@@ -11,16 +11,35 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
-TfrmObjectList *frmObjectList=0;
 //---------------------------------------------------------------------------
-void frmObjectListShow(){
-	if (frmObjectList){
-    	frmObjectList->SetFocus();
-    }else{
-		frmObjectList = xr_new<TfrmObjectList>((TComponent*)0);
-    	frmObjectList->Show();
-    }
+TfrmObjectList* TfrmObjectList::CreateForm(TWinControl* parent)
+{
+	TfrmObjectList* OL=xr_new<TfrmObjectList>(parent);
+    if (parent) OL->Parent = parent;
+	return OL;
 }
+
+void TfrmObjectList::DestroyForm(TfrmObjectList*& obj_list)
+{
+	VERIFY(obj_list);
+    xr_delete(obj_list);
+}
+
+void __fastcall TfrmObjectList::ShowObjectList()
+{
+	Show();
+}
+
+void __fastcall TfrmObjectList::ShowObjectListModal()
+{
+	ShowModal();
+}
+
+void __fastcall TfrmObjectList::HideObjectList()
+{
+	Hide();
+}
+
 //---------------------------------------------------------------------------
 __fastcall TfrmObjectList::TfrmObjectList(TComponent* Owner)
     : TForm(Owner)
@@ -206,15 +225,12 @@ void __fastcall TfrmObjectList::tmRefreshSelectionTimer(TObject *Sender)
 void __fastcall TfrmObjectList::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	Action = caFree;
-	frmObjectList = 0;
+    tmRefreshSelection->Enabled 	= false;
+    tmRefreshList->Enabled 			= false;
 
-    tmRefreshSelection->Enabled = false;
-    tmRefreshList->Enabled = false;
-
-    tvItems->OnItemSelectedChange = 0;
-    tvItems->Items->Clear();
-    tvItems->OnItemSelectedChange = tvItemsItemSelectedChange;
+    tvItems->OnItemSelectedChange 	= 0;
+    tvItems->Items->Clear			();
+    tvItems->OnItemSelectedChange 	= tvItemsItemSelectedChange;
 }
 //---------------------------------------------------------------------------
 

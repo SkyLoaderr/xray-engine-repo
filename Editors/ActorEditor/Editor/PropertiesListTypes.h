@@ -21,6 +21,7 @@ enum EPropType{
 	PROP_TOKEN,
 	PROP_TOKEN2,
     PROP_TOKEN3,
+    PROP_TOKEN4,
 	PROP_LIST,
 	PROP_COLOR,
 	PROP_FCOLOR,
@@ -434,6 +435,20 @@ public:
     const Item*			items;
 public:
 						TokenValue3		(u32* val, u32 _cnt, const Item* _items):CustomValue<u32>(val),cnt(_cnt),items(_items){};
+	virtual LPCSTR 		GetText			(TOnDrawEvent OnDraw);
+};
+//------------------------------------------------------------------------------
+
+class TokenValue4: public CustomValue<u32>{
+public:
+	struct Item {
+		u32				ID;
+		AnsiString		str;
+	};
+    DEFINE_VECTOR		(Item,ItemVec,ItemIt);
+    const ItemVec*		items;
+public:
+						TokenValue4		(u32* val, const ItemVec* _items):CustomValue<u32>(val),items(_items){};
 	virtual LPCSTR 		GetText			(TOnDrawEvent OnDraw);
 };
 //------------------------------------------------------------------------------

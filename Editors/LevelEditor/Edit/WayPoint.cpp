@@ -299,7 +299,7 @@ void CWayObject::Select(int flag)
     if ((flag==1)&&(m_WayPoints.size()==1)) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(1);
 }
 
-bool CWayObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
+bool CWayObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest)
 {
     if (IsPointMode()){
     	float dist = UI.ZFar();
@@ -376,7 +376,7 @@ void CWayObject::Render(int priority, bool strictB2F)
     }
 }
 
-bool CWayObject::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf)
+bool CWayObject::RayPick(float& distance, const Fvector& S, const Fvector& D, SRayPickInfo* pinf)
 {
     bool bPick=false;
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)

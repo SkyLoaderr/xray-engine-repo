@@ -114,7 +114,7 @@ bool CPortal::FrustumPick(const CFrustum& frustum){
 }
 //------------------------------------------------------------------------------
 
-bool CPortal::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CPortal::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	Fvector p[3];
     float range;
     bool bPick=false;

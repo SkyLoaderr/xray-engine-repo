@@ -49,6 +49,15 @@ LPCSTR TokenValue3::GetText(TOnDrawEvent OnDraw)
 }
 //------------------------------------------------------------------------------
 
+LPCSTR TokenValue4::GetText(TOnDrawEvent OnDraw)
+{
+	VERIFY(GetValue()<items->size());
+	u32 draw_val 	= GetValue();
+    if (OnDraw)OnDraw(this, &draw_val);
+    return (*items)[draw_val].str.c_str();
+}
+//------------------------------------------------------------------------------
+
 LPCSTR	ListValue::GetText(TOnDrawEvent OnDraw)
 {
     prop_draw_text=GetValue();

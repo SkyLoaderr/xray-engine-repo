@@ -160,6 +160,10 @@ public:
     {
     	return			(TokenValue3*)	AppendValue		(items,key,xr_new<TokenValue3>(val,cnt,lst),PROP_TOKEN3);
     }
+	IC TokenValue4*   	CreateToken4	(PropItemVec& items, LPCSTR key, u32* val, const TokenValue4::ItemVec* lst)
+    {
+    	return			(TokenValue4*)	AppendValue		(items,key,xr_new<TokenValue4>(val,lst),PROP_TOKEN4);
+    }
 	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, AStringVec* lst)
     {
     	return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lst),PROP_LIST);

@@ -152,7 +152,7 @@ void SceneBuilder::ResetStructures (){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num, int lod_id, 
+BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num, 
 							b_vertex* verts, int& vert_cnt, int& vert_it, b_face* faces, int& face_cnt, int& face_it)
 {
 	BOOL bResult = TRUE;
@@ -193,7 +193,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
             R_ASSERT(face_it<face_cnt);
             b_face& first_face 		= faces[face_it++];
         	{
-                int m_id			= BuildMaterial(surf,sect_num,lod_id);
+                int m_id			= BuildMaterial(surf,sect_num);
                 if (m_id<0){
                 	bResult 		= FALSE;
                     break;
@@ -257,13 +257,11 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj)
     const Fmatrix& T 	= obj->_Transform();
     // build LOD           
 	CSector* S 			= PortalUtils.FindSector(obj,*O->FirstMesh());
-	int	lod_id 			= BuildObjectLOD(T,O,S?S->sector_num:m_iDefaultSectorNum);
-    if (lod_id==-2)    	return FALSE;
 	// parse mesh data
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
-    	if (!BuildMesh(T,O,*M,sect_num,lod_id,l_verts,l_vert_cnt,l_vert_it,l_faces,l_face_cnt,l_face_it)) return FALSE;
+    	if (!BuildMesh(T,O,*M,sect_num,l_verts,l_vert_cnt,l_vert_it,l_faces,l_face_cnt,l_face_it)) return FALSE;
     }
     return TRUE;
 }
@@ -283,19 +281,21 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
             break;
         }
     }
-	// detect sector
-	CSector* S 			= PortalUtils.FindSector(obj,*O->FirstMesh());
-    int sect_num 		= S?S->sector_num:m_iDefaultSectorNum;
 
-    // build LOD           
-	int	lod_id 			= BuildObjectLOD(Fidentity,O,sect_num);
-    if (lod_id==-2)    	return FALSE;
+    // detect sector
+    CSector* S 			= PortalUtils.FindSector(obj,*O->FirstMesh());
+    int sect_num 		= S?S->sector_num:m_iDefaultSectorNum;
 
     // build model
     if (-1==model_idx){
+	    // build LOD           
+        int	lod_id 		= BuildObjectLOD(Fidentity,O,sect_num);
+        if (lod_id==-2) return FALSE;
+        // build model
         model_idx		= l_mu_models.size();
 	    l_mu_models.push_back(b_mu_model());
 		b_mu_model&	M	= l_mu_models.back();
+        M.lod_id		= lod_id;
         int vert_it=0, face_it=0;
         M.face_cnt		= obj->GetFaceCount();
         M.vert_cnt		= obj->GetVertexCount();
@@ -304,7 +304,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
         M.faces			= xr_alloc<b_face>(M.face_cnt);
 		// parse mesh data
 	    for(EditMeshIt MESH=O->FirstMesh();MESH!=O->LastMesh();MESH++)
-	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,lod_id,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
+	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
     }
     
     l_mu_refs.push_back	(b_mu_reference());
@@ -537,7 +537,6 @@ void SceneBuilder::BuildGlow(CGlow* e)
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
     mtl.sector		= CalculateSector	(e->PPosition,e->m_fRadius);
     mtl.shader_xrlc	= -1;
-    mtl.lod_id		= -1;
 
     mtl_idx 		= FindInMaterials(&mtl);
     if (mtl_idx<0){
@@ -659,7 +658,6 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     mtl.shader      = BuildShader		(e->GetLODShaderName());
     mtl.sector		= sector_num;
     mtl.shader_xrlc	= -1;
-    mtl.lod_id		= -1;
 
     int mtl_idx		= FindInMaterials(&mtl);
     if (mtl_idx<0){
@@ -692,14 +690,13 @@ int SceneBuilder::FindInMaterials(b_material* m)
         if( (l_materials[i].surfidx		== m->surfidx) 		&&
             (l_materials[i].shader		== m->shader) 		&&
             (l_materials[i].shader_xrlc	== m->shader_xrlc) 	&&
-            (l_materials[i].sector		== m->sector)		&&
-            (l_materials[i].lod_id		== m->lod_id)) return i;
+            (l_materials[i].sector		== m->sector)) return i;
     }
     return -1;
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num, int lod_id){
+int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num){
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
@@ -711,7 +708,6 @@ int SceneBuilder::BuildMaterial(CSurface* surf, int sector_num, int lod_id){
     mtl.shader_xrlc	= cl_sh_idx;
     mtl.sector		= sector_num;
 	mtl.surfidx		= BuildTexture(surf->_Texture());
-    mtl.lod_id		= lod_id;
     mtl_idx 		= FindInMaterials(&mtl);
     if (mtl_idx<0){
         l_materials.push_back(mtl);

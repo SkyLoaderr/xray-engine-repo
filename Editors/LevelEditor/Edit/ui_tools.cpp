@@ -10,6 +10,8 @@
 #include "ui_main.h"
 
 #include "editlibrary.h"
+#include "render.h"
+#include "ObjectList.h"
 
 #define DETACH_FRAME(a) if (a){ (a)->Parent = NULL;}
 #define ATTACH_FRAME(a,b) if (a){ (a)->Parent = (b);}
@@ -22,10 +24,12 @@ TUI_Tools::TUI_Tools()
 {
 	m_Props = TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
     m_Flags.zero();
+    pObjectListForm = TfrmObjectList::CreateForm();
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
+    TfrmObjectList::DestroyForm(pObjectListForm);
 	TProperties::DestroyForm(m_Props);
     for (DWORD i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
 }
@@ -39,6 +43,7 @@ TFrame*	TUI_Tools::GetFrame(){
 
 void TUI_Tools::OnCreate()
 {
+	UI.BeginEState	(esEditScene);
     target          = -1;
     action          = -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
@@ -74,16 +79,6 @@ void __fastcall TUI_Tools::MouseMove(TShiftState Shift){
 bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
     if(pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
     return false;
-}
-//---------------------------------------------------------------------------
-void __fastcall TUI_Tools::OnFrame(){
-	if(!UI.IsMouseCaptured()){
-        // если нужно изменить target выполняем после того как мышь освободится
-        if(m_Flags.is(flChangeTarget)) 		SetTarget(iNeedTarget);
-        // если нужно изменить action выполняем после того как мышь освободится
-        if(m_Flags.is(flChangeAction)) 		SetAction(iNeedAction);
-    }
-	if(m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
 }
 //---------------------------------------------------------------------------
 void __fastcall TUI_Tools::OnObjectsUpdate(){
@@ -352,4 +347,88 @@ void __fastcall TUI_Tools::OnPropsModified()
 }
 //---------------------------------------------------------------------------
 
+#include "EditLightAnim.h"
+
+bool TUI_Tools::IfModified()
+{
+    EEditorState est 		= UI.GetEState();
+    switch(est){
+    case esEditLightAnim: 	return TfrmEditLightAnim::FinalClose(); break;
+    case esEditLibrary: 	return TfrmEditLibrary::FinalClose(); 	break;
+    case esEditScene:		return Scene.IfModified(); 				break;
+    default: THROW;
+    }
+    return false;
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::ZoomObject(bool bSelectedOnly)
+{
+    if( !Scene.locked() ){
+        Scene.ZoomExtents(bSelectedOnly);
+    } else {
+        if (UI.GetEState()==esEditLibrary){
+            TfrmEditLibrary::ZoomObject();
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
+{
+	st_Environment& E 	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
+	s_fog				= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:UI.ZFar();
+	e_fog				= psDeviceFlags.is(rsFog)?0.91f * E.m_ViewDist:UI.ZFar();
+	fog_color 			=  E.m_FogColor.get();
+}
+//---------------------------------------------------------------------------
+
+LPCSTR TUI_Tools::GetInfo()
+{
+	return (AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())))).c_str();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TUI_Tools::OnFrame()
+{
+	Scene.OnFrame		(Device.fTimeDelta);
+    EEditorState est 	= UI.GetEState();
+    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
+        if (!UI.IsMouseCaptured()){
+            // если нужно изменить target выполняем после того как мышь освободится
+            if(m_Flags.is(flChangeTarget)) 		SetTarget(iNeedTarget);
+            // если нужно изменить action выполняем после того как мышь освободится
+            if(m_Flags.is(flChangeAction)) 		SetAction(iNeedAction);
+        }
+        if (m_Flags.is(flUpdateProperties)) 	RealUpdateProperties();
+        if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TUI_Tools::Render()
+{
+	// Render update
+    ::Render->Calculate		();
+    ::Render->Render		();
+    // draw sky
+    EEditorState est 		= UI.GetEState();
+    switch(est){
+    case esEditLightAnim:
+    case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
+    }
+    // draw scene
+    switch(est){
+    case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
+    case esEditLightAnim:
+    case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
+    }
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::ShowObjectList()
+{
+	pObjectListForm->ShowObjectList();
+}
+//---------------------------------------------------------------------------
 

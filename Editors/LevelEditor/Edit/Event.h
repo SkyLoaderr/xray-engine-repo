@@ -31,7 +31,7 @@ public:
         void		GetTransform	(Fmatrix& M);
         void		GetTransformRP	(Fmatrix& M);
 	    bool 		FrustumPick		(const Fmatrix& parent, const CFrustum& frustum);
-        bool		RayPick			(const Fmatrix& parent, float& distance, Fvector& start, Fvector& direction);
+        bool		RayPick			(const Fmatrix& parent, float& distance, const Fvector& start, const Fvector& direction);
 	    bool 		FrustumSelect	(const Fmatrix& parent, int flag, const CFrustum& frustum);
 		void 		Move			( const Fmatrix& parent, const Fmatrix& inv_parent, Fvector& amount );
 		void 		RotateLocal		( Fvector& axis, float angle );
@@ -65,12 +65,12 @@ public:
 	void 			Construct	(LPVOID data);
 
 	virtual void 	Render			( int priority, bool strictB2F );
-	virtual bool 	RayPick 		( float& distance, Fvector& start,
-									Fvector& direction, SRayPickInfo* pinf = NULL);
+	virtual bool 	RayPick 		( float& distance, const Fvector& start,
+									const Fvector& direction, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		( const CFrustum& frustum );
 
 	virtual void 	Select			(int flag);
-	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
+	virtual bool 	RaySelect		(int flag, const Fvector& start, const Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
     virtual bool 	FrustumSelect	(int flag, const CFrustum& frustum);
     // change position/orientation methods
 	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);

@@ -23,7 +23,7 @@ public:
 
 	virtual void 	Render		(int priority, bool strictB2F);
 
-	virtual bool 	RayPick		(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf = NULL);
+	virtual bool 	RayPick		(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);
 
     virtual bool 	FrustumPick	(const CFrustum& frustum);
 

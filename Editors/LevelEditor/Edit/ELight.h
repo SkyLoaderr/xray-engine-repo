@@ -60,8 +60,8 @@ public:
     void __fastcall	OnAutoA1Click	(PropItem* value);
     void __fastcall	OnAutoA2Click	(PropItem* value);
 protected:                 
-    virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
-    virtual void 	SetPosition		(Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
+    virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
+    virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
 public:
 					CLight		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
@@ -69,7 +69,7 @@ public:
     void			CopyFrom	(CLight* src);
 
     // pick functions
-	virtual bool 	RayPick		(float& distance, Fvector& start, Fvector& direction,
+	virtual bool 	RayPick		(float& distance, const Fvector& start, const Fvector& direction,
 								SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	(const CFrustum& frustum);
 

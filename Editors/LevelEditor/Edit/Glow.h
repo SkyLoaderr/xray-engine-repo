@@ -27,7 +27,7 @@ public:
     void __fastcall	ShaderChange	(PropValue* value);
 protected:
     virtual Fvector& GetScale		()	{ FScale.set(m_fRadius,m_fRadius,m_fRadius); return FScale; 	}
-	virtual void 	SetScale		(Fvector& sc){float v=m_fRadius; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_fRadius=v; UpdateTransform();}
+	virtual void 	SetScale		(const Fvector& sc){float v=m_fRadius; if (!fsimilar(FScale.x,sc.x)) v=sc.x; if (!fsimilar(FScale.y,sc.y)) v=sc.y; if (!fsimilar(FScale.z,sc.z)) v=sc.z; FScale.set(v,v,v); m_fRadius=v; UpdateTransform();}
 public:
 	                CGlow       (LPVOID data, LPCSTR name);
     void            Construct   (LPVOID data);
@@ -36,7 +36,7 @@ public:
     void			Compile		();
 
 	virtual void    Render      (int priority, bool strictB2F);
-	virtual bool    RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
+	virtual bool    RayPick     ( float& distance,	const Fvector& start,	const Fvector& direction,
 		                          SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick	( const CFrustum& frustum );
   	virtual bool 	Load		(CStream&);

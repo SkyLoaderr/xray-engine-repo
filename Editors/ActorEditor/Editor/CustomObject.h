@@ -61,9 +61,9 @@ protected:
     virtual Fvector& GetRotation	()	{ return FRotation;		}
     virtual Fvector& GetScale		()	{ return FScale; 		}
 
-    virtual void 	SetPosition		(Fvector& pos)	{ FPosition.set(pos);	UpdateTransform();}
-	virtual void 	SetRotation		(Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
-    virtual void 	SetScale		(Fvector& scale){ FScale.set(scale);	UpdateTransform();}
+    virtual void 	SetPosition		(const Fvector& pos)	{ FPosition.set(pos);	UpdateTransform();}
+	virtual void 	SetRotation		(const Fvector& rot)	{ FRotation.set(rot);	UpdateTransform();}
+    virtual void 	SetScale		(const Fvector& scale)	{ FScale.set(scale);	UpdateTransform();}
 public:
 	IC BOOL 		Visible			(){return m_bVisible; }
 	IC BOOL 		Locked			(){return m_bLocked; }
@@ -83,9 +83,9 @@ public:
 	virtual void 	OnFrame			();
     virtual void 	OnUpdateTransform();
 
-	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
+	virtual bool 	RaySelect		(int flag, const Fvector& start, const Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
     virtual bool 	FrustumSelect	(int flag, const CFrustum& frustum);
-	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };
+	virtual bool 	RayPick			(float& dist, const Fvector& start, const Fvector& dir, SRayPickInfo* pinf=NULL){ return false; };
     virtual bool 	FrustumPick		(const CFrustum& frustum){ return false; };
     virtual bool 	SpherePick		(const Fvector& center, float radius){ return false; };
 
@@ -107,9 +107,9 @@ public:
     CCustomObject* 	GetOwner		(){return m_pOwnerObject;}
 
     // change position/orientation methods
-    virtual void 	NumSetPosition	(Fvector& pos)	{ SetPosition(pos); }
-	virtual void 	NumSetRotation	(Fvector& rot)	{ SetRotation(rot);	}
-    virtual void 	NumSetScale		(Fvector& scale){ SetScale(scale);	}
+    virtual void 	NumSetPosition	(const Fvector& pos)	{ SetPosition(pos); }
+	virtual void 	NumSetRotation	(const Fvector& rot)	{ SetRotation(rot);	}
+    virtual void 	NumSetScale		(const Fvector& scale)	{ SetScale(scale);	}
 	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	RotateParent	(Fvector& axis, float angle );

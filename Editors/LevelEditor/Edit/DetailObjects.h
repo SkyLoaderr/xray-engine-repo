@@ -2,8 +2,8 @@
 // file: DetailObjects.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_DetailObjects_H_
-#define _INCDEF_DetailObjects_H_
+#ifndef DetailObjectsH
+#define DetailObjectsH
 
 #include "DetailFormat.h"
 #include "DetailModel.h"
@@ -151,7 +151,7 @@ public:
     void				ClearBase				();
     void				Clear					();
 
-	int					RaySelect				(bool flag, float& distance, Fvector& start, Fvector& direction);
+	int					RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
 	int					FrustumSelect			(bool flag);
 	int 				SelectObjects           (bool flag);
 	int 				InvertSelection         ();

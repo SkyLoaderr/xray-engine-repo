@@ -19,7 +19,7 @@ public:
 	void			add_sphere		(const Fsphere& S);
 	void			add_box			(const Fmatrix& B);
 protected:                 
-	virtual void 	SetScale		(Fvector& val);
+	virtual void 	SetScale		(const Fvector& val);
     virtual void	OnUpdateTransform();
 public:
 					CEditShape 	(LPVOID data, LPCSTR name);
@@ -27,7 +27,7 @@ public:
 	virtual 		~CEditShape	();
 
     // pick functions
-	virtual bool 	RayPick		(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf = NULL);
+	virtual bool 	RayPick		(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick	(const CFrustum& frustum);
 
     // placement functions

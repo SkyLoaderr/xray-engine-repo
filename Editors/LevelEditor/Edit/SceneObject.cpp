@@ -193,7 +193,7 @@ bool CSceneObject::SpherePick(const Fvector& center, float radius){
     return false;
 }
 
-bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf){
+bool CSceneObject::RayPick(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf){
 	if (!m_pReference) return false;
     if (::Render->occ_visible(m_TBBox))
 		if (m_pReference&&m_pReference->RayPick(dist, S, D, _ITransform(), pinf)){

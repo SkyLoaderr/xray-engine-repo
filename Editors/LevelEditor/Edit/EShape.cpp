@@ -67,7 +67,7 @@ void CEditShape::ComputeBounds()
 	m_Box.getsphere(m_Sphere.P,m_Sphere.R);
 }
 
-void CEditShape::SetScale(Fvector& val)	
+void CEditShape::SetScale(const Fvector& val)	
 { 
 	if (shapes.size()==1){
 		switch (shapes[0].type){
@@ -197,7 +197,7 @@ void CEditShape::Detach()
     }
 }
 
-bool CEditShape::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+bool CEditShape::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
     bool bPick			= FALSE;
 	

@@ -105,7 +105,7 @@ void CEvent::SForm::GetBox(Fbox& bb)
     bb.xform		(T);
 }
 
-bool CEvent::SForm::RayPick(const Fmatrix& parent, float& distance, Fvector& start, Fvector& direction)
+bool CEvent::SForm::RayPick(const Fmatrix& parent, float& distance, const Fvector& start, const Fvector& direction)
 {
 	bool bPick=false;
     float range;
@@ -283,7 +283,7 @@ bool CEvent::FrustumPick(const CFrustum& frustum){
     return false;
 }
 
-bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CEvent::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
     bool bPick=false;
 	for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++)
     	if (it->RayPick(FTransform,distance,start,direction)) bPick=true;
@@ -296,7 +296,7 @@ void CEvent::Select(int flag)
     if (flag==0) for (FormIt it=m_Forms.begin(); it!=m_Forms.end(); it++) it->Select(0);
 }
 
-bool CEvent::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest)
+bool CEvent::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest)
 {
     if (IsFormMode()){
         float dist = UI.ZFar();

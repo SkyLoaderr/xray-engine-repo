@@ -8,8 +8,8 @@ struct xr_token;
 	LPCSTR					_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
 	LPCSTR					_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
 	LPCSTR					_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
-	AnsiString&				ListToSequence			( AStringVec& lst );
-	AnsiString&				ListToSequence2			( AStringVec& lst );
+	AnsiString&				ListToSequence			( const AStringVec& lst );
+	AnsiString&				ListToSequence2			( const AStringVec& lst );
 	void 					SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
 #endif
 

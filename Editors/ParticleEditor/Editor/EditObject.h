@@ -298,9 +298,9 @@ public:
 	void		    EvictObject				();
 
     // pick methods
-	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& inv_parent, SRayPickInfo* pinf=0);
+	bool 			RayPick					(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf=0);
 #ifdef _LEVEL_EDITOR
-    bool 			BoxPick					(CSceneObject* obj, const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(CSceneObject* obj, const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 #endif

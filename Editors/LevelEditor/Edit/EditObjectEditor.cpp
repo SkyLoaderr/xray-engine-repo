@@ -40,7 +40,7 @@ bool CEditableObject::Reload()
     return Load(m_LoadName.c_str());
 }
 
-bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& inv_parent, SRayPickInfo* pinf){
+bool CEditableObject::RayPick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf){
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         if( (*m)->RayPick( dist, S, D, inv_parent, pinf ) )
@@ -55,7 +55,7 @@ bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent
 	return false;
 }
 
-bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf){
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         if ((*m)->BoxPick(box, parent, pinf)){

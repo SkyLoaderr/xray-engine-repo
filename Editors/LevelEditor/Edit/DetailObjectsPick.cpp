@@ -11,7 +11,7 @@
 #include "ui_main.h"
 #include "frustum.h"
 
-int EDetailManager::RaySelect(bool flag, float& distance, Fvector& start, Fvector& direction)
+int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, const Fvector& direction)
 {
 // box selected only
 
@@ -69,7 +69,7 @@ int EDetailManager::FrustumSelect(bool flag)
 
             bbox.min.set(fx-DETAIL_SLOT_SIZE_2, slot->y_min, fz-DETAIL_SLOT_SIZE_2);
             bbox.max.set(fx+DETAIL_SLOT_SIZE_2, slot->y_max, fz+DETAIL_SLOT_SIZE_2);
-			BYTE mask	= 0xff;
+			u32 mask	= 0xff;
             bool bRes 	= !!frustum.testAABB(bbox.min,bbox.max,mask);
             if (bRes==flag){
 	            m_Selected[z*dtH.size_x+x] = flag;

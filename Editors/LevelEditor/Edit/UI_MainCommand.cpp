@@ -12,7 +12,6 @@
 #include "ObjectList.h"
 #include "EditorPref.h"
 #include "main.h"
-#include "sceneproperties.h"
 #include "EditorPref.h"
 #include "ImageEditor.h"
 #include "d3dutils.h"
@@ -46,7 +45,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             PSLib.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
-		    BeginEState		(esEditScene);
 
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
@@ -71,44 +69,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	xr_delete(fraBottomBar);
 		//----------------
     	break;
-    case COMMAND_EVICT_OBJECTS:
-    	Lib.EvictObjects();
-    	break;
-    case COMMAND_EVICT_TEXTURES:
-    	Device.Shader.Evict();
-    	break;
-    case COMMAND_CHECK_MODIFIED:
-    	bRes = Scene.IsModified();
-		break;
 	case COMMAND_QUIT:
     	Quit();
     	break;
-	case COMMAND_EXIT:{
-	    EEditorState est = GetEState();
-    	switch(est){
-        case esEditLightAnim: 	bRes = TfrmEditLightAnim::FinalClose(); break;
-        case esEditLibrary: 	bRes = TfrmEditLibrary::FinalClose(); 	break;
-        case esEditScene:		bRes = Scene.IfModified(); 				break;
-        }
-		}break;
-	case COMMAND_SHOW_PROPERTIES:
-        Tools.ShowProperties();
-        break;
-	case COMMAND_UPDATE_PROPERTIES:
-        Tools.UpdateProperties();
-        break;
-	case COMMAND_SHOWCONTEXTMENU:
-    	ShowContextMenu(EObjClass(p1));
-        break;
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->Run();
-        break;
-	case COMMAND_OBJECT_LIST:
-		if( !Scene.locked() ){
-	        frmObjectListShow();
-        }else{
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-        }
         break;
 	case COMMAND_CHANGE_TARGET:
 	  	Tools.ChangeTarget(p1);
@@ -116,18 +81,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CHANGE_ACTION:
 		Tools.ChangeAction(p1);
         break;
-    case COMMAND_LIBRARY_EDITOR:
-        if (Scene.ObjCount()||(GetEState()!=esEditScene)){
-        	if (GetEState()==esEditLibrary)	TfrmEditLibrary::ShowEditor();
-            else							ELog.DlgMsg(mtError, "Scene must be empty before editing library!");
-        }else{
-            TfrmEditLibrary::ShowEditor();
-        }
-        break;
-    case COMMAND_LANIM_EDITOR:
-    	TfrmEditLightAnim::ShowEditor();
-    	break;
-
     case COMMAND_IMAGE_EDITOR:
     	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
     	break;
@@ -146,345 +99,32 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CHANGE_SNAP:
         ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
         break;
-    case COMMAND_FILE_MENU:
-		FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
-    	break;
-	case COMMAND_LOAD:
-		if( !Scene.locked() ){
-        	if (p1)	strcpy( filebuffer, (char*)p1 );
-            else	strcpy( filebuffer, m_LastFileName );
-			if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
-                if (!Scene.IfModified()){
-                	bRes=false;
-                    break;
-                }
-                if ((0!=stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,false,true)){
-                	bRes=false;
-                    break;
-                }
-                if ((0==stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,true,false)){
-	                Engine.FS.UnlockFile(0,filebuffer);
-                }
-                SetStatus("Level loading...");
-            	Command( COMMAND_CLEAR );
-	            BeginEState(esSceneLocked);
-				Scene.Load( filebuffer );
-                EndEState();
-				strcpy(m_LastFileName,filebuffer);
-                SetStatus("");
-              	Scene.UndoClear();
-				Scene.UndoSave();
-                Scene.m_Modified = false;
-			    Command(COMMAND_UPDATE_CAPTION);
-                Command(COMMAND_CHANGE_ACTION,eaSelect);
-                // lock
-                Engine.FS.LockFile(0,filebuffer);
-                fraLeftBar->AppendRecentFile(filebuffer);
-                // update props
-		        Command(COMMAND_UPDATE_PROPERTIES);
-                RedrawScene();
-			}
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_RELOAD:
-		if( !Scene.locked() ){
-        	Command(COMMAND_LOAD,(int)m_LastFileName);
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_SAVE:
-		if( !Scene.locked() ){
-			if( m_LastFileName[0] ){
-	            BeginEState(esSceneLocked);
-                SetStatus("Level saving...");
-				Scene.Save( m_LastFileName, false );
-                SetStatus("");
-                Scene.m_Modified = false;
-			    Command(COMMAND_UPDATE_CAPTION);
-                EndEState();
-			}else{
-				bRes = Command( COMMAND_SAVEAS ); }
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-    case COMMAND_SAVE_BACKUP:{
-    	AnsiString fn = AnsiString(Engine.FS.m_CompName)+"_"+Engine.FS.m_UserName+"_backup.level";
-        Engine.FS.m_Maps.Update(fn);
-    	Command(COMMAND_SAVEAS,(int)fn.c_str());
-    }break;
-	case COMMAND_SAVEAS:
-		if( !Scene.locked() ){
-			filebuffer[0] = 0;
-			if(p1 || Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
-            	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
-	            BeginEState(esSceneLocked);
-                SetStatus("Level saving...");
-				Scene.Save( filebuffer, false );
-                SetStatus("");
-                Scene.m_Modified = false;
-				// unlock
-    	        Engine.FS.UnlockFile(0,m_LastFileName);
-                // set new name
-                Engine.FS.LockFile(0,filebuffer);
-				strcpy(m_LastFileName,filebuffer);
-			    bRes = Command(COMMAND_UPDATE_CAPTION);
-	            EndEState();
-                fraLeftBar->AppendRecentFile(filebuffer);
-			}else
-            	bRes = false;
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_CLEAR:
-		if( !Scene.locked() ){
-            if (!Scene.IfModified()) return false;
-            BeginEState(esSceneLocked);
-			// unlock
-			Engine.FS.UnlockFile(0,m_LastFileName);
-			Device.m_Camera.Reset();
-			Scene.Unload();
-            Scene.m_LevelOp.Reset();
-			m_LastFileName[0] = 0;
-            EndEState();
-           	Scene.UndoClear();
-            Scene.m_Modified = false;
-			Command(COMMAND_UPDATE_CAPTION);
-			Command(COMMAND_CHANGE_TARGET,etObject);
-			Command(COMMAND_CHANGE_ACTION,eaSelect);
-		    Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-        Command(COMMAND_UPDATE_PROPERTIES);
-		break;
-
-    case COMMAND_IMPORT_COMPILER_ERROR:{
-    	AnsiString fn;
-    	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
-        	Scene.LoadCompilerError(fn.c_str());
-        }
-    	}break;
-    
-	case COMMAND_VALIDATE_SCENE:
-		if( !Scene.locked() ){
-            Scene.Validate(true,false);
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
     case COMMAND_UNLOAD_TEXTURES:
 		Device.UnloadTextures();
     	break;
-
-    case COMMAND_REFRESH_LIBRARY:
-        if (!Scene.ObjCount()&&!Scene.locked()){
-	    	Lib.RefreshLibrary();
-        }else{
-            ELog.DlgMsg(mtError, "Scene must be empty before refreshing library!");
-			bRes = false;
-        }
+    case COMMAND_EVICT_OBJECTS:
+    	Lib.EvictObjects();
     	break;
-
-    case COMMAND_RELOAD_OBJECTS:
-    	Lib.ReloadObjects();
+    case COMMAND_EVICT_TEXTURES:
+    	Device.Shader.Evict();
     	break;
-
-	case COMMAND_CUT:
-		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
-			Scene.CutSelection(Tools.CurrentClassID());
-        	EndEState();
-            fraLeftBar->miPaste->Enabled = true;
-            fraLeftBar->miPaste2->Enabled = true;
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
+    case COMMAND_CHECK_MODIFIED:
+    	bRes = Scene.IsModified();
 		break;
-
-	case COMMAND_COPY:
-		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
-			Scene.CopySelection(Tools.CurrentClassID());
-        	EndEState();
-            fraLeftBar->miPaste->Enabled = true;
-            fraLeftBar->miPaste2->Enabled = true;
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
+	case COMMAND_EXIT:
+    	bRes = Tools.IfModified();
 		break;
-
-	case COMMAND_PASTE:
-		if( !Scene.locked() ){
-        	BeginEState(esSceneLocked);
-			Scene.PasteSelection();
-        	EndEState();
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_UNDO:
-		if( !Scene.locked() ){
-			if( !Scene.Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
-            else{
-	            Tools.Reset();
-			    Command(COMMAND_CHANGE_ACTION, eaSelect);
-            }
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_REDO:
-		if( !Scene.locked() ){
-			if( !Scene.Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
-            else{
-	            Tools.Reset();
-			    Command(COMMAND_CHANGE_ACTION, eaSelect);
-            }
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_OPTIONS:
-		if( !Scene.locked() ){
-            if (mrOk==frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false))
-            	Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_BUILD:
-		if( !Scene.locked() ){
-            if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
-                Builder.Compile( );
-        }else{
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_MAKE_GAME:
-		if( !Scene.locked() ){
-            if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
-                Builder.MakeGame( );
-        }else{
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-    case COMMAND_MAKE_DETAILS:
-		if( !Scene.locked() ){
-            Builder.MakeDetails();
-        }else{
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
-	case COMMAND_INVERT_SELECTION_ALL:
-		if( !Scene.locked() ){
-			Scene.InvertSelection(Tools.CurrentClassID());
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_SELECT_ALL:
-		if( !Scene.locked() ){
-			Scene.SelectObjects(true,Tools.CurrentClassID());
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_DESELECT_ALL:
-		if( !Scene.locked() ){
-			Scene.SelectObjects(false,Tools.CurrentClassID());
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_DELETE_SELECTION:
-		if( !Scene.locked() ){
-			Scene.RemoveSelection( Tools.CurrentClassID() );
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-
-	case COMMAND_HIDE_UNSEL:
-		if( !Scene.locked() ){
-			Scene.ShowObjects( false, Tools.CurrentClassID(), true, false );
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
+	case COMMAND_SHOW_PROPERTIES:
+        Tools.ShowProperties();
         break;
-	case COMMAND_HIDE_SEL:
-		if( !Scene.locked() ){
-			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), true, true );
-			Scene.UndoSave();
-		} else {
-			ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
+	case COMMAND_UPDATE_PROPERTIES:
+        Tools.UpdateProperties();
         break;
-	case COMMAND_HIDE_ALL:
-		if( !Scene.locked() ){
-			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), false );
-			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
+	case COMMAND_SHOWCONTEXTMENU:
+    	ShowContextMenu(EObjClass(p1));
         break;
 	case COMMAND_ZOOM_EXTENTS:
-		if( !Scene.locked() ){
-			Scene.ZoomExtents(p1);
-		} else {
-        	if (GetEState()==esEditLibrary){
-            	TfrmEditLibrary::ZoomObject();
-            }else{
-                ELog.DlgMsg( mtError, "Scene sharing violation" );
-                bRes = false;
-            }
-        }
+		Tools.ZoomObject(p1);
     	break;
     case COMMAND_SET_NUMERIC_POSITION:
     	Tools.SetNumPosition((CCustomObject*)p1);
@@ -494,33 +134,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_SET_NUMERIC_SCALE:
     	Tools.SetNumScale((CCustomObject*)p1);
-    	break;
-    case COMMAND_LOCK_ALL:
-		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),false);
-			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
-    case COMMAND_LOCK_SEL:
-		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,true);
-			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
-    case COMMAND_LOCK_UNSEL:
-		if( !Scene.locked() ){
-			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,false);
-			Scene.UndoSave();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
     	break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&m_bReady)
@@ -536,44 +149,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_LOAD_FIRSTRECENT:
     	if (fraLeftBar->FirstRecentFile()){
         	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
-        }
-    	break;
-    case COMMAND_RESET_ANIMATION:
-		if( !Scene.locked() ){
-	    	Scene.ResetAnimation();
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-		break;
-    case COMMAND_SET_SNAP_OBJECTS:
-		if( !Scene.locked() ){
-	    	int cnt=Scene.SetSnapList();
- 			Scene.UndoSave();
-        	ELog.Msg( mtInformation, "%d snap object(s) selected.", cnt );
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-        break;
-    case COMMAND_ADD_SNAP_OBJECTS:
-		if( !Scene.locked() ){
-	    	int cnt=Scene.AddToSnapList();
- 			Scene.UndoSave();
-        	ELog.Msg( mtInformation, "%d object(s) appended.", cnt );
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
-        }
-    	break;
-    case COMMAND_CLEAR_SNAP_OBJECTS:
-		if( !Scene.locked() ){
-	    	Scene.ClearSnapList();
- 			Scene.UndoSave();
-	       	ELog.Msg( mtInformation, "Snap list empty.");
-		}else{
-        	ELog.DlgMsg( mtError, "Scene sharing violation" );
-			bRes = false;
         }
     	break;
 	case COMMAND_UPDATE_TOOLBAR:

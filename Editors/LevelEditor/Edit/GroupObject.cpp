@@ -150,7 +150,7 @@ void CGroupObject::MoveTo(const Fvector& pos, const Fvector& up)
     }
 }
 
-void CGroupObject::NumSetPosition(Fvector& pos)
+void CGroupObject::NumSetPosition(const Fvector& pos)
 {
 	inherited::NumSetPosition(pos);
     Fmatrix prev; prev.invert(FTransform);
@@ -163,7 +163,7 @@ void CGroupObject::NumSetPosition(Fvector& pos)
     	(*it)->PPosition=v;
     }
 }
-void CGroupObject::NumSetRotation(Fvector& rot)
+void CGroupObject::NumSetRotation(const Fvector& rot)
 {
 	Fvector old_r=FRotation;
 	inherited::NumSetRotation(rot);
@@ -179,7 +179,7 @@ void CGroupObject::NumSetRotation(Fvector& rot)
     	(*it)->PPosition=v;
     }
 }
-void CGroupObject::NumSetScale(Fvector& scale)
+void CGroupObject::NumSetScale(const Fvector& scale)
 {
 	inherited::NumSetScale(scale);
     Fmatrix prev; prev.invert(FTransform);
@@ -265,7 +265,7 @@ bool CGroupObject::FrustumPick(const CFrustum& frustum)
     return false;
 }
 
-bool CGroupObject::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+bool CGroupObject::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
 	bool bPick = false;
 	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)

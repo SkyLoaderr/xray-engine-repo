@@ -5,6 +5,7 @@
 class TUI_CustomTools;
 class TUI_Control;
 class TProperties;
+class TfrmObjectList;
 
 #include "SceneClassList.h"
 
@@ -64,6 +65,8 @@ class TUI_Tools{
     TUI_CustomTools*m_pTools[etMaxTarget];
     TUI_CustomTools*pCurTools;
 
+    TfrmObjectList*	pObjectListForm;
+
     void __fastcall SetTargetAction	();
 
     void __fastcall SetAction   	(int act);
@@ -82,6 +85,14 @@ public:
     void            OnDestroy      	();
     void            Reset       	();
 
+	bool 			IfModified		();
+    void			ZoomObject		(bool bSelectedOnly);
+    void			GetCurrentFog	(u32& fog_color, float& s_fog, float& e_fog);
+    LPCSTR			GetInfo			();
+
+    void __fastcall OnFrame			();
+    void __fastcall Render			();
+
     IC int          GetTarget   	(){return target;}
     IC EObjClass    GetTargetClassID(){return ClassIDFromTargetID(target);}
     IC int          GetAction   	(){return action;}
@@ -93,7 +104,6 @@ public:
 
     void __fastcall ChangeTarget	(int tgt, bool forced=false);
     void __fastcall ChangeAction	(int act, bool forced=false);
-    void __fastcall OnFrame			();
     void __fastcall OnObjectsUpdate	();
 
     void __fastcall	SetNumPosition	(CCustomObject* O);
@@ -113,6 +123,8 @@ public:
 
     bool			Pick			();
 
+    void			ShowObjectList	();
+    
     void			ShowProperties	();
     void			HideProperties	();
     void			UpdateProperties(){m_Flags.set(flUpdateProperties,TRUE);}

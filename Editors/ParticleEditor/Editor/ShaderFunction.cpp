@@ -37,7 +37,8 @@ void FillMenuFromToken(TMxPopupMenu* menu, const xr_token *token_list, ClickEven
     }
 }
 //---------------------------------------------------------------------------
-AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list){
+AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list)
+{
 	bool bRes=false;
 	for( DWORD i=0; token_list[i].name; i++ )
     	if (token_list[i].id==int(val)) {res = token_list[i].name; bRes=true; break; }
@@ -45,9 +46,10 @@ AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *t
     return res;
 }
 
-DWORD GetTokenValFromName(AnsiString& val, const xr_token *token_list){
+DWORD GetTokenValFromName(const LPCSTR val, const xr_token *token_list)
+{
 	for( int i=0; token_list[i].name; i++ )
-		if( !stricmp(val.c_str(),token_list[i].name) )
+		if( !stricmp(val,token_list[i].name) )
 			return token_list[i].id;
     return 0;
 }
@@ -166,7 +168,8 @@ void __fastcall TfrmShaderFunction::stFunctionClick(TObject *Sender)
 
 void TfrmShaderFunction::GetFuncData(){
 	bLoadMode = true;
-	stFunction->Caption = GetTokenNameFromVal_EQ(m_CurFunc->F, stFunction->Caption, function_token);
+    AnsiString buf;
+	stFunction->Caption = GetTokenNameFromVal_EQ(m_CurFunc->F, buf, function_token);
     seArg1->Value = m_CurFunc->arg[0];
     seArg2->Value = m_CurFunc->arg[1];
     seArg3->Value = m_CurFunc->arg[2];
@@ -176,7 +179,7 @@ void TfrmShaderFunction::GetFuncData(){
 
 void TfrmShaderFunction::UpdateFuncData(){
 	if (bLoadMode) return;
-	m_CurFunc->F = (WaveForm::EFunction)GetTokenValFromName(stFunction->Caption, function_token);
+	m_CurFunc->F = (WaveForm::EFunction)GetTokenValFromName(stFunction->Caption.c_str(), function_token);
     m_CurFunc->arg[0] = seArg1->Value;
     m_CurFunc->arg[1] = seArg2->Value;
     m_CurFunc->arg[2] = seArg3->Value;

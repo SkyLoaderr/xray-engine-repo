@@ -162,17 +162,17 @@ CSpawnPoint::~CSpawnPoint()
     OnDeviceDestroy();
 }
 
-void CSpawnPoint::SetPosition(Fvector& pos)
+void CSpawnPoint::SetPosition(const Fvector& pos)
 { 
 	inherited::SetPosition	(pos);
     if (m_AttachedObject) m_AttachedObject->PPosition = pos;
 }
-void CSpawnPoint::SetRotation(Fvector& rot)	
+void CSpawnPoint::SetRotation(const Fvector& rot)	
 { 
 	inherited::SetRotation	(rot);
     if (m_AttachedObject) m_AttachedObject->PRotation = rot;
 }
-void CSpawnPoint::SetScale(Fvector& scale)
+void CSpawnPoint::SetScale(const Fvector& scale)
 { 
 	inherited::SetScale		(scale);
     if (m_AttachedObject) m_AttachedObject->PScale = scale;
@@ -299,7 +299,7 @@ bool CSpawnPoint::FrustumPick(const CFrustum& frustum)
     return (frustum.testAABB(bb.min,bb.max,mask));
 }
 
-bool CSpawnPoint::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
 	bool bPick = false;
     if (m_AttachedObject) bPick = m_AttachedObject->RayPick(distance, start, direction, pinf);

@@ -108,7 +108,7 @@ bool CGlow::FrustumPick(const CFrustum& frustum)
     return (frustum.testSphere_dirty(PPosition,m_fRadius))?true:false;
 }
 
-bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
+bool CGlow::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf)
 {
 	Fvector ray2;
 	ray2.sub( PPosition, start );

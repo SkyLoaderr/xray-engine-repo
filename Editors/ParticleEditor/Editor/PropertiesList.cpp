@@ -400,6 +400,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_TOKEN:
             case PROP_TOKEN2:
             case PROP_TOKEN3:
+            case PROP_TOKEN4:
             case PROP_LIST:
                 R.Right	-=	12;
                 R.Left 	+= 	1;
@@ -563,6 +564,20 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+		case PROP_TOKEN4:{
+            pmEnum->Items->Clear();
+			TokenValue4* T	= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
+			TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
+			mi->Caption 	= "-";
+			pmEnum->Items->Add(mi);
+            for (TokenValue4::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
+                mi 			= xr_new<TMenuItem>((TComponent*)0);
+                mi->Tag		= it-T->items->begin();
+                mi->Caption = it->str;
+                mi->OnClick = PMItemClick;
+                pmEnum->Items->Add(mi);
+            }
+        }break;
 		case PROP_LIST:{
             pmEnum->Items->Clear();
 			ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
@@ -630,6 +645,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_TOKEN:
         case PROP_TOKEN2:
         case PROP_TOKEN3:
+        case PROP_TOKEN4:
         case PROP_LIST:
         case PROP_TEXTURE2:
             TPoint P; P.x = X; P.y = Y;
@@ -670,6 +686,15 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
 		case PROP_TOKEN3:{
 			TokenValue3* T			= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
             u32 new_val				= T->items[mi->Tag].ID;
+			prop->OnAfterEdit		(&new_val);
+            if (prop->ApplyValue(&new_val)){	
+            	Modified			();
+            }
+			item->ColumnText->Strings[0]= prop->GetText();
+        }break;
+		case PROP_TOKEN4:{
+			TokenValue4* T			= dynamic_cast<TokenValue4*>(prop->GetFrontValue()); R_ASSERT(T);
+            u32 new_val				= (*T->items)[mi->Tag].ID;
 			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(&new_val)){	
             	Modified			();

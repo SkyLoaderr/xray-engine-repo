@@ -51,7 +51,7 @@ public:
     EWayType		GetType			(){return m_Type;}
 
 	virtual void 	Select			(int flag);
-	virtual bool 	RaySelect		(int flag, Fvector& start,Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
+	virtual bool 	RaySelect		(int flag, const Fvector& start, const Fvector& dir, bool bRayTest=false); // flag 1,0,-1 (-1 invert)
     virtual bool 	FrustumSelect	(int flag, const CFrustum& frustum);
 
     CWayPoint*		AppendWayPoint	();
@@ -74,7 +74,7 @@ public:
 
 	virtual bool    GetBox      	(Fbox& box);
 	virtual void    Render      	(int priority, bool strictB2F);
-	virtual bool    RayPick	    	(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf = NULL);
+	virtual bool    RayPick	    	(float& distance, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);

@@ -27,9 +27,9 @@ class CPSObject: public CCustomObject{
 protected:
 	typedef CCustomObject inherited;
     virtual Fvector& 	GetPosition	()				{ return m_Emitter.m_Position; 	}
-    virtual void 		SetPosition	(Fvector& pos)	{ m_Emitter.m_Position.set(pos); UpdateTransform(); }
+    virtual void 		SetPosition	(const Fvector& pos)	{ m_Emitter.m_Position.set(pos); UpdateTransform(); }
 //	virtual Fvector& 	GetRotation	()				{ return m_ActiveOMotion?m_vMotionRotation:FRotation; }
-//	virtual void 		SetRotation	(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
+//	virtual void 		SetRotation	(const Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
 public:
     PS::SEmitter		m_Emitter;
 public:
@@ -39,7 +39,7 @@ public:
 
     void				RenderSingle();
 	virtual void    	Render      (int priority, bool strictB2F);
-	virtual bool    	RayPick     (float& distance,	Fvector& start,	Fvector& direction,
+	virtual bool    	RayPick     (float& distance,	const Fvector& start,	const Fvector& direction,
 		                          	SRayPickInfo* pinf = NULL );
     virtual bool 		FrustumPick	(const CFrustum& frustum);
 	virtual void 		Rotate		(Fvector& center, Fvector& axis, float angle);

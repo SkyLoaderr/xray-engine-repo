@@ -53,7 +53,7 @@ class SceneBuilder{
 
     void    BuildGlow       (CGlow* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
-    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num, int lod_id, 
+    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num, 
     						b_vertex* verts, int& vert_cnt, int& vert_it, 
                             b_face* faces, int& face_cnt, int& face_it);
     BOOL    BuildObject     (CSceneObject* obj);
@@ -81,7 +81,7 @@ class SceneBuilder{
     int     BuildTexture    (LPCSTR name);
 
     int     FindInMaterials (b_material* m);
-	int 	BuildMaterial	(CSurface* surf, int sector_num, int lod_id);
+	int 	BuildMaterial	(CSurface* surf, int sector_num);
 
     void 	SaveBuild		();
 

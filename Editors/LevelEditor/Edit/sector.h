@@ -59,7 +59,7 @@ public:
 	virtual 		~CSector	();
 
     virtual void 	Render		(int priority, bool strictB2F);
-	virtual bool 	RayPick 	(float& distance,Fvector& start,Fvector& direction,
+	virtual bool 	RayPick 	(float& distance,const Fvector& start,const Fvector& direction,
 								SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick	(const CFrustum& frustum);
     virtual bool 	SpherePick	(const Fvector& center, float radius);

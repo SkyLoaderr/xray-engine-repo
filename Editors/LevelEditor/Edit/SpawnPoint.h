@@ -52,9 +52,9 @@ public:
 
     void 			OnAppendObject	(CCustomObject* object);
 protected:
-    virtual void 	SetPosition		(Fvector& pos);
-    virtual void 	SetRotation		(Fvector& rot);
-    virtual void 	SetScale		(Fvector& scale);
+    virtual void 	SetPosition		(const Fvector& pos);
+    virtual void 	SetRotation		(const Fvector& rot);
+    virtual void 	SetScale		(const Fvector& scale);
 public:
 	                CSpawnPoint    	(LPVOID data, LPCSTR name);
     void            Construct   	(LPVOID data);
@@ -62,7 +62,7 @@ public:
 
     bool			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );
-	virtual bool    RayPick     	( float& distance,	Fvector& start,	Fvector& direction, SRayPickInfo* pinf = NULL );
+	virtual bool    RayPick     	( float& distance,	const Fvector& start,	const Fvector& direction, SRayPickInfo* pinf = NULL );
     virtual bool 	FrustumPick		( const CFrustum& frustum );
 	virtual bool    GetBox      	(Fbox& box);
 

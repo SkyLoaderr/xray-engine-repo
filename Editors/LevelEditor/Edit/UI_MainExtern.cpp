@@ -4,7 +4,6 @@
 
 #include "UI_Tools.h"
 #include "EditLibrary.h"
-#include "EditLightAnim.h"
 #include "ImageEditor.h"
 #include "topbar.h"
 #include "leftbar.h"
@@ -19,12 +18,419 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "frustum.h"
-#include "render.h"
+#include "EditLightAnim.h"
+#include "folderLib.h"
+#include "sceneproperties.h"
+#include "builder.h"
 
-bool TUI::CommandExt(int _Command, int p, int p2)
+bool TUI::CommandExt(int _Command, int p1, int p2)
 {
 	bool bRes = true;
+	string256 filebuffer;
 	switch (_Command){
+	case COMMAND_OBJECT_LIST:
+        if (GetEState()!=esEditScene) Tools.ShowObjectList();
+        break;
+    case COMMAND_LIBRARY_EDITOR:
+        if (Scene.ObjCount()||(GetEState()!=esEditScene)){
+        	if (GetEState()==esEditLibrary)	TfrmEditLibrary::ShowEditor();
+            else							ELog.DlgMsg(mtError, "Scene must be empty before editing library!");
+        }else{
+            TfrmEditLibrary::ShowEditor();
+        }
+        break;
+    case COMMAND_LANIM_EDITOR:
+    	TfrmEditLightAnim::ShowEditor();
+    	break;
+    case COMMAND_FILE_MENU:
+		FHelper.ShowPPMenu(fraLeftBar->pmSceneFile,0);
+    	break;
+	case COMMAND_LOAD:
+		if( !Scene.locked() ){
+        	if (p1)	strcpy( filebuffer, (char*)p1 );
+            else	strcpy( filebuffer, m_LastFileName );
+			if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+                if (!Scene.IfModified()){
+                	bRes=false;
+                    break;
+                }
+                if ((0!=stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,false,true)){
+                	bRes=false;
+                    break;
+                }
+                if ((0==stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,true,false)){
+	                Engine.FS.UnlockFile(0,filebuffer);
+                }
+                SetStatus("Level loading...");
+            	Command( COMMAND_CLEAR );
+	            BeginEState(esSceneLocked);
+				Scene.Load( filebuffer );
+                EndEState();
+				strcpy(m_LastFileName,filebuffer);
+                SetStatus("");
+              	Scene.UndoClear();
+				Scene.UndoSave();
+                Scene.m_Modified = false;
+			    Command(COMMAND_UPDATE_CAPTION);
+                Command(COMMAND_CHANGE_ACTION,eaSelect);
+                // lock
+                Engine.FS.LockFile(0,filebuffer);
+                fraLeftBar->AppendRecentFile(filebuffer);
+                // update props
+		        Command(COMMAND_UPDATE_PROPERTIES);
+                RedrawScene();
+			}
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_RELOAD:
+		if( !Scene.locked() ){
+        	Command(COMMAND_LOAD,(int)m_LastFileName);
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_SAVE:
+		if( !Scene.locked() ){
+			if( m_LastFileName[0] ){
+	            BeginEState(esSceneLocked);
+                SetStatus("Level saving...");
+				Scene.Save( m_LastFileName, false );
+                SetStatus("");
+                Scene.m_Modified = false;
+			    Command(COMMAND_UPDATE_CAPTION);
+                EndEState();
+			}else{
+				bRes = Command( COMMAND_SAVEAS ); }
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+    case COMMAND_SAVE_BACKUP:{
+    	AnsiString fn = AnsiString(Engine.FS.m_CompName)+"_"+Engine.FS.m_UserName+"_backup.level";
+        Engine.FS.m_Maps.Update(fn);
+    	Command(COMMAND_SAVEAS,(int)fn.c_str());
+    }break;
+	case COMMAND_SAVEAS:
+		if( !Scene.locked() ){
+			filebuffer[0] = 0;
+			if(p1 || Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+            	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
+	            BeginEState(esSceneLocked);
+                SetStatus("Level saving...");
+				Scene.Save( filebuffer, false );
+                SetStatus("");
+                Scene.m_Modified = false;
+				// unlock
+    	        Engine.FS.UnlockFile(0,m_LastFileName);
+                // set new name
+                Engine.FS.LockFile(0,filebuffer);
+				strcpy(m_LastFileName,filebuffer);
+			    bRes = Command(COMMAND_UPDATE_CAPTION);
+	            EndEState();
+                fraLeftBar->AppendRecentFile(filebuffer);
+			}else
+            	bRes = false;
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_CLEAR:
+		if( !Scene.locked() ){
+            if (!Scene.IfModified()) return false;
+            BeginEState(esSceneLocked);
+			// unlock
+			Engine.FS.UnlockFile(0,m_LastFileName);
+			Device.m_Camera.Reset();
+			Scene.Unload();
+            Scene.m_LevelOp.Reset();
+			m_LastFileName[0] = 0;
+            EndEState();
+           	Scene.UndoClear();
+            Scene.m_Modified = false;
+			Command(COMMAND_UPDATE_CAPTION);
+			Command(COMMAND_CHANGE_TARGET,etObject);
+			Command(COMMAND_CHANGE_ACTION,eaSelect);
+		    Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        Command(COMMAND_UPDATE_PROPERTIES);
+		break;
+
+    case COMMAND_IMPORT_COMPILER_ERROR:{
+    	AnsiString fn;
+    	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
+        	Scene.LoadCompilerError(fn.c_str());
+        }
+    	}break;
+    
+	case COMMAND_VALIDATE_SCENE:
+		if( !Scene.locked() ){
+            Scene.Validate(true,false);
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+    case COMMAND_REFRESH_LIBRARY:
+        if (!Scene.ObjCount()&&!Scene.locked()){
+	    	Lib.RefreshLibrary();
+        }else{
+            ELog.DlgMsg(mtError, "Scene must be empty before refreshing library!");
+			bRes = false;
+        }
+    	break;
+
+    case COMMAND_RELOAD_OBJECTS:
+    	Lib.ReloadObjects();
+    	break;
+
+	case COMMAND_CUT:
+		if( !Scene.locked() ){
+        	BeginEState(esSceneLocked);
+			Scene.CutSelection(Tools.CurrentClassID());
+        	EndEState();
+            fraLeftBar->miPaste->Enabled = true;
+            fraLeftBar->miPaste2->Enabled = true;
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_COPY:
+		if( !Scene.locked() ){
+        	BeginEState(esSceneLocked);
+			Scene.CopySelection(Tools.CurrentClassID());
+        	EndEState();
+            fraLeftBar->miPaste->Enabled = true;
+            fraLeftBar->miPaste2->Enabled = true;
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_PASTE:
+		if( !Scene.locked() ){
+        	BeginEState(esSceneLocked);
+			Scene.PasteSelection();
+        	EndEState();
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_UNDO:
+		if( !Scene.locked() ){
+			if( !Scene.Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
+            else{
+	            Tools.Reset();
+			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            }
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_REDO:
+		if( !Scene.locked() ){
+			if( !Scene.Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
+            else{
+	            Tools.Reset();
+			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            }
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_OPTIONS:
+		if( !Scene.locked() ){
+            if (mrOk==frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,false))
+            	Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_BUILD:
+		if( !Scene.locked() ){
+            if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
+                Builder.Compile( );
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_MAKE_GAME:
+		if( !Scene.locked() ){
+            if (frmScenePropertiesRun(&Scene.m_LevelOp.m_BuildParams,true)==mrOk)
+                Builder.MakeGame( );
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+    case COMMAND_MAKE_DETAILS:
+		if( !Scene.locked() ){
+            Builder.MakeDetails();
+        }else{
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+	case COMMAND_INVERT_SELECTION_ALL:
+		if( !Scene.locked() ){
+			Scene.InvertSelection(Tools.CurrentClassID());
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_SELECT_ALL:
+		if( !Scene.locked() ){
+			Scene.SelectObjects(true,Tools.CurrentClassID());
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_DESELECT_ALL:
+		if( !Scene.locked() ){
+			Scene.SelectObjects(false,Tools.CurrentClassID());
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_DELETE_SELECTION:
+		if( !Scene.locked() ){
+			Scene.RemoveSelection( Tools.CurrentClassID() );
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+
+	case COMMAND_HIDE_UNSEL:
+		if( !Scene.locked() ){
+			Scene.ShowObjects( false, Tools.CurrentClassID(), true, false );
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        break;
+	case COMMAND_HIDE_SEL:
+		if( !Scene.locked() ){
+			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), true, true );
+			Scene.UndoSave();
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        break;
+	case COMMAND_HIDE_ALL:
+		if( !Scene.locked() ){
+			Scene.ShowObjects( bool(p1), Tools.CurrentClassID(), false );
+			Scene.UndoSave();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        break;
+    case COMMAND_LOCK_ALL:
+		if( !Scene.locked() ){
+			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),false);
+			Scene.UndoSave();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+    case COMMAND_LOCK_SEL:
+		if( !Scene.locked() ){
+			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,true);
+			Scene.UndoSave();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+    case COMMAND_LOCK_UNSEL:
+		if( !Scene.locked() ){
+			Scene.LockObjects(bool(p1),Tools.CurrentClassID(),true,false);
+			Scene.UndoSave();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+    case COMMAND_RESET_ANIMATION:
+		if( !Scene.locked() ){
+	    	Scene.ResetAnimation();
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+		break;
+    case COMMAND_SET_SNAP_OBJECTS:
+		if( !Scene.locked() ){
+	    	int cnt=Scene.SetSnapList();
+ 			Scene.UndoSave();
+        	ELog.Msg( mtInformation, "%d snap object(s) selected.", cnt );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+        break;
+    case COMMAND_ADD_SNAP_OBJECTS:
+		if( !Scene.locked() ){
+	    	int cnt=Scene.AddToSnapList();
+ 			Scene.UndoSave();
+        	ELog.Msg( mtInformation, "%d object(s) appended.", cnt );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
+    case COMMAND_CLEAR_SNAP_OBJECTS:
+		if( !Scene.locked() ){
+	    	Scene.ClearSnapList();
+ 			Scene.UndoSave();
+	       	ELog.Msg( mtInformation, "Snap list empty.");
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -205,142 +611,6 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	return true;
 }
 //----------------------------------------------------
-void TUI::Redraw(){
-	VERIFY(m_bReady);
-    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
-	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
-// set render state
-    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
-    // fog
-	st_Environment& E	= Scene.m_LevelOp.m_Envs[Scene.m_LevelOp.m_CurEnv];
-	float fog_start	= psDeviceFlags.is(rsFog)?(1.0f - E.m_Fogness)* 0.85f * E.m_ViewDist:ZFar();
-	float fog_end	= psDeviceFlags.is(rsFog)?0.91f * E.m_ViewDist:ZFar();
-	Device.SetRS( D3DRS_FOGCOLOR,	E.m_FogColor.get());
-	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
-	if (HW.Caps.bTableFog)	{
-		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR 	);
-		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE	 	);
-	} else {
-		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE	 	);
-		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR	);
-	}
-	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
-	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
-    // filter
-    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
-        if( psDeviceFlags.is(rsFilterLinear)){
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
-        } else {
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_POINT);
-        }
-    }
-	// ligthing
-    if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
-    else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
-
-    try{
-    	Device.Statistic.RenderDUMP_RT.Begin();
-        Device.Begin();
-        Device.UpdateView();
-		Device.ResetMaterial();              
-/*	// safe rect
-		if (psDeviceFlags.is(rsDrawSafeRect)){ 
-        	DU::DrawSafeRect();
-
-			Irect rect;
-        	u32 left, top, width, height;
-			if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight))
-            	rect.set(Device.m_RenderWidth_2-1.33f*float(Device.m_RenderHeight_2),0,1.33f*Device.dwHeight,Device.dwHeight); 
-			else
-            	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth,0.75f*Device.dwWidth);
-			Device.Resize			(rect.x2,rect.y2,false);
-			Device.SetViewport		(rect.x1,rect.y1,rect.x2,rect.y2);
-            Device.UpdateView();
-        }
-*/
-        Device.SetRS(D3DRS_FILLMODE, Device.dwFillMode);
-		Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
-
-        // draw sky
-	    EEditorState est = GetEState();
-        switch(est){
-        case esEditLightAnim:
-        case esEditScene:		Scene.RenderSky(Device.m_Camera.GetTransform()); break;
-        }
-
-    // draw grid
-    	if (psDeviceFlags.is(rsDrawGrid)){
-	        DU::DrawGrid();
-    	    DU::DrawPivot(m_Pivot);
-        }
-
-        switch(est){
-        case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
-        case esEditLightAnim:
-        case esEditScene:		Scene.Render(Device.m_Camera.GetTransform()); break;
-        }
-
-    // draw selection rect
-		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
-
-    // draw cursor
-        m_Cursor->Render();
-
-    // draw axis
-        DU::DrawAxis(Device.m_Camera.GetTransform());
-    // end draw
-        Device.End();
-    	Device.Statistic.RenderDUMP_RT.End();
-    }
-    catch(...)
-    {
-		_clear87();
-		FPU::m24r();
-    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
-        Device.End();
-		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
-    }
-
-	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
-}
-//---------------------------------------------------------------------------
-void TUI::Idle()
-{
-	VERIFY(m_bReady);
-	// reset fpu
-	// input
-    pInput->OnFrame();
-    if (g_ErrorMode) return;
-    Sleep(1);
-	Device.UpdateTimer();
-    EEditorState est = GetEState();
-    if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditLightAnim)){
-		Tools.OnFrame();
-	    if (m_Flags.is(flUpdateScene)){ 
-	        Tools.UpdateProperties();
-        	RealUpdateScene		();
-        }
-    	if (m_Flags.is(flRedraw)){
-            Render->Calculate	();
-            Scene.OnFrame		(Device.fTimeDelta);
-            Render->Render		();
-        	Redraw();
-        }
-        if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
-    }
-        // show hint
-    ShowObjectHint	();
-
-	ResetBreak		();
-	// check mail    
-    CheckMailslot	();
-    if (m_Flags.is(flNeedQuit)) 	frmMain->Close();
-}
-//---------------------------------------------------------------------------
 void TUI::RealUpdateScene(){
 	if (GetEState()==esEditScene){
 	    Scene.OnObjectsUpdate();
@@ -362,11 +632,6 @@ void TUI::ShowContextMenu(int cls)
     RedrawScene(true);
     fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
     fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
-}
-
-void ResetActionToSelect()
-{
-    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
 }
 //---------------------------------------------------------------------------
 

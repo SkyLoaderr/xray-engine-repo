@@ -204,7 +204,7 @@ bool CPSObject::FrustumPick(const CFrustum& frustum){
 }
 //----------------------------------------------------
 
-bool CPSObject::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CPSObject::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	Fvector pos,ray2;
     pos.set(m_Emitter.m_Position);
 	ray2.sub( pos, start );

@@ -62,9 +62,9 @@ public:
 
     virtual Fvector& GetPosition			()	{return m_ActiveOMotion?m_vMotionPosition:FPosition; }
     virtual Fvector& GetRotation			()	{return m_ActiveOMotion?m_vMotionRotation:FRotation; }
-    virtual void 	SetPosition				(Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
-	virtual void 	SetRotation				(Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
-    virtual void 	SetScale				(Fvector& scale)
+    virtual void 	SetPosition				(const Fvector& pos)	{ if (m_ActiveOMotion) m_vMotionPosition.set(pos); else FPosition.set(pos);	UpdateTransform();}
+	virtual void 	SetRotation				(const Fvector& rot)	{ if (m_ActiveOMotion) m_vMotionRotation.set(rot); else FRotation.set(rot);	UpdateTransform();}
+    virtual void 	SetScale				(const Fvector& scale)
     { 
     	if (m_pReference&&m_pReference->IsDynamic()){
         	ELog.Msg(mtError,"Dynamic object %s - can't scale.", Name);
@@ -122,7 +122,7 @@ public:
 
     // pick methods
     bool 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
-	virtual bool 	RayPick					(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pinf=0);
+	virtual bool 	RayPick					(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf=0);
 	virtual bool 	FrustumPick				(const CFrustum& frustum);
     virtual bool 	SpherePick				(const Fvector& center, float radius);
 

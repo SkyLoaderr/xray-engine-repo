@@ -415,74 +415,113 @@ void TUI::CheckWindowPos(TForm* form)
 }
 //---------------------------------------------------------------------------
 
-/*
-void TUI::OnMousePress(int btn){
-	if (!m_bReady) return;
-    if (!frmMain->IsFocused()) return;
-    if (m_MouseCaptured) return;
-
-    // test owner
-    Ipoint pt;
-	iGetMousePosScreen(pt);
-    TWinControl* ctr 	= FindVCLWindow(*pt.d3d());
-    if (ctr!=m_D3DWindow) return;
-
-    bMouseInUse = true;
-
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
-
-    // camera activate
-    if(!Device.m_Camera.MoveStart(m_ShiftState)){
-    	if (Tools.Pick()) return;
-        if( !m_MouseCaptured ){
-            if( Tools.HiddenMode() ){
-				iGetMousePosScreen(m_StartCpH);
-                m_DeltaCpH.set(0,0);
-            }else{
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                m_StartCp = m_CurrentCp;
-
-                Device.m_Camera.MouseRayFromPoint(m_StartRStart, m_StartRNorm, m_StartCp );
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart, m_CurrentRNorm, m_CurrentCp );
-            }
-
-            if(Tools.MouseStart(m_ShiftState)){
-                if(Tools.HiddenMode()) ShowCursor( FALSE );
-                m_MouseCaptured = true;
-            }
+void TUI::Redraw(){
+	VERIFY(m_bReady);
+    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);                                                                      
+	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
+// set render state
+    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
+    // fog
+    u32 fog_color;
+	float fog_start, fog_end;
+    Tools.GetCurrentFog	(fog_color, fog_start, fog_end);
+	Device.SetRS( D3DRS_FOGCOLOR,		fog_color			);
+	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
+	if (HW.Caps.bTableFog)	{
+		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR 	);
+		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_NONE	 	);
+	} else {
+		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE	 	);
+		Device.SetRS( D3DRS_FOGVERTEXMODE,	D3DFOG_LINEAR	);
+	}
+	Device.SetRS( D3DRS_FOGSTART,	*(DWORD *)(&fog_start)	);
+	Device.SetRS( D3DRS_FOGEND,		*(DWORD *)(&fog_end)	);
+    // filter
+    for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
+        if( psDeviceFlags.is(rsFilterLinear)){
+            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
+        } else {
+            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_POINT);
         }
     }
-    RedrawScene();
-}
+	// ligthing
+    if (psDeviceFlags.is(rsLighting)) 	Device.SetRS(D3DRS_AMBIENT,0x00000000);
+    else                				Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
-void TUI::OnMouseRelease(int btn){
-	if (!m_bReady) return;
+    try{
+    	Device.Statistic.RenderDUMP_RT.Begin();
+        Device.Begin			();
+        Device.UpdateView		();
+		Device.ResetMaterial	();              
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
+        Device.SetRS			(D3DRS_FILLMODE, Device.dwFillMode);
+		Device.SetRS			(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    if( Device.m_Camera.IsMoving() ){
-        if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
-    }else{
-	    bMouseInUse = false;
-        if( m_MouseCaptured ){
-            if( !Tools.HiddenMode() ){
-                iGetMousePosReal(Device.m_hRenderWnd, m_CurrentCp);
-                Device.m_Camera.MouseRayFromPoint(m_CurrentRStart,m_CurrentRNorm,m_CurrentCp );
-            }
-            if( Tools.MouseEnd(m_ShiftState) ){
-                if( Tools.HiddenMode() ){
-                    SetCursorPos(m_StartCpH.x,m_StartCpH.y);
-                    ShowCursor( TRUE );
-                }
-                m_MouseCaptured = false;
-            }
+    	// draw grid
+    	if (psDeviceFlags.is(rsDrawGrid)){
+	        DU::DrawGrid		();
+    	    DU::DrawPivot		(m_Pivot);
         }
+
+		Tools.Render			();
+
+    	// draw selection rect
+		if(m_SelectionRect) 	DU::DrawSelectionRect(m_SelStart,m_SelEnd);
+
+    	// draw cursor
+        m_Cursor->Render();
+
+    	// draw axis
+        DU::DrawAxis(Device.m_Camera.GetTransform());
+    	// end draw
+        Device.End();
+    	Device.Statistic.RenderDUMP_RT.End();
     }
-    // update tools (change action)
-    Tools.Update();
-    RedrawScene();
+    catch(...)
+    {
+		_clear87();
+		FPU::m24r();
+    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
+        Device.End();
+		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
+    }
+
+//	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
 }
-*/
+//---------------------------------------------------------------------------
+void TUI::Idle()
+{
+	VERIFY(m_bReady);
+	// input
+    pInput->OnFrame();
+    if (g_ErrorMode) return;
+    Sleep(1);
+	Device.UpdateTimer	();
+    // tools on frame
+    if (m_Flags.is(flUpdateScene)){ 
+        Tools.UpdateProperties	();
+        RealUpdateScene	();
+    }
+    if (m_Flags.is(flRedraw)){
+	    Tools.OnFrame		();
+        Redraw();
+    }
+	// show hint
+    ShowObjectHint	();
+	ResetBreak		();
+	// check mail    
+    CheckMailslot	();
+    // test quit
+    if (m_Flags.is(flNeedQuit))			frmMain->Close();
+}
+//---------------------------------------------------------------------------
+void ResetActionToSelect()
+{
+    UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
+}
+//---------------------------------------------------------------------------
 

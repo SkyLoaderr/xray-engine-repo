@@ -33,7 +33,7 @@ LPCSTR _SetPos (LPCSTR src, u32 pos, char separator )
 {
 	LPCSTR	res			= src;
 	u32		p			= 0;
-	while( p<pos && (res=strchr(res,separator)) )
+	while( (p<pos) && (res=strchr(res,separator)) )
 	{
 		res		++;
 		p		++;
@@ -206,25 +206,25 @@ LPCSTR _GetItem ( LPCSTR src, int index, AnsiString& dst, char separator, LPCSTR
 	return		dst.c_str();
 }
 
-AnsiString& ListToSequence(AStringVec& lst)
+AnsiString& ListToSequence(const AStringVec& lst)
 {
 	static AnsiString out;
 	out = "";
 	if (lst.size()){
 		out			= lst.front();
-		for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
+		for (AStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
 			out		+= AnsiString(",")+(*s_it);
 	}
 	return out;
 }
 
-AnsiString& ListToSequence2(AStringVec& lst)
+AnsiString& ListToSequence2(const AStringVec& lst)
 {
 	static AnsiString out;
 	out = "";
 	if (lst.size()){
 		out			= lst.front();
-		for (AStringIt s_it=lst.begin()+1; s_it!=lst.end(); s_it++){
+		for (AStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++){
 			out		+= AnsiString("\n")+(*s_it);
 		}
 	}

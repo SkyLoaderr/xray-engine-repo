@@ -120,7 +120,7 @@ void CCustomObject::Render(int priority, bool strictB2F)
     }
 }
 
-bool CCustomObject::RaySelect(int flag, Fvector& start,Fvector& dir, bool bRayTest){
+bool CCustomObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest){
 	float dist = UI.ZFar();
 	if ((bRayTest&&RayPick(dist,start,dir))||!bRayTest){
 		Select(flag);

@@ -29,9 +29,9 @@ public:
 	void			UpdateBBoxAndPivot(bool bInitFromFirstObject);
 	virtual bool 	GetBox			(Fbox& box);
 
-    virtual void 	NumSetPosition	(Fvector& pos);
-	virtual void 	NumSetRotation	(Fvector& rot);
-    virtual void 	NumSetScale		(Fvector& scale);
+    virtual void 	NumSetPosition	(const Fvector& pos);
+	virtual void 	NumSetRotation	(const Fvector& rot);
+    virtual void 	NumSetScale		(const Fvector& scale);
 	virtual void 	MoveTo			(const Fvector& pos, const Fvector& up);
 	virtual void 	Move			(Fvector& amount);
 	virtual void 	RotateParent	(Fvector& axis, float angle );
@@ -40,7 +40,7 @@ public:
 
 	virtual void 	Render			(int priority, bool strictB2F);
 
-	virtual bool 	RayPick			(float& dist, Fvector& start,Fvector& dir, SRayPickInfo* pinf=NULL);
+	virtual bool 	RayPick			(float& dist, const Fvector& start,const Fvector& dir, SRayPickInfo* pinf=NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
 
     virtual void 	OnUpdateTransform();

@@ -154,7 +154,7 @@ bool CLight::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere_dirty(m_D3D.position,VIS_RADIUS))?true:false;
 }
 
-bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CLight::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
 	ray2.sub( m_D3D.position, start );
 

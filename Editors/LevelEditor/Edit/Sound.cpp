@@ -60,7 +60,7 @@ bool CSound::FrustumPick(const CFrustum& frustum){
     return (frustum.testSphere_dirty(PPosition,VIS_RADIUS))?true:false;
 }
 
-bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf){
+bool CSound::RayPick(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
 	Fvector ray2;
 	ray2.sub( PPosition, start );
 
