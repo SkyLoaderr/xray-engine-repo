@@ -139,19 +139,13 @@ void CModelPool::Destroy()
 	Models.clear();
 }
 
-void CModelPool::OnDeviceDestroy()
-{
-	Destroy();
-}
-
 CModelPool::CModelPool()
 {
-	Device.seqDevDestroy.Add	(this,REG_PRIORITY_LOW);
 }
 
 CModelPool::~CModelPool()
 {
-	Device.seqDevDestroy.Remove	(this);
+	Destroy	();
 }
 
 CVisual* CModelPool::Instance_Find(LPCSTR N)

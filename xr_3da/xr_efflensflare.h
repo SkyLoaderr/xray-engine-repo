@@ -3,7 +3,7 @@
 
 class ENGINE_API CInifile;
 
-class ENGINE_API CLensFlare : public pureDeviceCreate, public pureDeviceDestroy
+class ENGINE_API CLensFlare
 {
 protected:
 	BOOL			bInit;
@@ -53,9 +53,6 @@ public:
 public:
 					CLensFlare	();
 	virtual			~CLensFlare	();
-
-	virtual void	OnDeviceDestroy();
-	virtual void	OnDeviceCreate();
 
 	void			Load		( CInifile* pIni, LPCSTR section );
     void __fastcall	Render		( BOOL bSun, BOOL bFlares, BOOL bGradient );

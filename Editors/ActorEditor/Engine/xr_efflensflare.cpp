@@ -32,11 +32,6 @@
 CLensFlare::CLensFlare()
 {
 	// Device
-#ifndef _EDITOR
-	Device.seqDevDestroy.Add	(this);
-	Device.seqDevCreate.Add		(this);
-#endif
-
 	bInit						= false;
 	dwFrame						= 0xfffffffe;
 
@@ -46,36 +41,22 @@ CLensFlare::CLensFlare()
     LightColor.set				( 0xFFFFFFFF );
 	fGradientValue				= 0.f;
 
-	hGeom						= 0;
-}
-
-
-CLensFlare::~CLensFlare()
-{
-	if (Device.bReady)			OnDeviceDestroy();
-#ifndef _EDITOR
-	Device.seqDevDestroy.Remove	(this);
-	Device.seqDevCreate.Remove	(this);
-#endif
-}
-
-void CLensFlare::OnDeviceCreate	()
-{
 	// VS
 	hGeom				= Device.Shader.CreateGeom	(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
 	m_Source.hShader	= CreateSourceShader	(m_Source.texture);
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
+	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
 }
 
-void CLensFlare::OnDeviceDestroy()
+
+CLensFlare::~CLensFlare()
 {
 	// shaders
 	Device.Shader.Delete	(m_Gradient.hShader);
 	Device.Shader.Delete	(m_Source.hShader);
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
+	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
 
 	// VS
 	Device.Shader.DeleteGeom(hGeom);
@@ -148,8 +129,6 @@ void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 		SetGradient(r,o,T);
 	}
 	bInit			= false;
-
-	if (Device.bReady) OnDeviceCreate	();
 }
 
 void CLensFlare::OnFrame()

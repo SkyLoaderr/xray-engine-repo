@@ -24,7 +24,7 @@ struct ENGINE_API	SEnvDef
 	float			Far;
 };
 
-class ENGINE_API CEnvironment  : public pureDeviceCreate, public pureDeviceDestroy
+class ENGINE_API CEnvironment
 {
 public:
 	vector<CSun*>			Suns;
@@ -67,8 +67,6 @@ public:
 
 	void			RenderFirst			();
 	void			RenderLast			();
-	virtual void	OnDeviceCreate		();
-	virtual void	OnDeviceDestroy		();
 };
 
 ENGINE_API extern Flags32	psEnvFlags;

@@ -31,20 +31,22 @@ ENGINE_API Flags32	psEnvFlags= {effSunGlare};
 CEnvironment::CEnvironment()
 {
 	// environment objects
-	Device.seqDevCreate.Add	(this);
-	Device.seqDevDestroy.Add(this);
-	
-	pSkydome				= 0;
+	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
+	{
+		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
+		pSkydome			= Render->model_Create	(S);
+	} else {
+		pSkydome			= 0;
+	}
 
-	c_Invalidate			();
+	c_Invalidate		();
 }
 
 CEnvironment::~CEnvironment()
 {
 	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy				();
+
+	Render->model_Delete	(pSkydome);
 }
 
 void CEnvironment::Load(CInifile *pIni, char *section)
@@ -89,7 +91,6 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 
 	// update suns
 	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
-	if (Device.bReady) OnDeviceCreate();
 }
 
 void CEnvironment::Load_Music(CInifile* INI)
@@ -188,24 +189,6 @@ void CEnvironment::OnMove()
 
 void CEnvironment::SetGradient(float b)
 {
-}
-
-void CEnvironment::OnDeviceCreate()
-{
-	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
-	{
-		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
-		pSkydome			= Render->model_Create	(S);
-	} else {
-		pSkydome			= 0;
-	}
-	
-	c_Invalidate	();
-}
-
-void CEnvironment::OnDeviceDestroy()
-{
-	Render->model_Delete	(pSkydome);
 }
 
 extern float psHUD_FOV;

@@ -23,7 +23,7 @@ class ENGINE_API CObject;
 //-----------------------------------------------------------------------------------------------------------
 //Space Area
 //-----------------------------------------------------------------------------------------------------------
-class	ENGINE_API			CObjectSpace : public pureDeviceCreate, pureDeviceDestroy
+class	ENGINE_API			CObjectSpace
 {
 private:
 	friend class			CCFModel;
@@ -49,12 +49,12 @@ private:
 	// Debug
 	Shader*							sh_debug;
 	
-	u32							dwQueryID;
+	u32								dwQueryID;
 	BOOL							nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
 
 	struct SLOT
 	{
-		u32				dwQueryID;
+		u32					dwQueryID;
 		vector<CObject*>	lst;
 	};
 
@@ -123,8 +123,6 @@ public:
 	CDB::MODEL*						GetStaticModel		() { return &Static; }
 
 	// Device dependance and debugging
-	virtual void					OnDeviceCreate		();
-	virtual void					OnDeviceDestroy		();
 	void							dbgRender			();
 	Shader*							dbgGetShader		()	{ return sh_debug;	}
 };

@@ -21,9 +21,7 @@ class	ENGINE_API						CObject :
 	public CEventBase,
 	public CSheduled,
 	public DLL_Pure, 
-	public CController,
-	public pureDeviceDestroy,
-	public pureDeviceCreate
+	public CController
 {
 public:
 	enum ESectorMode					{EPM_AT_LOAD, EPM_AUTO, EPM_NONE };

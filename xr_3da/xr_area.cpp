@@ -20,33 +20,16 @@ CObjectSpace::CObjectSpace( )
 	dwQueryID	= 0;
 	sh_debug	= 0;
 	
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
-	OnDeviceCreate				();
+	sh_debug	= Device.Shader.Create	("debug\\wireframe","$null");
 }
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace( )
 {
 	Sound->SetGeometry			(NULL);
 
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
 	Device.Shader.Delete		(sh_debug);
-	OnDeviceDestroy				();
 }
 
-//----------------------------------------------------------------------
-void CObjectSpace::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	sh_debug	= Device.Shader.Create	("debug\\wireframe","$null");
-}
-//----------------------------------------------------------------------
-void CObjectSpace::OnDeviceDestroy()
-{
-	REQ_DESTROY	();
-	Device.Shader.Delete	(sh_debug);
-}
 //----------------------------------------------------------------------
 IC void CObjectSpace::Object_Register		( CObject *O )
 {

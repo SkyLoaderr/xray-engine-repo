@@ -14,7 +14,7 @@ namespace PS	{
 };
 
 // defs
-class ENGINE_API CModelPool : public pureDeviceDestroy
+class ENGINE_API CModelPool
 {
 	friend class CRender;
 
@@ -34,8 +34,6 @@ public:
 	CVisual*			Instance_Load		(LPCSTR N, CStream* data);
 	void				Instance_Register	(LPCSTR N, CVisual* V);
 	CVisual*			Instance_Find		(LPCSTR N);
-
-	virtual void		OnDeviceDestroy		();
 
 	CVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
 	CVisual*			Create				(LPCSTR name);
