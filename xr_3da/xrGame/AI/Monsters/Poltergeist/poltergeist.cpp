@@ -11,7 +11,7 @@ CPoltergeist::CPoltergeist()
 	m_particles_object	= 0;
 	m_hidden			= false;
 
-	m_flame_state		= flameNone;
+	m_time_flame_started = 0;
 }
 
 CPoltergeist::~CPoltergeist()
@@ -103,7 +103,6 @@ void CPoltergeist::UpdateCL()
 
 	UpdateParticles();
 	
-	UpdateFlame();
 }
 
 void CPoltergeist::ForceFinalAnimation()
@@ -161,3 +160,15 @@ void CPoltergeist::UpdateParticles()
 		m_particles_object				= NULL;
 	}
 }
+
+
+
+void CPoltergeist::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	CTelekinesis::schedule_update();
+	
+	UpdateFlame();
+}
+
+

@@ -229,7 +229,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	CPoltergeist	*monster	= dynamic_cast<CPoltergeist*>(obj);
 	
 	Fvector			pos;
-	pos.mad(Level().CurrentEntity()->Position(), Level().CurrentEntity()->XFORM().i, 2.f);
+	pos = Level().CurrentEntity()->Position();
 	pos.y += 1.5f;
 
 	if (monster) {
@@ -240,10 +240,24 @@ void CLevel::IR_OnKeyboardPress(int key)
 		case DIK_2:
 			monster->Show();
 			break;
-
 		case DIK_0:
-			monster->StartFlame(pos);
+			pos.mad(Level().CurrentEntity()->XFORM().i, 2.f);
+			monster->FireFlame(pos, Level().CurrentEntity());
 			break;
+		case DIK_9:
+			pos.mad(Level().CurrentEntity()->XFORM().i, 3.f);
+			monster->FireFlame(pos, Level().CurrentEntity());
+			break;
+		case DIK_8:
+			pos.mad(Level().CurrentEntity()->XFORM().i, 4.f);
+			monster->FireFlame(pos, Level().CurrentEntity());
+			break;
+		case DIK_7:
+			pos.mad(Level().CurrentEntity()->XFORM().i, 5.f);
+			monster->FireFlame(pos, Level().CurrentEntity());
+			break;
+
+
 		}
 	}
 

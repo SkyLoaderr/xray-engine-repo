@@ -3,7 +3,7 @@
 #include "telekinetic_object.h"
 #include "../PHObject.h"
 
-class CTelekinesis : public CPHUpdateObject /* make this object update physics correctly */ {
+class CTelekinesis : public CPHUpdateObject {
 	
 	DEFINE_VECTOR(CTelekineticObject,TELE_OBJECTS,TELE_OBJECTS_IT);
 	

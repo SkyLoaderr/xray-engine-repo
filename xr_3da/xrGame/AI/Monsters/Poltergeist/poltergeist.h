@@ -1,7 +1,10 @@
 #pragma once
 #include "../../biting/ai_biting.h"
+#include "../../telekinesis.h"
 
-class CPoltergeist : public CAI_Biting {
+class CPoltergeist :	public CAI_Biting ,
+						public CTelekinesis {
+	
 	typedef		CAI_Biting	inherited;
 
 	CParticlesObject	*m_particles_object;
@@ -20,6 +23,7 @@ public:
 	virtual void	StateSelector		();
 
 	virtual void	UpdateCL			();
+	virtual	void	shedule_Update		(u32 dt);
 
 	virtual void	ForceFinalAnimation	();
 
@@ -33,32 +37,24 @@ public:
 			void	UpdateParticles		();
 		
 	// FireBall
-			
-			enum {
-				flamePrepare,
-				flameFire,
-				flameFinalize,
-				flameNone
-			} m_flame_state;
 
-			u32 flame_state_started;
+			
 
 			void	LoadFlame			(LPCSTR section);
-			void	StartFlame			(const Fvector &);
-			void	FireFlame			();
-			void	FinalizeFlame		();
+			void	FireFlame			(const Fvector &position, CObject *target_object);
 			void	UpdateFlame			();
-			void	PlayFlameParticles	(CParticlesObject *&obj, LPCSTR name, const Fvector &position);
+	
+			ref_sound			m_flame_sound;
+			LPCSTR				m_flame_particles;
+			u32					m_flame_fire_delay;
+			float				m_flame_length;
+			float				m_flame_hit_value;
 
-			struct {
-				ref_sound			sound;
-				LPCSTR				particles;
-				CParticlesObject	*ps_object;
-				u32					time;
-			} m_flame_prepare, m_flame_fire, m_flame_finalize;
-
-			Fvector m_flame_position;
-
+			Fvector				m_flame_position;
+			Fvector				m_flame_target_dir;
+			CObject				*m_flame_target_object;
+			u32					m_time_flame_started;
+			
 
 	// Poltergeist ability
 			void	PhysicalImpulse		(const Fvector &position);
@@ -66,9 +62,6 @@ public:
 			void	StrangeSounds		(const Fvector &position);
 			
 			ref_sound m_strange_sound;
-
-	
-
 };
 
 
