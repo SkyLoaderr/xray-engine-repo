@@ -72,8 +72,10 @@ end
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
     -- вызов апдейта у управления группировками
-    if xr_gulag.fraction["blockpost"] ~= nil then
-        xr_gulag.fraction["blockpost"]:calculate()
+    local nn = xr_gulag.isUnderFraction(self.object)
+
+    if nn ~= nil then
+        xr_gulag.fraction[nn]:calculate()
     end
 end
 ----------------------------------------------------------------------------------------------------------------------
