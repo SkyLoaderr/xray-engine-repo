@@ -1,0 +1,22 @@
+-- File:        UI_MULTIPLAYER_OPTIONS_TAB.SCRIPT
+-- Description: Options tab for Create Server menu
+-- Created:     04.12.2004
+-- Author:      Serhiy 0. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright: 2004 GSC Game World
+
+class "options_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)
+
+function options_tab:__init() super()
+end
+
+function options_tab:__finalize()
+end
+
+function options_tab:InitContols()
+end
+
+function options_tab:InitCallbacks()
+end
+
