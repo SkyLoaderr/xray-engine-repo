@@ -3,7 +3,6 @@
 
 float				g_fGLOD			;
 float				g_fSCREEN		;
-float				g_fLOD			;
 
 extern float		r_ssaDISCARD	;
 extern float		r_ssaDONTSORT	;
@@ -17,8 +16,7 @@ void CRender::Calculate		()
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
-	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
-	g_fLOD							=	ps_r__LOD;
+	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD);
 	r_ssaDISCARD					=	_sqr(ps_r2_ssaDISCARD)		/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r2_ssaDONTSORT)		/g_fSCREEN;
 	r_ssaLOD_A						=	_sqr(ps_r2_ssaLOD_A)		/g_fSCREEN;

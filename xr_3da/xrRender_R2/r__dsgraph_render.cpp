@@ -10,7 +10,6 @@ using namespace		R_dsgraph;
 extern float		r_ssaDISCARD;
 extern float		r_ssaDONTSORT;
 extern float		r_ssaHZBvsTEX;
-extern float		g_fLOD;
 extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 
 ICF float calcLOD	(float ssa/*fDistSq*/, float R)
