@@ -1188,6 +1188,18 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsFirstElement(0,0,0);
 	m_phSkeleton->add_Joint(joint);
 
+	parent=element;
+	id=M->LL_BoneID("bip01_r_foot");//bip01_spine1
+	element=P_create_Element				();
+	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	element->setMass(80.f);
+	element->set_ParentElement(parent);
+	m_phSkeleton->add_Element(element);
+	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint->SetAnchorVsFirstElement(0,0,0);
+	m_phSkeleton->add_Joint(joint);
+
 	parent=root;
 	id=M->LL_BoneID("bip01_l_thigh");//bip01_spine1
 	element=P_create_Element				();
@@ -1216,7 +1228,17 @@ void CActor::create_Skeleton(){
 	joint->SetAnchorVsFirstElement(0,0,0);
 	m_phSkeleton->add_Joint(joint);
 
-
+ 	parent=element;
+	id=M->LL_BoneID("bip01_l_foot");//bip01_spine1
+	element=P_create_Element				();
+	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
+	element->add_Box(M->LL_GetBox(id));
+	element->setMass(80.f);
+	element->set_ParentElement(parent);
+	m_phSkeleton->add_Element(element);
+	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
+	joint->SetAnchorVsFirstElement(0,0,0);
+	m_phSkeleton->add_Joint(joint);
 
 
 	//set shell start position
