@@ -140,8 +140,9 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 	local task_list = first_speaker:artefact_tasks()
 	printf("first %s, second %s", first_speaker:name(), second_speaker:name())
 
-	result_text = string.format("%s\\n", original_text)
+	local result_text = string.format("%s\\n", original_text)
 	for K,V in task_list do
+		printf("- %s", K.name)
 		result_text = string.format("%s\\n-%s", result_text, K.name)
 	end
     
