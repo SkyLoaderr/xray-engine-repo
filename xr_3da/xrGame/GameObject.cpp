@@ -192,8 +192,6 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 #pragma warning(pop)
 	}
 
-	setDestroy						(FALSE);	// @@@ WT
-
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);
@@ -244,9 +242,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
  		inherited::net_Spawn	(DC);
 	}
 
-	m_bObjectRemoved = false;
-
-
+	m_bObjectRemoved			= false;
 
 	spawn_supplies				();
 
@@ -538,7 +534,7 @@ void CGameObject::DestroyObject()
 	NET_Packet			P;
 	u_EventGen			(P,GE_DESTROY,ID());
 //	Msg					("DestroyObject: ge_destroy: [%d] - %s",ID(),*cName());
-	if (Local()) u_EventSend			(P);
+	if (Local())		u_EventSend		(P);
 }
 
 void CGameObject::shedule_Update	(u32 dt)

@@ -151,8 +151,11 @@ BOOL CObject::net_Spawn			(LPVOID data)
 	}
 	spatial_register			();
 	shedule_register			();
-	Props.bActiveCounter		= 0;	// reinitialize processing flag
+
+	// reinitialize flags
+	Props.bActiveCounter		= 0;	
 	processing_activate			();
+	setDestroy					(false);
 
 	return TRUE;
 }

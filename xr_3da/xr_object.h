@@ -129,7 +129,7 @@ public:
 	IC BOOL								getVisible			()			const	{ return Props.bVisible;			}
 	void								setEnabled			(BOOL _enabled);
 	IC BOOL								getEnabled			()			const	{ return Props.bEnabled;			}
-	IC void								setDestroy			(BOOL _destroy)		{ Props.bDestroy = _destroy?1:0; processing_activate(); }
+	IC void								setDestroy			(BOOL _destroy)		{ Props.bDestroy = _destroy?1:0; if(_destroy)	processing_activate(); }
 	IC BOOL								getDestroy			()			const	{ return Props.bDestroy;			}
 	IC void								setLocal			(BOOL _local)		{ Props.net_Local = _local?1:0;		}
 	IC BOOL								getLocal			()			const	{ return Props.net_Local;			}
