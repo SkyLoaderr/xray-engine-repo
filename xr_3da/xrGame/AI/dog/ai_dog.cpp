@@ -158,10 +158,10 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
 	// Bones settings
-	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bone01")).set_callback(BoneCallback,this);
-	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_spine1")).set_callback(BoneCallback,this);
-	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_spine2")).set_callback(BoneCallback,this);
-	PKinematics(Visual())->LL_GetInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bone01")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine1")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_spine2")).set_callback(BoneCallback,this);
+	PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).set_callback(BoneCallback,this);
 
 	Bones.Reset();
 	Bones.AddBone(GetBone("bone01"), AXIS_Y); 

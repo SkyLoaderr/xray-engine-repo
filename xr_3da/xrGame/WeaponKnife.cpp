@@ -92,7 +92,7 @@ void CWeaponKnife::UpdateCL	()
 	{
 	case eShowing:
 	case eHiding:
-		PKinematics		(m_pHUD->Visual())->Update();
+		PSkeletonAnimated(m_pHUD->Visual())->Update();
 		break;
 	case eFire:
 		//state_Attacking	(dt);

@@ -54,7 +54,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	lanim					= LALib.FindItem(lamp->color_animator);
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp->mass);
-	PKinematics(Visual())->PlayCycle("idle");
+	PSkeletonAnimated(Visual())->PlayCycle("idle");
 	//PKinematics(Visual())->Calculate();
 	setVisible(true);
 	setEnabled(true);
@@ -123,7 +123,7 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	CKinematics* K		= PKinematics(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
-	CBoneInstance& B	= K->LL_GetInstance(u16(id));
+	CBoneInstance& B	= K->LL_GetBoneInstance(u16(id));
 	E->mXFORM.set		(K->LL_GetTransform(u16(id)));
 	Fobb bb			= K->LL_GetBox(u16(id));
 
@@ -160,7 +160,7 @@ void CHangingLamp::CreateBody(float mass)
 {
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
-	AddElement			(0,PKinematics(Visual())->LL_BoneRoot());
+	AddElement			(0,PKinematics(Visual())->LL_GetBoneRoot());
 	m_pPhysicsShell->mXFORM.set(renderable.xform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	m_pPhysicsShell->setMass(mass);

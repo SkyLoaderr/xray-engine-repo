@@ -28,7 +28,7 @@ class CAI_Crow : public CEntityAlive
 		typedef			svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
 		MotionSVec		m_Animations;
 		CMotionDef*		GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
-		void			Load		(CKinematics* visual, LPCSTR prefix);
+		void			Load		(CSkeletonAnimated* visual, LPCSTR prefix);
 	};
 
 	struct SSound

@@ -189,7 +189,7 @@ class CMotionManager {
 
 
 	CAI_Biting				*pMonster;
-	CKinematics				*tpKinematics;
+	CSkeletonAnimated		*tpKinematics;
 
 	ANIM_VECTOR				m_tHitFXs;
 	
@@ -226,7 +226,7 @@ public:
 			
 				CMotionManager			();
 	
-	void		Init					(CAI_Biting	*pM, CKinematics *tpKin);
+	void		Init					(CAI_Biting	*pM, CSkeletonAnimated *tpKin);
 	void		Destroy					();
 	
 	// создание карты анимаций, переходов 

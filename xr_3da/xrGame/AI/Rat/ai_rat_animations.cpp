@@ -22,7 +22,7 @@ void CAI_Rat::vfLoadSounds()
 // animations
 void CAI_Rat::vfLoadAnimations()
 {
-	CKinematics* tpVisualObject = PKinematics(Visual());
+	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	
 	// loading normal animations
 	m_tRatAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death");
@@ -48,7 +48,7 @@ void CAI_Rat::vfLoadAnimations()
 
 void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
-	CKinematics* tpVisualObject = PKinematics(Visual());
+	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (fEntityHealth <= 0) {

@@ -884,25 +884,22 @@
 					Name="Skeleton"
 					Filter="">
 					<File
-						RelativePath=".\BodyInstance.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
+						RelativePath=".\SkeletonAnimated.cpp">
 					</File>
 					<File
-						RelativePath=".\BodyInstance.h">
+						RelativePath=".\SkeletonAnimated.h">
 					</File>
 					<File
-						RelativePath=".\SkeletonCalculate.cpp">
+						RelativePath=".\SkeletonCustom.cpp">
+					</File>
+					<File
+						RelativePath=".\SkeletonCustom.h">
+					</File>
+					<File
+						RelativePath=".\SkeletonRigid.cpp">
+					</File>
+					<File
+						RelativePath=".\SkeletonRigid.h">
 					</File>
 					<File
 						RelativePath=".\SkeletonX.cpp">

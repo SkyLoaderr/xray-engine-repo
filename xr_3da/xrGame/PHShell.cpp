@@ -190,7 +190,7 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element){
 	if(!bActive) return;
 	VERIFY(m_pKinematics);
-	CBoneInstance& instance=m_pKinematics->LL_GetInstance				(element);
+	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(element);
 	if(!instance.Callback_Param) return;
 	((CPHElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val);
 
@@ -201,7 +201,7 @@ CPhysicsElement* CPHShell::get_Element(LPCSTR bone_name)
 	VERIFY(m_pKinematics);
 
 	
-	CBoneInstance& instance=m_pKinematics->LL_GetInstance				(m_pKinematics->LL_BoneID(bone_name));
+	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(m_pKinematics->LL_BoneID(bone_name));
 
 	return (CPhysicsElement*) (instance.Callback_Param);
 }
@@ -215,7 +215,7 @@ CPhysicsElement* CPHShell::get_ElementByStoreOrder(u16 num)
 CPhysicsElement* CPHShell::get_Element(s16 bone_id)
 {
 	VERIFY(m_pKinematics);
-	CBoneInstance& instance=m_pKinematics->LL_GetInstance				(bone_id);
+	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(bone_id);
 	return (CPhysicsElement*) instance.Callback_Param;
 }
 
@@ -393,7 +393,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	m_pKinematics=K;
 	spGetingMap=p_geting_map;
 	CBoneData& bone_data= m_pKinematics->LL_GetData(0);
-	AddElementRecursive(0,m_pKinematics->LL_BoneRoot(),bone_data);
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),bone_data);
 	
 	//Activate(true);
 
@@ -401,7 +401,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneData& parent_data)
 {
 
-	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
+	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 
 
@@ -410,8 +410,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneDa
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//
 	{														
 		Fmatrix fm_position;
-		fm_position.setXYZi(bone_data.bind_xyz);
-		fm_position.c.set(bone_data.bind_translate);
+		fm_position.set(bone_data.bind_transform);
 		if(bone_data.IK_data.type==jtRigid && root_e ) //
 		{
 			Fmatrix inv_root;
@@ -721,12 +720,12 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneDa
   
 void CPHShell::ZeroCallbacks()
 {
-ZeroCallbacksRecursive(m_pKinematics->LL_BoneRoot());
+ZeroCallbacksRecursive(m_pKinematics->LL_GetBoneRoot());
 }
 void CPHShell::ZeroCallbacksRecursive(u16 id)
 {
 
-	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
+	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 		B.set_callback(0,0);
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)

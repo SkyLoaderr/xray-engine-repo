@@ -19,8 +19,8 @@ using namespace AI;
 
 Flags32		psAI_Flags	= {0};
 ENGINE_API extern float psGravity;
-
-void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
+ 
+void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	char	buf[128];
 	fwd		= K->ID_Cycle_Safe(strconcat(buf,base,"_fwd"));
@@ -659,7 +659,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	r_torso_current.pitch	= r_torso_target.pitch	= 0;
 	fEntityHealth			= E->fHealth;
 
-	R_ASSERT				(Visual()->Type==MT_SKELETON);
+	R_ASSERT				(Visual()->Type==MT_SKELETON_ANIM);
 
 	// Eyes
 	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
@@ -795,7 +795,7 @@ bool CCustomMonster::bfScriptAnimation()
 		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
-		CKinematics			&tVisualObject = *(PKinematics(Visual()));
+		CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
 			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);

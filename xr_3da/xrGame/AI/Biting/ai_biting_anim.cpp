@@ -19,7 +19,7 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 // Установка анимации
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	if (MotionMan.PrepareAnimation()) PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+	if (MotionMan.PrepareAnimation()) PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
 }
 
 bool CAI_Biting::AA_CheckHit()
@@ -71,7 +71,7 @@ CMotionManager::CMotionManager()
 {
 }
 
-void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
+void CMotionManager::Init (CAI_Biting	*pM, CSkeletonAnimated *tpKin)
 {
 	pMonster				= pM;
 	tpKinematics			= tpKin;
@@ -636,7 +636,7 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 //	if (jump.entity) {
 //		// put target up to the head
 //		u16 bone_id = PKinematics(jump.entity->Visual())->LL_BoneID("bip01_head");
-//		CBoneInstance &bone = PKinematics(jump.entity->Visual())->LL_GetInstance(bone_id);
+//		CBoneInstance &bone = PKinematics(jump.entity->Visual())->LL_GetBoneInstance(bone_id);
 //
 //		Fmatrix global_transform;
 //		global_transform.set(jump.entity->XFORM());

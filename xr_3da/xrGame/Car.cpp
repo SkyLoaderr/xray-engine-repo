@@ -126,7 +126,7 @@ void	CCar::net_Destroy()
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
 	if(ini->line_exist("car_definition","steer"))
-		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
+		pKinematics->LL_GetBoneInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(0,0);
 }
 
 void CCar::shedule_Update(u32 dt)
@@ -244,9 +244,9 @@ bool CCar::attach_Actor(CActor* actor)
 	else
 	{	
 		m_owner->setVisible(0);
-		id=K->LL_BoneRoot();
+		id=K->LL_GetBoneRoot();
 	}
-	CBoneInstance& instance=K->LL_GetInstance				(u16(id));
+	CBoneInstance& instance=K->LL_GetBoneInstance				(u16(id));
 	m_sits_transforms.push_back(instance.mTransform);
 
 
@@ -312,7 +312,7 @@ void CCar::ParseDefinitions()
 	bone_map.clear();
 
 	CKinematics* pKinematics=PKinematics(Visual());
-	bone_map.insert(mk_pair(pKinematics->LL_BoneRoot(),physicsBone()));
+	bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()));
 	CInifile* ini = pKinematics->LL_UserData();
 	if(! ini) return;
 
@@ -387,12 +387,12 @@ void CCar::CreateSkeleton()
 {
 
 	if (!Visual()) return;
-	CKinematics* K= PKinematics(Visual());
+	CSkeletonAnimated* K = PSkeletonAnimated(Visual());
 	K->PlayCycle("idle");
 	K->Calculate();
 
 	//CInifile* ini=K->LL_UserData();
-	//K->LL_GetInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
+	//K->LL_GetBoneInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
 	m_pPhysicsShell		= P_create_Shell();
 	m_pPhysicsShell->build_FromKinematics(K,&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
@@ -408,7 +408,7 @@ void CCar::Init()
 	CInifile* ini = pKinematics->LL_UserData();
 	///SWheel& ref_wheel=m_wheels_map.find(pKinematics->LL_BoneID(ini->r_string("car_definition","reference_wheel")))->second;
 	if(ini->line_exist("car_definition","steer"))
-		pKinematics->LL_GetInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
+		pKinematics->LL_GetBoneInstance(pKinematics->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback(cb_Steer,this);
 	//ref_wheel.Init();
 	m_ref_radius=ini->r_float("car_definition","reference_radius");//ref_wheel.radius;
 
@@ -416,7 +416,7 @@ void CCar::Init()
 	b_clutch   =false;
 	b_starting =false;
 	b_stalling =false;
-	m_root_transform.set(bone_map.find(pKinematics->LL_BoneRoot())->second.element->mXFORM);
+	m_root_transform.set(bone_map.find(pKinematics->LL_GetBoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 
@@ -1069,8 +1069,7 @@ void CCar::SExhaust::Init()
 	pelement=(bone_map.find(bone_id))->second.element;
 	CKinematics* K=PKinematics(pcar->Visual());
 	CBoneData&	bone_data=K->LL_GetData(u16(bone_id));
-	transform.setXYZi(bone_data.bind_xyz);
-	transform.c.set(bone_data.bind_translate);
+	transform.set(bone_data.bind_transform);
 	transform.mulA(pcar->XFORM());
 	Fmatrix element_transform;
 	pelement->InterpolateGlobalTransform(&element_transform);

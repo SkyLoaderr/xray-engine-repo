@@ -110,7 +110,7 @@ public:
 	void				Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle);
 
 	// Calculation
-	virtual void		Calculate		(CSkeletonCustom* K, Fmatrix *Parent);
+	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 };
 
 //*** Shared motion Data **************************************************************************
@@ -151,9 +151,9 @@ public:
 };
 
 //*** The visual itself ***************************************************************************
-class ENGINE_API	CSkeletonAnimated	: public CSkeletonCustom
+class ENGINE_API	CSkeletonAnimated	: public CKinematics
 {
-	typedef CSkeletonCustom						inherited;
+	typedef CKinematics						inherited;
 	friend class								CBoneData;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;

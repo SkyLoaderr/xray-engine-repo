@@ -65,6 +65,6 @@ void CTargetCSCask::Load	(LPCSTR section)
 {
 	inherited::Load(section);
 
-	CKinematics* V	= PKinematics	(Visual());
+	CSkeletonAnimated* V	= PSkeletonAnimated(Visual());
 	if(V)			V->PlayCycle	("open");
 }

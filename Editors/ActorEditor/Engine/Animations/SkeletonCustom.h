@@ -10,7 +10,7 @@ const	u32		MAX_BONE_PARAMS		=	4;
 const	u16		BI_NONE				=	u16(-1);
 
 // refs
-class	ENGINE_API CSkeletonCustom;
+class	ENGINE_API CKinematics;
 class	ENGINE_API CInifile;
 class	ENGINE_API CBoneData;
 class   ENGINE_API CBoneInstance;
@@ -21,7 +21,7 @@ typedef vecBones::iterator			vecBonesIt;
 
 // callback
 typedef void (__stdcall * BoneCallback)		(CBoneInstance* P);
-typedef void (__stdcall * UpdateCallback)	(CSkeletonCustom*	P);
+typedef void (__stdcall * UpdateCallback)	(CKinematics*	P);
 
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
@@ -64,10 +64,10 @@ public:
 						CBoneData		(u16 ID):SelfID(ID){}
 	void				DebugQuery		(BoneDebug& L);
 	// Calculation
-	virtual void		Calculate		(CSkeletonCustom* K, Fmatrix *Parent)=0;
+	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent)=0;
 };
 
-class ENGINE_API	CSkeletonCustom: public FHierrarhyVisual
+class ENGINE_API	CKinematics: public FHierrarhyVisual
 {
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
@@ -102,7 +102,7 @@ public:
 	UpdateCallback				Update_Callback;
 	void*						Update_Callback_Param;
 public:
-	virtual						~CSkeletonCustom		();
+	virtual						~CKinematics		();
 
 	// Low level interface
 	u16							LL_BoneID		(LPCSTR B);
@@ -136,6 +136,6 @@ public:
 	virtual void 				Spawn			();
     virtual void 				Release			();
 };
-IC CSkeletonCustom* PKinematics(IRender_Visual* V) { return dynamic_cast<CSkeletonCustom*>(V); }
+IC CKinematics* PKinematics(IRender_Visual* V) { return dynamic_cast<CKinematics*>(V); }
 //---------------------------------------------------------------------------
 #endif

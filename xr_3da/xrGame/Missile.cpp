@@ -45,7 +45,7 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	CKinematics* V = PKinematics(Visual());
+	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
 	if(V) V->PlayCycle("idle");
 	setVisible					(true);
 	setEnabled					(true);
@@ -241,7 +241,7 @@ void CMissile::renderable_Render() {
 		Level().Cameras.affected_Matrix(trans);
 		m_pHUD->UpdatePosition(trans);
 
-		PKinematics(m_pHUD->Visual())->Update();
+		PSkeletonAnimated(m_pHUD->Visual())->Update();
 		if(m_showHUD) {
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());

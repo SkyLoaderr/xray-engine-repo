@@ -339,7 +339,7 @@ void CWeaponMagazined::UpdateCL			()
 	case eShowing:
 	case eHiding:
 	case eReload:
-		PKinematics		(m_pHUD->Visual())->Update();
+		PSkeletonAnimated		(m_pHUD->Visual())->Update();
 	case eIdle:
 		fTime			-=	dt;
 		if (fTime<0)	fTime = 0;

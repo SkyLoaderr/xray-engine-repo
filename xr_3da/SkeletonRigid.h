@@ -9,7 +9,7 @@ class CBoneDataRigid: public CBoneData
 public:
 						CBoneDataRigid	(u16 ID):CBoneData(ID){}
 	// Calculation                                                          
-	virtual void		Calculate		(CSkeletonCustom* K, Fmatrix *Parent);
+	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 };
 
 class CBoneInstanceRigid: public CBoneInstance
@@ -18,7 +18,7 @@ public:
 	void				construct		();
 };
 
-class ENGINE_API	CSkeletonRigid	: public CSkeletonCustom
+class ENGINE_API	CSkeletonRigid	: public CKinematics
 {
 protected:
     virtual CBoneData*			CreateBoneData	(u16 ID){return xr_new<CBoneDataRigid>(ID);}

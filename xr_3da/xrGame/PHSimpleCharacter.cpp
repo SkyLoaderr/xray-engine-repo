@@ -1015,7 +1015,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 
 		CKinematics* K=PKinematics(object->Visual());
 		u16 count=K->LL_BoneCount();
-		CBoneInstance* bone_instances=&K->LL_GetInstance(0);
+		CBoneInstance* bone_instances=&K->LL_GetBoneInstance(0);
 		Fvector pos_in_object;
 		pos_in_object.sub(*(Fvector*)m_damege_contact.geom.pos,object->Position());//vector from object center to contact position currently in global frame
 		Fmatrix object_form;

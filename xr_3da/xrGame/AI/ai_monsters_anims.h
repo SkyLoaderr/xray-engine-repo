@@ -14,7 +14,7 @@ class CAniVector {
 public:
 	ANIM_VECTOR		A;
 
-	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256	S1, S2;
 		CMotionDef	*tpMotionDef;
@@ -33,7 +33,7 @@ template <LPCSTR caBaseNames[]> class CAniFVector {
 public:
 	ANIM_VECTOR		A;
 
-	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256 S;
 		for (int j=0; caBaseNames[j]; j++);
@@ -47,7 +47,7 @@ template <class TYPE_NAME, LPCSTR caBaseNames[]> class CAniCollection {
 public:
 	xr_vector<TYPE_NAME>	A;
 
-	IC	void		Load(CKinematics *tpKinematics, LPCSTR caBaseName)
+	IC	void		Load(CSkeletonAnimated *tpKinematics, LPCSTR caBaseName)
 	{
 		string256	S;
 		for (int j=0; caBaseNames[j]; j++);

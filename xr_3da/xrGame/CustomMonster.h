@@ -41,7 +41,7 @@ protected:
 		CMotionDef		*ls;
 		CMotionDef		*rs;
 
-		void			Create(CKinematics* K, LPCSTR base);
+		void			Create(CSkeletonAnimated* K, LPCSTR base);
 	};
 
 	typedef struct tagSDynamicObject {

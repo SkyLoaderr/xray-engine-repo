@@ -392,7 +392,7 @@ void CSkeletonAnimated::Release()
 	// xr_free bones
 	for (u32 i=0; i<bones->size(); i++)
 	{
-		CBoneDataAnimated* &B = (CBoneDataAnimated*)(*bones)[i];
+		CBoneDataAnimated* B = (CBoneDataAnimated*)(*bones)[i];
 		for (u32 m=0; m<B->Motions.size(); m++)
 			xr_free(B->Motions[m]._keys);
 	}
@@ -618,7 +618,7 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 	// sort in decreasing order
 	std::sort(keys,keys+count);
 }
-void CBoneDataAnimated::Calculate(CSkeletonCustom* _K, Fmatrix *parent)
+void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 {
 	CSkeletonAnimated* K 			= dynamic_cast<CSkeletonAnimated*>(_K); R_ASSERT(K);
 

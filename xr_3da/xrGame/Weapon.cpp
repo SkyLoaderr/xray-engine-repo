@@ -693,7 +693,7 @@ void CWeapon::renderable_Render		()
 		Light_Render(vLastFP);
 	}
 	if (m_pHUD /*&& hud_mode*/)	
-		PKinematics(m_pHUD->Visual())->Update	();
+		PSkeletonAnimated(m_pHUD->Visual())->Update	();
 }
 
 void CWeapon::signal_HideComplete()
@@ -802,7 +802,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 				
 				if(V)
 				{
-					Fmatrix& m_bone = (V->LL_GetInstance(u16(RQ.element))).mTransform;
+					Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(RQ.element))).mTransform;
 					Fmatrix  m_inv_bone;
 					m_inv_bone.invert(m_bone);
 					m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);

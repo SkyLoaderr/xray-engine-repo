@@ -13,7 +13,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	m_vehicle=vehicle;
 
 
-	CKinematics* V		= PKinematics(Visual());
+	CSkeletonAnimated* V		= PSkeletonAnimated(Visual());
 	R_ASSERT			(V);
 	
 	if(!m_vehicle->attach_Actor(this)){
@@ -26,9 +26,9 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetInstance(u16(spine_bone)).set_callback		(NULL,NULL);
-	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
-	V->LL_GetInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
+	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(NULL,NULL);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
 
 	Movement.DestroyCharacter();
 	//PIItem iitem=m_inventory.ActiveItem();
@@ -53,11 +53,11 @@ void CActor::detach_Vehicle()
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	u16 head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
-	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
-	V->LL_GetInstance(u16(head_bone)).set_callback		(HeadCallback,this);
-	PKinematics(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
-	PKinematics(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
+	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
+	PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
+	PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;
 }
 

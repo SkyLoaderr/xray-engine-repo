@@ -63,7 +63,7 @@ void __stdcall CActor::CarHeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void CActor::SActorMotions::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+void CActor::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_aim_0"));
@@ -73,7 +73,7 @@ void CActor::SActorMotions::SActorState::STorsoWpn::Create(CKinematics* K, LPCST
 	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_drop_0"));
 	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso",base1,"_attack_0"));
 }
-void CActor::SActorMotions::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+void CActor::SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd_0"));
@@ -82,7 +82,7 @@ void CActor::SActorMotions::SActorState::SAnimState::Create(CKinematics* K, LPCS
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
 }
 
-void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
+void CActor::SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
 	string128		buf,buf1;
 	legs_turn		= K->ID_Cycle(strconcat(buf,base,"_turn"));
@@ -106,7 +106,7 @@ void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
-void CActor::SActorMotions::Create(CKinematics* V)
+void CActor::SActorMotions::Create(CSkeletonAnimated* V)
 {
 	m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
 	m_steering_torso_right	= V->ID_Cycle_Safe("steering_torso_rs");
@@ -120,10 +120,10 @@ void CActor::SActorMotions::Create(CKinematics* V)
 }
 void CActor::steer_Vehicle(float angle)	
 {
-if(!m_vehicle)		return;
-if(angle==0.f) 		PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
-else if(angle>0.f)	PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
-else				PKinematics	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
+	if(!m_vehicle)		return;
+	if(angle==0.f) 		PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
+	else if(angle>0.f)	PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
+	else				PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
 }
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
@@ -182,12 +182,12 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
 		if (m_current_torso!=M_torso){
-			if (m_bAnimTorsoPlayed)		PKinematics	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
-			else						PKinematics	(Visual())->PlayCycle(M_torso);
+			if (m_bAnimTorsoPlayed)		PSkeletonAnimated	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
+			else						PSkeletonAnimated	(Visual())->PlayCycle(M_torso);
 			m_current_torso=M_torso;
 		}
 		if (m_current_legs!=M_legs){
-			m_current_legs_blend = PKinematics(Visual())->PlayCycle(M_legs);
+			m_current_legs_blend = PSkeletonAnimated(Visual())->PlayCycle(M_legs);
 			m_current_legs=M_legs;
 		}
 	}else{
@@ -212,11 +212,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			//PKinematics	(Visual())->PlayCycle("x90",false);
 			////////////////////
 	
-			PKinematics(Visual())->LL_CloseCycle(0) ;
-			PKinematics(Visual())->LL_CloseCycle(1) ;
-			PKinematics(Visual())->LL_CloseCycle(2) ;
-			PKinematics(Visual())->LL_CloseCycle(3) ;
-			PKinematics(Visual())->PlayCycle(m_anims.m_dead_stop);
+			PSkeletonAnimated(Visual())->LL_CloseCycle(0) ;
+			PSkeletonAnimated(Visual())->LL_CloseCycle(1) ;
+			PSkeletonAnimated(Visual())->LL_CloseCycle(2) ;
+			PSkeletonAnimated(Visual())->LL_CloseCycle(3) ;
+			PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}
 #ifndef NDEBUG

@@ -184,7 +184,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	// loading animation stuff
 #pragma	todo("Jim to Jim: Bring all motion loading stuff off from Net_Spawn")
-	MotionMan.Init					(this, PKinematics(Visual()));
+	MotionMan.Init					(this, PSkeletonAnimated(Visual()));
 
 	m_pPhysics_support->in_NetSpawn();
 
@@ -300,10 +300,10 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)
 {
 	int bone = PKinematics(Visual())->LL_BoneID(bone_name);
-	return (&PKinematics(Visual())->LL_GetInstance(u16(bone)));
+	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone)));
 }
 CBoneInstance *CAI_Biting::GetBone(int bone_id)
 {
-	return (&PKinematics(Visual())->LL_GetInstance(u16(bone_id)));
+	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone_id)));
 }
 

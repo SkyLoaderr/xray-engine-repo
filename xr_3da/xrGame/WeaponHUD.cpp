@@ -38,7 +38,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 	// Visual
 	pVisualName					= pSettings->r_string(section, "visual");
 	pVisual						= ::Render->model_Create(*pVisualName);
-	R_ASSERT					(pVisual->Type==MT_SKELETON);
+	R_ASSERT					(pVisual->Type==MT_SKELETON_ANIM);
 
 	// fire bone	
 	LPCSTR fire_bone			= pSettings->r_string					(section,"fire_bone");
@@ -61,7 +61,7 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
-	return PKinematics(Visual())->ID_Cycle_Safe(name);
+	return PSkeletonAnimated(Visual())->ID_Cycle_Safe(name);
 }
 
 static void __stdcall animCallback	(CBlend* B)
@@ -73,8 +73,8 @@ static void __stdcall animCallback	(CBlend* B)
 
 void CWeaponHUD::animPlay			(CMotionDef* M,	BOOL bMixIn, CInventoryItem* W)
 {
-	PKinematics(pVisual)->Update			();
-	if (W)	PKinematics(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);
-	else	PKinematics(pVisual)->PlayCycle	(M,bMixIn);
-	PKinematics(pVisual)->Invalidate		();
+	PSkeletonAnimated(pVisual)->Update		();
+	if (W)	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn,animCallback,W);
+	else	PSkeletonAnimated(pVisual)->PlayCycle	(M,bMixIn);
+	PSkeletonAnimated(pVisual)->Invalidate	();
 }

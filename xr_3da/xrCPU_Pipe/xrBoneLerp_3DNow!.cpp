@@ -7,7 +7,7 @@
 
 // --  includes -----------------------------------------------------
 #include "stdafx.h"
-#include "..\bodyinstance.h"
+#include "..\skeletonanimated.h"
 
 //;******************************************************************************
 // A "magic" type to allow initialization with any type

@@ -32,13 +32,13 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		case epotBox:				break;
 		case epotFixedChain:
 			R_ASSERT				(Visual()&&PKinematics(Visual()));
-			PKinematics(Visual())->PlayCycle(start_anim);
-			PKinematics(Visual())->Calculate();
+			PSkeletonAnimated(Visual())->PlayCycle(start_anim);
+			PSkeletonAnimated(Visual())->Calculate();
 			break;
 		case epotSkeleton:
 			R_ASSERT				(Visual()&&PKinematics(Visual()));
-			PKinematics(Visual())->PlayCycle(start_anim);
-			PKinematics(Visual())->Calculate();
+			PSkeletonAnimated(Visual())->PlayCycle(start_anim);
+			PSkeletonAnimated(Visual())->Calculate();
 			break;
 		default: NODEFAULT; 
 	}
@@ -65,7 +65,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	CKinematics* K		= PKinematics(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
-	CBoneInstance& B	= K->LL_GetInstance(u16(id));
+	CBoneInstance& B	= K->LL_GetBoneInstance(u16(id));
 	E->mXFORM.set		(K->LL_GetTransform(u16(id)));
 	Fobb bb			= K->LL_GetBox(u16(id));
 
@@ -116,7 +116,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 		case epotFreeChain  :
 			{
 			m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
-			AddElement(0,PKinematics(Visual())->LL_BoneRoot());
+			AddElement(0,PKinematics(Visual())->LL_GetBoneRoot());
 			m_pPhysicsShell->setMass1(m_mass);
 		} break;
 		case   epotSkeleton: CreateSkeleton(po); break;

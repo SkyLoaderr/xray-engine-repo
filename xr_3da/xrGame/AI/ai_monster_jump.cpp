@@ -95,7 +95,7 @@ void CJumping::ExecuteJump()
 	if (entity) {
 		// put target up to the head
 		u16 bone_id = PKinematics(entity->Visual())->LL_BoneID("bip01_head");
-		CBoneInstance &bone = PKinematics(entity->Visual())->LL_GetInstance(bone_id);
+		CBoneInstance &bone = PKinematics(entity->Visual())->LL_GetBoneInstance(bone_id);
 
 		Fmatrix global_transform;
 		global_transform.set(entity->XFORM());

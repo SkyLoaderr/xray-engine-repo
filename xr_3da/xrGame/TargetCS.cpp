@@ -19,7 +19,7 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 	setEnabled					(true);
 	Game().targets.push_back	(this);
 
-	CKinematics* V = PKinematics(Visual());
+	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
 	if(V) V->PlayCycle("idle");
 
 	if (0==m_pPhysicsShell)

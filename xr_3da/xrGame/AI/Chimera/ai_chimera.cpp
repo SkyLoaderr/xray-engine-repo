@@ -54,7 +54,7 @@ void CAI_Chimera::StateSelector()
 //			else k = 1.0f;
 //
 //			int spin_bone	= PKinematics(Visual())->LL_BoneID("bip01_spine1");
-//			Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
+//			Bones.SetMotion(&PKinematics(Visual())->LL_GetBoneInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
 //		}
 //
 //	}

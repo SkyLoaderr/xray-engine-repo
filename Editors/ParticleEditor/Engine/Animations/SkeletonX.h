@@ -10,7 +10,7 @@
 #include "FProgressiveFixedVisual.h"
 
 // refs
-class ENGINE_API CSkeletonCustom;
+class ENGINE_API CKinematics;
 
 #pragma pack(push,4)
 struct vertBoned1W	// (3+3+2+1)*4 = 9*4 = 36 bytes
@@ -44,7 +44,7 @@ class ENGINE_API CSkeletonX
 protected:
 	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
 
-	CSkeletonCustom*		Parent;			// setted up by parent
+	CKinematics*		Parent;			// setted up by parent
 	vertBoned1W*			Vertices1W;		// shared
 	vertBoned2W*			Vertices2W;		// shared
 	u32						cache_DiscardID;
@@ -56,7 +56,7 @@ protected:
 	void					_Release		();
 	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
 public:
-	virtual void			SetParent		(CSkeletonCustom* K) { Parent = K; }
+	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
 	CSkeletonX()
 	{

@@ -68,7 +68,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 		return;
 	}
 
-	m_capture_bone=&p_kinematics->LL_GetInstance(
+	m_capture_bone=&p_kinematics->LL_GetBoneInstance(
 		p_kinematics->LL_BoneID(ini->r_string("capture","bone"))
 		);
 
@@ -147,7 +147,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u
 		return;
 	}
 
-	m_capture_bone=&p_kinematics->LL_GetInstance(
+	m_capture_bone=&p_kinematics->LL_GetBoneInstance(
 		p_kinematics->LL_BoneID(ini->r_string("capture","bone"))
 		);
 
@@ -170,7 +170,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u
 		return;
 	}
 
-	CBoneInstance& tag_bone=K->LL_GetInstance(a_taget_element);
+	CBoneInstance& tag_bone=K->LL_GetBoneInstance(a_taget_element);
 
 	if(!tag_bone.Callback_Param)
 	{

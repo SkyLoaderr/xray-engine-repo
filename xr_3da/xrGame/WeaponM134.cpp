@@ -117,8 +117,8 @@ void CWeaponM134::Load	(LPCSTR section)
 	dwServoMinFreq	= pSettings->r_s32(section,"servo_min_freq");
 	
 	// PKinematics(Visual())->PlayCycle("idle");
-	PKinematics(Visual())->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
-	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
+	PKinematics(Visual())->LL_GetBoneInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
+	PKinematics(m_pHUD->Visual())->LL_GetBoneInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
 
 	mhud_idle		= m_pHUD->animGet("idle");	
 	mhud_fire		= m_pHUD->animGet("fire");	

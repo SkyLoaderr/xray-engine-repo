@@ -2,9 +2,9 @@
 #pragma hdrstop
 
 #ifdef _EDITOR
- 	#include "bodyinstance.h"
+ 	#include "SkeletonAnimated.h"
 #else
- 	#include "..\bodyinstance.h"
+ 	#include "..\SkeletonAnimated.h"
 #endif
 
 IC float myasin(const float x)

@@ -23,7 +23,8 @@
 
 #include "..\render.h"
 #include "..\fmesh.h"
-#include "..\BodyInstance.h"
+#include "..\SkeletonAnimated.h"
+#include "..\SkeletonRigid.h"
 
 
 #include "ode_include.h"

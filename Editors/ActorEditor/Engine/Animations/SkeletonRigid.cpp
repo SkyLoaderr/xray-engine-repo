@@ -65,7 +65,7 @@ void CSkeletonRigid::Calculate(BOOL bLight)
 	if (Update_Callback)	Update_Callback(this);
 }
 
-void CBoneDataRigid::Calculate(CSkeletonCustom* K, Fmatrix *parent)
+void CBoneDataRigid::Calculate(CKinematics* K, Fmatrix *parent)
 {
     if (K->LL_GetBoneVisible(SelfID)){
 		CBoneInstance& INST	= (CBoneInstance&)K->LL_GetBoneInstance(SelfID);

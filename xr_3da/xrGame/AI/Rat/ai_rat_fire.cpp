@@ -92,7 +92,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 elem
 	if (g_Health() - amount <= 0) {
 		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
 			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
+				m_tpCurrentGlobalBlend = PSkeletonAnimated(Visual())->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
 	}
 }
 

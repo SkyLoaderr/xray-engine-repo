@@ -42,7 +42,7 @@ BOOL CArtifactMerger::net_Spawn(LPVOID DC)
 {
 	BOOL res = inherited::net_Spawn(DC);
 
-	CKinematics* V = PKinematics(Visual());
+	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
 	if(V) V->PlayCycle("idle");
 
 	if (m_pPhysicsShell==0) 

@@ -362,7 +362,7 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark.create			("effects\\wallmark",*pstrWallmark);
 
-	CKinematics* V					= PKinematics(Visual());
+	CSkeletonAnimated* V			= PSkeletonAnimated(Visual());
 	if(V) V->PlayCycle("idle1");
 	//setVisible					(true);
 	//setEnabled					(true);
@@ -667,9 +667,9 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	m_pGrenadePoint = &vLastFP;
 	BOOL l_res = inherited::net_Spawn(DC);
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
 	V = PKinematics(Visual()); R_ASSERT(V);
-	V->LL_GetInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) 
 	{

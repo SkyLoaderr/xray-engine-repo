@@ -45,14 +45,14 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-u16	CSkeletonCustom::LL_BoneID		(LPCSTR B)
+u16	CKinematics::LL_BoneID		(LPCSTR B)
 {
 	accel::iterator I = bone_map->find(LPSTR(B));
 	if (I==bone_map->end())		return BI_NONE;
 	else						return I->second;
 }
 
-void CSkeletonCustom::DebugRender(Fmatrix& XFORM)
+void CKinematics::DebugRender(Fmatrix& XFORM)
 {
 	Calculate();
 
@@ -89,12 +89,12 @@ void CSkeletonCustom::DebugRender(Fmatrix& XFORM)
 	}
 }
 
-CSkeletonCustom::~CSkeletonCustom	()
+CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();
 }
 
-void	CSkeletonCustom::IBoneInstances_Create()
+void	CKinematics::IBoneInstances_Create()
 {
 	u32				size	= bones->size();
 	void*			ptr		= xr_malloc(size*sizeof(CBoneInstance));
@@ -103,7 +103,7 @@ void	CSkeletonCustom::IBoneInstances_Create()
 		bone_instances[i].construct();
 }
 
-void	CSkeletonCustom::IBoneInstances_Destroy()
+void	CKinematics::IBoneInstances_Destroy()
 {
 	if (bone_instances) {
 		xr_free(bone_instances);
@@ -111,7 +111,7 @@ void	CSkeletonCustom::IBoneInstances_Destroy()
 	}
 }
 
-void	CSkeletonCustom::Load(const char* N, IReader *data, u32 dwFlags)
+void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	Msg				("skeleton: %s",N);
 	inherited::Load	(N, data, dwFlags);
@@ -196,11 +196,11 @@ void	CSkeletonCustom::Load(const char* N, IReader *data, u32 dwFlags)
 }
 
 #define PCOPY(a)	a = pFrom->a
-void CSkeletonCustom::Copy(IRender_Visual *P) 
+void CKinematics::Copy(IRender_Visual *P) 
 {
 	inherited::Copy	(P);
 
-	CSkeletonCustom* pFrom = (CSkeletonCustom*)P;
+	CKinematics* pFrom = (CKinematics*)P;
     PCOPY(pUserData);
 	PCOPY(bones);
 	PCOPY(iRoot);
@@ -236,7 +236,7 @@ void CSkeletonCustom::Copy(IRender_Visual *P)
 	Update_ID		= ::Random.randI(psSkeletonUpdate);
 }
 
-void CSkeletonCustom::Spawn	()
+void CKinematics::Spawn	()
 {
 	inherited::Spawn		();
 
@@ -246,7 +246,7 @@ void CSkeletonCustom::Spawn	()
 	Update_Callback			= NULL;
 }
 
-void CSkeletonCustom::Release()
+void CKinematics::Release()
 {
 	// xr_free bones
 	for (u32 i=0; i<bones->size(); i++)
@@ -263,7 +263,7 @@ void CSkeletonCustom::Release()
 	inherited::Release();
 }
 
-void CSkeletonCustom::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
+void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
 {
 	VERIFY(bone_id<LL_BoneCount()); 
     u64 mask 			= u64(1)<<bone_id;
@@ -274,7 +274,7 @@ void CSkeletonCustom::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
     	LL_SetBoneVisible((*C)->SelfID,val,bRecursive);
 }
 
-void CSkeletonCustom::LL_SetBonesVisible(u64 mask)
+void CKinematics::LL_SetBonesVisible(u64 mask)
 {
 	visimask.set(mask);	
 	for (u32 b=0; b<bones->size(); b++){

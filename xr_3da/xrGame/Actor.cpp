@@ -426,14 +426,14 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	// @@@: WT
 
 	// take index spine bone
-	CKinematics* V		= PKinematics(Visual());
+	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
 	R_ASSERT			(V);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	int head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
-	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
-	V->LL_GetInstance(u16(head_bone)).set_callback		(HeadCallback,this);
+	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
 
 	m_anims.Create			(V);
 	//
@@ -451,7 +451,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 			}else{
 				int bone	= V->LL_BoneID(*it->first); 
 				R_ASSERT2(bone!=BI_NONE,*it->first);
-				CBoneInstance& B = V->LL_GetInstance(u16(bone));
+				CBoneInstance& B = V->LL_GetBoneInstance(u16(bone));
 				B.set_param(0,(float)atof(_GetItem(*it->second,0,buf)));
 				B.set_param(1,float(atoi(_GetItem(*it->second,1,buf))));
 			}
@@ -635,9 +635,9 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 
 		float	yaw, pitch;
 		D.getHP(yaw,pitch);
-		CKinematics *tpKinematics = PKinematics(Visual());
+		CSkeletonAnimated *tpKinematics = PSkeletonAnimated(Visual());
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_model_yaw + r_model_yaw_delta,yaw,PI_DIV_2) ? 0 : 1))];
+		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_model_yaw + r_model_yaw_delta,yaw,PI_DIV_2) ? 0 : 1))];
 		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
@@ -1446,7 +1446,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 float CActor::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetInstance(u16(element)).get_param(0))?1.f:V->LL_GetInstance(u16(element)).get_param(0);
+	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
 	return hit_factor*scale;
 }
 

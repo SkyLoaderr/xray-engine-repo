@@ -19,7 +19,6 @@
 class ENGINE_API CCameraBase;
 class ENGINE_API CBoneInstance;
 class ENGINE_API CMotionDef;
-class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
@@ -107,7 +106,7 @@ protected:
 				CMotionDef*	legs_back;
 				CMotionDef*	legs_ls;
 				CMotionDef*	legs_rs;
-				void		Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+				void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
 			};
 			struct			STorsoWpn{
 				CMotionDef*	aim;
@@ -116,7 +115,7 @@ protected:
 				CMotionDef*	drop;
 				CMotionDef*	reload;
 				CMotionDef*	attack;
-				void		Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+				void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
 			};
 
 			CMotionDef*		legs_idle;
@@ -132,7 +131,7 @@ protected:
 
 			CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 
-			void			Create(CKinematics* K, LPCSTR base);
+			void			Create(CSkeletonAnimated* K, LPCSTR base);
 		};
 		CMotionDef*			m_steering_torso_left;
 		CMotionDef*			m_steering_torso_right;
@@ -143,7 +142,7 @@ protected:
 		SActorState			m_normal;
 		SActorState			m_crouch;
 		SActorState			m_climb;
-		void				Create(CKinematics* K);
+		void				Create(CSkeletonAnimated* K);
 	};
 	BOOL					m_bAnimTorsoPlayed;
 	static void				AnimTorsoPlayCallBack(CBlend* B)

@@ -11,7 +11,7 @@
 #include "ai_crow.h"
 #include "..\\..\\hudmanager.h"
 
-void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
+void CAI_Crow::SAnim::Load(CSkeletonAnimated* visual, LPCSTR prefix)
 {
 	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
 	if (M)				m_Animations.push_back(M);
@@ -61,7 +61,7 @@ void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
 
 void CAI_Crow::OnHitEndPlaying(CBlend* B)
 {
-	PKinematics(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
+	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death_idle.GetRandom());
 }
 
 CAI_Crow::CAI_Crow()
@@ -127,7 +127,7 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 	AI_Node		= 0;
 
 	// animations
-	CKinematics*	M			= PKinematics(Visual()); R_ASSERT(M);
+	CSkeletonAnimated*	M		= PSkeletonAnimated(Visual()); R_ASSERT(M);
 	m_Anims.m_death.Load		(M,"norm_death");
 	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
 	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
@@ -140,22 +140,22 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 // crow update
 void CAI_Crow::switch2_FlyUp()
 {
-	PKinematics(Visual())->PlayCycle	(m_Anims.m_fly.GetRandom());
+	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_fly.GetRandom());
 }
 void CAI_Crow::switch2_FlyIdle()
 {
-	PKinematics(Visual())->PlayCycle	(m_Anims.m_idle.GetRandom());
+	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_idle.GetRandom());
 }
 void CAI_Crow::switch2_DeathDead()
 {
-	PKinematics(Visual())->PlayCycle	(m_Anims.m_death_dead.GetRandom());
+	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death_dead.GetRandom());
 }
 void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
 	V.mul(XFORM().k,fSpeed);
 //	Movement.SetVelocity(V);
-	PKinematics(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
+	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 void CAI_Crow::shedule_Update(u32 DT)
 {
@@ -355,7 +355,7 @@ void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CObject* who, s16
 		Die();
 		st_target = eDeathFall;
 	}
-	else PKinematics(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
+	else PSkeletonAnimated(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
 //---------------------------------------------------------------------
 void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir)
