@@ -114,7 +114,7 @@ public:
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = ALife::eHitTypeWound);
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
-	virtual	void			HitScale			(const int bone_num, float hit_scale, float wound_scale);
+	virtual	void			HitScale			(const int bone_num, float& hit_scale, float& wound_scale);
 	virtual void			Die					();
 	virtual void			KillEntity			(CObject* who);
 		

@@ -95,7 +95,7 @@ float CEntity::CalcCondition(float hit)
 }
 
 
-void  CEntity::HitScale			(const int element, float hit_scale, float wound_scale)
+void  CEntity::HitScale			(const int element, float& hit_scale, float& wound_scale)
 {
 	if(BI_NONE == u16(element))
 	{
@@ -106,9 +106,9 @@ void  CEntity::HitScale			(const int element, float hit_scale, float wound_scale
 	}
 	
 	CKinematics* V		= smart_cast<CKinematics*>(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
+	float scale			= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(0);
 	hit_scale			= m_default_hit_factor*scale;
-	scale				= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(2);
+	scale				= /*fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:*/V->LL_GetBoneInstance(u16(element)).get_param(2);
 	wound_scale			= m_default_wound_factor*scale;
 }
 
