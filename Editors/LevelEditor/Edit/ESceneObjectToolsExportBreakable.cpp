@@ -307,27 +307,31 @@ bool SBPart::Export	(IWriter& F)
             break;
         }
 		SkelVertVec& lst = split_it->getV_Verts();
-	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++)
+	    for (SkelVertIt sv_it=lst.begin(); sv_it!=lst.end(); sv_it++){
 		    bone_points[sv_it->B0].push_back(sv_it->O);
+            bone_points[sv_it->B0].back().sub(m_Bones[sv_it->B0].offset);
+        }
     }
 
     if (!bRes) return false;
 
+    // compute bounding
+    ComputeBounding	();
+
 	// create OGF
-
-	// Saving geometry...
-    Fbox rootBB;    rootBB.invalidate();
-
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
     H.type			= MT_SKELETON_RIGID;
     H.shader_id		= 0;
+    H.bb.min		= m_Box.min;
+    H.bb.max		= m_Box.max;
+    m_Box.getsphere	(H.bs.c,H.bs.r);
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 
     // Desc
     ogf_desc		desc;
-    F.open_chunk	(OGF_DESC);
+    F.open_chunk	(OGF_S_DESC);
     desc.Save		(F);
     F.close_chunk	();
 	
@@ -338,18 +342,11 @@ bool SBPart::Export	(IWriter& F)
 	    F.open_chunk(chield++);
         split_it->Save(F,FALSE);
 	    F.close_chunk();
-		rootBB.merge(split_it->m_Box);
     }
     F.close_chunk();
 
-
-    // BBox (already computed)
-    F.open_chunk(OGF_BBOX);
-    F.w(&rootBB,sizeof(Fbox));
-    F.close_chunk();
-
     // BoneNames
-    F.open_chunk(OGF_BONE_NAMES);
+    F.open_chunk(OGF_S_BONE_NAMES);
     F.w_u32		(bone_count);
     // write other bones
     for (u32 bone_idx=0; bone_idx<bone_count; bone_idx++){
@@ -362,7 +359,7 @@ bool SBPart::Export	(IWriter& F)
     }
     F.close_chunk();
 
-    F.open_chunk(OGF_IKDATA);
+    F.open_chunk(OGF_S_IKDATA);
     for (bone_idx=0; bone_idx<bone_count; bone_idx++){
     	SBBone& bone=m_Bones[bone_idx];
 
@@ -394,11 +391,7 @@ bool SBPart::Export	(IWriter& F)
         F.w_fvector3(shape.box.m_translate);	// center of mass        
     }
     F.close_chunk();
-/*
-    F.open_chunk(OGF_USERDATA);
-    F.w(m_Source->GetClassScript().c_str(),m_Source->GetClassScript().Length());
-    F.close_chunk();
-*/
+
     return bRes;
 }
 

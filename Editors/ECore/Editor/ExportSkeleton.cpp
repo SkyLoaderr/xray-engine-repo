@@ -294,6 +294,26 @@ void CExportSkeleton::SSplit::CalculateTB()
         iV.B0		= iFloor(o_w_b0_b1[v_idx*3+1]+EPS_L);
         iV.B1		= iFloor(o_w_b0_b1[v_idx*3+2]+EPS_L);
     }
+
+    // Optimize texture coordinates
+    // 1. Calc bounds
+    Fvector2 	Tdelta;
+    Fvector2 	Tmin,Tmax;
+    Tmin.set	(flt_max,flt_max);
+    Tmax.set	(flt_min,flt_min);
+    for (v_idx=0; v_idx!=v_cnt; v_idx++){
+        SSkelVert	&iV = m_Verts[v_idx];
+        Tmin.min	(iV.UV);
+        Tmax.max	(iV.UV);
+    }
+    Tdelta.x 	= floorf((Tmax.x-Tmin.x)/2+Tmin.x);
+    Tdelta.y 	= floorf((Tmax.y-Tmin.y)/2+Tmin.y);
+
+    // 2. Recalc UV mapping
+    for (v_idx=0; v_idx!=v_cnt; v_idx++){
+        SSkelVert	&iV = m_Verts[v_idx];
+        iV.UV.sub	(Tdelta);
+    }
 }
 
 void CExportSkeleton::SSplit::MakeProgressive()
