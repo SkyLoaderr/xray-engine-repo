@@ -36,8 +36,7 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 		// Waiting for connection completition
 		pApp->LoadTitle						("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect())	Sleep(5);
-		ClientReceive						();
-		while (!net_isCompleted_Sync())		Sleep(5);
+		while (!net_isCompleted_Sync())		{ ClientReceive(); Sleep(5); }
 		ClientReceive						();
 
 		// Textures
