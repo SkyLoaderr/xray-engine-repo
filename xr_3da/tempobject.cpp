@@ -15,7 +15,7 @@ CTempObject::CTempObject(){
 //----------------------------------------------------
 
 CTempObject::~CTempObject(){
-	Render.Models.Delete(m_pVisual);
+	Render.model_Delete(m_pVisual);
 }
 //----------------------------------------------------
 

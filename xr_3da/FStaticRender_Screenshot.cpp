@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "render.h"
+#include "fstaticrender.h"
 #include "fs.h"
 #include "tga.h"
 
