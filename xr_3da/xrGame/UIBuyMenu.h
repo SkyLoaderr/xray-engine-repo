@@ -31,10 +31,13 @@ class CUIBuyMenu{
 		{
 			items.push_back(I);
 		}
-		void			OnItemDraw(CGameFont* F, int num)
+		void			OnItemDraw(CGameFont* F, int num, int col)
 		{
-			if (items.empty())	F->OutNext	("%-2d. %-20s %6d$",num,caption,tag);
-			else				F->OutNext	("%-2d. %-32s",num,caption);
+			switch(col){
+			case 0: F->OutNext						("%d. %s",num,caption);	break;
+			case 1: if (items.empty()) F->OutNext	("%d",tag);			break;
+			default: THROW;
+			}
 		}
 		IC BOOL			IsMenu				()			{return !items.empty();}
 		IC CMenuItem*	GetItem				(int id)	
@@ -42,6 +45,7 @@ class CUIBuyMenu{
 			id--;
 			if (-1==id) return m_Parent;
 			if (id<items.size()) return items[id];
+			return 0;
 		}
 		IC void			Execute				()			{if (OnExecute) OnExecute(this);}
 	};
@@ -51,6 +55,7 @@ class CUIBuyMenu{
 	static void 		BackItem			(CMenuItem* sender);
 	static void 		BuyItem				(CMenuItem* sender);
 	int					menu_offs;
+	int					menu_offs_col[2];
 	void				ParseMenu			(CInifile* ini, CMenuItem* root, LPCSTR sect);
 public:
 						CUIBuyMenu			();

@@ -29,6 +29,7 @@ private:
 public:
 	// hud font
 	CGameFont*				pHUDFont;
+	CGameFont*				pHUDFont2;
 	CGameFont*				pGameFont;
 public:
 							CHUDManager			();

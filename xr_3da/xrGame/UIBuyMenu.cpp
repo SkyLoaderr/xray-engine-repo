@@ -4,12 +4,16 @@
 #include "..\\xr_trims.h"
 #include <functional>
 
-#define BUY_MENU_OFFS 200
+#define BUY_MENU_OFFS		200
+#define BUY_MENU_OFFS_COL1	0
+#define BUY_MENU_OFFS_COL2	200
 //--------------------------------------------------------------------
 CUIBuyMenu::CUIBuyMenu()
 {
 	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
 	menu_offs			= HUD->ClientToScreenScaledY(BUY_MENU_OFFS,alLeft|alTop)/HUD->pHUDFont->GetScale();
+	menu_offs_col[0]	= HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL1,alLeft|alTop)/HUD->pHUDFont->GetScale();
+	menu_offs_col[1]	= HUD->ClientToScreenScaledX(BUY_MENU_OFFS_COL2,alLeft|alTop)/HUD->pHUDFont->GetScale();
 	menu_root			= 0;
 	menu_active			= 0;
 }
@@ -53,7 +57,7 @@ void CUIBuyMenu::Load()
 	// check ini exist
 	string256 fn;
 	if (Engine.FS.Exist(fn,Path.GameData,"cs.ltx")){
-		menu_root = new CMenuItem(0,"root",0);
+		menu_root = new CMenuItem(0,"Items",0);
 		CInifile* ini			= CInifile::Create(fn);
 		ParseMenu(ini,menu_root,"cs_buy_menu");
 		CInifile::Destroy		(ini);
@@ -65,17 +69,26 @@ void CUIBuyMenu::Load()
 void CUIBuyMenu::OnFrame()
 {
 	if (menu_active){
-		CGameFont* F	= Level().HUD()->pHUDFont;
-		F->OutSet		(0,menu_offs);
+		CGameFont* F	= Level().HUD()->pHUDFont2;
 		F->Color		(0xFFFFFFFF);
-		if (menu_active->m_Parent)	F->OutNext("Buy %-20s %6s",menu_active->caption,"$ Cost");
-		else						F->OutNext("Buy Items");
-		F->OutSkip		();
-		int k=1;
-		for (MIIt it=menu_active->items.begin(); it!=menu_active->items.end(); it++,k++)
-			(*it)->OnItemDraw(F,k);
-		F->OutSkip		();
-		F->OutNext		("%-2d. %-20s",0,"Exit");
+		if (menu_active->m_Parent){
+			F->OutSet	(menu_offs_col[1],menu_offs);
+			F->OutNext	("$ Cost");
+		}
+		F->OutSet		(menu_offs_col[0],menu_offs);
+		F->OutNext		("Buy %s",menu_active->caption);
+		for (int col=0; col<2; col++){
+			F->OutSet	(menu_offs_col[col],menu_offs);
+			F->OutSkip	();
+			F->OutSkip	();
+			int k=1;
+			for (MIIt it=menu_active->items.begin(); it!=menu_active->items.end(); it++,k++)
+				(*it)->OnItemDraw(F,k,col);
+			if (0==col){
+				F->OutSkip();
+				F->OutNext("%-2d. %-20s",0,"Exit");
+			}
+		}
 	}
 }
 //--------------------------------------------------------------------

@@ -13,7 +13,8 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01",128,16,0);
+	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01",128);
+	pHUDFont2		= new CGameFont("font","ui\\ui_font_hud_02",256);
 	pGameFont		= new CGameFont("font","ui\\ui_font_hud_02",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
@@ -28,6 +29,7 @@ CHUDManager::~CHUDManager()
 	Device.seqDevDestroy.Remove(this);
 	_DELETE			(pUI);
 	_DELETE			(pHUDFont);
+	_DELETE			(pHUDFont2);
 	_DELETE			(pGameFont);
 }
 //--------------------------------------------------------------------
@@ -129,6 +131,7 @@ void CHUDManager::Render_Direct	()
 		bAlready = ! (pUI && !pUI->Render());
 		pGameFont->OnRender		();
 		pHUDFont->OnRender		();
+		pHUDFont2->OnRender		();
 	}
 	if ((psHUD_Flags&HUD_CROSSHAIR) && !bAlready)	HUDCursor.Render();
 }
@@ -142,6 +145,7 @@ void CHUDManager::OnEvent(EVENT E, DWORD P1, DWORD P2)
 void CHUDManager::SetScale(float s){
 	fScale			= s;
 	pHUDFont->Scale	(fScale);
+	pHUDFont2->Scale(fScale);
 }
 
 void CHUDManager::OnDeviceCreate()
