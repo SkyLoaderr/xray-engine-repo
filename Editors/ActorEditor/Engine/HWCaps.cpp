@@ -28,12 +28,14 @@ void CHWCaps::Update()
 	pixel.op_MAD		= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
 	pixel.op_reg_TEMP	= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
-	// ***************** Compatibility
-	if (0==pixel.dwVersion)	vertex.dwVersion=0;			// Disable VS if no PS
+	// ***************** Compatibility : vertex shader
+	if (0==pixel.dwVersion)	vertex.dwVersion=0;				// Disable VS if no PS
 #ifdef _EDITOR
 	vertex.dwVersion	= 0;
 #endif
+	if (strstr(Engine.Params,"-novs"))	vertex.dwVersion=0;
 
+	//
 	bTableFog			=	BOOL	(caps.RasterCaps&D3DPRASTERCAPS_FOGTABLE);
 
 	// Detect if stencil available
