@@ -12,13 +12,13 @@
 
 
 
-#include "..\\Entity.h"
-#include "..\\HUDManager.h"
-#include "..\\WeaponAmmo.h"
-#include "..\\Actor.h"
-#include "..\\Trade.h"
-#include "..\\UIGameSP.h"
-#include "..\\gameobject.h"
+#include "../Entity.h"
+#include "../HUDManager.h"
+#include "../WeaponAmmo.h"
+#include "../Actor.h"
+#include "../Trade.h"
+#include "../UIGameSP.h"
+#include "../gameobject.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -124,7 +124,7 @@ void CUICarBodyWnd::UpdateLists()
 	UIOurBagList.DropAll();
 	UIOthersBagList.DropAll();
 
-	for(u32 i = 0; i <MAX_ITEMS; i++) 
+	for(u32 i = 0; i <MAX_ITEMS; ++i) 
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
@@ -139,7 +139,7 @@ void CUICarBodyWnd::UpdateLists()
 
 	//Наш рюкзак
 	PPIItem it;
-	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
+	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 			if((*it)) 
 			{
@@ -172,7 +172,7 @@ void CUICarBodyWnd::UpdateLists()
 				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
 				UIOurBagList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				++m_iUsedItems;
 			}
 	}
 
@@ -197,7 +197,7 @@ void CUICarBodyWnd::UpdateLists()
 
 
 	//Чужой рюкзак
-	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
+	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 			if((*it)) 
 			{
@@ -226,7 +226,7 @@ void CUICarBodyWnd::UpdateLists()
 				//установить коэффициент масштабирования
 				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				UIOthersBagList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				++m_iUsedItems;
 			}
 	}
 }
@@ -295,7 +295,7 @@ void CUICarBodyWnd::Draw()
 void CUICarBodyWnd::Update()
 {
 	//убрать объект drag&drop для уже использованной вещи
-	for(int i = 0; i <m_iUsedItems; i++) 
+	for(int i = 0; i <m_iUsedItems; ++i) 
 	{
 		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 		if(pItem && !pItem->Useful())

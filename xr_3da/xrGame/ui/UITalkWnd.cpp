@@ -9,10 +9,10 @@
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
-#include "..\\actor.h"
-#include "..\\HUDManager.h"
-#include "..\\UIGameSP.h"
-#include "..\\PDA.h"
+#include "../actor.h"
+#include "../HUDManager.h"
+#include "../UIGameSP.h"
+#include "../PDA.h"
 
 
 //////////////////////////////////////////////////////////////////////
@@ -130,8 +130,8 @@ void CUITalkWnd::UpdateQuestions()
 	m_pOurInvOwner->GetPDA()->UpdateQuestions();
 	
 	for(INFO_QUESTIONS_LIST_it it = m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.begin();
-		it != m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.end();
-		it++)
+		m_pOurInvOwner->GetPDA()->m_ActiveQuestionsList.end() != it;
+		++it)
 	{
 		SInfoQuestion* pQuestion = &(*it); 
 		UITalkDialogWnd.UIQuestionsList.AddItem((*it).text.GetBuf(), pQuestion);
@@ -219,7 +219,7 @@ void CUITalkWnd::AskQuestion()
 		CInfoPortion info_portion; 	
 
 		for(INFO_INDEX_LIST_it it = index_list.begin(); 
-							   it!= index_list.end(); it++)
+							   index_list.end() != it; ++it)
 		{
 			info_portion.Load(*it);		
 			str.AppendText(info_portion.GetText());

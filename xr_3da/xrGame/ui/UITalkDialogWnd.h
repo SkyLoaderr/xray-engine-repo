@@ -11,7 +11,7 @@
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
 
-#include "..\\InfoPortion.h"
+#include "../InfoPortion.h"
 
 class CUITalkDialogWnd: public CUIWindow
 {
