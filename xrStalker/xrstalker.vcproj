@@ -390,6 +390,16 @@
 				<File
 					RelativePath=".\Config\mp\teamdeathmatch_game.ltx">
 				</File>
+				<Filter
+					Name="weapons_mp"
+					Filter="">
+					<File
+						RelativePath=".\Config\mp\weapons_mp\w_knife_mp.ltx">
+					</File>
+					<File
+						RelativePath=".\Config\mp\weapons_mp\weapons_mp.ltx">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="text"
