@@ -1,5 +1,38 @@
 #include "stdafx.h"
 
+union var
+{
+	int		i;
+	float	f;
+	bool	b;
+
+	operator float()			{ return f; }
+	operator int()				{ return i; }
+	operator bool()				{ return b; }
+
+	var& operator = (float _f)	{ f=_f;	return *this; }
+	var& operator = (int _i)	{ i=_i;	return *this; }
+	var& operator = (bool _b)	{ b=_b;	return *this; }
+
+	var()  						{ }
+	var(float _f) : f(_f) 		{ }
+	var(int _i)	: i(_i)			{ }
+	var(bool _b) : b(_b)		{ }
+};
+
+/*
+var		test;
+
+test	= 0.f;
+int	k	= test;
+
+test	= true;
+float f = test;
+
+float x = 10.f;
+var _x	= var(x);
+*/
+
 //-----------------------------------------------------------------------
 void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer)
 {
