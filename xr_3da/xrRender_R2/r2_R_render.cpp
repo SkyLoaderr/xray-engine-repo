@@ -197,7 +197,7 @@ void CRender::Render		()
 	}
 
 	// Directional light - fucking sun
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))	render_sun	();
+	if (ps_r2_ls_flags.test(R2FLAG_SUN))	render_sun_near	();
 
 	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator				();

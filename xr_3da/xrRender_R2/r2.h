@@ -116,6 +116,7 @@ private:
 	void							render_indirect				(light*			L	);
 	void							render_lights				(light_Package& LP	);
 	void							render_sun					();
+	void							render_sun_near				();
 public:
 	ShaderElement*					rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*					rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);

@@ -4,6 +4,7 @@
 const	float	tweak_COP_initial_offs			= 100000.f	;
 const	float	tweak_ortho_xform_initial_offs	= 1000.f	;	//. ?
 const	float	tweak_guaranteed_range			= 20.f		;	//. ?
+const	float	tweak_near_range				= 10.f		;
 
 //////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
@@ -401,11 +402,11 @@ void CRender::render_sun				()
 
 	// Compute volume(s) - something like a frustum for infinite directional light
 	// Also compute virtual light position and sector it is inside
-	CFrustum					cull_frustum;
-	xr_vector<Fplane>			cull_planes;
-	Fvector3					cull_COP;
-	CSector*					cull_sector;
-	Fmatrix						cull_xform;
+	CFrustum					cull_frustum	;
+	xr_vector<Fplane>			cull_planes		;
+	Fvector3					cull_COP		;
+	CSector*					cull_sector		;
+	Fmatrix						cull_xform		;
 	{
 		FPU::m64r					();
 		// Lets begin from base frustum
@@ -492,8 +493,8 @@ void CRender::render_sun				()
 	xr_vector<Fbox3>&		s_receivers			= main_coarse_structure;
 	s_casters.reserve							(s_receivers.size());
 	set_Recorder								(&s_casters);
-//.	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
-	r_dsgraph_render_subspace					(cull_sector, cull_xform, cull_COP, TRUE);
+	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
+//.	r_dsgraph_render_subspace					(cull_sector, cull_xform, cull_COP, TRUE);
 	set_Recorder								(NULL);
 
 	//	Prepare to interact with D3DX code
@@ -785,6 +786,195 @@ void CRender::render_sun				()
 
 	// Finalize & Cleanup
 	fuckingsun->X.D.combine			= *((Fmatrix*)&m_LightViewProj);
+	s_receivers.clear				();
+	s_casters.clear					();
+
+	// Render shadow-map
+	//. !!! We should clip based on shrinked frustum (again)
+	{
+		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
+		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
+		if ( bNormal || bSpecial)	{
+			Target.phase_smap_direct			(fuckingsun					);
+			RCache.set_xform_world				(Fidentity					);
+			RCache.set_xform_view				(Fidentity					);
+			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
+			r_dsgraph_render_graph				(0);
+			fuckingsun->X.D.transluent			= FALSE;
+			if (bSpecial)						{
+				fuckingsun->X.D.transluent			= TRUE;
+				Target.phase_smap_direct_tsh		(fuckingsun);
+				r_dsgraph_render_graph				(1);			// normal level, secondary priority
+				r_dsgraph_render_sorted				( );			// strict-sorted geoms
+			}
+		}
+	}
+
+	// End SMAP-render
+	{
+		fuckingsun->svis.end					();
+		r_pmask									(true,false);
+	}
+
+	// Accumulate
+	Target.phase_accumulator	();
+	Target.accum_direct			();
+
+	// Restore XForms
+	RCache.set_xform_world		(Fidentity			);
+	RCache.set_xform_view		(Device.mView		);
+	RCache.set_xform_project	(Device.mProject	);
+}
+
+void CRender::render_sun_near	()
+{
+	light*			fuckingsun			= Lights.sun_adapted	;
+	D3DXMATRIX		m_LightViewProj		;
+
+	// calculate view-frustum bounds in world space
+	// note: D3D uses [0..1] range for Z
+	static Fvector3		corners [8]			= {
+		{ -1, -1,  0 },		{ -1, -1, +1},
+		{ -1, +1, +1 },		{ -1, +1,  0},
+		{ +1, +1, +1 },		{ +1, +1,  0},
+		{ +1, -1, +1},		{ +1, -1,  0}
+	};
+	static int			facetable[6][4]		= {
+		{ 0, 3, 5, 7 },		{ 1, 2, 3, 0 },
+		{ 6, 7, 5, 4 },		{ 4, 2, 1, 6 },
+		{ 3, 2, 4, 5 },		{ 1, 0, 7, 6 },
+	};
+
+	Fmatrix	ex_project, ex_full, ex_full_inverse;
+	{
+		ex_project.build_projection	(deg2rad(Device.fFOV*Device.fASPECT),Device.fASPECT,VIEWPORT_NEAR,tweak_near_range); 
+		ex_full.mul					(ex_project,Device.mView);
+		D3DXMatrixInverse			((D3DXMATRIX*)&ex_full_inverse,0,(D3DXMATRIX*)&ex_full);
+	}
+
+	// Compute volume(s) - something like a frustum for infinite directional light
+	// Also compute virtual light position and sector it is inside
+	CFrustum					cull_frustum;
+	xr_vector<Fplane>			cull_planes;
+	Fvector3					cull_COP;
+	CSector*					cull_sector;
+	Fmatrix						cull_xform;
+	{
+		FPU::m64r					();
+		// Lets begin from base frustum
+		Fmatrix		fullxform_inv	= ex_full_inverse;
+		DumbConvexVolume			hull;
+		{
+			hull.points.reserve		(9);
+			for						(int p=0; p<8; p++)	{
+				Fvector3				xf	= wform		(fullxform_inv,corners[p]);
+				hull.points.push_back	(xf);
+			}
+			for (int plane=0; plane<6; plane++)	{
+				hull.polys.push_back(DumbConvexVolume::_poly());
+				for (int pt=0; pt<4; pt++)	
+					hull.polys.back().points.push_back(facetable[plane][pt]);
+			}
+		}
+		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
+
+		// Search for default sector - assume "default" or "outdoor" sector is the largest one
+		//. hack: need to know real outdoor sector
+		CSector*	largest_sector		= 0;
+		float		largest_sector_vol	= 0;
+		for		(u32 s=0; s<Sectors.size(); s++)
+		{
+			CSector*			S		= (CSector*)Sectors[s]	;
+			IRender_Visual*		V		= S->root()				;
+			float				vol		= V->vis.box.getvolume();
+			if (vol>largest_sector_vol)	{
+				largest_sector_vol		= vol;
+				largest_sector			= S;
+			}
+		}
+		cull_sector	= largest_sector;
+
+		// COP - 100 km away
+		cull_COP.mad				(Device.vCameraPosition, fuckingsun->direction, -tweak_COP_initial_offs	);
+
+		// Create frustum for query
+		cull_frustum._clear			();
+		for (int p=0; p<cull_planes.size(); p++)
+			cull_frustum._add		(cull_planes[p]);
+
+		// Create approximate ortho-xform
+		// view: auto find 'up' and 'right' vectors
+		Fmatrix						mdir_View, mdir_Project;
+		Fvector						L_dir,L_up,L_right,L_pos;
+		L_pos.set					(fuckingsun->position);
+		L_dir.set					(fuckingsun->direction).normalize	();
+		L_right.set					(1,0,0);					if (_abs(L_right.dotproduct(L_dir))>.99f)	L_right.set(0,0,1);
+		L_up.crossproduct			(L_dir,L_right).normalize	();
+		L_right.crossproduct		(L_up,L_dir).normalize		();
+		mdir_View.build_camera_dir	(L_pos,L_dir,L_up);
+
+		// projection: box
+		float	sperical_range		= tweak_near_range*1.414213562373f;	// sqrt(2)
+		Fbox	frustum_bb;			frustum_bb.invalidate	();
+		hull.points.push_back		(Device.vCameraPosition);
+		for (int it=0; it<9; it++)	{
+			Fvector	xf	= wform		(mdir_View,hull.points[it]);
+			frustum_bb.modify		(xf);
+		}
+		float	size_x				= frustum_bb.max.x - frustum_bb.min.x;
+		float	size_y				= frustum_bb.max.y - frustum_bb.min.y;
+		float	diff_x				= (sperical_range - size_x)/2.f;
+		float	diff_y				= (sperical_range - size_y)/2.f;
+		frustum_bb.min.x -= diff_x; frustum_bb.max.x += diff_x;
+		frustum_bb.min.y -= diff_y; frustum_bb.max.y += diff_y;
+		Fbox&	bb					= frustum_bb;
+		D3DXMatrixOrthoOffCenterLH	((D3DXMATRIX*)&mdir_Project,bb.min.x,bb.max.x,  bb.min.y,bb.max.y,  bb.min.z-tweak_ortho_xform_initial_offs,bb.max.z);
+
+		// build viewport xform
+		float	view_dim			= float(RImplementation.o.smapsize);
+		Fmatrix	m_viewport			= {
+			view_dim/2.f,	0.0f,				0.0f,		0.0f,
+			0.0f,			-view_dim/2.f,		0.0f,		0.0f,
+			0.0f,			0.0f,				1.0f,		0.0f,
+			view_dim/2.f,	view_dim/2.f,		0.0f,		1.0f
+		};
+		Fmatrix				m_viewport_inv;
+		D3DXMatrixInverse	((D3DXMATRIX*)&m_viewport_inv,0,(D3DXMATRIX*)&m_viewport);
+
+		// snap view-position to pixel
+		cull_xform.mul		(mdir_Project,mdir_View	);
+		Fvector cam_proj	= wform		(cull_xform,Device.vCameraPosition	);
+		Fvector	cam_pixel	= wform		(m_viewport,cam_proj				);
+		cam_pixel.x			= floorf	(cam_pixel.x);
+		cam_pixel.y			= floorf	(cam_pixel.y);
+		Fvector cam_snapped	= wform		(m_viewport_inv,cam_pixel);
+		Fvector diff;		diff.sub	(cam_snapped,cam_proj				);
+		Fmatrix adjust;		adjust.translate(diff);
+		cull_xform.mulA		(adjust);
+
+		// full-xform
+		FPU::m24r					();
+	}
+
+	// Begin SMAP-render
+	{
+		Lights_LastFrame.push_back				(fuckingsun	);
+		HOM.Disable								();
+		phase									= PHASE_SMAP_D;
+		if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
+		else							r_pmask	(true,false	);
+		fuckingsun->svis.begin					();
+	}
+
+	// Fill the database
+	xr_vector<Fbox3>&		s_receivers			= main_coarse_structure;
+	s_casters.reserve							(s_receivers.size());
+	set_Recorder								(&s_casters);
+	r_dsgraph_render_subspace					(cull_sector, &cull_frustum, cull_xform, cull_COP, TRUE);
+	set_Recorder								(NULL);
+
+	// Finalize & Cleanup
+	fuckingsun->X.D.combine			= cull_xform;	//*((Fmatrix*)&m_LightViewProj);
 	s_receivers.clear				();
 	s_casters.clear					();
 
