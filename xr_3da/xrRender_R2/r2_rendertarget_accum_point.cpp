@@ -183,8 +183,8 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	RCache.set_c						("m_tex",			m_Tex);
 
 	// Render if (stencil >= light_id && z-pass)
-	RCache.set_Stencil		(FALSE);
-	// RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
+	// RCache.set_Stencil		(FALSE);
+	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
