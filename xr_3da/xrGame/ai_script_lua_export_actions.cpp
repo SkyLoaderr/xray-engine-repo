@@ -82,8 +82,8 @@ void CScriptEngine::export_action_management()
 			.def(								constructor<CLuaGameObject*,LPCSTR>())
 			.def("add_precondition",			(void (CScriptAction::*)(const CScriptAction::COperatorCondition &))(CScriptAction::add_condition))
 			.def("add_effect",					(void (CScriptAction::*)(const CScriptAction::COperatorCondition &))(CScriptAction::add_effect))
-			.def("remove_precondition",			(void (CScriptAction::*)(const CScriptAction::COperatorCondition &))(CScriptAction::remove_condition))
-			.def("remove_effect",				(void (CScriptAction::*)(const CScriptAction::COperatorCondition &))(CScriptAction::remove_effect))
+			.def("remove_precondition",			(void (CScriptAction::*)(const CScriptAction::COperatorCondition::_condition_type &))(CScriptAction::remove_condition))
+			.def("remove_effect",				(void (CScriptAction::*)(const CScriptAction::COperatorCondition::_condition_type &))(CScriptAction::remove_effect))
 			.def("reinit",						&CScriptActionWrapper::reinit_static)
 			.def("initialize",					&CScriptActionWrapper::initialize_static)
 			.def("execute",						&CScriptActionWrapper::execute_static)
@@ -220,8 +220,11 @@ void CScriptEngine::export_motivation_management()
 				value("action_kill_enemy_very_aggressive",			StalkerDecisionSpace::eWorldOperatorKillEnemyVeryAggressive),
 				value("action_get_ready_to_kill_aggressive",		StalkerDecisionSpace::eWorldOperatorGetReadyToKillAggressive),
 				value("action_kill_enemy_aggressive",				StalkerDecisionSpace::eWorldOperatorKillEnemyAggressive),
+				value("action_aim_enemy",							StalkerDecisionSpace::eWorldOperatorAimEnemy),
 				value("action_get_ready_to_kill_moderate",			StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
-				value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorKillEnemyModerate),
+				value("action_get_enemy_seen_moderate",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
+				value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorGetEnemySeenModerate),
+				value("action_camping",								StalkerDecisionSpace::eWorldOperatorCamping),
 				value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
 				value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
 				value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy)
