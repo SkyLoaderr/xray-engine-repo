@@ -61,7 +61,7 @@ void			INetQueue::Release	()
 
 //
 const u32 syncQueueSize		= 256;
-const int syncSamples		= 64;
+const int syncSamples		= 128;
 class ENGINE_API syncQueue
 {
 	u32				table[syncQueueSize];
@@ -496,7 +496,7 @@ void	IPureClient::Sync_Thread	()
 	for (; NET && !net_Disconnected; )
 	{
 		// Waiting for queue empty state
-		if (net_Syncronised)	Sleep(2000);
+		if (net_Syncronised)	break; // Sleep(2000);
 		else {
 			DWORD			dwPending=0;
 			do {
