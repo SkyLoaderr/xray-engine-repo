@@ -37,7 +37,7 @@ void CUIZoneMap::Init(){
 	entity.Init	("ui\\hud_map_point","font",4,4);
 	entity.SetRect(0,0,3,3);
 
-	Level().HUD()->ClientToScreenScaled(MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,map_center,align);
+	Level().HUD()->ClientToScreen(MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,map_center,align);
 	map_radius = MAP_RADIUS*Level().HUD()->GetScale();
 }
 //--------------------------------------------------------------------
