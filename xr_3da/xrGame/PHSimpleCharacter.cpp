@@ -593,7 +593,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 
 
-const float CHWON_ACCLEL_SHIFT=0.5f;
+const float CHWON_ACCLEL_SHIFT=0.4f;
 const float CHWON_AABB_FACTOR =1.f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
 const float CHWON_CALL_UP_SHIFT=0.05f;
@@ -610,6 +610,8 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	AABB.z=m_radius;
 
 	AABB_forbid.set(AABB);
+	AABB_forbid.x*=0.7f;
+	AABB_forbid.z*=0.7f;
 	AABB_forbid.y+=m_radius;
 	AABB_forbid.mul(CHWON_AABB_FB_FACTOR);
 
@@ -626,6 +628,13 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	center_forbid.set(center);
 	center_forbid.y+=CHWON_CALL_FB_HIGHT;
 	center.y+=m_radius+CHWON_CALL_UP_SHIFT;
+#ifdef DRAW_BOXES
+	m_bcenter.set(center);
+	m_bcenter_forbid.set(center_forbid);
+	m_AABB.set(AABB);
+	m_AABB_forbid.set(AABB_forbid);
+
+#endif
 	CDB::RESULT*    R_begin;
 	CDB::RESULT*    R_end  ;
 	CDB::TRI*       T_array ;
@@ -936,6 +945,10 @@ void CPHSimpleCharacter::OnRender(){
 
 	RCache.dbg_DrawEllipse(M, 0xffffffff);
 
+#ifdef DRAW_BOXES
+	RCache.dbg_DrawAABB			(m_bcenter,m_AABB.x,m_AABB.y,m_AABB.z,D3DCOLOR_XRGB(0,0,255));
+	RCache.dbg_DrawAABB			(m_bcenter_forbid,m_AABB_forbid.x,m_AABB_forbid.y,m_AABB_forbid.z,D3DCOLOR_XRGB(255,0,0));
+#endif
 	///M.c.set(0.f,1.f,0.f);
 	//RCache.dbg_DrawEllipse(M, 0xffffffff);
 }
