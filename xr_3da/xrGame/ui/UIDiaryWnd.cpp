@@ -76,7 +76,8 @@ void CUIDiaryWnd::Init()
 		break;
 	}
 
-	m_pActiveSubdialog->Show();
+#pragma todo("Dandy to Vortex: Call Show() in Init is meaning less!")
+	//m_pActiveSubdialog->Show();
 
 	// Табконтрол поддиалогов
 	AttachChild(&UITabControl);
