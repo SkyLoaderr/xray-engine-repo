@@ -226,7 +226,7 @@ function parse_waypoint_data(pathname, wpname)
 	local rslt = {}
 
 	par_num = 1
-	for param in string.gfind(wpname, "([%w_\\=]+)|*") do
+	for param in string.gfind(wpname, "([%w_\\=-]+)|*") do
 		if par_num == 1 then
 			-- continue
 		else
@@ -237,7 +237,7 @@ function parse_waypoint_data(pathname, wpname)
 			fld_num = 1
 			fld = nil
 			val = nil
-			for v in string.gfind(param, "([%w_\\]+)=*") do
+			for v in string.gfind(param, "([%w_\\-]+)=*") do
 				if fld_num == 1 then
 					fld = v
 				elseif fld_num == 2 then

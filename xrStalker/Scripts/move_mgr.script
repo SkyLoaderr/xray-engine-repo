@@ -31,8 +31,7 @@ end
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
-function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team,
-		walk_to_starting_pt, move_cb)
+function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team, move_cb)
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	--printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -74,7 +73,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.running = if_then_else(walk_to_starting_pt, false, true)
+	self.running = true
 	self.danger = false
 
 	self.retval_after_rotation = nil
@@ -524,10 +523,12 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 
 		local suggested_wait_time = self.path_look_info[pt_chosen_idx]["t"]
 		if suggested_wait_time then
+			printf("_bp1: %s", suggested_wait_time)
 			self.pt_wait_time = tonumber(suggested_wait_time)
 		else
 			self.pt_wait_time = default_wait_time
 		end
+		printf("_bp2: %s", utils.to_str(self.pt_wait_time))
 
 		local suggested_anim_set = self.path_look_info[pt_chosen_idx]["a"]
 		if suggested_anim_set then
