@@ -223,7 +223,6 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 	strcpy(low_name,name);	strlwr(low_name);
 	if (strext(low_name))	*strext(low_name)=0;
 //	Msg						("-CREATE %s",low_name);
-	IRender_Visual* Model	= NULL;
 
 	// 0. Search POOL
 	POOL_IT	it			=	Pool.find	(low_name);
@@ -233,6 +232,7 @@ IRender_Visual* CModelPool::Create(const char* name, IReader* data)
         IRender_Visual*		Model	= it->second;
 		Model->Spawn		();
 		Pool.erase			(it);
+		return				Model;
 	} else {
 		// 1. Search for already loaded model (reference, base model)
 		IRender_Visual* Base		= Instance_Find		(low_name);
