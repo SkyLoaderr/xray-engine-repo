@@ -17,12 +17,13 @@ public:
 	CPhrase(void);
 	virtual ~CPhrase(void);
 
-	LPCSTR			GetText()			{return m_text.GetBuf();}
-	int				GetIndex()			{return m_iIndex;}
+	void			SetText		(LPCSTR text)		{m_text.SetText(text);}
+	LPCSTR			GetText		()					{return m_text.GetBuf();}
+
+	void			SetIndex	(int index)			{m_iIndex = index;}
+	int				GetIndex	()					{return m_iIndex;}
 
 protected:
-	bool m_bLoaded;
-
 	//уникальный индекс в списке фраз диалога
 	int	m_iIndex;
 	//текстовое представление фразы

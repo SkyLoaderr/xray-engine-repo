@@ -4,3 +4,12 @@
 ///////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "phrase.h"
+
+CPhrase::CPhrase	(void)
+{
+	m_iIndex = -1;
+}
+CPhrase::~CPhrase	(void)
+{
+}
