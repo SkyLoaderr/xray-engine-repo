@@ -71,6 +71,7 @@ friend class  CPHFracturesHolder;
 friend class CPHElement;
 friend class CPHShell;
 bool			m_breaked;
+dMass			m_firstM;
 dMass			m_seccondM;
 float			m_break_force;
 float			m_break_torque;
