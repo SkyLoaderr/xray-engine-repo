@@ -15,6 +15,7 @@
 class CFrustum;
 namespace Opcode {
 	class OPCODE_Model;
+	class AABBNoLeafNode;
 };
 
 #pragma pack(push,4)
@@ -90,6 +91,7 @@ namespace CDB
 	// Collider itself
 	class XRCDB_API COLLIDER 
 	{
+		// Ray data and methods
 		DWORD			ray_mode;
 		DWORD			box_mode;
 		DWORD			frustum_mode;
