@@ -116,16 +116,24 @@ void InitSurface()
 }
 
 // Rendering of rect
-void _rect_register(_rect &R)
+void _rect_register(_rect &R, CDeflector* D)
 {
 	R.mask				= 0;
 	collected.push_back(R);
 	
-	for (int y=R.a.y; y<R.b.y; y++)
+	LPDWORD lm	= D->lm.pSurface;
+	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
+	DWORD	s_y = D->lm.dwHeight+2*BORDER;
+	for (DWORD y=0; y<s_y; y++)
 	{
-		BYTE*	P = surface+y*512+R.a.x;
-		int		L = R.SizeX();
-		FillMemory(P,L,0xff);
+		BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
+		DWORD*	S = lm + y*s_x;
+		for (DWORD x=0; x<s_x; x++) 
+		{
+			DWORD C = *S++;
+			DWORD A = RGBA_GETALPHA(C);
+			*P ++	= BYTE(A);
+		}
 	}
 }
 
@@ -158,7 +166,7 @@ bool Place(_rect &R, vecRIT CIT)
 	return Place_Perpixel(R);
 };
 
-BOOL _rect_place(_rect &r)
+BOOL _rect_place(_rect &r, CDeflector* D)
 {
 	// Normal
 	{
@@ -172,7 +180,7 @@ BOOL _rect_place(_rect &r)
 				if (surface[_Y*512+_X]) continue;
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
 				if (Place_Perpixel(R)) {
-					_rect_register(R);
+					_rect_register(R,D);
 					return TRUE;
 				}
 			}
@@ -192,7 +200,7 @@ BOOL _rect_place(_rect &r)
 
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
 				if (Place_Perpixel(R)) {
-					_rect_register(R);
+					_rect_register(R,D);
 					return TRUE;
 				}
 			}
@@ -245,10 +253,11 @@ void CBuild::MergeLM()
 				// Sort by size decreasing and startup
 				std::sort			(perturb.begin(),perturb.end(),cmp_rect);
 				InitSurface			();
-				_rect &First		= selected[perturb[0]];
-				_rect_register		(First);
+				int id				= perturb[0];
+				_rect &First		= selected[id];
+				_rect_register		(First,SEL[id]);
 				best.push_back		(First);
-				best_seq.push_back	(perturb[0]);
+				best_seq.push_back	(id);
 				brect.set			(First);
 
 				// Process 
@@ -256,7 +265,7 @@ void CBuild::MergeLM()
 				for (int R=1; R<(int)selected.size(); R++) 
 				{
 					int ID = perturb[R];
-					if (_rect_place(selected[ID])) 
+					if (_rect_place(selected[ID],SEL[ID])) 
 					{
 						brect.Merge			(collected.back());
 						best.push_back		(collected.back());
