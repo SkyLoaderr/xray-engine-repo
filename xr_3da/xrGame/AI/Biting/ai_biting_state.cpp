@@ -183,7 +183,9 @@ void IState::Execute(bool bNothingChanged)
 			Init();
 		case STATE_RUN:
 			if (!CheckCompletion()) {
-				Run();
+				if (m_dwNextThink < m_dwCurrentTime) {
+					Run();
+				}
 				break;
 			}
 		case STATE_DONE:
@@ -195,6 +197,7 @@ void IState::Execute(bool bNothingChanged)
 void IState::Init()
 {
 	m_dwStartTime = m_dwCurrentTime;
+	m_dwNextThink = m_dwCurrentTime;
 	m_tState = STATE_RUN;
 }
 void IState::Run()
@@ -211,6 +214,7 @@ void IState::Reset()
 {
 	m_dwStartTime		= 0;
 	m_dwCurrentTime		= 0;
+	m_dwNextThink		= 0;
 	m_tState			= STATE_NOT_ACTIVE;	
 }
 
@@ -306,7 +310,8 @@ void CRest::Replanning()
 
 	}
 	
-	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);;
+	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);
+	SetNextThink(dwMinRand);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -380,6 +385,8 @@ void CAttack::Run()
 			pData->Motion.m_tTurn.Set(ePostureStand,eActionRunTurnLeft,ePostureStand,eActionRunTurnRight, 
 									  m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
 
+			SetNextThink(300);	// чем больше расстояние, тем больше SetNextThink
+
 			break;
 		case ACTION_ATTACK_MELEE:
 			if (m_bAttackRat)
@@ -389,6 +396,7 @@ void CAttack::Run()
 				pData->Motion.m_tParams.SetParams(ePostureStand,eActionAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);			
 				
 			pData->Motion.m_tTurn.Clear();
+			SetNextThink(400);
 			break;
 	}
 }

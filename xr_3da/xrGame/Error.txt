@@ -14,3 +14,4 @@
 
 To OLES : 
 -D memory leak during reload (press f7 for reload) ~ 346kb on occ_part
+-J монстры исчезают из ХУДа в определённых позициях (level - occ_part_jim)

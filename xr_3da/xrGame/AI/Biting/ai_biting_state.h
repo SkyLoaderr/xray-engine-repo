@@ -26,8 +26,8 @@ const float m_cfWalkMinAngle	=   PI_DIV_6;
 
 
 const float m_cfRunAttackSpeed		=	5.0f;
-const float m_cfRunAttackTurnSpeed	=	2.5f;
-const float m_cfRunAttackTurnRSpeed	=	PI_DIV_2;
+const float m_cfRunAttackTurnSpeed	=	3.5f;
+const float m_cfRunAttackTurnRSpeed	=	5* PI_DIV_6;
 const float m_cfRunRSpeed			=	PI_DIV_2;
 const float m_cfRunAttackMinAngle	=   PI_DIV_6;
 
@@ -163,6 +163,7 @@ protected:
 
 	TTime			m_dwStartTime;						//!< время перехода в это состояние
 	TTime			m_dwCurrentTime;					//!< текущее время
+	TTime			m_dwNextThink;						//!< время следующего выполнения состояния
 
 public:
 						IState			(CAI_Biting *p);
@@ -179,6 +180,8 @@ public:
 		virtual void	Run				();									//!< Стадия выполнения состояния
 		virtual void	Done			();									//!< Стадия завершения выполнения состояния
 
+				void	SetNextThink	(TTime next_think) {m_dwNextThink = next_think + m_dwCurrentTime;}
+		
 };
 
 
