@@ -1058,8 +1058,16 @@ void CScriptGameObject::set_dest_level_vertex_id(u32 level_vertex_id)
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member set_dest_level_vertex_id!");
-	else
+	else {
+
+		if (!ai().level_graph().valid_vertex_id(level_vertex_id)) {
+#ifdef DEBUG
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : invalid vertex id being setup by action %s!",stalker->current_action().m_action_name);
+#endif
+			return;
+		}
 		stalker->set_level_dest_vertex	(level_vertex_id);
+	}
 }
 
 u32	CScriptGameObject::level_vertex_id		() const
