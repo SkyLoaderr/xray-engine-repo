@@ -23,7 +23,7 @@ public:
 };
 
 const DWORD		scale	= 16;
-const DWORD		size	= occ_dim0*scale;
+const DWORD		size	= occ_dim_0*scale;
 DWORD			buf		[size*size];
 
 void pixel	(int x, int y, DWORD C=255<<16)

@@ -65,16 +65,16 @@ occRasterizer::~occRasterizer	()
 
 void occRasterizer::clear		()
 {
-	DWORD size	= occ_dim0*occ_dim0;
+	DWORD size	= occ_dim*occ_dim;
 	float f		= 1.f;
 	fillDW_8x	(LPDWORD(bufFrame),		size,0);
-	fillDW_8x	(LPDWORD(bufDepth0),	size,*LPDWORD(&f));
+	fillDW_8x	(LPDWORD(bufDepth),		size,*LPDWORD(&f));
 }
 
 void occRasterizer::propagade	()
 {
-	propagade_depth<occ_dim1>	(bufDepth1,bufDepth0);
-	propagade_depth<occ_dim2>	(bufDepth2,bufDepth1);
-	propagade_depth<occ_dim3>	(bufDepth3,bufDepth2);
+	propagade_depth<occ_dim1>	(bufDepth_1,bufDepth_0);
+	propagade_depth<occ_dim2>	(bufDepth_2,bufDepth_1);
+	propagade_depth<occ_dim3>	(bufDepth_3,bufDepth_2);
 }
 
