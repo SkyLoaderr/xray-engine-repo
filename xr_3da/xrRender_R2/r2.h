@@ -61,6 +61,7 @@ public:
 	CHOM														HOM;
 
 	// Global vertex-buffer container
+	xr_vector<ref_shader>										Shaders;
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>		VertexDeclarator;
 	xr_vector<VertexDeclarator>									DCL;
 	xr_vector<IDirect3DVertexBuffer9*>							VB;
@@ -113,6 +114,7 @@ public:
 	virtual void					level_Unload				();
 
 	// Information
+	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);
 	virtual IRender_Visual*			getVisual					(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format				(int id);
