@@ -162,7 +162,7 @@ function main()
 	    wait	()
 	end
 
-	while guard01:action() and guard02:action() do
+	while true do
 		if guard01.health <= 0 or guard02.health <= 0 then
 			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
