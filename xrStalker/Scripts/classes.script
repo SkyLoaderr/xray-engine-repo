@@ -65,14 +65,13 @@ end
 ----------------------------------------------------------------------------------------------------
 class "SinglePatrol"
 
-function SinglePatrol:__init (npc, script_name, path_name, anims_razv, anims_end)
+function SinglePatrol:__init (npc, script_name, path_name, ...)
 	self.npc = npc
 	self.script_name = script_name
 	self.started = false
 	self.path_name = path_name
 	self.current_state = 0
-	self.anims_razv = anims_razv
-	self.anims_end = anims_end
+	self.anims = arg
 end
 
 function SinglePatrol:callback (obj, action_type, index)
@@ -81,20 +80,19 @@ function SinglePatrol:callback (obj, action_type, index)
 
 	printf ("Path : %s, index : %d", obj:patrol (), index) 
 
-	if index < 0 then return end
-	--обработаем развилку
-	if ptr:flag (index, 1) then
-	   action_first (obj, --move (move.standing, move.stand, move.line, ptr),
-					 self.anims_razv:get_animation (), cond (cond.anim_end))
-	   return	
-	   end	
-	--обработаем конечную точку
-	if ptr:flag (index, 2) then
-	   action_first (obj, --move (move.standing, move.stand, move.line, ptr),
-					 self.anims_end:get_animation (), cond (cond.anim_end))
-	   return 
-	   end	  	
+	-- При выполнении action-а движение прерывается, что генерит callback с index-ом -1.
+	-- Просто игнорировать такие callback-и.
+	if index < 0 then
+		return
+	end
 
+	for anim_num = 1, self.anims.n do
+		if ptr:flag(index, anim_num) then
+			action_first (obj, --move (move.standing, move.stand, move.line, ptr),
+				self.anims[anim_num]:get_animation (), cond (cond.anim_end))
+			return
+		end
+	end
 end
 
 function SinglePatrol:process ()
