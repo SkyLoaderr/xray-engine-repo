@@ -38,18 +38,41 @@ local radio_commander   = snd_base + 9
 
 local h2ms = 60 * 60 * 1000
 
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "схема командира активна"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_commander" (property_evaluator)
+
+function evaluator_commander:__init( name, storage ) super ()
+    self.a = storage
+end
+
+function evaluator_commander:evaluate ()
+    --printf( "s1" )
+    local b = self.a.enabled == true
+--    if b then sb = "true" else sb = "false" end
+--    printf( "s2 "..sb )
+    return b
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Главное Действие. Представляет из себя конечный автомат. И пусть мне кто-то докажет, что с GOAP это было бы проще.
 ----------------------------------------------------------------------------------------------------------------------
 class "action_commander" ( action_base )
 
-function action_commander:__init( name )  super ( nil, name )
+function action_commander:__init( name, storage )  super ( nil, name )
 --    self.drunk = true
     self.decision = true
+    self.a = storage
 end
 
 function action_commander:initialize()
     action_base.initialize( self )
+    
+--    self.way             = a.way
+--    self.way_inside      = a.way_inside
+--    self.way_outside     = a.way_outside
+--    self.near_door_index = a.near_door_index
 
     --self.object:set_item( object.idle, self.object:best_weapon() )
     self.object:set_item( object.idle, nil )
@@ -57,60 +80,6 @@ function action_commander:initialize()
     self.object:set_callback (self, "move_callback", game_object.movement)
     
 --    printf( "action_commander initialized" )
-end
-
-function action_commander:init( npc )
-    local char_ini = npc:spawn_ini()
-
-    if char_ini:section_exist("commander") then
-        -- включен?
-        if char_ini:line_exist("commander", "enabled") then     
-            if not char_ini:r_bool("commander", "enabled") then
-                return false
-            end
-        else
-            return false
-        end
-        
-        -- пути
-        if char_ini:line_exist("commander", "way") and
-           char_ini:line_exist("commander", "way_inside") and
-           char_ini:line_exist("commander", "way_outside") then
-            self.way         = patrol( char_ini:r_string( "commander", "way" ) )
-            self.way_inside  = patrol( char_ini:r_string( "commander", "way_inside" ) )
-            self.way_outside = char_ini:r_string( "commander", "way_outside" )
-
-            self.near_door_index = patrol( self.way_outside ):index( "near_door" )
-        else
-            return false
-        end
-        
-        -- солдаты
-        if char_ini:line_exist("commander", "soldiers") then
-            local soldiers = char_ini:r_string( "commander", "soldiers" )
-            self.soldiers = parse_names( soldiers )
-        else
-            self.soldiers = {}
-        end
-    else
-        --printf( "no section" )
-        return false
-    end
-
-    -- звуки
-    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",               13, snd_type.talk, 2, 1, snd_singing )
-    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",              13, snd_type.talk, 2, 1, snd_look_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_idle",                      13, snd_type.talk, 2, 1, snd_talk_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_stalker )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_monster )
-
-    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander )
-    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",        5, snd_type.talk, 2, 1, radio_noise )
-    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",        5, snd_type.talk, 2, 1, radio_voice )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",      5, snd_type.talk, 2, 1, radio_on )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",     5, snd_type.talk, 2, 1, radio_off )
-
-    return true
 end
 
 function action_commander:finalize()
@@ -186,7 +155,7 @@ function action_commander:execute()
                                    [look_map]     = 10,
                                    [look_outside] = 10,
                                    [radio_talk]   = 20,
-                                   [drink_vodka]  = 10000 }
+                                   [drink_vodka]  = 10 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -287,13 +256,13 @@ function action_commander:exec_walk_inside()
         local i
 
         repeat
-            i = math.random( 0, self.way_inside:count() - 1 )
+            i = math.random( 0, self.a.way_inside:count() - 1 )
         until i ~= self.last_inside_point
 
         self.last_inside_point = i
-        self:walk_to_pos( self.way_inside, i )
+        self:walk_to_pos( self.a.way_inside, i )
 
-        self.look_at_box = not self.looked_at_box and self.way_inside:flag( i, 0 )
+        self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 )
 
         if math.random( 100 ) < 40 then
             self.object:play_sound( snd_singing, 1, 0 )
@@ -328,7 +297,7 @@ function action_commander:exec_look_box()
                 self:add_inside_animations( 1 )
             end
         else
-            self.object:set_sight( look.point, self.way:point( self.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
+            self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
             --self.object:set_sight( look.direction, vector():set( 1, 0, 0 ), 0 )
             self.object:set_mental_state( anim.free )
 
@@ -351,7 +320,7 @@ function action_commander:exec_walk_outside()
         self.object:set_desired_direction ()
         self.object:set_sight             ( look.danger, nil, 0 )
         self.object:set_path_type         ( game_object.patrol_path )
-        self.object:set_patrol_path       ( self.way_outside, patrol.nearest, patrol.continue, true )
+        self.object:set_patrol_path       ( self.a.way_outside, patrol.nearest, patrol.continue, true )
         self.object:set_detail_path_type  ( move.line )
         self.object:set_body_state        ( move.standing )
         self.object:set_movement_type     ( move.walk )
@@ -360,7 +329,7 @@ function action_commander:exec_walk_outside()
         self.object:set_item              ( object.idle, nil )
 
         self.sub_act = true
-        self.near_door_visited = false
+        self.a.near_door_visited = false
 
         printf( "decision made: walk_outside" )
     end
@@ -399,7 +368,7 @@ function action_commander:exec_look_map()
         end
     else
         self.object:clear_animations()
-        self:walk_to_pos( self.way, "level_map" )
+        self:walk_to_pos( self.a.way, "level_map" )
         printf( "decision made: look_map" )
     end
 end
@@ -432,7 +401,7 @@ function action_commander:exec_look_outside()
         end
     else
         self.object:clear_animations()
-        self:walk_to_pos( self.way, "near_door" )
+        self:walk_to_pos( self.a.way, "near_door" )
         printf( "decision made: look_outside" )
     end
 end
@@ -554,29 +523,29 @@ function action_commander:exec_drink_vodka()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
-                --if self.object:animation_count() == 0 then
-                if self.time_end <= device():time_global() then
+                if self.object:animation_count() == 0 then
+                --if self.time_end <= device():time_global() then
                     self.decision = true
                 end
             else
                 self:stop()
 
-                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
                 --self.object:set_item ( object.idle, nil )
 
---[[                self.object:add_animation( "stalker_2_down", true )
+                self.object:add_animation( "stalker_2_down", true )
                 self.object:add_animation( "vodka_1", true )
                 self.object:add_animation( "vodka_2", true )
                 self.object:add_animation( "vodka_3", true )
                 self.object:add_animation( "vodka_4", true )
                 self.object:add_animation( "vodka_2", true )
-                self.object:add_animation( "stalker_2_up", true )]]
+                self.object:add_animation( "stalker_2_up", true )
                
-                local vodka = self.object:object( "vodka" )
+--[[                local vodka = self.object:object( "vodka" )
                 
                 self.object:set_item( object.activate, vodka )
                 self.object:set_item( object.use, vodka )
-                self.object:set_item( object.deactivate, vodka )
+                self.object:set_item( object.deactivate, vodka )]]
                 
                 
                 if day_time() > 14 * h2ms then
@@ -584,7 +553,7 @@ function action_commander:exec_drink_vodka()
                 end
 
                 self.sub_act = true
-                self.time_end = device():time_global() + 60000
+--                self.time_end = device():time_global() + 60000
             end
         else
             -- если сдвинулся с позиции, то уйти
@@ -595,7 +564,7 @@ function action_commander:exec_drink_vodka()
         end
     else
         self.object:clear_animations()
-        self:walk_to_pos( self.way, "mattress" )
+        self:walk_to_pos( self.a.way, "mattress" )
         printf( "decision made: drink_vodka" )
     end
 end
@@ -621,7 +590,7 @@ function action_commander:exec_sleep()
             else
                 self:stop()
 
-                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ), 0 )
+                self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "mattress_dir" ) ), 0 )
                 self.object:set_item ( object.idle, nil )
 
                 self.object:add_animation( "waunded_sitdawn_0", true )
@@ -638,7 +607,7 @@ function action_commander:exec_sleep()
         end
     else
         self.object:clear_animations()
-        self:walk_to_pos( self.way, "mattress" )
+        self:walk_to_pos( self.a.way, "mattress" )
         printf( "decision made: sleep" )
     end
 end
@@ -648,12 +617,12 @@ function action_commander:move_callback( obj, action_type, index )
 
     if index == -1 then return end
 
-    if index == self.near_door_index then
-        if self.near_door_visited then
+    if index == self.a.near_door_index then
+        if self.a.near_door_visited then
             self.decision = true
             return
         else
-            self.near_door_visited = true
+            self.a.near_door_visited = true
         end
     end
 
@@ -676,18 +645,83 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc )
-    local action = this.action_commander( "action_commander" )
-    
-    if action:init( npc ) then
-        local manager = npc:motivation_action_manager()
+    -- звуки
+    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",               13, snd_type.talk, 2, 1, snd_singing )
+    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",              13, snd_type.talk, 2, 1, snd_look_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_idle",                      13, snd_type.talk, 2, 1, snd_talk_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_stalker )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_monster )
 
-        manager:add_evaluator( prop_commander, const_evaluator( false ) )
+    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander )
+    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",        5, snd_type.talk, 2, 1, radio_noise )
+    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",        5, snd_type.talk, 2, 1, radio_voice )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",      5, snd_type.talk, 2, 1, radio_on )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",     5, snd_type.talk, 2, 1, radio_off )
 
-        action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
-        action:add_effect( world_property( prop_commander, true ) )
-        manager:add_action( act_commander, action )
+    -- GOAP
+    local a = xr_motivator.storage[npc:id()].commander
 
-        action = manager:action( stalker_ids.action_puzzle_solver)
-        action:add_precondition( world_property( prop_commander, true ) )
+    local action = this.action_commander( "action_commander", a )
+
+    local manager = npc:motivation_action_manager()
+
+    manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
+
+    action:add_precondition( world_property( stalker_ids.property_enemy, false ) )
+    action:add_effect( world_property( prop_commander, false ) )
+    manager:add_action( act_commander, action )
+
+    action = manager:action( stalker_ids.action_puzzle_solver)
+    action:add_precondition( world_property( prop_commander, false ) )
+end
+
+function init_commander( npc, a )
+    local char_ini = npc:spawn_ini()
+
+    if char_ini:section_exist("commander") then
+        -- включен?
+        if char_ini:line_exist("commander", "enabled") then     
+            if not char_ini:r_bool("commander", "enabled") then
+                return false
+            end
+        else
+            return false
+        end
+        
+        -- пути
+        if char_ini:line_exist("commander", "way") and
+           char_ini:line_exist("commander", "way_inside") and
+           char_ini:line_exist("commander", "way_outside") then
+            a.way         = patrol( char_ini:r_string( "commander", "way" ) )
+            a.way_inside  = patrol( char_ini:r_string( "commander", "way_inside" ) )
+            a.way_outside = char_ini:r_string( "commander", "way_outside" )
+
+            a.near_door_index = patrol( a.way_outside ):index( "near_door" )
+        else
+            return false
+        end
+
+        -- солдаты
+        if char_ini:line_exist("commander", "soldiers") then
+            local soldiers = char_ini:r_string( "commander", "soldiers" )
+            a.soldiers = parse_names( soldiers )
+        else
+            a.soldiers = {}
+        end
+    else
+        --printf( "no section" )
+        return false
+    end
+
+    return true
+end
+
+function set_commander( npc, enable )
+    local a = xr_motivator.storage[npc:id()].commander
+
+    if enable == nil then
+        a.enabled = this.init_commander( npc, a )
+    else
+        a.enabled = enable and this.init_commander( npc, a )
     end
 end

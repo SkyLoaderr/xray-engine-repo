@@ -21,7 +21,7 @@ class "evaluator_script" (property_evaluator)
 function evaluator_script:__init() super()
 end
 function evaluator_script:evaluate()
-	return false
+    return false
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -72,10 +72,10 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
-	-- вызов апдейта у управления группировками
-	if xr_gulag.fraction["blockpost"] ~= nil then
-		xr_gulag.fraction["blockpost"]:calculate()
-	end
+    -- вызов апдейта у управления группировками
+    if xr_gulag.fraction["blockpost"] ~= nil then
+        xr_gulag.fraction["blockpost"]:calculate()
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reload (section)
@@ -188,11 +188,11 @@ xr_motivator.storage[self.object:id()].sleeper = {
     end
 xr_motivator.storage[self.object:id()].robber = {
         enabled = false,
-	leader = false,
-	helper = false,
+    leader = false,
+    helper = false,
             teammate1 = nil,
             teammate2 = nil,
-	    path_rob = nil
+        path_rob = nil
     }
         if char_ini:section_exist ("robber") == true then
         printf("_bp: npc is robber = %s", self.object:name())
@@ -337,7 +337,7 @@ xr_motivator.storage[self.object:id()].novice = {
                             rest     = nil,         --Места для сидения
                             curState = 1,
                             time     = nil,
-							enemy    = nil,         --Для модификации новичка, если есть враг и есть оружие, идем мочить
+                            enemy    = nil,         --Для модификации новичка, если есть враг и есть оружие, идем мочить
                             index    = 1,           --Index точки, к которой идем, чтоб посидеть
                             enabled  = false
 }
@@ -369,9 +369,9 @@ xr_motivator.storage[self.object:id()].novice2 = {
 --Настройка схемы реакции новичка3 - новичок которого ограбили
 xr_motivator.storage[self.object:id()].novice3 = {
                             path     = nil,         --Путь, по которому ходить
-							enemy    = nil,
+                            enemy    = nil,
                             enabled  = false
-							}
+                            }
     if( char_ini:section_exist ("novice3") == true ) then
         xr_motivator.storage[self.object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
         if( char_ini:line_exist("novice3", "path") == true ) then
@@ -381,6 +381,15 @@ xr_motivator.storage[self.object:id()].novice3 = {
             xr_motivator.storage[self.object:id()].novice3.enemy  = char_ini:r_string("novice3", "enemy")
         end
     end
+-- Хранение схемы командира
+xr_motivator.storage[self.object:id()].commander = {
+        enabled = false,
+        soldiers = {},
+        --way
+        --way_inside
+        --way_outside
+        --near_door_index
+}
 -- Настройка схемы реакции
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
@@ -403,9 +412,9 @@ xr_motivator.storage[self.object:id()].reactions = {
         if char_ini:line_exist("reactions", "enabled") == true then
                 xr_motivator.storage[self.object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
         end
-	local i = 1
+    local i = 1
         while char_ini:line_exist("reactions", "rule_"..i) == true do
-	    table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
+        table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
             i = i + 1
         end
     end
@@ -435,34 +444,34 @@ xr_motivator.storage[self.object:id()].reactions = {
     -- Bind other scripts
     self.object:disable_talk()
 
-	-- SCRIPT ACTION PLANNER
+    -- SCRIPT ACTION PLANNER
 --[[
-	properties["scripts"] = xr_evaluators_id.script_evaluator
-	manager:add_evaluator (properties["scripts"], 		this.evaluator_script		())		
+    properties["scripts"] = xr_evaluators_id.script_evaluator
+    manager:add_evaluator (properties["scripts"],       this.evaluator_script       ())     
 
-	local action_pl = planner_action(self.object, "script_action")
-	action_pl:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action_pl:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action_pl:add_precondition		(world_property(properties["scripts"],		true))
-	action_pl:add_effect 			(world_property(properties["scripts"],		false))
-	local act_pl = cast_planner_to_action(action_pl)
-	if act_pl == nil then
-		printf("ERROR: can't cast planner to action")
-	else
-		manager:add_action (xr_actions_id.action_script, act_pl)
-	end
+    local action_pl = planner_action(self.object, "script_action")
+    action_pl:add_precondition      (world_property(stalker_ids.property_alive,     true))
+    action_pl:add_precondition      (world_property(stalker_ids.property_enemy, false))
+    action_pl:add_precondition      (world_property(properties["scripts"],      true))
+    action_pl:add_effect            (world_property(properties["scripts"],      false))
+    local act_pl = cast_planner_to_action(action_pl)
+    if act_pl == nil then
+        printf("ERROR: can't cast planner to action")
+    else
+        manager:add_action (xr_actions_id.action_script, act_pl)
+    end
 
---	action = manager:action (stalker_ids.action_puzzle_solver)	
---	action:add_precondition			(world_property(properties["scripts"],		false))
+--  action = manager:action (stalker_ids.action_puzzle_solver)  
+--  action:add_precondition         (world_property(properties["scripts"],      false))
 ]]--
 
-	-- общие скрипты
+    -- общие скрипты
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
     xr_position.add_to_binder(self.object)
     xr_meet.add_to_binder(self.object)
 
-	-- модели поведения
+    -- модели поведения
     xr_patrol.add_to_binder (self.object)
     xr_follower.add_to_binder (self.object)
     xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
@@ -476,24 +485,25 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_scout.add_to_binder(self.object)
 --    xr_talker.add_to_binder(self.object)
 
-	-- сюжетные скрипты
+    -- сюжетные скрипты
     xr_trivial.add_novice     (self.object)
     xr_trivial.add_novice2    (self.object)
     xr_trivial.add_novice3    (self.object)
+    xr_commander.set_commander(self.object)
 
 
-	--Привязка к организации
-	if char_ini:section_exist ("fraction") == true then
-		if char_ini:line_exist("fraction", "name") == true then
-			xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
-		end
-	else
-		-- включение схем
-		xr_kamp.set_kamp(self.object)
-		xr_guard.set_guard(self.object)
-		xr_patrol.set_patrol (self.object)
-		xr_follower.set_follower (self.object)
-	end
+    --Привязка к организации
+    if char_ini:section_exist ("fraction") == true then
+        if char_ini:line_exist("fraction", "name") == true then
+            xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
+        end
+    else
+        -- включение схем
+        xr_kamp.set_kamp(self.object)
+        xr_guard.set_guard(self.object)
+        xr_patrol.set_patrol (self.object)
+        xr_follower.set_follower (self.object)
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
@@ -509,39 +519,39 @@ function AddToMotivator(npc)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
-	local count = 0
+    local count = 0
 --[[
-	for k,v in xr_motivator.storage[npc:id()] do
-		if k == "sleeper" or
-		   k == "camper" or
-		   k == "scout" or
-		   k == "follower" or
-		   k == "patrol" or
-		   k == "guard" or
-		   k == "commander"
-		then
-			if v.enabled == true then 
-				count = count + 1
-			end
-		end
-	end
-	if count > 1 then
-		printf("ERROR: there is too many active script")
-		for k,v in xr_motivator.storage[npc:id()] do
-			if k == "sleeper" or
-			   k == "camper" or
-			   k == "scout" or
-			   k == "follower" or
-			   k == "patrol" or
-			   k == "guard" or
-			   k == "commander"
-			then
-				if v.enabled == true then 
-					printf("ERROR: %s", k)
-				end
-			end
-		end		
-	end
+    for k,v in xr_motivator.storage[npc:id()] do
+        if k == "sleeper" or
+           k == "camper" or
+           k == "scout" or
+           k == "follower" or
+           k == "patrol" or
+           k == "guard" or
+           k == "commander"
+        then
+            if v.enabled == true then 
+                count = count + 1
+            end
+        end
+    end
+    if count > 1 then
+        printf("ERROR: there is too many active script")
+        for k,v in xr_motivator.storage[npc:id()] do
+            if k == "sleeper" or
+               k == "camper" or
+               k == "scout" or
+               k == "follower" or
+               k == "patrol" or
+               k == "guard" or
+               k == "commander"
+            then
+                if v.enabled == true then 
+                    printf("ERROR: %s", k)
+                end
+            end
+        end     
+    end
 ]]
 end
 ----------------------------------------------------------------------------------------------------------------------
