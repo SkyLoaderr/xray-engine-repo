@@ -284,7 +284,7 @@ void	CEffect_Rain::Render	()
 			wdir.div	(wlen);
 			one.P.mad	(one.P, wdir, -(wlen+b_radius));
             if ((vCenter.y-one.P.y)>b_height) 	Born	(one,b_radius,b_height);
-			else								RayTest	(one, b_height);
+			else								RayTest	(one,b_height);
 		}
 
 		// Build line
