@@ -7,9 +7,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "xrHemispher
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "xrLC.vcproj", "{25B60978-8467-4263-A6EB-CB3BB108F8BF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "close", "close\close.vcproj", "{2996B2B8-B3A1-4785-97BD-56F4398C2E97}"
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 6
 		SccProjectName0 = \u0022$/xrLC\u0022,\u0020TLAAAAAA
 		SccLocalPath0 = .
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
@@ -30,6 +32,10 @@ Global
 		SccProjectUniqueName4 = xrLC.vcproj
 		SccLocalPath4 = .
 		CanCheckoutShared = true
+		SccProjectUniqueName5 = close\\close.vcproj
+		SccLocalPath5 = .
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection5 = close\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
@@ -54,6 +60,10 @@ Global
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Debug.Build.0 = Debug|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.ActiveCfg = Release|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.Build.0 = Release|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Debug.ActiveCfg = Debug|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Debug.Build.0 = Debug|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.ActiveCfg = Release|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
