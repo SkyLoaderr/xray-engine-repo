@@ -193,7 +193,6 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 	// actual rendering
 	bv_BBox.invalidate	();
 	float			p_size	= 0;
-	DWORD			vOffset;
 	FVF::TL*		pv_start= dest;
 	FVF::TL*		pv		= pv_start;
 	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++)
