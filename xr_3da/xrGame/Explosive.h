@@ -55,6 +55,10 @@ protected:
 	float m_fFragHit;
 	int	  m_iFragsNum;
 
+	//типы наносимых хитов
+	ALife::EHitType m_eHitTypeBlast;
+	ALife::EHitType m_eHitTypeFrag;
+
 	//фактор подпроса предмета вверх взрывной волной 
 	float m_fUpThrowFactor;
 

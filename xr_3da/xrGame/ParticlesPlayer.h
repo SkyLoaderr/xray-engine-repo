@@ -19,7 +19,11 @@ private:
 	{
 		CParticlesObject*	ps;
 		Fvector				dir;
-		u16					sender_id;
+
+		u16					sender_id;	//id - объекта, который запустил партиклы
+		int					life_time;	//время жизни партикла (-1) - бесконечно
+		
+		int					cur_time;	//текущее время существования партикла
 	};
 	DEFINE_LIST				(SParticlesInfo,ParticlesInfoList,ParticlesInfoListIt);
 	//структура для косточки с списком запущенных партиклов
@@ -56,8 +60,8 @@ public:
 	
 	void					UpdateParticles			();
 
-	void					StartParticles			(ref_str ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id);
-	void					StartParticles			(ref_str ps_name, const Fvector& dir, u16 sender_id);
+	void					StartParticles			(ref_str ps_name, u16 bone_num,  const Fvector& dir, u16 sender_id, int life_time = -1);
+	void					StartParticles			(ref_str ps_name, const Fvector& dir, u16 sender_id, int life_time = -1);
 
 	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
 	void					StopParticles			(ref_str particles_name, u16 bone_id=BI_NONE);

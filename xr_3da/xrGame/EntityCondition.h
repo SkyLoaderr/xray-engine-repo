@@ -9,6 +9,12 @@
 
 #include "gameobject.h"
 
+//раны полученные различными типами хитов
+typedef	svector<float,ALife::eHitTypeMax> HitTypeSVec;
+
+
+class CWound;
+
 class CEntityCondition
 {
 public:
@@ -41,7 +47,7 @@ public:
 	void ChangeEntityMorale(float value);
 
 	//hit_power задается от 0 до 100 (сложилось исторически)
-	virtual void ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
+	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element = BI_NONE);
 	//обновления состояния с течением времени
 	virtual void UpdateCondition();
 
@@ -65,19 +71,17 @@ protected:
 	virtual void UpdateCircumspection();
 	virtual void UpdateEntityMorale();
 
-	virtual void AddWound(float hit_power, s16 element = 0);
+	virtual CWound* AddWound(float hit_power, ALife::EHitType hit_type, u16 element);
 
 	//изменение силы хита в зависимости от надетого костюма
 	//(только для InventoryOwner)
 	virtual float HitOutfitEffect(float hit_power, ALife::EHitType hit_type);
 	
-
-
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит
 	//и скорость потери крови из раны
-	DEFINE_MAP (s16, float, WOUND_MAP, WOUND_PAIR_IT);
-	WOUND_MAP m_mWound;
+	DEFINE_MAP (u16, CWound*, WOUND_MAP, WOUND_PAIR_IT);
+	WOUND_MAP m_WoundMap;
 
 	//все величины от 0 до 1			
 	float m_fHealth;				//здоровье
@@ -155,16 +159,7 @@ protected:
 	//коэффициенты на которые домножается хит
 	//при соответствующем типе воздействия
 	//(для защитных костюмов и специфичных животных)
-	float m_fK_Burn;
-	float m_fK_Strike;
-	float m_fK_Shock;
-	float m_fK_Wound;
-	float m_fK_Radiation;
-	float m_fK_Telepatic;
-	float m_fK_ChemicalBurn;
-	float m_fK_Explosion;
-	float m_fK_FireWound;
-
+	HitTypeSVec m_HitTypeK;
 
 	//состояние сна
 	bool m_bIsSleeping;

@@ -30,6 +30,11 @@ CExplosive::CExplosive(void)
 
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
+
+
+	m_eHitTypeBlast = ALife::eHitTypeExplosion;
+	m_eHitTypeFrag = ALife::eHitTypeFireWound;
+
 }
 
 CExplosive::~CExplosive(void) 
@@ -46,6 +51,9 @@ void CExplosive::Load(LPCSTR section)
 	m_iFragsNum = pSettings->r_s32(section,"frags");
 	m_fFragsRadius = pSettings->r_float(section,"frags_r");
 	m_fFragHit = pSettings->r_float(section,"frag_hit");
+
+	m_eHitTypeBlast	= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_blast"));
+	m_eHitTypeFrag	= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
 
 	m_fUpThrowFactor = pSettings->r_float(section,"up_throw_factor");
 
@@ -130,6 +138,7 @@ void CExplosive::Explode()
 		m_fCurrentFireDist = m_fFragsRadius;
 		m_fCurrentHitPower = m_fFragHit;
 		m_fCurrentHitImpulse = m_fFragHit;
+		m_fCurrentHitType = m_eHitTypeFrag;
 		m_fCurrentWallmarkSize = fWallmarkSize;
 		m_pCurrentCartridge = NULL;
 		m_vCurrentShootDir = frag_dir;
@@ -226,7 +235,7 @@ void CExplosive::Explode()
 				P.w_s16			(l_element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_impuls);
-				P.w_u16			(u16(ALife::eHitTypeWound));
+				P.w_u16			(u16(m_eHitTypeBlast));
 				u_EventSend		(P);
 				l_elements.pop_front();
 				l_bs_positions.pop_front();

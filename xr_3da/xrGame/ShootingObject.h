@@ -48,8 +48,6 @@ protected:
 	Fvector		m_vEndPoint;
 	//ID персонажа который иницировал действие
 	u32			m_iCurrentParentID;
-
-	void		LoadEffector	();
-private:
-	SShootingEffector m_effector;
+	//тип наносимого хита
+	ALife::EHitType m_fCurrentHitType;
 };

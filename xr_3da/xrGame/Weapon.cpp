@@ -269,7 +269,6 @@ void CWeapon::Load		(LPCSTR section)
 
 
 	inherited::Load					(section);
-	CShootingObject::LoadEffector	();
 
 	Fvector				pos,ypr;
 	pos					= pSettings->r_fvector3		(section,"position");

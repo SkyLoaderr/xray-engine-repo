@@ -7,6 +7,7 @@
 #include "inventoryowner.h"
 #include "customoutfit.h"
 #include "inventory.h"
+#include "wound.h"
 
 
 #define MAX_HEALTH 1.0f
@@ -46,15 +47,12 @@ CEntityCondition::CEntityCondition(void)
 	m_fV_Bleeding = 0.09f;
 	m_fV_WoundIncarnation = 0.001f;
 
-	m_fK_Burn = 1.0f;
-	m_fK_Strike = 1.0f;
-	m_fK_Wound = 1.0f;
-	m_fK_Radiation = 1.0f;
-	m_fK_Telepatic = 1.0f;
-	m_fK_Shock = 1.0f;
-	m_fK_ChemicalBurn = 1.0f;
-	m_fK_Explosion = 1.0f;
-	m_fK_FireWound = 1.0f;
+	
+	m_HitTypeK.resize(ALife::eHitTypeMax);
+	for(int i=0; i<ALife::eHitTypeMax; i++)
+	{
+		m_HitTypeK[i] = 1.0f;
+	}
 
 	m_fHealthHitPart = 1.0f;
 	m_fPowerHitPart = 0.5f;
@@ -68,7 +66,7 @@ CEntityCondition::CEntityCondition(void)
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
-	m_mWound.clear();
+	m_WoundMap.clear();
 
 	Awoke();
 	/*
@@ -100,15 +98,15 @@ void CEntityCondition::Load(LPCSTR section)
 	m_fHealthHitPart = pSettings->r_float(section,"health_hit_part");
 	m_fPowerHitPart = pSettings->r_float(section,"power_hit_part");
 
-	m_fK_Burn = pSettings->r_float(section,"burn_immunity");
-	m_fK_Strike = pSettings->r_float(section,"strike_immunity");
-	m_fK_Shock = pSettings->r_float(section,"shock_immunity");
-	m_fK_Wound = pSettings->r_float(section,"wound_immunity");
-	m_fK_Radiation = pSettings->r_float(section,"radiation_immunity");
-	m_fK_Telepatic = pSettings->r_float(section,"telepatic_immunity");
-	m_fK_ChemicalBurn = pSettings->r_float(section,"chemical_burn_immunity");
-	m_fK_FireWound = pSettings->r_float(section,"fire_wound_immunity");
-	m_fK_Explosion = pSettings->r_float(section,"explosion_immunity");
+	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
+	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
+	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_immunity");
+	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_immunity");
+	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_immunity");
+	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_immunity");
+	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
+	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
+	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 	
 
 	m_fK_SleepHealth = pSettings->r_float(section,"sleep_health");
@@ -142,8 +140,6 @@ void CEntityCondition::reinit	()
 
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
-
-	m_mWound.clear();
 
 	Awoke();
 }
@@ -179,15 +175,13 @@ void CEntityCondition::ChangeEntityMorale(float value)
 void CEntityCondition::ChangeBleeding(float percent)
 {
 	//затянуть раны на заданное кол-во процентов
-	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
+	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
 	{
-		(*it).second -= (*it).second*percent;
-		//рана полность зажила
-		if((*it).second<0) (*it).second = 0;
+		(*it).second->Incarnation(percent);
 	}
 }
 
-//вычисление параметров с ходом времени
+//вычисление параметров с ходом игрового времени
 void CEntityCondition::UpdateCondition()
 {
 	if(GetHealth()<=0) return;
@@ -233,18 +227,11 @@ void CEntityCondition::UpdateCondition()
 	m_fDeltaCircumspection = 0;
 	m_fDeltaEntityMorale = 0;
 
-	if(m_fHealth<0) m_fHealth = 0;
-	if(m_fHealth>m_fHealthMax) m_fHealth = m_fHealthMax;
-	if(m_fPower<0) m_fPower = 0;
-	if(m_fPower>m_fPowerMax) m_fPower = m_fPowerMax;
-	if(m_fRadiation<0) m_fRadiation = 0;
-	if(m_fRadiation>m_fRadiationMax) m_fRadiation = m_fRadiationMax;
-	if(m_fSatiety<0) m_fSatiety = 0;
-	if(m_fSatiety>m_fSatietyMax) m_fSatiety = m_fSatietyMax;
-
-	if(m_fCircumspection<0) m_fCircumspection = 0;
-	if(m_fCircumspection>m_fCircumspectionMax) m_fCircumspection = m_fCircumspectionMax;
-	
+	clamp(m_fHealth,0.0f,m_fHealthMax);
+	clamp(m_fPower,0.0f,m_fPowerMax);
+	clamp(m_fRadiation,0.0f,m_fRadiationMax);
+	clamp(m_fSatiety,0.0f,m_fSatietyMax);
+	clamp(m_fCircumspection,0.0f,m_fCircumspectionMax);
 	clamp(m_fEntityMorale,0.0f,m_fEntityMoraleMax);
 }
 
@@ -265,33 +252,25 @@ void CEntityCondition::Sleep(float hours)
 
 	for(float time=0; time<time_to_sleep; time += m_iDeltaTime)
 	{
+		UpdateHealth();
+		UpdatePower();
+		UpdateSatiety();
+		UpdateRadiation();
 
+		m_fHealth += m_fDeltaHealth;
+		m_fPower += m_fDeltaPower;
+		m_fSatiety += m_fDeltaSatiety;
+		m_fRadiation +=  m_fDeltaRadiation;
 
-	UpdateHealth();
-	UpdatePower();
-	UpdateSatiety();
-	UpdateRadiation();
+		m_fDeltaHealth = 0;
+		m_fDeltaPower = 0;
+		m_fDeltaSatiety = 0;
+		m_fDeltaRadiation = 0;
 
-	m_fHealth += m_fDeltaHealth;
-	m_fPower += m_fDeltaPower;
-	m_fSatiety += m_fDeltaSatiety;
-	m_fRadiation +=  m_fDeltaRadiation;
-
-	m_fDeltaHealth = 0;
-	m_fDeltaPower = 0;
-	m_fDeltaSatiety = 0;
-	m_fDeltaRadiation = 0;
-
-
-
-	if(m_fHealth<0) m_fHealth = 0;
-	if(m_fHealth>m_fHealthMax) m_fHealth = m_fHealthMax;
-	if(m_fPower<0) m_fPower = 0;
-	if(m_fPower>m_fPowerMax) m_fPower = m_fPowerMax;
-	if(m_fRadiation<0) m_fRadiation = 0;
-	if(m_fRadiation>m_fRadiationMax) m_fRadiation = m_fRadiationMax;
-	if(m_fSatiety<0) m_fSatiety = 0;
-	if(m_fSatiety>m_fSatietyMax) m_fSatiety = m_fSatietyMax;
+		clamp(m_fHealth,0.0f,m_fHealthMax);
+		clamp(m_fPower,0.0f,m_fPowerMax);
+		clamp(m_fRadiation,0.0f,m_fRadiationMax);
+		clamp(m_fSatiety,0.0f,m_fSatietyMax);
 	}
 
 	Awoke();
@@ -304,111 +283,66 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 
 	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
 	if(!pOutfit) return hit_power;
-
-	switch(hit_type)
-	{
-	case ALife::eHitTypeBurn:
-		hit_power *= pOutfit->m_fOutfitBurn;
-		break;
-	case ALife::eHitTypeStrike:
-		hit_power *= pOutfit->m_fOutfitStrike;
-		break;
-	case ALife::eHitTypeTelepatic:
-		hit_power *= pOutfit->m_fOutfitTelepatic;
-		break;
-	case ALife::eHitTypeShock:
-		hit_power *= pOutfit->m_fOutfitShock;
-		break;
-	case ALife::eHitTypeWound:
-		hit_power *= pOutfit->m_fOutfitWound;
-		break;
-	case ALife::eHitTypeRadiation:
-		hit_power *= pOutfit->m_fOutfitRadiation;
-		break;
-	case ALife::eHitTypeChemicalBurn:
-		hit_power *= pOutfit->m_fOutfitChemicalBurn;
-		break;
-	case ALife::eHitTypeExplosion:
-		hit_power *= pOutfit->m_fOutfitExplosion;
-		break;
-	case ALife::eHitTypeFireWound:
-		hit_power *= pOutfit->m_fOutfitFireWound;
-		break;				
-	}
-		
+	hit_power *= pOutfit->GetHitTypeK(hit_type);
 	return hit_power;
 }
 
-void CEntityCondition::AddWound(float hit_power, s16 element)
+CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
 {
 	//запомнить кость по которой ударили и силу удара
-	WOUND_PAIR_IT it = m_mWound.find(element);
+	WOUND_PAIR_IT it = m_WoundMap.find(element);
 	//новая рана
-	if (it == m_mWound.end())
+	if (it == m_WoundMap.end())
 	{
-		m_mWound[element] = hit_power*m_fV_Bleeding*
-							::Random.randF(0.5f,1.5f);
-		}
-		//старая 
-		else
-		{
-			m_mWound[element] += hit_power*m_fV_Bleeding*
-								::Random.randF(0.5f,1.5f);
-		}
+		m_WoundMap[element] = xr_new<CWound>(element);
+		m_WoundMap[element]->AddHit(hit_power*m_fV_Bleeding*
+							::Random.randF(0.5f,1.5f), hit_type);
+	}
+	//старая 
+	else
+	{
+		m_WoundMap[element]->AddHit(hit_power*m_fV_Bleeding*
+			::Random.randF(0.5f,1.5f), hit_type);
+	}
+
+	return m_WoundMap[element];
 }
 
-void CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
+CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element)
 {
 	//кто нанес последний хит
 	m_pWho = who;
 
 	//нормализуем силу удара
 	hit_power = hit_power/100.f;
-
 	hit_power = HitOutfitEffect(hit_power, hit_type);
-
-	//кол-во костей в существе
-	//PKinematics(Visual())->LL_BoneCount();
 
 	switch(hit_type)
 	{
 	case ALife::eHitTypeBurn:
-		hit_power *= m_fK_Burn;
+		hit_power *= m_HitTypeK[hit_type];
 		break;
 	case ALife::eHitTypeChemicalBurn:
-		hit_power *= m_fK_ChemicalBurn;
-		break;
-	case ALife::eHitTypeStrike:
-		hit_power *= m_fK_Strike;
+		hit_power *= m_HitTypeK[hit_type];
 		break;
 	case ALife::eHitTypeTelepatic:
-		hit_power *= m_fK_Telepatic;
+		hit_power *= m_HitTypeK[hit_type];
 		break;
 	case ALife::eHitTypeShock:
-		hit_power *= m_fK_Shock;
+		hit_power *= m_HitTypeK[hit_type];
 		break;
-	case ALife::eHitTypeExplosion:
-		hit_power *= m_fK_Explosion;
-		m_fHealthLost = hit_power*m_fHealthHitPart;
-		m_fDeltaHealth -= m_fHealthLost;
-		m_fDeltaPower -= hit_power*m_fPowerHitPart;
-		AddWound(hit_power, element);
-		break;
+	case ALife::eHitTypeStrike:
 	case ALife::eHitTypeFireWound:
-		hit_power *= m_fK_FireWound;
-		m_fHealthLost = hit_power*m_fHealthHitPart;
-		m_fDeltaHealth -= m_fHealthLost;
-		m_fDeltaPower -= hit_power*m_fPowerHitPart;
-		AddWound(hit_power, element);
-		break;
+	case ALife::eHitTypeExplosion:
 	case ALife::eHitTypeWound:
-		hit_power *= m_fK_Wound;
+		hit_power *= m_HitTypeK[hit_type];
 		m_fHealthLost = hit_power*m_fHealthHitPart;
 		m_fDeltaHealth -= m_fHealthLost;
 		m_fDeltaPower -= hit_power*m_fPowerHitPart;
-		AddWound(hit_power, element);
 		break;
 	}
+
+	return AddWound(hit_power, hit_type, element);
 }
 
 
@@ -416,9 +350,9 @@ float CEntityCondition::BleedingSpeed()
 {
 	float bleeding_speed =0;
 
-	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
+	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
 	{
-		bleeding_speed += (*it).second;
+		bleeding_speed += (*it).second->TotalSize();
 	}
 	return bleeding_speed;
 }
@@ -429,11 +363,9 @@ void CEntityCondition::UpdateHealth()
 	m_fDeltaHealth -= BleedingSpeed() * m_iDeltaTime/1000;
 
 	//затянуть раны
-	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
+	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
 	{
-		(*it).second -= m_fV_WoundIncarnation * m_iDeltaTime/1000;
-		//рана полность зажила
-		if((*it).second<0) (*it).second = 0;
+		(*it).second->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
 	}
 
 
@@ -444,17 +376,16 @@ void CEntityCondition::UpdateHealth()
 
 	WOUND_PAIR_IT begin_it;
 
-	begin_it = m_mWound.begin(); 
+	begin_it = m_WoundMap.begin(); 
 
 	do
 	{
-		
 		previous_bone_num = -1;
 
 		for(WOUND_PAIR_IT it = begin_it; 
-						  m_mWound.end() != it;)
+						  m_WoundMap.end() != it;)
 		{
-			if((*it).second == 0)
+			if((*it).second->TotalSize() == 0)
 				break;
 
 			//запомнить номер последней кости
@@ -463,19 +394,18 @@ void CEntityCondition::UpdateHealth()
 		}
 
 
-		if(it == m_mWound.end()) 
+		if(it == m_WoundMap.end()) 
 			search_completed = true; 
 		else
 		{
-			m_mWound.erase(it);
+			xr_delete((*it).second);
+			m_WoundMap.erase(it);
 			search_completed = false;
 
-
-			begin_it = m_mWound.find(previous_bone_num);
-			
-			if(begin_it == m_mWound.end())
+			begin_it = m_WoundMap.find(previous_bone_num);
+			if(begin_it == m_WoundMap.end())
 			{
-				begin_it = m_mWound.begin();
+				begin_it = m_WoundMap.begin();
 			}
 		}
 

@@ -76,7 +76,7 @@ CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics
 
 
 
-void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, const Fvector& dir, u16 sender_id)
+void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, const Fvector& dir, u16 sender_id, int life_time)
 {
 	R_ASSERT(*particles_name);
 	
@@ -91,6 +91,10 @@ void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, cons
 	particles_info->dir				= dir;
 	particles_info->sender_id		= sender_id;
 
+	particles_info->life_time		= life_time;
+	particles_info->cur_time		= 0;
+
+
 	//начать играть партиклы
 	Fmatrix xform;
 	MakeXFORM						(object,pBoneInfo->index,particles_info->dir,pBoneInfo->offset,xform);
@@ -98,7 +102,7 @@ void CParticlesPlayer::StartParticles(ref_str particles_name, u16 bone_num, cons
 	particles_info->ps->Play		();
 }
 
-void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 sender_id)
+void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 sender_id, int life_time)
 {
 	CObject* object					= dynamic_cast<CObject*>(this);
 	VERIFY(object);
@@ -106,6 +110,9 @@ void CParticlesPlayer::StartParticles(ref_str ps_name, const Fvector& dir, u16 s
 		SParticlesInfo* particles_info	= it->AppendParticles(object,ps_name);
 		particles_info->dir			= dir;
 		particles_info->sender_id	= sender_id;
+
+		particles_info->life_time		= life_time;
+		particles_info->cur_time		= 0;
 
 		//начать играть партиклы
 		Fmatrix xform;
@@ -152,6 +159,11 @@ void CParticlesPlayer::UpdateParticles()
 			MakeXFORM				(object,b_info.index,p_info.dir,b_info.offset,xform);
 			p_info.ps->UpdateParent(xform,zero_vel);
 
+			//обновить время существования
+			p_info.cur_time += Device.dwTimeDelta;
+			if(p_info.life_time>0 && p_info.cur_time>p_info.life_time)
+				p_info.ps->Stop();
+
 			if(!p_info.ps->IsPlaying()){
 				p_info.ps->PSI_destroy		();
 				ParticlesInfoListIt cur_it	= p_it++;
@@ -166,17 +178,24 @@ void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& 
 	CBoneInstance&		l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_id);
 
 	result.identity		();
-	result.k.normalize	(dir);
-	Fvector::generate_orthonormal_basis(result.k, result.i, result.j);
-	result.translate_over(offset);
-	result.mulA			(l_tBoneInstance.mTransform);
-	result.mulA			(pObject->XFORM());
+	result.j.normalize	(dir);
+	Fvector::generate_orthonormal_basis(result.j, result.k, result.i);
+
+//	result.translate_over(offset);
+//	result.mulA			(l_tBoneInstance.mTransform);
+//	result.mulA			(pObject->XFORM());
+
+	Fvector pos;
+	pos = offset;
+	l_tBoneInstance.mTransform.transform_tiny(pos);
+	pObject->XFORM().transform_tiny(pos);
+	result.c.set(pos);
 }
 
 u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
 {
 	u16 play_bone	= bone_id;
-	while((BI_NONE!=play_bone)||!(bone_mask&(u64(1)<<u64(play_bone))))
+	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
 		play_bone	= K->LL_GetData(play_bone).ParentID;
 	return play_bone;
 }
