@@ -736,8 +736,6 @@ HRESULT CMyD3DApplication::RenderFAT	()
 
 HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
-	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x10101010, 1.0f, 0L);
-
 	if (M==CM_DBG_NORMALS)					return RenderCombineDBG_Normals();
 	if (M==CM_DBG_ACCUMULATOR)				return RenderCombineDBG_Accumulator();
 
