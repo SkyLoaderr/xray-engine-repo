@@ -878,17 +878,35 @@ bool CCar::Use(int id,const Fvector& pos,const Fvector& dir)
 {
 	xr_map<int,SDoor>::iterator i;
  //
-	if(is_Door(id,i)) 
-	{
-		 i->second.Use();
-		return false;
-	
-	}
-	if(!m_owner)
-		return Enter(pos,dir);
-	else
-		return Exit(pos,dir);
 
+	if(!m_owner)
+	{
+		if(Enter(pos,dir)) return true;
+	}
+
+
+
+	
+	ICollisionForm::RayPickResult result;
+	if (collidable.model->_RayPick	(result,pos, dir, 3.f, 0)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	{
+		int y=result.r_count();
+		for (int k=0; k<y; k++)
+		{
+			ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
+			if(is_Door(R->element,i)) 
+			{
+				i->second.Use();
+				return false;
+
+			}
+		}
+	}
+	
+if(m_owner)return Exit(pos,dir);
+
+return false;
+	
 }
 
 float CCar::Parabola(float rpm)
@@ -956,7 +974,7 @@ void CCar::SExhaust::Update()
 	global_transform.mulB(transform);
 	dVector3 res;
 	Fvector	 res_vel;
-	dBodyGetPointVel(pelement->get_body(),transform.c.x,transform.c.y,transform.c.z,res);
+	dBodyGetRelPointVel(pelement->get_body(),transform.c.x,transform.c.y,transform.c.z,res);
 	Memory.mem_copy (&res_vel,res,sizeof(Fvector));
 	p_pgobject->UpdateParent(global_transform,res_vel);
 }
