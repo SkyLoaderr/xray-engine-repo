@@ -30,9 +30,10 @@ void				Jump(const Fvector &end_point, float time);
 float				Jump(const Fvector &end_point);
 bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
 ///
-void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point); //returns vector of minimum velocity
-																									  //in min_vel and correspondent jump time in time
-float				JumpMinVelTime(const Fvector &end_point);
+void				GetJumpMinVelParam(Fvector &min_vel,float &time,JumpType &type,const Fvector &end_point);	//returns vector of velocity of jump with minimal start speed
+																												//in min_vel and correspondent jump time in time
+float				JumpMinVelTime(const Fvector &end_point); // return time of jump with min start speed
+// input: end_point and time; return velocity and type of jump
 void				GetJumpParam(Fvector &velocity, JumpType &type,const Fvector &end_point, float time);
 bool				b_exect_position;
 public:
