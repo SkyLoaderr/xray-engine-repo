@@ -7,24 +7,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
-#pragma warning(disable:4530)
-#	pragma comment(lib,"x:/xrCore.lib")
-#	pragma comment(lib,"x:/xrLUA.lib")
-#pragma warning(default:4530)
-
-// I need this because we have to exclude option /EHsc (exception handling) from the project
-namespace boost {
-	void __stdcall throw_exception(const exception &A)
-	{
-		Debug.fatal("Boost exception raised %s",A.what());
-	}
-};
+#include "ai_space.h"
+#include "script_engine.h"
 
 BOOL APIENTRY DllMain	(HANDLE module_handle, DWORD call_reason, LPVOID reserved)
 {
 	switch (call_reason) {
 		case DLL_PROCESS_ATTACH: {
+			ai().script_engine().export	();
 			break;
 		}
 		case DLL_PROCESS_DETACH: {

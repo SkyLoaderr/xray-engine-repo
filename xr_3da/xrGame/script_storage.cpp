@@ -10,20 +10,19 @@
 #include "script_storage.h"
 #include <stdarg.h>
 
-#ifdef ENGINE_BUILD
-#	define NO_SCRIPT_ENGINE
+#ifndef ENGINE_BUILD
+#	define NO_XRGAME_SCRIPT_ENGINE
+#	include "script_engine.h"
+#	include "ai_space.h"
 #endif
 
 #ifndef XRGAME_EXPORTS
-#	define NO_SCRIPT_ENGINE
+#	define NO_XRGAME_SCRIPT_ENGINE
 #endif
 
-#ifndef NO_SCRIPT_ENGINE
-#	include "script_engine.h"
+#ifndef NO_XRGAME_SCRIPT_ENGINE
 #	include "ai_debug.h"
-#	include "ai_space.h"
 #	include "script_debugger.h"
-#	define USE_DEBUGGER
 #endif
 
 CScriptStorage::CScriptStorage		()
@@ -52,7 +51,7 @@ CScriptStorage::~CScriptStorage		()
 
 int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
-#ifndef NO_SCRIPT_ENGINE
+#ifndef NO_XRGAME_SCRIPT_ENGINE
 	if (!psAI_Flags.test(aiLua))
 		return(0);
 #endif
@@ -117,7 +116,7 @@ int __cdecl CScriptStorage::script_log	(ScriptStorage::ELuaMessageType tLuaMessa
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,l_tMarker);
 
-#ifndef NO_SCRIPT_ENGINE
+#ifndef ENGINE_BUILD
 	ai().script_engine().m_output.w_string(S2);
 #endif
 
@@ -474,7 +473,7 @@ void CScriptStorage::print_error(CLuaVirtualMachine *L, int iErrorCode)
 		default : NODEFAULT;
 	}
 
-#ifndef NO_SCRIPT_ENGINE
+#ifndef ENGINE_BUILD
 	ai().script_engine().script_stack_tracker().print_stack(L);
 #endif
 }

@@ -10,20 +10,23 @@
 
 #include "script_storage.h"
 
+#ifdef XRGAME_EXPORTS
+	class CScriptProcessor;
+	class CScript;
+	class CScriptDebugger;
+#endif
 
-
-
-class CScriptProcessor;
-class CScript;
-
-class CScriptDebugger;
 class CScriptEngine : public CScriptStorage {
 public:
 	typedef CScriptStorage inherited;
+#ifdef XRGAME_EXPORTS
 	typedef xr_map<LPCSTR,CScriptProcessor*,pred_str> CScriptProcessorStorage;
+#endif
 
 protected:
+#ifdef XRGAME_EXPORTS
 	CScriptProcessorStorage		m_script_processors;
+#endif
 	xr_deque<LPSTR>				m_load_queue;
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
@@ -60,9 +63,11 @@ public:
 	static	void				lua_cast_failed				(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info);
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
-	IC		CScriptProcessor	*script_processor		(LPCSTR processor_name) const;
+#ifdef XRGAME_EXPORTS
+	IC		CScriptProcessor	*script_processor			(LPCSTR processor_name) const;
 	IC		void				add_script_processor		(LPCSTR processor_name, CScriptProcessor *script_processor);
 			void				remove_script_processor		(LPCSTR processor_name);
+#endif
 			void				add_file					(LPCSTR file_name);
 			void				process						();
 			void				export						();
@@ -74,7 +79,9 @@ public:
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
 	
 	
+#ifdef XRGAME_EXPORTS
 	CScriptDebugger	*			m_scriptDebugger;
+#endif
 };
 
 #include "script_engine_inline.h"

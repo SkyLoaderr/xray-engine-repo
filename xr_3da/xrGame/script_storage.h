@@ -12,6 +12,12 @@
 #include "script_storage_space.h"
 #include "script_stack_tracker.h"
 
+#ifndef ENGINE_BUILD
+#	ifdef XRGAME_EXPORTS
+#		define	USE_DEBUGGER
+#	endif
+#endif
+
 using namespace ScriptStorage;
 
 class CScriptStorage : public CScriptStackTracker {

@@ -8,11 +8,13 @@
 
 #include "stdafx.h"
 #include "script_engine.h"
-#include "ai_script_processor.h"
+//#include "ai_script_processor.h"
 #include "ai_space.h"
 #include "object_factory.h"
 
-#include "script_debugger.h"
+#ifdef USE_DEBUGGER
+#	include "script_debugger.h"
+#endif
 
 CScriptEngine::CScriptEngine	()
 {
@@ -20,16 +22,21 @@ CScriptEngine::CScriptEngine	()
 	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;
-
-	m_scriptDebugger = xr_new<CScriptDebugger>();
+#ifdef USE_DEBUGGER
+	m_scriptDebugger		= xr_new<CScriptDebugger>();
+#endif
 }
 
 CScriptEngine::~CScriptEngine			()
 {
+#ifdef XRGAME_EXPORTS
 	while (!m_script_processors.empty())
 		remove_script_processor(m_script_processors.begin()->first);
 	flush_log				();
+#endif
+#ifdef USE_DEBUGGER
 	xr_delete (m_scriptDebugger);
+#endif
 }
 
 void CScriptEngine::unload				()
@@ -68,10 +75,14 @@ void CScriptEngine::export()
 {
 	luabind::open						(lua());
 	
-	m_scriptDebugger->PrepareLuaBind();
+#ifdef USE_DEBUGGER
+	m_scriptDebugger->PrepareLuaBind	();
+#endif
 	
-	if( !CScriptDebugger::GetDebugger()->Active() )
-		luabind::set_error_callback			(CScriptEngine::lua_error);
+#ifdef USE_DEBUGGER
+	if (!CScriptDebugger::GetDebugger()->Active())
+#endif
+		luabind::set_error_callback		(CScriptEngine::lua_error);
 
 
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
@@ -97,11 +108,15 @@ void CScriptEngine::export()
 	export_motivation_management		();
 	export_monster_info					();
 
+#ifdef XRGAME_EXPORTS
 	object_factory().register_script	();
+#endif
 
 #ifdef DEBUG
-	if( !CScriptDebugger::GetDebugger()->Active() )
-		lua_sethook							(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+#	ifdef USE_DEBUGGER
+		if( !CScriptDebugger::GetDebugger()->Active() )
+#	endif
+			lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
 	load_common_scripts					();
@@ -119,6 +134,7 @@ bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
 		return		(load_file_into_namespace(caScriptName,l_caNamespaceName,bCall));
 }
 
+#ifdef XRGAME_EXPORTS
 void CScriptEngine::remove_script_processor	(LPCSTR processor_name)
 {
 	CScriptProcessorStorage::iterator	I = m_script_processors.find(processor_name);
@@ -127,6 +143,7 @@ void CScriptEngine::remove_script_processor	(LPCSTR processor_name)
 		m_script_processors.erase		(I);
 	}
 }
+#endif
 
 void CScriptEngine::add_file			(LPCSTR file_name)
 {
