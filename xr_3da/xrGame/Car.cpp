@@ -155,6 +155,8 @@ void	CCar::net_Destroy()
 		
 	}
 	CPHSkeleton::RespawnInit();
+	m_damage_particles.Clear();
+	CPHCollisionDamageReceiver::Clear();
 }
 
 void CCar::net_Save(NET_Packet& P)
@@ -321,7 +323,9 @@ void CCar::ApplyDamage(u16 level)
 	CDamagableItem::ApplyDamage(level);
 	switch(level)
 	{
-		case 3: m_fuel=0.f;
+		case 1: m_damage_particles.Play1(this);break;
+		case 2: m_damage_particles.Play2(this);break;
+		case 3: m_fuel=0.f;					   break;	
 	}
 
 }
@@ -523,13 +527,7 @@ void CCar::ParseDefinitions()
 		m_doors_torque_factor=ini->r_u16("doors","open_torque_factor");
 	}
 
-	if(ini->section_exist("damage_particles"))
-	{
-		m_car_damage_particles1=ini->r_string("damage_particles","car_damage_particles1");
-		m_car_damage_particles2=ini->r_string("damage_particles","car_damage_particles2");
-		m_wheels_damage_particles1=ini->r_string("damage_particles","wheels_damage_particles1");
-		m_wheels_damage_particles2=ini->r_string("damage_particles","wheels_damage_particles2");
-	}
+	m_damage_particles.Init(this);
 }
 
 void CCar::CreateSkeleton()
@@ -636,9 +634,9 @@ void CCar::Init()
 			
 	}
 
-	if(ini->section_exist("damage_defs"))
+	if(ini->section_exist("damage_items"))
 	{
-		CInifile::Sect& data		= ini->r_section("damage_defs");
+		CInifile::Sect& data		= ini->r_section("damage_items");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
 			CInifile::Item& item	= *I;
 			u16 index				= pKinematics->LL_BoneID(*item.first); 

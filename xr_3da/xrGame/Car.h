@@ -10,6 +10,7 @@
 #include "DamagableItem.h"
 #include "PHDestroyable.h"
 #include "phcollisiondamagereceiver.h"
+#include "CarDamageParticles.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -38,10 +39,7 @@ class CCar :
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return static_cast<CPHCollisionDamageReceiver*>(this);}
 ////////////////////////////////////////////////////////////////////////
-	shared_str							m_wheels_damage_particles1;
-	shared_str							m_wheels_damage_particles2;
-	shared_str							m_car_damage_particles1;
-	shared_str							m_car_damage_particles2;
+	CCarDamageParticles					m_damage_particles;
 ///////////////////////////////////////////////////////////////////////
 protected:
 	enum ECarCamType{

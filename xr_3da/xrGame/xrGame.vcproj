@@ -6447,6 +6447,12 @@
 								RelativePath=".\CarCameras.cpp">
 							</File>
 							<File
+								RelativePath=".\CarDamageParticles.cpp">
+							</File>
+							<File
+								RelativePath=".\CarDamageParticles.h">
+							</File>
+							<File
 								RelativePath=".\CarDoors.cpp">
 							</File>
 							<File

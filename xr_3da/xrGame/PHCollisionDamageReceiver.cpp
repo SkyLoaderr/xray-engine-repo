@@ -2,7 +2,7 @@
 #include "phcollisiondamagereceiver.h"
 #include "PhysicsShellHolder.h"
 #include "xr_ini.h"
-#include "..//skeletoncustom.h"
+#include "../skeletoncustom.h"
 #include "geometry.h"
 #include "PhysicsShell.h"
 #include "GameMtlLib.h"
@@ -101,4 +101,9 @@ void CPHCollisionDamageReceiver::Hit(u16 source_id,u16 bone_id,float power,const
 	P.w_float	(0.f);
 	P.w_u16		(ALife::eHitTypeStrike);
 	ph->u_EventSend(P);
+}
+
+void CPHCollisionDamageReceiver::Clear()
+{
+	m_controled_bones.clear();
 }

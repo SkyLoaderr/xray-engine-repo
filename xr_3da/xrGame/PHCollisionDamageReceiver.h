@@ -7,9 +7,10 @@ class CPHCollisionDamageReceiver
 {
 xr_map<u16,float> m_controled_bones;
 protected:
-	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()							=0;
-			void						Init						()							;
+	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()																		=0;
+			void						Init						()																		;
 			void						Hit							(u16 source_id,u16 bone_id,float power,const Fvector &dir,Fvector &pos)	;
+			void						Clear						()																		;
 private:
-	static	void __stdcall				CollisionCallback			(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
+	static	void __stdcall				CollisionCallback			(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)	;
 };

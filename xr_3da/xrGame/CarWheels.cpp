@@ -93,7 +93,7 @@ void CCar::SWheel::ApplyDamage(u16 level)
 		joint->GetJointSDfactors(sf,df);
 		sf/=20.f;df*=4.f;
 		joint->SetJointSDfactors(sf,df);
-		if(*car->m_wheels_damage_particles1)car->StartParticles(car->m_wheels_damage_particles1,bone_id,Fvector().set(0,1,0),car->ID());
+		car->m_damage_particles.PlayWheel1(car,bone_id);
 		break;
 	case 2:
 		
@@ -106,7 +106,7 @@ void CCar::SWheel::ApplyDamage(u16 level)
 		joint->GetJointSDfactors(sf,df);
 		sf/=30.f;df*=8.f;
 		joint->SetJointSDfactors(sf,df);
-		if(*car->m_wheels_damage_particles2)car->StartParticles(car->m_wheels_damage_particles2,bone_id,Fvector().set(0,1,0),car->ID());
+		car->m_damage_particles.PlayWheel2(car,bone_id);
 		break;
 	default: NODEFAULT;
 	}
