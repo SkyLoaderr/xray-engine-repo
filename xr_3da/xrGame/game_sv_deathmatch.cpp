@@ -1272,13 +1272,14 @@ void game_sv_Deathmatch::OnPlayerConnect	(ClientID id_who)
 //	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
 	
+	ps_who->Skip = false;
+	SpawnPlayer(id_who, "spectator");
+
 	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServerClient()) )
 	{
 		ps_who->Skip = true;
 		return;
 	}
-	ps_who->Skip = false;
-	SpawnPlayer(id_who, "spectator");
 
 	// Send Message About Client Connected
 	if (xrCData)

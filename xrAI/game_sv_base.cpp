@@ -170,6 +170,8 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	{
 		string64	p_name;
 		xrClientData*	C		=	(xrClientData*)	m_server->client_Get	(p_it);
+		game_PlayerState* A		=	get_it			(p_it);
+		if (A->Skip || !C->net_Ready) continue;
 		if (0==C)	strcpy(p_name,"Unknown");
 		else 
 		{
@@ -181,8 +183,6 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 			}
 		}
 
-		game_PlayerState* A		=	get_it			(p_it);
-		if (A->Skip || !C->net_Ready) continue;
 		A->setName(p_name);
 		u16 tmp_flags = A->flags;
 
