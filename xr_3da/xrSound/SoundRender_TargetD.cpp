@@ -188,7 +188,7 @@ void	CSoundRender_TargetD::fill_block		()
 	// Obtain memory address of write block. This will be in two parts if the block wraps around.
     LPVOID			ptr1, ptr2;
     u32				bytes1,bytes2;
-    R_CHK			(pBuffer->Lock(pos_write, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
+    R_CHK			(pBuffer->Lock(pos_write%buf_size, buf_block, &ptr1, LPDWORD(&bytes1), &ptr2, LPDWORD(&bytes2), 0));
 	R_ASSERT		(0==ptr2 && 0==bytes2);
 
 	// Copy data (and clear the end)
