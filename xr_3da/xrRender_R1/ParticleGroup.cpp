@@ -41,15 +41,6 @@ BOOL CPGDef::Load(IReader& F)
 
 	F.r_chunk		(PGD_CHUNK_FLAGS,&m_Flags);
 
-	R_ASSERT		(F.find_chunk(PGD_CHUNK_EFFECTS));
-    m_Effects.resize(F.r_u32());
-    for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
-    	F.r_stringZ		(it->m_EffectName);
-    	it->m_Time0 	= F.r_float();
-    	it->m_Time1 	= F.r_float();
-    	it->m_Flags.set	(F.r_u32());
-    }
-/*
 	R_ASSERT		(F.find_chunk(PGD_CHUNK_EFFECTS2));
     m_Effects.resize(F.r_u32());
     for (EffectIt it=m_Effects.begin(); it!=m_Effects.end(); it++){
@@ -59,7 +50,6 @@ BOOL CPGDef::Load(IReader& F)
     	it->m_Time1 	= F.r_float();
     	it->m_Flags.set	(F.r_u32());
     }
-*/
     
     if (F.find_chunk(PGD_CHUNK_TIME_LIMIT)){
    		m_fTimeLimit= F.r_float();
