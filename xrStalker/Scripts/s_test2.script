@@ -108,6 +108,7 @@ function Defender:process ()
 	--если еще идем, то вперед
 	if self.state == on_move then
 	   if self.npc:action () then 
+	      printf ("On move")
 	   	  return
 	   else 
 	      self.state = on_ready 
