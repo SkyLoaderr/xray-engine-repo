@@ -44,48 +44,6 @@ public:
 		g = f * (float) (BYTE) (dw >>  8);
 		r = f * (float) (BYTE) (dw >>  0);
 	};
-	IC	DWORD	get_ideal( ) const
-	{
-		float max, dif;
-
-		max = a;
-		if (r>max) max=r;
-		if (g>max) max=g;
-		if (b>max) max=b;
-		dif = 255.f/max;
-#define CNV(x) DWORD(BYTE((x<0?0:x)*dif))
-		return ((DWORD)(CNV(a)<<24) | (CNV(r)<<16) | (CNV(g)<<8) | (CNV(b)));
-#undef CNV
-	};
-	IC	DWORD	get_scale( ) const
-	{
-		BYTE _a, _r, _g, _b;
-		float min, max, dif;
-
-		min = max = a;
-		if (r<min) min=r; if (r>max) max=r;
-		if (g<min) min=g; if (g>max) max=g;
-		if (b<min) min=b; if (b>max) max=b;
-		dif = 255.f/(max-min);
-
-		_a = (BYTE)((a+min)*dif);
-		_r = (BYTE)((r+min)*dif);
-		_g = (BYTE)((g+min)*dif);
-		_b = (BYTE)((b+min)*dif);
-
-		return ((DWORD)(_a<<24) | (_r<<16) | (_g<<8) | (_b));
-	};
-	IC	DWORD	get_maximized( ) const
-	{
-		_color t;
-		float max = a;
-		if (r>max) max=r;
-		if (g>max) max=g;
-		if (b>max) max=b;
-		float dif = 1.0f-max;
-		t.set(r+dif,g+dif,b+dif,a+dif);
-		return t.get();
-	};
 	IC	void	adjust_contrast(float f)				// >1 - contrast will be increased
 	{
 		r = 0.5f + f * (r - 0.5f);
@@ -120,7 +78,6 @@ public:
 	};
 	IC	void	adjust_hue(float s)
 	{
-// AlexMX
 /*		float grey = r2 * 0.2125f + g2 * 0.7154f + b2 * 0.0721f;
 
 		r1= (r2 - grey + s*grey)/s;

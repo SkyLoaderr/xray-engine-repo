@@ -60,9 +60,9 @@ void CBuild::Flex2OGF()
 					R_ASSERT(FF);
 					
 					// Geometry
-					V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color;
-					V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color;
-					V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color;
+					V1.P.set(FF->v[0]->P);	V1.N.set(FF->v[0]->N); V1.Color = FF->v[0]->Color.get();
+					V2.P.set(FF->v[1]->P);	V2.N.set(FF->v[1]->N); V2.Color = FF->v[1]->Color.get();
+					V3.P.set(FF->v[2]->P);	V3.N.set(FF->v[2]->N); V3.Color = FF->v[2]->Color.get();
 					
 					// Normal order
 					svector<_TCF,8>::iterator TC=FF->tc.begin(); 

@@ -49,11 +49,11 @@ CBuild::CBuild(b_transfer * L)
 	scene_bb.invalidate	();
 	for (i=0; i<L->vertex_count; i++)
 	{
-		Vertex*	pV  = new Vertex;
-		pV->P.set(L->vertices[i]);
-		pV->N.set(0,0,0);
-		pV->Color	= 0;
-		scene_bb.modify(pV->P);
+		Vertex*	pV		= new Vertex;
+		pV->P.set		(L->vertices[i]);
+		pV->N.set		(0,0,0);
+		pV->Color.set	(0,0,0,0);
+		scene_bb.modify	(pV->P);
 	}
 	Progress(p_total+=p_cost);
 	Msg("%d vertices processed.",g_vertices.size());

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 #include "xrThread.h"
+#include "xrSyncronize.h"
 
 class CLMThread : public CThread
 {
@@ -109,9 +110,9 @@ void	g_trans_reg			(Vertex* V)
 
 void	g_trans_register	(Vertex* V)
 {
-	g_trans_CS.Lock		();
+	g_trans_CS.Enter	();
 	g_trans_reg			(V);
-	g_trans_CS.Unlock	();
+	g_trans_CS.Leave	();
 }
 
 class CVertexLightThread : public CThread
@@ -145,7 +146,7 @@ public:
 			{
 				Vertex* V		= F->v[v];
 				
-				Fcolor			C,R,Lumel;
+				Fcolor			C;
 				C.set			(0,0,0,0);
 				LightPoint		(&DB, C, V->P, V->N, Lights.begin(), Lights.end(), F);
 				
@@ -187,7 +188,11 @@ void CBuild::LightVertex()
 		Fcolor		C;
 		C.set		(0,0,0,0);
 		for (int v=0; v<VL.size(); v++)
-			C.add_rgb(VL[v]->Color);
+		{
+			C.r += VL[v]->Color.r;
+			C.g += VL[v]->Color.g;
+			C.b += VL[v]->Color.b;
+		}
 		C.mul_rgb	(1.f/float(VL.size()));
 
 		// Calculate final vertex color
