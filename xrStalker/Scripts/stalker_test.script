@@ -1,8 +1,6 @@
 function main()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
-    ak					= get_level_object ("wpn_ak0001")
-    vodka				= get_level_object ("vodka0000")
     
     stalker:script		(true,stalker_test:script_name());
     
