@@ -46,12 +46,14 @@ void CBuild::Tesselate	()
 		// F1
 		Face* F1			= FacePool.create();
 		F1->dwMaterial		= F->dwMaterial;
+		F1->dwMaterialGame	= F->dwMaterialGame;
 		F1->SetVertices		(F->v[idB],F->v[id1],V);
 		F1->AddChannel		(F->tc.front().uv[idB],F->tc.front().uv[id1],UV);
 		
 		// F2
 		Face* F2			= FacePool.create();
 		F2->dwMaterial		= F->dwMaterial;
+		F2->dwMaterialGame	= F->dwMaterialGame;
 		F2->SetVertices		(F->v[idB],V,F->v[id2]);
 		F2->AddChannel		(F->tc.front().uv[idB],UV,F->tc.front().uv[id2]);
 		
