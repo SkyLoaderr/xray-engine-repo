@@ -8,8 +8,11 @@
 
 #pragma once
 
+class CStalkerSoundData;
+
 class CSoundUserDataVisitor {
 public:
-	virtual			~CSoundUserDataVisitor	();
-	virtual void	visit					(CSoundUserData *data);
+	virtual			~CSoundUserDataVisitor	()							{};
+	virtual void	visit					(CSoundUserData *data)		{};
+	virtual void	visit					(CStalkerSoundData *data)	{};
 };

@@ -14,7 +14,6 @@ class CAI_Stalker;
 class CStalkerSoundData;
 
 class CStalkerSoundDataVisitor : public CSoundUserDataVisitor {
-	using CSoundUserDataVisitor::visit;
 private:
 	CAI_Stalker			*m_object;
 
