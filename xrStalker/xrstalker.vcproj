@@ -1651,12 +1651,6 @@
 					Name="Deprecated"
 					Filter="">
 					<File
-						RelativePath=".\scripts\avi_start.script">
-					</File>
-					<File
-						RelativePath=".\scripts\dialogs.script">
-					</File>
-					<File
 						RelativePath=".\scripts\escape_heli.script">
 					</File>
 					<File
@@ -1724,6 +1718,9 @@
 					Name="Storyline"
 					Filter="">
 					<File
+						RelativePath=".\scripts\avi_start.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_conditions.script">
 					</File>
 					<File
@@ -1737,6 +1734,9 @@
 						Filter="">
 						<File
 							RelativePath=".\scripts\bar_dialogs.script">
+						</File>
+						<File
+							RelativePath=".\scripts\dialogs.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\dialogs_military.script">
