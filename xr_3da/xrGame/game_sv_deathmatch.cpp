@@ -81,7 +81,9 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
-		game_PlayerState*	ps	=	get_it	(it);
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
 
 		ps->clear();
 //		ClearPlayerState		(ps);
@@ -256,7 +258,9 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 
 	for		(u32 it=0; it<cnt; ++it)	
 	{
-		game_PlayerState* ps		=	get_it	(it);
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
 		if (ps->Skip) continue;
 		if (ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 		PossiblePlayers[PPlayersCount++] = it;
@@ -335,7 +339,9 @@ BOOL	game_sv_Deathmatch::AllPlayers_Ready ()
 	u32		ready	= 0;
 	for		(u32 it=0; it<cnt; ++it)	
 	{
-		game_PlayerState* ps		=	get_it	(it);
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
 		if (ps->testFlag(GAME_PLAYER_FLAG_READY) )	++ready;
 		else
 			if (ps->Skip) ++ready;
@@ -1122,7 +1128,9 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team, bool Minor)
 	for		(u32 it=0; it<cnt; ++it)	
 	{
 		// init
-		game_PlayerState*	ps	=	get_it	(it);
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
 		if (ps->Skip) continue;		
 
 		if (ps->team == s16(Team))

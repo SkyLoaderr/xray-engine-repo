@@ -28,7 +28,9 @@ u8 game_sv_TeamDeathmatch::AutoTeam()
 {
 	u32	cnt = get_players_count(), l_teams[2] = {0,0};
 	for(u32 it=0; it<cnt; it++)	{
-		game_PlayerState* ps = get_it(it);
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready) continue;
 		if (ps->Skip) continue;
 		if(ps->team>=1) ++(l_teams[ps->team-1]);
 	}
