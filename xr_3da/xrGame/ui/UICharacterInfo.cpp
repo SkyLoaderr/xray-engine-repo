@@ -71,7 +71,7 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	if(uiXml.NavigateToNode("rank_static", 0))
 	{
 		xml_init.InitStatic(uiXml, "rank_static", 0, &UIRank);
-		UIRank.SetElipsis(CUIStatic::eepEnd, 0);
+		UIRank.SetElipsis(CUIStatic::eepEnd, 1);
 	}
 	else
 	{
@@ -94,7 +94,7 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	if(uiXml.NavigateToNode("community_static", 0))
 	{
 		xml_init.InitStatic(uiXml, "community_static", 0, &UICommunity);
-		UICommunity.SetElipsis(CUIStatic::eepEnd, 0);
+		UICommunity.SetElipsis(CUIStatic::eepEnd, 1);
 	}
 	else
 	{
@@ -117,7 +117,7 @@ void CUICharacterInfo::Init(int x, int y, int width, int height, const char* xml
 	if(uiXml.NavigateToNode("relation_static", 0))
 	{
 		xml_init.InitStatic(uiXml, "relation_static", 0, &UIRelation);
-		UIRelation.SetElipsis(CUIStatic::eepEnd, 0);
+		UIRelation.SetElipsis(CUIStatic::eepEnd, 1);
 	}
 	else
 	{
@@ -172,6 +172,17 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	}
 	UIRank.SetText(str);
 
+	sprintf(str, "%s", *stbl(GetReputationAsText(pCharInfo->Reputation())));
+	if (m_bInfoAutoAdjust)
+	{
+		if (UIRelationCaption.IsEnabled() && UIRelationCaption.GetFont())
+		{
+			offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);
+			UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UIRelation.GetWndRect().bottom);
+		}
+	}
+	UIRelation.SetText(str);
+
 	sprintf(str, "%s", *pCharInfo->Community());
 	if (m_bInfoAutoAdjust)
 	{
@@ -195,9 +206,11 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	{
 		UIBio.RemoveAll();
 		static CUIString str;
-		str.SetText(pCharInfo->Bio());
-		CUIStatic::PreprocessText(str.m_str, UIBio.GetItemWidth(), UIBio.GetFont());
-		UIBio.AddParsedItem<CUIListItem>(str, 0, UIBio.GetTextColor(), UIBio.GetFont());
+		if (pCharInfo->Bio())
+		{
+			str.SetText(pCharInfo->Bio());
+			UIBio.AddParsedItem<CUIListItem>(str, 0, UIBio.GetTextColor(), UIBio.GetFont());
+		}
 	}
 }
 

@@ -29,8 +29,8 @@ static ref_shader	g_EquipmentIconsShader	= NULL;
 static ref_shader	g_CharIconsShader		= NULL;
 static ref_shader	g_MapIconsShader		= NULL;
 static ref_shader	g_MPCharIconsShader		= NULL;
-static CUIStatic*	GetUIStatic();
-const int			hugeValue				= 0xdddddddd;
+static CUIStatic*	GetUIStatic				();
+const int			hugeValue				= 0x0ddddddd;
 
 typedef				std::pair<CHARACTER_RANK, shared_str>	CharInfoStringID;
 DEF_MAP				(CharInfoStrings, CHARACTER_RANK, shared_str);

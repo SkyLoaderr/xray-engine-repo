@@ -193,6 +193,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	AttachChild(&UITopList[OUTFIT_SLOT]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UITopList[OUTFIT_SLOT]);
+	UITopList[OUTFIT_SLOT].Enable(false);
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
@@ -901,6 +902,13 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	else if (DRAG_DROP_REFRESH_ACTIVE_ITEM == msg)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
+	}
+	else if (WINDOW_LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
+	{
+		if (UITopList[OUTFIT_SLOT].GetChildWndList().front())
+		{
+			UITopList[OUTFIT_SLOT].GetChildWndList().front()->Show(true);
+		}
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);

@@ -186,6 +186,10 @@ void CUIEncyclopediaWnd::Show(bool status)
 			prevArticlesCount = pActor->encyclopedia_registry.objects_ptr()->size();
 		}
 	}
+	else
+	{
+		UIBack.Show(false);
+	}
 
 	UIInfo.Show(status);
 	inherited::Show(status);

@@ -14,11 +14,13 @@
 #include "UIFrameLineWnd.h"
 #include "UIEncyclopediaWnd.h"
 #include "UIPdaAux.h"
+#include "UIActorInfo.h"
 #include "../encyclopedia_article_defs.h"
 
 class CInventoryOwner;
 
-extern const char * const ALL_PDA_HEADER_PREFIX;
+//////////////////////////////////////////////////////////////////////////
+
 extern const char * const PDA_XML;
 
 ///////////////////////////////////////
@@ -64,6 +66,7 @@ protected:
 	CUIMapWnd			UIMapWnd;
 	CUIEncyclopediaWnd	UIEncyclopediaWnd;
 	CUIDiaryWnd			UIDiaryWnd;
+	CUIActorInfoWnd		UIActorInfo;
 
 	//элементы декоративного интерфейса
 	CUIStatic			UIStaticTop;

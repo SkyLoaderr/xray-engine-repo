@@ -115,7 +115,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 //		pJobItem->SetPicture				("ui\\ui_icon_equipment", r);
 		pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
 		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
-		pJobItem->SetAdditionalMaterialID	(40);//task->ObjectiveArticle(i));
+		pJobItem->SetAdditionalMaterialID	(task->ObjectiveArticle(i));
 		if (i > 0) pJobItem->ScalePicture	(secondaryObjectiveScaleFactor);
 
 		if(pActor && pActor->encyclopedia_registry.objects_ptr())

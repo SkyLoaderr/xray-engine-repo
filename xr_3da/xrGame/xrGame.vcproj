@@ -8566,6 +8566,9 @@
 					Name="PdaWnd"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIPdaAux.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UIPdaAux.h">
 					</File>
 					<File
@@ -8661,6 +8664,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIActorDiary.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIActorInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIActorInfo.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIContracts.cpp">

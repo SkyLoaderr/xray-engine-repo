@@ -17,7 +17,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 const char * const PDA_XML					= "pda.xml";
-const char * const ALL_PDA_HEADER_PREFIX	= "#root 15/FD-665#68";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -83,6 +82,11 @@ void CUIPdaWnd::Init()
 	UIEncyclopediaWnd.Init();
 	UIEncyclopediaWnd.Show(false);
 
+	// Окно статистики о актере
+	UIMainPdaFrame.AttachChild(&UIActorInfo);
+	UIActorInfo.Init();
+	UIActorInfo.Show(false);
+
 	m_pActiveDialog = &UIDiaryWnd;
 
 	// Tab control
@@ -126,6 +130,9 @@ void CUIPdaWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				break;
 			case 3:
 				m_pActiveDialog = smart_cast<CUIWindow*>(&UIEncyclopediaWnd);
+				break;
+			case 4:
+				m_pActiveDialog = smart_cast<CUIWindow*>(&UIActorInfo);
 				break;
 			}
 			m_pActiveDialog->Reset();

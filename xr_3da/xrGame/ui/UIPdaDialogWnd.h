@@ -6,13 +6,10 @@
 
 #pragma once
 
-#include "UIStatic.h"
-#include "UIButton.h"
-#include "UIEditBox.h"
+#include "UIFrameWindow.h"
 #include "UIListWnd.h"
 #include "UICharacterInfo.h"
 #include "UIAnimatedStatic.h"
-#include "UIMultiTextStatic.h"
 
 class CUIPdaDialogWnd: public CUIWindow  
 {
