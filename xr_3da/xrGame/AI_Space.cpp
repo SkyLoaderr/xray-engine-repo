@@ -4,10 +4,8 @@
 
 #include "stdafx.h"
 #include "AI_Space.h"
+#include "gameobject.h"
 #include "..\fstaticrender.h"
-
-#include "x_ray.h"
-#include "xr_smallfont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -59,18 +57,18 @@ void CAI_Space::Render()
 {
 	if (0==vfs)	return;
 
-	CObject*		O	= pCreator->CurrentEntity();
+	CGameObject*	O	= (CGameObject*)Level().CurrentEntity();
 	Fvector	POSITION	= O->Position();
 	POSITION.y += 0.5f;
 
 	// display
 	Fvector P			= POSITION;
-	pApp->pFont->Out(0.f,0.5f,"%f,%f,%f",VPUSH(P));
+	pApp->pFont->Out	(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 
 	NodePosition	Local;
 	PackPosition	(Local,P);
 
-	DWORD ID		= O->AI_NodeID;
+	DWORD ID			= O->AI_NodeID;
 
 	pApp->pFont->Out(0.f,0.55f,"%3d,%4d,%3d -> %d",
 		int(Local[0]),int(Local[1]),int(Local[2]),DWORD(ID));
