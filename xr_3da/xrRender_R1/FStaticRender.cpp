@@ -30,7 +30,7 @@ ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float
 ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)
 {
 	switch (phase)		{
-	case PHASE_NORMAL:	return (((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<40)?pVisual->hShader->E[SE_R1_NORMAL_HQ]:pVisual->hShader->E[SE_R1_NORMAL_LQ])._get();
+	case PHASE_NORMAL:	return pVisual->hShader->E[SE_R1_NORMAL_HQ]._get();	// ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<40)?pVisual->hShader->E[SE_R1_NORMAL_HQ]:pVisual->hShader->E[SE_R1_NORMAL_LQ])._get();
 	case PHASE_POINT:	return pVisual->hShader->E[SE_R1_LPOINT]._get();
 	case PHASE_SPOT:	return pVisual->hShader->E[SE_R1_LSPOT]._get();
 	default:			NODEFAULT;

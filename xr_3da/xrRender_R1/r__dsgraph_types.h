@@ -2,7 +2,7 @@
 
 #include	"fixedmap.h"
 
-// #define	USE_RESOURCE_DEBUGGER
+#define	USE_RESOURCE_DEBUGGER
 
 namespace	R_dsgraph
 {

@@ -13,6 +13,7 @@ public:
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: trees/bushes";	}
 	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
+	virtual		BOOL		canBeDetailed()	{ return TRUE; }
 
 	virtual		void		Save			(IWriter&	fs);
 	virtual		void		Load			(IReader&	fs, u16 version);
