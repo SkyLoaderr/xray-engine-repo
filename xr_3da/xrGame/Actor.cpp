@@ -443,6 +443,7 @@ void CActor::net_Destroy	()
 	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->destroy	(sndHit[it]);
 	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->destroy	(sndDie[it]);
 	ph_Movement.DestroyCharacter();
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float impulse)
