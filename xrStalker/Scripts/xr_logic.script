@@ -633,7 +633,11 @@ function try_switch_to_another_section(npc, st, actor)
 end
 
 function is_active(npc, st)
-	local is_act = (st.section == db.storage[npc:id()]["active_section"])
+	if st.section == nil then
+		utils.abort("npc '%s': st.section is nil, active section is '%s'",
+			npc:name(), utils.to_str(db.storage[npc:id()].active_section))
+	end
+	local is_act = (st.section == db.storage[npc:id()].active_section)
 
 	-- Текущая секция активна и не сработало ни одно из условий переключения на другие секции
 	return is_act
