@@ -321,9 +321,6 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 		if(m_allow_fire)
 		{
-			Log("CHelicopter::eMovingByAttackTraj allow=",m_allow_fire);
-			Log("CHelicopter::eMovingByAttackTraj x=",m_cur_x_rot);
-			Log("CHelicopter::eMovingByAttackTraj y=",m_cur_y_rot);
 			FireStart();
 	
 			if(m_pRocket&&m_use_rocket_on_attack)
