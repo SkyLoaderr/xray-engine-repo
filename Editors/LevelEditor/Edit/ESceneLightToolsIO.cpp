@@ -32,7 +32,7 @@ bool ESceneLightTools::Load(IReader& F)
 	if (!inherited::Load(F)) return false;
 
     if (F.find_chunk(CHUNK_FLAGS))
-    	m_Flags.set	(F.r_u32());
+    	m_Flags.assign		(F.r_u32());
 
     if (F.find_chunk(CHUNK_HEMI)){
      	m_HemiQuality		= F.r_u8();

@@ -16,8 +16,8 @@ public:
                         
     virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
 	// definition
-    IC LPCSTR			ClassName				(){THROW; }
-    IC LPCSTR			ClassDesc				(){THROW; }
+    IC LPCSTR			ClassName				(){THROW; return 0;}
+    IC LPCSTR			ClassDesc				(){THROW; return 0;}
     IC int				RenderPriority			(){return -1; }
 };
 //---------------------------------------------------------------------------

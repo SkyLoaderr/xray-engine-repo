@@ -457,7 +457,7 @@ bool CWayObject::Load(IReader& F)
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++){
     	CWayPoint* W 	= xr_new<CWayPoint>(""); *it = W;
     	F.r_fvector3	(W->m_vPosition);
-    	W->m_Flags.set	(F.r_u32());
+    	W->m_Flags.assign(F.r_u32());
         W->m_bSelected	= F.r_u16();
         F.r_stringZ		(buf);
         W->m_Name		= buf.c_str();

@@ -25,7 +25,7 @@ ESceneWallmarkTools::ESceneWallmarkTools():ESceneCustomMTools(OBJCLASS_WM)
 {
     m_MarkSize		= 1.f;
     m_MarkRotate	= 0.f;
-    m_Flags.set		(flDrawWallmark);
+    m_Flags.assign	(flDrawWallmark);
 }
 
 ESceneWallmarkTools::~ESceneWallmarkTools()
@@ -549,7 +549,7 @@ BOOL ESceneWallmarkTools::AddWallmark	(const Fvector& start, const Fvector& dir)
 		FVF::LIT* E=&*W->verts.end		();
 		for (; I!=E; I++) W->bbox.modify(I->p);
 		W->bbox.getsphere				(W->bounds.P,W->bounds.R);
-        W->flags.set					(wallmark::flSelected);
+        W->flags.assign					(wallmark::flSelected);
         W->bbox.grow					(EPS_L);
 	}
 

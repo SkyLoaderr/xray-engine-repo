@@ -73,7 +73,7 @@ void SAINode::Load(IReader& F, ESceneAIMapTools* tools)
 	pl				= F.r_u16(); 		pvDecompress(Plane.n,pl);
     F.r				(&np,sizeof(np)); 	tools->UnpackPosition(Pos,np,tools->m_AIBBox,tools->m_Params);
 	Plane.build		(Pos,Plane.n);
-    flags.set		(F.r_u8());
+    flags.assign	(F.r_u8());
 }
 
 void SAINode::Save(IWriter& F, ESceneAIMapTools* tools)

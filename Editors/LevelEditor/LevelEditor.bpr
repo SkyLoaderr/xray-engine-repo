@@ -283,6 +283,8 @@
       <FILE FILENAME="Edit\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneWallmarkTools.cpp" FORMNAME="" UNITNAME="ESceneWallmarkTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneWallmarkControls.cpp" FORMNAME="" UNITNAME="ESceneWallmarkControls" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\xrServer_Objects_Abstract.h" FORMNAME="" UNITNAME="xrServer_Objects_Abstract.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\game_base_space.h" FORMNAME="" UNITNAME="game_base_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

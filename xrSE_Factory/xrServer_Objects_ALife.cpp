@@ -512,7 +512,7 @@ void CSE_ALifePHSkeletonObject::data_load(NET_Packet &tNetPacket)
 void CSE_ALifePHSkeletonObject::load(NET_Packet &tNetPacket)
 {
 	inherited::load				(tNetPacket);
-	flags.set					(tNetPacket.r_u8());
+	flags.assign				(tNetPacket.r_u8());
 	data_load					(tNetPacket);
 }
 void CSE_ALifePHSkeletonObject::UPDATE_Write(NET_Packet &tNetPacket)
@@ -525,6 +525,12 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
+#ifdef _EDITOR
+void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
+{
+//.	inherited::FillProp			(pref,items);
+}
+#endif
 
 
 ////////////////////////////////////////////////////////////////////////////

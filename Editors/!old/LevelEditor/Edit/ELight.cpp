@@ -60,7 +60,7 @@ void CLight::Construct(LPVOID data)
     m_pAnimRef		= 0;
     m_LControl		= 0;
 
-    m_Flags.set		(ELight::flAffectStatic);
+    m_Flags.assign	(ELight::flAffectStatic);
 }
 
 CLight::~CLight()

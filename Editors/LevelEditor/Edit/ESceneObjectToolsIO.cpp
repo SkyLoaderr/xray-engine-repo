@@ -24,7 +24,7 @@ bool ESceneObjectTools::Load(IReader& F)
 	if (!inherited::Load(F)) return false;
     
     if (F.find_chunk(CHUNK_FLAGS))
-    	m_Flags.set	(F.r_u32());
+    	m_Flags.assign(F.r_u32());
 
     if (F.find_chunk(CHUNK_APPEND_RANDOM)){
         F.r_fvector3(m_AppendRandomMinScale);

@@ -155,8 +155,8 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,	 values);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref, s_name, "Item condition"), &m_fCondition, 0.f, 1.f);
+//.	inherited::FillProp			(pref,	 values);
+//.	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref, s_name, "Item condition"), &m_fCondition, 0.f, 1.f);
 }
 #endif
 

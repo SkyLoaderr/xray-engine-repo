@@ -47,7 +47,7 @@ EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
     InitRender			();
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
-    m_Flags.set			(flObjectsDraw);
+    m_Flags.assign		(flObjectsDraw);
 }
 
 EDetailManager::~EDetailManager(){
@@ -271,7 +271,7 @@ bool EDetailManager::Load(IReader& F)
         return false;
     }
 
-    if (F.find_chunk(DETMGR_CHUNK_FLAGS)) m_Flags.set(F.r_u32());
+    if (F.find_chunk(DETMGR_CHUNK_FLAGS)) m_Flags.assign(F.r_u32());
     
 	// header
     R_ASSERT			(F.r_chunk(DETMGR_CHUNK_HEADER,&dtH));

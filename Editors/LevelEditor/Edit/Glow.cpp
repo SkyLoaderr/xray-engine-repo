@@ -152,7 +152,7 @@ bool CGlow::Load(IReader& F){
     }
 
     if (F.find_chunk(GLOW_CHUNK_FLAGS))
-    	m_Flags.set	(F.r_u16());
+    	m_Flags.assign	(F.r_u16());
 
     return true;
 }

@@ -371,7 +371,7 @@ bool SBPart::Export	(IWriter& F)
         // shape
         SBoneShape	shape;
         shape.type	= SBoneShape::stBox;
-        shape.flags.set(SBoneShape::sfRemoveAfterBreak);
+        shape.flags.assign(SBoneShape::sfRemoveAfterBreak);
         ComputeOBB	(shape.box,bone_points[bone_idx]);
 	    F.w			(&shape,sizeof(SBoneShape));
 	    F.w_u32		(jtNone);		// joint type

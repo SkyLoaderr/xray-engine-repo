@@ -1,6 +1,6 @@
 object fraLight: TfraLight
-  Left = 1324
-  Top = 280
+  Left = 616
+  Top = 429
   VertScrollBar.Visible = False
   Align = alClient
   BorderStyle = bsNone
