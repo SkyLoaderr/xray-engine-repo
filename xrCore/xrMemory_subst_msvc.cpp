@@ -23,6 +23,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 
 	// if (size>14310800 && size<14310860)	__asm int 3;
 
+	if		(debug_mode)		debug_cs.Enter	();
 	u32		_footer				=	debug_mode?4:0;
 	void*	_ptr				=	0;
 
@@ -50,14 +51,16 @@ void*	xrMemory::mem_alloc		(size_t size)
 		}
 	}
 
-	if (debug_mode)				dbg_register	(_ptr,size);
+	if		(debug_mode)		dbg_register	(_ptr,size);
+	if		(debug_mode)		debug_cs.Leave	();
 	return	_ptr;
 }
 
 void	xrMemory::mem_free		(void* P)
 {
 	stat_calls++;
-	if (debug_mode)				dbg_unregister	(P);
+	if		(debug_mode)		debug_cs.Enter	();
+	if		(debug_mode)		dbg_unregister	(P);
 	u32	pool					= get_header	(P);
 	void* _real					= (void*)(((u8*)P)-1);
 	if (mem_generic==pool)		
@@ -69,6 +72,7 @@ void	xrMemory::mem_free		(void* P)
 		R_ASSERT2				(pool<mem_pools_count,"Memory corruption");
 		mem_pools[pool].destroy	(_real);
 	}
+	if		(debug_mode)		debug_cs.Leave	();
 }
 
 void*	xrMemory::mem_realloc	(void* P, size_t size)
@@ -76,6 +80,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	stat_calls++;
 	if (0==P)					return mem_alloc(size);
 
+	if		(debug_mode)		debug_cs.Enter	();
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
@@ -97,6 +102,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		mem_free				(p_old);
 		_ptr					= p_new;
 	}
+	if		(debug_mode)		debug_cs.Leave	();
 	return	_ptr;
 }
 
