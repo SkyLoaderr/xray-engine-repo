@@ -238,10 +238,8 @@ add_to_type_list(CSE_ALifeLevelChanger)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 	void __stdcall 					OnChangeAnim	(PropValue* sender);
-#ifdef _EDITOR
 	void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
 	void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
-#endif
 	u32 							type;
 	f32 							mass;
     ref_str 						fixed_bones;
@@ -260,10 +258,8 @@ add_to_type_list(CSE_ALifeObjectPhysic)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 
     void __stdcall 					OnChangeAnim	(PropValue* sender);
-#ifdef _EDITOR
     void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
     void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
-#endif
     void __stdcall 					OnChangeFlag	(PropValue* sender);
     enum{
         flPhysic					= (1<<0),
@@ -317,9 +313,7 @@ add_to_type_list(CSE_ALifeObjectProjector)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion,CSE_PHSkeleton)
 	void __stdcall 					OnChangeAnim				(PropValue* sender);
-#ifdef _EDITOR
 	void __stdcall 					OnChooseAnim				(ChooseItemVec& lst);
-#endif
 	ref_str							engine_sound;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();

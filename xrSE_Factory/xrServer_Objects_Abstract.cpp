@@ -91,7 +91,20 @@ void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
 
 void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_stringZ			(visual_name);
+	tNetPacket.w_stringZ		(visual_name);
+}
+
+void CSE_Visual::OnChangeVisual	(PropValue* sender)
+{
+	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	abstract->set_editor_flag	(ISE_Abstract::flVisualChange);
+}
+
+void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec &items)
+{
+	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	ChooseValue *V 				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Model\\Visual"),	&visual_name,	smVisual);
+	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -119,4 +132,17 @@ void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
 void CSE_Motion::motion_write	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_stringZ			(motion_name);
+}
+
+void CSE_Motion::OnChangeMotion	(PropValue* sender)
+{
+	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	abstract->set_editor_flag	(ISE_Abstract::flMotionChange);
+}
+
+void CSE_Motion::FillProp(		LPCSTR pref, PropItemVec &items)
+{
+	ISE_Abstract* abstract		= dynamic_cast<ISE_Abstract*>(this); VERIFY(abstract);
+	ChooseValue *V				= PHelper().CreateChoose(items, PrepareKey(pref,abstract->name(),"Motion"),&motion_name, smGameAnim);
+	V->OnChangeEvent.bind		(this,&CSE_Motion::OnChangeMotion);
 }

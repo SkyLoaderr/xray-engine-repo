@@ -34,6 +34,7 @@ add_to_type_list(CSE_Shape)
 #define script_type_list save_type_list(CSE_Shape)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Visual)
+    void __stdcall	OnChangeVisual	(PropValue* sender);  
 public:
 	ref_str							visual_name;
 	ref_str							startup_animation;
@@ -47,12 +48,15 @@ public:
     void							set_visual		(LPCSTR name, bool load=true);
 	LPCSTR							get_visual		() const {return *visual_name;};
 
+	virtual void		__stdcall	FillProps		(LPCSTR pref, PropItemVec &items);
+
 	virtual CSE_Visual* __stdcall	visual			() = 0;
 };
 add_to_type_list(CSE_Visual)
 #define script_type_list save_type_list(CSE_Visual)
 
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_Motion)
+	void __stdcall	OnChangeMotion	(PropValue* sender);  
 public:
 	ref_str							motion_name;
 public:
@@ -65,6 +69,8 @@ public:
     void							set_motion		(LPCSTR name);
 	LPCSTR							get_motion		() const {return *motion_name;};
 
+	virtual void		__stdcall	FillProps		(LPCSTR pref, PropItemVec &items);
+
 	virtual CSE_Motion* __stdcall	motion			() = 0;
 };
 add_to_type_list(CSE_Motion)
@@ -73,9 +79,10 @@ add_to_type_list(CSE_Motion)
 struct ISE_Abstract {
 public:
 	enum {
-		flVisualAnimationChange		= u32(1 << 0),
-		flMotionChange				= u32(1 << 1),
-		flUpdateProperties			= u32(1 << 2),
+		flUpdateProperties			= u32(1 << 0),
+		flVisualChange				= u32(1 << 1),
+		flVisualAnimationChange		= u32(1 << 2),
+		flMotionChange				= u32(1 << 3),
 	};
 	Flags32							m_editor_flags;
 	IC	void						set_editor_flag	(u32 mask)	{m_editor_flags.set	(mask,TRUE);}

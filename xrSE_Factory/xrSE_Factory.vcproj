@@ -1113,9 +1113,6 @@
 						RelativePath=".\ItemListTypes.h">
 					</File>
 					<File
-						RelativePath=".\PropertiesListHelper.h">
-					</File>
-					<File
 						RelativePath=".\PropertiesListTypes.h">
 					</File>
 					<File

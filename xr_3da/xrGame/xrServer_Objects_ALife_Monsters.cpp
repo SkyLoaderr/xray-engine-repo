@@ -497,12 +497,13 @@ void CSE_ALifeTorridZone::UPDATE_Read		(NET_Packet	&tNetPacket)
 
 void CSE_ALifeTorridZone::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write	(tNetPacket);
 }
 
 void CSE_ALifeTorridZone::FillProps(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProps		(pref,	 values);
+	inherited1::FillProps		(pref, values);
+	inherited2::FillProps		(pref, values);
 }
 
 //-------------------------------------------------------------------------
