@@ -2634,6 +2634,30 @@ SOURCE=.\ParticleSorter.cpp
 SOURCE=.\ParticleSorter.h
 # End Source File
 # End Group
+# Begin Group "HOM occlusion"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\HOM.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\HOM.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\occRasterizer_core.cpp
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\DetailModel.cpp

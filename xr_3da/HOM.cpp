@@ -18,3 +18,7 @@ CHOM::~CHOM()
 {
 
 }
+
+void CHOM::Load(CStream* S)
+{
+}
