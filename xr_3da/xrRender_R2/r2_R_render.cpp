@@ -275,7 +275,6 @@ void CRender::Render	()
 	RCache.set_xform_world	(Fidentity);
 	Details.Render			(Device.vCameraPosition);
 
-	// pCreator->Environment.RenderFirst	();
 
 	// NORMAL-matrix		*** actors and dyn. objects
 	mapMatrix.traverseANY	(matrix_L1);
@@ -290,6 +289,10 @@ void CRender::Render	()
 	pCreator->pHUD->Render_Affected			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
+	// Direct-compute
+	LR_Direct.compute_xf_1					();
+
+	// pCreator->Environment.RenderFirst	();
 	// pCreator->Environment.RenderLast		();
 	
 	// Postprocess
