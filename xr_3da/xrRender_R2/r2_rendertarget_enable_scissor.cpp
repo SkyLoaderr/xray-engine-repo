@@ -23,7 +23,7 @@ BOOL CRenderTarget::enable_scissor		(light* L)		// true if intersects near plane
 		float denom						= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
 		plane.mul						(denom);
 		Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
-		float	p_dist					= P.classify	(L->spatial.center) - L->range;
+		float	p_dist					= P.classify	(L->spatial.center) - L->spatial.radius;
 		near_intersect					= (p_dist<=0);
 	}
 
