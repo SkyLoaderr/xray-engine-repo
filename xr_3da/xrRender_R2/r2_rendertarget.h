@@ -3,19 +3,12 @@
 class CRenderTarget		: public IRender_Target
 {
 private:
-					d_Position;		// 64bit, fat	(x,y,z,0)				(eye-space)
-	LPDIRECT3DSURFACE9				d_Position_S;
-	LPDIRECT3DTEXTURE9				d_Normal;		// 64bit, fat	(x,y,z,0)				(eye-space)
-	LPDIRECT3DSURFACE9				d_Normal_S;
-	LPDIRECT3DTEXTURE9				d_Color;		// 64bit, fat	(r,g,b,specular-gloss)
-	LPDIRECT3DSURFACE9				d_Color_S;
-	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
-	LPDIRECT3DSURFACE9				d_Accumulator_S;
-
-	LPDIRECT3DTEXTURE9				d_Bloom_1;		// 32bit		(r,g,b)
-	LPDIRECT3DSURFACE9				d_Bloom_1_S;
-	LPDIRECT3DTEXTURE9				d_Bloom_2;		// 32bit		(r,g,b)
-	LPDIRECT3DSURFACE9				d_Bloom_2_S;
+	CRT*				rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)
+	CRT*				rt_Normal;		// 64bit, fat	(x,y,z,?)				(eye-space)
+	CRT*				rt_Color;		// 64bit, fat	(r,g,b,specular-gloss)
+	CRT*				rt_Accumulator;	// 32bit		(r,g,b,specular)
+	CRT*				rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
+	CRT*				rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 private:
 	float				param_blur;
 	float				param_gray;
