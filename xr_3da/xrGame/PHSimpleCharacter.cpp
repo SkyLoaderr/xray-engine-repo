@@ -46,8 +46,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_phys_ref_object=NULL;
 	p_lastMaterial=&lastMaterial;
 	b_on_object=false;
-	b_climb=false;
-	b_pure_climb=true;
+
 	m_friction_factor=1.f;
 
 	m_control_force[0]=0.f;
@@ -98,8 +97,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	if(b_exist) return;
 
 	b_air_contact_state=false;
-	b_climb_getup=false;
-	b_near_leader=false;
+
 	////////////////////////////////////////////////////////
 	/*
 	m_control_force[0]=0.f;
@@ -376,8 +374,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	b_valide_ground_contact=false;
 	b_valide_wall_contact=false;
 
-	b_climb=false;
-	b_pure_climb=true;
+
 	b_was_on_object=b_on_object;
 	b_on_object=false;
 	b_death_pos=false;
@@ -433,15 +430,6 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if(m_acceleration.magnitude()>0.f) is_control=true;
 	else							   is_control=false;
 
-	b_pure_climb=b_pure_climb&&b_any_contacts&&(!b_lose_control);
-	if(b_pure_climb) 
-			b_at_wall=true;
-
-	if(b_lose_control || (!b_climb&&is_contact)||
-		(!b_pure_climb)//b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2//&&b_good_graund
-		) 
-		b_at_wall=false;
-
 	b_depart=was_contact&&(!is_contact);
 	b_stop_control=was_control&&(!is_control);
 	b_meet=(!was_contact)&&(is_contact);
@@ -475,7 +463,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		b_lose_control=false;
 	
 	
-	if(b_jumping&&b_good_graund ||(b_at_wall&&b_valide_wall_contact)) //b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2
+	if(b_jumping&&b_good_graund ||(m_elevator_state.ClimbingState()&&b_valide_wall_contact)) //b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2
 		b_jumping=false;
 
 	//deside if control lost
@@ -511,7 +499,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		}
 
 		//decide to clamb
-		if(!b_climb&&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
+		if(!m_elevator_state.ClimbingState()&&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
 		{
 			//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
 			//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};
@@ -572,7 +560,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		if(!b_lose_control||b_clamb_jump)
 			dBodyAddForce(m_body,
 				-sidedir[0]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor,
-				-m.mass*(50.f)*(!b_lose_control&&!(is_contact||(b_climb&&b_any_contacts))),//&&!b_climb
+				-m.mass*(50.f)*(!b_lose_control&&!(is_contact||(b_any_contacts))),//&&!b_climb
 				-sidedir[2]*vProj*(500.f+200.f*b_clamb_jump)*m_friction_factor
 				);
 		//if(b_clamb_jump){
@@ -667,7 +655,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	R_begin                         = XRC.r_begin();
 	R_end                           = XRC.r_end();
 	T_array                         = Level().ObjectSpace.GetStaticTris();
-	b_near_leader=false;
+
 	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		//CDB::TRI* T = T_array + Res->id;
@@ -681,10 +669,6 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 			side1[1]=Res->verts[2].y-Res->verts[1].y;
 			side1[2]=Res->verts[2].z-Res->verts[1].z;
 
-			CDB::TRI* T = T_array + Res->id;
-			SGameMtl* material=GMLib.GetMaterialByIdx(T->material);
-
-			b_near_leader=b_near_leader||(!!material->Flags.is(SGameMtl::flClimable));
 			dCROSS(norm,=,side0,side1);//optimize it !!!
 			dNormalize3(norm);
 			//if(b_leader)dVectorSet((dReal*)&leader_norm,norm);
@@ -811,7 +795,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 
 	}
 
-	if(!b_at_wall&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
+	if(!m_elevator_state.ClimbingState()&&b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
 		m_control_force[0]*=4.f;
 		m_control_force[1]*=4.f;//*8.f
 		m_control_force[2]*=4.f;
@@ -1128,8 +1112,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		c->surface.soft_cfm=world_cfm*2.f;
 		c->surface.soft_erp=world_erp;
 	}
-	b_climb=b_climb || bClimable;
-	b_pure_climb=b_pure_climb && (bClimable||c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform);
+	
 	if(tri_material->Flags.is(SGameMtl::flPassable))return;
 
 	dReal spring_rate=def_spring_rate;
@@ -1258,7 +1241,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	is_contact=true;
 
 	//if(b_at_wall&&!bClimable) return;
-	if(!((c->geom.g1==m_wheel) || (c->geom.g2==m_wheel)||(b_at_wall)  ))//
+	if(!((c->geom.g1==m_wheel) || (c->geom.g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
 		return;
 
 
@@ -1395,7 +1378,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		//c->surface.soft_cfm*=spring_rate;//0.01f;
 		//c->surface.soft_erp*=dumping_rate;//10.f;
 		MulSprDmp(c->surface.soft_cfm,c->surface.soft_erp,spring_rate,dumping_rate);
-		c->surface.mu *= (1.f+b_clamb_jump*3.f+b_climb*20.f);
+		c->surface.mu *= (1.f+b_clamb_jump*3.f);
 	}
 
 

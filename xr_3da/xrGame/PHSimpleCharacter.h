@@ -14,8 +14,9 @@ class CPHSimpleCharacter : public CPHCharacter
 	Fvector m_AABB;
 	Fvector m_AABB_forbid;
 #endif
-	CElevatorState			m_elevator_state;
+	
 protected:
+	CElevatorState			m_elevator_state;
 	////////////////////////////damage////////////////////////////////////////
 	dContact				m_damege_contact;
 	float					m_dmc_signum;
@@ -80,9 +81,7 @@ protected:
 	bool b_valide_wall_contact;
 	bool b_saved_contact_velocity;
 	bool b_jumping;
-	bool b_climb;
-	bool b_pure_climb;
-	bool b_at_wall;
+
 	bool was_control;
 	bool b_stop_control;
 	bool b_on_object;
@@ -90,11 +89,6 @@ protected:
 	bool b_external_impulse;
 	bool b_death_pos;
 
-	bool b_climb_getup;
-	bool b_near_leader;
-	bool b_block_climb_getup;
-	dReal m_start_climb_getup_height;
-	//Fvector leader_norm;
 	u32  m_contact_count;
 
 	dReal m_friction_factor;
