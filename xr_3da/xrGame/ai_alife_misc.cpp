@@ -33,8 +33,8 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 #pragma todo("Dima to Dima : Instead of copying map to map we have to implement more complex and efficient data processing while adding and removing objects to/from graph point")
 	m_tpGraphPointObjects		= m_tpGraphObjects[tGraphID].tpObjects;
 
-	D_OBJECT_PAIR_IT		I = m_tpGraphPointObjects.begin();
-	D_OBJECT_PAIR_IT		E = m_tpGraphPointObjects.end();
+	D_OBJECT_PAIR_IT			I = m_tpGraphPointObjects.begin();
+	D_OBJECT_PAIR_IT			E = m_tpGraphPointObjects.end();
 	int							l_iGroupIndex;
 	bool						l_bFirstTime = true;
 	bool						l_bMutualDetection;
