@@ -217,7 +217,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 {
 	int					l_iErrorCode;
 	if (caNameSpaceName && xr_strcmp("_G",caNameSpaceName)) {
-		string256		insert, a, b;
+		string512		insert, a, b;
 
 		LPCSTR			header = "\
 local function script_name() \
@@ -322,7 +322,7 @@ bool CScriptStorage::namespace_loaded(LPCSTR N, bool remove_from_stack)
 {
 	int						start = lua_gettop(lua());
 	lua_pushstring 			(lua(),"_G"); 
-	lua_gettable 			(lua(),LUA_GLOBALSINDEX); 
+	lua_rawget 				(lua(),LUA_GLOBALSINDEX); 
 	string256				S2;
 	strcpy					(S2,N);
 	LPSTR					S = S2;
@@ -333,7 +333,7 @@ bool CScriptStorage::namespace_loaded(LPCSTR N, bool remove_from_stack)
 		if (S1)
 			*S1				= 0; 
 		lua_pushstring 		(lua(),S); 
-		lua_gettable 		(lua(),-2); 
+		lua_rawget 			(lua(),-2); 
 		if (lua_isnil(lua(),-1)) { 
 //			lua_settop		(lua(),0);
 			VERIFY			(lua_gettop(lua()) >= 2);

@@ -23,11 +23,6 @@ CScriptProcess *CScriptEngine::script_process	(LPCSTR process_name) const
 	return									(0);
 }
 
-IC	void CScriptEngine::reload_modules		(bool flag)
-{
-	m_reload_modules						= flag;
-}
-
 IC	void CScriptEngine::parse_script_namespace(LPCSTR function_to_call, LPSTR name_space, LPSTR function)
 {
 	LPCSTR					I = function_to_call, J = 0;

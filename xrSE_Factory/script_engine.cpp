@@ -21,15 +21,12 @@ extern void export_classes(lua_State *L);
 
 CScriptEngine::CScriptEngine			()
 {
-//	lua_setgcthreshold		(lua(),64*1024);
-	m_stack_level			= 0;
-	m_reload_modules		= false;
-	m_global_script_loaded	= false;
-	m_processing			= false;
+	m_stack_level		= 0;
+	m_reload_modules	= false;
 
 #ifdef USE_DEBUGGER
-	m_scriptDebugger = NULL;
-	restartDebugger();	
+	m_scriptDebugger	= NULL;
+	restartDebugger		();	
 #endif
 }
 
@@ -117,6 +114,30 @@ void CScriptEngine::lua_hook_call		(CLuaVirtualMachine *L, lua_Debug *dbg)
 }
 #endif
 
+int auto_load				(lua_State *L)
+{
+	if ((lua_gettop(L) < 2) || !lua_istable(L,1) || !lua_isstring(L,2)) {
+		lua_pushnil	(L);
+		return		(1);
+	}
+
+	ai().script_engine().process_file(lua_tostring(L,2));
+	lua_rawget		(L,1);
+	return			(1);
+}
+
+void CScriptEngine::setup_auto_load		()
+{
+	luaL_newmetatable					(lua(),"XRAY_AutoLoadMetaTable");
+	lua_pushstring						(lua(),"__index");
+	lua_pushcfunction					(lua(), auto_load);
+	lua_settable						(lua(),-3);
+	lua_pushstring 						(lua(),"_G"); 
+	lua_gettable 						(lua(),LUA_GLOBALSINDEX); 
+	luaL_getmetatable					(lua(),"XRAY_AutoLoadMetaTable");
+	lua_setmetatable					(lua(),-2);
+}
+
 void CScriptEngine::script_export		()
 {
 	luabind::open						(lua());
@@ -125,6 +146,7 @@ void CScriptEngine::script_export		()
 	
 	export_classes						(lua());
 
+	setup_auto_load						();
 	load_class_registrators				();
 	object_factory().register_script	();
 
@@ -161,11 +183,6 @@ void CScriptEngine::remove_script_process	(LPCSTR process_name)
 	}
 }
 
-void CScriptEngine::add_file			(LPCSTR file_name)
-{
-	m_load_queue.push_back	(xr_strdup(file_name));
-}
-
 void CScriptEngine::load_common_scripts()
 {
 #ifdef DBG_DISABLE_SCRIPTS
@@ -185,8 +202,7 @@ void CScriptEngine::load_common_scripts()
 		u32				n = _GetItemCount(caScriptString);
 		string256		I;
 		for (u32 i=0; i<n; ++i) {
-			add_file	(_GetItem(caScriptString,i,I));
-			process		();
+			process_file(_GetItem(caScriptString,i,I));
 			if (object("_G",strcat(I,"_initialize"),LUA_TFUNCTION))
 				lua_dostring(lua(),strcat(I,"()"));
 		}
@@ -195,30 +211,23 @@ void CScriptEngine::load_common_scripts()
 	xr_delete			(l_tpIniFile);
 }
 
-void CScriptEngine::process	()
+void CScriptEngine::process_file	(LPCSTR file_name)
 {
-	if (m_processing)
-		return;
-
-	m_processing				= true;
-	string256					S,S1;
-	for (u32 i=0, n=m_load_queue.size(); !m_load_queue.empty(); ++i) {
-		LPSTR					S2 = m_load_queue.front();
-		m_load_queue.pop_front	();
-		bool					global_script_loaded = (!*S2 || !xr_strcmp(S2,"_G"));
-//		R_ASSERT2				(xr_strcmp(S2,"_G"),"File name \"_G.script\" is reserved and cannot be used!");
-		if ((global_script_loaded && !m_global_script_loaded) || ((m_reload_modules && (i < n)) || !namespace_loaded(S2))) {
-			if (global_script_loaded)
-				m_global_script_loaded = true;
-			FS.update_path		(S,"$game_scripts$",strconcat(S1,S2,".script"));
-			Msg					("* loading script %s",S1);
-			load_file			(S,true);
-		}
-		xr_free					(S2);
+	string256				S,S1;
+	bool					global_script_loaded = (!*file_name || !xr_strcmp(file_name,"_G"));
+	if (global_script_loaded || m_reload_modules || !namespace_loaded(file_name)) {
+		FS.update_path		(S,"$game_scripts$",strconcat(S1,file_name,".script"));
+		Msg					("* loading script %s",S1);
+		m_reload_modules	= false;
+		load_file			(S,true);
 	}
-	
-	m_reload_modules			= false;
-	m_processing				= false;
+}
+
+void CScriptEngine::process_file	(LPCSTR file_name, bool reload_modules)
+{
+	m_reload_modules		= reload_modules;
+	process_file			(file_name);
+	m_reload_modules		= false;
 }
 
 void CScriptEngine::register_script_classes	()
@@ -258,7 +267,7 @@ void CScriptEngine::load_class_registrators		()
 	xr_delete			(l_tpIniFile);
 }
 
-bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object)
+bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &object, int type)
 {
 //	VERIFY(luabind::get_error_callback() == CScriptEngine::lua_error);
 	if (!xr_strlen(function_to_call))
@@ -267,12 +276,10 @@ bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &ob
 	string256				name_space, function;
 
 	parse_script_namespace	(function_to_call,name_space,function);
-	if (xr_strcmp(name_space,"_G")) {
-		add_file			(name_space);
-		process				();
-	}
+	if (xr_strcmp(name_space,"_G"))
+		process_file		(name_space);
 
-	if (!this->object(name_space,function,LUA_TFUNCTION))
+	if (!this->object(name_space,function,type))
 		return				(false);
 
 	luabind::object			lua_namespace	= this->name_space(name_space);
@@ -283,13 +290,12 @@ bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &ob
 #ifdef USE_DEBUGGER
 void CScriptEngine::stopDebugger				()
 {
-	if(debugger()){
-		xr_delete( m_scriptDebugger );
-		Msg("Script debugger succesfully stoped.");
-	}else
-		Msg("Script debugger not present.");
-
-
+	if (debugger()){
+		xr_delete	(m_scriptDebugger);
+		Msg			("Script debugger succesfully stoped.");
+	}
+	else
+		Msg			("Script debugger not present.");
 }
 
 void CScriptEngine::restartDebugger				()
@@ -299,6 +305,6 @@ void CScriptEngine::restartDebugger				()
 
 	m_scriptDebugger = xr_new<CScriptDebugger>();
 	debugger()->PrepareLuaBind();
-	Msg("Script debugger succesfully restarted.");
+	Msg				("Script debugger succesfully restarted.");
 }
 #endif

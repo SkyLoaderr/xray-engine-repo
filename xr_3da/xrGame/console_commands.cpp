@@ -1354,10 +1354,8 @@ public:
 			P->m_Flags.set	(FS_Path::flNeedRescan,TRUE);
 			FS.rescan_pathes();
 			// run script
-			if (ai().script_engine().script_process("level")) {
-				ai().script_engine().script_process("level")->add_script(S);
-				ai().script_engine().reload_modules(true);
-			}
+			if (ai().script_engine().script_process("level"))
+				ai().script_engine().script_process("level")->add_script(S,false,true);
 		}
 	}
 };
@@ -1369,10 +1367,8 @@ public:
 		if (!xr_strlen(args))
 			Log("* Specify string to run!");
 		else {
-			if (ai().script_engine().script_process("level")) {
-				ai().script_engine().script_process("level")->add_string(args);
-				ai().script_engine().reload_modules(true);
-			}
+			if (ai().script_engine().script_process("level"))
+				ai().script_engine().script_process("level")->add_script(args,true,true);
 		}
 	}
 };

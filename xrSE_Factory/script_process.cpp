@@ -29,7 +29,7 @@ CScriptProcess::CScriptProcess	(shared_str name, shared_str scripts) :
 	
 	string256		I;
 	for (u32 i=0, n = _GetItemCount(*scripts); i<n; ++i)
-		add_script	(_GetItem(*scripts,i,I));
+		add_script	(_GetItem(*scripts,i,I),false,false);
 
 	m_iterator		= 0;
 }
@@ -45,10 +45,11 @@ void CScriptProcess::run_scripts()
 	for ( ; !m_scripts_to_run.empty(); ) {
 		LPSTR					I = m_scripts_to_run.back().m_script_name;
 		bool					do_string = m_scripts_to_run.back().m_do_string;
+		bool					reload = m_scripts_to_run.back().m_reload;
 		S						= xr_strdup(I);
 		m_scripts_to_run.pop_back();
 
-		CScriptThread			*script = xr_new<CScriptThread>(S,do_string);
+		CScriptThread			*script = xr_new<CScriptThread>(S,do_string,reload);
 		xr_free					(S);
 
 		if (script->active())
@@ -98,14 +99,7 @@ void CScriptProcess::update()
 #endif
 }
 
-void CScriptProcess::add_script	(LPCSTR	script_name)
+void CScriptProcess::add_script	(LPCSTR	script_name,bool do_string, bool reload)
 {
-	m_scripts_to_run.push_back(CScriptToRun(script_name,false));
+	m_scripts_to_run.push_back(CScriptToRun(script_name,do_string,reload));
 }
-
-#ifdef DEBUG
-void CScriptProcess::add_string	(LPCSTR	string_to_run)
-{
-	m_scripts_to_run.push_back(CScriptToRun(string_to_run,true));
-}
-#endif

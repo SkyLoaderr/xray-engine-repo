@@ -33,12 +33,6 @@ void ErrorLog(LPCSTR caMessage)
 #endif
 }
 
-void LoadScriptModule(LPCSTR script_name)
-{
-	ai().script_engine().add_file(script_name);
-	ai().script_engine().process();
-}
-
 void FlushLogs()
 {
 #ifdef DEBUG
@@ -98,7 +92,6 @@ void CScriptEngine::script_register(lua_State *L)
 	function	(L,	"log",							LuaLog);
 	function	(L,	"error_log",					ErrorLog);
 	function	(L,	"flush",						FlushLogs);
-	function	(L,	"module",						LoadScriptModule);
 	function	(L,	"verify_if_thread_is_running",	verify_if_thread_is_running);
 	function	(L,	"editor",						editor);
 	function	(L,	"bit_and",						bit_and);

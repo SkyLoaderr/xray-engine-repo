@@ -11,8 +11,9 @@
 #include "script_storage.h"
 #include "script_export_space.h"
 #include "script_space_forward.h"
+#include <lua.h>
 
-// #define DBG_DISABLE_SCRIPTS
+//#define DBG_DISABLE_SCRIPTS
 
 class CScriptProcess;
 class CScriptThread;
@@ -28,14 +29,15 @@ public:
 	typedef CScriptStorage inherited;
 	typedef xr_map<LPCSTR,CScriptProcess*,pred_str> CScriptProcessStorage;
 
+private:
+	bool						m_reload_modules;
+
 protected:
 	CScriptProcessStorage		m_script_processes;
-	xr_deque<LPSTR>				m_load_queue;
 	int							m_stack_level;
-	bool						m_reload_modules;
 	shared_str					m_class_registrators;
-	bool						m_global_script_loaded;
-	bool						m_processing;
+
+protected:
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;
 #endif
@@ -54,11 +56,11 @@ public:
 	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;
 	IC		void				add_script_process			(LPCSTR process_name, CScriptProcess *script_process);
 			void				remove_script_process		(LPCSTR process_name);
-			void				add_file					(LPCSTR file_name);
-			void				process						();
+			void				setup_auto_load				();
+			void				process_file				(LPCSTR file_name);
+			void				process_file				(LPCSTR file_name, bool reload_modules);
 			void				script_export				();
-	IC		void				reload_modules				(bool flag);
-			bool				function_object				(LPCSTR function_to_call, luabind::object &object);
+			bool				function_object				(LPCSTR function_to_call, luabind::object &object, int type = LUA_TFUNCTION);
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
 			void				load_class_registrators		();

@@ -22,7 +22,7 @@
 
 const LPCSTR main_function = "console_command_run_string_main_thread_function";
 
-CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string)
+CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string, bool reload)
 {
 	m_virtual_machine		= 0;
 	m_active				= false;
@@ -31,8 +31,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string)
 		string256			S;
 		if (!do_string) {
 			m_script_name	= caNamespaceName;
-			ai().script_engine().add_file(caNamespaceName);
-			ai().script_engine().process();
+			ai().script_engine().process_file(caNamespaceName,reload);
 		}
 		else {
 			m_script_name	= "console command";
