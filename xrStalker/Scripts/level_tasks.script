@@ -369,9 +369,9 @@ function process_map_spot(info_id)
 
 	-- radar
     elseif info_id == "bar_radar_turn_off_start" then
-           add_location(1000, "rad_aerials_location")
+           add_location(1000, "rad_antenna_location")
     elseif info_id == "bar_radar_turn_off_done" then
-           remove_location (1000, "rad_aerials_location")
+           remove_location (1000, "rad_antenna_location")
 	
 	end
 end
