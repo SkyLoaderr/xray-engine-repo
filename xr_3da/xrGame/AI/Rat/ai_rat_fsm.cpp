@@ -96,23 +96,23 @@ void CAI_Rat::Think()
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
-	if (m_fSpeed > EPS_L) {
-		AI_Path.TravelPath.resize(3);
-		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
-		AI_Path.TravelPath[0].P = m_tOldPosition;
-		AI_Path.TravelPath[1].P = vPosition;
-		Fvector tTemp;
-		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-		tTemp.normalize_safe();
-		tTemp.mul(10.f);
-		AI_Path.TravelPath[2].P.add(vPosition,tTemp);
-		AI_Path.TravelStart = 0;
-		vPosition = m_tOldPosition;
-	}
-	else {
-		AI_Path.TravelPath.clear();
-		AI_Path.TravelStart = 0;
-	}
+//	if (m_fSpeed > EPS_L) {
+//		AI_Path.TravelPath.resize(3);
+//		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = AI_Path.TravelPath[2].floating = FALSE;
+//		AI_Path.TravelPath[0].P = m_tOldPosition;
+//		AI_Path.TravelPath[1].P = vPosition;
+//		Fvector tTemp;
+//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//		tTemp.normalize_safe();
+//		tTemp.mul(10.f);
+//		AI_Path.TravelPath[2].P.add(vPosition,tTemp);
+//		AI_Path.TravelStart = 0;
+//		vPosition = m_tOldPosition;
+//	}
+//	else {
+//		AI_Path.TravelPath.clear();
+//		AI_Path.TravelStart = 0;
+//	}
 }
 void CAI_Rat::Death()
 {
