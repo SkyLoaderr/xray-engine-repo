@@ -295,14 +295,6 @@ SOURCE=.\EffectorShot.h
 # End Group
 # Begin Source File
 
-SOURCE=.\Tracer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Tracer.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\xr_weapon_list.cpp
 # End Source File
 # Begin Source File
@@ -605,6 +597,38 @@ SOURCE=.\xrServer.h
 # Begin Source File
 
 SOURCE=.\xrServer_Entities.cpp
+# End Source File
+# End Group
+# Begin Group "Effects"
+
+# PROP Default_Filter ""
+# Begin Group "Core"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\DynamicHeightMap.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\DynamicHeightMap.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=.\Rain.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Rain.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tracer.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Tracer.h
 # End Source File
 # End Group
 # Begin Source File
