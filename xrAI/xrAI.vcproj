@@ -1246,6 +1246,9 @@
 					RelativePath=".\bone.h">
 				</File>
 				<File
+					RelativePath=".\ChooseTypes.h">
+				</File>
+				<File
 					RelativePath="clsid_game.h">
 				</File>
 				<File
@@ -1265,6 +1268,9 @@
 				</File>
 				<File
 					RelativePath=".\inventory_space.h">
+				</File>
+				<File
+					RelativePath=".\ItemListTypes.h">
 				</File>
 				<File
 					RelativePath="NET_Compressor.h">
@@ -1306,13 +1312,28 @@
 					RelativePath=".\PHSynchronize.h">
 				</File>
 				<File
+					RelativePath=".\PropertiesListHelper.h">
+				</File>
+				<File
+					RelativePath=".\PropertiesListTypes.h">
+				</File>
+				<File
 					RelativePath=".\script_export_space.h">
+				</File>
+				<File
+					RelativePath=".\Sound.h">
+				</File>
+				<File
+					RelativePath=".\WaveForm.h">
+				</File>
+				<File
+					RelativePath=".\xrEProps.h">
 				</File>
 				<File
 					RelativePath="xrMessages.h">
 				</File>
 				<File
-					RelativePath="xrServer_Objects.cpp">
+					RelativePath=".\xrServer_Objects.cpp">
 				</File>
 				<File
 					RelativePath="xrServer_Objects.h">
@@ -1321,7 +1342,7 @@
 					RelativePath=".\xrServer_Objects_Abstract.h">
 				</File>
 				<File
-					RelativePath="xrServer_Objects_ALife.cpp">
+					RelativePath=".\xrServer_Objects_ALife.cpp">
 				</File>
 				<File
 					RelativePath="xrServer_Objects_ALife.h">
@@ -1330,13 +1351,13 @@
 					RelativePath="xrServer_Objects_ALife_All.h">
 				</File>
 				<File
-					RelativePath="xrServer_Objects_ALife_Items.cpp">
+					RelativePath=".\xrServer_Objects_ALife_Items.cpp">
 				</File>
 				<File
 					RelativePath="xrServer_Objects_ALife_Items.h">
 				</File>
 				<File
-					RelativePath="xrServer_Objects_ALife_Monsters.cpp">
+					RelativePath=".\xrServer_Objects_ALife_Monsters.cpp">
 				</File>
 				<File
 					RelativePath="xrServer_Objects_ALife_Monsters.h">

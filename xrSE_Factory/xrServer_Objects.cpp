@@ -12,6 +12,18 @@
 #include "game_base_space.h"
 #include "xrMessages.h"
 
+#ifndef XRSE_FACTORY_EXPORTS
+#	include "xrEProps.h"
+	
+	IPropHelper &PHelper()
+	{
+		NODEFAULT;
+#	ifdef DEBUG
+		return(*(IPropHelper*)0);
+#	endif
+	}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CPureServerObject
 ////////////////////////////////////////////////////////////////////////////
