@@ -4,7 +4,7 @@
 #ifndef PSLibraryH
 #define PSLibraryH
 
-#include "ParticleSystem.h"
+#include "..\ParticleSystem.h"
 #include "ParticleEffect.h"
 #include "ParticleGroup.h"
 

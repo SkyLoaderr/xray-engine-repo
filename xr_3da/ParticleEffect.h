@@ -3,171 +3,173 @@
 #define ParticleEffectH
 //---------------------------------------------------------------------------
 
-#include "FBasicVisual.h"
-#include "ParticleCustom.h"
+#include "..\FBasicVisual.h"
+#include "..\ParticleCustom.h"
 
 // refs
-namespace PAPI{
-struct Particle;
-struct ParticleEffect;
-struct PAHeader;
+namespace PAPI
+{
+	struct Particle;
+	struct ParticleEffect;
+	struct PAHeader;
 }
 
-namespace PS{
-class PFunction;
-struct SFrame
+namespace PS
 {
-    Fvector2			m_fTexSize;
-    Fvector2			m_fFrameSize;
-    int     			m_iFrameDimX;
-    int 				m_iFrameCount;
-    float				m_fSpeed;
+	class PFunction;
+	struct SFrame
+	{
+		Fvector2			m_fTexSize;
+		Fvector2			m_fFrameSize;
+		int     			m_iFrameDimX;
+		int 				m_iFrameCount;
+		float				m_fSpeed;
 
-    IC void 			InitDefault()
-    {
-        m_fFrameSize.set(32.f,64.f);
-        m_fTexSize.set	(32.f/256.f,64.f/128.f);
-        m_iFrameDimX 	= 8;
-        m_iFrameCount 	= 16;
-        m_fSpeed		= 24.f;
-    }
-    IC void 			Set(int frame_count, float w, float h, float fw, float fh)
-    {
-        m_iFrameCount 	= frame_count;
-        m_fFrameSize.set(fw,fh);
-        m_fTexSize.set	(fw/w,fh/h);
-        m_iFrameDimX 	= iFloor(1.f/m_fTexSize.x);
-    }
-    IC void       		CalculateTC(int frame, Fvector2& lt, Fvector2& rb)
-    {
-        lt.x       	 	= (frame%m_iFrameDimX)*m_fTexSize.x;
-        lt.y        	= (frame/m_iFrameDimX)*m_fTexSize.y;
-        rb.x        	= lt.x+m_fTexSize.x;
-        rb.y        	= lt.y+m_fTexSize.y;
-    }
-};
+		IC void 			InitDefault()
+		{
+			m_fFrameSize.set(32.f,64.f);
+			m_fTexSize.set	(32.f/256.f,64.f/128.f);
+			m_iFrameDimX 	= 8;
+			m_iFrameCount 	= 16;
+			m_fSpeed		= 24.f;
+		}
+		IC void 			Set(int frame_count, float w, float h, float fw, float fh)
+		{
+			m_iFrameCount 	= frame_count;
+			m_fFrameSize.set(fw,fh);
+			m_fTexSize.set	(fw/w,fh/h);
+			m_iFrameDimX 	= iFloor(1.f/m_fTexSize.x);
+		}
+		IC void       		CalculateTC(int frame, Fvector2& lt, Fvector2& rb)
+		{
+			lt.x       	 	= (frame%m_iFrameDimX)*m_fTexSize.x;
+			lt.y        	= (frame/m_iFrameDimX)*m_fTexSize.y;
+			rb.x        	= lt.x+m_fTexSize.x;
+			rb.y        	= lt.y+m_fTexSize.y;
+		}
+	};
 
-class CPEDef
-{
-public:
-    enum{
-    	dfSprite		= (1<<0),
-    	dfModel			= (1<<1),
+	class CPEDef
+	{
+	public:
+		enum{
+			dfSprite		= (1<<0),
+			dfModel			= (1<<1),
 
-    	dfFramed		= (1<<10),
-    	dfAnimated		= (1<<11),
-        dfRandomFrame   = (1<<12),
-        dfRandomPlayback= (1<<13),
-        dfTimeLimit		= (1<<14),
-    };
+			dfFramed		= (1<<10),
+			dfAnimated		= (1<<11),
+			dfRandomFrame   = (1<<12),
+			dfRandomPlayback= (1<<13),
+			dfTimeLimit		= (1<<14),
+		};
 
-    string64			m_Name;
-    Flags32				m_Flags;
+		string64			m_Name;
+		Flags32				m_Flags;
 
-    LPSTR				m_ShaderName;
-    LPSTR				m_TextureName;
+		LPSTR				m_ShaderName;
+		LPSTR				m_TextureName;
 
-    SFrame				m_Frame;
+		SFrame				m_Frame;
 
-	float				m_fTimeLimit;
+		float				m_fTimeLimit;
 
-    int					m_MaxParticles;
+		int					m_MaxParticles;
 
-    int					m_ActionCount;
-    PAPI::PAHeader*		m_ActionList;
+		int					m_ActionCount;
+		PAPI::PAHeader*		m_ActionList;
 
-	ref_shader			m_CachedShader;
+		ref_shader			m_CachedShader;
 #ifdef _PARTICLE_EDITOR
-public:
-	AnsiString			m_SourceText;
-	void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
-	void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
-	void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
-	void				Copy				(const CPEDef& src);
+	public:
+		AnsiString			m_SourceText;
+		void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
+		void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
+		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
+		void				Copy				(const CPEDef& src);
 #endif
-public:
-    // api function
-	// state api                                      
-    void				pSprite				(string64& sh_name, string64& tex_name);
-    void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
-    // action api
-	void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
-	void 				pTimeLimit			(float time_limit);
-    // action
-    void				pFrameInitExecute	(PAPI::ParticleEffect *effect);
-    void				pAnimateExecute		(PAPI::ParticleEffect *effect, float dt);
-protected:
-	BOOL 				SaveActionList		(IWriter& F);
-	BOOL 				LoadActionList		(IReader& F);
-public:
-						CPEDef				();
-                        ~CPEDef				();
-    void				SetName				(LPCSTR name);
+	public:
+		// api function
+		// state api                                      
+		void				pSprite				(string64& sh_name, string64& tex_name);
+		void				pFrame				(BOOL random_frame=TRUE, u32 frame_count=16, u32 texture_width=128, u32 texture_height=128, u32 frame_width=32, u32 frame_height=32);
+		// action api
+		void 				pAnimate			(float speed=24.f, BOOL random_playback=FALSE);
+		void 				pTimeLimit			(float time_limit);
+		// action
+		void				pFrameInitExecute	(PAPI::ParticleEffect *effect);
+		void				pAnimateExecute		(PAPI::ParticleEffect *effect, float dt);
+	protected:
+		BOOL 				SaveActionList		(IWriter& F);
+		BOOL 				LoadActionList		(IReader& F);
+	public:
+		CPEDef				();
+		~CPEDef				();
+		void				SetName				(LPCSTR name);
 
-   	void 				Save				(IWriter& F);
-   	BOOL 				Load				(IReader& F);
+		void 				Save				(IWriter& F);
+		BOOL 				Load				(IReader& F);
 
 #ifdef _PARTICLE_EDITOR
-	void 				Compile				();
-	static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
+		void 				Compile				();
+		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
 #endif
-};
+	};
 
-class CParticleEffect: public IParticleCustom
-{
-	friend class PFunction;
-protected:
-	CPEDef*				m_Def;
+	class CParticleEffect: public IParticleCustom
+	{
+		friend class PFunction;
+	protected:
+		CPEDef*				m_Def;
 
-    float				m_fElapsedLimit;
+		float				m_fElapsedLimit;
 
-	int					m_HandleEffect;
-	int					m_HandleActionList;
+		int					m_HandleEffect;
+		int					m_HandleActionList;
 
-	s32					m_MemDT;
-	
-	Fvector				m_InitialPosition;
-public:
-    enum{
-    	flRT_Playing		= (1<<0),
-        flRT_DefferedStop	= (1<<1)
-    };
-    Flags8				m_RT_Flags;
-protected:
-	void				ResetParticles		();
+		s32					m_MemDT;
 
-	BOOL 				SaveActionList		(IWriter& F);
-	BOOL 				LoadActionList		(IReader& F);
+		Fvector				m_InitialPosition;
+	public:
+		enum{
+			flRT_Playing		= (1<<0),
+			flRT_DefferedStop	= (1<<1)
+		};
+		Flags8				m_RT_Flags;
+	protected:
+		void				ResetParticles		();
 
-    void				RefreshShader		();
-public:
-						CParticleEffect		();
-	virtual 			~CParticleEffect	();
+		BOOL 				SaveActionList		(IWriter& F);
+		BOOL 				LoadActionList		(IReader& F);
 
-	void	 			OnFrame				(u32 dt);
+		void				RefreshShader		();
+	public:
+		CParticleEffect		();
+		virtual 			~CParticleEffect	();
 
-	u32					RenderTO			(FVF::TL* V);
-	virtual void		Render				(float LOD);
-	virtual void		Copy				(IRender_Visual* pFrom);
+		void	 			OnFrame				(u32 dt);
 
-    virtual void 		OnDeviceCreate		();
-    virtual void 		OnDeviceDestroy		();
+		u32					RenderTO			(FVF::TL* V);
+		virtual void		Render				(float LOD);
+		virtual void		Copy				(IRender_Visual* pFrom);
 
-    virtual void		UpdateParent		(const Fmatrix& m, const Fvector& velocity);
+		virtual void 		OnDeviceCreate		();
+		virtual void 		OnDeviceDestroy		();
 
-    BOOL				Compile				(CPEDef* def);
+		virtual void		UpdateParent		(const Fmatrix& m, const Fvector& velocity);
 
-	CPEDef*				GetDefinition		(){return m_Def;}
+		BOOL				Compile				(CPEDef* def);
 
-	virtual void		Play				();
-    virtual void		Stop				(BOOL bDefferedStop=TRUE);
-    virtual BOOL		IsPlaying			(){return m_RT_Flags.is(flRT_Playing);}
+		CPEDef*				GetDefinition		(){return m_Def;}
 
-	virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_fTimeLimit:-1.f;}
+		virtual void		Play				();
+		virtual void		Stop				(BOOL bDefferedStop=TRUE);
+		virtual BOOL		IsPlaying			(){return m_RT_Flags.is(flRT_Playing);}
 
-	virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
-};
-DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
+		virtual float		GetTimeLimit		(){VERIFY(m_Def); return m_Def->m_Flags.is(CPEDef::dfTimeLimit)?m_Def->m_fTimeLimit:-1.f;}
+
+		virtual LPCSTR		Name				(){VERIFY(m_Def); return m_Def->m_Name;}
+	};
+	DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }
 #define PED_VERSION				0x0001
 //----------------------------------------------------
