@@ -212,6 +212,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:set_wait ()
 
+    self.need_interrupt == false
     reset_action (self.npc, self.script)
     local variant = round (math.random (1.0, 2.0))
     if variant == 1 then
@@ -274,6 +275,7 @@ function Trader:play_queue ()
           action (self.npc, anim (self.current.end_anim), cond (cond.anim_end))
        end
        self.current.end_current = true
+       return
     else
        self.current.repeats = self.current.repeats - 1
        action (self.npc, anim (self.current.process_anim), cond (cond.anim_end))
