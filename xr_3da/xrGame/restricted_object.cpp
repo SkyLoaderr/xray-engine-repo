@@ -21,18 +21,6 @@ bool RestrictedObject::CShapeRestriction::accessible	(const Fvector &position) c
 	return							(!m_restrictor->inside(position));
 }
 
-void RestrictedObject::CRestrictionContainer::add_restriction	(CSpaceRestrictor *restrictor)
-{
-	RESTRICTIONS::const_iterator	I = m_restrictions.find(restrictor->ID());
-	VERIFY							(I == m_restrictions.end());
-	m_restrictions.insert			(std::make_pair(restrictor->ID(),xr_new<RestrictedObject::CShapeRestriction>(restrictor)));
-}
-
-RestrictedObject::CRestrictionContainer::~CRestrictionContainer	()
-{
-	delete_data						(m_restrictions);
-}
-
 CRestrictedObject::~CRestrictedObject	()
 {
 	clear						();
@@ -47,8 +35,8 @@ BOOL CRestrictedObject::net_Spawn		(LPVOID data)
 	CSE_ALifeMonsterAbstract	*monster	= dynamic_cast<CSE_ALifeMonsterAbstract*>(abstract);
 	VERIFY						(monster);
 	
-	m_in_restrictions			= xr_new<RestrictedObject::CRestrictionContainer>();
-	m_out_restrictions			= xr_new<RestrictedObject::CRestrictionContainer>();
+	m_in_restrictions			= xr_new<CRestrictionContainer>();
+	m_out_restrictions			= xr_new<CRestrictionContainer>();
 
 	Level().space_restrictor_manager().associate		(ID(),monster->m_space_restrictors);
 
