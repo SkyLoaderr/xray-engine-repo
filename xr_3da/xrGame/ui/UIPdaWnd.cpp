@@ -107,7 +107,7 @@ void CUIPdaWnd::Init()
 	UIOffButton.TextureOff();
 	UIOffButton.SetMessageTarget(this);
 
-	Draw();
+	// Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
