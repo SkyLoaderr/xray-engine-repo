@@ -6,7 +6,7 @@
 #define stdafxH
 #pragma once
 
-//#define OPENAL                       
+#define OPENAL                       
 
 #include <xrCore.h>
 

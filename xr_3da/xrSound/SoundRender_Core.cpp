@@ -412,7 +412,7 @@ void CSoundRender_Core::set_environment	(u32 id, CSound_environment** dst_env)
 	if (bEAX){
 		CSoundRender_Environment* DE 	= static_cast<CSoundRender_Environment*>(*dst_env); 
 		// set environment
-		i_eax_set			    		(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_IMMEDIATE | DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, &id, sizeof(id)));
+		i_eax_set			    		(&DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_IMMEDIATE | DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, &id, sizeof(id));
 		i_eax_listener_get				(DE);
 	}
 }

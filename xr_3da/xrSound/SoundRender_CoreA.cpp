@@ -30,15 +30,17 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     ALCubyte 			        deviceName[] = "DirectSound3D";
     // OpenAL device
     ALCdevice*	pDevice	        = alcOpenDevice		(deviceName);
-    // Get the device sp        ecifier.
+    // Get the device specifier.
+#ifndef _EDITOR    
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
 	Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
+#endif    
     // Create context
     ALCcontext*	pContext        = alcCreateContext	(pDevice,NULL);
-    // Set active contex        t
+    // Set active context
     A_CHK				        (alcMakeContextCurrent(pContext));
 
-    // initialize listen        er
+    // initialize listener
     A_CHK				        (alListener3f		(AL_POSITION,0.f,0.f,0.f));
     A_CHK				        (alListener3f		(AL_VELOCITY,0.f,0.f,0.f));
     Fvector	orient[2]	        = {{0.f,0.f,1.f},{0.f,1.f,0.f}};
