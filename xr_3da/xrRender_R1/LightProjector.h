@@ -8,7 +8,7 @@
 
 #include "r__dsgraph_types.h"
 
-class CLightProjector
+class CLightProjector		: public pureAppActivate
 {
 private:
 	static	const	int		P_rt_size		= 512;
@@ -26,7 +26,7 @@ private:
 		Fvector				UVclamp_max	;
 		Fbox				BB			;
 		DWORD				dwFrame		;
-		DWORD				dwTime		;
+		DWORD				dwTimeValid	;
 	};
 private:
 	IRenderable*			current;
@@ -34,17 +34,19 @@ private:
 	xr_vector<IRenderable*>	receivers;
 	xr_vector<int>			taskid;
 
-	ref_rt					RT;
-	shared_str					c_xform;
-	shared_str					c_clamp;
-	shared_str					c_factor;
+	ref_rt					RT			;
+	shared_str				c_xform		;
+	shared_str				c_clamp		;
+	shared_str				c_factor	;
 public:
 	void					set_object		(IRenderable*	O);
 	BOOL					shadowing		()			{ return current!=0;	}
 	void					calculate		();
 	void					setup			(int slot);
 	void					finalize		()			{ receivers.clear(); taskid.clear();	}
+	void					invalidate		();
 
+	virtual		void		OnAppActivate	();
 #ifdef DEBUG
 	void					render			();
 #endif

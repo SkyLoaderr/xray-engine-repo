@@ -37,10 +37,12 @@ CLightProjector::CLightProjector()
 	c_factor			= "m_plmap_factor";
 
 	cache.resize		(P_o_count);
+	Device.seqAppActivate.Add		(this);
 }
 
 CLightProjector::~CLightProjector()
 {
+	Device.seqAppActivate.Remove	(this);
 	RT.destroy			();
 }
 
@@ -86,6 +88,17 @@ void CLightProjector::setup		(int id)
 	RCache.set_ca	(c_clamp,	1,M.x,M.y,M.z,0);
 }
 
+void CLightProjector::invalidate()
+{
+	for (u32 c_it=0; c_it<cache.size(); c_it++)
+		cache[c_it].dwTimeValid	= 0;
+}
+
+void CLightProjector::OnAppActivate()
+{
+	invalidate					();
+}
+
 //
 void CLightProjector::calculate	()
 {
@@ -99,16 +112,15 @@ void CLightProjector::calculate	()
 		IRenderable*		O		= receivers[r_it];
 		CROS_impl*			LT		= (CROS_impl*)O->renderable.ROS;
 		int					slot	= LT->shadow_recv_slot;
-		if (slot<0 || slot>=P_o_count)		bValid = FALSE;	// invalid slot
-		else if (cache[slot].O!=O)			bValid = FALSE;	// not the same object
+		if (slot<0 || slot>=P_o_count)								bValid = FALSE;	// invalid slot
+		else if (cache[slot].O!=O)									bValid = FALSE;	// not the same object
 		else {
-			Fbox				bb;
-			bb.xform			(O->renderable.visual->vis.box,O->renderable.xform);
-			if (!cache[slot].BB.contains(bb))	{
-				// check time-limit
-				if (cache[slot].dwTime>Device.dwTimeGlobal)	bValid	= FALSE;
-				else										bValid	= TRUE;
-			}
+			// seems to be valid
+			Fbox	bb;		bb.xform		(O->renderable.visual->vis.box,O->renderable.xform);
+			if (cache[slot].BB.contains(bb))	{
+				// inside, but maybe timelimit exceeded?
+				if (Device.dwTimeGlobal > cache[slot].dwTimeValid)	bValid = FALSE;	// timeout
+			} else													bValid = FALSE;	// out of bounds
 		}
 
 		// 
@@ -146,7 +158,7 @@ void CLightProjector::calculate	()
 		R.O						= O;
 		R.C						= C;
 		R.BB.xform				(O->renderable.visual->vis.box,O->renderable.xform).scale(0.1f);
-		R.dwTime				= Device.dwTimeGlobal + ::Random.randI(time_min,time_max);
+		R.dwTimeValid			= Device.dwTimeGlobal + ::Random.randI(time_min,time_max);
 		LT->shadow_recv_slot	= c_it; 
 
 		// Msg					("[%f,%f,%f]-%f",C.C.x,C.C.y,C.C.z,C.O->renderable.visual->vis.sphere.R);
