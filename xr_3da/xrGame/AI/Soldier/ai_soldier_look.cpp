@@ -211,7 +211,7 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 	DWORD dwTime = Level().timeServer();
 	for (int i=0; i<tpaVisibleObjects.size(); i++) {
 		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpaVisibleObjects[i]);
-		if (tpCustomMonster) {
+		if (tpCustomMonster && bfCheckForVisibility(tpCustomMonster)) {
 			for (int j=0; j<tpaDynamicObjects.size(); j++)
 				if (tpCustomMonster == tpaDynamicObjects[j].tpEntity) {
 					tpaDynamicObjects[j].dwTime = dwTime;
