@@ -194,8 +194,16 @@ void xrServer::OnCL_Connected		(IClient* CL)
 
 		if (0==Test->owner)	
 		{
+			// PROCESS NAME; Name this entity
+			xrClientData*	C	= (xrClientData*)CL;
+			if (Test->s_flags & M_SPAWN_OBJECT_ASPLAYER)
+			{
+				C->owner		= Test;
+				strcpy			(Test->s_name_replace,C->Name);
+			}
+
 			// Associate
-			Test->owner			= (xrClientData*)CL;
+			Test->owner			= C;
 			Test->Spawn_Write	(P,TRUE	);
 		}
 		else				
