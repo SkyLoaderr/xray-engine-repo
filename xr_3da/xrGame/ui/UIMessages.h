@@ -40,6 +40,8 @@ enum EUIMessages
 
 	// CUITabControl
 	TAB_CHANGED,
+	TAB_SELECT,
+	TAB_DESELECT,
 
 	// CUICheckButton
 	CHECK_BUTTON_SET,
