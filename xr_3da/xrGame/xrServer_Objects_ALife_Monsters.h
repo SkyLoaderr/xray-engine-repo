@@ -14,6 +14,7 @@
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 class CSE_ALifeSimulator;
+class CSE_ALifeItemWeapon;
 #endif
 #endif
 
