@@ -37,7 +37,7 @@ void	smapvis::begin		()
 		break;
 	}
 }
-void	smapvis::end		(light* L)
+void	smapvis::end		()
 {
 	switch	(state)			{
 	case state_counting:
