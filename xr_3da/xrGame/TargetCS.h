@@ -15,8 +15,9 @@ public:
 	virtual void OnDeviceCreate();
 	virtual void OnDeviceDestroy();
 
-	virtual BOOL			net_Spawn			(LPVOID DC);
-	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
+
+	virtual BOOL						net_Spawn				(LPVOID DC);
+	virtual void						UpdateCL				( );								// Called each frame, so no need for dt
 
 	CPhysicsShell*						m_pPhysicsShell;
 };
