@@ -8,7 +8,7 @@ const static DWORD		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
 
 //--------------------------------------------------------------------
 CHitMarker::CHitMarker(){
-	hShader			= Device.Shader.Create("hud_hitmarker","hud_hitmarker");
+	hShader			= Device.Shader.Create("hud\\hitmarker","hud_hitmarker");
 	ZeroMemory		(fHitMarks,sizeof(float)*4);
 	VS				= Device.Streams.Create(FVF::F_TL,4*3);
 	as_PC[0].set	(-0.5f,-0.67f);
