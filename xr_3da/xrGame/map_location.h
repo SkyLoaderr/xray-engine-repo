@@ -3,6 +3,8 @@
 
 
 class CMapSpot;
+class CMapSpotPointer;
+class CUICustomMap;
 
 class CMapLocation
 {
@@ -10,21 +12,29 @@ private:
 	flags32					m_flags;
 	string512				m_hint;
 	CMapSpot*				m_level_spot;
-	CMapSpot*				m_zonemap_spot;
+	CMapSpotPointer*		m_level_spot_pointer;
+	CMapSpot*				m_minimap_spot;
+	CMapSpotPointer*		m_minimap_spot_pointer;
 	u16						m_objectID;
 	u16						m_refCount;
+	Fvector2				m_position_global; //last global position, actual time only current frame 
+	Ivector2 				m_position_on_map; //last position on parent map, actual time only current frame
 private:
 							CMapLocation					(const CMapLocation&){}; //disable copy ctor
 
 	void					LoadSpot						(LPCSTR type); 
 
+	void					UpdateSpot						(CUICustomMap* map, CMapSpot* sp );
+	void					UpdateSpotPointer				(CUICustomMap* map, CMapSpotPointer* sp );
+	CMapSpotPointer*		GetSpotPointer					(CMapSpot* sp);
 public:
 							CMapLocation					(LPCSTR type, u16 object_id);
 	virtual					~CMapLocation					();
 	virtual		LPCSTR		GetHint							()					{return m_hint;};
 	void					SetHint							(LPCSTR hint)		{strcat(m_hint,hint);};
-	CMapSpot*				LevelSpot						()					{return m_level_spot;};
-	CMapSpot*				ZoneMapSpot						()					{return m_zonemap_spot;};
+
+	void					UpdateMiniMap					(CUICustomMap* map);
+	void					UpdateLevelMap					(CUICustomMap* map);
 
 	Fvector2				Position						();
 	Fvector2				Direction						();

@@ -27,6 +27,7 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_registry_wrappers.h"
 
+#include "map_manager.h"
 
 //static LPCSTR	m_sMapSpotAnimEnemy = NULL;
 //static LPCSTR	m_sMapSpotAnimNeutral = NULL;
@@ -412,6 +413,38 @@ void CActor::UpdateContact		(u16 contact_id)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
+	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
+
+	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
+
+	ALife::ERelationType relation = ALife::eRelationTypeDummy;
+	if(Game().Type() == GAME_SINGLE)
+		relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
+	else
+	{
+///		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
+//		relation = EA->tfGetRelationType(this);
+		return;
+	}
+
+	xr_string location_type;
+
+	switch(relation)
+	{
+	case ALife::eRelationTypeEnemy:
+		location_type = "enemy_location";
+		break;
+	case ALife::eRelationTypeNeutral:
+		location_type = "neutral_location";
+		break;
+	case ALife::eRelationTypeFriend:
+		location_type = "friend_location";
+		break;
+	default:
+		location_type = "friend_location";
+	}
+	Level().MapManager().AddMapLocation(location_type.c_str(), GO->ID() );
+
 /*
 	static LPCSTR	m_sMapSpotAnimEnemy		= pSettings->r_string("game_map", "map_spots_enemy");	
 	static LPCSTR	m_sMapSpotAnimNeutral	= pSettings->r_string("game_map", "map_spots_neutral");
@@ -456,13 +489,16 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 	Level().AddMapLocation(map_location, eMapLocationPDAContact);
 */
 }
+
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
 {
-/*
+
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
-	if (GO)
-		Level().RemoveMapLocationByID(GO->ID(), eMapLocationPDAContact);
-*/
+	if (GO){
+		Level().MapManager().RemoveMapLocation("enemy_location",	GO->ID());
+		Level().MapManager().RemoveMapLocation("neutral_location",	GO->ID());
+		Level().MapManager().RemoveMapLocation("friend_location",	GO->ID());
+	};
 }
 
 void CActor::AddGameNews_deffered	 (GAME_NEWS_DATA& news_data, u32 delay)

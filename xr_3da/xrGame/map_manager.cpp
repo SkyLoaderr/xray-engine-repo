@@ -41,13 +41,6 @@ CMapLocation* CMapManager::AddMapLocation(LPCSTR spot_type, u16 id)
 	return (*it).location;
 }
 
-void CMapManager::force_clean(Locations_it& it)
-{
-	while( 0 != (*it).location->Release() ){};
-	
-	xr_delete				((*it).location);		
-	m_locations.erase		(it);
-}
 
 void CMapManager::RemoveMapLocation(LPCSTR spot_type, u16 id)
 {
@@ -55,9 +48,10 @@ void CMapManager::RemoveMapLocation(LPCSTR spot_type, u16 id)
 	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
 	if( it!=m_locations.end() ){
 
-		if( 1==(*it).location->RefCount() )
-			force_clean( it );
-		else
+		if( 1==(*it).location->RefCount() ){
+			xr_delete				((*it).location);		
+			m_locations.erase		(it);
+		}else
 			(*it).location->Release();
 	}
 }
@@ -67,7 +61,9 @@ void CMapManager::RemoveMapLocationByObjectID(u16 id) //call on destroy object
 	FindLocationByID key(id);
 	Locations_it it = std::find_if(m_locations.begin(),m_locations.end(),key);
 	while( it!= m_locations.end() ){
-		force_clean( it );
+		xr_delete				((*it).location);		
+		m_locations.erase		(it);
+
 		it = std::find_if(m_locations.begin(),m_locations.end(),key);
 	}
 }
@@ -84,8 +80,11 @@ u16 CMapManager::HasMapLocation(LPCSTR spot_type, u16 id)
 
 void CMapManager::Cleanup()//force
 {
-	while( !m_locations.empty() )
-		force_clean( m_locations.begin()+m_locations.size()-1 );
+	Locations_it it = m_locations.begin();
+	for(; it!=m_locations.end();++it){
+		xr_delete		((*it).location);	
+	}
+	m_locations.clear();
 }
 
 void CMapManager::Update()
@@ -95,7 +94,9 @@ void CMapManager::Update()
 		(*it).actual = (*it).location->Update();
 	}
 	std::sort( m_locations.begin(),m_locations.end() );
-	while( (!m_locations.empty())&&(!m_locations.back().actual) )
-		force_clean( m_locations.begin()+m_locations.size()-1 );
 
+	while( (!m_locations.empty())&&(!m_locations.back().actual) ){
+		xr_delete(m_locations.back().location);
+		m_locations.pop_back();
+	}
 }

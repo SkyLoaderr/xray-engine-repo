@@ -761,8 +761,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	//-------------------------------------------------------------
 
 
-	Level().MapManager().AddMapLocation("actor_spot",ID());
-	Level().MapManager().AddMapLocation("actor_spot",ID());
+	Level().MapManager().AddMapLocation("actor_location",ID());
 
 	return					TRUE;
 }

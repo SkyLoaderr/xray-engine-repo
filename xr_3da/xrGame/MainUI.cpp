@@ -196,6 +196,12 @@ void CMainUI::ClientToScreenScaled(Irect& r, u32 align)
 	r.y2 = ClientToScreenScaledY(r.y2,align); 
 }
 
+void CMainUI::ClientToScreenScaled(Ivector2& p, u32 align)
+{
+	p.x = ClientToScreenScaledX(p.x,align); 
+	p.y = ClientToScreenScaledY(p.y,align); 
+}
+
 void CMainUI::ClientToScreenScaled(Ivector2& dest, int left, int top, u32 align)
 {
 	dest.set(ClientToScreenScaledX(left,align),	ClientToScreenScaledY(top,align));
@@ -276,7 +282,7 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 
 Irect CMainUI::ScreenRect()
 {
-	return Irect().set(0,0,Device.dwWidth,Device.dwHeight);
+	return Irect().set(0,0,UI_BASE_WIDTH,UI_BASE_HEIGHT);
 }
 
 void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
@@ -289,11 +295,20 @@ void CMainUI::PushScissor(const Irect& r_tgt, bool overlapped)
 			result.set	(0,0,0,0);
 	}
 	m_Scissors.push		(result);
-	RCache.set_Scissor	(&m_Scissors.top());
+
+	ClientToScreenScaled(result,0);
+	RCache.set_Scissor	(&result);
 }
 void CMainUI::PopScissor()
 {
 	VERIFY(!m_Scissors.empty());
 	m_Scissors.pop		();
-	RCache.set_Scissor	(m_Scissors.empty()?NULL:&m_Scissors.top());
+	
+	if(m_Scissors.empty())
+		RCache.set_Scissor(NULL);
+	else{
+		Irect result = 	m_Scissors.top();
+		ClientToScreenScaled(result,0);
+		RCache.set_Scissor(&result);
+	}
 }

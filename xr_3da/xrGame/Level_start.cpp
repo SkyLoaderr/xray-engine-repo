@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "level.h"
-#include "LevelFogOfWar.h"
+//#include "LevelFogOfWar.h"
 #include "Level_Bullet_Manager.h"
 #include "xrserver.h"
 #include "game_cl_base.h"
@@ -120,7 +120,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	};
 
 	//init the fog of war for the current level
-	FogOfWar().Init();
+//	FogOfWar().Init();
 	
 	//init bullet manager
 	BulletManager().Clear		();

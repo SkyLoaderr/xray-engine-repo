@@ -45,7 +45,7 @@
 #include "ai_space.h"
 
 #include "trade.h"
-#include "LevelFogOfWar.h"
+//#include "LevelFogOfWar.h"
 
 #include "inventory.h"
 
@@ -678,7 +678,7 @@ void CActor::UpdateCL()
 	if (g_Alive()) 
 	{
 		//update the fog of war
-		Level().FogOfWar().UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
+//		Level().FogOfWar().UpdateFog(Position(), CFogOfWar::ACTOR_FOG_REMOVE_RADIUS);
 		//-------------------------------------------------------------------------------
 
 		//if(m_PhysicMovementControl->CharacterExist())

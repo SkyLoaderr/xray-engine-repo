@@ -221,9 +221,9 @@ public:
 	float				GetEnvironmentGameDayTimeSec();
 
 protected:
-	CFogOfWar*			m_pFogOfWar;
+//	CFogOfWar*			m_pFogOfWar;
 public:
-	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
+//	IC CFogOfWar&		FogOfWar() {return	*m_pFogOfWar;}
 
 	//список локаций на карте, которые отображаются в данный момент
 protected:	

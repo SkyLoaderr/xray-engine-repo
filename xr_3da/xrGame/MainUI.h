@@ -70,6 +70,7 @@ public:
 //	void			SetScaleXY						(float f_x, float f_y);
 
 	void			ClientToScreenScaled			(Irect& r, u32 align);
+	void			ClientToScreenScaled			(Ivector2& p, u32 align);
 	void			ClientToScreenScaled			(Ivector2& dest, int left, int top, u32 align);
 	int				ClientToScreenScaledX			(int left, u32 align);
 	int				ClientToScreenScaledY			(int top, u32 align);

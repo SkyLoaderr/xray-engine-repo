@@ -18,7 +18,9 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	ZeroMemory(m_hint, sizeof(m_hint) );
 	m_flags.zero			();
 	m_level_spot			= NULL;
-	m_zonemap_spot			= NULL;
+	m_level_spot_pointer	= NULL;
+	m_minimap_spot			= NULL;
+	m_minimap_spot_pointer	= NULL;
 	m_objectID				= object_id;
 
 	LoadSpot				(type);
@@ -28,8 +30,10 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 CMapLocation::~CMapLocation()
 {
 	xr_delete(m_level_spot);
-	xr_delete(m_zonemap_spot);
-	VERIFY(m_refCount==0);
+	xr_delete(m_level_spot_pointer);
+	xr_delete(m_minimap_spot);
+	xr_delete(m_minimap_spot_pointer);
+
 }
 
 void CMapLocation::LoadSpot(LPCSTR type)
@@ -49,15 +53,31 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	strconcat(path,path_base,":level_map");
 	node = uiXml.NavigateToNode(path,0);
 	if(node){
-		m_level_spot = xr_new<CLevelMapSpot>(this);
-		m_level_spot->Load(&uiXml,path);
+		LPCSTR str = uiXml.ReadAttrib(path, 0, "spot", "");
+		if( xr_strlen(str) ){
+			m_level_spot = xr_new<CMapSpot>(this);
+			m_level_spot->Load(&uiXml,str);
+		};
+		str = uiXml.ReadAttrib(path, 0, "pointer", "");
+		if( xr_strlen(str) ){
+			m_level_spot_pointer = xr_new<CMapSpotPointer>(this);
+			m_level_spot_pointer->Load(&uiXml,str);
+		};
 	};
 
-	strconcat(path,path_base,":zone_map");
+	strconcat(path,path_base,":mini_map");
 	node = uiXml.NavigateToNode(path,0);
 	if(node){
-		m_zonemap_spot = xr_new<CZoneMapSpot>(this);
-		m_zonemap_spot->Load(&uiXml,path);
+		LPCSTR str = uiXml.ReadAttrib(path, 0, "spot", "");
+		if( xr_strlen(str) ){
+			m_minimap_spot = xr_new<CMapSpot>(this);
+			m_minimap_spot->Load(&uiXml,str);
+		};
+		str = uiXml.ReadAttrib(path, 0, "pointer", "");
+		if( xr_strlen(str) ){
+			m_minimap_spot_pointer = xr_new<CMapSpotPointer>(this);
+			m_minimap_spot_pointer->Load(&uiXml,str);
+		};
 	};
 }
 
@@ -104,11 +124,81 @@ bool CMapLocation::Update() //returns actual
 	return true;
 }
 
+void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
+{
+	if( map->MapName()==LevelName() ){
 
+
+		//update spot position
+		m_position_global = Position();
+
+		m_position_on_map =	map->ConvertRealToLocal(m_position_global);
+
+		sp->SetWndPos(m_position_on_map);
+		
+		if( map->IsRectVisible(sp->GetWndRect() ) ) {
+
+			//update heading if needed
+			if( sp->Heading() ){
+				Fvector2 dir_global = Direction();
+				float h = dir_global.getH();
+				float h_ = map->GetHeading()+h;
+				sp->SetHeading( h_ );
+			}
+
+			Irect clip_rect = map->GetClipperRect();
+			sp->SetClipRect( clip_rect );
+			map->AttachChild(sp);
+		}else
+		if( GetSpotPointer(sp) ){
+			UpdateSpotPointer( map, GetSpotPointer(sp) );
+		}
+
+	};
+}
+
+void CMapLocation::UpdateSpotPointer(CUICustomMap* map, CMapSpotPointer* sp )
+{
+	float		heading;
+	Ivector2	pointer_pos;
+	map->GetPointerTo(m_position_on_map, sp->GetWidth()/2, pointer_pos, heading);
+
+	sp->SetWndPos(pointer_pos);
+	sp->SetHeading(heading);
+
+	Irect clip_rect = map->GetClipperRect();
+	sp->SetClipRect( clip_rect );
+	map->AttachChild(sp);
+}
+
+void CMapLocation::UpdateMiniMap(CUICustomMap* map)
+{
+	CMapSpot* sp = m_minimap_spot;
+	if(!sp) return;
+	UpdateSpot(map, sp);
+
+}
+
+void CMapLocation::UpdateLevelMap(CUICustomMap* map)
+{
+	CMapSpot* sp = m_level_spot;
+	if(!sp) return;
+	UpdateSpot(map, sp);
+}
+
+CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
+{
+	R_ASSERT(sp);
+	if(sp==m_level_spot)
+		return m_level_spot_pointer;
+	else
+	if(sp==m_minimap_spot)
+		return m_minimap_spot_pointer;
+
+	return NULL;
+}
 
 /*
-
-
 //////////////////////////////////////////////////////////////////////////
 
 SMapLocation::SMapLocation():animation(&icon_color)
