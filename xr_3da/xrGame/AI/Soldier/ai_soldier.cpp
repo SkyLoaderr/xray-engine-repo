@@ -127,12 +127,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 
 		m_iCurrentPoint = 0;
 		AI_Path.bNeedRebuild = TRUE;
-		/**
-		tpaPatrolPathes.resize(path_count);
-		for ( i=0; i<path_count; i++)
-			vfCreateStraightForwardPath(tpaPatrolPoints[i], tpaPatrolPoints[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolNodes[i], tpaPatrolNodes[(i < path_count - 1) ? (i + 1) : 0], tpaPatrolPathes[i]);
-		/**/
-		vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath);
+		vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,3);
 	}
 }
 
@@ -446,7 +441,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 
 			r_target.yaw = fBestAngle;
 			q_look.o_look_speed=_FB_look_speed;
-			r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
+			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			r_target.yaw += PI/6.f;
 		}
 	}
