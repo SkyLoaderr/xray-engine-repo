@@ -46,7 +46,7 @@ void CALifeSurgeManager::surge		()
 	
 	generate_anomalies					();
 	generate_anomaly_map				();
-	kill_creatures						();
+//	kill_creatures						();
 	ballance_creatures					();
 	VERIFY								(graph().actor());
 	{
@@ -202,15 +202,17 @@ void CALifeSurgeManager::generate_anomaly_map	()
 
 void CALifeSurgeManager::ballance_creatures()
 {
+	Msg									("BALLANCING OBJECTS");
 #pragma todo("Dima to Dima : Respawn the objects in the spawn groups only")
 	// filling array of the survived creatures
 	{
 		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 		for ( ; I != E; ++I) {
-			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
-			CSE_ALifeGroupAbstract	  *l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
-			if (l_tpALifeCreatureAbstract)
+			Msg							("object %s, spawn group %d",(*I).second->s_name_replace,(*I).second->m_tSpawnID);
+			CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
+			CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
+			if (l_tpALifeCreatureAbstract) {
 				if (l_tpALifeGroupAbstract) {
 					if (l_tpALifeGroupAbstract->m_wCount) {
 						m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
@@ -218,9 +220,13 @@ void CALifeSurgeManager::ballance_creatures()
 						//l_tpALifeGroupAbstract->m_wCount *= l_tpALifeGroupAbstract->m_wCount < 50 ? 1.5 : 0.8;
 					}
 				}
-				else
+				else {
 					if (l_tpALifeCreatureAbstract->fHealth > 0.f)
 						m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
+				}
+			}
+			else
+				m_alive_spawn_objects[(*I).second->m_tSpawnID] = true;
 		}
 	}
 	// balancing creatures by spawn groups
