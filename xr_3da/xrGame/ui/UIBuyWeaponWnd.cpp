@@ -1618,8 +1618,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	if (dik == g_iOkAccelerator)
 	{
-//		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
-		SectionToSlot(2, 64, false);
+		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
 		return true;
 	}
 
@@ -1630,8 +1629,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 			//--------------------- for E3 ---------------------
 ///			SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
 			//--------------------------------------------------
-//			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
-			SectionToSlot(3, 1, false);
+			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
 			return true;
 		}
 	}
