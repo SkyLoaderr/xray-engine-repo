@@ -350,7 +350,7 @@ void CAI_Biting::SetText()
 		strconcat(s,AI_Biting::caStateNames[It->m_tPostureAnim],
 				AI_Biting::caStateNames[It->m_tActionAnim]);
 		
-		HUD().pFontSmall->OutSet	(100+i*50,350);
+		HUD().pFontSmall->OutSet	((float)100+i*50,350);
 		HUD().pFontSmall->OutNext ("SA[%i]=[%s]",i,s);
 		It++;
 	}
@@ -380,7 +380,7 @@ void CAI_Biting::SetText()
 		a = acosf(a);
 */		
 	
-		float yaw1;
+		float yaw1=0.f;
 		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(m_tSavedEnemy);
 		if (tpCustomMonster) yaw1		= -tpCustomMonster->r_current.yaw;
 		else {

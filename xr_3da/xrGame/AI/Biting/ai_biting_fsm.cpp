@@ -154,6 +154,8 @@ void CAI_Biting::ExploreNDE()
 {
 	WRITE_TO_LOG("Explore non-danger-expedient enemy");
 
+	if (m_bStateChanged) m_dwInertion = 6000;
+
 	vfSetMotionActionParams	(eBodyStateStand,eMovementTypeWalk,eMovementDirectionForward,eStateTypeDanger,eActionTypeWalk);
 	
 	//AnimEx.Set				(ePostureStand, eActionWalkFwd,false,false);
