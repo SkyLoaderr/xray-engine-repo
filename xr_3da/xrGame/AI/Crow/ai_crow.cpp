@@ -112,7 +112,7 @@ void CAI_Crow::Load( LPCSTR section )
 	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
 	vVarGoal					= pSettings->ReadVECTOR	(section,"goal_variability");
 	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
-	fIdleSoundTime				= 30.f*fIdleSoundDelta*Random.randF();
+	fIdleSoundTime				= fIdleSoundDelta+10.f*fIdleSoundDelta*Random.randF();
 
 	Movement.SetParent			(this);
 }
@@ -192,7 +192,6 @@ void CAI_Crow::Update(DWORD DT)
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
-			Level().HUD()->outMessage(0xffffffff,cName(),"cry");
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}
