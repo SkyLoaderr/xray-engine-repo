@@ -33,8 +33,12 @@ struct lua_State;
 #define DMOD_BREAK					10
 #define DMOD_STOP					11
 
-
-
+struct SBreakPoint{
+	string256	fileName;
+	s32			nLine;
+	SBreakPoint(){fileName[0]=0;nLine=0;};
+	SBreakPoint(const SBreakPoint& other):nLine(other.nLine){fileName[0]=0;strcat(fileName,other.fileName);};
+};
 
 class CScriptDebugger
 {
@@ -75,6 +79,8 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
+	void			FillBreakPointsIn	(CMailSlotMsg* msg);
+	bool			HasBreakPoint		(const char* fileName, s32 lineNum);
 	void			CheckNewMessages	();
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
 	LRESULT			WaitForReply		(UINT nMsg);
@@ -92,4 +98,6 @@ protected:
 
 	HANDLE								m_mailSlot;
 	BOOL								m_bIdePresent;
+
+	xr_vector<SBreakPoint>				m_breakPoints;
 };

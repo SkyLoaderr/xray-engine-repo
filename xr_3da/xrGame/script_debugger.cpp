@@ -48,6 +48,7 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_DEBUG_BREAK:{
 		msg.w_int(DMSG_SHOW_IDE);
 		SendMailslotMessage(IDE_MAIL_SLOT, msg);
+		
 		m_nMode = (int)WaitForReply(DMSG_SHOW_IDE);
 
 		if(m_nMode == DMOD_SHOW_STACK_LEVEL){
@@ -120,7 +121,14 @@ CScriptDebugger::CScriptDebugger()
 
 	m_bIdePresent = CheckExisting(IDE_MAIL_SLOT);
 	if(Active() )
+	{
 		_SendMessage(DMSG_NEW_CONNECTION,0,0);
+		CMailSlotMsg msg;
+		msg.w_int(DMSG_GET_BREAKPOINTS);
+		SendMailslotMessage(IDE_MAIL_SLOT, msg);
+		WaitForReply(DMSG_GET_BREAKPOINTS);
+
+	}
 }
 
 CScriptDebugger::~CScriptDebugger()
@@ -176,6 +184,7 @@ void CScriptDebugger::LineHook(const char *szFile, int nLine)
 		Break();
 
 	if (
+		HasBreakPoint(szFile, nLine) ||
 //		_SendMessage(DMSG_HAS_BREAKPOINT, (WPARAM)szFile, (LPARAM)nLine) ||
 			m_nMode==DMOD_STEP_INTO	|| 
 			m_nMode==DMOD_BREAK ||
@@ -208,20 +217,16 @@ void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 		_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
 
 	}while(m_nMode==DMOD_SHOW_STACK_LEVEL);
+	
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_GET_BREAKPOINTS);
+	SendMailslotMessage(IDE_MAIL_SLOT, msg);
+	WaitForReply(DMSG_GET_BREAKPOINTS);
 }
 
 void CScriptDebugger::ErrorBreak(const char* szFile, int nLine)
 {
 	DebugBreak(szFile, nLine);
-/*	m_lua.DrawStackTrace();
-	m_lua.DrawGlobalVariables();
-
-	StackLevelChanged();
-
-	_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
-
-	m_nMode = DMOD_NONE;
-*/
 }
 
 void CScriptDebugger::ClearStackTrace()
@@ -311,10 +316,9 @@ LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
 	msg.r_int(msgType);
 	VERIFY(msgType==(int)nMsg);
 	switch(msgType) {
-	case DMSG_HAS_BREAKPOINT:{
-			int res;
-			msg.r_int(res);
-			return res;
+	case DMSG_GET_BREAKPOINTS:{
+			FillBreakPointsIn(&msg);
+			return 1;
 		}break;
 	case DMSG_SHOW_IDE:{
 			return TranslateIdeMessage(&msg);
@@ -373,5 +377,46 @@ int CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 
 	default:
 		return DMOD_NONE;
+	}
+}
+
+bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
+{
+	string256 sFileName;
+	char drive[_MAX_DRIVE];
+	char dir[_MAX_DIR];
+	char fname[_MAX_FNAME];
+	char ext[_MAX_EXT];
+
+	_splitpath( fileName, drive, dir, sFileName, ext );
+
+
+
+	for(s32 i=0; i< m_breakPoints.size(); ++i)
+	{
+		if(m_breakPoints[i].nLine == lineNum)
+			if( strlen(m_breakPoints[i].fileName) == strlen(fileName) )
+				if( strstr(m_breakPoints[i].fileName, fileName)==0 )
+					return true;
+	}
+	return false;
+}
+
+void CScriptDebugger::FillBreakPointsIn(CMailSlotMsg* msg)
+{
+	m_breakPoints.clear();
+	s32 nCount = 0;
+	msg->r_int(nCount);
+	string256 fName;
+	for(s32 i=0; i<nCount; ++i){
+		SBreakPoint bp;
+		msg->r_string(bp.fileName);
+		s32 bpCount = 0;
+		msg->r_int(bpCount);
+
+		for(s32 j=0; j<bpCount; ++j){
+			msg->r_int(bp.nLine);
+			m_breakPoints.push_back(bp);
+		}
 	}
 }
