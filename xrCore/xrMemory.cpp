@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
-#include <malloc.h>
+#include	<malloc.h>
 
 xrMemory	Memory;
 BOOL		mem_initialized	= FALSE;

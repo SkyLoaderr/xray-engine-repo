@@ -46,7 +46,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 
-	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like free hunting
+	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like _free hunting
 
 	m_dwDayTimeBegin	= pSettings->r_u32	(section,"DayTime_Begin");
 	m_dwDayTimeEnd		= pSettings->r_u32	(section,"DayTime_End");		
