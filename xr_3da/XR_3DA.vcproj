@@ -1358,6 +1358,15 @@
 				RelativePath=".\ai_script_space.h">
 			</File>
 			<File
+				RelativePath=".\class.cpp">
+			</File>
+			<File
+				RelativePath=".\class_info.cpp">
+			</File>
+			<File
+				RelativePath=".\class_registry.cpp">
+			</File>
+			<File
 				RelativePath=".\class_rep.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1398,6 +1407,9 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\error.cpp">
 			</File>
 			<File
 				RelativePath=".\find_best_match.cpp">
@@ -1463,6 +1475,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\link_compatibility.cpp">
+			</File>
+			<File
 				RelativePath=".\object.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1482,6 +1497,9 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\object_rep.cpp">
 			</File>
 			<File
 				RelativePath=".\open.cpp">
@@ -1505,6 +1523,15 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\pcall.cpp">
+			</File>
+			<File
+				RelativePath=".\ref.cpp">
+			</File>
+			<File
+				RelativePath=".\scope.cpp">
+			</File>
+			<File
 				RelativePath=".\stack_content_by_name.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -1524,6 +1551,9 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="0"/>
 				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\weak_ref.cpp">
 			</File>
 		</Filter>
 		<File
