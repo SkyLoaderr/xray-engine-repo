@@ -450,7 +450,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 		return;
 	
 	VERIFY(!m_magazine.empty());
-	while (fTime<=0 && (IsWorking() || m_bFireSingleShot))
+	while (!m_magazine.empty() && fTime<=0 && (IsWorking() || m_bFireSingleShot))
 	{
 		m_bFireSingleShot = false;
 
