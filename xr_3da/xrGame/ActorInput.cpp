@@ -235,11 +235,14 @@ void CActor::ActorUse()
 {
 	PickupModeOn();
 
+	if(m_PhysicMovementControl->PHCapture())
+		m_PhysicMovementControl->PHReleaseObject();
+
 	if(!m_pUsableObject) return;
 
 	m_pUsableObject->use(this);
 	
-	bool capture_switch_on=false;
+
 	if(m_pUsableObject->nonscript_usable())
 	{
 		if(m_pPersonWeLookingAt)
@@ -284,7 +287,7 @@ void CActor::ActorUse()
 			if(!m_PhysicMovementControl->PHCapture())
 			{
 				m_PhysicMovementControl->PHCaptureObject(object,element);
-				capture_switch_on=true;
+			
 			}
 
 		}
@@ -313,7 +316,6 @@ void CActor::ActorUse()
 		}
 	}
 
-	if(m_PhysicMovementControl->PHCapture()&&!capture_switch_on)
-						m_PhysicMovementControl->PHReleaseObject();
+
 }
 //void CActor::IR_OnMousePress(int btn)
