@@ -458,6 +458,9 @@
 				RelativePath="xrMemory_align.h">
 			</File>
 			<File
+				RelativePath=".\xrMemory_debug.cpp">
+			</File>
+			<File
 				RelativePath="xrMemory_POOL.cpp">
 			</File>
 			<File

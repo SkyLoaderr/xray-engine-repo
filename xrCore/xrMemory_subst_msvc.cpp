@@ -32,6 +32,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 		void*	_real			=	xr_aligned_offset_malloc	(size,16,0x1);
 		_ptr					=	(void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		=	mem_generic;
+		if (debug_mode)			dbg_register	(_ptr);
 		return	_ptr;
 	}
 
@@ -57,7 +58,8 @@ void*	xrMemory::mem_alloc		(size_t size)
 void	xrMemory::mem_free		(void* P)
 {
 	stat_calls++;
-	u32	pool					= get_header(P);
+	if (debug_mode)				dbg_unregister	(P);
+	u32	pool					= get_header	(P);
 	void* _real					= (void*)(((u8*)P)-1);
 	if (mem_generic==pool)		
 	{
@@ -77,6 +79,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	stat_calls++;
 	if (0==P)					return mem_alloc(size);
 
+	if		(debug_mode)		dbg_unregister	(P);
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
@@ -97,6 +100,7 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		mem_free				(p_old);
 		_ptr					= p_new;
 	}
+	if		(debug_mode)		dbg_register	(P);
 	return	_ptr;
 }
 
