@@ -344,7 +344,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 
 
-	if (!g_Alive()) return;
+	if (!g_Alive())
+	{
+		inherited::Hit(iLost,dir,who,element,position_in_bone_space,impulse,hit_type);
+		return;
+	}
 
 #ifndef _DEBUG
 	if(Level().CurrentEntity() == this) {
