@@ -37,7 +37,7 @@ void CUIOutfitSlot::Init(int x, int y, int width, int height)
 	// Немного ублюдочный способ прорескейлить текстуру иконки персонажа, чтобы изображение
 	// полностью влазило в статик контрол. Коэфициент подобран методом тыка. :( Других способов
 	// пока не вижу.
-	UIOutfitIcon.SetTextureScale(0.67f);
+	UIOutfitIcon.SetTextureScale(0.64f);
 	UIOutfitIcon.Show(true);
 	UIOutfitIcon.Enable(false);
 	UIOutfitIcon.ClipperOn();
@@ -74,8 +74,8 @@ void CUIOutfitSlot::AttachChild(CUIWindow *pChild)
 		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(
 			pOutfit->GetIconX()*ICON_GRID_WIDTH,
 			pOutfit->GetIconY()*ICON_GRID_HEIGHT,
-			pOutfit->GetIconX()+CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
-			pOutfit->GetIconY()+CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
+			CHAR_ICON_FULL_WIDTH*ICON_GRID_WIDTH,
+			CHAR_ICON_FULL_HEIGHT*ICON_GRID_HEIGHT);
 	}
 
 	// Скрываем изображение

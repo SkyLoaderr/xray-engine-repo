@@ -28,7 +28,7 @@ public:
 	void			ScalePicture			(float value) { UIPicture.SetTextureScale(UIPicture.GetTextureScale() * value); }
 	void			SetCaption				(LPCSTR caption);
 	void			SetDescription			(LPCSTR description);
-	void			SetAdditionalMaterialID	(int id) { m_id = id; }
+	void			SetAdditionalMaterialID	(int id) { m_id = id; UIAdditionalMaterials.Show(true); }
 	int				GetAdditionalMaterialID	() const { return m_id; }
 	void			SetCallbackMessage		(EUIMessages msg) { articleTypeMsg = msg; }
 

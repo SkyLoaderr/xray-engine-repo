@@ -129,7 +129,10 @@ void CUIPdaDialogWnd::Show(bool status)
 	inherited::Enable(status);
 
 	if (status)
+	{
+		UILogListWnd.ResetAll();
 		ResetAll();
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

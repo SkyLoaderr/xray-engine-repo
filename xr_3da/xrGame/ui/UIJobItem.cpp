@@ -45,6 +45,7 @@ CUIJobItem::CUIJobItem(int leftOffest)
 	// Description
 	AttachChild(&UIAdditionalMaterials);
 	xml_init.InitButton(uiXml, "materials_button", 0, &UIAdditionalMaterials);
+	UIAdditionalMaterials.Show(false);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -194,7 +194,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	AttachChild(&UITopList[OUTFIT_SLOT]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UITopList[OUTFIT_SLOT]);
-	UITopList[OUTFIT_SLOT].Enable(false);
+//	UITopList[OUTFIT_SLOT].Enable(false);
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
@@ -247,7 +247,7 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	AttachChild(&UIOutfitIcon);
 	xml_init.InitStatic(uiXml, "outfit_static", 0, &UIOutfitIcon);
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
-	UIOutfitIcon.SetTextureScale(0.65f);
+	UIOutfitIcon.SetTextureScale(0.68f);
 	UIOutfitIcon.ClipperOn();
 
 	UIDescWnd.AttachChild(&UIItemInfo);
@@ -906,9 +906,17 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (WINDOW_LBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
 	{
-		if (UITopList[OUTFIT_SLOT].GetChildWndList().front())
+		if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
 		{
-			UITopList[OUTFIT_SLOT].GetChildWndList().front()->Show(true);
+			UITopList[OUTFIT_SLOT].GetChildWndList().back()->Show(true);
+		}
+	}
+	else if (WINDOW_RBUTTON_DOWN == msg && &UIOutfitIcon == pWnd)
+	{
+		if (UITopList[OUTFIT_SLOT].GetChildWndList().back())
+		{
+			UITopList[OUTFIT_SLOT].GetChildWndList().back()->Show(true);
+			SendMessage(UITopList[OUTFIT_SLOT].GetChildWndList().back(), DRAG_DROP_ITEM_RBUTTON_CLICK, NULL);
 		}
 	}
 
@@ -918,6 +926,19 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 void CUIBuyWeaponWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
+	if (WINDOW_LBUTTON_DOWN == mouse_action || WINDOW_RBUTTON_DOWN == mouse_action)
+	{
+		RECT	r = UIOutfitIcon.GetAbsoluteRect();
+		POINT	p;
+		p.x = x;
+		p.y = y;
+
+		if (PtInRect(&r, p))
+		{
+			SendMessage(&UIOutfitIcon, static_cast<s16>(mouse_action), NULL);
+		}
+	}
+
 	//вызов дополнительного меню по правой кнопке
 	if(mouse_action == WINDOW_RBUTTON_DOWN)
 	{
