@@ -2045,19 +2045,6 @@ SOURCE=.\xrParticlesLib.h
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=.\DetailDither.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
 SOURCE=.\DetailFormat.h
 # End Source File
 # Begin Source File

@@ -410,10 +410,10 @@ void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 			Item.P.set	(rx,0,rz);
 
 			// Angles and scale
-			Item.yaw	= ::Random.randF	(0,PI_MUL_2);
+			Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
 			Item.phase_x= ::Random.randFs	(phase_range);
 			Item.phase_z= ::Random.randF	(phase_range);
-			Item.scale	= ::Random.randF	(0.3f,1.8f);
+			Item.scale	= r_scale.randF		(0.3f,1.8f);
 
 			// Color
 			Item.C		= 0xffffffff;
