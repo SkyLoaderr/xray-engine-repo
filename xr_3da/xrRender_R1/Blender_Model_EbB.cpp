@@ -75,60 +75,41 @@ void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.PassBegin		();
+		LPCSTR	sname		= 0;
+		LPCSTR	sname_ps	= 0;
+		switch (C.iElement)
 		{
-			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET	();
-			C.PassSET_LightFog	(TRUE,TRUE);
-			
-			switch (C.iElement)	
-			{
-			case 0:	// Highest LOD
-				// Stage0 - projector
-				C.StageBegin		();
-				C.StageSET_TMC		("$user$projector", "$user$projector", "$null", 0	);
-				C.StageEnd			();
-
-				// Stage1 - Env texture
-				C.StageBegin		();
-				C.StageSET_Address	(D3DTADDRESS_CLAMP);
-				C.StageSET_TMC		(oT2_Name, oT2_xform, "$null", 0);
-				C.StageEnd			();
-
-				// Stage2 - Base texture
-				C.StageBegin		();
-				C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
-				C.StageEnd			();
-
-				C.PassSET_PS		("model_env");
-				break;
-			case 1:	// Lowest LOD
-				// Stage1 - Env texture
-				C.StageBegin		();
-				C.StageSET_Address	(D3DTADDRESS_CLAMP);
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT2_Name, oT2_xform, "$null", 0);
-				C.StageEnd			();
-
-				// Stage2 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_BLENDTEXTUREALPHA,	D3DTA_CURRENT);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,		D3DTA_CURRENT);
-				C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
-				C.StageEnd			();
-
-				// Stage3 - Lighting - should work on all 2tex hardware
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE2X,		D3DTA_CURRENT);
-				C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_SELECTARG2,		D3DTA_CURRENT);
-				C.Stage_Texture		("$null"	);
-				C.Stage_Matrix		("$null",	0);
-				C.Stage_Constant	("$null"	);
-				C.StageEnd			();
-				break;
-			}
+		case SE_R1_NORMAL_HQ:	
+			sname				= "model_env_hq"; 
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname,TRUE);
+			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
+			C.r_Sampler_clf		("s_lmap",	"$user$projector",true);
+			C.r_End				();
+			break;
+		case SE_R1_NORMAL_LQ:
+			sname				= "model_env_lq"; 
+			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname,TRUE);
+			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_Sampler			("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
+			C.r_End				();
+			break;
+		case SE_R1_LPOINT:
+			break;
+		case SE_R1_LSPOT:
+			sname				= "model_def_spot";
+			sname_ps			= "add_spot";
+			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
+			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
+			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
+			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
+			C.r_End				();
+			break;
+		case SE_R1_LMODELS:
+			break;
 		}
-		C.PassEnd			();
 	}
 }
