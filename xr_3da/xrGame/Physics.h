@@ -148,11 +148,13 @@ public:
 	dSpaceID GetSpace(){return Space;};
 	
 	void Create();
+/*
 	CPHElement* AddElement(){
 	CPHElement* phelement=new CPHElement(Space);
 	elements.push_back(phelement);
 	return phelement;
 	}
+*/
 	void Destroy();
 
 	void Step(dReal step=0.025f);

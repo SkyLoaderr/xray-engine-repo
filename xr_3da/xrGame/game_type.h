@@ -8,6 +8,6 @@ enum
 	GAME_ASSAULT
 };
 
-extern int GAME;
-extern int g_fraglimit;
-extern int g_timelimit;
+extern DWORD	GAME;
+extern int		g_fraglimit;
+extern int		g_timelimit;
