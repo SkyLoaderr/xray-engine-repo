@@ -13,10 +13,7 @@
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
 #pragma comment(lib,"X:\\xrProgressive.lib")
-//#pragma comment(lib,"X:\\xrOcclusion.lib")
-//#pragma comment(lib,"X:\\xrStrips.lib")
-//#pragma comment(lib,"X:\\xrDXTC.lib")
-//#pragma comment(lib,"X:\\xrSpherical.lib")
+#pragma comment(lib,"X:\\xrCDB.lib")
 #pragma comment(lib,"X:\\FreeImage.lib")
 #pragma comment(lib,"X:\\xrHemisphere.lib")
 

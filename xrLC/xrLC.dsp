@@ -401,17 +401,9 @@ SOURCE=.\xrLoadSurface.cpp
 SOURCE=.\xrUVpoint.h
 # End Source File
 # End Group
-# Begin Group "Rapid"
+# Begin Group "CDB"
 
 # PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\cl_bboxcollide.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_build.cpp
-# End Source File
 # Begin Source File
 
 SOURCE=.\cl_collector.cpp
@@ -422,44 +414,11 @@ SOURCE=.\cl_collector.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cl_collide.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_defs.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\cl_intersect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\cl_moments.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_overlap.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_RAPID.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_RAPID.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\cl_raypick.cpp
-
-!IF  "$(CFG)" == "xrLC - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "xrLC - Win32 Debug"
-
-!ENDIF 
-
+SOURCE=.\xrCDB.h
 # End Source File
 # End Group
 # Begin Group "External"
@@ -645,11 +604,6 @@ SOURCE=.\xrHierrarhy.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrMergeGeometry.cpp
-# PROP Exclude_From_Build 1
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrMergeLM.cpp
 # PROP Exclude_From_Build 1
 # End Source File
@@ -679,6 +633,9 @@ SOURCE=.\xrVis.cpp
 # PROP Exclude_From_Build 1
 # End Source File
 # End Group
+# Begin Group "*** COMPILER ***"
+
+# PROP Default_Filter ""
 # Begin Source File
 
 SOURCE=.\Build.cpp
@@ -784,5 +741,6 @@ SOURCE=.\xrSoftenLights.cpp
 
 SOURCE=.\xrT_Junction.cpp
 # End Source File
+# End Group
 # End Target
 # End Project
