@@ -93,6 +93,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 }
 
+#ifdef XRGAME_EXPORTS
 SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 {
 	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
@@ -215,6 +216,7 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 	m_character_profile_init = true;
 	return	m_iCharacterProfile;
 }
+#endif
 
 void CSE_ALifeTraderAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
