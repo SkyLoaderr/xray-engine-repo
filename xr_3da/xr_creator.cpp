@@ -130,7 +130,7 @@ BOOL CCreator::Load(DWORD dwNum)
 			pSounds->Play3DAtPos(Sounds.back(),pos,true);
 		}
 	}
-	Environment.Load_Music(pLevel);
+	Environment.Load_Music		(pLevel);
 
 	// Done
 	pApp->LoadTitle				("Syncronizing...");
