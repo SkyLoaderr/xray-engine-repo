@@ -402,6 +402,8 @@ void __fastcall TProperties::OnFolderFocused(TElTreeItem* item)
 
 void __fastcall TProperties::tvPropertiesClick(TObject *Sender)
 {
+	if (m_Flags.is(plReadOnly)) return;
+
 	TSTItemPart 	IP=(TSTItemPart)0;
     int				HC=0;
     TElTreeItem* 	Item;
@@ -884,6 +886,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 void __fastcall TProperties::tvPropertiesMouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
+	if (m_Flags.is(plReadOnly)) return;
 	if (tvProperties->Selected){
 		TElTreeItem* item 	= tvProperties->Selected;
 		PropItem* prop 		= (PropItem*)item->Tag;
@@ -911,6 +914,7 @@ void __fastcall TProperties::tvPropertiesMouseMove(TObject *Sender,
 void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
+	if (m_Flags.is(plReadOnly)) return;
 	if (tvProperties->Selected){
 		TElTreeItem* item 	= tvProperties->Selected;
 		PropItem* prop 		= (PropItem*)item->Tag;
