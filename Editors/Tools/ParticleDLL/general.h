@@ -113,6 +113,7 @@ enum PActionEnum
 	PADampingID,		// Dampen particle velocities.
 	PAExplosionID,		// An Explosion.
 	PAFollowID,			// Accelerate toward the previous particle in the group.
+	PAFrameID,			// 
 	PAGravitateID,		// Accelerate each particle toward each other particle.
 	PAGravityID,		// Acceleration in the given direction.
 	PAJetID,			// 
@@ -136,7 +137,6 @@ enum PActionEnum
 	PATargetVelocityID,	// 
 	PATargetVelocityDID,// 
 	PAVortexID,			// 
-	PAFrameID,			// 
 	action_enum_force_dword = DWORD(-1)
 };
 
