@@ -200,11 +200,8 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (!g_Alive())
-		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[0];
-	else
-		if (m_tStateType == eStateTypePanic)
-			tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
+	if (g_Alive() && (m_tStateType == eStateTypePanic))
+		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
@@ -405,22 +402,23 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
 			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 	}
-	else {
-		CMotionDef				*tpTorsoAnimation	=	0;
-		CMotionDef				*tpLegsAnimation	=	0;
-		m_tpCurrentGlobalBlend	= 0;
-		vfAssignTorsoAnimation	(tpTorsoAnimation);
-		vfAssignLegsAnimation	(tpLegsAnimation);
-//		if ((tpTorsoAnimation) && ((m_tpCurrentTorsoAnimation != tpTorsoAnimation) || (m_tpCurrentTorsoBlend && !m_tpCurrentTorsoBlend->playing && (tpTorsoAnimation == m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[1].A[0]))))
-		if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
-			m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
-		if (tpLegsAnimation && (m_tpCurrentLegsAnimation != tpLegsAnimation))
-			m_tpCurrentLegsBlend	= tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
-		
-		if (tpTorsoAnimation && tpLegsAnimation){
-			if ((tpTorsoAnimation->flags & esmSyncPart) && (tpLegsAnimation->flags & esmSyncPart))
-				if (m_tpCurrentTorsoBlend && m_tpCurrentLegsBlend)
-					m_tpCurrentTorsoBlend->timeCurrent = m_tpCurrentLegsBlend->timeCurrent;
+	else
+		if (g_Alive()) {
+			CMotionDef				*tpTorsoAnimation	=	0;
+			CMotionDef				*tpLegsAnimation	=	0;
+			m_tpCurrentGlobalBlend	= 0;
+			vfAssignTorsoAnimation	(tpTorsoAnimation);
+			vfAssignLegsAnimation	(tpLegsAnimation);
+			
+			if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
+				m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);
+			if (tpLegsAnimation && (m_tpCurrentLegsAnimation != tpLegsAnimation))
+				m_tpCurrentLegsBlend	= tVisualObject.PlayCycle(m_tpCurrentLegsAnimation = tpLegsAnimation);
+			
+			if (tpTorsoAnimation && tpLegsAnimation){
+				if ((tpTorsoAnimation->flags & esmSyncPart) && (tpLegsAnimation->flags & esmSyncPart))
+					if (m_tpCurrentTorsoBlend && m_tpCurrentLegsBlend)
+						m_tpCurrentTorsoBlend->timeCurrent = m_tpCurrentLegsBlend->timeCurrent;
+			}
 		}
-	}
 }
