@@ -51,10 +51,10 @@ void CBloodsuckerRest::Replanning()
 			m_tAction = ACTION_SIT;
 
 			// играть анимацию сесть
-			if ((pMonster->m_tAnim != eAnimLieIdle) && (pMonster->m_tAnim != eAnimSitIdle)) {
-				pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-				pMonster->Motion.m_tSeq.Switch();
-			}
+//			if ((pMonster->m_tAnim != eAnimLieIdle) && (pMonster->m_tAnim != eAnimSitIdle)) {
+//				pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//				pMonster->Motion.m_tSeq.Switch();
+//			}
 			
 			dwMinRand = pMonster->m_timeLieIdleMin;	
 			dwMaxRand = pMonster->m_timeLieIdleMax;
@@ -80,11 +80,11 @@ void CBloodsuckerRest::Replanning()
 			m_tAction = ACTION_SLEEP;
 
 			// играть анимацию сесть
-			if ((pMonster->m_tAnim != eAnimLieIdle) && (pMonster->m_tAnim != eAnimSitIdle) && (pMonster->m_tAnim != eAnimSleep)) {
-				pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-				pMonster->Motion.m_tSeq.Add(eAnimSitToSleep,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-				pMonster->Motion.m_tSeq.Switch();
-			}
+//			if ((pMonster->m_tAnim != eAnimLieIdle) && (pMonster->m_tAnim != eAnimSitIdle) && (pMonster->m_tAnim != eAnimSleep)) {
+//				pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//				pMonster->Motion.m_tSeq.Add(eAnimSitToSleep,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//				pMonster->Motion.m_tSeq.Switch();
+//			}
 
 			dwMinRand = pMonster->m_timeSleepMin; 
 			dwMaxRand = pMonster->m_timeSleepMax;
@@ -113,25 +113,23 @@ void CBloodsuckerRest::Run()
 	// проверить нужно ли провести перепланировку
 	if (m_dwCurrentTime > m_dwLastPlanTime + m_dwReplanTime) Replanning();
 	
-	pMonster->Motion.m_tTurn.Clear();
-
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_SIT: 
-			pMonster->Motion.m_tParams.SetParams(eAnimSitIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tParams.SetParams(eAnimSitIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			break;
 		case ACTION_WALK: // обход точек графа
 			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 			break;
 		case ACTION_SLEEP:
-			pMonster->Motion.m_tParams.SetParams(eAnimSleep,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tParams.SetParams(eAnimSleep,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			break;
 		case ACTION_WALK_CIRCUMSPECTION:
 			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 			break;
 	}
 }
@@ -203,14 +201,14 @@ void CBloodsuckerEat::Run()
 		if (!bTastyCorpse) {
 			pMonster->AddIgnoreObject(pCorpse);
 			// играть анимацию (плохой труп)
-			pMonster->Motion.m_tSeq.Add(eAnimWalkBkwd,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-			pMonster->Motion.m_tSeq.Switch();
+//			pMonster->Motion.m_tSeq.Add(eAnimWalkBkwd,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//			pMonster->Motion.m_tSeq.Switch();
 			
 		} else {
 			// играть анимацию сесть
-			pMonster->Motion.m_tSeq.Add(eAnimAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-			pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-			pMonster->Motion.m_tSeq.Switch();
+//			pMonster->Motion.m_tSeq.Add(eAnimAttack,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//			pMonster->Motion.m_tSeq.Add(eAnimStandSitDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//			pMonster->Motion.m_tSeq.Switch();
 			m_tAction = ACTION_EAT;
 		}
 	}
@@ -221,21 +219,21 @@ void CBloodsuckerEat::Run()
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 			break;
 		case ACTION_CORPSE_APPROACH_WALK:
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 
 			break;
 		case ACTION_EAT:
-			pMonster->Motion.m_tParams.SetParams(eAnimEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+//			pMonster->Motion.m_tParams.SetParams(eAnimEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Clear();
 
 			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
 			else pMonster->flagEatNow = true;
@@ -338,8 +336,8 @@ void CBloodsuckerAttack::Run()
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 300);
 
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
@@ -363,8 +361,8 @@ void CBloodsuckerAttack::Run()
 			} else yaw = pMonster->r_torso_target.yaw;
 
 			// set motion params
-			pMonster->Motion.m_tParams.SetParams(eAnimAttack,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-			pMonster->Motion.m_tTurn.Set(eAnimRun, eAnimRun, 0, pMonster->m_ftrAttackFastRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimAttack,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
+//			pMonster->Motion.m_tTurn.Set(eAnimRun, eAnimRun, 0, pMonster->m_ftrAttackFastRSpeed,pMonster->m_ftrRunAttackMinAngle);
 			break;
 	}
 }
@@ -406,8 +404,8 @@ void CBloodsuckerHearNDE::Run()
 		pMonster->LookPosition(m_tSound.position, PI_DIV_3);
 		DO_ONCE_END();
 
-		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimStandTurnLeft, eAnimStandTurnRight, 0, PI_DIV_3, PI_DIV_6/20);
+//		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//		pMonster->Motion.m_tTurn.Set(eAnimStandTurnLeft, eAnimStandTurnRight, 0, PI_DIV_3, PI_DIV_6/20);
 
 		if (m_dwStateStartedTime + 3000 < m_dwCurrentTime) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
@@ -419,8 +417,8 @@ void CBloodsuckerHearNDE::Run()
 		DO_ONCE_END();
 
 		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorHearSnd,0, true, 0, 300);
-		pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
-		pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+//		pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);		
+//		pMonster->Motion.m_tTurn.Set(eAnimWalkFwd, eAnimWalkFwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 		break;
 	}
 }
@@ -474,8 +472,8 @@ void CBloodsuckerHearDNE::Run()
 
 		pMonster->Path_GetAwayFromPoint (0, m_tSound.position, m_fRunAwayDist, 2000);
 
-		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//		pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 
 		// каждую минуту сохранять текущую позицию, а затем развернуться и посмотреть в последнюю позицию
 		// т.е. развернуться назад
@@ -499,8 +497,8 @@ void CBloodsuckerHearDNE::Run()
 			pMonster->LookPosition(SavedPosition, PI_DIV_3);
 		DO_ONCE_END();
 
-		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimStandTurnLeft, eAnimStandTurnRight, 0, PI_DIV_3, PI_DIV_6/20);
+//		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//		pMonster->Motion.m_tTurn.Set(eAnimStandTurnLeft, eAnimStandTurnRight, 0, PI_DIV_3, PI_DIV_6/20);
 
 		// если уже повернулся, перейти в след. состояние
 		if (getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw, PI_DIV_6/6)) m_tAction = ACTION_LOOK_AROUND;
@@ -508,8 +506,8 @@ void CBloodsuckerHearDNE::Run()
 
 	case ACTION_LOOK_AROUND:
 		Msg("DNE : [LOOK_AROUND]");
-		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Clear();
+//		pMonster->Motion.m_tParams.SetParams(eAnimStandIdle, 0, 0, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//		pMonster->Motion.m_tTurn.Clear();
 		break;
 	}
 }
@@ -564,8 +562,8 @@ void CBloodsuckerPanic::Run()
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 
-		pMonster->Motion.m_tSeq.Add(eAnimStandTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);		
-		pMonster->Motion.m_tSeq.Switch();
+//		pMonster->Motion.m_tSeq.Add(eAnimStandTurnLeft,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);		
+//		pMonster->Motion.m_tSeq.Switch();
 	} 
 
 	if (!cur_pos.similar(prev_pos)) {
@@ -587,16 +585,16 @@ void CBloodsuckerPanic::Run()
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 
 	if (!bFacedOpenArea) {
-		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//		pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 	} else {
 		// try to rebuild path
 		if (pMonster->AI_Path.TravelPath.size() > 5) {
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+//			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Set(eAnimRun,eAnimRun, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
 		} else {
-			pMonster->Motion.m_tParams.SetParams(eAnimStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+//			pMonster->Motion.m_tParams.SetParams(eAnimStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+//			pMonster->Motion.m_tTurn.Clear();
 		}
 	}
 

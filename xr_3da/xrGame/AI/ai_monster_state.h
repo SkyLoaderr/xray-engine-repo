@@ -68,60 +68,6 @@ enum EMotionAnim {
 	eAnimAttackJump,
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CMotionSequence class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CMotionParams {
-
-public:
-	u32 stop_mask;
-	u32 time;
-
-	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0) {
-	}
-	void ApplyData(CCustomMonster *p) {}
-};
-class CMotionTurn {
-public:
-	void Set(EMotionAnim l,EMotionAnim r, float f1, float f2, float f3) {};
-	void Clear() {}
-	void SetMoveBkwd(bool b) {};
-};
-
-
-class CMotionSequence {
-
-	xr_vector<CMotionParams>::iterator it;		// индекс текущий элемент
-	xr_vector<CMotionParams> States;
-
-	CCustomMonster	*pMonster;
-
-public:	
-
-	bool Playing;
-
-public:
-	IC	void	Setup		(CCustomMonster *pM) {pMonster = pM;}
-
-		// Инициализация всех полей
-		void	Init		();
-		// добавить состояние
-		void	Add			(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0);
-		// Перейти в следующее состояние, если такового не имеется - завершить
-		void	Switch		();
-		// Выполняется в каждом фрейме, выполняются проверки на завершение тек. элемента последовательности 
-		void	Cycle		(u32 cur_time);
-		// Выполняется по завершении анимации
-		void	OnAnimEnd	();
-		// Установить параметры, определённые в текущем элементе последовательности
-		void	ApplyData	();
-		// Завершение последовательности
-		void	Finish		();
-
-	IC	bool	isActive	() {return Playing;}
-};
-
 
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

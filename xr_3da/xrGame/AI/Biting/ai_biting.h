@@ -105,9 +105,8 @@ public:
 			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
 			void			vfChooseNextGraphPoint			();
 			void			vfUpdateDetourPoint				();
-			void			SetReversedDirectionLook		();
 			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
-			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, float dist, TTime rebuild_time);
+			void			Path_CoverFromPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position, TTime rebuild_time);
 
 			void			vfUpdateParameters				();
@@ -115,19 +114,6 @@ public:
 			void			DoDamage						(CEntity *pEntity, float fDamage, float yaw, float pitch);
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
-	// Animation control
-	//		void			OnAnimationEnd					();
-	//		void			ControlAnimation				();
-	virtual	void			MotionToAnim					(EMotionAnim motion, int &index1, int &index2, int &index3) = 0;
-	virtual	void			CheckTransitionAnims			();	 // проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
-			void			LockAnim						(EMotionAnim anim, int i3, TTime from, TTime to);
-			bool			IsAnimLocked					(TTime cur_time);
-
-	// Motion control
-	virtual void			OnMotionSequenceStart			();
-	virtual	void			OnMotionSequenceEnd				();
-
-	virtual	void			LoadAttackAnim					() {}
 	virtual void			CheckAttackHit					();
 
 	// FSM
@@ -166,15 +152,7 @@ public:
 	u32						m_dwHealth;				
 	float					m_fSoundThreshold;
 	float					m_fHitPower;
-	bool					bShowDeath;				// need to control animation
-	CAttackAnim				m_tAttackAnim;			// for hit calculation
-	//LOCK_ANIM_VECTOR		m_tLockedAnims;
-	int						anim_i3;				// 3ий индекс текущей анимации
-	TTime					m_dwAnimStarted;		// время начала текущей анимации
-	EMotionAnim				m_tAnimPlaying;
 
-	CBitingMotion			Motion;					// motion frame params
-	
 	// FSM 
 	IState					*CurrentState;
 
@@ -248,6 +226,5 @@ public:
 	bool					flagEatNow;				// true - сейчас монстр ест]
 
 	CMotionManager			MotionMan; 
-	CMotionDef				*m_tpCurAnim;
 
 };

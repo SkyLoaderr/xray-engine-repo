@@ -78,23 +78,7 @@ void CAI_Bloodsucker::UpdateCL()
 
 void CAI_Bloodsucker::StateSelector()
 {
-	//	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
-	//	int bone2		= PKinematics(Visual())->LL_BoneID("bip01_head");
-	//	
-	//	static bool look_left = true;
-	//
-	//	if (!Bones.IsActive()) {
-	//
-	//		float look_k;
-	//		look_k = ((look_left) ? (-1.f) : 1.f);
-	//
-	//		look_left = !look_left;
-	//
-	//		// Колбасит
-	//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Z, look_k * PI_DIV_4 , PI, 1);
-	//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Y, look_k * PI_DIV_3 , PI_DIV_2 , 1);
-	//	}
-	
+
 	VisionElem ve;
 
 	if (C && H && I)			SetState(statePanic);
@@ -152,20 +136,20 @@ CBoneInstance *CAI_Bloodsucker::GetBone(int bone_id)
 	return (&PKinematics(Visual())->LL_GetInstance(bone_id));
 }
 
-void CAI_Bloodsucker::LoadAttackAnim()
-{
-	Fvector center;
-	center.set		(0.f,0.f,0.f);
-
-	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6);
-
-	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6);
-
-	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6);
-}
+//void CAI_Bloodsucker::LoadAttackAnim()
+//{
+//	Fvector center;
+//	center.set		(0.f,0.f,0.f);
+//
+//	// 1 //
+//	m_tAttackAnim.PushAttackAnim(0, 10, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6, PI_DIV_6);
+//
+//	// 2 //
+//	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f, PI_DIV_6);
+//
+//	// 3 // 
+//	m_tAttackAnim.PushAttackAnim(0, 10, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3, PI_DIV_6);
+//}
 
 
 void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)

@@ -26,7 +26,6 @@ void CAI_Biting::Init()
 {
 	
 	// initializing class members
-	m_tpCurAnim						= 0;
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
 	m_fGoingSpeed					= 0.f;
@@ -35,8 +34,6 @@ void CAI_Biting::Init()
 	m_dwLastRangeSearch				= 0;
 
 	// Инициализация параметров анимации
-	m_tAnim							= m_tAnimPrevFrame = DEFAULT_ANIM;
-
 	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
 	m_fAttackSuccessProbability[0]	= .8f;
@@ -44,11 +41,7 @@ void CAI_Biting::Init()
 	m_fAttackSuccessProbability[2]	= .4f;
 	m_fAttackSuccessProbability[3]	= .2f;
 
-	bShowDeath						= false;
-	
 	InitMemory						(10000,10000);
-
-	Motion.Init						(this);
 
 	m_dwPathBuiltLastTime			= 0;
 	
@@ -58,16 +51,7 @@ void CAI_Biting::Init()
 	AI_Path.DestNode				= u32(-1);
 	m_pPhysics_support				->in_Init();
 
-	m_tAttackAnim.Clear				();
-
-	m_dwAnimStarted					= 0;
-	anim_i3							= 0;
-
-//	m_tLockedAnims.clear			();
-	m_tAnimPlaying					= DEFAULT_ANIM;
-
 	flagEatNow						= false;
-
 }
 
 void CAI_Biting::Die()
@@ -76,11 +60,8 @@ void CAI_Biting::Die()
 
 	DeinitMemory();
 
-	Fvector	dir;
-	
-	bShowDeath = true;
-	SelectAnimation(dir,dir,0.f);
-
+//	bShowDeath = true;
+//	SelectAnimation(dir,dir,0.f);
 }
 
 void CAI_Biting::Load(LPCSTR section)
@@ -159,10 +140,6 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
-
-	LoadAttackAnim					();
-
-	
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
@@ -179,7 +156,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
-	// loading animations
+	// loading animation stuff
 	MotionMan.Init					(this, PKinematics(Visual()));
 
 	m_pPhysics_support->in_NetSpawn();

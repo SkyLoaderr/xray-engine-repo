@@ -12,81 +12,9 @@
 
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MOTION STATE MANAGMENT
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-//*********************************************************************************************************
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CMotionSequence implementation
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CMotionSequence::Init()
-{
-	States.clear();
-	it = States.end();
-	Playing = false;
-}
-
-void CMotionSequence::Add(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m,u32 s_m)
-{
-	CMotionParams tS;
-	tS.SetParams(a,s,r_s,y,t,m,s_m);
-
-	States.push_back(tS);
-}
-
-void CMotionSequence::Switch()
-{
-	if (!Playing) it = States.begin();
-	else {
-		it++; 
-		if (it == States.end()) {
-			Finish();
-			return;
-		}
-	}
-
-	Playing = true;
-
-	ApplyData();
-	pMonster->OnMotionSequenceStart();
-}
-
-void CMotionSequence::ApplyData()
-{
-	it->ApplyData(pMonster);
-}
-
-void CMotionSequence::Finish()
-{
-	Init(); 
-	pMonster->OnMotionSequenceEnd();
-}
-
-
-// Выполнить проверки на завершение текущего элемента последовательности (по STOP маскам)
-void CMotionSequence::Cycle(u32 cur_time)
-{
-	if (((it->stop_mask & STOP_TIME_OUT) == STOP_TIME_OUT) && (cur_time > it->time) ||																				// если TIME_OUT
-		(((it->stop_mask & STOP_AT_TURNED) == STOP_AT_TURNED) && (getAI().bfTooSmallAngle(pMonster->r_torso_target.yaw, pMonster->r_torso_current.yaw, EPS_L))))	// если необходима остановка, когда произведен поворот 
-	{ 
-		Switch();
-	}
-}
-
-void CMotionSequence::OnAnimEnd()
-{
-	if (Playing) {			// Sequence active?
-		if ((it->stop_mask & STOP_ANIM_END) == STOP_ANIM_END) Switch();
-	}	
-}
-
-
-//*********************************************************************************************************
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // STATE MANAGMENT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IState implementation

@@ -71,8 +71,7 @@ void CBitingEat::Run()
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
 
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			if (cur_dist < m_fDistToCorpse) {
 				// пытаться взять труп
@@ -89,8 +88,7 @@ void CBitingEat::Run()
 				}
 
 				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
-				pMonster->Motion.m_tSeq.Add(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-				pMonster->Motion.m_tSeq.Switch();
+				// Set Spec Params
 			}
 			break;
 
@@ -98,12 +96,10 @@ void CBitingEat::Run()
 			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 5000);
 
 			// Установить параметры движения
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkBkwd,pMonster->m_ftrWalkSpeed / 2, pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set		(eAnimWalkBkwd, eAnimWalkBkwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);			
-			pMonster->Motion.m_tTurn.SetMoveBkwd(true);
+			pMonster->MotionMan.m_tAction = ACT_WALK_BKWD; 
 
 			// если не может тащить
-			if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_WALK_LITTLE_AWAY;
+			if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_WALK_LITTLE_AWAY; 
 
 			if (saved_dist > m_fDistToDrag) {
 				// бросить труп
@@ -115,12 +111,8 @@ void CBitingEat::Run()
 
 			break;
 		case ACTION_WALK_LITTLE_AWAY:
-
 			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 4.f, 5000);
-
-			
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed / 2,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
 			if (cur_dist > 3.f) m_tAction = ACTION_LOOK_AROUND;
 			break;
@@ -132,31 +124,27 @@ void CBitingEat::Run()
 			
 			if (m_dwStandStart + 2000 < m_dwCurrentTime) m_tAction = ACTION_WALK;
 
-			pMonster->Motion.m_tParams.SetParams(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			// Look around
+			pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND; 
 
 			break;
 		case ACTION_WALK:
 
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
-
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
-			pMonster->Motion.m_tTurn.SetMoveBkwd(false);
+	
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
 			if (cur_dist  + 0.5f  < m_fDistToCorpse) {
 				m_tAction = ACTION_EAT;
 
 				// лечь и есть
-				pMonster->Motion.m_tSeq.Add(eAnimStandLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-				pMonster->Motion.m_tSeq.Switch();
+				// set spec flags
 			}
 
 			break;
 		case ACTION_EAT:
-			pMonster->Motion.m_tParams.SetParams(eAnimEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			pMonster->MotionMan.m_tAction = ACT_EAT; 
 
 			if (pMonster->GetSatiety() >= 1.0f) pMonster->flagEatNow = false;
 			else pMonster->flagEatNow = true;
@@ -177,7 +165,6 @@ void CBitingEat::Done()
 
 	pMonster->flagEatNow = false;
 
-	pMonster->Motion.m_tTurn.SetMoveBkwd(false);
 	// если тащит труп - бросить
 	if (bDragging) {
 		pMonster->Movement.PHReleaseObject();

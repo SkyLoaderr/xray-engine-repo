@@ -48,9 +48,9 @@ void CBitingExploreDNE::Init()
 
 	// проиграть анимацию испуга
 
-	pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW, STOP_ANIM_END);
-	pMonster->Motion.m_tSeq.Add(eAnimScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-	pMonster->Motion.m_tSeq.Switch();
+//	pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW, STOP_ANIM_END);
+//	pMonster->Motion.m_tSeq.Add(eAnimScared,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+//	pMonster->Motion.m_tSeq.Switch();
 
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
@@ -68,8 +68,8 @@ void CBitingExploreDNE::Run()
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
 
-		pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);		
-		pMonster->Motion.m_tSeq.Switch();
+//		pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);		
+//		pMonster->Motion.m_tSeq.Switch();
 	} 
 
 	if (!cur_pos.similar(prev_pos)) {
@@ -85,11 +85,10 @@ void CBitingExploreDNE::Run()
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
 
 	if (!bFacedOpenArea) {
-		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;	
 	} else {
-		pMonster->Motion.m_tParams.SetParams(eAnimStandDamaged,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Clear();
+		// spec flags (stand damaged)
+		// ...
 	}
 
 	prev_pos = cur_pos;

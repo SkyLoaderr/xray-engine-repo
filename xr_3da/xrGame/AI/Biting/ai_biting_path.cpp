@@ -218,6 +218,7 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 // Выбор точки, построение пути, построение TravelLine
 void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath, u32 TimeToRebuild)
 {
+	// если путь был построен - проверить нужно ли перестраивать путь
 	if (m_tPathState == PATH_STATE_PATH_BUILT) {
 		if (m_dwPathBuiltLastTime + TimeToRebuild > m_dwCurrentUpdate) return;
 		m_tPathState = PATH_STATE_SEARCH_NODE;
@@ -225,49 +226,35 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 
 	INIT_SQUAD_AND_LEADER;
 
-//	if (tpNodeEvaluator) {
-//		vfInitSelector			(*tpNodeEvaluator,Squad);
-//		if (!tpNodeEvaluator->m_tEnemy) return;
-//	}
-
 	Fvector tempV;
-
 	switch (m_tPathState) {
-		case PATH_STATE_SEARCH_NODE : 
-			if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
-				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
-			else
-				if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-					m_tPathState = PATH_STATE_BUILD_NODE_PATH;	// 
+		case PATH_STATE_SEARCH_NODE: 
+			if (tpNodeEvaluator && bSearchForNode)		// необходимо искать ноду?
+			 	vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
+			else if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+			 	m_tPathState = PATH_STATE_BUILD_NODE_PATH;	// 
 			break;
-									
-		case PATH_STATE_BUILD_NODE_PATH : 
-			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
+			 						
+		case PATH_STATE_BUILD_NODE_PATH: 
+  			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
 				vfBuildPathToDestinationPoint(bSelectorPath ? tpNodeEvaluator : 0);
-			else
-				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
-					AI_Path.Nodes.clear();
-					AI_Path.Nodes.push_back(AI_NodeID);
-					m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
-				}
-				else
-					if (bSearchForNode && tpNodeEvaluator)
-						m_tPathState = PATH_STATE_SEARCH_NODE;
-					else
-						if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-							m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
+			else if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition && (!AI_Path.TravelPath.size() || (tpDestinationPosition->distance_to_xz(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) > EPS_L))) {
+				AI_Path.Nodes.clear();
+				AI_Path.Nodes.push_back(AI_NodeID);
+				m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
+			} else if (bSearchForNode && tpNodeEvaluator)
+				m_tPathState = PATH_STATE_SEARCH_NODE;
+			else if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+				m_tPathState = PATH_STATE_BUILD_TRAVEL_LINE;
 			break;
 									
-		case PATH_STATE_BUILD_TRAVEL_LINE : 
-			
+		case PATH_STATE_BUILD_TRAVEL_LINE: 
 			tempV = ((tpDestinationPosition) ?  *tpDestinationPosition : getAI().tfGetNodeCenter(AI_Path.Nodes.back()));
-			//vfBuildTravelLine(tempV,Position());
 			vfBuildTravelLine(&tempV);
 
 			m_tPathState = PATH_STATE_PATH_BUILT;
 			m_dwPathBuiltLastTime = m_dwCurrentUpdate;
 			break;
-										
 	}	
 }
 
@@ -329,16 +316,16 @@ void CAI_Biting::vfUpdateDetourPoint()
 		if (tpLeader) {
 			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
 			m_tNextGP					= tpLeader->m_tNextGP;
+			return;
 		}
 	}
-	else
-		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
-			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
-			vfChooseNextGraphPoint		();
-			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
-			m_dwTimeToChange			= Level().timeServer() + 2000;
-		}
-		
+	
+	if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+		m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+		vfChooseNextGraphPoint		();
+		m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+		m_dwTimeToChange			= Level().timeServer() + 2000;
+	}
 }
 
 // high level 
@@ -361,7 +348,7 @@ void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist
 	vfChoosePointAndBuildPath(&m_tSelectorGetAway, 0, true, 0, rebuild_time);
 }
 
-void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, float dist, TTime rebuild_time)
+void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position, TTime rebuild_time)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0); 									// forse enemy selection

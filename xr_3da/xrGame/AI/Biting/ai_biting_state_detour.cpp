@@ -38,18 +38,11 @@ void CBitingDetour::Run()
 	VisionElem tempEnemy;
 	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
 
-	pMonster->vfUpdateDetourPoint();
+	pMonster->vfUpdateDetourPoint	();
 	pMonster->AI_Path.DestNode		= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
+	pMonster->Path_CoverFromPoint	(m_tEnemy.obj,m_tEnemy.obj->Position(),2000);
 
-	pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
-	pMonster->m_tSelectorCover.m_fOptEnemyDistance = 15;
-	pMonster->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pMonster->Position()) + 3.f;
-
-	pMonster->vfInitSelector(pMonster->m_tSelectorCover, false);	
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0, 2000);
-
-	// Установить параметры движения
-	pMonster->Motion.m_tParams.SetParams	(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set			(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
-
+	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 }
+
+

@@ -18,9 +18,6 @@ public:
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual	void			Load				(LPCSTR section);
 
-	virtual	void			MotionToAnim		(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual	void			LoadAttackAnim		();
-
 	// Bone manipulation
 			void			vfAssignBones		(CInifile *ini, const char *section);
 	static	void __stdcall	SpinCallback		(CBoneInstance *B);

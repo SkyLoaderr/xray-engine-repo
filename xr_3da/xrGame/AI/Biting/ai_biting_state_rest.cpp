@@ -2,12 +2,6 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "..\\rat\\ai_rat.h"
-
-#include "..\\..\\PhysicsShell.h"
-#include "..\\..\\phcapture.h"
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,11 +64,6 @@ void CBitingRest::Replanning()
 
 	} else if (rand_val < (cur_val = cur_val + pMonster->m_dwProbRestLieIdle)) {	
 		m_tAction = ACTION_LIE;
-		// проверить лежит уже?
-		if (pMonster->m_tAnim != eAnimLieIdle) {
-			pMonster->Motion.m_tSeq.Add(eAnimStandLieDown,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-			pMonster->Motion.m_tSeq.Switch();
-		}
 
 		dwMinRand = pMonster->m_timeLieIdleMin;
 		dwMaxRand = pMonster->m_timeLieIdleMax;
@@ -104,7 +93,7 @@ void CBitingRest::Run()
 	} else {
 		// проверить нужно ли провести перепланировку
 		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, m_dwReplanTime);
-		Replanning();
+			Replanning();
 		DO_IN_TIME_INTERVAL_END();
 	}
 
@@ -112,24 +101,19 @@ void CBitingRest::Run()
 	switch (m_tAction) {
 		case ACTION_WALK:		// обход точек графа
 			pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			break;
 		case ACTION_STAND:     // стоять, ничего не делать
-			pMonster->Motion.m_tParams.SetParams(eAnimStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			break;
 		case ACTION_LIE:		// лежать
-			pMonster->Motion.m_tParams.SetParams(eAnimLieIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			pMonster->MotionMan.m_tAction = ACT_LIE_IDLE;
 			break;
 		case ACTION_TURN:		// повернуться на 90 град.
-			pMonster->Motion.m_tParams.SetParams(eAnimStandTurnLeft,0,pMonster->m_ftrStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 			break;
 		case ACTION_WALK_GRAPH_END:
-			pMonster->Motion.m_tParams.SetParams(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			break;
 	}
 }

@@ -96,19 +96,19 @@ void CBitingAttack::Run()
 			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
 
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			// если враг крыса под монстром подпрыгнуть и убить
+
+			// spec flag CLEAR here
+
 			if (dist < 0.6f) {
 				if (!m_dwSuperMeleeStarted)	m_dwSuperMeleeStarted = m_dwCurrentTime;
-
 				if (m_dwSuperMeleeStarted + 600 < m_dwCurrentTime) {
 					// прыгнуть
-					pMonster->Motion.m_tSeq.Add(eAnimAttackJump,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-					pMonster->Motion.m_tSeq.Switch();
+					// spec flag SET here
 					m_dwSuperMeleeStarted = 0;
 				}
 			} else m_dwSuperMeleeStarted = 0;
@@ -120,20 +120,21 @@ void CBitingAttack::Run()
 
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
 
-			pMonster->AI_Path.TravelPath.clear();
+				pMonster->AI_Path.TravelPath.clear();
 
-			Fvector dir;
-			dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
-			dir.getHP(yaw,pitch);
-			yaw *= -1;
-			yaw = angle_normalize(yaw);
+				Fvector dir;
+				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+				dir.getHP(yaw,pitch);
+				yaw *= -1;
+				yaw = angle_normalize(yaw);
 
 			DO_IN_TIME_INTERVAL_END();
 
 			// set motion params
-			if (m_bAttackRat) pMonster->Motion.m_tParams.SetParams(eAnimAttackRat,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-			else pMonster->Motion.m_tParams.SetParams(eAnimAttack,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-			pMonster->Motion.m_tTurn.Set(eAnimFastTurn, eAnimFastTurn, 0, pMonster->m_ftrAttackFastRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			// if (m_bAttackRat) set spec flags
+			pMonster->MotionMan.m_tAction = ACT_ATTACK;
+
 			break;
 	}
 }
+

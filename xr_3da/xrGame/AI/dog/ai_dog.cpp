@@ -66,53 +66,53 @@ void CAI_Dog::StateSelector()
 	else						SetState(stateRest); 
 }
 
-void CAI_Dog::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
-{
-	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
-	index3 = -1;
-
-	switch(motion) {
-		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
-		case eAnimLieIdle:			index1 = 2; index2 = 0;	 break;
-		case eAnimStandTurnLeft:	index1 = 0; index2 = 3;	 break;
-		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
-		case eAnimWalkBkwd:			index1 = 0; index2 = 3;  break;
-		case eAnimWalkTurnLeft:		index1 = 0; index2 = 3;  break;
-		case eAnimWalkTurnRight:	index1 = 0; index2 = 3;  break;
-		case eAnimRun:				index1 = 0; index2 = 7;  break;
-		case eAnimRunTurnLeft:		index1 = 0; index2 = 7;  break;
-		case eAnimRunTurnRight:		index1 = 0; index2 = 7;  break;
-		case eAnimAttack:			index1 = 0; index2 = 10;  break;
-		case eAnimAttackRat:		index1 = 0; index2 = 10; break;
-		case eAnimFastTurn:			index1 = 0; index2 = 7; break;
-		case eAnimEat:				index1 = 0; index2 = 14; break;
-		case eAnimStandDamaged:		index1 = 0; index2 = 15; break;
-		case eAnimScared:			index1 = 0; index2 = 0; break;
-		case eAnimDie:				index1 = 0; index2 = 0; break;
-		case eAnimStandLieDown:		index1 = 0; index2 = 20; break;
-		case eAnimLieStandUp:		index1 = 2; index2 = 21; break;
-		case eAnimCheckCorpse:		index1 = 0; index2 = 0;	 break;
-		case eAnimStandLieDownEat:	index1 = 0; index2 = 0; break;
-		case eAnimAttackJump:		index1 = 0; index2 = 10; break;
-			//default:					NODEFAULT;
-	}
-
-//	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
-}
-
-void CAI_Dog::LoadAttackAnim()
-{
-	Fvector center;
-
-	center.set		(0.f,0.f,0.f);
-
-	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
-
-	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
-
-	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600, 700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
-}
+//void CAI_Dog::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
+//{
+//	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
+//	index3 = -1;
+//
+//	switch(motion) {
+//		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
+//		case eAnimLieIdle:			index1 = 2; index2 = 0;	 break;
+//		case eAnimStandTurnLeft:	index1 = 0; index2 = 3;	 break;
+//		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
+//		case eAnimWalkBkwd:			index1 = 0; index2 = 3;  break;
+//		case eAnimWalkTurnLeft:		index1 = 0; index2 = 3;  break;
+//		case eAnimWalkTurnRight:	index1 = 0; index2 = 3;  break;
+//		case eAnimRun:				index1 = 0; index2 = 7;  break;
+//		case eAnimRunTurnLeft:		index1 = 0; index2 = 7;  break;
+//		case eAnimRunTurnRight:		index1 = 0; index2 = 7;  break;
+//		case eAnimAttack:			index1 = 0; index2 = 10;  break;
+//		case eAnimAttackRat:		index1 = 0; index2 = 10; break;
+//		case eAnimFastTurn:			index1 = 0; index2 = 7; break;
+//		case eAnimEat:				index1 = 0; index2 = 14; break;
+//		case eAnimStandDamaged:		index1 = 0; index2 = 15; break;
+//		case eAnimScared:			index1 = 0; index2 = 0; break;
+//		case eAnimDie:				index1 = 0; index2 = 0; break;
+//		case eAnimStandLieDown:		index1 = 0; index2 = 20; break;
+//		case eAnimLieStandUp:		index1 = 2; index2 = 21; break;
+//		case eAnimCheckCorpse:		index1 = 0; index2 = 0;	 break;
+//		case eAnimStandLieDownEat:	index1 = 0; index2 = 0; break;
+//		case eAnimAttackJump:		index1 = 0; index2 = 10; break;
+//			//default:					NODEFAULT;
+//	}
+//
+////	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
+//}
+//
+//void CAI_Dog::LoadAttackAnim()
+//{
+//	Fvector center;
+//
+//	center.set		(0.f,0.f,0.f);
+//
+//	// 1 //
+//	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
+//
+//	// 2 //
+//	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
+//
+//	// 3 // 
+//	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600, 700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
+//}
 

@@ -17,8 +17,6 @@ CAI_Flesh::CAI_Flesh()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
 
-	stateTest			= xr_new<CTest>				(this);
-
 	Init();
 }
 
@@ -33,10 +31,7 @@ CAI_Flesh::~CAI_Flesh()
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreDE);
 	xr_delete(stateExploreNDE);
-
-	xr_delete(stateTest);
 }
-
 
 void CAI_Flesh::Init()
 {
@@ -53,111 +48,53 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 		return(FALSE);
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,		  0);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
-	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
-	
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						m_ftrStandTurnRSpeed);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_ls_",		-1, 0,						m_ftrStandTurnRSpeed);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, 0,						0);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed);
+	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, m_ftrWalkSpeed,			m_ftrWalkRSpeed);
+	MotionMan.AddAnim(eAnimWalkTurnLeft,	"stand_walk_ls_",		-1, m_ftrWalkTurningSpeed,	m_ftrWalkRSpeed);
+	MotionMan.AddAnim(eAnimWalkTurnRight,	"stand_walk_rs_",		-1, m_ftrWalkTurningSpeed,	m_ftrWalkRSpeed);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_ftrRunAttackSpeed,	m_ftrRunRSpeed);
+	MotionMan.AddAnim(eAnimRunTurnLeft,		"stand_run_ls_",		-1,	m_ftrRunAttackTurnSpeed,m_ftrRunAttackTurnRSpeed);
+	MotionMan.AddAnim(eAnimRunTurnRight,	"stand_run_rs_",		-1,	m_ftrRunAttackTurnSpeed,m_ftrRunAttackTurnRSpeed);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 2,	0,						0);
+	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, 0,						0);
+	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0);
+	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, 0,						0);
+	MotionMan.AddAnim(eAnimAttackRat,		"stand_attack2_",		 0, 0,						0);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		 0, 0,						m_ftrRunRSpeed);
+	MotionMan.AddAnim(eAnimAttackJump,		"stand_attack_jump_",	 0,	0,						0);
+	MotionMan.AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1,	0,						0);
+	MotionMan.AddAnim(eAnimStandLieDownEat, "stand_liedown_eat_",	-1,	0,						0);
+	MotionMan.AddAnim(eAnimScared,			"stand_scared_",		-1,	0,						0);
+
+	// define transitions
 	MotionMan.AddTransition(eAnimStandIdle,		eAnimLieIdle,		eAnimStandLieDown,	false);
 	MotionMan.AddTransition(eAnimLieIdle,		eAnimStandIdle,		eAnimLieStandUp,	false);
+	MotionMan.AddTransition(eAnimLieIdle,		eAnimWalkFwd,		eAnimLieStandUp,	false);
+	MotionMan.AddTransition(eAnimWalkFwd,		eAnimLieIdle,		eAnimScared,		true);
+	MotionMan.AddTransition(eAnimScared,		eAnimLieIdle,		eAnimCheckCorpse,	true);
+	MotionMan.AddTransition(eAnimCheckCorpse,	eAnimLieIdle,		eAnimStandLieDown,	false);
 
-	// the order is very important!!!  add motions according to EAction enum
-	MotionMan.AddMotion(eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
-	MotionMan.AddMotion(eAnimSitIdle);
-	MotionMan.AddMotion(eAnimLieIdle);
-	MotionMan.AddMotion(eAnimWalkFwd, eAnimWalkTurnLeft,	eAnimWalkTurnRight, PI_DIV_6);
-	MotionMan.AddMotion(eAnimWalkBkwd);
-	MotionMan.AddMotion(eAnimRun);
-	MotionMan.AddMotion(eAnimEat);
-	MotionMan.AddMotion(eAnimSleep);
-	MotionMan.AddMotion(eAnimWalkBkwd);
-	MotionMan.AddMotion(eAnimAttack);
-	MotionMan.AddMotion(eAnimWalkFwd);
-	MotionMan.AddMotion(eAnimStandIdle);
-
-	return TRUE;
-}
+	// define links from Action to animations
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd,	eAnimWalkTurnLeft,	eAnimWalkTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkBkwd);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,		eAnimRunTurnLeft,	eAnimRunTurnRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
 
-
-void CAI_Flesh::StateSelector()
-{
-
-	SetState(stateTest);
-	
-	//	VisionElem ve;
-//
-//	Msg("Satiety = [%f]", GetSatiety());
-//
-//	if (C && H && I)			SetState(statePanic);
-//	else if (C && H && !I)		SetState(statePanic);
-//	else if (C && !H && I)		SetState(statePanic);
-//	else if (C && !H && !I) 	SetState(statePanic);
-//	else if (D && H && I)		SetState(stateAttack);
-//	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
-//	else if (D && !H && I)		SetState(statePanic);
-//	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
-//	else if (E && H && I)		SetState(stateAttack); 
-//	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
-//	else if (E && !H && I) 		SetState(stateDetour); 
-//	else if (E && !H && !I)		SetState(stateDetour); 
-//	else if (F && H && I) 		SetState(stateAttack); 		
-//	else if (F && H && !I)  	SetState(stateAttack); 
-//	else if (F && !H && I)  	SetState(stateDetour); 
-//	else if (F && !H && !I) 	SetState(stateHide);
-//	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-//	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-//	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-//	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-//		SetState(stateEat);
-//	else						SetState(stateRest); 
-}
-
-void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
-{
-	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
-	index3 = -1;
-
-	switch(motion) {
-		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
-		case eAnimLieIdle:			index1 = 2; index2 = 0;	 break;
-		case eAnimStandTurnLeft:	index1 = 0; index2 = 2;	 break;
-		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
-		case eAnimWalkBkwd:			index1 = 0; index2 = 4;  break;
-		case eAnimWalkTurnLeft:		index1 = 0; index2 = 5;  break;
-		case eAnimWalkTurnRight:	index1 = 0; index2 = 6;  break;
-		case eAnimRun:				index1 = 0; index2 = 7;  break;
-		case eAnimRunTurnLeft:		index1 = 0; index2 = 8;  break;
-		case eAnimRunTurnRight:		index1 = 0; index2 = 9;  break;
-		case eAnimAttack:			index1 = 0; index2 = 10;  break;
-		case eAnimAttackRat:		index1 = 0; index2 = 11; break;
-		case eAnimFastTurn:			index1 = 0; index2 = 13; break;
-		case eAnimEat:				index1 = 2; index2 = 14; break;
-		case eAnimStandDamaged:		index1 = 0; index2 = 15; break;
-		case eAnimScared:			index1 = 0; index2 = 16; break;
-		case eAnimDie:				index1 = 0; index2 = 17; break;
-		case eAnimStandLieDown:		index1 = 0; index2 = 20; break;
-		case eAnimLieStandUp:		index1 = 2; index2 = 21; break;
-		case eAnimCheckCorpse:		index1 = 0; index2 = 0;	 index3 = 2;	break;
-		case eAnimStandLieDownEat:	index1 = 0; index2 = 22; break;
-		case eAnimAttackJump:		index1 = 0; index2 = 12; break;
-		//default:					NODEFAULT;
-	}
-
-//	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
-}
-
-void CAI_Flesh::LoadAttackAnim()
-{
+	// Добавить анимации атак
 	Fvector center, left_side, right_side, special_side;
 
 	center.set		(0.f,0.f,0.f);
@@ -165,24 +102,43 @@ void CAI_Flesh::LoadAttackAnim()
 	right_side.set	(0.1f,0.f,0.f);
 	special_side.set(-0.5f,0.f,0.5f);
 
-	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 700,	800,	center,		2.f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		0, 700,		800,	center,			2.f,  m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		1, 600,		800,	center,			2.5f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		2, 1100,	1250,	right_side,		1.5f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttack,		3, 1300,	1400,	left_side,		0.6f, m_fHitPower, 0.f, 0.f);
+	MotionMan.AA_PushAttackAnim(eAnimAttackRat,		0, 600,		800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_ATTACK_RAT);
+	MotionMan.AA_PushAttackAnim(eAnimAttackJump,	0, 700,		850,	center,			2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_FIRE_ANYWAY);
 
-	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 10, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
+	return TRUE;
+}
 
-	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, 0.f, 0.f);
+void CAI_Flesh::StateSelector()
+{
+	VisionElem ve;
 
-	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, 0.f, 0.f);
-
-	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 11, 0, 600, 800,	special_side,	2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_ATTACK_RAT);
-
-	// 6 //
-	m_tAttackAnim.PushAttackAnim(0, 12, 0, 700, 850,	center,		2.6f, m_fHitPower, 0.f, 0.f, AA_FLAG_FIRE_ANYWAY);
-
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
+	else if (E && !H && I) 		SetState(stateDetour); 
+	else if (E && !H && !I)		SetState(stateDetour); 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateDetour); 
+	else if (F && !H && !I) 	SetState(stateHide);
+	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
+		SetState(stateEat);
+	else						SetState(stateRest); 
 }
 
 void CAI_Flesh::CheckAttackHit()
@@ -191,7 +147,7 @@ void CAI_Flesh::CheckAttackHit()
 	TTime cur_time = Level().timeServer();
 	SAttackAnimation apt_anim;
 
-	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
+	bool bGoodTime = MotionMan.AA_CheckTime(cur_time,apt_anim);
 
 	if (bGoodTime) {
 		VisionElem ve;
@@ -205,7 +161,7 @@ void CAI_Flesh::CheckAttackHit()
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
 			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);	// не нужна
-			m_tAttackAnim.UpdateLastAttack(cur_time);
+			MotionMan.AA_UpdateLastAttack(cur_time);
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
 			// TestIntersection конуса(копыта) и сферы(крысы)
@@ -214,7 +170,7 @@ void CAI_Flesh::CheckAttackHit()
 
 			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
 				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
-				m_tAttackAnim.UpdateLastAttack(cur_time);
+				MotionMan.AA_UpdateLastAttack(cur_time);
 			}
 
 		} else 	{ // нужна
@@ -224,7 +180,7 @@ void CAI_Flesh::CheckAttackHit()
 			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
 					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw, apt_anim.dir_pitch);
-					m_tAttackAnim.UpdateLastAttack(cur_time);
+					MotionMan.AA_UpdateLastAttack(cur_time);
 				}
 			}
 			this->setEnabled(true);			
@@ -269,36 +225,4 @@ bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvec
 	return false;
 }
 
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-CTest::CTest (CAI_Flesh *p)
-{
-	pMonster = p;
-	m_dwLastPlanTime	= 0;
-	m_dwReplanTime		= 3000;	
-}
-
-void CTest::Run()
-{
-	int i = 0;
-	
-	DO_IN_TIME_INTERVAL_BEGIN(m_dwLastPlanTime, m_dwReplanTime);
-		i++;
-	DO_IN_TIME_INTERVAL_END();
-	
-	if (i % 2) {
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-	} else {
-		pMonster->AI_Path.TravelPath.clear();
-		pMonster->vfUpdateDetourPoint();	
-		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
-		pMonster->vfChoosePointAndBuildPath(0,0, false, 0,2000);
-
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-	}
-	
-	
-}
 

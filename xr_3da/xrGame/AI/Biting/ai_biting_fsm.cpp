@@ -18,7 +18,6 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters		();
 
-
 //#ifndef SILENCE
 //	if (g_Alive())
 //		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);
@@ -29,15 +28,9 @@ void CAI_Biting::Think()
 		SetState(stateRest);
 	}
 	
-//	if (MotionMan.m_tSeq.isActive()) {
-//		MotionMan.m_tSeq.Cycle(m_dwCurrentUpdate);
-//	} else {
-		StateSelector			();
-		CurrentState->Execute(m_dwCurrentUpdate);
-		// провер€ем на завершЄнность
-		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
-//	}
-//
+	StateSelector			();
+	CurrentState->Execute	(m_dwCurrentUpdate);
+
 	MotionMan.ProcessAction();
 }
 
@@ -62,57 +55,3 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 	}
 }
 
-void CAI_Biting::OnMotionSequenceStart()
-{
-	// блокировка состо€ни€
-	CurrentState->LockState();
-//	FORCE_ANIMATION_SELECT();
-}
-
-void CAI_Biting::OnMotionSequenceEnd()
-{
-	// ѕосле проигрывани€ Seq, m_tParams содержит необходимые данные дл€ установки анимации
-	Motion.m_tParams.ApplyData(this);
-	// восстановление текущего состо€ни€
-	CurrentState->UnlockState(m_dwCurrentUpdate);
-}
-
-void CAI_Biting::CheckTransitionAnims()
-{
-	if ((m_tAnimPrevFrame == eAnimLieIdle) && (m_tAnim != eAnimLieIdle)){
-		Motion.m_tSeq.Add(eAnimLieStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
-		Motion.m_tSeq.Switch();
-	}
-}
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingMotion implementation
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-void CBitingMotion::Init(CAI_Biting *pData)
-{
-	m_tSeq.Setup(pData);
-	m_tSeq.Init();
-	m_tTurn.SetMoveBkwd(false);
-}
-
-void CBitingMotion::SetFrameParams(CAI_Biting *pData) 
-{
-	if (!m_tSeq.isActive()) {
-		// Process action here
-//		EAction cur_act;
-//		pData->ProcessAction(cur_act);
-
-//		m_tParams.ApplyData(pData);
-//		m_tTurn.CheckTurning(pData);
-//
-//		//!- проверить необходимо ли устанавливать специфич. параметры (kinda StandUp)
-//		pData->CheckTransitionAnims();
-//		
-//		//!---
-
-	} else {
-		m_tSeq.ApplyData();
-	}
-}
-
-//---------------------------------------------------------------------------------------------------------

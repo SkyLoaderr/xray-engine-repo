@@ -45,8 +45,8 @@ void CBitingExploreNDE::Run()
 	pMonster->vfChoosePointAndBuildPath(0, &m_tEnemy.position, false, 0, 2000);
 
 	// Установить параметры движения
-	pMonster->Motion.m_tParams.SetParams	(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set			(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+	pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+
 }
 
 

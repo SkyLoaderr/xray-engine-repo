@@ -111,7 +111,8 @@ void CAI_Chimera::Load (LPCSTR section)
 {
 	inherited::Load (section);
 
-	LockAnim		(eAnimAttack, 0, 1, 1300);
-	LockAnim		(eAnimAttack, 1, 1, 800);
-	LockAnim		(eAnimAttack, 2, 1, 1000);
+//	LockAnim		(eAnimAttack, 0, 1, 1300);
+//	LockAnim		(eAnimAttack, 1, 1, 800);
+//	LockAnim		(eAnimAttack, 2, 1, 1000);
 }
+

@@ -78,44 +78,44 @@ bool CBloodsuckerVisibility::Update ()
 // Другие функции
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
-{
-	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
-	index3 = -1;
+//void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
+//{
+//	index1 = index2 = 0;		// bug protection ;) todo: find out the reason
+//	index3 = -1;
+//
+//	switch(motion) {
+//		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
+//		case eAnimStandTurnLeft:	index1 = 0; index2 = 2;  break;
+//		case eAnimStandTurnRight:	index1 = 0; index2 = 1;  break;
+//		
+//		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
+//		case eAnimWalkBkwd:			index1 = 0; index2 = 4;  break;
+//		case eAnimRun:				index1 = 0; index2 = 7;  break;
+//
+//		case eAnimAttack:			index1 = 0; index2 = 10; break;
+//		
+//		case eAnimEat:				index1 = 1; index2 = 14; break;
+//		case eAnimDie:				index1 = 0; index2 = 0;	 break;
+//		
+//		case eAnimSitStandUp:		index1 = 1; index2 = 21; break;
+//
+//		case eAnimSitIdle:			index1 = 1; index2 = 0;	 break; 
+//		case eAnimStandSitDown:		index1 = 0; index2 = 18; break; 
+//		case eAnimSleep:			index1 = 2; index2 = 24; break;
+//		case eAnimSitToSleep:		index1 = 1; index2 = 23; break;
+//
+//		//default:					NODEFAULT;
+//	} 
+//
+////	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
+//
+//}
 
-	switch(motion) {
-		case eAnimStandIdle:		index1 = 0; index2 = 0;	 break;
-		case eAnimStandTurnLeft:	index1 = 0; index2 = 2;  break;
-		case eAnimStandTurnRight:	index1 = 0; index2 = 1;  break;
-		
-		case eAnimWalkFwd:			index1 = 0; index2 = 3;	 break;
-		case eAnimWalkBkwd:			index1 = 0; index2 = 4;  break;
-		case eAnimRun:				index1 = 0; index2 = 7;  break;
-
-		case eAnimAttack:			index1 = 0; index2 = 10; break;
-		
-		case eAnimEat:				index1 = 1; index2 = 14; break;
-		case eAnimDie:				index1 = 0; index2 = 0;	 break;
-		
-		case eAnimSitStandUp:		index1 = 1; index2 = 21; break;
-
-		case eAnimSitIdle:			index1 = 1; index2 = 0;	 break; 
-		case eAnimStandSitDown:		index1 = 0; index2 = 18; break; 
-		case eAnimSleep:			index1 = 2; index2 = 24; break;
-		case eAnimSitToSleep:		index1 = 1; index2 = 23; break;
-
-		//default:					NODEFAULT;
-	} 
-
-//	if (index3 == -1) index3 = ::Random.randI((int)m_tAnimations.A[index1].A[index2].A.size());
-
-}
-
-void CAI_Bloodsucker::CheckTransitionAnims()
-{
-	if (((m_tAnimPrevFrame == eAnimSitIdle) && (m_tAnim != eAnimSitIdle)) ||
-		((m_tAnimPrevFrame == eAnimSleep) && (m_tAnim != eAnimSleep))){
-		Motion.m_tSeq.Add(eAnimSitStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
-		Motion.m_tSeq.Switch();
-	}
-}
+//void CAI_Bloodsucker::CheckTransitionAnims()
+//{
+//	if (((m_tAnimPrevFrame == eAnimSitIdle) && (m_tAnim != eAnimSitIdle)) ||
+//		((m_tAnimPrevFrame == eAnimSleep) && (m_tAnim != eAnimSleep))){
+////		Motion.m_tSeq.Add(eAnimSitStandUp,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED,STOP_ANIM_END);
+////		Motion.m_tSeq.Switch();
+//	}
+//}

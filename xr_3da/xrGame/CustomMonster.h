@@ -153,12 +153,7 @@ public:
 
 	// Monster motion & state management		__START	(JIM)
 	u32					m_dwCurrentUpdate;
-	EMotionAnim			m_tAnim;
-	EMotionAnim			m_tAnimPrevFrame;
 	void				SetDirectionLook		(bool bReversed = false);
-	// сообщения на начало/завершение последовательности
-	virtual void		OnMotionSequenceStart	() {}
-	virtual	void		OnMotionSequenceEnd		() {}
 	//											__END	(JIM)
 
 	// network

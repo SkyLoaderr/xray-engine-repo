@@ -48,8 +48,6 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 
-	Msg(" Visible Enemies = [%i]", VisibleEnemies.size());
-	
 	// определить, видит ли мен€ враг
 	I = false;
 

@@ -12,6 +12,4 @@ public:
 	virtual void	Init					();
 	virtual void	StateSelector			();
 
-	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual	void	LoadAttackAnim			();
 };

@@ -50,9 +50,9 @@ void CBitingPanic::Run()
 		pMonster->AI_Path.TravelPath.clear();
 
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI);
-
-		pMonster->Motion.m_tSeq.Add(eAnimFastTurn,0,pMonster->m_ftrScaredRSpeed * 2.0f,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);		
-		pMonster->Motion.m_tSeq.Switch();
+		
+		// Faced the open area
+		// ...
 	} 
 
 	if (!cur_pos.similar(prev_pos)) {
@@ -60,27 +60,20 @@ void CBitingPanic::Run()
 		m_dwStayTime = 0;
 	} else if (m_dwStayTime == 0) m_dwStayTime = m_dwCurrentTime;
 
-
-	pMonster->vfInitSelector(pMonster->m_tSelectorFreeHunting,false);
-	pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorFreeHunting.m_fSearchRange;
-	pMonster->m_tSelectorFreeHunting.m_fOptEnemyDistance = pMonster->m_tSelectorFreeHunting.m_fMaxEnemyDistance;
-	pMonster->m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + 3.f;
-
-	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, true, 0,2000);
-
+	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30, 2000);
+	
 	if (!bFacedOpenArea) {
-		pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 	} else {
 		// try to rebuild path
 		if (pMonster->AI_Path.TravelPath.size() > 5) {
-			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			pMonster->MotionMan.m_tAction = ACT_RUN;
 		} else {
-			pMonster->Motion.m_tParams.SetParams(eAnimStandDamaged,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Clear();
+			// Set Spec Flags (eAnimStandDamaged)			
+			// ...
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 		}
 	}
-
+	
 	prev_pos = cur_pos;
 }

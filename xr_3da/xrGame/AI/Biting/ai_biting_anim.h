@@ -5,121 +5,9 @@
 //	Author		: Serge Zhem
 //	Description : Animations, Bone transformations and Sounds for monsters of biting class 
 ////////////////////////////////////////////////////////////////////////////
-
 #pragma once
 
-#include "..\\ai_monsters_anims.h"
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Biting Animation class
-////////////////////////////////////////////////////////////////////////////////////////////////////////
 class CAI_Biting;
-
-//#define FORCE_ANIMATION_SELECT() {\
-//	m_tpCurAnim = 0; \
-//	SelectAnimation(Direction(),Direction(),0);\
-//}
-
-//extern LPCSTR caBitingStateNames	[];
-//extern LPCSTR caBitingGlobalNames	[];
-//
-//
-//class CBitingAnimations {
-//protected:
-//	CBitingAnimations() {
-//		m_tpCurAnim = 0;
-//	};
-//
-//	void	Load(CKinematics *tpKinematics) {
-//		m_tAnimations.Load	(tpKinematics,"");
-//	};
-//
-//protected:
-//	typedef CAniCollection<CAniVector,caBitingGlobalNames> CStateAnimations;
-//	CAniCollection<CStateAnimations,caBitingStateNames>	m_tAnimations;
-//	u8				m_bAnimationIndex;
-//
-//public:
-//	CMotionDef		*m_tpCurAnim;
-//};
-
-
-
-
-//// Lock animation 
-//struct SLockAnim {
-//	EMotionAnim	anim;
-//	int			i3;
-//	TTime		from;
-//	TTime		to;
-//};
-//
-//
-//DEFINE_VECTOR(SLockAnim, LOCK_ANIM_VECTOR, LOCK_ANIM_IT);
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Attack Animation
-////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-#define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
-#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
-
-// Определение времени аттаки по анимации
-typedef struct {
-	// индексы конкретной анимации 
-	u32		anim_i1;
-	u32		anim_i2;
-	u32		anim_i3;
-
-	TTime	time_from;			// диапазон времени когда можно наносить hit (от)
-	TTime	time_to;		    // диапазон времени когда можно наносить hit (до)
-
-	Fvector	trace_offset;		// направление трассировки
-	float	dist;				// дистанция трассировки
-
-	// специальные флаги
-	u32		flags;				
-
-	float	damage;				// урон при данной атаке
-	float	dir_yaw;			// угол направления приложения силы к объекту 
-	float	dir_pitch;			//  - || -
-} SAttackAnimation;
-
-
-DEFINE_VECTOR(SAttackAnimation, ATTACK_ANIM, ATTACK_ANIM_IT);
-
-class CAttackAnim {
-
-	TTime			time_started;		// время начала анимации	
-	TTime			time_last_attack;	// время последнего нанесения хита
-
-	ATTACK_ANIM		m_all;		// список всех атак
-	ATTACK_ANIM		m_stack;	// список атак для текущей анимации
-
-public:
-	void		Clear				(); 
-
-	void		SwitchAnimation		(TTime cur_time, u32 i1, u32 i2, u32 i3);
-	void		PushAttackAnim		(SAttackAnimation AttackAnim);
-	void		PushAttackAnim		(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, 
-									 float dist, float damage, float yaw, float pitch, u32 flags = 0);
-
-	bool		CheckTime			(TTime cur_time, SAttackAnimation &anim); 
-	void		UpdateLastAttack	(TTime cur_time) {time_last_attack = cur_time;}
-
-	ATTACK_ANIM	&GetStack			() {return m_stack;}
-};
-
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-//
-//		NEW ANIMATION MANAGMENT
-//
-///////////////////////////////////////////////////////////////////////////////////////////
 
 typedef string64 anim_string;
 
@@ -151,14 +39,13 @@ struct SAnimItem {
 		float	linear;
 		float	angular;
 	} speed;
-
 };
 
 struct STransition {
-	EMotionAnim	anim_from;
-	EMotionAnim anim_target;
-	EMotionAnim anim_transition;
-	bool		chain;
+	EMotionAnim		anim_from;
+	EMotionAnim		anim_target;
+	EMotionAnim		anim_transition;
+	bool			chain;
 };
 
 struct SMotionItem {
@@ -172,62 +59,114 @@ struct SMotionItem {
 	} turn;
 };
 
+#define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
+#define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
-// Motion and animation Management
+#define FORCE_ANIMATION_SELECT() {				\
+	m_tpCurAnim = 0;							\
+	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0); \
+}
+
+// Определение времени аттаки по анимации
+typedef struct {
+	EMotionAnim	anim;				// параметры конкретной анимации 
+	u32			anim_i3; 			
+
+	TTime		time_from;			// диапазон времени когда можно наносить hit (от)
+	TTime		time_to;		    // диапазон времени когда можно наносить hit (до)
+
+	Fvector		trace_offset;		// направление трассировки
+	float		dist;				// дистанция трассировки
+
+	u32			flags;				// специальные флаги
+
+	float		damage;				// урон при данной атаке
+	float		dir_yaw;			// угол направления приложения силы к объекту 
+	float		dir_pitch;			//  - || -
+} SAttackAnimation;
+
+
+
+// Motion and animation management
 class CMotionManager {
 
-	DEFINE_MAP		(EMotionAnim, SAnimItem, ANIM_ITEM_MAP, ANIM_ITEM_MAP_IT);
-	DEFINE_VECTOR	(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
-	DEFINE_VECTOR	(SMotionItem, MOTION_ITEM_VECTOR, MOTION_ITEM_VECTOR_IT);
-	
+	DEFINE_MAP		(EMotionAnim,		SAnimItem,				ANIM_ITEM_MAP,		ANIM_ITEM_MAP_IT);
+	DEFINE_VECTOR	(STransition,		TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
+	DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
+	DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
+	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
+
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
-	MOTION_ITEM_VECTOR		m_tMotions;			// вектор движений монстров
-
-	CAI_Biting				*pMonster;
-
-public:
-	EAction					m_tAction;
+	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 	
+	CAI_Biting				*pMonster;
+	CKinematics				*tpKinematics;
+
+	// работа с последовательностями
+	SEQ_VECTOR				seq_states;
+	SEQ_VECTOR_IT			seq_it;				// итератор (текущий элемент)
+	bool					seq_playing;
+
 	EMotionAnim				cur_anim; 
 	EMotionAnim				prev_anim; 
 
+	// работа с анимациями атаки
+	TTime					aa_time_started;		// время начала анимации	
+	TTime					aa_time_last_attack;	// время последнего нанесения хита
+	ATTACK_ANIM				aa_all;		// список всех атак
+	ATTACK_ANIM				aa_stack;	// список атак для текущей анимации
+
+public:
+
+	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
-	CKinematics				*tpKinematics;
 
-
-	CMotionSequence			m_tSeq;
 public:
 			
-			CMotionManager	();
+				CMotionManager			();
 	
-	void	Init			(CAI_Biting	*pM, CKinematics *tpKin);
-	void	Destroy			();
+	void		Init					(CAI_Biting	*pM, CKinematics *tpKin);
+	void		Destroy					();
 	
 	// создание карты анимаций, переходов 
-	void	AddAnim			(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
-	void	AddTransition	(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddAnim					(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
+	void		AddTransition			(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
 	
-	void	AddMotion		(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
-	void	AddMotion		(EMotionAnim pmt_motion);
+	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
+	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
-	bool	CheckTransition	(EMotionAnim from, EMotionAnim to);
-	
-//	LPCTSTR	GetTargetName	(EMotionAnim ma);
-//	void	GetSpeedParams	(EMotionAnim ma);
-//	void	ApplyParams		(CAI_Biting *pM);
-//	void	CheckSpecFlags	();
+	bool		CheckTransition			(EMotionAnim from, EMotionAnim to);
+	void		ApplyParams				();
 
-	void	ProcessAction	();
-	void	ApplyParams		();
-	
-	void	Play			();
+	// выполнить текущий m_tAction
+	void		ProcessAction			();
+	// подготовить текущую анимацию на запрос из SelectAnimation
+	bool		PrepareAnimation		();
 
-	void	OnAnimationEnd	() {m_tpCurAnim = 0;}
-	void	ShowDeath		();
+	void		OnAnimationEnd			();
+	void		ShowDeath				();
 
-private: 
-	void	Load			(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect);
+private:	
 
+	// работа с последовательностями
+	void		Seq_Init				();
+	void		Seq_Add					(EMotionAnim a);
+	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
+	void		Seq_Finish				();
+
+	// загрузка анимаций
+	void		Load					(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect);
+
+	// работа с анимациями атак
+	void		AA_Clear				(); 
+	void		AA_SwitchAnimation		(EMotionAnim a, u32 i3);
+public:
+	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);
+	void		AA_PushAttackAnim		(EMotionAnim a, u32 i3, TTime from, TTime to, Fvector &ray, 
+										 float dist, float damage, float yaw, float pitch, u32 flags = 0);
+	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
+	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
 };
+
 

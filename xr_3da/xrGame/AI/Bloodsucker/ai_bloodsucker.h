@@ -24,9 +24,7 @@ public:
 
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 
-	virtual	void			MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
-	virtual	void			LoadAttackAnim			();
-	virtual	void			CheckTransitionAnims	();
+	//virtual	void			CheckTransitionAnims	();
 
 			CBoneInstance*	GetBone					(LPCTSTR bone_name);
 			CBoneInstance*	GetBone					(int bone_id);

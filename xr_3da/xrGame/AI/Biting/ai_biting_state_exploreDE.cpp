@@ -61,8 +61,7 @@ void CBitingExploreDE::Run()
 
 	switch(m_tAction) {
 	case ACTION_LOOK_AROUND:
-		pMonster->Motion.m_tParams.SetParams(eAnimStandTurnLeft,0,pMonster->m_ftrStandTurnRSpeed, pMonster->r_torso_target.yaw, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
-		pMonster->Motion.m_tTurn.Clear();
+		// look round here
 		break;
 	case ACTION_HIDE:
 		pMonster->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pMonster->Position()) + pMonster->m_tSelectorCover.m_fSearchRange;
@@ -72,22 +71,12 @@ void CBitingExploreDE::Run()
 		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0,2000);
 
 		// Установить параметры движения
-		pMonster->Motion.m_tParams.SetParams	(eAnimWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-		pMonster->Motion.m_tTurn.Set			(eAnimWalkTurnLeft, eAnimWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 		break;
 	}
 }
 
 bool CBitingExploreDE::CheckCompletion()
 {	
-	//	if (!m_tEnemy.obj) return true;
-	//	
-	//	// проверить, если ли новый звук, завершить состояние
-	//	SoundElem se;
-	//	bool bDangerous;
-	//	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
-	//	
-	//	if ((m_dwSoundTime + 2000)< se.time) return true;
-	//
 	return false;
 }
