@@ -240,8 +240,7 @@ bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 		vfAdjustSpeed();
 
 	if (m_fSpeed < EPS_L) {
-		tStateStack.push(eCurrentState = aiZombieTurn);
-		return;
+		return(true);
 	}
 
 	

@@ -204,7 +204,8 @@ void CAI_Zombie::FreeHuntingActive()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition(false);
+	if (bfComputeNewPosition(false))
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	SetDirectionLook();
 
@@ -360,7 +361,7 @@ void CAI_Zombie::AttackRun()
 		return;
 	}
 
-	vfSetFire(false,Group);
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
@@ -373,8 +374,6 @@ void CAI_Zombie::AttackRun()
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) > m_fMaxPursuitRadius),aiZombieReturnHome);
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive());
-
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
 	Fvector tDistance;
 	tDistance.sub(Position(),m_Enemy.Enemy->Position());
@@ -497,7 +496,8 @@ void CAI_Zombie::Pursuit()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition();
+	if (bfComputeNewPosition())
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	SetDirectionLook();
 
@@ -564,7 +564,8 @@ void CAI_Zombie::ReturnHome()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition();
+	if (bfComputeNewPosition())
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
 	SetDirectionLook();
 
