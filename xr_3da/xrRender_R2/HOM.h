@@ -7,7 +7,7 @@ class occTri;
 
 class CHOM  
 #ifdef DEBUG
-	: public pureRender, pureStats
+	: public pureRender
 #endif
 {
 private:
@@ -39,11 +39,11 @@ public:
 	BOOL					visible		(sPoly&		P);
 	BOOL					visible		(Fbox2&		B, float depth);	// viewport-space (0..1)
 	
-	CHOM();
-	~CHOM();
+	CHOM	();
+	~CHOM	();
 
 #ifdef DEBUG
 	virtual void			OnRender	();
-	virtual void			OnStats		();
+			void			stats		();
 #endif
 };

@@ -20,14 +20,12 @@ CHOM::CHOM()
 	m_pTris			= 0;
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1000);
-	Device.Statistic.seqStats.Add(this,REG_PRIORITY_LOW-1000);
 #endif
 }
 
 CHOM::~CHOM()
 {
 #ifdef DEBUG
-	Device.Statistic.seqStats.Remove(this);
 	Device.seqRender.Remove(this);
 #endif
 }
@@ -358,18 +356,14 @@ void CHOM::OnRender	()
 		}
 	}
 }
-void CHOM::OnStats()
+void CHOM::stats()
 {
-	if (psDeviceFlags.is(rsOcclusionStats)){
-		if (m_pModel){
-			CGameFont& F		= *Device.Statistic.Font();
-			F.OutSet			(200,0);
-			F.SetColor			(0xFFFFFFFF);
-			F.OutNext			("OCCLUSION:");
-			F.OutNext			("  visible:  %2d", tris_in_frame_visible);
-			F.OutNext			("  frustum:  %2d", tris_in_frame);
-			F.OutNext			("    total:  %2d", m_pModel->get_tris_count());
-		}
+	if (m_pModel){
+		CGameFont& F		= *Device.Statistic.Font();
+		F.OutNext			(" **** HOM-occ ****");
+		F.OutNext			("  visible:  %2d", tris_in_frame_visible);
+		F.OutNext			("  frustum:  %2d", tris_in_frame);
+		F.OutNext			("    total:  %2d", m_pModel->get_tris_count());
 	}
 }
 #endif
