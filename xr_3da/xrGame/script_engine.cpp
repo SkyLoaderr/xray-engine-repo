@@ -26,7 +26,6 @@ CScriptEngine::CScriptEngine			()
 	m_stack_level			= 0;
 	m_reload_modules		= false;
 	m_global_script_loaded	= false;
-	m_return_passed_object_functor = 0;
 #ifdef USE_DEBUGGER
 	m_scriptDebugger		= xr_new<CScriptDebugger>();
 #endif
@@ -34,7 +33,6 @@ CScriptEngine::CScriptEngine			()
 
 CScriptEngine::~CScriptEngine			()
 {
-	xr_delete				(m_return_passed_object_functor);
 	while (!m_script_processes.empty())
 		remove_script_process(m_script_processes.begin()->first);
 	flush_log				();
@@ -515,15 +513,3 @@ bool CScriptEngine::function_object(LPCSTR function_to_call, luabind::object &ob
 	object					= lua_namespace[function];
 	return					(true);
 }
-
-void CScriptEngine::initialize_return_passed_object	()
-{
-	static bool			initialized = false;
-	if (!initialized) {
-		initialized		= true;
-		lua_dostring	(lua(),"function return_passed_object(obj) return obj end");
-		m_return_passed_object_functor = xr_new<luabind::object>();
-		R_ASSERT		(function_object("return_passed_object",*m_return_passed_object_functor));
-	}
-}
-

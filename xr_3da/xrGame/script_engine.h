@@ -34,7 +34,6 @@ protected:
 	int							m_stack_level;
 	bool						m_reload_modules;
 	ref_str						m_class_registrators;
-	luabind::object				*m_return_passed_object_functor;
 	bool						m_global_script_loaded;
 #ifdef USE_DEBUGGER
 	CScriptDebugger				*m_scriptDebugger;
@@ -62,14 +61,10 @@ public:
 			bool				function_object				(LPCSTR function_to_call, luabind::object &object);
 			void				register_script_classes		();
 	IC		void				parse_script_namespace		(LPCSTR function_to_call, LPSTR name_space, LPSTR functor);
-			void				initialize_return_passed_object();
 			void				load_class_registrators		();
 
 	template <typename _result_type>
 	IC		bool				functor						(LPCSTR function_to_call, luabind::functor<_result_type> &lua_function);
-	
-	template <typename T>
-	IC		T					get_value_from_object		(luabind::object object);
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -77,12 +77,3 @@ IC	bool CScriptEngine::functor(LPCSTR function_to_call, luabind::functor<_result
 
 	return					(true);
 }
-
-template <typename T>
-IC	T	CScriptEngine::get_value_from_object(luabind::object object)
-{
-	initialize_return_passed_object	();
-	luabind::functor<T>				f = luabind::object_cast<luabind::functor<T> >(*m_return_passed_object_functor);
-	return							(f(object));
-}
-

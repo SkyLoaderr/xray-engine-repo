@@ -12,13 +12,11 @@
 #include "xrServer_Object_Base.h"
 #include "script_value_container_impl.h"
 #include "script_value_wrapper.h"
-#include "ai_space.h"
-#include "script_engine.h"
 #include "script_space.h"
 
 CSE_Abstract *owner				(luabind::object object)
 {
-	CSE_Abstract			*result = ai().script_engine().get_value_from_object<CSE_Abstract*>(object);
+	CSE_Abstract			*result = luabind::object_cast<CSE_Abstract*>(object);
 	R_ASSERT				(result);
 	return					(result);
 }
@@ -37,7 +35,7 @@ struct CWrapHelper {
 	template <>
 	static T	*wrap_value<true>		(luabind::object object, LPCSTR name)
 	{
-		return					(ai().script_engine().get_value_from_object<T*>(object[name]));
+		return					(luabind::object_cast<T*>(object[name]));
 	}
 };
 

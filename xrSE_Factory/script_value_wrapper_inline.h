@@ -12,7 +12,7 @@ template <typename _type>
 IC	CScriptValueWrapperImpl<_type>::CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) :
 	inherited			(object,name)
 {
-	m_value				= ai().script_engine().get_value_from_object<_type>(object[name]);
+	m_value				= luabind::object_cast<_type>(object[name]);
 }
 
 template <typename _type>

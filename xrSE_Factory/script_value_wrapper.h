@@ -9,8 +9,6 @@
 #pragma once
 
 #include "script_value.h"
-#include "ai_space.h"
-#include "script_engine.h"
 
 template <typename _type>
 class CScriptValueWrapperImpl : public CScriptValue {
@@ -46,7 +44,7 @@ protected:
 public:
 	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) : inherited(object,name)
 	{
-		m_value		= ai().script_engine().get_value_from_object<bool>(object[name]);
+		m_value		= luabind::object_cast<bool>(object[name]);
 	}
 
 	virtual	void	assign					()
@@ -71,7 +69,7 @@ protected:
 public:
 	IC				CScriptValueWrapperImpl	(luabind::object object, LPCSTR name) : inherited(object,name)
 	{
-		m_value		= ai().script_engine().get_value_from_object<LPCSTR>(object[name]);
+		m_value		= luabind::object_cast<LPCSTR>(object[name]);
 	}
 
 	virtual	void	assign					()
