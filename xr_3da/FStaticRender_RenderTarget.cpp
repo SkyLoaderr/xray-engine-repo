@@ -54,7 +54,7 @@ void CRenderTarget::End		()
 {
 	if (!Available() || !NeedPostProcess())	return;
 	
-	R_CHK			(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
+	R_CHK			(HW.pDevice->SetRenderTarget(HW.pBaseRT,HW.pBaseZB));
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
