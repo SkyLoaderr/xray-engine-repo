@@ -6,7 +6,7 @@
             <level></level>
             <object>001</object>
             <icon name="" x="2" y="3" width="1" height="1" marker="0"></icon>
-            <text>Помочь ограбленному новичку</text>
+            <text>.Помочь ограбленному новичку</text>
         </location>
         <task>escape_novice_need_weapon</task>        
     </info_portion>
