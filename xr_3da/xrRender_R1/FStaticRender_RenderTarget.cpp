@@ -64,8 +64,9 @@ BOOL CRenderTarget::Create	()
 	R_CHK	(HW.pDevice->CreateDepthStencilSurface	(512,512,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&pTempZB,NULL));
 
 	// Shaders and stream
-	s_postprocess.create		("postprocess");
-	g_postprocess.create		(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
+	s_postprocess.create				("postprocess");
+	if (RImplementation.b_distortion)	s_postprocess_D.create("postprocess_d");
+	g_postprocess.create				(D3DFVF_XYZRHW|D3DFVF_DIFFUSE|D3DFVF_SPECULAR|D3DFVF_TEX3,RCache.Vertex.Buffer(),RCache.QuadIB);
 	return	RT->Valid() && RT_distort->Valid();
 }
 
@@ -73,6 +74,7 @@ CRenderTarget::~CRenderTarget	()
 {
 	_RELEASE					(pTempZB);
 	_RELEASE					(ZB);
+	s_postprocess_D.destroy		();
 	s_postprocess.destroy		();
 	g_postprocess.destroy		();
 	RT_distort.destroy			();
@@ -185,7 +187,7 @@ void CRenderTarget::End		()
 	curHeight			= Device.dwHeight;
 	
 	if (!bPerform)		return;
-	RCache.set_Element	(bDistort ? (s_postprocess->E[4]) : (s_postprocess->E[0]) );
+	RCache.set_Shader	(bDistort ? s_postprocess_D : s_postprocess );
 
 	int		gblend		= clampr		(iFloor((1-param_gray)*255.f),0,255);
 	int		nblend		= clampr		(iFloor((1-param_noise)*255.f),0,255);

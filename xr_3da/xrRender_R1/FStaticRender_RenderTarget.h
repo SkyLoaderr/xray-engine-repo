@@ -16,6 +16,7 @@ private:
 	IDirect3DSurface9*	ZB;
 
 	ref_shader			s_postprocess;
+	ref_shader			s_postprocess_D;
 	ref_geom			g_postprocess;
 	
 	float				im_noise_time;
