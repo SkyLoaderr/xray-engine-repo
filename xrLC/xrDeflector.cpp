@@ -14,7 +14,7 @@ void blit	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, 
 			u32 dx = px+x;
 			u32 dy = py+y;
 			u32 sc = src[y*ss_x+x];
-			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
+			if (color_get_A(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
 
@@ -28,7 +28,7 @@ void blit_r	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px
 			u32 dx = px+y;
 			u32 dy = py+x;
 			u32 sc = src[y*ss_x+x];
-			if (RGBA_GETALPHA(sc)>=aREF) dest[dy*ds_x+dx] = sc;
+			if (color_get_A(sc)>=aREF) dest[dy*ds_x+dx] = sc;
 		}
 }
 

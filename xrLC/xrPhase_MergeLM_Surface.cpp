@@ -27,7 +27,7 @@ void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
 				DWORD C = *S++;
-				DWORD A = RGBA_GETALPHA	(C);
+				DWORD A = color_get_A	(C);
 				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
@@ -39,7 +39,7 @@ void _rect_register	(L_rect &R, CDeflector::Layer* D, BOOL bRotate)
 			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
-				DWORD A = RGBA_GETALPHA(C);
+				DWORD A = color_get_A(C);
 				if (A>=alpha_ref)	*P	= 255;
 			}
 		}
@@ -62,7 +62,7 @@ bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 			for (DWORD x=0; x<s_x; x++,P++) 
 			{
 				DWORD C = *S++;
-				DWORD A = RGBA_GETALPHA(C);
+				DWORD A = color_get_A(C);
 				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}
@@ -74,7 +74,7 @@ bool Place_Perpixel	(L_rect& R, CDeflector::Layer* D, BOOL bRotate)
 			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
-				DWORD A = RGBA_GETALPHA(C);
+				DWORD A = color_get_A(C);
 				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}

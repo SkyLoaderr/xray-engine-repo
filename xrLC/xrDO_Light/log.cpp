@@ -5,7 +5,7 @@
 #include "log.h"
 
 //************************* Log-thread data
-static CCriticalSection	csLog;
+static xrCriticalSection	csLog;
 
 volatile BOOL			bClose = FALSE;
 

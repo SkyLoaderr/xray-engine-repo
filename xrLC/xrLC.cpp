@@ -2,7 +2,6 @@
 //
 #include "stdafx.h"
 #include "math.h"
-#include "debugkernel.h"
 #include "build.h"
 
 #pragma comment(linker,"/STACK:0x800000,0x400000")
@@ -16,6 +15,7 @@
 #pragma comment(lib,"X:\\xrCDB.lib")
 #pragma comment(lib,"X:\\FreeImage.lib")
 #pragma comment(lib,"X:\\xrHemisphere.lib")
+#pragma comment(lib,"X:\\xrCore.lib")
 
 CBuild*	pBuild		= NULL;
 
@@ -137,22 +137,9 @@ int APIENTRY WinMain(HINSTANCE hInst,
                      int       nCmdShow)
 {
 	// Initialize debugging
-	Debug.Start		();
-
-#ifndef _DEBUG
-	__try
-	{
-#endif
-		Startup		(lpCmdLine);
-#ifndef _DEBUG
-	}
-	__except(Debug.LogStack(GetExceptionInformation()))
-	{
-		MessageBox(0,"Access violation occured. See ENGINE.LOG for details.","Error",MB_OK|MB_ICONSTOP);
-	}
-#endif
-	
-	Debug.Stop		();
+	Core._initialize	("xrLC");
+	Startup				(lpCmdLine);
+	Core._destroy		();
 	
 	return 0;
 }

@@ -130,7 +130,7 @@ void CLightmap::Save()
 		for (u32 _x=0; _x<lmap_size; _x++)
 		{
 			u32 pixel = lm.pSurface[_y*lmap_size+_x];
-			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&color_rgba(255,255,255,0))|color_rgba(0,0,0,255);
+			if (color_get_A(pixel)>=(254-BORDER))	pixel = (pixel&color_rgba(255,255,255,0))|color_rgba(0,0,0,255);
 			else									pixel = (pixel&color_rgba(255,255,255,0));
 		}
 	}
