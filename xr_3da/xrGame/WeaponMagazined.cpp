@@ -178,6 +178,19 @@ void CWeaponMagazined::Update(float dt, BOOL bHUDView)
 		st_current = st_target;
 	}
 
+	LPCSTR st_name = 0;
+	switch(st_current)
+	{
+	case eIdle:			st_name = "idle";	break;
+	case eFire:			st_name = "Fire";	break;
+	case eMagEmpty:		st_name = "empty";	break;
+	case eReload:		st_name = "reload";	break;
+	case eShowing:		st_name = "showing";break;
+	case eHiding:		st_name = "hiding";	break;
+	}
+	pApp->pFont->Out(0,0,"state: %s",st_name);
+	Log("****",st_name);
+
 	// cycle update
 	switch (st_current)
 	{
