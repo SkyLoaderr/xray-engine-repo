@@ -1,6 +1,5 @@
 #pragma once
 
-#include "..\modelpool.h"
 #include "..\PSLibrary.h"
 
 #include "r2_types.h"
@@ -10,6 +9,7 @@
 #include "hom.h"
 #include "portal.h"
 #include "detailmanager.h"
+#include "modelpool.h"
 
 #include "light_db.h"
 
