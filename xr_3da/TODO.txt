@@ -32,7 +32,7 @@
 		+	Self-reference in _vector2<T>, _vector3<T>, _vector4<T>, _matrix<T>, etc.
 		*	.OGG vorbis + params
 			подумать насчет декомпрессии (кеш?непрерывная?при загрузке?)
-
+		*	#include in "system.ltx"
 
 ***[???]*** TODO:		
 -------------------------
