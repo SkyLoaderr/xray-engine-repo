@@ -234,6 +234,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 
 void CWeaponGroza::Render(BOOL bHUDView)
 {
+	inherited::Render		(bHUDView);
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
 	{ 

@@ -344,6 +344,7 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 
 void CWeaponM134::Render	(BOOL bHUDView)
 {
+	inherited::Render		(bHUDView);
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
 	{ 

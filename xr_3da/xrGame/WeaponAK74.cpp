@@ -236,6 +236,7 @@ void CWeaponAK74::Update(float dt, BOOL bHUDView)
 
 void CWeaponAK74::Render(BOOL bHUDView)
 {
+	inherited::Render		(bHUDView);
 	UpdateXForm	(bHUDView);
 	if (bHUDView)
 	{ 

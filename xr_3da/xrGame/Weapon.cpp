@@ -117,7 +117,6 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	bVisible			= FALSE;
 }
 
-
 void CWeapon::OnDeviceCreate()
 {
 	CObject::OnDeviceCreate();
