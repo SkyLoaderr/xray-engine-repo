@@ -150,7 +150,6 @@ function save_dialog:InitControls()
     list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     list_wnd:SetItemHeight(25)
     list_wnd:EnableScrollBar(true)
-	list_wnd:ActivateList(true)	
 	self:Register(list_wnd)
     main_frame:AttachChild(list_wnd)
 
@@ -305,7 +304,7 @@ end
 
 function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
-	local shift = 0
+	local shift = 20
 	local color = GetARGB(255,0,255,255)
 	local parse = true
 	
