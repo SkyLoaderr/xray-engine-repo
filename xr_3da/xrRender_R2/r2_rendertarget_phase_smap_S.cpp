@@ -18,7 +18,7 @@ void	CRenderTarget::phase_smap_spot		(light* L)
 	CHK_DX								(HW.pDevice->SetViewport(&VP));
 
 	// Misc		- draw only front-faces //back-faces
-	RCache.set_CullMode					( CULL_CW	);
+	RCache.set_CullMode					( CULL_CCW	);
 	RCache.set_Stencil					( FALSE		);
 	// no transparency
 	#pragma todo("can optimize for multi-lights covering more than say 50%...")
@@ -28,7 +28,6 @@ void	CRenderTarget::phase_smap_spot		(light* L)
 
 void	CRenderTarget::phase_smap_spot_tsh	(light* L)
 {
-	RCache.set_CullMode					( CULL_CCW	);
 	if (IRender_Light::OMNIPART == L->flags.type)	{
 		// omni-part
 		CHK_DX							(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0xffffffff,	1.0f, 0L));
