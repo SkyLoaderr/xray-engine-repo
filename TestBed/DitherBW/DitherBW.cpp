@@ -37,6 +37,12 @@ void bwdithermap	(int levels, int magic[16][16] )
 					(magic4x4[k][l] / 16.) * magicfact);
 }
 
+float dist2d(DWORD _x, DWORD _y, DWORD _x2, DWORD _y2)
+{
+	float	x=float(_x), y=float(_y), x2=float(_x2), y2=float(_y2);
+	return	sqrtf((x-x2)*(x-x2)+(y-y2)*(y-y2));
+}
+
 void main(int argc, char* argv[])
 {
 	CImage		tex;
@@ -45,6 +51,12 @@ void main(int argc, char* argv[])
 	int			magic[16][16];
 	bwdithermap	(2,magic);
 
+	DWORD		p0=255;
+	DWORD		p1=0;
+	DWORD		p2=0;
+	DWORD		p3=0;
+
+	float		f = float(tex.dwWidth)*sqrtf(2);
 	for (DWORD y=0; y<tex.dwHeight; y++)
 	{
 		for (DWORD x=0; x<tex.dwWidth; x++)
@@ -52,10 +64,16 @@ void main(int argc, char* argv[])
 			DWORD c		= tex.GetPixel(x,y);
 			DWORD new_c;
 
-			int val		= c&255;
+			float		f0	= dist2d(x,y,0,0);
+			float		f1	= dist2d(x,y,tex.dwWidth,0);
+			float		f2	= dist2d(x,y,0,tex.dwHeight);
+			float		f3	= dist2d(x,y,tex.dwWidth,tex.dwHeight);
+			float		cl	= float(p0)*(1-f0/f) + float(p1)*(1-f1/f) + float(p2)*(1-f2/f) + float(p3)*(1-f3/f);
+			new_c			= DWORD(cl);
+
 		    int row		= y % 16; 
 			int col		= x % 16;
- 			new_c		= val > magic[col][row] ? 255 : 0;
+ 			new_c		= new_c > magic[col][row] ? 255 : 0;
 			
 			tex.PutPixel(x,y,RGB(new_c,new_c,new_c));
 		}
