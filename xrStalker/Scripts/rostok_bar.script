@@ -39,8 +39,8 @@ function main ()
 end
 -------------------------------------------------------------------------------------
 function on_enter (zone, obj)
-    printf ("ACTOR ENTERED")
-    flush ()
+    --printf ("ACTOR ENTERED")
+    --flush ()
     local act = level.actor ()
     if act == nil or obj:id () ~= act:id () then return  end
     if game.time () - last_time > (12 * 60 * 60 * 1000) or table.getn (indices) == 0 then
@@ -53,8 +53,8 @@ function on_enter (zone, obj)
 end
  -------------------------------------------------------------------------------------
 function on_exit (zone, obj)
-    printf ("ACTOR EXITED")
-    flush ()
+    --printf ("ACTOR EXITED")
+    --flush ()
     local act = level.actor ()
     if act == nil or obj:id () ~= act:id () then return  end
     for a = 1, table.getn (indices), 1 do
@@ -64,25 +64,25 @@ function on_exit (zone, obj)
 end
 -------------------------------------------------------------------------------------
 function rechange ()
-    printf ("RECHANGE CALLED")
-    flush ()
+    --printf ("RECHANGE CALLED")
+    --flush ()
     local num = table.getn (stalkers) / 3
-    printf ("NUMBER OF STALKERS %d", num)
-    flush ()
+    --printf ("NUMBER OF STALKERS %d", num)
+    --flush ()
     indices = {}
     local a = 0
     while a ~= num do
-          printf ("PASS %d", a)
-          flush ()
+          --printf ("PASS %d", a)
+          --flush ()
           local index = math.random (1, table.getn (stalkers))
           if this.present (index) == false then
-             printf ("INSERT %d", index)
-             flush ()
+             --printf ("INSERT %d", index)
+             --flush ()
              a = a + 1
              table.insert (indices, index)
           end
     end          
-    printf ("RECHANGE EXIT")
+    --printf ("RECHANGE EXIT")
 end
 -------------------------------------------------------------------------------------
 function present (index)
@@ -94,16 +94,16 @@ function present (index)
 end
 -------------------------------------------------------------------------------------
 function switch_online (a)
-    printf ("SWITCH ONLINE CALLED")
-    flush ()
+    --printf ("SWITCH ONLINE CALLED")
+    --flush ()
     local sim = alife ()
     if sim ~= nil then
-       printf ("PREPARE TO ONLINE") 
-       flush ()
+       --printf ("PREPARE TO ONLINE") 
+       --flush ()
        sim:set_switch_online  (stalkers[a].id, true) 
        sim:set_switch_offline (stalkers[a].id, false)
-       printf ("Object %s move to online at %d time", stalkers[a].name, device ():time_global ())
-       flush ()
+       --printf ("Object %s move to online at %d time", stalkers[a].name, device ():time_global ())
+       --flush ()
     else
        printf ("NO SIMULATION")    
     end       
