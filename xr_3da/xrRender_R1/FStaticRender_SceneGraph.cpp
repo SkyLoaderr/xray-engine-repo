@@ -31,7 +31,14 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 
 	// Select List and add to it
 	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->E[0]:pVisual->hShader->E[1];
-	if (val_bHUD)	{
+	if (val_bInvisible){
+		SceneGraph::mapMatrixItem::TNode C;
+		C.val.pObject			= val_pObject;
+		C.val.pVisual			= pVisual;
+		C.val.Matrix			= *val_pTransform;
+		C.val.vCenter.set		(Center);
+		L_Shadows.add_element	(&C);
+	}else if (val_bHUD)	{
 		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;

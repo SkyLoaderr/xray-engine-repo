@@ -121,16 +121,32 @@ void CSector::Render_objects	(CFrustum& F)
 	}
 }
 
+void CSector::Render_prepare	(CFrustum &F)
+{
+	// Render prepare
+	// Ётот кусочек переехал временно из ф-ции Render
+	// дл€ того чтобы показать ѕрофу что отрисовать тень в 
+	// принципе возможно(но не нужно - выгл€дит хреново)
+	// св€зано с тем что лайты нужно заполнить чуть раньше
+	{
+		RImplementation.set_Frustum		(&F);
+		RImplementation.add_Glows		(Glows);
+		RImplementation.add_Lights		(Lights);
+		RImplementation.add_Geometry	(pRoot);
+	}
+}
+
 void CSector::Render			(CFrustum &F)
 {
 	// Render everything
 	{
 		Fvector	Tpos;
+/*
 		RImplementation.set_Frustum		(&F);
 		RImplementation.add_Glows		(Glows);
 		RImplementation.add_Lights		(Lights);
 		RImplementation.add_Geometry	(pRoot);
-		
+*/		
 		// 1 sorting-pass on objects
 		for (int s=0; s<int(Objects.size())-1; s++)
 		{

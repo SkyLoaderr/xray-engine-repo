@@ -7,6 +7,7 @@
 #include "LightTrack.h"
 #include "..\xr_object.h"
 #include "..\fbasicvisual.h"
+#include "..\CustomHUD.h"
 
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;
@@ -436,8 +437,7 @@ void CLightShadows::render	()
 	}
 	
 	// Clear all shadows
-	shadows.clear			();
-
+	shadows.clear				();
 	// Debug
 /*
 	{

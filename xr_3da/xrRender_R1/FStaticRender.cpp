@@ -253,8 +253,10 @@ void CRender::Calculate()
 	marker++;
 	calc_DetailTexturing					();
 	set_Object								(0);
+	if (0!=pLastSector)	pLastSector->Render_prepare(ViewBase);
+	pCreator->pHUD->Render_First			();	
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
-	pCreator->pHUD->Render_Calculate		();	
+	pCreator->pHUD->Render_Last				();	
 	L_Shadows.calculate						();
 	L_Projector.calculate					();
 	

@@ -101,7 +101,23 @@ void CHUDManager::OnFrame()
 
 ENGINE_API extern float psHUD_FOV;
 
-void CHUDManager::Render_Calculate()
+void CHUDManager::Render_First()
+{
+	if (!psHUD_Flags.test(HUD_WEAPON))return;
+	if (0==pUI)						return;
+	CObject*	O					= pCreator->CurrentViewEntity();
+	if (0==O)						return;
+	CActor*		A					= dynamic_cast<CActor*> (O);
+	if (A && !A->HUDview())			return;
+
+	// only shadow 
+	::Render->set_Invisible			(TRUE);
+	::Render->set_Object			(O->H_Root());
+	O->OnVisible					();
+	::Render->set_Invisible			(FALSE);
+}
+
+void CHUDManager::Render_Last()
 {
 	if (!psHUD_Flags.test(HUD_WEAPON))return;
 	if (0==pUI)						return;

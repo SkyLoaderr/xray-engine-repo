@@ -91,6 +91,7 @@ public:
 	}
 
 	// Main interface
+	void					Render_prepare	(CFrustum& F); //. temp
 	void					Render			(CFrustum& F);
 	void					Render_objects	(CFrustum& F);
 	void					Load			(IReader& fs);
