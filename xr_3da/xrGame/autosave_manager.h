@@ -9,18 +9,30 @@
 #pragma once
 
 class CAutosaveManager : public ISheduled {
+private:
 	typedef ISheduled inherited;
+
+private:
+	enum ESaveState {
+		eSaveStateWaitForUpdate = u32(0),
+		eSaveStateWaitForText,
+		eSaveStateWaitForSend,
+		eSaveStateWaitForDummy = u32(-1),
+	};
+
 private:
 	u32				m_autosave_interval;
 	u32				m_last_autosave_time;
 	u32				m_delay_autosave_interval;
 	u32				m_not_ready_count;
+	ESaveState		m_save_state;
 
 public:
 					CAutosaveManager		();
 	virtual			~CAutosaveManager		();
 	virtual	void	shedule_Update			(u32 dt);
 	virtual float	shedule_Scale			();
+			void	OnRender				();
 
 public:
 	IC		u32		autosave_interval		() const;

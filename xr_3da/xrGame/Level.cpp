@@ -366,6 +366,8 @@ void CLevel::OnRender()
 	//отрисовать интерфейc пользователя
 	HUD().RenderUI();
 
+	autosave_manager().OnRender();
+
 #ifdef DRAW_CONTACTS
 	ph_world->OnRender	();
 #endif

@@ -34,6 +34,8 @@ struct CFontManager{
 	CGameFont*				pFontGraffiti32Russian;
 	CGameFont*				pFontGraffiti50Russian;
 	CGameFont*				pFontLetterica25;
+
+	CGameFont*				pFontStat;
 };
 
 class CHUDManager :

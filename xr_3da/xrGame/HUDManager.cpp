@@ -31,7 +31,10 @@ CFontManager::CFontManager()
 	pFontGraffiti32Russian	= xr_new<CGameFont> ("ui_font_graff_32");
 	pFontGraffiti50Russian	= xr_new<CGameFont> ("ui_font_graff_50");
 	pFontLetterica25		= xr_new<CGameFont> ("ui_font_letter_25");
+	
+	pFontStat				= xr_new<CGameFont> ("stat_font");
 }
+
 CFontManager::~CFontManager()
 {
 	xr_delete			(pFontBigDigit);
@@ -50,7 +53,10 @@ CFontManager::~CFontManager()
 	xr_delete			(pFontGraffiti32Russian);
 	xr_delete			(pFontGraffiti50Russian);
 	xr_delete			(pFontLetterica25);
+
+	xr_delete			(pFontStat);
 }
+
 void CFontManager::Render()
 {
 	pFontDI->OnRender			();
@@ -69,6 +75,8 @@ void CFontManager::Render()
 	pFontLetterica16Russian->OnRender();
 	pFontLetterica18Russian->OnRender();
 	pFontLetterica25->OnRender();
+
+	pFontStat->OnRender			();
 }
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
