@@ -341,6 +341,7 @@ void CAI_Soldier::OnFindAloneFire()
 						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
 						if (Index != -1) {
 							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
+							Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 							vfBuildPathToDestinationPoint(0);
 						}
@@ -375,6 +376,7 @@ void CAI_Soldier::OnFindAloneFire()
 						int Index = ifGetSuspiciousAvailableNode(iLastIndex,Group);
 						if (Index != -1) {
 							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
+							Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[Index].dwGroup] = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 							vfBuildPathToDestinationPoint(0);
 						}
