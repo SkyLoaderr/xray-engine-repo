@@ -145,7 +145,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// tracer
 	Fcolor		c; c.set(1,.7f,.1f,1);
-	Level().Tracers.Add	(Peff,end_point,500,0.1f,2,c);
+	Level().Tracers.Add	(Peff,end_point,1000,0.1f,2,c);
 
 	return				bResult;
 }
