@@ -27,7 +27,7 @@
 // Refer to the user's manual for more information.
 // Note that this source file duplicates a lot of stuff from step.cpp,
 // eventually we should move the common code to a third file.
-
+ 
 #include "objects.h"
 #include "joint.h"
 #include <ode/config.h>
