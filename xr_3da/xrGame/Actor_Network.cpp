@@ -788,6 +788,7 @@ void	CActor::OnChangeVisual()
 
 	m_anims.			Create			(V);
 	m_vehicle_anims.	Create			(V);
+	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"));
 	//-------------------------------------------------------------------------------
 	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
 	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
