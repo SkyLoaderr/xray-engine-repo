@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+float				g_fGLOD, g_fFarSq, g_fPOWER;
+float				g_fSCREEN;
+float				g_fLOD,g_fLOD_scale=1.f;
+
 extern float		r_ssaDISCARD;
 extern float		r_ssaDONTSORT;
 extern float		r_ssaLOD_A;
