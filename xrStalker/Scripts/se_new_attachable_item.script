@@ -13,7 +13,7 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self._vector3				= vector():set(0,0,0)
 	self._vector4				= vector():set(0,0,0)
 	// vcolor
-	self._vcolor				= vector()::set(0,0,0)
+	self._vcolor				= vector():set(0,0,0)
 	// flags16
 	self._flag16				= flags16()
 	self._flag16:zero			()
