@@ -113,7 +113,13 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 //	}
 	if (tpTraderParams) {
 		for (int i=0, n=(int)object->children.size(); i<n; ++i) {
-			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(objects().object(object->children[i]));
+			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(objects().object(object->children[i],true));
+			if (!dynamic_object) {
+				CSE_Abstract		*abstract = server().ID_to_entity(object->children[i]);
+				VERIFY				(abstract);
+				Msg					("ERROR : [%s][%s]",object->s_name,object->s_name_replace);
+				R_ASSERT3			(false,abstract->s_name,abstract->s_name_replace);
+			}
 			VERIFY					(dynamic_object);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(dynamic_object);
 			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
