@@ -51,7 +51,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	slim->constraint_manual	(4,5,2);
 	slim->collect_edges		();
 
-	slim->decimate			(8);
+	slim->decimate			(0,0.7f);
 	m->compact_vertices		();
 
 	IWriter* W		= FS.w_open("x:/import/cube4.smf");

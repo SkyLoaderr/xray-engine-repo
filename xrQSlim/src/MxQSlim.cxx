@@ -575,16 +575,19 @@ void MxEdgeQSlim::apply_expansion(const MxPairContraction& conx)
 	update_post_expand(conx);
 }
 
-bool MxEdgeQSlim::decimate(unsigned int target)
+bool MxEdgeQSlim::decimate(unsigned int target, float max_error)
 {
 	MxPairContraction local_conx;
 
 	while( valid_faces > target )
 	{
-		MxQSlimEdge *info = (MxQSlimEdge *)heap.extract();
-		if( !info ) { return false; }
+		MxHeapable *top						= heap.top();
+		if( !top )							{ return false; }
+		if( -top->heap_key()>max_error )	{ return true;	}
 
-		MxVertexID v1=info->v1, v2=info->v2;
+		MxQSlimEdge *info					= (MxQSlimEdge *)heap.extract();
+		MxVertexID v1						= info->v1;
+		MxVertexID v2						= info->v2;
 
 		if( m->vertex_is_valid(v1) && m->vertex_is_valid(v2) )
 		{
@@ -671,7 +674,7 @@ void MxFaceQSlim::initialize()
 		compute_face_info(f);
 }
 
-bool MxFaceQSlim::decimate(unsigned int target)
+bool MxFaceQSlim::decimate(unsigned int target, float max_error)
 {
 	unsigned int i;
 
@@ -679,8 +682,11 @@ bool MxFaceQSlim::decimate(unsigned int target)
 
 	while( valid_faces > target )
 	{
+		MxHeapable *top						= heap.top();
+		if( !top )							{ return false; }
+		if( -top->heap_key()>max_error )	{ return true;	}
+
 		tri_info *info = (tri_info *)heap.extract();
-		if( !info ) { return false; }
 
 		MxFaceID f = info->f;
 		MxVertexID v1 = m->face(f)(0),

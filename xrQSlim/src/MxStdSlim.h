@@ -55,7 +55,7 @@ public:
     MxStdSlim(MxStdModel *m0);
 
     virtual void initialize() = 0;
-    virtual bool decimate(unsigned int) = 0;
+    virtual bool decimate(unsigned int, float max_error) = 0;
 
     MxStdModel& model() { return *m; }
 };
