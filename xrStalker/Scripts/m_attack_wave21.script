@@ -1,3 +1,4 @@
+
 --прожектора на вышках при нападении на базу
 -- ѕрожектора -  projector1, projector2
 -- “очки дл€ прожекторов:
@@ -21,26 +22,38 @@ end
 
 function main ()
 
-  local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
-  local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
 
-  local proj1 = classes.Projector (get_level_object ("projector1"), 0.52, 0.22, m_attack_wave21.script_name (), points1, false, nil)
-  local proj2 = classes.Projector (get_level_object ("projector2"), 0.52, 0.22, m_attack_wave21.script_name (), points2, false, nil)
+    local proj1 = get_level_object ("projector1")
+    proj1:script (true, m_attack_wave21.script_name ())
+    action (proj1, object (object.turn_off), cond (cond.time_end, time_infinite))
+    
+    local proj2 = get_level_object ("projector1")
+    proj2:script (true, m_attack_wave21.script_name ())
+    action (proj2, object (object.turn_off), cond (cond.time_end, time_infinite))
+
+    local initz = get_level_object ("projector_zone")
+    initz:set_callback (m_attack_wave21.on_enter, true)
+    
+    while true do wait () end
+    
+--  local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
+--  local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
+
+--  local proj1 = classes.Projector (get_level_object ("projector1"), 0.52, 0.22, m_attack_wave21.script_name (), points1, false, nil)
+--  local proj2 = classes.Projector (get_level_object ("projector2"), 0.52, 0.22, m_attack_wave21.script_name (), points2, false, nil)
   
-  local initz = get_level_object ("projector_zone")
-  initz:set_callback (m_attack_wave21.on_enter, true)
 
-  while true do
-      proj1:process ()
-      proj2:process ()
-      if called == false then
-      	 if intruder ~= nil then 
-      	 	proj1:set_target (intruder)
-      	 	called = true
-      	 end
-      end	  	
-      wait ()
-  end
+--  while true do
+--      proj1:process ()
+--      proj2:process ()
+--      if called == false then
+--      	 if intruder ~= nil then 
+--      	 	proj1:set_target (intruder)
+--      	 	called = true
+--      	 end
+--      end	  	
+--      wait ()
+--  end
 
 
 end
