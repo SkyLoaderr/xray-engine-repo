@@ -19,6 +19,7 @@ CDummyObject::CDummyObject	()
 	s_model					= NULL;
 	s_particles				= NULL;
 	s_sound.feedback		= NULL;
+	m_pPhysicsShell			= 0;
 }
 
 CDummyObject::~CDummyObject	()
@@ -27,6 +28,7 @@ CDummyObject::~CDummyObject	()
 	::Render->model_Delete	(s_particles);
 	::Render->model_Delete	(s_model);
 	_DELETE					(s_animator);
+	_DELETE					(m_pPhysicsShell);
 }
 
 void CDummyObject::Load		(LPCSTR section)
@@ -98,6 +100,29 @@ BOOL CDummyObject::net_Spawn(LPVOID DC)
 		pSounds->Create			(s_sound,TRUE,fn);
 		pSounds->PlayAtPos		(s_sound,0,Position(),true);
 	}
+
+	if (!s_animator && s_model)
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->bv_BBox.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
+
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
+
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(10.f);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
+
 	return TRUE;
 }
 
@@ -120,6 +145,13 @@ void CDummyObject::UpdateCL		()
 			R_ASSERT2(0,"CDummyObject: Relative position error.");
 			svTransform.mulB_43	(relation);
 		}
+	} else {
+		if (m_pPhysicsShell)		
+		{
+			m_pPhysicsShell->Update	();
+			svTransform.set			(m_pPhysicsShell->mXFORM);
+			vPosition.set			(svTransform.c);
+		}
 	}
 	clTransform.set				(svTransform);
 
@@ -139,7 +171,7 @@ void CDummyObject::UpdateCL		()
 
 void CDummyObject::OnVisible	()
 {
-	::Render->set_Transform		(&clTransform);
+	::Render->set_Transform					(&clTransform);
 	if (s_model)		::Render->add_Visual(s_model);
 	if (s_particles)	::Render->add_Visual(s_particles);
 }

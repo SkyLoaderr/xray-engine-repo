@@ -7,6 +7,7 @@
 #pragma once
 
 #include "gameobject.h"
+#include "PhysicsShell.h"
 #include "..\psruntime.h"
 
 // refs
@@ -32,6 +33,7 @@ private:
 	CVisual*							s_particles;
 	sound								s_sound;
 	PS::SEmitter						s_emitter;
+	CPhysicsShell*						m_pPhysicsShell;
 
 	Fmatrix								relation;
 public:

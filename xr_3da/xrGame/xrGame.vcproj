@@ -307,12 +307,6 @@
 				RelativePath="Level_start.cpp">
 			</File>
 			<File
-				RelativePath="PhysicsShell.cpp">
-			</File>
-			<File
-				RelativePath="PhysicsShell.h">
-			</File>
-			<File
 				RelativePath="PlayerList.cpp">
 			</File>
 			<File
@@ -1244,6 +1238,12 @@
 			</File>
 			<File
 				RelativePath="Physics.h">
+			</File>
+			<File
+				RelativePath="PhysicsShell.cpp">
+			</File>
+			<File
+				RelativePath="PhysicsShell.h">
 			</File>
 			<File
 				RelativePath="dCylinder\dCylinder.cpp">
