@@ -108,14 +108,14 @@ void CDetailManager::Load		()
 	bwdithermap		(2,dither);
 
 	// Hardware specific optimizations
-	if (UseVS())	VS_Load		();
+	if (UseVS())	hw_Load		();
 	else			soft_Load	();
 	 
 }
 
 void CDetailManager::Unload		()
 {
-	if (UseVS())	VS_Unload	();
+	if (UseVS())	hw_Unload	();
 	else			soft_Unload	();
 	
 	for (DWORD it=0; it<objects.size(); it++)
@@ -233,7 +233,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	Device.Statistic.RenderDUMP_DT_Render.Begin	();
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
-	if (UseVS())	VS_Render	();
+	if (UseVS())	hw_Render	();
 	else			soft_Render	();
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
 	Device.Statistic.RenderDUMP_DT_Render.End	();
