@@ -11,12 +11,16 @@
 #	include "profiler.h"
 #endif
 
+static	void *	ode_alloc	(size_t size)								{ return xr_malloc(size);			}
+static	void *	ode_realloc	(void *ptr, size_t oldsize, size_t newsize)	{ return xr_realloc(ptr,newsize);	}
+static	void	ode_free	(void *ptr, size_t size)					{ return xr_free(ptr);				}
+
 CGamePersistent::CGamePersistent(void)
 {
 	// 
-	dSetAllocHandler	(xr_malloc	);
-	dSetReallocHandler	(xr_realloc	);
-	dSetFreeHandler		(xr_free	);
+	dSetAllocHandler	(ode_alloc		);
+	dSetReallocHandler	(ode_realloc	);
+	dSetFreeHandler		(ode_free		);
 
 	// 
 	BOOL	bDemoMode	= (0!=strstr(Core.Params,"-demomode "));
