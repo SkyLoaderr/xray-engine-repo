@@ -97,7 +97,7 @@ function handing_lamp_binder:__init(obj) super(obj)
 end
 
 function handing_lamp_binder:reload(section)
-	object_binder.reloda(self, section)
+	object_binder.relodad(self, section)
 	
 	//'Читаем данные из кастом даты. Если неправильные данные, то ставим type = "low"
 	local ini	= self.object:spawn_ini()
