@@ -11,6 +11,9 @@
 #include "script_game_object.h"
 #include "script_space.h"
 
+#include "object_loader.h"
+#include "object_saver.h"
+
 #include "ui/xrXMLParser.h"
 
 TASK_DATA::TASK_DATA():index(NO_TASK),receive_time(0),finish_time(0)
@@ -27,6 +30,22 @@ TASK_DATA::TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time):index(idx),receive_ti
 	for(std::size_t i=0; i<states.size();i++)
 		states[i] = eTaskStateInProgress;
 };
+
+
+void TASK_DATA::load (IReader& stream)
+{
+	load_data(index, stream);
+	load_data(receive_time, stream);
+	load_data(finish_time, stream);
+	load_data(states, stream);
+}
+void TASK_DATA::save (IWriter& stream)
+{
+	save_data(index, stream);
+	save_data(receive_time, stream);
+	save_data(finish_time, stream);
+	save_data(states, stream);
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
