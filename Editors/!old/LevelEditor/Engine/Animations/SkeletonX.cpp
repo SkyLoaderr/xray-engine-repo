@@ -182,36 +182,49 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	switch		(dwVertType)
 	{
 	case 1*0x12071980:
-		size		= dwVertCount*sizeof(vertBoned1W);
-		crc			= crc32	(data->pointer(),size);
-		Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
-		for (it=0; it<dwVertCount; it++)	{
-			u32		mid = Vertices1W[it].matrix;
-			if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
-			if		(mid>sw_bones)	sw_bones = mid;
-		}
-		if	(1==bids.size())	{
-			RenderMode						= RM_SINGLE;
-			RMS_boneid						= *bids.begin();
-			Render->shader_option_skinning	(0);
-		} else if (sw_bones<=hw_bones) {
-			RenderMode						= RM_SKINNING_1B;
-			RMS_bonecount					= sw_bones+1;
-			Render->shader_option_skinning	(1);
+		{
+			size			= dwVertCount*sizeof(vertBoned1W);
+			vertBoned1W* VO = (vertBoned1W*)data->pointer();
+			for (it=0; it<dwVertCount; it++)	{
+				u32		mid = VO[it].matrix;
+				if		(bids.end() == std::find(bids.begin(),bids.end(),mid))	bids.push_back(mid);
+				if		(mid>sw_bones)	sw_bones = mid;
+			}
+			if	(1==bids.size())	{
+				// HW- single bone
+				RenderMode						= RM_SINGLE;
+				RMS_boneid						= *bids.begin();
+				Render->shader_option_skinning	(0);
+			} else if (sw_bones<=hw_bones) {
+				// HW- one weight
+				RenderMode						= RM_SKINNING_1B;
+				RMS_bonecount					= sw_bones+1;
+				Render->shader_option_skinning	(1);
+			} else {
+				// software
+				crc					= crc32	(data->pointer(),size);
+				Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
+			}
 		}
 		break;
 	case 2*0x12071980:
-		size		= dwVertCount*sizeof(vertBoned2W);
-		crc			= crc32	(data->pointer(),size);
-		Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
-		for (it=0; it<dwVertCount; it++)	{
-			if (Vertices2W[it].matrix0>sw_bones)	sw_bones = Vertices2W[it].matrix0;
-			if (Vertices2W[it].matrix1>sw_bones)	sw_bones = Vertices2W[it].matrix1;
-		}
-		if (sw_bones<=hw_bones) {
-			RenderMode						= RM_SKINNING_2B;
-			RMS_bonecount					= sw_bones+1;
-			Render->shader_option_skinning	(2);
+		{
+			size			= dwVertCount*sizeof(vertBoned2W);
+			vertBoned2W* VO = (vertBoned2W*)data->pointer();
+			for (it=0; it<dwVertCount; it++)	{
+				if (VO[it].matrix0>sw_bones)	sw_bones = Vertices2W[it].matrix0;
+				if (VO[it].matrix1>sw_bones)	sw_bones = Vertices2W[it].matrix1;
+			}
+			if (sw_bones<=hw_bones) {
+				// HW- two weights
+				RenderMode						= RM_SKINNING_2B;
+				RMS_bonecount					= sw_bones+1;
+				Render->shader_option_skinning	(2);
+			} else {
+				// software
+				crc			= crc32	(data->pointer(),size);
+				Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
+			}
 		}
 		break;
 	default:
@@ -351,11 +364,11 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 	switch	(RenderMode)
 	{
 	case RM_SKINNING_SOFT:
-		Msg					("skinning: software");
+		//Msg					("skinning: software");
 		V.hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), V.pIndices);
 		break;
 	case RM_SINGLE:
-		Msg					("skinning: hw, 0-weight");
+		//Msg					("skinning: hw, 0-weight");
 		{
 			u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
 			BYTE*	bytes		= 0;
@@ -375,7 +388,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 		}
 		break;
 	case RM_SKINNING_1B:
-		Msg					("skinning: hw, 1-weight");
+		//Msg					("skinning: hw, 1-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_1W,0);
 			VERIFY	(vStride==sizeof(vertHW_1W));
@@ -394,7 +407,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 		}
 		break;
 	case RM_SKINNING_2B:
-		Msg					("skinning: hw, 2-weight");
+		//Msg					("skinning: hw, 2-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
 			VERIFY	(vStride==sizeof(vertHW_2W));
