@@ -136,13 +136,13 @@ void CAI_Stalker::Think()
 
 //		BackCover();
 
-//		if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
-//			m_bStateChanged = true;
-//		ForwardCover();
+		if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
+			m_bStateChanged = true;
+		ForwardCover();
 		
 //		ForwardDodge();
 		
-		ForwardStraight();
+//		ForwardStraight();
 	} else
 	if (M) {
 		m_tSelectorFreeHunting.m_fMaxEnemyDistance	= vPosition.distance_to(m_tpItemToTake->Position());
@@ -233,6 +233,8 @@ void CAI_Stalker::ForwardCover()
 	WRITE_TO_LOG("Back cover");
 	
 	SelectEnemy					(m_tEnemy);
+	if (!m_tEnemy.Enemy)
+		return;
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
 
@@ -301,6 +303,8 @@ void CAI_Stalker::ForwardStraight()
 	WRITE_TO_LOG("Forward straight");
 	
 	SelectEnemy					(m_tEnemy);
+	if (!m_tEnemy.Enemy)
+		return;
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
 	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());

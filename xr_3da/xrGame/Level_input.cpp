@@ -2,6 +2,7 @@
 #include "HUDmanager.h"
 #include "..\xr_level_controller.h"
 #include "..\xr_ioconsole.h"
+#include "entity.h"
 
 // Обработка нажатия клавиш
 void CLevel::OnKeyboardPress(int key)
@@ -25,6 +26,39 @@ void CLevel::OnKeyboardPress(int key)
 		return;
 	case DIK_F9:
 		// SLS_Load					("quick.save");
+		return;
+	case DIK_F5:
+		vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
+		vector<CObject*>::iterator E = Objects.objects.end();
+		bool bOk = false;
+		if (pCurrentEntity)
+			for ( ; I != E; I++)
+				if ((*I) == pCurrentEntity)
+					break;
+		if (I != E) {
+			J = I;
+			bOk = false;
+			for (I++; I != E; I++) {
+				CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
+				if (tpEntityAlive) {
+					bOk = true;
+					break;
+				}
+			}
+			if (bOk)
+				SetEntity(*I);
+			else {
+				for (I = B; I != J; I++) {
+					CEntityAlive* tpEntityAlive = dynamic_cast<CEntityAlive*>(*I);
+					if (tpEntityAlive) {
+						bOk = true;
+						break;
+					}
+				}
+				if (bOk)
+					SetEntity(*I);
+			}
+		}
 		return;
 	}
 

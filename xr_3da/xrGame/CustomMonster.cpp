@@ -9,6 +9,7 @@
 #include "customitem.h"
 #include "hudmanager.h"
 #include "ai_space.h"
+#include "actor.h"
 
 using namespace AI;
 
@@ -427,7 +428,8 @@ void CCustomMonster::GetVisible			(objVisible& R)
 	vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 	for (; I!=E; I++)	if (positive(I->fuzzy)) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
-		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend))
+		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
+		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && !tpActor)
 			R.insert(I->O);
 	}
 }

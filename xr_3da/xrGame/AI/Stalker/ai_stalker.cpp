@@ -194,6 +194,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	#endif
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
+	if (!Level().CurrentViewEntity())
+		Level().SetEntity(this);
 	return							(TRUE);
 }
 
@@ -701,6 +703,9 @@ void CAI_Stalker::UpdateCL(){
 	else
 		if (!g_Alive())
 			CreateSkeleton();
+	if (Level().CurrentViewEntity() == this) {
+		Exec_Visibility();
+	}
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
