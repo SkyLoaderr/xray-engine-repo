@@ -300,6 +300,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
 
 	// ************************************* Perform mungle
+	D3DXVECTOR3			vecModelCenter;
 	{
 		unsigned int i;
 
@@ -335,6 +336,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			index.push_back(indexBuffer[i][2]);
 		}
 		gMesh->UnlockIndexBuffer();
+		gMesh->Release();
 
 		// Prepare the parameters to the mesh mender
 
@@ -398,22 +400,30 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		--n; position = outputAtts[n].floatVector_;
 
 		// Create the new vertex buffer
-		gNumVertices = position.size() / 3;
-		unsigned int size = gNumVertices * sizeof(Vertex);
-		gD3DDevice->CreateVertexBuffer(size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &gVertexBuffer);
-		Vertex* vertexBufferNew;
-		gVertexBuffer->Lock(0, size, (BYTE**)&vertexBufferNew, 0);
-		for (i = 0; i < gNumVertices; ++i) {
-			vertexBufferNew[i].position.x = position[3 * i + 0];
-			vertexBufferNew[i].position.y = position[3 * i + 1];
-			vertexBufferNew[i].position.z = position[3 * i + 2];
-			vertexBufferNew[i].texCoord.x = texCoord[3 * i + 0];
-			vertexBufferNew[i].texCoord.y = texCoord[3 * i + 1];
-			vertexBufferNew[i].normal.x = normal[3 * i + 0];
-			vertexBufferNew[i].normal.y = normal[3 * i + 1];
-			vertexBufferNew[i].normal.z = normal[3 * i + 2];
+		m_dwModelNumVerts = position.size() / 3;
+		D3DXComputeBoundingSphere(&position.front(), m_dwModelNumVerts, 3*sizeof(float), &vecModelCenter, &fModelRad);
+
+		u32 size = m_dwModelNumVerts * sizeof(VERTEX);
+		m_pd3dDevice->CreateVertexBuffer(size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
+		VERTEX* vertexBufferNew;
+		m_pModelVB->Lock	(0, 0, (void**)&vertexBufferNew, 0);
+		for (i = 0; i < m_dwModelNumVerts; ++i) {
+			vertexBufferNew[i].p.x			= position[3 * i + 0];
+			vertexBufferNew[i].p.y			= position[3 * i + 1];
+			vertexBufferNew[i].p.z			= position[3 * i + 2];
+			vertexBufferNew[i].tu			= texCoord[3 * i + 0];
+			vertexBufferNew[i].tv			= texCoord[3 * i + 1];
+			vertexBufferNew[i].n.x			= normal[3 * i + 0];
+			vertexBufferNew[i].n.y			= normal[3 * i + 1];
+			vertexBufferNew[i].n.z			= normal[3 * i + 2];
+			vertexBufferNew[i].tangent.x	= tangent[3 * i + 0];
+			vertexBufferNew[i].tangent.y	= tangent[3 * i + 1];
+			vertexBufferNew[i].tangent.z	= tangent[3 * i + 2];
+			vertexBufferNew[i].binormal.x	= binormal[3 * i + 0];
+			vertexBufferNew[i].binormal.y	= binormal[3 * i + 1];
+			vertexBufferNew[i].binormal.z	= binormal[3 * i + 2];
 		}
-		gVertexBuffer->Unlock();
+		m_pModelVB->Unlock();
 
 		// Create the new index buffer
 		gNumTriangles = index.size() / 3;
@@ -427,22 +437,6 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		}
 		gIndexBuffer->Unlock();
 	}
-
-
-	// Create model VB
-	m_dwModelNumVerts	= Mesh.GetSysMemMesh()->GetNumVertices();
-	m_pd3dDevice->CreateVertexBuffer(m_dwModelNumVerts * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
-
-	// Copy vertices and compute bounding sphere
-	Mesh.GetSysMemMesh()->GetVertexBuffer(&pMeshSrcVB);
-	pMeshSrcVB->Lock	(0, 0, (void**)&pSrc, 0);
-	m_pModelVB->Lock	(0, 0, (void**)&pDst, 0);
-	memcpy				(pDst, pSrc, m_dwModelNumVerts * sizeof(VERTEX));
-	D3DXVECTOR3			vecModelCenter;
-	D3DXComputeBoundingSphere(&pSrc->p, m_dwModelNumVerts, sizeof(VERTEX), &vecModelCenter, &fModelRad);
-	m_pModelVB->Unlock	();
-	pMeshSrcVB->Unlock	();
-	pMeshSrcVB->Release	();
 
 	m_fModelSize = fModelRad * 2.0f;
 
