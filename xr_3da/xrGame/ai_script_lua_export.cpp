@@ -686,7 +686,7 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readwrite("noise",				&SPPInfo::noise)
 			.def(								constructor<>()),
 
-		class_<CLuaEffector, CLuaEffectorWrapper>("pp_effector")
+		class_<CLuaEffector, CLuaEffectorWrapper>("effector")
 			.def_readwrite("info",				&CLuaEffector::m_tInfo)
 			.def(								constructor<int,float>())
 			.def("start",						&CLuaEffector::Add)
