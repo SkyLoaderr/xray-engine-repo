@@ -1153,10 +1153,11 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 void CCar::ResetScriptData(void	*P)
 {
 	CScriptMonster::ResetScriptData(P);
-	CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>();
-	l_tpEntityAction->m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
-	bfAssignMovement(l_tpEntityAction);
-	xr_delete		(l_tpEntityAction);
+	{
+		CEntityAction	l_tpEntityAction;
+		l_tpEntityAction.m_tMovementAction.SetInputKeys(CScriptMovementAction::eInputKeyEngineOff);
+		bfAssignMovement(&l_tpEntityAction);
+	}
 	m_max_rpm		= m_fSaveMaxRPM;
 }
 
