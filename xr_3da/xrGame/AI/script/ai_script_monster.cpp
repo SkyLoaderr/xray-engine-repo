@@ -456,18 +456,18 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
 			l_tpMovementManager->set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
-			u32					vertex_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),l_tMovementAction.m_tDestinationPosition);
+//			u64					start = CPU::GetCycleCount();
+			u32					vertex_id;
+			vertex_id			= ai().level_graph().vertex(level_vertex_id(),l_tMovementAction.m_tDestinationPosition);
 			if (!ai().level_graph().valid_vertex_id(vertex_id)) {
-//				u64				start = CPU::GetCycleCount();
-				vertex_id		= ai().level_graph().vertex(vertex_id,l_tMovementAction.m_tDestinationPosition);
-//				u64				stop = CPU::GetCycleCount();
-#ifdef _DEBUG
-//				Msg				("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*cName(),float(s64(stop - start))*CPU::cycles2seconds);
-#endif
+				vertex_id		= ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),l_tMovementAction.m_tDestinationPosition);
 			}
+//			u64					stop = CPU::GetCycleCount();
+#ifdef _DEBUG
+//			Msg					("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*cName(),float(s64(stop - start))*CPU::cycles2seconds);
+#endif
 			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
 			l_tpMovementManager->CLevelPathManager::set_dest_vertex(vertex_id);
-			
 			l_tpMovementManager->CLevelLocationSelector::set_evaluator(0);
 			break;
 		}
