@@ -605,22 +605,18 @@ void CDetailPathManager::add_patrol_point()
 		else
 			return;
 
-		v.mul							(2.f);
+		v.mul							(4.f);
 		t								= m_path.back();
 		t.position.add					(v);
-		t.vertex_id						= ai().level_graph().check_position_in_direction(m_path.back().vertex_id,m_path.back().position,t.position);
-		if (ai().level_graph().valid_vertex_id(t.vertex_id)) {
-			bool						b = ai().level_graph().create_straight_PTN_path<false>(
-				m_path.back().vertex_id,
-				ai().level_graph().v2d(m_path.back().position),
-				ai().level_graph().v2d(t.position),
-				m_path,
-				m_path.back(),
-				false,
-				false
-			);
-			VERIFY						(b);
-		}
+		ai().level_graph().create_straight_PTN_path<false>(
+			m_path.back().vertex_id,
+			ai().level_graph().v2d(m_path.back().position),
+			ai().level_graph().v2d(t.position),
+			m_path,
+			m_path.back(),
+			false,
+			false
+		);
 	}
 }
 
