@@ -111,6 +111,7 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
     Tools.m_ObjectProps->SaveParams(fsStorage);
     Tools.m_MotionProps->SaveParams(fsStorage);
     Tools.m_PreviewObject.SaveParams(fsStorage);
+    Tools.m_RenderObject.SaveParams(fsStorage);
 	for (int i = 0; i < miRecentFiles->Count; i++)
 	{
 		TMenuItem* MI = miRecentFiles->Items[i];
@@ -124,6 +125,7 @@ void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
     Tools.m_ObjectProps->RestoreParams(fsStorage);
     Tools.m_MotionProps->RestoreParams(fsStorage);
     Tools.m_PreviewObject.RestoreParams(fsStorage);
+    Tools.m_RenderObject.RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -573,4 +575,5 @@ void __fastcall TfraLeftBar::ebRotateMotionClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 

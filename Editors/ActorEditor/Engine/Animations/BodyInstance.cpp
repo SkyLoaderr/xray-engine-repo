@@ -372,28 +372,30 @@ void CKinematics::Update ()
 		{
 		case CBlend::eFREE_SLOT: 
 			NODEFAULT;
-		case CBlend::eFixed: 
+		case CBlend::eFixed:
 			{
-				B.blendAmount = B.blendPower; 
+/*				B.blendAmount = B.blendPower; 
 				// calc time to falloff
 				float time2falloff = B.timeTotal - 1/(B.blendFalloff*B.speed);
 				if (B.timeCurrent >= time2falloff) {
 					// switch to falloff
 					B.blend		= CBlend::eFalloff;
 				}
+*/
+				B.blend		= CBlend::eFalloff;
 			}
 			break;
-		case CBlend::eAccrue:	
-			B.blendAmount += dt*B.blendAccrue*B.blendPower;
+		case CBlend::eAccrue:
+            B.blendAmount 	+= dt*B.blendAccrue*B.blendPower*B.speed;
 			if (B.blendAmount>=B.blendPower) {
 				// switch to fixed
 				B.blendAmount	= B.blendPower;
 				B.blend			= CBlend::eFixed;
 			}
 			break;
-		case CBlend::eFalloff:	
-			B.blendAmount -= dt*B.blendFalloff*B.blendPower;
-			if (B.timeCurrent>=B.timeTotal || B.blendAmount<=0) {
+		case CBlend::eFalloff:
+			B.blendAmount 	-= dt*B.blendFalloff*B.blendPower*B.speed;
+			if (B.blendAmount<=0) {
 				// destroy fx
 				B.blend = CBlend::eFREE_SLOT;
 				(*bones)[B.bone_or_part]->Motion_Stop(this,*I);

@@ -113,10 +113,16 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
 {
     if (M&&IsRenderable()){
         if (M->m_Flags.is(esmFX)){
+			for (int k=0; k<MAX_PARTS; k++){
+            	if (!m_BPPlayCache[k].IsEmpty()){
+                	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
+                    if (D) D->PlayCycle(PKinematics(m_pVisual),k,false,0,0);
+    	    	}
+            }        
         	m_pBlend = PKinematics(m_pVisual)->PlayFX(M->Name(),1.f);
         }else{	
         	R_ASSERT(M->iBoneOrPart<MAX_PARTS);
-            int idx = M->iBoneOrPart;
+            int idx 		= M->iBoneOrPart;
         	if (-1==idx)	for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k] = M->Name();
             else			m_BPPlayCache[idx] = M->Name();
             m_pBlend		= 0;
@@ -125,7 +131,7 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
                 	CMotionDef* D = PKinematics(m_pVisual)->ID_Cycle_Safe(m_BPPlayCache[k].c_str());
                     CBlend* B=0;
                     if (D){
-                    	B = D->PlayCycle(PKinematics(m_pVisual),k,fraLeftBar->ebMixMotion->Down,0,0);
+                    	B = D->PlayCycle(PKinematics(m_pVisual),k,(idx==k)?fraLeftBar->ebMixMotion->Down:false,0,0);
                         if (idx==k) m_pBlend = B;
                     }
     	    	}
@@ -133,6 +139,18 @@ void CActorTools::EngineModel::PlayMotion(CSMotion* M)
         }
     }
 }
+void CActorTools::EngineModel::RestoreParams(TFormStorage* s)
+{          
+    for (int k=0; k<MAX_PARTS; k++)
+    	m_BPPlayCache[k] = s->ReadString("bp_cache_"+AnsiString(k),"");
+}
+
+void CActorTools::EngineModel::SaveParams(TFormStorage* s)
+{
+    for (int k=0; k<MAX_PARTS; k++)
+	    s->WriteString	("bp_cache_"+AnsiString(k),	m_BPPlayCache[k]);
+}
+
 //---------------------------------------------------------------------------
 
 void CActorTools::OnMotionKeysModified()
@@ -224,7 +242,7 @@ void CActorTools::MakePreview()
 
 void CActorTools::MotionOnChange(PropValue* sender)
 {
-	Flag32Value* V = (Flag32Value*)sender;
+	Flag8Value* V = (Flag8Value*)sender;
     if (V->GetValueEx()){
 	    m_pCycleNode->Hidden	= true;
     	m_pFXNode->Hidden		= false;

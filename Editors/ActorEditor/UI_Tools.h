@@ -83,13 +83,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     public:
         				EngineModel			(){m_pVisual=0;m_fLOD=1.f;m_pBlend=0;}
         void			DeleteVisual		(){Device.Models.Delete(m_pVisual);m_pBlend=0;}
-        void			ClearCache			()
-        {
-            for (int k=0; k<MAX_PARTS; k++) m_BPPlayCache[k]="";
-        }
         void			Clear				()
         {
-        	ClearCache				();
         	DeleteVisual			(); 
             m_GeometryStream.clear	();
             m_MotionKeysStream.clear();
@@ -99,6 +94,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         bool			IsRenderable		(){return !!m_pVisual;}
         void			Render				(const Fmatrix& mTransform);
         void			PlayMotion			(CSMotion* motion);
+        void			RestoreParams		(TFormStorage* s);
+        void			SaveParams			(TFormStorage* s);
     };
 
     bool				m_bObjectModified;
