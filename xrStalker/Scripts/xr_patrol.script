@@ -180,7 +180,7 @@ function patrol_binder:reload (section)
 	action:add_effect		(world_property(properties["path_end"],	    true))
 	manager:add_action		(actions["move"],			                action)
 	
-	action                  = manager:action(stalker_ids.free_no_alife)
+	action                  = manager:action (stalker_ids.free_no_alife)
 	action:add_precondition (world_property(properties["path_end"],	    true))
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -205,6 +205,5 @@ end
 
 function AddToPatrol (npc, group, command, member)
     npc:bind_object	(this.patrol_binder (npc))
-    this.PrintTable ()
 end
 
