@@ -167,38 +167,34 @@ float rayTrace	(RAPID::XRCollide* DB, R_Light& L, Fvector& P, Fvector& D, float 
 {
 	R_ASSERT	(DB);
 
-	try {
+//	try {
 		// 1. Check cached polygon
 		float _u,_v,range;
 		bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,false);
 		if (res) {
 			if (range>0 && range<R) return 0;
 		}
-	} catch (...)
-	{
-		Msg("* ERROR: rayTrace :: 1");
-		return 0;
-	}
+//	} catch (...)	{ Msg("* ERROR: rayTrace :: 1"); return 0; }
 	
 	// 2. Polygon doesn't pick - real database query
-	try {
+//	try {
 		DB->RayPick(0,&RCAST_Model,P,D,R);
-	} catch (...) { Msg("* ERROR: rayTrace :: 2"); }
+//	} catch (...) { Msg("* ERROR: rayTrace :: 2"); }
 
 	// 3. analyze polygons and cache nearest if possible
-	try {
+//	try {
 		if (0==DB->GetRayContactCount()) {
 			return 1;
 		} else {
 			return getLastRP_Scale(DB,L);
 		}
-	} catch (...) { Msg("* ERROR: rayTrace :: 3"); }
+//	} catch (...) { Msg("* ERROR: rayTrace :: 3"); }
 	return 0;
 }
 
 void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
 {
-	try {
+//	try {
 		Fvector		Ldir,Pnew;
 		Pnew.direct(P,N,0.01f);
 		
@@ -237,10 +233,7 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 				C.b += A * L->diffuse.b;
 			}
 		}
-	} catch (...)
-	{
-		Msg("* ERROR: LightPoint");
-	}
+//	} catch (...) {  Msg("* ERROR: LightPoint"); }
 }
 
 IC DWORD	rms_diff	(DWORD a, DWORD b)
