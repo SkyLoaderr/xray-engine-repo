@@ -53,7 +53,7 @@
 		<rank>80</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\militari\soldier_spetsnaz</visual>		
+		<visual>actors\soldier\soldier_spetsnaz</visual>		
 	</specific_character>
 
 <!---------------------------SOLDIER MASTER----------------------->
