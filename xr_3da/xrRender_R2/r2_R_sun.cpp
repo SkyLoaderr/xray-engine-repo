@@ -816,7 +816,7 @@ void CRender::render_sun				()
 
 	// Accumulate
 	Target.phase_accumulator	();
-	Target.accum_direct			();
+	Target.accum_direct			(SE_SUN_FAR);
 
 	// Restore XForms
 	RCache.set_xform_world		(Fidentity			);
@@ -1004,7 +1004,7 @@ void CRender::render_sun_near	()
 
 	// Accumulate
 	Target.phase_accumulator	();
-	Target.accum_direct			();
+	Target.accum_direct			(SE_SUN_NEAR);
 
 	// Restore XForms
 	RCache.set_xform_world		(Fidentity			);
