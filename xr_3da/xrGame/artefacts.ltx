@@ -14,7 +14,7 @@ cform				= skeleton
 class				= ARTEFACT
 
 visual				= physics\anomaly\artefact_blackdrip.ogf  
-inv_name			= "medusa"
+inv_name			= "Medusa"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -39,10 +39,46 @@ particles			= anomaly2\artefact\artefact_gravi
 
 lights_enabled = true	;true			;свет вокруг 
 trail_light_color = 0.5,0.5,0.6
-trail_light_range = 2.0
+trail_light_range = 1.0
+
+[af_night_star]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\star"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_blackdrip_2.ogf  
+inv_name			= "Night Star"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
 
 
-[af_stone_flower]
+cost				= 300	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .5
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_myaso_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.5
+trail_light_range = 3.0
+
+
+[af_cristall_flower]
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\flower"
 
@@ -51,7 +87,368 @@ cform				= skeleton
 class				= ARTEFACT
 
 visual				= physics\anomaly\artefact_blackdrip_1.ogf  
-inv_name			= "flower"
+inv_name			= "Cristall Flower"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 500	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .5
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_myaso_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.5
+trail_light_range = 1.0
+
+; Артефакты для аномалии "Грави"
+
+[af_vyvert]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\vyvert"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_gravi1.ogf  
+inv_name			= "Vyvert"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 300	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_gravi
+
+lights_enabled = false	;true			;свет вокруг 
+
+
+[af_gravi]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\Gravi"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_gravi2.ogf  
+inv_name			= "Gravi"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 400	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_gravi
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.5
+trail_light_range = 3.0
+
+
+[af_gold_fish]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\fish"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_gravi3.ogf  
+inv_name			= "Gold Fish"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 700	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_myaso_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.5
+trail_light_range = 1.0
+
+; Артефакты для аномалии "Жарка"
+
+[af_drops]
+
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\drops"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BDROP
+
+visual				= physics\anomaly\artefact_kaply.ogf
+inv_name			= "Drops"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 150	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+
+[af_fireball]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\fireball"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_NEEDL
+
+visual				= physics\anomaly\artefact_fire.ogf
+inv_name			= "Fireball"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 300	;100
+
+
+impulse_threshold		= 10
+radius					= 10
+strike_impulse			= 20
+
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.7,0.5,0.5
+trail_light_range = 3.0
+
+[af_cristall]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\cristall"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BAST
+
+visual				= physics\anomaly\artefact_cristall.ogf
+inv_name			= "Cristall"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+;!!!!!!
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 800	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+impulse_threshold		= 10
+radius					= 10
+strike_impulse			= 20
+energy_max				= 10
+energy_decrease_speed	= 1.5
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+; Артефакты для аномалии "мясорубка"
+
+[af_blood]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\blood"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_myasorubka1.ogf  
+inv_name			= "Stone blood"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 100	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+lights_enabled = false	;true			;свет вокруг 
+
+
+[af_meat]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\meatloaf"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_myasorubka2.ogf  
+inv_name			= "Meatloaf"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+lights_enabled = false	;true			;свет вокруг 
+
+[af_soul]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\myaso"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_myasorubka3.ogf  
+inv_name			= "Soul"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 1000	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_myaso_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.9,0.9,0.6
+trail_light_range = 2.0
+
+; Артефакты для аномалии "Электра"
+
+[af_sparkler]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\sparkler"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_electra1.ogf  
+inv_name			= "Sparkler"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -72,24 +469,206 @@ detector_sound		= zone_mosquito_bald
 jump_height			= .5
 energy				= 1
 
+particles			= anomaly2\artefact\artefact_electra
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.5,0.5,0.6
+trail_light_range = 1.5
+
+[af_flash]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\flash"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_electra2.ogf  
+inv_name			= "Flash"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 500	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_electra
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.9
+trail_light_range = 2.5
+
+[af_moonlight]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\moonlight"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_electra_3.ogf  
+inv_name			= "Moonlight"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 800	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_electra
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.9
+trail_light_range = 3.0
+
+; Артефакты для аномалии "Амебы"
+
+[af_slime]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\slime"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_ameba1.ogf  
+inv_name			= "Slime"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 200	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .0
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_gravi
+
+lights_enabled = false
+
+[af_slug]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\slug"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_ameba2.ogf  
+inv_name			= "Slug"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 300	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .0
+energy				= 1
+
 particles			= anomaly2\artefact\artefact_myaso_idle_00
 
 lights_enabled = true	;true			;свет вокруг 
-trail_light_color = 0.5,0.7,0.4
-trail_light_range = 2.0
+trail_light_color = 0.6,0.6,0.5
+trail_light_range = 1.0
 
 
-; Артефакты для аномалии "Жарка"
-[af_black_drops]
+[af_mica]
 GroupControlSection	= spawn_group
-$spawn 			= "artifacts\black drops"
+$spawn				= "artifacts\mica"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_ameba3.ogf  
+inv_name			= "Mica"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 8
+inv_grid_y			= 15
+
+
+cost				= 500	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .1
+energy				= 1
+
+particles			= anomaly2\artefact\artefact_myaso_idle_00
+
+lights_enabled = true	;true			;свет вокруг 
+trail_light_color = 0.6,0.7,0.6
+trail_light_range = 2
+
+
+; "  Пустышки"
+
+[af_spring]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\spring"
 $npc			= on				; option for Level Editor
 ;$prefetch 		= 3
 cform           = skeleton
-class   		= AF_BDROP
+class   		= AF_DUMMY
 
-visual				= physics\anomaly\artefact_kaply.ogf
-inv_name			= "Black Drops"
+visual				= physics\anomaly\artefact_pustishka.ogf
+inv_name			= "Spring"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -101,115 +680,12 @@ inv_grid_height		= 2
 inv_grid_x			= 0
 inv_grid_y			= 0
 
-cost				= 200	;100
+cost				= 300
+jump_height			= .5
+energy				= 1
 
 detector_dist		= 8
 detector_sound		= zone_mosquito_bald
-
-particles			= anomaly2\artefact\artefact_zharka_idle_00
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_needles]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\needles"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_NEEDL
-
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Needles"
-inv_name_short		= 
-inv_weight			= 1
-
-food_value			= 0
-health_value		= 0
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 200	;100
-
-
-impulse_threshold		= 10
-radius					= 10
-strike_impulse			= 20
-
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_bast]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\bast"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_BAST
-
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Bast artifact"
-inv_name_short		= 
-inv_weight			= 10000
-
-food_value			= 0
-health_value		= 0
-;!!!!!!
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 200	;100
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-impulse_threshold		= 10
-radius					= 10
-strike_impulse			= 20
-energy_max				= 100000
-energy_decrease_speed	= 1.5
-particle				= ghoul\fx-01-camp-fire_00
-
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_black_gravi]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\black_gravi"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_BGRAV
-
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Black Gravi Artifact"
-inv_name_short		= 
-inv_weight			= 1
-
-food_value			= 0
-health_value		= 0
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 200	;100
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-impulse_threshold		= 10
-radius					= 10
-strike_impulse			= 20
-;particle				= ghoul\anomal-02-or-flash
-;particle				= ghoul\fx-01-camp-fire_00
-particle				= ghoul\ps_0001
 
 lights_enabled = false			;свет вокруг ракеты, во время полета
 
@@ -221,8 +697,8 @@ $npc			= on				; option for Level Editor
 cform           = skeleton
 class   		= AF_DUMMY
 
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Dummy Artifact"
+visual				= physics\anomaly\artefact_pustishka1.ogf
+inv_name			= "Dummy"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -234,14 +710,16 @@ inv_grid_height		= 2
 inv_grid_x			= 0
 inv_grid_y			= 0
 
-cost				= 200
+cost				= 300
+jump_height			= .5
+energy				= 1
 
 detector_dist		= 8
 detector_sound		= zone_mosquito_bald
 
 lights_enabled = false			;свет вокруг ракеты, во время полета
 
-[af_zuda]
+[af_battery]
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\zuda"
 $npc			= on				; option for Level Editor
@@ -249,8 +727,8 @@ $npc			= on				; option for Level Editor
 cform           = skeleton
 class   		= AF_ZUDA
 
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Zuda Artifact"
+visual				= physics\anomaly\artefact_battery.ogf
+inv_name			= "Battery"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -263,12 +741,72 @@ inv_grid_x			= 0
 inv_grid_y			= 0
 
 cost				= 1000	;200
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_pellicle]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\pellicle"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_ZUDA
+
+visual				= physics\anomaly\artefact_plenka.ogf
+inv_name			= "Pellicle"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 500	;200
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+lights_enabled = false			;свет вокруг ракеты, во время полета
+
+[af_glassbeads]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\glassbeads"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_ZUDA
+
+visual				= physics\anomaly\artefact_spiral.ogf
+inv_name			= "Glassbeads for Mummy"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 500	;200
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
 
 detector_dist		= 8
 detector_sound		= zone_mosquito_bald
 
 lights_enabled = false			;свет вокруг ракеты, во время полета
 
+
+ " Ржавые волосы аномалия "
 [af_thorn]
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\thorn"
@@ -277,8 +815,8 @@ $npc			= on				; option for Level Editor
 cform           = skeleton
 class   		= AF_THORN
 
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Thorn Artifact"
+visual				= physics\anomaly\artefact_rusty_hairs.ogf
+inv_name			= "Thorn"
 inv_name_short		= 
 inv_weight			= 1
 
@@ -290,98 +828,16 @@ inv_grid_height		= 2
 inv_grid_x			= 0
 inv_grid_y			= 0
 
-cost				= 200	;100
+cost				= 600	;100
 
 detector_dist		= 8
 detector_sound		= zone_mosquito_bald
 
 lights_enabled = false			;свет вокруг ракеты, во время полета
 
-[af_faded_ball]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\faded ball"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_FBALL
 
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Faded Ball"
-inv_name_short		= 
-inv_weight			= 1
+; "Жгучий Пух аномалия"
 
-food_value			= 0
-health_value		= 0
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 200	;100
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_electric_ball]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\electric ball"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_EBALL
-
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Electric Ball"
-inv_name_short		= 
-inv_weight			= 1
-
-food_value			= 0
-health_value		= 0
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 1000	;300
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_rusty_hair]
-GroupControlSection	= spawn_group
-$spawn 			= "artifacts\rusty hair"
-$npc			= on				; option for Level Editor
-;$prefetch 		= 3
-cform           = skeleton
-class   		= AF_RHAIR
-
-visual				= physics\anomaly\artefact_electra1.ogf
-inv_name			= "Rusty Hair Artifact"
-inv_name_short		= 
-inv_weight			= 1
-
-food_value			= 0
-health_value		= 0
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 0
-inv_grid_y			= 0
-
-cost				= 200	;100
-
-detector_dist		= 8
-detector_sound		= zone_mosquito_bald
-
-lights_enabled = false			;свет вокруг ракеты, во время полета
-
-[af_galantine]
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\galantine"
 $npc			= on				; option for Level Editor
@@ -408,3 +864,5 @@ detector_dist		= 8
 detector_sound		= zone_mosquito_bald
 
 lights_enabled = false			;свет вокруг ракеты, во время полета
+
+; " Холодец артефакт"
