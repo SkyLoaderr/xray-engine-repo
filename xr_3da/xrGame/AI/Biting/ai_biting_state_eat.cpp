@@ -34,15 +34,15 @@ void CBitingEat::Reset()
 }
 void CBitingEat::Init()
 {
-	LOG_EX("eat init");
-	IState::Init();
+	LOG_EX			("eat init");
+	IState::Init	();
 
 	// Получить инфо о трупе
 	const CEntityAlive *p_corpse = pMonster->CorpseMan.get_corpse();
-	if (!p_corpse) VERIFY(false);
-	pCorpse = const_cast<CEntityAlive *>(p_corpse);
+	VERIFY			(p_corpse);
+	pCorpse			= const_cast<CEntityAlive *>(p_corpse);
 
-	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
+	bEatRat			= (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->get_sd()->m_fDistToCorpse); 
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа

@@ -12,9 +12,9 @@ public:
 public:
 	T x,y;
 
-	IC SelfRef set(float _u, float _v)				{ x=_u; y=_v;					return *this;	}
-	IC SelfRef set(double _u, double _v)			{ x=_u; y=_v;					return *this;	}
-	IC SelfRef set(int _u, int _v)					{ x=_u; y=_v;					return *this;	}
+	IC SelfRef set(float _u, float _v)				{ x=T(_u); y=T(_v);				return *this;	}
+	IC SelfRef set(double _u, double _v)			{ x=T(_u); y=T(_v);				return *this;	}
+	IC SelfRef set(int _u, int _v)					{ x=T(_u); y=T(_v);				return *this;	}
 	IC SelfRef set(const Self &p)					{ x=p.x; y=p.y;					return *this;	}
 	IC SelfRef abs(const Self &p)					{ x=_abs(p.x); y=_abs(p.y);		return *this;	}
 	IC SelfRef min(const Self &p)					{ x=_min(x,p.x); y=_min(y,p.y);	return *this;	}

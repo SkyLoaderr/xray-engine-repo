@@ -152,6 +152,10 @@
 #pragma warning (disable : 4530 )		// C++ exception handler used, but unwind semantics are not enabled
 #pragma warning (disable : 4345 )
 #pragma warning (disable : 4714 )		// __forceinline not inlined
+#ifndef DEBUG
+#pragma warning (disable : 4189 )		//  local variable is initialized but not refenced
+#endif									//	frequently in release code due to large amount of VERIFY
+
 
 #ifdef _M_AMD64
 #pragma warning (disable : 4512 )

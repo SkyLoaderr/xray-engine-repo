@@ -21,7 +21,7 @@ void CRenderTarget::accum_point		(light* L)
 	RCache.set_xform_world			(L->m_xform);
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
-	BOOL	bIntersect				= enable_scissor	(L);
+	enable_scissor					(L);
 
 	// *****************************	Mask by stencil		*************************************
 	// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,

@@ -359,7 +359,6 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 
 	case DPN_MSGID_RECEIVE:
 		{
-			u32				time	= TimerAsync(device_timer);
 			PDPNMSG_RECEIVE	pMsg	= (PDPNMSG_RECEIVE) pMessage;
 			void*			m_data	= pMsg->pReceiveData;
 			u32				m_size	= pMsg->dwReceiveDataSize;

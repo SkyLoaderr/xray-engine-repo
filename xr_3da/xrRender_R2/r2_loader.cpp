@@ -249,7 +249,7 @@ void CRender::LoadSectors(IReader* fs)
 			for (u32 j=2; j<P.vertices.size(); j++)
 				CL.add_face_packed_D(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
-				u32(Portals[i])
+				u32(i)
 				);
 		}
 		if (CL.getTS()<2)
@@ -263,7 +263,7 @@ void CRender::LoadSectors(IReader* fs)
 
 		// build portal model
 		rmPortals = xr_new<CDB::MODEL> ();
-		rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+		rmPortals->build	(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
 	} else {
 		rmPortals = 0;
 	}
