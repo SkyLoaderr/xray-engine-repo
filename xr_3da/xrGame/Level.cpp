@@ -260,7 +260,7 @@ void CLevel::OnFrame	()
 		}
 	}
 	
-	g_pGamePersistent->Environment.SetGameTime(GetGameDayTimeSec());
+	g_pGamePersistent->Environment.SetGameTime(GetGameDayTimeSec(),GetGameTimeFactor());
 
 	if (m_tpScriptProcessor)
 		m_tpScriptProcessor->Update();
