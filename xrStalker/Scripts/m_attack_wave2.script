@@ -50,8 +50,11 @@ function Defender:__init (npc, patrol_way, script_name, monsters, available, sta
 	self.available = available
 	self.attacker = nil					-- монстр, который атакует сталкера. Если не nil, то сталкер свободен :)
 	self.weapon = nil
-	if stand == true then self.stand = move.standing 
-	else self.stand = move.crouch
+	if stand == true then 
+	   self.stand = move.standing 
+	else 
+       self.stand = move.crouch 
+	end
 end
 
 function Defender:initialize ()
