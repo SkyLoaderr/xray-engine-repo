@@ -145,6 +145,13 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 
 void	CCar::net_Destroy()
 {
+	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
+	if(m_bone_steer!=BI_NONE)
+	{
+
+		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(0,0);
+
+	}
 	inherited::net_Destroy();
 	CScriptEntity::net_Destroy();
 	CExplosive::net_Destroy();
@@ -165,15 +172,6 @@ void	CCar::net_Destroy()
 	m_gear_ratious.clear();
 	m_car_sound->Destroy();
 	CPHUpdateObject::Deactivate();
-	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
-
-	if(m_bone_steer!=BI_NONE)
-	{
-		
-		pKinematics->LL_GetBoneInstance(m_bone_steer).set_callback(0,0);
-		
-	}
-	
 	CPHSkeleton::RespawnInit();
 	m_damage_particles.Clear();
 	CPHCollisionDamageReceiver::Clear();
