@@ -178,6 +178,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_alife_simulator			= 0;
 #endif
     fp_data.inc					();
+	m_flags.set					(flOfflineNoMove,FALSE);
 }
 
 #ifdef XRGAME_EXPORTS
@@ -195,6 +196,16 @@ CSE_ALifeObject::~CSE_ALifeObject			()
 
 void CSE_ALifeObject::on_surge				()
 {
+}
+
+bool CSE_ALifeObject::move_offline			() const
+{
+	return						(!!m_flags.test(flOfflineNoMove));
+}
+
+void CSE_ALifeObject::move_offline			(bool value)
+{
+	m_flags.set					(flOfflineNoMove,value ? TRUE : FALSE);
 }
 
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
@@ -291,6 +302,7 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 	}                            
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,s_name,"ALife\\No move in offline"),&m_flags,			flOfflineNoMove);
 	PHelper().CreateRToken32	(items,	PrepareKey(pref,s_name,"ALife\\Story ID"),			&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 

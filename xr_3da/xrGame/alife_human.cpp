@@ -121,7 +121,10 @@ void CSE_ALifeHumanAbstract::vfSetCurrentTask(_TASK_ID &tTaskID)
 
 bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 {
-	bool			bContinue = false;
+	if (!m_flags.test(flOfflineNoMove))
+		return					(false);
+
+	bool						bContinue = false;
 	if (m_tNextGraphID != m_tGraphID) {
 		_TIME_ID				tCurTime = ai().alife().time_manager().game_time();
 		m_fDistanceFromPoint	+= float(tCurTime - m_tTimeID)/1000.f/ai().alife().time_manager().normal_time_factor()*m_fCurSpeed;

@@ -69,6 +69,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObject,CSE_Abstract,CRandom)
 		flInteractive	= u32(1) << 3,
 		flVisibleForAI	= u32(1) << 4,
 		flUsefulForAI	= u32(1) << 5,
+		flOfflineNoMove = u32(1) << 6,
 	};
 
 public:
@@ -97,9 +98,11 @@ public:
 	virtual bool					can_switch_offline	() const;
 	virtual bool					interactive			() const;
 	virtual void					on_surge			();
+			bool					move_offline		() const;
 			void					can_switch_online	(bool value);
 			void					can_switch_offline	(bool value);
 			void					interactive			(bool value);
+			void					move_offline		(bool value);
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies		();
 			CALifeSimulator			&alife				() const;
