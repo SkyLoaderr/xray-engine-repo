@@ -96,6 +96,10 @@ function main()
 				cond	(cond.sound_end, 10000)
 				)
 		wait(2000)
+
+			printf("a!")
+			flush()
+
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
@@ -104,6 +108,10 @@ function main()
 				cond	(cond.sound_end, 10000)
 				)
 		wait(2000)
+
+			printf("b!")
+			flush()
+
 			action(
 				stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
@@ -112,6 +120,10 @@ function main()
 				cond	(cond.time_end, 50000)
 				)
 			wait(30000)			
+
+			printf("c!")
+			flush()
+
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
