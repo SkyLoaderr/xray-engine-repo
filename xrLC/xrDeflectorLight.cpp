@@ -530,7 +530,7 @@ void CDeflector::Save()
 
 	// DEBUG: Lines
 	{
-		// 3x expand
+		// 5x expand
 		b_texture		temp;
 		temp.dwHeight	= lm.dwHeight*5;
 		temp.dwWidth	= lm.dwWidth *5;

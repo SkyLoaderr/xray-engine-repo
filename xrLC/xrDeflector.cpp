@@ -150,10 +150,12 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 	
 	// UV rect (dedicated)
 	UVpoint		d_min,d_max,d_size;
-	d_min.u		= (float(base_u)+.5f)/float(lm_u);
-	d_min.v		= (float(base_v)+.5f)/float(lm_v);
-	d_max.u		= (float(base_u+size_u)-.5f)/float(lm_u);
-	d_max.v		= (float(base_v+size_v)-.5f)/float(lm_v);
+	d_min.u		= (float(base_u)+.4999f)/float(lm_u);
+	d_min.v		= (float(base_v)+.4999f)/float(lm_v);
+	d_max.u		= (float(base_u+size_u)-.5001f)/float(lm_u);
+	d_max.v		= (float(base_v+size_v)-.5001f)/float(lm_v);
+	if (d_min.u>d_max.u)	d_min.u=d_max.u=(d_min.u+d_max.u)/2;
+	if (d_min.v>d_max.v)	d_min.v=d_max.v=(d_min.v+d_max.v)/2;
 	d_size.sub	(d_max,d_min);
 	
 	// Remapping
