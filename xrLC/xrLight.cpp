@@ -76,24 +76,30 @@ public:
 void CBuild::Light()
 {
 	//****************************************** Starting MU
+	FPU::m64r		();
+	Phase			("LIGHT: Starting MU...");
+	mem_Compact		();
+	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
+	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
+
 	CThreadManager	mu;
 	mu.start		(xr_new<CMUThread> (0));
 
 	//****************************************** Implicit
 	FPU::m64r		();
-	Phase			("Implicit lighting...");
+	Phase			("LIGHT: Implicit...");
 	mem_Compact		();
 
 	ImplicitLighting();
 
 	//****************************************** Lmaps
 	FPU::m64r		();
-	Phase			("Lighting...");
+	Phase			("LIGHT: LMaps...");
 	mem_Compact		();
 
 	// Randomize deflectors
 	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
-	for (u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
+	for				(u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
 
 	// Main process (4 threads)
 	Status	("Lighting...");
@@ -104,16 +110,16 @@ void CBuild::Light()
 	threads.wait	(500);
 	clMsg			("%d seconds",(timeGetTime()-dwTimeStart)/1000);
 
-	//****************************************** Lmaps
+	//****************************************** Vertex
 	FPU::m64r		();
-	Phase			("Vertex Lighting...");
+	Phase			("LIGHT: Vertex...");
 	mem_Compact		();
 
 	LightVertex		();
 
 	//****************************************** Wait for MU
 	FPU::m64r		();
-	Phase			("Waiting for completition of MU-Lighting...");
+	Phase			("LIGHT: Waiting for MU-thread...");
 	mem_Compact		();
 	mu.wait			(100);
 }
