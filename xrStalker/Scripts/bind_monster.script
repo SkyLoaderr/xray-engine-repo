@@ -68,8 +68,21 @@ function generic_object_binder:waypoint_callback(obj, action_type, index)
 	end
 end
 
+function generic_object_binder:net_spawn(data)
+	if not object_binder.net_spawn(self, data) then
+		return false
+	end
+
+	db.add_obj(self.object)
+
+	return true
+end
+
 function generic_object_binder:net_destroy()
 	self.object:clear_callback(game_object.movement)
+
+	db.del_obj(self.object)
+
 	object_binder.net_destroy(self)
 end 
 
