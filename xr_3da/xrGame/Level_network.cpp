@@ -176,7 +176,7 @@ void CLevel::ClientReceive()
 		case M_UPDATE:
 			Objects.net_Import	(P);
 			break;
-		case M_TAKE_OWNERSHIP:		// DUAL: Client request for ownership of an item
+		case M_OWNERSHIP_TAKE:			// DUAL: Client request for ownership of an item
 			{
 				u16				ID_child;
 				P->r_u16		(ID);
@@ -186,7 +186,7 @@ void CLevel::ClientReceive()
 				if (O && C)		O->net_OwnershipTake	(C);
 			}
 			break;
-		case M_TAKE_REJECTION:		// DUAL: Client request ownership rejection
+		case M_OWNERSHIP_REJECT:		// DUAL: Client request ownership rejection
 			{
 				u16				ID_child;
 				P->r_u16		(ID);

@@ -7,8 +7,8 @@ enum {
 	M_UPDATE				=0,	// DUAL: Update state
 	M_SPAWN,					// DUAL: Spawning, full state
 	M_DESTROY,					// TO:   Destroying
-	M_TAKE_OWNERSHIP,			// DUAL: Client request for ownership of an item
-	M_TAKE_REJECTION,			// DUAL: Client request ownership rejection
+	M_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
+	M_OWNERSHIP_REJECT,			// DUAL: Client request ownership rejection
 	M_MIGRATE_DEACTIVATE,		// TO:   Changing server, just deactivate
 	M_MIGRATE_ACTIVATE,			// TO:   Changing server, full state
 	M_HIT,						// 
