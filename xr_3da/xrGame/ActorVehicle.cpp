@@ -36,7 +36,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 
 	m_PhysicMovementControl->DestroyCharacter();
 	//PIItem iitem=inventory().ActiveItem();
-	setVisible(true);
+	//setVisible(true);
 	//clear actor movement states 
 	mstate_wishful=0;
 }
