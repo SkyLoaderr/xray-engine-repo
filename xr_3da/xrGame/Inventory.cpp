@@ -603,6 +603,8 @@ bool CInventory::Eat(PIItem pIItem)
 		P.w_u16(u16(pIItem->ID()));
 		pObject->u_EventSend(P);
 
+		Msg		("ge_destroy: [%d] - %s",pIItem->ID(),*pIItem->cName());
+
 		return false;
 	}
 

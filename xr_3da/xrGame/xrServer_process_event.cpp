@@ -177,6 +177,8 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination;
 			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
+			if (0==e_dest)		Msg			("SV:ge_destroy: [%d]",id_dest);
+
 			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
 			R_ASSERT		(c_dest			);
