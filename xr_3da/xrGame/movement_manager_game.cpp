@@ -24,6 +24,15 @@ void CMovementManager::process_game_path()
 {
 	START_PROFILE("AI/Build Path/Process Game Path");
 
+	if (!detail().actual())
+		m_path_state		= ePathStateBuildLevelPath;
+
+	if (!level_path().actual())
+		m_path_state		= ePathStateBuildLevelPath;
+
+	if (!game_path().actual())
+		m_path_state		= ePathStateBuildGamePath;
+
 	EPathState	prev_state	= m_path_state;
 	for (;;) {
 		switch (m_path_state) {

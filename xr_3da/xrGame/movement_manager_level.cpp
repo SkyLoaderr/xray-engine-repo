@@ -19,6 +19,12 @@ void CMovementManager::process_level_path()
 {
 	START_PROFILE("AI/Build Path/Process Level Path");
 
+	if (!detail().actual())
+		m_path_state		= ePathStateBuildLevelPath;
+
+	if (!level_path().actual())
+		m_path_state		= ePathStateBuildLevelPath;
+
 	switch (m_path_state) {
 		case ePathStateSelectLevelVertex : {
 			level_selector().select_location(object().ai_location().level_vertex_id(), true);
