@@ -46,7 +46,6 @@ void CBurerAttackMelee::Run()
 		case ACTION_MELEE:		
 		// *********************
 			
-			LOG_EX("ATTACK: ATTACK_MELEE");
 			pMonster->MotionMan.m_tAction	= ACT_ATTACK;
 
 			// Смотреть на врага 
