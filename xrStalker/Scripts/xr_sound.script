@@ -293,30 +293,7 @@ end
 --	Theme  functions
 -----------------------------------------------------------------------------------------------------------------------------------
 function npc_class(avail_types, npc, target)
-	local snpc = npc:section()
-	local type = "soldier"
-	if snpc == "m_army_soldier" or
-	   snpc == "m_army_sniper" or
-	   snpc == "m_army_commander" or
-	   snpc == "m_army_specnaz"
-	then
-		type = "soldier"
-	elseif snpc == "m_bandit_bandit" or
-	   snpc == "m_bandit_commander"
-	then
-		type = "bandit"
-	elseif snpc == "m_stalker_wolf"
-	then
-		type = "stalker"
-	elseif snpc == "m_fraction_soldier" or
-	   snpc == "m_fraction_sniper" or
-	   snpc == "m_fraction_commander" or
-	   snpc == "m_fraction_specnaz"
-	then
-		type = "fraction"
-	end
 	type = "soldier"
---	printf( "npc type = %s", type )
 	return type
 end
 function weather_class(avail_types, npc, target)
