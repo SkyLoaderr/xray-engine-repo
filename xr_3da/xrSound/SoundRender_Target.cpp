@@ -146,7 +146,13 @@ void	CSoundRender_Target::rewind			()
 	fill_block		();
 	fill_block		();
 	R_CHK			(pBuffer->SetCurrentPosition	(0));
-	R_CHK			(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	HRESULT _hr		= pBuffer->Play(0,0,DSBPLAY_LOOPING);
+	if (DSERR_BUFFERLOST==_hr)	{
+		R_CHK(pBuffer->Restore());
+		R_CHK(pBuffer->Play(0,0,DSBPLAY_LOOPING));
+	}else{
+		R_CHK		(_hr);
+	}
 
 	// .
 	/*
@@ -207,9 +213,9 @@ void	CSoundRender_Target::fill_parameters()
 		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
 */
 		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
-		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,DS3D_DEFERRED));
-		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,DS3D_DEFERRED));
-		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,DS3D_DEFERRED));
+		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,	DS3D_DEFERRED));
+		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,	DS3D_DEFERRED));
+		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,			DS3D_DEFERRED));
 	}
 	
 	// 2. Set 2D params (volume, freq) + position(rewind)
