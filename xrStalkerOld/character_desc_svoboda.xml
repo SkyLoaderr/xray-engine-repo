@@ -2,7 +2,7 @@
 
 <xml>
 	<specific_character id="svoboda_leader">
-		<name>"Лукаш". Лидер группировки "Свобода"</name>
+		<name>"Лукаш"</name>
 		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Лидер группировки "Свобода".</bio>
