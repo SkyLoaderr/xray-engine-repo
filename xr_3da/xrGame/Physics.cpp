@@ -881,14 +881,24 @@ void CPHElement::			create_Box		(Fobb&		V){
 																		V.m_halfsize.z*2.f);
 														
 														m_geoms.push_back(geom);
-														dGeomSetBody(geom,m_body);														
+
+														
 														dGeomSetPosition(geom,
-															m_mass_center.x,
-															m_mass_center.y,
-															m_mass_center.z);
+															local_position[0],
+															local_position[1],
+															local_position[2]);
+
 														dMatrix3 R;
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
+
+
+														trans=dCreateGeomTransform(0);
+														dGeomTransformSetInfo(trans,1);
+														dGeomTransformSetGeom(trans,geom);
+														dGeomSetBody(trans,m_body);
+														m_trans.push_back(trans);
+
 														dGeomCreateUserData(geom);
 														dGeomGetUserData(geom)->material=GMLib.GetMaterialIdx("materials\\box_default");
 
@@ -977,7 +987,10 @@ void CPHElement::RunSimulation()
 if(m_group)
 dSpaceAdd(m_shell->GetSpace(),m_group);
 else
+if(m_boxes_data.size()==0)
 dSpaceAdd(m_shell->GetSpace(),*m_geoms.begin());
+else
+dSpaceAdd(m_shell->GetSpace(),*m_trans.begin());
 
 dBodyEnable(m_body);
 }

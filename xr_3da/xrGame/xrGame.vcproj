@@ -720,7 +720,7 @@
 						RelativePath="Actor.cpp">
 					</File>
 					<File
-						RelativePath=".\Actor.h">
+						RelativePath="Actor.h">
 					</File>
 					<File
 						RelativePath=".\ActorAnimation.cpp">

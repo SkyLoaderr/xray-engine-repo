@@ -306,8 +306,10 @@ IC void set_param(const float e,const float c){erp=e;cfm=c;}
 SPHAxis(){
 	high=M_PI/15.f;
 	low=-M_PI/15.f;;
-	erp=ERP(world_spring,world_damping);
-	cfm=CFM(world_spring,world_damping);
+	//erp=ERP(world_spring/5.f,world_damping*5.f);
+	//cfm=CFM(world_spring/5.f,world_damping*5.f);
+	erp=0.8f;
+	cfm=0.000001f;
 	direction.set(0,0,1);
 	}
 };
