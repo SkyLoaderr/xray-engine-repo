@@ -1,1 +1,13 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+    <info_portion id="level_changer_icons">
+        <location>
+            <level>l01_escape</level>
+            <x>15</x>
+            <y>675</y>
+			<icon name="" x="3" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>На свалку.</text>
+        </location>
+    </info_portion>    
+</game_information_portions>
