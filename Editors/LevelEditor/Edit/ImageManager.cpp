@@ -333,7 +333,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     }
     // Analyze
     float 		difference	= 0;
-    float 		maximal 	= 0;	
+    float 		maximal 	= 0;
     for (DWORD p=0; p<data.size(); p++)
     {
         Fcolor 		c1,c2;
@@ -376,5 +376,127 @@ void CImageManager::CheckCompliance(FileMap& files, FileMap& compl)
 		if (UI.NeedAbort()) break;
     }
 	UI.ProgressEnd();
+}
+
+void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR out_name, int tgt_w, int tgt_h, int age)
+{
+    int scr_w=320,scr_h=320;
+	DWORDVec pixels[4];
+    ECameraStyle old_cs = Device.m_Camera.GetStyle();
+    Device.m_Camera.SetStyle(cs3DArcBall);
+    Device.m_Camera.ViewLeft();
+
+    Fvector sz;
+    bbox.getsize(sz);
+
+    Fmatrix projection=Device.mProjection;
+
+    float D		= 5000.f;
+    float t_a	= (sz.y/2)/D;
+    float asp 	= sz.y/sz.x;
+    float near_p= D-2.f*sz.z;
+	float far_p	= D+2.f*sz.z;
+    Device.mProjection.build_projection_HAT(t_a,asp,near_p,far_p);
+    Device.m_Camera.Set(0,0,0,0,0,-D);
+//    Device.mProjection.build_projection( 0.5f, 0.82, 0.1, 7000 );
+
+//    Device.SetTransform	(D3DTS_PROJECTION,projection);
+    Device.SetTransform	(D3DTS_PROJECTION,Device.mProjection);
+
+    return;
+
+    if (Device.MakeScreenshot(pixels[0],scr_w,scr_h)){
+        Device.m_Camera.ViewRight();
+        if (Device.MakeScreenshot(pixels[1],scr_w,scr_h)){
+            Device.m_Camera.ViewFront();
+            if (Device.MakeScreenshot(pixels[2],scr_w,scr_h)){
+                Device.m_Camera.ViewBack();
+                if (Device.MakeScreenshot(pixels[3],scr_w,scr_h)){
+                    int min_w=scr_w, max_w=-scr_w;
+                    int min_h=scr_h, max_h=-scr_h;
+                    for (int k=0; k<4; k++){
+                        int x,y;
+                        // left
+                        for (x=0; x<scr_w; x++)
+                            for (y=0; y<scr_h; y++){
+                                BYTE a = (BYTE)(pixels[k][x+y*scr_w]>>24);
+                                if (a&&(x<min_w)){
+                                    min_w=x;
+                                    break;
+                                }
+                            }
+                        // right
+                        for (x=scr_w-1; x>=0; x--)
+                            for (y=0; y<scr_h; y++){
+                                BYTE a = (BYTE)(pixels[k][x+y*scr_w]>>24);
+                                if (a&&(x>max_w)){
+                                    max_w=x;
+                                    break;
+                                }
+                            }
+                        // top
+                        for (y=0; y<scr_h; y++)
+                            for (x=0; x<scr_w; x++){
+                                BYTE a = (BYTE)(pixels[k][x+y*scr_w]>>24);
+                                if (a&&(y<min_h)){
+                                    min_h=y;
+                                    break;
+                                }
+                            }
+                        // bottom
+                        for (y=scr_h-1; y>=0; y--)
+                            for (x=0; x<scr_w; x++){
+                                BYTE a = (BYTE)(pixels[k][x+y*scr_w]>>24);
+                                if (a&&(y>max_h)){
+                                    max_h=y;
+                                    break;
+                                }
+                            }
+                        min_w-=4; max_w+=4;
+                        min_h-=4; max_h+=4;
+
+                        clamp(min_w,0,scr_w); clamp(max_w,0,scr_w);
+                        clamp(min_h,0,scr_h); clamp(max_h,0,scr_h);
+
+                        int new_w=max_w-min_w, new_h=max_h-min_h;
+                        DWORDVec new_pixels;
+                        new_pixels.resize(new_w*new_h*4);
+                        for (int i=0; i<2; i++){
+                            int x_offs = i*new_w;
+                            for (int j=0; j<2; j++){
+                                int y_offs = j*new_h;
+                                for (int y=0; y<new_h; y++)
+                                    CopyMemory(new_pixels.begin()+(y+y_offs)*new_w*2+x_offs,pixels[i+j*2].begin()+(y+min_h)*scr_w+min_w,new_w*sizeof(DWORD));
+                            }
+                        }
+
+                        DWORDVec final_pixels;
+                        final_pixels.resize(tgt_h*tgt_w);
+                        // scale down(lanczos3) and up (bilinear, as video board)
+                        try {
+                            imf_Process     (final_pixels.begin(),	tgt_w,tgt_h,new_pixels.begin(),new_w*2,new_h*2,imf_lanczos3);
+                        } catch (...)
+                        {
+                            ELog.DlgMsg(mtError,"* ERROR: imf_Process");
+                            return;
+                        }
+
+                        CImage* I = new CImage();
+                        I->Create(tgt_w,tgt_h,final_pixels.begin());
+                        I->Vflip();
+                        I->SaveTGA(out_name);
+                        _DELETE(I);
+                        Engine.FS.SetFileAge(out_name, age);
+                        ELog.Msg(mtInformation,"LOD texture created.");
+                    }
+                }
+            }
+        }
+    }else{
+        ELog.DlgMsg(mtError,"Can't make screenshot.");
+    }
+
+    Device.m_Camera.ViewFront();
+    Device.m_Camera.SetStyle(old_cs);
 }
 
