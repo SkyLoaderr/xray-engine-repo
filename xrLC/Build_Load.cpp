@@ -208,6 +208,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				// type
 				if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
 				else											RL.type = LT_POINT;
+				RL.level	= 0;
 
 				// split energy/color
 				float			_e		=	(L.diffuse.r+L.diffuse.g+L.diffuse.b)/3.f;

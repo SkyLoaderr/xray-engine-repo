@@ -6,7 +6,7 @@
 #define	GI_THREADS		4
 const	u32				gi_num_photons		= 1024;
 const	float			gi_reflect			= .9f;
-const	float			gi_clip				= 0.001f;
+const	float			gi_clip				= 0.01f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
@@ -39,6 +39,7 @@ public:
 				src				= task->at(task_it);
 				dst				= src;
 				dst.type		= LT_SECONDARY;
+				dst.level		++;
 				task_it			++;
 				thProgress		= float(task_it)/float(task->size());
 			}
@@ -85,8 +86,15 @@ public:
 void	CBuild::xrPhase_Radiosity	()
 {
 	CThreadManager			gi;
+	Status					("Working...");
 	task					= &(pBuild->L_static.rgb);
 	task_it					= 0;
-	for (int t=0; t<GI_THREADS; t++)	gi.start(xr_new<CGI>(t));
+	u32	setup_old			= task->size	();
+	for (int t=0; t<GI_THREADS; t++)	{
+		Sleep	(100);
+		gi.start(xr_new<CGI>(t));
+	}
 	gi.wait					();
+	u32 setup_new			= task->size	();
+	clMsg					("old setup [%d], new setup[%d]",setup_old,setup_new);
 }

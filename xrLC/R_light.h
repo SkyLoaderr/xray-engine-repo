@@ -6,7 +6,8 @@
 
 struct R_Light
 {
-	u32				type;				// Type of light source		
+	u16				type;				// Type of light source		
+	u16				level;				// GI level
 	Fvector         diffuse;			// Diffuse color of light	
 	Fvector         position;			// Position in world space	
 	Fvector         direction;			// Direction in world space	

@@ -164,7 +164,7 @@ void CBuild::Run	(LPCSTR P)
 	if (b_radiosity)			
 	{
 		FPU::m64r					();
-		Phase						("Radiosity-solver-setup...");
+		Phase						("Radiosity-Solver...");
 		mem_Compact					();
 		Light_prepare				();
 		xrPhase_Radiosity			();
