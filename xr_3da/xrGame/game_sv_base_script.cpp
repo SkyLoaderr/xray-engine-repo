@@ -36,7 +36,11 @@ public:
 	bool	operator ==		(const xrTime& other)	const			{ return m_time == other.m_time;		}
 	xrTime	operator +		(const xrTime& other)					{ return xrTime(m_time+other.m_time);	}
 	xrTime	operator -		(const xrTime& other)					{ return xrTime(m_time-other.m_time);	}
-	float	diffSec			(const xrTime& other)					{ if(*this>other) return (m_time-other.m_time)/sec2ms; return -(other.m_time-m_time)/sec2ms;	}
+	float	diffSec			(const xrTime& other)					{ 
+		if(*this>other) 
+			return (m_time-other.m_time)/(float)sec2ms; 
+		return ((other.m_time-m_time)/(float)sec2ms)*(-1.0f);	
+	}
 	void	add				(const xrTime& other)					{  m_time += other.m_time;				}
 	void	sub				(const xrTime& other)					{  if(*this>other)m_time -= other.m_time; else m_time=0;	}
 
