@@ -14,6 +14,7 @@
 #include "xrServer_Objects_Abstract.h"
 #include "ESceneSpawnTools.h"
 #include "GeometryPartExtractor.h"
+#include "ResourceManager.h"
 
 //----------------------------------------------------
 IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtractor* extractor, u32 game_mtl_mask)
@@ -28,6 +29,14 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, CGeomPartExtracto
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains bad game material.",surf->_Name());
         	bResult 		= FALSE; 
             break; 
+        }
+        {
+            IBlender* 		B = Device.Resources->_FindBlender(surf->_ShaderName()); 
+            if (TRUE==B->canBeLMAPped()){ 
+                ELog.Msg	(mtError,"Surface: '%s' non dynamic engine shader found '%s'",surf->_Name(),surf->_ShaderName());
+                bResult 		= FALSE; 
+                break; 
+            }
         }
         SGameMtl* M 		= GMLib.GetMaterialByID(gm_id);
         if (0==M){
