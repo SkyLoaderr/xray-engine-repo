@@ -124,7 +124,7 @@ ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_toler
 	g_pObject->Initialize	();
 	CalculateAllCollapses	(g_pObject,error_tolerance);
 	CalculateSW				(g_pObject,g_pResult,optimize_vertex_order);
-	return g_pResult;
+	return g_pResult		;
 }
 
 ETOOLS_API void			VIPM_Destroy		()
