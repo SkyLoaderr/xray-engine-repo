@@ -63,8 +63,9 @@ BOOL CPda::net_Spawn(CSE_Abstract* DC)
 }
 void CPda::net_Destroy() 
 {
-	inherited::net_Destroy();
-	TurnOff				();
+	inherited::net_Destroy	();
+	TurnOff					();
+	feel_touch.clear		();
 }
 
 void CPda::Load(LPCSTR section) 
