@@ -233,7 +233,9 @@ function action_follow:calculate_position ()
     if self.object:accessible (need_id) == false then
        need_id = leader:level_vertex_id ()
        if self.object:accessible (need_id) == false then
-          utils.abort ("ERROR: can't find vertex id for object %s", self.object:name ())
+          printf ("!!!ERROR!!! Follower %s can't found accessible vertex id !!!", self.object:name ())
+          need_id = self.object:level_vertex_id ()
+          --utils.abort ("ERROR: can't find vertex id for object %s", self.object:name ())
        end 
     end
     
