@@ -22,7 +22,13 @@ public:
 	};
 };
 
-class CAI_ALife : public CALifeHeader, public CALifeSpawnRegistry, public CALifeObjectRegistry, public CALifeEventRegistry, public CALifeTaskRegistry, public CSheduled {
+class CAI_ALife : 
+	public CALifeHeader, 
+	public CALifeSpawnRegistry, 
+	public CALifeObjectRegistry, 
+	public CALifeEventRegistry, 
+	public CALifeTaskRegistry, 
+	public CSheduled {
 public:
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
