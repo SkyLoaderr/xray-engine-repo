@@ -2,6 +2,8 @@
 #include "ai_monster_motion.h"
 #include "biting/ai_biting.h"
 #include "../PHMovementControl.h"
+#include "ai_monster_utils.h"
+#include "ai_monster_jump.h"
 
 //////////////////////////////////////////////////////////////////////////
 // m_tAction processing
@@ -15,12 +17,8 @@ void CMotionManager::Update()
 	// Установка Yaw
 	if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
-	b_forced_velocity	= false;
-
 	SelectAnimation		();
 	SelectVelocities	();
-
-	spec_params		= 0;
 }
 
 
@@ -35,8 +33,6 @@ void CMotionManager::SelectAnimation()
 
 	cur_anim_info().motion			= get_sd()->m_tMotions[action].anim;
 	
-	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-
 	pMonster->CheckSpecParams		(spec_params);	
 	if (Seq_Active()) return;
 
@@ -46,8 +42,6 @@ void CMotionManager::SelectAnimation()
 	CheckReplacedAnim				();
 
 	pMonster->ProcessTurn			();
-	
-	anim_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 }
 
 
@@ -127,7 +121,7 @@ void CMotionManager::SelectVelocities()
 	// установка угловой скорости
 	if (!b_forced_velocity) {
 		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-		VERIFY(get_sd()->m_tAnims.end() != item_it);
+		VERIFY(get_sd()->m_tAnims.end() != item_it);aaaaa
 
 		pMonster->m_velocity_angular = item_it->second.velocity->velocity.angular_real;
 	}
@@ -140,3 +134,31 @@ void CMotionManager::SelectVelocities()
 	}
 }
 
+#define ANIM_CHANGE_SPEED_VELOCITY 10.f
+
+void CMotionManager::FrameUpdate()
+{
+	// update animation speed 
+	if (m_cur_anim.speed.target > 0) {
+		if (m_cur_anim.speed.current < 0) m_cur_anim.speed.current = 0.f;
+		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
+	} else m_cur_anim.speed.current = -1.f;
+
+	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
+		Update				();	
+		// ValidateAnimation();
+	}
+}
+
+void CMotionManager::ScheduledInit()
+{
+	spec_params	= 0;
+}
+
+void CMotionManager::UpdateScheduled()
+{
+	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
+		b_forced_velocity	= false;
+		Update				();	
+	}
+}

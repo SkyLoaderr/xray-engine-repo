@@ -654,19 +654,3 @@ void CMotionManager::DeactivateJump()
 {
 	pJumping = 0;
 }
-
-#define ANIM_CHANGE_SPEED_VELOCITY 10.f
-
-void CMotionManager::FrameUpdate()
-{
-	// update animation speed 
-	if (m_cur_anim.speed.target > 0) {
-		if (m_cur_anim.speed.current < 0) m_cur_anim.speed.current = 0.f;
-		velocity_lerp(m_cur_anim.speed.current, m_cur_anim.speed.target, ANIM_CHANGE_SPEED_VELOCITY, Device.fTimeDelta);
-	} else m_cur_anim.speed.current = -1.f;
-
-	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
-		Update				();	
-		// ValidateAnimation();
-	}
-}

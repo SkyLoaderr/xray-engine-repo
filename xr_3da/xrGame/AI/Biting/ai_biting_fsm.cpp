@@ -24,7 +24,8 @@ void CAI_Biting::Think()
 	m_current_update						= Level().timeServer();
 
 	InitThink								();
-	
+	MotionMan.ScheduledInit					();
+
 	MotionStats->update						();
 	
 	START_PROFILE("AI/Base Monster/Think/Update Memory");
@@ -58,7 +59,7 @@ void CAI_Biting::Think()
 	CMonsterMovement::Frame_Update			();
 	STOP_PROFILE;
 	
-	MotionMan.Update						();
+	MotionMan.UpdateScheduled				();
 
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();

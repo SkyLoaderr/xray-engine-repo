@@ -109,6 +109,8 @@ public:
 	// -------------------------------------- 	
 
 	void		FrameUpdate				();
+	void		UpdateScheduled			();
+	void		ScheduledInit			();
 
 	// подготовить текущую анимацию на запрос из SelectAnimation
 	bool		PrepareAnimation		();
