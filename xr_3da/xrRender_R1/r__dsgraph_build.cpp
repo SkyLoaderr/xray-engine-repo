@@ -155,6 +155,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 
 	if	(val_feedback && counter_S==val_feedback_breakp)	val_feedback->rfeedback_static(pVisual);
 
+	counter_S					++;
 	SPass&						pass	= *sh->Passes.front	();
 	mapNormal_T&				map		= mapNormal			[sh->Flags.iPriority/2];
 	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
