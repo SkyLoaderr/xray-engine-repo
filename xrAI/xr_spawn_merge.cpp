@@ -142,6 +142,7 @@ public:
 		u32 S3					= (m_tpAI_Map->m_header.count)*sizeof(SNode *);
 		m_tppHeap				= (SNode **)xr_malloc(S1);
 		ZeroMemory				(m_tpHeap,S1);
+		m_dwMaxNodeCount		= m_tpAI_Map->m_header.count;
 	};
 	virtual 					~CSpawn()
 	{
@@ -217,7 +218,14 @@ public:
 					dwBest = I - BB;
 				}
 			}
-			R_ASSERT(dwBest != -1);
+			//R_ASSERT(dwBest != -1);
+			if (dwBest == u32(-1)) {
+				Msg("Level ID    : %d",m_dwLevelID);
+				Msg("Spawn index : %d",i);
+				Msg("Spawn node  : %d",m_tpSpawnNodes[i]);
+				Msg("Spawn point : [%7.2f][%7.2f][%7.2f]",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
+				R_ASSERT(false);
+			}
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 			thProgress						= 1.0f;
@@ -279,7 +287,6 @@ void xrMergeSpawns()
 
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-//		tpLevels[i]->Execute();
 		tThreadManager.start	(tpLevels[i]);
 	tThreadManager.wait();
 	

@@ -69,8 +69,8 @@ public:
 							*tpTemp1,
 							*tpTemp2,
 							*tpBestNode,
-							**tppHeapStart = m_tppHeap + 1,
-							**tppHeapEnd = m_tppHeap + 2;
+							**tppHeapStart = m_tppHeap + 0,
+							**tppHeapEnd = m_tppHeap + 1;
 		
 		Memory.mem_fill(tpTemp,0,sizeof(SNode));
 		
