@@ -87,3 +87,24 @@ function send_task(actor, type)
 	end
 	
 end
+
+function relocate_item(actor, type)
+	if db.actor == nil then return false end
+	--' Играем дефолтный звук
+	if type == "in" then
+		db.actor:give_game_news("general_in_item", "ui\\ui_icons_task", 300,100,50,500, 0)
+	elseif type == "out" then
+		db.actor:give_game_news("general_out_item", "ui\\ui_icons_task", 300,100,50,500, 0)
+	end
+	
+end
+function relocate_money(actor, type)
+	if db.actor == nil then return false end
+	--' Играем дефолтный звук
+	if type == "in" then
+		db.actor:give_game_news("general_in_money", "ui\\ui_icons_task", 300,100,50,500, 0)
+	elseif type == "out" then
+		db.actor:give_game_news("general_out_money", "ui\\ui_icons_task", 300,100,50,500, 0)
+	end
+	
+end
