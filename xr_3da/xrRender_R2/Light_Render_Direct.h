@@ -2,7 +2,7 @@
 
 const u32							DSM_size		= 1024;
 const float							DSM_distance_1	= 5.f;
-const float							DSM_distance_2	= 15.f;
+const float							DSM_distance_2	= 50.f;
 const float							DSM_d_range		= 100.f;
 
 class CLight_Render_Direct
