@@ -25,12 +25,12 @@ public:
 		rRange2		= R*R;
 	}
 
-	IC bool			_box		(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
+	IC BOOL			_box		(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
 	{
 		Fbox		BB;
 		BB.min.sub	(bCenter,bExtents);
 		BB.max.add	(bCenter,bExtents);
-        return 		!!BB.Pick2(rC,rD,coord);
+        return 		BB.Pick2(rC,rD,coord);
 		
 		/*
 		BOOL		Inside = TRUE;
