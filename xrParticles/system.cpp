@@ -108,15 +108,11 @@ int _ParticleState::GenerateLists(int list_count)
 	int num_empty = 0;
 	int first_empty = -1;
 	
-	for(int i=0; i<(int)alist_vec.size(); i++)
-	{
-		if(!alist_vec[i]->actions.empty())
-		{
+	for(int i=0; i<(int)alist_vec.size(); i++){
+		if(alist_vec[i]){
 			num_empty = 0;
 			first_empty = -1;
-		}
-		else
-		{
+		}else{
 			if(first_empty < 0)
 				first_empty = i;
 			num_empty++;
