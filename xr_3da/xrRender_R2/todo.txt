@@ -46,7 +46,7 @@ R1:
 	* per-pixel displacement + secondary channel					-	~1week / ps2.0 / ps1.3 (1 day + 1 day) 
 	* wallmarks on dynamic objects		(?)							-	~1week
 	* SlidingWindow VIPM / screen-error	(???)						-	3 day (max)
-	* ShadowCast cache (:BUG:)
+	* ShadowCast cache					(:BUG:)
 
 R2:
 	* work out point-light-hw-shadowmaps()							-	1 day
