@@ -10,10 +10,10 @@ public:
 	IC	void	set(DWORD dw)
 	{
 		const float f = 1.0f / 255.0f;
-		a = f * (float) BYTE(dw >> 24);
-		r = f * (float) BYTE(dw >> 16);
-		g = f * (float) BYTE(dw >>  8);
-		b = f * (float) BYTE(dw >>  0);
+		a = f * float((dw >> 24)& 0xff);
+		r = f * float((dw >> 16)& 0xff);
+		g = f * float((dw >>  8)& 0xff);
+		b = f * float((dw >>  0)& 0xff);
 	};
 	IC	void	set(float _r, float _g, float _b, float _a)
 	{	r = _r; g = _g; b = _b; a = _a;		};
