@@ -75,10 +75,10 @@ void CRender::level_Unload()
 	pLastSector				= 0;
 	vLastCameraPos.set		(0,0,0);
 	// 2.
-	for (I=0; I<Sectors.size(); I++)
-		xr_delete(Sectors[I]);
+	for (I=0; I<Sectors.size(); I++)	xr_delete(Sectors[I]);
 	Sectors.clear			();
 	// 3.
+	for (I=0; I<Portals.size(); I++)	xr_delete(Portals[I]);
 	Portals.clear			();
 
 	//*** Lights
