@@ -23,7 +23,7 @@
 CHUDCursor::CHUDCursor()
 {    
 	hShader			= 0;
-	Stream			= 0;
+	hVS				= 0;
 	OnDeviceCreate	();
 	
 	Device.seqDevCreate.Add		(this);
@@ -39,15 +39,16 @@ CHUDCursor::~CHUDCursor()
 	OnDeviceDestroy	();
 }
 
-void CHUDCursor::OnDeviceDestroy()
-{
-	Device.Shader.Delete		(hShader);
-}
 void CHUDCursor::OnDeviceCreate()
 {
 	REQ_CREATE	();
-	Stream		= Device.Streams.Create	(FVF::F_TL,4);
-	hShader		= Device.Shader.Create	("hud\\cursor","ui\\cursor",FALSE);
+	hVS			= Device.Shader._CreateVS	(FVF::F_TL);
+	hShader		= Device.Shader.Create		("hud\\cursor","ui\\cursor",FALSE);
+}
+void CHUDCursor::OnDeviceDestroy()
+{
+	Device.Shader.Delete		(hShader);
+	Device.Shader._DeleteVS		(hVS);
 }
 
 void CHUDCursor::Render()

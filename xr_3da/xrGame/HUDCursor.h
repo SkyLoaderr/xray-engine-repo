@@ -5,7 +5,7 @@
 class CHUDCursor : public pureDeviceDestroy, public pureDeviceCreate
 {
 	Shader*					hShader;
-	CVertexStream*			Stream;	
+	CVS*					hVS;	
 public:
 							CHUDCursor	();
 							~CHUDCursor	();

@@ -7,7 +7,8 @@ static Fvector2			as_TC[5];
 const static DWORD		as_id[4*3] = {0,1,4,  1,2,4,  2,3,4,  3,0,4};
 
 //--------------------------------------------------------------------
-CHitMarker::CHitMarker(){
+CHitMarker::CHitMarker()
+{
 	ZeroMemory		(fHitMarks,sizeof(float)*4);
 	as_PC[0].set	(-0.5f,-0.67f);
 	as_PC[1].set	(0.5f,-0.67f);
@@ -20,14 +21,15 @@ CHitMarker::CHitMarker(){
 	as_TC[3].set	(1.f,0.f);
 	as_TC[4].set	(.5f,1.f);
 	hShader			= 0;
-	VS				= 0;
+	hVS				= 0;
 	OnDeviceCreate	();
 
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 } 
 //--------------------------------------------------------------------
-CHitMarker::~CHitMarker(){
+CHitMarker::~CHitMarker()
+{
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
@@ -38,13 +40,14 @@ CHitMarker::~CHitMarker(){
 
 void CHitMarker::OnDeviceDestroy()
 {
-	Device.Shader.Delete(hShader);
+	Device.Shader.Delete		(hShader);
+	Device.Shader._DeleteVS		(hVS);
 }
 void CHitMarker::OnDeviceCreate()
 {
 	REQ_CREATE	();
-	hShader		= Device.Shader.Create("hud\\hitmarker","ui\\hud_hitmarker");
-	VS			= Device.Streams.Create(FVF::F_TL,4*3);
+	hShader		= Device.Shader.Create		("hud\\hitmarker","ui\\hud_hitmarker");
+	hVS			= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
 const static float fShowTime = 0.2f;
@@ -53,7 +56,7 @@ void CHitMarker::Render()
 	if (fHitMarks[0]>0 || fHitMarks[1]>0 || fHitMarks[2]>0 || fHitMarks[3]>0)	
 	{
 		DWORD			dwOffset;
-		FVF::TL* D		= (FVF::TL*)VS->Lock(12,dwOffset);
+		FVF::TL* D		= (FVF::TL*)Device.Streams.Vertex.Lock(12,hVS->dwStride,dwOffset);
 		FVF::TL* Start	= D;
 		for (int i=0; i<4; i++){
 			if (fHitMarks[i]>0){
@@ -67,10 +70,16 @@ void CHitMarker::Render()
 				fHitMarks[i] -= Device.fTimeDelta;
 			}
 		}
-		DWORD Count = D-Start;
-		VS->Unlock				(Count);
-		Device.Shader.set_Shader(hShader);
-		Device.Primitive.Draw	(VS,Count/3,dwOffset);
+		DWORD Count				= D-Start;
+		VS->Unlock				(Count,hVS->dwStride);
+		if (Count)	
+		{
+			Device.Shader.set_Shader	(hShader);
+			Device.Primitive.setVertices(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+			Device.Primitive.setIndices	(0,0);
+			Device.Primitive.Render		(D3DPT_TRIANGLELIST,dwOffset,Count/3);
+			UPDATEC						(Count,Count/3,1);
+		}
 	}
 }
 //--------------------------------------------------------------------
