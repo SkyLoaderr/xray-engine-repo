@@ -300,8 +300,7 @@ end
 
 
 class "AttackError" (stateAttack)
-function AttackError:__init( script_name, mem, way_o ) super( script_name, mem, way_o )
-    self.way        = patrol(way_o, patrol.start, patrol.stop)
+function AttackError:__init( script_name, mem, way_o ) super( script_name, mem)
     self.time       = 0
     self.attack_actor = false
     self.angry        = false
