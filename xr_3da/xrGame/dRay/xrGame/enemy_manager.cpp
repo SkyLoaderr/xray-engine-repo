@@ -24,10 +24,8 @@ bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 	if (m_self_entity_alive && (m_self_entity_alive->tfGetRelationType(entity_alive) != ALife::eRelationTypeEnemy))
 		return				(false);
 
-	if (m_self_entity_alive->human_being() && !entity_alive->human_being() && !expedient(entity_alive) && (evaluate(entity_alive) >= m_ignore_monster_threshold)) {
-		Msg					("Object %s is ignored\n",*entity_alive->cName());
+	if (m_self_entity_alive->human_being() && !entity_alive->human_being() && !expedient(entity_alive) && (evaluate(entity_alive) >= m_ignore_monster_threshold))
 		return				(false);
-	}
 
 	return					(true);
 }
