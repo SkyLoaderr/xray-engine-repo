@@ -21,7 +21,7 @@ local snd = {
 	},
 
 	trader_tut_choice = {
-		[[characters_voice\human_01\scenario\trader\trader_script1b_5]]
+		[[characters_voice\human_01\scenario\trader\trader_dialog_choice]]
 	},
 
 	trader_map_quest_1 = {
