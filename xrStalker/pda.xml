@@ -29,10 +29,10 @@
 		<button x="0" y="10" width="55" height="20">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Events</text>
 		</button>
-		<button x="70" y="10" width="60" height="20">
+		<button x="70" y="10" width="70" height="20">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Contacts</text>
 		</button>
-		<button x="148" y="10" width="30" height="20">
+		<button x="148" y="10" width="40" height="20">
 			<text x="0" y="0" font="letterica18" r="255" g="255" b="255">Map</text>
 		</button>
 		<button x="195" y="10" width="95" height="20">
