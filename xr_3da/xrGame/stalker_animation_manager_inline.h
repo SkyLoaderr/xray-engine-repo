@@ -60,10 +60,6 @@ IC	void CStalkerAnimationManager::clear_script_animations	()
 IC	void CStalkerAnimationManager::setup_storage			(CPropertyStorage *storage)
 {
 	VERIFY			(!m_storage || (m_storage && !storage));
-	if (!storage)
-		Msg			("%6d : STORAGE IS CLEARED",Device.dwTimeGlobal);
-	else
-		Msg			("%6d : STORAGE IS SETUP",Device.dwTimeGlobal);
 	m_storage		= storage;
 }
 
