@@ -15,6 +15,7 @@ public:
 	Fmatrix*													val_pTransform;
 	BOOL														val_bHUD;
 	BOOL														val_bInvisible;
+	BOOL														val_bRecordMP;		// record nearest for multi-pass
 	u32															phase;
 	u32															marker;
 	bool														pmask		[2];
@@ -30,7 +31,7 @@ public:
 	R_dsgraph::mapEmissive_T									mapEmissive;
 #endif
 
-	// Runtime structures
+	// Runtime structures 
 	xr_vector<R_dsgraph::mapNormalVS::TNode*>					nrmVS;
 	xr_vector<R_dsgraph::mapNormalPS::TNode*>					nrmPS;
 	xr_vector<R_dsgraph::mapNormalCS::TNode*>					nrmCS;
@@ -56,15 +57,17 @@ public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}
 	virtual		void					set_HUD					(BOOL 		V	)				{ val_bHUD		= V;				}
 	virtual		void					set_Invisible			(BOOL 		V	)				{ val_bInvisible= V;				}
+				void					set_RecordMP			(BOOL		V	)				{ val_bRecordMP	= V;				}
 public:
 	R_dsgraph_structure	()
 	{
-		val_pObject		= NULL;
-		val_pTransform	= NULL;
-		val_bHUD		= FALSE;
-		val_bInvisible	= FALSE;
-		marker			= 0;
-		r_pmask			(true,true);
+		val_pObject			= NULL;
+		val_pTransform		= NULL;
+		val_bHUD			= FALSE;
+		val_bInvisible		= FALSE;
+		val_bRecordMP		= FALSE;
+		marker				= 0;
+		r_pmask				(true,true);
 	};
 
 	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}
