@@ -159,7 +159,7 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 
 	if (heli->state() == CHelicopter::eMovingByAttackTraj) {
 		if(lt>m_endAttackTime)
-		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+		heli->setState(CHelicopter::eInitiatePatrolZone);
 	}
 	
 	if( (heli->state()==CHelicopter::eInitiateWaitBetweenPatrol) ) {
@@ -281,9 +281,9 @@ void CHelicopterMovManager::createHuntPathTrajectory(float from_time,
 	Fvector destPos = enemyPos;
 	destPos.y += m_attackAltitude;
 	keys.push_back(fromPos);//tmp
-	keys.push_back(destPos);//tmp
-	return;
-/*
+//	keys.push_back(destPos);//tmp
+//	return;
+
 //rounding
 	Fvector imPoint,T,R;
 	CHelicopterMotion::_Evaluate(from_time-1.0f, T, R);
@@ -294,26 +294,20 @@ void CHelicopterMovManager::createHuntPathTrajectory(float from_time,
 	dir_next.sub(fromPos,destPos).normalize_safe();
 	float dp = dir_prev.dotproduct(dir_next);
 	float angle = acosf(dp);
-
-	if(angle<PI_DIV_3){//make circle
+	if(angle<PI_DIV_3){//make round
+		Fvector cp;
+		Fvector norm;
+		cp.crossproduct(dir_prev,dir_next);
 		dir_prev.mul(-1.0f);
-		imPoint.mad(fromPos,dir_prev,3.0f);
-		insertRounding(fromPos, imPoint, ROUND_RADIUS, keys);
-		keys.erase( keys.begin() );
-	};
-	keys.insert(keys.begin(),fromPos);
+		norm.set(-dir_prev.z,0,dir_prev.x);
+		if(cp.y>0)
+			norm.mul(-1.0f);
 
-	if(dist<EPS_L)
-		keys.push_back(destPos);
-	else{
-		float d = keys.back().distance_to(destPos);
-		if(d>dist)
-			d -=dist;
-		Fvector p;
-		p.mad(keys.back(),dir_next,d);
-		keys.push_back(p);
-	}
-*/
+		imPoint.mad(fromPos,norm,20.0f);
+		keys.push_back(imPoint);
+	};
+	keys.push_back(destPos);
+
 }
 
 
