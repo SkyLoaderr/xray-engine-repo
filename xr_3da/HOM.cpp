@@ -98,6 +98,7 @@ void CHOM::Render		(CFrustum& base)
 {
 	if (0==m_pModel)	return;
 
+	Device.Statistic.RenderCALC_HOM.Begin	();
 	// Clear buffers
 	Raster.clear		();
 
@@ -131,4 +132,6 @@ void CHOM::Render		(CFrustum& base)
 
 	// Propagade
 	Raster.propagade	();
+
+	Device.Statistic.RenderCALC_HOM.End		();
 }
