@@ -666,11 +666,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 {
 	if(inherited::Action(cmd, flags)) return true;
 
-	//если оружие чем-то занято, то ничего не делать
-	if(IsPending()) return false;
-
-
-
+	
 	switch(cmd) 
 	{
 		case kWPN_FIRE: 
@@ -715,7 +711,7 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 			{
                 if(flags&CMD_START && !IsPending())
 					OnZoomIn();
-                else  if(IsZoomed())
+                else if(IsZoomed())
 					OnZoomOut();
 				return true;
 			} 

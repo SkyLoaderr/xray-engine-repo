@@ -131,7 +131,7 @@ void CWeaponShotgun::OnShotBoth()
 void CWeaponShotgun::switch2_Fire	()
 {
 	inherited::switch2_Fire	();
-	inherited::FireEnd();
+	bWorking = FALSE;
 /*	if (fTime<=0)
 	{
 		UpdateFP					();

@@ -185,7 +185,8 @@ void CCustomZone::net_Destroy()
 	inherited::net_Destroy();
 	
 	StopIdleParticles();
-	m_pLight->set_active(false);
+	if(m_pLight)
+		m_pLight->set_active(false);
 }
 
 void CCustomZone::UpdateCL() 
@@ -630,7 +631,7 @@ void CCustomZone::StartBlowoutLight		()
 }
 void CCustomZone::UpdateBlowoutLight	()
 {
-	if(!m_pLight->get_active()) return;
+	if(!m_pLight || !m_pLight->get_active()) return;
 
 	if(m_dwLightTimeLeft>0)
 	{
