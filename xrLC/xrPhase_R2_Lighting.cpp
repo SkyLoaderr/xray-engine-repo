@@ -52,7 +52,7 @@ public:
 			Vertex* V		= g_vertices[I];
 			R_ASSERT		(V);
 
-			base_color_c	C;
+			base_color_c	C,tmp;
 			LightPoint		(&DB, RCAST_Model, C, V->P, V->N, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
 			V->C._set		(C);
 			thProgress		= float(I - vertStart) / float(vertEnd-vertStart);
@@ -76,10 +76,12 @@ void CBuild::Light_R2			()
 	mem_Compact				();
 
 	// hemi
+	/*
 	FPU::m64r				();
 	Phase					("LIGHT: Hemisphere...");
 	Status					("Calculating... (%d lights)",L_static.hemi.size());
 	CTimer	start_time;		start_time.Start();				
 	Threads.wait			();
 	clMsg					("%f seconds",start_time.GetElapsed_sec());
+	*/
 }

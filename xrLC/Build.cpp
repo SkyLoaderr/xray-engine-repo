@@ -203,8 +203,7 @@ void CBuild::Run	(LPCSTR P)
 
 	//****************************************** All lighting + lmaps building and saving
 	if (!b_R2)					Light			();
-	//else						Light_R2		();
-
+	else						Light_R2		();
 
 	//****************************************** Merge geometry
 	FPU::m64r					();
