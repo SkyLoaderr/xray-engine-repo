@@ -65,4 +65,5 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 		}
 		break;
 	}
+	return bResult;
 }
