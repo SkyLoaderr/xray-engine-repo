@@ -44,15 +44,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 	// 
 	shaders.Load				("gamedata\\shaders_xrlc.xr");
-	/*
-	{
-		Shader_xrLCVec&	S = shaders.Library();
-		for (Shader_xrLCIt I = S.begin(); I!=S.end(); I++)
-		{
-			Msg("|%s|",I->Name);
-		}
-	}
-	*/
 	
 	//*******
 	Status					("Vertices...");
@@ -107,6 +98,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				_F->AddChannel		( uv1, uv2, uv3 );
 			} catch (...)
 			{
+				err_save	();
 				Fatal		("* ERROR: Can't process face #%d",i);
 			}
 		}
@@ -116,6 +108,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 		if (dwInvalidFaces)	
 		{
+			err_save		();
 			Fatal			("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 		}
 	}
@@ -415,12 +408,33 @@ void CBuild::Run	(string& P)
 	mem_Compact		();
 	SaveSectors		(fs);
 
-/*
-	string256	log_name,log_user;
-	DWORD		buffer_size		= 128;
-	GetUserName	(log_user,&buffer_size);
-	strconcat	(log_name,"build_",strlwr(log_user),".log");
-	FILE *F = fopen(log_name, "wt");
-	R_ASSERT(F);
-*/
+	err_save		();
+}
+
+void CBuild::err_save	()
+{
+	string256		log_name,log_user;
+	DWORD			buffer_size		= 128;
+	GetUserName		(log_user,&buffer_size);
+	strconcat		(log_name,"build_",strlwr(log_user),".err");
+
+	CFS_File		err(log_name);
+
+	// t-junction
+	err.open_chunk	(0);
+	err.Wdword		(err_tjunction.size()/(1*sizeof(Fvector)));
+	err.write		(err_tjunction.pointer(), err_tjunction.size());
+	err.close_chunk	();
+
+	// m-edje
+	err.open_chunk	(1);
+	err.Wdword		(err_multiedge.size()/(2*sizeof(Fvector)));
+	err.write		(err_multiedge.pointer(), err_multiedge.size());
+	err.close_chunk	();
+
+	// invalid
+	err.open_chunk	(2);
+	err.Wdword		(err_invalid.size()/(3*sizeof(Fvector)));
+	err.write		(err_invalid.pointer(), err_invalid.size());
+	err.close_chunk	();
 }

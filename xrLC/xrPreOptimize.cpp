@@ -129,6 +129,7 @@ void CBuild::PreOptimize()
 	}
 	if (dwInvalidFaces)	
 	{
+		err_save		();
 		Fatal			("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 	}
 
