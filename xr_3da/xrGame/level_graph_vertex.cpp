@@ -202,14 +202,14 @@ float CLevelGraph::farthest_vertex_in_direction(u32 start_vertex_id, const Fvect
 		for ( ; I != E; ++I) {
 			iNextNode		= value(dwCurNode,I);
 			
-			if (check_accessability && !is_accessible(iNextNode))
-				continue;
-
 			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
 
 		if (saved_index > -1) {
+			if (check_accessability && !is_accessible(saved_index))
+				return		(fCurDistance);
+
 			fCurDistance	= start_point.distance_to_xz(temp_point);
 			iPrevIndex		= dwCurNode;
 			dwCurNode		= saved_index;
@@ -285,7 +285,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
+			if ((next_vertex_id == prev_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
@@ -301,6 +301,10 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 				if (dist > cur_sqr)
 					continue;
+				
+				if (!is_accessible(next_vertex_id))
+					return		(u32(-1));
+
 				cur_sqr			= dist;
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
@@ -337,7 +341,7 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 		bool				found = false;
 		for ( ; I != E; ++I) {
 			u32				next_vertex_id = value(cur_vertex_id,I);
-			if ((next_vertex_id == prev_vertex_id) || !is_accessible(next_vertex_id))
+			if ((next_vertex_id == prev_vertex_id))
 				continue;
 			unpack_xz		(vertex(next_vertex_id),temp.x,temp.y);
 			box.min			= box.max = temp;
@@ -353,6 +357,10 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 				float			dist = _sqr(temp.x - dest.x) + _sqr(temp.y - dest.y);
 				if (dist > cur_sqr)
 					continue;
+
+				if (!is_accessible(next_vertex_id))
+					return		(false);
+
 				cur_sqr			= dist;
 				found			= true;
 				prev_vertex_id	= cur_vertex_id;
