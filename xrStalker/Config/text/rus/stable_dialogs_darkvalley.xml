@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="val_ambush_dialog_11">
+        <text>Привет. Пойдешь с нами.</text>
+    </string>
+    <string id="val_ambush_dialog_111">
+        <text>Да, идем</text>
+    </string>
+    <string id="val_ambush_dialog_112">
+        <text>Не хочу</text>
+    </string>
     <string id="val_escort_hello_0">
         <text>Спасибо, что спас меня. Бандиты, сволочи, хотели отдать меня монолитовцам. А эти полузомби, по слухам, скармливают сталкеров монстрам, которыми кишит секретная лаборатория под Базой Монолита. Монолитовцы почти никого не пускают на свою территорию, разве что на людей в костюме бандитов не обращают внимания. Да и у тех на входе пароль требуют.</text>
     </string>
