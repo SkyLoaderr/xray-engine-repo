@@ -286,14 +286,6 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			ClientID clientID; clientID.set(msg->dpnidPlayer);
 			new_client(clientID, cname, bLocal);
 
-			IDirectPlay8Address* pClAddr;
-			CHK_DX(NET->GetClientAddress(msg->dpnidPlayer, &pClAddr, 0));
-			char cURLA[1024];
-			DWORD Len = 1024;
-			CHK_DX(pClAddr->GetURLA(cURLA, &Len));
-			int x=0;
-			x=x;
-
 /*			
 			// register player
 			csPlayers.Enter			();
@@ -380,27 +372,6 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 			{				
 				return S_FALSE;
 			};
-
-/*
-			WCHAR wstrHostname[ 256 ] = {0};
-			DWORD dwSize = sizeof(wstrHostname);
-			DWORD dwDataType = 0;
-			msg->pAddressPlayer->GetComponentByName( DPNA_KEY_HOSTNAME, wstrHostname, &dwSize, &dwDataType );
-
-			GetClientAddress()
-
-
-			string256				HostName;
-			CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
-			char HAddr[4] = {0, 0, 0, 0};
-			char a[4][4] = {0, 0, 0, 0};
-			sscanf(HostName, "%[^'.'].%[^'.'].%[^'.'].%s", a[0], a[1], a[2], a[3]);
-
-			for (int i=0; i<4; i++)
-			{
-				HAddr[i] = char(atol(a[i]));
-			};		
-*/
 		}break;
     }
 	
@@ -577,7 +548,6 @@ void			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char*
 
 	string256				HostName;
 	CHK_DX(WideCharToMultiByte(CP_ACP,0,wstrHostname,-1,HostName,sizeof(HostName),0,0));
-	char HAddr[4] = {0, 0, 0, 0};
 	char a[4][4] = {0, 0, 0, 0};
 	sscanf(HostName, "%[^'.'].%[^'.'].%[^'.'].%s", a[0], a[1], a[2], a[3]);
 
@@ -612,13 +582,18 @@ void			IPureServer::BanClient			(IClient* C, u32 BanTime)
 {
 	char ClAddress[4];
 	GetClientAddress(C->ID, ClAddress);
-	
-	if (GetBannedClient(ClAddress)) 
+	BanAddress(ClAddress, BanTime);
+};
+
+void			IPureServer::BanAddress			(char* Address, u32 BanTime)
+{
+	if (!Address) return;
+	if (GetBannedClient(Address)) 
 	{
 		Msg("Already banned\n");
 		return;
 	};
 
-	IBannedClient* pNewClient = xr_new<IBannedClient>(ClAddress, BanTime);
+	IBannedClient* pNewClient = xr_new<IBannedClient>(Address, BanTime);
 	if (pNewClient) BannedAddresses.push_back(pNewClient);
 };
