@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "DynamicHeightMap.h"
 
+const int tasksPerFrame	= 3;
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -15,6 +17,7 @@ void CHM_Static::Update	()
 	int			v_x		= iFloor(view.x/dhm_size);
 	int			v_z		= iFloor(view.z/dhm_size);
 	
+	// *****	SCROLL
 	if (v_x!=c_x)	{
 		if (v_x>c_x)	{
 			// scroll matrix to left
@@ -48,7 +51,7 @@ void CHM_Static::Update	()
 				for (int z=dhm_matrix-1; z>0; z--)	data[z][x] = data[z-1][x];
 				data[0]		= S;
 			}
-			c_z++;
+			c_z ++;
 		} else {
 			// scroll matrix up
 			for (int x=0; x<dhm_matrix; x++)
@@ -58,7 +61,14 @@ void CHM_Static::Update	()
 				for (int z=0; z<dhm_matrix; z++)	data[z-1][x] = data[z][x];
 				data[dhm_matrix-1][x]	= S;
 			}
-			c_z--;
+			c_z --;
 		}
+	}
+	
+	// *****	perform TASKs
+	for (int tid=0; tid<tasksPerFrame; tid++)
+	{
+		Slot*	S = task.back	();
+
 	}
 }
