@@ -40,7 +40,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 	BoxQuery(BB,false	);
 	DWORD	dwCount = XRC.GetBBoxContactCount();
 	if (dwCount==0)	{
-		Log("chasm1");
+//		Log("chasm1");
 		return FALSE;			// chasm?
 	}
 
@@ -62,7 +62,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 		tris.inc	();
 	}
 	if (tris.size()==0)	{
-		Log("chasm2");
+//		Log("chasm2");
 		return FALSE;			// chasm?
 	}
 
@@ -106,11 +106,11 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 		}
 	}
 	if (points.size()<3) {
-		Msg		("Failed to create node at [%f,%f,%f].",vAt.x,vAt.y,vAt.z);
+//		Msg		("Failed to create node at [%f,%f,%f].",vAt.x,vAt.y,vAt.z);
 		return	FALSE;
 	}
 	if (float(points.size())/float(RCAST_Total) < 0.7f) {
-		Msg		("Partial chasm at [%f,%f,%f].",vAt.x,vAt.y,vAt.z);
+//		Msg		("Partial chasm at [%f,%f,%f].",vAt.x,vAt.y,vAt.z);
 		return	FALSE;
 	}
 
@@ -206,7 +206,7 @@ BOOL	CreateNode(Fvector& vAt, Node& N)
 		}
 		float perc = float(num_successed_rays)/float(RCAST_Total);
 		if (perc < 0.5f) {
-			Msg		("Floating node.");
+//			Msg		("Floating node.");
 			return	FALSE;
 		}
 	}
