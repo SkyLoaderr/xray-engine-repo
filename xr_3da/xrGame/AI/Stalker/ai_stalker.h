@@ -241,6 +241,7 @@ public:
 			bool				kill_distance					();
 			void				update_best_item_info			();
 			CCoverPoint			*best_cover_point				(const Fvector &self_position, const Fvector &enemy_position, const ECoverType &cover_type, float radius, float deviation, float min_enemy_distance, float max_enemy_distance);
+	virtual float				GetWeaponAccuracy				() const;
 
 public:
 	u32							m_last_best_item_frame;

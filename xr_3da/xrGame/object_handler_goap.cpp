@@ -16,6 +16,7 @@
 #include "object_handler_goap.h"
 #include "object_property_evaluators.h"
 #include "object_actions.h"
+#include "torch.h"
 
 CObjectHandlerGOAP::CObjectHandlerGOAP	()
 {
@@ -82,6 +83,10 @@ void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemTake	(inventory_item);
 	Msg							("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	add_item					(inventory_item);
+
+	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
+	if (torch)
+		torch->Switch			(true);
 }
 
 void CObjectHandlerGOAP::OnItemDrop		(CInventoryItem *inventory_item)
@@ -89,6 +94,10 @@ void CObjectHandlerGOAP::OnItemDrop		(CInventoryItem *inventory_item)
 	CInventoryOwner::OnItemDrop	(inventory_item);
 	Msg							("Removing item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	remove_item					(inventory_item);
+
+	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
+	if (torch)
+		torch->Switch			(false);
 }
 
 void CObjectHandlerGOAP::OnItemDropUpdate	()

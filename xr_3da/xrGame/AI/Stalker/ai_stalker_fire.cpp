@@ -15,6 +15,27 @@
 #include "../../cover_manager.h"
 #include "../../cover_point.h"
 
+float CAI_Stalker::GetWeaponAccuracy	() const
+{
+	float				base = PI/180.f;
+	if (movement_type() == eMovementTypeWalk)
+		if (body_state() == eBodyStateStand)
+			return		(base*1.f);
+		else
+			return		(base*.75f);
+	else
+		if (movement_type() == eMovementTypeRun)
+			if (body_state() == eBodyStateStand)
+				return	(base*2.f);
+			else
+				return	(base*1.f);
+		else
+			if (body_state() == eBodyStateStand)
+				return	(base*.5f);
+			else
+				return	(base*.25f);
+}
+
 float CAI_Stalker::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
@@ -25,9 +46,11 @@ float CAI_Stalker::HitScale	(int element)
 void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 {
 	if (g_Alive()) {
-		Center			(P);
 		D.setHP			(-m_head.current.yaw,-m_head.current.pitch);
 		D.normalize_safe();
+		Center			(P);
+		P.mad			(D,.5f);
+		P.y				+= .75f;
 	}
 }
 

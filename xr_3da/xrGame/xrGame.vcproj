@@ -1302,6 +1302,16 @@
 					</File>
 				</Filter>
 				<Filter
+					Name="SetupManager"
+					Filter="">
+					<File
+						RelativePath=".\setup_manager.h">
+					</File>
+					<File
+						RelativePath=".\setup_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="SightManager"
 					Filter="">
 					<File
@@ -1326,16 +1336,6 @@
 							RelativePath=".\sight_control_action_inline.h">
 						</File>
 					</Filter>
-				</Filter>
-				<Filter
-					Name="SetupManager"
-					Filter="">
-					<File
-						RelativePath=".\setup_manager.h">
-					</File>
-					<File
-						RelativePath=".\setup_manager_inline.h">
-					</File>
 				</Filter>
 				<Filter
 					Name="SoundPlayer"
