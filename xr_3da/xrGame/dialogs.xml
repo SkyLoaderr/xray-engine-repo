@@ -92,7 +92,7 @@
 	</dialog>
 
 	<dialog id="trader_job">
-		<has_info>2</has_info>
+		<has_info>trader_start2</has_info>
 		<phrase_list>
 			<phrase id="0">
 				<text>����� � ���� ���� ������?</text>
