@@ -147,19 +147,3 @@ void CRenderTarget::accum_spot	(light* L)
 	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
 }
-
-/*
-		// Shader + constants
-		float circle				= ps_r2_ls_ssm_kernel / L->X.S.size;
-		Fvector4 J; float scale		= circle/11.f;
-		R_constant* _C				= RCache.get_c			("J_spot");
-		if (_C)		{
-			// Radial jitter (12 samples)
-			J.set(11, 0,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,0,J.x,J.y,-J.y,-J.x);
-			J.set(19, 3,  0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,1,J.x,J.y,-J.y,-J.x);
-			J.set(22, 11, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,2,J.x,J.y,-J.y,-J.x);
-			J.set(19, 19, 0);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,3,J.x,J.y,-J.y,-J.x);
-			J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y, J.w, J.z);
-			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y, J.w, J.z);
-		}
-*/
