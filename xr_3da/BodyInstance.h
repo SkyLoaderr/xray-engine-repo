@@ -44,7 +44,7 @@ struct ENGINE_API CKey
 struct ENGINE_API CKeyQ
 {
 	short		x,y,z,w;	// rotation
-	Fvector		T;			// translation
+	Fvector		t;			// translation
 };
 IC void	KEY_Interp(CKey& D, CKey& K1, CKey& K2, float delta)
 {

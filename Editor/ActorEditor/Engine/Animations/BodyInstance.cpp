@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "BodyInstance.h"
 #include "fmesh.h"
 #include "xr_ini.h"
