@@ -168,7 +168,7 @@ void CAI_ALife::Load()
 		Engine.FS.Close			(tpStream);
 		vfNewGame				();
 		Save					();
-		R_ASSERT				(false);
+		R_ASSERT2				(false,"New game has been generated successfully.\nYou have to restart game");
 	}
 	tpStream					= Engine.FS.Open(caFileName);
 	R_ASSERT					(tpStream);
