@@ -86,7 +86,6 @@ void SceneBuilder::SaveBuild()
     F.close_chunk	();
 
     F.open_chunk	(EB_MU_models);
-    F.Wdword		(l_mu_models.size());
     for (int k=0; k<(int)l_mu_models.size(); k++){
     	b_mu_model&	m= l_mu_models[k];
         // name

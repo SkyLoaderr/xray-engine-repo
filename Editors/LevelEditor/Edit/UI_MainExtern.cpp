@@ -497,18 +497,11 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Key=='S'){
-            if (Shift.Contains(ssAlt))  {Command(COMMAND_SAVEAS);               bExec=true;}
-            else                        {Command(COMMAND_SAVE);                 bExec=true;}
-        }
-        else if (Key=='O')   			{Command(COMMAND_LOAD);                 bExec=true;}
-        else if (Key=='N')   			{Command(COMMAND_CLEAR);                bExec=true;}
-        else if (Key=='V')    			{Command(COMMAND_PASTE);                bExec=true;}
+        if (Key=='V')    				{Command(COMMAND_PASTE);                bExec=true;}
         else if (Key=='C')    			{Command(COMMAND_COPY);                 bExec=true;}
         else if (Key=='X')    			{Command(COMMAND_CUT);                  bExec=true;}
         else if (Key=='Z')    			{Command(COMMAND_UNDO);                 bExec=true;}
         else if (Key=='Y')    			{Command(COMMAND_REDO);                 bExec=true;}
-		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
     }
     return bExec;
 }
