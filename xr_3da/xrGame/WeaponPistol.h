@@ -18,17 +18,23 @@ public:
 	virtual void	net_Destroy		();
 	virtual void	OnH_B_Chield	();
 
+	//анимации
+	virtual void	PlayAnimShow	();
 	virtual void	PlayAnimIdle	();
 	virtual void	PlayAnimHide	();
+	virtual void	PlayAnimReload	();
+	virtual void	PlayAnimShoot	();
 
 	virtual void	UpdateSounds	();
 protected:	
 	HUD_SOUND		sndClose;
 	ESoundTypes		m_eSoundClose;
 
+	MotionSVec		mhud_show_empty;
 	MotionSVec		mhud_empty;
 	MotionSVec		mhud_shot_l;
 	MotionSVec		mhud_close;
+	MotionSVec		mhud_reload_empty;
 
 	bool m_opened;
 };

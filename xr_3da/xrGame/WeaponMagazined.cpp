@@ -30,6 +30,7 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_queueSize = m_shotNum = 0;
 
 	m_pSndShotCurrent = NULL;
+	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = NULL;
 }
 
 CWeaponMagazined::~CWeaponMagazined()

@@ -81,7 +81,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
 	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
 	m_sShellParticles = NULL;
-
 }
 
 CWeapon::~CWeapon		()

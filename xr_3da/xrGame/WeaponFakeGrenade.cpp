@@ -136,7 +136,8 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 		// Physics (Box)
 		Fobb								obb;
 		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.035f, .035f, .07f);
+		//obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.035f, .035f, .07f);
+		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.07f, .07f, .35f);
 		obb.m_rotate.identity				();
 
 		// Physics (Elements)
