@@ -22,6 +22,7 @@
 #define	r2_RT_smap_p		"$user$smap_p"			// ---	point
 
 #define r2_material			"$user$material"						// ---
+#define r2_float2rg			"$user$float2rg"						// --- compression/encoding table
 #define r2_attenuate		"internal\\internal_light_r2att"		// ---
 #define r2_ds2_fade			"$user$ds2_fade"						// ---
 
@@ -37,3 +38,4 @@ const float					PSM_near_plane		= .08f;
 const u32					TEX_material_LdotN	= 128;	// diffuse,		X
 const u32					TEX_material_LdotH	= 256;	// specular,	Y
 const u32					TEX_ds2_fade_size	= 256;
+const u32					TEX_float2rg		= 256;

@@ -208,6 +208,27 @@ void	CRenderTarget::OnDeviceCreate	()
 			R_CHK						(t_material_surf->UnlockRect	(0));
 		}
 
+		// Build encode table
+		{
+			// Surface
+			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rg,TEX_float2rg,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encode_surf));
+			t_encode					= Device.Resources->_CreateTexture(r2_float2rg);
+			t_encode->surface_set		(t_encode_surf);
+
+			// Fill it, scale = (1,255)
+			D3DLOCKED_RECT				R;
+			R_CHK						(t_encode_surf->LockRect	(0,&R,0,0));
+			for (u32 y=0; y<TEX_float2rg; y++)
+			{
+				for (u32 x=0; x<TEX_float2rg; x++)
+				{
+					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
+					*p			=	color_rgba	(y,x,0,0);
+				}
+			}
+			R_CHK						(t_encode_surf->UnlockRect	(0));
+		}
+
 		// Build shadow2fade
 		{
 			// Surface
