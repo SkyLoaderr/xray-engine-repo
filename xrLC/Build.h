@@ -97,7 +97,7 @@ public:
 	void	CalcNormals				();
 	void	xrPhase_TangentBasis	();
 
-	void	BuildCForm				(IWriter &fs);
+	void	BuildCForm				();
 	void	BuildPortals			(IWriter &fs);
 	void	BuildRapid				();
 		

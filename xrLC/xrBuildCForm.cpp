@@ -44,7 +44,7 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 	}
 }
 
-void CBuild::BuildCForm(IWriter &fs)
+void CBuild::BuildCForm()
 {
 	// Collecting data
 	Phase		("CFORM: creating...");
@@ -116,6 +116,7 @@ void CBuild::BuildCForm(IWriter &fs)
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Saving
+	string512		fn;
 	IWriter*		MFS	= FS.w_open	(strconcat(fn,pBuild->path,"level.cform"));
 	Status			("Saving...");
 
