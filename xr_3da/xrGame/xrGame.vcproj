@@ -785,6 +785,16 @@
 							<File
 								RelativePath=".\sound_memory_manager_inline.h">
 							</File>
+							<Filter
+								Name="SoundUserDataVisitor"
+								Filter="">
+								<File
+									RelativePath=".\sound_user_data_visitor.cpp">
+								</File>
+								<File
+									RelativePath=".\sound_user_data_visitor.h">
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="VisualMemoryManager"

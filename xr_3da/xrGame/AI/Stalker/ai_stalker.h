@@ -336,7 +336,12 @@ public:
 	IC		void						body_action						(const EBodyAction &body_action);
 	IC		const EBodyAction			&body_action					() const;
 
+private:
+	CSoundUserDataVisitor				*m_sound_user_data_visitor;
+
 protected:
+	virtual CSoundUserDataVisitor		*create_sound_visitor			();
+	virtual CMemoryManager				*create_memory_manager			();
 	virtual CMovementManager			*create_movement_manager		();
 
 public:

@@ -111,8 +111,9 @@
 // 92 - CSE_AlifeCreatureActor			added base class CSE_PHSkeleton
 // 93 - CSE_AlifeCar					health added in STATE_Read STATE_Write
 // 94 - CSE_Abstract					client_data size increased
+// 95 - CSE_ALifeCreatureAbstract		appended with m_killer_id property
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(94)
+#define SPAWN_VERSION	u16(95)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

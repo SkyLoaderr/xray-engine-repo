@@ -15,6 +15,7 @@
 #include "custommonster.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
+#include "sound_user_data_visitor.h"
 
 #define SILENCE
 //#define SAVE_OWN_SOUNDS
@@ -90,6 +91,9 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 {
 	if (!m_sounds)
 		return;
+
+	if (user_data)
+		user_data->accept	(m_visitor);
 
 	CObject					*self = m_object;
 	VERIFY					(self);

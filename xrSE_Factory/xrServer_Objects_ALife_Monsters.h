@@ -213,6 +213,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	u32								m_ef_creature_type;
 	u32								m_ef_weapon_type;
 	u32								m_ef_detector_type;
+
+	ALife::_OBJECT_ID				m_killer_id;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureAbstract();

@@ -24,7 +24,7 @@ public:
 
 private:
 	CCustomMonster				*m_object;
-	
+	CSoundUserDataVisitor		*m_visitor;
 	// sound objects
 private:
 	SOUNDS						*m_sounds;
@@ -52,7 +52,7 @@ protected:
 	IC		void				priority				(const ESoundTypes &sound_type, u32 priority);
 
 public:
-	IC							CSoundMemoryManager		(CCustomMonster *object);
+	IC							CSoundMemoryManager		(CCustomMonster *object, CSoundUserDataVisitor *visitor);
 	virtual						~CSoundMemoryManager	();
 	virtual	void				Load					(LPCSTR section);
 	virtual	void				reinit					();

@@ -8,6 +8,7 @@
 #include "ai_space.h"
 #include "alife_object_registry.h"
 #include "xrServer_Objects_ALife_Items.h"
+#include "xrServer_Objects_ALife_Monsters.h"
 
 void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 {
@@ -213,6 +214,21 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 //last	SendBroadcast		(clientID,P,MODE);
 		}
 		break;
+	case GE_ASSIGN_KILLER: {
+		u16							id_dest	= destination, id_src;
+		P.r_u16						(id_src);
+		
+		CSE_Abstract				*e_dest = game->get_entity_from_eid	(id_dest);	// кто умер
+		VERIFY						(e_dest);
+
+		CSE_ALifeCreatureAbstract	*creature = smart_cast<CSE_ALifeCreatureAbstract*>(e_dest);
+		if (creature)
+			creature->m_killer_id	= id_src;
+
+		Msg							("[%d][%s] killed [%d][%s]",id_src,id_src==u16(-1) ? "UNKNOWN" : game->get_entity_from_eid(id_src)->name_replace(),id_dest,e_dest->name_replace());
+
+		break;
+	}
 	case GE_DIE:
 		{
 			// Parse message
@@ -237,6 +253,14 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 			R_ASSERT2			(e_dest && e_src, "Killer or/and being killed are offline or not exist at all :(");
 			if (game->Type() != GAME_SINGLE)
 				Msg				("* [%2d] is [%s:%s]", id_src, *e_src->s_name, e_src->name_replace());
+
+			{
+				CSE_ALifeCreatureAbstract	*creature = smart_cast<CSE_ALifeCreatureAbstract*>(e_dest);
+				if (creature) {
+					VERIFY					(creature->m_killer_id == ALife::_OBJECT_ID(-1));
+					creature->m_killer_id	= id_src;
+				}
+			}
 
 			xrClientData*		c_dest		= e_dest->owner;			// клиент, чей юнит умер
 			xrClientData*		c_src		= e_src->owner;				// клиент, чей юнит убил

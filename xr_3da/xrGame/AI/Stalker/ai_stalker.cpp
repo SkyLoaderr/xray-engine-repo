@@ -45,11 +45,13 @@
 #include "../../sound_player.h"
 #include "../../setup_action.h"
 #include "../../script_space.h"
+#include "../../sound_user_data_visitor.h"
 
 extern int g_AI_inactive_time;
 
 CAI_Stalker::CAI_Stalker			()
 {
+	m_sound_user_data_visitor		= 0;
 	m_movement_manager				= 0;
 	shedule.t_min					= 1;
 	shedule.t_max					= 200;
@@ -730,11 +732,6 @@ void CAI_Stalker::SelectAnimation(const Fvector &view, const Fvector &move, floa
 	animation().update();
 }
 
-CMovementManager *CAI_Stalker::create_movement_manager()
-{
-	return		(m_movement_manager = xr_new<CStalkerMovementManager>(this));
-}
-
 const SRotation CAI_Stalker::Orientation	() const
 {
 	return		(movement().m_head.current);
@@ -742,6 +739,28 @@ const SRotation CAI_Stalker::Orientation	() const
 const MonsterSpace::SBoneRotation &CAI_Stalker::head_orientation	() const
 {
 	return movement().head_orientation();
+}
+
+void CAI_Stalker::net_Relcase				(CObject*	 O)
+{
+	inherited::net_Relcase				(O);
+	if (g_Alive())
+		agent_manager().remove_links	(O);
+}
+
+CMovementManager *CAI_Stalker::create_movement_manager	()
+{
+	return		(m_movement_manager = xr_new<CStalkerMovementManager>(this));
+}
+
+CSoundUserDataVisitor *CAI_Stalker::create_sound_visitor		()
+{
+	return	(m_sound_user_data_visitor	= xr_new<CSoundUserDataVisitor>());
+}
+
+CMemoryManager *CAI_Stalker::create_memory_manager		()
+{
+	return	(xr_new<CMemoryManager>(this,create_sound_visitor()));
 }
 
 DLL_Pure *CAI_Stalker::_construct			()
@@ -757,11 +776,4 @@ DLL_Pure *CAI_Stalker::_construct			()
 	m_sight_manager						= xr_new<CSightManager>(this);
 	m_setup_manager						= xr_new<CSSetupManager>(this);
 	return								(this);
-}
-
-void CAI_Stalker::net_Relcase				(CObject*	 O)
-{
-	inherited::net_Relcase				(O);
-	if (g_Alive())
-		agent_manager().remove_links	(O);
 }

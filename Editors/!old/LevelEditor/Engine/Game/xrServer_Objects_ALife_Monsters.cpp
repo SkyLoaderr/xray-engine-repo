@@ -128,8 +128,7 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			tNetPacket.r_s32	(m_iCharacterProfile);
 		if (m_wVersion > 85)
 			tNetPacket.r_s32	(m_community_index);
-		if (m_wVersion > 86)
-		{
+		if (m_wVersion > 86) {
 			tNetPacket.r_s32	(m_rank);
 			tNetPacket.r_s32	(m_reputation);
 		}
@@ -888,6 +887,7 @@ CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALi
 	m_ef_creature_type			= pSettings->r_u32(caSection,"ef_creature_type");
 	m_ef_weapon_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_weapon_type",u32(-1));
 	m_ef_detector_type			= READ_IF_EXISTS(pSettings,r_u32,caSection,"ef_detector_type",u32(-1));
+	m_killer_id					= ALife::_OBJECT_ID(-1);
 }
 
 CSE_ALifeCreatureAbstract::~CSE_ALifeCreatureAbstract()
@@ -920,6 +920,7 @@ void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(fHealth);
 	save_data					(m_dynamic_out_restrictions,tNetPacket);
 	save_data					(m_dynamic_in_restrictions,tNetPacket);
+	tNetPacket.w				(&m_killer_id,sizeof(m_killer_id));
 }
 
 void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
@@ -938,6 +939,8 @@ void CSE_ALifeCreatureAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_dynamic_out_restrictions,tNetPacket);
 		load_data				(m_dynamic_in_restrictions,tNetPacket);
 	}
+	if (m_wVersion > 94)
+		tNetPacket.r			(&m_killer_id,sizeof(m_killer_id));
 }
 
 void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)

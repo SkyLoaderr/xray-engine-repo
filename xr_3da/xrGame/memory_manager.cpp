@@ -22,14 +22,14 @@
 #include "ai_object_location.h"
 #include "level_graph.h"
 
-CMemoryManager::CMemoryManager		(CCustomMonster *monster)
+CMemoryManager::CMemoryManager		(CCustomMonster *monster, CSoundUserDataVisitor *visitor)
 {
 	VERIFY				(monster);
 	m_object			= monster;
 	m_stalker			= smart_cast<CAI_Stalker*>(monster);
 
 	m_visual			= xr_new<CVisualMemoryManager>	(monster);
-	m_sound				= xr_new<CSoundMemoryManager>	(monster);
+	m_sound				= xr_new<CSoundMemoryManager>	(monster, visitor);
 	m_hit				= xr_new<CHitMemoryManager>		(monster);
 	m_enemy				= xr_new<CEnemyManager>			(monster);
 	m_item				= xr_new<CItemManager>			(monster);

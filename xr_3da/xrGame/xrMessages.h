@@ -55,6 +55,7 @@ enum {
 	GE_TRANSFER_AMMO,			// DUAL: Take ammo out of weapon for our weapon
 	GE_HIT,						//
 	GE_DIE,						//
+	GE_ASSIGN_KILLER,			//
 	GE_DESTROY,					// authorative client request for entity-destroy
 	GE_DESTROY_REJECT,			// GE_DESTROY + GE_OWNERSHIP_REJECT
 	GE_TELEPORT_OBJECT,

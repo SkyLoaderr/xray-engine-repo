@@ -24,6 +24,9 @@ void CBaseMonster::feel_sound_new(CObject* who, int eType, CSoundUserDataPtr use
 
 	// ignore my sounds
 	if (this == who)	return;
+
+	if (user_data)
+		user_data->accept	(sound_user_data_visitor());
 	
 	// ignore sounds if not from enemies
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (who);
