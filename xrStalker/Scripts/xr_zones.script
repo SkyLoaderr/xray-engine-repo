@@ -3,6 +3,12 @@
 Чугай Саша
 
 Сделать:
+	- два одинаковых name
+	- fraction types->gulag
+	- createGulag
+	- capacity
+
+	- если сталкер под фракцией заходит в зону другой фракции
 
 Идеи:
 	- для каждого типа фракции отдельный файл
@@ -229,20 +235,9 @@ fraction_types.searcher = fraction_searcher()
 class "zone_fractions"
 
 function zone_fractions:__init( zone, ini )
-	-- общие настройки системы управления фракциями для данной зоны
-	local sect = "fractions"
-
---	if not ini:line_exist( sect, "squad" ) or
---	   not ini:line_exist( sect, "group" )
---	then
---		return
---	end
+	local sect
 
 	self.zone            = zone
---	self.squad           = ini:r_float( sect, "squad" )
---	self.group           = ini:r_float( sect, "group" )
-	self.squad           = r_num( ini, sect, "squad" )
-	self.group           = r_num( ini, sect, "group" )
 	self.stalkers        = {}    -- group и squad для каждого
 	self.fractions       = {}    -- настройки фракций, возможных в этой зоне
 	self.fraction        = nil   -- экземпляр текущей фракции
@@ -271,6 +266,8 @@ function zone_fractions:__init( zone, ini )
 			ffi.prefix                          = r_str ( ini, sect, "prefix", self.zone:name() )
 			ffi.capacity                        = r_num ( ini, sect, "capacity",  100 )
 			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       24, 48 )
+			ffi.squad                           = r_num ( ini, sect, "squad" )
+			ffi.group                           = r_num ( ini, sect, "group" )
 		else
 			table.remove( f, fi )
 		end
@@ -350,11 +347,14 @@ function zone_fractions:create_fraction()
 	self.prefix        = fparams.prefix
 	self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
 	self.capacity      = fparams.capacity
+	self.squad         = fparams.squad
+	self.group         = fparams.group
 	self.check_time    = game.time() + check_period
 
-	self.fraction      = xr_gulag.fract( self.fraction_name )
+--	self.fraction      = xr_gulag.fract( self.fraction_name )
+	self.fraction      = xr_gulag.createGulag( self.fraction_name, fparams.type )
 
-	fraction_types[fparams.type].setup_jobs( self )
+--	fraction_types[fparams.type].setup_jobs( self )
 
 	printf( "[zone] creating fraction %s of type %s", self.fraction_name, fparams.type )
 end
@@ -456,7 +456,7 @@ function zone_sound:__init( zone, ini )
 		return
 	end
 
-	printf( table.concat( self.sound_names, "  " ) )
+--	printf( table.concat( self.sound_names, "  " ) )
 
 	self.delay = r_num( ini, sect, "delay", 0 )
 	self.idle  = r_num( ini, sect, "idle",  0 ) * 1000 -- секунды->мс
