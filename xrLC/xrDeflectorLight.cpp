@@ -4,8 +4,6 @@
 #include "cl_defs.h"
 #include "cl_intersect.h"
 #include "std_classes.h"
-#include "xrDXTC.h"
-#include "tga.h"
 #include "xrImage_Resampler.h"
 
 void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
@@ -310,344 +308,80 @@ VOID CDeflector::Light()
 	LightsSelected.clear	();
 
 	// Expand LMap with borders
-	LPDWORD	old = lm.pSurface;
-	DWORD	o_x = lm.dwWidth;
-	DWORD	o_y = lm.dwHeight;
-	DWORD	s_x = (o_x+2*BORDER);
-	DWORD	s_y = (o_y+2*BORDER);
-	DWORD size	= s_x*s_y*4;
-	lm.pSurface	= LPDWORD(malloc(size));
-	ZeroMemory	(lm.pSurface,size);
-	blit		(lm.pSurface,s_x,s_y,old,o_x,o_y,BORDER,BORDER,1);
-	_FREE		(old);
+	DWORD			ref;
+	b_texture		lm_old	= lm;
+	b_texture		lm_new;
+	lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
+	lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
+	DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
+	lm.pSurface		= LPDWORD(malloc(size));
+	ZeroMemory		(lm_new.pSurface,size);
+	blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,0);
+	for (ref=254; ref>0; ref--) if (!ApplyBorders(lm_new,ref))	break;	// new
+	for (ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref))		break;	// old
 
-	// Calculate color of border pixels
-	lm.dwWidth	= s_x;	lm.dwHeight	= s_y;
-	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
-	
 	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
+		const DWORD rms		= 4;
+		DWORD _r=0, _g=0, _b=0, _count=0, x,y, bCompress=TRUE;
+
 		// Calculate average color
-		DWORD _r=0, _g=0, _b=0, _count=0;
+		for (y=0; y<lm_new.dwHeight; y++)
 		{
-			for (DWORD y=0; y<s_y; y++)
+			for (x=0; x<lm_new.dwWidth; x++)
 			{
-				for (DWORD x=0; x<s_x; x++)
-				{
-					DWORD pixel			= lm.pSurface[y*s_x+x];
-					if (RGBA_GETALPHA(pixel)>=254)	{
-						_r		+= RGBA_GETRED	(pixel);
-						_g		+= RGBA_GETGREEN(pixel);
-						_b		+= RGBA_GETBLUE	(pixel);
-						_count	++;
-					}
+				DWORD pixel			= lm_new.pSurface[y*lm_new.dwWidth+x];
+				if ((RGBA_GETALPHA(pixel))>=254)	{
+					_r		+= RGBA_GETRED	(pixel);
+					_g		+= RGBA_GETGREEN(pixel);
+					_b		+= RGBA_GETBLUE	(pixel);
+					_count	++;
 				}
 			}
 		}
 		if (0==_count)	{
 			Msg("* ERROR: Lightmap not calculated (T:%d)",tris.size());
 			return;
+		} else {
+			_r	/= _count;	_g	/= _count;	_b	/= _count;
+			Msg("* avarage: %d,%d,%d",_r,_g,_b);
 		}
 		
 		// Test for equality
-		DWORD	bCompress	= TRUE;
-		const DWORD rms		= 4;
-		_r	/= _count;	_g	/= _count;	_b	/= _count;
+		for (y=0; y<lm_new.dwHeight; y++)
 		{
-			for (DWORD y=0; y<s_y; y++)
+			for (x=0; x<lm_new.dwWidth; x++)
 			{
-				for (DWORD x=0; x<s_x; x++)
-				{
-					DWORD pixel	= lm.pSurface	[y*s_x+x];
-					if (RGBA_GETALPHA(pixel)>=254)	{
-						if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	{ bCompress=FALSE; break; }
-						if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	{ bCompress=FALSE; break; }
-						if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	{ bCompress=FALSE; break; }
-					}
+				DWORD pixel	= lm_new.pSurface	[y*lm_new.dwWidth+x];
+				if (RGBA_GETALPHA(pixel)>=254)	{
+					if (rms_diff(_r, RGBA_GETRED(pixel))>rms)	{ bCompress=FALSE; break; }
+					if (rms_diff(_g, RGBA_GETGREEN(pixel))>rms)	{ bCompress=FALSE; break; }
+					if (rms_diff(_b, RGBA_GETBLUE(pixel))>rms)	{ bCompress=FALSE; break; }
 				}
-				if (!bCompress) break;
 			}
+			if (!bCompress) break;
 		}
-
+		
 		// Compress if needed
 		if (bCompress)
 		{
-			// Msg		("Compressing");
+			Msg		("Compressing");
+			_FREE	(lm.pSurface);		// release OLD
+			_FREE	(lm_new.pSurface);	// ... and new
 			DWORD	c_x			= BORDER*2;
 			DWORD	c_y			= BORDER*2;
 			DWORD   c_size		= c_x*c_y;
 			LPDWORD	compressed	= LPDWORD(malloc(c_size*4));
-			ZeroMemory			(compressed,c_size*4);
-			DWORD	c_fill		= RGBA_MAKE		(_r,_g,_b,255-BORDER);
+			DWORD	c_fill		= RGBA_MAKE	(_r,_g,_b,255-BORDER);
 			for (DWORD p=0; p<c_size; p++)	compressed[p]=c_fill;
 
-			_FREE				(lm.pSurface);
 			lm.pSurface			= compressed;
-			lm.dwHeight			= 0;	s_y=c_y;
-			lm.dwWidth			= 0;	s_x=c_x;
+			lm.dwHeight			= 0;
+			lm.dwWidth			= 0;
 		} else {
 			// *** Try to bilinearly filter lightmap down and up
-			// DWORD	filtered	[512*512];
+			// b_texture			
 		}
 	}
 }
 
-float gauss [7][7] =
-{
-	{	0,	0,	0,	5,	0,	0,	0	},
-	{	0,	5,	18,	32,	18,	5,	0	},
-	{	0,	18,	64,	100,64,	18,	0	},
-	{	5,	32,	100,100,100,32,	5	},
-	{	0,	18,	64,	100,64,	18,	0	},
-	{	0,	5,	18,	32,	18,	5,	0	},
-	{	0,	0,	0,	5,	0,	0,	0	}
-};
-
-/* Un-optimized code to perform general image filtering
-outputs to dst using a filter kernel in ker which must be a 2D float
-array of size [2*k+1][2*k+1] */
-void ip_BuildKernel	(float* dest, float* src, int DIM, float norm=1.f)
-{
-	float	*I,*E;
-
-	float	sum		= 0;
-	int		size	= 2*DIM+1;
-	E				= src + (size*size);
-	for (I=src; I!=E; I++) sum += *I;
-	float	scale	= norm/sum;
-	for (I=src; I!=E; I++) *dest++ = *I * scale;
-}
-void ip_ProcessKernel(Fvector* dest, Fvector* src, int w, int h, float* kern, int DIM)
-{
-	for (int y=0;y<h;y++)
-	{
-		for (int x=0;x<w;x++)
-		{
-			Fvector total; 
-			total.set	(0,0,0);
-			float *kp	= kern;
-			for (int j=-DIM;j<=DIM;j++)
-			for (int i=-DIM;i<=DIM;i++)
-			{
-				int x2=x+i,y2=y+j;
-
-				// wrap pixels
-				if (x2<0) x2+=w;
-				else if (x2>=w) x2-=w;
-				if (y2<0) y2+=h;
-				else if (y2>=h) y2-=h;
-				
-				total.direct(total,src[y2*w+x2],*kp);
-				kp++;
-			}
-			dest->set(total);
-			dest++;
-		}
-	}
-}
-
-IC DWORD convert(float a)
-{
-	if (a<=0)		return 0;
-	else if (a>=1)	return 255;
-	else			return iFloor(a*255.f);
-}
-IC void pixel(int x, int y,  b_texture* T, DWORD C=RGBA_MAKE(0,255,0,0))
-{
-	// wrap pixels
-	if (x<0) return;
-	else if (x>=(int)T->dwWidth)	return;
-	if (y<0) return;
-	else if (y>=(int)T->dwHeight)	return;
-
-	T->pSurface[y*T->dwWidth+x]	= C;
-}
-
-void line ( int x1, int y1, int x2, int y2, b_texture* T )
-{
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
-    int sx = x2 >= x1 ? 1 : -1;
-    int sy = y2 >= y1 ? 1 : -1;
-
-    if ( dy <= dx ){
-        int d  = ( dy << 1 ) - dx;
-        int d1 = dy << 1;
-        int d2 = ( dy - dx ) << 1;
-
-		pixel(x1,y1,T);
-
-        for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
-            if ( d > 0){
-                d += d2; y += sy;
-            }else
-                d += d1;
-			pixel(x,y,T);
-        }
-    }else{
-        int d  = ( dx << 1 ) - dy;
-        int d1 = dx << 1;
-        int d2 = ( dx - dy ) << 1;
-
-		pixel(x1,y1,T);
-        for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
-            if ( d > 0){
-                d += d2; x += sx;
-            }else
-                d += d1;
-			pixel(x,y,T);
-        }
-    }
-}
-
-void CDeflector::Save()
-{
-	static int		deflNameID = 0; ++deflNameID;
-
-	if (g_params.m_bRadiosity) {
-		DWORD count	= lm.dwWidth*lm.dwHeight;
-
-		// Blur data
-		Fvector	blured[512*512];
-		float	kernel[7*7];
-		ip_BuildKernel	(kernel, (float*)gauss, 3, 1/3.5f);
-		ip_ProcessKernel(blured,lm_rad,lm.dwWidth,lm.dwHeight,kernel,3);
-		CopyMemory		(lm_rad,blured,count*sizeof(Fvector));
-
-		// Convert to '32bpp' format - for debugging
-		DWORD		surf[512*512];
-		for (DWORD I=0; I<count; I++)
-		{
-			Fvector&	Pixel	= *(lm_rad+I);
-			DWORD&		Dest	= *(surf+I);
-
-			Fcolor R;
-			R.r		= Pixel.x; clamp(R.r,0.f,1.f);
-			R.g		= Pixel.y; clamp(R.g,0.f,1.f);
-			R.b		= Pixel.z; clamp(R.b,0.f,1.f);
-			R.a		= 1.f;
-			Dest	= R.get();
-		}
-
-		// Saving
-		sprintf			(lm.name,"L#%d_rad",deflNameID);
-		TGAdesc			p;
-		p.format		= IMG_24B;
-		p.scanlenght	= lm.dwWidth*4;
-		p.width			= lm.dwWidth;
-		p.height		= lm.dwHeight;
-		p.data			= surf;
-		p.maketga		(lm.name);
-
-		// Adding radiosity to direct lighting model
-		for (I=0; I<count; I++)
-		{
-			Fvector&	TexelRad	= *(lm_rad+I);
-			DWORD&		Texel		= *(lm.pSurface+I);
-
-			if (!RGBA_GETALPHA(Texel)) continue;
-			
-			Fcolor R, Lumel;
-
-			R.r = (float(RGBA_GETRED	(Texel))/255.f+TexelRad.x);
-			R.g = (float(RGBA_GETGREEN	(Texel))/255.f+TexelRad.y);
-			R.b = (float(RGBA_GETBLUE	(Texel))/255.f+TexelRad.z);
-			Lumel.lerp(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-			
-			// Make 32bpp color
-			Texel = RGBA_MAKE(convert(R.r*255.f),convert(R.g*255.f),convert(R.b*255.f),255);
-		}
-		_FREE(lm_rad);
-	}
-
-	// DEBUG: Lines
-	{
-		// 5x expand
-		b_texture		temp;
-		temp.dwHeight	= lm.dwHeight*5;
-		temp.dwWidth	= lm.dwWidth *5;
-		temp.pSurface	= LPDWORD(malloc(temp.dwHeight*temp.dwWidth*4));
-		for (DWORD y=0; y<lm.dwHeight; y++)
-		{
-			for (DWORD x=0; x<lm.dwWidth; x++)
-			{
-				DWORD C = lm.pSurface[y*lm.dwWidth+x];
-				if (RGBA_GETALPHA(C)!=255)	C=0;
-				for (DWORD p_y=0; p_y<5; p_y++)
-					for (DWORD p_x=0; p_x<5; p_x++)
-						pixel(x*5+p_x,y*5+p_y,&temp,C);
-			}
-		}
-
-		// Render polygons
-		for (DWORD t=0; t<tris.size(); t++)
-		{
-			UVtri&		T	= tris[t];
-			UVpoint&	p1	= T.uv[0]; int x1=iFloor(p1.u*float(temp.dwWidth)); int y1=iFloor(p1.v*float(temp.dwHeight));
-			UVpoint&	p2	= T.uv[1]; int x2=iFloor(p2.u*float(temp.dwWidth)); int y2=iFloor(p2.v*float(temp.dwHeight));
-			UVpoint&	p3	= T.uv[2]; int x3=iFloor(p3.u*float(temp.dwWidth)); int y3=iFloor(p3.v*float(temp.dwHeight));
-			line		(x1,y1,x2,y2,&temp);
-			line		(x2,y2,x3,y3,&temp);
-			line		(x3,y3,x1,y1,&temp);
-		}
-
-		// Save picture
-		sprintf			(temp.name,"L#%d_debug",deflNameID);
-		TGAdesc			p;
-		p.format		= IMG_32B;
-		p.scanlenght	= temp.dwWidth*4;
-		p.width			= temp.dwWidth;
-		p.height		= temp.dwHeight;
-		p.data			= temp.pSurface;
-		p.maketga		(temp.name);
-		_FREE			(temp.pSurface);
-	}
-	
-	// Borders correction
-	for (DWORD _y=0; _y<512; _y++)
-	{
-		for (DWORD _x=0; _x<512; _x++)
-		{
-			DWORD pixel = lm.pSurface[_y*512+_x];
-			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	pixel = (pixel&RGBA_MAKE(255,255,255,0))|RGBA_MAKE(0,0,0,255);
-			else									pixel = (pixel&RGBA_MAKE(255,255,255,0));
-		}
-	}
-	for (DWORD ref=254; ref>0; ref--) ApplyBorders(lm,ref);
-
-	// DEBUG: Saving	(32b.tga)
-	char	FN[_MAX_PATH];
-	{
-		sprintf			(lm.name,"L#%d",deflNameID);
-		TGAdesc			p;
-		p.format		= IMG_32B;
-		p.scanlenght	= lm.dwWidth*4;
-		p.width			= lm.dwWidth;
-		p.height		= lm.dwHeight;
-		p.data			= lm.pSurface;
-		p.maketga		(lm.name);
-	}
-
-	// Saving			(16b.dds)
-	{
-		sprintf	(lm.name,"L#%d",deflNameID				);
-		sprintf	(FN,"%s%sQ.dds",g_params.L_path,lm.name	);
-		BYTE*	raw_data		= LPBYTE(lm.pSurface);
-		DWORD	w				= lm.dwWidth;
-		DWORD	h				= lm.dwHeight;
-		DWORD	pitch			= w*4;
-
-		STextureParams fmt;
-		fmt.fmt					= STextureParams::tf565;
-		fmt.flag				= EF_DITHER | EF_NO_MIPMAP;
-		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
-	}
-
-	// Saving			(DXT1.dds)
-	sprintf	(lm.name,"L#%d",deflNameID);
-	sprintf	(FN,"%s%s.dds",g_params.L_path,lm.name);
-	R_ASSERT(xrDXTC_Compress(FN,eDXT1,FALSE,lm.pSurface,lm.dwWidth,lm.dwHeight,0xff));
-
-	_FREE			(lm.pSurface);
-}
