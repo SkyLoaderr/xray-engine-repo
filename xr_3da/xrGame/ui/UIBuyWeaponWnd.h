@@ -4,14 +4,12 @@
 
 #pragma once
 
-class CInventory;
-
 #include "UIDialogWnd.h"
 #include "UIStatic.h"
 #include "UIButton.h"
 
 #include "UIDragDropItem.h"
-#include "UIWpnDragDropItem.h"
+//#include "UIWpnDragDropItem.h"
 
 #include "UIDragDropList.h"
 #include "UIProgressBar.h"
@@ -26,6 +24,9 @@ class CInventory;
 #include "UITabControl.h"
 
 class CArtifact;
+
+// Пояс
+#define BELT_SLOT			5
 
 class CUIBuyWeaponWnd: public CUIDialogWnd
 {
@@ -53,18 +54,19 @@ public:
 	virtual void Hide();
 
 	//для работы с сочетателем артефактом извне
-	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
-	void AddArtifactToMerger(CArtifact* pArtifact);
+//	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
+//	void AddArtifactToMerger(CArtifact* pArtifact);
 	//для добавления новых предметов во время работы с интерфейсом (например 
 	//отсоединенных аддонов)
-	void AddItemToBag(PIItem pItem);
+//	void AddItemToBag(PIItem pItem);
 protected:
 
 	//-----------------------------------------------------------------------------/
 	//  новые данные относящиеся к покупке оружия 
 	//-----------------------------------------------------------------------------/
-	class CUIDragDropItemMP: public CUIWpnDragDropItem
+	class CUIDragDropItemMP: public CUIDragDropItem
 	{
+		typedef CUIDragDropItem inherited;
 		// возможность хранения номера слота
 		// в который можно переместить данную вещь
 		u32 slotNum;
@@ -75,7 +77,12 @@ protected:
 		// Запоминаем адрес "хозяина"
 		CUIDragDropList *m_pOwner;
 	public:
-		CUIDragDropItemMP(): slotNum(0), sectionNum(0) {}
+		CUIDragDropItemMP(): slotNum(0), sectionNum(0), bAddonsAvailable(false)
+		{
+			std::strcpy(m_strAddonTypeNames[0], "Scope");
+			std::strcpy(m_strAddonTypeNames[1], "Silencer");
+			std::strcpy(m_strAddonTypeNames[2], "Grenade Launcher");
+		}
 		// Для слота
 		void SetSlot(u32 slot) { R_ASSERT(slot < 6); slotNum = slot; }
 		u32	 GetSlot() { return slotNum; }
@@ -101,22 +108,31 @@ protected:
 			// Имя секции для аддона
 			std::string			strAddonName;
 			// -1 - вообще нельзя приаттачить, 0 - не приаттачен, 1 - приаттачен
-			int					bIsAttached;
+			int					iAttachStatus;
 			// Координаты смещения относительно иконки оружия
 			int					x, y;
 			// Constructor
-			tAddonInfo():		bIsAttached(false), x(-1), y(-1) {}
+			tAddonInfo():		iAttachStatus(-1), x(-1), y(-1) {}
 		} AddonInfo;
 
 		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
 		// Scope, Silencer, Grenade Launcher.
-		AddonInfo	m_addonInfo[3];
+		enum  AddonIDs { ID_SCOPE = 0, ID_SILENCER, ID_GRENADE_LAUNCHER };
+		AddonInfo	m_AddonInfo[3];
+		// Если у вещи вообще нет аддонов, то поднимаем этот флажек, для ускорения проверок
+		bool		bAddonsAvailable;
+		// Список название типов аддонов
+		char		m_strAddonTypeNames[3][15];
 		
-		void AttachDetachAddon(int iAddonIndex, bool bAttach = true)
-		{
-			R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 4);
-			m_addonInfo[iAddonIndex].bIsAttached = bAttach ? 1 : 0;
-		}
+		void AttachDetachAddon(int iAddonIndex, bool bAttach = true);
+		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
+		virtual void ClipperOn();
+		virtual void ClipperOff();
+		virtual void Draw();
+		// Статики для отображения аддонов
+		CUIStaticItem m_UIStaticScope;
+		CUIStaticItem m_UIStaticSilencer;
+		CUIStaticItem m_UIStaticGrenadeLauncher;
 	};
 
 	CUIFrameWindow		UIBagWnd;
@@ -145,15 +161,23 @@ protected:
 	CUIStatic			UIStaticPersonal;
 
 
-#define SLOTS_NUM 5
+//	#define NO_ACTIVE_SLOT		0xffffffff
+//	#define KNIFE_SLOT			0
+//	#define PISTOL_SLOT			1
+//	#define RIFLE_SLOT			2
+//	#define GRENADE_SLOT		3
+//	#define APPARATUS_SLOT		4
+	#define BELT_SLOT			5
+//	#define OUTFIT_SLOT			6
+//	#define PDA_SLOT			7 
+	#define MP_SLOTS_NUM 8
 	//слоты для оружия
-	CUIDragDropList		UITopList[SLOTS_NUM]; 
+	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 
 	//отдельный слот для костюмов
 	CUIOutfitSlot		UIOutfitSlot;
 
 //	CUIDragDropList		UIBagList;
-	CUIDragDropList		UIBeltList;
-
+//	CUIDragDropList		UIBeltList;
 
 	CUIProgressBar		UIProgressBarHealth;
 	CUIProgressBar		UIProgressBarSatiety;
@@ -205,7 +229,9 @@ protected:
 
 	//описание возоможных дейстивий над предметами инвентаря
 	enum {BUY_ITEM_ACTION, CANCEL_BUYING_ACTION,
-		ATTACH_ADDON, 
+		ATTACH_SCOPE_ADDON, 
+		ATTACH_SILENCER_ADDON,
+		ATTACH_GRENADE_LAUNCHER_ADDON,
 		DETACH_SCOPE_ADDON,
 		DETACH_SILENCER_ADDON,
 		DETACH_GRENADE_LAUNCHER_ADDON};
@@ -213,7 +239,7 @@ protected:
 	//выбросить элемент
 	void DropItem();
 	//съесть элемент
-	void EatItem();
+//	void EatItem();
 
 	//перемещение вещи
 	bool ToSlot();
@@ -229,8 +255,8 @@ protected:
 	void StopSleepWnd();
 
 	//присоединение/отсоединение аддонов к оружию
-	void AttachAddon();
-	void DetachAddon(const char* addon_name);
+//	void AttachAddon();
+//	void DetachAddon(const char* addon_name);
 
 	//устанавливает текущий предмет
 	void SetCurrentItem(CInventoryItem* pItem);
@@ -258,8 +284,10 @@ protected:
 	void InitWpnSectStorage();
 	// заполнить секции оружием которое мы определили предыдущей процедурой
 	void FillWpnSubBags();
-	// заполнить заданную секцию оружием которое мы определили процедурой InitWpnSectStorage
+	// заполнить отдельную секцию оружием
 	void FillWpnSubBag(const u32 slotNum);
+	// Инициализируем аддоны у вещи
+	void InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::string &sectioName);
 	// удаляем все из секций
 	void ClearWpnSubBags();
 	// удаляем все из заданной секции
@@ -276,17 +304,30 @@ protected:
 	string64	m_SectionName;
 	// Кнопки OK и Cancel
 	CUIButton	UIBtnOK, UIBtnCancel;
-	// Спецмассив для запоминания индексов гранат в массиве.
-	xr_vector<int> m_vGrenadeArr;
+	// массив индексов пустых элементов
+	std::set<int> m_iEmptyIndexes;
+	// Получить первый свободный индекс в массиве m_vDragDropItems
+	int GetFirstFreeIndex();
+
+	// Дополнительные функции для получения информации о вещах в слотах
+	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
+	const u8 GetItemIndex(u32 slotNum, u32 idxInArr = 0);
 
 public:
-	// Получить имя секции в weapon.ltx соответствующий оружию в слоте
+	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
 	const char *GetWeaponName(u32 slotNum);
+	const char *GetWeaponNameInBelt(u32 indexInBelt);
 	// Получить индекс оружия в массиве доступных, из заданного слота.
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
 	const u8 GetWeaponIndex(u32 slotNum);
+	const u8 GetWeaponIndexInBelt(u32 indexInBelt);
 	// Получить имя оружия по индексу, и номеру слота
 	const char *GetWeaponNameByIndex(u32 slotNum, u8 idx);
+	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
+	// 0 - Grenade Launcher, 1 - Silencer, 2 - Scope
+	const u8 GetWeaponAddonInfoByIndex(u8 idx);
+	// Получить размер пояса в элементах
+	const u8 GetBeltSize();
 	// Перезагрузка предметов
 	void		ReInitItems	(char *strSectionName);
 };

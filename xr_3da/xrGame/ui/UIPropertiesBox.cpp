@@ -66,7 +66,7 @@ void CUIPropertiesBox::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	inherited::SendMessage(pWnd, msg, pData);
 }
 
-bool CUIPropertiesBox::AddItem(char*  str, void* pData, int value)
+bool CUIPropertiesBox::AddItem(const char*  str, void* pData, int value)
 {
 	return m_UIListWnd.AddItem(str, pData, value);
 }

@@ -33,7 +33,7 @@ public:
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
-	bool AddItem(char*  str, void* pData = NULL, int value = 0);
+	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
 	void RemoveItem(int index);
 	void RemoveAll();
 

@@ -37,6 +37,8 @@ CUIDragDropItem:: CUIDragDropItem()
 	m_bClipper = false;
 
 	m_bInFloat = false;
+
+	m_bMoveOnNextDrop = false;
 }
 
 CUIDragDropItem::~ CUIDragDropItem()
