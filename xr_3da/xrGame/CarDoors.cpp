@@ -138,7 +138,9 @@ void CCar::SDoor::Init()
 		opened_angle+=2.f*M_PI/180.f;
 		closed_angle-=2.f*M_PI/180.f;
 	}
-
+	Fvector shoulder;
+	shoulder.sub(door_transform.c,joint->PSecond_element()->mass_Center());
+	torque=shoulder.magnitude()*joint->PSecond_element()->getMass()*2.f*10.f;
 	Close();
 }
 void CCar::SDoor::Open()
@@ -438,8 +440,8 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 	return true;
 }
 
-bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir)
+bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	if(!joint) return true;//temp for fake doors
-	return state==opened && IsInArea(pos) && TestPass(pos,dir);
+	return state==opened && IsInArea(pos) && TestPass(foot_pos,dir);
 }

@@ -257,14 +257,17 @@ bool CCar::is_Door(int id,xr_map<int,SDoor>::iterator& i)
 	}
 }
 
-bool CCar::Enter(const Fvector& pos,const Fvector& dir)
+bool CCar::Enter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	xr_map<int,SDoor>::iterator i,e;
 
 	i=m_doors.begin();e=m_doors.end();
+	Fvector enter_pos;
+	enter_pos.add(pos,foot_pos);
+	enter_pos.mul(0.5f);
 	for(;i!=e;i++)
 	{
-		if(i->second.CanEnter(pos,dir)) return true;
+		if(i->second.CanEnter(pos,dir,enter_pos)) return true;
 	}
 	return false;
 }
@@ -725,14 +728,14 @@ void CCar::ClearExhausts()
 		i->Clear();
 }
 
-bool CCar::Use(int id,const Fvector& pos,const Fvector& dir)
+bool CCar::Use(int id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
 	xr_map<int,SDoor>::iterator i;
  //
 
 	if(!m_owner)
 	{
-		if(Enter(pos,dir)) return true;
+		if(Enter(pos,dir,foot_pos)) return true;
 	}
 
 

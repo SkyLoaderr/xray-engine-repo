@@ -151,7 +151,7 @@ public:
 		void Close();
 		void Update();
 		float GetAngle();
-		bool CanEnter(const Fvector& pos,const Fvector& dir);
+		bool CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 		bool IsInArea(const Fvector& pos);
 		bool CanExit(const Fvector& pos,const Fvector& dir);
 		bool TestPass(const Fvector& pos,const Fvector& dir);
@@ -295,9 +295,9 @@ public:
 	void					detach_Actor		();
 	bool					attach_Actor		(CActor* actor);
 	bool					is_Door				(int id,xr_map<int,SDoor>::iterator& i);
-	bool					Enter				(const Fvector& pos,const Fvector& dir);
+	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
-	bool					Use					(int id,const Fvector& pos,const Fvector& dir);
+	bool					Use					(int id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );
