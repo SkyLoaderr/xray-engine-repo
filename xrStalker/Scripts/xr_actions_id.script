@@ -59,6 +59,7 @@ zmey_talker_base       = zmey_actions + 400
 zmey_bodyguard_base    = zmey_actions + 450
 zmey_punch_base        = zmey_actions + 500
 zmey_guide_base        = zmey_actions + 550
+zmey_robber_guard_base = zmey_actions + 555
 
 -- Æåíÿ
 jon_actions = zmey_actions + 1024

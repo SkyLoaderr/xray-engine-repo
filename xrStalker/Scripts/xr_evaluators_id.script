@@ -57,6 +57,7 @@ zmey_talker_base     = zmey_evaluators + 300
 zmey_bodyguard_base  = zmey_evaluators + 350
 zmey_punch_base      = zmey_evaluators + 400
 zmey_guide_base      = zmey_evaluators + 450
+zmey_robber_guard_base = zmey_evaluators + 500
 
 --  эвалуоторы Жени
 jon_evaluators          = stalker_ids.property_script + 5000

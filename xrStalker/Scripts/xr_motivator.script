@@ -194,7 +194,11 @@ function motivator_binder:reload (section)
 
     -- Поводырь/грабитель
     xr_motivator.storage[self.object:id()].guide = { }
---    xr_guide.add_to_binder(self.object, char_ini)
+    xr_guide.add_to_binder(self.object, char_ini)
+
+    -- Охранник на входе в логово бандитов
+    xr_motivator.storage[self.object:id()].robber_guard = { }
+    xr_robber_guard.add_to_binder(self.object, char_ini)
 
     -- Настройка встречи
     xr_motivator.storage[self.object:id()].meet = {

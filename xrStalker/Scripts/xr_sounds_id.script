@@ -39,6 +39,7 @@ zmey_sleeper_base           = sound_zmey_base + 200
 zmey_talker_base            = sound_zmey_base + 250
 zmey_bodyguard_base         = sound_zmey_base + 300
 zmey_guide_base             = sound_zmey_base + 350
+zmey_robber_guard_base      = sound_zmey_base + 400
 
 -- Чугай
 chugai_sounds          = global_sounds + 4000
