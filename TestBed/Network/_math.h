@@ -41,6 +41,17 @@ namespace CPU {
 #endif
 };
 
-extern void InitMath(void);
+extern XRCORE_API	void	_initialize_cpu			();
+extern XRCORE_API	void	_initialize_cpu_thread	();
+
+// threading
+typedef				void	thread_t				( void * );
+extern XRCORE_API	void	thread_name				( const char* name);
+extern XRCORE_API	void	thread_spawn			(
+	thread_t*	entry,
+	const char*	name,
+	unsigned	stack,
+	void*		arglist 
+	);
 
 #endif //__XR_MATH_H__

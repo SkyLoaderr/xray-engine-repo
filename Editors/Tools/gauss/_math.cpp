@@ -185,7 +185,7 @@ namespace CPU
 };
 
 //------------------------------------------------------------------------------------
-void InitMath(void) 
+void _initialize_cpu	(void) 
 {
 	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %.2f mhz, %d-clk 'rdtsc'",
 		CPU::ID.v_name,CPU::ID.model_name,
@@ -204,10 +204,81 @@ void InitMath(void)
 	Didentity.identity		();	// Identity matrix
 	pvInitializeStatics		();	// Lookup table for compressed normals
 	FPU::initialize			();
+	_initialize_cpu_thread	();
 }
 
+// per-thread initialization
+#include <xmmintrin.h>
+#define _MM_DENORMALS_ZERO_MASK 0x0040
+#define _MM_DENORMALS_ZERO_ON 0x0040
+#define _MM_FLUSH_ZERO_MASK 0x8000
+#define _MM_FLUSH_ZERO_ON 0x8000
+#define _MM_SET_FLUSH_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_FLUSH_ZERO_MASK) | (mode))
+#define _MM_SET_DENORMALS_ZERO_MODE(mode) _mm_setcsr((_mm_getcsr() & ~_MM_DENORMALS_ZERO_MASK) | (mode))
+void _initialize_cpu_thread	()
+{
+	// fpu & sse
+	FPU::m24r	();
+	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
+		_MM_SET_FLUSH_ZERO_MODE		(_MM_FLUSH_ZERO_ON);
+		_MM_SET_DENORMALS_ZERO_MODE	(_MM_DENORMALS_ZERO_ON);
+	}
+}
 
-void spline1( float t, Fvector *p, Fvector *ret )
+// threading API 
+#pragma pack(push,8)
+struct THREAD_NAME	{
+	DWORD	dwType;
+	LPCSTR	szName;
+	DWORD	dwThreadID;
+	DWORD	dwFlags;
+};
+void	thread_name	(const char* name)
+{
+	THREAD_NAME		tn;
+	tn.dwType		= 0x1000;
+	tn.szName		= name;
+	tn.dwThreadID	= DWORD(-1);
+	tn.dwFlags		= 0;
+	__try
+	{
+		RaiseException(0x406D1388,0,sizeof(tn)/sizeof(DWORD),(DWORD*)&tn);
+	}
+	__except(EXCEPTION_CONTINUE_EXECUTION)
+	{
+	}
+}
+#pragma pack(pop)
+
+struct	THREAD_STARTUP
+{
+	thread_t*	entry	;
+	char*		name	;
+	void*		args	;
+};
+void	__cdecl			thread_entry	(void*	_params )	{
+	// initialize
+	THREAD_STARTUP*		startup	= (THREAD_STARTUP*)_params	;
+	thread_name			(startup->name);
+	thread_t*			entry	= startup->entry;
+	void*				arglist	= startup->args;
+	xr_delete			(startup);
+	_initialize_cpu_thread		();
+
+	// call
+	entry				(arglist);
+}
+
+void	thread_spawn	(thread_t*	entry, const char*	name, unsigned	stack, void* arglist )
+{
+	THREAD_STARTUP*		startup	= xr_new<THREAD_STARTUP>	();
+	startup->entry		= entry;
+	startup->name		= name;
+	startup->args		= arglist;
+	_beginthread		(thread_entry,stack,startup);
+}
+
+void spline1	( float t, Fvector *p, Fvector *ret )
 {
 	float     t2  = t * t;
 	float     t3  = t2 * t;

@@ -82,33 +82,6 @@ void CRenderDevice::End		(void)
 	R_ASSERT2		(SUCCEEDED(_hr),	"Presentation failed. Driver upgrade needed?");
 }
 
-#pragma pack(push,8)
-struct THREAD_NAME
-{
-	DWORD	dwType;
-	LPCSTR	szName;
-	DWORD	dwThreadID;
-	DWORD	dwFlags;
-};
-
-void	SetThreadName(LPCSTR name)
-{
-	THREAD_NAME		tn;
-	tn.dwType		= 0x1000;
-	tn.szName		= name;
-	tn.dwThreadID	= DWORD(-1);
-	tn.dwFlags		= 0;
-	__try
-	{
-		RaiseException(0x406D1388,0,sizeof(tn)/sizeof(DWORD),(DWORD*)&tn);
-	}
-	__except(EXCEPTION_CONTINUE_EXECUTION)
-	{
-	}
-}
-
-#pragma pack(pop)
-
 
 volatile u32	mt_Thread_marker		= 0x12345678;
 void __cdecl	mt_Thread	(void *ptr)	{
