@@ -142,14 +142,17 @@ void CPSVisual::Render(float LOD)
 	mSpriteTransform.set(Device.mFullTransform);
 //	mSpriteTransform.translate_over(m_Emitter->m_Position);
 	
+    int 	mb_samples 	= 1;
+    float 	mb_step 	= 0;
+	
+	Fvector2 lt,rb;
+    lt.set	(0.f,0.f);
+	rb.set	(1.f,1.f);
+
 	// actual rendering
 	DWORD			vOffset;
 	FVF::TL*		pv_start= (FVF::TL*)m_Stream->Lock(m_Particles.size()*4,vOffset);
 	FVF::TL*		pv		= pv_start;
-	
-    int 	mb_samples 	= 1;
-    float 	mb_step 	= 0;
-	
 	for (PS::ParticleIt P=m_Particles.begin(); P!=m_Particles.end(); P++)
 	{
 		DWORD 	C;
@@ -180,24 +183,21 @@ void CPSVisual::Render(float LOD)
             
             PS::SimulateColor	(C,P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
             PS::SimulateSize	(sz,P,k,k_inv);		// adjust current Size & Angle
-
+			
             Fvector D;
 			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
 				Fvector p;
                 float PT = T-0.1f;
-	            float kk = PT/(P->m_Time.end-P->m_Time.start);
+				float kk = PT/(P->m_Time.end-P->m_Time.start);
                 PS::SimulatePosition(p,P,PT,kk);
 				D.sub(Pos,p);
                 D.normalize_safe();
-	        }else{
-            	PS::SimulateAngle(angle,P,T,k,k_inv);
+			}else{
+				PS::SimulateAngle(angle,P,T,k,k_inv);
             }
-
+			
 			// Animation
-			Fvector2 lt,rb;
-            lt.set(0.f,0.f);
-            rb.set(1.f,1.f);
-	        if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
+			if (m_Definition->m_dwFlag&PS_FRAME_ENABLED){
 				int frame;
 				if (m_Definition->m_dwFlag&PS_FRAME_ANIMATE)PS::SimulateAnimation(frame,m_Definition,P,T);
 				else										frame = P->m_iAnimStartFrame;
@@ -205,7 +205,7 @@ void CPSVisual::Render(float LOD)
             }
 			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH) 	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,D);
 			else                                     	FillSprite(pv,mSpriteTransform,Pos,lt,rb,sz*.5f,C,angle);
-
+			
 			// modify visual bbox
 			bv_BBox.modify(Pos);
         }
@@ -214,8 +214,9 @@ void CPSVisual::Render(float LOD)
 	// unlock VB and Render it as triangle list
 	DWORD dwNumVerts = pv-pv_start;
 	m_Stream->Unlock(dwNumVerts);
-	if (dwNumVerts){
-		Device.Shader.Set		(hShader);
+	if (dwNumVerts)
+	{
+//		Device.Shader.Set		(hShader);
 		Device.Primitive.Draw	(m_Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
 	}
 }
