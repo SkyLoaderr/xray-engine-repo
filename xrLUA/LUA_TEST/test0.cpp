@@ -1097,12 +1097,6 @@ struct MI2W : public MI2, public wrap_base
 template <typename T>
 struct AW : public T, public wrap_base {};
 
-void test_pointer(luabind::object a)
-{
-	a["a"] = 5;
-	a["b"] = "Ok";
-}
-
 class CLuaValue {
 protected:
 	luabind::object	m_object;
@@ -1171,8 +1165,25 @@ public:
 	}
 };
 
+void test_object(luabind::object a)
+{
+//	luabind::get_globals(a.lua_state())[a] = 5;
+	a = 5;
+}
+
+void test_object1(luabind::object a, LPCSTR name)
+{
+	a[name] = 5;
+}
+
+void test_object2(luabind::object a, luabind::object b)
+{
+	a[b] = 5;
+}
+
 void test1()
 {
+	broker_test		();
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -1200,9 +1211,9 @@ void test1()
 			.def(constructor<>())
 			.def("vf",&MI2::vf,&MI2W::vf_static,out_value(_2)),
 
-
-
-		def("test_pointer",&test_pointer)
+		def("test_object",&test_object),
+		def("test_object",&test_object1),
+		def("test_object",&test_object2)
 	];
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);

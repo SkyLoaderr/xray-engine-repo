@@ -97,7 +97,8 @@ struct CDestroyer {
 		template <>
 		IC	static void delete_data<true>(T &data)
 		{
-			CDestroyer::delete_data		(*data);
+			if (data)
+				CDestroyer::delete_data	(*data);
 			xr_delete					(data);
 		}
 	};

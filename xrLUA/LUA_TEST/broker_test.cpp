@@ -16,7 +16,7 @@ u32 update_count = 0;
 u32 save_count = 0;
 u32 inequality_count = 0;
 
-struct CTestObject : public IPureServerObject {
+struct CTestObject : public IPureServerObject, public IPureDestroyableObject{
 	int a;
 
 	IC								CTestObject	()
@@ -91,6 +91,12 @@ struct CTestObject : public IPureServerObject {
 		--save_count;
 		tFileStream.r				(&a,sizeof(a));
 	}
+
+	virtual void					destroy		()
+	{
+		printf	("destroy called\n");
+	}
+
 };
 
 //#define USE_WRITER
