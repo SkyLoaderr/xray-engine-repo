@@ -290,50 +290,55 @@ HRESULT	CRender::shader_compile			(
 		sprintf						(c_smapsize,"%d",u32(o.smapsize));
 		defines[def_it].Name		=	"SMAP_size";
 		defines[def_it].Definition	=	c_smapsize;
-		def_it						++;
+		def_it						++	;
 	}
 	if (o.fp16_filter)		{
 		defines[def_it].Name		=	"FP16_FILTER";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (o.fp16_blend)		{
 		defines[def_it].Name		=	"FP16_BLEND";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (o.HW_smap)			{
 		defines[def_it].Name		=	"USE_HWSMAP";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (o.sjitter)			{
 		defines[def_it].Name		=	"USE_SJITTER";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (HW.Caps.raster_major >= 3)	{
 		defines[def_it].Name		=	"USE_SHADER3";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (o.Tshadows)			{
 		defines[def_it].Name		=	"USE_TSHADOWS";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
+	}
+	if (o.sunfilter)		{
+		defines[def_it].Name		=	"USE_SUNFILTER";
+		defines[def_it].Definition	=	"1";
+		def_it						++	;
 	}
 	if (o.forcegloss)		{
 		sprintf						(c_gloss,"%f",o.forcegloss_v);
 		defines[def_it].Name		=	"FORCE_GLOSS";
 		defines[def_it].Definition	=	c_gloss;
-		def_it						++;
+		def_it						++	;
 	}
 
 	// skinning
 	if (m_skinning<0)		{
 		defines[def_it].Name		=	"SKIN_NONE";
 		defines[def_it].Definition	=	"1";
-		def_it						++;
+		def_it						++	;
 	}
 	if (0==m_skinning)		{
 		defines[def_it].Name		=	"SKIN_0";
