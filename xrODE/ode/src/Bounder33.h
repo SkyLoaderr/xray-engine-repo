@@ -12,6 +12,8 @@ static	const	int			RLENGTH=4;
 				dReal		*b																		;
 				dReal		*x																		;
 				dReal		w[3]																	;
+				dReal		tw[3]																	;
+				int			state[3]																;
 				int			skip																	;
 
 				int			index[3]																;
@@ -25,6 +27,8 @@ static	const	int			RLENGTH=4;
 				void		Swap			(int i, int j)											;
 				void		ToBn			(int i)													;
 				bool 		CheckIndex		(int i)													;
+				bool		CheckState		(int i)													;
+				void		ToNBn			()														;
 				void		SolveW			()														;
 				void		UpdateX			()														;
 				void		CheckUnBn		()														;
