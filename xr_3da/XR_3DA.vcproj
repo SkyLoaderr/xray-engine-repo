@@ -1075,6 +1075,9 @@
 				<File
 					RelativePath=".\Stats_Timer.h">
 				</File>
+				<File
+					RelativePath=".\xr_resource.h">
+				</File>
 				<Filter
 					Name="HW"
 					Filter="">
@@ -1189,6 +1192,18 @@
 						Filter="">
 						<File
 							RelativePath=".\SH_Constant.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									AssemblerOutput="4"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\SH_Constant.h">
