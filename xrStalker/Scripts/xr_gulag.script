@@ -83,7 +83,10 @@ function fract:calculate()
 			v.object = nil				
 		end
 	end
-	if self.calculateStates ~= nil then self.calculateStates(self.Object, self.music) end
+	if self.calculateStates ~= nil then 
+		printf("calculate_state")
+		self.state = self.calculateStates(self.Object, self.music) 
+	end
 
 	--' Апдейт матюгальника
 	if self.music ~= nil then
