@@ -33,10 +33,11 @@ function main ()
 --		cond		(cond.move_end)
 --	)
 
-	action(
-		stalker,
-		look		(),
-		cond		(cond.time_end,100000000)
+	action (
+		stalker, 
+		move		(move.standing, move.stand, move.line, patrol ("way0000")),
+		anim		("sidya_boltaet_ 0"),
+		cond		(cond.time_end, 10000000)
 	)
 	
 	while stalker:action() do
