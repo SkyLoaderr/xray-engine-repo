@@ -230,13 +230,6 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 
 	xrServer*	S					=	Level().Server;
 
-	// spectator
-	xrSE_Spectator*		A			=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
-	strcpy							(A->s_name_replace,get_option_s(get_name_id(id_killed),"name","Player"));					// name
-	A->s_flags						=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
-	A->o_Position					=	S->ID_to_entity(get_id_2_eid(id_killed))->o_Position;
-	spawn_end						(A,id_killed);
-
 	// Drop everything
 	vector<u16>*	C				=	get_children(id_killed);
 	if (0==C)						return;
@@ -248,6 +241,13 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 		xrServerEntity*		what		= S->ID_to_entity(eid);
 		S->Perform_reject				(what,from);
 	}
+
+	// spectator
+	xrSE_Spectator*		A			=	(xrSE_Spectator*)spawn_begin	("spectator");															// create SE
+	strcpy							(A->s_name_replace,get_option_s(get_name_id(id_killed),"name","Player"));					// name
+	A->s_flags						=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
+	A->o_Position					=	S->ID_to_entity(get_id_2_eid(id_killed))->o_Position;
+	spawn_end						(A,id_killed);
 }
 
 void	game_sv_CS::OnPlayerDisconnect	(u32 id_who)
