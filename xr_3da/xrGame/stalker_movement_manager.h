@@ -159,8 +159,10 @@ public:
 	IC		const Fvector							&desired_position		() const;
 	IC		const Fvector							&desired_direction		() const;
 	IC		const MonsterSpace::EBodyState			body_state				() const;
+	IC		const MonsterSpace::EBodyState			target_body_state		() const;
 	IC		const MonsterSpace::EMovementType		movement_type			() const;
 	IC		const MonsterSpace::EMentalState		mental_state			() const;
+	IC		const MonsterSpace::EMentalState		target_mental_state		() const;
 	IC		const EPathType							path_type				() const;
 	IC		const EDetailPathType					detail_path_type		() const;
 	IC		CAbstractVertexEvaluator				*node_evaluator			() const;

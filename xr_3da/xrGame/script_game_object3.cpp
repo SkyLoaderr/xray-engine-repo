@@ -418,6 +418,16 @@ MonsterSpace::EBodyState CScriptGameObject::body_state					() const
 	return			(stalker->movement().body_state());
 }
 
+MonsterSpace::EBodyState CScriptGameObject::target_body_state			() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member body_state!");
+		return		(MonsterSpace::eBodyStateStand);
+	}
+	return			(stalker->movement().target_body_state());
+}
+
 MonsterSpace::EMovementType CScriptGameObject::movement_type			() const
 {
 	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
@@ -446,6 +456,16 @@ MonsterSpace::EMentalState CScriptGameObject::mental_state				() const
 		return		(MonsterSpace::eMentalStateDanger);
 	}
 	return			(stalker->movement().mental_state());
+}
+
+MonsterSpace::EMentalState CScriptGameObject::target_mental_state		() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker) {
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member mental_state!");
+		return		(MonsterSpace::eMentalStateDanger);
+	}
+	return			(stalker->movement().target_mental_state());
 }
 
 MovementManager::EPathType CScriptGameObject::path_type					() const

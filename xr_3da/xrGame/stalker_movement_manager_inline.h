@@ -84,6 +84,11 @@ IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 	return						(m_current.m_body_state);
 }
 
+IC	const MonsterSpace::EBodyState CStalkerMovementManager::target_body_state() const
+{
+	return						(m_target.m_body_state);
+}
+
 IC const MonsterSpace::EMovementType CStalkerMovementManager::movement_type() const
 {
 	return						(m_current.m_movement_type);
@@ -92,6 +97,11 @@ IC const MonsterSpace::EMovementType CStalkerMovementManager::movement_type() co
 IC const MonsterSpace::EMentalState CStalkerMovementManager::mental_state() const
 {
 	return						(m_current.m_mental_state);
+}
+
+IC const MonsterSpace::EMentalState CStalkerMovementManager::target_mental_state() const
+{
+	return						(m_target.m_mental_state);
 }
 
 IC	const MovementManager::EPathType CStalkerMovementManager::path_type	() const

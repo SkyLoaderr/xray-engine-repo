@@ -180,9 +180,11 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("set_detail_path_type",		&CScriptGameObject::set_detail_path_type	)
 
 		.def("body_state",					&CScriptGameObject::body_state				)
+		.def("target_body_state",			&CScriptGameObject::target_body_state		)
 		.def("movement_type",				&CScriptGameObject::movement_type			)
 		.def("target_movement_type",		&CScriptGameObject::target_movement_type	)
 		.def("mental_state",				&CScriptGameObject::mental_state			)
+		.def("target_mental_state",			&CScriptGameObject::target_mental_state		)
 		.def("path_type",					&CScriptGameObject::path_type				)
 		.def("detail_path_type",			&CScriptGameObject::detail_path_type		)
 
