@@ -247,6 +247,7 @@ public:
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
 	virtual void					statistic				( CSound_stats&  dest )																	= 0;
 
+	virtual float					get_occlusion_to		( const Fvector& hear_pt, Fvector& snd_pt, float dispersion=0.2f)						= 0;
 #ifdef __BORLANDC__
 	virtual SoundEnvironment_LIB*	get_env_library			()																						= 0;
 	virtual void					refresh_env_library		()																						= 0;

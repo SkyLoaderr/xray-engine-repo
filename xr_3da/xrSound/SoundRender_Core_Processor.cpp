@@ -140,6 +140,41 @@ void	CSoundRender_Core::statistic			(CSound_stats&  dest)
 	cache.stats_clear	();
 }
 
+float CSoundRender_Core::get_occlusion_to( const Fvector& hear_pt, Fvector& snd_pt, float dispersion )
+{
+	float occ_value			= 1.f;
+
+	// Calculate RAY params
+	Fvector	pos,dir;
+	pos.random_dir			();
+	pos.mul					(dispersion);
+	pos.add					(snd_pt);
+	dir.sub					(pos,hear_pt);
+	float range				= dir.magnitude	();
+	dir.div					(range);
+
+	if (0!=geom_SOM){
+#ifdef _EDITOR
+		ETOOLS::ray_options		(CDB::OPT_CULL);
+		ETOOLS::ray_query		(geom_SOM,hear_pt,dir,range);
+		u32 r_cnt				= ETOOLS::r_count();
+		CDB::RESULT*	_B 		= ETOOLS::r_begin();
+#else
+		geom_DB.ray_options		(CDB::OPT_CULL);
+		geom_DB.ray_query		(geom_SOM,hear_pt,dir,range);
+		u32 r_cnt				= geom_DB.r_count();
+		CDB::RESULT*	_B 		= geom_DB.r_begin();
+#endif            
+		if (0!=r_cnt){
+			for (u32 k=0; k<r_cnt; k++){
+				CDB::RESULT* R	 = _B+k;
+				occ_value		*= *(float*)&R->dummy;
+			}
+		}
+	}
+	return occ_value;
+}
+
 float CSoundRender_Core::get_occlusion(Fvector& P, float R, Fvector* occ)
 {
 	float occ_value			= 1.f;
