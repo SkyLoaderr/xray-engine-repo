@@ -84,18 +84,14 @@ struct SPathPoint {
 	Fvector			direction;
 	float			linear_velocity;
 	float			angular_velocity; 
+	u32				start_vertex_id;
 };
 
-struct STangentPoint {
-	Fvector			point;
-	float			angle;
-};
-
-struct SCirclePoint :
-	public STangentPoint
-{
+struct SCirclePoint {
 	Fvector			center;
 	float			radius;
+	Fvector			point;
+	float			angle;
 };
 
 struct STrajectoryPoint :
@@ -104,83 +100,209 @@ struct STrajectoryPoint :
 {
 };
 
-IC	void adjust_point(const Fvector &source, float yaw, float magnitude, Fvector &dest)
+IC	void adjust_point(
+	const Fvector		&source, 
+	float				yaw, 
+	float				magnitude, 
+	Fvector				&dest
+)
 {
-	dest.setHP		(yaw,0);
-	dest.mul		(magnitude);
-	dest.add		(source);
+	dest.setHP			(yaw,0);
+	dest.mul			(magnitude);
+	dest.add			(source);
+}
+
+IC	void assign_angle(
+	float				&angle, 
+	const float			start_yaw, 
+	const float			dest_yaw, 
+	const bool			positive
+)
+{
+	if (positive)
+		if (dest_yaw >= start_yaw)
+			angle		= dest_yaw - start_yaw;
+		else
+			angle		= PI_MUL_2 - (dest_yaw - start_yaw);
+	else
+		if (dest_yaw <= start_yaw)
+			angle		= dest_yaw - start_yaw;
+		else
+			angle		= dest_yaw - start_yaw - PI_MUL_2;
 }
 
 IC	void compute_circles(
-	STrajectoryPoint &point, 
-	SCirclePoint	 *circles
+	STrajectoryPoint	&point, 
+	SCirclePoint		*circles
 )
 {
-	point.radius	= point.linear_velocity/point.angular_velocity;
-	circles[0].radius = circles[1].radius = point.radius;
-	float			yaw, pitch;
+	point.radius		= point.linear_velocity/point.angular_velocity;
+	circles[0].radius	= circles[1].radius = point.radius;
+	float				yaw, pitch;
 	point.direction.getHP(yaw,pitch);
-	adjust_point	(point.position,yaw + PI_DIV_2,point.radius,circles[0].center);
-	adjust_point	(point.position,yaw - PI_DIV_2,point.radius,circles[1].center);
+	adjust_point		(point.position,yaw + PI_DIV_2,point.radius,circles[0].center);
+	adjust_point		(point.position,yaw - PI_DIV_2,point.radius,circles[1].center);
 }
 
-IC	void compute_tangent(
-	const SCirclePoint		&start, 
-	const SCirclePoint		&dest, 
-	STangentPoint			*tangent
+IC	float cross_product_2D_y(
+	const Fvector &point1,
+	const Fvector &point2
 )
 {
-	// distance between circle centers
-	float			distance = start.center.distance_to(dest.center);
-	// radius difference
-	float			r_diff = start.radius - dest.radius;
-	// angle between external tangents and circle centers segment
-	float			alpha = acosf(r_diff/distance);
-	
-	Fvector			direction;
-	// direction from the first circle to the second one
-	direction.sub	(dest.center,start.center);
-	float			yaw, pitch;
-	direction.getHP	(yaw,pitch);
-
-	float			start_angle = 0.f, dest_angle = 0.f;
-	if (r_diff > 0)
-		dest_angle	= PI_DIV_2;
-	else
-		start_angle	= PI_DIV_2;
-
-	// compute external tangents points
-	Fvector			tangents[4][2];
-	adjust_point	(start.center,yaw + (alpha - start_angle),	start.radius,tangents[0][0]);
-	adjust_point	(start.center,yaw - (alpha - start_angle),	start.radius,tangents[1][0]);
-	adjust_point	(dest.center,yaw  + (alpha - dest_angle),	dest.radius, tangents[0][1]);
-	adjust_point	(dest.center,yaw  - (alpha - dest_angle),	dest.radius, tangents[1][1]);
-	
-#pragma todo("Check if this tangents are possible, i.e. circles aren't intersecting")
-	// angle between internal tangents and circle centers segment
-	alpha			= PI_DIV_2 - asinf((start.radius + dest.radius)/distance);
-
-	// compute internal tangents points
-	adjust_point	(start.center,yaw + alpha,					start.radius,tangents[2][0]);
-	adjust_point	(start.center,yaw - alpha,					start.radius,tangents[3][0]);
-	adjust_point	(dest.center,yaw + alpha,					dest.radius, tangents[2][1]);
-	adjust_point	(dest.center,yaw - alpha,					dest.radius, tangents[3][1]);
-
-	// choosing valid tangents (it is a single one)
+	return				(point1.z*point2.x - point1.x*point2.z);
 }
 
-u32	 choose_tangent(const STangentPoint	tangents[4][2])
+IC	bool compute_tangent(
+	const STrajectoryPoint	&start, 
+	const SCirclePoint		&start_circle, 
+	const STrajectoryPoint	&dest, 
+	const SCirclePoint		&dest_circle, 
+	SCirclePoint			*tangents
+)
 {
-	return			(0);
+#pragma todo("Dima to Dima : If this will be a slow down, optimize it by using just a few square roots instead of arctangents and arccosinuses")
+	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, pitch, yaw;
+	Fvector				direction, temp;
+	
+	// computing 2D cross product for start point
+	direction.sub		(start.point,start_circle.center);
+	direction.getHP		(start_yaw,pitch);
+	start_cp			= cross_product_2D_y(start.point,direction);
+	
+	// computing 2D cross product for dest point
+	direction.sub		(dest.point,dest_circle.center);
+	direction.getHP		(dest_yaw,pitch);
+	dest_cp				= cross_product_2D_y(dest.point,direction);
+
+	if (start_cp*dest_cp > 0) {
+		// so, our tangents are outside
+		// distance between circle centers
+		// radius difference
+		float			r_diff = start_circle.radius - dest_circle.radius;
+		if (fis_zero(r_diff,EPS_L))
+			return		(false);
+
+		distance		= start_circle.center.distance_to_xz(dest_circle.center);
+
+		// angle between external tangents and circle centers segment
+		alpha			= acosf(r_diff/distance);
+	}
+	else {
+		distance		= start_circle.center.distance_to_xz(dest_circle.center);
+		// so, our tangents are inside (crossing)
+		if (start_circle.radius + dest_circle.radius > distance)
+			return		(false);
+	
+		// angle between internal tangents and circle centers segment
+		alpha			= acosf((start_circle.radius + dest_circle.radius)/distance);
+	}
+
+	tangents[0]			= start_circle;
+	tangents[1]			= dest_circle;
+	start_yaw			= angle_normalize(start_yaw);
+	dest_yaw			= angle_normalize(dest_yaw);
+
+	// direction from the first circle to the second one
+	direction.sub		(dest_circle.center,start_circle.center);
+	direction.getHP		(yaw,pitch);
+
+	// compute external tangent points
+	adjust_point		(start_circle.center,yaw + alpha,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center,yaw  + alpha,	dest_circle.radius, tangents[1].point);
+
+	direction.sub		(tangents[1].point,tangents[0].point);
+	temp.sub			(tangents[0].point,start_circle.center);
+	float				tangent_cp = cross_product_2D_y(temp,direction);
+	if (start_cp*tangent_cp > 0) {
+		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw + alpha),start_cp > 0);
+		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw + alpha),dest_cp  > 0);
+		return			(true);
+	}
+
+	// compute external tangent points
+	adjust_point		(start_circle.center,yaw - alpha,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center,yaw  - alpha,	dest_circle.radius, tangents[1].point);
+
+	return				(true);
 }
 
-void build_trajectory(
+bool choose_tangent(
+	STrajectoryPoint	&start, 
+	STrajectoryPoint	&dest, 
+	const SCirclePoint	tangents[4][2], 
+	const u32			tangent_count
+)
+{
+	float				min_distance = flt_max;
+	u32					choosen = u32(-1);
+	for (u32 i=0; i<tangent_count; ++i) {
+		float			trajectory_length = 
+			_abs(tangents[i][0].angle)*tangents[i][0].radius + 
+			_abs(tangents[i][1].angle)*tangents[i][1].radius + 
+			tangents[i][0].point.distance_to_xz(tangents[i][1].point);
+		if (trajectory_length < min_distance) {
+			min_distance = trajectory_length;
+			choosen		= i;
+		}
+	}
+	if (choosen > tangent_count)
+		return			(false);
+
+	SCirclePoint		&_start = start;
+	SCirclePoint		&_dest  = dest;
+	_start				= tangents[choosen][0];
+	_dest				= tangents[choosen][1];
+
+	return				(true);
+}
+
+bool build_circle_trajectory(
+	const STrajectoryPoint	&position, 
+	xr_vector<Fvector>		&path,
+	bool					start_point
+)
+{
+	Fvector				direction;
+	if (start_point)
+		direction.sub	(position.position,position.center);
+	else
+		direction.sub	(position.point,position.center);
+
+	float				yaw,pitch;
+	direction.getHP		(yaw,pitch);
+	for (u32 i=0, n=fis_zero(position.angle) ? 1 : iFloor(position.angular_velocity/(_abs(position.angle)*10.f) +.5f); i<n; ++i) {
+		path.push_back	(Fvector());
+		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,path.back());
+	}
+	return				(true);
+}
+
+bool build_line_trajectory(
 	const STrajectoryPoint	&start, 
 	const STrajectoryPoint	&dest, 
-	const STangentPoint		*tangents,
-	const xr_vector<Fvector>&path
+	xr_vector<Fvector>		&path
 )
 {
+	xr_vector<u32>		node_path;
+	u32					start_vertex_id = ai().level_graph().check_position_in_direction(start.start_vertex_id,start.position,start.point);
+	if (!ai().level_graph().valid_vertex_id(start_vertex_id))
+		return			(false);
+	return				(ai().level_graph().create_straight_PTN_path(start_vertex_id,start.point,dest.point,path,node_path,false));
+}
+
+bool build_trajectory(
+	const STrajectoryPoint	&start, 
+	const STrajectoryPoint	&dest, 
+	xr_vector<Fvector>		&path
+)
+{
+	if (!build_circle_trajectory(start,path,true))
+		return			(false);
+	if (!build_line_trajectory(start,dest,path))
+		return			(false);
+	if (!build_circle_trajectory(dest,path,false))
+		return			(false);
+	return				(true);
 }
 
 bool compute_trajectory(
@@ -193,16 +315,22 @@ bool compute_trajectory(
 	compute_circles	(start,start_circles);
 	compute_circles	(dest,dest_circles);
 	
-	STangentPoint	tangent_points[4][2];
+	u32				tangent_count = 0;
+	SCirclePoint	tangent_points[4][2];
 	for (u32 i=0; i<2; ++i)
 		for (u32 j=0; j<2; ++j)
-			compute_tangent(start_circles[i],dest_circles[j],tangent_points[2*i + j]);
+			if (compute_tangent(
+					start,
+					start_circles[i],
+					dest,
+					dest_circles[j],
+					tangent_points[tangent_count]
+				)
+			)
+			++tangent_count;
 
-	u32				choosen = choose_tangent(tangent_points);
-	if (choosen > 4)
+	if (!choose_tangent(start,dest,tangent_points,tangent_count))
 		return		(false);
 
-	build_trajectory(start,dest,tangent_points[choosen],path);
-
-	return			(true);
+	return			(build_trajectory(start,dest,path));
 }
