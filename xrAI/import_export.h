@@ -13,7 +13,7 @@
 
 using namespace fastdelegate;
 
-DLL_API class CTestInterface {
+class DLL_API CTestInterface {
 public:
 	FastDelegate1<LPCSTR>	test0;
 	FastDelegate1<int>		test1;
