@@ -60,7 +60,6 @@ p2f 	p_main	( v2p_in IN )
 
   // Half-angle vector:
   float3 H 	= normalize	(L + V);
-  // float3 H 	= (L + V)*0.6;
 
   // Specular = (H • N)^m
   float S 	= pow		(max(0,dot(H, N)), 32);
