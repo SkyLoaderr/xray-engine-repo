@@ -195,13 +195,11 @@ public:
 					if (fMinDistance < EPS_L) {
 						SConnectionVertex				T;
 						LPSTR							S;
-						S								= (char *)xr_malloc((xr_strlen(tpGraphPoint->name_replace()) + 1)*sizeof(char));
-						T.caConnectName					= (char *)xr_malloc((xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
+						S								= xr_strdup(tpGraphPoint->name_replace());
+						T.caConnectName					= xr_strdup(tpGraphPoint->m_caConnectionPointName);
 						T.dwLevelID						= dwfGetIDByLevelName(Ini,*tpGraphPoint->m_caConnectionLevelName);
 						T.tGraphID						= (ALife::_GRAPH_ID)i;
 						T.tOldGraphID					= tGraphID;
-						Memory.mem_copy					(S,tpGraphPoint->name_replace(),(u32)xr_strlen(tpGraphPoint->name_replace()) + 1);
-						Memory.mem_copy					(T.caConnectName,*tpGraphPoint->m_caConnectionPointName,(u32)xr_strlen(tpGraphPoint->m_caConnectionPointName) + 1);
 
 						bool							ok = true;
 						VERTEX_MAP::const_iterator		II = m_tVertexMap.begin();
