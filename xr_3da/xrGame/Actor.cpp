@@ -1489,7 +1489,7 @@ void aaa()
 {
 	Fvector start,dir;
 	float range;
-	collide::ray_defs RD		(start,dir,range,0,collide::rqtBoth);
+	collide::ray_defs RD		(start,dir,range,CDB::OPT_CULL,collide::rqtBoth);
 	float	shoot_factor		= 1.f;
 	if (g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&shoot_factor)){
 	}
