@@ -137,10 +137,9 @@
 	// to a quaternion.
 
 #define AA_QZERO_TOLERANCE		0.0001f
-
 #define QEPSILON				0.00001f
 
-typedef struct _quaternion 
+typedef struct XRCORE_API _quaternion 
 {
 private:
 	IC float _asin(const float x)

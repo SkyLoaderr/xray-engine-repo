@@ -123,7 +123,7 @@
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE">
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -391,6 +391,12 @@
 					Name="VCCLCompilerTool"
 					AssemblerOutput="4"/>
 			</FileConfiguration>
+		</File>
+		<File
+			RelativePath="xrMemory_subst_borland.h">
+		</File>
+		<File
+			RelativePath="xrMemory_subst_msvc.h">
 		</File>
 		<File
 			RelativePath="xrSyncronize.h">

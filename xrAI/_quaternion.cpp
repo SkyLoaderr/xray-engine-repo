@@ -2,7 +2,8 @@
 #pragma hdrstop
 
 #define TRACE_QZERO_TOLERANCE	0.1f
-XRCORE_API void Fquaternion::set(const Fmatrix& M){
+XRCORE_API void Fquaternion::set(const Fmatrix& M)
+{
 	float trace,s;
 	
 	trace = M._11 + M._22 + M._33;
