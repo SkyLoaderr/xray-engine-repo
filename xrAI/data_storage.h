@@ -107,6 +107,7 @@ public:
 
 	IC		bool		is_opened_empty	() const
 	{
+		VERIFY					(heap_start <= heap_end);
 		return					(heap_start == heap_end);
 	}
 
@@ -126,17 +127,22 @@ public:
 		return					(is_visited(node) && !is_opened(node));
 	}
 
-	IC		CGraphNode	&add_opened		(const _index_type node_index)
+	IC		CGraphNode	&create_node	(const _index_type node_index)
 	{
 		VERIFY					(node_index < max_node_count);
 		CGraphNode				*node = indexes[node_index].node = nodes + node_count++;
 		indexes[node_index].epoch_id = epoch_count;
 		Memory.mem_fill			(node,0,sizeof(CGraphNode));
 		node->_index			= node_index;
-		node->open_close_mask	= 1;
-		*heap_end				= node;
-		std::push_heap			(heap_start,++heap_end,CGraphNodePredicate());
 		return					(*node);
+	}
+
+	IC		void		add_opened		(CGraphNode &node)
+	{
+		VERIFY					(heap_start <= heap_end);
+		node.open_close_mask	= 1;
+		*heap_end				= &node;
+		std::push_heap			(heap_start,++heap_end,CGraphNodePredicate());
 	}
 
 	IC		void		decrease_opened	(CGraphNode &node)
@@ -146,13 +152,13 @@ public:
 		std::push_heap			(heap_start,i + 1,CGraphNodePredicate());
 	}
 
-	IC		void		remove_best		()
+	IC		void		remove_best_opened	()
 	{
 		VERIFY					(!is_opened_empty());
 		std::pop_heap			(heap_start,heap_end--,CGraphNodePredicate());
 	}
 
-	IC		void		add_closed		()
+	IC		void		add_best_closed		()
 	{
 		VERIFY					(!is_opened_empty());
 		(*heap_start)->open_close_mask = 0;
@@ -188,6 +194,7 @@ public:
 
 	IC		void		get_path		(xr_vector<_index_type> &path)
 	{
+		VERIFY					(!is_opened_empty());
 		CGraphNode				*best = &get_best(), *t1 = best, *t2 = t1->back;
 		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, i++) ;
 

@@ -649,4 +649,9 @@ public:
 	{
 		return					(true);
 	}
+
+	IC		u32			get_node_count	() const
+	{
+		return					(m_header.count);
+	}
 };

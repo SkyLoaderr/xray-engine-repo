@@ -72,11 +72,12 @@ public:
 
 	IC		bool		is_limit_reached(const _iteration_type	iteration_count) const
 	{
-		return					(
-			(data_storage->get_best().f() >= max_range)	||
-			(iteration_count >= max_iteration_count)		||
-			(data_storage->get_visited_node_count() >= max_visited_node_count)
-		);
+		return					(false);
+//		return					(
+//			(data_storage->get_best().f() >= max_range)	||
+//			(iteration_count >= max_iteration_count)		||
+//			(data_storage->get_visited_node_count() >= max_visited_node_count)
+//		);
 	}
 
 	IC		bool		is_accessible	(const _index_type node_index) const
@@ -90,14 +91,14 @@ public:
 		return					(true);
 	}
 
-	IC		void		create_path		(const _index_type node_index)
+	IC		void		create_path		()
 	{
-		Msg						("Path is found!");
+//		Msg						("Path is found!");
 		data_storage->get_path	(*path);
-		xr_vector<_index_type>::const_iterator	i = path->begin();
-		xr_vector<_index_type>::const_iterator	e = path->end();
-		for ( ; i != e; ++i)
-			Msg					("%d",*i);
-		Msg						("Total : %d nodes",e - path->begin());
+//		xr_vector<_index_type>::const_iterator	i = path->begin(), b = i;
+//		xr_vector<_index_type>::const_iterator	e = path->end();
+//		for ( ; i != e; ++i)
+//			Msg					("%4d : %6d",i - b,*i);
+//		Msg						("Total : %d nodes (%f)",e - b,data_storage->get_best().f());
 	}
 };

@@ -117,6 +117,7 @@ void Startup(LPSTR     lpCmdLine)
 	MessageBox			(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	bClose				= TRUE;
+	FlushLog			();
 	Sleep				(500);
 }
 

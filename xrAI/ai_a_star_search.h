@@ -205,4 +205,122 @@ public:
 		}
 		fValue = MAX_VALUE;
 	}
+
+	void vfFindOptimalPath(
+			SNode		**m_tppHeap,
+			SNode		*tpHeap,
+			SIndexNode	*tpIndexes,
+			u32			&dwAStarStaticCounter,
+			SData		&tData,
+			u32			dwStartNode, 
+			u32			dwGoalNode, 
+			xr_vector<u32> &tpaNodes)
+	{
+		// initialization
+		dwAStarStaticCounter++;
+
+		u32					dwHeap = 0;
+		CTemplateNode		tTemplateNode(tData);
+
+		SNode				*tpTemp = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
+							*tpTemp1,
+							*tpTemp2,
+							*tpBestNode,
+							**tppHeapStart = m_tppHeap + 0,
+							**tppHeapEnd = m_tppHeap + 1;
+		
+		Memory.mem_fill(tpTemp,0,sizeof(SNode));
+		
+		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
+
+		tpTemp->iIndex = dwStartNode;
+		tpTemp->g = 0.0;
+		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode);
+		tpTemp->ucOpenCloseMask = 1;
+		tpTemp->f = tpTemp->g + tpTemp->h;
+		*tppHeapStart = tpTemp;
+		
+		for (;;) {
+			
+			// finding the node being estimated as the cheapest among the opened ones
+			tpBestNode = *tppHeapStart;
+			
+			// checking if the distance is not too large
+			// check if that node is our goal
+			int iBestIndex = tpBestNode->iIndex;
+			if (iBestIndex == (int)dwGoalNode) {
+//				fValue = tpBestNode->g;
+
+				tpTemp1 = tpBestNode;
+				tpTemp = tpTemp1->tpBack;
+				for (u32 i=1; tpTemp; tpTemp1 = tpTemp, tpTemp = tpTemp->tpBack, i++) ;
+
+				tpaNodes.resize(i);
+
+				tpTemp1 = tpBestNode;
+				tpaNodes[--i] = tpBestNode->iIndex;
+				tpTemp = tpTemp1->tpBack;
+
+				{
+					xr_vector<u32>::reverse_iterator	I = tpaNodes.rbegin();
+					xr_vector<u32>::reverse_iterator	E = tpaNodes.rend();
+					for (I++ ; tpTemp; tpTemp = tpTemp->tpBack, I++)
+						*I = tpTemp->iIndex;
+				}
+
+				return;
+			}
+			
+			// remove that node from the opened list and put that node to the closed list
+			tpBestNode->ucOpenCloseMask = 0;
+			std::pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
+
+			// iterating on children/neighbours
+			CTemplateNode::iterator tIterator;
+			CTemplateNode::iterator tEnd;
+			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
+			for (  ; tIterator != tEnd; tIterator++) {
+				int iNodeIndex = tTemplateNode.get_value(tIterator);
+				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
+					// check if this node is already in the opened list
+					tpTemp = tpIndexes[iNodeIndex].tpNode;
+					if (tpTemp->ucOpenCloseMask) {
+						// initialize node
+						float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
+						if (tpTemp->g > dG) {
+							tpTemp->g = dG;
+							tpTemp->f = tpTemp->g + tpTemp->h;
+							tpTemp->tpBack = tpBestNode;
+							for (SNode **tpIndex = tppHeapStart; *tpIndex != tpTemp; tpIndex++);
+							std::push_heap(tppHeapStart,tpIndex + 1,CComparePredicate());
+							continue;
+						}
+						continue;
+					}
+					continue;
+				}
+				else {
+					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
+					tpTemp2->tpForward = 0;
+					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
+
+					tpTemp2->iIndex = iNodeIndex;
+					tpTemp2->tpBack = tpBestNode;
+					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
+
+					// put that node to the opened list if wasn't found there and in the closed one
+					tpTemp2->h = tTemplateNode.ffAnticipate();
+					tpTemp2->f = tpTemp2->g + tpTemp2->h;
+					
+					tpTemp2->ucOpenCloseMask = 1;
+					
+					// make it a BESTNODE successor
+					tpBestNode->tpForward = tpTemp2;
+					
+					*tppHeapEnd = tpTemp2;
+					std::push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());
+				}
+			}
+		}
+	}
 };
