@@ -19,7 +19,6 @@ protected:
 	u32					m_start_level_time;
 	ALife::_TIME_ID		m_start_game_time;
 	u32					m_inertia_time;
-	u32					m_priority;
 
 	enum EStateStates {
 		eStateStateConstructed = u32(0),
@@ -36,9 +35,9 @@ protected:
 	LPCSTR				m_state_name;
 #endif
 public:
-							CStateBase			(LPCSTR state_name, u32 priority = u32(-1));
+							CStateBase			(LPCSTR state_name);
 	virtual					~CStateBase			();
-			void			Init				(LPCSTR state_name, u32 priority);
+			void			Init				(LPCSTR state_name);
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reinit				(_Object *object);
 	virtual	void			reload				(LPCSTR section);
