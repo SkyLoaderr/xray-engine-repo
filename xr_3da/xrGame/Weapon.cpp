@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "effectorshot.h"
 #include "..\bodyinstance.h"
+#include "..\render.h"
 #include "..\portal.h"
 #include "..\PSObject.h"
 #include "Weapon.h"
@@ -399,7 +400,7 @@ void CWeapon::OnDrawFlame(BOOL bHUDView)
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render.add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,bHUDView);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;

@@ -368,7 +368,7 @@ void CWeaponM134::Render	(BOOL bHUDView)
 		// Actor render
 		::Render->set_Transform		(&svTransform);
 		::Render->set_LightLevel	(iFloor(m_pParent->AI_Lighting));
-		::Render->add_leafs_Dynamic	(Visual());
+		::Render->add_Visual		(Visual());
 	}
 	if (st_current==eM134Fire) 
 	{

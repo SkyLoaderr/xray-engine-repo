@@ -63,8 +63,9 @@ float				g_fSCREEN;
 static	Fmaterial	gm_Data;
 static	int			gm_Level	= 0;
 static	DWORD		gm_Ambient	= 0;
+static	BOOL		gm_Nearer	= 0;
 
-IC		void		gm_SetLevel		(int iLevel)
+IC		void		gm_SetLevel			(int iLevel)
 {
 	if (_abs(gm_Level-s32(iLevel))>2) {
 		gm_Level	= iLevel;
@@ -74,7 +75,7 @@ IC		void		gm_SetLevel		(int iLevel)
 	}
 }
 
-IC		void		gm_SetAmbient	(DWORD C)
+IC		void		gm_SetAmbient		(DWORD C)
 {
 	if (C!=gm_Ambient)	{
 		gm_Ambient	= C;
@@ -82,12 +83,21 @@ IC		void		gm_SetAmbient	(DWORD C)
 	}
 }
 
-IC		void		gm_SetAmbientLevel(DWORD C)
+IC		void		gm_SetAmbientLevel	(DWORD C)
 {
 	DWORD Camb		= (C*3)/4;
 	gm_SetAmbient	(D3DCOLOR_XRGB(Camb,Camb,Camb));
 	DWORD Clevel	= (C*4)/3;
 	gm_SetLevel		(Clevel);
+}
+IC		void		gm_SetNearer		(BOOL bNearer)
+{
+	if (bNearer	!= gm_Nearer)
+	{
+		gm_Nearer	= bNearer;
+		if (gm_Nearer)	rmNear		();
+		else			rmNormal	();
+	}
 }
 
 // Textures
@@ -478,6 +488,8 @@ void CRender::OnDeviceCreate()
 	REQ_CREATE				();
 	Target.OnDeviceCreate	();
 	level_Load				();
+	gm_Nearer				= FALSE;
+	rmNormal				();
 }
 void CRender::OnDeviceDestroy()
 {

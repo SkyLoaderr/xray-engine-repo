@@ -96,13 +96,13 @@ void CHUDManager::Render_Affected()
 			Model& M = Models[i];
 			::Render->set_Transform		(&M.M);
 			::Render->set_LightLevel	(M.iLightLevel);
-			::Render->add_leafs_Dynamic	(M.V);
+			::Render->add_Visual		(M.V);
 		}
 		
 		// Render with ZB hack :)
-		::Render.rmNear			();
-		::Render.flush_Models	();
-		::Render.rmNormal		();
+		::Render->rmNear		();
+		::Render->flush_Models	();
+		::Render->rmNormal		();
 		
 		Device.mProject			= Pold;
 		Device.mFullTransform	= FTold;

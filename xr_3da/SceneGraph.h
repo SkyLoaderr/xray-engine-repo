@@ -13,6 +13,7 @@ namespace SceneGraph
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
 		int				iLighting;
+		BOOL			nearer;
 	};
 	struct _PatchItem	{
 		Shader*			S;

@@ -28,8 +28,6 @@ public:
 	
 	virtual	void	OnMove					(){;}
 	virtual	void	OnEvent					(EVENT E, DWORD P1, DWORD P2){;}
-	
-	virtual void	RenderModel				(CVisual* V, Fmatrix& M, int L) = 0;
 
 	virtual	void	Hit						(int idx){;}
 

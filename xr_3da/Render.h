@@ -1,6 +1,8 @@
 #ifndef _RENDER_H_
 #define _RENDER_H_
 
+const float					fLightSmoothFactor = 4.f;
+
 #include "frustum.h"
 
 // refs
@@ -18,8 +20,9 @@ class	ENGINE_API	CRender_interface	:
 {
 public:
 	// Data
-	Fmatrix*						pTransform;
-	int								iLightLevel;
+	Fmatrix*						val_pTransform;
+	int								val_iLightLevel;
+	BOOL							val_bNearer;
 	CFrustum						ViewBase;
 	CFrustum*						View;
 public:
@@ -40,8 +43,9 @@ public:
 	
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
-	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	pTransform = M;		}
-	IC		void					set_LightLevel			(int		L	)			{ iLightLevel = L;					}
+	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
+	IC		void					set_LightLevel			(int		L	)			{ val_iLightLevel	= L;			}
+	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= B;			}
 	virtual void					set_Object				(CObject*	O	)	= 0;
 	virtual void					add_Visual				(CVisual*	V	)	= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(CVisual*	V	)	= 0;	// add visual(s)	(all culling performed)
