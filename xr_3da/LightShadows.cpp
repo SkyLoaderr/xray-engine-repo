@@ -130,15 +130,14 @@ void CLightShadows::calculate	()
 			if (level<S_level)	continue;
 			
 			// calculate light center
-			/*
-			Fvector		Lpos;
+			Fvector		Lpos	= L->position;
+			float		Lrange	= L->range;
 			if (L->type==D3DLIGHT_DIRECTIONAL)
 			{
-				Lpos.mul	()
-			} else {
-				Lpos.set	(L->position);
+				Lpos.mul	(L->direction,-100);
+				Lpos.add	(C.C);
+				Lrange		= 120;
 			}
-			*/
 			
 			// calculate projection-matrix
 			Fmatrix		mProject;
