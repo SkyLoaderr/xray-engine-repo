@@ -53,6 +53,15 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
+class CCC_MemStat : public CConsoleCommand
+{
+public:
+	CCC_MemStat(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Memory.mem_statistic();
+	}
+};
+//-----------------------------------------------------------------------
 class CCC_E_Dump : public CConsoleCommand
 {
 public:
