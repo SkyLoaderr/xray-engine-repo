@@ -306,10 +306,8 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_NORMAL);
-		/*
 		RenderCombine_Bloom			();
 		RenderOverlay				();
-		*/
 
 		// Output statistics
 		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -1550,6 +1548,7 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
 	m_pd3dDevice->SetDepthStencilSurface	(NULL);
 	m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,		FALSE);
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 
 	// samplers and texture (diffuse + gloss)
 	m_pd3dDevice->SetTexture				(0, d_Color);
@@ -1573,7 +1572,6 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetFVF					(TVERTEXbloom_FVF);
 
 	// Transfer over-bright information to BLOOM-1
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Combine_VB, 0, sizeof(TVERTEXbloom));
 
 	cc.flush								(m_pd3dDevice);
@@ -1582,8 +1580,6 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetTexture				(1, NULL);
 
 	// ***** Begin filtering *****
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
-
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
