@@ -19,8 +19,6 @@ function main()
 			chert:script	(true,  angry_stalkers.script_name())
 			stalker:script	(true,  angry_stalkers.script_name())
 			ecolog:script	(true,  angry_stalkers.script_name())
-			guard01:script	(true,  angry_stalkers.script_name())
-			guard02:script	(true,  angry_stalkers.script_name())
 
 			action(
 				siviy,
@@ -48,42 +46,6 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000000)
 			)
-			action(
-				guard01,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000000)
-			)
-			action(
-				guard02,
-			  	move	(move.standing, move.stand,move.line,patrol("way0001")),
-				anim	(anim.danger),
-				cond	(cond.time_end, 100000000)
-			)
-
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) and distance_between(guard01,actor) <= 20 then
-			printf("see = true!")
-			flush()
-			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
-			wait(2000)			
-			guard_see_actor = 1
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01:see(actor) and distance_between(guard01,actor) <= 10 then
-			printf("see = true2!")
-			flush()
-			prof_eto_territoriya_svobodi:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)			
-			guard_see_actor = 2
-		break
-		end
-	    wait	()
-	end
 
 	while siviy:action() and chert:action() do
 		if siviy:see(chert) and distance_between(chert,siviy) <= 3 then
