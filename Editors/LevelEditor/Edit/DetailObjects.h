@@ -125,7 +125,9 @@ public:
     void				InvalidateSlots			();
 
     CDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
+    bool				RemoveObject			(LPCSTR name);
     int					RemoveObjects			(bool bOnlyMarked=false);
+    DOIt				FindObjectByNameIt		(LPCSTR name);
     CDetail*			FindObjectByName		(LPCSTR name);
     void				MarkAllObjectsAsDel		();
 

@@ -19,6 +19,7 @@
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
 #include "mxPlacemnt.hpp"
+#include "PropertiesList.h"
 //---------------------------------------------------------------------------
 // refs
 class TfrmOneColor;
@@ -37,26 +38,17 @@ __published:	// IDE-managed Components
 	TExtBtn *ebMultiClear;
 	TPanel *Panel2;
 	TElTree *tvItems;
-	TPanel *Panel4;
-	TLabel *lbItemName;
-	TLabel *RxLabel1;
-	TLabel *RxLabel3;
-	TLabel *lbInfo;
+	TPanel *paObject;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TPanel *Panel5;
-	TExtBtn *ebOk;
-	TExtBtn *ebCancel;
 	TPanel *Panel1;
 	TExtBtn *ebAddObject;
 	TExtBtn *ebDelObject;
-	TExtBtn *ebDOProperties;
 	TExtBtn *ebLoadList;
 	TExtBtn *ebSaveList;
 	TExtBtn *ebClearList;
-	TExtBtn *ExtBtn2;
-    void __fastcall ebOkClick(TObject *Sender);
-    void __fastcall ebCancelClick(TObject *Sender);
+	TPanel *paObjectProps;
+	TSplitter *Splitter1;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
@@ -79,12 +71,14 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsStartDrag(TObject *Sender,
           TDragObject *&DragObject);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall ebDOPropertiesClick(TObject *Sender);
-	void __fastcall tvItemsDblClick(TObject *Sender);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall ebSaveListClick(TObject *Sender);
 	void __fastcall ebLoadListClick(TObject *Sender);
 	void __fastcall ebClearListClick(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
@@ -92,18 +86,22 @@ private:	// User declarations
     EImageThumbnail* m_Thm;
 	EDetailManager* DM;
 
+    TProperties* m_ObjectProps;
+    void __fastcall OnObjectPropsModified();
+    
     xr_vector<TfrmOneColor*> color_indices;
 
     void InitItemsList(const char* nm=0);
 	TElTreeItem* FindItem(const char* s);
     TElTreeItem* AddItem(TElTreeItem* node, const char* name, void* obj=(void*)1);
 
-    void GetInfo();
-    void ClearInfo();
-    void ApplyInfo();
+    void FillData		(); 
+    bool ApplyChanges	();
 
     bool bColorIndModif;
-    void ModifColorInd(){bColorIndModif=true;}
+    bool bObjectModif;
+
+    void ClearIndexForms(); 
 public:		// User declarations
     __fastcall TfrmDOShuffle(TComponent* Owner, EDetailManager* dm_tools);
 // static function
@@ -113,14 +111,16 @@ public:		// User declarations
 	static TfrmDOShuffle* __fastcall Form(){return form;}
 };
 //---------------------------------------------------------------------------
+/*
 struct SDOData{
     AnsiString	m_RefName;
     float		m_fMinScale;
     float		m_fMaxScale;
     float 		m_fDensityFactor;
-    u32		m_dwFlags;
+    Flags32		m_Flags;
     SDOData		();
 };
 DEFINE_VECTOR(SDOData*,DDVec,DDIt);
+*/
 //---------------------------------------------------------------------------
 #endif

@@ -82,6 +82,7 @@ void EDetailManager::ClearBase()
 {
     m_Base.Clear		();
     m_SnapObjects.clear	();
+    UI.Command			(COMMAND_REFRESH_SNAP_OBJECTS);
 }
 void EDetailManager::Clear(bool bSpecific)
 {
@@ -221,6 +222,8 @@ void EDetailManager::SaveColorIndices(IWriter& F)
 
 bool EDetailManager::LoadColorIndices(IReader& F)
 {
+	VERIFY				(objects.empty());
+    VERIFY  			(m_ColorIndices.empty());
     // objects
     IReader* OBJ 		= F.open_chunk(DETMGR_CHUNK_OBJECTS);
     if (OBJ){
@@ -246,7 +249,8 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 		for (int j=0; j<ref_cnt; j++){
         	F.r_stringZ	(buf);
             CDetail* DO	= FindObjectByName(buf);
-            if (DO) 	m_ColorIndices[index].push_back(DO);
+            if (DO) 	m_ColorIndices[index].push_back(DO);    
+            else		ELog.Msg(mtError,"Can't find library object: '%s'",buf);
         }
     }
 

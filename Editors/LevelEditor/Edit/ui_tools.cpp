@@ -40,8 +40,8 @@ TFrame*	TUI_Tools::GetFrame(){
 
 bool TUI_Tools::OnCreate()
 {
-    target          = -1;
-    action          = -1;
+    target          = etObject;//-1;
+    action          = eaSelect;//-1;
     sub_target		= -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
     pCurTools       = 0;
@@ -155,6 +155,7 @@ void __fastcall TUI_Tools::ChangeAction(int act, bool forced){
 
 void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
 {
+	R_ASSERT(tgt!=-1);
     if(bForced||(target!=tgt)){
         target 					= tgt;
         sub_target 				= estDefault;
@@ -196,7 +197,7 @@ void __fastcall TUI_Tools::ChangeTarget(int tgt, bool forced)
 	    m_Flags.set(flChangeTarget,TRUE);
         iNeedTarget=tgt;
     }else
-    	SetTarget(tgt);
+    	SetTarget(tgt,forced);
 }
 //---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){

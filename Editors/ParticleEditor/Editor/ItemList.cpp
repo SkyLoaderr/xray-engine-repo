@@ -242,6 +242,8 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 
     if (Parent)	tvItems->HeaderSections->Item[0]->Text = title;
     else		Caption = title;
+    // check size
+	tvItemsResize			(0);
 }
 //---------------------------------------------------------------------------
 
@@ -426,15 +428,7 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
 
 void __fastcall TItemList::miCreateFolderClick(TObject *Sender)
 {
-	R_ASSERT(m_Flags.is(ilEditMenu));
-	AnsiString folder;
-    AnsiString start_folder;
-    FHelper.MakeName(tvItems->Selected,0,start_folder,true);
-    FHelper.GenerateFolderName(tvItems,tvItems->Selected,folder);
-    folder = start_folder+folder;
-	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder.c_str());
-    if (tvItems->Selected) tvItems->Selected->Expand(false);
-    tvItems->EditItem(node,-1);
+	FHelper.CreateNewFolder(tvItems,true);
 }
 //---------------------------------------------------------------------------
 
@@ -459,9 +453,11 @@ void __fastcall TItemList::Delete1Click(TObject *Sender)
 {
 	R_ASSERT(m_Flags.is(ilEditMenu));
     ElItemsVec sel_items;
-    if (GetSelected(sel_items))
+    if (GetSelected(sel_items)){
         for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
 			FHelper.RemoveItem(tvItems,*it,OnItemRemove);
+        tvItemsAfterSelectionChange(Sender);
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -509,10 +505,17 @@ void __fastcall TItemList::tvItemsResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TItemList::RefreshForm1Click(TObject *Sender)
 {
 	RefreshForm();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
+{
+    tvItems->HeaderSections->Item[0]->Width = tvItems->Width;
+    if (tvItems->VertScrollBarVisible)
+    	tvItems->HeaderSections->Item[0]->Width -= tvItems->VertScrollBarStyles->Width;
 }
 //---------------------------------------------------------------------------
 

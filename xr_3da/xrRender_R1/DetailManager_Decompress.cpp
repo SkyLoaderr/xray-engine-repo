@@ -158,7 +158,7 @@ Device.Statistic.TEST0.End		();
 			Item.P.y	= y;
 
 			// Angles and scale
-			Item.scale	= r_scale.randF		(Dobj->s_min,Dobj->s_max);
+			Item.scale	= r_scale.randF		(Dobj->m_fMinScale,Dobj->m_fMaxScale);
 
 			// X-Form BBox
 			Fmatrix		mScale,mXform;
@@ -189,7 +189,7 @@ Device.Statistic.TEST0.End		();
 				// Always still on CPU pipe
 				Item.vis_ID	= 0;
 			} else {
-				if (Dobj->flags&DO_NO_WAVING)	Item.vis_ID	= 0;
+				if (Dobj->m_Flags.is(DO_NO_WAVING))	Item.vis_ID	= 0;
 				else
 				{
 					if (::Random.randI(0,3)==0)	Item.vis_ID	= 2;	// Second wave

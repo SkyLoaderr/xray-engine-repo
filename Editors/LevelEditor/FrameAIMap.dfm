@@ -20,7 +20,7 @@ object fraAIMap: TfraAIMap
     Left = 0
     Top = 0
     Width = 198
-    Height = 78
+    Height = 65
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -70,7 +70,7 @@ object fraAIMap: TfraAIMap
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'Generate Map'
+      Caption = 'Generate AI Map'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -100,7 +100,7 @@ object fraAIMap: TfraAIMap
       ParentFont = False
       OnClick = ebSmoothNodesClick
     end
-    object ebRemove0LNodes: TExtBtn
+    object ExtBtn6: TExtBtn
       Left = 1
       Top = 46
       Width = 195
@@ -110,7 +110,7 @@ object fraAIMap: TfraAIMap
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'Remove 0-Link Nodes'
+      Caption = 'Clear AI Map'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
@@ -118,32 +118,12 @@ object fraAIMap: TfraAIMap
       Font.Style = []
       Margin = 13
       ParentFont = False
-      OnClick = ebRemove0LNodesClick
-    end
-    object ebRemove1LNodes: TExtBtn
-      Left = 1
-      Top = 61
-      Width = 195
-      Height = 15
-      Align = alNone
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = 'Remove 1-Link Nodes'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      OnClick = ebRemove1LNodesClick
+      OnClick = ExtBtn6Click
     end
   end
   object paLink: TPanel
     Left = 0
-    Top = 78
+    Top = 65
     Width = 198
     Height = 117
     Align = alTop
@@ -188,7 +168,7 @@ object fraAIMap: TfraAIMap
     object ebModeAppend: TExtBtn
       Left = 6
       Top = 69
-      Width = 45
+      Width = 40
       Height = 15
       Align = alNone
       BevelShow = False
@@ -197,19 +177,20 @@ object fraAIMap: TfraAIMap
       CloseButton = False
       GroupIndex = 1
       Down = True
-      Caption = '+'
+      Caption = 'Add'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 2
       ParentFont = False
       FlatAlwaysEdge = True
     end
     object ebModeRemove: TExtBtn
       Left = 6
       Top = 84
-      Width = 45
+      Width = 40
       Height = 15
       Align = alNone
       BevelShow = False
@@ -217,115 +198,164 @@ object fraAIMap: TfraAIMap
       HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
-      Caption = '-'
+      Caption = 'Delete'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 2
       ParentFont = False
       FlatAlwaysEdge = True
     end
     object ebUp: TExtBtn
       Tag = 1
-      Left = 106
+      Left = 73
       Top = 69
-      Width = 45
+      Width = 24
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'F'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        F6000000424DF600000000000000360000002800000008000000080000000100
+        180000000000C0000000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000
+        00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFF
+        FFFFFFFFFF000000000000000000000000191919000000FFFFFFFFFFFFFFFFFF
+        000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000000000
+        00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFF}
       ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSideClick
     end
     object ebDown: TExtBtn
       Tag = 3
-      Left = 106
+      Left = 73
       Top = 99
-      Width = 45
+      Width = 24
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'B'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        F6000000424DF600000000000000360000002800000008000000080000000100
+        180000000000C0000000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000000000
+        00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000FFFFFFFF
+        FFFFFFFFFFFFFFFF000000000000000000000000FFFFFFFFFFFFFFFFFF000000
+        191919000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF0000000000
+        00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFF}
       ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSideClick
     end
     object ebLeft: TExtBtn
-      Left = 61
+      Left = 49
       Top = 84
-      Width = 45
+      Width = 24
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'L'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        F6000000424DF600000000000000360000002800000008000000080000000100
+        180000000000C0000000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000
+        00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000FFFFFFFFFFFFFF
+        FFFF000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000000000000000000FFFFFFFFFFFF0000000000001919
+        19FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
       ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSideClick
     end
     object ebRight: TExtBtn
       Tag = 2
-      Left = 151
+      Left = 97
       Top = 84
-      Width = 45
+      Width = 24
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'R'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        F6000000424DF600000000000000360000002800000008000000080000000100
+        180000000000C0000000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF191919000000000000FFFFFFFF
+        FFFF000000000000000000000000000000000000000000000000000000000000
+        000000000000000000000000000000000000FFFFFFFFFFFFFFFFFF0000000000
+        00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
       ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSideClick
     end
     object ebFull: TExtBtn
       Tag = 4
-      Left = 106
+      Left = 73
       Top = 84
-      Width = 45
+      Width = 24
       Height = 15
       Align = alNone
       BevelShow = False
       HotTrack = True
       HotColor = 15790320
       CloseButton = False
-      Caption = 'All'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Glyph.Data = {
+        E6010000424DE60100000000000036000000280000000C0000000C0000000100
+        180000000000B0010000120B0000120B00000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF000000000000000000000000FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF7F7F7F0000000000000000000000007F7F7FFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFF7F7F7FFFFFFFFFFFFF000000000000FFFFFFFFFF
+        FF7F7F7FFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF000000000000FF
+        FFFFFFFFFF000000000000FFFFFF000000000000000000000000000000000000
+        0000000000000000000000000000000000000000000000000000000000000000
+        00000000000000000000000000000000000000000000FFFFFF000000000000FF
+        FFFFFFFFFF000000000000FFFFFFFFFFFF000000000000FFFFFFFFFFFFFFFFFF
+        7F7F7FFFFFFFFFFFFF000000000000FFFFFFFFFFFF7F7F7FFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF7F7F7F0000000000000000000000007F7F7FFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFF}
       ParentFont = False
       FlatAlwaysEdge = True
       OnClick = ebSideClick
@@ -333,7 +363,7 @@ object fraAIMap: TfraAIMap
     object ebModeInvert: TExtBtn
       Left = 6
       Top = 99
-      Width = 45
+      Width = 40
       Height = 15
       Align = alNone
       BevelShow = False
@@ -341,12 +371,13 @@ object fraAIMap: TfraAIMap
       HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
-      Caption = #172
+      Caption = 'Invert'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = []
+      Margin = 2
       ParentFont = False
       FlatAlwaysEdge = True
     end
@@ -418,11 +449,76 @@ object fraAIMap: TfraAIMap
       Width = 196
       Height = 2
     end
+    object ExtBtn1: TExtBtn
+      Left = 128
+      Top = 69
+      Width = 69
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Select 0-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 2
+      ParentFont = False
+      FlatAlwaysEdge = True
+      OnClick = ebSelLinkClick
+    end
+    object ExtBtn5: TExtBtn
+      Tag = 1
+      Left = 128
+      Top = 84
+      Width = 69
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Select 1-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 2
+      ParentFont = False
+      FlatAlwaysEdge = True
+      OnClick = ebSelLinkClick
+    end
+    object ExtBtn3: TExtBtn
+      Tag = 2
+      Left = 128
+      Top = 99
+      Width = 69
+      Height = 15
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'Select 2-Link'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      Margin = 2
+      ParentFont = False
+      FlatAlwaysEdge = True
+      OnClick = ebSelLinkClick
+    end
   end
   object fsStorage: TFormStorage
     IniSection = 'FrameAIMap'
     Options = []
-    Version = 10
+    Version = 13
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'paObjectList.Tag'

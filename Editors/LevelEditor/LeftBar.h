@@ -184,6 +184,23 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSnapListMode;
 	TExtBtn *ebModeInvert;
 	TBevel *Bevel2;
+	TMenuItem *N21;
+	TMenuItem *Load1;
+	TMenuItem *Save2;
+	TExtBtn *ebViewObject;
+	TExtBtn *ebViewLight;
+	TExtBtn *ebViewSoundSrc;
+	TExtBtn *ebViewSoundEnv;
+	TExtBtn *ebViewGlow;
+	TExtBtn *ebViewShape;
+	TExtBtn *ebViewSpawnPoint;
+	TExtBtn *ebViewWay;
+	TExtBtn *ebViewSector;
+	TExtBtn *ebViewPortal;
+	TExtBtn *ebViewGroup;
+	TExtBtn *ebViewPS;
+	TExtBtn *ebViewDO;
+	TExtBtn *ebViewAIMap;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -273,6 +290,9 @@ __published:	// IDE-managed Components
 	void __fastcall RemoveSelectedFromList1Click(TObject *Sender);
 	void __fastcall ebSnapListModeClick(TObject *Sender);
 	void __fastcall splEmptyMoved(TObject *Sender);
+	void __fastcall Load1Click(TObject *Sender);
+	void __fastcall Save2Click(TObject *Sender);
+	void __fastcall ebViewClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

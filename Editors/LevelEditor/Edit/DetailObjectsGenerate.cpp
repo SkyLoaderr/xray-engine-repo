@@ -454,17 +454,36 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     return true;
 }
 
-CDetail* EDetailManager::FindObjectByName(LPCSTR name){
+DOIt EDetailManager::FindObjectByNameIt(LPCSTR name)
+{
 	for (DOIt it=objects.begin(); it!=objects.end(); it++)
-    	if (stricmp((*it)->GetName(),name)==0) return *it;
-    return 0;
+    	if (stricmp((*it)->GetName(),name)==0) return it;
+    return objects.end();
 }
 
-void EDetailManager::MarkAllObjectsAsDel(){
+CDetail* EDetailManager::FindObjectByName(LPCSTR name)
+{
+	DOIt it = FindObjectByNameIt(name);
+	return (it!=objects.end())?*it:0;
+}
+
+void EDetailManager::MarkAllObjectsAsDel()
+{
 	for (DOIt it=objects.begin(); it!=objects.end(); it++)
     	(*it)->m_bMarkDel = true;
 }
 
+bool EDetailManager::RemoveObject(LPCSTR name)
+{
+    CDetail* D=0;
+    DOIt it = FindObjectByNameIt(name);
+    if (it!=objects.end()){
+        xr_delete		(*it);
+        objects.erase	(it);
+    	return true;
+    }else return false;
+    
+}
 
 CDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
 {

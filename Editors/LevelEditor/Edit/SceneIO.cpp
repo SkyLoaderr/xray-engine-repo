@@ -161,7 +161,7 @@ void EScene::Save(char *_FileName, bool bUndo){
 	F.close_chunk	();
 
 //	Msg("3: %d",F.tell());
-    if (GetMTools(OBJCLASS_DO)->Valid()){
+    if (GetMTools(OBJCLASS_DO)->IsNeedSave()){
 		F.open_chunk	(CHUNK_DETAILOBJECTS);
     	GetMTools(OBJCLASS_DO)->Save(F);
 		F.close_chunk	();
@@ -340,8 +340,6 @@ bool EScene::Load(char *_FileName)
             UpdateSnapList();
         }
 
-        // detail objects
-        // объ€зательно после загрузки snap листа
 	    IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
 		if (DO){
 	    	GetMTools(OBJCLASS_DO)->Load(*DO);
@@ -372,12 +370,13 @@ bool EScene::Load(char *_FileName)
 //---------------------------------------------------------------------------------------
 //copy/paste utils
 //---------------------------------------------------------------------------------------
-void EScene::SaveSelection( int classfilter, char *filename ){
+void EScene::SaveSelection( int classfilter, char *filename )
+{
 	VERIFY( filename );
     CMemoryWriter F;
 
     F.open_chunk	(CHUNK_VERSION);
-    F.w_u32		(CURRENT_FILE_VERSION);
+    F.w_u32			(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
     F.open_chunk	(CHUNK_OBJECT_LIST);
@@ -399,6 +398,23 @@ void EScene::SaveSelection( int classfilter, char *filename ){
             }
     }
 	F.close_chunk	();
+
+    if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)){
+        if (GetMTools(OBJCLASS_DO)->IsNeedSave()){
+            F.open_chunk	(CHUNK_DETAILOBJECTS);
+            GetMTools(OBJCLASS_DO)->Save(F);
+            F.close_chunk	();
+        }
+    }
+
+    if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_AIMAP)){
+        if (GetMTools(OBJCLASS_AIMAP)->IsNeedSave()){
+            F.open_chunk	(CHUNK_AIMAP);
+            GetMTools(OBJCLASS_AIMAP)->Save	(F);
+            F.close_chunk	();
+        }
+    }
+
     F.save_to		(filename);
 }
 
@@ -441,6 +457,20 @@ bool EScene::LoadSelection( const char *_FileName )
         if (!ReadObjects(*F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject)){
             ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
             res = false;
+        }
+
+        IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
+        if (DO){
+        	GetMTools(OBJCLASS_DO)->Clear	();
+            GetMTools(OBJCLASS_DO)->Load	(*DO);
+            DO->close();
+        }
+
+        IReader* AIM = F->open_chunk(CHUNK_AIMAP);
+        if (AIM){
+        	GetMTools(OBJCLASS_AIMAP)->Clear();
+            GetMTools(OBJCLASS_AIMAP)->Load	(*AIM);
+            AIM->close();
         }
 
         // Synchronize

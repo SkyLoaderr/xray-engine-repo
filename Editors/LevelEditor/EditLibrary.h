@@ -20,6 +20,9 @@
 #include "mxPlacemnt.hpp"
 #include <Menus.hpp>
 #include "PropertiesEObject.h"
+#include "MxMenus.hpp"
+#include "ElTreeAdvEdit.hpp"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 // refs
 class TObjectPreview;
@@ -30,16 +33,12 @@ class TfrmEditLibrary : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
-    TExtBtn *ebCancel;
-    TElTree *tvObjects;
 	TExtBtn *ebMakeThm;
 	TFormStorage *fsStorage;
 	TExtBtn *ebProperties;
 	TCheckBox *cbPreview;
 	TPanel *paImage;
 	TPaintBox *pbImage;
-	TExtBtn *ebSave;
-	TExtBtn *ebImport;
 	TExtBtn *ebMakeLOD;
 	TPanel *Panel3;
 	TLabel *lbFaces;
@@ -47,7 +46,12 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel3;
 	TLabel *lbVertices;
 	TBevel *Bevel4;
+	TPanel *paItems;
+	TPanel *Panel2;
+	TExtBtn *ebImport;
 	TExtBtn *ebMakeLWO;
+	TExtBtn *ebSave;
+	TExtBtn *ebCancel;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -55,29 +59,34 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebPropertiesClick(TObject *Sender);
-    void __fastcall tvObjectsDblClick(TObject *Sender);
+    void __fastcall tvItemsDblClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
-	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
-	void __fastcall tvObjectsItemFocused(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall ebMakeLODClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall ebMakeLWOClick(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* 		m_Thm;
 	static TfrmEditLibrary*	form;
     CSceneObject* 			m_pEditObject;
-	static AnsiString 		m_LastSelection;
     static FS_QueryMap		modif_map;
     static bool 			bFinalExit;
     static bool 			bExitResult;
     TfrmPropertiesEObject*  m_Props;
     void					UpdateObjectProperties();
     void					ChangeReference	(LPCSTR new_name);
+
+	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1);
+
+    TItemList*				m_Items;
+	void __fastcall 		OnItemFocused	(ListItemsVec& items);
 public:		// User declarations
     void __fastcall 		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);

@@ -176,3 +176,38 @@ int ELibrary::GetObjects(FS_QueryMap& files)
 }
 //---------------------------------------------------------------------------
 
+BOOL ELibrary::RemoveObject(LPCSTR _fname)
+{
+	AnsiString src_name;
+	AnsiString fname		= ChangeFileExt(_fname,".object");
+    FS.update_path			(src_name,_objects_,fname.c_str());
+	if (FS.exist(src_name.c_str())){
+        AnsiString thm_name = ChangeFileExt(fname,".thm");
+    	// source
+        EFS.BackupFile		(_objects_,fname.c_str());
+        FS.file_delete		(src_name.c_str());
+        EFS.WriteAccessLog	(src_name.c_str(),"Remove");
+        // thumbnail
+        EFS.BackupFile		(_objects_,thm_name.c_str());
+        FS.file_delete		(_objects_,thm_name.c_str());
+
+        return TRUE;
+    }
+    return FALSE;
+}
+//---------------------------------------------------------------------------
+
+void ELibrary::RenameObject(LPCSTR fn0, LPCSTR fn1)
+{
+	AnsiString nm0,nm1;
+    // rename base file
+    FS.update_path(nm0,_objects_,fn0);	nm0+=".object";
+    FS.update_path(nm1,_objects_,fn1);	nm1+=".object";
+	FS.file_rename(nm0.c_str(),nm1.c_str(),false);
+    // rename thm
+    FS.update_path(nm0,_objects_,fn0);	nm0+=".thm";
+    FS.update_path(nm1,_objects_,fn1);	nm1+=".thm";
+	FS.file_rename(nm0.c_str(),nm1.c_str(),false);
+}
+//---------------------------------------------------------------------------
+

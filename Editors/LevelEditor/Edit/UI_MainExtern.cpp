@@ -31,8 +31,11 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	bool bRes = true;
 	string256 filebuffer;
 	switch (_Command){
+    case COMMAND_CHANGE_VIEW:
+//    	Scene.ChangeView
+    	break;
 	case COMMAND_CHANGE_TARGET:
-	  	Tools.ChangeTarget(p1);
+	  	Tools.ChangeTarget(p1,p2);
         Command(COMMAND_UPDATE_PROPERTIES);
         break;
 	case COMMAND_SHOW_OBJECTLIST:
@@ -157,7 +160,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
            	Scene.UndoClear();
             Scene.m_Modified = false;
 			Command(COMMAND_UPDATE_CAPTION);
-			Command(COMMAND_CHANGE_TARGET,etObject);
+			Command(COMMAND_CHANGE_TARGET,etObject,TRUE);
 			Command(COMMAND_CHANGE_ACTION,eaSelect);
 		    Scene.UndoSave();
 		} else {
@@ -237,6 +240,38 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
 		break;
+
+	case COMMAND_LOAD_SELECTION:
+		if( !Scene.locked() ){
+        	AnsiString fn;
+			if( EFS.GetOpenName( _maps_, fn ) ){
+                SetStatus		("Fragment loading...");
+				Scene.LoadSelection	(fn.c_str());
+				ResetStatus		();
+				Scene.UndoSave	();
+                Command			(COMMAND_CHANGE_ACTION,eaSelect);
+		        Command			(COMMAND_UPDATE_PROPERTIES);
+                RedrawScene		();
+			}
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+	    break;
+        
+	case COMMAND_SAVE_SELECTION:
+		if( !Scene.locked() ){
+        	AnsiString fn;
+			if( EFS.GetSaveName	( _maps_, fn ) ){
+                SetStatus		("Fragment saving...");
+				Scene.SaveSelection(Tools.CurrentClassID(),fn.c_str());
+				ResetStatus		();
+			}
+		} else {
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
+			bRes = false;
+        }
+    	break;
 
 	case COMMAND_UNDO:
 		if( !Scene.locked() ){
@@ -482,6 +517,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
         break;
+    case COMMAND_REFRESH_SNAP_OBJECTS:
+    	fraLeftBar->UpdateSnapList();
+    	break;
     case COMMAND_REFRESH_SOUND_ENVS:
     	::Sound->refresh_env_library();
 //		::Sound->_restart();
@@ -567,12 +605,17 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Key=='V')    				COMMAND0(COMMAND_PASTE)
-        else if (Key=='C')    			COMMAND0(COMMAND_COPY)
-        else if (Key=='X')    			COMMAND0(COMMAND_CUT)
-        else if (Key=='Z')    			COMMAND0(COMMAND_UNDO)
-        else if (Key=='Y')    			COMMAND0(COMMAND_REDO)
-		else if (Key=='R')				COMMAND0(COMMAND_LOAD_FIRSTRECENT)
+        if (Shift.Contains(ssShift)){
+            if (Key=='S')				COMMAND0(COMMAND_SAVE_SELECTION)
+	        else if (Key=='O')   		COMMAND0(COMMAND_LOAD_SELECTION)
+        }else{
+            if (Key=='V')    			COMMAND0(COMMAND_PASTE)
+            else if (Key=='C')    		COMMAND0(COMMAND_COPY)
+            else if (Key=='X')    		COMMAND0(COMMAND_CUT)
+            else if (Key=='Z')    		COMMAND0(COMMAND_UNDO)
+            else if (Key=='Y')    		COMMAND0(COMMAND_REDO)
+            else if (Key=='R')			COMMAND0(COMMAND_LOAD_FIRSTRECENT)
+        }
     }
     return bExec;
 }

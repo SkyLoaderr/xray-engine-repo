@@ -149,7 +149,7 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     m_BuildParams->area_dispersion		 	= seLMAreaDispersion->Value;
     m_BuildParams->area_energy_summary	 	= seLMAreaSummaryEnergy->Value/100.f;
     m_BuildParams->area_color.set_windows	(mcLMAreaColor->Brush->Color);
-    m_BuildParams->area_quality				= rgAreaQuality->ItemIndex;
+    m_BuildParams->area_quality				= rgAreaQuality->ItemIndex+1;
     m_BuildParams->fuzzy_min				= seLMFuzzyMin->Value;
     m_BuildParams->fuzzy_max				= seLMFuzzyMax->Value;
     m_BuildParams->fuzzy_samples			= seLMFuzzySamples->Value;
@@ -201,7 +201,7 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     seLMAreaDispersion->Value	   	= m_BuildParams->area_dispersion;
 	mcLMAreaColor->ObjFirstInit     ( m_BuildParams->area_color.get_windows() );
     seLMAreaSummaryEnergy->Value   	= m_BuildParams->area_energy_summary*100.f;
-    rgAreaQuality->ItemIndex		= m_BuildParams->area_quality;
+    rgAreaQuality->ItemIndex		= m_BuildParams->area_quality-1;
     seLMFuzzyMin->Value				= m_BuildParams->fuzzy_min;
     seLMFuzzyMax->Value				= m_BuildParams->fuzzy_max;
     seLMFuzzySamples->Value			= m_BuildParams->fuzzy_samples;

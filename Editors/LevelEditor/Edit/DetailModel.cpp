@@ -16,13 +16,14 @@
 #define DETOBJ_VERSION 				0x0001
 //------------------------------------------------------------------------------
 
-CDetail::CDetail(){
+CDetail::CDetail()
+{
 	shader				= 0;
-	flags				= 0;
+	m_Flags.zero		();
 	m_pRefs				= 0;
     m_bMarkDel			= false;
-    s_min				= 0.5f;
-    s_max         		= 2.f;
+    m_fMinScale			= 0.5f;
+    m_fMaxScale   		= 2.f;
     m_fDensityFactor	= 1.f;
     m_sRefs				= "";
 	vertices			= 0;
@@ -142,15 +143,15 @@ bool CDetail::Load(IReader& F){
 
     // scale
     R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_SCALE_LIMITS));
-    s_min				= F.r_float(); if (fis_zero(s_min)) 	s_min = 0.1f;
-	s_max		        = F.r_float(); if (s_max<s_min)		s_max = s_min;
+    m_fMinScale			= F.r_float(); if (fis_zero(m_fMinScale))	m_fMinScale = 0.1f;
+	m_fMaxScale			= F.r_float(); if (m_fMaxScale<m_fMinScale)	m_fMaxScale = m_fMinScale;
 
 	// density factor
     if (F.find_chunk(DETOBJ_CHUNK_DENSITY_FACTOR))
 	    m_fDensityFactor= F.r_float();
 
     if (F.find_chunk(DETOBJ_CHUNK_FLAGS))
-    	flags			= F.r_u32();
+    	m_Flags.set		(F.r_u32());
 
     // update object
     return 				Update(buf);
@@ -169,8 +170,8 @@ void CDetail::Save(IWriter& F){
 
 	// scale
 	F.open_chunk		(DETOBJ_CHUNK_SCALE_LIMITS);
-    F.w_float			(s_min);
-    F.w_float			(s_max);
+    F.w_float			(m_fMinScale);
+    F.w_float			(m_fMaxScale);
     F.close_chunk		();
 
 	// density factor
@@ -180,7 +181,7 @@ void CDetail::Save(IWriter& F){
 
     // flags
 	F.open_chunk		(DETOBJ_CHUNK_FLAGS);
-    F.w_u32				(flags);
+    F.w_u32				(m_Flags.get());
     F.close_chunk		();
 }
 
@@ -192,9 +193,9 @@ void CDetail::Export(IWriter& F){
 	F.w_stringZ			(surf->_ShaderName());
 	F.w_stringZ			(surf->_Texture());
 
-    F.w_u32				(flags);
-    F.w_float			(s_min);
-    F.w_float			(s_max);
+    F.w_u32				(m_Flags.get());
+    F.w_float			(m_fMinScale);
+    F.w_float			(m_fMinScale);
 
     F.w_u32				(number_vertices);
     F.w_u32				(number_indices);

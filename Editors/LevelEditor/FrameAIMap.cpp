@@ -49,15 +49,12 @@ void __fastcall TfraAIMap::ebSmoothNodesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraAIMap::ebRemove0LNodesClick(TObject *Sender)
+void __fastcall TfraAIMap::ExtBtn6Click(TObject *Sender)
 {
-	tools->RemoveInvalidNodes(0); 
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraAIMap::ebRemove1LNodesClick(TObject *Sender)
-{
-	tools->RemoveInvalidNodes(1); 
+	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear AI Map?")==mrYes){
+		tools->Clear();
+		Scene.UndoSave();
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -124,4 +121,13 @@ void __fastcall TfraAIMap::ebSideClick(TObject *Sender)
     UI.RedrawScene();      
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfraAIMap::ebSelLinkClick(TObject *Sender)
+{
+    TExtBtn* btn = dynamic_cast<TExtBtn*>(Sender); R_ASSERT(btn);
+	tools->SelectNodesByLink	(btn->Tag);
+    Scene.UndoSave();
+}
+//---------------------------------------------------------------------------
+
 

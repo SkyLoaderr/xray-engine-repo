@@ -22,6 +22,9 @@ public:
 						ELibrary			();
 	virtual 			~ELibrary			();
 
+    BOOL __fastcall		RemoveObject		(LPCSTR fname);
+    void __fastcall		RenameObject		(LPCSTR fn0, LPCSTR fn1);
+
 	void 				OnCreate			();
 	void 				OnDestroy			();
 	void 				Save				();

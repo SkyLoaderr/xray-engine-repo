@@ -60,6 +60,7 @@ public:
 	void __fastcall		DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnItemRename after_drag);
 	void __fastcall		DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
 	void __fastcall		StartDrag			(TObject *Sender, TDragObject *&DragObject);
+	void __fastcall		StartDragNoFolder	(TObject *Sender, TDragObject *&DragObject);
     // popup menu
     void				ShowPPMenu			(TMxPopupMenu* M, TExtBtn* B=0);
     // name edit

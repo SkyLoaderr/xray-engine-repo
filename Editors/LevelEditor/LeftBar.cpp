@@ -24,20 +24,20 @@ TfraLeftBar *fraLeftBar;
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
-	ebTargetGroup->Tag		= etGroup;
-    ebTargetObject->Tag     = etObject;
-    ebTargetLight->Tag      = etLight;
-    ebTargetShape->Tag		= etShape;
-    ebTargetSoundSrc->Tag   = etSoundSrc;
-    ebTargetSoundEnv->Tag   = etSoundEnv;
-    ebTargetGlow->Tag       = etGlow;
-    ebTargetSpawnPoint->Tag = etSpawnPoint;
-    ebTargetWay->Tag  		= etWay;
-    ebTargetSector->Tag 	= etSector;
-    ebTargetPortal->Tag		= etPortal;
-    ebTargetPS->Tag			= etPS;
-    ebTargetDO->Tag			= etDO;
-    ebTargetAIMap->Tag		= etAIMap;
+	ebTargetGroup->Tag		= etGroup;       ebViewGroup->Tag		= etGroup;
+    ebTargetObject->Tag     = etObject;      ebViewObject->Tag		= etObject;
+    ebTargetLight->Tag      = etLight;       ebViewLight->Tag      	= etLight;
+    ebTargetShape->Tag		= etShape;       ebViewShape->Tag		= etShape;
+    ebTargetSoundSrc->Tag   = etSoundSrc;    ebViewSoundSrc->Tag  	= etSoundSrc;
+    ebTargetSoundEnv->Tag   = etSoundEnv;    ebViewSoundEnv->Tag   	= etSoundEnv;
+    ebTargetGlow->Tag       = etGlow;        ebViewGlow->Tag       	= etGlow;
+    ebTargetSpawnPoint->Tag = etSpawnPoint;  ebViewSpawnPoint->Tag 	= etSpawnPoint;
+    ebTargetWay->Tag  		= etWay;         ebViewWay->Tag  		= etWay;
+    ebTargetSector->Tag 	= etSector;      ebViewSector->Tag 		= etSector;
+    ebTargetPortal->Tag		= etPortal;      ebViewPortal->Tag		= etPortal;
+    ebTargetPS->Tag			= etPS;          ebViewPS->Tag			= etPS;
+    ebTargetDO->Tag			= etDO;          ebViewDO->Tag			= etDO;
+    ebTargetAIMap->Tag		= etAIMap;       ebViewAIMap->Tag		= etAIMap;
 
     DEFINE_INI(fsStorage);
 }
@@ -240,6 +240,18 @@ void __fastcall TfraLeftBar::ebRedoClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Load1Click(TObject *Sender)
+{
+ 	UI.Command( COMMAND_LOAD_SELECTION );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::Save2Click(TObject *Sender)
+{
+ 	UI.Command( COMMAND_SAVE_SELECTION );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebValidateSceneClick(TObject *Sender)
 {
 	UI.Command( COMMAND_VALIDATE_SCENE );
@@ -319,6 +331,13 @@ void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
     UI.Command(COMMAND_CHANGE_TARGET, btn->Tag);
     // turn off snap mode
     ebSnapListMode->Down = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ebViewClick(TObject *Sender)
+{
+    TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
+    UI.Command(COMMAND_CHANGE_VIEW, btn->Tag, btn->Down);
 }
 //---------------------------------------------------------------------------
 
@@ -590,6 +609,8 @@ void __fastcall TfraLeftBar::UpdateSnapList()
     }
     Repaint();
 }
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ExtBtn1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -667,7 +688,5 @@ void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-
-
 
 

@@ -1,5 +1,5 @@
-#ifndef _INCDEF_DetailModel_H_
-#define _INCDEF_DetailModel_H_
+#ifndef DetailModelH
+#define DetailModelH
 #pragma once
 
 // refs
@@ -31,8 +31,8 @@ class CDetail{
 		float			u,v;
 	};
 
-    float				s_min;
-    float				s_max;
+    float				m_fMinScale;
+    float				m_fMaxScale;
     float 				m_fDensityFactor;
 
 	// render
@@ -41,7 +41,7 @@ class CDetail{
 	WORD				*indices;
 	DWORD				number_indices;
 	ref_shader			shader;
-	DWORD				flags;
+	Flags32				m_Flags;
 	Fsphere				bv_sphere;
 	Fbox				bv_bb;
 

@@ -183,7 +183,7 @@ public:
 	void 				UpdateHLSelected		(){m_Flags.set(flUpdateHL,TRUE);}
 
     void 				SmoothNodes				();
-    void				RemoveInvalidNodes		(int link);
+    void				SelectNodesByLink		(int link);
 };
 #endif // ESceneAIMapToolsH
 

@@ -359,7 +359,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
             item=next;
         }
     }while(item&&(item->Level>drg_level));
-}
+ }
 //---------------------------------------------------------------------------
 
 void CFolderHelper::DragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept)
@@ -398,6 +398,14 @@ void CFolderHelper::StartDrag(TObject *Sender, TDragObject *&DragObject)
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
 	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
   	else					DragItem = 0;
+}
+//---------------------------------------------------------------------------
+
+void CFolderHelper::StartDragNoFolder(TObject *Sender, TDragObject *&DragObject)
+{
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
+	if (tv->ItemFocused&&IsObject(tv->ItemFocused)) DragItem = tv->ItemFocused;
+  	else											DragItem = 0;
 }
 //---------------------------------------------------------------------------
 

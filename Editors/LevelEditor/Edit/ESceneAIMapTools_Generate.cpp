@@ -11,6 +11,7 @@
 #include "sceneobject.h"
 #include "EditObject.h"
 #include "EditMesh.h"
+#include "leftbar.h"
 
 static SPickQuery	PQ;
 
@@ -631,27 +632,19 @@ int ESceneAIMapTools::RemoveOutOfBoundsNodes()
 bool ESceneAIMapTools::RealUpdateSnapList()
 {
 	m_Flags.set					(flUpdateSnapList,FALSE);
+	fraLeftBar->UpdateSnapList	();
     Fbox nodes_bb;				CalculateNodesBBox(nodes_bb);
 	if (!GetSnapList().empty()){
         Fbox snap_bb;			Scene.GetBox(snap_bb,GetSnapList());
         Fbox bb;				bb.merge(snap_bb,nodes_bb);
         if (!m_AIBBox.similar(bb)){
             m_AIBBox.set		(bb);
-            if (Valid()){
-//				int cnt		   	= RemoveOutOfBoundsNodes	();
-//                if (cnt) ELog.Msg	(mtError,"AIMap: Bounding volume changed. Remove %d out of bounds node(s).",cnt);
-				ELog.Msg	   	(mtError,"AIMap: Bounding volume changed.");
-            }
             hash_Clear		   	();
 		    hash_FillFromNodes 	();
         }
 	    return true;
     }else{
     	m_AIBBox.set			(nodes_bb);
-        if (Valid()){
-//        	Clear				(true);
-            ELog.Msg			(mtError,"AIMap: Snap list empty."/* All nodes removed."*/);
-        }
         hash_Clear		   		();
         hash_FillFromNodes 		();
         return false;

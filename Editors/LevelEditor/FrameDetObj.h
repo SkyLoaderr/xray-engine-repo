@@ -21,15 +21,11 @@ class EDetailManager;
 class TfraDetailObject : public TFrame
 {
 __published:	// IDE-managed Components
-	TPanel *paSelect;
-	TLabel *APHeadLabel1;
-	TExtBtn *ExtBtn2;
 	TFormStorage *fsStorage;
 	TPanel *paCommand;
 	TLabel *Label1;
 	TExtBtn *ExtBtn3;
 	TExtBtn *ExtBtn1;
-	TExtBtn *ebReinitializeSlotObjects;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ExtBtn4;
 	TExtBtn *ebResetSlots;
@@ -39,6 +35,7 @@ __published:	// IDE-managed Components
 	TBevel *Bevel4;
 	TExtBtn *ExtBtn5;
 	TBevel *Bevel1;
+	TExtBtn *ebReinitializeSlotObjects;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
 	void __fastcall ExtBtn1Click(TObject *Sender);

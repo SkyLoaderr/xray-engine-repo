@@ -122,6 +122,7 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	m_Nodes.clear		();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
+        UI.Command		(COMMAND_REFRESH_SNAP_OBJECTS);
     }
 }
 //----------------------------------------------------
@@ -343,29 +344,15 @@ struct invalid_node_pred : public std::unary_function<SAINode*, bool>
 	invalid_node_pred(int _link):link(_link){;}
 	bool operator()(const SAINode*& x){ return x->Links()==link; }
 };
-void ESceneAIMapTools::RemoveInvalidNodes(int link)
+void ESceneAIMapTools::SelectNodesByLink(int link)
 {
-    UI.ProgressStart	(m_Nodes.size(), "Removing invalid nodes...");
+    SelectObjects		(false);
     // remove link to sel nodes
-    for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-        for (int k=0; k<4; k++){ 
-        	if ((*it)->n[k]&&(link==(*it)->n[k]->Links())) (*it)->n[k]=0;
-        }
-    }
-    // realy remove node
-	int count=0;
-    // remove sel nodes
-    AINodeIt result		= std::remove_if(m_Nodes.begin(), m_Nodes.end(), invalid_node_pred(link));
-    count				= m_Nodes.size();
-    for (AINodeIt r_it=m_Nodes.begin(); r_it!=m_Nodes.end(); r_it++) 
-        if ((*r_it)->Links()==link) xr_delete(*r_it);
-    m_Nodes.erase		(result,m_Nodes.end());
-    count				-= m_Nodes.size();
-    hash_Clear		   	();
-    hash_FillFromNodes 	();
-    UI.ProgressEnd		();
-    ELog.DlgMsg			(mtInformation,"Removed '%d' %d-link nodes.",count,link);
-	Scene.UndoSave		();
+    for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+        if ((*it)->Links()==link)
+			if (!(*it)->flags.is(SAINode::flHide))
+	            (*it)->flags.set(SAINode::flSelected,TRUE);
+    UI.RedrawScene		();
 }
 
 int ESceneAIMapTools::SelectObjects(bool flag)

@@ -69,6 +69,7 @@ __published:	// IDE-managed Components
           TShiftState Shift);
 	void __fastcall tvItemsResize(TObject *Sender);
 	void __fastcall RefreshForm1Click(TObject *Sender);
+	void __fastcall tvItemsHeaderResize(TObject *Sender);
 public:
 	DEFINE_VECTOR(TElTreeItem*,ElItemsVec,ElItemsIt);
     typedef void 	__fastcall (__closure *TOnItemsFocused)		(ListItemsVec& items);
@@ -141,7 +142,7 @@ public:		// User declarations
 		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
     }
     void __fastcall 	LoadParams				(TFormStorage* fs)
-    {                                      	
+    {
 //		tvItems->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
         miDrawThumbnails->Checked				= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
         RefreshForm			();
