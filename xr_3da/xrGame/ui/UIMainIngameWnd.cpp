@@ -236,11 +236,13 @@ void CUIMainIngameWnd::Init()
 	LoadNewsTemplates();
 
 	ref_str warningStrings[5] = 
-		{	"jammed",
-			"radiation",
-			"wounds",
-			"starvation",
-			"fatigue" };
+	{	
+		"jammed",
+		"radiation",
+		"wounds",
+		"starvation",
+		"fatigue"
+	};
 
 	// «агружаем пороговые значени€ дл€ индикаторов
 	EWarningIcons j = ewiWeaponJammed;
@@ -487,13 +489,14 @@ void CUIMainIngameWnd::Update()
 			value = m_pActor->BleedingSpeed();
 			break;
 		case ewiWeaponJammed:
-			value = 0.0f;
+			if (m_pWeapon)
+				value = 1 - m_pWeapon->GetCondition();
 			break;
 		case ewiStarvation:
-			value = 0.0f;
+			value = 1 - m_pActor->GetSatiety();
 			break;
 		case ewiFatigue:
-			value = 0.0f;
+			value = 1 - m_pActor->GetPower();
 			break;
 		default:
 			R_ASSERT(!"Unknown type of warning icon");
