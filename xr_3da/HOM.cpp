@@ -263,11 +263,13 @@ void CHOM::Render_ZB	()
 	Device.Streams.Vertex.Unlock	(vCount,m_VS->dwStride);
 
 	// Render it
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0));
 	Device.set_xform_world			(Fidentity);
 	Device.Shader.set_Shader		(m_Shader);
 	Device.Primitive.setIndices		(0,0);
 	Device.Primitive.setVertices	(m_VS->dwHandle,m_VS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,vOffset,vCount/3);
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
 }
 
 void CHOM::Debug		()
