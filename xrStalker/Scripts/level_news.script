@@ -4,7 +4,7 @@ function main()
 	fill_news()
 	delta = 10*60*1000
 	begin = nil
-	rnd = 70
+	rnd = 100 --'70
 	
 	while true do
 		if begin == nil or
@@ -15,7 +15,7 @@ function main()
 			end
 			begin = game.time()
 		end		
---		printf("%d of %d",game.time() - begin, delta)
+		printf("%d of %d",game.time() - begin, delta)
 		wait()
 	end
 end

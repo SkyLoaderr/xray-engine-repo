@@ -2,7 +2,8 @@ function init    (obj)
 	xr_motivator.AddToMotivator(obj)
 end
 
-
+lasthealth  = 0
+lasttime	= 0
 ----------------------------------------------------------------------------------------------------------------------
 class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
@@ -25,42 +26,46 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
-			actor = self.object
-			
-       		if actor:has_info("escape_trader_need_artefact") and
-       		   actor:object("af_night_star") ~= nil
+	--' Проверка потери жизни
+if false then
+	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
+	lasthealth = self.object.health
+	lasttime = game.time()
+end
+       		if self.object:has_info("escape_trader_need_artefact") and
+       		   self.object:object("af_night_star") ~= nil
        		then
-       			actor:give_info_portion("escape_trader_find_artefact")
-				actor:set_task_state(task.completed, "escape_trader_need_artefact", 1)
+       			self.object:give_info_portion("escape_trader_find_artefact")
+				self.object:set_task_state(task.completed, "escape_trader_need_artefact", 1)
        		end       	
 
-       		if actor:has_info("escape_need_blockpost_case") and
-       		   actor:object("quest_case_01") ~= nil
+       		if self.object:has_info("escape_need_blockpost_case") and
+       		   self.object:object("quest_case_01") ~= nil
        		then
-       			actor:give_info_portion("escape_take_blockpost_case")
-				actor:set_task_state(task.completed, "escape_blockpost_case", 1)
+       			self.object:give_info_portion("escape_take_blockpost_case")
+				self.object:set_task_state(task.completed, "escape_blockpost_case", 1)
        		end       	
 
-       		if actor:has_info("escape_need_agroprom_documents") and
-       		   actor:object("quest_case_02") ~= nil
+       		if self.object:has_info("escape_need_agroprom_documents") and
+       		   self.object:object("quest_case_02") ~= nil
        		then
-       			actor:give_info_portion("agroprom_take_agroprom_documents")
-				actor:set_task_state(task.completed, "agroprom_get_military_documents", 1)
+       			self.object:give_info_portion("agroprom_take_agroprom_documents")
+				self.object:set_task_state(task.completed, "agroprom_get_military_documents", 1)
        		end       	
 
-			if actor:has_info("garbage_find_stalker") and
-       			actor:object("garbage_letter") ~= nil
+			if self.object:has_info("garbage_find_stalker") and
+       			self.object:object("garbage_letter") ~= nil
        		then
-       			actor:give_info_portion("garbage_find_dead_stalker")
-       			actor:give_info_portion("agroprom_meet_gunslinger_band")
-				actor:set_task_state(task.fail, "garbage_meet_stalker", 0)				
+       			self.object:give_info_portion("garbage_find_dead_stalker")
+       			self.object:give_info_portion("agroprom_meet_gunslinger_band")
+				self.object:set_task_state(task.fail, "garbage_meet_stalker", 0)				
        		end       	
 
-       		if actor:has_info("agroprom_meet_gunslinger_band") and
-       		   actor:object("agroprom_notebook") ~= nil
+       		if self.object:has_info("agroprom_meet_gunslinger_band") and
+       		   self.object:object("agroprom_notebook") ~= nil
        		then
-       			actor:give_info_portion("agroprom_find_gunslinger_band")
-				actor:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
+       			self.object:give_info_portion("agroprom_find_gunslinger_band")
+				self.object:set_task_state(task.fail, "agroprom_meet_gunslinger_band", 0)
        		end       		
 end
 ----------------------------------------------------------------------------------------------------------------------
