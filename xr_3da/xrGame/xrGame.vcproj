@@ -1923,6 +1923,9 @@
 				RelativePath="PhysicsShell.h">
 			</File>
 			<File
+				RelativePath="_cylinder.h">
+			</File>
+			<File
 				RelativePath="dCylinder\dCylinder.cpp">
 			</File>
 			<File
