@@ -105,6 +105,16 @@ function move_mgr:extrapolate_callback(npc)
 	self.current_point_init_time = device():time_global()
 end
 
+function move_mgr:standing_on_terminal_waypoint()
+	for idx = 0, self.patrol_walk:count() - 1 do
+		if utils.stalker_at_waypoint(self.object, self.patrol_walk, idx) then
+			return true, idx
+		end
+	end
+	
+	return false
+end
+
 -- Из move_cb вернуть true, чтобы приостановить работу схемы. Чтобы продолжить движение,
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
@@ -204,17 +214,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.run_until = device():time_global() + walk_min_time + run_min_time
 	self.keep_state_until = device():time_global()
 
-	--self.object:set_mental_state(anim.free)
-	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
-	self:update_movement_state()
-
-	self.object:set_path_type(game_object.patrol_path)
-	self.object:set_detail_path_type(move.line)
-	self.object:patrol_path_make_inactual()
-	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
-	--self.object:set_sight(look.danger, nil, 0)
-	self.state = state_moving
-
 	self.path_cyclic, self.lowest_sync_val, self.highest_sync_val = self:get_lowest_highest_sync_val()
 	self.team = team
 	if self.team then
@@ -231,6 +230,21 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.last_index = nil
 	self.last_look_index = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
+
+	self.object:set_path_type(game_object.patrol_path)
+	self.object:set_detail_path_type(move.line)
+	self.object:patrol_path_make_inactual()
+	self.object:set_patrol_path(self.path_walk, patrol.nearest, patrol.continue, true)
+	self.state = state_moving
+
+	local is_term, idx = self:standing_on_terminal_waypoint()
+	if is_term then
+		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
+		self:waypoint_callback(self.object, nil, idx)
+	else
+		-- Реально идем в вершину
+		self:update_movement_state()
+	end
 end
 
 function move_mgr:arrived_to_first_waypoint()

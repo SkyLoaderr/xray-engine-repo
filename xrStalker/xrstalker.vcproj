@@ -1684,6 +1684,9 @@
 						RelativePath=".\scripts\xr_conditions.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\xr_conditions_impl.script">
+					</File>
+					<File
 						RelativePath=".\scripts\xr_effects.script">
 					</File>
 					<Filter

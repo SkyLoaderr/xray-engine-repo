@@ -209,6 +209,8 @@ function disable_generic_schemes(npc, stype)
 		mob_combat.disable_scheme(npc, "mob_combat")
 		mob_death.disable_scheme(npc, "mob_death")
 		mob_trade.disable_scheme(npc, "mob_trade")
+	elseif stype == modules.stype_item then
+		ph_on_hit.disable_scheme(npc, "hit")
 	end
 end
 
@@ -265,6 +267,11 @@ function enable_generic_schemes(ini, npc, stype, section)
 		local trade_section = utils.cfg_get_string(ini, section, "on_trade", npc, false, "")
 		if trade_section then
 			mob_trade.set_scheme(npc, ini, "mob_trade", trade_section)
+		end
+	elseif stype == modules.stype_item then
+		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
+		if hit_section then
+			ph_on_hit.set_hit_checker(npc, ini, "hit", hit_section)
 		end
 	end
 end
