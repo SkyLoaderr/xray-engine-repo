@@ -7,6 +7,7 @@ function HeliManager:__finalize()
 end
 
 
+
 function HeliManager:Init()
    self.m_heli = get_level_object( "helicopter" )
    self.m_heliObject = self.m_heli:get_helicopter()
