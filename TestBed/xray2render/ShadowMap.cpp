@@ -390,7 +390,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			0,											// no texture matrix applied to my texture coordinates
 			NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
 			NVMeshMender::DontFixCylindricalTexGen,		// handle cylindrically mapped textures via vertex duplication
-			NVMeshMender::WeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
+			NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
 			fprintf(stderr, "NVMeshMender failed\n");
@@ -420,6 +420,18 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			vertexBufferNew[i].p.z			= position[3 * i + 2];
 			vertexBufferNew[i].tu			= texCoord[3 * i + 0];
 			vertexBufferNew[i].tv			= texCoord[3 * i + 1];
+
+			D3DXVECTOR3	N,T,B;
+			N.x								= normal[3 * i + 0];
+			N.y								= normal[3 * i + 1];
+			N.z								= normal[3 * i + 2];
+			T.x								= tangent[3 * i + 0];
+			T.y								= tangent[3 * i + 1];
+			T.z								= tangent[3 * i + 2];
+			B.x								= binormal[3 * i + 0];
+			B.y								= binormal[3 * i + 1];
+			B.z								= binormal[3 * i + 2];
+
 			vertexBufferNew[i].n.x			= normal[3 * i + 0];
 			vertexBufferNew[i].n.y			= normal[3 * i + 1];
 			vertexBufferNew[i].n.z			= normal[3 * i + 2];
