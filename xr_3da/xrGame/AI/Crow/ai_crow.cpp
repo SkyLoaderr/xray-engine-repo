@@ -12,8 +12,6 @@
 #include "..\\ai_monsters.h"
 #include "..\\..\\hudmanager.h"
 
-//#define WRITE_LOG
-
 void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 {
 	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
@@ -121,6 +119,7 @@ BOOL CAI_Crow::Spawn(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 {
 	BOOL R = inherited::Spawn	(bLocal,server_id,o_pos,o_angle,P,flags);
 	bVisible					= TRUE;
+	AI_Node = 0;
 	return R;
 }
 
