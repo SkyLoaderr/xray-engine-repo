@@ -98,6 +98,14 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 	}
 }
 
+BOOL OGF::dbg_SphereContainsVertex(Fvector& c, float R)
+{
+	Fsphere	S;	S.set(c,R);
+	for (int it=0; it<vertices.size(); it++)
+		if (S.contains(vertices[it].P))	return	TRUE;
+	return FALSE	;
+}
+
 void OGF::Optimize	()
 {
 	VERIFY	(x_vertices.size()	<= vertices.size()	);
@@ -286,6 +294,7 @@ void OGF::MakeProgressive	(float metric_limit)
 	// for batch size 50,100,200 - we are CPU-limited anyway even on nv30
 	// for nv40 and up the better guess will probably be around 500
 	if (faces.size()<c_PM_FaceLimit)		return		;	
+	// return											;
 
 	// prepare progressive geom
 	progressive_cs.Enter	();

@@ -90,7 +90,7 @@ struct OGF_Base
 
 	IC BOOL				IsNode()	{ return iLevel; }
 
-	virtual void		PreSave		()							{};
+	virtual void		PreSave		(u32 tree_id)				{};
 	virtual void		Save		(IWriter &fs);
 	virtual void		GetGeometry	(xr_vector<Fvector> &RES)	= 0;
 	void				CalcBounds	(); 
@@ -136,6 +136,9 @@ struct OGF : public OGF_Base
 	~OGF(){
 		xr_free			(m_SWI.sw);
 	}
+
+	BOOL				dbg_SphereContainsVertex	(Fvector& c, float R);
+
 	u16					x_BuildVertex		(x_vertex&	V);
 	void				x_BuildFace			(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3);
 	u16					_BuildVertex		(OGF_Vertex& V1);
@@ -153,7 +156,7 @@ struct OGF : public OGF_Base
 		xr_free			(m_SWI.sw);
 	}
 
-	virtual void		PreSave			();
+	virtual void		PreSave			(u32 tree_id);
 	virtual void		Save			(IWriter &fs);
 
 	void				Save_Cached		(IWriter &fs, ogf_header& H, BOOL bColors);

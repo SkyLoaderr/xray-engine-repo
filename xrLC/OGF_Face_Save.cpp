@@ -241,8 +241,9 @@ void OGF_Reference::Save	(IWriter &fs)
 	}
 }
 
-void	OGF::PreSave			()
+void	OGF::PreSave		(u32 tree_id)
 {
+	// if (20==tree_id || 18==tree_id)	__asm int 3;	//.
 	Shader_xrLC*	SH	=	pBuild->shaders.Get		(pBuild->materials[material].reserved);
 	bool bVertexColored	=	(SH->flags.bLIGHT_Vertex);
 
