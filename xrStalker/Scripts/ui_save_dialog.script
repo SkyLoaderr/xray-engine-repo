@@ -26,7 +26,7 @@ function save_dialog:InitControls()
 	main_static:SetAutoDelete(true)              --parent will delete this item in destructor
 	main_static:SetWindowName("main_frame")
 	--init texture and position relatively parent	
-	main_static:Init("ui\\ui_pda_frame_sub",0,0,main_rect.width, main_rect.height)
+	main_static:Init("ui\\ui_pop_up",0,0,main_rect.width, main_rect.height)
     --textures name, root is Gamedata\Textures folder
 --	main_static:ClipperOn() --clip texture by window region
 	self:AttachChild(main_static)
