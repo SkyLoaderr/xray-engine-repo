@@ -14,6 +14,7 @@ const float drop_width		= 0.1f;
 const float drop_angle		= 1.f;
 const float drop_speed_min	= 10.f;
 const float drop_speed_max	= 20.f;
+const int	max_particles	= 300;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -122,6 +123,7 @@ void	CEffect_Rain::p_free(Particle* P)
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
 }
+
 void	CEffect_Rain::Render	()
 {
 	// Parse states
