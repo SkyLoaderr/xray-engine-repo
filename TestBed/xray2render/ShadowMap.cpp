@@ -1328,7 +1328,7 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 
 	// Cleanup
 	m_pd3dDevice->SetTexture				(0, NULL);
-
+	m_pd3dDevice->SetTexture				(1, NULL);
 	return S_OK;
 }
 
