@@ -1,4 +1,4 @@
--- File:        UI_MULTIPLAYER_CREATE_MAP_TAB.SCRIPT
+-- File:        UI_MULTIPLAYER_MAP_TAB.SCRIPT
 -- Description: Map Tab for Multiplayer Create Server dialog
 -- Created:     02.12.2004
 -- Author:      Serhiy 0. Vynnychenk0
@@ -6,24 +6,24 @@
 --
 
 function main()
-	local dlg = ui_multiplayer_map_tab.create_map_tab()
+	local dlg = ui_multiplayer_map_tab.map_tab()
 	level.start_stop_menu(dlg,true)	
 	while true do
 		wait(3000)
 	end
 end
 
-class "create_map_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)													   
+class "map_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)													   
 
-function create_map_tab:__init() super()
+function map_tab:__init() super()
 	self:InitControls()
 	self:InitCallbacks()
 end
 
-function create_map_tab:__finalize()
+function map_tab:__finalize()
 end
 
-function create_map_tab:InitControls(x_pos, y_pos)
+function map_tab:InitControls(x_pos, y_pos)
 	ui_multiplayer_base_tab.multiplayer_base_tab.InitControls(self, "Map", x_pos, y_pos)
 	
 	----- DATA ----
@@ -50,10 +50,10 @@ function create_map_tab:InitControls(x_pos, y_pos)
 	self.main_frame:AttachChild(btn)	
 end
 
-function create_map_tab:InitCallbacks()
+function map_tab:InitCallbacks()
 	self:AddCallback("btn_back",			ui_events.BUTTON_CLICKED, self, "OnButton_back")
 end
 
-function create_map_tab:OnButton_back()
+function map_tab:OnButton_back()
 	level.start_stop_menu(self, true)
 end
