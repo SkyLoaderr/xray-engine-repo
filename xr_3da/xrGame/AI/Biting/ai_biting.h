@@ -38,7 +38,7 @@ public:
 
 
 //	virtual float EnemyHeuristics(CEntity* E);
-//	virtual void  SelectEnemy(SEnemySelected& S);
+	
 //	virtual objQualifier* GetQualifier();
 //	virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
 //	virtual void  Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
@@ -106,9 +106,9 @@ private:
 	Fvector					m_tSavedEnemyPosition;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
-	u32						m_dwLostEnemyTime;			// время потери врага      
-	Fvector					m_tMySavedPosition;			// последняя позиция, в которой я видел врага
-	u32						m_dwMyNodeID;				// нода последней позиции, ...
+	u32						m_dwSeenEnemyLastTime;		// время, когда последний раз видел врага
+	Fvector					m_tMySavedPosition;			// моя последняя позиция, в которой я видел врага
+	u32						m_dwMyNodeID;				// моя нода последней позиции, ...
 
 	// search and path parameters
 	u32						m_dwLastRangeSearch;		// время последнего поиска узла
@@ -149,5 +149,52 @@ private:
 	float		fTimeRestStand;
 	float		fTimeRestSit;
 	float		fTimeRestLie;
+		// Attack
+
+	
+	objSET				m_tpaVisibleObjects;	// массив видимых объектов
+
+	void SelectEnemy(SEnemySelected& S);
+	void Attack();
+	void DoFeel();
+	
+	// Sound
+	SSimpleSound			m_tLastSound;
+	AI_Biting::ESoundType	SndType;
+	float				m_fSoundThreshold;
+	virtual void feel_sound_new(CObject* who, int eType, const Fvector &Position, float power);
+	
+	bool		bAnimCanBeNew;
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	
+	bool	bHearSound;
+	bool	bDangerous;
+	bool	bEnemySighted;
+	bool	bAttackedWithFire;
+	bool	bExpedient;
+	AI_Biting::EEnemyType	m_tEnemyType;
+
+
+	/////////////////////////////////////////////////////////////////////////////////////////
+	AI_Biting::EActionState m_tActionState;
+
+	// HIT
+	u32					m_dwHitTime;
+	Fvector				m_tHitDir;
+	Fvector				m_tHitPosition;
+	float				m_fHitPower;
+	u32					m_dwHitInterval;
+
+	float					m_fAttackSuccessProbability0;
+	float					m_fAttackSuccessProbability1;
+	float					m_fAttackSuccessProbability2;
+	float					m_fAttackSuccessProbability3;
+	
+	void vfUpdateParameters(bool &A, bool &B, bool &Bb, bool &C, bool &Cc, bool &D, bool &E, bool &Ee, bool &F);
+	float	m_fInertion;
+
+	void MoveBackScared();
 
 };
+

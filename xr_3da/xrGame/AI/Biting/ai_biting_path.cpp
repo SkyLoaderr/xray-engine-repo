@@ -30,8 +30,8 @@ void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= vPosition;
 
-	if (m_tEnemy.Enemy)
-		vfSaveEnemy();
+//	if (m_tEnemy.Enemy)
+//		vfSaveEnemy();
 	
 	S.m_tEnemy			= m_tSavedEnemy;
 	S.m_tEnemyPosition	= m_tSavedEnemyPosition;
@@ -244,38 +244,43 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 													  		 m_tPathType = ePathTypeCriteria ;
 	}
 
+	do {
+		
 
-	switch (m_tPathState) {
-		case ePathStateSearchNode : {
-			if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
-				vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
-			else
-				if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-					m_tPathState = ePathStateBuildNodePath;	// 
-			break;
-									}
-		case ePathStateBuildNodePath : {
-			if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
-				vfBuildPathToDestinationPoint(tpNodeEvaluator);
-			else
-				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
-					AI_Path.Nodes.clear();
-					AI_Path.Nodes.push_back(AI_NodeID);
-					m_tPathState = ePathStateBuildTravelLine;
-				}
+		switch (m_tPathState) {
+			case ePathStateSearchNode : {
+				if (tpNodeEvaluator && bSearchForNode)  // необходимо искать ноду?
+					vfSearchForBetterPosition(*tpNodeEvaluator,Squad,Leader);
 				else
-					if (bSearchForNode && tpNodeEvaluator)
-						m_tPathState = ePathStateSearchNode;
+					if (!bSearchForNode || !tpDestinationPosition || !AI_Path.TravelPath.size() || (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+						m_tPathState = ePathStateBuildNodePath;	// 
+				break;
+										}
+			case ePathStateBuildNodePath : {
+				if ((AI_Path.DestNode != AI_NodeID) && (AI_Path.Nodes.empty() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode) || AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)))
+					vfBuildPathToDestinationPoint(tpNodeEvaluator);
+				else
+					if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
+						AI_Path.Nodes.clear();
+						AI_Path.Nodes.push_back(AI_NodeID);
+						m_tPathState = ePathStateBuildTravelLine;
+					}
 					else
-						if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
-							m_tPathState = ePathStateBuildTravelLine;
-			break;
-									   }
-		case ePathStateBuildTravelLine : {
-			vfBuildTravelLine(tpDestinationPosition);
-			break;
-										 }
-	}
+						if (bSearchForNode && tpNodeEvaluator)
+							m_tPathState = ePathStateSearchNode;
+						else
+							if (AI_Path.TravelPath.size() && tpDestinationPosition && (AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P.distance_to(*tpDestinationPosition) > EPS_L))
+								m_tPathState = ePathStateBuildTravelLine;
+				break;
+										}
+			case ePathStateBuildTravelLine : {
+				vfBuildTravelLine(tpDestinationPosition);
+				m_tPathState = ePathStateBuilt;
+				break;
+											}
+		}	
+	} while (m_tPathState != ePathStateBuilt);
+
 	m_tPathType = tPathType;	// восстанавливаем текущий тип пути
 }
 

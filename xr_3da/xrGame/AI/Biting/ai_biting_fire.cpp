@@ -15,7 +15,7 @@ void CAI_Biting::vfSaveEnemy()
 	m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
 	m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
 	m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
-	m_dwLostEnemyTime		= Level().timeServer();
+	m_dwSeenEnemyLastTime	= Level().timeServer();
 	m_tMySavedPosition		= vPosition;
 	m_dwMyNodeID			= AI_NodeID;
 	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);

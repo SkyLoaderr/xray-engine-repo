@@ -64,6 +64,7 @@ namespace AI_Biting {
 		ePathStateSearchNode = 0,
 		ePathStateBuildNodePath,
 		ePathStateBuildTravelLine,
+		ePathStateBuilt
 	};
 
 	enum EPathType {
@@ -81,22 +82,52 @@ namespace AI_Biting {
 
 	enum EActionAnim {
 		eActionIdle = 0,
+		eActionIdleTurnLeft,
 		eActionWalkFwd,
 		eActionWalkBkwd,
-		eActionWalkSpeed,
-		eActionTurnLeft,
-		eActionTurnRight,
+		eActionWalkTurnLeft,
+		eActionWalkTurnRight,
 		eActionRun,
-		eActionRunSpeed,
-		eActionAttack
+		eActionRunTurnLeft,
+		eActionRunTurnRight,
+		eActionAttack,
 	};
 
+	// Sound
+	
+	enum ESoundType {
+		eHearSoundNone = 0,
+		eHearSoundCommon,				
+		eHearSoundInteresting,
+		eHearSoundDangerous,
+	};
+	
 	enum EStateFSM {
 		eNoState, 
 		eRestIdle,			// стоять/лежать/сидеть на месте, отдыхать
+		eRestIdleTurn,
 		eWalkAround,	    // обход территории
-		
+		eAttack	
 	};
 
+	enum EEnemyType {
+		eWeak = 0,
+		eEqual,
+		eDangerous,
+		eVeryDangerous,
+	};
+
+
+	enum EActionState {
+		eListenAndLookAround,
+		eGotoPlaceOfSound,
+		eStayInPlace,
+		eScaredTurnToAttacker,
+		eRunToCover,
+		eStayInPlaceScared,
+		eTurnToAttacker,
+		eMoveBackUncertain,
+		eRunAwayInPanic,
+	};
 };
 

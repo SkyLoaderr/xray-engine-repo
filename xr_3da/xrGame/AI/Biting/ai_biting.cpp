@@ -36,7 +36,7 @@ void CAI_Biting::Init()
 	m_tSavedEnemyPosition.set	(0,0,0);
 	m_tpSavedEnemyNode			= 0;
 	m_dwSavedEnemyNodeID		= u32(-1);
-	m_dwLostEnemyTime			= 0;
+	m_dwSeenEnemyLastTime			= 0;
 	m_tMySavedPosition.set		(0,0,0);
 	m_dwMyNodeID				= u32(-1);
 	
@@ -55,6 +55,12 @@ void CAI_Biting::Init()
 
 	m_tStateFSM				= eNoState;
 
+	m_fAttackSuccessProbability0	= .8f;
+	m_fAttackSuccessProbability1	= .6f;
+	m_fAttackSuccessProbability2	= .4f;
+	m_fAttackSuccessProbability3	= .2f;
+
+	m_fInertion = 0.f;
 }
 
 void CAI_Biting::Die()
@@ -86,6 +92,12 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
+	m_tSelectorRetreat.Load			(section,"selector_retreat");
+
+	// loading frustum parameters
+	eye_fov							= pSettings->r_float(section,"EyeFov");
+	eye_range						= pSettings->r_float(section,"EyeRange");
+	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 	
 	// loading sounds
 //	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
@@ -94,8 +106,7 @@ void CAI_Biting::Load(LPCSTR section)
 	// Load params from section
 
 	// personal properties
-/*	m_dwEyeFOV				= pSettings->r_u32   (section,"EyeFov");
-	m_dwEyeRange			= pSettings->r_u32   (section,"EyeRange");
+/*
 	m_dwHealth				= pSettings->r_u32   (section,"Health");
 	m_fMinSpeed				= pSettings->r_float   (section,"MinSpeed");
 	m_fMaxSpeed				= pSettings->r_float   (section,"MaxSpeed");
