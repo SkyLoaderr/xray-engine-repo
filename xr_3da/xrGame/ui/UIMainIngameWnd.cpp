@@ -266,7 +266,10 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitProgressBar(uiXml, "progress_bar", 2, &UIBatteryBar);
 	ShowBattery(false);
 	SetBatteryCharge(1.0f);
-	UICarPanel.Init(this,uiXml,xml_init);
+	
+	AttachChild(&UICarPanel);
+	xml_init.InitWindow(uiXml, "car_panel", 0, &UICarPanel);
+	UICarPanel.Show(true);
 }
 
 //////////////////////////////////////////////////////////////////////////

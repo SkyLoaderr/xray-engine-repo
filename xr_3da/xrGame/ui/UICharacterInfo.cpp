@@ -264,14 +264,15 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(pActor)
-			SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
+			SetRelation(RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(pActor)),
+						RELATION_REGISTRY().GetAttitude(pInvOwner, static_cast<CInventoryOwner*>(pActor)));
 	}
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 
-void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
+void  CUICharacterInfo::SetRelation(ALife::ERelationType relation, CHARACTER_GOODWILL goodwill)
 {
 	shared_str relation_str;
 
@@ -280,21 +281,18 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 	switch(relation) {
 	case ALife::eRelationTypeFriend:
 		UIRelation.SetTextColor(0xff00ff00);
-		relation_str = stbl("friend");
 		break;
 	case ALife::eRelationTypeNeutral:
 		UIRelation.SetTextColor(0xffc0c0c0);
-		relation_str = stbl("neutral");
 		break;
 	case ALife::eRelationTypeEnemy:
 		UIRelation.SetTextColor(0xffff0000);
-		relation_str = stbl("enemy");
 		break;
 	default:
 		NODEFAULT;
 	}
 
-	UIRelation.SetText(*relation_str);
+	UIRelation.SetText(*stbl(GetGoodwillAsText(goodwill)));
 	if (m_bInfoAutoAdjust)
 	{
 		int offset = static_cast<int>(UIRelationCaption.GetFont()->SizeOf(UIRelationCaption.GetText()) + UIRelationCaption.GetWndRect().left + 5);

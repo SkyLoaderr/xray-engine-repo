@@ -1,15 +1,22 @@
 #pragma once
 
-class CUIXmlInit;
-class CUIMainIngameWnd;
-class CUICarPanel 
+#include "uiwindow.h"
+#include "uipointergage.h"
+
+
+class CUICarPanel : public CUIWindow
 {
-		CUIStatic			UIStaticCarHealth;
-		CUIProgressBar		UICarHealthBar;
+private:
+	typedef CUIWindow inherited;
+
+	CUIStatic			UIStaticCarHealth;
+	CUIProgressBar		UICarHealthBar;
+	CUIPointerGage		UIPointerGage;
 public: 
-		// Установить 
-		void				SetCarHealth(float value);
-		// Показать/спрятать 
-		void				ShowCarHealth(bool on);
-		void				Init(CUIMainIngameWnd* wnd, CUIXml& uiXml,CUIXmlInit& xml_init);
+
+	// Установить 
+	void				SetCarHealth	(float value);
+	void				SetSpeed		(float speed);
+	void				SetRPM			(float rmp);
+	void				Init			(int x, int y, int width, int height);
 };

@@ -1,4 +1,4 @@
-// CUIInventoryUtilities.cpp:  функции утилиты для работы с
+// UIInventoryUtilities.cpp:  функции утилиты для работы с
 // различными окнами инвентаря 
 //////////////////////////////////////////////////////////////////////
 
@@ -24,6 +24,12 @@
 #define MAP_ICONS		"ui\\ui_icons_map"
 #define MP_CHAR_ICONS	"ui\\ui_models_multiplayer"
 
+LPCSTR relationsLtxSection	= "game_relations";
+LPCSTR ratingField			= "rating_names";
+LPCSTR reputationgField		= "reputation_names";
+LPCSTR goodwillField		= "goodwill_names";
+
+
 
 static ref_shader	g_EquipmentIconsShader	= NULL;
 static ref_shader	g_CharIconsShader		= NULL;
@@ -37,6 +43,7 @@ DEF_MAP				(CharInfoStrings, CHARACTER_RANK_VALUE, shared_str);
 
 CharInfoStrings		*charInfoReputationStrings	= NULL;
 CharInfoStrings		*charInfoRankStrings		= NULL;
+CharInfoStrings		*charInfoGoodwillStrings	= NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -415,10 +422,6 @@ void InitCharacterInfoStrings()
 {
 	if (charInfoReputationStrings && charInfoRankStrings) return;
 
-	LPCSTR relationsLtxSection	= "game_relations";
-	LPCSTR ratingField			= "rating";
-	LPCSTR reputationgField		= "reputation";
-
 	if (!charInfoReputationStrings)
 	{
 		// Create string->Id DB
@@ -434,6 +437,15 @@ void InitCharacterInfoStrings()
 		// Ranks
 		LoadStrings(charInfoRankStrings, relationsLtxSection, ratingField);
 	}
+
+	if (!charInfoGoodwillStrings)
+	{
+		// Create string->Id DB
+		charInfoGoodwillStrings			= xr_new<CharInfoStrings>();
+		// Ranks
+		LoadStrings(charInfoGoodwillStrings, relationsLtxSection, goodwillField);
+	}
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -442,6 +454,7 @@ void InventoryUtilities::ClearCharacterInfoStrings()
 {
 	xr_delete(charInfoReputationStrings);
 	xr_delete(charInfoRankStrings);
+	xr_delete(charInfoGoodwillStrings);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -465,5 +478,17 @@ LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION_VALUE rankID
 
 	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID - 1);
 	R_ASSERT(charInfoReputationStrings->end() != cit);
+	return *cit->second;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+LPCSTR InventoryUtilities::GetGoodwillAsText(CHARACTER_GOODWILL goodwill)
+{
+	InitCharacterInfoStrings();
+	R_ASSERT(charInfoGoodwillStrings);
+
+	CharInfoStrings::const_iterator cit = charInfoGoodwillStrings->upper_bound(goodwill - 1);
+	R_ASSERT(charInfoGoodwillStrings->end() != cit);
 	return *cit->second;
 }

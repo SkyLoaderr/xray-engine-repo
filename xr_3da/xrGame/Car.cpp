@@ -381,7 +381,7 @@ void CCar::detach_Actor()
 	Unclutch();
 	ResetKeys();
 	m_current_rpm=m_min_rpm;
-	HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(false);
+	//HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(false);
 	///Break();
 }
 
@@ -407,7 +407,7 @@ bool CCar::attach_Actor(CActor* actor)
 	VisualUpdate();
 	
 
-	HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(true);
+	//HUD().GetUI()->UIMainIngameWnd.CarPanel().ShowCarHealth(true);
 	HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
 	//HUD().GetUI()->UIMainIngameWnd.ShowBattery(true);
 	//CBoneData&	bone_data=K->LL_GetData(id);

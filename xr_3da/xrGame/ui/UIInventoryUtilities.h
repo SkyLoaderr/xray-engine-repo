@@ -91,6 +91,7 @@ void UpdateWeight(CUIStatic &wnd, bool withPrefix = false);
 // Функции получения строки-идентификатора ранга и отношения по их числовому идентификатору
 LPCSTR	GetRankAsText				(CHARACTER_RANK_VALUE		rankID);
 LPCSTR	GetReputationAsText			(CHARACTER_REPUTATION_VALUE rankID);
+LPCSTR	GetGoodwillAsText			(CHARACTER_GOODWILL			goodwill);
 
 void	ClearCharacterInfoStrings	();
 };

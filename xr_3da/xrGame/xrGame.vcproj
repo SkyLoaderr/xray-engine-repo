@@ -8949,6 +8949,12 @@
 						RelativePath=".\ui\UIPdaMsgListItem.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIPointerGage.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIPointerGage.h">
+					</File>
+					<File
 						RelativePath=".\UIZoneMap.cpp">
 					</File>
 					<File
@@ -9783,6 +9789,9 @@
 				Name="ui"
 				Filter="">
 				<File
+					RelativePath=".\car_panel.xml">
+				</File>
+				<File
 					RelativePath=".\carbody.xml">
 				</File>
 				<File
@@ -9805,6 +9814,9 @@
 				</File>
 				<File
 					RelativePath=".\inventoryMP_new2.xml">
+				</File>
+				<File
+					RelativePath=".\maingame.xml">
 				</File>
 				<File
 					RelativePath=".\maingame_character.xml">
