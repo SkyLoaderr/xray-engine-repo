@@ -74,7 +74,7 @@ void CGroup::GetMemberDedication(MemberPlacement& MP, CEntity* Me)
 			const Fvector&	P = E->Position();
 			vCentroid.add	(P);
 			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				Fvector	P1,P2,C;
 
 				NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
@@ -99,7 +99,7 @@ void CGroup::GetMemberDedicationN(MemberNodes& MP, CEntity* Me)
 		else {
 			CEntity*		E = Members[I];
 			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				MP.push_back		(M->AI_Path.DestNode);
 			}
 		}
@@ -125,7 +125,7 @@ void CGroup::GetMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlacement
 		else {
 			CEntity*E = Members[I];
 			if (E!=Me) {
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				const Fvector&	P = E->Position();
 				Fvector	_P1,_P2,C;
 				NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
@@ -184,7 +184,7 @@ void CGroup::GetAliveMemberDedication(MemberPlacement& MP, CEntity* Me)
 				const Fvector&	P = E->Position();
 				vCentroid.add	(P);
 				if (E!=Me)	{
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					Fvector	P1,P2,C;
 
 					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
@@ -210,7 +210,7 @@ void CGroup::GetAliveMemberDedicationN(MemberNodes& MP, CEntity* Me)
 			else {
 				CEntity*		E = Members[I];
 				if (E!=Me)	{
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster* M	= dynamic_cast<CCustomMonster*>(E);
 					MP.push_back		(M->AI_Path.DestNode);
 				}
 			}
@@ -237,7 +237,7 @@ void CGroup::GetAliveMemberInfo(MemberPlacement& P0, MemberNodes& P1, MemberPlac
 			else {
 				CEntity*E = Members[I];
 				if (E!=Me) {
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					const Fvector&	P = E->Position();
 					Fvector	_P1,_P2,C;
 					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
@@ -305,7 +305,7 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 				const Fvector&	P = E->Position();
 				vCentroid.add	(P);
 				if (E!=Me)	{
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster* M			= dynamic_cast<CCustomMonster*>(E);
 					Fvector	P1,P2,C;
 
 					NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
@@ -328,7 +328,7 @@ void CGroup::GetAliveMemberDedicationWithLeader(MemberPlacement& MP, CEntity* Me
 			const Fvector&	P = E->Position();
 			vCentroid.add	(P);
 			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M			= dynamic_cast<CCustomMonster*>(E);
 				Fvector	P1,P2,C;
 
 				NodeCompressed*	NC			= Level().AI.Node(M->AI_Path.DestNode);
@@ -354,7 +354,7 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 			else {
 				CEntity*		E = Members[I];
 				if (E!=Me)	{
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster*	M	= dynamic_cast<CCustomMonster*>(E);
 					MP.push_back		(M->AI_Path.DestNode);
 				}
 			}
@@ -365,7 +365,7 @@ void CGroup::GetAliveMemberDedicationNWithLeader(MemberNodes& MP, CEntity* Me, C
 		else {
 			CEntity*		E = Leader;
 			if (E!=Me)	{
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M	= dynamic_cast<CCustomMonster*>(E);
 				MP.push_back		(M->AI_Path.DestNode);
 			}
 		}
@@ -392,7 +392,7 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 			else {
 				CEntity*E = Members[I];
 				if (E!=Me) {
-					CCustomMonster* M = (CCustomMonster*)E;
+					CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 					const Fvector&	P = E->Position();
 					Fvector	_P1,_P2,C;
 					NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);
@@ -419,7 +419,7 @@ void CGroup::GetAliveMemberInfoWithLeader(MemberPlacement& P0, MemberNodes& P1, 
 		else {
 			CEntity*E = Leader;
 			if (E!=Me) {
-				CCustomMonster* M = (CCustomMonster*)E;
+				CCustomMonster* M = dynamic_cast<CCustomMonster*>(E);
 				const Fvector&	P = E->Position();
 				Fvector	_P1,_P2,C;
 				NodeCompressed*	NC = Level().AI.Node(M->AI_Path.DestNode);

@@ -91,7 +91,7 @@ void CAI_Space::Render()
 	if (0==vfs)			return;
 	if (0==sh_debug)	return;
 	
-	CGameObject*	O	= (CGameObject*)Level().CurrentEntity();
+	CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
 	Fvector	POSITION	= O->Position();
 	POSITION.y += 0.5f;
 
