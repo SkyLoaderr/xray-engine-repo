@@ -146,6 +146,9 @@
 				RelativePath=".\xr_rest.script">
 			</File>
 			<File
+				RelativePath=".\xr_robber_guard.script">
+			</File>
+			<File
 				RelativePath=".\xr_robbers.script">
 			</File>
 			<File
