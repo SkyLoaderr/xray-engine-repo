@@ -68,7 +68,7 @@ end
 function haveAK(first_speaker, second_speaker)
 	return( first_speaker:object("wpn_ak74") ~= nil )
 end
-function haveTOZ()
+function haveTOZ(first_speaker, second_speaker)
 	return( first_speaker:object("wpn_toz34") ~= nil )
 end
 
