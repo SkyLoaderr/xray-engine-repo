@@ -201,7 +201,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 
 void xrMU_Model::calc_lighting		()
 {
-	clMsg				("model '%s' - reference lighted.",m_name);
+	clMsg				("model '%s' - REF_lighted.",m_name);
 	calc_lighting		(color,Fidentity,0,0);
 }
 

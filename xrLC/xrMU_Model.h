@@ -12,9 +12,17 @@ public:
 
 	struct	_subdiv
 	{
-		u32 material;
-		u32	start;
-		u32 count;
+		u32		material;
+		u32		start;
+		u32		count;
+
+		OGF*	ogf;
+
+		u32		vb_id;
+		u32		vb_start;
+
+		u32		ib_id;
+		u32		ib_start;
 	};
 
 	//** 
@@ -87,6 +95,8 @@ public:
 	void				calc_faceopacity	();
 	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer);
 	void				calc_lighting		();
+	void				calc_ogf			();
+	void				export_geometry		();
 };
 
 class xrMU_Reference
