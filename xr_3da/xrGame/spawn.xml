@@ -25,9 +25,9 @@
 	</t2_static>
 
 	<!-- BUTTON -->
-	<button x="100" y="340" width="138" height="30" align="c">
+	<button x="100" y="340" width="138" height="30">
 		<texture>ui\ui_button_04</texture>
-		<text>JOIN</text>
+		<text align="c">JOIN</text>
 	</button>
 	
 </window>
