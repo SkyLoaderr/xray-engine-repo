@@ -88,9 +88,9 @@ void CTorch::OnH_A_Chield()
 	inherited::OnH_A_Chield	();
 	setVisible				(false);
 	setEnabled				(false);
-	svTransform.c.set		(m_pos);
-	vPosition.set			(svTransform.c);
-	m_focus.set				(H_Root()->Position());
+	H_Root()->clCenter		(vPosition);
+	svTransform.c.set		(vPosition);
+	m_focus.set				(vPosition);
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
 }
 
