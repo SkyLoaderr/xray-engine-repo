@@ -650,7 +650,7 @@ function stalker_novice3_action:state_actor()
 
     if(self.a.curState == wait_actor and self.b.talk == false) then
       --Изредка зовем актера, или проигруем анимацию
-		if(self.object:active_sound_count == 0 and self.object:animation_count() == 0 and distance_between(self.object, level.actor()) > 4) then
+		if(self.object:active_sound_count() == 0 and self.object:animation_count() == 0 and distance_between(self.object, level.actor()) > 4) then
 	        if(device():time_global() > self.b.speak_time and self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
 	            self:select_phrase()
 	            xr_sounds.play_sound_rnd    (self.object, 1000, 1500, "trivial", 4,2, self.phrase)
