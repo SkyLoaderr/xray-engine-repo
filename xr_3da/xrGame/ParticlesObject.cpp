@@ -5,6 +5,7 @@
 #pragma hdrstop
 
 #include "ParticlesObject.h"
+#include "../defines.h"
 #include "../fbasicvisual.h"
 #include "../ParticleCustom.h"
 #include "../render.h"
@@ -86,8 +87,8 @@ void CParticlesObject::UpdateSpatial()
 			spatial_register		();
 		} else {
 			BOOL	bMove			= FALSE;
-			if		(!P.similar(spatial.center))		bMove	= TRUE;
-			if		(!fsimilar(R,spatial.radius,0.15f))	bMove	= TRUE;
+			if		(!P.similar(spatial.center,EPS_L*10.f))		bMove	= TRUE;
+			if		(!fsimilar(R,spatial.radius,0.15f))			bMove	= TRUE;
 			if		(bMove)			{
 				spatial.center			= P;
 				spatial.radius			= R;
@@ -104,13 +105,13 @@ const shared_str CParticlesObject::Name()
 }
 
 //----------------------------------------------------
-void CParticlesObject::Play()
+void CParticlesObject::Play		()
 {
-	IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->Play				();
-	dwLastTime			= Device.dwTimeGlobal-33ul;
-	PerformAllTheWork	(0);
-	m_bStoppig			= false;
+	IParticleCustom* V			= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+	V->Play						();
+	dwLastTime					= Device.dwTimeGlobal-33ul;
+	PerformAllTheWork			(0);
+	m_bStoppig					= false;
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
@@ -124,18 +125,31 @@ void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 	m_bStoppig					= false;
 }
 
-void CParticlesObject::Stop(BOOL bDefferedStop)
+void CParticlesObject::Stop		(BOOL bDefferedStop)
 {
-	IParticleCustom* V	= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->Stop			(bDefferedStop);
-
-	m_bStoppig = true;
+	IParticleCustom* V			= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+	V->Stop						(bDefferedStop);
+	m_bStoppig					= true;
 }
 
 void CParticlesObject::shedule_Update	(u32 _dt)
 {
 	inherited::shedule_Update		(_dt);
-	PerformAllTheWork				(_dt);
+
+	// Update
+	u32 dt							= Device.dwTimeGlobal - dwLastTime;
+	if (dt)							{
+		if (psDeviceFlags.test(mtParticles))	{
+			mt_dt					= dt;
+			fastdelegate::FastDelegate0			delegate	(this,&CParticlesObject::PerformAllTheWork_mt);
+			//Device.seqParallel.push_back		(delegate);
+		} else {
+			IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+			V->OnFrame				(dt);
+		}
+		dwLastTime					= Device.dwTimeGlobal;
+	}
+	UpdateSpatial					();
 }
 
 void CParticlesObject::PerformAllTheWork(u32 _dt)
@@ -148,6 +162,12 @@ void CParticlesObject::PerformAllTheWork(u32 _dt)
 		dwLastTime				= Device.dwTimeGlobal;
 	}
 	UpdateSpatial					();
+}
+
+void CParticlesObject::PerformAllTheWork_mt()
+{
+	IParticleCustom* V		= smart_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+	V->OnFrame				(mt_dt);
 }
 
 void CParticlesObject::SetXFORM		(const Fmatrix& m)
@@ -181,13 +201,12 @@ void CParticlesObject::renderable_Render	()
 	::Render->set_Transform			(&renderable.xform);
 	::Render->add_Visual			(renderable.visual);
 }
-
-bool CParticlesObject::IsAutoRemove()
+bool CParticlesObject::IsAutoRemove			()
 {
 	if(m_bAutoRemove) return true;
 	else return false;
 }
-void CParticlesObject::SetAutoRemove(bool auto_remove)
+void CParticlesObject::SetAutoRemove		(bool auto_remove)
 {
 	VERIFY(m_bStoppig || !IsLooped());
 	m_bAutoRemove = auto_remove;

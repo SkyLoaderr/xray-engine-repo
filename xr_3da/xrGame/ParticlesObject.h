@@ -14,10 +14,10 @@ class CParticlesObject		:	public CPS_Instance
 	void				Init				(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove);
 	void				UpdateSpatial		();
 protected:
-	//флаг, что система зациклена
-	bool				m_bLooped;
-	//вызвана функция Stop()
-	bool				m_bStoppig;
+	bool				m_bLooped;			//флаг, что система зациклена
+	bool				m_bStoppig;			//вызвана функция Stop()
+protected:
+	u32					mt_dt;
 public:
 						CParticlesObject	(LPCSTR p_name, IRender_Sector* S=0, BOOL bAutoRemove=TRUE);
 						CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove);
@@ -27,6 +27,7 @@ public:
 	virtual void		shedule_Update		(u32 dt);
 	virtual void		renderable_Render	();
 	void				PerformAllTheWork	(u32 dt);
+	void				PerformAllTheWork_mt();
 
 	Fvector&			Position			();
 	void				SetXFORM			(const Fmatrix& m);

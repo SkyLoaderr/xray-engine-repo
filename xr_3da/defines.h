@@ -28,9 +28,10 @@ enum {
 	mtSound				= (1ul<<10ul),
 	mtPhysics			= (1ul<<11ul),
 	mtNetwork			= (1ul<<12ul),
+	mtParticles			= (1ul<<13ul),
 
-	rsOcclusionDraw		= (1ul<<13ul),
-	rsOcclusionStats	= (1ul<<14ul),
+	rsOcclusionDraw		= (1ul<<14ul),
+	rsOcclusionStats	= (1ul<<15ul),
 	// 20-32 bit - defined in Editor
 };
 
