@@ -45,8 +45,8 @@ void CBuild::Flex2OGF()
 					// If lightmaps persist
 					CLightmap* LM	= F->lmap_layers[lmit];
 					R_ASSERT		(LM);
-					strcpy			(T.name, LM->lm.name);
-					T.pSurface		= &(LM->lm);
+					strcpy			(T.name, LM->lm_texture.name);
+					T.pSurface		= &(LM->lm_texture);
 					R_ASSERT		(T.pSurface);
 					R_ASSERT		(pOGF);
 					pOGF->textures.push_back(T);
@@ -69,7 +69,7 @@ void CBuild::Flex2OGF()
 						V[fv].N.set(FF->v[fv]->N); 
 						V[fv].T.set(FF->basis_tangent[fv]);
 						V[fv].B.set(FF->basis_binormal[fv]);
-						V[fv].Color=FF->v[fv]->C.get();
+						V[fv].Color=FF->v[fv]->C;
 					}
 					
 					// Normal order
