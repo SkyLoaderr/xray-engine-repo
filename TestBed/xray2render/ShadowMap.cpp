@@ -682,7 +682,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,4.f);
 	height->Release						();
 
-	hr = CreatePower					(m_pd3dDevice,256,48.f,&t_SpecularPower_32);
+	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
 	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
 
 	m_ArcBall.SetWindow					(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
