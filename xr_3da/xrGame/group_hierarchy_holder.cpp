@@ -156,4 +156,5 @@ void CGroupHierarchyHolder::unregister_member			(CEntity *member)
 	unregister_in_group			(member);
 	unregister_in_squad			(member);
 	unregister_in_agent_manager	(member);
+	unregister_in_group_senses	(member);
 }
