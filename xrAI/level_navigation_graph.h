@@ -22,8 +22,6 @@ namespace LevelNavigationGraph {
 	class  CSector;
 };
 
-#include "level_navigation_graph_space.h"
-
 template <typename, typename, typename> class CGraphAbstractSerialize;
 
 #ifndef OPTIMAL_GRAPH
@@ -93,6 +91,8 @@ protected:
 
 #else
 
+//#define USE_COMPUTED
+
 class CLevelNavigationGraph : public CLevelGraph {
 private:
 	typedef CLevelGraph									inherited;
@@ -152,6 +152,9 @@ protected:
 	IC		void				fill_cell				(u32 start_vertex_id);
 	IC		void				fill_cells				();
 	IC		void				fast_sort				();
+#ifdef USE_COMPUTED
+	IC		void				update_cell_computed	(u32 start_vertex_id, u32 link);
+#endif
 	IC		void				update_cell				(u32 start_vertex_id, u32 link);
 	IC		void				update_cells			(u32 vertex_id, u32 right, u32 down);
 	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down, u32 max_square);
