@@ -12,6 +12,8 @@
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\xr_trims.h"
+#include "..\\..\\hudmanager.h"
+
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -31,6 +33,7 @@ CAI_Soldier::CAI_Soldier()
 	m_fAggressiveness = ::Random.randF(0,1);
 	m_fTimorousness = ::Random.randF(0,1);
 	m_bFiring = false;
+	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -38,6 +41,18 @@ CAI_Soldier::~CAI_Soldier()
 	// removing all data no more being neded 
 	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	Engine.Event.Handler_Detach (m_tpEventSay,this);
+}
+
+void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
+{
+	if (E == m_tpEventSay) {
+		if (0==P2 || DWORD(this)==P2) {
+			char* Test;
+			Test = (char *)P1;
+			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
+		}
+	}
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)

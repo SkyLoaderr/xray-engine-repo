@@ -297,6 +297,8 @@ class CAI_Soldier : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		
+		EVENT			m_tpEventSay;
+		
 		// ai
 		ESoldierStates	eCurrentState;
 		ESoldierStates	m_ePreviousState;
@@ -428,6 +430,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  OnVisible(); 
 		virtual objQualifier* GetQualifier	();
 		virtual BOOL  Spawn( BOOL bLocal, int sid, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+		virtual void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2);
 };
 		
 #endif
