@@ -55,8 +55,8 @@ void CPseudoGigant::Load(LPCSTR section)
 		MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1, &inherited::get_sd()->m_fsVelocityNone,				PS_LIE,		"fx_stand_f", "fx_stand_b", "fx_stand_l", "fx_stand_r");
 
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
-		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
-		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimSitIdle);
+		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
+		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_RUN,			eAnimRun);

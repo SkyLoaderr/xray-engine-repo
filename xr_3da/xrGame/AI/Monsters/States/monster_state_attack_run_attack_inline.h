@@ -12,7 +12,9 @@ TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAttackAbstract::initialize()
 {
 	inherited::initialize			();
+	
 	object->CriticalActionInfo->set	(CAF_LockPath);
+	object->m_time_last_attack_success		= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -48,15 +50,15 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 {
 	float dist			= object->MeleeChecker.distance_to_enemy	(object->EnemyMan.get_enemy());
 	
-	if (dist > object->MeleeChecker.get_max_distance())	return false;
-	if (dist < object->MeleeChecker.get_min_distance())	return false;
+	if (dist > object->get_sd()->m_run_attack_start_dist)	return false;
+	if (dist < object->MeleeChecker.get_min_distance())		return false;
 	
 	// check angle
-	if (!object->DirMan.is_face_target(object->EnemyMan.get_enemy(), deg(5))) return false;
+	if (!object->DirMan.is_face_target(object->EnemyMan.get_enemy(), deg(30))) return false;
 	
 	// try to build path
 	Fvector target_position;
-	target_position.mad(object->Position(), object->Direction(), 8.0f);
+	target_position.mad(object->Position(), object->Direction(), object->get_sd()->m_run_attack_path_dist);
 	
 	if (!object->CMonsterMovement::build_special(target_position, u32(-1), object->eVelocityParamsRunAttack)) return false;
 	else object->CMonsterMovement::enable_path();
@@ -67,7 +69,7 @@ bool CStateMonsterAttackRunAttackAbstract::check_start_conditions()
 TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackRunAttackAbstract::check_completion()
 {
-	if (!object->CMonsterMovement::IsMovingOnPath()) return true;
+	if (!object->CMonsterMovement::IsMovingOnPath() || (object->m_time_last_attack_success != 0)) return true;
 	return false;
 }
 

@@ -11,14 +11,18 @@ protected:
 	enum {
 		eStateSleep				= u32(0),
 		eStateWalkGraphPoint,
-		eStateIdle
+		eStateIdle,
+		eStateFun
 	};
+
+	u32					time_last_fun;	
 
 public:
 						CStateMonsterRest		(_Object *obj);
 						CStateMonsterRest		(_Object *obj, state_ptr state_sleep, state_ptr state_walk);
 	virtual				~CStateMonsterRest		();
 
+	virtual	void		initialize				();
 	virtual	void		execute					();
 };
 

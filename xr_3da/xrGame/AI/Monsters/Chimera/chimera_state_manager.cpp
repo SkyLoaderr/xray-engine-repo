@@ -14,6 +14,9 @@
 
 #include "../critical_action_info.h"
 
+#include "../states/state_hit_object.h"
+
+
 CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 {
 	add_state(eStateRest,				xr_new<CStateMonsterRest<CChimera> >					(obj));
@@ -24,6 +27,8 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 	add_state(eStateDangerousSound,		xr_new<CStateMonsterHearDangerousSound<CChimera> >		(obj));
 	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CChimera> >					(obj));
 	add_state(eStateThreaten,			xr_new<CStateChimeraThreaten<CChimera> >				(obj));
+	add_state(eStateHitObject,			xr_new<CStateMonsterHitObject<CChimera> >				(obj));
+	
 }
 
 CStateManagerChimera::~CStateManagerChimera()
@@ -32,6 +37,21 @@ CStateManagerChimera::~CStateManagerChimera()
 
 void CStateManagerChimera::execute()
 {
+	bool exec_hit_obj = false;
+	
+	//if (prev_substate == eStateHitObject) {
+	//	if (!get_state_current()->check_completion())					exec_hit_obj = true;
+	//} else if (get_state(eStateHitObject)->check_start_conditions())	exec_hit_obj = true;
+	
+	if (exec_hit_obj) {
+		select_state					(eStateHitObject); 
+		get_state_current()->execute	();
+		prev_substate					= current_substate;
+		return;
+	}
+
+
+
 	u32 state_id = u32(-1);
 
 	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
@@ -68,16 +88,18 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 
-	//if (state_id == eStateAttack) {
-	//	if (!object->MotionMan.IsCriticalAction()) {
-	//		CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
-	//		if (object->CJumpingAbility::can_jump(target)) {
-	//			object->try_to_jump();
-	//		}
-	//	}
-	//}
+	if (state_id == eStateAttack) {
+		if (!object->MotionMan.IsCriticalAction()) {
+			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
+			if (object->CJumpingAbility::can_jump(target)) {
+				object->try_to_jump();
+			}
+		}
+	}
 
 	if (object->CriticalActionInfo->is_fsm_locked()) return;
+
+	
 
 
 	select_state(state_id); 

@@ -64,6 +64,9 @@ CBaseMonster::CBaseMonster()
 
 	DirMan.init_external			(this);
 	MeleeChecker.init_external		(this);
+	Morale.init_external			(this);
+
+	m_jumping						= 0;
 }
 
 CBaseMonster::~CBaseMonster()
@@ -118,7 +121,8 @@ void CBaseMonster::UpdateCL()
 
 void CBaseMonster::shedule_Update(u32 dt)
 {
-	inherited::shedule_Update(dt);
+	inherited::shedule_Update	(dt);
+	Morale.update_schedule		(dt);
 	
 	m_pPhysics_support->in_shedule_Update(dt);
 }
@@ -166,18 +170,6 @@ CBoneInstance *CBaseMonster::GetEatBone()
 {
 	int bone = smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_ponytail2");
 	return (&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(bone)));
-}
-
-
-void CBaseMonster::MoraleBroadcast(float fValue)
-{
-	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
-	for (u32 i=0; i<Group.members().size(); ++i) {
-		CEntityAlive *pE = smart_cast<CEntityAlive *>(Group.members()[i]);
-		if (!pE) continue;
-		
-		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < get_sd()->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
-	}
 }
 
 #ifdef DEBUG
@@ -270,19 +262,10 @@ void CBaseMonster::PitchCorrection()
 	bool b_need_pitch_correction = true;
 	
 	if (ability_can_jump()) {
-		CJumping *pJumping = smart_cast<CJumping *>(this);
-		if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
+		if (m_jumping && m_jumping->IsActive()) b_need_pitch_correction = false;
 	}
 	if (b_need_pitch_correction) inherited::PitchCorrection();
 }
-
-//void CBaseMonster::State_PlaySound(u32 internal_type, u32 max_stop_time)
-//{
-//	if (m_bAngry && ((internal_type == eMonsterSoundIdle) ||  (internal_type == eMonsterSoundEat)))
-//		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, get_sd()->m_dwAttackSndDelay);
-//	else 
-//		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
-//}
 
 void CBaseMonster::set_state_sound(u32 type, bool once)
 {
@@ -397,4 +380,15 @@ u32 CBaseMonster::get_attack_rebuild_time()
 {
 	float dist = EnemyMan.get_enemy()->Position().distance_to(Position());
 	return (100 + u32(50.f * dist));
+}
+
+void CBaseMonster::on_kill_enemy(const CEntity *obj)
+{
+	const CEntityAlive *entity	= smart_cast<const CEntityAlive *>(obj);
+	
+	// добавить в список трупов	
+	CorpseMemory.add_corpse		(entity);
+	
+	// удалить всю информацию о хитах
+	HitMemory.remove_hit_info	(entity);
 }

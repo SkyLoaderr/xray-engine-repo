@@ -77,8 +77,8 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_blend_speed					= -1.f;
 	m_target_position				= point;
 
-	//m_object->m_velocity_angular	= 3.f;
-	//m_object->DirMan.face_target	(point);
+	m_object->m_velocity_angular	= 3.f;
+	m_object->DirMan.face_target	(point);
 
 	m_active			= true;
 	m_velocity_bounced	= false;
@@ -155,7 +155,7 @@ void CJumpingAbility::set_animation_speed()
 		if (m_blend_speed < 0)	m_blend_speed = info.blend->speed;
 		info.speed.current = (info.blend->timeTotal / m_jump_time);
 	} else {
-		info.speed.current = -1.f;
+		info.speed.current = 1.f;
 	}
 }
 

@@ -39,14 +39,12 @@ public:
 	virtual void	CheckSpecParams				(u32 spec_params);
 	virtual	EAction	CustomVelocityIndex2Action	(u32 velocity_index);
 	virtual	void	TranslateActionToPathParams ();
-	//virtual bool	ability_run_attack			() {return true;}
+	virtual bool	ability_run_attack			() {return true;}
 			
 			void	try_to_jump					();
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
-
-	virtual u32		get_run_attack_velocity_mask() {return eVelocityParamsRunAttack;}
 };
 
 

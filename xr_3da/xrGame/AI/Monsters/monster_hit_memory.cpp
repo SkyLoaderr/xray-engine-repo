@@ -144,3 +144,18 @@ Fvector CMonsterHitMemory::get_last_hit_position()
 	return last_hit.position;
 }
 
+struct predicate_old_info {
+	const CObject *object;
+
+	predicate_old_info(const CObject *obj) : object(obj) {}
+
+	IC bool	operator() (const SMonsterHit &hit_info) {
+		return (object == hit_info.object);
+	}
+};
+
+void CMonsterHitMemory::remove_hit_info(const CObject *obj)
+{
+	MONSTER_HIT_VECTOR_IT it = remove_if(m_hits.begin(), m_hits.end(), predicate_old_info(obj));
+	m_hits.erase(it, m_hits.end());
+}

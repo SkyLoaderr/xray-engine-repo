@@ -49,6 +49,10 @@ public:
 	IC		void	disable					(){m_enable = false;}
 
 	IC		void	set_aggressive			(bool b_val = true) {m_aggressive = b_val;}
+
+
+	// DEBUG
+	IC		float	get_value				() {return m_value;}
 };
 
 

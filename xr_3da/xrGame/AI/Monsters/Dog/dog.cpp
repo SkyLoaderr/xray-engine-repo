@@ -85,6 +85,8 @@ void CAI_Dog::Load(LPCSTR section)
 		MotionMan.AddTransition(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
 		MotionMan.AddTransition(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 		MotionMan.AddTransition(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+		
+		// todo: stand -> lie
 
 		// define links from Action to animations
 		MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft,	eAnimStandTurnRight, PI_DIV_6);

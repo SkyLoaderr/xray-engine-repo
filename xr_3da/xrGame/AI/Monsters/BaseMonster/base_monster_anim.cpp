@@ -69,9 +69,6 @@ void CBaseMonster::AA_CheckHit()
 
 	if (should_hit) HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
 	
-	// если жертва убита - добавить в список трупов	
-	if (!enemy->g_Alive()) CorpseMemory.add_corpse(enemy);
-
 	MeleeChecker.on_hit_attempt		(should_hit);
 	MotionMan.AA_UpdateLastAttack	(Level().timeServer());
 }

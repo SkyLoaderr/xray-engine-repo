@@ -12,7 +12,10 @@ protected:
 		eStateRun			= u32(0),
 		eStateMelee,
 		eStateRunAttack,
+		eStateRunAway,
 	};
+
+	u32		m_time_next_run_away;
 
 public:
 						CStateMonsterAttack		(_Object *obj);
@@ -21,6 +24,7 @@ public:
 	
 	virtual void		initialize				();
 	virtual	void		execute					();
+	virtual void		setup_substates			();
 };
 
 #include "monster_state_attack_inline.h"

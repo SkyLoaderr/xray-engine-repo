@@ -26,15 +26,6 @@ public:
 
 	// -------------------------------------------------------
 
-	// Мораль 
-	float					m_fMoraleSuccessAttackQuant;		// увеличение морали при успешной атаке
-	float					m_fMoraleDeathQuant;				// уменьшение морали при смерти монстра из одной команды
-	float					m_fMoraleFearQuant;					// уменьшение морали в панике
-	float					m_fMoraleRestoreQuant;				// квант восстановления морали ? 
-	float					m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
-
-	// ----------------------------------------------------------- 
-
 	u32						m_dwDayTimeBegin;
 	u32						m_dwDayTimeEnd;
 	float					m_fMinSatiety;
@@ -53,6 +44,8 @@ public:
 
 	float					m_max_hear_dist;
 
+	float					m_run_attack_path_dist;
+	float					m_run_attack_start_dist;
 };
 
 class _motion_shared : public CSharedResource {

@@ -2272,6 +2272,19 @@
 									RelativePath=".\ai\Monsters\melee_checker_inline.h">
 								</File>
 							</Filter>
+							<Filter
+								Name="Morale"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\monster_morale.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\monster_morale.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\monster_morale_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter
@@ -2352,6 +2365,12 @@
 							Filter="">
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_rest.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_rest_fun.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\States\monster_state_rest_fun_inline.h">
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\States\monster_state_rest_idle.h">
@@ -2574,6 +2593,12 @@
 							<Filter
 								Name="Test"
 								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\state_hit_object.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_hit_object_inline.h">
+								</File>
 								<File
 									RelativePath=".\ai\Monsters\States\state_test_look_actor.h">
 								</File>

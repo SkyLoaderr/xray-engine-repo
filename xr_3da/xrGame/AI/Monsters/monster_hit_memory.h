@@ -4,7 +4,7 @@
 class CBaseMonster;
 
 class CMonsterHitMemory {
-	CBaseMonster				*monster;
+	CBaseMonster			*monster;
 	TTime					time_memory;
 
 	MONSTER_HIT_VECTOR		m_hits;
@@ -28,6 +28,8 @@ public:
 	Fvector				get_last_hit_position	();
 	
 	void				clear					() {m_hits.clear();}
+
+	void				remove_hit_info			(const CObject *obj);
 
 private:
 	void				remove_non_actual		();

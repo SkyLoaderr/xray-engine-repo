@@ -26,6 +26,7 @@
 #include "../monster_event_manager.h"
 #include "../direction_manager.h"
 #include "../melee_checker.h"
+#include "../monster_morale.h"
 
 class CMonsterDebug;
 class CCharacterPhysicsSupport;
@@ -35,6 +36,7 @@ class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorCloseToEnemy;
 class CMonsterEventManager;
 class CCriticalActionInfo;
+class CJumping;
 
 class CBaseMonster : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -210,10 +212,7 @@ public:
 		
 			CBoneInstance *GetEatBone						();
 
-	// Morale
-			void			MoraleBroadcast					(float fValue);
 			void			LoadShared						(LPCSTR section);
-
 
 	// Cover
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
@@ -268,6 +267,7 @@ public:
 	// -----------------------------------------------------------------------------
 
 	CMeleeChecker			MeleeChecker;
+	CMonsterMorale			Morale;
 
 	// -----------------------------------------------------------------------------
 
@@ -305,10 +305,14 @@ IC	void					fall_asleep			(){m_bSleep = true;}
 IC	void					wake_up				(){m_bSleep = false;}
 
 
-CCriticalActionInfo		*CriticalActionInfo;
-
+	CCriticalActionInfo		*CriticalActionInfo;
+	
 	// Temp
-	virtual u32				get_run_attack_velocity_mask() {return u32(0);}
+	u32						m_time_last_attack_success;
+
+	void					on_kill_enemy		(const CEntity *obj);
+
+	CJumping				*m_jumping;
 
 
 #ifdef DEBUG

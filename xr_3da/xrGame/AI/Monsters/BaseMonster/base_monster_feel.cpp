@@ -63,9 +63,17 @@ void CBaseMonster::HitEntity(const CEntity *pEntity, float fDamage, float impuls
 		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
 		VERIFY		(pEntityNC);
 		pEntityNC->Hit(fDamage,hit_dir,this, smart_cast<CKinematics*>(pEntityNC->Visual())->LL_GetBoneRoot(),position_in_bone_space,impulse);
-		//HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation("monster");
 
-		if (smart_cast<CActor *>(pEntityNC)) SetAttackEffector();
+		if (smart_cast<CActor *>(pEntityNC)) {
+			HUD().GetUI()->UIMainIngameWnd.PlayClawsAnimation	("monster");
+			SetAttackEffector									();
+		}
+
+		Morale.on_attack_success();
+		
+		m_time_last_attack_success	= Level().timeServer();
+
+		if (!pEntity->g_Alive()) on_kill_enemy(pEntity);
 	}
 }
 
@@ -106,9 +114,11 @@ void CBaseMonster::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16
 	else if ((yaw >= 3 * PI_DIV_4) && (yaw <= 5*PI_DIV_4)) hit_side = eSideBack;
 	else if ((yaw >= 5 * PI_DIV_4) && (yaw <= 7*PI_DIV_4)) hit_side = eSideRight;
 
-	MotionMan.FX_Play(hit_side, 1.0f);
+	MotionMan.FX_Play	(hit_side, 1.0f);
 
-	HitMemory.add_hit(who,hit_side);
+	HitMemory.add_hit	(who,hit_side);
+
+	Morale.on_hit		();
 
 	CScriptMonster	*script_monster = smart_cast<CScriptMonster*>(this);
 	if (script_monster)

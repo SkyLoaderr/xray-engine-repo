@@ -6,6 +6,8 @@
 #include "../../../hudmanager.h"
 #include "../../../../skeletonanimated.h"
 #include "../critical_action_info.h"
+#include "../ai_monster_jump.h"
+
 
 void CBaseMonster::reload	(LPCSTR section)
 {
@@ -51,6 +53,9 @@ void CBaseMonster::reinit()
 	
 	StateMan->reinit					();
 	CriticalActionInfo->reinit			();
+	
+	Morale.reinit						();
+
 
 	flagEatNow						= false;
 	m_bDamaged						= false;
@@ -79,6 +84,7 @@ void CBaseMonster::Load(LPCSTR section)
 	CStepManager::load				(section);
 
 	MeleeChecker.load				(section);
+	Morale.load						(section);
 
 	m_pPhysics_support				->in_Load(section);
 
@@ -86,7 +92,9 @@ void CBaseMonster::Load(LPCSTR section)
 	fEntityHealth					= (float)m_dwHealth;
 
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
-//	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
+
+	if (ability_can_jump())
+		m_jumping					= smart_cast<CJumping *>(this);
 }
 
 void CBaseMonster::load_shared(LPCSTR section)
@@ -102,8 +110,12 @@ void CBaseMonster::load_shared(LPCSTR section)
 	get_sd()->m_fsVelocityDrag.Load				(section,"Velocity_Drag");
 	get_sd()->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
 
-	if (ability_run_attack()) 
+	if (ability_run_attack()) {
 		get_sd()->m_fsVelocityRunAttack.Load	(section,"Velocity_RunAttack");
+		
+		get_sd()->m_run_attack_path_dist		= pSettings->r_float(section, "RunAttack_PathDistance");
+		get_sd()->m_run_attack_start_dist		= pSettings->r_float(section, "RunAttack_StartDistance");
+	}
 
 	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
 	get_sd()->m_dwDayTimeEnd				= pSettings->r_u32	(section,"DayTime_End");		
@@ -116,12 +128,6 @@ void CBaseMonster::load_shared(LPCSTR section)
 	get_sd()->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
 	get_sd()->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
 	get_sd()->m_dwAttackSndDelay			= pSettings->r_u32	(section,"attack_sound_delay");
-
-	get_sd()->m_fMoraleSuccessAttackQuant	= pSettings->r_float(section,"MoraleSuccessAttackQuant");
-	get_sd()->m_fMoraleDeathQuant			= pSettings->r_float(section,"MoraleDeathQuant");
-	get_sd()->m_fMoraleFearQuant			= pSettings->r_float(section,"MoraleFearQuant");
-	get_sd()->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
-	get_sd()->m_fMoraleBroadcastDistance	= pSettings->r_float(section,"MoraleBroadcastDistance");
 
 	get_sd()->m_fEatFreq					= pSettings->r_float(section,"eat_freq");
 	get_sd()->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
@@ -186,6 +192,8 @@ BOOL CBaseMonster::net_Spawn (LPVOID DC)
 	m_movement_params.insert(std::make_pair(eVelocityParameterRunAttack,	STravelParams(get_sd()->m_fsVelocityRunAttack.velocity.linear,		get_sd()->m_fsVelocityRunAttack.velocity.angular_path,		get_sd()->m_fsVelocityRunAttack.velocity.angular_real)));
 	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
+
+	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
 
 	return(TRUE);
 }
