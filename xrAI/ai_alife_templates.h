@@ -38,6 +38,7 @@ void delete_data(xr_vector<T> &tpVector)
 template <class T> 
 void delete_data(T *&tpData)
 {
+	delete_data					(*tpData);
 	xr_delete					(tpData);
 };
 
@@ -110,6 +111,25 @@ void save_data(T *&tpData, M &tNetPacket, bool bSaveCount = true)
 	tpData->Save				(tNetPacket);
 };
 
+template <class T, class M>
+void save_data(T **&tpData, M &tNetPacket, bool bSaveCount = true)
+{
+	save_data					(*tpData,tNetPacket,bSaveCount);
+};
+
+template <class T1, class T2, class T3, class M>
+void save_data(xr_map<T1,T2,T3> *&tpMap, M &tNetPacket, bool bSaveCount = true)
+{
+	save_data					(*tpMap,tNetPacket,bSaveCount);
+};
+
+template <class T, class M>
+void save_data(xr_vector<T> *&tpVector, M &tNetPacket, bool bSaveCount = true)
+{
+	save_data					(*tpVector,tNetPacket,bSaveCount);
+};
+
+
 // load data
 
 template <class T1, class T2, class T3, class M>
@@ -162,20 +182,6 @@ void load_data(xr_vector<bool> &baVector, M &tNetPacket, bool bSaveCount = true)
 };
 
 template <class M>
-void load_data(xr_vector<LPSTR> &tpVector, M &tNetPacket, bool bSaveCount = true)
-{
-	if (bSaveCount)
-		tpVector.resize			(tNetPacket.r_u32());
-	string4096					S;
-	xr_vector<LPSTR>::iterator	I = tpVector.begin();
-	xr_vector<LPSTR>::iterator	E = tpVector.end();
-	for ( ; I != E; I++) {
-		tNetPacket.r_string		(S);
-		*I						= xr_strdup(S);
-	}
-};
-
-template <class M>
 void load_data(LPSTR &tpData, M &tNetPacket, bool bSaveCount = true)
 {
 	string4096					S;
@@ -193,6 +199,31 @@ template <class T, class M>
 void load_data(T *&tpData, M &tNetPacket, bool bSaveCount = true)
 {
 	tpData->Load				(tNetPacket);
+};
+
+//
+template <class T, class M>
+void load_data(T **&tpData, M &tNetPacket, bool bSaveCount = true)
+{
+	load_data					(*tpData,tNetPacket,bSaveCount);
+};
+
+template <class T1, class T2, class T3, class M>
+void load_data(xr_map<T1,T2,T3> *&tpMap, M &tNetPacket, T1 tfGetKey(const T2))
+{
+	load_data					(*tpMap,tNetPacket,tfGetKey);
+};
+
+template <class T1, class T2, class T3, class M>
+void load_data(xr_map<T1,T2,T3> *&tpMap, M &tNetPacket, bool bSaveCount = true)
+{
+	load_data					(*tpMap,tNetPacket,bSaveCount);
+};
+
+template <class T, class M>
+void load_data(xr_vector<T> *&tpVector, M &tNetPacket, bool bSaveCount = true)
+{
+	load_data					(*tpVector,tNetPacket,bSaveCount);
 };
 
 #endif
