@@ -58,7 +58,8 @@ void		CDetailManager::cache_Decompress(Slot* S)
 #else
 	xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
 	u32	triCount		= xrc.r_count	();
-	CDB::TRI* tris		= g_pGameLevel->ObjectSpace.GetStaticTris();
+	CDB::TRI*	tris	= g_pGameLevel->ObjectSpace.GetStaticTris();
+	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts();
 #endif
 
 	if (0==triCount)	return;
@@ -145,7 +146,8 @@ Device.Statistic.TEST0.End		();
 				}
 #else
 				CDB::TRI&	T		= tris[xrc.r_begin()[tid].id];
-				if (CDB::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
+				Fvector		Tv[3]	= { verts[T.verts[0]],verts[T.verts[1]],verts[T.verts[2]] };
+				if (CDB::TestRayTri(Item.P,dir,Tv,r_u,r_v,r_range,TRUE))
 				{
 					if (r_range>=0)	{
 						float y_test	= Item.P.y - r_range;
