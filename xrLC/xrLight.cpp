@@ -3,8 +3,8 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
-xrCriticalSection		task_CS;
-xr_vector<int>				task_pool;
+xrCriticalSection					task_CS;
+xr_vector<int>						task_pool;
 
 class CLMThread : public CThread
 {
@@ -74,7 +74,7 @@ void CBuild::Light()
 		// Main process (4 threads)
 		Status			("Lighting...");
 		CThreadManager	threads;
-		const	u32	thNUM	= 4;
+		const	u32	thNUM	= 6;
 		u32	dwTimeStart	= timeGetTime();
 		for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 		threads.wait	(500);
