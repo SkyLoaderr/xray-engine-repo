@@ -140,6 +140,8 @@ void LOut(const char *s) {
 HWND logWindow=0;
 void __cdecl logThread(void *dummy)
 {
+	SetProcessPriorityBoost	(GetCurrentProcess(),TRUE);
+
 	// Startup
 	string128	log_name,log_user;
 	DWORD		buffer_size		= 128;
