@@ -280,12 +280,6 @@
 			Name="Collider"
 			Filter="">
 			<File
-				RelativePath="cl_collector.cpp">
-			</File>
-			<File
-				RelativePath="cl_collector.h">
-			</File>
-			<File
 				RelativePath="cl_intersect.h">
 			</File>
 			<File
