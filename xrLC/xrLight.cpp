@@ -7,9 +7,9 @@ extern void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, 
 class CLMThread : public CThread
 {
 public:
-	CDeflector *	volatile defl;
-	BOOL			volatile bContinue;
-	HASH			hash;
+	CDeflector *		volatile	defl;
+	BOOL				volatile	bContinue;
+	CDeflector::HASH				hash;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{

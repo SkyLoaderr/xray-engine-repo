@@ -34,6 +34,8 @@ struct R_Light
 	}
 };
 
+typedef hash2D<UVtri*,128,128>	HASH;
+
 class CDeflector
 {
 public:
@@ -48,8 +50,6 @@ public:
 
 	vector<R_Light>		LightsSelected;
 	RAPID::XRCollide	DB;
-
-	typedef hash2D<UVtri*,128,128>	HASH;
 public:
 	CDeflector		();
 	~CDeflector		();
@@ -63,8 +63,7 @@ public:
 
 	DWORD	GetFaceCount() { return tris.size();	};
 
-	VOID	Prepare			();
-	VOID	Light			();
+	VOID	Light			(HASH& H);
 	VOID	L_Direct		(HASH& H);
 	VOID	L_Direct_Edge	(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
 	VOID	L_Radiosity		(HASH& H);

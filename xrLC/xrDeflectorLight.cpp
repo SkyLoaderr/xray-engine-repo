@@ -369,24 +369,19 @@ BOOL	compress_RMS			(b_texture& lm, DWORD rms, DWORD& w, DWORD& h)
 	return FALSE;
 }
 
-VOID CDeflector::L_Calculate(HASH& hash)
+VOID CDeflector::L_Calculate(HASH& H)
 {
 	// UV & HASH
 	RemapUV			(0,0,lm.dwWidth,lm.dwHeight,lm.dwWidth,lm.dwHeight,FALSE);
-	Fbox bb;		bb.invalidate	();
 	Fbox2			bounds;
 	Bounds_Summary	(bounds);
-	hash.initialize	(bounds);
+	H.initialize	(bounds);
 	for (DWORD fid=0; fid<tris.size(); fid++)
 	{
-		UVtri* T		= &(tris[fid]);
-		Bounds			(fid,bounds);
-		hash.add		(bounds,T);
-
-		Face*	F		= T->owner;
-		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
+		UVtri* T	= &(tris[fid]);
+		Bounds		(fid,bounds);
+		H.add		(bounds,T);
 	}
-	bb.getsphere(Center,Radius);
 
 	// Calculate
 	{
@@ -394,12 +389,21 @@ VOID CDeflector::L_Calculate(HASH& hash)
 		lm.pSurface = (DWORD *)malloc(size);
 		ZeroMemory	(lm.pSurface,size);
 	}
-	if (g_params.m_bRadiosity)	L_Radiosity	(hash);
-	else						L_Direct	(hash);
+	if (g_params.m_bRadiosity)	L_Radiosity	(H);
+	else						L_Direct	(H);
 }
 
-VOID CDeflector::Light(HASH& hash)
+VOID CDeflector::Light(HASH& H)
 {
+	// Geometrical bounds
+	Fbox bb;		bb.invalidate	();
+	for (DWORD fid=0; fid<tris.size(); fid++)
+	{
+		Face*	F		= T->owner;
+		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
+	}
+	bb.getsphere(Center,Radius);
+	
 	// Convert lights to local form
 	{
 		R_Light*	L = pBuild->lights_soften.begin();
