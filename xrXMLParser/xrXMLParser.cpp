@@ -109,7 +109,7 @@ XML_NODE* CUIXml::NavigateToNodeWithAttribute(const char *tag_name, const char *
 
 	for (int i = 0; i < tabsCount; ++i)
 	{
-		if (std::strcmp(ReadAttrib(root, attrib_name, ""), attrib_value) == 0)
+		if (xr_strcmp(ReadAttrib(root, tag_name, i, attrib_name, ""), attrib_value) == 0)
 		{
 			return NavigateToNode(root, tag_name, i);
 		}
