@@ -332,7 +332,6 @@ void CLightShadows::render	()
 			if (0==clip)		continue;
 			
 			// Triangulate poly 
-			float lE			= S.L->diffuse.magnitude_rgb	();
 			for (int v=2; v<clip->size(); v++)
 			{
 				Fvector& v1		= (*clip)[0];
