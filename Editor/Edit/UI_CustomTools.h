@@ -38,7 +38,7 @@ public:
     virtual void    OnActivate  	();
     virtual void    OnDeactivate	();
     virtual void    OnObjectsUpdate	(){;}
-    
+
     virtual void	ShowProperties	();
 
     virtual void 	SetNumPosition	(SceneObject* O);

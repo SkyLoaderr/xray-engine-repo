@@ -54,10 +54,10 @@ bool CRPoint::GetBox( Fbox& box ){
 //	box.max.add(RPOINT_SIZE);
 	return true;
 }
-                                
+
 void CRPoint::Render( Fmatrix& parent, ERenderPriority flag ){
     if (flag==rpNormal){
-        if (UI->Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
+        if (Device.m_Frustum.testSphere(m_Position,RPOINT_SIZE)){
 		    DU::DrawFlag(m_Position,m_fHeading,RPOINT_SIZE*2,RPOINT_SIZE,.3f,RP_COLORS[m_dwTeamID]);
             if( Selected() ){
                 Fbox bb; GetBox(bb);
@@ -92,7 +92,7 @@ bool CRPoint::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatr
 
 void CRPoint::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -102,7 +102,7 @@ void CRPoint::Move( Fvector& amount ){
 
 void CRPoint::LocalRotate( Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     m_fHeading			-= axis.y*angle;
@@ -112,7 +112,7 @@ void CRPoint::LocalRotate( Fvector& axis, float angle ){
 
 void CRPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -130,10 +130,10 @@ bool CRPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_VERSION,&version));
     if( version!=RPOINT_VERSION ){
-        Log->DlgMsg( mtError, "RPOINT: Unsupported version.");
+        ELog.DlgMsg( mtError, "RPOINT: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     R_ASSERT(F.ReadChunk(RPOINT_CHUNK_POSITION,&m_Position));

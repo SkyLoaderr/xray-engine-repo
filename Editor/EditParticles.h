@@ -92,7 +92,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebMergeClick(TObject *Sender);
 	void __fastcall ExtBtn2Click(TObject *Sender);
 	void __fastcall ExtBtn5Click(TObject *Sender);
-private:	
+private:
 // list functions
     void InitItemsList(const char* nm=0);
 	TElTreeItem* FindItem(const char* s);

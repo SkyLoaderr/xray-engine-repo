@@ -18,6 +18,7 @@
 #include "xrLevel.h"
 #include "xrShader.h"
 #include "shader.h"
+#include "UI_main.h"
 
 #define vSpecular			1
 #define vLight				2
@@ -124,7 +125,7 @@ void SceneBuilder::ResetStructures (){
 	l_faces_cnt		= 0;
 	l_vertices_it 	= 0;
 	l_faces_it		= 0;
-    _DELETEARRAY(l_vertices); 
+    _DELETEARRAY(l_vertices);
     _DELETEARRAY(l_faces);
     l_textures.clear();
     l_shaders.clear();
@@ -145,7 +146,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
     point_offs = l_vertices_it;  // save offset
 
     const Fmatrix& T = parent->GetTransform();
-    
+
     // fill vertices
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
     	T.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
@@ -203,7 +204,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
                         st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
-                            t--; 
+                            t--;
                             continue;
                         }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
@@ -212,7 +213,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
                     }
                 }
             }
-            
+
 	        if (surf->sideflag){
                 b_face& new_face 	= l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
@@ -227,7 +228,7 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
                         st_VMap& vmap		= mesh->m_VMaps[vm_pt.vmap_index];
                         if (vmap.type!=vmtUV){
                             offs++;
-                            t--; 
+                            t--;
                             continue;
                         }
                         Fvector2& uv		= vmap.getUV(vm_pt.index);
@@ -248,7 +249,7 @@ void SceneBuilder::BuildObject(CEditObject* obj){
 }
 
 void SceneBuilder::BuildObjectDynamic(CEditObject* obj){
-// compute vertex/face count    
+// compute vertex/face count
 	l_faces_cnt		+= obj->GetFaceCount();
     l_vertices_cnt  += obj->GetVertexCount();
 	l_faces			= new b_face[l_faces_cnt];
@@ -313,7 +314,7 @@ void SceneBuilder::BuildGlow(b_glow* b, CGlow* e){
     VERIFY(!e->m_ShaderName.IsEmpty());
     mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
     for (AStringIt s_it=e->m_TexNames.begin(); s_it!=e->m_TexNames.end(); s_it++)
-        mtl.surfidx[s_it-e->m_TexNames.begin()]=BuildTexture(UI->Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
+        mtl.surfidx[s_it-e->m_TexNames.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
     mtl.sector		= CalculateSector	(e->m_Position,e->m_Range);
 
     mtl_idx = FindInMaterials(&mtl);
@@ -340,7 +341,7 @@ void SceneBuilder::BuildDPatch(b_particle* b, st_SPData* e, st_DPSurface* surf){
     VERIFY(surf->m_Shader);
     mtl.shader      = BuildShader		(surf->m_Shader->shader->cName);
     for (AStringIt s_it=surf->m_Textures.begin(); s_it!=surf->m_Textures.end(); s_it++)
-        mtl.surfidx[s_it-surf->m_Textures.begin()]=BuildTexture(UI->Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
+        mtl.surfidx[s_it-surf->m_Textures.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
     mtl.sector		= CalculateSector	(e->m_Position,e->m_Range);
 
     mtl_idx = FindInMaterials(&mtl);
@@ -406,7 +407,7 @@ int SceneBuilder::BuildShader(const char * s){
 // texture build functions
 //------------------------------------------------------------------------------
 int SceneBuilder::FindInTextures(const char* name){
-    for (DWORD i=0; i<l_textures.size(); i++) 
+    for (DWORD i=0; i<l_textures.size(); i++)
     	if(stricmp(l_textures[i].name,name)==0) return i;
     return -1;
 }
@@ -454,11 +455,11 @@ int SceneBuilder::BuildMaterial(CEditMesh* m, st_Surface* surf, int sector_num )
     VERIFY(sector_num>=0);
     int mtl_idx;
 	DWORD tex_cnt 	= ((surf->dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
-    mtl.dwTexCount  = tex_cnt;  VERIFY(mtl.dwTexCount);               
+    mtl.dwTexCount  = tex_cnt;  VERIFY(mtl.dwTexCount);
     mtl.shader      = BuildShader(surf->shader->shader->cName);
     mtl.sector		= sector_num;
     for (AStringIt s_it=surf->textures.begin(); s_it!=surf->textures.end(); s_it++)
-        mtl.surfidx[s_it-surf->textures.begin()]=BuildTexture(UI->Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
+        mtl.surfidx[s_it-surf->textures.begin()]=BuildTexture(Device.Shader.FindTexture(s_it->c_str()),s_it->c_str());
     mtl_idx = FindInMaterials(&mtl);
     if (mtl_idx<0){
         l_materials.push_back(mtl);
@@ -513,7 +514,7 @@ bool SceneBuilder::RemoteStaticBuild()
     }
 
     UI->ProgressStart(Scene->ObjCount(OBJCLASS_EDITOBJECT),"Allocating memory for static faces and vertices...");
-// compute vertex/face count    
+// compute vertex/face count
     l_vertices_cnt	= 0;
     l_faces_cnt 	= 0;
 	l_vertices_it 	= 0;
@@ -578,7 +579,7 @@ bool SceneBuilder::RemoteStaticBuild()
 	        for (DWORD st=0; st<sh->Passes[ps].Stages_Count; st++)
             	 if (sh->Passes[ps].Stages[st].Tname[0]!='$') AddUniqueTexName(sh->Passes[ps].Stages[st].Tname);
     }
-    
+
     if (!NeedAbort()){
 	    UI->ProgressStart(Scene->m_DetailPatches->ObjCount(),"Saving detail patches...");
         for(PatchMapIt p_it=Scene->m_DetailPatches->m_Patches.begin();p_it!=Scene->m_DetailPatches->m_Patches.end(); p_it++){

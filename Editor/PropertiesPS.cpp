@@ -106,7 +106,7 @@ void __fastcall TfrmPropertiesPS::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	Action = caFree;
-    form = 0;	
+    form = 0;
 }
 //---------------------------------------------------------------------------
 

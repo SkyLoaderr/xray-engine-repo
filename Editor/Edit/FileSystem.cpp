@@ -21,7 +21,7 @@ void FSPath::Init( char *_Root, char *_Add, char *_DefExt, char *_FilterString )
 	strcat( m_Path, _Add );
     strlwr( m_Path );
 	VerifyPath();
-	Log->Msg( mtInformation, "FS: path = %s", m_Path );
+	ELog.Msg( mtInformation, "FS: path = %s", m_Path );
 }
 
 void FSPath::Update( char *_FileName )const{
@@ -171,7 +171,7 @@ bool CFileSystem::GetSaveName( FSPath *initial, AnsiString& buffer ){
 bool CFileSystem::Exist( const char *_FileName, bool bMessage ){
     bool bRes = FileExists(_FileName);
     if (bMessage&&!bRes){
-        Log->Msg(mtError,"Can't find required file: '%s'",_FileName);
+        ELog.Msg(mtError,"Can't find required file: '%s'",_FileName);
         return false;
     };
     return bRes;

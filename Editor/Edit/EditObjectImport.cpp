@@ -33,7 +33,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	UI->ProgressUpdate(100);
 	if (I){
         bool bResult=true;
-        Log->Msg( mtInformation, "CEditObject: import lwo %s...", fname );
+        ELog.Msg( mtInformation, "CEditObject: import lwo %s...", fname );
         char name[1024];
         _splitpath( fname, 0, 0, name, 0 );
         strcpy(m_Name,name);
@@ -62,7 +62,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         shader_name = (char*)Isf->shader->data;
                     }
                     if (!SHLib->FindShader(shader_name)){
-						Log->Msg(mtError,"CEditObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
+						ELog.Msg(mtError,"CEditObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
 	                    shader_name = "default";
                     }
                     // fill texture layers
@@ -75,7 +75,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         cidx = -1;
                         if (Itx->type==ID_IMAP) cidx=Itx->param.imap.cindex;
                         else{
-                            Log->DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' is not Image Map!",Osf->name);
+                            ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' is not Image Map!",Osf->name);
                             bResult=false;
                             break;
                         }
@@ -87,7 +87,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                                     break;
                                 }
                             if (tname[0]==0){
-                                Log->DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' name is empty or non 'STIL' type!",Osf->name);
+                                ELog.DlgMsg(mtError, "Import LWO (Surface '%s'): 'Texture' name is empty or non 'STIL' type!",Osf->name);
                                 bResult=false;
                                 break;
                             }
@@ -100,13 +100,13 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     }
                     if (!bResult) break;
                     if (Osf->textures.empty()){
-						Log->DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->name);
+						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->name);
                         bResult = false;
                         break;
                     }
-                    
-                    Osf->shader = UI->Device.Shader.Create(shader_name.c_str(),Osf->textures);
-                
+
+                    Osf->shader = Device.Shader.Create(shader_name.c_str(),Osf->textures);
+
                     Osf->dwFVF = D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT);
                     i++;
                 }
@@ -128,12 +128,12 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     st_lwVMap* Ivmap=0;
                     int vmap_count=0;
                     if (Ilr->nvmaps==0){
-                        Log->DlgMsg(mtError, "Import LWO: Mesh layer must contain UV!");
+                        ELog.DlgMsg(mtError, "Import LWO: Mesh layer must contain UV!");
                         bResult=false;
                         break;
                     }
 
-                    // индексы соответствия импортируемых мап 
+                    // индексы соответствия импортируемых мап
 					static VMIndexLink VMIndices;
 				    VMIndices.clear();
 
@@ -141,7 +141,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     	switch(Ivmap->type){
                         case ID_TXUV:{
                             if (Ivmap->dim!=2){
-                                Log->DlgMsg(mtError, "Import LWO: 'UV Map' must contain 2 value!");
+                                ELog.DlgMsg(mtError, "Import LWO: 'UV Map' must contain 2 value!");
                                 bResult=false;
                                 break;
                             }
@@ -159,9 +159,9 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             // vmap index
                             VMIndices[Ivmap] = vmap_count++;
                         }break;
-						case ID_WGHT:{ 
+						case ID_WGHT:{
                             if (Ivmap->dim!=1){
-                                Log->DlgMsg(mtError, "Import LWO: 'Weight' must contain 1 value!");
+                                ELog.DlgMsg(mtError, "Import LWO: 'Weight' must contain 1 value!");
                                 bResult=false;
                                 break;
                             }
@@ -174,12 +174,12 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             // vmap index
                             VMIndices[Ivmap] = vmap_count++;
                         }break;
-						case ID_PICK: Log->Msg(mtError,"Found 'PICK' VMAP. Import failed."); bResult = false; break;
-						case ID_MNVW: Log->Msg(mtError,"Found 'MNVW' VMAP. Import failed."); bResult = false; break;
-						case ID_MORF: Log->Msg(mtError,"Found 'MORF' VMAP. Import failed."); bResult = false; break;
-						case ID_SPOT: Log->Msg(mtError,"Found 'SPOT' VMAP. Import failed."); bResult = false; break;
-						case ID_RGB:  Log->Msg(mtError,"Found 'RGB' VMAP. Import failed.");  bResult = false; break;
-						case ID_RGBA: Log->Msg(mtError,"Found 'RGBA' VMAP. Import failed."); bResult = false; break;
+						case ID_PICK: ELog.Msg(mtError,"Found 'PICK' VMAP. Import failed."); bResult = false; break;
+						case ID_MNVW: ELog.Msg(mtError,"Found 'MNVW' VMAP. Import failed."); bResult = false; break;
+						case ID_MORF: ELog.Msg(mtError,"Found 'MORF' VMAP. Import failed."); bResult = false; break;
+						case ID_SPOT: ELog.Msg(mtError,"Found 'SPOT' VMAP. Import failed."); bResult = false; break;
+						case ID_RGB:  ELog.Msg(mtError,"Found 'RGB' VMAP. Import failed.");  bResult = false; break;
+						case ID_RGBA: ELog.Msg(mtError,"Found 'RGBA' VMAP. Import failed."); bResult = false; break;
                         }
 	                    if (!bResult) break;
                     }
@@ -215,7 +215,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         st_Face&		Mpol=MESH->m_Faces[i];
                         st_lwPolygon&   Ipol=Ilr->polygon.pol[i];
                         if (Ipol.nverts!=3) {
-							Log->DlgMsg(mtError, "Import LWO: Face must contain only 3 vertices!");
+							ELog.DlgMsg(mtError, "Import LWO: Face must contain only 3 vertices!");
                         	bResult=false;
                             break;
                         }
@@ -233,11 +233,11 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 							st_lwPoint& Ipt 	=Ilr->point.pt[Mpv.pindex];
                             int vmpt_cnt		=Ipt.nvmaps;
                             if (!vmpl_cnt&&!vmpt_cnt){
-                                Log->DlgMsg	(mtError,"Found mesh without UV's!",0);
+                                ELog.DlgMsg	(mtError,"Found mesh without UV's!",0);
                                 bResult		= false;
                                 break;
                             }
-                            
+
                             AStringVec names;
 							if (vmpl_cnt){
                             	// берем из poly
@@ -263,7 +263,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 							}
 
                             sort(vm_lst.begin(),vm_lst.end(),CompareFunc);
-                            
+
 							// parse weight-map
                             int vm_cnt		=Ipt.nvmaps;
                             for (int vm_i=0; vm_i<vm_cnt; vm_i++){
@@ -296,13 +296,13 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 		UI->ProgressEnd();
 	    UI->SetStatus("");
     	if (bResult) 	VerifyMeshNames();
-        else			Log->DlgMsg(mtError,"Can't parse LWO object.");
+        else			ELog.DlgMsg(mtError,"Can't parse LWO object.");
         return bResult;
     }else
-		Log->DlgMsg(mtError,"Can't import LWO object file.");
+		ELog.DlgMsg(mtError,"Can't import LWO object file.");
 	UI->ProgressEnd();
 	UI->SetStatus("");
     return false;
 }
 
- 
+

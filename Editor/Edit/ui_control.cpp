@@ -93,11 +93,11 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 }
 
 //------------------------------------------------------------------------------
-// total select 
+// total select
 //------------------------------------------------------------------------------
 bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
 	EObjClass cls = UI->CurrentClassID();
-	
+
     if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
     if (!Shift.Contains(ssCtrl)) Scene->SelectObjects( false, cls);
 
@@ -107,13 +107,13 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
     if( bBoxSelection ){
         UI->EnableSelectionRect( true );
         UI->UpdateSelectionRect(UI->m_StartCp,UI->m_CurrentCp);
-        if(obj){ 
+        if(obj){
 	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene->GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
         	else obj->Select((obj->Selected())?false:true);
         }
         return true;
     } else {
-        if( obj ){ 
+        if( obj ){
 	        if(obj->IsInGroup()&&!fraLeftBar->ebIgnoreGroup->Down) Scene->GroupSelect(obj->GetGroupIndex(),(obj->Selected())?false:true,false);
             else obj->Select(obj->Selected()?false:true);
         }
@@ -148,9 +148,9 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
 		m_MovingXVector.set(0,0,0);
 		m_MovingYVector.set(0,1,0);
 	}else{
-		m_MovingXVector.set( UI->Device.m_Camera.GetRight() );
+		m_MovingXVector.set( Device.m_Camera.GetRight() );
 		m_MovingXVector.y = 0;
-		m_MovingYVector.set( UI->Device.m_Camera.GetDirection() );
+		m_MovingYVector.set( Device.m_Camera.GetDirection() );
 		m_MovingYVector.y = 0;
 		m_MovingXVector.normalize_safe();
 		m_MovingYVector.normalize_safe();

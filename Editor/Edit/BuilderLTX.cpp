@@ -52,7 +52,7 @@ bool SceneBuilder::BuildLTX(){
 
     if (FS.Exist(ltx_filename, false))
     	FS.MarkFile(ltx_filename);
-        
+
 	// -- defaults --
     CFS_Memory F;
 	if( !Scene->m_LevelOp.m_BOPText.IsEmpty() )
@@ -67,7 +67,7 @@ bool SceneBuilder::BuildLTX(){
     pIni->WriteString("static_sounds",		"; sounds","");
     pIni->WriteString("sound_environment",	"; sound environment","");
     pIni->WriteString("mobileobjects",		"; mobile objects","");
-    
+
 	// -- mobile objects --
     ObjectIt i = Scene->FirstObj(OBJCLASS_EDITOBJECT);
     ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
@@ -121,7 +121,7 @@ bool SceneBuilder::BuildLTX(){
         for(;i!=_E;i++){
             CSound *s = (CSound *)(*i);
             if (strlen(s->m_fName)==0){
-            	Log->DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->GetName());
+            	ELog.DlgMsg(mtError,"*ERROR: Sound '%s'. Not assigned wave file!", s->GetName());
                 bResult=false;
                 goto end_ltx_build;
             }
@@ -176,7 +176,7 @@ bool SceneBuilder::BuildLTX(){
             pIni->WriteString("ai_traffic",P->GetName(),temp.c_str());
 		}
 	}
-    
+
 
 end_ltx_build:
     delete pIni;

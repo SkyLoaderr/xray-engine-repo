@@ -43,7 +43,7 @@ void __fastcall TfraAITPoint::ebAddLinksClick(TObject *Sender)
     	ObjectIt _B1=objset.end();
 		for (ObjectIt _A=_A0; _A!=_A1; _A++){
         	CAITPoint* A = (CAITPoint*)(*_A);
-            ObjectIt _B=_A; _B++;            
+            ObjectIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
 	        	CAITPoint* B = (CAITPoint*)(*_B);
         		if (A->AddLink(B)) cnt++;
@@ -64,7 +64,7 @@ void __fastcall TfraAITPoint::ebRemoveLinksClick(TObject *Sender)
     	ObjectIt _B1=objset.end();
 		for (ObjectIt _A=_A0; _A!=_A1; _A++){
         	CAITPoint* A = (CAITPoint*)(*_A);
-            ObjectIt _B=_A; _B++;            
+            ObjectIt _B=_A; _B++;
             for (; _B!=_B1; _B++){
 	        	CAITPoint* B = (CAITPoint*)(*_B);
         		if (A->RemoveLink(B)) cnt++;

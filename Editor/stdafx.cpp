@@ -5,7 +5,7 @@ bool g_ErrorMode=false;
 
 void __fastcall _verify(const char *expr, char *file, int line) {
 	// Log Description
-	int res = Log->DlgMsg(mtError,TMsgDlgButtons()<<mbOK<<mbAbort<<mbIgnore,"Assertion failed in file %s, line %d.\nExpression was\n'%s'\n\nClick on OK to debug the program.",file, line, expr);
+	int res = ELog.DlgMsg(mtError,TMsgDlgButtons()<<mbOK<<mbAbort<<mbIgnore,"Assertion failed in file %s, line %d.\nExpression was\n'%s'\n\nClick on OK to debug the program.",file, line, expr);
 	switch (res) {
 	case mrAbort:
         TerminateProcess(GetCurrentProcess(),-1);

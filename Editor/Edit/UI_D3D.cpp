@@ -23,8 +23,8 @@ void TUI::D3D_UpdateGrid(){
 	m_GridSubDiv[1] = 8;
 	m_GridCounts[0] = 127;
 	m_GridCounts[1] = 127;
-	m_ColorGrid = RGBA_MAKE(150, 150, 150, 0);
-	m_ColorGridTh = RGBA_MAKE( 180, 180, 180, 0 );
+	m_ColorGrid = D3DCOLOR_RGBA(150, 150, 150, 0);
+	m_ColorGridTh = D3DCOLOR_RGBA( 180, 180, 180, 0 );
 
 	VERIFY( !fis_zero(m_GridStep.x) );
 	VERIFY( !fis_zero(m_GridStep.y) );
@@ -69,10 +69,10 @@ void TUI::D3D_UpdateGrid(){
 }
 
 void TUI::D3D_DrawGrid(){
-	VERIFY( Device.m_bReady );
+	VERIFY( Device.bReady );
 	if( !bDrawGrid ) return;
 	if( m_GridPoints.size() == 0 ||	m_GridIndices.size()==0 ) return;
-    Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);
 	Device.Shader.Set(Device.m_WireShader);
     Device.DIP(	D3DPT_LINELIST,FVF::F_L,
 	   	        m_GridPoints.begin(), m_GridPoints.size(),
@@ -80,23 +80,23 @@ void TUI::D3D_DrawGrid(){
 }
 
 void TUI::D3D_DrawPivot(){
-	VERIFY( Device.m_bReady );
+	VERIFY( Device.bReady );
 	if( !bDrawGrid ) return;
 	FVF::L v[6];
 	WORD j[12];
     j[0]=0; j[1]=1; j[2]=2; j[3]=3; j[4]=4; j[5]=5;
-	DWORD c=RGBA_MAKE( 127, 255, 127, 0 );
+	DWORD c=D3DCOLOR_RGBA( 127, 255, 127, 0 );
 	for(int i=0;i<6;i++) v[i].set(m_Pivot.x,m_Pivot.y,m_Pivot.z,c);
 	v[0].p.x+=5.f;	v[1].p.x-=5.f;
     v[2].p.y+=5.f;	v[3].p.y-=5.f;
     v[4].p.z+=5.f;	v[5].p.z-=5.f;
-	Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+	Device.SetTransform(D3DTS_WORLD,precalc_identity);
 	Device.Shader.Set(Device.m_WireShader);
 	Device.DIP(D3DPT_LINELIST,FVF::F_L, v, 6, j, 6);
 }
 
 void TUI::D3D_DrawAxis(){
-	VERIFY( Device.m_bReady );
+	VERIFY( Device.bReady );
     WORD i[6];
     Fvector p[4];
     FVF::TL v[4];
@@ -117,23 +117,23 @@ void TUI::D3D_DrawAxis(){
     float dx=-Device.m_RenderWidth/2.2f;
     float dy=Device.m_RenderHeight/2.25f;
     for (int k=0; k<4; k++){
-	    v[k].transform(p[k],Device.m_FullTransform); v[k].color=c[k];v[k].tu=v[k].tv=0;
-	    v[k].p.x	= X_TO_REAL(v[k].p.x)+dx;   v[k].p.y	= Y_TO_REAL(v[k].p.y)+dy;
+	    v[k].transform(p[k],Device.mFullTransform); v[k].color=c[k];v[k].tu=v[k].tv=0;
+	    v[k].p.x	= Device._x2real(v[k].p.x)+dx;   v[k].p.y	= Device._y2real(v[k].p.y)+dy;
     }
 
     // render
-	Device.SetRS(D3DRENDERSTATE_SHADEMODE,D3DSHADE_GOURAUD);
+	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
 	Device.Shader.Set(Device.m_WireShader);
     Device.DIP(D3DPT_LINELIST,FVF::F_TL, v, 4, i, 6);
-	Device.SetRS(D3DRENDERSTATE_SHADEMODE,UI->dwRenderShadeMode);
+	Device.SetRS(D3DRS_SHADEMODE,UI->dwRenderShadeMode);
 }
 
 void TUI::D3D_DrawSelectionRect(){
-	VERIFY( Device.m_bReady );
+	VERIFY( Device.bReady );
 	if( !m_SelectionRect ) return;
 	FVF::TL v[4];
-	DWORD c=RGBA_MAKE(127,255,127,64);
-    UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+	DWORD c=D3DCOLOR_RGBA(127,255,127,64);
+    Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     v[0].set(m_SelStart.x*Device.m_ScreenQuality, m_SelStart.y*Device.m_ScreenQuality, 0,0,c,0,0);
     v[1].set(m_SelStart.x*Device.m_ScreenQuality, m_SelEnd.y*Device.m_ScreenQuality,   0,0,c,0,0);
     v[2].set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelEnd.y*Device.m_ScreenQuality,   0,0,c,0,0);
@@ -141,7 +141,7 @@ void TUI::D3D_DrawSelectionRect(){
 
 	Device.Shader.Set(Device.m_SelectionShader);
     Device.DP(D3DPT_TRIANGLEFAN,FVF::F_TL,v,4);
-    UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 //---------------------------------------------------------------------------

@@ -58,7 +58,7 @@ bool CSector::IsFaceUsed(CEditObject* O, CEditMesh* M, int f_id){
     return false;
 }
 //----------------------------------------------------
-class FindMaskFaces{   
+class FindMaskFaces{
 	BOOLVec& ref;
 public:
     FindMaskFaces(BOOLVec& a):ref(a) {};
@@ -168,12 +168,12 @@ void OptimizeVertices(CHFaceVec& Faces, FvectorVec& vert, FvectorVec& vert_new){
 	//caches oldIndex --> newIndex conversion
 	int *indexCache = new int[iVertexCount];
 	memset(indexCache, -1, sizeof(int)*iVertexCount);
-	
+
 	for(DWORD i = 0; i < Faces.size(); i++){
 		int v0 = Faces[i].p0;
 		int v1 = Faces[i].p1;
 		int v2 = Faces[i].p2;
-		
+
 		//v0
 		int index = indexCache[v0];
 		if(index == -1){
@@ -182,7 +182,7 @@ void OptimizeVertices(CHFaceVec& Faces, FvectorVec& vert, FvectorVec& vert_new){
 		}else{
 			Faces[i].p0 = index;
 		}
-		
+
 		//v1
 		index = indexCache[v1];
 		if(index == -1){
@@ -191,7 +191,7 @@ void OptimizeVertices(CHFaceVec& Faces, FvectorVec& vert, FvectorVec& vert_new){
 		}else{
 			Faces[i].p1 = index;
 		}
-		
+
 		//v2
 		index = indexCache[v2];
 		if(index == -1){
@@ -212,7 +212,7 @@ void CSector::UpdatePlanes(){
         Fvector& 	v0	= m_CHSectorVertices[T.p[0]];
         Fvector& 	v1	= m_CHSectorVertices[T.p[1]];
         Fvector&	v2	= m_CHSectorVertices[T.p[2]];
-                
+
         Fvector t1,t2,n;
         t1.sub(v0,v1);
         t2.sub(v0,v2);
@@ -225,12 +225,12 @@ void CSector::UpdatePlanes(){
             P.build(v2,v1,v0);
             swap(T.p[0],T.p[2]);
         }
-                
+
         // search plane in list
         bool bNeedAppend=true;
         for(PlaneIt p_it=m_CHSectorPlanes.begin(); p_it!=m_CHSectorPlanes.end(); p_it++)
             if (p_it->similar(P,EPS,EPS_L)) { bNeedAppend = false; break; }
-                    
+
         if (bNeedAppend) m_CHSectorPlanes.push_back(P);
     }
 }
@@ -305,9 +305,9 @@ void CSector::MakeCHull	(){
             m_bNeedUpdateCHull = false;
         }else{
         	switch(err_code){
-			case CHULL3D_INC_TSIZE: Log->Msg(mtError,"Temporary storage exceeded.\n Increase ms_iTSize and call the constructor again."); break;
-			case CHULL3D_FTMP_ZERO: Log->Msg(mtError,"'fTmp' is zero. May be flat convex."); break;
-			default: Log->Msg(mtError,"Unknown error."); break;
+			case CHULL3D_INC_TSIZE: ELog.Msg(mtError,"Temporary storage exceeded.\n Increase ms_iTSize and call the constructor again."); break;
+			case CHULL3D_FTMP_ZERO: ELog.Msg(mtError,"'fTmp' is zero. May be flat convex."); break;
+			default: ELog.Msg(mtError,"Unknown error."); break;
             }
         	_DELETE(chull);
         }
@@ -320,10 +320,10 @@ void CSector::MakeCHull	(){
 }
 
 bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
-	if (m_CHSectorFaces.size()==0) return true;
+/*	if (m_CHSectorFaces.size()==0) return true;
     if (m_bNeedUpdateCHull) return false;
 	if (m_CHSectorVertices.size()>0xf000) return false;
-	if (!bCull) UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+	if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     if (bEdge||bSolid){
         DWORDVec colors;
         colors.resize(m_CHSectorVertices.size(),color);
@@ -333,28 +333,29 @@ bool CSector::RenderCHull(DWORD color, bool bSolid, bool bEdge, bool bCull){
         dt.diffuse.lpvData = colors.begin();
         dt.diffuse.dwStride = sizeof(DWORD);
 
-		UI->Device.RenderNearer(-0.0003);
+		Device.RenderNearer(-0.0003);
         static WORDVec indices;
         indices.resize(m_CHSectorFaces.size()*3);
-        for (DWORD i=0; i<m_CHSectorFaces.size(); i++){ 
+        for (DWORD i=0; i<m_CHSectorFaces.size(); i++){
         	indices[i*3+0]=m_CHSectorFaces[i].p0;
 			indices[i*3+1]=m_CHSectorFaces[i].p1;
 			indices[i*3+2]=m_CHSectorFaces[i].p2;
         }
         if (bEdge){
-	        UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_WIREFRAME);
-	        UI->Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-    				        &dt, m_CHSectorVertices.size(), 
+	        Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_WIREFRAME);
+	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
+    				        &dt, m_CHSectorVertices.size(),
                             indices.begin(),indices.size());
-	        UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
+	        Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
         }else if (bSolid){
-	        UI->Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-    				        &dt, m_CHSectorVertices.size(), 
+	        Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
+    				        &dt, m_CHSectorVertices.size(),
                             indices.begin(),indices.size());
         }
-		UI->Device.ResetNearer();
+		Device.ResetNearer();
     }
-	if (!bCull) UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+*/
+	if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 	return true;
 }
 
@@ -365,14 +366,14 @@ void CSector::Render( Fmatrix& parent, ERenderPriority flag ){
         float k = Selected()?0.4f:0.2f;
 		color.set(sector_color.r,sector_color.g,sector_color.b,k);
         if (fraBottomBar->miDrawSectorFaces->Checked){
-			UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
                 it->mesh->RenderList( matrix, color.get(), false, it->Face_IDs );
             }
-			UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-        if (fraBottomBar->miDrawSectorCHull->Checked) 
+        if (fraBottomBar->miDrawSectorCHull->Checked)
         	RenderCHull(color.get(),true,false,true);
     }else if (flag==rpNormal){
         Fmatrix matrix;
@@ -380,14 +381,14 @@ void CSector::Render( Fmatrix& parent, ERenderPriority flag ){
         float k = Selected()?0.4f:0.2f;
 		color.set(sector_color.r*k,sector_color.g*k,sector_color.b*k,1.f);
         if (fraBottomBar->miDrawSectorCHull->Checked||fraBottomBar->miDrawSectorEdgedSFaces->Checked){
-			UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+			Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
             for (SItemIt it=sector_items.begin();it!=sector_items.end();it++){
                 it->object->GetFullTransformToWorld(matrix);
                 it->mesh->RenderList( matrix, color.get(), true, it->Face_IDs );
             }
-			UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+			Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
-        if (fraBottomBar->miDrawSectorCHull->Checked&&fraBottomBar->miDrawSectorEdgedCHull->Checked) 
+        if (fraBottomBar->miDrawSectorCHull->Checked&&fraBottomBar->miDrawSectorEdgedCHull->Checked)
         	RenderCHull(color.get(),false,true,false);
     }
 }
@@ -577,21 +578,21 @@ void CSector::LoadSectorDef( CStream* F ){
 	// sector item
     R_ASSERT(F->FindChunk(SECTOR_CHUNK_ITEM_OBJECT));
 	F->RstringZ(o_name);
-	sitem.object=(CEditObject*)Scene->FindObjectByName(o_name,OBJCLASS_EDITOBJECT); 
+	sitem.object=(CEditObject*)Scene->FindObjectByName(o_name,OBJCLASS_EDITOBJECT);
     if (sitem.object==0){
-    	Log->Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
+    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
         m_bHasLoadError = true;
         return;
     }
     if (!sitem.object->CheckVersion()){
-    	Log->Msg(mtError,"Sector Item contains object '%s' - can't load.\nDifferent object version.",o_name);
+    	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nDifferent object version.",o_name);
         m_bHasLoadError = true;
      	return;
     }
 	F->RstringZ(m_name);
 	sitem.mesh=sitem.object->FindMeshByName(m_name);
     if (sitem.mesh==0){
-    	Log->Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
+    	ELog.Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
         m_bHasLoadError = true;
         return;
     }
@@ -609,10 +610,10 @@ bool CSector::Load(CStream& F){
     char buf[1024];
     R_ASSERT(F.ReadChunk(SECTOR_CHUNK_VERSION,&version));
     if( version!=SECTOR_VERSION ){
-        Log->Msg( mtError, "CSector: Unsupported version.");
+        ELog.Msg( mtError, "CSector: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     R_ASSERT(F.ReadChunk(SECTOR_CHUNK_COLOR,&sector_color));
@@ -649,7 +650,7 @@ bool CSector::Load(CStream& F){
     }
 
     if (sector_items.empty()) return false;
-    
+
     Update((m_CHSectorFaces.size()==0)||(m_CHSectorPlanes.size()==0)||m_bNeedUpdateCHull||m_bHasLoadError);
     return true;
 }

@@ -104,7 +104,7 @@ void __fastcall TfraPortal::SetSector(CSector* obj){
 void __fastcall TfraPortal::ebComputeAllPortalsClick(TObject *Sender)
 {
 	int cnt=PortalUtils.CalculateAllPortals();
-	if (cnt) Log->DlgMsg(mtInformation,"Calculated '%d' portal(s).",cnt);
+	if (cnt) ELog.DlgMsg(mtInformation,"Calculated '%d' portal(s).",cnt);
     ShowCompute(true);
 }
 //---------------------------------------------------------------------------

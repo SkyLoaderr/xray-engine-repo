@@ -11,7 +11,6 @@
 #include "Shader.h"
 #include "Cursor3D.h"
 #include "PSLibrary.h"
-#include "d3dx.h"
 
 #include "leftbar.h"
 #include "topbar.h"
@@ -79,7 +78,7 @@ TUI::TUI()
     bDrawGrid		= true;
 
 // create base class
-    Log             = new CLog("ed.log");
+    ELog.Create		("ed.log");
     FS.Init			();
     Scene           = new EScene();
     Lib             = new ELibrary();
@@ -99,7 +98,6 @@ TUI::~TUI()
     _DELETE(PSLib);
     _DELETE(Lib);
     _DELETE(Builder);
-    _DELETE(Log);
 }
 
 bool TUI::Init(TD3DWindow* wnd){
@@ -110,7 +108,7 @@ bool TUI::Init(TD3DWindow* wnd){
     PSLib->Init		();
 
     if (!Device.Create(m_D3DWindow->Handle)){
-        Log->DlgMsg(mtError,"Can't create DirectX device. Editor halted!");
+        ELog.DlgMsg(mtError,"Can't create DirectX device. Editor halted!");
         return false;
      }
     m_Tools         = new TUI_Tools(fraLeftBar->paFrames);
@@ -287,20 +285,20 @@ void TUI::Redraw(){
     Device.m_Statistic.Reset();
 // set render state
     // filter
-    for (int k=0; k<Device.m_Caps.wMaxSimultaneousTextures; k++){
+    for (DWORD k=0; k<HW.Caps.dwNumBlendStages; k++){
         if( bRenderFilter ){
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTFG_LINEAR);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTFN_LINEAR);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTFP_LINEAR);
+            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
         } else {
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTFG_POINT);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTFN_POINT);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTFP_POINT);
+            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_POINT);
         }
     }
 	// ligthing
-    if (bRenderLights)	Device.SetRS(D3DRENDERSTATE_AMBIENT,0x00000000);
-    else                Device.SetRS(D3DRENDERSTATE_AMBIENT,0xFFFFFFFF);
+    if (bRenderLights)	Device.SetRS(D3DRS_AMBIENT,0x00000000);
+    else                Device.SetRS(D3DRS_AMBIENT,0xFFFFFFFF);
 
     try{
         Device.m_Statistic.dwTotalFrame++;
@@ -310,8 +308,8 @@ void TUI::Redraw(){
         Device.UpdateView();
 		Device.ResetMaterial();
 
-        Device.SetRS(D3DRENDERSTATE_FILLMODE, dwRenderFillMode);
-		Device.SetRS(D3DRENDERSTATE_SHADEMODE,dwRenderShadeMode);
+        Device.SetRS(D3DRS_FILLMODE, dwRenderFillMode);
+		Device.SetRS(D3DRS_SHADEMODE,dwRenderShadeMode);
 
 	    EEditorState est = GetEState();
         switch(est){
@@ -358,7 +356,7 @@ void TUI::Idle()
 {
     if (g_ErrorMode) return;
 	Device.UpdateTimer();
-//    Log->Msg(mtInformation,"%f",Device.m_FrameDTime);
+//    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);
     Sleep(2);
     EEditorState est = GetEState();
     if ((est==esEditScene)||(est==esEditLibrary)||(est==esEditShaders)||(est==esEditParticles)||(est==esEditImages)){
@@ -370,7 +368,7 @@ void TUI::Idle()
         }
 	    if (bUpdateScene) RealUpdateScene();
     	if (bRedraw){
-            Scene->Update(Device.m_FrameDTime);
+            Scene->Update(Device.fTimeDelta);
         	Redraw();
         }
 		m_Tools->Update();
@@ -400,7 +398,7 @@ void __fastcall TUI::MouseStart(TShiftState Shift, int X, int Y){
     // camera activate
     if(!Device.m_Camera.MoveStart(Shift)){
         if( Scene->locked() ){
-		// Log->DlgMsg( mtError, "Scene sharing violation..." );
+		// ELog.DlgMsg( mtError, "Scene sharing violation..." );
             return;
         }
         if( !m_MouseCaptured ){
@@ -546,7 +544,7 @@ void TUI::ShowObjectHint(){
         fHintPauseTime = fHintPause;
     }
     if (bHintShowing){
-        fHintHideTime -= Device.m_FrameDTime;
+        fHintHideTime -= Device.fTimeDelta;
         if (fHintHideTime<0) HideHint();
         return;
     }
@@ -557,7 +555,7 @@ void TUI::ShowObjectHint(){
         Scene->OnShowHint(SS);
         if (ShowHint(SS)) fHintHideTime = fHintHide;
     }else{
-        fHintPauseTime -= Device.m_FrameDTime;
+        fHintPauseTime -= Device.fTimeDelta;
     }
 }
 

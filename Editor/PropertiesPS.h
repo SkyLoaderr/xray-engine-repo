@@ -14,7 +14,7 @@
 #include "FrameEmitter.h"
 #include <Forms.hpp>
 
-// refs 
+// refs
 class SceneObject;
 
 class TfrmPropertiesPS : public TForm
@@ -42,7 +42,7 @@ private:	// User declarations
 	static bool bLoadMode;
 
     SH_Function		m_BirthFunc;
-    
+
     list<SceneObject*>* m_Objects;
     void GetObjectsInfo     ();
     bool ApplyObjectsInfo   ();

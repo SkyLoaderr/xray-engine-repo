@@ -39,7 +39,7 @@ void __fastcall TfrmPreviewImage::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	Action = caFree;
-    form = 0;	
+    form = 0;
 }
 //---------------------------------------------------------------------------
 
@@ -48,10 +48,10 @@ void __fastcall TfrmPreviewImage::pbImagePaint(TObject *Sender)
     if (tex){
         int w = paImage->Width-4;
         int h = paImage->Height-4;
-        RECT r; 
+        RECT r;
         r.left  = 2; r.top = 2;
         r.right = w+2; r.bottom = h+2;
-        tex->DrawStretch(paImage->Handle, &r);     
+        tex->DrawStretch(paImage->Handle, &r);
     }
 }
 //---------------------------------------------------------------------------

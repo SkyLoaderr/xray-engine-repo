@@ -147,7 +147,7 @@ void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
     if (bValidTex){
         RECT r; r.left = 1; r.top = 1;
         float w, h;
-        ETextureCore* tx = UI->Device.Shader.FindTexture(lbTexture->Caption.c_str());
+        ETextureCore* tx = Device.Shader.FindTexture(lbTexture->Caption.c_str());
         if (tx){
 	        w = tx->width();
     	    h = tx->height();
@@ -176,7 +176,7 @@ void __fastcall TfrmPropertiesGlow::seRangeKeyDown(TObject *Sender,
 void __fastcall TfrmPropertiesGlow::seRangeLWChange(TObject *Sender,
       int Val)
 {
-	OnModified(Sender);	
+	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 

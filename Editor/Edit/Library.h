@@ -82,7 +82,7 @@ public:
 
 	IC LibObjIt			FirstObj			(){return m_Objects.begin();}
 	IC LibObjIt			LastObj				(){return m_Objects.end();}
-    
+
     void 				SaveLibrary			(){Save();}
     void 				ReloadLibrary		();
     void 				RefreshLibrary		();
@@ -90,7 +90,7 @@ public:
     void				ResetAnimation		();
 
 	void 				GenerateObjectName	(char* buffer, const char* start_name, const CLibObject* pass_object);
-    
+
     void				SetCurrentObject	(LPCSTR T);
     CLibObject*			GetCurrentObject	(){return m_Current;}
 

@@ -24,7 +24,7 @@ public:
     IC ShaderIt		FirstShader		()	{return m_Shaders.begin();}
     IC ShaderIt		LastShader		()	{return m_Shaders.end();}
     IC int			ShaderCount		()	{return m_Shaders.size();}
-    
+
     void			Init			(){Load(SHLIB_FILENAME);}
     void			Clear			();
     int 			Merge			(const char* nm);
@@ -39,7 +39,7 @@ public:
     void			DeleteShader	(AnsiString& name);
     SH_ShaderDef*	FindShader		(AnsiString& name){ return shLibrary_Find(name.c_str(), m_Shaders);}
     void			Sort			();
-    
+
     bool 			Validate		(){return true;}
 };
 

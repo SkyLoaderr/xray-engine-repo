@@ -15,7 +15,7 @@
 #pragma package(smart_init)
 #pragma link "Placemnt"
 #pragma link "RxMenus"
-#pragma resource "*.dfm"                                  
+#pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
 //---------------------------------------------------------------------------
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)

@@ -25,7 +25,7 @@ class CPSObject: public SceneObject{
     Fbox				m_BBox;
 
     void 				DrawPS		();
-    
+
 public:
     PS::SEmitter		m_Emitter;
 public:

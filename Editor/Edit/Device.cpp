@@ -8,73 +8,113 @@
 
 #pragma package(smart_init)
 
+CRenderDevice Device;
+
+DWORD psDeviceFlags = 0;
+// video
+enum {
+	rsFullscreen		= (1ul<<0ul),
+	rsTriplebuffer		= (1ul<<1ul),
+	rsClearBB			= (1ul<<2ul),
+	rsNoVSync			= (1ul<<3ul),
+	rsWireframe			= (1ul<<4ul),
+	rsAntialias			= (1ul<<5ul),
+	rsNormalize			= (1ul<<6ul),
+	rsOverdrawView		= (1ul<<7ul),
+	rsOcclusion			= (1ul<<8ul),
+	rsDepthEnhance		= (1ul<<9ul),
+	rsAnisotropic		= (1ul<<10ul),
+	rsStatistic			= (1ul<<11ul),
+	mtSound				= (1ul<<24ul),
+	mtInput				= (1ul<<25ul)
+};
+
 //---------------------------------------------------------------------------
-CDevice::CDevice(){
-    m_DX 			= 0;
+CRenderDevice::CRenderDevice(){
     m_ScreenQuality = 1.f;
-    m_RenderWidth 	= m_RenderHeight = 0;
-    m_RealWidth 	= m_RealHeight = 0;
-    m_bReady 		= false;
-	m_Projection.identity();
-    m_FullTransform.identity();
-	m_FramePrevTime	= timeGetTime();
-	m_FrameDTime   	= 0;
-    m_fTimeGlobal	= 0;
+    m_RenderWidth 	= m_RenderHeight 	= 256;
+    m_RealWidth 	= m_RealHeight 		= 256;
+    m_RenderWidth_2	= m_RenderHeight_2 	= 128;
+	mProjection.identity();
+    mFullTransform.identity();
+    mView.identity();
     m_DefaultMat.set(1,1,1);
 	m_NullShader	= 0;
 	m_WireShader	= 0;
 	m_SelectionShader = 0;
-	ZeroMemory		(&m_Caps,sizeof(m_Caps));
+
+    bReady 			= FALSE;
+	bActive			= FALSE;
+
+	// Engine flow-control
+	fTimeDelta		= 0;
+	fTimeGlobal		= 0;
+	dwTimeDelta		= 0;
+	dwTimeGlobal	= 0;
 }
 
-CDevice::~CDevice(){
-	VERIFY(!m_bReady);
+CRenderDevice::~CRenderDevice(){
+	VERIFY(!bReady);
 }
 //---------------------------------------------------------------------------
-void CDevice::RenderNearer(float n){
-    m_Projection._43=m_fNearer-n;
-    SetTransform(D3DTRANSFORMSTATE_PROJECTION,m_Projection);
+void CRenderDevice::RenderNearer(float n){
+    mProjection._43=m_fNearer-n;
+    SetTransform(D3DTS_PROJECTION,mProjection);
 }
-void CDevice::ResetNearer(){
-    m_Projection._43=m_fNearer;
-    SetTransform(D3DTRANSFORMSTATE_PROJECTION,m_Projection);
+void CRenderDevice::ResetNearer(){
+    mProjection._43=m_fNearer;
+    SetTransform(D3DTS_PROJECTION,mProjection);
 }
 //---------------------------------------------------------------------------
-bool CDevice::Create(HANDLE handle){
-    if( FAILED( InitD3DX(handle, &m_DX, UI->dwRenderHWTransform))){
-		Log->DlgMsg( mtError, "D3D: DirectDrawCreateEx() failed" );
-		return false;
-    }
-    m_DX->pD3DDev->GetCaps(&m_Caps);
-	m_bReady = true;
-// shaders
-    Shader.Initialize();
-    m_NullShader = Shader.Create();
-    m_WireShader = Shader.Create("$ed_wire");
-    m_SelectionShader = Shader.Create("$ed_selection");
+bool CRenderDevice::Create(HANDLE handle){
+	if (bReady)	return false;
+	ELog.Msg(mtInformation,"Starting RENDER device...");
+
+    m_Handle			= handle;
+
+	HW.CreateDevice		(handle,m_RenderWidth,m_RenderHeight);
+
+	// after creation
+	bReady				= TRUE;
+
+	dwFrame				= 0;
+	// Signal everyone - device created
+    Shader.Initialize	();
+    m_NullShader 		= Shader.Create();
+    m_WireShader 		= Shader.Create("$ed_wire");
+    m_SelectionShader 	= Shader.Create("$ed_selection");
 
     OnDeviceCreate();
 
-	Log->Msg( mtInformation, "D3D: initialized" );
+	ELog.Msg( mtInformation, "D3D: initialized" );
 	return true;
 }
 
 //---------------------------------------------------------------------------
-void CDevice::Destroy(){
+void CRenderDevice::Destroy(){
+	if (!bReady) return;
+
+	ELog.Msg( mtInformation, "Destroying Direct3D...");
+
+	HW.Validate					();
+
 	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
 
-//    D3D_DestroyStateBlocks();
-	m_bReady = false;
-	OnDeviceDestroy();
+	// before destroy
+	bReady 						= FALSE;
     Shader.Clear();
-    ReleaseD3DX();
-	Log->Msg( mtInformation, "D3D: device cleared" );
+	OnDeviceDestroy();
+
+	// real destroy
+	_RELEASE					(Streams_QuadIB);
+	HW.DestroyDevice			();
+	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 
-void CDevice::OnDeviceCreate(){
-	SetRS(D3DRS_COLORVERTEX,TRUE);
+void CRenderDevice::OnDeviceCreate(){
+/*	SetRS(D3DRS_COLORVERTEX,TRUE);
 	SetRS(D3DRS_ALPHAFUNC,D3DCMP_GREATER);
 	SetRS(D3DRS_DITHERENABLE,		TRUE				);
 	SetRS(D3DRS_STENCILENABLE,		FALSE				);
@@ -92,28 +132,88 @@ void CDevice::OnDeviceCreate(){
 	float fBias = -1.f;
     for (int k=0; k<m_Caps.wMaxSimultaneousTextures; k++)
 		SetTSS( k, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias)));
-/*
+*/
+	// General Render States
+	HW.Caps.Update();
+	for (DWORD i=0; i<HW.Caps.dwNumBlendStages; i++)
+	{
+		if (psDeviceFlags&rsAnisotropic)	{
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_ANISOTROPIC ));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_ANISOTROPIC ));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAXANISOTROPY, 16				));
+		} else {
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MINFILTER,	D3DTEXF_LINEAR 		));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MAGFILTER,	D3DTEXF_LINEAR 		));
+			CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPFILTER,	D3DTEXF_LINEAR		));
+		}
+		float fBias = -1.f;
+		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
+	}
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DITHERENABLE,		TRUE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_COLORVERTEX,		TRUE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILENABLE,	FALSE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_ZENABLE,			TRUE				));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_SHADEMODE,		D3DSHADE_GOURAUD	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC,		D3DCMP_GREATER		));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_LOCALVIEWER,		FALSE				));
+
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL	));
+	CHK_DX(HW.pDevice->SetRenderState( D3DRS_EMISSIVEMATERIALSOURCE,D3DMCS_COLOR1	));
+
 	if (psDeviceFlags&rsWireframe)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_WIREFRAME	)); }
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_FILLMODE,			D3DFILL_SOLID		)); }
 	if (psDeviceFlags&rsAntialias)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,TRUE				));	}
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_MULTISAMPLEANTIALIAS,FALSE				)); }
 	if (psDeviceFlags&rsNormalize)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	TRUE				)); }
 	else							{ CHK_DX(HW.pDevice->SetRenderState( D3DRS_NORMALIZENORMALS,	FALSE				)); }
-*/
+
     ResetMaterial();
 	// signal another objects
-    Shader.OnDeviceCreate();
-    Scene->OnDeviceCreate();
+    Shader.OnDeviceCreate		();
+    Scene->OnDeviceCreate		();
 
     UpdateFog();
+
+	// Create TL-primitive
+	{
+		const DWORD dwTriCount = 1024;
+		const DWORD dwIdxCount = dwTriCount*2*3;
+		WORD	*Indices = 0;
+		DWORD	dwUsage=D3DUSAGE_WRITEONLY;
+		if (HW.Caps.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
+		R_CHK(HW.pDevice->CreateIndexBuffer(dwIdxCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&Streams_QuadIB));
+		R_CHK(Streams_QuadIB->Lock(0,0,(BYTE**)&Indices,D3DLOCK_NOSYSLOCK));
+		{
+			int		Cnt = 0;
+			int		ICnt= 0;
+			for (int i=0; i<dwTriCount; i++)
+			{
+				Indices[ICnt++]=Cnt+0;
+				Indices[ICnt++]=Cnt+1;
+				Indices[ICnt++]=Cnt+2;
+
+				Indices[ICnt++]=Cnt+3;
+				Indices[ICnt++]=Cnt+2;
+				Indices[ICnt++]=Cnt+1;
+
+				Cnt+=4;
+			}
+		}
+		R_CHK(Streams_QuadIB->Unlock());
+	}
 }
 
-void CDevice::OnDeviceDestroy(){
-    Scene->OnDeviceDestroy();
-    Shader.OnDeviceDestroy();
+void CRenderDevice::OnDeviceDestroy(){
+    Scene->OnDeviceDestroy		();
+    Shader.OnDeviceDestroy		();
+	Streams.OnDeviceDestroy		();
 }
 
-void CDevice::UpdateFog(){
+void CRenderDevice::UpdateFog(){
 	//Fog parameters
     st_Environment& E	= Scene->m_LevelOp.m_Envs[Scene->m_LevelOp.m_CurEnv];
     Fcolor& FogColor 	= E.m_FogColor;
@@ -122,17 +222,17 @@ void CDevice::UpdateFog(){
 	SetRS( D3DRS_FOGCOLOR,	FogColor.get());
 	float start	= (1.0f - Fogness)* 0.85f * view_dist;
 	float end	= 0.91f * view_dist;
-	if (m_Caps.dpcTriCaps.dwRasterCaps&D3DPRASTERCAPS_FOGTABLE)	{
-		Log->Msg(mtInformation,"* Using hardware fog...");
+	if (HW.Caps.bTableFog)	{
+		ELog.Msg(mtInformation,"* Using hardware fog...");
 		SetRS( D3DRS_RANGEFOGENABLE,FALSE				);
 		SetRS( D3DRS_FOGTABLEMODE, D3DFOG_LINEAR		);
 		SetRS( D3DRS_FOGVERTEXMODE,D3DFOG_NONE			);
-		if (!m_Caps.dpcTriCaps.dwRasterCaps&D3DPRASTERCAPS_WFOG) {
+		if (!HW.Caps.bWFog) {
 			start/=view_dist;
 			end  /=view_dist;
 		}
 	} else {
-		Log->Msg(mtInformation,"* Fog is emulated...");
+		ELog.Msg(mtInformation,"* Fog is emulated...");
 		SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_NONE			);
 		SetRS( D3DRS_FOGVERTEXMODE,D3DFOG_LINEAR		);
 		SetRS( D3DRS_RANGEFOGENABLE,FALSE				);
@@ -142,125 +242,133 @@ void CDevice::UpdateFog(){
 }
 
 //---------------------------------------------------------------------------
-void __fastcall CDevice::Resize(int w, int h)
+void __fastcall CRenderDevice::Resize(int w, int h)
 {
-    m_bReady = false;
-	
+    bReady 			= FALSE;
+
     m_RealWidth 	= w;
     m_RealHeight 	= h;
     m_RenderArea	= w*h;
 
-    m_RenderWidth  = m_RealWidth * m_ScreenQuality;
-    m_RenderHeight = m_RealHeight * m_ScreenQuality;
+    m_RenderWidth  	= m_RealWidth * m_ScreenQuality;
+    m_RenderHeight 	= m_RealHeight * m_ScreenQuality;
+    m_RenderWidth_2 = m_RenderWidth * 0.5f;
+    m_RenderHeight_2= m_RenderHeight * 0.5f;
 
-    OnDeviceDestroy();
-    
-    if (FAILED(ResizeD3DX(m_RenderWidth, m_RenderHeight))){
-        Log->DlgMsg(mtError,"Don't create DirectX device. Editor halted!");
-        THROW;
-    }
-    m_bReady = true;
+    Destroy			();
 
     m_Camera.m_Aspect = (float)m_RenderHeight / (float)m_RenderWidth;
-    m_Projection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
-    m_fNearer = m_Projection._43;
+    mProjection.build_projection( m_Camera.m_FOV, m_Camera.m_Aspect, m_Camera.m_Znear, m_Camera.m_Zfar );
+    m_fNearer = mProjection._43;
 
-    SetTransform(D3DTRANSFORMSTATE_PROJECTION,m_Projection);
-    SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+    SetTransform	(D3DTS_PROJECTION,mProjection);
+    SetTransform	(D3DTS_WORLD,precalc_identity);
 
-	OnDeviceCreate();
+    Create			(m_Handle);
+    bReady 			= TRUE;
 
     UI->RedrawScene();
 }
 
-void CDevice::Begin( ){
-	VERIFY(m_bReady);
-    VERIFY(m_DX->pD3DDev);
+void CRenderDevice::Begin( ){
+	VERIFY(bReady);
+	HW.Validate	();
+    if (HW.pDevice->TestCooperativeLevel()!=D3D_OK){
+		Sleep	(500);
+		Destroy	();
+		Create	(m_Handle);
+	}
 
-    BeginDraw();
+	CHK_DX(HW.pDevice->BeginScene());
+	CHK_DX(HW.pDevice->Clear(0,0,
+		D3DCLEAR_ZBUFFER|
+		((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
+		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
+		D3DCOLOR_XRGB(0,255,0),1,0
+		));
+	Streams.BeginFrame();
 }
 
 //---------------------------------------------------------------------------
-void CDevice::End(){
-	VERIFY(m_bReady);
-    Shader.SetNULL();
-    EndDraw();
+void CRenderDevice::End(){
+	VERIFY(HW.pDevice);
+	VERIFY(bReady);
+
+	// end scene
+	Shader.SetNULL	();
+    CHK_DX(HW.pDevice->EndScene());
+
+	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
-void CDevice::UpdateView(){
+void CRenderDevice::UpdateView(){
 // set camera matrix
-	m_Camera.GetView(m_View);
+	m_Camera.GetView(mView);
 
-    SetTransform(D3DTRANSFORMSTATE_VIEW,m_View);
-    m_FullTransform.mul(m_Projection,m_View);
+    SetTransform(D3DTS_VIEW,mView);
+    mFullTransform.mul(mProjection,mView);
 
 // frustum culling sets
     m_Frustum.CreateFromViewMatrix();
 }
 
-void CDevice::UpdateTimer(){
-    float t = timeGetTime();
-    m_FrameDTime = 0.001f * ( t - m_FramePrevTime );
-	if (m_FrameDTime>0.06666f) m_FrameDTime=.06666f; // limit to 15fps minimum
-    m_fTimeGlobal += m_FrameDTime;
-    m_FramePrevTime = t;
+void CRenderDevice::UpdateTimer(){
+	dwFrame++;
 
-    m_Camera.Update(m_FrameDTime);
+	// Timer
+	float fPreviousFrameTime = Timer.GetAsync(); Timer.Start();	// previous frame
+	fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;	// smooth random system activity - worst case ~7% error
+	if (fTimeDelta>.06666f) fTimeDelta=.06666f;					// limit to 15fps minimum
+
+	u64	qTime		= TimerGlobal.GetElapsed();
+	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
+
+	dwTimeGlobal	= DWORD((qTime*u64(1000))/CPU::cycles_per_second);
+	dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
+
+    m_Camera.Update(fTimeDelta);
 }
 
-void CDevice::DP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc){
-    DWORD dwRequired	= UI->Device.Shader.dwPassesRequired;
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc){
+/*    DWORD dwRequired	= Device.Shader.dwPassesRequired;
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
-        CDX(m_DX->pD3DDev->DrawPrimitive(pt,vtd,v,vc,0));
+        CHK_DX(m_DX->pD3DDev->DrawPrimitive(pt,vtd,v,vc,0));
 		m_Statistic.dwRenderPolyCount += vc/3;
     }
+*/
 }
 
-void CDevice::DPS(D3DPRIMITIVETYPE pt, DWORD vtd, LPD3DDRAWPRIMITIVESTRIDEDDATA va, DWORD vc){
-    DWORD dwRequired	= UI->Device.Shader.dwPassesRequired;
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc, LPWORD i, DWORD ic){
+/*    DWORD dwRequired	= Device.Shader.dwPassesRequired;
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.SetupPass(dwPass);
-        CDX(m_DX->pD3DDev->DrawPrimitiveStrided(pt,vtd,va,vc,0));
-		m_Statistic.dwRenderPolyCount += vc/3;
-    }
-}
-
-void CDevice::DIP(D3DPRIMITIVETYPE pt, DWORD vtd, LPVOID v, DWORD vc, LPWORD i, DWORD ic){
-    DWORD dwRequired	= UI->Device.Shader.dwPassesRequired;
-    for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.SetupPass(dwPass);
-        CDX(m_DX->pD3DDev->DrawIndexedPrimitive(pt,vtd,v,vc,i,ic,0));
+        CHK_DX(m_DX->pD3DDev->DrawIndexedPrimitive(pt,vtd,v,vc,i,ic,0));
 		m_Statistic.dwRenderPolyCount += ic;
     }
+*/
 }
 
-void CDevice::DIPS(D3DPRIMITIVETYPE pt, DWORD vtd, LPD3DDRAWPRIMITIVESTRIDEDDATA va, DWORD vc, LPWORD i, DWORD ic){
-    DWORD dwRequired	= UI->Device.Shader.dwPassesRequired;
-    for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.SetupPass(dwPass);
-        CDX(m_DX->pD3DDev->DrawIndexedPrimitiveStrided(pt,vtd,va,vc,i,ic,0));
-		m_Statistic.dwRenderPolyCount += ic;
-    }
-}
-
-void CDevice::DPVB(D3DPRIMITIVETYPE pt, LPDIRECT3DVERTEXBUFFER7 vb, DWORD sv, DWORD nv){
-    DWORD dwRequired	= UI->Device.Shader.dwPassesRequired;
-    for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.SetupPass(dwPass);
-        CDX(m_DX->pD3DDev->DrawPrimitiveVB(pt,vb,sv,nv,0));
-		m_Statistic.dwRenderPolyCount += nv/3;
-    }
-}
-
-void CDevice::Validate()
+void CRenderDevice::Validate()
 {
-    DWORD Pass,Res;
-    Res =  GetDevice()->ValidateDevice(&Pass);
+/*    DWORD Pass,Res;
+    Res =  HW.pDevice->ValidateDevice(&Pass);
     char* E = 0;
     switch (Res)
     {
-		case DDERR_INVALIDOBJECT:				E = "DDERR_INVALIDOBJECT"; break;
+    	case D3DERR_CONFLICTINGTEXTUREFILTER
+		case D3DERR_CONFLICTINGTEXTUREPALETTE
+		case D3DERR_DEVICELOST
+		case D3DERR_TOOMANYOPERATIONS
+		case D3DERR_UNSUPPORTEDALPHAARG
+		case D3DERR_UNSUPPORTEDALPHAOPERATION
+		case D3DERR_UNSUPPORTEDCOLORARG
+		case D3DERR_UNSUPPORTEDCOLOROPERATION
+		case D3DERR_UNSUPPORTEDFACTORVALUE
+		case D3DERR_UNSUPPORTEDTEXTUREFILTER
+		case D3DERR_WRONGTEXTUREFORMAT
+    	case
+		case D3DERR_INVALIDOBJECT:				E = "DDERR_INVALIDOBJECT"; break;
 		case DDERR_INVALIDPARAMS:               E = "DDERR_INVALIDPARAMS"; break;
 		case D3DERR_CONFLICTINGTEXTUREFILTER:   E = "D3DERR_CONFLICTINGTEXTUREFILTER"; break;
 		case D3DERR_CONFLICTINGTEXTUREPALETTE:  E = "D3DERR_CONFLICTINGTEXTUREPALETTE"; break;
@@ -274,10 +382,11 @@ void CDevice::Validate()
 		case D3DERR_WRONGTEXTUREFORMAT:         E = "D3DERR_WRONGTEXTUREFORMAT"; break;
     }
     if (E)
-    	Log->DlgMsg(mtError, E);
+    	ELog.DlgMsg(mtError, E);
+*/
 }
 
-void CDevice::ReloadShaders(){
+void CRenderDevice::ReloadShaders(){
 	if (m_NullShader) Shader.Delete(m_NullShader);
 	if (m_WireShader) Shader.Delete(m_WireShader);
 	if (m_SelectionShader) Shader.Delete(m_SelectionShader);
@@ -290,7 +399,7 @@ void CDevice::ReloadShaders(){
     m_SelectionShader 	= Shader.Create("$ed_selection");
 }
 
-void CDevice::RefreshTextures(bool bOnlyNew){
+void CRenderDevice::RefreshTextures(bool bOnlyNew){
 	UI->SetStatus("Reload textures...");
 	Shader.RefreshTextures(bOnlyNew);
 	UI->SetStatus("");
@@ -307,8 +416,8 @@ struct clr_16{
     }
 };
 
-bool CDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
-	if (!m_bReady) return false;
+bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
+/*	if (!m_bReady) return false;
 	if ((m_DX->BackDesc.ddpfPixelFormat.dwRGBBitCount!=32)&&
 	    (m_DX->BackDesc.ddpfPixelFormat.dwRGBBitCount!=16)) return false;
 
@@ -340,6 +449,8 @@ bool CDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
         m_DX->pBackBuffer->Unlock(0);
         return true;
     }
+*/
     return false;
 }
+
 

@@ -22,8 +22,8 @@ void CFrustum::CreateFromPoints(Fvector* p, int count)
 
 	_clear();
 	for (int i=1; i<count; i++)
-		_add(UI->Device.m_Camera.GetPosition(),p[i-1],p[i]);
-	_add(UI->Device.m_Camera.GetPosition(),p[count-1],p[0]);
+		_add(Device.m_Camera.GetPosition(),p[i-1],p[i]);
+	_add(Device.m_Camera.GetPosition(),p[count-1],p[0]);
 }
 
 sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
@@ -118,7 +118,7 @@ void CFrustum::CreateFromPlanes(Fplane* p, int count){
 
 void CFrustum::CreateFromViewMatrix()
 {
-	Fmatrix &M	= UI->Device.m_FullTransform;
+	Fmatrix &M	= Device.mFullTransform;
 
 	// Left clipping plane
 	planes[0].n.x	= -(M._14 + M._11);

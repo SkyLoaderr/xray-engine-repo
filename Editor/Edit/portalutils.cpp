@@ -121,7 +121,7 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
             	try{
 					V[cur_i].portal=portal_num;
                 }catch(...){
-				    Log->DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
+				    ELog.DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
 					UI->EndEState();
                 	return 0;
                 }
@@ -154,10 +154,10 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
     	            Scene->AddObject(_O);
                 }else{
                 	delete _O;
-				    Log->DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
+				    ELog.DlgMsg(mtError,"Portal can't create, because has some errors.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
                 }
             }else
-			    if (wl.size()<3) Log->DlgMsg(mtError,"Portal can't create, because has error: '< 3 edges'.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
+			    if (wl.size()<3) ELog.DlgMsg(mtError,"Portal can't create, because has error: '< 3 edges'.\nCheck geometry.\n'%s'<->'%s'",SF->GetName(),SB->GetName());
 
             wl.clear();
             portal_num++;
@@ -255,7 +255,7 @@ int CPortalUtils::CalculateAllPortals2(){
 
         Scene->UndoSave();
     }else{
-		Log->DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
 	UI->SetStatus("...");
@@ -289,18 +289,18 @@ bool CPortalUtils::Validate(bool bMsg){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedFaces();
         int f_cnt=sector_def->GetSectorFacesCount();
-		if (f_cnt!=0){	if (bMsg) Log->DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
+		if (f_cnt!=0){	if (bMsg) ELog.DlgMsg(mtError,"*ERROR: Scene has '%d' non associated face!",f_cnt);
         }else{
-			if (bMsg) Log->DlgMsg(mtInformation,"Validation OK!");
+			if (bMsg) ELog.DlgMsg(mtInformation,"Validation OK!");
             bResult = true;
         }
-        if (f_cnt&&Log->DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
+        if (f_cnt&&ELog.DlgMsg(mtConfirmation,"ERROR: Scene has '%d' non associated face.\nPrint errors?",f_cnt)==mrYes){
         	const Fvector* PT[3];
 	        for (SItemIt it=sector_def->sector_items.begin(); it!=sector_def->sector_items.end(); it++){
-            	Log->Msg(mtError,"Object: %s", it->object->GetName());
+            	ELog.Msg(mtError,"Object: %s", it->object->GetName());
                 for (DWORDIt dw_it=it->Face_IDs.begin(); dw_it!=it->Face_IDs.end(); dw_it++){
 					it->mesh->GetFacePT(*dw_it, PT);
-	            	Log->Msg(mtError," PT: [%3.2f, %3.2f, %3.2f]", PT[0]->x, PT[0]->y, PT[0]->z);
+	            	ELog.Msg(mtError," PT: [%3.2f, %3.2f, %3.2f]", PT[0]->x, PT[0]->y, PT[0]->z);
                 }
             }
         }
@@ -315,37 +315,37 @@ bool CPortalUtils::Validate(bool bMsg){
             }
         }
     }else{
-		if (bMsg) Log->DlgMsg(mtInformation,"Validation failed! Can't compute bbox.");
+		if (bMsg) ELog.DlgMsg(mtInformation,"Validation failed! Can't compute bbox.");
     }
 	UI->EndEState();
     return bResult;
 }
-    
+
 void CPortalUtils::CreateDebugCollection(){
 	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
 
     UI->ProgressStart(6,"Create debug sectors and portal...");
 	UI->ProgressInc();
-   
+
     // create default sector
     CreateDefaultSector();
     CSector* DEF=(CSector*)Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
     if (!DEF) return;
 	UI->ProgressInc();
 
-	// create debug object                       
+	// create debug object
     CEditObject* O = new CEditObject("$debug_object_0x247d05e9");
     AnsiString fn;
     fn = "$debug_sector.object";
     FS.m_Objects.Update(fn);
     if (!O->Load(fn.c_str())){
-    	Log->DlgMsg(mtError, "Can't find object '%s'",fn.c_str());
+    	ELog.DlgMsg(mtError, "Can't find object '%s'",fn.c_str());
     	_DELETE(O);
 	    UI->ProgressEnd();
         return;
     }
 	UI->ProgressInc();
-    
+
     Fbox lev_box, obj_box;
     Fvector offs; offs.set(0,0,0);
 	if (Scene->GetBox(lev_box,OBJCLASS_EDITOBJECT)){
@@ -405,7 +405,7 @@ class sCollector
         DWORD v[2];
         DWORD used;
         DWORD dummy;
-    
+
         sEdge() { used=false; }
 	    static bool c_less(const sEdge& E1, const sEdge& E2)
         {
@@ -453,15 +453,15 @@ public:
 
     DWORD			VPack(Fvector& V){
         DWORD P = 0xffffffff;
-		
+
         DWORD ix,iy,iz;
         ix = floorf(float(V.x-VMmin.x)/VMscale.x*clpMX);
         iy = floorf(float(V.y-VMmin.y)/VMscale.y*clpMY);
         iz = floorf(float(V.z-VMmin.z)/VMscale.z*clpMZ);
         R_ASSERT(ix<=clpMX && iy<=clpMY && iz<=clpMZ);
-		
+
         {
-            DWORDVec* vl; 
+            DWORDVec* vl;
             vl = &(VM[ix][iy][iz]);
             for(DWORDIt it=vl->begin();it!=vl->end(); it++)
                 if( verts[*it].similar(V) )	{
@@ -473,16 +473,16 @@ public:
             P = verts.size();
             sVert sV; sV.set(V);
             verts.push_back	(sV);
-			
+
             VM[ix][iy][iz].push_back(P);
-			
+
             DWORD ixE,iyE,izE;
             ixE = floorf(float(V.x+VMeps.x-VMmin.x)/VMscale.x*clpMX);
             iyE = floorf(float(V.y+VMeps.y-VMmin.y)/VMscale.y*clpMY);
             izE = floorf(float(V.z+VMeps.z-VMmin.z)/VMscale.z*clpMZ);
-			
+
             R_ASSERT(ixE<=clpMX && iyE<=clpMY && izE<=clpMZ);
-			
+
             if (ixE!=ix)							VM[ixE][iy][iz].push_back	(P);
             if (iyE!=iy)							VM[ix][iyE][iz].push_back	(P);
             if (izE!=iz)							VM[ix][iy][izE].push_back	(P);
@@ -493,7 +493,7 @@ public:
         }
         return P;
     }
-        
+
     sCollector(const Fbox &bb){
         VMscale.set	(bb.max.x-bb.min.x, bb.max.y-bb.min.y, bb.max.z-bb.min.z);
         VMmin.set	(bb.min);
@@ -502,11 +502,11 @@ public:
         VMeps.y		= (VMeps.y<EPS_L)?VMeps.y:EPS_L;
         VMeps.z		= (VMeps.z<EPS_L)?VMeps.z:EPS_L;
     }
-		
+
     void			add_face(
         Fvector& v0,    // vertices
-        Fvector& v1, 
-        Fvector& v2,	
+        Fvector& v1,
+        Fvector& v2,
         DWORD sector
         )
     {
@@ -532,7 +532,7 @@ public:
             sVert& v0=verts[F.v[0]];
             sVert& v1=verts[F.v[1]];
             sVert& v2=verts[F.v[2]];
-            
+
             // 1 pair (0-1)
             for (a_it=v0.adj.begin(); a_it!=v0.adj.end(); a_it++) {
             	if (*a_it==i) continue;
@@ -584,10 +584,10 @@ public:
         }
     }
     void dump_edges() {
-       	Log->Msg(mtInformation,"********* dump");
+       	ELog.Msg(mtInformation,"********* dump");
     	for (DWORD i=0; i<edges.size(); i++){
         	sEdge& E = edges[i];
-        	Log->Msg(mtInformation,"%d: %d,%d",i,E.v[0],E.v[1]);
+        	ELog.Msg(mtInformation,"%d: %d,%d",i,E.v[0],E.v[1]);
         }
     }
     void sort_edges(){
@@ -597,7 +597,7 @@ public:
             if (E.v[0]>E.v[1]) swap(E.v[0],E.v[1]);
             if (E.s[0]>E.s[1]) swap(E.s[0],E.s[1]);
         }
-        
+
         // remove equal
         qsort(edges.begin(),edges.size(),sizeof(sEdge),sEdge::compare);
         sEdgeIt NewEnd = std::unique(edges.begin(),edges.end(),sEdge::c_equal);
@@ -605,11 +605,11 @@ public:
 		dump_edges();
     }
     void make_portals() {
-        for(DWORD e_it=0; e_it<edges.size(); e_it++) 
+        for(DWORD e_it=0; e_it<edges.size(); e_it++)
         {
-        	Log->Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
+        	ELog.Msg(mtInformation,"%d: %d,%d",e_it,edges[e_it].v[0],edges[e_it].v[1]);
         	if (edges[e_it].used) continue;
-            
+
             sPortal current;
             current.e.push_back (e_it);
             current.s[0] = edges[e_it].s[0];
@@ -655,7 +655,7 @@ public:
                 }
                 INTIt end = std::unique(vlist.begin(), vlist.end());
                 vlist.erase(end,vlist.end());
-            
+
                 // append portal
                 char namebuffer[MAX_OBJ_NAME];
                 Scene->GenObjectName( OBJCLASS_PORTAL, namebuffer );
@@ -669,10 +669,10 @@ public:
 	 	            Scene->AddObject(_O);
                 }else{
                 	delete _O;
-				    Log->DlgMsg(mtError,"Can't simplify Portal :(\nPlease check geometry once more.\n'%s'<->'%s'",Sectors[p_it->s[0]]->GetName(),Sectors[p_it->s[1]]->GetName());
+				    ELog.DlgMsg(mtError,"Can't simplify Portal :(\nPlease check geometry once more.\n'%s'<->'%s'",Sectors[p_it->s[0]]->GetName(),Sectors[p_it->s[1]]->GetName());
                 }
             }else
-			    Log->DlgMsg(mtError,"Can't create Portal from one edge :(\nPlease check geometry once more.\n'%s'<->'%s'",Sectors[p_it->s[0]]->GetName(),Sectors[p_it->s[1]]->GetName());
+			    ELog.DlgMsg(mtError,"Can't create Portal from one edge :(\nPlease check geometry once more.\n'%s'<->'%s'",Sectors[p_it->s[0]]->GetName(),Sectors[p_it->s[1]]->GetName());
         }
     }
 };
@@ -683,7 +683,7 @@ int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
     Scene->GetBox(bb,OBJCLASS_EDITOBJECT);
     sCollector* CL = new sCollector(bb);
     Fmatrix T;
-        
+
     //1. xform + weld
     UI->SetStatus("xform + weld...");
     for (DWORD i=0; i<sectors.size(); i++){
@@ -740,7 +740,7 @@ int CPortalUtils::CalculateAllPortals(){
 
         iPCount = CalculateSelectedPortals(sectors);
     }else{
-		Log->DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
 	UI->SetStatus("...");
@@ -762,7 +762,7 @@ int CPortalUtils::CalculatePortals(CSector* SF, CSector* SB){
 
         iPCount = CalculateSelectedPortals(sectors);
     }else{
-		Log->DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+		ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
     }
 
 	UI->SetStatus("...");

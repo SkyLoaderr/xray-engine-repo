@@ -82,7 +82,7 @@ void __fastcall TfrmImageLib::CheckImageLib(){
 }
 
 void __fastcall TfrmImageLib::HideImageLib(){
-	if (form){ 
+	if (form){
     	form->Close();
     	check_tex_list.clear();
     }
@@ -135,7 +135,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
     }
 
     UI->Command(COMMAND_REFRESH_TEXTURES,false);
-    
+
 	_DELETE(sel_tex);
 	Action = caFree;
 	form = 0;
@@ -212,7 +212,7 @@ void TfrmImageLib::InitItemsList(const char* nm)
         }
     }
     fld->Expand(true);
-    
+
     // redraw
 	SendMessage(tvItems->Handle,WM_SETREDRAW,1,0);
 	tvItems->Repaint();
@@ -325,7 +325,7 @@ void __fastcall TfrmImageLib::tvItemsItemSelectedChange(TObject *Sender,
 void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
 {
     if (sel_tex){
-        RECT r; 
+        RECT r;
         r.left = 2; r.top = 2;
         float w, h;
         w = sel_tex->width();
@@ -349,7 +349,7 @@ void __fastcall TfrmImageLib::mcFadeColorMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	DWORD color = ((TMultiObjColor*)Sender)->Brush->Color;
-	if (SelectColorWin(&color,&color)){ 
+	if (SelectColorWin(&color,&color)){
     	((TMultiObjColor*)Sender)->_Set(color);
 		if (!bSetMode) bModified = true;
     }
@@ -371,10 +371,10 @@ void __fastcall TfrmImageLib::ebConvertClick(TObject *Sender)
     	UI->ProgressStart(2,"Convert texture...");
         UI->ProgressInc();
     	if(!sel_tex->SaveAsDDS(fn.c_str())){
-        	Log->DlgMsg(mtError,"Can't save picture.");
+        	ELog.DlgMsg(mtError,"Can't save picture.");
         }else{
 	        UI->ProgressInc();
-        	Log->DlgMsg(mtInformation,"Picture %s succesfully converted.",sel_tex->name());
+        	ELog.DlgMsg(mtInformation,"Picture %s succesfully converted.",sel_tex->name());
         }
         UI->ProgressEnd();
     }

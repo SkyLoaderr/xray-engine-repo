@@ -71,7 +71,7 @@ __published:	// IDE-managed Components
 	void __fastcall pbImageDblClick(TObject *Sender);
 	void __fastcall ebConvertClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
-private:	
+private:
 // list functions
     void InitItemsList(const char* nm=0);
 	TElTreeItem* FindItem(const char* s);

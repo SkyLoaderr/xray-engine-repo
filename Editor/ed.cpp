@@ -33,7 +33,6 @@ USEUNIT("edit\portalutils.cpp");
 USEUNIT("stdafx.cpp");
 USEFORM("NumericVector.cpp", frmNumericVector);
 USELIB("lib\LWO.lib");
-USEUNIT("edit\EditObject.cpp");
 USEUNIT("edit\EditMesh.cpp");
 USEUNIT("edit\Shader.cpp");
 USEFORM("EditShaders.cpp", frmEditShaders);
@@ -74,7 +73,6 @@ USEFORM("main.cpp", frmMain);
 USELIB("lib\cg32.lib");
 USEFORM("PropertiesEvent.cpp", frmPropertiesEvent);
 USEFORM("LogForm.cpp", frmLog);
-USELIB("lib\d3dx8d.lib");
 USEUNIT("edit\EditObjectIO.cpp");
 USEUNIT("PropertiesObjectSMotions.cpp");
 USEUNIT("edit\EditObjectMotions.cpp");
@@ -89,7 +87,6 @@ USEFORM("OneEnvironment.cpp", frmOneEnvironment);
 USEUNIT("shared\xrShaderLib.cpp");
 USEUNIT("shared\XRShader.cpp");
 USEUNIT("shared\ShaderManager.cpp");
-USEUNIT("shared\tss.cpp");
 USEFORM("StatisticForm.cpp", frmStatistic);
 USELIB("lib\MagicFMd.lib");
 USEFORM("EditParticles.cpp", frmEditParticles);
@@ -162,7 +159,6 @@ USEUNIT("edit\ui_tools.cpp");
 USEUNIT("edit\ELight.cpp");
 USEUNIT("shared\FS.cpp");
 USEUNIT("edit\Statistic.cpp");
-USEOBJ("ed_debug\_math.obj");
 USEOBJ("ed_debug\cpuid.obj");
 USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
@@ -170,6 +166,15 @@ USEUNIT("edit\DetailObjectsRender.cpp");
 USEFORM("PropertiesDetailObject.cpp", frmPropertiesDO);
 USEUNIT("edit\DetailObjectsPick.cpp");
 USE("!TODO.txt", File);
+USEUNIT("edit\HW.cpp");
+USEUNIT("shared\HWCaps.cpp");
+USEUNIT("shared\PrimitivesR.cpp");
+USEUNIT("shared\Primitive.cpp");
+USEUNIT("shared\SharedPrimitive.cpp");
+USEOBJ("ed_debug\_math.obj");
+USELIB("lib\DX\d3d8.lib");
+USELIB("lib\DX\d3dx8.lib");
+USEUNIT("edit\EditObject.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -180,7 +185,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {
     try{
         TfrmLog::CreateLog();
-    	
+
         frmSplash = new TfrmSplash(0);
         frmSplash->Show();
         frmSplash->Repaint();
@@ -199,7 +204,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         _DELETE(frmSplash);
 
         Application->Run();
-        
+
         TfrmLog::DestroyLog();
     }
     catch (Exception &exception)

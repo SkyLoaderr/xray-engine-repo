@@ -72,7 +72,7 @@ int __fastcall TfrmEditorPreferences::Run(TTabSheet* ts){
     pmLMTextures->Items->Clear();
     LPCSTR T=0;
 	if (T=FS.FindFirst(nm.c_str())){
-    	do{ 
+    	do{
             TMenuItem* mi = new TMenuItem(0);
             mi->Caption = T;
             mi->OnClick = stLMTexturesClick;
@@ -122,15 +122,15 @@ void __fastcall TfrmEditorPreferences::fsEditorPrefRestorePlacement(
 	UI->m_AngleSnap = deg2rad(seSnapAngle->Value);
 	UI->m_MoveSnap  = seSnapMove->Value;
 
-	UI->Device.m_Camera.SetStyle(ECameraStyle(rgCameraStyle->ItemIndex));
-    UI->Device.m_Camera.SetViewport(seZNear->Value, seZFar->Value, seFOV->Value);
+	Device.m_Camera.SetStyle(ECameraStyle(rgCameraStyle->ItemIndex));
+    Device.m_Camera.SetViewport(seZNear->Value, seZFar->Value, seFOV->Value);
 
     UI->m_MouseSM= 0.2*(float(seSM->Value)/100.f)*(float(seSM->Value)/100.f);
     UI->m_MouseSR= 0.02f*(float(seSR->Value)/100.f)*(float(seSR->Value)/100.f);
     UI->m_MouseSS= 0.02f*(float(seSS->Value)/100.f)*(float(seSS->Value)/100.f);
 
-    UI->Device.m_Camera.SetSensitivity(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
-	UI->Device.m_Camera.SetFlyParams(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
+    Device.m_Camera.SetSensitivity(float(seCameraSM->Value)/100.f, float(seCameraSR->Value)/100.f);
+	Device.m_Camera.SetFlyParams(seCameraFlySpeed->Value,seCameraFlyAltitude->Value);
 
     UI->m_Cursor->SetBrushSegment(seBrushSegment->Value);
     UI->m_Cursor->SetBrushRadius(seBrushSize->Value);

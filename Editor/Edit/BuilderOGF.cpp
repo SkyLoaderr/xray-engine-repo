@@ -71,7 +71,7 @@ bool fmat_predicate_less(b_face& F1, b_face& F2){
 
 bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditObject *O, const char* name, FSPath& path ){
 	CEditObject* obj = (O->IsReference())?O->GetRef():O;
-    
+
 	if( obj->MeshCount() == 0 ) return false;
 
     AnsiString base_name; base_name=ExtractFileName(name); base_name=ChangeFileExt(base_name,"");
@@ -100,7 +100,7 @@ bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditObject *O, const char* name
                 sub_index++;
                 cur_mid=l_faces[i].dwMaterial;
                 fid_start=i;
-            }        
+            }
         }
 
     // write root OGF
@@ -134,7 +134,7 @@ bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditObject *O, const char* name
     }
 
     WriteTextures();
-    
+
     ResetStructures();
 	return true;
 }
@@ -231,7 +231,7 @@ bool SceneBuilder::BuildSingleOGF( CFS_Base& FM, DWORD fid_start, DWORD f_cnt, i
     vector<ogf_face>    F;
 
     R_ASSERT2(l_vnormals.size(),"Non-dynamic object convert to dynamic OGF.")
-	
+
     for(DWORD fid=fid_start; fid<fid_start+f_cnt; fid++){
         F.push_back(ogf_face());
         for (DWORD k=0; k<3; k++){

@@ -24,7 +24,7 @@ AnsiString TfrmChoseItem::last_item="";
 LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, LPCSTR start_folder, LPCSTR start_name){
 	VERIFY(!form);
 	form 							= new TfrmChoseItem(0);
-	form->Mode 						= smObject; 
+	form->Mode 						= smObject;
     form->bMultiSel 				= bMulti;
     form->iMultiSelLimit 			= 8;
     form->tvItems->ShowCheckboxes 	= bMulti;
@@ -42,7 +42,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     // redraw
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
 	form->tvItems->Repaint			();
-	// show    
+	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
 }
@@ -50,7 +50,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
 LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_folder, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
-	form->Mode = smShader; 
+	form->Mode = smShader;
 	// init
 	if (init_name) last_item = init_name;
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
@@ -65,7 +65,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
     // redraw
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
 	form->tvItems->Repaint();
-	// show    
+	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
 }
@@ -73,7 +73,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(bool bExcludeSystem, LPCSTR start_
 LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
-	form->Mode = smPS; 
+	form->Mode = smPS;
 	// init
 	if (init_name) last_item = init_name;
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
@@ -87,7 +87,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
     // redraw
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
 	form->tvItems->Repaint();
-	// show    
+	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
 }
@@ -95,7 +95,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
 	VERIFY(!form);
 	form = new TfrmChoseItem(0);
-	form->Mode = smTexture; 
+	form->Mode = smTexture;
     form->bMultiSel = msel;
     form->iMultiSelLimit = 8;
     form->tvItems->ShowCheckboxes = msel;
@@ -111,7 +111,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     FS.m_Textures.Update(nm);
     LPCSTR T=0;
 	if (T=FS.FindFirst(nm.c_str())){
-    	do{ 
+    	do{
 			tt = ChangeFileExt(AnsiString(T),"");
         	form->AddItem(fld,tt.c_str());
         }while(T=FS.FindNext());
@@ -119,7 +119,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     nm = "*.bmp";
     FS.m_Textures.Update(nm);
 	if (T=FS.FindFirst(nm.c_str())){
-    	do{ 
+    	do{
 			tt = ChangeFileExt(AnsiString(T),"");
         	form->AddItem(fld,tt.c_str());
         }while(T=FS.FindNext());
@@ -128,7 +128,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
 	form->tvItems->Repaint();
 
-	// show    
+	// show
     if (form->ShowModal()!=mrOk) return 0;
     return select_item.c_str();
 }
@@ -202,14 +202,14 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
             select_item += ", ";
         }
         select_item.Delete(select_item.Length()-1,2);
-    
+
         if (select_item.IsEmpty()){
             if (tvItems->Selected&&tvItems->Selected->Data){
                 select_item = tvItems->Selected->Text;
                 Close();
                 ModalResult = mrOk;
             }else{
-                Log->DlgMsg(mtInformation,"Select item first.");
+                ELog.DlgMsg(mtInformation,"Select item first.");
             }
         }else{
             Close();
@@ -246,7 +246,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         for (int i=0; i<itm_cnt; i++){
             TElTreeItem* itm_node = FindItem(_GetItem(last_item.c_str(),i,T));
 	        TElTreeItem* fld_node = 0;
-            if (itm_node){ 
+            if (itm_node){
 				tvMulti->Items->Add(0,itm_node->Text);
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
@@ -257,7 +257,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
     }else{
         TElTreeItem* itm_node = FindItem(last_item.c_str());
         TElTreeItem* fld_node = FindFolder(last_item.c_str());
-        if (itm_node){ 
+        if (itm_node){
         	if (bMultiSel) itm_node->Checked = true;
             tvItems->Selected = itm_node;
             tvItems->EnsureVisible(itm_node);
@@ -325,7 +325,7 @@ void __fastcall TfrmChoseItem::tvItemsItemSelectedChange(TObject *Sender, TElTre
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
     if (sel_tex){
-        RECT r; 
+        RECT r;
         r.left = 2; r.top = 2;
         float w, h;
         w = sel_tex->width();
@@ -362,7 +362,7 @@ bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails){
 void __fastcall TfrmChoseItem::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);    
+    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     if (node){
     	tvItems->Selected = node;
 		tvItems->EnsureVisible(node);

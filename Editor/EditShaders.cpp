@@ -47,9 +47,9 @@ __fastcall TfrmEditShaders::TfrmEditShaders(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditShaders::EditShaders()
 {
-	init_cam_hpb.set(UI->Device.m_Camera.GetHPB());
-	init_cam_pos.set(UI->Device.m_Camera.GetPosition());
-    UI->Device.m_Camera.Set(0,0,0, 2,6,-11);
+	init_cam_hpb.set(Device.m_Camera.GetHPB());
+	init_cam_pos.set(Device.m_Camera.GetPosition());
+    Device.m_Camera.Set(0,0,0, 2,6,-11);
     // scene locking
 	Scene->lock();
     Show();
@@ -60,7 +60,7 @@ void __fastcall TfrmEditShaders::ZoomObject(){
     if (O){
     	Fbox bb;
         O->GetBox(bb);
-        UI->Device.m_Camera.ZoomExtents(bb);
+        Device.m_Camera.ZoomExtents(bb);
     }
 }
 //---------------------------------------------------------------------------
@@ -70,7 +70,7 @@ void __fastcall TfrmEditShaders::OnRender(){
             CEditObject* O = m_TestObject->GetReference();
             if (O) O->RenderSingle(precalc_identity);
         }
-    }else{ 
+    }else{
     	if (m_SelectedShader&&m_TestObject&&cbPreview->Checked){
             CEditObject* O = m_TestObject->GetReference();
             if (O){
@@ -78,11 +78,11 @@ void __fastcall TfrmEditShaders::OnRender(){
                 if (surf){
                     if (surf->shader){
                         if (strcmp(surf->shader->shader->cName,m_SelectedShader->cName)!=0){
-                            UI->Device.Shader.Delete(surf->shader);
-                            surf->shader = UI->Device.Shader.Create(m_SelectedShader->cName,surf->textures);
+                            Device.Shader.Delete(surf->shader);
+                            surf->shader = Device.Shader.Create(m_SelectedShader->cName,surf->textures);
                         }
                     }else
-                        surf->shader = UI->Device.Shader.Create(m_SelectedShader->cName,surf->textures);
+                        surf->shader = Device.Shader.Create(m_SelectedShader->cName,surf->textures);
                 }
             	O->RenderSingle(precalc_identity);
             }
@@ -96,7 +96,7 @@ void __fastcall TfrmEditShaders::OnIdle(){
 	if (rgTestObject->ItemIndex==4){
     	if (m_TestObject&&cbPreview->Checked){
             CEditObject* O = m_TestObject->GetReference();
-            if (O&&ebDropper->Down){ 
+            if (O&&ebDropper->Down){
                 POINT pt,wpt;
                 GetCursorPos( &pt );
 
@@ -110,7 +110,7 @@ void __fastcall TfrmEditShaders::OnIdle(){
                     Fvector2 CP;
                     pt = UI->GetD3DWindow()->ScreenToClient(pt);
                     CP.set(float(pt.x),float(pt.y));
-                    UI->Device.m_Camera.MouseRayFromPoint(S, D, CP );
+                    Device.m_Camera.MouseRayFromPoint(S, D, CP );
 
                     float dist=flt_max;
                     SRayPickInfo pinf;
@@ -153,19 +153,19 @@ void __fastcall TfrmEditShaders::FormShow(TObject *Sender)
     L.type = D3DLIGHT_DIRECTIONAL;
     L.diffuse.set(1,1,1,1);
     L.direction.set(1,-1,1); L.direction.normalize();
-	UI->Device.SetLight(0,L);
-	UI->Device.LightEnable(0,true);
+	Device.SetLight(0,L);
+	Device.LightEnable(0,true);
     L.diffuse.set(0.5,0.5,0.5,1);
     L.direction.set(1,-1,-1); L.direction.normalize();
-	UI->Device.SetLight(1,L);
-	UI->Device.LightEnable(1,true);
+	Device.SetLight(1,L);
+	Device.LightEnable(1,true);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditShaders::FormClose(TObject *Sender, TCloseAction &Action)
 {
 	Action = caFree;
 	frmEditShaders=0;
-	UI->Device.m_Camera.Set(init_cam_hpb,init_cam_pos);
+	Device.m_Camera.Set(init_cam_hpb,init_cam_pos);
 	Scene->unlock();
 	if (m_TestObject) m_TestObject->UnloadObject();
 	m_TestObject = 0;
@@ -173,13 +173,13 @@ void __fastcall TfrmEditShaders::FormClose(TObject *Sender, TCloseAction &Action
     UI->EndEState(esEditShaders);
     UI->Command(COMMAND_CLEAR);
     // remove directional light
-	UI->Device.LightEnable(0,false);
-	UI->Device.LightEnable(1,false);
+	Device.LightEnable(0,false);
+	Device.LightEnable(1,false);
 }
 //---------------------------------------------------------------------------
 void TfrmEditShaders::CloseEditShaders(bool bReload){
     if (ebSave->Enabled){
-    	int res = Log->DlgMsg(mtConfirmation, "Library was change. Do you want save?");
+    	int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
 		if (res==mrCancel) return;
 		if (res==mrYes)
             ebSaveClick(0);
@@ -196,7 +196,7 @@ void TfrmEditShaders::CloseEditShaders(bool bReload){
 //---------------------------------------------------------------------------
 void TfrmEditShaders::FinalClose(){
     if (ebSave->Enabled){
-	    if (Log->DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
+	    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
     	    ebSaveClick(0);
     }
     Close();
@@ -367,7 +367,7 @@ void __fastcall TfrmEditShaders::ebNewShaderClick(TObject *Sender)
     SHLib->GenerateName(name);
 	m_SelectedShader = SHLib->AddShader(name);
 	SHLib->SaveLibrary();
-	UI->Device.ReloadShaders();
+	Device.ReloadShaders();
     tvShaders->Selected = AddShader(0, name.c_str());
 	tvShaders->Sort(true);
 	ebPropertiesShaderClick(Sender);
@@ -386,14 +386,14 @@ void __fastcall TfrmEditShaders::ebCloneShaderClick(TObject *Sender)
             SHLib->GenerateName(name,&pref);
             m_SelectedShader = SHLib->AddShader(name,sh_src);
             SHLib->SaveLibrary();
-            UI->Device.ReloadShaders();
+            Device.ReloadShaders();
             tvShaders->Selected = AddShader(0, name.c_str());
 			tvShaders->Sort(true);
             ebPropertiesShaderClick(Sender);
             OnModified();
         }
     }else{
-		Log->DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -406,13 +406,13 @@ void __fastcall TfrmEditShaders::ebRemoveShaderClick(TObject *Sender)
         if (MessageDlg("Delete selected item?", mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0) == mrYes){
             SHLib->DeleteShader(pNode->Text);
 	        SHLib->SaveLibrary();
-	        UI->Device.ReloadShaders();
+	        Device.ReloadShaders();
             pNode->Delete();
             cbPreviewClick(Sender);
             OnModified();
         }
     }else{
-		Log->DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -521,7 +521,7 @@ void __fastcall TfrmEditShaders::ebReloadShadersClick(TObject *Sender)
 void __fastcall TfrmEditShaders::rgTestObjectClick(TObject *Sender)
 {
     AnsiString fn;
-    if(rgTestObject->ItemIndex!=4) gbExtern->Hide(); 
+    if(rgTestObject->ItemIndex!=4) gbExtern->Hide();
 	switch(rgTestObject->ItemIndex){
     	case 0: fn="$ShaderTest_Plane"; 	break;
     	case 1: fn="$ShaderTest_Box"; 		break;
@@ -532,12 +532,12 @@ void __fastcall TfrmEditShaders::rgTestObjectClick(TObject *Sender)
     }
     m_TestObject = Lib->SearchObject(fn.c_str());
     if (!m_TestObject&&!fn.IsEmpty()){
-       	Log->DlgMsg(mtError,"System object '%s.object' can't find in object library. Preview disabled.",fn.c_str());
+       	ELog.DlgMsg(mtError,"System object '%s.object' can't find in object library. Preview disabled.",fn.c_str());
         g_ExternalObject = "";
     }
 	m_TestExternSurface = 0;
 	ebDropper->Down = false;
-    
+
     UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -548,13 +548,13 @@ void __fastcall TfrmEditShaders::ebMergeClick(TObject *Sender)
     if( FS.GetOpenName( &FS.m_GameRoot, fn ) ){
     	int cnt;
     	cnt=SHLib->Merge(fn.c_str());
-        Log->DlgMsg(mtInformation,"Append %d shader(s)",cnt);
+        ELog.DlgMsg(mtInformation,"Append %d shader(s)",cnt);
         AnsiString sh_nm;
         if (tvShaders->Selected) sh_nm = tvShaders->Selected->Text;
         m_SelectedShader = 0;
         InitShaderFolder(sh_nm.c_str());
 		SHLib->SaveLibrary();
-		UI->Device.ReloadShaders();
+		Device.ReloadShaders();
         OnModified();
     }
 }
@@ -587,11 +587,11 @@ void __fastcall TfrmEditShaders::ebAssignShaderClick(TObject *Sender)
 	if (m_TestExternSurface&&cbPreview->Checked&&m_SelectedShader){
         if (m_TestExternSurface->shader){
             if (strcmp(m_TestExternSurface->shader->shader->cName,m_SelectedShader->cName)!=0){
-                UI->Device.Shader.Delete(m_TestExternSurface->shader);
-                m_TestExternSurface->shader = UI->Device.Shader.Create(m_SelectedShader->cName,m_TestExternSurface->textures);
+                Device.Shader.Delete(m_TestExternSurface->shader);
+                m_TestExternSurface->shader = Device.Shader.Create(m_SelectedShader->cName,m_TestExternSurface->textures);
             }
         }else
-            m_TestExternSurface->shader = UI->Device.Shader.Create(m_SelectedShader->cName,m_TestExternSurface->textures);
+            m_TestExternSurface->shader = Device.Shader.Create(m_SelectedShader->cName,m_TestExternSurface->textures);
 	    ebSaveExternObject->Enabled = true;
         lbExternSelShader->Caption = m_TestExternSurface->shader->shader->cName;
     }
@@ -613,7 +613,7 @@ void __fastcall TfrmEditShaders::ExtBtn1Click(TObject *Sender)
     for(ShaderIt it=SHLib->m_Shaders.begin(); it!=SHLib->m_Shaders.end(); it++)
     	it->R.iPriority = 1;
 	SHLib->SaveLibrary();
-    Log->DlgMsg(mtInformation,"All Priority = 1");
+    ELog.DlgMsg(mtInformation,"All Priority = 1");
 }
 //---------------------------------------------------------------------------
 

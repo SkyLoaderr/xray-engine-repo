@@ -44,7 +44,7 @@ enum EAxis{
 
 class TUI_Tools{
     TPanel*         paParent;
-    int             target;                                                       
+    int             target;
     int             action;
 
     bool 			bNeedChangeAction;

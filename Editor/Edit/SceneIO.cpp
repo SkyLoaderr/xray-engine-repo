@@ -59,16 +59,16 @@ void st_LevelOptions::Save( CFS_Base& F ){
     F.open_chunk( CHUNK_LO_VERSION );
 	F.Wdword	( CURRENT_LEVELOP_VERSION );
     F.close_chunk();
-    
+
     F.open_chunk( CHUNK_LO_NAMES );
 	F.WstringZ	( m_FNLevelPath.c_str() );
 	F.WstringZ	( m_LevelName.c_str() );
     F.close_chunk();
-    
+
     F.open_chunk( CHUNK_LO_BOP );
 	F.WstringZ	( m_BOPText.c_str() );
     F.close_chunk();
-    
+
     F.open_chunk( CHUNK_LO_SKYDOME );
     F.WstringZ	( m_SkydomeObjName.c_str() );
     F.close_chunk();
@@ -76,10 +76,10 @@ void st_LevelOptions::Save( CFS_Base& F ){
     F.open_chunk( CHUNK_LO_ENVS );
 	F.Wdword	( m_CurEnv );
 	F.Wdword	( m_Envs.size() );
-	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++) 
+	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
     	e_it->Save(F);
     F.close_chunk();
-    
+
     F.open_chunk( CHUNK_LO_DOCLUSTERSIZE );
 	F.Wfloat	( m_DOClusterSize );
     F.close_chunk();
@@ -89,7 +89,7 @@ void st_LevelOptions::Read(CStream& F){
 	R_ASSERT(F.FindChunk(CHUNK_LO_VERSION));
     DWORD vers = F.Rdword( );
     if( vers != CURRENT_LEVELOP_VERSION ){
-        Log->Msg( mtError, "Skipping bad version of level options..." );
+        ELog.Msg( mtError, "Skipping bad version of level options..." );
         return;
     }
 
@@ -107,7 +107,7 @@ void st_LevelOptions::Read(CStream& F){
     R_ASSERT(F.FindChunk(CHUNK_LO_ENVS));
 	m_CurEnv	= F.Rdword( );
     m_Envs.resize(F.Rdword( ));
-	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++) 
+	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++)
     	e_it->Read(F);
 
     R_ASSERT(F.FindChunk(CHUNK_LO_DOCLUSTERSIZE));
@@ -131,7 +131,7 @@ void EScene::Save(char *_FileName, bool bUndo){
     F.open_chunk	(CHUNK_OBJECT_COUNT);
     F.Wdword		(ObjCount());
 	F.close_chunk	();
-    
+
     if (m_DetailPatches->ObjCount()){
 		F.open_chunk	(CHUNK_DETAILPATCHES);
     	m_DetailPatches->Save(F);
@@ -146,8 +146,8 @@ void EScene::Save(char *_FileName, bool bUndo){
 
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
-        F.Wvector		(UI->Device.m_Camera.GetHPB());
-        F.Wvector		(UI->Device.m_Camera.GetPosition());
+        F.Wvector		(Device.m_Camera.GetHPB());
+        F.Wvector		(Device.m_Camera.GetPosition());
 		F.close_chunk	();
     }
 
@@ -194,7 +194,7 @@ SceneObject* EScene::ReadObject( CStream* F ){
     R_ASSERT(S);
     bool bRes = currentobject->Load(*S);
     S->Close();
-    
+
 	if (!bRes) _DELETE(currentobject);
 	return currentobject;
 }
@@ -204,8 +204,8 @@ bool EScene::Load(char *_FileName){
     DWORD version = 0;
 
 	VERIFY( _FileName );
-	Log->Msg( mtInformation, "EScene: loading %s...", _FileName );
-    
+	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
+
     if (FS.Exist(_FileName,true)){
         CStream* F;
         F = new CFileStream(_FileName);
@@ -215,14 +215,14 @@ bool EScene::Load(char *_FileName){
         	_DELETE(F);
             F = new CCompressedStream(_FileName,"LEVEL");
         }
-    	
+
 //      CCompressedStream F(_FileName,"LEVEL");
 //        CFileStream F(_FileName);
 
         // Version
         R_ASSERT(F->ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
-            Log->DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
+            ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI->UpdateScene();
         	_DELETE(F);
             return false;
@@ -235,7 +235,7 @@ bool EScene::Load(char *_FileName){
     	    UpdateSkydome();
         	LOP->Close();
         }else{
-			Log->DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
+			ELog.DlgMsg( mtError, "Skipping old version of level options.\nCheck level options after loading." );
 	    }
 
         //
@@ -243,7 +243,7 @@ bool EScene::Load(char *_FileName){
         	Fvector hpb, pos;
 	        F->Rvector	(hpb);
     	    F->Rvector	(pos);
-            UI->Device.m_Camera.Set(hpb,pos);
+            Device.m_Camera.Set(hpb,pos);
 		}
 
         // Objects
@@ -251,7 +251,7 @@ bool EScene::Load(char *_FileName){
 	    if (F->FindChunk	(CHUNK_OBJECT_COUNT)){
 	    	obj_cnt		= F->Rdword();
         }
-        
+
         CStream* OBJ = F->OpenChunk(CHUNK_OBJECT_LIST);
 	    UI->ProgressStart(obj_cnt,"Load scene...");
         if (OBJ){
@@ -286,7 +286,7 @@ bool EScene::Load(char *_FileName){
         }
 
         // detail objects
-        // объ€зательно после загрузки snap листа 
+        // объ€зательно после загрузки snap листа
 	    CStream* DO = F->OpenChunk(CHUNK_DETAILOBJECTS);
 		if (DO){
 	    	m_DetailObjects->Load(*DO);
@@ -297,16 +297,16 @@ bool EScene::Load(char *_FileName){
 
         // update scene groups list
         UpdateGroups();
-        
-        Log->Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
+
+        ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
         UI->UpdateScene();
-        UI->Device.UpdateFog();
+        Device.UpdateFog();
 
 		_DELETE(F);
 
         SynchronizeObjects();
-        
+
 		return true;
     }
 	return false;
@@ -349,25 +349,25 @@ void EScene::SaveSelection( int classfilter, char *filename ){
 
 bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
     DWORD version = 0;
- 
+
 	VERIFY( _FileName );
-	Log->Msg( mtInformation, "EScene: loading %s...", _FileName );
+	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
 
     bool res = true;
-    
+
     if (FS.Exist(_FileName)){
         CFileStream F(_FileName);
 
         // Version
         R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
-            Log->DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
+            ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI->UpdateScene();
             return false;
         }
 
         // Objects
-        CStream* OBJ = F.OpenChunk(CHUNK_OBJECT_LIST); 
+        CStream* OBJ = F.OpenChunk(CHUNK_OBJECT_LIST);
         if (OBJ){
             CStream* O   = OBJ->OpenChunk(0);
             for (int count=1; O; count++) {
@@ -377,7 +377,7 @@ bool EScene::LoadSelection(const char *_FileName,ObjectList& lst){
                 if (obj){
                 	lst.push_back(obj);
                 }else{
-                    Log->DlgMsg(mtError,"EScene. Failed to load selection.");
+                    ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
                     res = false;
                     break;
                 }
@@ -449,7 +449,7 @@ int EScene::CopySelection( EObjClass classfilter ){
 		SetClipboardData( clipformat, hmem );
 		CloseClipboard();
 	} else {
-		Log->DlgMsg( mtError, "Failed to open clipboard" );
+		ELog.DlgMsg( mtError, "Failed to open clipboard" );
 		GlobalFree( hmem );
 	}
 
@@ -466,13 +466,13 @@ int EScene::PasteSelection(){
 			LoadSelection( sceneclipdata->m_FileName );
 			GlobalUnlock( hmem );
 		} else {
-			Log->DlgMsg( mtError, "No data in clipboard" );
+			ELog.DlgMsg( mtError, "No data in clipboard" );
 		}
 
 		CloseClipboard();
 
 	} else {
-		Log->DlgMsg( mtError, "Failed to open clipboard" );
+		ELog.DlgMsg( mtError, "Failed to open clipboard" );
 		return false;
 	}
 

@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: NetDeviceLog->cpp
+// file: NetDeviceELog.cpp
 //----------------------------------------------------
 
 #include "stdafx.h"
@@ -13,10 +13,36 @@
 #endif
 //----------------------------------------------------
 
-CLog* Log;// ( "ed.log" );
+CLog ELog;
 
+void Log	(const char *msg){ ELog.Msg(mtInformation,msg); }
+void Log	(const char *msg, const char*	dop){ ELog.Msg(mtInformation,"%s%s",msg,dop); }
+void Log	(const char *msg, DWORD			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
+void Log	(const char *msg, int  			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop); }
+void Log	(const char *msg, float			dop){ ELog.Msg(mtInformation,"%s%f",msg,dop); }
+void Log	(const char *msg, const Fvector& dop){ ELog.Msg(mtInformation,"%s [%f,%f,%f]",msg,dop); }
+void Log	(const char *msg, const Fmatrix& dop){
+	ELog.Msg(mtInformation,"%s [%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n",msg,
+	dop.i.x,dop.i.y,dop.i.z,dop._14_, dop.k.x,dop.k.y,dop.k.z,dop._34_,dop.c.x,dop.c.y,dop.c.z,dop._44_);
+}
+
+void __cdecl Msg	(LPCSTR format, ...){
+	char buf[4096];
+	va_list l;
+	va_start( l, format );
+	vsprintf( buf, format, l );
+
+#ifdef _EDITOR
+    if (frmSplash) frmSplash->SetStatus(buf);
+#endif
+    TfrmLog::AddMessage(mtInformation,AnsiString(buf));
+
+	strcat( buf, "\r\n" );
+    ELog.Msg(mtInformation,buf);
+}
 //----------------------------------------------------
-CLog::CLog( char *_FileName ){
+void CLog::Create(LPCSTR _FileName){
+	VERIFY(!bReady);
     char f_path[1024];
     char _ExeName[1024];
     GetModuleFileName( GetModuleHandle(0), _ExeName, 1024 );
@@ -27,9 +53,11 @@ CLog::CLog( char *_FileName ){
     sprintf( m_FileName, "%s%s",f_path,_FileName );
 	int hf = open( m_FileName, _O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY, _S_IREAD | _S_IWRITE );
 	_close( hf );
+    bReady = TRUE;
 }
 
-int CLog::DlgMsg ( TMsgDlgType mt, TMsgDlgButtons btn, char *_Format, ... ){
+int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
+	VERIFY(bReady);
     g_ErrorMode = true;
 	char buf[4096];
 	va_list l;
@@ -49,7 +77,8 @@ int CLog::DlgMsg ( TMsgDlgType mt, TMsgDlgButtons btn, char *_Format, ... ){
 }
 
 
-int CLog::DlgMsg ( TMsgDlgType mt, char *_Format, ... ){
+int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
+	VERIFY(bReady);
     g_ErrorMode = true;
 	char buf[4096];
 	va_list l;
@@ -70,7 +99,8 @@ int CLog::DlgMsg ( TMsgDlgType mt, char *_Format, ... ){
     return res;
 }
 
-void CLog::Msg( TMsgDlgType mt, char *_Format, ... ){
+void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...){
+	VERIFY(bReady);
 	char buf[4096];
 	va_list l;
 	va_start( l, _Format );

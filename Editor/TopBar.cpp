@@ -58,12 +58,12 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);
     if (btn){
-        if (btn==ebViewFront)   UI->Device.m_Camera.ViewFront();
-        if (btn==ebViewBack)    UI->Device.m_Camera.ViewBack();
-        if (btn==ebViewLeft)    UI->Device.m_Camera.ViewLeft();
-        if (btn==ebViewRight)   UI->Device.m_Camera.ViewRight();
-        if (btn==ebViewTop)     UI->Device.m_Camera.ViewTop();
-        if (btn==ebViewBottom)  UI->Device.m_Camera.ViewBottom();
+        if (btn==ebViewFront)   Device.m_Camera.ViewFront();
+        if (btn==ebViewBack)    Device.m_Camera.ViewBack();
+        if (btn==ebViewLeft)    Device.m_Camera.ViewLeft();
+        if (btn==ebViewRight)   Device.m_Camera.ViewRight();
+        if (btn==ebViewTop)     Device.m_Camera.ViewTop();
+        if (btn==ebViewBottom)  Device.m_Camera.ViewBottom();
     }
     UI->RedrawScene();
 }

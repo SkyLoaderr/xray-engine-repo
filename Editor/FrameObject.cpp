@@ -82,12 +82,12 @@ void TfraObject::SelByRefObject( bool flag ){
 void __fastcall TfraObject::ebResolveClick(TObject *Sender)
 {
 	if (Scene->SelectionCount(true,OBJCLASS_EDITOBJECT)){
-    	if(Log->DlgMsg(mtConfirmation,"This irreversible operation.\nAre you sure to resolve reference?")==mrYes){
+    	if(ELog.DlgMsg(mtConfirmation,"This irreversible operation.\nAre you sure to resolve reference?")==mrYes){
     		ResolveObjects(true);
 	    	Scene->UndoSave();
         }
     }else{
-        Log->DlgMsg(mtInformation,"Select reference objects and try again.");
+        ELog.DlgMsg(mtInformation,"Select reference objects and try again.");
     }
 }
 //---------------------------------------------------------------------------
@@ -104,8 +104,8 @@ void TfraObject::ResolveObjects(bool bMsg){
         }
     }
     if (bMsg){
-	    if (cnt) Log->DlgMsg(mtInformation,"Resolve %d object(s)",cnt);
-        else 	 Log->DlgMsg(mtInformation,"Select reference objects and try again.");
+	    if (cnt) ELog.DlgMsg(mtInformation,"Resolve %d object(s)",cnt);
+        else 	 ELog.DlgMsg(mtInformation,"Select reference objects and try again.");
     }
 }
 

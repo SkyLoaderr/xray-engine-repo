@@ -54,7 +54,7 @@ TUI_Tools::TUI_Tools(TPanel* p)
     AddTool			(etAITPoint,new TUI_AITPointTools());
     AddTool			(etPS, 		new TUI_PSTools		());
     AddTool			(etDO,		new TUI_DOTools		());
-// check tools    
+// check tools
     for (DWORD i=0; i<etMaxTarget; i++) VERIFY2(m_pTools[i], "Can't find specify tools.");
 }
 //---------------------------------------------------------------------------

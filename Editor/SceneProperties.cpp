@@ -37,7 +37,7 @@ int frmScenePropertiesRun(b_params* params, bool bRunBuild){
 #else
 extern "C" __declspec(dllexport) __cdecl int frmScenePropertiesRun(b_params* params, DWORD version, bool bRunBuild){
 	if (version!=XRCL_CURRENT_VERSION){
-    	Log->DlgMsg(mtError,"Incorrect version of level options dll.");
+    	ELog.DlgMsg(mtError,"Incorrect version of level options dll.");
     	return mrCancel;
     }
 #endif
@@ -87,7 +87,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
 	mmText->Text			= Scene->m_LevelOp.m_BOPText;
 	edSkydomeObjectName->Text = Scene->m_LevelOp.m_SkydomeObjName;
 	seDOClusterSize->Value	= Scene->m_LevelOp.m_DOClusterSize;
-    
+
     tsLevelScript->Enabled = true;
     tsLevelOptions->Enabled = true;
     tsLevelEnvironment->Enabled = true;
@@ -170,7 +170,7 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     m_BuildParams->m_bStripify 				= cbStrippify->Checked;
     m_BuildParams->m_vCacheSize			 	= seStripCacheSize->Value;
 #ifdef _EDITOR
-	UI->Device.UpdateFog();
+	Device.UpdateFog();
 #endif
 }
 
@@ -311,12 +311,12 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 	if (!N) return;
 	CLibObject* LO = Lib->SearchObject(N);
     if (!LO){
-        Log->DlgMsg(mtError,"Object %s can't find in library.",N);
+        ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return ;
     }
 	CEditObject* O = LO->GetReference();
     if (!O->IsDynamic()){
-    	Log->DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
+    	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         return ;
     }
 	edSkydomeObjectName->Text = LO->GetRefName();
@@ -348,9 +348,9 @@ void __fastcall TfrmSceneProperties::EnvsUpdate(){
     seCurEnv->Value = Scene->m_LevelOp.m_CurEnv;
 
     EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
-    for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++) 
+    for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
-        
+
 //	SendMessage(sbEnvs->Handle,WM_SETREDRAW,1,0);
 
 	sbEnvs->Refresh();
@@ -387,7 +387,7 @@ void __fastcall TfrmSceneProperties::tsLevelEnvironmentShow(
     seCurEnv->Value = Scene->m_LevelOp.m_CurEnv;
 
     EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
-    for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++) 
+    for (f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
 	bUpdateMode = false;
 #endif
@@ -419,7 +419,7 @@ void __fastcall TfrmSceneProperties::seEnvCountChange(TObject *Sender)
         m_frmEnvs.back()->HideEnv();
     }
     EnvIt e_it=Scene->m_LevelOp.m_Envs.begin();
-    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++) 
+    for (FrmEnvIt f_it=m_frmEnvs.begin(); f_it!=m_frmEnvs.end(); f_it++, e_it++)
     	(*f_it)->ShowEnv(e_it);
 #endif
 }

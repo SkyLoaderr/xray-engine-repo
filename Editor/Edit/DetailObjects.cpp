@@ -64,7 +64,7 @@ CDetail::CDetail(){
 }
 
 CDetail::~CDetail(){
-	if (m_pShader) 		UI->Device.Shader.Delete(m_pShader);
+	if (m_pShader) 		Device.Shader.Delete(m_pShader);
 	m_Vertices.clear	();
 }
 
@@ -72,19 +72,19 @@ bool CDetail::Update	(LPCSTR name){
     // update link
     CLibObject* LO 		= Lib->SearchObject(name);
     if (!LO){
-        Log->DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
+        ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
         return false;
     }
     if (0==(m_pRefs=LO->GetReference())){
-        Log->DlgMsg		(mtError, "CDetail: '%s' can't load", name);
+        ELog.DlgMsg		(mtError, "CDetail: '%s' can't load", name);
         return false;
     }
     if(m_pRefs->SurfaceCount()!=1){
-    	Log->DlgMsg		(mtError,"Object must contain 1 material.");
+    	ELog.DlgMsg		(mtError,"Object must contain 1 material.");
     	return false;
     }
 	if(m_pRefs->MeshCount()==0){
-    	Log->DlgMsg		(mtError,"Object must contain 1 mesh.");
+    	ELog.DlgMsg		(mtError,"Object must contain 1 mesh.");
     	return false;
     }
 
@@ -94,8 +94,8 @@ bool CDetail::Update	(LPCSTR name){
     m_bSideFlag			= surf->sideflag;
 
     // create shader
-	if (m_pShader) 		UI->Device.Shader.Delete(m_pShader);
-    m_pShader			= UI->Device.Shader.Create(surf->shader->shader->cName,surf->textures);
+	if (m_pShader) 		Device.Shader.Delete(m_pShader);
+    m_pShader			= Device.Shader.Create(surf->shader->shader->cName,surf->textures);
     R_ASSERT			(m_pShader);
 
     // fill geometry
@@ -137,7 +137,7 @@ bool CDetail::Load(CStream& F){
     R_ASSERT			(F.FindChunk(DETOBJ_CHUNK_VERSION));
     DWORD version		= F.Rdword();
     if (version!=DETOBJ_VERSION){
-    	Log->Msg(mtError,"CDetail: unsupported version.");
+    	ELog.Msg(mtError,"CDetail: unsupported version.");
         return false;
     }
 
@@ -303,12 +303,12 @@ void CDetailManager::FindClosestIndex(const Fcolor& C, SIndexDistVec& best){
 
 bool CDetailManager::Initialize(LPCSTR tex_name){
 	if (!fraLeftBar->ebEnableSnapList->Down||Scene->m_SnapObjects.empty()){
-    	Log->DlgMsg(mtError,"Fill snap list and activate before generating slots!");
+    	ELog.DlgMsg(mtError,"Fill snap list and activate before generating slots!");
     	return false;
     }
 
     if (m_Objects.empty()){
-    	Log->DlgMsg(mtError,"Fill object list before generating slots!");
+    	ELog.DlgMsg(mtError,"Fill object list before generating slots!");
     	return false;
     }
 
@@ -324,12 +324,12 @@ bool CDetailManager::Initialize(LPCSTR tex_name){
 
 bool CDetailManager::Reinitialize(){
 	if (m_SnapObjects.empty()){
-    	Log->DlgMsg(mtError,"Snap list empty! Initialize at first.");
+    	ELog.DlgMsg(mtError,"Snap list empty! Initialize at first.");
     	return false;
     }
 
     if (m_Objects.empty()){
-    	Log->DlgMsg(mtError,"Fill object list before reinitialize!");
+    	ELog.DlgMsg(mtError,"Fill object list before reinitialize!");
     	return false;
     }
 
@@ -349,11 +349,11 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     _DELETE(m_pBaseTexture);
     m_pBaseTexture = new ETextureCore(fn.c_str());
     if (!m_pBaseTexture->Valid()){
-    	Log->DlgMsg(mtError,"Can't load base texture '%s'!",fn.c_str());
+    	ELog.DlgMsg(mtError,"Can't load base texture '%s'!",fn.c_str());
     	return false;
     }
-    if (m_pBaseShader) UI->Device.Shader.Delete(m_pBaseShader);
-    m_pBaseShader = UI->Device.Shader.Create("def_trans",fn.c_str(),false);
+    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
+    m_pBaseShader = Device.Shader.Create("def_trans",fn.c_str(),false);
     UI->Command(COMMAND_REFRESH_TEXTURES);
     return true;
 }
@@ -487,7 +487,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
     DSIt slot	= m_Slots.begin()+z*m_Header.size_x+x;
     Irect		R;
     GetSlotTCRect(R,x,z);
-//    Log->Msg(mtInformation,"TC [%d,%d]-[%d,%d]",R.x1,R.y1,R.x2,R.y2);
+//    ELog.Msg(mtInformation,"TC [%d,%d]-[%d,%d]",R.x1,R.y1,R.x2,R.y2);
     SIndexDistVec best;
     // find best color index
     {
@@ -602,7 +602,7 @@ void CDetailManager::Clear(){
 	RemoveObjects		();
 	m_ColorIndices.clear();
     m_Slots.clear		();
-    if (m_pBaseShader){ UI->Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
+    if (m_pBaseShader){ Device.Shader.Delete(m_pBaseShader); m_pBaseShader = 0;}
     _DELETE				(m_pBaseTexture);
 	m_Selected.clear	();
     m_SnapObjects.clear	();
@@ -657,7 +657,7 @@ void CDetailManager::RemoveObjects(bool bOnlyMarked){
             }
         }
         if (cnt>0){
-	        Log->DlgMsg(mtInformation,"Object list changed. Update objects needed!");
+	        ELog.DlgMsg(mtInformation,"Object list changed. Update objects needed!");
     	    InvalidateSlots();
         }
     }else{
@@ -710,7 +710,7 @@ bool CDetailManager::Load_V1(CStream& F){
             if (DO->Load(*O)){
                 m_Objects.push_back(DO);
             }else{
-                Log->Msg(mtError,"Can't load detail object.");
+                ELog.Msg(mtError,"Can't load detail object.");
                 _DELETE(DO);
             }
             O->Close();
@@ -729,7 +729,7 @@ bool CDetailManager::Load_V1(CStream& F){
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
     	m_pBaseTexture	= new ETextureCore(buf);
-	    m_pBaseShader 	= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+	    m_pBaseShader 	= Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -752,7 +752,7 @@ bool CDetailManager::Load_V1(CStream& F){
         for (int i=0; i<cnt; i++){
         	F.RstringZ	(buf);
             CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
-            if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
             else		m_SnapObjects.push_back(O);
         }
     }else{
@@ -771,7 +771,7 @@ bool CDetailManager::Load(CStream& F){
     if (version==1) return Load_V1(F);
 
     if (version!=DETMGR_VERSION){
-    	Log->Msg(mtError,"CDetailManager: unsupported version.");
+    	ELog.Msg(mtError,"CDetailManager: unsupported version.");
         return false;
     }
 
@@ -787,7 +787,7 @@ bool CDetailManager::Load(CStream& F){
             if (DO->Load(*O)){
                 m_Objects.push_back(DO);
             }else{
-                Log->Msg(mtError,"Can't load detail object.");
+                ELog.Msg(mtError,"Can't load detail object.");
                 _DELETE(DO);
             }
             O->Close();
@@ -811,7 +811,7 @@ bool CDetailManager::Load(CStream& F){
 	if(F.FindChunk(DETMGR_CHUNK_BASE_TEXTURE)){
 	    F.RstringZ		(buf);
     	m_pBaseTexture	= new ETextureCore(buf);
-	    m_pBaseShader 	= UI->Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+	    m_pBaseShader 	= Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
     }
     // color index map
     R_ASSERT			(F.FindChunk(DETMGR_CHUNK_COLOR_INDEX));
@@ -835,7 +835,7 @@ bool CDetailManager::Load(CStream& F){
 	        for (int i=0; i<cnt; i++){
     	    	F.RstringZ	(buf);
         	    CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
-            	if (!O)		Log->Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }
         }else{

@@ -93,11 +93,11 @@ void TUI_CustomTools::ShowProperties(){
 	    case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&objset,bChange); 	break;
     	case OBJCLASS_PORTAL:   	frmPropertiesPortalRun(&objset,bChange); 	break;
 	    case OBJCLASS_EVENT:   		frmPropertiesEventRun(&objset,bChange);		break;
-	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;	
-//	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;	
+	    case OBJCLASS_RPOINT:   	TfrmPropertiesRPoint::Run(&objset,bChange); break;
+//	    case OBJCLASS_AITRAFFIC:   	TfrmPropertiesAITraffic::Run(&objset,bChange);break;
     	case OBJCLASS_DPATCH:   	break;
         case OBJCLASS_PS:			TfrmPropertiesPS::Run(&objset,bChange);		break;
-    	default:{ Log->DlgMsg(mtError, "Can't find properties form."); throw -1;}
+    	default:{ ELog.DlgMsg(mtError, "Can't find properties form."); throw -1;}
 	    }
         if (bChange) Scene->UndoSave();
         UI->RedrawScene();
@@ -114,7 +114,7 @@ void TUI_CustomTools::SetNumPosition(SceneObject* O){
             Fvector RV; RV.set(0,0,0);
             if (mrOk==NumericVectorRun("Position",&V,3,&RV)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
-                for(;_F!=_E;_F++){ 
+                for(;_F!=_E;_F++){
                 	(*_F)->SetPosition(V);
                     (*_F)->UpdateTransform();
                 }
@@ -138,7 +138,7 @@ void TUI_CustomTools::SetNumRotation(SceneObject* O){
             if (mrOk==NumericVectorRun("Rotation",&V,1,&RV,&MN,&MX)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
 	            V.set(deg2rad(V.x),deg2rad(V.y),deg2rad(V.z));
-                for(;_F!=_E;_F++){ 
+                for(;_F!=_E;_F++){
                 	(*_F)->SetRotate(V);
                     (*_F)->UpdateTransform();
                 }
@@ -160,7 +160,7 @@ void TUI_CustomTools::SetNumScale(SceneObject* O){
             Fvector MX; MX.set(10000,10000,10000);
             if (mrOk==NumericVectorRun("Scale",&V,3,&RV,&MN,&MX)){
                 ObjectIt _F = objset.begin(); ObjectIt _E = objset.end();
-                for(;_F!=_E;_F++){ 
+                for(;_F!=_E;_F++){
                 	(*_F)->SetScale(V);
                     (*_F)->UpdateTransform();
                 }

@@ -134,7 +134,7 @@ void CEditMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, DWORD
         for( int k=0;k<3;k++) parent.transform_tiny(p[k],m_Points[p_it->pv[k].pindex]);
         if (bCulling){
 	        Fplane P; P.build(p[0],p[1],p[2]);
-    	    if (P.classify(UI->Device.m_Camera.GetPosition())<0) continue;
+    	    if (P.classify(Device.m_Camera.GetPosition())<0) continue;
         }
         sPoly s(p,3);
         if (frustum.testPoly(s))
@@ -143,4 +143,4 @@ void CEditMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, DWORD
 }
 
 
- 
+

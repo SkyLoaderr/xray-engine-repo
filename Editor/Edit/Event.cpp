@@ -70,21 +70,21 @@ void CEvent::RenderBox(bool bAlpha ){
 	FLvertexVec V;
 	DWORD C;
 	if (bAlpha){
-        C=RGBA_MAKE( 0, 255, 0, 96 );
-//		UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
-        UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,mTransform);
-	    UI->Device.Shader.Set(UI->Device.m_SelectionShader);
+        C=D3DCOLOR_RGBA( 0, 255, 0, 96 );
+//		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+        Device.SetTransform(D3DTS_WORLD,mTransform);
+	    Device.Shader.Set(Device.m_SelectionShader);
         DU::DrawIdentBox(false,&C);
-//		UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+//		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
     }else{
-        C=RGBA_MAKE( 32, 32, 32, 255 );
-        UI->Device.RenderNearer(0.0003);
-        UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,mTransform);
-	    UI->Device.Shader.Set(UI->Device.m_WireShader);
-        UI->Device.ResetNearer();
+        C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
+        Device.RenderNearer(0.0003);
+        Device.SetTransform(D3DTS_WORLD,mTransform);
+	    Device.Shader.Set(Device.m_WireShader);
+        Device.ResetNearer();
         DU::DrawIdentBox(true,&C);
         if(Selected()){
-            Fbox bb; 
+            Fbox bb;
 			bb.min.set(-0.5f,-0.5f,-0.5f);
 			bb.max.set( 0.5f, 0.5f, 0.5f);
 			DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -102,7 +102,7 @@ void CEvent::Render( Fmatrix& parent, ERenderPriority flag ){
 typedef BYTE T_IDX[3];
 static const T_IDX idx[12]={{0,4,3},{4,7,3},{7,6,2},{7,2,3},{4,5,6},{6,7,4},
 							{6,5,1},{6,1,2},{5,4,0},{5,0,1},{0,3,2},{0,2,1}};
-                            
+
 void GetBoxTri(int index, Fvector* v){
 	box_identity.getpoint(idx[index][0],v[0]);
 	box_identity.getpoint(idx[index][1],v[1]);
@@ -149,7 +149,7 @@ bool CEvent::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatri
 
 void CEvent::Move(Fvector& amount){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -159,10 +159,10 @@ void CEvent::Move(Fvector& amount){
 
 void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
-    UI->UpdateScene();     
+    UI->UpdateScene();
 
 	Fmatrix m;
 	m.rotation( axis, angle );
@@ -178,7 +178,7 @@ void CEvent::Rotate(Fvector& center, Fvector& axis, float angle){
 
 void CEvent::LocalRotate(Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -188,7 +188,7 @@ void CEvent::LocalRotate(Fvector& axis, float angle){
 
 void CEvent::Scale( Fvector& center, Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -201,7 +201,7 @@ void CEvent::Scale( Fvector& center, Fvector& amount ){
 
 void CEvent::LocalScale( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -218,14 +218,14 @@ bool CEvent::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(EVENT_CHUNK_VERSION,&version));
     if( version!=EVENT_VERSION ){
-        Log->DlgMsg( mtError, "Event: Unsupported version.");
+        ELog.DlgMsg( mtError, "Event: Unsupported version.");
         return false;
     }
 
 	SceneObject::Load(F);
 
     R_ASSERT(F.ReadChunk(EVENT_CHUNK_TYPE,&eEventType));
-    
+
     switch(eEventType){
     case eetBox:
 	    R_ASSERT(F.FindChunk(EVENT_CHUNK_BOX));
@@ -234,7 +234,7 @@ bool CEvent::Load(CStream& F){
     	F.Rvector(vScale);
     break;
     }
-    
+
     char buf[4096];
     R_ASSERT(F.FindChunk(EVENT_PARAMS));
     F.RstringZ		(buf); sTargetClass = buf;
@@ -256,7 +256,7 @@ void CEvent::Save(CFS_Base& F){
 	F.close_chunk	();
 
     F.write_chunk	(EVENT_CHUNK_TYPE,&eEventType,sizeof(EEventType));
-    
+
     switch(eEventType){
     case eetBox:
 	    F.open_chunk(EVENT_CHUNK_BOX);

@@ -102,16 +102,16 @@ void __fastcall TfraSector::ebCaptureInsideVolumeClick(TObject *Sender)
 void __fastcall TfraSector::ebCreateDefaultClick(TObject *Sender)
 {
     SceneObject* O=Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR);
-	if (O) Log->DlgMsg(mtInformation,"Default sector already present. Remove this and try again.");
+	if (O) ELog.DlgMsg(mtInformation,"Default sector already present. Remove this and try again.");
     else{
-		if (!PortalUtils.CreateDefaultSector()) Log->DlgMsg(mtInformation,"Default can't created.");
+		if (!PortalUtils.CreateDefaultSector()) ELog.DlgMsg(mtInformation,"Default can't created.");
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraSector::ebRemoveDefaultClick(TObject *Sender)
 {
-	if (!PortalUtils.RemoveDefaultSector()) Log->DlgMsg(mtInformation,"Default sector not found.");
+	if (!PortalUtils.RemoveDefaultSector()) ELog.DlgMsg(mtInformation,"Default sector not found.");
 }
 //---------------------------------------------------------------------------
 

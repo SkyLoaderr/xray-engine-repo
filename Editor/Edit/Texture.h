@@ -21,7 +21,7 @@ class ETextureThumbnail{
 	AnsiString 		m_LoadName;
 	DWORDVec 		m_Pixels;
     STextureParams*	m_TexParams;
-// thumbnail routines    
+// thumbnail routines
     void 			Smooth			();
 public:
 					ETextureThumbnail(const char *_ShortName);
@@ -38,7 +38,7 @@ public:
 	bool 			CreateFromData	(DWORDVec& p, int w, int h, int src_age, bool check=true, bool blur=false);
 
     STextureParams*	GetTextureParams();
-    
+
     // validation
     IC bool			Valid			(){return (!m_Pixels.empty());}
 };
@@ -57,7 +57,7 @@ protected:
     bool			m_bLoadFailed;
 
 	ETextureThumbnail* 		m_Thm;
-	LPDIRECTDRAWSURFACE7 	m_Surface;
+	IDirect3DTexture8*	 	m_Surface;
 
 	int		   		m_Width;
 	int		 		m_Height;

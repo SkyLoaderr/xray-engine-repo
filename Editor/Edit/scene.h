@@ -84,7 +84,7 @@ public:
     CEditObject*	m_SkyDome;
 
     ObjectList		m_SnapObjects;
-    
+
 	typedef	FixedMAP<float,CEditObject*>   mapObject_D;
 	typedef mapObject_D::TNode	 	    mapObject_Node;
 	mapObject_D						    mapRenderObjects;
@@ -108,7 +108,7 @@ protected:
 	deque<UndoItem> m_RedoStack;
 
     GroupMap	m_Groups;
-    
+
 protected:
 	SceneObject* ReadObject(CStream*);
 
@@ -205,7 +205,7 @@ public:
     bool GetBox						(Fbox& box, ObjectList& lst);
 	void UpdateSkydome				();
     void WriteToLTX					(CInifile* pIni);
-    
+
 public:
 	SceneObject* GetQueryObject		(EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
 	int  GetQueryObjects			(ObjectList& objset, EObjClass classfilter, int iSel=1, int iVis=1, int iLock=0);
@@ -233,7 +233,7 @@ public:
 
 	EScene();
 	virtual ~EScene();
-    
+
 	void 	OnDeviceCreate();
 	void 	OnDeviceDestroy();
 

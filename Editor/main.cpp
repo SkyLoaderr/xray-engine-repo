@@ -244,8 +244,8 @@ void __fastcall TfrmMain::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
     if (Key==VK_OEM_3)		  			UI->Command(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
-                                          
-void __fastcall TfrmMain::UpdateCaption()     
+
+void __fastcall TfrmMain::UpdateCaption()
 {
     AnsiString name;
     name.sprintf("Level Editor - [%s%s]",UI->GetEditFileName()[0]?UI->GetEditFileName():"noname",Scene->IsModified()?"*":"");

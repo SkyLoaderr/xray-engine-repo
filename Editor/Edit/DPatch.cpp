@@ -20,8 +20,8 @@
 #define     DPATCH_CHUNK_DATA  		0xD412
 //----------------------------------------------------
 
-st_DPSurface::~st_DPSurface(){ 
-	UI->Device.Shader.Delete(m_Shader); 
+st_DPSurface::~st_DPSurface(){
+	Device.Shader.Delete(m_Shader);
 }
 //----------------------------------------------------
 
@@ -48,7 +48,7 @@ st_DPSurface* CDPatchSystem::CreateSurface(AStringVec& tex_names, const char* sh
     }
     st_DPSurface* s = new st_DPSurface();
     s->m_Textures 	= tex_names;
-    s->m_Shader		= UI->Device.Shader.Create(sh_name,tex_names);
+    s->m_Shader		= Device.Shader.Create(sh_name,tex_names);
 	return s;
 }
 
@@ -87,29 +87,29 @@ bool CDPatchSystem::GetBox( Fbox& p_box ){
 }
 
 void CDPatchSystem::Render( ){
-    UI->Device.SetRS	(D3DRENDERSTATE_CLIPPING, FALSE);
-	UI->Device.ResetMaterial();
+    Device.SetRS	(D3DRS_CLIPPING, FALSE);
+	Device.ResetMaterial();
     for(PatchMapIt it=m_Patches.begin();it!=m_Patches.end(); it++){
         PatchVec& lst = it->second;
         st_DPSurface* surf = it->first;
         VERIFY(surf);
         VERIFY(surf->m_Shader);
-        UI->Device.Shader.Set(surf->m_Shader);
+        Device.Shader.Set(surf->m_Shader);
         for(PatchIt i = lst.begin();i!=lst.end();i++)
-            if (UI->Device.m_Frustum.testSphere(i->m_Position,i->m_Range))
+            if (Device.m_Frustum.testSphere(i->m_Position,i->m_Range))
                 m_RenderSprite.Render(i->m_Position,i->m_Range);
     }
 // draw selection
-    UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_WIREFRAME);
-	UI->Device.Shader.Set(UI->Device.m_WireShader);
+    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
+	Device.Shader.Set(Device.m_WireShader);
     for(it=m_Patches.begin();it!=m_Patches.end(); it++){
         PatchVec& lst = it->second;
         for(PatchIt i = lst.begin();i!=lst.end();i++)
-            if (UI->Device.m_Frustum.testSphere(i->m_Position,i->m_Range))
+            if (Device.m_Frustum.testSphere(i->m_Position,i->m_Range))
                 if( i->m_Selected ) m_RenderSprite.Render(i->m_Position,i->m_Range);
     }
-	UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
-    UI->Device.SetRS(D3DRENDERSTATE_CLIPPING, TRUE);
+	Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS(D3DRS_CLIPPING, TRUE);
 }
 
 void CDPatchSystem::FrustumSelect( bool flag ){
@@ -166,7 +166,7 @@ void CDPatchSystem::AddDPatch(PatchVec& lst, float r, Fvector& p, Fvector& n){
 void CDPatchSystem::AddDPatch(st_DPSurface* surf, float r, Fvector& p, Fvector& n){
 	VERIFY(surf);
 	AddDPatch(m_Patches[surf], r, p, n);
-/* 
+/*
 	previous release!!!!
    bool bFound=false;
     for(PatchMapIt it=m_Patches.begin();it!=m_Patches.end(); it++){
@@ -270,7 +270,7 @@ bool CDPatchSystem::LoadPatches(CStream& F){
     for (AStringIt s_it=surf->m_Textures.begin(); s_it!=surf->m_Textures.end(); s_it++){
         F.RstringZ	(buf); *s_it = buf;
     }
-    surf->m_Shader	= UI->Device.Shader.Create(sh_name,surf->m_Textures);
+    surf->m_Shader	= Device.Shader.Create(sh_name,surf->m_Textures);
 
     R_ASSERT(F.FindChunk(DPATCH_CHUNK_DATA));
     PatchVec& lst	= m_Patches[surf];
@@ -287,10 +287,10 @@ bool CDPatchSystem::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(DPATCH_CHUNK_VERSION,&version));
     if( version!=DPATCH_VERSION ){
-        Log->DlgMsg( mtError, "DetailPatch: Unsupported version.");
+        ELog.DlgMsg( mtError, "DetailPatch: Unsupported version.");
         return false;
     }
-    
+
     // Load meshes
     CStream* OBJ = F.OpenChunk(DPATCH_CHUNK_PATCHES); VERIFY(OBJ);
 	if(OBJ){
@@ -302,7 +302,7 @@ bool CDPatchSystem::Load(CStream& F){
         }
         OBJ->Close();
     }
-    
+
 	return true;
 }
 

@@ -31,7 +31,7 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 	edName->Text= _S->GetName();
     seTeamID->ObjFirstInit(_S->m_dwTeamID);
     seHeading->ObjFirstInit(rad2deg(_S->m_fHeading));
-    
+
     _F++;
     for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID()==OBJCLASS_RPOINT );
@@ -39,12 +39,12 @@ void TfrmPropertiesRPoint::GetObjectsInfo(){
 	    seTeamID->ObjNextInit(_N->m_dwTeamID);
 	    seHeading->ObjNextInit(rad2deg(_S->m_fHeading));
 	}
-    if (_S!=_N){ 
+    if (_S!=_N){
     	edName->Enabled = false;
         edName->Text	= "<Multiple selection>";
     }else
     	edName->Enabled = true;
-    
+
 	bLoadMode = false;
 }
 
@@ -118,7 +118,7 @@ void __fastcall TfrmPropertiesRPoint::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
 	Action = caFree;
-    form = 0;	
+    form = 0;
 }
 //---------------------------------------------------------------------------
 

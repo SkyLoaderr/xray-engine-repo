@@ -64,7 +64,7 @@ void TfrmPropertiesPSDef::GetObjectsInfo(){
         seColorEndB->ObjFirstInit		(m_PS->m_Color.end.b);
         seColorEndA->ObjFirstInit		(m_PS->m_Color.end.a);
 
-        Fcolor C; 
+        Fcolor C;
         C.set			   				(m_PS->m_Color.start.r/255,m_PS->m_Color.start.g/255,m_PS->m_Color.start.b/255,0);
 		grColor->BeginColor				= TColor(C.get_windows());
         C.set							(m_PS->m_Color.end.r/255,m_PS->m_Color.end.g/255,m_PS->m_Color.end.b/255,0);
@@ -130,7 +130,7 @@ bool TfrmPropertiesPSDef::ApplyObjectsInfo(){
         	AnsiString name 			= m_PS->m_Name;
             PS::SDef* F 				= TfrmEditParticles::FindPS(edName->Text.c_str());
             if (F&&(m_PS!=F)){
-            	Log->DlgMsg				(mtError,"Specify name already present in library. Change name and try again.");
+            	ELog.DlgMsg				(mtError,"Specify name already present in library. Change name and try again.");
             }else
 		        if (m_PS->SetName		(edName->Text.c_str()))
 				    TfrmEditParticles::OnNameUpdate();
@@ -370,7 +370,7 @@ void __fastcall TfrmPropertiesPSDef::seEmitterExit(TObject *Sender)
 void __fastcall TfrmPropertiesPSDef::seEmitterKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (Key==VK_RETURN){ 
+	if (Key==VK_RETURN){
     	ApplyObjectsInfo();
 		TfrmEditParticles::UpdateEmitter();
     }

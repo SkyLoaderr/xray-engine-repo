@@ -33,9 +33,9 @@ void __fastcall TfrmEditParticles::ShowEditor(){
 	if (!form){
         form = new TfrmEditParticles(0);
 
-        form->init_cam_hpb.set(UI->Device.m_Camera.GetHPB());
-        form->init_cam_pos.set(UI->Device.m_Camera.GetPosition());
-        UI->Device.m_Camera.Set(0,0,0, 0,6,-20);
+        form->init_cam_hpb.set(Device.m_Camera.GetHPB());
+        form->init_cam_pos.set(Device.m_Camera.GetPosition());
+        Device.m_Camera.Set(0,0,0, 0,6,-20);
         // scene locking
         Scene->lock();
     }
@@ -47,9 +47,9 @@ void __fastcall TfrmEditParticles::ShowEditor(){
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
-	if (form){ 
+	if (form){
 	    if (form->ebSave->Enabled){
-            int res = Log->DlgMsg(mtConfirmation, "Library was change. Do you want save?");
+            int res = ELog.DlgMsg(mtConfirmation, "Library was change. Do you want save?");
             if (res==mrCancel) return;
             if (res==mrYes){
     	        form->ebSaveClick(0);
@@ -66,9 +66,9 @@ void __fastcall TfrmEditParticles::HideEditor(bool bNeedReload){
 }
 //---------------------------------------------------------------------------
 void TfrmEditParticles::FinalClose(){
-	if (form){ 
+	if (form){
 	    if (form->ebSave->Enabled){
-		    if (Log->DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
+		    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Library was change. Do you want save?")==mrYes)
 				form->ebSaveClick(0);
         }
     	form->Close();
@@ -129,7 +129,7 @@ void __fastcall TfrmEditParticles::ZoomObject(){
     if (form->m_SelectedPS){
     	Fbox bb;
 //        form->m_SelectedPS->GetBox(bb);
-        UI->Device.m_Camera.ZoomExtents(bb);
+        Device.m_Camera.ZoomExtents(bb);
     }
 }
 //---------------------------------------------------------------------------
@@ -142,7 +142,7 @@ void __fastcall TfrmEditParticles::OnRender(){
 void __fastcall TfrmEditParticles::OnIdle(){
 	if (!Visible()) return;
 	if (form->m_TestObject){
-    	form->m_TestObject->RTL_Update(UI->Device.m_FrameDTime);
+    	form->m_TestObject->RTL_Update(Device.fTimeDelta);
         form->lbCurState->Caption = (form->m_TestObject->ParticleCount()||form->m_TestObject->IsPlaying())?"playing":"stopping";
         form->lbParticleCount->Caption = form->m_TestObject->ParticleCount();
     }
@@ -160,12 +160,12 @@ void __fastcall TfrmEditParticles::FormShow(TObject *Sender)
     L.type = D3DLIGHT_DIRECTIONAL;
     L.diffuse.set(1,1,1,1);
     L.direction.set(1,-1,1); L.direction.normalize();
-	UI->Device.SetLight(0,L);
-	UI->Device.LightEnable(0,true);
+	Device.SetLight(0,L);
+	Device.LightEnable(0,true);
     L.diffuse.set(0.5,0.5,0.5,1);
     L.direction.set(1,-1,-1); L.direction.normalize();
-	UI->Device.SetLight(1,L);
-	UI->Device.LightEnable(1,true);
+	Device.SetLight(1,L);
+	Device.LightEnable(1,true);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditParticles::FormClose(TObject *Sender, TCloseAction &Action)
@@ -173,13 +173,13 @@ void __fastcall TfrmEditParticles::FormClose(TObject *Sender, TCloseAction &Acti
     _DELETE(m_TestObject);
 	Action = caFree;
 	form = 0;
-	UI->Device.m_Camera.Set(init_cam_hpb,init_cam_pos);
+	Device.m_Camera.Set(init_cam_hpb,init_cam_pos);
 	Scene->unlock();
     UI->EndEState(esEditParticles);
     UI->Command(COMMAND_CLEAR);
     // remove directional light
-	UI->Device.LightEnable(0,false);
-	UI->Device.LightEnable(1,false);
+	Device.LightEnable(0,false);
+	Device.LightEnable(1,false);
     // close properties window
     TfrmPropertiesPSDef::HideProperties();
 }
@@ -247,7 +247,7 @@ void TfrmEditParticles::InitItemsList(const char* nm)
 
     for(PSIt it=PSLib->FirstPS(); it!=PSLib->LastPS(); it++)
         AddItemToFolder(it->m_Folder,it->m_Name);
-        
+
 	SendMessage(tvItems->Handle,WM_SETREDRAW,1,0);
 	tvItems->Repaint();
     if (nm){
@@ -297,7 +297,7 @@ void __fastcall TfrmEditParticles::ebPropertiesPSClick(TObject *Sender)
         if (PSLib->FindPS(nm.c_str())){
 		    TfrmPropertiesPSDef::ShowProperties();
         }else{
-			Log->DlgMsg(mtInformation, "Select PS to edit.");
+			ELog.DlgMsg(mtInformation, "Select PS to edit.");
         }
     }
 }
@@ -347,7 +347,7 @@ void __fastcall TfrmEditParticles::ebClonePSClick(TObject *Sender)
 //            PSLib->Save();
         }
     }else{
-		Log->DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -357,7 +357,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
     TElTreeItem* pNode = tvItems->Selected;
     if (pNode){
     	if(pNode->Data){
-	        if (Log->DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
 				ResetCurrent();
     	        PSLib->DeletePS(pNode->Text.c_str());
 //	    	    PSLib->Save();
@@ -365,7 +365,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
     	        OnModified();
         	}
         }else{
-            if (Log->DlgMsg(mtConfirmation, "Delete selected folder and inside objects?") == mrYes){
+            if (ELog.DlgMsg(mtConfirmation, "Delete selected folder and inside objects?") == mrYes){
                 TElTreeItem* fld=tvItems->Selected;
                 for ( TElTreeItem* pNode = fld->GetFirstChild(); pNode; pNode = fld->GetNextChild(pNode))
                     if (pNode->Data){
@@ -378,7 +378,7 @@ void __fastcall TfrmEditParticles::ebRemovePSClick(TObject *Sender)
         }
 		SetFocus();
     }else{
-		Log->DlgMsg(mtInformation, "At first selected item.");
+		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -465,7 +465,7 @@ void __fastcall TfrmEditParticles::ebMergeClick(TObject *Sender)
 	AnsiString fn;
     if( FS.GetOpenName( &FS.m_GameRoot, fn ) ){
     	int cnt=PSLib->Merge(fn.c_str());
-        Log->DlgMsg(mtInformation,"Append %d PS(s)",cnt);
+        ELog.DlgMsg(mtInformation,"Append %d PS(s)",cnt);
         AnsiString ps_nm;
         if (tvItems->Selected) ps_nm = tvItems->Selected->Text;
         ResetCurrent();

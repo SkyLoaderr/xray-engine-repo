@@ -18,7 +18,7 @@ CUI_Camera::CUI_Camera(){
 
 	m_FlySpeed = 5.f;
     m_FlyAltitude = 1.8f;
-    
+
     m_bMoving=false;
 }
 
@@ -84,7 +84,7 @@ void CUI_Camera::Update(float dt){
             	if (UI->PickGround(pos,m_Position,dir,-1))
                 	m_Position.y = pos.y+m_FlyAltitude;
             }
-            
+
         	UI->RedrawScene();
 	    }
         BuildCamera();
@@ -239,7 +239,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
     m_Position.direct(C,D,H);
 
 	BuildCamera();
-/*    
+/*
 	eye_k - фокусное расстояние, eye_k=eye_width/2
 	camera.alfa:=0;
      camera.beta:=-30*pi/180;

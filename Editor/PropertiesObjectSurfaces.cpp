@@ -84,12 +84,12 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderClick(TObject *Sender)
         lbShader->Caption = S;
     	if (surf_selected->shader){
         	if(strcmp(surf_selected->shader->shader->cName,S)!=0){
-		    	UI->Device.Shader.Delete(surf_selected->shader);
-    		    surf_selected->shader = UI->Device.Shader.Create(S,surf_selected->textures);
+		    	Device.Shader.Delete(surf_selected->shader);
+    		    surf_selected->shader = Device.Shader.Create(S,surf_selected->textures);
         		OnModified(Sender);
             }
         }else{
-            surf_selected->shader = UI->Device.Shader.Create(S,surf_selected->textures);
+            surf_selected->shader = Device.Shader.Create(S,surf_selected->textures);
             OnModified(Sender);
         }
     }
@@ -105,11 +105,11 @@ void __fastcall TfrmPropertiesObject::ebSelectTextureClick(TObject *Sender)
         lbTexture->Caption = S;
         SequenceToList(surf_selected->textures,S);
     	if (surf_selected->shader){
-			UI->Device.Shader.Delete(surf_selected->shader);
-    		surf_selected->shader = UI->Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
+			Device.Shader.Delete(surf_selected->shader);
+    		surf_selected->shader = Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
 			OnModified(Sender);
         }else{
-            surf_selected->shader = UI->Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
+            surf_selected->shader = Device.Shader.Create(lbShader->Caption.c_str(),surf_selected->textures);
             OnModified(Sender);
         }
     }
@@ -144,7 +144,7 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
 		surf_selected 				= surf;
     }break;
     case 2:
-        tx_selected = UI->Device.Shader.FindTexture(Item->Text.c_str());
+        tx_selected = Device.Shader.FindTexture(Item->Text.c_str());
         if (tx_selected){
             lbWidth->Caption = tx_selected->width();
             lbHeight->Caption = tx_selected->height();
@@ -152,7 +152,7 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
             if (tx_selected->width()!=tx_selected->height()) paImage->Repaint();
             imPaint(Sender);
         }else{
-        	Log->DlgMsg(mtInformation,"Texture '%s' not used in current material.",Item->Text.c_str());
+        	ELog.DlgMsg(mtInformation,"Texture '%s' not used in current material.",Item->Text.c_str());
         }
     break;
     }
@@ -165,7 +165,7 @@ void __fastcall TfrmPropertiesObject::imPaint(TObject *Sender)
         float w, h;
         w = tx_selected->width();
         h = tx_selected->height();
-        if (w>h){   
+        if (w>h){
         	r.right = im->Width; r.bottom = h/w*im->Height;
         }else{
         	r.right = w/h*im->Width; r.bottom = im->Height;}

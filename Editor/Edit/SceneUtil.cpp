@@ -73,21 +73,21 @@ void EScene::SetLights(){
             CLight* l = (CLight*)(*_F);
             l_cnt++;
             if (l->Visible())
-                if ((l->m_D3D.type==D3DLIGHT_DIRECTIONAL) || UI->Device.m_Frustum.testSphere(l->m_D3D.position,l->m_D3D.range)){
+                if ((l->m_D3D.type==D3DLIGHT_DIRECTIONAL) || Device.m_Frustum.testSphere(l->m_D3D.position,l->m_D3D.range)){
                     l->Set( i++ );
                     frame_light.push_back(l);
                     l->Enable(FALSE);
                 }
         }
-        UI->Device.m_Statistic.dwTotalLight = l_cnt;
-        UI->Device.m_Statistic.dwLightInScene = frame_light.size();
+        Device.m_Statistic.dwTotalLight = l_cnt;
+        Device.m_Statistic.dwLightInScene = frame_light.size();
     }
 }
 
 void EScene::TurnLightsForObject(CEditObject* obj){
     for (DWORD i=0; i<frame_light.size(); i++){
         CLight* l = frame_light[i];
-        
+
         if (!(l->m_D3D.flags&XRLIGHT_MODELS)&&!(l->m_D3D.flags&XRLIGHT_LMAPS)) continue;
         if (obj->IsDynamic()&&!(l->m_D3D.flags&XRLIGHT_MODELS)) continue;
         if (!obj->IsDynamic()&&!(l->m_D3D.flags&XRLIGHT_LMAPS)) continue;

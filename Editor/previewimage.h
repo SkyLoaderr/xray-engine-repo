@@ -20,7 +20,7 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 private:	// User declarations
 	static TfrmPreviewImage* form;
-    
+
     ETextureCore* tex;
     float mult;
 public:		// User declarations

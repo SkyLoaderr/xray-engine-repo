@@ -19,7 +19,7 @@ static WORD lineindices[LINE_DIVISION*2];
 
 static FVF::L crossbuffer[6];
 
-const DWORD boxcolor = RGBA_MAKE(255,255,255,0);
+const DWORD boxcolor = D3DCOLOR_RGBA(255,255,255,0);
 static const int boxvertcount = 32;
 static Fvector boxvert[boxvertcount];
 static const int boxindexcount = 48;
@@ -34,31 +34,31 @@ static const WORD boxindices[boxindexcount] = {
 	28, 29, 28, 30, 28, 31
 };
 // identity box
-const DWORD identboxcolor = RGBA_MAKE(255,255,255,0);
+const DWORD identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
 static const int identboxvertcount = 8;
-static const Fvector identboxvert[identboxvertcount] = {
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, +0.5f, -0.5f,
-	+0.5f, +0.5f, -0.5f,
-	+0.5f, -0.5f, -0.5f, 
-	-0.5f, +0.5f, +0.5f, 
-	-0.5f, -0.5f, +0.5f, 
-	+0.5f, +0.5f, +0.5f, 
-	+0.5f, -0.5f, +0.5f, 
+static FVF::L identboxvert[identboxvertcount] = {
+	-0.5f, -0.5f, -0.5f, 0x0,
+	-0.5f, +0.5f, -0.5f, 0x0,
+	+0.5f, +0.5f, -0.5f, 0x0,
+	+0.5f, -0.5f, -0.5f, 0x0,
+	-0.5f, +0.5f, +0.5f, 0x0,
+	-0.5f, -0.5f, +0.5f, 0x0,
+	+0.5f, +0.5f, +0.5f, 0x0,
+	+0.5f, -0.5f, +0.5f, 0x0
 };
 static const int identboxindexcount = 36;
 static const WORD identboxindices[identboxindexcount] = {
-	0, 1, 2,   2, 3, 0, 
-	3, 2, 6,   6, 7, 3, 
-	6, 4, 5,   6, 5, 7, 
+	0, 1, 2,   2, 3, 0,
+	3, 2, 6,   6, 7, 3,
+	6, 4, 5,   6, 5, 7,
     4, 1, 5,   1, 0, 5,
     3, 5, 0,   3, 7, 5,
     1, 4, 6,   1, 6, 2};
 static const int identboxindexwirecount = 24;
 static const WORD identboxindiceswire[identboxindexwirecount] = {
-	0, 1, 	1, 2, 
-	2, 3, 	3, 0, 
-	4, 6, 	6, 7, 
+	0, 1, 	1, 2,
+	2, 3, 	3, 0,
+	4, 6, 	6, 7,
     7, 5, 	5, 4,
     1, 4, 	2, 6,
     3, 7, 	0, 5};
@@ -92,8 +92,8 @@ void InitUtilLibrary(){
 	bb.set(-0.505f,-0.505f,-0.505f, 0.505f,0.505f,0.505f);
 	for (i=0; i<8; i++){
     	Fvector S;
-    	Fvector p; 
-        bb.getpoint(i,p); 
+    	Fvector p;
+        bb.getpoint(i,p);
         S.set(SIGN(p.x),SIGN(p.y),SIGN(p.z));
     	boxvert[i*4+0].set(p);
     	boxvert[i*4+1].set(p.x-S.x*0.25f,p.y,p.z);
@@ -128,15 +128,15 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
     linebuffer1[3].set(-r,0,sz,	c);//
     linebuffer1[4].set(r,0,r,	c);
     linebuffer1[5].set(r,0,sz,	c);//
-	UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,rot);
-	UI->Device.DP(D3DPT_LINELIST,FVF::F_L, linebuffer1, 6);
+	Device.SetTransform(D3DTS_WORLD,rot);
+	Device.DP(D3DPT_LINELIST,FVF::F_L, linebuffer1, 6);
 
     Fbox b;
     b.min.set(-r,-r,-r);
     b.max.set(r,r,r);
 
     DrawSelectionBox(b,&c);
-	UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+	Device.SetTransform(D3DTS_WORLD,precalc_identity);
 }
 
 void DrawPointLight(const Fvector& p, float radius, DWORD c)
@@ -153,7 +153,7 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
 	linebuffer1[1].p.set(p);
 	linebuffer1[1].p.y+=height;
 
-	UI->Device.DP(D3DPT_LINELIST,FVF::F_L, linebuffer1, 2);
+	Device.DP(D3DPT_LINELIST,FVF::F_L, linebuffer1, 2);
 
 	linebuffer1[0].p.y = p.y+height*(1.f-sz_fl);
 
@@ -165,7 +165,7 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
     linebuffer1[4].p.set(linebuffer1[2].p);
     linebuffer1[5].p.set(linebuffer1[1].p);
 
-	UI->Device.DP(D3DPT_TRIANGLELIST,FVF::F_L, linebuffer1, 6);
+	Device.DP(D3DPT_TRIANGLELIST,FVF::F_L, linebuffer1, 6);
 }
 
 //------------------------------------------------------------------------------
@@ -185,9 +185,9 @@ void DrawRomboid(const Fvector& p, float r, DWORD c){
     v[4].set(p.x-r,	p.y,	p.z,	c);
     v[5].set(p.x+r,	p.y,	p.z,	c);
 
-	UI->Device.DIP(D3DPT_TRIANGLELIST,FVF::F_L, v, 6, IT, 24);
+	Device.DIP(D3DPT_TRIANGLELIST,FVF::F_L, v, 6, IT, 24);
     for (int i=0; i<6; i++) v[i].color=c;
-	UI->Device.DIP(D3DPT_LINELIST,FVF::F_L, v, 6, IL, 24);
+	Device.DIP(D3DPT_LINELIST,FVF::F_L, v, 6, IL, 24);
 }
 //------------------------------------------------------------------------------
 
@@ -202,7 +202,7 @@ void DrawSound(const Fvector& p, float r, DWORD c){
     v[4].set(p.x-r,	p.y,	p.z,	c);
     v[5].set(p.x+r,	p.y,	p.z,	c);
 
-	UI->Device.DIP(D3DPT_LINELIST,FVF::F_L, v, 6, I, 24);
+	Device.DIP(D3DPT_LINELIST,FVF::F_L, v, 6, I, 24);
 }
 //------------------------------------------------------------------------------
 void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross){
@@ -216,13 +216,13 @@ void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross){
         linebuffer3[i].set(t,c);
 	}
 
-	UI->Device.DIP( D3DPT_LINELIST,FVF::F_L,
+	Device.DIP( D3DPT_LINELIST,FVF::F_L,
 		linebuffer1, LINE_DIVISION,		lineindices, LINE_DIVISION*2);
 
-	UI->Device.DIP( D3DPT_LINELIST,FVF::F_L,
+	Device.DIP( D3DPT_LINELIST,FVF::F_L,
 		linebuffer2, LINE_DIVISION,		lineindices, LINE_DIVISION*2);
 
-	UI->Device.DIP( D3DPT_LINELIST,FVF::F_L,
+	Device.DIP( D3DPT_LINELIST,FVF::F_L,
 		linebuffer3, LINE_DIVISION,		lineindices, LINE_DIVISION*2);
 
     if (bCross) DrawCross(p, radius,radius,radius, radius,radius,radius, c);
@@ -232,7 +232,7 @@ void DrawLine(const Fvector& p0, const Fvector& p1, DWORD c){
     FVF::L v[2];
     v[0].set(p0,c);
     v[1].set(p1,c);
-    UI->Device.DP(D3DPT_LINELIST, FVF::F_L, v, 2);
+    Device.DP(D3DPT_LINELIST, FVF::F_L, v, 2);
 }
 
 //----------------------------------------------------
@@ -245,54 +245,38 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
         p.add(C);
     	B[i].set(p,cc);
     }
-    
-	UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_SOLID);
-	UI->Device.DIP(D3DPT_LINELIST,FVF::F_L,
+
+	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
+	Device.DIP(D3DPT_LINELIST,FVF::F_L,
 		B, boxvertcount, (LPWORD)boxindices, boxindexcount);
-    UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
 }
 
 void DrawIdentBox(bool bWire, DWORD* c){
     DWORD cc=(c)?*c:identboxcolor;
 
-    DWORDVec colors;
-    colors.resize(identboxvertcount,cc);
-    D3DDRAWPRIMITIVESTRIDEDDATA dt;
-    dt.position.lpvData = (void*)identboxvert;
-    dt.position.dwStride = sizeof(Fvector);
-    dt.diffuse.lpvData = colors.begin();
-    dt.diffuse.dwStride = sizeof(DWORD);
+    for (int i=0; i<identboxvertcount; i++)
+    	identboxvert[i].color = cc;
 
     if (bWire){
-        UI->Device.DIPS(D3DPT_LINELIST, FVF::F_L,
-                        &dt, identboxvertcount, 
+        Device.DIP(D3DPT_LINELIST, FVF::F_L, identboxvert, identboxvertcount,
                         (WORD*)identboxindiceswire,identboxindexwirecount);
     }else{
-        UI->Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-                        &dt, identboxvertcount, 
+        Device.DIP(D3DPT_TRIANGLELIST, FVF::F_L, identboxvert, identboxvertcount,
                         (WORD*)identboxindices,identboxindexcount);
     }
 }
 
 void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c){
-    Fvector box[8]; CopyMemory(box,identboxvert,sizeof(Fvector)*8);
-    DWORDVec colors;
-    colors.resize(identboxvertcount,c);
-    D3DDRAWPRIMITIVESTRIDEDDATA dt;
-    dt.position.lpvData = (void*)box;
-    dt.position.dwStride = sizeof(Fvector);
-    dt.diffuse.lpvData = colors.begin();
-    dt.diffuse.dwStride = sizeof(DWORD);
+	FVF::L box[8]; CopyMemory(box,identboxvert,sizeof(FVF::L)*8);
 
-    for (int i=0; i<8; i++){ box[i].mul(Size); box[i].mul(2); box[i].add(offs);}
-    
+    for (int i=0; i<8; i++){FVF::L& v=box[i]; v.p.mul(Size); v.p.mul(2); v.p.add(offs); v.color=c;}
+
     if (bWire){
-        UI->Device.DIPS(D3DPT_LINELIST, FVF::F_L,
-                        &dt, identboxvertcount, 
+        Device.DIP(D3DPT_LINELIST, FVF::F_L, box, identboxvertcount,
                         (WORD*)identboxindiceswire,identboxindexwirecount);
     }else{
-        UI->Device.DIPS(D3DPT_TRIANGLELIST, FVF::F_L,
-                        &dt, identboxvertcount, 
+        Device.DIP(D3DPT_TRIANGLELIST, FVF::F_L, box, identboxvertcount,
                         (WORD*)identboxindices,identboxindexcount);
     }
 }
@@ -332,14 +316,14 @@ void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& ro
         crossbuffer[i].p.add(center);
     }
 
-    if (!bCull) UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
-    UI->Device.DP(D3DPT_TRIANGLEFAN,FVF::F_L, crossbuffer, 4);
-    if (!bCull) UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+    if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+    Device.DP(D3DPT_TRIANGLEFAN,FVF::F_L, crossbuffer, 4);
+    if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 
     if (bBorder){
         for (int i=0; i<4; i++) crossbuffer[i].color = cb;
         crossbuffer[4].set(crossbuffer[0].p,crossbuffer[0].color);
-        UI->Device.DP(D3DPT_LINESTRIP,FVF::F_L, crossbuffer, 5);
+        Device.DP(D3DPT_LINESTRIP,FVF::F_L, crossbuffer, 5);
     }
 }
 //----------------------------------------------------
@@ -352,16 +336,16 @@ void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2,
     crossbuffer[3].p.y -= szy1;
     crossbuffer[4].p.z += szz2;
     crossbuffer[5].p.z -= szz1;
-    UI->Device.DP(D3DPT_LINELIST,FVF::F_L, crossbuffer, 6);
+    Device.DP(D3DPT_LINELIST,FVF::F_L, crossbuffer, 6);
     if (bRot45){
     	Fmatrix M;
         M.setHPB(PI_DIV_4,PI_DIV_4,PI_DIV_4);
-	    for(int i=0;i<6;i++){ 
+	    for(int i=0;i<6;i++){
         	crossbuffer[i].p.sub(p);
         	M.transform_dir(crossbuffer[i].p);
         	crossbuffer[i].p.add(p);
         }
-	    UI->Device.DP(D3DPT_LINELIST,FVF::F_L, crossbuffer, 6);
+	    Device.DP(D3DPT_LINELIST,FVF::F_L, crossbuffer, 6);
     }
 }
 
@@ -412,11 +396,11 @@ void DrawQuadPlane( Fvector *points, bool selected, float alpha ){
 		verts2[i].z = points[i].z;
 	}
 
-	UI->Device.DIP(
+	Device.DIP(
 		D3DPT_TRIANGLELIST,FVF::F_L,
 		verts1, 4, (LPWORD)planeindices2, planeindexcount2);
 
-	UI->Device.DIP(
+	Device.DIP(
 		D3DPT_LINELIST,FVF::F_L,
 		verts2, 4, (LPWORD)planeindices1, planeindexcount1);
 }

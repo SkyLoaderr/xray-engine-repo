@@ -27,7 +27,7 @@ public:
 
 class TUI_ControlDPatchAdd: public TUI_CustomControl{
     void GenerateDPatch();
-	TfraDPatch* fraDPatch;            
+	TfraDPatch* fraDPatch;
 public:
     TUI_ControlDPatchAdd(int st, int act, TUI_CustomTools* parent);
     virtual ~TUI_ControlDPatchAdd(){;}

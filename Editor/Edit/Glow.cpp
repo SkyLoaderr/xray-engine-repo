@@ -38,12 +38,12 @@ void CGlow::Construct(){
 }
 
 CGlow::~CGlow(){
-    if (m_GShader) UI->Device.Shader.Delete(m_GShader);
+    if (m_GShader) Device.Shader.Delete(m_GShader);
 }
 
 void CGlow::Compile(){
-	if (m_GShader) UI->Device.Shader.Delete(m_GShader);
-	if (!m_TexNames.empty()&&!m_ShaderName.IsEmpty()) m_GShader = UI->Device.Shader.Create(m_ShaderName.c_str(),m_TexNames);
+	if (m_GShader) Device.Shader.Delete(m_GShader);
+	if (!m_TexNames.empty()&&!m_ShaderName.IsEmpty()) m_GShader = Device.Shader.Create(m_ShaderName.c_str(),m_TexNames);
 }
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box ){
@@ -58,27 +58,27 @@ void CGlow::Render( Fmatrix& parent, ERenderPriority flag ){
     	// определяем параметры для RayPick
     	Fvector D;
         SRayPickInfo pinf;
-        D.sub(UI->Device.m_Camera.GetPosition(),m_Position); 
+        D.sub(Device.m_Camera.GetPosition(),m_Position);
         pinf.rp_inf.range = D.magnitude();
         if (pinf.rp_inf.range) D.div(pinf.rp_inf.range);
         // тестируем находится ли во фрустуме glow
-		UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-        if (UI->Device.m_Frustum.testSphere(m_Position,m_Range)){
+		Device.SetTransform(D3DTS_WORLD,precalc_identity);
+        if (Device.m_Frustum.testSphere(m_Position,m_Range)){
         	// рендерим Glow
 //        	if (!Scene->RayPick(m_Position,D,OBJCLASS_EDITOBJECT,&pinf)){
-                if (m_GShader){	UI->Device.Shader.Set(m_GShader);
-                }else{			UI->Device.Shader.Set(UI->Device.m_WireShader);}
+                if (m_GShader){	Device.Shader.Set(m_GShader);
+                }else{			Device.Shader.Set(Device.m_WireShader);}
                 m_RenderSprite.Render(m_Position,m_Range);
 //			}else{
                 // рендерим bounding sphere
 //				Fcolor clr; clr.set(0,0.85f,0,0);
-//        		UI->Device.Shader.Set(UI->Device.m_WireShader);
+//        		Device.Shader.Set(Device.m_WireShader);
 //          	DU::DrawLineSphere( m_Position, m_Range, clr, false );
 //			}
             if( Selected() ){
             	Fbox bb; GetBox(bb);
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                UI->Device.Shader.Set(UI->Device.m_WireShader);
+                Device.Shader.Set(Device.m_WireShader);
                 DU::DrawSelectionBox(bb,&clr);
             }
         }
@@ -111,7 +111,7 @@ bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix
 
 void CGlow::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -121,7 +121,7 @@ void CGlow::Move( Fvector& amount ){
 
 void CGlow::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -139,10 +139,10 @@ bool CGlow::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(GLOW_CHUNK_VERSION,&version));
     if( version!=GLOW_VERSION ){
-        Log->DlgMsg( mtError, "CGlow: Unsupported version.");
+        ELog.DlgMsg( mtError, "CGlow: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     if (F.FindChunk(GLOW_CHUNK_SHADER)) F.RstringZ (sh_name);

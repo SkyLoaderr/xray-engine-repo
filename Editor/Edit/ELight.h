@@ -66,7 +66,7 @@ public:
 
     virtual void 	SetPosition	(Fvector& pos){m_D3D.position.set(pos);}
     virtual void 	SetRotate	(Fvector& rot){vRotate.set(rot.x,rot.y,0); UpdateTransform();}
-    
+
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);

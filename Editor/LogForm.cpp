@@ -35,7 +35,7 @@ void __fastcall TfrmLog::HideLog(){
 
 void __fastcall TfrmLog::ebClearClick(TObject *Sender)
 {
-	lbLog->Items->Clear();		
+	lbLog->Items->Clear();
 }
 //---------------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ void __fastcall TfrmLog::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmLog::ebClearSelectedClick(TObject *Sender)
 {
-	for (int i = 0; i < lbLog->Items->Count; i++){ 
+	for (int i = 0; i < lbLog->Items->Count; i++){
     	if (lbLog->Selected[i]){
         	lbLog->Items->Delete(i);
             i--;

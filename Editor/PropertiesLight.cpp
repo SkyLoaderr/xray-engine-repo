@@ -222,7 +222,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
     	SaveCurrentKey();
 	    if (m_CurLight->m_Data.size()<2){
         	bResult = false;
-            Log->DlgMsg(mtError,"Not enough keys. (2-minimum)");
+            ELog.DlgMsg(mtError,"Not enough keys. (2-minimum)");
     	}else{
             m_CurLight->Update();
         }

@@ -74,7 +74,7 @@ bool SceneBuilder::LightenObjects(){
 	UI->ProgressEnd();
 	// unload texture
     UI->Command(COMMAND_REFRESH_TEXTURES);
-    
+
     return true;
 }
 
@@ -113,7 +113,7 @@ bool SceneBuilder::ResolveReferences(){
     for(;_F!=_E;_F++){
         if (NeedAbort()) break; // break building
         CEditObject *obj = (CEditObject*)(*_F);
-    	Log->Msg(mtInformation,obj->GetName());
+    	ELog.Msg(mtInformation,obj->GetName());
         if( !obj->IsDynamic() )  obj->ResolveReference();
         if( !obj->IsReference() )  obj->TranslateToWorld();
 		UI->ProgressInc();
@@ -152,7 +152,7 @@ bool SceneBuilder::ShiftLevel(){
   	UI->ProgressEnd();
 
 	return true;
-}                                     
+}
 
 
 bool SceneBuilder::RenumerateSectors(){

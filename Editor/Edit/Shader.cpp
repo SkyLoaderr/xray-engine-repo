@@ -15,7 +15,7 @@ CShaderLibrary* SHLib;
 
 SH_ShaderDef* CShaderLibrary::AddShader(AnsiString& name, SH_ShaderDef* src){
 	if (src)m_Shaders.push_back(*src);
-	else{ 	
+	else{
     	m_Shaders.push_back(SH_ShaderDef());
 	    m_Shaders.back().Init();
     }
@@ -97,8 +97,8 @@ bool CShaderLibrary::Load(const char* nm){
 void CShaderLibrary::Reload(const char* nm){
 	Clear();
     Load(nm);
-	Log->Msg( mtInformation, "Shader Library was succesfully reloaded." );
-    UI->Device.ReloadShaders();
+	ELog.Msg( mtInformation, "Shader Library was succesfully reloaded." );
+    Device.ReloadShaders();
 }
 //----------------------------------------------------
 
@@ -106,7 +106,7 @@ void CShaderLibrary::SaveLibrary(const char* nm){
   	AnsiString fn=nm;
     FS.m_GameRoot.Update(fn);
     shLibrary_Save(fn.c_str(), m_Shaders);
-    UI->Device.ReloadShaders();
+    Device.ReloadShaders();
 }
 //----------------------------------------------------
 
@@ -114,7 +114,7 @@ void CShaderLibrary::Backup(){
   	AnsiString fn=SHLIB_FILENAME;
     FS.m_GameRoot.Update(fn);
     FS.BackupFile(fn);
-//	UI->Device.ReloadShaders();
+//	Device.ReloadShaders();
 //	SaveLibrary(SHLIB_BACKUPNAME);
 }
 

@@ -51,7 +51,7 @@ void ETM::Clear(){
 }
 
 void ETM::BindNone(){
-	UI->Device.d3d()->SetTexture( 0, 0 );
+	Device.d3d()->SetTexture( 0, 0 );
 	m_Current = 0;
 }
 

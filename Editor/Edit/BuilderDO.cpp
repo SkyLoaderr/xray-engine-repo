@@ -39,11 +39,11 @@ bool SceneBuilder::BuildObjectDO( CFS_Base& F, CEditObject *O, const char* name,
 	CEditObject* obj = (O->IsReference())?O->GetRef():O;
 
     if(obj->SurfaceCount()!=1){
-    	Log->DlgMsg(mtError,"Object must contain 1 material.");
+    	ELog.DlgMsg(mtError,"Object must contain 1 material.");
     	return false;
     }
 	if(obj->MeshCount()==0){
-    	Log->DlgMsg(mtError,"Object must contain 1 mesh.");
+    	ELog.DlgMsg(mtError,"Object must contain 1 mesh.");
     	return false;
     }
 
@@ -55,7 +55,7 @@ bool SceneBuilder::BuildObjectDO( CFS_Base& F, CEditObject *O, const char* name,
     b_material& M = l_materials[0];
 
 	if(M.dwTexCount!=1){
-    	Log->DlgMsg(mtError,"Object must contain 1 texture.");
+    	ELog.DlgMsg(mtError,"Object must contain 1 texture.");
         ResetStructures();
     	return false;
     }

@@ -25,7 +25,7 @@ bool ETextureCore::GetBMPParams(){
 
 	DWORD datasize = filelength( hfile );
 	if( datasize <= (sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)) ){
-		Log->DlgMsg( mtError, "Error: '%s' seems to be invalid !", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: '%s' seems to be invalid !", name.c_str() );
 		_close( hfile );
 		return false;
     }
@@ -37,13 +37,13 @@ bool ETextureCore::GetBMPParams(){
 	_read( hfile, &bi, sizeof(bi) );
 
 	if( bf.bfType != 0x4D42 ){
-		Log->DlgMsg( mtError, "Error: the '%s' may not be of BMP format ?!", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: the '%s' may not be of BMP format ?!", name.c_str() );
 		_close( hfile );
 		return false;
     }
 
 	if( bi.biCompression != BI_RGB ){
-		Log->DlgMsg( mtError, "Error: the '%s' is compressed (unsupported now) !", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: the '%s' is compressed (unsupported now) !", name.c_str() );
 		_close( hfile );
 		return false;
     }
@@ -51,7 +51,7 @@ bool ETextureCore::GetBMPParams(){
 	m_Width = bi.biWidth;
 	m_Height = bi.biHeight;
     if (!btwIsPow2(m_Width)||!btwIsPow2(m_Height)){
-		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		ELog.DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
 		_close( hfile );
         return false;
     }
@@ -73,7 +73,7 @@ bool ETextureCore::LoadBMP(){
 
 	DWORD datasize = filelength( hfile );
 	if( datasize <= (sizeof(BITMAPFILEHEADER)+sizeof(BITMAPINFOHEADER)) ){
-		Log->DlgMsg( mtError, "Error: '%s' seems to be invalid !", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: '%s' seems to be invalid !", name.c_str() );
 		_close( hfile );
 		return false; }
 
@@ -84,19 +84,19 @@ bool ETextureCore::LoadBMP(){
 	_read( hfile, &bi, sizeof(bi) );
 
 	if( bf.bfType != 0x4D42 ){
-		Log->DlgMsg( mtError, "Error: the '%s' may not be of BMP format ?!", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: the '%s' may not be of BMP format ?!", name.c_str() );
 		_close( hfile );
 		return false; }
 
 	if( bi.biCompression != BI_RGB ){
-		Log->DlgMsg( mtError, "Error: the '%s' is compressed (unsupported now) !", name.c_str() );
+		ELog.DlgMsg( mtError, "Error: the '%s' is compressed (unsupported now) !", name.c_str() );
 		_close( hfile );
 		return false; }
 
 	m_Width = bi.biWidth;
 	m_Height = bi.biHeight;
     if (!btwIsPow2(m_Width)||!btwIsPow2(m_Height)){
-		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		ELog.DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
 		_close( hfile );
         return false;
     }
@@ -160,14 +160,14 @@ bool ETextureCore::GetTGAParams(){
     if (!TGA.Length()) return false;
 	TGA.Read(&hdr,sizeof(TGAHeader));
     if (!((hdr.pixsize==24)||(hdr.pixsize==32))){
-        Log->DlgMsg(mtError, "'%s' Unsupported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",name.c_str());
+        ELog.DlgMsg(mtError, "'%s' Unsupported texture format!\nPlease convert to 24 bit or 32(if texture contain alpha channel).",name.c_str());
         return false;
     }
 
 //	VERIFY((hdr.imgtype==2)||(hdr.imgtype==10));
 	VERIFY((hdr.pixsize==24)||(hdr.pixsize==32));	// 24bpp/32bpp
     if (!btwIsPow2(hdr.width)||!btwIsPow2(hdr.height)){
-		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
+		ELog.DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",name.c_str());
         return false;
     }
 
@@ -202,7 +202,7 @@ bool ETextureCore::LoadTGA( )
 //	VERIFY((hdr.imgtype==2)||(hdr.imgtype==10));
 	VERIFY((hdr.pixsize==24)||(hdr.pixsize==32));	// 24bpp/32bpp
     if (!btwIsPow2(hdr.width)||!btwIsPow2(hdr.height)){
-		Log->DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",m_ShortName);
+		ELog.DlgMsg(mtError,"'%s' Unsupported texture format!\nPlease convert width and height to size power 2.",m_ShortName);
         return false;
     }
 
@@ -268,7 +268,7 @@ bool ETextureCore::SaveAsTGA(LPCSTR filename){
 	VERIFY( filename );
 
     if (!Valid()) return false;
-    
+
     // time check
     AnsiString 	src_name;
     src_name	= m_LoadName;
@@ -348,8 +348,8 @@ bool MakeTGA( DWORDVec& pixels, DWORD w, DWORD h, bool bAlpha, LPCSTR filename )
     return true;
 }
 
-extern "C" __declspec(dllexport) 
-bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch, 
+extern "C" __declspec(dllexport)
+bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 				 STextureParams* options, DWORD depth);
 
 //--------------------------------------------------------------------------------------------------

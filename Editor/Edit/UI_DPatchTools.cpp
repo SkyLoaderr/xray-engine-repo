@@ -110,11 +110,11 @@ bool __fastcall TUI_ControlDPatchAdd::Start(TShiftState Shift)
     SRayPickInfo pinf;
     bool bPickObject, bPickGround;
     if (fraDPatch->sTexture=="..."){
-        Log->DlgMsg(mtError, "Link texture before add DPatch!");
+        ELog.DlgMsg(mtError, "Link texture before add DPatch!");
         return false;
     }
     if (fraDPatch->sShader=="..."){
-        Log->DlgMsg(mtError, "Set shader before add DPatch!");
+        ELog.DlgMsg(mtError, "Set shader before add DPatch!");
         return false;
     }
     bPickObject = !!Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, true);

@@ -39,7 +39,7 @@ void st_LevelOptions::WriteToLTX(CInifile* pIni){
 	AnsiString temp, ln;
 	for (EnvIt e_it=m_Envs.begin(); e_it!=m_Envs.end(); e_it++){
     	ln.sprintf("env%d",e_it-m_Envs.begin());
-    	temp.sprintf("%.3f,%.3f,%.3f,  %.3f,%.3f,%.3f,  %.3f,  %.3f,  %.3f,%.3f,%.3f,%.3f",	
+    	temp.sprintf("%.3f,%.3f,%.3f,  %.3f,%.3f,%.3f,  %.3f,  %.3f,  %.3f,%.3f,%.3f,%.3f",
         			e_it->m_AmbColor.r,e_it->m_AmbColor.g,e_it->m_AmbColor.b,
         			e_it->m_FogColor.r,e_it->m_FogColor.g,e_it->m_FogColor.b,
                     e_it->m_Fogness, e_it->m_ViewDist,
@@ -117,14 +117,14 @@ EScene::~EScene(){
 void EScene::Init(){
 	m_LastAvailObject = 0;
     m_LevelOp.Reset();
-	Log->Msg( mtInformation, "Scene: initialized" );
+	ELog.Msg( mtInformation, "Scene: initialized" );
 	m_Valid = true;
     m_Modified = false;
 	UI->Command(COMMAND_UPDATE_CAPTION);
 }
 
 void EScene::Clear(){
-	Log->Msg( mtInformation, "Scene: cleared" );
+	ELog.Msg( mtInformation, "Scene: cleared" );
 	m_LastAvailObject = 0;
 	m_Valid = false;
     _DELETE(m_DetailPatches);
@@ -149,7 +149,7 @@ void EScene::RemoveObject( SceneObject* object, bool bUndo ){
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
     // remove object from Snap List if exists
-    if ((object->ClassID()==OBJCLASS_EDITOBJECT)&&!m_SnapObjects.empty()) 
+    if ((object->ClassID()==OBJCLASS_EDITOBJECT)&&!m_SnapObjects.empty())
     	m_SnapObjects.remove(object);
     // remove from scene list
     lst.remove( object );
@@ -180,7 +180,7 @@ int EScene::FrustumSelect( bool flag, EObjClass classfilter ){
     if (!UI->SelectionFrustum(frustum)) return 0;
 
 	if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)) return m_DetailObjects->FrustumSelect(flag);
-    
+
 	int count = 0;
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -326,7 +326,7 @@ int EScene::RemoveSelection( EObjClass classfilter ){
             	}else{
                 	_F++;
                 }
-/*            
+/*
                 if( (*_F)->Selected() && !(*_F)->Locked() ){
                     count ++;
                     _DELETE((*_F));
@@ -420,14 +420,14 @@ void __fastcall object_AlphaLast(EScene::mapObject_Node *N)
 //----------------------------------------------------
 
 #define RENDER_CLASS_NORMAL(C)\
- 	UI->Device.Shader.Set(UI->Device.m_WireShader);\
-    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);\
+ 	Device.Shader.Set(Device.m_WireShader);\
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpNormal);
 
 #define RENDER_CLASS_ALPHA(C)\
- 	UI->Device.Shader.Set(UI->Device.m_SelectionShader);\
-    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);\
+ 	Device.Shader.Set(Device.m_SelectionShader);\
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);\
     _E=LastObj(C); _F=FirstObj(C);\
     for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
 
@@ -443,8 +443,8 @@ void EScene::Render( Fmatrix *_Camera ){
 	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
     	Fmatrix mat;
         st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
-        mat.translate(UI->Device.m_Camera.GetPosition());
-		UI->Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
+        mat.translate(Device.m_Camera.GetPosition());
+		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
     	m_SkyDome->RenderSingle(mat);
     }
 
@@ -460,14 +460,14 @@ void EScene::Render( Fmatrix *_Camera ){
 
 // draw objects
 	{
-    	const Fvector* cam_pos=&UI->Device.m_Camera.GetPosition();
+    	const Fvector& cam_pos=Device.m_Camera.GetPosition();
         ObjectList& lst = ListObj(OBJCLASS_EDITOBJECT);
         ObjectIt _E=lst.end(); _F=lst.begin();
         for(;_F!=_E;_F++){
             if( (*_F)->Visible()&& (*_F)->IsRender( precalc_identity ) ){
                 CEditObject* _pT = (CEditObject*)(*_F);
                 Fmatrix m; _pT->GetFullTransformToWorld(m);
-                float distSQ = cam_pos->distance_to_sqr(m.c);
+                float distSQ = cam_pos.distance_to_sqr(m.c);
                 mapRenderObjects.insertInAnyWay(distSQ,_pT);
             }
         }
@@ -494,7 +494,7 @@ void EScene::Render( Fmatrix *_Camera ){
     m_DetailObjects->Render(rpAlphaLast);
 
 	// draw PS
-    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);
     _F = FirstObj(OBJCLASS_PS);
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
@@ -518,12 +518,12 @@ void EScene::UpdateSkydome(){
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
         CLibObject* LO = Lib->SearchObject(m_LevelOp.m_SkydomeObjName.c_str());
         if (!LO){
-        	Log->DlgMsg(mtError,"Skydome %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
+        	ELog.DlgMsg(mtError,"Skydome %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
         	return ;
         }
         CEditObject* O = LO->GetReference();
         if (!O->IsDynamic()){
-        	Log->DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
+        	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         	return ;
         }
         if (O){
@@ -589,7 +589,7 @@ bool EScene::IsModified(){
 
 bool EScene::IfModified(){
     if (m_Modified && (ObjCount()||UI->GetEditFileName()[0])){
-        int mr = Log->DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
+        int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
         case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; else m_Modified = false; break;
         case mrNo: m_Modified = false; break;
@@ -608,49 +608,49 @@ void EScene::Unload(){
 bool EScene::Validate(bool bNeedMsg, bool bTestPortal){
 	if (bTestPortal){
         if (ObjCount(OBJCLASS_SECTOR)<2){
-            Log->DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
+            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Sector'.");
             return false;
         }
         if (ObjCount(OBJCLASS_PORTAL)==0){
-            Log->DlgMsg(mtError,"*ERROR: Can't find 'Portal'.");
+            ELog.DlgMsg(mtError,"*ERROR: Can't find 'Portal'.");
             return false;
         }
 		if (!PortalUtils.Validate(false)){
-			Log->DlgMsg(mtError,"*ERROR: Scene has non associated face!");
+			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
 	    	return false;
     	}
     }
     if (ObjCount(OBJCLASS_RPOINT)==0){
-    	Log->DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");
+    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Respawn Point'.\nPlease add at least one.");
         return false;
     }
     if (ObjCount(OBJCLASS_LIGHT)==0){
-    	Log->DlgMsg(mtError,"*ERROR: Can't find 'Light'.\nPlease add at least one.");
+    	ELog.DlgMsg(mtError,"*ERROR: Can't find 'Light'.\nPlease add at least one.");
         return false;
     }
 
 //	if(!Scene->FindObjectByName(DEFAULT_SECTOR_NAME,OBJCLASS_SECTOR)){
-//    	Log->DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
+//    	ELog.DlgMsg(mtError,"*ERROR: Compute portals before compiling.");
 //        return false;
 //	}
     if (ObjCount(OBJCLASS_OCCLUDER)){
     	ObjectList& lst = ListObj(OBJCLASS_OCCLUDER);
     	for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
         	if (!(*it)->Valid()){
-	    		Log->DlgMsg(mtError,"*ERROR: Can't found 'PClipper'.\nPlease add at least one.");
+	    		ELog.DlgMsg(mtError,"*ERROR: Can't found 'PClipper'.\nPlease add at least one.");
     	    	return false;
             }
     }
 //	if (ObjCount(OBJCLASS_GLOW)==0){
-//    	Log->DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
+//    	ELog.DlgMsg(mtError,"*ERROR: Can't found 'Glow'.\nPlease add at least one.");
 //		return false;
 //	}
     if (FindDuplicateName()){
-    	Log->DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
+    	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
         return false;
     }
     if (bNeedMsg)
-    	Log->DlgMsg(mtInformation,"Validation OK!");
+    	ELog.DlgMsg(mtInformation,"Validation OK!");
     return true;
 }
 
@@ -764,8 +764,8 @@ void EScene::ZoomExtents( BOOL bSel ){
             if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
 				if ((*_F)->GetBox(bb)) if (bFirstInit){ BB.set(bb); bFirstInit=false; }else{ BB.merge(bb);}
     }
-    if (!bFirstInit) UI->Device.m_Camera.ZoomExtents(BB);
-    else Log->Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
+    if (!bFirstInit) Device.m_Camera.ZoomExtents(BB);
+    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
 }
 //--------------------------------------------------------------------------------------------------
 void EScene::UpdateGroups(){
@@ -785,11 +785,11 @@ int EScene::GroupGetEmptyIndex(){
 }
 //--------------------------------------------------------------------------------------------------
 bool EScene::GroupAddItem(int idx, SceneObject* O, bool bLoadMode){
-	if (bLoadMode||O->Group(idx)){	
+	if (bLoadMode||O->Group(idx)){
     	m_Groups[idx].objects.push_back(O);
         return true;
     }else{
-        Log->DlgMsg(mtError,"Object '%s' already in %d group.",O->GetName(),O->GetGroupIndex());
+        ELog.DlgMsg(mtError,"Object '%s' already in %d group.",O->GetName(),O->GetGroupIndex());
         return false;
     }
 }
@@ -818,8 +818,8 @@ int EScene::GroupSelect(int idx, bool flag, bool bClearPrevSel){
 }
 //--------------------------------------------------------------------------------------------------
 void EScene::GroupCreate(bool bMsg){
-	if (fraLeftBar->ebIgnoreGroup->Down){ 
-		if (bMsg) Log->DlgMsg(mtError,"Ignore groups checked. Group can't created.");
+	if (fraLeftBar->ebIgnoreGroup->Down){
+		if (bMsg) ELog.DlgMsg(mtError,"Ignore groups checked. Group can't created.");
     	return;
 	}
     EObjClass cls = UI->CurrentClassID();
@@ -828,8 +828,8 @@ void EScene::GroupCreate(bool bMsg){
         ObjectList& lst = (*it).second;
         if ((cls==OBJCLASS_DUMMY)||(cls==it->first)){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if ((*_F)->Visible()&&(*_F)->Selected()&&(*_F)->IsInGroup()){ 
-                    if (bMsg) Log->DlgMsg(mtError,"Object '%s' already in group#%d",(*_F)->GetName(),(*_F)->GetGroupIndex());
+                if ((*_F)->Visible()&&(*_F)->Selected()&&(*_F)->IsInGroup()){
+                    if (bMsg) ELog.DlgMsg(mtError,"Object '%s' already in group#%d",(*_F)->GetName(),(*_F)->GetGroupIndex());
                     return;
                 }
             }
@@ -850,12 +850,12 @@ void EScene::GroupCreate(bool bMsg){
             }
         }
 	}
-	if (bMsg) Log->DlgMsg(mtInformation,"Group#%d successfully created.\nContain %d object(s)",idx,count);
+	if (bMsg) ELog.DlgMsg(mtInformation,"Group#%d successfully created.\nContain %d object(s)",idx,count);
 }
 //--------------------------------------------------------------------------------------------------
 void EScene::GroupDestroy(){
-	if (fraLeftBar->ebIgnoreGroup->Down){ 
-		Log->DlgMsg(mtError,"'Ignore groups' checked. Group can't destroy.");
+	if (fraLeftBar->ebIgnoreGroup->Down){
+		ELog.DlgMsg(mtError,"'Ignore groups' checked. Group can't destroy.");
     	return;
     }
     set<int> relevant;
@@ -869,14 +869,14 @@ void EScene::GroupDestroy(){
         for (set<int>::iterator i_it=relevant.begin(); i_it!=relevant.end(); i_it++){
 	    	for(ObjectIt _F = m_Groups[*i_it].objects.begin();_F!=m_Groups[*i_it].objects.end();_F++) (*_F)->Ungroup();
             m_Groups.erase(*i_it);
-			Log->DlgMsg(mtInformation,"Group#%d destroyed.",*i_it);
+			ELog.DlgMsg(mtInformation,"Group#%d destroyed.",*i_it);
         }
     }
 }
 //--------------------------------------------------------------------------------------------------
 void EScene::GroupSave(){
-	if (fraLeftBar->ebIgnoreGroup->Down){ 
-		Log->DlgMsg(mtError,"'Ignore groups' checked. Group can't be save.");
+	if (fraLeftBar->ebIgnoreGroup->Down){
+		ELog.DlgMsg(mtError,"'Ignore groups' checked. Group can't be save.");
     	return;
     }
     set<int> relevant;
@@ -887,11 +887,11 @@ void EScene::GroupSave(){
                 relevant.insert((*_F)->GetGroupIndex());
     }
     if (relevant.empty()){
-		Log->DlgMsg(mtError,"Select group before save.");
+		ELog.DlgMsg(mtError,"Select group before save.");
     	return;
     }
     if (relevant.size()>1){
-		Log->DlgMsg(mtError,"Must selected 1 group only.");
+		ELog.DlgMsg(mtError,"Must selected 1 group only.");
     	return;
     }
 	AnsiString fn;
@@ -903,8 +903,8 @@ void EScene::GroupSave(){
 void EScene::GroupUpdateBox(int idx){
 	VERIFY(m_Groups.find(idx)!=m_Groups.end());
 	st_GroupItem& gi = m_Groups[idx];
-    if (gi.dwUpdateFrame==UI->Device.m_Statistic.dwTotalFrame) return;
-    
+    if (gi.dwUpdateFrame==Device.m_Statistic.dwTotalFrame) return;
+
     ObjectList& lst = gi.objects;
 
     ObjectIt i = lst.begin();
@@ -917,7 +917,7 @@ void EScene::GroupUpdateBox(int idx){
             gi.box.modify( bb.max );
         }
     }
-    gi.dwUpdateFrame=UI->Device.m_Statistic.dwTotalFrame;
+    gi.dwUpdateFrame=Device.m_Statistic.dwTotalFrame;
 }
 
 st_GroupItem& EScene::GetGroupItem(int idx){
@@ -934,9 +934,9 @@ void EScene::UngroupAll(){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
                 if ((*_F)->IsInGroup()) (*_F)->Ungroup();
         }
-		Log->DlgMsg(mtInformation,"'%d' group(s) destroyed.",grp_cnt);
+		ELog.DlgMsg(mtInformation,"'%d' group(s) destroyed.",grp_cnt);
     }else{
-		Log->DlgMsg(mtInformation,"Can't find any group in scene.");
+		ELog.DlgMsg(mtInformation,"Can't find any group in scene.");
     }
 }
 

@@ -25,7 +25,7 @@ public:
 	virtual         ~CGlow      ();
 
     void			Compile		();
-    
+
 	virtual void    Render      ( Fmatrix& parent, ERenderPriority flag );
 	virtual bool    RayPick     ( float& distance,	Fvector& start,	Fvector& direction,
 		                          Fmatrix& parent, SRayPickInfo* pinf = NULL );

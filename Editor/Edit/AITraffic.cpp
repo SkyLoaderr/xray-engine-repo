@@ -78,7 +78,7 @@ void CAITPoint::DrawLinks(Fcolor& c){
 
 void CAITPoint::Render( Fmatrix& parent, ERenderPriority flag ){
     if (flag==rpNormal){
-        if (UI->Device.m_Frustum.testSphere(m_Position,AITPOINT_SIZE)){
+        if (Device.m_Frustum.testSphere(m_Position,AITPOINT_SIZE)){
             Fcolor c1,c2;
             c1.set(0.f,1.f,0.f,1.f);
             c2.set(1.f,1.f,0.f,1.f);
@@ -122,7 +122,7 @@ bool CAITPoint::RayPick(float& distance, Fvector& S, Fvector& D, Fmatrix& parent
 
 void CAITPoint::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -132,7 +132,7 @@ void CAITPoint::Move( Fvector& amount ){
 
 void CAITPoint::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -151,10 +151,10 @@ bool CAITPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(AITPOINT_CHUNK_VERSION,&version));
     if( version!=AITPOINT_VERSION ){
-        Log->DlgMsg( mtError, "CAITPoint: Unsupported version.");
+        ELog.DlgMsg( mtError, "CAITPoint: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     R_ASSERT(F.FindChunk(AITPOINT_CHUNK_POINT));

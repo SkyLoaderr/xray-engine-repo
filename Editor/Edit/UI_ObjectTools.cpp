@@ -46,7 +46,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
 	Fvector p;
 	if(!UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)) return false;
     CLibObject* LO = Lib->GetCurrentObject();
-    if(!LO){ 
+    if(!LO){
     	fraObject->ebCurObjClick(0);
 	    LO = Lib->GetCurrentObject();
     }

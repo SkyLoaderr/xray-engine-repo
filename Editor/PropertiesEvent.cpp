@@ -120,13 +120,13 @@ int __fastcall TfrmPropertiesEvent::Run(ObjectList* pObjects, bool& bChange)
 
 void __fastcall TfrmPropertiesEvent::cbTargetClassChange(TObject *Sender)
 {
-	OnModified(Sender);	
+	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEvent::edOnEnterChange(TObject *Sender)
 {
-	OnModified(Sender);	
+	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 

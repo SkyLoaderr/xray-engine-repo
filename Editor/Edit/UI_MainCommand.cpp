@@ -24,7 +24,7 @@ bool TUI::Command( int _Command, int p1 ){
 	char filebuffer[MAX_PATH]="";
 
     bool bRes = true;
-    
+
 	switch( _Command ){
 
 	case COMMAND_EXIT:{
@@ -53,7 +53,7 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	        frmObjectListShow();
         }else{
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
         }
         break;
 	case COMMAND_CHANGE_TARGET:
@@ -65,7 +65,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_LIBRARY_EDITOR:
         if (Scene->ObjCount()||(GetEState()!=esEditScene)){
         	if (GetEState()==esEditLibrary)	frmEditLibraryEditLibrary();
-            else							Log->DlgMsg(mtError, "Scene must be empty before editing library!");
+            else							ELog.DlgMsg(mtError, "Scene must be empty before editing library!");
         }else{
             frmEditLibraryEditLibrary();
         }
@@ -73,7 +73,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_SHADER_EDITOR:
         if (Scene->ObjCount()||(GetEState()!=esEditScene)){
         	if (GetEState()==esEditShaders)	frmEditShadersEditShaders();
-            else							Log->DlgMsg(mtError, "Scene must be empty before editing shaders!");
+            else							ELog.DlgMsg(mtError, "Scene must be empty before editing shaders!");
         }else{
 			frmEditShadersEditShaders();
         }
@@ -81,7 +81,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_PARTICLE_EDITOR:
         if (Scene->ObjCount()||(GetEState()!=esEditScene)){
         	if (GetEState()==esEditParticles)	TfrmEditParticles::ShowEditor();
-            else								Log->DlgMsg(mtError, "Scene must be empty before editing particles!");
+            else								ELog.DlgMsg(mtError, "Scene must be empty before editing particles!");
         }else{
 			TfrmEditParticles::ShowEditor();
         }
@@ -89,7 +89,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_IMAGE_EDITOR:
         if (Scene->ObjCount()||(GetEState()!=esEditScene)){
         	if (GetEState()==esEditImages)	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
-            else							Log->DlgMsg(mtError, "Scene must be empty before editing images!");
+            else							ELog.DlgMsg(mtError, "Scene must be empty before editing images!");
         }else{
 			TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
         }
@@ -123,7 +123,7 @@ bool TUI::Command( int _Command, int p1 ){
                 Command(COMMAND_CHANGE_ACTION,eaSelect);
 			}
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -132,7 +132,7 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
         	UI->Command(COMMAND_LOAD,(int)m_LastFileName);
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -150,7 +150,7 @@ bool TUI::Command( int _Command, int p1 ){
 			}else{
 				bRes = Command( COMMAND_SAVEAS ); }
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -164,10 +164,10 @@ bool TUI::Command( int _Command, int p1 ){
 				strcpy(m_LastFileName,filebuffer);
 	            EndEState();
 			    bRes = UI->Command(COMMAND_UPDATE_CAPTION);
-			}else 
+			}else
             	bRes = false;
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -188,7 +188,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Command(COMMAND_CHANGE_ACTION,eaSelect);
 		    Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -197,7 +197,7 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
             Scene->Validate(true,false);
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -209,7 +209,7 @@ bool TUI::Command( int _Command, int p1 ){
     case COMMAND_UNLOAD_LIBMESHES:
     	Lib->UnloadMeshes();
     	break;
-        
+
     case COMMAND_RELOAD_LIBRARY:
     	Lib->ReloadLibrary();
     	break;
@@ -227,7 +227,7 @@ bool TUI::Command( int _Command, int p1 ){
             frmMain->miPaste->Enabled = true;
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -240,7 +240,7 @@ bool TUI::Command( int _Command, int p1 ){
             fraLeftBar->miPaste->Enabled = true;
             frmMain->miPaste->Enabled = true;
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -252,29 +252,29 @@ bool TUI::Command( int _Command, int p1 ){
         	EndEState();
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
 
 	case COMMAND_UNDO:
 		if( !Scene->locked() ){
-			if( !Scene->Undo() ) Log->DlgMsg( mtInformation, "Undo buffer empty" );
+			if( !Scene->Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
             m_Tools->Reset();
 		    UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
 
 	case COMMAND_REDO:
 		if( !Scene->locked() ){
-			if( !Scene->Redo() ) Log->DlgMsg( mtInformation, "Redo buffer empty" );
+			if( !Scene->Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
             m_Tools->Reset();
 		    UI->Command(COMMAND_CHANGE_ACTION, eaSelect);
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -284,7 +284,7 @@ bool TUI::Command( int _Command, int p1 ){
             frmScenePropertiesRun(&Scene->m_BuildParams,false);
             Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -295,18 +295,18 @@ bool TUI::Command( int _Command, int p1 ){
                 if (frmScenePropertiesRun(&Scene->m_BuildParams,true)==mrOk)
                     Builder->Execute( );
         }else{
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
-        
+
 	case COMMAND_MAKE_LTX:
 		if( !Scene->locked() ){
             if( !Builder->InProgress() )
                 if (frmScenePropertiesRun(&Scene->m_BuildParams,true)==mrOk)
                     Builder->MakeLTX( );
         }else{
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -315,7 +315,7 @@ bool TUI::Command( int _Command, int p1 ){
             if( !Builder->InProgress() )
 				Builder->MakeDetails(true);
         }else{
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -324,7 +324,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->InvertSelection(CurrentClassID());
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -334,7 +334,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->SelectObjects(true,CurrentClassID());
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -344,7 +344,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->SelectObjects(false,CurrentClassID());
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -354,7 +354,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->RemoveSelection( CurrentClassID() );
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 		break;
@@ -364,7 +364,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->ShowObjects( false, CurrentClassID(), true, false );
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
         break;
@@ -373,7 +373,7 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->ShowObjects( bool(p1), CurrentClassID(), true, true );
 			Scene->UndoSave();
 		} else {
-			Log->DlgMsg( mtError, "Scene sharing violation" );
+			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
         break;
@@ -381,8 +381,8 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			Scene->ShowObjects( bool(p1), CurrentClassID(), false );
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
         break;
@@ -391,11 +391,11 @@ bool TUI::Command( int _Command, int p1 ){
 			Scene->ZoomExtents(p1);
 		} else {
         	if (GetEState()==esEditLibrary){
-            	frmEditLibrary->ZoomObject();   
+            	frmEditLibrary->ZoomObject();
             }else if (GetEState()==esEditShaders){
             	frmEditShaders->ZoomObject();
-                }else{ 
-                    Log->DlgMsg( mtError, "Scene sharing violation" );
+                }else{
+                    ELog.DlgMsg( mtError, "Scene sharing violation" );
                     bRes = false;
                 }
         }
@@ -413,8 +413,8 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			Scene->LockObjects(bool(p1),CurrentClassID(),false);
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -422,8 +422,8 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			Scene->LockObjects(bool(p1),CurrentClassID(),true,true);
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -431,13 +431,13 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 			Scene->LockObjects(bool(p1),CurrentClassID(),true,false);
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible) 
+		if (frmMain->Visible)
         	m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:
@@ -451,8 +451,8 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	Scene->GroupCreate(true);
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
 	    break;
@@ -460,17 +460,17 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	Scene->GroupSave();
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
-		break;    
+		break;
     case COMMAND_GROUP_DESTROY:
 		if( !Scene->locked() ){
 	    	Scene->GroupDestroy();
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -478,24 +478,24 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	Scene->UngroupAll();
 			Scene->UndoSave();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
     case COMMAND_RESET_ANIMATION:
 		if( !Scene->locked() ){
 	    	Scene->ResetAnimation();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
-		break;    
+		break;
     case COMMAND_CLEAN_LIBRARY:
 		if( !Scene->locked() ){
 	    	Lib->Clean();
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -506,9 +506,9 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	int cnt=Scene->SetSnapList();
  			Scene->UndoSave();
-        	Log->Msg( mtInformation, "%d snap object(s) selected.", cnt );
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+        	ELog.Msg( mtInformation, "%d snap object(s) selected.", cnt );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
         break;
@@ -516,9 +516,9 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	int cnt=Scene->AddToSnapList();
  			Scene->UndoSave();
-        	Log->Msg( mtInformation, "%d object(s) appended.", cnt );
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+        	ELog.Msg( mtInformation, "%d object(s) appended.", cnt );
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -526,9 +526,9 @@ bool TUI::Command( int _Command, int p1 ){
 		if( !Scene->locked() ){
 	    	Scene->ClearSnapList();
  			Scene->UndoSave();
-	       	Log->Msg( mtInformation, "Snap list empty.");
-		}else{ 
-        	Log->DlgMsg( mtError, "Scene sharing violation" );
+	       	ELog.Msg( mtInformation, "Snap list empty.");
+		}else{
+        	ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
         }
     	break;
@@ -536,7 +536,7 @@ bool TUI::Command( int _Command, int p1 ){
     	fraLeftBar->UpdateBar();
     	break;
  	default:
-		Log->DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
+		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
 		}
 
@@ -545,4 +545,4 @@ bool TUI::Command( int _Command, int p1 ){
 }
 
 
- 
+

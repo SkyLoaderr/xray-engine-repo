@@ -66,7 +66,7 @@ void CLibObject::SaveObject(){
     if ((P.x!=0)||(P.y!=0)||(P.z!=0)|| (S.x!=1)||(S.y!=1)||(S.z!=1)|| (R.x!=0)||(R.y!=0)||(R.z!=0))
         obj->TranslateToWorld();
 
-    // save object        
+    // save object
     AnsiString fn;
     fn=m_RefName+AnsiString(".object");
     FS.m_Objects.Update(fn);
@@ -161,12 +161,12 @@ bool ELibrary::Load(){
 	if (FS.Exist(_FileName,true)){
 	    CCompressedStream F(_FileName,"LIBRARY");
 
-		Log->Msg( mtInformation, "Object Library: loading %s...", _FileName );
+		ELog.Msg( mtInformation, "Object Library: loading %s...", _FileName );
 	    // Version
 		R_ASSERT(F.ReadChunk(CHUNK_VERSION, &version));
 
 	    if (version!=CURRENT_LIBRARY_VERSION){
-    	    Log->DlgMsg( mtError, "Object Library: unsupported file version. Can't load library.");
+    	    ELog.DlgMsg( mtError, "Object Library: unsupported file version. Can't load library.");
 	        return false;
     	}
 
@@ -184,7 +184,7 @@ bool ELibrary::Load(){
             OBJ->Close();
         }
 
-		Log->Msg( mtInformation, "ELibrary: %d objects loaded", ObjectCount() );
+		ELog.Msg( mtInformation, "ELibrary: %d objects loaded", ObjectCount() );
 		return true;
     }
 	return false;
@@ -201,7 +201,7 @@ void ELibrary::Save(){
     F.Wdword		(CURRENT_LIBRARY_VERSION);
     F.close_chunk	();
 
-	F.open_chunk	(0); 
+	F.open_chunk	(0);
     int count = 0;
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++){
         F.open_chunk(count); count++;
@@ -216,8 +216,8 @@ void ELibrary::Save(){
 void ELibrary::Init(){
 	m_Current = 0;
 	m_Valid = true;
-    if (Load())	Log->Msg( mtInformation, "Lib: initialized" );
-    else		Log->DlgMsg( mtError, "Can't initialized object library." );
+    if (Load())	ELog.Msg( mtInformation, "Lib: initialized" );
+    else		ELog.DlgMsg( mtError, "Can't initialized object library." );
 }
 
 void ELibrary::Clear(){
@@ -228,7 +228,7 @@ void ELibrary::Clear(){
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++) _DELETE( *it );
 
     m_Objects.clear();
-	Log->Msg( mtInformation, "Lib: cleared" );
+	ELog.Msg( mtInformation, "Lib: cleared" );
 }
 
 ELibrary::ELibrary(){
@@ -258,7 +258,7 @@ CLibObject* ELibrary::FindObjectByName(const char *name, const CLibObject* pass_
 
 bool ELibrary::Validate(){
 // find duplicate name
-	for(LibObjIt it=FirstObj(); it!=LastObj(); it++) 
+	for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
         if (FindObjectByName((*it)->m_RefName.c_str(), *it)){
             AnsiString s;
             s.sprintf("Duplicated Item name '%s'!",(*it)->m_RefName.c_str());
@@ -297,7 +297,7 @@ void ELibrary::Clean(){
 	    do{
 			if ((sr.Attr & iAttributes) == sr.Attr){
 				_splitpath( sr.Name.c_str(), 0, 0, name, 0 );
-                if (!SearchObject(name)){ 
+                if (!SearchObject(name)){
                 	fn=sr.Name; FS.m_Objects.Update(fn);
                 	FS.MarkFile(fn);
                 }

@@ -27,7 +27,7 @@
 #pragma link "multi_edit"
 #pragma link "Placemnt"
 #pragma resource "*.dfm"
-          
+
 TfrmPropertiesObject *frmPropertiesObject=0;
 //---------------------------------------------------------------------------
 int frmPropertiesObjectRun(ObjectList* pObjects, bool& bChange){
@@ -95,17 +95,17 @@ void __fastcall TfrmPropertiesObject::ebCancelClick(TObject *Sender)
         	bool bCreateShader=false;
             if ((*s_it)->shader){
                 if(strcmp(SH_Names[k].c_str(),(*s_it)->shader->shader->cName)!=0){
-                    UI->Device.Shader.Delete((*s_it)->shader);
+                    Device.Shader.Delete((*s_it)->shader);
                     bCreateShader=true;
                 }
             }else{
-                (*s_it)->shader = UI->Device.Shader.Create(SHLib->FindShader(SH_Names[k])->cName,(*s_it)->textures);
+                (*s_it)->shader = Device.Shader.Create(SHLib->FindShader(SH_Names[k])->cName,(*s_it)->textures);
                 bCreateShader = true;
             }
             if (bCreateShader){
                 SH_ShaderDef* sh_base=SHLib->FindShader(SH_Names[k]);
                 VERIFY2(sh_base,"Can't find shader.");
-                (*s_it)->shader = UI->Device.Shader.Create(sh_base->cName,(*s_it)->textures);
+                (*s_it)->shader = Device.Shader.Create(sh_base->cName,(*s_it)->textures);
                 VERIFY((*s_it)->shader);
                 if (sh_base->Passes_Count>0)
                     (*s_it)->has_alpha = sh_base->Passes[0].Flags.bABlend;
@@ -256,7 +256,7 @@ void __fastcall TfrmPropertiesObject::pcObjectsChange(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::OnIdle(){
 	if (ebDropper->Down&&m_EditObject){
-		if ((pcObjects->ActivePage==tsMeshes)||(pcObjects->ActivePage==tsSurfaces)){	
+		if ((pcObjects->ActivePage==tsMeshes)||(pcObjects->ActivePage==tsSurfaces)){
         // check cursor position and define ...
             POINT pt,wpt;
             GetCursorPos( &pt );
@@ -271,7 +271,7 @@ void __fastcall TfrmPropertiesObject::OnIdle(){
                 Fvector2 CP;
                 pt = UI->GetD3DWindow()->ScreenToClient(pt);
                 CP.set(float(pt.x),float(pt.y));
-                UI->Device.m_Camera.MouseRayFromPoint(S, D, CP );
+                Device.m_Camera.MouseRayFromPoint(S, D, CP );
 
                 float dist=flt_max;
                 SRayPickInfo pinf;

@@ -68,8 +68,8 @@ void CDetailManager::Render(ERenderPriority flag){
 	if (m_Slots.size()){
     	switch (flag){
 		case rpNormal:{
-            UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-            UI->Device.Shader.Set(UI->Device.m_WireShader);
+            Device.SetTransform(D3DTS_WORLD,precalc_identity);
+            Device.Shader.Set(Device.m_WireShader);
 
 			Fvector			c;
             Fbox			bbox;
@@ -87,7 +87,7 @@ void CDetailManager::Render(ERenderPriority flag){
                         bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
                         bbox.shrink	(0.05f);
 
-                        if (UI->Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
+                        if (Device.m_Frustum.testSphere(c,DETAIL_SLOT_SIZE_2))
 	                        DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
                     }
                 }
@@ -95,7 +95,7 @@ void CDetailManager::Render(ERenderPriority flag){
         }break;
 		case rpAlphaNormal:{
         	if (fraBottomBar->miDODrawObjects->Checked)
-	        	RenderObjects(UI->Device.m_Camera.GetPosition());
+	        	RenderObjects(Device.m_Camera.GetPosition());
         }break;
 		case rpAlphaLast:{
         	if (fraBottomBar->miDrawDOBaseTexture->Checked)
@@ -108,18 +108,18 @@ void CDetailManager::Render(ERenderPriority flag){
 void CDetailManager::RenderTexture(float alpha){
 	FVF::LIT V[4];
 
-    DWORD color = RGBA_MAKE(255,255,255,BYTE(alpha*255));
+    DWORD color = D3DCOLOR_RGBA(255,255,255,BYTE(alpha*255));
 
 	V[0].set(m_BBox.min.x,m_BBox.max.y,m_BBox.min.z,color,0,1);
 	V[1].set(m_BBox.min.x,m_BBox.max.y,m_BBox.max.z,color,0,0);
 	V[2].set(m_BBox.max.x,m_BBox.max.y,m_BBox.max.z,color,1,0);
 	V[3].set(m_BBox.max.x,m_BBox.max.y,m_BBox.min.z,color,1,1);
 
-	UI->Device.Shader.Set(m_pBaseShader);
-    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-    UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
-    UI->Device.DP(D3DPT_TRIANGLEFAN,FVF::F_LIT, V, 4);
-    UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+	Device.Shader.Set(m_pBaseShader);
+    Device.SetTransform(D3DTS_WORLD,precalc_identity);
+    Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+    Device.DP(D3DPT_TRIANGLEFAN,FVF::F_LIT, V, 4);
+    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 //------------------------------------------------------------------------------
@@ -141,11 +141,11 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 		for (int _x=s_x-dm_size; _x<=(s_x+dm_size); _x++){
 			// Query for slot
 			Slot&	S		= Query(_x,_z);
-			S.dwFrameUsed	= UI->Device.m_Statistic.dwTotalFrame;
+			S.dwFrameUsed	= Device.m_Statistic.dwTotalFrame;
 
 			// Transfer visibile and partially visible slot contents
 			BYTE mask		= 0xff;
-			switch (UI->Device.m_Frustum.testAABB(S.BB.min,S.BB.max,mask))
+			switch (Device.m_Frustum.testAABB(S.BB.min,S.BB.max,mask))
 			{
 			case fcvNone:		// nothing to do
 				break;
@@ -166,13 +166,13 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 
-							if (UI->Device.m_Frustum.testSphere(siIT->P,R*Item.scale))
+							if (Device.m_Frustum.testSphere(siIT->P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
 
-								if (UI->Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
+								if (Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
 
 								Item.scale_calculated = scale; //alpha;
 								vis.push_back	(siIT);
@@ -202,7 +202,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;
 
-							if (UI->Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
+							if (Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
 
 							Item.scale_calculated = scale; //alpha;
 							vis.push_back	(siIT);
@@ -214,19 +214,19 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 		}
 	}
 
-	UI->Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+	Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
 
 	// Render itself
 	float	fPhaseRange	= PI/16;
-	float	fPhaseX		= sinf(UI->Device.m_fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		= sinf(UI->Device.m_fTimeGlobal*0.11f)	*fPhaseRange;
+	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
+	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
 
 	for (DWORD O=0; O<dm_max_objects; O++){
 		vector<SlotItem*>&	vis = m_Visible	[O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *m_Objects[O];
-        UI->Device.Shader.Set	(Object.m_pShader);
+        Device.Shader.Set	(Object.m_pShader);
 		Fmatrix		mXform,mRotXZ;
 		for (DWORD item=0; item<vis.size(); item++){
             SlotItem&	Instance	= *(vis[item]);
@@ -250,14 +250,14 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
                 mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
             }
             // render objects
-			UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,mXform);
-			UI->Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
+			Device.SetTransform(D3DTS_WORLD,mXform);
+			Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
 		}
 
 		// Clean up
 		vis.clear	();
 	}
-	UI->Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+	Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
@@ -293,12 +293,12 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 	float	f	= float(size);
 	float	fx	= float(x)/f; float ifx = 1.f-fx;
 	float	fy	= float(y)/f; float ify = 1.f-fy;
-	
+
 	float	c01	= base[0]*ifx + base[1]*fx;
 	float	c23	= base[2]*ifx + base[3]*fx;
 	float	c02	= base[0]*ify + base[2]*fy;
 	float	c13	= base[1]*ify + base[3]*fy;
-	
+
 	float	cx	= ify*c01 + fy*c23;
 	float	cy	= ifx*c02 + fx*c13;
 	return	(cx+cy)/2;

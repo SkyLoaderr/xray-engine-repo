@@ -18,7 +18,7 @@ PS::SDef* CPSLibrary::FindPS(const char* name){
 PS::SDef* CPSLibrary::AddPS(const char* name, PS::SDef* src){
 	if (src)
     	m_PSs.push_back(*src);
-	else{ 	
+	else{
     	m_PSs.push_back(PS::SDef());
 	    m_PSs.back().InitDefault();
     }
@@ -41,7 +41,7 @@ void CPSLibrary::Init(){
     fn = PSLIB_FILENAME;
     FS.m_GameRoot.Update(fn);
 	if (FS.Exist(fn.c_str(),true)){
-    	if (!Load(fn.c_str())) Log->DlgMsg(mtInformation,"PS Library: Unsupported version.");
+    	if (!Load(fn.c_str())) ELog.DlgMsg(mtInformation,"PS Library: Unsupported version.");
     }
 }
 
@@ -92,7 +92,7 @@ int CPSLibrary::Merge(const char* nm){
         }
     }
     for (PSIt l1_it=L1.FirstPS(); l1_it!=L1.LastPS(); l1_it++)
-        if (!L0.FindPS(l1_it->m_Name)){ 
+        if (!L0.FindPS(l1_it->m_Name)){
         	AddPS(l1_it->m_Name,l1_it);
             cnt++;
         }
@@ -102,7 +102,7 @@ int CPSLibrary::Merge(const char* nm){
 void CPSLibrary::Reload(){
 	Clear();
     Init();
-	Log->Msg( mtInformation, "PS Library was succesfully reloaded." );
+	ELog.Msg( mtInformation, "PS Library was succesfully reloaded." );
 }
 //----------------------------------------------------
 void CPSLibrary::Backup(){

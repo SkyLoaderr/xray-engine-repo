@@ -22,7 +22,7 @@ public:
     	eet_force_dword = -1
     };
     EEventType		eEventType;
-    
+
     // orientation
     Fvector 		vScale;
     Fvector 		vRotate;

@@ -116,7 +116,7 @@ class CSector : public SceneObject {
 	void 			LoadSectorDef( CStream* F );
 
     void 			UpdatePlanes();
-    
+
     // only for build
     int				sector_num;
 public:

@@ -39,7 +39,7 @@ STextureParams* ETextureThumbnail::GetTextureParams(){
 bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int src_age, bool check, bool blur){
 	R_ASSERT(!p.empty());
 	if ((width<=0)&&(height<=0)) return false;
-    
+
     AnsiString name=m_LoadName;
     FS.m_TexturesThumbnail.Update(name);
 
@@ -62,12 +62,12 @@ bool ETextureThumbnail::CreateFromData(DWORDVec& p, int width, int height, int s
         int W[THUMB_WIDTH];
         int H[THUMB_HEIGHT];
         m_Pixels.resize(THUMB_SIZE);
-        for (int w=0; w<THUMB_WIDTH; w++){ 
+        for (int w=0; w<THUMB_WIDTH; w++){
             float f=float(w)/float(THUMB_WIDTH);
             W[w]=f*width;
         }
         for (int h=0; h<THUMB_HEIGHT; h++) {
-            float f=float(h)/float(THUMB_HEIGHT); 
+            float f=float(h)/float(THUMB_HEIGHT);
             H[h]=f*height;
         }
         for (h=0; h<THUMB_HEIGHT; h++)
@@ -102,7 +102,7 @@ bool ETextureThumbnail::CreateFromTexture(ETextureCore* tex){
 bool ETextureThumbnail::CreateFromTexture(const char* name){
     AnsiString fn;
 	if (name) fn=name;
-    else{ 
+    else{
         fn = ChangeFileExt(m_LoadName,".");
         FS.m_Textures.Update(fn);
     }
@@ -134,9 +134,9 @@ bool ETextureThumbnail::Save(int src_age){
 	F.close_chunk	();
 
     F.SaveTo		(name.c_str(),THM_SIGN);
-    
+
 	FS.SetFileAge	(name,src_age);
-    
+
 	return true;
 }
 
@@ -159,7 +159,7 @@ bool ETextureThumbnail::LoadTexParams(){
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
-        Log->DlgMsg( mtError, "Thumbnail: Unsupported version.");
+        ELog.DlgMsg( mtError, "Thumbnail: Unsupported version.");
 		m_bLoadFailed = true;
         return false;
     }
@@ -173,7 +173,7 @@ bool ETextureThumbnail::LoadTexParams(){
 bool ETextureThumbnail::Load(){
 	AnsiString fn=m_LoadName;
     FS.m_TexturesThumbnail.Update(fn);
-    if (!FS.Exist(fn.c_str())){ 
+    if (!FS.Exist(fn.c_str())){
 		m_bLoadFailed = true;
     	return false;
     }
@@ -188,17 +188,17 @@ bool ETextureThumbnail::Load(){
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
-        Log->DlgMsg( mtError, "Thumbnail: Unsupported version.");
+        ELog.DlgMsg( mtError, "Thumbnail: Unsupported version.");
 		m_bLoadFailed = true;
         return false;
     }
-    
+
     R_ASSERT(F.FindChunk(THM_CHUNK_DATA));
     int sz = F.Rdword();
     m_Pixels.resize(sz);
     F.Read(m_Pixels.begin(),sz*sizeof(DWORD));
 
-	STextureParams* TP=GetTextureParams();    
+	STextureParams* TP=GetTextureParams();
     R_ASSERT(F.FindChunk(THM_CHUNK_TEXTUREPARAM));
     F.Read(TP,sizeof(STextureParams));
     return true;
@@ -206,16 +206,16 @@ bool ETextureThumbnail::Load(){
 
 void ETextureThumbnail::DrawNormal( HANDLE handle, RECT *r ){
     if (m_bLoadFailed) return;
-	if (!Valid()) 
+	if (!Valid())
     	if (!Load()){
-			Log->Msg( mtError, "Error: can't load thumbnail for '%s'", m_LoadName );
+			ELog.Msg( mtError, "Error: can't load thumbnail for '%s'", m_LoadName );
 	     	return;
     	}
 
 	HBITMAP th;
 	if( !CreateBitmap(th,m_Pixels,THUMB_WIDTH,THUMB_HEIGHT) ){
-		Log->Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_LoadName );
-		return; 
+		ELog.Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_LoadName );
+		return;
     }
 
     HDC hdc = GetDC(handle);
@@ -232,15 +232,15 @@ void ETextureThumbnail::DrawNormal( HANDLE handle, RECT *r ){
 void ETextureThumbnail::DrawStretch( HANDLE handle, RECT *r ){
     if (m_bLoadFailed) return;
 
-	if (!Valid()) 
+	if (!Valid())
     	if (!Load()){
-			Log->Msg( mtError, "Error: can't load thumbnail for '%s'", m_LoadName );
+			ELog.Msg( mtError, "Error: can't load thumbnail for '%s'", m_LoadName );
 	     	return;
     	}
 
 	HBITMAP th;
 	if( !CreateBitmap(th,m_Pixels,THUMB_WIDTH,THUMB_HEIGHT) ){
-		Log->Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_LoadName );
+		ELog.Msg( mtError, "Error: can't create bitmap from thumbnail for '%s'", m_LoadName );
 		return; }
 
     HDC hdc = GetDC(handle);
@@ -254,4 +254,4 @@ void ETextureThumbnail::DrawStretch( HANDLE handle, RECT *r ){
     DeleteObject(th);
 }
 
- 
+

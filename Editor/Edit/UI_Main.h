@@ -53,8 +53,6 @@ protected:
 	bool bRedraw;
     bool bUpdateScene;
 	bool bResize;
-public:
-	CDevice Device;
 protected:
 	long m_StartTime;
 

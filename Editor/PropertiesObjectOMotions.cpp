@@ -84,12 +84,12 @@ void __fastcall TfrmPropertiesObject::ebOAppendMotionClick(TObject *Sender)
             Item->CheckBoxType = ectCheckBox;
             Item->CheckBoxEnabled = true;
             tvOMotions->Selected = Item;
-            
-        	Log->DlgMsg(mtInformation,"Motion '%s' appended.",M->Name());
+
+        	ELog.DlgMsg(mtInformation,"Motion '%s' appended.",M->Name());
     		lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
 		    OnModified(Sender);
         }else
-        	Log->DlgMsg(mtError,"Append failed.");
+        	ELog.DlgMsg(mtError,"Append failed.");
     }
 }
 //---------------------------------------------------------------------------
@@ -132,7 +132,7 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
     case icmText:
         if (FEditNode){
             if (!m_EditObject->RenameOMotion(last_name.c_str(),Item->Text.c_str())){
-                Log->DlgMsg(mtError,"Motion with name '%s' already present.",Item->Text.c_str());
+                ELog.DlgMsg(mtError,"Motion with name '%s' already present.",Item->Text.c_str());
                 FEditNode = 0;
                 Item->Text = last_name;
             }else{
@@ -144,7 +144,7 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
             last_name = "";
         }
     break;
-    case icmCheckState: 
+    case icmCheckState:
     	if (m_EditObject){
             if (Item->Checked){
 		    	lbActiveOMotion->Caption 	 = Item->Text;
@@ -169,7 +169,7 @@ TElTreeItem* TfrmPropertiesObject::FindOMotionItem(const char* name){
 
 
 void __fastcall TfrmPropertiesObject::ebOResetActiveMotion(TElTreeItem* ignore_item){
-	if (m_EditObject){ 
+	if (m_EditObject){
 //		lbActiveOMotion->Caption 		= "...";
 	    for ( TElTreeItem* node = tvOMotions->Items->GetFirstNode(); node; node = node->GetNext())
     	    if (node->Checked&&(ignore_item!=node)){ node->Checked = false; break; }
@@ -181,7 +181,7 @@ void __fastcall TfrmPropertiesObject::ebOMotionClearClick(TObject *Sender)
 {
     TElTreeItem* Item = tvOMotions->Items->GetFirstNode(); Item->Clear();
 	m_EditObject->ClearOMotions();
-	OnModified(Sender);	
+	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -190,12 +190,12 @@ void __fastcall TfrmPropertiesObject::ebOMotionSaveClick(TObject *Sender)
 	AnsiString fn;
     if (m_EditObject->OMotionCount()){
     	fn = m_EditObject->GetName();
-	    if (FS.GetSaveName(&FS.m_OMotions,fn)){ 
+	    if (FS.GetSaveName(&FS.m_OMotions,fn)){
         	m_EditObject->SaveOMotions(fn.c_str());
-	    	Log->DlgMsg(mtInformation,"Motions saved.");
+	    	ELog.DlgMsg(mtInformation,"Motions saved.");
         }
     }else{
-    	Log->DlgMsg(mtInformation,"Motion list empty!");
+    	ELog.DlgMsg(mtInformation,"Motion list empty!");
     }
 }
 //---------------------------------------------------------------------------
@@ -207,9 +207,9 @@ void __fastcall TfrmPropertiesObject::ebOMotionLoadClick(TObject *Sender)
 	    TElTreeItem* Item = tvOMotions->Items->GetFirstNode(); Item->Clear();
 		m_EditObject->ClearOMotions();
 		m_EditObject->LoadOMotions(fn.c_str());
-		Log->DlgMsg(mtInformation,"%d motion loaded.",m_EditObject->OMotionCount());
+		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_EditObject->OMotionCount());
         tsOAnimationShow(Sender);
-		OnModified(Sender);	
+		OnModified(Sender);
     }
 }
 //---------------------------------------------------------------------------

@@ -131,7 +131,7 @@ public:
 
 	virtual bool Execute            ();
 	bool MakeLTX  			        ();
-    bool MakeDetails				(bool bOkMessage);	
+    bool MakeDetails				(bool bOkMessage);
 
     bool    NeedAbort               (){Application->ProcessMessages(); return bNeedAbort;}
     void 	BreakBuild				(){bNeedAbort = true;}

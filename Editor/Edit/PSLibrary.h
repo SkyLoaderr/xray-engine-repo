@@ -22,7 +22,7 @@ public:
     IC PSIt				FirstPS			()	{return m_PSs.begin();}
     IC PSIt				LastPS			()	{return m_PSs.end();}
     IC int				PSCount			()	{return m_PSs.size();}
-    
+
     void				Init			();
     void				Clear			();
     int 				Merge			(const char* nm);
@@ -40,7 +40,7 @@ public:
 
 	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
     PS::SDef*			ChoosePS		(bool bSetCurrent=true);
-    
+
     bool 				Validate		(){return true;}
 };
 

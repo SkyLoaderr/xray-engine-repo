@@ -34,20 +34,20 @@ SceneBuilder::~SceneBuilder(){
 bool SceneBuilder::Execute( ){
     bNeedAbort = false;
 	if( m_InProgress ) return false;
-	Log->Msg( mtInformation, "Building started..." );
+	ELog.Msg( mtInformation, "Building started..." );
 
     // save scene
 	UI->Command(COMMAND_SAVE);
 
     // check debug
 	if ((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0))
-    	if (Log->DlgMsg(mtConfirmation,"Can't find sector and portal in scene. Create default?")==mrYes)
+    	if (ELog.DlgMsg(mtConfirmation,"Can't find sector and portal in scene. Create default?")==mrYes)
         	PortalUtils.CreateDebugCollection();
 
-    
+
     // validate scene
     if (!Scene->Validate()){
-    	Log->DlgMsg( mtError, "Invalid scene. Building failed." );
+    	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
 		UI->Command(COMMAND_RELOAD);
         return false;
     }
@@ -70,14 +70,14 @@ bool SceneBuilder::Execute( ){
 bool SceneBuilder::MakeLTX( ){
     bNeedAbort = false;
 	if( m_InProgress ) return false;
-	Log->Msg( mtInformation, "Making started..." );
+	ELog.Msg( mtInformation, "Making started..." );
 
     // save scene
 	UI->Command(COMMAND_SAVE);
 
     // validate scene
     if (!Scene->Validate(false,false)){
-    	Log->DlgMsg( mtError, "Invalid scene. Building failed." );
+    	ELog.DlgMsg( mtError, "Invalid scene. Building failed." );
 		UI->Command(COMMAND_RELOAD);
         return false;
     }
@@ -111,8 +111,8 @@ bool SceneBuilder::MakeDetails(bool bOkMessage){
         // save details
 		Scene->m_DetailObjects->Export(fn.c_str());
     }while(0);
-	if( error_flag )  	Log->DlgMsg(mtError,error_text.c_str());
-    else				if (bOkMessage) Log->DlgMsg(mtInformation,"Details succesfully exported.");
+	if( error_flag )  	ELog.DlgMsg(mtError,error_text.c_str());
+    else				if (bOkMessage) ELog.DlgMsg(mtInformation,"Details succesfully exported.");
 
 	return error_flag;
 }
@@ -180,7 +180,7 @@ DWORD SceneBuilder::Thread(){
         // unload object library
 //	    UI->Command(COMMAND_UNLOAD_LIBMESHES);
 */
-        
+
         if (NeedAbort()) break;
 		if( !RenumerateSectors() ){
 			error_text="*ERROR: Failed to renumerate sectors....";
@@ -226,9 +226,9 @@ DWORD SceneBuilder::Thread(){
 
 	} while(0);
 
-	if( error_flag ) 		Log->DlgMsg(mtError,error_text.c_str());
-	else if ( bNeedAbort ) 	Log->DlgMsg(mtInformation,"Building terminated...");
-    else					Log->DlgMsg(mtInformation,"Building OK...");
+	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
+	else if ( bNeedAbort ) 	ELog.DlgMsg(mtInformation,"Building terminated...");
+    else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;
 
@@ -281,9 +281,9 @@ DWORD SceneBuilder::ThreadMakeLTX(){
 		}
 	} while(0);
 
-	if( error_flag ) 		Log->DlgMsg(mtError,error_text.c_str());
-	else if ( bNeedAbort ) 	Log->DlgMsg(mtInformation,"Building terminated...");
-    else					Log->DlgMsg(mtInformation,"Building OK...");
+	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
+	else if ( bNeedAbort ) 	ELog.DlgMsg(mtInformation,"Building terminated...");
+    else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;
 

@@ -18,7 +18,6 @@ void CEditMesh::CloneFrom(CEditMesh *source){
     m_LoadState = 0;
     m_Parent 	= save_parent;
     m_CFModel 	= NULL;
-    m_RenderBuffers.clear();
 	// copy surface links
 	m_SurfFaces.clear();
 	for (SurfFacesPairIt sp_it=source->m_SurfFaces.begin(); sp_it!=source->m_SurfFaces.end(); sp_it++){
@@ -83,16 +82,16 @@ bool CEditMesh::OptimizeFace(st_Face& face){
     	points[k].set(m_Points[face.pv[k].pindex]);
 		mface[k] = -1;
     }
-	
+
 	// get similar vert idx list
 	for (k=0; k<3; k++){
-		DWORDVec* vl; 
+		DWORDVec* vl;
 		int ix,iy,iz;
 		ix = floorf(float(points[k].x-VMmin.x)/VMscale.x*MX);
 		iy = floorf(float(points[k].y-VMmin.y)/VMscale.y*MY);
 		iz = floorf(float(points[k].z-VMmin.z)/VMscale.z*MZ);
 		vl = &(VM[ix][iy][iz]);
-		for(DWORDIt it=vl->begin();it!=vl->end(); it++){ 
+		for(DWORDIt it=vl->begin();it!=vl->end(); it++){
 			FvectorIt v = m_NewPoints.begin()+(*it);
             if( v->similar(points[k],EPS) )
                 mface[k] = *it;
@@ -111,25 +110,25 @@ bool CEditMesh::OptimizeFace(st_Face& face){
 			ixE = floorf(float(points[k].x+VMeps.x-VMmin.x)/VMscale.x*MX);
 			iyE = floorf(float(points[k].y+VMeps.y-VMmin.y)/VMscale.y*MY);
 			izE = floorf(float(points[k].z+VMeps.z-VMmin.z)/VMscale.z*MZ);
-			if (ixE!=ix)				
+			if (ixE!=ix)
 				VM[ixE][iy][iz].push_back(mface[k]);
-			if (iyE!=iy)				
+			if (iyE!=iy)
 				VM[ix][iyE][iz].push_back(mface[k]);
-			if (izE!=iz)				
+			if (izE!=iz)
 				VM[ix][iy][izE].push_back(mface[k]);
-			if ((ixE!=ix)&&(iyE!=iy))	
+			if ((ixE!=ix)&&(iyE!=iy))
 				VM[ixE][iyE][iz].push_back(mface[k]);
-			if ((ixE!=ix)&&(izE!=iz))	
+			if ((ixE!=ix)&&(izE!=iz))
 				VM[ixE][iy][izE].push_back(mface[k]);
-			if ((iyE!=iy)&&(izE!=iz))	
+			if ((iyE!=iy)&&(izE!=iz))
 				VM[ix][iyE][izE].push_back(mface[k]);
 			if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))
 				VM[ixE][iyE][izE].push_back(mface[k]);
 		}
 	}
-	
+
 	if ((mface[0]==mface[1])||(mface[1]==mface[2])||(mface[0]==mface[2])){
-		Log->DlgMsg( mtError, "Optimize: Face missing." );
+		ELog.DlgMsg( mtError, "Optimize: Face missing." );
         return false;
 	}else{
     	face.pv[0].pindex = mface[0];
@@ -147,7 +146,7 @@ void CEditMesh::Optimize(){
             	VM[x][y][z].clear();
 	VMscale.set(m_Box.max.x-m_Box.min.x, m_Box.max.y-m_Box.min.y, m_Box.max.z-m_Box.min.z);
 	VMmin.set(m_Box.min.x, m_Box.min.y, m_Box.min.z);
-	
+
 	VMeps.set(VMscale.x/MX/2,VMscale.y/MY/2,VMscale.z/MZ/2);
 	VMeps.x = (VMeps.x<EPS_L)?VMeps.x:EPS_L;
 	VMeps.y = (VMeps.y<EPS_L)?VMeps.y:EPS_L;
@@ -155,9 +154,9 @@ void CEditMesh::Optimize(){
 
     m_NewPoints.clear();
     m_NewPoints.reserve(m_Points.size());
-    
+
     UI->SetStatus("Optimize...");
-    
+
 	INTVec mark_for_del;
 	mark_for_del.clear();
     for (DWORD k=0; k<m_Faces.size(); k++){
@@ -166,7 +165,7 @@ void CEditMesh::Optimize(){
 	}
 
     m_Points.clear();
-    m_Points = m_NewPoints;    
+    m_Points = m_NewPoints;
     if (mark_for_del.size()>0){
         std::sort	(mark_for_del.begin(),mark_for_del.end());
         std::reverse(mark_for_del.begin(),mark_for_del.end());
@@ -191,4 +190,4 @@ void CEditMesh::Optimize(){
 
     UpdateAdjacency();
 }
- 
+

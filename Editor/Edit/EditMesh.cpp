@@ -25,7 +25,7 @@ void CEditMesh::Construct(){
 }
 
 void CEditMesh::Clear(){
-	ClearRenderBuffers	();
+//	ClearRenderBuffers	();
 	m_Points.clear 		();
     m_Adjs.clear		();
 	m_Faces.clear		();
@@ -83,7 +83,7 @@ void CEditMesh::GenerateCFModel(){
         for (INTIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
 			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,0);
-	        if (sp_it->first->sideflag) 
+	        if (sp_it->first->sideflag)
 				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,0);
         }
 	}
@@ -160,7 +160,7 @@ void CEditMesh::GenerateSVertices(){
         if (M.type==vmtWeight) kk++;
     }
 
-    
+
     for (DWORD i=0; i<m_Points.size(); i++){
     	Fvector&  P =m_Points[i];
     	st_SVert& SV=m_SVertices[i];
@@ -177,7 +177,7 @@ void CEditMesh::GenerateSVertices(){
                         st_VMap& VM = m_VMaps[vmpt_it->vmap_index];
                         if (VM.type==vmtWeight){
 							//float& w = VM.getW(vmpt_it->index);
-                            SV.bone 	= m_Parent->GetBoneIndexByWMap(VM.name); 
+                            SV.bone 	= m_Parent->GetBoneIndexByWMap(VM.name);
                             VERIFY2(SV.bone>-1,"Can't find weight map");
                             CBone* B 	= m_Parent->m_Bones[SV.bone];
                             B->LITransform().transform_tiny(SV.offs,P);
@@ -246,15 +246,15 @@ int CEditMesh::GetSurfFaceCount(st_Surface* surf, bool bMatch2Sided){
     if (bMatch2Sided&&sp_it->first->sideflag) f_cnt*=2;
     return f_cnt;
 }
- 
+
 void CEditMesh::DumpAdjacency(){
-	Log->Msg(mtInformation,"Adjacency dump.");
-	Log->Msg(mtInformation,"------------------------------------------------------------------------");
+	ELog.Msg(mtInformation,"Adjacency dump.");
+	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
     for (DWORD i=0; i<m_Adjs.size(); i++){
         INTVec& a_lst	= m_Adjs[i];
         AnsiString s; s.sprintf("Point #%d:",i);
         for (DWORD j=0; j<a_lst.size(); j++) s+=" "+AnsiString(a_lst[j]);
-		Log->Msg(mtInformation,s.c_str());
+		ELog.Msg(mtInformation,s.c_str());
     }
 }
 

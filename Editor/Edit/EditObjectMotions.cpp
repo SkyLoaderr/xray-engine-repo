@@ -25,16 +25,16 @@ public:
 	IC bool operator() (CBone* B) { return (stricmp(B->WMap(),wm_name.c_str())==0); }
 };
 //----------------------------------------------------
-void st_AnimParam::Set(CCustomMotion* M){ 
-	t=0; 
-    min_t=(float)M->FrameStart()/M->FPS(); 
+void st_AnimParam::Set(CCustomMotion* M){
+	t=0;
+    min_t=(float)M->FrameStart()/M->FPS();
     max_t=(float)M->FrameEnd()/M->FPS();
 }
-void st_AnimParam::Update(float dt){ 
-	t+=dt; 
+void st_AnimParam::Update(float dt){
+	t+=dt;
     if (t>max_t){ if (fraBottomBar->miObjectLoopedAnimation->Checked) t=min_t; else t=max_t; }
 }
-    
+
 void CEditObject::RTL_Update( float dT ){
     if (IsOMotionActive()){
         Fvector R,T,r;
@@ -75,11 +75,11 @@ void CEditObject::RemoveOMotion(const char* name){
     CEditObject* _O = m_LibRef?m_LibRef:this;    VERIFY(_O);
     OMotionVec& lst = _O->m_OMotions;
     for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
-        if ((stricmp((*m)->Name(),name)==0)){ 
+        if ((stricmp((*m)->Name(),name)==0)){
         	if (m_ActiveOMotion==*m) SetActiveOMotion(0);
             _DELETE(*m);
-        	_O->m_OMotions.erase(m); 
-            break; 
+        	_O->m_OMotions.erase(m);
+            break;
         }
 }
 
@@ -120,7 +120,7 @@ void CEditObject::LoadOMotions(const char* fname){
     // object motions
     m_OMotions.resize(F.Rdword());
 	SetActiveOMotion(0);
-    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){ 
+    for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
         *m_it = new COMotion();
         (*m_it)->Load(F);
     }
@@ -161,7 +161,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
         }
 /*
         {
-            Log->Msg(mtInformation,"A: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
+            ELog.Msg(mtInformation,"A: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
                         M.i.x,M.i.y,M.i.z,M._14_,
                         M.j.x,M.j.y,M.j.z,M._24_,
                         M.k.x,M.k.y,M.k.z,M._34_,
@@ -170,7 +170,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
         if (m_ActiveSMotion){
 			GetBoneWorldTransform(b_it-m_Bones.begin(),m_SMParam.Frame(),m_ActiveSMotion,M);
     	    {
-        	    Log->Msg(mtInformation,"B: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
+        	    ELog.Msg(mtInformation,"B: [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f], [%3.2f, %3.2f, %3.2f, %3.2f]",
             	            M.i.x,M.i.y,M.i.z,M._14_,
                 	        M.j.x,M.j.y,M.j.z,M._24_,
                     	    M.k.x,M.k.y,M.k.z,M._34_,
@@ -212,11 +212,11 @@ CSMotion* CEditObject::AppendSMotion(const char* fname){
 	  	if (CheckBoneCompliance(M)){
 	     	m_SMotions.push_back(M);
         }else{
-        	Log->DlgMsg(mtError,"Motion file '%s' has different bone names. Append failed.",fname);
+        	ELog.DlgMsg(mtError,"Motion file '%s' has different bone names. Append failed.",fname);
 	    	_DELETE(M);
         }
     }else{
-		Log->DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
+		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
     }
     return M;
 }
@@ -228,10 +228,10 @@ bool CEditObject::ReloadSMotion(CSMotion* src, const char* fname){
 	  	if (CheckBoneCompliance(M)){
         	src->CopyMotion(M);
             return true;
-        }else                        Log->DlgMsg(mtError,"Motion file '%s' has different bone names. Reload failed.",fname);
+        }else                        ELog.DlgMsg(mtError,"Motion file '%s' has different bone names. Reload failed.",fname);
 		_DELETE(M);
     }else{
-		Log->DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
+		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
     }
     return false;
 }
@@ -249,17 +249,17 @@ void CEditObject::LoadSMotions(const char* fname){
     // object motions
     m_SMotions.resize(F.Rdword());
 	SetActiveSMotion(0);
-    for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++){ 
+    for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++){
         *m_it = new CSMotion();
         if (!(*m_it)->Load(F)){
-            Log->DlgMsg(mtError,"Motions has different version. Load failed.");
+            ELog.DlgMsg(mtError,"Motions has different version. Load failed.");
             _DELETE(*m_it);
             m_SMotions.clear();
             break;
         }
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
-            Log->DlgMsg(mtError,"Motions file '%s' has different bone names. Load failed.",fname);
+            ELog.DlgMsg(mtError,"Motions file '%s' has different bone names. Load failed.",fname);
             _DELETE(m_it);
             return;
         }
@@ -302,7 +302,7 @@ void CEditObject::GenerateSMotionName(char* buffer, const char* start_name, cons
 
 void CEditObject::UpdateBoneParenting(){
     // update parenting
-    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){ 
+    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         BoneIt parent=find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
         (*b_it)->ParentIndex()=(parent==m_Bones.end())?-1:parent-m_Bones.begin();
     }

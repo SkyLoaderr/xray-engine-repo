@@ -75,18 +75,16 @@ void CPortal::Render( Fmatrix& parent, ERenderPriority flag ){
         for(i=0; i<src.size()-1; i++){ I.push_back(i+1);I.push_back(i+2); }
 		I.push_back			(i+1);
         I.push_back			(1);
-		UI->Device.RenderNearer(0.0002);
+		Device.RenderNearer(0.0002);
 		// render portal tris
-        UI->Device.Shader.Set(UI->Device.m_SelectionShader);
-		UI->Device.DP(D3DPT_TRIANGLEFAN, FVF::F_L, LV.begin(), LV.size());
+        Device.Shader.Set	(Device.m_SelectionShader);
+		Device.DP			(D3DPT_TRIANGLEFAN, FVF::F_L, LV.begin(), LV.size());
 		// render portal edges
-        UI->Device.Shader.Set(UI->Device.m_WireShader);
-		UI->Device.DIP(	D3DPT_LINELIST, FVF::F_L, 
-        				LV.begin(), LV.size(),
-                    	I.begin(),I.size());
-		UI->Device.ResetNearer();
+        Device.Shader.Set	(Device.m_WireShader);
+		Device.DIP			(D3DPT_LINELIST, FVF::F_L, LV.begin(), LV.size(), I.begin(),I.size());
+        Device.ResetNearer	();
         // render normal
-        DU::DrawFaceNormal(m_Center,m_Normal,0.5f,col.get());
+        DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,col.get());
    	}
 }
 
@@ -145,7 +143,7 @@ bool CPortal::Update(bool bLoadMode){
     }
     float m=m_Normal.magnitude();
     if (fabsf(m)<=EPS){
-    	Log->DlgMsg(mtError,"Portal: Some error found at pos: [%3.2f,%3.2f,%3.2f].",m_Vertices[0].x,m_Vertices[0].x,m_Vertices[0].x);
+    	ELog.DlgMsg(mtError,"Portal: Some error found at pos: [%3.2f,%3.2f,%3.2f].",m_Vertices[0].x,m_Vertices[0].x,m_Vertices[0].x);
         m_Valid = false;
 		return false;
     }
@@ -182,7 +180,7 @@ bool CPortal::Update(bool bLoadMode){
         else  if ((front.size()==1)&&(back.size()==2)) 	{ SF = front[0]; SB = back [(SF==back[0])?1:0]; }
 
         if (!(SF && (SF!=SB))){
-            Log->DlgMsg(mtInformation, "Check portal orientation: '%s'",m_Name);
+            ELog.DlgMsg(mtInformation, "Check portal orientation: '%s'",m_Name);
         }else{
             if (SF!=m_SectorFront) InvertOrientation();
         }
@@ -389,30 +387,30 @@ bool CPortal::Load(CStream& F){
     char buf[64];
     R_ASSERT(F.ReadChunk(PORTAL_CHUNK_VERSION,&version));
     if( version!=PORTAL_VERSION ){
-        Log->Msg( mtError, "CPortal: Unsupported version.");
+        ELog.Msg( mtError, "CPortal: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
 	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_FRONT)){
         F.RstringZ	(buf);
-        m_SectorFront=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR); 
+        m_SectorFront=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 	if (F.FindChunk	(PORTAL_CHUNK_SECTOR_BACK)){
         F.RstringZ	(buf);
-		m_SectorBack=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR); 
+		m_SectorBack=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 
     if (!m_SectorBack||!m_SectorFront){
-        Log->Msg( mtError, "Portal: Can't find required sectors.\nObject '%s' can't load.", m_Name);
+        ELog.Msg( mtError, "Portal: Can't find required sectors.\nObject '%s' can't load.", m_Name);
     	return false;
     }
     if (m_SectorBack->m_bHasLoadError||m_SectorFront->m_bHasLoadError){
-        Log->Msg( mtError, "Portal: '%s' can't create.", m_Name);
+        ELog.Msg( mtError, "Portal: '%s' can't create.", m_Name);
     	return false;
     }
-    
+
     R_ASSERT(F.ReadChunk(PORTAL_CHUNK_COLOR,&color));
 
     R_ASSERT(F.FindChunk(PORTAL_CHUNK_VERTICES));
@@ -420,10 +418,10 @@ bool CPortal::Load(CStream& F){
 	F.Read			(m_Vertices.begin(), m_Vertices.size()*sizeof(Fvector));
 
     if (m_Vertices.size()<3){
-        Log->Msg( mtError, "Portal: '%s' can't create.\nInvalid portal.", m_Name);
+        ELog.Msg( mtError, "Portal: '%s' can't create.\nInvalid portal.", m_Name);
     	return false;
     }
-    
+
     Update(true);
     return true;
 }

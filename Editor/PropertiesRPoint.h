@@ -14,7 +14,7 @@
 #include "FrameEmitter.h"
 #include <Forms.hpp>
 
-// refs 
+// refs
 class SceneObject;
 
 class TfrmPropertiesRPoint : public TForm

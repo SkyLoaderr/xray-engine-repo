@@ -21,7 +21,7 @@ class CUI_Camera{
     Fvector			m_HPB;
     Fvector			m_Position;
 protected:
-	friend class	CDevice;
+	friend class	CRenderDevice;
 	friend class	TUI;
 
 	float 			m_Aspect;
@@ -55,7 +55,7 @@ public:
     void			ViewRight 	(){m_HPB.set(PI_DIV_2,0.f,0.f); BuildCamera();}
     void			ViewTop		(){m_HPB.set(0.f,-PI_DIV_2,0.f); BuildCamera();}
     void			ViewBottom 	(){m_HPB.set(0.f,PI_DIV_2,0.f); BuildCamera();}
-    
+
     void			GetView		(Fmatrix& V) const {return V.invert(m_CamMat);}
     const Fvector&	GetHPB		() const {return m_HPB;}
     const Fvector&	GetPosition	() const {return m_Position;}

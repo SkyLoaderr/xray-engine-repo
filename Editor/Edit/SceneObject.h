@@ -26,7 +26,7 @@ protected:
 	char 			m_Name[MAX_OBJ_NAME];
 
     int 			m_GroupIndex;
-    
+
 	BOOL 			m_Selected;
 	BOOL 			m_Visible;
     BOOL 			m_Locked;

@@ -144,7 +144,7 @@ void CLight::Render( Fmatrix& parent, ERenderPriority flag ){
 void CLight::Enable( BOOL flag )
 {
     if (m_UseInD3D){
-		UI->Device.LightEnable(m_D3DIndex,flag);
+		Device.LightEnable(m_D3DIndex,flag);
     	m_Enabled = flag;
     }
 }
@@ -156,12 +156,12 @@ void CLight::Set( int d3dindex ){
     L.diffuse.mul_rgb(m_Brightness);
     L.ambient.mul_rgb(m_Brightness);
     L.specular.mul_rgb(m_Brightness);
-    UI->Device.SetLight(m_D3DIndex,L);
+    Device.SetLight(m_D3DIndex,L);
 }
 
 void CLight::UnSet(){
 	VERIFY( m_D3DIndex>=0 );
-	UI->Device.LightEnable(m_D3DIndex,FALSE);
+	Device.LightEnable(m_D3DIndex,FALSE);
 }
 
 bool CLight::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
@@ -188,7 +188,7 @@ bool CLight::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatri
 
 void CLight::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	m_D3D.position.add(amount);
@@ -199,7 +199,7 @@ void CLight::Move( Fvector& amount ){
 
 void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 
@@ -218,7 +218,7 @@ void CLight::Rotate(Fvector& center, Fvector& axis, float angle){
 //----------------------------------------------------
 void CLight::LocalRotate(Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     vRotate.direct(vRotate,axis,angle);
@@ -272,7 +272,7 @@ bool CLight::Load(CStream& F){
     char buf[1024];
     R_ASSERT(F.ReadChunk(LIGHT_CHUNK_VERSION,&version));
     if( version!=LIGHT_VERSION ){
-        Log->DlgMsg( mtError, "CLight: Unsupported version.");
+        ELog.DlgMsg( mtError, "CLight: Unsupported version.");
         return false;
     }
 

@@ -26,7 +26,7 @@ C3DCursor::~C3DCursor(){
     m_RenderBuffer.clear();
 }
 //---------------------------------------------------------------------------
-                                               
+
 void C3DCursor::SetBrushSegment(float segment){
     m_RenderBuffer.resize(int(segment+1));
     d_angle = float(PI_MUL_2)/float(segment);
@@ -59,14 +59,14 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
 //---------------------------------------------------------------------------
 
 void C3DCursor::Render(){
-    if (m_Visible&&!UI->Device.m_Camera.IsMoving()){
+    if (m_Visible&&!Device.m_Camera.IsMoving()){
         SRayPickInfo pinf;
         Fvector start, dir, N, D;
         POINT start_pt;
         Fvector2 pt;
         GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
         pt.set(float(start_pt.x),float(start_pt.y));
-        UI->Device.m_Camera.MouseRayFromPoint(start,dir,pt);
+        Device.m_Camera.MouseRayFromPoint(start,dir,pt);
         if (UI->PickGround(pinf.pt,start,dir, -1)){
             N.set(0,1,0);
             D.set(0,0,1);
@@ -87,9 +87,9 @@ void C3DCursor::Render(){
                 m_RenderBuffer.back().p.set(m_RenderBuffer[0].p);
 
     //            UI->D3D_RenderNearer(0.0001);
-                UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-				UI->Device.Shader.Set(UI->Device.m_WireShader);
-                UI->Device.DP(D3DPT_LINESTRIP,FVF::F_L,
+                Device.SetTransform(D3DTS_WORLD,precalc_identity);
+				Device.Shader.Set(Device.m_WireShader);
+                Device.DP(D3DPT_LINESTRIP,FVF::F_L,
                     &(m_RenderBuffer.front()), m_RenderBuffer.size());
     //            UI->D3D_ResetNearer();
             }break;
@@ -106,27 +106,27 @@ void C3DCursor::Render(){
                     m_ViewMat.transform(p);
 	                pt[idx].set(p,dwColor);
                 }
-                UI->Device.RenderNearer(0.001);
-                UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-				UI->Device.Shader.Set(UI->Device.m_WireShader);
-                UI->Device.DIP(D3DPT_LINELIST,FVF::F_L, pt, 4, CrossIndices, 4);
-                UI->Device.ResetNearer();
+                Device.RenderNearer(0.001);
+                Device.SetTransform(D3DTS_WORLD,precalc_identity);
+				Device.Shader.Set(Device.m_WireShader);
+                Device.DIP(D3DPT_LINELIST,FVF::F_L, pt, 4, CrossIndices, 4);
+                Device.ResetNearer();
             }break;
             case csPoint:{
             	FVF::TL pt[5];
-                pt[0].transform(pinf.pt,UI->Device.m_FullTransform);
+                pt[0].transform(pinf.pt,Device.mFullTransform);
                 pt[0].color = dwColor;
-                pt[0].p.x = X_TO_REAL(pt[0].p.x);
-                pt[0].p.y = Y_TO_REAL(pt[0].p.y);
+                pt[0].p.x = Device._x2real(pt[0].p.x);
+                pt[0].p.y = Device._y2real(pt[0].p.y);
 				pt[1].set(pt[0].p.x-1,pt[0].p.y  ,pt[0].p.z,pt[0].p.w,dwColor,0,0);
 				pt[2].set(pt[0].p.x+1,pt[0].p.y  ,pt[0].p.z,pt[0].p.w,dwColor,0,0);
 				pt[3].set(pt[0].p.x  ,pt[0].p.y-1,pt[0].p.z,pt[0].p.w,dwColor,0,0);
 				pt[4].set(pt[0].p.x  ,pt[0].p.y+1,pt[0].p.z,pt[0].p.w,dwColor,0,0);
-                UI->Device.RenderNearer(0.001);
-                UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
-				UI->Device.Shader.Set(UI->Device.m_WireShader);
-                UI->Device.DP(D3DPT_POINTLIST,FVF::F_TL, pt, 5);
-                UI->Device.ResetNearer();
+                Device.RenderNearer(0.001);
+                Device.SetTransform(D3DTS_WORLD,precalc_identity);
+				Device.Shader.Set(Device.m_WireShader);
+                Device.DP(D3DPT_POINTLIST,FVF::F_TL, pt, 5);
+                Device.ResetNearer();
             }break;
             }
         }
@@ -142,7 +142,7 @@ bool C3DCursor::PrepareBrush(){
     Fvector2 pt;
     GetCursorPos(&start_pt); start_pt=UI->GetD3DWindow()->ScreenToClient(start_pt);
     pt.set(float(start_pt.x),float(start_pt.y));
-    UI->Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
+    Device.m_Camera.MouseRayFromPoint(brush_start,brush_dir,pt);
     bPickObject = !!Scene->RayPick( brush_start, brush_dir, OBJCLASS_EDITOBJECT, &pinf, false, true);
     if (!bPickObject) bPickGround = UI->PickGround(pinf.pt, brush_start, brush_dir);
     if (bPickObject||bPickGround){

@@ -121,7 +121,7 @@ void TfrmObjectList::UpdateState()
             if (O->Visible())			 node->Selected=O->Selected();
         }
     }
-    
+
 /*    for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
         ObjectList& lst = (*it).second;
         if (IsObjectListClassID((*it).first))
@@ -186,7 +186,7 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 
 void __fastcall TfrmObjectList::sbRefreshListClick(TObject *Sender)
 {
-    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID())) 
+    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID()))
 	    InitListBox();
     else
     	UpdateState();
@@ -204,7 +204,7 @@ void __fastcall TfrmObjectList::tmRefreshSelectionTimer(TObject *Sender)
     // disable UpdateSelection
     tvItems->OnItemSelectedChange = 0;
 
-    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID())) 
+    if ((Scene->ObjCount()!=obj_count)||(cur_cls!=UI->CurrentClassID()))
 		InitListBox();
 //    UpdateListBox();
 
@@ -218,10 +218,10 @@ void __fastcall TfrmObjectList::FormClose(TObject *Sender,
 {
 	Action = caFree;
 	frmObjectList = 0;
-    
+
     tmRefreshSelection->Enabled = false;
     tmRefreshList->Enabled = false;
-    
+
     tvItems->OnItemSelectedChange = 0;
     tvItems->Items->Clear();
     tvItems->OnItemSelectedChange = tvItemsItemSelectedChange;
@@ -248,7 +248,7 @@ void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
       char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);    
+    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
     if (node){
     	tvItems->Selected = node;
 		tvItems->EnsureVisible(node);

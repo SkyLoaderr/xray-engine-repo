@@ -16,7 +16,7 @@ class CAITPoint: public SceneObject {
     ObjectList		m_Links;
     // temporary storage (load only)
     AStringVec		m_NameLinks;
-    
+
     void            DrawPoint		(Fcolor& c);
     void			DrawLinks		(Fcolor& c);
 

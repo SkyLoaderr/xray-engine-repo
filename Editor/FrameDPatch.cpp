@@ -94,11 +94,11 @@ void __fastcall TfraDPatch::ebSelectTextureClick(TObject *Sender)
                 lbDPTexture->Caption = sTexture;
                 pbImagePaint(Sender);
             }else{
-                if (!new_tex->alpha()) Log->DlgMsg(mtError, "Texture must contains alpha channel.");
-                else                   Log->DlgMsg(mtError, "Texture width and height must <= 64");
+                if (!new_tex->alpha()) ELog.DlgMsg(mtError, "Texture must contains alpha channel.");
+                else                   ELog.DlgMsg(mtError, "Texture width and height must <= 64");
             }
         }else{
-            Log->DlgMsg(mtError, "Texture can't load!");
+            ELog.DlgMsg(mtError, "Texture can't load!");
 			sTexture="...";
 	    	lbDPTexture->Caption=sTexture;
         }

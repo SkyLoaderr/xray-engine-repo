@@ -77,7 +77,7 @@ void CNavPoint::DrawNavPoint  (Fcolor& c){
 
 void CNavPoint::Render( Fmatrix& parent, ERenderPriority flag ){
     if (flag==rpNormal){
-        if (UI->Device.m_Frustum.testSphere(m_Position,NAVPOINT_SIZE)){
+        if (Device.m_Frustum.testSphere(m_Position,NAVPOINT_SIZE)){
             Fcolor c;
             c.set(0.f,1.f,0.f,1.f);
             DrawNavPoint(c);
@@ -119,7 +119,7 @@ bool CNavPoint::RTL_Pick(
 
 void CNavPoint::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -132,10 +132,10 @@ bool CNavPoint::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(NAVPOINT_CHUNK_VERSION,&version));
     if( version!=NAVPOINT_VERSION ){
-        Log->DlgMsg( mtError, "CNavPoint: Unsuported version.");
+        ELog.DlgMsg( mtError, "CNavPoint: Unsuported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     R_ASSERT(F.FindChunk(NAVPOINT_CHUNK_POINTS));

@@ -92,7 +92,7 @@ bool CSound::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatri
 
 void CSound::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -101,7 +101,7 @@ void CSound::Move( Fvector& amount ){
 
 void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -114,7 +114,7 @@ void CSound::Rotate( Fvector& center, Fvector& axis, float angle ){
 
 void CSound::LocalRotate( Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -127,10 +127,10 @@ bool CSound::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(SOUND_CHUNK_VERSION,&version));
     if( version!=SOUND_VERSION ){
-        Log->DlgMsg( mtError, "CSound: Unsupported version.");
+        ELog.DlgMsg( mtError, "CSound: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
     R_ASSERT(F.FindChunk(SOUND_CHUNK_PARAMS));

@@ -99,7 +99,7 @@ public:
         bool operator == (st_ObjVer& v)	{return v.f_age==f_age;}
         void reset	(){ver=0;}
     };
-protected:    
+protected:
     st_ObjVer		m_ObjVer;
 	CEditObject 	*m_LibRef;
     bool 			bLibItem;
@@ -144,7 +144,7 @@ public:
     IC OMotionIt	FirstOMotion			()	{return m_OMotions.begin();}
     IC OMotionIt	LastOMotion				()	{return m_OMotions.end();}
     IC int			OMotionCount 			()	{return m_OMotions.size();}
-    
+
     IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 	IC bool 		IsLibItem     			()	{return bLibItem; }

@@ -6,7 +6,6 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
-#include "d3dx.h"
 #include "statisticform.h"
 
 //---------------------------------------------------------------------------
@@ -97,8 +96,8 @@ void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
         else if (mi==miLightScene)  		UI->bRenderLights   = mi->Checked;
         else if (mi==miRenderLinearFilter)	UI->bRenderFilter   = mi->Checked;
         else if (mi==miRenderEdgedFaces)	UI->bRenderEdgedFaces =mi->Checked;
-        else if (mi==miFog){				UI->bRenderFog = mi->Checked; UI->Device.UpdateFog();}
-        else if (mi==miRenderHWTransform){	UI->dwRenderHWTransform = mi->Checked?D3DX_DEFAULT:D3DX_HWLEVEL_RASTER;}
+        else if (mi==miFog){				UI->bRenderFog = mi->Checked; Device.UpdateFog();}
+        else if (mi==miRenderHWTransform){	UI->dwRenderHWTransform = mi->Checked?D3DX_DEFAULT:D3DX_DEFAULT;}//D3DX_HWLEVEL_RASTER;}
         else if (mi==miRealTime)			UI->bRenderRealTime = mi->Checked;
     }
     UI->RedrawScene();
@@ -122,8 +121,9 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
 	if (miRenderShadeFlat->Checked)			UI->dwRenderShadeMode=D3DSHADE_FLAT;
     else if (miRenderShadeGouraud->Checked)	UI->dwRenderShadeMode=D3DSHADE_GOURAUD;
     // hw transform
-	if (miRenderHWTransform->Checked)		UI->dwRenderHWTransform=D3DX_DEFAULT;
-    else 									UI->dwRenderHWTransform=D3DX_HWLEVEL_RASTER;
+//	if (miRenderHWTransform->Checked)
+    UI->dwRenderHWTransform=D3DX_DEFAULT;
+//    else 									UI->dwRenderHWTransform=D3DX_HWLEVEL_RASTER;
     // other render
     UI->bRenderTextures 	= miRenderWithTextures->Checked;
     UI->bRenderLights   	= miLightScene->Checked;
@@ -154,7 +154,7 @@ void __fastcall TfraBottomBar::ebLogClick(TObject *Sender)
 
 void __fastcall TfraBottomBar::ebStopClick(TObject *Sender)
 {
-	UI->Command(COMMAND_BREAK_LAST_OPERATION);	
+	UI->Command(COMMAND_BREAK_LAST_OPERATION);
 }
 //---------------------------------------------------------------------------
 

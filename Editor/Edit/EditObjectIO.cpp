@@ -25,8 +25,8 @@
 #define EOBJ_CHUNK_EDITMESHES      	0x0910
 #define EOBJ_CHUNK_LIB_VERSION     	0x0911
 #define EOBJ_CHUNK_CLASSSCRIPT     	0x0912
-#define EOBJ_CHUNK_BONES			0x0913 
-#define EOBJ_CHUNK_OMOTIONS			0x0914 
+#define EOBJ_CHUNK_BONES			0x0913
+#define EOBJ_CHUNK_OMOTIONS			0x0914
 #define EOBJ_CHUNK_ACTIVE_OMOTION	0x0915
 #define EOBJ_CHUNK_SMOTIONS			0x0916
 #define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
@@ -35,7 +35,7 @@
 bool CEditObject::Load(const char* fname){
 	AnsiString ext=ExtractFileExt(fname);
     ext=ext.LowerCase();
-    if 	(ext==".lwo")    		return Import_LWO(fname,false);//(Log->DlgMsg(mtConfirmation,"Optimize object?")==mrYes)?true:false);
+    if 	(ext==".lwo")    		return Import_LWO(fname,false);//(ELog.DlgMsg(mtConfirmation,"Optimize object?")==mrYes)?true:false);
     else if (ext==".object") 	return LoadObject(fname);
 	return false;
 }
@@ -62,7 +62,7 @@ void CEditObject::SaveObject(const char* fname){
     F.open_chunk(CHUNK_OBJECT_BODY);
     Save(F);
     F.close_chunk();
-    
+
     F.SaveTo(fname,0);
 //    UI->ProgressStart(2,"Compressing...");
 //    UI->ProgressUpdate(1);
@@ -75,44 +75,44 @@ bool CEditObject::Load(CStream& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
-        char buf[1024];        
+        char buf[1024];
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
         if (version!=EOBJ_CURRENT_VERSION){
-            Log->DlgMsg( mtError, "CEditObject: unsupported file version. Object can't load.");
+            ELog.DlgMsg( mtError, "CEditObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }
-    
+
 		SceneObject::Load(F);
 
         R_ASSERT(F.FindChunk(EOBJ_CHUNK_PLACEMENT));
         F.Rvector(vPosition);
         F.Rvector(vRotate);
         F.Rvector(vScale);
-    
+
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAG, &m_DynamicObject));
 
         if (F.FindChunk	(EOBJ_CHUNK_CLASSSCRIPT)){
             F.RstringZ	(buf); m_ClassScript=buf;
         }
-    
+
         if (F.FindChunk(EOBJ_CHUNK_REFERENCE)){
             VERIFY(m_LibRef==0 && m_Meshes.size()==0);
             F.Read(&m_ObjVer, sizeof(m_ObjVer));
             F.RstringZ(buf);
             CLibObject* LO = Lib->SearchObject(buf);
             if (!LO){
-                Log->Msg( mtError, "CEditObject: '%s' not found in library", buf );
+                ELog.Msg( mtError, "CEditObject: '%s' not found in library", buf );
 	            bRes = false;
     	        break;
             }
             if (0==(m_LibRef=LO->GetReference())){
-                Log->Msg( mtError, "CEditObject: '%s' can't load", buf );
+                ELog.Msg( mtError, "CEditObject: '%s' can't load", buf );
 	            bRes = false;
     	        break;
             }
             if(!CheckVersion())
-                Log->Msg( mtError, "CEditObject: '%s' different file version! Some objects will work incorrectly.", buf );
+                ELog.Msg( mtError, "CEditObject: '%s' different file version! Some objects will work incorrectly.", buf );
         }else{
             // file version
             R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
@@ -136,7 +136,7 @@ bool CEditObject::Load(CStream& F){
                 for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
                     F.RstringZ		(buf); *v_it = buf;
                 }
-                (*s_it)->shader 	= UI->Device.Shader.Create(sh_name,(*s_it)->textures);
+                (*s_it)->shader 	= Device.Shader.Create(sh_name,(*s_it)->textures);
                 SH_ShaderDef* sh_base = SHLib->FindShader(AnsiString(sh_name));
                 if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
             }
@@ -151,7 +151,7 @@ bool CEditObject::Load(CStream& F){
                         m_Meshes.push_back(mesh);
                     else{
                         _DELETE(mesh);
-                        Log->DlgMsg( mtError, "CEditObject: Can't load mesh!", buf );
+                        ELog.DlgMsg( mtError, "CEditObject: Can't load mesh!", buf );
                         bRes = false;
                     }
                     M->Close();
@@ -164,20 +164,20 @@ bool CEditObject::Load(CStream& F){
             // bones
             if (F.FindChunk(EOBJ_CHUNK_BONES)){
             	m_Bones.resize(F.Rdword());
-    	        for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){ 
+    	        for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
                 	*b_it = new CBone();
                 	(*b_it)->Load(F);
                 }
                 UpdateBoneParenting();
     		}
-    
+
             // object motions
             if (F.FindChunk(EOBJ_CHUNK_OMOTIONS)){
             	m_OMotions.resize(F.Rdword());
-    	        for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){ 
+    	        for (OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end(); o_it++){
                 	*o_it = new COMotion();
 					if (!(*o_it)->Load(F)){
-			            Log->Msg(mtError,"Motions has different version. Load failed.");
+			            ELog.Msg(mtError,"Motions has different version. Load failed.");
                         _DELETE(*o_it);
                         m_OMotions.clear();
                         break;
@@ -187,10 +187,10 @@ bool CEditObject::Load(CStream& F){
             // skeleton motions
             if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
             	m_SMotions.resize(F.Rdword());
-    	        for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){ 
+    	        for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
                 	*s_it = new CSMotion();
 					if (!(*s_it)->Load(F)){
-			            Log->Msg(mtError,"Motions has different version. Load failed.");
+			            ELog.Msg(mtError,"Motions has different version. Load failed.");
                         _DELETE(*s_it);
                         m_SMotions.clear();
                         break;
@@ -207,12 +207,12 @@ bool CEditObject::Load(CStream& F){
         	F.RstringZ	(buf);
             SetActiveSMotion(FindSMotionByName(buf));
         }
-        
+
         if (!bRes) break;
         UpdateBox();
         UpdateTransform();
     }while(0);
-                                         
+
     return bRes;
 }
 
@@ -232,7 +232,7 @@ void CEditObject::Save(CFS_Base& F){
 	F.open_chunk	(EOBJ_CHUNK_CLASSSCRIPT);
 	F.WstringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
-    
+
     F.write_chunk	(EOBJ_CHUNK_FLAG,&m_DynamicObject,1);
 
     if( IsReference() ){

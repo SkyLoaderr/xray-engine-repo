@@ -145,19 +145,19 @@ bool COccluder::GetBox( Fbox& box ){
 
 void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
 	FLvertexVec V;
-	UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,D3DFILL_SOLID);
+	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
 	if (flag==rpAlphaNormal){
-		DWORD C=RGBA_MAKE ( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
+		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
         // draw plane
-        DU::DrawPlane(m_vCenter,m_vPlaneSize,m_vRotate,RGBA_MAKE(128,255,128,Selected()?BYTE(255*0.15f):BYTE(255*0.07f)),false,false,0);
+        DU::DrawPlane(m_vCenter,m_vPlaneSize,m_vRotate,D3DCOLOR_RGBA(128,255,128,Selected()?BYTE(255*0.15f):BYTE(255*0.07f)),false,false,0);
         UpdatePoints3D();
         // draw convex plane
         V.resize(m_3DPoints.m_Points.size());
         FLvertexIt l_it=V.begin();
         for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,C);
-        UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
-        UI->Device.DP( D3DPT_TRIANGLEFAN,FVF::F_L, V.begin(), V.size());
-        UI->Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+        Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+        Device.DP( D3DPT_TRIANGLEFAN,FVF::F_L, V.begin(), V.size());
+        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }
     if (flag==rpNormal){
         if(Selected()){
@@ -168,14 +168,14 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
             }
         }
         UpdatePoints3D();
-        DWORD CP=RGBA_MAKE( 255, 0,   0, 255 );
-        DWORD CB=RGBA_MAKE( 0,   196, 0, Selected()?BYTE(255*1.0f):BYTE(255*0.6f) );
+        DWORD CP=D3DCOLOR_RGBA( 255, 0,   0, 255 );
+        DWORD CB=D3DCOLOR_RGBA( 0,   196, 0, Selected()?BYTE(255*1.0f):BYTE(255*0.6f) );
         // edges
         V.resize(m_3DPoints.m_Points.size());
         FLvertexIt l_it=V.begin();
         for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,CB);
         V.push_back(V.front());
-        UI->Device.DP( D3DPT_LINESTRIP,FVF::F_L, V.begin(), V.size());
+        Device.DP( D3DPT_LINESTRIP,FVF::F_L, V.begin(), V.size());
         // points
         for(it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++)
             DU::DrawCross(*it,0.025f,0.025f,0.025f,0.025f,0.025f,0.025f,CP,false);
@@ -187,11 +187,11 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
                 DU::DrawSelectionBox(m_3DPoints.m_Points[*it],S);
         }
     }
-    UI->Device.SetRS(D3DRENDERSTATE_FILLMODE,UI->dwRenderFillMode);
+    Device.SetRS(D3DRS_FILLMODE,UI->dwRenderFillMode);
 }
 
 void COccluder::UpdatePoints3D(){
-	if (m_3DPoints.dwFrame==UI->Device.m_Statistic.dwTotalFrame) return;
+	if (m_3DPoints.dwFrame==Device.m_Statistic.dwTotalFrame) return;
     VERIFY(m_Points.size()>2);
     // update transform matrix
     Fmatrix	                M,mScale,mTranslate,mRotate;
@@ -200,7 +200,7 @@ void COccluder::UpdatePoints3D(){
     mTranslate.translate	(m_vCenter);
     M.mul			        (mTranslate,mRotate);
     M.mul			        (mScale);
-    m_3DPoints.dwFrame		= UI->Device.m_Statistic.dwTotalFrame;
+    m_3DPoints.dwFrame		= Device.m_Statistic.dwTotalFrame;
     m_3DPoints.m_Points.resize(m_Points.size());
     FvectorIt lst_it		= m_3DPoints.m_Points.begin();
     Fvector					p;
@@ -280,7 +280,7 @@ bool COccluder::SelectPoint(const CFrustum& frustum, bool bLeaveSel){
 
 void COccluder::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     m_vCenter.add(amount);
@@ -288,7 +288,7 @@ void COccluder::Move( Fvector& amount ){
 
 void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -303,7 +303,7 @@ void COccluder::Rotate( Fvector& center, Fvector& axis, float angle ){
 
 void COccluder::LocalRotate( Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     m_vRotate.direct(m_vRotate,axis,angle);
@@ -311,7 +311,7 @@ void COccluder::LocalRotate( Fvector& axis, float angle ){
 
 void COccluder::Scale( Fvector& center, Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	m_vPlaneSize.x+=amount.x;
@@ -330,7 +330,7 @@ void COccluder::Scale( Fvector& center, Fvector& amount ){
 
 void COccluder::LocalScale( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	m_vPlaneSize.x+=amount.x;
@@ -346,7 +346,7 @@ bool COccluder::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(OCCLUDER_CHUNK_VERSION,&version));
     if( version!=OCCLUDER_VERSION ){
-        Log->DlgMsg( mtError, "Occluder: Unsupported version.");
+        ELog.DlgMsg( mtError, "Occluder: Unsupported version.");
         return false;
     }
 

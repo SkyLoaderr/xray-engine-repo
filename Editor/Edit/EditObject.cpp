@@ -23,7 +23,7 @@ ERenderPriority	st_Surface::RenderPriority(){
 	return rpNormal;
 }
 st_Surface::~st_Surface(){
-	if (shader) UI->Device.Shader.Delete(shader);
+	if (shader) Device.Shader.Delete(shader);
 }
 
 // mimimal bounding box size
@@ -86,10 +86,10 @@ void CEditObject::CloneFrom(CEditObject* source, bool bSetPlacement){
     m_fRadius = source->m_fRadius;
     m_Center.set(source->m_Center);
     m_ClassScript = source->m_ClassScript;
-    
+
     ClearGeometry();
     CopyGeometry(source);
-    
+
 	m_LibRef = source->m_LibRef;
     bLibItem = source->bLibItem;
 }
@@ -155,9 +155,9 @@ void CEditObject::CopyGeometry (CEditObject* source){
     for(SurfaceIt sf_it=source->m_Surfaces.begin(); sf_it!=source->m_Surfaces.end(); sf_it++){
     	m_Surfaces.push_back(new st_Surface(**sf_it));
         if ((*sf_it)->shader){
-	        m_Surfaces.back()->shader = UI->Device.Shader.Create((*sf_it)->shader->shader->cName,(*sf_it)->textures);
-            SH_ShaderDef* sh_base = SHLib->FindShader(AnsiString((*sf_it)->shader->shader->cName));
-            if (sh_base)	m_Surfaces.back()->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
+	        m_Surfaces.back()->shader 	= Device.Shader.Create((*sf_it)->shader->shader->cName,(*sf_it)->textures);
+            SH_ShaderDef* sh_base 		= SHLib->FindShader(AnsiString((*sf_it)->shader->shader->cName));
+            if (sh_base) m_Surfaces.back()->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
         }
     }
     // meshes
@@ -267,7 +267,7 @@ bool CEditObject::GetBox( Fbox& box ){
 }
 
 bool __inline CEditObject::IsRender(Fmatrix& parent){
-    bool bRes = bLibItem||UI->Device.m_Frustum.testSphere(m_Center,m_fRadius);
+    bool bRes = bLibItem||Device.m_Frustum.testSphere(m_Center,m_fRadius);
     if(bRes&&fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(precalc_identity);
     return bRes;
 }
@@ -279,8 +279,8 @@ void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
     if(!bLibItem&&(flag==rpNormal)){
     	Fmatrix matrix; matrix.mul(parent,mTransform);
         if (Selected()){
-	        UI->Device.Shader.Set(UI->Device.m_WireShader);
-    	    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,matrix);
+	        Device.Shader.Set(Device.m_WireShader);
+    	    Device.SetTransform(D3DTS_WORLD,matrix);
         	DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 	        DU::DrawSelectionBox(m_Box,&clr);
         }
@@ -300,20 +300,20 @@ void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
         if(UI->bRenderEdgedFaces&&(flag==rpNormal))
         	RenderEdge(matrix);
 
-	    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,matrix);
+	    Device.SetTransform(D3DTS_WORLD,matrix);
         for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
         	if ((flag==rpAlphaNormal)&&((*s_it)->RenderPriority()==rpAlphaNormal)){
-				UI->Device.Shader.Set((*s_it)->shader);
-    	        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)	
+				Device.Shader.Set((*s_it)->shader);
+    	        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 	(*_M)->Render(matrix,*s_it);
             }
         	if ((flag==rpAlphaLast)&&((*s_it)->RenderPriority()==rpAlphaLast)){
-				UI->Device.Shader.Set((*s_it)->shader);
+				Device.Shader.Set((*s_it)->shader);
     	        for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
 					(*_M)->Render(matrix,*s_it);
             }
             if ((flag==rpNormal)&&((*s_it)->RenderPriority()==rpNormal)){
-				UI->Device.Shader.Set((*s_it)->shader);
+				Device.Shader.Set((*s_it)->shader);
                 // Now iterate on passes
 				for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	    		(*_M)->Render(matrix,*s_it);
@@ -327,11 +327,11 @@ void CEditObject::RenderSingle(Fmatrix& parent){
 	Render(parent, rpAlphaNormal);
 	Render(parent, rpAlphaLast);
 }
- 
+
 void CEditObject::RenderAnimation(const Fmatrix& parent){
 	if (IsOMotionActive()){
     	float fps = m_ActiveOMotion->FPS();
-	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps; 
+	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
     	float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
 
         Fvector T,r;
@@ -352,9 +352,9 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
         M.mul					(mTranslate,mRotate);
         M.mul					(mScale);
 
-        UI->Device.Shader.Set(UI->Device.m_WireShader);
-        UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,M);
-        UI->Device.DP(D3DPT_LINESTRIP,FVF::F_L,v.begin(),v.size());
+        Device.Shader.Set		(Device.m_WireShader);
+        Device.SetTransform		(D3DTS_WORLD,M);
+        Device.DP				(D3DPT_LINESTRIP,FVF::F_L,v.begin(),v.size());
     }
 }
 
@@ -368,21 +368,21 @@ void CEditObject::RenderBones(const Fmatrix& parent){
 	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
                 (*b_it)->Update(T,R);
             }
-            m_SMParam.Update(UI->Device.m_FrameDTime);
+            m_SMParam.Update(Device.fTimeDelta);
         }else{
 		    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
         }
         CalculateAnimation();
 
         // render
-        UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,parent);
-        UI->Device.Shader.Set(UI->Device.m_WireShader);
+        Device.SetTransform(D3DTS_WORLD,parent);
+        Device.Shader.Set(Device.m_WireShader);
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
             Fmatrix& M = (*b_it)->LTransform();
             Fvector p1;
             p1.set			(0,0,0);
             M.transform_tiny(p1);
-            DWORD c = RGBA_MAKE(255,255,0,255);
+            DWORD c 		= D3DCOLOR_RGBA(255,255,0,255);
             Fvector p2,d; 	d.set	(0,0,1);
             M.transform_dir	(d);
             p2.direct		(p1,d,(*b_it)->Length());
@@ -406,10 +406,10 @@ void CEditObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
-    if (bLibItem || UI->Device.m_Frustum.testSphere(m_Center,m_fRadius)){
-		UI->Device.Shader.Set(UI->Device.m_WireShader);
+    if (bLibItem || Device.m_Frustum.testSphere(m_Center,m_fRadius)){
+		Device.Shader.Set(Device.m_WireShader);
         VERIFY(!IsReference());
-        DWORD c=RGBA_MAKE(192,192,192,255);
+        DWORD c=D3DCOLOR_RGBA(192,192,192,255);
         if(mesh) mesh->RenderEdge(parent, c);
         else for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
 				(*_M)->RenderEdge(parent, c);
@@ -422,24 +422,24 @@ void CEditObject::RenderSelection(Fmatrix& parent){
         matrix.mul(parent,mTransform);
         m_LibRef->RenderSelection(matrix);
     }else{
-        DWORD c=RGBA_MAKE(230,70,70,64);
-	    UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,parent);
-		UI->Device.Shader.Set(UI->Device.m_SelectionShader);
-		UI->Device.RenderNearer(0.0005);
+        DWORD c=D3DCOLOR_RGBA(230,70,70,64);
+	    Device.SetTransform(D3DTS_WORLD,parent);
+		Device.Shader.Set(Device.m_SelectionShader);
+		Device.RenderNearer(0.0005);
         for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
 			(*_M)->RenderSelection(parent, c);
 // проба рендерить целым мешем из буфера
 //        for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
 //            for(EditMeshIt _M = m_Meshes.begin();_M!=m_Meshes.end();_M++)
-//                if ((*_M)->m_Visible||fraBottomBar->miDrawHiddenMeshes->Checked) 
+//                if ((*_M)->m_Visible||fraBottomBar->miDrawHiddenMeshes->Checked)
 //                    (*_M)->RenderSelection(parent, c, *s_it);
 //        }
-	    UI->Device.ResetNearer();
+	    Device.ResetNearer();
     }
 }
 
 bool CEditObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
-    if (!bLibItem&&!UI->Device.m_Frustum.testSphere(m_Center,m_fRadius))return false;
+    if (!bLibItem&&!Device.m_Frustum.testSphere(m_Center,m_fRadius))return false;
 	if(IsReference()) return m_LibRef->FrustumPick( frustum, mTransform );
     Fmatrix matrix;
     matrix.mul(parent, mTransform);
@@ -456,7 +456,7 @@ bool CEditObject::SpherePick(const Fvector& center, float radius, const Fmatrix&
 }
 
 bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
-    if (!bLibItem&&!UI->Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
+    if (!bLibItem&&!Device.m_Frustum.testSphere(m_Center,m_fRadius)) return false;
 
 	bool picked = false;
 
@@ -476,7 +476,7 @@ bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, 
 
 void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
 	if(IsReference()){
-    	int offs = pinf.size();
+    	DWORD offs = pinf.size();
 		m_LibRef->BoxPick(box,mTransform,pinf);
         if (pinf.size()>offs)
         	for (SBoxPickInfoIt it=pinf.begin()+offs; it!=pinf.end(); it++)
@@ -491,7 +491,7 @@ void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pin
 
 void CEditObject::Move(Fvector& amount){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -501,7 +501,7 @@ void CEditObject::Move(Fvector& amount){
 
 void CEditObject::Rotate(Fvector& center, Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -519,7 +519,7 @@ void CEditObject::Rotate(Fvector& center, Fvector& axis, float angle){
 }
 void CEditObject::LocalRotate(Fvector& axis, float angle){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -529,11 +529,11 @@ void CEditObject::LocalRotate(Fvector& axis, float angle){
 
 void CEditObject::Scale( Fvector& center, Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     if (IsDynamic()){
-    	Log->DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
+    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -549,17 +549,17 @@ void CEditObject::Scale( Fvector& center, Fvector& amount ){
 	vPosition.sub( center );
 	m.transform_tiny(vPosition);
 	vPosition.add( center );
-    
+
     UpdateBox();
 }
 
 void CEditObject::LocalScale( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     if (IsDynamic()){
-    	Log->DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
+    	ELog.DlgMsg(mtInformation,"Dynamic object %s - can't scale.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -571,8 +571,8 @@ void CEditObject::LocalScale( Fvector& amount ){
 }
 
 void CEditObject::ClearRenderBuffers(){
-	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-    	if (*_M) (*_M)->ClearRenderBuffers();
+//	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+//    	if (*_M) (*_M)->ClearRenderBuffers();
     m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
 }
 
@@ -582,10 +582,11 @@ extern void EndLightVertices();
 void CEditObject::UpdateRenderBuffers(){
 	ClearRenderBuffers();
     DWORD dwCaps;
-    if (UI->Device.m_Caps.dwDevCaps&D3DDEVCAPS_HWTRANSFORMANDLIGHT) dwCaps = D3DVBCAPS_WRITEONLY;
-    else dwCaps = D3DVBCAPS_WRITEONLY | D3DVBCAPS_SYSTEMMEMORY;
+//    if (HW.Caps.bForceSWTransform) dwCaps = D3DVBCAPS_WRITEONLY | D3DVBCAPS_SYSTEMMEMORY;
+//    else dwCaps = D3DVBCAPS_WRITEONLY;
     EditMeshIt _M;
-	for (_M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++) (*_M)->UpdateRenderBuffers(UI->Device.GetD3D(),dwCaps);
+//	for (_M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+//    	(*_M)->UpdateRenderBuffers(Device.GetD3D(),dwCaps);
     m_LoadState |= EOBJECT_LS_RENDERBUFFER;
 }
 //------------------------------------------------------------------------------
@@ -607,7 +608,7 @@ void CEditObject::CloneFromLib( SceneObject *source ){
 
 void CEditObject::ResolveReference() {
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	if( IsReference() ){
@@ -620,7 +621,7 @@ void CEditObject::ResolveReference() {
 
 void CEditObject::TranslateToWorld() {
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -636,7 +637,7 @@ void CEditObject::TranslateToWorld() {
 
     ClearRenderBuffers();
 //    UpdateRenderBuffers();
-    
+
 	UpdateBox();
 }
 
@@ -685,7 +686,7 @@ void CEditObject::OnDeviceDestroy(){
 
 void CEditObject::LightenObject(){
 	EditMeshIt m = m_Meshes.begin();
-	for(;m!=m_Meshes.end();m++){ 
+	for(;m!=m_Meshes.end();m++){
     	(*m)->UnloadCForm();
     	(*m)->UnloadPNormals();
     }

@@ -55,7 +55,7 @@ void TfraEmitter::GetInfoNext(const PS::SEmitterDef& E){
     // sphere
     seSphereRadius->ObjNextInit		(E.m_SphereRadius);
     // box
-    seBoxSizeX->ObjNextInit			(E.m_BoxSize.x);                             
+    seBoxSizeX->ObjNextInit			(E.m_BoxSize.x);
     seBoxSizeY->ObjNextInit			(E.m_BoxSize.y);
     seBoxSizeZ->ObjNextInit			(E.m_BoxSize.z);
     // birth

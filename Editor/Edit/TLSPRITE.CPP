@@ -25,9 +25,9 @@ void CTLSprite::Render(Fvector &pos, float radius){
 	DWORD			cur;
 	BYTE			cc;
 
-	P.transform		( pos, UI->Device.m_FullTransform );
-	float cx		= X_TO_REAL(P.p.x);
-	float cy		= Y_TO_REAL(P.p.y);
+	P.transform		( pos, Device.mFullTransform );
+	float cx		= Device._x2real(P.p.x);
+	float cy		= Device._y2real(P.p.y);
 
 	float sz		= 0.7071f*UI->GetRenderWidth()*radius/P.p.w;
 
@@ -39,7 +39,7 @@ void CTLSprite::Render(Fvector &pos, float radius){
 	mesh.setdepth	( P.p.z, P.p.w );
 	mesh.setcolor	( 0xffffffff );
 
-    UI->Device.DP	( D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    Device.DP		( D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 }
 
 void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
@@ -48,11 +48,11 @@ void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
 	DWORD			cur;
 	BYTE			cc;
 
-	P.transform     (pos, UI->Device.m_FullTransform);
+	P.transform     (pos, Device.mFullTransform);
     if (P.p.w<=0) 	return;
 
-	float cx		= X_TO_REAL(P.p.x);
-	float cy		= Y_TO_REAL(P.p.y);
+	float cx		= Device._x2real(P.p.x);
+	float cy		= Device._y2real(P.p.y);
 
 	float sz		= (UI->GetRenderWidth()*radius)/P.p.w;
 	if (sz<1.5f) 	return;
@@ -70,7 +70,7 @@ void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
 	mesh.setdepth	(P.p.z, P.p.w);
 	mesh.setcolor	(color);
 
-    UI->Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    Device.DP		(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 }
 
 void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& D ){
@@ -79,8 +79,8 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
     P2.direct		(pos,D,radius);
 
 	FVF::TL			s1,s2;
-	s1.transform	(P1,UI->Device.m_FullTransform);
-	s2.transform	(P2,UI->Device.m_FullTransform);
+	s1.transform	(P1,Device.mFullTransform);
+	s2.transform	(P2,Device.mFullTransform);
 
     if ((s1.p.w<=0)||(s2.p.w<=0)) return;
 
@@ -92,14 +92,14 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
 	dir.norm		();
 	R.cross			(dir);
 
-	mesh.m[0].p.x = X_TO_REAL(s1.p.x+l1*R.x);	mesh.m[0].p.y = Y_TO_REAL(s1.p.y+l1*R.y); mesh.m[0].p.z = s2.p.z; mesh.m[0].p.w = s2.p.w;
-	mesh.m[1].p.x = X_TO_REAL(s2.p.x+l2*R.x);	mesh.m[1].p.y = Y_TO_REAL(s2.p.y+l2*R.y); mesh.m[1].p.z = s2.p.z; mesh.m[1].p.w = s2.p.w;
-	mesh.m[2].p.x = X_TO_REAL(s1.p.x-l1*R.x);	mesh.m[2].p.y = Y_TO_REAL(s1.p.y-l1*R.y); mesh.m[2].p.z = s2.p.z; mesh.m[2].p.w = s2.p.w;
-	mesh.m[3].p.x = X_TO_REAL(s2.p.x-l2*R.x);	mesh.m[3].p.y = Y_TO_REAL(s2.p.y-l2*R.y); mesh.m[3].p.z = s2.p.z; mesh.m[3].p.w = s2.p.w;
+	mesh.m[0].p.x = Device._x2real(s1.p.x+l1*R.x);	mesh.m[0].p.y = Device._y2real(s1.p.y+l1*R.y); mesh.m[0].p.z = s2.p.z; mesh.m[0].p.w = s2.p.w;
+	mesh.m[1].p.x = Device._x2real(s2.p.x+l2*R.x);	mesh.m[1].p.y = Device._y2real(s2.p.y+l2*R.y); mesh.m[1].p.z = s2.p.z; mesh.m[1].p.w = s2.p.w;
+	mesh.m[2].p.x = Device._x2real(s1.p.x-l1*R.x);	mesh.m[2].p.y = Device._y2real(s1.p.y-l1*R.y); mesh.m[2].p.z = s2.p.z; mesh.m[2].p.w = s2.p.w;
+	mesh.m[3].p.x = Device._x2real(s2.p.x-l2*R.x);	mesh.m[3].p.y = Device._y2real(s2.p.y-l2*R.y); mesh.m[3].p.z = s2.p.z; mesh.m[3].p.w = s2.p.w;
 
 	mesh.setcolor	(color);
 
-    UI->Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    Device.DP		(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 /*
 	float radius	= size*0.5f;
 
@@ -108,8 +108,8 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
     P2.direct		(pos,D,-radius);
 
 	FVF::TL			s1,s2;
-	s1.transform	(P1,UI->Device.m_FullTransform);
-	s2.transform	(P2,UI->Device.m_FullTransform);
+	s1.transform	(P1,Device.m_FullTransform);
+	s2.transform	(P2,Device.m_FullTransform);
 
     if ((s1.p.w<=0)||(s2.p.w<=0)) return;
 
@@ -130,7 +130,7 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
 
 	mesh.setcolor	(RGBA_MAKE(iFloor(color.r),iFloor(color.g),iFloor(color.b),iFloor(color.a)));
 
-    UI->Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 */
 /*    Fvector2 		dir;
     dir.x			= p1.x-p0.x;
@@ -141,7 +141,7 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
     P0.direct		(pos,);
 
 	FVF::TL			P;
-	P.transform		(pos,UI->Device.m_FullTransform);
+	P.transform		(pos,Device.m_FullTransform);
 	float sz		= UI->GetRenderWidth()*radius/P.p.w;
 	float sz0		= radius/P.p.w;//(radius/p0.w)/2;
 	float sz1		= radius/P.p.w;//radius/p1.w;
@@ -161,7 +161,7 @@ void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& 
 	mesh.setdepth	(P.p.z, P.p.w);
 	mesh.setcolor	(RGBA_MAKE(iFloor(color.r),iFloor(color.g),iFloor(color.b),iFloor(color.a)));
 
-    UI->Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
+    Device.DP	(D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 */
 }
 

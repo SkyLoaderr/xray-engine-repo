@@ -13,12 +13,24 @@
 #include <windows.h>
 #include <mmsystem.h>
 
+#define fabsf(a) fabs(a)
+#define sinf(a) sin(a)
+#define asinf(a) asin(a)
+#define cosf(a) cos(a)
+#define acosf(a) acos(a)
+#define tanf(a) tan(a)
+#define atanf(a) atan(a)
+#define sqrtf(a) sqrt(a)
+#define __forceinline __inline
+#define floorf floor
+#define atan2f atan2
+#define logf log
+
 // DirectX headers
-#include <ddraw.h>
-#include <dsound.h>
+#include <d3d8.h>
+#include <d3dx8.h>
 #include <dinput.h>
-#include <dplay.h>
-#include <d3d.h>
+#include <dsound.h>
 
 // Std C++ headers
 #include <math.h>
@@ -88,29 +100,18 @@ __inline float _cpp_max(float a, float b){ return _MAX(a,b);}
 	( (DWORD)(_0) | ((DWORD)(_1)<<8) | ((DWORD)(_2)<<16) | ((DWORD)(_3)<<24) )
 
 void __fastcall _verify(const char *expr, char *file, int line);
-#define VERIFY(expr) if (!(expr)) _verify(#expr, __FILE__, __LINE__)
+#define VERIFY(expr) 	if (!(expr)) _verify(#expr, __FILE__, __LINE__)
 #define VERIFY2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
-#define R_ASSERT(expr) if (!(expr)) _verify(#expr, __FILE__, __LINE__)
+#define R_ASSERT(expr) 	if (!(expr)) _verify(#expr, __FILE__, __LINE__)
 #define R_ASSERT2(expr, info) if (!(expr)) { char buf[128]; sprintf(buf,"%s, %s",#expr,info); _verify(buf, __FILE__, __LINE__); }
-#define THROW _verify("ERROR", __FILE__, __LINE__)
-#define THROW2(expr) _verify(#expr, __FILE__, __LINE__)
+#define THROW 			_verify("ERROR", __FILE__, __LINE__)
+#define THROW2(expr) 	_verify(#expr, __FILE__, __LINE__)
 #define NODEFAULT THROW
+#define UPDATEC(a,b,c)
 
 #define _FREE(x)		{ if(x) { free(x); (x)=NULL; } }
 #define _DELETE(a)      {delete(a); (a)=NULL;}
 #define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
-#define fabsf(a) fabs(a)
-#define sinf(a) sin(a)
-#define asinf(a) asin(a)
-#define cosf(a) cos(a)
-#define acosf(a) acos(a)
-#define tanf(a) tan(a)
-#define atanf(a) atan(a)
-#define sqrtf(a) sqrt(a)
-#define __forceinline __inline
-#define floorf floor
-#define atan2f atan2
-#define logf log
 
 #define ENGINE_API
 #define DLL_API			__declspec(dllimport)
@@ -123,26 +124,16 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define _RC_NEAR RC_NEAR
 
 // some user components
-#include "shared/dx7todx8.h"
+//#include "shared/dx7todx8.h"
 #include "clsid.h"
 #include "shared/vector.h"
 #include "shared/FixedVector.h"
 #include "shared/xr_list.h"
-#include "shared/fvf.h"
 #include "Log.h"
+
 extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
-#define CDX(_expr_){HRESULT hr=_expr_; if (hr!=DD_OK){char buf[255]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
-
-#define X_TO_REAL(_X_)			((_X_)+1.f)*float(float(UI->GetRenderWidth())/2.f)
-#define Y_TO_REAL(_Y_)			((_Y_)+1.f)*float(float(UI->GetRenderHeight())/2.f)
-
-#define MAX_FOLDER_NAME    255
-#define MAX_OBJ_NAME       64
-#define MAX_OBJCLS_NAME    64
-#define MAX_CLASS_SCRIPT   4096
-#define MAX_LINK_NAME      64
-#define MAX_LTX_ADD        16384
-#define MAX_ADD_FILES_TEXT 1024
+#define CHK_DX(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[255]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
+#define R_CHK(_expr_)			{HRESULT hr=_expr_; if (FAILED(hr)){char buf[255]; sprintf(buf,"%s\n\nD3D Error: %s",#_expr_,InterpretError(hr)); _verify(buf, __FILE__, __LINE__);}}
 
 #define DEFINE_SVECTOR(type,sz,lst,it)\
 	typedef svector<type,sz> lst;\
@@ -154,12 +145,30 @@ DEFINE_VECTOR(WORD,WORDVec,WORDIt);
 DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
 DEFINE_VECTOR(int,INTVec,INTIt);
 DEFINE_VECTOR(float,FloatVec,FloatIt);
-DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);      
+DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
 DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
+DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
+
+#include "device.h"
+
 DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
 DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
-DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
+
+#define MAX_FOLDER_NAME    255
+#define MAX_OBJ_NAME       64
+#define MAX_OBJCLS_NAME    64
+#define MAX_CLASS_SCRIPT   4096
+#define MAX_LINK_NAME      64
+#define MAX_LTX_ADD        16384
+#define MAX_ADD_FILES_TEXT 1024
+
+#ifndef RGBA_GETALPHA
+#define RGBA_GETALPHA(rgb)      DWORD((rgb) >> 24)
+#define RGBA_GETRED(rgb)        DWORD(((rgb) >> 16) & 0xff)
+#define RGBA_GETGREEN(rgb)      DWORD(((rgb) >> 8) & 0xff)
+#define RGBA_GETBLUE(rgb)       DWORD((rgb) & 0xff)
+#endif
 
 extern ENGINE_API Fmatrix precalc_identity;;
 extern ENGINE_API Fbox box_identity;

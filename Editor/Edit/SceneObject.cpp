@@ -50,10 +50,10 @@ bool SceneObject::Load(CStream& F){
 
     if(F.FindChunk(SCENEOBJECT_CHUNK_GROUPINDEX))
 		m_GroupIndex= F.Rdword();
-        
+
 	if(F.FindChunk(SCENEOBJECT_CHUNK_LOCK))
 		m_Locked	= F.Rword();
-        
+
 	return true;
 }
 void SceneObject::Save(CFS_Base& F){

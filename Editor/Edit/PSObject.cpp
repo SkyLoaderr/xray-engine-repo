@@ -45,7 +45,7 @@ void CPSObject::Construct(){
 //----------------------------------------------------
 
 CPSObject::~CPSObject(){
-	if (m_Shader) UI->Device.Shader.Delete(m_Shader);
+	if (m_Shader) Device.Shader.Delete(m_Shader);
 }
 //----------------------------------------------------
 
@@ -65,7 +65,7 @@ bool CPSObject::GetBox( Fbox& box ){
 // - доделать рождение/умирание без удаления и добавления в массив
 //
 void CPSObject::RTL_Update(float dT){
-	float fTime = UI->Device.m_fTimeGlobal;
+	float fTime = Device.fTimeGlobal;
 
 	// update all particles that we own
     for (int i=0; i<int(m_Particles.size()); i++){
@@ -94,9 +94,9 @@ void CPSObject::RTL_Update(float dT){
 
 //this draws the particle system in the ogl window
 void CPSObject::DrawPS(){
-	float fTime = UI->Device.m_fTimeGlobal;
-    if (m_Shader) 	UI->Device.Shader.Set(m_Shader);
-    else			UI->Device.Shader.Set(UI->Device.m_WireShader);
+	float fTime = Device.fTimeGlobal;
+    if (m_Shader) 	Device.Shader.Set(m_Shader);
+    else			Device.Shader.Set(Device.m_WireShader);
 
     CTLSprite m_Sprite;
     int 	mb_samples 	= 1;
@@ -174,7 +174,7 @@ void CPSObject::Render( Fmatrix& parent, ERenderPriority flag ){
         case PS::SEmitter::emSphere:
 			DU::DrawLineSphere(m_Emitter.m_Position, m_Emitter.m_SphereRadius, C, true);
             break;
-        case PS::SEmitter::emBox:   
+        case PS::SEmitter::emBox:
         	DU::DrawBox(m_Emitter.m_Position,m_Emitter.m_BoxSize,true,C);
             break;
         default: THROW;
@@ -185,7 +185,7 @@ void CPSObject::Render( Fmatrix& parent, ERenderPriority flag ){
             DU::DrawSelectionBox(bb,&clr);
         }
     }else if (flag==rpAlphaNormal){
-        if (UI->Device.m_Frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))
+        if (Device.m_Frustum.testSphere(m_Emitter.m_Position,PSOBJECT_SIZE))
             DrawPS();
     }
 }
@@ -223,7 +223,7 @@ bool CPSObject::RayPick(float& distance, Fvector& start, Fvector& direction, Fma
 
 void CPSObject::Move( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     UI->UpdateScene();
@@ -233,7 +233,7 @@ void CPSObject::Move( Fvector& amount ){
 
 void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -248,7 +248,7 @@ void CPSObject::Rotate( Fvector& center, Fvector& axis, float angle ){
 
 void CPSObject::LocalRotate(Fvector& axis, float angle ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
 	Fmatrix m;
@@ -259,7 +259,7 @@ void CPSObject::LocalRotate(Fvector& axis, float angle ){
 //----------------------------------------------------
 void CPSObject::Scale( Fvector& center, Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
@@ -277,7 +277,7 @@ void CPSObject::Scale( Fvector& center, Fvector& amount ){
 
 void CPSObject::LocalScale( Fvector& amount ){
 	if (Locked()){
-    	Log->DlgMsg(mtInformation,"Object %s - locked.", GetName());
+    	ELog.DlgMsg(mtInformation,"Object %s - locked.", GetName());
         return;
     }
     if (m_Emitter.m_EmitterType==PS::SEmitter::emBox){
@@ -298,7 +298,7 @@ bool CPSObject::Compile(PS::SDef* source){
 	if (!source) return false;
 	VERIFY(!m_Shader&&!m_Definition);
 	m_Definition= source;
-    if (source->m_ShaderName[0]&&source->m_TextureName[0]) 	m_Shader = UI->Device.Shader.Create(source->m_ShaderName,source->m_TextureName);
+    if (source->m_ShaderName[0]&&source->m_TextureName[0]) 	m_Shader = Device.Shader.Create(source->m_ShaderName,source->m_TextureName);
     else    												m_Shader = 0;
     m_Emitter.Compile(&source->m_DefaultEmitter);
     return true;
@@ -332,10 +332,10 @@ bool CPSObject::Load(CStream& F){
 
     R_ASSERT(F.ReadChunk(CPSOBJECT_CHUNK_VERSION,&version));
     if( version!=CPSOBJECT_VERSION ){
-        Log->DlgMsg( mtError, "PSObject: Unsupported version.");
+        ELog.DlgMsg( mtError, "PSObject: Unsupported version.");
         return false;
     }
-    
+
 	SceneObject::Load(F);
 
 	char buf[1024];
@@ -343,13 +343,13 @@ bool CPSObject::Load(CStream& F){
     F.RstringZ(buf);
 	Compile(buf);
     if (!m_Definition){
-        Log->DlgMsg( mtError, "CPSObject: '%s' not found in library", buf );
+        ELog.DlgMsg( mtError, "CPSObject: '%s' not found in library", buf );
         return false;
     }
 
     // читать обязательно после компиляции
     R_ASSERT(F.ReadChunk(CPSOBJECT_CHUNK_EMITTER,&m_Emitter));
-    
+
     return true;
 }
 //----------------------------------------------------

@@ -1,0 +1,9 @@
+- DirectX 8.1
+- Новые шейдеры
+- Создать отдельные проекты:
+	- LevelEditor
+    - ShaderEditor
+    - ParticlesEditor
+    - ModelEditor
+- Плагины для MAX && LW
+

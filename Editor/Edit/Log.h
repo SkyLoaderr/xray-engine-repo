@@ -7,15 +7,27 @@
 
 class CLog{
 protected:
-	char m_FileName[MAX_PATH];
+	BOOL        bReady;
+	char 		m_FileName[MAX_PATH];
 public:
-	CLog( char *_FileName );
-	void Msg   ( TMsgDlgType mt, char *_Format, ... );
-	int DlgMsg ( TMsgDlgType mt, char *_Format, ... );
-	int DlgMsg ( TMsgDlgType mt, TMsgDlgButtons btn, char *_Format, ... );
+				CLog	(){bReady=false;}
+    void		Create  (LPCSTR _FileName );
+	void 		Msg   	(TMsgDlgType mt, LPCSTR _Format, ...);
+	int 		DlgMsg 	(TMsgDlgType mt, LPCSTR _Format, ...);
+	int 		DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
 };
 
-extern CLog* Log;
+extern CLog ELog;
+
+void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
+void ENGINE_API	Log	(LPCSTR msg);
+void ENGINE_API	Log	(LPCSTR msg);
+void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
+void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
+void ENGINE_API	Log	(LPCSTR msg, int  			dop);
+void ENGINE_API	Log	(LPCSTR msg, float			dop);
+void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
+void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/
 
