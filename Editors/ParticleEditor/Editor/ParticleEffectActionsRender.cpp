@@ -14,7 +14,7 @@ void RenderDomain(pDomain d, u32 clr)
 	u32 clr_w = subst_alpha	(clr,0xff);
     RCache.set_xform_world	(Fidentity);
     
-    Device.SetShader	(Tools.m_Flags.is(CParticleTools::flDrawTransp)?Device.m_SelectionShader:Device.m_WireShader);
+    Device.SetShader	(Tools.m_Flags.is(CParticleTools::flDrawSolid)?Device.m_SelectionShader:Device.m_WireShader);
     
 	switch(d.type){
     case PDPoint: 	
