@@ -218,7 +218,6 @@
 		<col def="S255">ISProFeatureName</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>##IDS_SERVER_FEATURE_NAME##</td><td/><td>6</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ServerFeature</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td>New MSDE 2000 Object 1</td><td/><td>9</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MSDE_2000_Object</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>New Merge Module Holder Object 1</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>Microsoft Additional Components Holder</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td>##IDS_VLIENT_FEATURE_NAME##</td><td/><td>4</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ClientFeature</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td>DefaultFeature</td><td/><td>2</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>DefaultFeature</td></row>
 		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td>##ID_STRING10##</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MSDE</td></row>
@@ -245,7 +244,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>blank.htm</td><td>ClientComponent</td><td>blank.htm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\blank.htm</td><td>1</td><td/></row>
+		<row><td>blank.htm</td><td>ClientComponent</td><td>blank.htm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\blank.htm</td><td>1</td><td/></row>
 		<row><td>calc.exe</td><td>ClientComponent</td><td>Calc.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\Calc.exe</td><td>1</td><td/></row>
 		<row><td>client_repl_data.mdf</td><td>ServerComponent</td><td>client_repl_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\client_repl_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>client_repl_log.ldf</td><td>ServerComponent</td><td>client_repl_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\client_repl_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
@@ -254,18 +253,18 @@
 		<row><td>kas.exe</td><td>ClientComponent</td><td>KAS.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\KAS.exe</td><td>1</td><td/></row>
 		<row><td>kas_data.mdf</td><td>ServerComponent</td><td>KAS_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\KAS_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>kas_log.ldf</td><td>ServerComponent</td><td>KAS_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\KAS_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
-		<row><td>kasbk.jpg</td><td>ClientComponent</td><td>kasbk.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\kasbk.jpg</td><td>1</td><td/></row>
+		<row><td>kasbk.jpg</td><td>ClientComponent</td><td>kasbk.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\kasbk.jpg</td><td>1</td><td/></row>
 		<row><td>kashelp.chm</td><td>DefaultComponent</td><td>KAShelp.chm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\KAShelp.chm</td><td>1</td><td/></row>
-		<row><td>mdisplit.ico</td><td>DefaultComponent</td><td>MDISplit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MDISplit.ico</td><td>1</td><td/></row>
-		<row><td>msvcp71.dll1</td><td>Files</td><td>MSVCP71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MSVCP71.dll</td><td>1</td><td/></row>
-		<row><td>msvcr71.dll1</td><td>Files</td><td>MSVCR71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MSVCR71.dll</td><td>1</td><td/></row>
+		<row><td>mdisplit.ico</td><td>DefaultComponent</td><td>MDISplit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDISplit.ico</td><td>1</td><td/></row>
+		<row><td>msvcp71.dll1</td><td>Files</td><td>msvcp71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\msvcp71.dll</td><td>1</td><td/></row>
+		<row><td>msvcr71.dll1</td><td>Files</td><td>msvcr71.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\msvcr71.dll</td><td>1</td><td/></row>
 		<row><td>searchdb_data.mdf</td><td>ServerComponent</td><td>searchdb_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
 		<row><td>searchdb_log.ldf</td><td>ServerComponent</td><td>searchdb_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
-		<row><td>sql_config.dll</td><td>ServerComponent</td><td>sql_config.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\vc\sql_config\sql_config.dll</td><td>1</td><td/></row>
-		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
+		<row><td>sql_config.dll</td><td>ServerComponent</td><td>sql_config.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\sql_config.dll</td><td>1</td><td/></row>
+		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\trident.gif</td><td>1</td><td/></row>
 		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
 		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
-		<row><td>xp_indexing.dll</td><td>Files</td><td>xp_indexing.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\xp_indexing.dll</td><td>1</td><td/></row>
+		<row><td>xp_indexing.dll</td><td>Files</td><td>xp_indexing.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\xp_indexing.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="Font">
@@ -353,7 +352,6 @@
 		<col def="S50">Moniker</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td>MSDE_2000_Object_UnInstalling</td><td>MSDE_2000_Object_UnInstalled</td><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>44</td><td/><td/><td/></row>
 		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td/><td/><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
@@ -369,8 +367,6 @@
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s255">ISMergeModule_</col>
 		<col key="yes" def="i2">Language_</col>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>VC_User_CRT71.07D8793C_DC93_47EF_8FDA_3517BC941A0F</td><td>0</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>VC_User_STL71.09528776_2EA8_4A65_AA88_693146381D7D</td><td>0</td></row>
 	</table>
 
 	<table name="ISIISCommon">
@@ -453,8 +449,6 @@
 		<col def="s255">Name</col>
 		<col def="S255">Destination</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>VC_User_CRT71.07D8793C_DC93_47EF_8FDA_3517BC941A0F</td><td>0</td><td>VC User CRT71 RTL X86 ---</td><td/><td/></row>
-		<row><td>VC_User_STL71.09528776_2EA8_4A65_AA88_693146381D7D</td><td>0</td><td>VC User STL71 RTL X86 ---</td><td/><td/></row>
 	</table>
 
 	<table name="ISMergeModuleCfgValues">
@@ -510,17 +504,6 @@
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>UpgradeUser</td><td>"sa"</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>UserName</td><td>""</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>saPassword</td><td>"KAStorka40"</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Cache</td><td>0,Bool</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>CommandLine</td><td>""</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>InstallStatusText</td><td>""</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Logging</td><td>0,Bool</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Msi12Engine</td><td>3,Long</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Msi20Engine</td><td>3,Long</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>MsiTargetPath</td><td>""</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>ProductCode</td><td>""</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>UIOption</td><td>2,Long</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>Uninstall</td><td>-1,Bool</td></row>
-		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td>UninstallStatusText</td><td>""</td></row>
 	</table>
 
 	<table name="ISProductConfiguration">
@@ -748,18 +731,15 @@
 	<table name="ISSetupTypeFeatures">
 		<col key="yes" def="s38">ISSetupType_</col>
 		<col key="yes" def="s38">Feature_</col>
-		<row><td>Client</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Client</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>Client</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
 		<row><td>ClientServer</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
-		<row><td>ClientServer</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>ClientServer</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>ClientServer</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td></row>
 		<row><td>Server</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
 		<row><td>Server</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
-		<row><td>Server</td><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td></row>
 		<row><td>Server</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>Server</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td></row>
 	</table>
