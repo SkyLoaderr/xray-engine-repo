@@ -269,7 +269,7 @@ public:
 						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
 						if (fDistance == MAX_VALUE) {
 							SAIMapData			tData;
-							tData.dwFinishNode	= tCurrentGraphVertex.dwNodeID;
+							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
 							m_tpMapPath.vfFindOptimalPath(
 								m_tpHeap,
 								m_tpIndexes,

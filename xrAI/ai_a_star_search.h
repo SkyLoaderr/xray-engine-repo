@@ -35,11 +35,7 @@ typedef struct tagSAIMapData {
 } SAIMapData;
 
 template<class CTemplateNode, class SData> class CAStarSearch {
-
 private:
-
-	u32			m_dwMaxNodeCount;
-
 	IC void vfUpdateSuccessors(SNode *tpList, float dDifference)
 	{
 		SNode *tpTemp = tpList->tpForward;
@@ -71,14 +67,7 @@ private:
 			tpTemp = tpTemp->tpNext;
 		}
 	}
-
-
 public:
-	CAStarSearch()
-	{
-		m_dwMaxNodeCount = m_header.count;
-	}
-
 	void vfFindOptimalPath(
 			SNode		*tpHeap,
 			SIndexNode	*tpIndexes,
@@ -123,7 +112,7 @@ public:
 			tpBestNode = tpOpenedList->tpOpenedNext;
 
 			if (tpBestNode->f >= fMaxDistance) {
-				fDistance = fMaxDistance;
+				fDistance = MAX_VALUE;
 				return;
 			}
 			
@@ -287,12 +276,10 @@ public:
 					tpTemp2->tpNext = tpTemp1;
 				}
 			}
-			if (dwHeap > m_dwMaxNodeCount)
+			if (dwHeap > m_header.count)
 				break;
 		}
 		
-		tpaNodes.clear();
-		fDistance = fMaxDistance;
+		fDistance = MAX_VALUE;
 	}
 };
-

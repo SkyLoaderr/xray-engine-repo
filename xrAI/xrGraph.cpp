@@ -275,9 +275,6 @@ void xrBuildGraph(LPCSTR name)
 	u32 dwAIPoints;
 	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
 
-	Phase("Initalizing AI path-finding structures");
-	vfLoadSearch();
-
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
 	tThreadManager.wait();
