@@ -202,7 +202,7 @@ void	CRenderTarget::OnDeviceCreate	()
 					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
 							ls	*=	powf		(ld,1/4.f);							// minimize specular where diffuse near zero
 					s32		_d	=	iFloor		(ld*255.5f);						clamp(_d,0,255);
-					s32		_s	=	iFloor		(pow(ls,ps_r2_ls_spower)*255.5f);	clamp(_s,0,255);
+					s32		_s	=	iFloor		(powf(ls,ps_r2_ls_spower)*255.5f);	clamp(_s,0,255);
 					*p			=	color_rgba	(_d,_d,_d,_s);
 				}
 			}
