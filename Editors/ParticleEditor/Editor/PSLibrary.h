@@ -59,6 +59,5 @@ public:
 #define PS_CHUNK_FIRSTGEN		0x0002
 #define PS_CHUNK_SECONDGEN		0x0003
 
-extern CPSLibrary PSLib;
 #endif /*_INCDEF_PSLibrary_H_*/
 

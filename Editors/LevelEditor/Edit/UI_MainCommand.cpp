@@ -36,7 +36,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	    fraTopBar   		= xr_new<TfraTopBar>((TComponent*)0);
 		//----------------
         if (UI.OnCreate()){
-            PSLib.OnCreate	();
+            ::Render->PSystems.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
             SndLib.OnCreate	();
@@ -55,7 +55,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_DESTROY:
 		Command				(COMMAND_CLEAR);
         LALib.OnDestroy		();
-    	PSLib.OnDestroy		();
+    	::Render->PSystems.OnDestroy();
 		Tools.OnDestroy		();
 		SndLib.OnDestroy	();
 		Lib.OnDestroy		();

@@ -22,6 +22,10 @@ DEFINE_VECTOR	(SParticle,Particles,ParticleIt);
 
 #define PARTICLESYSTEM_VERSION		0x0011
 
+#ifdef _EDITOR
+class PropItemVec;
+#endif
+
 #pragma pack( push,1 )
 struct ENGINE_API SEmitterDef
 {

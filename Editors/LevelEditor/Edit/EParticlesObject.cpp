@@ -202,10 +202,10 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 
 bool EParticlesObject::Compile(LPCSTR ref_name)
 {
-    PS::CPGDef* def = PSLib.FindPG(ref_name);
+    PS::CPGDef* def 		= ::Render->PSystems.FindPG(ref_name);
     if (PS::CParticleGroup::Compile(def)){
-		m_RefName	= ref_name;
-		UpdateTransform();
+		m_RefName			= ref_name;
+		UpdateTransform		();
         return true;
     }
     return false;

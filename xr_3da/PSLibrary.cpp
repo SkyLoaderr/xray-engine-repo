@@ -7,8 +7,6 @@
 #include "PSLibrary.h"
 #include "ParticleGroup.h"
 
-CPSLibrary PSLib;
-
 #define _game_data_			"$game_data$"
 
 //----------------------------------------------------

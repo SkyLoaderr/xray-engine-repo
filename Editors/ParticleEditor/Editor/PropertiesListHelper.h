@@ -192,6 +192,19 @@ public:
     IC ButtonValue*		CreateButton	(PropItemVec& items, LPCSTR key, AnsiString val)
     {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val),PROP_BUTTON);		}
     
+    IC FloatValue* 		CreateAngle		(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
+    {   FloatValue* V	= (FloatValue*)	AppendValue		(items,key,xr_new<FloatValue>(val,mn,mx,inc,decim),PROP_FLOAT);
+    	V->SetEvents	(floatRDOnAfterEdit,floatRDOnBeforeEdit); 
+	    V->Owner()->SetEvents(floatRDOnDraw);
+        return V;						
+    }
+    IC VectorValue* 	CreateAngle3	(PropItemVec& items, LPCSTR key, float* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)
+    {   VectorValue* V	= (VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,mn,mx,inc,decim),PROP_VECTOR);
+    	V->SetEvents	(FvectorRDOnAfterEdit,FvectorRDOnBeforeEdit); 
+	    V->Owner()->SetEvents(FvectorRDOnDraw);
+        return V;					
+    }
+
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

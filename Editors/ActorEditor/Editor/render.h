@@ -7,12 +7,14 @@
 #include "blender.h"
 #include "blender_clsid.h"
 #include "xrRender_console.h"
+#include "PSLibrary.h"
 
 // definition (Renderer)
 class	CRender{
 public:
 	// Data
 	CFrustum			ViewBase;
+	CPSLibrary			PSystems;
 public:
 	// Occlusion culling
 	virtual BOOL		occ_visible		(Fbox&	B);

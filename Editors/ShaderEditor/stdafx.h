@@ -125,6 +125,10 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 };
 
 #ifdef _EDITOR
+	class PropValue;
+	class PropItem;
+	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
+
 	#include "device.h"
 	#include "properties.h"
 	#include "render.h"
@@ -133,10 +137,6 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 
 	#include "xrXRC.h"
-
-	class PropValue;
-	class PropItem;
-	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
 
 	#include "CustomObject.h"
 #endif
