@@ -254,5 +254,7 @@ void CScriptEngine::export_object()
 			[
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
+			.def("air_attack",                  &CLuaGameObject::air_attack)
+			.def("air_attack_active",           &CLuaGameObject::air_attack_active)
 	];
 }

@@ -25,6 +25,8 @@
 #include "AI_PhraseDialogManager.h"
 #include "character_info.h"
 
+#include "helicopter.h"
+
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
 	NET_Packet		P;
@@ -832,4 +834,23 @@ const xr_vector<CHitObject>		&CLuaGameObject::memory_hit_objects		() const
 		NODEFAULT;
 	}
 	return			(monster->hit_objects());
+}
+void CLuaGameObject::air_attack (CLuaGameObject * object)
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member do_hunt!");
+		NODEFAULT;
+	}
+	helicopter->doHunt(object->m_tpGameObject);
+}
+bool CLuaGameObject::air_attack_active ()
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member air_attack_active!");
+		NODEFAULT;
+		return true;
+	}
+	return !!helicopter->isOnAttack();
 }
