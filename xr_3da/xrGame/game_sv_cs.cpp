@@ -524,7 +524,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 
 				// Event
 				NET_Packet			P;
-				u_EventGen			(P, GE_ADD_AMMO, W->ID);	   
+				u_EventGen			(P, GE_WPN_AMMO_ADD, W->ID);	   
 				P.w_u16				(u16(iAmmoMagCount*a_magsize+a_total)>u16(a_limit)?u16(a_limit-a_total):u16(iAmmoMagCount*a_magsize));	// Amount of ammo to add
 				u_EventSend			(P);
 				return;

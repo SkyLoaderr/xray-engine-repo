@@ -356,7 +356,6 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
-	P.w_u8					(u8(STATE));
 
 	P.w_u16					(u16(iAmmoCurrent));
 	P.w_u16					(u16(iAmmoElapsed));
@@ -376,7 +375,6 @@ void CWeapon::net_Import	(NET_Packet& P)
 
 	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(N.flags);
-	P.r_u8					(N.state);
 
 	P.r_u16					(N.ammo_current);
 	P.r_u16					(N.ammo_elapsed);
@@ -511,7 +509,6 @@ void CWeapon::UpdateCL		()
 				} else {
 					if (IsWorking())	{ FireEnd(); }
 				}
-				if (u32(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
 			}
 		}
 	}
@@ -530,7 +527,7 @@ void CWeapon::SwitchState(u32 S)
 	if (Local() && (S!=STATE))	
 	{
 		NET_Packet		P;
-		u_EventGen		(P,GE_WPN_STATECHANGE,ID());
+		u_EventGen		(P,GE_WPN_STATE_CHANGE,ID());
 		P.w_u8			(u8(STATE));
 		u_EventSend		(P);
 	}
