@@ -34,8 +34,9 @@ public:
 	virtual	~IWriter	()
 	{
 		xr_free		(fName);
-		while (!chunk_pos.empty())
-			close_chunk();
+        R_ASSERT3	(chunk_pos.empty(),"Opened chunk not closed.",fName);
+//		while (!chunk_pos.empty())
+//			close_chunk();
 	}
 
 	// kernel
