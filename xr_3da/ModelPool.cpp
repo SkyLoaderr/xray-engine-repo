@@ -108,6 +108,25 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 
 	return V;
 }
+
+FBasicVisual*	CModelPool::Instance_Load(CStream* data)
+{
+	FBasicVisual	*V;
+	
+	// Actual loading
+	ogf_header			H;
+	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	V = Instance_Create (H.type);
+	V->Load				(0,data,0);
+
+	// Registration
+	ModelDef			M;
+	M.name[0]			= 0;
+	M.model				= V;
+	Models.push_back	(M);
+
+	return V;
+}
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -145,7 +164,7 @@ FBasicVisual* CModelPool::Create(const char* name)
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
-		if (0==strcmp(I->name,low_name)) {
+		if (I->name[0]&&(0==strcmp(I->name,low_name))) {
 			Model = I->model;
 			break;
 		}
@@ -156,6 +175,11 @@ FBasicVisual* CModelPool::Create(const char* name)
 
 	// 3. If not found
 	return Instance_Duplicate(Instance_Load(low_name));
+}
+
+FBasicVisual* CModelPool::Create(CStream* data)
+{
+	return Instance_Duplicate(Instance_Load(data));
 }
 
 void	CModelPool::Delete(FBasicVisual* &V)
