@@ -15,18 +15,17 @@ end
 function move_callback (obj, action_type, index)
 	if index < 0 then return end
   	local ptr = patrol (obj:patrol ())
-	local point
-    if ptr:flag (index, 1) then point = patrol ("viewpoint1"):point (0) end
-	if ptr:flag (index, 2) then point = patrol ("viewpoint2"):point (0) end
+	local pt
+    if ptr:flag (index, 1) then pt = patrol ("viewpoint1"):point (0) end
+	if ptr:flag (index, 2) then pt = patrol ("viewpoint2"):point (0) end
 	if ptr:flag (index, 3) then
 	   update_action (obj, military2_1.script_name (), look (look.path_dir))	
 	   obj:clear_callback (game_object.movement)	
 	   return
 	end	
 
-	point.y = point.y + 2.0
 
-	update_action (obj, military2_1.script_name (), look (look.point, point))	
+	update_action (obj, military2_1.script_name (), look (look.point, pt))	
 
 end
 
