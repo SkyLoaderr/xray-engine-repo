@@ -150,7 +150,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	pVisual->vis.marker			=	RI.marker			;
 
 #if RENDER==R_R1
-//	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
+	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
 	pVisual->vis.accept_frame	=	Device.dwFrame		;
 #endif
 
