@@ -105,7 +105,7 @@ void CHOM::Load			()
 
 void CHOM::Unload		()
 {
-	_RELEASE	(m_pDBG);
+//	_RELEASE	(m_pDBG);
 	_DELETE		(m_pModel);
 	_FREE		(m_pTris);
 }
