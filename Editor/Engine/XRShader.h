@@ -6,7 +6,6 @@
 #define AFX_XRSHADER_H__DCA7E752_D211_4499_A9EA_1976C523C069__INCLUDED_
 #pragma once
 
-#include "xrShaderDef.h"
 #include "xrShaderTypes.h"
 #include "tss.h"
 

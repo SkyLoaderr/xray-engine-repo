@@ -2,7 +2,6 @@
 #define ParticleSystemH
 
 #include "Particle.h"
-#include "XRShaderDef.h"
 
 namespace PS{
 DEFINE_VECTOR(SParticle,Particles,ParticleIt);

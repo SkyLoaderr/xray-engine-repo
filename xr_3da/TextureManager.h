@@ -39,9 +39,8 @@ private:
 	BOOL				bDeferredLoad;
 public:
 	CTexture*			_CreateTexture	(const char* Name, BOOL bMipmaps=TRUE);
-	CXRShader*			_CreateShader	(const char* Name);
+	CShader*			_CreateShader	(const char* Name);
 	DWORD				_GetMemoryUsage	();
-
 
 	DWORD				dwPassesRequired;
 
