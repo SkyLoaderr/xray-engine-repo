@@ -178,6 +178,9 @@ void CMissile::UpdateCL()
 {
 	inherited::UpdateCL();
 
+//	if (!H_Parent())
+//		Msg				("MISSILE [%s][%s] : [%f][%f][%f]",*cName(),*cNameSect(),VPUSH(Position()));
+	
 	if(State() == MS_IDLE && m_dwStateTime > PLAYING_ANIM_TIME) 
 		OnStateSwitch(MS_PLAYING);
 	
