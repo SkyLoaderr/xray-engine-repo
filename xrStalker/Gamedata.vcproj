@@ -138,7 +138,13 @@
 				Name="string_table"
 				Filter="">
 				<File
+					RelativePath=".\stable_dialogs_agroprom.xml">
+				</File>
+				<File
 					RelativePath=".\stable_dialogs_escape.xml">
+				</File>
+				<File
+					RelativePath=".\stable_dialogs_garbage.xml">
 				</File>
 			</Filter>
 		</Filter>
