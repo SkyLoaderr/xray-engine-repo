@@ -132,6 +132,10 @@ void CUIInventoryWnd::Init()
 	
 
 
+	//Ёлементы автоматического добавлени€
+	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+
+
 	//кнопки внизу
 	AttachChild(&UIButton1);
 	xml_init.InitButton(uiXml, "button", 0, &UIButton1);
@@ -176,7 +180,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UITopList[4]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 6, &UITopList[4]);
 	UITopList[4].BlockCustomPlacement();
-	
+		
 	AttachChild(&UIOutfitSlot);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 7, &UIOutfitSlot);
 	UIOutfitSlot.BlockCustomPlacement();

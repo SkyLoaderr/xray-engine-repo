@@ -83,6 +83,9 @@ void CCustomOutfit::Load(LPCSTR section)
 	m_fK_ChemicalBurn = pSettings->r_float(section,"chemical_burn_immunity");
 	m_fK_Explosion = pSettings->r_float(section,"explosion_immunity");
 	m_fK_FireWound = pSettings->r_float(section,"fire_wound_immunity");
+
+	m_iOutfitIconX = pSettings->r_u32(section, "full_scale_icon_x");
+	m_iOutfitIconY = pSettings->r_u32(section, "full_scale_icon_y");
 }
 
 void CCustomOutfit::net_Destroy() 

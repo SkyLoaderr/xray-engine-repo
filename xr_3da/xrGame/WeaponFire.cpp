@@ -17,8 +17,6 @@
 #define FLAME_TIME 0.05f
 #define HIT_POWER_EPSILON 0.05f
 
-#define GROUND_HIT_PARTICLES "weapons\\wg-hit-ground"
-
 
 
 void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
@@ -26,6 +24,7 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(CWeapon::bullet_material_id, target_material);
 
 	
+	Fvector particle_dir;
 	if (R.O) 
 	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -40,9 +39,18 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 			PS->m_Emitter.m_ConeDirection.set(D);
 			PS->play_at_pos		(vEnd);
 			*/
+			particle_dir = m_vCurrentShootDir;
+			particle_dir.invert();
 		}
-	} else 
+	} 
+	else 
 	{
+        Fvector N;
+		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
+		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
+		particle_dir = N;
+
 		/*ref_shader* pShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
 					 NULL:
 					 *mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
@@ -71,28 +79,22 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
 						NULL:
 						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-	if(!ps_name) return;
+	if(ps_name)
+	{
+		//отыграть партиклы попадания в материал
+		CParticlesObject* pStaticPG;
+		pStaticPG = xr_new<CParticlesObject>(ps_name,Sector());
 
 
-	//отыграть партиклы попадания в материал
-	CParticlesObject* pStaticPG;
-	pStaticPG = xr_new<CParticlesObject>(ps_name,Sector());
+		Fmatrix pos;
+		Fvector zero_vel = {0.f,0.f,0.f};
+		pos.k.normalize(particle_dir);
+		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
+		pos.c.set(vEnd);
 
-//		Fvector N,D;
-//		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-//		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
-//		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-//		D.reflect			(m_vCurrentShootDir,N);
-
-	Fmatrix pos; 
-	Fvector zero_vel = {0.f,0.f,0.f};
-	Fvector reversed_dir = m_vCurrentShootDir;
-	pos.k.normalize(reversed_dir.invert());
-	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
-	pos.c.set(vEnd);
-
-	pStaticPG->UpdateParent(pos,zero_vel);
-	pStaticPG->Play();
+		pStaticPG->UpdateParent(pos,zero_vel);
+		pStaticPG->Play();
+	}
 }
 
 
@@ -111,7 +113,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 	pThisWeapon->m_vEndPoint.mad(pThisWeapon->m_vCurrentShootPos,
 								 pThisWeapon->m_vCurrentShootDir,result.range);
 
-	u16 hit_material_id;
+	u16 hit_material_id = GAMEMTL_NONE;
 
 	//динамический объект
 	if(result.O)
@@ -404,6 +406,25 @@ void CWeapon::UpdateFlameParticles	()
 	m_pFlameParticles->UpdateParent(pos, vel); 
 */
 
+//партиклы дыма
+void CWeapon::StartSmokeParticles	()
+{
+	if(!m_sSmokeParitcles) return;
+
+	CParticlesObject* pSmokeParticles = xr_new<CParticlesObject>(m_sSmokeParitcles,Sector());
+
+	Fvector vel; 
+	vel.sub(Position(),ps_Element(0).vPosition); 
+	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+
+	Fmatrix pos; 
+	pos.set(XFORM()); 
+	pos.c.set(vLastFP);
+
+	pSmokeParticles->UpdateParent(pos, vel); 
+	pSmokeParticles->Play();
+}
+
 
 void CWeapon::FireStart	()
 {
@@ -464,6 +485,12 @@ query:
 	}
 	}
 	}
+
+	//		Fvector N,D;
+//		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
+//		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
+//		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
+//		D.reflect			(m_vCurrentShootDir,N);
 
 */
 

@@ -87,6 +87,9 @@ CWeapon::CWeapon(LPCSTR name)
 	light_render				= ::Render->light_create();
 	light_render->set_shadow	(true);
 	m_shotLight = true;
+
+
+	m_sFlameParitcles = m_sSmokeParitcles = NULL;
 }
 
 CWeapon::~CWeapon		()
@@ -408,6 +411,9 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
 	m_sFlameParitcles	= pSettings->r_string		(section,"flame_particles" );
+
+	if(pSettings->line_exist(section,"smoke_particles"))
+			m_sSmokeParitcles = pSettings->r_string (section,"smoke_particles" );
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));

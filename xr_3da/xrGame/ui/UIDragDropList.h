@@ -42,7 +42,7 @@ public:
 
 	virtual void DetachAll();
 
-	void DropAll();
+	virtual void DropAll();
 		
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 

@@ -158,7 +158,7 @@ void CGrenade::OnEvent(NET_Packet& P, u16 type)
 	case GE_GRENADE_EXPLODE:
 		{
 			Explode();
-			m_expoldeTime = 5000;
+			m_expoldeTime = EXPLODE_TIME_MAX;
 		}break;
 	}
 }

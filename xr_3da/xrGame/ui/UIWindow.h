@@ -145,11 +145,10 @@ public:
 	DEF_LIST (WINDOW_LIST, CUIWindow*);
 	WINDOW_LIST& GetChildWndList() {return m_ChildWndList;}
 
+
+	bool IsAutoDelete() {return m_bAutoDelete;}
+	void SetAutoDelete(bool auto_delete) {m_bAutoDelete = auto_delete;}
 protected:
-
-
-
-
 	//список дочерних окон
 	WINDOW_LIST m_ChildWndList;
 	
@@ -188,4 +187,6 @@ protected:
 	//для определения DoubleClick
 	u32 m_dwLastClickTime;
 
+	//флаг автоматического удаления во время вызова деструктора
+	bool m_bAutoDelete;
 };

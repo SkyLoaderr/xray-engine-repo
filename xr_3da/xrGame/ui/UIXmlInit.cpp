@@ -105,6 +105,11 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, const char* path,
 	if(*scale_str) scale = (float)atof(*scale_str);
 	pWnd->SetTextureScale(scale);
 
+	int stretch_flag = xml_doc.ReadAttribInt(path, index, "stretch");
+	if(stretch_flag) 
+		pWnd->SetStretchTexture(true);
+	else
+		pWnd->SetStretchTexture(false); 
 
 	ref_str texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
@@ -226,10 +231,17 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, const char* path,
 	int rows_num = xml_doc.ReadAttribInt(path, index, "rows_num");
 	int cols_num = xml_doc.ReadAttribInt(path, index, "cols_num");
 	int rows_num_view = xml_doc.ReadAttribInt(path, index, "rows_num_view");
+	
+	ref_str show_grid_str = xml_doc.ReadAttrib(path, index, "show_grid");
+	int show_grid = 1;
+	if(*show_grid_str) show_grid = atoi(*show_grid_str);
 
 	pWnd->SetCellWidth(cell_width);
 	pWnd->SetCellHeight(cell_height);
-	pWnd->InitGrid(rows_num, cols_num, true, rows_num_view);
+	if(show_grid)
+		pWnd->InitGrid(rows_num, cols_num, true, rows_num_view);
+	else
+		pWnd->InitGrid(rows_num, cols_num, 0, rows_num_view);
 
 
 	return true;
@@ -295,6 +307,21 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, const char* path,
 
 	pWnd->SetBackgroundTexture(texture,x,y);
 	
+	return true;
+}
 
+bool CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd)
+{
+	int items_num = xml_doc.GetNodesNum(xml_doc.GetRoot(), tag_name);
+
+	CUIStatic* pUIStatic = NULL;
+	for(int i=0; i<items_num; i++)
+	{
+		pUIStatic = xr_new<CUIStatic>();
+		InitStatic(xml_doc, tag_name, i, pUIStatic);
+		pUIStatic->SetAutoDelete(true);
+		pParentWnd->AttachChild(pUIStatic);
+		pUIStatic = NULL;
+	}
 	return true;
 }

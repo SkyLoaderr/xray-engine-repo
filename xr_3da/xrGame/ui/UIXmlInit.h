@@ -48,6 +48,10 @@ public:
 	bool InitProgressBar(CUIXml& xml_doc, const char* path, 
 						int index, CUIProgressBar* pWnd);
 
+	//автоматическая инициализация статических элеменитов
+	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
+
+
 protected:
 	
 	

@@ -531,6 +531,9 @@ void CWeaponMagazined::OnShot		()
 	// ќгонь из ствола
 	if(m_pFlameParticles && !m_pFlameParticles->IsLooped()) StopFlameParticles();
 	StartFlameParticles	();
+
+	//дым из ствола
+	StartSmokeParticles	();
 }
 
 void CWeaponMagazined::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R)

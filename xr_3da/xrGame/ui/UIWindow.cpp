@@ -22,39 +22,21 @@ CUIWindow::CUIWindow()
 	m_pKeyboardCapturer =  NULL;
 	SetRect(&m_WndRect, 0,0,0,0);
 
+	m_bAutoDelete = false;
+
     Show(true);
 	Enable(true);
 }
 
 CUIWindow::~CUIWindow()
 {
-	m_ChildWndList.clear();
+	DetachAll();
 }
 
 
 void CUIWindow::Init( int x, int y, int width, int height)
 {
 	SetRect(&m_WndRect, x, y, x+width, y+height);
-
-	//
-	//m_background.Init("ui\\hud_health_back","hud\\default",250,250,alNone);
-	//m_background.Init("ui\\ui_hud_frame_l","hud\\default",250,250,alNone);
-//	m_background.Init("ui\\ui_hud_frame",x,y,width, height,alNone);
-	
-	//m_background.Init("ui\\ui_hud_frame",100,100,132, 132,alNone);
-	//m_background.Init("ui\\ui_hud_frame",x,y,width,height,alNone);
-	//m_background.Init("ui\\ui_hud_frame",x,y,x+width,y+height,alNone);
-	//m_background.SetSize(256,256);
-	
-	
-	
-	//m_background.SetRect(x, y, x+width, y+height);
-	
-
-	
-
-	//координаты текста заголовка
-//	SetRect(&m_title_rect, 2,2, width-2, height-2);
 }
 
 void CUIWindow::Init(RECT* pRect)
@@ -116,6 +98,13 @@ void CUIWindow::DetachChild(CUIWindow* pChild)
 void CUIWindow::DetachAll()
 {
 	if(m_ChildWndList.empty()) return;
+
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
+	{
+		CUIWindow* pChild = *it;
+		if(pChild->IsAutoDelete()) 
+			xr_delete(pChild);
+	}
 
 	m_ChildWndList.erase(m_ChildWndList.begin(), m_ChildWndList.end());
 }

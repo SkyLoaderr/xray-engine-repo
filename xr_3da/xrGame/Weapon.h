@@ -235,6 +235,8 @@ public:
 	virtual void			StopFlameParticles	();
 	virtual void			UpdateFlameParticles();
 
+	virtual void			StartSmokeParticles	();
+
 	virtual void			OnStateSwitch		(u32 /**S/**/)		{};
 
 public:
@@ -352,6 +354,10 @@ public:
 	LPCSTR				m_sFlameParitcles;
 	//объект партиклов огня
 	CParticlesObject*	m_pFlameParticles;
+
+	//имя пратиклов для дыма
+	LPCSTR				m_sSmokeParitcles;
+
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;

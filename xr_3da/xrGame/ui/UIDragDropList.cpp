@@ -38,6 +38,8 @@ CUIDragDropList::CUIDragDropList()
 
 CUIDragDropList::~CUIDragDropList()
 {
+	DetachAll();
+
 	m_vGridState.clear();
 	m_vCellStatic.clear();
 	m_DragDropItemsList.clear();
@@ -105,6 +107,13 @@ void CUIDragDropList::DropAll()
 	//тянется совсем другой.
 	GetParent()->SetCapture(this, false);
 	m_pMouseCapturer = NULL;
+
+
+/*	for(DRAG_DROP_LIST_it it = m_DragDropItemsList.begin(); m_DragDropItemsList.end() != it; ++it)
+	{
+		DetachChild((CUIWindow*)*it);
+	}
+	m_DragDropItemsList.clear();*/
 
 	for(u32 i=0; i<m_vCellStatic.size(); ++i)
 	{
@@ -218,10 +227,14 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 					{
 						//отсоединить у прошлого родителя
 						pItem->GetParent()->SetCapture(pItem, false);
+						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 
-						//присоединить нам (но не помещать снова в сетку)
-						AttachChild((CUIWindow*)pItem);
+						//присоединить нам 
+						//чтоб 2 раза не присоединять сначала выкинем
+						//в AttachChild присоединим еще раз
+						RemoveItemFromGrid(pItem);
+						AttachChild(pItem);
 						pItem->BringAllToTop(); 
 					}
 					else

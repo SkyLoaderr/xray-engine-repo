@@ -12,6 +12,8 @@
 #include "ParticlesObject.h"
 
 
+
+
 CExplosive::CExplosive(void) 
 {
 	m_blast = 50.f;
@@ -322,9 +324,9 @@ void CExplosive::UpdateCL()
 	{
 		m_expoldeTime -= Device.dwTimeDelta;
 		
-		if(m_expoldeTime > (5000 - m_lightTime)) 
+		if(m_expoldeTime > (EXPLODE_TIME_MAX - m_lightTime)) 
 		{
-			f32 l_scale = f32(m_expoldeTime - (5000 - m_lightTime))/f32(m_lightTime);
+			f32 l_scale = f32(m_expoldeTime - (EXPLODE_TIME_MAX - m_lightTime))/f32(m_lightTime);
 			m_pLight->set_color(m_lightColor.r*l_scale, 
 								m_lightColor.g*l_scale, 
 								m_lightColor.b*l_scale);

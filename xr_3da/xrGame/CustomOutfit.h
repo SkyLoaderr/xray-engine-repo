@@ -44,4 +44,11 @@ public:
 	float m_fOutfitChemicalBurn;
 	float m_fOutfitExplosion;
 	float m_fOutfitFireWound;
+
+	int GetIconX() {return m_iOutfitIconX;}
+	int GetIconY() {return m_iOutfitIconY;}
+
+protected:
+	int m_iOutfitIconX;
+	int m_iOutfitIconY;
 };

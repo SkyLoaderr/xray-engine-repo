@@ -5,6 +5,8 @@
 #pragma once
 
 #define SND_RIC_COUNT 5
+#define EXPLODE_TIME_MAX 5000
+
 
 #include "../feel_touch.h"
 #include "inventory.h"
