@@ -724,7 +724,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	//m_body_interpolation.UpdatePositions();
 	//m_body_interpolation.UpdateRotations();
 	//return;
-
+	if(! bActive)return;
 	///////////////skip body effecting update for attached elements////////////////
 	if(attached) {
 		if( !dBodyIsEnabled(m_body)) return;
@@ -1053,6 +1053,11 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	m->mulB(m_inverse_local_transform);
 
 }
+void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
+{
+	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
+	m->mulB(m_inverse_local_transform);
+}
 
 void CPHElement::InterpolateGlobalPosition(Fvector* v){
 	m_body_interpolation.InterpolatePosition(*v);
@@ -1290,7 +1295,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 void CPHElement::CallBack1(CBoneInstance* B)
 {
 	Fmatrix parent;
-
+	if(! bActive)return;
 	if(bActivating)
 	{
 		if(ph_world->GetSpace()->lock_count) return;
@@ -1606,4 +1611,93 @@ void CPHElement::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* 
 {
 	m_disl_param=dis_l;
 	m_disw_param=dis_w;
+}
+
+
+void GetBoxExtensions(dGeomID box,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+R_ASSERT2(dGeomGetClass(box)==dBoxClass,"is not a box");
+dVector3 length;
+dGeomBoxGetLengths(box,length);
+dReal dif=dDOT(dGeomGetPosition(box),axis)-center_prg;
+const dReal* rot=dGeomGetRotation(box);
+dReal ful_ext=dFabs(dDOT14(axis,rot+0))*length[0]
+			 +dFabs(dDOT14(axis,rot+1))*length[1]
+			 +dFabs(dDOT14(axis,rot+2))*length[2];
+ ful_ext/=2.f;
+*lo_ext=-ful_ext+dif;
+*hi_ext=ful_ext+dif;
+}
+
+void GetCylinderExtensions(dGeomID cyl,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(cyl)==dCylinderClassUser,"is not a cylinder");
+	dReal radius,length;
+	dGeomCylinderGetParams(cyl,&radius,&length);
+	dReal dif=dDOT(dGeomGetPosition(cyl),axis)-center_prg;
+	const dReal* rot=dGeomGetRotation(cyl);
+
+	dReal _cos=dFabs(dDOT14(axis,rot+1));
+	dReal cos1=dDOT14(axis,rot+0);
+	dReal cos3=dDOT14(axis,rot+2);
+	dReal _sin=_sqrt(cos1*cos1+cos3*cos3);
+	length/=2.f;
+	dReal ful_ext=_cos*length+_sin*radius;
+	*lo_ext=-ful_ext+dif;
+	*hi_ext=ful_ext+dif;
+}
+
+void GetSphereExtensions(dGeomID sphere,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(sphere)==dSphereClass,"is not a sphere");
+	dReal radius=dGeomSphereGetRadius(sphere);
+	dReal dif=dDOT(dGeomGetPosition(sphere),axis)-center_prg;
+	*lo_ext=-radius+dif;
+	*hi_ext=radius+dif;
+}
+
+void GetTransformedGeometryExtensions(dGeomID geom_transform,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(geom_transform)==dGeomTransformClass,"is not a geom transform");
+	dGeomID obj=dGeomTransformGetGeom(geom_transform);
+
+	const dReal* rot=dGeomGetRotation(geom_transform);
+	const dReal* pos=dGeomGetPosition(geom_transform);
+	dVector3 local_axis,local_pos;
+
+	dMULTIPLY1_331(local_axis,rot,axis);
+	dMULTIPLY1_331(local_pos,rot,pos);
+	dReal local_center_prg=center_prg-dDOT(local_pos,local_axis);
+
+	int geom_class_id=dGeomGetClass(obj);
+
+	if(geom_class_id==dCylinderClassUser)	
+	{
+		GetCylinderExtensions	(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		return;
+	}
+
+	switch(geom_class_id) 
+	{
+	case dBoxClass:				GetBoxExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		break;
+	case dSphereClass:			GetSphereExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		break;
+	default: NODEFAULT;
+	}
+}
+
+void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
+{
+	lo_ext=dInfinity;hi_ext=-dInfinity;
+	xr_vector<dGeomID>::iterator i=m_trans.begin(),e=m_trans.end();
+	for(;i!=e;i++)
+	{
+		float temp_lo_ext,temp_hi_ext;
+		GetTransformedGeometryExtensions(*i,(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
+		if(lo_ext>temp_lo_ext)lo_ext=temp_lo_ext;
+		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
+	}
+	
+
 }

@@ -746,6 +746,11 @@ m->mulB(m_object_in_root);
 //m->c.add(m_object_in_root);
 }
 
+void CPHShell::GetGlobalTransformDynamic(Fmatrix* m)
+{
+(*elements.begin())->GetGlobalTransformDynamic(m);
+m->mulB(m_object_in_root);
+}
 void CPHShell::InterpolateGlobalPosition(Fvector* v)
 {
 	(*elements.begin())->InterpolateGlobalPosition(v);

@@ -32,7 +32,7 @@ void CPHJoint::CreateBall()
 
 	if(first)
 	{
-		first->InterpolateGlobalTransform(&first_matrix);
+		first->GetGlobalTransformDynamic(&first_matrix);
 		body1=first->get_body();
 	}
 	else
@@ -42,7 +42,7 @@ void CPHJoint::CreateBall()
 
 	if(second)
 	{
-		second->InterpolateGlobalTransform(&second_matrix);
+		second->GetGlobalTransformDynamic(&second_matrix);
 		body2=second->get_body();
 	}
 	else
@@ -93,8 +93,8 @@ void CPHJoint::CreateHinge()
 
 	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
-	first->InterpolateGlobalTransform(&first_matrix);
-	second->InterpolateGlobalTransform(&second_matrix);
+	first->GetGlobalTransformDynamic(&first_matrix);
+	second->GetGlobalTransformDynamic(&second_matrix);
 
 pos.set(0,0,0);
 switch(vs_anchor)
@@ -144,8 +144,8 @@ void CPHJoint::CreateHinge2()
 	Fvector axis;
 	CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 	CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
-	first->InterpolateGlobalTransform(&first_matrix);
-	second->InterpolateGlobalTransform(&second_matrix);
+	first->GetGlobalTransformDynamic(&first_matrix);
+	second->GetGlobalTransformDynamic(&second_matrix);
 	pos.set(0,0,0);
 	switch(vs_anchor)
 	{
@@ -241,7 +241,7 @@ void CPHJoint::CreateFullControl()
 	dBodyID body2=0;
 	if(first)
 	{
-		first->InterpolateGlobalTransform(&first_matrix);
+		first->GetGlobalTransformDynamic(&first_matrix);
 		body1=first->get_body();
 	}
 	else
@@ -251,7 +251,7 @@ void CPHJoint::CreateFullControl()
 
 	if(second)
 	{
-		second->InterpolateGlobalTransform(&second_matrix);
+		second->GetGlobalTransformDynamic(&second_matrix);
 		body2=second->get_body();
 	}
 	else
@@ -929,6 +929,65 @@ void CPHJoint::GetLimits					(float& lo_limit,float& hi_limit,int axis_num)
 LimitAxisNum(axis_num);
 lo_limit=axes[axis_num].low;
 hi_limit=axes[axis_num].high;
+}
+
+
+void CPHJoint::GetAxisDir(int num, Fvector& axis, eVs& vs)
+{
+LimitAxisNum(num);
+vs=axes[num].vs;
+axis.set(axes[num].direction);
+}
+
+void CPHJoint::GetAxisDirDynamic(int num,Fvector& axis)
+{
+LimitAxisNum(num);
+dVector3 result;
+	switch(eType)
+	{
+		case welding:				; 
+		case ball:					;
+		case universal_hinge:		;
+		case shoulder1:				;
+		case shoulder2:				;
+		case car_wheel:				
+									return;
+		case hinge:					dJointGetHingeAxis (m_joint,result);
+			break;
+		case hinge2:				if(num)	dJointGetHinge2Axis2 (m_joint,result);
+									else	dJointGetHinge2Axis1 (m_joint,result);
+
+			break;
+		case full_control:			dJointGetAMotorAxis (m_joint1,num,result);
+			 break;
+	}
+axis.set(result[0],result[1],result[2]);
+}
+
+void CPHJoint::GetAnchorDynamic(Fvector& anchor)
+{
+	
+	dVector3 result;
+	switch(eType)
+	{
+	case welding:				; 
+	
+	case universal_hinge:		;
+	case shoulder1:				;
+	case shoulder2:				;
+	case car_wheel:				
+								return;
+	case hinge:					dJointGetHingeAnchor (m_joint,result);
+		break;
+	case hinge2:				dJointGetHingeAnchor (m_joint,result);
+						
+
+								break;
+	case ball:					;
+	case full_control:			dJointGetBallAnchor (m_joint,result);
+		break;
+	}
+	anchor.set(result[0],result[1],result[2]);
 }
 
 CPHJoint::SPHAxis::SPHAxis(){

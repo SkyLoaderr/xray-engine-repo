@@ -69,8 +69,7 @@ class CPHElement	:  public CPhysicsElement
 	u32							push_untill;
 
 public:
-	bool					bActive;
-	bool					bActivating;
+
 	/////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////////
@@ -96,6 +95,8 @@ public:
 	void					CallBack						(CBoneInstance* B);
 	void					CallBack1						(CBoneInstance* B);
 	void					PhDataUpdate					(dReal step);
+
+	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
 	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);
 	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val)	;
@@ -121,6 +122,7 @@ public:
 	virtual float			getRadius						();
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
 	virtual void			InterpolateGlobalPosition		(Fvector* v);
+	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);
 
@@ -145,7 +147,7 @@ public:
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
-	void					Activate				(const Fmatrix& start_from, bool disable=false);
+	virtual void			Activate				(const Fmatrix& start_from, bool disable=false);
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
 	virtual float			getMass					(){return m_mass.mass;}

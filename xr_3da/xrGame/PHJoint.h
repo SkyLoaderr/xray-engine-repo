@@ -12,11 +12,7 @@ class CPHJoint: public CPhysicsJoint{
 	float m_erp;				 //joint erp
 	float m_cfm;				 //joint cfm
 
-	enum eVs {				//coordinate system 
-		vs_first,			//in first local
-		vs_second,			//in second local 
-		vs_global			//in global 
-	};
+
 	struct SPHAxis {
 		float high;			//high limit
 		float low;			//law limit
@@ -84,6 +80,10 @@ public:
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
 	virtual dJointID GetDJoint				(){return m_joint;}
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num);
+	virtual void GetAxisDir					(int num,Fvector& axis,eVs& vs);
+	virtual void GetAxisDirDynamic			(int num,Fvector& axis);
+	virtual void GetAnchorDynamic			(Fvector& anchor);
+	virtual void Deactivate();
 	CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual ~CPHJoint(){
 		if(bActive) Deactivate();
@@ -91,7 +91,7 @@ public:
 
 	};
 	void SetShell					(CPHShell* p)			 {pShell=p;}
-	void Deactivate();
+
 };
 
 

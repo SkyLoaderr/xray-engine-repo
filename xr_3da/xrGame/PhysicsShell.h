@@ -41,14 +41,19 @@ DEFINE_MAP	(int,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
 class	CPhysicsBase
 {
 public:
+
+	BOOL					bActive;
+	bool					bActivating;
 	Fmatrix					mXFORM;					// In parent space
 	Fmatrix					mDesired;				// In parent space
 	float					fDesiredStrength;		// Desire strength, [0..1]%
 public:
-	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)		= 0;
+	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false)						= 0;
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false)	= 0;
-	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)																			= 0;
+	virtual void			Activate				(bool  place_current_forms=false,bool disable=false)									    = 0;
+	virtual void			Activate				(const Fmatrix& form,bool disable=false)				= 0;
 	virtual void			InterpolateGlobalTransform(Fmatrix* m)											= 0;
+	virtual void			GetGlobalTransformDynamic(Fmatrix* m)											= 0;
 	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
 
 	virtual void			Deactivate				()														= 0;
@@ -99,6 +104,7 @@ public:
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual float			getRadius				()												= 0;
+	virtual void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
 	virtual ~CPhysicsElement						()												{};
 };
 
@@ -109,8 +115,13 @@ class CPhysicsJoint
 {
 
 public:
-
- 
+	bool bActive;
+enum eVs 
+	{				//coordinate system 
+			vs_first,			//in first local
+			vs_second,			//in second local 
+			vs_global			//in global		
+	};
 enum enumType{				//joint type
 
 	ball,					// ball-socket
@@ -133,7 +144,7 @@ enum enumType{				//joint type
 protected:
 	CPhysicsElement* pFirst_element;
 	CPhysicsElement* pSecond_element;
-	bool bActive;
+
 
 //	CPhysicsJoint(CPhysicsElement* first,CPhysicsElement* second,enumType type){pFirst_element=first; pSecond_element=second; eType=type;bActive=false;}
 
@@ -144,6 +155,7 @@ public:
 IC CPhysicsElement* PFirst_element			()												{return pFirst_element;};
 IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
 	virtual void Activate					()												=0;
+	virtual void Deactivate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;
 	virtual void SetJointSDfactors			(float spring_factor,float damping_factor)		=0;
@@ -170,6 +182,9 @@ IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
 	virtual dJointID GetDJoint				()																  =0;
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
+	virtual void GetAxisDir					(int num,Fvector& axis,eVs& vs)									  =0;
+	virtual void GetAxisDirDynamic			(int num,Fvector& axis)											  =0;
+	virtual void GetAnchorDynamic			(Fvector& anchor)												  =0;
 };
 
 // ABSTRACT: 
@@ -178,8 +193,7 @@ class CPhysicsShell			: public CPhysicsBase
 protected:
 CKinematics* m_pKinematics;
 public:
-	BOOL					bActive;
-	bool					bActivating;
+
 public:
 IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	void						set_Kinematics			(CKinematics* p)	{m_pKinematics=p;}
