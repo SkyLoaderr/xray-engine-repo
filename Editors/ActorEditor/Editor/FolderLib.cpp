@@ -8,9 +8,11 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+CFolderHelper FHelper;
+
 static TElTreeItem*			DragItem;
 
-void FOLDER::ShowPPMenu(TMxPopupMenu* M, TExtBtn* B){
+void CFolderHelper::ShowPPMenu(TMxPopupMenu* M, TExtBtn* B){
     POINT pt;
     GetCursorPos(&pt);
 	M->Popup(pt.x,pt.y-10);
@@ -18,7 +20,7 @@ void FOLDER::ShowPPMenu(TMxPopupMenu* M, TExtBtn* B){
 }
 //---------------------------------------------------------------------------
 
-LPCSTR FOLDER::GetFolderName(const AnsiString& full_name, AnsiString& dest)
+LPCSTR CFolderHelper::GetFolderName(const AnsiString& full_name, AnsiString& dest)
 {
     for (int i=full_name.Length(); i>=1; i--)
     	if (full_name[i]=='\\'){
@@ -28,7 +30,7 @@ LPCSTR FOLDER::GetFolderName(const AnsiString& full_name, AnsiString& dest)
     return dest.c_str();
 }
 
-LPCSTR FOLDER::GetObjectName(const AnsiString& full_name, AnsiString& dest)
+LPCSTR CFolderHelper::GetObjectName(const AnsiString& full_name, AnsiString& dest)
 {
     for (int i=full_name.Length(); i>=1; i--)
     	if (full_name[i]=='\\'){
@@ -40,7 +42,7 @@ LPCSTR FOLDER::GetObjectName(const AnsiString& full_name, AnsiString& dest)
 
 // собирает имя от стартового итема до конечного
 // может включать либо не включать имя объекта
-bool FOLDER::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)
+bool CFolderHelper::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)
 {
 	if (begin_item){
     	TElTreeItem* node = (DWORD(begin_item->Data)==TYPE_OBJECT)?begin_item->Parent:begin_item;
@@ -62,7 +64,7 @@ bool FOLDER::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString
 }
 //---------------------------------------------------------------------------
 
-bool FOLDER::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name)
+bool CFolderHelper::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name)
 {
 	if (begin_item){
     	TElTreeItem* node = begin_item;
@@ -81,7 +83,7 @@ bool FOLDER::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiSt
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
 {
 	if (bIgnoreExt){
         if (start_folder){
@@ -109,7 +111,7 @@ TElTreeItem* FOLDER::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* star
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
 {
 	if (bIgnoreExt){
         if (start_folder){
@@ -136,7 +138,7 @@ TElTreeItem* FOLDER::FindItemInFolder(TElTree* tv, TElTreeItem* start_folder, co
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* CFolderHelper::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
 	int cnt = _GetItemCount(full_name,'\\');
     if (cnt<=0) return 0;
@@ -160,7 +162,7 @@ TElTreeItem* FOLDER::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
 	int cnt = _GetItemCount(full_name,'\\');
     if (cnt<=0) return 0;
@@ -184,7 +186,7 @@ TElTreeItem* FOLDER::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeItem** las
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx, bool bIgnoreExt)
 {
 	int cnt = _GetItemCount(full_name,'\\'); cnt--;
     if (cnt<0) return 0;
@@ -221,7 +223,7 @@ TElTreeItem* FOLDER::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** las
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::AppendFolder(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, LPCSTR full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -240,7 +242,7 @@ TElTreeItem* FOLDER::AppendFolder(TElTree* tv, LPCSTR full_name)
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* FOLDER::AppendObject(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, LPCSTR full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -263,7 +265,7 @@ TElTreeItem* FOLDER::AppendObject(TElTree* tv, LPCSTR full_name)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
+void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
 {
 	name = pref;
     int cnt = 0;
@@ -272,7 +274,7 @@ void FOLDER::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
+void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
 {
 	name = pref;
     int cnt = 0;
@@ -281,7 +283,7 @@ void FOLDER::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name
 }
 //---------------------------------------------------------------------------
 
-LPCSTR FOLDER::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest)
+LPCSTR CFolderHelper::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest)
 {
     VERIFY(level<_GetItemCount(old_name,'\\'));
     _ReplaceItem(old_name,level,ren_part,dest,'\\');
@@ -292,7 +294,7 @@ LPCSTR FOLDER::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR de
 //---------------------------------------------------------------------------
 // Drag'n'Drop
 //---------------------------------------------------------------------------
-void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag)
+void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag)
 {
 	R_ASSERT(after_drag);
 
@@ -347,7 +349,7 @@ void FOLDER::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOnRenameI
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::DragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept)
+void CFolderHelper::DragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept)
 {
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
 	TElTreeItem* tgt;
@@ -378,7 +380,7 @@ void FOLDER::DragOver(TObject *Sender, TObject *Source, int X, int Y, TDragState
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::StartDrag(TObject *Sender, TDragObject *&DragObject)
+void CFolderHelper::StartDrag(TObject *Sender, TDragObject *&DragObject)
 {
 	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(Sender);
 	if (tv->ItemFocused) 	DragItem = tv->ItemFocused;
@@ -386,12 +388,14 @@ void FOLDER::StartDrag(TObject *Sender, TDragObject *&DragObject)
 }
 //---------------------------------------------------------------------------
 
-bool FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
+bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
 {
+	VERIFY(node);
 	N=N.LowerCase();
 	int cnt=_GetItemCount(N.c_str(),'\\');
     if (cnt>1){ N=value; return false; }
     VERIFY(node);
+
     for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){
         if ((itm->Text==N)&&(itm!=node)){
 	        N=value;
@@ -408,20 +412,28 @@ bool FOLDER::AfterTextEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
 }
 //---------------------------------------------------------------------------
 
-void FOLDER::BeforeTextEdit(LPCSTR value, AnsiString& N)
+void CFolderHelper::NameAfterEdit(PropValue* sender, LPVOID edit_val)
 {
+	NameAfterEdit((TElTreeItem*)sender->tag,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
+}
+//---------------------------------------------------------------------------
+
+void CFolderHelper::NameBeforeEdit(PropValue* sender, LPVOID edit_val)
+{
+	AnsiString& N = *(AnsiString*)edit_val;
 	int cnt=_GetItemCount(N.c_str(),'\\');
 	N = _SetPos(N.c_str(),cnt-1,'\\');
 }
 //------------------------------------------------------------------------------
-void FOLDER::TextDraw(LPCSTR value, AnsiString& N)
+void CFolderHelper::NameDraw(PropValue* sender, LPVOID draw_val)
 {
+	AnsiString& N = *(AnsiString*)draw_val;
 	int cnt=_GetItemCount(N.c_str(),'\\');
 	N = _SetPos(N.c_str(),cnt-1,'\\');
 }
 //------------------------------------------------------------------------------
 
-bool FOLDER::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRename){
+bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRename){
     new_text = new_text.LowerCase();
 
     // find item with some name
@@ -430,20 +442,20 @@ bool FOLDER::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TO
             return false;
     }
     AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
+    if (IsFolder(node)){
     	// is folder - rename all folder items
         for (TElTreeItem* item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
+            if (IsObject(item)){
+                MakeName(item,0,full_name,false);
                 VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
                 string256 new_full_name;
                 _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
                 OnRename(full_name.c_str(),new_full_name);
             }
         }
-    }else if (FOLDER::IsObject(node)){
+    }else if (IsObject(node)){
     	// is object - rename only this item
-        FOLDER::MakeName(node,0,full_name,false);
+        MakeName(node,0,full_name,false);
         VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
         string256 new_full_name;
         _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
@@ -454,20 +466,20 @@ bool FOLDER::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TO
 }
 //------------------------------------------------------------------------------
 
-void FOLDER::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
+void CFolderHelper::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(tv->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(tv,tv->Selected,folder);
+    MakeName(tv->Selected,0,start_folder,true);
+    GenerateFolderName(tv,tv->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(tv,folder.c_str());
+	TElTreeItem* node = AppendFolder(tv,folder.c_str());
     if (tv->Selected) tv->Selected->Expand(false);
     if (bEditAfterCreate) tv->EditItem(node,-1);
 }
 //------------------------------------------------------------------------------
 
-BOOL FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem)
+BOOL CFolderHelper::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem, TOnAfterRemoveItem OnAfterRemoveItem)
 {
 	BOOL bRes = FALSE;
     R_ASSERT(OnRemoveItem);
@@ -476,22 +488,28 @@ BOOL FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveI
 	    TElTreeItem* pSelNode = pNode->GetPrevSibling();
 	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
 		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
+    	if (IsFolder(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
                 bRes = TRUE;
 		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) 
+                    MakeName(item,0,full_name,false);
+                	if (IsObject(item)) 
                     	if (!OnRemoveItem(full_name.c_str())) bRes=FALSE;
                 }
-                if (bRes) pNode->Delete();
+                if (bRes){
+                	pNode->Delete();
+                    if (OnAfterRemoveItem) OnAfterRemoveItem();
+                }
         	}
         }
-    	if (FOLDER::IsObject(pNode)){
+    	if (IsObject(pNode)){
 	        if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
+				MakeName(pNode,0,full_name,false);
                 bRes = OnRemoveItem(full_name.c_str());
-	            if (bRes) pNode->Delete();
+	            if (bRes){ 
+                	pNode->Delete();
+                    if (OnAfterRemoveItem) OnAfterRemoveItem();
+                }
         	}
         }
         if (bRes) tv->Selected = pSelNode;
@@ -502,7 +520,7 @@ BOOL FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveI
     }
     return bRes;
 }
-TElTreeItem* FOLDER::ExpandItem(TElTree* tv, TElTreeItem* node)
+TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
 {
 	if (node){
 	    tv->IsUpdating 	= true;
@@ -517,11 +535,11 @@ TElTreeItem* FOLDER::ExpandItem(TElTree* tv, TElTreeItem* node)
     }
     return node;
 }
-TElTreeItem* FOLDER::ExpandItem(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, LPCSTR full_name)
 {
 	return ExpandItem(tv,FindItem(tv,full_name));
 }
-TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
+TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node)
 {
 	if (node){
 	    tv->Selected 		= node;
@@ -529,7 +547,7 @@ TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
     }
     return node;
 }
-TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, LPCSTR full_name)
 {
 	return RestoreSelection(tv,FindItem(tv,full_name));
 }

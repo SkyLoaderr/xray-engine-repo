@@ -147,7 +147,7 @@ void TfrmImageLib::InitItemsList(const char* nm)
 	FilePairIt _E = texture_map.end();
     if (compl_map.size()){
         for (; it!=_E; it++){
-            TElTreeItem* node = FOLDER::AppendObject(tvItems,it->first.c_str());
+            TElTreeItem* node = FHelper.AppendObject(tvItems,it->first.c_str());
             FilePairIt c_it = compl_map.find(it->first);
             if (c_it!=compl_map.end()){
                 int A,M;
@@ -160,15 +160,15 @@ void TfrmImageLib::InitItemsList(const char* nm)
         }
     }else{
         for (; it!=_E; it++)
-            FOLDER::AppendObject(tvItems,it->first.c_str());
+            FHelper.AppendObject(tvItems,it->first.c_str());
     }
 
     // redraw
     TElTreeItem *node=0;
     if (!nm)	node = tvItems->Items->GetFirstNode();
-    else 		node = FOLDER::FindObject(tvItems,nm);
+    else 		node = FHelper.FindObject(tvItems,nm);
 	tvItems->IsUpdating = false;
-    FOLDER::RestoreSelection(tvItems,node);
+    FHelper.RestoreSelection(tvItems,node);
 }
 
 //---------------------------------------------------------------------------
@@ -219,7 +219,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 		// save previous data
         SaveTextureParams();
         // make new name
-    	FOLDER::MakeName(Item,0,m_SelectedName,false);
+    	FHelper.MakeName(Item,0,m_SelectedName,false);
 		_DELETE(m_Thm);
         // get new texture
         if (bImportMode){ 
@@ -282,7 +282,7 @@ void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
 {
 	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
     if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FOLDER::RestoreSelection(tvItems,node);
+    FHelper.RestoreSelection(tvItems,node);
 }
 //---------------------------------------------------------------------------
 
@@ -381,7 +381,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 {
-  	FOLDER::RemoveItem(tvItems,tvItems->Selected,ImageManager.RemoveTexture);
+  	FHelper.RemoveItem(tvItems,tvItems->Selected,ImageManager.RemoveTexture);
 }
 //---------------------------------------------------------------------------
 

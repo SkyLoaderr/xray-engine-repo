@@ -85,6 +85,15 @@ __published:	// IDE-managed Components
 	TMenuItem *N6;
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
+	TElTabSheet *tsMaterial;
+	TBevel *Bevel2;
+	TPanel *Panel2;
+	TExtBtn *ExtBtn1;
+	TExtBtn *ExtBtn2;
+	TExtBtn *ExtBtn3;
+	TExtBtn *ExtBtn6;
+	TElTree *tvMaterial;
+	TElTreeInplaceAdvancedEdit *InplaceMaterialEdit;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -104,23 +113,18 @@ __published:	// IDE-managed Components
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
-	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
 	void __fastcall tvEngineItemFocused(TObject *Sender);
 	void __fastcall ebEngineShaderCloneClick(TObject *Sender);
 	void __fastcall tvEngineKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
-	void __fastcall InplaceEngineEditValidateResult(TObject *Sender,
+	void __fastcall InplaceEditValidateResult(TObject *Sender,
           bool &InputValid);
 	void __fastcall ebCShaderCreateClick(TObject *Sender);
 	void __fastcall pcShadersChange(TObject *Sender);
-	void __fastcall ebCompilerShaderRemoveClick(TObject *Sender);
+	void __fastcall ebShaderRemoveClick(TObject *Sender);
 	void __fastcall ebCompilerShaderCloneClick(TObject *Sender);
-	void __fastcall tvEngineStartDrag(TObject *Sender,
-          TDragObject *&DragObject);
-	void __fastcall tvEngineDragOver(TObject *Sender, TObject *Source, int X,
-          int Y, TDragState State, bool &Accept);
-	void __fastcall tvEngineDragDrop(TObject *Sender, TObject *Source, int X,
+	void __fastcall OnDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
@@ -134,9 +138,10 @@ private:	// User declarations
     TElTree*		CurrentView		(){ if (pcShaders->ActivePage==tsEngine) 		return tvEngine;
 									    else if (pcShaders->ActivePage==tsCompiler)	return tvCompiler;
                                         THROW;
-                                        return 0;
     								  }
 	void __fastcall RenameItem(LPCSTR p0, LPCSTR p1);
+	BOOL __fastcall RemoveItem(LPCSTR p0);
+	void __fastcall AfterRemoveItem();
     bool			bFocusedAffected;
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);

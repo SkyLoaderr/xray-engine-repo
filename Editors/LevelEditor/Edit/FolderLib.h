@@ -9,13 +9,14 @@
 
 // refs
 
-namespace FOLDER{
-	const DWORD TYPE_INVALID=-1;
-	const DWORD TYPE_FOLDER=0;
-	const DWORD TYPE_OBJECT=1;
-
+const DWORD TYPE_INVALID= -1;
+const DWORD TYPE_FOLDER	= 0;
+const DWORD TYPE_OBJECT	= 1;
+class CFolderHelper{
+public:
 	typedef void 		__fastcall (__closure *TOnRenameItem)(LPCSTR p0, LPCSTR p1);
 	typedef BOOL 		__fastcall (__closure *TOnRemoveItem)(LPCSTR p0);
+	typedef void 		__fastcall (__closure *TOnAfterRemoveItem)();
     IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(DWORD)node->Data):TYPE_INVALID;}
     IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(DWORD)node->Data):TYPE_INVALID;}
 
@@ -35,22 +36,25 @@ namespace FOLDER{
     LPCSTR				ReplacePart			(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest);
     bool 				RenameItem          (TElTree* tv, TElTreeItem* node, AnsiString& new_text, TOnRenameItem OnRenameItem);
     void 				CreateNewFolder		(TElTree* tv, bool bEditAfterCreate);
-    BOOL				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem);
+    BOOL				RemoveItem			(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveItem, TOnAfterRemoveItem OnAfterRemoveItem=0);
     // drag'n'drop
-	void 				DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag);
-	void 				DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
-	void 				StartDrag			(TObject *Sender, TDragObject *&DragObject);
+	void __fastcall		DragDrop			(TObject *Sender, TObject *Source, int X, int Y, TOnRenameItem after_drag);
+	void __fastcall		DragOver			(TObject *Sender, TObject *Source, int X, int Y, TDragState State, bool &Accept);
+	void __fastcall		StartDrag			(TObject *Sender, TDragObject *&DragObject);
     // popup menu
     void				ShowPPMenu			(TMxPopupMenu* M, TExtBtn* B=0);
     // folder text edit
-    bool 				AfterTextEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
-    void 				BeforeTextEdit		(LPCSTR value, AnsiString& edit_val);
-    void 				TextDraw			(LPCSTR value, AnsiString& show_val);
+    // name
+ 	bool 				NameAfterEdit		(TElTreeItem* node, LPCSTR value, AnsiString& edit_val);
+    void __fastcall		NameAfterEdit		(PropValue* sender, LPVOID edit_val);
+    void __fastcall		NameBeforeEdit		(PropValue* sender, LPVOID edit_val);
+    void __fastcall		NameDraw			(PropValue* sender, LPVOID draw_val);
     // last selection
     TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		RestoreSelection	(TElTree* tv, LPCSTR full_name);
     TElTreeItem*		ExpandItem			(TElTree* tv, LPCSTR full_name);
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
 //------------------------------------------------------------------------------
-}
+};
+extern CFolderHelper FHelper;
 #endif

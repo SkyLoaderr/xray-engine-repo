@@ -34,6 +34,7 @@ void CShaderTools::OnChangeEditor()
 	switch (ActiveEditor()){
     case aeEngine: 		SEngine.UpdateProperties(); 	break;
     case aeCompiler: 	SCompiler.UpdateProperties(); 	break;
+    case aeMaterial:	SMaterial.UpdateProperties(); 	break;
     };
 }
 //---------------------------------------------------------------------------
@@ -42,6 +43,7 @@ EActiveEditor CShaderTools::ActiveEditor()
 {
 	if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsEngine) return aeEngine;
 	else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsCompiler)	return aeCompiler;
+    else if (fraLeftBar->pcShaders->ActivePage==fraLeftBar->tsMaterial) return aeMaterial;
     return -1;
 }
 //---------------------------------------------------------------------------
@@ -50,6 +52,7 @@ void CShaderTools::Modified(){
     switch (ActiveEditor()){
     case aeEngine: 		SEngine.Modified(); 	break;
     case aeCompiler: 	SCompiler.Modified(); 	break;
+    case aeMaterial:	SMaterial.Modified();	break;
     }
 }
 //---------------------------------------------------------------------------
@@ -102,6 +105,9 @@ void CShaderTools::Update(){
     break;
 	case aeCompiler:
     	SCompiler.Update();
+    break;
+    case aeMaterial:
+    	SMaterial.Update();
     break;
     };
 }
@@ -211,6 +217,7 @@ void CShaderTools::ApplyChanges()
 {
     if (ActiveEditor()==aeEngine)		SEngine.ApplyChanges();
     else if (ActiveEditor()==aeCompiler)SCompiler.ApplyChanges();
+    else if (ActiveEditor()==aeMaterial)SMaterial.ApplyChanges();
 }
 
 void CShaderTools::ShowProperties()

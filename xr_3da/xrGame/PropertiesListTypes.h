@@ -60,6 +60,7 @@ public:
     EPropType			type;
 	TElTreeItem*		item; 
     bool				bEnabled;
+    int 				tag;
 public:
 	// base events
     TAfterEdit			OnAfterEdit;
@@ -68,7 +69,7 @@ public:
     TOnChange			OnChange;
 public:
 						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):
-                        				item(0),key(0),/*parent(0),*/bEnabled(true),bDiff(false),OnAfterEdit(after),
+                        				item(0),key(0),tag(0),bEnabled(true),bDiff(false),OnAfterEdit(after),
                                         OnBeforeEdit(before),OnDrawValue(draw),OnChange(change){};
 	virtual 			~PropValue		(){_FREE(key);};
     virtual LPCSTR		GetText			()=0;

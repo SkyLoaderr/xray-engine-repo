@@ -45,7 +45,7 @@ TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 {
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
-    if (section) return FOLDER::FindFolder(tvProperties,section);
+    if (section) return FHelper.FindFolder(tvProperties,section);
     return 0;
 }
 //---------------------------------------------------------------------------
@@ -62,13 +62,13 @@ void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR secti
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
     if (section){
-    	TElTreeItem* node = FOLDER::FindFolder(tvProperties,section);
+    	TElTreeItem* node = FHelper.FindFolder(tvProperties,section);
         if (node){
 			ClearParams(node);
         	node->Delete();
         }
     }else{
-		FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
+		FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
         ClearParams();
 	    tvProperties->Items->Clear();
     }
@@ -82,7 +82,7 @@ void __fastcall TProperties::EndFillMode(bool bFullExpand)
     // end fill mode
 	if (bFullExpand) tvProperties->FullExpand();
     tvProperties->IsUpdating 	= false;
-    FOLDER::RestoreSelection	(tvProperties,last_selected_item.c_str());
+    FHelper.RestoreSelection	(tvProperties,last_selected_item.c_str());
 };
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
@@ -250,7 +250,7 @@ void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
     // clear values
-    if (tvProperties->Selected) FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
+    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
     ClearParams();
     tvProperties->Items->Clear();
     // fill values
@@ -258,7 +258,7 @@ void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand
     m_Values				= values;
 	for (PropValueIt it=m_Values.begin(); it!=m_Values.end(); it++){
     	PropValue* prop		= *it;
-        prop->item			= FOLDER::AppendObject(tvProperties,(*it)->key);
+        prop->item			= FHelper.AppendObject(tvProperties,(*it)->key);
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         TElCellStyle* CS    = prop->item->AddStyle();
@@ -272,11 +272,11 @@ void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand
     bModified=false;
 	if (full_expand) tvProperties->FullExpand();
 
-    TElTreeItem* sel_node	= FOLDER::ExpandItem(tvProperties,last_selected_item.c_str());
+    TElTreeItem* sel_node	= FHelper.ExpandItem(tvProperties,last_selected_item.c_str());
 
     tvProperties->IsUpdating= false;
 
-    FOLDER::RestoreSelection(tvProperties,sel_node);
+    FHelper.RestoreSelection(tvProperties,sel_node);
 
     Caption = title;
 }

@@ -59,6 +59,12 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     frmMain->paLeftBar->Width = paLeftBar->Width+2;
     frmMain->sbToolsMin->Left = paLeftBar->Width-frmMain->sbToolsMin->Width-3;
     bFocusedAffected = true;
+    
+    // events
+    tvEngine->OnStartDrag 	= FHelper.StartDrag;
+    tvEngine->OnDragOver 	= FHelper.DragOver;
+    tvCompiler->OnStartDrag = FHelper.StartDrag;
+    tvCompiler->OnDragOver 	= FHelper.DragOver;
 }
 //---------------------------------------------------------------------------
 
@@ -129,28 +135,28 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebEngineShaderFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmImages,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	if (Button==mbRight)	FOLDER::ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
+	if (Button==mbRight)	FHelper.ShowPPMenu(pmShaderList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -174,7 +180,7 @@ void TfraLeftBar::InitPalette(TemplateVec& lst){
 void __fastcall TfraLeftBar::ebEngineShaderCreateMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FOLDER::ShowPPMenu(pmTemplateList,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmTemplateList,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -182,7 +188,7 @@ void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
 {
 	TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     AnsiString folder;
-	FOLDER::MakeName(tvEngine->Selected,0,folder,true);
+	FHelper.MakeName(tvEngine->Selected,0,folder,true);
     CBlender* B = Tools.SEngine.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
 	Tools.SEngine.ResetShaders(true);
 	Tools.SEngine.SetCurrentBlender(B);
@@ -201,18 +207,18 @@ void TfraLeftBar::ClearCShaderList(){
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddBlender(LPCSTR full_name){
-	FOLDER::AppendObject(tvEngine,full_name);
+	FHelper.AppendObject(tvEngine,full_name);
 }
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::AddCShader(LPCSTR full_name){
-	FOLDER::AppendObject(tvCompiler,full_name);
+	FHelper.AppendObject(tvCompiler,full_name);
 }
 //---------------------------------------------------------------------------
 
 void TfraLeftBar::SetCurrentBlender(LPCSTR full_name)
 {
-	TElTreeItem* node = full_name?FOLDER::FindItem(tvEngine,full_name):0;
+	TElTreeItem* node = full_name?FHelper.FindItem(tvEngine,full_name):0;
 	bFocusedAffected = false;
 	tvEngine->Selected=node;
 	bFocusedAffected = true;
@@ -221,7 +227,7 @@ void TfraLeftBar::SetCurrentBlender(LPCSTR full_name)
 //---------------------------------------------------------------------------
 void TfraLeftBar::SetCurrentCShader(LPCSTR full_name)
 {
-	TElTreeItem* node = full_name?FOLDER::FindItem(tvCompiler,full_name):0;
+	TElTreeItem* node = full_name?FHelper.FindItem(tvCompiler,full_name):0;
 	bFocusedAffected = false;
 	tvCompiler->Selected=node;
 	bFocusedAffected = true;
@@ -233,10 +239,10 @@ void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
 	AnsiString folder;
     AnsiString start_folder;
-    FOLDER::MakeName(CurrentView()->Selected,0,start_folder,true);
-    FOLDER::GenerateFolderName(CurrentView(),CurrentView()->Selected,folder);
+    FHelper.MakeName(CurrentView()->Selected,0,start_folder,true);
+    FHelper.GenerateFolderName(CurrentView(),CurrentView()->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = FOLDER::AppendFolder(CurrentView(),folder.c_str());
+	TElTreeItem* node = FHelper.AppendFolder(CurrentView(),folder.c_str());
     if (CurrentView()->Selected) CurrentView()->Selected->Expand(false);
     CurrentView()->EditItem(node,-1);
 	Tools.Modified();
@@ -255,44 +261,32 @@ void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
+BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
 {
-    TElTreeItem* pNode = tvEngine->Selected;
-    if (pNode){
-		tvEngine->IsUpdating = true;
-	    TElTreeItem* pSelNode = pNode->GetPrevSibling();
-	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
-		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
-		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) Tools.SEngine.RemoveBlender(full_name.c_str());
-                }
-				Tools.SEngine.ResetCurrentBlender();
-                Tools.SEngine.ApplyChanges();
-                Tools.SEngine.ResetShaders();
-	            pNode->Delete();
-                Tools.SEngine.Modified();
-        	}
-        }
-    	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
-	            Tools.SEngine.RemoveBlender(full_name.c_str());
-				Tools.SEngine.ResetCurrentBlender();
-                Tools.SEngine.ApplyChanges();
-                Tools.SEngine.ResetShaders();
-	            pNode->Delete();
-                Tools.SEngine.Modified();
-        	}
-        }
-        tvEngine->Selected		= pSelNode;
-		tvEngine->IsUpdating 	= false;
-        tvEngine->SetFocus();
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
+	switch (Tools.ActiveEditor()){
+    case aeEngine: 		Tools.SEngine.RemoveBlender(p0); 	break;
+    case aeCompiler: 	Tools.SCompiler.RemoveShader(p0); 	break;
+    case aeMaterial:	Tools.SMaterial.RemoveMaterial(p0);	break;
     }
+    return TRUE;
+}
+//---------------------------------------------------------------------------
+void TfraLeftBar::AfterRemoveItem()
+{
+	switch (Tools.ActiveEditor()){
+    case aeEngine: 		
+        Tools.SEngine.ResetCurrentBlender();
+        Tools.SEngine.ApplyChanges();
+        Tools.SEngine.ResetShaders();
+    break;
+    case aeCompiler: 	
+        Tools.SCompiler.ResetCurrentShader();
+    break;
+    case aeMaterial:
+    	Tools.SMaterial.ResetCurrentMaterial();
+    break;
+    }
+	Tools.Modified();
 }
 //---------------------------------------------------------------------------
 
@@ -301,11 +295,11 @@ void __fastcall TfraLeftBar::tvEngineItemFocused(TObject *Sender)
 	if (!bFocusedAffected) return;
 	if (pcShaders->ActivePage==tsEngine){
     	AnsiString name;
-    	FOLDER::MakeName(tvEngine->Selected, 0, name, false);
+    	FHelper.MakeName(tvEngine->Selected, 0, name, false);
 	    Tools.SEngine.SetCurrentBlender(name.c_str());
     }else if (pcShaders->ActivePage==tsCompiler){
     	AnsiString name;
-    	FOLDER::MakeName(tvCompiler->Selected, 0, name, false);
+    	FHelper.MakeName(tvCompiler->Selected, 0, name, false);
 	    Tools.SCompiler.SetCurrentShader(name.c_str());
     }
 }
@@ -314,9 +308,9 @@ void __fastcall TfraLeftBar::tvEngineItemFocused(TObject *Sender)
 void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvEngine->Selected;
-    if (pNode&&FOLDER::IsObject(pNode)){
+    if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
-		FOLDER::MakeName(pNode,0,full_name,false);
+		FHelper.MakeName(pNode,0,full_name,false);
         CBlender* B=Tools.SEngine.CloneBlender(full_name.c_str());
 		Tools.SEngine.ResetShaders(true);
 	    Tools.SEngine.SetCurrentBlender(B);
@@ -330,11 +324,7 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
 void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-	if (pcShaders->ActivePage==tsEngine){
-    	if (Key==VK_DELETE) ebEngineShaderRemoveClick(Sender);
-    }else if (pcShaders->ActivePage==tsCompiler){
-    	if (Key==VK_DELETE) ebCompilerShaderRemoveClick(Sender);
-    }
+   	if (Key==VK_DELETE) ebShaderRemoveClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -345,12 +335,13 @@ void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::InplaceEngineEditValidateResult(TObject *Sender, bool &InputValid)
+void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &InputValid)
 {
 	TElTreeInplaceAdvancedEdit* IE=0;
     switch(Tools.ActiveEditor()){
     case aeEngine: 		IE=InplaceEngineEdit; 	break;
     case aeCompiler: 	IE=InplaceCompilerEdit;	break;
+    case aeMaterial:	IE=InplaceMaterialEdit;	break;
     }
 
     AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
@@ -364,21 +355,23 @@ void __fastcall TfraLeftBar::InplaceEngineEditValidateResult(TObject *Sender, bo
         }
     }
     AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
+    if (FHelper.IsFolder(node)){
         for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
+            if (FHelper.IsObject(item)){
+                FHelper.MakeName(item,0,full_name,false);
                 switch (Tools.ActiveEditor()){
                 case aeEngine: 		Tools.SEngine.RenameBlender(full_name.c_str(),new_text.c_str(),node->Level); break;
                 case aeCompiler: 	Tools.SCompiler.RenameShader(full_name.c_str(),new_text.c_str(),node->Level); break;
+                case aeMaterial: 	Tools.SMaterial.RenameMaterial(full_name.c_str(),new_text.c_str(),node->Level); break;
                 }
             }
         }
-    }else if (FOLDER::IsObject(node)){
-        FOLDER::MakeName(node,0,full_name,false);
+    }else if (FHelper.IsObject(node)){
+        FHelper.MakeName(node,0,full_name,false);
         switch (Tools.ActiveEditor()){
         case aeEngine: 		Tools.SEngine.RenameBlender(full_name.c_str(),new_text.c_str(),node->Level); break;
         case aeCompiler: 	Tools.SCompiler.RenameShader(full_name.c_str(),new_text.c_str(),node->Level); break;
+        case aeMaterial: 	Tools.SMaterial.RenameMaterial(full_name.c_str(),new_text.c_str(),node->Level); break;
         }
     }
     CurrentView()->Selected=node;
@@ -389,7 +382,7 @@ void __fastcall TfraLeftBar::InplaceEngineEditValidateResult(TObject *Sender, bo
 void __fastcall TfraLeftBar::ebCShaderCreateClick(TObject *Sender)
 {
     AnsiString folder;
-	FOLDER::MakeName(tvCompiler->Selected,0,folder,true);
+	FHelper.MakeName(tvCompiler->Selected,0,folder,true);
     Shader_xrLC* S = Tools.SCompiler.AppendShader(folder.c_str(),0);
 	Tools.SCompiler.SetCurrentShader(S);
 	Tools.SCompiler.Modified();
@@ -402,49 +395,19 @@ void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebCompilerShaderRemoveClick(TObject* Sender)
+void __fastcall TfraLeftBar::ebShaderRemoveClick(TObject* Sender)
 {
-    TElTreeItem* pNode = tvCompiler->Selected;
-    if (pNode){
-		tvCompiler->IsUpdating = true;
-	    TElTreeItem* pSelNode = pNode->GetPrevSibling();
-	    if (!pSelNode) pSelNode = pNode->GetNextSibling();
-		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
-		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item)) Tools.SCompiler.RemoveShader(full_name.c_str());
-                }
-				Tools.SCompiler.ResetCurrentShader();
-	            pNode->Delete();
-                Tools.SCompiler.Modified();
-        	}
-        }
-    	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected blender?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
-	            Tools.SCompiler.RemoveShader(full_name.c_str());
-				Tools.SCompiler.ResetCurrentShader();
-	            pNode->Delete();
-                Tools.SCompiler.Modified();
-        	}
-        }
-        tvCompiler->Selected	= pSelNode;
-		tvCompiler->IsUpdating 	= false;
-        tvCompiler->SetFocus();
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
+	TElTree* tv = dynamic_cast<TElTree*>(Sender); VERIFY(tv);
+	FHelper.RemoveItem(tv,tv->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvCompiler->Selected;
-    if (pNode&&FOLDER::IsObject(pNode)){
+    if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
-		FOLDER::MakeName(pNode,0,full_name,false);
+		FHelper.MakeName(pNode,0,full_name,false);
 		Tools.SCompiler.SetCurrentShader(Tools.SCompiler.CloneShader(full_name.c_str()));
 		Tools.SCompiler.Modified();
     }else{
@@ -453,33 +416,21 @@ void __fastcall TfraLeftBar::ebCompilerShaderCloneClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngineDragOver(TObject *Sender,
-      TObject *Source, int X, int Y, TDragState State, bool &Accept)
-{
-	FOLDER::DragOver(Sender,Source,X,Y,State,Accept);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvEngineStartDrag(TObject *Sender,
-      TDragObject *&DragObject)
-{
-	FOLDER::StartDrag(Sender,DragObject);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1)
 {
 	switch (Tools.ActiveEditor()){
-    case aeEngine: 		Tools.SEngine.RenameBlender((LPCSTR)p0,(LPCSTR)p1); 	break;
-    case aeCompiler: 	Tools.SCompiler.RenameShader((LPCSTR)p0,(LPCSTR)p1); 	break;
+    case aeEngine: 		Tools.SEngine.RenameBlender(p0,p1); 	break;
+    case aeCompiler: 	Tools.SCompiler.RenameShader(p0,p1); 	break;
+    case aeMaterial:	Tools.SMaterial.RenameMaterial(p0,p1);	break;
     }
 	Tools.Modified();
 }
 //---------------------------------------------------------------------------
-void __fastcall TfraLeftBar::tvEngineDragDrop(TObject *Sender,
+
+void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-	FOLDER::DragDrop(Sender,Source,X,Y,RenameItem);
+	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
 }
 //---------------------------------------------------------------------------
 

@@ -63,7 +63,9 @@
       Intermediate\LightAnimLibrary.obj Intermediate\Frustum.obj 
       Intermediate\render.obj Intermediate\SoundManager.obj 
       Intermediate\UI_MainMail.obj Intermediate\xrSkin2W.obj Intermediate\HW.obj 
-      Intermediate\defines.obj Intermediate\GameFont.obj"/>
+      Intermediate\defines.obj Intermediate\GameFont.obj 
+      Intermediate\SHGameMaterialToolsProperties.obj 
+      Intermediate\SHGameMaterialTools.obj Intermediate\GameMtlLib.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -88,16 +90,16 @@
     <USERDEFINES value="_EDITOR;_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source"/>
-    <LIBPATH value="Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source"/>
+    <LIBPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Animations -IEngine\BLENDERS -Ir:\borland\components6\alexmx 
-      -Ieditor -Ilib -Ilib\DX -IR:\DirectX8.1\include -I$(BCB)\include 
-      -I$(BCB)\include\vcl -Iengine -IP:\MagicFM_Borland\Sdk\Include 
-      -IR:\Borland\Components6\Elpack\Code 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
+      -Ir:\borland\components6\alexmx -Ieditor -Ilib -Ilib\DX 
+      -IR:\DirectX8.1\include -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
+      -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -src_suffix cpp -D_EDITOR 
       -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 -b- 
@@ -253,6 +255,9 @@
       <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHGameMaterialToolsProperties.cpp" FORMNAME="" UNITNAME="SHGameMaterialToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHGameMaterialTools.cpp" FORMNAME="" UNITNAME="SHGameMaterialTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

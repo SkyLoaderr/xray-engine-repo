@@ -91,7 +91,7 @@ void CSHCompilerTools::Load(){
 void CSHCompilerTools::Save(){
     ApplyChanges();
     AnsiString name;
-    FOLDER::MakeFullName		(fraLeftBar->tvCompiler->Selected,0,name);
+    FHelper.MakeFullName		(fraLeftBar->tvCompiler->Selected,0,name);
 	ResetCurrentShader			();
 	m_bUpdateCurrent			= false;
 

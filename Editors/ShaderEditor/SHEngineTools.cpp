@@ -138,7 +138,7 @@ void CSHEngineTools::RealResetShaders()
     m_bFreezeUpdate 	= TRUE;
 	// mem current blender
     AnsiString name;
-    FOLDER::MakeFullName(fraLeftBar->tvEngine->Selected,0,name);
+    FHelper.MakeFullName(fraLeftBar->tvEngine->Selected,0,name);
 
 	Tools.UpdateObjectShader();
 	ResetCurrentBlender	();

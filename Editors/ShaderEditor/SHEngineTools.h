@@ -80,8 +80,6 @@ friend class TfrmShaderProperties;
 	void __fastcall 	RemoveConstProps	(TElTreeItem* parent);
     // name
 	void __fastcall 	NameOnAfterEdit		(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit	(PropValue* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 
     void				RealResetShaders	();
 

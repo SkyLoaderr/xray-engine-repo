@@ -4,6 +4,7 @@
 
 #include "SHEngineTools.h"
 #include "SHCompilerTools.h"
+#include "SHGameMaterialTools.h"
 
 // refs
 class CEditableObject;
@@ -13,7 +14,8 @@ class TProperties;
 
 enum EActiveEditor{
 	aeEngine = 0,
-    aeCompiler
+    aeCompiler,
+    aeMaterial
 };
 
 enum EAction{
@@ -41,6 +43,7 @@ public:
     TProperties*		m_Props;
     CSHEngineTools		SEngine;
     CSHCompilerTools	SCompiler;
+    CSHGameMaterialTools SMaterial;
 public:
 						CShaderTools		();
     virtual 			~CShaderTools		();
@@ -51,8 +54,8 @@ public:
     bool				OnCreate			();
     void				OnDestroy			();
 
-    bool				IfModified			(){return SEngine.IfModified()&&SCompiler.IfModified();}
-    bool				IsModified			(){return SEngine.IsModified()||SCompiler.IsModified();}
+    bool				IfModified			(){return SEngine.IfModified()&&SCompiler.IfModified()&&SMaterial.IfModified();}
+    bool				IsModified			(){return SEngine.IsModified()||SCompiler.IsModified()||SMaterial.IsModified();}
     void				Modified			();
 
     void				ZoomObject			();

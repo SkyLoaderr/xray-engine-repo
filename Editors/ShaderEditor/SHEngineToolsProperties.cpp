@@ -163,18 +163,8 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_v
 {
 	TextValue* V = (TextValue*)sender;
     AnsiString* new_name = (AnsiString*)edit_val;
-	if (FOLDER::AfterTextEdit(fraLeftBar->tvEngine->Selected,V->GetValue(),*new_name))
+	if (FHelper.NameAfterEdit(fraLeftBar->tvEngine->Selected,V->GetValue(),*new_name))
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
-}
-//------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnBeforeEdit(PropValue* sender, LPVOID edit_val)
-{
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
-}
-//------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
 }
 //------------------------------------------------------------------------------
 
@@ -193,7 +183,7 @@ void CSHEngineTools::UpdateProperties()
         TElTreeItem* node;
 
         P->AddItem	(0,"Type",(void*)m_CurrentBlender->getComment(),PHelper.CreateMarker());
-        P->AddItem	(0,"Name",(LPSTR)&desc->cName,PHelper.CreateText(sizeof(desc->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        P->AddItem	(0,"Name",(LPSTR)&desc->cName,PHelper.CreateText(sizeof(desc->cName),NameOnAfterEdit,FHelper.NameBeforeEdit,FHelper.NameDraw));
 
         while (!data.Eof()){
             int sz=0;
