@@ -356,7 +356,6 @@ void	CRender::Render		()
 	// Begin
 	Target->Begin					();
 
-	r_pmask										(true,true);
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details

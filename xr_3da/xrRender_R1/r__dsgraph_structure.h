@@ -54,6 +54,16 @@ public:
 	virtual		ShaderElement*			rimp_select_sh_static	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
 	virtual		ShaderElement*			rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)							= 0;
 public:
+	R_dsgraph_structure	()
+	{
+		val_pObject		= NULL;
+		val_pTransform	= NULL;
+		val_bHUD		= FALSE;
+		val_bInvisible	= FALSE;
+		marker			= 0;
+		r_pmask			(true,true);
+	};
+
 	void		r_pmask											(bool _1, bool _2)				{ pmask[0]=_1; pmask[1]=_2;			}
 
 	void		r_dsgraph_insert_dynamic						(IRender_Visual	*pVisual, Fvector& Center);
