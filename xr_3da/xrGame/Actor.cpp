@@ -360,6 +360,7 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
+	Msg				("ACTOR: %f,%f,%f",vPosition.x,vPosition.y,vPosition.z);
 	float	dt		= float(DT)/1000.f;
 
 	// Check controls, create accel, prelimitary setup "mstate_real"
