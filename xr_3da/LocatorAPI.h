@@ -27,23 +27,23 @@ public:
 		{	return strcmp(name,other.name)<0;	}
 	};
 private:
-	typedef set<char*,pred_str>	set_cstr;
-	typedef set_cstr::iterator	set_cstr_it;
+	typedef set<file>			set_files;
+	typedef set_files::iterator	set_files_it;
 
-	set_cstr			files;
+	set_files					files;
 
-	void				ProcessArchive	(const char* path);
-	void				ProcessOne		(_finddata_t& F, const char* path);
-	void				Recurse			(const char* path);
+	void						ProcessArchive	(const char* path);
+	void						ProcessOne		(_finddata_t& F, const char* path);
+	void						Recurse			(const char* path);
 public:
-	void				Initialize	();
-	void				Destroy		();
+	void						Initialize		();
+	void						Destroy			();
 
-	BOOL				Exist		(const char* N);
-	BOOL				Exist		(char* fn, const char* path, const char* name);
-	BOOL				Exist		(char* fn, const char* path, const char* name, const char* ext);
+	BOOL						Exist			(const char* N);
+	BOOL						Exist			(char* fn, const char* path, const char* name);
+	BOOL						Exist			(char* fn, const char* path, const char* name, const char* ext);
 
-	void				List		(vector<char*>& dest, const char* path, DWORD flags=FS_ListFiles);
+	void						List			(vector<char*>& dest, const char* path, DWORD flags=FS_ListFiles);
 
 	CLocatorAPI();
 	~CLocatorAPI();
