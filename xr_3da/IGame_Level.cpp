@@ -112,7 +112,7 @@ BOOL IGame_Level::Load			(u32 dwNum)
 int		psNET_DedicatedSleep	= 5;
 void	IGame_Level::OnRender		( ) 
 {
-	if (_abs(Device.fTimeDelta)<EPS_S) return;
+//	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Level render, only when no client output required
 	if (!g_pGamePersistent->bDedicatedServer)	{
@@ -129,7 +129,7 @@ void	IGame_Level::OnRender		( )
 void	IGame_Level::OnFrame		( ) 
 {
 	// Log				("- level:on-frame: ",u32(Device.dwFrame));
-	if (_abs(Device.fTimeDelta)<EPS_S) return;
+//	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
 	// Play req particle systems
 	while (ps_needtoplay.size())
