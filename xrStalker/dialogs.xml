@@ -2,16 +2,79 @@
 
 <game_dialogs>
 
+    <dialog id="loser_hello_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="1">
+                <text>Я посмотрю что можно сделать.</text>
+                <give_info>escape_novice_need_weapon</give_info>
+                <next>5</next>
+            </phrase>
+            <phrase id="2">
+                <text>Как нибудь в другой раз.</text>
+                <action>escape.break_dialog</action>
+            </phrase>
+            <phrase id="3">
+                <precondition>escape.haveAK</precondition>
+                <text>На, возьми калаш, может он тебе подойдет...</text>
+                <next>4</next>
+                <action>escape.give_kalash_to_loser</action>
+                <give_info>escape_novice_has_weapon</give_info>
+            </phrase>
+            <phrase id="6">
+                <precondition>escape.haveTOZ</precondition>
+                <text>На, возьми винтовку, может она тебе подойдет...</text>
+                <next>4</next>
+                <action>escape.give_toz_to_loser</action>
+                <give_info>escape_novice_has_weapon</give_info>
+            </phrase>
+            <phrase id="4">
+                <text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
+				<action>escape.set_dialog_thank</action>
+            </phrase>
+            <phrase id="5">
+                <text>Ну давай, я буду тут если что.</text>
+                <action>escape.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
 
-
-
-
-
+    <dialog id="escape_novice_thank_actor">
+        <phrase_list>
+            <phrase id="0">
+                <text>Ты мне очень помог, дав оружие. Мне давно уже никто не помогал.</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="1">
+				<precondition>escape.bandits_alive</precondition>
+                <text>Сейчас я немного занят, извени, не могу с тобой поговорить.</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+				<precondition>escape.bandits_dead</precondition>
+                <text>Ты мне сильно помог, если и тебе будет нужна помощь, обращайся, помогу, чем смогу.</text>
+				<next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text> </text>
+                <action>escape.break_dialog</action>
+            </phrase>
+            <phrase id="4">
+            </phrase>
+        </phrase_list>
+    </dialog>
 
 
 	<dialog id="test_dialog">
-		<!-- название диалога, если оно не задано, то в качестве названия будет 
-		  использоваться текст первой фразы. -->	
+		<!-- название диалога, если оно не задано, то в качестве названия будет
+		  использоваться текст первой фразы. -->
 		<caption>Say 'Hello'</caption>
 
 		<!-- cкриптовый предикат активизации диалога -->
@@ -21,8 +84,8 @@
 
 
 		<phrase_list>
-			<!-- фразы - пустышки, полезны, если мы хотим пропустить 
-			     очередь говорить одного из собеседников -->	
+			<!-- фразы - пустышки, полезны, если мы хотим пропустить
+			     очередь говорить одного из собеседников -->
 			<phrase id="0">
 				<next>1</next>
 			</phrase>
@@ -308,7 +371,7 @@
 
 	<dialog id="job_box">
         <precondition>trader_job.is_box_present</precondition>
- 
+
 		<phrase_list>
 			<phrase id="0">
 				<text>Я выполнил работу! Принес ящик с блокпоста.</text>
@@ -324,7 +387,7 @@
 
 	<dialog id="job_box02">
         <precondition>trader_job.is_box02_present</precondition>
- 
+
 		<phrase_list>
 			<phrase id="0">
 				<text>Я выполнил работу! Принес чемодан с Агропрома.</text>
@@ -341,7 +404,7 @@
 			</phrase>
 		</phrase_list>
 	</dialog>
-	
+
 	<dialog id="hello_dialog">
 		<phrase_list>
 			<phrase id="0">
