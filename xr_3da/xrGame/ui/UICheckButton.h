@@ -15,7 +15,7 @@ private:
 	typedef CUIButton inherited;
 public:
 	CUICheckButton(void);
-	~CUICheckButton(void);
+	virtual ~CUICheckButton(void);
 
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 

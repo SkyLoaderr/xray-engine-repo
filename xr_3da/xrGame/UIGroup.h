@@ -22,6 +22,7 @@ class CUISquad
 	CUIGroup		group;
 public:
 					CUISquad		();
+#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 					~CUISquad		();
 	void			Init			();
 	void			Render			(CSquad& S, bool* bSel, bool bActive);

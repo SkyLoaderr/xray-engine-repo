@@ -31,6 +31,7 @@ public:
 	void		Render	();
 
 	CTracer();
+#pragma todo("Dima to Oles : check if you need here a non-virtual destructor!")
 	~CTracer();
 };
 

@@ -21,6 +21,8 @@ public:
 	u32								m_dwStartTime;
 	u64								m_qwStartProcessorCycle;
 
+	virtual							~CSE_ALifeGameTime(){};
+
 	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		m_tGameTime					= tfGetGameTime();
@@ -70,6 +72,8 @@ public:
 		m_tZoneState				= eZoneStateAfterSurge;
 	}
 
+	virtual							~CSE_ALifeHeader(){};
+
 	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);
@@ -93,6 +97,7 @@ public:
 	u32								m_dwSpawnCount;
 	u32								m_dwLevelCount;
 	
+	virtual							~CSE_ALifeSpawnHeader(){};
 	virtual void					Load(IReader	&tFileStream);
 };
 
@@ -107,6 +112,7 @@ public:
 	{
 	}
 
+	virtual							~CSE_ALifeKnownAnomaly(){};
 	virtual void					Save(IWriter	&tMemoryStream)
 	{
 		tMemoryStream.w				(&m_tAnomalousZoneType,	sizeof(m_tAnomalousZoneType));
@@ -178,7 +184,7 @@ public:
 
 									CSE_ALifeOrganization();
 									CSE_ALifeOrganization(LPCSTR caSection);
-									~CSE_ALifeOrganization();
+	virtual							~CSE_ALifeOrganization();
 	virtual void					Save				(IWriter &tMemoryStream);
 	virtual void					Load				(IReader &tFileStream);
 };

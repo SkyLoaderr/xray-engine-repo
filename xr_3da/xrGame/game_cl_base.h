@@ -16,7 +16,7 @@ public:
 	xr_vector<CGameObject*>			targets;
 public:
 									game_cl_GameState		();
-									~game_cl_GameState		();
+	virtual							~game_cl_GameState		();
 
 	virtual		void				Create					(LPSTR &options);
 	virtual		void				net_import_state		(NET_Packet& P);

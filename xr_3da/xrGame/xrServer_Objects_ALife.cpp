@@ -27,6 +27,14 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeEvent
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeEvent::CSE_ALifeEvent				()
+{
+}
+
+CSE_ALifeEvent::~CSE_ALifeEvent				()
+{
+}
+
 void CSE_ALifeEvent::STATE_Write			(NET_Packet &tNetPacket)
 {
 }
@@ -64,6 +72,14 @@ void CSE_ALifeEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePersonalEvent
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifePersonalEvent::CSE_ALifePersonalEvent()
+{
+}
+
+CSE_ALifePersonalEvent::~CSE_ALifePersonalEvent()
+{
+}
+
 void CSE_ALifePersonalEvent::STATE_Write	(NET_Packet &tNetPacket)
 {
 	save_data					(m_tpItemIDs,		tNetPacket);
@@ -105,6 +121,10 @@ CSE_ALifeTask::CSE_ALifeTask				()
 {
 	m_dwTryCount				= 0;
 	m_caSection[0]				= 0;
+}
+
+CSE_ALifeTask::~CSE_ALifeTask				()
+{
 }
 
 void CSE_ALifeTask::STATE_Write				(NET_Packet &tNetPacket)
@@ -236,6 +256,10 @@ CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSec
 	m_tLocations[3]				= 0;
 }
 
+CSE_ALifeGraphPoint::~CSE_ALifeGraphPoint	()
+{
+}
+
 void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_string			(m_caConnectionPointName);
@@ -348,6 +372,10 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	strcpy						(m_caGroupControl,"");
 }
 
+CSE_ALifeObject::~CSE_ALifeObject			()
+{
+}
+
 void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fProbability);
@@ -450,6 +478,15 @@ void CSE_ALifeGroupAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeEventGroup
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeEventGroup::CSE_ALifeEventGroup(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
+{
+	m_wCountAfter				= m_wCountBefore;
+}
+
+CSE_ALifeEventGroup::~CSE_ALifeEventGroup()
+{
+}
+
 void CSE_ALifeEventGroup::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
@@ -479,6 +516,10 @@ CSE_ALifeDynamicObject::CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObje
 {
 	m_tTimeID					= 0;
 	m_qwSwitchCounter			= u64(-1);
+}
+
+CSE_ALifeDynamicObject::~CSE_ALifeDynamicObject()
+{
 }
 
 void CSE_ALifeDynamicObject::STATE_Write	(NET_Packet &tNetPacket)
@@ -514,6 +555,10 @@ CSE_ALifeDynamicObjectVisual::CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : C
 {
 	if (pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
+CSE_ALifeDynamicObjectVisual::~CSE_ALifeDynamicObjectVisual()
+{
 }
 
 void CSE_ALifeDynamicObjectVisual::STATE_Write(NET_Packet &tNetPacket)
@@ -929,4 +974,8 @@ CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSe
 #endif
 	m_tpBestDetector			= 0;
 	m_qwUpdateCounter			= u64(-1);
+}
+
+CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
+{
 }

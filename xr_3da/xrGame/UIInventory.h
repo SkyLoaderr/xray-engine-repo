@@ -10,7 +10,7 @@ class CUIInventory
 {
 public:
 	CUIInventory(void);
-	~CUIInventory(void);
+	virtual ~CUIInventory(void);
 
 	//by Dandy
 	void Init();

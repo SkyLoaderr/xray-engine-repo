@@ -18,6 +18,7 @@ public:
 	char*						Name;
 	xr_vector<MenuItem>			Items;
 public:
+#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 				~CContextMenu	();
 	void		Load			(CInifile* INI, LPCSTR S);
 	void		Render			(CGameFont* F, u32 cT, u32 cI, float s);

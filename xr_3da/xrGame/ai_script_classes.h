@@ -123,7 +123,7 @@ public:
 		}
 	}
 
-								~CLuaSound		()
+	virtual						~CLuaSound		()
 	{
 		xr_delete			(m_tpSound);
 	}

@@ -14,7 +14,7 @@ class CUIListItem :
 {
 public:
 	CUIListItem(void);
-	~CUIListItem(void);
+	virtual ~CUIListItem(void);
 
 	virtual void Init(char* str, int x, int y, int width, int height);
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);

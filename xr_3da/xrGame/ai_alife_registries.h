@@ -102,7 +102,7 @@ public:
 
 
 									CSE_ALifeGraphRegistry		();
-									~CSE_ALifeGraphRegistry		();
+	virtual							~CSE_ALifeGraphRegistry		();
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
@@ -124,6 +124,7 @@ public:
 	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев
 	TRADER_SET_MAP					m_tpCrossTraders;
 
+	virtual							~CSE_ALifeTraderRegistry	(){}
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			CSE_ALifeTrader			*tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHumanAbstract);
@@ -135,6 +136,7 @@ public:
 	_OBJECT_ID						m_tNextFirstProcessObjectID;
 	bool							m_bUpdateChanged;
 
+	virtual							~CSE_ALifeScheduleRegistry	(){}
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 			void					vfAddObjectToScheduled		(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects = true);

@@ -376,6 +376,10 @@ CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALi
 	m_fMorale					= 100.f;
 }
 
+CSE_ALifeCreatureAbstract::~CSE_ALifeCreatureAbstract()
+{
+}
+
 void CSE_ALifeCreatureAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
@@ -506,6 +510,10 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_tpBestDetector			= this;
 }
 
+CSE_ALifeMonsterAbstract::~CSE_ALifeMonsterAbstract()
+{
+}
+
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
@@ -551,6 +559,10 @@ void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
 	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
+}
+
+CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
+{
 }
 
 void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -617,6 +629,10 @@ CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatu
 		set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
+CSE_ALifeCreatureCrow::~CSE_ALifeCreatureCrow()
+{
+}
+
 void CSE_ALifeCreatureCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20) {
@@ -678,6 +694,10 @@ CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAb
 	fAttackDistance				= 0.7f;
 	fAttackAngle				= 45;
 	fAttackSuccessProbability	= 0.5f;
+}
+
+CSE_ALifeMonsterRat::~CSE_ALifeMonsterRat	()
+{
 }
 
 void CSE_ALifeMonsterRat::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -809,6 +829,10 @@ CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMon
 	fAttackAngle				= 15;
 }
 
+CSE_ALifeMonsterZombie::~CSE_ALifeMonsterZombie()
+{
+}
+
 void CSE_ALifeMonsterZombie::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	// inherited properties
@@ -885,6 +909,10 @@ void CSE_ALifeMonsterZombie::FillProp		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
+}
+
+CSE_ALifeMonsterBiting::~CSE_ALifeMonsterBiting()
+{
 }
 
 void CSE_ALifeMonsterBiting::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -1024,6 +1052,10 @@ CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanA
 	m_dwTotalMoney				= 0;
 }
 
+CSE_ALifeHumanStalker::~CSE_ALifeHumanStalker()
+{
+}
+
 void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
@@ -1058,6 +1090,10 @@ CSE_ALifeObjectIdol::CSE_ALifeObjectIdol	(LPCSTR caSection) : CSE_ALifeHumanAbst
 {
 	m_dwAniPlayType				= 0;
 	m_caAnimations[0]			= 0;
+}
+
+CSE_ALifeObjectIdol::~CSE_ALifeObjectIdol	()
+{
 }
 
 void CSE_ALifeObjectIdol::STATE_Read		(NET_Packet& tNetPacket, u16 size)

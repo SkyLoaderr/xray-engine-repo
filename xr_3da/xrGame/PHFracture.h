@@ -28,6 +28,7 @@ PH_IMPACT_STORAGE m_impacts;		//filled in anytime from CPHElement applyImpulseTr
 CFEEDBACK_STORAGE m_feedbacks;		//this store feedbacks for non contact joints 
 public:
 CPHFracturesHolder			();
+#pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
 ~CPHFracturesHolder			();
 void				AddImpact		(const Fvector& force,const Fvector& point);
 protected:

@@ -47,6 +47,7 @@ void CAI_Space::dbg_DrawOBB(Fmatrix &T, Fvector &half_dim, u32 C, u32 C1)
 
 void CAI_Space::DrawTravelLine()
 {
+	return;
 	DrawDynamicObstacles				();
 	if (!m_tpTravelLine.empty()) {
 		Fvector							P = m_tpTravelLine[0];
@@ -167,6 +168,7 @@ void CAI_Space::ComputeTravelLine(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 
 #include "a_star.h"
 void CAI_Space::ComputePath()
 {
+	return;
 	u32						l_dwStartNodeID		= q_LoadSearch(m_tStartPoint);
 	VERIFY					(bfInsideNode(Node(l_dwStartNodeID),m_tStartPoint));
 	u32						l_dwFinishNodeID	= q_LoadSearch(m_tFinishPoint);

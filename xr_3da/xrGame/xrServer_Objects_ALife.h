@@ -33,6 +33,7 @@ public:
 	u64								m_qwUpdateCounter;
 
 									CSE_ALifeSchedulable	(LPCSTR caSection);
+	virtual							~CSE_ALifeSchedulable	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float		&fHitPower) = 0;
@@ -55,9 +56,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)
 	CSE_ALifeEventGroup				*m_tpMonsterGroup1;
 	CSE_ALifeEventGroup				*m_tpMonsterGroup2;
 
-									CSE_ALifeEvent	()
-	{
-	};
+									CSE_ALifeEvent	();
+	virtual							~CSE_ALifeEvent	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
@@ -68,9 +68,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePersonalEvent,CPureServerObject)
 	EEventRelationType				m_tEventRelationType;
 	OBJECT_VECTOR					m_tpItemIDs;
 
-									CSE_ALifePersonalEvent()
-	{
-	};
+									CSE_ALifePersonalEvent();
+	virtual							~CSE_ALifePersonalEvent();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
@@ -90,6 +89,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	};
 
 									CSE_ALifeTask	();
+	virtual							~CSE_ALifeTask	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
@@ -102,7 +102,9 @@ public:
 	string32						m_caConnectionLevelName;
 	string32						m_caConnectionPointName;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
+
 									CSE_ALifeGraphPoint(LPCSTR caSection);
+	virtual							~CSE_ALifeGraphPoint();
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeObject : virtual public CSE_Abstract {
@@ -120,6 +122,7 @@ public:
 	string64						m_caGroupControl;
 
 									CSE_ALifeObject	(LPCSTR caSection);
+	virtual							~CSE_ALifeObject();
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {
@@ -182,10 +185,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEventGroup,CSE_ALifeObject)
 	u16								m_wCountBefore;
 	u16								m_wCountAfter;
 	
-									CSE_ALifeEventGroup(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
-	{
-		m_wCountAfter				= m_wCountBefore;
-	};
+									CSE_ALifeEventGroup(LPCSTR caSection);
+	virtual							~CSE_ALifeEventGroup();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
@@ -193,10 +194,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	u64								m_qwSwitchCounter;
 	
 									CSE_ALifeDynamicObject(LPCSTR caSection);
+	virtual							~CSE_ALifeDynamicObject();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)
 									CSE_ALifeDynamicObjectVisual(LPCSTR caSection);
+	virtual							~CSE_ALifeDynamicObjectVisual();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)

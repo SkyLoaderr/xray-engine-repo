@@ -27,6 +27,7 @@ public:
 	int						m_iACTboneL, m_iACTboneR;
 public:
 							CWeaponList				(CEntity* p);
+#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 							~CWeaponList			();
 
 	void					Init					(LPCSTR act_bone_r, LPCSTR act_bone_l);

@@ -22,6 +22,7 @@
 //fog over the map
 #include "LevelFogOfWar.h"
 #include "ai_script_processor.h"
+#include "xrXMLParser.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -31,6 +32,7 @@ CPHWorld*	ph_world = 0;
 
 CLevel::CLevel()
 {
+	XML_DisableStringCaching();
 	Server						= NULL;
 
 	game_configured				= FALSE;
@@ -98,6 +100,7 @@ CLevel::~CLevel()
 	xr_delete			(g_tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
+	XML_CleanUpMemory	();
 }
 
 // Game interface ////////////////////////////////////////////////////

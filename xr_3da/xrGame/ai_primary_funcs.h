@@ -22,6 +22,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CDistanceFunction(){}
+
 	virtual float ffGetValue();
 
 	virtual u32	dwfGetDiscreteValue(u32 dwDiscretizationValue)
@@ -64,6 +66,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalMoraleFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -79,6 +83,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalCreatureTypeFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -93,6 +99,8 @@ public:
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CPersonalWeaponTypeFunction(){}
 
 			u32	  dwfGetWeaponType	();
 			float ffGetTheBestWeapon();
@@ -111,6 +119,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalAccuracyFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -125,6 +135,8 @@ public:
 		strcat(m_caName,"PersonalIntelligence");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CPersonalIntelligenceFunction(){}
 
 	virtual float ffGetValue();
 };
@@ -141,6 +153,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalRelationFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -155,6 +169,8 @@ public:
 		strcat(m_caName,"PersonalGreed");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CPersonalGreedFunction(){}
 
 	virtual float ffGetValue();
 };
@@ -171,6 +187,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalAggressivenessFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -186,6 +204,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEnemyHealthFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -200,6 +220,9 @@ public:
 		strcat(m_caName,"EnemyMorale");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+	
+	virtual ~CEnemyMoraleFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -214,6 +237,9 @@ public:
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CEnemyCreatureTypeFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -228,6 +254,8 @@ public:
 		strcat(m_caName,"EnemyWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CEnemyWeaponTypeFunction(){}
 
 	virtual float ffGetValue();
 };
@@ -244,6 +272,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEnemyEquipmentCostFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -258,6 +288,8 @@ public:
 		strcat(m_caName,"EnemyRukzakWeight");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CEnemyRukzakWeightFunction(){}
 
 	virtual float ffGetValue();
 };
@@ -274,6 +306,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEnemyAnomalityFunction(){}
+
 	virtual float ffGetValue();
 };
 
@@ -288,6 +322,8 @@ public:
 		strcat(m_caName,"GraphPointType0");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CGraphPointType0(){}
 
 	virtual float ffGetValue();
 };
@@ -304,6 +340,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CPersonalEyeRange(){}
+
 	virtual float ffGetValue();
 };
 
@@ -318,6 +356,8 @@ public:
 		strcat(m_caName,"PersonalMaxHealth");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CPersonalMaxHealth(){}
 
 	virtual float	ffGetValue();
 	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
@@ -335,6 +375,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEnemyEyeRange(){}
+
 	virtual float ffGetValue();
 };
 
@@ -349,6 +391,8 @@ public:
 		strcat(m_caName,"EnemyMaxHealth");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CEnemyMaxHealth(){}
 
 	virtual float	ffGetValue();
 	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
@@ -366,6 +410,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEquipmentType(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -380,6 +426,8 @@ public:
 		strcat(m_caName,"ItemDeterioration");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CItemDeterioration(){}
 
 	virtual float	ffGetValue();
 };
@@ -396,6 +444,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEquipmentPreference(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -410,6 +460,8 @@ public:
 		strcat(m_caName,"MainWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CMainWeaponType(){}
 
 	virtual float	ffGetValue();
 };
@@ -426,6 +478,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CMainWeaponPreference(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -441,6 +495,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CItemValue(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -455,6 +511,8 @@ public:
 		strcat(m_caName,"WeaponAmmoCount");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CWeaponAmmoCount(){}
 
 	virtual float	ffGetValue();
 	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue = 1);
@@ -472,6 +530,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CEnemyAnomalyType(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -487,6 +547,8 @@ public:
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
 
+	virtual ~CDetectorType(){}
+
 	virtual float	ffGetValue();
 };
 
@@ -501,6 +563,8 @@ public:
 		strcat(m_caName,"EnemyDistanceToGraphPoint");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
+
+	virtual ~CEnemyDistanceToGraphPoint(){}
 
 	virtual float	ffGetValue();
 };

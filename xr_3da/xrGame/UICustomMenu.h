@@ -32,6 +32,7 @@ public:
 		OnExecute		= exec;
 		OnItemDraw		= draw;
 	}
+#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 	~CUICustomMenuItem	()
 	{
 		xr_free			(value0);

@@ -26,6 +26,7 @@ public:
 	_OBJECT_ID						m_tPreviousParentID;
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
+	virtual							~CSE_ALifeInventoryItem	();
 	IC		bool					bfAttached		() const
 	{
 		return						(ID_Parent < 0xffff);
@@ -35,6 +36,7 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
 									CSE_ALifeItem	(LPCSTR caSection);
+	virtual							~CSE_ALifeItem	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
@@ -54,6 +56,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 	u16								m_boxSize;
 
 									CSE_ALifeItemAmmo	(LPCSTR caSection);
+	virtual							~CSE_ALifeItemAmmo	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
@@ -69,6 +72,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u32								m_dwSlot;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
+	virtual							~CSE_ALifeItemWeapon();
 	virtual void					OnEvent			(NET_Packet& P, u16 type, u32 time, u32 sender );
 	u8								get_slot		();
 	u16								get_ammo_limit	();
@@ -79,24 +83,28 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
 									CSE_ALifeItemCar(LPCSTR caSection);
+	virtual							~CSE_ALifeItemCar();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 									CSE_ALifeItemDetector(LPCSTR caSection);
+	virtual							~CSE_ALifeItemDetector();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
 	float							m_fAnomalyValue;
-
 									CSE_ALifeItemArtefact(LPCSTR caSection);
+	virtual							~CSE_ALifeItemArtefact();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 									CSE_ALifeItemPDA(LPCSTR caSection);
+	virtual							~CSE_ALifeItemPDA();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
 	u16								m_wDocIndex;
 									CSE_ALifeItemDocument(LPCSTR caSection);
+	virtual							~CSE_ALifeItemDocument();
 SERVER_ENTITY_DECLARE_END
 #endif

@@ -10,6 +10,7 @@ public:
 	ref_geom				hGeom;
 public:
 							CHitMarker	();
+#pragma todo("Dima to Oles : check if you need here a non-virtual destructor!")
 							~CHitMarker	();
 
 	void					Render		();

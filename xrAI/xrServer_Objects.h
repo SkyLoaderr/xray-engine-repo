@@ -59,6 +59,7 @@
 
 class CPureServerObject : public IPureServerObject {
 public:
+	virtual							~CPureServerObject(){}
 	virtual void					Load(IReader	&tFileStream);
 	virtual void					Save(IWriter	&tMemoryStream);
 	virtual void					Load(NET_Packet	&tNetPacket);
@@ -129,6 +130,8 @@ public:
 public:
 	void							cform_read		(NET_Packet& P);
 	void							cform_write		(NET_Packet& P);
+									CSE_Shape		();
+	virtual							~CSE_Shape		();
 };
 
 class CSE_Visual
@@ -142,15 +145,9 @@ public:
     void 							PlayAnimation	(LPCSTR name);
 #endif
 public:
-									CSE_Visual		(LPCSTR name=0)
-    {
-    	strcpy						(visual_name,name?name:"");
-#ifdef _EDITOR
-		play_animation				= "$editor";
-		visual						= 0;
-        OnChangeVisual				(0);
-#endif
-    }
+									CSE_Visual		(LPCSTR name=0);
+	virtual							~CSE_Visual		();
+
 	void							visual_read		(NET_Packet& P);
 	void							visual_write	(NET_Packet& P);
 
@@ -163,45 +160,45 @@ public:
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
-									CSE_Spectator	(LPCSTR caSection) : CSE_Abstract(caSection)
-	{
-	};
-	
-	virtual u8						g_team() {return 0;};
+									CSE_Spectator	(LPCSTR caSection);
+	virtual							~CSE_Spectator	();
+	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target,CSE_Abstract)
-									CSE_Target		(LPCSTR caSection) : CSE_Abstract(caSection)
-	{
-	};
+									CSE_Target		(LPCSTR caSection);
+	virtual							~CSE_Target		();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_TargetAssault,CSE_Target)
-									CSE_TargetAssault(LPCSTR caSection) : CSE_Target(caSection)
-	{
-	};
+									CSE_TargetAssault(LPCSTR caSection);
+	virtual							~CSE_TargetAssault();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Base,CSE_Target)
 	float							radius;
 	u8								s_team;
-	virtual u8						g_team() {return s_team;};
 									CSE_Target_CS_Base(LPCSTR caSection);
+	virtual							~CSE_Target_CS_Base();
+	virtual u8						g_team			();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS_Cask,CSE_Target)
 	string64						s_Model;
 									CSE_Target_CS_Cask(LPCSTR caSection);
+	virtual							~CSE_Target_CS_Cask();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Target_CS,CSE_Target)
 	string64						s_Model;
 									CSE_Target_CS	(LPCSTR caSection);
+	virtual							~CSE_Target_CS	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Temporary,CSE_Abstract)
 	u32								m_tNodeID;
 									CSE_Temporary	(LPCSTR caSection);
+	virtual							~CSE_Temporary	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
@@ -214,16 +211,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_Event,CSE_Shape,CSE_Abstract)
 	};
 	xr_vector<tAction>				Actions;
 
-	void							Actions_clear	()
-	{
-		for (u32 a=0; a<Actions.size(); a++)
-			xr_free					(Actions[a].event);
-		Actions.clear				();
-	}
-							
-									CSE_Event		(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
-	{
-	};
+									CSE_Event		(LPCSTR caSection);
+	virtual							~CSE_Event		();
+			void					Actions_clear	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
@@ -231,6 +221,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 	u32								m_dwSpawnGroup;
 	
 									CSE_SpawnGroup	(LPCSTR caSection);
+	virtual							~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END
 
 extern CSE_Abstract		*F_entity_Create	(LPCSTR caSection);

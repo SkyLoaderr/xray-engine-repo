@@ -13,6 +13,7 @@ class CUICursor
 	float m_fSensitivity;
 public:
 					CUICursor	();
+#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 					~CUICursor	();
 	void			Render		();
 	

@@ -166,6 +166,7 @@ public:
 	float			m_fResult;
 	float			m_fFireDispersionAngle;
 
+	virtual			~IBaseAI_NodeEvaluator				() {}
 	virtual	float	ffEvaluateNode						() = 0;
 	virtual	void	vfShallowGraphSearch				() = 0;
 	virtual	void	vfShallowGraphSearch				(xr_vector<u8>   &tpaMask) = 0;

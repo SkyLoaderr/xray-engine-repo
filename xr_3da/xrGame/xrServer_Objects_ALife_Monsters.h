@@ -108,6 +108,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	bool							m_bDeathIsProcessed;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
+	virtual							~CSE_ALifeCreatureAbstract();
 	virtual u8						g_team					();
 	virtual u8						g_squad					();
 	virtual u8						g_group					();
@@ -130,6 +131,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	svector<float,eHitTypeMax>		m_fpImmunityFactors;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
+	virtual							~CSE_ALifeMonsterAbstract();
 	IC		float					g_MaxHealth				()											{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
 	virtual	void					Update					()	{};
@@ -154,11 +156,13 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	Fvector							velocity;
 	float							fArmor;
 	u8								weapon;
-									CSE_ALifeCreatureActor		(LPCSTR caSection);
+									CSE_ALifeCreatureActor	(LPCSTR caSection);
+	virtual							~CSE_ALifeCreatureActor	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
-									CSE_ALifeCreatureCrow		(LPCSTR caSection);
+									CSE_ALifeCreatureCrow	(LPCSTR caSection);
+	virtual							~CSE_ALifeCreatureCrow	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_ALifeInventoryItem)
@@ -187,6 +191,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 	float							fAttackSuccessProbability;
 
 									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
+	virtual							~CSE_ALifeMonsterRat();
 	virtual bool					bfUseful();
 SERVER_ENTITY_DECLARE_END
 
@@ -206,10 +211,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
 	float							fAttackAngle;
 
 									CSE_ALifeMonsterZombie	(LPCSTR caSection);				// constructor for variable initialization
+	virtual							~CSE_ALifeMonsterZombie	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterBiting,CSE_ALifeMonsterAbstract)
 									CSE_ALifeMonsterBiting	(LPCSTR caSection);				// constructor for variable initialization
+	virtual							~CSE_ALifeMonsterBiting	();
 SERVER_ENTITY_DECLARE_END
 
 //-------------------------------
@@ -291,12 +298,14 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
 									CSE_ALifeHumanStalker	(LPCSTR caSection);
+	virtual							~CSE_ALifeHumanStalker	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	string256						m_caAnimations;
 	u32								m_dwAniPlayType;
 									CSE_ALifeObjectIdol		(LPCSTR caSection);
+	virtual							~CSE_ALifeObjectIdol	();
 SERVER_ENTITY_DECLARE_END
 
 #endif

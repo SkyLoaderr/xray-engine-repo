@@ -51,6 +51,10 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(
 	m_tPreviousParentID			= 0xffff;
 }
 
+CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
+{
+}
+
 void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
 {
 }
@@ -82,7 +86,11 @@ bool CSE_ALifeInventoryItem::bfUseful		()
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItem
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItem::CSE_ALifeItem(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItem::CSE_ALifeItem				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeItem::~CSE_ALifeItem				()
 {
 }
 
@@ -204,6 +212,10 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
         set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
+CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
+{
+}
+
 void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
@@ -307,6 +319,10 @@ CSE_ALifeItemAmmo::CSE_ALifeItemAmmo		(LPCSTR caSection) : CSE_ALifeItem(caSecti
         set_visual				(pSettings->r_string(caSection,"visual"));
 }
 
+CSE_ALifeItemAmmo::~CSE_ALifeItemAmmo		()
+{
+}
+
 void CSE_ALifeItemAmmo::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
@@ -341,11 +357,15 @@ void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemCar
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemCar::CSE_ALifeItemCar(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemCar::CSE_ALifeItemCar			(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
-};
+}
+
+CSE_ALifeItemCar::~CSE_ALifeItemCar			()
+{
+}
 
 void CSE_ALifeItemCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
@@ -379,6 +399,10 @@ void CSE_ALifeItemCar::FillProp				(LPCSTR pref, PropItemVec& values)
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeItemDetector::~CSE_ALifeItemDetector()
 {
 }
 
@@ -418,6 +442,10 @@ CSE_ALifeItemArtefact::CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(c
 	m_fAnomalyValue				= 100.f;
 }
 
+CSE_ALifeItemArtefact::~CSE_ALifeItemArtefact()
+{
+}
+
 void CSE_ALifeItemArtefact::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
@@ -449,7 +477,11 @@ void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemPDA
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemPDA::CSE_ALifeItemPDA(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeItemPDA::~CSE_ALifeItemPDA		()
 {
 }
 
@@ -486,6 +518,10 @@ void CSE_ALifeItemPDA::FillProp		(LPCSTR pref, PropItemVec& items)
 CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
 {
 	m_wDocIndex					= 0;
+}
+
+CSE_ALifeItemDocument::~CSE_ALifeItemDocument()
+{
 }
 
 void CSE_ALifeItemDocument::STATE_Read		(NET_Packet	&tNetPacket, u16 size)

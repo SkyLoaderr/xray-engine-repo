@@ -97,7 +97,7 @@ public:
 	//xr_vector<CPHElement*> elements;
 	CPHWorld(){disable_count=0;frame_time=0.f;m_steps_num=0;m_frame_sum=0.f;
 	m_delay=0; m_previous_delay=0;m_reduce_delay=0;m_update_delay_count=0;}
-	~CPHWorld(){};
+	virtual ~CPHWorld(){};
 	//double Time(){return m_start_time+m_steps_num*fixed_step;}
 	dSpaceID GetSpace(){return Space;};
 	//	dWorldID GetWorld(){return phWorld;};

@@ -167,6 +167,14 @@ void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Shape
 ////////////////////////////////////////////////////////////////////////////
+CSE_Shape::CSE_Shape						()
+{
+}
+
+CSE_Shape::~CSE_Shape						()
+{
+}
+
 void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
 {
 	shapes.clear				();
@@ -209,6 +217,20 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Visual
 ////////////////////////////////////////////////////////////////////////////
+CSE_Visual::CSE_Visual					(LPCSTR name)
+{
+	strcpy						(visual_name,name?name:"");
+#ifdef _EDITOR
+	play_animation				= "$editor";
+	visual						= 0;
+	OnChangeVisual				(0);
+#endif
+}
+
+CSE_Visual::~CSE_Visual						()
+{
+}
+
 void CSE_Visual::set_visual					(LPCSTR name)
 {
 	strcpy						(visual_name,name); if (strext(visual_name)) *strext(visual_name) = 0;
@@ -262,6 +284,21 @@ void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Event
 ////////////////////////////////////////////////////////////////////////////
+CSE_Event::CSE_Event						(LPCSTR caSection) : CSE_Shape(), CSE_Abstract(caSection)
+{
+}
+
+CSE_Event::~CSE_Event						()
+{
+}
+
+void CSE_Event::Actions_clear				()
+{
+	for (u32 a=0; a<Actions.size(); a++)
+		xr_free					(Actions[a].event);
+	Actions.clear				();
+}
+
 void CSE_Event::UPDATE_Read					(NET_Packet	&tNetPacket)
 {
 }
@@ -317,6 +354,19 @@ void CSE_Event::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Spectator
 ////////////////////////////////////////////////////////////////////////////
+CSE_Spectator::CSE_Spectator				(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+}
+
+CSE_Spectator::~CSE_Spectator				()
+{
+}
+
+u8	 CSE_Spectator::g_team					()
+{
+	return 0;
+}
+
 void CSE_Spectator::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
 }
@@ -343,21 +393,29 @@ void CSE_Spectator::FillProp				(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Target
 ////////////////////////////////////////////////////////////////////////////
+CSE_Target::CSE_Target						(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+}
+
+CSE_Target::~CSE_Target						()
+{
+}
+
 void CSE_Target::STATE_Read					(NET_Packet	&tNetPacket, u16 size)
 {
-};
+}
 
 void CSE_Target::STATE_Write				(NET_Packet	&tNetPacket)
 {
-};
+}
 
 void CSE_Target::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
-};
+}
 
 void CSE_Target::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
-};
+}
 
 #ifdef _EDITOR
 void CSE_Target::FillProp					(LPCSTR pref, PropItemVec& values)
@@ -369,21 +427,29 @@ void CSE_Target::FillProp					(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_TargetAssault
 ////////////////////////////////////////////////////////////////////////////
+CSE_TargetAssault::CSE_TargetAssault		(LPCSTR caSection) : CSE_Target(caSection)
+{
+}
+
+CSE_TargetAssault::~CSE_TargetAssault		()
+{
+}
+
 void CSE_TargetAssault::STATE_Read			(NET_Packet	&tNetPacket, u16 size)	
 {
-};
+}
 
 void CSE_TargetAssault::STATE_Write			(NET_Packet	&tNetPacket)
 {
-};
+}
 
 void CSE_TargetAssault::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
-};
+}
 
 void CSE_TargetAssault::UPDATE_Write		(NET_Packet &tNetPacket)
 {
-};
+}
 
 #ifdef _EDITOR
 void CSE_TargetAssault::FillProp			(LPCSTR pref, PropItemVec& values)
@@ -400,7 +466,16 @@ CSE_Target_CS_Base::CSE_Target_CS_Base		(LPCSTR caSection) : CSE_Target(caSectio
 	s_team						= 0;
 	radius						= 10.f;
     s_gameid					= GAME_CS;    
-};
+}
+
+CSE_Target_CS_Base::~CSE_Target_CS_Base		()
+{
+}
+
+u8	 CSE_Target_CS_Base::g_team()
+{
+	return s_team;
+}
 
 void CSE_Target_CS_Base::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
@@ -438,6 +513,11 @@ CSE_Target_CS_Cask::CSE_Target_CS_Cask		(LPCSTR caSection) : CSE_Target(caSectio
 {
 	s_Model[0]					= 0;
 }
+
+CSE_Target_CS_Cask::~CSE_Target_CS_Cask		()
+{
+}
+
 void CSE_Target_CS_Cask::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 }
@@ -471,6 +551,10 @@ CSE_Target_CS::CSE_Target_CS				(LPCSTR caSection) : CSE_Target(caSection)
 	s_Model[0]					= 0;
 }
 
+CSE_Target_CS::~CSE_Target_CS				()
+{
+}
+
 void CSE_Target_CS::UPDATE_Read				(NET_Packet	&tNetPacket)
 {
 }
@@ -502,7 +586,11 @@ void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 CSE_Temporary::CSE_Temporary				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_tNodeID					= u32(-1);
-};
+}
+
+CSE_Temporary::~CSE_Temporary				()
+{
+}
 
 void CSE_Temporary::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
@@ -536,6 +624,10 @@ void CSE_Temporary::FillProp				(LPCSTR pref, PropItemVec& values)
 CSE_SpawnGroup::CSE_SpawnGroup				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
 	m_fGroupProbability						= 1.f;
+}
+
+CSE_SpawnGroup::~CSE_SpawnGroup				()
+{
 }
 
 void CSE_SpawnGroup::STATE_Read				(NET_Packet	&tNetPacket, u16 size)

@@ -18,7 +18,12 @@ class dcTriListCollider
 #endif
 public:
 	dcTriListCollider(dxGeom* Geometry);
+#ifdef DEBUG
+	virtual ~dcTriListCollider();
+#else
+#pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
 	~dcTriListCollider();
+#endif
 
 	int CollideBox(dxGeom* Box, int Flags, dContactGeom* Contact, int Stride);
 	int CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride);

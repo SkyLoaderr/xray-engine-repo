@@ -14,7 +14,7 @@ public:
 	EVENT				eDemoStart;
 
 						CGamePersistent			();
-						~CGamePersistent		();
+	virtual				~CGamePersistent		();
 
 	virtual void		OnAppCycleStart			();
 	virtual void		OnAppCycleEnd			();

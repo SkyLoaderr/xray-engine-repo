@@ -235,6 +235,7 @@ public:
 		return m_character->b_exist;
 	}
 	CPHMovementControl(void);
+#pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
 	~CPHMovementControl(void);
 };
 #endif

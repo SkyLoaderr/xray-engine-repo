@@ -2257,9 +2257,6 @@
 						Name="XML"
 						Filter="">
 						<File
-							RelativePath=".\ui\CkSettings.h">
-						</File>
-						<File
 							RelativePath=".\ui\CkString.h">
 						</File>
 						<File
@@ -2631,6 +2628,9 @@
 					</File>
 					<File
 						RelativePath="ai_alife_console.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_alife_interfaces.cpp">
 					</File>
 					<File
 						RelativePath="ai_alife_interfaces.h">

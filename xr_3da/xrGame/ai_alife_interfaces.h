@@ -13,19 +13,23 @@ class NET_Packet;
 
 interface IPureALifeLObject {
 public:
-	virtual void					Load(IReader	&tFileStream)	= 0;
+	virtual							~IPureALifeLObject()								= 0;
+	virtual void					Load(IReader	&tFileStream)						= 0;
 };
 
 interface IPureALifeSObject {
 public:
-	virtual void					Save(IWriter	&tMemoryStream) = 0;
+	virtual							~IPureALifeSObject()								= 0;
+	virtual void					Save(IWriter	&tMemoryStream)						= 0;
 };
 
 interface IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
+	virtual							~IPureALifeLSObject()								= 0;
 };
 
 interface IPureServerObject : public IPureALifeLSObject {
 public:
+	virtual							~IPureServerObject()								= 0;
 	virtual void					STATE_Write	(NET_Packet &tNetPacket)				= 0;
 	virtual void					STATE_Read	(NET_Packet &tNetPacket, u16 size)		= 0;
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket)				= 0;
@@ -33,6 +37,8 @@ public:
 };
 
 interface IPureSchedulableObject {
+	virtual							~IPureSchedulableObject()							= 0;
 	virtual void					Update		()										= 0;
 };
+
 #endif

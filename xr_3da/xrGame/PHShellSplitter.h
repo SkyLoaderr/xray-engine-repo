@@ -40,7 +40,7 @@ virtual void			InitContact(dContact* c){};
 		void			InitNewShell(CPHShell* shell);			//inits new active shell
 public:
 						CPHShellSplitterHolder(CPHShell* shell);
-						~CPHShellSplitterHolder();
+virtual					~CPHShellSplitterHolder();
 		void			Activate();
 		void			Deactivate();
 		void			AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint);
