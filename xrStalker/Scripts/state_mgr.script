@@ -156,7 +156,6 @@ function act_state_mgr_end:execute()
 		   (self.object:best_enemy() ~= nil and
 		    self.object:best_enemy():alive() == true)
 		then
-			printf("FIRE!!!")
 			self.object:set_item(object.fire1, self.object:best_weapon())
 		else
 			self.object:set_item(object.idle, self.object:best_weapon())
