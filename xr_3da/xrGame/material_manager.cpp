@@ -42,8 +42,9 @@ void CMaterialManager::reinit		()
 	m_run_mode				= false;
 
 	CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(this);
-	if (entity_alive && entity_alive->m_PhysicMovementControl->CharacterExist()) {
-		entity_alive->m_PhysicMovementControl->SetPLastMaterial	(&m_last_material_idx);
+	if (entity_alive ) {
+		if(entity_alive->m_PhysicMovementControl->CharacterExist())
+			entity_alive->m_PhysicMovementControl->SetPLastMaterial	(&m_last_material_idx);
 		entity_alive->m_PhysicMovementControl->SetMaterial		(m_my_material_idx);
 	}
 }
