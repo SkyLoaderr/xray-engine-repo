@@ -67,11 +67,13 @@ void	CBlender_Compile::PassEnd			()
 	// Create pass
 	SPS* ps					= Device.Shader._CreatePS			(pass_ps);
 	SVS* vs					= Device.Shader._CreateVS			(pass_vs);
+	ctable.merge			(&ps->constants);
+	ctable.merge			(&vs->constants);
 
 	SPass					P;
 	P.ps					= ps->ps;
 	P.vs					= vs->vs;
-	P.constants				= Device.Shader._CreateConstantTable(&ps->constants,&vs->constants);
+	P.constants				= Device.Shader._CreateConstantTable(ctable);
 	P.state					= Device.Shader._CreateState		(RS.GetContainer());
 	P.T						= Device.Shader._CreateTextureList	(passTextures);
 	P.M						= Device.Shader._CreateMatrixList	(passMatrices);

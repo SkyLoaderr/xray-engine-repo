@@ -44,7 +44,7 @@ void	R_xforms::unmap			()
 	c_vp		= NULL;
 	c_wvp		= NULL;
 }
-void	R_xforms::R_xforms		()
+R_xforms::R_xforms				()
 {
 	unmap		();
 	set_W		(Fidentity);
