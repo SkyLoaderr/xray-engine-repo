@@ -213,5 +213,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		.def("set_actor_position",			&CScriptGameObject::SetActorPosition)
 		.def("set_actor_direction",			&CScriptGameObject::SetActorDirection)
+
+		.def("vertex_in_direction",			&CScriptGameObject::vertex_in_direction)
 	;return	(instance);
 }

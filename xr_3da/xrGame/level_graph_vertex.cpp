@@ -186,7 +186,7 @@ float CLevelGraph::mark_nodes_in_direction(u32 start_vertex_id, const Fvector &s
 	return					(fCurDistance);
 }
 
-float CLevelGraph::farthest_vertex_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, u32 &finish_vertex_id, xr_vector<bool> *tpaMarks) const
+float CLevelGraph::farthest_vertex_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, u32 &finish_vertex_id, xr_vector<bool> *tpaMarks, bool check_accessability) const
 {
 	SContour				_contour;
 	const_iterator			I,E;
@@ -200,7 +200,11 @@ float CLevelGraph::farthest_vertex_in_direction(u32 start_vertex_id, const Fvect
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
-			iNextNode = value(dwCurNode,I);
+			iNextNode		= value(dwCurNode,I);
+			
+			if (check_accessability && !is_accessible(iNextNode))
+				continue;
+
 			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}
@@ -242,7 +246,7 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 		saved_index			= -1;
 		contour				(_contour,dwCurNode);
 		for ( ; I != E; ++I) {
-			iNextNode = value(dwCurNode,I);
+			iNextNode		= value(dwCurNode,I);
 			if (valid_vertex_id(iNextNode) && (iPrevIndex != iNextNode) && (ai().cross_table().vertex(iNextNode).game_vertex_id() == tGraphID))
 				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
 		}

@@ -31,6 +31,7 @@
 #include "entitycondition.h"
 #include "space_restrictor.h"
 #include "detail_path_manager.h"
+#include "level_navigation_graph.h"
 
 class CScriptBinderObject;
 
@@ -443,3 +444,23 @@ void CScriptGameObject::set_range				(float new_range)
 	}
 	monster->set_range		(new_range);
 }
+
+u32	CScriptGameObject::vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance) const
+{
+	CCustomMonster	*monster = smart_cast<CCustomMonster*>(&object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member vertex_in_direction!");
+		return		(level_vertex_id);
+	}
+
+	direction.normalize_safe();
+	direction.mul	(max_distance);
+	Fvector			start_position = ai().level_graph().vertex_position(level_vertex_id);
+	Fvector			finish_position = Fvector(start_position).add(direction);
+	u32				result = u32(-1);
+	monster->movement().restrictions().add_border(level_vertex_id,max_distance);
+	ai().level_graph().farthest_vertex_in_direction(level_vertex_id,start_position,finish_position,result,0,true);
+	monster->movement().restrictions().remove_border();
+	return			(ai().level_graph().valid_vertex_id(result) ? result : level_vertex_id);
+}
+

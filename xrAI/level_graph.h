@@ -176,7 +176,7 @@ public:
 			float	mark_nodes_in_direction		(u32 start_vertex_id, const Fvector &start_position, const Fvector &direction, float distance, xr_vector<u32> &vertex_stack, xr_vector<bool> *vertex_marks) const;
 			float	mark_nodes_in_direction		(u32 start_vertex_id, const Fvector &start_position, u32 finish_node, xr_vector<u32> &vertex_stack, xr_vector<bool> *vertex_marks) const;
 			float	mark_nodes_in_direction		(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_point, xr_vector<u32> &vertex_stack, xr_vector<bool> *vertex_marks) const;
-			float	farthest_vertex_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, u32 &finish_vertex_id, xr_vector<bool> *tpaMarks) const;
+			float	farthest_vertex_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, u32 &finish_vertex_id, xr_vector<bool> *tpaMarks, bool check_accessability = false) const;
 			bool	create_straight_path		(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath = true) const;
 			bool	create_straight_path		(u32 start_vertex_id, const Fvector2 &start_point, const Fvector2 &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath = true) const;
 	template <bool bAssignY, typename T>

@@ -444,6 +444,8 @@ public:
 			bool				inside					(const Fvector &position) const;
 
 			Fvector				head_orientation		() const;
+			u32					vertex_in_direction		(u32 level_vertex_id, Fvector direction, float max_distance) const;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)
