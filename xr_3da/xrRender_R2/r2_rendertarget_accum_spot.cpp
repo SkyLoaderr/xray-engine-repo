@@ -3,16 +3,18 @@
 void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
-	float			z_bias				= +0.005f;
-
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
+	u32				uRange				= 1; 
+	if (RImplementation.b_nv3x)	uRange	= 0xFFFFFFFF >> (32 - 24);
+	float			fRange				= float(uRange);
+	float			fBias				= -0.001f*fRange;
 	Fmatrix			m_TexelAdjust		= 
 	{
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
-		0.0f,				0.0f,				1.0f,			0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f - z_bias,	1.0f
+		0.0f,				0.0f,				fRange,			0.0f,
+		0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
 	};
 
 	// compute xforms

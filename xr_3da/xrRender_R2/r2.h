@@ -73,7 +73,7 @@ public:
 
 	CRenderTarget											Target;			// Render-target
 	CLight_DB												Lights;
-	CLight_Render_Direct									LR_Direct;
+	CLight_Render_Direct									LR;
 	cl_binders												Binders;
 private:
 	// Loading / Unloading
