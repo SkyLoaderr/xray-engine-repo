@@ -345,17 +345,26 @@ function load_common (obj, sounds_base)
     themes["bar_talk_double"] =
                {
                --speech 1
+               { 
+               sounds_base,  
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_novice_1",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_novice_2",  1, snd_type.talk, 2, 1, id ())
+               },
+               --speech 2
                {
-               sounds_base,
-               obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, id ()),
-               obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, id ())
-              }
-              }
+               sounds_base, 
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_1",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_2",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_3",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_4",  1, snd_type.talk, 2, 1, id ())
+               },
+               --speech 3
+               {
+               sounds_base, 
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_hiding_place_1",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_hiding_place_2",  1, snd_type.talk, 2, 1, id ())
+               }
+               }
 
     themes["laboratory_scientist"] =
                {
