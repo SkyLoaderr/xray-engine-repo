@@ -262,9 +262,6 @@
 				RelativePath="FStaticRender_Blenders.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_Cached.cpp">
-			</File>
-			<File
 				RelativePath="FStaticRender_DetectSector.cpp">
 			</File>
 			<File

@@ -3,11 +3,6 @@
 #include "..\tga.h"
 #include "..\xrImage_Resampler.h"
 
-#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
-#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
-
 IC u32 convert(float c)
 {
 	u32 C=iFloor(c);
@@ -67,9 +62,9 @@ void CRender::Screenshot		(LPCSTR postfix, BOOL bSquare)
 	{
 		u32 p = *pPixel;
 		*pPixel = D3DCOLOR_XRGB(
-			G.red	[RGBA_GETRED(p)],
-			G.green	[RGBA_GETGREEN(p)],
-			G.blue	[RGBA_GETBLUE(p)]
+			G.red	[color_get_R(p)],
+			G.green	[color_get_G(p)],
+			G.blue	[color_get_B(p)]
 			);
 	}
 

@@ -9,19 +9,6 @@
 
 #include "xrImage_Resampler.h"
 
-#ifndef RGBA_GETALPHA
-#define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
-#define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)
-#define RGBA_GETGREEN(rgb)      u32(((rgb) >> 8) & 0xff)
-#define RGBA_GETBLUE(rgb)       u32((rgb) & 0xff)
-#define color_rgba(r,g,b,a)		D3DCOLOR_ARGB(a,r,g,b)
-#endif
-#ifndef D3DCOLOR_ARGB
-#define D3DCOLOR_ARGB(a,r,g,b) \
-	((u32)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
-#endif
-
-
 typedef	u32	Pixel;
 struct Image
 {
@@ -344,10 +331,10 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				{
 					double	W	=	contrib[i].p[j].weight;
 					Pixel	P	=	raster[contrib[i].p[j].pixel];
-					w_r			+=	W*double(RGBA_GETRED(P));
-					w_g			+=	W*double(RGBA_GETGREEN(P));
-					w_b			+=	W*double(RGBA_GETBLUE(P));
-					w_a			+=	W*double(RGBA_GETALPHA(P));
+					w_r			+=	W*double(color_get_R(P));
+					w_g			+=	W*double(color_get_G(P));
+					w_b			+=	W*double(color_get_B(P));
+					w_a			+=	W*double(color_get_A(P));
 				}
 				put_pixel(tmp, i, k, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
@@ -440,10 +427,10 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 				{
 					double	W	=	contrib[i].p[j].weight;
 					Pixel	P	=	raster[contrib[i].p[j].pixel];
-					w_r			+=	W*double(RGBA_GETRED(P));
-					w_g			+=	W*double(RGBA_GETGREEN(P));
-					w_b			+=	W*double(RGBA_GETBLUE(P));
-					w_a			+=	W*double(RGBA_GETALPHA(P));
+					w_r			+=	W*double(color_get_R(P));
+					w_g			+=	W*double(color_get_G(P));
+					w_b			+=	W*double(color_get_B(P));
+					w_a			+=	W*double(color_get_A(P));
 				}
 				put_pixel(&dst, k, i, color_rgba(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
 			}
