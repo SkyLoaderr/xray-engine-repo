@@ -132,20 +132,20 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CAI_Map,
+		CLevelGraph,
 		_DataStorage,
 		_dist_type,
 		_index_type,
 		_iteration_type
 	> : public CPathManagerBase <
-			CAI_Map,
+			CLevelGraph,
 			_DataStorage,
 			_dist_type,
 			_index_type,
 			_iteration_type
 		>
 {
-	typedef CAI_Map _Graph;
+	typedef CLevelGraph _Graph;
 	typedef typename CPathManagerBase <
 				_Graph,
 				_DataStorage,
@@ -193,29 +193,29 @@ public:
 			_max_range,
 			_max_iteration_count
 		);
-		square_size_xz			= graph->m_fSize2;
-		square_size_y			= graph->m_fYSize2;
-		m_sqr_distance_xz		= _sqr(graph->m_header.size);
+		square_size_xz			= graph->header().cell_size();
+		square_size_y			= graph->header().factor_y();
+		m_sqr_distance_xz		= _sqr(graph->header().cell_size());
 	}
 
 	IC	void		init			()
 	{
-		const _Graph::InternalNode	&tNode1	= *graph->Node(start_node_index);
+		const _Graph::CVertex	&tNode1	= *graph->vertex(start_node_index);
 		graph->unpack_xz		(tNode1,x2,z2);
-		y2						= (float)(tNode1.p.y);
+		y2						= (float)(tNode1.position().y);
 		
-		const _Graph::InternalNode	&tNode2	= *graph->Node(goal_node_index);
+		const _Graph::CVertex	&tNode2	= *graph->vertex(goal_node_index);
 		graph->unpack_xz		(tNode2,x3,z3);
-		y3						= (float)(tNode2.p.y);
+		y3						= (float)(tNode2.position().y);
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
 	{
 		VERIFY					(graph);
 		
-		const _Graph::InternalNode	&tNode1 = *graph->Node(node_index2);
+		const _Graph::CVertex	&tNode1 = *graph->vertex(node_index2);
 
-		y2						= (float)(tNode1.p.y);
+		y2						= (float)(tNode1.position().y);
 
 		return					(_sqrt(square_size_y*(float)_sqr(y2 - y1) + m_sqr_distance_xz));
 	}
@@ -231,9 +231,9 @@ public:
 		if (node_index == goal_node_index)
 			return				(true);
 		
-		_Graph::InternalNode	&tNode0 = *graph->Node(node_index);
+		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
 
-		y1						= (float)(tNode0.p.y);
+		y1						= (float)(tNode0.position().y);
 
 		return					(false);
 	}
@@ -262,20 +262,20 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CSE_ALifeGraph,
+		CGameGraph,
 		_DataStorage,
 		_dist_type,
 		_index_type,
 		_iteration_type
 	> : public CPathManagerBase <
-			CSE_ALifeGraph,
+			CGameGraph,
 			_DataStorage,
 			_dist_type,
 			_index_type,
 			_iteration_type
 		>
 {
-	typedef CSE_ALifeGraph _Graph;
+	typedef CGameGraph _Graph;
 	typedef typename CPathManagerBase <
 		_Graph,
 		_DataStorage,
@@ -284,7 +284,7 @@ template <
 		_iteration_type
 	> inherited;
 protected:
-	_Graph::SGraphVertex	*goal_vertex;
+	const _Graph::CVertex	*goal_vertex;
 public:
 
 	virtual				~CPathManager	()
@@ -312,19 +312,19 @@ public:
 			_max_range,
 			_max_iteration_count
 			);
-		goal_vertex				= graph->m_tpaGraph + goal_node_index;
+		goal_vertex				= &graph->vertex(goal_node_index);
 	}
 
 	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i) const
 	{
 		VERIFY					(graph);
-		return					(graph->get_edge_weight(i));
+		return					((*i).distance());
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
-		return					(goal_vertex->tGlobalPoint.distance_to(graph->m_tpaGraph[node_index].tGlobalPoint));
+		return					(goal_vertex->game_point().distance_to(graph->vertex(node_index).game_point()));
 	}
 
 	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const

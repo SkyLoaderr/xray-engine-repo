@@ -1285,7 +1285,7 @@ public:
 			return;
 		}
 		
-		verify_buckets	();
+//		verify_buckets	();
 	}
 
 	IC		void		add_opened		(CGraphNode &vertex)
