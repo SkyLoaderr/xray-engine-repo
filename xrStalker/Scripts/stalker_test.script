@@ -69,6 +69,27 @@ function custom_planner:reinit	(obj, clear_all)
 end
 
 function main()
+
+	stalker			= get_level_object("m_stalker_e0000")
+	stalker:script	(true,this.script_name())
+	
+	action(
+		stalker,
+		move		(move.stand,move.walk,move.line,patrol("way0000",patrol.nearest,patrol.continue)),
+		cond		(cond.move_end)
+	)
+
+	while true do
+		wait		()
+	end
+
+	stalker:script	(false,this.script_name())
+
+	if true then
+		return
+	end
+
+
 	-- define world properties
 	local property_id0		= 0
 	local property_id1		= 1
