@@ -13,7 +13,7 @@
 
 
   <info_portion id="encyclopedy">
-	<article>social_stalker-clans_gunslinger-clan</article>
+  <article>social_stalker-clans_gunslinger-clan</article>
   </info_portion>
 
   <!-- Чтоб не изпользовать сохранения, используются следующие инфо-поршены -->
@@ -24,6 +24,11 @@
 
   <!-- В темной лаборатории кровосос видел актера -->
   <info_portion id="dark_lab_bloodsucker">
+  </info_portion>
+
+  <info_portion id="test_info">
+       <dialog>net_deneg</dialog>
+       <dialog>vodka_est</dialog>
   </info_portion>
 
 </game_information_portions>
