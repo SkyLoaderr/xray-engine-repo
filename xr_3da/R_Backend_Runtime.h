@@ -188,7 +188,6 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 baseV, u32 startV, u32 coun
 	stat.calls			++;
 	stat.verts			+= countV;
 	stat.polys			+= PC;
-	xforms.flush		();
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawIndexedPrimitive(T,baseV, startV, countV,startI,PC));
 }
@@ -198,7 +197,6 @@ IC void CBackend::Render				(D3DPRIMITIVETYPE T, u32 startV, u32 PC)
 	stat.calls			++;
 	stat.verts			+= 3*PC;
 	stat.polys			+= PC;
-	xforms.flush		();
 	constants.flush		();
 	CHK_DX				(HW.pDevice->DrawPrimitive(T, startV, PC));
 }
