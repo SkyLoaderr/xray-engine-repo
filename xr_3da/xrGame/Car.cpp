@@ -754,7 +754,7 @@ void CCar::Init()
 	CDamageManager::reload("car_definition",ini);
 	
 	HandBreak();
-	Transmision(1);
+	Transmission(1);
 }
 
 void CCar::Revert()
@@ -866,9 +866,9 @@ void CCar::UpdatePower()
 
 	if(b_auto_switch_transmission) 
 	{
-		VERIFY2(m_current_transmission_num<m_gear_ratious.size(),"wrong transmission");
-		if(m_current_rpm<m_gear_ratious[m_current_transmission_num][1]) TransmisionDown();
-		if(m_current_rpm>m_gear_ratious[m_current_transmission_num][2]) TransmisionUp();
+		VERIFY2(CurrentTransmission()<m_gear_ratious.size(),"wrong transmission");
+		if(m_current_rpm<m_gear_ratious[CurrentTransmission()][1]) TransmissionDown();
+		if(m_current_rpm>m_gear_ratious[CurrentTransmission()][2]) TransmissionUp();
 	}
 
 	xr_vector<SWheelDrive>::iterator i,e;
@@ -1006,15 +1006,15 @@ void CCar::PressBreaks()
 void CCar::DriveBack()
 {
 	Clutch();
-	Transmision(0);
-	if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
+	Transmission(0);
+	if(1==CurrentTransmission()||0==CurrentTransmission())Starter();
 	Drive();
 }
 void CCar::DriveForward()
 {
 	Clutch();
-	if(0==m_current_transmission_num) Transmision(1);
-	if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
+	if(0==CurrentTransmission()) Transmission(1);
+	if(1==CurrentTransmission()||0==CurrentTransmission())Starter();
 	Drive();
 }
 void CCar::ReleaseRight()
@@ -1038,8 +1038,8 @@ void CCar::ReleaseForward()
 	if(bkp)
 	{
 		Clutch();
-		Transmision(0);
-		if(1==m_current_transmission_num||0==m_current_transmission_num)Starter();
+		Transmission(0);
+		if(1==CurrentTransmission()||0==CurrentTransmission())Starter();
 		Drive();
 	}
 	else
@@ -1055,8 +1055,8 @@ void CCar::ReleaseBack()
 	if(fwp)
 	{
 		Clutch();
-		if(0==m_current_transmission_num) Transmision(1);
-		if(1==m_current_transmission_num||0==m_current_transmission_num) Starter();
+		if(0==CurrentTransmission()) Transmission(1);
+		if(1==CurrentTransmission()||0==CurrentTransmission()) Starter();
 		Drive();
 	}
 	else
@@ -1074,15 +1074,15 @@ void CCar::ReleaseBreaks()
 	brp=false;
 }
 
-void CCar::Transmision(size_t num)
+void CCar::Transmission(size_t num)
 {
 
-	//if(0==num||1==num)Starter();
 	if(num<m_gear_ratious.size())
 	{
+		if(CurrentTransmission()!=num)m_car_sound->TransmissionSwitch();
 		m_current_transmission_num=num;
 		m_current_gear_ratio=m_gear_ratious[num][0];
-		//	m_current_rpm=m_torque_rpm;
+
 	}
 #ifdef DEBUG
 	//Log("Transmission switch %d",(u32)num);
@@ -1090,30 +1090,30 @@ void CCar::Transmision(size_t num)
 }
 void CCar::CircleSwitchTransmission()
 {
-	if(0==m_current_transmission_num)return;
-	++m_current_transmission_num;
-	m_current_transmission_num=m_current_transmission_num%m_gear_ratious.size();
-	0==m_current_transmission_num ? m_current_transmission_num + 1 : m_current_transmission_num;
-	Transmision(m_current_transmission_num);
+	if(0==CurrentTransmission())return;
+	size_t transmission=1+CurrentTransmission();
+	transmission=transmission%m_gear_ratious.size();
+	0==transmission ? transmission++ : transmission;
+	Transmission(transmission);
 	Drive();
 }
 
-void CCar::TransmisionUp()
+void CCar::TransmissionUp()
 {
-	if(0==m_current_transmission_num)return;
-	++m_current_transmission_num;
+	if(0==CurrentTransmission())return;
+	size_t transmission=1+CurrentTransmission();
 	size_t max_transmition_num=m_gear_ratious.size()-1;
-	m_current_transmission_num>max_transmition_num ? m_current_transmission_num=max_transmition_num :m_current_transmission_num;
-	Transmision(m_current_transmission_num);
+	transmission>max_transmition_num ? transmission=max_transmition_num :transmission;
+	Transmission(transmission);
 	Drive();
 }
 
-void CCar::TransmisionDown()
+void CCar::TransmissionDown()
 {
-	if(0==m_current_transmission_num)return;
-	--m_current_transmission_num;
-	m_current_transmission_num<1 ? m_current_transmission_num=1 : m_current_transmission_num;
-	Transmision(m_current_transmission_num);
+	if(0==CurrentTransmission())return;
+	size_t transmission=CurrentTransmission()-1;
+	transmission<1 ? transmission=1 : transmission;
+	Transmission(transmission);
 	Drive();
 }
 void CCar::InitParabola()

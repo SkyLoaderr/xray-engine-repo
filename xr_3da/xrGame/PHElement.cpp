@@ -7,6 +7,7 @@
 #include "MathUtils.h"
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
+
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -29,7 +30,7 @@
 
 #include "PHShell.h"
 #include "PHElement.h"
-
+extern CPHWorld*				ph_world;
 
 
 
@@ -886,6 +887,8 @@ void	CPHElement::setForce(const Fvector& force)
 void	CPHElement::setTorque(const Fvector& torque)
 {
 	if(!bActive||m_flags.test(flFixed)) return;
+	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	m_shell->EnableObject(0);
 	dBodySetTorque(m_body,torque.x,torque.y,torque.z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }

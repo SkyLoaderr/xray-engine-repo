@@ -263,6 +263,7 @@ virtual void ApplyDamage(u16 level);
 	struct SCarSound
 	{
 		ref_sound					snd_engine;
+		ref_sound					snd_transmission;
 		enum 
 		{
 			sndOff,
@@ -280,6 +281,7 @@ virtual void ApplyDamage(u16 level);
 		void Stop();
 		void Stall();
 		void Drive();
+		void TransmissionSwitch();
 		SCarSound(CCar* car);
 		~SCarSound();
 		u32		time_state_start;
@@ -388,10 +390,11 @@ private:
 	void SteerRight();
 	void SteerLeft();
 	void SteerIdle();
-	void Transmision(size_t num);
+	void Transmission(size_t num);
 	void CircleSwitchTransmission();
-	void TransmisionUp();
-	void TransmisionDown();
+	void TransmissionUp();
+	void TransmissionDown();
+IC	size_t CurrentTransmission(){return m_current_transmission_num;}
 	void PressRight();
 	void PressLeft();
 	void PressForward();

@@ -118,8 +118,8 @@ void CCar::OnKeyboardPress(int cmd)
 	case kCAM_1:	OnCameraChange(ectFirst);	break;
 	case kCAM_2:	OnCameraChange(ectChase);	break;
 	case kCAM_3:	OnCameraChange(ectFree);	break;
-	case kACCEL:	TransmisionUp();			break;
-	case kCROUCH:	TransmisionDown();			break;
+	case kACCEL:	TransmissionUp();			break;
+	case kCROUCH:	TransmissionDown();			break;
 	case kFWD:		PressForward();				break;
 	case kBACK:		PressBack();				break;
 	case kR_STRAFE:	PressRight();				if (Owner()) Owner()->steer_Vehicle(1);	break;

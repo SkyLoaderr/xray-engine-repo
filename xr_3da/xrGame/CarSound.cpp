@@ -24,6 +24,10 @@ void CCar::SCarSound::Init()
 		{
 			relative_pos.set(ini->r_fvector3("car_sound","relative_pos"));
 		}
+		if(ini->line_exist("car_sound","transmission_switch"))
+		{
+			snd_transmission.create(TRUE,ini->r_string("car_sound","transmission_switch"));
+		}
 	
 	} else {
 		Msg					("! Car doesn't contain sound params");
@@ -76,6 +80,7 @@ void CCar::SCarSound::Destroy()
 {
 	SwitchOff();
 	snd_engine.destroy	();
+	snd_transmission.destroy();
 }
 
 void CCar::SCarSound::SwitchOff()
@@ -112,4 +117,13 @@ void CCar::SCarSound::Drive()
 	if(eCarSound==sndOff) SwitchOn();
 	eCarSound=sndDrive;
 	time_state_start=Device.dwTimeGlobal;
+}
+void CCar::SCarSound::TransmissionSwitch()
+{
+	Fvector pos;
+	pcar->XFORM().transform_tiny(pos,relative_pos);
+	if(snd_transmission.handle)
+	{
+		snd_transmission.play_at_pos(pcar,pos);
+	}
 }

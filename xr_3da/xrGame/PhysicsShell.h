@@ -116,6 +116,7 @@ public:
 	virtual void			addInertia				(const dMass& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
+	virtual void			setTorque				(const Fvector& torque)							= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual u16				setGeomFracturable		(CPHFracture &fracture)							= 0;
 	virtual CPHFracture&	Fracture				(u16 num)										= 0;

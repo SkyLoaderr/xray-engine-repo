@@ -26,6 +26,7 @@ class CPHWorld	: public pureFrame
 	u32							m_reduce_delay												;
 	u32							m_update_delay_count										;
 	bool						b_world_freezed												;
+	bool						b_processing;
 	static const u32			update_delay=1												;
 ///	dSpaceID					Space														;
 
@@ -42,7 +43,7 @@ public:
 	dReal						m_frame_time												;
 	float						m_update_time												;
 	unsigned int				disable_count												;
-
+	
 								CPHWorld						()							;
 	virtual						~CPHWorld						()				{}			;
 
@@ -65,6 +66,7 @@ IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 	void						AddFreezedObject				(CPHObject* obj)			;
 	void						RemoveFreezedObject				(PH_OBJECT_I i)				;
 	bool 						IsFreezed						()							;
+IC	bool						Processing						()							{return b_processing;}
 	u32							CalcNumSteps					(u32 dTime)					;
 
 #ifdef DRAW_CONTACTS

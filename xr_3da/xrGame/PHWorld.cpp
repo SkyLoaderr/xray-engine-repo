@@ -73,6 +73,7 @@ CPHWorld::CPHWorld()
 	m_reduce_delay=0;
 	m_update_delay_count=0;
 	b_world_freezed=false;
+	b_processing=false;
 }
 void CPHWorld::Create()
 {
@@ -276,8 +277,10 @@ void CPHWorld::FrameStep(dReal step)
 	m_delay+=(it_number-m_reduce_delay-1);
 	*/
 	//for(UINT i=0;i<(m_reduce_delay+1);++i)
+	b_processing=true;
 	start_time = Device.dwTimeGlobal;// - u32(m_frame_time*1000);
 	for(UINT i=0; i<it_number;++i)	Step();
+	b_processing=false;
 }
 
 void CPHWorld::AddObject(CPHObject* object){
