@@ -752,8 +752,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 
 	// Set up the stencil states
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_GREATER		);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x00				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x01				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xff				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0x00				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
