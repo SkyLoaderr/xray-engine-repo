@@ -15,8 +15,6 @@
 namespace NAI_Rat_Constants
 {
 	const float TORSO_ANGLE_DELTA				= EPS_L;
-	const float ATTACK_DISTANCE					= PI_DIV_2;
-	const float ATTACK_ANGLE					= PI_DIV_6;
 	const DWORD LOST_MEMORY_TIME				= 20000;
 	const DWORD LOST_RECOIL_TIME				=  2000;
 	const float UNDER_FIRE_DISTANCE				= 100.f;
@@ -178,6 +176,10 @@ class CAI_Rat : public CCustomMonster
 		DWORD				m_dwStandingCountPercent;
 		bool				m_bStanding;
 		bool				m_bActive;
+
+		// attack parameters
+		float				m_fAttackDistance;
+		float				m_fAttackAngle;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

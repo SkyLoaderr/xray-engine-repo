@@ -125,6 +125,9 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwActiveCountPercent			= pSettings->ReadINT(section,"ActiveCountPercent");
 	m_dwStandingCountPercent		= pSettings->ReadINT(section,"StandingCountPercent");
 
+	m_fAttackDistance				= pSettings->ReadFLOAT(section,"AttackDistance");
+	m_fAttackAngle					= pSettings->ReadFLOAT(section,"AttackAngle")/180.f*PI;
+
 	m_dwActiveScheduleMin = shedule_Min;
 	m_dwActiveScheduleMax = shedule_Max;
 }

@@ -139,7 +139,8 @@ void CAI_Rat::Turn()
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 
 	//mRotate.setHPB(m_tHPB.x = -r_torso_target.yaw,m_tHPB.y,m_tHPB.z);
-	//UpdateTransform();
+	UpdateTransform();
+
 	CHECK_IF_GO_TO_PREV_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, PI_DIV_6))
 	
 	INIT_SQUAD_AND_LEADER
@@ -332,10 +333,10 @@ void CAI_Rat::UnderFire()
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	//if (m_fSpeed > EPS_L)
+	if (m_fSpeed > EPS_L)
 		vfComputeNewPosition();
-	//else
-	//	UpdateTransform();
+	else
+		UpdateTransform();
 
 	SetDirectionLook();
 }
@@ -360,7 +361,7 @@ void CAI_Rat::AttackFire()
 
 	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy));// || !m_Enemy.Enemy->g_Alive())
 		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > m_fAttackDistance),aiRatAttackRun)
 
 	Fvector tTemp;
 	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
@@ -368,7 +369,7 @@ void CAI_Rat::AttackFire()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 	
-	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,ATTACK_ANGLE),aiRatAttackRun)
+	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,m_fAttackAngle),aiRatAttackRun)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -421,8 +422,8 @@ void CAI_Rat::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
-		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE)) {
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
 			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
 		}
 		else {
@@ -431,7 +432,7 @@ void CAI_Rat::AttackRun()
 		}
 	}
 	else
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn);
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiRatTurn);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -446,7 +447,7 @@ void CAI_Rat::AttackRun()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
 		vfAimAtEnemy();
 		r_torso_target.pitch = 0;
 		UpdateTransform();
