@@ -1545,6 +1545,22 @@
 					RelativePath="GameMtlLib_Engine.cpp">
 				</File>
 			</Filter>
+			<Filter
+				Name="_particles"
+				Filter="">
+				<File
+					RelativePath=".\PGObject.cpp">
+				</File>
+				<File
+					RelativePath=".\PGObject.h">
+				</File>
+				<File
+					RelativePath=".\PSObject.cpp">
+				</File>
+				<File
+					RelativePath=".\PSObject.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="HUD"

@@ -1,11 +1,10 @@
 #ifndef _INCDEF_PSObject_H_
 #define _INCDEF_PSObject_H_
 
-#include "PS_instance.h"
-#include "ParticleSystem.h"
+#include "..\PS_instance.h"
+#include "..\ParticleSystem.h"
 
-class ENGINE_API CPSObject	: 
-	public CPS_Instance
+class CPSObject			: public CPS_Instance
 {
 public:
 	PS::SEmitter		m_Emitter;

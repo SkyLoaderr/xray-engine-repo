@@ -13,8 +13,6 @@ class ENGINE_API CPS_Instance	:
 protected:
 	int					m_iLifeTime;
 	BOOL				m_bAutoRemove;
-	string32			rm_event_desc;
-	EVENT				rm_event;
 public:
 	CPS_Instance		();
 	virtual				~CPS_Instance	();

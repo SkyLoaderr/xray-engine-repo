@@ -991,6 +991,12 @@
 					RelativePath=".\ParticleSystem.h">
 				</File>
 				<File
+					RelativePath=".\PS_instance.cpp">
+				</File>
+				<File
+					RelativePath=".\PS_instance.h">
+				</File>
+				<File
 					RelativePath="PSLibrary.cpp">
 				</File>
 				<File
@@ -1020,12 +1026,6 @@
 					</File>
 					<File
 						RelativePath="PGObject.h">
-					</File>
-					<File
-						RelativePath=".\PS_instance.cpp">
-					</File>
-					<File
-						RelativePath=".\PS_instance.h">
 					</File>
 					<File
 						RelativePath=".\PSObject.cpp">
