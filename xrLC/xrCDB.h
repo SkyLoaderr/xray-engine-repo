@@ -60,7 +60,7 @@ namespace CDB
 	{
 		friend class COLLIDER;	
 	private:
-		HANDLE			hHeap;
+		HANDLE					hHeap;
 		Opcode::OPCODE_Model*	tree;
 
 		// tris
