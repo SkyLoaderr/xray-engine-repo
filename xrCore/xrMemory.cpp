@@ -17,7 +17,9 @@ extern		pso_MemFill32	xrMemFill32_x86;
 
 xrMemory::xrMemory()
 {
+#ifdef DEBUG
 	debug_mode	= FALSE;
+#endif
 	mem_copy	= xrMemCopy_x86;
 	mem_fill	= xrMemFill_x86;
 	mem_fill32	= xrMemFill32_x86;
@@ -25,8 +27,10 @@ xrMemory::xrMemory()
 
 void	xrMemory::_initialize	(BOOL bDebug)
 {
+#ifdef DEBUG
 	debug_mode				= bDebug;
 	debug_info_update		= 0;
+#endif
 
 	stat_calls				= 0;
 	stat_counter			= 0;
