@@ -165,45 +165,45 @@ public:
 	virtual				~CActor					( );
 
 
-	IC static BOOL		isAccelerated			(DWORD mstate)	
+	IC static BOOL			isAccelerated		(DWORD mstate)	
 	{
 		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
 		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
 	}
 
-	virtual void		Load					( CInifile* ini, const char *section );
-
-	virtual void		Die						( );
-	virtual	BOOL		Spawn					(BOOL bLocal, int sid, int team, int squad, int group, Fvector& o_pos, Fvector& o_angle, NET_Packet& P );
-	virtual	BOOL		Hit						(int iLost, Fvector &dir, CEntity* who);
-	virtual void		HitSignal				(int HitAmount, Fvector& vLocalDir, CEntity* who);
+	virtual void			Load				( CInifile* ini, const char *section );
+	virtual BOOL			Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
+	
+	virtual void			Die					( );
+	virtual	BOOL			Hit					(int iLost, Fvector &dir, CEntity* who);
+	virtual void			HitSignal			(int HitAmount, Fvector& vLocalDir, CEntity* who);
 
 	// Fire control
-	virtual void		g_fireParams			(Fvector& P, Fvector& D);
-	virtual void		g_cl_fireStart			( );
-	virtual void		g_sv_fireStart			(NET_Packet* P);
-	virtual void		g_fireEnd				( );
+	virtual void			g_fireParams		(Fvector& P, Fvector& D);
+	virtual void			g_cl_fireStart		( );
+	virtual void			g_sv_fireStart		(NET_Packet* P);
+	virtual void			g_fireEnd			( );
 
 	// Network
-	virtual void		net_Export				(NET_Packet* P);				// export to server
-	virtual void		net_Import				(NET_Packet* P);				// import from server
-	virtual BOOL		net_Relevant			()	{ return net_Local; };		// relevant for export to server
+	virtual void			net_Export			(NET_Packet* P);				// export to server
+	virtual void			net_Import			(NET_Packet* P);				// import from server
+	virtual BOOL			net_Relevant		()	{ return net_Local; };		// relevant for export to server
 	
-	virtual BOOL		TakeItem				( DWORD CID );
+	virtual BOOL			TakeItem			( DWORD CID );
 
-	virtual void		OnMouseMove				(int x, int y);
-	virtual void		OnKeyboardPress			(int dik);
-	virtual void		OnKeyboardRelease		(int dik);
-	virtual void		OnKeyboardHold			(int dik);
+	virtual void			OnMouseMove			(int x, int y);
+	virtual void			OnKeyboardPress		(int dik);
+	virtual void			OnKeyboardRelease	(int dik);
+	virtual void			OnKeyboardHold		(int dik);
 
-	virtual void		Update					( DWORD T ); 
-	virtual float		OnVisible				( ); 
+	virtual void			Update				( DWORD T ); 
+	virtual float			OnVisible			( ); 
 
-	void				Statistic				( );
-	virtual void		OnRender				( );
+	void					Statistic			( );
+	virtual void			OnRender			( );
 
 	// HUD
-	virtual void		OnHUDDraw				(CCustomHUD* hud);
+	virtual void			OnHUDDraw			(CCustomHUD* hud);
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

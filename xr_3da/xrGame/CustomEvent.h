@@ -27,11 +27,11 @@ struct EV_LIST	{
 
 class CCustomEvent		: public CObject, public pureRender
 {
-	EV_LIST				OnEnter;
-	EV_LIST				OnExit;
-	CLASS_ID			clsid_Target;
-	vector<CObject*>	Contacted;
-	BOOL				ExecuteOnce;
+	EV_LIST					OnEnter;
+	EV_LIST					OnExit;
+	CLASS_ID				clsid_Target;
+	vector<CObject*>		Contacted;
+	BOOL					ExecuteOnce;
 public:
 	CCustomEvent();
 	virtual ~CCustomEvent();
