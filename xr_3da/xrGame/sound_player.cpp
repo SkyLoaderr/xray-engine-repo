@@ -116,6 +116,7 @@ void CSoundPlayer::update_playing_sounds()
 				CObject						*object = dynamic_cast<CObject*>(this);
 				VERIFY						(object);
 				(*I).m_sound->play_at_pos	(object,compute_sound_point(*I));
+				(*I).m_start_time			= (*I).m_stop_time + 1;
 			}
 	}
 }
