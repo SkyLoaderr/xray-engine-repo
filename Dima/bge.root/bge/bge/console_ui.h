@@ -1,17 +1,15 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ui.h
+//	Module 		: console_ui.h
 //	Created 	: 12.11.2004
 //  Modified 	: 12.11.2004
 //	Author		: Dmitriy Iassenev
-//	Description : User interface
+//	Description : Console interface
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-#include <singleton.h>
-#include <console_ui.h>
-
-IC	CConsoleUI &ui()
-{
-	return	(Loki::SingletonHolder<CConsoleUI>::Instance());
-}
+class CConsoleUI {
+public:
+			int __cdecl log		(LPCSTR format, ...);
+			void		execute	(char argc, char *argv[]);
+};

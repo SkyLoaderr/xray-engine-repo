@@ -460,6 +460,14 @@
 			<Filter
 				Name="console"
 				>
+				<File
+					RelativePath=".\console_ui.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\console_ui.h"
+					>
+				</File>
 				<Filter
 					Name="input"
 					>

@@ -8,8 +8,10 @@
 
 #include "stdafx.h"
 #include "hardware.h"
+#include "ui.h"
 
-void main(char *argc, char *argv[])
+void main(char argc, char *argv[])
 {
-	Hardware::detect();
+	Hardware::detect	();
+	ui().execute		(argc,argv);
 }
