@@ -18,21 +18,28 @@ enum COMBINE_MODE
 #define OVERLAY_SIZE		128
 #define DEPTH_RANGE			4.0f
 
-typedef struct
+// 2D
+struct TVERTEX
 {
     D3DXVECTOR4 p;
     FLOAT       tu, tv;
-} TVERTEX;
+};
 #define TVERTEX_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
+D3DVERTEXELEMENT9 decl_vert2D[] =
+{
+	{ 0, 0,		D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,	0 },
+	{ 0, 16,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
 
-typedef struct
+// 3D
+struct VERTEX
 {
     D3DXVECTOR3 p;
     D3DXVECTOR3 n;
     FLOAT       tu, tv;
-} VERTEX;
-
-D3DVERTEXELEMENT9 vertDecl[] =
+};
+D3DVERTEXELEMENT9 decl_vert[] =
 {
 	{ 0, 0,		D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION,	0 },
 	{ 0, 12,	D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,		0 },
@@ -60,8 +67,10 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DINDEXBUFFER9			m_pModelIB;
 	DWORD							m_dwModelNumVerts;
 	DWORD							m_dwModelNumFaces;
-	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
 	FLOAT							m_fModelSize;
+
+	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
+	LPDIRECT3DVERTEXBUFFER9			m_pQuadVB;
 
 	// xr2
 	R_constants						cc;
@@ -696,50 +705,32 @@ HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 {
 	// samplers and texture
-	m_pd3dDevice->SetTexture				(0, d_Position);
+	m_pd3dDevice->SetTexture				(0, d_Normal);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
-	// samplers and texture
-	m_pd3dDevice->SetTexture				(1, d_Normal);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
-
-	// samplers and texture
-	m_pd3dDevice->SetTexture				(2, d_Color);
-	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
-
-	// samplers and texture
-	m_pd3dDevice->SetTexture				(3, d_Accumulator);
-	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(3, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
-
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_CombineDBG_normals.ps);
-	m_pd3dDevice->SetVertexShader			(s_CombineDBG_normals.vs);
-	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
-	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
+	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
+	m_pd3dDevice->SetVertexDeclaration		(m_pVert2D_Decl);
 	cc.flush								(m_pd3dDevice);
 
-	// Render model
+	// Render Quad
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
 	m_pd3dDevice->SetIndices				(m_pModelIB);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	m_pd3dDevice->SetStreamSource			(0, m_pOverlayVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->SetTexture				(0, m_pShadowMap);
+	m_pd3dDevice->SetTextureStageState		(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	m_pd3dDevice->SetTextureStageState		(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+	m_pd3dDevice->SetTexture				(0, NULL);
+
 	// Cleanup
-	m_pd3dDevice->SetTexture				(0, NULL);
-	m_pd3dDevice->SetTexture				(0, NULL);
-	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(0, NULL);
 
 	return S_OK;
