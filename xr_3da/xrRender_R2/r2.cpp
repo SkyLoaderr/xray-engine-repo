@@ -115,10 +115,10 @@ void					CRender::reset_end				()
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)				{ return 0;								}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)		{ xr_delete(p);							}
-IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)		{ return Models.Create(name,data);		}
-IRender_Visual*			CRender::model_CreateChild		(LPCSTR name, IReader* data)		{ return Models.CreateChild(name,data);	}
-IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)					{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(IRender_Visual* &V, BOOL bDiscard)	{ Models.Delete(V, bDiscard);			}
+IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)		{ return Models->Create(name,data);		}
+IRender_Visual*			CRender::model_CreateChild		(LPCSTR name, IReader* data)		{ return Models->CreateChild(name,data);}
+IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)					{ return Models->Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IRender_Visual* &V, BOOL bDiscard)	{ Models->Delete(V, bDiscard);			}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();
@@ -138,15 +138,15 @@ void					CRender::model_Delete			(IRender_DetailModel* & F)
 IRender_Visual*			CRender::model_CreatePE			(LPCSTR name)	
 { 
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);		VERIFY(SE);
-	return					Models.CreatePE	(SE);
+	return					Models->CreatePE	(SE);
 }
 IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)	
 { 
 	PS::CPEDef*	SE			= PSLibrary.FindPED	(name);
-	if (SE) return			Models.CreatePE	(SE);
+	if (SE) return			Models->CreatePE	(SE);
 	else{
 		PS::CPGDef*	SG		= PSLibrary.FindPGD	(name);		VERIFY	(SG);
-		return				Models.CreatePG	(SG);
+		return				Models->CreatePG	(SG);
 	}
 }
 ref_shader				CRender::getShader				(int id)			{ VERIFY(id<int(Shaders.size()));	return Shaders[id];	}
@@ -158,7 +158,7 @@ D3DVERTEXELEMENT9*		CRender::getVB_Format			(int id)			{ VERIFY(id<int(DCL.size(
 IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 FSlideWindowItem*		CRender::getSWI					(int id)			{ VERIFY(id<int(SWIs.size()));		return &SWIs[id];	}
-IRender_Target*			CRender::getTarget				()					{ return &Target;										}
+IRender_Target*			CRender::getTarget				()					{ return Target;										}
 
 IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}

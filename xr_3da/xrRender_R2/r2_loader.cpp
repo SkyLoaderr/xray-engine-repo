@@ -62,7 +62,7 @@ void CRender::level_Load()
 
 		// Details
 		pApp->LoadTitle		("Loading details...");
-		Details.Load		();
+		Details->Load		();
 	}
 
 	// Sectors
@@ -206,8 +206,8 @@ void CRender::LoadVisuals(IReader *fs)
 
 	while ((chunk=fs->open_chunk(index))!=0)
 	{
-		chunk->r_chunk_safe		(OGF_HEADER,&H,sizeof(H));
-		V = Models.Instance_Create	(H.type);
+		chunk->r_chunk_safe			(OGF_HEADER,&H,sizeof(H));
+		V = Models->Instance_Create	(H.type);
 		V->Load(0,chunk,0);
 		Visuals.push_back(V);
 

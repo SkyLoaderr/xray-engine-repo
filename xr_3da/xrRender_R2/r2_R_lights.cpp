@@ -12,7 +12,7 @@ void	CRender::render_lights	(light_Package& LP)
 	//////////////////////////////////////////////////////////////////////////
 	// Refactor order based on ability to pack shadow-maps
 	// 1. calculate area + sort in descending order
-	const	u16		smap_unassigned			= u16(-1);
+	// const	u16		smap_unassigned		= u16(-1);
 	{
 		xr_vector<light*>&	source			= LP.v_shadowed;
 		for (u32 it=0; it<source.size(); it++)
@@ -81,7 +81,7 @@ void	CRender::render_lights	(light_Package& LP)
 		stats.s_used		++;
 
 		// generate spot shadowmap
-		Target.phase_smap_spot_clear	();
+		Target->phase_smap_spot_clear	();
 		xr_vector<light*>&	source		= LP.v_shadowed;
 		light*		L		= source.back	()	;
 		u16			sid		= L->vis.smap_ID	;
@@ -104,7 +104,7 @@ void	CRender::render_lights	(light_Package& LP)
 			if ( bNormal || bSpecial)	{
 				stats.s_merged						++;
 				L_spot_s.push_back					(L);
-				Target.phase_smap_spot				(L);
+				Target->phase_smap_spot				(L);
 				RCache.set_xform_world				(Fidentity);
 				RCache.set_xform_view				(L->X.S.view);
 				RCache.set_xform_project			(L->X.S.project);
@@ -112,7 +112,7 @@ void	CRender::render_lights	(light_Package& LP)
 				L->X.S.transluent					= FALSE;
 				if (bSpecial)						{
 					L->X.S.transluent					= TRUE;
-					Target.phase_smap_spot_tsh			(L);
+					Target->phase_smap_spot_tsh			(L);
 					r_dsgraph_render_graph				(1);			// normal level, secondary priority
 					r_dsgraph_render_sorted				( );			// strict-sorted geoms
 				}
@@ -124,7 +124,7 @@ void	CRender::render_lights	(light_Package& LP)
 		}
 
 		//		switch-to-accumulator
-		Target.phase_accumulator			();
+		Target->phase_accumulator			();
 		HOM.Disable							();
 
 		//		if (has_point_unshadowed)	-> 	accum point unshadowed
@@ -132,7 +132,7 @@ void	CRender::render_lights	(light_Package& LP)
 			light*	L	= LP.v_point.back	();		LP.v_point.pop_back		();
 			L->vis_update				();
 			if (L->vis.visible)			{ 
-				Target.accum_point		(L);
+				Target->accum_point		(L);
 				render_indirect			(L);
 			}
 		}
@@ -143,7 +143,7 @@ void	CRender::render_lights	(light_Package& LP)
 			L->vis_update				();
 			if (L->vis.visible)			{ 
 				LR.compute_xf_spot		(L);
-				Target.accum_spot		(L);
+				Target->accum_spot		(L);
 				render_indirect			(L);
 			}
 		}
@@ -151,7 +151,7 @@ void	CRender::render_lights	(light_Package& LP)
 		//		if (was_spot_shadowed)		->	accum spot shadowed
 		if		(!L_spot_s.empty())		{ 
 			for (u32 it=0; it<L_spot_s.size(); it++)	{
-				Target.accum_spot			(L_spot_s[it]);
+				Target->accum_spot			(L_spot_s[it]);
 				render_indirect				(L_spot_s[it]);
 			}
 			L_spot_s.clear	();
@@ -165,7 +165,7 @@ void	CRender::render_lights	(light_Package& LP)
 			Lvec[pid]->vis_update		();
 			if (Lvec[pid]->vis.visible)	{
 				render_indirect			(Lvec[pid]);
-				Target.accum_point		(Lvec[pid]);
+				Target->accum_point		(Lvec[pid]);
 			}
 		}
 		Lvec.clear	();
@@ -179,7 +179,7 @@ void	CRender::render_lights	(light_Package& LP)
 			if (Lvec[pid]->vis.visible)	{
 				LR.compute_xf_spot		(Lvec[pid]);
 				render_indirect			(Lvec[pid]);
-				Target.accum_spot		(Lvec[pid]);
+				Target->accum_spot		(Lvec[pid]);
 			}
 		}
 		Lvec.clear	();
@@ -221,6 +221,6 @@ void	CRender::render_indirect			(light* L)
 		if		(x < 0.1f)				continue;
 		LIGEN.set_range					(x);
 
-		Target.accum_reflected			(&LIGEN);
+		Target->accum_reflected			(&LIGEN);
 	}
 }

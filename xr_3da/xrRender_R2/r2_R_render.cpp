@@ -134,15 +134,15 @@ void CRender::Render		()
 	//******* Main render
 	{
 		// level
-		Target.phase_scene						();
+		Target->phase_scene						();
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
 		r_dsgraph_render_lods					();
-		Details.Render							();
+		Details->Render							();
 	}
 
 	//******* Occlusion testing of volume-limited light-sources
-	Target.phase_occq							();
+	Target->phase_occq							();
 	CHK_DX										(q_sync_point->Issue(D3DISSUE_END));
 	LP_normal.clear								();
 	LP_pending.clear							();
@@ -185,7 +185,7 @@ void CRender::Render		()
 	LP_pending.sort			();
 
 	// Wall marks
-	Target.phase_wallmarks					();
+	Target->phase_wallmarks					();
 	Wallmarks->Render						();				// wallmarks has priority as normal geometry
 
 	// Update incremental shadowmap-visibility solver
@@ -203,7 +203,7 @@ void CRender::Render		()
 	}
 
 	// Lighting, non dependant on OCCQ
-	Target.phase_accumulator				();
+	Target->phase_accumulator				();
 	HOM.Disable								();
 	render_lights							(LP_normal);
 	
@@ -225,7 +225,7 @@ void CRender::Render		()
 	render_lights							(LP_pending);
 
 	// Postprocess
-	Target.phase_combine					();
+	Target->phase_combine					();
 
 	//******* Main render - second order geometry (the one, that doesn't support deffering)
 	{
