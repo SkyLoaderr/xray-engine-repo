@@ -123,3 +123,37 @@ void CScriptZone::clear_callback(bool bOnEnter)
 	else
 		m_tpOnExit				= 0;
 }
+
+#ifdef DEBUG
+void CScriptZone::OnRender() 
+{
+	if(!bDebug) return;
+	RCache.OnFrameEnd();
+	Fvector l_half; l_half.set(.5f, .5f, .5f);
+	Fmatrix l_ball, l_box;
+	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
+	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
+	
+	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) 
+	{
+		switch(l_pShape->type)
+		{
+		case 0:
+			{
+                Fsphere &l_sphere = l_pShape->data.sphere;
+				l_ball.scale(l_sphere.R, l_sphere.R, l_sphere.R);
+				Fvector l_p; XFORM().transform(l_p, l_sphere.P);
+				l_ball.translate_add(l_p);
+				RCache.dbg_DrawEllipse(l_ball, D3DCOLOR_XRGB(0,255,255));
+			}
+			break;
+		case 1:
+			{
+				l_box.mul(XFORM(), l_pShape->data.box);
+				RCache.dbg_DrawOBB(l_box, l_half, D3DCOLOR_XRGB(0,255,255));
+			}
+			break;
+		}
+	}
+}
+#endif
