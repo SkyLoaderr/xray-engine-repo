@@ -93,8 +93,14 @@ void	game_sv_CS::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 
 void	game_sv_CS::OnTimelimitExceed	()
 {
+	Lock	();
 	// Artifacts count
 	// if ()
+	// Если у команд поровну артефактов, то ничья.
+	ASSERT(teams.size() == 2);
+	if(teams[0].num_targets == teams[1].num_targets) OnTeamsInDraw();
+	else OnTeamScore((teams[0].num_targets > teams[1].num_targets) ? 0 : 1);
+	Unlock	();
 }
 
 BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
