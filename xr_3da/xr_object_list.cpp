@@ -123,7 +123,9 @@ void CObjectList::net_Export	(NET_Packet* Packet)
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 	{
 		CObject* P = *O;
-		if (P->net_Relevant())	{
+		if (P->net_Relevant() && !P->getDestroy())	
+		{
+			Msg						("%s",P->cName());
 			Packet->w_u16			(u16(P->ID()));
 			P->net_Export			(*Packet);
 		}

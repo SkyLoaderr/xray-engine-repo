@@ -15,7 +15,6 @@ void xrServer::Process_update(NET_Packet& P, DPNID sender)
 		xrServerEntity* E	= ID_to_entity(ID);
 		if (E)				
 		{
-			Msg				("%s",E->s_name_replace);
 			E->net_Ready	= TRUE;
 			E->UPDATE_Read	(P);
 		}
