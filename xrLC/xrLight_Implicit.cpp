@@ -192,7 +192,7 @@ public:
 						UVpoint P;
 						P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
 						P.v	= float(V)/dim.v + half.v + Jitter[J].v * JS.v;
-						vecFace&	space	= ImplicitHash.query(P.u,P.v);
+						vector<Face*>&	space	= ImplicitHash.query(P.u,P.v);
 						
 						// World space
 						Fvector wP,wN,B;
