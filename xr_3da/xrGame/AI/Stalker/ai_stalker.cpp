@@ -441,15 +441,15 @@ void CAI_Stalker::update_object_handler	()
 
 void CAI_Stalker::UpdateCL()
 {
-	inherited::UpdateCL				();
-	
 	if (g_Alive()) {
-		if (g_mt_config.test(mtObjectHandler))
+		if (g_mt_config.test(mtObjectHandler) && CObjectHandler::planner().initialized())
 			Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CAI_Stalker::update_object_handler));
 		else
 			update_object_handler			();
 	}
 
+	inherited::UpdateCL				();
+	
 	m_pPhysics_support->in_UpdateCL	();
 
 	if (g_Alive()) {
