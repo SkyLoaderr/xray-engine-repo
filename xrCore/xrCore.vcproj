@@ -454,12 +454,6 @@
 				RelativePath=".\LocatorAPI_Notifications.h">
 			</File>
 			<File
-				RelativePath=".\LocatorAPI_wrapper.cpp">
-			</File>
-			<File
-				RelativePath=".\LocatorAPI_wrapper.h">
-			</File>
-			<File
 				RelativePath="log.cpp">
 			</File>
 			<File
