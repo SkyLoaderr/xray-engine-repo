@@ -293,6 +293,9 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Fix vertex contents
 	Mesh.SetFVF			(m_pd3dDevice, D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1);
 
+	// ************************************* Perform mungle
+	
+
 	// Create model VB
 	m_dwModelNumVerts	= Mesh.GetSysMemMesh()->GetNumVertices();
 	m_pd3dDevice->CreateVertexBuffer(m_dwModelNumVerts * sizeof(VERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pModelVB, NULL);
