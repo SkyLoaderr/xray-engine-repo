@@ -9,7 +9,7 @@
 
 CPS_Instance::CPS_Instance			()
 {
-	g_pGameLevel->ps_active.push_back		(this);
+	g_pGameLevel->ps_active.insert			(this);
 
 	m_iLifeTime								= int_max;
 	m_bAutoRemove							= TRUE;
@@ -18,7 +18,7 @@ CPS_Instance::CPS_Instance			()
 //----------------------------------------------------
 CPS_Instance::~CPS_Instance			()
 {
-	xr_vector<CPS_Instance*>::iterator it	= find(g_pGameLevel->ps_active.begin(),g_pGameLevel->ps_active.end(),this);
+	xr_set<CPS_Instance*>::iterator it		= g_pGameLevel->ps_active.find(this);
 	R_ASSERT								(it!=g_pGameLevel->ps_active.end());
 	g_pGameLevel->ps_active.erase			(it);
 
