@@ -1,0 +1,137 @@
+<!-- bar rostok locations and spots -->
+	<bar_barman_location hint="bar_barman" store="1">
+		<level_map spot="bar_barman_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_barman_spot" pointer="quest_pointer"></mini_map>
+	</bar_barman_location>
+	
+	<bar_hunter_toz_location hint="bar_hunter_toz" store="1">
+		<level_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_hunter_rifle_spot" pointer="quest_pointer"></mini_map>
+	</bar_hunter_toz_location>
+
+	<bar_crazy_veterans_location hint="bar_crazy_veterans_location" store="1">
+		<level_map spot="bar_crazy_veterans_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_crazy_veterans_spot" pointer="quest_pointer"></mini_map>
+	</bar_crazy_veterans_location>
+
+	<bar_hunter_location hint="bar_hunter" store="1">
+		<level_map spot="bar_hunter_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_hunter_spot" pointer="quest_pointer"></mini_map>
+	</bar_hunter_location>
+
+	<bar_ecolog_crush_location hint="bar_ecolog_crush_professor" store="1">
+		<level_map spot="bar_ecolog_crush_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_ecolog_crush_spot" pointer="quest_pointer"></mini_map>
+	</bar_ecolog_crush_location>
+
+	<bar_freedom_volkodav_location hint="bar_ecolog_crush_professor" store="1">
+		<level_map spot="bar_freedom_volkodav_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_freedom_volkodav_spot" pointer="quest_pointer"></mini_map>
+	</bar_freedom_volkodav_location>
+
+	<bar_dolg_arhive_document_location hint="bar_dolg_arhive_document" store="1">
+		<level_map spot="bar_dolg_arhive_document_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_dolg_arhive_document_spot" pointer="quest_pointer"></mini_map>
+	</bar_dolg_arhive_document_location>
+
+	<bar_dolg_captain_ivancov_location hint="bar_dolg_captain_ivancov" store="1">
+		<level_map spot="bar_dolg_captain_ivancov_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_dolg_captain_ivancov_spot" pointer="quest_pointer"></mini_map>
+	</bar_dolg_captain_ivancov_location>
+
+	<bar_dolg_petrenko_location hint="bar_dolg_petrenko_location" store="1">
+		<level_map spot="bar_dolg_petrenko_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_dolg_petrenko_spot" pointer="quest_pointer"></mini_map>
+	</bar_dolg_petrenko_location>
+
+	<bar_dolg_voronin_location hint="bar_dolg_voronin_location" store="1">
+		<level_map spot="bar_dolg_voronin_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_dolg_voronin_spot" pointer="quest_pointer"></mini_map>
+	</bar_dolg_voronin_location>
+
+	<bar_svoboda_ambush_tiran_location hint="bar_svoboda_ambush_tiran_location" store="1">
+		<level_map spot="bar_svoboda_ambush_tiran_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_svoboda_ambush_tiran_spot" pointer="quest_pointer"></mini_map>
+	</bar_svoboda_ambush_tiran_location>
+
+	<bar_killer_sniper_location hint="bar_killer_sniper_destination" store="1">
+		<level_map spot="bar_water_tower_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_water_tower_spot" pointer="quest_pointer"></mini_map>
+	</bar_killer_sniper_location>
+
+	<bar_bar_drunk_dolg_location hint="bar_bar_drunk_dolg" store="1">
+		<level_map spot="bar_bar_drunk_dolg_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_bar_drunk_dolg_spot" pointer="quest_pointer"></mini_map>
+	</bar_bar_drunk_dolg_location>
+
+	<bar_darklab_documents_location hint="bar_darklab_documents" store="1">
+		<level_map spot="bar_darklab_documents_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_darklab_documents_spot" pointer="quest_pointer"></mini_map>
+	</bar_darklab_documents_location>
+	
+	<bar_decoding_documents_location hint="bar_decoding_documents" store="1">
+		<level_map spot="bar_decoding_documents_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_decoding_documents_spot" pointer="quest_pointer"></mini_map>
+	</bar_decoding_documents_location>
+
+
+	<!-- spots -->
+	<bar_barman_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_barman_spot>
+	
+	<bar_hunter_rifle_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_hunter_rifle_spot>
+
+	<bar_crazy_veterans_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="0" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_crazy_veterans_spot>
+	
+	<bar_ecolog_crush_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="192" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_ecolog_crush_spot>
+
+	<bar_freedom_volkodav_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_freedom_volkodav_spot>
+
+	<bar_hunter_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_hunter_spot>
+
+	<bar_dolg_arhive_document_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="224" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_dolg_arhive_document_spot>
+
+	<bar_dolg_petrenko_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_dolg_petrenko_spot>
+
+	<bar_dolg_voronin_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_dolg_voronin_spot>
+
+	<bar_svoboda_ambush_tiran_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_svoboda_ambush_tiran_spot>
+
+	<bar_dolg_captain_ivancov_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_dolg_captain_ivancov_spot>
+
+	<bar_water_tower_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="96" y="64" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_water_tower_spot>
+
+	<bar_bar_drunk_dolg_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_bar_drunk_dolg_spot>
+
+	<bar_darklab_documents_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_darklab_documents_spot>
+	
+	<bar_decoding_documents_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_decoding_documents_spot>
