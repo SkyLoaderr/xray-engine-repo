@@ -165,10 +165,10 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			if (m_pHUD)	{
 				Fmatrix			trans;
 				trans.set(
-					Device.vCameraRight,
-					Device.vCameraTop,
-					Device.vCameraDirection,
-					Device.vCameraPosition
+					Level().Cameras.unaffected_Right(),
+					Level().Cameras.unaffected_Up(),
+					Level().Cameras.unaffected_Dir(),
+					Level().Cameras.unaffected_Pos(),
 					);
 				m_pHUD->UpdatePosition(trans);
 			}
