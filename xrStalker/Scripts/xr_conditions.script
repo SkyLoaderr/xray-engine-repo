@@ -69,9 +69,10 @@ function is_day (actor, npc)
 end    
 
 function mob_has_enemy (actor, npc)
-    if npc == nil then return false end
+    return false
+    --if npc == nil then return false end
     --if npc:get_enemy () then printf ("ENEMY PRESENT") else printf ("ENEMY NOT PRESENT") end
-    return npc:get_enemy () ~= nil
+    --return npc:get_enemy () ~= nil
 end    
 
 function mob_actor_nearest (actor, npc)
