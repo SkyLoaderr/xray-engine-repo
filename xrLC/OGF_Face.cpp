@@ -17,8 +17,11 @@ void set_status(char* N, int id, int f, int v)
 
 BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 {
+	const float ntb		= _cos	(deg2rad(5.f));
 	if (!P.similar(V.P)) return FALSE;
 	if (!N.similar(V.N)) return FALSE;
+	if (!T.similar(V.T)) return FALSE;
+	if (!B.similar(V.B)) return FALSE;
 	
 	R_ASSERT(UV.size()==V.UV.size());
 	for (DWORD i=0; i<V.UV.size(); i++) {
@@ -207,7 +210,7 @@ void OGF_Node::Save	(IWriter &fs)
 
 extern int	RegisterString	(string &T);
 
-void OGF_LOD::Save	(IWriter &fs)
+void OGF_LOD::Save		(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
@@ -217,7 +220,7 @@ void OGF_LOD::Save	(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_LOD;
 	H.flags				= 0;
-	fs.w			(&H,sizeof(H));
+	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 
 	// Chields

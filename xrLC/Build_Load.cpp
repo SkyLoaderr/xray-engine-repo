@@ -55,6 +55,8 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		{
 			v[it].flags.bSaveNormals	= TRUE;
 			v[it].flags.bLIGHT_Vertex	= TRUE;
+			v[it].vert_ambient			= 0;
+			v[it].vert_translucency		= 0;
 		}
 	}
 

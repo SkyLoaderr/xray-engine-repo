@@ -22,11 +22,13 @@ struct OGF;
 struct OGF_Vertex
 {
 	Fvector				P;
-	Fvector				N;
+	Fvector				N;	// normal
+	Fvector				T;	// tangent
+	Fvector				B;	// binormal
 	DWORD				Color;
 	svector<Fvector2,4>	UV;
 
-	BOOL		similar(OGF* p, OGF_Vertex&	other);
+	BOOL		similar	(OGF* p, OGF_Vertex&	other);
 };
 typedef vector<OGF_Vertex>		vecOGF_V;
 typedef vecOGF_V::iterator		itOGF_V;
