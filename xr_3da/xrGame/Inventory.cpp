@@ -452,7 +452,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	}*/
 		
 	//поытаться закинуть в слот
-	if(!Slot(pIItem)) 
+	if(!Slot(pIItem,bNotActivate)) 
 	{
 		if(pIItem->GetSlot() < NO_ACTIVE_SLOT) 
 		{
@@ -540,7 +540,7 @@ void CInventory::ClearAll()
 	m_all.clear();
 }
 
-bool CInventory::Slot(PIItem pIItem) 
+bool CInventory::Slot(PIItem pIItem, bool bNotActivate) 
 {
 	if(!m_bSlotsUseful) return false;
 
@@ -558,7 +558,7 @@ bool CInventory::Slot(PIItem pIItem)
 			 it = std::find(m_belt.begin(), m_belt.end(), pIItem); 
 			 if(m_belt.end() != it) m_belt.erase(it);
 			
-			if(m_activeSlot == NO_ACTIVE_SLOT) Activate(pIItem->GetSlot());
+			if ((m_activeSlot == NO_ACTIVE_SLOT) && (!bNotActivate)) Activate(pIItem->GetSlot());
 			return true;
 		} 
 		else 
@@ -661,7 +661,7 @@ bool CInventory::Activate(u32 slot)
         return false;
 
 	//если активный слот чем-то занят, неразрешать его деактивацию 
-	if(m_activeSlot < m_slots.size() &&
+	if(m_activeSlot < m_slots.size() && m_slots[m_activeSlot].m_pIItem &&
 		m_slots[m_activeSlot].m_pIItem->IsPending()) 
 		return false;
 

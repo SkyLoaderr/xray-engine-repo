@@ -74,6 +74,7 @@ public:
 	virtual LPCSTR GetGameRank();
 	virtual LPCSTR GetGameCommunity();
 	const CInventory &inventory() const {return(m_inventory);}
+	CInventory &inventory() {return(m_inventory);}
 
 protected:
 	// торговля

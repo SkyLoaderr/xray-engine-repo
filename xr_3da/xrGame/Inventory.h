@@ -196,7 +196,7 @@ public:
 	void ClearAll();										// Очистить всё
 	
 	
-	bool Slot(PIItem pIItem);								// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
+	bool Slot(PIItem pIItem, bool bNotActivate = false);	// Вставить объект себе в слот. То что было - на пояс. Нельзя - в рюкзак
 	bool Belt(PIItem pIItem);								// Повесить объект на пояс
 	bool Ruck(PIItem pIItem);								// Полжить объект в рюкзак
 
