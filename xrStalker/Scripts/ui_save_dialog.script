@@ -1,3 +1,9 @@
+-- File:        UI_SAVE_DIALOG.SCRIPT
+-- Description: Save Dialog for STALKER
+-- Created:     27.9.2004
+-- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
+-- Version:     0.4
+
 class "save_dialog" (CUIScriptWnd)
 
 function save_dialog:__init() super()
@@ -72,6 +78,13 @@ function save_dialog:InitControls()
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(txt_caption)
+	
+	-- EDIT box --
+	local edit_filename = CUIEditBox()
+	edit_filename:SetAutoDelete(true)
+	edit_filename:SetWindowName("edit_filename")
+	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
+	main_frame:AttachChild(edit_filename)
 
 
 	------------LIST-----------------
