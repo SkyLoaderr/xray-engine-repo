@@ -17,11 +17,12 @@ CTexture::CTexture		()
 {
 	pSurface			= NULL;
 	pAVI				= NULL;
-	dwMemoryUsage		= 0;
 	desc_cache			= 0;
 	seqMSPF				= 0;
 	seqCycles			= FALSE;
-	bUser				= FALSE;
+	flags.MemoryUsage	= 0;
+	flags.bLoaded		= false;
+	flags.bUser			= false;
 }
 
 CTexture::~CTexture()
@@ -47,7 +48,8 @@ IDirect3DBaseTexture9*	CTexture::surface_get	()
 
 void CTexture::Apply	(u32 dwStage)
 {
-	if (0==pSurface)	Load	();
+	if (!flags.bLoaded)			Load	();
+
 	if (pAVI && pAVI->NeedUpdate())
 	{
 		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
@@ -77,14 +79,15 @@ void CTexture::Apply	(u32 dwStage)
 
 void CTexture::Load()
 {
+	flags.bLoaded					= true;
 	desc_cache						= 0;
 	if (pSurface)					return;
 
-	bUser							= FALSE;
-	dwMemoryUsage					= 0;
+	flags.bUser						= false;
+	flags.MemoryUsage				= 0;
 	if (0==stricmp(*cName,"$null"))	return;
 	if (0!=strstr(*cName,"$user$"))	{
-		bUser	= TRUE;
+		flags.bUser	= true;
 		return;
 	}
 
@@ -135,8 +138,7 @@ void CTexture::Load()
 		{
 			fs().r_string(buffer);
 			_Trim		(buffer);
-			if (buffer[0])
-			{
+			if (buffer[0])	{
 				// Load another texture
 				D3DFORMAT f; u32 W,H,M;
 				pSurface = TWLoader2D

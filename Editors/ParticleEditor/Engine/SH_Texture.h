@@ -8,17 +8,19 @@ class ENGINE_API CAviPlayerCustom;
 
 class ENGINE_API CTexture			: public xr_resource_named				{
 public:
+	struct 
+	{
+		u32					bLoaded		: 1;
+		u32					bUser		: 1;
+		u32					MemoryUsage	: 30;
+	}									flags;
 	IDirect3DBaseTexture9*				pSurface;
 	CAviPlayerCustom*					pAVI;
-	u32									dwMemoryUsage;
 
 	// Sequence data
 	u32									seqMSPF;	// milliseconds per frame
 	xr_vector<IDirect3DBaseTexture9*>	seqDATA;
 	BOOL								seqCycles;
-
-	// User-data
-	BOOL								bUser;
 
 	// Description
 	IDirect3DBaseTexture9*				desc_cache;
@@ -26,7 +28,6 @@ public:
 	IC BOOL								desc_valid	()	{ return pSurface==desc_cache; }
 	IC void								desc_enshure()	{ if (!desc_valid()) desc_update(); }
 	void								desc_update	();
-
 public:
 	void								Load		();
 	void								Unload		(void);
@@ -35,11 +36,9 @@ public:
 	void								surface_set	(IDirect3DBaseTexture9* surf);
 	IDirect3DBaseTexture9*				surface_get ();
 
-	IC BOOL								isUser		()	{return bUser;};
-
+	IC BOOL								isUser		()	{ return flags.bUser;					}
 	IC u32								get_Width	()	{ desc_enshure(); return desc.Width;	}
 	IC u32								get_Height	()	{ desc_enshure(); return desc.Height;	}
-	IC u32								get_Depth	()	{ return 1;								}
 
 	CTexture							();
 	virtual ~CTexture					();
