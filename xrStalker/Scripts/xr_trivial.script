@@ -672,7 +672,11 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.object:animation_count() < 2) then
-    	self.object:add_animation("torg_1", true)
+		--иногда машем рукой
+        self.object:add_animation("torg_1", true)
+        if(distance_between(self.object, level.actor()) > 13) then
+        	self.object:add_animation("torg_6", true)
+        end
         self.object:add_animation("torg_2", true)
         self.object:add_animation("torg_4", true)
     end
@@ -778,6 +782,7 @@ function novice3_attack:execute ()
         end
 	elseif(self.state == 3) then
 	    self.object:set_sight        ( look.point, self.a.enemy_path:point(self.a.enemy_path:count() - 1), 0 )
+    	self.object:set_body_state   ( move.crouch  )
 	end
 
 	self.object:set_mental_state     ( anim.danger )
