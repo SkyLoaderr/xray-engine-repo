@@ -11,7 +11,8 @@
 #include "../XR_IOConsole.h"
 
 //#define		MAPROT_LIST				"maprot_list.ltx"
-string64		MAPROT_LIST	= "";
+string_path		MAPROT_LIST		= "";
+
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
@@ -608,6 +609,8 @@ void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 
 void game_sv_GameState::SaveMapList				()
 {
+	if (0==MAPROT_LIST[0])				return;
+	if (m_pMapRotation_List.empty())	return;
 	IWriter*		fs	= FS.w_open(MAPROT_LIST);
 	while(m_pMapRotation_List.size())
 	{
