@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "light_rSM.h"
 
-void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV, float p_A, float p_FAR, )
+void CLight_rSM::compute_xf_direct	(Fmatrix& mDest, Fmatrix& mView, float p_FOV, float p_A, float p_FAR )
 {
 	// calc window extents in camera coords
 	float YFov		=	deg2rad(p_FOV);
