@@ -60,11 +60,12 @@ function action_alive:__init(object,name) super(object,name)
 end
 
 function action_alive:initialize()
-	action_base.initialize	(self)
---	self.object:set_node_evaluator		(nil)
---	self.object:set_path_evaluator		(nil)
---	self.object:set_desired_position	(nil)
---	self.object:set_desired_direction	(nil)
+	action_base.initialize				(self)
+
+	self.object:set_node_evaluator		()
+	self.object:set_path_evaluator		()
+	self.object:set_desired_position	()
+	self.object:set_desired_direction	()
 end
 
 function action_alive:execute()
@@ -74,9 +75,7 @@ function action_alive:execute()
 
 	self.object:set_sight				(look.search,nil,0);
 
-	printf								("try set_item")
 	self.object:set_item				(object.idle);
-	printf								("tried set_item")
 
 	self.object:set_path_type			(game_object.game_path)
 	self.object:set_detail_path_type	(move.line)
