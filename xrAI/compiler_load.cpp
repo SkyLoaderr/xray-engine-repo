@@ -10,10 +10,8 @@ void xrLoad(LPCSTR name)
 	// Load CFORM
 	string256				N;
 	{
-		strconcat			(N,name,"level");
-		IReader				*F = FS.r_open(N);
-		
-		IReader				*fs	= F->open_chunk(fsL_CFORM);
+		strconcat			(N,name,"level.cform");
+		IReader				*fs = FS.r_open(N);
 		R_ASSERT			(fs);
 		
 		hdrCFORM			H;
@@ -44,6 +42,7 @@ void xrLoad(LPCSTR name)
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 		LevelLight.build	( verts, H.vertcount, tris, H.facecount );
 		fs->close			();
+		F->close			();
 		Msg("* Level CFORM(L): %dK",LevelLight.memory()/1024);
 	}
 	
