@@ -166,6 +166,11 @@ M_UPDATE
 			direction	f_dir;
 		}
 	}
+	weapon
+	{
+		DWORD		timestamp;
+		u8			flags;
+	}
 }
 
 M_FIRE_HIT

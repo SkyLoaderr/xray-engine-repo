@@ -445,13 +445,12 @@ void CActor::Update	(DWORD DT)
 		if (sndZoneHeart.feedback)		sndZoneHeart.feedback->Stop		();
 		if (sndZoneDetector.feedback)	sndZoneDetector.feedback->Stop	();
 	}
-
-	cam_shift		= 0.f;
-	cam_gray		= 0.f;
+	cam_shift				= 0.f;
+	cam_gray				= 0.f;
 
 	// 
-	clamp			(DT,0ul,100ul);
-	float	dt		= float(DT)/1000.f;
+	clamp					(DT,0ul,100ul);
+	float	dt				= float(DT)/1000.f;
 	
 	// Check controls, create accel, prelimitary setup "mstate_real"
 	float	Jump	= 0;
@@ -462,7 +461,6 @@ void CActor::Update	(DWORD DT)
 		g_Physics			(NET_SavedAccel,Jump,dt);
 		g_cl_ValidateMState	(mstate_wishful);
 		g_SetAnimation		(mstate_real);
-		Level().HUD()->outMessage(0xffffffff,cName(),"%d",AI_NodeID);
 	} else {
 		// distinguish interpolation/extrapolation
 		DWORD	dwTime		= Level().timeServer()-NET_Latency;
