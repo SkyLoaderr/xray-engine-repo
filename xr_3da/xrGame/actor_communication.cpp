@@ -117,7 +117,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 		//добавляем в архив только новости
 		if(ALife::eNewsTypeKill == pNewsItem->m_news_type || ALife::eNewsTypeRetreat == pNewsItem->m_news_type)
 		{
-			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(pNewsItem->m_object_id[1]);
+//			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(pNewsItem->m_object_id[1]);
 //			CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(E); 
 //			if(!pTA) return;
 		}
