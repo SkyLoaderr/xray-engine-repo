@@ -64,16 +64,19 @@ void CALifeMonsterParams::STATE_Read(NET_Packet &tNetPacket, u16 size)
 void CALifeMonsterParams::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_s32			(m_iHealth);
+	tNetPacket.w_u16			(ID);
 };
 
 void CALifeMonsterParams::UPDATE_Read(NET_Packet &tNetPacket)
 {
 	tNetPacket.r_s32			(m_iHealth);
+	tNetPacket.r_u16			(ID);
 };
 
 void CALifeMonsterParams::Init(LPCSTR caSection)
 {
 	m_iHealth					= pSettings->ReadINT(caSection, "health");
+	ID							= u16(-1);
 };
 
 // CALifeTraderParams
