@@ -1747,7 +1747,7 @@ HRESULT CMyD3DApplication::UpdateTransform()
 	float l_f				= float(t-tm_base)/float(tm_next-tm_base);
 	float l_i				= 1.f - l_f;
 
-	D3DXVECTOR3 vLightDir	= l_i*vLightDir0 + l_f*vLightDir1;
+	D3DXVECTOR3 vLightDir	= (l_i*vLightDir0 + l_f*vLightDir1) +	D3DXVECTOR3(-1.0f, -1.0f, 1.0);
 	D3DXVec3Normalize		( &dv_LightDir, &vLightDir );
 
 	// Model offset
