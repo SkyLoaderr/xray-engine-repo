@@ -56,11 +56,11 @@ private:
 	};
 
 	enum ELookType {
-		eLookTypeDirection = 0,
-		eLookTypeView,
+		eLookTypePatrol = 0,
 		eLookTypeSearch,
 		eLookTypeDanger,
 		eLookTypePoint,
+		eLookTypeFirePoint,
 	};
 
 	typedef struct tagSStalkerStates {

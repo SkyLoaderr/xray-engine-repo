@@ -10,12 +10,19 @@
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
 
-static const float y_spin_factor		= 0.4f;
-static const float y_shoulder_factor	= 0.4f;
-static const float y_head_factor		= 0.2f;
-static const float p_spin_factor		= 0.2f;
-static const float p_shoulder_factor	= 0.7f;
-static const float p_head_factor		= 0.1f;
+static const float y_spin_factor			= 0.25f;
+static const float y_shoulder_factor		= 0.25f;
+static const float y_head_factor			= 0.5f;
+static const float p_spin_factor			= 0.2f;
+static const float p_shoulder_factor		= 0.7f;
+static const float p_head_factor			= 0.1f;
+
+static const float y_spin_fire_factor		= 0.5f;
+static const float y_shoulder_fire_factor	= 0.5f;
+static const float y_head_fire_factor		= 0.0f;
+static const float p_spin_fire_factor		= 0.2f;
+static const float p_shoulder_fire_factor	= 0.7f;
+static const float p_head_fire_factor		= 0.1f;
 
 float faTurnAngles			[] = {
 	0.f,
@@ -98,22 +105,22 @@ void __stdcall CAI_Stalker::HeadCallback(CBoneInstance *B)
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
-	float					yaw_factor, pitch_factor;
+	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
-		case eLookTypeView : {
-			yaw_factor		= 1.f;
-			pitch_factor	= p_head_factor;
+		case eLookTypeFirePoint : {
+			yaw_factor		= y_head_fire_factor;
+			pitch_factor	= p_head_fire_factor;
 			break;
 		}
-		case eLookTypeSearch : {
+		case eLookTypePatrol :
+		case eLookTypeSearch :
+		case eLookTypeDanger :
+		case eLookTypePoint : {
 			yaw_factor		= y_head_factor;
 			pitch_factor	= p_head_factor;
 			break;
 		}
-		default : {
-			yaw_factor		= y_head_factor;
-			pitch_factor	= p_head_factor;
-		}
+		default : NODEFAULT;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
@@ -127,22 +134,22 @@ void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance *B)
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
-	float					yaw_factor, pitch_factor;
+	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
-		case eLookTypeView : {
-			yaw_factor		= 0.f;
-			pitch_factor	= p_shoulder_factor;
+		case eLookTypeFirePoint : {
+			yaw_factor		= y_shoulder_fire_factor;
+			pitch_factor	= p_shoulder_fire_factor;
 			break;
 		}
-		case eLookTypeSearch : {
+		case eLookTypePatrol :
+		case eLookTypeSearch :
+		case eLookTypeDanger :
+		case eLookTypePoint : {
 			yaw_factor		= y_shoulder_factor;
 			pitch_factor	= p_shoulder_factor;
 			break;
 		}
-		default : {
-			yaw_factor		= y_shoulder_factor;
-			pitch_factor	= p_shoulder_factor;
-		}
+		default : NODEFAULT;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
@@ -156,22 +163,22 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
 	Fvector c				= B->mTransform.c;
 	Fmatrix					spin;
-	float					yaw_factor, pitch_factor;
+	float					yaw_factor = 0, pitch_factor = 0;
 	switch(A->m_tLookType) {
-		case eLookTypeView : {
-			yaw_factor		= 0.f;
-			pitch_factor	= p_spin_factor;
+		case eLookTypeFirePoint : {
+			yaw_factor		= y_spin_fire_factor;
+			pitch_factor	= p_spin_fire_factor;
 			break;
 		}
-		case eLookTypeSearch : {
+		case eLookTypePatrol :
+		case eLookTypeSearch :
+		case eLookTypeDanger :
+		case eLookTypePoint : {
 			yaw_factor		= y_spin_factor;
 			pitch_factor	= p_spin_factor;
 			break;
 		}
-		default : {
-			yaw_factor		= y_spin_factor;
-			pitch_factor	= p_spin_factor;
-		}
+		default : NODEFAULT;
 	}
 	float					yaw		= angle_normalize_signed(-yaw_factor * angle_normalize_signed(A->NET_Last.o_torso.yaw - A->NET_Last.o_model));
 	float					pitch	= angle_normalize_signed(-pitch_factor * (A->NET_Last.o_torso.pitch));
@@ -322,11 +329,11 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 					}
 		}
 	}
-	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
-	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
+//	Msg("----%d\n[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",Level().timeServer(),yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+//	Msg("Trying %s\nMoving %s",caMovementActionNames[m_tDesirableDirection],caMovementActionNames[m_tMovementDirection]);
 	tpLegsAnimation			= m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[m_tMovementDirection].A[0];
 	r_torso_target.yaw		= angle_normalize_signed(yaw + faTurnAngles[m_tMovementDirection]);
-	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
+//	Msg("[W=%7.2f][TT=%7.2f][TC=%7.2f][T=%7.2f][C=%7.2f]",yaw,r_torso_target.yaw,r_torso_current.yaw,r_target.yaw,r_current.yaw);
 }
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)

@@ -15,17 +15,21 @@ CAI_Stalker::CAI_Stalker			()
 	m_tStateList.clear				();
 	while (m_tStateStack.size())
 		m_tStateStack.pop			();
+	
 	m_tMovementDirection			= eMovementDirectionForward;
 	m_tDesirableDirection			= eMovementDirectionForward;
+	m_tLookType						= eLookTypePatrol;
+	m_tBodyState					= eBodyStateStand;
 	m_dwDirectionStartTime			= 0;
 	m_dwAnimationSwitchInterval		= 500;
 	r_torso_speed					= PI_MUL_2;
 	r_head_speed					= 3*PI_DIV_2;
+	
+	m_dwTimeToChange				= 0;
+	m_dwHitTime						= 0;
+	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
-	m_dwTimeToChange				= 0;
-	m_tBodyState					= eBodyStateStand;
-	m_dwHitTime						= 0;
 }
 
 CAI_Stalker::~CAI_Stalker			()

@@ -202,8 +202,8 @@ void CAI_Stalker::Firing()
 
 void CAI_Stalker::Searching()
 {
-//	WRITE_TO_LOG("Searching");
-//
+	WRITE_TO_LOG				("Searching");
+
 ////	SelectEnemy(m_Enemy);
 //
 ////	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_Enemy.Enemy,eStalkerStateFiring);
@@ -214,17 +214,10 @@ void CAI_Stalker::Searching()
 //		vfBuildPathToDestinationPoint		(0);
 //
 //	vfSetMovementType(eBodyStateStand,eMovementTypeWalk,eLookTypeSearch);
-//	if (m_fCurSpeed < EPS_L)
-//		r_torso_target.yaw = r_target.yaw;
-	WRITE_TO_LOG				("Searching");
+	
+	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting,true);
 
-	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting);
-
-//	Fvector						tDummy;
-//	u32							dwTime = Level().timeServer();
-//	tDummy.setHP				(angle_normalize_signed(-2*PI*dwTime/20000),0);
-//	tDummy.add					(vPosition);
-	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);//,tDummy);//Device.vCameraPosition);
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeDanger);
 
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
