@@ -137,7 +137,9 @@
 #	include "game_sv_deathmatch.h"
 #	include "game_sv_teamdeathmatch.h"
 #	include "game_sv_ArtefactHunt.h"
-#	include "game_sv_CS.h"
+
+#	include "UIGameSP.h"
+#	include "UIGameAHunt.h"
 #endif
 
 #ifndef NO_XR_GAME
@@ -156,10 +158,17 @@ void CObjectFactory::register_classes	()
 	add<CCustomTarget>											(CLSID_TARGET				,"custom_target");
 
 	//Game type
+	add<game_sv_Single>											(CLSID_GAME_SINGLE			,"game_single");
 	add<game_sv_Deathmatch>										(CLSID_GAME_DEATHMATCH		,"game_deathmatch");
 	add<game_sv_TeamDeathmatch>									(CLSID_GAME_TEAMDEATHMATCH	,"game_team_deathmatch");
 	add<game_sv_ArtefactHunt>									(CLSID_GAME_ARTEFACTHUNT	,"game_artefact_hunt");
-	add<game_sv_CS>												(CLSID_GAME_CS				,"game_cs");
+//	add<game_sv_CS>												(CLSID_GAME_CS				,"game_cs");
+
+	//Game UI type
+	add<CUIGameSP>												(CLSID_GAME_UI_SINGLE			,"game_ui_single");
+	add<CUIGameDM>												(CLSID_GAME_UI_DEATHMATCH		,"game_ui_deathmatch");
+	add<CUIGameTDM>												(CLSID_GAME_UI_TEAMDEATHMATCH	,"game_ui_team_deathmatch");
+	add<CUIGameAHunt>											(CLSID_GAME_UI_ARTEFACTHUNT		,"game_ui_artefact_hunt");
 
 #endif
 

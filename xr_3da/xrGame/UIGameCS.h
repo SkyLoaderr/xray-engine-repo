@@ -27,7 +27,7 @@ class CUIGameCS: public CUIGameCustom
 	BOOL				CanBuy				();
 	static void 		BuyItem				(CUICustomMenuItem* sender);
 public:
-						CUIGameCS			(CUI* parent);
+						CUIGameCS			();
 	virtual 			~CUIGameCS			();
 	virtual void		Render				();
 	virtual void		OnFrame				();

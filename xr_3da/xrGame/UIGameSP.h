@@ -20,15 +20,15 @@ class CUIGameSP : public CUIGameCustom
 private:
 	typedef CUIGameCustom inherited;
 public:
-	CUIGameSP(CUI* parent);
-	virtual ~CUIGameSP(void);
+	CUIGameSP									();
+	virtual				~CUIGameSP				();
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
 
-	void StartTalk();
-	void StartCarBody(CInventory* pOurInv,    CGameObject* pOurObject,
-					  CInventory* pOthersInv, CGameObject* pOthersObject);
+	void				StartTalk				();
+	void				StartCarBody			(CInventory* pOurInv,    CGameObject* pOurObject,
+												 CInventory* pOthersInv, CGameObject* pOthersObject);
 
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;

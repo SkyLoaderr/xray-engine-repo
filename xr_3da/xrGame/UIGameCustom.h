@@ -11,7 +11,7 @@ class CUI;
 class CTeamBaseZone;
 
 
-class CUIGameCustom
+class CUIGameCustom :public DLL_Pure
 {
 protected:
 	u32					uFlags;
@@ -22,18 +22,19 @@ public:
 
 		fl_force_dword	= u32(-1)
 	};
-	void				SetFlag				(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
-	void				InvertFlag			(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
-	BOOL				GetFlag				(u32 mask){return uFlags&mask;}
+	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
+	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
+	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
 	
 public:
-						CUIGameCustom		(CUI* parent){uFlags=0;m_Parent=parent;m_pUserMenu=NULL;}
-	virtual				~CUIGameCustom		(){}
+						CUIGameCustom			(){m_Parent=NULL;uFlags=0;m_pUserMenu=NULL;}
+	virtual				~CUIGameCustom			(){}
 
-	virtual	void		Init				()	{};
-
-	virtual void		Render				();
-	virtual void		OnFrame				();
+			void		SetUI					(CUI* parent){m_Parent=parent;}
+	virtual	void		Init					()	{};
+	
+	virtual void		Render					();
+	virtual void		OnFrame					();
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
 	virtual bool		IR_OnKeyboardRelease	(int dik);
@@ -55,11 +56,11 @@ public:
 
 
 	//для остановки и запуска дополнительных меню
-	virtual void StartStopMenu(CUIDialogWnd* pDialog);
+	virtual void		StartStopMenu			(CUIDialogWnd* pDialog);
 	
 	//текущее меню пользователя показанное на экране
 	//NULL если такого сейчас нет
-	CUIDialogWnd* m_pUserMenu;
+	CUIDialogWnd*								m_pUserMenu;
 };
 
 //by Dandy

@@ -9,6 +9,7 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "ai_space.h"
+#include "script_engine.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -391,6 +392,25 @@ CSE_Abstract*	xrServer::GetEntity			(u32 Num)
 	};
 	return NULL;
 };
+
+CLASS_ID xrServer::getGameCLASS_ID(LPCSTR game_type_option)
+{
+	string256		S;
+	FS.update_path	(S,"$game_data$","script.ltx");
+	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
+	R_ASSERT		(l_tpIniFile);
+
+	string256				I;
+	strcpy(I,l_tpIniFile->r_string("common","game_type_clsid_factory"));
+
+	luabind::functor<LPCSTR>	result;
+	R_ASSERT					(ai().script_engine().functor(I,result));
+	ref_str clsid = result		(game_type_option);
+
+	xr_delete			(l_tpIniFile);
+	
+	return TEXT2CLSID(*clsid);
+}
 
 #ifdef DEBUG
 

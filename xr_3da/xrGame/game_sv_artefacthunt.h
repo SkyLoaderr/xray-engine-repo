@@ -6,8 +6,7 @@ class	game_sv_ArtefactHunt			: public game_sv_TeamDeathmatch
 {
 private:
 	typedef game_sv_TeamDeathmatch inherited;
-protected:
-	
+
 	enum	ARTEFACT_STATE
 	{
 		NONE,
@@ -15,18 +14,21 @@ protected:
 		ON_FIELD,
 		IN_POSESSION,
 	};
+
+protected:
 	
-	BOOL		m_delayedRoundEnd;
-	u32			m_roundEndDelay;
+	
+	BOOL							m_delayedRoundEnd;
+	u32								m_roundEndDelay;
 
-	u32			m_dwArtefactRespawnDelta;
-	u32			m_dwArtefactStayTime;
+	u32								m_dwArtefactRespawnDelta;
+	u32								m_dwArtefactStayTime;
 
-	u32			m_dwArtefactSpawnTime;
-	u32			m_dwArtefactRemoveTime;
+	u32								m_dwArtefactSpawnTime;
+	u32								m_dwArtefactRemoveTime;
 
-	u16			m_ArtefactsSpawnedTotal;
-	u16			m_dwArtefactID;	
+	u16								m_ArtefactsSpawnedTotal;
+	u16								m_dwArtefactID;	
 
 	ARTEFACT_STATE					m_eAState;
 
@@ -42,8 +44,10 @@ protected:
 	bool							Artefact_MissCheck		();
     	
 public:
+									game_sv_ArtefactHunt	(){type = GAME_ARTEFACTHUNT;}
 	virtual		void				Create					(LPSTR &options);
 
+	virtual		LPCSTR				section_name			() const { return "artefacthunt";};
 	// Events	
 	virtual		void				OnRoundStart			();							// старт раунда
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);

@@ -11,7 +11,7 @@ void	game_sv_ArtefactHunt::Create					(LPSTR &options)
 	inherited::Create					(options);
 
 	m_dwArtefactRespawnDelta = get_option_i		(options,"ardelta",0)*1000;
-	m_ArtefactsNum	= u8(get_option_i		(options,"anum",1));
+	artefactsNum	= u8(get_option_i		(options,"anum",1));
 	m_dwArtefactStayTime	= get_option_i		(options,"astime",5)*60000;
 	fraglimit = 0;	
 
@@ -96,7 +96,7 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 			if (ps_killer == ps_killed)
 				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillSelf;
 			else
-				if (ps_killed->GameID == m_ArtefactBearerID)
+				if (ps_killed->GameID == artefactBearerID)
 					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetTeam;
 				else
 					ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillTeam;
@@ -106,7 +106,7 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		ps_killer->kills			+=	1;
 
 		if (pTeam)
-			if (ps_killed->GameID == m_ArtefactBearerID)
+			if (ps_killed->GameID == artefactBearerID)
 				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_TargetRival;
 			else
 				ps_killer->money_for_round	=	ps_killer->money_for_round + pTeam->m_iM_KillRival;
@@ -287,8 +287,8 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
 		{
-			m_ArtefactBearerID = eid_who;
-			m_TeamInPosession = A->g_team();
+			artefactBearerID = eid_who;
+			teamInPosession = A->g_team();
 			signal_Syncronize();
 
 			m_eAState = IN_POSESSION;
@@ -330,8 +330,8 @@ BOOL	game_sv_ArtefactHunt::OnDetach				(u16 eid_who, u16 eid_what)
 		CSE_ALifeItemArtefact* pIArtefact	=	dynamic_cast<CSE_ALifeItemArtefact*> (e_what);
 		if (pIArtefact)
 		{
-			m_ArtefactBearerID = 0;
-			m_TeamInPosession = 0;
+			artefactBearerID = 0;
+			teamInPosession = 0;
 			signal_Syncronize();
 			m_eAState = ON_FIELD;
 
@@ -452,7 +452,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 	//-----------------------------------------------
 	Artefact_PrepareForSpawn();
 
-	if (teams[ps->team-1].score >= m_ArtefactsNum) 
+	if (teams[ps->team-1].score >= artefactsNum) 
 	{
 		OnTeamScore(ps->team-1);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
@@ -636,9 +636,9 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 void				game_sv_ArtefactHunt::net_Export_State		(NET_Packet& P, u32 id_to)
 {
 	inherited::net_Export_State(P, id_to);
-	P.w_u8			(m_ArtefactsNum);
-	P.w_u16			(m_ArtefactBearerID);
-	P.w_u8			(m_TeamInPosession);
+	P.w_u8			(artefactsNum);
+	P.w_u16			(artefactBearerID);
+	P.w_u8			(teamInPosession);
 };
 
 void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
@@ -649,8 +649,8 @@ void				game_sv_ArtefactHunt::Artefact_PrepareForSpawn	()
 
 	m_dwArtefactSpawnTime = Device.dwTimeGlobal + m_dwArtefactRespawnDelta;
 
-	m_ArtefactBearerID	= 0;
-	m_TeamInPosession	= 0;
+	artefactBearerID	= 0;
+	teamInPosession	= 0;
 
 	signal_Syncronize();
 };

@@ -2,6 +2,7 @@
 #include "game_sv_deathmatch.h"
 #include "script_space.h"
 #include "xrServer_script_macroses.h"
+#include "xrserver.h"
 
 using namespace luabind;
 
@@ -9,31 +10,22 @@ template <typename T>
 struct CWrapperBase : public T, public luabind::wrap_base {
 	typedef T inherited;
 	typedef CWrapperBase<T>	self_type;
-//		DEFINE_LUA_WRAPPER_METHOD_V1	(save,			NET_Packet&)
-//		DEFINE_LUA_WRAPPER_METHOD_V1	(load,			NET_Packet&)
-		//	DEFINE_LUA_WRAPPER_METHOD_V1	(save,			IWriter&)
-	DEFINE_LUA_WRAPPER_METHOD_1	(IsBuyableItem,	bool,	LPCSTR)
+	DEFINE_LUA_WRAPPER_CONST_METHOD_0(section_name, LPCSTR)
+//	DEFINE_LUA_WRAPPER_METHOD_1(Money_SetStart, void, u32)
 };
 
 void game_sv_Deathmatch::script_register(lua_State *L)
 {
-
+	typedef CWrapperBase<game_sv_Deathmatch> WrapType;
 	module(L)
 		[
-/*			luabind_class_pure0(
-			game_sv_Deathmatch,
-			"game_sv_Deathmatch"
-			)
-*/
-			luabind::class_<DLL_Pure>("dll_pure"),
-
-			luabind::class_< game_sv_Deathmatch, CWrapperBase<game_sv_Deathmatch>,DLL_Pure >("game_sv_Deathmatch")
+			luabind::class_< game_sv_Deathmatch, WrapType, game_sv_GameState >("game_sv_Deathmatch")
 			.def(	constructor<>())
-//			.def("IsBuyableItem", &CWrapperBase<game_sv_Deathmatch>::IsBuyableItem, &CWrapperBase<game_sv_Deathmatch>::IsBuyableItem_static)
-
-//			DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,save,void,NET_Packet&) \
-//			DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,load,void,NET_Packet&) 
-
+			.def("GetTeamData",			&game_sv_Deathmatch::GetTeamData)
+			
+			
+			.def("section_name",		&WrapType::section_name, &WrapType::section_name_static)
+//			.def("Money_SetStart",		&CWrapperBase<game_sv_Deathmatch>::Money_SetStart, &CWrapperBase<game_sv_Deathmatch>::Money_SetStart_static)
 		];
 
 }

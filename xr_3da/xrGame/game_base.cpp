@@ -10,7 +10,7 @@ game_PlayerState::game_PlayerState()
 	money_for_round		=	0;
 	flags				=	0;
 
-	m_skin				=	0;
+	skin				=	0;
 
 	Skip = false;
 	//---------------------------------

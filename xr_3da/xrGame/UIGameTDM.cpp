@@ -14,7 +14,7 @@
 #define	TEAM2_MENU		"teamdeathmatch_team2"
 
 //--------------------------------------------------------------------
-CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
+CUIGameTDM::CUIGameTDM()
 {
 	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
 	pBuyMenuTeam1 = NULL;
@@ -29,7 +29,7 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 	m_bTeamSelected	= TRUE;
 }
 //--------------------------------------------------------------------
-void		CUIGameTDM::Init				()
+void		CUIGameTDM::Init ()
 {
 	//-----------------------------------------------------------
 	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();

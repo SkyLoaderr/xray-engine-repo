@@ -80,9 +80,9 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	{
 	case GAME_ARTEFACTHUNT:
 		{
-			P.r_u8	(m_ArtefactsNum);
-			P.r_u16	(m_ArtefactBearerID);
-			P.r_u8	(m_TeamInPosession);
+			P.r_u8	(artefactsNum);
+			P.r_u16	(artefactBearerID);
+			P.r_u8	(teamInPosession);
 		}break;
 	};
 }

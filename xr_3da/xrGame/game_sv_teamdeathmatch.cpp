@@ -200,7 +200,7 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	P.r_u16			(hit_type);	//hit type
 	P.r_pos = RPos;
 	//---------------------------------------
-	if (Device.dwTimeGlobal<ps_hitted->m_RespawnTime + damgeblocklimit)
+	if (Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
 	{
 		power = 0;
 		impulse = 0;
@@ -223,8 +223,8 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	//---------------------------------------
 	if (power > 0)
 	{
-		ps_hitted->m_lasthitter = a_hitter->ID;
-		ps_hitted->m_lasthitweapon = WeaponID;
+		ps_hitted->lasthitter = a_hitter->ID;
+		ps_hitted->lasthitweapon = WeaponID;
 	};
 	//---------------------------------------
 	P.B.count	= BCount;

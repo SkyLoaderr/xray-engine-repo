@@ -80,6 +80,10 @@ class CUI{
 	float				msgs_offs;
 	float				menu_offs;
 	UIMsgSVec			messages;
+
+	//for scripting enhancement
+	CLASS_ID				getGameUICLASS_ID(LPCSTR options);
+
 public:
 	CHUDManager*		m_Parent;
 
@@ -114,6 +118,7 @@ public:
 	void HideIndicators() {m_bShowIndicators = false;}
 
 	void				AddMessage			(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
+
 };
 
 #endif // __XR_UI_H__

@@ -289,58 +289,21 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 
 		FS.r_close	(F);
 	}
+
 	// loading scripts
 	ai().script_engine().remove_script_process("game");
-	LPCSTR						caSection = "";
-	switch (type) {
-		case GAME_ANY			: {
-			Debug.fatal			("Game type is not specified!");
-			break;
-		}
-		case GAME_SINGLE		: {
-			caSection			= "single";
-			break;
-		}
-		case GAME_DEATHMATCH	: {
-			caSection			= "deathmatch";
-			break;
-		}
-		case GAME_CTF			: {
-			caSection			= "ctf";
-			break;
-		}
-		case GAME_ASSAULT		: {
-			caSection			= "assault";
-			break;
-		}
-		case GAME_CS			: {
-			caSection			= "cs";
-			break;
-		}
-		case GAME_TEAMDEATHMATCH	: 
-			{
-				caSection			= "teamdeathmatch";
-				break;
-			}
-		case GAME_ARTEFACTHUNT	: 
-			{
-				caSection			= "artefacthunt";
-				break;
-			}
-		default					: NODEFAULT;
-	}
 	string256					S;
 	FS.update_path				(S,"$game_data$","script.ltx");
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT					(l_tpIniFile);
-	if (l_tpIniFile->r_string(caSection,"script"))
-		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(caSection,"script")));
+	if (l_tpIniFile->r_string(section_name(),"script"))
+		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",l_tpIniFile->r_string(section_name(),"script")));
 	else
 		ai().script_engine().add_script_process("game",xr_new<CScriptProcess>("game",""));
 	xr_delete					(l_tpIniFile);
 }
 
-void				game_sv_GameState::assign_RP				(CSE_Abstract* E)
+void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
 {
 	VERIFY				(E);
 

@@ -34,12 +34,12 @@ protected:
 	CUIBuyWeaponWnd*	pBuyMenu;
 	*/
 public:
-	CUIGameAHunt		(CUI* parent);
+	CUIGameAHunt								();
 	virtual 			~CUIGameAHunt			();
 
-	virtual	void		Init				();
+	virtual	void		Init					();
 
-	virtual void		OnFrame				();
+	virtual void		OnFrame					();
 
 	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
 	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);

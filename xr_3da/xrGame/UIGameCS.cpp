@@ -13,7 +13,7 @@ static const int time_x_offs = 400;
 static const int time_y_offs = 550;
 
 //--------------------------------------------------------------------
-CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
+CUIGameCS::CUIGameCS()
 {
 	BuyMenu.Load			("game_cs.ltx","cs_buy_menu",this,CUIGameCS::BuyItem);
 	CTMenu.Load				("game_cs.ltx","cs_change_team",this);

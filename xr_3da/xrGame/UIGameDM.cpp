@@ -18,7 +18,7 @@
 #define	TEAM0_MENU		"deathmatch_team0"
 
 //--------------------------------------------------------------------
-CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
+CUIGameDM::CUIGameDM()
 {
 	ClearLists ();
 	
@@ -48,6 +48,7 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
 {
+
 	CUIDMFragList* pFragList		= xr_new<CUIDMFragList>		();
 	CUIDMPlayerList* pPlayerList	= xr_new<CUIDMPlayerList>	();
 

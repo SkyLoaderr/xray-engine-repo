@@ -30,9 +30,9 @@ protected:
 	DEF_VECTOR			(TEAMS_LIST, std::string);
 	DEF_VECTOR			(PRESET_ITEMS, s16);
 
-	FRAGS_LISTS			m_aFragsLists;
-	PLAYERS_LISTS		m_aPlayersLists;
-	TEAMS_LIST			m_aTeamSections;
+	FRAGS_LISTS				m_aFragsLists;
+	PLAYERS_LISTS			m_aPlayersLists;
+	TEAMS_LIST				m_aTeamSections;
 
 	CUIBuyWeaponWnd*		pBuyMenuTeam0;
 	CUIBuyWeaponWnd*		pCurBuyMenu;
@@ -40,56 +40,56 @@ protected:
 	PRESET_ITEMS			PresetItemsTeam0;
 	PRESET_ITEMS*			pCurPresetItems;
 
-	BOOL				m_bBuyEnabled;
+	BOOL					m_bBuyEnabled;
 
 	CUISkinSelectorWnd*		pSkinMenuTeam0;
 	CUISkinSelectorWnd*		pCurSkinMenu;
 	
-	BOOL				m_bSkinSelected;
+	BOOL					m_bSkinSelected;
 
-	virtual	void		ClearLists ();
+	virtual	void					ClearLists				();
 	
-	virtual CUIBuyWeaponWnd*		InitBuyMenu			(LPCSTR BasePriceSection, s16 Team);
-	virtual void					FillDefItems		(const char* caSection, CUIBuyWeaponWnd* pMenu);
+	virtual CUIBuyWeaponWnd*		InitBuyMenu				(LPCSTR BasePriceSection, s16 Team);
+	virtual void					FillDefItems			(const char* caSection, CUIBuyWeaponWnd* pMenu);
 
-	virtual CUISkinSelectorWnd*		InitSkinMenu		(s16 Team = -1);
+	virtual CUISkinSelectorWnd*		InitSkinMenu			(s16 Team = -1);
 
-	virtual s16			ModifyTeam			(s16 Team)	{return Team;};
+	virtual s16						ModifyTeam				(s16 Team)	{return Team;};
 	//-----------------------------------------------------------------------------
-	s16					m_iCurrentPlayersMoney;
+	s16								m_iCurrentPlayersMoney;
 
-	virtual	void		CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems);
+	virtual	void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
 
 public:
-						CUIGameDM			(CUI* parent);
-	virtual 			~CUIGameDM			();
+									CUIGameDM				();
+	virtual 						~CUIGameDM				();
 
-	virtual	void		Init				();
+	virtual	void					Init					();
 
-	virtual	void		SetCurrentBuyMenu	()	;//{pCurBuyMenu = pBuyMenuTeam0; };
-	virtual	void		SetCurrentSkinMenu	()	{pCurSkinMenu = pSkinMenuTeam0; };
+	virtual	void					SetCurrentBuyMenu		()	;//{pCurBuyMenu = pBuyMenuTeam0; };
+	virtual	void					SetCurrentSkinMenu		()	{pCurSkinMenu = pSkinMenuTeam0; };
 
-	virtual void		Render				();
-	virtual void		OnFrame				();
+	virtual void					Render					();
+	virtual void					OnFrame					();
 
-	virtual bool		IR_OnKeyboardPress		(int dik);
-	virtual bool		IR_OnKeyboardRelease	(int dik);
+	virtual bool					IR_OnKeyboardPress		(int dik);
+	virtual bool					IR_OnKeyboardRelease	(int dik);
 
-	virtual void		OnBuyMenu_Ok			();
-	virtual void		OnSkinMenu_Ok			();
+	virtual void					OnBuyMenu_Ok			();
+	virtual void					OnSkinMenu_Ok			();
 
-	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pCurBuyMenu; };
-	virtual CUIDialogWnd*	GetSkinWnd			()	{ return (CUIDialogWnd*) pCurSkinMenu; };
+	virtual CUIDialogWnd*			GetBuyWnd				()	{ return (CUIDialogWnd*) pCurBuyMenu; };
+	virtual CUIDialogWnd*			GetSkinWnd				()	{ return (CUIDialogWnd*) pCurSkinMenu; };
 
-	virtual bool		CanBeReady				();
-	virtual BOOL		CanCallBuyMenu			();
+	virtual bool					CanBeReady				();
+	virtual BOOL					CanCallBuyMenu			();
 
-	virtual	void		SetBuyMenuItems			();
-	virtual void		ClearBuyMenu			();
+	virtual	void					SetBuyMenuItems			();
+	virtual void					ClearBuyMenu			();
 
 	/////////
-	CUIInventoryWnd		InventoryMenu;
-	CUITextBanner		TimeMsgStatic, TimeMsgDyn;
+	CUIInventoryWnd					InventoryMenu;
+	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
 //	CUIBuyWeaponWnd		UIBuyWeaponWnd;
 //	CUIStatsWnd*		pUIStatsWnd;
 };

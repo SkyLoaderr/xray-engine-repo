@@ -15,12 +15,12 @@
 #define	TEAM2_MENU		"artefacthunt_team2"
 
 //--------------------------------------------------------------------
-CUIGameAHunt::CUIGameAHunt(CUI* parent):CUIGameTDM(parent)
+CUIGameAHunt::CUIGameAHunt()
 {
 	m_bBuyEnabled = TRUE;
 }
 //--------------------------------------------------------------------
-void		CUIGameAHunt::Init				()
+void		CUIGameAHunt::Init	()
 {
 	//-----------------------------------------------------------
 	CUIAHuntFragList* pFragListT1	= xr_new<CUIAHuntFragList>	();
@@ -147,20 +147,20 @@ void			CUIGameAHunt::OnFrame()
 				StaticMsg.Out	(0.0f, -0.9f, "Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
 					Game().teams[pCurActor->g_Team()-1].score, 
 					Game().teams[1 - (pCurActor->g_Team()-1)].score, 
-					Game().m_ArtefactsNum);
+					Game().artefactsNum);
 
 //				StaticMsg.Out					(0.0f, -0.9f, "Your Team has : %3d Artefacts from %3d",
 //					Game().teams[pCurActor->g_Team()-1].score, Game().m_ArtefactsNum);
 				StaticMsg.Update				();
 
-				if (Game().m_ArtefactBearerID == 0)
+				if (Game().artefactBearerID == 0)
 				{
 					StaticMsg.Out				(0.0f, -0.85f, "Grab the Artefact");
 					StaticMsg.Update			();
 				}
 				else
 				{
-					if (Game().m_TeamInPosession != pCurActor->g_Team())
+					if (Game().teamInPosession != pCurActor->g_Team())
 					{
 						WarningMsg.Out				(0.f,-0.85f,"Stop ArtefactBearer.");
 						WarningMsg.Update			();
@@ -168,7 +168,7 @@ void			CUIGameAHunt::OnFrame()
 					else
 					{
 						WarningMsg2.SetTextColor		(0xff00ff00);
-						if (pCurActor->ID() == Game().m_ArtefactBearerID)
+						if (pCurActor->ID() == Game().artefactBearerID)
 						{
 							WarningMsg2.Out			(0.f,-0.85f,"You got the Artefact. Bring it to your base.");
 							WarningMsg2.Update		();

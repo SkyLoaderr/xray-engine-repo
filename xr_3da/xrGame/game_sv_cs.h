@@ -1,5 +1,10 @@
 #pragma once
 
+#define NO_CSTRIKE
+
+
+#ifndef NO_CSTRIKE
+
 #include "game_sv_base.h"
 
 class cs_money {
@@ -11,8 +16,9 @@ public:
 class	game_sv_CS					: public game_sv_GameState
 {
 public:
-									game_sv_CS				(){}
+									game_sv_CS				(){type = GAME_CS;}
 	virtual		void				Create					(LPSTR &options);
+	virtual		LPCSTR				section_name			() const { return "cs";};
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
@@ -49,3 +55,5 @@ public:
 	u32								m_roundEndDelay;
 	cs_money						money;
 };
+
+#endif

@@ -5,6 +5,7 @@
 
 class	game_sv_Deathmatch			: public game_sv_GameState
 {
+	typedef game_sv_GameState inherited;
 protected:
 	struct		RPointData
 	{
@@ -36,19 +37,9 @@ protected:
 	{
 		u16				SlotItem_ID		;    //SlotID << 8 | ItemID;
 		std::string		WeaponName		;
-
 		u16				Cost			;
-
-		bool			operator	==		(s16 ID)
-		{
-			return		(SlotItem_ID == ID);
-		}
-
-		bool			operator	==		(LPCSTR name)
-		{
-			int res = xr_strcmp(WeaponName.c_str(), name);
-			return	res	 == 0;
-		}
+		bool			operator	==		(s16 ID){return		(SlotItem_ID == ID);}
+		bool			operator	==		(LPCSTR name){int res = xr_strcmp(WeaponName.c_str(), name);return	res	 == 0;}
 	};
 
 	DEF_VECTOR(TEAM_WPN_LIST, WeaponDataStruct);
@@ -88,14 +79,14 @@ protected:
 	//массив данных по командам
 	DEF_DEQUE(TEAM_DATA_LIST, TeamStruct);
 
-	TEAM_DATA_LIST		TeamList;
+	TEAM_DATA_LIST					TeamList;
 
 	//список трупов для удаления
 	DEF_DEQUE(CORPSE_LIST, u16);
 
-	CORPSE_LIST		m_CorpseList;
+	CORPSE_LIST						m_CorpseList;
 
-	ref_str			m_sBaseWeaponCostSection;
+	ref_str							m_sBaseWeaponCostSection;
 
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
@@ -107,10 +98,12 @@ protected:
 
 	game_sv_Deathmatch::TeamStruct*	GetTeamData				(u8 Team);
 
-	virtual	void					CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
+	virtual	void					CheckItem				(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 public:
-
+									game_sv_Deathmatch		(){type = GAME_DEATHMATCH;};
 	virtual		void				Create					(LPSTR &options);
+
+	virtual		LPCSTR				section_name		() const { return "deathmatch";};
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда

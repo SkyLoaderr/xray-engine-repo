@@ -1,5 +1,10 @@
 #include "stdafx.h"
+
+
 #include "game_sv_cs.h"
+
+#ifndef NO_CSTRIKE
+
 #include "HUDManager.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "xrServer.h"
@@ -859,3 +864,5 @@ u8 game_sv_CS::AutoTeam()
 	}
 	return (l_teams[0]>l_teams[1])?1:0;
 }
+
+#endif

@@ -15,14 +15,10 @@ protected:
 	CALifeSimulator					*m_alife_simulator;
 
 public:
-									game_sv_Single			(xrServer *server) : game_sv_GameState()
-	{
-		m_server					= server;
-		m_alife_simulator			= 0;
-	};
-
+									game_sv_Single			();
 	virtual							~game_sv_Single			();
 
+	virtual		LPCSTR				section_name		() const { return "single";};
 	virtual		void				Create					(LPSTR &options);
 	virtual		CSE_Abstract*		get_entity_from_eid		(u16 id);
 

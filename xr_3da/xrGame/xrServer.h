@@ -89,6 +89,8 @@ public:
 
 	void					SendConnectionData		(IClient* _CL);
 
+	//for scripting enhancement
+	CLASS_ID				getGameCLASS_ID(LPCSTR options);
 public:
 	// constr / destr
 	xrServer				();

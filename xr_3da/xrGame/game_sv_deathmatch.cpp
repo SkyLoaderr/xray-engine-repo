@@ -12,10 +12,11 @@ u32		g_dwMaxCorpses = 10;
 
 void	game_sv_Deathmatch::Create					(LPSTR &options)
 {
-	__super::Create					(options);
-	fraglimit	= get_option_i		(options,"fraglimit",0);
-	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
-	damgeblocklimit	= get_option_i		(options,"timelimit",5)*1000;	// in (ms)
+//	__super::Create							(options);
+	inherited::Create						(options);
+	fraglimit			= get_option_i		(options,"fraglimit",0);
+	timelimit			= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
+	damageblocklimit	= get_option_i		(options,"timelimit",5)*1000;	// in (ms)
 
 	/////////////////////////////////////////////////////////////////////////
 	LoadTeams();
@@ -31,7 +32,8 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 
 void	game_sv_Deathmatch::OnRoundStart			()
 {
-	__super::OnRoundStart	();
+//	__super::OnRoundStart	();
+	inherited::OnRoundStart	();
 
 	// Respawn all players and some info
 	u32		cnt = get_count();
@@ -97,7 +99,8 @@ void	game_sv_Deathmatch::OnFraglimitExceed		()
 }
 void	game_sv_Deathmatch::Update					()
 {
-	__super::Update	();
+//	__super::Update	();
+	inherited::Update	();
 	switch (phase)
 	{
 	case GAME_PHASE_INPROGRESS:
@@ -290,7 +293,8 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
-	__super::OnPlayerConnect	(id_who);
+//	__super::OnPlayerConnect	(id_who);
+	inherited::OnPlayerConnect	(id_who);
 
 	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
@@ -324,8 +328,9 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 
 void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 {
-	__super::OnPlayerDisconnect	(id_who);
-
+//	__super::OnPlayerDisconnect	(id_who);
+	inherited::OnPlayerDisconnect	(id_who);
+	
 	LPCSTR	Name = NULL;
 
 	Name = get_name_id(id_who);
@@ -410,9 +415,9 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	{
 		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(pA);
-		SetSkin(E, pA->s_team, ps_who->m_skin);
+		SetSkin(E, pA->s_team, ps_who->skin);
 		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
-		ps_who->m_RespawnTime = Device.dwTimeGlobal;
+		ps_who->RespawnTime = Device.dwTimeGlobal;
 	}
 	else
 		if (pS)
@@ -715,8 +720,8 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 
 	ps->kills				= 0;
 	ps->deaths				= 0;
-	ps->m_lasthitter		= 0;
-	ps->m_lasthitweapon		= 0;
+	ps->lasthitter		= 0;
+	ps->lasthitweapon		= 0;
 
 	ClearPlayerItems		(ps);
 };
@@ -977,7 +982,7 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	P.r_pos = RPos;
 	
 	//---------------------------------------
-	if (Device.dwTimeGlobal<ps_hitted->m_RespawnTime + damgeblocklimit)
+	if (Device.dwTimeGlobal<ps_hitted->RespawnTime + damageblocklimit)
 	{
 		power = 0;
 		impulse = 0;
@@ -988,8 +993,8 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	//---------------------------------------
 	if (power > 0)
 	{
-		ps_hitted->m_lasthitter = a_hitter->ID;
-		ps_hitted->m_lasthitweapon = WeaponID;
+		ps_hitted->lasthitter = a_hitter->ID;
+		ps_hitted->lasthitweapon = WeaponID;
 	};
 	//---------------------------------------
 	P.B.count	= BCount;
@@ -1005,10 +1010,10 @@ void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
 	P.w_begin			(M_GAMEMESSAGE);
 	P.w_u32				(GMSG_PLAYER_KILLED);
 	P.w_u16				(ps_killed->GameID);
-	if (ps_killer->GameID == ps_killed->m_lasthitter)
+	if (ps_killer->GameID == ps_killed->lasthitter)
 	{
 		P.w_u16				(ps_killer->GameID);
-		P.w_u16				(ps_killed->m_lasthitweapon);
+		P.w_u16				(ps_killed->lasthitweapon);
 	}
 	else
 	{
@@ -1019,8 +1024,8 @@ void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
 	u_EventSend(P);
 
 	//---------------------------------------------------------
-	ps_killed->m_lasthitter			= 0;
-	ps_killed->m_lasthitweapon		= 0;
+	ps_killed->lasthitter			= 0;
+	ps_killed->lasthitweapon		= 0;
 	ClearPlayerItems		(ps_killed);
 	//---------------------------------------------------------
 	SetPlayersDefItems		(ps_killed);
@@ -1074,7 +1079,7 @@ void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin)
 {
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if (!ps_who) return;
-	ps_who->m_skin = skin;
+	ps_who->skin = skin;
 
 	if (OnServer())
 	{
@@ -1167,7 +1172,7 @@ s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
 	return res;
 }
 */
-void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
+void	game_sv_Deathmatch::RemoveItemFromActor	(CSE_Abstract* pItem)
 {
 	if (!pItem) return;
 	//-------------------------------------------------------------
@@ -1181,7 +1186,7 @@ void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 	Level().Send(P,net_flags(TRUE,TRUE));
 };
 
-void	game_sv_Deathmatch::OnTeamScore				(u32 Team)
+void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
 {
 	TeamStruct* pTeam		= GetTeamData(u8(Team));
 	if (!pTeam) return;

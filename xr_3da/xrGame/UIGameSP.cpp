@@ -3,13 +3,13 @@
 #include "actor.h"
 #include "level.h"
 
-CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent) 
+CUIGameSP::CUIGameSP()
 {
 	m_pUserMenu = NULL;
 	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"artefacthunt_team1", (char*)"artefacthunt_base_cost");
 }
 
-CUIGameSP::~CUIGameSP(void) 
+CUIGameSP::~CUIGameSP() 
 {
 	xr_delete(pUIBuyWeaponWnd);
 }

@@ -39,7 +39,7 @@ protected:
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
 public:
-	CUIGameTDM			(CUI* parent);
+	CUIGameTDM			();
 	virtual 			~CUIGameTDM			();
 
 	virtual	void		Init				();

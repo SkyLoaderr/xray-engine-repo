@@ -7,6 +7,13 @@
 #include "alife_time_manager.h"
 #include "level.h"
 
+game_sv_Single::game_sv_Single()
+{
+	m_server					= Level().Server;
+	m_alife_simulator			= NULL;
+	type						= GAME_SINGLE;
+};
+
 game_sv_Single::~game_sv_Single			()
 {
 	xr_delete							(m_alife_simulator);

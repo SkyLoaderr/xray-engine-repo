@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game_base_space.h"
+#include "script_export_space.h"
 
 #pragma pack(push,1)
 struct	game_PlayerState
@@ -19,11 +20,11 @@ struct	game_PlayerState
 	//------Dedicated-------------------
 	bool		Skip;
 	//---------------------------
-	u16			m_lasthitter;
-	u16			m_lasthitweapon;
-	u8			m_skin;
+	u16			lasthitter;
+	u16			lasthitweapon;
+	u8			skin;
 	//---------------------------
-	u32			m_RespawnTime;
+	u32			RespawnTime;
 	//---------------------------
 	s16			money_delta;
 
@@ -45,7 +46,12 @@ struct	game_PlayerState
 	PLAYER_ITEMS_LIST	pItemList;
 
 	s16					LastBuyAcount;
+	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
+add_to_type_list(game_PlayerState)
+#undef script_type_list
+#define script_type_list save_type_list(game_PlayerState)
+
 
 struct	game_TeamState
 {
@@ -53,7 +59,12 @@ struct	game_TeamState
 	u16			num_targets;
 
 	game_TeamState();
+	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT
 };
+add_to_type_list(game_TeamState)
+#undef script_type_list
+#define script_type_list save_type_list(game_TeamState)
+
 #pragma pack(pop)
 
 class	game_GameState : public DLL_Pure
@@ -66,14 +77,18 @@ public:
 	u32								buy_time;
 	s32								fraglimit;
 	s32								timelimit;
-	u32								damgeblocklimit;
+	u32								damageblocklimit;
 	xr_vector<game_TeamState>		teams;
 	// for Artefact Hunt
-	u8								m_ArtefactsNum;
-	u16								m_ArtefactBearerID;
-	u8								m_TeamInPosession;
+	u8								artefactsNum;
+	u16								artefactBearerID;
+	u8								teamInPosession;
 public:
 	game_GameState();
 
-	virtual		void				Create					(LPSTR &options)	=	0;
+	virtual		void				Create					(LPSTR &options){};
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(game_GameState)
+#undef script_type_list
+#define script_type_list save_type_list(game_GameState)
