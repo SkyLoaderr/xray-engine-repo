@@ -208,7 +208,8 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 
  	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, 
 							  pThisGameObject->lua_game_object(),
-							  pWho->lua_game_object(), (int)msg,
+							  pWho->lua_game_object(), 
+							  (int)msg,
 							  info_index);
 }
 

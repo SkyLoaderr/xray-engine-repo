@@ -73,6 +73,27 @@ bool CLuaGameObject::GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFrom
 	return			true;
 }
 
+bool CLuaGameObject::SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+	if(!pInventoryOwner->GetPDA()) return false;
+
+	CInventoryOwner* pForWhoInvOwner = dynamic_cast<CInventoryOwner*>(pForWho->m_tpGameObject);
+	if(!pForWhoInvOwner) return false;
+	if(!pForWhoInvOwner->GetPDA()) return false;
+
+	//отправляем от нашему PDA пакет информации с номером
+	NET_Packet		P;
+	m_tpGameObject->u_EventGen(P,GE_PDA,pForWhoInvOwner->GetPDA()->ID());
+	P.w_u16			(u16(pInventoryOwner->GetPDA()->ID()));		//отправитель
+	P.w_s16			(pda_msg);
+	P.w_s32			(-1);
+	m_tpGameObject->u_EventSend(P);
+	return			true;
+}
+
+
 bool CLuaGameObject::IsTalking()
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);

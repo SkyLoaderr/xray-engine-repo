@@ -282,6 +282,8 @@ public:
 	//передача порции информации InventoryOwner
 	bool GiveInfoPortion(int info_index);
 	bool GiveInfoPortionViaPda(int info_index, CLuaGameObject* pFromWho);
+	bool SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho);
+	
 	bool IsTalking();
 	void StopTalk();
 	
@@ -513,6 +515,14 @@ public:
 		else
 			pInvOwner->set_pda_callback(lua_function);
 	}
+	void SetPdaCallback(const luabind::object &instance, LPCSTR method)
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_pda_callback!");
+		else
+			pInvOwner->set_pda_callback(instance,method);
+	}
 	void ClearPdaCallback()
 	{
 		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
@@ -529,6 +539,15 @@ public:
 			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
 		else
 			pInvOwner->set_info_callback(lua_function);
+	}
+
+	void SetInfoCallback(const luabind::object &instance, LPCSTR method)
+	{
+		CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+		if (!pInvOwner)
+			ai().script_engine().script_log 	(ScriptStorage::eLuaMessageTypeError,"CInventoryOwner : cannot access class member set_info_callback!");
+		else
+			pInvOwner->set_info_callback(instance,method);
 	}
 	void ClearInfoCallback()
 	{
