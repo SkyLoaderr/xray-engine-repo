@@ -324,14 +324,10 @@ end
 function CStartActions:update(trader)
 	if(self.door == nil) then
 		self.door = level.object("trader_door")
-		if(self.door == nil) then
-			--printf("Trader is waiting for door to appear.")
-			return
-		end
 	end
 
 	// закрываем дверь, если это еще не сделали
-	if(self.lock == false) then
+	if(self.lock == false and self.door ~= nil) then
 		self.door:binded_object():set_lock(true)
 		self.lock	= true
 	end
@@ -374,7 +370,9 @@ function CStartActions:select_new_action(trader)
 		// ∆дем немного
 		trader:play_animation("idle_looped", idle, nil, 3000, false)
 		level.actor():give_info_portion("tutorial_artefact_gain")
-		if(self.lock) then self.door:binded_object():set_lock(false) end
+		if(self.lock and self.door) then
+			self.door:binded_object():set_lock(false)
+		end
 		self:set_state(wait4)
 	elseif(self.state == wait4) then		
 		// ќжидаем некоторое врем€
