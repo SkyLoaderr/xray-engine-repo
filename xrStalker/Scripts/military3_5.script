@@ -237,28 +237,6 @@ end
 
 function main ()
 
-	local bredun1 = get_level_object ("stalker_ptr3")
-	local bredun2 = get_level_object ("stalker_ptr4")
-	local bredun3 = get_level_object ("stalker_ptr6")
-	local bredun4 = get_level_object ("stalker_ptr7")
-	local bredun5 = get_level_object ("stalker_ptr8")
-	bredun1:script (true, military3_5.script_name ())
-	bredun2:script (true, military3_5.script_name ())
-	bredun3:script (true, military3_5.script_name ())
-	bredun4:script (true, military3_5.script_name ())
-	bredun5:script (true, military3_5.script_name ())
-	action (bredun1, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	action (bredun2, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	action (bredun3, move (move.standing, move.walk, move.line, patrol ("way_ptr30")),
-		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	action (bredun4, move (move.standing, move.walk, move.line, patrol ("way_ptr40")),
-		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	action (bredun5, move (move.standing, move.walk, move.line, patrol ("way_ptr80")),
-		    look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
-	
-
   	local patrol1 = military3_5.Patrol (get_level_object ("stalker_ptr1"), military3_5.script_name ())
  	local patrol2 = military3_5.Patrol (get_level_object ("stalker_ptr2"), military3_5.script_name ())
 
@@ -289,19 +267,13 @@ function main ()
   	patrol2:start ()
 
   	while true do
-      	  patrol1:process ()
-      	  patrol2:process ()
+  		  patrol1:process ()
+  		  patrol2:process ()
       	  wait ()
       	  end
 
   	patrol1:finish ()
   	patrol2:finish ()
-
-	bredun1:script (false, military3_5.script_name ())
-	bredun2:script (false, military3_5.script_name ())
-	bredun3:script (false, military3_5.script_name ())
-	bredun4:script (false, military3_5.script_name ())
-	bredun5:script (false, military3_5.script_name ())
 
 
 end

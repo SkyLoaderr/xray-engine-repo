@@ -1,6 +1,6 @@
 -- сталкер у шлагбаума
 
-local anims = {"stoya_ruje_ 0"}
+local anims = {"stoya_ruje_ 0", "vishka_3"}
 
 function waiting (actor)
     military3_3.reset (actor)
@@ -18,7 +18,7 @@ function moving (actor, path)
 	military3_3.reset (actor)
 	action (actor, move (move.standing, move.walk, move.line, patrol (path)),
 			look (look.search), anim (anim.free), cond (cond.move_end))
-	printf ("Moving path - %s", path)
+--	printf ("Moving path - %s", path)
 end
 
 function main ()
@@ -32,11 +32,17 @@ function main ()
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
 			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
 
-    while stalker:action () do wait () end
+--    while stalker:action () do wait () end
 
-	military3_3.reset (stalker)
+--	military3_3.reset (stalker)
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
 			look (), anim ("chistit ruje_1"), cond (cond.anim_end))
+
+--    while stalker:action () do wait () end
+
+--	military3_3.reset (stalker)
+	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_sh1")),
+			look (), anim ("stul_podyem"), cond (cond.anim_end))
 
     while stalker:action () do wait () end
 
@@ -51,7 +57,7 @@ function main ()
 		  military3_3.waiting (stalker)
 
 		  point = nextpoint
-		  printf ("Next point : %d", nextpoint)	
+--		  printf ("Next point : %d", nextpoint)	
 
 		  --перемещения из точки 1
 		  if point == 1 then
