@@ -71,9 +71,13 @@ function main_menu:InitControls()
 							 y = btn_multi_rect.y + btn_multi_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
-							 
+	-- Bottom align
 	local btn_quit_rect    = {x = btn_rect.x,
 							 y = main_rect.height - btn_rect.height - indent,
+							 width = btn_rect.width,
+							 height = btn_rect.height}
+	local btn_bonus_rect   = {x = btn_rect.x,
+							 y = btn_quit_rect.y - btn_rect.height - indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	
@@ -168,6 +172,19 @@ function main_menu:InitControls()
 	btn:SetTextY(button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
+	
+		--------->> QUIT TO WINDOWS
+	btn = CUIButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_bonus")
+	btn:Init("ui\\ui_button_01", btn_bonus_rect.x, btn_bonus_rect.y, btn_bonus_rect.width, btn_bonus_rect.height)
+	btn:SetText("Bonus")
+	btn:SetFont(GetFontLetterica25())
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(button_indent)
+	self:Register(btn)
+	main_frame:AttachChild(btn)
+
 		
 	-- Message Box --
 	message_box = CUIMessageBox()
