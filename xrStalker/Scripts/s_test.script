@@ -52,7 +52,7 @@ function action_patrol:initialize()
 	self.object:script		(true,s_test.script_name())
 	action					(
 		self.object,
-		move				(move.standing,move.walk,move.line,patrol(self.patrol_path))),
+		move				(move.standing,move.walk,move.line,patrol(self.patrol_path)),
 		anim				(anim.free),
 		cond				(cond.move_end)
 	)
