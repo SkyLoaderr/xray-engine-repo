@@ -344,14 +344,15 @@ void CLightShadows::render	()
 	int slot_line	= S_rt_size/S_size;
 	
 	// Projection and xform
-	float _43			= Device.mProject._43;
-	Device.mProject._43 -= 0.001f; 
+	float _43				= Device.mProject._43;
+	Device.mProject._43    -= 0.002f; 
 	RCache.set_xform_world	(Fidentity);
 	RCache.set_xform_project(Device.mProject);
-	Fvector	View		= Device.vCameraPosition;
+	Fvector	View			= Device.vCameraPosition;
 	
 	// Render shadows
 	RCache.set_Shader			(sh_World);
+	RCache.set_Geometry			(geom_World);
 	int batch					= 0;
 	u32 Offset					= 0;
 	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
@@ -419,7 +420,6 @@ void CLightShadows::render	()
 				// Calc plane
 				Fplane		P;
 				P.build				(A[0],A[1],A[2]);
-				//			if (P.classify(View)<0)				continue;
 				if (P.classify(S.L->position)<0)	continue;
 
 				// Clip polygon
@@ -455,11 +455,12 @@ void CLightShadows::render	()
 			tess_tri&	TT		= CI->tris[tid];
 			Fvector* 	v		= TT.v;
 			Fvector		T;
+			Fplane		ttp;	ttp.build_unit_normal(v[0],TT.N);
 
-			int	c0				= PLC_calc(v[0],TT.N,S.L,Le,S.C);	clamp(c0,S_ambient,255);
-			int	c1				= PLC_calc(v[1],TT.N,S.L,Le,S.C);	clamp(c1,S_ambient,255);
-			int	c2				= PLC_calc(v[2],TT.N,S.L,Le,S.C);	clamp(c2,S_ambient,255);
-			if ((c0>S_clip) && (c1>S_clip) && (c2>S_clip))			continue;
+			if (ttp.classify(View)<0)										continue;
+			int	c0		= PLC_calc(v[0],TT.N,S.L,Le,S.C);	if (c0>S_clip)	continue;	clamp(c0,S_ambient,255);
+			int	c1		= PLC_calc(v[1],TT.N,S.L,Le,S.C);	if (c1>S_clip)	continue;	clamp(c1,S_ambient,255);
+			int	c2		= PLC_calc(v[2],TT.N,S.L,Le,S.C);	if (c2>S_clip)	continue;	clamp(c2,S_ambient,255);
 
 			S.M.transform(T,v[0]); pv->set(v[0],CLS(c0),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 			S.M.transform(T,v[1]); pv->set(v[1],CLS(c1),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
@@ -469,8 +470,6 @@ void CLightShadows::render	()
 			if (batch==batch_size)	{
 				// Flush
 				RCache.Vertex.Unlock	(batch*3,geom_World->vb_stride);
-
-				RCache.set_Geometry		(geom_World);
 				RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 
 				pv						= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
@@ -483,7 +482,6 @@ void CLightShadows::render	()
 	// Flush if nessesary
 	RCache.Vertex.Unlock	(batch*3,geom_World->vb_stride);
 	if (batch)				{
-		RCache.set_Geometry		(geom_World);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 	}
 	
