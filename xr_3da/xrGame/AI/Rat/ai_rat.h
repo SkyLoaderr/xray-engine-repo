@@ -68,23 +68,28 @@ class CAI_Rat : public CCustomMonster
 		bool			bBuildPathToLostEnemy;
 		// finite state machine
 		stack<ERatStates>	tStateStack;
-		void Die();
-		void UnderFire();
-		void SenseSomething();
-		void GoInThisDirection();
-		void GoToThisPosition();
-		void WaitOnPosition();
-		void HoldThisPosition();
-		void HoldPositionUnderFire();
-		void FreeHunting();
-		void FollowMe();
-		void Attack();
-		void Defend();
-		void Pursuit();
-		void Retreat();
-		void Cover();
-		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
-		bool bfCheckPath(AI::Path &Path);
+			void Die();
+			void UnderFire();
+			void SenseSomething();
+			void GoInThisDirection();
+			void GoToThisPosition();
+			void WaitOnPosition();
+			void HoldThisPosition();
+			void HoldPositionUnderFire();
+			void FreeHunting();
+			void FollowMe();
+			void Attack();
+			void Defend();
+			void Pursuit();
+			void Retreat();
+			void Cover();
+		IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+			bool bfCheckPath(AI::Path &Path);
+			void SetLessCoverLook(NodeCompressed *tNode);
+			int	 ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
+		IC	bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
+		IC	bool bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode);
+		IC float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour);
 	
 		CRatSelectorAttack		SelectorAttack;
 		CRatSelectorFreeHunting SelectorFreeHunting;
@@ -92,9 +97,6 @@ class CAI_Rat : public CCustomMonster
 		CRatSelectorPursuit		SelectorPursuit;
 		CRatSelectorUnderFire	SelectorUnderFire;
 
-		void SetLessCoverLook(NodeCompressed *tNode);
-		int	ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
-		IC bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

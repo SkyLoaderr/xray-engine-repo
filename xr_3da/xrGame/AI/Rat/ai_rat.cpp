@@ -486,6 +486,37 @@ IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNo
 	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) || ((tCenter.x >= tpSubNode.tRightUp.x) && (tCenter.z >= tpSubNode.tRightUp.z)));
 }
 
+IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
+{
+	// check if it is left node
+	if ((tCurrentSubNode.tRightUp.z == tMySubNode.tRightUp.z) &&
+		(tCurrentSubNode.tRightUp.x == tMySubNode.tLeftDown.x))
+		return(true);
+	// check if it is front node
+	if ((tCurrentSubNode.tLeftDown.z == tMySubNode.tRightUp.z) &&
+		(tCurrentSubNode.tLeftDown.x == tMySubNode.tLeftDown.x))
+		return(true);
+	// check if it is right node
+	if ((tCurrentSubNode.tLeftDown.z == tMySubNode.tLeftDown.z) &&
+		(tCurrentSubNode.tLeftDown.x == tMySubNode.tRightUp.x))
+		return(true);
+	// check if it is back node
+	if ((tCurrentSubNode.tRightUp.z == tMySubNode.tLeftDown.z) &&
+		(tCurrentSubNode.tRightUp.x == tMySubNode.tRightUp.x))
+		return(true);
+	// otherwise
+	return(false);
+}
+
+IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour)
+{
+	Fvector tCurrentSubNode;
+	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
+	tCurrentSubNode.y = (tCurrentNeighbour.tLeftDown.y + tCurrentNeighbour.tRightUp.y)/2.f;
+	tCurrentSubNode.z = (tCurrentNeighbour.tLeftDown.z + tCurrentNeighbour.tRightUp.z)/2.f;
+	return(SQR(tLeaderPosition.x - tCurrentSubNode.x) + SQR(tLeaderPosition.y - tCurrentSubNode.y) + SQR(tLeaderPosition.z - tCurrentSubNode.z));
+}
+
 int CAI_Rat::ifDivideNode(NodeCompressed* tpCurrentNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
 	float fSubNodeSize = Level().AI.GetHeader().size;
@@ -577,7 +608,7 @@ void CAI_Rat::FollowMe()
 						Fvector tCurrentPosition = Position();
 						NodeCompressed* tpCurrentNode = AI_Node;
 						vector<SSubNode> tpSubNodes;
-						int iMySubNode = tfDivideNode(tpCurrentNode,tpSubNodes);
+						int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 						// filling the subnodes with the moving objects
 						Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
 						CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
@@ -593,10 +624,37 @@ void CAI_Rat::FollowMe()
 							}
 						}
 						// checking the nearest nodes
+						vector<SSubNode> tpFreeNeighbourNodes;
+						tpFreeNeighbourNodes.clear();
 						for (int i=0; i<tpSubNodes.size(); i++)
-							if (tpSubNodes[i].bEmpty) {
-								if tpSub
+							if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
+								tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
+						tpSubNodes.clear();
+						AI_Path.TravelPath.clear();
+						if (!tpFreeNeighbourNodes.empty()) {
+							float fBestCost = 100.f;
+							Fvector tLeaderPosition = Leader->Position();
+							for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
+								float fCurCost = ffComputeCost(tLeaderPosition,tpFreeNeighbourNodes[i]);
+								if (fCurCost < fBestCost) {
+									iBestI = i;
+									fBestCost = fCurCost;
+								}
 							}
+							Fvector tFinishPosition;
+							tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
+							tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
+							tFinishPosition.z = (tpFreeNeighbourNodes[iBestI].tLeftDown.z + tpFreeNeighbourNodes[iBestI].tRightUp.z)/2.f;
+							CTravelNode	tCurrentPoint,tFinishPoint;
+							tCurrentPoint.P.set(tCurrentPosition);
+							tCurrentPoint.floating = FALSE;
+							AI_Path.TravelPath.push_back(tCurrentPoint);
+							tFinishPoint.P.set(tFinishPosition);
+							tFinishPoint.floating = FALSE;
+							AI_Path.TravelPath.push_back(tFinishPoint);
+						}
+						else {
+						}
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
