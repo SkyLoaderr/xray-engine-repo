@@ -75,8 +75,8 @@ void	CBlender::Load(	CStream& FS, WORD version )
 
 void	CBlender::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
-	if (bEditor)	RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);
-	else			RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
+	if (bEditor)	RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
+	else			RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);
 }
 
 //////////////////////////////////////////////////////////////////////

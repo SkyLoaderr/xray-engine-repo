@@ -11,16 +11,16 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Recorder::CBlender_Recorder	(Shader* _SH)
+CBlender_Recorder::CBlender_Recorder		(Shader* _SH)
 {
 	RS.Invalidate	();
 	SH =			_SH;
 }
-CBlender_Recorder::~CBlender_Recorder	()
+CBlender_Recorder::~CBlender_Recorder		()
 {
 
 }
-void	CBlender_Recorder::SetParams	(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
+void	CBlender_Recorder::SetParams		(int iPriority, bool bStrictB2F, bool bLighting, bool bPixelShader)
 {
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;
@@ -28,7 +28,7 @@ void	CBlender_Recorder::SetParams	(int iPriority, bool bStrictB2F, bool bLightin
 	SH->Flags.bPixelShader	= bPixelShader;
 }
 //
-void	CBlender_Recorder::PassBegin	()
+void	CBlender_Recorder::PassBegin		()
 {
 	RS.Invalidate			();
 	passTextures.clear		();
@@ -36,7 +36,7 @@ void	CBlender_Recorder::PassBegin	()
 	passConstants.clear		();
 	dwStage					= 0;
 }
-void	CBlender_Recorder::PassEnd		()
+void	CBlender_Recorder::PassEnd			()
 {
 	// Last Stage - disable
 	RS.SetTSS	(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
@@ -51,14 +51,14 @@ void	CBlender_Recorder::PassEnd		()
 	SH->Passes.push_back(P);
 }
 
-void	CBlender_Recorder::PassSET_ZB	(BOOL bZTest, BOOL bZWrite)
+void	CBlender_Recorder::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
 {
 	if (Pass())	bZWrite = FALSE;
 	RS.SetRS	(D3DRS_ZFUNC,			bZTest?D3DCMP_LESSEQUAL:D3DCMP_ALWAYS);
 	RS.SetRS	(D3DRS_ZWRITEENABLE,	BC(bZWrite));
 }
 
-void	CBlender_Recorder::PassSET_Blend(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL bATest, DWORD aRef)
+void	CBlender_Recorder::PassSET_Blend	(BOOL bABlend, DWORD abSRC, DWORD abDST, BOOL bATest, DWORD aRef)
 {
 	RS.SetRS(D3DRS_ALPHABLENDENABLE,	BC(bABlend));
 	RS.SetRS(D3DRS_SRCBLEND,			bABlend?abSRC:D3DBLEND_ONE	);
@@ -66,6 +66,12 @@ void	CBlender_Recorder::PassSET_Blend(BOOL bABlend, DWORD abSRC, DWORD abDST, BO
 	RS.SetRS(D3DRS_ALPHATESTENABLE,		BC(bATest));
 	if (bATest)
 		RS.SetRS(D3DRS_ALPHAREF,		DWORD(aRef));
+}
+void	CBlender_Recorder::PassSET_LightFog	(BOOL bLight, BOOL bFog)
+{
+	RS.SetRS(D3DRS_LIGHTING,			BC(bLight));
+	RS.SetRS(D3DRS_FOGENABLE,			BC(bFog));
+	SH->Flags.bLighting					|= !!bLight;
 }
 
 //
