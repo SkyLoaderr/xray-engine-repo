@@ -200,6 +200,7 @@ void CSector::Render_prepare	(CFrustum &F)
 	// дл€ того чтобы показать ѕрофу что отрисовать тень в 
 	// принципе возможно(но не нужно - выгл€дит хреново)
 	// св€зано с тем что лайты нужно заполнить чуть раньше
+	RImplementation.set_Frustum	(&F);
 	RImplementation.add_Lights	(Lights);
 }
 
