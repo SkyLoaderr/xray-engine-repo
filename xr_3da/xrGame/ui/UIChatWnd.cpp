@@ -42,7 +42,10 @@ CUIChatWnd::~CUIChatWnd()
 void CUIChatWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", CHAT_MP_WND_XML);
+//	uiXml.Init("$game_data$", CHAT_MP_WND_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, CHAT_MP_WND_XML);
+	R_ASSERT2(xml_result, "xml file not found");
+
 
 	CUIXmlInit xml_init;
 

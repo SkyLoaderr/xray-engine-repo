@@ -53,7 +53,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	m_strSection = strSectionName;
 
 	CUIXml xml_doc;
-	bool xml_result = xml_doc.Init("$game_data$", SKIN_SELECTOR_XML);
+	bool xml_result = xml_doc.Init(CONFIG_PATH, UI_PATH, SKIN_SELECTOR_XML);
 	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;

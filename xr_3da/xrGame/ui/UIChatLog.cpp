@@ -39,13 +39,17 @@ void CUIChatLog::AddLogMessage(const shared_str &msg, const shared_str &author)
 void CUIChatLog::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$", CHAT_MP_WND_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, CHAT_MP_WND_XML);
+	R_ASSERT2(xml_result, "xml file not found");
+
+//	uiXml.Init("$game_data$", CHAT_MP_WND_XML);
 
 	CUIXmlInit xml_init;
 
 	// Chat log
 	AttachChild(&UILogList);
 	xml_init.InitListWnd(uiXml, "chat_log_list", 0, &UILogList);
+
 }
 
 //////////////////////////////////////////////////////////////////////////

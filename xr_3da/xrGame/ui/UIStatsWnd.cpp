@@ -30,8 +30,10 @@ CUIStatsWnd::~CUIStatsWnd()
 void CUIStatsWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
-	R_ASSERT3(xml_result, "xml file not found", STATS_XML);
+//	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
+//	R_ASSERT3(xml_result, "xml file not found", STATS_XML);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, STATS_XML);
+	R_ASSERT2(xml_result, "xml file not found");
 
 	CUIXmlInit xml_init;
 
@@ -66,8 +68,10 @@ CUIStatsListItem * CUIStatsWnd::AddItem()
 	UIStatsList.ScrollToBegin();
 
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
-	R_ASSERT(xml_result);
+//	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
+//	R_ASSERT(xml_result);
+	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, STATS_XML);
+	R_ASSERT2(xml_result, "xml file not found");
 
 	pNewItem->XmlInit("list", uiXml);
 //	pNewItem->SetMessageTarget(this);
