@@ -1639,7 +1639,8 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetTexture				(0, NULL);
 	m_pd3dDevice->SetTexture				(1, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget		);
-	m_pd3dDevice->SetDepthStencilSurface	(pBaseZB);
+	m_pd3dDevice->SetDepthStencilSurface	(pBaseZB			);
+	m_pd3dDevice->SetViewport				(&oldViewport		);
 	return S_OK;
 }
 
