@@ -45,7 +45,8 @@ protected:
 	enum { vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1 };
 
 	CKinematics*			Parent;			// setted up by parent
-	vertBoned1W*			Vertices;		// shared
+	vertBoned1W*			Vertices1W;		// shared
+	vertBoned1W*			Vertices2W;		// shared
 	DWORD					cache_DiscardID;
 	DWORD					cache_vCount;
 	DWORD					cache_vOffset;

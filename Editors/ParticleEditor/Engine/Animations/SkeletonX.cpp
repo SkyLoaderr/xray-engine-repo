@@ -20,7 +20,8 @@
 void CSkeletonX::_Copy(CSkeletonX *B)
 {
 	Parent				= NULL;
-	Vertices			= B->Vertices;
+	Vertices1W			= B->Vertices1W;
+	Vertices2W			= B->Vertices2W;
 	cache_DiscardID		= 0xffffffff;
 }
 void CSkeletonX_PM::Copy(CVisual *V) 
@@ -72,12 +73,22 @@ void CSkeletonX::_Render	(CVS* hVS, DWORD vCount, DWORD pCount, IDirect3DIndexBu
 		cache_vOffset		= vOffset;
 		
 		Device.Statistic.RenderDUMP_SKIN.Begin	();
-		PSGP.skin1W(
-			Dest,										// dest
-			Vertices,									// source
-			vCount,										// count
-			Parent->bone_instances						// bones
-			);
+		if (Vertices1W)
+		{
+			PSGP.skin1W(
+				Dest,										// dest
+				Vertices1W,									// source
+				vCount,										// count
+				Parent->bone_instances						// bones
+				);
+		} else {
+			PSGP.skin2W(
+				Dest,										// dest
+				Vertices2W,									// source
+				vCount,										// count
+				Parent->bone_instances						// bones
+				);
+		}
 		Device.Statistic.RenderDUMP_SKIN.End	();
 		_VS.Unlock			(vCount,hVS->dwStride);
 	}
@@ -109,11 +120,25 @@ void CSkeletonX::_Load(const char* N, CStream *data, DWORD& dwVertCount)
 	R_ASSERT(data->FindChunk(OGF_VERTICES));
 			
 	DWORD dwVertType;
-	dwVertType	= data->Rdword(); R_ASSERT(dwVertType==0x12071980);
+	dwVertType	= data->Rdword(); 
 	dwVertCount	= data->Rdword();
-	
-	Vertices	 = new vertBoned1W[dwVertCount];
-	data->Read	(Vertices,dwVertCount*sizeof(vertBoned1W));
+
+	switch		(dwVertType)
+	{
+	case 1*0x12071980:
+		Vertices1W	= new vertBoned1W[dwVertCount];
+		Vertices2W	= NULL;
+		data->Read	(Vertices1W,dwVertCount*sizeof(vertBoned1W));
+		break;
+	case 2*0x12071980:
+		Vertices1W	= NULL;
+		Vertices2W	= new vertBoned2W[dwVertCount];
+		data->Read	(Vertices2W,dwVertCount*sizeof(vertBoned2W));
+		break;
+	default:
+		Device.Fatal	("Invalid vertex type in skinned model '%s'",N);
+		break;
+	}
 }
 
 void CSkeletonX_PM::Load(const char* N, CStream *data, DWORD dwFlags) 
