@@ -2541,30 +2541,34 @@
 			<Filter
 				Name="AScript"
 				Filter="">
-				<File
-					RelativePath=".\ai_script.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_debug.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_extension.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_lua_extension.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_processor.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_script_processor.h">
-				</File>
-				<File
-					RelativePath=".\ai_script_space.h">
-				</File>
+				<Filter
+					Name="core"
+					Filter="">
+					<File
+						RelativePath=".\ai_script.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_debug.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_extension.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_processor.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_processor.h">
+					</File>
+					<File
+						RelativePath=".\ai_script_space.h">
+					</File>
+				</Filter>
 				<Filter
 					Name="lua_bind"
 					Filter="">
