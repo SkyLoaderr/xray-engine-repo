@@ -218,9 +218,6 @@
 				RelativePath="r2_R_render.cpp">
 			</File>
 			<File
-				RelativePath="r2_R_scenegraph.cpp">
-			</File>
-			<File
 				RelativePath="r2_R_smap_direct.cpp">
 			</File>
 			<File
