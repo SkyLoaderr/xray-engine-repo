@@ -219,23 +219,12 @@ void CUIDragDropItem::Draw()
 	m_UIStaticItem.SetPos(rect.left , rect.top);
 //.	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	
-	if(m_bClipper)
-		TextureClipper(right_offset, down_offset);
+//.	if(m_bClipper)
+//.		TextureClipper(right_offset, down_offset);
 
+	if (m_bInFloat) UI()->PushScissor(UI()->ScreenRect(),true);
 	m_UIStaticItem.Render();
-
-
-	//вызвать дополнительную функцию рисования
-//	if(m_pCustomDrawProc) (*m_pCustomDrawProc)(this);
-
-//	GetFont()->SetColor(0xFFEEEEEE);
-//	GetFont()->SetAligment(CGameFont::alLeft);
-//
-//	if(m_str && xr_strlen(m_str)>0)
-//		GetFont()->Out((float)rect.left,(float)rect.top, m_str);
-
-//	GetFont()->OnRender(GetClipRect());
-//	GetFont()->OnRender();
+	if (m_bInFloat) UI()->PopScissor();
 }
 
 void CUIDragDropItem::Update()

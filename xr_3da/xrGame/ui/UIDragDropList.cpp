@@ -601,9 +601,9 @@ E_CELL_STATE CUIDragDropList::GetCellState(int row, int col)
 
 void CUIDragDropList::Draw()
 {
-//.	UI()->PushScissor	(GetAbsoluteRect());
+	UI()->PushScissor	(GetAbsoluteRect());
 	inherited::Draw();
-//.	UI()->PopScissor	();
+	UI()->PopScissor	();
 }
 void CUIDragDropList::Update()
 {
