@@ -43,7 +43,7 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	while siviy:action() and chert:action() do
+	while siviy:action() and chert:action() and siviy:position():distance_to(chert:position()) <= 3 do
 		if siviy:see(chert) then
 			rainbow_privet:play_at_pos						(siviy,siviy:position(),0);
 			wait(2000)			
@@ -55,7 +55,7 @@ function main()
 	    wait	()
 	end
 
-	while siviy:action() and chert:action() do
+	while siviy:action() and chert:action() and siviy:position():distance_to(chert:position()) <= 3 do
 		if siviy:see(chert) and i_see_chert == 1 then
 			rainbow_ti_sledish_za_mnoy:play_at_pos						(siviy,siviy:position(),0);
 			wait(2000)			
@@ -67,7 +67,7 @@ function main()
 	    wait	()
 	end
 
-	while siviy:action() and chert:action() do
+	while siviy:action() and chert:action() and siviy:position():distance_to(chert:position()) <= 3 do
 		if siviy:see(chert) and i_see_chert == 2 then
 			wait(1000)			
 			rainbow_chto_za_chert:play_at_pos		(siviy,siviy:position(),0);
