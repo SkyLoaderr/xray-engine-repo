@@ -37,11 +37,6 @@ CSoundRender_Core::CSoundRender_Core	()
     e_target.set_identity		();
     bListenerMoved				= FALSE;
     bReady						= FALSE;
-#ifdef _EDITOR
-    geom_DB						= ETOOLS::get_collider();
-#else
-    geom_DB						= xr_new<CDB::COLLIDER>();
-#endif
 }
 
 CSoundRender_Core::~CSoundRender_Core()
@@ -52,7 +47,6 @@ CSoundRender_Core::~CSoundRender_Core()
 #else
 	xr_delete					(geom_ENV);
 	xr_delete					(geom_SOM);
-    xr_delete					(geom_DB);
 #endif
 }
 
@@ -315,12 +309,14 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& 
 #ifdef _EDITOR
 			ETOOLS::ray_options		(CDB::OPT_ONLYNEAREST);
 			ETOOLS::ray_query		(geom_ENV,P,dir,1000.f);
+			if (ETOOLS::r_count()){
+				CDB::RESULT*		r	= ETOOLS::r_begin();
 #else
 			geom_DB->ray_options	(CDB::OPT_ONLYNEAREST);
 			geom_DB->ray_query		(geom_ENV,P,dir,1000.f);
-#endif            
 			if (geom_DB->r_count()){
 				CDB::RESULT*		r	= geom_DB->r_begin();
+#endif            
 				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
 				Fvector*			V	= geom_ENV->get_verts();
 				Fvector tri_norm;
