@@ -109,6 +109,8 @@ public:
 		IC	ALife::_GRAPH_ID		edge_count			() const;
 		IC	u32						death_point_count	() const;
 		IC	const LEVEL_MAP			&levels				() const;
+		IC	const SLevel			&level				(const ALife::_LEVEL_ID &id) const;
+		IC	const SLevel			&level				(LPCSTR level_name) const;
 		friend class CGameGraph;
 #ifdef AI_COMPILER
 		friend class CGraphSaver;

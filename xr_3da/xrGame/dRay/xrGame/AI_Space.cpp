@@ -52,29 +52,23 @@ void CAI_Space::load				(LPCSTR level_name)
 		)
 	);
 	
-	CGameGraph::LEVEL_MAP::const_iterator	I = game_graph().header().levels().begin();
-	CGameGraph::LEVEL_MAP::const_iterator	E = game_graph().header().levels().end();
-	for ( ; I != E; ++I)
-		if (!xr_strcmp((*I).second.name(),level_name))
-			break;
-
-	VERIFY2					((I != game_graph().header().levels().end()),"There is no graph for the current level or current level is not included into the game graph!");
+	const CGameGraph::SLevel &current_level = game_graph().header().level(level_name);
 	
 #ifdef DEBUG
-	validate				((*I).second.id());
+	validate				(current_level.id());
 #endif
 
-	level_graph().set_level_id((*I).second.id());
+	level_graph().set_level_id(current_level.id());
 
 	xr_vector<CCoverPoint*>	nearest;
 	if (m_cover_manager->get_covers()) {
 		m_cover_manager->covers().nearest(Fvector().set(0.f,0.f,0.f),100000.f,nearest);
-		{
-			xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
-			xr_vector<CCoverPoint*>::iterator	E = nearest.end();
-			for ( ; I != E; ++I)
-				xr_delete		(*I);
-		}
+		
+		xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
+		xr_vector<CCoverPoint*>::iterator	E = nearest.end();
+		for ( ; I != E; ++I)
+			xr_delete		(*I);
+		
 		m_cover_manager->clear	();
 	}
 	m_cover_manager->compute_static_cover();

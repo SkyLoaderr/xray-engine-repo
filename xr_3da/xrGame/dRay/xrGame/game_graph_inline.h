@@ -139,6 +139,28 @@ IC	const CGameGraph::LEVEL_MAP &CGameGraph::CHeader::levels() const
 	return		(tpLevels);
 }
 
+IC	const CGameGraph::SLevel &CGameGraph::CHeader::level	(const ALife::_LEVEL_ID &id) const
+{
+	LEVEL_MAP::const_iterator	I = levels().find(id);
+	R_ASSERT2	(I != levels().end(),"There is no specified level in the game graph!");
+	return		((*I).second);
+}
+
+IC	const CGameGraph::SLevel &CGameGraph::CHeader::level	(LPCSTR level_name) const
+{
+	LEVEL_MAP::const_iterator	I = levels().begin();
+	LEVEL_MAP::const_iterator	E = levels().end();
+	for ( ; I != E; ++I)
+		if (!xr_strcmp((*I).second.name(),level_name))
+			return	((*I).second);
+	
+	VERIFY3	(false,"There is no specified level in the game graph!",level_name);
+	NODEFAULT;
+#ifdef DEBUG
+	return		(levels().begin()->second);
+#endif
+}
+
 IC	const Fvector &CGameGraph::CVertex::level_point() const
 {
 	return		(tLocalPoint);
