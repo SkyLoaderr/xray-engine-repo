@@ -102,11 +102,11 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 	if (dest)	return;
 	string256	name,temp;
 
-	// test 'WEAPONS' folder
+	// test 'WEAPONS' folder 
 	strconcat	(name,"weapons\\",GetName(),"\\",T);
 	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
 	{
-		dest = Device.Shader.Create(S,name);
+		dest = Device.Shader.Create(S,name); 
 		return;
 	}
 	strconcat	(name,"weapons\\generic\\",T);
@@ -117,13 +117,13 @@ void CWeapon::ShaderCreate	(Shader* &dest, LPCSTR S, LPCSTR T)
 	}
 
 	// test 'UI' folder
-	strconcat	(name,"ui\\hud_wpn_",GetName());
+	strconcat	(name,"ui\\ui_hud_wpn_",GetName());
 	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
 		return;
 	}
-	strcpy		(name,"ui\\hud_wpn_generic");
+	strcpy		(name,"ui\\ui_hud_wpn_generic");
 	if (Engine.FS.Exist(temp,Path.Textures,name,".dds"))	
 	{
 		dest = Device.Shader.Create(S,name);
