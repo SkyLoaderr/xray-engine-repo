@@ -15,6 +15,7 @@ local state_wait_spawn  = 1
 local state_heli_fly    = 2
 local state_heli_attack = 3
 local state_after       = 4
+local state_stay        = 5
 
 local state_init
 
@@ -252,7 +253,7 @@ function update()
 			heli_mgr.not_die = false
 
 			fly_away_time = CTime()
-			fly_away_time:set( 0, 0, 0, 0, 10, 0 )
+			fly_away_time:set( 0, 0, 0, 0, 6, 0 )
 			fly_away_time:add( game.get_game_time() )
 
 			state_init = false
@@ -263,7 +264,7 @@ function update()
 		end
 	end
 
-	if state == state_after then
+	if state == state_stay then
 		if state_init then
 			heli_mgr:send_to_stay_point()
 
