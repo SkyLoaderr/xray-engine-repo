@@ -57,6 +57,8 @@ static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_con
 // Just two static storage
 void					CRender::create					()
 {
+	Device.seqFrame.Add	(this,REG_PRIORITY_HIGH+0x12345678);
+
 	m_skinning			= -1;
 	// hardware
 	o.smapsize			= 2048;
@@ -125,6 +127,7 @@ void					CRender::create					()
 } 
 void					CRender::destroy				()
 {
+	Device.seqFrame.Remove		(this);
 	_RELEASE					(q_sync_point);
 	HWOCC.occq_destroy			();
 	xr_delete					(Models);
@@ -137,6 +140,10 @@ void					CRender::reset_begin			()
 void					CRender::reset_end				()
 {
 	Target			=	xr_new<CRenderTarget>			();
+}
+void					CRender::OnFrame				()
+{
+	Models->DeleteQueue	();
 }
 
 // Implementation
