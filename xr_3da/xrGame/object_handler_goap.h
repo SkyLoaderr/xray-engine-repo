@@ -83,7 +83,9 @@ public:
 	};
 
 protected:
-	typedef CActionPlanner<CAI_Stalker>	inherited;
+	typedef CActionPlanner<CAI_Stalker>				inherited;
+	typedef CGraphEngine::_solver_value_type		_value_type;
+	typedef CGraphEngine::_solver_condition_type	_condition_type;
 
 private:
 	bool						m_aimed1;
@@ -133,20 +135,20 @@ public:
 	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
 	virtual void			OnItemDropUpdate		();
 	IC		bool			firing					() const;
-	IC		u32				uid						(const u32 id1, const u32 id0) const;
-	IC		bool			object_action			(u32 action_id, CObject *object);
+	IC		_condition_type	uid						(const u32 id1, const u32 id0) const;
+	IC		bool			object_action			(_condition_type action_id, CObject *object);
 	IC		u32				current_action_object_id() const;
 	IC		u32				current_action_state_id	() const;
-	IC		u32				action_object_id		(u32 action_id) const;
-	IC		u32				action_state_id			(u32 action_id) const;
+	IC		u32				action_object_id		(_condition_type action_id) const;
+	IC		u32				action_state_id			(_condition_type action_id) const;
 	IC		bool			goal_reached			() const;
 			CInventoryItem	*best_weapon			() const;
 			u32				weapon_state			(const CWeapon *weapon) const;
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
-	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
-	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value);
+	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
+	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
 	IC		void			set_aimed				(u32 type, bool value);
 };
 

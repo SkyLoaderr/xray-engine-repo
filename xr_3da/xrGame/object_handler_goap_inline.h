@@ -15,7 +15,7 @@ IC	bool CObjectHandlerGOAP::firing		() const
 	return					(m_bFiring);
 }
 
-IC	u32 CObjectHandlerGOAP::uid(const u32 id1, const u32 id0) const
+IC	CObjectHandlerGOAP::_condition_type CObjectHandlerGOAP::uid(const u32 id1, const u32 id0) const
 {
 	VERIFY				(!((id0 << 16) & id1));
 	return				((id0 << 16) | id1);
@@ -36,12 +36,12 @@ IC	u32	CObjectHandlerGOAP::current_action_state_id	() const
 	return				(action_state_id(current_action_id()));
 }
 
-IC	u32	CObjectHandlerGOAP::action_object_id		(u32 action_id) const
+IC	u32	CObjectHandlerGOAP::action_object_id		(_condition_type action_id) const
 {
 	return				(action_id & 0xffff);
 }
 
-IC	u32	CObjectHandlerGOAP::action_state_id			(u32 action_id) const
+IC	u32	CObjectHandlerGOAP::action_state_id			(_condition_type action_id) const
 {
 	return				(action_id >> 16);
 }
@@ -51,12 +51,12 @@ IC	bool CObjectHandlerGOAP::goal_reached			() const
 	return				(solution().size() < 2);
 }
 
-IC	void CObjectHandlerGOAP::add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value)
+IC	void CObjectHandlerGOAP::add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value)
 {
 	action->add_condition(CWorldProperty(uid(id,property),value));
 }
 
-IC	void CObjectHandlerGOAP::add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, bool value)
+IC	void CObjectHandlerGOAP::add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value)
 {
 	action->add_effect	(CWorldProperty(uid(id,property),value));
 }
