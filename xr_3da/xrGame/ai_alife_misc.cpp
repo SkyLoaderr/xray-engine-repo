@@ -101,7 +101,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			}
 		}
 		else {
-			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_ucRoutePointCount;
+			int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.size();
 			GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints;
 			int					iBranches		= 0;
 			bool bOk = false;

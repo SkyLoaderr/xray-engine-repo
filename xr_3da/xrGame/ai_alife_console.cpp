@@ -492,7 +492,7 @@ void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 			strcat(S,",");
 		strcat(S,itoa(*I,S1,10));
 	}
-	vfPrintLargeString(S,"RouteGraphPoints",tSpawnPoint.m_ucRoutePointCount,105);
+	vfPrintLargeString(S,"RouteGraphPoints",tSpawnPoint.m_tpRouteGraphPoints.size(),105);
 }
 
 void CAI_ALife::vfGraphVertexInfo(_GRAPH_ID &tGraphID)

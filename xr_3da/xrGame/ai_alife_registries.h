@@ -87,6 +87,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(OBJECT_CHUNK_DATA));
 		tFileStream.Read(&m_tObjectID,sizeof(m_tObjectID));
+		m_tObjectRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
 			CALifeDynamicObject *tpALifeDynamicObject = 0;
@@ -122,7 +123,7 @@ public:
 				default : NODEFAULT;
 			};
 			tpALifeDynamicObject->Load	(tFileStream);
-			m_tObjectRegistry.insert			(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
+			m_tObjectRegistry.insert	(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}
 	};
 
@@ -178,6 +179,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(EVENT_CHUNK_DATA));
 		tFileStream.Read(&m_tEventID,sizeof(m_tEventID));
+		m_tEventRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
 			CALifeEvent				tEvent;
@@ -226,6 +228,7 @@ public:
 	{
 		R_ASSERT(tFileStream.FindChunk(TASK_CHUNK_DATA));
 		tFileStream.Read(&m_tTaskID,sizeof(m_tTaskID));
+		m_tTaskRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
 			CALifeTask				tTask;
