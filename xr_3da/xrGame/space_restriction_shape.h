@@ -21,24 +21,24 @@ public:
 	using CSpaceRestrictionBase::inside;
 
 protected:
-	CSpaceRestrictor	*m_restrictor;
-	bool				m_default;
+	CSpaceRestrictor		*m_restrictor;
+	bool					m_default;
 
 protected:
-	IC			Fvector	position				(const CCF_Shape::shape_def &data) const;
-	IC			float	radius					(const CCF_Shape::shape_def &data) const;
-				void	build_border			();
-				void	fill_shape				(const CCF_Shape::shape_def &shape);
+	IC			Fvector		position				(const CCF_Shape::shape_def &data) const;
+	IC			float		radius					(const CCF_Shape::shape_def &data) const;
+				void		build_border			();
+				void		fill_shape				(const CCF_Shape::shape_def &shape);
 
 public:
-	IC					CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor);
-	IC	virtual void	initialize				();
-		virtual bool	inside					(const Fvector &position, float radius);
+	IC						CSpaceRestrictionShape	(CSpaceRestrictor *space_restrictor, bool default_restrictor);
+	IC	virtual void		initialize				();
+		virtual bool		inside					(const Fvector &position, float radius);
 		virtual shared_str	name					() const;
-	IC	virtual bool	shape					() const;
-	IC	virtual bool	default_restrictor		() const;
+	IC	virtual bool		shape					() const;
+	IC	virtual bool		default_restrictor		() const;
 #ifdef DEBUG
-				void	test_correctness		();
+				void		test_correctness		();
 #endif
 };
 
