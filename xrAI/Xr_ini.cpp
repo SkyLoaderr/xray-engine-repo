@@ -263,36 +263,20 @@ CInifile::Sect& CInifile::r_section( LPCSTR S )
 {
 	char	section[256]; strcpy(section,S); strlwr(section);
 	RootIt I = std::lower_bound(DATA.begin(),DATA.end(),section,sect_pred);
-#ifdef ENGINE_BUILD
-	if (I!=DATA.end() && strcmp(*I->Name,section)==0)	return *I;
-	else												{ Debug.fatal("Can't open section '%s'",S); return Test; }
-#else
-#ifdef _EDITOR
-	if (I!=DATA.end() && strcmp(*I->Name,section)==0)	return *I;
-	else												Debug.fatal("Can't open section '%s'",S);
-#else
-	R_ASSERT(I!=DATA.end() && strcmp(*I->Name,section)==0);
-	return *I;
-#endif
-#endif
+	if (!(I!=DATA.end() && strcmp(*I->Name,section)==0))	Debug.fatal("Can't open section '%s'",S);
+	return	*I;
 }
 
 LPCSTR	CInifile::r_string(LPCSTR S, LPCSTR L )
 {
-#pragma todo("std::lower_bound is INEFFICIENT here")
 	Sect&	I = r_section(S);
 	SectIt	A = std::lower_bound(I.begin(),I.end(),L,item_pred);
-#ifdef ENGINE_BUILD
-	if (A!=I.end() && strcmp(A->first,L)==0)	return A->second;
-	else										{ Debug.fatal("Can't find variable '%s'",L); return 0; }
-#else
 #ifdef _EDITOR
 	if (A!=I.end() && strcmp(*A->first,L)==0)	return *A->second;
 	else										Debug.fatal("Can't find variable '%s'",L);
 #else
 	R_ASSERT(A!=I.end() && strcmp(*A->first,L)==0);
 	return *A->second;
-#endif
 #endif
 }
 u8 CInifile::r_u8(LPCSTR S, LPCSTR L)
