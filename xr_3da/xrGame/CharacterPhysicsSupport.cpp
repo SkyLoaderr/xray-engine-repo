@@ -3,6 +3,10 @@
 #include "PHMovementControl.h"
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
+CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
+{
+	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
+}
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
 : m_PhysicMovementControl(*aentity->PMovement()), 
   m_pPhysicsShell(aentity->PPhysicsShell()),
@@ -26,6 +30,8 @@ m_eState=esAlive;
 b_death_anim_on					= false;
 m_pPhysicsShell					= NULL;
 m_saved_impulse					= 0.f;
+m_physics_skeleton				= NULL;
+b_skeleton_in_shell				= false;
 };
 
 void CCharacterPhysicsSupport::Activate()
@@ -66,16 +72,28 @@ void CCharacterPhysicsSupport::in_NetSpawn()
 	m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
 	
 #endif
+	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
 	m_PhysicMovementControl.DestroyCharacter();
-	if(m_pPhysicsShell)	
+	if((!b_skeleton_in_shell||m_pPhysicsShell)&&m_physics_skeleton)
 	{
-		m_pPhysicsShell->Deactivate();
-		m_pPhysicsShell->ZeroCallbacks();
+			m_physics_skeleton->Deactivate();
+			xr_delete(m_physics_skeleton);
+			b_skeleton_in_shell=false;
 	}
-	xr_delete				(m_pPhysicsShell);
+
+	//if(m_pPhysicsShell)	
+	//{
+	//	//m_pPhysicsShell->Deactivate();
+	//	//m_pPhysicsShell->ZeroCallbacks();
+	//	m_pPhysicsShell=0;
+	//	b_skeleton_in_shell=false;
+
+	//}
+	
+	//xr_delete				(m_pPhysicsShell);
 }
 
 void CCharacterPhysicsSupport::in_Init()
@@ -124,7 +142,9 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 	{
 
 		//Log("mem use %d",Memory.mem_usage());
-		CreateSkeleton();
+
+		ActivateShell();
+		//CreateSkeleton();
 		//Log("mem use %d",Memory.mem_usage());
 #ifndef NO_PHYSICS_IN_AI_MOVE
 
@@ -134,8 +154,9 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
 	}
 }
 
-void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse)
+void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse,bool is_killing)
 {
+	if(!m_pPhysicsShell&&is_killing)ActivateShell();
 	if(!(m_pPhysicsShell&&m_pPhysicsShell->bActive))
 	{
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
@@ -143,11 +164,13 @@ void CCharacterPhysicsSupport::in_Hit(float /**P/**/, Fvector &dir, CObject * /*
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
 #ifndef NO_PHYSICS_IN_AI_MOVE
-		m_PhysicMovementControl.ApplyImpulse(dir,impulse);
+		if(!is_killing&&m_EntityAlife.g_Alive())
+			m_PhysicMovementControl.ApplyImpulse(dir,impulse);
 #endif
+
 	}
 	else {
-		if (!m_EntityAlife.g_Alive()) {
+		{//if (!m_EntityAlife.g_Alive()) 
 			if(m_pPhysicsShell&&m_pPhysicsShell->bActive) 
 				m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 			//m_pPhysicsShell->applyImpulseTrace(position_in_bone_space,dir,impulse);
@@ -171,6 +194,29 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 	}
 }
 
+void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
+{
+
+	R_ASSERT2(!pShell,"pShell already initialized!!");
+	if (!m_EntityAlife.Visual())
+		return;
+	pShell		= P_create_Shell();
+	pShell->preBuild_FromKinematics(PKinematics(m_EntityAlife.Visual()));
+	pShell->mXFORM.set(mXFORM);
+	pShell->SetAirResistance(0.002f*skel_airr_lin_factor,
+		0.3f*skel_airr_ang_factor);
+	pShell->SmoothElementsInertia(0.3f);
+
+	pShell->set_PhysicsRefObject(&m_EntityAlife);
+	if(m_eType==etStalker)
+	{
+	CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
+	R_ASSERT2(ini,"NO INI FILE IN MODEL");
+	pShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
+	}
+	pShell->Build();
+
+}
 void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
@@ -194,13 +240,31 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 	m_pPhysicsShell->set_PhysicsRefObject(&m_EntityAlife);
 	if(m_eType==etStalker)
 	{
-	CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
-	R_ASSERT2(ini,"NO INI FILE IN MODEL");
-	m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
+		CInifile* ini = PKinematics(m_EntityAlife.Visual())->LL_UserData();
+		R_ASSERT2(ini,"NO INI FILE IN MODEL");
+		m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
 	}
 	m_pPhysicsShell->Activate(true);
 
 	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;
 	m_eState=esDead;
+}
+void CCharacterPhysicsSupport::ActivateShell()
+{
+	if(m_pPhysicsShell) return;
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
+	m_PhysicMovementControl.DestroyCharacter();
+#endif
+	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
+
+	m_pPhysicsShell=m_physics_skeleton;
+	m_pPhysicsShell->RunSimulation();
+	m_pPhysicsShell->mXFORM.set(mXFORM);
+	m_pPhysicsShell->SetCallbacks();
+	PKinematics(m_EntityAlife.Visual())->Calculate();
+	b_death_anim_on=false;
+	m_eState=esDead;
+	b_skeleton_in_shell=true;
 }

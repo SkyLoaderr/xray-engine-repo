@@ -81,6 +81,8 @@ virtual ~CPHShell				()
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false){};
+	virtual	void			Build					(bool place_current_forms=true,bool disable=false);
+	virtual	void			RunSimulation			(bool place_current_forms=true);
 			void			PresetActive			();
 			void			AfterSetActive			();
 			void			PureActivate			();
@@ -145,8 +147,10 @@ virtual ~CPHShell				()
 	virtual void				InitContact					(dContact* c){};
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
+	virtual void				preBuild_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map);
 	virtual void                ZeroCallbacks				();
 	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
+	virtual void				SetCallbacks				();
 	virtual void				set_DisableParams			(float dis_l=default_disl,float dis_w=default_disw);
 	virtual void				UpdateRoot					();
 	virtual void				SmoothElementsInertia		(float k);
@@ -184,6 +188,7 @@ private:
 	/////////////////////////////////////////
 	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
 	void ZeroCallbacksRecursive(u16 id);
+	void SetCallbacksRecursive(u16 id,u16 element);
 	void ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask);
 	void SetJointRootGeom(CPhysicsElement* root_e,CPhysicsJoint* J);
 

@@ -826,6 +826,47 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 
 
 }
+void CPHElement::build(bool disable){
+
+	if(bActive) return;
+	bActive=true;
+	bActivating=true;
+
+	build();
+	//	if(place_current_forms)
+	{
+	
+		SetTransform(mXFORM);
+	}
+
+	//////////////////////////////////////////////////////////////
+	//initializing values for disabling//////////////////////////
+	//////////////////////////////////////////////////////////////
+
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
+	//previous_f[0]=dInfinity;
+	if(disable) dBodyDisable(m_body);
+
+
+}
+
+void CPHElement::RunSimulation(const Fmatrix& start_from)
+{
+
+	RunSimulation();
+	//	if(place_current_forms)
+	{
+		Fmatrix globe;
+		globe.mul(start_from,mXFORM);
+		SetTransform(globe);
+	}
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+}
 
 void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 	if(bActive) return;

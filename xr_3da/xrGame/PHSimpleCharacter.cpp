@@ -345,6 +345,20 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	dBodySetAngularVel(m_body,0.f,0.f,0.f);
 	dBodySetRotation(m_body,R);
 
+	dMass mass;
+	const float		*linear_velocity		=dBodyGetLinearVel(m_body);
+	dReal			linear_velocity_mag		=_sqrt(dDOT(linear_velocity,linear_velocity));
+	dBodyGetMass(m_body,&mass);
+	dReal l_air=linear_velocity_mag*default_k_l;//force/velocity !!!
+	if(l_air>mass.mass/fixed_step) l_air=mass.mass/fixed_step;//validate
+
+	if(!fis_zero(l_air))
+		dBodyAddForce(
+		m_body,
+		-linear_velocity[0]*l_air,
+		-linear_velocity[1]*l_air,
+		-linear_velocity[2]*l_air
+		);
 
 	m_body_interpolation.UpdatePositions();
 }

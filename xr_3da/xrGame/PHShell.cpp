@@ -145,6 +145,50 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 	bActive=true;
 	bActivating=true;
 }
+
+
+void CPHShell::Build(bool place_current_forms/*true*/,bool disable/*false*/)
+{
+	if(bActive)
+		return;
+	bActive=true;
+	bActivating=true;
+	if(!m_space)
+	{
+		m_space=dSimpleSpaceCreate(0);
+		dSpaceSetCleanup(m_space,0);
+	}
+
+	{		
+		ELEMENT_I i=elements.begin(),e=elements.end();
+		if(place_current_forms) for(;i!=e;++i)
+		{
+			(*i)->build(disable);
+		}
+	}
+
+	{
+		JOINT_I i=joints.begin(),e=joints.end();
+		for(;i!=e;++i) (*i)->Activate();
+	}	
+
+}
+
+void CPHShell::RunSimulation(bool place_current_forms/*true*/)
+{
+
+	CPHObject::Activate();
+	dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
+	dSpaceSetCleanup(m_space,0);
+	{		
+		ELEMENT_I i=elements.begin(),e=elements.end();
+		if(place_current_forms) for(;i!=e;++i)(*i)->RunSimulation(mXFORM);
+	}
+
+	if(m_spliter_holder)m_spliter_holder->Activate();
+
+}
+
 void CPHShell::AfterSetActive()
 {
 	if(bActive)	return;
@@ -188,7 +232,8 @@ void CPHShell::Deactivate(){
 	for(j=joints.begin();joints.end() != j;++j)
 		(*j)->Deactivate();
 
-	CPHObject::Deactivate();
+	if(!bActivating)CPHObject::Deactivate();
+
 	if(m_space) {
 		dSpaceDestroy(m_space);
 		m_space=NULL;
@@ -435,13 +480,24 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
+	SetCallbacks();
+	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
+}
+
+void CPHShell::preBuild_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
+{
+	m_pKinematics			=K;
+	spGetingMap				=p_geting_map;
+	//CBoneData& bone_data	= m_pKinematics->LL_GetData(0);
+	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
 
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)
 {
 
-	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
+	//CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	SJointIKData& joint_data=bone_data.IK_data;
 	Fmatrix fm_position;
@@ -498,8 +554,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 				root_e->add_Mass(bone_data.shape,vs_root_position,bone_data.center_of_mass,bone_data.mass);
 			}
 	
-			B.Callback_Param=root_e;
-			B.Callback=NULL;
+			//B.Callback_Param=root_e;
+			//B.Callback=NULL;
 		
 		}
 		else										//
@@ -511,7 +567,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 			//Fvector mc;
 			//fm_position.transform_tiny(mc,bone_data.center_of_mass);
 			E->set_ParentElement(root_e);
-			B.set_callback(BonesCallback1,E);
+			///B.set_callback(BonesCallback1,E);
 			E->add_Shape(bone_data.shape);
 			E->setMassMC(bone_data.mass,bone_data.center_of_mass);
 			element_number=u16(elements.size());
@@ -717,7 +773,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 	}
 	else
 	{	
-		B.set_callback(0,root_e);
+	//	B.set_callback(0,root_e);
 		E=root_e;
 	}
 	
@@ -817,7 +873,44 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		ResetCallbacksRecursive((*it)->SelfID,element,mask);
 }
 
-  
+static u16 element_position_in_set_calbacks=u16(-1);
+
+void CPHShell::SetCallbacks()
+{
+	element_position_in_set_calbacks=u16(-1);
+	SetCallbacksRecursive(m_pKinematics->LL_GetBoneRoot(),element_position_in_set_calbacks);
+}
+
+void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
+{
+
+	//if(elements.size()==element)	return;
+	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
+	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
+	SJointIKData& joint_data=bone_data.IK_data;
+
+	if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1))
+	{
+
+		B.set_callback(0,dynamic_cast<CPhysicsElement*>(elements[element]));
+	}
+	else
+	{
+
+		element_position_in_set_calbacks++;
+		element=element_position_in_set_calbacks;
+		R_ASSERT2(element<elements.size(),"Out of elements!!");
+		//if(elements.size()==element)	return;
+		CPhysicsElement* E=dynamic_cast<CPhysicsElement*>(elements[element]);
+		B.set_callback(BonesCallback1,E);
+		
+		//B.Callback_overwrite=TRUE;
+	}
+
+	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
+		SetCallbacksRecursive((*it)->SelfID,element);
+}
+
 void CPHShell::ZeroCallbacks()
 {
 ZeroCallbacksRecursive(m_pKinematics->LL_GetBoneRoot());

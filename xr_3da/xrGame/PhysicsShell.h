@@ -217,9 +217,13 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual CPhysicsElement*	get_ElementByStoreOrder (u16 num)											= 0;
 	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	virtual void				preBuild_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	virtual	void				Build					(bool place_current_forms=true,bool disable=false)	= 0;
+	virtual	void				RunSimulation			(bool place_current_forms=true)						= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;
 	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)								= 0;
+	virtual void				SetCallbacks			()													= 0;
 	virtual Fmatrix&			ObjectInRoot			()													= 0;
 	virtual						~CPhysicsShell		    (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;

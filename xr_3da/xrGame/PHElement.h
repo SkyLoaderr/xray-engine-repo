@@ -143,12 +143,14 @@ public:
 	
 	
 	void			build									();																				//aux
+	void			build									(bool disable);																				//aux
 	void			destroy									();																				//called anywhere ph state influent
 	Fvector			get_mc_data								();																				//aux
 	Fvector			get_mc_geoms							();																				//aux
 	void			calc_volume_data						();																				//aux
 	void			Start									();																				//aux
-	void			RunSimulation							();																				//called anywhere ph state influent
+	void			RunSimulation							();																			//called anywhere ph state influent
+	void			RunSimulation							(const Fmatrix& start_from);
 	IC CPHFracturesHolder* FracturesHolder					(){return m_fratures_holder;}													//aux
 
 	float			get_volume								()	{calc_volume_data();return m_volume;};										//aux
