@@ -707,12 +707,15 @@ function Projector:process ()
 	if self.first_call == true then
 	   self.projector:script (true, self.script)
 	   self.first_call = false
-	   if self.target ~= nil then action (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
-  	   else action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end)) end
+	   if self.target ~= nil then 
+	   	  action (self.projector, look (self.target, self.speedh, self.speedv), cond (cond.time_end, time_infinite))
+  	   else 
+  	      action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end)) 
+  	   end
 	   return	
     end	
 
-	if self.target_set == true
+	if self.target_set == true then
 	   if self.target == nil then 
 	   	  self.target_set = false	
 	   	  reset_action (self.projector, self.script)
