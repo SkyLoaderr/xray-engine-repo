@@ -89,7 +89,7 @@ void CRenderTarget::Begin	()
 
 void CRenderTarget::End		(float blur)
 {
-	R_CHK		(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
+	R_CHK			(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
