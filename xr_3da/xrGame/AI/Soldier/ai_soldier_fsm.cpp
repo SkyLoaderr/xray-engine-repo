@@ -1068,7 +1068,7 @@ void CAI_Soldier::OnPatrol()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
-	/**
+	/**/
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
@@ -1169,27 +1169,35 @@ void CAI_Soldier::OnSenseSomethingAlone()
 	if (iSoundIndex >= 0) {
 		m_iSoundIndex = iSoundIndex;
 		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
-			Fvector tCurrentPosition = vPosition;
-			tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
-			if (tWatchDirection.magnitude() > EPS_L) {
-				tWatchDirection.normalize();
-				mk_rotation(tWatchDirection,r_torso_target);
-				r_target.yaw = r_torso_target.yaw;
-				ASSIGN_SPINE_BONE;
-			}
-			
-			CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
-
-			vfInitSelector(SelectorPatrol,Squad,Leader);
-	
-			SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-
-			if (AI_Path.bNeedRebuild) {
-				vfBuildPathToDestinationPoint(0);
+			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);				
+				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+				GO_TO_NEW_STATE(aiSoldierPatrolHurt);
 			}
 			else {
-				//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-				vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+				Fvector tCurrentPosition = vPosition;
+				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
+				if (tWatchDirection.magnitude() > EPS_L) {
+					tWatchDirection.normalize();
+					mk_rotation(tWatchDirection,r_torso_target);
+					r_target.yaw = r_torso_target.yaw;
+					ASSIGN_SPINE_BONE;
+				}
+				
+				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+
+				vfInitSelector(SelectorPatrol,Squad,Leader);
+		
+				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+
+				if (AI_Path.bNeedRebuild) {
+					vfBuildPathToDestinationPoint(0);
+				}
+				else {
+					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+				}
 			}
 		}
 		else {
@@ -1478,7 +1486,7 @@ void CAI_Soldier::OnPatrolHurt()
 	if (fDistance < DISTANCE_NEAR)
 		CHECK_IF_SWITCH_TO_NEW_STATE(!m_bStateChanged,aiSoldierAttackAim);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
+	CHECK_IF_GO_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
 
 	//dwHitTime = 0;
 	GO_TO_NEW_STATE(aiSoldierHurtAloneDefend);
@@ -1534,6 +1542,10 @@ void CAI_Soldier::OnHurtAloneDefend()
 			else
 				vfSetMovementType(m_cBodyState,m_fMinSpeed);
 
+			if (dwCurTime - dwHitTime > 45000) {
+				GO_TO_PREV_STATE;
+			}
+
 			break;
 		}
 		case BODY_STATE_CROUCH : {
@@ -1569,7 +1581,7 @@ void CAI_Soldier::OnHurtAloneDefend()
 				else
 					vfSearchForBetterPositionWTime(SelectorUnderFireCover,Squad,Leader);
 					
-				if ((dwCurTime - dwHitTime > 15000) && (m_cBodyState != BODY_STATE_STAND)) {
+				if ((dwCurTime - dwHitTime > 12000) && (m_cBodyState != BODY_STATE_STAND)) {
 					StandUp();
 					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
 					vfSetMovementType(m_cBodyState,0);
