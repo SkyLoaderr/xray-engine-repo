@@ -64,9 +64,9 @@ void CAI_Stalker::init()
 void CAI_Stalker::reinit			()
 {
 	CSSetupManager::reinit			(this);
-	CCustomMonster::reinit			();
 	CObjectHandler::reinit			(this);
 	CSightManager::reinit			(this);
+	CCustomMonster::reinit			();
 	animation_manager().reinit		();
 	CStalkerMovementManager::reinit	();
 	CStepManager::reinit			();
