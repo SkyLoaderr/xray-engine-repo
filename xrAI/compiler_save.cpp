@@ -73,26 +73,36 @@ void xrSaveNodes(LPCSTR N)
 	Status("Saving header...");
 	hdrNODES	H;
 	H.version	= XRAI_CURRENT_VERSION;
-	H.count		= g_merged.size();
+	H.count		= g_merged.size()+1;
 	H.size		= g_params.fPatchSize;
 	H.size_y	= CalculateHeight(H.aabb);
 	fs.write	(&H,sizeof(H));
+
+	// Dummy node
+	NodeCompressed	NC;
+	ZeroMemory		(&NC,sizeof(NC));
+	fs.write		(&NC,sizeof(NC));
 
 	// All nodes
 	Status("Saving nodes...");
 	for (DWORD i=0; i<g_merged.size(); i++)
 	{
-		// write node itself
 		NodeMerged&		N	= g_merged[i];
-		NodeCompressed	NC;
+
+		// Calculate non-zero members
+		int		cnt		= 0;
+		for		(DWORD L=0; L<N.neighbours.size(); L++)	if (N.neighbours[L]) cnt++;
+
+		// write node itself
 		Compress		(NC,N,H);
+		NC.links		= cnt;
 		fs.write		(&NC,sizeof(NC));
 
 		// write links
-		for (DWORD L=0; L<N.neighbours.size(); L++)
+		for (L=0; L<N.neighbours.size(); L++)
 		{
-			DWORD		L_id = N.neighbours[L];
-			fs.write	(&L_id,3);
+			DWORD		L_id		= N.neighbours[L];
+			if (L_id)	{ L_id++; fs.write	(&L_id,3); }
 		}
 		Progress(float(i)/float(g_merged.size()));
 	}
