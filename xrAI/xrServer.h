@@ -56,6 +56,9 @@ public:
 	
 	IC u16					PerformIDgen			(u16 ID)
 	{
+#ifdef DEBUG
+		Msg					("[ID_NEW] %d",ID);
+#endif
 		return				(m_tID_Generator.tfGetID(ID));
 	}
 

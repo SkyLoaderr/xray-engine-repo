@@ -111,6 +111,19 @@ public:
 
 		if (!l_tID_Block.m_tCount)
 			m_tpTimeMap.insert	(std::make_pair(tTimeID,l_tBlockID));
+		else {
+			bool				bOk = false;
+			TIME_BLOCK_PAIR_IT	I = m_tpTimeMap.find(l_tID_Block.m_tTimeID);
+			TIME_BLOCK_PAIR_IT	E = m_tpTimeMap.end();
+			for ( ; I != E; I++)
+				if ((*I).second == l_tBlockID) {
+					m_tpTimeMap.erase	(I);
+					m_tpTimeMap.insert	(std::make_pair(tTimeID,l_tBlockID));
+					bOk					= true;
+					break;
+				}
+			VERIFY				(bOk);
+		}
 
 		l_tID_Block.m_tpIDs		[l_tID_Block.m_tCount++] = TYPE_ID((tValueID - tMinValue)%tBlockSize);
 		l_tID_Block.m_tTimeID	= tTimeID;

@@ -162,6 +162,9 @@ CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 {
 	R_ASSERT					(P);
+#ifdef DEBUG
+	Msg							("[ID_FREE] %d",P->ID);
+#endif
 	m_tID_Generator.vfFreeID	(P->ID,Device.TimerAsync());
 	if (!P->m_bALifeControl)
 		F_entity_Destroy		(P);
