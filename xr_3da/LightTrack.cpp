@@ -50,7 +50,9 @@ void	CLightDB_Static::Track	(CObject* O)
 
 	// Prepare
 	if					(0==O)							return;
-	CLightTrack& dest	= *((CLightTrack*)O->ROS());
+	CLightTrack* pROS	= dynamic_cast<CLightTrack*>(O->ROS());
+	R_ASSERT			(pROS);
+	CLightTrack& dest	= *pROS;
 	if					(dest.dwFrame==Device.dwFrame)	return;
 	dest.dwFrame		= Device.dwFrame;
 	O->clCenter			(pos);

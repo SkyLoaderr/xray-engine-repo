@@ -16,6 +16,7 @@ struct	ENGINE_API NodeCompressed;
 //-----------------------------------------------------------------------------------------------------------
 //	CObject
 //-----------------------------------------------------------------------------------------------------------
+#pragma pack(push,4)
 class	ENGINE_API						CObject :	
 	public CEventBase,
 	public CSheduled,
@@ -178,5 +179,6 @@ public:
 
 	virtual void						ForceTransform		(const Fmatrix& m)	{};
 };
+#pragma pack(pop)
 
 #endif //__XR_OBJECT_H__
