@@ -1,8 +1,10 @@
 #pragma once
 
 #include "xrLevel.h"
-#include "ai_a_star_search.h"
+//#include "ai_a_star_search.h"
 #include "AIMapExport.h"
+
+#define MAX_VALUE				1000000.0
 
 #define EPS_H				0.5f
 
@@ -74,7 +76,7 @@ public:
 
 	IC	NodeCompressed*		Node(u32 ID) const { return vfs?m_nodes_ptr[ID]:NULL; }
 
-	IC	u32		UnpackLink		(NodeLink& L)  const {	return (*LPDWORD(&L))&0x00ffffff;	}
+	IC	u32		UnpackLink		(const NodeLink &L)  const {	return (*LPDWORD(&L))&0x00ffffff;	}
 
 	IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc) const
 	{
@@ -624,5 +626,22 @@ public:
 			for ( ; I!=E; I++)	
 				tpaMask[*I] = false;
 		}
+	}
+
+	typedef	const NodeLink* const_iterator;
+	
+	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end) const
+	{
+		end						= (begin = (const_iterator)((BYTE *)Node(node_index) + sizeof(NodeCompressed))) + Node(node_index)->links;
+	}
+
+	IC		float		get_edge_weight	(const u32 node_index1, const u32 node_index2) const
+	{
+		return					(ffGetDistanceBetweenNodeCenters(node_index1,node_index2));
+	}
+
+	IC		u32			get_value		(const_iterator &i) const
+	{
+		return					(UnpackLink(*i));
 	}
 };

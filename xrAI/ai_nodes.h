@@ -13,6 +13,7 @@
 
 #include "xrGraph.h"
 #include "ai_map.h"
+#include "ai_a_star_search.h"
 
 
 class CNodeThread : public CThread

@@ -1,7 +1,15 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: a_star.h
+//	Created 	: 21.03.2002
+//  Modified 	: 18.10.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Implementation of the A* (a-star) algorithm
+////////////////////////////////////////////////////////////////////////////
+
 #pragma once
 
-template <typename _DataStorage, typename _PathManager, typename _Graph, bool bEuclidianHeuristics = true> class CAStar {
-	typedef _DataStorage::CGraphNode CGraphNode;
+template <typename _DataStorage, typename _PathManager, typename _Graph, typename _iteration_type = u32, typename _dist_type = float> class CAStar {
+//	typedef _DataStorage::SGraphNode CGraphNode;
 public:
 						CAStar			()
 	{
@@ -16,27 +24,27 @@ public:
 		// initialize data structures before we started path search
 		data_storage.init		();
 		// add start node to the opened list
-		CGraphNode				&start = data_storage.add_opened(path_controller.start_node());
-		start.g()				= dist_type(0);
-		start.h()				= path_manager.estimate(start);
+		_DataStorage::SGraphNode	&start = data_storage.add_opened(path_manager.start_node());
+		start.g()				= _dist_type(0);
+		start.h()				= path_manager.estimate(start.index());
 		start.f()				= start.g() + start.h();
 	}
 
 	IC		bool		step			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
 	{
 		// get the best node, i.e. a node with the minimum 'f'
-		CGraphNode				&best = data_storage.get_best();
+		_DataStorage::SGraphNode	&best = data_storage.get_best();
 
 		// check if this node is the one we are searching for
-		if (path_manager.is_goal_reached(best)) {
+		if (path_manager.is_goal_reached(best.index())) {
 			// we reached the goal, so we have to create a path
-			path_manager.create_path	(best);
+			path_manager.create_path	(best.index());
 			// and return success
 			return				(true);
 		}
 
 		// put best node to the closed list
-		data_storage.add_closed	(best);
+		data_storage.add_closed	();
 		// and remove this node from the opened one
 		data_storage.remove_best();
 
@@ -45,20 +53,23 @@ public:
 		_Graph::const_iterator	e;
 		graph.begin				(best.index(),i,e);
 		for (  ; i != e; ++i) {
+			// check if neighbour is accessible
+			if (!path_manager.is_accessible(graph.get_value(i)))
+				continue;
 			// check if neighbour is visited, i.e. is in the opened or 
 			// closed lists
-			if (data_storage.is_visited(*i)) {
+			if (data_storage.is_visited(graph.get_value(i))) {
 				// so, this neighbour node has been already visited
 				// therefore get the pointer to this node
-				CGraphNode		&neighbour	= data_storage.get_node(*i);
+				_DataStorage::SGraphNode	&neighbour	= data_storage.get_node(graph.get_value(i));
 				// check if this node is in the opened list
 				if (data_storage.is_opened(neighbour)) {
-					dist_type	g = best.g() + path_manager.evaluate(best.index(),*i)
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
 					if (neighbour.g() > g) {
 						neighbour.g()	= g;
 						neighbour.f()	= neighbour.g() + neighbour.h();
 						data_storage.assign_parent	(neighbour,best);
-						data_storage.decrease_opened(neighbour)
+						data_storage.decrease_opened(neighbour);
 						continue;
 					}
 					continue;
@@ -73,13 +84,13 @@ public:
 				// impossible that we can find a better path for a node 
 				// which is in the closed list and therefore we have to do
 				// nothing here. 
-				if (!bEuclidianHeuristics) {
+				if (!path_manager.is_metric_euclidian()) {
 					// so, we use a heurictics which doesn't gurantee that 
 					// found path is the best, then we have to update all 
 					// of the our node successors but we still can't be sure 
 					// that when the condition 'is_goal_reached' is true, 
 					// then we found the _best_ path
-					dist_type	g = best.g() + path_manager.evaluate(best.index(),*i)
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
 					if (neighbour.g() > g) {
 						neighbour.g()	= g;
 						neighbour.f()	= neighbour.g() + neighbour.h();
@@ -94,28 +105,30 @@ public:
 			else {
 				// so, this neighbour node is not in the opened or closed lists
 				// put neighbour node to the opened list
-				CGraphNode				&neighbour = data_storage.add_opened(*i);
+				_DataStorage::SGraphNode	&neighbour = data_storage.add_opened(graph.get_value(i));
 				// assign best node as its parent
 				data_storage.assign_parent(neighbour,best);
 				// fill the corresponding node parameters 
-				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),*i);
-				neighbour.h()			= path_manager.estimate(neighbour);
-				neighbour.f()			= start.g() + start.h();
+				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
+				neighbour.h()			= path_manager.estimate(neighbour.index());
+				neighbour.f()			= neighbour.g() + neighbour.h();
 				continue;
 			}
 		}
 
 		// this iteration haven't got the goal node, therefore return failure
-		return					(false)
+		return					(false);
 	}
 
 	IC		bool		find			(_DataStorage &data_storage, _PathManager &path_manager, const _Graph &graph)
 	{
+		
+
 		init					(data_storage, path_manager, graph);
 		
-		while (!data_storage.is_opened_empty()) {
+		for (_iteration_type i = _iteration_type(0); !data_storage.is_opened_empty(); ++i) {
 			
-			if (path_manager.is_limit_reached())
+			if (path_manager.is_limit_reached(i))
 				return			(false);
 			
 			if (step(data_storage, path_manager, graph))

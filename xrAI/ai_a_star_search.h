@@ -8,8 +8,6 @@
 
 #pragma once
 
-#define MAX_VALUE				1000000.0
-
 class CAI_Map;
 
 typedef struct tagSAIMapData {

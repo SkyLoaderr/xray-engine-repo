@@ -484,10 +484,10 @@
 						RelativePath=".\graph.h">
 					</File>
 					<File
-						RelativePath=".\path_controller.h">
+						RelativePath=".\path_machine.h">
 					</File>
 					<File
-						RelativePath=".\path_machine.h">
+						RelativePath=".\path_manager.h">
 					</File>
 					<File
 						RelativePath=".\path_test.cpp">
