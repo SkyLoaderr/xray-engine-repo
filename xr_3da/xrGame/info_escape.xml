@@ -19,7 +19,7 @@
     
 	<info_portion id="escape_need_blockpost_case">
         <location>
-            <level>l01_escape</level>
+            <level></level>
             <object>000</object>
 			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>Украсть ящик с блокпоста</text>
@@ -65,7 +65,7 @@
             <text>Предполагаемое место артефакта.</text>
         </location>
         <location>
-            <level>l01_escape</level>
+            <level></level>
             <object>002</object>            
 			<icon name="Артефакт" x="1" y="5" width="0" height="0" r="238" g="155" b="23" marker="1"></icon>
 			<text>Возьмите артефакт.</text>
