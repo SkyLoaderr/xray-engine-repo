@@ -3,29 +3,34 @@
 function main ()
 
     local monsters = {
+                      get_level_object ("m_dog_e0000"),   
                       get_level_object ("m_dog_e0001"),   
+                      get_level_object ("m_dog_e0002"),   
                       get_level_object ("m_dog_e0003"),   
-                      get_level_object ("m_dog_e0007"),   
+                      get_level_object ("m_dog_e0009"),   
+                      get_level_object ("m_dog_e0010"),   
+                      get_level_object ("m_dog_e0011"),   
                       get_level_object ("m_dog_e0012"),   
-                      get_level_object ("m_dog_e0017"),   
+                      get_level_object ("m_dog_e0013"),   
+                      get_level_object ("m_dog_e0014"),   
+                      get_level_object ("m_dog_e0015"),   
+                      get_level_object ("m_dog_e0016"),   
+                      get_level_object ("m_dog_e0018"),   
                       get_level_object ("m_dog_e0019"),   
+                      get_level_object ("m_dog_e0020"),   
                       get_level_object ("m_dog_e0021"),   
-                      get_level_object ("m_dog_e0023"),   
-                      get_level_object ("m_dog_e0027"),   
-                      get_level_object ("m_dog_e0031"),   
-                      get_level_object ("m_dog_e0035"),   
-                      get_level_object ("m_dog_e0040"),   
                       get_level_object ("m_pseudodog_e0000"),   
                       get_level_object ("m_pseudodog_e0001"),   
                       get_level_object ("m_pseudodog_e0002"),   
                       get_level_object ("m_pseudodog_e0003"),   
                       get_level_object ("m_pseudodog_e0004"),   
                       get_level_object ("m_pseudodog_e0005"),   
+                      get_level_object ("m_pseudodog_e0006"),   
+                      get_level_object ("m_pseudodog_e0007"),   
                       get_level_object ("m_boar_e0000"),   
                       get_level_object ("m_boar_e0001"),   
                       get_level_object ("m_boar_e0002"),   
-                      get_level_object ("m_boar_e0003"),   
-                      get_level_object ("m_boar_e0004")   
+                      get_level_object ("m_boar_e0003")   
                       }
                       
     local actor = get_actor ()                      
