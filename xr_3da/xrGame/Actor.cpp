@@ -178,8 +178,10 @@ CActor::CActor() : CEntityAlive()
 
 	m_anims = xr_new<SActorMotions>();
 	m_vehicle_anims = xr_new<SActorVehicleAnims>();
-	m_entity_condition = NULL;
-	m_material_manager = 0;
+	m_entity_condition		= NULL;
+	m_material_manager		= 0;
+	m_pLastHitter			= NULL;
+	m_pLastHittingWeapon	= NULL;
 }
 
 
