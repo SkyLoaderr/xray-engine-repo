@@ -21,7 +21,7 @@ class "evaluator_wound" (property_evaluator)
 function evaluator_wound:__init (name, storage) super ()
     self.a = storage
 end
-------------------------------------------------------------------------------------------
+------------
 function evaluator_wound:evaluate ()
     if self.a.ignore_time ~= 0 then
        if device ():time_global () - self.a.ignore_time > 60000 then
