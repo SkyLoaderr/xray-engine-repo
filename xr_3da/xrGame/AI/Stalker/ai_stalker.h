@@ -13,7 +13,7 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 
-class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
+class CAI_Stalker : public CCustomMonster, public CStalkerAnimations, public CInventoryOwner {
 private:
 	typedef CCustomMonster inherited;
 	
@@ -102,7 +102,7 @@ private:
 	u32						m_dwLostEnemyTime;
 	NodeCompressed*			m_tpSavedEnemyNode;
 	u32						m_dwSavedEnemyNodeID;
-	CWeapon*				m_tpWeaponToTake;
+	CInventoryItem*			m_tpItemToTake;
 	// pursuiting
 	int						m_iCurrentSuspiciousNodeIndex;
 	SuspiciousPoints		m_tpaSuspiciousPoints;
@@ -241,8 +241,8 @@ private:
 			void			SetLessCoverLook				(NodeCompressed *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void			vfValidateAngleDependency		(float x1, float &x2, float x3);
 			// movement and look
-			void			vfSetMovementType				(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
-			void			vfSetMovementType				(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
+			void			vfSetMovementType				(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType);
+			void			vfSetMovementType				(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook);
 			// fire
 			bool			bfCheckForMember				(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 			bool			bfCheckIfCanKillEnemy			();
@@ -352,7 +352,7 @@ public:
 	virtual void			g_WeaponBones					(int& L,	int& R	);
 	virtual void			Think							();
 	virtual void			Die								();
-	virtual void			g_fireParams					(Fvector& P, Fvector& D);
+//	virtual void			g_fireParams					(Fvector& P, Fvector& D);
 	virtual void			net_Export						(NET_Packet& P);
 	virtual void			net_Import						(NET_Packet& P);
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );

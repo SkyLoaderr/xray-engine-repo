@@ -32,9 +32,8 @@ objQualifier* CAI_Stalker::GetQualifier	()
 void CAI_Stalker::OnVisible	()
 {
 	inherited::OnVisible	();
-
-	CWeapon* W				= Weapons->ActiveWeapon();
-	if (W)					W->OnVisible		();
+	if(m_inventory.ActiveItem())
+		m_inventory.ActiveItem()->OnVisible();
 }
 
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)

@@ -652,7 +652,7 @@ class CAI_Soldier : public CCustomMonster
 		}
 	IC	bool bfNoAmmo()
 		{
-			return(Weapons && (Weapons->getAmmoCurrent() == 0));
+			return(true);
 		}
 	IC	u32 tfUpdateActionType()
 		{
@@ -736,7 +736,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
-		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
+//		virtual void  g_fireParams(Fvector &fire_pos, Fvector &fire_dir);
 		virtual void  OnVisible(); 
 		virtual void  Exec_Movement(float dt);
 		virtual void  OnEvent(EVENT E, u32 P1, u32 P2);

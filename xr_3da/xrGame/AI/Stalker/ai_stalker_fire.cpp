@@ -11,12 +11,6 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 
-void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
-{
-	if (Weapons->ActiveWeapon())
-		Weapons->GetFireParams(fire_pos,fire_dir);
-}
-
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	// Save event
@@ -46,9 +40,9 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 
 void CAI_Stalker::g_WeaponBones	(int& L, int& R)
 {
-	VERIFY	(Weapons);
-	L		=	Weapons->m_iACTboneL;
-	R		=	Weapons->m_iACTboneR;
+	CKinematics	*V	= PKinematics(Visual());
+	R			= V->LL_BoneID("bip01_r_hand");
+	L			= V->LL_BoneID("bip01_l_finger1");
 }
 
 float CAI_Stalker::EnemyHeuristics(CEntity* E)
@@ -155,29 +149,31 @@ void CAI_Stalker::vfSetFire(bool bFire, CGroup &Group)
 {
 	bool bSafeFire = m_bFiring;
 	
-	if (!Weapons || !Weapons->ActiveWeapon())
+	CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+	
+	if (!m_inventory.ActiveItem() || !tpWeapon)
 		return;
 
 	if (bFire)
 		if (m_bFiring)
-			if ((int)m_dwStartFireAmmo - (int)Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
-				q_action.setup(AI::AIC_Action::FireEnd);
+			if ((int)m_dwStartFireAmmo - (int)tpWeapon->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+				m_inventory.Action(kWPN_FIRE, CMD_STOP);
 				m_bFiring = false;
 				m_dwNoFireTime = m_dwCurrentUpdate;
 			}
 			else {
 				if (bfCheckIfCanKillEnemy())
 					if (!bfCheckIfCanKillMember()) {
-						q_action.setup(AI::AIC_Action::FireBegin);
+						m_inventory.Action(kWPN_FIRE, CMD_START);
 						m_bFiring = true;
 					}
 					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
+						m_inventory.Action(kWPN_FIRE, CMD_STOP);
 						m_bFiring = false;
 						m_dwNoFireTime = m_dwCurrentUpdate;
 					}
 					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
+						m_inventory.Action(kWPN_FIRE, CMD_STOP);
 						m_bFiring = false;
 						m_dwNoFireTime = m_dwCurrentUpdate;
 					}
@@ -186,25 +182,25 @@ void CAI_Stalker::vfSetFire(bool bFire, CGroup &Group)
 				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
 					if (bfCheckIfCanKillEnemy())
 						if (!bfCheckIfCanKillMember()) {
-							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
-							q_action.setup(AI::AIC_Action::FireBegin);
+							m_dwStartFireAmmo = tpWeapon->GetAmmoElapsed();
+							m_inventory.Action(kWPN_FIRE, CMD_START);
 							m_bFiring = true;
 						}
 						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
+							m_inventory.Action(kWPN_FIRE, CMD_STOP);
 							m_bFiring = false;
 						}
 					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
+						m_inventory.Action(kWPN_FIRE, CMD_STOP);
 						m_bFiring = false;
 					}
 				else {
-					q_action.setup(AI::AIC_Action::FireEnd);
+					m_inventory.Action(kWPN_FIRE, CMD_STOP);
 					m_bFiring = false;
 				}
 			}
 			else {
-				q_action.setup(AI::AIC_Action::FireEnd);
+				m_inventory.Action(kWPN_FIRE, CMD_STOP);
 				m_bFiring = false;
 			}
 			

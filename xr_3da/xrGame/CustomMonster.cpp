@@ -39,7 +39,7 @@ void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
 
 CCustomMonster::CCustomMonster()
 {
-	Weapons				= 0;
+//	Weapons				= 0;
 	tWatchDirection		= Direction();
 	m_cBodyState		= BODY_STATE_STAND;
 	r_torso_speed		= PI;
@@ -56,7 +56,6 @@ CCustomMonster::CCustomMonster()
 
 CCustomMonster::~CCustomMonster	()
 {
-	xr_delete		(Weapons);
 }
 
 void CCustomMonster::Load		(LPCSTR section)
@@ -118,29 +117,6 @@ void CCustomMonster::Load		(LPCSTR section)
 	shedule_Max			= 500; // 30 * NET_Latency / 4;
 
 	// Msg				("! cmonster size: %d",sizeof(*this));
-}
-
-void CCustomMonster::g_WeaponBones	(int& L, int& R)
-{
-	VERIFY	(Weapons);
-	L		=	Weapons->m_iACTboneL;
-	R		=	Weapons->m_iACTboneR;
-}
-
-void CCustomMonster::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
-{
-	fire_pos.set					(eye_matrix.c);
-	fire_dir.set					(eye_matrix.k);
-}
-
-void CCustomMonster::g_fireStart	( )
-{
-	Weapons->FireStart	();
-}
-
-void CCustomMonster::g_fireEnd	( )
-{
-	Weapons->FireEnd	();
 }
 
 void CCustomMonster::mk_orientation(Fvector &dir, Fmatrix& mR)
@@ -212,7 +188,6 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 {
 	R_ASSERT				(Local());
-	VERIFY					(Weapons);
 
 	// export last known packet
 	R_ASSERT				(!NET.empty());
@@ -229,7 +204,6 @@ void CCustomMonster::net_Export(NET_Packet& P)					// export to server
 void CCustomMonster::net_Import(NET_Packet& P)
 {
 	R_ASSERT				(Remote());
-	VERIFY					(Weapons);
 	net_update				N;
 
 	u8 flags;
@@ -256,6 +230,10 @@ void CCustomMonster::Exec_Physics( float dt )
 	Engine.Sheduler.Slice	();
 }
 
+void CCustomMonster::g_WeaponBones(int& L, int& R)
+{
+}
+ 
 void CCustomMonster::Update	( u32 DT )
 {
 	// Queue shrink
@@ -332,12 +310,8 @@ void CCustomMonster::Update	( u32 DT )
 				NET.push_back		(uNext);
 			}
 		}
-		Exec_Action				(dt);
 	}
 
-	// weapons
-	if (Weapons)		Weapons->Update		(dt,false);
-	
 	// *** general stuff
 	inherited::Update	(DT);
 }
@@ -644,12 +618,6 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
-	if (pSettings->r_s32(cNameSect(),"weapon_usage")) {
-		Weapons					= xr_new<CWeaponList>(this);
-		LPCSTR S1 = pSettings->r_string(cNameSect(),"bone_torso_weapon"),S2 = pSettings->r_string(cNameSect(),"bone_head_weapon");
-		Weapons->Init			(S1,S2);
-	}
-
 	if (Local())	
 	{
 		net_update				N;
@@ -733,77 +701,4 @@ void CCustomMonster::feel_touch_new				(CObject* O)
 	}
 
 	// 
-}
-
-IC BOOL BE	(BOOL A, BOOL B)
-{
-	bool a = !!A;
-	bool b = !!B;
-	return a==b;
-}
-
-void CCustomMonster::OnEvent		(NET_Packet& P, u16 type)
-{
-	inherited::OnEvent		(P,type);
-
-	u16 id;
-	switch (type)
-	{
-	case GE_OWNERSHIP_TAKE:
-		{
-			P.r_u16		(id);
-			CObject* O	= Level().Objects.net_Find	(id);
-
-			// Test for weapon
-			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-			if (W) 
-			{
-				R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-				W->H_SetParent						(this);
-				Weapons->weapon_add					(W);
-				Weapons->ActivateWeaponID			(W->GetSlot());
-				return;
-			}
-		}
-		break;
-	case GE_OWNERSHIP_REJECT:
-		{
-			P.r_u16		(id);
-			CObject* O	= Level().Objects.net_Find	(id);
-
-			// Test for weapon
-			CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-			if (W) 
-			{
-				R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-				Weapons->weapon_remove				(W);
-				Weapons->ActivateWeaponHistory		();
-				W->H_SetParent						(0);
-				feel_touch.push_back				(W);
-				return;
-			}
-		}
-		break;
-	case GE_TRANSFER_AMMO:
-		{
-			u16			from,to;
-			P.r_u16		(from);
-			P.r_u16		(to);
-
-			CObject* Ofrom	= Level().Objects.net_Find	(from);
-			CObject* Oto	= Level().Objects.net_Find	(to);
-			if (!(Ofrom && Oto))	break;
-
-			// Test for weapon
-			CWeapon* Wfrom	= dynamic_cast<CWeapon*>	(Ofrom);
-			CWeapon* Wto	= dynamic_cast<CWeapon*>	(Oto);
-			if (Wfrom && Wto)
-			{
-				R_ASSERT							(BE(Local(),Wfrom->Local()));
-				R_ASSERT							(BE(Local(),Wto->Local()));
-				Wto->Ammo_add	(Wfrom->Ammo_eject());
-			}
-		}
-		break;
-	}
 }

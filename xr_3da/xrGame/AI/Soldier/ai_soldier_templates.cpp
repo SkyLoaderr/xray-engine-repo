@@ -172,64 +172,64 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 {
 	bool bSafeFire = m_bFiring;
 	
-	if (!Weapons || !Weapons->ActiveWeapon())
-		return;
-
-	if (bFire)
-		if (m_bFiring)
-			if ((int)m_dwStartFireAmmo - (int)Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
-				q_action.setup(AI::AIC_Action::FireEnd);
-				m_bFiring = false;
-				m_dwNoFireTime = m_dwCurrentUpdate;
-			}
-			else {
-				if (bfCheckIfCanKillEnemy())
-					if (!bfCheckIfCanKillMember()) {
-						q_action.setup(AI::AIC_Action::FireBegin);
-						m_bFiring = true;
-					}
-					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
-						m_bFiring = false;
-						m_dwNoFireTime = m_dwCurrentUpdate;
-					}
-					else {
-						q_action.setup(AI::AIC_Action::FireEnd);
-						m_bFiring = false;
-						m_dwNoFireTime = m_dwCurrentUpdate;
-					}
-			}
-			else {
-				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
-					if (bfCheckIfCanKillEnemy())
-						if (!bfCheckIfCanKillMember()) {
-							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
-							q_action.setup(AI::AIC_Action::FireBegin);
-							m_bFiring = true;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-						else {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							m_bFiring = false;
-						}
-			}
-			else {
-				q_action.setup(AI::AIC_Action::FireEnd);
-				m_bFiring = false;
-			}
-			
-			if ((bSafeFire) && (!m_bFiring))
-				Group.m_dwFiring--;
-			else
-				if ((!bSafeFire) && (m_bFiring))
-					Group.m_dwFiring++;
+//	if (!Weapons || !Weapons->ActiveWeapon())
+//		return;
+//
+//	if (bFire)
+//		if (m_bFiring)
+//			if ((int)m_dwStartFireAmmo - (int)Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+//				q_action.setup(AI::AIC_Action::FireEnd);
+//				m_bFiring = false;
+//				m_dwNoFireTime = m_dwCurrentUpdate;
+//			}
+//			else {
+//				if (bfCheckIfCanKillEnemy())
+//					if (!bfCheckIfCanKillMember()) {
+//						q_action.setup(AI::AIC_Action::FireBegin);
+//						m_bFiring = true;
+//					}
+//					else {
+//						q_action.setup(AI::AIC_Action::FireEnd);
+//						m_bFiring = false;
+//						m_dwNoFireTime = m_dwCurrentUpdate;
+//					}
+//					else {
+//						q_action.setup(AI::AIC_Action::FireEnd);
+//						m_bFiring = false;
+//						m_dwNoFireTime = m_dwCurrentUpdate;
+//					}
+//			}
+//			else {
+//				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
+//					if (bfCheckIfCanKillEnemy())
+//						if (!bfCheckIfCanKillMember()) {
+//							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
+//							q_action.setup(AI::AIC_Action::FireBegin);
+//							m_bFiring = true;
+//						}
+//						else {
+//							q_action.setup(AI::AIC_Action::FireEnd);
+//							m_bFiring = false;
+//						}
+//						else {
+//							q_action.setup(AI::AIC_Action::FireEnd);
+//							m_bFiring = false;
+//						}
+//						else {
+//							q_action.setup(AI::AIC_Action::FireEnd);
+//							m_bFiring = false;
+//						}
+//			}
+//			else {
+//				q_action.setup(AI::AIC_Action::FireEnd);
+//				m_bFiring = false;
+//			}
+//			
+//			if ((bSafeFire) && (!m_bFiring))
+//				Group.m_dwFiring--;
+//			else
+//				if ((!bSafeFire) && (m_bFiring))
+//					Group.m_dwFiring++;
 }
 
 void CAI_Soldier::vfStopFire()

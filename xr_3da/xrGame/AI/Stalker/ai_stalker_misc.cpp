@@ -9,19 +9,23 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 
-void CAI_Stalker::vfSetMovementType(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
+void CAI_Stalker::vfSetMovementType(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
 {
 	VERIFY(tLookType != eLookTypePoint);
 	Fvector tDummy;
-	vfSetMovementType(tPathType,tBodyState,tMovementType,tLookType,tDummy);
+	vfSetMovementType(tNodeEvaluator,tpDesiredPosition,bFire,tPathType,tBodyState,tMovementType,tLookType,tDummy);
 }
 
-void CAI_Stalker::vfSetMovementType(EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
+void CAI_Stalker::vfSetMovementType(IBaseAI_NodeEvaluator &tNodeEvaluator, Fvector *tpDesiredPosition, bool bFire, EPathType tPathType, EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType, Fvector &tPointToLook)
 {
 	m_tPathType		= tPathType;
 	m_tBodyState	= tBodyState;
 	m_tMovementType = tMovementType;
 	m_tLookType		= tLookType;
+
+	vfChoosePointAndBuildPath(tNodeEvaluator,tpDesiredPosition);
+
+	vfSetFire(bFire,*getGroup());
 	
 	m_fCurSpeed		= 1.f;
 
@@ -82,17 +86,22 @@ void CAI_Stalker::vfSetMovementType(EPathType tPathType, EBodyState tBodyState, 
 		}
 		default : NODEFAULT;
 	}
+	
 	m_fCurSpeed = 6.5f;
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::vfCheckForItems()
 {
-	m_tpWeaponToTake = 0;
+	m_tpItemToTake = 0;
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
 	for (u32 i=0; i<Known.size(); i++) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(Known[i].key);
-		if (tpWeapon && Weapons->isSlotEmpty(tpWeapon->GetSlot())) {
-			m_tpWeaponToTake = tpWeapon;
+		CInventoryItem *tpInventoryItem = dynamic_cast<CInventoryItem*>(Known[i].key);
+#pragma todo("Check if rukzak is not full!!")
+		if (tpInventoryItem) {
+			m_tpItemToTake = tpInventoryItem;
 			break;
 		}
 	}

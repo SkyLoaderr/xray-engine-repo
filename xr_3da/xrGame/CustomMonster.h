@@ -105,11 +105,11 @@ public:
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
 
-	u32				m_dwSoundUpdate;
+	u32					m_dwSoundUpdate;
 	float				m_fSoundPower;
 	float				m_fStartPower;
 	CLevel::SPath		*m_tpPath;
-	CWeaponList			*Weapons;
+	//CWeaponList			*Weapons;
 
 
 	virtual void		Think() = 0;
@@ -208,7 +208,6 @@ public:
 						CCustomMonster			( );
 	virtual				~CCustomMonster			( );
 
-	virtual void		Exec_Action				( float dt );
 	virtual BOOL		net_Spawn				( LPVOID DC);
 	virtual void		Death					( );
 	virtual void		Die						( );
@@ -221,11 +220,6 @@ public:
 
 	// Team visibility
 	virtual void		GetVisible				(objVisible& R);
-
-	// Fire control
-	virtual void		g_fireParams			(Fvector& P, Fvector& D);
-	virtual void		g_fireStart				( );
-	virtual void		g_fireEnd				( );
 
 	// Network
 	virtual void		net_Export				(NET_Packet& P);				// export to server
@@ -287,7 +281,6 @@ public:
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
 	virtual	void			feel_touch_new		(CObject* O);
-	virtual	void			OnEvent				(NET_Packet& P, u16 type);
 	virtual BOOL			IsVisibleForAI		()	{return TRUE;};
 };
 

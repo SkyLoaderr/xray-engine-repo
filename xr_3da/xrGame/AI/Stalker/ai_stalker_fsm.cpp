@@ -65,13 +65,9 @@ void CAI_Stalker::BackDodge()
 	
 	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 
-	vfChoosePointAndBuildPath	(m_tSelectorRetreat);
-
-	vfSetFire					(false,*getGroup());
-
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
+	vfSetMovementType			(m_tSelectorRetreat,0,false,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeDirection,tPoint);
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
@@ -84,16 +80,10 @@ void CAI_Stalker::BackCover()
 	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 
 	m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) + 3.f;
-	vfChoosePointAndBuildPath	(m_tSelectorCover);
-
-	vfSetFire					(false,*getGroup());
 
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
-	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+	vfSetMovementType			(m_tSelectorCover,0,false,ePathTypeCriteria,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
 }
 
 void CAI_Stalker::ForwardCover()
@@ -102,8 +92,6 @@ void CAI_Stalker::ForwardCover()
 	
 	m_tEnemy.Enemy				= dynamic_cast<CEntity *>(Level().CurrentEntity());
 
-	m_tPathType					= ePathTypeDodge;
-	
 	float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) - 3.f;
 	
 	if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
@@ -113,15 +101,11 @@ void CAI_Stalker::ForwardCover()
 		m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
 	}	
 	
-	vfChoosePointAndBuildPath	(m_tSelectorCover);
-
-	vfSetFire					(false,*getGroup());
-
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
-	vfSetMovementType			(ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
+	vfSetMovementType			(m_tSelectorCover,0,AI_Path.fSpeed < EPS_L,ePathTypeDodge,eBodyStateStand,eMovementTypeRun,eLookTypeFirePoint,tPoint);
 	
-	if (m_fCurSpeed < EPS_L)
+	if (AI_Path.fSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
 }
 

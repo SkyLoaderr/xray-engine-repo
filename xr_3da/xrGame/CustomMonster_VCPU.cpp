@@ -112,29 +112,6 @@ void CCustomMonster::Exec_Look		( float dt )
 	Engine.Sheduler.Slice			();
 }
 
-void CCustomMonster::Exec_Action	( float dt )
-{
-	if (0==Weapons)		return;
-	//*** process action commands
-	AI::C_Command* C	= &q_action;
-	AI::AIC_Action* L	= (AI::AIC_Action*)C;
-	BOOL	b_firing	= Weapons->isWorking();
-	switch (L->Command) {
-	case AI::AIC_Action::FireBegin:
-		if (!b_firing)	g_fireStart		();
-		break;
-	case AI::AIC_Action::FireEnd:
-		if (b_firing)	g_fireEnd		();
-		break;
-	default:
-		break;
-	}
-	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
-
-	//
-	Engine.Sheduler.Slice			();
-}
-
 void CCustomMonster::Exec_Movement	( float dt )
 {
 	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);

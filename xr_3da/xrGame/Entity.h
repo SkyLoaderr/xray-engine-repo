@@ -79,16 +79,12 @@ public:
 	virtual	float			HitScale			(int element){return 1.f;}
 	virtual void			Die					()													= 0;
 	
-	// Fire control
-	virtual void			g_fireParams		(Fvector& P, Fvector& D)			= 0;
-	virtual void			g_fireStart			( )					{;}
-	virtual void			g_fireEnd			( )					{;}
-
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);
 
 	virtual BOOL			IsVisibleForAI		()	{return g_Alive();	}
 	virtual BOOL			IsVisibleForHUD		()	{return g_Alive();	}
+	virtual void			g_fireParams			(Fvector &, Fvector &){}; 
 };
 
 class CEntityAlive			: public CEntity

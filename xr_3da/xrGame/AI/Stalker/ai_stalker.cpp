@@ -36,7 +36,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLostEnemyTime				= 0;
 	m_tpSavedEnemyNode				= 0;
 	m_dwSavedEnemyNodeID			= u32(-1);
-	m_tpWeaponToTake				= 0;
+	m_tpItemToTake					= 0;
 	m_bActionStarted				= false;
 	m_iSoundIndex					= -1;
 	m_dwSoundTime					= 0;
@@ -62,7 +62,6 @@ CAI_Stalker::~CAI_Stalker			()
 //	for (int i=0; i<(int)m_tStateStack.size(); i++)
 //		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
 //	Msg								("Total updates : %d",m_dwUpdateCount);
-	xr_delete						(Weapons);
 	xr_delete						(m_pPhysicsShell);
 }
 
@@ -788,12 +787,10 @@ void CAI_Stalker::Update	( u32 DT )
 				NET.push_back		(uNext);
 			}
 		}
-		Exec_Action				(dt);
 	}
-
-	// weapons
-	if (Weapons)		Weapons->Update		(dt,false);
 	
+	m_inventory.Update(DT);
+
 	// *** general stuff
 	inherited::inherited::Update	(DT);
 	

@@ -91,7 +91,7 @@ LPCSTR caGlobalNames		[] = {
 
 bool CAI_Stalker::bfCheckIfCanKillEnemy() 
 {
-	if (!Weapons->ActiveWeapon() || !m_tEnemy.Enemy)
+	if (!m_inventory.ActiveItem() || !m_tEnemy.Enemy)
 		return(false);
 
 	return(true);
@@ -236,9 +236,9 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	if (g_Health() <= 0)
 		return;
-	if (Weapons->ActiveWeapon())
+	if (m_inventory.ActiveItem())
 		if (m_eCurrentState == eStalkerStateRecharge) {
-			switch (Weapons->ActiveWeaponID()) {
+			switch (m_inventory.m_activeSlot) {
 				case 0 : {
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[5].A[0];
 					break;
@@ -254,7 +254,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 			}
 		}
 		else {
-			switch (Weapons->ActiveWeaponID()) {
+			switch (m_inventory.m_activeSlot) {
 				case 0 : {
 					if (m_eCurrentState == eStalkerStateAccomplishingTask)
 						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7+m_tMovementType].A[0];
