@@ -7,15 +7,11 @@
  * below is included in the resulting source code, for example:
  * "Portions Copyright (C) Tom Forsyth, 2001"
  */
+#include "stdafx.h"
+#pragma hdrstop
 
 #include "object.h"
-#include "quad.h"
-
-
-#include "xrCore.h"
 #include "MxQMetric.h"
-#pragma comment(lib,"x:/xrCore.lib")
-#pragma comment(lib,"x:/xrQSlim.lib")
 
 #define QUAD_SIZE 5
 
@@ -35,7 +31,8 @@ Object::~Object()
 
 	while ( CollapseRoot.ListNext() != NULL )
 	{
-		delete ( CollapseRoot.ListNext() );
+		GeneralCollapseInfo* inf = (GeneralCollapseInfo*)CollapseRoot.ListNext();
+		xr_delete		(inf);
 	}
 }
 
@@ -56,7 +53,7 @@ void Object::CheckObject ( void )
 	while ( tri != NULL )
 	{
 		// And all tris should be the current level or the next.
-		ASSERT ( ( tri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel ) || 
+		VERIFY ( ( tri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel ) || 
 				 ( tri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 ) );
 		tri = tri->ListNext();
 	}
@@ -68,15 +65,18 @@ void Object::BinCurrentObject ( void )
 {
 	while ( CurTriRoot.ListNext() != NULL )
 	{
-		delete ( CurTriRoot.ListNext() );
+		MeshTri* tri = (MeshTri*)CurTriRoot.ListNext();
+		xr_delete ( tri );
 	}
 	while ( CurEdgeRoot.ListNext() != NULL )
 	{
-		delete ( CurEdgeRoot.ListNext() );
+		MeshEdge* edge = (MeshEdge*)CurEdgeRoot.ListNext();
+		xr_delete ( edge );
 	}
 	while ( CurPtRoot.ListNext() != NULL )
 	{
-		delete ( CurPtRoot.ListNext() );
+		MeshPt* pt = (MeshPt*)CurPtRoot.ListNext();
+		xr_delete ( pt );
 	}
 }
 
@@ -88,11 +88,11 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 	CheckObject();
 
 	// The thing had better be fully collapsed.
-	ASSERT ( pNextCollapse == &CollapseRoot );
+	VERIFY ( pNextCollapse == &CollapseRoot );
 
 	MeshEdge *pedge = pptBinned->FindEdge ( pptKept );
-	ASSERT ( pedge != NULL );
-	GeneralCollapseInfo *pGCI = new GeneralCollapseInfo ( &CollapseRoot );
+	VERIFY ( pedge != NULL );
+	GeneralCollapseInfo *pGCI = xr_new<GeneralCollapseInfo>( &CollapseRoot );
 
 	pGCI->fError = FindCollapseError ( pptBinned, pptKept->FindEdge ( pptBinned ) );
 
@@ -111,11 +111,11 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 	long bNeedNewLevel = FALSE;
 	for ( ptri = pptBinned->FirstTri(); ptri != NULL; ptri = pptBinned->NextTri() )
 	{
-		ASSERT ( iNumTrisCollapsed < c_iMaxNumTris );	// Grow c_iMaxNumTris as needed.
+		VERIFY ( iNumTrisCollapsed < c_iMaxNumTris );	// Grow c_iMaxNumTris as needed.
 		pBinnedTris[iNumTrisCollapsed++] = ptri;
 		if ( ptri->mytri.iSlidingWindowLevel != iCurSlidingWindowLevel )
 		{
-			ASSERT ( ptri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
+			VERIFY ( ptri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
 			// Need to set a new level before doing this collapse.
 			bNeedNewLevel = TRUE;
 		}
@@ -128,7 +128,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 		{
 			if ( pTri->mytri.iSlidingWindowLevel != iCurSlidingWindowLevel )
 			{
-				ASSERT ( pTri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
+				VERIFY ( pTri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
 				GeneralTriInfo *pTriInfoNew = pGCI->TriNextLevel.AddItem();
 				pTriInfoNew->ppt[0] = pTri->pPt1;
 				pTriInfoNew->ppt[1] = pTri->pPt2;
@@ -165,7 +165,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 			ppt[1] = ppt[2];
 			ppt[2] = pptTemp;
 		}
-		ASSERT ( iCurSlidingWindowLevel == pBinnedTris[i]->mytri.iSlidingWindowLevel );
+		VERIFY ( iCurSlidingWindowLevel == pBinnedTris[i]->mytri.iSlidingWindowLevel );
 		
 		if ( ( ppt[0] == pptKept ) || 
 			 ( ppt[1] == pptKept ) || 
@@ -203,9 +203,9 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 				ppt[1] = ppt[2];
 				ppt[2] = pptTemp;
 			}
-			ASSERT ( iCurSlidingWindowLevel == pBinnedTris[i]->mytri.iSlidingWindowLevel );
+			VERIFY ( iCurSlidingWindowLevel == pBinnedTris[i]->mytri.iSlidingWindowLevel );
 			
-			ASSERT ( ( ppt[0] == pptKept ) || ( ppt[1] == pptKept ) || ( ppt[2] == pptKept ) );
+			VERIFY ( ( ppt[0] == pptKept ) || ( ppt[1] == pptKept ) || ( ppt[2] == pptKept ) );
 
 			GeneralTriInfo *pTriInfo = pGCI->TriOriginal.AddItem();
 			pTriInfo->ppt[0] = ppt[0];
@@ -223,7 +223,7 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 		GeneralTriInfo *pTriInfo = pGCI->TriOriginal.Item ( i );
 
 		// ppt[0] should always be the binned pt.
-		ASSERT ( pTriInfo->ppt[0] == pptBinned );
+		VERIFY ( pTriInfo->ppt[0] == pptBinned );
 
 		// Now, are either of the other two the kept point?
 		// If so, these are tris that get binned, rather than remapped.
@@ -231,20 +231,20 @@ void Object::CreateEdgeCollapse ( MeshPt *pptBinned, MeshPt *pptKept )
 			 ( pTriInfo->ppt[2] == pptKept ) )
 		{
 			// Binned tri - these should be the last few.
-			ASSERT ( i >= iNumTrisCollapsed - iNumBinned );
+			VERIFY ( i >= iNumTrisCollapsed - iNumBinned );
 		}
 		else
 		{
 			// A remapped tri.
-			ASSERT ( pGCI->TriCollapsed.Size() == i );
+			VERIFY ( pGCI->TriCollapsed.Size() == i );
 			GeneralTriInfo *pTriInfoNew = pGCI->TriCollapsed.AddItem();
 			pTriInfoNew->ppt[0] = pptKept;
 			pTriInfoNew->ppt[1] = pTriInfo->ppt[1];
 			pTriInfoNew->ppt[2] = pTriInfo->ppt[2];
 
 			// And actually create this tri.
-			MeshTri *pTri = new MeshTri ( pTriInfoNew->ppt[0], pTriInfoNew->ppt[1], pTriInfoNew->ppt[2], &CurTriRoot, &CurEdgeRoot );
-			ASSERT ( pTri != NULL );
+			MeshTri *pTri = xr_new<MeshTri>( pTriInfoNew->ppt[0], pTriInfoNew->ppt[1], pTriInfoNew->ppt[2], &CurTriRoot, &CurEdgeRoot );
+			VERIFY ( pTri != NULL );
 			pTri->mytri.iSlidingWindowLevel = iCurSlidingWindowLevel + 1;
 		}
 	}
@@ -267,7 +267,7 @@ long Object::BinEdgeCollapse ( void )
 	if ( pGCI == NULL )
 	{
 		// No collapses to bin.
-		ASSERT ( iNumCollapses == 0 );
+		VERIFY ( iNumCollapses == 0 );
 		return FALSE;
 	}
 	else
@@ -284,7 +284,7 @@ long Object::BinEdgeCollapse ( void )
 			pNextCollapse = &CollapseRoot;
 		}
 		pGCI->ListDel();
-		delete pGCI;
+		xr_delete (pGCI);
 
 		return TRUE;
 	}
@@ -302,22 +302,22 @@ long Object::UndoCollapse ( void )
 	{
 		pNextCollapse = pNextCollapse->ListNext();
 
-		ASSERT ( pNextCollapse->iSlidingWindowLevel == iCurSlidingWindowLevel );
+		VERIFY ( pNextCollapse->iSlidingWindowLevel == iCurSlidingWindowLevel );
 
 		int i;
 		for ( i = 0; i < pNextCollapse->TriCollapsed.Size(); i++ )
 		{
 			GeneralTriInfo *pTriInfo = pNextCollapse->TriCollapsed.Item(i);
 			MeshTri *pTri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
-			ASSERT ( pTri != NULL );
+			VERIFY ( pTri != NULL );
 			pTri->Delete ( TRUE );
 		}
 
 		for ( i = 0; i < pNextCollapse->TriOriginal.Size(); i++ )
 		{
 			GeneralTriInfo *pTriInfo = pNextCollapse->TriOriginal.Item(i);
-			MeshTri *pTri = new MeshTri ( pTriInfo->ppt[0], pTriInfo->ppt[1], pTriInfo->ppt[2], &CurTriRoot, &CurEdgeRoot );
-			ASSERT ( pTri != NULL );
+			MeshTri *pTri = xr_new<MeshTri>( pTriInfo->ppt[0], pTriInfo->ppt[1], pTriInfo->ppt[2], &CurTriRoot, &CurEdgeRoot );
+			VERIFY ( pTri != NULL );
 			pTri->mytri.iSlidingWindowLevel = iCurSlidingWindowLevel;
 		}
 
@@ -328,7 +328,7 @@ long Object::UndoCollapse ( void )
 			if ( pNextCollapse->ListNext()->iSlidingWindowLevel != iCurSlidingWindowLevel )
 			{
 				// Need to go back a level.
-				ASSERT ( pNextCollapse->ListNext()->iSlidingWindowLevel == iCurSlidingWindowLevel - 1 );
+				VERIFY ( pNextCollapse->ListNext()->iSlidingWindowLevel == iCurSlidingWindowLevel - 1 );
 				iCurSlidingWindowLevel--;
 				SetNewLevel ( iCurSlidingWindowLevel );
 
@@ -337,7 +337,7 @@ long Object::UndoCollapse ( void )
 				{
 					GeneralTriInfo *pTriInfo = pNextCollapse->TriNextLevel.Item(i);
 					MeshTri *pTri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
-					ASSERT ( pTri != NULL );
+					VERIFY ( pTri != NULL );
 					pTri->mytri.iSlidingWindowLevel = iCurSlidingWindowLevel + 1;
 				}
 			}
@@ -360,15 +360,15 @@ long Object::DoCollapse ( void )
 		if ( pNextCollapse->iSlidingWindowLevel != iCurSlidingWindowLevel )
 		{
 			// Need to start a new level.
-			ASSERT ( pNextCollapse->TriNextLevel.Size() > 0 );
-			ASSERT ( pNextCollapse->iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
+			VERIFY ( pNextCollapse->TriNextLevel.Size() > 0 );
+			VERIFY ( pNextCollapse->iSlidingWindowLevel == iCurSlidingWindowLevel + 1 );
 			iCurSlidingWindowLevel++;
 			SetNewLevel ( iCurSlidingWindowLevel );
 		}
 		else
 		{
 			// No new level to start.
-			ASSERT ( pNextCollapse->TriNextLevel.Size() == 0 );
+			VERIFY ( pNextCollapse->TriNextLevel.Size() == 0 );
 		}
 
 
@@ -377,9 +377,9 @@ long Object::DoCollapse ( void )
 		{
 			GeneralTriInfo *pTriInfo = pNextCollapse->TriOriginal.Item(i);
 			MeshTri *pTri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
-			ASSERT ( pTri != NULL );
+			VERIFY ( pTri != NULL );
 
-			ASSERT ( pTri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel );
+			VERIFY ( pTri->mytri.iSlidingWindowLevel == iCurSlidingWindowLevel );
 
 			pTri->Delete ( TRUE );
 		}
@@ -387,8 +387,8 @@ long Object::DoCollapse ( void )
 		for ( i = 0; i < pNextCollapse->TriCollapsed.Size(); i++ )
 		{
 			GeneralTriInfo *pTriInfo = pNextCollapse->TriCollapsed.Item(i);
-			MeshTri *pTri = new MeshTri ( pTriInfo->ppt[0], pTriInfo->ppt[1], pTriInfo->ppt[2], &CurTriRoot, &CurEdgeRoot );
-			ASSERT ( pTri != NULL );
+			MeshTri *pTri = xr_new<MeshTri>( pTriInfo->ppt[0], pTriInfo->ppt[1], pTriInfo->ppt[2], &CurTriRoot, &CurEdgeRoot );
+			VERIFY ( pTri != NULL );
 			pTri->mytri.iSlidingWindowLevel = iCurSlidingWindowLevel + 1;
 		}
 
@@ -426,7 +426,7 @@ long Object::CollapseAllowedForLevel ( MeshPt *pptBinned, int iLevel )
 // Set bTryToCacheResult=TRUE if you can pass pptBinned in multiple times.
 // Make sure you call this with bTryToCacheResult=FALSE if any data changes,
 //	or you'll confuse the poor thing.
-void pack_to_vector(MxVector& tgt, const D3DXVECTOR3& src_p, float src_u, float src_v)
+void pack_to_vector(MxVector& tgt, const Fvector3& src_p, float src_u, float src_v)
 {
 	tgt[0] = src_p.x;
 	tgt[1] = src_p.y;
@@ -479,13 +479,14 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 		}
 
 		MeshPt *pptKept		= pedgeCollapse->OtherPt ( pptBinned );
-		ASSERT ( pptKept != NULL );
+		VERIFY ( pptKept != NULL );
 
 		MxVector pos(QUAD_SIZE);
 		pack_to_vector(pos,pptKept->mypt.vPos,pptKept->mypt.fU,pptKept->mypt.fV);
 
 		return qSum.evaluate(pos);
 	}else{
+/*
 		static MeshPt *pptLast;
 		static Quad qLast;
 
@@ -497,7 +498,7 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 
 
 		MeshPt *pptKept = pedgeCollapse->OtherPt ( pptBinned );
-		ASSERT ( pptKept != NULL );
+		VERIFY ( pptKept != NULL );
 
 
 		Quad qSum;
@@ -518,5 +519,6 @@ float Object::FindCollapseError ( MeshPt *pptBinned, MeshEdge *pedgeCollapse, lo
 
 		// And find the error once the collapse has happened.
 		return qSum.FindError ( pptKept->mypt.vPos );
+*/
 	}
 }

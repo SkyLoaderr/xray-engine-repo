@@ -10,7 +10,7 @@
 #ifndef objectH
 #define objectH
 
-#include "quad.h"
+//#include "quad.h"
 
 // Incremented by the draw routs. Display + zero whenever you want.
 extern int g_iMaxNumTrisDrawn;
@@ -21,18 +21,19 @@ class MeshPt;
 class MeshEdge;
 class MeshTri;
 
-#include "D3dx8core.h"
+//#include "D3dx8core.h"
 
 struct MyPt
 {
-	D3DXVECTOR3 vPos;
-	D3DXVECTOR3 vNorm;
-	float fU, fV;
+	Fvector3	vPos;
+	Fvector3	vNorm;
+	float		fU, fV;
 
-	DWORD dwIndex;
+	DWORD		dwIndex;
+	DWORD		dwNewIndex;
 
 	// Temporary data.
-	MeshPt *pTempPt;	// Temporary data.
+	MeshPt*		pTempPt;			// Temporary data.
 };
 
 struct MyEdge
@@ -43,10 +44,11 @@ struct MyEdge
 struct MyTri
 {
 	// Temporary data.
-	int iSlidingWindowLevel;			// Which sliding window level this tri belongs to.
+	int			iSlidingWindowLevel;// Which sliding window level this tri belongs to.
 
-	DWORD dwIndex;
-	MeshTri *pOriginalTri;
+	DWORD		dwIndex;
+	DWORD		dwNewIndex;
+	MeshTri*	pOriginalTri;
 };
 
 
@@ -59,7 +61,6 @@ struct MyTri
 #include "xrCore.h"
 
 #include "mesh.h"
-#include "MxBlock.h"
 #include "MxQMetric.h"
 
 struct GeneralTriInfo

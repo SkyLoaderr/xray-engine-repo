@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "PropSlimTools.h"
 #include "object.h"
+#include "object_sliding.h"
 
 namespace ETOOLS{
 ETOOLS_API void ContractionClear		(QSContraction*& dst_conx)
@@ -106,8 +107,8 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 		MeshPt * pt			= xr_new<MeshPt>( &m_pObject->CurPtRoot );
 		ppPts[v_idx]		= pt;
 		pt->mypt.vPos 		= v.pt;
-		pt->mypt.fU			= 1.f;//float(rand())/32767.f;
-		pt->mypt.fV			= 1.f;//float(rand())/32767.f;
+		pt->mypt.fU			= v.uv.x;
+		pt->mypt.fV			= v.uv.y;
 		pt->mypt.dwIndex	= v_idx;
 	}
 	for (u32 f_idx=0; f_idx<src_mesh->faces.size(); f_idx++){
@@ -117,9 +118,41 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 	}
 	xr_free(ppPts);
 
+	m_pObject->iFullNumTris = 0;
+	m_pObject->iFullNumPts	= 0;
+	MeshPt *pt = m_pObject->CurPtRoot.ListNext();
+	while ( pt != NULL )
+	{
+		// All the pts had better be the same material.
+		pt = pt->ListNext();
+		m_pObject->iFullNumPts++;
+	}
+	MeshTri *tri = m_pObject->CurTriRoot.ListNext();
+	while ( tri != NULL )
+	{
+		// All the pts had better be the same material.
+		tri = tri->ListNext();
+		m_pObject->iFullNumTris++;
+	}
+
+	MeshEdge *edge = m_pObject->CurEdgeRoot.ListNext();
+	while ( edge != NULL )
+	{
+		edge = edge->ListNext();
+	}
+
+	m_pObject->iNumCollapses = 0;
+	m_pObject->iCurSlidingWindowLevel = 0;
+	m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
+
 	dst_conx				= xr_new<QSContraction>(src_mesh->verts.size());
 
 	CalculateAllCollapses	(m_pObject);
+	OMSlidingWindow* SM		= xr_new<OMSlidingWindow>(m_pObject);
+	
+	SM->Update				();
+
+	xr_delete				(SM);
 
 
 /*
@@ -146,97 +179,4 @@ ETOOLS_API BOOL ContractionGenerate		(QSMesh* src_mesh, QSContraction*& dst_conx
 
 	return TRUE;
 }
-
-
-/*
-
-void CMyD3DApplication::CollapseAll()
-{
-// prepare model
-MxStdModel* mdl			= xr_new<MxStdModel>(m_pObject->iFullNumPts,m_pObject->iFullNumTris);
-MeshPt*	pt;
-mdl->texcoord_binding	(MX_PERVERTEX);
-for (pt=m_pObject->PermPtRoot.ListNext(); pt!=NULL; pt=pt->ListNext()){
-mdl->add_vertex		(pt->mypt.vPos.x,pt->mypt.vPos.y,pt->mypt.vPos.z);
-mdl->add_texcoord	(pt->mypt.fU,pt->mypt.fV);
-}
-MeshTri* tri;
-for (tri=m_pObject->PermTriRoot.ListNext(); tri!=NULL; tri=tri->ListNext())
-mdl->add_face		(tri->pPt1->mypt.dwIndex,tri->pPt2->mypt.dwIndex,tri->pPt3->mypt.dwIndex);
-
-
-m_pObject->iCurSlidingWindowLevel = 0;
-m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
-
-
-// create slim and set params
-MxPropSlim* slim		= xr_new<MxPropSlim>(mdl);
-slim->boundary_weight	= 1000.f;
-slim->compactness_ratio	= COMPACTNESS_RATIO;
-slim->meshing_penalty	= 1000.f;
-slim->placement_policy	= MX_PLACE_ENDPOINTS;
-slim->weighting_policy	= MX_WEIGHT_AREA_AVG;
-slim->contraction_callback = contraction_callback;
-
-// initialiez slim
-slim->initialize		();
-
-// collect edges
-slim->collect_edges		();
-
-// decimate
-slim->decimate			(0,MAX_DECIMATE_ERROR,m_pObject);
-//	mdl->compact_vertices	();
-
-xr_delete				(m_pObject);
-m_pObject				= xr_new<Object>();
-
-// rebuild
-MeshPt **ppPts = new MeshPt*[mdl->face_count()];
-for (u32 i_idx=0; i_idx<mdl->vert_count(); i_idx++){
-MxVertex& V				= mdl->vertex(i_idx);
-ppPts[i_idx] 			= new MeshPt ( &m_pObject->PermPtRoot );
-ppPts[i_idx]->mypt.vPos	= D3DXVECTOR3 (V[0],V[1],V[2]);
-}
-for (u32 f_idx=0; f_idx<mdl->face_count(); f_idx++){
-if (mdl->face_is_valid(f_idx)){
-MxFace& F		= mdl->face(f_idx);
-MeshTri *ptri	= new MeshTri (ppPts[F[0]], ppPts[F[1]], ppPts[F[2]], &m_pObject->PermTriRoot, &m_pObject->PermEdgeRoot );
-}
-}
-delete [] ppPts;
-
-m_pObject->iFullNumTris = 0;
-m_pObject->iFullNumPts	= 0;
-pt = m_pObject->PermPtRoot.ListNext();
-while ( pt != NULL )
-{
-// All the pts had better be the same material.
-pt = pt->ListNext();
-m_pObject->iFullNumPts++;
-}
-tri = m_pObject->PermTriRoot.ListNext();
-while ( tri != NULL )
-{
-// All the pts had better be the same material.
-tri = tri->ListNext();
-m_pObject->iFullNumTris++;
-}
-
-MeshEdge *edge = m_pObject->PermEdgeRoot.ListNext();
-while ( edge != NULL )
-{
-edge = edge->ListNext();
-}
-
-m_pObject->iCurSlidingWindowLevel = 0;
-m_pObject->SetNewLevel ( m_pObject->iCurSlidingWindowLevel );
-
-m_pObject->MakeCurrentObjectFromPerm();
-
-
-
-xr_delete				(slim);
-xr_delete				(mdl);
-*/
 }

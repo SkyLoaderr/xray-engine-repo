@@ -356,13 +356,13 @@ template <class C> C *SafeStrncpy ( C *dest, const C *src, size_t number )
 // A moderately good "close enough" thing.
 inline bool CloseEnough ( float f1, float f2, float epsilon = 0.0001f )
 {
-	if ( fabsf ( f1 ) > fabsf ( f2 ) )
+	if ( _abs ( f1 ) > _abs ( f2 ) )
 	{
-		return ( fabsf ( f1 - f2 ) <= fabsf ( epsilon * f1 ) + epsilon );
+		return ( _abs ( f1 - f2 ) <= _abs ( epsilon * f1 ) + epsilon );
 	}
 	else
 	{
-		return ( fabsf ( f1 - f2 ) <= fabsf ( epsilon * f2 ) + epsilon );
+		return ( _abs ( f1 - f2 ) <= _abs ( epsilon * f2 ) + epsilon );
 	}
 }
 
@@ -478,7 +478,7 @@ public:
 			pBlobArray = new Blob[iAllocatedSize];
 			ASSERT ( pBlobArray != NULL );
 			if ( pOldBlobArray != NULL )
-			{
+			{ 
 				memcpy ( pBlobArray, pOldBlobArray, ( iCurrentSize + 1 ) * sizeof ( Blob ) );
 				delete[] pOldBlobArray;
 			}

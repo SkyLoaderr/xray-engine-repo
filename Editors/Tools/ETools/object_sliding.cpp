@@ -11,73 +11,15 @@
 #pragma hdrstop
 
 #include "object.h"
+#include "object_sliding.h"
 
 BOOL g_bOptimiseVertexOrder = FALSE;
 
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).
-void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris );
-
-// Finds the weighted average number of verts read when rendering this list.
-float GetNumVerticesLoadedTriList ( WORD *pwList, int iHowManyTris );
+// void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris );
 
 ///////// SLIDING WINDOW VIPM ////////////
-// A table of these exists, one per collapse.
-struct SlidingWindowRecord
-{
-	DWORD	dwFirstIndexOffset;			// Offset of the first index in the index buffer to start at (note! no retrictions. Can easily be >64k)
-	WORD	wNumTris;					// Number of tris to render (most cards can't do more than 65536)
-	WORD	wNumVerts;					// Number of vertices to render with (using WORD indices)
-};
-
-class OptimisedMesh
-{
-protected:
-	OptimisedMesh ( void );
-
-	int iVersion;				// Current version number.
-	BOOL bDirty;				// TRUE if dirty.
-	BOOL bWillGetInfo;
-public:
-
-
-
-	virtual ~OptimisedMesh ( void ) = 0;
-
-	// Tell this method that the underlying mesh has changed.
-	// bWillGetInfo = TRUE if you are going to call any of the Info* functions.
-	// This causes a speed hit, so only do it when necessary.
-	virtual void MarkAsDirty ( BOOL bWillGetInfo );
-
-	// Actually updates the OptimisedMesh to match the real mesh.
-	virtual void Update ( void ) = 0;
-};
-
-class OMSlidingWindow: public OptimisedMesh
-{
-	friend class OMISlidingWindow;
-
-	Object *pObj;
-
-	int										iNumVerts;			// Number of verts at full rez.
-	int										iNumCollapses;		// Total number of collapses.
-	int										iNumLevels;			// Total number of levels.
-	int										iSizeOfIB;			// In indices. Just for info.
-	ArbitraryList<SlidingWindowRecord>		swrRecords;			// The records of the collapses.
-
-	BOOL									bOptimised;			// Have the tris been reordered optimally?
-
-//	LPDIRECT3DVERTEXBUFFER8		pVB;							// The VB with the vertices in.
-//	LPDIRECT3DINDEXBUFFER8		pIB;							// The index list, all levels clumped together. Always using TRILISTs.
-
-public:
-	OMSlidingWindow ( Object *pObject );
-	virtual ~OMSlidingWindow ( void );
-	virtual void Update ( void );
-};
-
-
-
 OMSlidingWindow::OMSlidingWindow ( Object *pObject )
 {
 	pObj = pObject;
@@ -119,7 +61,7 @@ void OMSlidingWindow::Update ( void )
 	// How many vertices are we looking at?
 	iNumVerts = 0;
 	for ( pt = pObj->CurPtRoot.ListNext(); pt != NULL; pt = pt->ListNext() ){
-		pt->mypt.dwIndex = -1;
+		pt->mypt.dwNewIndex = -1;
 		iNumVerts++;
 	}
 	// Er... word indices, guys... nothing supports 32-bit indices yet.
@@ -128,7 +70,7 @@ void OMSlidingWindow::Update ( void )
 	// How many tris are we looking at?
 	int iNumTris = 0;
 	for ( tri = pObj->CurTriRoot.ListNext(); tri != NULL; tri = tri->ListNext() ){
-		tri->mytri.dwIndex = -1;
+		tri->mytri.dwNewIndex = -1;
 		iNumTris++;
 	}
 	// A lot of cards have this annoying limit - see D3DCAPS8.MaxPrimitiveCount, which is
@@ -139,21 +81,10 @@ void OMSlidingWindow::Update ( void )
 	// how many we need yet, we can't create the IB until the end. Then we'll copy this into it.
 	ArbitraryList<WORD> wIndices;
 	wIndices.SizeTo ( 0 );
-/*
-	// Create the vertex buffer.
-	HRESULT hres = g_pd3dDevice->CreateVertexBuffer ( iNumVerts * sizeof ( STDVERTEX ),
-										D3DUSAGE_WRITEONLY,
-										STDVERTEX_FVF,
-										D3DPOOL_DEFAULT,
-										&pVB );
-	VERIFY ( SUCCEEDED ( hres ) );
 
-	STDVERTEX *pVertices, *pCurVertex;
-	hres = pVB->Lock ( 0, 0, (BYTE **)(&pVertices), 0 );
-	VERIFY ( SUCCEEDED ( hres ) );
+	vertices.resize	(iNumVerts);
+	ETOOLS::QSVert *pCurVertex	= &vertices.front();
 
-	pCurVertex = pVertices;
-*/
 	// Now do all the collapses, so we start from the minimum mesh.
 	// Along the way, mark the vertices in reverse order.
 	int iCurVerts = iNumVerts;
@@ -166,25 +97,24 @@ void OMSlidingWindow::Update ( void )
 		iCurSlidingWindowLevel = pCollapse->iSlidingWindowLevel;
 		iCurCollapse++;
 		iCurVerts--;
-		pCollapse->pptBin->mypt.dwIndex = iCurVerts;
+		pCollapse->pptBin->mypt.dwNewIndex = iCurVerts;
 		pObj->DoCollapse();
 	}
 
 	iNumCollapses = iCurCollapse;
 
-/*
 	// Add the remaining existing pts in any old order.
 	WORD wCurIndex = 0;
 	for ( pt = pObj->CurPtRoot.ListNext(); pt != NULL; pt = pt->ListNext() )
 	{
-		if ( pt->mypt.dwIndex == (DWORD)-1 )
+		if ( pt->mypt.dwNewIndex == (DWORD)-1 )
 		{
 			// Not binned in a collapse.
-			pt->mypt.dwIndex = wCurIndex;
-			pCurVertex->v = pt->mypt.vPos;
-			pCurVertex->norm = pt->mypt.vNorm;
-			pCurVertex->tu = pt->mypt.fU;
-			pCurVertex->tv = pt->mypt.fV;
+			pt->mypt.dwNewIndex	= wCurIndex;
+			pCurVertex->pt		= pt->mypt.vPos;
+//.			pCurVertex->norm	= pt->mypt.vNorm;
+			pCurVertex->uv.x	= pt->mypt.fU;
+			pCurVertex->uv.y	= pt->mypt.fV;
 
 			pCurVertex++;
 			wCurIndex++;
@@ -193,7 +123,6 @@ void OMSlidingWindow::Update ( void )
 
 	// Should meet in the middle!
 	VERIFY ( wCurIndex == iCurVerts );
-*/
 
 	// And count the tris that are left.
 	int iCurNumTris = 0;
@@ -245,7 +174,7 @@ void OMSlidingWindow::Update ( void )
 		int iJustCheckingNumTris = 0;
 		for ( tri = pObj->CurTriRoot.ListNext(); tri != NULL; tri = tri->ListNext() )
 		{
-			tri->mytri.dwIndex = -1;		// Mark them as not being in a collapse.
+			tri->mytri.dwNewIndex = -1;		// Mark them as not being in a collapse.
 			iJustCheckingNumTris++;
 		}
 		VERIFY ( iJustCheckingNumTris == iCurNumTris );
@@ -274,22 +203,20 @@ void OMSlidingWindow::Update ( void )
 						GeneralTriInfo *pTriInfo = pCollapse->TriCollapsed.Item(i);
 						MeshTri *tri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
 						VERIFY ( tri != NULL );
-						VERIFY ( tri->mytri.dwIndex == -1 );	// Should not have been in a collapse this level.
+						VERIFY ( tri->mytri.dwNewIndex == -1 );	// Should not have been in a collapse this level.
 
-						VERIFY ( pTriInfo->ppt[0]->mypt.dwIndex < wCurIndex );
-						VERIFY ( pTriInfo->ppt[1]->mypt.dwIndex < wCurIndex );
-						VERIFY ( pTriInfo->ppt[2]->mypt.dwIndex < wCurIndex );
-						*wTempIndices.Item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwIndex;
-						*wTempIndices.Item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwIndex;
-						*wTempIndices.Item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwIndex;
+						VERIFY ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
+						VERIFY ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
+						VERIFY ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
+						*wTempIndices.Item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwNewIndex;
+						*wTempIndices.Item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwNewIndex;
+						*wTempIndices.Item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwNewIndex;
 						iCurNumTris--;
 					}
 
 					// Now try to order them as best you can.
-					if ( g_bOptimiseVertexOrder )
-					{
-						OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriCollapsed.Size() );
-					}
+//.					if ( g_bOptimiseVertexOrder )
+//.						OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriCollapsed.Size() );
 
 					// And write them to the index list.
 					wIndices.CopyFrom ( iCurTriBinned * 3, wTempIndices, 0, 3 * pCollapse->TriCollapsed.Size() );
@@ -308,11 +235,11 @@ void OMSlidingWindow::Update ( void )
 			pObj->UndoCollapse();
 			// Add the unbinned vertex.
 			MeshPt *pPt = pCollapse->pptBin;
-			VERIFY ( pPt->mypt.dwIndex == wCurIndex );
-			pCurVertex->v = pPt->mypt.vPos;
-			pCurVertex->norm = pPt->mypt.vNorm;
-			pCurVertex->tu = pPt->mypt.fU;
-			pCurVertex->tv = pPt->mypt.fV;
+			VERIFY ( pPt->mypt.dwNewIndex == wCurIndex );
+			pCurVertex->pt	= pPt->mypt.vPos;
+//.			pCurVertex->norm = pPt->mypt.vNorm;
+			pCurVertex->uv.x = pPt->mypt.fU;
+			pCurVertex->uv.y = pPt->mypt.fV;
 			pCurVertex++;
 			wCurIndex++;
 
@@ -323,20 +250,20 @@ void OMSlidingWindow::Update ( void )
 					GeneralTriInfo *pTriInfo = pCollapse->TriOriginal.Item(i);
 					MeshTri *tri = pTriInfo->ppt[0]->FindTri ( pTriInfo->ppt[1], pTriInfo->ppt[2] );
 					VERIFY ( tri != NULL );
-					tri->mytri.dwIndex = 1;		// Mark it has having been in a collapse.
+					tri->mytri.dwNewIndex = 1;		// Mark it has having been in a collapse.
 
-					VERIFY ( pTriInfo->ppt[0]->mypt.dwIndex < wCurIndex );
-					VERIFY ( pTriInfo->ppt[1]->mypt.dwIndex < wCurIndex );
-					VERIFY ( pTriInfo->ppt[2]->mypt.dwIndex < wCurIndex );
-					*wTempIndices.Item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwIndex;
-					*wTempIndices.Item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwIndex;
-					*wTempIndices.Item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwIndex;
+					VERIFY ( pTriInfo->ppt[0]->mypt.dwNewIndex < wCurIndex );
+					VERIFY ( pTriInfo->ppt[1]->mypt.dwNewIndex < wCurIndex );
+					VERIFY ( pTriInfo->ppt[2]->mypt.dwNewIndex < wCurIndex );
+					*wTempIndices.Item(i*3+0) = (WORD)pTriInfo->ppt[0]->mypt.dwNewIndex;
+					*wTempIndices.Item(i*3+1) = (WORD)pTriInfo->ppt[1]->mypt.dwNewIndex;
+					*wTempIndices.Item(i*3+2) = (WORD)pTriInfo->ppt[2]->mypt.dwNewIndex;
 					iCurNumTris++;
 				}
 
 				// Now try to order them as best you can.
-				if ( g_bOptimiseVertexOrder )
-					OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriOriginal.Size() );
+//.				if ( g_bOptimiseVertexOrder )
+//.					OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), pCollapse->TriOriginal.Size() );
 
 				// And write them to the index list.
 				wIndices.SizeTo ( ( iCurTriAdded + pCollapse->TriOriginal.Size() ) * 3 );
@@ -360,20 +287,20 @@ void OMSlidingWindow::Update ( void )
 		int iTempTriNum = 0;
 		for ( tri = pObj->CurTriRoot.ListNext(); tri != NULL; tri = tri->ListNext() ){
 			iJustCheckingNumTris++;
-			if ( tri->mytri.dwIndex == -1 ){
+			if ( tri->mytri.dwNewIndex == -1 ){
 				// This tri has not been created by a collapse this level.
 				wTempIndices.SizeTo ( iTempTriNum * 3 + 3 );
-				*(wTempIndices.Item(iTempTriNum*3+0)) = tri->pPt1->mypt.dwIndex;
-				*(wTempIndices.Item(iTempTriNum*3+1)) = tri->pPt2->mypt.dwIndex;
-				*(wTempIndices.Item(iTempTriNum*3+2)) = tri->pPt3->mypt.dwIndex;
+				*(wTempIndices.Item(iTempTriNum*3+0)) = tri->pPt1->mypt.dwNewIndex;
+				*(wTempIndices.Item(iTempTriNum*3+1)) = tri->pPt2->mypt.dwNewIndex;
+				*(wTempIndices.Item(iTempTriNum*3+2)) = tri->pPt3->mypt.dwNewIndex;
 				iTempTriNum++;
 			}
 		}
 		VERIFY ( iJustCheckingNumTris == iCurNumTris );
 
 		// Now try to order them as best you can.
-		if ( g_bOptimiseVertexOrder )
-			OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), iTempTriNum );
+//.		if ( g_bOptimiseVertexOrder )
+//.			OptimiseVertexCoherencyTriList ( wTempIndices.Ptr(), iTempTriNum );
 
 		// And write them to the index list.
 		wIndices.CopyFrom ( iCurTriBinned * 3, wTempIndices, 0, 3 * iTempTriNum );
@@ -394,9 +321,6 @@ void OMSlidingWindow::Update ( void )
 	    iCurSlidingWindowLevel = pObj->pNextCollapse->ListNext()->iSlidingWindowLevel;
 	}
 
-	hres = pVB->Unlock();
-	VERIFY ( SUCCEEDED ( hres ) );
-
 	// And now check everything is OK.
 	VERIFY ( swrRecords.Size() == iNumCollapses + 1 );
 	for ( int i = 0; i <= iNumCollapses; i++ ){
@@ -406,33 +330,11 @@ void OMSlidingWindow::Update ( void )
 		}
 	}
 
-	DWORD dwFlags = 0;
-// If doing extra debugging, we're always going to do reads from the IB.
-	if ( !bWillGetInfo ){
-		// We don't need to do reads from the IB to get vertex-cache info.
-		dwFlags |= D3DUSAGE_WRITEONLY;
-	}
-
 	// Create the index buffer.
-	iSizeOfIB = wIndices.Size();
-	hres = g_pd3dDevice->CreateIndexBuffer ( sizeof(WORD) * wIndices.Size(),
-										dwFlags,
-										D3DFMT_INDEX16,
-										D3DPOOL_DEFAULT,
-										&pIB );
-	VERIFY ( SUCCEEDED ( hres ) );
+	indices.resize(wIndices.Size()/3);
 
 	// Copy to the index buffer
-	WORD *pwDest;
-	hres = pIB->Lock ( 0, sizeof(WORD) * wIndices.Size(), (BYTE**)&pwDest, 0 );
-	VERIFY ( SUCCEEDED ( hres ) );
-
-	memcpy ( pwDest, wIndices.Ptr(), sizeof(WORD) * wIndices.Size() );
-
-	hres = pIB->Unlock();
-	VERIFY ( SUCCEEDED ( hres ) );
-
-	wIndices.SizeTo ( 0 );
-
+	for (u32 i_idx=0; i_idx<indices.size(); i_idx++)
+		indices[i_idx].set(*wIndices.Item(i_idx*3+0),*wIndices.Item(i_idx*3+1),*wIndices.Item(i_idx*3+2));
 }
 

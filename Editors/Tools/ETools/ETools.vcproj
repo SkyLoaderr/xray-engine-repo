@@ -117,7 +117,8 @@
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"/>
+				CallingConvention="2"
+				ShowIncludes="FALSE"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
@@ -203,13 +204,37 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="PropSlim"
+			Name="VIPM"
 			Filter="">
+			<File
+				RelativePath=".\ArbitraryList.h">
+			</File>
+			<File
+				RelativePath=".\DLink.h">
+			</File>
+			<File
+				RelativePath=".\mesh.h">
+			</File>
+			<File
+				RelativePath=".\object.cpp">
+			</File>
+			<File
+				RelativePath=".\object.h">
+			</File>
+			<File
+				RelativePath=".\object_sliding.cpp">
+			</File>
+			<File
+				RelativePath=".\object_sliding.h">
+			</File>
 			<File
 				RelativePath=".\PropSlimTools.cpp">
 			</File>
 			<File
 				RelativePath=".\PropSlimTools.h">
+			</File>
+			<File
+				RelativePath=".\TomsLib.h">
 			</File>
 		</Filter>
 	</Files>

@@ -11,7 +11,9 @@
 // Pretty memory-hungry, but good for cross-referencing between
 // edges, points and triangles.
 
-#include "tomslib.h"
+//.#include "tomslib.h"
+#include "dlink.h"
+#include "arbitrarylist.h"
 
 // Before including this file, #define the following:
 //
@@ -72,7 +74,7 @@ public:
 	MeshTri ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshPt *pNewPt3, MeshTri *pListRoot = NULL, MeshEdge *pEdgeListRoot = NULL );
 	~MeshTri ( void );
 	// Set bBinUnusedEdges to TRUE to autodestroy edges.
-	Delete ( BOOL bBinUnusedEdges = FALSE );
+	void Delete ( BOOL bBinUnusedEdges = FALSE );
 	// Which list is this tri in?
 	MeshTri *QueryList ( void );
 	// Move this tri to this list.
@@ -289,9 +291,9 @@ inline MeshTri::MeshTri ( void )
 
 inline MeshTri::MeshTri ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshPt *pNewPt3, MeshTri *pListRoot, MeshEdge *pEdgeListRoot )
 {
-	ASSERT ( pNewPt1 != NULL );
-	ASSERT ( pNewPt2 != NULL );
-	ASSERT ( pNewPt3 != NULL );
+	VERIFY ( pNewPt1 != NULL );
+	VERIFY ( pNewPt2 != NULL );
+	VERIFY ( pNewPt3 != NULL );
 	pPt1 = pNewPt1;
 	pPt2 = pNewPt2;
 	pPt3 = pNewPt3;
@@ -307,9 +309,9 @@ inline MeshTri::MeshTri ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshPt *pNewPt3, Mes
 	if ( ( pEdge12 == NULL ) && ( pEdgeListRoot != NULL ) )
 	{
 		// Autocreate the edge.
-		pEdge12 = new MeshEdge ( pPt1, pPt2, pEdgeListRoot );
+		pEdge12 = xr_new<MeshEdge>( pPt1, pPt2, pEdgeListRoot );
 	}
-	ASSERT ( pEdge12 != NULL );
+	VERIFY ( pEdge12 != NULL );
 	{
 		pEdge12->AddTri ( this );
 	}
@@ -318,9 +320,9 @@ inline MeshTri::MeshTri ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshPt *pNewPt3, Mes
 	if ( ( pEdge23 == NULL ) && ( pEdgeListRoot != NULL ) )
 	{
 		// Autocreate the edge.
-		pEdge23 = new MeshEdge ( pPt2, pPt3, pEdgeListRoot );
+		pEdge23 = xr_new<MeshEdge>( pPt2, pPt3, pEdgeListRoot );
 	}
-	ASSERT ( pEdge23 != NULL );
+	VERIFY ( pEdge23 != NULL );
 	{
 		pEdge23->AddTri ( this );
 	}
@@ -329,9 +331,9 @@ inline MeshTri::MeshTri ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshPt *pNewPt3, Mes
 	if ( ( pEdge31 == NULL ) && ( pEdgeListRoot != NULL ) )
 	{
 		// Autocreate the edge.
-		pEdge31 = new MeshEdge ( pPt3, pPt1, pEdgeListRoot );
+		pEdge31 = xr_new<MeshEdge>( pPt3, pPt1, pEdgeListRoot );
 	}
-	ASSERT ( pEdge31 != NULL );
+	VERIFY ( pEdge31 != NULL );
 	{
 		pEdge31->AddTri ( this );
 	}
@@ -353,7 +355,7 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 		if ( bBinUnusedEdges && ( pEdge12->pTri12 == NULL ) && ( pEdge12->pTri21 == NULL ) )
 		{
 			// This edge is no longer in use.
-			delete pEdge12;
+			xr_delete(pEdge12);
 		}
 		pEdge12 = NULL;
 	}
@@ -361,12 +363,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	if ( pEdge23 != NULL )
@@ -375,7 +377,7 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 		if ( bBinUnusedEdges && ( pEdge23->pTri12 == NULL ) && ( pEdge23->pTri21 == NULL ) )
 		{
 			// This edge is no longer in use.
-			delete pEdge23;
+			xr_delete(pEdge23);
 		}
 		pEdge23 = NULL;
 	}
@@ -383,12 +385,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	if ( pEdge31 != NULL )
@@ -397,7 +399,7 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 		if ( bBinUnusedEdges && ( pEdge31->pTri12 == NULL ) && ( pEdge31->pTri21 == NULL ) )
 		{
 			// This edge is no longer in use.
-			delete pEdge31;
+			xr_delete(pEdge31);
 		}
 		pEdge31 = NULL;
 	}
@@ -405,12 +407,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	// Remove point references.
@@ -423,12 +425,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	if ( pPt2 != NULL )
@@ -440,12 +442,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	if ( pPt3 != NULL )
@@ -457,12 +459,12 @@ inline void MeshTri::InternalDelete ( BOOL bBinUnusedEdges )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pEdge12 == NULL );
-		ASSERT ( pEdge23 == NULL );
-		ASSERT ( pEdge31 == NULL );
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pPt3 == NULL );
+		VERIFY ( pEdge12 == NULL );
+		VERIFY ( pEdge23 == NULL );
+		VERIFY ( pEdge31 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pPt3 == NULL );
 	}
 
 	ListDel();
@@ -473,22 +475,23 @@ inline MeshTri::~MeshTri ( void )
 	InternalDelete ( FALSE );
 }
 
-inline MeshTri::Delete ( BOOL bBinUnusedEdges /*= FALSE*/ )
+inline void MeshTri::Delete ( BOOL bBinUnusedEdges /*= FALSE*/ )
 {
 	InternalDelete ( bBinUnusedEdges );
-	delete this;
+	MeshTri* tri = (MeshTri*)this;
+	xr_delete(tri);
 }
 
 
 inline void MeshTri::AddEdge ( MeshEdge *pEdge )
 {
 	// Can't mess with a tri's edges once created.
-	ASSERT ( FALSE );
+	VERIFY ( FALSE );
 }
 
 inline void MeshTri::RemoveEdge ( MeshEdge *pEdge )
 {
-	ASSERT ( pEdge != NULL );
+	VERIFY ( pEdge != NULL );
 	if ( pEdge12 == pEdge )
 	{
 		pEdge12 = NULL;
@@ -499,14 +502,14 @@ inline void MeshTri::RemoveEdge ( MeshEdge *pEdge )
 	}
 	else
 	{
-		ASSERT ( pEdge31 == pEdge );
+		VERIFY ( pEdge31 == pEdge );
 		pEdge31 = NULL;
 	}
 }
 
 inline void MeshTri::RemovePt ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	if ( pPt1 == pPt )
 	{
 		pPt1 = NULL;
@@ -517,7 +520,7 @@ inline void MeshTri::RemovePt ( MeshPt *pPt )
 	}
 	else
 	{
-		ASSERT ( pPt3 == pPt );
+		VERIFY ( pPt3 == pPt );
 		pPt3 = NULL;
 	}
 }
@@ -528,7 +531,7 @@ inline MeshTri *MeshTri::QueryList ( void )
 	MeshTri *pListRoot = ListFindFirst();
 	if ( pListRoot == this )
 	{
-		ASSERT ( ListFindLast() == this );
+		VERIFY ( ListFindLast() == this );
 		pListRoot = NULL;
 	}
 	return ( pListRoot );
@@ -543,7 +546,7 @@ inline void MeshTri::SetList ( MeshTri *pListRoot )
 	}
 }
 
-#define FAIL_CHECK() bRes = FALSE; ASSERT ( FALSE )
+#define FAIL_CHECK() bRes = FALSE; VERIFY ( FALSE )
 inline bool MeshTri::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, MeshTri *pTriRoot )
 {
 	bool bRes = TRUE;
@@ -692,8 +695,8 @@ inline MeshEdge::MeshEdge ( void )
 
 inline MeshEdge::MeshEdge ( MeshPt *pNewPt1, MeshPt *pNewPt2, MeshEdge *pListRoot )
 {
-	ASSERT ( pNewPt1 != NULL );
-	ASSERT ( pNewPt2 != NULL );
+	VERIFY ( pNewPt1 != NULL );
+	VERIFY ( pNewPt2 != NULL );
 	pPt1 = pNewPt1;
 	pPt2 = pNewPt2;
 	pTri12 = NULL;
@@ -724,10 +727,10 @@ inline MeshEdge::~MeshEdge ( void )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pTri12 == NULL );
-		ASSERT ( pTri21 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pTri12 == NULL );
+		VERIFY ( pTri21 == NULL );
 	}
 
 
@@ -741,15 +744,15 @@ inline MeshEdge::~MeshEdge ( void )
 	{
 		// The only good reason is if this is a local var,
 		// in which case everything should be NULL.
-		ASSERT ( pPt1 == NULL );
-		ASSERT ( pPt2 == NULL );
-		ASSERT ( pTri12 == NULL );
-		ASSERT ( pTri21 == NULL );
+		VERIFY ( pPt1 == NULL );
+		VERIFY ( pPt2 == NULL );
+		VERIFY ( pTri12 == NULL );
+		VERIFY ( pTri21 == NULL );
 	}
 
 	// Any tri should have been binned already
-	ASSERT ( pTri12 == NULL );
-	ASSERT ( pTri21 == NULL );
+	VERIFY ( pTri12 == NULL );
+	VERIFY ( pTri21 == NULL );
 
 	ListDel();
 }
@@ -758,14 +761,14 @@ inline MeshEdge::~MeshEdge ( void )
 // Remove this edge from the tri.
 inline void MeshEdge::RemoveTri ( MeshTri *pTri )
 {
-	ASSERT ( pTri != NULL );
+	VERIFY ( pTri != NULL );
 	if ( pTri12 == pTri )
 	{
 		pTri12 = NULL;
 	}
 	else
 	{
-		ASSERT ( pTri21 == pTri );
+		VERIFY ( pTri21 == pTri );
 		pTri21 = NULL;
 	}
 }
@@ -773,35 +776,35 @@ inline void MeshEdge::RemoveTri ( MeshTri *pTri )
 // Remove this edge from the pt.
 inline void MeshEdge::RemovePt ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	if ( pPt1 == pPt )
 	{
 		pPt1 = NULL;
 	}
 	else
 	{
-		ASSERT ( pPt2 == pPt );
+		VERIFY ( pPt2 == pPt );
 		pPt2 = NULL;
 	}
 }
 
 inline void MeshEdge::AddTri ( MeshTri *pTri )
 {
-	ASSERT ( pTri != NULL );
+	VERIFY ( pTri != NULL );
 	// Assumes the tri's pt pointers have already been set up.
 	if ( ( ( pPt1 == pTri->pPt1 ) && ( pPt2 == pTri->pPt2 ) ) ||
 		 ( ( pPt1 == pTri->pPt2 ) && ( pPt2 == pTri->pPt3 ) ) ||
 		 ( ( pPt1 == pTri->pPt3 ) && ( pPt2 == pTri->pPt1 ) ) )
 	{
-		ASSERT ( pTri12 == NULL );
+		VERIFY ( pTri12 == NULL );
 		pTri12 = pTri;
 	}
 	else
 	{
-		ASSERT ( ( ( pPt1 == pTri->pPt2 ) && ( pPt2 == pTri->pPt1 ) ) ||
+		VERIFY ( ( ( pPt1 == pTri->pPt2 ) && ( pPt2 == pTri->pPt1 ) ) ||
 				 ( ( pPt1 == pTri->pPt3 ) && ( pPt2 == pTri->pPt2 ) ) ||
 				 ( ( pPt1 == pTri->pPt1 ) && ( pPt2 == pTri->pPt3 ) ) );
-		ASSERT ( pTri21 == NULL );
+		VERIFY ( pTri21 == NULL );
 		pTri21 = pTri;
 	}
 }
@@ -809,28 +812,28 @@ inline void MeshEdge::AddTri ( MeshTri *pTri )
 // Returns the other triangle that uses this edge.
 inline MeshTri *MeshEdge::OtherTri ( MeshTri *pTri )
 {
-	ASSERT ( pTri != NULL );
+	VERIFY ( pTri != NULL );
 	if ( pTri == pTri12 )
 	{
 		return ( pTri21 );
 	}
 	else
 	{
-		ASSERT ( pTri == pTri21 );
+		VERIFY ( pTri == pTri21 );
 		return ( pTri12 );
 	}
 }
 
 inline MeshPt *MeshEdge::OtherPt ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	if ( pPt == pPt1 )
 	{
 		return ( pPt2 );
 	}
 	else
 	{
-		ASSERT ( pPt == pPt2 );
+		VERIFY ( pPt == pPt2 );
 		return ( pPt1 );
 	}
 }
@@ -838,10 +841,10 @@ inline MeshPt *MeshEdge::OtherPt ( MeshPt *pPt )
 // Try to merge these two edges. Result is TRUE if it succeeded - note that the other edge will be NOT deleted.
 inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 {
-	ASSERT ( pedge != this );
+	VERIFY ( pedge != this );
 	if ( pPt1 == pedge->pPt1 )
 	{
-		ASSERT ( pPt2 == pedge->pPt2 );
+		VERIFY ( pPt2 == pedge->pPt2 );
 		if ( ( pTri12 == NULL ) && ( pedge->pTri21 == NULL ) &&
 			 ( ( pEdgeProx == NULL ) || ( pedge->pEdgeProx == NULL ) ) )
 		{
@@ -859,16 +862,16 @@ inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 				}
 				else
 				{
-					ASSERT ( pTri12->pEdge31 == pedge );
+					VERIFY ( pTri12->pEdge31 == pedge );
 					pTri12->pEdge31 = this;
 				}
 			}
 			pedge->pTri12 = NULL;
 			if ( pedge->pEdgeProx != NULL )
 			{
-				ASSERT ( pEdgeProx == NULL );
+				VERIFY ( pEdgeProx == NULL );
 				pEdgeProx = pedge->pEdgeProx;
-				ASSERT ( pEdgeProx->pEdgeProx == pedge );
+				VERIFY ( pEdgeProx->pEdgeProx == pedge );
 				pEdgeProx->pEdgeProx = this;
 				pedge->pEdgeProx = NULL;
 			}
@@ -891,16 +894,16 @@ inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 				}
 				else
 				{
-					ASSERT ( pTri21->pEdge31 == pedge );
+					VERIFY ( pTri21->pEdge31 == pedge );
 					pTri21->pEdge31 = this;
 				}
 			}
 			pedge->pTri21 = NULL;
 			if ( pedge->pEdgeProx != NULL )
 			{
-				ASSERT ( pEdgeProx == NULL );
+				VERIFY ( pEdgeProx == NULL );
 				pEdgeProx = pedge->pEdgeProx;
-				ASSERT ( pEdgeProx->pEdgeProx == pedge );
+				VERIFY ( pEdgeProx->pEdgeProx == pedge );
 				pEdgeProx->pEdgeProx = this;
 				pedge->pEdgeProx = NULL;
 			}
@@ -914,8 +917,8 @@ inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 	}
 	else
 	{
-		ASSERT ( pPt1 == pedge->pPt2 );
-		ASSERT ( pPt2 == pedge->pPt1 );
+		VERIFY ( pPt1 == pedge->pPt2 );
+		VERIFY ( pPt2 == pedge->pPt1 );
 		if ( ( pTri12 == NULL ) && ( pedge->pTri12 == NULL ) &&
 			 ( ( pEdgeProx == NULL ) || ( pedge->pEdgeProx == NULL ) ) )
 		{
@@ -933,16 +936,16 @@ inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 				}
 				else
 				{
-					ASSERT ( pTri12->pEdge31 == pedge );
+					VERIFY ( pTri12->pEdge31 == pedge );
 					pTri12->pEdge31 = this;
 				}
 			}
 			pedge->pTri21 = NULL;
 			if ( pedge->pEdgeProx != NULL )
 			{
-				ASSERT ( pEdgeProx == NULL );
+				VERIFY ( pEdgeProx == NULL );
 				pEdgeProx = pedge->pEdgeProx;
-				ASSERT ( pEdgeProx->pEdgeProx == pedge );
+				VERIFY ( pEdgeProx->pEdgeProx == pedge );
 				pEdgeProx->pEdgeProx = this;
 				pedge->pEdgeProx = NULL;
 			}
@@ -965,16 +968,16 @@ inline bool MeshEdge::bTryToMergeEdges ( MeshEdge *pedge )
 				}
 				else
 				{
-					ASSERT ( pTri21->pEdge31 == pedge );
+					VERIFY ( pTri21->pEdge31 == pedge );
 					pTri21->pEdge31 = this;
 				}
 			}
 			pedge->pTri12 = NULL;
 			if ( pedge->pEdgeProx != NULL )
 			{
-				ASSERT ( pEdgeProx == NULL );
+				VERIFY ( pEdgeProx == NULL );
 				pEdgeProx = pedge->pEdgeProx;
-				ASSERT ( pEdgeProx->pEdgeProx == pedge );
+				VERIFY ( pEdgeProx->pEdgeProx == pedge );
 				pEdgeProx->pEdgeProx = this;
 				pedge->pEdgeProx = NULL;
 			}
@@ -994,7 +997,7 @@ inline MeshEdge *MeshEdge::QueryList ( void )
 	MeshEdge *pListRoot = ListFindFirst();
 	if ( pListRoot == this )
 	{
-		ASSERT ( ListFindLast() == this );
+		VERIFY ( ListFindLast() == this );
 		pListRoot = NULL;
 	}
 	return ( pListRoot );
@@ -1017,7 +1020,7 @@ inline void MeshEdge::SetList ( MeshEdge *pListRoot )
 // Returns TRUE on success, or FALSE if it failed.
 inline bool MeshEdge::AddProx ( MeshEdge *pEdge )
 {
-	ASSERT ( pEdge != NULL );
+	VERIFY ( pEdge != NULL );
 	if ( pEdgeProx != NULL )
 	{
 		// Already got prox.
@@ -1071,7 +1074,7 @@ inline MeshEdge *MeshEdge::DoProxMatch ( void )
 	for ( i = 0; i < pPt1->ProxPtList.Size(); i++ )
 	{
 		MeshPt *pPtProx = ppPt[i];
-		ASSERT ( pPtProx != NULL );
+		VERIFY ( pPtProx != NULL );
 
 		MeshEdge *pEdgeOther = pPtProx->FirstEdge();
 		while ( pEdgeOther != NULL )
@@ -1111,7 +1114,7 @@ inline bool MeshEdge::RemoveProx ( void )
 	}
 	else
 	{
-		ASSERT ( pEdgeProx->pEdgeProx == this );
+		VERIFY ( pEdgeProx->pEdgeProx == this );
 		pEdgeProx->pEdgeProx = NULL;
 		pEdgeProx = NULL;
 		return ( TRUE );
@@ -1272,21 +1275,21 @@ inline MeshPt::~MeshPt ( void )
 	while ( ProxPtList.Size() > 0 )
 	{
 		bool bRes = RemoveProx ( ProxPtList.Ptr()[0] );
-		ASSERT ( bRes );
+		VERIFY ( bRes );
 	}
  
 	// Should not be any tris.
-	ASSERT ( TriList.Size() == 0 );
+	VERIFY ( TriList.Size() == 0 );
 
 	// Should not be any edges.
-	ASSERT ( EdgeList.Size() == 0 );
+	VERIFY ( EdgeList.Size() == 0 );
 
 	ListDel();
 }
 
 inline void MeshPt::RemoveEdge ( MeshEdge *pEdge )
 {
-	ASSERT ( pEdge != NULL );
+	VERIFY ( pEdge != NULL );
 	MeshEdge **ppEdgeList = EdgeList.Ptr();
 	int i;
 	for ( i = 0; i < EdgeList.Size(); i++ )
@@ -1296,14 +1299,14 @@ inline void MeshPt::RemoveEdge ( MeshEdge *pEdge )
 			break;
 		}
 	}
-	ASSERT ( i < EdgeList.Size() );
+	VERIFY ( i < EdgeList.Size() );
 	// Bin this entry.
 	EdgeList.RemoveItem ( i );
 }
 
 inline void MeshPt::RemoveTri ( MeshTri *pTri )
 {
-	ASSERT ( pTri != NULL );
+	VERIFY ( pTri != NULL );
 	MeshTri **ppTriList = TriList.Ptr();
 	int i;
 	for ( i = 0; i < TriList.Size(); i++ )
@@ -1313,22 +1316,22 @@ inline void MeshPt::RemoveTri ( MeshTri *pTri )
 			break;
 		}
 	}
-	ASSERT ( i < TriList.Size() );
+	VERIFY ( i < TriList.Size() );
 	// Bin this entry with the last entry.
 	TriList.RemoveItem ( i );
 }
 
 inline void MeshPt::AddTri ( MeshTri *pTri )
 {
-	ASSERT ( pTri != NULL );
+	VERIFY ( pTri != NULL );
 #ifdef DEBUG
 	// Make sure this hasn't been added already.
 	MeshTri **ppTriList = TriList.Ptr();
 	int i;
 	for ( i = 0; i < TriList.Size(); i++ )
 	{
-		ASSERT ( ppTriList[i] != NULL );
-		ASSERT ( ppTriList[i] != pTri );
+		VERIFY ( ppTriList[i] != NULL );
+		VERIFY ( ppTriList[i] != pTri );
 	}
 #endif
 	*(TriList.AddItem()) = pTri;
@@ -1336,15 +1339,15 @@ inline void MeshPt::AddTri ( MeshTri *pTri )
 
 inline void MeshPt::AddEdge ( MeshEdge *pEdge )
 {
-	ASSERT ( pEdge != NULL );
+	VERIFY ( pEdge != NULL );
 #ifdef DEBUG
 	// Make sure this hasn't been added already.
 	int i;
 	MeshEdge **ppEdgeList = EdgeList.Ptr();
 	for ( i = 0; i < EdgeList.Size(); i++ )
 	{
-		ASSERT ( ppEdgeList[i] != NULL );
-		ASSERT ( ppEdgeList[i] != pEdge );
+		VERIFY ( ppEdgeList[i] != NULL );
+		VERIFY ( ppEdgeList[i] != pEdge );
 	}
 #endif
 	*(EdgeList.AddItem()) = pEdge;
@@ -1353,23 +1356,23 @@ inline void MeshPt::AddEdge ( MeshEdge *pEdge )
 
 inline MeshEdge *MeshPt::FindEdge ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
-	ASSERT ( pPt != this );
+	VERIFY ( pPt != NULL );
+	VERIFY ( pPt != this );
 	MeshEdge **ppEdgeList = EdgeList.Ptr();
 	int i;
 	for ( i = 0; i < EdgeList.Size(); i++ )
 	{
 		MeshEdge *pEdge = ppEdgeList[i];
-		ASSERT ( pEdge != NULL );
-		ASSERT ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
+		VERIFY ( pEdge != NULL );
+		VERIFY ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
 		if ( pEdge->pPt2 == pPt )
 		{
-			ASSERT ( pEdge->pPt1 == this );
+			VERIFY ( pEdge->pPt1 == this );
 			return ( pEdge );
 		}
 		if ( pEdge->pPt1 == pPt )
 		{
-			ASSERT ( pEdge->pPt2 == this );
+			VERIFY ( pEdge->pPt2 == this );
 			return ( pEdge );
 		}
 	}
@@ -1385,18 +1388,18 @@ inline MeshEdge *MeshPt::FindEdge ( MeshPt *pPt )
 // The tri will use the points in the order *this,*pPt.
 inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
-	ASSERT ( pPt != this );
+	VERIFY ( pPt != NULL );
+	VERIFY ( pPt != this );
 	MeshEdge **ppEdgeList = EdgeList.Ptr();
 	int i;
 	for ( i = 0; i < EdgeList.Size(); i++ )
 	{
 		MeshEdge *pEdge = ppEdgeList[i];
-		ASSERT ( pEdge != NULL );
-		ASSERT ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
+		VERIFY ( pEdge != NULL );
+		VERIFY ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
 		if ( pEdge->pPt2 == pPt )
 		{
-			ASSERT ( pEdge->pPt1 == this );
+			VERIFY ( pEdge->pPt1 == this );
 			// Check that it would be possible to add a tri to this.
 			// The tri will use this,pPt in that order, so must be in
 			// pTri12
@@ -1411,7 +1414,7 @@ inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 		}
 		if ( pEdge->pPt1 == pPt )
 		{
-			ASSERT ( pEdge->pPt2 == this );
+			VERIFY ( pEdge->pPt2 == this );
 			// Check that it would be possible to add a tri to this.
 			// The tri will use this,pPt in that order, so must be in
 			// pTri21
@@ -1431,15 +1434,15 @@ inline MeshEdge *MeshPt::FindTriEdge ( MeshPt *pPt )
 
 inline MeshTri *MeshPt::FindTri ( MeshPt *pPt1, MeshPt *pPt2 )
 {
-	ASSERT ( pPt1 != NULL );
-	ASSERT ( pPt2 != NULL );
+	VERIFY ( pPt1 != NULL );
+	VERIFY ( pPt2 != NULL );
 	MeshTri **ppTriList = TriList.Ptr();
 	int i;
 	for ( i = 0; i < TriList.Size(); i++ )
 	{
 		MeshTri *pTri = ppTriList[i];
-		ASSERT ( pTri != NULL );
-		ASSERT ( ( pTri->pPt1 == this ) || ( pTri->pPt2 == this ) || ( pTri->pPt3 == this ) );
+		VERIFY ( pTri != NULL );
+		VERIFY ( ( pTri->pPt1 == this ) || ( pTri->pPt2 == this ) || ( pTri->pPt3 == this ) );
 		if ( ( pTri->pPt1 == this ) && ( pTri->pPt2 == pPt1 ) && ( pTri->pPt3 == pPt2 ) )
 		{
 			return ( pTri );
@@ -1461,14 +1464,14 @@ inline MeshTri *MeshPt::FindTri ( MeshPt *pPt1, MeshPt *pPt2 )
 // are returned, otherwise all tris are returned.
 inline MeshTri *MeshPt::NextTri ( MeshPt *pPt )
 {
-	ASSERT ( this != pPt );
-	ASSERT ( iCurTriNum >= 0 );
+	VERIFY ( this != pPt );
+	VERIFY ( iCurTriNum >= 0 );
 	while ( TRUE )
 	{
 		if ( iCurTriNum < TriList.Size() )
 		{
 			MeshTri *pTri = (TriList.Ptr())[iCurTriNum++];
-			ASSERT ( pTri != NULL );
+			VERIFY ( pTri != NULL );
 			if ( pPt == NULL )
 			{
 				// Return all tris.
@@ -1497,7 +1500,7 @@ inline MeshTri *MeshPt::NextTri ( MeshPt *pPt )
 // are returned, otherwise all tris are returned.
 inline MeshTri *MeshPt::FirstTri ( MeshPt *pPt )
 {
-	ASSERT ( iCurTriNum == -1 );
+	VERIFY ( iCurTriNum == -1 );
 	iCurTriNum = 0;
 	return ( NextTri ( pPt ) );
 }
@@ -1513,14 +1516,14 @@ inline void MeshPt::EndTri ( void )
 // are returned, otherwise all edges are returned.
 inline MeshEdge *MeshPt::NextEdge ( MeshPt *pPt )
 {
-	ASSERT ( this != pPt );
-	ASSERT ( iCurEdgeNum >= 0 );
+	VERIFY ( this != pPt );
+	VERIFY ( iCurEdgeNum >= 0 );
 	while ( TRUE )
 	{
 		if ( iCurEdgeNum < EdgeList.Size() )
 		{
 			MeshEdge *pEdge = (EdgeList.Ptr())[iCurEdgeNum++];
-			ASSERT ( pEdge != NULL );
+			VERIFY ( pEdge != NULL );
 			if ( pPt == NULL )
 			{
 				// Return all edges.
@@ -1530,7 +1533,7 @@ inline MeshEdge *MeshPt::NextEdge ( MeshPt *pPt )
 			// Return only the edges the use this & pPt.
 			if ( ( pEdge->pPt1 == pPt ) || ( pEdge->pPt2 == pPt ) )
 			{
-				ASSERT ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
+				VERIFY ( ( pEdge->pPt1 == this ) || ( pEdge->pPt2 == this ) );
 				return ( pEdge );
 			}
 
@@ -1562,11 +1565,11 @@ inline void MeshPt::EndEdge ( void )
 // Returns TRUE if the two pts are marked as being in proximity.
 inline bool MeshPt::CheckProx ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	MeshPt **ppPt = ProxPtList.Ptr();
 	for ( int i = 0; i < ProxPtList.Size(); i++ )
 	{
-		ASSERT ( ppPt[i] != NULL );
+		VERIFY ( ppPt[i] != NULL );
 		if ( ppPt[i] == pPt )
 		{
 			// Yes.
@@ -1584,16 +1587,16 @@ inline bool MeshPt::AddProx ( MeshPt *pPt, bool bProxEdges )
 {
 	bool bRes;
 
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	if ( CheckProx ( pPt ) )
 	{
 		// Already prox.
-		ASSERT ( pPt->CheckProx ( this ) );
+		VERIFY ( pPt->CheckProx ( this ) );
 		bRes = FALSE;
 	}
 	else
 	{
-		ASSERT ( !pPt->CheckProx ( this ) );
+		VERIFY ( !pPt->CheckProx ( this ) );
 
 		// Add to this pt.
 		*(ProxPtList.AddItem()) = pPt;
@@ -1615,12 +1618,12 @@ inline bool MeshPt::AddProx ( MeshPt *pPt, bool bProxEdges )
 		MeshPt **ppPt = pptOther->ProxPtList.Ptr();
 		for ( int i = 0; i < pptOther->ProxPtList.Size(); i++ )
 		{
-			ASSERT ( ppPt[i] != NULL );
+			VERIFY ( ppPt[i] != NULL );
 			MeshEdge *pedgeProx = pPt->FindEdge ( ppPt[i] );
 			if ( pedgeProx != NULL )
 			{
 				bool bRes = pedgeProx->AddProx ( pedge );
-				ASSERT ( bRes );
+				VERIFY ( bRes );
 				break;
 			}
 		}
@@ -1635,11 +1638,11 @@ inline bool MeshPt::AddProx ( MeshPt *pPt, bool bProxEdges )
 // If the pt was there, returns TRUE.
 inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 {
-	ASSERT ( pPt != NULL );
+	VERIFY ( pPt != NULL );
 	if ( CheckProx ( pPt ) )
 	{
 		// Yep, they are prox.
-		ASSERT ( pPt->CheckProx ( this ) );
+		VERIFY ( pPt->CheckProx ( this ) );
 
 		MeshPt **ppPtList;
 		int i;
@@ -1653,7 +1656,7 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 				break;
 			}
 		}
-		ASSERT ( i < ProxPtList.Size() );
+		VERIFY ( i < ProxPtList.Size() );
 		// Replace this entry with the last entry.
 		ProxPtList.RemoveItem(i);
 
@@ -1666,7 +1669,7 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 				break;
 			}
 		}
-		ASSERT ( i < pPt->ProxPtList.Size() );
+		VERIFY ( i < pPt->ProxPtList.Size() );
 		// Replace this entry with the last entry.
 		ProxPtList.RemoveItem(i);
 
@@ -1675,7 +1678,7 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 	else
 	{
 		// No, they're not prox.
-		ASSERT ( !pPt->CheckProx ( this ) );
+		VERIFY ( !pPt->CheckProx ( this ) );
 		return ( FALSE );
 	}
 
@@ -1684,7 +1687,7 @@ inline bool MeshPt::RemoveProx ( MeshPt *pPt )
 // Return the first prox pt. MUST be called before calling NextProx().
 inline MeshPt *MeshPt::FirstProx ( void )
 {
-	ASSERT ( iCurProxNum == -1 );
+	VERIFY ( iCurProxNum == -1 );
 	iCurProxNum = 0;
 	return ( NextProx() );
 }
@@ -1692,13 +1695,13 @@ inline MeshPt *MeshPt::FirstProx ( void )
 // Return the next prox pt.
 inline MeshPt *MeshPt::NextProx ( void )
 {
-	ASSERT ( iCurProxNum >= 0 );
+	VERIFY ( iCurProxNum >= 0 );
 	while ( TRUE )
 	{
 		if ( iCurProxNum < ProxPtList.Size() )
 		{
 			MeshPt *pptProx = (ProxPtList.Ptr())[iCurProxNum++];
-			ASSERT ( pptProx != NULL );
+			VERIFY ( pptProx != NULL );
 			return ( pptProx );
 		}
 		else
@@ -1721,7 +1724,7 @@ inline MeshPt *MeshPt::QueryList ( void )
 	MeshPt *pListRoot = ListFindFirst();
 	if ( pListRoot == this )
 	{
-		ASSERT ( ListFindLast() == this );
+		VERIFY ( ListFindLast() == this );
 		pListRoot = NULL;
 	}
 	return ( pListRoot );
@@ -1748,7 +1751,7 @@ inline bool MeshPt::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Mes
 	MeshPt **ppPt = ProxPtList.Ptr();
 	for ( int i = 0; i < ProxPtList.Size(); i++ )
 	{
-		ASSERT ( ppPt[i] != NULL );
+		VERIFY ( ppPt[i] != NULL );
 		if ( !ppPt[i]->CheckProx ( this ) )
 		{
 			FAIL_CHECK();
@@ -1765,7 +1768,7 @@ inline bool MeshPt::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Mes
 	{
 		if ( !pEdge->ConsistencyCheck ( pPtRoot, pEdgeRoot, pTriRoot ) )
 		{
-			// Will have already ASSERTed.
+			// Will have already VERIFYed.
 			bRes = FALSE;
 		}
 		pEdge = NextEdge();
@@ -1775,7 +1778,7 @@ inline bool MeshPt::ConsistencyCheck ( MeshPt *pPtRoot, MeshEdge *pEdgeRoot, Mes
 	{
 		if ( !pTri->ConsistencyCheck ( pPtRoot, pEdgeRoot, pTriRoot ) )
 		{
-			// Will have already ASSERTed.
+			// Will have already VERIFYed.
 			bRes = FALSE;
 		}
 		pTri = NextTri();
