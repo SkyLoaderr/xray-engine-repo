@@ -11,26 +11,6 @@
 CPropHelper 	PHelper_impl;
 IPropHelper& 	PHelper		(){return PHelper_impl;}
 //---------------------------------------------------------------------------
-std::string FolderAppend	(LPCSTR val)
-{
-    return (val&&val[0])?std::string(val)+std::string("\\"):std::string("");
-}
-ref_str CPropHelper::PrepareKey1	(LPCSTR pref, LPCSTR key)
-{
-    R_ASSERT(key);
-    return ref_str(std::string(FolderAppend(pref)+std::string(key)).c_str());
-}
-ref_str CPropHelper::PrepareKey2	(LPCSTR pref0, LPCSTR pref1, LPCSTR key)
-{
-    R_ASSERT(key);
-    return ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+std::string(key)).c_str());
-}
-ref_str CPropHelper::PrepareKey3	(LPCSTR pref0, LPCSTR pref1, LPCSTR pref2, LPCSTR key)
-{
-    R_ASSERT(key);
-    return ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+std::string(key)).c_str());
-}
-//---------------------------------------------------------------------------
 PropItem* CPropHelper::CreateItem(PropItemVec& items, const ref_str& key, EPropType type, u32 item_flags)
 {
     PropItem* item	= FindItem(items,key,type);

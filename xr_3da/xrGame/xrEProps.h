@@ -35,6 +35,28 @@ typedef fastdelegate::FastDelegate1<ChooseItemVec&>				TOnChooseFillProp;
 #endif
 
 //------------------------------------------------------------------------------
+// Prepare Key
+//------------------------------------------------------------------------------
+IC std::string FolderAppend	(LPCSTR val)
+{
+    return 	(val&&val[0])?std::string(val)+std::string("\\"):std::string("");
+}
+IC ref_str PrepareKey	(LPCSTR pref, 	LPCSTR key)
+{
+    R_ASSERT	(key);
+	return 		ref_str(std::string(FolderAppend(pref)+std::string(key)).c_str());
+}
+IC ref_str PrepareKey (LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key)
+{
+    R_ASSERT	(key);
+    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+std::string(key)).c_str());
+}
+IC ref_str PrepareKey (LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key)
+{
+    R_ASSERT	(key);
+    return 		ref_str(std::string(FolderAppend(pref0)+FolderAppend(pref1)+FolderAppend(pref2)+std::string(key)).c_str());
+}
+//------------------------------------------------------------------------------
 // Properties
 //------------------------------------------------------------------------------
 class XR_EPROPS_API IPropHelper{
@@ -89,10 +111,6 @@ public:
     virtual VectorValue* 		__stdcall	CreateAngle3	    (PropItemVec& items, ref_str key, Fvector* val, float mn=0.f, float mx=PI_MUL_2, float inc=0.01f, int decim=2)=0;
     virtual RTextValue* 		__stdcall	CreateName		    (PropItemVec& items, ref_str key, ref_str* val, ListItem* owner)=0;  
 	virtual RTextValue* 		__stdcall	CreateNameCB		(PropItemVec& items, ref_str key, ref_str* val, TOnDrawTextEvent=0, RTextValue::TOnBeforeEditEvent=0, RTextValue::TOnAfterEditEvent=0)=0;
-
-    virtual ref_str  			__stdcall	PrepareKey1			(LPCSTR pref, 	LPCSTR key)=0;
-    virtual ref_str  			__stdcall	PrepareKey2			(LPCSTR pref0, 	LPCSTR pref1,	LPCSTR key)=0;
-    virtual ref_str  			__stdcall	PrepareKey3			(LPCSTR pref0,	LPCSTR pref1, 	LPCSTR pref2,	LPCSTR key)=0;
 };
 //---------------------------------------------------------------------------
 #ifdef __BORLANDC__
