@@ -10,18 +10,15 @@
 #include "location_manager.h"
 #include "gameobject.h"
 
-CLocationManager::CLocationManager	()
+CLocationManager::CLocationManager	(CGameObject *object)
 {
-	init							();
+	VERIFY							(object);
+	m_object						= object;
+	m_vertex_types.clear			();
 }
 
 CLocationManager::~CLocationManager	()
 {
-}
-
-void CLocationManager::init			()
-{
-	m_vertex_types.clear			();
 }
 
 void CLocationManager::setup_location_types(LPCSTR S, LPCSTR section)
@@ -47,14 +44,9 @@ void CLocationManager::Load			(LPCSTR section)
 	setup_location_types			(pSettings->r_string(section,"terrain"),section);
 }
 
-void CLocationManager::reinit		()
-{
-}
-
 void CLocationManager::reload		(LPCSTR section)
 {
-	CGameObject						*game_object = smart_cast<CGameObject*>(this);
-	if (!game_object || !game_object->spawn_ini() || !game_object->spawn_ini()->section_exist("alife") || !game_object->spawn_ini()->line_exist("alife","terrain"))
+	if (!m_object->spawn_ini() || !m_object->spawn_ini()->section_exist("alife") || !m_object->spawn_ini()->line_exist("alife","terrain"))
 		return;
-	setup_location_types			(game_object->spawn_ini()->r_string("alife","terrain"),*game_object->cNameSect());
+	setup_location_types			(m_object->spawn_ini()->r_string("alife","terrain"),*m_object->cNameSect());
 }

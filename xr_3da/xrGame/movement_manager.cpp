@@ -19,6 +19,7 @@
 #include "xrmessages.h"
 #include "ai_object_location.h"
 #include "custommonster.h"
+#include "location_manager.h"
 
 using namespace MovementManager;
 
@@ -40,6 +41,7 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	m_enemy_location_predictor	= xr_new<CEnemyLocationPredictor>();
 	m_restricted_object			= xr_new<CRestrictedObject>		 (m_object);
 	m_selector_manager			= xr_new<CSelectorManager>		 (m_object);
+	m_location_manager			= xr_new<CLocationManager>		 (m_object);
 
 	extrapolate_path			(false);
 }
@@ -57,10 +59,12 @@ CMovementManager::~CMovementManager	()
 	xr_delete					(m_enemy_location_predictor	);
 	xr_delete					(m_restricted_object		);
 	xr_delete					(m_selector_manager			);
+	xr_delete					(m_location_manager			);
 }
 
 void CMovementManager::Load			(LPCSTR section)
 {
+	locations().Load			(section);
 }
 
 void CMovementManager::reinit		()
@@ -78,7 +82,7 @@ void CMovementManager::reinit		()
 	m_build_at_once							= false;
 
 	enable_movement								(true);
-	game_location_selector().reinit				(&restrictions(),&selectors(),&object(),&ai().game_graph());
+	game_location_selector().reinit				(&restrictions(),&selectors(),&locations(),&ai().game_graph());
 	level_location_selector().reinit			(&restrictions(),&selectors(),ai().get_level_graph());
 	detail_path_manager().reinit				(&restrictions());
 	game_path_manager().reinit					(&restrictions(),&ai().game_graph());
@@ -94,6 +98,7 @@ void CMovementManager::reinit		()
 
 void CMovementManager::reload		(LPCSTR section)
 {
+	locations().reload				(section);
 }
 
 BOOL CMovementManager::net_Spawn	(CSE_Abstract* data)

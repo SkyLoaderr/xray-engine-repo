@@ -18,6 +18,7 @@
 #include "../../detail_path_manager.h"
 #include "../../ai_object_location.h"
 #include "../../movement_manager.h"
+#include "../../location_manager.h"
 
 using namespace RatSpace;
 
@@ -199,10 +200,10 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 	//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
 	m_tCurGP						= m_tNextGP = ai_location().game_vertex_id();
 
-	int								iPointCount	= (int)vertex_types().size();
+	int								iPointCount	= (int)movement().locations().vertex_types().size();
 	for (int j=0; j<iPointCount; ++j)
-		if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex(ai_location().game_vertex_id())->vertex_type())) {
-			m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+		if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex(ai_location().game_vertex_id())->vertex_type())) {
+			m_dwTimeToChange	= Level().timeServer() + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
 			break;
 		}
 

@@ -73,7 +73,6 @@ CCustomMonster::~CCustomMonster	()
 void CCustomMonster::Load		(LPCSTR section)
 {
 	inherited::Load				(section);
-	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
 	memory().Load				(section);
 	movement().Load				(section);
@@ -154,7 +153,6 @@ void CCustomMonster::reinit()
 {
 	CScriptEntity::reinit		();
 	CEntityAlive::reinit		();
-	CLocationManager::reinit	();
 	CMaterialManager::reinit	();
 	memory().reinit				();
 	movement().reinit	();
@@ -171,7 +169,6 @@ void CCustomMonster::reload		(LPCSTR section)
 {
 	CSoundPlayer::reload		(section);
 	CEntityAlive::reload		(section);
-	CLocationManager::reload	(section);
 	CMaterialManager::reload	(section);
 	memory().reload				(section);
 	movement().reload			(section);

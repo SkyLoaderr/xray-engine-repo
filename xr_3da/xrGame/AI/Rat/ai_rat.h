@@ -14,6 +14,7 @@
 #include "../../team_hierarchy_holder.h"
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
+#include "../../game_graph_space.h"
 
 class CMotionDef;
 class CBlend;

@@ -176,6 +176,12 @@ IC	CSelectorManager &CMovementManager::selectors						() const
 	return					(*m_selector_manager);
 }
 
+IC	CLocationManager &CMovementManager::locations						() const
+{
+	VERIFY					(m_location_manager);
+	return					(*m_location_manager);
+}
+
 IC	CCustomMonster &CMovementManager::object							() const
 {
 	VERIFY					(m_object);

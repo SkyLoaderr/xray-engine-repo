@@ -671,19 +671,6 @@
 					</Filter>
 				</Filter>
 				<Filter
-					Name="LocationManager"
-					Filter="">
-					<File
-						RelativePath=".\location_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\location_manager.h">
-					</File>
-					<File
-						RelativePath=".\location_manager_inline.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="MaterialManager"
 					Filter="">
 					<File
@@ -991,6 +978,19 @@
 						</File>
 						<File
 							RelativePath=".\selector_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="LocationManager"
+						Filter="">
+						<File
+							RelativePath=".\location_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\location_manager.h">
+						</File>
+						<File
+							RelativePath=".\location_manager_inline.h">
 						</File>
 					</Filter>
 				</Filter>

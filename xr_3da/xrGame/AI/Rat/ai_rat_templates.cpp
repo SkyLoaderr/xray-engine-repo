@@ -16,6 +16,7 @@
 #include "../../ai_object_location.h"
 #include "../../level_graph.h"
 #include "../../movement_manager.h"
+#include "../../location_manager.h"
 
 IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 {
@@ -331,20 +332,20 @@ void CAI_Rat::vfChooseNextGraphPoint()
 	GameGraph::_GRAPH_ID	tGraphID		= m_tNextGP;
 	CGameGraph::const_iterator	i,e;
 	ai().game_graph().begin		(tGraphID,i,e);
-	int					iPointCount		= (int)vertex_types().size();
+	int					iPointCount		= (int)movement().locations().vertex_types().size();
 	int					iBranches		= 0;
 	for ( ; i != e; ++i)
 		for (int j=0; j<iPointCount; ++j)
-			if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP))
+			if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP))
 				++iBranches;
 	ai().game_graph().begin		(tGraphID,i,e);
 	if (!iBranches) {
 		for ( ; i != e; ++i) {
 			for (int j=0; j<iPointCount; ++j)
-				if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
+				if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type())) {
 					m_tCurGP	= m_tNextGP;
 					m_tNextGP	= (*i).vertex_id();
-					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
 					return;
 				}
 		}
@@ -354,11 +355,11 @@ void CAI_Rat::vfChooseNextGraphPoint()
 		iBranches = 0;
 		for ( ; i != e; ++i) {
 			for (int j=0; j<iPointCount; ++j)
-				if (ai().game_graph().mask(vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
+				if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex((*i).vertex_id())->vertex_type()) && ((*i).vertex_id() != m_tCurGP)) {
 					if (iBranches == iChosenBranch) {
 						m_tCurGP			= m_tNextGP;
 						m_tNextGP			= (*i).vertex_id();
-						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(vertex_types()[j].dwMinTime,vertex_types()[j].dwMaxTime);
+						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
 						return;
 					}
 					++iBranches;

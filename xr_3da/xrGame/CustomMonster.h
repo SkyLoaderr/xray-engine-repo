@@ -15,7 +15,6 @@
 
 #include "damage_manager.h"
 #include "event_memory_manager.h"
-#include "location_manager.h"
 #include "material_manager.h"
 #include "sound_player.h"
 
@@ -33,7 +32,6 @@ class CCustomMonster :
 	public Feel::Vision,
 	public Feel::Sound,
 	public Feel::Touch,
-	public CLocationManager,
 	public CMaterialManager,
 	public CSoundPlayer
 {

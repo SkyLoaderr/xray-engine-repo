@@ -13,16 +13,15 @@
 class CLocationManager {
 private:
 	GameGraph::TERRAIN_VECTOR	m_vertex_types;
+	CGameObject					*m_object;
 
 protected:
 			void	setup_location_types	(LPCSTR S, LPCSTR section);
 
 public:
-					CLocationManager		();
+					CLocationManager		(CGameObject *object);
 	virtual			~CLocationManager		();
-			void	init					();
 	virtual void	Load					(LPCSTR section);
-	virtual void	reinit					();
 	virtual void	reload					(LPCSTR section);
 	IC		const GameGraph::TERRAIN_VECTOR &vertex_types	() const;
 };

@@ -59,6 +59,7 @@ class CLevelGraph;
 class CAbstractVertexEvaluator;
 class CRestrictedObject;
 class CSelectorManager;
+class CLocationManager;
 class CCustomMonster;
 
 namespace DetailPathManager {
@@ -171,6 +172,7 @@ public:
 	CEnemyLocationPredictor	*m_enemy_location_predictor;
 	CRestrictedObject		*m_restricted_object;
 	CSelectorManager		*m_selector_manager;
+	CLocationManager		*m_location_manager;
 	CCustomMonster			*m_object;
 
 private:
@@ -238,6 +240,7 @@ public:
 	IC		CEnemyLocationPredictor	&enemy_location_predictor	() const;
 	IC		CRestrictedObject		&restrictions				() const;
 	IC		CSelectorManager		&selectors					() const;
+	IC		CLocationManager		&locations					() const;
 	IC		CCustomMonster			&object						() const;
 };
 
