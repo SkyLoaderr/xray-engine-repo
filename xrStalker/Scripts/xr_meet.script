@@ -405,10 +405,10 @@ function add_to_binder(object, char_ini)
 	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
-	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", xr_motivator.storage[object:id()].meet, "meet_wait_buyer"))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", xr_motivator.storage[object:id()].meet, "meet_contact"))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", xr_motivator.storage[object:id()].meet, "meet_weapon"))
+	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", xr_motivator.storage[object:id()].meet, "meet_threat"))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet, char_ini)
