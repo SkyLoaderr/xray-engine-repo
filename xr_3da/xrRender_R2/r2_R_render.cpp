@@ -397,6 +397,6 @@ void	CRender::render_indirect			(light* L)
 		if		(x < 0.1f)				continue;
 		LIGEN.set_range					(x);
 
-		Target.accum_spot				(&LIGEN);
+		Target.accum_reflected			(&LIGEN);
 	}
 }
