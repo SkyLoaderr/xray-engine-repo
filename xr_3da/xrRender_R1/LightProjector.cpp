@@ -7,15 +7,17 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
-const	int			P_rt_size	= 512;
-const	int			P_o_size	= 51;
-const	int			P_o_line	= P_rt_size/P_o_size;
-const	int			P_o_count	= P_o_line*P_o_line;
-const	float		P_distance	= 48;					// switch distance between LOW-q light and HIGH-q light
-const	float		P_distance2	= P_distance*P_distance;
-const	float		P_cam_dist	= 200;
-const	float		P_cam_range = 7.f;
-const	D3DFORMAT	P_rtf		= D3DFMT_A8R8G8B8;
+// tir2.xrdemo		-> 45.20
+
+const	int			P_rt_size		= 512;
+const	int			P_o_size		= 51;
+const	int			P_o_line		= P_rt_size/P_o_size;
+const	int			P_o_count		= P_o_line*P_o_line;
+const	float		P_distance		= 48;					// switch distance between LOW-q light and HIGH-q light
+const	float		P_distance2		= P_distance*P_distance;
+const	float		P_cam_dist		= 200;
+const	float		P_cam_range		= 7.f;
+const	D3DFORMAT	P_rtf			= D3DFMT_A8R8G8B8;
 const	float		P_blur_kernel	= .5f;
 
 //////////////////////////////////////////////////////////////////////
@@ -80,8 +82,7 @@ void CLightProjector::set_object	(IRenderable* O)
 		if (D < P_distance)		current	= O;
 		else					current = 0;
 		
-		if (current)
-		{
+		if (current)				{
 			CLightTrack*	LT		= (CLightTrack*)current->renderable.ROS;
 			LT->Shadowed_dwFrame	= Device.dwFrame;
 			LT->Shadowed_Slot		= receivers.size();
@@ -230,13 +231,6 @@ void CLightProjector::calculate	()
 		mTemp.translate		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,0);
 		C.UVgen.mulA		(mTemp);
 
-		// Clear color to ambience
-		/*
-		float	c_a			=	((CLightTrack*)C.O->renderable.ROS)->ambient;
-		int		c_i			=	iFloor(c_a)/2;
-		CHK_DX				(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
-		*/
-		
 		// Build bbox and render
 		Fvector				min,max;
 		Fbox				BB;
@@ -273,6 +267,7 @@ void CLightProjector::calculate	()
 	RCache.set_xform_view		(Device.mView);
 }
 
+#ifdef DEBUG
 void CLightProjector::render	()
 {
 	/*
@@ -309,3 +304,4 @@ void CLightProjector::render	()
 	}
 	*/
 }
+#endif

@@ -160,7 +160,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		data->r		(Vertices1W,size);
 		for (it=0; it<dwVertCount; it++)
 			bids.insert	(Vertices1W[it].matrix);
-		Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
+		//Msg	("         BPV: %d, %d verts, %d bone-influences",bpv,dwVertCount,bids.size());
 		if	(1==bids.size())	{
 			RenderMode	= RM_SINGLE;
 			RMS_boneid	= *bids.begin();
@@ -184,7 +184,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 				bids2.insert(Vertices2W[it].matrix1);
 			}
 		}
-		Msg	("         BPV: %d, %d verts, %d/%d bone-influences",bpv,dwVertCount,bids.size(),bids2.size());
+		//Msg	("         BPV: %d, %d verts, %d/%d bone-influences",bpv,dwVertCount,bids.size(),bids2.size());
 		break;
 	default:
 		Debug.fatal	("Invalid vertex type in skinned model '%s'",N);

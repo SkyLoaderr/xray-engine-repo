@@ -10,12 +10,10 @@
 
 class CLightProjector
 {
-	friend class			pred_sorter;
 private:
 	//
 	typedef	R_dsgraph::_MatrixItem	NODE;		
-	struct	recv
-	{
+	struct	recv	{
 		IRenderable*		O;
 		Fvector				C;
 		float				D;
@@ -45,7 +43,9 @@ public:
 	void					setup			(int slot);
 	void					finalize		()			{ receivers.clear(); }
 
+#ifdef DEBUG
 	void					render			();
+#endif
 
 	CLightProjector			();
 	~CLightProjector		();
