@@ -14,7 +14,8 @@ class CWeaponGroza: public CWeapon
 	{
 		eIdle,
 		eReload,
-		eFire
+		eFire,
+		eFiring
 	};
 	typedef CWeapon inherited;
 
