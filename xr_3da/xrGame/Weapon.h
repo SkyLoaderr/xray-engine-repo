@@ -134,7 +134,8 @@ public:
 
 	// logic & effects
 	virtual void			SetDefaults			();
-	virtual bool			AddAmmo				(int iValue)	{ iAmmoElapsed+=iValue; return true;}
+	virtual void			Ammo_add			(int iValue)	{ iAmmoElapsed+=iValue; }
+	virtual int				Ammo_eject			()				{ int save = iAmmoCurrent+iAmmoElapsed; iAmmoCurrent = iAmmoElapsed = 0; return save;  }
 	virtual void			FireStart			()				{ bWorking=true;	}
 	virtual void			FireEnd				()				{ bWorking=false;	}
 	virtual void			Reload				()				{};

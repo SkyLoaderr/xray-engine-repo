@@ -179,17 +179,6 @@ void CActor::Load		(LPCSTR section )
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
-	/*
-	Weapons->TakeItem	(CLSID_OBJECT_W_HPSA,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_PM,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_FORT,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_AK74,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_FN2000,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_LR300,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_BINOCULAR,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
-	*/
-	
 	// sounds
 	char buf[256];
 	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
@@ -314,40 +303,6 @@ void CActor::Die	( )
 	mstate_real		&=~ mcAnyMove;
 }
 
-/*
-BOOL CActor::TakeItem		( DWORD CID )
-{
-	if (!bAlive) return FALSE;
-
-	CCustomItem* O = (CCustomItem*) pCreator->Objects.GetObjectByCID(CID);
-	int iValue = O->iValue;
-	switch (O->clsid_target) 
-	{
-	case CLSID_OBJECT_W_RAIL:
-	case CLSID_OBJECT_A_RAIL:
-		return Weapons->TakeItem(O->clsid_target,iValue);
-		break;
-	case CLSID_OBJECT_HEALTH:
-		if (iHealth<iMAX_Health)
-		{
-			iHealth += iValue;
-			if (iHealth>iMAX_Health) iHealth = iMAX_Health;
-		}else return false;
-		break;
-	case CLSID_OBJECT_ARMOR:
-		if (iArmor<iMAX_Armor)
-		{
-			iArmor += iValue;
-			if (iArmor>iMAX_Armor) iArmor = iMAX_Armor;
-		}else return false;
-		break;
-	default:
-		return false;
-	}
-	return true;
-}
-*/
-
 void CActor::g_sv_AnalyzeNeighbours	()
 {
 	// Find nearest objects
@@ -371,7 +326,7 @@ void CActor::g_sv_AnalyzeNeighbours	()
 			if (T)	
 			{
 				// We have similar weapon - just get ammo out of it
-				// T->AddAmmo	(W);
+				T->Ammo_add	(W->Ammo_eject());
 			}
 		}
 
