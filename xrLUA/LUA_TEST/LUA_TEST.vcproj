@@ -137,7 +137,7 @@
 	</References>
 	<Files>
 		<Filter
-			Name="Lua-bind"
+			Name="luabind"
 			Filter="">
 			<File
 				RelativePath=".\luabind\class.cpp">
