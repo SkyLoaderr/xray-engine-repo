@@ -167,62 +167,7 @@ void CAI_Biting::vfUpdateParameters()
 		m_tEnemyPrevFrame = m_tEnemy;
 }
 
-////////////////////////////////////////////////////////////////////////////
-//void TurnLeft(Angle);
-//void TurnRight(Angle);
-//
-//CAnimManager::AddAnim	(eAnimStandIdle,		"stand_idle_",			-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimStandTurnLeft,	"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimLieIdle,			"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimWalkFwd,			"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimWalkTurnLeft,		"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimWalkTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimRun,				"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
-//CAnimManager::AddAnim	(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
 
-
-//// the order is very important!!!  add motions according to EAction enum
-//CMotionManager::AddMotion	(eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
-//CMotionManager::AddMotion	(eAnimSitIdle);
-//CMotionManager::AddMotion	(eAnimLieIdle);
-//CMotionManager::AddMotion	(eAnimWalkFwd);
-//
-
-
-void CAI_Biting::ProcessAction()
-{
-
-	// преобразовать Action в Motion и получить новую анимацию
-	SMotionItem MI = MotionMan.m_tMotions[m_tAction];
-	AnimMan.cur_anim = MI.anim;
-	
-
-	// если новая анимация не совпадает с предыдущей, проверить переход
-	if (AnimMan.prev_anim != AnimMan.cur_anim) {
-		if (AnimMan.CheckTransition	(AnimMan.prev_anim, AnimMan.cur_anim)) return;
-	}
-
-	// Check special flags and replacing animations
-	// pMan->CheckSpecFlags();
-
-	if (MI.is_turn_params)
-		// проверить необходимость поворота
-		if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, MI.turn.min_angle)) {
-			// повернуться
-			// необходим поворот влево или вправо
-			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) {
-				// вправо
-				AnimMan.cur_anim = MI.turn.anim_right;
-			} else {
-				// влево
-				AnimMan.cur_anim = MI.turn.anim_left;
-			}
-		}
-
-	AnimMan.ApplyParams(this);					// ?
-}
 
 
 

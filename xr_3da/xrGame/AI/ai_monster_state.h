@@ -69,54 +69,27 @@ enum EMotionAnim {
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CMotionParams class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CMotionParams{
-public:
-	EMotionAnim					anim;
-
-	float						speed;
-	float						r_speed;
-	float						yaw;
-	TTime						time;
-
-	u32							mask;
-	u32							stop_mask;
-
-public:	
-	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0);
-	void ApplyData(CCustomMonster *pData);
-};
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CMotionTurn class
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-class CMotionTurn {
-	CMotionParams TurnLeft;
-	CMotionParams TurnRight;
-
-	float fMinAngle;
-	bool  bLeftSide;
-	bool  bMoveBkwd;
-public:
-	void Set(EMotionAnim a_left, EMotionAnim a_right, float s, float r_s, float min_angle);
-	
-	bool CheckTurning(CCustomMonster *pData);
-	void Clear() {
-		fMinAngle = 0;						//!< если fMinAngle == 0, то поворот не нужен
-	}
-	void SetMoveBkwd(bool dir_bkwd) {bMoveBkwd = dir_bkwd;}
-private:	
-	bool NeedToTurn(CCustomMonster *pData);		//!< возвращает true, если поворот необходим, переменная bLeftSide - определяет сторону поворота
-
-};
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CMotionSequence class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class CMotionParams {
+
+public:
+	u32 stop_mask;
+	u32 time;
+
+	void SetParams(EMotionAnim a, float s, float r_s, float y, TTime t, u32 m, u32 s_m = 0) {
+	}
+	void ApplyData(CCustomMonster *p) {}
+};
+class CMotionTurn {
+public:
+	void Set(EMotionAnim l,EMotionAnim r, float f1, float f2, float f3) {};
+	void Clear() {}
+	void SetMoveBkwd(bool b) {};
+};
+
+
 class CMotionSequence {
 
 	xr_vector<CMotionParams>::iterator it;		// индекс текущий элемент
@@ -150,13 +123,11 @@ public:
 };
 
 
-
 //*********************************************************************************************************
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // STATE MANAGMENT
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 //*********************************************************************************************************
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

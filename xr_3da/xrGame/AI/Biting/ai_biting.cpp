@@ -68,7 +68,6 @@ void CAI_Biting::Init()
 
 	flagEatNow						= false;
 
-	m_tAction						= ACT_STAND_IDLE;
 }
 
 void CAI_Biting::Die()
@@ -163,6 +162,7 @@ void CAI_Biting::Load(LPCSTR section)
 
 	LoadAttackAnim					();
 
+	MotionMan.Init					(PKinematics(Visual()));
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 

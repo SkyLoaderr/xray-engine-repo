@@ -45,11 +45,6 @@ void CAI_Flesh::Init()
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
 	m_fEyeShiftYaw					= PI_DIV_6;
-
-	// TEMP
-	PState							= 0;
-	PressedLastTime					= 0;	
-	// ----
 }
 
 void CAI_Flesh::Load(LPCSTR section)
@@ -57,27 +52,27 @@ void CAI_Flesh::Load(LPCSTR section)
 	inherited::Load (section);
 	
 	// define animation set
-	AnimMan.AddAnim(eAnimStandIdle,			"stand_idle_",			-1, 0,		  0);
-	AnimMan.AddAnim(eAnimStandTurnLeft,		"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimWalkBkwd,			"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimWalkTurnLeft,		"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimWalkTurnRight,		"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimRun,				"stand_run_",			-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
-	AnimMan.AddAnim(eAnimStandLieDown,		"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimStandIdle,			"stand_idle_",			-1, 0,		  0);
+	MotionMan.AddAnim(eAnimStandTurnLeft,		"stand_turn_left_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_right_",	-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimLieIdle,			"lie_idle_",			-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkBkwd,			"stand_walk_bkwd_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkTurnLeft,		"stand_walk_ls_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimWalkTurnRight,		"stand_walk_rs_",		-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			 3, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimEat,				"lie_eat_",				-1, PI_DIV_3, PI_DIV_6);
+	MotionMan.AddAnim(eAnimStandLieDown,		"stand_lie_down_",		-1, PI_DIV_3, PI_DIV_6);
 	
-	AnimMan.AddTransition(eAnimStandIdle,	eAnimLieIdle,	eAnimStandLieDown,	false);
-	AnimMan.AddTransition(eAnimLieIdle,		eAnimStandIdle, eAnimLieStandUp,	false);
+	MotionMan.AddTransition(eAnimStandIdle,	eAnimLieIdle,		eAnimStandLieDown,	false);
+	MotionMan.AddTransition(eAnimLieIdle,		eAnimStandIdle,		eAnimLieStandUp,	false);
 
 	// the order is very important!!!  add motions according to EAction enum
-	MotionMan.AddMotion(eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
+	MotionMan.AddMotion(eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.AddMotion(eAnimSitIdle);
 	MotionMan.AddMotion(eAnimLieIdle);
-	MotionMan.AddMotion(eAnimWalkFwd, eAnimWalkTurnLeft, eAnimWalkTurnRight, PI_DIV_6);
+	MotionMan.AddMotion(eAnimWalkFwd, eAnimWalkTurnLeft,	eAnimWalkTurnRight, PI_DIV_6);
 	MotionMan.AddMotion(eAnimWalkBkwd);
 	MotionMan.AddMotion(eAnimRun);
 	MotionMan.AddMotion(eAnimEat);
@@ -269,154 +264,6 @@ bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvec
 	return false;
 }
 
-#ifdef DEBUG
-void CAI_Flesh::OnRender()
-{
-	inherited::OnRender();
-
-	RCache.OnFrameEnd				();
-
-	if (PTurn.empty()) return;
-
-	Fvector pos;
-	
-	// Draw start point	
-	pos = PTurn[0];
-	pos.y += 0.1f;
-	RCache.dbg_DrawAABB	(pos,.1f,.1f,.1f,D3DCOLOR_XRGB(0x33,0x00,0xff));
-
-	Fvector P1,P2;
-	for (u32 i=1; i<PTurn.size();i++) {
-		// draw line between previous node and this node
-		P1 = PTurn[i-1];	P1.y += 0.1f;
-		P2 = PTurn[i];		P2.y += 0.1f;
-		RCache.dbg_DrawLINE			(Fidentity,P1,P2,D3DCOLOR_XRGB(0xFF,0x00,0x33));
-		// draw this node
-
-		if (i >= PTurn.size() - 2) {
-			RCache.dbg_DrawAABB	(P2,.1f,.1f,.1f,D3DCOLOR_XRGB(0xff,0x00,0x00));
-		} else RCache.dbg_DrawAABB	(P2,.1f,.1f,.1f,D3DCOLOR_XRGB(0xff,0xff,0x00));
-
-
-	}
-
-}
-#endif
-
-///////////////////////////////////////////////////////////////////////////////////
-// TEMP
-void CAI_Flesh::SetPoints()
-{
-	if (PressedLastTime + 500 > Level().timeServer()) return;
-
-	if (Level().IR_GetKeyState(DIK_RCONTROL)) {
-		PressedLastTime = Level().timeServer();
-		
-		CObject	*pE = Level().CurrentEntity();
-			
-
-		switch (PState) {
-			case 0:
-				PTurn.clear();
-				PStart		= pE->Position();
-				MStart		= pE->XFORM();
-				break;
-			case 1:
-				PFinish		= pE->Position();
-				break;
-			case 2:
-				MakeTurn();
-				break;
-		}
-		PState++;
-
-		if (PState > 2) PState = 0;
-	}
-
-}
-
-void CAI_Flesh::MakeTurn()
-{
-	Fvector		S;					// start point
-	Fvector		F;					// finish point
-	Fmatrix		xform;
-	float		R = 2.f;
-
-	S		= PStart;
-	F		= PFinish;
-	xform	= MStart;
-
-	PTurn.push_back(S);
-	
-	bool bLeftSide;
-	float yaw1, yaw2, tt;
-	S.getHP(yaw1,tt);
-	F.getHP(yaw2,tt);
-
- 	if (angle_normalize_signed(yaw2 - yaw1) > 0) bLeftSide = true;
-	else bLeftSide = false;
-	Msg("Left?: [%i]", bLeftSide);
-
-	Fvector		P = S;
-	(bLeftSide) ? MoveInAxis(P, xform.i, -R) : MoveInAxis(P, xform.i, R);
-	
-	float d  =	F.distance_to(P);
-	float angle = acosf(R / d);
-
-	Fvector Ddir;
-	Ddir.sub(F,P);
-	Ddir.normalize();
-
-	float yaw,pitch;
-	Ddir.getHP(yaw,pitch);
-	yaw += ((bLeftSide) ? -angle : angle);
-	yaw = angle_normalize(yaw);
-	Ddir.setHP(yaw,pitch);
-	Ddir.mul(R);
-
-	
-	Fvector Q;
-	Q.add(P,Ddir);
-	
-	// построение окружности
-	float min_angle = PI_DIV_6;
-	float curYaw;
-	float destYaw;
-	float noneV;
-
-	Fvector tV;
-	tV.sub(Q,P);
-	tV.getHP(destYaw,noneV);
-	tV.sub(S,P);
-	tV.getHP(curYaw,noneV);
-	
-	while (!getAI().bfTooSmallAngle(destYaw,curYaw,min_angle)) {
-		Fvector newP = P;
-		curYaw += ((bLeftSide) ? min_angle : -min_angle);
-		curYaw = angle_normalize(curYaw);
-		tV.setHP(curYaw,noneV);
-		tV.normalize();
-		tV.mul(R);
-		newP.add(tV);
-		PTurn.push_back(newP);
-	}
-
-	//PTurn.push_back(P);
-	PTurn.push_back(Q);
-	PTurn.push_back(F);
-}
-
-
-// Перемещенеи вдоль вектора направления 'dir' на растояние dx
-void CAI_Flesh::MoveInAxis(Fvector &Pos, const Fvector &dir,  float dx)
-{
-	// dir - should be already normalized
-	Fvector shift;
-	shift.mul(dir, dx);
-	Pos.add(shift);
-}
-
-
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -428,6 +275,6 @@ CTest::CTest (CAI_Flesh *p)
 
 void CTest::Run()
 {
-	pMonster->m_tAction = ACT_STAND_IDLE;
+	//pMonster->m_tAction = ACT_STAND_IDLE;
 }
 

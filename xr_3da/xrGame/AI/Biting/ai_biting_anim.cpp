@@ -63,30 +63,10 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-	// преобразование названия анимации в индексы глобальной анимации
-	int i1,i2,i3;
-
-	if (bShowDeath)	{
-		MotionToAnim(eAnimDie,i1,i2,i3);
-		m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
+	if (g_Alive()) {
 		PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
-		bShowDeath  = false;
-		return;
+
 	}
-	
-	TTime cur_time = Level().timeServer();
-
-	if (g_Alive())
-		if (!m_tpCurAnim && !IsAnimLocked(cur_time)) {
-			MotionToAnim(m_tAnim,i1,i2,i3);
-			m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
-			PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
-			m_tAttackAnim.SwitchAnimation(cur_time,i1,i2,i3);
-
-			m_tAnimPlaying	= m_tAnim;
-			m_dwAnimStarted = cur_time;
-			anim_i3			= i3;
-		}
 }
 
 void CAI_Biting::OnAnimationEnd()
@@ -95,50 +75,7 @@ void CAI_Biting::OnAnimationEnd()
 	Motion.m_tSeq.OnAnimEnd();
 }
 
-void CAI_Biting::ControlAnimation()
-{
-	if (!Motion.m_tSeq.Playing) {
 
-		// __START: Bug protection 
-		// Если нет пути и есть анимация движения, то играть анимацию стоять на месте
-		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
-			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
-				m_tAnim = eAnimStandIdle;
-			}
-		}
-
-		// если стоит на месте и пытается бежать...
-		int i = ps_Size();		
-		if (i > 1) {
-			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
-				if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
-					m_tAnim = eAnimStandIdle;
-				}
-			}
-		}
-		// __END
-
-		// если анимация изменилась, переназначить анимацию
-		if (m_tAnimPrevFrame != m_tAnim) {
-			FORCE_ANIMATION_SELECT();
-		}	
-	}
-	//--------------------------------------
-
-	// Сохранение предыдущей анимации
-	m_tAnimPrevFrame = m_tAnim;
-}
-
-bool CAI_Biting::IsInMotion()
-{
-	if ((m_tAnim != eAnimStandTurnLeft) && (m_tAnim != eAnimWalkFwd) && (m_tAnim != eAnimWalkBkwd) && 
-		(m_tAnim != eAnimWalkTurnLeft) && (m_tAnim != eAnimWalkTurnRight) && (m_tAnim != eAnimRun) && 
-		(m_tAnim != eAnimRunTurnLeft) && (m_tAnim != eAnimRunTurnRight) && (m_tAnim != eAnimFastTurn)) {
-		return false;
-	}
-	return true;
-}
 
 void CAI_Biting::CheckAttackHit()
 {
@@ -270,13 +207,37 @@ bool CAttackAnim::CheckTime(TTime cur_time, SAttackAnimation &anim)
 	return false;
 }
 
+
+
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //		NEW ANIMATION MANAGMENT
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
+CMotionManager::CMotionManager()
+{
+}
 
-void CAnimManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed)
+void CMotionManager::Init (CKinematics *tpKin)
+{
+	tpKinematics	= tpKin;
+
+	prev_anim		= cur_anim	= eAnimStandIdle; 
+	m_tAction		= ACT_STAND_IDLE;
+	m_tpCurAnim		= 0;
+}
+
+void CMotionManager::Destroy()
+{
+
+}
+
+// Загрузка параметров анимации
+void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed)
 {
 	SAnimItem new_item;
 
@@ -285,10 +246,12 @@ void CAnimManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, fl
 	new_item.speed.linear	= speed;
 	new_item.speed.angular	= r_speed;
 
-	m_tAnims.insert(std::make_pair(ma, new_item));
+	Load					(new_item.target_name, &new_item.pMotionVect);
+
+	m_tAnims.insert			(std::make_pair(ma, new_item));
 }
 
-void CAnimManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
+void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
 	STransition new_item;
 
@@ -300,7 +263,44 @@ void CAnimManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim t
 	m_tTransitions.push_back(new_item);
 }
 
-bool CAnimManager::CheckTransition(EMotionAnim from, EMotionAnim to)
+// загрузка анимаций из модели начинающиеся с pmt_name в вектор pMotionVect
+void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
+{
+	anim_string	S1, S2;
+	CMotionDef	*tpMotionDef;
+	for (int i=0; ; i++) {
+		if (0 != (tpMotionDef = tpKinematics->ID_Cycle_Safe(strconcat(S1,pmt_name,itoa(i,S2,10)))))  pMotionVect->push_back(tpMotionDef);
+		else if (0 != (tpMotionDef = tpKinematics->ID_FX_Safe(strconcat(S1,pmt_name,itoa(i,S2,10))))) pMotionVect->push_back(tpMotionDef);
+		else break;
+	}
+}
+
+// Играть текущую анимацию определённую в cur_anim
+void CMotionManager::Play()
+{
+	if (m_tpCurAnim) return;
+
+	// получить элемент SAnimItem соответствующий cur_anim
+	ANIM_ITEM_MAP_IT anim_it = m_tAnims.find(cur_anim);
+	R_ASSERT(anim_it != m_tAnims.end());
+
+	// определить необходимый индекс
+	int index;
+	if (anim_it->second.spec_id != -1) index = anim_it->second.spec_id;
+	else {
+		R_ASSERT(!anim_it->second.pMotionVect.empty());
+		index = ::Random.randI(anim_it->second.pMotionVect.size());
+	}
+
+	// получить анимацию
+	CMotionDef	*m_tpCurAnim = anim_it->second.pMotionVect[index];
+
+	// проиграть 
+	tpKinematics->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
+}
+
+
+bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
 	// поиск соответствующего перехода
 	bool bActivated = false;
@@ -324,18 +324,14 @@ bool CAnimManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	return false;
 }
 
-void CAnimManager::ApplyParams(CAI_Biting *pM)
-{
-	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
-	R_ASSERT(item_it != m_tAnims.end());
-	
-	pM->m_fCurSpeed		= item_it->second.speed.linear;
-	pM->r_torso_speed	= item_it->second.speed.angular;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// Motion Management
-//////////////////////////////////////////////////////////////////////////
+//void CMotionManager::ApplyParams(CAI_Biting *pM)
+//{
+//	ANIM_ITEM_MAP_IT	item_it = m_tAnims.find(cur_anim);
+//	R_ASSERT(item_it != m_tAnims.end());
+//	
+//	pM->m_fCurSpeed		= item_it->second.speed.linear;
+//	pM->r_torso_speed	= item_it->second.speed.angular;
+//}
 
 void CMotionManager::AddMotion(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle)
 {
@@ -360,8 +356,68 @@ void CMotionManager::AddMotion(EMotionAnim pmt_motion)
 	m_tMotions.push_back(new_item);
 }
 
+void CMotionManager::ProcessAction()
+{
+
+//	// преобразовать Action в Motion и получить новую анимацию
+//	SMotionItem MI = m_tMotions[m_tAction];
+//	cur_anim = MI.anim;
+//
+//	// если новая анимация не совпадает с предыдущей, проверить переход
+//	if (prev_anim != cur_anim) {
+//		if (CheckTransition	(prev_anim, cur_anim)) return;
+//	}
+//
+//	if (MI.is_turn_params)
+//		// проверить необходимость поворота
+//		if (!getAI().bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw, MI.turn.min_angle)) {
+//			// повернуться
+//			// необходим поворот влево или вправо
+//			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) {
+//				// вправо
+//				cur_anim = MI.turn.anim_right;
+//			} else {
+//				// влево
+//				cur_anim = MI.turn.anim_left;
+//			}
+//		}
+//
+//		ApplyParams(this);					
+}
 
 
 
+void CAI_Biting::ControlAnimation()
+{
+	if (!Motion.m_tSeq.Playing) {
 
+		// __START: Bug protection 
+		// Если нет пути и есть анимация движения, то играть анимацию стоять на месте
+		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
+			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+				m_tAnim = eAnimStandIdle;
+			}
+		}
 
+		// если стоит на месте и пытается бежать...
+		int i = ps_Size();		
+		if (i > 1) {
+			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
+			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
+				if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
+					m_tAnim = eAnimStandIdle;
+				}
+			}
+		}
+		// __END
+
+		// если анимация изменилась, переназначить анимацию
+		if (m_tAnimPrevFrame != m_tAnim) {
+			FORCE_ANIMATION_SELECT();
+		}	
+	}
+	//--------------------------------------
+
+	// Сохранение предыдущей анимации
+	m_tAnimPrevFrame = m_tAnim;
+}

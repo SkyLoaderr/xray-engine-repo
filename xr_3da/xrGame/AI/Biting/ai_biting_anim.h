@@ -23,12 +23,11 @@ class CAI_Biting;
 extern LPCSTR caBitingStateNames	[];
 extern LPCSTR caBitingGlobalNames	[];
 
+
 class CBitingAnimations {
 protected:
 	CBitingAnimations() {
-		
 		m_tpCurAnim = 0;
-
 	};
 
 	void	Load(CKinematics *tpKinematics) {
@@ -37,7 +36,6 @@ protected:
 
 protected:
 	typedef CAniCollection<CAniVector,caBitingGlobalNames> CStateAnimations;
-	
 	CAniCollection<CStateAnimations,caBitingStateNames>	m_tAnimations;
 	u8				m_bAnimationIndex;
 
@@ -45,7 +43,7 @@ public:
 	CMotionDef		*m_tpCurAnim;
 };
 
-
+// Lock animation 
 struct SLockAnim {
 	EMotionAnim	anim;
 	int			i3;
@@ -113,11 +111,14 @@ public:
 
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////
 //
 //		NEW ANIMATION MANAGMENT
 //
 ///////////////////////////////////////////////////////////////////////////////////////////
+
+typedef string64 anim_string;
 
 enum EAction {
 	ACT_STAND_IDLE = 0,
@@ -134,12 +135,14 @@ enum EAction {
 	ACT_LOOK_AROUND
 };
 
-//EMotionAnim	anim;
+DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 
 struct SAnimItem {
-	
-	string32	target_name;	// "stand_idle_"
+
+	anim_string	target_name;	// "stand_idle_"
 	int			spec_id;		// (-1) - any,  (0 - ...) - идентификатор 3
+				
+	ANIM_VECTOR	pMotionVect;	// вектор указателей на анимации модели
 
 	struct{
 		float	linear;
@@ -155,46 +158,6 @@ struct STransition {
 	bool		chain;
 };
 
-
-// Animation Management
-class CAnimManager {
-//	DEFINE_VECTOR(SAnimItem, ANIM_ITEM_VECTOR, ANIM_ITEM_VECTOR_IT);
-//	DEFINE_VECTOR(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
-//
-//	ANIM_ITEM_VECTOR		m_tAnims;
-//	TRANSITION_ANIM_VECTOR	m_tTransitions;
-
-public:
-
-	DEFINE_MAP(EMotionAnim, SAnimItem, ANIM_ITEM_MAP, ANIM_ITEM_MAP_IT);
-	DEFINE_VECTOR(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
-
-	ANIM_ITEM_MAP			m_tAnims;
-	TRANSITION_ANIM_VECTOR	m_tTransitions;
-
-	EMotionAnim				cur_anim; 
-	EMotionAnim				prev_anim; 
-	
-			CAnimManager	() {
-				cur_anim	 = eAnimStandIdle;
-				prev_anim	 = eAnimStandIdle;
-			}
-	void	Load			();
-	
-	void	AddAnim			(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
-	void	AddTransition	(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
-	bool	CheckTransition	(EMotionAnim from, EMotionAnim to);
-
-	
-	LPCTSTR	GetTargetName	(EMotionAnim ma);
-	void	GetSpeedParams	(EMotionAnim ma);
-	void	ApplyParams		(CAI_Biting *pM);
-};
-
-//////////////////////////////////////////////////////////////////////////
-// Motion Management
-//////////////////////////////////////////////////////////////////////////
-
 struct SMotionItem {
 	EMotionAnim		anim;
 	bool			is_turn_params;
@@ -206,26 +169,59 @@ struct SMotionItem {
 	} turn;
 };
 
+
+// Motion and animation Management
 class CMotionManager {
-	CAnimManager		*pAnimManager;
+
+	DEFINE_MAP		(EMotionAnim, SAnimItem, ANIM_ITEM_MAP, ANIM_ITEM_MAP_IT);
+	DEFINE_VECTOR	(STransition, TRANSITION_ANIM_VECTOR, TRANSITION_ANIM_VECTOR_IT);
+	DEFINE_VECTOR	(SMotionItem, MOTION_ITEM_VECTOR, MOTION_ITEM_VECTOR_IT);
 	
+
+	ANIM_ITEM_MAP			m_tAnims;
+	TRANSITION_ANIM_VECTOR	m_tTransitions;
+	MOTION_ITEM_VECTOR		m_tMotions;
+
+	EAction					m_tAction;
+	
+	EMotionAnim				cur_anim; 
+	EMotionAnim				prev_anim; 
+
+	CMotionDef				*m_tpCurAnim;
+	CKinematics				*tpKinematics;
+
+
+	CMotionSequence			m_tSeq;
 public:
-	DEFINE_VECTOR(SMotionItem, MOTION_ITEM_VECTOR, MOTION_ITEM_VECTOR_IT);
-	MOTION_ITEM_VECTOR	m_tMotions;
-
-
+			
+			CMotionManager	();
+	
+	void	Init			(CKinematics *tpKin);
+	void	Destroy			();
+	
+	// создание карты анимаций, переходов 
+	void	AddAnim			(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
+	void	AddTransition	(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
+	
 	void	AddMotion		(EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void	AddMotion		(EMotionAnim pmt_motion);
 	
-	void	Turn			();
-
-//	void	CheckTurn		();
-//	void	ApplyMotion		();
+	bool	CheckTransition	(EMotionAnim from, EMotionAnim to);
+	
+//	LPCTSTR	GetTargetName	(EMotionAnim ma);
+//	void	GetSpeedParams	(EMotionAnim ma);
+//	void	ApplyParams		(CAI_Biting *pM);
 //	void	CheckSpecFlags	();
+
+	void	ProcessAction	();
+	
+	void	Play			();
+
+	void	OnAnimationEnd	() {m_tpCurAnim = 0;}
+	void	ShowDeath		();
+
+private: 
+	void	Load			(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect);
+
 };
-
-
-
-
-
 

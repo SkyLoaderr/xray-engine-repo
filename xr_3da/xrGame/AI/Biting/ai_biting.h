@@ -124,7 +124,6 @@ public:
 			bool			IsAnimLocked					(TTime cur_time);
 
 	// Motion control
-	virtual	bool			IsInMotion						();
 	virtual void			OnMotionSequenceStart			();
 	virtual	void			OnMotionSequenceEnd				();
 
@@ -248,10 +247,6 @@ public:
 	// State flags
 	bool					flagEatNow;				// true - сейчас монстр ест]
 
-
-	void ProcessAction(); 
 	CMotionManager			MotionMan; 
-	CAnimManager			AnimMan; 
-	EAction					m_tAction; 
 
 };

@@ -40,7 +40,7 @@ void CAI_Biting::Think()
 		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
 	}
 
-	ProcessAction();
+	//ProcessAction();
 //	Motion.SetFrameParams(this);
 //	ControlAnimation();		
 }
