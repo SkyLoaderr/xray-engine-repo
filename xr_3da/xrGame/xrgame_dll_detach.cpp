@@ -16,6 +16,10 @@
 #include "character_info.h"
 #include "specific_character.h"
 
+extern void show_smart_cast_stats		();
+extern void clear_smart_cast_stats		();
+extern void release_smart_cast_stats	();
+
 void clean_game_globals()
 {
 	// xml parser options
@@ -50,4 +54,8 @@ void clean_game_globals()
 	CUIXmlInit::DeleteColorDefs			();
 
 	xr_delete							(g_profiler);
+
+#ifdef DEBUG
+	release_smart_cast_stats			();
+#endif
 }

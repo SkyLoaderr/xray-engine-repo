@@ -21,9 +21,11 @@
 #include "xrServer_Objects.h"
 #include "ui/UIMainIngameWnd.h"
 #include "PhysicsGamePars.h"
-
 #include "string_table.h"
 
+extern void show_smart_cast_stats		();
+extern void clear_smart_cast_stats		();
+extern void release_smart_cast_stats	();
 
 ENGINE_API
 extern	float	psHUD_FOV;
@@ -890,6 +892,7 @@ public:
 	  }
 };
 
+#ifdef DEBUG
 extern void print_help(lua_State *L);
 
 struct CCC_LuaHelp : public IConsole_Command {
@@ -899,6 +902,23 @@ struct CCC_LuaHelp : public IConsole_Command {
 		print_help(ai().script_engine().lua());
 	}
 };
+
+struct CCC_ShowSmartCastStats : public IConsole_Command {
+	CCC_ShowSmartCastStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+
+	virtual void Execute(LPCSTR args) {
+		show_smart_cast_stats();
+	}
+};
+
+struct CCC_ClearSmartCastStats : public IConsole_Command {
+	CCC_ClearSmartCastStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+
+	virtual void Execute(LPCSTR args) {
+		clear_smart_cast_stats();
+	}
+};
+#endif
 
 void CCC_RegisterCommands()
 {
@@ -1030,7 +1050,9 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
 
 #ifdef DEBUG
-	CMD1(CCC_LuaHelp,	"lua_help");
+	CMD1(CCC_LuaHelp,				"lua_help");
+	CMD1(CCC_ShowSmartCastStats,	"show_smart_cast_stats");
+	CMD1(CCC_ClearSmartCastStats,	"clear_smart_cast_stats");
 
 	CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
 	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);

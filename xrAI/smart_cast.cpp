@@ -7,7 +7,6 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "smart_cast.h"
 
 #ifndef PURE_DYNAMIC_CAST
 #	ifdef XRGAME_EXPORTS

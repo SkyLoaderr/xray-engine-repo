@@ -11,6 +11,10 @@
 #include <_type_traits.h>
 #include "object_type_traits.h"
 
+#ifdef DEBUG
+	void add_smart_cast_stats	(LPCSTR,LPCSTR);
+#endif
+
 namespace SmartDynamicCast {
 	
 	template <typename Base, typename Source, typename List>
@@ -164,7 +168,10 @@ namespace SmartDynamicCast {
 		template <>
 		IC	static T1* smart_cast<Loki::NullType>(T2 *p)
 		{
-			return		(dynamic_cast<T1*>(p));
+#ifdef DEBUG
+			add_smart_cast_stats(typeid(T2*).name(),typeid(T1*).name());
+#endif
+			return				(dynamic_cast<T1*>(p));
 		}
 	};
 
@@ -199,7 +206,8 @@ namespace SmartDynamicCast {
 			typedef object_type_traits::remove_const<T2>::type _T2;
 #ifdef DEBUG
 			T1					*temp = SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p));
-			VERIFY2				(temp == dynamic_cast<T1*>(p),"SmartCast result differs from the DynamicCast!");
+			T1					*test = dynamic_cast<T1*>(p);
+			VERIFY2				(temp == test,"SmartCast FAILED (result differs from the dynamic_cast) or object is CORRUPTED!");
 			return				(temp);
 #else
 			return				(SmartDynamicCast::smart_cast<_T1>(const_cast<_T2*>(p)));
@@ -209,6 +217,9 @@ namespace SmartDynamicCast {
 		template <>
 		IC	static void* smart_cast<void>(T2* p)
 		{
+#ifdef DEBUG
+			add_smart_cast_stats(typeid(T2*).name(),typeid(void*).name());
+#endif
 			return				(dynamic_cast<void*>(p));
 		}
 	};
