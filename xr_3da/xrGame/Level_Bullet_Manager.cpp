@@ -205,6 +205,20 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 
 void CBulletManager::Render	()
 {
+	if(m_BulletList.empty()) return;
+
+	u32	vOffset;
+	u32 bullet_num = m_BulletList.size();
+
+	
+
+	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullet_num*8,
+										tracers.sh_Geom->vb_stride,
+										vOffset);
+	FVF::V	*start		=	verts;
+
+
+
 	for(BULLET_LIST_it it = m_BulletList.begin();
 		it != m_BulletList.end(); it++)
 	{
@@ -213,9 +227,9 @@ void CBulletManager::Render	()
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);
 		float length = dist.magnitude();
-
+	
 		if(length<TRACER_LENGHT_MIN)
-			return;
+			continue;
 
 		if(length>TRACER_LENGHT)
 			length = TRACER_LENGHT;
@@ -226,6 +240,23 @@ void CBulletManager::Render	()
 		else 
 			width = length/TRACER_LENGTH_TO_WIDTH_RATIO;
 
-		tracers.Render	(bullet->pos, bullet->prev_pos, length, width);
+		dist.normalize();
+
+		Fvector center;
+		center.mad(bullet->pos, dist,  -length/2.f);
+		tracers.Render(verts, center, dist, length, width);
+	}
+
+	u32 vCount					= (u32)(verts-start);
+	RCache.Vertex.Unlock		(vCount,tracers.sh_Geom->vb_stride);
+
+	if (vCount)
+	{
+		RCache.set_CullMode			(CULL_NONE);
+		RCache.set_xform_world		(Fidentity);
+		RCache.set_Shader			(tracers.sh_Tracer);
+		RCache.set_Geometry			(tracers.sh_Geom);
+		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
+		RCache.set_CullMode			(CULL_CCW);
 	}
 }

@@ -23,198 +23,60 @@ CTracer::~CTracer()
 {
 }
 
-void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width)
+
+IC void FillSprite      (FVF::V*& pv, const Fvector& pos, const float r1, float r2)
 {
-	if (from.distance_to(to)<.1f)	return;
+	const Fvector& T        = Device.vCameraTop;
+	const Fvector& R        = Device.vCameraRight;
+	Fvector Vr, Vt;
+	Vr.x            = R.x*r1;
+	Vr.y            = R.y*r1;
+	Vr.z            = R.z*r1;
+	Vt.x            = T.x*r2;
+	Vt.y            = T.y*r2;
+	Vt.z            = T.z*r2;
 
-	bullets.push_back	(Bullet());
-	Bullet&	B			= bullets.back();
-
-	Fvector	path;
-	path.sub			(to,from);
-
-	B.target.set		(to);
-	B.dir.normalize		(path);
-	B.pos_head.mad		(from,B.dir,start_length);
-	B.pos_trail.set		(from);
-	B.speed_head =		bullet_speed;
-	B.speed_trail =		bullet_speed*trail_speed_factor;
-	B.width =			width;
-	B.life_time =		(path.magnitude()-start_length)/bullet_speed;
-	if (B.life_time<0)	bullets.pop_back();
+	Fvector         a,b,c,d;
+	a.sub           (Vt,Vr);
+	b.add           (Vt,Vr);
+	c.invert        (a);
+	d.invert        (b);
+	pv->set         (d.x+pos.x,d.y+pos.y,d.z+pos.z, 0.f,1.f);        pv++;
+	pv->set         (a.x+pos.x,a.y+pos.y,a.z+pos.z, 0.f,0.f);        pv++;
+	pv->set         (c.x+pos.x,c.y+pos.y,c.z+pos.z, 1.f,1.f);        pv++;
+	pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.f);        pv++;
 }
 
-void	CTracer::Render	()
+IC void FillSprite	(FVF::V*& pv, const Fvector& pos, const Fvector& dir, float r1, float r2)
 {
-	if (bullets.empty())	return;
-	
-	u32	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)bullets.size()*4,sh_Geom->vb_stride,vOffset);
-	FVF::V	*start		=	verts;
-	float	dt			=	Device.fTimeDelta;
+    const Fvector& T        = dir;
+    Fvector R;      R.crossproduct(T,Device.vCameraDirection).normalize_safe();
+    Fvector Vr, Vt;
+    Vr.x            = R.x*r1;
+    Vr.y            = R.y*r1;
+    Vr.z            = R.z*r1;
+    Vt.x            = T.x*r2;
+    Vt.y            = T.y*r2;
+    Vt.z            = T.z*r2;
 
-//	Fvector&	vTop	=	Device.vCameraTop;
-//	Fvector&	vDir	=	Device.vCameraDirection;
-	Fvector&	vCenter =	Device.vCameraPosition;
-	for (int I=0; I<(int)bullets.size(); ++I)
-	{
-		// General stuff and time control
-		Bullet&	B		=	bullets[I];
-		B.life_time		-=	dt;
-		if (B.life_time<=0)	{
-			bullets.erase(bullets.begin()+I);
-			--I;
-			continue;
-		}
-
-		// Physics :)))
-		B.pos_head.mad	(B.dir,dt*B.speed_head);
-		B.pos_trail.mad	(B.dir,dt*B.speed_trail);
-
-		// Culling
-		Fvector sC,lineD;	float sR; 
-		sC.sub	(B.pos_head,B.pos_trail);
-		lineD.normalize(sC);
-		sC.mul	(.5f);
-		sR		= sC.magnitude();
-		sC.add	(B.pos_trail);
-		if (!::Render->ViewBase.testSphere_dirty(sC,sR))	continue;
-
-		// Everything OK - build vertices
-		Fvector	P,lineTop,camDir;
-		camDir.sub			(sC,vCenter);
-		camDir.normalize	();
-		lineTop.crossproduct(camDir,lineD);
-		float	w = B.width;
-		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,1);	++verts;
-		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0);	++verts;
-		P.mad(B.pos_head, lineTop,-w);	verts->set(P,1,1);	++verts;
-		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	++verts;
-	}
-
-	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock		(vCount,sh_Geom->vb_stride);
-	
-	if (vCount)	{
-		RCache.set_CullMode			(CULL_NONE);
-		RCache.set_xform_world		(Fidentity);
-		RCache.set_Shader			(sh_Tracer);
-		RCache.set_Geometry			(sh_Geom);
-		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-		RCache.set_CullMode			(CULL_CCW);
-	}
+    Fvector         a,b,c,d;
+    a.sub           (Vt,Vr);
+    b.add           (Vt,Vr);
+    c.invert        (a);
+    d.invert        (b);
+    pv->set         (d.x+pos.x,d.y+pos.y,d.z+pos.z, 0.f,1.f);        pv++;
+    pv->set         (a.x+pos.x,a.y+pos.y,a.z+pos.z, 0.f,0.f);        pv++;
+    pv->set         (c.x+pos.x,c.y+pos.y,c.z+pos.z, 1.f,1.f);        pv++;
+    pv->set         (b.x+pos.x,b.y+pos.y,b.z+pos.z, 1.f,0.f);        pv++;
 }
-/*
-void CTracer::Render	(const Fvector& pos, const Fvector& dir, 
-						  float length, float width)
+
+void  CTracer::Render	(FVF::V*&verts,  
+						 const Fvector& center, const Fvector& dir,
+						 float length, float width)
 {
-	u32	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)4,sh_Geom->vb_stride,vOffset);
-	FVF::V	*start		=	verts;
-
-	Fvector&	vCenter =	Device.vCameraPosition;
-
-	Fvector pos_head, pos_trail;
-
-	pos_head.set	(pos);
-	pos_trail.mad	(pos_head, dir,-length);
-
-	// Culling
-	Fvector sC,lineD;
-	float sR;
-	sC.sub	(pos_head,pos_trail);
-	lineD.normalize(sC);
-	sC.mul	(.5f);
-	sR		= sC.magnitude();
-	sC.add	(pos_trail);
-	
-	if (::Render->ViewBase.testSphere_dirty(sC,sR))
+	if (::Render->ViewBase.testSphere_dirty((Fvector&)center,length*.5f))
 	{
-		// Everything OK - build vertices
-		Fvector	P,lineTop,camDir;
-		camDir.sub			(sC,vCenter);
-		camDir.normalize	();
-		lineTop.crossproduct(camDir,lineD);
-		float	w = width;
-		P.mad(pos_trail,lineTop,-w);	verts->set(P,0,1);	++verts;
-		P.mad(pos_trail,lineTop,w);	verts->set(P,0,0);	++verts;
-		P.mad(pos_head, lineTop,-w);	verts->set(P,1,1);	++verts;
-		P.mad(pos_head, lineTop,w);	verts->set(P,1,0);	++verts;
-	}
-	
-
-	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock		(vCount,sh_Geom->vb_stride);
-
-	if (vCount)
-	{
-		//RCache.set_CullMode			(CULL_NONE);
-		RCache.set_xform_world		(Fidentity);
-		RCache.set_Shader			(sh_Tracer);
-		RCache.set_Geometry			(sh_Geom);
-		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-		//RCache.set_CullMode			(CULL_CCW);
-	}
-}*/
-
-void  CTracer::Render	(const Fvector& head, const Fvector& trail,
-						float length, float width)
-{
-	float tracer_length = length;
-
-	u32	vOffset;
-	FVF::V	*verts		=	(FVF::V	*) RCache.Vertex.Lock((u32)4,sh_Geom->vb_stride,vOffset);
-	FVF::V	*start		=	verts;
-
-	Fvector&	vCenter =	Device.vCameraPosition;
-
-	Fvector pos_head, pos_trail;
-
-	pos_head.set	(head);
-	pos_trail.set	(trail);
-
-	// Culling
-	Fvector sC,lineD;
-	float sR;
-	sC.sub	(pos_head,pos_trail);
-	lineD.normalize(sC);
-
-
-///	float tracer_length = sC.magnitude();
-//	if(tracer_length>length) 
-//		tracer_length = length;
-	pos_trail.mad	(pos_head, lineD, -tracer_length);
-
-
-	sC.mul	(.5f);
-	sR		= sC.magnitude();
-	sC.add	(pos_trail);
-
-	if (::Render->ViewBase.testSphere_dirty(sC,sR))
-	{
-		// Everything OK - build vertices
-		Fvector	P,lineTop,camDir;
-		camDir.sub			(sC,vCenter);
-		camDir.normalize	();
-		lineTop.crossproduct(camDir,lineD);
-		float	w = width;
-		P.mad(pos_trail,lineTop,-w);verts->set(P,0,1);	++verts;
-		P.mad(pos_trail,lineTop,w);	verts->set(P,0,0);	++verts;
-		P.mad(pos_head, lineTop,-w);verts->set(P,1,1);	++verts;
-		P.mad(pos_head, lineTop,w);	verts->set(P,1,0);	++verts;
-	}
-
-
-	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock		(vCount,sh_Geom->vb_stride);
-
-	if (vCount)
-	{
-		RCache.set_CullMode			(CULL_NONE);
-		RCache.set_xform_world		(Fidentity);
-		RCache.set_Shader			(sh_Tracer);
-		RCache.set_Geometry			(sh_Geom);
-		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-		RCache.set_CullMode			(CULL_CCW);
+		FillSprite(verts,center,width,width);
+		FillSprite(verts,center,dir,width,length);
 	}
 }
