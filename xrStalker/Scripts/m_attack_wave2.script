@@ -110,6 +110,15 @@ function Defender:add_attacker (mutant)
 	return added
 end
 
+function Defender:attacker_present (mutant)
+	for a = 1, num, 1 do
+		if self.attackers[a] == mutant then 
+		   return true 
+        end
+	end
+	return false
+end
+
 function Defender:is_alive ()
 	if self.npc ~= nil and self.npc:alive () == true then return true end
 	return false
@@ -230,18 +239,23 @@ function Monster:find_enemy ()
 	for a = 1, table.getn (self.targets), 1 do
 		if self.targets[a]:is_alive () == true and self.targets[a].available == true then
 		   local tdist = distance_between (self.npc, self.targets[a].npc) 
-		   if tdist < dist and self.targets[a].attacker == nil and self.npc:see (self.targets[a].npc) then
+		   if tdist < dist and 
+			  self.targets[a]:get_num_attackers () < max_attackers and 
+			  self.targets[a]:attacker_present (self) == false and
+			  self.npc:see (self.targets[a].npc) then
 			  dist = tdist
 			  enemy = self.targets[a]
 		   end
         end
 	end
-	if enemy ~= nil then enemy.attacker = self end
+
+	if enemy ~= nil then enemy:add_attacker (self) end
 	
-	if enemy ~= nil then
-  	   printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
-	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
-	end
+--	if enemy ~= nil then
+--  	   printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+--	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
+--	end
+
 	return enemy
 end
 
@@ -308,7 +322,7 @@ function main ()
 	local scrname = m_attack_wave2.script_name ()
 
     local monsters = {
-                      m_attack_wave2.Monster (get_level_object ("m_boar_e0000"), patrol ("way0000"), scrname)
+                      m_attack_wave2.Monster (get_level_object ("m_boar_e0000"), patrol ("way0000"), scrname),
                       m_attack_wave2.Monster (get_level_object ("m_boar_e0001"), patrol ("way0000"), scrname),
                       m_attack_wave2.Monster (get_level_object ("m_boar_e0002"), patrol ("way0000"), scrname),
                       m_attack_wave2.Monster (get_level_object ("m_boar_e0003"), patrol ("way0000"), scrname),
