@@ -10,6 +10,8 @@ class CBitingPanic : public IState {
 		ACTION_FACE_BACK_SCARED,
 	} m_tAction;
 
+	Fvector			position;
+
 public:
 					CBitingPanic	(CAI_Biting *p);
 	

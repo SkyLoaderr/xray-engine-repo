@@ -9,6 +9,9 @@
 #include "../ai_monster_group.h"
 #include "../ai_monster_utils.h"
 
+#include "../../WeaponMagazined.h"
+#include "../../inventory.h"
+
 
 /////////////////////////////////////////////////////////////////////////
 // State Attack Flags 
@@ -82,6 +85,7 @@ void CBitingAttack::Init()
 	time_start_walk_away		= 0;
 
 	time_next_attack_run		= 0;
+	time_next_psi_attack		= 0;
 }
 
 #define TIME_WALK_PATH						5000
@@ -340,6 +344,8 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+
+			time_next_psi_attack			= m_dwCurrentTime + Random.randI(3000,6000);
 			break;
 	}
 
@@ -624,6 +630,8 @@ bool CBitingAttack::CheckPsiAttack()
 	if (!pMonster->ability_psi_attack()) return false;
 	if (!flags.is(AF_SEE_ENEMY)) return false;
 
+	if (time_next_psi_attack > m_dwCurrentTime) return false;
+	
 	// проверить направленность на цель
 	float h,p;
 	Fvector().sub(pMonster->EnemyMan.get_enemy_position(), pMonster->Position()).getHP(h,p);
@@ -636,6 +644,10 @@ bool CBitingAttack::CheckPsiAttack()
 	if (!pA) return false;
 	
 	if (pMonster != dynamic_cast<CAI_Biting *>(pA->ObjectWeLookingAt())) return false;
+
+	CWeaponMagazined *pWeapon = dynamic_cast<CWeaponMagazined *>(pA->m_inventory->ActiveItem());
+	if (!pWeapon) return false;
+
 
 	return true;
 }

@@ -16,11 +16,24 @@ void CBitingPanic::Init()
 	LOG_EX("PANIC:: Init");
 	inherited::Init();
 
+	if (pMonster->EnemyMan.get_enemy())
+		position = pMonster->EnemyMan.get_enemy_position();
+	else if (pMonster->SoundMemory.IsRememberSound()) 
+		position = pMonster->SoundMemory.GetSound().position;
+	else 
+		position = pMonster->Position();
+		
 	m_tAction		= ACTION_RUN;
 }
 
 void CBitingPanic::Run()
 {
+	if (pMonster->EnemyMan.get_enemy() && (pMonster->EnemyMan.get_enemy_time_last_seen() == m_dwCurrentTime)) {
+		position = pMonster->EnemyMan.get_enemy_position();
+	}
+
+	float dist = pMonster->Position().distance_to(position);
+	
 	switch (m_tAction) {
 		
 		/**************/
@@ -30,15 +43,12 @@ void CBitingPanic::Run()
 			LOG_EX("PANIC:: Run away");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 
-			pMonster->MoveAwayFromTarget			(pMonster->EnemyMan.get_enemy_position());
+			pMonster->MoveAwayFromTarget			(position);
 			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
 			pMonster->MotionMan.accel_set_braking	(false);
 
-			// если не видел врага > 15 сек 
-			if (pMonster->EnemyMan.get_enemy_time_last_seen() + 10000 < m_dwCurrentTime) {
-				m_tAction = ACTION_FACE_BACK_SCARED;
-				pMonster->CMovementManager::m_body.target.yaw = angle_normalize(pMonster->CMovementManager::m_body.target.yaw + PI);
-			}
+			
+			if (dist > 50.f) m_tAction = ACTION_FACE_BACK_SCARED;
 
 			break;
 		
@@ -50,9 +60,10 @@ void CBitingPanic::Run()
 			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
 			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
 
-			// если враг виден
-			if (pMonster->EnemyMan.get_enemy_time_last_seen() + 1000 > m_dwCurrentTime) m_tAction = ACTION_RUN;
+			pMonster->FaceTarget(position);
 
+			// если враг виден
+			if (pMonster->EnemyMan.get_enemy() && (pMonster->EnemyMan.get_enemy_time_last_seen() + 1000 > m_dwCurrentTime)) m_tAction = ACTION_RUN;
 			break;
 	}
 	

@@ -47,6 +47,7 @@ class CBitingAttack : public IState {
 	TTime			time_start_walk_away;			// время начала состояния ACTION_ENEMY_WALK_AWAY (монстр не может добраться до жертвы)
 	
 	TTime			time_next_attack_run;
+	TTime			time_next_psi_attack;
 
 public:	
 					CBitingAttack		(CAI_Biting *p);

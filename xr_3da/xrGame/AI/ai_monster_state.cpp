@@ -16,11 +16,13 @@ IState::IState()
 {
 	m_Priority			= PRIORITY_NONE;
 	Reset				();
+	
+	m_dwCurrentTime		= 0;
 }
 
 void IState::Reset()
 {
-	m_dwCurrentTime		= 0;
+	
 	m_dwNextThink		= 0;
 	m_dwTimeLocked		= 0;
 	m_tState			= STATE_NOT_ACTIVE;	
