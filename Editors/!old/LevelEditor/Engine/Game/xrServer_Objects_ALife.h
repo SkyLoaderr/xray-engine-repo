@@ -11,9 +11,10 @@
 
 #include "xrServer_Objects.h"
 #include "alife_space.h"
+#include "phnetstate.h"
 #ifndef _EDITOR
 #	ifndef AI_COMPILER
-#		include "phnetstate.h"
+
 		class 	CALifeSimulator;
 #	endif
 #endif
