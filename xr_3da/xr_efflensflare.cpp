@@ -135,7 +135,8 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	bInit			= false;
 }
 
-void CLensFlare::OnMove(){
+void CLensFlare::OnMove()
+{
 	VERIFY(bInit);
 	//
 	// Compute center and axis of flares
