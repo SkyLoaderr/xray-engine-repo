@@ -51,6 +51,7 @@ function activate_by_section(npc, ini, section)
 	end
 
 	if section == "nil" then
+		xr_motivator.storage[npc_id].overrides = nil
 		return
 	end
 
@@ -60,6 +61,10 @@ function activate_by_section(npc, ini, section)
 			utils.abort("object '%s': unable to determine scheme name from section name '%s'",
 				npc:name(), section)
 		end
+
+		-- Загрузить оверрайды:
+		xr_motivator.storage[npc_id].overrides = cfg_get_overrides(ini, section, npc)
+
 		-- schemes[scheme] даст имя файла (модуля), в котором реализована схема
 		-- _G[] даст указатель на неймспейс (таблицу) этого модуля
 		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
@@ -393,3 +398,16 @@ function cfg_get_switch_conditions(ini, section, npc)
 	return l
 end
 
+function cfg_get_overrides(ini, section, npc)
+	local l = {}
+
+	l.meet_enabled = utils.cfg_get_string(ini, section, "meet_enabled", npc, false, "")
+
+	return l
+end
+
+-- Возвращает ссылку на оверрайды, зарегистрированные в активной на данный момент секции,
+-- либо nil, если ни одна из секций не активна, или оверрайдов нет.
+function generic_scheme_overrides(npc)
+	return xr_motivator.storage[npc:id()].overrides
+end
