@@ -24,11 +24,9 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper.CreateCaption(items,"Visibility\\HOM Vertices",		hom_vert_cnt);
     PHelper.CreateCaption(items,"Visibility\\Sectors",			sector_cnt);
     PHelper.CreateCaption(items,"Visibility\\Portals",			portal_cnt);
-    PHelper.CreateCaption(items,"Lights\\Count",				light_pointR1_cnt+light_pointR2_cnt+light_spotR1_cnt+light_spotR2_cnt);
-    PHelper.CreateCaption(items,"Lights\\By Type\\PointR1",		light_pointR1_cnt);
-    PHelper.CreateCaption(items,"Lights\\By Type\\PointR2",		light_pointR2_cnt);
-    PHelper.CreateCaption(items,"Lights\\By Type\\SpotR1",		light_spotR1_cnt);
-    PHelper.CreateCaption(items,"Lights\\By Type\\SpotR2",		light_spotR2_cnt);
+    PHelper.CreateCaption(items,"Lights\\Count",				light_point_cnt+light_spot_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Type\\Point",		light_point_cnt);
+    PHelper.CreateCaption(items,"Lights\\By Type\\Spot",		light_spot_cnt);
     PHelper.CreateCaption(items,"Lights\\By Usage\\Dynamic",	light_dynamic_cnt);
     PHelper.CreateCaption(items,"Lights\\By Usage\\Static",		light_static_cnt);
     PHelper.CreateCaption(items,"Lights\\By Usage\\Breakable",	light_breakable_cnt);

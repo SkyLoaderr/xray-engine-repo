@@ -130,10 +130,8 @@ public:
     
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
 	void			FillSunProp		(LPCSTR pref, PropItemVec& items);
-	void			FillPointR1Prop	(LPCSTR pref, PropItemVec& items);
-	void			FillPointR2Prop	(LPCSTR pref, PropItemVec& items);
-	void			FillSpotR1Prop	(LPCSTR pref, PropItemVec& items);
-	void			FillSpotR2Prop	(LPCSTR pref, PropItemVec& items);
+	void			FillPointProp	(LPCSTR pref, PropItemVec& items);
+	void			FillSpotProp	(LPCSTR pref, PropItemVec& items);
     void			FillAttProp		(LPCSTR pref, PropItemVec& items);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 

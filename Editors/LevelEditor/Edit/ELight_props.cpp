@@ -155,7 +155,7 @@ xr_token fuzzy_shape_types[]={
 	{ "Box",			CLight::SFuzzyData::fstBox		},
 	{ 0,				0				}
 };
-void CLight::FillPointR1Prop(LPCSTR pref, PropItemVec& items)
+void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
     PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
@@ -190,7 +190,7 @@ void CLight::FillPointR1Prop(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-void CLight::FillSpotR1Prop(LPCSTR pref, PropItemVec& items)
+void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
     PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
@@ -204,26 +204,9 @@ void CLight::FillSpotR1Prop(LPCSTR pref, PropItemVec& items)
 }
 //----------------------------------------------------
 
-void CLight::FillPointR2Prop(LPCSTR pref, PropItemVec& items)
-{
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_FalloffTex, 	smTexture);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
-}
-//----------------------------------------------------
-
-void CLight::FillSpotR2Prop(LPCSTR pref, PropItemVec& items)
-{
-	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R2\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R2\\Texture"),		&m_FalloffTex, 	smTexture);
-    PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref, "Spot R2\\Virtual Size"),	&m_VirtualSize);
-}
-//----------------------------------------------------
-
 xr_token			token_light_type[ ]	=	{
-    { "Point R1",	ELight::ltPointR1		},
-    { "Spot R1",	ELight::ltSpotR1		},
-    { "Point R2",	ELight::ltPointR2		},
-    { "Spot R2",	ELight::ltSpotR2		},
+    { "Point",		ELight::ltPoint			},
+    { "Spot",		ELight::ltSpot			},
     { 0,			0	  					}
 };
 
@@ -244,10 +227,8 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
 
     switch(m_Type){
-    case ELight::ltPointR1:	FillPointR1Prop	(pref, items);	break;
-    case ELight::ltPointR2:	FillPointR2Prop	(pref, items);	break;
-    case ELight::ltSpotR1: 	FillSpotR1Prop 	(pref, items);	break;
-    case ELight::ltSpotR2: 	FillSpotR2Prop 	(pref, items);	break;
+    case ELight::ltPoint:	FillPointProp	(pref, items);	break;
+    case ELight::ltSpot: 	FillSpotProp 	(pref, items);	break;
     default: THROW;
     }
     PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
@@ -266,8 +247,8 @@ void CLight::OnShowHint(AStringVec& dest){
     AnsiString temp;
     temp.sprintf("Type:  ");
     switch(m_Type){
-    case ELight::ltPointR1:	        temp+="point"; break;
-    case ELight::ltSpotR1:			temp+="spot"; break;
+    case ELight::ltPoint:	        temp+="point"; break;
+    case ELight::ltSpot:			temp+="spot"; break;
     default: temp+="undef";
     }
     dest.push_back(temp);

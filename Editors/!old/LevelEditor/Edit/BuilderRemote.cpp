@@ -501,12 +501,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
     }
         
     b_light	L;
-    switch(e->m_Type){
-    case ELight::ltPointR1:	L.data.type	= D3DLIGHT_POINT; 	break;
-    case ELight::ltSpotR1: 	L.data.type	= D3DLIGHT_SPOT; 	break;
-    default: return FALSE;
-    }
-    
+    L.data.type					= e->m_Type;
     L.data.diffuse.mul_rgb		(e->m_Color,e->m_Brightness);
     L.data.mul					(e->m_Brightness);
     L.data.position.set			(e->PPosition);
@@ -554,7 +549,7 @@ BOOL SceneBuilder::BuildLight(CLight* e)
 
 
     switch (e->m_Type){
-    case ELight::ltPointR1:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
+    case ELight::ltPoint:		return BuildPointLight	(&L,e->m_Flags,lpSectors,e->m_FuzzyData?&e->m_FuzzyData->m_Positions:0,&e->_Transform());
     default:
     	THROW2("Invalid light type.");
 	    return FALSE;

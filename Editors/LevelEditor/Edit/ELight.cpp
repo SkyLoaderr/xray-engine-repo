@@ -46,7 +46,7 @@ void CLight::Construct(LPVOID data)
 
     m_FuzzyData		= 0;
     
-    m_Type 			= ELight::ltPointR1;
+    m_Type 			= ELight::ltPoint;
 	m_Color.set		(1.f,1.f,1.f,0);
     m_Brightness 	= 1.f;
 	m_Attenuation0 	= 1.f;
@@ -101,8 +101,7 @@ void CLight::Render(int priority, bool strictB2F)
         RCache.set_xform_world	(Fidentity);
     	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(ELight::flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_Type){
-        case ELight::ltPointR1:
-        case ELight::ltPointR2:
+        case ELight::ltPoint:
             if (Selected()) 	DU.DrawLineSphere( PPosition, m_Range, clr, true );
             DU.DrawPointLight(PPosition,VIS_RADIUS, clr);
             if (m_Flags.is(ELight::flPointFuzzy)){
@@ -113,8 +112,7 @@ void CLight::Render(int priority, bool strictB2F)
 	            }
 			}
         break;
-        case ELight::ltSpotR1:
-        case ELight::ltSpotR2:{
+        case ELight::ltSpot:{
 //			Fvector dir;
 //			dir.setHP		(PRotation.y,PRotation.x);
 //			DU.DrawCone		(Fidentity, PPosition, dir, Selected()?m_Range:VIS_RADIUS, radius2, clr, true, false);
@@ -134,8 +132,7 @@ void CLight::Render(int priority, bool strictB2F)
         Device.SetShader		(Device.m_SelectionShader);
         RCache.set_xform_world	(Fidentity);
     	switch (m_Type){
-        case ELight::ltPointR1:
-        case ELight::ltPointR2:
+        case ELight::ltPoint:
             if (m_Flags.is(ELight::flPointFuzzy)){
 		    	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(ELight::flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
                 clr 	= subst_alpha(clr,0x40);
@@ -151,8 +148,7 @@ void CLight::Render(int priority, bool strictB2F)
                 }
 			}
         break;
-        case ELight::ltSpotR1:
-        case ELight::ltSpotR2:               break;
+        case ELight::ltSpot:		break;
         default: THROW;
         }
 	}
@@ -211,15 +207,13 @@ void __fastcall	CLight::OnNeedUpdate(PropValue* value)
 bool CLight::GetSummaryInfo(SSceneSummary* inf)
 {
     switch (m_Type){
-    case ELight::ltPointR1:		inf->light_pointR1_cnt++; break;
-    case ELight::ltPointR2:		inf->light_pointR2_cnt++; break;
-    case ELight::ltSpotR1:		inf->light_spotR1_cnt++; 	break;
-    case ELight::ltSpotR2:		inf->light_spotR2_cnt++; 	break;
+    case ELight::ltPoint:		inf->light_point_cnt++; break;
+    case ELight::ltSpot:		inf->light_spot_cnt++; 	break;
     }
 
     switch (m_Type){
-    case ELight::ltPointR1:
-    case ELight::ltSpotR1:
+    case ELight::ltPoint:
+    case ELight::ltSpot:
         if (m_Flags.is(ELight::flAffectStatic))		inf->light_static_cnt++;
         if (m_Flags.is(ELight::flAffectDynamic))	inf->light_dynamic_cnt++;
         if (m_Flags.is(ELight::flProcedural))		inf->light_procedural_cnt++;

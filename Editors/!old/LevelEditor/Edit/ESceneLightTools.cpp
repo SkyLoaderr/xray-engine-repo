@@ -54,16 +54,19 @@ void ESceneLightTools::SelectLightsForObject(CCustomObject* obj)
 void ESceneLightTools::AppendFrameLight(CLight* src)
 {
     Flight L;
+    ZeroMemory			(&L, sizeof(Flight));
+    L.type				= src->m_Type;
     L.diffuse.mul_rgb	(src->m_Color,src->m_Brightness);
-    L.mul				(src->m_Brightness);
+    L.specular.set		(L.diffuse);
     L.position.set		(src->PPosition);
     Fvector dir;    	dir.setHP(src->PRotation.y,src->PRotation.x);
     L.direction.set		(dir);
     L.range				= src->m_Range;
-    L.attenuation0		= src->m_Attenuation0;
+    L.attenuation0		= src->m_Attenuation0+EPS_S;
     L.attenuation1		= src->m_Attenuation1;
     L.attenuation2		= src->m_Attenuation2;
     L.phi				= src->m_Cone;
+    L.falloff			= 1.f;
     Device.SetLight		(frame_light.size(),L);
     frame_light.push_back(src);
 }
@@ -172,26 +175,9 @@ void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, 
     bDataModified = true;
 }
 //------------------------------------------------------------------------------
-void __fastcall ESceneLightTools::OnControlFilesClick(PropValue* sender, bool& bDataModified)
-{
-	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
-    AnsiString item_name = sender->Owner()->Item()->Text;
-    switch (V->btn_num){
-    case 0:{ 
-        if (mrYes==ELog.DlgMsg(mtConfirmation, TMsgDlgButtons()<<mbYes<<mbNo, "Are you sure to export game?"))
-		    if (!ExportLevelLights())
-            	ELog.DlgMsg(mtError, "Failed to export level lights.");
-    }break;
-	}
-    UI->Command(COMMAND_UPDATE_PROPERTIES);
-    bDataModified = false;
-}
-//------------------------------------------------------------------------------
 void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     ButtonValue*	B 	= 0;
-	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"File"),	"Export Lights",		ButtonValue::flFirstOnly);
-	B->OnBtnClickEvent	= OnControlFilesClick;
     // hemisphere
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),		&m_HemiQuality,		1,2);
     // sun

@@ -40,7 +40,6 @@ protected:
 	ATokenVec			lcontrols;
     void __fastcall 	OnControlAppendClick		(PropValue* sender, bool& bDataModified);
     void __fastcall 	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified);
-    void __fastcall 	OnControlFilesClick			(PropValue* sender, bool& bDataModified);
 protected:
     // controls
     virtual void 		CreateControls			();
@@ -79,8 +78,6 @@ public:
     xr_a_token*   		FindLightControl		(LPCSTR name){ATokenIt it = FindLightControlIt(name); return it!=lcontrols.end()?it:0;}
     void				AppendLightControl		(LPCSTR name, u32* idx=0);
     void				RemoveLightControl		(LPCSTR name);
-
-    bool				ExportLevelLights		();
 };
 #endif // ESceneCustomOToolsH
 

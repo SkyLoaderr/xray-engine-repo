@@ -16,75 +16,239 @@ struct SBVert{
 public:
     bool			similar(const Fvector& v){return pos.similar(v,EPS_L);}
 };
+struct SBFace;
+DEFINE_VECTOR		(SBVert*,SBVertVec,SBVertVecIt);
+DEFINE_VECTOR		(SBFace*,SBFaceVec,SBFaceVecIt);
 struct SBFace{
 // prepare
-    int 			vert[3];
+    int 			vert_id[3];
     bool			marked;
+    SBFaceVec		adjs;
 // geom
+	Fvector			p[3];
     Fvector			o[3];
     Fvector2		uv[3];
     Fvector			n;
-    Fvector			b;
+    int				bone_id;
     CSurface*		surf;
 public:		
-					SBFace	(CSurface* _surf, const Fvector2* _uv[3]):surf(_surf),marked(false)
+					SBFace	(CSurface* _surf, const Fvector2* _uv[3]):surf(_surf),marked(false),bone_id(-1)
 	{
-    	vert[0]		= -1;
-    	vert[1]		= -1;
-    	vert[2]		= -1;
+    	vert_id[0]	= -1;
+    	vert_id[1]	= -1;
+    	vert_id[2]	= -1;
         uv[0]		= *_uv[0];
         uv[1]		= *_uv[1];
         uv[2]		= *_uv[2];
         n.set		(0,0,0);
-        b.set		(0,0,0);
     }
 };
-DEFINE_VECTOR		(SBVert*,SBVertVec,SBVertVecIt);
-DEFINE_VECTOR		(SBFace*,SBFaceVec,SBFaceVecIt);
 
-struct SBPart: public CExportSkeletonCustom{
-	U32Vec 			part_faces;
-
-    SBVertVec*		m_Verts;
-    SBFaceVec*		m_Faces;
-    Fbox			m_BBox;
-    Fvector			m_Offset;
-public:
-					SBPart				(SBVertVec* _verts, SBFaceVec* _faces):m_Verts(_verts),m_Faces(_faces){m_BBox.invalidate();m_Offset.set(0,0,0);}
-    virtual bool 	Export				(IWriter& F);
-    void			append_face			(int id)
+struct SBBone
+{
+	AnsiString		mtl;
+	AnsiString		name;
+	AnsiString		parent;
+	Fvector			offset;
+    u32				f_cnt;
+				    SBBone				(AnsiString _nm, AnsiString _parent, AnsiString _mtl, u32 _f_cnt):name(_nm),parent(_parent),mtl(_mtl),f_cnt(_f_cnt)
     {
-    	part_faces.push_back(id);
-        SBFace* F	= (*m_Faces)[id];
-        for (int k=0; k<3; k++)
-	        m_BBox.modify((*m_Verts)[F->vert[k]]->pos);
+    	offset.set	(0,0,0);
+    }
+};
+DEFINE_VECTOR		(SBBone,SBBoneVec,SBBoneVecIt);
+DEFINE_VECTOR		(SBFaceVec,SBAdjVec,SBAdjVecIt);
+
+struct SBPart: public CExportSkeletonCustom
+{
+	SBFaceVec		m_Faces;
+    SBBoneVec		m_Bones;
+
+    Fbox			m_BBox;
+    Fobb			m_OBB;
+
+    SBPart*			m_Reference;
+    
+    Fvector			m_RefOffset;
+    Fvector			m_RefRotate;
+public:
+					SBPart				(){m_Reference=0;}
+    virtual bool 	Export				(IWriter& F);
+    void			append_face			(SBFace* F)
+    {
+    	m_Faces.push_back				(F);
+    }
+    void			use_face			(SBFace* F, u32& cnt, u32 bone_id)
+    {
+    	VERIFY							(F->bone_id==-1);
+        F->marked						= true;
+        F->bone_id						= bone_id;
+        cnt++;
+    }
+    void			recurse_fragment	(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces)
+    {
+    	if (F){
+        	if (!F->marked)	use_face	(F,cnt,bone_id);
+            // fill nearest
+            SBFaceVec r_vec;
+            for (SBFaceVecIt n_it=F->adjs.begin(); n_it!=F->adjs.end(); n_it++){
+                if (cnt>=max_faces)		break;
+                if ((*n_it)->marked)	continue;
+	        	use_face				(*n_it,cnt,bone_id);
+                r_vec.push_back			(*n_it);
+            }     
+            // recurse adjs   	
+            for (SBFaceVecIt a_it=r_vec.begin(); a_it!=r_vec.end(); a_it++){
+                if (cnt>=max_faces)				break;
+                if ((*a_it)->bone_id!=bone_id)	continue;
+                recurse_fragment				(*a_it,cnt,bone_id,max_faces);
+            } 
+        }
+    }
+    void			prepare				(SBAdjVec& adjs)
+    {
+        // compute OBB
+        FvectorVec pts; pts.reserve		(m_Faces.size()*3);
+		for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+        	(*f_it)->marked				= false;
+        	for (int k=0; k<3; k++)		pts.push_back((*f_it)->p[k]);
+        }
+        ComputeOBB						(m_OBB,pts);
+        // fill adjacent
+		for (SBFaceVecIt a_it=m_Faces.begin(); a_it!=m_Faces.end(); a_it++){
+        	SBFace* A					= *a_it;
+            for (int k=0; k<3; k++){
+            	SBFaceVec& b_vec		= adjs[A->vert_id[k]];
+                for (SBFaceVecIt b_it=b_vec.begin(); b_it!=b_vec.end(); b_it++){
+                    SBFace* B			= *b_it;
+                    if (A!=B){
+                        int cnt			= 0;
+                        for (int a=0; a<3; a++) for (int b=0; b<3; b++) if (A->vert_id[a]==B->vert_id[b]) cnt++;
+                        if (cnt>=2){
+                            if (std::find(A->adjs.begin(),A->adjs.end(),B)==A->adjs.end()) A->adjs.push_back(B);
+                            if (std::find(B->adjs.begin(),B->adjs.end(),A)==B->adjs.end()) B->adjs.push_back(A);
+                        }
+                    }
+                }
+            }
+        }
+        // prepare transform matrix
+    	m_BBox.invalidate				();
+		Fmatrix M; M.set				(m_OBB.m_rotate.i,m_OBB.m_rotate.j,m_OBB.m_rotate.k,m_OBB.m_translate);
+        m_RefOffset.set					(m_OBB.m_translate);
+        M.getXYZ						(m_RefRotate); // не i потому что в движке так
+        M.invert						();
+        // transform vertices & calculate bounding box
+		for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+        	SBFace* F					= (*f_it);
+        	for (int k=0; k<3; k++){ 
+            	M.transform_tiny		(F->p[k]);
+                m_BBox.modify			(F->p[k]);
+            }
+            if (F->adjs.empty())		ELog.Msg(mtError,"Error"); //.
+        }   
+        // calculate bone params
+        int bone_face_min				= 2;
+        int bone_cnt_calc				= iFloor(float(m_Faces.size())/bone_face_min);
+        int bone_cnt_max				= (bone_cnt_calc<62)?bone_cnt_calc:62;
+        int bone_face_max				= iFloor(float(m_Faces.size())/bone_cnt_max+0.5f); bone_face_max *= 4.f;
+        int bone_idx					= 0;
+        // create big fragment
+        u32 face_accum_total			= 0;
+        AnsiString parent_bone			= "";
+        do{
+        	SBFace* F					= 0;
+        	// find unused face
+            for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+            	if (!(*f_it)->marked){
+	            	F					= *f_it;
+                	int cnt 			= 0;
+		            for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++) cnt+=(*a_it)->marked?0:1;
+                    if ((cnt==0)||(cnt>=2))	break;
+                }
+            }
+            if (!F)						break;
+	        u32 face_accum				= 0;
+            u32 face_max_count 			= Random.randI(bone_face_min,bone_face_max+1);
+            // fill faces
+            recurse_fragment			(F,face_accum,bone_idx,face_max_count);
+            if (face_accum==1){
+//            	F->marked				= false;
+                F->bone_id				= -1;
+            }else{
+                m_Bones.push_back		(SBBone(bone_idx,parent_bone,F->surf->_GameMtlName(),face_accum));
+                parent_bone				= "0";
+                bone_idx				++;
+                face_accum_total		+= face_accum;
+            }
+            // create bone
+        }while(bone_idx<bone_cnt_max);
+        
+		// attach small single face to big fragment
+        while (face_accum_total<m_Faces.size()){
+            for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+            	SBFace* F				= *f_it;
+            	if (-1==F->bone_id){
+	            	SBFace* P			= 0;
+		            for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++){ 
+                    	P				= *a_it;
+                    	if (-1!=P->bone_id)	break;
+                    }
+                    if (P){
+                        F->marked		= true;
+                        F->bone_id		= P->bone_id;
+                        face_accum_total++;
+                    }
+            	}
+            } 
+        }
+        
+        // calculate bone offset
+        for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+            SBFace* F					= *f_it;
+            SBBone& B					= m_Bones[F->bone_id];
+            for (int k=0; k<3; k++)		B.offset.add(F->p[k]);
+        }
+        for (SBBoneVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+            SBBone& B					= *b_it;
+            VERIFY						(0!=B.f_cnt);
+            B.offset.div				(B.f_cnt*3);
+        }
+        Fvector& offs					= m_Bones.front().offset;
+        for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+            b_it->offset.sub			(offs);
+        
+		// calculate vertices offset
+		for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+        	SBFace* F					= (*f_it);	VERIFY(F->bone_id>=0);	
+            SBBone& B					= m_Bones	[F->bone_id]; 
+        	for (int k=0; k<3; k++)		F->o[k].sub	(F->p[k],B.offset);
+            F->n.mknormal				(F->o[0],F->o[1],F->o[2]);
+        }
     }
 };
 DEFINE_VECTOR		(SBPart*,SBPartVec,SBPartVecIt);
-DEFINE_VECTOR		(U32Vec,SBAdjVec,SBAdjVecIt);
 //----------------------------------------------------
 bool SBPart::Export	(IWriter& F)
 {
-	VERIFY			(!part_faces.empty());
-    if (part_faces.size()>63){
-    	ELog.Msg(mtError,"Breakable object cannot handle more than 63 faces.");
+	VERIFY			(!m_Bones.empty());
+    if (m_Bones.size()>63){
+    	ELog.Msg(mtError,"Breakable object cannot handle more than 63 parts.");
      	return false;
     }
 
     bool bRes = true;
 
-    int bone_count			= part_faces.size()+1;
+    u32 bone_count			= m_Bones.size();
                     
     xr_vector<FvectorVec>	bone_points;
 	bone_points.resize		(bone_count);
 
     u32 mtl_cnt				= 0;
-    m_BBox.getcenter		(m_Offset);
-    m_BBox.sub				(m_Offset);
-    
-    for (U32It pf_it=part_faces.begin(); pf_it!=part_faces.end(); pf_it++){
-    	SBFace* face= (*m_Faces)[*pf_it]; VERIFY(face);
-        int mtl_idx	= FindSplit(face->surf->_ShaderName(),face->surf->_Texture());
+                                  
+    for (SBFaceVecIt pf_it=m_Faces.begin(); pf_it!=m_Faces.end(); pf_it++){
+    	SBFace* face		= *pf_it;
+        int mtl_idx			= FindSplit(face->surf->_ShaderName(),face->surf->_Texture());
         if (mtl_idx<0){
             m_Splits.push_back(SSplit(face->surf,m_BBox));
             mtl_idx	= mtl_cnt++;
@@ -92,12 +256,10 @@ bool SBPart::Export	(IWriter& F)
         SSplit& split=m_Splits[mtl_idx];
         SSkelVert v[3];
         for (int k=0; k<3; k++){
-        	Fvector p;
-            p.sub		((*m_Verts)[face->vert[k]]->pos,m_Offset);
-            v[k].set	(p,face->uv[k],1.f);
-            v[k].set0	(face->o[k],face->n,pf_it-part_faces.begin()+1); //. нужно взять нормаль для вертекса
+            v[k].set	(face->p[k],face->uv[k],1.f);
+            v[k].set0	(face->o[k],face->n,face->bone_id); //. нужно взять нормаль для вертекса
         }
-        split.add_face(v[0], v[1], v[2]);
+        split.add_face		(v[0], v[1], v[2]);
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){
             v[0].N0.invert(); v[1].N0.invert(); v[2].N0.invert();
             v[0].N1.invert(); v[1].N1.invert(); v[2].N1.invert();
@@ -158,15 +320,11 @@ bool SBPart::Export	(IWriter& F)
     // BoneNames
     F.open_chunk(OGF_BONE_NAMES);
     F.w_u32		(bone_count);
-    // write root bone
-    F.w_stringZ	("root");
-    F.w_stringZ	("");
-    Fobb obb; 	obb.invalidate();
-    F.w			(&obb,sizeof(Fobb));
     // write other bones
-    for (u32 bone_idx=0; bone_idx<=part_faces.size(); bone_idx++){
-        F.w_stringZ	(AnsiString(bone_idx).c_str());
-        F.w_stringZ	("root");
+    for (u32 bone_idx=0; bone_idx<bone_count; bone_idx++){
+    	SBBone& bone=m_Bones[bone_idx];
+        F.w_stringZ	(bone.name.c_str());
+        F.w_stringZ	(bone.parent.c_str());
         Fobb		obb;
         ComputeOBB	(obb,bone_points[bone_idx]);
         F.w			(&obb,sizeof(Fobb));
@@ -174,21 +332,18 @@ bool SBPart::Export	(IWriter& F)
     F.close_chunk();
 
     F.open_chunk(OGF_IKDATA);
-    for (bone_idx=0; bone_idx<=part_faces.size(); bone_idx++){
-    	SBFace* face= 0;
-        if (bone_idx>0){
-	    	face		= (*m_Faces)[part_faces[bone_idx-1]];
-		    F.w_stringZ (face->surf->_GameMtlName());
-        }else{
-		    F.w_stringZ ("default");
-        }
+    for (bone_idx=0; bone_idx<bone_count; bone_idx++){
+    	SBBone& bone=m_Bones[bone_idx];
+
+        // material
+        F.w_stringZ (bone.mtl.c_str());
         // shape
         SBoneShape	shape;
         shape.type	= SBoneShape::stBox;
         shape.flags.set(SBoneShape::sfRemoveAfterBreak);
         ComputeOBB	(shape.box,bone_points[bone_idx]);
 	    F.w			(&shape,sizeof(SBoneShape));
-	    F.w_u32		(jtRigid);		// joint type
+	    F.w_u32		(jtNone);		// joint type
         for (int k=0; k<3; k++){    // limits
             F.w_float(0.f);         // min
             F.w_float(0.f);         // max
@@ -201,10 +356,9 @@ bool SBPart::Export	(IWriter& F)
         F.w_float   (0.f);			// break_force
         F.w_float   (0.f);			// break_torque
 
-        Fvector rot={0,0,0},offs=m_Offset;
+        Fvector rot={0,0,0};
         F.w_fvector3(rot);
-        offs.sub	(face?face->b:offs,m_Offset);
-        F.w_fvector3(offs);         //.?
+        F.w_fvector3(bone.offset);
         F.w_float   (0.f);			// mass
         F.w_float   (0.f);			// center of mass        
         F.w_float   (0.f);                         
@@ -225,28 +379,17 @@ IC void	append_face(SBVertVec& verts, SBFaceVec& faces, Fvector* v, const Fvecto
 	// find similar verts
 	for (SBVertVecIt v_it=verts.begin(); v_it!=verts.end(); v_it++){
     	for (int k=0; k<3; k++)
-	    	if ((F->vert[k]==-1)&&(*v_it)->similar(v[k])) F->vert[k]=v_it-verts.begin();
+	    	if ((F->vert_id[k]==-1)&&(*v_it)->similar(v[k])) F->vert_id[k]=v_it-verts.begin();
     }
-    for (int k=0; k<3; k++)
-        if (F->vert[k]==-1){
-        	SBVert* V	= xr_new<SBVert>(); 
-            V->pos.set	(v[k]);
-         	F->vert[k]	= verts.size();
-            verts.push_back(V);
+    for (int k=0; k<3; k++){
+	    F->p[k].set			(v[k]);
+        if (F->vert_id[k]==-1){
+        	SBVert* V		= xr_new<SBVert>(); 
+            V->pos.set		(v[k]);
+         	F->vert_id[k]	= verts.size();
+            verts.push_back	(V);
         }
-        
-    // make bone
-    {
-        F->b.add	(v[0]);
-        F->b.add	(v[1]);
-        F->b.add	(v[2]);
-        F->b.div	(3);
-        for (int k=0; k<3; k++)
-            F->o[k].sub	(verts[F->vert[k]]->pos,F->b);
-        // make normal
-        F->n.mknormal	(v[0],v[1],v[2]);
     }
-    
     faces.push_back		(F);
 }
 
@@ -288,18 +431,17 @@ IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, SBVertVec& m_vert
     return bResult;
 }
 
-IC void recurse_tri(SBPart* P, SBFaceVec& faces, SBAdjVec& adjs, int id)
+IC void recurse_tri(SBPart* P, SBFaceVec& faces, SBAdjVec& adjs, SBFace* F)
 {
-    SBFace* F			= faces[id];
 	if (F->marked) 		return;
 
-	P->append_face		(id);
+	P->append_face		(F);
     F->marked			= true;
 
     // recurse
     for (int k=0; k<3; k++){
-	    U32Vec& PL 		= adjs[F->vert[k]];
-        for (U32It pl_it=PL.begin(); pl_it!=PL.end(); pl_it++)
+	    SBFaceVec& PL 	= adjs[F->vert_id[k]];
+        for (SBFaceVecIt pl_it=PL.begin(); pl_it!=PL.end(); pl_it++)
             recurse_tri	(P,faces,adjs,*pl_it);
     }
 }
@@ -328,18 +470,23 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     if (bResult){
     	adjs.resize	(verts.size());
 		for (SBFaceVecIt f_it=faces.begin(); f_it!=faces.end(); f_it++)
-        	for (int k=0; k<3; k++) adjs[(*f_it)->vert[k]].push_back(f_it-faces.begin());
+        	for (int k=0; k<3; k++) adjs[(*f_it)->vert_id[k]].push_back(*f_it);
     }
     // extract parts
     if (bResult){
 		for (SBFaceVecIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
         	SBFace* F	= *f_it;
             if (!F->marked){
-		    	SBPart* P 		= xr_new<SBPart>(&verts,&faces);
-                int	id			= f_it-faces.begin();
-			    recurse_tri		(P,faces,adjs,id);
+		    	SBPart* P 		= xr_new<SBPart>();
+			    recurse_tri		(P,faces,adjs,*f_it);
 		    	parts.push_back	(P);
             }
+        }
+    }
+    // simplify parts
+    if (bResult){
+        for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
+        	(*p_it)->prepare	(adjs);
         }
     }
     // export parts
@@ -359,13 +506,14 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
             // export spawn object
             {
             	AnsiString entity_ref		= "breakable_object";
-				CSE_ALifeBreakable*	m_Data	= dynamic_cast<CSE_ALifeBreakable*>(F_entity_Create(entity_ref.c_str())); VERIFY(m_Data);
+				CSE_ALifeObjectBreakable*	m_Data	= dynamic_cast<CSE_ALifeObjectBreakable*>(F_entity_Create(entity_ref.c_str())); VERIFY(m_Data);
                 // set params
                 strcpy	  					(m_Data->s_name,entity_ref.c_str());
                 strcpy	  					(m_Data->s_name_replace,sn.c_str());
-                m_Data->o_Position.set		(P->m_Offset);
-                m_Data->o_Angle.set			(0,0,0);
+                m_Data->o_Position.set		(P->m_RefOffset); 
+                m_Data->o_Angle.set			(P->m_RefRotate);
                 m_Data->set_visual			(sn.c_str(),false);
+                m_Data->m_health			= 100.f;
 
                 NET_Packet					Packet;
                 m_Data->Spawn_Write			(Packet,TRUE);
