@@ -95,7 +95,8 @@ void CUIDragDropList::DropAll()
 	//а ведь забывают, суки!!!!
 	//выскакивает глюк, когда вместо одного элемента
 	//тянется совсем другой.
-	GetParent()->SetCapture(this, false);
+	if (GetParent())
+		GetParent()->SetCapture(this, false);
 	m_pMouseCapturer = NULL;
 
 
