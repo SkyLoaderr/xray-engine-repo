@@ -79,8 +79,9 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
 	death			= K->ID_Cycle(strconcat(buf,base,"_death"));
 	m_walk.Create	(K,base,"_walk");
 	m_run.Create	(K,base,"_run");
-	m_torso[1].Create(K,base,"_1");
-	m_torso[2].Create(K,base,"_2");
+	m_torso[0].Create(K,base,"_1");
+	m_torso[1].Create(K,base,"_2");
+	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_idle"));;
 
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
@@ -119,23 +120,33 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		// Torso
 		CWeapon* W = dynamic_cast<CWeapon*>(Weapons->ActiveWeapon());
 		if (W){
-			SActorState::STorsoWpn* TW = &ST->m_torso[W->HandDependence()];
-			switch (W->STATE){
-			case CWeapon::eIdle:		M_torso	= TW->aim;		break;
-			case CWeapon::eFire:		M_torso	= TW->attack;	break;
-			case CWeapon::eReload:		M_torso	= TW->reload;	break;
-			case CWeapon::eShowing:		M_torso	= TW->draw;		break;
-			case CWeapon::eHiding:		M_torso	= TW->holster;	break;
+			SActorState::STorsoWpn* TW	= &ST->m_torso[W->HandDependence()-1];
+			if (!b_DropActivated&&!fis_zero(f_DropPower)){
+				M_torso					= TW->drop;
+				m_bAnimTorsoPlayed		= TRUE;
+			}else{
+				if (!m_bAnimTorsoPlayed){
+					switch (W->STATE){
+					case CWeapon::eIdle:	M_torso	= TW->aim;		break;
+					case CWeapon::eFire:	M_torso	= TW->attack;	break;
+					case CWeapon::eReload:	M_torso	= TW->reload;	break;
+					case CWeapon::eShowing:	M_torso	= TW->draw;		break;
+					case CWeapon::eHiding:	M_torso	= TW->holster;	break;
+					}
+				}
 			}
 		}
 
-		// на ноги есть анимация - установим еще и на торс / иначе Idle для всего
 		if (!M_legs)					M_legs	= ST->legs_idle;
-		if (!M_torso)					M_torso = ST->m_torso[1].aim; // fake
+		if (!M_torso){				
+			if (m_bAnimTorsoPlayed)		M_torso	= m_current_torso;
+			else						M_torso = ST->m_torso_idle;
+		}
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
 		if (m_current_torso!=M_torso){
-			PKinematics	(pVisual)->PlayCycle(M_torso);
+			if (m_bAnimTorsoPlayed)		PKinematics	(pVisual)->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
+			else						PKinematics	(pVisual)->PlayCycle(M_torso);
 			m_current_torso=M_torso;
 		}
 		if (m_current_legs!=M_legs){

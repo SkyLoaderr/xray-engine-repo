@@ -104,9 +104,16 @@ protected:
 		CMotionDef*			death;
 		SAnimState			m_walk;
 		SAnimState			m_run;
-		STorsoWpn			m_torso[3];
+		STorsoWpn			m_torso[2];
+		CMotionDef*			m_torso_idle;
 		void				Create(CKinematics* K, LPCSTR base);
 	};
+	BOOL					m_bAnimTorsoPlayed;
+	static void				AnimTorsoPlayCallBack(CBlend* B)
+	{
+		CActor* actor		= (CActor*)B->CallbackParam;
+		actor->m_bAnimTorsoPlayed = FALSE;
+	}
 public:
 	// animation
 	CBlend*					m_current_legs_blend;

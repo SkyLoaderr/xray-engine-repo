@@ -1089,12 +1089,6 @@
 					RelativePath=".\UICursor.h">
 				</File>
 				<File
-					RelativePath="UIFragList.cpp">
-				</File>
-				<File
-					RelativePath="UIFragList.h">
-				</File>
-				<File
 					RelativePath=".\UIGroup.cpp">
 				</File>
 				<File
@@ -1152,10 +1146,32 @@
 						RelativePath="UIFrameRect.h">
 					</File>
 					<File
+						RelativePath="UIListBox.cpp">
+					</File>
+					<File
+						RelativePath="UIListBox.h">
+					</File>
+					<File
 						RelativePath=".\UIStaticItem.cpp">
 					</File>
 					<File
 						RelativePath=".\UIStaticItem.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Deathmatch"
+					Filter="">
+					<File
+						RelativePath="UIDMPlayerList.cpp">
+					</File>
+					<File
+						RelativePath="UIDMPlayerList.h">
+					</File>
+					<File
+						RelativePath="UIFragList.cpp">
+					</File>
+					<File
+						RelativePath="UIFragList.h">
 					</File>
 				</Filter>
 			</Filter>
