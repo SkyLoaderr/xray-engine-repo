@@ -16,5 +16,14 @@ function ui_main_base_tab:__finalize()
 end
 
 function ui_main_base_tab:InitControls()
+	self.main_rect = {x = 0, y = 0, width = 257, height = 270}
+	// huge btn struct with all common parameters
+	self.btn = {}
+	self.btn.indent = -1
+	self.btn.x = 0
+	self.btn.y = 0
+	self.btn.width = 256
+	self.btn.height = 33
+	self.btn.font = GetFontLetterica25()
 end
 

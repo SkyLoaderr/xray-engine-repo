@@ -1,0 +1,28 @@
+-- File:        UI_MAIN_MAIN_TAB.SCRIPT
+-- Description: main tab for main menu :)
+-- Created:     16.12.2004
+-- Author:      Serhiy 0. Vynnychenk0
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright 2004 GSC Game World
+--
+
+class "ui_main_main_tab" (ui_main_base_tab.main_base_tab)
+
+function ui_main_main_tab:__init() super()
+	
+end
+
+function ui_main_main_tab:__finalize()
+	
+end
+
+function ui_main_main_tab:InitControls()
+	ui_main_base_tab.InitControls(self)
+
+end
+
+function ui_main_main_tab:InitCallbacks()
+
+end
+
