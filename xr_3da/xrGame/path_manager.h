@@ -717,7 +717,7 @@ public:
 	{
 		VERIFY					(path);
 		path->push_back			(node_index);
-		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
+		best_node				= *graph->vertex(node_index);
 		y1						= (float)(tNode0.position().y());
 		return					(false);
 	}
@@ -916,6 +916,8 @@ public:
 		);
 		m_evaluator				= &parameters;
 		m_evaluator->max_range	= parameters.m_fSearchRange;
+		m_evaluator->m_fBestCost= flt_max;
+		graph->set_invalid_vertex(m_evaluator->m_dwBestNode);
 	}
 
 	IC	_dist_type	estimate		(const _index_type node_index) const
@@ -930,13 +932,13 @@ public:
 		m_evaluator->m_tpCurrentNode = graph->vertex(node_index);
 		m_evaluator->m_fDistance	 = data_storage->get_best().g();
 		float					value = m_evaluator->ffEvaluate();
-		if (value > m_evaluator->m_fResult) {
-			m_evaluator->m_fResult		= value;
+		if (value < m_evaluator->m_fBestCost) {
+			m_evaluator->m_fBestCost	= value;
 			m_evaluator->m_dwBestNode	= node_index;
 		}
 
-		_Graph::CVertex			&tNode0 = *graph->vertex(node_index);
-		y1						= (float)(tNode0.position().y());
+		best_node				= graph->vertex(node_index);
+		y1						= (float)(best_node->position().y());
 
 		return					(false);
 	}

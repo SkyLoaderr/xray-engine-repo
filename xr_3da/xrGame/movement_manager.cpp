@@ -51,7 +51,6 @@ void CMovementManager::Load			(LPCSTR caSection)
 
 void CMovementManager::update_path()
 {
-	Device.Statistic.AI_Path.Begin();
 	time_start				();
 	if (!actual()) {
 		switch (m_path_type) {
@@ -102,5 +101,4 @@ void CMovementManager::update_path()
 		}
 		default :				NODEFAULT;
 	}
-	Device.Statistic.AI_Path.End();
 }

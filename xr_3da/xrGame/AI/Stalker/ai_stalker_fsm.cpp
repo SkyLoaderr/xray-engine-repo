@@ -908,24 +908,8 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
-//	for (;;) {
-//		u32 v_id = ::Random.randI(ai().game_graph().header().vertex_count());
-//		if (ai().game_graph().vertex(v_id).level_point().distance_to(Position())) {
-//			set_game_dest_node	(ALife::_GRAPH_ID(v_id));
-//			set_path_type		(ePathTypeGamePath);
-//			update_path			();
-//			break;
-//		}
-//	}
-//
-//	set_game_dest_vertex(34);
 //	m_tMovementType		= eMovementTypeWalk;
-//	m_tMentalState		= eMentalStateDanger;
-//	set_path_type		(ePathTypeGamePath);
-//	CMovementManager::CGameLocationSelector::set_selection_type	(eSelectionTypeRandomBranching);
-//	update_path			();
-//	m_tMovementType		= eMovementTypeWalk;
-//	m_tMentalState		= eMentalStateDanger;
+//	m_tMentalState		= eMentalStateFree;
 //	CMovementManager::set_path_type		(ePathTypePatrolPath);
 //	CPatrolPathManager::set_path		("way0000");
 //	CPatrolPathManager::set_start_type	(ePatrolStartTypeNearest);
@@ -933,6 +917,22 @@ void CAI_Stalker::Think()
 //	CPatrolPathManager::set_random		(true);
 //	update_path			();
 //	SetDirectionLook	();
+	m_tEnemy.m_enemy	= 0;
+	m_tSavedEnemy		= dynamic_cast<CEntity*>(Level().CurrentEntity());
+	m_tSavedEnemyPosition = m_tSavedEnemy->Position();
+	m_dwLostEnemyTime	= Level().timeServer();
+	m_tpSavedEnemyNode	= ai().level_graph().vertex(m_dwSavedEnemyNodeID = m_tSavedEnemy->level_vertex_id());
+	m_tMySavedPosition	= Position();
+	m_dwMyNodeID		= level_vertex_id();
+	INIT_SQUAD_AND_LEADER;
+	vfInitSelector		(*m_tpSelectorRetreat,Squad,Leader);
+
+	m_tMovementType		= eMovementTypeRun;
+	m_tMentalState		= eMentalStatePanic;
+	CMovementManager::set_path_type		(ePathTypeLevelPath);
+	CLevelLocationSelector::set_evaluator(m_tpSelectorRetreat);
+	update_path			();
+	SetDirectionLook	();
 	return;
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
