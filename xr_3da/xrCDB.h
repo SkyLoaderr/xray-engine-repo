@@ -1,3 +1,6 @@
+#ifndef XRCDB_H
+#define XRCDB_H
+
 #pragma once
 // The following ifdef block is the standard way of creating macros which make exporting 
 // from a DLL simpler. All files within this DLL are compiled with the XRCDB_EXPORTS
@@ -126,3 +129,4 @@ namespace CDB
 };
 
 #pragma pack(pop)	
+#endif
