@@ -19,3 +19,4 @@ To OLES :
 -O	resolved	~160 memory operations per frame
 -O				no particles
 -WT				ни хера не работает (level - cs_test)
+-D				зоны глючат постоянно из-за spatial-хрени!
