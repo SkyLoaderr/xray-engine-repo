@@ -370,6 +370,11 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 			bNoRecurse	= !(fl&FS_Path::flRecurse);
 			Recurse		(P->m_Path);
 			I			= pathes.insert(mk_pair(xr_strdup(id),P));
+			
+			//disable file caching if no network drive ($server_root$ begins with \\x-ray)
+			if(0==xr_strcmp(id,"$server_root$") && root!=strstr(root,"\\\\x-ray") )
+				m_Flags.set(flCacheFiles,FALSE);
+			
 			R_ASSERT	(I.second);
 		}
 		r_close			(F);
