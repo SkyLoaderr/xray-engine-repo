@@ -44,8 +44,9 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 	ClipperOn			();
 }
 
-void CUICustomMap::ClampMoveByParent()
+void CUICustomMap::MoveWndDelta(const Ivector2& d)
 {
+	CUIWindow::MoveWndDelta	(d);
 	Irect clip			= GetClipRect();
 	Irect r				= GetWndRect();
 	if (r.x2<clip.width())	r.x1 = clip.width()-r.width();
@@ -238,15 +239,19 @@ void CUIMapWnd::Init()
 
 	Irect r = m_UILevelFrame.GetWndRect();
 
-	m_UIMainScrollV.Init(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
-	m_UIMainFrame.AttachChild(&m_UIMainScrollV);
-	m_UIMainScrollV.SetMessageTarget(this);
-	m_UIMainScrollV.Show(true);
+	m_UIMainScrollV.Init			(r.right + SCROLLBARS_SHIFT, r.top, r.bottom - r.top, false);
+	m_UIMainScrollV.SetWindowName	("scroll_v");
+	m_UIMainFrame.AttachChild		(&m_UIMainScrollV);
+	Register						(&m_UIMainScrollV);
+	AddCallback						("scroll_v",SCROLLBAR_VSCROLL,boost::bind(&CUIMapWnd::OnScrollV,this));
+	m_UIMainScrollV.Show			(true);
 
-	m_UIMainScrollH.Init(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
-	m_UIMainFrame.AttachChild(&m_UIMainScrollH);
-	m_UIMainScrollH.SetMessageTarget(this);
-	m_UIMainScrollH.Show(true);
+	m_UIMainScrollH.Init			(r.left, r.bottom + SCROLLBARS_SHIFT, r.right - r.left, true);
+	m_UIMainScrollH.SetWindowName	("scroll_h");
+	m_UIMainFrame.AttachChild		(&m_UIMainScrollH);
+	Register						(&m_UIMainScrollH);
+	AddCallback						("scroll_h",SCROLLBAR_HSCROLL,boost::bind(&CUIMapWnd::OnScrollH,this));
+	m_UIMainScrollH.Show			(true);
 
 //	AttachChild(&UIMainMapHeader);
 //	xml_init.InitFrameLine(uiXml, "map_header_frame_line", 0, &UIMainMapHeader);
@@ -274,8 +279,8 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			l->Init(it->first, gameLtx);
-//			l->FitToWidth( m_UILevelFrame.GetWidth()	);
-			l->FitToHeight( m_UILevelFrame.GetHeight()	);
+			l->FitToWidth( m_UILevelFrame.GetWidth()	);
+//			l->FitToHeight( m_UILevelFrame.GetHeight()	);
 		}
 	}
 }
@@ -299,14 +304,20 @@ void CUIMapWnd::Show(bool status)
 void CUIMapWnd::SetActiveMap			(shared_str level_name)
 {
 	if(m_activeLevelMap)
-		DetachChild(m_activeLevelMap);
+		DetachChild				(m_activeLevelMap);
 
-	GameMapsPairIt it = m_GameMaps.find(level_name);
-	if( m_GameMaps.end()==it) return;
+	GameMapsPairIt it			= m_GameMaps.find(level_name);
+	if( m_GameMaps.end()==it)	return;
 	
-	m_activeLevelMap = it->second;
-	m_UILevelFrame.AttachChild(m_activeLevelMap);
-	m_UILevelFrame.BringToTop(m_GlobalMap);
+	m_activeLevelMap			= it->second;
+	m_UILevelFrame.AttachChild	(m_activeLevelMap);
+	m_UILevelFrame.BringToTop	(m_GlobalMap);
+
+	// set scroll range
+	m_UIMainScrollV.SetRange	(0,m_activeLevelMap->GetHeight()-m_UILevelFrame.GetHeight());
+	m_UIMainScrollH.SetRange	(0,m_activeLevelMap->GetWidth()-m_UILevelFrame.GetWidth());
+	m_UIMainScrollV.SetScrollPos(0);
+	m_UIMainScrollH.SetScrollPos(0);
 }
 
 void CUIMapWnd::Draw()
@@ -325,23 +336,47 @@ void CUIMapWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 
 	if(m_activeLevelMap && m_UILevelFrame.GetAbsoluteRect().in( GetUICursor()->GetPos() ) ){
 		switch (mouse_action){
-			case WINDOW_MOUSE_MOVE:
-				if(m_flags.test(lmMouseHold)){
-					m_activeLevelMap->MoveWndDelta		(GetUICursor()->GetPosDelta());
-					m_activeLevelMap->ClampMoveByParent	();
-				}break;
-
-			case WINDOW_LBUTTON_DOWN:{
-							GetUICursor()->HoldMode(true);
-							m_flags.set(lmMouseHold,TRUE);
-					   }break;
-
-			case WINDOW_LBUTTON_UP:{
-							GetUICursor()->HoldMode(false);
-							m_flags.set(lmMouseHold,FALSE);
-					   }break;
+		case WINDOW_MOUSE_MOVE:
+			if(m_flags.test(lmMouseHold)){
+				m_activeLevelMap->MoveWndDelta	(GetUICursor()->GetPosDelta());
+				UpdateScroll					();
+			}
+		break;
+		case WINDOW_LBUTTON_DOWN:
+			GetUICursor()->HoldMode(true);
+			m_flags.set(lmMouseHold,TRUE);
+		break;
+		case WINDOW_LBUTTON_UP:
+			GetUICursor()->HoldMode(false);
+			m_flags.set(lmMouseHold,FALSE);
+		break;
 		}	
 	};
+}
+
+void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
+{
+	CUIWndCallback::OnEvent(pWnd, msg, pData);
+}
+
+void CUIMapWnd::UpdateScroll()
+{
+	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
+	m_UIMainScrollV.SetScrollPos(-w_pos.y);
+	m_UIMainScrollH.SetScrollPos(-w_pos.x);
+}
+
+void CUIMapWnd::OnScrollV()
+{
+	s16 s_pos					= m_UIMainScrollV.GetScrollPos();
+	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
+	m_activeLevelMap->SetWndPos	(w_pos.x,-s_pos);
+}
+void CUIMapWnd::OnScrollH()
+{
+	s16 s_pos					= m_UIMainScrollH.GetScrollPos();
+	Ivector2 w_pos				= m_activeLevelMap->GetWndPos();
+	m_activeLevelMap->SetWndPos	(-s_pos,w_pos.y);
 }
 
 

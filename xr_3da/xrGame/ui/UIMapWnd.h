@@ -35,8 +35,9 @@ public:
 	Irect			ConvertRealToLocal  (const Fvector2& src);// meters->pixels (relatively own left-top pos)
 	void			FitToWidth			(u32 width);
 	void			FitToHeight			(u32 height);
+	float			GetCurrentZoom		(){return m_zoom_factor;}
 	const Frect&    BoundRect			()const					{return m_BoundRect;};
-	void			ClampMoveByParent	();
+	virtual	void	MoveWndDelta		(const Ivector2& d);
 };
 
 
@@ -67,22 +68,19 @@ public:
 class CUILevelMap: public CUICustomMap{
 	typedef  CUICustomMap inherited;
 	Frect			m_GlobalRect;// virtual map size (meters)
-
 public:
 					CUILevelMap			();
 	virtual			~CUILevelMap		();
 	virtual void	Init				(shared_str name, CInifile& gameLtx);
-
 };
 
 DEFINE_MAP(shared_str,CUICustomMap*,GameMaps,GameMapsPairIt);
 
-class CUIMapWnd: public CUIWindow
+class CUIMapWnd: public CUIWindow, public CUIWndCallback
 {
 	typedef CUIWindow inherited;
 	enum lmFlags{lmMouseHold = 1,};
 	Flags32			m_flags;
-
 
 	CUICustomMap*		m_activeLevelMap;
 
@@ -93,8 +91,10 @@ class CUIMapWnd: public CUIWindow
 	CUIScrollBar		m_UIMainScrollV,	m_UIMainScrollH;
 	CUIStatic			m_UILevelFrame;
 
-
 //	CUIFrameLineWnd		UIMainMapHeader;
+	void				OnScrollV			();
+	void				OnScrollH			();
+	void				UpdateScroll		();
 public:
 					CUIMapWnd				();
 	virtual			~CUIMapWnd				();
@@ -104,13 +104,13 @@ public:
 	virtual void	Draw					();
 
 	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
+	virtual void	SendMessage				(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
 	void			InitGlobalMapObjectives	(){}
 	void			InitLocalMapObjectives	(){}
 
 	void			SetActivePoint			(const Fvector &vNewPoint){}
 	void			SetActiveMap			(shared_str level_name);
-
 };
 
 /*
