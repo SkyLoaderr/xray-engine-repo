@@ -26,8 +26,9 @@ BOOL				SphereValid	(vector<Fvector>& geom, Fsphere& test)
 void				OGF_Base::CalcBounds	() 
 {
 	// get geometry
-	vector<Fvector>				V;
+	static vector<Fvector>		V;
 	vector<Fvector>::iterator	I;
+	V.clear						();
 	V.reserve					(4096);
 	GetGeometry					(V);
 	FPU::m64					();
