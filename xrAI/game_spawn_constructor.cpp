@@ -271,6 +271,9 @@ void CGameSpawnConstructor::process_actor			(LPCSTR start_level_name)
 	if (!start_level_name)
 		return;
 
+	if (!xr_strcmp(*actor_level_name(),start_level_name))
+		return;
+
 	const CGameGraph::SLevel		&level = game_graph().header().level(start_level_name);
 	ALife::_GRAPH_ID				dest = ALife::_GRAPH_ID(-1);
 	CGraphEngine::CGameLevelParams	evaluator(level.id());
