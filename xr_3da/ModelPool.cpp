@@ -63,6 +63,7 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	V->Type = type;
 	return V;
 }
+
 CVisual*	CModelPool::Instance_Duplicate	(CVisual* V)
 {
 	R_ASSERT(V);
@@ -101,15 +102,12 @@ CVisual*	CModelPool::Instance_Load		(const char* N)
 	Engine.FS.Close		(data);
 
 	// Registration
-	ModelDef			M;
-	strcpy				(M.name,N);
-	M.model				= V;
-	Models.push_back	(M);
+	Instance_Register	(N,V);
 
 	return V;
 }
 
-CVisual*	CModelPool::Instance_Load(CStream* data)
+CVisual*	CModelPool::Instance_Load(LPCSTR name, CStream* data)
 {
 	CVisual	*V;
 	
@@ -117,20 +115,27 @@ CVisual*	CModelPool::Instance_Load(CStream* data)
 	ogf_header			H;
 	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
-	V->Load				(0,data,0);
+	V->Load				(name,data,0);
 
 	// Registration
-	ModelDef			M;
-	M.name[0]			= 0;
-	M.model				= V;
-	Models.push_back	(M);
-
+	Instance_Register	(name,V);
 	return V;
 }
+
+void		CModelPool::Instance_Register(LPCSTR N, CVisual* V)
+{
+	Msg					("------------------------- %s",N);
+	// Registration
+	ModelDef			M;
+	strcpy				(M.name,N);
+	M.model				= V;
+	Models.push_back	(M);
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
 void CModelPool::Destroy()
 {
 	vector<ModelDef>::iterator	I;
@@ -141,34 +146,43 @@ void CModelPool::Destroy()
 	}
 	Models.clear();
 }
+
 void CModelPool::OnDeviceDestroy()
 {
 	Destroy();
 }
+
 CModelPool::CModelPool()
 {
 	Device.seqDevDestroy.Add	(this,REG_PRIORITY_LOW);
 }
+
 CModelPool::~CModelPool()
 {
 	Device.seqDevDestroy.Remove	(this);
 }
 
-CVisual* CModelPool::Create(const char* name)
+CVisual* CModelPool::Instance_Find(LPCSTR N)
 {
-	// 1. Search for already loaded model
-	string128 low_name;		R_ASSERT(strlen(name)<128);
-	strcpy(low_name,name);	strlwr(low_name);
-
 	CVisual*				Model=0;
 	vector<ModelDef>::iterator	I;
 	for (I=Models.begin(); I!=Models.end(); I++)
 	{
-		if (I->name[0]&&(0==strcmp(I->name,low_name))) {
+		if (I->name[0]&&(0==strcmp(I->name,N))) {
 			Model = I->model;
 			break;
 		}
 	}
+	return Model;
+}
+
+CVisual* CModelPool::Create(const char* name)
+{
+	string128 low_name;		R_ASSERT(strlen(name)<128);
+	strcpy(low_name,name);	strlwr(low_name);
+
+	// 1. Search for already loaded model
+	CVisual* Model	= Instance_Find(low_name);
 
 	// 2. If found - return reference
 	if (0!=Model) return Instance_Duplicate(Model);
@@ -177,9 +191,19 @@ CVisual* CModelPool::Create(const char* name)
 	return Instance_Duplicate(Instance_Load(low_name));
 }
 
-CVisual* CModelPool::Create(CStream* data)
+CVisual* CModelPool::Create(LPCSTR name, CStream* data)
 {
-	return Instance_Duplicate(Instance_Load(data));
+	string128 low_name;		R_ASSERT(strlen(name)<128);
+	strcpy(low_name,name);	strlwr(low_name);
+
+	// 1. Search for already loaded model
+	CVisual* Model	= Instance_Find(low_name);
+
+	// 2. If found - return reference
+	if (0!=Model) return Instance_Duplicate(Model);
+
+	// 3. If not found
+	return Instance_Duplicate(Instance_Load(name,data));
 }
 
 void	CModelPool::Delete(CVisual* &V)

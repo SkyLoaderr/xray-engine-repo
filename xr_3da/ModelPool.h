@@ -31,13 +31,15 @@ public:
 	CVisual*			Instance_Create		(DWORD Type);
 	CVisual*			Instance_Duplicate	(CVisual* V);
 	CVisual*			Instance_Load		(LPCSTR N);
-	CVisual*			Instance_Load		(CStream* data);
+	CVisual*			Instance_Load		(LPCSTR N, CStream* data);
+	void				Instance_Register	(LPCSTR N, CVisual* V);
+	CVisual*			Instance_Find		(LPCSTR N);
 
 	virtual void		OnDeviceDestroy		();
 
 	CVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
 	CVisual*			Create				(LPCSTR name);
-	CVisual*			Create				(CStream* data);
+	CVisual*			Create				(LPCSTR name, CStream* data);
 	void				Delete				(CVisual* &V);
 
 	CModelPool			();

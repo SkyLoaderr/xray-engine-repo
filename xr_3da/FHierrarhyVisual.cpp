@@ -17,6 +17,7 @@
 
 FHierrarhyVisual::FHierrarhyVisual()  : CVisual()
 {
+	bDontDelete	= FALSE;
 }
 
 FHierrarhyVisual::~FHierrarhyVisual()
@@ -31,7 +32,9 @@ FHierrarhyVisual::~FHierrarhyVisual()
 void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 {
 	CVisual::Load(N,data,dwFlags);
-	if (data->FindChunk(OGF_CHIELDS_L)) {
+	if (data->FindChunk(OGF_CHIELDS_L)) 
+	{
+		// From Link
 		DWORD cnt = data->Rdword();
 		children.resize(cnt);
 		for (DWORD i=0; i<cnt; i++) {
@@ -43,8 +46,12 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #endif
 		}
 		bDontDelete = TRUE;
-	}else{
-    	if (data->FindChunk(OGF_CHILDREN)){
+	}
+	else
+	{	
+    	if (data->FindChunk(OGF_CHILDREN))
+		{
+			// From stream
             CStream* OBJ = data->OpenChunk(OGF_CHILDREN);
             if (OBJ){
                 CStream* O = OBJ->OpenChunk(0);
@@ -52,7 +59,9 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 #ifdef _EDITOR
                     children.push_back	(::Device.Models.Create(O));
 #else
-					children.push_back	(::Render->model_Create(O));
+					string256 name_load;
+					sprintf				(name_load,"%s_%d",N,count);
+					children.push_back	(::Render->model_Create(name_load,O));
 #endif
                     O->Close();
                     O = OBJ->OpenChunk(count);
@@ -60,7 +69,10 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
                 OBJ->Close();
             }
 			bDontDelete = FALSE;
-        }else{
+        }
+		else
+		{
+			// From FILE
 			if (data->FindChunk(OGF_CHIELDS)) {
                 string32	c_drv;
                 string256	c_dir;
@@ -68,7 +80,8 @@ void FHierrarhyVisual::Load(const char* N, CStream *data, DWORD dwFlags)
                 _splitpath	(N,c_drv,c_dir,0,0);
                 int			cnt = data->Rdword();
                 children.reserve(cnt);
-                for (int i=0; i<cnt; i++) {
+                for (int i=0; i<cnt; i++) 
+				{
                     data->RstringZ		(fn);
                     strconcat			(fn_full,c_drv,c_dir,fn);
 #ifdef _EDITOR

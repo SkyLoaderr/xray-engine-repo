@@ -20,7 +20,7 @@ ENGINE_API	CRender_interface*	Render = &Render_Implementation;
 
 // Implementation
 CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);			}
-CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data);			}
+CVisual*	CRender::model_Create		(LPCSTR name, CStream* data)	{ return Models.Create(name,data);		}
 CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
 void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);						}
 

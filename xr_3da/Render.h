@@ -76,7 +76,7 @@ public:
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)	= 0;
 	virtual CVisual*				model_Create			(LPCSTR name)					= 0;
-	virtual CVisual*				model_Create			(CStream* data)					= 0;
+	virtual CVisual*				model_Create			(LPCSTR name, CStream* data)	= 0;
 	virtual CVisual*				model_Duplicate			(CVisual* V)					= 0;
 	virtual void					model_Delete			(CVisual* &V)					= 0;
 	
