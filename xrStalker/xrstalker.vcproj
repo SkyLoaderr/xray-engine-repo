@@ -498,10 +498,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
@@ -1446,12 +1446,6 @@
 				</File>
 				<File
 					RelativePath=".\Scripts\ui_multiplayer_create.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_create_base_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_create_map_tab.script">
 				</File>
 				<File
 					RelativePath=".\Scripts\ui_multiplayer_dialog.script">
