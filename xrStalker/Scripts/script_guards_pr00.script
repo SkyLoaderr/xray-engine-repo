@@ -19,7 +19,7 @@ function main()
 	guard02:script	(true,script_guards_pr00.script_name())
 	guard03:script	(true,script_guards_pr00.script_name())
 
-	final_guard01:script	(true,script_guards_00.script_name())
+	final_guard01:script	(true,script_guards_pr00.script_name())
 	final_guard02:script	(true,script_guards_pr00.script_name())
 	final_guard03:script	(true,script_guards_pr00.script_name())
 	final_guard04:script	(true,script_guards_pr00.script_name())
