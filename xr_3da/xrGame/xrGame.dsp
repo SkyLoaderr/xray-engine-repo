@@ -852,6 +852,17 @@ SOURCE=.\Spawn.h
 # Begin Source File
 
 SOURCE=.\Spawn_Event.cpp
+
+!IF  "$(CFG)" == "xrGame - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
