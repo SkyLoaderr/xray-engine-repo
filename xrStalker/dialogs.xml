@@ -362,7 +362,7 @@
 				<next>5</next>
 			</phrase>
 			<phrase id="3">
-				<script_text>info_test1.test_text</script_text>
+				<!-- <script_text>info_test1.test_text</script_text> -->
 				<text>It's you again?!</text>
 			</phrase>
 
