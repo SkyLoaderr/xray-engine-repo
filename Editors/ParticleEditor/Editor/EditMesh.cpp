@@ -26,7 +26,8 @@ void CEditableMesh::Construct(){
 #endif
 }
 
-void CEditableMesh::Clear(){
+void CEditableMesh::Clear()           
+{
 #ifdef _EDITOR
 	ClearRenderBuffers	();
 #endif

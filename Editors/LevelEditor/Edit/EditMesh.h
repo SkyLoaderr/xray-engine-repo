@@ -106,10 +106,8 @@ class CSector;
 	struct st_RenderBuffer{
 		u32			dwStartVertex;
 	    u32			dwNumVertex;
-        SGeometry*		pGeom;
-		IDirect3DVertexBuffer9*	pVB;
-//		IDirect3DIndexBuffer9*	pIB;
-		st_RenderBuffer	(u32 sv, u32 nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0),pVB(0){;}
+        SGeometry* 	pGeom;
+		st_RenderBuffer	(u32 sv, u32 nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
@@ -153,24 +151,25 @@ public:
 	st_MeshOptions	m_Ops;
 
     enum{
-        LS_CF_MODEL 	= (1<<0),
-        LS_FNORMALS 	= (1<<1),
-        LS_PNORMALS 	= (1<<2),
-		LS_SVERTICES 	= (1<<3),
-        LS_RBUFFERS		= (1<<4)
+        LS_CF_MODEL = (1<<0),
+        LS_RBUFFERS	= (1<<1),
+        LS_FNORMALS = (1<<2),
+        LS_PNORMALS = (1<<3),
+		LS_SVERTICES= (1<<4),
     };
     Flags32			m_LoadState;
 protected:
 	Fbox			m_Box;
-    FvectorVec		m_Points;	// |
-    SVertVec		m_SVertices;// |
-    AdjVec			m_Adjs;     // + some array size!!!
-    SurfFaces		m_SurfFaces;
-    FvectorVec		m_PNormals;	// |*3
-    FvectorVec		m_FNormals;	// |
-    FaceVec			m_Faces;    // + some array size!!!
-    VMapVec			m_VMaps;
-    VMRefsVec		m_VMRefs;
+
+    FvectorVec	    m_Points;	// |
+    SVertVec	    m_SVertices;// |
+    AdjVec		    m_Adjs;     // + some array size!!!
+    SurfFaces	    m_SurfFaces;
+    FvectorVec	    m_PNormals;	// |*3
+    FvectorVec	    m_FNormals;	// |
+    FaceVec		    m_Faces;    // + some array size!!!
+    VMapVec		    m_VMaps;
+    VMRefsVec	    m_VMRefs;
 
 	void 			CreateRenderBuffers		();
 	void 			FillRenderBuffer		(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& data);

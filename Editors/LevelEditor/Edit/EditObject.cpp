@@ -24,7 +24,7 @@ CEditableObject::CEditableObject(LPCSTR name)
 
 	m_Box.invalidate();
 
-    m_LoadState 	= 0;
+    m_LoadState.zero();
 
     m_ActiveSMotion = 0;
 

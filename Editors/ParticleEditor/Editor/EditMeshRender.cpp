@@ -44,12 +44,15 @@ void CEditableMesh::CreateRenderBuffers()
 
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
 			u8*	bytes			= 0;
-			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &rb.pVB, 0));
-			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),rb.pVB,0);
+			IDirect3DVertexBuffer9*	pVB=0;
+			IDirect3DIndexBuffer9*	pIB=0;
+			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &pVB, 0));
+//            R_CHK(HW.pDevice->CreateIndexBuffer(i_cnt*sizeof(u16),D3DUSAGE_WRITEONLY,D3DFMT_INDEX16,D3DPOOL_MANAGED,&pIB,NULL));
+			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),pVB,0);
 
-			R_CHK				(rb.pVB->Lock(0,0,(LPVOID*)&bytes,0));
+			R_CHK				(pVB->Lock(0,0,(LPVOID*)&bytes,0));
 			FillRenderBuffer	(face_lst,start_face,num_face,_S,bytes);
-			rb.pVB->Unlock		();
+			pVB->Unlock			();
 
             v_cnt				-= V_LIM;
             start_face			+= (_S->m_Flags.is(CSurface::sf2Sided))?rb.dwNumVertex/6:rb.dwNumVertex/3;
@@ -66,10 +69,12 @@ void CEditableMesh::CreateRenderBuffers()
 void CEditableMesh::ClearRenderBuffers()
 {
     for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++){
-        for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++){
-			Device.Shader.DeleteGeom(rb_it->pGeom);
-			_RELEASE(rb_it->pVB);
-        }
+        for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++)
+            if (rb_it->pGeom){
+                _RELEASE		(rb_it->pGeom->vb);
+                _RELEASE		(rb_it->pGeom->ib);
+                Device.Shader.DeleteGeom(rb_it->pGeom);
+            }
     }
     m_RenderBuffers.clear();
     m_LoadState.set(LS_RBUFFERS,FALSE);

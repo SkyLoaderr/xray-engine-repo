@@ -8,9 +8,11 @@
 #include "EditMesh.h"
 #include "EditObject.h"
 //----------------------------------------------------
-void CEditableMesh::Transform(const Fmatrix& parent){
+void CEditableMesh::Transform(const Fmatrix& parent)
+{
+	R_ASSERT(m_pGeometry);
 	// transform position
-	for(FvectorIt pt=m_Points.begin(); pt!=m_Points.end(); pt++)
+	for(FvectorIt pt=m_pGeometry->m_Points.begin(); pt!=m_pGeometry->m_Points.end(); pt++)
 		parent.transform_tiny(*pt);
     // RecomputeBBox
 	RecomputeBBox();

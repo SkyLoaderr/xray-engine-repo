@@ -432,7 +432,6 @@ void TUI::CheckWindowPos(TForm* form)
 
 void TUI::Redraw(){
 	VERIFY(m_bReady);
-    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
 	if (m_Flags.is(flResize)) Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -523,8 +522,9 @@ void TUI::Idle()
         RealUpdateScene	();
     }
     if (m_Flags.is(flRedraw)){
+	    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);
 	    Tools.OnFrame		();
-        Redraw();
+        Redraw				();
     }
 	// show hint
     ShowObjectHint	();

@@ -56,15 +56,15 @@ public:
     AnsiString		m_GameMtlName;
     Shader*			m_Shader;
     Flags32			m_Flags;
-    u32			m_dwFVF;
+    u32				m_dwFVF;
 #ifdef _MAX_EXPORT
-	u32			mid;
+	u32				mid;
 	Mtl*			mtl;
 #endif
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
 #endif
-	u32			tag;
+	u32				tag;
 public:
 	CSurface		()
 	{
@@ -130,8 +130,6 @@ DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
-
-#define EOBJECT_LS_DEFFEREDRP		0x0001
 
 struct st_AnimParam{
     float			t;
@@ -223,7 +221,11 @@ protected:
     void __fastcall	OnChangeShader			(PropValue* prop);
 	void __fastcall OnChangeTransform		(PropValue* prop);
 public:
-    u32			m_LoadState;
+	enum{
+	    LS_RBUFFERS	= (1<<0),
+//	    LS_GEOMETRY	= (1<<1),
+    };
+    Flags32			m_LoadState;
 
 	AnsiString		m_LibName;
 public:

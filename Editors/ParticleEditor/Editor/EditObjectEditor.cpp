@@ -82,7 +82,7 @@ extern float 	ssaLIMIT;
 extern float	g_fSCREEN;
 static const float ssaLim = 64.f*64.f/(640*480);
 void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F){
-    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
+    if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
 	Fvector v; float r;
     Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
@@ -157,7 +157,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
 }
 
 void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32 color){
-    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
+    if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
     Device.SetShader(Device.m_WireShader);
     if(mesh) mesh->RenderEdge(parent, color);
@@ -167,7 +167,7 @@ void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32
 
 void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, u32 color)
 {
-    if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
+    if (!(m_LoadState.is(LS_RBUFFERS))) DefferedLoadRP();
 
     RCache.set_xform_world(parent);
     Device.SetShader(Device.m_SelectionShader);
@@ -270,7 +270,7 @@ void CEditableObject::OnDeviceDestroy()
 
 void CEditableObject::DefferedLoadRP()
 {
-	if (m_LoadState&EOBJECT_LS_DEFFEREDRP) return;
+	if (m_LoadState.is(LS_RBUFFERS)) return;
 /*
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
@@ -291,11 +291,11 @@ void CEditableObject::DefferedLoadRP()
     Device.Shader.Delete(m_LODShader);
     if (FS.exist(_textures_,fname.c_str()))
     	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
-    m_LoadState |= EOBJECT_LS_DEFFEREDRP;
+    m_LoadState.set(LS_RBUFFERS,TRUE);
 }
 void CEditableObject::DefferedUnloadRP()
 {
-	if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) return;
+	if (!(m_LoadState.is(LS_RBUFFERS))) return;
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	if (*_M) (*_M)->ClearRenderBuffers();
 	// удалить shaders
@@ -303,7 +303,7 @@ void CEditableObject::DefferedUnloadRP()
         (*s_it)->OnDeviceDestroy();
     // LOD
     Device.Shader.Delete(m_LODShader);
-    m_LoadState &=~ EOBJECT_LS_DEFFEREDRP;
+    m_LoadState.set(LS_RBUFFERS,FALSE);
 }
 void CEditableObject::EvictObject(){
 	EditMeshIt m = m_Meshes.begin();
