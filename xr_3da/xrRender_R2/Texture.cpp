@@ -294,6 +294,7 @@ _DDS_2D:
 			return					pTexture2D;
 		}
 	}
+	/*
 _BUMP:
 	{
 		// Load   SYS-MEM-surface, bound to device restrictions
@@ -361,6 +362,7 @@ _BUMP:
 		_RELEASE			(T_normal_1		);
 		return				T_normal_1C;
 	}
+	*/
 _BUMP_from_base:
 	{
 		*strstr		(fname,"_bump")	= 0;

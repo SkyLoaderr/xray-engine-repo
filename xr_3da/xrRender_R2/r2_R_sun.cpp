@@ -739,7 +739,7 @@ void CRender::render_sun				()
 		DumbClipper	view_clipper;
 		Fmatrix&	xform		= *((Fmatrix*)&m_LightViewProj);
 		CFrustum	view_planes	; view_planes.CreateFromMatrix(ex_full,FRUSTUM_P_ALL);
-		for		(u32 p=0; p<view_planes.p_count; p++)
+		for		(int p=0; p<view_planes.p_count; p++)
 		{
 			Fplane&		P	= view_planes.planes	[p];
 			view_clipper.planes.push_back(D3DXPLANE(P.n.x,P.n.y,P.n.z,P.d));
@@ -922,7 +922,7 @@ void CRender::render_sun_near	()
 
 		// Create frustum for query
 		cull_frustum._clear			();
-		for (int p=0; p<cull_planes.size(); p++)
+		for (u32 p=0; p<cull_planes.size(); p++)
 			cull_frustum._add		(cull_planes[p]);
 
 		// Create approximate ortho-xform

@@ -55,10 +55,10 @@ void	light::gi_generate	()
 	if (indirect.size())	{
 		float	target_E		=	ps_r2_GI_refl;
 		float	total_E			=	0;
-		for (int it=0; it<indirect.size(); it++)
+		for (u32 it=0; it<indirect.size(); it++)
 			total_E				+=	indirect[it].E;
 		float	scale_E			=	target_E/total_E;
-		for (int it=0; it<indirect.size(); it++)
+		for (u32 it=0; it<indirect.size(); it++)
 			indirect[it].E		*=	scale_E;
 	}
 }
