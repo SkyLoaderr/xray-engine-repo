@@ -66,7 +66,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 {
 	VERIFY						(m_hits);
 	if (!object().g_Alive()) {
-		m_hits->clear			();
+//		m_hits->clear			();
 		return;
 	}
 
@@ -106,7 +106,7 @@ void CHitMemoryManager::add(const CHitObject &hit_object)
 {
 	VERIFY						(m_hits);
 	if (!object().g_Alive()) {
-		m_hits->clear			();
+//		m_hits->clear			();
 		return;
 	}
 
@@ -137,14 +137,14 @@ void CHitMemoryManager::update()
 {
 	VERIFY						(m_hits);
 	{
-		HITS::iterator	I = remove_if(m_hits->begin(),m_hits->end(),CRemoveOfflinePredicate());
-		m_hits->erase					(I,m_hits->end());
+		HITS::iterator			I = remove_if(m_hits->begin(),m_hits->end(),CRemoveOfflinePredicate());
+		m_hits->erase			(I,m_hits->end());
 	}
 
 	m_selected_hit				= 0;
 	u32							level_time = 0;
-	HITS::const_iterator	I = m_hits->begin();
-	HITS::const_iterator	E = m_hits->end();
+	HITS::const_iterator		I = m_hits->begin();
+	HITS::const_iterator		E = m_hits->end();
 	for ( ; I != E; ++I) {
 		if ((*I).m_level_time > level_time) {
 			m_selected_hit		= &*I;
