@@ -1,5 +1,5 @@
 --[[------------------------------------------------------------------------------------------------
-База данных "живых" объектов, зон и рестрикторов
+База данных "живых" объектов, зон и рестрикторов, актёра
 Чугай Саша
 --------------------------------------------------------------------------------------------------]]
 
@@ -7,6 +7,7 @@ obj_by_id    = {}
 zone_by_name = {}
 storage      = {}
 actor        = nil
+
 
 function add_obj( obj )
 	obj_by_id [obj:id()] = obj
@@ -25,4 +26,14 @@ end
 function del_zone( zone )
 	zone_by_name[zone:name()] = nil
 	del_obj( zone )
+end
+
+function add_actor( obj )
+	actor = obj
+	add_obj( obj )
+end
+
+function del_actor()
+	del_obj( actor )
+	actor = nil
 end
