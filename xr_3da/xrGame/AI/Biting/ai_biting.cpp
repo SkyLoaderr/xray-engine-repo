@@ -98,6 +98,7 @@ void CAI_Biting::reinit()
 	flagEatNow						= false;
 	m_bDamaged						= false;
 	m_bAngry						= false;
+	m_bAggressive					= false;
 
 	state_invisible					= false;
 

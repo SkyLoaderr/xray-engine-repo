@@ -28,6 +28,8 @@ class CBitingExploreDNE : public IState {
 
 public:
 					CBitingExploreDNE	(CAI_Biting *p);
+
+	virtual bool	GetStateAggressiveness	(){return true;}
 private:
 	virtual	void	Init				();
 	virtual	void	Run					();

@@ -9,6 +9,7 @@ class CEnergyHolder {
 	float		m_critical_value;	// критическое значение энергии, меньше которого активность будет отключена (ltx-param)
 	float		m_activate_value;	// значение энергии, больше которого активность может быть восстановлена (ltx-param)
 	u32			m_time_last_update;	// время последнего обновления энергии
+	float		m_aggressive_restore_vel; // скорость агрессивного восстановления (ltx-param)
 	
 	// активность
 	bool		m_active;
@@ -19,6 +20,9 @@ class CEnergyHolder {
 
 	// обновлене энергии разрешено
 	bool		m_enable;
+
+	// состояние агрессивности
+	bool		m_aggressive;
 
 public:
 					CEnergyHolder			();
@@ -43,6 +47,8 @@ public:
 
 			void	enable					();
 	IC		void	disable					(){m_enable = false;}
+
+	IC		void	set_aggressive			(bool b_val = true) {m_aggressive = b_val;}
 };
 
 

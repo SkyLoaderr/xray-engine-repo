@@ -25,10 +25,13 @@ void CEnergyHolder::reload(LPCSTR section, LPCSTR prefix, LPCSTR suffix)
 {
 	string128 line_name;
 	
-	m_restore_vel		= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Restore_Velocity",suffix));
-	m_decline_vel		= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Decline_Velocity",suffix));
-	m_critical_value	= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Critical_Value",suffix)); 
-	m_activate_value	= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Activate_Value",suffix));
+	m_restore_vel				= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Restore_Velocity",suffix));
+	m_decline_vel				= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Decline_Velocity",suffix));
+	m_critical_value			= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Critical_Value",suffix)); 
+	m_activate_value			= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Activate_Value",suffix));
+	m_aggressive_restore_vel	= pSettings->r_float(section, strconcat(line_name,prefix,"Energy_Aggressive_Restore_Velocity",suffix));
+
+	m_aggressive				= false;
 }
 
 void CEnergyHolder::activate()
@@ -52,7 +55,7 @@ void CEnergyHolder::schedule_update()
 	float	dt			= float(cur_time - m_time_last_update) / 1000.f;
 
 	if (!is_active()) 
-		m_value += m_restore_vel * dt;
+		m_value += m_aggressive ? m_aggressive_restore_vel * dt : m_restore_vel * dt;
 	else 
 		m_value -= m_decline_vel * dt;
 

@@ -3,7 +3,6 @@
 #include "ai_biting_state.h"
 
 #include "../rat/ai_rat.h"
-#include "../bloodsucker/ai_bloodsucker.h"
 #include "../../actor.h"
 #include "../ai_monster_jump.h"
 #include "../ai_monster_squad.h"
@@ -341,26 +340,6 @@ void CBitingAttack::Run()
 			time_next_psi_attack			= m_dwCurrentTime + Random.randI(2000,4000);
 			break;
 	}
-
-
-	// ѕроверить возможность невидимости
-	if (flags.is(AF_HAS_INVISIBILITY_ABILITY) && (ACTION_THREATEN != m_tAction)) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		bool			bActorIsEnemy = (dynamic_cast<const CActor*>(enemy) != 0);	// set !=0 to work
-
-		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				//if (pBS->CMonsterInvisibility::Switch(false)) {
-				//	pBS->set_visible(false);
-				//	pBS->ChangePower(pBS->m_ftrPowerDown);
-				//	pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				//}
-			}
-		}
-	}
-	
 
 	init_flags.set(AF_NEW_ENEMY,FALSE);
 

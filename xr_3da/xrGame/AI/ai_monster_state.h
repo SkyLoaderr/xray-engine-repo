@@ -73,6 +73,8 @@ public:
 	IC			bool 	IsInertia		() {return ((PRIORITY_NONE != m_Priority) && (m_dwInertia > m_dwCurrentTime));}
 	
 	IC			u8		GetPriority		() {return m_Priority;}
+
+	IC	virtual bool	GetStateAggressiveness	(){return false;}
 };
 
 

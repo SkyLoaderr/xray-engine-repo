@@ -13,10 +13,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	statePanic			= xr_new<CBitingPanic>			(this);
 	stateExploreDNE		= xr_new<CBitingRunAway>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
-	stateSquadTask		= xr_new<CBitingSquadTask>		(this);
 
-
-	m_fEffectDist					= 0.f;
 	invisible_vel.set				(0.1f, 0.1f);
 }
 
@@ -28,7 +25,6 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(statePanic);
 	xr_delete(stateExploreDNE);
 	xr_delete(stateExploreNDE);
-	xr_delete(stateSquadTask);
 }
 
 void CAI_Bloodsucker::Load(LPCSTR section) 
@@ -277,6 +273,8 @@ void CAI_Bloodsucker::StateSelector()
 	else									pState = stateRest;
 	
 	SetState(pState);
+
+	CEnergyHolder::set_aggressive(pState->GetStateAggressiveness());
 }
 
 

@@ -250,6 +250,8 @@ public:
 	bool						m_bDamaged;
 	bool						m_bAngry;
 	bool						m_bGrowling;
+	bool						m_bAggressive;
+
 	bool						flagEatNow;				// true - сейчас монстр ест
 
 	float						m_fCurMinAttackDist;		// according to attack stops
@@ -272,7 +274,6 @@ public:
 	IState				*stateExploreDNE;
 	IState				*stateExploreDE;
 	IState				*stateExploreNDE;
-	IState				*stateSquadTask;
 	IState				*stateTest;
 	IState				*stateNull;
 	IState				*stateControlled;

@@ -126,7 +126,7 @@ public:
 					CBitingHide			(CAI_Biting *p);
 
 	virtual void	Reset			();	
-	
+	virtual bool	GetStateAggressiveness	(){return true;}
 private:
 
 	virtual void	Init			();
@@ -144,7 +144,7 @@ public:
 					CBitingDetour			(CAI_Biting *p);
 
 	virtual void	Reset			();	
-
+	virtual bool	GetStateAggressiveness	(){return true;}
 private:
 	virtual void	Init			();
 	virtual void	Run				();
@@ -172,7 +172,7 @@ public:
 
 //	virtual void	Reset				();
 	virtual bool	CheckCompletion		();
-
+	virtual bool	GetStateAggressiveness	(){return true;}
 private:
 	virtual void	Init				();
 	virtual void	Run					();
@@ -206,31 +206,6 @@ public:
 	void Run();
 };
 
-//////////////////////////////////////////////////////////////////////////
-// Выполнение задач группового интелекта
-//////////////////////////////////////////////////////////////////////////
-class CBitingSquadTask : public IState {
-	typedef IState inherited;
-	CAI_Biting		*pMonster;
-
-	enum {
-		ACTION_DANGER_1,
-		ACTION_DANGER_2,
-		ACTION_DANGER_3,
-		ACTION_DANGER_4
-	} m_tAction;
-
-	bool			flag_once_1;
-	Fvector			saved_pos;
-	TTime			time_last_switch;
-
-public:
-	CBitingSquadTask (CAI_Biting *p);
-private:
-	virtual void	Init				();
-	virtual void	Run					();
-};
-
 
 class CBitingSearchEnemy : public IState {
 	typedef IState inherited;
@@ -248,9 +223,11 @@ class CBitingSearchEnemy : public IState {
 
 public:
 	CBitingSearchEnemy(CAI_Biting *p);
+	virtual bool	GetStateAggressiveness	(){return true;}
 private:
 	virtual void	Init				();
 	virtual void	Run					();
 	virtual void	Done				();
+	
 };
 

@@ -23,7 +23,6 @@ class CAI_Bloodsucker : public CAI_Biting,
 	SMotionVel				invisible_vel;
 	LPCSTR					invisible_particle_name;
 	
-	
 public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
@@ -46,11 +45,6 @@ public:
 
 	virtual	void			CheckSpecParams			(u32 spec_params);
 	virtual bool			ability_invisibility	() {return true;}
-
-	float					m_fInvisibilityDist;			// дистанция до врага, на которой монстр может становиться нивидимым
-	float					m_ftrPowerDown;					// коэффициент, на который падает сила монстра при активации невидимости 
-	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
-	float					m_fEffectDist;
 
 			
 	// PP Effector		

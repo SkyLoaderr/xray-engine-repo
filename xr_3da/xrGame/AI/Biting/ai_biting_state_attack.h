@@ -75,4 +75,7 @@ public:
 			bool	CanAttackRun		();
 
 			bool	CheckPsiAttack		();
+
+
+	virtual bool	GetStateAggressiveness	(){return true;}
 };

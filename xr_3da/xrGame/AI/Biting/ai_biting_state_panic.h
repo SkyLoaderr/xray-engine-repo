@@ -21,6 +21,7 @@ public:
 					CBitingPanic	(CAI_Biting *p);
 	
 	virtual bool	CheckCompletion	();
+	virtual bool	GetStateAggressiveness	(){return true;}
 
 private:
 	virtual void	Init			();

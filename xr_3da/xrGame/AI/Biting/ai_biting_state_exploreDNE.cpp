@@ -2,9 +2,6 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-#include "../bloodsucker/ai_bloodsucker.h"
-#include "../../actor.h"
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreDNE class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -42,22 +39,6 @@ void CBitingExploreDNE::Run()
 	pMonster->SoundMemory.GetSound(se, bTemp);
 	if (m_tSound.time + 2000 < se.time) Init();
 
-	// Проверить возможность невидимости
-	if (pMonster->ability_invisibility()) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
-		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
-
-		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if ((pBS->GetPower() > pBS->m_fPowerThreshold)) {
-				//if (pBS->CMonsterInvisibility::Switch(false)) {
-				//	pBS->set_visible(false);
-				//	pBS->ChangePower(pBS->m_ftrPowerDown);
-				//	pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
-				//}
-			}
-		}
-	}
-	
 	switch (m_tAction) {
 	case ACTION_RUN_AWAY: // убегать на N метров от звука
 		
