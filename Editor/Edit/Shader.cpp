@@ -7,7 +7,6 @@
 #include "Shader.h"
 #include "ui_main.h"
 #include "xrShaderLib.h"
-#include "Library.h"
 
 CShaderLibrary* SHLib;
 //----------------------------------------------------
