@@ -204,12 +204,15 @@ void SPHBonesData::net_Save(NET_Packet &P)
 	{
 		(*i).net_Save(P,min,max);
 	}
-	bones.clear();
+//	this comment is added by Dima (correct me if this is wrong)
+//  if we call 2 times in a row StateWrite then we get different results
+//	WHY???
+//	bones.clear		();
 }
 
 void SPHBonesData::net_Load(NET_Packet &P)
 {
-	bones.clear();
+	bones.clear					();
 	bones_mask					=P.r_u64();
 	root_bone					=P.r_u16();
 	P.r_vec3					(min);
