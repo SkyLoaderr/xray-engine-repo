@@ -170,6 +170,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	if (E->s_name_replace[0])
 		cName_set					(E->s_name_replace);
 
+	setID							(E->ID);
+	
+	// XForm
+	XFORM().setXYZ					(E->o_Angle);
+	Position().set					(E->o_Position);
+	VERIFY							(_valid(renderable.xform));
+
 	CSE_ALifeObject					*O = dynamic_cast<CSE_ALifeObject*>(E);
 	if (O && xr_strlen(O->m_ini_string)) {
 #pragma warning(push)
@@ -188,15 +195,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	setDestroy						(FALSE);	// @@@ WT
 
-	// XForm
-	XFORM().setXYZ					(E->o_Angle);
-	Position().set					(E->o_Position);
-	VERIFY							(_valid(renderable.xform));
-
 	// Net params
 	setLocal						(E->s_flags.is(M_SPAWN_OBJECT_LOCAL));
 	setReady						(TRUE);
-	setID							(E->ID);
 	g_pGameLevel->Objects.net_Register	(this);
 
 	// if we have a parent
