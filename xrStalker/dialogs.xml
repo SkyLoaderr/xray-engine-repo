@@ -91,6 +91,7 @@
 	</dialog>
 
 	<dialog id="trader_job">
+		<precondition>trader_job.is_trader</precondition>
 		<phrase_list>
 			<phrase id="0">
 				<text>Какая у тебя есть работа?</text>
@@ -144,6 +145,7 @@
 	</dialog>
 
 	<dialog id="trader_talk_about">
+	<precondition>trader_job.is_trader</precondition>
 	    <has_info>actor_start</has_info>
 		<phrase_list>
 			<phrase id="0">
