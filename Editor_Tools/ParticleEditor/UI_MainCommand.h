@@ -27,7 +27,7 @@ enum ECommands{
     COMMAND_CHANGE_ACTION,
     // unused (only for compatibility)
     COMMAND_UNDO,
-    COMMAND_REDO,
+    COMMAND_REDO
     
 };
 #endif //UI_MainCommandH
