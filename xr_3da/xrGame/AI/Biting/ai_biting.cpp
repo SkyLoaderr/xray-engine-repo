@@ -237,11 +237,17 @@ void CAI_Biting::net_Export(NET_Packet& P)
 	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
 	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	float					f1;
-	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
-	P.w						(&f1,						sizeof(f1));
-	f1						= Position().distance_to	(ai().game_graph().vertex(game_vertex_id())->level_point());
-	P.w						(&f1,						sizeof(f1));
+	float					f1 = 0;
+	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.w					(&f1,						sizeof(f1));
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.w					(&f1,						sizeof(f1));
+	}
+	else {
+		P.w					(&f1,						sizeof(f1));
+		P.w					(&f1,						sizeof(f1));
+	}
 }
 
 void CAI_Biting::net_Import(NET_Packet& P)

@@ -329,11 +329,22 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_angle8						(N.o_torso.yaw);
 	P.w_angle8						(N.o_torso.pitch);
 
-	float							f1 = 0;
-	P.w								(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-	P.w								(&m_tGraphID,				sizeof(m_tGraphID));
-	P.w								(&f1,						sizeof(f1));
-	P.w								(&f1,						sizeof(f1));
+	float					f1 = 0;
+	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
+	P.w						(&f1,						sizeof(f1));
+	P.w						(&f1,						sizeof(f1));
+	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.w					(&f1,						sizeof(f1));
+		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
+		P.w					(&f1,						sizeof(f1));
+	}
+	else {
+		P.w					(&f1,						sizeof(f1));
+		P.w					(&f1,						sizeof(f1));
+	}
 
 	if (ai().game_graph().valid_vertex_id(m_tGraphID)) {
 		f1							= Position().distance_to	(ai().game_graph().vertex(m_tGraphID)->level_point());
