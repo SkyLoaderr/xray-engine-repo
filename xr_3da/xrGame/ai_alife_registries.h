@@ -355,33 +355,6 @@ public:
 	}
 };
 
-class CALifeOwnerRegistry {
-public:
-	ALIFE_MONSTER_P_VECTOR_VECTOR	m_tpLocationOwners;		// массив списков : по точке графа 
-															//  получить список её владельцев
-	void							Init()
-	{
-		m_tpLocationOwners.resize	(Level().AI.GraphHeader().dwVertexCount);
-		{
-			ALIFE_MONSTER_P_VECTOR_IT	I = m_tpLocationOwners.begin();
-			ALIFE_MONSTER_P_VECTOR_IT	E = m_tpLocationOwners.end();
-			for ( ; I != E; I++)
-				(*I).clear();
-		}
-	};
-	
-	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject, SPAWN_P_VECTOR &tpSpawnPoints)
-	{
-		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
-		if (tpALifeMonsterAbstract) {
-			GRAPH_IT			I = tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.begin(); 
-			GRAPH_IT			E = tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.end(); 
-			for ( ; I != E; I++)
-				m_tpLocationOwners[*I].push_back(tpALifeMonsterAbstract);
-		}
-	};	
-};
-
 class CALifeTraderRegistry {
 public:
 	TRADER_P_VECTOR					m_tpTraders;			// массив торговцев

@@ -107,29 +107,6 @@ void CAI_ALife::vfListTasks()
 	Msg("Total %d tasks",i);
 }
 
-void CAI_ALife::vfListLocations()
-{
-	ALIFE_MONSTER_P_VECTOR_IT	I = m_tpLocationOwners.begin();
-	ALIFE_MONSTER_P_VECTOR_IT	E = m_tpLocationOwners.end();
-	Msg("%s->Listing location owners :",cName());
-	string4096			S;
-	for (int i=0; I != E; I++, i++) {
-		ALIFE_MONSTER_P_IT   it1 = (*I).begin();
-		ALIFE_MONSTER_P_IT   E1  = (*I).end();
-		S[0] = 0;
-		string16		S1;
-		for (int j=0; it1 != E1; it1++, j++) {
-			if (j)
-				strcat(S,",");
-			strcat(S,itoa((*it1)->m_tObjectID,S1,10));
-		}
-
-		if (j)
-			vfPrintLargeString("Graph vertex ID",S,i,j,105);
-	}
-	Msg("Total %d graph vertexes",i);
-}
-
 void CAI_ALife::vfListTerrain()
 {
 	GRAPH_VECTOR_IT	I = m_tpTerrain.begin();

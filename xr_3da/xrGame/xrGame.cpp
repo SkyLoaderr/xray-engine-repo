@@ -181,7 +181,6 @@ public:
 				tpGame->m_tALife.vfListObjects();
 				tpGame->m_tALife.vfListEvents();
 				tpGame->m_tALife.vfListTasks();
-				tpGame->m_tALife.vfListLocations();
 				tpGame->m_tALife.vfListTerrain();
 				tpGame->m_tALife.vfListSpawnPoints();
 			}
@@ -235,23 +234,6 @@ public:
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				tpGame->m_tALife.vfListTasks();
-			}
-			else
-				Log("!ALife parameters are not loaded!");
-		}
-		else
-			Log("!Not a single player game!");
-	}
-};
-
-class CCC_ALifeListLocations : public CConsoleCommand {
-public:
-	CCC_ALifeListLocations(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
-	virtual void Execute(LPCSTR args) {
-		if (Level().game.type == GAME_SINGLE) {
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				tpGame->m_tALife.vfListLocations();
 			}
 			else
 				Log("!ALife parameters are not loaded!");
@@ -481,14 +463,13 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeListObjects,	"al_lo"					);		// list objects
 		CMD1(CCC_ALifeListEvents,	"al_le"					);		// list events
 		CMD1(CCC_ALifeListTasks,	"al_lt"					);		// list tasks
-		CMD1(CCC_ALifeListLocations,"al_ll"					);		// list location owners
 		CMD1(CCC_ALifeListTerrain,	"al_lr"					);		// list terrain
 		CMD1(CCC_ALifeListSpawns,	"al_ls"					);		// list spawnpoints
 		CMD1(CCC_ALifeObjectInfo,	"al_io"					);		// object info
 		CMD1(CCC_ALifeEventInfo,	"al_ie"					);		// event info
 		CMD1(CCC_ALifeTaskInfo,		"al_it"					);		// task info
 		CMD1(CCC_ALifeSpawnInfo,	"al_is"					);		// spawn-point info
-		CMD1(CCC_ALifeGraphInfo,	"al_ig"					);		// spawn-point info
+		CMD1(CCC_ALifeGraphInfo,	"al_ig"					);		// graph-point info
 		CMD1(CCC_ALifeTimeFactor,	"al_time_factor"		);		// set time factor
 #endif
 

@@ -22,7 +22,6 @@ class CAI_ALife :
 	public CALifeEventRegistry, 
 	public CALifeTaskRegistry, 
 	public CALifeGraphRegistry,
-	public CALifeOwnerRegistry,
 	public CALifeTraderRegistry,
 	public CALifeScheduleRegistry,
 	public CSheduled,
@@ -46,13 +45,11 @@ public:
 		CALifeGraphRegistry::Update		(tpALifeDynamicObject);
 		CALifeTraderRegistry::Update	(tpALifeDynamicObject);
 		CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
-		CALifeOwnerRegistry::Update		(tpALifeDynamicObject,m_tpSpawnPoints);
 	};
 	
 	IC void vfUpdateDynamicData()
 	{
 		// initialize
-		CALifeOwnerRegistry::Init	();
 		CALifeGraphRegistry::Init	();
 		CALifeTraderRegistry::Init	();
 		CALifeScheduleRegistry::Init();
@@ -170,7 +167,6 @@ public:
 			void					vfListObjects			();
 			void					vfListEvents			();
 			void					vfListTasks				();
-			void					vfListLocations			();
 			void					vfListTerrain			();
 			void					vfListSpawnPoints		();
 			void					vfObjectInfo			(_OBJECT_ID	&tObjectID);
