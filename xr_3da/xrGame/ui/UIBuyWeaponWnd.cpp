@@ -871,11 +871,9 @@ void CUIBuyWeaponWnd::Hide()
 	}
 
 	// For test purposes
-//	const u8 a = GetWeaponIndex(KNIFE_SLOT);
-//	const u8 b = GetWeaponIndex(PISTOL_SLOT);
-//	const u8 c = GetWeaponIndex(RIFLE_SLOT);
-//	const u8 d = GetWeaponIndex(GRENADE_SLOT);
-//	const u8 e = GetWeaponIndex(APPARATUS_SLOT);
+//	const char * a = GetWeaponNameByIndex(KNIFE_SLOT, 0);
+//	const char * b = GetWeaponNameByIndex(PISTOL_SLOT, 5);
+//	const char * c = GetWeaponNameByIndex(RIFLE_SLOT, 2);
 
 	inherited::Hide();
 }
@@ -1314,4 +1312,10 @@ const u8 CUIBuyWeaponWnd::GetWeaponIndex(u32 slotNum)
 		if (diff < static_cast<WPN_SECT_NAMES::difference_type>((*it).size())) return static_cast<u8>(diff);
 	}
 	return static_cast<u8>(-1);
+}
+
+const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
+{
+	if (wpnSectStorage.size() <= slotNum || idx > wpnSectStorage[slotNum].size()) return NULL;
+	return wpnSectStorage[slotNum][idx].c_str();
 }
