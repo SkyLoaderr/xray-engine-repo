@@ -3,6 +3,7 @@
 #define particle_actions_collectionH
 
 #include "particle_actions.h"
+#include "particle_core.h"
 namespace PAPI{
 #define _METHODS	virtual void 	Load		(IReader& F);\
                     virtual void 	Save		(IWriter& F);\
