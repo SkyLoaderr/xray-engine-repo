@@ -514,9 +514,9 @@ void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR met
 	m_tpCallbacks[tActionType].set(lua_object, method);
 
 	if (eActionTypeMovement == tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
+		CMovementManager	*l_tpPatrolPathManager = smart_cast<CMovementManager*>(this);
 		if (l_tpPatrolPathManager)
-			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
+			l_tpPatrolPathManager->patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
@@ -527,9 +527,9 @@ void CScriptMonster::set_callback	(const luabind::functor<void> &lua_function, c
 	m_tpCallbacks[tActionType].set(lua_function);
 	
 	if (eActionTypeMovement == tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
+		CMovementManager	*l_tpPatrolPathManager = smart_cast<CMovementManager*>(this);
 		if (l_tpPatrolPathManager)
-			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
+			l_tpPatrolPathManager->patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
@@ -540,9 +540,9 @@ void CScriptMonster::clear_callback	(const ScriptMonster::EActionType tActionTyp
 	m_tpCallbacks[tActionType].clear();
 
 	if (tActionType) {
-		CPatrolPathManager	*l_tpPatrolPathManager = smart_cast<CPatrolPathManager*>(this);
+		CMovementManager	*l_tpPatrolPathManager = smart_cast<CMovementManager*>(this);
 		if (l_tpPatrolPathManager)
-			l_tpPatrolPathManager->set_callback(m_tpCallbacks[tActionType]);
+			l_tpPatrolPathManager->patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
