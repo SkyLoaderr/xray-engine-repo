@@ -1253,9 +1253,6 @@
 				RelativePath=".\FStaticRender_Loader.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_Loader_Trees.cpp">
-			</File>
-			<File
 				RelativePath=".\FStaticRender_SceneGraph.cpp">
 			</File>
 			<File

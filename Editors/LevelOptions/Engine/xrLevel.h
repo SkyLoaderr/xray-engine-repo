@@ -11,16 +11,8 @@ enum fsL_Chunks {
 	fsL_LIGHT_DYNAMIC,	//*		
 	fsL_GLOWS,			//*		- All glows inside level
 	fsL_SECTORS,		//*		- All sectors on level
-	fsL_IBUFFERS,		//*		- Relevance map
+	fsL_IBUFFERS,		//*		
     fsL_forcedword	= 0xFFFFFFFF
-};
-enum fsEVisChunks {
-	fsV_HEADER = 1,
-	fsV_NODES,
-	fsV_LIGHTS,
-	fsV_GLOWS,
-	fsV_MAP,
-	fsV_forcedword = u32(-1)
 };
 enum fsESectorChunks {
 	fsP_Portals = 1,	// - portal polygons

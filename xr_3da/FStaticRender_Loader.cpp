@@ -120,11 +120,11 @@ void CRender::LoadBuffers	(CStream *base_fs)
 		{
 			u32 vFVF			= fs().Rdword	();
 			u32 vCount			= fs().Rdword	();
-			u32 vSize			= D3DXGetFVFVertexSize(vFVF);
+			u32 vSize			= D3DXGetFVFVertexSize	(vFVF);
 			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
 
 			D3DVERTEXELEMENT9*	dcl_dst	= DCL[i].begin();
-			CHK_DX				(D3DXDeclaratorFromFVF(vFVF,dcl_dst));
+			CHK_DX				(D3DXDeclaratorFromFVF	(vFVF,dcl_dst));
 
 			// Create and fill
 			BYTE*	pData		= 0;
