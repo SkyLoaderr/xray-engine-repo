@@ -131,7 +131,7 @@ void CMincer::OnOwnershipTake(u16 id)
 			u_EventGen	(l_P,GE_HIT, id);
 			l_P.w_u16	(u16(id));
 			l_P.w_u16	(ID());
-			l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
+			l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
 			l_P.w_float	(0.f);
 			l_P.w_s16	(0/*(s16)BI_NONE*/);
 			Fvector		position_in_bone_space={0.f,0.f,0.f};
