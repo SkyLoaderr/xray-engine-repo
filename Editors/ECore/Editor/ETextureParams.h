@@ -118,7 +118,7 @@ struct STextureParams{
     void Load (IReader& F);
     void Save (IWriter& F);
 #ifdef _EDITOR
-	void __fastcall OnTypeChange	(PropValue* v);
+	void __stdcall	OnTypeChange	(PropValue* v);
     void 			FillProp		(PropItemVec& items);
 #endif
 };

@@ -140,7 +140,7 @@ void STextureParams::OnTypeChange(PropValue* prop)
 
 void STextureParams::FillProp(PropItemVec& items)
 {
-    PropValue* P	= PHelper.CreateToken<u32>	(items, "Type",			(u32*)&type,		ttype_token);
+    PropValue* P	= PHelper.CreateToken32	(items, "Type",				(u32*)&type,		ttype_token);
     P->OnChangeEvent= OnTypeChange;
     PHelper.CreateCaption			(items, "Source\\Width",			width);
     PHelper.CreateCaption			(items, "Source\\Height",			height);
@@ -148,12 +148,12 @@ void STextureParams::FillProp(PropItemVec& items)
 	switch (type){
     case ttImage:	
     case ttCubeMap:	
-	    PHelper.CreateToken<u32>	(items, "Format",	   				(u32*)&fmt, 		tfmt_token);
+	    PHelper.CreateToken32		(items, "Format",	   				(u32*)&fmt, 		tfmt_token);
 
 	    PHelper.CreateFlag32		(items, "MipMaps\\Enabled",			&flags,				flGenerateMipMaps);
-    	PHelper.CreateToken<u32>	(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
+    	PHelper.CreateToken32		(items, "MipMaps\\Filter",			(u32*)&mip_filter,	tparam_token);
 
-    	P = PHelper.CreateToken<u32>(items, "Bump\\Mode",				(u32*)&bump_mode,	tbmode_token);
+    	P = PHelper.CreateToken32	(items, "Bump\\Mode",				(u32*)&bump_mode,	tbmode_token);
         P->OnChangeEvent			= OnTypeChange;
         if (tbmUse==bump_mode)
         	PHelper.CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture);
@@ -165,7 +165,7 @@ void STextureParams::FillProp(PropItemVec& items)
         PHelper.CreateChoose		(items, "Details\\Texture",			&detail_name,		smTexture);
         PHelper.CreateFloat			(items, "Details\\Scale",			&detail_scale,		0.1f,10000.f,0.1f,2);
 
-        PHelper.CreateToken<u32>	(items, "Material\\Base",			(u32*)&material,	tmtl_token);
+        PHelper.CreateToken32		(items, "Material\\Base",			(u32*)&material,	tmtl_token);
         PHelper.CreateFloat			(items, "Material\\Weight",			&material_weight	);
         
 //		PHelper.CreateFlag32		(items, "Flags\\Grayscale",			&flags,				flGreyScale);
