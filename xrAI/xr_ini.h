@@ -21,8 +21,7 @@ public:
 
 		Item() : first(0), second(0), comment(0) {};
 	};
-//	DEFINE_VECTOR(Item,Items,SectIt);
-	typedef vector<Item>		Items;
+	typedef std::vector<Item>	Items;
 	typedef Items::iterator		SectIt;
     struct	Sect {
 		LPSTR			Name;
@@ -33,7 +32,7 @@ public:
 		IC int			size()	{ return Data.size();	}
 		IC void			clear()	{ Data.clear();			}
 	};
-	typedef	vector<Sect>		Root;
+	typedef	std::vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
 
 	struct sect_pred : public std::binary_function<Sect&, Sect&, bool> 
