@@ -32,13 +32,31 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 
 extern "C" __declspec(dllexport) 
-HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, int* w, int* h, BOOL* bAlpha){
+HRESULT CreateTexture(LPDIRECTDRAWSURFACE7& pTexture, LPSTR pSrcName, LPSTR pAlternateSrcName, int* w, int* h, BOOL* bAlpha){
 	HRESULT hr;
-	D3DX_SURFACEFORMAT fmt = D3DX_SF_UNKNOWN; 
-	DWORD mip_num=D3DX_DEFAULT;
 
-	hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, 0, (DWORD*)w, (DWORD*)h, &fmt, 0, 
-										&pTexture, &mip_num, pSrcName, D3DX_FT_LINEAR );
+	DDS_HEADER HDR;
+	try{
+		CFileStream F(pSrcName);
+		F.Rdword();
+		F.Read(&HDR,sizeof(DDS_HEADER));
+	}catch(...){
+		return D3DERR_TEXTURE_LOAD_FAILED;
+	}
+
+	DWORD dwFlag = HDR.dwMipMapCount?0:D3DX_TEXTURE_NOMIPMAP;
+	DWORD mip_num= 0;
+	D3DX_SURFACEFORMAT fmt = D3DXMakeSurfaceFormat((DDPIXELFORMAT*)&HDR.ddspf); 	
+
+	hr = D3DXCreateTexture(m_dx->pD3DDev,&dwFlag,LPDWORD(w),LPDWORD(h),&fmt,0,&pTexture,&mip_num);
+	hr = D3DXLoadTextureFromFile(m_dx->pD3DDev,pTexture,  D3DX_DEFAULT, pSrcName,0,0,D3DX_FT_LINEAR);
+	if (FAILED(hr)){
+		hr = D3DXLoadTextureFromFile(m_dx->pD3DDev,pTexture,D3DX_DEFAULT,pAlternateSrcName,0,0,D3DX_FT_LINEAR);
+	}
+
+
+//	hr=D3DXCreateTextureFromFile(	m_dx->pD3DDev, HDR.dwMipMapCount?0:&dwFlag, (DWORD*)w, (DWORD*)h, &fmt, 0, 
+//										&pTexture, &mip_num, pSrcName, D3DX_FT_LINEAR );
 	if (!FAILED(hr))
 	{
 		switch (fmt){
