@@ -123,8 +123,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			}
 			else {
 				AI_Node				= AI.Node(AI_NodeID);
-				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+				//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
+				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
 			}
 		}
 		else {
@@ -139,6 +140,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				AI_NodeID			= u32(node);
 				AI_Node				= getAI().Node(AI_NodeID);
 				getAI().ref_add		(AI_NodeID);
+				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
 			}
 		}
 	}
