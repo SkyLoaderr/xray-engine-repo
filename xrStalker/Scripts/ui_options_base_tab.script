@@ -40,10 +40,10 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 					  y = 0, 
 					  width = 135, 
 					  height = 40 }
-	if x_pos ~= nil
+	if x_pos ~= nil then
 		self.btn_rect.x = x_pos
 	end
-	if y_pos ~= nil
+	if y_pos ~= nil then
 		self.btn_rect.y = y_pos
 	end
 	
