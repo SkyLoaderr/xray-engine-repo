@@ -340,26 +340,28 @@ void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 };
 
 #include "WeaponHUD.h"
+
 void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 {
 	if (!pNewObject || !m_bSpectatorMode) return;
 
 	Level().SetEntity(pNewObject);
+	if (pNewObject != m_pSM_CurViewEntity)
+	{
+		CActor* pActor = smart_cast<CActor*> (m_pSM_CurViewEntity);
+		if (pActor)
+			pActor->inventory().Items_SetCurrentEntityHud(false);
+	}
 	CActor* pActor = smart_cast<CActor*> (pNewObject);
 	if (pActor)
 	{
+		pActor->inventory().Items_SetCurrentEntityHud(true);
+
 		CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 		if (pHudItem) 
 		{
-			pHudItem->GetHUD()->SetCurrentEntityHud(true);
-			pHudItem->StartIdleAnim();
-		}
-		CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
-		if (pWeapon)
-		{
-			pWeapon->InitAddons();
-			pWeapon->UpdateAddonsVisibility();
-		}
+			pHudItem->OnStateSwitch(pHudItem->State());
+		};
 	}
 	m_pSM_CurViewEntity = pNewObject;
 	m_dwSM_CurViewEntity = pNewObject->ID();

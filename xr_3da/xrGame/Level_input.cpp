@@ -58,7 +58,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F4: {
-		if (GameID() != GAME_SINGLE) return;
+//		if (GameID() != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
@@ -87,6 +87,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 			if (bOk) {
 				CObject *tpObject = CurrentEntity();
 				SetEntity(*I);
+				if (tpObject != *I)
+				{
+					CActor* pActor = smart_cast<CActor*> (tpObject);
+					if (pActor)
+						pActor->inventory().Items_SetCurrentEntityHud(false);
+				}
 				if (tpObject)
 				{
 					Engine.Sheduler.Unregister	(tpObject);
@@ -98,18 +104,21 @@ void CLevel::IR_OnKeyboardPress(int key)
 				CActor* pActor = smart_cast<CActor*> (*I);
 				if (pActor)
 				{
+					pActor->inventory().Items_SetCurrentEntityHud(true);
+
 					CHudItem* pHudItem = smart_cast<CHudItem*>(pActor->inventory().ActiveItem());
 					if (pHudItem) 
 					{
-						pHudItem->GetHUD()->SetCurrentEntityHud(true);
-						pHudItem->StartIdleAnim();
+						pHudItem->OnStateSwitch(pHudItem->State());
 					}
+					/*
 					CWeapon* pWeapon = smart_cast<CWeapon*>(pActor->inventory().ActiveItem());
 					if (pWeapon)
 					{
 						pWeapon->InitAddons();
 						pWeapon->UpdateAddonsVisibility();
 					}
+					*/
 				}
 			}
 		}

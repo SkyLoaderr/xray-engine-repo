@@ -1066,3 +1066,24 @@ void  CInventory::AddAvailableItems(TIItemList& items_container, bool for_trade)
 				items_container.push_back(m_slots[OUTFIT_SLOT].m_pIItem);
 	}		
 }
+
+#include "WeaponHUD.h"
+void CInventory::Items_SetCurrentEntityHud(bool current_entity)
+{
+	PSPIItem it;
+	for(it = m_all.begin(); m_all.end() != it; ++it) 
+	{
+		PIItem pIItem = *it;
+		CHudItem* pHudItem = smart_cast<CHudItem*> (pIItem);
+		if (pHudItem) 
+		{
+			pHudItem->GetHUD()->SetCurrentEntityHud(current_entity);
+		};
+		CWeapon* pWeapon = smart_cast<CWeapon*>(pIItem);
+		if (pWeapon)
+		{
+			pWeapon->InitAddons();
+			pWeapon->UpdateAddonsVisibility();
+		}
+	}
+};

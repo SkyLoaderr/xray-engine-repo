@@ -146,7 +146,7 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 }
 void CWeaponKnife::StartIdleAnim		()
 {
-	m_pHUD->animDisplay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE);
+	m_pHUD->animDisplay(mhud_idle[Random.randI(mhud_idle.size())], TRUE);
 }
 void CWeaponKnife::OnAnimationEnd()
 {
@@ -243,7 +243,7 @@ void CWeaponKnife::switch2_Hidden()
 
 void CWeaponKnife::switch2_Showing	()
 {
-	setVisible				(TRUE);
+//	setVisible				(TRUE);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 
 	m_bPending				= true;

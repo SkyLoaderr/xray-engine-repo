@@ -3,6 +3,7 @@
 
 class CInventory;
 class CInventoryItem;
+class CHudItem;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 class CInventorySlot					// Слот
@@ -156,6 +157,7 @@ public:
 
 
 	u32	ModifyFrame() const {return m_dwModifyFrame;}
+	void		Items_SetCurrentEntityHud (bool current_entity);
 
 protected:
 	// Активный слот и слот который станет активным после смены
@@ -196,4 +198,5 @@ protected:
 	bool				m_drop_last_frame;
 
 	void		SendActionEvent		(s32 cmd, u32 flags);
+
 };
