@@ -8,7 +8,7 @@
 
 void CActor::OnKeyboardPress(int cmd)
 {
-	if (Remote() || !bAlive)	return;
+	if (Remote() || !g_Alive())		return;
 
 	switch(cmd){
 	case kACCEL:	fHealth+=5; mstate_wishful |= mcAccel;		break;
@@ -51,8 +51,9 @@ void CActor::OnKeyboardPress(int cmd)
 	}
 }
 
-void CActor::OnKeyboardRelease(int cmd){
-	if (Remote() || !bAlive)	return;
+void CActor::OnKeyboardRelease(int cmd)
+{
+	if (Remote() || !g_Alive())		return;
 
 	switch(cmd){
 	case kACCEL:	mstate_wishful &=~mcAccel;		break;
@@ -72,7 +73,7 @@ void CActor::OnKeyboardRelease(int cmd){
 
 void CActor::OnKeyboardHold(int cmd)
 {
-	if (Remote() || !bAlive)	return;
+	if (Remote() || !g_Alive())		return;
 
 	switch(cmd)
 	{

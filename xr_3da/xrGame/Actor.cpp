@@ -214,8 +214,6 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	r_model_yaw			= o_angle.y;
 	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
 
-	bAlive				= TRUE;
-	
 	Weapons->Reset		();
 	
 	// *** movement state - respawn
@@ -277,7 +275,6 @@ void CActor::Die	( )
 	pSounds->PlayAtPos	(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	cam_Set				(eacFreeLook);
 	g_fireEnd			();
-	bAlive				= FALSE;
 	mstate_wishful	&=	~mcAnyMove;
 	mstate_real		&=	~mcAnyMove;
 }
@@ -744,7 +741,7 @@ void CActor::g_fireStart	( )
 	else if (Local())
 	{
 		// We want to respawn
-		g_cl_Spawn			("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
+		Level().g_cl_Spawn	("actor",0xFF,M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);
 	}
 }
 

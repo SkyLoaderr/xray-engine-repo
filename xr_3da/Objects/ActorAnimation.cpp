@@ -26,7 +26,8 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base){
 
 void CActor::g_SetAnimation( DWORD mstate_rl )
 {
-	if (bAlive){
+	if (g_Alive())
+	{
 		SActorState* ST = 0;
 		SActorState::SAnimState*		AS = 0;
 		
