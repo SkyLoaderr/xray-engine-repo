@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(54)
+#define SPAWN_VERSION	u16(55)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -71,6 +71,7 @@
 // 52 - CSE_ALifeItemExplosive			new class based on CSE_ALifeItem
 // 53 - CSE_AlifeInventoryItem			appended with property 'condition'
 // 54 - CSE_AlifeLevelChanger			property 'angles' changed from float to fvector
+// 55 - CSE_AlifeItemCar->CSE_ALifeCar	heritage changed
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

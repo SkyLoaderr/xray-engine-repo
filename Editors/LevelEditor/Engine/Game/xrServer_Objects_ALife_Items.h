@@ -118,12 +118,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u16								get_ammo_magsize();
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
-									CSE_ALifeItemCar	(LPCSTR caSection);
-	virtual							~CSE_ALifeItemCar	();
-	virtual bool					used_ai_locations	() const;
-SERVER_ENTITY_DECLARE_END
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 									CSE_ALifeItemDetector(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDetector();

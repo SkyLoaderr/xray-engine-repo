@@ -294,4 +294,10 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	virtual bool					used_ai_locations	() const;
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifeCar		(LPCSTR caSection);
+	virtual							~CSE_ALifeCar		();
+	virtual bool					used_ai_locations	() const;
+SERVER_ENTITY_DECLARE_END
+
 #endif

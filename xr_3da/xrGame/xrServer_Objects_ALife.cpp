@@ -1155,3 +1155,52 @@ bool CSE_ALifeHelicopter::used_ai_locations	() const
 {
 	return						(false);
 }
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeCar
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	set_visual				(pSettings->r_string(caSection,"visual"));
+	m_flags.set					(flUseSwitches,false);
+	m_flags.set					(flSwitchOffline,false);
+}
+
+CSE_ALifeCar::~CSE_ALifeCar				()
+{
+}
+
+void CSE_ALifeCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	if ((m_wVersion > 52) && (m_wVersion < 55))
+		tNetPacket.r_float		();
+}
+
+void CSE_ALifeCar::STATE_Write			(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeCar::UPDATE_Read			(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeCar::UPDATE_Write			(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+bool CSE_ALifeCar::used_ai_locations() const
+{
+	return						(false);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
+{
+  	inherited::FillProp			(pref,values);
+}
+#endif

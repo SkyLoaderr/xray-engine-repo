@@ -476,54 +476,6 @@ void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeItemCar
-////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemCar::CSE_ALifeItemCar			(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
-{
-	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
-    	set_visual				(pSettings->r_string(caSection,"visual"));
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
-}
-
-CSE_ALifeItemCar::~CSE_ALifeItemCar			()
-{
-}
-
-void CSE_ALifeItemCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
-{
-	if (m_wVersion > 20)
-		inherited::STATE_Read	(tNetPacket,size);
-}
-
-void CSE_ALifeItemCar::STATE_Write			(NET_Packet	&tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CSE_ALifeItemCar::UPDATE_Read			(NET_Packet	&tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-}
-
-void CSE_ALifeItemCar::UPDATE_Write			(NET_Packet	&tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-}
-
-#ifdef _EDITOR
-void CSE_ALifeItemCar::FillProp				(LPCSTR pref, PropItemVec& values)
-{
-  	inherited::FillProp			(pref,values);
-}
-#endif
-
-bool CSE_ALifeItemCar::used_ai_locations() const
-{
-	return						(false);
-}
-
-////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)

@@ -196,7 +196,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CSE_ALifeCreatureAbstract	*E	= dynamic_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {
 		// Car or trader only!!!!
-		CSE_ALifeItemCar	*C	= dynamic_cast<CSE_ALifeItemCar*>(e);
+		CSE_ALifeCar		*C	= dynamic_cast<CSE_ALifeCar*>(e);
 		CSE_ALifeTrader		*T	= dynamic_cast<CSE_ALifeTrader*>(e);
 		R_ASSERT2			(C || T,"Invalid entity (no inheritance from CSE_CreatureAbstract, CSE_ALifeItemCar and CSE_ALifeTrader)!");
 		id_Team				= id_Squad = id_Group = 0;

@@ -96,7 +96,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	Log("car spawn");
 #endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
-	CSE_ALifeItemCar				*po = dynamic_cast<CSE_ALifeItemCar*>(e);
+	CSE_ALifeCar					*po = dynamic_cast<CSE_ALifeCar*>(e);
 	R_ASSERT						(po);
 	BOOL							R = inherited::net_Spawn(DC);
 
@@ -206,16 +206,16 @@ void	CCar::renderable_Render				( )
 
 void	CCar::net_Export			(NET_Packet& P)
 {
-	P.w_u32 (Level().timeServer());
-	P.w_u16 (0);
+//	P.w_u32 (Level().timeServer());
+//	P.w_u16 (0);
 }
 
 void	CCar::net_Import			(NET_Packet& P)
 {
-	u32 TimeStamp = 0;
-	P.w_u32 (TimeStamp);
-	u16 NumItems = 0;
-	P.w_u32 (NumItems);
+//	u32 TimeStamp = 0;
+//	P.w_u32 (TimeStamp);
+//	u16 NumItems = 0;
+//	P.w_u32 (NumItems);
 }
 
 void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
