@@ -26,37 +26,45 @@ void __fastcall normal_L2(FixedMAP<float,IVisual*>::TNode *N)
 
 void __fastcall mapNormal_Render	(mapNormalItems& N)
 {
-	// *** DIRECT ***
-	{
-		// DIRECT:SORTED
-		N.sorted.traverseLR		(normal_L2);
-		N.sorted.clear			();
+	// DIRECT:SORTED
+	N.sorted.traverseLR		(normal_L2);
+	N.sorted.clear			();
 
-		// DIRECT:UNSORTED
-		vector<IVisual*>&	L			= N.unsorted;
-		IVisual **I=&*L.begin(), **E = &*L.end();
-		for (; I!=E; I++)
-		{
-			IVisual *V = *I;
-			V->Render	(0);	// zero lod 'cause it is too small onscreen
-		}
-		L.clear	();
+	// DIRECT:UNSORTED
+	vector<IVisual*>&	L			= N.unsorted;
+	IVisual **I=&*L.begin(), **E = &*L.end();
+	for (; I!=E; I++)
+	{
+		IVisual *V = *I;
+		V->Render	(0);	// zero lod 'cause it is too small onscreen
 	}
+	L.clear	();
 }
 
-// MATRIX
-void __fastcall matrix_L2	(mapMatrixItem::TNode *N)
+// Matrix
+void __fastcall matrix_L2			(FixedMAP<float,_MatrixItem>::TNode *N)
 {
-	IVisual *V				= N->val.pVisual;
-	RCache.set_xform_world	(N->val.Matrix);
+	_MatrixItem&	I		= N->val;
+	IVisual			*V		= I.pVisual;
+	RCache.set_xform_world	(I.Matrix);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
-void __fastcall matrix_L1	(mapMatrix_Node *N)
+void __fastcall mapMatrix_Render	(mapMatrixItems& N)
 {
-	RCache.set_Element	(N->key);
-	N->val.traverseLR			(matrix_L2);
-	N->val.clear				();
+	// DIRECT:SORTED
+	N.sorted.traverseLR		(matrix_L2);
+	N.sorted.clear			();
+
+	// DIRECT:UNSORTED
+	vector<_MatrixItem>&	L		= N.unsorted;
+	IVisual **I=&*L.begin(), **E	= &*L.end();
+	for (; I!=E; I++)
+	{
+		IVisual *V = *I;
+		V->Render	(0);	// zero lod 'cause it is too small onscreen
+	}
+	L.clear	();
 }
 
 // ALPHA

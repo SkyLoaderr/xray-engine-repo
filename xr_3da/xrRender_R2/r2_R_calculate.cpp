@@ -56,7 +56,7 @@ void CRender::Calculate		()
 	}
 
 	// Calculate sector(s) and their objects
-	frame									++;
+	marker									++;
 	set_Object								(0);
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
 	pCreator->pHUD->Render_Calculate		();
