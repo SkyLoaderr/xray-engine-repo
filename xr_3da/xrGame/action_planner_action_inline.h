@@ -70,22 +70,7 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::update					(u32 time_delta)
 {
 	execute						();
-	
 	inherited_planner::update	(time_delta);
-
-	VERIFY						(!solution().empty());
-
-	if (current_operator() != solution().front()) {
-		action(current_operator()).finalize();
-		set_current_operator	(solution().front());
-	}
-
-	action(current_operator()).initialize();
-	action(current_operator()).execute();
-
-	inherited_planner			*action_planner = dynamic_cast<inherited_planner*>(&action(current_operator()));
-	if (action_planner)
-		action_planner->update	(time_delta);
 }
 
 TEMPLATE_SPECIALIZATION
