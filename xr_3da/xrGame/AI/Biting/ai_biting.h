@@ -141,6 +141,8 @@ public:
 		eMovementParameterStand						= u32(1) <<  1,
 		eMovementParameterWalkFree					= u32(1) <<  2,
 		eMovementParameterRunFree					= u32(1) <<  3,
+
+		eMovementParameterAnyType					= eMovementParameterStand | eMovementParameterWalkFree | eMovementParameterRunFree,
 	};
 
 
@@ -183,7 +185,7 @@ public:
 			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
 			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
 
-			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos);
+			void			SetPathParams					(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos, u32 velocity_mask, u32 desirable_vel);
 
 	// Other
 			void			vfUpdateParameters				();

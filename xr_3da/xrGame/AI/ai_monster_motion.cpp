@@ -279,7 +279,6 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 void CMotionManager::ProcessAction()
 {
 	bad_motion_fixed		= false;
-
 	
 	if (pJumping && pJumping->IsActive()) return;
 
@@ -290,7 +289,7 @@ void CMotionManager::ProcessAction()
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (!pMonster->CDetailPathManager::path().empty() && pMonster->CMovementManager::enabled()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
+		if (pMonster->IsMovingOnPath()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);

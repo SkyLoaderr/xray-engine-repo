@@ -50,13 +50,9 @@ BOOL CAI_Flesh::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-
 	m_movement_params.insert(std::make_pair(eMovementParameterStand		,STravelParams(0.f,	inherited::_sd->m_fsTurnNormalAngular / 2)));
 	m_movement_params.insert(std::make_pair(eMovementParameterWalkFree	,STravelParams(inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular / 2)));
 	m_movement_params.insert(std::make_pair(eMovementParameterRunFree	,STravelParams(inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular / 2 )));
-
-	set_velocity_mask		(eMovementParameterRunFree);
-	set_desirable_mask		(eMovementParameterRunFree);
 
 	return TRUE;
 }
@@ -239,6 +235,24 @@ void CAI_Flesh::CheckSpecParams(u32 spec_params)
 	bool bDamaged = (GetHealth() < 0.5f);
 
 	if (cur_anim == eAnimStandIdle && bDamaged) MotionMan.SetCurAnim(eAnimStandDamaged);
+
+	
+	
+//	if (IsMovingOnPath()) {
+//		u32 velocity_index = CDetailPathManager::path()[curr_travel_point_index()].velocity;
+//
+//		switch (velocity_index) {
+//		case eMovementParameterStand:
+//
+//			break;
+//		case eMovementParameterWalkFree:
+//			MotionMan.SetCurAnim(eAnimWalkFwd);
+//			break;
+//		case eMovementParameterRunFree:
+//			MotionMan.SetCurAnim(eAnimWalkFwd);
+//			break;
+//		}
+//	}
 }
 
 

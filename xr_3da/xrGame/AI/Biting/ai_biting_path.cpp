@@ -202,7 +202,7 @@ bool CAI_Biting::IsMoveAlongPathFinished()
 	return CDetailPathManager::completed(Position());
 }
 
-bool CAI_Biting::IsMovingOnPath	()
+bool CAI_Biting::IsMovingOnPath()
 {
 	return (!IsMoveAlongPathFinished() && CMovementManager::enabled());
 }
@@ -250,11 +250,13 @@ Fvector CAI_Biting::RandomPosInR(const Fvector &p, float R)
 	return v;
 }
 
-void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos)
+void CAI_Biting::SetPathParams(CMovementManager::EPathType path_type, u32 dest_vertex_id, const Fvector &dest_pos, u32 velocity_mask, u32 desirable_vel)
 {
 	set_level_dest_vertex(dest_vertex_id);
 	set_dest_position(dest_pos);
 	set_path_type (path_type);
+	set_velocity_mask(velocity_mask);	
+	set_desirable_mask(desirable_vel);
 }
 
 
