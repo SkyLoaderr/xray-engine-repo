@@ -79,7 +79,14 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_DialogNames.push_back(dialog_name);
 	}
 
-
+	dialogs_num = uiXml.GetNodesNum(pNode, "actor_dialog");
+	info_data()->m_ActorDialogNames.clear();
+	for(int i=0; i<dialogs_num; ++i)
+	{
+		shared_str dialog_name = uiXml.Read(pNode, "actor_dialog", i);
+		info_data()->m_ActorDialogNames.push_back(dialog_name);
+	}
+	
 	//список названий порций информации, которые деактивируются,
 	//после получения этой порции
 	int disable_num = uiXml.GetNodesNum(pNode, "disable");

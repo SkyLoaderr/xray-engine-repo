@@ -235,6 +235,9 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 
 			for(u32 i = 0; i<info_portion.DialogNames().size(); i++)
 				AddAvailableDialog(*info_portion.DialogNames()[i], partner);
+
+			for(u32 i = 0; i<info_portion.ActorDialogNames().size(); i++)
+				AddAvailableDialog(*info_portion.ActorDialogNames()[i], partner);
 		}
 	}
 

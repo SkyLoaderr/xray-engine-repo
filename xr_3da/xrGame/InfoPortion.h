@@ -31,6 +31,10 @@ struct SInfoPortionData : CSharedResource
 	//из этого InfoPortion
 	DIALOG_ID_VECTOR m_DialogNames;
 
+	//массив с именами диалогов, которые могут быть инициированы актером
+	//при разговоре с персонажем, который имеет данный InfoPortion
+	DIALOG_ID_VECTOR m_ActorDialogNames;
+
 	//список локаций на карте
 	LOCATIONS_VECTOR	m_MapLocations;
 	//список статей в энциклопедии, которые становятся известными 
@@ -82,6 +86,7 @@ public:
 	const ARTICLE_INDEX_VECTOR&						ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
 	const TASK_INDEX_VECTOR&						GameTasks	()	const {return info_data()->m_GameTasks;}
 	const DIALOG_ID_VECTOR&							DialogNames	()	const {return info_data()->m_DialogNames;}
+	const DIALOG_ID_VECTOR&							ActorDialogNames	()	const {return info_data()->m_ActorDialogNames;}
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
 	//запуск присоединенных скриптовых функций	
