@@ -199,9 +199,11 @@ class CGameMtlLibrary{
 	GameMtlVec			materials;
     GameMtlPairVec		material_pairs;
 
+#ifndef _EDITOR
     // game part
     u32					material_count;
     GameMtlPairVec		material_pairs_rt;
+#endif
 public:
 	CGameMtlLibrary		()
 	{
@@ -264,14 +266,14 @@ public:
 	}
 #else
 	// game
-	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(materials.end() != it); return (u32)(it-materials.begin());}
-	IC u32				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(materials.end() != it); return (u32)(it-materials.begin());}
-	IC SGameMtl*		GetMaterial		(u32 idx){R_ASSERT(idx<materials.size()); return materials[idx];}
+	IC u16				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(materials.end() != it); return (u16)(it-materials.begin());}
+	IC u16				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(materials.end() != it); return (u16)(it-materials.begin());}
+	IC SGameMtl*		GetMaterial		(u16 idx){R_ASSERT(idx<materials.size()); return materials[idx];}
 #endif
 
 	IC GameMtlIt		FirstMaterial	(){return materials.begin();}
 	IC GameMtlIt		LastMaterial	(){return materials.end();}
-	IC u32				CountMaterial	(){return (u32)materials.size();}
+	IC u32				CountMaterial	(){return materials.size();}
 
 // material pair routine
 #ifdef _EDITOR
@@ -291,11 +293,10 @@ public:
 	GameMtlPairIt		GetMaterialPairIt	(int mtl0, int mtl1);
 	SGameMtlPair*		GetMaterialPair		(int mtl0, int mtl1);
 	SGameMtlPair*		GetMaterialPair		(LPCSTR name);
-#endif
-
+#else
 	// game
-	IC SGameMtlPair*	GetMaterialPair		(u32 idx0, u32 idx1){R_ASSERT((idx0<material_count)&&(idx1<material_count)); return material_pairs_rt[idx1*material_count+idx0];}
-
+	IC SGameMtlPair*	GetMaterialPair		(u16 idx0, u16 idx1){R_ASSERT((idx0<material_count)&&(idx1<material_count)); return material_pairs_rt[idx1*material_count+idx0];}
+#endif
 	IC GameMtlPairIt	FirstMaterialPair	(){return material_pairs.begin();}
 	IC GameMtlPairIt	LastMaterialPair	(){return material_pairs.end();}
 
