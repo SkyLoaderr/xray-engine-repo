@@ -633,9 +633,6 @@ Shader:
 + сохранить размер колонок в пропертях
 ?+иногда после клонирования выскакивает flt err после клика по пропсам
 - рендерить всегда объект
-	FOLDER::AfterTextEdit(item,((TextValue*)sender)->val,*(AnsiString*)edit_val);
-	FOLDER::BeforeTextEdit(((TextValue*)sender)->val,*(AnsiString*)edit_val);itoa
-	FOLDER::TextDraw(((TextValue*)sender)->val,*(AnsiString*)draw_val);
 
 --------------------------------------------------------------------------------
 Plugs:
