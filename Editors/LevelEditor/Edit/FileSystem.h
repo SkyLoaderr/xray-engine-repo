@@ -45,7 +45,7 @@ public:
 	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
 	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);
 };
-extern EFS_Utils EFS;
+extern XRCORE_API EFS_Utils EFS;
 
 #endif /*_INCDEF_FileSystem_H_*/
 
