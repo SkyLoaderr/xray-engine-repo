@@ -1,14 +1,33 @@
 module("ui_save_dialog")
 module("ui_load_dialog")
 
+function dump_time(t)
+printf("----dump time start")
+	printf(t:dateToString(time_struct.DateToDay))
+	printf(t:dateToString(time_struct.DateToMonth))
+	printf(t:dateToString(time_struct.DateToYear))
+	
+	printf(t:timeToString(time_struct.TimeToHours))
+	printf(t:timeToString(time_struct.TimeToMinutes))
+	printf(t:timeToString(time_struct.TimeToSeconds))
+	printf(t:timeToString(time_struct.TimeToMilisecs))
+printf("----dump time end")
+printf("")
+end
+
 function main()
 --local dlg = ui_main_menu.main_menu()
 --level.start_stop_menu(dlg,true)
 --	while (1) do
 	--	wait(1000)
 	--end
-	local t = game.time()
+	local t = game.time2()
+	dump_time(t)
 	wait(10000)
-	local dt = game.time() - t
-	wait(10000)
+	
+	local t2 = game.time2()
+	dump_time(t2)
+	local t3 = t2-t
+	dump_time(t3)
+	
 end
