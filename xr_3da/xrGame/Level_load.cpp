@@ -140,10 +140,10 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 				else
 					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
 
-			if (tTemp.magnitude() < .1f) {
-				j--;
-				continue;
-			}
+//			if (tTemp.magnitude() < .1f) {
+//				j--;
+//				continue;
+//			}
 
 			tTemp.y = 0.f;
 			tTemp.normalize();
@@ -155,23 +155,23 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			
 			tpaVector1[j].add(tTemp);
 
-			if ((j > 1) && (tpaVector1[j].distance_to(tpaVector1[j - 2]) <= fHalfSubnodeSize + tpaVector1[j - 1].distance_to(tpaVector1[j - 2]))) {
-				Fvector tPrevious = tpaVector1[j - 2];
-				Fvector tCurrent = tpaVector1[j - 1];
-				Fvector tNext = tpaVector1[j];
-				Fvector tTemp1, tTemp2;
-				tTemp1.sub(tCurrent,tPrevious);
-				tTemp2.sub(tNext,tCurrent);
-				tTemp1.normalize_safe();
-				tTemp1.y = tTemp2.y = 0;
-				tTemp2.normalize_safe();
-				float fAlpha = tTemp1.dotproduct(tTemp2);
-				clamp(fAlpha, -.99999f, +.99999f);
-				if ((acosf(fAlpha) < PI_DIV_8*.375f) || (acosf(fAlpha) > 2*PI_DIV_8*.375f)) {
-					j--;
-					continue;
-				}
-			}
+//			if ((j > 1) && (tpaVector1[j].distance_to(tpaVector1[j - 2]) <= fHalfSubnodeSize + tpaVector1[j - 1].distance_to(tpaVector1[j - 2]))) {
+//				Fvector tPrevious = tpaVector1[j - 2];
+//				Fvector tCurrent = tpaVector1[j - 1];
+//				Fvector tNext = tpaVector1[j];
+//				Fvector tTemp1, tTemp2;
+//				tTemp1.sub(tCurrent,tPrevious);
+//				tTemp2.sub(tNext,tCurrent);
+//				tTemp1.normalize_safe();
+//				tTemp1.y = tTemp2.y = 0;
+//				tTemp2.normalize_safe();
+//				float fAlpha = tTemp1.dotproduct(tTemp2);
+//				clamp(fAlpha, -.99999f, +.99999f);
+//				if ((acosf(fAlpha) < PI_DIV_8*.375f) || (acosf(fAlpha) > 2*PI_DIV_8*.375f)) {
+//					j--;
+//					continue;
+//				}
+//			}
 			
 			for (int m=k; (k < tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i],fHalfSubnodeSize)); k++) ;
 

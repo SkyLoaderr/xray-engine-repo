@@ -1203,20 +1203,18 @@ void CAI_Soldier::OnPatrolRoute()
 
 		AI_Path.TravelStart = 0;
 		
-		if (AI_Path.TravelPath.size()) {
-			if (m_tpPath->dwType & CLevel::PATH_LOOPED) {
-				m_dwLoopCount++;
-				if (m_dwLoopCount % 2 == 0) {
-					DWORD dwCount = AI_Path.TravelPath.size();
-					for ( i=0; i<dwCount / 2; i++) {
-						Fvector tTemp = AI_Path.TravelPath[i].P;
-						AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
-						AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
-					}
+		if (m_tpPath->dwType & CLevel::PATH_LOOPED) {
+			m_dwLoopCount++;
+			if (m_dwLoopCount % 2 == 0) {
+				DWORD dwCount = AI_Path.TravelPath.size();
+				for ( i=0; i<dwCount / 2; i++) {
+					Fvector tTemp = AI_Path.TravelPath[i].P;
+					AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
+					AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
 				}
 			}
-			m_dwLastRangeSearch = m_dwCurrentUpdate;
 		}
+		m_dwLastRangeSearch = m_dwCurrentUpdate;
 	}
 
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
@@ -1291,8 +1289,20 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 				AI_Path.TravelPath[i].floating = FALSE;
 				AI_Path.TravelPath[i].P = tpaVector[i];
 			}
+			
 			AI_Path.TravelStart = 0;
 
+			if (m_tpPath->dwType & CLevel::PATH_LOOPED) {
+				m_dwLoopCount++;
+				if (m_dwLoopCount % 2 == 0) {
+					DWORD dwCount = AI_Path.TravelPath.size();
+					for ( i=0; i<dwCount / 2; i++) {
+						Fvector tTemp = AI_Path.TravelPath[i].P;
+						AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
+						AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
+					}
+				}
+			}
 			m_dwLastRangeSearch = m_dwCurrentUpdate;
 		}
 		else {
