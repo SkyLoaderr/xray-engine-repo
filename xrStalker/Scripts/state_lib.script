@@ -113,7 +113,7 @@ states = {
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = "idle"
+				animation = nil
 			},
 	threat = {	weapon = "unstrapped",
 				movement = move.stand,
