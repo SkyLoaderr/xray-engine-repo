@@ -21,7 +21,7 @@ public:
 		cs.Enter	();
 		NET_Packet*	P = &(table[id_write++]);
 		if (id_write == NET_QueueSize)	id_write = 0;
-		R_ASSERT(id_write != id_read);
+		R_ASSERT	(id_write != id_read);
 		cs.Leave	();
 		return P;
 	}

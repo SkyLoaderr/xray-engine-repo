@@ -73,10 +73,11 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 			for (;;) 
 			{
 				CObject*	 uO	= Objects.net_Find	(s_server_parent_id);
-				R_ASSERT	(uO);
-				CGameObject* GO = dynamic_cast<CGameObject*>(O);
+				R_ASSERT		(uO);
+				CGameObject* GO = dynamic_cast<CGameObject*>(uO);
 				if (0==GO)		break;
 				GO->net_Event	(GEN);
+				break;
 			}
 		}
 	}
