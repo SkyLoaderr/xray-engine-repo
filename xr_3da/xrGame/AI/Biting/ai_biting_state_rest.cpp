@@ -58,9 +58,15 @@ void CBitingRest::Replanning()
 
 			// Построить путь обхода точек графа, поиск пищи
 			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
-			pMonster->set_level_dest_vertex(vertex_id);
-			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
-			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
+
+			pMonster->SetPathParams(
+				CMovementManager::ePathTypeLevelPath, 
+				vertex_id, 
+				ai().level_graph().vertex_position(vertex_id),
+				pMonster->eVelocityParamsWalk,
+				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+			);						
+
 
 //			if (!pMonster->CDetailPathManager::valid()) {
 //			}
@@ -83,9 +89,14 @@ void CBitingRest::Replanning()
 			m_tAction = ACTION_WALK_CIRCUMSPECTION;
 
 			u32 vertex_id = ::Random.randI(ai().level_graph().header().vertex_count());
-			pMonster->set_level_dest_vertex(vertex_id);
-			pMonster->set_dest_position(ai().level_graph().vertex_position(vertex_id));
-			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
+
+			pMonster->SetPathParams(
+				CMovementManager::ePathTypeLevelPath, 
+				vertex_id, 
+				ai().level_graph().vertex_position(vertex_id),
+				pMonster->eVelocityParamsWalk,
+				pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
+			);						
 
 			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}

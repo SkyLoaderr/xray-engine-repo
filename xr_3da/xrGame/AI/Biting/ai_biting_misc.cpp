@@ -229,6 +229,20 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 	case ACT_DRAG:
 		vel_mask = eVelocityParameterDrag;
 		des_mask = eVelocityParameterDrag;
+
+		{
+			Fvector v;
+			v = Direction();
+			
+			float yaw,pitch;
+			v.getHP(yaw,pitch);
+			yaw = angle_normalize(yaw + PI);
+			v.setHP(yaw,pitch);
+			CDetailPathManager::set_start_direction(v);
+		}
+
+		MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+
 		break;
 	case ACT_STEAL:
 		vel_mask = eVelocityParameterSteal;

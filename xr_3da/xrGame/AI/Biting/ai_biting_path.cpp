@@ -151,18 +151,27 @@ Fvector CAI_Biting::GetValidPosition(CEntity *entity, const Fvector &actual_posi
 	else return ai().level_graph().vertex_position(entity->level_vertex());
 }
 
-void CAI_Biting::MoveToTarget(CEntity *entity) 
+void CAI_Biting::MoveToTarget(CEntity *entity, u32 vel_mask, u32 des_mask) 
 {
-	set_level_dest_vertex(entity->level_vertex_id());
-	set_dest_position(GetValidPosition(entity, entity->Position()));
-	set_path_type (CMovementManager::ePathTypeLevelPath);
+	SetPathParams(
+		CMovementManager::ePathTypeLevelPath, 
+		entity->level_vertex_id(),
+		GetValidPosition(entity, entity->Position()),
+		vel_mask,
+		des_mask
+	);
+
 }
 
-void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id) 
+void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id, u32 vel_mask, u32 des_mask) 
 {
-	set_level_dest_vertex(node_id);
-	set_dest_position(pos);
-	set_path_type (CMovementManager::ePathTypeLevelPath);
+	SetPathParams(
+		CMovementManager::ePathTypeLevelPath, 
+		node_id,
+		pos,
+		vel_mask,
+		des_mask
+	);
 }
 
 void CAI_Biting::FaceTarget(CEntity *entity) 

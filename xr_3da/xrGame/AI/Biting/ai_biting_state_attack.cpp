@@ -134,7 +134,7 @@ void CBitingAttack::Run()
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
-			pMonster->MoveToTarget(m_tEnemy.obj);
+			pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsRun, pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal);
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
@@ -165,9 +165,10 @@ void CBitingAttack::Run()
 			break;
 		case ACTION_STEAL:
 			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
-			pMonster->MoveToTarget(m_tEnemy.obj);
+			pMonster->MoveToTarget(m_tEnemy.obj, pMonster->eVelocityParamsSteal, pMonster->eVelocityParameterSteal);
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
+		
 		case ACTION_THREATEN: 
 			pMonster->enable_movement(false);
 
@@ -184,7 +185,6 @@ void CBitingAttack::Run()
 			pMonster->enable_movement(false);
 			pMonster->LookPosition(m_tEnemy.obj->Position(), PI_DIV_2);
 			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-
 			break;
 	}
 

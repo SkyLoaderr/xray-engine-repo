@@ -110,7 +110,6 @@ void CBitingSquadTask::Run()
 	case SC_EXPLORE:  {
 		// 1. Идти к позиции, осмотреться || проверка трупа
 		float cur_dist=0.0f;
-
 		
 		// Get cur dist
 		if (task.target.entity) {
@@ -130,9 +129,9 @@ void CBitingSquadTask::Run()
 			if (task.target.entity) {
 				CEntity *pE = dynamic_cast<CEntity *>(task.target.entity);
 				R_ASSERT(pE);
-				pMonster->MoveToTarget(pE);
+				//pMonster->MoveToTarget(pE);
 			} else { 
-				pMonster->MoveToTarget(task.target.pos, task.target.node);
+				//pMonster->MoveToTarget(task.target.pos, task.target.node);
 			}
 
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

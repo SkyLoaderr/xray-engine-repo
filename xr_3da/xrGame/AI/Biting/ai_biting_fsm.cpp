@@ -36,49 +36,48 @@ void CAI_Biting::Think()
 	CDetailPathManager::set_path_type(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time(true);
 
-	CTimer T;
-	T.Start();
+//	CTimer T;
+//	T.Start();
 	
 	update_path				();
 
-	//if (T.GetElapsed_sec() > 0.1f)  {
-	//		// Time checker	
-	//		LOG_EX("------------- PATH BUILDER OVERTIME -------------");
-	//		LOG_EX2("Time: %f ", *"*/ T.GetElapsed_sec() /*"*);
-	//		LOG_EX2("Start Node ID = [%u] Start Position = [%f,%f] ", *"*/ CDetailPathManager::path()[0].vertex_id,  CDetailPathManager::path()[0].position.x, CDetailPathManager::path()[0].position.y /*"*);
-	//		
-	//		u32 last_index = CDetailPathManager::path().size() - 1;
-	//		LOG_EX2("Finish Node ID = [%u] Finish Position = [%f,%f] ", *"*/ CDetailPathManager::path()[last_index].vertex_id,  CDetailPathManager::path()[last_index].position.x, CDetailPathManager::path()[last_index].position.y /*"*);	
-	//		
-	//		LOG_EX("Velocity Mask: ");
-	//
-	//		xr_map<u32,STravelParams>::iterator it;
-	//		for (it = m_movement_params.begin(); it != m_movement_params.end(); it++) {
-	//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-	//		}
-	//		
-	//		LOG_EX("Desirable Mask: ");
-	//		u32 m = desirable_mask();
-	//		
-	//		if ((m & eMovementParameterStand) == eMovementParameterStand) {
-	//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterStand);
-	//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-	//		} 
-	//		if ((m & eMovementParameterWalkFree) == eMovementParameterWalkFree) {
-	//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterWalkFree);
-	//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-	//		}
-	//		
-	//		if ((m & eMovementParameterRunFree) == eMovementParameterRunFree) {
-	//			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterRunFree);
-	//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
-	//		}
-	//		
-	//		LOG_EX2("Start dir: [yaw = %f]", *"*/m_body.current.yaw /*"*);
-	//
-	//		LOG_EX("-------------------------------------------------");
-	//	}
-	
+//	if (T.GetElapsed_sec() > 0.1f)  {
+//		// Time checker	
+//		LOG_EX("------------- PATH BUILDER OVERTIME -------------");
+//		LOG_EX2("Time: %f ", *"*/ T.GetElapsed_sec() /*"*);
+//		LOG_EX2("Start Node ID = [%u] Start Position = [%f,%f] ", *"*/ CDetailPathManager::path()[0].vertex_id,  CDetailPathManager::path()[0].position.x, CDetailPathManager::path()[0].position.y /*"*);
+//		
+//		u32 last_index = CDetailPathManager::path().size() - 1;
+//		LOG_EX2("Finish Node ID = [%u] Finish Position = [%f,%f] ", *"*/ CDetailPathManager::path()[last_index].vertex_id,  CDetailPathManager::path()[last_index].position.x, CDetailPathManager::path()[last_index].position.y /*"*);	
+//		
+//		LOG_EX("Velocity Mask: ");
+//
+//		xr_map<u32,STravelParams>::iterator it;
+//		for (it = m_movement_params.begin(); it != m_movement_params.end(); it++) {
+//			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+//		}
+//		
+//		LOG_EX("Desirable Mask: ");
+//		u32 m = desirable_mask();
+//		
+////		if ((m & eMovementParameterStand) == eMovementParameterStand) {
+////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterStand);
+////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+////		} 
+////		if ((m & eMovementParameterWalkFree) == eMovementParameterWalkFree) {
+////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterWalkFree);
+////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+////		}
+////		
+////		if ((m & eMovementParameterRunFree) == eMovementParameterRunFree) {
+////			xr_map<u32,STravelParams>::const_iterator it = m_movement_params.find(eMovementParameterRunFree);
+////			LOG_EX2("Mask: [linear = %f, angular = %f]", *"*/ it->second.linear_velocity, it->second.angular_velocity /*"*);
+////		}
+//		
+//		LOG_EX2("Start dir: [yaw = %f]", *"*/m_body.current.yaw /*"*);
+//
+//		LOG_EX("-------------------------------------------------");
+//	}
 
 	PreprocessAction();
 	MotionMan.ProcessAction();

@@ -89,6 +89,14 @@ void CBitingPanic::Run()
 		}
 	}
 	
+	pMonster->SetPathParams(
+		CMovementManager::ePathTypeLevelPath, 
+		pMonster->level_vertex_id(), 
+		pMonster->Position(),
+		pMonster->eVelocityParamsRun,
+		pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand | pMonster->eVelocityParameterRunNormal
+	); 
+
 	prev_pos = cur_pos;
 }
 

@@ -125,8 +125,8 @@ void CAI_Flesh::Load(LPCSTR section)
 void CAI_Flesh::StateSelector()
 {
 	
-	SetState(stateTest);
-	return;
+//	SetState(stateTest);
+//	return;
 
 	// ---------------------------------------------------------------------------------
 
