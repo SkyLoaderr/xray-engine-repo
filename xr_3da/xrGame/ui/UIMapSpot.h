@@ -43,5 +43,6 @@ public:
 	EMapSpotAlign m_eAlign;
 	
 	//направление иконки
-	float m_fHeading;
+	bool	m_bHeading;
+	float	m_fHeading;
 };

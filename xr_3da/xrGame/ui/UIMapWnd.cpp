@@ -270,6 +270,7 @@ void CUIMapWnd::InitMap()
 	float h,p;
 	Device.vCameraDirection.getHP	(h,p);
 	map_spot->m_fHeading = h;
+	map_spot->m_bHeading = true;
 	
 	//map_spot->SetShader(GetCharIconsShader());
 	map_spot->InitTexture(pSettings->r_string("game_map", "actor_arrow"));
@@ -293,6 +294,8 @@ void CUIMapWnd::InitMap()
 	UIMapBackground.m_vMapSpots.push_back(map_spot);
 	UIMapBackground.AttachChild(map_spot);
 	m_pActorSpot = map_spot;
+	//!!! предварительный рендер неизвестно зачем
+	m_pActorSpot->GetStaticItem()->Render();
 
 	//информация о выбранном объекте
 	UIStaticInfo.Show(false);

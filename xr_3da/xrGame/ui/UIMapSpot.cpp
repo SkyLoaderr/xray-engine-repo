@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "UIMapSpot.h"
 
+#include "../actor.h"
+
 CUIMapSpot::CUIMapSpot()
 {
 	m_pObject = NULL;
@@ -16,6 +18,7 @@ CUIMapSpot::CUIMapSpot()
 	m_sNameText.SetText("");
 
 	m_fHeading = 0.f;
+	m_bHeading = false;
 
 	ClipperOn();
 }
@@ -25,7 +28,12 @@ CUIMapSpot::~CUIMapSpot()
 
 void CUIMapSpot::Draw()
 {
-	if(m_fHeading != 0.f)
+	if(dynamic_cast<CActor*>(this->m_pObject))
+	{
+		int a =0;
+		a++;
+	}
+	if(m_bHeading)
 	{
 		RECT rect = GetAbsoluteRect();
 		if(m_bClipper) TextureClipper();
