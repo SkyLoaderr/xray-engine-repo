@@ -1509,7 +1509,7 @@ void	xrSE_DeviceTorch::FillProp		(LPCSTR pref, PropItemVec& values)
 //--------------------------------------------------------------------
 
 //***** Physic Object
-xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeObject(caSection) 
+xrSE_PhysicObject::xrSE_PhysicObject(LPCSTR caSection) : CALifeDynamicObject(caSection) 
 {
 	type 		= epotBox;
 	mass 		= 10.f;
@@ -1521,7 +1521,10 @@ xrSE_PhysicObject::~xrSE_PhysicObject()
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) 
 {
 	if (m_wVersion >= 14)
-		inherited::STATE_Read	(P,size);
+		if (m_wVersion >= 16)
+			inherited::STATE_Read	(P,size);
+		else
+			CALifeObject::STATE_Read(P,size);
 	visual_read				(P);
 	P.r_u32					(type);
 	P.r_float				(mass);

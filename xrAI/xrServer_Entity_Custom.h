@@ -4,7 +4,7 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(15)
+#define SPAWN_VERSION	u16(16)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -14,6 +14,7 @@
 // 13 - xrSE_HangingLamp append 	'mass'
 // 14 - xrSE_PhysicObject append 	inherited from CALifeObject
 // 15 - xrSE_Zone append 			inherited calls from CALifeDynamicObject
+// 16 - xrSE_PhysicObject append 	inherited from CALifeDynamicObject
 //------------------------------------------------------------------------------
 
 class xrClientData;
