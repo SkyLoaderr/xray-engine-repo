@@ -193,9 +193,21 @@ void CAI_Space::Render()
 						for (int i=0, n=(int)m_tGraphHeader.dwVertexCount; i<n; i++) {
 							if (m_tpaGraph[i].tLevelID != J)
 								continue;
-							Fvector t1 = m_tpaGraph[i].tLocalPoint;
+							Fvector t1 = m_tpaGraph[i].tLocalPoint, t2 = m_tpaGraph[i].tGlobalPoint;
 							t1.y += .6f;
+							t2.y += .6f;
+							NORMALIZE_VECTOR(t2);
 							RCache.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(255,255,255));
+							//RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,255,255));
+							Fvector         T;
+							Fvector4        S;
+							T.set			(t1);
+							//T.y+= 1.5f;
+							T.y+= 1.5f;
+							Device.mFullTransform.transform (S,T);
+							F->SetSize	(0.1f/_sqrt(_abs(S.w)));
+							F->SetColor(0xffffffff);
+							F->Out(S.x,-S.y,"%d",i);
 						}
 					}
 

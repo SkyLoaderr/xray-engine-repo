@@ -38,7 +38,7 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 		m_bSwitchChanged				= false;
 		if ((*I).second->m_qwSwitchCounter == m_qwCycleCounter) {
 #ifdef ALIFE_LOG
-			Msg							("[LSS][OOS0][%d : %d]",i, m_tpCurrentLevel->size());
+			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
 #endif
 			return;
 		}
@@ -47,7 +47,7 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 		ProcessOnlineOfflineSwitches	((*I).second);
 		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 #ifdef ALIFE_LOG
-			Msg							("[LSS][OOS0][%d : %d]",i, m_tpCurrentLevel->size());
+			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
 #endif
 			return;
 		}
@@ -79,7 +79,7 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			m_bUpdateChanged				= false;
 			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {
 	#ifdef ALIFE_LOG
-				Msg							("[LSS][OOS0][%d : %d]",i, m_tpScheduledObjects.size());
+				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
 	#endif
 				return;
 			}
@@ -88,7 +88,7 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			(*I).second->Update				();
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
 	#ifdef ALIFE_LOG
-				Msg							("[LSS][OOS0][%d : %d]",i, m_tpScheduledObjects.size());
+				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
 	#endif
 				return;
 			}
