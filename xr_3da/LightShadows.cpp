@@ -13,7 +13,7 @@ const	float	S_distance	= 32;
 const	float	S_level		= .1f;
 const	int		S_size		= 64;
 const	int		S_rt_size	= 512;
-const	int		S_polys		= 128;
+const	int		batch_size	= 128;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -37,7 +37,7 @@ void CLightShadows::OnDeviceCreate	()
 	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
-	vs_World	= Device.Streams.Create		(FVF::F_L, S_polys*3);
+	vs_World	= Device.Streams.Create		(FVF::F_L, 4*batch_size*3);
 
 	// Debug
 	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
@@ -191,12 +191,25 @@ void CLightShadows::render	()
 	// Gain access to collision-DB
 	CDB::MODEL*		DB		= pCreator->ObjectSpace.GetStaticModel();
 	CDB::TRI*		TRIS	= DB->get_tris();
+
+	int slot_line	= S_rt_size/S_size;
+	int slot_max	= slot_line*slot_line;
 	
 	// Render shadows
-	Device.Shader.set_Shader(sh_World);
+	Device.Shader.set_Shader	(sh_World);
+	int batch					= 0;
+	DWORD Offset				= 0;
+	DWORD C						= 0;
+	FVF::LIT* pv				= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
 	for (int s_it=0; s_it<shadows.size(); s_it++)
 	{
-		shadow&		S			= shadows[s_it];
+		shadow&		S			=	shadows[s_it];
+		int			s_x			=	S.slot%slot_line;
+		int			s_y			=	S.slot/slot_line;
+		Fvector2	t_scale, t_offset;
+		t_scale.set	(S_size/S_rt_size,S_size/S_rt_size);
+		t_offset.set(s_x/slot_line,s_y/slot_line);
+		t_offset.add(.5f/S_rt_size,.5f/S_rt_size);
 		
 		// Frustum
 		CFrustum	F;
@@ -218,22 +231,38 @@ void CLightShadows::render	()
 			sPoly*		clip	= F.ClipPoly(A,B);
 			if (0==clip)		continue;
 
-
+			for (int v=2; v<clip->size(); v++)
+			{
+				Fvector& v1		= (*clip)[0];
+				Fvector& v2		= (*clip)[v-1];
+				Fvector& v3		= (*clip)[v];
+				Fvector	 T;
+				
+				S.M.transform(T,v1); pv->set(v1,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v2); pv->set(v2,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v3); pv->set(v3,C,T.x*t_scale.x+t_offset.x,T.y*t_scale.y+t_offset.y); pv++;
+				batch++;
+				if (batch==batch_size)	{
+					// Flush
+					vs_World->Unlock		(batch*3);
+					Device.Primitive.Draw	(vs_World,batch,Offset);
+					pv						= (FVF::LIT*) vs_World->Lock(batch_size*3,Offset);
+				}
+			}
 		}
-
-		
-		// Rendering
-		DWORD Offset, C=0;
-		FVF::L* pv				= (FVF::L*) vs_World->Lock(XRC.r_count()*3,Offset);
-		
-		vs_World->Unlock		(XRC.r_count()*3);
 	}
-	shadows.clear	();
+
+	// Flush if nessesary
+	vs_World->Unlock		(batch*3);
+	if (batch)				Device.Primitive.Draw	(vs_World,batch,Offset);
+	
+	// Clear all shadows
+	shadows.clear			();
 	
 	// UV
-	Fvector2		p0,p1;
-	p0.set			(.5f/S_rt_size, .5f/S_rt_size);
-	p1.set			((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
+	Fvector2				p0,p1;
+	p0.set					(.5f/S_rt_size, .5f/S_rt_size);
+	p1.set					((S_rt_size+.5f)/S_rt_size, (S_rt_size+.5f)/S_rt_size);
 	
 	// Fill vertex buffer
 	DWORD Offset, C=0xffffffff;
