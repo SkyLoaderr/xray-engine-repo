@@ -17,7 +17,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			CALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CALifeHumanAbstract *>(tpALifeMonsterAbstract);
-			if (tpALifeHumanAbstract && (tpALifeHumanAbstract->m_tTaskState == eTaskStateGoing)) {
+			if (tpALifeHumanAbstract && (tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching)) {
 				GRAPH_IT	B = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].begin();
 				GRAPH_IT	E = m_tpTerrain[tpALifeHumanAbstract->m_tCurTask.tLocationID].end();
 				GRAPH_IT	I = B;
