@@ -27,7 +27,6 @@ function mob_eluder:reset_scheme()
 	self.st.signals				= {}
 	self.action_end_signalled	= false
 	
-	self.need_reselect			= true
 	
 	self.self_distances			= {}
 	self.actor_distances		= {}
@@ -48,13 +47,10 @@ function mob_eluder:update(delta)
 
 	
 	if not self.object:action() then
-		self.need_reselect		= false
-		
 		-- Select point here
 		self:update_distances	()
 		
-		xr_logic.mob_capture(self.object, true)
-		
+		--xr_logic.mob_capture(self.object, true)
 		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), 3), cond(cond.move_end))
 	end
 	
@@ -71,16 +67,6 @@ function mob_eluder:update(delta)
 --		end
 --	end
 end
-
-----------------------------------------------------------------------------------------------------
--- WAYPOINT_CALLBACK
-----------------------------------------------------------------------------------------------------
-function mob_eluder:waypoint_callback(obj, action_type, index)
-	printf("mob_eluder:waypoint_callback(): name=%s, index=%d", self.object:name(), index)
-	
-	self.need_reselect = true
-end
-
 
 ----------------------------------------------------------------------------------------------------
 -- SERVICE FUNCTIONS
@@ -111,9 +97,8 @@ function mob_eluder:update_distances()
 	local max_value		= 0
 	self.best_point_id	= 0
 	
-	-- temp PRE MAX
-	local pre_max_value	= 0
-	local pre_max_id	= 0
+	local k_self		= 1
+	local k_actor		= 2
 	
 	-- пересчитать в соответствии с максимальным расстоянием
 	for i = 1, patrol(self.st.path):count() do
@@ -121,30 +106,21 @@ function mob_eluder:update_distances()
 		self.actor_distances[i]	= self.actor_distances[i] / max_actor_dist
 		
 		-- сохранить результат
-		self.self_distances[i]	= self.actor_distances[i] * self.self_distances[i]
+		self.self_distances[i]	= self.actor_distances[i]*k_actor + self.self_distances[i]*k_self
 		
 		-- show
---		printf("P[%u] = [%f]", i-1, self.self_distances[i])
+		-- printf("P[%u] = [%f]", i-1, self.self_distances[i])
 		
 		if max_value < self.self_distances[i] and self.prev_point_id ~= i-1 then
 			max_value			= self.self_distances[i]
 			self.best_point_id	= i-1
 		end
 		
-		-- temp PRE MAX
-		if pre_max_value < self.self_distances[i] and self.self_distances[i] < max_value then
-			pre_max_value	= self.self_distances[i]
-			pre_max_id		= i-1
-		end
-		
 	end
-	
-	-- temp PRE MAX
-	--self.best_point_id = pre_max_id
 	
 	self.prev_point_id = self.best_point_id
 	
-	printf("Best Point ID = [%u] Value = [%f]", self.best_point_id, max_value)
+	-- printf("Best Point ID = [%u] Value = [%f]", self.best_point_id, max_value)
 end
 
 
