@@ -56,7 +56,7 @@ end
 
 function action_walker_activity:reset_scheme()
 	self.move_mgr:reset(self.st.path_walk, self.path_walk_info, self.st.path_look, self.path_look_info, self.st.team,
-		true, nil)
+		false, nil)
 end	
 
 function action_walker_activity:execute()

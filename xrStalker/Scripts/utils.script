@@ -238,7 +238,7 @@ function parse_waypoint_data(pathname, wpname)
 			fld = nil
 			val = nil
 			for v in string.gfind(param, "([%w_\\]+)=*") do
-				if flkd_num == 1 then
+				if fld_num == 1 then
 					fld = v
 				elseif fld_num == 2 then
 					val = v
