@@ -118,5 +118,5 @@ IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 
 IC	bool CAI_Rat::use_model_pitch	() const
 {
-	return			(true);
+	return			(false);//!!g_Alive());
 }

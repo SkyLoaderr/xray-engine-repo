@@ -37,7 +37,7 @@ void CAI_Rat::Init()
 	m_bFiring				= false;
 	m_previous_query_time		= 0;
 	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
-	m_tCurrentDir.set		(0,0,1);
+	m_tCurrentDir			= m_tGoalDir;
 	m_tHPB.set				(0,0,0);
 	m_fDHeading				= 0;
 	m_fGoalChangeTime		= 0.f;
@@ -49,11 +49,12 @@ void CAI_Rat::Init()
 	m_bStanding				= false;
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
-//	q_look.o_look_speed		= PI;
 	m_saved_impulse			= 0.f;
 	m_bMoving				= false;
 	m_bCanAdjustSpeed		= false;
 	m_bStraightForward		= false;
+	m_thinking				= false;
+	m_turning				= false;
 }
 
 void CAI_Rat::reinit					()
@@ -89,7 +90,6 @@ void CAI_Rat::Die()
 
 void CAI_Rat::Load(LPCSTR section)
 { 
-	// load parameters from ".ini" file
 	Init();
 
 	inherited::Load(section);
@@ -197,7 +197,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
 	//////////////////////////////////////////////////////////////////////////
 
-	m_fCurSpeed						= m_fMaxSpeed;
+	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
 
 	m_tOldPosition.set				(Position());
 	m_tSpawnPosition.set			(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
@@ -207,8 +207,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_bStateChanged					= true;
 	set_game_vertex					(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 
-	m_tHPB.x						= m_body.current.yaw;
-	m_tHPB.y						= m_body.current.pitch;
+	m_tHPB.x						= -m_body.current.yaw;
+	m_tHPB.y						= -m_body.current.pitch;
 	m_tHPB.z						= 0;
 
 	enable_movement					(false);
@@ -360,31 +360,36 @@ void CAI_Rat::shedule_Update(u32 dt)
 	inherited::shedule_Update	(dt);
 }
 
-void CAI_Rat::UpdateCL(){
+void CAI_Rat::UpdateCL			()
+{
+	if (!Useful()) {
+		inherited::UpdateCL		();
+		Exec_Look				(Device.fTimeDelta);
+	}
+	else
+		CEatableItem::UpdateCL	();
 
-	inherited::UpdateCL	();
-	CEatableItem::UpdateCL();
-	if(!m_pPhysicsShell && (fEntityHealth <= 0))
-		CreateSkeleton	();
+	if(!m_pPhysicsShell && !g_Alive())
+		CreateSkeleton			();
 }
 
 void CAI_Rat::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type /*= ALife::eHitTypeWound*/){
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse, hit_type);
-	if(!m_pPhysicsShell){
-		m_saved_impulse=impulse;
-		m_saved_hit_dir.set(dir);
-		m_saved_hit_type=hit_type;
+	inherited::Hit				(P,dir,who,element,p_in_object_space,impulse, hit_type);
+	if (!m_pPhysicsShell) {
+		m_saved_impulse			= impulse;
+		m_saved_hit_dir.set		(dir);
+		m_saved_hit_type		= hit_type;
 		m_saved_hit_position.set(p_in_object_space);
 	}
 }
 
-void CAI_Rat::feel_touch_new(CObject* /**O/**/)
+void CAI_Rat::feel_touch_new(CObject* O)
 {
 }
 
 /////////////////////////////////////
 // Rat as eatable item
-//
+/////////////////////////////////////
 void CAI_Rat::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
@@ -399,11 +404,12 @@ void CAI_Rat::OnH_B_Independent	()
 
 bool CAI_Rat::Useful() const
 {
-	//if(!g_Alive()) return true;
-	if(fEntityHealth<=0) return true;
+	if (!g_Alive())
+		return true;
 
 	return false;
 }
+
 #ifdef DEBUG
 void CAI_Rat::OnRender()
 {
@@ -473,7 +479,21 @@ void CAI_Rat::activate_physic_shell	()
 
 float CAI_Rat::get_custom_pitch_speed	(float def_speed)
 {
-	return PI_DIV_2;
+	if (fsimilar(m_fSpeed,0.f))
+		return				(PI_DIV_6);
+	else
+		if (fsimilar(m_fSpeed,m_fMinSpeed))
+			return			(PI_DIV_4);
+		else
+			if (fsimilar(m_fSpeed,m_fMaxSpeed))
+				return		(PI_DIV_3);
+			else
+				if (fsimilar(m_fSpeed,m_fAttackSpeed))
+					return	(PI_DIV_2);
+	NODEFAULT;
+#ifdef DEBUG
+	return					(PI_DIV_2);
+#endif
 }
 
 BOOL CAI_Rat::renderable_ShadowReceive	()

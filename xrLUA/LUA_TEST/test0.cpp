@@ -1059,6 +1059,7 @@ extern void delegate_test();
 extern void registry_test();
 extern void abstract_registry_test();
 extern void broker_test();
+extern void box_collision_test();
 
 
 //struct MI0 {
@@ -1183,6 +1184,7 @@ void test_object2(luabind::object a, luabind::object b)
 
 void test1()
 {
+	box_collision_test	();
 	broker_test		();
 	string4096		SSS;
 	strcpy			(SSS,"");

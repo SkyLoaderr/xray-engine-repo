@@ -23,7 +23,6 @@ protected:
 
 	enum ERatStates 	{
 		aiRatDie				= 0,
-		aiRatTurn,
 		aiRatFreeHuntingActive,
 		aiRatFreeHuntingPassive,
 		aiRatAttackFire,
@@ -75,6 +74,8 @@ protected:
 	ALife::_GRAPH_ID			m_tNextGP;
 	u32							m_dwTimeToChange;
 	float						m_fGoingSpeed;
+	bool						m_thinking;
+	bool						m_turning;
 
 	// FSM
 	xr_stack<ERatStates>		m_tStateStack;
@@ -87,18 +88,6 @@ protected:
 	SRatAnimations				m_tRatAnimations;
 	CMotionDef*					m_tpCurrentGlobalAnimation;
 	CBlend*						m_tpCurrentGlobalBlend;
-	
-	// SOUNDS
-//	ref_sound					m_tpaSoundHit[SND_HIT_COUNT];
-//	ref_sound					m_tpaSoundDie[SND_DIE_COUNT];
-//	ref_sound					m_tpaSoundAttack[SND_ATTACK_COUNT];
-//	ref_sound					m_tpaSoundVoice[SND_VOICE_COUNT];
-//	ref_sound*					m_tpSoundBeingPlayed;
-//	u32							m_dwLastSoundRefresh;
-//	float						m_fMinVoiceIinterval;
-//	float						m_fMaxVoiceIinterval;
-//	float						m_fVoiceRefreshRate;
-//	u32							m_dwLastVoiceTalk;
 	
 	// ATTACK
 	bool						m_bActionStarted;
@@ -137,6 +126,7 @@ protected:
 	Fvector						m_tCurrentDir;
 	Fvector						m_tHPB;
 	float						m_fDHeading;
+	Fvector						m_tRecoilPosition;
 
 	// constants
 	float						m_fGoalChangeDelta;
@@ -231,11 +221,11 @@ public:
 			// MISCELLANIOUS FUNCTIONS
 			//////////////////////////
 			void				vfAdjustSpeed			();
-			bool				bfComputeNewPosition	(bool bCanAdjustSpeed = true, bool bStraightForward = false);
+			void				vfComputeNewPosition	(bool bCanAdjustSpeed = true, bool bStraightForward = false);
+			void				make_turn				();
 			void				vfUpdateMoraleBroadcast	(float fValue, float fRadius);
 			void				vfUpdateMorale			();
 			void				vfLoadAnimations		();
-			void				SetDirectionLook		();
 			void				vfAimAtEnemy			();
 			void				vfSetFire				(bool bFire, CGroup &Group);
 			void				vfSetMovementType		(float fSpeed);
@@ -251,13 +241,13 @@ public:
 			void				FreeHuntingPassive		();
 			void				AttackFire				();
 			void				AttackRun				();
-			void				Turn					();
 			void				UnderFire				();
 			void				Retreat					();
 			void				Pursuit					();
 			void				FreeRecoil				();
 			void				ReturnHome				();
 			void				EatCorpse				();
+			void				test_movement			();
 			void				Init					();
 public:
 								CAI_Rat					();
@@ -328,6 +318,7 @@ public:
 	virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
 	virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
+			bool				can_stand_here			();
 };
 
 #include "ai_rat_inline.h"

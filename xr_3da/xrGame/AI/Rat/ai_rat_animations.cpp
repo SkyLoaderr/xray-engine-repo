@@ -56,64 +56,36 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
 	}
 	else
-		if (m_bFiring) {
-//			for (int i=0 ;i<3; ++i)
-//				if (m_tRatAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-//					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-//					break;
-//				}
-//			
-//			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-//				tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
+		if (m_bFiring)
 			tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaAttack[2];
-		}
 		else
-			if (_abs(m_body.target.yaw - m_body.current.yaw) <= PI)
-				if (_abs(m_body.target.yaw - m_body.current.yaw) >= MIN_TURN_ANGLE)
-					if (m_body.target.yaw - m_body.current.yaw >= 0)
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
+			if (angle_difference(m_body.target.yaw,m_body.current.yaw) <= MIN_TURN_ANGLE)
+				if (m_fSpeed < 0.2f) {
+					if (m_bStanding)
+						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
 					else
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
+						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+				}
 				else
-					if (m_fSpeed < 0.2f) {
-						if (m_bStanding)
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
+					if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
+						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRunAttack;
 					else
-						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRunAttack;
+						if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
+							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
 						else
-							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
-							else
-								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
-			else
-				if (PI_MUL_2 - _abs(m_body.target.yaw - m_body.current.yaw) >= MIN_TURN_ANGLE)
-					if (m_body.target.yaw > m_body.current.yaw)
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
-					else
-						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
+							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+			else {
+				if (left_angle(-m_body.current.yaw,-m_body.target.yaw))
+//					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 				else
-					if (m_fSpeed < 0.2f) {
-						if (m_bStanding)
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[1];
-						else
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
-					}
-					else
-						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRunAttack;
-						else
-							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
-								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tRun.fwd;
-							else
-								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
+//					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaIdle[0];
+					tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
+			}
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
 
 	if (psAI_Flags.is(aiAnimation))
-		Msg			("%6d %s animation : %s",Level().timeServer(),"Global",PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation));
+		Msg			("%6d %s animation : %s (%f,%f)",Level().timeServer(),"Global",PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation),m_body.current.yaw,m_body.target.yaw);
 }

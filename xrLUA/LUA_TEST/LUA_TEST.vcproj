@@ -435,6 +435,9 @@
 				RelativePath=".\alife_abstract_registry_inline.h">
 			</File>
 			<File
+				RelativePath=".\box_collision.cpp">
+			</File>
+			<File
 				RelativePath=".\delegate_test.cpp">
 			</File>
 			<File
