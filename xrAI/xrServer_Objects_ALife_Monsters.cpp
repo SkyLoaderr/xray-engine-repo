@@ -18,6 +18,8 @@
 #include "ai_alife_templates.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "ai_alife_predicates.h"
+#include "ai_space.h"
+#include "ai_primary_funcs.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
@@ -806,6 +808,13 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurNode					= u32(-1);
 	strcpy						(m_caKnownCustomers,"m_trader0000");
 	m_tpKnownCustomers.clear	();
+	m_tpALife					= 0;
+	m_cpEquipmentPreferences.resize(iFloor(getAI().m_pfEquipmentType->ffGetMaxResultValue()));
+	m_cpMainWeaponPreferences.resize(iFloor(getAI().m_pfMainWeaponType->ffGetMaxResultValue()));
+	for (int i=0, n=m_cpEquipmentPreferences.size(); i<n; i++)
+		m_cpEquipmentPreferences[i] = u8(::Random.randI(3));
+	for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
+		m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
