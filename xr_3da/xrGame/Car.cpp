@@ -105,7 +105,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	{
 		ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 		CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
-		PKinematics(Visual())->Calculate();
+		PKinematics(Visual())->CalculateBones	();
 		Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 		SetDefaultNetState				(po);
 		RestoreNetState					(po);
