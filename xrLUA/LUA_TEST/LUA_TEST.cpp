@@ -20,53 +20,174 @@ extern "C"
 #include <luabind\\luabind.hpp>
 #pragma warning(default:4244)
 
-class etest
-{
-public:
-	float	a;
-public:
-			etest	()			{}
-			etest	(float _a)	{ a=_a;		}
-	void	add		(float _b)	{ a+=_b;	}
-	void	msg		()			
-	{ 
-		printf("Hello from C++ :)\n");
-	}
-};
-std::ostream& operator<<(std::ostream& o, etest& v)		{	return o << v.a; }		// tostring
+using namespace luabind;
 
-void	cppf		(int x=0)
+void Log(LPCSTR S)
 {
-	printf			("CPPF: %d\n",x);
+	printf("%s",S);
 }
 
-void export2lua		(lua_State* L)
+namespace Game {
+	enum EWeatherType {
+		eWeatherTypeSun = u32(0),
+		eWeatherTypeClouds,
+		eWeatherTypeRain,
+		eWeatherTypeDummy = u32(-1),
+	};
+
+	u32 get_time()
+	{
+		static int	g_iCurrentTime = 0;
+		return		(g_iCurrentTime++);
+	}
+	
+	EWeatherType get_weather()
+	{
+		return(eWeatherTypeSun);
+	}
+
+	u32 get_psi_plant_deactivation_time()
+	{
+		static int	g_iCurrentTime = 0;
+		return		(g_iCurrentTime++);
+	}
+};
+
+//class _vector {
+//public:
+//
+//};
+//
+//class CItemObject {
+//public:
+//	Active();
+//	Visible(); // only for NPC
+//	Condition();
+//	get_parent();
+//	get_mass();
+//	get_cost();
+//	position();
+//};
+//
+//class CAliveObject {
+//public:
+//	rank();
+//	health();
+//	activeweapon();
+//	equipment();
+//	asleep();
+//	zombied();
+//	checkifobjectvisible();
+//
+//};
+//
+int ifSuspendThread(lua_State *tpLuaVirtualMachine)
 {
-	using namespace luabind;
-	open			(L);
+	return lua_yield(tpLuaVirtualMachine, lua_gettop(tpLuaVirtualMachine));
+}
 
-	function		(L,"cppf",cppf);
+void export2lua		(lua_State *tpLuaVirtualMachine)
+{
+	open			(tpLuaVirtualMachine);
+	
+	module(tpLuaVirtualMachine,"Game")
+	[
+		// declarations
+		def("get_time",							Game::get_time)
+//		def("get_surge_time",					Game::get_surge_time),
+//		def("get_object_by_name",				Game::get_object_by_name),
+//		
+//		namespace_("Level")
+//		[
+//			// declarations
+//			def("get_weather",					Level::get_weather)
+//			def("get_object_by_name",			Level::get_object_by_name),
+//		]
+//
+	];
 
-	class_<etest>	(L,"etest")
-		.def		(constructor<>())
-		.def		(constructor<float>())
-		.def		("add",&etest::add)
-		.def		("msg",&etest::msg)
-		.def		(tostring(self))
-		;
+//	module(tpLuaVirtualMachine)
+//	[
+//		class_<CScriptObject>("CGameObject")
+//			.def(),
+//	];
+//	
+//
+	module(tpLuaVirtualMachine)
+	[
+		class_<Fvector >("Fvector")
+		.def_readwrite("x", &Fvector::x)
+		.def_readwrite("y", &Fvector::y)
+		.def_readwrite("z", &Fvector::z)
+		.def(constructor<>())
+		.def("set",							(void (Fvector::*)(float,float,float))(Fvector::set))
+		.def("set",							(void (Fvector::*)(const Fvector &))(Fvector::set))
+		.def("add",							(void (Fvector::*)(float))(Fvector::add))
+		.def("add",							(void (Fvector::*)(const Fvector &))(Fvector::add))
+		.def("add",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::add))
+		.def("add",							(void (Fvector::*)(const Fvector &, float))(Fvector::add))
+		.def("sub",							(void (Fvector::*)(float))(Fvector::sub))
+		.def("sub",							(void (Fvector::*)(const Fvector &))(Fvector::sub))
+		.def("sub",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::sub))
+		.def("sub",							(void (Fvector::*)(const Fvector &, float))(Fvector::sub))
+		.def("mul",							(void (Fvector::*)(float))(Fvector::mul))
+		.def("mul",							(void (Fvector::*)(const Fvector &))(Fvector::mul))
+		.def("mul",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::mul))
+		.def("mul",							(void (Fvector::*)(const Fvector &, float))(Fvector::mul))
+		.def("div",							(void (Fvector::*)(float))(Fvector::div))
+		.def("div",							(void (Fvector::*)(const Fvector &))(Fvector::div))
+		.def("div",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::div))
+		.def("div",							(void (Fvector::*)(const Fvector &, float))(Fvector::div))
+		.def("invert",						(void (Fvector::*)())(Fvector::invert))
+		.def("invert",						(void (Fvector::*)(const Fvector &))(Fvector::invert))
+		.def("min",							(void (Fvector::*)(const Fvector &))(Fvector::min))
+		.def("min",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::min))
+		.def("max",							(void (Fvector::*)(const Fvector &))(Fvector::max))
+		.def("max",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::max))
+		.def("abs",							&Fvector::abs)
+		.def("similar",						&Fvector::similar)
+		.def("set_length",					&Fvector::set_length)
+		.def("align",						&Fvector::align)
+		.def("squeeze",						&Fvector::squeeze)
+		.def("clamp",						(void (Fvector::*)(const Fvector &))(Fvector::clamp))
+		.def("clamp",						(void (Fvector::*)(const Fvector &, const Fvector))(Fvector::clamp))
+		.def("inertion",					&Fvector::inertion)
+		.def("average",						(void (Fvector::*)(const Fvector &))(Fvector::average))
+		.def("average",						(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::average))
+		.def("lerp",						&Fvector::lerp)
+		.def("mad",							(void (Fvector::*)(const Fvector &, float))(Fvector::mad))
+		.def("mad",							(void (Fvector::*)(const Fvector &, const Fvector &, float))(Fvector::mad))
+		.def("mad",							(void (Fvector::*)(const Fvector &, const Fvector &))(Fvector::mad))
+		.def("mad",							(void (Fvector::*)(const Fvector &, const Fvector &, const Fvector &))(Fvector::mad))
+		.def("square_magnitude",			&Fvector::square_magnitude)
+		.def("magnitude",					&Fvector::magnitude)
+		.def("normalize",					(float (Fvector::*)())(Fvector::normalize))
+		.def("normalize",					(void (Fvector::*)(const Fvector &))(Fvector::normalize))
+		.def("normalize_safe",				(void (Fvector::*)())(Fvector::normalize_safe))
+		.def("normalize_safe",				(void (Fvector::*)(const Fvector &))(Fvector::normalize_safe))
+		.def("random_dir",					(void (Fvector::*)(CRandom &))(Fvector::random_dir))
+		.def("random_dir",					(void (Fvector::*)(const Fvector &, float, CRandom &))(Fvector::random_dir))
+		.def("random_point",				(void (Fvector::*)(const Fvector &, CRandom &))(Fvector::random_point))
+		.def("random_point",				(void (Fvector::*)(float, CRandom &))(Fvector::random_point))
+		.def("dotproduct",					&Fvector::dotproduct)
+		.def("crossproduct",				&Fvector::crossproduct)
+		.def("distance_to_xz",				&Fvector::distance_to_xz)
+		.def("distance_to_sqr",				&Fvector::distance_to_sqr)
+		.def("distance_to",					&Fvector::distance_to)
+		//			.def("from_bary",					(void (Fvector::*)(const Fvector &, const Fvector &, const Fvector &, float, float, float))(Fvector::from_bary))
+		.def("from_bary",					(void (Fvector::*)(const Fvector &, const Fvector &, const Fvector &, const Fvector &))(Fvector::from_bary))
+		//			.def("from_bary4",					&Fvector::from_bary4)
+		.def("mknormal_non_normalized",		&Fvector::mknormal_non_normalized)
+		.def("mknormal",					&Fvector::mknormal)
+		.def("setHP",						&Fvector::setHP)
+		.def("getHP",						&Fvector::getHP)
+		.def("reflect",						&Fvector::reflect)
+		.def("slide",						&Fvector::slide)
+		.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis)
+	];
 
-	class_<Fvector>	(L, "vector")
-		.def		(constructor<>())
-		.def("set", ( void (Fvector::*) (float,float,float) )	&Fvector::set)	// overloads should specify type
-		.def("set", ( void (Fvector::*) (const Fvector&) )		&Fvector::set)	// overloads should specify type
-		/*
-		.def("add", &Fvector::add)
-		.def("sub", &Fvector::sub)
-		.def("mul", &Fvector::mul)
-		.def("div", &Fvector::div)
-		.def("normalize", &Fvector::normalize)
-		*/
-		;
+	lua_register	(tpLuaVirtualMachine,	"wait",				ifSuspendThread);
+	function		(tpLuaVirtualMachine,"log",(void (*)(LPCSTR))(Log));
 }
 
 // main
@@ -87,17 +208,9 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	export2lua		(luaVM);
 
 	// do some stuff
-	lua_dofile						(luaVM, "cf.lua");
+	lua_dofile		(luaVM, "x:\\test1.lua");
 
-//	try 
-//	{
-//		luabind::call_function<void>	(luaVM, "a_lua_function");
-//	} catch(luabind::error& e)
-//	{
-//		lua_State*	L	= e.state();
-//		printf			("%s",lua_tostring(L, 0));
-//	}
-
+	// close lua
 	lua_close		(luaVM);
 	return 0;
 }

@@ -292,6 +292,7 @@ void game_sv_GameState::Create					(LPSTR &options)
 	R_ASSERT					(l_tpIniFile);
 	if (l_tpIniFile->r_string(caSection,"script"))
 		m_tpScriptProcessor		= xr_new<CScriptProcessor>("Game",l_tpIniFile->r_string(caSection,"script"));
+	xr_delete					(l_tpIniFile);
 }
 
 void				game_sv_GameState::assign_RP				(CSE_Abstract* E)
