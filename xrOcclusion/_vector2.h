@@ -85,6 +85,6 @@ typedef _vector2<double>	Dvector2;
 typedef _vector2<int>		Ivector2;
 
 template <class T>
-BOOL	_valid			(_vector2<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y);	}
+BOOL	_valid			(const _vector2<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y);	}
 
 #endif

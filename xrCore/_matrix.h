@@ -547,7 +547,7 @@ typedef		_matrix<float>	Fmatrix;
 typedef		_matrix<double>	Dmatrix;
 
 template <class T>
-BOOL	_valid			(_matrix<T>& m)		
+BOOL	_valid			(const _matrix<T>& m)		
 { 
 	return 
 		_valid(m.i) && _valid(m._14_)	&& 

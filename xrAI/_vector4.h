@@ -56,6 +56,6 @@ typedef							_vector4<s32>		Ivector4;
 #endif
 
 template <class T>
-BOOL	_valid			(_vector4<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y) && _valid((T)v.z) && _valid((T)v.w);	}
+BOOL	_valid			(const _vector4<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y) && _valid((T)v.z) && _valid((T)v.w);	}
 
 #endif

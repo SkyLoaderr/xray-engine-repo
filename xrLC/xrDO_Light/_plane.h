@@ -130,6 +130,6 @@ typedef _plane<float>	Fplane;
 typedef _plane<double>	Dplane;
 
 template <class T>
-BOOL	_valid			(_plane<T>& s)		{ return _valid(s.n) && _valid(s.d);	}
+BOOL	_valid			(const _plane<T>& s)		{ return _valid(s.n) && _valid(s.d);	}
 
 #endif

@@ -155,6 +155,6 @@ typedef _cylinder<float>	Fcylinder;
 typedef _cylinder<double>	Dcylinder;
 
 template <class T>
-BOOL	_valid			(_cylinder<T>& c)	{ return _valid(c.m_center) && _valid(c.m_direction) && _valid(c.m_height) && _valid(c.m_height);	}
+BOOL	_valid			(const _cylinder<T>& c)	{ return _valid(c.m_center) && _valid(c.m_direction) && _valid(c.m_height) && _valid(c.m_height);	}
 
 #endif // _DEBUG
