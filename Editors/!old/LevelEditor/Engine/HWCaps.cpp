@@ -18,6 +18,25 @@ void CHWCaps::Update()
 	geometry.bMPS				= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	geometry.dwRegisters		= (caps.MaxVertexShaderConst);
 	geometry.dwClipPlanes		= _min(caps.MaxUserClipPlanes,15);
+
+	// ***************** PIXEL processing
+	raster_major				= u32 ( u32(u32(caps.PixelShaderVersion)&u32(0xf << 8ul))>>8 );
+	raster_minor				= u32 ( u32(u32(caps.PixelShaderVersion)&u32(0xf)) );
+	raster.dwStages				= caps.MaxSimultaneousTextures;
+	raster.bNonPow2				= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
+	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
+	raster.op_DP3				= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
+	raster.op_LERP				= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
+	raster.op_MAD				= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
+	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
+
+	// *******1********** Info
+	Msg							("* GPU shading: vs(%x/%d.%d), ps(%x/%d)",
+		caps.VertexShaderVersion,	geometry_major, geometry_minor,
+		caps.PixelShaderVersion,	raster_major,	raster_minor
+		);
+
+	// *******1********** Vertex cache
 	IDirect3DQuery9*	q_vc;
 	D3DDEVINFO_VCACHE	vc;
 	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
@@ -34,17 +53,6 @@ void CHWCaps::Update()
 		else					geometry.dwVertexCache	= 16;
 	}
 	Msg					("* GPU vertex cache: %s, %d",(1==vc.OptMethod)?"recognized":"unrecognized",u32(geometry.dwVertexCache));
-
-	// ***************** PIXEL processing
-	raster_major				= u32 ( u32(u32(caps.PixelShaderVersion)&u32(0xf << 8ul))>>8 );
-	raster_minor				= u32 ( u32(u32(caps.PixelShaderVersion)&u32(0xf)) );
-	raster.dwStages				= caps.MaxSimultaneousTextures;
-	raster.bNonPow2				= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
-	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
-	raster.op_DP3				= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
-	raster.op_LERP				= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;
-	raster.op_MAD				= (caps.TextureOpCaps & D3DTEXOPCAPS_MULTIPLYADD)!=0;
-	raster.op_reg_TEMP			= (caps.PrimitiveMiscCaps & D3DPMISCCAPS_TSSARGTEMP)!=0;
 
 	// *******1********** Compatibility : vertex shader
 	if (0==raster_major)		geometry_major=0;		// Disable VS if no PS
