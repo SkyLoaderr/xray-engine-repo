@@ -208,8 +208,10 @@ void CAI_Stalker::Load				(LPCSTR section)
 	// skeleton physics
 	m_pPhysics_support				->in_Load(section);
 
-	::Sound->create					(m_tpSoundStep[0],	TRUE,	"Actor\\StepL",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
-	::Sound->create					(m_tpSoundStep[1],	TRUE,	"Actor\\StepR",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
+	m_tpSoundStep[0].g_type			= SOUND_TYPE_MONSTER_WALKING_HUMAN;
+	m_tpSoundStep[1].g_type			= SOUND_TYPE_MONSTER_WALKING_HUMAN;
+//	::Sound->create					(m_tpSoundStep[0],	TRUE,	"Actor\\StepL",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
+//	::Sound->create					(m_tpSoundStep[1],	TRUE,	"Actor\\StepR",						SOUND_TYPE_MONSTER_WALKING_HUMAN);
 
 	g_vfLoadSounds					(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
 	g_vfLoadSounds					(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
@@ -524,8 +526,10 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				float k				= (eBodyStateCrouch == m_tBodyState) ? 0.75f : 1.f;
 				float tm			= (eMovementTypeRun == m_tMovementType) ? (PI/(k*10.f)) : (PI/(k*7.f));
 				m_fTimeToStep		= tm;
-				m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
-				m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
+				if (mtl_pair->StepSounds.size()>=2){
+					m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
+					m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
+				}
 			}
 			m_fTimeToStep -= dt;
 		}
