@@ -1215,6 +1215,22 @@ void PARandomVelocity::Transform(const Fmatrix& m)
 }
 //-------------------------------------------------------------------------------------------------
 
+void PARotateD::Execute(ParticleGroup *group)
+{
+	for(int i = 0; i < group->p_count; i++)
+	{
+		Particle &m = group->list[i];
+        if (m.flags.is(Particle::BIRTH))
+        {
+			gen_rotate.Generate(m.rot);
+        }
+	}
+}
+void PARotateD::Transform(const Fmatrix& m)
+{
+	gen_rotate.transform_dir(gen_rotateL,m);
+}
+//-------------------------------------------------------------------------------------------------
 
 #if 0
 // Produce coefficients of a velocity function v(t)=at^2 + bt + c
