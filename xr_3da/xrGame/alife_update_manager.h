@@ -44,6 +44,7 @@ public:
 			void		set_switch_online		(ALife::_OBJECT_ID id, bool value);
 			void		set_switch_offline		(ALife::_OBJECT_ID id, bool value);
 			void		set_interactive			(ALife::_OBJECT_ID id, bool value);
+			void		jump_to_level			(LPCSTR level_name) const;
 };
 
 #include "alife_update_manager_inline.h"

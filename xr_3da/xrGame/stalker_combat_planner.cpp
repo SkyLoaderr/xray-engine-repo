@@ -53,6 +53,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyFoundItemToKill	,xr_new<CStalkerPropertyEvaluatorFoundItemToKill>	());
 	add_evaluator			(eWorldPropertyFoundAmmo		,xr_new<CStalkerPropertyEvaluatorFoundAmmo>			());
 	add_evaluator			(eWorldPropertyReadyToKill		,xr_new<CStalkerPropertyEvaluatorReadyToKill>		());
+	add_evaluator			(eWorldPropertyPanic			,xr_new<CStalkerPropertyEvaluatorPanic>				());
 }
 
 void CStalkerCombatPlanner::add_actions			()
@@ -103,6 +104,7 @@ void CStalkerCombatPlanner::add_actions			()
 	add_condition			(action,eWorldPropertyEnemyAimed,	true);
 	add_condition			(action,eWorldPropertySafeToKill,	true);
 	add_condition			(action,eWorldPropertyFireEnough,	false);
+	add_condition			(action,eWorldPropertyPanic,		false);
 	add_effect				(action,eWorldPropertyEnemy,		false);
 	add_operator			(eWorldOperatorKillEnemyModerate,	action);
 

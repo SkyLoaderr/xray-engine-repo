@@ -24,8 +24,8 @@ void CStateManagerSnork::initialize()
 void CStateManagerSnork::execute()
 {
 	u32 state_id = u32(-1);
-	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
-	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
+//	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+//	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
 	state_id	= eStateRest;
 

@@ -178,4 +178,16 @@ public:
 	virtual _value_type	evaluate							();
 };
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorPanic
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerPropertyEvaluatorPanic : public CStalkerPropertyEvaluator {
+protected:
+	typedef CStalkerPropertyEvaluator inherited;
+
+public:
+	virtual _value_type	evaluate							();
+};
+
 #include "stalker_property_evaluators_inline.h"

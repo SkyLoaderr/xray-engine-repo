@@ -131,7 +131,7 @@ void CStalkerActionMakeItemKilling::execute	()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
+	m_object->CSightManager::action	(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
 	m_object->set_goal				(eObjectActionIdle);
 }
 
@@ -224,7 +224,6 @@ CStalkerActionRetreatFromEnemy::CStalkerActionRetreatFromEnemy	(CAI_Stalker *obj
 void CStalkerActionRetreatFromEnemy::initialize	()
 {
 	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
 }
 
 void CStalkerActionRetreatFromEnemy::finalize	()
@@ -249,21 +248,40 @@ void CStalkerActionRetreatFromEnemy::execute		()
 
 	CMemoryInfo						mem_object = m_object->memory(m_object->enemy());
 
-	if (!m_object->visible_now(m_object->enemy()))
-		return;
-
-	m_object->set_movement_type			(eMovementTypeStand);
+	m_object->set_movement_type			(eMovementTypeRun);
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_mental_state			(eMentalStateDanger);
-	m_object->setup						(CSightAction(m_object->enemy(),true));
-	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
+
+	m_object->m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
+	CCoverPoint							*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_far,CMovementRestrictor(m_object));
+	if (!point)
+		point							= ai().cover_manager().best_cover(m_object->Position(),50.f,*m_object->m_ce_far,CMovementRestrictor(m_object));
+
+	if (point) {
+		m_object->set_level_dest_vertex			(point->level_vertex_id());
+		m_object->set_desired_position			(&point->position());
+		m_object->CObjectHandler::set_goal		(eObjectActionIdle);
+		m_object->setup							(CSightAction(SightManager::eSightTypePathDirection,false));
+	}
+	else {
+		if (m_object->visible_now(m_object->enemy())) {
+			m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
+			m_object->setup						(CSightAction(m_object->enemy(),true));
+		}
+		else {
+			m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+			m_object->setup						(CSightAction(SightManager::eSightTypeCover,true));
+		}
+	}
+
+	m_object->play	(m_object->enemy()->human_being() ? eStalkerSoundPanicHuman : eStalkerSoundPanicMonster,0,0,10000);
 }
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return							(_edge_value_type(100));
+	return								(_edge_value_type(100));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -401,11 +419,6 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 }
 
-_edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return							(_edge_value_type(1));
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionKillEnemyModerate
 //////////////////////////////////////////////////////////////////////////
@@ -481,11 +494,6 @@ void CStalkerActionKillEnemyModerate::execute		()
 	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
-_edge_value_type CStalkerActionKillEnemyModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return							(_edge_value_type(1));
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionGetEnemySeenModerate
 //////////////////////////////////////////////////////////////////////////
@@ -551,7 +559,20 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 				m_object->set_level_dest_vertex	(level_vertex_id);
 				m_object->set_desired_position	(&desired_position);
 			}
-			m_object->set_movement_type		(eMovementTypeWalk);
+			if (m_object->Position().distance_to(mem_object.m_object_params.m_position) >= 2.f) {
+				if (m_object->Position().distance_to(mem_object.m_object_params.m_position) >= 10.f) {
+					m_object->set_body_state	(eBodyStateStand);
+					m_object->set_movement_type	(eMovementTypeRun);
+				}
+				else {
+					m_object->set_body_state	(eBodyStateStand);
+					m_object->set_movement_type	(eMovementTypeWalk);
+				}
+			}
+			else {
+				m_object->set_body_state	(eBodyStateCrouch);
+				m_object->set_movement_type	(eMovementTypeRun);
+			}
 			if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <= .1f)
 				m_object->CMemoryManager::enable(m_object->enemy(),false);
 		}
@@ -567,6 +588,20 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 				m_object->set_desired_position	(&point->position());
 				if (!m_object->Position().similar(point->position(),.1f))
 					m_start_standing_time	= Level().timeServer();
+				if (m_object->Position().distance_to(point->position()) >= 2.f) {
+					if (m_object->Position().distance_to(point->position()) >= 10.f) {
+						m_object->set_body_state	(eBodyStateStand);
+						m_object->set_movement_type	(eMovementTypeRun);
+					}
+					else {
+						m_object->set_body_state	(eBodyStateStand);
+						m_object->set_movement_type	(eMovementTypeWalk);
+					}
+				}
+				else {
+					m_object->set_body_state	(eBodyStateCrouch);
+					m_object->set_movement_type	(eMovementTypeRun);
+				}
 			}
 			else
 				m_object->set_movement_type	(eMovementTypeStand);
@@ -577,14 +612,6 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	if (m_object->Position().distance_to(mem_object.m_self_params.m_position) >= 2.f) {
-		m_object->set_body_state	(eBodyStateStand);
-		m_object->set_movement_type		(eMovementTypeWalk);
-	}
-	else {
-		m_object->set_body_state	(eBodyStateCrouch);
-		m_object->set_movement_type	(eMovementTypeRun);
-	}
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(CSightAction(SightManager::eSightTypePosition,mem_object.m_object_params.m_position,true));
@@ -599,11 +626,6 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 		if ((mem_object.m_object_params.m_level_vertex_id == m_object->level_vertex_id()) || 
 			 (m_object->Position().distance_to_xz(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id)) < ai().level_graph().header().cell_size() * 1.5f))
 				m_object->CMemoryManager::enable	(m_object->enemy(),false);
-}
-
-_edge_value_type CStalkerActionGetEnemySeenModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return							(_edge_value_type(1));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -684,11 +706,6 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
-_edge_value_type CStalkerActionKillEnemyLostModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return							(_edge_value_type(1));
-}
-
 //////////////////////////////////////////////////////////////////////////
 // CStalkerActionTakeCover
 //////////////////////////////////////////////////////////////////////////
@@ -756,9 +773,4 @@ void CStalkerActionTakeCover::execute	()
 		m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 	else
 		m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
-}
-
-_edge_value_type CStalkerActionTakeCover::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
-{
-	return							(_edge_value_type(1));
 }

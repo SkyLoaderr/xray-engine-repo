@@ -11,6 +11,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 #include "script_game_object.h"
+#include "ai/ai_monsters_misc.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -168,3 +169,12 @@ _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 	return				(m_object->inside_anomaly());
 }
 
+//////////////////////////////////////////////////////////////////////////
+// CStalkerPropertyEvaluatorPanic
+//////////////////////////////////////////////////////////////////////////
+
+_value_type CStalkerPropertyEvaluatorPanic::evaluate	()
+{
+	u32					result = dwfChooseAction(2000,0.3f,0.3f,0.3f,0.3f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
+	return				(result > 2);
+}

@@ -65,6 +65,7 @@ public:
 	typedef SObstaclesLightCoverEnemy<_dist_type,_index_type,_iteration_type>	CObstaclesLightCoverEnemy;
 	typedef SPosition<_dist_type,_index_type,_iteration_type>					CPositionParameters;
 	typedef SStraightLineParams<_dist_type,_index_type,_iteration_type>			CStraightLineParams;
+	typedef SGameLevel<_dist_type,_index_type,_iteration_type>					CGameLevelParams;
 
 protected:
 //	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;

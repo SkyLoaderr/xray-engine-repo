@@ -250,7 +250,7 @@ void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicat
 
 void game_cl_GameState::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	if(m_game_ui_custom->MainInputReceiver() != NULL) return;
+	if (m_game_ui_custom->MainInputReceiver() != NULL) return;
 
 	R_ASSERT( !pDialog->IsShown() );
 	R_ASSERT( m_game_ui_custom->MainInputReceiver() == NULL );

@@ -106,6 +106,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_backup"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskBackup),			eStalkerSoundBackup,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),		100, SOUND_TYPE_MONSTER_TALKING,	3, u32(eStalkerSoundMaskAttack),			eStalkerSoundAttack,			head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_friendly_fire"),100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eStalkerSoundMaskInjuringByFriend),	eStalkerSoundInjuringByFriend,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_human"),	100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicHuman),		eStalkerSoundPanicHuman,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_panic_monster"),100, SOUND_TYPE_MONSTER_TALKING,	2, u32(eStalkerSoundMaskPanicMonster),		eStalkerSoundPanicMonster,		head_bone_name);
 }
 
 void CAI_Stalker::Die				()

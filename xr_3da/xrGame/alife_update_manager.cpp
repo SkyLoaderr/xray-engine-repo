@@ -18,6 +18,7 @@
 #include "ef_storage.h"
 #include "xrserver.h"
 #include "level.h"
+#include "graph_engine.h"
 
 using namespace ALife;
 
@@ -305,4 +306,46 @@ void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 	object->m_alife_simulator		= 0;
 	object->interactive				(value);
 	register_object					(object,true);
+}
+
+void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const
+{
+	const CGameGraph::SLevel		&level = ai().game_graph().header().level(level_name);
+	xr_vector<u32>					m_temp_path;
+	CGraphEngine::CGameLevelParams	evaluator(level.id());
+	bool							failed = ai().graph_engine().search(ai().game_graph(),graph().actor()->m_tGraphID,ALife::_GRAPH_ID(-1),&m_temp_path,evaluator);
+	if (failed) {
+		Msg							("! Cannot build path via game graph from the current level to the level %s!",level_name);
+		float						min_dist = flt_max;
+		ALife::_GRAPH_ID			dest = ALife::_GRAPH_ID(-1);
+		Fvector						current = ai().game_graph().vertex(graph().actor()->m_tGraphID)->game_point();
+		ALife::_GRAPH_ID			n = ai().game_graph().header().vertex_count();
+		for (ALife::_GRAPH_ID i=0; i<n; ++i)
+			if (ai().game_graph().vertex(i)->level_id() == level.id()) {
+				float				distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(current);
+				if (distance < min_dist) {
+					min_dist		= distance;
+					dest			= i;
+				}
+			}
+		if (!ai().game_graph().vertex(dest)) {
+			Msg						("! There is no game vertices on the level %s, cannot jump to the specified level",level_name);
+			return;
+		}
+		m_temp_path.push_back		(dest);
+	}
+	else {
+		VERIFY						(ai().game_graph().vertex(m_temp_path.back()));
+	}
+	NET_Packet						net_packet;
+	net_packet.w_begin				(M_CHANGE_LEVEL);
+	net_packet.w					(&m_temp_path.back(),sizeof(m_temp_path.back()));
+	
+	u32								vertex_id = ai().game_graph().vertex(m_temp_path.back())->level_vertex_id();
+	net_packet.w					(&vertex_id,sizeof(vertex_id));
+	
+	Fvector							level_point = ai().game_graph().vertex(m_temp_path.back())->level_point();
+	net_packet.w					(&level_point,sizeof(level_point));
+	net_packet.w_vec3				(Fvector().set(0.f,0.f,0.f));
+	Level().Send					(net_packet,net_flags(TRUE));
 }

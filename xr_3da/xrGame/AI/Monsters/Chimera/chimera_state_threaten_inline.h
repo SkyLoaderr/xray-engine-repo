@@ -45,7 +45,7 @@ void CStateChimeraTestAbstract::execute()
 	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());		
 	
 	Fvector pos		= pA->Position();
-	u32		node	= u32(-1);
+//	u32		node	= u32(-1);
 	
 	//object->CMonsterMovement::set_target_point			(pos, node);
 	object->CMonsterMovement::set_retreat_from_point	(pos);

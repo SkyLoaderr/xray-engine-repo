@@ -920,6 +920,28 @@ struct CCC_ClearSmartCastStats : public IConsole_Command {
 };
 #endif
 
+struct CCC_JumpToLevel : public IConsole_Command {
+	CCC_JumpToLevel(LPCSTR N) : IConsole_Command(N)  {};
+
+	virtual void Execute(LPCSTR args) {
+		if (!ai().get_alife()) {
+			Msg				("! ALife simulator is needed to perform specified command!");
+			return;
+		}
+		string256		level;
+		sscanf(args,"%s",level);
+
+		CGameGraph::LEVEL_MAP::const_iterator	I = ai().game_graph().header().levels().begin();
+		CGameGraph::LEVEL_MAP::const_iterator	E = ai().game_graph().header().levels().end();
+		for ( ; I != E; ++I)
+			if (!xr_strcmp((*I).second.name(),level)) {
+				ai().alife().jump_to_level(level);
+				return;
+			}
+		Msg							("! There is no level \"%s\" in the game graph!",level);
+	}
+};
+
 void CCC_RegisterCommands()
 {
 	// game
@@ -942,6 +964,7 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ALifeSwitchDistance,"al_switch_distance"	);		// set switch distance
 	CMD1(CCC_ALifeProcessTime,	"al_process_time"		);		// set process time
 	CMD1(CCC_ALifeSwitchFactor,	"al_switch_factor"		);		// set switch factor
+	CMD1(CCC_JumpToLevel,		"jump_to_level"			);
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 	CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set min schedule
 	CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set max schedule

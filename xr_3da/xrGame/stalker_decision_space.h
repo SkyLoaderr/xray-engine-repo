@@ -41,6 +41,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyEnemyAimed,
 		eWorldPropertySafeToKill,
 		eWorldPropertyFireEnough,
+		eWorldPropertyPanic,
 
 		eWorldPropertySquadAction,
 		eWorldPropertySquadGoal,
