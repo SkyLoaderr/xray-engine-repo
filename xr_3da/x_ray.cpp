@@ -291,10 +291,10 @@ void CApplication::LoadBegin()
 {
 	ll_dwReference++;
 	if (1==ll_dwReference) {
-		ll_hGeom	= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-		ll_hLogo1	= Device.Shader.Create		("font","ui\\logo");
-		ll_hLogo2	= Device.Shader.Create		("font","ui\\ui_logo_nv");
-		ll_hLogo	= ll_hLogo2;
+		ll_hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+		ll_hLogo1.create("font","ui\\logo");
+		ll_hLogo2.create("font","ui\\ui_logo_nv");
+		ll_hLogo		= ll_hLogo2;
 	}
 }
 

@@ -10,9 +10,9 @@ void CDetail::Load		(IReader* S)
 {
 	// Shader
 	string256		fnT,fnS;
-	S->r_stringZ		(fnS);
-	S->r_stringZ		(fnT);
-	shader			= Device.Shader.Create(fnS,	fnT);
+	S->r_stringZ	(fnS);
+	S->r_stringZ	(fnT);
+	shader.create	(fnS,	fnT);
 
 	// Params
 	flags			= S->r_u32	();
@@ -75,7 +75,7 @@ void CDetail::Unload	()
 {
 	if (vertices)		{ xr_free(vertices);	vertices=0; }
 	if (indices)		{ xr_free(indices);	indices=0;	}
-	Device.Shader.Delete(shader);
+	shader.destroy		();
 }
 
 void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset)

@@ -19,17 +19,18 @@ protected:
     Fcolor			LightColor;
 	float			fGradientValue;
 
-	SGeometry*		hGeom;
+	ref_geom		hGeom;
 
 	void			SetGradient	(float fMaxRadius, float fOpacity, const char* tex_name);
     void			SetSource	(float fRadius, const char* tex_name);
     void			AddFlare	(float fRadius, float fOpacity, float fPosition, const char* tex_name);
 public:
-	struct SFlare{
+	struct SFlare
+	{
     	float		fOpacity;
 	    float		fRadius;
     	float		fPosition;
-		Shader*		hShader;
+		ref_shader	hShader;
         string128	texture;
     	SFlare()	{ZeroMemory(this,sizeof(SFlare));}
 	};
@@ -42,12 +43,14 @@ public:
     	flGradient 	= (1<<2)
     };
 	Flags32			m_Flags;
-    // source
+    
+	// source
     SFlare			m_Source;
-    // gradient
+    
+	// gradient
     SFlare			m_Gradient;
-    Shader*			CreateSourceShader(const char* tex_name);
-    Shader*			CreateFlareShader(const char* tex_name);
+    ref_shader		CreateSourceShader	(const char* tex_name);
+    ref_shader		CreateFlareShader	(const char* tex_name);
 
 	void			OnFrame		();
 public:

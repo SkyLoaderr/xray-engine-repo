@@ -51,7 +51,7 @@ public:
 
 	// Device dependance and debugging
 	void								dbgRender			();
-	Shader*								dbgGetShader		()	{ return sh_debug();	}
+	ref_shader							dbgGetShader		()	{ return sh_debug;	}
 };
 
 #endif //__XR_AREA_H__

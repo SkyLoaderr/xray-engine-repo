@@ -36,7 +36,7 @@ public:
 	float		s_min;
 	float		s_max;
 
-	Shader*		shader;
+	ref_shader	shader;
 	fvfVertexIn	*vertices;
 	u32			number_vertices;
 	u16			*indices;
