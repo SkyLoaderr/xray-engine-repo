@@ -34,8 +34,8 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALif
 void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromRegistries)
 {
 	tpALifeDynamicObject->m_bOnline	= true;
+
 	NET_Packet						tNetPacket;
-	
 	CSE_Abstract					*l_tpAbstract = dynamic_cast<CSE_Abstract*>(tpALifeDynamicObject);
 	m_tpServer->entity_Destroy		(l_tpAbstract);
 	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
@@ -69,9 +69,9 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			tpItem->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
 			tpItem->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			tpItem->m_bOnline		= true;
-			Device.Statistic.TEST3.Begin();
-			Engine.Sheduler.Slice();
-			Device.Statistic.TEST3.End();
+//			Device.Statistic.TEST3.Begin();
+//			Engine.Sheduler.Slice();
+//			Device.Statistic.TEST3.End();
 		}
 	}
 	
@@ -150,9 +150,9 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 					l_tpALifeMonsterAbstract->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
 			vfCreateOnlineObject	(J, false);
-			Device.Statistic.TEST3.Begin();
-			Engine.Sheduler.Slice();
-			Device.Statistic.TEST3.End();
+//			Device.Statistic.TEST3.Begin();
+//			Engine.Sheduler.Slice();
+//			Device.Statistic.TEST3.End();
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);

@@ -612,6 +612,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 	r_torso_current.yaw		= r_torso_target.yaw	= -E->o_Angle.y;
 	r_torso_current.pitch	= r_torso_target.pitch	= 0;
+	fEntityHealth			= E->fHealth;
 
 	R_ASSERT				(Visual()->Type==MT_SKELETON);
 

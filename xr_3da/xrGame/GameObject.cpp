@@ -152,7 +152,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 					if (!l_tpPhysicObject) {
 						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
 						if (!l_tpHangingLamp)
-							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z) + .5f;
 					}
 				}
 			}
@@ -174,7 +174,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 					if (!l_tpPhysicObject) {
 						CHangingLamp	*l_tpHangingLamp = dynamic_cast<CHangingLamp*>(this);
 						if (!l_tpHangingLamp) {
-							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+							Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z) + .5f;
 						}
 					}
 				}
@@ -184,6 +184,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
 			VERIFY						(O);
 			Position().set				(O->Position());
+			Position().y				+= .5f;
 			AI_NodeID					= O->AI_NodeID;
 			AI_Node						= O->AI_Node;
 		}

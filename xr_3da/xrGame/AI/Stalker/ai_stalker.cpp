@@ -238,7 +238,6 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	r_current.yaw = r_target.yaw = r_torso_current.yaw = r_torso_target.yaw	= angle_normalize_signed(-tpHuman->o_Angle.y);
 	r_torso_current.pitch			= r_torso_target.pitch	= 0;
 
-	fEntityHealth							= tpHuman->fHealth;
 	m_tCurGP						= tpHuman->m_tGraphID;
 	m_tNextGP						= tpHuman->m_tNextGraphID;
 	m_dwBornTime					= Level().timeServer();
