@@ -470,7 +470,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 	if (compute_path(start,dest,&m_path,m_startParams,finish_params,straight_line_index,straight_line_index_negative)) 
 	{
 		for(pathIt It = m_path.begin(); It!=m_path.end(); ++It)
-			(*It).position.y = 25.0f;
+			(*It).position.y = 5.0f;
 
 /*		float xz_dist	= start.position.distance_to(dest.position); 
 		float fullDist	= _sqrt( xz_dist*xz_dist+(destH-startH)*(destH-startH) );
@@ -488,7 +488,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 
 		u32 time	= Level().timeServer();
 		
-		if(!bClearOld){
+		if(!bClearOld&&oldSize){
 			std::advance(B, oldSize-1);
 			std::advance(E, oldSize-1);
 			time = (*B).time;
@@ -524,7 +524,7 @@ CHelicopterMovementManager::build_smooth_path (int startKeyIdx, bool bClearOld, 
 			{
 				float h,p;
 				dir.getHP(h,p);
-				b_xyz.y =  h ;
+				b_xyz.y =  angle_normalize_signed(h);
 				b_xyz.x =  m_velocity*PITCH_K ;
 				b_xyz.z =  computeB((*B).angularVelocity) ;
 				if (!(*B).clockwise )
@@ -652,4 +652,39 @@ CHelicopterMovementManager::init_build(	int startKeyIdx,
 	m_destParams.push_back				(STravelParamsIndex(0.f,PI_MUL_2,u32(-1)));
 
 	return								(true);
+}
+
+bool	
+CHelicopterMovementManager::build_attack_circle(	const Fvector& center_point, 
+													const Fvector& start_point, 
+													xr_vector<STravelPathPoint>& path)
+{
+	float radius = center_point.distance_to_xz(start_point);
+	float _ax,_ay;
+	Fvector().sub(start_point,center_point).normalize_safe().getHP(_ax, _ay);
+	
+	int Cnt = 100;
+	float k = PI_MUL_2/(float)(Cnt);
+
+	STravelPathPoint p;
+
+	for(int i=0; i<Cnt; ++i)
+	{
+		p.angularVelocity = PI_DIV_2;
+		p.position.setHP(_ax, _ay);
+		p.position.mul(radius);
+		p.position.add(center_point);
+		Fvector().sub(center_point,p.position).normalize_safe().getHP(p.xyz.y, _ay);
+//		p.xyz.y =  -p.xyz.y ;
+		p.xyz.x =  m_velocity*PITCH_K ;
+		p.xyz.z =  -computeB(p.angularVelocity) ;
+
+		p.position.y = start_point.y;
+		path.push_back(p);
+
+		_ax+=k;
+	}
+
+
+	return true;
 }

@@ -11,13 +11,19 @@ class CHelicopter :
 
 {
 	typedef CGameObject inherited;
+public:
+	enum EHeliState {
+		eIdleState					= u32(0),
+		eInitiatePatrolZone,
+		eMovingByPatrolZonePath,
+		eInitiateHunt,
+		eMovingToAttackTraj,
+		eInitiateAttackTraj,
+		eMovingByAttackTraj
+	}; 
 protected:
-	enum EHeilState{
-		eIdle		=u32(0),
-		ePatrolZone	=u32(1),
-		eHunt		=u32(2)
-	};
-	EHeilState						m_curState;
+	
+	EHeliState						m_curState;
 	ref_sound						m_engineSound;
 	CHelicopterMovementManager		m_movementMngr;
 	xr_map<s16,float>				m_hitBones;
@@ -33,6 +39,9 @@ protected:
 	ref_str							m_sAmmoType;
 	CCartridge						m_CurrentAmmo;
 
+	CObject*						m_destEnemy;
+	Fvector							m_destEnemyPos;
+
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
 	static void __stdcall	BoneMGunCallbackY		(CBoneInstance *B);
 
@@ -41,6 +50,9 @@ public:
 	CHelicopter();
 	virtual				~CHelicopter();
 	
+	CHelicopter::EHeliState			state();
+	void							setState(CHelicopter::EHeliState s);
+	Fvector&						lastEnemyPos(){return m_destEnemyPos;};
 	//CAI_ObjectLocation
 	void				init();
 	virtual	void		reinit();

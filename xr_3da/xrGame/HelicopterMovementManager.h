@@ -72,14 +72,15 @@ public:
 		SWayPoint(Fvector& p):position(p){direction.set(0.0f, 0.0f,0.0f);};
 	};
 
-	enum EMovementState {
+/*	enum EMovementState {
 		eIdleState		= u32(0),
 		eMovingByPath	= u32(1),
 		eMovingToEnemy	= u32(2)
 	}; 
-
+*/
 private:
-	EMovementState					m_curState;
+//	EMovementState					m_curState;
+	CHelicopter*					m_pHelicopter;
 
 	xr_vector<STravelPathPoint>		m_path;
 	xr_vector<STravelParamsIndex>	m_startParams;
@@ -124,7 +125,7 @@ protected:
 	Fvector							m_lastXYZ;
 
 
-	CHelicopter*					m_pHelicopter;
+	bool	build_attack_circle(const Fvector& center_point, const Fvector& start_point, xr_vector<STravelPathPoint>& path);
 	//smooth path
 	bool	init_build				(int startKeyIdx, STrajectoryPoint &start, STrajectoryPoint &dest, float& startH, float& destH, u32 &straight_line_index, u32 &straight_line_index_negative);
 	bool	compute_path			(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<STravelPathPoint> *m_tpTravelLine, const xr_vector<STravelParamsIndex> &m_start_params, const xr_vector<STravelParamsIndex> &m_dest_params, const u32 straight_line_index, const u32 straight_line_index_negative);
@@ -141,14 +142,18 @@ protected:
 	//end smooth path
 	float	computeB(float angVel);
 	bool	getPathPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
+	bool	getAttackPosition(u32 time, float fTimeDelta, const Fvector& enemy_pos, const Fvector& src, Fvector& pos, Fvector& dir);
 
-	void	addCurrentPosToTrajectory();
+	void	addCurrentPosToTrajectory(u32 time = 0);
+
+	CHelicopter*	helicopter(){return m_pHelicopter;};
 
 public:
 	CHelicopterMovementManager();
 	virtual ~CHelicopterMovementManager();
 	void		init(CHelicopter* heli);
 	void		deInit();
+	bool		failed() {return m_failed;};
 	void		shedule_Update(u32 timeDelta);
 	void		build_smooth_path(int startKeyIdx, bool bClearOld, bool bUseDestOrientation);
 	void		onFrame(Fmatrix& xform, float fTimeDelta);
@@ -157,8 +162,7 @@ public:
 	virtual void OnRender();
 #endif
 
-	void		stayIdle();
-	void		setKeyTrajectory(xr_vector<Fvector>& t, bool bFromCurrentPos=false);
+	void		setKeyTrajectory(xr_vector<Fvector>& t, bool bFromCurrentPos, bool bClearOld);
 	void		createLevelPatrolTrajectory(u32 keyCount, xr_vector<Fvector>& keyPoints);
 	Fvector		makeIntermediateKey(Fvector& start, Fvector& dest, float k);
 

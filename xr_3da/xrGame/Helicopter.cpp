@@ -11,13 +11,58 @@ CHelicopter::~CHelicopter()
 {
 }
 
+CHelicopter::EHeliState			
+CHelicopter::state()
+{
+	return m_curState;
+}
+
+void							
+CHelicopter::setState(CHelicopter::EHeliState s)
+{
+	m_curState = s;
+	
+	LPCSTR str;
+	switch(m_curState) {
+	case CHelicopter::eIdleState:
+		str = "eIdleState";
+		break;
+	case CHelicopter::eMovingByPatrolZonePath:
+		str = "eMovingByPatrolZonePath";
+		break;
+	case CHelicopter::eInitiateHunt:
+		str = "eInitiateHunt";
+		break;
+	case CHelicopter::eMovingToAttackTraj:
+		str = "eMovingToAttackTraj";
+		break;
+	case CHelicopter::eMovingByAttackTraj:
+		str = "eMovingByAttackTraj";
+		break;
+	case CHelicopter::eInitiatePatrolZone:
+		str = "eInitiatePatrolZone";
+		break;
+	case CHelicopter::eInitiateAttackTraj:
+		str = "eInitiateAttackTraj";
+		break;
+
+
+	default:
+		str = "unknown";
+		break;
+	};
+
+	Msg("---CHelicopter::state==(%s)", str);
+}
+
+
 //CAI_ObjectLocation
 void				
 CHelicopter::init()
 {
-	m_curState = eIdle;
-
+	m_destEnemy = 0;
 	m_movementMngr.init(this);
+	setState(CHelicopter::eInitiatePatrolZone);
 }
 
 void		
@@ -97,6 +142,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	setVisible			(true);
 	setEnabled			(true);
 
+
 	return				(TRUE);
 }
 
@@ -147,7 +193,6 @@ CHelicopter::UpdateCL()
 
 	if(Device.dwFrame == 1000)
 	{
-		FireStart();
 	}
 
 	if(Device.dwFrame == 10000)
@@ -163,6 +208,11 @@ CHelicopter::shedule_Update(u32	time_delta)
 	inherited::shedule_Update	(time_delta);
 	
 	m_movementMngr.shedule_Update(time_delta);
+
+	if(state()==CHelicopter::eMovingByAttackTraj)
+		FireStart();
+	else
+		FireEnd();
 }
 
 void		
@@ -174,7 +224,7 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-	if(hit_type != ALife::eHitTypeWound)
+	if(hit_type != ALife::eHitTypeFireWound)
 		return;
 
 	bonesIt It = m_hitBones.find(element);
@@ -200,5 +250,13 @@ CHelicopter::Hit(	float P,
 void					
 CHelicopter::doHunt(CObject* dest)
 {
-	m_movementMngr.buildHuntPath(dest->XFORM().c);
+	if( state()==CHelicopter::eInitiateHunt || 
+		state()==CHelicopter::eMovingToAttackTraj ||
+		state()==CHelicopter::eMovingByAttackTraj)
+		return;
+
+	m_destEnemy = dest;
+	m_destEnemyPos = dest->XFORM().c;
+	setState(CHelicopter::eInitiateHunt);
+//	m_movementMngr.buildHuntPath(dest->XFORM().c);
 }
