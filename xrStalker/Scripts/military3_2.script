@@ -15,22 +15,26 @@ function main ()
     wait (10000)
 
 	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
-
-	printf ("Set bazar start")
-	action (stalker2, anim ("sidya_boltaet_ 0"), 
-            sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true),
-            cond (cond.time_end, 10000000))
-	printf ("Set bazar end")
-
 	action (stalker3, anim ("spit_ 0"), cond (cond.time_end, 10000000))
+	action (stalker2, sound ("scripts\\rolik\\story1", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true),
+            anim ("stalker_3_1"), cond (cond.sound_end))
 
-	while true do
-		  if stalker1:action () == nil then
-			 reset_action (stalker1, military3_2.script_name ())
-			 action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
-		  end	
-		  wait () 
-	end
+    while stalker2:action () do wait () end
+    reset_action (stalker2, military3_2.script_name ())
+    action (stalker2, anim ("stalker_3_2"), cond (cond.time_end, time_infinite))
+    
+    wait (3000)
+    
+    update_action (stalker1, military3_2.script_name, 
+                   sound ("scripts\\rolik\\hm", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true))
+                   
+    wait (2000)
+    
+    update_action (stalker3, military3_2.script_name,                    
+                   sound ("scripts\\rolik\\crazy_man", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), true))
+
+
+    wait (time_infinite)                   
 
 	stalker1:script (false, military3_2.script_name ())
 	stalker2:script (false, military3_2.script_name ())
