@@ -132,8 +132,8 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 		base()->o_Position			= State.position;
 	}
 
-	VERIFY							(m_self);
-	m_self->m_flags.set				(CSE_ALifeObject::flSwitchOffline,TRUE);
+//	VERIFY							(m_self);
+//	m_self->m_flags.set				(CSE_ALifeObject::flSwitchOffline,TRUE);
 
 	if (!m_u16NumItems || (m_u16NumItems == FLAG_NO_POSITION))
 		return;
