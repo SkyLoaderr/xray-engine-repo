@@ -81,6 +81,7 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 			else
 				return &m_part_animations.A[body_state].m_torso.A[slot].A[(body_state == eBodyStateStandDamaged) ? 9 : 6].A[0];
 		}
+#if 0
 		case ObjectHandlerSpace::eWorldOperatorStrapping :
 			return &m_part_animations.A[body_state].m_torso.A[slot].A[11].A[0];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
@@ -89,6 +90,16 @@ const CAnimationPair *CStalkerAnimationManager::unknown_object_animation(u32 slo
 			return &m_part_animations.A[body_state].m_torso.A[slot].A[11].A[1];
 		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
 			return &m_part_animations.A[body_state].m_torso.A[slot].A[12].A[1];
+#else
+		case ObjectHandlerSpace::eWorldOperatorStrapping :
+			return &m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[0];
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping :
+			return &m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[0];
+		case ObjectHandlerSpace::eWorldOperatorStrapping2Idle :
+			return &m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[11].A[1];
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle :
+			return &m_part_animations.A[eBodyStateStand].m_torso.A[slot].A[12].A[1];
+#endif
 		default : {
 			if (eMentalStateFree == object()->mental_state()) {
 				//. hack
