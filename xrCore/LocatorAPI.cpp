@@ -275,7 +275,7 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy)
     if (!F) F		= r_open("$app_root$","fs.ltx"); 
 	R_ASSERT2		(F,"Can't open file 'fs.ltx'");
     // append all pathes    
-	string256		id, temp, root, add, def, capt;
+	string_path		id, temp, root, add, def, capt;
 	LPCSTR			lp_add, lp_def, lp_capt;
     string16		b_v;
 	while(!F->eof()){
@@ -452,11 +452,58 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	files_it	I 	= files.find(desc_f);
 	if (I == files.end()) return NULL;
 
-	// OK, analyse
 	const file& desc	= *I;
+	// OK, analyse
 	if (0xffffffff == desc.vfs)
 	{
-		// Normal file
+		// Normal file, 100% full path - check cache
+		// Release don't need this at all
+#ifdef	DEBUG
+		if (pathes.size())
+		{
+			LPCSTR		path_base		= get_path	("$server_root$")->m_Path;
+			u32			len_base		= xr_strlen	(path_base);
+			LPCSTR		path_file		= fname;
+			u32			len_file		= xr_strlen	(path_file);
+			if (len_file>len_base)		
+			{
+				if (0==memcmp(path_base,fname,len_base))	{
+					BOOL		bCopy	= FALSE;
+
+					string512	fname_in_cache	;
+					update_path	(fname_in_cache,"$cache$",path_file+len_base);
+					files_it	fit	= file_find(fname_in_cache);
+					if (fit!=files.end())	
+					{
+						// use
+						file&		fc	= *fit;
+						if ((fc.size_real == desc.size_real)&&(fc.modif==desc.modif))	{
+							// use
+						} else {
+							// copy & use
+							bCopy	= TRUE;
+						}
+					} else {
+						// copy & use
+						bCopy	= TRUE;
+					}
+
+					// copy if need
+					if (bCopy)			
+					{
+						IReader*	_src	= xr_new<CVirtualFileReader>	(fname);
+						IWriter*	_dst	= xr_new<CFileWriter>			(fname_in_cache);
+						_dst->w				(_src->pointer(),_src->length());
+						xr_delete			(_dst);
+						xr_delete			(_src);
+					}
+
+					// Use
+					strcpy	(fname,fname_in_cache);
+				}
+			}
+		}
+#endif
 		if (desc.size_real<256*1024)	R = xr_new<CFileReader>			(fname);
 		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
