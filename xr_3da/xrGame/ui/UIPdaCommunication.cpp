@@ -258,12 +258,12 @@ void CUIPdaCommunication::InitPdaDialog()
 	//инициализировать окошко с информацией о собеседнике
 	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner);
 
-	m_pActor  = smart_cast<CActor*>(Level().CurrentEntity());;
-	if(m_pActor)
-	{
-		CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(m_pContactInvOwner);
-		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(smart_cast<CEntityAlive*>(m_pActor)));
-	}
+//	m_pActor  = smart_cast<CActor*>(Level().CurrentEntity());;
+//	if(m_pActor)
+//	{
+//		CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(m_pContactInvOwner);
+//		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(smart_cast<CEntityAlive*>(m_pActor)));
+//	}
 
 	m_pOurDialogManager = smart_cast<CPhraseDialogManager*>(m_pOurInvOwner);
 	m_pOthersDialogManager = smart_cast<CPhraseDialogManager*>(m_pOthersInvOwner);

@@ -25,11 +25,15 @@
 #define MP_CHAR_ICONS	"ui\\ui_models_multiplayer"
 
 
-static ref_shader g_EquipmentIconsShader	= NULL;
-static ref_shader g_CharIconsShader			= NULL;
-static ref_shader g_MapIconsShader			= NULL;
-static ref_shader g_MPCharIconsShader		= NULL;
+static ref_shader	g_EquipmentIconsShader	= NULL;
+static ref_shader	g_CharIconsShader		= NULL;
+static ref_shader	g_MapIconsShader		= NULL;
+static ref_shader	g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic();
+const int			hugeValue				= 0xdddddddd;
+
+InventoryUtilities::Private::CharInfoStrings	*charInfoReputationStrings	= NULL;
+InventoryUtilities::Private::CharInfoStrings	*charInfoRankStrings		= NULL;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -41,8 +45,10 @@ void InventoryUtilities::DestroyShaders()
 	g_MPCharIconsShader.destroy();
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 //для надписей на иконках с оружием
+//////////////////////////////////////////////////////////////////////////
+
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
 	CInventoryItem* pIItem = (CInventoryItem*)(pItem->GetData());
@@ -61,7 +67,10 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
 //для надписей на иконках с едой
+//////////////////////////////////////////////////////////////////////////
+
 void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 {
 	//CEatableItem* pEatableItem = (CEatableItem*)(pItem->GetData());
@@ -82,7 +91,10 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 }
 
 
+//////////////////////////////////////////////////////////////////////////
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
+//////////////////////////////////////////////////////////////////////////
+
 bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
 	int item1_room = item1->GetGridWidth()*item1->GetGridHeight();
@@ -98,7 +110,7 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
    	return false;
 }
 
-//static bool ruck_room[1000];
+//////////////////////////////////////////////////////////////////////////
 
 bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 {
@@ -182,6 +194,8 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 {	
 	if(!g_EquipmentIconsShader)
@@ -192,6 +206,8 @@ ref_shader& InventoryUtilities::GetEquipmentIconsShader()
 	return g_EquipmentIconsShader;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 ref_shader& InventoryUtilities::GetCharIconsShader()
 {
 	if(!g_CharIconsShader)
@@ -201,6 +217,8 @@ ref_shader& InventoryUtilities::GetCharIconsShader()
 
 	return g_CharIconsShader;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 ref_shader&  InventoryUtilities::GetMapIconsShader()
 {
@@ -213,8 +231,9 @@ ref_shader&  InventoryUtilities::GetMapIconsShader()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-
 // shader на иконки персонажей в мультиплеере
+//////////////////////////////////////////////////////////////////////////
+
 ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 {
 	if(!g_MPCharIconsShader)
@@ -225,7 +244,7 @@ ref_shader&	InventoryUtilities::GetMPCharIconsShader()
 	return g_MPCharIconsShader;
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 
 void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 {
@@ -240,6 +259,8 @@ const shared_str InventoryUtilities::GetGameDateAsString(EDatePrecision datePrec
 {
 	return GetDateAsString(Level().GetGameTime(), datePrec, dateSeparator);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 const shared_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator)
 {
@@ -350,4 +371,96 @@ void InventoryUtilities::UpdateWeight(CUIStatic &wnd, bool withPrefix)
 	sprintf(buf, "%s%s%3.1f %s/%5.1f", prefix, cl, total, "%cUI_orange", max);
 	wnd.SetText(buf);
 	//	UIStaticWeight.ClipperOff();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK rankID)
+{
+	Private::InitCharacterInfoStrings();
+	R_ASSERT(Private::charInfoRankStrings);
+
+	Private::CharInfoStrings::const_iterator cit = Private::charInfoRankStrings->upper_bound(rankID);
+	R_ASSERT(Private::charInfoRankStrings->end() != cit);
+	return *cit->second;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION rankID)
+{
+	Private::InitCharacterInfoStrings();
+	R_ASSERT(Private::charInfoReputationStrings);
+
+	Private::CharInfoStrings::const_iterator cit = Private::charInfoReputationStrings->upper_bound(rankID);
+	R_ASSERT(Private::charInfoReputationStrings->end() != cit);
+	return *cit->second;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void InventoryUtilities::Private::InitCharacterInfoStrings()
+{
+	if (charInfoReputationStrings && charInfoRankStrings) return;
+
+	LPCSTR relationsLtxSection	= "game_relations";
+	LPCSTR ratingField			= "raiting";
+	LPCSTR reputationgField		= "reputation";
+
+	if (!charInfoRankStrings)
+	{
+		// Create string->Id DB
+		charInfoReputationStrings	= xr_new<CharInfoStrings>();
+		// Reputation
+		LoadStrings(charInfoReputationStrings, relationsLtxSection, reputationgField);
+	}
+
+	if (!charInfoReputationStrings)
+	{
+		// Create string->Id DB
+		charInfoRankStrings			= xr_new<CharInfoStrings>();
+		// Ranks
+		LoadStrings(charInfoRankStrings, relationsLtxSection, ratingField);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void InventoryUtilities::Private::ClearCharacterInfoStrings()
+{
+	xr_delete(charInfoReputationStrings);
+	xr_delete(charInfoRankStrings);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void InventoryUtilities::Private::LoadStrings(CharInfoStrings *container, LPCSTR section, LPCSTR field)
+{
+	R_ASSERT(container);
+
+	LPCSTR				cfgRecord	= pSettings->r_string(section, field);
+	u32					count		= _GetItemCount(cfgRecord);
+	string32			singleThreshold;
+	ZeroMemory			(singleThreshold, sizeof(singleThreshold));
+	int					upBoundThreshold	= 0;
+	CharInfoStringID	id;
+
+	for (u32 k = 0; k < count; k += 2)
+	{
+		_GetItem(cfgRecord, k, singleThreshold);
+		id.second = singleThreshold;
+
+		if (count == k + 1)
+		{
+			// Indicate greatest value
+			id.first = hugeValue;
+		}
+		else
+		{
+			_GetItem(cfgRecord, k + 1, singleThreshold);
+			sscanf(singleThreshold, "%i", upBoundThreshold);
+			id.first = upBoundThreshold;
+		}
+		container->insert(id);
+	}
 }

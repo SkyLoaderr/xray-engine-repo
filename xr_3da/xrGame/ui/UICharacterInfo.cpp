@@ -154,13 +154,14 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 {
 	VERIFY(pCharInfo);
 
-	string256 str;
-	sprintf(str, "%s", pCharInfo->Name());
-	UIName.SetText(str);
+	string256		str;
+	sprintf			(str, "%s", pCharInfo->Name());
+	UIName.SetText	(str);
+	CStringTable	stbl;
 
 	int offset;
 
-	sprintf(str, "%d", pCharInfo->Rank());
+	sprintf(str, "%s", *stbl(GetRankAsText(pCharInfo->Rank())));
 	if (m_bInfoAutoAdjust)
 	{
 		if (UIRankCaption.IsEnabled() && UIRankCaption.GetFont())
@@ -218,11 +219,12 @@ void CUICharacterInfo::InitCharacter(CInventoryOwner* pInvOwner)
 	VERIFY			(entity_alive);
 
 	CEntityAlive* ContactEA = smart_cast<CEntityAlive*>(pInvOwner);
-	SetRelation(ContactEA->tfGetRelationType(entity_alive));
+//	SetRelation(ContactEA->tfGetRelationType(entity_alive));
 }
 
 //////////////////////////////////////////////////////////////////////////
 
+/*
 void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 {
 	shared_str relation_str;
@@ -253,6 +255,7 @@ void  CUICharacterInfo::SetRelation(ALife::ERelationType relation)
 		UIRelation.SetWndRect(offset, UIRelation.GetWndRect().top, GetWndRect().right - offset - 10, UICommunity.GetWndRect().bottom - UIRelation.GetWndRect().top);
 	}
 }
+*/
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -23,7 +23,7 @@ public:
 	void		Init(int x, int y, int width, int height, const char* xml_name);
 	void		InitCharacter(CInventoryOwner* pInvOwner);
 	void		InitCharacter(CCharacterInfo* pCharInfo);
-	void		SetRelation(ALife::ERelationType relation);
+//	void		SetRelation(ALife::ERelationType relation);
 	
 	void		ResetAllStrings();
 
