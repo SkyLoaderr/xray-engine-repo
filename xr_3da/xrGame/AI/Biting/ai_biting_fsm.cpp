@@ -105,13 +105,14 @@ void CAI_Biting::ForwardStraight()
 		case eActionStateRun:	
 			vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
 									eMovementDirectionForward, eStateTypeDanger, eActionTypeRun);
-			vfSetParameters			(0,&EnemyPosition,true,0);
+			//vfSetParameters			(0,&EnemyPosition,false,&EnemyPosition);
+			vfSetParameters			(0,&EnemyPosition,false,0);
 			break;
 		case eActionStateStand:	
 			vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 									eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
 
-			vfSetParameters			(0,&EnemyPosition,true,0);
+			vfSetParameters			(0,&EnemyPosition,false,0);
 			break;
 	}	
 	

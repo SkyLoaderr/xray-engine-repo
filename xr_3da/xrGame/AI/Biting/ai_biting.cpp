@@ -75,6 +75,8 @@ void CAI_Biting::Init()
 	m_dwLastSoundNodeID				= 0;
 
 	ZeroMemory						(&m_tCorpse, sizeof(SEnemySelected));
+
+	AnimEx.Init						(eActionIdle,ePostureStand);
 }
 
 void CAI_Biting::Die()
@@ -252,3 +254,11 @@ void CAI_Biting::Exec_Movement		(float dt)
 //void CAI_Biting::HitSignal(float amount, Fvector &vLocalDir, CObject *who, s16 element)
 //{
 //}
+
+
+void CAI_Biting::UpdateCL()
+{
+	SetText();
+	inherited::UpdateCL();
+
+}

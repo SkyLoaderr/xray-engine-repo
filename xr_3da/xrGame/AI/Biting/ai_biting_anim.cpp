@@ -43,6 +43,7 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 {
 	CAI_Biting *tpBiting = (CAI_Biting*)B->CallbackParam;
 	tpBiting->m_tpCurrentGlobalAnimation = 0;
+	tpBiting->AnimEx.ChangeAnimation();
 	//bAnimCanBeNew = true;
 }
 

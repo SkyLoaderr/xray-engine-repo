@@ -93,6 +93,10 @@ public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual objQualifier*	GetQualifier					();
+
+
+
+	CAnim					AnimEx;
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
@@ -213,4 +217,8 @@ private:
 	u32						m_dwEatCorpseInterval;
 	// saved corpse
 	SEnemySelected			m_tCorpse;
+	
+	void					SetText();
+	virtual void			UpdateCL();
+
 };
