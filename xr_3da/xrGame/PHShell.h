@@ -17,6 +17,9 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
 	dSpaceID			    m_space;
+	bool					b_contacts_saved;		//e					//aux
+	dJointGroupID			m_saved_contacts;		//e					//bt
+
 	CPHShellSplitterHolder* m_spliter_holder;
 public:
 	Fmatrix					m_object_in_root;
@@ -33,7 +36,7 @@ public:
 	};
 
 	void					SetPhObjectInElements	();
-
+	void					EnableObject			();
 	virtual void			SetAirResistance		(dReal linear=default_k_l, dReal angular=default_k_w)
 	{
 		xr_vector<CPHElement*>::iterator i;
@@ -74,15 +77,18 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( dir, val);
+		EnableObject();
 	};
 	virtual void			applyForce				(float x,float y,float z)				
 	{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( x,y,z);
+		EnableObject();
 	};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyImpulse			( dir, val);
+		EnableObject();
 	};
 	virtual void			set_JointResistance		(float force)
 	{
@@ -123,6 +129,7 @@ public:
 
 	virtual	void				PhDataUpdate				(dReal step);
 	virtual	void				PhTune						(dReal step);
+
 	virtual void				InitContact					(dContact* c,bool &do_collide){};
 	virtual void				Freeze						();
 	virtual void				UnFreeze					();
@@ -153,25 +160,30 @@ public:
 			dSpaceSetCleanup (m_space, 0);
 		}
 	}
-	void PassEndElements(u16 from,u16 to,CPHShell *dest);
-	void PassEndJoints(u16 from,u16 to,CPHShell *dest);
-	void DeleteElement(u16 element);
-	void DeleteJoint(u16 joint);
-	u16  BoneIdToRootGeom(u16 id);
-	void SetTransform(Fmatrix m);
+				void PassEndElements					(u16 from,u16 to,CPHShell *dest)												;
+				void PassEndJoints						(u16 from,u16 to,CPHShell *dest)												;
+				void DeleteElement						(u16 element)																	;
+				void DeleteJoint						(u16 joint)																		;
+				u16  BoneIdToRootGeom					(u16 id)																		;
+				void SetTransform						(Fmatrix m)																		;
+protected:
+	virtual		void		get_spatial_params			()												;
+	virtual		dSpaceID	dSpace						()																	{return m_space;}
 private:
 	//breakable
-	void setEndElementSplitter	  ();
-	void setElementSplitter		  (u16 element_number,u16 splitter_position);
-	void setEndJointSplitter	  ();
-	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint);
-	void AddSplitter			  (CPHShellSplitter::EType type,u16 element,u16 joint,u16 position);
+	void setEndElementSplitter	  			()																							;
+	void setElementSplitter		  			(u16 element_number,u16 splitter_position)										;
+	void setEndJointSplitter	  			()																				;
+	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint)							;
+	void AddSplitter			  			(CPHShellSplitter::EType type,u16 element,u16 joint,u16 position)				;
 	/////////////////////////////////////////
-	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number);
-	void ZeroCallbacksRecursive(u16 id);
-	void SetCallbacksRecursive(u16 id,u16 element);
-	void ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask);
-	void SetJointRootGeom(CPhysicsElement* root_e,CPhysicsJoint* J);
+	void AddElementRecursive				(CPhysicsElement* root_e, u16 id,Fmatrix global_parent,u16 element_number)		;
+	void ZeroCallbacksRecursive				(u16 id)																		;
+	void SetCallbacksRecursive				(u16 id,u16 element)															;
+	void ResetCallbacksRecursive			(u16 id,u16 element,Flags64 &mask)												;
+	void SetJointRootGeom					(CPhysicsElement* root_e,CPhysicsJoint* J)										;
 
+	void DisableObject						()																				;
+	void ReanableObject						()																				;
 };
 #endif

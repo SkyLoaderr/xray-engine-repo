@@ -105,8 +105,8 @@ void CPHElement::add_Cylinder	(const Fcylinder& V)
 void CPHElement::			build	(){
 
 	m_body=dBodyCreate(phWorld);
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 	dBodyDisable(m_body);
 	//dBodySetFiniteRotationMode(m_body,1);
 	//dBodySetFiniteRotationAxis(m_body,0,0,0);
@@ -143,7 +143,7 @@ void CPHElement::RunSimulation()
 
 void CPHElement::destroy	()
 {
-	dJointGroupDestroy(m_saved_contacts);
+	//dJointGroupDestroy(m_saved_contacts);
 	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 
 
@@ -594,6 +594,7 @@ void CPHElement::PhDataUpdate(dReal step){
 void CPHElement::Enable(){
 
 	if(!bActive) return;
+	m_shell->EnableObject();
 	if(dBodyIsEnabled(m_body)) return;
 	dBodyEnable(m_body);
 }
@@ -604,14 +605,14 @@ void CPHElement::Disable(){
 //	return;
 	if(!dBodyIsEnabled(m_body)) return;
 	FillInterpolation();
-	if(!b_contacts_saved)
-	{
-		if(m_group)
-			SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
-		else 
-			SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
-		b_contacts_saved=true;
-	}
+	//if(!b_contacts_saved)
+	//{
+	//	if(m_group)
+	//		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
+	//	else 
+	//		SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
+	//	b_contacts_saved=true;
+	//}
 	//	dBodySetForce(m_body,0.f,0.f,0.f);
 	//	dBodySetTorque(m_body,0.f,0.f,0.f);
 	//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
@@ -622,8 +623,8 @@ void CPHElement::Disable(){
 
 void CPHElement::ReEnable(){
 
-	dJointGroupEmpty(m_saved_contacts);
-	b_contacts_saved=false;
+	//dJointGroupEmpty(m_saved_contacts);
+	//b_contacts_saved=false;
 
 }
 
@@ -934,6 +935,7 @@ void	CPHElement::applyForce(const Fvector& dir, float val)															//aux
 void	CPHElement::applyForce(float x,float y,float z)																//called anywhere ph state influent
 {
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	m_shell->EnableObject();
 	dBodyAddForce(m_body,x,y,z);
 }
 
@@ -1207,8 +1209,8 @@ void CPHElement::DeleteFracturesHolder()
 void CPHElement::CreateSimulBase()
 {
 	m_body=dBodyCreate(phWorld);
-	m_saved_contacts=dJointGroupCreate (0);
-	b_contacts_saved=false;
+	//m_saved_contacts=dJointGroupCreate (0);
+	//b_contacts_saved=false;
 	dBodyDisable(m_body);
 	if(m_geoms.size()>1)
 	{

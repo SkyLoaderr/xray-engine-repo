@@ -12,7 +12,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object)
 {
-	CPHObject::Activate();
+	CPHUpdateObject::Activate();
 
 	m_joint					=NULL;	
 	m_ajoint				=NULL;
@@ -89,7 +89,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u16 a_taget_element)
 {
 
-	CPHObject::Activate();
+	CPHUpdateObject::Activate();
 	m_joint					=NULL;	
 	m_ajoint				=NULL;
 	m_body					=NULL;

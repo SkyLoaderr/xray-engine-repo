@@ -4648,6 +4648,12 @@
 					RelativePath="ode_redefine.h">
 				</File>
 				<File
+					RelativePath=".\PHWorld.cpp">
+				</File>
+				<File
+					RelativePath=".\PHWorld.h">
+				</File>
+				<File
 					RelativePath="Physics.cpp">
 				</File>
 				<File
@@ -4755,6 +4761,16 @@
 							RelativePath=".\PHShellSplitter.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Island"
+						Filter="">
+						<File
+							RelativePath=".\PHIsland.cpp">
+						</File>
+						<File
+							RelativePath=".\PHIsland.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Disabling"
@@ -4796,6 +4812,12 @@
 				</File>
 				<File
 					RelativePath="PHInterpolation.h">
+				</File>
+				<File
+					RelativePath=".\PHItemList.h">
+				</File>
+				<File
+					RelativePath=".\SpaceUtils.h">
 				</File>
 			</Filter>
 			<Filter

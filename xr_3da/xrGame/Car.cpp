@@ -107,7 +107,7 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 	ParseDefinitions				();//parse ini filling in m_driving_wheels,m_steering_wheels,m_breaking_wheels
 	CreateSkeleton					();//creates m_pPhysicsShell & fill in bone_map
 	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
-	CPHObject::Activate             ();
+	CPHUpdateObject::Activate             ();
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 
@@ -133,7 +133,7 @@ void	CCar::net_Destroy()
 	m_exhausts.clear();
 	m_breaking_wheels.clear();
 	m_doors.clear();
-	CPHObject::Deactivate();
+	CPHUpdateObject::Deactivate();
 	CKinematics* pKinematics=PKinematics(Visual());
 
 	if(m_bone_steer!=BI_NONE)

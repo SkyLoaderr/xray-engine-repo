@@ -11,7 +11,7 @@ class CAI_Chimera : 	public CCustomMonster,
 						public CChimeraMovementManager,
 						public CStateInternal<CAI_Chimera>,
 						public CTelekinesis<CAI_Chimera>,
-						public CPHObject {
+						public CPHUpdateObject {
 
 public:
 	typedef CTelekinesis<CAI_Chimera>	TTelekinesis;

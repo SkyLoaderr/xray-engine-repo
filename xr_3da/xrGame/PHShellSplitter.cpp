@@ -435,14 +435,14 @@ void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 void CPHShellSplitterHolder::Activate()
 {
 	if(bActive) return;
-	CPHObject::Activate();
+	CPHUpdateObject::Activate();
 	bActive=true;
 }
 
 void CPHShellSplitterHolder::Deactivate()
 {
 	if(!bActive)return;
-	CPHObject::Deactivate();
+	CPHUpdateObject::Deactivate();
 	bActive=false;
 }
 void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)

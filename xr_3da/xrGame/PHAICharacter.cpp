@@ -17,7 +17,7 @@ bool CPHAICharacter::TryPosition(Fvector pos){
 	SetPosition(pos);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();
-	dBodyDisable(m_body);
+	Disable();
 	return true;
 }
 

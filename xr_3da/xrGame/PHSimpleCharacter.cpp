@@ -9,6 +9,7 @@
 #include "PHSimpleCharacter.h"
 #include "PHContactBodyEffector.h"
 #include "ui/uistatic.h"
+#include "SpaceUtils.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 static u16 lastMaterial;
@@ -23,7 +24,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	m_geom_shell=NULL;
 	m_wheel=NULL;
 
-	m_geom_group=NULL;
+	m_space=NULL;
 	m_wheel_transform=NULL;
 	m_shell_transform=NULL;
 
@@ -124,7 +125,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	m_radius=_min(sizes[0],sizes[2])/2.f;
 	m_cyl_hight=sizes[1]-2.f*m_radius;
 	if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
-	CPHObject::Activate();
+
 	b_exist=true;
 	const dReal k=1.20f;
 	dReal doun=m_radius*_sqrt(1.f-1.f/k/k)/2.f;
@@ -176,11 +177,11 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomCreateUserData(m_hat);
 
 
-	//dGeomUserDataSetPhObject(m_wheel_transform,(CPHObject*)this);
+	//dGeomUserDataSetPhObject(m_wheel_transform,(CPHUpdateObject*)this);
 	dGeomUserDataSetPhObject(m_wheel,(CPHObject*)this);
-	//dGeomUserDataSetPhObject(m_shell_transform,(CPHObject*)this);
+	//dGeomUserDataSetPhObject(m_shell_transform,(CPHUpdateObject*)this);
 	dGeomUserDataSetPhObject(m_geom_shell,(CPHObject*)this);
-	//dGeomUserDataSetPhObject(m_cap_transform,(CPHObject*)this);
+	//dGeomUserDataSetPhObject(m_cap_transform,(CPHUpdateObject*)this);
 
 	dGeomUserDataSetPhObject(m_hat,(CPHObject*)this);
 	//dGeomGetUserData(m_cap_transform)->friction=0.f;
@@ -191,12 +192,12 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dMassAdjust(&m,m_mass);
 	dBodySetMass(m_body,&m);
 
-	m_geom_group=dCreateGeomGroup(ph_world->GetSpace());
+	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
 	//dGeomGroupAdd(m_geom_group,m_wheel_transform);
-	dGeomGroupAdd(m_geom_group,m_wheel);
+	dSpaceAdd(m_space,m_wheel);
 
-	dGeomGroupAdd(m_geom_group,m_shell_transform);
-	dGeomGroupAdd(m_geom_group,m_hat_transform);
+	dSpaceAdd(m_space,m_shell_transform);
+	dSpaceAdd(m_space,m_hat_transform);
 	//dGeomGroupAdd(chRGeomGroup,chRCylinder);
 	m_body_interpolation.SetBody(m_body);
 
@@ -214,7 +215,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 
 
 	dGeomUserDataSetPhObject(m_cap,(CPHObject*)this);
-	dGeomGroupAdd(m_geom_group,m_cap_transform);
+	dSpaceAdd(m_space,m_cap_transform);
 	dGeomSetBody(m_cap_transform,m_body);
 	dGeomUserDataSetObjectContactCallback(m_cap,TestPathCallback);
 	if(m_phys_ref_object)
@@ -231,13 +232,15 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 		dGeomUserDataSetObjectContactCallback(m_wheel,m_object_contact_callback);
 		//dGeomUserDataSetObjectContactCallback(m_cap,m_object_contact_callback);
 	}
+	CPHObject::Activate();
+	spatial_register();
 }
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
 	//if(ph_world)
 	CPHObject::Deactivate();
-
+	spatial_unregister();
 
 
 	if(m_geom_shell){
@@ -278,9 +281,9 @@ void CPHSimpleCharacter::Destroy(){
 		dGeomDestroy(m_hat_transform);
 		m_hat_transform=NULL;
 	}
-	if(m_geom_group){
-		dGeomDestroy(m_geom_group);
-		m_geom_group=NULL;
+	if(m_space){
+		dSpaceDestroy(m_space);
+		m_space=NULL;
 	}
 
 	if(m_body) {
@@ -294,7 +297,8 @@ void CPHSimpleCharacter::Destroy(){
 void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 {
 	if(!b_exist) return;
-	if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	//if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	Enable();
 	b_lose_control=true;
 	b_external_impulse=true;
 	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
@@ -308,7 +312,7 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& force)
 void		CPHSimpleCharacter::ApplyForce(float x, float y, float z)
 {
 	if(!b_exist) return;
-	if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+	Enable();
 	dBodyAddForce(m_body,x,y,z);
 }
 
@@ -700,7 +704,7 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 
 	if(!dBodyIsEnabled(m_body))
 		if(!fsimilar(0.f,accel.magnitude()))
-			dBodyEnable(m_body);
+			Enable();
 	m_acceleration=accel;
 }
 
@@ -736,7 +740,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	dVector3 y={0.f,1.f,0.f};
 	dCROSS(sidedir,=,y,accel);
 
-	if(b_clamb_jump&&b_valide_wall_contact){
+	if(b_clamb_jump&&b_valide_wall_contact&&!b_at_wall){
 		dCROSS(fvdir,=,sidedir,m_wall_contact_normal);
 		dNormalize3(fvdir);
 		m_control_force[0]+=fvdir[0]*m.mass*20.f;
@@ -757,7 +761,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		 */
 		if(b_at_wall&&b_valide_wall_contact){
 
-			dReal press_to_ladder=world_gravity*m_mass*0.1f;
+			dReal press_to_ladder=world_gravity*m_mass*0.0f;
 			dReal proj=dDOT(accel,m_wall_contact_normal);
 			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_ladder);
 			//fvdir[1]=-proj;
@@ -1040,6 +1044,8 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
+	if(is_control&&bClimable)
+		c->surface.mu=0.f;
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && (bClimable||c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform);
 	if(tri_material->Flags.is(SGameMtl::flPassable))return;
@@ -1294,4 +1300,9 @@ void CPHSimpleCharacter::get_State(SPHNetState& state)
 void CPHSimpleCharacter::set_State(const SPHNetState& state)
 {
 	CPHCharacter::set_State (state);
+}
+
+void CPHSimpleCharacter::get_spatial_params()
+{
+	spatialParsFromDSpace(m_space,spatial.center,AABB,spatial.radius);
 }

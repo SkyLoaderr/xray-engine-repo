@@ -53,9 +53,9 @@ public:
 	virtual void		Freeze								();
 	virtual void		UnFreeze							();
 	virtual	dBodyID		get_body							()															{return m_body;}
-	virtual	void		Disable								()															{dBodyDisable(m_body);}																			
+	virtual	void		Disable								()															;																		
 	virtual	void		ReEnable							()															{;}																				
-			void		Enable								()															{if(m_body)dBodyEnable(m_body);}											//!!
+			void		Enable								()															;											//!!
 			bool		IsEnabled							()															{ if(!b_exist)return false; return !!dBodyIsEnabled(m_body);}
 			float		ContactVelocity						()															{ dReal ret= m_contact_velocity; m_contact_velocity=0; return ret;}			//!!
 

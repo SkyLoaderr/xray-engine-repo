@@ -19,16 +19,12 @@ class CEntityAction;
 class CCar : 
 	public CEntity, 
 	public CScriptMonster,
-	public CPHObject,
+	public CPHUpdateObject,
 	public CVehicleCustom
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
-	virtual void InitContact(dContact* /**c/**/,bool &/**do_collide/**/){};
-	virtual void StepFrameUpdate(dReal /**step/**/){};
-	virtual void Freeze		(){};
-	virtual void UnFreeze	(){};
 protected:
 	enum ECarCamType{
 		ectFirst	= 0,

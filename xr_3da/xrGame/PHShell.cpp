@@ -7,9 +7,15 @@
 #include "PHShellSplitter.h"
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
+#include "SpaceUtils.h"
+//#pragma warning(disable:4995)
+//#pragma warning(disable:4267)
+//#include "../ode/src/collision_kernel.h"
+//#pragma warning(default:4995)
+//#pragma warning(default:4267)
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
-//#include "../ode/src/collision_kernel.h"
+
 //#include <../ode/src/joint.h>
 //#include <../ode/src/objects.h>
 
@@ -17,7 +23,6 @@
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"
-
 #include "PHElement.h"
 #include "PHShell.h"
 
@@ -45,7 +50,32 @@ CPHShell::CPHShell()
 	m_spliter_holder=NULL;
 	m_object_in_root.identity();
 }
-void CPHShell::setDensity(float M){
+
+void CPHShell::EnableObject()
+{
+	CPHObject::Activate();
+	if(m_spliter_holder)m_spliter_holder->Activate();
+}
+void CPHShell::DisableObject()
+{
+	if(!b_contacts_saved) 
+	{
+		//SaveContacts(m_saved_contacts);
+		b_contacts_saved=true;
+	}
+	
+	CPHObject::Deactivate();
+	if(m_spliter_holder)m_spliter_holder->Deactivate();
+}
+
+void CPHShell::ReanableObject()
+{
+	//if(b_contacts_saved) dJointGroupEmpty(m_saved_contacts);
+	b_contacts_saved=false;
+}
+
+void CPHShell::setDensity(float M)
+{
 	ELEMENT_I i;
 	//float volume=0.f;
 	//for(i=elements.begin();elements.end() != i;++i)	volume+=(*i)->get_volume();
@@ -85,6 +115,12 @@ float CPHShell::getMass()
 
 	return m;
 }
+
+void  CPHShell::get_spatial_params()
+{
+	spatialParsFromDSpace(m_space,spatial.center,AABB,spatial.radius);
+}
+
 float CPHShell::getVolume()
 {
 	float v=0.f;
@@ -95,6 +131,7 @@ float CPHShell::getVolume()
 
 	return v;
 }
+
 float	CPHShell::getDensity()
 {
 	return getMass()/getVolume();
@@ -107,8 +144,15 @@ float	CPHShell::getDensity()
 void CPHShell::PhDataUpdate(dReal step){
 
 	ELEMENT_I i=elements.begin(),e=elements.end();
+	bool disable=true;
 	for(; e!=i ;++i)
+	{
 		(*i)->PhDataUpdate(step);
+		dBodyID body=(*i)->get_body();
+		if(body)disable=disable&&(!dBodyIsEnabled(body));
+	}
+	if(disable) DisableObject();
+	else		ReanableObject();
 }
 
 
@@ -145,6 +189,7 @@ void	CPHShell::UnFreeze()
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);
+	EnableObject();
 }
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id){
@@ -153,7 +198,7 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(id);
 	if(!instance.Callback_Param) return;
 	((CPhysicsElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, id);
-
+	EnableObject();
 }
 
 CPhysicsElement* CPHShell::get_Element		(ref_str bone_name)
@@ -222,9 +267,10 @@ void CPHShell::Enable()
 
 	ELEMENT_I i,e;
 	i=elements.begin(); e=elements.end();
-	if(dBodyIsEnabled((*i)->get_body())) return;
+	//if(dBodyIsEnabled((*i)->get_body())) return;
 	for( ;i!=e;++i)
 		(*i)->Enable();
+	EnableObject();
 }
 
 void CPHShell::set_PhysicsRefObject	 (CPhysicsRefObject* ref_object)
@@ -303,6 +349,7 @@ void	CPHShell::set_LinearVel(const Fvector& velocity)
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(;i!=e;i++) (*i)->set_LinearVel(velocity);
 }
+
 void	CPHShell::set_AngularVel(const Fvector& velocity)
 {
 	ELEMENT_I i=elements.begin(),e=elements.end();

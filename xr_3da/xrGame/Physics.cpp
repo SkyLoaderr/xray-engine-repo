@@ -54,7 +54,7 @@ int			phIterationCycle= 5;
 static int IterationCycleI= 0;
 dWorldID	phWorld;
 /////////////////////////////////////
-static dJointGroupID ContactGroup;
+dJointGroupID ContactGroup;
 CBlockAllocator<dJointFeedback,128>			ContactFeedBacks;
 CBlockAllocator<CPHContactBodyEffector,128> ContactEffectors;
 ///////////////////////////////////////////////////////////
@@ -88,268 +88,25 @@ IC void add_contact_body_effector(dBodyID body,dContact& c,float flotation)
 
 
 
-static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
-
-
-//////////////////////////////////////////////////////////////
-//////////////CPHMesh///////////////////////////////////////////
-///////////////////////////////////////////////////////////
-
-void CPHMesh ::Create(dSpaceID space, dWorldID world){
-	Geom = dCreateTriList(space, 0, 0);
-
-}
-/////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////
-
-void CPHMesh ::Destroy(){
-	dGeomDestroy(Geom);
-	dTriListClass=-1;
-}
 
 
 
-////////////////////////////////////////////////////////////////////////////
-///////////CPHWorld/////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-//#define PH_PLAIN
-#ifdef PH_PLAIN
-dGeomID plane;
-#endif
-void CPHWorld::Render()
-{
-	if (!bDebug)	return;
-
-}
-CPHWorld::CPHWorld()
-{
-	disable_count=0;
-	m_frame_time=0.f;
-	m_steps_num=0;
-	m_frame_sum=0.f;
-	m_delay=0; 
-	m_previous_delay=0;
-	m_reduce_delay=0;
-	m_update_delay_count=0;
-	b_world_freezed=false;
-}
-void CPHWorld::Create()
-{
-	if (psDeviceFlags.test(mtPhysics))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
-	else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
-
-	phWorld = dWorldCreate();
-	//Space = dHashSpaceCreate(0);
-
-	//dVector3 extensions={2048,256,2048};
-	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
-	Fvector level_size,level_center;
-	level_box				.	getsize		(level_size);
-	level_box				.	getcenter	(level_center);
-	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
-	dVector3 center			=	{level_center.x,0.f,level_center.z};
-	Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
-
-	dSpaceSetCleanup			(Space,0);
-#ifdef ODE_SLOW_SOLVER
-#else
-	dWorldSetAutoEnableDepthSF1(phWorld, 15);
-#endif
-	ContactGroup			= dJointGroupCreate(0);		
-	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
-	Mesh.Create				(Space,phWorld);
-	//Jeep.Create(Space,phWorld);//(Space,phWorld)
-	//Gun.Create(Space);
-#ifdef PH_PLAIN
-	plane=dCreatePlane(Space,0,1,0,0.3f);
-	//dGeomCreateUserData(plane);
-#endif
-
-	//const  dReal k_p=2400000.f;//550000.f;///1000000.f;
-	//const dReal k_d=200000.f;
-	dWorldSetERP(phWorld, ERP(world_spring,world_damping) );
-	dWorldSetCFM(phWorld, CFM(world_spring,world_damping));
-	//dWorldSetERP(phWorld,  0.2f);
-	//dWorldSetCFM(phWorld,  0.000001f);
-	disable_count=0;
-	//Jeep.DynamicData.CalculateData();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-
-void CPHWorld::Destroy(){
-	Mesh.Destroy();
-#ifdef PH_PLAIN
-	dGeomDestroy(plane);
-#endif
-	dJointGroupEmpty(ContactGroup);
-	dSpaceDestroy(Space);
-	dWorldDestroy(phWorld);
-	dCloseODE();
-	dCylinderClassUser=-1;
-
-	Device.seqFrameMT.Remove	(this);
-	Device.seqFrame.Remove		(this);
-}
-
-void CPHWorld::OnFrame()
-{
-	// Msg									("------------- physics: %d / %d",u32(Device.dwFrame),u32(m_steps_num));
-	Device.Statistic.Physics.Begin		();
-	FrameStep								(Device.fTimeDelta);
-	Device.Statistic.Physics.End		();
-}
-
-//////////////////////////////////////////////////////////////////////////////
-//static dReal frame_time=0.f;
-static u32 start_time=0;
-void CPHWorld::Step()
-{
-	//	u32 start_time=Device.dwTimeGlobal;
-	xr_list<CPHObject*>::iterator iter;
-
-	++disable_count;		
-	if(disable_count==dis_frames+1) disable_count=0;
-
-	++m_steps_num;
-	//double dif=m_frame_sum-Time();
-	//if(fabs(dif)>fixed_step) 
-	//	m_start_time+=dif;
-
-	//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
-	//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
-
-	//dWorldSetERP(phWorld,  0.8);
-	//dWorldSetCFM(phWorld,  0.00000001);
 
 
-
-	Device.Statistic.ph_collision.Begin	();
-	dSpaceCollide		(Space, 0, &NearCallback); 
-	Device.Statistic.ph_collision.End	();
-
-	//		ContactEffectors.for_each(SApplyBodyEffectorPred());
-
-	Device.Statistic.ph_core.Begin		();
-	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
-		(*iter)->PhTune(fixed_step);	
-
-#ifdef ODE_SLOW_SOLVER
-	dWorldStep		(phWorld,	fixed_step);
-#else
-	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
-
-	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
-#endif
-
-
-	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
-		(*iter)->PhDataUpdate(fixed_step);
-	dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
-	ContactFeedBacks.empty();
-	ContactEffectors.empty();
-	Device.Statistic.ph_core.End		();
-	if(physics_step_time_callback) 
-	{
-		physics_step_time_callback(start_time,start_time+u32(fixed_step*1000));	
-		start_time += u32(fixed_step*1000);
-	};
-
-
-	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
-	//			(*iter)->StepFrameUpdate(step);
-}
-
-u32 CPHWorld::CalcNumSteps (u32 dTime)
-{
-	u32 res = iFloor((float(dTime) / 1000 / fixed_step)+0.5f);
-	return res;
-};
-
-void CPHWorld::FrameStep(dReal step)
-{
-	VERIFY	(_valid(step));
-	step*=phTimefactor;
-	// compute contact joints and forces
-
-	//step+=astep;
-
-	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;
-	//const dReal k_d=400000.f;
-	u32 it_number;
-	float frame_time=m_frame_time;
-	frame_time+=step;
-	//m_frame_sum+=step;
-
-	if(!(frame_time<fixed_step))
-	{
-		it_number	=	iFloor	(frame_time/fixed_step);
-		frame_time	-=	it_number*fixed_step;
-		m_frame_time=frame_time;
-	}
-	else
-	{
-		m_frame_time=frame_time;
-		return;
-	}
-	/*
-	++m_update_delay_count;
-
-	if(m_update_delay_count==update_delay){
-	if(m_delay){
-	if(m_delay<m_previous_delay) --m_reduce_delay;
-	else 	++m_reduce_delay;
-	}
-	m_previous_delay=m_delay;
-	m_update_delay_count=0;
-	}
-
-	m_delay+=(it_number-m_reduce_delay-1);
-	*/
-	//for(UINT i=0;i<(m_reduce_delay+1);++i)
-	start_time = Device.dwTimeGlobal;// - u32(m_frame_time*1000);
-	for(UINT i=0; i<it_number;++i)	Step();
-}
-
-void CPHWorld::Freeze()
-{
-	R_ASSERT2(!b_world_freezed,"already freezed!!!");
-	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
-		e=	m_objects.end()	;
-
-	for(; e != iter;++iter)
-		(*iter)->Freeze();
-	b_world_freezed=true;
-}
-void CPHWorld::UnFreeze()
-{
-	R_ASSERT2(b_world_freezed,"is not freezed!!!");
-	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
-		e=	m_objects.end()	;
-	for(; e != iter;++iter)
-		(*iter)->UnFreeze();	
-	b_world_freezed=false;
-}
-bool CPHWorld::IsFreezed()
-{
-	return b_world_freezed;
-}
-
-IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
+IC static bool CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 {
 	const ULONG N = 800;
 	static dContact contacts[N];
-
+	bool	collided=false;
 	// get the contacts up to a maximum of N contacts
 	ULONG n;
-
+	
 	n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 
 	if(n>N-1)
 		n=N-1;
 	ULONG i;
-
+	
 
 	for(i = 0; i < n; ++i)
 	{
@@ -470,19 +227,29 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 			surface.mu=dInfinity;
 		if	(do_collide)
 		{
+			collided=true;
 			dJointID contact_joint	= dJointCreateContact(phWorld, jointGroup, &c);
 			dJointAttach			(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
 		}
 	}
+	return collided;
 }
-static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2)
+void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
+{	
+	if(CollideIntoGroup(o1,o2,ContactGroup) && obj2 &&!obj2->IsActive())obj2->EnableObject();
+}
+void CollideStatic(dGeomID o2)
 {
-	CollideIntoGroup(o1,o2,ContactGroup);
+	CollideIntoGroup(ph_world->GetMeshGeom(),o2,ContactGroup);
 }
 
+void SaveContactsStatic(dGeomID o2,dJointGroupID jointGroup)
+{
+	CollideIntoGroup(ph_world->GetMeshGeom(),o2,jointGroup);
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-void SaveContacts(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
+void SaveContacts(CPHObject* obj1,CPHObject* obj2,dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 {
 	CollideIntoGroup(o1,o2,jointGroup);
 }

@@ -4,7 +4,7 @@
 
 #include "phobject.h"
 
-class CPHCapture : public CPHObject
+class CPHCapture : public CPHUpdateObject
 {
 public:
 					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object);
@@ -63,9 +63,6 @@ static void object_contactCallbackFun(bool& do_colide,dContact& c);
 ///////////CPHObject/////////////////////////////
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step);
-	virtual void InitContact(dContact* /**c/**/,bool & /**do_collide/**/){};
-	virtual void StepFrameUpdate(dReal /**step/**/){};
-	virtual void Freeze		(){};
-	virtual void UnFreeze	(){};
+
 };
 #endif

@@ -40,13 +40,11 @@
 #include "mosquitobald.h"
 #include "mincer.h"
 #include "radioactivezone.h"
-
+#include "PhysicsCommon.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
-extern	int					phFPS;
-extern	int					phIterations;
-extern	float				phTimefactor;
+
 extern	int					lvInterp;
 extern	float				g_fMaxDesyncLen;
 extern	bool				g_bUnlimitedAmmo;

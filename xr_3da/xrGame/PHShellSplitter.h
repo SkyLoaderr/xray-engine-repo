@@ -26,7 +26,7 @@ private:
 	CPHShellSplitter();
 };
 
-class CPHShellSplitterHolder : public CPHObject			//call all Fractures and Breakable Joints Updates
+class CPHShellSplitterHolder : public CPHUpdateObject			//call all Fractures and Breakable Joints Updates
 {
 friend class CPHShell;
 bool					m_has_breaks;
@@ -36,9 +36,6 @@ SPLITTER_STORAGE		m_splitters;							//
 GEOM_MAP				m_geom_root_map;							//to find geom pointer by bone id
 virtual	void			PhTune(dReal step);						//call fractures PhTune for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhTune()
 virtual void			PhDataUpdate(dReal step);				//call fractures PhDataUpdate for element splitters m_pShell->m_elements[m_splitters[i]->m_element]->m_pFracturesHolder->PhDataUpdate()
-virtual void			Freeze		(){};
-virtual void			UnFreeze	(){};
-virtual void			InitContact(dContact* c,bool &do_collide){};
 		bool			CheckSplitter(u16 aspl);		//
 		shell_root		SplitJoint(u16 aspl);		//create new shell moving into it departed elements and joints 
 		shell_root		ElementSingleSplit(const element_fracture &split_elem,const CPHElement* source_element);

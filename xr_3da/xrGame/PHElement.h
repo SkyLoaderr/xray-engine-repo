@@ -55,9 +55,7 @@ class CPHElement	:
 	dReal						k_w;					//->to shell ??		//st
 	dReal						k_l;//1.8f;				//->to shell ??		//st
 
-	bool						b_contacts_saved;		//e					//aux
-	dJointGroupID				m_saved_contacts;		//e					//bt
-	
+
 	ContactCallbackFun*			contact_callback;		//->to shell ??		//bt
 	ObjectContactCallbackFun*	object_contact_callback;//->to shell ??		//st
 	ObjectContactCallbackFun*	temp_for_push_out;		//->to shell ??		//aux

@@ -23,7 +23,7 @@ protected:
 	dGeomID m_shell_transform;
 	dGeomID m_cap_transform;
 
-	dGeomID m_geom_group;
+	dSpaceID m_space;
 	
 	dReal m_radius;
 	dReal m_cyl_hight;
@@ -81,13 +81,14 @@ protected:
 	dReal m_friction_factor;
 public:
 	CPHSimpleCharacter										()					;
-	virtual					~CPHSimpleCharacter										()					{Destroy();};
+	virtual					~CPHSimpleCharacter					()						{Destroy();}
 
 	/////////////////CPHObject//////////////////////////////////////////////
-	virtual		void		PhDataUpdate						(dReal step)		;
-	virtual		void		PhTune								(dReal step)		;
+	virtual		void		PhDataUpdate						(dReal step)						;
+	virtual		void		PhTune								(dReal step)						;
 	virtual		void		InitContact							(dContact* c,bool &do_collide)		;
-	virtual		void		StepFrameUpdate						(dReal /**step/**/)		{};
+	virtual		dSpaceID	dSpace								()									{return m_space;}
+	virtual		void		get_spatial_params					()									;
 	/////////////////CPHCharacter////////////////////////////////////////////
 public:
 	//update

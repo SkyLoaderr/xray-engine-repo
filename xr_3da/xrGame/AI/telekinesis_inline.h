@@ -48,7 +48,7 @@ void CTelekinesis<CMonster>::Activate()
 		//obj->m_pPhysicsShell->SetAirResistance(EPS_L, EPS_L);
 	}
 
-	if (!objects.empty()) monster->CPHObject::Activate();
+	if (!objects.empty()) monster->CPHUpdateObject::Activate();
 }
 
 template <typename CMonster>
@@ -63,7 +63,7 @@ void CTelekinesis<CMonster>::Deactivate()
 
 	objects.clear	();
 
-	monster->CPHObject::Deactivate();
+	monster->CPHUpdateObject::Deactivate();
 }
 
 template <typename CMonster>

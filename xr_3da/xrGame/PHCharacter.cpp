@@ -98,10 +98,18 @@ void CPHCharacter::set_State(const SPHNetState& state)
 		Disable();
 	};
 }
-//////////////////////////////////////////////////////////////////////////
-/////////////////////CPHWheeledCharacter//////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
 
+void CPHCharacter::Disable()
+{
+	CPHObject::Deactivate();
+	dBodyDisable(m_body);
+}
+
+void CPHCharacter::Enable()
+{
+	CPHObject::Activate();
+	if(m_body)dBodyEnable(m_body);
+}
 
 
 

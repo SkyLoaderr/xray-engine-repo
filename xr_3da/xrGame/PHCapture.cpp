@@ -23,7 +23,7 @@ void CPHCapture::CreateBody()
 
 CPHCapture::~CPHCapture()
 {
-	CPHObject::Deactivate();
+	CPHUpdateObject::Deactivate();
 	Deactivate();
 }
 void CPHCapture::PhDataUpdate(dReal /**step/**/)
