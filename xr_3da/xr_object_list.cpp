@@ -66,10 +66,12 @@ void CObjectList::SingleUpdate	(CObject* O)
 void CObjectList::Update		()
 {
 	// Clients
-	Device.Statistic.UpdateClient.Begin		();
-	for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
-		SingleUpdate(*O);
-	Device.Statistic.UpdateClient.End		();
+	if (Device.fTimeDelta>EPS_S)			{
+		Device.Statistic.UpdateClient.Begin		();
+		for (xr_vector<CObject*>::iterator O=objects.begin(); O!=objects.end(); O++) 
+			SingleUpdate(*O);
+		Device.Statistic.UpdateClient.End		();
+	}
 
 	// Destroy
 	if (!destroy_queue.empty()) 
