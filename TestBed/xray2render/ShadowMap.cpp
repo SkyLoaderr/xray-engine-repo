@@ -545,7 +545,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		return E_FAIL;
 
 	// Create shaders
-	s_Scene2fat.compile				(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_Scene2fat_base.compile		(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_Scene2fat_bump.compile		(m_pd3dDevice,"shaders\\D\\fat_bump.s");
 	s_Scene2smap_direct.compile		(m_pd3dDevice,"shaders\\D\\smap_direct.s");
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
@@ -764,11 +765,11 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
 
 	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
-	m_pd3dDevice->SetVertexShader			(s_Scene2fat.vs);
+	m_pd3dDevice->SetPixelShader			(s_Scene2fat_base.ps);
+	m_pd3dDevice->SetVertexShader			(s_Scene2fat_base.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
-	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	cc.set									(s_Scene2fat_base.constants.get("m_model2view"),			*((Fmatrix*)&dm_model2world2view));
+	cc.set									(s_Scene2fat_base.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
 	cc.flush								(m_pd3dDevice);
 
 	// Render model
