@@ -27,6 +27,7 @@
 #define IDR_ACCEL_NO_PROJECT            132
 #define IDD_PROJECT_PROPERTIES          133
 #define IDD_NEW_PROJECT                 134
+#define IDD_DIALOG1                     136
 #define IDC_PROJECT_TYPES               1002
 #define IDC_OUTPUT_DIR                  1003
 #define IDC_PROJECT_NAME                1003
@@ -36,6 +37,7 @@
 #define IDC_PROJECT_SELLOC              1005
 #define IDC_GENERATE_LISTING            1006
 #define IDC_INTERMEDIATE_DIR            1007
+#define IDC_EDIT1                       1007
 #define ID_PROJECT_ADD_FILES            32771
 #define ID_FILE_OPENPROJECT             32773
 #define ID_FILE_SAVEPROJECT             32774
@@ -68,15 +70,16 @@
 #define IDC_THREADS                     32806
 #define ID_VIEW_THREADS                 32807
 #define ID_VIEW_THREADS32807            32807
+#define ID_EDIT_GOTOLINE                32808
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        136
-#define _APS_NEXT_COMMAND_VALUE         32808
-#define _APS_NEXT_CONTROL_VALUE         1006
+#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_COMMAND_VALUE         32818
+#define _APS_NEXT_CONTROL_VALUE         1008
 #define _APS_NEXT_SYMED_VALUE           112
 #endif
 #endif

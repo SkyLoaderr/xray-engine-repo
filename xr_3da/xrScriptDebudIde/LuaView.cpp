@@ -38,6 +38,13 @@ BEGIN_MESSAGE_MAP(CLuaView, CView)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_CLEAR, OnUpdateEditClear)
 	ON_COMMAND(ID_TOGGLE_BREAKPOINT, OnToggleBreakpoint)
+
+	ON_COMMAND(ID_EDIT_GOTOLINE, OnGotoLineNumber)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_GOTOLINE, OnUpdateGotoLineNumber)
+
+	ON_COMMAND(ID_EDIT_FIND, OnFind)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_FIND, OnUpdateGotoLineNumber)
+	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -212,6 +219,11 @@ void CLuaView::OnUpdateEditUndo(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_editor.CanUndo());
 }
 
+void CLuaView::OnUpdateGotoLineNumber(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(TRUE);
+}
+
 void CLuaView::OnEditRedo() 
 {
 	m_editor.Redo();
@@ -285,4 +297,12 @@ void CLuaView::OnToggleBreakpoint()
 {
 	if ( GetDocument()&&GetDocument()->IsInProject() )
 		ToggleBreakPoint(m_editor.GetCurrentLine());
+}
+void CLuaView::OnGotoLineNumber()
+{
+	m_editor.GotoLineDlg();
+}
+void CLuaView::OnFind()
+{
+	m_editor.FindText("main");
 }

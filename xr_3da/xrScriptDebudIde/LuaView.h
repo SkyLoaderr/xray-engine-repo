@@ -70,6 +70,9 @@ protected:
 	afx_msg void OnEditClear();
 	afx_msg void OnUpdateEditClear(CCmdUI* pCmdUI);
 	afx_msg void OnToggleBreakpoint();
+	afx_msg void OnUpdateGotoLineNumber(CCmdUI* pCmdUI);
+	afx_msg void OnGotoLineNumber();
+	afx_msg void OnFind();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

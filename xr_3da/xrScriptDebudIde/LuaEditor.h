@@ -76,6 +76,8 @@ public:
 
 	void Print(bool showDialog);
 	CharacterRange GetSelection();
+	void GotoLineDlg();
+	void FindText(CString str);
 protected:
 	int (*m_fnScintilla)(void*,int,int,int);
 	void *m_ptrScintilla;

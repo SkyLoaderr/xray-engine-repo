@@ -9,6 +9,7 @@
 #include "SString.h"
 #include "SciLexer.h"
 #include "MainFrame.h"
+#include "GotoLineDialog.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -17,6 +18,16 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CLuaEditor
+
+void CLuaEditor::GotoLineDlg()
+{
+	CGotoLineDialog dlg;
+	if ( dlg.DoModal()!=IDOK )
+		return ;
+
+	int ln = dlg.m_line_n;
+	GotoLine(ln);
+}
 
 CLuaEditor::CLuaEditor()
 {
@@ -278,6 +289,12 @@ CString CLuaEditor::GetLine(int nLine)
 	
 	strLine = s;
 	return strLine;
+}
+
+void CLuaEditor::FindText(CString str)
+{
+	char s[]="module";
+	Sci(SCI_FINDTEXT, (int)s);
 }
 
 void CLuaEditor::GotoLastLine()

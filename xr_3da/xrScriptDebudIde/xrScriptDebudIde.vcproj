@@ -176,6 +176,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\GotoLineDialog.cpp">
+			</File>
+			<File
 				RelativePath="ide2.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -591,6 +594,9 @@
 				RelativePath="CallStack.h">
 			</File>
 			<File
+				RelativePath=".\GotoLineDialog.h">
+			</File>
+			<File
 				RelativePath="ide2.h">
 			</File>
 			<File
@@ -813,5 +819,8 @@
 		</Filter>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="ide2.rc"/>
 	</Globals>
 </VisualStudioProject>
