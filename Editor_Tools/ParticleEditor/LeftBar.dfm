@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 606
+  Height = 748
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 606
+    Height = 748
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -146,11 +146,11 @@ object fraLeftBar: TfraLeftBar
         OnClick = ebRefreshTexturesClick
       end
     end
-    object paEngineShaders: TPanel
+    object paParticles: TPanel
       Left = 1
       Top = 69
       Width = 210
-      Height = 186
+      Height = 328
       Align = alClient
       ParentShowHint = False
       ShowHint = True
@@ -171,13 +171,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 171
+        Height = 313
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 153
+          Top = 295
           Width = 208
           Height = 2
           Align = alBottom
@@ -191,7 +191,7 @@ object fraLeftBar: TfraLeftBar
         end
         object paAction: TPanel
           Left = 0
-          Top = 155
+          Top = 297
           Width = 208
           Height = 16
           Align = alBottom
@@ -221,7 +221,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 52
           Width = 208
-          Height = 101
+          Height = 243
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -414,9 +414,9 @@ object fraLeftBar: TfraLeftBar
         end
       end
     end
-    object Panel2: TPanel
+    object paProperties: TPanel
       Left = 1
-      Top = 255
+      Top = 397
       Width = 210
       Height = 350
       Hint = 'Scene commands'
@@ -479,7 +479,8 @@ object fraLeftBar: TfraLeftBar
     StoredProps.Strings = (
       'paScene.Tag'
       'paScene.Height'
-      'paEngineShaders.Height')
+      'paParticles.Tag'
+      'paParticles.Height')
     StoredValues = <>
     Left = 65529
     Top = 65526

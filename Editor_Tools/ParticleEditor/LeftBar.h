@@ -36,7 +36,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Reload1;
 	TMxPopupMenu *pmPreviewObject;
 	TMenuItem *Plane1;
-	TPanel *paEngineShaders;
+	TPanel *paParticles;
 	TLabel *Label1;
 	TExtBtn *ExtBtn3;
 	TMenuItem *Box1;
@@ -65,7 +65,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebEngineShaderFile;
 	TExtBtn *ebCShaderCreate;
 	TBevel *Bevel1;
-	TPanel *Panel2;
+	TPanel *paProperties;
 	TLabel *Label2;
 	TExtBtn *ExtBtn1;
 	TPanel *paPSProps;
