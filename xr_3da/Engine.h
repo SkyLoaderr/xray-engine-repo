@@ -8,7 +8,6 @@
 
 #include "engineAPI.h"
 #include "debugkernel.h"
-#include "scriptAPI.h"
 #include "eventAPI.h"
 #include "locatorAPI.h"
 #include "xrCPU_Pipe.h"
@@ -21,7 +20,6 @@ public:
 	// DLL api stuff
 	char				Params		[512];
 	CEngineAPI			External;
-	CScriptAPI			Scripts;
 	CEventAPI			Event;
 	CLocatorAPI			FS;
 	CSheduler			Sheduler;
