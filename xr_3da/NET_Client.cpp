@@ -454,8 +454,8 @@ void	IPureClient::Send(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 
 BOOL	IPureClient::net_HasBandwidth	()
 {
-	u32	dwTime				= Device.dwTimeGlobal;
-	u32	dwInterval			= 1000/psNET_ClientUpdate;
+	u32		dwTime				= Device.dwTimeGlobal;
+	u32		dwInterval			= 1000/psNET_ClientUpdate;
 	if		(net_Disconnected)	return FALSE;
 
 	HRESULT hr;
@@ -511,7 +511,7 @@ void	IPureClient::Sync_Thread	()
 		clPing.dwTime_ClientSend	= Device.TimerAsync();
 
 		// Send it
-		try {
+		__try {
 			DPN_BUFFER_DESC					desc;
 			DPNHANDLE						hAsync=0;
 			desc.dwBufferSize				= sizeof(clPing);
@@ -519,12 +519,13 @@ void	IPureClient::Sync_Thread	()
 			if (0==NET || net_Disconnected)	break;
 
 			if (FAILED(NET->Send(&desc,1,0,0,&hAsync,net_flags(FALSE,FALSE,TRUE))))	{
-				Msg("* CLIENT: Thread: EXIT. (failed to send - disconnected?)");
+				Msg("* CLIENT: SyncThread: EXIT. (failed to send - disconnected?)");
 				break;
 			}
-		} catch (...)
+		} 
+		__except (EXCEPTION_EXECUTE_HANDLER)
 		{
-			Msg("* CLIENT: Thread: EXIT. (failed to send - disconnected?)");
+			Msg("* CLIENT: SyncThread: EXIT. (failed to send - disconnected?)");
 			break;
 		}
 		
@@ -548,7 +549,7 @@ void	IPureClient::Sync_Average	()
 	s64		summary_delta	= 0;
 	s32		size			= net_DeltaArray.size();
 	u32*	I				= net_DeltaArray.begin();
-	u32*  E				= I+size;
+	u32*  E					= I+size;
 	for (; I!=E; I++)		summary_delta	+= *((int*)I);
 
 	s64 frac				=	s64(summary_delta) % s64(size);
