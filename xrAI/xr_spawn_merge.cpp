@@ -62,12 +62,12 @@ public:
 		m_tLevel				= tLevel;
 		m_dwLevelID				= dwLevelID;
 		string256				fName;
-		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
+		strconcat				(fName,"$game_levels$\\",m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\");
 		m_tpAI_Map				= xr_new<CAI_Map>(fName);
 		// loading spawn points
 		fName[0]				= 0;
-		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
+		strconcat				(fName,"$game_levels$\\",m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\level.spawn");
 		IReader					*SP = FS.r_open(fName);
 		IReader					*S = 0;
