@@ -402,6 +402,7 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
+/*
 	// zone test
 	Fvector z_P			= {1.803f, -0.012f, -22.089f};
 	float	z_R			= 15.f;
@@ -414,6 +415,7 @@ void CActor::Update	(DWORD DT)
 		if (sndZoneHeart.feedback)		sndZoneHeart.feedback->Stop		();
 		if (sndZoneDetector.feedback)	sndZoneDetector.feedback->Stop	();
 	}
+*/
 
 	// 
 	clamp			(DT,0ul,100ul);

@@ -285,11 +285,15 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 		_Freq			= ctrl_freq;
 	}
 	
-	FILE_NAME			fn;
-	strconcat			(fn,Path.Sounds,fName);
-	if (strext(fn))		*strext(fn) = 0;
-	strcat				(fn,".wav");
-	
+	FILE_NAME			fn,N;
+	strcpy				(N,name);
+	if (strext(N))		*strext(N) = 0;
+
+	strconcat			(fn,Path.Current,N,".wav");
+	if (!Engine.FS.Exist(fn))	{
+		strconcat			(fn,Path.Sounds,N,".wav");
+	}
+
 	if (_3D)	
 	{
 		pBuffer				= LoadWaveAs3D( fn, _Freq );

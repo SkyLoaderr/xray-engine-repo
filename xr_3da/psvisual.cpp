@@ -135,7 +135,7 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 	pv->set	(c.x-sz*_sin1,	c.y-sz*_cos1,	PT.p.z, PT.p.w, clr, rb.x,lt.y);	pv++;
 }
 
-IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D, float scale)
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D, float scale)
 {
 	Fvector			P1,P2;
     P1.mad			(pos,D,-radius);
