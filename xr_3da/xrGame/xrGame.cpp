@@ -1090,7 +1090,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "script_zone.h"
 #include "gravizone.h"
 
-#include "vehicle_helicopter.h"
+//#include "vehicle_helicopter.h"
+#include "helicopter.h"
 
 
 
@@ -1128,7 +1129,9 @@ extern "C" {
 			case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
 			case CLSID_CAR:					P = xr_new<CCar>();					break;
 
-			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CVehicleHelicopter>();	break;
+// Andy---temporary
+//			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CVehicleHelicopter>();	break;
+			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CHelicopter>();	break;
 
 			// Artifacts
 			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
