@@ -1,0 +1,70 @@
+--[[----------------------------------------------------------------------------------------------------------
+Боевая схема зомбированных сталкеров
+Чугай Саша
+------------------------------------------------------------------------------------------------------------]]
+
+class "evaluator_combat_zombied" ( property_evaluator )
+
+function evaluator_combat_zombied:__init( name, storage ) super ( nil, name )
+	self.st = storage
+end
+
+function evaluator_combat_zombied:evaluate()
+	return db.storage[self.object:id()].script_combat_type == "zombied"
+end
+
+--------------------------------------------------------------------------------------------------------------
+
+class "action_zombie_shoot" ( action_base )
+
+function action_zombie_shoot:__init( name, storage )  super ( nil, name )
+	self.st = storage
+end
+
+function action_zombie_shoot:initialize()
+	action_base.initialize( self )
+
+    self.object:set_node_evaluator      ()
+    self.object:set_path_evaluator      ()
+    self.object:set_desired_direction   ()
+	self.object:set_detail_path_type    ( move.line )
+end
+
+function action_zombie_shoot:execute()
+	action_base.execute( self )
+
+	local be = self.object:best_enemy()
+
+	self.object:set_path_type           ( game_object.level_path )
+    self.object:set_dest_level_vertex_id( be:level_vertex_id() )
+    self.object:set_desired_position    ( be:position() )
+
+	if self.object:see( be ) then
+		state_mgr.set_state( self.object, "patrol_fire", nil, nil, { look_object = be, look_position = be:position() } )
+	else
+		state_mgr.set_state( self.object, "patrol",      nil, nil, { look_object = be, look_position = be:position() } )
+	end
+end
+
+function action_zombie_shoot:finalize()
+	action_base.finalize( self )
+
+	state_mgr.set_state( self.object, "idle" )
+end
+
+--------------------------------------------------------------------------------------------------------------
+
+function add_to_binder( npc, ini, st, planner )
+	local prop_enemy          = xr_evaluators_id.combat_enemy
+	local prop_combat_zombied = xr_evaluators_id.combat_zombied_base
+
+	local act_zombie_shoot    = xr_actions_id.combat_zombied_base
+
+	planner:add_evaluator( prop_combat_zombied, evaluator_combat_zombied( "combat_zombied", st ) )
+
+	local action = action_zombie_shoot( "action_zombie_shoot", st )
+	action:add_precondition( world_property( prop_combat_zombied, true  ) )
+	action:add_effect( world_property( stalker_ids.property_enemy, false ) )
+	action:add_effect( world_property( prop_enemy, false ) )
+	planner:add_action( act_zombie_shoot, action )
+end

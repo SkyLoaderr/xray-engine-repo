@@ -3,10 +3,11 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 -- Глобальные
-global_actions		= stalker_ids.action_script
-action_script		= stalker_ids.action_script + 1
-alife				= stalker_ids.action_alife_planner
-state_mgr           = stalker_ids.action_script + 2
+global_actions        = stalker_ids.action_script
+action_script         = stalker_ids.action_script + 1
+alife                 = stalker_ids.action_alife_planner
+state_mgr             = stalker_ids.action_script + 2
+script_combat_planner = stalker_ids.action_script + 3
 
 -- Стохе
 stohe_actions = stalker_ids.action_script + 100
@@ -58,6 +59,7 @@ chugai_ambush_base                  = chugai_actions + 70
 chugai_formation_base               = chugai_actions + 80
 chugai_replics_base                 = chugai_actions + 90
 chugai_heli_hunter_base             = chugai_actions + 100
+combat_zombied_base                 = chugai_actions + 110
 
 -- Змей
 zmey_actions = chugai_actions + 1024

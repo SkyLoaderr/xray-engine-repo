@@ -24,6 +24,8 @@ stohe_camper_base       = id_start + 1080
 assistance              = id_start + 1090
 death                   = id_start + 1100
 combat                  = id_start + 1110
+combat_enemy            = id_start + 1111
+
 
 sidor_patrol_base_property          = id_start + 2000
 sidor_wounded_base                  = id_start + 2010
@@ -51,6 +53,7 @@ chugai_ambush_base                  = id_start + 3070
 chugai_formation_base               = id_start + 3080
 chugai_replics_base                 = id_start + 3090
 chugai_heli_hunter_base             = id_start + 3100
+combat_zombied_base                 = id_start + 3110
 
 zmey_guard_base                     = id_start + 4000
 zmey_property_guard_activity_end    = id_start + 4100

@@ -43,6 +43,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	patrol_fire = {	weapon = "fire",
+				movement = move.walk,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	raid = {	weapon = "unstrapped",
 				movement = move.walk,
 				mental = anim.danger,
