@@ -16,7 +16,7 @@ function save_dialog:InitControls()
 	local main_rect = {x = 0, x = 0, width = 800, height = 600}
 	
 	main_rect.x = (screen.width - main_rect.width)/2
-	mian_rect.y = (screen.height - main_rect.height)/2
+	main_rect.y = (screen.height - main_rect.height)/2
 	
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height) --init self position and size
 	
