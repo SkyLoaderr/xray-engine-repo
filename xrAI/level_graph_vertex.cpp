@@ -313,7 +313,7 @@ float CLevelGraph::find_farthest_node_in_direction(u32 start_vertex_id, const Fv
 	return					(fCurDistance);
 }
 
-bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint) const
+bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath) const
 {
 	SContour				_contour;
 	const_iterator			I,E;
@@ -322,8 +322,10 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 	float					fDistance = start_point.distance_to(finish_point), fCurDistance = 0.f;
 	u32						dwCurNode = start_vertex_id;
 
-	tpaOutputPoints.clear	();
-	tpaOutputNodes.clear	();
+	if (bClearPath) {
+		tpaOutputPoints.clear	();
+		tpaOutputNodes.clear	();
+	}
 	if (bAddFirstPoint) {
 		tpaOutputPoints.push_back(start_point);
 		tpaOutputNodes.push_back(start_vertex_id);

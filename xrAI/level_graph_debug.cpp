@@ -381,7 +381,7 @@ void CLevelGraph::draw_travel_line() const
 	}
 }
 
-void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /**start_vertex_id/**/, u32 /**finish_vertex_id/**/) const
+void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /**vertex_id/**/, u32 /**finish_vertex_id/**/) const
 {
 //	Fvector						*tpDestinationPosition = &m_tFinishPoint;
 //
@@ -491,12 +491,11 @@ void CLevelGraph::draw_dynamic_obstacles() const
 }
 
 struct SPathPoint {
-	u32				vertex_id;
 	Fvector			position;
 	Fvector			direction;
 	float			linear_velocity;
 	float			angular_velocity; 
-	u32				start_vertex_id;
+	u32				vertex_id;
 };
 
 struct SCirclePoint {
@@ -535,7 +534,7 @@ IC	void assign_angle(
 		if (dest_yaw >= start_yaw)
 			angle		= dest_yaw - start_yaw;
 		else
-			angle		= PI_MUL_2 - (dest_yaw - start_yaw);
+			angle		= PI_MUL_2 - start_yaw + dest_yaw;
 	else
 		if (dest_yaw <= start_yaw)
 			angle		= dest_yaw - start_yaw;
@@ -575,24 +574,31 @@ IC	bool compute_tangent(
 )
 {
 #pragma todo("Dima to Dima : If this will be a slow down, optimize it by using just a few square roots instead of arctangents and arccosinuses")
-	float				start_cp, dest_cp, distance, alpha, start_yaw, dest_yaw, pitch, yaw;
+	float				start_cp, dest_cp, distance, alpha1, alpha2, start_yaw, dest_yaw, pitch, yaw1, yaw2;
 	Fvector				direction, temp;
 	
 	// computing 2D cross product for start point
-	direction.sub		(start.point,start_circle.center);
+	direction.sub		(start.position,start_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= start.direction;
 	direction.getHP		(start_yaw,pitch);
-	start_cp			= cross_product_2D_y(start.point,direction);
+	start_yaw			= angle_normalize(start_yaw);
+	start_cp			= cross_product_2D_y(start.direction,direction);
 	
 	// computing 2D cross product for dest point
-	direction.sub		(dest.point,dest_circle.center);
+	direction.sub		(dest.position,dest_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
 	direction.getHP		(dest_yaw,pitch);
-	dest_cp				= cross_product_2D_y(dest.point,direction);
+	dest_yaw			= angle_normalize(dest_yaw);
+	dest_cp				= cross_product_2D_y(dest.direction,direction);
 
-	if (start_cp*dest_cp > 0) {
+	// direction from the first circle to the second one
+	direction.sub		(dest_circle.center,start_circle.center);
+	direction.getHP		(yaw1,pitch);
+	yaw1 = yaw2			= angle_normalize(yaw1);
+
+	if (start_cp*dest_cp >= 0.f) {
 		// so, our tangents are outside
 		if (start_circle.center.similar(dest_circle.center)) {
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
@@ -612,7 +618,7 @@ IC	bool compute_tangent(
 			// radius difference
 			float			r_diff = start_circle.radius - dest_circle.radius;
 			// angle between external tangents and circle centers segment
-			alpha			= acosf(r_diff/distance);
+			alpha1 = alpha2	= angle_normalize(acosf(r_diff/distance));
 		}
 	}
 	else {
@@ -622,7 +628,9 @@ IC	bool compute_tangent(
 			return		(false);
 	
 		// angle between internal tangents and circle centers segment
-		alpha			= acosf((start_circle.radius + dest_circle.radius)/distance);
+		alpha1			= angle_normalize(acosf((start_circle.radius + dest_circle.radius)/distance));
+		alpha2			= angle_normalize(PI + alpha1);
+		//yaw2			= angle_normalize(yaw1 + PI);
 	}
 
 	tangents[0]			= start_circle;
@@ -630,26 +638,24 @@ IC	bool compute_tangent(
 	start_yaw			= angle_normalize(start_yaw);
 	dest_yaw			= angle_normalize(dest_yaw);
 
-	// direction from the first circle to the second one
-	direction.sub		(dest_circle.center,start_circle.center);
-	direction.getHP		(yaw,pitch);
-
 	// compute external tangent points
-	adjust_point		(start_circle.center,yaw + alpha,	start_circle.radius,tangents[0].point);
-	adjust_point		(dest_circle.center,yaw  + alpha,	dest_circle.radius, tangents[1].point);
+	adjust_point		(start_circle.center,yaw1 + alpha1,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center,yaw2  + alpha2,	dest_circle.radius, tangents[1].point);
 
 	direction.sub		(tangents[1].point,tangents[0].point);
 	temp.sub			(tangents[0].point,start_circle.center);
-	float				tangent_cp = cross_product_2D_y(temp,direction);
-	if (start_cp*tangent_cp > 0) {
-		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw + alpha),start_cp > 0);
-		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw + alpha),dest_cp  > 0);
+	float				tangent_cp = cross_product_2D_y(direction,temp);
+	if (start_cp*tangent_cp >= 0) {
+		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha1),		start_cp >= 0);
+		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha2),dest_cp  >= 0);
 		return			(true);
 	}
 
 	// compute external tangent points
-	adjust_point		(start_circle.center,yaw - alpha,	start_circle.radius,tangents[0].point);
-	adjust_point		(dest_circle.center,yaw  - alpha,	dest_circle.radius, tangents[1].point);
+	adjust_point		(start_circle.center,yaw1 - alpha1,	start_circle.radius,tangents[0].point);
+	adjust_point		(dest_circle.center,yaw2  - alpha2,	dest_circle.radius, tangents[1].point);
+	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha1),		start_cp >= 0);
+	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha2),dest_cp  >= 0);
 
 	return				(true);
 }
@@ -698,7 +704,9 @@ bool build_circle_trajectory(
 
 	float				yaw,pitch;
 	direction.getHP		(yaw,pitch);
-	for (u32 i=0, n=fis_zero(position.angle) ? 1 : iFloor(position.angular_velocity/(_abs(position.angle)*10.f) +.5f); i<n; ++i) {
+	yaw					= angle_normalize(yaw);
+	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
+	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
 		path.push_back	(Fvector());
 		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,path.back());
 	}
@@ -712,10 +720,10 @@ bool build_line_trajectory(
 )
 {
 	xr_vector<u32>		node_path;
-	u32					start_vertex_id = ai().level_graph().check_position_in_direction(start.start_vertex_id,start.position,start.point);
-	if (!ai().level_graph().valid_vertex_id(start_vertex_id))
+	u32					vertex_id = ai().level_graph().check_position_in_direction(start.vertex_id,start.position,start.point);
+	if (!ai().level_graph().valid_vertex_id(vertex_id))
 		return			(false);
-	return				(ai().level_graph().create_straight_PTN_path(start_vertex_id,start.point,dest.point,path,node_path,false));
+	return				(ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,path,node_path,false,false));
 }
 
 bool build_trajectory(
@@ -730,6 +738,7 @@ bool build_trajectory(
 		return			(false);
 	if (!build_circle_trajectory(dest,path,false))
 		return			(false);
+	path.push_back		(dest.position);
 	return				(true);
 }
 
@@ -766,22 +775,37 @@ bool compute_trajectory(
 void CLevelGraph::compute_path()
 {
 	STrajectoryPoint		start, dest;
-	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-	obj						= Level().Objects.FindObjectByName("localhost/dima");
-	CActor					*actor = dynamic_cast<CActor*>(obj);
+
+//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+//	obj						= Level().Objects.FindObjectByName("localhost/dima");
+//	CActor					*actor = dynamic_cast<CActor*>(obj);
+//	
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 2.15f;
+//	start.position			= stalker->Position();
+//	start.direction.setHP	(-stalker->m_body.current.yaw,0);
+//	start.vertex_id			= stalker->level_vertex_id();
+//	
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 2.15f;
+//	dest.position			= actor->Position();
+//	dest.direction.setHP	(actor->r_model_yaw,0);
+//	dest.vertex_id			= actor->level_vertex_id();
 	
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 2.15f;
-	start.position			= stalker->Position();
-	start.direction.setHP	(stalker->m_body.current.yaw,0);
-	
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 2.15f;
-	dest.position			= actor->Position();
-	dest.direction.setHP	(actor->r_model_yaw,0);
-	
-	compute_trajectory		(start,dest,m_tpTravelLine);
+//	start.angular_velocity	= 1.f;
+//	start.linear_velocity	= 2.f;
+//	start.position			= Fvector().set(-50,0,-40);
+//	start.direction.set		(0,0,1);
+//	start.vertex_id			= vertex(start.position);
+//	
+//	dest.angular_velocity	= 1.f;
+//	dest.linear_velocity	= 2.f;
+//	dest.position			= Fvector().set(-40,0,-40);
+//	dest.direction.set		(0,0,-1);
+//	dest.vertex_id			= vertex(dest.position);
+//
+//	compute_trajectory		(start,dest,m_tpTravelLine);
 	return;
 	//	u32						l_dwStartNodeID		= vertex(m_start_point);
 	//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
