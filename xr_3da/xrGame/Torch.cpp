@@ -140,9 +140,13 @@ void CTorch::UpdateCL()
 			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
+
+		Fvector _P;
+		_P.mad	(l_p,Device.vCameraRight,	m_pos.x);
+		_P.mad	(Device.vCameraTop,			m_pos.y);
 		H_Parent()->setEnabled		(true);
 		light_render->set_direction	(svTransform.k);//clXFORM().k); // l_d
-		light_render->set_position	(svTransform.c);//clXFORM().c); // l_p
+		light_render->set_position	(_P);			//clXFORM().c); // l_p
 	}
 	// update light source
 	if (light_render->get_active()){
