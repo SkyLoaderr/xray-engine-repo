@@ -568,70 +568,37 @@ void	CRender::Render		()
 			for (u32 code_id=0; code_id<lstCodes.size(); code_id++)
 			{
 				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
-				SceneGraph::mapNormalVS&	textures		= Ncode->val;
-				RCache.set_States			(Ncode->key);
+				RCache.set_States					(Ncode->key);	
 
-				sort_tlist					(lstTextures, lstTexturesTemp, textures, sort); 
-				for (u32 texture_id=0; texture_id<lstTextures.size(); texture_id++)
+				SceneGraph::mapNormalVS&	vs				= Ncode->val;	vs.ssa	= 0;
+				vs.getANY_P		(lstVS);	if (sort)		std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
+				for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 				{
-					SceneGraph::mapNormalTextures::TNode*	Ntexture	= lstTextures[texture_id];
-					SceneGraph::mapNormalVS&				vs			= Ntexture->val;
-					RCache.set_Textures						(Ntexture->key);
-
-					vs.getANY_P			(lstVS);
-					if (sort)			std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
-					for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
+					SceneGraph::mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
+					RCache.set_VS						(Nvs->key);	
+					RCache.set_xform_world				(Fidentity);
+				
+					SceneGraph::mapNormalConstants&	cs			= Nvs->val;		cs.ssa	= 0;
+					cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
+					for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 					{
-						SceneGraph::mapNormalVS::TNode*	Nvs					= lstVS[vs_id];
-						SceneGraph::mapNormalVB&		vb					= Nvs->val;
-						RCache.set_VS					(Nvs->key);
-
-						vb.getANY_P						(lstVB);
-						if (sort)	std::sort(lstVB.begin(),lstVB.end(),cmp_vb);
-						for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+						SceneGraph::mapNormalConstants::TNode*	Ncs	= lstCS[cs_id];
+						RCache.set_Constants					(Ncs->key);
+						
+						SceneGraph::mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
+						sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
+						for (u32 tex_id=0; tex_id<lstCS.size(); tex_id++)
 						{
-							SceneGraph::mapNormalVB::TNode*		Nvb				= lstVB[vb_id];
-							SceneGraph::mapNormalMatrices& matrices				= Nvb->val;
-							// no need to setup that shit - visual defined
-
-							matrices.getANY_P	(lstMatrices);
-							if (sort) std::sort	(lstMatrices.begin(),lstMatrices.end(), cmp_matrices);
-							for (u32 matrix_id=0; matrix_id<lstMatrices.size(); matrix_id++) 
-							{
-								SceneGraph::mapNormalMatrices::TNode*	Nmatrix		= lstMatrices[matrix_id];
-								SceneGraph::mapNormalConstants& constants			= Nmatrix->val;
-								RCache.set_Matrices	(Nmatrix->key);
-
-								constants.getANY_P	(lstConstants);
-								if (sort) std::sort	(lstConstants.begin(),lstConstants.end(), cmp_constants);
-								for (u32 constant_id=0; constant_id<lstConstants.size(); constant_id++)
-								{
-									SceneGraph::mapNormalConstants::TNode*	Nconstant	= lstConstants[constant_id];
-									SceneGraph::mapNormalItems&	items					= Nconstant->val;
-									RCache.set_Constants		(Nconstant->key);
-									mapNormal_Render			(Nconstant->val);
-									items.ssa					= 0;
-								}
-								lstConstants.clear		();
-								constants.clear			();
-								constants.ssa			= 0;
-							}
-							lstMatrices.clear		();
-							matrices.clear			();
-							matrices.ssa			= 0;
 						}
-						lstVB.clear				();
-						vb.clear				();
-						vb.ssa					= 0;
+						lstTextures.clear		();
+						lstTexturesTemp.clear	();
+						tex.clear				();
 					}
-					lstVS.clear				();
-					vs.clear				();
-					vs.ssa					= 0;
+					lstCS.clear				();
+					cs.clear				();
 				}
-				lstTextures.clear		();
-				lstTexturesTemp.clear	();
-				textures.clear			();
-				textures.ssa			= 0;
+				lstVS.clear				();
+				vs.clear				();
 			}
 			lstCodes.clear			();
 			codes.clear				();
