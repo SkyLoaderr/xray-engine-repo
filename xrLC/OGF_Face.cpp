@@ -98,7 +98,7 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 	}
 }
 
-void OGF::Optimize()
+void OGF::Optimize	()
 {
 	VERIFY	(x_vertices.size()	<= vertices.size()	);
 	VERIFY	(x_faces.size()		== faces.size()		);
@@ -284,10 +284,8 @@ void OGF::MakeProgressive	()
 	progressive_cs.Enter	();
 	// prepare progressive geom
 	VIPM_Init				();
-	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)
-		VIPM_AppendVertex	(vertices[v_idx].P,vertices[v_idx].UV[0]);
-	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)
-		VIPM_AppendFace		(faces[f_idx].v[0],faces[f_idx].v[1],faces[f_idx].v[2]);
+	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
+	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)		VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
 	// Convert
 	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
 	if (VR->swr_records.size()>0){
@@ -320,53 +318,6 @@ void OGF::MakeProgressive	()
 	// cleanup
 	VIPM_Destroy		();
 	progressive_cs.Leave();
-
-/*
-	if (faces.size()>c_PM_LowVertLimit) 
-	{
-//		set_status("CLODing",treeID,faces.size(),vertices.size());
-		vertices_saved	= vertices;
-		faces_saved		= faces;
-
-		// Options
-		PM_Init	(dwRelevantUV,dwRelevantUVMASK,3, 
-			g_params.m_pm_uv, g_params.m_pm_pos, g_params.m_pm_curv, 
-			g_params.m_pm_borderH_angle, g_params.m_pm_borderH_distance, 
-			g_params.m_pm_heuristic);
-
-		// Transfer vertices
-		for(itOGF_V iV=vertices.begin();iV!=vertices.end();iV++) {
-			PM_CreateVertex(
-				iV->P.x,iV->P.y,iV->P.z,
-				u32(iV - vertices.begin()),
-				(P_UV*)iV->UV.begin()
-				);
-		}
-
-		// Convert
-		PM_Result R;
-		I_Current	= PM_Convert((u16*)&*faces.begin(),(u32)faces.size()*3,&R);
-
-		if (I_Current>=0) 
-		{
-			// Permute vertices
-			vecOGF_V temp_list = vertices;
-			
-			// Perform permutation
-			for(u32 i=0; i<temp_list.size(); i++)
-				vertices[R.permutePTR[i]]=temp_list[i];
-			
-			// Copy results
-			pmap_vsplit.resize(R.splitSIZE);
-			CopyMemory(&*pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
-
-			pmap_faces.resize(R.facefixSIZE);
-			CopyMemory(&*pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(u16));
-
-			dwMinVerts = R.minVertices;
-		}
-	}
-*/
 }
 
 void OGF_Base::Save	(IWriter &fs)

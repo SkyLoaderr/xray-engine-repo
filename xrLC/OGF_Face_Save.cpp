@@ -164,8 +164,8 @@ void OGF::Save			(IWriter &fs)
 	
 	switch (H.type) 
 	{
-	case MT_NORMAL:
-	case MT_PROGRESSIVE:
+	case MT_NORMAL		:
+	case MT_PROGRESSIVE	:
 		Save_Normal_PM	(fs,H,bVertexColors);		
 		break;
 	}
