@@ -278,19 +278,10 @@ void CSE_ALifeSimulator::vfKillCreatures()
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
 					getAI().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
 					if (randF(100) > getAI().m_pfSurgeDeathProbability->ffGetValue()) {
-
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
-						l_tpALifeCreatureAbstract->fHealth			= 0.f;
 						l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + i);
-
-						SLevelPoint*								l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[l_tGraphID].dwPointOffset);
-						u32											l_dwDeathpointIndex = randI(getAI().m_tpaGraph[l_tGraphID].tDeathPointCount);
-						l_tpALifeCreatureAbstract->m_tGraphID		= l_tGraphID;
-						l_tpALifeCreatureAbstract->o_Position		= l_tpaLevelPoints[l_dwDeathpointIndex].tPoint;
-						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
-						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
-
 						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
+						vfAssignDeathPosition						(l_tpALifeCreatureAbstract,l_tGraphID);
 						i--;
 						N--;
 					}

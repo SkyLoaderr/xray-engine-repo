@@ -19,7 +19,7 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 #ifdef OLD_BEHAVIOUR
 	inherited2::Update		(m_tpALife);
 	m_tpALife->vfCheckForTheCombat(this);
-	bfProcessItems			();
+	vfProcessItems			();
 #else
 	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
 	bool				bOk;
@@ -65,7 +65,7 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 		}
 		bOk						= bfChooseNextRoutePoint();
 		m_tpALife->vfCheckForTheInteraction(this);
-		bfProcessItems			();
+		vfProcessItems			();
 		vfCheckForDeletedEvents	();
 	}
 	while (bOk && (m_tpALife->m_tpActor->o_Position.distance_to(o_Position) > m_tpALife->m_fOnlineDistance));

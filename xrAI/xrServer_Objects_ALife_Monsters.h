@@ -101,6 +101,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	void					Update					(CSE_ALifeSimulator		*tpALifeSimulator);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			()											{return(true);};
+	virtual	void					vfUpdateWeaponAmmo		()											{};
+	virtual	void					vfProcessItems			()											{};
+	virtual	void					vfAttachItems			()											{};
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END
@@ -217,13 +220,15 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			// miscellanious
 			bool					bfCheckIfTaskCompleted	(OBJECT_IT				&I);
 			bool					bfCheckIfTaskCompleted	();
-			bool					bfProcessItems			();
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
-	u16								get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			();
+	virtual	void					vfUpdateWeaponAmmo		();
+	virtual	void					vfProcessItems			();
+	virtual	void					vfAttachItems			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

@@ -34,12 +34,14 @@ class CSE_ALifeSimulator :
 	string256						m_caSaveName;
 	bool							m_bFirstUpdate;
 	u32								m_dwMaxCombatIterationCount;
-	MONSTER_P_VECTOR				m_tpaCombatGroups[2];
-	CSE_ALifeMonsterAbstract		*m_tpaCombatMonsters[2];
 	
 	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
+	
+	// temporary buffers for combats
+	MONSTER_P_VECTOR				m_tpaCombatGroups[2];
+	CSE_ALifeMonsterAbstract		*m_tpaCombatMonsters[2];
 
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
@@ -77,11 +79,15 @@ class CSE_ALifeSimulator :
 			bool					bfCheckIfRetreated			(int						iCombatGroupIndex);
 			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
+			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID tGraphID);
 public:
 	// members
 	bool							m_bLoaded;
 	LPSTR							*m_cppServerOptions;
 	float							m_fOnlineDistance;
+	
+	// temporary buffers for combats
+	OBJECT_VECTOR					m_tpObjectVector;
 	
 	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);

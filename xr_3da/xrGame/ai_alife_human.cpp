@@ -79,51 +79,18 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 	return			(bContinue);
 }
 
-bool CSE_ALifeHumanAbstract::bfProcessItems()
+void CSE_ALifeHumanAbstract::vfProcessItems()
 {
-	bool						bOk = false;
+	m_tpALife->m_tpObjectVector.clear();
 	for (int I=0; I<(int)m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects.size(); I++) {
 		u16						wID = m_tpALife->m_tpGraphObjects[m_tGraphID].tpObjects[I]->ID;
 		CSE_ALifeDynamicObject	*tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(wID);
 		CSE_ALifeItem			*tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
-		if (tpALifeItem && !tpALifeItem->m_bOnline) {
-			// adding _new item to the item list
-			if (m_fCumulativeItemMass + tpALifeItem->m_fMass < m_fMaxItemMass) {
-				if (m_tpALife->randF(1.0f) < m_fProbability) {
-					m_tpALife->vfAttachItem(*this,tpALifeItem,m_tGraphID);
-					bOk = true;
-					I--;
-					continue;
-				}
-			}
-			else {
-				std::sort(children.begin(),children.end(),CSortItemPredicate(m_tpALife->m_tObjectRegistry));
-				float			fItemMass = m_fCumulativeItemMass;
-				u32				dwCount = (u32)children.size();
-				int				i;
-				for ( i=(int)dwCount - 1; i>=0; i--) {
-					CSE_ALifeItem	*tpALifeItemIn = dynamic_cast<CSE_ALifeItem *>(m_tpALife->tpfGetObjectByID(children[i]));
-					R_ASSERT	(tpALifeItemIn);
-					m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
-					if (float(tpALifeItemIn->m_dwCost)/tpALifeItemIn->m_fMass >= float(tpALifeItemIn->m_dwCost)/tpALifeItem->m_fMass)
-						break;
-					if (m_fCumulativeItemMass + tpALifeItem->m_fMass < m_fMaxItemMass)
-						break;
-				}
-				if (m_fCumulativeItemMass + tpALifeItem->m_fMass < m_fMaxItemMass) {
-					for (int j=i + 1 ; j < (int)dwCount; j++)
-						m_tpALife->vfDetachItem(*this,tpALifeItem,m_tGraphID);
-					m_tpALife->vfAttachItem(*this,tpALifeItem,m_tGraphID);
-					bOk = true;
-					I--;
-					continue;
-				}
-				else
-					m_fCumulativeItemMass	= fItemMass;
-			}
-		}
+		if (tpALifeItem && !tpALifeItem->m_bOnline && (m_tpALife->randF(1.0f) < m_fProbability))
+			m_tpALife->m_tpObjectVector.push_back(tpALifeItem->ID);
 	}
-	return			(bOk);
+	if (!m_tpALife->m_tpObjectVector.empty())
+		vfAttachItems();
 }
 
 void CSE_ALifeHumanAbstract::vfCheckForDeletedEvents()
@@ -151,19 +118,6 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 			break;
 		}
 	}
-}
-
-u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon)
-{
-	u32							l_dwResult = 0;
-	OBJECT_IT					I = children.begin();
-	OBJECT_IT					E = children.end();
-	for ( ; I != E; I++) {
-		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(*I));
-		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
-			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
-	}
-	return						(u16(l_dwResult));
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeHumanAbstract::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
@@ -232,7 +186,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 	if (m_tpCurrentBestWeapon->m_dwAmmoAvailable)
 		return					(true);
 	
-	for (int i=0, n = children.size() ; i<n; i++) {
+	for (int i=0, n=children.size() ; i<n; i++) {
 		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
 		if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
 			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
@@ -243,4 +197,67 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 	}
 	m_tpCurrentBestWeapon		= 0;
 	return						(false);
+}
+
+void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
+{
+	if (!m_tpCurrentBestWeapon)
+		return;
+	for (int i=0, n=children.size() ; i<n; i++) {
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
+		if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name)) {
+			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable > l_tpALifeItemAmmo->a_elapsed) {
+				m_tpCurrentBestWeapon->m_dwAmmoAvailable	-= l_tpALifeItemAmmo->a_elapsed;
+				continue;
+			}
+			if (m_tpCurrentBestWeapon->m_dwAmmoAvailable) {
+				l_tpALifeItemAmmo->a_elapsed = u16(l_tpALifeItemAmmo->a_elapsed - u16(m_tpCurrentBestWeapon->m_dwAmmoAvailable));
+				continue;
+			}
+			m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
+			children.erase		(children.begin() + i);
+			i--;
+			n--;
+		}
+	}
+}
+
+u16	CSE_ALifeHumanAbstract::get_available_ammo_count(CSE_ALifeItemWeapon *tpALifeItemWeapon)
+{
+	u32							l_dwResult = 0;
+	OBJECT_IT					I = children.begin();
+	OBJECT_IT					E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(*I));
+		if (l_tpALifeItemAmmo && strstr(tpALifeItemWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name))
+			l_dwResult			+= l_tpALifeItemAmmo->a_elapsed;
+	}
+	return						(u16(l_dwResult));
+}
+
+void CSE_ALifeHumanAbstract::vfAttachItems()
+{
+	CSE_ALifeAbstractGroup		*l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(this);
+	if (l_tpALifeAbstractGroup) {
+		OBJECT_IT				I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+		OBJECT_IT				E = l_tpALifeAbstractGroup->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(*I));
+			R_ASSERT2				(l_tpALifeHumanAbstract,"Invalid group member");
+			l_tpALifeHumanAbstract->vfAttachItems();
+		}
+		return;
+	}
+	m_tpALife->m_tpObjectVector.insert(m_tpALife->m_tpObjectVector.end(),children.begin(),children.end());
+	OBJECT_IT					I = l_tpALifeAbstractGroup->m_tpMembers.begin();
+	OBJECT_IT					E = l_tpALifeAbstractGroup->m_tpMembers.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeItem			*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+		R_ASSERT2				(l_tpALifeItem,"Invalid inventory object");
+		m_tpALife->vfDetachItem	(*this,l_tpALifeItem,m_tGraphID);
+	}
+	R_ASSERT2					(m_fCumulativeItemMass < EPS_L,"Invalid cumulative mass value");
+	m_fCumulativeItemMass		= 0.f;
+#pragma todo("Append with item choice logic")
+	
 }
