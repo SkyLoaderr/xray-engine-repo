@@ -33,6 +33,7 @@ m_saved_impulse					= 0.f;
 m_physics_skeleton				= NULL;
 b_skeleton_in_shell				= false;
 m_shot_up_factor				=0.f;
+m_after_death_velocity_factor	=1.f;
 };
 
 void CCharacterPhysicsSupport::Activate()
@@ -64,6 +65,7 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	if(pSettings->line_exist(section,"ph_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_shot_up_factor");
+	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
 }
 
 void CCharacterPhysicsSupport::in_NetSpawn()
@@ -253,8 +255,8 @@ Fvector velocity;
 	SAllDDOParams disable_params;
 	disable_params.Load(PKinematics(m_EntityAlife.Visual())->LL_UserData());
 	m_pPhysicsShell->set_DisableParams(disable_params);
-
 	m_pPhysicsShell->Activate(true);
+	velocity.mul(1.25f*m_after_death_velocity_factor);
 	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;
@@ -278,6 +280,7 @@ void CCharacterPhysicsSupport::ActivateShell()
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetCallbacks();
+	velocity.mul(1.25f*m_after_death_velocity_factor);
 	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;

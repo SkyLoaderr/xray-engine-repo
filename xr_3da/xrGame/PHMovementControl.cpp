@@ -141,7 +141,7 @@ void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,flo
 
 }
 
-void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& /**precision/**/  )
+void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
 {
 	
 	if(m_capture) 
@@ -220,8 +220,8 @@ void CPHMovementControl::Calculate(const xr_vector<CDetailPathManager::STravelPa
 				PathNearestPoint(path,new_position,index,near_line);
 			}
 			vPosition.set(new_position);//for PathDirLine && PathDirPoint
-			if(near_line) PathDIrLine(path,index,m_path_distance,1.f,dir);
-			else		  PathDIrPoint(path,index,m_path_distance,1.f,dir);
+			if(near_line) PathDIrLine(path,index,m_path_distance,precision,dir);
+			else		  PathDIrPoint(path,index,m_path_distance,precision,dir);
 
 
 			travel_point=(u32)index;

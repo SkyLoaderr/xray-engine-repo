@@ -10,7 +10,7 @@
 #include "movement_manager.h"
 #include "PHMovementControl.h"
 
-#define DISTANCE_PHISICS_ENABLE_CHARACTERS 6.f
+#define DISTANCE_PHISICS_ENABLE_CHARACTERS 2.f
 
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
@@ -111,7 +111,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 		{
 			movement_control->b_exect_position=true;
 			Fvector velocity=mdir;
-			velocity.mul(speed);
+			velocity.mul(speed*1.25f);
 			movement_control->SetVelocity(velocity);
 		}
 	}

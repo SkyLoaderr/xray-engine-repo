@@ -48,6 +48,7 @@ Fvector					m_saved_hit_dir;
 s16						m_saved_element;
 /////////////////////////////////////////////////////////
 float					m_shot_up_factor;
+float					m_after_death_velocity_factor;
 
 public:
 EType Type()
