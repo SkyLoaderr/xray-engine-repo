@@ -1049,7 +1049,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			mk_rotation(tDirection,tRotation);
 			float fCost = ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T));
 			Msg("%d %.2f",Test,fCost);
-			if (fCost < .25f) {
+			if (fCost < .35f) {
 				bool bOk = false;
 				float fMax = 0.f;
 				for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
@@ -1165,14 +1165,22 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 {
 	int Index = -1;
-	float fMin = 1000;
+	float fMin = 1000, fCost;
+	DWORD dwNodeID = AI_NodeID;
 	if (iLastIndex >= 0) {
+		dwNodeID = Group.m_tpaSuspiciousNodes[iLastIndex].dwNodeID;
 		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;
 		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
 			if ((Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) || Group.m_tpaSuspiciousNodes[i].dwSearched)
 				continue;
-			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
-				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+//			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
+//				continue;
+//			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
+//				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
+//				Index = i;
+//			}
+			if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+				fMin = fCost;
 				Index = i;
 			}
 		}
@@ -1182,12 +1190,18 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 		return(Index);
 
 	for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-		if (Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[i].dwGroup])
+//		if (Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[i].dwGroup])
+//			continue;
+		if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 			continue;
 		if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
 			fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 			Index = i;
 		}
+//		if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//			fMin = fCost;
+//			Index = i;
+//		}
 	}
 
 	if (Index == -1) {
@@ -1198,6 +1212,10 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 				fMin = Group.m_tpaSuspiciousNodes[i].fCost;
 				Index = i;
 			}
+//			if ((fCost = Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[i].dwNodeID,dwNodeID)) < fMin) {
+//				fMin = fCost;
+//				Index = i;
+//			}
 		}
 	}
 	return(Index);

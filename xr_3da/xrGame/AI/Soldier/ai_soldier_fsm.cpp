@@ -307,7 +307,6 @@ void CAI_Soldier::OnFindAloneFire()
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 					Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwGroup] = 1;
 					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-					vfInitSelector(SelectorRetreat,Squad,Leader);
 					vfBuildPathToDestinationPoint(0);
 				}
 				else {

@@ -303,6 +303,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			break;
 	}
 	
+	Result.Nodes.clear();
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
@@ -478,6 +479,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			break;
 	}
 	
+	Result.Nodes.clear();
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
@@ -653,6 +655,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			break;
 	}
 	
+	Result.Nodes.clear();
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
