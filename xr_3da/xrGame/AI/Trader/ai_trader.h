@@ -25,6 +25,9 @@ class CAI_Trader : public CEntityAlive,
 				   public CPhraseDialogManager,
 				   public CSoundPlayer
 {
+private:
+	typedef CEntityAlive inherited;
+
 	CScriptCallback		m_OnStartCallback;
 	CScriptCallback		m_OnStopCallback;
 	CScriptCallback		m_OnTradeCallback;
