@@ -7,7 +7,7 @@
 const DWORD	v_limit			= 2048;
 
 // Render of cached meshes
-void __fastcall render_Cached(CList<FCached*>& cache)
+void __fastcall render_Cached(std::vector<FCached*>& cache)
 {
 	CVertexStream*			vs	= cache[0]->VS;
 	CIndexStream*			is	= Device.Streams.Get_IB();

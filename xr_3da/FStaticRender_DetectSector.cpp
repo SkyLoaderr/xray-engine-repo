@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "render.h"
+#include "fstaticrender.h"
 #include "xr_creator.h"
 
 CSector* CRender::detectSector(Fvector& P)

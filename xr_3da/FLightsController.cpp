@@ -75,11 +75,12 @@ void CLightDB_Static::Unload		(void)
 	Distance.clear			();
 	Enabled.clear			();
 }
-
+/*
 IC BOOL lights_compare(int a, int b) {
-	CLightDB_Static &L = Render.Lights;
+	CLightDB_Static &L = Render->Lights;
 	return L.Distance[a]<L.Distance[b];
 }
+*/
 IC float spline(float *m, float p0, float p1, float p2, float p3)
 {	return p0 * m[0] + p1 * m[1] + p2 * m[2] + p3 * m[3]; }
 

@@ -27,7 +27,7 @@ const int max_patches = 512;
 // definition
 class ENGINE_API CRender			:  public CRender_interface
 {
-private:
+public:
 	// Dynamic scene graph
 	SceneGraph::mapNormal_T							mapNormal[4];
 	SceneGraph::mapMatrix_T							mapMatrix;
@@ -79,6 +79,8 @@ private:
 	void							InsertSG_Dynamic		(CVisual	*pVisual, Fvector& Center);
 	void							InsertSG_Static			(CVisual	*pVisual);
 	void							InsertSG_Cached			(CVisual	*pVisual);
+
+	void							flush_Patches			();
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();

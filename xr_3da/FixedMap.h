@@ -1,14 +1,11 @@
 #ifndef _FIXEDMAP_H
 #define _FIXEDMAP_H
-
 #pragma once
 
 #ifndef SG_REALLOC_ADVANCE
 #define SG_REALLOC_ADVANCE	64
 #define SG_REALLOC_ALIGN	64
 #endif
-
-#include "xr_list.h"
 
 template<class K, class T>
 class FixedMAP
@@ -89,25 +86,25 @@ private:
 		CB(N);
 		if (N->left)	recurseRL(N->left,CB);
 	}
-	IC void		getLR		(TNode* N, CList<T>&	D)
+	IC void		getLR		(TNode* N, std::vector<T>&	D)
 	{
 		if (N->left)	getLR(N->left,D);
 		D.push_back		(N->val);
 		if (N->right)	getLR(N->right,D);
 	}
-	IC void		getRL		(TNode* N, CList<T>&	D)
+	IC void		getRL		(TNode* N, std::vector<T>&	D)
 	{
 		if (N->right)	getRL(N->right,D);
 		D.push_back		(N->val);
 		if (N->left)	getRL(N->left,D);
 	}
-	IC void		getLR_P		(TNode* N, CList<TNode*>& D)
+	IC void		getLR_P		(TNode* N, std::vector<TNode*>& D)
 	{
 		if (N->left)	getLR_P(N->left,D);
 		D.push_back		(N);
 		if (N->right)	getLR_P(N->right,D);
 	}
-	IC void		getRL_P		(TNode* N, CList<TNode*>& D)
+	IC void		getRL_P		(TNode* N, std::vector<TNode*>& D)
 	{
 		if (N->right)	getRL_P(N->right,D);
 		D.push_back		(N);
@@ -213,20 +210,20 @@ public:
 			CB(cur);
 	}
 
-	IC void		getLR		(CList<T>&	D)
+	IC void		getLR		(std::vector<T>&	D)
 	{ if (pool)	getLR(nodes,D); }
-	IC void		getLR_P		(CList<TNode*>&	D)
+	IC void		getLR_P		(std::vector<TNode*>&	D)
 	{ if (pool)	getLR_P(nodes,D); }
-	IC void		getRL		(CList<T>&	D)
+	IC void		getRL		(std::vector<T>&	D)
 	{ if (pool)	getRL(nodes,D); }
-	IC void		getRL_P		(CList<TNode*>&	D)
+	IC void		getRL_P		(std::vector<TNode*>&	D)
 	{ if (pool)	getRL_P(nodes,D); }
-	IC void		getANY		(CList<T>&	D)
+	IC void		getANY		(std::vector<T>&	D)
 	{
 		TNode*	_end = end();
 		for (TNode* cur = begin(); cur!=_end; cur++) D.push_back(cur->val);
 	}
-	IC void		getANY_P	(CList<TNode*>&	D)
+	IC void		getANY_P	(std::vector<TNode*>&	D)
 	{
 		TNode*	_end = end();
 		for (TNode* cur = begin(); cur!=_end; cur++) D.push_back(cur);

@@ -162,7 +162,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				break;
 			case fcvPartial:	// addition with TEST
 				{
-					if (!::Render.occ_visible(S.BB))		continue;
+					if (!::Render->occ_visible(S.BB))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
@@ -195,7 +195,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				break;
 			case fcvFully:		// addition
 				{
-					if (!::Render.occ_visible(S.BB))		continue;
+					if (!::Render->occ_visible(S.BB))		continue;
 					for (int sp_id=0; sp_id<3; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "FixedMap.h"
-#include "xr_List.h"
 
 class ENGINE_API FCached;
 class ENGINE_API CVisual;
@@ -27,12 +26,12 @@ namespace SceneGraph
 	struct mapNormalDirect
 	{
 		FixedMAP<float,CVisual*>			sorted;
-		CList<CVisual*>						unsorted;
+		std::vector<CVisual*>				unsorted;
 	};
 	struct mapNormalCached
 	{
 		FixedMAP<float,FCached*>			sorted;
-		CList<FCached*>						unsorted;
+		std::vector<FCached*>				unsorted;
 	};
 	struct mapNormalItems 
 	{
@@ -66,5 +65,5 @@ namespace SceneGraph
 	typedef FixedMAP<float,_MatrixItem>		mapSorted_T;
 	typedef mapSorted_T::TNode				mapSorted_Node;
 
-	typedef CList<_PatchItem>				vecPatches_T;
+	typedef std::vector<_PatchItem>				vecPatches_T;
 };

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "xr_ioconsole.h"
 #include "render.h"
+#include "fstaticrender.h"
 #include "fbasicvisual.h"
 #include "xr_creator.h"
 #include "CustomHUD.h"
@@ -120,9 +121,9 @@ void CRender::Calculate()
 	// HOM rendering
 	HOM.Render	(ViewBase);
 
-	// Build lights visibility & perform basic initialization
-	// Lights
-	Lights.UnselectAll				();
+	// Build L_DB visibility & perform basic initialization
+	// L_DB
+	L_DB.UnselectAll				();
 	gm_Data.diffuse.set				(1,1,1,1);
 	gm_Data.ambient.set				(1,1,1,1);
 	gm_Data.emissive.set			(0,0,0,0);
@@ -173,7 +174,7 @@ void __fastcall normal_L2(FixedMAP<float,CVisual*>::TNode *N)
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
-extern void __fastcall render_Cached(CList<FCached*>& cache);
+extern void __fastcall render_Cached(vector<FCached*>& cache);
 void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 {
 	// *** DIRECT ***
@@ -183,7 +184,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		N.direct.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		CList<CVisual*>&	L			= N.direct.unsorted;
+		vector<CVisual*>&	L			= N.direct.unsorted;
 		CVisual **I=L.begin(), **E = L.end();
 		for (; I!=E; I++)
 		{
@@ -198,14 +199,14 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 		Device.Statistic.RenderDUMP_Cached.Begin();
 
 		// CACHED:SORTED
-		CList<FCached*>& CS				= ::Render.vecCached;
+		vector<FCached*>& CS			= ::Render_Implementation.vecCached;
 		N.cached.sorted.getLR			(CS);
 		if (!CS.empty())				render_Cached(CS);
 		CS.clear						();
 		N.cached.sorted.clear			();
 
 		// CACHED:UNSORTED
-		CList<FCached*>& CU				= N.cached.unsorted;
+		vector<FCached*>& CU			= N.cached.unsorted;
 		if (!CU.empty())				render_Cached(CU);
 		CU.clear						();
 
@@ -218,7 +219,7 @@ void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 {
 	CVisual *V = N->val.pVisual;
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
-	::Render.Lights.Select(N->val.vCenter,V->bv_Radius);
+	::Render_Implementation.L_DB.Select(N->val.vCenter,V->bv_Radius);
 	gm_SetAmbientLevel(N->val.iLighting);
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
@@ -236,17 +237,17 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	CVisual *V = N->val.pVisual;
 	Device.Shader.set_Shader		(V->hShader);
 	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
-	::Render.Lights.Select			(N->val.vCenter,V->bv_Radius);
+	::Render_Implementation.L_DB.Select			(N->val.vCenter,V->bv_Radius);
 	gm_SetAmbientLevel				(N->val.iLighting);
 	V->Render						(calcLOD(N->key,V->bv_Radius));
 }
-
+/*
 void CRender::flush_Models()
 {
 	mapMatrix.traverseANY	(matrix_L1);
 	mapMatrix.clear			();
 }
-
+*/
 void CRender::flush_Patches()
 {
 	// *** Fill VB
@@ -424,7 +425,7 @@ void	CRender::Render		()
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
 
 			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-			Lights_Dynamic.Render	();		// Lights has priority the same as normal geom
+			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
 
 			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 			Details.Render			(Device.vCameraPosition);

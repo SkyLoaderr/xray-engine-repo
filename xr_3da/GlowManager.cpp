@@ -100,7 +100,7 @@ void CGlowManager::add(vector<WORD> &V)
 
 		float	range = start.distance_to_sqr(G.C);
 		if (range < dlim2) {
-			if (::Render.View->testSphere_dirty(G.C,G.R)) {
+			if (::Render->View->testSphere_dirty(G.C,G.R)) {
 				G.dwFrame = mark;
 
 				// 2. Use result of test
