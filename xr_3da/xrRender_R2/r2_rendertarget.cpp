@@ -147,8 +147,8 @@ void	CRenderTarget::OnDeviceCreate	()
 	{
 		u32	w=SMAP_size, h=SMAP_size;
 
-		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R5G6B5	);
 		rt_smap_depth.create		(r2_RT_smap_depth,			w,h,D3DFMT_D24X8	);
+		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R5G6B5	);
 		rt_smap_ZB					= NULL;
 		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
 		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
