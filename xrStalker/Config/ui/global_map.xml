@@ -1,8 +1,10 @@
+
 <?xml version='1.0' encoding="UTF-8"?>
 <!-- global map  -->	
-<window>
+<window x="57" y="16">
 	<background>
-		<texture>ui\ui_global_map_small</texture>
+<!--		<texture>ui\ui_global_map_small</texture> -->
+		<texture>ui\ui_global_map</texture>
 		<minimized_rect x1="2" y1="2" x2="130" y2="19" ></minimized_rect>
 		<normal_rect x1="2" y1="2" x2="130" y2="258" ></normal_rect>
 		
