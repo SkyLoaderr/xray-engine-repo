@@ -1089,49 +1089,6 @@
 						RelativePath=".\UIStaticItem.h">
 					</File>
 				</Filter>
-				<Filter
-					Name="Tri-Collider"
-					Filter="">
-					<File
-						RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
-					</File>
-					<File
-						RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
-					</File>
-					<File
-						RelativePath="tri-colliderKNoOPC\dTriList.cpp">
-					</File>
-					<File
-						RelativePath="tri-colliderKNoOPC\dTriList.h">
-					</File>
-					<File
-						RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
-						<FileConfiguration
-							Name="Debug|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32"
-							ExcludedFromBuild="TRUE">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
-					</File>
-					<File
-						RelativePath="tri-colliderKNoOPC\dxTriList.h">
-					</File>
-				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
@@ -1299,6 +1256,49 @@
 				</File>
 				<File
 					RelativePath="dRay\dxRay.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="Tri-Collider"
+				Filter="">
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriCallideK.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriCollideK.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.cpp">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dTriList.h">
+				</File>
+				<File
+					RelativePath="tri-colliderknoopc\dcTriListCollider.cpp">
+					<FileConfiguration
+						Name="Debug|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Mixed|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release|Win32"
+						ExcludedFromBuild="TRUE">
+						<Tool
+							Name="VCCLCompilerTool"/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
+				</File>
+				<File
+					RelativePath="tri-colliderKNoOPC\dxTriList.h">
 				</File>
 			</Filter>
 		</Filter>
