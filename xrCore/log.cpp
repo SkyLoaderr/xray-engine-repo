@@ -12,11 +12,11 @@ static LogCallback			LogCB			= 0;
 
 void FlushLog			()
 {
-	FILE	*f = fopen	(logFName, "wt");
+	IWriter *f			= FS.w_open(logFName);
 	if (f) {
 		for (u32 it=0; it<LogFile.size(); it++)
-			fprintf			(f, "%s\n", LogFile[it]);
-		fclose			(f);
+			f->w_string	(LogFile[it]);
+		FS.w_close		(f);
 	}
 }
 
@@ -123,10 +123,9 @@ void CreateLog(LogCallback cb)
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
     FS.update_path		(logFName,"$logs$",logFName);
 
-	FILE *f;
-	f		= fopen		(logFName, "wt");
-	if		(f==NULL) abort();
-	fclose	(f);
+	IWriter *f			= FS.w_open	(logFName);
+	if (f==NULL)		abort();
+	FS.w_close			(f);
 
 	// Calculating build
 	long Time;
