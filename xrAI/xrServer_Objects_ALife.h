@@ -120,14 +120,7 @@ public:
 	string64						m_caGroupControl;
 
 									CSE_ALifeObject	(LPCSTR caSection);
-	virtual void					STATE_Write		(NET_Packet &tNetPacket);
-	virtual void					STATE_Read		(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write	(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read		(NET_Packet &tNetPacket);
-#ifdef _EDITOR
-    virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
-#endif
-};
+SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeAbstractGroup : virtual public CSE_Abstract {
 public:
@@ -146,14 +139,7 @@ public:
 	{
 	};
 	
-	virtual void STATE_Read			(NET_Packet	&tNetPacket, u16 size);
-	virtual void STATE_Write		(NET_Packet	&tNetPacket);
-	virtual void UPDATE_Read		(NET_Packet	&tNetPacket);
-	virtual void UPDATE_Write		(NET_Packet	&tNetPacket);
-	#ifdef _EDITOR
-	virtual void FillProp			(LPCSTR pref, PropItemVec& items);
-	#endif
-};
+SERVER_ENTITY_DECLARE_END
 
 template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeAbstractGroup {
 	typedef __A					inherited1;
@@ -232,38 +218,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Sh
 
 									CSE_ALifeLevelChanger	(LPCSTR caSection);
 	virtual							~CSE_ALifeLevelChanger	();
-SERVER_ENTITY_DECLARE_END
-
-SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_Shape,CSE_ALifeSchedulable)
-	f32								m_maxPower;
-	f32								m_attn;
-	u32								m_period;
-	float							m_fRadius;
-	float							m_fBirthProbability;
-	u16								m_wItemCount;
-	float							*m_faWeights;
-	string64						*m_cppArtefactSections;
-	u16								m_wArtefactSpawnCount;
-	u32								m_dwStartIndex;
-	EAnomalousZoneType				m_tAnomalyType;
-	EHitType						m_tHitType;
-	float							m_fStartPower;
-
-									CSE_ALifeAnomalousZone	(LPCSTR caSection);
-	virtual							~CSE_ALifeAnomalousZone	();
-#ifdef _EDITOR
-	virtual	void					Update					()	{};
-#else
-#ifdef AI_COMPILER
-	virtual	void					Update					()	{};
-#else
-	virtual	void					Update					();
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,				float &fHitPower);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int iGroupIndex, bool bMutualDetection);
-	virtual bool					bfActive				();
-	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-#endif
-#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)

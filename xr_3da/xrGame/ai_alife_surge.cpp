@@ -211,7 +211,7 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 				if (l_tpALifeAbstractGroup) {
 					if (l_tpALifeAbstractGroup->m_wCount) {
 						m_baAliveSpawnObjects[(*I).second->m_tSpawnID] = true;
-#pragma todo("Dima to Dima : Add monster population increse here")
+#pragma todo("Dima to Dima : Add monster population increase here")
 						//l_tpALifeAbstractGroup->m_wCount *= l_tpALifeAbstractGroup->m_wCount < 50 ? 1.5 : 0.8;
 					}
 				}

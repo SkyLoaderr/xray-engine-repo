@@ -36,6 +36,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 	float							spot_range;
 	float							spot_cone_angle;
     float							spot_brightness;
+
 									CSE_ALifeItemTorch	(LPCSTR caSection);
     virtual							~CSE_ALifeItemTorch();
 SERVER_ENTITY_DECLARE_END
@@ -43,7 +44,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 	u16								a_elapsed;
 	u16								m_boxSize;
-							
+
 									CSE_ALifeItemAmmo	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
@@ -69,33 +70,21 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemCar,CSE_ALifeItem)
-									CSE_ALifeItemCar(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
-	{
-		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
-    	    set_visual				(pSettings->r_string(caSection,"visual"));
-	};
+									CSE_ALifeItemCar(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
-									CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
-	{
-	};
+									CSE_ALifeItemDetector(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
 	float							m_fAnomalyValue;
 
-									CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
-	{
-		m_fAnomalyValue				= 100.f;
-	};
+									CSE_ALifeItemArtefact(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
-
-									CSE_ALifeItemPDA(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
-	{
-	};
+									CSE_ALifeItemPDA(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 #endif

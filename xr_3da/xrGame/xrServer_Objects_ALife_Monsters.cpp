@@ -218,6 +218,160 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	}
 }
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeAnomalousZone
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+{
+	m_maxPower					= 100.f;
+	m_attn						= 1.f;
+	m_period					= 1000;
+	m_fRadius					= 30.f;
+	m_fBirthProbability			= pSettings->r_float(caSection,"BirthProbability");
+
+	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
+	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
+	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
+	m_wItemCount				>>= 1;
+
+	m_faWeights					= (float*)xr_malloc(m_wItemCount*sizeof(float));
+	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
+	string512					l_caBuffer;
+	for (u16 i=0; i<m_wItemCount; i++) {
+		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,i << 1,l_caBuffer));
+		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
+	}
+	m_wArtefactSpawnCount		= 32;
+	m_tAnomalyType				= eAnomalousZoneTypeGravi;
+	m_fStartPower = m_maxPower	= 0.f;
+
+	if (pSettings->line_exist(caSection,"hit_type"))
+		m_tHitType				= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
+	else
+		m_tHitType				= eHitTypeMax;
+}
+
+CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
+{
+	xr_free						(m_faWeights);
+	xr_free						(m_cppArtefactSections);
+}
+
+void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	// CForm
+	if (m_wVersion >= 15)
+		inherited1::STATE_Read	(tNetPacket,size);
+
+	cform_read					(tNetPacket);
+
+	tNetPacket.r_float			(m_maxPower);
+	tNetPacket.r_float			(m_attn);
+	tNetPacket.r_u32			(m_period);
+
+	if (m_wVersion > 21) {
+		tNetPacket.r_float		(m_fRadius);
+		tNetPacket.r_float		(m_fBirthProbability);
+		u16						l_wItemCount;
+		tNetPacket.r_u16		(l_wItemCount);
+		float					*l_faWeights			= (float*)xr_malloc(l_wItemCount*sizeof(float));
+		string64				*l_cppArtefactSections	= (string64*)xr_malloc(l_wItemCount*sizeof(string64));
+
+		for (u16 i=0; i<l_wItemCount; i++) {
+			tNetPacket.r_string	(l_cppArtefactSections[i]);
+			if (m_wVersion > 26)
+				tNetPacket.r_float	(l_faWeights[i]);
+			else {
+				u32					l_dwValue;
+				tNetPacket.r_u32	(l_dwValue);
+				l_faWeights[i]		= float(l_dwValue);
+			}
+		}
+
+		for ( i=0; i<l_wItemCount; i++)
+			for (u16 j=0; j<m_wItemCount; j++)
+				if (!strstr(l_cppArtefactSections[i],m_cppArtefactSections[j])) {
+					m_faWeights[j] = l_faWeights[i];
+					break;
+				}
+
+				xr_free					(l_faWeights);
+				xr_free					(l_cppArtefactSections);
+	}
+	if (m_wVersion > 25) {
+		tNetPacket.r_u16		(m_wArtefactSpawnCount);
+		tNetPacket.r_u32		(m_dwStartIndex);
+	}
+	if (m_wVersion > 27) {
+		u32						l_dwDummy;
+		tNetPacket.r_u32		(l_dwDummy);
+		m_tAnomalyType			= EAnomalousZoneType(l_dwDummy);
+	}
+	if (m_wVersion > 38)
+		tNetPacket.r_float		(m_fStartPower);
+}
+
+void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	// CForm
+	cform_write					(tNetPacket);
+
+	tNetPacket.w_float			(m_maxPower);
+	tNetPacket.w_float			(m_attn);
+	tNetPacket.w_u32			(m_period);
+	tNetPacket.w_float			(m_fRadius);
+	tNetPacket.w_float			(m_fBirthProbability);
+	tNetPacket.w_u16			(m_wItemCount);
+	for (u16 i=0; i<m_wItemCount; i++) {
+		tNetPacket.w_string		(m_cppArtefactSections[i]);
+		tNetPacket.w_float		(m_faWeights[i]);
+	}
+	tNetPacket.w_u16			(m_wArtefactSpawnCount);
+	tNetPacket.w_u32			(m_dwStartIndex);
+	tNetPacket.w_u32			(m_tAnomalyType);
+	tNetPacket.w_float			(m_fStartPower);
+}
+
+void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+#ifdef _EDITOR
+xr_token TokenAnomalyType[]={
+	{ "Gravi",			eAnomalousZoneTypeGravi			},
+	{ "Fog",			eAnomalousZoneTypeFog			},
+	{ "Radioactive",	eAnomalousZoneTypeRadio			},
+	{ "Plant",			eAnomalousZoneTypePlant			},
+	{ "Gelatine",		eAnomalousZoneTypeGelatine		},
+	{ "Fluff",			eAnomalousZoneTypeFluff			},
+	{ "Rusty Hair",		eAnomalousZoneTypeRustyHair		},
+	{ "RustyWhistlers",	eAnomalousZoneTypeRustyWhistlers},
+	{ 0,				0}
+};
+
+void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProp		(pref,items);
+	PHelper.CreateToken			(items,FHelper.PrepareKey(pref,s_name,"Type"),								&m_tAnomalyType,	TokenAnomalyType, 1);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
+	PHelper.CreateU32			(items,FHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
+	for (u16 i=0; i<m_wItemCount; i++)
+		PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_faWeights + i,0.f,1.f);
+	PHelper.CreateFloat			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
+	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"ALife\\Artefact spawn places count"),&m_wArtefactSpawnCount,32,256);
+}
+#endif
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////
@@ -874,24 +1028,20 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 
 void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	// calling inherited
 	inherited1::UPDATE_Write	(tNetPacket);
 	inherited2::UPDATE_Write	(tNetPacket);
 	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.w_u32			(m_dwCurTaskLocation);
 	tNetPacket.w_u32			(m_dwCurTaskID);
-//	tNetPacket.w_u32			(m_dwCurNode);
 };
 
 void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	// calling inherited
 	inherited1::UPDATE_Read		(tNetPacket);
 	inherited2::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.r_u32			(m_dwCurTaskLocation);
 	tNetPacket.r_u32			(m_dwCurTaskID);
-//	tNetPacket.r_u32			(m_dwCurNode);
 };
 
 #ifdef _EDITOR

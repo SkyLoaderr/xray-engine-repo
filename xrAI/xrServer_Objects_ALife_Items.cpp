@@ -298,6 +298,12 @@ void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemCar
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemCar::CSE_ALifeItemCar(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+    	set_visual				(pSettings->r_string(caSection,"visual"));
+};
+
 void CSE_ALifeItemCar::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
@@ -329,6 +335,10 @@ void CSE_ALifeItemCar::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+}
+
 void CSE_ALifeItemDetector::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20)
@@ -360,6 +370,11 @@ void CSE_ALifeItemDetector::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemArtefact::CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	m_fAnomalyValue				= 100.f;
+}
+
 void CSE_ALifeItemArtefact::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
@@ -391,6 +406,10 @@ void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemPDA
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemPDA::CSE_ALifeItemPDA(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+}
+
 void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
