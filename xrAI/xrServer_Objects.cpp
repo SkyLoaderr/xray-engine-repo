@@ -64,6 +64,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	o_Position.set				(0.f,0.f,0.f);
 	m_bALifeControl				= false;
 	m_wVersion					= 0;
+	m_script_version			= 0;
 }
 
 CSE_Abstract::~CSE_Abstract					()
@@ -107,6 +108,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 		tNetPacket.w_u16		(u16(s_flags.flags&~(M_SPAWN_OBJECT_LOCAL|M_SPAWN_OBJECT_ASPLAYER)));
 	
 	tNetPacket.w_u16			(SPAWN_VERSION);
+	
+	tNetPacket.w_u16			(m_script_version);
 
 	// write specific data
 	u32	position				= tNetPacket.w_tell();
@@ -144,6 +147,9 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
         return					FALSE;
 	}
 	// this is "zaplatka"
+
+	if (m_wVersion > 69)
+		m_script_version		= tNetPacket.r_u16();
 
 	// read specific data
 	u16							size;
@@ -205,7 +211,7 @@ xr_token game_types[]={
 	{ 0,				0				}
 };
 
-void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
+void CSE_Abstract::FillProps					(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateToken8		(items,	PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
@@ -280,7 +286,7 @@ void CSE_Event::STATE_Write					(NET_Packet	&tNetPacket)
 	}
 }
 
-void CSE_Event::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_Event::FillProps	(LPCSTR pref, PropItemVec& values)
 {
 }
 
@@ -316,9 +322,9 @@ void CSE_Spectator::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Spectator::FillProp				(LPCSTR pref, PropItemVec& items)
+void CSE_Spectator::FillProps				(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp			(pref,items);
+  	inherited::FillProps			(pref,items);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -348,9 +354,9 @@ void CSE_Target::UPDATE_Write				(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target::FillProp					(LPCSTR pref, PropItemVec& values)
+void CSE_Target::FillProps					(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited::FillProps			(pref,values);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -380,9 +386,9 @@ void CSE_TargetAssault::UPDATE_Write		(NET_Packet &tNetPacket)
 {
 }
 
-void CSE_TargetAssault::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_TargetAssault::FillProps			(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited::FillProps			(pref,values);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -424,9 +430,9 @@ void CSE_Target_CS_Base::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_Target_CS_Base::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS_Base::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref,items);
+	inherited::FillProps			(pref,items);
     PHelper().CreateFloat		(items,PrepareKey(pref,s_name,"Radius"),	&radius,1.f,100.f);
     PHelper().CreateU8			(items,PrepareKey(pref,s_name,"Team"),		&s_team,0,1);
 }
@@ -460,7 +466,7 @@ void CSE_Target_CS_Cask::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_stringZ			(s_Model);
 }
 
-void CSE_Target_CS_Cask::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS_Cask::FillProps			(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
@@ -494,7 +500,7 @@ void CSE_Target_CS::STATE_Write				(NET_Packet	&tNetPacket)
 	tNetPacket.w_stringZ			(s_Model);
 }
 
-void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
+void CSE_Target_CS::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateChoose		(items, PrepareKey(pref,s_name,"Model"),	&s_Model,	smGameObject);
 }
@@ -529,7 +535,7 @@ void CSE_Temporary::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_Temporary::FillProp				(LPCSTR pref, PropItemVec& values)
+void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 };
 
@@ -564,9 +570,9 @@ void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
 };
 
-void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
+void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp				(pref,values);
+	inherited::FillProps				(pref,values);
 	PHelper().CreateFloat			(values,PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
 };
 
@@ -637,7 +643,7 @@ void CSE_PHSkeleton::UPDATE_Read(NET_Packet &tNetPacket)
 
 };
 
-void CSE_PHSkeleton::FillProp				(LPCSTR pref, PropItemVec& values)
+void CSE_PHSkeleton::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 
 };

@@ -145,7 +145,7 @@ void CSE_ALifeGraphPoint::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 }
 
-void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeGraphPoint::FillProps			(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\1"),				&m_tLocations[0],			&fp_data.locations[0]);
 	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&fp_data.locations[1]);
@@ -286,9 +286,9 @@ void CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 }
 #endif
 
-void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref, 	items);
+	inherited::FillProps			(pref, 	items);
 	PHelper().CreateRText		(items,	PrepareKey(pref,s_name,"Custom data"),&m_ini_string);
 	PHelper().CreateFloat		(items,	PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
 #ifdef _EDITOR      
@@ -399,7 +399,7 @@ void CSE_ALifeGroupAbstract::UPDATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u32			(m_bCreateSpawnPositions);
 };
 
-void CSE_ALifeGroupAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeGroupAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateU16			(items,	PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
 };	
@@ -438,9 +438,9 @@ void CSE_ALifeDynamicObject::UPDATE_Read	(NET_Packet &tNetPacket)
 	inherited::UPDATE_Read		(tNetPacket);
 };
 
-void CSE_ALifeDynamicObject::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeDynamicObject::FillProps	(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited::FillProps			(pref,values);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -484,9 +484,9 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 	inherited1::UPDATE_Read		(tNetPacket);
 };
 
-void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeDynamicObjectVisual::FillProps	(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp		(pref,items);
+	inherited1::FillProps		(pref,items);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -546,10 +546,10 @@ bool CSE_ALifePHSkeletonObject::used_ai_locations () const
 	return false;
 }
 
-void CSE_ALifePHSkeletonObject::FillProp(LPCSTR pref, PropItemVec& items)
+void CSE_ALifePHSkeletonObject::FillProps(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp			(pref,items);
-	inherited2::FillProp			(pref,items);
+	inherited1::FillProps			(pref,items);
+	inherited2::FillProps			(pref,items);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -590,9 +590,9 @@ void CSE_ALifeScriptZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited1::UPDATE_Write	(tNetPacket);
 }
 
-void CSE_ALifeScriptZone::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeScriptZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp		(pref,items);
+	inherited1::FillProps		(pref,items);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -657,9 +657,9 @@ void CSE_ALifeLevelChanger::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeLevelChanger::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref,items);
+	inherited::FillProps			(pref,items);
 	
 	PHelper().CreateList		(items,PrepareKey(pref,s_name,"Level to change"),			&m_caLevelToChange,		&fp_data.level_ids);
 	PHelper().CreateRText		(items,PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
@@ -791,9 +791,9 @@ void CSE_ALifeObjectPhysic::OnChooseBone(ChooseItemVec& lst)
 }
 #endif
 
-void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
-	inherited1::FillProp		(pref,	 values);
-	inherited2::FillProp		(pref,	 values);
+void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values) {
+	inherited1::FillProps		(pref,	 values);
+	inherited2::FillProps		(pref,	 values);
 
 	PHelper().CreateToken32		(values, PrepareKey(pref,s_name,"Type"), &type,	po_types);
 	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
@@ -1004,10 +1004,10 @@ void CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 	set_editor_flag				(flUpdateProperties);
 }
 
-void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectHangingLamp::FillProps	(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProp		(pref,values);
-	inherited2::FillProp		(pref,values);
+	inherited1::FillProps		(pref,values);
+	inherited2::FillProps		(pref,values);
 
     PropValue* P				= 0;
 	PHelper().CreateFlag16		(values, PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
@@ -1100,9 +1100,9 @@ void CSE_ALifeObjectProjector::UPDATE_Write(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeObjectProjector::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectProjector::FillProps			(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,	 values);
+	inherited::FillProps			(pref,	 values);
 }
 
 bool CSE_ALifeObjectProjector::used_ai_locations() const
@@ -1211,10 +1211,10 @@ void CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
 }
 #endif
 
-void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeHelicopter::FillProps(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProp		(pref,	 values);
-	inherited3::FillProp		(pref,	 values);
+	inherited1::FillProps		(pref,	 values);
+	inherited3::FillProps		(pref,	 values);
 #ifdef _EDITOR
     // motions
     if (visual && PSkeletonAnimated(visual))
@@ -1311,10 +1311,10 @@ void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
 	door_states.clear();
 }	
 
-void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeCar::FillProps				(LPCSTR pref, PropItemVec& values)
 {
-  	inherited1::FillProp			(pref,values);
-	inherited2::FillProp			(pref,values);
+  	inherited1::FillProps			(pref,values);
+	inherited2::FillProps			(pref,values);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1351,9 +1351,9 @@ void CSE_ALifeObjectBreakable::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeObjectBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeObjectBreakable::FillProps		(LPCSTR pref, PropItemVec& values)
 {
-  	inherited::FillProp			(pref,values);
+  	inherited::FillProps			(pref,values);
 	PHelper().CreateFloat		(values, PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
 }
 
@@ -1398,9 +1398,9 @@ void CSE_ALifeMountedWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeMountedWeapon::FillProp			(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeMountedWeapon::FillProps			(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited::FillProps			(pref,values);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -1437,8 +1437,8 @@ void CSE_ALifeTeamBaseZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
-void CSE_ALifeTeamBaseZone::FillProp		(LPCSTR pref, PropItemVec& items)
+void CSE_ALifeTeamBaseZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp			(pref,items);
+	inherited::FillProps			(pref,items);
 	PHelper().CreateU8			(items, PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
 }

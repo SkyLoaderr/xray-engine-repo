@@ -25,7 +25,9 @@ template <typename T>
 struct CWrapperAbstract : public CWrapperPure<T> {
 	typedef CWrapperPure<T> inherited;
 	typedef CWrapperAbstract<T>	self_type;
+
 	CWrapperAbstract			(LPCSTR section) : inherited(section){}
+	DEFINE_LUA_WRAPPER_METHOD_V2	(FillProps,		LPCSTR,	PropItemVec &)
 	DEFINE_LUA_WRAPPER_METHOD_V1	(STATE_Write,	NET_Packet&)
 	DEFINE_LUA_WRAPPER_METHOD_V2	(STATE_Read,	NET_Packet&,	u16)
 	DEFINE_LUA_WRAPPER_METHOD_V1	(UPDATE_Write,	NET_Packet&)
@@ -80,6 +82,7 @@ struct CWrapperAbstractItem : CWrapperAbstractALife<T> {
 //	DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,load,void,IReader&) 
 
 #define luabind_virtual_abstract(a,b) \
+	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,FillProps	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,STATE_Write	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,STATE_Read	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,UPDATE_Write) \

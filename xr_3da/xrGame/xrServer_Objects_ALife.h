@@ -178,10 +178,10 @@ public:
 		return						(inherited1::base());
 	}
 
-	virtual void __stdcall FillProp	(LPCSTR pref, PropItemVec& items)
+	virtual void		FillProps	(LPCSTR pref, PropItemVec& items)
 	{
-   		inherited1::FillProp		(pref, items);
-   		inherited2::FillProp		(pref, items);
+   		inherited1::FillProps		(pref, items);
+   		inherited2::FillProps		(pref, items);
 	};	
 };
 

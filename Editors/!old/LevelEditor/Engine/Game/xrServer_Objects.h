@@ -86,7 +86,8 @@
 // 67 - CSE_ALifeCustomZone				new class appended, heritage changed
 // 68 - CSE_ALifeHumanStalker,				
 //		CSE_ALifeMonsterBiting			heritage changed
-// 69	object broker changed from this version
+// 69 -	object broker changed from this version
+// 70 -	CSE_Abstract					appended with m_script_version, script version support
 //------------------------------------------------------------------------------
 
 SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
@@ -107,6 +108,7 @@ public:
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
 	
 	u16								m_wVersion;
+	u16								m_script_version;
 	u16								RespawnTime;
 
 	u16								ID;				// internal ID
@@ -133,10 +135,11 @@ public:
 									CSE_Abstract	(LPCSTR caSection);
 	virtual							~CSE_Abstract	();
 	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
+	virtual void					FillProps		(LPCSTR pref, PropItemVec &items);
 	//
 	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);
-    virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
+	virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items){FillProps(pref,items);};
 	virtual LPSTR		__stdcall	name			();
 	virtual LPSTR		__stdcall	name_replace	();
 	virtual Fvector&	__stdcall	position		();

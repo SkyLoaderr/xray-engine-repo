@@ -14,6 +14,9 @@
 
 using namespace luabind;
 
+LPCSTR script_section = "script";
+LPCSTR current_version = "current_server_entity_version";
+
 bool r_eof(NET_Packet *self)
 {
 	return			(!!self->r_eof());
@@ -26,10 +29,19 @@ LPSTR r_stringZ(NET_Packet *self)
 	return			(xr_strdup(*temp));
 }
 
+u16	script_server_object_version	()
+{
+	if (!pSettings->section_exist(script_section) || !pSettings->line_exist(script_section,current_version))
+		return		(0);
+	return			(pSettings->r_u16(script_section,current_version));
+}
+
 void CScriptNetPacket::script_register(lua_State *L)
 {
 	module(L)
 	[
+		def("script_server_object_version", &script_server_object_version),
+
 		class_<NET_Packet>("net_packet")
 			.def(					constructor<>()				)
 			.def("w_begin",			&NET_Packet::w_begin		)
