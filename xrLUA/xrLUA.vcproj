@@ -651,7 +651,8 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
 			<File
