@@ -33,7 +33,7 @@ function multiplayer_dialog:InitControls()
 							 height = self.btn_rect.height}
 							 
 	local btn_create_rect = {x = self.left_align_x,
-							 y = btn_find_rect.y + btn_create_rect.height + self.indent,
+							 y = btn_find_rect.y + btn_find_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}	
 	
