@@ -91,6 +91,7 @@ void CBuild::CorrectTJunctions()
 				{
 					Vertex			*v1,*v2;
 					F1->EdgeVerts	(e1,&v1,&v2);
+					edge						(v1,v2);
 					if (v1==vA && v2!=vB)		check(vA,vB,v2);
 					else if (v2==vA && v1!=vB)	check(vA,vB,v1);
 				}
@@ -105,6 +106,7 @@ void CBuild::CorrectTJunctions()
 				{
 					Vertex			*v1,*v2;
 					F2->EdgeVerts	(e1,&v1,&v2);
+					edge						(v1,v2);
 					if (v1==vB && v2!=vA)		check(vA,vB,v2);
 					else if (v2==vB && v1!=vA)	check(vA,vB,v1);
 				}
