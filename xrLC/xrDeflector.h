@@ -70,7 +70,7 @@ typedef vector<UVtri>::iterator UVIt;
 typedef vector<UVtri*>	vecPT;
 typedef vecPT::iterator	vecPTIT;
 
-const int	i_size	= 2;
+const int	i_size	= 4;
 const float f_size	= 4.f/512.f;
 const int	h_size	= 512/i_size;
 
