@@ -325,7 +325,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	// Options + Shader def
 	Shader				S;
 	CBlender_Compile	C;
-	C.RS.Initialize		(&S);
+	C.Initialize		(&S);
 	C.bEditor			= FALSE;
 	C.bLighting			= FALSE;
 	C.iLayers			= 1;

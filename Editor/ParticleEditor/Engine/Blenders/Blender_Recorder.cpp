@@ -112,7 +112,7 @@ void	CBlender_Compile::StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_chan
 	Stage_Constant		(C);
 }
 
-void	CBlender_Compile::StageTemplate_LMAP0	(CBlender_Compile& C)
+void	CBlender_Compile::StageTemplate_LMAP0	()
 {
 	StageSET_Address	(D3DTADDRESS_CLAMP);
 	StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
@@ -134,8 +134,9 @@ int ParseName(LPCSTR N)
 	return -1;
 }
 
-void	CBlender_Compile::Stage_Texture	(LPCSTR name, sh_list& lst)
+void	CBlender_Compile::Stage_Texture	(LPCSTR name)
 {
+	sh_list& lst= L_textures;
 	int id		= ParseName(name);
 	LPCSTR N	=  name;
 	if (id>=0)	{
@@ -144,9 +145,10 @@ void	CBlender_Compile::Stage_Texture	(LPCSTR name, sh_list& lst)
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
 }
-void	CBlender_Compile::Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel)
+void	CBlender_Compile::Stage_Matrix		(LPCSTR name, int iChannel)
 {
-	int id = ParseName(name);
+	sh_list& lst= L_matrices; 
+	int id		= ParseName(name);
 	CMatrix*	M	= Device.Shader._CreateMatrix	((id>=0)?lst[id]:name);
 	passMatrices.push_back(M);
 
@@ -166,8 +168,9 @@ void	CBlender_Compile::Stage_Matrix		(LPCSTR name, sh_list& lst, int iChannel)
 		StageSET_XForm	(D3DTTFF_DISABLE,D3DTSS_TCI_PASSTHRU|iChannel);	
 	}
 }
-void	CBlender_Compile::Stage_Constant	(LPCSTR name, sh_list& lst)
+void	CBlender_Compile::Stage_Constant	(LPCSTR name)
 {
-	int id = ParseName(name);
+	sh_list& lst= L_constants;
+	int id		= ParseName(name);
 	passConstants.push_back	(Device.Shader._CreateConstant((id>=0)?lst[id]:name));
 }

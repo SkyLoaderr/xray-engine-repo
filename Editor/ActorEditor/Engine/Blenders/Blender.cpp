@@ -75,8 +75,8 @@ void	CBlender::Load(	CStream& FS, WORD version )
 
 void	CBlender::Compile(CBlender_Compile& C)
 {
-	if (C.bEditor)	C.RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
-	else			C.RS.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);
+	if (C.bEditor)	C.SetParams	(oPriority.value,oStrictSorting.value?true:false,true,	false);
+	else			C.SetParams	(oPriority.value,oStrictSorting.value?true:false,false,	false);
 }
 
 //////////////////////////////////////////////////////////////////////
