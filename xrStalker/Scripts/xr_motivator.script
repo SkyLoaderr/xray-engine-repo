@@ -310,6 +310,7 @@ xr_ambush.add_to_binder(self.object, char_ini)
 
     xr_storyline.set_storyline(self.object, char_ini)
     xr_rest.add_to_binder (self.object, stalker_ids.action_puzzle_solver)
+    xr_punch.add_to_binder (self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
