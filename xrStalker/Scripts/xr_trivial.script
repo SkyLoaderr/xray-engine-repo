@@ -26,7 +26,8 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 class "stalker_zombe_action" (action_base)
 function stalker_zombe_action:__init (name, storage) super (nil, name)
-    self.a = storage
+    self.a 	  = storage
+    self.time = 0
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:initialize ()
@@ -58,9 +59,11 @@ function stalker_zombe_action:execute ()
     end
 
 
-    if( self.a.stand and self.object:animation_count() == 0 ) then
+    if( self.a.stand and device():time_global() > self.time ) then
+    --self.object:animation_count() == 0 ) then
         --Если остановились и проиграли до конца звук, то снова идем
         self.a.stand = false
+        self.object:clear_animations()
         self.object:set_movement_type( move.walk )
     end
 end
@@ -76,6 +79,7 @@ function stalker_zombe_action:speak()
         self.a.stand = true
     end
 
+    self.time    = device():time_global() + 5000
     self.a.time = device():time_global() + ( 0.8 + math.random() ) * time_to_speak          --Запоминаем время, когда надо сказать следующую фразу( время всегда разное )
 end
 ---------------------------------------------------------------------------------------------------------------------
