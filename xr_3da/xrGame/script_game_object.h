@@ -367,6 +367,9 @@ public:
 			void				restore_sound_threshold	();
 			//////////////////////////////////////////////////////////////////////////
 			bool				limping					() const;
+			//////////////////////////////////////////////////////////////////////////
+			void				enable_attachable_item	(bool value);
+			bool				attachable_item_enabled	() const;
 			
 			// HELICOPTER
 			void				air_attack				(CScriptGameObject*);

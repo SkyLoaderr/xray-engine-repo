@@ -44,6 +44,7 @@
 #include "helicopter.h"
 #include "ai/bloodsucker/ai_bloodsucker.h"
 #include "cover_manager.h"
+#include "attachable_item.h"
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -1538,4 +1539,24 @@ void CScriptGameObject::restore_sound_threshold	()
 		return;
 	}
 	sound_memory_manager->restore_threshold	();
+}
+
+void CScriptGameObject::enable_attachable_item	(bool value)
+{
+	CAttachableItem							*attachable_item = dynamic_cast<CAttachableItem*>(m_tpGameObject);
+	if (!attachable_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAttachableItem : cannot access class member enable_attachable_item!");
+		return;
+	}
+	attachable_item->enable					(value);
+}
+
+bool CScriptGameObject::attachable_item_enabled	() const
+{
+	CAttachableItem							*attachable_item = dynamic_cast<CAttachableItem*>(m_tpGameObject);
+	if (!attachable_item) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAttachableItem : cannot access class member attachable_item_enabled!");
+		return								(false);
+	}
+	return									(attachable_item->enabled());
 }

@@ -908,7 +908,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		if (!xr_strcmp((*l_it)->cNameSect(),caItemName))
 			return	(*l_it);
-	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
+//	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }
 
