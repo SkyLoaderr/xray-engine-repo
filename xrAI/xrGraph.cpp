@@ -126,9 +126,11 @@ u32 dwfFindCorrespondingNode(Fvector &tPoint)
 u32 dwfInitNodes()
 {
 	u32 dwPointsWONodes = 0;
-	for (int i=0; i<(int)tpaGraph.size(); i++)
+	Progress(0);
+	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(i + 1)/tpaGraph.size()), i++)
 		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1))
 			dwPointsWONodes++;
+	Progress(1);
 	return(dwPointsWONodes);
 }
 
@@ -139,6 +141,7 @@ void vfSaveGraph(LPCSTR name)
 	
 	CFS_Memory	tGraph;
 	tGraph.Wdword(m_header.version);	
+	Progress(0);
 	for (int i=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
 		tGraph.Wvector(tGraphVertex.tPoint);
@@ -149,21 +152,38 @@ void vfSaveGraph(LPCSTR name)
 			tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
 			tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
 		}
+		Progress(float(i + 1)/tpaGraph.size());
 	}
+	Progress(1);
 	tGraph.SaveTo(fName,0);
 	Msg("%d bytes saved",int(tGraph.tell()));
 }
 
 void vfBuildGraph()
 {
+	float fDistance;
+	Progress(0);
 	for (int i=0; i<(int)tpaGraph.size() - 1; i++) {
 		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
 		for (int j = i + 1; j<(int)tpaGraph.size(); j++) {
-			if (tCurrentGraphVertex.tPoint.distance_to(tpaGraph[j].tPoint) < MAX_DISTANCE_TO_CONNECT) {
-//				float fDistance = ffFindTheXestPath(tCurrentGraphVertex.tPoint,tpaGraph[j].tPoint);
+			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
+			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
+				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance);
+				if (fDistance < MAX_DISTANCE_TO_CONNECT) {
+					tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
+					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+					
+					tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
+					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+				}
 			}
+			Progress((float(i + 1)*(tpaGraph.size() - 1) + j + 1)/(tpaGraph.size() - 1)/(tpaGraph.size() - 1));
 		}
+		Progress(float(i + 1)/(tpaGraph.size() - 1));
 	}
+	Progress(1);
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -179,11 +199,11 @@ void xrBuildGraph(LPCSTR name)
 	u32 dwAIPoints;
 	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
 
-	Phase("Searching AI map for corresponding nodes");
-	Msg("%d points don't have corresponding nodes (they are deleted)",dwfInitNodes());
-
 	Phase("Loading AI path-finding structures");
 	vfLoadSearch();
+
+	Phase("Searching AI map for corresponding nodes");
+	Msg("%d points don't have corresponding nodes (they are deleted)",dwfInitNodes());
 
 	Phase("Building graph");
 	vfBuildGraph();
@@ -194,6 +214,11 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Saving graph");
 	vfSaveGraph(name);
 
-	Phase("Unloading AI path-finding structures");
+	Phase("Freeing AI path-finding structures");
 	vfUnloadSearch();
+	
+	Phase("Freeing graph being built");
+	for (i=0; i<(int)tpaGraph.size(); i++)
+		_FREE(tpaGraph[i].tpaEdges);
+	tpaGraph.clear();
 }

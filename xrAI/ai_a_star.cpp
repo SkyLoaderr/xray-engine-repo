@@ -89,7 +89,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-float vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
+void vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -127,8 +127,10 @@ float vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 		tpBestNode->ucOpenCloseMask = 0;
 
 		// check if that node is our goal
-		if (tpBestNode->iIndex == (int)dwGoalNode)
-			return(tpTemp1->g);
+		if (tpBestNode->iIndex == (int)dwGoalNode) {
+			fDistance = tpBestNode->g;
+			return;
+		}
 		
 		NodeLink *taLinks = (NodeLink *)((unsigned char *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
 		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
@@ -240,5 +242,5 @@ float vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 			break;
 	}
 	
-	return(MAX_VALUE);
+	fDistance = MAX_VALUE;
 }
