@@ -91,6 +91,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 			P.mad					(vP,vN,a);
 
 			Fcolor					C;
+			C.set					(0,0,0,0);
 			LightPoint				(&DB, C, P, vN, Lights.begin(), Lights.end(), 0);
 			vC.r					+=	C.r;
 			vC.g					+=	C.g;
