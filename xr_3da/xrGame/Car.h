@@ -124,11 +124,14 @@ private:
 	CActor*					m_owner;
 	Fvector					m_vCamDeltaHP;
 ////////////////////////////////////////////////////
-xr_map<int,SWheel>		m_wheels_map;
+xr_map   <int,SWheel>	m_wheels_map;
 xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
 xr_vector <SWheelBreak> m_breaking_wheels;
+xr_vector <SExhaust>	m_exhausts;
 xr_vector <float>		m_gear_ratious;
+xr_vector <int>			m_doors_ids;
+xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
 float					m_power;
 float					m_axle_friction;
@@ -139,9 +142,7 @@ float					m_steering_speed;
 float					m_ref_radius;
 float					m_break_torque;
 size_t					m_current_transmission_num;
-xr_vector<int>			m_doors_ids;
-xr_vector<SExhaust>		m_exhausts;
-xr_vector<Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
+
 ////////////////////////////////////////////////////
 float GetSteerAngle();
 void LimitWheels();
