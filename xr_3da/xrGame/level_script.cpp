@@ -74,12 +74,6 @@ CScriptGameObject *get_object_by_name(LPCSTR caObjectName)
 
 CScriptGameObject *get_object_by_id(u32 id)
 {
-#ifdef DEBUG
-	static bool first_time = true;
-	if (first_time)
-		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use level.object_by_id function!");
-	first_time = false;
-#endif
 	CGameObject* pGameObject = smart_cast<CGameObject*>(Level().Objects.net_Find(id));
 	if(!pGameObject)
 		return NULL;
