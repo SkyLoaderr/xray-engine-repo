@@ -476,5 +476,6 @@ function dialog_manager_reset(npc)
 		printf("_bp: Restore start dialog")
 		npc:restore_default_start_dialog()	
 	end	
+	dialogs.set_ids({"a"})
 end
 

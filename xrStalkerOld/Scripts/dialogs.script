@@ -1,11 +1,6 @@
 function break_dialog(first_speaker, second_speaker, id)
-	if id ~= nil then
-		printf("DIALOGA: %s", id)
-	else
-		printf("DIALOGA: nil")
-	end
-        first_speaker:stop_talk()
-        second_speaker:stop_talk()
+	first_speaker:stop_talk()
+	second_speaker:stop_talk()
 end
 
 function disable_talk_self(first_speaker, second_speaker)
@@ -24,13 +19,39 @@ function get_money_then_leave(first_speaker, second_speaker)
 	xr_motivator.storage[first_speaker:id()].robber.enabled = true
 end
 
+
+--'---------------------------------------------------------------------------------
+--' DIALOG ALLOWED CLASS
+--'---------------------------------------------------------------------------------
+class "dialog_manager"
+function dialog_manager:__init()
+	self.ids = {}
+end
+function dialog_manager:set_ids(tt)
+	if tt ~= nil then return false end
+	for k,v in tt do
+		self.ids[v] = true
+	end
+end
+function dialog_manager:check_ids(id)
+	return self.ids[id] == true
+end
+
+dmanager = nil
+
 function dialog_allowed(object, victim, id)
 	if id ~= nil then
 		printf("DIALOG: %s", id)
 	else
 		printf("DIALOG: nil")
 	end
-	return true
+	return dmanager:check_ids(id)
+end
+function set_ids(tt)
+	if this.dmanager == nil then
+		this.dmanager = this.dialog_manager()
+	end
+	this.dmanager:set_ids(tt)
 end
 
 -----------------------------------------------------------------------------------

@@ -20,13 +20,13 @@
 		<rank>70</rank>
 		<reputation>65</reputation>
 		
-		<start_dialog>escape_trader_start_dialog</start_dialog>
+		<start_dialog>escape_trader_start_dialog</start_dialog>	
 		<actor_dialog>escape_trader_talk_level</actor_dialog>
-		<actor_dialog>escape_trader_talk_about</actor_dialog>
-		<actor_dialog>escape_trader_talk_flame</actor_dialog>
+		<actor_dialog>escape_trader_talk_info</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 		<actor_dialog>escape_trader_done_gift</actor_dialog>
 		<actor_dialog>escape_trader_done_artefact</actor_dialog>
+		<actor_dialog>escape_trader_done_tutorial_artefact</actor_dialog>
 		<actor_dialog>escape_trader_done_blockpost_box</actor_dialog>		
 	</specific_character>
 

@@ -51,333 +51,8 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_done_artefact" priority="9">
-        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
-        <dont_has_info>escape_artefact_done</dont_has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_trader_done_artefact_2</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_artefact_0</text>
-                <action>escape_dialog.give_artefact_from_fleshes</action>
-                <give_info>escape_artefact_done</give_info>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_done_blockpost_box" priority="9">
-        <precondition>escape_dialog.have_blockpost_case</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_trader_done_blockpost_box_2</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_blockpost_box_0</text>
-                <action>escape_dialog.give_blockpost_case</action>
-                <give_info>escape_have_blockpost_case</give_info>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_done_gift">
-        <has_info>escape_stalker_to_trader_give</has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_trader_done_gift_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_gift_0</text>
-                <give_info>escape_stalker_to_trader_done</give_info>
-                <has_info>escape_stalker_to_trader_give</has_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_start_dialog">
-        <phrase_list>
-            <phrase id="31">
-                <text>escape_trader_start_dialog_31</text>
-                <give_info>esc_trader_newbie</give_info>
-                <next>311</next>
-            </phrase>
-            <phrase id="32">
-                <text>escape_trader_start_dialog_32</text>
-                <give_info>esc_trader_experienced</give_info>
-                <next>321</next>
-            </phrase>
-            <phrase id="321">
-                <text>escape_trader_start_dialog_321</text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_tutorial_chosen</give_info>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_start_dialog_21</text>
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>211</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <give_info>esc_trader_monolog_1</give_info>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="211">
-                <text />
-                <give_info>esc_trader_tutorial_choice</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="311">
-                <text>escape_trader_start_dialog_311</text>
-                <action>dialogs.break_dialog</action>
-                <action>dialogs.disable_talk_self</action>
-                <give_info>esc_trader_tutorial_chosen</give_info>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_start_dialog_4</text>
-                <has_info>esc_trader_tutorial_chosen</has_info>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_start_dialog_3</text>
-                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
-                <has_info>esc_trader_tutorial_choice</has_info>
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_start_dialog_2</text>
-                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_talk_about" priority="1">
-        <phrase_list>
-            <phrase id="22">
-                <text>escape_trader_talk_about_22</text>
-                <next>221</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_talk_about_21</text>
-                <next>22</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_trader_talk_about_31</text>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="221">
-                <text>escape_trader_talk_about_221</text>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_talk_about_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_trader_talk_about_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>escape_trader_talk_about_10</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_talk_about_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_talk_about_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_talk_flame" priority="6">
-        <phrase_list>
-            <phrase id="21211">
-                <text>escape_trader_talk_flame_21211</text>
-                <next>212111</next>
-            </phrase>
-            <phrase id="212111">
-                <text>escape_trader_talk_flame_212111</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="211">
-                <text>escape_trader_talk_flame_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="2111">
-                <text>escape_trader_talk_flame_2111</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="212">
-                <text>escape_trader_talk_flame_212</text>
-                <next>2121</next>
-            </phrase>
-            <phrase id="2121">
-                <text>escape_trader_talk_flame_2121</text>
-                <next>21211</next>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_talk_flame_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="6">
-                <text>escape_trader_talk_flame_6</text>
-                <next>61</next>
-            </phrase>
-            <phrase id="41">
-                <text>escape_trader_talk_flame_41</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="5">
-                <text>escape_trader_talk_flame_5</text>
-                <next>51</next>
-            </phrase>
-            <phrase id="51">
-                <text>escape_trader_talk_flame_51</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="61">
-                <text>escape_trader_talk_flame_61</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="10">
-                <text>escape_trader_talk_flame_10</text>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_talk_flame_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_trader_talk_flame_31</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_talk_flame_21</text>
-                <next>211</next>
-                <next>212</next>
-                <next>213</next>
-            </phrase>
-            <phrase id="213">
-                <text>escape_trader_talk_flame_213</text>
-                <next>2131</next>
-            </phrase>
-            <phrase id="2131">
-                <text>escape_trader_talk_flame_2131</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="1">
-                <text>escape_trader_talk_flame_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-                <next>5</next>
-                <next>6</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_talk_flame_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_talk_flame_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_trader_talk_level" priority="2">
-        <phrase_list>
-            <phrase id="1">
-                <text>escape_trader_talk_level_1</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_talk_level_4</text>
-                <next>41</next>
-            </phrase>
-            <phrase id="41">
-                <text>escape_trader_talk_level_41</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="31">
-                <text>escape_trader_talk_level_31</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text>escape_trader_talk_level_10</text>
-            </phrase>
-            <phrase id="2">
-                <text>escape_trader_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_trader_talk_level_21</text>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_talk_level_3</text>
-                <next>31</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="tutorial_wounded">
-    	<precondition>escape_dialog.wounded_need_help</precondition>
+        <precondition>escape_dialog.wounded_need_help</precondition>
         <phrase_list>
             <phrase id="11">
                 <text>tutorial_wounded_11</text>
@@ -389,38 +64,14 @@
             <phrase id="1">
                 <text>tutorial_wounded_1</text>
                 <precondition>dialogs.medikit_yes</precondition>
-                <give_info>tutorial_wounded_help</give_info>
                 <action>dialogs.transfer_medikit2</action>
+                <give_info>tutorial_wounded_help</give_info>
                 <next>11</next>
             </phrase>
             <phrase id="0">
                 <text>tutorial_wounded_0</text>
                 <next>1</next>
                 <next>3</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="escape_talk_about_escape" priority="2">
-        <precondition>dialogs.level_escape</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_talk_about_escape_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>escape_talk_about_escape_21</text>
-            </phrase>
-            <phrase id="10">
-                <text>escape_talk_about_escape_10</text>
-            </phrase>
-            <phrase id="1">
-                <text>escape_talk_about_escape_1</text>
-                <next>2</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text>escape_talk_about_escape_0</text>
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -544,96 +195,76 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_trader_jobs" priority="5">
+    <dialog id="escape_lager_volk_dynamite_done">
+        <precondition>escape_dialog.have_dynamite</precondition>
         <phrase_list>
-            <phrase id="62">
-                <text>escape_trader_jobs_62</text>
-                <give_info>agroprom_military_case</give_info>
-                <next>82</next>
+            <phrase id="0">
+                <text>escape_lager_volk_dynamite_done_0</text>
+                <precondition>escape_dialog.have_dynamite</precondition>
+                <action>escape_dialog.give_dynamite</action>
+                <next>1</next>
             </phrase>
-            <phrase id="72">
-                <text>escape_trader_jobs_72</text>
-                <next>92</next>
+            <phrase id="1">
+                <text>escape_lager_volk_dynamite_done_1</text>
             </phrase>
-            <phrase id="82">
-                <text>escape_trader_jobs_82</text>
-            </phrase>
-            <phrase id="92">
-                <text>escape_trader_jobs_92</text>
-            </phrase>
-            <phrase id="61">
-                <text>escape_trader_jobs_61</text>
-                <give_info>escape_blockpost_case</give_info>
-                <next>81</next>
-            </phrase>
-            <phrase id="71">
-                <text>escape_trader_jobs_71</text>
-                <next>91</next>
-            </phrase>
-            <phrase id="91">
-                <text>escape_trader_jobs_91</text>
-            </phrase>
-            <phrase id="81">
-                <text>escape_trader_jobs_81</text>
-            </phrase>
-            <phrase id="6">
-                <text>escape_trader_jobs_6</text>
-                <give_info>escape_artefact_start</give_info>
-                <next>8</next>
-            </phrase>
-            <phrase id="8">
-                <text>escape_trader_jobs_8</text>
-            </phrase>
-            <phrase id="7">
-                <text>escape_trader_jobs_7</text>
-                <next>9</next>
-            </phrase>
-            <phrase id="9">
-                <text>escape_trader_jobs_9</text>
-            </phrase>
-            <phrase id="15">
-                <text>escape_trader_jobs_15</text>
-            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_talk_about_escape" priority="2">
+        <precondition>dialogs.level_escape</precondition>
+        <phrase_list>
             <phrase id="2">
-                <text>escape_trader_jobs_2</text>
-                <next>3</next>
-                <next>4</next>
+                <text>escape_talk_about_escape_2</text>
+                <next>21</next>
             </phrase>
-            <phrase id="5">
-                <text>escape_trader_jobs_5</text>
-                <precondition>escape_dialog.trader_need_artefact</precondition>
-                <next>6</next>
-                <next>7</next>
+            <phrase id="21">
+                <text>escape_talk_about_escape_21</text>
             </phrase>
-            <phrase id="12">
-                <text>escape_trader_jobs_12</text>
-                <precondition>escape_dialog.trader_dont_has_job</precondition>
+            <phrase id="10">
+                <text>escape_talk_about_escape_10</text>
             </phrase>
-            <phrase id="51">
-                <text>escape_trader_jobs_51</text>
-                <precondition>escape_dialog.trader_need_blockpost_box</precondition>
-                <next>61</next>
-                <next>71</next>
-            </phrase>
-            <phrase id="52">
-                <text>escape_trader_jobs_52</text>
-                <precondition>escape_dialog.trader_need_military_document</precondition>
-                <next>62</next>
-                <next>72</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_jobs_3</text>
-                <next>15</next>
-            </phrase>
-            <phrase id="4">
-                <text>escape_trader_jobs_4</text>
-                <next>12</next>
-                <next>5</next>
-                <next>51</next>
-                <next>52</next>
+            <phrase id="1">
+                <text>escape_talk_about_escape_1</text>
+                <next>2</next>
+                <next>10</next>
             </phrase>
             <phrase id="0">
-                <text>escape_trader_jobs_0</text>
+                <text>escape_talk_about_escape_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_lager_volk_job">
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_lager_volk_job_2</text>
+                <precondition>escape_dialog.wolf_dont_has_job</precondition>
+            </phrase>
+            <phrase id="1">
+                <text>escape_lager_volk_job_1</text>
+                <precondition>escape_dialog.wolf_need_dynamite</precondition>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="12">
+                <text>escape_lager_volk_job_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_lager_volk_job_11</text>
+                <give_info>escape_dynamite_start</give_info>
+                <next>111</next>
+            </phrase>
+            <phrase id="121">
+                <text>escape_lager_volk_job_121</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="111">
+                <text>escape_lager_volk_job_111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text>escape_lager_volk_job_0</text>
+                <next>1</next>
                 <next>2</next>
             </phrase>
         </phrase_list>
@@ -653,49 +284,321 @@
                 <give_info>garbage_meetstalker_start</give_info>
                 <next>11</next>
             </phrase>
+            <phrase id="11">
+                <text>escape_raid_wounded_11</text>
+            </phrase>
             <phrase id="0">
                 <text>escape_raid_wounded_0</text>
                 <next>1</next>
                 <next>2</next>
             </phrase>
-            <phrase id="11">
-                <text>escape_raid_wounded_11</text>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_talk_level" priority="2">
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_trader_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_talk_level_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_talk_level_21</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_trader_talk_level_31</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_trader_talk_level_51</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_trader_talk_level_10</text>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_talk_level_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="41">
+                <text>escape_trader_talk_level_41</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_talk_level_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="1">
+                <text>escape_trader_talk_level_1</text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>10</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_talk_level_0</text>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_lager_volk_job">
+    <dialog id="escape_trader_start_dialog">
         <phrase_list>
             <phrase id="2">
-                <text>escape_lager_volk_job_2</text>
-                <precondition>escape_dialog.wolf_dont_has_job</precondition>
+                <text>escape_trader_start_dialog_2</text>
+                <dont_has_info>esc_trader_tutorial_choice</dont_has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_start_dialog_21</text>
+                <give_info>esc_trader_tutorial_choice</give_info>
+                <next>211</next>
+            </phrase>
+            <phrase id="211">
+                <text />
+                <give_info>esc_trader_tutorial_choice</give_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_start_dialog_5</text>
+            </phrase>
+            <phrase id="32">
+                <text>escape_trader_start_dialog_32</text>
+                <give_info>esc_trader_experienced</give_info>
+                <next>321</next>
+            </phrase>
+            <phrase id="321">
+                <text>escape_trader_start_dialog_321</text>
+                <give_info>esc_trader_tutorial_chosen</give_info>
+                <next>3211</next>
+            </phrase>
+            <phrase id="311">
+                <text />
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_self</action>
+                <give_info>esc_trader_tutorial_chosen</give_info>
+            </phrase>
+            <phrase id="3211">
+                <text>escape_trader_start_dialog_3211</text>
+                <action>dialogs.break_dialog</action>
+                <action>dialogs.disable_talk_victim</action>
             </phrase>
             <phrase id="1">
-                <text>escape_lager_volk_job_1</text>
-                <precondition>escape_dialog.wolf_need_dynamite</precondition>
-                <next>11</next>
-                <next>12</next>
+                <text />
+                <give_info>esc_trader_monolog_1</give_info>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_start_dialog_3</text>
+                <dont_has_info>esc_trader_tutorial_chosen</dont_has_info>
+                <has_info>esc_trader_tutorial_choice</has_info>
+                <next>31</next>
+                <next>32</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_trader_start_dialog_31</text>
+                <give_info>esc_trader_newbie</give_info>
+                <next>311</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_start_dialog_4</text>
+                <has_info>esc_trader_tutorial_chosen</has_info>
             </phrase>
             <phrase id="0">
-                <text>escape_lager_volk_job_0</text>
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_blockpost_box" priority="9">
+        <precondition>escape_dialog.have_blockpost_case</precondition>
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_trader_done_blockpost_box_2</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_blockpost_box_0</text>
+                <action>escape_dialog.give_blockpost_case</action>
+                <give_info>escape_have_blockpost_case</give_info>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_artefact" priority="9">
+        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
+        <dont_has_info>escape_artefact_done</dont_has_info>
+        <phrase_list>
+            <phrase id="2">
+                <text>escape_trader_done_artefact_2</text>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_artefact_0</text>
+                <action>escape_dialog.give_artefact_from_fleshes</action>
+                <give_info>escape_artefact_done</give_info>
+                <next>2</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_gift">
+        <has_info>escape_stalker_to_trader_give</has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>escape_trader_done_gift_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_trader_done_gift_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_done_gift_0</text>
+                <give_info>escape_stalker_to_trader_done</give_info>
+                <has_info>escape_stalker_to_trader_give</has_info>
+                <next>1</next>
+            </phrase>
+            <phrase id="111">
+                <text>escape_trader_done_gift_111</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_done_gift_2</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_jobs" priority="5">
+        <phrase_list>
+            <phrase id="15">
+                <text>escape_trader_jobs_15</text>
+            </phrase>
+            <phrase id="6">
+                <text>escape_trader_jobs_6</text>
+                <give_info>escape_artefact_start</give_info>
+                <next>8</next>
+            </phrase>
+            <phrase id="8">
+                <text>escape_trader_jobs_8</text>
+            </phrase>
+            <phrase id="7">
+                <text>escape_trader_jobs_7</text>
+                <next>9</next>
+            </phrase>
+            <phrase id="9">
+                <text>escape_trader_jobs_9</text>
+            </phrase>
+            <phrase id="81">
+                <text>escape_trader_jobs_81</text>
+            </phrase>
+            <phrase id="91">
+                <text>escape_trader_jobs_91</text>
+            </phrase>
+            <phrase id="531">
+                <text>escape_trader_jobs_531</text>
+                <next>5311</next>
+            </phrase>
+            <phrase id="5311">
+                <text>escape_trader_jobs_5311</text>
+            </phrase>
+            <phrase id="532">
+                <text>escape_trader_jobs_532</text>
+                <next>5321</next>
+            </phrase>
+            <phrase id="5321">
+                <text>escape_trader_jobs_5321</text>
+            </phrase>
+            <phrase id="61">
+                <text>escape_trader_jobs_61</text>
+                <give_info>escape_blockpost_case</give_info>
+                <next>81</next>
+            </phrase>
+            <phrase id="71">
+                <text>escape_trader_jobs_71</text>
+                <next>91</next>
+            </phrase>
+            <phrase id="12">
+                <text>escape_trader_jobs_12</text>
+                <precondition>escape_dialog.trader_dont_has_job</precondition>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_jobs_3</text>
+                <next>15</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_jobs_4</text>
+                <next>12</next>
+                <next>5</next>
+                <next>51</next>
+                <next>53</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_jobs_5</text>
+                <precondition>escape_dialog.trader_need_artefact</precondition>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="53">
+                <text>escape_trader_jobs_53</text>
+                <next>531</next>
+                <next>532</next>
+            </phrase>
+            <phrase id="511">
+                <text>escape_trader_jobs_511</text>
+                <next>5111</next>
+            </phrase>
+            <phrase id="5111">
+                <text>escape_trader_jobs_5111</text>
+                <next>61</next>
+                <next>71</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_trader_jobs_51</text>
+                <precondition>escape_dialog.trader_need_blockpost_box</precondition>
+                <next>511</next>
+            </phrase>
+            <phrase id="0">
+                <text>escape_trader_jobs_0</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_jobs_2</text>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_trader_done_tutorial_artefact">
+        <phrase_list>
+            <phrase id="0">
+                <text>escape_trader_done_tutorial_artefact_0</text>
                 <next>1</next>
                 <next>2</next>
             </phrase>
-            <phrase id="12">
-                <text>escape_lager_volk_job_12</text>
-                <next>121</next>
+            <phrase id="1">
+                <text>escape_trader_done_tutorial_artefact_1</text>
             </phrase>
-            <phrase id="11">
-                <text>escape_lager_volk_job_11</text>
-                <give_info>escape_dynamite_start</give_info>
-                <next>111</next>
-            </phrase>
-            <phrase id="121">
-                <text>escape_lager_volk_job_121</text>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="111">
-                <text>escape_lager_volk_job_111</text>
-                <action>dialogs.break_dialog</action>
+            <phrase id="2">
+                <text>escape_trader_done_tutorial_artefact_2</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -773,17 +676,97 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_lager_volk_dynamite_done">
-		<precondition>escape_dialog.have_dynamite</precondition>
+    <dialog id="escape_trader_talk_info">
         <phrase_list>
+            <phrase id="1">
+                <text>escape_trader_talk_info_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text></text>
+                <next>111</next>
+            </phrase>
+            <phrase id="41">
+                <text>escape_trader_talk_info_41</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="21">
+                <text>escape_trader_talk_info_21</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="3121">
+                <text>escape_trader_talk_info_3121</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="3111">
+                <text>escape_trader_talk_info_3111</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="312">
+                <text>escape_trader_talk_info_312</text>
+                <next>3121</next>
+            </phrase>
+            <phrase id="311">
+                <text>escape_trader_talk_info_311</text>
+                <next>3111</next>
+            </phrase>
+            <phrase id="31">
+                <text>escape_trader_talk_info_31</text>
+                <next>311</next>
+                <next>312</next>
+                <next>313</next>
+            </phrase>
+            <phrase id="313">
+                <text>escape_trader_talk_info_313</text>
+                <next>3131</next>
+            </phrase>
+            <phrase id="3131">
+                <text>escape_trader_talk_info_3131</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_trader_talk_info_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_trader_talk_info_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="4">
+                <text>escape_trader_talk_info_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <text>escape_trader_talk_info_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>escape_trader_talk_info_51</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="6">
+                <text>escape_trader_talk_info_6</text>
+                <next>61</next>
+            </phrase>
+            <phrase id="61">
+                <text>escape_trader_talk_info_61</text>
+                <next>11</next>
+            </phrase>
             <phrase id="0">
-                <text>escape_lager_volk_dynamite_done_0</text>
-                <precondition>escape_dialog.have_dynamite</precondition>
-                <action>escape_dialog.give_dynamite</action>
+                <text>escape_trader_talk_info_0</text>
                 <next>1</next>
             </phrase>
-            <phrase id="1">
-                <text>escape_lager_volk_dynamite_done_1</text>
+            <phrase id="111">
+                <text></text>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="10">
+                <text>escape_trader_talk_info_10</text>
             </phrase>
         </phrase_list>
     </dialog>

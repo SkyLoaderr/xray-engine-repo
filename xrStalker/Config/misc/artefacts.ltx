@@ -2,6 +2,55 @@
 ;; Artefacts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+; Уникальные квестовые артефакты
+[af_blood_tutorial]
+GroupControlSection	= spawn_group
+$spawn				= "artifacts\tutorial blood"
+
+$prefetch 			= 64
+cform				= skeleton
+class				= ARTEFACT
+
+visual				= physics\anomaly\artefact_myasorubka1.ogf  
+inv_name			= "Stone blood"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 17
+inv_grid_y			= 0
+
+belt				= true
+cost				= 300	;100
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald
+
+jump_height			= .01
+energy				= 0.1
+
+particles			= anomaly2\artefact\artefact_zharka_idle_00
+
+lights_enabled = false	;true			;???? ?????? 
+
+;влияние артефакта на поясе у актера
+actor_properties = on
+
+;скорости увеличения (уменьшения) 
+health_restore_speed = 0.001			
+radiation_restore_speed = 0.000
+satiety_restore_speed = -0.001
+power_restore_speed = 0.0000
+bleeding_restore_speed = 0.01
+hit_absorbation_sect = af_blood_absorbation
+
+;предмет нельзя продать
+can_trade = off
+
 
 ; Артефакты для аномалии "Комариная плешь"
 

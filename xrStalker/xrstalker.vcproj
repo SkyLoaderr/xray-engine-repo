@@ -1471,9 +1471,6 @@
 					RelativePath=".\scripts\xr_actions_id.script">
 				</File>
 				<File
-					RelativePath=".\scripts\xr_agro_boar.script">
-				</File>
-				<File
 					RelativePath=".\scripts\xr_ambush.script">
 				</File>
 				<File
