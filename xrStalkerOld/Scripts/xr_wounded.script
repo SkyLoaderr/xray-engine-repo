@@ -350,7 +350,7 @@ function action_stand:execute ()
     if self.first == false then
        self.first = true
        self.object:clear_animations ()
-       self.object:add_animation ("waunded_stand_uo_0", true)
+       self.object:add_animation ("waunded_stand_up_0", true)
     end
     
     if self.object:animation_count () == 0 then
