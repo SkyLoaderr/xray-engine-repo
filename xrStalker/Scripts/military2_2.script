@@ -23,6 +23,7 @@ function main ()
 	wait (60000)	
 
 	for a = 1, table.getn (stalkers), 1 do
+	    action (stalkers[a], object (stalkers[a]:best_weapon (), object.activate), cond (cond.time_end, 1000))
 		action (stalkers[a], move (move.standing, move.run, move.line, ways[a]), object (torches[a], object.activate),
 				look (look.path_dir), anim (anim.danger), cond (cond.move_end))
 	end
