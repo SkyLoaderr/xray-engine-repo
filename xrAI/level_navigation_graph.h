@@ -93,20 +93,6 @@ protected:
 
 #else
 
-//struct sort_cells_predicate {
-//	ICF	bool	operator()	(const LevelNavigationGraph::CCellVertexEx *v0, const LevelNavigationGraph::CCellVertexEx *v1) const
-//	{
-//		u32					s0 = v0->m_down*v0->m_right;
-//		u32					s1 = v1->m_down*v1->m_right;
-//		if (s0 > s1)
-//			return			(true);
-//		else
-//			if (s0 < s1)
-//				return		(false);
-//		return				(v0 < v1);
-//	}
-//};
-
 class CLevelNavigationGraph : public CLevelGraph {
 private:
 	typedef CLevelGraph									inherited;

@@ -536,15 +536,8 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 //	VERIFY					(!v->m_mark);
 //#endif
 
-	if (v->m_right >= v->m_down) {
-		right				= v->m_right;
-		down				= 1;
-	}
-	else {
-		right				= 1;
-		down				= v->m_down;
-	}
-
+	right					= 1;
+	down					= v->m_down;
 	u32						current_down = v->m_down;
 	CCellVertex				*right_id = v->m_right_next;
 	u32						i = 2;
@@ -555,7 +548,7 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 //#endif
 //		VERIFY				(right_id);
 
-		current_down		= _min(current_down,right_id->m_down_left);
+		current_down		= (u32)_min((s32)current_down,(s32)right_id->m_down_left);
 		
 		if (current_down*v->m_right <= max_square)
 			break;
@@ -600,15 +593,15 @@ IC	void CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 IC	void CLevelNavigationGraph::build_sector	(u32 vertex_id, u32 _right, u32 _down, u32 group_id)
 {
 //	Msg							("* Sector %5d (%3dx%3d) %6d",_right*_down,_right,_down,vertex_id);
-	CCellVertex					*cell = 0;
+	CCellVertex					*cell = 0, *right_id = &m_cross[vertex_id];
 	u32							j, down_id, mask = left;
-	for (u32 right_id = vertex_id, i=0; i<_right; right_id = vertex(right_id)->link(1), ++i) {
-		m_cross[right_id].m_use	= mask | up;
+	for (u32 i=0; i<_right; right_id = right_id->m_right_next, ++i) {
+		right_id->m_use			= mask | up;
 
 		if (i == (_right-1))
 			mask				|= right;
 		
-		for (down_id = right_id, j=0; j<_down; down_id = vertex(down_id)->link(2), ++j) {
+		for (down_id = this->vertex_id(right_id), j=0; j<_down; down_id = vertex(down_id)->link(2), ++j) {
 			cell				= &m_cross[down_id];
 
 			m_temp.erase		(cell_id(cell));
