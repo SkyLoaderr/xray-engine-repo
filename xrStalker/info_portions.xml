@@ -18,12 +18,12 @@
 	</info_portion>
 
 	<info_portion id="actor_start01">
-		<text>Спаси меня... меня тяжело ранил патруль... мне нужна аптечка...</text> 
+		<text>Please... Help me!!! I need medikit...</text> 
 		<location >
 			<level>0</level>
 			<object>wounded_stalker_0_1</object>
 			<icon name="unknown" x="2" y="3" width="1" height="1"></icon>
-			<text>аптечку...</text>
+			<text>medikit...</text>
 		</location>
 		<!-- список диалогов, который может инициировать InfoPortion -->
 		<dialog>job_medkit</dialog>
