@@ -1176,6 +1176,9 @@
 						RelativePath=".\config\scripts\dar\dar_monster_holder.ltx">
 					</File>
 					<File
+						RelativePath=".\config\scripts\dar\dar_polter_grand_holder.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\dar\dar_sound_zone.ltx">
 					</File>
 				</Filter>
