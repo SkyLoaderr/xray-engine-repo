@@ -3,6 +3,4 @@ function main()
 	local 	ps = particles("nature\\fog_stormy",true)
 
 	ps:play_at_pos		(actor:position());
-	wait()
-	end
 end
