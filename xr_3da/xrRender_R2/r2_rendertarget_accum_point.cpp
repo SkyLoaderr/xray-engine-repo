@@ -74,9 +74,9 @@ void CRenderTarget::accum_point		(light* L)
 	float	o_h						= (.5f / _h);
 	Fmatrix			m_TexelAdjust	= {
 		0.5f,				0.0f,				0.0f,			0.0f,
-			0.0f,				-0.5f,				0.0f,			0.0f,
-			0.0f,				0.0f,				1.0f,			0.0f,
-			0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
+		0.0f,				-0.5f,				0.0f,			0.0f,
+		0.0f,				0.0f,				1.0f,			0.0f,
+		0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
 	};
 	Fmatrix			m_Tex;
 	m_Tex.mul		(m_TexelAdjust,RCache.xforms.m_wvp);
@@ -92,7 +92,7 @@ void CRenderTarget::accum_point		(light* L)
 			else					_id	= SE_L_NORMAL;
 		} else {
 			_id						= SE_L_UNSHADOWED;
-			m_Shadow				= m_Lmap;
+			//m_Shadow				= m_Lmap;
 		}
 		RCache.set_Element			(shader->E[ _id ]	);
 
@@ -100,21 +100,6 @@ void CRenderTarget::accum_point		(light* L)
 		RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
 		RCache.set_c					("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 		RCache.set_c					("m_texgen",		m_Tex);
-		RCache.set_c					("m_cube",			L->X.P.world);
-		R_constant* _C					= RCache.get_c		("J_point");
-		if (_C)
-		{
-			Fvector4	J;
-			float		scale			= ps_r2_ls_psm_kernel/100.f;
-			J.set(-1,-1,-1); J.mul(scale); RCache.set_ca	(_C,0,J);
-			J.set(+1,-1,-1); J.mul(scale); RCache.set_ca	(_C,1,J);
-			J.set(-1,-1,+1); J.mul(scale); RCache.set_ca	(_C,2,J);
-			J.set(+1,-1,+1); J.mul(scale); RCache.set_ca	(_C,3,J);
-			J.set(-1,+1,-1); J.mul(scale); RCache.set_ca	(_C,4,J);
-			J.set(+1,+1,-1); J.mul(scale); RCache.set_ca	(_C,5,J);
-			J.set(-1,+1,+1); J.mul(scale); RCache.set_ca	(_C,6,J);
-			J.set(+1,+1,+1); J.mul(scale); RCache.set_ca	(_C,7,J);
-		}
 
 		// Render if (stencil >= light_id && z-pass)
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
