@@ -91,11 +91,6 @@ void CGameMtlLibrary::RemoveMaterial(LPCSTR name)
     xr_delete		(*rem_it);
     materials.erase	(rem_it);
 }
-SGameMtl* CGameMtlLibrary::GetMaterialByID	(int id)
-{
-	GameMtlIt it = GetMaterialItByID(id);
-    return it!=materials.end()?*it:0;
-}
 
 //------------------------------------------------------------------------------
 // material pair routines
