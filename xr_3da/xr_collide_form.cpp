@@ -342,37 +342,25 @@ void CCF_Shape::ComputeBounds()
 		case 0: // sphere
 			{
 				Fsphere		T		= shapes[el].data.sphere;
-				for (int t=0; t<100; t++)
-				{
-					Fvector p; p.random_dir();
-					p.normalize	();
-					p.mul		(T.R);
-					p.add		(T.P);
-					s_box.modify(p);
-				}
+				Fvector		P;
+				P.set		(T.P);	P.sub(T.R);	s_box.modify(P);
+				P.set		(T.P);	P.add(T.R);	s_box.modify(P);
 			}
 			break;
 		case 1:	// box
 			{
-				Fvector		A[8],B[8];
+				Fvector		A,B;
 				Fmatrix&	T		= shapes[el].data.box;
 				
 				// Build points
-				A[0].set( -.5f, -.5f, -.5f); T.transform_tiny	(B[0],A[0]); 
-				A[1].set( -.5f, -.5f, +.5f); T.transform_tiny	(B[1],A[1]);
-				A[2].set( -.5f, +.5f, +.5f); T.transform_tiny	(B[2],A[2]);
-				A[3].set( -.5f, +.5f, -.5f); T.transform_tiny	(B[3],A[3]);
-				A[4].set( +.5f, +.5f, +.5f); T.transform_tiny	(B[4],A[4]);
-				A[5].set( +.5f, +.5f, -.5f); T.transform_tiny	(B[5],A[5]);
-				A[6].set( +.5f, -.5f, +.5f); T.transform_tiny	(B[6],A[6]);
-				A[7].set( +.5f, -.5f, -.5f); T.transform_tiny	(B[7],A[7]);
-				
-				P.build(B[0],B[3],B[5]);	if (P.classify(S.P)<S.R) break;
-				P.build(B[1],B[2],B[3]);	if (P.classify(S.P)>S.R) break;
-				P.build(B[6],B[5],B[4]);	if (P.classify(S.P)>S.R) break;
-				P.build(B[4],B[2],B[1]);	if (P.classify(S.P)>S.R) break;
-				P.build(B[3],B[2],B[4]);	if (P.classify(S.P)>S.R) break;
-				P.build(B[1],B[0],B[6]);	if (P.classify(S.P)>S.R) break;
+				A.set( -.5f, -.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( -.5f, -.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( -.5f, +.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( -.5f, +.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( +.5f, +.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( +.5f, +.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( +.5f, -.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( +.5f, -.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
 				return TRUE;
 			}
 			break;

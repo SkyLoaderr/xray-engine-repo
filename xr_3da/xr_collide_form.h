@@ -200,6 +200,7 @@ public:
 
 	void			add_sphere		( Fsphere& S	);
 	void			add_box			( Fmatrix& B	);
+	void			ComputeBounds	( );
 	BOOL			Contact			( CObject* O	);
 };
 
