@@ -236,7 +236,8 @@ public:
     void				Save            		(CFS_Base&);
     bool				Export          		(LPCSTR fn);
 
-    bool				UpdateBBox				();
+    bool				UpdateHeader			();
+    bool				UpdateSlots  			();
     bool				UpdateBaseTexture		(LPCSTR tex_name=0);
     bool				UpdateSlotObjects		(int x, int z);
     bool				UpdateObjects			(bool bUpdateTex, bool bUpdateSelectedOnly);

@@ -34,6 +34,8 @@ void CCustomObject::OnUpdateTransform()
 	mTranslate.translate	(PPosition);
 	FTransformRP.mul		(mTranslate,mRotate);
 	FTransform.mul			(FTransformRP,mScale);
+    FITransformRP.invert	(FTransformRP);
+    FITransform.invert		(FTransform);
 }
 
 void CCustomObject::Select( int flag )

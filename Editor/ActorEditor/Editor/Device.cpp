@@ -9,12 +9,7 @@
 
 #pragma package(smart_init)
 
-extern void __stdcall xrSkin1W_x86(	vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
-extern void __stdcall xrBoneLerp_x86(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
-
-
 CRenderDevice 		Device;
-xrDispatchTable		PSGP;
 
 int psTextureLOD	= 0;
 DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
@@ -27,7 +22,7 @@ void CRenderDevice::Error(HRESULT hr, const char *file, int line)
 
 	const char *errStr = DXGetErrorString8A(hr);
 	if (errStr==0) {
-		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,errmsg_buf,1024,0);
+        strcpy(errmsg_buf,Engine.LastWindowsError());
 		errStr = errmsg_buf;
 	}
 	_verify(errStr,(char *)file,line);
@@ -70,13 +65,6 @@ CRenderDevice::CRenderDevice(){
     dwShadeMode		= D3DSHADE_GOURAUD;
 
     m_CurrentShader	= 0;
-
-    // generic
-    PSGP.skin1W		= xrSkin1W_x86;
-    PSGP.skin2W		= NULL;
-    PSGP.blerp		= xrBoneLerp_x86;
-    PSGP.m44_mul	= NULL;//xrM44_Mul_x86;
-    PSGP.transfer 	= NULL;//xrTransfer_x86;
 }
 
 CRenderDevice::~CRenderDevice(){

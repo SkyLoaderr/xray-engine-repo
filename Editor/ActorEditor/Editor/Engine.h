@@ -8,19 +8,23 @@
 
 #include "FS.h"
 #include "FileSystem.h"
+#include "xrCPU_Pipe.h"
                       
 class ENGINE_API CEngine
 {
+	HMODULE				hPSGP;
 public:
 	CFileSystem			FS;
 public:
-						CEngine		();
-						~CEngine	();
+						CEngine		    ();
+						~CEngine	    ();
 
-	void				Initialize	();
-	void				Destroy		();
+	void				Initialize	    ();
+	void				Destroy		    ();
+    LPCSTR              LastWindowsError();
 };
 
+ENGINE_API extern xrDispatchTable	PSGP;
 ENGINE_API extern CEngine			Engine;
 
 #endif // !defined(AFX_ENGINE_H__22802DD7_D7EB_4234_9781_E237657471AC__INCLUDED_)

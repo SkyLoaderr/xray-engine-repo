@@ -9,7 +9,6 @@
 //----------------------------------------------------
 bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h){
     bool err=false;
-	char lpMsgBuf[1024];
     BITMAPINFOHEADER bi;
     ZeroMemory(&bi, sizeof(bi));
     bi.biSize = sizeof(BITMAPINFOHEADER);
@@ -25,14 +24,12 @@ bool CreateBitmap(HDC hdc, HBITMAP& th, DWORDVec& data, int w, int h){
 	th = CreateCompatibleBitmap( hdc,w,h );
 	if (!th&&(GetLastError()!=0)){
     	err = true;
-		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,GetLastError(),0,lpMsgBuf,1024,0);
-        ELog.Msg(mtError, lpMsgBuf);
+        ELog.Msg(mtError, Engine.LastWindowsError());
     }
     int ln = SetDIBits( hdc, th, 0, h, (BYTE*)data.begin(), (LPBITMAPINFO)&bi, DIB_RGB_COLORS);
 	if ((ln==0)&&(GetLastError()!=0)){
     	err = true;
-		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,GetLastError(),0,lpMsgBuf,1024,0);
-        ELog.Msg(mtError, lpMsgBuf);
+        ELog.Msg(mtError, Engine.LastWindowsError());
     }
 	return (!err);
 }

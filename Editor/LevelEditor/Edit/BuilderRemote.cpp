@@ -226,7 +226,7 @@ void SceneBuilder::BuildObject(CSceneObject* obj){
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
     UI.SetStatus(temp.c_str());
 
-    const Fmatrix& T = obj->_Transform();
+    const Fmatrix& T = obj->_Transform();                           
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;

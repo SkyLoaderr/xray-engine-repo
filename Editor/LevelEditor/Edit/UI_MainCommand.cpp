@@ -34,7 +34,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
 		Engine.Initialize	();
-		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
     	fraLeftBar  		= new TfraLeftBar(0);

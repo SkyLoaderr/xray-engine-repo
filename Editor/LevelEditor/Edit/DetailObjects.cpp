@@ -349,9 +349,9 @@ bool CDetailManager::Initialize(LPCSTR tex_name){
     m_SnapObjects.clear();
     m_SnapObjects = Scene.m_SnapObjects;
 
-    // create base texture
+    if (!UpdateHeader())                return false;
 	if (!UpdateBaseTexture(tex_name))	return false;
-    if (!UpdateBBox()) 					return false;
+    if (!UpdateSlots()) 		   		return false;
     if (!UpdateObjects(false,false))	return false;
 	return true;
 }
@@ -369,11 +369,28 @@ bool CDetailManager::Reinitialize(){
 
     InvalidateCache();
 
+    if (!UpdateHeader())            return false;
     if (!UpdateBaseTexture(0))		return false;
-    if (!UpdateBBox()) 				return false;
-    if (!UpdateObjects(false,false))return false;
+    if (!UpdateSlots()) 			return false;
+    if (!UpdateObjects(false,false))return false;							
 
 	return true;
+}
+
+bool CDetailManager::UpdateHeader(){
+    // get bounding box
+	if (!Scene.GetBox(m_BBox,m_SnapObjects)) return false;
+
+    // fill header
+    int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE);
+    int mn_z 			= iFloor(m_BBox.min.z/DETAIL_SLOT_SIZE);
+    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE+0.5f);
+    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE+0.5f);
+    m_Header.offs_x 	= -mn_x;
+    m_Header.offs_z 	= -mn_z;
+	m_Header.size_x 	= mx_x-mn_x;
+	m_Header.size_z 	= mx_z-mn_z;
+    return true;
 }
 
 bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
@@ -443,15 +460,15 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
     }
 }
 
-bool CDetailManager::UpdateBBox(){
+bool CDetailManager::UpdateSlots(){
     // get bounding box
 	if (!Scene.GetBox(m_BBox,m_SnapObjects)) return false;
 
     // fill header
     int mn_x 			= iFloor(m_BBox.min.x/DETAIL_SLOT_SIZE);
     int mn_z 			= iFloor(m_BBox.min.z/DETAIL_SLOT_SIZE);
-    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE+0.5f);
-    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE+0.5f);
+    int mx_x 			= iFloor(m_BBox.max.x/DETAIL_SLOT_SIZE)+1;
+    int mx_z 			= iFloor(m_BBox.max.z/DETAIL_SLOT_SIZE)+1;
     m_Header.offs_x 	= -mn_x;
     m_Header.offs_z 	= -mn_z;
 	m_Header.size_x 	= mx_x-mn_x;
@@ -635,10 +652,10 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         // density
         float f = m_Objects[slot->items[k].id]->m_fDensityFactor;
 
-        slot->items[k].palette.a0 	= iFloor(best[k].dens[0]*f*15.f+.5f);
-        slot->items[k].palette.a1 	= iFloor(best[k].dens[1]*f*15.f+.5f);
-        slot->items[k].palette.a2 	= iFloor(best[k].dens[2]*f*15.f+.5f);
-        slot->items[k].palette.a3 	= iFloor(best[k].dens[3]*f*15.f+.5f);
+        slot->items[k].palette.a0 	= 15;//iFloor(best[k].dens[0]*f*15.f+.5f);
+        slot->items[k].palette.a1 	= 15;//iFloor(best[k].dens[1]*f*15.f+.5f);
+        slot->items[k].palette.a2 	= 15;//iFloor(best[k].dens[2]*f*15.f+.5f);
+        slot->items[k].palette.a3 	= 15;//iFloor(best[k].dens[3]*f*15.f+.5f);
 /*
 		static bool bFnd=false;
 

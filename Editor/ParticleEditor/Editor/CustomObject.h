@@ -35,6 +35,8 @@ public:
     Fvector 		FRotation;
     Fmatrix			FTransformRP;
 	Fmatrix 		FTransform;
+    Fmatrix			FITransformRP;
+	Fmatrix 		FITransform;
 
     CGroupObject*	m_pGroupObject;
 protected:
@@ -128,10 +130,11 @@ public:
 
 	virtual 		~CCustomObject();
 
-    IC const Fmatrix& _Transform			(){return FTransform;}
-    IC const Fvector& _Position				(){return FPosition;}
-    IC const Fvector& _Rotation				(){return FRotation;}
-    IC const Fvector& _Scale				(){return FScale;}
+//    IC const Fmatrix& _ITransform			(){return FITransform;}
+//    IC const Fmatrix& _Transform			(){return FTransform;}
+//    IC const Fvector& _Position				(){return FPosition;}
+//    IC const Fvector& _Rotation				(){return FRotation;}
+//    IC const Fvector& _Scale				(){return FScale;}
 
     PropertyGP(GetPosition,SetPosition)		Fvector PPosition;
     PropertyGP(GetRotation,SetRotation)		Fvector PRotation;

@@ -85,11 +85,10 @@
       intermediate\Blender_Lm(EbB).obj intermediate\Blender_LmBmmD.obj 
       intermediate\fmesh.obj intermediate\Blender_BmmD.obj 
       intermediate\BuilderGame.obj intermediate\EventOneAction.obj 
-      intermediate\xrXRC.obj intermediate\xrSkin1W.obj 
-      intermediate\FBasicVisual.obj intermediate\FHierrarhyVisual.obj 
-      intermediate\FProgressive.obj intermediate\FProgressiveFixedVisual.obj 
-      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
-      intermediate\SkeletonX.obj intermediate\xrBoneLerp.obj 
+      intermediate\xrXRC.obj intermediate\FBasicVisual.obj 
+      intermediate\FHierrarhyVisual.obj intermediate\FProgressive.obj 
+      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
+      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
       intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\cpuid.obj 
       intermediate\SH_RT.obj Intermediate\_math.obj 
@@ -134,8 +133,8 @@
     <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
-    <LIBPATH value="Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <INCLUDEPATH value="Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <LIBPATH value="Engine\CPU_Pipe;Engine\Animations;Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;engine;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
   </MACROS>
   <OPTIONS>
