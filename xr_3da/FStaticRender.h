@@ -92,6 +92,7 @@ public:
 	virtual CSector*				getSector				(int id);
 	virtual CSector*				getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
+	virtual void					getLights				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 

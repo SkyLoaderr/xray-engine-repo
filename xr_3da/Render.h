@@ -9,6 +9,7 @@ class ENGINE_API	CSector;
 class ENGINE_API	CPortal;
 class ENGINE_API	CVisual;
 class ENGINE_API	CObject;
+class ENGINE_API	xrLIGHT;
 
 // definition
 class	ENGINE_API	CRender_interface	:
@@ -34,6 +35,7 @@ public:
 	virtual CVisual*				getVisual				(int id);
 	virtual DWORD					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
+	virtual void					getLights				(Fvector &pos, float fRadius, vector<xrLIGHT*>	dest);
 	virtual CSector*				detectSector			(Fvector& P);
 	
 	// Main 

@@ -25,6 +25,10 @@ CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<Portals.size()); return &Po
 CSector*	CRender::getSector			(int id)			{ VERIFY(id<Sectors.size()); return Sectors[id];	}
 CSector*	CRender::getSectorActive	()					{ return pLastSector;								}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size()); return Visuals[id];	}
+void		CRender::getLights			(Fvector &pos, float fRadius, vector<xrLIGHT*> dest)
+{
+	L_DB.Select	(pos,fRadius,dest);
+}
 
 BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
 BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
