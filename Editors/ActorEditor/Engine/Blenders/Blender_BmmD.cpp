@@ -65,6 +65,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
+		if (C.L_textures.size()<2)	Debug.fatal	("Not enought textures for shader, base tex: %s",C.L_textures[0]);
 		if (2==C.iElement)
 		{
 			// Lighting only
