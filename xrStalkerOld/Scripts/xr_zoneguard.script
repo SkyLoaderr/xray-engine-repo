@@ -119,7 +119,7 @@ function action_zoneguard_activity:execute()
 	
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
-		if see_actor and xr_zones.is_in_zone(actor, self.st.zone_guard_obj:id()) then
+		if see_actor and self.st.zone_guard_obj:active_zone_contact(actor:id()) then
 			if self.object:relation(actor) ~= game_object.enemy then
 				self.object:set_relation(game_object.enemy, actor)
 			end
