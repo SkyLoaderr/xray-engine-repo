@@ -140,7 +140,7 @@ int __cdecl main	(int argc, char* argv[])
 	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 	DWORD cycles_per_tri	= DWORD(u64(u64(total)/u64(count)));
 	DWORD tpms				= DWORD(u64(u64(CPU::cycles_per_second) / u64(cycles_per_tri)));
-	Msg("Cycles: %d\nTpMS:   %d\n",cycles_per_tri,tpms/1000);
+	Msg("Cycles: %d\nTpMS:   %d\nTpS:    %d\n",cycles_per_tri,tpms/1000,tpms);
 	
 	// Propagade
 	Raster.propagade	();
