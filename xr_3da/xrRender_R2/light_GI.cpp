@@ -34,11 +34,21 @@ void	light::gi_generate	()
 		light_indirect		LI;
 		LI.P.mad			(position,dir,R->range);
 		LI.D.reflect		(dir,TN);
-		LI.E				= dot * ps_r2_GI_refl * (1-R->range/range) / float(indirect_photons);
-		if (LI.E < ps_r2_GI_clip)	continue;
+		LI.E				= dot * (1-R->range/range) / float(indirect_photons);
+		if (LI.E < ps_r2_GI_clip/10.f)			continue;
 		LI.S				= spatial.sector;	//BUG
 
 		indirect.push_back	(LI);
 	}
-}
 
+	// normalize
+	if (indirect.size())	{
+		float	target_E		=	ps_r2_GI_refl;
+		float	total_E			=	0;
+		for (int it=0; it<indirect.size(); it++)
+			total_E				+=	indirect[it].E;
+		float	scale_E			=	target_E/total_E;
+		for (int it=0; it<indirect.size(); it++)
+			indirect[it].E		*=	scale_E;
+	}
+}

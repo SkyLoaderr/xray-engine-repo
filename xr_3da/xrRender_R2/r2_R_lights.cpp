@@ -208,9 +208,11 @@ void	CRender::render_indirect			(light* L)
 		LIGEN.set_color					(T.x,T.y,T.z);
 
 		// geometric
+		Fvector L_up,L_right;			L_up.set	(0,1,0);	if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
+		L_right.crossproduct			(L_up,LI.D).normalize	();
 		LIGEN.spatial.sector			= LI.S;
 		LIGEN.set_position				(LI.P);
-		LIGEN.set_rotation				(LI.D,T.set(0,0,0));
+		LIGEN.set_rotation				(LI.D,L_right);
 
 		// range
 		// dist^2 / range^2 = A - has infinity number of solutions
