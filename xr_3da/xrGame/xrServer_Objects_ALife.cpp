@@ -996,7 +996,7 @@ bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 
 bool CSE_ALifeObjectHangingLamp::match_configuration() const
 {
-	R_ASSERT3(flags.test(flR1) || flags.test(flR2),"no render type set for hanging-lamp ",s_name_replace);
+	R_ASSERT3(flags.test(flR1) || flags.test(flR2),"no renderer type set for hanging-lamp ",s_name_replace);
 #ifdef XRGAME_EXPORTS
 	return						(
 		(flags.test(flR1) && (::Render->get_generation() == IRender_interface::GENERATION_R1)) ||
