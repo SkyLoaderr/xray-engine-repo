@@ -1,0 +1,98 @@
+--kpd.Le-MMiNG Script
+--Скрипт "монстры пожирающие трупы"
+--1.  Монстры бродят среди трупов и пожирают их (настроить чуство голода)
+--2.  Скрипт удерживает их от разбредания по базе (при выходе из скриптовой зоны скрипт возвращает их назад, только если не появился враг - игрок, сталкер или другой монстр)
+--
+--Используемые объекты : zone2 - скриптовая зона
+--flesh02 - плоть,которая бродит и иногда хавает
+--s1,s2,s3 - три мертвых сталкера, под в сцене скрипт не берутся.
+--way2 - вэйпоинт,по которому плоть бродит,когда под скриптом
+--way1 - вэйпоинт возврата в скриптовую зону
+
+m_gameplay2.flesh02_entered = true
+
+function on_enter(zone,object)
+  --log("on_enter: flesh_id is " .. m_gameplay2.flesh02_id)
+--  log("on_enter: object:id() is " .. object:id())
+  --flush()
+  if m_gameplay2.flesh02_id == object:id() then
+    --log("Flesh entered the zone"); flush()
+    m_gameplay2.flesh02_entered = true
+  end
+end
+
+function on_exit(zone,object)
+--  log("on_exit: flesh_id is " .. m_gameplay2.flesh02_id)
+--  log("on_exit: object:id() is " .. object:id())
+--  flush()
+  if m_gameplay2.flesh02_id == object:id () then
+--    log("Flesh has left the zone"); flush()
+    m_gameplay2.flesh02_entered = false
+  end
+end
+
+function check_stalker (object)
+        if object:action () then return end
+        object:script(false, m_gameplay2.script_name())
+end
+
+function main ()
+  local zone1 = get_level_object ("zone2")
+
+  zone1:clear_callback(true)
+  zone1:clear_callback(false)
+  zone1:set_callback (m_gameplay2.on_enter, true)
+  zone1:set_callback (m_gameplay2.on_exit, false)
+
+  local actor = get_actor()
+  m_gameplay2.actor_id = actor:id()
+
+  m_gameplay2.monster_under_script = 0
+
+  m_gameplay2.flesh02    =   get_level_object("flesh02")
+  m_gameplay2.s1=get_level_object("s1")
+  m_gameplay2.s2=get_level_object("s2")
+  m_gameplay2.s3=get_level_object("s3")
+  m_gameplay2.flesh02_id = m_gameplay2.flesh02:id()
+  m_gameplay2.time = 1000
+
+
+       while m_gameplay2.flesh02.health > 0 do
+--printf(test2.flesh02.satiety)
+if m_gameplay2.flesh02_entered == true then
+  wait(m_gameplay2.time)
+  m_gameplay2.time=1000
+  wait(m_gameplay2.time)
+  --6400vremeni na 0.1 edenicu satiety
+     printf("pervaya proverka")
+     if m_gameplay2.flesh02.satiety>0.7 then
+       if m_gameplay2.monster_under_script==0
+         then
+       printf("proverka satiety>0.7")
+          m_gameplay2.flesh02:script(true,m_gameplay2.script_name())
+    action(m_gameplay2.flesh02,move (move.act_walk_fwd,patrol("way2")), cond (cond.time_end,3333700))
+    m_gameplay2.monster_under_script=1
+    else
+    end
+
+          else
+      if m_gameplay2.monster_under_script==1 then
+      printf("proverka satiety<0.7")
+                m_gameplay2.flesh02:script(false,m_gameplay2.script_name())
+    printf("time to wait poka pohavaet:",m_gameplay2.time)
+    m_gameplay2.time=(1-m_gameplay2.flesh02.satiety)*64000
+                printf(m_gameplay2.time)
+    m_gameplay2.monster_under_script=0
+    else
+    end
+    end
+     elseif  m_gameplay2.flesh02.entered == false then
+     m_gameplay2.time=100
+    m_gameplay2.flesh02:script(true,m_gameplay2.script_name())
+          action(m_gameplay2.flesh02,move (move.act_walk_fwd,patrol("way1")), cond (cond.time_end,33700))
+    end
+
+
+    wait();
+       end
+end

@@ -1,0 +1,84 @@
+--kpd.Le-MMiNG Script
+--Скрипт "монстры бродят по базе"
+--1.  Несколько монстров просто бегают по базе
+--2.  Несколько монстров забежало в постройки
+--
+--Используемые объекты :
+--zone3 - скриптовая зона,по которой гуляет плоть
+--flesh01 - плоть,которая гуляет по зоне
+--way4 - вэйпоинт возврата в скриптовую зону
+
+m_gameplay3.flesh01_entered = true
+
+function on_enter(zone,object)
+--  log("on_enter: flesh_id is " .. test4.flesh01_id)
+--  log("on_enter: object:id() is " .. object:id())
+--  flush()
+  if m_gameplay3.flesh01_id == object:id() then
+--    log("Flesh entered the zone"); flush()
+    m_gameplay3.flesh01_entered = true
+  end
+end
+
+function on_exit(zone,object)
+--  log("on_exit: flesh_id is " .. test4.flesh01_id)
+--  log("on_exit: object:id() is " .. object:id())
+--  flush()
+  if m_gameplay3.flesh01_id == object:id () then
+--    log("Flesh has left the zone"); flush()
+    m_gameplay3.flesh01_entered = false
+  end
+end
+
+function check_stalker (object)
+        if object:action () then return end
+        object:script(false, m_gameplay3.script_name())
+end
+
+function main ()
+  local zone1 = get_level_object ("zone3")
+
+  zone1:clear_callback(true)
+  zone1:clear_callback(false)
+  zone1:set_callback (m_gameplay3.on_enter, true)
+  zone1:set_callback (m_gameplay3.on_exit, false)
+
+  local actor = get_actor()
+  m_gameplay3.actor_id = actor:id()
+
+  m_gameplay3.monster_under_script = 0
+
+  m_gameplay3.flesh01    =   get_level_object("flesh01")
+  m_gameplay3.flesh01_id = m_gameplay3.flesh01:id()
+
+
+       while m_gameplay3.flesh01.health > 0 do
+wait(500)
+   if m_gameplay3.flesh01_entered == true then
+         if m_gameplay3.monster_under_script == 1 then
+          printf("otpuskaem")
+                m_gameplay3.flesh01:script(false,m_gameplay3.script_name())
+           m_gameplay3.monster_under_script = 0
+         else
+
+          printf("vtoroy raz ne otpuskaem")
+              end
+
+       else
+          if m_gameplay3.flesh01_entered == false then
+           if m_gameplay3.monster_under_script == 0 then
+       printf("berem pod skript obratno")
+       m_gameplay3.flesh01:script(true,m_gameplay3.script_name())
+       action(m_gameplay3.flesh01,move (move.act_walk_fwd,patrol("way4")), cond (cond.time_end,3000000))
+       m_gameplay3.monster_under_script = 1
+                   else
+              printf("false,1,unreal..tipa gulyaem pod scriptom")
+     end
+                else
+     end
+
+         end
+
+    wait();
+        end
+end

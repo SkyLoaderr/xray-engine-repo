@@ -1,0 +1,363 @@
+----------------------------------------------------------------------------
+-- Сценарий 5 из задания на 1-е января 2004.
+----------------------------------------------------------------------------
+--
+-- 2003/12/29 [ zmey ]
+--   первый работающий вариант
+--
+-- 2003/12/30 [ zmey ]
+--   поставил в сценарий реальные фразы
+--
+-- zmey - Andrey Fidrya (af@svitonline.com)
+--
+-- TODO: nothing
+--
+
+function main()
+  -- Указываем, чтобы debug_log() выводил для этого сценария отладочные строки в лог.
+  -- В релизе нужно закомментировать эту строку:
+  debug_script_name = m_gameplay4.script_name()
+  debug_log(m_gameplay4.script_name(), "_bp: main()")
+
+  -- Перечисляем возможные в этом сценарии физические состояния монстра
+  -- (т.е. что он делает/делал в последний раз - говорил, смотрел, стрелял и т.д.)
+  m_gameplay4.action_none = 0      -- ничего не делает
+  m_gameplay4.action_talking = 1   -- говорит с игроком
+  m_gameplay4.action_tracking = 2  -- просто смотрит на игрока
+  m_gameplay4.action_shooting = 3  -- стреляет по игроку
+
+  -- Последнее состояние
+  m_gameplay4.last_action = m_gameplay4.action_none  -- изначально он ничего не делалне было никаких действий, поэтому action_none
+
+  -- Имена звуковых файлов
+  m_gameplay4.snd_kashel = [[m_gameplay4\kashel]]
+  m_gameplay4.snd_davay_davay = [[m_gameplay4\davay-davay]]
+  m_gameplay4.snd_ey_spryatalsa = [[m_gameplay4\ey-spryatalsa]]
+  m_gameplay4.snd_gav_gav = [[m_gameplay4\gav-gav]]
+  m_gameplay4.snd_ispugalsa = [[m_gameplay4\ispugalsa]]
+  m_gameplay4.snd_kishki = [[m_gameplay4\kishki]]
+  m_gameplay4.snd_napali_v_volnu = [[m_gameplay4\napali-v-volnu]]
+  m_gameplay4.snd_padli = [[m_gameplay4\padli]]
+  m_gameplay4.snd_po_sklonam = [[m_gameplay4\po-sklonam]]
+  m_gameplay4.snd_nashi_podberut = [[m_gameplay4\nashi-podberut]]
+  m_gameplay4.snd_skoti_truslivie = [[m_gameplay4\skoti-truslivie]]
+  m_gameplay4.snd_vihodi_str = [[m_gameplay4\vihodi-str]]
+
+  -- Состояния FSM
+  m_gameplay4.state_end = 0               -- завершить работу
+  m_gameplay4.state_look_for_actor = 1    -- ищу жертву (никогда ее не видел)
+  m_gameplay4.state_see_actor = 2         -- вижу жертву
+  m_gameplay4.state_not_see_actor = 3     -- не вижу жертву
+
+  -- Вспомогательные переменные (используются при реализации обработчико вышеперечисленных состояний)
+  m_gameplay4.phrase_type = random_choice('a', 'b', 'd')   -- тип фразы, которая будет произнесена следующей (см. задание)
+  m_gameplay4.phrase_time = 0                              -- игровое время, в которое должна быть произнесена фраза
+  m_gameplay4.cough_time = 0                               -- игровое время, в которое сталкер должен закашляться
+
+  -- FSM стартует в этом состоянии:
+  m_gameplay4.state = m_gameplay4.state_look_for_actor
+
+  -- Участники сцены
+  m_gameplay4.stalker_pes = get_level_object("m_stalker_pes")  -- сталкер Пес
+  m_gameplay4.wpn = get_level_object("wpn_ak0000")           -- его автомат
+  m_gameplay4.actor = get_actor()                            -- игрок
+
+  local previous_state = m_gameplay4.state
+
+  debug_log(m_gameplay4.script_name(), "_bp: Before main cycle")
+
+  -- Основной цикл FSM:
+  while m_gameplay4.state ~= m_gameplay4.state_end do
+    m_gameplay4.before_next_action()
+    m_gameplay4.next_action()
+    m_gameplay4.after_next_action()
+    -- Проверить, изменилось ли в этом цикле состояние FSM:
+    if m_gameplay4.state == previous_state then
+      -- Состояние осталось прежним, т.е. ничего не происходит... Можно отдавать слайсы игре:
+      wait()
+    else
+      -- Если изменилось состояние, то можно сразу же запускать next_action
+      debug_log(m_gameplay4.script_name(), "_bp: State change: " .. previous_state .. " to " .. m_gameplay4.state)
+      previous_state = m_gameplay4.state
+    end
+  end
+  debug_log(m_gameplay4.script_name(), "_bp: After main cycle")
+
+  -- Вывести из под контроля сценариев:
+  if m_gameplay4.stalker_pes:get_script() then
+    m_gameplay4.stalker_pes:script(false, m_gameplay4.script_name())
+  end
+end
+
+function track(who, whom)
+  if not who:get_script() then
+    who:script(true, m_gameplay4.script_name())
+  end
+
+  debug_log(m_gameplay4.script_name(), '_bp: track')
+
+  action(who,
+         look  (look.fire_point, whom),
+         anim  (anim.danger),
+         move  (move.standing, move.stand, move.line, m_gameplay4.actor),
+         cond  (cond.time_end, time_infinite)
+  )
+  m_gameplay4.last_action = m_gameplay4.action_tracking
+end
+
+function shoot(who, whom)
+  -- Всегда отключать tracking и talking при начале shooting
+  if m_gameplay4.is_tracking(who) or m_gameplay4.is_talking(who) then
+    interrupt_action(who, m_gameplay4.script_name())
+  end
+
+  if not who:get_script() then
+    who:script(true, m_gameplay4.script_name())
+  end
+
+  debug_log(m_gameplay4.script_name(), '_bp: shoot')
+
+  action(who,
+         look  (look.fire_point, whom),
+         anim  (anim.danger),
+         move  (move.standing, move.stand, move.line, m_gameplay4.actor),
+         object (m_gameplay4.wpn, object.fire1),
+         cond  (cond.time_end, time_infinite)
+  )
+  m_gameplay4.last_action = m_gameplay4.action_shooting
+end
+
+function tell(who, to_whom, snd, body_part)
+  -- Всегда отключать tracking при начале talking
+  if m_gameplay4.is_tracking(who) then
+    interrupt_action(who, m_gameplay4.script_name())
+  end
+
+  if not who:get_script() then
+    who:script(true, m_gameplay4.script_name())
+  end
+
+  -- DEBUG (COMMENT THIS OUT LATER):
+  debug_log(m_gameplay4.script_name(), '_bp: tell: ' .. snd)
+  --local snd = m_gameplay4.snd_davay_davay
+
+  action(who,
+         look  (look.fire_point, to_whom),
+         anim  (anim.danger),
+         sound  (snd, body_part, vector():set(0,0,0), vector():set(0,0,0), false),
+         move  (move.standing, move.stand, move.line, m_gameplay4.actor),
+               cond  (cond.sound_end)
+         --cond  (cond.time_end, 5000)
+  )
+  m_gameplay4.last_action = m_gameplay4.action_talking
+end
+
+function is_talking(who)
+  return m_gameplay4.last_action == m_gameplay4.action_talking and who:get_script() and who:action()
+end
+
+function is_tracking(who)
+  return m_gameplay4.last_action == m_gameplay4.action_tracking and who:get_script() and who:action()
+end
+
+function is_shooting(who)
+  return m_gameplay4.last_action == m_gameplay4.action_shooting and who:get_script() and who:action()
+end
+
+function get_next_cough_time()
+  return game.time() + math.random(3000, 15000)
+end
+
+-- Вызывается ДО вызова next_action()
+function before_next_action()
+  --debug_log(m_gameplay4.script_name(), "health=" .. m_gameplay4.stalker_pes.health)
+  if m_gameplay4.stalker_pes.health <= 0 then
+    interrupt_action(m_gameplay4.stalker_pes, m_gameplay4.script_name())
+    m_gameplay4.state = m_gameplay4.state_end
+    return
+  end
+end
+
+-- Проверка, обработка и переключение состояний FSM
+function next_action()
+  --------------------------------------------------------------------------------------------------------------------
+  -- STATE_END
+  --------------------------------------------------------------------------------------------------------------------
+  if m_gameplay4.state == m_gameplay4.state_end then
+    return
+
+  --------------------------------------------------------------------------------------------------------------------
+  -- STATE_LOOK_FOR_ACTOR
+  --------------------------------------------------------------------------------------------------------------------
+  elseif m_gameplay4.state == m_gameplay4.state_look_for_actor then
+    --debug_log(m_gameplay4.script_name(), "_bp: m_gameplay4.state == m_gameplay4.state_look_for_actor")
+    if m_gameplay4.stalker_pes:see(m_gameplay4.actor) then
+      --debug_log(m_gameplay4.script_name(), "_bp: State: m_gameplay4.state_look_for_actor - pes sees m_gameplay4.actor")
+      interrupt_action(m_gameplay4.stalker_pes, m_gameplay4.script_name())
+      m_gameplay4.phrase_type = random_choice('a', 'b', 'c')
+      m_gameplay4.phrase_time = 0
+      m_gameplay4.state = m_gameplay4.state_see_actor
+      return
+    end
+
+    if distance_between(m_gameplay4.stalker_pes, m_gameplay4.actor) <= 15 then
+      --debug_log(m_gameplay4.script_name(), "_bp: State: m_gameplay4.state_look_for_actor - m_gameplay4.actor is near")
+      if not m_gameplay4.is_talking(m_gameplay4.stalker_pes) and not m_gameplay4.is_shooting(m_gameplay4.stalker_pes) then
+        -- Периодически просто подкашливать:
+        if game.time() >= m_gameplay4.cough_time then
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_kashel, "bip01_spine2")
+          m_gameplay4.cough_time = m_gameplay4.get_next_cough_time()
+          return
+        end
+
+        if game.time() < m_gameplay4.phrase_time then
+          return
+        end
+
+        if m_gameplay4.phrase_type == 'a' then -- скоты трусливые
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_skoti_truslivie, "bip01_spine2")
+          m_gameplay4.phrase_type = 'c' -- падлы!
+          m_gameplay4.phrase_time = game.time() + 3000 + math.random(1000, 3000)
+
+        elseif m_gameplay4.phrase_type == 'b' then -- напали в волну
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_napali_v_volnu, "bip01_spine2")
+          m_gameplay4.phrase_type = 'c' -- падлы!
+          m_gameplay4.phrase_time = game.time() + 3000 + math.random(1000, 3000)
+
+        elseif m_gameplay4.phrase_type == 'c' then -- падлы!
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_padli, "bip01_spine2")
+          -- И весь разговор по новой:
+          m_gameplay4.phrase_type = random_choice('a', 'b', 'd')
+          m_gameplay4.phrase_time = game.time() + 2000 + math.random(5000, 10000)
+
+        elseif m_gameplay4.phrase_type == 'd' then -- надо пересидеть и валить по склонам
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_po_sklonam, "bip01_spine2")
+          m_gameplay4.phrase_type = 'e' -- наши подберут
+          m_gameplay4.phrase_time = game.time() + 4000 + math.random(1000, 2000)
+
+        elseif m_gameplay4.phrase_type == 'e' then -- наши подберут
+          m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_nashi_podberut, "bip01_spine2")
+          -- И весь разговор по новой:
+          m_gameplay4.phrase_type = random_choice('a', 'b', 'd')
+          m_gameplay4.phrase_time = game.time() + 3000 + math.random(5000, 10000)
+        end
+      end
+    end
+
+  --------------------------------------------------------------------------------------------------------------------
+  -- STATE_SEE_ACTOR
+  --------------------------------------------------------------------------------------------------------------------
+  elseif m_gameplay4.state == m_gameplay4.state_see_actor then
+    --debug_log(m_gameplay4.script_name(), "_bp: m_gameplay4.state == m_gameplay4.state_see_actor")
+    if not m_gameplay4.stalker_pes:see(m_gameplay4.actor) then
+      -- Если стреляет - хватит, он уже потерял его из виду:
+      if m_gameplay4.is_shooting(m_gameplay4.stalker_pes) then
+        interrupt_action(m_gameplay4.stalker_pes, m_gameplay4.script_name())
+      end
+      m_gameplay4.state = m_gameplay4.state_not_see_actor
+      m_gameplay4.phrase_type = random_choice('a', 'b', 'c', 'd', 'e')
+      m_gameplay4.phrase_time = 0
+      return
+    end
+
+    if not m_gameplay4.is_shooting(m_gameplay4.stalker_pes) and
+       (distance_between(m_gameplay4.stalker_pes, m_gameplay4.actor) <= 10 or m_gameplay4.stalker_pes.health < 0.99) then
+      if m_gameplay4.is_talking(m_gameplay4.stalker_pes) or m_gameplay4.is_tracking(m_gameplay4.stalker_pes) then
+        interrupt_action(m_gameplay4.stalker_pes, m_gameplay4.script_name())
+      end
+      m_gameplay4.shoot(m_gameplay4.stalker_pes, m_gameplay4.actor)
+      return
+    end
+
+    if not m_gameplay4.is_talking(m_gameplay4.stalker_pes) and not m_gameplay4.is_shooting(m_gameplay4.stalker_pes) then
+      if game.time() < m_gameplay4.phrase_time then
+        return
+      end
+
+      if m_gameplay4.phrase_type == 'a' then -- только сунься! я тебе кишнки выпущу
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_kishki, "bip01_spine2")
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(2000, 5000)
+
+      elseif m_gameplay4.phrase_type == 'b' then -- давай давай!
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_davay_davay, "bip01_spine2")
+        m_gameplay4.phrase_time = game.time() + 2000 + math.random(2000, 5000)
+
+      elseif m_gameplay4.phrase_type == 'c' then -- Лай с завыванием, хриплый смех
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_gav_gav, "bip01_spine2")
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(2000, 5000)
+      end
+      m_gameplay4.phrase_type = random_choice('a', 'b', 'c')
+    end
+
+  --------------------------------------------------------------------------------------------------------------------
+  -- STATE_NOT_SEE_ACTOR
+  --------------------------------------------------------------------------------------------------------------------
+  elseif m_gameplay4.state == m_gameplay4.state_not_see_actor then
+    --debug_log(m_gameplay4.script_name(), "_bp: m_gameplay4.state == m_gameplay4.state_not_see_actor")
+    if m_gameplay4.stalker_pes:see(m_gameplay4.actor) then
+      interrupt_action(m_gameplay4.stalker_pes, m_gameplay4.script_name())
+      m_gameplay4.state = m_gameplay4.state_see_actor
+      m_gameplay4.phrase_type = random_choice('a', 'b', 'c')
+      m_gameplay4.phrase_time = 0
+      return
+    end
+
+    if not m_gameplay4.is_talking(m_gameplay4.stalker_pes) and not m_gameplay4.is_shooting(m_gameplay4.stalker_pes) then
+      if game.time() < m_gameplay4.phrase_time then
+        return
+      end
+
+      if m_gameplay4.phrase_type == 'a' then -- ха! испугался
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_ispugalsa, "bip01_spine2")
+        m_gameplay4.phrase_type = random_choice('a', 'b', 'c', 'd', 'e')
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(1000, 3000)
+
+      elseif m_gameplay4.phrase_type == 'b' then -- давай давай!
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_davay_davay, "bip01_spine2")
+        m_gameplay4.phrase_type = random_choice('a', 'b', 'c', 'd', 'e')
+        m_gameplay4.phrase_time = game.time() + 2000 + math.random(1000, 3000)
+
+      elseif m_gameplay4.phrase_type == 'c' then -- лай с завыванием, хриплый смех
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_gav_gav, "bip01_spine2")
+        m_gameplay4.phrase_type = random_choice('a', 'b', 'c', 'd', 'e')
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(5000, 10000)
+
+      elseif m_gameplay4.phrase_type == 'd' then -- эй! куда ты спрятался?
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_ey_spryatalsa, "bip01_spine2")
+        m_gameplay4.phrase_type = random_choice('a', 'b', 'c', 'd', 'e')
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(1000, 2000)
+
+      elseif m_gameplay4.phrase_type == 'e' then -- выходи, стреляться будем!
+        m_gameplay4.tell(m_gameplay4.stalker_pes, m_gameplay4.actor, m_gameplay4.snd_vihodi_str, "bip01_spine2")
+        -- А после этого лай с завыванием:
+        m_gameplay4.phrase_type = 'c'
+        m_gameplay4.phrase_time = game.time() + 3000 + math.random(2000, 3000)
+      end
+    end
+
+  --------------------------------------------------------------------------------------------------------------------
+  -- UNKNOWN STATE
+  --------------------------------------------------------------------------------------------------------------------
+  else
+    debug_log(m_gameplay4.script_name(), "_bp: Unknown state: " .. m_gameplay4.state)
+  end
+end
+
+-- Вызывается ПОСЛЕ вызова next_action()
+function after_next_action()
+  if m_gameplay4.state == m_gameplay4.state_end then
+    return
+  end
+
+  -- Включить сценарий, если он еще не включен, т.к. дальше мы будем проверять на наличие action(),
+  -- а это делать нельзя, если сценарий отключен:
+  if not m_gameplay4.stalker_pes:get_script() then
+    m_gameplay4.stalker_pes:script(true, m_gameplay4.script_name())
+  end
+
+  -- Если сталкер ничего не делает, пусть просто смотрит на жертву
+  if not m_gameplay4.stalker_pes:action() then
+    m_gameplay4.track(m_gameplay4.stalker_pes, m_gameplay4.actor)
+  end
+end
+

@@ -1,0 +1,526 @@
+--lestat
+--LeSTAT_SCENE1_Script
+
+
+
+--Script Zone--
+function on_enter(zone,object)
+  is_creature_entered = true
+  printf("Object %s entered zone %s",object:name(),zone:name())
+  if event_zone_id == zone:id() and actor_id == object:id() then
+    printf("actor entering in our zone")
+    is_actor_entered = true
+  end
+end
+
+
+--Script Zone Exit--
+function on_exit(zone,object)
+    is_creature_entered = false
+    is_actor_entered = false
+    printf("Object %s exited zone %s",object:name(),zone:name())
+end
+
+
+--Stalker already saw Her0 (really?)  he call Her0 to come closer
+
+function call_actor  (npc, fsm)
+
+  if distance_between (npc,actor) <= 13 then
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+    log("1")
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_podoidi","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 1200)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_kashel","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 1000)
+      )
+
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_podoidi_blige","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ti_dolgen_menya_vislyshat","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_da_podoidige_blige","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_kashel_long","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+        cond  (cond.time_end, 10000000)
+      )
+
+
+
+        stalker_already_dead = false
+        mission = false
+    return true
+  end
+  return false
+end
+
+--Stalker already saw Her0 call again
+function call_actor2 (npc, fsm)
+
+  if distance_between (npc,actor) <= 10 then
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+    log("1")
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_kashel","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ti_dolgen_menya_vislyshat","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_da_podoidige_blige","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston4","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 100000)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston2","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 100000)
+      )
+
+
+        stalker_already_dead = false
+        mission = false
+    return true
+  end
+  return false
+end
+
+
+
+--Her0 goes away no mission
+function if_actor_leave (npc,fsm)
+  if distance_between (npc,actor) >= 15 and mission == false then
+
+    if npc:get_script () then
+      npc:script (false, m_gameplay.script_name())
+      npc:script (true, m_gameplay.script_name())
+    end
+
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_postoi","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 5000)
+      )
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ne_ostavlyai_menya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+          action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston4","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 10000000)
+      )
+
+      stalker_already_dead = flase
+      mission = false
+    return true
+  end
+  return false
+end
+
+
+--Her0 near stalker = 5, wounded gives him mission, and dies?
+function actor_near(npc, fsm)
+
+  if distance_between (npc,actor) <= 5 then
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+
+    log("2")
+
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ti_dolgen_dobit_psa","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+
+                action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_on_svalilsya_s_mosta","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+         action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_kashel","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+
+                action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_vo_vremya_ataki_mutantov","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 3500)
+      )
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_zaberi_artefakt","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_blood_kashel","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_zabirai_patroni_i_yhodi","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2500)
+      )
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_mne_yge_ne_pomogesh","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_kashel2","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 1000000)
+      )
+
+                 log("3")
+
+      stalker_already_dead = false
+      mission = false
+
+    return true
+  end
+  return false
+end
+
+
+--Actor is standing on Injured guy, dies after 10 sek
+function actor_enter_zone(npc, fsm)
+  if is_actor_entered == true then
+    printf("entered")
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+
+    log("3")
+
+
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_pain","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_pain","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 5000)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ostonovis","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.time_end, 2000)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_psa_dobei","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+            npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_pain2","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+        cond  (cond.time_end, 1000000)
+      )
+
+        log("5")
+
+
+      stalker_already_dead = true
+      mission = true
+
+    return true
+  end
+  return false
+end
+
+
+--Actor if not standing on stalker
+function actor_exit_zone(npc, fsm)
+    if is_actor_entered == false then
+      printf("left")
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+    log ("4")
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 100000000)
+      )
+
+
+    stalker_already_dead = false
+    mission = false
+
+    return true
+  end
+  return false
+end
+
+--Player leaves, withought receiving mission
+
+function actor_leaves(npc, fsm)
+  if distance_between (npc,actor) >= 13 and mission == false then
+
+  if npc:get_script () then
+    npc:script (false, m_gameplay.script_name())
+    npc:script (true, m_gameplay.script_name())
+  end
+
+    log("5")
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ti_dolgen_dobit_psa","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_mne_yge_ne_pomogesh","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ston2","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 1000000000)
+      )
+
+
+
+    stalker_already_dead = true
+    mission = true
+
+
+     return true
+  end
+  return false
+end
+
+--Stalker is Killed by Player, recives mission and ammo?--
+function actor_attack(npc, fsm)
+                 if npc.health <= 0.90 then
+  log ("6")
+    if npc:get_script () then
+      npc:script (false, m_gameplay.script_name())
+      npc:script (true, m_gameplay.script_name())
+    end
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_ti_dolgen_menya_vislyshat","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_psa_dobei","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+        cond  (cond.sound_end)
+      )
+
+    action  (
+          npc,
+        anim  ("dead_kahel"),
+        sound  ("wounded_pain","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0), true),
+        cond  (cond.time_end, 10000000)
+      )
+
+    stalker_already_dead = true
+    mission = true
+
+    return true
+  end
+  return false
+end
+
+--Player Kill Stalker
+function actor_kills(npc, fsm)
+
+         if npc.health <= 0.30 or distance_between (npc, actor) >= 20 then
+
+  log ("die")
+
+    npc.health = npc.health - 100
+  end
+end
+
+
+function main()
+
+--  log  ("Scene1-Injured Stalker aka Partner and The Player")
+
+        is_creature_entered = false
+  is_actor_entered = false
+  stalker_already_dead = false
+  mission = false
+  attack = false
+
+  local event  = get_level_object("trup_zone")
+
+  stalker00  = get_level_object("trup")
+
+  actor = get_actor()
+  actor_id = actor:id()
+  event_zone_id = event:id()
+
+
+  event:clear_callback(true)
+  event:clear_callback(false)
+
+  event:set_callback(m_gameplay.on_enter,true)
+  event:set_callback(m_gameplay.on_exit,false)
+
+  local fsm_stalker = FSM(m_gameplay.script_name(), stalker00)
+
+  stalker00:script (true, m_gameplay.script_name ())
+
+  action (stalker00, anim ("dead_kahel"), cond (cond.time_end, 100000))
+
+  fsm_stalker:set_transition(0, 1, m_gameplay.call_actor)
+  fsm_stalker:set_transition(1, 2, m_gameplay.if_actor_leave)
+  fsm_stalker:set_transition(2, 8, m_gameplay.call_actor2)
+  fsm_stalker:set_transition(8, 3, m_gameplay.actor_near)
+  fsm_stalker:set_transition(1, 3, m_gameplay.actor_near)
+  fsm_stalker:set_transition(3, 4, m_gameplay.actor_enter_zone)
+  fsm_stalker:set_transition(4, 5, m_gameplay.actor_exit_zone)
+  fsm_stalker:set_transition(1, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(2, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(3, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(4, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(5, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(8, 6, m_gameplay.actor_attack)
+  fsm_stalker:set_transition(6, 7, m_gameplay.actor_kills)
+  fsm_stalker:set_transition(3, 7, m_gameplay.actor_kills)
+  fsm_stalker:set_transition(4, 7, m_gameplay.actor_kills)
+  fsm_stalker:set_transition(5, 7, m_gameplay.actor_kills)
+  fsm_stalker:set_transition(7, 7, m_gameplay.actor_kills)
+
+
+  fsm_stalker:run_loop()
+
+
+  m_gameplay.actor_attack (stalker00)
+  m_gameplay.actor_kills (stalker00)
+
+  event:clear_callback(true)
+  event:clear_callback(false)
+
+end

@@ -1,0 +1,85 @@
+function main ()
+
+    local t = {
+               get_level_object ("m_boar_e0000"),
+               get_level_object ("m_boar_e0001"),
+               get_level_object ("m_boar_e0002"),
+               get_level_object ("m_boar_e0003"),
+               get_level_object ("m_boar_e0004"),
+               get_level_object ("m_boar_e0005"),
+               get_level_object ("m_boar_e0006"),
+               get_level_object ("m_dog_e0000"),
+               get_level_object ("m_dog_e0001"),
+               get_level_object ("m_dog_e0002"),
+               get_level_object ("m_dog_e0003"),
+               get_level_object ("m_dog_e0004"),
+               get_level_object ("m_dog_e0005"),
+               get_level_object ("m_dog_e0006"),
+               get_level_object ("m_dog_e0007"),
+               get_level_object ("m_dog_e0008"),
+               get_level_object ("m_pseudodog_e0000"),
+               get_level_object ("m_pseudodog_e0001"),
+               get_level_object ("m_pseudodog_e0002"),
+               get_level_object ("m_pseudodog_e0003"),
+               get_level_object ("m_pseudodog_e0004"),
+               get_level_object ("m_pseudodog_e0005"),
+               get_level_object ("m_flesh_e0000"),
+               get_level_object ("m_flesh_e0001"),
+               get_level_object ("m_flesh_e0002"),
+               get_level_object ("m_flesh_e0003"),
+               get_level_object ("m_flesh_e0004"),
+               get_level_object ("m_flesh_e0005"),
+               get_level_object ("m_flesh_e0006")
+               }
+    local tways = {
+                  patrol ("way0000"),            --m_boar_e0000
+                  patrol ("way0001"),            --m_boar_e0001
+                  patrol ("way0002"),            --m_boar_e0002
+                  patrol ("way0003"),            --m_boar_e0003
+                  patrol ("way0004"),            --m_boar_e0004
+                  patrol ("way0005"),            --m_boar_e0005
+                  patrol ("way0006"),            --m_boar_e0006
+                  patrol ("way0007"),            --m_dog_e0000
+                  patrol ("way0008"),            --m_dog_e0001
+                  patrol ("way0009"),            --m_dog_e0002
+                  patrol ("way0010"),            --m_dog_e0003
+                  patrol ("way0011"),            --m_dog_e0004
+                  patrol ("way0012"),            --m_dog_e0005
+                  patrol ("way0013"),            --m_dog_e0006
+                  patrol ("way0014"),            --m_dog_e0007
+                  patrol ("way0015"),            --m_dog_e0008
+                  patrol ("way0016"),            --m_pseudodog_e0000
+                  patrol ("way0017"),            --m_pseudodog_e0001
+                  patrol ("way0018"),            --m_pseudodog_e0002
+                  patrol ("way0019"),            --m_pseudodog_e0003
+                  patrol ("way0020"),            --m_pseudodog_e0004
+                  patrol ("way0021"),            --m_pseudodog_e0005
+                  patrol ("way0022"),            --m_flesh_e0000
+                  patrol ("way0023"),            --m_flesh_e0001
+                  patrol ("way0024"),            --m_flesh_e0002
+                  patrol ("way0025"),            --m_flesh_e0003
+                  patrol ("way0026"),            --m_flesh_e0004
+                  patrol ("way0027"),            --m_flesh_e0005
+                  patrol ("way0028")             --m_flesh_e0006
+                  }
+
+    for a = 1, table.getn (t), 1 do
+        t[a]:script (true, m_attack_wave.script_name ())
+        action (t[a], move (move.act_stand_idle, tways[a]), cond (cond.time_end, 1000000000))
+        end
+
+    wait (20000)
+
+    for a = 1, 6, 1 do
+        reset_action (t[a], m_attack_wave.script_name ())
+        action (t[a], move (move.act_run, tways[a]), cond (cond.move_end))
+        end
+
+    wait (120000)
+--    while t[0]:action () do wait () end
+
+    for a = 1, table.getn (t), 1 do
+        t[a]:script (false, m_attack_wave.script_name ())
+        end
+
+end
