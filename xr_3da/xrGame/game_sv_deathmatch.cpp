@@ -16,8 +16,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	u32		cnt		= get_count	();
 	for		(u32 it=0; it<cnt; it++)	
 	{
-		ps				=	get_it	(it);
-		ps->flags		&=	~GAME_PLAYER_FLAG_READY;
+		game_PlayerState*	ps	=	get_it	(it);
+		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
 	}
 	Unlock	();
 }
@@ -62,7 +62,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
 	Lock	();
-	game_PlayerState*	ps	=	get_id	(id_killer);
+	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
 	{
 		if (ps->flags & GAME_PLAYER_FLAG_READY)	

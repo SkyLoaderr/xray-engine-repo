@@ -10,6 +10,18 @@ void CActor::OnKeyboardPress(int cmd)
 {
 	if (Remote() || !g_Alive())		return;
 
+	if (GAME_PHASE_PENDING	== Game().phase)
+	{
+		if (kWPN_FIRE == cmd)	
+		{
+			// Switch our "ready" status
+			NET_Packet			P;
+			u_EventGen			(P,GEG_PLAYER_READY,ID());
+			u_EventSend			(P);
+		}
+		return;
+	}
+
 	switch(cmd){
 	case kACCEL:	mstate_wishful |= mcAccel;					break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
