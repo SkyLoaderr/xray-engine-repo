@@ -996,7 +996,11 @@ bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 
 bool CSE_ALifeObjectHangingLamp::validate			()
 {
-	return						(flags.test(flR1) || flags.test(flR2));
+	if (flags.test(flR1) || flags.test(flR2))
+		return					(true);
+
+	Msg							("! Render type is not set properly!");
+	return						(false);
 }
 
 bool CSE_ALifeObjectHangingLamp::match_configuration() const
