@@ -126,11 +126,10 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define _RC_NEAR RC_NEAR
 
 // some user components
-//#include "shared/dx7todx8.h"
 #include "clsid.h"
-#include "shared/vector.h"
-#include "shared/FixedVector.h"
-#include "shared/xr_list.h"
+#include "engine/vector.h"
+#include "engine/FixedVector.h"
+#include "engine/xr_list.h"
 #include "Log.h"
 
 extern "C" DLL_API LPCSTR InterpretError(HRESULT hr);
