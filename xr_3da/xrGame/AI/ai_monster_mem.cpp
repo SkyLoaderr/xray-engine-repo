@@ -340,9 +340,9 @@ struct predicate_remove_nonactual_enemies {
 			!x.obj || 
 			!x.obj->g_Alive() || 
 			x.obj->getDestroy() ||
-			(x.time + mem_time < cur_time) ||
-			(x.obj->Position().distance_to(monster_pos) > eye_range) ||
-			((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time))
+			(x.time + mem_time < cur_time)
+//			(x.obj->Position().distance_to(monster_pos) > eye_range) ||
+//			((x.obj->Position().distance_to(monster_pos) > 30) && (x.time != cur_time))
 		);
 	}
 };

@@ -268,7 +268,8 @@ void CWeapon::Load		(LPCSTR section)
 	m_fK_FireWound		= pSettings->r_float("weapon","fire_wound_immunity");
 
 
-	inherited::Load		(section);
+	inherited::Load					(section);
+	CShootingObject::LoadEffector	();
 
 	Fvector				pos,ypr;
 	pos					= pSettings->r_fvector3		(section,"position");

@@ -10,6 +10,8 @@
 #include "ParticlesObject.h"
 #include "WeaponAmmo.h"
 
+#include "actor.h"
+
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
@@ -29,6 +31,30 @@ CShootingObject::CShootingObject(void)
 }
 CShootingObject::~CShootingObject(void)
 {
+}
+
+void CShootingObject::LoadEffector()
+{
+	m_effector.ppi.duality.h		= pSettings->r_float("shooting_effector","duality_h");
+	m_effector.ppi.duality.v		= pSettings->r_float("shooting_effector","duality_v");
+	m_effector.ppi.gray				= pSettings->r_float("shooting_effector","gray");
+	m_effector.ppi.blur				= pSettings->r_float("shooting_effector","blur");
+	m_effector.ppi.noise.intensity	= pSettings->r_float("shooting_effector","noise_intensity");
+	m_effector.ppi.noise.grain		= pSettings->r_float("shooting_effector","noise_grain");
+	m_effector.ppi.noise.fps		= pSettings->r_float("shooting_effector","noise_fps");
+
+	sscanf(pSettings->r_string("shooting_effector","color_base"),	"%f,%f,%f", &m_effector.ppi.color_base.r, &m_effector.ppi.color_base.g, &m_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string("shooting_effector","color_gray"),	"%f,%f,%f", &m_effector.ppi.color_gray.r, &m_effector.ppi.color_gray.g, &m_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string("shooting_effector","color_add"),	"%f,%f,%f", &m_effector.ppi.color_add.r,  &m_effector.ppi.color_add.g,	&m_effector.ppi.color_add.b);
+
+	m_effector.time				= pSettings->r_float("shooting_effector","time");
+	m_effector.time_attack		= pSettings->r_float("shooting_effector","time_attack");
+	m_effector.time_release		= pSettings->r_float("shooting_effector","time_release");
+
+	m_effector.ce_time			= pSettings->r_float("shooting_effector","ce_time");
+	m_effector.ce_amplitude		= pSettings->r_float("shooting_effector","ce_amplitude");
+	m_effector.ce_period_number	= pSettings->r_float("shooting_effector","ce_period_number");
+	m_effector.ce_power			= pSettings->r_float("shooting_effector","ce_power");
 }
 
 
@@ -69,8 +95,8 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 	}		
 
 	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
-NULL:
-	&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
+				NULL:
+				&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
 	//проиграть звук
 	if(pSound)
 	{
@@ -78,8 +104,8 @@ NULL:
 	}
 
 	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
-NULL:
-	*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+			NULL:
+			*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 	if(ps_name)
 	{
 		//отыграть партиклы попадания в материал
@@ -229,6 +255,12 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 		
 	m_fCurrentHitPower *= (shoot_factor*pierce);
 	m_fCurrentHitImpulse *= material_pierce;
+
+	CActor *pActor = dynamic_cast<CActor *> (R.O);
+	if (pActor && (pActor == dynamic_cast<CActor *>(Level().CurrentEntity()))) {
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffectorPP>(	m_effector.ppi,		m_effector.time,		m_effector.time_attack,		m_effector.time_release));
+		Level().Cameras.AddEffector(xr_new<CShootingHitEffector>(	m_effector.ce_time,	m_effector.ce_amplitude,m_effector.ce_period_number,m_effector.ce_power));
+	}
 }
 
 void CShootingObject::StaticObjectHit(Collide::rq_result& R, u16 target_material)

@@ -12,7 +12,7 @@
 
 #include "../ai_monster_effector.h"
 
-#define MAX_SOUND_DISTANCE 75
+#define MAX_SOUND_DISTANCE 50
 
 void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
