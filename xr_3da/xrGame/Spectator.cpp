@@ -186,14 +186,13 @@ void CSpectator::cam_Update	(CActor* A)
 		}
 		pCreator->Cameras.Update(cam);
 	}else{
-		R_ASSERT(cam_active==eacFreeFly);
 		Fvector point, dangle;
 		point.set					(0.f,1.6f,0.f);
 		svTransform.transform_tiny	(point);
 
 		// apply shift
 		dangle.set					(0,0,0);
-		CCameraBase* cam			= cameras[cam_active];
+		CCameraBase* cam			= cameras[eacFreeFly];
 		cam->Update					(point,dangle);
 		pCreator->Cameras.Update	(cam);
 	}
