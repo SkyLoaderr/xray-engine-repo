@@ -72,6 +72,6 @@ void	light::set_position	(const Fvector& P)
 	position.set				(P);
 
 	spatial.center				= P;
-	spatial.range				= range;
+	spatial.radius				= range;
 	spatial_move				();
 }

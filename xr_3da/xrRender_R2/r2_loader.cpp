@@ -216,8 +216,8 @@ void CRender::LoadSectors(IReader* fs)
 		IReader* P = S->open_chunk(i);
 		if (0==P) break;
 
-		CSector* __S		= xr_new<CSector> (i);
-		__S->Load			(*P);
+		CSector* __S		= xr_new<CSector> ();
+		__S->load			(*P);
 		Sectors.push_back	(__S);
 
 		P->close();

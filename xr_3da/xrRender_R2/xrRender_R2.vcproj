@@ -501,6 +501,9 @@
 				<File
 					RelativePath="Portal.h">
 				</File>
+				<File
+					RelativePath=".\Portal_traversal.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="HOM Occlusion"

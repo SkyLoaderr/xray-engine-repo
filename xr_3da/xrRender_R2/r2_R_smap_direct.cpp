@@ -11,7 +11,7 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 	for (u32 s=0; s<Sectors.size(); s++)
 	{
 		CSector*	S				= (CSector*)Sectors[s];
-		add_Geometry				(S->Root());
+		add_Geometry				(S->root());
 		S->Render_objects			(ViewBase);
 	}
 
