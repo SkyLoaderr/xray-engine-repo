@@ -83,11 +83,11 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				if (m_eCurrentState == eStalkerStateRecharge) {
 					switch (Weapons->ActiveWeaponID()) {
 						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[5]->A[0];
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[5]->A[0];
 							break;
 						}
 						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[5]->A[0];
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[5]->A[0];
 							break;
 						}
 						case 2 : {
@@ -99,11 +99,11 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 				else {
 					switch (Weapons->ActiveWeaponID()) {
 						case 0 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[0]->A[0];
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[0]->A[0];
 							break;
 						}
 						case 1 : {
-							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[3]->A[0]->A[0];
+							tpTorsoAnimation = m_tAnims.A[1]->m_tTorso.A[1]->A[0]->A[0];
 							break;
 						}
 						case 2 : {
