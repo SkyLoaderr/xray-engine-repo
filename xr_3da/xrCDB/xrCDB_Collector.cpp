@@ -8,10 +8,10 @@ namespace CDB
 	u32		Collector::VPack	(Fvector& V, float eps)
 	{
 		xr_vector<Fvector>::iterator I,E;
-		I=verts.begin(); E=verts.end();
-		for (;I!=E;I++) if (I->similar(V,eps)) return (I-verts.begin());
-		verts.push_back(V);
-		return verts.size()-1;
+		I=verts.begin();	E=verts.end();
+		for (;I!=E;I++)		if (I->similar(V,eps)) return u32(I-verts.begin());
+		verts.push_back		(V);
+		return verts.size	()-1;
 	}
 
 	void	Collector::add_face_D	(
