@@ -45,6 +45,7 @@ protected:
 
 private:
 	CGameObject					*m_object;
+	CCustomMonster				*m_monster;
 
 protected:
 	ACTIONS						m_tpActionQueue;

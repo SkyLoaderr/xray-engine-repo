@@ -50,7 +50,11 @@ DLL_Pure *CScriptEntity::_construct		()
 {
 	m_object	= smart_cast<CGameObject*>(this);
 	VERIFY		(m_object);
+	
+	m_monster	= smart_cast<CCustomMonster*>(this);
+	
 	init		();
+	
 	return		(m_object);
 }
 
@@ -132,22 +136,20 @@ LPCSTR CScriptEntity::GetScriptControlName() const
 
 bool CScriptEntity::CheckObjectVisibility(const CGameObject *tpObject)
 {
-	CCustomMonster		*l_tpCustomMonster = smart_cast<CCustomMonster*>(this);
-	if (!l_tpCustomMonster)
+	if (!m_monster)
 		return			(false);
-	return				(l_tpCustomMonster->memory().visual().visible_now(tpObject));
+	return				(m_monster->memory().visual().visible_now(tpObject));
 }
 
 //определяет видимость определенного типа объектов, 
 //заданного через section_name
 bool CScriptEntity::CheckTypeVisibility(const char* section_name)
 {
-	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
-	if (!monster)
+	if (!m_monster)
 		return			(false);
 
-	CVisualMemoryManager::VISIBLES::const_iterator	I = monster->memory().visual().objects().begin();
-	CVisualMemoryManager::VISIBLES::const_iterator	E = monster->memory().visual().objects().end();
+	CVisualMemoryManager::VISIBLES::const_iterator	I = m_monster->memory().visual().objects().begin();
+	CVisualMemoryManager::VISIBLES::const_iterator	E = m_monster->memory().visual().objects().end();
 	for ( ; I != E; ++I)
 		if (!xr_strcmp(section_name, *(*I).m_object->cNameSect()))
 			return		(true);
@@ -436,33 +438,32 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 		return				(false);
 	}
 	
-	CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
-	VERIFY				(monster);
+	VERIFY				(m_monster);
 
 	switch (l_tMovementAction.m_tGoalType) {
 		case CScriptMovementAction::eGoalTypeObject : {
 			CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
-			monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
+			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
 //			Msg			("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),*l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
-			monster->movement().detail_path_manager().set_dest_position(l_tpGameObject->Position());
-			monster->movement().set_level_dest_vertex(l_tpGameObject->ai_location().level_vertex_id());
+			m_monster->movement().detail_path_manager().set_dest_position(l_tpGameObject->Position());
+			m_monster->movement().set_level_dest_vertex(l_tpGameObject->ai_location().level_vertex_id());
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePatrolPath : {
-			monster->movement().set_path_type	(MovementManager::ePathTypePatrolPath);
-			monster->movement().patrol_path_manager().set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
-			monster->movement().patrol_path_manager().set_start_type	(l_tMovementAction.m_tPatrolPathStart);
-			monster->movement().patrol_path_manager().set_route_type	(l_tMovementAction.m_tPatrolPathStop);
-			monster->movement().patrol_path_manager().set_random		(l_tMovementAction.m_bRandom);
+			m_monster->movement().set_path_type	(MovementManager::ePathTypePatrolPath);
+			m_monster->movement().patrol_path_manager().set_path		(l_tMovementAction.m_path,l_tMovementAction.m_path_name);
+			m_monster->movement().patrol_path_manager().set_start_type	(l_tMovementAction.m_tPatrolPathStart);
+			m_monster->movement().patrol_path_manager().set_route_type	(l_tMovementAction.m_tPatrolPathStop);
+			m_monster->movement().patrol_path_manager().set_random		(l_tMovementAction.m_bRandom);
 			if (l_tMovementAction.m_previous_patrol_point != u32(-1)) {
-				monster->movement().patrol_path_manager().set_previous_point(l_tMovementAction.m_previous_patrol_point);
+				m_monster->movement().patrol_path_manager().set_previous_point(l_tMovementAction.m_previous_patrol_point);
 			}
 			break;
 		}
 		case CScriptMovementAction::eGoalTypePathPosition : {
-			monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
-			monster->movement().detail_path_manager().set_dest_position(l_tMovementAction.m_tDestinationPosition);
+			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
+			m_monster->movement().detail_path_manager().set_dest_position(l_tMovementAction.m_tDestinationPosition);
 			
 //			u64					start = CPU::GetCycleCount();
 			u32					vertex_id;
@@ -475,31 +476,31 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 //			Msg					("%6d Searching for node for script object %s (%.5f seconds)",Level().timeServer(),*object().cName(),float(s64(stop - start))*CPU::cycles2seconds);
 #endif
 			VERIFY				(ai().level_graph().valid_vertex_id(vertex_id));
-			monster->movement().level_path_manager().set_dest_vertex(vertex_id);
-			monster->movement().level_location_selector().set_evaluator(0);
+			m_monster->movement().level_path_manager().set_dest_vertex(vertex_id);
+			m_monster->movement().level_location_selector().set_evaluator(0);
 			break;
 		}
 		case CScriptMovementAction::eGoalTypeNoPathPosition : {
-			monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
-			if (monster->movement().detail_path_manager().path().empty() || (monster->movement().detail_path_manager().path()[monster->movement().detail_path_manager().path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
-				monster->movement().detail_path_manager().m_path.resize(2);
-				monster->movement().detail_path_manager().m_path[0].position = object().Position();
-				monster->movement().detail_path_manager().m_path[1].position = l_tMovementAction.m_tDestinationPosition;
-				monster->movement().detail_path_manager().m_current_travel_point	= 0;
+			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
+			if (m_monster->movement().detail_path_manager().path().empty() || (m_monster->movement().detail_path_manager().path()[m_monster->movement().detail_path_manager().path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
+				m_monster->movement().detail_path_manager().m_path.resize(2);
+				m_monster->movement().detail_path_manager().m_path[0].position = object().Position();
+				m_monster->movement().detail_path_manager().m_path[1].position = l_tMovementAction.m_tDestinationPosition;
+				m_monster->movement().detail_path_manager().m_current_travel_point	= 0;
 			}
 
-			if (monster->movement().detail_path_manager().m_path[1].position.similar(object().Position(),.2f))
+			if (m_monster->movement().detail_path_manager().m_path[1].position.similar(object().Position(),.2f))
 				l_tMovementAction.m_bCompleted = true;
 
 			break;
 		}
 		default : {
-			monster->movement().set_desirable_speed(0.f);
+			m_monster->movement().set_desirable_speed(0.f);
 			return									(l_tMovementAction.m_bCompleted = true);
 		}
 	}
 
-	if (monster->movement().actual_all() && monster->movement().path_completed())
+	if (m_monster->movement().actual_all() && m_monster->movement().path_completed())
 		l_tMovementAction.m_bCompleted = true;
 
 	return		(!l_tMovementAction.m_bCompleted);
@@ -517,9 +518,8 @@ void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR meth
 	m_tpCallbacks[tActionType].set(lua_object, method);
 
 	if (eActionTypeMovement == tActionType) {
-		CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
-		if (monster)
-			monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
+		if (m_monster)
+			m_monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
@@ -530,9 +530,8 @@ void CScriptEntity::set_callback	(const luabind::functor<void> &lua_function, co
 	m_tpCallbacks[tActionType].set(lua_function);
 	
 	if (eActionTypeMovement == tActionType) {
-		CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
-		if (monster)
-			monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
+		if (m_monster)
+			m_monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
@@ -543,9 +542,8 @@ void CScriptEntity::clear_callback	(const ScriptEntity::EActionType tActionType)
 	m_tpCallbacks[tActionType].clear();
 
 	if (tActionType) {
-		CCustomMonster		*monster = smart_cast<CCustomMonster*>(this);
-		if (monster)
-			monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
+		if (m_monster)
+			m_monster->movement().patrol_path_manager().set_callback(m_tpCallbacks[tActionType]);
 	}
 }
 
