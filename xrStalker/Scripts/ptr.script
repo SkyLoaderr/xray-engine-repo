@@ -1,4 +1,84 @@
+-- Сталкер  -   s_patrol
+-- путь     -   patrolway
+
+
+class "SPatrol"
+
+local snd_interval      =   5000
+local anim_interval     =   10000
+
+function SPatrol:__init (npc, script, way, sounds)
+    self.npc = npc
+    self.script = script
+    self.way = way
+    self.sounds = sounds
+    self.snd_time = 0
+    self.anim_time = 0
+    self.snd_len = 0
+    
+    npc:script (true, script)
+    action (npc, anim (anim.free), cond (cond.time_end, time_infinite))
+    
+end
+
+function SPatrol:initialize ()
+    reset_action (self.npc, self.script)
+    action (self.npc, move (move.standing, move.walk, move.line, self.way), anim (anim.free), 
+            object (self.npc:best_weapon (), object.activate), cond (cond.move_end))
+    self.snd_time = game.time ()            
+    self.anim_time = self.snd_time
+end
+
+
+function SPatrol:process ()
+    --if patrol man is dead then exit
+    if self.npc == nil or self.npc:alive () == false then return end
+    
+    --sounds
+    if table.getn (self.sounds) ~= 0 then
+       if self.snd_len > 0 and game.time () >= self.snd_len then 
+          self.snd_len = 0
+          self.snd_time = game.time ()
+       end   
+       if game.time () - self.snd_time >= snd_interval then
+          local sname = self.sounds[math.random (1, table.getn (self.sounds))]
+          local s = sound_object (sname)
+          self.snd_len = s:length () + game.time ()
+          update_action (self.npc, self.script, sound (sname, "bip01_head", 
+                         vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+                         
+       end
+    end         
+end
+
+
+
 function main ()
 
+    local snds = 
+               { 
+               "monsters\Stalker\Humming\em1_humming1",
+               "monsters\Stalker\Humming\em1_humming2",
+               "monsters\Stalker\Humming\em1_humming3",
+               "monsters\Stalker\Humming\em1_humming4",
+               "monsters\Stalker\Humming\em1_humming5",
+               "monsters\Stalker\Humming\em1_whistle1",
+               "monsters\Stalker\Humming\em1_whistle2",
+               "monsters\Stalker\Humming\em1_whistle3",
+               "monsters\Stalker\Humming\em1_whistle4",
+               "monsters\Stalker\Humming\em1_whistle5"
+               }
+    
+    local sss = ptr.SPatrol (get_level_object ("s_patrol"), ptr.script_name (), patrol ("patrolway"), snds)
+    wait (5000)
+    
+    sss:initialize ()
+    
+    while true do
+          sss:process ()
+          wait ()
+    end        
+    
+    
 end
 
