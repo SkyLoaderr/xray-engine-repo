@@ -58,7 +58,7 @@ private:
 	BOOL 						bReadOnly;
 public:
 	CInifile					( LPCSTR szFileName, BOOL ReadOnly=TRUE);
-	~CInifile					( );
+	virtual ~CInifile			( );
 
 	LPCSTR		cName			( ) { return fName; };
 
