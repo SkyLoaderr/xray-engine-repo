@@ -75,7 +75,7 @@ struct SFillPropData{
 #ifndef AI_COMPILER
 		//character profiles indexes
 		VERIFY					(character_profile_indxs.empty());
-		for(PROFILE_INDEX i = 0; i=<CCharacterInfo::GetMaxIndex(); i++)
+		for(PROFILE_INDEX i = 0; i<=CCharacterInfo::GetMaxIndex(); i++)
 		{
 			character_profile_indxs.push_back(xr_rtoken(*CCharacterInfo::IndexToId(i),i));
 		}

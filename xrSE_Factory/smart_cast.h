@@ -19,8 +19,10 @@
 #ifdef PURE_DYNAMIC_CAST
 #	define smart_cast dynamic_cast
 #else
-#	include "../ispatial.h"
-#	include "../fbasicvisual.h"
+#	ifdef XRGAME_EXPORTS
+#		include "../ispatial.h"
+#		include "../fbasicvisual.h"
+#	endif
 #	ifndef DECLARE_SPECIALIZATION
 #		include "smart_cast_impl0.h"
 #	else
