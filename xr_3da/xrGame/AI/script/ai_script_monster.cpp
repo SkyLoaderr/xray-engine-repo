@@ -273,6 +273,15 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 			default : NODEFAULT;
 		}
 		R_ASSERT	(l_iFirst>=0);
+		bool		bOk = false;
+		for (int i=0, n=l_tPatrolPath.tpaWayLinks.size(); i<n; i++) {
+			if (l_tPatrolPath.tpaWayLinks[i].wTo == l_iFirst) {
+				l_iFirst = i;
+				bOk		= true;
+				break;
+			}
+		}
+		VERIFY		(bOk);
 	}
 	else {
 		if (l_tMovementAction.m_tDestinationPosition.distance_to(Position()) > .1f)
@@ -319,6 +328,11 @@ void CScriptMonster::vfChoosePatrolPathPoint(CEntityAction *tpEntityAction)
 						}
 						else
 							l_iCount++;
+				VERIFY(l_iFirst > -1);
+			}
+			else {
+				l_tMovementAction.m_bCompleted = true;
+				return;
 			}
 		}
 	}
