@@ -271,9 +271,6 @@
 				RelativePath="FStaticRender_Loader.cpp">
 			</File>
 			<File
-				RelativePath="FStaticRender_LODs.cpp">
-			</File>
-			<File
 				RelativePath="FStaticRender_RenderTarget.cpp">
 			</File>
 			<File
@@ -322,7 +319,7 @@
 				RelativePath=".\r__dsgraph_render.cpp">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_render_hud.cpp">
+				RelativePath=".\r__dsgraph_render_lods.cpp">
 			</File>
 			<File
 				RelativePath=".\r__dsgraph_structure.h">
