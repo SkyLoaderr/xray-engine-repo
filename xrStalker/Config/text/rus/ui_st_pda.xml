@@ -2,22 +2,22 @@
 
 <string_table>
 	<string id="events">
-		<text>‘®ЎлвЁп</text>
+		<text>События</text>
 	</string>
 	<string id="contacts">
-		<text>Љ®­в Євл</text>
+		<text>Контакты</text>
 	</string>
 	<string id="map">
-		<text>Љ ав </text>
+		<text>Карта</text>
 	</string>
 	<string id="encyclopedia">
-		<text>ќ­жЁЄ«®ЇҐ¤Ёп</text>
+		<text>Энциклопедия</text>
 	</string>
 	<string id="statistics">
-		<text>‘в вЁбвЁЄ </text>
+		<text>Статистика</text>
 	</string>
 	<string id="rankings">
-		<text>ђҐ©вЁ­Ј</text>
+		<text>Рейтинг</text>
 	</string>	
 </string_table>
 
