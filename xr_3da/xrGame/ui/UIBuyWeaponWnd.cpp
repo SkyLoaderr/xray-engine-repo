@@ -610,18 +610,22 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if (&UIWeaponsTabControl == pWnd && CUITabControl::TAB_CHANGED == msg)
 	{
-		m_WeaponSubBags[*static_cast<int*>(pData) + 1]->Show(false);
-		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
-		UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
-		UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
-		SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
-		if (mlRoot == m_mlCurrLevel)
-		{
-			MenuLevelUp();
-		}
 		if (mlAddons == m_mlCurrLevel)
 		{
 			MenuLevelDown();
+		}
+		else 
+		{
+			m_WeaponSubBags[*static_cast<int*>(pData) + 1]->Show(false);
+			m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
+			UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
+			UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
+			SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
+
+			if (mlRoot == m_mlCurrLevel)
+			{
+				MenuLevelUp();
+			}
 		}
 	}
 	// Кнопки ОК и Отмена
@@ -1332,7 +1336,6 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 	// Если уровень назначения не тот на котором мы сейчас
 	if (m_mlCurrLevel != lvl)
 	{
-		// Запоминаем предыдущий уровень
 		switch (lvl)
 		{
 		case mlRoot:
@@ -1362,6 +1365,7 @@ bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
 			break;
 		}
 
+		// Запоминаем предыдущий уровень
 		m_mlCurrLevel = lvl;
 	}
 	return true;
@@ -1476,31 +1480,6 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
-CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
-{
-	R_ASSERT(pPossibleAddon);
-
-	for (int i = 0; i < m_iUsedItems; ++i)
-	{
-		if (m_vDragDropItems[i].bAddonsAvailable)
-		{
-			for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
-			{
-				// Если один из типов аддонов
-				if (pPossibleAddon == m_vDragDropItems[i].m_pAddon[j])
-				{
-					ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
-					return &m_vDragDropItems[i];
-				}
-			}
-		}
-	}
-
-	return NULL;
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::MoveWeapon(const u8 grpNum, const u8 uIndexInSlot)
@@ -1580,6 +1559,31 @@ void CUIBuyWeaponWnd::SwitchIndicator(bool bOn, const int activeTabIndex)
 //-----------------------------------------------------------------------------/
 //  CUIDragDropItemMP class
 //-----------------------------------------------------------------------------/
+
+//////////////////////////////////////////////////////////////////////////
+
+CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID)
+{
+	R_ASSERT(pPossibleAddon);
+
+	for (int i = 0; i < m_iUsedItems; ++i)
+	{
+		if (m_vDragDropItems[i].bAddonsAvailable)
+		{
+			for (u8 j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
+			{
+				// Если один из типов аддонов
+				if (pPossibleAddon == m_vDragDropItems[i].m_pAddon[j])
+				{
+					ID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
+					return &m_vDragDropItems[i];
+				}
+			}
+		}
+	}
+
+	return NULL;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
