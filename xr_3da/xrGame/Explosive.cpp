@@ -138,7 +138,7 @@ float CExplosive::ExplosionEffect(CGameObject* pExpObject,  const Fvector &expl_
 	}*/
 	elements.push_back((s16)RQ.element);
 
-	//l_pos.set(0, 0, 0);
+	l_pos.sub(expl_centre,pExpObject->Position());
 	bs_positions.push_back(l_pos);
 	return 1.f;
 }

@@ -65,7 +65,7 @@ void CCarDamageParticles::PlayWheel2(CCar*car,u16 bone_id)
 
 void CCarDamageParticles::PlayExplosion(CCar* car)
 {
-	if(*m_car_explosion_particles)car->StartParticles(m_car_explosion_particles,Fvector().set(0,1,0),car->ID());
+	if(*m_car_explosion_particles)car->StartParticles(m_car_explosion_particles,0,Fvector().set(0,1,0),car->ID());
 }
 void CCarDamageParticles::Clear()
 {

@@ -51,8 +51,12 @@ void CPHShell::ExplosionHit(const Fvector& pos, const Fvector& dir, float val,co
 			r_box.set(rad,rad,rad);
 			r_pos.random_point(r_box);
 			r_dir.random_dir();
-			r_dir.mul(0.5f);
-			r_dir.add(dir);
+			if(!fis_zero(pos.magnitude(),EPS_L))
+			{
+				r_dir.mul(0.5f);
+				r_dir.add(dir);
+			}
+
 			r_dir.normalize_safe();//safe???
 			element->applyImpulseTrace(r_pos,r_dir,g_impulse,element->CPHGeometryOwner::Geom(j)->bone_id());
 		}
