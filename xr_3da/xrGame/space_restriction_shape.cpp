@@ -114,7 +114,11 @@ void CSpaceRestrictionShape::build_border	()
 #ifdef DEBUG
 void CSpaceRestrictionShape::test_correctness	()
 {
-	VERIFY(!m_test_storage.empty());
+	if (m_test_storage.empty()) {
+		string128 s;
+		sprintf(s,"Bad Shape for object [%s]", *m_restrictor->cName());
+		VERIFY2(!m_test_storage.empty(), s);
+	}
 
 	ai().level_graph().set_mask		(border());
 
