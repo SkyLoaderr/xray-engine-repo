@@ -450,6 +450,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 
 		dist			-= mdist;
 		TravelStart		++;
+		VERIFY			((TravelStart+1) < TravelPath.size());
 		target.set		(TravelPath[TravelStart+1].P);
 		mdir.sub		(target, p_dest);
 		mdist			= mdir.magnitude();
