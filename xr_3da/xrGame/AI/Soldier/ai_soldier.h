@@ -157,7 +157,6 @@ class CAI_Soldier : public CCustomMonster
 		void vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFinishPoint, DWORD dwStartNode, DWORD dwFinishNode, vector<CTravelNode> &tpaPath);
 		void vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD> &dwaNodes, vector<CTravelNode> &tpaPath);
 		void vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tPoint1, float &fRadius, Fvector &tCircleCentre);
-		float bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchAngle, float fSwitchDistance);
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);

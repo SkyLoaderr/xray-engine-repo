@@ -203,32 +203,6 @@ void CAI_Soldier::vfComputeCircle(Fvector tPosition, Fvector tPoint0, Fvector tP
 	tCircleCentre.add(tPoint0);
 }
 
-float CAI_Soldier::bfCheckForChange(DWORD dwNode0, DWORD dwNode1, float fSwitchAngle, float fSwitchDistance)
-{
-	Fvector tTemp0, tTemp1, tPoint0, tPoint1;
-	
-	Level().AI.UnpackPosition(tTemp0,Level().AI.Node(dwNode0)->p0);
-	Level().AI.UnpackPosition(tTemp1,Level().AI.Node(dwNode0)->p1);
-	tPoint0.average(tTemp0,tTemp1);
-	tPoint0.sub(vPosition);
-	
-	Level().AI.UnpackPosition(tTemp0,Level().AI.Node(dwNode1)->p0);
-	Level().AI.UnpackPosition(tTemp1,Level().AI.Node(dwNode1)->p1);
-	tPoint1.average(tTemp0,tTemp1);
-	tPoint1.sub(vPosition);
-
-	//if (fabsf(tPoint0.magnitude() - tPoint1.magnitude()) > 5.f)
-	if (tPoint1.magnitude() > 15.f)
-		return(false);
-
-	vfNormalizeSafe(tPoint0);
-	vfNormalizeSafe(tPoint1);
-
-	float fAngle = acosf(tPoint1.dotproduct(tPoint0));
-
-	return(fAngle > fSwitchAngle);
-}
-
 void CAI_Soldier::FollowLeaderPatrol()
 {
 	// if no more health then soldier is dead
