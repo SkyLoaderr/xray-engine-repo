@@ -15,9 +15,6 @@ class CMainUI :
 	public CDialogHolder
 
 {
-	bool											m_bRestoreConsole;
-	bool											m_bRestorePause;
-	bool											m_bActive;
 	CFontManager*									m_pFontManager;
 	CUICursor*										m_pUICursor;
 
@@ -25,6 +22,13 @@ class CMainUI :
 
 	float											m_fDevScale;
 
+	enum{
+		flRestoreConsole	= (1<<0),
+		flRestorePause		= (1<<1),
+		flActive			= (1<<2),
+		flNeedChangeCapture	= (1<<3),
+	};
+	Flags8											m_Flags;
 public:
 					CMainUI							();
 	virtual			~CMainUI						();

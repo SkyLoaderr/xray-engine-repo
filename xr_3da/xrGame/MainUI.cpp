@@ -14,12 +14,10 @@ extern CMainUI*		UI(){return (CMainUI*)(g_pGamePersistent->m_pMainUI);};
 
 CMainUI::CMainUI	()
 {
-	m_bActive					= false;
+	m_Flags.zero				();
 	m_pFontManager				= xr_new<CFontManager>();
 	m_pUICursor					= xr_new<CUICursor>();
 	m_startDialog				= NULL;
-	m_bRestoreConsole			= false;
-	m_bRestorePause				= false;
 	g_pGamePersistent->m_pMainUI= this;
 	if (Device.bReady)			OnDeviceCreate();
 }
@@ -33,18 +31,18 @@ CMainUI::~CMainUI	()
 }
 void CMainUI::Activate	(bool bActivate)
 {
-	if(m_bActive == bActivate) return;
+	if(!!m_Flags.is(flActive) == bActivate)	return;
 		
 	if(bActivate){
-		m_bActive					= true;
+		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
 		DLL_Pure* dlg = NEW_INSTANCE (TEXT2CLSID("MAIN_MNU"));
 		if(!dlg)
 			return;
 		m_startDialog = smart_cast<CUIDialogWnd*>(dlg);
 		VERIFY(m_startDialog);
 
-		m_bRestoreConsole	= !!Console->bVisible;
-		m_bRestorePause		= !!Device.Pause();
+		m_Flags.set			(flRestoreConsole,Console->bVisible);
+		m_Flags.set			(flRestorePause,Device.Pause());
 		Console->Hide				();
 //		Console->Execute			("pause on");
 		StartStopMenu				(m_startDialog,true);
@@ -54,9 +52,9 @@ void CMainUI::Activate	(bool bActivate)
 		};
 		Device.seqRender.Add		(this);
 //		Device.seqFrame.Add			(this);
-		IR_Capture					();
 	}else{
-		m_bActive					= false;
+		m_Flags.set					(flActive,FALSE);
+		m_Flags.set					(flNeedChangeCapture,TRUE);
 
 		Device.seqRender.Remove		(this);
 		
@@ -75,7 +73,7 @@ void CMainUI::Activate	(bool bActivate)
 			Device.seqFrame.Add		(g_pGameLevel);
 			Device.seqRender.Add	(g_pGameLevel);
 		};
-		if(m_bRestoreConsole)
+		if(m_Flags.is(flRestoreConsole))
 			Console->Show			();
 
 /*		if(m_bRestorePause)
@@ -84,11 +82,10 @@ void CMainUI::Activate	(bool bActivate)
 			Console->Execute		("pause off");
 */
 	}
-	m_bActive = bActivate;
 }
 bool CMainUI::IsActive	()
 {
-	return m_bActive;
+	return !!m_Flags.is(flActive);
 }
 
 
@@ -96,47 +93,47 @@ bool CMainUI::IsActive	()
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
 void	CMainUI::IR_OnMousePress				(int btn)	
 {	
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 	IR_OnKeyboardPress(mouse_button_2_key[btn]);
 };
 
 void	CMainUI::IR_OnMouseRelease				(int btn)	
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 	IR_OnKeyboardRelease(mouse_button_2_key[btn]);
 };
 void	CMainUI::IR_OnMouseHold					(int btn)	
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 	IR_OnKeyboardHold(mouse_button_2_key[btn]);
 };
 
 void	CMainUI::IR_OnMouseMove					(int x, int y)
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 		MainInputReceiver()->IR_OnMouseMove(x, y);
 };
 
 void	CMainUI::IR_OnMouseStop					(int x, int y)
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 };
 
 void	CMainUI::IR_OnKeyboardPress				(int dik)
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 	MainInputReceiver()->IR_OnKeyboardPress( dik);
 };
 
 void	CMainUI::IR_OnKeyboardRelease			(int dik)
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 	MainInputReceiver()->IR_OnKeyboardRelease(dik);
 };
 
 void	CMainUI::IR_OnKeyboardHold				(int dik)	
 {
-	if(!m_bActive) return;
+	if(!IsActive()) return;
 };
 
 //pureRender
@@ -157,6 +154,11 @@ void	CMainUI::OnFrame		(void)
 //		Device.seqRender.Remove		(this);
 //		IR_Release					();
 		xr_delete					(m_startDialog);
+	}
+	if (m_Flags.is(flNeedChangeCapture)){
+		m_Flags.set					(flNeedChangeCapture,FALSE);
+		if (m_Flags.is(flActive))	IR_Capture();
+		else						IR_Release();
 	}
 	CDialogHolder::OnFrame();
 }
