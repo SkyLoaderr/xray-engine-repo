@@ -22,6 +22,7 @@
 #include "sound_memory_manager.h"
 #include "missile.h"
 #include "script_binder.h"
+#include "motivation_action_manager.h"
 
 class CInventoryItem;
 class CLuaHit;
@@ -507,5 +508,16 @@ public:
 			LuaOut					(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member set_object!");
 		else
 			binder->set_lua_object	(object);
+	}
+
+	IC		CMotivationActionManager<CAI_Stalker>	*motivation_action_manager()
+	{
+		CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!stalker) {
+			LuaOut				(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member motivation_action_manager!");
+			return				(0);
+		}
+		else
+			return				(dynamic_cast<CMotivationActionManager<CAI_Stalker>*>(stalker));
 	}
 };
