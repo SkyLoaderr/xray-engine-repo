@@ -21,7 +21,13 @@ public:
 		float				test;			// note range: (-1[no]..1[yes])
 		float				energy;
 	};
+	struct Light
+	{
+		Flight				L;
+		float				energy;
+	};
 	vector<Item>			track;
+	vector<Light>			lights;
 public:
 	void					add				(int id);
 	void					remove			(int id);

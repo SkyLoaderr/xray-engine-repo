@@ -40,6 +40,8 @@ void CLightTrack::remove(int id)
 
 void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 {
+	dest.lights.clear	();
+
 	// Process selected lights
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
 	{
@@ -66,7 +68,8 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 		P.mad			(pos,P,R);
 		
 		// Direction/range	
-		Fvector& LP		= Lights[I->id].position;
+		xrLIGHT& xrL	= Lights[I->id];
+		Fvector& LP		= xrL.position;
 		Fvector	D;	
 		D.sub			(P,LP);
 		float	f		= D.magnitude();
@@ -76,5 +79,16 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 
 		clamp			(I->test,-1.f,1.f);
 		I->energy		= .9f*I->energy + .1f*I->test;
+
+		float	E		= I->energy * xrL.diffuse.magnitude_rgb();
+		if (E > EPS)	
+		{
+			// Select light
+			dest.lights.push_back	(CLightTrack::Light());
+			CLightTrack::Light&	L	= dest.lights.back();
+			L.L.set					(xrL);
+			L.L.diffuse.mul_rgb		(I->energy);
+			L.energy				= E;
+		}
 	}
 }
