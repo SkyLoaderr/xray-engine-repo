@@ -298,7 +298,8 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 			zeroV.set			(0,0,0);
 			Movement.SetVelocity(zeroV);
 		}
-		hit_slowmo				= 1.f;
+		hit_slowmo				= perc/100.f;
+		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
 	}
 }
 
@@ -335,23 +336,23 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	// Calculate physics
 	Movement.SetPosition		(vPosition);
-	float step = 0.1f;
-	while (dt>step){
-		Movement.Calculate		(accel,0,jump,step,false);
-		dt -= step;
-	}
-	if (dt>0){
-		Movement.Calculate		(accel,0,jump,dt,false);
-	}
+	Movement.Calculate			(accel,0,jump,dt,false);
 	Movement.GetPosition		(vPosition);
 
 	// Check ground-contact
-	if (Local() && Movement.gcontact_Was) 
+	if (Movement.gcontact_Was) 
 	{
 		pSounds->PlayAtPos					(sndLanding,this,Position());
-		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
-		Fvector D; D.set					(0,1,0);
-		if (Movement.gcontact_HealthLost)	Hit(Movement.gcontact_HealthLost,D,this);
+
+		Fvector zeroV;
+		zeroV.set							(0,0,0);
+		Movement.SetVelocity				(zeroV);
+
+		if (Local()) {
+			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
+			Fvector D; D.set					(0,1,0);
+			if (Movement.gcontact_HealthLost)	Hit	(Movement.gcontact_HealthLost,D,this);
+		}
 	}
 }
 
