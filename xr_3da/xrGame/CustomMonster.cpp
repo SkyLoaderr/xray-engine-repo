@@ -82,7 +82,6 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	vPosition.y += EPS_L;
 	
 	R_ASSERT	(pVisual->Type==MT_SKELETON);
-	PKinematics(pVisual)->PlayCycle("idle");
 	
 	Fbox					bbStandBox;
 	Fbox					bbCrouchBox;
@@ -126,6 +125,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	m_run.Create			(V,"norm_run");
 //	m_crouch_walk.Create	(V,"crouch_walk");
 //	m_crouch_run.Create		(V,"crouch_run");
+	PKinematics(pVisual)->PlayCycle(m_idle);
 
 	// weapons
 	Weapons					= new CWeaponList(this);

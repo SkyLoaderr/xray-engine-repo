@@ -221,7 +221,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 		motion, aabb, bbf, final_pos, final_vel, EPS);
 	
 	// Velocity stuff
-	float s_calc	= motion.magnitude();	// length of motion - dS - requisted
+	float s_calc	= motion.magnitude();	// length of motion - dS - requested
 	motion.sub		(final_pos,vPosition);	// motion - resulting
 	vLastMotion.set	(motion);
 	float s_res		= motion.magnitude();	// length of motion - dS - resulting

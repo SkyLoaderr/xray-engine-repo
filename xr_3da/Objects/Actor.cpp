@@ -757,4 +757,7 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 
 	HUD->pHUDFont->Color(0xffffffff);
 	HUD->pHUDFont->Out	(400,320,buf);
+	HUD->pHUDFont->Out	(400,330,"Vel Actual:    %3.2f",Movement.GetVelocityActual());
+	HUD->pHUDFont->Out	(400,340,"Vel:           %3.2f",Movement.GetVelocity());
+	HUD->pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",Movement.GetVelocityMagnitude());
 }
