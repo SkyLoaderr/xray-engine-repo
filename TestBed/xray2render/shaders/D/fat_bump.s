@@ -1,7 +1,7 @@
 struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
-  float4 Normal: 	NORMAL;		// Object-space normal
+  float4 N: 		NORMAL;		// Object-space normal
   float4 TexCoords: TEXCOORD0;	// Texture coordinates
   float4 T:			TEXCOORD1;	// tangent
   float4 B:			TEXCOORD2;	// binormal
@@ -49,13 +49,19 @@ v2p_out v_main	( a2v  	IN )
   OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
   float3 Pe 	= mul	(m_model2view, 				IN.Position	);
   OUT.Pe 		= float4(Pe.x,Pe.y,Pe.z,0);
-  OUT.Tex0 		= IN.TexCoords;
+	OUT.Tex0 		= IN.TexCoords;
 
-  // Calculate transform from tangent space to eye-space
+	// Calculate the 3x3 transform from tangent space to eye-space
+	// TangentToCubeSpace = object2cube * tangent2object
+	//              = object2cube * transpose(objToTangentSpace) (since the inverse of a rotation is its transpose)
+	// so a row of TangentToCubeSpace is the transform by objToTangentSpace of the corresponding row of ObjToCubeSpace
+	OUT.TangentToCubeSpace0.xyz = mul(objToTangentSpace, ObjToCubeSpace[0].xyz);
+	OUT.TangentToCubeSpace1.xyz = mul(objToTangentSpace, ObjToCubeSpace[1].xyz);
+	OUT.TangentToCubeSpace2.xyz = mul(objToTangentSpace, ObjToCubeSpace[2].xyz);
   float3x3 xform= mul	(m_model2view, float3x3(
-							IN.tangent.x,IN.tangent.y,IN.tangent.z,
-							IN.binormal.x,IN.binormal.y,IN.binormal.z,
-							IN.normal.x,IN.normal.y,IN.normal.z) 
+							IN.T.x,IN.T.y,IN.T.z,
+							IN.B.x,IN.B.y,IN.B.z,
+							IN.N.x,IN.N.y,IN.N.z) 
 							);
   
   // Feed this transform to pixel shader
@@ -84,6 +90,7 @@ p2f 	p_main	( v2p_in IN )
 							IN.M3.x,IN.M3.y,IN.M3.z),
 							N);
 
-  OUT.Ne 	= normalize	(Ne);
+  float3 NeN= normalize	(Ne);
+  OUT.Ne 	= float4	(NeN.x,NeN.y,NeN.z,0);
   return OUT;
 }
