@@ -161,6 +161,16 @@ public:
 		}
 	}
 };
+class CCC_VID_Reset : public CConsoleCommand
+{
+public:
+	CCC_VID_Reset(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		if (Device.bReady) {
+			Device.Reset	();
+		}
+	}
+};
 //-----------------------------------------------------------------------
 class CCC_SND_Restart : public CConsoleCommand
 {
@@ -292,7 +302,8 @@ void CCC_Register()
 	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);
 	CMD3(CCC_Token,		"vid_bpp",				&psCurrentBPP,	vid_bpp_token);
 	CMD1(CCC_VID_Restart,"vid_restart"			);
-
+	CMD1(CCC_VID_Reset, "vid_reset"				);
+	
 	// Sound
 	CMD4(CCC_Float,		"snd_rolloff",			&psSoundRolloff,	DS3D_MINROLLOFFFACTOR, DS3D_MAXROLLOFFFACTOR);
 	CMD4(CCC_Float,		"snd_doppler",			&psSoundDoppler,	DS3D_MINDOPPLERFACTOR, DS3D_MAXDOPPLERFACTOR );
