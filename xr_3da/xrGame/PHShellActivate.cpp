@@ -25,7 +25,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	PresetActive();
 
 	if(!CPHObject::is_active()) vis_update_deactivate();
-	if(!disable)EnableObject();
+	if(!disable)EnableObject(0);
 
 	ELEMENT_I i;
 	mXFORM.set(m0);
@@ -53,7 +53,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 	PresetActive();	
 	
 	if(!CPHObject::is_active()) vis_update_deactivate();
-	if(!disable)EnableObject();
+	if(!disable)EnableObject(0);
 
 
 
@@ -84,7 +84,7 @@ void CPHShell::Activate(bool disable)
 	PresetActive();
 	
 	if(!CPHObject::is_active()) vis_update_deactivate();
-	if(!disable)EnableObject();
+	if(!disable)EnableObject(0);
 
 
 
@@ -132,7 +132,7 @@ void CPHShell::Build(bool disable/*false*/)
 void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 {
 	if(!CPHObject::is_active()) vis_update_deactivate();
-	EnableObject();
+	EnableObject(0);
 
 
 	dSpaceSetCleanup(m_space,0);
@@ -164,7 +164,7 @@ void CPHShell::PureActivate()
 	if(bActive)	return;
 	bActive=true;
 	if(!CPHObject::is_active()) vis_update_deactivate();
-	EnableObject();
+	EnableObject(0);
 	m_object_in_root.identity();
 	spatial_register();
 }

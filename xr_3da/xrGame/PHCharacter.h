@@ -4,7 +4,7 @@
 #include "PHSynchronize.h"
 #include "PHDisabling.h"
 class CPhysicsShellHolder;
-
+class CClimableObject;
 class CGameObject;
  static enum EEnvironment
 			{
@@ -51,6 +51,7 @@ dVector3 m_safe_position;
 
 
 public:
+	virtual ECastType	CastType							(){return CPHObject::tpCharacter;}
 	virtual void		FreezeContent						();
 	virtual void		UnFreezeContent						();
 	virtual	dBodyID		get_body							()															{return m_body;}
@@ -63,6 +64,7 @@ public:
 
 
 void					SetPLastMaterial					(u16* p)													{p_lastMaterial=p;}													
+virtual void			SetElevator							(CClimableObject* climable)									{};
 virtual void			SetMaterial							(u16 material)												=0 ;
 virtual void			SetMaximumVelocity					(dReal /**vel/**/)											{}																			//!!
 virtual		dReal		GetMaximumVelocity					()															{return 0;}

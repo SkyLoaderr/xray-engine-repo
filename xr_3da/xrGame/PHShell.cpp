@@ -53,7 +53,7 @@ CPHShell::CPHShell()
 	m_object_in_root.identity();
 }
 
-void CPHShell::EnableObject()
+void CPHShell::EnableObject(CPHObject* obj)
 {
 	CPHObject::activate();
 	if(m_spliter_holder)m_spliter_holder->Activate();
@@ -219,7 +219,7 @@ void	CPHShell::UnFreezeContent()
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 	if(!bActive) return;
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val, 0);
-	EnableObject();
+	EnableObject(0);
 }
 
 void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id){
@@ -228,7 +228,7 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 	CBoneInstance& instance=m_pKinematics->LL_GetBoneInstance				(id);
 	if(!instance.Callback_Param) return;
 	((CPhysicsElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val, id);
-	EnableObject();
+	EnableObject(0);
 }
 
 CPhysicsElement* CPHShell::get_Element		(const shared_str & bone_name)
@@ -334,7 +334,7 @@ void CPHShell::Enable()
 	//if(dBodyIsEnabled((*i)->get_body())) return;
 	for( ;i!=e;++i)
 		(*i)->Enable();
-	EnableObject();
+	EnableObject(0);
 }
 
 void CPHShell::set_PhysicsRefObject	 (CPhysicsShellHolder* ref_object)
@@ -1167,7 +1167,7 @@ void CPHShell::applyGravityAccel(const Fvector& accel)
 	i=elements.begin(); e=elements.end();
 	for( ;i!=e;++i)
 		(*i)->applyGravityAccel(a);
-	EnableObject();
+	EnableObject(0);
 }
 
 void CPHShell::PlaceBindToElForms()

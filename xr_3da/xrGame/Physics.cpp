@@ -258,7 +258,7 @@ void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 		if(obj2)
 		{
 			obj1->MergeIsland(obj2);
-			if(!obj2->is_active())obj2->EnableObject();
+			if(!obj2->is_active())obj2->EnableObject(obj1);
 		}
 	}
 }

@@ -33,17 +33,19 @@ void cb(CBoneInstance* B)
 
 }
 
-
-CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b)
+void P_BuildStaticGeomShell(CPHStaticGeomShell* pUnbrokenObject,CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b)
 {
-	CPHStaticGeomShell* pUnbrokenObject=xr_new<CPHStaticGeomShell>();
 	pUnbrokenObject->add_Box	(b);
 	pUnbrokenObject->Activate	(obj->XFORM());
 
 	pUnbrokenObject->set_PhysicsRefObject(smart_cast<CPhysicsShellHolder*>(obj));
 	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
 	pUnbrokenObject->set_ObjectContactCallback(object_contact_callback);
-
+}
+CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b)
+{
+	CPHStaticGeomShell* pUnbrokenObject=xr_new<CPHStaticGeomShell>();
+	P_BuildStaticGeomShell(pUnbrokenObject,obj,object_contact_callback,b);
 	return pUnbrokenObject;
 }
 

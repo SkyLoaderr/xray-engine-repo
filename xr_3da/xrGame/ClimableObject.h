@@ -1,6 +1,6 @@
 #pragma once
 #include "physicsshellholder.h"
-class CPHStaticGeomShell;
+class CPHLeaderGeomShell;
 class CPHCharacter;
 class CClimableObject: public CPhysicsShellHolder 
 #ifdef DEBUG
@@ -8,8 +8,9 @@ class CClimableObject: public CPhysicsShellHolder
 #endif
 {
 	typedef	CPhysicsShellHolder		inherited;
-	CPHStaticGeomShell* m_pStaticShell;
+	CPHLeaderGeomShell* m_pStaticShell;
 	Fobb				m_box;
+	Fvector				m_axis;
 	float				m_radius;
 public:
 					CClimableObject		();
@@ -24,7 +25,10 @@ public:
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif
-	float			DistLoverEdge		(CPHCharacter	*actor);
-	float			DistApperEdge		(CPHCharacter	*actor);
+	float			DDLoverP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to lover point
+	float			DDApperP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to upper point
+	float			DDToAxis			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to ladder axis
+	void			LoverPoint			(Fvector	&P);
+	void			UpperPoint			(Fvector	&P);
 	void			DefineClimbState	(CPHCharacter	*actor);
 };

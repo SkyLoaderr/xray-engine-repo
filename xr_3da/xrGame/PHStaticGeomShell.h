@@ -9,7 +9,7 @@ class CPHStaticGeomShell:
 	public CPHUpdateObject
 {
 			void			get_spatial_params	();	
-virtual		void			activate			(){CPHUpdateObject::Activate();}
+virtual		void			EnableObject		(CPHObject* obj){CPHUpdateObject::Activate();}
 virtual		dGeomID			dSpacedGeom			(){return dSpacedGeometry();}
 virtual		void			PhDataUpdate		(dReal step){Island().Step(step);Island().Unmerge();CPHUpdateObject::Deactivate();}
 virtual		void			PhTune				(dReal step){}
@@ -22,4 +22,5 @@ public:
 
 CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback);
 CPHStaticGeomShell* P_BuildStaticGeomShell(CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b);
+void				P_BuildStaticGeomShell(CPHStaticGeomShell* shell,CGameObject* obj,ObjectContactCallbackFun* object_contact_callback,Fobb &b);
 #endif

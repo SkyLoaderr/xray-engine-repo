@@ -22,7 +22,7 @@ void CPHObject::activate()
 	m_flags.set(st_activated,TRUE);
 }
 
-void CPHObject::EnableObject()
+void CPHObject::EnableObject(CPHObject* obj)
 {
 	activate();
 }

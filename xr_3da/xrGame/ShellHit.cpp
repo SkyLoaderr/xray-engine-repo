@@ -30,7 +30,7 @@ void CPHShell::applyHit(const Fvector& pos, const Fvector& dir, float val,const 
 
 void CPHShell::ExplosionHit(const Fvector& pos, const Fvector& dir, float val,const u16 id)
 {
-	EnableObject();
+	EnableObject(0);
 	//Fvector local_pos;local_pos.set(0.f,0.f,0.f);
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	float impulse=val/_sqrt(_sqrt((float)elements.size()));

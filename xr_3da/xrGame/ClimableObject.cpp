@@ -2,6 +2,44 @@
 #include "climableobject.h "
 #include "PHStaticGeomShell.h"
 #include "xrServer_Objects_ALife.h"
+#include "PHCharacter.h"
+#include "MathUtils.h"
+
+#define  MAX_OF(x,on_x,y,on_y,z,on_z)\
+				if(x>y){\
+					if	(x>z)	{on_x;}\
+					else		{on_z;}\
+				}\
+				else\
+				{\
+					if	(y>z)	{on_y;}\
+					else		{on_z;}\
+				}
+
+
+
+class CPHLeaderGeomShell: public CPHStaticGeomShell
+{
+CClimableObject		*m_pClimable;
+public:
+						CPHLeaderGeomShell		(CClimableObject* climable);
+	virtual		void	EnableObject			(CPHObject* obj);
+};
+
+CPHLeaderGeomShell::CPHLeaderGeomShell(CClimableObject* climable)
+{
+	m_pClimable=climable;
+}
+void CPHLeaderGeomShell:: EnableObject(CPHObject* obj)
+{
+	if(obj && obj->CastType()==CPHObject::tpCharacter)
+	{
+		CPHCharacter* ch=static_cast<CPHCharacter*>(obj);
+		ch->SetElevator(m_pClimable);
+	}
+}
+
+
 	CClimableObject::CClimableObject		()
 {
 	m_pStaticShell=NULL;
@@ -21,11 +59,18 @@ BOOL CClimableObject::	net_Spawn			( LPVOID DC)
 	Fmatrix& b=CLB->shapes[0].data.box;
 	m_box.m_halfsize.set(b._11,b._22,b._33);
 	//m_box.m_halfsize.set(1.f,1.f,1.f);
-		m_radius=_max(_max(m_box.m_halfsize.x,m_box.m_halfsize.y),m_box.m_halfsize.z);
+	m_radius=_max(_max(m_box.m_halfsize.x,m_box.m_halfsize.y),m_box.m_halfsize.z);
 	BOOL ret	= inherited::net_Spawn(DC);
 	m_box.xform_set(Fidentity);
-	m_pStaticShell=P_BuildStaticGeomShell(smart_cast<CGameObject*>(this),0,m_box);
+	m_pStaticShell=xr_new<CPHLeaderGeomShell>(this);
+	P_BuildStaticGeomShell(smart_cast<CPHStaticGeomShell*>(m_pStaticShell),smart_cast<CGameObject*>(this),0,m_box);
 	m_pStaticShell->SetMaterial("materials\\fake_ladders");
+	
+	MAX_OF(	_abs(XFORM().i.y),m_axis.set(XFORM().i);m_axis.mul(m_box.m_halfsize.x),
+			_abs(XFORM().j.y),m_axis.set(XFORM().j);m_axis.mul(m_box.m_halfsize.y),
+			_abs(XFORM().k.y),m_axis.set(XFORM().k);m_axis.mul(m_box.m_halfsize.z)
+			);
+	if(m_axis.y<0.f) m_axis.invert();
 	return ret;
 }
 void CClimableObject::	net_Destroy			()
@@ -45,23 +90,50 @@ void CClimableObject::	UpdateCL			( )								// Called each frame, so no need fo
 
 void	CClimableObject::Center				(Fvector &C) const
 {
-	C.set(XFORM().c);
+		C.set(XFORM().c);
 }
 float	CClimableObject::Radius				() const
 {
 		return							m_radius;
 }
 
-float		CClimableObject::	DistLoverEdge		(CPHCharacter	*actor)
+float		CClimableObject::	DDLoverP		(CPHCharacter	*actor,Fvector	&out_dir)
 {
-	return 0.f;
+	Fvector pos;
+	LoverPoint(out_dir);
+	actor->GetPosition(pos);
+	out_dir.sub(pos);
+	return to_mag_and_dir(out_dir);
 }
-float		CClimableObject::	DistApperEdge		(CPHCharacter	*actor)
+float		CClimableObject::	DDApperP		(CPHCharacter	*actor,Fvector	&out_dir)
 {
-	return 0.f;
+	Fvector pos;
+	UpperPoint(out_dir);
+	actor->GetPosition(pos);
+	out_dir.sub(pos);
+	return to_mag_and_dir(out_dir);
 }
+
+
 void		CClimableObject::	DefineClimbState	(CPHCharacter	*actor)
 {
+
+
+}
+
+float		CClimableObject::	DDToAxis			(CPHCharacter	*actor,Fvector &out_dir)
+{
+	return 0.f;	
+}
+
+void		CClimableObject::	LoverPoint			(Fvector &P)
+{
+	P.sub(XFORM().c,m_axis);
+}
+
+void		CClimableObject::	UpperPoint			(Fvector &P)
+{
+	P.add(XFORM().c,m_axis);
 }
 #ifdef DEBUG
 void CClimableObject ::OnRender()
@@ -69,5 +141,10 @@ void CClimableObject ::OnRender()
 	Fmatrix form;m_box.xform_get(form);
 	//form.mulA(XFORM());
 	RCache.dbg_DrawOBB(XFORM(),m_box.m_halfsize,D3DCOLOR_XRGB(0,0,255));
+	Fvector p1,p2,d;
+	d.set(m_axis);
+	p1.add(XFORM().c,d);
+	p2.sub(XFORM().c,d);
+	RCache.dbg_DrawLINE(Fidentity,p1,p2,D3DCOLOR_XRGB(255,0,0));
 }
 #endif

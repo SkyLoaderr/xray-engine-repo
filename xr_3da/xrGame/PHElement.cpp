@@ -487,7 +487,7 @@ void CPHElement::PhDataUpdate(dReal step){
 
 void CPHElement::Enable()	{
 	if(!bActive) return;
-	m_shell->EnableObject();
+	m_shell->EnableObject(0);
 	if(dBodyIsEnabled(m_body)) return;
 	dBodyEnable(m_body);
 }
@@ -865,7 +865,7 @@ void	CPHElement::applyForce(float x,float y,float z)																//called any
 	if(!bActive)return;//hack??
 	if(m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-	m_shell->EnableObject();
+	m_shell->EnableObject(0);
 	dBodyAddForce(m_body,x,y,z);
 	BodyCutForce(m_body,m_l_limit,m_w_limit);
 }
@@ -1258,7 +1258,7 @@ void CPHElement::applyGravityAccel				(const Fvector& accel)
 {
 	if(m_flags.test(flFixed)) return;
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);
-	m_shell->EnableObject();
+	m_shell->EnableObject(0);
 	Fvector val;
 	val.set(accel);
 	val.mul(m_mass.mass);

@@ -26,8 +26,17 @@ class CPHObject :
 					st_net_interpolation			=(1<<3),
 					fl_ray_motions					=(1<<4)
 				};
-			
+
 			CPHIsland		m_island;
+
+public:
+			enum ECastType
+			{
+					tpNotDefinite,
+					tpShell,
+					tpCharacter,
+					tpStaticShell
+			};
 protected:
 				Fvector		AABB;
 protected:
@@ -52,7 +61,7 @@ public:
 	
 	virtual		void		FreezeContent					()								;
 	virtual		void		UnFreezeContent					()								;
-	virtual		void 		EnableObject					()								;
+	virtual		void 		EnableObject					(CPHObject* obj)				;
 
 	virtual 	void 		PhDataUpdate					(dReal step)					=0;
 	virtual 	void 		PhTune							(dReal step)					=0;
@@ -70,13 +79,13 @@ public:
 
 
 							CPHObject						()										;
-virtual		void			activate						()										;
+			void			activate						()										;
 		IC	bool			is_active						()										{return !!m_flags.test(st_activated)/*b_activated*/;}
 			void			deactivate						()										;
 virtual		void			Collide							()										;
 virtual		void			RMotionsQuery					(qResultVec	&res)						{;}
 virtual		CPHMoveStorage*	MoveStorage						()										{return NULL;}
-
+virtual		ECastType		CastType						(){return tpNotDefinite;}
 virtual		void			vis_update_activate				()										{}
 virtual		void			vis_update_deactivate			()										{}
 };

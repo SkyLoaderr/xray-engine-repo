@@ -81,4 +81,15 @@ IC	void twoq_2w(const Fquaternion& q1,const Fquaternion& q2,float dt,Fvector& w)
 	if(sinus_2>EPS)	k*=acos(cosinus)/_sqrt(sinus_2);
 	w.mul(k);
 }
+
+IC float	to_mag_and_dir(Fvector &in_out_v)
+{
+	float mag=in_out_v.magnitude();
+	if(!fis_zero(mag))
+		in_out_v.mul(1.f/mag);
+	else
+		in_out_v.set(0.f,0.f,0.f);
+	return mag;
+}
+
 #endif

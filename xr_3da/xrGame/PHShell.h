@@ -34,7 +34,7 @@ public:
 	virtual	void			add_Element				(CPhysicsElement* E);
 
 	void					SetPhObjectInElements	();
-	void					EnableObject			();
+	virtual	void			EnableObject			(CPHObject* obj);
 	virtual void			SetAirResistance		(dReal linear=default_k_l, dReal angular=default_k_w)
 	{
 		xr_vector<CPHElement*>::iterator i;
@@ -77,18 +77,18 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( dir, val);
-		EnableObject();
+		EnableObject(0);
 	};
 	virtual void			applyForce				(float x,float y,float z)				
 	{
 		if(!bActive) return;
 		(*elements.begin())->applyForce				( x,y,z);
-		EnableObject();
+		EnableObject(0);
 	};
 	virtual void			applyImpulse			(const Fvector& dir, float val)				{
 		if(!bActive) return;
 		(*elements.begin())->applyImpulse			( dir, val);
-		EnableObject();
+		EnableObject(0);
 	};
 	virtual void			applyGravityAccel		(const Fvector& accel);
 	virtual void			set_JointResistance		(float force)
