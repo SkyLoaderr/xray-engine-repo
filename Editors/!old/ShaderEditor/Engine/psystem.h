@@ -502,47 +502,24 @@ namespace PAPI
 	};
 
     DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
-	struct PARTICLEDLL_API ParticleActions{
+	class PARTICLEDLL_API ParticleActions{
 		PAVec			actions;
 	public:
-						ParticleActions()
-		{
-			actions.reserve(4);
-		}
-						~ParticleActions()
-		{
-			clear		();
-		}
-		IC void			clear(){
+						ParticleActions()						{actions.reserve(4);	}
+						~ParticleActions()						{clear();				}
+		IC void			clear			()
+        {
 			for (PAVecIt it=actions.begin(); it!=actions.end(); it++) 
 				xr_delete(*it);
 			actions.clear();
 		}
-		IC void			append(ParticleAction* pa)
-		{
-			actions.push_back(pa);
-		}
-		IC bool			empty()
-		{
-			return		actions.empty();
-		}
-		IC PAVecIt		begin()
-		{
-			return		actions.begin();
-		}
-		IC PAVecIt		end()
-		{
-			return		actions.end();
-		}
-        IC int			size()
-        {
-        	return 		actions.size();
-        }
-        IC void			resize(int cnt)
-        {
-        	actions.resize(cnt);
-        }
-        void			copy(ParticleActions* src);
+		IC void			append			(ParticleAction* pa)	{actions.push_back(pa);	}
+		IC bool			empty			()						{return	actions.empty();}
+		IC PAVecIt		begin			()						{return	actions.begin();}
+		IC PAVecIt		end				()						{return actions.end();	}
+        IC int			size			()						{return actions.size();	}
+        IC void			resize			(int cnt)        		{actions.resize(cnt);	}
+        void			copy			(ParticleActions* src);
 	};
 
 	// Global state _vector
