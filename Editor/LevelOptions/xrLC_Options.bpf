@@ -1,0 +1,11 @@
+USEUNIT("xrLC_OptionsEntry.cpp");
+USEFORM("SceneProperties.cpp", frmSceneProperties);
+USEUNIT("edit\FileSystem.cpp");
+USEUNIT("stdafx.cpp");
+USEUNIT("edit\log.cpp");
+USEFORM("LogForm.cpp", frmLog);
+USEUNIT("edit\ColorPicker.cpp");
+//---------------------------------------------------------------------------
+This file is used by the project manager only and should be treated like the project file
+
+DllEntryPoint

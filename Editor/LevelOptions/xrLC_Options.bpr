@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.05.03"/>
+    <PROJECT value="!run\xrLC_Options.dll"/>
+    <OBJFILES value="XRLC_Intermediate\xrLC_OptionsEntry.obj 
+      XRLC_Intermediate\SceneProperties.obj XRLC_Intermediate\FileSystem.obj 
+      XRLC_Intermediate\stdafx.obj XRLC_Intermediate\log.obj 
+      XRLC_Intermediate\LogForm.obj XRLC_Intermediate\ColorPicker.obj"/>
+    <RESFILES value=""/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES) SceneProperties.dfm LogForm.dfm"/>
+    <LIBFILES value=""/>
+    <LIBRARIES value="dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
+    <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib"/>
+    <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclusr50.bpi dclocx50.bpi"/>
+    <PATHCPP value=".;edit"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="tlink32"/>
+    <USERDEFINES value=""/>
+    <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
+    <MAINSOURCE value="xrLC_Options.bpf"/>
+    <INCLUDEPATH value="Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <LIBPATH value="shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <WARNINGS value="-w-par"/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-IEngine\Blenders -IR:\Borland\Components\Eldos\Code\Source\. 
+      -Ir:\borland\components\alexmx\. -Ilib\DX -IR:\DirectX8.1\include\. 
+      -Ic:\rad\Borland\CBuilder5\Bin\. -Ic:\rad\borland\CBuilder5\Projects\. 
+      -I$(BCB)\include -I$(BCB)\include\vcl -Iengine -Iedit -IImport\LWO 
+      -ICollide -IP:\MagicFM_Borland\Sdk\Include\. 
+      -Ic:\rad\borland\components\extbtn\. -Ic:\rad\borland\components\multi\. 
+      -Ic:\rad\borland\components\renderwindow\. 
+      -IC:\RAD\borland\Components\RX\Units\. 
+      -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -src_suffix cpp -boa"/>
+    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -tWD -tWM -c"/>
+    <PFLAGS value="-N2XRLC_Intermediate -N0XRLC_Intermediate -$Y- -$L- -$D- -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-IXRLC_Intermediate -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0d32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+  </LINKER>
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1058
+CodePage=1251
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[Excluded Packages]
+$(BCB)\Bin\dclite50.bpl=Borland Integrated Translation Environment
+
+[HistoryLists\hlIncludePath]
+Count=4
+Item0=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item1=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item2=$(BCB)\include;$(BCB)\include\vcl;edit
+Item3=$(BCB)\include;$(BCB)\include\vcl
+
+[HistoryLists\hlLibraryPath]
+Count=3
+Item0=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item1=edit;$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+Item2=$(BCB)\Projects\Lib;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=1
+Item0=_DEBUG
+
+[HistoryLists\hlIntOutputDir]
+Count=2
+Item0=XRLC_Intermediate
+Item1=xrLC_Options
+
+[HistoryLists\hlFinalOutputDir]
+Count=2
+Item0=!run\
+Item1=!run
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=-fdemo -o
+HostApplication=P:\Editor\!Run\xrLC.exe
+RemoteHost=
+RemotePath=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+  </IDEOPTIONS>
+</PROJECT>
