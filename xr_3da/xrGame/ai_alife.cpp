@@ -157,7 +157,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	IReader						*tpStream;
 
 	// loading spawn registry
-	R_ASSERT3					(FS.exist(caFileName, "$game_data$", caSaveName,".spawn"),"Can't find file '%s.spawn'",caSaveName);
+	R_ASSERT3					(FS.exist(caFileName, "$game_spawn$", caSaveName,".spawn"),"Can't find file '%s.spawn'",caSaveName);
 	tpStream					= FS.r_open(caFileName);
 	Log							("* Loading spawn registry");
 	CSE_ALifeSpawnRegistry::Load(*tpStream);
