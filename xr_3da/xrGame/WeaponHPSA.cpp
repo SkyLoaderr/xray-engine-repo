@@ -18,6 +18,6 @@ void CWeaponHPSA::OnShot(BOOL bHUDView)
 //	FireEnd				();
 }
 
-void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
+void CWeaponHPSA::switch2_Fire	(BOOL bHUDView)
 {
 }
