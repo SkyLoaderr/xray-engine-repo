@@ -34,7 +34,7 @@ void CMemoryManager::Load			(LPCSTR section)
 	m_object						= dynamic_cast<CAI_Stalker*>(this);
 }
 
-void CMemoryManager::reinit	()
+void CMemoryManager::reinit			()
 {
 	CVisualMemoryManager::reinit	();
 	CSoundMemoryManager::reinit		();

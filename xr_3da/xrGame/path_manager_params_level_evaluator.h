@@ -10,8 +10,16 @@
 
 #include "path_manager_params.h"
 #include "level_graph.h"
-#include "group.h"
 #include "script_export_space.h"
+
+class CEntity;
+
+namespace GroupHierarchyHolder {
+	typedef xr_vector<CEntity*> MEMBER_REGISTRY;
+}
+
+typedef xr_vector<Fvector>				MemberPlacement;
+typedef xr_vector<u32>					MemberNodes;
 
 #define CHECK_CONDITION(A)				((qwFlags & A) == A)
 
@@ -115,7 +123,7 @@ public:
 	MemberNodes		m_taMemberNodes;
 	MemberPlacement m_taDestMemberPositions;
 	MemberNodes		m_taDestMemberNodes;
-	EntityVec		*m_taMembers;
+	const GroupHierarchyHolder::MEMBER_REGISTRY		*m_taMembers;
 
 	// postion being tested
 	float			m_fDistance;

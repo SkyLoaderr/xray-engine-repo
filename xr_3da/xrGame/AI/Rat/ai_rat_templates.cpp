@@ -12,7 +12,7 @@
 #include "../../game_graph.h"
 #include "../../magic_box3.h"
 
-void CAI_Rat::vfSetFire(bool bFire, CGroup &/**Group/**/)
+void CAI_Rat::vfSetFire(bool bFire)
 {
 	if (bFire) {
 		m_bFiring = true;

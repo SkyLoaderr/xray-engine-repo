@@ -147,7 +147,7 @@ void CUIZoneMap::EntityOut(float diff, u32 color, const Ivector2& pt)
 
 int x_m_x = 0;
 int x_m_z = 0;
-void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
+void CUIZoneMap::UpdateRadar(CEntity* Actor)
 {
 	CActor* pActor = dynamic_cast<CActor*>(Actor);
 

@@ -12,6 +12,10 @@
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 Flags32		psAI_Flags	= {aiLua};
  
@@ -591,50 +595,50 @@ void CCustomMonster::OnRender()
 //	}
 	}
 
-	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
-		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
-			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-			tP0.y += .35f;
-			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
-				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
-			else
-				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
-					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
-				else
-					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
-			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
-				case 0 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-					break;
-				}
-				case 1 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
-					break;
-				}
-				case 2 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-					break;
-				}
-				case 3 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
-					break;
-				}
-				case 4 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
-					break;
-				}
-				case 5 : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
-					break;
-				}
-				default : {
-					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
-					break;
-				}
-			}
-		}
-	}
+//	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
+//		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+//		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); ++i) {
+//			Fvector tP0 = ai().level_graph().vertex_position(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+//			tP0.y += .35f;
+//			if (!Group.m_tpaSuspiciousNodes[i].dwSearched)
+//				RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
+//			else
+//				if (1 == Group.m_tpaSuspiciousNodes[i].dwSearched)
+//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+//				else
+//					RCache.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+//			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
+//				case 0 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+//					break;
+//				}
+//				case 1 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+//					break;
+//				}
+//				case 2 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+//					break;
+//				}
+//				case 3 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+//					break;
+//				}
+//				case 4 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+//					break;
+//				}
+//				case 5 : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+//					break;
+//				}
+//				default : {
+//					RCache.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	if (psAI_Flags.test(aiFrustum))
 		dbg_draw_frustum(eye_fov,eye_range,1,eye_matrix.c,eye_matrix.k,eye_matrix.j);
@@ -653,6 +657,7 @@ void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, COb
 
 void CCustomMonster::Die	()
 {
+	inherited::Die			();
 	processing_deactivate	();
 }
 
@@ -777,16 +782,14 @@ void CCustomMonster::ChangeTeam(int team, int squad, int group)
 	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
 
 	// remove from current team
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	Group.Member_Remove(this);
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member	(this);
 
-	id_Team		= team;
-	id_Squad	= squad;
-	id_Group	= group;
+	id_Team					= team;
+	id_Squad				= squad;
+	id_Group				= group;
 
 	// add to new team
-	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	Group.Member_Add(this);
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member		(this);
 }
 
 void CCustomMonster::PitchCorrection() 

@@ -10,8 +10,6 @@
 
 #define	MAX_HEAD_TURN_ANGLE				(1.f*PI_DIV_4)
 
-DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
-
 namespace StalkerSpace {
 	enum EStalkerSounds {
 		eStalkerSoundDie = u32(0),

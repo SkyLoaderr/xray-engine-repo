@@ -8,16 +8,15 @@
 
 #pragma once
 
-#include "../ai_space.h"
-#include "../Entity.h"
-#include "../CustomMonster.h"
-#include "../Group.h"
-
 class CBaseFunction;
-		   
-// Fuzzy State Machine
-#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
+class CEntity;
+class CEntityAlive;
 
+namespace GroupHierarchyHolder {
+	typedef xr_vector<CEntity*> MEMBER_REGISTRY;
+}
+
+		   
 #define WRITE_LOG
 
 #ifndef DEBUG
@@ -125,89 +124,10 @@ class CBaseFunction;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(b);\
 }
 
-#define SET_LOOK_FIRE_MOVEMENT(a,b,c)\
-	if (!(Group.m_bLessCoverLook)) {\
-		Group.m_bLessCoverLook = m_bLessCoverLook = true;\
-		Group.m_dwLastViewChange = dwCurTime;\
-	}\
-	else\
-		if ((m_bLessCoverLook) && (dwCurTime - Group.m_dwLastViewChange > 5000))\
-			Group.m_bLessCoverLook = m_bLessCoverLook = false;\
-	if (m_bLessCoverLook)\
-		SetLessCoverLook(level_vertex());\
-	else\
-		SetDirectionLook();\
-	\
-	vfSetFire(a,Group);\
-	\
-	vfSetMovementType(b,c);
-
-// Bones
-#define ASSIGN_SPINE_BONE {\
-	if (_abs(m_body.target.yaw - m_head.target.yaw) < MIN_SPINE_TURN_ANGLE) {\
-		r_spine_target.yaw = m_head.target.yaw;\
-	}\
-	else\
-		m_head.target.yaw = r_spine_target.yaw =  m_body.target.yaw;\
-}
-		
-#define LOOK_AT_DIRECTION(A) {\
-	mk_rotation(A,m_body.target);\
-	m_head.target.yaw = m_body.target.yaw;\
-	ASSIGN_SPINE_BONE\
-}
-
 #define INIT_SQUAD_AND_LEADER \
-	CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
-	CEntity* Leader = Squad.Leader;\
-	if (Leader->g_Health() <= 0)\
-		Leader = this;\
-	R_ASSERT (Leader);
+	CSquadHierarchyHolder	&Squad = Level().seniority_holder().team(g_Team()).squad(g_Squad());\
+	CEntity					*Leader = Squad.leader();\
+	VERIFY					(Leader);
 
-#define ADJUST_ANGLE(A) \
-	if (A >= PI_MUL_2 - EPS_L)\
-		A -= PI_MUL_2;\
-	else\
-		if (A <= -EPS_L)\
-			A += PI_MUL_2;
-		
-#define ADJUST_BONE(A) \
-	ADJUST_ANGLE(A.yaw);\
-	ADJUST_ANGLE(A.pitch);
-		
-#define ADJUST_BONE_ANGLES \
-	ADJUST_BONE(m_head.target);\
-	ADJUST_BONE(m_head.current);\
-	ADJUST_BONE(m_body.target);\
-	ADJUST_BONE(m_body.current);
-		
-#define SUB_ANGLE(A,B)\
-	A -= B;\
-	if (A <= -EPS_L )\
-		A += PI_MUL_2;
-		
-#define ADD_ANGLE(A,B)\
-	A += B;\
-	if (A >= PI_MUL_2 - EPS_L)\
-		A -= PI_MUL_2;
-
-#define CUBE(x)	((x)*(x)*(x))
-#define LEFT_NODE(Index)					((Index + 3) & 3)
-#define RIGHT_NODE(Index)					((Index + 5) & 3)
-#define NEXT_POINT(m_iCurrentPoint)			tpaPatrolPoints.size() - 1 == (m_iCurrentPoint) ? 0 : (m_iCurrentPoint) + 1
-#define PREV_POINT(m_iCurrentPoint)			0 == (m_iCurrentPoint) ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
-#define COMPUTE_DISTANCE_2D(t,p)			(_sqrt(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
-
-#define DELETE_SOUNDS(a,b) {\
-	for (int i=0; i<(a); ++i)\
-		::Sound->destroy((b)[i]);\
-}
-
-extern int			ifFindNearestPatrolPoint		(xr_vector<Fvector> &tpaVector, const Fvector &tPosition);
-extern bool			bfGetActionSuccessProbability	(EntityVec &Members, const xr_set<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction);
+extern bool			bfGetActionSuccessProbability	(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_set<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction);
 extern u32			dwfChooseAction					(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity=0, float fGroupDistance = 100.f);
-extern Fvector		tfGetNextCollisionPosition		(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition);
-
-DEFINE_VECTOR										(ref_sound,SOUND_VECTOR,SOUND_IT);
-extern void			g_vfLoadSounds					(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount,int type);
-

@@ -29,6 +29,7 @@
 #include "../alife_object_registry.h"
 #include "../game_cl_base.h"
 #include "../level.h"
+#include "../seniority_hierarchy_holder.h"
 
 using namespace InventoryUtilities;
 
@@ -434,7 +435,7 @@ void CUIMainIngameWnd::Update()
 
 
     // radar
-	UIZoneMap.UpdateRadar(m_pActor,Level().Teams[m_pActor->id_Team]);
+	UIZoneMap.UpdateRadar(m_pActor);
 	// viewport
 	float h,p;
 	Device.vCameraDirection.getHP	(h,p);

@@ -13,6 +13,10 @@
 #include "game_cl_base.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
@@ -43,14 +47,14 @@ void CSpectator::UpdateCL()
 		if (eacFreeFly!=cam_active){
 			int idx			= 0;
 			game_PlayerState* P = Game().local_player;
-			if (P&&(P->team>=0)&&(P->team<(int)Level().Teams.size())){
-				CTeam& T		= Level().Teams[P->team];
-				for (u32 i=0; i<T.Squads.size(); ++i){
-					CSquad& S = T.Squads[i];
-					for (u32 j=0; j<S.Groups.size(); ++j){
-						CGroup& G = S.Groups[j];
-						for (u32 k=0; k<G.Members.size(); ++k){
-							CActor* A = dynamic_cast<CActor*>(G.Members[k]);
+			if (P&&(P->team>=0)&&(P->team<(int)Level().seniority_holder().teams().size())){
+				const CTeamHierarchyHolder& T		= Level().seniority_holder().team(P->team);
+				for (u32 i=0; i<T.squads().size(); ++i){
+					const CSquadHierarchyHolder& S = T.squad(i);
+					for (u32 j=0; j<S.groups().size(); ++j){
+						const CGroupHierarchyHolder& G = S.group(j);
+						for (u32 k=0; k<G.members().size(); ++k){
+							CActor* A = dynamic_cast<CActor*>(G.members()[k]);
 							if (A/*&&A->g_Alive()*/){
 								if(idx==look_idx){
 									cam_Update	(A);

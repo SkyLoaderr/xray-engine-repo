@@ -72,7 +72,6 @@ public:
 	// Fire control
 	virtual void		g_fireParams		(const CHudItem* /**pHudItem/**/, Fvector& /**P/**/, Fvector& /**D/**/) {};
 
-	virtual void		Die					( ){;}
 	virtual void		HitSignal			( int /**iHitAmount/**/, Fvector& /**vLocalDir/**/, CEntity* /**E/**/, s16 /**element/**/){;}
 
 	virtual void		Update				( u32 DT );

@@ -12,8 +12,12 @@
 #include "../custommonster.h"
 #include "../actor.h"
 #include "../ef_storage.h"
+#include "../seniority_hierarchy_holder.h"
+#include "../team_hierarchy_holder.h"
+#include "../squad_hierarchy_holder.h"
+#include "../group_hierarchy_holder.h"
 
-bool bfGetActionSuccessProbability(EntityVec &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
+bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
 	xr_vector<const CEntityAlive*>::const_iterator	II = VisibleEnemies.begin();
@@ -73,7 +77,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, const xr_vector<const CEn
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
 {
 //	return(a0);
-	CGroup		&Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(dwTeam).squad(dwSquad).group(dwGroup);
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
 		switch (Group.m_dwLastAction) {
@@ -90,17 +94,17 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	VERIFY								(enemy_manager);
 	const xr_vector<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
 
-	EntityVec	Members;
+	GroupHierarchyHolder::MEMBER_REGISTRY Members;
 	if (!tpEntity)
-		for (int k=0; k<(int)Group.Members.size(); ++k) {
-			if (Group.Members[k]->g_Alive() && ((Group.Members[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
-				Members.push_back(Group.Members[k]);
+		for (int k=0; k<(int)Group.members().size(); ++k) {
+			if (Group.members()[k]->g_Alive() && ((Group.members()[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
+				Members.push_back(Group.members()[k]);
 		}
 	else
-		for (int k=0; k<(int)Group.Members.size(); ++k) {
-			if (Group.Members[k]->g_Alive() && ((Group.Members[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
-				if (tpEntity->Position().distance_to(Group.Members[k]->Position()) < fGroupDistance)
-					Members.push_back(Group.Members[k]);
+		for (int k=0; k<(int)Group.members().size(); ++k) {
+			if (Group.members()[k]->g_Alive() && ((Group.members()[k]->spatial.type & STYPE_VISIBLEFORAI) == STYPE_VISIBLEFORAI))
+				if (tpEntity->Position().distance_to(Group.members()[k]->Position()) < fGroupDistance)
+					Members.push_back(Group.members()[k]);
 		}
 
 	WRITE_QUERY_TO_LOG("\nNew query");
@@ -138,54 +142,3 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 					return						(a4);
 				}
 }
-
-
-Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition, float fInflexibilityCoefficient)
-{
-	Fvector tResult;
-	tResult.sub(tCurrentPosition,tSpringPosition);
-	tResult.y = 0.f;
-	float m = tResult.magnitude();
-	float F = 1/(fInflexibilityCoefficient*m*m/2);
-	tResult.mul(_abs(fInflexibilityCoefficient*m) > EPS_L ? F*m : 0.f);
-	return(tResult);
-}
-
-Fvector tfGetNextCollisionPosition(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition)
-{
-//	Fvector	tForcePosition = tfComputeSpringPull(tpCustomMonster->Position(),tFuturePosition,-10.f*tpCustomMonster->m_fCurSpeed);
-//	
-//	for (int i=0; i<(int)tpCustomMonster->feel_touch.size(); ++i)
-//		tForcePosition.add(tfComputeSpringPull(tpCustomMonster->Position(),tpCustomMonster->feel_touch[i]->Position(),100.f));
-//
-	Fvector tResult;
-//	tResult.add(tpCustomMonster->Position(),tForcePosition);
-	return(tResult.set(0,0,0));
-}
-
-// Загрузка звуков из system.ltx
-void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount, int type)
-{
-	tpSounds.clear			();
-	for (int j=0, N = _GetItemCount(prefix); j<N; ++j) {
-		string256				fn, s;
-		LPSTR					S = (LPSTR)&s;
-		_GetItem				(prefix,j,S);
-		if (FS.exist(fn,"$game_sounds$",S,".ogg")){
-			tpSounds.push_back	(ref_sound());
-			::Sound->create		(tpSounds.back(),TRUE,prefix,type);
-		}
-		for (u32 i=0; i<dwMaxCount; ++i){
-			string64			name;
-			sprintf				(name,"%s%d",S,i);
-			if (FS.exist(fn,"$game_sounds$",name,".ogg")){
-				tpSounds.push_back(ref_sound());
-				::Sound->create(tpSounds.back(),TRUE,name,type);
-			}
-		}
-	}
-
-	VERIFY	(tpSounds.size());
-}
-
-

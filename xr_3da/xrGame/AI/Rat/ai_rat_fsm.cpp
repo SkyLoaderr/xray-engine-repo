@@ -101,12 +101,11 @@ void CAI_Rat::Think()
 void CAI_Rat::Death()
 {
 	//WRITE_TO_LOG	("Dying...");
-	vfSetFire		(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire		(false);
 
 	m_bStopThinking = true;
 
-	CGroup			&Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire		(false,Group);
+	vfSetFire		(false);
 	
 	SelectAnimation	(XFORM().k,direction(),0);
 
@@ -133,7 +132,7 @@ void CAI_Rat::FreeHuntingActive()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((enemy() && ((enemy()->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))),aiRatAttackRun);
 
@@ -192,7 +191,7 @@ void CAI_Rat::FreeHuntingPassive()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	if (enemy()) {
 		m_fGoalChangeTime = 0;
@@ -232,7 +231,7 @@ void CAI_Rat::UnderFire()
 
 //	Msg					("%6d : Rat %s, %f -> %f [%f]",Level().timeServer(),*cName(),m_body.current.pitch,m_body.target.pitch,get_custom_pitch_speed(0.f));
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	if (enemy()) {
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
@@ -298,7 +297,7 @@ void CAI_Rat::AttackFire()
 	
 	m_fSpeed		= 0.f;
 
-	vfSetFire		(true,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire		(true);
 	
 	vfSetMovementType(0);
 }
@@ -313,7 +312,7 @@ void CAI_Rat::AttackRun()
 	}
 
 //	Msg			("%6d : Rat %s, %f -> %f [%f]",Level().timeServer(),*cName(),m_body.current.pitch,m_body.target.pitch,get_custom_pitch_speed(0.f));
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	ERatStates eState = ERatStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),m_eCurrentState,m_eCurrentState,m_eCurrentState,aiRatRetreat,aiRatRetreat,this,30.f));
 	if (eState != m_eCurrentState) {
@@ -356,7 +355,7 @@ void CAI_Rat::Retreat()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	if	(!enemy() ||
 			(enemy() && 
@@ -425,7 +424,7 @@ void CAI_Rat::Pursuit()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	if (enemy() && (Level().timeServer() - memory(enemy()).m_level_time >= m_dwLostMemoryTime)) {
 		enable(enemy(),false);
@@ -476,7 +475,7 @@ void CAI_Rat::FreeRecoil()
 		m_tRecoilPosition	= m_tLastSound.tSavedPosition;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(enemy());
 
@@ -537,7 +536,7 @@ void CAI_Rat::ReturnHome()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	if (enemy() && (m_tSafeSpawnPosition.distance_to(enemy()->Position()) < m_fMaxPursuitRadius)) {
 		m_fGoalChangeTime = 0;
@@ -586,7 +585,7 @@ void CAI_Rat::EatCorpse()
 		return;
 	}
 
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
+	vfSetFire(false);
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE((enemy() && ((enemy()->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))));
 

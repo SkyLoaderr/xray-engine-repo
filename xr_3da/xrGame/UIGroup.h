@@ -4,8 +4,8 @@
 
 #include "uistaticitem.h"
 
-class CGroup;
-class CSquad;
+class CSquadHierarchyHolder;
+class CGroupHierarchyHolder;
 
 class CUIGroup{
 	CUIStaticItem	back;
@@ -17,7 +17,7 @@ class CUIGroup{
 	CUIStaticItem	list_item_ammo;
 public:
 					CUIGroup		();
-	void			Render			(CGroup& G, int offs, int grp_index, bool bSelected);
+	void			Render			(CGroupHierarchyHolder& G, int offs, int grp_index, bool bSelected);
 };
 
 class CUISquad
@@ -27,7 +27,7 @@ public:
 					CUISquad		();
 					~CUISquad		();
 	void			Init			();
-	void			Render			(CSquad& S, bool* bSel, bool bActive);
+	void			Render			(CSquadHierarchyHolder& S, bool* bSel, bool bActive);
 };
 
 #endif //__XR_UIGROUPS_H__

@@ -1,15 +1,5 @@
 #pragma once
 
-IC	int	CCustomMonster::ifGetMemberIndex() 
-{
-	xr_vector<CEntity*> &tpaMembers = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Members;
-	int iCount = (int)tpaMembers.size();
-	for (int i=0; i<iCount; ++i)
-		if (this == tpaMembers[i])
-			return(i);
-	return(-1);
-};
-
 IC	bool CCustomMonster::angle_lerp_bounds(float &a, float b, float c, float d)
 {
 	if (c*d >= angle_difference(a,b)) {
@@ -21,11 +11,6 @@ IC	bool CCustomMonster::angle_lerp_bounds(float &a, float b, float c, float d)
 
 	return(false);
 };
-
-IC  CGroup *CCustomMonster::getGroup()
-{
-	return	(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));
-}
 
 IC void CCustomMonster::vfNormalizeSafe(Fvector& Vector)
 {

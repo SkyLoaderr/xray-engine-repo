@@ -87,7 +87,7 @@ void CAI_Rat::Die()
 
 	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
 
-	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
 	--(Group.m_dwAliveCount);
@@ -209,7 +209,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fSpeed						= m_fCurSpeed = m_fMaxSpeed;
 
 	m_tOldPosition.set				(Position());
-	m_tSpawnPosition.set			(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
+	m_tSpawnPosition.set			(Level().seniority_holder().team(g_Team()).squad(g_Squad()).leader()->Position());
 	m_tSafeSpawnPosition.set		(m_tSpawnPosition);
 	m_tStateStack.push				(m_eCurrentState = aiRatFreeHuntingActive);
 	vfAddActiveMember				(true);
@@ -226,7 +226,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	vfLoadAnimations				();
 
-	getGroup()->m_dwLastActionTime		= 0;
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwLastActionTime = 0;
 	return							(TRUE);
 }
 

@@ -18,6 +18,10 @@
 #include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
 #include "../../motivation_action_manager_stalker.h"
+#include "../../seniority_hierarchy_holder.h"
+#include "../../team_hierarchy_holder.h"
+#include "../../squad_hierarchy_holder.h"
+#include "../../group_hierarchy_holder.h"
 
 using namespace StalkerSpace;
 

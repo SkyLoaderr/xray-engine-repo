@@ -64,7 +64,6 @@ public:
 
 	virtual void		HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element){;}
 	virtual void		HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir){;}
-	virtual void		Die					(){;}
 protected:
 	IC		const CObjectAnimator	*animator	() const;
 	IC		const ref_str			&animation	() const;

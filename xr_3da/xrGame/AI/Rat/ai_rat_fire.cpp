@@ -138,8 +138,8 @@ void CAI_Rat::vfUpdateMorale()
 
 void CAI_Rat::vfUpdateMoraleBroadcast(float fValue, float /**fRadius/**/)
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (int i=0; i<(int)Group.Members.size(); ++i)
-		if (Group.Members[i]->g_Alive())
-			Group.Members[i]->m_fMorale += fValue;
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
+	for (int i=0; i<(int)Group.members().size(); ++i)
+		if (Group.members()[i]->g_Alive())
+			Group.members()[i]->m_fMorale += fValue;
 }

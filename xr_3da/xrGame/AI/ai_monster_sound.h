@@ -19,19 +19,11 @@ enum ESoundPriority {
 	SND_PRIORITY_LOW
 };
 
+class CCustomMonster;
 
 class CMonsterSound  {
 	
 	CCustomMonster *pMonster;						// pointer to data class
-
-	SOUND_VECTOR 	sndIdle;						// sound_ref storage
-	SOUND_VECTOR 	sndEat;
-	SOUND_VECTOR 	sndAttack;
-	SOUND_VECTOR 	sndAttackHit;
-	SOUND_VECTOR 	sndTakeDamage;
-	SOUND_VECTOR	sndDie;
-	SOUND_VECTOR	sndBkground;
-	SOUND_VECTOR	sndThreaten;
 
 	ref_sound		*current;						// pointer to current sound
 	ref_sound		*bkgnd;

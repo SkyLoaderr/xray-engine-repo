@@ -9,7 +9,10 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "entity.h"
 #include "level.h"
-//#include "ai/ai_monster_group.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
@@ -61,6 +64,12 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 void CEntity::Die() 
 {
 	fEntityHealth = -1.f;
+	CSquadHierarchyHolder	&squad = Level().seniority_holder().team(g_Team()).squad(g_Squad());
+	CGroupHierarchyHolder	&group = squad.group(g_Group());
+	if (group.leader()->ID() == ID())
+        group.update_leader	();
+	if (squad.leader()->ID() == ID())
+		squad.update_leader	();
 }
 
 //обновление состояния
@@ -213,10 +222,6 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 		id_Group			= E->g_group();
 	}
 
-	// Register
-	CSquad& S				= Level().get_squad	(id_Team,id_Squad);
-	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
-
 	// Initialize variables
 	if(E)
 		fEntityHealth			= E->fHealth;
@@ -225,9 +230,9 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 
 	fArmor					= 0;
 
-	G.Member_Add			(this);
-	if (S.Leader==0)		S.Leader			=this;
-	++G.m_dwAliveCount;
+	// Register
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
+	++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
@@ -237,15 +242,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 
 void CEntity::net_Destroy	()
 {
-	CSquad& S			= Level().get_squad	(g_Team(),g_Squad());
-	CGroup& G			= Level().get_group	(g_Team(),g_Squad(),g_Group());
-	G.Member_Remove		(this);
-	if (this==S.Leader)	
-	{
-		S.Leader		= 0;
-		if (!G.Members.empty())	S.Leader	= G.Members.back();
-	}
-
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 	inherited::net_Destroy	();
 }
 

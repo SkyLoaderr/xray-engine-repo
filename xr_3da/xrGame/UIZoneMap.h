@@ -6,7 +6,6 @@
 #include "uidynamicitem.h"
 
 class CEntity;
-class CTeam;
 
 class CUIZoneMap
 {
@@ -39,7 +38,7 @@ public:
 	void			SetHeading		(float angle);
 	void			Init			();
 
-	void			UpdateRadar		(CEntity* Actor, CTeam& Team);
+	void			UpdateRadar		(CEntity* Actor);
 
 	void			SetScale		(float scale)						{m_fScale = scale;}
 	float			GetScale		()									{return m_fScale;}

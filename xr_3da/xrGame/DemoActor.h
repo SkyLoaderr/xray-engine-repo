@@ -38,7 +38,6 @@ public:
 
 	// virtual
 	virtual void		HitSignal		(int /**HitAmount/**/,Fvector& /**vLocalDir/**/,CEntity* /**E/**/, s16 /**element/**/) {};
-	virtual void		Die				(){};
 	virtual void		g_fireParams	(const CHudItem* pHudItem, Fvector& P, Fvector& D);
 };
 

@@ -10,6 +10,10 @@
 
 #include "../../CustomMonster.h"
 #include "../../eatable_item.h"
+#include "../../seniority_hierarchy_holder.h"
+#include "../../team_hierarchy_holder.h"
+#include "../../squad_hierarchy_holder.h"
+#include "../../group_hierarchy_holder.h"
 
 class CAI_Rat : public CCustomMonster, public CEatableItem
 {
@@ -226,7 +230,7 @@ public:
 			void				vfUpdateMoraleBroadcast	(float fValue, float fRadius);
 			void				vfUpdateMorale			();
 			void				vfLoadAnimations		();
-			void				vfSetFire				(bool bFire, CGroup &Group);
+			void				vfSetFire				(bool bFire);
 			void				vfSetMovementType		(float fSpeed);
 			void				vfUpdateDynamicObjects	() {};
 			void				CreateSkeleton			();

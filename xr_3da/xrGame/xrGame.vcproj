@@ -5023,37 +5023,59 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="group"
+						Name="SeniorityHierarchyHolder"
 						Filter="">
 						<File
-							RelativePath=".\Group.cpp">
+							RelativePath=".\seniority_hierarchy_holder.cpp">
 						</File>
 						<File
-							RelativePath=".\Group.h">
+							RelativePath=".\seniority_hierarchy_holder.h">
 						</File>
 						<File
-							RelativePath=".\group_inline.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="squad"
-						Filter="">
-						<File
-							RelativePath=".\squad.cpp">
+							RelativePath=".\seniority_hierarchy_holder_inline.h">
 						</File>
 						<File
-							RelativePath=".\squad.h">
+							RelativePath=".\seniority_hierarchy_space.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="team"
-						Filter="">
-						<File
-							RelativePath=".\team.cpp">
-						</File>
-						<File
-							RelativePath=".\team.h">
-						</File>
+						<Filter
+							Name="TeamHierarchyHolder"
+							Filter="">
+							<File
+								RelativePath=".\team_hierarchy_holder.cpp">
+							</File>
+							<File
+								RelativePath=".\team_hierarchy_holder.h">
+							</File>
+							<File
+								RelativePath=".\team_hierarchy_holder_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="SquadHierarchyHolder"
+							Filter="">
+							<File
+								RelativePath=".\squad_hierarchy_holder.cpp">
+							</File>
+							<File
+								RelativePath=".\squad_hierarchy_holder.h">
+							</File>
+							<File
+								RelativePath=".\squad_hierarchy_holder_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GroupHierarchyHolder"
+							Filter="">
+							<File
+								RelativePath=".\group_hierarchy_holder.cpp">
+							</File>
+							<File
+								RelativePath=".\group_hierarchy_holder.h">
+							</File>
+							<File
+								RelativePath=".\group_hierarchy_holder_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

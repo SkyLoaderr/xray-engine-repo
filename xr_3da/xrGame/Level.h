@@ -6,7 +6,6 @@
 #define AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_
 #pragma once
 
-#include "team.h"
 #include "infoportiondefs.h"
 #include "script_export_space.h"
 #include "StatGraph.h"
@@ -15,12 +14,13 @@ class	CHUDManager;
 class	CParticlesObject;
 class	xrServer;
 struct	SMapLocation;
-class	CEntity;
 class	game_cl_GameState;
 class	NET_Queue_Event;
 class	CSE_Abstract;
 class	CPatrolPathStorage;
 class	CSpaceRestrictionManager;
+class	CSeniorityHierarchyHolder;
+class	CGameObject;
 
 DEFINE_VECTOR (SMapLocation*, LOCATIONS_PTR_VECTOR, LOCATIONS_PTR_VECTOR_IT);
 #define DEFAULT_FOV				90.f
@@ -44,6 +44,8 @@ protected:
 	CPatrolPathStorage			*m_patrol_path_storage;
 	// movement restriction manager
 	CSpaceRestrictionManager	*m_space_restriction_manager;
+	// seniority hierarchy holder
+	CSeniorityHierarchyHolder	*m_seniority_hierarchy_holder;
 	// Local events
 	EVENT						eChangeRP;
 	EVENT						eDemoPlay;
@@ -101,8 +103,6 @@ public:
 	xrServer*					Server;
 
 public:
-	svector<CTeam,maxTeams>		Teams;
-
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;
 
@@ -128,55 +128,16 @@ public:
 	virtual void				OnRender				( );
 
 	// Input
-	virtual	void				IR_OnKeyboardPress			( int btn );
-	virtual void				IR_OnKeyboardRelease		( int btn );
-	virtual void				IR_OnKeyboardHold			( int btn );
+	virtual	void				IR_OnKeyboardPress		( int btn );
+	virtual void				IR_OnKeyboardRelease	( int btn );
+	virtual void				IR_OnKeyboardHold		( int btn );
 	virtual void				IR_OnMousePress			( int btn );
-	virtual void				IR_OnMouseRelease			( int btn );
-	virtual void				IR_OnMouseHold				( int btn );
-	virtual void				IR_OnMouseMove				( int, int);
-	virtual void				IR_OnMouseStop				( int, int);
-
-	// Misc
-	CTeam&						get_team				(int ID)
-	{
-		if (ID >= (int)(Teams.size()))	{
-			R_ASSERT2	(ID < maxTeams,"Team number is out of range!");
-			Teams.resize(ID+1);
-		}
-		return Teams[ID];
-	}
-	CTeam&						acc_team				(int ID)
-	{
-		VERIFY(ID < (int)(Teams.size()));
-		return Teams[ID];
-	}
-	CSquad&						get_squad				(int ID, int S)
-	{
-		CTeam&	T = get_team(ID);
-		if (S >= (int)(T.Squads.size())) {
-			R_ASSERT2	(S < maxTeams,"Squad number is out of range!");
-			T.Squads.resize(S+1);
-		}
-		return T.Squads[S];
-	}
-	CSquad&						acc_squad				(int ID, int S)
-	{
-		CTeam&	T = acc_team(ID);
-		VERIFY(S < (int)(T.Squads.size()));
-		return T.Squads[S];
-	}
-	CGroup&						get_group				(int ID, int S, int G)
-	{
-		CSquad&	SQ = get_squad(ID,S);
-		if (G >= (int)(SQ.Groups.size())) {
-			R_ASSERT2	(G < maxTeams,"Group number is out of range!");
-			SQ.Groups.resize(G+1);
-		}
-		return SQ.Groups[G];
-	}
-
-	int							get_RPID				(LPCSTR name);
+	virtual void				IR_OnMouseRelease		( int btn );
+	virtual void				IR_OnMouseHold			( int btn );
+	virtual void				IR_OnMouseMove			( int, int);
+	virtual void				IR_OnMouseStop			( int, int);
+	
+			int					get_RPID				(LPCSTR name);
 
 
 	// Game
@@ -195,6 +156,7 @@ public:
 	void						SLS_Default				();					// Default/Editor Load
 	
 	IC CSpaceRestrictionManager	&space_restriction_manager	();
+	IC CSeniorityHierarchyHolder &seniority_holder			();
 
 	// C/D
 	CLevel();
@@ -260,12 +222,20 @@ IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
 IC game_cl_GameState&	Game()		{ return *Level().game;					}
 	u32					GameID();
 IC CHUDManager&			HUD()		{ return *((CHUDManager*)Level().pHUD);	}
+
 IC CSpaceRestrictionManager	&CLevel::space_restriction_manager()
 {
 	VERIFY				(m_space_restriction_manager);
 	return				(*m_space_restriction_manager);
 }
-	//by Mad Max 
+
+IC CSeniorityHierarchyHolder &CLevel::seniority_holder()
+{
+	VERIFY				(m_seniority_hierarchy_holder);
+	return				(*m_seniority_hierarchy_holder);
+}
+
+//by Mad Max 
 IC bool					OnServer()	{ return Level().IsServer();				}
 IC bool					OnClient()	{ return Level().IsClient();				}
 

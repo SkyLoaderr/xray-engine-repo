@@ -3,7 +3,6 @@
 #include "../xr_IOConsole.h"
 #include "Entity.h"
 #include "HUDManager.h"
-#include "Group.h"
 #include "UIGameSP.h"
 #include "UIGameDM.h"
 #include "UIGameTDM.h"

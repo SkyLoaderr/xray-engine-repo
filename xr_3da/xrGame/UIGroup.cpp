@@ -3,6 +3,10 @@
 #include "hudmanager.h"
 #include "entity.h"
 #include "level.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -29,7 +33,7 @@ CUIGroup::CUIGroup()
 
 const u32 DET_COLOR[3]={ITEM_COLOR_BAD,ITEM_COLOR_MED,ITEM_COLOR_GOOD};
 
-void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
+void CUIGroup::Render(CGroupHierarchyHolder& G, int idx, int grp_index, bool bSelected)
 {
 	// convert
 	int offset			= HUD().ClientToScreenX(UI_BASE_WIDTH-(idx+1)*GROUP_OFFSET, alRight|alTop);
@@ -49,8 +53,8 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 	list_top.Render		();
 	int item_cnt=0;
 	float Y = GROUP_FIRST_ITEM;
-	for (int i=0; i<G.Size(); ++i,Y+=GROUP_ITEM_SIZE){
-		CEntity* E = G.Members[i];
+	for (u32 i=0; i<G.members().size(); ++i,Y+=GROUP_ITEM_SIZE){
+		CEntity* E = G.members()[i];
 		if (E->IsVisibleForHUD())
 		{
 			// update item back
@@ -89,11 +93,11 @@ void CUISquad::Init(){
 CUISquad::~CUISquad(){
 }
 
-void CUISquad::Render(CSquad& S, bool* bSel, bool /**bActive/**/){
+void CUISquad::Render(CSquadHierarchyHolder& S, bool* bSel, bool /**bActive/**/){
 	int idx=0;
-	for (u32 i=0; i<S.Groups.size(); ++i,idx){
-		CGroup& G		= S.Groups[i];
-		if (!G.Empty())	group.Render(G,idx++,i,bSel[i]);
+	for (u32 i=0; i<S.groups().size(); ++i,idx){
+		CGroupHierarchyHolder& G		= S.group(i);
+		if (!G.members().empty())	group.Render(G,idx++,i,bSel[i]);
 /*		if (!G.Empty()){
 			if (bSelGroups[i]) m_Parent->pSmallFont->Color(0xffffff00);
 			m_Parent->pSmallFont->OutSet(x,y);

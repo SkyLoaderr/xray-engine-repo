@@ -13,6 +13,10 @@
 #include "../ai_monster_squad_manager.h"
 #include "../corpse_cover.h"
 #include "../../cover_evaluators.h"
+#include "../../seniority_hierarchy_holder.h"
+#include "../../team_hierarchy_holder.h"
+#include "../../squad_hierarchy_holder.h"
+#include "../../group_hierarchy_holder.h"
 
 CAI_Biting::CAI_Biting()
 {
@@ -440,9 +444,9 @@ CBoneInstance *CAI_Biting::GetEatBone()
 
 void CAI_Biting::MoraleBroadcast(float fValue)
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (u32 i=0; i<Group.Members.size(); ++i) {
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.Members[i]);
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
+	for (u32 i=0; i<Group.members().size(); ++i) {
+		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.members()[i]);
 		if (!pE) continue;
 		
 		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < get_sd()->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
@@ -610,18 +614,9 @@ void CAI_Biting::ChangeTeam(int team, int squad, int group)
 	if ((team == g_Team()) && (squad == g_Squad()) && (group == g_Group())) return;
 		
 	// remove from current team
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	Group.Member_Remove(this);
-	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
-
-	id_Team		= team;
-	id_Squad	= squad;
-	id_Group	= group;
-		
-	// add to new team
-	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	Group.Member_Add(this);
-	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
+	monster_squad().remove_member	((u8)g_Team(),(u8)g_Squad(), this);
+	inherited::ChangeTeam			(team,squad,group);
+	monster_squad().register_member	((u8)g_Team(),(u8)g_Squad(), this);
 }
 
 

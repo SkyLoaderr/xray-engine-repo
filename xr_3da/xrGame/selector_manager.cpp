@@ -9,6 +9,10 @@
 #include "stdafx.h"
 #include "selector_manager.h"
 #include "memory_manager.h"
+#include "seniority_hierarchy_holder.h"
+#include "team_hierarchy_holder.h"
+#include "squad_hierarchy_holder.h"
+#include "group_hierarchy_holder.h"
 
 CSelectorManager::CSelectorManager		()
 {
@@ -77,7 +81,7 @@ void CSelectorManager::init_selector	(CAbstractVertexEvaluator &S)
 		S.m_tpEnemyNode		= 0;
 	}
 	
-	S.m_taMembers			= &(Level().Teams[entity_alive->g_Team()].Squads[entity_alive->g_Squad()].Groups[entity_alive->g_Group()].Members);
+	S.m_taMembers			= &(Level().seniority_holder().team(entity_alive->g_Team()).squad(entity_alive->g_Squad()).group(entity_alive->g_Group()).members());
 	S.m_dwStartNode			= memory_manager->level_vertex_id();
 	S.m_tStartPosition		= memory_manager->Position();
 }

@@ -15,5 +15,5 @@ IC	BOOL CAI_Stalker::UsedAI_Locations				()
 
 IC	const CAgentManager	&CAI_Stalker::agent_manager	() const
 {
-	return				(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].agent_manager());
+	return				(Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).agent_manager());
 }

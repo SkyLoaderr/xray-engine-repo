@@ -51,7 +51,7 @@ IC void CAI_Rat::vfUpdateTime(float fTimeDelta)
 
 IC void CAI_Rat::vfAddActiveMember(bool bForceActive)
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
 		m_bActive = true;
 		m_eCurrentState = aiRatFreeHuntingActive;
@@ -65,7 +65,7 @@ IC void CAI_Rat::vfAddActiveMember(bool bForceActive)
 
 IC void CAI_Rat::vfRemoveActiveMember()
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	if (m_bActive) {
 		R_ASSERT(Group.m_dwActiveCount > 0);
 		--(Group.m_dwActiveCount);
@@ -79,7 +79,7 @@ IC void CAI_Rat::vfRemoveActiveMember()
 
 IC void CAI_Rat::vfAddStandingMember()
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	if ((Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) && (!m_bStanding)) {
 		++Group.m_dwStandingCount;
 		m_bStanding = true;
@@ -88,7 +88,7 @@ IC void CAI_Rat::vfAddStandingMember()
 
 IC void CAI_Rat::vfRemoveStandingMember()
 {
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	CGroupHierarchyHolder &Group = Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group());
 	if (m_bStanding) {
 		R_ASSERT(Group.m_dwStandingCount > 0);
 		--(Group.m_dwStandingCount);
