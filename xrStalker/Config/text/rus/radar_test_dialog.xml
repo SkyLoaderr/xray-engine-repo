@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="rad_regular_stalker_dialog_0">
-        <text>default text</text>
+        <text>Приветсвую!</text>
+    </string>
+    <string id="rad_regular_stalker_dialog_1">
+        <text>text in default</text>
     </string>
     <string id="radar_test_dialog_0">
         <text>Приветствую! Кто ты? Как ты тут оказался?</text>
@@ -10,7 +13,7 @@
         <text>Привет! Я Меченый, бармен послал меня отключить Антенны! С чем я справился, были проблемы я их решил. А сейчас думаю что делать дальше, может пойду искать Монолит!</text>
     </string>
     <string id="radar_test_dialog_100">
-        <text>Здраствуй! Я? А че ты не слыхал кто Я? Я Стрелок! Я иду к Монолиту! С дороги Осел!</text>
+        <text>Здраствуй! Я? А че ты не слыхал кто Я? Я Стрелок! Я иду к Монолиту!</text>
     </string>
     <string id="radar_test_dialog_1000">
         <text>Дароф! Тебя ебет кто я? А ну бабки все сюда собрал по братве! </text>
@@ -20,6 +23,12 @@
     </string>
     <string id="radar_test_dialog_102">
         <text>Спасибо за предложение браток, но я справлюсь сам! Монолит Мой и только Мой!</text>
+    </string>
+    <string id="radar_test_dialog_103">
+        <text>Хорошо! Ну а если они погибли? </text>
+    </string>
+    <string id="radar_test_dialog_104">
+        <text>Хорошо!</text>
     </string>
     <string id="radar_test_dialog_1100">
         <text>Нюхни САМ ЗНАЕШЬ ЧЕГО!</text>
@@ -32,6 +41,9 @@
     </string>
     <string id="radar_test_dialog_130">
         <text>Отлично! Вместе мы точно найдем Монолит! \nНо есть одна проблема, я послал пару своих ребят посмотреть, что же творится на Припяти, но они пропали, их задача была разведать происходящее на Припяти и вернутся доложить мне. Прошли уже целые сутки! А их до сих пор нет, а ведь они мои лучшие ребята, Бревно и Лом. Если, хочешь к нам присоединится тебе надо заслужить мое доверие! Как тебе это подходит?</text>
+    </string>
+    <string id="radar_test_dialog_131">
+        <text>Найди их ПДА и принеси мне!</text>
     </string>
     <string id="radar_test_dialog_2">
         <text>Думаю это хорошая идея! Я согласен! </text>
