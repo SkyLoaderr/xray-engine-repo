@@ -392,7 +392,7 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_effect           (world_property (properties["on_position"],     true))
    	manager:add_action          (operators["action_position"], action)
    	
-	xr_logic.subscribe_action_for_events (npc, storage, action)
+	xr_logic.subscribe_action_for_events (npc, st, action)
     
     action = this.action_rest ("action_rest", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
