@@ -36,13 +36,13 @@ void	CBlender_Vertex_aref::Load(	CStream& FS )
 	BP_READ			(BPID_INTEGER,		oAREF);
 }
 
-void	CBlender_Vertex_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void	CBlender_Vertex_aref::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend	(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,oAREF.value);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
+		RS.R().SetRS		(D3DRS_LIGHTING,					BC(bEditor?TRUE:FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 
 		// Stage1 - Base texture

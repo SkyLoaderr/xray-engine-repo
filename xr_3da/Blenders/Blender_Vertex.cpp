@@ -31,13 +31,13 @@ void	CBlender_Vertex::Load	( CStream& FS	)
 	CBlender::Load	(FS);
 }
 
-void CBlender_Vertex::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void CBlender_Vertex::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
 		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
-		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
+		RS.R().SetRS		(D3DRS_LIGHTING,					BC(bEditor?TRUE:FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 
 		// Stage0 - Base texture

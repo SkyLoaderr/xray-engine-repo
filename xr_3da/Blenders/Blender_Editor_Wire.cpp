@@ -30,7 +30,7 @@ void	CBlender_Editor_Wire::Load	( CStream& FS	)
 	BP_READ		(BPID_CONSTANT,	oT_Factor);
 }
 
-void CBlender_Editor_Wire::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void CBlender_Editor_Wire::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{

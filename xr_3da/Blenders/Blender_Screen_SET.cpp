@@ -27,7 +27,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 	CBlender::Load	(FS);
 }
 
-void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{

@@ -32,7 +32,7 @@ void	CBlender_Screen_BLEND::Load	( CStream& FS	)
 	BP_READ			(BPID_INTEGER,		oAREF);
 }
 
-void	CBlender_Screen_BLEND::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices)
+void	CBlender_Screen_BLEND::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	RS.PassBegin		();
 	{
