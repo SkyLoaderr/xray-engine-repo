@@ -52,8 +52,6 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 		
 		m_dwLastRangeSearch = tNodeEvaluator.m_dwCurTime;
 		
-		vfInitSelector(tNodeEvaluator,Squad,Leader);
-		
 		float fOldCost = MAX_NODE_ESTIMATION_COST;
 		
 		if (AI_Path.DestNode != u32(-1)) {
@@ -281,6 +279,9 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 		m_tPathState		= ePathStateSearchNode;
 		AI_Path.DestNode	= u32(-1);
 	}
+	if (tpNodeEvaluator)
+	vfInitSelector			(*tpNodeEvaluator,Squad,Leader);
+		
 	EPathType tPathType = m_tPathType;
 	switch (m_tPathType) {
 		case ePathTypeStraight : {
