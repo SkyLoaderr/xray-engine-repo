@@ -140,6 +140,9 @@ void CWeaponGroza::UpdateFP(BOOL bHUDView)
 			// 3rd person
 			Fmatrix& parent			= clTransform;
 			Fvector& fp				= vFirePoint;
+			parent.transform_tiny	(vLastFP,fp);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
 		}
 	}
 }
