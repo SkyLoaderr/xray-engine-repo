@@ -20,9 +20,6 @@
 CBone::CBone()
 {
 	flags.zero		();
-    name[0]			= 0;
-    parent_name[0]	= 0;
-    wmap[0]			= 0;
     rest_length		= 0;
 	index			= -1;
     parent			= 0;
@@ -47,9 +44,9 @@ void CBone::ResetData()
 void CBone::Save(IWriter& F)
 {
 #ifdef _LW_EXPORT
-	extern char* ReplaceSpace(char* s);
-	ReplaceSpace(name);			strlwr(name);
-	ReplaceSpace(parent_name);	strlwr(parent_name);
+	extern void ReplaceSpaceAndLowerCase(ref_str& s);
+	ReplaceSpaceAndLowerCase(name);			
+	ReplaceSpaceAndLowerCase(parent_name);	
 #endif
 	F.open_chunk	(BONE_CHUNK_VERSION);
     F.w_u16			(BONE_VERSION);

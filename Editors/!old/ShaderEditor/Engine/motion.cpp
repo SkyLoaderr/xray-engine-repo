@@ -10,7 +10,7 @@
 #define EOBJ_SMOTION_VERSION   	0x0006
 
 #ifdef _LW_EXPORT
-	extern char* ReplaceSpace(char* s);
+	extern void ReplaceSpaceAndLowerCase(ref_str& s);
 #endif
 //------------------------------------------------------------------------------------------
 // CCustomMotion
@@ -33,7 +33,7 @@ CCustomMotion::~CCustomMotion()
 void CCustomMotion::Save(IWriter& F)
 {
 #ifdef _LW_EXPORT
-	ReplaceSpace(name);			strlwr(name);
+	ReplaceSpaceAndLowerCase(name);
 #endif
 	F.w_stringZ	(name);
 	F.w_u32		(iFrameStart);

@@ -146,9 +146,9 @@ struct ECORE_API SJointIKData
 
 class ECORE_API CBone
 {
-	string64			name;
-	string64			parent_name;
-	string64			wmap;
+	ref_str				name;
+	ref_str				parent_name;
+	ref_str				wmap;
 	Fvector			    rest_offset;
 	Fvector			    rest_rotate;    // XYZ format (Game format)
 	float			    rest_length;
@@ -181,14 +181,14 @@ public:
 					    CBone			();
 	virtual			    ~CBone			();
 
-	void			    SetName			(const char* p){if(p) strcpy(name,p); strlwr(name); }
-	void			    SetParentName	(const char* p){if(p) strcpy(parent_name,p); strlwr(parent_name); }
-	void			    SetWMap			(const char* p){if(p) strcpy(wmap,p);}
+	void			    SetName			(const char* p){name		= p; xr_strlwr(name);		}
+	void			    SetParentName	(const char* p){parent_name	= p; xr_strlwr(parent_name);}
+	void			    SetWMap			(const char* p){wmap		= p;}
 	void			    SetRestParams	(float length, const Fvector& offset, const Fvector& rotate){rest_offset.set(offset);rest_rotate.set(rotate);rest_length=length;};
 
-	const char*		    Name			(){return name;}
-	const char*		    ParentName		(){return parent_name;}
-	const char*		    WMap			(){return wmap;}
+	const char*		    Name			(){return *name;}
+	const char*		    ParentName		(){return *parent_name;}
+	const char*		    WMap			(){return *wmap;}
     IC int			    Index			(){return index;}
     IC CBone*		    Parent			(){return parent;}
     IC BOOL			    IsRoot			(){return (parent==0);}
