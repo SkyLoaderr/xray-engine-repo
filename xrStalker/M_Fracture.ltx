@@ -116,7 +116,7 @@ hit_type = wound
 ;entity condition
 
 ; entity condition
-satiety_v 		= 0.001				;0.01			;скорость уменьшения сытости со временем
+satiety_v 		= 0.1				;0.01			;скорость уменьшения сытости со временем
 radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
 satiety_health_v 	= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
@@ -171,24 +171,10 @@ idle_sound_delay		= 15000
 eat_sound_delay			= 3000
 attack_sound_delay		= 4000
 
-jump_factor				= 1.6
-jump_delay				= 3000	
-jump_min_dist			= 1.0 
-jump_max_dist			= 20.0
-jump_max_angle			= 1.5
-
 DamagedThreshold		= 0.5
 
 material				= creatures\medium
 DynamicObjectsCount		= 32
-
-step_snd_walk			= 1.0, 1.0
-step_snd_walk_dmg		= 1.0, 2.0
-step_snd_run			= 1.0, 2.0
-step_snd_run_dmg		= 1.0, 2.0
-step_snd_turn			= 1.0, 2.0
-step_snd_steal			= 1.0, 2.0
-step_snd_drag			= 1.0, 2.0
 
 squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
