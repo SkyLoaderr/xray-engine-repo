@@ -92,6 +92,7 @@ public:
 			for ( ; I != E; I++) {
 				m_tpGraphVFS->r_stringZ		((*I).caLevelName);
 				m_tpGraphVFS->r_fvector3	((*I).tOffset);
+				m_tpGraphVFS->r_u32			((*I).dwLevelID);
 			}
 		}
 		R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
