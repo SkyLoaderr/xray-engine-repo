@@ -6,7 +6,8 @@ restrictors = {}
 
 local i
 
-local gulag_tasks_ltx = ini_file("misc\\gulag_tasks.ltx")
+local gulag_tasks_file_name = "misc\\gulag_tasks.ltx"
+local gulag_tasks_ltx       = ini_file( gulag_tasks_file_name )
 
 class "fract"
 function fract:__init(smrttrn_id, name, type, squad, groups)
@@ -115,6 +116,11 @@ function fract:updateJob()
 		return false
 	end
 
+	-- если актёра нету, то никакие работы не могут быть назначены
+	if not db.actor then
+		return
+	end
+
 	for k,v in self.Job do
 		-- проверка на доступность работы при текущем стейте
 		if availState(v.state, self.state) ~= true then
@@ -194,27 +200,30 @@ function fract:get_population()
 	end
 	return i
 end
+
+function fract:get_stype( obj )
+	if IsStalker( obj ) then
+		return modules.stype_stalker
+	elseif IsMonster( obj ) then
+		return modules.stype_monster
+	else
+		utils.abort( "[smart terrain %s] object %s: gulag supports stalkers and monsters only!", self.name, obj:name() )
+	end
+end
+
 function fract:setJob(npc, job)
 	self:clearAllJob(npc:id())
 
 	job.object = npc
 	job.begin  = game.time()
 
-	local actor = level.actor()
-	if not actor then
-		return
-	end
-
-	local condlist = xr_logic.parse_condlist(npc, "[[[gulag_tasks.script]]]", "[[[gulag_name="..self.name.."]]]", job.section )
-	local section  = xr_logic.pick_section_from_condlist(actor, npc, condlist)
-	if not section then
-		utils.abort( "no sections available! npc=%s section=%s gulag=%s", npc:name(), job.section, self.name )
-	end
-
-	xr_logic.gulag_activate(npc, gulag_tasks_ltx, section, self.name, job.death, job.combat, job.actor_dialogs)
+	xr_logic.configure_schemes(npc, gulag_tasks_ltx, gulag_tasks_file_name, self:get_stype(npc), job.section, self.name)
+	local sect = xr_logic.determine_section_to_activate(npc, gulag_tasks_ltx, job.section, db.actor)
+	xr_logic.activate_by_section(npc, gulag_tasks_ltx, sect)
 
 	--' Смена тим, сквад, груп
 	job.object:change_team(job.object:team(), job.squad or job.object:squad(), job.group or job.object:group())
+
 	--' Спейс рестрикторы
 	self:add_restrictor(job.object, job.out_rest, job.in_rest)
 end
@@ -273,7 +282,8 @@ function fract:clearAllJob(npc_id)
 	-- если сталкер в онлайне, то сбросить его схему поведения
 	local t = self.Object[npc_id]
 	if t ~= nil and t ~= true then
-		xr_logic.gulag_activate(t, gulag_tasks_ltx, "nil")
+		-- как будто он только что загрузился
+		xr_logic.initialize_obj( t, nil, false, db.actor, self:get_stype( t ) )
 	end
 end
 function fract:stalkerExist(npc)
