@@ -86,6 +86,8 @@ public:
     void            Reset       	();
 
 	bool 			IfModified		();
+	bool			IsModified		();
+
     void			ZoomObject		(bool bSelectedOnly);
     void			GetCurrentFog	(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR			GetInfo			();

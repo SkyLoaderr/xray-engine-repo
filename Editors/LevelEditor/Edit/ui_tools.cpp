@@ -55,10 +55,17 @@ void TUI_Tools::OnCreate()
 // create tools
     for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
 		m_pTools[tgt]=NewToolFromTarget(tgt);
+    // scene creating
+	Scene.OnCreate	();
+    // change target to Object
+	UI.Command		(COMMAND_CHANGE_TARGET, etObject);
 }
 //---------------------------------------------------------------------------
 
-void TUI_Tools::OnDestroy(){
+void TUI_Tools::OnDestroy()
+{
+    // scene destroing
+	Scene.OnDestroy		();
     pCurTools->OnDeactivate();
 }
 //---------------------------------------------------------------------------
@@ -431,4 +438,9 @@ void TUI_Tools::ShowObjectList()
 	pObjectListForm->ShowObjectList();
 }
 //---------------------------------------------------------------------------
+
+bool TUI_Tools::IsModified()
+{
+	return Scene.IsModified();
+}
 

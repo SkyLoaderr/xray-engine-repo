@@ -30,6 +30,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	bool bRes = true;
 	string256 filebuffer;
 	switch (_Command){
+	case COMMAND_CHANGE_TARGET:
+	  	Tools.ChangeTarget(p1);
+        break;
 	case COMMAND_OBJECT_LIST:
         if (GetEState()!=esEditScene) Tools.ShowObjectList();
         break;
