@@ -329,4 +329,8 @@
 		<class>Killer_specnaz_courier</class>
 	</character>
 
+	<character id="svoboda_cook">
+		<class>Svoboda_cook</class>
+	</character>
+
 </xml>

@@ -378,6 +378,35 @@
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
 
+<!---------------------------SVOBODA COOK----------------------->
+	<specific_character id="svoboda_cook" team_default = "1">
+		<name>"Повар"</name>
+		
+		<icon x="12" y="0"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Повар группировки "Свобода". Детальная информация отсутствует.</bio>
+		
+		<class>Svoboda_cook</class>
+		<community>freedom</community>
+		
+		<rank>90</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_fmj = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
 
 	
 </xml>
