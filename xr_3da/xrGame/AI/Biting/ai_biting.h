@@ -3,11 +3,10 @@
 //	Created 	: 21.05.2003
 //  Modified 	: 21.05.2003
 //	Author		: Serge Zhem
-//	Description : AI Behaviour for all monsters of class "Biting"
+//	Description : AI Behaviour for all the monsters of class "Biting"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_BITING__
-#define __XRAY_AI_BITING__
+#pragma once
 
 #include "..\\..\\CustomMonster.h"
 
