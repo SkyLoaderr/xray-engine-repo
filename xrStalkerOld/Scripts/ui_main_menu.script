@@ -225,6 +225,11 @@ function main_menu:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
+	
+	local combo = CUIComboBox()
+	combo:SetAutoDelete(true)
+	combo:SetWindowName("combo_box")
+	combo:Init(btn_bonus_rect.x, btn_bonus_rect.y + btn_bonus_rect.height, btn_bonus_rect.width)
 end
 
 function main_menu:InitCallBacks()
