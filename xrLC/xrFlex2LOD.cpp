@@ -36,5 +36,43 @@ void	CBuild::Flex2LOD()
 		R_ASSERT						(pNode->chields.size());
 		pNode->CalcBounds				();
 		g_tree.push_back				(pNode);
+
+		// Calculate colors
+		const float sm_range	= 5.f;
+		for (int lf=0; lf<8; lf++)
+		{
+			OGF_LOD::_face& F = pNode->lod_faces[lf];
+			for (int lv=0; lv<4; lv++)
+			{
+				Fvector	ptPos	= F.v[lv].v;
+				DWORD&	ptColor	= F.v[lv].c;
+
+				Fcolor	_C;		_C.set(0,0,0,0);
+				float 	_N		= 0;
+
+				for (int c_it=0; c_it<pNode->chields.size(); c_it++)
+				{
+					OGF*		ogf		= (OGF*)g_tree[pNode->chields[c_it]];
+					vecOGF_V&	verts	= ogf->vertices;
+					for (int v_it=0; v_it<verts.size(); v_it++)
+					{
+						Fcolor			vC; 
+						OGF_Vertex&		oV	= verts[v_it];
+						float			oD	= ptPos.distance_to(oV.P);
+						float			oA  = 1-(oD/sm_range);
+						if (oA<=0)		continue;
+						vC.set			(oV.Color); 
+						vC.mul_rgb		(oA);
+						_C.r			+= vC.r;
+						_C.g			+= vC.g;
+						_C.b			+= vC.b;
+						_N				+= oA;
+					}
+				}
+
+				_C.mul_rgb		(1/(_N+EPS));
+				ptColor			= _C.get();
+			}
+		}
 	}
 }
