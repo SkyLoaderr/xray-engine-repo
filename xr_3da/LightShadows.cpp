@@ -238,7 +238,7 @@ IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
 		if( D <=0 )						return 0;
 		
 		// Trace Light
-		float A		= D*E;
+		float A		= D*E*.5f;
 		return A;
 	} else {
 		// Distance
