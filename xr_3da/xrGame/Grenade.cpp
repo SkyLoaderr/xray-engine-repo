@@ -8,7 +8,7 @@
 #include "actor.h"
 #include "inventory.h"
 
-#define GRENADE_REMOVE_TIME		60000
+#define GRENADE_REMOVE_TIME		30000
 
 CGrenade::CGrenade(void) 
 {
