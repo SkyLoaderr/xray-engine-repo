@@ -24,9 +24,9 @@ CPSObject::~CPSObject()
 {
 }
 //----------------------------------------------------
-
 void CPSObject::UpdateSector(CSector* sect)
 {
+	if (sect == m_pCurSector)	return;
 	if (m_pCurSector) m_pCurSector->tempobjRemove(this);
 	m_pCurSector	= sect;
 	if (m_pCurSector) m_pCurSector->tempobjAdd(this);
