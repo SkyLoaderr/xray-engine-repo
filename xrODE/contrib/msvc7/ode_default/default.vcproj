@@ -260,7 +260,13 @@
 				RelativePath="..\..\..\ode\src\Bounder33.h">
 			</File>
 			<File
+				RelativePath="..\..\..\include\ode\collision.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\collision_kernel.h">
+			</File>
+			<File
+				RelativePath="..\..\..\include\ode\collision_space.h">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_space_internal.h">
