@@ -208,7 +208,6 @@ void CBuild::Run	(string& P)
 	Phase			("Saving...");
 	mem_Compact		();
 	SaveLights		(*fs);
-	SaveTREE		(*fs);
 
 	fs->open_chunk	(fsL_GLOWS);
 	for (u32 i=0; i<glows.size(); i++)
@@ -216,12 +215,13 @@ void CBuild::Run	(string& P)
 		b_glow&	G	= glows[i];
 		fs->w		(&G,4*sizeof(float));
 		string T	= textures		[materials[G.dwMaterial].surfidx].name;
-		string S	= shader_render[materials[G.dwMaterial].shader].name;
+		string S	= shader_render	[materials[G.dwMaterial].shader].name;
 		fs->w_u32	(RegisterString(T));
 		fs->w_u32	(RegisterString(S));
 	}
 	fs->close_chunk	();
 
+	SaveTREE		(*fs);
 	SaveSectors		(*fs);
 
 	err_save		();

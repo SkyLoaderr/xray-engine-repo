@@ -15,7 +15,8 @@ enum fsL_Chunks {
 	fsL_SECTORS,		//*		- All sectors on level
 	fsL_IBUFFERS,		//*
 	fsL_VBUFFERS_DX9,	//*
-    fsL_forcedword	= 0xFFFFFFFF
+	fsL_SCOMBI,			//*		- Shader combinations for precompiling
+    fsL_forcedword		= 0xFFFFFFFF
 };
 enum fsESectorChunks {
 	fsP_Portals = 1,	// - portal polygons
@@ -79,7 +80,7 @@ struct NodeCompressed
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	14;
-const u32 XRCL_PRODUCTION_VERSION	=	9;
+const u32 XRCL_PRODUCTION_VERSION	=	10;
 const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
 #endif // xrLevelH
