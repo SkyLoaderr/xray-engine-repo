@@ -33,8 +33,11 @@ IC	T*		xr_new		()
 template <class T>
 IC	void	xr_delete	(T* &ptr)
 {
-	ptr->~T();
-	ptr = NULL;
+	if (ptr) 
+	{
+		ptr->~T();
+		ptr = NULL;
+	}
 }
 
 // generic "C"-like allocations/deallocations
@@ -42,7 +45,7 @@ template <class T>
 IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
 
 template <class T>
-IC void		xr_free		(T* &P)					{	Memory.mem_free((void*)P); P=NULL;				}
+IC void		xr_free		(T* &P)					{	if (P) { Memory.mem_free((void*)P); P=NULL;	};	}
 
 IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
 
