@@ -3,6 +3,7 @@
 #include "hudmanager.h"
 #include "game_cl_base.h"
 #include "level.h"
+#include "game_cl_teamdeathmatch.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -15,10 +16,12 @@ void CUITDMFragList::Init(u8 Team)
 	m_CurTeam = Team;	
 }
 //--------------------------------------------------------------------
+/*
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
 {
 	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
 };
+*/
 
 void	CUITDMFragList::UpdateItemsList ()
 {
@@ -34,7 +37,7 @@ void	CUITDMFragList::UpdateItemsList ()
 
 		items.push_back(I->second);
 	};
-	std::sort			(items.begin(),items.end(),pred_player);
+	std::sort			(items.begin(),items.end(),TDM_Compare_Players);
 };
 /*
 void	CUITDMFragList::Update()

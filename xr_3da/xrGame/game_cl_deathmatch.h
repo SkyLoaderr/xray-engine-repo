@@ -97,3 +97,5 @@ public:
 	virtual		void				OnRender				();
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
 };
+
+IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2);

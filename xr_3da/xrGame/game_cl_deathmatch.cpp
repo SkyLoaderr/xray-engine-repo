@@ -266,11 +266,6 @@ void game_cl_Deathmatch::ConvertTime2String		(string64* str, u32 Time)
 	sprintf(*str,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 };
 
-IC bool	pred_player		(LPVOID v1, LPVOID v2)
-{
-	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
-};
-
 int game_cl_Deathmatch::GetPlayersPlace			(game_PlayerState* ps)
 {
 	if (!ps) return -1;
@@ -280,7 +275,7 @@ int game_cl_Deathmatch::GetPlayersPlace			(game_PlayerState* ps)
 	// create temporary map (sort by kills)
 	xr_vector<LPVOID>	Players;
 	for (;I!=E;++I)		Players.push_back(I->second);
-	std::sort			(Players.begin(),Players.end(),pred_player);
+	std::sort			(Players.begin(),Players.end(),DM_Compare_Players);
 
 	int Place = 1;
 	for (u32 i=0; i<Players.size(); i++)
@@ -612,3 +607,12 @@ void		game_cl_Deathmatch::OnRender				()
 		}
 	};
 }
+
+IC bool	DM_Compare_Players		(LPVOID v1, LPVOID v2)
+{
+	if (((game_PlayerState*)v1)->kills==((game_PlayerState*)v2)->kills)
+	{
+		return ((game_PlayerState*)v1)->deaths<((game_PlayerState*)v2)->deaths;
+	}
+	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
+};

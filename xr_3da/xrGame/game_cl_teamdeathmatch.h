@@ -53,3 +53,8 @@ protected:
 	virtual		void				OnRender				();
 	virtual		bool				IsEnemy					(game_PlayerState* ps);
 };
+
+IC bool	TDM_Compare_Players		(LPVOID v1, LPVOID v2)
+{
+	return DM_Compare_Players(v1, v2);
+};

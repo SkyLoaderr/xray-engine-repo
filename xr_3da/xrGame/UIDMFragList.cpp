@@ -3,6 +3,7 @@
 #include "hudmanager.h"
 #include "game_cl_base.h"
 #include "level.h"
+#include "game_cl_deathmatch.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -27,11 +28,12 @@ CUIStatsListItem*		CUIDMFragList::GetItem			(int index)
 {
 	return (smart_cast<CUIStatsListItem*> (UIStatsList.GetItem(index)));
 };
-
+/*
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
 {
 	return ((game_PlayerState*)v1)->kills>((game_PlayerState*)v2)->kills;
 };
+*/
 
 void	CUIDMFragList::UpdateItemsList ()
 {
@@ -41,7 +43,7 @@ void	CUIDMFragList::UpdateItemsList ()
 	// create temporary map (sort by kills)
 	items.clear			();
 	for (;I!=E;++I)		items.push_back(I->second);
-	std::sort			(items.begin(),items.end(),pred_player);
+	std::sort			(items.begin(),items.end(),DM_Compare_Players);
 }
 
 bool	CUIDMFragList::SetItemData		(u32 ItemID, CUIStatsListItem *pItem)
