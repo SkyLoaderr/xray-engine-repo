@@ -62,6 +62,12 @@ public:
 
 	IC	const Fvector		&point				(u32 index) const
 	{
+		VERIFY				(m_path);
+		VERIFY				(!m_path->tpaWayPoints.empty());
+		if (m_path->tpaWayPoints.size() <= index) {
+			ai().script_engine().script_log(eLuaMessageTypeError,"Can't get information about patrol point number %d in the patrol way %s",index,*m_path_name);
+			index			= m_path->tpaWayPoints.size() - 1;
+		}
 		VERIFY				(m_path->tpaWayPoints.size() > index);
 		return				(m_path->tpaWayPoints[index].tWayPoint);
 	}
