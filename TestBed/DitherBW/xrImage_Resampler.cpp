@@ -10,180 +10,71 @@
 #include <math.h>
 #include "GGems.h"
 
-#ifndef EXIT_SUCCESS
-#define	EXIT_SUCCESS	(0)
-#define	EXIT_FAILURE	(1)
-#endif
-
 typedef	DWORD	Pixel;
-
-typedef struct {
+struct Image 
+{
 	int		xsize;		/* horizontal size of the image in Pixels */
 	int		ysize;		/* vertical size of the image in Pixels */
 	Pixel *	data;		/* pointer to first scanline of image */
 	int		span;		/* byte offset between two scanlines */
-} Image;
+};
 
-#define	WHITE_PIXEL	(255)
-#define	BLACK_PIXEL	(0)
+#define	WHITE_PIXEL		(255)
+#define	BLACK_PIXEL		(0)
 
 /*
  *	generic image access and i/o support routines
  */
 
-static char *
-next_token(f)
-FILE *f;
+Pixel	get_pixel	(Image* image, int x, int y)
 {
-	static char delim[] = " \t\r\n";
-	static char *t = NULL;
-	static char lnbuf[256];
-	char *p;
+	static Image *	im	= NULL;
+	static int		yy	= -1;
+	static Pixel *	p	= NULL;
 
-	while(t == NULL) {			/* nothing in the buffer */
-		if(fgets(lnbuf, sizeof(lnbuf), f)) {	/* read a line */
-			if(p = strchr(lnbuf, '#')) {	/* clip any comment */
-				*p = '\0';
-			}
-			t = strtok(lnbuf, delim);	/* get first token */
-		} else {
-			return(NULL);
-		}
-	}
-	p = t;
-	t = strtok((char *)NULL, delim);		/* get next token */
-	return(p);
-}
+	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) return 0;
 
-Image *
-new_image(xsize, ysize)	/* create a blank image */
-int xsize, ysize;
-{
-	Image *image;
-
-	if((image = (Image *)malloc(sizeof(Image)))
-	&& (image->data = (Pixel *)calloc(ysize, xsize))) {
-		image->xsize = xsize;
-		image->ysize = ysize;
-		image->span = xsize;
-	}
-	return(image);
-}
-
-void
-free_image(image)
-Image *image;
-{
-	free(image->data);
-	free(image);
-}
-
-Image *
-load_image(f)		/* read image from file */
-FILE *f;
-{
-	char *p;
-	int width, height;
-	Image *image;
-
-	if(((p = next_token(f)) && (strcmp(p, "Bm") == 0))
-	&& ((p = next_token(f)) && ((width = atoi(p)) > 0))
-	&& ((p = next_token(f)) && ((height = atoi(p)) > 0))
-	&& ((p = next_token(f)) && (strcmp(p, "8") == 0))
-	&& (image = new_image(width, height))
-	&& (fread(image->data, width, height, f) == height)) {
-		return(image);		/* load successful */
-	} else {
-		return(NULL);		/* load failed */
-	}
-}
-
-int
-save_image(f, image)	/* write image to file */
-FILE *f;
-Image *image;
-{
-	fprintf(f, "Bm # PXM 8-bit greyscale image\n");
-	fprintf(f, "%d %d 8 # width height depth\n",
-		image->xsize, image->ysize);
-	if(fwrite(image->data, image->xsize, image->ysize, f) == image->ysize) {
-		return(0);		/* save successful */
-	} else {
-		return(-1);		/* save failed */
-	}
-}
-
-Pixel
-get_pixel(image, x, y)
-Image *image;
-int x, y;
-{
-	static Image *im = NULL;
-	static int yy = -1;
-	static Pixel *p = NULL;
-
-	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) {
-		return(0);
-	}
 	if((im != image) || (yy != y)) {
 		im = image;
 		yy = y;
 		p = image->data + (y * image->span);
 	}
-	return(p[x]);
+	return p[x];
 }
 
-void
-get_row(row, image, y)
-Pixel *row;
-Image *image;
-int y;
+void	get_row		(Pixel* row, Image* image, int y)
 {
-	if((y < 0) || (y >= image->ysize)) {
-		return;
-	}
-	memcpy(row,
-		image->data + (y * image->span),
-		(sizeof(Pixel) * image->xsize));
+	if((y < 0) || (y >= image->ysize)) return;
+	CopyMemory(row,	image->data + (y * image->span), (sizeof(Pixel) * image->xsize));
 }
 
-void
-get_column(column, image, x)
-Pixel *column;
-Image *image;
-int x;
+void	get_column	(Pixel* column, Image* image, int x)
 {
 	int i, d;
 	Pixel *p;
 
-	if((x < 0) || (x >= image->xsize)) {
-		return;
-	}
-	d = image->span;
+	if((x < 0) || (x >= image->xsize)) return;
+
+	d	= image->span;
 	for(i = image->ysize, p = image->data + x; i-- > 0; p += d) {
 		*column++ = *p;
 	}
 }
 
-Pixel
-put_pixel(image, x, y, data)
-Image *image;
-int x, y;
-Pixel data;
+Pixel	put_pixel	(Image* image, int x, int y, Pixel data)
 {
-	static Image *im = NULL;
-	static int yy = -1;
-	static Pixel *p = NULL;
+	static Image *	im	= NULL;
+	static int		yy	= -1;
+	static Pixel *	p	= NULL;
 
-	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) {
-		return(0);
-	}
+	if((x < 0) || (x >= image->xsize) || (y < 0) || (y >= image->ysize)) return 0;
+
 	if((im != image) || (yy != y)) {
 		im = image;
 		yy = y;
 		p = image->data + (y * image->span);
 	}
-	return(p[x] = data);
+	return	(p[x] = data);
 }
 
 
@@ -191,11 +82,10 @@ Pixel data;
  *	filter function definitions
  */
 
+//
 #define	filter_support		(1.0)
 
-double
-filter(t)
-double t;
+double	filter(double t)
 {
 	/* f(t) = 2|t|^3 - 3|t|^2 + 1, -1 <= t <= 1 */
 	if(t < 0.0) t = -t;
@@ -203,6 +93,7 @@ double t;
 	return(0.0);
 }
 
+//
 #define	box_support		(0.5)
 
 double
@@ -213,6 +104,7 @@ double t;
 	return(0.0);
 }
 
+//
 #define	triangle_support	(1.0)
 
 double
@@ -224,6 +116,7 @@ double t;
 	return(0.0);
 }
 
+// 
 #define	bell_support		(1.5)
 
 double
@@ -239,6 +132,7 @@ double t;
 	return(0.0);
 }
 
+// 
 #define	B_spline_support	(2.0)
 
 double
@@ -258,6 +152,7 @@ double t;
 	return(0.0);
 }
 
+// 
 double
 sinc(x)
 double x;
@@ -278,6 +173,7 @@ double t;
 	return(0.0);
 }
 
+// 
 #define	Mitchell_support	(2.0)
 
 #define	B	(1.0 / 3.0)
