@@ -444,6 +444,8 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(ENTITY_STATE_MAP &cur_map, C
 	_elem					first;
 	_elem					last;
 
+	members.reserve(cur_map.size());
+	lines.reserve(cur_map.size());
 
 	// заполнить вектор npc
 	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 
@@ -541,6 +543,9 @@ void CMonsterSquad::SetupMemeberPositions_Deviation(ENTITY_STATE_MAP &cur_map, C
 	
 	xr_vector<_line>		lines;
 	xr_vector<CEntity *>	members;
+
+	members.reserve(cur_map.size());
+	lines.reserve(cur_map.size());
 
 	// заполнить вектор npc
 	for (ENTITY_STATE_MAP_IT it = cur_map.begin(); it != cur_map.end(); it++) 

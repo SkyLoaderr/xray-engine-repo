@@ -100,7 +100,7 @@ void CBitingAttack::Init()
 #define REAL_DIST_THROUGH_TRACE_THRESHOLD	6.0f
 #define PREDICT_POSITION_MIN_THRESHOLD		6.0f		// мин дистанция при которой 	
 #define BUILD_FULL_PATH_MAX_DIST			10.0f		// макс дистанция до врага, при которой будет строится полный путь
-#define BUILD_HALF_PATH_DIST				8.f			// дистанция не полного пути
+#define BUILD_HALF_PATH_DIST				5.f			// дистанция не полного пути
 
 void CBitingAttack::Run()
 {
@@ -166,7 +166,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 			pMonster->b_try_min_time		= false;
 
-			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,200 + 50.f * dist);
+			DO_IN_TIME_INTERVAL_BEGIN(RebuildPathInterval,200 + 100.f * dist);
 				bNeedRebuild = true; 
 			DO_IN_TIME_INTERVAL_END();
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
