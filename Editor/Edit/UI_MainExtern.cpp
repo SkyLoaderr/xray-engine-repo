@@ -202,6 +202,20 @@ void TUI::RealUpdateScene(){
 }
 //---------------------------------------------------------------------------
 
+
+void TUI::ShowContextMenu(int cls)
+{
+    if (g_bEditorValid){
+        POINT pt;
+        GetCursorPos(&pt);
+		fraLeftBar->miProperties->Enabled = false;
+        if (Scene.SelectionCount( true, cls )) fraLeftBar->miProperties->Enabled = true;
+        RedrawScene(true);
+	    fraLeftBar->pmObjectContext->TrackButton = tbRightButton;
+        fraLeftBar->pmObjectContext->Popup(pt.x,pt.y);
+    }
+}
+
 void ResetActionToSelect()
 {
     UI.Command(COMMAND_CHANGE_ACTION, eaSelect);
