@@ -226,7 +226,7 @@ BOOL CPEDef::Load(IReader& F)
 
     if (m_Flags.is(dfVelocityScale)){
     	R_ASSERT(F.find_chunk(PED_CHUNK_VEL_SCALE));
-        F.r_fvector3				(m_VelocityScale);
+        F.r_fvector3				(m_VelocityScale); 
     }
 
     if (m_Flags.is(dfAlignToPath)){
