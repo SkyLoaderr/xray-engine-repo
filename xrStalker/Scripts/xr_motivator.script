@@ -285,7 +285,7 @@ xr_motivator.storage[self.object:id()].follower = {
           xr_motivator.storage[self.object:id()].follower.raid_path = char_ini:r_string ("follower", "raid_path")
        end
   end
-
+-- Настройка схемы реакции
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
     time_wait = 60000, -- 60 секунд ждем повтора
