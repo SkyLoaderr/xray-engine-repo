@@ -716,9 +716,9 @@ else
 		fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*proj;//accel[1]-m_wall_contact_normal[1]*proj,
 		fvdir[2]=accel[2]-m_wall_contact_normal[2]*proj;
 		dNormalize3(fvdir);
-		m_control_force[0]+=fvdir[0]*m.mass*20.f;
-		m_control_force[1]+=fvdir[1]*m.mass*20.f;
-		m_control_force[2]+=fvdir[2]*m.mass*20.f;
+		m_control_force[0]+=fvdir[0]*m.mass*30.f;
+		m_control_force[1]+=fvdir[1]*m.mass*30.f;
+		m_control_force[2]+=fvdir[2]*m.mass*30.f;
 	
 	}
 	else{
