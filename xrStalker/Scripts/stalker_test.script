@@ -31,7 +31,7 @@ function main ()
     
     action				(
 		stalker,
-		object			(ak,object.fire),
+		object			(ak,object.fire1),
 		cond			(cond.time_end,2000)
     )
     
