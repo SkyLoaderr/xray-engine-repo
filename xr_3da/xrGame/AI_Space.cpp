@@ -11,16 +11,37 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CAI_Space::CAI_Space()
+CAI_Space::CAI_Space	()
 {
 	m_nodes_ptr	= NULL;
 	vfs			= NULL;
+	sh_debug	= 0;
+
+	Device.seqDevCreate.Add		(this);
+	Device.seqDevDestroy.Add	(this);
+	OnDeviceDestroy				();
 }
 
-CAI_Space::~CAI_Space()
+CAI_Space::~CAI_Space	()
 {
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	Device.Shader.Delete		(sh_debug);
+	OnDeviceDestroy				();
+
 	_FREE	(m_nodes_ptr);
 	_DELETE	(vfs);
+}
+
+void CAI_Space::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	sh_debug	= Device.Shader.Create	("debug\\ai_nodes","$null");
+}
+void CAI_Space::OnDeviceDestroy()
+{
+	REQ_DESTROY	();
+	Device.Shader.Delete	(sh_debug);
 }
 
 void CAI_Space::Load(LPCSTR name)
@@ -92,7 +113,7 @@ void CAI_Space::Render()
 
 	Fvector	DUP;	DUP.set(0,1,0);
 
-	Device.Shader.OnFrameEnd();
+	Device.Shader.set_Shader(sh_debug);
 	pApp->pFont->Color		(D3DCOLOR_RGBA(255,255,255,255));
 
 	for (DWORD Nid=0; Nid<m_header.count; Nid++)

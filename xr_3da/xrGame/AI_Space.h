@@ -35,7 +35,7 @@ namespace AI {
 	};
 };
 
-class CAI_Space
+class CAI_Space	: public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	// Initial data
@@ -47,6 +47,9 @@ private:
 	// Query
 	vector<bool>					q_mark;			// temporal usage mark for queries
 	CList<DWORD>					q_stack;
+	
+	// Debug
+	Shader*							sh_debug;
 public:
 	CAI_Space		();
 	~CAI_Space		();
@@ -92,6 +95,10 @@ public:
 		return 	((P[0]>=N.p0[0])&&(P[0]<=N.p1[0]))&&	// X inside
 				((P[2]>=N.p0[2])&&(P[2]<=N.p1[2]));		// Z inside
 	}
+
+	// Device dependance
+	virtual void	OnDeviceCreate	();
+	virtual void	OnDeviceDestroy	();
 };
 
 #endif // !defined(AFX_AI_SPACE_H__58DA6D1C_2A38_4242_8327_A4EDF2D8EC0C__INCLUDED_)
