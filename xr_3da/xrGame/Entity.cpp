@@ -228,7 +228,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	fArmor					= 0;
 
 	// Register
-	if (g_Alive()) {
+	if (fEntityHealth > 0.f) {
 		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
 		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
 	}
