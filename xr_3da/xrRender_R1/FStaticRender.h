@@ -32,6 +32,9 @@ public:
 		u32		distortion			: 1;	// run-time modified
 		u32		disasm				: 1;	// config
 	}			o;
+	struct		_stats		{
+		u32		o_queries;
+	}			stats;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
