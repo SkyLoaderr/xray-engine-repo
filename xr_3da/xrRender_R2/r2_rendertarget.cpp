@@ -74,9 +74,9 @@ void	CRenderTarget::OnDeviceCreate	()
 			{
 				for (u32 x=0; x<TEX_material_size; x++)
 				{
-					u32*	p	=	(u32*)	(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-					float	ld	=	float(x) / float	(TEX_material_size-1);
-					float	ls	=	float(y) / float	(TEX_material_size-1);
+					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
+					float	ld	=	float(x)	/ float	(TEX_material_size-1);
+					float	ls	=	float(y)	/ float	(TEX_material_size-1);
 							ls	*=	_sqrt(ld);	// minimize specular where diffuse near zero
 					s32		_d	=	iFloor		(ld*255.5f);			clamp(_d,0,255);
 					s32		_s	=	iFloor		(pow(ls,32.f)*255.5f);	clamp(_s,0,255);
