@@ -32,4 +32,5 @@ public:
 	virtual void	renderable_Render			();
 
 	void			Switch				();
+	void			Switch				(bool light_on);
 };

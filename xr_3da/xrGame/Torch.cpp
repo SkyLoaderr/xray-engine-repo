@@ -36,6 +36,12 @@ void CTorch::Switch()
 	glow_render->set_active	(bActive);
 }
 
+void Switch	(bool light_on)
+{
+	light_render->set_active(light_on);
+	glow_render->set_active	(light_on);
+}
+
 BOOL CTorch::net_Spawn(LPVOID DC) 
 {
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
@@ -136,22 +142,29 @@ void CTorch::OnH_B_Independent()
 void CTorch::UpdateCL() 
 {
 	inherited::UpdateCL();
-	if(getVisible() && m_pPhysicsShell) {
+	
+	if(getVisible() && m_pPhysicsShell) 
+	{
 		m_pPhysicsShell->Update	();
 		XFORM().set				(m_pPhysicsShell->mXFORM);
 		Position().set			(XFORM().c);
-		if (light_render->get_active()){
+		
+		if (light_render->get_active())
+		{
 			light_render->set_direction	(XFORM().k);
 			light_render->set_position	(XFORM().c);
 			glow_render->set_position	(XFORM().c);
 			time2hide			-= Device.fTimeDelta;
-			if (time2hide<0){
+			if (time2hide<0)
+			{
 				light_render->set_active(false);
 				glow_render->set_active(false);
 			}
 		}
-	} else if(H_Parent()) {
-		Collide::rq_result RQ;
+	} 
+	else if(H_Parent()) 
+	{
+		/*Collide::rq_result RQ;
 		H_Parent()->setEnabled(false);
 		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
 		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);
@@ -172,14 +185,25 @@ void CTorch::UpdateCL()
 		H_Parent()->setEnabled		(true);
 		light_render->set_direction	(_D);	//XFORM().k); // l_d
 		light_render->set_position	(_P);	//XFORM().c); // l_p
+		glow_render->set_position	(_P);*/
+
+		light_render->set_direction	(XFORM().k);
+		light_render->set_position	(XFORM().c);
 		glow_render->set_position	(_P);
+
 	}
+	
 	// update light source
-	if (light_render->get_active()){
+	if (light_render->get_active())
+	{
+		
 		// calc color animator
-		if (lanim){
+		if (lanim)
+		{
 			int frame;
-			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
+			// возвращает в формате BGR
+			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); 
+		
 			Fcolor			fclr;
 			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
 			fclr.mul_rgb	(fBrightness/255.f);
@@ -191,12 +215,16 @@ void CTorch::UpdateCL()
 
 void CTorch::renderable_Render() 
 {
-	if(getVisible() && !H_Parent()) {
+	if(getVisible())
+	{
 		::Render->set_Transform		(&XFORM());
 		::Render->add_Visual		(Visual());
-	} else {
-		light_render->set_direction	(XFORM().k);
-		light_render->set_position	(XFORM().c);
-		glow_render->set_position	(XFORM().c);
+	 
+		if(H_Parent()) 
+		{
+			light_render->set_direction	(XFORM().k);
+			light_render->set_position	(XFORM().c);
+			glow_render->set_position	(XFORM().c);
+		}
 	}
 }
