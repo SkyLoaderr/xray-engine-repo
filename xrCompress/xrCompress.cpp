@@ -13,11 +13,10 @@ u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
 struct	ALIAS
 {
 	LPCSTR			path;
-	u32				size;
 	u32				crc;
-	u32				c_mode;
 	u32				c_ptr;
-	u32				c_size;
+	u32				c_size_real;
+	u32				c_size_compressed;
 };
 xr_multimap<u32,ALIAS>	aliases;
 
@@ -80,7 +79,7 @@ ALIAS*	testALIAS		(IReader* base, u32 crc, u32& a_tests)
 	return 0;
 }
 
-extern	u32		crc32_calc			(void* P, u32 size);
+extern	u32	crc32_calc		(void* P, u32 size);
 
 void	Compress			(LPCSTR path, LPCSTR base)
 {
@@ -93,18 +92,18 @@ void	Compress			(LPCSTR path, LPCSTR base)
 		return;
 	}
 
-	string256		fn;		strconcat(fn,base,"\\",path);
+	string256		fn;				strconcat(fn,base,"\\",path);
 
-	IReader*		src		=	FS.r_open	(fn);
-	bytesSRC				+=	src->length	();
-	u32			c_crc32		=	crc32_calc	(src->pointer(),src->length());
-	u32			c_ptr		=	0;
-	u32			c_size		=	0;
-	u32			c_mode		=	0;
-	u32			a_tests		=	0;
+	IReader*		src				=	FS.r_open	(fn);
+	bytesSRC						+=	src->length	();
+	u32			c_crc32				=	crc32_calc	(src->pointer(),src->length());
+	u32			c_ptr				=	0;
+	u32			c_size_real			=	0;
+	u32			c_size_compressed	=	0;
+	u32			a_tests				=	0;
 
-	ALIAS*		A			=	testALIAS	(src,c_crc32,a_tests);
-	printf					("%3da ",a_tests);
+	ALIAS*		A					=	testALIAS	(src,c_crc32,a_tests);
+	printf							("%3da ",a_tests);
 	if (A) 
 	{
 		filesALIAS			++;
@@ -112,38 +111,36 @@ void	Compress			(LPCSTR path, LPCSTR base)
 
 		// Alias found
 		c_ptr				= A->c_ptr;
-		c_size				= A->c_size;
-		c_mode				= A->c_mode;
+		c_size_real			= A->c_size_real;
+		c_size_compressed	= A->c_size_compressed;
 	} else {
 		if (testVFS(path))	{
 			filesVFS			++;
-			printf				("VFS");
 
 			// Write into BaseFS
 			c_ptr				= fs->tell	();
-			c_size				= src->length();
-			c_mode				= 1;		// VFS file
-			fs->w				(src->pointer(),c_size);
+			c_size_real			= src->length();
+			c_size_compressed	= src->length();
+			fs->w				(src->pointer(),c_size_real);
+			printf				("VFS");
 		} else {
 			// Compress into BaseFS
 			c_ptr				= fs->tell();
-			c_size				= 0;
+			c_size_real			= src->length();
 			u32 c_size_max		= rtc_csize		(src->length());
 			u8*	c_data			= xr_alloc<u8>	(c_size_max);
-			c_size				= rtc_compress	(c_data,c_size_max,src->pointer(),src->length());
-			if ((c_size+64) >= u32(src->length()))
+			c_size_compressed	= rtc_compress	(c_data,c_size_max,src->pointer(),c_size_real);
+			if ((c_size_compressed+16) >= c_size_real)
 			{
 				// Failed to compress - revert to VFS
 				filesVFS			++;
-				c_mode				= 1;		// VFS file
-				c_size				= src->length();
-				fs->w				(src->pointer(),c_size);
+				c_size_compressed	= c_size_real;
+				fs->w				(src->pointer(),c_size_real);
 				printf				("VFS (R)");
 			} else {
 				// Compressed OK
-				c_mode				= 0;		// Normal file
-				fs->w				(c_data,c_size);
-				printf				("%3.1f%%",	100.f*float(c_size)/float(src->length()));
+				fs->w				(c_data,c_size_compressed);
+				printf				("%3.1f%%",	100.f*float(c_size_compressed)/float(src->length()));
 			}
 
 			// cleanup
@@ -152,22 +149,21 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	}
 
 	// Write description
-	fs_desc.w_stringZ	(path	);
-	fs_desc.w_u32		(c_mode	);
-	fs_desc.w_u32		(c_ptr	);
-	fs_desc.w_u32		(c_size	);
+	fs_desc.w_stringZ	(path				);
+	fs_desc.w_u32		(c_ptr				);
+	fs_desc.w_u32		(c_size_real		);
+	fs_desc.w_u32		(c_size_compressed	);
 
 	if (0==A)	
 	{
 		// Register for future aliasing
 		ALIAS			R;
-		R.path			= xr_strdup	(fn);
-		R.size			= src->length();
-		R.crc			= c_crc32;
-		R.c_mode		= c_mode;
-		R.c_ptr			= c_ptr;
-		R.c_size		= c_size;
-		aliases.insert	(mk_pair(R.size,R));
+		R.path				= xr_strdup	(fn);
+		R.crc				= c_crc32;
+		R.c_ptr				= c_ptr;
+		R.c_size_real		= c_size_real;
+		R.c_size_compressed	= c_size_compressed;
+		aliases.insert		(mk_pair(R.c_size_real,R));
 	}
 
 	FS.r_close	(src);
