@@ -13,6 +13,9 @@
 #include "level.h"
 #include "xr_level_controller.h"
 
+#include "CameraLook.h"
+#include "CameraFirstEye.h"
+
 IC BOOL BE	(BOOL A, BOOL B)
 {
 	bool a = !!A;
@@ -185,6 +188,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			r_torso.pitch			= -NewRot.x;
 			unaffected_r_torso_yaw	 = r_torso.yaw;
 			unaffected_r_torso_pitch = r_torso.pitch;
+			cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);
 			Level().CurrentControlEntity()->ForceTransform(M);
 		}break;
 	}
