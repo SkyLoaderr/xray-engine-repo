@@ -10,7 +10,7 @@ struct	xr_token;
 //Описание Inifile
 //-----------------------------------------------------------------------------------------------------------
 
-class ENGINE_API CInifile
+class XRCORE_API CInifile
 {
 public:
 	struct	Item
@@ -29,9 +29,9 @@ public:
 
 		IC SectIt		begin()		{ return Data.begin();	}
 		IC SectIt		end()		{ return Data.end();	}
-		IC int			size()		{ return Data.size();	}
+		IC size_t		size()		{ return Data.size();	}
 		IC void			clear()		{ Data.clear();			}
-	    BOOL			LineExists	(LPCSTR L, LPCSTR* val=0);
+	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
 	};
 	typedef	std::vector<Sect>	Root;
 	typedef Root::iterator		RootIt;
@@ -63,40 +63,60 @@ public:
 public:
 				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);
 	virtual 	~CInifile		( );
-    void		SaveAs          ( LPCSTR new_fname=0 );
+    void		save_as         ( LPCSTR new_fname=0 );
 
-	LPCSTR		cName			( ) { return fName; };
+	LPCSTR		fname			( ) { return fName; };
 
-	Sect&		ReadSection		( LPCSTR S );
-	BOOL		LineExists		( LPCSTR S, LPCSTR L );
-	u32			LineCount		( LPCSTR S );
-	BOOL		SectionExists	( LPCSTR S );
-	Root&		Sections		( ){return DATA;}
+	Sect&		r_section		( LPCSTR S );
+	BOOL		line_exist		( LPCSTR S, LPCSTR L );
+	u32			line_count		( LPCSTR S );
+	BOOL		section_exist	( LPCSTR S );
+	Root&		sections		( ){return DATA;}
 
-	CLASS_ID	ReadCLSID		( LPCSTR S, LPCSTR L );
-	LPCSTR 		ReadSTRING		( LPCSTR S, LPCSTR L );
-	int 		ReadINT			( LPCSTR S, LPCSTR L );
-	float		ReadFLOAT		( LPCSTR S, LPCSTR L );
-	u32			ReadCOLOR		( LPCSTR S, LPCSTR L );
-	Fvector		ReadVECTOR		( LPCSTR S, LPCSTR L );
-	Fvector2	ReadVECTOR2		( LPCSTR S, LPCSTR L );
-	Fvector4	ReadVECTOR4		( LPCSTR S, LPCSTR L );
-	BOOL		ReadBOOL		( LPCSTR S, LPCSTR L );
-	int			ReadTOKEN		( LPCSTR S, LPCSTR L,	const xr_token *token_list);
-	BOOL		ReadLINE		( LPCSTR S, int L,		LPCSTR* N, LPCSTR* V );
+	CLASS_ID	r_clsid			( LPCSTR S, LPCSTR L );
+	LPCSTR 		r_string		( LPCSTR S, LPCSTR L );
+	u8	 		r_u8			( LPCSTR S, LPCSTR L );
+	u16	 		r_u16			( LPCSTR S, LPCSTR L );
+	u32	 		r_u32			( LPCSTR S, LPCSTR L );
+	s8	 		r_s8			( LPCSTR S, LPCSTR L );
+	s16	 		r_s16			( LPCSTR S, LPCSTR L );
+	s32	 		r_s32			( LPCSTR S, LPCSTR L );
+	float		r_float			( LPCSTR S, LPCSTR L );
+	Fcolor		r_fcolor		( LPCSTR S, LPCSTR L );
+	u32			r_color			( LPCSTR S, LPCSTR L );
+	Ivector2	r_ivector2		( LPCSTR S, LPCSTR L );
+	Ivector3	r_ivector3		( LPCSTR S, LPCSTR L );
+	Ivector4	r_ivector4		( LPCSTR S, LPCSTR L );
+	Fvector2	r_fvector2		( LPCSTR S, LPCSTR L );
+	Fvector3	r_fvector3		( LPCSTR S, LPCSTR L );
+	Fvector4	r_fvector4		( LPCSTR S, LPCSTR L );
+	BOOL		r_bool			( LPCSTR S, LPCSTR L );
+	int			r_token			( LPCSTR S, LPCSTR L,	const xr_token *token_list);
+	BOOL		r_line			( LPCSTR S, int L,		LPCSTR* N, LPCSTR* V );
 
-    void		WriteString		( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment=0 );
-    void		WriteFloat		( LPCSTR S, LPCSTR L, float				V, LPCSTR comment=0 );
-    void		WriteInteger	( LPCSTR S, LPCSTR L, int				V, LPCSTR comment=0 );
-    void		WriteColor		( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment=0 );
-    void		WriteColor		( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment=0 );
-    void		WriteVector		( LPCSTR S, LPCSTR L, const Fvector&	V, LPCSTR comment=0 );
+    void		w_string		( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment=0 );
+	void		w_u8			( LPCSTR S, LPCSTR L, u8				V, LPCSTR comment=0 );
+	void		w_u16			( LPCSTR S, LPCSTR L, u16				V, LPCSTR comment=0 );
+	void		w_u32			( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment=0 );
+    void		w_s8			( LPCSTR S, LPCSTR L, s8				V, LPCSTR comment=0 );
+	void		w_s16			( LPCSTR S, LPCSTR L, s16				V, LPCSTR comment=0 );
+	void		w_s32			( LPCSTR S, LPCSTR L, s32				V, LPCSTR comment=0 );
+	void		w_float			( LPCSTR S, LPCSTR L, float				V, LPCSTR comment=0 );
+    void		w_fcolor		( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment=0 );
+    void		w_color			( LPCSTR S, LPCSTR L, u32				V, LPCSTR comment=0 );
+    void		w_ivector2		( LPCSTR S, LPCSTR L, const Ivector2&	V, LPCSTR comment=0 );
+	void		w_ivector3		( LPCSTR S, LPCSTR L, const Ivector3&	V, LPCSTR comment=0 );
+	void		w_ivector4		( LPCSTR S, LPCSTR L, const Ivector4&	V, LPCSTR comment=0 );
+	void		w_fvector2		( LPCSTR S, LPCSTR L, const Fvector2&	V, LPCSTR comment=0 );
+	void		w_fvector3		( LPCSTR S, LPCSTR L, const Fvector3&	V, LPCSTR comment=0 );
+	void		w_fvector4		( LPCSTR S, LPCSTR L, const Fvector4&	V, LPCSTR comment=0 );
+	void		w_bool			( LPCSTR S, LPCSTR L, BOOL				V, LPCSTR comment=0 );
 
-    void		RemoveLine		( LPCSTR S, LPCSTR L );
+    void		remove_line		( LPCSTR S, LPCSTR L );
 };
 
 // Main configuration file
-extern ENGINE_API CInifile *pSettings;
+extern XRCORE_API CInifile *pSettings;
 
 
 #endif //__XR_INI_H__

@@ -339,6 +339,15 @@
 				RelativePath="LzHuf.cpp">
 			</File>
 			<File
+				RelativePath="Xr_ini.cpp">
+			</File>
+			<File
+				RelativePath="clsid.cpp">
+			</File>
+			<File
+				RelativePath="clsid.h">
+			</File>
+			<File
 				RelativePath="log.cpp">
 			</File>
 			<File
@@ -346,6 +355,15 @@
 			</File>
 			<File
 				RelativePath="lzhuf.h">
+			</File>
+			<File
+				RelativePath="xr_ini.h">
+			</File>
+			<File
+				RelativePath="xr_trims.cpp">
+			</File>
+			<File
+				RelativePath="xr_trims.h">
 			</File>
 		</Filter>
 		<File

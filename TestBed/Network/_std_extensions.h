@@ -12,6 +12,13 @@
 #undef max
 #endif
 
+// token type definition
+struct XRCORE_API xr_token
+{
+	LPCSTR	name;
+	int 	id;
+};
+
 // generic
 template <class T>	IC T		_min	(T a, T b)	{ return a<b?a:b;	}
 template <class T>	IC T		_max	(T a, T b)	{ return a>b?a:b;	}

@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_trims.h"
-#include "xr_tokens.h"
-
 LPSTR _TrimLeft( LPSTR str )
 {
 	LPSTR p = str;
 	while( *p && isspace(*p) ) p++;
-	u32	num1 = strlen( str );
-	u32	num2 = strlen( p );
+	size_t	num1 = strlen( str );
+	size_t	num2 = strlen( p );
 	if (num1 == num2) return str;
 	for (u32	i = 0; i < num1; i++)
 	{
@@ -21,7 +18,7 @@ LPSTR _TrimLeft( LPSTR str )
 
 LPSTR _TrimRight( LPSTR str )
 {
-	u32	num = strlen( str ) - 1;
+	size_t	num = strlen( str ) - 1;
 	while ( (num > 0)&&(isspace(u8(str[num]))))
 	{
 		num--;
@@ -59,7 +56,7 @@ LPCSTR _SetPos (LPCSTR src, u32 pos, char separator )
 LPCSTR _CopyVal ( LPCSTR src, LPSTR dst, char separator )
 {
 	LPCSTR	p;
-	u32		n;
+	size_t	n;
 	p			= strchr	( src, separator );
 	n			= (p>0) ? (p-src) : strlen(src);
 	strncpy		( dst, src, n );
