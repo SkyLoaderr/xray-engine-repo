@@ -26,8 +26,8 @@ const float min_turning_angle = PI_DIV_6;
 // исправление несоответствия позиции узлу 
 void CAI_Biting::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
 {
-	if ((dwNodeID <= 0) || (dwNodeID >= getAI().Header().count) || (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1)))
-		m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
+	//if ((dwNodeID <= 0) || (dwNodeID >= getAI().Header().count) || (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1)))
+	//	m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
 }
 
 // установка параметров движения и действий 
@@ -243,9 +243,7 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 // Зрение, слух, вероятность победы, выгодность противника
 void CAI_Biting::vfUpdateParameters()
 {
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// Mem.UpdateMemory();
-	SelectEnemy(m_tEnemy);
+	Mem.UpdateMemory();
 
 	//------------------------------------
 	// слух
@@ -266,11 +264,8 @@ void CAI_Biting::vfUpdateParameters()
 	//------------------------------------
 	// Зрение
 
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	/*
-	if (Mem.IsEnemy()) {
-		VisionElem &ve = Mem.GetNearestObject(Position());
-
+	VisionElem ve;
+	if (Mem.SelectEnemy(ve)) {
 		// определить, видит ли меня враг
 		I = false;
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;

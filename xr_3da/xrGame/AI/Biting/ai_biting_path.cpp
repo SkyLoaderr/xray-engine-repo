@@ -23,20 +23,18 @@ using namespace AI_Biting;
 
 void CAI_Biting::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad)
 {
-//	S.m_tHitDir			= m_tHitDir;
-//	S.m_dwHitTime		= m_dwHitTime;
 	S.m_dwCurTime		= m_dwCurrentUpdate;
 	S.m_tMe				= this;
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 
-//	if (m_tEnemy.Enemy)
-//		vfSaveEnemy();
-	
-	S.m_tEnemy			= m_tSavedEnemy;
-	S.m_tEnemyPosition	= m_tSavedEnemyPosition;
-	S.m_dwEnemyNode		= m_dwSavedEnemyNodeID;
-	S.m_tpEnemyNode		= m_tpSavedEnemyNode;
+	VisionElem ve;
+	Mem.SelectEnemy(ve);
+
+	S.m_tEnemy			= ve.obj;
+	S.m_tEnemyPosition	= ve.position;
+	S.m_dwEnemyNode		= ve.node_id;
+	S.m_tpEnemyNode		= ve.node;
 
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= AI_NodeID;		// текущий узел
