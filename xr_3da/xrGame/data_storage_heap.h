@@ -256,7 +256,7 @@ public:
 		u32						byte_count;
 		
 		byte_count				= (node_count/heap_count + 1)*sizeof(CGraphNode*);
-		for (u32 i=0; i<heap_count; i++) {
+		for (u32 i=0; i<heap_count; ++i) {
 			heaps[i].heap		= (CGraphNode**)xr_malloc(byte_count);
 			ZeroMemory			(heaps[i].heap,byte_count);
 			memory_usage		+= byte_count;
@@ -267,20 +267,20 @@ public:
 
 	virtual				~CDataStorageMultiBinaryHeap()
 	{
-		for (u32 i=0; i<heap_count; i++)
+		for (u32 i=0; i<heap_count; ++i)
 			xr_free				(heaps[i].heap);
 	}
 
 	IC		void		init			()
 	{
 		inherited::init			();
-		for (u32 i=0; i<heap_count; i++)
+		for (u32 i=0; i<heap_count; ++i)
 			heaps[i].heap_head	= heaps[i].heap_tail = heaps[i].heap;
 	}
 
 	IC		bool		is_opened_empty	() const
 	{
-		for (u32 i=0; i<heap_count; i++) {
+		for (u32 i=0; i<heap_count; ++i) {
 			VERIFY				(heaps[i].heap_head <= heaps[i].heap_tail);
 			if (heaps[i].heap_head != heaps[i].heap_tail)
 				return			(false);
@@ -446,7 +446,7 @@ public:
 		u32						byte_count;
 		
 		byte_count				= (node_count/heap_count + 1)*sizeof(CGraphNode*);
-		for (u32 i=0; i<heap_count; i++) {
+		for (u32 i=0; i<heap_count; ++i) {
 			heaps[i].heap		= (CGraphNode**)xr_malloc(byte_count);
 			ZeroMemory			(heaps[i].heap,byte_count);
 			memory_usage		+= byte_count;
@@ -457,14 +457,14 @@ public:
 
 	virtual				~CDataStorageBinaryHeapList()
 	{
-		for (u32 i=0; i<heap_count; i++)
+		for (u32 i=0; i<heap_count; ++i)
 			xr_free				(heaps[i].heap);
 	}
 
 	IC		void		init			()
 	{
 		inherited::init			();
-		for (u32 i=0; i<heap_count; i++)
+		for (u32 i=0; i<heap_count; ++i)
 			heaps[i].heap_head	= heaps[i].heap_tail = heaps[i].heap;
 		ZeroMemory				(nodes,2*sizeof(CGraphNode));
 		list_head				= nodes + node_count++;

@@ -3,7 +3,7 @@
 //	Created 	: 02.10.2001
 //  Modified 	: 12.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : Movement manager
+//	Description : m_PhysicMovementControl manager
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

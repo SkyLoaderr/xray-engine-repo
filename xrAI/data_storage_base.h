@@ -74,7 +74,7 @@ public:
 	IC		void		get_path		(xr_vector<_index_type> &path, _GraphNode *best)
 	{
 		_GraphNode				*t1 = best, *t2 = best->back;
-		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, i++) ;
+		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, ++i) ;
 
 		path.resize				(i);
 
@@ -179,7 +179,7 @@ public:
 
 	IC		void		init			()
 	{
-		cur_path_id++;
+		++cur_path_id;
 	}
 
 	IC		bool		is_opened		(const _GraphNode &vertex) const

@@ -760,21 +760,21 @@ public:
 	IC		void		verify_cheap	() const
 	{
 //		u32						count = 0;
-//		for (CGraphNode *i = cheap_list_head; i; i = i->next, count++) {
+//		for (CGraphNode *i = cheap_list_head; i; i = i->next, ++count) {
 //			VERIFY(!i->next || (i->f() <= i->next->f()));
 //		}
 //		VERIFY					(count == cheap_count);
 //		count					= 0;
-//		for (CGraphNode *i = cheap_list_tail; i; i = i->prev, count++) {
+//		for (CGraphNode *i = cheap_list_tail; i; i = i->prev, ++count) {
 //			VERIFY(!i->prev || (i->f() >= i->prev->f()));
 //		}
 //		VERIFY					(count == cheap_count);
 //		count					= 0;
-//		for (CGraphNode *i = list_head->next; i != list_tail; i = i->next, count++) {
+//		for (CGraphNode *i = list_head->next; i != list_tail; i = i->next, ++count) {
 //			VERIFY				(i->f() >= cheap_list_tail->f());
 //		}
 //		u32						count1 = 0;
-//		for (CGraphNode *i = list_tail->prev; i != list_head; i = i->prev, count1++) {
+//		for (CGraphNode *i = list_tail->prev; i != list_head; i = i->prev, ++count1) {
 //			VERIFY				(i->f() >= cheap_list_tail->f());
 //		}
 //		VERIFY					(count == count1);
@@ -805,7 +805,7 @@ public:
 			vertex.next				= cheap_list_head;
 			vertex.prev				= 0;
 			cheap_list_head			= &vertex;
-			cheap_count++;
+			++cheap_count;
 			return;
 		}
 
@@ -816,7 +816,7 @@ public:
 					vertex.prev		= i;
 					i->next->prev	= &vertex;
 					i->next			= &vertex;
-					cheap_count++;
+					++cheap_count;
 					return;
 				}
 			}
@@ -827,7 +827,7 @@ public:
 //					vertex.prev		= i->prev;
 //					i->prev->next	= &vertex;
 //					i->prev			= &vertex;
-//					cheap_count++;
+//					++cheap_count;
 //					return;
 //				}
 //			}
@@ -840,7 +840,7 @@ public:
 			vertex.prev		= cheap_list_tail;
 			vertex.next		= 0;
 			cheap_list_tail	= &vertex;
-			cheap_count++;
+			++cheap_count;
 			return;
 		}
 		add_cheap			(vertex);
@@ -886,7 +886,7 @@ public:
 		list_head->next				= cheap_list_tail;
 		cheap_list_tail				= cheap_list_tail->prev;
 		list_head->next->prev		= list_head;
-		cheap_count--;
+		--cheap_count;
 	}
 
 	IC		void		fill_cheap		()
@@ -1003,7 +1003,7 @@ public:
 		
 		verify_cheap			();
 		cheap_list_head			= cheap_list_head->next;
-		cheap_count--;
+		--cheap_count;
 		
 		if (cheap_list_head)
 			cheap_list_head->prev = 0;
@@ -1198,12 +1198,12 @@ public:
 
 	IC		void		verify_buckets	() const
 	{
-//		for (u32 i=0; i<bucket_count; i++) {
+//		for (u32 i=0; i<bucket_count; ++i) {
 //			CGraphNode	*j = buckets[i], *k;
 //			if (!j || (indexes[j->index()].path_id != cur_path_id) || (indexes[j->index()].vertex != j))
 //				continue;
 //			u32			count = 0, count1 = 0;
-//			for ( ; j; k=j,j=j->next, count++) {
+//			for ( ; j; k=j,j=j->next, ++count) {
 //				VERIFY	(indexes[j->index()].path_id == cur_path_id);
 //				VERIFY	(compute_bucket_id(*j) == i);
 //				VERIFY	(!j->prev || (j == j->prev->next));
@@ -1211,7 +1211,7 @@ public:
 //				VERIFY	(!j->next || (j != j->next));
 //				VERIFY	(!j->prev || (j != j->prev));
 //			}
-//			for ( ; k; k=k->prev, count1++) {
+//			for ( ; k; k=k->prev, ++count1) {
 //				VERIFY	(indexes[k->index()].path_id == cur_path_id);
 //				VERIFY	(compute_bucket_id(*k) == i);
 //				VERIFY	(!k->prev || (k == k->prev->next));

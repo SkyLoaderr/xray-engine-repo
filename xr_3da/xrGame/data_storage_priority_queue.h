@@ -113,7 +113,7 @@ public:
 
 	IC		void		init			()
 	{
-		cur_path_id++;
+		++cur_path_id;
 		node_count				= _index_type(0);
 		while (!priority_queue.empty())
 			priority_queue.pop();
@@ -209,7 +209,7 @@ public:
 	IC		void		get_path		(xr_vector<_index_type> &path)
 	{
 		CGraphNode				*best = &get_best(), *t1 = best, *t2 = best->back;
-		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, i++) ;
+		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, ++i) ;
 
 		path.resize				(i);
 
