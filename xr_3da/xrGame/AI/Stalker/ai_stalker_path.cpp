@@ -70,6 +70,9 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 //		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
 		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid Node Evaluator node");
+			}
 			AI_Path.Nodes.clear		();
 			m_tPathState			= ePathStateBuildNodePath;
 			vfAddToSearchList		();
@@ -103,15 +106,15 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 	
 	if (AI_Path.Nodes.empty()) {
 		Msg("! !!!! node_start %d, node_finish %d",AI_NodeID,AI_Path.DestNode);
-		if (tpNodeEvaluator) {
+//		if (tpNodeEvaluator) {
 			getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 			if (AI_Path.Nodes.empty())
 				m_tPathState = ePathStateSearchNode;
 			else
 				m_tPathState = ePathStateBuildTravelLine;
-		}
-		else
-			m_tPathState = ePathStateSearchNode;
+//		}
+//		else
+//			m_tPathState = ePathStateSearchNode;
 	}
 	else
 		m_tPathState = ePathStateBuildTravelLine;
@@ -619,6 +622,9 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 			tSelector.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 			tSelector.m_tEnemyPosition = getAI().tfGetNodeCenter(tSelector.m_tpEnemyNode);
 			AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid suspicious point node");
+			}
 			vfBuildPathToDestinationPoint(0);
 			m_bActionStarted = true;
 		}
@@ -659,6 +665,9 @@ void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 			if (m_iCurrentSuspiciousNodeIndex != -1) {
 				if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) {
 					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+					if (!AI_Path.DestNode) {
+						Msg("! Invalid suspicious point node");
+					}
 					vfBuildPathToDestinationPoint(0);
 				}
 			}

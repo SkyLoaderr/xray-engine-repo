@@ -351,12 +351,13 @@ void CCustomMonster::UpdateCL	()
 				u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
 				float					f = (float(d1)/float(d2));
 				
-				NET_Last.p_pos.sub		(B.p_pos,A.p_pos);
-				if (dwTime - B.dwTimeStamp < 150)
-					NET_Last.p_pos.mul		(f);
-				else
-					NET_Last.p_pos.mul		((float(d2 + 150)/float(d2)));
-				NET_Last.p_pos.add		(A.p_pos);
+//				NET_Last.p_pos.sub		(B.p_pos,A.p_pos);
+//				if (dwTime - B.dwTimeStamp < 150)
+//					NET_Last.p_pos.mul		(f);
+//				else
+//					NET_Last.p_pos.mul		((float(d2 + 150)/float(d2)));
+//				NET_Last.p_pos.add		(A.p_pos);
+				NET_Last.lerp			(A,B,min(f,2.f));
 				
 				Fvector					dir;
 				AI_Path.Direction		(dir);

@@ -122,7 +122,7 @@ void CAI_Stalker::ForwardStraight()
 	WRITE_TO_LOG("Forward straight");
 	
 	m_dwInertion				= 20000;
-	if (!m_tEnemy.Enemy) {
+	if (!m_tEnemy.Enemy && (m_dwSavedEnemyNodeID != u32(-1))) {
 		SearchEnemy();
 		return;
 	}
@@ -150,6 +150,9 @@ void CAI_Stalker::Camp(bool bWeapon)
 
 	if (vPosition.distance_to(m_tpaDynamicObjects[iIndex].tMySavedPosition) > .1f) {
 		AI_Path.DestNode		= m_tpaDynamicObjects[iIndex].dwMyNodeID;
+		if (!AI_Path.DestNode) {
+			Msg("! Object %s is in invalid node",m_tpaDynamicObjects[iIndex].tpEntity ? m_tpaDynamicObjects[iIndex].tpEntity->cName() : "world");
+		}
 		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 	}
 	else {
@@ -277,6 +280,11 @@ void CAI_Stalker::Detour()
 			WRITE_TO_LOG			("WatchLook : Detour");
 			vfUpdateSearchPosition	();
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
+			}
 			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > dwDelay2) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -387,6 +395,9 @@ void CAI_Stalker::SearchEnemy()
 		case eActionStateDontWatch : {
 			OUT_TEXT("Last enemy position");
 			AI_Path.DestNode	= m_dwSavedEnemyNodeID;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid Saved Enemy Node in Search Enemy (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+			}
 			if (Group.m_tpaSuspiciousNodes.empty()) {
 				if (!m_iCurrentSuspiciousNodeIndex) {
 					vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,40.f,Group);
@@ -421,6 +432,9 @@ void CAI_Stalker::SearchEnemy()
 						Fvector				tPoint = m_tSavedEnemyPosition;
 						tPoint.y			+= 1.5f;
 						AI_Path.DestNode	= m_dwSavedEnemyNodeID;
+						if (!AI_Path.DestNode) {
+							Msg("! Invalid Saved Enemy Node in Search Enemy 2 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+						}
 						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
@@ -448,6 +462,9 @@ void CAI_Stalker::SearchEnemy()
 				else {
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;
 					AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+					if (!AI_Path.DestNode) {
+						Msg("! Invalid Saved Enemy Node in Search Enemy 3 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+					}
 					m_tPathState = ePathStateBuildNodePath;
 				}
 			}
@@ -474,12 +491,18 @@ void CAI_Stalker::SearchEnemy()
 				if (!bOk)
 					if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) && (getAI().u_SqrDistance2Node(vPosition,getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) < .35f)) {
 						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+						if (!AI_Path.DestNode) {
+							Msg("! Invalid Saved Enemy Node in Search Enemy 4 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+						}
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
 					}
 					else {
 						Fvector				tPoint = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 						tPoint.y			+= 1.5f;
 						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+						if (!AI_Path.DestNode) {
+							Msg("! Invalid Saved Enemy Node in Search Enemy 5 (%s)",m_tSavedEnemy ? m_tSavedEnemy->cName() : "world");
+						}
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
@@ -550,6 +573,11 @@ void CAI_Stalker::ExploreDNE()
 			WRITE_TO_LOG			("WatchLook : Exploring danger non-expedient sound");
 			vfUpdateSearchPosition	();
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
+			}
 			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 5000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState		= eActionStateWatchGo;
@@ -698,6 +726,11 @@ void CAI_Stalker::ExploreNDNE()
 			WRITE_TO_LOG			("WatchLook : Exploring non-danger non-expedient sound");
 			vfUpdateSearchPosition	();
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+			if (!AI_Path.DestNode) {
+				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
+			}
 			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 			if ((Level().timeServer() - m_dwActionStartTime > 3000) || (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) == u32(-1))) {
 				m_tActionState = eActionStateWatchGo;
@@ -719,6 +752,9 @@ void CAI_Stalker::TakeItems()
 	Fvector					tPoint;
 	m_tpItemToTake->svCenter(tPoint);
 	AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
+	if (!AI_Path.DestNode) {
+		Msg("! Invalid item node %s",m_tpItemToTake->cName());
+	}
 	if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
 		tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 	else
@@ -739,6 +775,11 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	if (!AI_Path.DestNode) {
+		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
+		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+			Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
+	}
 	float					yaw,pitch;
 	GetDirectionAngles		(yaw,pitch);
 	yaw						= angle_normalize_signed(-yaw);

@@ -316,8 +316,10 @@ bool CAI_Stalker::bfAddEnemyToDynamicObjects(CAI_Stalker *tpStalker)
 		if (tpStalker->m_tpaDynamicObjects[i].tpEntity == m_tSavedEnemy) {
 			u32 dwTime = m_dwCurrentUpdate;
 			CEntity *tpEntity = m_tSavedEnemy;
-			if (tpEntity && !tpEntity->AI_NodeID)
+			if (tpEntity && !tpEntity->AI_NodeID) {
+				Msg("! Invalid object node ID %s",tpEntity->cName());
 				return(false);
+			}
 			for (int j=0; j<(int)m_tpaDynamicObjects.size(); j++)
 				if (m_tSavedEnemy == m_tpaDynamicObjects[j].tpEntity) {
 					m_tpaDynamicObjects[j].dwTime = tpStalker->m_tpaDynamicObjects[i].dwTime;
@@ -390,7 +392,8 @@ void CAI_Stalker::SelectSound(int &iIndex)
 	iIndex = -1;
 	float fMaxPower = 0.f;
 	for (int i=0; i<(int)m_tpaDynamicSounds.size(); i++)
-		if ((!m_tpaDynamicSounds[i].tpEntity) || (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
+//		if ((!m_tpaDynamicSounds[i].tpEntity) || (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
+		if (m_tpaDynamicSounds[i].tpEntity && (m_tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 			if ((m_tpaDynamicSounds[i].dwTime + SOUND_UPDATE_DELAY > m_dwCurrentUpdate) && (m_tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = m_tpaDynamicSounds[i].fPower;
 				iIndex = i;
@@ -485,7 +488,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 						m_tpaDynamicSounds[j].tMySavedPosition	= vPosition;
 						m_tpaDynamicSounds[j].tMyOrientation	= r_torso_current;
 						m_tpaDynamicSounds[j].tpEntity			= tpEntity;
-						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : 0;
+						m_tpaDynamicSounds[j].dwNodeID			= tpEntity ? tpEntity->AI_NodeID : -1;
 						m_tpaDynamicSounds[j].dwMyNodeID		= AI_NodeID;
 						if (tpEntity && !getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[j].dwNodeID),Fvector(Position)))
 							m_tpaDynamicSounds[j].tSavedPosition	= getAI().tfGetNodeCenter(m_tpaDynamicSounds[j].dwNodeID);
