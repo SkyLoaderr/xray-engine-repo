@@ -123,7 +123,7 @@ public:
 		return					(_sqrt((float)(square_size_xz*float(_sqr(x2 - x1) + _sqr(z2 - z1)) + square_size_y*(float)_sqr(y2 - y1))));
 	}
 
-	IC	_dist_type	estimate		(const _index_type node_index)
+	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
 		return					(_sqrt((float)(square_size_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
@@ -155,7 +155,7 @@ public:
 		return					(true);
 	}
 
-	IC	bool		is_metric_euclidian()
+	IC	bool		is_metric_euclidian() const
 	{
 		return					(true);
 	}
@@ -220,13 +220,13 @@ public:
 		goal_vertex				= graph->m_tpaGraph + goal_node_index;
 	}
 
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i) const
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(i));
 	}
 
-	IC	_dist_type	estimate		(const _index_type node_index)
+	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
 		return					(goal_vertex->tGlobalPoint.distance_to(graph->m_tpaGraph[node_index].tGlobalPoint));
@@ -244,7 +244,7 @@ public:
 		return					(true);
 	}
 
-	IC	bool		is_metric_euclidian()
+	IC	bool		is_metric_euclidian() const
 	{
 		return					(true);
 	}
@@ -313,15 +313,13 @@ public:
 		_j						= goal_node_index % (columns + 2);
 	}
 
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i)
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i) const
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index1,node_index2));
 	}
 
-	template <typename _T> _abs(const _T _1) {return(_1 < _T(0) ? _T(-_1) : _1);}
-
-	IC	_dist_type	estimate		(const _index_type node_index)
+	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
 		int						i,j;
@@ -343,7 +341,7 @@ public:
 		return					(graph->is_accessible(node_index));
 	}
 
-	IC	bool		is_metric_euclidian()
+	IC	bool		is_metric_euclidian() const
 	{
 		return					(true);
 	}

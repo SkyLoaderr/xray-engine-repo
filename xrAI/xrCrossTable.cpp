@@ -23,11 +23,11 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, xr_vector<bool
 	else
 		tDistances[dwStartNodeID] = fValue;
 	NodeCompressed		*tpNode = tMap.Node(dwStartNodeID);
-	NodeLink			*I = tpNode->links;
-	NodeLink			*E = I + NODE_NEIGHBOUR_COUNT;
+	CAI_Map::const_iterator	I, E;
+	tMap.begin			(dwStartNodeID,I,E);
 	tMarks[dwStartNodeID] = true;
 	for ( ; I != E; I++) {
-		u32				dwNexNodeID = tMap.UnpackLink(*I);
+		u32				dwNexNodeID = tpNode->get_link(I);
 		if (!tMarks[dwNexNodeID])
 			vfRecurseUpdate(tDistances,tMap,tMarks,dwNexNodeID,fValue + tMap.ffGetDistanceBetweenNodeCenters(dwStartNodeID,dwNexNodeID));
 	}
@@ -37,11 +37,11 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CAI_Map& tMap, xr_vector<bool
 void					vfRecurseMark(CAI_Map &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
 {
 	NodeCompressed		*tpNode = tMap.Node(dwStartNodeID);
-	NodeLink			*I = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));;
-	NodeLink			*E = I + NODE_NEIGHBOUR_COUNT;
+	CAI_Map::const_iterator	I, E;
+	tMap.begin			(dwStartNodeID,I,E);
 	tMarks[dwStartNodeID] = true;
 	for ( ; I != E; I++) {
-		u32				dwNexNodeID = tMap.UnpackLink(*I);
+		u32				dwNexNodeID = tpNode->get_link(I);
 		if (!tMarks[dwNexNodeID])
 			vfRecurseMark(tMap,tMarks,dwNexNodeID);
 	}

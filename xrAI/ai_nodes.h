@@ -45,6 +45,7 @@ public:
 
 class CAIMapShortestPathNode {
 public:
+	typedef		CAI_Map::const_iterator const_iterator;
 	int			x1;
 	float		y1;
 	int			z1;
@@ -54,10 +55,10 @@ public:
 	int			x3;
 	float		y3;
 	int			z3;
-	typedef		NodeLink* iterator;
 	SAIMapData	tData;
 	float		m_fSize2;
 	float		m_fYSize2;
+	NodeCompressed	*m_tpNode;
 
 
 	IC CAIMapShortestPathNode(SAIMapData &tAIMapData)
@@ -71,20 +72,20 @@ public:
 		m_fYSize2				= tData.m_tpAI_Map->m_fYSize2;
 	}
 
-	IC void begin(u32 dwNode, CAIMapShortestPathNode::iterator &tIterator, CAIMapShortestPathNode::iterator &tEnd)
+	IC void begin(u32 dwNode, const_iterator &tIterator, const_iterator &tEnd)
 	{
-		tEnd = (tIterator = tData.m_tpAI_Map->Node(dwNode)->links) + NODE_NEIGHBOUR_COUNT;
-		
-		NodeCompressed &tNode0 = *tData.m_tpAI_Map->Node(dwNode);
+		tData.m_tpAI_Map->begin	(dwNode,tIterator,tEnd);
+		m_tpNode				= tData.m_tpAI_Map->Node(dwNode);
+		NodeCompressed &tNode0	= *m_tpNode;
 
 		x1 = (int)(tNode0.p.x);
 		y1 = (float)(tNode0.p.y);
 		z1 = (int)(tNode0.p.z);
 	}
 
-	IC u32 get_value(CAIMapShortestPathNode::iterator &tIterator)
+	IC u32 get_value(const_iterator &tIterator)
 	{
-		return(tData.m_tpAI_Map->UnpackLink(*tIterator));
+		return(m_tpNode->get_link(tIterator));
 	}
 
 	IC bool bfCheckIfAccessible(u32 dwNode)
@@ -92,7 +93,7 @@ public:
 		return(tData.m_tpAI_Map->q_mark_bit[dwNode]);
 	}
 
-	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, iterator &tIterator)
+	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, const_iterator &tIterator)
 	{
 		NodeCompressed &tNode1 = *tData.m_tpAI_Map->Node(dwFinishNode);
 

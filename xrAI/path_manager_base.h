@@ -25,7 +25,9 @@ protected:
 	_dist_type			max_range;
 	_iteration_type		max_iteration_count;
 	_index_type			max_visited_node_count;
+	_index_type			best_node_index;
 public:
+	typedef	typename _Graph::const_iterator const_iterator;
 
 						CPathManagerBase()
 	{
@@ -63,13 +65,13 @@ public:
 		max_iteration_count		= _max_iteration_count;
 	}
 
-	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i)
+	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i) const
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index1,node_index2));
 	}
 
-	IC		_dist_type	estimate		(const _index_type node_index)
+	IC		_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index,goal_node_index));
@@ -81,7 +83,7 @@ public:
 		data_storage->get_path	(*path);
 	}
 
-	IC		_index_type	start_node		()
+	IC		_index_type	start_node		() const
 	{
 		return					(start_node_index);
 	}
@@ -107,10 +109,21 @@ public:
 		return					(graph->is_accessible(node_index));
 	}
 
-	IC		bool		is_metric_euclidian()
+	IC		bool		is_metric_euclidian() const
 	{
 #pragma todo("Dima to Dima : implement path manager for non-euclidian metrics")
 		return					(true);
+	}
+
+	IC		void		begin			(const _index_type node_index, const_iterator &begin, const_iterator &end)
+	{
+		best_node_index			= node_index;
+		graph->begin			(node_index,begin,end);
+	}
+
+	IC		u32			get_value		(const_iterator &i) const
+	{
+		return					(graph->get_value(best_node_index,i));
 	}
 };
 

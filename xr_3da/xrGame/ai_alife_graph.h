@@ -103,7 +103,7 @@ public:
 		end							= (start = (const SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[node_index].dwEdgeOffset)) + m_tpaGraph[node_index].tNeighbourCount;
 	}
 
-	IC		u32						get_value			(const_iterator &i) const
+	IC		u32						get_value			(const u32 node_index, const_iterator &i) const
 	{
 		return						(i->dwVertexNumber);
 	}

@@ -134,19 +134,20 @@ void xrLoad(LPCSTR name)
 		g_nodes.resize		(N);
 		CAI_Map				tAIMap;
 		
+		typedef BYTE NodeLink[3];
 		for (u32 i=0; i<N; i++) {
 			NodeLink		id;
 			u16 			pl;
 			NodePosition 	np;
 			
 			F->r			(&id,3);
-			g_nodes[i].n1	= tAIMap.UnpackLink(id);
+			g_nodes[i].n1	= id && 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n2	= tAIMap.UnpackLink(id);
+			g_nodes[i].n2	= id && 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n3	= tAIMap.UnpackLink(id);
+			g_nodes[i].n3	= id && 0x00ffffff;
 			F->r			(&id,3);
-			g_nodes[i].n4	= tAIMap.UnpackLink(id);
+			g_nodes[i].n4	= id && 0x00ffffff;
 
 			pl				= F->r_u16();
 			pvDecompress	(g_nodes[i].Plane.n,pl);

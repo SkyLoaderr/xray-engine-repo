@@ -76,8 +76,6 @@ public:
 
 	IC	NodeCompressed*		Node(u32 ID) const { return vfs?m_nodes_ptr[ID]:NULL; }
 
-	IC	u32		UnpackLink		(const NodeLink &L)  const {	return (*LPDWORD(&L))&0x00ffffff;	}
-
 	IC	void PackPosition(NodePosition& Pdest, const Fvector& Psrc) const
 	{
 		float sp = 1/m_header.size;
@@ -139,6 +137,36 @@ public:
 	{
 		return(ffGetDistanceBetweenNodeCenters(Node(dwNodeID0),tpNode1));
 	}
+
+	typedef	int	const_iterator;
+
+	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end) const
+	{
+		begin					= 0;
+		end						= 4;
+	}
+
+	IC		float		get_edge_weight	(const u32 node_index1, const u32 node_index2) const
+	{
+		return					(ffGetDistanceBetweenNodeCenters(node_index1,node_index2));
+	}
+
+	IC		u32			get_value		(const u32 node_index, const_iterator &i) const
+	{
+		return					(Node(node_index)->get_link(i));
+	}
+
+	IC		bool		is_accessible	(const u32 node_index) const
+	{
+		return					(true);
+	}
+
+	IC		u32			get_node_count	() const
+	{
+		return					(m_header.count);
+	}
+
+	typedef NodeCompressed InternalNode;
 
 	IC int lines_intersect(	float x1, float y1,	float x2, float y2,	float x3, float y3, float x4, float y4,	float *x, float *y) const
 	{
@@ -536,7 +564,7 @@ public:
 			iSavedIndex			= -1;
 			UnpackContour		(tCurContour,dwCurNode);
 			for ( i=0; i < NODE_NEIGHBOUR_COUNT; i++)
-				if ((iNextNode = UnpackLink(tpNode->links[i])) != iPrevIndex)
+				if ((iNextNode = tpNode->get_link(i)) != iPrevIndex)
 					vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
 
 			if (iSavedIndex > -1) {
@@ -586,7 +614,7 @@ public:
 		u32							dwCurNodeID, dwNextNodeID;
 		NodeCompressed				*tpStartNode = Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
 		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to_sqr(tfGetNodeCenter(tpStartNode));
-		NodeLink					*I, *E;
+		const_iterator				I, E;
 
 		tpaStack.clear				();
 		tpaStack.push_back			(dwStartNode);
@@ -596,10 +624,9 @@ public:
 		for (u32 i=0; i<tpaStack.size(); i++) {
 			dwCurNodeID				= tpaStack[i];
 			tpCurNode				= Node(dwCurNodeID);
-			I						= tpCurNode->links;
-			E						= I + NODE_NEIGHBOUR_COUNT;
+			begin					(dwCurNodeID,I,E);
 			for ( ; I != E; I++) {
-				if (tpaMask[dwNextNodeID = UnpackLink(*I)])
+				if (tpaMask[dwNextNodeID = tpCurNode->get_link(I)])
 					continue;
 				tpCurrentNode		= Node(dwNextNodeID);
 				fDistance			= tStartPosition.distance_to_sqr(tfGetNodeCenter(tpCurrentNode));
@@ -617,33 +644,4 @@ public:
 				tpaMask[*I] = false;
 		}
 	}
-
-	typedef	const NodeLink* const_iterator;
-	
-	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end) const
-	{
-		end						= (begin = Node(node_index)->links) + NODE_NEIGHBOUR_COUNT;
-	}
-
-	IC		float		get_edge_weight	(const u32 node_index1, const u32 node_index2) const
-	{
-		return					(ffGetDistanceBetweenNodeCenters(node_index1,node_index2));
-	}
-
-	IC		u32			get_value		(const_iterator &i) const
-	{
-		return					(UnpackLink(*i));
-	}
-
-	IC		bool		is_accessible	(const u32 node_index) const
-	{
-		return					(true);
-	}
-
-	IC		u32			get_node_count	() const
-	{
-		return					(m_header.count);
-	}
-
-	typedef NodeCompressed InternalNode;
 };

@@ -18,7 +18,6 @@ protected:
 	_cell_type			table[(rows+2)*(columns + 2)];
 	_cell_type			invalid_value;
 	_cell_type			valid_value;
-	u32					cur_node_index;
 public:
 	typedef	_cell_type const_iterator;
 
@@ -39,11 +38,10 @@ public:
 	{
 	}
 
-	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end)
+	IC		void		begin			(const u32 node_index, const_iterator &begin, const_iterator &end) const
 	{
 		begin					= 0;
 		end						= 4;
-		cur_node_index			= node_index;
 	}
 
 	IC		u32			get_edge_weight	(const u32 node_index1, const u32 node_index2) const
@@ -51,13 +49,13 @@ public:
 		return					(1);
 	}
 
-	IC		u32			get_value		(const_iterator &i) const
+	IC		u32			get_value		(const u32 node_index, const_iterator &i) const
 	{
 		switch (i) {
-			case 0 : return		(cur_node_index - rows - 2);
-			case 1 : return		(cur_node_index - 1);
-			case 2 : return		(cur_node_index + rows + 2);
-			case 3 : return		(cur_node_index + 1);
+			case 0 : return		(node_index - rows - 2);
+			case 1 : return		(node_index - 1);
+			case 2 : return		(node_index + rows + 2);
+			case 3 : return		(node_index + 1);
 			default: NODEFAULT;
 		}
 		return					(-1);

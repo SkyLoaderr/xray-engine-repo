@@ -30,10 +30,10 @@ template <
 	typename _dist_type,
 	typename _Graph
 >
-void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type dummy)
+void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type dummy)
 {
 	typedef CPathManager<_Graph,_DataStorage,_dist_type,u32,u32>			_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,_Graph,u32,_dist_type>			_AStarSearch;
+	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>				_AStarSearch;
 
 	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->get_node_count());
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
@@ -59,7 +59,7 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 			(*I).x,
 			(*I).y
 			);
-		a_star->find		(*data_storage,*path_manager,*graph);
+		a_star->find		(*data_storage,*path_manager);
 	}
 
 	finish					= CPU::GetCycleCount();
@@ -79,10 +79,10 @@ template <
 	typename _dist_type,
 	typename _Graph
 >
-void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type min_value, _dist_type max_value)
+void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type min_value, _dist_type max_value)
 {
 	typedef CPathManager<_Graph,_DataStorage,_dist_type,u32,u32>			_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,_Graph,u32,_dist_type>			_AStarSearch;
+	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>				_AStarSearch;
 
 	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->get_node_count(),min_value,max_value);
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
@@ -108,7 +108,7 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 			(*I).x,
 			(*I).y
 			);
-		a_star->find		(*data_storage,*path_manager,*graph);
+		a_star->find		(*data_storage,*path_manager);
 	}
 
 	finish					= CPU::GetCycleCount();
@@ -243,11 +243,11 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 #define TEST_COUNT 1000
 
-//void path_test				(LPCSTR caLevelName)
-//{
-//	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
-//	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
-//	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
-//}
+void path_test				(LPCSTR caLevelName)
+{
+	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
+	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+}

@@ -757,7 +757,7 @@ public:
 		return					((list_head->next == list_tail) && (!cheap_list_head));
 	}
 
-	IC		void		verify_cheap	()
+	IC		void		verify_cheap	() const
 	{
 //		u32						count = 0;
 //		for (CGraphNode *i = cheap_list_head; i; i = i->next, count++) {
@@ -1196,7 +1196,7 @@ public:
 		return				(u32(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value)));
 	}
 
-	IC		void		verify_buckets	()
+	IC		void		verify_buckets	() const
 	{
 //		for (u32 i=0; i<bucket_count; i++) {
 //			CGraphNode	*j = buckets[i], *k;

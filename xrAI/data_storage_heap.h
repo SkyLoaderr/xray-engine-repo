@@ -322,7 +322,7 @@ public:
 		VERIFY					(!is_opened_empty());
 		best_heap				= 0;
 		_dist_type				f = _dist_type(0x7fffffff);
-		for (u32 i=0; i<heap_count; i++) {
+		for (u32 i=0; i<heap_count; ++i) {
 			if ((heaps[i].heap_head < heaps[i].heap_tail) && (*heaps[i].heap_head)->f() < f) {
 				best_heap		= heaps + i;
 				f				= (*heaps[i].heap_head)->f();
@@ -420,7 +420,7 @@ protected:
 
 	class CGraphNodePredicate {
 	public:
-		IC			bool	operator()(CGraphNode *node1, CGraphNode *node2)
+		IC			bool	operator()(CGraphNode *node1, CGraphNode *node2) const
 		{
 			return				(node1->f() > node2->f());
 		};
@@ -492,7 +492,7 @@ public:
 		inherited::get_path		(path,&get_best());
 	}
 	
-	IC		u32			compute_heap_index(const _index_type node_index)
+	IC		u32			compute_heap_index(const _index_type node_index) const
 	{
 		return					(node_index % heap_count);
 	}
@@ -592,7 +592,7 @@ public:
 		}
 	}
 
-	IC		CGraphNode	&get_best		()
+	IC		CGraphNode	&get_best		() const
 	{
 		VERIFY					(!is_opened_empty());
 		return					(*list_head->next);

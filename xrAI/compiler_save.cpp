@@ -16,8 +16,8 @@ IC void	CompressPos	(NodePosition& Dest, Fvector& Src, hdrNODES& H)
 
 IC BYTE	CompressCover(float c)
 {
-	int	cover = iFloor(c*255.f+EPS_L);
-	clamp(cover,0,255);
+	int	cover = iFloor(c*15.f+EPS_L);
+	clamp(cover,0,15);
 	return BYTE(cover);
 }
 
@@ -95,12 +95,28 @@ void xrSaveNodes(LPCSTR N)
 		Node&		N	= g_nodes[i];
 
 		Compress		(NC,N,H);
-		for (u32 j=0; j<NODE_NEIGHBOUR_COUNT; j++)
-			Memory.mem_fill(NC.links[j],0xff,sizeof(NodeLink));
+		NC.link0		= 0xffffffff;
+		NC.link1		= 0xffffffff;
+		NC.link2		= 0xffffffff;
+		NC.link3		= 0xffffffff;
 		for	(u32 L=0; L<4; L++)
-			if (N.n[L] != UnkonnectedNode) {
-				u32		link = N.n[L];
-				Memory.mem_copy(NC.links[L],&link,sizeof(NodeLink));
+			switch (L) {
+				case 0 : {
+					NC.link0	= N.n[L];
+					break;
+				}
+				case 1 : {
+					NC.link1	= N.n[L];
+					break;
+				}
+				case 2 : {
+					NC.link2	= N.n[L];
+					break;
+				 }
+				case 3 : {
+					NC.link3	= N.n[L];
+					break;
+				}
 			}
 		
 		fs->w			(&NC,sizeof(NC));

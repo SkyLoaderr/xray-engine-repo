@@ -154,8 +154,8 @@ public:
 			std::pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
 
 			// iterating on children/neighbours
-			CTemplateNode::iterator tIterator;
-			CTemplateNode::iterator tEnd;
+			CTemplateNode::const_iterator tIterator;
+			CTemplateNode::const_iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
 			for (  ; tIterator != tEnd; tIterator++) {
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
@@ -274,8 +274,8 @@ public:
 			std::pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
 
 			// iterating on children/neighbours
-			CTemplateNode::iterator tIterator;
-			CTemplateNode::iterator tEnd;
+			CTemplateNode::const_iterator tIterator;
+			CTemplateNode::const_iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
 			for (  ; tIterator != tEnd; tIterator++) {
 				int iNodeIndex = tTemplateNode.get_value(tIterator);

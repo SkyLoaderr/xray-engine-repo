@@ -50,21 +50,35 @@ struct	hdrNODES
 };
 #pragma pack(pop)
 #pragma pack(push,1)
-typedef BYTE		NodeLink[3];
 struct NodePosition
 {
-	s16				x;
+	s16				x:12;
 	u16				y;
-	s16				z;
+	s16				z:12;
 };
 struct NodeCompressed
 {
 	u16				plane;			// 2
 	NodePosition	p;				// 2+2+2 = 6
-	u8				light;			// 1
 	u8				cover;			// 1
-	NodeLink		links	[4];	// 12
-};									// 2+6+1+1+12 = 22b
+	u64				light	:4;		// 1
+	u64				link0	:21;
+	u64				link1	:21;
+	u64				link2	:21;
+	u64				link3	:21;
+
+	IC get_link		(int i)
+	{
+		switch (i) {
+			case 0 :	return link0;
+			case 1 :	return link1;
+			case 2 :	return link2;
+			case 3 :	return link3;
+			default :	NODEFAULT;
+		}
+		return		(-1);
+	}
+};									// 2+5+1+11 = 19b
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
