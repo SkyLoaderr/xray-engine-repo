@@ -10,13 +10,14 @@
 #include "ai_script.h"
 #include "ai_script_lua_extension.h"
 
-CStreamRedirector *tpStreamRedirector = 0;
+CStreamRedirector *g_tpStreamRedirector = 0;
 
 using namespace Script;
 
 CScript::CScript(LPCSTR caFileName)
 {
-	vfRedirectHandles();
+	getSTDStreams();
+
 	m_tpLuaVirtualMachine = lua_open();
 	if (!m_tpLuaVirtualMachine) {
 		Msg			("! ERROR : Cannot initialize script virtual machine!");
@@ -27,16 +28,18 @@ CScript::CScript(LPCSTR caFileName)
 	luaopen_table	(m_tpLuaVirtualMachine);
 	luaopen_string	(m_tpLuaVirtualMachine);
 	luaopen_math	(m_tpLuaVirtualMachine);
+	luaopen_io		(m_tpLuaVirtualMachine);
 #ifdef DEBUG
 	luaopen_debug	(m_tpLuaVirtualMachine);
 #endif
+
+	vfExportToLua	(m_tpLuaVirtualMachine);
 
 	Msg				("* Loading script %s",caFileName);
 	IReader			*l_tpFileReader = FS.r_open(caFileName);
 	R_ASSERT		(l_tpFileReader);
 
 	CLuaVirtualMachine	*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
-	vfExportToLua	(l_tpThread);
 
 	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
 	
@@ -51,6 +54,7 @@ CScript::CScript(LPCSTR caFileName)
 
 CScript::~CScript()
 {
+	getSTDStreams().Flush();
 	lua_close		(m_tpLuaVirtualMachine);
 }
 

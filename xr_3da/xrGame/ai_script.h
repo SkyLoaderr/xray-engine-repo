@@ -33,6 +33,7 @@ public:
 		strconcat		(l_caLogFileName,Core.ApplicationName,"_",Core.UserName,".lualog");
 		FS.update_path	(l_caLogFileName,"$logs$",l_caLogFileName);
 		m_tpOutputLog	= freopen(l_caLogFileName,"wt",stdout);
+		strcat			(l_caLogFileName,"err");
 		m_tpErrorLog	= freopen(l_caLogFileName,"wt",stderr);
 		R_ASSERT		(m_tpOutputLog && m_tpErrorLog);
 	}
@@ -42,12 +43,19 @@ public:
 		fclose			(m_tpOutputLog);
 		fclose			(m_tpErrorLog);
 	}
+
+	void				Flush()
+	{
+		fflush			(m_tpOutputLog);
+		fflush			(m_tpErrorLog);
+	}
 };
 
-extern CStreamRedirector *tpStreamRedirector;
+extern CStreamRedirector *g_tpStreamRedirector;
 
-IC void vfRedirectHandles()
+IC CStreamRedirector &getSTDStreams()
 {
-	if (!tpStreamRedirector)
-		tpStreamRedirector = xr_new<CStreamRedirector>();
+	if (!g_tpStreamRedirector)
+		g_tpStreamRedirector = xr_new<CStreamRedirector>();
+	return				(*g_tpStreamRedirector);
 };
