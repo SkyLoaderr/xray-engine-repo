@@ -2,6 +2,7 @@ local entered = false
 
 function on_enter (zone, object)
 	entered = true
+	printf ("Actor entered")
 end
 
 
