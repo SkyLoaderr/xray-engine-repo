@@ -24,11 +24,6 @@ void	CLevel::net_Save				(LPCSTR name)		// Game Save
 	Server->SLS_Save	(fs);
 	fs.close_chunk		();
 
-	// 4. Units Specific
-	fs.open_chunk		(fsSLS_UnitsSpecific);
-	Objects.SLS_Save    (fs);
-	fs.close_chunk		();
-
 	// Save it to file
 	fs.save_to			(name);
 }

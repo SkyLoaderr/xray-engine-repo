@@ -105,10 +105,6 @@ public:
 	virtual BOOL						renderable_ShadowGenerate	()			{ return TRUE;						}
 	virtual BOOL						renderable_ShadowReceive	()			{ return TRUE;						}
 
-	// SLS
-	virtual void						SLS_Save			(IWriter& fs)		{};
-	virtual void						SLS_Load			(IReader& fs)		{};
-	
 	// Accessors and converters
 	IC IRender_Visual*					Visual				()					{ return renderable.visual;			}
 	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}

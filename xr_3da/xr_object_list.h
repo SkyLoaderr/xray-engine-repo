@@ -40,9 +40,6 @@ public:
 	u32							net_Export			( NET_Packet* P,	u32 _start, u32 _count	);	// return next start
 	void						net_Import			( NET_Packet* P		);
 	CObject*					net_Find			( u32 ID			);
-
-	void						SLS_Save			( IWriter&	fs		);
-	void						SLS_Load			( IReader&	fs		);
 };
 
 #endif //__XR_OBJECT_LIST_H__
