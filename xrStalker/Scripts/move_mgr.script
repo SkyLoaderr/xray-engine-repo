@@ -651,7 +651,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		-- HACK, fixme:
 		local npc_id = self.object:id()
 		local section = xr_motivator.storage[npc_id]["active_section"]
-		local signals = xr_motivator.storage[npc_id][get_scheme_by_section(section)].signals
+		local signals = xr_motivator.storage[npc_id][utils.get_scheme_by_section(section)].signals
 		signals[sig] = true
 	end
 
