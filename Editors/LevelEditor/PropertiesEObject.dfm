@@ -20,6 +20,8 @@ object frmPropertiesEObject: TfrmPropertiesEObject
   ParentBiDiMode = False
   Scaled = False
   OnDestroy = FormDestroy
+  OnHide = FormHide
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object ElPageControl1: TElPageControl
@@ -423,6 +425,13 @@ object frmPropertiesEObject: TfrmPropertiesEObject
       'ElPageControl1.ActivePage')
     StoredValues = <>
     Left = 8
+    Top = 24
+  end
+  object tmIdle: TTimer
+    Enabled = False
+    Interval = 100
+    OnTimer = tmIdleTimer
+    Left = 40
     Top = 24
   end
 end

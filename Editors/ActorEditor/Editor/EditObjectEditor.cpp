@@ -274,6 +274,19 @@ void CEditableObject::OnDeviceDestroy()
     Device.Shader.Delete(m_LODShader);
 }
 
+void CEditableObject::RefreshShaders()
+{
+	SurfaceIt s_it;
+	// удалить shaders
+    for(s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+        (*s_it)->DeleteShader();
+    Device.Shader.Delete(m_LODShader);
+	// создать заново shaders
+    for(s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+       (*s_it)->CreateShader();
+    UpdateLODShader();
+}
+
 void CEditableObject::EvictObject(){
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++){
@@ -329,4 +342,5 @@ void CEditableObject::FillPropSurf(PropValueVec& values, TAfterEdit after_eshade
         FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShaderValue());
     }
 }
+//---------------------------------------------------------------------------
 

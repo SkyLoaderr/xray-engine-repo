@@ -303,7 +303,7 @@ public:
 	bool 			Reload					();
 	bool 			Load					(LPCSTR fname);
 	bool 			LoadObject				(LPCSTR fname);
-	void 			SaveObject				(LPCSTR fname);
+	void 			SaveObject				(LPCSTR fname);         
     CSMotion*		LoadSMotion				(LPCSTR fname);
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
@@ -326,6 +326,7 @@ public:
     // device dependent routine
 	void 			OnDeviceCreate 			();
 	void 			OnDeviceDestroy			();
+    void			RefreshShaders			();
 
     // export routine
     // skeleton

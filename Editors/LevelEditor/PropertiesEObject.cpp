@@ -24,6 +24,7 @@ __fastcall TfrmPropertiesEObject::TfrmPropertiesEObject(TComponent* Owner)
 {
 	m_Thumbnail	= 0;
     m_pEditObject=0;
+	m_bNeedRereshShaders = false;
 }
 //---------------------------------------------------------------------------
 
@@ -218,30 +219,21 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 	R_ASSERT(pinf.e_mesh);
 	if (ebDropper->Down&&m_pEditObject){
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
-        FOLDER::RestoreSelection(m_SurfProp->tvProperties,surf->_Name());
+        AnsiString s_name = AnsiString("Surfaces\\")+AnsiString(surf->_Name());
+        FOLDER::RestoreSelection(m_SurfProp->tvProperties,s_name.c_str());
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	AnsiString new_name = *(AnsiString*)edit_val;
-	TElTreeItem* parent	= item->Parent; VERIFY(parent);
-	CSurface* surf 		= (CSurface*)parent->Data;	VERIFY(surf);
-    surf->DeleteShader	();
-    surf->ED_SetShader	(new_name.c_str());
-    surf->CreateShader	();
+	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	AnsiString new_name = *(AnsiString*)edit_val;
-	TElTreeItem* parent	= item->Parent; VERIFY(parent);
-	CSurface* surf 		= (CSurface*)parent->Data; 	VERIFY(surf);
-    surf->DeleteShader	();
-    surf->SetTexture	(new_name.c_str());
-    surf->CreateShader	();
+	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
@@ -251,4 +243,25 @@ void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, 
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmPropertiesEObject::tmIdleTimer(TObject *Sender)
+{
+	if (m_bNeedRereshShaders){
+	    m_pEditObject->GetReference()->RefreshShaders();
+        m_bNeedRereshShaders = false;
+        UI.RedrawScene();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEObject::FormShow(TObject *Sender)
+{
+	tmIdle->Enabled = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmPropertiesEObject::FormHide(TObject *Sender)
+{
+	tmIdle->Enabled = false;
+}
+//---------------------------------------------------------------------------
 

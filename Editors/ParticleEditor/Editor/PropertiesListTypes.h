@@ -394,11 +394,11 @@ public:
     virtual LPCSTR		GetText			(){return 0;}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
     virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(BOOL value)
+    virtual bool		ApplyValue		(bool value)
     {
     	bool bChanged	= false;
     	for (LPDWORDIt it=values.begin();it!=values.end();it++){
-        	if ((!!value)!=(!!(**it&mask))){
+        	if (value!=(!!(**it&mask))){
 	        	if (value) **it|=mask; else **it&=~mask; 
                 bChanged= true;
             }
@@ -406,7 +406,7 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    BOOL	 			GetValue		(){return !!((*values.front())&mask);}
+    bool	 			GetValue		(){return (*values.front())&mask;}
     void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
 };
 //------------------------------------------------------------------------------
@@ -576,13 +576,13 @@ namespace PROP{
         V->type			= PROP_TOKEN;
         return V;
     }
-	TokenValue2* 		CreateTokenValue2	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue2* 		CreateTokenValue	(AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
         TokenValue2* V	= new TokenValue2(lst,after,before,draw);
         V->type			= PROP_TOKEN2;
         return V;
     }
-	TokenValue3* 		CreateTokenValue3	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+	TokenValue3* 		CreateTokenValue	(DWORD cnt, const TokenValue3::Item* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
         TokenValue3* V	= new TokenValue3(cnt,lst,after,before,draw);
         V->type			= PROP_TOKEN3;
