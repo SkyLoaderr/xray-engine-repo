@@ -362,8 +362,7 @@ void CHelicopter::net_Destroy()
 	m_engineSound.stop();
 //	m_pParticle->Stop();
 	xr_delete(m_pParticle);
-	::Render->light_destroy	(m_light_render);
-
+	m_light_render.destroy();
 }
 
 void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)	

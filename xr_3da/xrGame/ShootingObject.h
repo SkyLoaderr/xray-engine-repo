@@ -7,11 +7,11 @@
 #pragma once
 
 #include "alife_space.h"
+#include "../render.h"
 
 class CCartridge;
 class CParticlesObject;
 class IRender_Sector;
-class IRender_Light;
 
 extern const Fvector zero_vel;
 
@@ -94,7 +94,7 @@ protected:
 	float					light_base_range;
 	Fcolor					light_build_color;
 	float					light_build_range;
-	IRender_Light*			light_render;
+	ref_light				light_render;
 	float					light_var_color;
 	float					light_var_range;
 	float					light_lifetime;

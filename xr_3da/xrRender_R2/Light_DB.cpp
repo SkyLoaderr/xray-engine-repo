@@ -100,10 +100,9 @@ void CLight_DB::Load			(IReader *fs)
 
 void			CLight_DB::Unload	()
 {
-	for	(u32 it=0; it<v_static.size(); it++)	Destroy(v_static[it]);
 	v_static.clear			();
-	Destroy					(sun_original	);
-	Destroy					(sun_adapted	);
+	sun_original.destroy	();
+	sun_adapted.destroy		();
 }
 
 light*			CLight_DB::Create	()
@@ -113,11 +112,6 @@ light*			CLight_DB::Create	()
 	L->flags.bActive	= false;
 	L->flags.bShadow	= true;
 	return				L;
-}
-
-void			CLight_DB::Destroy	(light* L)
-{
-	xr_delete			(L);
 }
 
 #if RENDER==R_R1
@@ -146,17 +140,19 @@ void			CLight_DB::Update			()
 	// set sun params
 	if (sun_original && sun_adapted)
 	{
+		light*	_sun_original		= (light*) sun_original._get();
+		light*	_sun_adapted		= (light*) sun_adapted._get();
 		CEnvDescriptor&	E			= g_pGamePersistent->Environment.CurrentEnv;
 		Fvector						OD,OP,AD,AP;
 		OD.set						(E.sun_dir).normalize	();
 		OP.mad						(Device.vCameraPosition,OD,-500.f);
 		AD.set(0,-.75f,0).add		(E.sun_dir).normalize	();
 		AP.mad						(Device.vCameraPosition,AD,-500.f);
-		sun_original->set_rotation	(OD,sun_original->right	);
+		sun_original->set_rotation	(OD,_sun_original->right	);
 		sun_original->set_position	(OP);
 		sun_original->set_color		(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun_original->set_range		(600.f);
-		sun_adapted->set_rotation	(AD,sun_adapted->right	);
+		sun_adapted->set_rotation	(AD, _sun_adapted->right	);
 		sun_adapted->set_position	(AP		);
 		sun_adapted->set_color		(E.sun_color.x*ps_r2_sun_lumscale,E.sun_color.y*ps_r2_sun_lumscale,E.sun_color.z*ps_r2_sun_lumscale);
 		sun_adapted->set_range		(600.f	);

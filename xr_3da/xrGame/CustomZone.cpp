@@ -371,25 +371,14 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 
 void CCustomZone::net_Destroy() 
 {
-	StopIdleParticles();
+	StopIdleParticles		();
 
-	inherited::net_Destroy();
+	inherited::net_Destroy	();
 
 	StopWind();
 
-	if(m_pLight)
-	{
-		m_pLight->set_active(false);
-		::Render->light_destroy	(m_pLight);
-		m_pLight = NULL;
-	}
-
-	if(m_pIdleLight)
-	{
-		m_pIdleLight->set_active(false);
-		::Render->light_destroy	(m_pIdleLight);
-		m_pIdleLight = NULL;
-	}
+	m_pLight.destroy		();
+	m_pIdleLight.destroy	();
 
 	if (m_pIdleParticles)
 	{

@@ -66,9 +66,9 @@ void CHangingLamp::Load		(LPCSTR section)
 
 void CHangingLamp::net_Destroy()
 {
-	::Render->light_destroy	(light_render);
-	::Render->light_destroy	(light_ambient);
-	::Render->glow_destroy	(glow_render);
+	light_render.destroy	();
+	light_ambient.destroy	();
+	glow_render.destroy		();
 	RespawnInit				();
 	if(Visual())CPHSkeleton::RespawnInit();
 	inherited::net_Destroy	();

@@ -114,9 +114,9 @@ void	CROS_impl::update	(IRenderable* O)
 
 	// sun-tracing
 #if RENDER==R_R1
-	light*	sun		=		RImplementation.L_DB->sun_original	;
+	light*	sun		=		(light*)RImplementation.L_DB->sun_original._get()	;
 #else
-	light*	sun		=		RImplementation.Lights.sun_adapted	;
+	light*	sun		=		(light*)RImplementation.Lights.sun_adapted._get()	;
 #endif
 	if	(MODE & IRender_ObjectSpecific::TRACE_SUN)	{
 		if  (--result_sun	< 0)	{

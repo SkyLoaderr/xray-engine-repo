@@ -140,16 +140,15 @@ PROFILE_INDEX CCharacterInfo::Profile()			const
 
 LPCSTR CCharacterInfo::Name() const
 {
-	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
+	R_ASSERT2(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER, m_SpecificCharacter.Name());
 	return	m_SpecificCharacter.Name();
 }
 
 LPCSTR CCharacterInfo::Bio() const
 {
-	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
+	R_ASSERT2(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER, m_SpecificCharacter.Bio());
 	return 	m_SpecificCharacter.Bio();
 }
-
 
 const CHARACTER_RANK& CCharacterInfo::Rank() const
 {

@@ -121,7 +121,7 @@ protected:
 	//вместе с двигателем
 	bool			m_bStopLightsWithEngine;
 	//подсветка во время полета и работы двигателя
-	IRender_Light*	m_pTrailLight;
+	ref_light		m_pTrailLight;
 	Fcolor			m_TrailLightColor;
 	float			m_fTrailLightRange;
 protected:

@@ -13,8 +13,8 @@ class CProjector: public CScriptObject {
 	float			fBrightness;
 	CLAItem*		lanim;
 	Fvector			m_pos;
-	IRender_Light*	light_render;
-	IRender_Glow*	glow_render;
+	ref_light		light_render;
+	ref_glow		glow_render;
 
 	u16				guid_bone;
 

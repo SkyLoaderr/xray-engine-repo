@@ -35,22 +35,22 @@ CCustomRocket::CCustomRocket()
 
 CCustomRocket::~CCustomRocket	()
 {
-	if (m_pTrailLight) ::Render->light_destroy(m_pTrailLight);
+	m_pTrailLight.destroy		();
 }
 
 
 void CCustomRocket::reinit		()
 {
-	inherited::reinit();
+	inherited::reinit			();
 
-	if (m_pTrailLight) ::Render->light_destroy(m_pTrailLight);
-	m_pTrailLight = ::Render->light_create();
-	m_pTrailLight->set_shadow(true);
+	m_pTrailLight.destroy		();
+	m_pTrailLight				= ::Render->light_create();
+	m_pTrailLight->set_shadow	(true);
 
-	m_pEngineParticles = NULL;
-	m_pFlyParticles = NULL;
+	m_pEngineParticles			= NULL;
+	m_pFlyParticles				= NULL;
 
-	m_pOwner = NULL;
+	m_pOwner					= NULL;
 
 	m_vPrevVel.set(0,0,0);
 }

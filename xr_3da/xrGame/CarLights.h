@@ -2,15 +2,15 @@
 #define CAR_LIGHTS_H
 #pragma once
 
+#include "../Render.h"
+
 class CCarLights;
 class CCar;
-class IRender_Glow;
-class IRender_Light;
 
 struct SCarLight
 {
-	IRender_Light*			light_render;
-	IRender_Glow*			glow_render;
+	ref_light				light_render;
+	ref_glow				glow_render;
 	u16						bone_id;
 	CCarLights*				m_holder;				
 			SCarLight		();

@@ -111,8 +111,7 @@ void CArtefact::net_Destroy()
 	inherited::net_Destroy();
 
 	StopLights();
-	::Render->light_destroy(m_pTrailLight);
-	m_pTrailLight = NULL;
+	m_pTrailLight.destroy();
 }
 
 void CArtefact::OnH_A_Chield() 

@@ -22,12 +22,12 @@ public CPHSkeleton
 	typedef	CPhysicsShellHolder		inherited;
 private:
 	u16				guid_bone;
-	IRender_Light*	light_render;
-	IRender_Light*	light_ambient;
+	ref_light		light_render;
+	ref_light		light_ambient;
 	CLAItem*		lanim;
 	float			ambient_power;
 	
-	IRender_Glow*	glow_render;
+	ref_glow		glow_render;
 	
 	float			fHealth;
 	float			fBrightness;

@@ -223,9 +223,7 @@ public:
 
 	// Lighting
 	virtual IRender_Light*			light_create				();
-	virtual void					light_destroy				(IRender_Light* &);
 	virtual IRender_Glow*			glow_create					();
-	virtual void					glow_destroy				(IRender_Glow* &);
 
 	// Models
 	virtual IRender_Visual*			model_CreateParticles		(LPCSTR name);

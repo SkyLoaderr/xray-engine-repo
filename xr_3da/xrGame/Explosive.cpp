@@ -53,14 +53,13 @@ CExplosive::CExplosive(void)
 
 CExplosive::~CExplosive(void) 
 {
-	::Render->light_destroy	(m_pLight);
-
-	sndExplode.destroy();
+	m_pLight.destroy	();
+	sndExplode.destroy	();
 }
 
 void CExplosive::Load(LPCSTR section) 
 {
-	Load(pSettings,section);
+	Load				(pSettings,section);
 }
 
 void CExplosive::Load(CInifile *ini,LPCSTR section)

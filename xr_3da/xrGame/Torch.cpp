@@ -38,13 +38,11 @@ CTorch::CTorch(void)
 
 CTorch::~CTorch(void) 
 {
-	::Render->light_destroy	(light_render);
-	::Render->glow_destroy	(glow_render);
-	xr_delete				(collidable.model);
-
-	HUD_SOUND::DestroySound(m_NightVisionOnSnd);
-	HUD_SOUND::DestroySound(m_NightVisionOffSnd);
-	HUD_SOUND::DestroySound(m_NightVisionIdleSnd);
+	light_render.destroy	();
+	glow_render.destroy		();
+	HUD_SOUND::DestroySound	(m_NightVisionOnSnd);
+	HUD_SOUND::DestroySound	(m_NightVisionOffSnd);
+	HUD_SOUND::DestroySound	(m_NightVisionIdleSnd);
 }
 
 void CTorch::Load(LPCSTR section) 

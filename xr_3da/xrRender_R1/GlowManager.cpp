@@ -130,23 +130,19 @@ void CGlowManager::Load		(IReader* fs)
 void CGlowManager::Unload	()
 {
 	// glows
-	xr_vector<CGlow*>::iterator	it	= Glows.begin();
-	xr_vector<CGlow*>::iterator	end	= Glows.end();
-	for (; it!=end; it++)
-	{
-		CGlow*		G			= *it;
-		G->set_active			(false);
-		xr_delete				(G);
-	}
-	Glows.clear		();
-	Selected.clear	();
+	SelectedToTest_2.clear	();
+	SelectedToTest_1.clear	();
+	SelectedToTest_0.clear	();
+	Selected.clear			();
+	Glows.clear				();
 }
 
-IC bool glow_compare(CGlow* g1, CGlow *g2)
-{	return g1->shader < g2->shader; }
+IC bool glow_compare	(ref_glow g1, ref_glow g2)
+{	return ((CGlow*)g1._get())->shader < ((CGlow*)g2._get())->shader; }
 
-void CGlowManager::add	(CGlow *G)
+void CGlowManager::add	(ref_glow G_)
 {
+	CGlow*	G		= (CGlow*)	G_._get		();
 	if (G->dwFrame	==Device.dwFrame)		return;
 	G->dwFrame		= Device.dwFrame;
 
@@ -220,9 +216,8 @@ void CGlowManager::render_sw		()
 	for (int i=0; i<ps_r1_GlowsPerFrame; i++,dwTestID++)
 	{
 		u32	ID		= dwTestID%Selected.size();
-		CGlow&	G	= *Selected[ID];
+		CGlow&	G	= *( (CGlow*)Selected[ID]._get() );
 		if (G.dwFrame=='test')	break;
-
 		G.dwFrame	=	'test';
 		Fvector		dir;
 		dir.sub		(G.spatial.center,start); float range = dir.magnitude();
@@ -233,81 +228,34 @@ void CGlowManager::render_sw		()
 	// 1.5 restore main view
 	if (o_main)				o_main->setEnabled	(o_enable);
 
-	// 2. Sort by shader
-	std::sort		(Selected.begin(),Selected.end(),glow_compare);
-
-	FVF::LIT		*pv;
-
-	u32				pos = 0, count;
-	ref_shader		T;
-
-	Fplane			NP;
-	NP.build		(Device.vCameraPosition,Device.vCameraDirection);
-
-	float		dlim2	= MAX_GlowsDist2;
-	for (;pos<Selected.size();) 
-	{
-		T		= Selected[pos]->shader;
-		count	= 0;
-		while	((pos+count<Selected.size()) && (Selected[pos+count]->shader==T)) count++;
-
-		u32		vOffset;
-		u32		end		= pos+count;
-		FVF::LIT* pvs	= pv = (FVF::LIT*) RCache.Vertex.Lock(count*4,hGeom->vb_stride,vOffset);
-		for (; pos<end; pos++)
-		{
-			// Cull invisible 
-			CGlow&	G					= *Selected[pos];
-			if (G.fade<=1.f)			continue;
-
-			// Now perform dotproduct if need it
-			float	scale	= 1.f, dist_sq;
-			Fvector	dir;
-			dir.sub			(Device.vCameraPosition,G.position);
-			dist_sq			= dir.square_magnitude();
-			if (G.direction.square_magnitude()>EPS)	{
-				dir.div			(_sqrt(dist_sq));
-				scale			= dir.dotproduct(G.direction);
-			}
-			if (G.fade*scale<=1.f)		continue;
-
-			// near fade
-			float dist_np	= NP.distance(G.position)-VIEWPORT_NEAR;
-			float snear		= dist_np/0.15f;	clamp	(snear,0.f,1.f);
-			scale			*=	snear;
-			if (G.fade*scale<=1.f)		continue;
-
-			u32 C			= iFloor(G.fade*scale*(1-(dist_sq/dlim2)));
-			u32 clr			= color_rgba(C,C,C,C);
-			FillSprite		(pv,G.position,G.radius,clr);
-		}
-		int vCount				= int(pv-pvs);
-		RCache.Vertex.Unlock	(vCount,hGeom->vb_stride);
-		if (vCount) {
-			RCache.set_Shader		(T);
-			RCache.set_Geometry		(hGeom);
-			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-		}
-	}
-	Selected.clear				();
+	// 2. Render selected
+	render_selected			();
 }
 
 void CGlowManager::render_hw		()
 {
-	// 1. Test some number of glows
+	// 0. query result from 'SelectedToTest_2'
+	SelectedToTest_2		= SelectedToTest_1;
+	SelectedToTest_1		= SelectedToTest_0;
+	SelectedToTest_0.clear_not_free	();
+
+	// 1. Sort into two parts - 1(selected-to-test)[to-test], 2(selected)[just-draw]
 	Fvector &start	= Device.vCameraPosition;
-	for (int i=0; i<ps_r1_GlowsPerFrame; i++,dwTestID++)
+	for (int i=0; (i<ps_r1_GlowsPerFrame) && Selected.size(); i++,dwTestID++)
 	{
 		u32	ID		= dwTestID%Selected.size();
-		CGlow&	G	= *Selected[ID];
-		if (G.dwFrame=='test')	break;
-
-		G.dwFrame	=	'test';
-		Fvector		dir;
-		dir.sub		(G.spatial.center,start); float range = dir.magnitude();
-		dir.div		(range);
-		G.bTestResult = g_pGameLevel->ObjectSpace.RayTest(start,dir,range,collide::rqtBoth,&G.RayCache);
+		SelectedToTest_0.push_back	(Selected[ID]);
+		Selected.erase	(Selected.begin()+ID);
 	}
+
+	// 2. Render selected
+	render_selected			();
+
+	// 
+}
+
+void CGlowManager::render_selected()
+{
 	// 2. Sort by shader
 	std::sort		(Selected.begin(),Selected.end(),glow_compare);
 
@@ -322,9 +270,9 @@ void CGlowManager::render_hw		()
 	float		dlim2	= MAX_GlowsDist2;
 	for (;pos<Selected.size();) 
 	{
-		T		= Selected[pos]->shader;
+		T		= ((CGlow*)Selected[pos]._get())->shader;
 		count	= 0;
-		while	((pos+count<Selected.size()) && (Selected[pos+count]->shader==T)) count++;
+		while	((pos+count<Selected.size()) && (((CGlow*)Selected[pos+count]._get())->shader==T)) count++;
 
 		u32		vOffset;
 		u32		end		= pos+count;
@@ -332,7 +280,7 @@ void CGlowManager::render_hw		()
 		for (; pos<end; pos++)
 		{
 			// Cull invisible 
-			CGlow&	G					= *Selected[pos];
+			CGlow&	G					= *( (CGlow*)Selected[pos]._get() );
 			if (G.fade<=1.f)			continue;
 
 			// Now perform dotproduct if need it
@@ -364,5 +312,5 @@ void CGlowManager::render_hw		()
 			RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
 		}
 	}
-	Selected.clear				();
+	Selected.clear_not_free			();
 }

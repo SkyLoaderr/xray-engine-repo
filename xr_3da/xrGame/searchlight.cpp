@@ -22,8 +22,8 @@ CProjector::CProjector()
 
 CProjector::~CProjector()
 {
-	::Render->light_destroy	(light_render);
-	::Render->glow_destroy	(glow_render);
+	light_render.destroy	();
+	glow_render.destroy		();
 }
 
 void CProjector::Load(LPCSTR section)

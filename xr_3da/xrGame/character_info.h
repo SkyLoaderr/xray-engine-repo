@@ -33,7 +33,7 @@ struct SCharacterProfile : CSharedResource
 
     //если задано, то выбирается именно такой профиль,
 	//иначе ищется случайно,удовлетворяющее шаблону
-	SPECIFIC_CHARACTER_INDEX m_iCharacterIndex;	
+	SPECIFIC_CHARACTER_INDEX		m_iCharacterIndex;	
 
 	//требуемые параметры персонажа
 	CHARACTER_CLASS					m_Class;

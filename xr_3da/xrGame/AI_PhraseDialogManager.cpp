@@ -113,7 +113,7 @@ void CAI_PhraseDialogManager::RestoreDefaultStartDialog()
 	m_sStartDialog = m_sDefaultStartDialog;
 
 #ifdef _DEBUG
-	CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
+	//CInventoryOwner* pOwner = smart_cast<CInventoryOwner*>(this);
 	//Msg("[PhraseDialogManager] %s restore default start dialog %s",pOwner->Name(), *m_sStartDialog);
 #endif
 

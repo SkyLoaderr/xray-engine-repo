@@ -6,6 +6,7 @@
 
 #define SND_RIC_COUNT 5
 
+#include "../Render.h"
 #include "../feel_touch.h"
 #include "inventory_item.h"
 #include "ai_sounds.h"
@@ -80,21 +81,21 @@ protected:
 
 	//////////////////////////////////////////////
 	//для разлета осколков
-	float					tracerHeadSpeed;
-	float					tracerMaxLength;
+	float				tracerHeadSpeed;
+	float				tracerMaxLength;
 
 	//звуки
-	ref_sound	sndExplode;
-	ESoundTypes m_eSoundExplode;
+	ref_sound			sndExplode;
+	ESoundTypes			m_eSoundExplode;
 
 	//размер отметки на стенах
-	float		fWallmarkSize;
+	float				fWallmarkSize;
 	
 	//эффекты и подсветка
-	shared_str		m_sExplodeParticles;
+	shared_str			m_sExplodeParticles;
 	
 	//подсветка взрыва
-	IRender_Light*		m_pLight;
+	ref_light			m_pLight;
 	Fcolor				m_LightColor;
 	float				m_fLightRange;
 	float				m_fLightTime;

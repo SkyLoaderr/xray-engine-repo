@@ -17,7 +17,7 @@ const	float		fLightSmoothFactor = 4.f;
 
 //////////////////////////////////////////////////////////////////////////
 // definition (Dynamic Light)
-class	ENGINE_API	IRender_Light		{
+class	ENGINE_API	IRender_Light	: public xr_resource									{
 public:
 	enum LT
 	{
@@ -41,12 +41,17 @@ public:
 	virtual void					set_texture			(LPCSTR name)						= 0;
 	virtual void					set_color			(const Fcolor& C)					= 0;
 	virtual void					set_color			(float r, float g, float b)			= 0;
-	virtual ~IRender_Light()		{};
+	virtual ~IRender_Light()		;
 };
+struct ENGINE_API		resptrcode_light	: public resptr_base<IRender_Light>
+{
+	void				destroy			()				{ _set(NULL);						}
+};
+typedef	resptr_core<IRender_Light,resptrcode_light >	ref_light;
 
 //////////////////////////////////////////////////////////////////////////
 // definition (Dynamic Glow)
-class	ENGINE_API	IRender_Glow		{
+class	ENGINE_API		IRender_Glow	: public xr_resource									{
 public:
 	virtual void					set_active			(bool)								= 0;
 	virtual bool					get_active			()									= 0;
@@ -56,8 +61,14 @@ public:
 	virtual void					set_texture			(LPCSTR name)						= 0;
 	virtual void					set_color			(const Fcolor& C)					= 0;
 	virtual void					set_color			(float r, float g, float b)			= 0;
-	virtual ~IRender_Glow()			{};
+	virtual ~IRender_Glow()			;
 };
+struct ENGINE_API		resptrcode_glow	: public resptr_base<IRender_Glow>
+{
+	void				destroy			()					{ _set(NULL);					}
+};
+typedef	resptr_core<IRender_Glow,resptrcode_glow >		ref_glow;
+
 //////////////////////////////////////////////////////////////////////////
 // definition (Per-object render-specific data)
 class	ENGINE_API	IRender_ObjectSpecific		{
@@ -201,9 +212,9 @@ public:
 
 	// Lighting/glowing
 	virtual IRender_Light*			light_create			()											= 0;
-	virtual void					light_destroy			(IRender_Light* &)							= 0;
+	virtual void					light_destroy			(IRender_Light* p_)							{ p_->set_active(false);	};
 	virtual IRender_Glow*			glow_create				()											= 0;
-	virtual void					glow_destroy			(IRender_Glow* &)							= 0;
+	virtual void					glow_destroy			(IRender_Glow* p_)							{ p_->set_active(false);	};
 
 	// Models
 	virtual IRender_Visual*			model_CreateParticles	(LPCSTR name)								= 0;

@@ -235,7 +235,7 @@ protected:
 
 	//подсветка idle состояния
 	bool				m_bIdleLight;
-	IRender_Light*		m_pIdleLight;
+	ref_light			m_pIdleLight;
 	Fcolor				m_IdleLightColor;
 	float				m_fIdleLightRange;
 	float				m_fIdleLightHeight;
@@ -249,7 +249,7 @@ protected:
 
 	//подсветка выброса
 	bool				m_bBlowoutLight;
-	IRender_Light*		m_pLight;
+	ref_light		m_pLight;
 	float				m_fLightRange;
 	Fcolor				m_LightColor;
 	float				m_fLightTime;

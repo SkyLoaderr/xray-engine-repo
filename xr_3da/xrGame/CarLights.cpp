@@ -14,11 +14,9 @@ SCarLight::SCarLight()
 SCarLight::~SCarLight()
 {
 
-	if(light_render) ::Render->light_destroy	(light_render)	;
-	if(glow_render)  ::Render->glow_destroy		(glow_render)	;
-	light_render	=NULL										;
-	glow_render		=NULL										;
-	bone_id			=BI_NONE									;
+	light_render.destroy	()	;
+	glow_render.destroy		()	;
+	bone_id			=	BI_NONE	;
 }
 
 void SCarLight::Init(CCarLights* holder)

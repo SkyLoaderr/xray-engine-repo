@@ -84,11 +84,10 @@ void CShootingObject::Light_Create		()
 void CShootingObject::Light_Destroy		()
 {
 	//lights
-	::Render->light_destroy	(light_render);
+	light_render.destroy	();
 }
 
-
-void CShootingObject::LoadFireParams(LPCSTR section, LPCSTR prefix)
+void CShootingObject::LoadFireParams	(LPCSTR section, LPCSTR prefix)
 {
 	string256 full_name;
 
@@ -101,8 +100,7 @@ void CShootingObject::LoadFireParams(LPCSTR section, LPCSTR prefix)
 	m_fStartBulletSpeed = pSettings->r_float	(section,strconcat(full_name, prefix, "bullet_speed"));
 }
 
-
-void CShootingObject::LoadLights(LPCSTR section, LPCSTR prefix)
+void CShootingObject::LoadLights		(LPCSTR section, LPCSTR prefix)
 {
 	string256 full_name;
 
@@ -118,7 +116,6 @@ void CShootingObject::LoadLights(LPCSTR section, LPCSTR prefix)
 		light_time			= -1.f;
 	}
 }
-
 
 void CShootingObject::Light_Start	()
 {

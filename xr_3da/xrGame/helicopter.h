@@ -139,7 +139,7 @@ protected:
 	HUD_SOUND						m_sndShot;
 	ref_sound						m_engineSound;
 	ref_sound						m_explodeSound;
-	IRender_Light*					m_light_render;
+	ref_light						m_light_render;
 	CLAItem*						m_lanim;
 	u16								m_light_bone;
 	float							m_light_brightness;

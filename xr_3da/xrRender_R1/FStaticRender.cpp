@@ -140,10 +140,8 @@ IRender_Target*			CRender::getTarget				()					{ return Target;										}
 FSlideWindowItem*		CRender::getSWI					(int id)			{ VERIFY(id<int(SWIs.size()));		return &SWIs[id];	}
 
 IRender_Light*			CRender::light_create			()					{ return L_DB->Create();								}
-void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_DB->Destroy((light*)L); L=0; }				}
 
 IRender_Glow*			CRender::glow_create			()					{ return xr_new<CGlow>();								}
-void					CRender::glow_destroy			(IRender_Glow* &L)	{ CGlow* G = dynamic_cast<CGlow*>(L); xr_delete(G);	L=0;}		
 
 void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 

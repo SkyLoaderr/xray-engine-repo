@@ -130,16 +130,6 @@ public:
 	{
 		return	(self->base::dcast_Renderable());
 	}
-
-	virtual	IRender_Light*	dcast_Light					()
-	{
-		return	(call_member<IRender_Light*>(this,"dcast_Light"));
-	}
-
-	static	IRender_Light*	dcast_Light_static			(base *self)
-	{
-		return	(self->base::dcast_Light());
-	}
 */
 };
 

@@ -48,19 +48,22 @@ public:
 
 class CGlowManager 
 {
-	xr_vector<CGlow*>		Glows			;
-	xr_vector<CGlow*>		Selected		;
-	xr_vector<CGlow*>		SelectedToTest	;
+	xr_vector<ref_glow>		Glows			;
+	xr_vector<ref_glow>		Selected		;
+	xr_vector<ref_glow>		SelectedToTest_2;	// 2-frames behind
+	xr_vector<ref_glow>		SelectedToTest_1;	// 1-frames behind
+	xr_vector<ref_glow>		SelectedToTest_0;	// 0-frames behind
 	ref_geom				hGeom			;
 
 	BOOL					b_hardware		;
 	u32						dwTestID		;
 public:
-	void	add				(CGlow		*G);
+	void	add				(ref_glow	g)	;
 
 	void	Load			(IReader	*fs);
 	void	Unload			();
 
+	void	render_selected	();
 	void	render_sw		();
 	void	render_hw		();
 	void	Render			();
