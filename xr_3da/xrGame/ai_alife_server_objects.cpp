@@ -14,7 +14,11 @@
 #ifdef _EDITOR
 	#include "xr_trims.h"
 #else
-	#include "..\\xr_trims.h"
+	#ifdef AI_COMPILER
+		#include "xr_trims.h"
+	#else
+		#include "..\\xr_trims.h"
+	#endif
 #endif
 
 // CALifeObject
