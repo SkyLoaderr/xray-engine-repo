@@ -6,11 +6,12 @@ module("game_last_dialog")
 module("game_last_charselect_dlg")
 module("game_last_header_wnd")
 --include
+module("ui_base_dialog")
 module("ui_save_dialog")
 module("ui_load_dialog")
 module("ui_main_menu")
 module("ui_new_game_dialog")
-module("ui_base_dialog")
+
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
