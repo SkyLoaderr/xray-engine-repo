@@ -327,7 +327,7 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 	
 	if (kSKIN == key )
 	{
-		if(!pCurSkinMenu) SetCurrentSkinMenu();
+		SetCurrentSkinMenu();
 		StartStopMenu(pCurSkinMenu,true);
 
 		return true;
