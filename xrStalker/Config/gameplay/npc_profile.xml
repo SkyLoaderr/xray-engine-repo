@@ -222,6 +222,11 @@
 	<!-- Drammoment Garbage Novice  -->
 	<character id="stalker_gar_dram_novice">
 		<class>stalker_gar_dram_novice</class>
+	</character>
+	
+	<character id="svoboda_bodyguard">
+		<class>svoboda_bodyguard</class>
 	</character>	
+
 
 </xml>
