@@ -38,8 +38,8 @@ void CAI_Trader::Load(LPCSTR section)
 	inventory().SetMaxRuck(10000);
 	
 	m_trade_storage->CalcTotalWeight();
-	m_trade_storage->SetMaxWeight(max_weight);
-	m_trade_storage->SetMaxRuck(inventory().GetMaxRuck());
+	m_trade_storage->SetMaxWeight(max_weight*1000);
+	m_trade_storage->SetMaxRuck(inventory().GetMaxRuck()*1000);
 }
 
 void CAI_Trader::Init()
@@ -272,19 +272,23 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
-			if(g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
+			if(inventory().Take(dynamic_cast<CGameObject*>(Obj))) 
+				Obj->H_SetParent(this);
+			else
+			{
+				NET_Packet				P;
+				u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16					(u16(Obj->ID()));
+				u_EventSend				(P);
+			}
 			break;
-		case GE_TRADE_SELL:
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
 			if(inventory().Drop(dynamic_cast<CGameObject*>(Obj))) 
 				Obj->H_SetParent(0);
 			break;
-		case GE_TRANSFER_AMMO:
-			break;
-		
-			// Trade is accomplishing through 'm_trade_storage'
+		// Trade is accomplishing through 'm_trade_storage'
 		case GE_TRADE_BUY:		// equal to GE_OWNERSHIP_TAKE
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
@@ -293,12 +297,14 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 				Obj->H_SetParent(this);
 
 			break;
-/*		case GE_TRADE_SELL:
+		case GE_TRADE_SELL:
 			P.r_u16		(id);
 			Obj			= Level().Objects.net_Find	(id);
 			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj))) 
-				Obj->H_SetParent(0);
-			break;*/
+				Obj->H_SetParent(NULL);
+			break;
+		case GE_TRANSFER_AMMO:
+			break;
 	}
 }
 
