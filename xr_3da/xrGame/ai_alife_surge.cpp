@@ -784,7 +784,7 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 						jj = ii;
 					}
 				}
-				R_ASSERT2					(jj != ee,"Data mismatch!");
+				R_ASSERT2		(jj != ee,"There is no way from trader to artefact");
 
 				// creating _new task
 				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
