@@ -45,9 +45,6 @@ void CUIListItem::Init(const char* str, int x, int y, int width, int height)
 void CUIListItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
 	CUIButton::OnMouse(x, y, mouse_action);
-
-/*	if(m_bButtonClicked)
-		GetParent()->SendMessage(this, BUTTON_CLICKED);*/
 }	
 
 

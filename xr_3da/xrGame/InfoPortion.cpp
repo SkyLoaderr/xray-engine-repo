@@ -81,9 +81,6 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 	//текст
 	m_text.SetText(uiXml.Read(pNode, "text", 0));
 
-	//локация на карте
-
-
 
 	//вопросы
 	int i,j;
@@ -113,6 +110,23 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 		}
 	
 		m_QuestionsList.push_back(question);
+	}
+
+	//загрузить позицию на карте, если она задана
+	XML_NODE* pMapNode = uiXml.NavigateToNode(pNode,"location",0);
+
+	if(pMapNode)
+	{
+		m_bLocationSet = true;
+		m_sMapLocation.level_num = uiXml.ReadInt(pMapNode,"level",0);
+		m_sMapLocation.x = (float)atof(uiXml.Read(pMapNode,"x",0));
+		m_sMapLocation.y = (float)atof(uiXml.Read(pMapNode,"y",0));
+
+		m_sMapLocation.name.SetText(uiXml.ReadAttrib(pMapNode, "icon", 0, "name"));
+		m_sMapLocation.icon_x = uiXml.ReadAttribInt(pMapNode, "icon", 0, "x");
+		m_sMapLocation.icon_y = uiXml.ReadAttribInt(pMapNode, "icon", 0, "y");
+		m_sMapLocation.icon_width = uiXml.ReadAttribInt(pMapNode, "icon", 0, "width");
+		m_sMapLocation.icon_height = uiXml.ReadAttribInt(pMapNode, "icon", 0, "height");
 	}
 }
 

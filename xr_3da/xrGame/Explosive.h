@@ -11,7 +11,7 @@
 
 class CExplosive:
 	virtual public CInventoryItem,
-	public Feel::Touch
+    public Feel::Touch
 {
 public:
 	CExplosive(void);
@@ -45,7 +45,7 @@ protected:
 	//параметры и количество осколков
 	float m_fragsR; 
 	float m_fragHit;
-	int m_frags;
+	int	  m_frags;
 
 	//фактор подпроса предмета вверх взрывной волной 
 	float m_fUpThrowFactor;

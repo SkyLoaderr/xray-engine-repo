@@ -44,9 +44,6 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 	CUIWindow::Init(x, y, width, height);
 
 	RECT rect = GetAbsoluteRect();
-	
-	landscape.Init("ui\\ui_minimap_level3",	"hud\\default",	rect.left, rect.top, alNone);
-	landscape.SetRect(0, 0, width, height);
 
 
 	m_fMapViewWidthMeters =  width*MAP_PIXEL_TO_METERS;
@@ -80,18 +77,20 @@ void CUIMapBackground::Init(int x, int y, int width, int height)
 //גûחûגאועסÿ ךאזהûי נאח ןונוה גûחמגמל ךאנעû
 void CUIMapBackground::InitMapBackground()
 {
-	//Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
-	Fbox level_box;
-	level_box.x2 = 359.843f;
-	level_box.x1 = -280.157f;
-	level_box.z2 = 253.36f;
-	level_box.z1 = -386.64f;
+	RECT rect = GetAbsoluteRect();
+	
+	if(*m_MapTextureName)
+		landscape.Init(*m_MapTextureName,"hud\\default",rect.left, rect.top, alNone);
+	else
+		landscape.Init("ui\\ui_minimap_level3",	"hud\\default",	rect.left, rect.top, alNone);
+	landscape.SetRect(0, 0, GetWidth(), GetHeight());
 
-	m_fMapWidthMeters = level_box.x2 - level_box.x1;
-	m_fMapHeightMeters = level_box.z2 - level_box.z1;
-	m_fMapLeftMeters = level_box.x1;
-	m_fMapTopMeters = level_box.z2;
-	m_fMapBottomMeters = level_box.z1;
+
+	m_fMapWidthMeters = m_LevelBox.x2 - m_LevelBox.x1;
+	m_fMapHeightMeters = m_LevelBox.z2 - m_LevelBox.z1;
+	m_fMapLeftMeters = m_LevelBox.x1;
+	m_fMapTopMeters = m_LevelBox.z2;
+	m_fMapBottomMeters = m_LevelBox.z1;
 
 	UpdateActorPos();
 	UpdateMapSpots();

@@ -9,10 +9,10 @@
 
 #include "ParticlesObject.h"
 
-
 #include "HUDManager.h"
 #include "entity.h"
 #include "actor.h"
+
 
 #define FLAME_TIME 0.05f
 #define HIT_POWER_EPSILON 0.05f
@@ -20,11 +20,14 @@
 #define GROUND_HIT_PARTICLES "weapons\\wg-hit-ground"
 
 
-void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R) 
-{
-	if (!hWallmark)	return;
 
-	if (R.O) {
+void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
+{
+	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(CWeapon::bullet_material_id, target_material);
+
+	
+	if (R.O) 
+	{
 		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
 #pragma todo("Oles to Yura: replace 'CPSObject' with 'CParticlesObject'")
@@ -40,18 +43,24 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 		}
 	} else 
 	{
-		//добавить отметку на материале
-		::Render->add_Wallmark	(
-			hWallmark,
-			vEnd,
-			fWallmarkSize,
-			Level().ObjectSpace.GetStaticTris()+R.element,
-			Level().ObjectSpace.GetStaticVerts());
-
-			
-		//отыграть партиклы попадания в материал
-		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>(GROUND_HIT_PARTICLES,Sector());
+		if (hWallmark)
+		{
+			//добавить отметку на материале
+			::Render->add_Wallmark	(
+				hWallmark,
+				vEnd,
+				fWallmarkSize,
+				Level().ObjectSpace.GetStaticTris()+R.element,
+				Level().ObjectSpace.GetStaticVerts());
+		}
+	}		
+	
+	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
+						GROUND_HIT_PARTICLES:
+						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+	//отыграть партиклы попадания в материал
+	CParticlesObject* pStaticPG;
+	pStaticPG = xr_new<CParticlesObject>(ps_name,Sector());
 
 //		Fvector N,D;
 //		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
@@ -59,19 +68,16 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 //		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
 //		D.reflect			(m_vCurrentShootDir,N);
 
-		Fmatrix pos; 
-		Fvector reversed_dir = m_vCurrentShootDir;
-		Fvector zero_vel = {0.f,0.f,0.f};
+	Fmatrix pos; 
+	Fvector reversed_dir = m_vCurrentShootDir;
+	Fvector zero_vel = {0.f,0.f,0.f};
 
-		reversed_dir.invert();
-		pos.j.set(reversed_dir);
-		pos.j.normalize();
-		Fvector::generate_orthonormal_basis(pos.j, pos.i, pos.k);
-		pos.c.set(vEnd);
+	pos.j.normalize(reversed_dir.invert());
+	Fvector::generate_orthonormal_basis(pos.j, pos.i, pos.k);
+	pos.c.set(vEnd);
 
-		pStaticPG->UpdateParent(pos,zero_vel);
-		pStaticPG->Play();
-	}
+	pStaticPG->UpdateParent(pos,zero_vel);
+	pStaticPG->Play();
 }
 
 
@@ -90,7 +96,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 	pThisWeapon->m_vEndPoint.mad(pThisWeapon->m_vCurrentShootPos,
 								 pThisWeapon->m_vCurrentShootDir,result.range);
 
-	u32 hit_material_id;
+	u16 hit_material_id;
 
 	//динамический объект
 	if(result.O)
@@ -101,8 +107,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 		{
 			CBoneData& B = V->LL_GetData((u16)result.element);
 			hit_material_id = B.game_mtl_idx;
-			pThisWeapon->DynamicObjectHit(result);
-//			return FALSE;
+			pThisWeapon->DynamicObjectHit(result, hit_material_id);
 		}
 	}
 	//статический объект
@@ -111,14 +116,12 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 		//получить треугольник и узнать его материал
 		CDB::TRI* T	= Level().ObjectSpace.GetStaticTris()+result.element;
 		hit_material_id = T->material;
-		pThisWeapon->StaticObjectHit(result);
-
-		pThisWeapon->m_fCurrentHitPower*= 0.1f;
-//		return FALSE;
+		pThisWeapon->StaticObjectHit(result, hit_material_id);
 	}
 
+	SGameMtl* mtl = GMLib.GetMaterial(hit_material_id);
 
-//	SGameMtl* mtl1	= GMLib.GetMaterial(hit_material_id);
+	pThisWeapon->m_fCurrentHitPower*= mtl->fShootFactor;
 
 	if(pThisWeapon->m_fCurrentHitPower>HIT_POWER_EPSILON)
 		return TRUE;
@@ -126,7 +129,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 		return FALSE;
 }
 
-void CWeapon::DynamicObjectHit (Collide::rq_result& R)
+void CWeapon::DynamicObjectHit (Collide::rq_result& R, u16 target_material)
 {
 	//только для динамических объектов
 	R_ASSERT(R.O);
@@ -183,16 +186,16 @@ void CWeapon::DynamicObjectHit (Collide::rq_result& R)
 	u_EventSend		(P);
 
 	//визуальное обозначение попадание на объекте
-	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R);
+	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
 
 	//уменьшить хит и импульс передать его дальше 
 	m_fCurrentHitPower *= scale;
 	m_fCurrentHitImpulse *= scale;
 }
 
-void CWeapon::StaticObjectHit(Collide::rq_result& R)
+void CWeapon::StaticObjectHit(Collide::rq_result& R, u16 target_material)
 {
-	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R);
+	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
 }
 
 

@@ -54,7 +54,6 @@
 	#define PSSVec4 		AnsiString
 	#define ShaderSVec4 	AnsiString
 #else
-	class CPS;
 	DEFINE_SVECTOR(ref_sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
 	DEFINE_SVECTOR(ref_str,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
 	DEFINE_SVECTOR(ref_shader,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);

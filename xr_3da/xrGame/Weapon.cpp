@@ -13,6 +13,12 @@
 #include "entity.h"
 #include "actor.h"
 
+
+
+u16 CWeapon::bullet_material_id = GAMEMTL_NONE;
+
+#define WEAPON_MATERIAL_NAME "objects\\bullet"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -302,6 +308,9 @@ void CWeapon::Load		(LPCSTR section)
 	m_fK_ChemicalBurn	= pSettings->r_float("weapon","chemical_burn_immunity");
 	m_fK_Explosion		= pSettings->r_float("weapon","explosion_immunity");
 	m_fK_FireWound		= pSettings->r_float("weapon","fire_wound_immunity");
+
+	//получить материал пули
+	bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	
 	inherited::Load		(section);
 
@@ -535,7 +544,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u8					(flags);
 
 	P.w_u16					(u16(0/*iAmmoCurrent*/));
-	P.w_u16					(u16(iAmmoElapsed));
+	P.w_u16					(u16(0/*iAmmoElapsed*/));
 
 	//////
 	P.w_vec3				(Position());
@@ -716,16 +725,6 @@ void CWeapon::UpdateCL		()
 		NET_Last = N;
 		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
 		Position().set(NET_Last.pos);
-
-		iAmmoElapsed		= NET_Last.ammo_elapsed;
-
-		if (NET_Last.flags&M_UPDATE_WEAPON_wfWorking)
-		{
-			if (!IsWorking())	{ FireStart(); }
-		} else {
-			if (IsWorking())	{ FireEnd(); }
-		}
-
 /*
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{

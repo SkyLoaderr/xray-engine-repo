@@ -117,10 +117,6 @@ void CUIPdaDialogWnd::ContactRestore()
 {
 	UIPhrasesListWnd.Show(true);
 	UIPhrasesListWnd.Enable(true);
-
-	//убрать последнее сообщение, так оно содержит информацию,
-	//о причине задержки контакта
-//	UILogListWnd.RemoveItem(UILogListWnd.GetSize()-1);
 }
 
 void CUIPdaDialogWnd::Update()

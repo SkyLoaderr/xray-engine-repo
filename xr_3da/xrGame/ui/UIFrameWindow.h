@@ -42,10 +42,8 @@ public:
 	//прорисовка окна
 	virtual void Draw();
 	
-
 	//текст заголовка
-	CUIStatic UITitleText;
-
+	CUIStatic UITitleText;	
 protected:
 
 	///////////////////////////////////////	

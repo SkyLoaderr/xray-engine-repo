@@ -391,19 +391,16 @@ void CWeaponMagazined::state_Fire	(float dt)
 		dynamic_cast<CEntity*>	(H_Parent())->g_fireParams	(p1,d);
 	else 
 		return;
-
-	if (Local())
+	
+	while (fTime<0)
 	{
-		while (fTime<0)
-		{
-			bFlame			=	TRUE;
-			fTime			+=	fTimeToFire;
+		bFlame			=	TRUE;
+		fTime			+=	fTimeToFire;
 
-			++m_shotNum;
-			OnShot			();
-			FireTrace		(p1,vLastFP,d);
-		}
-	};
+		++m_shotNum;
+		OnShot			();
+		FireTrace		(p1,vLastFP,d);
+	}
 
 	UpdateSounds			();
 
@@ -476,9 +473,9 @@ void CWeaponMagazined::Show		()
 	SwitchState(eShowing);
 }
 
-void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R) 
+void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
 {
-	inherited::FireShotmark		(vDir, vEnd, R);
+	inherited::FireShotmark		(vDir, vEnd, R, target_material);
 //	OnShotmark					(vDir, vEnd, R);
 }
 

@@ -45,7 +45,7 @@ protected:
 		eMagEmpty
 	};
 protected:
-	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R);
+	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void	OnMagazineEmpty	();
 
 	virtual void	MediaLOAD		();

@@ -41,6 +41,8 @@ typedef struct tagSPdaMessage
 DEF_LIST (PDA_LIST, CPda*);
 
 
+DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
+
 class CPda :
 	public CInventoryItem,
 	public Feel::Touch
@@ -119,7 +121,6 @@ public:
 
 
 	//свединия об известной информации
-	DEFINE_MAP (int, BOOL, KNOWN_INFO_MAP, KNOWN_INFO_PAIR_IT);
 	KNOWN_INFO_MAP m_mapKnownInfo;
 
 	//все вопросы доступные в этот момент

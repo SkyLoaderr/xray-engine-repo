@@ -50,17 +50,7 @@ public:
 protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
-	
-	CUIStatic			UIOurMoneySign;
-	CUIStatic			UIOthersMoneySign;
-	CUIStatic			UIOurItemsPriceSign;
-	CUIStatic			UIOthersItemsPriceSign;
 
-	CUIStatic			UIOurMoney;
-	CUIStatic			UIOthersMoney;
-	CUIStatic			UIOurItemsPrice;
-	CUIStatic			UIOthersItemsPrice;
-	
 	CUIFrameWindow		UIOurBagWnd;
 	CUIFrameWindow		UIOthersBagWnd;
 	CUIDragDropList		UIOurBagList;

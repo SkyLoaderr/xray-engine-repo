@@ -66,31 +66,6 @@ void CUITradeWnd::Init()
 	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
 
 
-	//надписи	
-	AttachChild(&UIOurMoneySign);
-	UIOurMoneySign.Init(40,265,150,30);
-	UIOurMoneySign.SetText("our money");
-	AttachChild(&UIOthersMoneySign);
-	UIOthersMoneySign.Init(730,265,150,30);
-	UIOthersMoneySign.SetText("others money");
-	AttachChild(&UIOurItemsPriceSign);
-	UIOurItemsPriceSign.Init(360,260,150,30);
-	UIOurItemsPriceSign.SetText("our items price");
-	AttachChild(&UIOthersItemsPriceSign);
-	UIOthersItemsPriceSign.Init(360,485,150,30);
-	UIOthersItemsPriceSign.SetText("others items price");
-
-	AttachChild(&UIOurMoney);
-	UIOurMoney.Init(40,295,150,30);
-	AttachChild(&UIOthersMoney);
-	UIOthersMoney.Init(730,295,150,30);
-	AttachChild(&UIOurItemsPrice);
-	UIOurItemsPrice.Init(360,290,150,30);
-	AttachChild(&UIOthersItemsPrice);
-	UIOthersItemsPrice.Init(360,515,150,30);
-
-
-
 	//Списки торговли
 	AttachChild(&UIOurBagWnd);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIOurBagWnd);
@@ -486,16 +461,17 @@ void CUITradeWnd::UpdatePrices()
 	m_iOurTradePrice = CalcItemsPrice(&UIOurTradeList, m_pOthersTrade);
 	m_iOthersTradePrice = CalcItemsPrice(&UIOthersTradeList, m_pOthersTrade);
 
+
 	char buf[255];
-	sprintf(buf, "%d$", m_iOurTradePrice);
-	UIOurItemsPrice.SetText(buf);
-	sprintf(buf, "%d$", m_iOthersTradePrice);
-	UIOthersItemsPrice.SetText(buf);
+	sprintf(buf, "our trade price: %d$", m_iOurTradePrice);
+	UIOurTradeWnd.SetText(buf);
+	sprintf(buf, "others trade price: %d$", m_iOthersTradePrice);
+	UIOthersTradeWnd.SetText(buf);
 
 	sprintf(buf, "%d$", m_pInvOwner->m_dwMoney);
-	UIOurMoney.SetText(buf);
+	UIOurBagWnd.UITitleText.SetText(buf);
 	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
-	UIOthersMoney.SetText(buf);
+	UIOthersBagWnd.UITitleText.SetText(buf);
 }
 
 void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
@@ -523,13 +499,15 @@ void CUITradeWnd::UpdateLists()
 {
 	//обновить надписи
 	char buf[255];
+	sprintf(buf, "our trade price: 0$", m_iOurTradePrice);
+	UIOurTradeWnd.SetText(buf);
+	sprintf(buf, "others trade price: 0$", m_iOthersTradePrice);
+	UIOthersTradeWnd.SetText(buf);
 	sprintf(buf, "%d$", m_pInvOwner->m_dwMoney);
-	UIOurMoney.SetText(buf);
+	UIOurBagWnd.UITitleText.SetText(buf);
 	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
-	UIOthersMoney.SetText(buf);
-	sprintf(buf, "0$");
-	UIOurItemsPrice.SetText(buf);
-	UIOthersItemsPrice.SetText(buf);
+	UIOthersBagWnd.UITitleText.SetText(buf);
+
 	
 	//очистить после предыдущего запуска
 	UIOurBagList.DropAll();

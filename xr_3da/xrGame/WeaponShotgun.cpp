@@ -282,7 +282,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& /**Peff/**/, 
 				P.w_u16			(eHitTypeWound);
 				u_EventSend		(P);
 			}
-			FireShotmark		(D,end_point,RQ);
+			FireShotmark		(D,end_point,RQ, GAMEMTL_NONE);
 		}
 	}
 

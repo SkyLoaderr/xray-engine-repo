@@ -183,11 +183,11 @@ protected:
 	void					Light_Render		(Fvector& P);
 
 	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
-	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R);
+	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 	//попадание по динамическому объекту
-	virtual void			DynamicObjectHit	(Collide::rq_result& R);
-	virtual void			StaticObjectHit		(Collide::rq_result& R);
+	virtual void			DynamicObjectHit	(Collide::rq_result& R, u16 target_material);
+	virtual void			StaticObjectHit		(Collide::rq_result& R, u16 target_material);
 
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
@@ -353,6 +353,8 @@ public:
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
+
+	static u16 bullet_material_id;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

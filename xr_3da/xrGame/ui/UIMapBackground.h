@@ -50,6 +50,9 @@ public:
 	float m_fMapX;
 	float m_fMapY;
 
+	Fbox m_LevelBox;
+	ref_str m_MapTextureName;
+
 	//вектор обозначений на карте
 	DEFINE_VECTOR	(CUIMapSpot*, MAP_SPOT_VECTOR, MAP_SPOT_VECTOR_IT);
 	MAP_SPOT_VECTOR m_vMapSpots;
@@ -72,6 +75,4 @@ protected:
 	int m_iOldMouseX;
 	int m_iOldMouseY;
 	POINT m_previousPos;
-
-
 };

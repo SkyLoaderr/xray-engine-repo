@@ -19,6 +19,11 @@ typedef struct tagSMapLocation
 	//координаты на уровне
 	float x;
 	float y;
+	//имя локации
+	CUIString name;
+
+	//размеры и положение иконки
+	int icon_x, icon_y, icon_width, icon_height;
 
 } SMapLocation;
 
@@ -56,6 +61,7 @@ public:
 
 	int				GetIndex()		{return m_iIndex;}
 	SMapLocation&	GetLocation()	{return m_sMapLocation;}
+	bool			LocationExist() {return m_bLocationSet;}
 	char*			GetText()		{return m_text.GetBuf();}
 
 	//загрузка структуры информацией из файла
