@@ -17,6 +17,7 @@ class ENGINE_API CMotionDef;
 
 class CWeapon : public CGameObject
 {
+	friend class CWeaponList;
 private:
 	typedef CGameObject		inherited;
 public:
