@@ -466,6 +466,8 @@ public:
 			void				eat						(CScriptGameObject *item);
 			bool				inside					(const Fvector &position, float epsilon) const;
 			bool				inside					(const Fvector &position) const;
+
+			Fvector				head_orientation		() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)
