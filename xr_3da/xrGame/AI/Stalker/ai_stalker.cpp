@@ -244,7 +244,7 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (m_dwParticularState == u32(-1)) {
-		R_ASSERT2					(getAI().bfCheckIfGraphLoaded(),"There is no graph!");
+		R_ASSERT2					(getAI().bfCheckIfMapLoaded() && getAI().bfCheckIfGraphLoaded() && getAI().bfCheckIfCrossTableLoaded() && (getAI().m_dwCurrentLevelID != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 		m_tNextGP					= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -31,6 +31,8 @@ CAI_Space::CAI_Space	()
 	string256					caFileName;
 	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
 		CSE_ALifeGraph::Load		(caFileName);
+	
+	m_dwCurrentLevelID			= u32(-1);
 }
 
 CAI_Space::~CAI_Space	()
@@ -40,9 +42,10 @@ CAI_Space::~CAI_Space	()
 
 void CAI_Space::Unload()
 {
-	xr_free		(m_nodes_ptr);
-	xr_delete	(vfs);
-	xr_delete	(m_tpAStar);
+	m_dwCurrentLevelID			= u32(-1);
+	xr_free						(m_nodes_ptr);
+	xr_delete					(vfs);
+	xr_delete					(m_tpAStar);
 }
 
 void CAI_Space::Load()
@@ -96,8 +99,8 @@ void CAI_Space::Load()
 
 	CSE_ALifeCrossTable::Load	(fName);
 
-	bool bOk = false;
-	u32 N = m_tGraphHeader.dwLevelCount, I = (u32)(-1);
+	bool	bOk = false;
+	u32		N = m_tGraphHeader.dwLevelCount, I = (u32)(-1);
 	for ( I=0; I<N; I++)
 		if (!stricmp(m_tGraphHeader.tpLevels[I].caLevelName,Level().net_SessionName())) {
 			I = m_tGraphHeader.tpLevels[I].dwLevelID;
