@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-const float		tess	= 32.0001f;
+const float		tess	= 4.0001f;
 
 void CBuild::Tesselate	()
 {
@@ -69,7 +69,7 @@ void CBuild::Tesselate	()
 			F2->AddChannel		(F->tc.front().uv[idB],UV,F->tc.front().uv[id2]);
 
 			// Destroy old face
-			_DELETE				(F);
+			_DELETE				(g_faces[I]);
 		}
 
 		Msg ("%d splits performed.",cnt_splits);
