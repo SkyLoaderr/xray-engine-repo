@@ -449,13 +449,6 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 							fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 						break;
 					}
-					case CLSID_OBJECT_W_M134_en		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
-							fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
-						else
-							fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
-						break;
-					}
 					case CLSID_OBJECT_W_FN2000		: {
 						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
 							fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
@@ -527,13 +520,6 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
-									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
-								else
-									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoElapsed;
-								break;
-							}
-							case CLSID_OBJECT_W_M134_en		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
 									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
 								else
@@ -633,13 +619,6 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
 								break;
 							}
-							case CLSID_OBJECT_W_M134_en		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
-									fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
-								else
-									fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
-								break;
-							}
 							case CLSID_OBJECT_W_FN2000		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
 									fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoElapsed;
@@ -704,13 +683,6 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 				int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
 					case CLSID_OBJECT_W_M134		: {
-						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
-							fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
-						else
-							fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoElapsed;
-						break;
-					}
-					case CLSID_OBJECT_W_M134_en		: {
 						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
 							fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoElapsed;
 						else
@@ -788,13 +760,6 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
-								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
-									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
-								else
-									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoElapsed;
-								break;
-							}
-							case CLSID_OBJECT_W_M134_en		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
 									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoElapsed;
 								else
