@@ -75,10 +75,10 @@ class CAISelectorBase : public AI::NodeEstimator
 		
 		// hit information
 		Fvector			m_tHitDir;
-		u32			m_dwHitTime;
+		u32				m_dwHitTime;
 		
 		// current time information
-		u32			m_dwCurTime;
+		u32				m_dwCurTime;
 
 		// myself
 		CEntity*        m_tMe;
@@ -91,12 +91,12 @@ class CAISelectorBase : public AI::NodeEstimator
 		NodeCompressed* m_tpLeaderNode;
 		Fvector			m_tLeaderPosition;
 		Fvector			m_tLeaderDirection;
-		u32			m_tLeaderNode;
+		u32				m_tLeaderNode;
 
 		// enemy
 		CEntity*        m_tEnemy;
 		NodeCompressed* m_tpEnemyNode;
-		u32			m_dwEnemyNode;
+		u32				m_dwEnemyNode;
 		Fvector			m_tEnemyPosition;
 		Fvector			m_tEnemyDirection;
 		Fvector			m_tEnemySurroundDirection;
