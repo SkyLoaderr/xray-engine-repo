@@ -238,9 +238,6 @@ function Monster:callback (obj, action_type, index)
 	   printf ("Callback called for object %s", self.npc:name ())	 
 	end
 
-	
-	
-
 end
 
 function Monster:set_enemyes (enemyes)
@@ -299,6 +296,7 @@ function Monster:process ()
 	if self.moving == true then return end
 
 	if true then
+	   printf ("FREE OBJECT %s", self.npc:name ())	
    	   self.npc:script (false, self.script)
 	   self.freemove = true
   	   return
