@@ -18,7 +18,13 @@
 float CMovementManager::speed			(CPHMovementControl *movement_control) const
 {
 	VERIFY					(movement_control);
-	return					(movement_control->GetVelocityActual());
+	if (fis_zero(m_speed))
+		return				(0.f);
+
+	if (movement_control->IsCharacterEnabled())
+		return				(movement_control->GetVelocityActual());
+
+	return					(m_speed);
 }
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta)
