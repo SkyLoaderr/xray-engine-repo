@@ -208,8 +208,6 @@ void CAI_Stalker::vfValidateAngleDependency(float x1, float &x2, float x3)
 		x2  = x3;
 }
 
-#define R2D(x) (angle_normalize(x)*180.f/PI)
-
 void CAI_Stalker::Exec_Look(float dt)
 {
 	// normalizing torso angles
@@ -224,16 +222,22 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.yaw			= angle_normalize_signed	(r_target.yaw);
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
+	// validating angles
+	//Msg("BeforeX: %f, %f",r_torso_target.yaw,r_target.yaw);
+	//Msg("Before : %f, %f, %f, %f",R2D(r_torso_current.yaw),R2D(r_torso_target.yaw),R2D(r_current.yaw),R2D(r_target.yaw));
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
 	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
+	//Msg("AfterX: %f, %f",r_torso_target.yaw,r_target.yaw);
 
 	// updating torso angles
 	angle_lerp_bounds		(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
 	angle_lerp_bounds		(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
 	
 	// updating head angles
-	angle_lerp_bounds		(r_current.yaw,r_target.yaw,r_head_speed,r_head_speed);
-	angle_lerp_bounds		(r_current.pitch,r_target.pitch,r_head_speed,dt);
+	//float					fAngleDifference = _abs(angle_normalize_signed(r_current.yaw - r_target.yaw));
+	float					fSpeedFactor = 9;//fAngleDifference < PI_DIV_6 ? fAngleDifference/PI_DIV_6 : 3.f*fAngleDifference/PI;
+	angle_lerp_bounds		(r_current.yaw,r_target.yaw,fSpeedFactor*r_head_speed,dt);
+	angle_lerp_bounds		(r_current.pitch,r_target.pitch,fSpeedFactor*r_head_speed,dt);
 
 	// normalizing torso angles
 	r_torso_current.yaw		= angle_normalize_signed	(r_torso_current.yaw);
@@ -243,6 +247,7 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
 	
+	//Msg("After  : %f, %f, %f, %f",R2D(r_torso_current.yaw),R2D(r_torso_target.yaw),R2D(r_current.yaw),R2D(r_target.yaw));
 	// updating rotation matrix
 	mRotate.setHPB			(-NET_Last.o_model,0,0);
 	

@@ -350,7 +350,7 @@ void CCustomMonster::UpdateCL	()
 	if	(NET.empty())	return;
 
 	// distinguish interpolation/extrapolation
-	u32	dwTime		= Level().timeServer()-NET_Latency;
+	u32	dwTime			= Level().timeServer()-NET_Latency;
 	net_update&	N		= NET.back();
 	if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 	{
@@ -368,16 +368,16 @@ void CCustomMonster::UpdateCL	()
 		if (select>=0)		
 		{
 			// Interpolate state
-			net_update&	A		= NET[select+0];
-			net_update&	B		= NET[select+1];
-			u32	d1			= dwTime-A.dwTimeStamp;
-			u32	d2			= B.dwTimeStamp - A.dwTimeStamp;
-			float	factor		= (float(d1)/float(d2));
-			NET_Last.lerp		(A,B,factor);
+			net_update&	A			= NET[select+0];
+			net_update&	B			= NET[select+1];
+			u32	d1					= dwTime-A.dwTimeStamp;
+			u32	d2					= B.dwTimeStamp - A.dwTimeStamp;
+			float	factor			= (float(d1)/float(d2));
+			NET_Last.lerp			(A,B,factor);
 			
-			Fvector				dir;
-			AI_Path.Direction	(dir);
-			SelectAnimation		(clTransform.k,dir,AI_Path.fSpeed);
+			Fvector					dir;
+			AI_Path.Direction		(dir);
+			SelectAnimation			(clTransform.k,dir,AI_Path.fSpeed);
 			
 			// Signal, that last time we used interpolation
 			NET_WasInterpolating	= TRUE;

@@ -630,43 +630,6 @@ void CAI_Stalker::CreateSkeleton()
 	
 }
 
-void CAI_Stalker::Update(u32 dt){
-
-	inherited::Update( dt);
-
-	if(m_pPhysicsShell){
-
-	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
-		{
-			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.5f,m_saved_element);
-			m_saved_impulse=0.f;
-		}
-		mRotate.set(m_pPhysicsShell->mXFORM);
-		mRotate.c.set(0,0,0);
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		if(skel_ddelay==0)
-		{
-		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
-		
-		}
-		skel_ddelay--;
-
-		mRotate.set(m_pPhysicsShell->mXFORM);
-		mRotate.c.set(0,0,0);
-		UpdateTransform					();
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		svTransform.set(m_pPhysicsShell->mXFORM);
-		
-	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-	//	int id=M->LL_BoneID("bip01_pelvis");
-	//	CBoneInstance& instance=M->LL_GetInstance				(id);
-	//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
-			
-	}
-	
-	
-}
-
 void CAI_Stalker::UpdateCL(){
 
 	 inherited::UpdateCL();
@@ -702,5 +665,108 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 				m_saved_hit_position.set(p_in_object_space);
 			}
 		}
+	}
+}
+
+void CAI_Stalker::Update	( u32 DT )
+{
+	// Queue shrink
+	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
+	VERIFY				(!NET.empty());
+	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
+	
+	// Queue setup
+	float dt			= float(DT)/1000.f;
+	if (dt > 3)
+		return;
+	
+	if (Remote())		{
+	} else {
+		// here is monster AI call
+		m_fTimeUpdateDelta				= dt;
+		Device.Statistic.AI_Think.Begin	();
+		Think							();
+		m_dwLastUpdateTime = Level().timeServer();
+		Device.Statistic.AI_Think.End	();
+		//
+		Engine.Sheduler.Slice			();
+
+		// Look and action streams
+		if (fHealth>0) {
+			Exec_Look				(dt);
+			Exec_Movement			(dt);
+			Exec_Visibility			();
+			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+			feel_touch_update		(C,R);
+
+			net_update				uNext;
+			uNext.dwTimeStamp		= Level().timeServer();
+			uNext.o_model			= r_torso_current.yaw;
+			uNext.o_torso			= r_current;
+			uNext.p_pos				= vPosition;
+			uNext.fHealth			= fHealth;
+			NET.push_back			(uNext);
+		}
+		else 
+		{
+			Exec_Physics			(dt);
+			if (bfExecMovement()) 
+			{
+				Exec_Movement		(dt);
+				net_update			uNext;
+				uNext.dwTimeStamp	= Level().timeServer();
+				uNext.o_model		= r_torso_current.yaw;
+				uNext.o_torso		= r_current;
+				uNext.p_pos			= vPosition;
+				uNext.fHealth		= fHealth;
+				NET.push_back		(uNext);
+			}
+			else {
+				net_update			uNext;
+				uNext.dwTimeStamp	= Level().timeServer();
+				uNext.o_model		= r_torso_current.yaw;
+				uNext.o_torso		= r_current;
+				uNext.p_pos			= vPosition;
+				uNext.fHealth		= fHealth;
+				NET.push_back		(uNext);
+			}
+		}
+		Exec_Action				(dt);
+	}
+
+	// weapons
+	if (Weapons)		Weapons->Update		(dt,false);
+	
+	// *** general stuff
+	inherited::inherited::Update	(DT);
+	
+	if(m_pPhysicsShell){
+
+	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
+		{
+			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.5f,m_saved_element);
+			m_saved_impulse=0.f;
+		}
+		mRotate.set(m_pPhysicsShell->mXFORM);
+		mRotate.c.set(0,0,0);
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		if(skel_ddelay==0)
+		{
+		m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);
+		
+		}
+		skel_ddelay--;
+
+		mRotate.set(m_pPhysicsShell->mXFORM);
+		mRotate.c.set(0,0,0);
+		UpdateTransform					();
+		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		svTransform.set(m_pPhysicsShell->mXFORM);
+		
+	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
+	//	int id=M->LL_BoneID("bip01_pelvis");
+	//	CBoneInstance& instance=M->LL_GetInstance				(id);
+	//	instance.mTransform.set(m_pPhysicsShell->mXFORM);
+			
 	}
 }

@@ -184,8 +184,11 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 			break;
 		}
 		case eLookTypePoint : {
-			tPointToLook.getHP(r_target.yaw,r_target.pitch);
+			Fvector tTemp;
+			tTemp.sub	(tPointToLook,vPosition);
+			tTemp.getHP	(r_target.yaw,r_target.pitch);
 			r_target.yaw *= -1;
+			r_target.pitch *= -0;
 			break;
 		}
 		default : NODEFAULT;

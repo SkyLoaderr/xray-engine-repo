@@ -17,6 +17,8 @@
 #define MAX_TIME_RANGE_SEARCH			5000.f
 #define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 
+#define R2D(x)							(angle_normalize(x)*180.f/PI)
+
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
 private:
 	typedef CCustomMonster inherited;
