@@ -23,7 +23,6 @@ function main()
     )
     
 	while stalker:action() do
-		printf			("%s",stalker:best_weapon():name())
 		wait			()
     end
     
@@ -36,7 +35,6 @@ function main()
     )
     
 	while stalker:action() do
-		printf			("%s",stalker:best_weapon():name())
 		wait			()
     end
     
