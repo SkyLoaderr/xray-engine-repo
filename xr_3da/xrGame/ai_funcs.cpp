@@ -27,7 +27,7 @@ CPatternFunction::CPatternFunction()
 	m_dwaVariableValues = 0;
 }
 
-CPatternFunction::CPatternFunction(const char *caFileName)
+CPatternFunction::CPatternFunction(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 {
 	m_dwPatternCount = m_dwVariableCount = m_dwParameterCount = 0;
 	m_dwaVariableTypes = 0;
@@ -36,7 +36,7 @@ CPatternFunction::CPatternFunction(const char *caFileName)
 	m_tpPatterns = 0;
 	m_faParameters = 0;
 	m_dwaVariableValues = 0;
-	vfLoadEF(caFileName);
+	vfLoadEF(caFileName, tpAI_DDD);
 }
 
 CPatternFunction::~CPatternFunction()
@@ -51,8 +51,9 @@ CPatternFunction::~CPatternFunction()
 	xr_free(m_dwaVariableValues);
 }
 
-void CPatternFunction::vfLoadEF(const char *caFileName)
+void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 {
+	inherited::vfLoadEF(caFileName,tpAI_DDD);
 	char		caPath[260];
 	strconcat	(caPath,Path.GameData,AI_PATH);
 
@@ -117,7 +118,8 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	
 	xr_free(m_dwaAtomicIndexes);
     
-	Level().m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
+	m_tpAI_DDD = tpAI_DDD;
+	m_tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	_splitpath(caPath,0,0,m_caName,0);
 
@@ -134,12 +136,10 @@ float CPatternFunction::ffEvaluate()
 
 float CPatternFunction::ffGetValue()
 {
-	//if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
-	//	return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
 	for (u32 i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = Level().m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = m_tpAI_DDD->fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 #ifndef WRITE_TO_LOG
 	return(m_fLastValue = ffEvaluate());
 #else
@@ -157,39 +157,39 @@ float CPatternFunction::ffGetValue()
 // primary functions
 float CDistanceFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->Position().distance_to(Level().m_tpAI_DDD->m_tpCurrentEnemy->Position()));
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	return(m_fLastValue = m_tpAI_DDD->m_tpCurrentMember->Position().distance_to(m_tpAI_DDD->m_tpCurrentEnemy->Position()));
 };
 
 float CPersonalHealthFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	m_fMaxResultValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_MaxHealth();
-	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_Health());
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	m_fMaxResultValue = m_tpAI_DDD->m_tpCurrentMember->g_MaxHealth();
+	return(m_fLastValue = m_tpAI_DDD->m_tpCurrentMember->g_Health());
 };
 
 float CPersonalMoraleFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->m_fMorale);
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	return(m_fLastValue = m_tpAI_DDD->m_tpCurrentMember->m_fMorale);
 };
 
 float CPersonalCreatureTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	switch (Level().m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	switch (m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -283,9 +283,9 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
 	u32 dwBestWeapon = 2;
-	if (Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList())
-		for (int i=0; i<(int)Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
-			CWeapon *tpCustomWeapon = Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
+	if (m_tpAI_DDD->m_tpCurrentMember->GetItemList())
+		for (int i=0; i<(int)m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
+			CWeapon *tpCustomWeapon = m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
 			if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
 				u32 dwCurrentBestWeapon = 0;
 				switch (tpCustomWeapon->SUB_CLS_ID) {
@@ -331,11 +331,11 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 
 float CPersonalWeaponTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentMember))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
-	switch (Level().m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentMember;
+	switch (m_tpAI_DDD->m_tpCurrentMember->SUB_CLS_ID) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -434,52 +434,52 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 // enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
-	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	m_fLastValue = Level().m_tpAI_DDD->pfPersonalHealth.ffGetValue();
-	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = m_tpAI_DDD->m_tpCurrentMember;
+	m_tpAI_DDD->m_tpCurrentMember = m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = m_tpAI_DDD->pfPersonalHealth.ffGetValue();
+	m_tpAI_DDD->m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 };
 
 float CEnemyMoraleFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
-	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	m_fLastValue = Level().m_tpAI_DDD->pfPersonalMorale.ffGetValue();
-	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = m_tpAI_DDD->m_tpCurrentMember;
+	m_tpAI_DDD->m_tpCurrentMember = m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = m_tpAI_DDD->pfPersonalMorale.ffGetValue();
+	m_tpAI_DDD->m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 };
 
 float CEnemyCreatureTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
-	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	m_fLastValue = Level().m_tpAI_DDD->pfPersonalCreatureType.ffGetValue();
-	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = m_tpAI_DDD->m_tpCurrentMember;
+	m_tpAI_DDD->m_tpCurrentMember = m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = m_tpAI_DDD->pfPersonalCreatureType.ffGetValue();
+	m_tpAI_DDD->m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 };
 
 float CEnemyWeaponTypeFunction::ffGetValue()
 {
-	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))
+	if ((m_dwLastUpdate == Device.dwTimeGlobal) && (m_tpLastMonster == m_tpAI_DDD->m_tpCurrentEnemy))
 		return(m_fLastValue);
-	m_dwLastUpdate = Level().timeServer();
-	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	CEntityAlive *tpEntity = Level().m_tpAI_DDD->m_tpCurrentMember;
-	Level().m_tpAI_DDD->m_tpCurrentMember = Level().m_tpAI_DDD->m_tpCurrentEnemy;
-	m_fLastValue = Level().m_tpAI_DDD->pfPersonalWeaponType.ffGetValue();
-	Level().m_tpAI_DDD->m_tpCurrentMember = tpEntity;
+	m_dwLastUpdate = Device.dwTimeGlobal;
+	m_tpLastMonster = m_tpAI_DDD->m_tpCurrentEnemy;
+	CEntityAlive *tpEntity = m_tpAI_DDD->m_tpCurrentMember;
+	m_tpAI_DDD->m_tpCurrentMember = m_tpAI_DDD->m_tpCurrentEnemy;
+	m_fLastValue = m_tpAI_DDD->pfPersonalWeaponType.ffGetValue();
+	m_tpAI_DDD->m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 };

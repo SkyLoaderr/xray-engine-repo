@@ -19,6 +19,8 @@
 #define AI_MAX_EVALUATION_FUNCTION_COUNT	128
 #define OUT_MESSAGE(s1,s2)					Msg(s1,s2);
 
+class CAI_DDD;
+
 class CBaseFunction {
 protected:
 	u32				m_dwLastUpdate;
@@ -27,13 +29,22 @@ protected:
 	float			m_fMinResultValue;
 	float			m_fMaxResultValue;
 	char			m_caName[260];
+	CAI_DDD			*m_tpAI_DDD;
 
 public:
 
-					CBaseFunction() {m_caName[0] = 0;};
-	virtual	void	vfLoadEF(const char *caFileName) {};
+					CBaseFunction()
+	{
+		m_caName[0] = 0;
+	};
+
+	virtual	void	vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
+	{
+		m_tpAI_DDD = tpAI_DDD;
+	};
+
 	virtual float	ffGetValue() = 0;
-	virtual u32	dwfGetDiscreteValue(u32 dwDiscretizationValue)
+	virtual u32		dwfGetDiscreteValue(u32 dwDiscretizationValue)
 	{
 		float fTemp = ffGetValue();
 		if (fTemp <= m_fMinResultValue)
@@ -52,26 +63,25 @@ public:
 class CPatternFunction : public CBaseFunction {
 	
 private:
+	typedef CBaseFunction inherited;
 	static const u32	EFC_VERSION	= 1;
 	typedef struct tagSEFHeader {
-		u32	dwBuilderVersion;
-		u32	dwDataFormat;
+		u32			dwBuilderVersion;
+		u32			dwDataFormat;
 	} SEFHeader;
 
 	typedef struct tagSPattern {
-		u32		dwCardinality;
-		u32		*dwaVariableIndexes;
+		u32			dwCardinality;
+		u32			*dwaVariableIndexes;
 	} SPattern;
 
-	u32		*m_dwaAtomicFeatureRange;
-	u32		*m_dwaPatternIndexes;
-	SPattern	*m_tpPatterns;
-	float		*m_faParameters;
-
-	u32		m_dwPatternCount;
-	u32		m_dwParameterCount;
-
-	SEFHeader	m_tEFHeader;
+	u32				*m_dwaAtomicFeatureRange;
+	u32				*m_dwaPatternIndexes;
+	SPattern		*m_tpPatterns;
+	float			*m_faParameters;
+	u32				m_dwPatternCount;
+	u32				m_dwParameterCount;
+	SEFHeader		m_tEFHeader;
 
 	IC u32 dwfGetPatternIndex(u32 *dwpTest, int iPatternIndex)
 	{
@@ -81,32 +91,35 @@ private:
 		return(dwIndex + m_dwaPatternIndexes[iPatternIndex]);
 	}
 	
-	float		ffEvaluate();
+	float			ffEvaluate();
 
 public:
 	
-	u32		m_dwVariableCount;
-	u32		m_dwFunctionType;
-	u32		*m_dwaVariableTypes;
-	u32		*m_dwaVariableValues;
+	u32				m_dwVariableCount;
+	u32				m_dwFunctionType;
+	u32				*m_dwaVariableTypes;
+	u32				*m_dwaVariableValues;
 
-				CPatternFunction(const char *caEFFileName);
-				CPatternFunction();
-				~CPatternFunction();
+					CPatternFunction();
+					CPatternFunction(LPCSTR caEFFileName, CAI_DDD *tpAI_DDD);
+					~CPatternFunction();
 
-	virtual	void	vfLoadEF(const char *caEFFileName);
+	virtual	void	vfLoadEF(LPCSTR caEFFileName, CAI_DDD *tpAI_DDD);
 	virtual float	ffGetValue();
 };
 
 class CDistanceFunction : public CBaseFunction {
 
 public:
-	CDistanceFunction() {
+	
+	CDistanceFunction()
+	{
 		m_fMinResultValue = 3.0;
 		m_fMaxResultValue = 20.0;
 		strcat(m_caName,"Distance");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 	
 	virtual u32	dwfGetDiscreteValue(u32 dwDiscretizationValue)
@@ -125,36 +138,45 @@ public:
 class CPersonalHealthFunction : public CBaseFunction {
 
 public:
-	CPersonalHealthFunction() {
+	
+	CPersonalHealthFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalHealth");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 };
  
 class CPersonalMoraleFunction : public CBaseFunction {
 	
 public:
-	CPersonalMoraleFunction() {
+	
+	CPersonalMoraleFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"PersonalMorale");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+	
 	virtual float ffGetValue();
 };
  
 class CPersonalCreatureTypeFunction : public CBaseFunction {
 	
 public:
-	CPersonalCreatureTypeFunction() {
+	
+	CPersonalCreatureTypeFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
 		strcat(m_caName,"PersonalCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 };
  
@@ -163,60 +185,73 @@ class CPersonalWeaponTypeFunction : public CBaseFunction {
 	float ffGetTheBestWeapon();
 
 public:
-	CPersonalWeaponTypeFunction() {
+	
+	CPersonalWeaponTypeFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"PersonalWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 };
  
 class CEnemyHealthFunction : public CBaseFunction {
 
 public:
-	CEnemyHealthFunction() {
+	
+	CEnemyHealthFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyHealth");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 };
  
 class CEnemyMoraleFunction : public CBaseFunction {
 	
 public:
-	CEnemyMoraleFunction() {
+	
+	CEnemyMoraleFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"EnemyMorale");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
 	virtual float ffGetValue();
 };
  
 class CEnemyCreatureTypeFunction : public CBaseFunction {
 	
 public:
-	CEnemyCreatureTypeFunction() {
+	
+	CEnemyCreatureTypeFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 21.0;
 		strcat(m_caName,"EnemyCreatureType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
 	virtual float ffGetValue();
 };
  
 class CEnemyWeaponTypeFunction : public CBaseFunction {
 	
 public:
-	CEnemyWeaponTypeFunction() {
+	
+	CEnemyWeaponTypeFunction()
+	{
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
 		strcat(m_caName,"EnemyWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
-	}
+	};
+
 	virtual float ffGetValue();
 };
  
@@ -259,10 +294,10 @@ public:
 		fpaBaseFunctions[43] = &pfEnemyCreatureType;
 		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
-		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat");
-		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat");
-		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat");
-		pfCreatureEffectiveness.	vfLoadEF("common\\CreatureEffectiveness.dat");
+		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",this);
+		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",this);
+		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",this);
+		pfCreatureEffectiveness.	vfLoadEF("common\\CreatureEffectiveness.dat",this);
 	}
 };
 
