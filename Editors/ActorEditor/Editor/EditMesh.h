@@ -236,8 +236,6 @@ public:
 	// convert
     void			FlipFaces				();
 	TriObject*		ExtractTriObject		(INode *node, int &deleteIt);
-	bool			ExtractTexName			(char *dest, Texmap *map);
-	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
 	bool			Convert					(INode *node);
 	bool			Convert					(CExporter* exporter);
 #endif

@@ -25,6 +25,8 @@ struct	st_ObjectDB;
 #include <lwsurf.h>
 #endif
 
+// refs
+class XRayMaterial;
 
 class CSurface
 {
@@ -38,8 +40,8 @@ public:
     BYTE			m_Sideflag;
     DWORD			m_dwFVF;
 #ifdef _MAX_EXPORT
-	DWORD			mat_id;
-	LPVOID			mtl_id;
+	DWORD			mid;
+	Mtl*			mtl;
 #endif
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
@@ -52,8 +54,8 @@ public:
 		m_Sideflag	= 0;
 		m_dwFVF		= 0;
 #ifdef _MAX_EXPORT
-		mat_id		= 0;
-		mtl_id		= 0;
+		mtl			= 0;
+		mid			= 0;
 #endif
 #ifdef _LW_IMPORT
 		surf_id		= 0;
@@ -322,7 +324,11 @@ public:
     bool			ExportObjectOGF			(LPCSTR fname);
     bool			PrepareOGF				(CFS_Base& F);
 #ifdef _MAX_EXPORT
-	CSurface*		CreateSurface			(LPVOID M, DWORD mat_id);
+	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
+	BOOL			ParseStdMaterial		(StdMat* src, CSurface* dest);
+	BOOL			ParseMultiMaterial		(MultiMtl* src, DWORD mid, CSurface* dest);
+	BOOL			ParseXRayMaterial		(XRayMaterial* src, DWORD mid, CSurface* dest);
+	CSurface*		CreateSurface			(Mtl* M, DWORD mat_id);
 	LPCSTR			GenerateSurfaceName		(LPCSTR base_name); 
 	bool			ImportMAXSkeleton		(CExporter* exporter);
 #endif
