@@ -83,7 +83,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrD3D9-Null.dll"
+				OutputFile="x:\D3D9-Null.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="D3D9-Null.def"
 				GenerateDebugInformation="TRUE"
