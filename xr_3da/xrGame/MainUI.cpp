@@ -36,8 +36,10 @@ void CMainUI::Activate	(bool bActivate)
 	if(bActivate){
 		m_Flags.set					(flActive|flNeedChangeCapture,TRUE);
 		DLL_Pure* dlg = NEW_INSTANCE (TEXT2CLSID("MAIN_MNU"));
-		if(!dlg)
+		if(!dlg) {
+			m_Flags.set				(flActive|flNeedChangeCapture,FALSE);
 			return;
+		}
 		m_startDialog = smart_cast<CUIDialogWnd*>(dlg);
 		VERIFY(m_startDialog);
 
