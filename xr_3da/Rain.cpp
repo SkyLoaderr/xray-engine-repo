@@ -222,6 +222,7 @@ void	CEffect_Rain::Render	()
 		if (factor<EPS_L)		return;
 		state					= stWorking;
 		snd_Ambient.play		(0,TRUE);
+		snd_Ambient.set_range	(15.f,20.f);
 		break;
 	case stWorking:
 		if (factor<EPS_L)
