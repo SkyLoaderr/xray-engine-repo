@@ -139,7 +139,7 @@ blend_down_time				= 300 ;(сек)
 ;ccc             = sect_ccc
 ddd             = sect_ddd
 vibros           =sect_vibros
-all_no_vert      =sect_all_no_vert
+;all_no_vert      =sect_all_no_vert
 
 
 
@@ -1294,7 +1294,7 @@ sun_dir			=	-3.0, 292
 13:00:00			=	ev_13
 14:00:00			=	ev_14
 14:30:00			=	ev_141
-15:00:00			=	ev_15
+;15:00:00			=	ev_15
 16:00:00			=	ev_16
 17:00:00			=	ev_17
 18:00:00			=	ev_18
@@ -1737,7 +1737,7 @@ fog_density		=	0.9
 rain_density	=	0.50
 rain_color		=	0.70,	0.70,	0.70
 thunderbolt		= 	on
-bolt_period		=	3.f
+bolt_period		=	5.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
@@ -1748,48 +1748,49 @@ sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-25.0, 292.0
 
 
-[ev_17]
-flares			=	
+[e_17]
+flares			=   flares_default
+sky_texture		=	sky\sky_21_cube
+sky_rotation	=	0
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	400
+fog_color		=	0.675, 0.675, 0.620
+fog_density		=	0.9
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
+wind_velocity	=	20.0 
+wind_direction	=	0.0
+ambient			=	0.075,   0.08,  	0.08   
+lmap_color		=	2.0,	2.0,	1.86
+hemi_color		=   0.0,    0.0,  	0.0
+sun_color		=	1.000, 0.914, 0.675
+sun_dir			=	-24.0, 292
+
+
+[e_18]
+flares			=	flares_gradient	
 sky_texture		=	sky\sky_13_cube
 sky_rotation	=	0
-sky_color		=	0.50,	0.50,	0.50
-far_plane		=	300
-fog_color		=	0.204, 0.200, 0.204
+sky_color		=	1.0,    1.0,  	1.0
+far_plane		=	250
+fog_color		=	0.408, 0.400, 0.408
 fog_density		=	0.9
-rain_density	=	0.5
-rain_color		=	0.70,	0.70,	0.70
-thunderbolt		= 	on
+rain_density	=	0.0
+rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
 bolt_period		=	3.f
 bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
-ambient			=	0.01,   0.01,  	0.01
-lmap_color		=	0.757, 0.855, 1.000
+ambient			=	0.06,   0.06,  	0.06
+lmap_color		=   1.5,	1.5,	1.5
 hemi_color		=	0.0,    0.0,  	0.0
 sun_color		=	0.0,    0.0,  	0.0
-sun_dir			=	-25.0, 292.0
+sun_dir			=	-25.0, 292
 
-
-[ev_18]
-flares			=	
-sky_texture		=	sky\sky_13_cube
-sky_rotation	=	0
-sky_color		=	0.50,	0.50,	0.50
-far_plane		=	300
-fog_color		=	0.204, 0.200, 0.204
-fog_density		=	0.9
-rain_density	=	0.5
-rain_color		=	0.70,	0.70,	0.70
-thunderbolt		= 	on
-bolt_period		=	3.f
-bolt_duration	=	0.25f
-wind_velocity	=	0.0 
-wind_direction	=	0.0
-ambient			=	0.01,   0.01,  	0.01
-lmap_color		=	0.757, 0.855, 1.000
-hemi_color		=	0.0,    0.0,  	0.0
-sun_color		=	0.0,    0.0,  	0.0
-sun_dir			=	-25.0, 292.0
 
 [ev_19]
 flares			=	
