@@ -1358,6 +1358,7 @@ CPhysicsShell* CScriptGameObject::get_physics_shell() const
 	return ph_shell_holder->PPhysicsShell();
 }
 
+//////////////////////////////////////////////////////////////////////////
 //CAI_Bloodsucker
 void CScriptGameObject::set_invisible(bool val)
 {
@@ -1380,6 +1381,28 @@ void CScriptGameObject::set_manual_invisibility(bool val)
 
 	val ? monster->set_manual_switch(true) : monster->set_manual_switch(false);
 }
+bool CScriptGameObject::get_invisible()
+{
+	CAI_Bloodsucker		*monster = dynamic_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_invisible!");
+		return false;
+	}
+	
+	return monster->CEnergyHolder::is_active();
+}
+
+bool CScriptGameObject::get_manual_invisibility()
+{
+	CAI_Bloodsucker		*monster = dynamic_cast<CAI_Bloodsucker*>(m_tpGameObject);
+	if (!monster) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"Script Object : cannot access class member get_manual_invisibility!");
+		return false;
+	}
+	return monster->is_manual_control();
+}
+//////////////////////////////////////////////////////////////////////////
+
 
 void CScriptGameObject::add_restrictions		(LPCSTR in, LPCSTR out)
 {

@@ -32,6 +32,7 @@ public:
 			void	set_manual_switch		(bool b_man = true);
 			void	manual_activate			();
 			void	manual_deactivate		();
+			bool	is_manual_control		() {return m_manual;}
 
 private:
 			void	start_blink				();
