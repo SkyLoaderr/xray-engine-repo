@@ -21,6 +21,7 @@ public:
 	virtual ~CExplosiveRocket(void);
 public:
 	virtual CInventoryItem*				cast_inventory_item		()						{return this;}
+	virtual CWeapon*					cast_weapon				()						{return NULL;}
 public:
 
 	virtual void Load(LPCSTR section);
