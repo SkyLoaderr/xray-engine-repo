@@ -421,15 +421,7 @@ struct _ParticleState
 	// p_group_count groups can be added.
 	int GenerateGroups(int p_group_count);
 	int GenerateLists(int alist_count);
-	__forceinline ParticleGroup *GetGroupPtr(int p_group_num){
-		if(p_group_num < 0)
-			return NULL; // IERROR
-
-		if(p_group_num >= group_count)
-			return NULL; // IERROR
-
-		return group_list[p_group_num];
-	}
+	ParticleGroup *GetGroupPtr(int p_group_num);
 	PAHeader *GetListPtr(int action_list_num);
 };
 
@@ -448,6 +440,8 @@ inline _ParticleState &_GetPState()
 // All entry points call this to get their particle state.
 // For the non-MP case this is practically a no-op.
 extern "C" PARTICLEDLL_API _ParticleState& __cdecl _GetPState();
+extern "C" PARTICLEDLL_API ParticleGroup* __cdecl _GetGroupPtr(int p_group_num);
+extern "C" PARTICLEDLL_API PAHeader* __cdecl _GetListPtr(int action_list_num);
 #endif
 
 #pragma pack( pop ) // push 4

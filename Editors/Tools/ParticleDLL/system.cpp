@@ -153,6 +153,15 @@ _ParticleState& __cdecl _GetPState()
 
 	return __ps;
 }
+// Get a pointer to the particles in gp memory
+ParticleGroup* __cdecl _GetGroupPtr(int p_group_num)
+{
+	return __ps.GetGroupPtr(p_group_num);
+}
+PAHeader* __cdecl _GetListPtr(int action_list_num)
+{
+	return __ps.GetListPtr(action_list_num);
+}
 
 inline void _PLock()
 {
@@ -185,7 +194,7 @@ _ParticleState::_ParticleState()
 	Age = 0.0f;
 	AgeSigma = 0.0f;
 }
-/*
+
 ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
 {
 	if(p_group_num < 0)
@@ -196,7 +205,7 @@ ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
 
 	return group_list[p_group_num];
 }
-*/
+
 PAHeader *_ParticleState::GetListPtr(int a_list_num)
 {
 	if(a_list_num < 0)
