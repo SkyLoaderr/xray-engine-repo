@@ -11,6 +11,16 @@
 #include "hudmanager.h"
 #include "ai_funcs.h"
 
+bool				CCustomMonster::bPatternFunctionLoaded = false;
+CPatternFunction	CCustomMonster::pfRelation;
+CBaseFunction		*CCustomMonster::fpaBaseFunctions[MAX_FUNCTION_COUNT];
+CHealthFunction		CCustomMonster::pfHealth;
+CArmorFunction		CCustomMonster::pfArmor;
+CMoraleFunction		CCustomMonster::pfMorale;
+CStrengthFunction	CCustomMonster::pfStrength;
+CAccuracyFunction	CCustomMonster::pfAccuracy;
+CReactionFunction	CCustomMonster::pfReaction;
+
 DWORD psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
 
@@ -115,7 +125,18 @@ void CCustomMonster::Load		(LPCSTR section)
 	shedule_Min	= 50;
 	shedule_Max	= 500; // 30 * NET_Latency / 4;
 
-	//
+	if (!bPatternFunctionLoaded) {
+		bPatternFunctionLoaded = true;
+		fpaBaseFunctions[0] = &pfHealth;
+		fpaBaseFunctions[1] = &pfArmor;
+		fpaBaseFunctions[2] = &pfMorale;
+		fpaBaseFunctions[3] = &pfStrength;
+		fpaBaseFunctions[4] = &pfAccuracy;
+		fpaBaseFunctions[5] = &pfReaction;
+		//pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
+	}
+
+	//Msg("Evaluation Function Relation : %8.2f",pfRelation.dfGetValue(this,fpaBaseFunctions));
 }
 
 void CCustomMonster::g_WeaponBones	(int& L, int& R)

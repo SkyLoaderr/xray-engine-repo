@@ -52,6 +52,7 @@ class CAI_Rat : public CCustomMonster
 		// constants
 		float			m_fGoalChangeDelta;
 		float			m_fSpeed;
+		float			m_fSafeSpeed;
 		float			m_fASpeed;
 		float			m_fMinHeight;
 		Fvector			m_tVarGoal;

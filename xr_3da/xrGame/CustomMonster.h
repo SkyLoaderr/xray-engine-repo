@@ -12,6 +12,9 @@
 #include "entity.h"
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
+#include "ai_funcs.h"
+
+#define MAX_FUNCTION_COUNT 64
 
 class ENGINE_API CMotionDef;
 class ENGINE_API CKinematics;
@@ -241,6 +244,17 @@ public:
 	CWeaponList			*	tpfGetWeapons		(){return Weapons;}
 	virtual	void			feel_touch_new		(CObject* O);
 	virtual	void			OnEvent				(NET_Packet& P, u16 type);
+
+	// Data driven design properties
+	static	bool				bPatternFunctionLoaded;
+	static  CBaseFunction		*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+	static  CHealthFunction		pfHealth;
+	static  CArmorFunction		pfArmor;
+	static  CMoraleFunction		pfMorale;
+	static  CStrengthFunction	pfStrength;
+	static  CAccuracyFunction	pfAccuracy;
+	static  CReactionFunction	pfReaction;
+	static  CPatternFunction	pfRelation;
 };
 
 namespace AI{

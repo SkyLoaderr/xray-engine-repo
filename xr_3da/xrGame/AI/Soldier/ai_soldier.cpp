@@ -14,16 +14,6 @@
 #include "..\\..\\hudmanager.h"
 #include "..\\..\\..\\xr_trims.h"
 
-bool				CAI_Soldier::bPatternFunctionLoaded = false;
-CPatternFunction	CAI_Soldier::pfRelation;
-CBaseFunction		*CAI_Soldier::fpaBaseFunctions[MAX_FUNCTION_COUNT];
-CHealthFunction		CAI_Soldier::pfHealth;
-CArmorFunction		CAI_Soldier::pfArmor;
-CMoraleFunction		CAI_Soldier::pfMorale;
-CStrengthFunction	CAI_Soldier::pfStrength;
-CAccuracyFunction	CAI_Soldier::pfAccuracy;
-CReactionFunction	CAI_Soldier::pfReaction;
-
 CAI_Soldier::CAI_Soldier()
 {
 	dwHitTime = DWORD(-1);
@@ -168,19 +158,6 @@ void CAI_Soldier::Load	(LPCSTR section)
 	
 	m_dwMaxDynamicObjectsCount = min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount = min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
-
-	if (!bPatternFunctionLoaded) {
-		bPatternFunctionLoaded = true;
-		fpaBaseFunctions[0] = &pfHealth;
-		fpaBaseFunctions[1] = &pfArmor;
-		fpaBaseFunctions[2] = &pfMorale;
-		fpaBaseFunctions[3] = &pfStrength;
-		fpaBaseFunctions[4] = &pfAccuracy;
-		fpaBaseFunctions[5] = &pfReaction;
-		//pfRelation.vfLoadEF(pSettings->ReadSTRING(section,"Relation"),fpaBaseFunctions);
-	}
-
-	//Msg("Evaluation Function Relation : %8.2f",pfRelation.dfGetValue(this,fpaBaseFunctions));
 
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");

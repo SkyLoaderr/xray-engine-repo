@@ -15,9 +15,6 @@
 #include "..\\..\\group.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
-#include "..\\..\\ai_funcs.h"
-
-#define MAX_FUNCTION_COUNT 64
 
 class CAI_Soldier : public CCustomMonster
 {
@@ -734,17 +731,6 @@ class CAI_Soldier : public CCustomMonster
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual objQualifier* GetQualifier();
 		virtual	void  soundEvent(CObject* who, int eType, Fvector& Position, float power);
-		
-		// Data driven design properties
-		static	bool				bPatternFunctionLoaded;
-		static  CBaseFunction		*fpaBaseFunctions[MAX_FUNCTION_COUNT];
-		static  CHealthFunction		pfHealth;
-		static  CArmorFunction		pfArmor;
-		static  CMoraleFunction		pfMorale;
-		static  CStrengthFunction	pfStrength;
-		static  CAccuracyFunction	pfAccuracy;
-		static  CReactionFunction	pfReaction;
-		static  CPatternFunction	pfRelation;
 };
 		
 #endif

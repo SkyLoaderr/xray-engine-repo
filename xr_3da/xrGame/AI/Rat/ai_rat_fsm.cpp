@@ -15,6 +15,7 @@
 #include "..\\..\\..\\xr_trims.h"
 
 #define TORSO_ANGLE_DELTA				(PI/30.f)
+//#define PRE_THINK_COUNT					4
 
 void CAI_Rat::Die()
 {
@@ -332,8 +333,14 @@ void CAI_Rat::Turn()
 
 void CAI_Rat::FreeState()
 {
-	//m_fTimeUpdateDelta = Device.fTimeDelta;
-	AI_Path.TravelPath.clear();
+	WRITE_TO_LOG("Free state");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+
+	SelectEnemy(Enemy);
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiRatAttackFire)
+
 	if(m_fGoalChangeTime<=0){
 		m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
 		Fvector vP;
@@ -341,6 +348,7 @@ void CAI_Rat::FreeState()
 		m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
 		m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
 		m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
+		
 		int iRandom = ::Random.randI(0,3);
 		switch (iRandom) {
 			case 0 : {
@@ -353,61 +361,103 @@ void CAI_Rat::FreeState()
 			}
 			case 2 : {
 				if (::Random.randI(0,4) == 0)
-					m_fSpeed = 0.f;
+					m_fSpeed = EPS_S;
 				break;
 			}
 		}
+		m_fSafeSpeed = m_fSpeed;
 	}
 	m_fGoalChangeTime -= m_fTimeUpdateDelta;
-	// Update position and orientation of the planes
-	float fAT = m_fASpeed * m_fTimeUpdateDelta;
+	//if (fabsf(m_fSpeed) > EPS_L) 
+	{
+		// Update position and orientation of the planes
+		float fAT = m_fASpeed * m_fTimeUpdateDelta;
 
-	Fvector& tDirection = mRotate.k;
+		Fvector& tDirection = mRotate.k;
 
-	// Tweak orientation based on last position and goal
-	Fvector tOffset;
-	tOffset.sub(m_tGoalDir,vPosition);
+		// Tweak orientation based on last position and goal
+		Fvector tOffset;
+		tOffset.sub(m_tGoalDir,vPosition);
 
-	// First, tweak the pitch
-	if( tOffset.y > 1.0){			// We're too low
-		m_tHPB.y += fAT;
-		if( m_tHPB.y > 0.8f )	m_tHPB.y = 0.8f;
-	}else if( tOffset.y < -1.0){	// We're too high
-		m_tHPB.y -= fAT;
-		if( m_tHPB.y < -0.8f )m_tHPB.y = -0.8f;
-	}else							// Add damping
-		m_tHPB.y *= 0.95f;
+		// First, tweak the pitch
+		if( tOffset.y > 1.0){			// We're too low
+			m_tHPB.y += fAT;
+			if( m_tHPB.y > 0.8f )	m_tHPB.y = 0.8f;
+		}else if( tOffset.y < -1.0){	// We're too high
+			m_tHPB.y -= fAT;
+			if( m_tHPB.y < -0.8f )m_tHPB.y = -0.8f;
+		}else							// Add damping
+			m_tHPB.y *= 0.95f;
 
-	// Now figure out yaw changes
-	tOffset.y           = 0.0f;
-	tDirection.y		= 0.0f;
+		// Now figure out yaw changes
+		tOffset.y           = 0.0f;
+		tDirection.y		= 0.0f;
 
-	tDirection.normalize();
-	tOffset.normalize	();
+		tDirection.normalize();
+		tOffset.normalize	();
 
-	float fDot = tDirection.dotproduct(tOffset);
-	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
+		float fDot = tDirection.dotproduct(tOffset);
+		fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
 
-	tOffset.crossproduct(tOffset,tDirection);
+		tOffset.crossproduct(tOffset,tDirection);
 
-	if( tOffset.y > 0.01f )		m_fDHeading = ( m_fDHeading * 9.0f + fDot ) * 0.1f;
-	else if( tOffset.y < 0.01f )m_fDHeading = ( m_fDHeading * 9.0f - fDot ) * 0.1f;
+		if( tOffset.y > 0.01f )		m_fDHeading = ( m_fDHeading * 9.0f + fDot ) * 0.1f;
+		else if( tOffset.y < 0.01f )m_fDHeading = ( m_fDHeading * 9.0f - fDot ) * 0.1f;
 
-	m_tHPB.x  +=  m_fDHeading;
-	m_tHPB.z  = -m_fDHeading * 9.0f;
+		m_tHPB.x  +=  m_fDHeading;
+		m_tHPB.z  = -m_fDHeading * 9.0f;
 
-	// Build the local matrix for the pplane
-	mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+		// Build the local matrix for the pplane
+		mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 
-	// Update position
-	m_tOldPosition.set(vPosition);
-	vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-	vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+		// Update position
+		m_tOldPosition.set(vPosition);
+		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+		vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
 
-	SetDirectionLook();
+		SetDirectionLook();
 
-	UpdateTransform();
-	bStopThinking = true;
+		if (!Level().AI.bfTooBigAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+			m_fSpeed = EPS_S;
+		else 
+			if (m_fSafeSpeed != m_fSpeed) {
+				int iRandom = ::Random.randI(0,2);
+				switch (iRandom) {
+					case 0 : {
+						m_fSpeed = m_fMaxSpeed;
+						break;
+					}
+					case 1 : {
+						m_fSpeed = m_fMinSpeed;
+						break;
+					}
+					case 2 : {
+						if (::Random.randI(0,4) == 0)
+							m_fSpeed = EPS_S;
+						break;
+					}
+				}
+				m_fSafeSpeed = m_fSpeed;
+			}
+
+		AI_Path.TravelPath.clear();
+		if (fabsf(m_fSpeed) < EPS_L) {
+	//		AI_Path.TravelPath.resize(2);
+	//		AI_Path.TravelStart = 0;
+	//		AI_Path.TravelPath[0].floating = FALSE;
+	//		AI_Path.TravelPath[0].P = vPosition;
+	//		AI_Path.TravelPath[1].floating = FALSE;
+	//		AI_Path.TravelPath[1].P.mad(vPosition,tDirection,10.f);
+	//		AI_Path.TravelPath.resize(11);
+	//		AI_Path.TravelStart = 0;
+	//		AI_Path.TravelPath[0].floating = FALSE;
+	//		AI_Path.TravelPath[0].P = vPosition;
+	//		for (int i=1; i<11; i++) {
+	//			AI_Path.TravelPath[i].floating = FALSE;
+	//			AI_Path.TravelPath[i].P.mad(vPosition,tDirection,(float)i);
+	//		}
+		}
+	}
 }
 
 void CAI_Rat::Think()
