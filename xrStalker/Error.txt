@@ -14,6 +14,11 @@
 ; -Y - from Yura
 ; -K - from Koan
 
+
+To SLIPCH: 
+-S			колеса жестко не фиксируются (интегратор?)
+
+
 To OLES : 
 +++S		вылетает CHOM::Render_DB (CHOM-CDB)
 ---O	(?) LightPPA (line 202) - inactive.empty() = false
@@ -52,6 +57,7 @@ To AlexMX:
 
 
 To Dima:
+-S  маршруты между несвязанными по высоте нодами
 -S	вороны вылетают в ai_primary_func.cpp ffGetValue() -NODEFAULT
 -O	ai_alife_switch.cpp / line 294 - "non RTTI object"
 +K	сталкеры перемещаются быстрее отыгрываемой анимации
