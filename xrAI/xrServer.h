@@ -10,7 +10,7 @@
 #include "id_generator.h"
 class CSE_Abstract;
 
-const u32	NET_Latency		= 50;		// time in (ms)
+const u32	NET_Latency		= 0;		// time in (ms)
 
 // t-defs
 typedef xr_map<u16,CSE_Abstract*>	xrS_entities;
