@@ -40,6 +40,7 @@ void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool
 {
 	inherited_planner::reinit	(object,clear_all);
 	inherited_action::reinit	(object,storage,clear_all);
+	set_target_state			(effects());
 }
 
 TEMPLATE_SPECIALIZATION

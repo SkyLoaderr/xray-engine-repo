@@ -86,6 +86,9 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorTakeCover,
 
 		eWorldOperatorSquadAction,
+		eWorldOperatorDeathPlanner,
+		eWorldOperatorALifePlanner,
+		eWorldOperatorCombatPlanner,
 
 		eWorldOperatorScript,
 		eWorldOperatorDummy			= u32(-1),

@@ -76,13 +76,16 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("action_kill_enemy_aggressive",				StalkerDecisionSpace::eWorldOperatorKillEnemyAggressive),
 				luabind::value("action_aim_enemy",							StalkerDecisionSpace::eWorldOperatorAimEnemy),
 				luabind::value("action_get_ready_to_kill_moderate",			StalkerDecisionSpace::eWorldOperatorGetReadyToKillModerate),
-				luabind::value("action_get_enemy_seen_moderate",				StalkerDecisionSpace::eWorldOperatorGetEnemySeenModerate),
-				luabind::value("action_kill_enemy_moderate",					StalkerDecisionSpace::eWorldOperatorKillEnemyModerate),
-				luabind::value("action_camping",								StalkerDecisionSpace::eWorldOperatorCamping),
-				luabind::value("action_get_ready_to_kill_avoid",				StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
+				luabind::value("action_get_enemy_seen_moderate",			StalkerDecisionSpace::eWorldOperatorGetEnemySeenModerate),
+				luabind::value("action_kill_enemy_moderate",				StalkerDecisionSpace::eWorldOperatorKillEnemyModerate),
+				luabind::value("action_camping",							StalkerDecisionSpace::eWorldOperatorCamping),
+				luabind::value("action_get_ready_to_kill_avoid",			StalkerDecisionSpace::eWorldOperatorGetReadyToKillAvoid),
 				luabind::value("action_kill_enemy_avoid",					StalkerDecisionSpace::eWorldOperatorKillEnemyAvoid),
 				luabind::value("action_retreat_from_enemy",					StalkerDecisionSpace::eWorldOperatorRetreatFromEnemy),
-				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction)
+				luabind::value("action_squad_action",						StalkerDecisionSpace::eWorldOperatorSquadAction),
+				luabind::value("action_death_planner",						StalkerDecisionSpace::eWorldOperatorDeathPlanner),
+				luabind::value("action_puzzle_solver",						StalkerDecisionSpace::eWorldOperatorALifePlanner),
+				luabind::value("action_combat_planner",						StalkerDecisionSpace::eWorldOperatorCombatPlanner)
 			]
 
 			.enum_("sounds")
