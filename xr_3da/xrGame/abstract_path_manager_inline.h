@@ -125,4 +125,5 @@ IC	void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
 	m_dest_vertex_id		= vertex_id;
 }
 
+#undef CPathManagerTemplate
 #undef TEMPLATE_SPECIALIZATION

@@ -14,20 +14,19 @@ template <
 	typename _vertex_id_type
 >
 class CAbstractLocationSelector {
-private:
+protected:
 	bool						m_failed;
 	_VertexEvaluator			*m_evaluator;
 	_vertex_id_type				m_selected_vertex_id;
 	const _Graph				*m_graph;
-
-	IC		void				perform_search				(const _vertex_id_type game_vertex_id);
-protected:
 	u32							m_last_query_time;
 	u32							m_query_interval;
+	
+	IC		void				perform_search				(const _vertex_id_type game_vertex_id);
 public:
 	IC							CAbstractLocationSelector	();
 	IC	virtual					~CAbstractLocationSelector	();
-		virtual void			Init						(const _Graph *graph = 0);
+	IC	virtual void			Init						(const _Graph *graph = 0);
 
 	IC			_vertex_id_type get_selected_vertex_id		() const;
 
