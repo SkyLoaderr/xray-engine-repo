@@ -11,6 +11,8 @@
 #include "UICursor.h"
 #include "game_base_space.h"
 #include "level.h"
+#include "ai_space.h"
+#include "script_engine.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -85,6 +87,7 @@ void CGamePersistent::OnAppStart()
 	GMLib.Load					();
 	__super::OnAppStart			();
 	m_pMainUI					= xr_new<CMainUI>();
+	ai().script_engine().setup_callbacks();
 }
 
 extern void clean_game_globals	();
