@@ -119,7 +119,7 @@ function stateAttackThreaten:execute()
     --If enemy near, retreat
           action(self.memory.npc, anim(anim.turn, 0), look(look.point, self.enemy:position()), cond(cond.look_end) )
           action(self.memory.npc, anim(anim.attack, 0), look(look.point, self.enemy:position()), sound(sound.growling), cond(cond.time_end, 1000))
-      escape_bobic.bobik_alarm()
+      escape_bobik.bobik_alarm()
         else
 --      local new_pos = self.memory.npc:position()
 --            new_pos:sub( self.memory.enemy:position():sub(self.memory.npc:position()):mul(10) )
