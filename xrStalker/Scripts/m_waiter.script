@@ -10,22 +10,17 @@ function waiter:execute()
 	if( self:is_on_line() == false ) then return end
     if( self.npc:action() == nil ) then
         action( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
---        this.action2( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
     end
 end
 
 function waiter:is_on_line()
 	if( level.object( self.npc_name ) ) then
---        printf( "on_line" )
         if( self.on_line ) then return true end
         self.npc = level.object( self.npc_name )
         self.npc:script( true, self.scr_name )
---        printf( "get-----------------" )
         action( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
---        this.action2( self.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 100000000000000000 ) )
         self.on_line = true
     else
---	    printf( "off_line" )
     	if( self.on_line == true ) then self.on_line = false end
     end
     return self.on_line
@@ -33,6 +28,7 @@ end
 
 local snd = nil
 local hit = nil
+
 function waiter:check_completed()
 	if( self.on_line == false ) 	then return false end
 	if( self.npc:alive() == false ) then return true end
