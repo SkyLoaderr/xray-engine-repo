@@ -72,6 +72,21 @@ void CStateAttackWeak::execute			()
 		m_object->CSightManager::update				(eLookTypeDirection,&direction);
 	}
 
+	if (m_object->visible(m_object->enemy()) && (m_object->Position().distance_to(m_object->enemy()->Position()) < 10.f)) {
+		m_object->CStalkerMovementManager::update	(
+			0,
+			0,
+			0,
+			0,
+			CMovementManager::ePathTypeLevelPath,
+			CMovementManager::eDetailPathTypeSmooth,
+			eBodyStateStand,
+			eMovementTypeStand,
+			eMentalStateDanger
+		);
+		return;
+	}
+
 	m_object->set_level_dest_vertex				(mem_object.m_object_params.m_level_vertex_id);
 	m_object->CStalkerMovementManager::update	(
 		0,
