@@ -161,6 +161,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("get_invisible",				&CScriptGameObject::get_invisible)
 		.def("get_manual_invisibility",		&CScriptGameObject::get_manual_invisibility)
 
+		// AI_Stalker
 		.def("get_current_equipment",		&CScriptGameObject::GetCurrentEquipment)
 
 		// searchlight
