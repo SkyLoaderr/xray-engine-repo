@@ -424,8 +424,8 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 
 	//проверяем, можно ли разместить элемент на том месте на 
 	//котором он сейчас
-	Irect item_rect = pItem->GetAbsoluteRect();
-	Irect rect = GetAbsoluteRect();
+	Irect item_rect		= pItem->GetAbsoluteRect();
+	Irect rect			= GetAbsoluteRect();
 
 	if(item_rect.left - rect.left<0)
 		place_col = 0;
@@ -444,7 +444,7 @@ bool CUIDragDropList::CanPlaceItemInGrid(CUIDragDropItem* pItem, int& place_row,
 
 	if(place_col == -1)
 	{
-		place_col = iFloor((float)item_center_x/GetCellWidth() - (float)pItem->GetGridWidth()/2 /* + .5f*/);
+		place_col = iFloor((float)item_center_x/GetCellWidth() - (float)pItem->GetGridWidth()/2  + .1f);
 	}
 	if(place_row == -1)
 	{
