@@ -200,8 +200,12 @@ void CGameObject::setup_parent_ai_locations()
 	// get parent's position
 	if (use_parent_ai_locations())
 		Position().set		(l_tpGameObject->Position());
+
 	// setup its ai locations
-	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
+	if (!UsedAI_Locations() || !ai().get_level_graph())
+		return;
+
+	if (ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
 		set_level_vertex		(l_tpGameObject->level_vertex_id());
 	if (ai().game_graph().valid_vertex_id(l_tpGameObject->game_vertex_id()))
 		set_game_vertex			(l_tpGameObject->game_vertex_id());
@@ -209,7 +213,7 @@ void CGameObject::setup_parent_ai_locations()
 
 void CGameObject::validate_ai_locations			(bool decrement_reference)
 {
-	if (!ai().get_level_graph())
+	if (!UsedAI_Locations() || !ai().get_level_graph())
 		return;
 
 	u32		l_dwNewLevelVertexID	= ai().level_graph().vertex(level_vertex_id(),Position());
@@ -356,7 +360,7 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	PHSetPushOut();
-	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec(level_vertex_id());
 }
 

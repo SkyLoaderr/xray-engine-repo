@@ -30,6 +30,10 @@ public:
 	virtual void UpdateCL();
 
 	virtual void feel_touch_new(CObject* O);
+	virtual BOOL UsedAI_Locations	()
+	{
+		return	(FALSE);
+	}
 
 	void Explode(const Fvector &pos, const Fvector &normal);
 	virtual void FragWallmark(const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R);

@@ -19,6 +19,10 @@ public:
 	virtual void net_Destroy();
 	virtual void OnH_B_Independent();
 	virtual void UpdateCL();
+	virtual BOOL UsedAI_Locations	()
+	{
+		return	(FALSE);
+	}
 
 	virtual void feel_touch_new(CObject* O);
 
