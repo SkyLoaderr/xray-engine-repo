@@ -32,6 +32,8 @@ using namespace InventoryUtilities;
 
 #include "..\\InfoPortion.h"
 
+#define MAX_ITEMS	70
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -48,11 +50,15 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Init();
 
 	SetFont(HUD().pFontMedium);
+
+	m_vDragDropItems.clear();
+	m_vDragDropItems.reserve(MAX_ITEMS);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
 {
 //	m_vDragDropItems.erase(m_vDragDropItems.begin(), m_vDragDropItems.end());
+	m_vDragDropItems.clear();
 }
 
 void CUIInventoryWnd::Init()
@@ -251,16 +257,15 @@ void CUIInventoryWnd::InitInventory()
 	UIBagList.DropAll();
 
 
-//	u32 i;
-	for(u32 i = 0; i <MAX_ITEMS; i++) 
+	u32 i;
+	/*for(u32 i = 0; i <MAX_ITEMS; i++) 
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
 		m_vDragDropItems[i].SetCustomUpdate(NULL);
 	}
-
-		
-	m_iUsedItems = 0;
+	m_iUsedItems = 0;*/
+	m_vDragDropItems.clear();
 
 
 	//Slots
@@ -268,9 +273,9 @@ void CUIInventoryWnd::InitInventory()
 	{
 			if(pInv->m_slots[i].m_pIItem) 
 			{
-
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				
+				m_vDragDropItems.push_back(CUIDragDropItem());
+				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
+	
 				//UIDragDropItem.Init(pInv->m_slots[i].m_pIItem->m_sIconTexture, 0,0, 50,50);
 				
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
@@ -289,14 +294,18 @@ void CUIInventoryWnd::InitInventory()
 				UIDragDropItem.SetData(pInv->m_slots[i].m_pIItem);
 				
 				UITopList[i].AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				
+				//m_iUsedItems++;
+				//m_vDragDropItems.push_back(UIDragDropItem);
+
 			}
 	}
 
 	//Слот с костюмом
 	if(pInv->m_slots[OUTFIT_SLOT].m_pIItem) 
 	{
-		CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+		m_vDragDropItems.push_back(CUIDragDropItem());
+		CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
 		
 //		UIDragDropItem.Init(pInv->m_slots[OUTFIT_SLOT].m_pIItem->m_sIconTexture, 0,0, 50,50);
 
@@ -316,7 +325,8 @@ void CUIInventoryWnd::InitInventory()
 		UIDragDropItem.SetData(pInv->m_slots[OUTFIT_SLOT].m_pIItem);
 				
 		UIOutfitSlot.AttachChild(&UIDragDropItem);
-		m_iUsedItems++;
+		
+		//m_iUsedItems++;
 	}
 
 	//Пояс
@@ -324,8 +334,9 @@ void CUIInventoryWnd::InitInventory()
 	{
 			if((*it)) 
 			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				
+				m_vDragDropItems.push_back(CUIDragDropItem());
+				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
+			
 //				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
 //				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
@@ -350,7 +361,8 @@ void CUIInventoryWnd::InitInventory()
 				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 		
 				UIBeltList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				
+				//m_iUsedItems++;
 			}
 	}
 
@@ -363,8 +375,9 @@ void CUIInventoryWnd::InitInventory()
 	{
 			if((*it)) 
 			{
-				CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
-				
+				m_vDragDropItems.push_back(CUIDragDropItem());
+				CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();
+
 //				UIDragDropItem.Init((*it)->m_sIconTexture, 0,0, 50,50);
 //				UIDragDropItem.Init("ui\\ui_inv_quick_slots", 0,0, 50,50);
 				UIDragDropItem.CUIStatic::Init(0,0, 50,50);
@@ -388,7 +401,8 @@ void CUIInventoryWnd::InitInventory()
 				if(pEatableItem) UIDragDropItem.SetCustomUpdate(FoodUpdateProc);
 
 				UIBagList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				
+				//m_iUsedItems++;
 			}
 	}
 }  
@@ -718,7 +732,11 @@ void CUIInventoryWnd::Update()
 
 		
 		//убрать объект drag&drop для уже использованной вещи
-		for(int i = 0; i <m_iUsedItems; i++) 
+		//for(int i = 0; i <m_iUsedItems; i++) 
+		int i = 0;
+		for(DRAG_DROP_VECTOR_it it = m_vDragDropItems.begin(); 
+			it != m_vDragDropItems.end(); 
+			it++, i++) 
 		{
 			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 			if(pItem && !pItem->Useful())
@@ -726,12 +744,16 @@ void CUIInventoryWnd::Update()
 				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
 				m_vDragDropItems[i].SetData(NULL);
 				m_vDragDropItems[i].SetCustomUpdate(NULL);
+				m_vDragDropItems.erase(m_vDragDropItems.begin()+i);
 
 				if(m_pCurrentItem == pItem)
 				{	
 					m_pCurrentItem = NULL;
 					m_pCurrentDragDropItem = NULL;
 				}
+
+				i = 0;
+				it = m_vDragDropItems.begin(); 
 			}
 		}
 	}
@@ -975,7 +997,9 @@ void CUIInventoryWnd::StopArtifactMerger()
 //для работы с сочетателем артефактом извне
 void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
 {
-	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+	m_vDragDropItems.push_back(CUIDragDropItem());
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();		
+
 	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
 	UIDragDropItem.SetGridHeight(pArtifact->m_iGridHeight);
@@ -986,13 +1010,14 @@ void CUIInventoryWnd::AddArtifactToMerger(CArtifact* pArtifact)
 										pArtifact->m_iGridWidth*INV_GRID_WIDTH,
 										pArtifact->m_iGridHeight*INV_GRID_HEIGHT);
 	UIDragDropItem.SetData(pArtifact);
-	m_iUsedItems++;
 	UIArtifactMergerWnd.UIArtifactList.AttachChild(&UIDragDropItem);
 }
 
 void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 {
-	CUIDragDropItem& UIDragDropItem = m_vDragDropItems[m_iUsedItems];		
+	m_vDragDropItems.push_back(CUIDragDropItem());
+	CUIDragDropItem& UIDragDropItem = m_vDragDropItems.back();		
+
 	UIDragDropItem.CUIStatic::Init(0,0, 50,50);
 	UIDragDropItem.SetShader(GetEquipmentIconsShader());
 	UIDragDropItem.SetGridHeight(pItem->m_iGridHeight);
@@ -1003,7 +1028,7 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 										pItem->m_iGridWidth*INV_GRID_WIDTH,
 										pItem->m_iGridHeight*INV_GRID_HEIGHT);
 	UIDragDropItem.SetData(pItem);
-	m_iUsedItems++;
+	m_vDragDropItems.push_back(UIDragDropItem);
 	UIBagList.AttachChild(&UIDragDropItem);
 }
 

@@ -8,6 +8,7 @@
 #include "UIInventoryUtilities.h"
 #include "..\\WeaponAmmo.h"
 #include "..\\UIStaticItem.h"
+#include "UIDragDropItem.h"
 
 //буферный список для сортировки
 static TIItemList ruck_list;
@@ -18,13 +19,11 @@ static ref_shader g_EquipmentIconsShader = NULL;
 
 
 
-
-
 //для надписей на иконках с оружием
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 {
 	CWeaponAmmo* pAmmoItem = (CWeaponAmmo*)(pItem->GetData());
-	RECT rect = pItem->GetAbsoluteRect();
+	RECT rect = pItem->GetAbsoluteRect();]
 	
 	pItem->GetFont()->Out(float(rect.left), 
 						float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
@@ -42,6 +41,15 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
 							"%d",	pEatableItem->m_iPortionsNum);
 }
+
+//для иконок аддонов на оружии
+void InventoryUtilities::WeaponDrawProc(CUIDragDropItem* pItem)
+{
+	CWeapon* pWeapon = (CWeapon*)(pItem->GetData());
+	RECT rect = pItem->GetAbsoluteRect();
+
+}
+
 
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
 bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)

@@ -1,12 +1,20 @@
 #include "stdafx.h"
 #include "actor.h"
-#include "weapon.h"
-#include "artifact.h"
+
 #include "xr_weapon_list.h"
 #include "targetcs.h"
 #include "customdetector.h"
 #include "uigamesp.h"
 #include "hudmanager.h"
+
+#include "weapon.h"
+#include "artifact.h"
+#include "scope.h"
+#include "silencer.h"
+#include "grenadelauncher.h"
+
+
+
 
 IC BOOL BE	(BOOL A, BOOL B)
 {
@@ -37,6 +45,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				//добавить новый артефакт в меню, если
 				//мы работали с устройством сочетания 
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				
 				CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
 				if(pGameSP && pArtifact)
 				{
@@ -44,6 +53,20 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 						pGameSP->InventoryMenu.IsArtifactMergeShown())
 					{
 						pGameSP->InventoryMenu.AddArtifactToMerger(pArtifact);
+					}
+				}
+
+
+				CScope* pScope = dynamic_cast<CScope*>(O);
+				CSilencer* pSilencer = dynamic_cast<CSilencer*>(O);
+				CGrenadeLauncher* pGrenadeLauncher = dynamic_cast<CGrenadeLauncher*>(O);
+
+				//добавить отсоединенный аддон в инвентарь
+				if(pGameSP && (pScope || pSilencer || pGrenadeLauncher))
+				{
+					if(pGameSP->m_pUserMenu == &pGameSP->InventoryMenu)
+					{
+						pGameSP->InventoryMenu.AddItemToBag(dynamic_cast<CInventoryItem*>(O));
 					}
 				}
 

@@ -302,6 +302,40 @@ void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 	inherited::OnEvent(P, type);
 }
 
+//процесс отсоединения вещи заключается в спауне новой вещи 
+//в инвентаре и установке соответствующих флагов в родительском
+//объекте, поэтому функция должна быть переопределена
+bool CInventoryItem::Detach(const char* item_section_name) 
+{
+	CSE_Abstract*		D	= F_entity_Create(item_section_name);
+	R_ASSERT		   (D);
+	CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = 
+							 dynamic_cast<CSE_ALifeDynamicObject*>(D);
+	R_ASSERT			(l_tpALifeDynamicObject);
+	l_tpALifeDynamicObject->m_tNodeID = this->AI_NodeID;
+		
+	// Fill
+	strcpy				(D->s_name, item_section_name);
+	strcpy				(D->s_name_replace,"");
+	D->s_gameid			=	u8(GameID());
+	D->s_RP				=	0xff;
+	D->ID				=	0xffff;
+	D->ID_Parent		=	u16(this->H_Parent()->ID());
+	D->ID_Phantom		=	0xffff;
+	D->o_Position		=	Position();
+	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+	D->RespawnTime		=	0;
+	// Send
+	NET_Packet			P;
+	D->Spawn_Write		(P,TRUE);
+	Level().Send		(P,net_flags(TRUE));
+	// Destroy
+	F_entity_Destroy	(D);
+
+	return true;
+}
+
+
 ///////////////////////////////////////////
 // CEatableItem class 
 ///////////////////////////////////////////
@@ -431,6 +465,7 @@ CInventory::CInventory()
 	m_bBeltUseful = false;
 }
 
+
 CInventory::~CInventory() 
 {
 }
@@ -484,13 +519,14 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	{
 		if(pIItem->m_slot < NO_ACTIVE_SLOT) 
 		{
-			if(m_slots[pIItem->m_slot].m_pIItem &&
+			/*if(m_slots[pIItem->m_slot].m_pIItem &&
 			   m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem))
 			{
 				m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), pIItem));
 				return true;
 			} 
-			else if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
+			else */
+			if(!Belt(pIItem)/* || !FreeBeltRoom()*/) 
 				 if(m_ruck.size() > m_maxRuck || 
 					!pIItem->m_ruck || !FreeRuckRoom()) 
 			{
@@ -591,7 +627,7 @@ bool CInventory::Slot(PIItem pIItem)
 		} 
 		else 
 		{
-			if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) 
+			/*if(m_slots[pIItem->m_slot].m_pIItem->Attach(pIItem)) 
 			{
 				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 				if(it != m_ruck.end()) m_ruck.erase(it);
@@ -601,18 +637,18 @@ bool CInventory::Slot(PIItem pIItem)
 				 if(it != m_belt.end()) m_belt.erase(it);
 
 				return true;
-			}
+			}*/
 		}
 	} 
 	else 
 	{
-		for(u32 i = 0; i < m_slots.size(); i++) 
+		/*for(u32 i = 0; i < m_slots.size(); i++) 
 			if(m_slots[i].m_pIItem && m_slots[i].m_pIItem->Attach(pIItem)) 
 			{
 				PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem);
 				if(it != m_ruck.end()) m_ruck.erase(it);
 				return true;
-			}
+			}*/
 	}
 	return false;
 }

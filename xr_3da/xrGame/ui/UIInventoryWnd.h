@@ -104,11 +104,11 @@ protected:
 	CUIArtifactMerger UIArtifactMergerWnd;
 
 		
-	//DEFINE_VECTOR (CUIDragDropItem, DRAG_DROP_LIST, DRAG_DROP_LIST_it);
+	DEFINE_VECTOR (CUIDragDropItem, DRAG_DROP_VECTOR, DRAG_DROP_VECTOR_it);
+	DRAG_DROP_VECTOR m_vDragDropItems;
 
-	static const int MAX_ITEMS = 70;
-	CUIDragDropItem m_vDragDropItems[MAX_ITEMS];
-	int m_iUsedItems;
+	//static const int MAX_ITEMS = 70;
+	//int m_iUsedItems;
 
 	//указатель на инвентарь, передается перед запуском меню
 	CInventory* m_pInv;

@@ -13,7 +13,11 @@ typedef xr_list<PIItem>			TIItemList;
 typedef TIItemSet::iterator		PSPIItem;
 typedef TIItemList::iterator	PPIItem;
 
-
+#define KNIFE_SLOT 0
+#define PISTOL_SLOT 1
+#define RIFLE_SLOT 2
+#define GRENADE_SLOT 3
+#define APPARATUS_SLOT 4
 #define BOLT_SLOT 5
 #define OUTFIT_SLOT 6
 #define PDA_SLOT 7 
@@ -41,7 +45,13 @@ public:
 	virtual bool	Attach(PIItem pIItem) {return false;}
 	virtual bool	Detach(PIItem pIItem) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции
-	virtual bool	Detach(const char* item_section_name) {return false;}
+	virtual bool	Detach(const char* item_section_name);
+	//проверяет может ли элемент быть присоединен
+	//не производя самого действия
+	virtual bool	CanAttach(PIItem pIItem) {return false;}
+	virtual bool	CanDetach(const char* item_section_name) {return false;}
+
+
 	
 	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)

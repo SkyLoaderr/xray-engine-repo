@@ -9,6 +9,7 @@
 
 
 #include "uibutton.h"
+#include "UIInventoryUtilities.h"
 
 class CUIDragDropItem;
 
@@ -68,6 +69,8 @@ public:
 	void SetCustomDraw(CUSTOM_DRAW_PROC pCustomDrawProc) 
 								{m_pCustomDrawProc = pCustomDrawProc;}
 
+
+	friend void InventoryUtilities::WeaponDrawProc(CUIDragDropItem* pItem);
 
 protected:
 	
