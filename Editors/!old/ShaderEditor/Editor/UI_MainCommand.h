@@ -65,30 +65,22 @@ enum{
 typedef fastdelegate::FastDelegate3<u32,u32,u32&> TECommandEvent;
 
 struct ECORE_API SECommand{
-	struct SShortcut{
-    	enum{
-        	flAlt	= (1<<0),
-        	flCtrl	= (1<<1),
-            flShift	= (1<<2)
-        };
-    	u32 		key;
-        Flags8		ext;
-        			SShortcut		(u32 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
-        			SShortcut		(){}
-    };
-    shared_str		caption;
-	SShortcut 		shortcut;
+	bool			editable;
+    LPSTR			caption;
+	xr_shortcut		shortcut;
     TECommandEvent	command;
-                    SECommand		(){}
-    				SECommand		(shared_str capt, const SShortcut& shrt, TECommandEvent cmd):caption(capt),shortcut(shrt),command(cmd){}
+    				SECommand		(LPCSTR capt, bool edit, const xr_shortcut& shrt, TECommandEvent cmd):editable(edit),shortcut(shrt),command(cmd){caption=xr_strdup(capt);}
+					~SECommand		(){xr_free(caption);}
+    IC LPCSTR		Caption			(){return caption&&caption[0]?caption:"Unknown";}
 };
-DEFINE_VECTOR(SECommand,ECommandVec,ECommandVecIt);
+DEFINE_VECTOR(SECommand*,ECommandVec,ECommandVecIt);
 
-ECORE_API u32 		ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
-ECORE_API void		RegisterCommand 		(u32 cmd_type, const SECommand& cmd_impl);
-ECORE_API void		EnableReceiveCommands	();
+ECORE_API u32 					ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
+ECORE_API void					RegisterCommand 		(u32 cmd_type, SECommand* cmd_impl);
+ECORE_API void					EnableReceiveCommands	();
+ECORE_API ECommandVec&  		GetEditorCommands		();
 
-#define MAKE_SHORTCUT(k,a,c,s)  SECommand::SShortcut(k,a,c,s)
+#define MAKE_SHORTCUT(k,a,c,s)  xr_shortcut(k,a,c,s)
 #define MAKE_EMPTY_SHORTCUT  	MAKE_SHORTCUT(0,0,0,0)
 #define BIND_CMD_EVENT_S(a) 	TECommandEvent().bind(a)
 #define BIND_CMD_EVENT_C(a,b)	TECommandEvent().bind(a,&b)

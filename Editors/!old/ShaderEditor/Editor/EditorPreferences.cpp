@@ -78,6 +78,12 @@ void __stdcall CEditorPreferences::OnClose	()
 }
 //---------------------------------------------------------------------------
 
+
+void CheckValidate(ShortcutValue* val, const xr_shortcut& new_val, bool& result)
+{
+	result = false;
+}
+
 void CEditorPreferences::Edit()
 {
     // fill prop
@@ -108,26 +114,38 @@ void CEditorPreferences::Edit()
     PHelper().CreateFloat	(props,"Snap\\Move To", 				&snap_moveto,		0.01f,	1000.f);
 
     PHelper().CreateFloat	(props,"Grid\\Cell Size", 				&grid_cell_size,	0.1f,	10.f);
-    PHelper().CreateU32	(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
+    PHelper().CreateU32		(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
 
     PHelper().CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
-    PHelper().CreateU32	(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
-    PHelper().CreateU32	(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
+    PHelper().CreateU32		(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
+    PHelper().CreateU32		(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
     PHelper().CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
 
     PHelper().CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
-    PHelper().CreateFlag32(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
-    PHelper().CreateFlag32(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
+    PHelper().CreateFlag32	(props,"Sounds\\Use Hardware",					&psSoundFlags, 	ssHardware);
+    PHelper().CreateFlag32	(props,"Sounds\\Use EAX",						&psSoundFlags, 	ssEAX);
 
-    PHelper().CreateFlag32(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
-    PHelper().CreateFlag32(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
-    PHelper().CreateFlag32(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
-    PHelper().CreateFlag32(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
-    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
-    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
-    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
-    PHelper().CreateFlag32(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
+    PHelper().CreateFlag32	(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
+    PHelper().CreateFlag32	(props,"Objects\\Draw Pivot",					&object_flags, 	epoDrawPivot);
+    PHelper().CreateFlag32	(props,"Objects\\Draw Animation Path",			&object_flags, 	epoDrawAnimPath);
+    PHelper().CreateFlag32	(props,"Objects\\Draw LOD",						&object_flags, 	epoDrawLOD);
+    PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
+    PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Axis",		&object_flags, 	epoDrawBoneAxis);
+    PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
+    PHelper().CreateFlag32	(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
     
+    PHelper().CreateButton	(props,"Keyboard\\File",	 					"Load,Save", 0);
+    ECommandVec& cmds		= GetEditorCommands();
+    u32 idx					= 0;
+    for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
+    	SECommand*& CMD		= cmds[cmd_idx];
+        if (CMD&&CMD->editable){
+            string128 nm; 		sprintf(nm,"%d.%s",idx++,CMD->Caption());
+            ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Commands",nm), &CMD->shortcut);
+            V->OnValidateResultEvent.bind(&CheckValidate);
+        }
+    }
+
 	m_ItemProps->AssignItems		(props);
     m_ItemProps->ShowPropertiesModal();
 }

@@ -92,7 +92,12 @@ void STextureParams::Load(IReader& F)
         }
     	F.r_stringZ			(bump_name);
     }
+
+    if (F.find_chunk(THM_CHUNK_EXT_NORMALMAP)){
+	    F.r_stringZ			(ext_normal_map_name);
+    }
 }
+
 
 void STextureParams::Save(IWriter& F)
 {
@@ -127,6 +132,10 @@ void STextureParams::Save(IWriter& F)
     F.w_u32			(bump_mode);
     F.w_stringZ		(bump_name);
     F.close_chunk	();
+
+    F.open_chunk	(THM_CHUNK_EXT_NORMALMAP);
+    F.w_stringZ		(ext_normal_map_name);
+    F.close_chunk	();
 }
 
 
@@ -153,7 +162,7 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
     P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
     PHelper().CreateCaption			(items, "Source\\Width",			shared_str().sprintf("%d",width));
     PHelper().CreateCaption			(items, "Source\\Height",			shared_str().sprintf("%d",height));
-    PHelper().CreateCaption			(items, "Source\\Alpha",			HasAlphaChannel()?"on":"off"); 
+    PHelper().CreateCaption			(items, "Source\\Alpha",			HasAlpha	()?"present":"absent"); 
 	switch (type){
     case ttImage:	
     case ttCubeMap:	
@@ -194,6 +203,7 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
         PHelper().CreateColor	   	(items, "Border\\Color",			&border_color		);
     break;
     case ttBumpMap:	
+        PHelper().CreateChoose		(items, "Bump\\Special NormalMap",	&ext_normal_map_name,smTexture,base_name);
         PHelper().CreateFloat	   	(items, "Bump\\Virtual Height (m)",	&bump_virtual_height, 0.f, 0.1f, 0.001f, 3);
     break;
     }

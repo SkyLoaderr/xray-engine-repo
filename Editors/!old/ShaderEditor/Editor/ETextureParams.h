@@ -100,6 +100,7 @@ struct XR_EPROPS_API STextureParams{
 	float 				bump_virtual_height;
     ETBumpMode			bump_mode;
     shared_str			bump_name;
+    shared_str			ext_normal_map_name;
 
     STextureParams		()
 	{
@@ -154,6 +155,7 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_DETAIL_EXT			0x0815
 #define THM_CHUNK_MATERIAL				0x0816
 #define THM_CHUNK_BUMP					0x0817
+#define THM_CHUNK_EXT_NORMALMAP			0x0818
 //----------------------------------------------------
 #define THUMB_WIDTH 	128
 #define THUMB_HEIGHT 	128
