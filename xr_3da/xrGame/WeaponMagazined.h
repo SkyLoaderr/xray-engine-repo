@@ -33,6 +33,7 @@ protected:
 					
 	// HUD :: Animations
 	MotionSVec		mhud_idle;
+	MotionSVec		mhud_idle_aim;
 	MotionSVec		mhud_reload;
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;

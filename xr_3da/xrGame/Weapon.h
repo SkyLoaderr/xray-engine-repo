@@ -218,7 +218,9 @@ public:
 	virtual void			OnZoomOut			();
 	virtual bool			IsZoomed			()	const	{return m_bZoomMode;}
 	CUIStaticItem*			ZoomTexture			();
-	IC float				GetZoomFactor		()	const		{	return m_fZoomFactor;	}
+	IC float				GetZoomFactor		() const		{	return m_fZoomFactor;	}
+	//показывает, что оружие находится в соостоянии поворота для приближенного прицеливания
+	virtual bool			IsRotatingToZoom	() const		{	return (m_fZoomRotationFactor>0.f && m_fZoomRotationFactor<1.f);}
 
 //////////////////////////////////////////////////////////////////////////
 //  Weapon generic logic

@@ -101,6 +101,7 @@ protected:
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
 	ref_str					hud_sect;
+	bool					m_bRenderHud;
 
 	//время нахождения в текущем состоянии
 	u32						m_dwStateTime;

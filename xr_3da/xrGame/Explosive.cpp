@@ -15,6 +15,10 @@
 #include "Weapon.h"
 
 #include "explode_effector.h" 
+#include "actor.h"
+#include "actoreffector.h"
+
+#define EFFECTOR_RADIUS 30.f
 
 CExplosive::CExplosive(void) 
 {
@@ -263,10 +267,14 @@ void CExplosive::Explode()
 
 	//////////////////////////////////////////////////////////////////////////
 	// Explode Effector	//////////////
-	float dist_to_actor = Level().CurrentEntity()->Position().distance_to(Position());
-	float max_dist		= 30.f;
-	if (dist_to_actor < max_dist) 
-		Level().Cameras.AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
+	CActor* pActor =  dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		float dist_to_actor = pActor->Position().distance_to(Position());
+		float max_dist		= EFFECTOR_RADIUS;
+		if (dist_to_actor < max_dist) 
+			pActor->EffectorManager().AddEffector(xr_new<CExplodeEffector>(effector.time, effector.amplitude, effector.period_number, (max_dist - dist_to_actor) / max_dist));
+	}
 	//////////////////////////////////
 	
 }

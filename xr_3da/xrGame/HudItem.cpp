@@ -18,6 +18,7 @@ CHudItem::CHudItem(void)
 	m_pHUD = NULL;
 	hud_mode = FALSE;
 	m_dwStateTime = 0;
+	m_bRenderHud = true;
 }
 CHudItem::~CHudItem(void)
 {
@@ -130,8 +131,12 @@ void CHudItem::renderable_Render()
 	{ 
 		// HUD render
 		UpdateHudPosition			();
-		::Render->set_Transform		(&m_pHUD->Transform());
-		::Render->add_Visual		(m_pHUD->Visual());
+
+		if(m_bRenderHud)
+		{
+			::Render->set_Transform		(&m_pHUD->Transform());
+			::Render->add_Visual		(m_pHUD->Visual());
+		}
 	}
 	//else if(!pActor || !hud_mode)
 	else

@@ -66,9 +66,9 @@ void CWeaponPistol::PlayAnimIdle	()
 void CWeaponPistol::PlayAnimReload	()
 {	
 	if(m_opened) 
-		m_pHUD->animPlay(mhud_reload_empty[Random.randI(mhud_reload_empty.size())], FALSE, this);
+		m_pHUD->animPlay(mhud_reload_empty[Random.randI(mhud_reload_empty.size())], TRUE, this);
 	else
-		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())], FALSE, this);
+		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())], TRUE, this);
 	
 	m_opened = false;		
 }
@@ -80,7 +80,7 @@ void CWeaponPistol::PlayAnimHide()
 	{
 		UpdateFP();
 		PlaySound(sndClose,vLastFP);
-		m_pHUD->animPlay (mhud_close[Random.randI(mhud_close.size())],FALSE,this);
+		m_pHUD->animPlay (mhud_close[Random.randI(mhud_close.size())],TRUE,this);
 	} 
 	else 
 		inherited::PlayAnimHide();
@@ -90,12 +90,12 @@ void CWeaponPistol::PlayAnimShoot	()
 {
 	if(iAmmoElapsed > 1) 
 	{
-		m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE,this);
+		m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
 		m_opened = false;
 	}
 	else 
 	{
-		m_pHUD->animPlay	(mhud_shot_l[Random.randI(mhud_shot_l.size())],FALSE,this); 
+		m_pHUD->animPlay	(mhud_shot_l[Random.randI(mhud_shot_l.size())],TRUE,this); 
 		m_opened = true; 
 	}
 }

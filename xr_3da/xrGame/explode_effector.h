@@ -1,9 +1,10 @@
-#include "../effector.h"
+#include "CameraEffector.h"
+
 
 #define EXPLODE_EFFECTOR_TYPE_ID	7
 
-class CExplodeEffector : public CEffector {
-	typedef CEffector inherited;	
+class CExplodeEffector : public CCameraEffector {
+	typedef CCameraEffector inherited;	
 
 	float total;
 	float max_amp;

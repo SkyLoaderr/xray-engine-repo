@@ -752,9 +752,10 @@ void CActor::shedule_Update	(u32 DT)
 	m_bZoomAimingMode = false;
 
 
-	//обновить положение камеры
-	if (eacFirstEye == cam_active)
-		cam_Update(dt,pWeapon?pWeapon->GetZoomFactor():DEFAULT_FOV);
+	//обновить положение камеры и FOV 
+	if (eacFirstEye == cam_active && pWeapon &&
+		pWeapon->IsZoomed() && !pWeapon->IsRotatingToZoom())
+		cam_Update(dt, pWeapon->GetZoomFactor());
 	else 
 		cam_Update(dt, DEFAULT_FOV);
 

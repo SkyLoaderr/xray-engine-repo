@@ -595,6 +595,13 @@ void CWeapon::renderable_Render		()
 	}
 
 	UpdateXForm();
+
+	//если мы в режиме снайперки, то сам HUD рисовать не надо
+	if(IsZoomed() && !IsRotatingToZoom() && ZoomTexture())
+		m_bRenderHud = false;
+	else
+		m_bRenderHud = true;
+
 	inherited::renderable_Render		();
 }
 

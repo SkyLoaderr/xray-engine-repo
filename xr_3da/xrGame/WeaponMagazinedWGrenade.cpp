@@ -52,6 +52,12 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	animGet				(mhud_hide_w_gl,	pSettings->r_string(*hud_sect, "anim_holster_gl"));
 	animGet				(mhud_shots_w_gl,	pSettings->r_string(*hud_sect, "anim_shoot_gl"));
 
+	if(this->IsZoomEnabled())
+	{
+		animGet				(mhud_idle_g_aim,		pSettings->r_string(*hud_sect, "anim_idle_g_aim"));
+		animGet				(mhud_idle_w_gl_aim,	pSettings->r_string(*hud_sect, "anim_idle_gl_aim"));
+	}
+
 
 	if(m_eGrenadeLauncherStatus == ALife::eAddonPermanent)
 	{
@@ -371,6 +377,7 @@ bool CWeaponMagazinedWGrenade::Attach(PIItem pIItem)
 		P.w_u16(u16(pIItem->ID()));
 		u_EventSend(P);
 
+		InitAddons();
 		UpdateAddonsVisibility();
 		return true;
 	}
@@ -406,6 +413,20 @@ void CWeaponMagazinedWGrenade::InitAddons()
 		if(IsGrenadeLauncherAttached())
 		{
 			m_fGrenadeVel = pSettings->r_float(*m_sGrenadeLauncherName,"grenade_vel");
+
+			if(m_bZoomEnabled && m_pHUD)
+			{
+				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "grenade_zoom_offset"));
+				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "grenade_zoom_rotate_y"));
+			}
+		}
+		else
+		{	
+			if(m_bZoomEnabled && m_pHUD)
+			{
+				m_pHUD->SetZoomOffset(pSettings->r_fvector3(hud_sect, "zoom_offset"));
+				m_pHUD->SetZoomRotateY(pSettings->r_float(hud_sect, "zoom_rotate_y"));
+			}
 		}
 	}
 }
@@ -453,17 +474,17 @@ void CWeaponMagazinedWGrenade::PlayAnimShow()
 void CWeaponMagazinedWGrenade::PlayAnimHide()
 {
 	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_hide_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+		m_pHUD->animPlay(mhud_hide_w_gl[Random.randI(mhud_idle.size())],TRUE,this);
 	else
-		m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+		m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimReload()
 {
 	if(IsGrenadeLauncherAttached())
-		m_pHUD->animPlay(mhud_reload_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+		m_pHUD->animPlay(mhud_reload_w_gl[Random.randI(mhud_idle.size())],TRUE,this);
 	else
-		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
 void CWeaponMagazinedWGrenade::PlayAnimIdle()
@@ -471,12 +492,28 @@ void CWeaponMagazinedWGrenade::PlayAnimIdle()
 	if(IsGrenadeLauncherAttached())
 	{
 		if(m_bGrenadeMode)
-			m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())],FALSE);
+		{
+			if(IsZoomed())
+				m_pHUD->animPlay(mhud_idle_g_aim[Random.randI(mhud_idle.size())]);
+			else
+				m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())]);
+		}
 		else
-			m_pHUD->animPlay(mhud_idle_w_gl[Random.randI(mhud_idle.size())]);	
+		{
+			if(IsZoomed())
+				m_pHUD->animPlay(mhud_idle_w_gl_aim[Random.randI(mhud_idle.size())]);	
+			else
+				m_pHUD->animPlay(mhud_idle_w_gl[Random.randI(mhud_idle.size())]);	
+				
+		}
 	}
 	else
-		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+	{
+		if(IsZoomed())
+			m_pHUD->animPlay(mhud_idle_aim[Random.randI(mhud_idle.size())]);
+		else
+			m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+	}
 }
 void CWeaponMagazinedWGrenade::PlayAnimShoot()
 {
@@ -497,9 +534,9 @@ void CWeaponMagazinedWGrenade::PlayAnimShoot()
 void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 {
 	if(m_bGrenadeMode)
-		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
+		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],TRUE,this);
 	else 
-		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],FALSE,this);
+		m_pHUD->animPlay(mhud_switch[Random.randI(mhud_switch.size())],TRUE,this);
 }
 
 

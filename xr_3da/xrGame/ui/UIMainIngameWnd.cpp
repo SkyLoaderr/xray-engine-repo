@@ -155,7 +155,8 @@ void CUIMainIngameWnd::Draw()
 	}
 
 	//отрендерить текстуру объектива снайперского прицела или бинокля
-	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && m_pWeapon->ZoomTexture())
+	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
+		!m_pWeapon->IsRotatingToZoom() && m_pWeapon->ZoomTexture())
 	{
 		m_pWeapon->ZoomTexture()->SetPos(0,0);
 		m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);

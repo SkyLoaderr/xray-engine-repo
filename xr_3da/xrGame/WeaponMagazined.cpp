@@ -72,6 +72,10 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_show,		pSettings->r_string(*hud_sect, "anim_draw"));
 	animGet				(mhud_hide,		pSettings->r_string(*hud_sect, "anim_holster"));
 	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
+	
+	if(IsZoomEnabled())
+		animGet				(mhud_idle_aim,		pSettings->r_string(*hud_sect, "anim_idle_aim"));
+	
 
 	//звуки и партиклы глушителя, еслит такой есть
 	if(m_eSilencerStatus == ALife::eAddonAttachable)
@@ -770,7 +774,10 @@ void CWeaponMagazined::PlayAnimReload()
 
 void CWeaponMagazined::PlayAnimIdle()
 {
-	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+	if(IsZoomed())
+		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle_aim.size())]);
+	else
+		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponMagazined::PlayAnimShoot()
 {
@@ -781,6 +788,9 @@ void CWeaponMagazined::PlayAnimShoot()
 void CWeaponMagazined::OnZoomIn			()
 {
 	inherited::OnZoomIn();
+
+	if(STATE == eIdle)
+		PlayAnimIdle();
 
 
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
@@ -795,6 +805,9 @@ void CWeaponMagazined::OnZoomIn			()
 void CWeaponMagazined::OnZoomOut		()
 {
 	inherited::OnZoomOut();
+
+	if(STATE == eIdle)
+		PlayAnimIdle();
 
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 	if(pActor)
