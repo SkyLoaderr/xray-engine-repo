@@ -28,22 +28,24 @@
 #define GAMEMTL_SUBITEM_COUNT			4
 
 #define GAMEMTL_NONE	u32(-1)
+#define GAMEMTL_FILENAME "gamemtl.xr"
 
-#ifdef _EDITOR
+#ifdef _EDITOR		
+#define GM_NON_GAME	
+#endif
+#ifdef _MAX_PLUGIN	
+#define GM_NON_GAME 
+#endif
+
+#ifdef GM_NON_GAME
 	#define SoundSVec4 	AnsiString
 	#define PSSVec4 		AnsiString
 	#define ShaderSVec4 	AnsiString
 #else
-	#ifdef _MAX_PLUGIN
-		#define SoundSVec4 	AnsiString
-		#define PSSVec4 		AnsiString
-		#define ShaderSVec4 	AnsiString
-	#else
-		class CPS;
-		DEFINE_SVECTOR(sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
-		DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
+	class CPS;
+	DEFINE_SVECTOR(sound,GAMEMTL_SUBITEM_COUNT,SoundSVec4,SoundS4It);
+	DEFINE_SVECTOR(CPS*,GAMEMTL_SUBITEM_COUNT,PSSVec4,PSS4It);
 	DEFINE_SVECTOR(Shader*,GAMEMTL_SUBITEM_COUNT,ShaderSVec4,ShaderS4It);
-	#endif
 #endif
 
 struct SGameMtl{
@@ -214,6 +216,7 @@ public:
 
 	IC GameMtlIt		FirstMaterial	(){return materials.begin();}
 	IC GameMtlIt		LastMaterial	(){return materials.end();}
+	IC u32				CountMaterial	(){return materials.size();}
 
 // material pair routine
 #ifdef _EDITOR

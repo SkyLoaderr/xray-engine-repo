@@ -6,7 +6,7 @@
 
 CGameMtlLibrary GMLib;
 
-#ifdef _EDITOR
+#ifdef GM_NON_GAME
 SGameMtlPair::~SGameMtlPair		()
 {
 }

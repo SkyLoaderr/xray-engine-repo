@@ -50,7 +50,7 @@ class Shader_xrLC_LIB
 public:
 	void					Load	(LPCSTR name)
 	{
-		CCompressedStream	fs(name,SHADER_XRLC_HEADER);
+		CFileStream			fs(name);
 		int count			= fs.Length()/sizeof(Shader_xrLC);
 		R_ASSERT			(int(fs.Length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
@@ -60,7 +60,7 @@ public:
 	{
 		CFS_Memory			fs;
 		fs.write			(library.begin(),library.size()*sizeof(Shader_xrLC));
-		fs.SaveTo			(name,SHADER_XRLC_HEADER);
+		fs.SaveTo			(name,0);
 	}
 	void					Unload	()
 	{
