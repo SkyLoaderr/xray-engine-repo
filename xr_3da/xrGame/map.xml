@@ -18,7 +18,11 @@
 	<!--        --> 
 	<window x="13" y="76" width="912" height="561"></window>
 
-	<!--  TEXT OF DESCRIPTION --> 
+	<!--  MULYAJ --> 
+	<static x="730" y="295" width="240" height="280">
+		<text x="0" y="0" font="normal" r="255" g="255" b="255"></text>
+	</static>
+	
 	<static x="730" y="295" width="240" height="280">
 		<text x="0" y="0" font="normal" r="255" g="255" b="255"></text>
 	</static>
