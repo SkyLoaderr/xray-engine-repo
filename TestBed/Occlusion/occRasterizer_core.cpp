@@ -121,6 +121,8 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
 	float	*startp1, *startp2;
+	float	E1[3], E2[3];
+
 	if (Sect == BOTTOM) { 
 		startY	= minPixel(A[1]); endY = maxPixel(B[1]); 
 		startp1 = startp2 = A;
@@ -128,6 +130,14 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		// check 'endY' for out-of-tiangle 
 		int test = maxPixel(C[1]);
 		if (endY>=test) endY --;
+		
+		// check
+		if (startY > endY) return;
+
+		// Find the edge differences
+		E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0];
+		E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1];
+		E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2];
 	}
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
@@ -136,17 +146,11 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		// check 'startY' for out-of-tiangle 
 		int test = minPixel(A[1]);
 		if (startY<test) startY ++;
-	}
-	if (startY > endY) return;
-	
-	// Find the edge differences
-	float E1[3], E2[3];
-	if (Sect == BOTTOM)	
-	{
-		E1[0] = B[0]-A[0]; E2[0] = C[0]-A[0];
-		E1[1] = B[1]-A[1]; E2[1] = C[1]-A[1];
-		E1[2] = B[2]-A[2]; E2[2] = C[2]-A[2];
-	} else {
+
+		// check
+		if (startY > endY) return;
+
+		// Find the edge differences
 		E1[0] = C[0]-A[0]; E2[0] = C[0]-B[0];
 		E1[1] = C[1]-A[1]; E2[1] = C[1]-B[1];
 		E1[2] = C[2]-A[2]; E2[2] = C[2]-B[2];
@@ -169,6 +173,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		t		= e1_init_dY/E1[1]; // Initial fraction of offset
 		leftX	= startp1[0] + E1[0]*t; left_dX = mE1;
 		leftZ	= startp1[2] + E1[2]*t; left_dZ = E1[2]/E1[1];
+
 		// Initial Ending values for right (from E2)
 		t		= e2_init_dY/E2[1]; // Initial fraction of offset
 		rightX	= startp2[0] + E2[0]*t; right_dX = mE2;
@@ -180,6 +185,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		t		= e2_init_dY/E2[1]; // Initial fraction of offset
 		leftX	= startp2[0] + E2[0]*t; left_dX = mE2;
 		leftZ	= startp2[2] + E2[2]*t; left_dZ = E2[2]/E2[1];
+
 		// Initial Ending values for right (from E1)
 		t		= e1_init_dY/E1[1]; // Initial fraction of offset
 		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
