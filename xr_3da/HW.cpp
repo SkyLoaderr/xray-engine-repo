@@ -206,11 +206,6 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 	return dwWindowStyle;
 }
 
-void	CHW::setRT					()
-{
-	R_CHK	(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
-}
-
 DWORD	CHW::selectPresentInterval	()
 {
 	D3DCAPS8	caps;

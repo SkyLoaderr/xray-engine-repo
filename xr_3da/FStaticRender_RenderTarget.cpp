@@ -46,7 +46,7 @@ void CRenderTarget::Begin	()
 {
 	if (!Available() || !NeedPostProcess())	return;
 
-	R_CHK		(HW.pDevice->SetRenderTarget	(RT->pRT, HW.pBaseZB));
+	Device.Shader.set_RT	(RT->pRT,HW.pBaseZB);
 	if (psDeviceFlags&rsClearBB) CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,255,0),1,0));
 }
 
@@ -54,7 +54,7 @@ void CRenderTarget::End		()
 {
 	if (!Available() || !NeedPostProcess())	return;
 	
-	R_CHK			(HW.pDevice->SetRenderTarget(HW.pBaseRT,HW.pBaseZB));
+	Device.Shader.set_RT	(HW.pBaseRT,HW.pBaseZB);
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;

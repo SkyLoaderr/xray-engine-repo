@@ -30,8 +30,6 @@ public:
 	DWORD					selectGPU				();
 	DWORD					selectRefresh			(DWORD dwWidth, DWORD dwHeight);
 
-	void					setRT					();
-
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };
 #else
