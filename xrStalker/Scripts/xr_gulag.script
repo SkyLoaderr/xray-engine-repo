@@ -50,6 +50,7 @@ function fract:calculate() -- просчет лагеря
 	local tt = {}
 	for k,v in self.Object do
 		if v:alive() ~= true then
+			self:changeCasualites(1)
 			self.Object[k] = nil
 		end
 	end
@@ -486,7 +487,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Actions
 ----------------------------------------------------------------------------------------------------------------------
--- Инициализация торговли
 class "action_alarm" (action_base)
 function action_alarm:__init (npc_name,action_name) super (nil, action_name)
 end
