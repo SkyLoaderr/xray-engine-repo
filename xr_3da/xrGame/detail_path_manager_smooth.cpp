@@ -348,6 +348,7 @@ bool CDetailPathManager::compute_path(
 	const u32					straight_line_index_negative
 )
 {
+#pragma todo("Dima to Dima : Implement different signs velocities support")
 	STrajectoryPoint		start_save = start;
 	STrajectoryPoint		dest_save = dest;
 	float					min_time = flt_max, time;
