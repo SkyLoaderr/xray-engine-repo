@@ -58,7 +58,6 @@ void CActorEffector::RemoveEffector(EEffectorType type)
 		}
 }
 
-
 void CActorEffector::Update(const CCameraBase* C)
 {	
 	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, C->f_aspect, g_pGamePersistent->Environment.CurrentEnv.far_plane, C->m_Flags.flags); 

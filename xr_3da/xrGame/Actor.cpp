@@ -144,7 +144,7 @@ CActor::CActor() : CEntityAlive()
 	pStatGraph = NULL;
 	dDesyncVec.set(0, 0, 0);
 
-	m_pActorEffector = xr_new<CActorEffector>();
+	m_pActorEffector = NULL;
 }
 
 
@@ -788,6 +788,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	};
 	//*/
 	//----------------------------------
+
+	VERIFY(m_pActorEffector == NULL);
+	m_pActorEffector = xr_new<CActorEffector>();
+
 	return					TRUE;
 }
 
@@ -816,6 +820,8 @@ void CActor::net_Destroy	()
 	};
 
 	xr_delete(pStatGraph);
+
+	xr_delete(m_pActorEffector);
 }
 
 
