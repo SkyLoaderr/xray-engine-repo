@@ -417,9 +417,6 @@ void CObjectHandler::update(u32 time_delta)
 //			if (tpWeaponMagazined->IsAmmoAvailable())
 //				stalker->inventory().Action(kWPN_RELOAD,	CMD_START);
 	set_current_state	(object_state());
-	if (current_state_state_id() == eObjectActionNoItems) {
-		__asm int 3
-	}
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
@@ -452,9 +449,6 @@ u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 			if (weapon_magazined->IsMisfire() && (current_state_state_id() != eObjectActionReload1))
 				return(CWeapon::eMisfire);
 			
-			if (current_state_state_id() == eObjectActionHide) {
-				__asm int 3;
-			}
 			switch (current_state_state_id()) {
 				case eObjectActionIdle		: return(CWeapon::eIdle		);
 				case eObjectActionFire1		: return(CWeapon::eFire		);
@@ -477,9 +471,6 @@ u32 CObjectHandler::object_state() const
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
 	if (weapon) {
 		if (weapon->ID() != current_object_state_id()) {
-			if (weapon_state(weapon) == CWeapon::eHiding) {
-				__asm int 3;
-			}
 			switch (weapon_state(weapon)) {
 				case CWeapon::eIdle		: return(uid(eObjectActionIdle,weapon->ID()));
 				case CWeapon::eFire		: return(uid(eObjectActionFire1,weapon->ID()));

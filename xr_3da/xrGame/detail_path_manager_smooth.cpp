@@ -409,7 +409,7 @@ bool CDetailPathManager::compute_path(
 
 void CDetailPathManager::validate_vertex_position(STrajectoryPoint &point) const
 {
-	if (ai().level_graph().inside(point.vertex_id,point.position))
+	if (ai().level_graph().valid_vertex_position(ai().level_graph().v3d(point.position)) && ai().level_graph().inside(point.vertex_id,point.position))
 		return;
 
 //	point.vertex_id			= ai().level_graph().vertex(point.vertex_id,ai().level_graph().v3d(point.position),false);

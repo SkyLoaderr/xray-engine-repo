@@ -34,6 +34,7 @@ void CScriptMonster::Init()
 	}
 	// animation
 	m_tpScriptAnimation		= 0;
+	m_tpCurrentEntityAction	= 0;
 }
 
 void CScriptMonster::reinit()
@@ -134,6 +135,7 @@ void CScriptMonster::UseObject(const CObject * /**tpObject/**/)
 
 void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPriority)
 {
+	Msg					("%6d Adding action : %s",Level().timeServer(),*tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 	if (!bHighPriority || m_tpActionQueue.empty())
 		m_tpActionQueue.push_back(xr_new<CEntityAction>(*tpEntityAction));
 	else {
@@ -144,6 +146,12 @@ void CScriptMonster::AddAction(const CEntityAction *tpEntityAction, bool bHighPr
 		m_tpActionQueue.front() = l_tpEntityAction;
 		m_tpActionQueue.insert(m_tpActionQueue.begin(),xr_new<CEntityAction>(*tpEntityAction));
 	}
+
+	Msg					("%6d Action queue",Level().timeServer());
+	xr_deque<CEntityAction*>::const_iterator	I = m_tpActionQueue.begin();
+	xr_deque<CEntityAction*>::const_iterator	E = m_tpActionQueue.end();
+	for ( ; I != E; ++I)
+		Msg				("%6d Action : %s",Level().timeServer(),*(*I)->m_tAnimationAction.m_caAnimationToPlay);
 }
 
 CEntityAction *CScriptMonster::GetCurrentAction()
@@ -195,8 +203,20 @@ void CScriptMonster::ProcessScripts()
 	while (!m_tpActionQueue.empty()) {
 		l_tpEntityAction= m_tpActionQueue.front();
 		R_ASSERT	(l_tpEntityAction);
+		Msg			("%6d Processing action : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
+		
+		if (m_tpCurrentEntityAction != l_tpEntityAction)
+			l_tpEntityAction->initialize	();
+
+		m_tpCurrentEntityAction	= l_tpEntityAction;
+
+		if (!strcmp("prisluh",*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay)) {
+			l_tpEntityAction = l_tpEntityAction;
+		}
 		if (!l_tpEntityAction->CheckIfActionCompleted())
 			break;
+
+		Msg			("%6d Action completed : %s",Level().timeServer(),*l_tpEntityAction->m_tAnimationAction.m_caAnimationToPlay);
 
 		vfFinishAction(l_tpEntityAction);
 
@@ -477,8 +497,11 @@ void ScriptCallBack(CBlend* B)
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction()) {
+//		Msg			("%6d Script animation : %s",Level().timeServer(),PSkeletonAnimated(l_tpScriptMonster->Visual())->LL_MotionDefName_dbg(l_tpScriptMonster->m_tpScriptAnimation));
+		
 		if (!l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted)
 			l_tpScriptMonster->callback(CScriptMonster::eActionTypeAnimation);
+		Msg			("Completed %s",*l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 		l_tpScriptMonster->ProcessScripts();
 	}
@@ -492,6 +515,9 @@ bool CScriptMonster::bfScriptAnimation()
 		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 
+#ifdef _DEBUG
+			Msg				("%6d Playing animation : %s",Level().timeServer(),*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+#endif
 			CSkeletonAnimated	&tVisualObject = *(PSkeletonAnimated(Visual()));
 			CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 			if (m_tpScriptAnimation != l_tpMotionDef)

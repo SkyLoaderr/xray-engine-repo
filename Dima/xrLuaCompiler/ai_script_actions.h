@@ -289,6 +289,9 @@ public:
 		m_tActState = tActState;
 	}
 
+	IC		void			initialize				()
+	{
+	}
 };
 
 class CWatchAction : public CAbstractAction {
@@ -379,6 +382,10 @@ public:
 		m_bone_to_watch		= bone_to_watch;
 		m_bCompleted		= false;
 	}
+
+	IC		void			initialize				()
+	{
+	}
 };
 
 class CAnimationAction : public CAbstractAction {
@@ -425,6 +432,10 @@ public:
 		m_tMentalState		= tMentalState;
 		m_tGoalType			= eGoalTypeMental;
 		m_bCompleted		= true;
+	}
+
+	IC		void			initialize				()
+	{
 	}
 };
 
@@ -517,6 +528,11 @@ public:
 		m_tSoundAngles		= tAngles;
 		m_bStartedToPlay	= false;
 	}
+
+	IC		void			initialize				()
+	{
+		m_bStartedToPlay	= false;
+	}
 };
 
 class CParticleParams {
@@ -533,6 +549,10 @@ public:
 	}
 
 	virtual					~CParticleParams()
+	{
+	}
+
+	IC		void			initialize				()
 	{
 	}
 };
@@ -617,6 +637,10 @@ public:
 		m_bStartedToPlay	= false;
 		m_bCompleted		= false;
 	}
+
+	IC		void			initialize				()
+	{
+	}
 };
 
 class CObjectAction : public CAbstractAction {
@@ -665,6 +689,10 @@ public:
 		m_dwQueueSize		= dwQueueSize;
 		m_bCompleted		= false;
 	}
+
+	IC		void			initialize				()
+	{
+	}
 };
 
 class CActionCondition {
@@ -692,6 +720,11 @@ public:
 	{
 		m_dwFlags			= dwFlags;
 		m_tLifeTime			= _TIME_ID(dTime);
+		m_tStartTime		= Level().GetGameTime();
+	}
+
+	IC		void			initialize				()
+	{
 		m_tStartTime		= Level().GetGameTime();
 	}
 };
@@ -835,5 +868,16 @@ public:
 			return			(true);
 		else
 			return			(!l_dwFlags);
+	}
+
+	IC		void			initialize	()
+	{
+		m_tMovementAction.initialize	();
+		m_tWatchAction.initialize		();
+		m_tAnimationAction.initialize	();
+		m_tSoundAction.initialize		();
+		m_tParticleAction.initialize	();
+		m_tObjectAction.initialize		();
+		m_tActionCondition.initialize	();
 	}
 };
