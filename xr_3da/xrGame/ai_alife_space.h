@@ -17,11 +17,10 @@
 // ALife objects, events and tasks
 #define ALIFE_VERSION				0x0001
 
-#define ALIFE_CHUNK_VERSION			0x0001
+#define ALIFE_CHUNK_DATA			0x0001
 #define OBJECT_CHUNK_DATA			0x0002
 #define EVENT_CHUNK_DATA			0x0003
 #define TASK_CHUNK_DATA				0x0004
-#define ALIFE_CHUNK_DATA			0x0005
 
 #define ALIFE_ITEM_ID				0x00
 #define ALIFE_MONSTER_ID			0x01

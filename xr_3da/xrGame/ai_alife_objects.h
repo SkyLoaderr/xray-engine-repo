@@ -158,7 +158,7 @@ public:
 	
 	virtual void					Save(CFS_Memory	&tMemoryStream)
 	{
-		tMemoryStream.open_chunk	(ALIFE_CHUNK_VERSION);
+		tMemoryStream.open_chunk	(ALIFE_CHUNK_DATA);
 		tMemoryStream.write			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
 		tMemoryStream.write			(&m_tGameTime,		sizeof(m_tGameTime));
 		tMemoryStream.close_chunk	();
@@ -166,7 +166,7 @@ public:
 	
 	virtual void					Load(CStream	&tFileStream)
 	{
-		R_ASSERT(tFileStream.FindChunk(ALIFE_CHUNK_VERSION));
+		R_ASSERT(tFileStream.FindChunk(ALIFE_CHUNK_DATA));
 		m_tALifeVersion				= tFileStream.Rdword();
 		if (m_tALifeVersion != ALIFE_VERSION)
 			THROW;
