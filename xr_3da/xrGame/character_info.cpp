@@ -8,6 +8,14 @@
 #include "PhraseDialog.h"
 #include "ui/xrXMLParser.h"
 
+#include "alife_registry_container_composition.h"
+
+//////////////////////////////////////////////////////////////////////////
+
+//возможное отклонение от значения репутации
+//заданого в профиле и для конкретного персонажа
+#define REPUTATION_DELTA	10
+#define RANK_DELTA			10
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -42,11 +50,10 @@ void SRelation::SetGoodwill(int new_goodwill)
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
 {
-	m_sGameName		= NULL;
-	m_iStartDialog  = NO_DIALOG;
-
-	m_iIconX = m_iIconY = -1;
-	m_iMapIconX = m_iMapIconY = -1;
+	m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
+	m_Community		= NO_COMMUNITY;
+	m_Rank			= NO_RANK;
+	m_Reputation	= NO_REPUTATION;
 }
 
 SCharacterProfile::~SCharacterProfile()
@@ -60,9 +67,7 @@ SCharacterProfile::~SCharacterProfile()
 CCharacterInfo::CCharacterInfo()
 {
 	m_iProfileIndex = NO_PROFILE;
-
-	m_sTeamName		= "NA";
-	m_sRank			= "novice";
+	m_iSpecificCharacterIndex = NO_SPECIFIC_CHARACTER;
 }
 
 
@@ -88,8 +93,87 @@ void CCharacterInfo::Load(PROFILE_INDEX index)
 {
 	m_iProfileIndex = index;
 	inherited_shared::load_shared(m_iProfileIndex, NULL);
+	InitSpecificCharacter(data()->m_iCharacterIndex);
 }
 
+void CCharacterInfo::SetSpecificCharacter ()
+{
+	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
+
+	m_SpecificCharacter.Load(m_iSpecificCharacterIndex);
+	if(Rank() == NO_RANK)
+		SetRank(m_SpecificCharacter.Rank());
+	if(Reputation() == NO_REPUTATION)
+		SetReputation(m_SpecificCharacter.Reputation());
+
+	if(ai().get_alife())
+	{
+		//запомнить, то что мы использовали индекс
+		int a = 1;
+		ai().alife().registry(specific_characters).add(m_iSpecificCharacterIndex, a, false);
+	}
+}
+
+
+void CCharacterInfo::InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index)
+{
+	if (NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex) 
+	{
+		//удалить использованный индекс из реестра
+		if(ai().get_alife())
+			ai().alife().registry(specific_characters).remove(m_iSpecificCharacterIndex, true);
+	}
+
+	m_iSpecificCharacterIndex = new_index;
+
+
+	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacterIndex)
+	{
+		SetSpecificCharacter();
+	}
+	//проверяем все информации о персонаже, запоминаем подходящие,
+	//а потом делаем случайный выбор
+	else
+	{
+		SPECIFIC_CHARACTER_INDEX first_found_index = NO_SPECIFIC_CHARACTER;
+		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
+		{
+			CSpecificCharacter spec_char;
+			spec_char.Load(i);
+
+			if(spec_char.Community() == NO_COMMUNITY || !xr_strcmp(spec_char.Community(), data()->m_Community))
+			{
+				if(spec_char.Reputation() == NO_REPUTATION || _abs(spec_char.Reputation() - data()->m_Reputation)<REPUTATION_DELTA)
+				{
+					if(spec_char.Rank() == NO_RANK || _abs(spec_char.Rank() - data()->m_Rank)<RANK_DELTA)
+					{
+						if(NO_SPECIFIC_CHARACTER == first_found_index)
+						{
+							first_found_index = i;
+						}
+						
+						int* count = NULL;
+						if(ai().get_alife())
+							count = ai().alife().registry(specific_characters).object(i, true);
+						//если индекс еще не был использован
+						if(NULL == count)
+							m_CheckedCharacters.push_back(i);
+					}
+				}
+			}
+		}
+		R_ASSERT3(NO_SPECIFIC_CHARACTER != first_found_index, 
+			"No specific character found for profile id", *IndexToId(m_iProfileIndex));
+	
+		
+		if(m_CheckedCharacters.empty())
+			m_iSpecificCharacterIndex = first_found_index;
+		else
+			m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
+
+		SetSpecificCharacter();
+	}
+}
 
 void CCharacterInfo::load_shared	(LPCSTR)
 {
@@ -109,35 +193,42 @@ void CCharacterInfo::load_shared	(LPCSTR)
 	uiXml.SetLocalRoot(item_node);
 
 	//игровое имя персонажа
-	data()->m_sGameName		= uiXml.Read("name", 0, NULL);
-	//!!! временно, пока нет соответствующих RPG компонент
-	m_sTeamName		= uiXml.Read("team", 0, NULL);
-	m_sRank			= uiXml.Read("rank", 0, NULL);
-	
-	LPCSTR start_dialog = uiXml.Read("start_dialog", 0, NULL);
-	if(start_dialog)
-		data()->m_iStartDialog	= CPhraseDialog::IdToIndex(start_dialog);
-	else
-		data()->m_iStartDialog	= NO_DIALOG;
-
-	data()->m_iIconX		= uiXml.ReadAttribInt("icon", 0, "x");
-	data()->m_iIconY		= uiXml.ReadAttribInt("icon", 0, "y");
-	data()->m_iMapIconX		= uiXml.ReadAttribInt("map_icon", 0, "x");
-	data()->m_iMapIconY		= uiXml.ReadAttribInt("map_icon", 0, "y");
+	data()->m_Community		= uiXml.Read("team", 0, NO_COMMUNITY);
+	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
+	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
 }
 
 
-LPCSTR CCharacterInfo::Name() const 
+LPCSTR CCharacterInfo::Name() const
 {
-	return	*data()->m_sGameName;
+	return	m_SpecificCharacter.Name();
 }
-LPCSTR CCharacterInfo::Rank() const 
+CHARACTER_RANK CCharacterInfo::Rank() const
 {
-	return	*m_sRank;
+	return	m_CurrentRank;
 }
-LPCSTR CCharacterInfo::Community() const 
+LPCSTR CCharacterInfo::Community() const
 {
-	return	*m_sTeamName;
+	return	m_SpecificCharacter.Community();
+}
+
+CHARACTER_REPUTATION CCharacterInfo::Reputation() const
+{
+	return m_CurrentReputation;
+}
+
+void CCharacterInfo::SetRank (CHARACTER_RANK rank)
+{
+	m_CurrentRank = rank;
+}
+void CCharacterInfo::SetReputation (CHARACTER_REPUTATION reputation)
+{
+	m_CurrentReputation = reputation;
+}
+
+void CCharacterInfo::SetCommunity	(CHARACTER_COMMUNITY community)
+{
+	m_CurrentCommunity = community;
 }
 
 ALife::ERelationType  CCharacterInfo::GetRelationType	(u16 person_id) const 
@@ -191,4 +282,39 @@ void CCharacterInfo::ClearRelations	()
 	{
 		relation_registry.objects().clear();
 	}
+}
+
+int	 CCharacterInfo::TradeIconX() const
+{
+	return m_SpecificCharacter.TradeIconX();
+}
+int	 CCharacterInfo::TradeIconY() const
+{
+	return m_SpecificCharacter.TradeIconY();
+}
+int	 CCharacterInfo::MapIconX()	 const
+{
+	return m_SpecificCharacter.MapIconX();
+}
+int	 CCharacterInfo::MapIconY()	 const
+{
+	return m_SpecificCharacter.MapIconY();
+}
+
+PHRASE_DIALOG_INDEX	CCharacterInfo::StartDialog	()	const
+{
+	return m_SpecificCharacter.data()->m_iStartDialog;
+}
+PHRASE_DIALOG_INDEX	CCharacterInfo::ActorDialog	()	const
+{
+	return m_SpecificCharacter.data()->m_iActorDialog;
+}
+
+void CCharacterInfo::load	(IReader& stream)
+{
+	m_SpecificCharacter.data()->m_iStartDialog = stream.r_s16();
+}
+void CCharacterInfo::save	(NET_Packet& stream)
+{
+	stream.w_s16((s16)StartDialog());
 }

@@ -248,18 +248,25 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
 
 			//////////////////////////////////////////////////////////////////////////
+			// Space restrictions
+			//////////////////////////////////////////////////////////////////////////
+			.def("add_restrictions",			&CScriptGameObject::add_restrictions)
+			.def("remove_restrictions",			&CScriptGameObject::remove_restrictions)
+			.def("remove_all_restrictions",		&CScriptGameObject::remove_all_restrictions)
+			.def("in_restrictions",				&CScriptGameObject::in_restrictions)
+			.def("out_restrictions",			&CScriptGameObject::out_restrictions)
+			.def("accessible",					&CScriptGameObject::accessible_position)
+			.def("accessible",					&CScriptGameObject::accessible_vertex_id)
+			.def("accessible_nearest",			&CScriptGameObject::accessible_nearest, out_value(_3))
+
+			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
 			//////////////////////////////////////////////////////////////////////////
 
 			.enum_("EPdaMsg")
 			[
-				value("trade_pda_msg",			int(ePdaMsgTrade)),
-				value("help_pda_msg",			int(ePdaMsgNeedHelp)),
-				value("go_away_pda_msg",		int(ePdaMsgGoAway)),
+				value("dialog_pda_msg",			int(ePdaMsgDialog)),
 				value("info_pda_msg",			int(ePdaMsgInfo)),
-				value("accept_pda_msg",			int(ePdaMsgAccept)),
-				value("decline_pda_msg",		int(ePdaMsgDecline)),
-				value("i_leave_pda_msg",		int(ePdaMsgILeave)),
 				value("no_pda_msg",				int(ePdaMsgMax))
 			]
 
@@ -294,10 +301,17 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("goodwill",					&CScriptGameObject::GetGoodwill)
 			.def("set_relation",				&CScriptGameObject::SetRelation)
 			.def("set_start_dialog",			&CScriptGameObject::SetStartDialog)
+			.def("need_to_answer_pda",			&CScriptGameObject::NeedToAnswerPda)
+			.def("answer_pda",					&CScriptGameObject::AnswerPda)
+			
 
 			.def("character_name",				&CScriptGameObject::CharacterName)
 			.def("character_rank",				&CScriptGameObject::CharacterRank)
+			.def("set_character_rank",			&CScriptGameObject::SetCharacterRank)
+			.def("character_reputation",		&CScriptGameObject::CharacterReputation)
+			.def("set_character_reputation",	&CScriptGameObject::SetCharacterReputation)
 			.def("character_community",			&CScriptGameObject::CharacterCommunity)
+			.def("set_character_community",		&CScriptGameObject::SetCharacterCommunity)
 			
 
 			//////////////////////////////////////////////////////////////////////////

@@ -191,24 +191,68 @@ void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
 	pDialogManager->SetStartDialog(dialog_id);
 }
 
+bool CScriptGameObject::NeedToAnswerPda		()
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return false;
+	return pDialogManager->NeedAnswerOnPDA();
+}
+void CScriptGameObject::AnswerPda			()
+{
+	CAI_PhraseDialogManager* pDialogManager = dynamic_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
+	if(!pDialogManager) return;
+	pDialogManager->AnswerOnPDA();
+}
+
+
+
 LPCSTR CScriptGameObject::CharacterName			()
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
 	return pInventoryOwner->CharacterInfo().Name();
 }
-LPCSTR CScriptGameObject::CharacterRank			()
+int CScriptGameObject::CharacterRank			()
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
 	return pInventoryOwner->CharacterInfo().Rank();
 }
+void CScriptGameObject::SetCharacterRank			(int char_rank)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().SetRank(char_rank);
+}
+
+int CScriptGameObject::CharacterReputation			()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().Reputation();
+}
+
+void CScriptGameObject::SetCharacterReputation		(int char_rep)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().SetReputation(char_rep);
+}
+
 LPCSTR CScriptGameObject::CharacterCommunity	()
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
 	return pInventoryOwner->CharacterInfo().Community();
 }
+
+void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	VERIFY(pInventoryOwner);
+	return pInventoryOwner->CharacterInfo().SetCommunity(comm);
+}
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 

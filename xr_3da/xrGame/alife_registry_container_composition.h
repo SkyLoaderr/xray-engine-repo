@@ -52,4 +52,10 @@ add_to_registry_type_list(CGameTaskRegistry);
 #define game_tasks define_constant(CGameTaskRegistry) 
 #define registry_type_list save_registry_type_list(CGameTaskRegistry)
 
+//список описаний персонажей, которые уже задействованы в игре
+typedef CALifeAbstractRegistry<SPECIFIC_CHARACTER_INDEX, int > CSpecificCharacterRegistry;
+add_to_registry_type_list(CSpecificCharacterRegistry);
+#define specific_characters define_constant(CSpecificCharacterRegistry) 
+#define registry_type_list save_registry_type_list(CSpecificCharacterRegistry)
+
 #pragma warning(pop)

@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// character_info.h			игровая информация для персонажей в игре
+// character_info.h			шаблон, для представления абстрактного песонажа
 // 
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,6 +14,8 @@
 #include "shared_data.h"
 #include "xml_str_id_loader.h"
 
+#include "specific_character.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 // SCharacterProfile: данные профиля персонажа
@@ -23,16 +25,14 @@ struct SCharacterProfile : CSharedResource
 	SCharacterProfile ();
 	virtual ~SCharacterProfile ();
 
-	//игровое имя персонажа
-	ref_str m_sGameName;
+    //если задано, то выбирается именно такой профиль,
+	//иначе ищется случайно,удовлетворяющее шаблону
+	SPECIFIC_CHARACTER_INDEX m_iCharacterIndex;	
 
-	//начальный диалог
-	PHRASE_DIALOG_INDEX m_iStartDialog;
-
-	//положение большой икноки (для торговли и общения) в файле с иконками 
-	int	m_iIconX, m_iIconY;
-	//положение мальнькой иконки (для карты)
-	int	m_iMapIconX, m_iMapIconY;
+	//требуемые параметры характера
+	CHARACTER_COMMUNITY		m_Community;
+	CHARACTER_RANK			m_Rank;
+	CHARACTER_REPUTATION	m_Reputation;
 };
 
 
@@ -52,17 +52,23 @@ public:
 	CCharacterInfo();
 	~CCharacterInfo();
 
-
-	//инициализация данными
-	//если таким id раньше не использовалось
-	//будет загружено из файла
 	virtual void Load	(PROFILE_ID id);
 	virtual void Load	(PROFILE_INDEX index);
 
 
+	void load	(IReader&);
+	void save	(NET_Packet&);
+
+	//инициализация профиля подразумевает
+	//загрузку соответствующего CSpecificCharacter, по 
+	//указанному индексу, или если индекс NO_SPECIFIC_CHARACTER,
+	//то случайный подбор по шаблону
+	virtual void InitSpecificCharacter (SPECIFIC_CHARACTER_INDEX new_index);
 protected:
-	const SCharacterProfile* data() const { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
-	SCharacterProfile* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	virtual void SetSpecificCharacter ();
+protected:
+	const SCharacterProfile* data() const	{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	SCharacterProfile* data()				{ VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	//загрузка из XML файла
 	virtual void load_shared		(LPCSTR);
@@ -70,18 +76,32 @@ protected:
 
 	//индекс загруженного профиля
 	PROFILE_INDEX m_iProfileIndex;
+	
+	//индекс данных о конкретном персонаже, который
+	//используется в данном экземпляре класса
+	SPECIFIC_CHARACTER_INDEX m_iSpecificCharacterIndex;
+	//загруженная информация о конкретном персонаже
+	CSpecificCharacter m_SpecificCharacter;
 
 public:
 
-	LPCSTR	Name()		const ;
-	LPCSTR	Rank()		const ;
-	LPCSTR	Community() const ;
+	LPCSTR					Name()				const;
+	CHARACTER_COMMUNITY		Community()			const;
+	CHARACTER_RANK			Rank()				const;
+	CHARACTER_REPUTATION	Reputation()		const;
 
-	int		TradeIconX() const	 {return data()->m_iIconX;}
-	int		TradeIconY() const	 {return data()->m_iIconY;}
-	int		MapIconX()	 const 	 {return data()->m_iMapIconX;}
-	int		MapIconY()	 const	 {return data()->m_iMapIconY;}
+	void	SetRank			(CHARACTER_RANK rank);
+	void	SetReputation	(CHARACTER_REPUTATION reputation);
+	void	SetCommunity	(CHARACTER_COMMUNITY community);
 
+
+	int		TradeIconX	()	const;
+	int		TradeIconY	()	const;
+	int		MapIconX	()	const;
+	int		MapIconY	()	const;
+
+	PHRASE_DIALOG_INDEX	StartDialog	()	const;
+	PHRASE_DIALOG_INDEX	ActorDialog	()	const;
 
 	int					 GetGoodwill			(u16 person_id) const ;
 	void				 SetGoodwill			(u16 person_id, int goodwill);
@@ -94,7 +114,10 @@ protected:
 	typedef CALifeRegistryWrapper<CRelationRegistry> RELATION_REGISTRY;
 	RELATION_REGISTRY relation_registry;
 
-	//временно...(пока нет RGP компонент)
-	ref_str m_sTeamName;
-	ref_str m_sRank;
+	CHARACTER_RANK			m_CurrentRank;
+	CHARACTER_REPUTATION	m_CurrentReputation;
+	CHARACTER_COMMUNITY		m_CurrentCommunity;
+
+	//буферный вектор проверенных персонажей
+	xr_vector<SPECIFIC_CHARACTER_INDEX> m_CheckedCharacters;
 };

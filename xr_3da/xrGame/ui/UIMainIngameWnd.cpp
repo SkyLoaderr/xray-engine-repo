@@ -793,7 +793,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	}
 	else
 	{
-		pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
+	//	pItem->UIMsgText.SetText(CPda::m_PdaMsgStr[msg]);
 	}
 }
 

@@ -60,13 +60,6 @@ void CInventoryOwner::Load					(LPCSTR section)
 
 void CInventoryOwner::reload				(LPCSTR section)
 {
-	CAttachmentOwner::reload	(section);
-}
-
-void CInventoryOwner::reinit				()
-{
-	CAttachmentOwner::reinit	();
-
 	inventory().Clear			();
 	inventory().m_pOwner		= this;
 	inventory().SetSlotsUseful (true);
@@ -78,8 +71,17 @@ void CInventoryOwner::reinit				()
 
 	m_pPdaCallback->clear		();
 	m_pInfoCallback->clear		();
+
+
+	CAttachmentOwner::reload	(section);
 }
 
+void CInventoryOwner::reinit				()
+{
+	CAttachmentOwner::reinit	();
+}
+
+//call this after CGameObject::net_Spawn
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 {
 	//получить указатель на объект, InventoryOwner
@@ -97,20 +99,21 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		CharacterInfo().Load(pTrader->m_iCharacterProfile);
 
 		CAI_PhraseDialogManager* dialog_manager = dynamic_cast<CAI_PhraseDialogManager*>(this);
-		if(dialog_manager && CharacterInfo().data()->m_iStartDialog != NO_DIALOG)
-			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().data()->m_iStartDialog));
+		if(dialog_manager && CharacterInfo().StartDialog() != NO_DIALOG)
+			dialog_manager->SetStartDialog(CPhraseDialog::IndexToId(CharacterInfo().StartDialog()));
 	}
 	else
 	{
-		CharacterInfo().data()->m_sGameName = pThis->cName();
+		pTrader->m_iCharacterProfile = DEFAULT_PROFILE;
+		CharacterInfo().Load(DEFAULT_PROFILE);
+		/*CharacterInfo().data()->m_sGameName = pThis->cName();
 		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().data()->m_iIconY = pEntity->GetTradeIconY();
 
 		CharacterInfo().data()->m_iMapIconX = pEntity->GetMapIconX();
-		CharacterInfo().data()->m_iMapIconY = pEntity->GetMapIconY();
+		CharacterInfo().data()->m_iMapIconY = pEntity->GetMapIconY();*/
 	}
-
 	
 	if(!pThis->Local())  return TRUE;
 
@@ -146,7 +149,7 @@ void	CInventoryOwner::save	(NET_Packet &output_packet)
 	else
 		output_packet.w_u8((u8)inventory().GetActiveSlot());
 
-	output_packet.w_s16((s16)CharacterInfo().data()->m_iStartDialog);
+	CharacterInfo().save(output_packet);
 }
 void	CInventoryOwner::load	(IReader &input_packet)
 {
@@ -156,7 +159,7 @@ void	CInventoryOwner::load	(IReader &input_packet)
 	else
 		inventory().SetActiveSlot(active_slot);
 
-	CharacterInfo().data()->m_iStartDialog = input_packet.r_s16();
+	CharacterInfo().load(input_packet);
 }
 
 

@@ -5311,6 +5311,12 @@
 								<File
 									RelativePath=".\character_info_defs.h">
 								</File>
+								<File
+									RelativePath=".\specific_character.cpp">
+								</File>
+								<File
+									RelativePath=".\specific_character.h">
+								</File>
 							</Filter>
 						</Filter>
 						<Filter
@@ -8769,6 +8775,9 @@
 			<Filter
 				Name="gameplay"
 				Filter="">
+				<File
+					RelativePath=".\character_desc_general.xml">
+				</File>
 				<File
 					RelativePath=".\dialogs.xml">
 				</File>

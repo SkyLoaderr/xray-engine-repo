@@ -196,11 +196,19 @@ public:
 			void				SetRelation			(ALife::ERelationType relation, CScriptGameObject* pWhoToSet);
 			void				SetStartDialog		(LPCSTR dialog_id);
 
-			LPCSTR				CharacterName		();
-			LPCSTR				CharacterRank		();
-			LPCSTR				CharacterCommunity	();
+			bool				NeedToAnswerPda		();
+			void				AnswerPda			();
 
-			
+
+			LPCSTR				CharacterName		();
+			LPCSTR				CharacterCommunity	();
+			int					CharacterRank		();
+			int					CharacterReputation	();
+
+			void SetCharacterRank			(int);
+			void SetCharacterReputation		(int);
+			void SetCharacterCommunity		(LPCSTR);
+						
 			u32					GetInventoryObjectCount() const;
 
 			CScriptGameObject	*GetActiveItem		();
