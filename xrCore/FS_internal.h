@@ -15,13 +15,11 @@ private:
 public:
 	CFileWriter		(const char *name)
 	{
-		fName		= xr_strdup(name);
-		R_ASSERT	(name);
-		R_ASSERT	(name[0]);
-		VerifyPath	(fName);
-		hf			= fopen(fName, "wb");
-		R_ASSERT3	(hf, "Can't write file. File may be open or in use.", fName );
-		setvbuf		(hf, 0, _IOFBF, 24*1024 );
+		R_ASSERT	(name && name[0]);
+		fName		= name;
+		VerifyPath	(*fName);
+		hf			= fopen	(*fName, "wb");
+		R_ASSERT3	(hf, "Can't write file. File may be open or in use.", *fName );
 	}
 
 	virtual ~CFileWriter()

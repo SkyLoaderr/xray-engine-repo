@@ -16,15 +16,13 @@ class XRCORE_API IWriter
 private:
 	xr_stack<u32>	chunk_pos;
 public:
-	LPSTR			fName;
+	ref_str			fName;
 public:
 	IWriter	()
 	{
-		fName		= 0;
 	}
 	virtual	~IWriter	()
 	{
-		xr_free		(fName);
         R_ASSERT3	(chunk_pos.empty(),"Opened chunk not closed.",fName);
 	}
 
