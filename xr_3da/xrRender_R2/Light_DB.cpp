@@ -79,7 +79,7 @@ void CLight_DB::Unload		()
 
 light*			CLight_DB::Create	()
 {
-	light*	L					= xr_new<CLightPPA>	();
+	light*	L					= xr_new<light>	();
 	v_dynamic_inactive.insert	(L);
 	return						L;
 }
