@@ -167,9 +167,6 @@ void CStalkerMovementManager::update(u32 time_delta)
 		return;
 	}
 	
-	if ((m_mental_state == eMentalStateFree) && (path_direction_angle() >= PI_DIV_4))
-		m_mental_state		= eMentalStateDanger;
-
 	const CEntityCondition	*entity_condition = dynamic_cast<const CEntityCondition*>(this);
 	VERIFY					(entity_condition);
 	u32						velocity_mask = eMovementParameterPositiveVelocity | (entity_condition->IsLimping() ? eMovementParameterDamaged : 0);
@@ -245,5 +242,8 @@ void CStalkerMovementManager::update(u32 time_delta)
 	update_path						();
 
 #pragma todo("Dima to Dima : This method will be automatically removed after 22.12.2003 00:00")
+	if ((m_movement_type != eMovementTypeStand) && (m_mental_state == eMentalStateFree) && (path_direction_angle() >= PI_DIV_4))
+		m_mental_state		= eMentalStateDanger;
+
 	set_desirable_speed				(custom_monster->m_fCurSpeed);
 }
