@@ -186,7 +186,7 @@ void	CCar::UpdateCL				( )
 	clCenter	(C);
 	V.set		(m_jeep.GetVelocity	());
 	float		velocity						= V.magnitude();
-	float		scale							= .5f + .4f*(velocity/10.f);
+	float		scale							= 1.5f + 1.f*(velocity/10.f);
 //	Log			("carS",scale);
 	snd_engine.feedback->SetPosition			(C);
 	snd_engine.feedback->SetFrequencyScale		(scale);
