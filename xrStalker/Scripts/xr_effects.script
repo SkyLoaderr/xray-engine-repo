@@ -1,19 +1,38 @@
 
+-- Кто-то из участников сценки вступил в бой - теперь нужно пообижать всех на всех
 function gar_bandits_fight(actor, npc)
-	local bandit1 = level.object("gar_dramscene_1")
-	local bandit2 = level.object("gar_dramscene_2")
-	local bandit3 = level.object("gar_dramscene_3")
+	local novice = level.object("gar_dramscene_novice")
+	if not novice then
+		return
+	end
 
+	local bandit1 = level.object("gar_dramscene_bandit1")
 	if bandit1 then
-		npc:set_relation(game_object.enemy, bandit1)
+		novice:set_relation(game_object.enemy, bandit1)
+		bandit1:set_relation(game_object.enemy, novice)
+		bandit1:set_relation(game_object.enemy, actor)
 	end
 
+	local bandit2 = level.object("gar_dramscene_bandit2")
 	if bandit2 then
-		npc:set_relation(game_object.enemy, bandit2)
+		novice:set_relation(game_object.enemy, bandit2)
+		bandit2:set_relation(game_object.enemy, novice)
+		bandit2:set_relation(game_object.enemy, actor)
 	end
 
+	local bandit3 = level.object("gar_dramscene_bandit3")
 	if bandit3 then
-		npc:set_relation(game_object.enemy, bandit3)
+		novice:set_relation(game_object.enemy, bandit3)
+		bandit3:set_relation(game_object.enemy, novice)
+		bandit3:set_relation(game_object.enemy, actor)
 	end
+end
+	
+function actor_friend(actor, npc)
+	npc:set_relation(game_object.friend, actor)
+end
+
+function log_bp1(actor, npc)
+	printf("_bp1 (actor='%s', npc='%s'", actor:name(), npc:name())
 end
 

@@ -361,7 +361,13 @@ function pick_section_from_condlist(actor, npc, condlist)
 			-- Условия выполнены. Независимо от того, задана ли секция, нужно проставить требуемые
 			-- infoportions:
 			for inum, infop in pairs(cond.infop_set) do
-				if infop.required then
+				if infop.func then
+					if not xr_effects[infop.func] then
+						utils.abort("object '%s': pick_section_from_condlist: function '%s' is " ..
+							"not defined in xr_effects.script", npc:name(), infop.func)
+					end
+					xr_effects[infop.func](actor, npc)
+				elseif infop.required then
 					if not actor:has_info(infop.name) then
 						printf("_bp: setting infoportion: %s", infop.name)
 						actor:give_info_portion(infop.name)

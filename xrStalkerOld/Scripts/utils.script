@@ -16,9 +16,9 @@ function to_str(what)
 function vector_copy_by_val(vec)
 
 -- Настройка параметров игровых объектов:
-function cfg_get_bool(char_ini, section, field, object, mandatory)
-function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name)
-function cfg_get_number(char_ini, section, field, object, mandatory)
+function cfg_get_bool(char_ini, section, field, object, mandatory, default_val)
+function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name, default_val)
+function cfg_get_number(char_ini, section, field, object, mandatory, default_val)
 
 -- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
