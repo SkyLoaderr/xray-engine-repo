@@ -14,10 +14,11 @@ class TfrmObjectList;
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
 class CLevelTools: public CToolsCustom{
+	typedef CToolsCustom inherited;
+
     TPanel*         paParent;
     int             sub_target;
     EObjClass		target;
-    int             action;
 
     Flags32			m_Flags;
 
@@ -54,7 +55,6 @@ public:
     virtual         	~CLevelTools		();
 
     IC EObjClass		GetTarget   		(){return target;}
-    IC int          	GetAction   		(){return action;}
     IC int          	GetSubTarget   		(){return sub_target;}
     virtual void		SetAction			(ETAction act);
     void 			 	SetTarget			(EObjClass tgt);

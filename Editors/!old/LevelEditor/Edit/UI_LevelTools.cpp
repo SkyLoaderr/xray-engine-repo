@@ -41,8 +41,8 @@ TForm*	CLevelTools::GetFrame()
 //---------------------------------------------------------------------------
 bool CLevelTools::OnCreate()
 {
+	inherited::OnCreate();
     target          = OBJCLASS_DUMMY;
-    action          = etaSelect;
     sub_target		= -1;
     pCurTools       = 0;
     ssRBOnly << ssRight;
@@ -61,6 +61,7 @@ bool CLevelTools::OnCreate()
 
 void CLevelTools::OnDestroy()
 {
+	inherited::OnDestroy();
     TfrmObjectList::DestroyForm(pObjectListForm);
 	TProperties::DestroyForm(m_Props);
     // scene destroing
@@ -130,19 +131,9 @@ bool __fastcall CLevelTools::KeyPress  (WORD Key, TShiftState Shift)
 
 void CLevelTools::RealSetAction   (ETAction act)
 {
-    action = act;
-    switch(act){
-        case etaSelect:  UI->GetD3DWindow()->Cursor = crCross;     break;
-        case etaAdd:     UI->GetD3DWindow()->Cursor = crArrow;     break;
-        case etaMove:    UI->GetD3DWindow()->Cursor = crSizeAll;   break;
-        case etaRotate:  UI->GetD3DWindow()->Cursor = crSizeWE;    break;
-        case etaScale:   UI->GetD3DWindow()->Cursor = crVSplit;    break;
-        default:         UI->GetD3DWindow()->Cursor = crHelp;
-    }
-    if (pCurTools) pCurTools->SetAction(action);
-    UI->RedrawScene();
+	inherited::SetAction(act);
+    if (pCurTools) pCurTools->SetAction(act);
     UI->Command(COMMAND_UPDATE_TOOLBAR);
-    UI->Command(COMMAND_REFRESH_UI_BAR);
     m_Flags.set	(flChangeAction,FALSE);
 }
 
@@ -170,7 +161,7 @@ void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,bool bForced)
         pCurTools->OnActivate	();
         
         pCurTools->SetSubTarget	(sub_target);
-        pCurTools->SetAction	(action);
+        pCurTools->SetAction	(GetAction());
         ATTACH_FRAME(pCurTools->pFrame, paParent);
     }
     UI->RedrawScene();
