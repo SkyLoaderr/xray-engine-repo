@@ -37,6 +37,9 @@ public:
 
 void CBuild::Light()
 {
+	// Randomize deflectors
+	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
+
 	// Main process (4 threads)
 	const	DWORD			thNUM = 5;
 	DWORD	dwTimeStart = timeGetTime();
@@ -60,7 +63,7 @@ void CBuild::Light()
 				// Info
 				float	P = float(N)/float(g_deflectors.size());
 				Progress(P);
-				Status	("Calculating surface up to #%d...",N);
+				Status	("Calculating surface up to #%d (%d)...",N,g_deflectors.size());
 			}
 		}
 		if	(N>=g_deflectors.size())	
