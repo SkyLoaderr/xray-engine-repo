@@ -31,7 +31,7 @@ BOOL CGameObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	nPos.y				+= .1f;
 	int node			= Level().AI.q_LoadSearch(nPos);
 	if (node<0)			{
-		Msg					("! ERROR: AI node not found for monster %s. (%f,%f,%f)",nPos.x,nPos.y,nPos.z,cName());
+		Msg					("! ERROR: AI node not found for monster %s. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
 		// R_ASSERT		(node>=0);
 		AI_NodeID			= DWORD(-1);
 		AI_Node				= NULL;

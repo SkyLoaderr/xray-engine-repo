@@ -304,7 +304,8 @@ void CApplication::Level_Set(DWORD L)
 {
 	if (L>=Levels.size()) return;
 	Level_Current = L;
-	strconcat(Path.Current,Path.Levels,Levels[L].folder);
+	strconcat	(Path.Current,Path.Levels,Levels[L].folder);
+	strlwr		(Path.Current);
 }
 int CApplication::Level_ID(LPCSTR name)
 {

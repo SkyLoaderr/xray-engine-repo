@@ -87,7 +87,7 @@ void CSoundRender::OnMove()
 int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
 	for (DWORD i=0; i<sounds.size(); i++) {
 		if (sounds[i].size()) {
-			if ((strcmp(sounds[i][0]->fName,name)==0)&&(_3D==sounds[i][0]->_3D)&&(_Freq==sounds[i][0]->_Freq))  
+			if ((stricmp(sounds[i][0]->fName,name)==0)&&(_3D==sounds[i][0]->_3D)&&(_Freq==sounds[i][0]->_Freq))  
 				return i;
 		}
 	}

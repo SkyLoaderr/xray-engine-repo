@@ -281,17 +281,20 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 	R_ASSERT			( pBuffer==0	);
 	
 	if (name){ 
-		fName			= strlwr(strdup(name));
+		fName			= strlwr	(strdup(name));
 		_Freq			= ctrl_freq;
 	}
 	
 	FILE_NAME			fn,N;
 	strcpy				(N,name);
+	strlwr				(N);
 	if (strext(N))		*strext(N) = 0;
 
 	strconcat			(fn,Path.Current,N,".wav");
+	strlwr				(fn);
 	if (!Engine.FS.Exist(fn))	{
 		strconcat			(fn,Path.Sounds,N,".wav");
+		strlwr				(fn);
 	}
 
 	if (_3D)	

@@ -73,7 +73,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 
 void CAI_Soldier::SetDirectionLook()
 {
-	int i = ps_Size();
+	int i = ps_Size	();
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
