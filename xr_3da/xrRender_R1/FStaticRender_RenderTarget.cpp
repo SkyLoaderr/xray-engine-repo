@@ -2,7 +2,6 @@
 #include "fstaticrender_rendertarget.h"
 
 static LPCSTR		RTname			= "$user$rendertarget";
-int					psSupersample	= 0;
 
 CRenderTarget::CRenderTarget()
 {
@@ -32,7 +31,7 @@ BOOL CRenderTarget::Create	()
 	curHeight			= Device.dwHeight;
 
 	// Select mode to operate in
-	switch (psSupersample)
+	switch (ps_r__Supersample)
 	{
 	case	1:		rtWidth = 1*Device.dwWidth;					rtHeight=1*Device.dwHeight;					break;
 	case	2:		rtWidth = iFloor(1.414f*Device.dwWidth);	rtHeight=iFloor(1.414f*Device.dwHeight);	break;
@@ -185,7 +184,7 @@ void CRenderTarget::e_render_duality()
 
 BOOL CRenderTarget::Perform		()
 {
-	return Available() && ( NeedPostProcess() || (psSupersample>1));
+	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1));
 }
 
 void CRenderTarget::Begin		()
