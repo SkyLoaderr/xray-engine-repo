@@ -378,6 +378,8 @@ void CAI_Zombie::AttackRun()
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 
+	Msg("%s : %5.2f",cName(),m_fSpeed);
+
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();
 		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
@@ -429,12 +431,9 @@ void CAI_Zombie::Pursuit()
 
 	m_tGoalDir.set(m_tSavedEnemyPosition);
 	
-	if (bfCheckIfGoalChanged(false))
-		vfChooseNewSpeed();
-	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (bfComputeNewPosition())
+	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
 }
 
@@ -448,6 +447,8 @@ void CAI_Zombie::ReturnHome()
 		m_fSpeed = m_fSafeSpeed = 0;
 		return;
 	}
+
+	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 	SelectEnemy(m_Enemy);
 	
@@ -468,10 +469,8 @@ void CAI_Zombie::ReturnHome()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if (bfComputeNewPosition())
+	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-
-	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 }
 
 void CAI_Zombie::Resurrect()
