@@ -19,7 +19,7 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing maximum viewable distance in the specified direction
 	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_torso_current.yaw - m_fBananPadlaCorrection,r_torso_current.pitch);
+	tCurrentWatchDirection.setHP	(-r_torso_current.yaw,-r_torso_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
