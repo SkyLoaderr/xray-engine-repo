@@ -81,10 +81,10 @@ int dSortTriPrimitiveCollide (
 		tri.T=T;
 		dCROSS(tri.norm,=,tri.side0,tri.side1);
 		dNormalize3(tri.norm);
-		dReal sidePr=dPrimitiveProj(o1,tri.norm);
+		
 		tri.pos=dDOT((dReal*)&Res->verts[0],tri.norm);
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
-		tri.depth=sidePr-tri.dist;
+		
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(tri.dist<0.f){
 			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
@@ -120,9 +120,11 @@ int dSortTriPrimitiveCollide (
 						){
 							if(neg_depth>tri.depth&&dDOT(neg_tri->norm,tri.norm)>-M_SQRT1_2)
 							{
+								dReal sidePr=dPrimitiveProj(o1,tri.norm);
+								tri.depth=sidePr-tri.dist;
 								neg_depth=tri.depth;
 								(*neg_tri)=tri;
-								if(intersect)*pushing_neg=true;
+								//if(intersect)*pushing_neg=true;
 							}
 
 
@@ -130,9 +132,11 @@ int dSortTriPrimitiveCollide (
 					else{
 						++b_count;
 						if(b_neg_depth>tri.depth&&dDOT(b_neg_tri->norm,tri.norm)>-M_SQRT1_2){
+							dReal sidePr=dPrimitiveProj(o1,tri.norm);
+							tri.depth=sidePr-tri.dist;
 							b_neg_depth=tri.depth;
 							(*b_neg_tri)=tri;
-							if(intersect)*pushing_b_neg=true;
+							//if(intersect)*pushing_b_neg=true;
 						}
 					}
 				}
@@ -156,7 +160,7 @@ int dSortTriPrimitiveCollide (
 	xr_vector<Triangle>::iterator i;
 
 
-	if(neg_depth<dInfinity&&intersect&&ret==0)
+	if(neg_depth<dInfinity&&intersect)
 	{
 		bool include = true;
 		if(no_last_pos)
