@@ -512,9 +512,10 @@ function stalker_novice3_action:__init (name, storage) super (nil, name)
     self.b.speak_time = self.a.time
     self.b.time_stand = self.a.time
     self.b.stand      = false
-    self.b.talk      = false
+    self.b.talk       = false
     self.b.time_actor = 0
     self.phrase       = 1
+    self.b.anim_time  = device():time_global()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:initialize ()
@@ -617,8 +618,9 @@ function stalker_novice3_action:init_state_actor()
     self.object:set_sight      (look.point, pos, 0)
   	self.object:set_movement_type   (move.stand)
     self.a.curState        = say_hello
-    self.a.time         = device():time_global() + 1000
-    self.b.speak_time  = device():time_global() + 5000
+    self.a.time            = device():time_global() + 1000
+    self.b.speak_time      = device():time_global() + 5000
+    self.b.anim_time       = device():time_global() + 10000
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:state_actor()
@@ -647,12 +649,25 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.a.curState == wait_actor and self.b.talk == false) then
-      --Изредка зовем актера
-        if(device():time_global() > self.b.speak_time and self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
-            self:select_phrase()
-            xr_sounds.play_sound_rnd    (self.object, 1000, 1500, "trivial", 4,2, self.phrase)
-            self.a.curState    = wait_actor
-            self.b.speak_time  = device():time_global() + 5000
+      --Изредка зовем актера, или проигруем анимацию
+		if(self.object:active_sound_count == 0 and self.object:animation_count() == 0 and distance_between(self.object, level.actor()) > 4) then
+	        if(device():time_global() > self.b.speak_time and self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
+	            self:select_phrase()
+	            xr_sounds.play_sound_rnd    (self.object, 1000, 1500, "trivial", 4,2, self.phrase)
+	            self.b.speak_time  = device():time_global() + 5000
+            elseif(device():time_global() > self.b.anim_time) then
+            	local r = math.random(1, 3)
+
+                if(r == 1) then
+                	self.object:add_animation("torg_1", true)
+                elseif(r == 2) then
+                	self.object:add_animation("torg_2", true)
+                else
+                    self.object:add_animation("torg_4", true)
+                end
+
+                self.b.anim_time = device():time_global() + 10000
+            end
     	end
     end
 
