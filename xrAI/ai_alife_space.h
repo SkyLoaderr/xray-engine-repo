@@ -51,6 +51,7 @@ namespace ALife {
 	typedef u16	_SPAWN_ID;									// Spawn ID
 	typedef u16	_TERRAIN_ID;								// Terrain ID
 	typedef u8	_LOCATION_ID;								// Location ID
+	typedef u8  _LEVEL_ID;									// Level ID
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
@@ -80,7 +81,9 @@ namespace ALife {
 	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		OBJECT_MAP,					OBJECT_PAIR_IT);
 	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
 	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
-	DEFINE_MAP		(u8,						ALIFE_ENTITY_P_VECTOR*,			ALIFE_ENTITY_P_VECTOR_MAP,	ALIFE_ENTITY_P_VECTOR_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		ALIFE_ENTITY_P_MAP,			ALIFE_ENTITY_P_PAIR_IT);
+	DEFINE_MAP		(_LEVEL_ID,					ALIFE_ENTITY_P_MAP*,			ALIFE_ENTITY_P_MAP_MAP,		ALIFE_ENTITY_P_MAP_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeMonsterAbstract*,		ALIFE_MONSTER_P_MAP,		ALIFE_MONSTER_P_PAIR_IT);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);
 	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,		pred_str);

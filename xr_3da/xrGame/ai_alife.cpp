@@ -70,6 +70,7 @@ void CSE_ALifeSimulator::vfUpdateDynamicData()
 			R_ASSERT2			(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
 		}
 	}
+	
 	// update events
 	{
 		EVENT_PAIR_IT			I = m_tEventRegistry.begin();
@@ -77,6 +78,16 @@ void CSE_ALifeSimulator::vfUpdateDynamicData()
 		for ( ; I != E; I++)
 			vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
 	}
+	
+	// setting up the first switched object
+	R_ASSERT2					(m_tpCurrentLevel->begin() != m_tpCurrentLevel->end(),"It is impossible, because at least actor must be in the switch objects map");
+	m_tNextFirstSwitchObjectID	= (*(m_tpCurrentLevel->begin())).second->ID;
+	
+	// setting up the first scheduled object
+	if (m_tpScheduledObjects.size())
+		m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;
+	else
+		m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
 }
 
 void CSE_ALifeSimulator::Save()
@@ -113,8 +124,6 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tpActor					= 0;
 	m_tGameTime					= 0;
-	m_dwObjectsBeingProcessed	= 0;
-	m_dwObjectsBeingSwitched	= 0;
 	m_bActorEnabled				= true;
 	strconcat					(m_caSaveName,caSaveName,SAVE_EXTENSION);
 
@@ -240,19 +249,20 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 				m_tNextSurgeTime	= m_tLastSurgeTime + 7*24*3600*1000; // a week in milliseconds
 				m_tZoneState		= eZoneStateAfterSurge;
 				break;
-								   }
+			}
 			case eZoneStateAfterSurge : {
 				if (tfGetGameTime() > m_tNextSurgeTime) {
 					m_tZoneState	= eZoneStateSurge;
 					break;
 				}
 
-				ALIFE_MONSTER_P_IT	B = m_tpScheduledObjects.begin(), I = B;
-				ALIFE_MONSTER_P_IT	E = m_tpScheduledObjects.end();
+				ALIFE_MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.begin();
+				ALIFE_MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
 				for ( ; I != E; I++)
-					vfProcessNPC	(*I);
+					vfProcessNPC	((*I).second);
+
 				break;
-										}
+			}
 			default : NODEFAULT;
 		}
 	}

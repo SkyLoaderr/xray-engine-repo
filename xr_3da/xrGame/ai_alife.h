@@ -26,8 +26,6 @@ class CSE_ALifeSimulator :
 	public CRandom 
 {
 private:
-	u32								m_dwObjectsBeingProcessed;
-	u32								m_dwObjectsBeingSwitched;
 	u64								m_qwMaxProcessTime;
 	float							m_fOnlineDistance;
 	u32								m_dwSwitchDelay;

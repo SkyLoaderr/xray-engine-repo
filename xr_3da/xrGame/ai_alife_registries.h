@@ -53,13 +53,16 @@ public:
 class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
 public:
 	typedef CSE_ALifeAStar inherited;
-	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
+	ALIFE_ENTITY_P_MAP_MAP			m_tLevelMap;
 	CSE_ALifeDynamicObject			*m_tpActor;
-	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
+	ALIFE_ENTITY_P_MAP				*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;					// по точке графа получить все 
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];	// массив списков: по идетнификатору 
-    																	//	местности получить список точек 
+       																	//	местности получить список точек 
 																		//  графа
+	_OBJECT_ID						m_tNextFirstSwitchObjectID;
+	_LEVEL_ID						m_tCurrentLevelID;
+
 									CSE_ALifeGraphRegistry		();
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
@@ -72,6 +75,7 @@ public:
 			void					vfChangeEventGraphPoint		(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID);
 			void					vfAttachItem				(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bAddChild = true);
 			void					vfDetachItem				(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bRemoveChild = true);
+			void					vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 };
 
 class CSE_ALifeTraderRegistry {
@@ -84,10 +88,13 @@ public:
 
 class CSE_ALifeScheduleRegistry {
 public:
-	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
+	ALIFE_MONSTER_P_MAP				m_tpScheduledObjects;	// массив обновляемых объектов
+	_OBJECT_ID						m_tNextFirstProcessObjectID;
 
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			void					vfAddObjectToScheduled		(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			void					vfRemoveObjectFromScheduled	(CSE_ALifeDynamicObject *tpALifeDynamicObject);
 };
 
 class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {

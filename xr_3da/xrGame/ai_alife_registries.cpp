@@ -234,19 +234,20 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 	u8 dwLevelID = getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
 
-	ALIFE_ENTITY_P_VECTOR_PAIR_IT I = m_tLevelMap.find(dwLevelID);
+	ALIFE_ENTITY_P_MAP_PAIR_IT I = m_tLevelMap.find(dwLevelID);
 	if (I == m_tLevelMap.end()) {
-		ALIFE_ENTITY_P_VECTOR *tpTemp = xr_new<ALIFE_ENTITY_P_VECTOR>();
-		tpTemp->push_back(tpALifeDynamicObject);
-		m_tLevelMap.insert(std::make_pair(dwLevelID,tpTemp));
+		ALIFE_ENTITY_P_MAP	*tpTemp = xr_new<ALIFE_ENTITY_P_MAP>();
+		tpTemp->insert		(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+		m_tLevelMap.insert	(std::make_pair(dwLevelID,tpTemp));
 	}
 	else
-		(*I).second->push_back(tpALifeDynamicObject);
+		(*I).second->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 
 	if (m_tpActor && !m_tpCurrentLevel) {
 		I = m_tLevelMap.find(getAI().m_tpaGraph[m_tpActor->m_tGraphID].tLevelID);
 		R_ASSERT2(I != m_tLevelMap.end(),"Can't find corresponding to actor level!");
 		m_tpCurrentLevel = (*I).second;
+		m_tCurrentLevelID = (*I).first;
 	}
 
 	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
@@ -258,6 +259,21 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 	if (!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
 		m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
+}
+
+void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+{
+	ALIFE_ENTITY_P_PAIR_IT	I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
+	R_ASSERT2				(I != m_tpCurrentLevel->end(),"Object not found in the level map!");
+	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
+		if (++J == m_tpCurrentLevel->end())
+			J = m_tpCurrentLevel->begin();
+		if (J != m_tpCurrentLevel->end())
+			m_tNextFirstSwitchObjectID	= (*J).second->ID;
+		else
+			m_tNextFirstSwitchObjectID	= _OBJECT_ID(0xffff);
+	}
+	m_tpCurrentLevel->erase(I);
 }
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
@@ -288,11 +304,17 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 {
-	vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tGraphPointID);
-	vfAddObjectToGraphPoint			(tpALifeDynamicObject,tNextGraphPointID);
+	vfRemoveObjectFromGraphPoint		(tpALifeDynamicObject,tGraphPointID);
+	vfAddObjectToGraphPoint				(tpALifeDynamicObject,tNextGraphPointID);
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;
 	tpALifeDynamicObject->o_Position	= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLocalPoint;
 	tpALifeDynamicObject->m_tNodeID		= getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tNodeID;
+
+	if ((getAI().m_tpaGraph[tGraphPointID].tLevelID == m_tCurrentLevelID) && (getAI().m_tpaGraph[tNextGraphPointID].tLevelID != m_tCurrentLevelID))
+		vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
+	else
+		if ((getAI().m_tpaGraph[tGraphPointID].tLevelID != m_tCurrentLevelID) && (getAI().m_tpaGraph[tNextGraphPointID].tLevelID == m_tCurrentLevelID))
+			m_tpCurrentLevel->insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
 // events
@@ -389,8 +411,39 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 	CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
 
 	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth > 0))
-		m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
-}	
+		vfAddObjectToScheduled		(tpALifeMonsterAbstract);
+}
+
+void CSE_ALifeScheduleRegistry::vfAddObjectToScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+{
+	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	if (!tpALifeMonsterAbstract)
+		return;
+
+	m_tpScheduledObjects.insert	(std::make_pair(tpALifeMonsterAbstract->ID,tpALifeMonsterAbstract));
+
+	if (m_tNextFirstProcessObjectID == _OBJECT_ID(-1))
+		m_tNextFirstProcessObjectID = tpALifeMonsterAbstract->ID;
+}
+
+void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObject *tpALifeDynamicObject)
+{
+	CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	if (!tpALifeMonsterAbstract)
+		return;
+
+	ALIFE_MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID), J = I;
+	R_ASSERT2				(I != m_tpScheduledObjects.end(),"Object not found in the level map!");
+	if (m_tNextFirstProcessObjectID == tpALifeDynamicObject->ID) {
+		if (++J == m_tpScheduledObjects.end())
+			J = m_tpScheduledObjects.begin();
+		if (J != m_tpScheduledObjects.end())
+			m_tNextFirstProcessObjectID	= (*J).second->ID;
+		else
+			m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
+	}
+	m_tpScheduledObjects.erase(I);
+}
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeSpawnRegistry

@@ -13,42 +13,13 @@
 
 void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
 {
-	CSE_ALifeDynamicObject		*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
-	VERIFY						(tpALifeDynamicObject);
-	m_tObjectRegistry.erase		(tpSE_Abstract->ID);
+	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
+	VERIFY							(tpALifeDynamicObject);
+	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
-	vfRemoveObjectFromGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
-
-	{
-		bool					bOk = false;
-		ALIFE_ENTITY_P_IT		B = m_tpCurrentLevel->begin(), I = B;
-		ALIFE_ENTITY_P_IT		E = m_tpCurrentLevel->end();
-		for ( ; I != E; I++)
-			if (*I == tpALifeDynamicObject) {
-				if (I - B >= (int)m_dwObjectsBeingSwitched) {
-					if (m_dwObjectsBeingSwitched)
-						m_dwObjectsBeingSwitched--;
-				}
-				m_tpCurrentLevel->erase(I);
-				bOk				= true;
-				break;
-			}
-		VERIFY					(bOk);
-	}
-
-	{
-		bool					bOk = false;
-		ALIFE_MONSTER_P_IT		I = m_tpScheduledObjects.begin();
-		ALIFE_MONSTER_P_IT		E = m_tpScheduledObjects.end();
-		for ( ; I != E; I++)
-			if (*I == tpALifeDynamicObject) {
-				if ((m_tpScheduledObjects.begin() + m_dwObjectsBeingProcessed) == m_tpScheduledObjects.end())
-					m_dwObjectsBeingProcessed--;
-				m_tpScheduledObjects.erase(I);
-				bOk				= true;
-				break;
-			}
-	}
+	vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
+	vfRemoveObjectFromCurrentLevel	(tpALifeDynamicObject);
+	vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 
 	tpSE_Abstract->m_bALifeControl = false;
 }
@@ -87,6 +58,7 @@ void CSE_ALifeSimulator::vfCreateObject(CSE_ALifeDynamicObject *tpALifeDynamicOb
 			tpItem->m_bOnline		= true;
 		}
 	}
+	vfRemoveObjectFromScheduled		(tpALifeDynamicObject);
 }
 
 void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicObject)
@@ -115,6 +87,7 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_ALifeDynamicObject *tpALifeDynamicO
 			tpItem->m_bOnline		= false;
 		}
 	}
+	vfAddObjectToScheduled			(tpALifeDynamicObject);
 #ifdef DEBUG_LOG
 	Msg("ALife : Destroying monster %s",tpALifeDynamicObject->s_name_replace);
 #endif
@@ -289,18 +262,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 		}
 	
 	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(I);
-	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0)) {
-		ALIFE_MONSTER_P_IT	i = m_tpScheduledObjects.begin();
-		ALIFE_MONSTER_P_IT	e = m_tpScheduledObjects.end();
-		_OBJECT_ID			tObjectID = tpALifeMonsterAbstract->ID;
-		for ( ; i != e; i++)
-			if ((*i)->ID == tObjectID) {
-				if ((m_tpScheduledObjects.begin() + m_dwObjectsBeingProcessed) == m_tpScheduledObjects.end())
-					m_dwObjectsBeingProcessed--;
-				m_tpScheduledObjects.erase(i);
-				break;
-			}
-	}
+	if (tpALifeMonsterAbstract && (tpALifeMonsterAbstract->fHealth <= 0) && (m_tpScheduledObjects.find(tpALifeMonsterAbstract->ID) != m_tpScheduledObjects.end()))
+		vfRemoveObjectFromScheduled(tpALifeMonsterAbstract);
 }
 
 // switch object offline an check if it is a group of monsters then separate dead monsters from the group
