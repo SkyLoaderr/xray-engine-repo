@@ -497,11 +497,13 @@ void CAI_ALife::vfListObjects()
 	OBJECT_PAIR_IT	it = m_tObjectRegistry.m_tppMap.begin();
 	OBJECT_PAIR_IT	E  = m_tObjectRegistry.m_tppMap.end();
 	string64	tString;
-	for ( ; it != E; it++) {
+	Msg("%s->Listing objects :",cName());
+	for (int i=0; it != E; it++, i++) {
 		memcpy(tString,&((*it).second->m_tClassID),sizeof((*it).second->m_tClassID));
 		tString[sizeof((*it).second->m_tClassID)] = 0;
-		Msg("* %8s : %6d",tString,(*it).first);
+		Msg("* %4d : %8s[ID=%4d][MDL=%10s][CNT=%3d][GID=%4d][UPD=%11I64u]",i,tString,(*it).first,m_tpSpawnPoints[(*it).second->m_tSpawnID].caModel,(*it).second->m_wCount,(*it).second->m_tGraphID,(*it).second->m_tTimeID);
 	}
+	Msg("Total %d objects",i);
 }
 
 void CAI_ALife::vfListEvents()

@@ -102,7 +102,7 @@ public:
 	virtual							~CAI_ALife				();
 	virtual float					shedule_Scale			()					{return .5f;};
 	virtual BOOL					Ready					()					{return TRUE;};
-	virtual LPCSTR					cName					()					{return "ALife simulator";}; 
+	virtual LPCSTR					cName					()					{return "ALife Simulator";}; 
 	virtual void					Load					();
 	virtual void					Update					(u32 dt);	
 			void					Save					();

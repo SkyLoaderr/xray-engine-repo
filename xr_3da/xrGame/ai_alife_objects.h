@@ -45,7 +45,8 @@ public:
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
-		m_tClassID			= _CLASS_ID(pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class"));
+		LPCSTR				S = pSettings->ReadSTRING(tpSpawnPoints[tSpawnID].caModel, "class");
+		memcpy				(&m_tClassID,S,sizeof(m_tClassID));
 		m_tGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
 		m_tSpawnID			= tSpawnID;
 		m_wCount			= tpSpawnPoints[tSpawnID].wCount;
