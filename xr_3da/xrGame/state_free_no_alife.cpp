@@ -64,7 +64,7 @@ void CStateFreeNoAlife::execute			()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::update	(SightManager::eSightTypeSearch);
+	m_object->CSightManager::setup	(SightManager::eSightTypeSearch);
 
 #ifdef OLD_OBJECT_HANDLER
 	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
