@@ -7704,6 +7704,9 @@
 							<File
 								RelativePath=".\game_sv_deathmatch_process_event.cpp">
 							</File>
+							<File
+								RelativePath=".\game_sv_deathmatch_script.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="single"
