@@ -58,12 +58,6 @@ public:
 #endif
 };
 
+IC	CAI_Space	&ai	();
+
 #include "ai_space_inline.h"
-
-extern  *g_ai_space;
-
-IC CAI_Space &ai()
-{
-	static CAI_Space ai_space;
-	return			(ai_space);
-}

@@ -80,3 +80,9 @@ IC	CScriptEngine				&CAI_Space::script_engine	() const
 	VERIFY			(m_script_engine);
 	return			(*m_script_engine);
 }
+
+IC	CAI_Space					&ai							()
+{
+	static CAI_Space ai_space;
+	return			(ai_space);
+}
