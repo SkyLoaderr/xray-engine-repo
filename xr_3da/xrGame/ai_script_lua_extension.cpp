@@ -8,48 +8,13 @@
 
 #include "stdafx.h"
 #include "ai_script_lua_extension.h"
+#include "ParticlesObject.h"
 
 using namespace Script;
 
-void Script::vfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
-{
-	for (int i=0; ; i++)
-		if (lua_isstring(tpLuaVirtualMachine,i)) {
-			if (!i)
-				Msg("* [LUA] Output from %s",caScriptFileName);
-			Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
-		}
-		else
-			return;
-}
-
-//class CItemObject {
-//public:
-//	Active();
-//	Visible(); // only for NPC
-//	Condition();
-//	get_parent();
-//	get_mass();
-//	get_cost();
-//	position();
-//};
-//
-//class CAliveObject {
-//public:
-//	rank();
-//	health();
-//	activeweapon();
-//	equipment();
-//	asleep();
-//	zombied();
-//	checkifobjectvisible();
-//
-//};
-//
-
 double get_time()
 {
-	return((double)Level().GetGameTime());
+	return((double)Device.TimerAsync());
 }
 
 void LuaLog(LPCSTR caMessage)
@@ -134,7 +99,11 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("getHP",						&Fvector::getHP)
 			.def("reflect",						&Fvector::reflect)
 			.def("slide",						&Fvector::slide)
-			.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis)
+			.def("generate_orthonormal_basis",	&Fvector::generate_orthonormal_basis),
+
+		class_<CParticlesObject>("CParticleSystem")
+			.def(constructor<const char *, bool>())
+			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
 	];
 	
 	module(tpLuaVirtualMachine,"Game")

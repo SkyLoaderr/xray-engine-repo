@@ -13,6 +13,18 @@
 
 using namespace Script;
 
+void Script::vfPrintOutput(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptFileName)
+{
+	for (int i=0; ; i++)
+		if (lua_isstring(tpLuaVirtualMachine,i)) {
+			if (!i)
+				Msg("* [LUA] Output from %s",caScriptFileName);
+			Msg		("* [LUA] %s",lua_tostring(tpLuaVirtualMachine,i));
+		}
+		else
+			return;
+}
+
 void Script::vfPrintError(CLuaVirtualMachine *tpLuaVirtualMachine, int iErrorCode)
 {
 	switch (iErrorCode) {

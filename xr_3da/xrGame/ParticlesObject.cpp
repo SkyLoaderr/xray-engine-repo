@@ -8,7 +8,17 @@
 #include "..\ParticleCustom.h"
 #include "..\render.h"
 
+CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
+{
+	Init					(p_name,0,bAutoRemove);
+}
+
 CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
+{
+	Init					(p_name,S,bAutoRemove);
+}
+
+void CParticlesObject::Init(LPCSTR p_name, IRender_Sector* S, BOOL bAutoRemove)
 {
 	m_bAutoRemove			= bAutoRemove;
 
@@ -22,11 +32,11 @@ CParticlesObject::CParticlesObject	(LPCSTR p_name, IRender_Sector* S, BOOL bAuto
 	}else{
 		R_ASSERT3	(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",p_name);
 	}
-
+	
 	// spatial
 	spatial.type			= 0;
 	spatial.sector			= S;
-
+	
 	// sheduled
 	shedule.t_min			= 20;
 	shedule.t_max			= 50;
