@@ -13,7 +13,9 @@ private:
 	xr_vector<CObject*>			destroy_queue		;
 	xr_vector<CObject*>			objects_active		;
 	xr_vector<CObject*>			objects_sleeping	;
-	xr_vector<CObject*>			objects_active_dup	;
+
+	CObject**					objects_dup			;
+	u32							objects_dup_memsz	;
 public:
 	// methods
 								CObjectList			( );
