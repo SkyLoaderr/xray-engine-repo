@@ -123,6 +123,8 @@ public:
 	void						accum_spot_geom_destroy	();
 
 	void						u_stencil_optimize		();
+	void						u_compute_texgen_screen	(Fmatrix& dest);
+	void						u_compute_texgen_jitter	(Fmatrix& dest);
 	void						u_setrt					(const ref_rt& _1, const ref_rt& _2, const ref_rt& _3, IDirect3DSurface9* zb);
 	void						u_setrt					(u32 W, u32 H, IDirect3DSurface9* _1, IDirect3DSurface9* _2, IDirect3DSurface9* _3, IDirect3DSurface9* zb);
 

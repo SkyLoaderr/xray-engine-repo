@@ -51,22 +51,9 @@ void CRenderTarget::accum_spot	(light* L)
 	RCache.set_ColorWriteEnable		();
 	RCache.set_CullMode				(CULL_CW);		// back
 
-	// 2D texgen (texture adjustment matrix)
-	Fmatrix			m_Texgen;
-	{
-		float	_w						= float(Device.dwWidth);
-		float	_h						= float(Device.dwHeight);
-		float	o_w						= (.5f / _w);
-		float	o_h						= (.5f / _h);
-		Fmatrix			m_TexelAdjust		= 
-		{
-			0.5f,				0.0f,				0.0f,			0.0f,
-			0.0f,				-0.5f,				0.0f,			0.0f,
-			0.0f,				0.0f,				1.0f,			0.0f,
-			0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
-		};
-		m_Texgen.mul	(m_TexelAdjust,RCache.xforms.m_wvp);
-	}
+	// 2D texgens 
+	Fmatrix			m_Texgen;			u_compute_texgen_screen	(m_Texgen	);
+	Fmatrix			m_Texgen_J;			u_compute_texgen_jitter	(m_Texgen_J	);
 
 	// Shadow xform (+texture adjustment matrix)
 	Fmatrix			m_Shadow,m_Lmap;
@@ -137,6 +124,7 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));
 		RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 		RCache.set_c				("m_texgen",		m_Texgen	);
+		RCache.set_c				("m_texgen_J",		m_Texgen_J	);
 		RCache.set_c				("m_shadow",		m_Shadow	);
 		RCache.set_ca				("m_lmap",		0,	m_Lmap._11, m_Lmap._21, m_Lmap._31, m_Lmap._41	);
 		RCache.set_ca				("m_lmap",		1,	m_Lmap._12, m_Lmap._22, m_Lmap._32, m_Lmap._42	);

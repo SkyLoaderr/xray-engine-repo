@@ -52,19 +52,9 @@ void CRenderTarget::accum_point		(light* L)
 	else			RCache.set_CullMode		(CULL_CCW);		// front
 	*/
 
-	// 2D texgen (texture adjustment matrix)
-	float	_w						= float(Device.dwWidth);
-	float	_h						= float(Device.dwHeight);
-	float	o_w						= (.5f / _w);
-	float	o_h						= (.5f / _h);
-	Fmatrix			m_TexelAdjust	= {
-		0.5f,				0.0f,				0.0f,			0.0f,
-		0.0f,				-0.5f,				0.0f,			0.0f,
-		0.0f,				0.0f,				1.0f,			0.0f,
-		0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
-	};
-	Fmatrix			m_Tex;
-	m_Tex.mul		(m_TexelAdjust,RCache.xforms.m_wvp);
+	// 2D texgens 
+	Fmatrix			m_Texgen;			u_compute_texgen_screen	(m_Texgen	);
+	Fmatrix			m_Texgen_J;			u_compute_texgen_jitter	(m_Texgen_J	);
 
 	// Draw volume with projective texgen
 	{
@@ -84,7 +74,7 @@ void CRenderTarget::accum_point		(light* L)
 		// Constants
 		RCache.set_c					("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L_R*L_R));
 		RCache.set_c					("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
-		RCache.set_c					("m_texgen",		m_Tex);
+		RCache.set_c					("m_texgen",		m_Texgen);
 
 		// Render if (stencil >= light_id && z-pass)
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
