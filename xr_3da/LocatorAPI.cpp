@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "LocatorAPI.h"
-#include "xr_func.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

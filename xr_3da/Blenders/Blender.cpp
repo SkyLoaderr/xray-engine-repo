@@ -45,22 +45,22 @@ void	CBlender::Save(	CFS_Base& FS )
 {
 	FS.write	(&description,sizeof(description));
 	BP_W_MARKER ("General");
-	BP_WRITE	("Priority",		BPID_INTEGER,	oPriority);
-	BP_WRITE	("Strict sorting",	BPID_BOOL,		oStrictSorting);
+	BP_WRITE	("Priority",		xrPID_INTEGER,	oPriority);
+	BP_WRITE	("Strict sorting",	xrPID_BOOL,		oStrictSorting);
 	BP_W_MARKER	("Base Texture");
-	BP_WRITE	("Name",			BPID_TEXTURE,	oT_Name);
-	BP_WRITE	("Transform",		BPID_MATRIX,	oT_xform);
+	BP_WRITE	("Name",			xrPID_TEXTURE,	oT_Name);
+	BP_WRITE	("Transform",		xrPID_MATRIX,	oT_xform);
 }
 
 void	CBlender::Load(	CStream& FS )
 {
 	FS.Read		(&description,sizeof(description));
 	BP_R_MARKER	();
-	BP_READ		(BPID_INTEGER,	oPriority);
-	BP_READ		(BPID_BOOL,		oStrictSorting);
+	BP_READ		(xrPID_INTEGER,	oPriority);
+	BP_READ		(xrPID_BOOL,	oStrictSorting);
 	BP_R_MARKER	();
-	BP_READ		(BPID_TEXTURE,	oT_Name);
-	BP_READ		(BPID_MATRIX,	oT_xform);
+	BP_READ		(xrPID_TEXTURE,	oT_Name);
+	BP_READ		(xrPID_MATRIX,	oT_xform);
 }
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"

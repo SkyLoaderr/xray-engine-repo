@@ -6,9 +6,6 @@
 #pragma hdrstop
 
 #include "image.h"
-#include "xr_func.h"
-//#include "xr_creator.h"
-//#include "x_ray.h"
 #include "texture.h"
 #include "std_classes.h"
 #include "xr_avi.h"

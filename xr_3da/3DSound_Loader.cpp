@@ -2,7 +2,6 @@
 #include <msacm.h>
 #include "3dsound.h"
 #include "xr_sndman.h"
-#include "xr_func.h"
 #include "xr_ini.h"
 
 void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, DWORD &len)

@@ -6,7 +6,6 @@
 #include "BodyInstance.h"
 #include "fmesh.h"
 #include "xr_ini.h"
-#include "xr_func.h"
 
 int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration

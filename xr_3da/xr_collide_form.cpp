@@ -2,7 +2,6 @@
 #include "xr_collide_form.h"
 #include "xr_object.h"
 #include "xr_ini.h"
-#include "xr_func.h"
 #include "xr_creator.h"
 #include "xr_area.h"
 #include "collide\cl_defs.h"

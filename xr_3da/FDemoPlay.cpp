@@ -7,7 +7,6 @@
 #include "xr_ioconsole.h"
 #include "xr_creator.h"
 #include "Motion.h"
-#include "xr_func.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

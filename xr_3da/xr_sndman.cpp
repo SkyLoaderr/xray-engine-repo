@@ -8,7 +8,6 @@
 #include "3DSoundRender.h"
 #include "2DSoundRender.h"
 #include "MusicStream.h"
-#include "xr_func.h"
 
 #include "3dsound.h"
 #include "collide\cl_rapid.h"

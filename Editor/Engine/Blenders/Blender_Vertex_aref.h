@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_Vertex_aref : public CBlender  
 {
 public:
-	BP_Integer	oAREF;
+	xrP_Integer	oAREF;
 public:
 	virtual		LPCSTR		getComment()	{ return "base vertex blender with transparency";	}
 

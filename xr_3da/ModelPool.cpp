@@ -14,7 +14,6 @@
 #include "PSVisual.h"
 #include "fcached.h"
 
-#include "xr_func.h"
 #include "x_ray.h"
 
 FBasicVisual*	CModelPool::Instance_Create(DWORD type)

@@ -10,12 +10,12 @@
 
 class ENGINE_API CBlender_Screen_SET : public CBlender  
 {
-	BP_TOKEN	oBlend;
-	BP_Integer	oAREF;
-	BP_BOOL		oZTest;
-	BP_BOOL		oZWrite;
-	BP_BOOL		oLighting;
-	BP_BOOL		oFog;
+	xrP_TOKEN	oBlend;
+	xrP_Integer	oAREF;
+	xrP_BOOL	oZTest;
+	xrP_BOOL	oZWrite;
+	xrP_BOOL	oLighting;
+	xrP_BOOL	oFog;
 public:
 	virtual		LPCSTR		getComment()	{ return "basic"; }
 	

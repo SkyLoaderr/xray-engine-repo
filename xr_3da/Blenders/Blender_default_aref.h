@@ -11,7 +11,7 @@
 class CBlender_default_aref : public CBlender  
 {
 public:
-	BP_Integer	oAREF;
+	xrP_Integer	oAREF;
 public:
 	virtual		LPCSTR		getComment()	{ return "base blender with tranparency";	}
 

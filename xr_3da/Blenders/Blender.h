@@ -9,9 +9,9 @@
 #include "Blender_Recorder.h"
 #include "Blender_CLSID.h"
 
-#define		BP_W_MARKER(a)	BP_write_c(FS,BPID_MARKER,a,0,0)
+#define		BP_W_MARKER(a)	BP_write_c(FS,xrPID_MARKER,a,0,0)
 #define		BP_WRITE(a,b,c)	BP_write_c(FS,b,a,&c,sizeof(c))
-#define		BP_R_MARKER()	R_ASSERT(BPID_MARKER==BP_read_c(FS))
+#define		BP_R_MARKER()	R_ASSERT(xrPID_MARKER==BP_read_c(FS))
 #define		BP_READ(a,c)	R_ASSERT(a==BP_read_c(FS)); FS.Read(&c,sizeof(c))
 
 #pragma pack(push,4)
