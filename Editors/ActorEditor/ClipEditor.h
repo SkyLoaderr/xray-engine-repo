@@ -194,12 +194,12 @@ protected:
     void				UpdateClips		(bool bForced=false, bool bRepaint=true){m_RTFlags.set(flRT_UpdateClips,TRUE); m_RTFlags.set(flRT_RepaintClips,bRepaint); if(bForced) RealUpdateClips(); }
 
     void				Clear			();
+               
+	void __stdcall  	OnZoomChange		(PropValue* V);
+    void __stdcall  	OnNameChange		(PropValue* V);
+    void __stdcall  	OnClipLengthChange	(PropValue* V);
 
-	void __fastcall 	OnZoomChange		(PropValue* V);
-    void __fastcall 	OnNameChange		(PropValue* V);
-    void __fastcall 	OnClipLengthChange	(PropValue* V);
-
-    void __fastcall 	OnClipItemFocused	(ListItemsVec& items);
+    void __stdcall  	OnClipItemFocused	(ListItemsVec& items);
 public:
     float				m_CurrentPlayTime;
     float				m_TotalLength;

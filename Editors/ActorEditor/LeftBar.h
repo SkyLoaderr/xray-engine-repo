@@ -129,7 +129,7 @@ __published:	// IDE-managed Components
 	void __fastcall miExportOMFClick(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
-	void __fastcall RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);
+	void 			RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);
     void 			UpdateBar		();

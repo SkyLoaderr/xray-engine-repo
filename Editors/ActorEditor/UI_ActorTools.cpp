@@ -79,10 +79,10 @@ xr_token		sa_token					[ ]={
 void CActorTools::PreviewModel::SetPreferences()
 {
 	PropItemVec items;
-    PHelper.CreateFlag32		(items, 	"Scroll", 		&m_Flags, 		pmScroll);
-    PHelper.CreateFloat			(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
-    PHelper.CreateFloat			(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
-    PHelper.CreateToken<u32>	(items,		"Scroll axis",	(u32*)&m_ScrollAxis,	sa_token);
+    PHelper().CreateFlag32		(items, 	"Scroll", 		&m_Flags, 		pmScroll);
+    PHelper().CreateFloat			(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
+    PHelper().CreateFloat			(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
+    PHelper().CreateToken32		(items,		"Scroll axis",	(u32*)&m_ScrollAxis,	sa_token);
 	m_Props->AssignItems		(items);
     m_Props->ShowProperties		();
 }
@@ -113,8 +113,30 @@ void CActorTools::PreviewModel::Update()
     }
 }
 
+#include "EThumbnail.h"
+void _SynchronizeTextures()
+{   
+	FS_QueryMap M_THUM;
+    FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
+
+    FS_QueryPairIt it	= M_THUM.begin();
+	FS_QueryPairIt _E 	= M_THUM.end();
+	for (; it!=_E; it++){
+		ETextureThumbnail* THM=0;
+        THM = xr_new<ETextureThumbnail>(it->first.c_str());
+        STextureParams& fmt = THM->_Format();
+        if (fmt.material==STextureParams::tmOrenNayar_Blin){
+        	fmt.material=STextureParams::tmBlin_Phong;
+	        THM->Save(0,0);
+        }
+	    xr_delete(THM);
+    }
+}
+
+
 CActorTools::CActorTools()
 {
+	//. _SynchronizeTextures();
     m_Props 			= 0;
 	m_pEditObject		= 0;
     m_bObjectModified	= false;

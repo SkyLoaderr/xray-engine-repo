@@ -12,7 +12,7 @@
 #include "SkeletonAnimated.h"
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
+void CActorTools::OnObjectItemFocused(ListItemsVec& items)
 {
 	PropItemVec props;
 	m_EditMode	= emObject;
@@ -58,7 +58,7 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::PMMotionItemClick(TObject *Sender)
+void CActorTools::PMMotionItemClick(TObject *Sender)
 {
 	R_ASSERT(m_pEditObject);
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
@@ -69,14 +69,14 @@ void __fastcall CActorTools::PMMotionItemClick(TObject *Sender)
     }
 }
 
-void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
+void CActorTools::OnChangeTransform(PropValue* sender)
 {
 //    OnMotionKeysModified();
 	UI->RedrawScene();
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe)
+void CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -137,7 +137,7 @@ void CActorTools::RealUpdateProperties()
 	m_Flags.set(flRefreshProps,FALSE);
 	ListItemsVec items;
 	if (m_pEditObject){
-        LHelper.CreateItem					(items,OBJECT_PREFIX,0,emObject);
+        LHelper().CreateItem				(items,OBJECT_PREFIX,0,emObject);
         m_pEditObject->FillSurfaceList		(SURFACES_PREFIX,items,emSurface);
         // skin
         if (m_pEditObject->IsSkeleton()){
@@ -168,13 +168,13 @@ void CActorTools::OnMotionTypeChange(PropValue* sender)
 }
 //------------------------------------------------------------------------------
                         
-void __fastcall CActorTools::OnMotionNameChange(PropValue* V)
+void CActorTools::OnMotionNameChange(PropValue* V)
 {
     OnMotionKeysModified();
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -186,7 +186,7 @@ void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModi
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnMotionRefsChange(PropValue* sender)
+void  CActorTools::OnMotionRefsChange(PropValue* sender)
 {
     OnMotionKeysModified	();
 	UI->Command				(COMMAND_UPDATE_PROPERTIES);
@@ -209,44 +209,44 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
     }else{
     	m_cnt 				= m_pEditObject->SMotionCount();
     }
-    
-    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Motion count"),	m_cnt);
-    V=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions);
+                                     
+    PHelper().CreateCaption	(items, PHelper().PrepareKey(pref,"Global\\Motion count"),	m_cnt.c_str());
+    V=PHelper().CreateChoose	(items, PHelper().PrepareKey(pref,"Global\\Motion reference"),&m_pEditObject->m_SMotionRefs, smGameSMotions);
     V->OnChangeEvent		= OnMotionRefsChange;
     ButtonValue* B;                         
-    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
+    B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Global\\Edit"),			"Append,Delete,Save",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnMotionEditClick; 
     if (SM){                                                                     
-        B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Motion\\Control"),		"Play,Stop,Pause",ButtonValue::flFirstOnly);
+        B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Motion\\Control"),	"Play,Stop,Pause",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent		= OnMotionControlClick;
-	    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Motion\\Frame\\Start"),	SM->FrameStart());
-	    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Motion\\Frame\\End"),		SM->FrameEnd());
-	    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Motion\\Frame\\Length"),	SM->Length());
+	    PHelper().CreateCaption	(items, PHelper().PrepareKey(pref,"Motion\\Frame\\Start"),	ref_str().sprintf("%d",SM->FrameStart()));
+	    PHelper().CreateCaption	(items, PHelper().PrepareKey(pref,"Motion\\Frame\\End"),	ref_str().sprintf("%d",SM->FrameEnd()));
+	    PHelper().CreateCaption	(items, PHelper().PrepareKey(pref,"Motion\\Frame\\Length"),	ref_str().sprintf("%d",SM->Length()));
         PropValue* P=0;                                              
-        P=PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Motion\\Name"),		&SM->Name(), sizeof(SM->Name()), sender);
+        P=PHelper().CreateName	(items,PHelper().PrepareKey(pref,"Motion\\Name"),		&SM->name, sender);
         P->OnChangeEvent		= OnMotionNameChange;
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Speed"),	&SM->fSpeed,  0.f,10.f,0.01f,2);
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Accrue"),	&SM->fAccrue, 0.f,10.f,0.01f,2);
-        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,10.f,0.01f,2);
+        PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\Speed"),	&SM->fSpeed,  0.f,10.f,0.01f,2);
+        PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\Accrue"),	&SM->fAccrue, 0.f,10.f,0.01f,2);
+        PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,10.f,0.01f,2);
 
         PropValue /**C=0,*/*TV=0;
-        TV = PHelper.CreateFlag8(items,FHelper.PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
+        TV = PHelper().CreateFlag8(items,PHelper().PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
         TV->OnChangeEvent		= OnMotionTypeChange;
         m_BoneParts.clear		();
         if (SM->m_Flags.is(esmFX)){
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++)
 				m_BoneParts.push_back	(xr_rtoken((*it)->Name(),(*it)->index));
-			PHelper.CreateRToken<u16>	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Start bone"),	(u16*)&SM->m_BoneOrPart,	&m_BoneParts);
+			PHelper().CreateRToken16		(items,PHelper().PrepareKey(pref,"Motion\\FX\\Start bone"),	(u16*)&SM->m_BoneOrPart,	&m_BoneParts);
 
-            PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,10.f,0.01f,2);
+            PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,10.f,0.01f,2);
         }else{
             m_BoneParts.push_back(xr_rtoken("--all bones--",BI_NONE));
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++)
 				m_BoneParts.push_back	(xr_rtoken(it->alias.c_str(),it-m_pEditObject->FirstBonePart()));
-			PHelper.CreateRToken<u16>	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Bone part"),		&SM->m_BoneOrPart,	&m_BoneParts);
-            PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Stop at end"),	&SM->m_Flags,	esmStopAtEnd);
-            PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\No mix"),	  	&SM->m_Flags,	esmNoMix);
-            PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Sync part"),		&SM->m_Flags,	esmSyncPart);
+			PHelper().CreateRToken16		(items,PHelper().PrepareKey(pref,"Motion\\Cycle\\Bone part"),		&SM->m_BoneOrPart,	&m_BoneParts);
+            PHelper().CreateFlag8			(items,PHelper().PrepareKey(pref,"Motion\\Cycle\\Stop at end"),	&SM->m_Flags,	esmStopAtEnd);
+            PHelper().CreateFlag8			(items,PHelper().PrepareKey(pref,"Motion\\Cycle\\No mix"),	  	&SM->m_Flags,	esmNoMix);
+            PHelper().CreateFlag8			(items,PHelper().PrepareKey(pref,"Motion\\Cycle\\Sync part"),		&SM->m_Flags,	esmSyncPart);
         }
     }
 }
@@ -277,23 +277,23 @@ xr_token shape_types[]={
 static const LPCSTR axis[3]=
 { "Axis X", "Axis Y", "Axis Z" };
 
-void __fastcall CActorTools::OnJointTypeChange(PropValue* V)
+void  CActorTools::OnJointTypeChange(PropValue* V)
 {
 	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
-void __fastcall CActorTools::OnShapeTypeChange(PropValue* V)
+void  CActorTools::OnShapeTypeChange(PropValue* V)
 {
 	UI->RedrawScene();
 	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
-void __fastcall CActorTools::OnBindTransformChange(PropValue* V)
+void  CActorTools::OnBindTransformChange(PropValue* V)
 {
 	R_ASSERT(m_pEditObject);
     m_pEditObject->OnBindTransformChange();
 	UI->RedrawScene();
 }
 
-void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -303,7 +303,7 @@ void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif, b
 	}
 }
 
-void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -326,7 +326,7 @@ void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bo
 	}
 }
 
-void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
+void  CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 {              
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -354,7 +354,7 @@ void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bo
 	}
 }
 
-void __fastcall CActorTools::OnBoneLimitsChange(PropValue* sender)
+void  CActorTools::OnBoneLimitsChange(PropValue* sender)
 {
 	m_pEditObject->ClampByLimits(true);
 }
@@ -364,39 +364,39 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
 	R_ASSERT(m_pEditObject);
 	CBone* BONE = (CBone*)sender->m_Object;
 
-    PHelper.CreateCaption	(items, FHelper.PrepareKey(pref,"Global\\Bone count"),	m_pEditObject->BoneCount());
+    PHelper().CreateCaption	(items, PHelper().PrepareKey(pref,"Global\\Bone count"),	ref_str().sprintf("%d",m_pEditObject->BoneCount()));
     ButtonValue* B;
-    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\File"),"Load,Save",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnBoneFileClick;
-    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Edit"),"Bind pose,Reset IK,Clamp limits",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnBoneEditClick;
-    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Global\\Generate Shape"),"All, Selected",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnBoneShapeClick;
+    B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Global\\File"),"Load,Save",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent			= OnBoneFileClick;
+    B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Global\\Edit"),"Bind pose,Reset IK,Clamp limits",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent			= OnBoneEditClick;
+    B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Global\\Generate Shape"),"All, Selected",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent			= OnBoneShapeClick;
     if (BONE){
     	PropValue* V;
-        PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Name"),						BONE->Name());
-		PHelper.CreateChoose		(items,	FHelper.PrepareKey(pref,"Bone\\Game Material"),				BONE->game_mtl, sizeof(BONE->game_mtl), smGameMaterial);
-        PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
-        PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
-        V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent = OnBindTransformChange;
-        V=PHelper.CreateAngle3		(items, FHelper.PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent = OnBindTransformChange;
-        PHelper.CreateFlag16		(items, FHelper.PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
-        PHelper.CreateFlag16		(items, FHelper.PrepareKey(pref,"Bone\\Flags\\Remove After Break"),	&BONE->shape.flags, SBoneShape::sfRemoveAfterBreak);
-		V=PHelper.CreateToken<u16>	(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types);			V->OnChangeEvent = OnShapeTypeChange;
+        PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Bone\\Name"),						BONE->Name());
+		PHelper().CreateChoose		(items,	PHelper().PrepareKey(pref,"Bone\\Game Material"),				&BONE->game_mtl, smGameMaterial);
+        PHelper().CreateFloat	 	(items, PHelper().PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
+        PHelper().CreateVector		(items, PHelper().PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
+        V=PHelper().CreateVector 	(items, PHelper().PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent = OnBindTransformChange;
+        V=PHelper().CreateAngle3 	(items, PHelper().PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent = OnBindTransformChange;
+        PHelper().CreateFlag16		(items, PHelper().PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
+        PHelper().CreateFlag16		(items, PHelper().PrepareKey(pref,"Bone\\Flags\\Remove After Break"),	&BONE->shape.flags, SBoneShape::sfRemoveAfterBreak);
+		V=PHelper().CreateToken16	(items,	PHelper().PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types);			V->OnChangeEvent = OnShapeTypeChange;
         switch (BONE->shape.type){
         case SBoneShape::stBox:
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Box\\Center"),		&BONE->shape.box.m_translate, -10000.f, 10000.f);
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Box\\Half Size"),  	&BONE->shape.box.m_halfsize, 0.f, 1000.f);
+	        PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Box\\Center"),		&BONE->shape.box.m_translate, -10000.f, 10000.f);
+	        PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Box\\Half Size"),  	&BONE->shape.box.m_halfsize, 0.f, 1000.f);
         break;
         case SBoneShape::stSphere:
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Sphere\\Position"),	&BONE->shape.sphere.P, -10000.f, 10000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Sphere\\Radius"),  	&BONE->shape.sphere.R, 0.f, 1000.f);
+	        PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Sphere\\Position"),	&BONE->shape.sphere.P, -10000.f, 10000.f);
+	        PHelper().CreateFloat  	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Sphere\\Radius"),  	&BONE->shape.sphere.R, 0.f, 1000.f);
         break;
         case SBoneShape::stCylinder:
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Cylinder\\Center"),	&BONE->shape.cylinder.m_center, -10000.f, 10000.f);
-	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Cylinder\\Direction"),&BONE->shape.cylinder.m_direction, 0.f, 10000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Cylinder\\Height"),	&BONE->shape.cylinder.m_height, 0.f, 1000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Cylinder\\Radius"),	&BONE->shape.cylinder.m_radius, 0.f, 1000.f);
+	        PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Cylinder\\Center"),	&BONE->shape.cylinder.m_center, -10000.f, 10000.f);
+	        PHelper().CreateVector	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Cylinder\\Direction"),&BONE->shape.cylinder.m_direction, 0.f, 10000.f);
+	        PHelper().CreateFloat  	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Cylinder\\Height"),	&BONE->shape.cylinder.m_height, 0.f, 1000.f);
+	        PHelper().CreateFloat  	(items, PHelper().PrepareKey(pref,"Bone\\Shape\\Cylinder\\Radius"),	&BONE->shape.cylinder.m_radius, 0.f, 1000.f);
         break;
         }
 
@@ -411,48 +411,48 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         lim_rot.y 					= rad2deg(lim_rot.y);
         lim_rot.z 				 	= rad2deg(lim_rot.z);
         
-        PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Current Rotation"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(lim_rot)));
+        PHelper().CreateCaption		(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Current Rotation"),	ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(lim_rot)));
     	SJointIKData& data			= BONE->IK_data;
-        V=PHelper.CreateFlag32		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Breakable"),			&data.ik_flags, SJointIKData::flBreakable);
+        V=PHelper().CreateFlag32 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Breakable"),		&data.ik_flags, SJointIKData::flBreakable);
         V->OnChangeEvent			= OnJointTypeChange;
         if (data.ik_flags.is(SJointIKData::flBreakable)){
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Break Force"),		&data.break_force, 	0.f, 1000000000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Break Torque"),		&data.break_torque, 0.f, 1000000000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Break Force"),		&data.break_force, 	0.f, 1000000000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Break Torque"),		&data.break_torque, 0.f, 1000000000.f);
         }
-		V=PHelper.CreateToken<u32>	(items,	FHelper.PrepareKey(pref,"Bone\\Joint\\Type"),				(u32*)&data.type,	joint_types);  	V->OnChangeEvent = OnJointTypeChange;
+		V=PHelper().CreateToken32	(items,	PHelper().PrepareKey(pref,"Bone\\Joint\\Type"),				(u32*)&data.type,	joint_types);  	V->OnChangeEvent = OnJointTypeChange;
         switch (data.type){
         case jtRigid: 
         break; 
         case jtCloth:{ 
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 		&data.friction, 	0.f, 1000000000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
         }break; 
         case jtJoint:{
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 		&data.friction, 	0.f, 1000000000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
-	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
+	        PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
+	        PHelper().CreateFloat 	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Spring Factor"),		&data.spring_factor, 	0.f, 1000.f);
+	        PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Bone\\Joint\\Damping Factor"),		&data.damping_factor, 	0.f, 1000.f);
             for (int k=0; k<3; k++){
-		        V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Min"),			&data.limits[k].limit.x, 		-M_PI, 0.f);
-                V->OnChangeEvent	= OnBoneLimitsChange;
-		        V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Max"),			&data.limits[k].limit.y, 		0.f, M_PI);
-                V->OnChangeEvent	= OnBoneLimitsChange;
-		        V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Spring Factor"),	&data.limits[k].spring_factor, 	0.f, 1000.f);
-                V->OnChangeEvent	= OnBoneLimitsChange;
-		        V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Damping Factor"),	&data.limits[k].damping_factor, 0.f, 1000.f);
-                V->OnChangeEvent	= OnBoneLimitsChange;
+		        V=PHelper().CreateAngle	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Min"),				&data.limits[k].limit.x, 		-M_PI, 0.f);
+                V->OnChangeEvent		= OnBoneLimitsChange;
+		        V=PHelper().CreateAngle	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Max"),				&data.limits[k].limit.y, 		0.f, M_PI);
+                V->OnChangeEvent		= OnBoneLimitsChange;
+		        V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Spring Factor"),	&data.limits[k].spring_factor, 	0.f, 1000.f);
+                V->OnChangeEvent		= OnBoneLimitsChange;
+		        V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Limits",axis[k],"Damping Factor"),	&data.limits[k].damping_factor, 0.f, 1000.f);
+                V->OnChangeEvent		= OnBoneLimitsChange;
             }
         }break; 
 		case jtWheel:
         {
 //	        int idx = (data.type-jtWheelXZ)/2;
 	        int idx = (data.type-jtWheel)/2;
-	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
-	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Spring Factor"),			&data.spring_factor, 0.f, 1000.f);
-	        PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Damping Factor"),			&data.damping_factor, 0.f, 1000.f);
-            V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Min"),		&data.limits[idx].limit.x, -PI_DIV_2, 0.f);
+	        PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Friction"),	 			&data.friction, 	0.f, 1000000000.f);
+	        PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Spring Factor"),			&data.spring_factor, 0.f, 1000.f);
+	        PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Damping Factor"),	 	&data.damping_factor, 0.f, 1000.f);
+            V=PHelper().CreateAngle	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Min"),		&data.limits[idx].limit.x, -PI_DIV_2, 0.f);
 			V->OnChangeEvent		= OnBoneLimitsChange;
-            V=PHelper.CreateAngle	(items,FHelper.PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Max"),		&data.limits[idx].limit.y, 0, PI_DIV_2);
+            V=PHelper().CreateAngle	(items,PHelper().PrepareKey(pref,"Bone\\Joint\\Steer\\Limits Max"),		&data.limits[idx].limit.y, 0, PI_DIV_2);
             V->OnChangeEvent		= OnBoneLimitsChange;
         }break;
         }
@@ -464,10 +464,10 @@ void CActorTools::FillSurfaceProperties(PropItemVec& items, LPCSTR pref, ListIte
 {
 	R_ASSERT(m_pEditObject);
 	CSurface* SURF = (CSurface*)sender->m_Object;
-    PHelper.CreateCaption			(items, FHelper.PrepareKey(pref,"Statistic\\Count"),	m_pEditObject->SurfaceCount());
+    PHelper().CreateCaption			(items, PHelper().PrepareKey(pref,"Statistic\\Count"),	ref_str().sprintf("%d",m_pEditObject->SurfaceCount()));
     if (SURF){
-        PHelper.CreateCaption		(items,FHelper.PrepareKey(pref,"Surface\\Name"),		SURF->_Name());
-        AnsiString _pref			= FHelper.PrepareKey(pref,"Surface");
+        PHelper().CreateCaption		(items,PHelper().PrepareKey(pref,"Surface\\Name"),		SURF->_Name());
+        AnsiString _pref			= PHelper().PrepareKey(pref,"Surface").c_str();
 	    m_pEditObject->FillSurfaceProps(SURF,_pref.c_str(),items);
     }
 }
@@ -477,20 +477,20 @@ void CActorTools::FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem
 {
 	R_ASSERT(m_pEditObject);
     PropValue* V=0;
-    PHelper.CreateFlag32	(items, "Object\\Flags\\Make Progressive",	&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
-    V=PHelper.CreateVector	(items, "Object\\Transform\\Position",		&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
-    V->OnChangeEvent 		= OnChangeTransform;
-    V=PHelper.CreateAngle3	(items, "Object\\Transform\\Rotation",		&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);
-    V->OnChangeEvent 		= OnChangeTransform;
-    V=PHelper.CreateCaption	(items, "Object\\Transform\\BBox Min",		AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().min)));
-    V=PHelper.CreateCaption	(items, "Object\\Transform\\BBox Max",		AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().max)));
+    PHelper().CreateFlag32			(items, "Object\\Flags\\Make Progressive",	&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
+    V=PHelper().CreateVector		(items, "Object\\Transform\\Position",		&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
+    V->OnChangeEvent 				= OnChangeTransform;
+    V=PHelper().CreateAngle3		(items, "Object\\Transform\\Rotation",		&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);
+    V->OnChangeEvent 				= OnChangeTransform;
+    V=PHelper().CreateCaption		(items, "Object\\Transform\\BBox Min",		ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().min)));
+    V=PHelper().CreateCaption		(items, "Object\\Transform\\BBox Max",		ref_str().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(m_pEditObject->GetBox().max)));
     m_pEditObject->FillSummaryProps	("Object\\Summary",items);
 }
 //------------------------------------------------------------------------------
 
 void CActorTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand)
 {
-	AnsiString nm = (name&&name[0])?FHelper.PrepareKey(pref,name):AnsiString(pref);
+	AnsiString nm = (name&&name[0])?PHelper().PrepareKey(pref,name).c_str():AnsiString(pref).c_str();
 	m_ObjectItems->SelectItem(nm.c_str(),bVal,bLeaveSel,bExpand);
 	if (pref){
     	m_ObjectItems->SelectItem(pref,true,true,bExpand);

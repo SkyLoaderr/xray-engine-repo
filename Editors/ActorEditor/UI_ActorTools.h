@@ -111,27 +111,27 @@ class CActorTools: public CToolsCustom
 
     RTokenVec			m_BoneParts;
 
-	void __fastcall		OnMotionTypeChange		(PropValue* sender);
+	void __stdcall 		OnMotionTypeChange		(PropValue* sender);
 
-	void __fastcall 	OnChangeTransform		(PropValue* sender);
-	void __fastcall 	OnMotionNameChange		(PropValue* sender);
+	void __stdcall  	OnChangeTransform		(PropValue* sender);
+	void __stdcall  	OnMotionNameChange		(PropValue* sender);
 
-	void __fastcall 	OnMotionEditClick		(PropValue* sender, bool& bModif, bool& bSafe);
-	void __fastcall 	OnMotionControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnMotionEditClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnMotionControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
 
-    void __fastcall 	OnObjectItemFocused		(ListItemsVec& items);
+    void __stdcall  	OnObjectItemFocused		(ListItemsVec& items);
 
-    void __fastcall		OnBoneShapeClick  		(PropValue* sender, bool& bModif, bool& bSafe);
-    void __fastcall		OnBoneEditClick			(PropValue* sender, bool& bModif, bool& bSafe);
-    void __fastcall		OnBoneFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
-    void __fastcall		OnBoneLimitsChange		(PropValue* sender);
+    void __stdcall 		OnBoneShapeClick  		(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneEditClick			(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneFileClick			(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 		OnBoneLimitsChange		(PropValue* sender);
     
-	void __fastcall 	OnJointTypeChange		(PropValue* sender);
-	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
+	void __stdcall  	OnJointTypeChange		(PropValue* sender);
+	void __stdcall  	OnShapeTypeChange		(PropValue* sender);
 
-	void __fastcall 	OnMotionRefsChange		(PropValue* sender);
+	void __stdcall  	OnMotionRefsChange		(PropValue* sender);
     
-	void __fastcall 	OnBindTransformChange	(PropValue* V);
+	void __stdcall  	OnBindTransformChange	(PropValue* V);
 
     SMotionVec 			appended_motions;
 protected:
@@ -149,7 +149,7 @@ protected:
     void				RefreshSubProperties	(){m_Flags.set(flRefreshSubProps,TRUE);}
     void				RefreshShaders			(){m_Flags.set(flRefreshShaders,TRUE);}
 
-    void __fastcall 	PMMotionItemClick		(TObject *Sender);
+    void __stdcall  	PMMotionItemClick		(TObject *Sender);
     
     void				RealUpdateProperties	();
 public:
@@ -189,7 +189,7 @@ public:
     virtual bool		IfModified			();
     virtual bool		IsModified			(){return m_bObjectModified;}
     virtual void		Modified			(); 
-    void __fastcall		OnItemModified		(void); 
+    void __stdcall 		OnItemModified		(void); 
 
     virtual LPCSTR		GetInfo				();
     
@@ -236,9 +236,9 @@ public:
     void 				WorldMotionRotate	(const Fvector& R);
     void				MakePreview			();
 
-    void __fastcall		OnBoneModified		(void);
-    void __fastcall		OnObjectModified	(void);
-    void __fastcall		OnMotionDefsModified(void); 
+    void __stdcall 		OnBoneModified		(void);
+    void __stdcall 		OnObjectModified	(void);
+    void __stdcall 		OnMotionDefsModified(void); 
     void 				OnMotionKeysModified(void); 
 	void 				OnGeometryModified	(void);
 

@@ -40,21 +40,21 @@ CMotion*	CActorTools::EngineModel::FindMotionKeys(LPCSTR name)
 
 void CActorTools::EngineModel::FillMotionList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
-    LHelper.CreateItem			(items, pref,  modeID, ListItem::flSorted);
+    LHelper().CreateItem			(items, pref,  modeID, ListItem::flSorted);
     if (IsRenderable()&&fraLeftBar->ebRenderEngineStyle->Down){
     	CSkeletonAnimated* V	= dynamic_cast<CSkeletonAnimated*>(m_pVisual);
 		if (V){
             // cycles
             CSkeletonAnimated::mdef::const_iterator I,E;
             I = V->m_cycle->begin(); 
-            E = V->m_cycle->end(); 
+            E = V->m_cycle->end();                  
             for ( ; I != E; ++I) 
-                LHelper.CreateItem(items, FHelper.PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+                LHelper().CreateItem(items, PHelper().PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
             // fxs
             I = V->m_fx->begin(); 
             E = V->m_fx->end(); 
             for ( ; I != E; ++I)
-                LHelper.CreateItem(items, FHelper.PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
+                LHelper().CreateItem(items, PHelper().PrepareKey(pref, *(*I).first).c_str(), modeID, 0, (void*)&I->second);
         }
     }
 }

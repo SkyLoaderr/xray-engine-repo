@@ -185,11 +185,11 @@ void __fastcall TfraBottomBar::miWeatherClick(TObject *Sender)
         }else if (mi->Tag==-3){
             TProperties* P 		= TProperties::CreateModalForm("Weather properties");
 			CEnvironment& env	= g_pGamePersistent->Environment;
-            PropItemVec items;
+            PropItemVec items;   
             float ft=env.ed_from_time,tt=env.ed_to_time,sp=env.fTimeFactor;
-            PHelper.CreateTime	(items,"From Time", 	&ft);
-            PHelper.CreateTime	(items,"To Time",   	&tt);
-            PHelper.CreateFloat	(items,"Speed",			&sp, 		1.f,10000.f,1.f,1);
+            PHelper().CreateTime	(items,"From Time", 	&ft);
+            PHelper().CreateTime	(items,"To Time",   	&tt);
+            PHelper().CreateFloat	(items,"Speed",			&sp, 		1.f,10000.f,1.f,1);
             P->AssignItems		(items);
             if (mrOk==P->ShowPropertiesModal()){
                 env.ed_from_time	= ft;

@@ -488,25 +488,25 @@ void TClipMaker::RealUpdateProperties()
     // clip props
     PropItemVec		p_items;
     PropValue* V	= 0;
-	PHelper.CreateCaption		(p_items,"Length",				FloatTimeToStrTime(m_TotalLength,true,true,true,true));
-    V=PHelper.CreateFloat		(p_items,"Zoom",				&m_Zoom,			1.f,1000.f,0.1f,1);
+	PHelper().CreateCaption		(p_items,"Length",				FloatTimeToStrTime(m_TotalLength,true,true,true,true).c_str());
+    V=PHelper().CreateFloat		(p_items,"Zoom",				&m_Zoom,			1.f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnZoomChange;
     if (sel_clip){
     	ListItem* l_owner		= m_ClipList->FindItem(*sel_clip->name); VERIFY(l_owner);
-	    V=PHelper.CreateRName	(p_items,"Current Clip\\Name",	&sel_clip->name,	l_owner);
+	    V=PHelper().CreateName	(p_items,"Current Clip\\Name",	&sel_clip->name,	l_owner);
         V->OnChangeEvent		= OnNameChange;
-	    V=PHelper.CreateFloat	(p_items,"Current Clip\\Length",&sel_clip->length,	0.f,10000.f,0.1f,2);
+	    V=PHelper().CreateFloat	(p_items,"Current Clip\\Length",&sel_clip->length,	0.f,10000.f,0.1f,2);
         V->OnChangeEvent		= OnClipLengthChange;
         for (u32 k=0; k<4; k++){
             AnsiString mname	= sel_clip->CycleName(k);	
             CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
             SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
-            AnsiString tmp		= "-";
+            ref_str tmp;
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
-            if (BP)				PHelper.CreateCaption	(p_items,FHelper.PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
+            if (BP)				PHelper().CreateCaption	(p_items,PHelper().PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
-        if (*sel_clip->fx)		PHelper.CreateFloat		(p_items,FHelper.PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
+        if (*sel_clip->fx)		PHelper().CreateFloat		(p_items,PHelper().PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
     }
 	m_ClipProps->AssignItems(p_items);
 }
@@ -795,7 +795,7 @@ void TClipMaker::RealUpdateClips()
     // clip list
     ListItemsVec	l_items;
     for (it=clips.begin(); it!=clips.end(); it++)
-    	LHelper.CreateItem		(l_items,*(*it)->name,0,0,*it);
+    	LHelper().CreateItem		(l_items,*(*it)->name,0,0,*it);
 	m_ClipList->AssignItems		(l_items,true);
 	// select default clip
  	if (!clips.empty()&&(sel_clip==0)) 
@@ -887,9 +887,7 @@ void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
     	float len = 0.f;
         for (u32 k=0; k<4; k++){
             AnsiString mname	= (*c_it)->CycleName(k);	
-            CMotionDef* MD		= ATools->m_RenderObject.FindMotionDef	(mname.c_str());
             CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
-            SBonePart* BP		= (k<m_CurrentObject->BoneParts().size())?&m_CurrentObject->BoneParts()[k]:0;
             if (MI&&(len<MI->GetLength())) len = MI->GetLength();
 		}            
     	(*c_it)->length = fis_zero(len)?2.f:len;
