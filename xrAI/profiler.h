@@ -8,7 +8,13 @@
 
 #pragma once
 
-#ifdef DEBUG
+#ifdef XRGAME_EXPORTS
+#	ifdef DEBUG
+#		define	USE_PROFILER
+#	endif
+#endif
+
+#ifdef USE_PROFILER
 #include "ai_debug.h"
 
 struct CProfileResultPortion {
@@ -69,7 +75,6 @@ IC	CProfiler&	profiler();
 #include "profiler_inline.h"
 
 #else
-#	define START_PROFILE(a)
-#	define STOP_PROFILE
+#	define START_PROFILE(a) {
+#	define STOP_PROFILE		}
 #endif
-

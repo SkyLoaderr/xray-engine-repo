@@ -1490,6 +1490,9 @@
 						RelativePath="clsid_game.h">
 					</File>
 					<File
+						RelativePath=".\profiler.h">
+					</File>
+					<File
 						RelativePath=".\smart_cast.cpp">
 					</File>
 					<File
