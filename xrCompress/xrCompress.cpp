@@ -130,13 +130,13 @@ void	Compress			(LPCSTR path)
 			if ((c_size+64)>=u32(src.Length()))
 			{
 				// Failed to compress - revert to VFS
+				filesVFS			++;
 				c_mode				= 1;		// VFS file
 				c_size				= src.Length();
 				fs->write			(src.Pointer(),c_size);
 				printf				("VFS (R)");
 			} else {
 				// Compressed OK
-				filesVFS			++;
 				c_mode				= 0;		// Normal file
 				fs->write			(c_data,c_size);
 				printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
