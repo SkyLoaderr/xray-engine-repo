@@ -56,7 +56,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 	_HEAPINFO		hinfo;
 	int				heapstatus;
 	hinfo._pentry	= NULL;
-	u32	total		= 0;
+	size_t	total	= 0;
 	u32	blocks_free	= 0;
 	u32	blocks_used	= 0;
 	while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
@@ -68,8 +68,8 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 			blocks_free	+= 1;
 		}
 	}
-	if (pBlocksFree)	*pBlocksFree= blocks_free;
-	if (pBlocksUsed)	*pBlocksUsed= blocks_used;
+	if (pBlocksFree)	*pBlocksFree= (u32)blocks_free;
+	if (pBlocksUsed)	*pBlocksUsed= (u32)blocks_used;
 
 	switch( heapstatus )
 	{
