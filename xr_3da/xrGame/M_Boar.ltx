@@ -4,11 +4,11 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0 =	  	0.30,		20,	      250,        1.0, 1.5, 1.5,	 -1.6, 1.6, -1.6, 1.6,					  3.5
+stand_attack_0 =	  	0.30,		20,	      200,        0.0, 1.0, 0.5,	 -1.6, 1.6, -1.6, 1.6,					  3.5
 ;Bite2
-stand_attack_1 =	  	0.30,		20,	      250,        1.0, 1.5, 1.5,	 -1.6, 1.6, -1.6, 1.6,					  3.5
+stand_attack_1 =	  	0.30,		20,	      250,        0.0, 1.0, 0.5,	 -1.6, 1.6, -1.6, 1.6,					  3.5
 ;Right Leg Attack
-stand_attack_2 =	  	0.30,		30,	      500,        1.5, 2.0, 3.0,	 -1.6, 1.6, -1.6, 1.6,					  3.5
+stand_attack_2 =	  	0.30,		30,	      500,        -2.5, 2.0, 3.0,	 -1.6, 1.6, -1.6, 1.6,					  3.5
 
 
 [m_boar_attack_effector]
@@ -31,7 +31,7 @@ time_release	        = 0.25		; fade out
 ce_time			= 0.85 ;time 
 ce_amplitude		= -10.0 ; head shake after hit
 ce_period_number	= 2.0 ; camera shake times
-ce_power		= 1.0 ; power 
+ce_power		= 2.0 ; power 
 
 [m_boar_step_params]			   
 ;-------------------------------------------------------------------------------------------------------------
