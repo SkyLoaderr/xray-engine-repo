@@ -11,12 +11,12 @@
 #include "..\\ai_monsters_misc.h"
 
 /**
-	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
-	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 /**/
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) {\
+	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
+	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
 	m_bStopThinking = true;\
 }
 
@@ -75,11 +75,11 @@ void CAI_Stalker::ForwardCover()
 
 	if (m_bStateChanged) {
 		float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
-		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-		m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon)
 			m_tSelectorCover.m_fOptEnemyDistance = tpWeapon->m_fMinRadius;
+		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+		m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 		m_dwLastRangeSearch = 0;
 		m_tActionState = eActionStateRun;
 	}
@@ -108,11 +108,11 @@ void CAI_Stalker::ForwardCover()
 		}
 		case eActionStateStand : {
 			float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
-			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-			m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon)
 				m_tSelectorCover.m_fOptEnemyDistance = tpWeapon->m_fMinRadius;
+			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 
 			vfSetParameters				(
 				&m_tSelectorCover,
@@ -336,7 +336,7 @@ void CAI_Stalker::Think()
 	m_dwUpdateCount++;
 	m_ePreviousState		= m_eCurrentState;
 
-//	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
+	Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
 	
 	m_bStateChanged = K != _K;
 	if (!g_Alive())
