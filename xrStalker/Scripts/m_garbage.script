@@ -201,13 +201,12 @@ function stateGarbageBoarWalk:curState_execute()
     elseif( self.curState == walk ) then
             if( device():time_global() > self.time ) then
                 reset_action( self.memory.npc, self.scr_name )
-                self.time  = device():time_global() + math.random( 5000, 10000 )
+                self.time  = device():time_global() + math.random( 10000, 20000 )
             else
                 if( self.memory.npc:action() ) then return end
             end
 
                 action( self.memory.npc, anim( anim.look_around, 0 ), sound( sound.idle ), cond( cond.time_end, math.random( 3000, 6000 ) ) )
-				printf( "set previos point %d", self.way_point )
                 action( self.memory.npc, move( move.walk_fwd, patrol( self.way, patrol.next, patrol.continue, true, self.way_point ) ), sound( sound.idle ), cond( cond.move_end ) )
                 printf( "set state walk" )
     end
