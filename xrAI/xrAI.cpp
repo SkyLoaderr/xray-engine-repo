@@ -28,6 +28,7 @@ extern volatile BOOL bClose;
 extern void test_smooth_path	(LPCSTR name);
 extern void test_hierarchy		(LPCSTR name);
 extern void	xrConvertMaps		();
+extern void	test_goap			();
 
 static const char* h_str = 
 	"The following keys are supported / required:\n"
@@ -111,7 +112,8 @@ void Startup(LPSTR     lpCmdLine)
 					if (strstr(cmd,"-t")) {
 						//path_test			(prjName);
 						//test_smooth_path	(prjName);
-						test_hierarchy		(prjName);
+						//test_hierarchy	(prjName);
+						test_goap			();
 					}
 					else
 						if (strstr(cmd,"-c")) {
