@@ -20,7 +20,7 @@ public:
 	void		SafeCopyLocalToServer(FileMap& files);
 	void		SynchronizeTextures	(bool sync_thm, bool sync_game, bool bForceGame, FileMap* source_map, LPSTRVec* sync_list_without_extention, FileMap* modif_map=0);
     void 		SynchronizeTexture	(LPCSTR tex_name, int age);
-    void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) _FREE(*it);};
+    void		FreeModifVec		(LPSTRVec& vect){for (LPSTRIt it=vect.begin(); it!=vect.end(); it++) xr_free(*it);};
 	// make/update routines
     void		CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, FSPath* path=0, bool bSetDefParam=true); 
     BOOL		CreateOBJThumbnail	(LPCSTR tex_name, CEditableObject* obj, int age);

@@ -41,7 +41,7 @@ void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 
 void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
 	if (!form){
-        form 				= new TfrmImageLib(0);
+        form 				= xr_new<TfrmImageLib>((TComponent*)0);
         form->Caption 		= title;
 	    form->bImportMode 	= bImport;
         form->ebRemoveTexture->Enabled = !bImport;
@@ -127,7 +127,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 	if (!form) return;
     form->Enabled = false;
 
-	_DELETE(m_Thm);
+	xr_delete(m_Thm);
     m_SelectedName = "";
 
     TProperties::DestroyForm(ImageProps);
@@ -220,10 +220,10 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         SaveTextureParams();
         // make new name
     	FHelper.MakeName(Item,0,m_SelectedName,false);
-		_DELETE(m_Thm);
+		xr_delete(m_Thm);
         // get new texture
         if (bImportMode){ 
-        	m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
+        	m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
             AnsiString fn = m_SelectedName;
             Engine.FS.UpdateTextureNameWithFolder(fn);         
 //            if (!(m_Thm->Load(m_SelectedName.c_str(),&Engine.FS.m_Import)||m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures)))
@@ -231,7 +231,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             	bool bLoad = m_Thm->Load(fn.c_str(),&Engine.FS.m_Textures);
             	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),&Engine.FS.m_Import,!bLoad);
             }
-        }else			 m_Thm = new EImageThumbnail(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
+        }else			 m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid()){
         	pbImage->Repaint();
             ImageProps->ClearProperties();
@@ -260,7 +260,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         }
     }else{
 		ImageProps->ClearProperties();
-		_DELETE(m_Thm);
+		xr_delete(m_Thm);
         m_SelectedName = "";
 		lbFileName->Caption	= "...";
 		lbInfo->Caption		= "...";
@@ -347,7 +347,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
     
 	AnsiString nm = "textures.ltx";
     Engine.FS.m_GameTextures.Update(nm);
-	CInifile* ini = new CInifile(nm.c_str(), FALSE, FALSE, TRUE);
+	CInifile* ini = xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
 	LockForm();
     
@@ -357,7 +357,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
     UI.ProgressStart(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
-        EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
+        EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
 	    UI.ProgressInc(it->first.c_str());
         if (m_Thm->Valid()&&(m_Thm->_Format().flags.is(STextureParams::flHasDetailTexture))){
         	AnsiString det;
@@ -367,7 +367,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 	    	if (strext(src)) *strext(src)=0;
 	    	ini->WriteString("association", src, det.c_str());
         }
-        _DELETE(m_Thm);
+        xr_delete(m_Thm);
 		if (UI.NeedAbort()){ bRes=false; break; }
     }
     UI.ProgressEnd();
@@ -375,7 +375,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 	UnlockForm();
 
     if (!bRes) ini->bSaveAtEnd = false;
-	_DELETE(ini);    
+	xr_delete(ini);    
 }
 //---------------------------------------------------------------------------
 

@@ -27,18 +27,18 @@ bool CEditableObject::Load(const char* fname){
 
 bool CEditableObject::LoadObject(const char* fname){
     CStream* F;
-    F = new CFileStream(fname);
+    F = xr_new<CFileStream>(fname);
     char MARK[8];
     F->Read(MARK,8);
     if (strcmp(MARK,"OBJECT")==0){
-        _DELETE(F);
-        F = new CCompressedStream(fname,"OBJECT");
+        xr_delete(F);
+        F = xr_new<CCompressedStream>(fname,"OBJECT");
     }
     CStream* OBJ = F->OpenChunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);
     bool bRes = Load(*OBJ);
     OBJ->Close();
-	_DELETE(F);
+	xr_delete(F);
     if (bRes) m_LoadName = fname;
     return bRes;
 }
@@ -103,7 +103,7 @@ bool CEditableObject::Load(CStream& F){
             DWORD cnt = F.Rdword();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it 		= new CSurface();
+                *s_it 		= xr_new<CSurface>();
                 F.RstringZ	(buf);	(*s_it)->SetName		(buf);
                 F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
                 F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
@@ -120,7 +120,7 @@ bool CEditableObject::Load(CStream& F){
             DWORD cnt = F.Rdword();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it 		= new CSurface();
+                *s_it 		= xr_new<CSurface>();
                 F.RstringZ	(buf);	(*s_it)->SetName		(buf);
                 F.RstringZ	(buf);	(*s_it)->SetShader		(buf);
                 F.RstringZ	(buf);	(*s_it)->SetShaderXRLC	(buf);
@@ -137,7 +137,7 @@ bool CEditableObject::Load(CStream& F){
             DWORD cnt = F.Rdword();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                *s_it = new CSurface();
+                *s_it = xr_new<CSurface>();
                 F.RstringZ(buf);
                 (*s_it)->SetName(buf);
                 F.RstringZ(sh_name);
@@ -164,11 +164,11 @@ bool CEditableObject::Load(CStream& F){
         if(OBJ){
             CStream* M   = OBJ->OpenChunk(0);
             for (int count=1; M; count++) {
-                CEditableMesh* mesh=new CEditableMesh(this);
+                CEditableMesh* mesh=xr_new<CEditableMesh>(this);
                 if (mesh->LoadMesh(*M))
                     m_Meshes.push_back(mesh);
                 else{
-                    _DELETE(mesh);
+                    xr_delete(mesh);
                     ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", buf );
                     bRes = false;
                 }
@@ -183,7 +183,7 @@ bool CEditableObject::Load(CStream& F){
         if (F.FindChunk(EOBJ_CHUNK_BONES)){
             m_Bones.resize(F.Rdword());
             for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-                *b_it = new CBone();
+                *b_it = xr_new<CBone>();
                 (*b_it)->Load(F);
             }
             UpdateBoneParenting();
@@ -193,10 +193,10 @@ bool CEditableObject::Load(CStream& F){
         if (F.FindChunk(EOBJ_CHUNK_SMOTIONS)){
             m_SMotions.resize(F.Rdword());
             for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
-                *s_it = new CSMotion();
+                *s_it = xr_new<CSMotion>();
                 if (!(*s_it)->Load(F)){
                     ELog.Msg(mtError,"Motions has different version. Load failed.");
-                    _DELETE(*s_it);
+                    xr_delete(*s_it);
                     m_SMotions.clear();
                     break;
                 }
@@ -305,9 +305,9 @@ void CEditableObject::Save(CFS_Base& F){
 //------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){
 	if (Engine.FS.Exist(fname)){
-    	CSMotion* M = new CSMotion();
+    	CSMotion* M = xr_new<CSMotion>();
         if (!M->LoadMotion(fname)){
-        	_DELETE(M);
+        	xr_delete(M);
         }
         return M;
     }

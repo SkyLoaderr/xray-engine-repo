@@ -18,7 +18,6 @@ CEngine	Engine;
 CEngine::CEngine()
 {
 	hPSGP = 0;
-	ZeroMemory(&PSGP,sizeof(PSGP));
 }
 
 CEngine::~CEngine()
@@ -56,11 +55,9 @@ void CEngine::Initialize(void)
     FS.m_LocalRoot.Update   (fn);
     ELog.Create             (fn);
 
-	// Mathematics & PSI detection
-	InitMath				();
-
 #ifdef _EDITOR
 	// Bind PSGP
+	ZeroMemory				(&PSGP,sizeof(PSGP));
 	hPSGP		            = LoadLibrary("xrCPU_Pipe.dll");
 	R_ASSERT2	            (hPSGP,"Can't find 'xrCPU_Pipe.dll'");
 
@@ -74,13 +71,13 @@ void CEngine::Initialize(void)
     // game configure
     string256 si_name		= "system.ltx";
     FS.m_GameRoot.Update	(si_name);
-	pSettings				= new CInifile(si_name,TRUE);// FALSE,TRUE,TRUE);
+	pSettings				= xr_new<CInifile>(si_name,TRUE);// FALSE,TRUE,TRUE);
 
 }
 
 void CEngine::Destroy()
 {                      
-    _DELETE					(pSettings);
+    xr_delete				(pSettings);
 	Engine.FS.OnDestroy		();
 	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }
 }

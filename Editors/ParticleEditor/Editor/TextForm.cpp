@@ -16,6 +16,8 @@ TfrmText* TfrmText::form = 0;
 __fastcall TfrmText::TfrmText(TComponent* Owner)
     : TForm(Owner)
 {
+	m_Text 			= 0;
+    OnApplyClick 	= 0;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmText::FormKeyDown(TObject *Sender,
@@ -28,6 +30,7 @@ void __fastcall TfrmText::FormKeyDown(TObject *Sender,
 //----------------------------------------------------
 void __fastcall TfrmText::FormShow(TObject *Sender)
 {
+	ebApply->Visible 	= !!OnApplyClick;
     ebOk->Enabled       = false;
 	// check window position
 	UI.CheckWindowPos(this);
@@ -36,8 +39,9 @@ void __fastcall TfrmText::FormShow(TObject *Sender)
 
 void __fastcall TfrmText::ebOkClick(TObject *Sender)
 {
-    Close();
-    ModalResult = mrOk;
+	ebApplyClick	(Sender);
+    Close			();
+    ModalResult 	= mrOk;
 }
 //---------------------------------------------------------------------------
 
@@ -48,26 +52,68 @@ void __fastcall TfrmText::ebCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TfrmText::Run(AnsiString& txt, LPCSTR caption, bool bReadOnly, int lim)
+void __fastcall TfrmText::ebApplyClick(TObject *Sender)
+{
+	*m_Text = form->mmText->Text;
+    if (OnApplyClick) OnApplyClick();
+}
+//---------------------------------------------------------------------------
+
+bool __fastcall TfrmText::Run(AnsiString& txt, LPCSTR caption, bool bReadOnly, int lim, bool bModal, TOnApplyClick on_apply)
 {
 	VERIFY(!TfrmText::form);
-	form 		= new TfrmText(0);
-    form->Caption=caption;
-    form->mmText->ReadOnly=bReadOnly;
-	form->mmText->Text = txt;
+	form 					= xr_new<TfrmText>((TComponent*)0);
+    form->Caption			= caption;
+    form->m_Text			= &txt;
+    form->mmText->ReadOnly	= bReadOnly;
+	form->mmText->Text 		= txt;
     form->mmText->MaxLength = lim;
-    bool bRes	= (form->ShowModal()==mrOk);
-    if (bRes){
-    	txt		= form->mmText->Text;
+    form->OnApplyClick 		= on_apply;
+    
+    if (bModal){
+	    return (form->ShowModal()==mrOk);
+    }else{
+	    form->Show();
+        return true;
     }
-	_DELETE	(form);
-    return bRes;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmText::mmTextChange(TObject *Sender)
 {
     ebOk->Enabled 	= mmText->Modified;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfrmText::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	Action = caFree;
+    form = 0;	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmText::ebLoadClick(TObject *Sender)
+{
+	AnsiString fn;
+	if (Engine.FS.GetOpenName(Engine.FS.m_Import,fn,false,NULL,4)){
+    	string4096 buf;
+    	CStream* F = Engine.FS.Open(fn.c_str());
+        F->RstringZ	(buf);
+        mmText->Text= buf;
+        Engine.FS.Close(F);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmText::ebSaveClick(TObject *Sender)
+{
+	AnsiString fn;
+	if (Engine.FS.GetSaveName(Engine.FS.m_Import,fn,NULL,4)){
+    	CFS_Memory F;
+        F.WstringZ	(mmText->Text.c_str());
+        F.SaveTo	(fn.c_str(),0);
+    }
 }
 //---------------------------------------------------------------------------
 

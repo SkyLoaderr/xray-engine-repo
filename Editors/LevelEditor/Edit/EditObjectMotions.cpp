@@ -140,7 +140,7 @@ bool CEditableObject::RemoveSMotion(const char* name){
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
         	if (m_ActiveSMotion==*m) SetActiveSMotion(0);
-            _DELETE(*m);
+            xr_delete(*m);
         	lst.erase(m);
             return true;
         }
@@ -157,7 +157,7 @@ CSMotion* CEditableObject::AppendSMotion(LPCSTR name, LPCSTR fname){
 	     	m_SMotions.push_back(M);
         }else{
         	ELog.DlgMsg(mtError,"Append failed.",fname);
-	    	_DELETE(M);
+	    	xr_delete(M);
         }
     }else{
 		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
@@ -173,7 +173,7 @@ bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
         	src->CopyMotion(M);
             return true;
         }else                        ELog.DlgMsg(mtError,"Reload failed.",fname);
-		_DELETE(M);
+		xr_delete(M);
     }else{
 		ELog.DlgMsg(mtError,"Motion '%s' can't load. Append failed.",fname);
     }
@@ -182,7 +182,7 @@ bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
 
 void CEditableObject::ClearSMotions(){
 	SetActiveSMotion(0);
-    for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)_DELETE(*m_it);
+    for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)xr_delete(*m_it);
     m_SMotions.clear();
 }
 
@@ -193,17 +193,17 @@ bool CEditableObject::LoadSMotions(const char* fname){
     m_SMotions.resize(F.Rdword());
 	SetActiveSMotion(0);
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++){
-        *m_it = new CSMotion();
+        *m_it = xr_new<CSMotion>();
         if (!(*m_it)->Load(F)){
             ELog.DlgMsg(mtError,"Motions has different version. Load failed.");
-            _DELETE(*m_it);
+            xr_delete(*m_it);
             m_SMotions.clear();
             return false;
         }
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
             ELog.DlgMsg(mtError,"Load failed.",fname);
-            _DELETE(m_it);
+            xr_delete(m_it);
             return false;
         }
     }

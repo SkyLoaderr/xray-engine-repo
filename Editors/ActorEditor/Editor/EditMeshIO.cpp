@@ -143,7 +143,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
     if(F.FindChunk(EMESH_CHUNK_VMAPS_2)){
 		m_VMaps.resize	(F.Rdword());
 		for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
-			*vm_it		= new st_VMap();
+			*vm_it		= xr_new<st_VMap>();
 			F.RstringZ	((*vm_it)->name);
 			(*vm_it)->dim 	= F.Rbyte();
 			(*vm_it)->polymap=F.Rbyte();
@@ -158,7 +158,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
 		if(F.FindChunk(EMESH_CHUNK_VMAPS_1)){
 			m_VMaps.resize	(F.Rdword());
 			for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
-				*vm_it		= new st_VMap();
+				*vm_it		= xr_new<st_VMap>();
 				F.RstringZ	((*vm_it)->name);
 				(*vm_it)->dim 	= F.Rbyte();
 				(*vm_it)->type	= EVMType(F.Rbyte());
@@ -169,7 +169,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
 			R_ASSERT(F.FindChunk(EMESH_CHUNK_VMAPS_0));
 			m_VMaps.resize	(F.Rdword());
 			for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
-				*vm_it		= new st_VMap();
+				*vm_it		= xr_new<st_VMap>();
 				F.RstringZ	((*vm_it)->name);
 				(*vm_it)->dim 	= 2;
 				(*vm_it)->type	= vmtUV;

@@ -61,7 +61,7 @@ CFileSystem::CFileSystem( ){
 }
 
 CFileSystem::~CFileSystem(){
-	_DELETE(m_AccessLog);
+	xr_delete(m_AccessLog);
 }
 
 void CFileSystem::OnCreate(){
@@ -91,7 +91,7 @@ void CFileSystem::OnCreate(){
 
 	m_Groups.Init   		(m_Server, 		"objects\\",       		"*.group", 			"Groups" );
     m_Objects.Init  		(m_Server, 		"objects\\",       		"*.object;*.lwo",	"Editor objects" );
-	m_Import.Init  			(m_Local, 		"import\\",       		"*.object;*.lwo", 	"Object files" );
+	m_Import.Init  			(m_Local, 		"import\\",       		"*.object;*.lwo;*.txt","Import files" );
     m_DetailObjects.Init	(m_Local, 		"import\\",       		"*.dti",		 	"Detail indices" );
 	m_Envelope.Init  		(m_Local, 		"import\\",       		"*.env", 			"Envelope files" );
 	m_OMotion.Init			(m_Local, 		"import\\", 		   	"*.anm",			"Object animation files" );
@@ -104,7 +104,7 @@ void CFileSystem::OnCreate(){
 
     strcpy					(m_LastAccessFN,"access.ini"); 	m_ServerDataRoot.Update(m_LastAccessFN);
     string256 fn; strcpy(fn,"access.log"); m_ServerDataRoot.Update(fn);
-    m_AccessLog				= new CLog();
+    m_AccessLog				= xr_new<CLog>();
 	m_AccessLog->Create		(fn,true);
 }
 //----------------------------------------------------
@@ -140,6 +140,9 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
 	return dest;
 }
 
+//------------------------------------------------------------------------------
+// start_flt_ext = 1-all 2..n-indices
+//------------------------------------------------------------------------------
 bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset, int start_flt_ext ){
 	VERIFY(buffer&&(sz_buf>0));
 	string1024 flt;
@@ -454,12 +457,12 @@ void CFileSystem::Recurse(const char* path, bool bRootOnly)
 
 int CFileSystem::GetFileList(LPCSTR path, FileMap& items, bool clamp_path, bool clamp_ext, bool bRootOnly, LPCSTR ext_m)
 {
-    ext_mask		= strdup(ext_m);
+    ext_mask		= xr_strdup(ext_m);
 	m_FindItems		= &items;
     bClampExt		= clamp_ext;
     path_size		= clamp_path?strlen(path):0;
 	Recurse			(path,bRootOnly);
-    _FREE			(ext_mask);
+    xr_free			(ext_mask);
     return m_FindItems->size();
 }
 
@@ -583,12 +586,12 @@ LPCSTR CFileSystem::GetLockOwner(FSPath *initial, LPSTR fname)
 CStream* CFileSystem::Open(LPCSTR fn)
 {
 	if (!Exist(fn)) return 0;
-	return new CFileStream(fn);	
+	return xr_new<CFileStream>(fn);
 }
 
 void CFileSystem::Close(CStream*& F)
 {
-	_DELETE(F);
+	xr_delete(F);
 }
 
 LPCSTR CFileSystem::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)

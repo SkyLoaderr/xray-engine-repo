@@ -4,7 +4,7 @@
 #include "Bone.h"                     
 #include "SceneClassList.h"
 #ifdef _EDITOR
-	#include "PropertiesListHelper.h"
+//	#include "PropertiesListHelper.h"
 	#include "GameMtlLib.h"
 #endif
 //----------------------------------------------------

@@ -1,5 +1,5 @@
-#ifndef __XR_TRIMS_H__
-#define __XR_TRIMS_H__
+#ifndef xr_trimsH
+#define xr_trimsH
 
 // refs
 struct xr_token;
@@ -10,7 +10,7 @@ struct xr_token;
 	LPCSTR					_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
 	AnsiString&				ListToSequence			( AStringVec& lst );
 	AnsiString&				ListToSequence2			( AStringVec& lst );
-	void 					SequenceToList			( AStringVec& lst, LPCSTR in );
+	void 					SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
 #endif
 
 ENGINE_API int				_GetItemCount			( LPCSTR , char separator=',');

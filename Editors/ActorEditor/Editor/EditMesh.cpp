@@ -34,7 +34,7 @@ void CEditableMesh::Clear(){
     m_Adjs.clear		();
 	m_Faces.clear		();
 	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
-		_DELETE(*vm_it);
+		xr_delete(*vm_it);
     m_VMaps.clear		();
     m_SurfFaces.clear	();
     m_VMRefs.clear		();

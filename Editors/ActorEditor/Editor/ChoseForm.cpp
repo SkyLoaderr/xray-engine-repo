@@ -40,7 +40,7 @@ AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt)
 {
 	VERIFY(!form);
-	form 							= new TfrmChoseItem(0);
+	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
 	form->Mode						= mode;
     form->bMultiSel 				= sel_cnt>1;
     form->iMultiSelLimit 			= sel_cnt;
@@ -318,7 +318,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
     if (tvItems->Selected) m_LastSelection[form->Mode]=tvItems->Selected->Text;
-	_DELETE(m_Thm);
+	xr_delete(m_Thm);
 	Action = caFree;
     form = 0;
 }
@@ -438,12 +438,12 @@ void __fastcall TfrmChoseItem::ebMultiClearClick(TObject *Sender)
 void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvItems->Selected;
-	_DELETE(m_Thm);
+	xr_delete(m_Thm);
 	if (Item&&FHelper.IsObject(Item)){
         if (Mode==smTexture){
 	        AnsiString nm;
         	FHelper.MakeName		(Item,0,nm,false);
-    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITTexture);
+    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITTexture);
 	        if (!m_Thm->Valid())	pbImage->Repaint();
             else	 				pbImagePaint(Sender);
 	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
@@ -456,7 +456,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
             fn						= ChangeFileExt(nm,".thm");
             Engine.FS.m_Objects.Update(fn);
             if (Engine.FS.Exist(fn.c_str())){
-	    	    m_Thm 					= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+	    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();
         	    else				 	pbImagePaint(Sender);
             }else						pbImage->Repaint();

@@ -46,8 +46,8 @@ protected:
 	Fvector m_Pivot;
 protected:
 	bool m_SelectionRect;
-	Ipoint m_SelStart;
-	Ipoint m_SelEnd;
+	Ivector2 m_SelStart;
+	Ivector2 m_SelEnd;
 protected:
 	enum{
     	flRedraw		= (1<<0),
@@ -69,8 +69,8 @@ protected:
     void D3D_DestroyStateBlocks();
 public:
 	// non-hidden ops
-	Ipoint m_StartCp;
-	Ipoint m_CurrentCp;
+	Ivector2 m_StartCp;
+	Ivector2 m_CurrentCp;
 
 	Fvector m_StartRStart;
 	Fvector m_StartRNorm;
@@ -79,8 +79,8 @@ public:
 	Fvector m_CurrentRNorm;
 
 	// hidden ops
-	Ipoint m_StartCpH;
-	Ipoint m_DeltaCpH;
+	Ivector2 m_StartCpH;
+	Ivector2 m_DeltaCpH;
 
 #ifdef _LEVEL_EDITOR
     C3DCursor*   m_Cursor;
@@ -140,7 +140,7 @@ public:
     void 			SetRenderQuality	(float q)      {   Device.m_ScreenQuality = q;}
 // mouse action
     void 			EnableSelectionRect	(bool flag );
-    void 			UpdateSelectionRect	(const Ipoint& from, const Ipoint& to );
+    void 			UpdateSelectionRect	(const Ivector2& from, const Ivector2& to );
 	bool 			PickGround			(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0);
     bool 			SelectionFrustum	(CFrustum& frustum);
 

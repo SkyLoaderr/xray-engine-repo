@@ -57,7 +57,7 @@ TUI::~TUI()
 {
     VERIFY(m_EditorState.size()==0);
 #ifdef _LEVEL_EDITOR
-    _DELETE(m_Cursor);
+    xr_delete(m_Cursor);
 #endif
 }
 
@@ -80,12 +80,12 @@ bool TUI::OnCreate(){
     Device.Initialize();
 
 #ifdef _LEVEL_EDITOR
-    m_Cursor        = new C3DCursor();
+    m_Cursor        = xr_new<C3DCursor>();
 #endif
 	// Creation
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 
-    pInput			= new CInput(FALSE,mouse_device_key);
+    pInput			= xr_new<CInput>(FALSE,mouse_device_key);
     UI.iCapture		();
 
     m_bReady		= true;
@@ -103,7 +103,7 @@ void TUI::OnDestroy()
 	VERIFY(m_bReady);
 	m_bReady		= false;
 	UI.iRelease		();
-    _DELETE			(pInput);
+    xr_delete			(pInput);
     EndEState		();
 
     Device.ShutDown	();
@@ -121,7 +121,7 @@ void TUI::EnableSelectionRect( bool flag ){
 	m_SelEnd.y = m_SelStart.y = 0;
 }
 
-void TUI::UpdateSelectionRect( const Ipoint& from, const Ipoint& to ){
+void TUI::UpdateSelectionRect( const Ivector2& from, const Ivector2& to ){
 	m_SelStart.set(from);
 	m_SelEnd.set(to);
 }
@@ -282,7 +282,7 @@ bool TUI::ShowHint(const AStringVec& SS){
         m_LastHint = S;
         m_bHintShowing = true;
         if (!m_pHintWindow){
-            m_pHintWindow = new THintWindow(frmMain);
+            m_pHintWindow = xr_new<THintWindow>(frmMain);
             m_pHintWindow->Brush->Color = (TColor)0x0d9F2FF;
         }
         TRect rect = m_pHintWindow->CalcHintRect(320,S,0);
@@ -300,7 +300,7 @@ bool TUI::ShowHint(const AStringVec& SS){
 void TUI::HideHint(){
 	VERIFY(m_bReady);
     m_bHintShowing = false;
-    _DELETE(m_pHintWindow);
+    xr_delete(m_pHintWindow);
 }
 //---------------------------------------------------------------------------
 

@@ -18,30 +18,6 @@ extern int	rsDVB_Size;
 extern int	rsDIB_Size;
 
 //---------------------------------------------------------------------------
-void CRenderDevice::Error(HRESULT hr, const char *file, int line)
-{
-	char errmsg_buf[1024];
-
-	const char *errStr = DXGetErrorString8A(hr);
-	if (errStr==0) {
-        strcpy(errmsg_buf,Engine.LastWindowsError());
-		errStr = errmsg_buf;
-	}
-	_verify(errStr,(char *)file,line);
-}
-
-void __cdecl CRenderDevice::Fatal(const char* F,...)
-{
-	char errmsg_buf[1024];
-
-	va_list		p;
-	va_start	(p,F);
-	vsprintf	(errmsg_buf,F,p);
-	va_end		(p);
-	_verify		(errmsg_buf,"<unknown>",0);
-}
-
-//---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice()
 {
 	psDeviceFlags.set(rsStatistic|rsFilterLinear|rsFog|rsDrawGrid);
@@ -55,8 +31,7 @@ CRenderDevice::CRenderDevice()
     m_RenderWidth_2	= m_RenderHeight_2 	= 128;
 	mProjection.identity();
     mFullTransform.identity();
-    mView.identity();
-    m_DefaultMat.set(1,1,1);
+    mView.identity	();
 	m_WireShader	= 0;
 	m_SelectionShader = 0;
 
@@ -84,6 +59,7 @@ void CRenderDevice::Initialize()
 {
 //	m_Camera.Reset();
 
+    m_DefaultMat.set(1,1,1);
 	Surface_Init();
 
 	// game materials
@@ -109,7 +85,7 @@ void CRenderDevice::Initialize()
 	// Startup shaders
 	Create				();
 
-	pSystemFont			= new CGameFont("hud_font_small");
+	pSystemFont			= xr_new<CGameFont>("hud_font_small");
 }
 
 void CRenderDevice::ShutDown()
@@ -119,7 +95,7 @@ void CRenderDevice::ShutDown()
 
 	// destroy context
 	Destroy				();
-	_DELETE				(pSystemFont);
+	xr_delete			(pSystemFont);
 
 	// destroy shaders
 //	PSLib.xrShutDown	();

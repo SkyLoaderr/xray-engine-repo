@@ -23,6 +23,7 @@
 #include "engine/particles/general.h"
 //------------------------------------------------------------------------------
 CParticleTools Tools;
+#pragma comment(lib,"ParticleDLL.lib")
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
@@ -50,7 +51,7 @@ bool CParticleTools::OnCreate(){
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
-    m_PSProps = new TfrmPropertiesPSDef(fraLeftBar->paPSProps);
+    m_PSProps = xr_new<TfrmPropertiesPSDef>(fraLeftBar->paPSProps);
 	m_PSProps->Parent = fraLeftBar->paPSProps;
     m_PSProps->Align = alClient;
     m_PSProps->BorderStyle = bsNone;
@@ -74,7 +75,7 @@ void CParticleTools::OnDestroy(){
     Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr");
 
 	Lib.RemoveEditObject(m_EditObject);
-	_DELETE(m_TestObject);
+	xr_delete(m_TestObject);
     m_LibPS				= 0;
     m_PSProps->HideProperties();
     Device.seqDevCreate.Remove(this);
@@ -268,7 +269,7 @@ void CParticleTools::ResetCurrentPS()
 {
 	VERIFY(m_bReady);
 	m_LibPS = 0;
-	_DELETE(m_TestObject);
+	xr_delete(m_TestObject);
 }
 
 void CParticleTools::SetCurrentPS(PS::SDef* P)
@@ -283,8 +284,8 @@ void CParticleTools::SetCurrentPS(PS::SDef* P)
         if (m_LibPS) m_EditPS = *m_LibPS;
         m_PSProps->SetCurrent(m_LibPS?&m_EditPS:0);
         // update visual
-        _DELETE(m_TestObject);
-		m_TestObject = new CPSObject(0,"Test");
+        xr_delete(m_TestObject);
+		m_TestObject = xr_new<CPSObject>((LPVOID)0,"Test");
 		m_TestObject->Compile(&m_EditPS);
     }
 }
@@ -297,8 +298,8 @@ void CParticleTools::SetCurrentPS(LPCSTR name)
 void CParticleTools::UpdateCurrent(){
 	VERIFY(m_bReady);
     VERIFY(m_LibPS);
-	_DELETE(m_TestObject);
-    m_TestObject = new CPSObject(0,"Test");
+	xr_delete(m_TestObject);
+    m_TestObject = xr_new<CPSObject>((LPVOID)0,"Test");
     m_TestObject->Compile(&m_EditPS);
 }
 //---------------------------------------------------------------------------

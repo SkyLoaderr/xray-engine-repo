@@ -99,14 +99,14 @@ void TProperties::ClearParams(TElTreeItem* node)
 	            PropValuePairIt it=find(m_Values.begin(),m_Values.end(),V); VERIFY(it!=m_Values.end());
     	        if (it){
 					m_Values.erase(it);
-					_DELETE(V);
+					xr_delete(V);
                 }
             }
 		}
 */
     }else{
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
-    		_DELETE	(*it);
+    		xr_delete	(*it);
 		m_Items.clear();
 		tvProperties->IsUpdating 	= true;
 	    tvProperties->Items->Clear	();
@@ -134,9 +134,9 @@ __fastcall TProperties::TProperties(TComponent* Owner)
 	m_FirstClickItem= 0;
 	bModified 		= false;
     DEFINE_INI		(fsStorage);
-	m_BMCheck 		= new Graphics::TBitmap();
-    m_BMDot 		= new Graphics::TBitmap();
-    m_BMEllipsis 	= new Graphics::TBitmap();
+	m_BMCheck 		= xr_new<Graphics::TBitmap>();
+    m_BMDot 		= xr_new<Graphics::TBitmap>();
+    m_BMEllipsis 	= xr_new<Graphics::TBitmap>();
 	m_BMCheck->LoadFromResourceName((DWORD)HInstance,"CHECK");
 	m_BMDot->LoadFromResourceName((DWORD)HInstance,"DOT");
 	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
@@ -147,7 +147,7 @@ __fastcall TProperties::TProperties(TComponent* Owner)
 
 TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
 {
-	TProperties* props 			= new TProperties(parent);
+	TProperties* props 			= xr_new<TProperties>(parent);
     props->OnModifiedEvent 		= modif;
     props->OnItemFocused    	= focused;
     props->OnCloseEvent			= on_close;
@@ -169,7 +169,7 @@ void TProperties::DestroyForm(TProperties*& props)
     // destroy forms
 	props->ClearProperties();
 	props->Close();
-    _DELETE(props);
+    xr_delete(props);
 }
 void __fastcall TProperties::ShowProperties(){
 	Show();
@@ -195,9 +195,9 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 
 void __fastcall TProperties::FormDestroy(TObject *Sender)
 {
-    _DELETE		(m_BMCheck);
-    _DELETE		(m_BMDot);
-    _DELETE		(m_BMEllipsis);
+    xr_delete		(m_BMCheck);
+    xr_delete		(m_BMDot);
+    xr_delete		(m_BMEllipsis);
 }
 //---------------------------------------------------------------------------
 
@@ -523,11 +523,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Items->Clear();
 			TokenValue* T				= dynamic_cast<TokenValue*>(prop->GetFrontValue()); R_ASSERT(T);
             xr_token* token_list 		= T->token;
-			TMenuItem* mi 				= new TMenuItem(0);
+			TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 				= "-";
 			pmEnum->Items->Add			(mi);
 			for(int i=0; token_list[i].name; i++){
-                mi 			= new TMenuItem(0);
+                mi 			= xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= i;
                 mi->Caption = token_list[i].name;
                 mi->OnClick = PMItemClick;
@@ -538,11 +538,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Items->Clear();
 			TokenValue2* T	= dynamic_cast<TokenValue2*>(prop->GetFrontValue()); R_ASSERT(T);
             AStringVec& lst = T->items;
-			TMenuItem* mi 	= new TMenuItem(0);
+			TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
 			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                mi 			= new TMenuItem(0);
+                mi 			= xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= it-lst.begin();
                 mi->Caption = *it;
                 mi->OnClick = PMItemClick;
@@ -552,11 +552,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 		case PROP_TOKEN3:{
             pmEnum->Items->Clear();
 			TokenValue3* T	= dynamic_cast<TokenValue3*>(prop->GetFrontValue()); R_ASSERT(T);
-			TMenuItem* mi 	= new TMenuItem(0);
+			TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
             for (DWORD i=0; i<T->cnt; i++){
-                mi 			= new TMenuItem(0);
+                mi 			= xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= i;
                 mi->Caption = T->items[i].str;
                 mi->OnClick = PMItemClick;
@@ -567,11 +567,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             pmEnum->Items->Clear();
 			ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
             AStringVec& lst = T->items;
-            TMenuItem* mi	= new TMenuItem(0);
+            TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
 			for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                mi = new TMenuItem(0);
+                mi 			= xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= it-lst.begin();
                 mi->Caption = *it;
                 mi->OnClick = PMItemClick;
@@ -614,11 +614,11 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         break;
 		case PROP_TEXTURE2:{
             pmEnum->Items->Clear();
-            TMenuItem* mi	= new TMenuItem(0);
+            TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
             for (DWORD i=0; i<TSTRING_COUNT; i++){
-                mi = new TMenuItem(0);
+                mi = xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= i;
                 mi->Caption = TEXTUREString[i];
                 mi->OnClick = PMItemClick;

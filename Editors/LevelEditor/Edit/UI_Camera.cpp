@@ -232,13 +232,13 @@ bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift){
 	return false;
 }
 
-void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ipoint& point ){
+void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ivector2& point ){
 	int halfwidth  = UI.GetRealWidth()*0.5f;
 	int halfheight = UI.GetRealHeight()*0.5f;
 
     if (!halfwidth||!halfheight) return;
 
-    Ipoint point2;
+    Ivector2 point2;
     point2.set(point.x-halfwidth, halfheight-point.y);
 
 	start.set( m_Position );

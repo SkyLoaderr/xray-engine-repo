@@ -83,18 +83,18 @@ void CEditableObject::ClearGeometry ()
     OnDeviceDestroy();
 #endif
     if (!m_Meshes.empty())
-        for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
+        for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)xr_delete(*m);
     if (!m_Surfaces.empty())
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            _DELETE(*s_it);
+            xr_delete(*s_it);
     m_Meshes.clear();
     m_Surfaces.clear();
 #ifdef _EDITOR
     // bones
-    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end();b_it++)_DELETE(*b_it);
+    for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end();b_it++)xr_delete(*b_it);
     m_Bones.clear();
     // skeletal motions
-    for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) _DELETE(*s_it);
+    for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) xr_delete(*s_it);
     m_SMotions.clear();
 #endif
     m_ActiveSMotion = 0;
@@ -141,7 +141,7 @@ void CEditableObject::RemoveMesh(CEditableMesh* mesh){
 	EditMeshIt m_it = std::find(m_Meshes.begin(),m_Meshes.end(),mesh);
     VERIFY(m_it!=m_Meshes.end());
 	m_Meshes.erase(m_it);
-    _DELETE(mesh);
+    xr_delete(mesh);
 }
 
 void CEditableObject::TranslateToWorld(const Fmatrix& parent) 

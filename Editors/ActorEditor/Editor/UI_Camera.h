@@ -12,7 +12,7 @@ class CUI_Camera{
 	ECameraStyle	m_Style;
     bool			m_bMoving;
     TShiftState	 	m_Shift;
-    Ipoint			m_StartPos;
+    Ivector2		m_StartPos;
     float 			m_FlySpeed;
     float 			m_FlyAltitude;
 
@@ -80,6 +80,6 @@ public:
 
     void			ZoomExtents	(const Fbox& bb);
 
-	void 			MouseRayFromPoint(Fvector& start, Fvector& direction, const Ipoint& point);
+	void 			MouseRayFromPoint(Fvector& start, Fvector& direction, const Ivector2& point);
 };
 #endif

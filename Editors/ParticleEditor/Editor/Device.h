@@ -35,7 +35,7 @@ public:
     Shader*					m_WireShader;
     Shader*					m_SelectionShader;
 
-    Fmaterial				m_DefaultMat;
+    Fmaterial				m_DefaultMat;           
 
     CModelPool				Models;
 public:
@@ -164,9 +164,6 @@ public:
     { u64 qTime = TimerGlobal.GetElapsed(); return u32((qTime*u64(1000))/CPU::cycles_per_second); }
 	IC u32	 				TimerAsyncMM	(void)
     { return TimerAsync()+Timer_MM_Delta; }
-
-	__declspec(noreturn) void __cdecl		Fatal	(const char* F,...);
-	void									Error	(HRESULT,LPCSTR,int);
 public:
 	CShaderManager			Shader;
     Shader_xrLC_LIB			ShaderXRLC;

@@ -9,9 +9,9 @@
 TfrmNumericVector *frmNumericVector=0;
 
 bool NumericVectorRun(const char* title, Fvector* data, int decimal, Fvector* reset_value, Fvector* min, Fvector* max, int* X, int* Y){
-	frmNumericVector = new TfrmNumericVector(0);
+	frmNumericVector = xr_new<TfrmNumericVector>((TComponent*)0);
     bool res = frmNumericVector->Run(title, data, decimal, reset_value, min, max, X, Y);
-    _DELETE(frmNumericVector);
+    xr_delete(frmNumericVector);
     return res;
 }
 

@@ -4,6 +4,7 @@
 
 #include "ParticleSystem.h"
 #include "ParticleGroup.h"
+#include "pure.h"
 
 // refs
 class CPSObject;

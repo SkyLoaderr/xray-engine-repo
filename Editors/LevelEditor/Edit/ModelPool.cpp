@@ -20,25 +20,25 @@ CVisual*	CModelPool::Instance_Create(DWORD type)
 	// Check types
 	switch (type) {
 	case MT_NORMAL:				// our base visual
-		V	= new Fvisual;
+		V	= xr_new<Fvisual>();
 		break;
 	case MT_HIERRARHY:
-		V	= new FHierrarhyVisual;
+		V	= xr_new<FHierrarhyVisual>();
 		break;
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
-		V	= new FProgressiveFixedVisual;
+		V	= xr_new<FProgressiveFixedVisual>();
 		break;
 	case MT_SKELETON:
-		V	= new CKinematics;
+		V	= xr_new<CKinematics>();
 		break;
 	case MT_SKELETON_PART:
-		V	= new CSkeletonX_PM;
+		V	= xr_new<CSkeletonX_PM>();
 		break;
 	case MT_SKELETON_PART_STRIPPED:
-		V	= new CSkeletonX_ST;
+		V	= xr_new<CSkeletonX_ST>();
 		break;
 //	case MT_PROGRESSIVE_STRIPS:
-//  		V	= new FProgressive;
+//  		V	= xr_new<FProgressive>();
 //		break;
 	default:
 		R_ASSERT(0=="Unknown visual type");
@@ -119,7 +119,7 @@ void CModelPool::OnDestroy()
 	for (I=Models.begin(); I!=Models.end(); I++) 
 	{
 		I->model->Release();
-		_DELETE(I->model);
+		xr_delete(I->model);
 	}
 	Models.clear();
 }
@@ -166,7 +166,7 @@ void	CModelPool::Delete(CVisual* &V)
 {
 	if (V) {
 		if (V->Type==MT_PARTICLE_SYSTEM) V->Release();
-		_DELETE(V);
+		xr_delete(V);
 	}
 }
 

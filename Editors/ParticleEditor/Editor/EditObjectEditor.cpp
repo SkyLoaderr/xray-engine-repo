@@ -12,6 +12,7 @@
 #include "d3dutils.h"
 #include "ui_main.h"
 #include "render.h"
+#include "PropertiesListHelper.h"
 
 const float tex_w	= LOD_SAMPLE_COUNT*LOD_IMAGE_SIZE;
 const float tex_h	= 1*LOD_IMAGE_SIZE;

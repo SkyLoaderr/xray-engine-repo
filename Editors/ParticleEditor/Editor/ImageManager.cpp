@@ -99,7 +99,7 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 //------------------------------------------------------------------------------
 void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnail* thumb){
 	R_ASSERT(src_name.Length());
-    EImageThumbnail* THM 	= thumb?thumb:new EImageThumbnail(src_name.c_str(),EImageThumbnail::EITTexture);
+    EImageThumbnail* THM 	= thumb?thumb:xr_new<EImageThumbnail>(src_name.c_str(),EImageThumbnail::EITTexture);
 	AnsiString base_name 	= src_name;       
 	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
 	Engine.FS.m_Textures.Update(base_name);
@@ -112,7 +112,7 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
     MakeGameTexture(THM,game_name.c_str(),data.begin());
 
     Engine.FS.SetFileAge(game_name, base_age);
-    if (!thumb) delete THM;
+    if (!thumb) xr_delete(THM);
 }
 
 //------------------------------------------------------------------------------
@@ -223,14 +223,14 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 
     	// check thumbnail
     	if (sync_thm&&bThm){
-        	THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
+        	THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
             MakeThumbnailImage(THM,data.begin(),w,h,a);
             THM->Save	(it->second);
         }
         // check game textures
     	if (bForceGame||(sync_game&&bGame)){
-        	if (!THM) THM = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
+        	if (!THM) THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
                 AnsiString game_name=AnsiString(base_name)+".dds";
@@ -243,7 +243,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 		    	ELog.DlgMsg(mtError,"Can't make game texture '%s'.\nInvalid size (%dx%d).",fn.c_str(),w,h);
             }
 		}
-		if (THM) _DELETE(THM);
+		if (THM) xr_delete(THM);
 		if (UI.NeedAbort()) break;
     }
     UI.ProgressEnd();
@@ -331,16 +331,16 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     u32 w_2 	= (1==w)?w:w/2;
     u32 h_2 	= (1==h)?h:h/2;
     // scale down(lanczos3) and up (bilinear, as video board)
-    u32* pScaled     = (u32*)(malloc((w_2)*(h_2)*4));
-    u32* pRestored   = (u32*)(malloc(w*h*4));
+    u32* pScaled     = (u32*)(xr_malloc((w_2)*(h_2)*4));
+    u32* pRestored   = (u32*)(xr_malloc(w*h*4));
     try {
     	imf_Process     (pScaled,	w_2,h_2,data.begin(),w,h,imf_lanczos3	);
         imf_Process		(pRestored,	w,h,pScaled,w_2,h_2,imf_filter 		    );
     } catch (...)
     {
         Msg             ("* ERROR: imf_Process");
-        _FREE   (pScaled);
-        _FREE   (pRestored);
+        xr_free   (pScaled);
+        xr_free   (pRestored);
         return  FALSE;
     }
     // Analyze
@@ -368,8 +368,8 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     compl			+= 	iFloor(maximal);
 
     // free
-    _FREE           (pScaled);
-    _FREE   		(pRestored);
+    xr_free			(pScaled);
+    xr_free   		(pRestored);
     return 			TRUE;
 }
 void CImageManager::CheckCompliance(FileMap& files, FileMap& compl)
@@ -526,11 +526,11 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     Engine.FS.m_Textures.Update(out_name);
     Engine.FS.VerifyPath(out_name.c_str());
     
-    CImage* I = new CImage();
+    CImage* I = xr_new<CImage>();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();
     I->SaveTGA	(out_name.c_str());
-    _DELETE		(I);
+    xr_delete		(I);
     Engine.FS.SetFileAge(out_name.c_str(), age);
 
     SynchronizeTexture(tex_name,age);

@@ -179,7 +179,7 @@ void ELightAnimLibrary::OnDestroy()
 void ELightAnimLibrary::Unload()
 {
 	for (LAItemIt it=Items.begin(); it!=Items.end(); it++)
-    	_DELETE(*it);
+    	xr_delete(*it);
     Items.clear();
 }
 
@@ -193,7 +193,7 @@ void ELightAnimLibrary::Load()
         if (OBJ){
 	        CStream* O   = OBJ->OpenChunk(0);
     	    for (int count=1; O; count++) {
-        	    CLAItem* I = new CLAItem();
+        	    CLAItem* I = xr_new<CLAItem>();
                 I->Load(*O);
                 Items.push_back(I);
             	O->Close();
@@ -256,7 +256,7 @@ LPCSTR ELightAnimLibrary::GenerateName(LPSTR name, LPCSTR source)
 CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 {
     char old_name[128]; if (parent) strcpy(old_name,parent->cName);
-	CLAItem* I=new CLAItem();
+	CLAItem* I=xr_new<CLAItem>();
     I->InitDefault();
     char new_name[128]; new_name[0]=0;
     if (folder_name) strcpy(new_name,folder_name);
@@ -269,7 +269,7 @@ CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 void ELightAnimLibrary::DeleteItem(LPCSTR name)
 {
 	LAItemIt it=FindItemI(name); R_ASSERT(it!=Items.end());
-    _DELETE(*it);
+    xr_delete(*it);
 	Items.erase(it);
 }
 

@@ -59,7 +59,7 @@ namespace DU{
     void DrawPivot	(const Fvector& pos, float sz=5.f);
 	void DrawAxis	(const Fmatrix& T);
 	void DrawObjectAxis(const Fmatrix& T);
-	void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd);
+	void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd);
 
     void DrawPrimitiveL(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, DWORD color, bool bCull, bool bCycle);
     void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle);

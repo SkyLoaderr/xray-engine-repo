@@ -47,7 +47,7 @@ void ELibrary::OnDestroy(){
         	ELog.DlgMsg(mtError,"Object '%s' still referenced.",O->first);
 	    	R_ASSERT(0==O->second->m_RefCount);
         }
-    	delete O->second;
+    	xr_delete(O->second);
     }
 	m_EditObjects.clear();
 
@@ -122,7 +122,7 @@ void ELibrary::EvictObjects()
 
 CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 	VERIFY(m_bReady);
-    CEditableObject* m_EditObject = new CEditableObject(name);
+    CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
     AnsiString fn=ChangeFileExt(name,".object");
     Engine.FS.m_Objects.Update(fn);
     if (Engine.FS.Exist(fn.c_str(), true))
@@ -130,7 +130,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
             m_EditObject->m_ObjVer.f_age = age;
             return m_EditObject;
         }
-    _DELETE(m_EditObject);
+    xr_delete(m_EditObject);
 	return m_EditObject;
 }
 //---------------------------------------------------------------------------

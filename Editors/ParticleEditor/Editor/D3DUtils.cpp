@@ -717,6 +717,27 @@ void DrawSafeRect()
 //    Device.DP(D3DPT_TRIANGLELIST,vs_TL,vBase,2);
 }
 
+// half_fov-angle-tangent
+IC	void	build_projection_HAT	(Fmatrix& M, float HAT, float fAspect, float fNearPlane, float fFarPlane) {
+    VERIFY( _abs(fFarPlane-fNearPlane) > EPS_S );
+    VERIFY( _abs(HAT) > EPS_S );
+		
+    float cot	= 1/HAT;
+    float w		= fAspect * cot;
+    float h		= 1.0f    * cot;
+    float Q		= fFarPlane / ( fFarPlane - fNearPlane );
+		
+    ZeroMemory	(&M,sizeof(M));
+    M._11		= w;
+    M._22		= h;
+    M._33		= Q;
+    M._34		= 1.0f;
+    M._43		= -Q*fNearPlane;
+}
+IC	void	build_projection		(Fmatrix& M, float fFOV, float fAspect, float fNearPlane, float fFarPlane) 
+{
+    build_projection_HAT			(M,tanf(fFOV/2.f),fAspect,fNearPlane,fFarPlane);
+}
 void DrawGrid()
 {
 	VERIFY( Device.bReady );
@@ -726,12 +747,14 @@ void DrawGrid()
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
 	Device.Streams.Vertex.Unlock(m_GridPoints.size(),vs_L->dwStride);
 	// Render it as triangle list
-    Device.SetTransform(D3DTS_WORLD,Fidentity);
+    Fmatrix ddd;
+    ddd.identity();
+    Device.SetTransform(D3DTS_WORLD,ddd);
 	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,vs_L,vBase,m_GridPoints.size()/2);
 }
 
-void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd){
+void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){
 	VERIFY( Device.bReady );
 	// fill VB
     DWORD vBase;

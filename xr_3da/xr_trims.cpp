@@ -231,15 +231,16 @@ AnsiString& ListToSequence2(AStringVec& lst)
 	return out;
 }
 
-void SequenceToList(AStringVec& lst, LPCSTR in)
+void SequenceToList(AStringVec& lst, LPCSTR in, char separator)
 {
 	lst.clear();
-	int t_cnt=_GetItemCount(in);
-	string256 T;
+	int t_cnt=_GetItemCount(in,separator);
+	string1024 T;
 	for (int i=0; i<t_cnt; i++){
-		_GetItem(in,i,T,',',0);
-		lst.push_back(T);
-	}
+		_GetItem(in,i,T,separator,0);
+        _Trim(T);
+        if (strlen(T)) lst.push_back(T);
+	}                  
 }
 #endif
 

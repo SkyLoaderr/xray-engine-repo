@@ -21,7 +21,7 @@ enum ECommands{
 	COMMAND_EDITOR_PREF,
 	COMMAND_UPDATE_CAPTION,
     COMMAND_EVICT_TEXTURES,
-	COMMAND_REFRESH_TEXTURES,	// p1 - refresh only new (true,false)
+	COMMAND_REFRESH_TEXTURES,	// p1 - refresh only newer (true,false)
     COMMAND_CHECK_TEXTURES,
 	COMMAND_IMAGE_EDITOR,
 	COMMAND_RENDER_FOCUS,
@@ -35,6 +35,9 @@ enum ECommands{
 
     COMMAND_CHANGE_ACTION,
     COMMAND_CHANGE_AXIS,
+
+    COMMAND_TOGGLE_SAFE_RECT,	
+    COMMAND_TOGGLE_GRID,		
     // unused (only for compatibility)
     COMMAND_UNDO,
     COMMAND_REDO
