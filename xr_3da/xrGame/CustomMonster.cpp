@@ -105,7 +105,7 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	// Sheduler
 	dwMinUpdate	= 50;
-	dwMaxUpdate	= 1000; // 30 * NET_Latency / 4;
+	dwMaxUpdate	= 500; // 30 * NET_Latency / 4;
 
 	//
 }
