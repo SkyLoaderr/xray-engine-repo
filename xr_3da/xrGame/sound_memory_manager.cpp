@@ -154,6 +154,8 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 	if (m_sounds->end() == J) {
 		CSoundObject			sound_object;
 
+		const CGameObject		*game_object = dynamic_cast<const CGameObject*>(object);
+
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
 		sound_object.m_first_level_time	= Level().timeServer();
 		sound_object.m_first_game_time	= Level().GetGameTime();
