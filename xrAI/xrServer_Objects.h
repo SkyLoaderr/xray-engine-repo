@@ -100,8 +100,9 @@
 // 81 - CSE_SpawnGroup					appended with 4 properties
 // 82 - CSE_AlifeTraderAbstract			load/save m_iCharacterProfile on state read/write
 // 83 - CSE_AlifeObject					m_fProbability moved to CSE_Abstract, m_dwSpawnGroup is removed completely
+// 84 - CSE_SpawnGroup					appended with a property
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(83)
+#define SPAWN_VERSION	u16(84)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:
@@ -191,23 +192,11 @@ add_to_type_list(CSE_Event)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_SpawnGroup,CSE_Abstract)
 public:
-	enum ESpawnGroupFlags {
-		flSpawnGroupActive			= u32(1 << 0),
-		flSpawnGroupOnSurgeOnly		= u32(1 << 1),
-		flSpawnGroupSingleItemOnly	= u32(1 << 2),
-		flSpawnGroupIfDestroyedOnly	= u32(1 << 3),
-		flSpawnGroupSingleTimeOnly	= u32(1 << 4),
-	};
+	u64								m_min_spawn_interval;
+	u64								m_max_spawn_interval;
 
-public:
-	float								m_spawn_probability;
-	float								m_min_spawn_interval;
-	float								m_max_spawn_interval;
-	Flags32								m_flags;
-	shared_str							m_group_control;
-
-										CSE_SpawnGroup	(LPCSTR caSection);
-	virtual								~CSE_SpawnGroup	();
+									CSE_SpawnGroup	(LPCSTR caSection);
+	virtual							~CSE_SpawnGroup	();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_SpawnGroup)
 #define script_type_list save_type_list(CSE_SpawnGroup)

@@ -396,16 +396,8 @@ void CSE_Temporary::FillProps				(LPCSTR pref, PropItemVec& values)
 
 CSE_SpawnGroup::CSE_SpawnGroup				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
-	m_spawn_probability			= 1.f;
-	m_min_spawn_interval		= 0.f;
-	m_max_spawn_interval		= 0.f;
-	m_flags.zero				();
-	m_flags.set					(flSpawnGroupActive				,TRUE);
-	m_flags.set					(flSpawnGroupOnSurgeOnly		,TRUE);
-	m_flags.set					(flSpawnGroupSingleItemOnly		,TRUE);
-	m_flags.set					(flSpawnGroupIfDestroyedOnly	,TRUE);
-	m_flags.set					(flSpawnGroupSingleTimeOnly		,FALSE);
-	m_group_control				= "";
+	m_min_spawn_interval		= 0;
+	m_max_spawn_interval		= 0;
 }
 
 CSE_SpawnGroup::~CSE_SpawnGroup				()
@@ -414,55 +406,47 @@ CSE_SpawnGroup::~CSE_SpawnGroup				()
 
 void CSE_SpawnGroup::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
-	tNetPacket.r_float			(m_spawn_probability);
+	if (m_wVersion < 84)
+		tNetPacket.r_float		(m_spawn_probability);
+
 	if (m_wVersion > 80) {
-		tNetPacket.r_float		(m_min_spawn_interval);
-		tNetPacket.r_float		(m_max_spawn_interval);
-		m_flags.assign			(tNetPacket.r_u32());
-		tNetPacket.r_stringZ	(m_group_control);
+		if (m_wVersion < 84) {
+			tNetPacket.r_float	();
+			tNetPacket.r_float	();
+			m_spawn_flags.assign(tNetPacket.r_u32());
+			tNetPacket.r_stringZ(m_spawn_control);
+		}
+		else {
+			tNetPacket.r_u64	(m_min_spawn_interval);
+			tNetPacket.r_u64	(m_max_spawn_interval);
+		}
 	}
 }
 
 void CSE_SpawnGroup::STATE_Write			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_float			(m_spawn_probability);
-	tNetPacket.w_float			(m_min_spawn_interval);
-	tNetPacket.w_float			(m_max_spawn_interval);
-	tNetPacket.w_u32			(m_flags.get());
-	tNetPacket.w_stringZ		(m_group_control);
+	tNetPacket.w_u64			(m_min_spawn_interval);
+	tNetPacket.w_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::UPDATE_Read			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.r_float			(m_spawn_probability);
-	tNetPacket.r_float			(m_min_spawn_interval);
-	tNetPacket.r_float			(m_max_spawn_interval);
-	m_flags.assign				(tNetPacket.r_u32());
-	tNetPacket.r_stringZ		(m_group_control);
+	tNetPacket.r_u64			(m_min_spawn_interval);
+	tNetPacket.r_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_float			(m_spawn_probability);
-	tNetPacket.w_float			(m_min_spawn_interval);
-	tNetPacket.w_float			(m_max_spawn_interval);
-	tNetPacket.w_u32			(m_flags.get());
-	tNetPacket.w_stringZ		(m_group_control);
+	tNetPacket.w_u64			(m_min_spawn_interval);
+	tNetPacket.w_u64			(m_max_spawn_interval);
 }
 
 void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProps		(pref,values);
-	PHelper().CreateFloat		(values,PrepareKey(pref,*s_name,"ALife\\Spawn group probability"),	&m_spawn_probability,	0.f,	1.f);
-	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"ALife\\Min time spawn interval"),	&m_min_spawn_interval);
-	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"ALife\\Max time spawn interval"),	&m_max_spawn_interval);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn group is active"),	&m_flags,	flSpawnGroupActive);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn on surge only"),		&m_flags,	flSpawnGroupOnSurgeOnly);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn single item only"),	&m_flags,	flSpawnGroupSingleItemOnly);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn if destroyed only"),	&m_flags,	flSpawnGroupIfDestroyedOnly);
-	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn single time only"),	&m_flags,	flSpawnGroupSingleTimeOnly);
-	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
-    PHelper().CreateChoose		(values,PrepareKey(pref,*s_name,"ALife\\Group control"),			&m_group_control,	smSpawnItem,	0, (void*)gcs,	16);
+//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Min time spawn interval"),	&m_min_spawn_interval);
+//	PHelper().CreateTime		(values,PrepareKey(pref,*s_name,"Spawn parameters\\Max time spawn interval"),	&m_max_spawn_interval);
+	PHelper().CreateFlag32		(values,PrepareKey(pref,*s_name,"ALife\\Spawn single item only"),	&m_spawn_flags,	flSpawnSingleItemOnly);
 }
 
 ////////////////////////////////////////////////////////////////////////////

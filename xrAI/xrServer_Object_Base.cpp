@@ -86,10 +86,22 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	m_wVersion					= 0;
 	m_script_version			= 0;
 	m_tClassID					= TEXT2CLSID(pSettings->r_string(caSection,"class"));
+
+	m_spawn_probability			= 1.f;
+	m_spawn_flags.zero			();
+	m_spawn_flags.set			(flSpawnActive			,TRUE);
+	m_spawn_flags.set			(flSpawnOnSurgeOnly		,TRUE);
+	m_spawn_flags.set			(flSpawnSingleItemOnly	,TRUE);
+	m_spawn_flags.set			(flSpawnIfDestroyedOnly	,TRUE);
+	m_spawn_flags.set			(flSpawnInfiniteCount	,TRUE);
+	m_max_spawn_count			= 1;
+	m_spawn_control				= "";
+	m_spawn_count				= 0;
+	m_last_spawn_time			= 0;
+
 #ifndef AI_COMPILER
 	m_script_clsid				= object_factory().script_clsid(m_tClassID);
 #endif
-	m_fProbability				= 1.f;
 
 	client_data.clear			();
 }
@@ -146,7 +158,12 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 		tNetPacket.w			(&*client_data.begin(),client_data_size);
 
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
-	tNetPacket.w_float			(m_fProbability);
+	tNetPacket.w_float			(m_spawn_probability);
+	tNetPacket.w_u32			(m_spawn_flags.get());
+	tNetPacket.w_stringZ		(m_spawn_control);
+	tNetPacket.w_u32			(m_max_spawn_count);
+	tNetPacket.w_u32			(m_spawn_count);
+	tNetPacket.w_u64			(m_last_spawn_time);
 
 #ifdef XRSE_FACTORY_EXPORTS
 	CScriptValueContainer::assign();
@@ -214,7 +231,16 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 
 	if (m_wVersion > 82)
-		tNetPacket.r_float		(m_fProbability);
+		tNetPacket.r_float		(m_spawn_probability);
+
+	if (m_wVersion > 83) {
+		tNetPacket.r_float		(m_spawn_probability);
+		m_spawn_flags.assign	(tNetPacket.r_u32());
+		tNetPacket.r_stringZ	(m_spawn_control);
+		tNetPacket.r_u32		(m_max_spawn_count);
+		tNetPacket.r_u32		(m_spawn_count);
+		tNetPacket.r_u64		(m_last_spawn_time);
+	}
 
 	u16							size;
 	tNetPacket.r_u16			(size			);	// size
@@ -292,7 +318,16 @@ void CSE_Abstract::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateToken8		(items,	PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
-	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),			&m_fProbability,	0.f,1.f);
+
+	PHelper().CreateFloat		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn probability"),			&m_spawn_probability,	0.f,			1.f);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn is active"),			&m_spawn_flags,			flSpawnActive);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn on surge only"),		&m_spawn_flags,			flSpawnOnSurgeOnly);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn if destroyed only"),	&m_spawn_flags,			flSpawnIfDestroyedOnly);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Spawn infinite count"),		&m_spawn_flags,			flSpawnInfiniteCount);
+	PHelper().CreateFlag32		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Destroy on spawn"),			&m_spawn_flags,			flSpawnDestroyOnSpawn);
+
+	LPCSTR						gcs = pSettings->r_string(s_name,"GroupControlSection");
+	PHelper().CreateChoose		(items,PrepareKey(pref,*s_name,"Spawn parameters\\Group control"),				&m_spawn_control,		smSpawnItem,	0,	(void*)gcs,	16);
 }
 
 void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec &items)

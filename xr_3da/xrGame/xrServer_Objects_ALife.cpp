@@ -235,13 +235,13 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion >= 1) {
 		if (m_wVersion > 24) {
 			if (m_wVersion < 83) {
-				tNetPacket.r_float	(m_fProbability);
+				tNetPacket.r_float	(m_spawn_probability);
 			}
 		}
 		else {
 			u8					l_ucTemp;
 			tNetPacket.r_u8		(l_ucTemp);
-			m_fProbability		= (float)l_ucTemp;
+			m_spawn_probability	= (float)l_ucTemp;
 		}
 		if (m_wVersion < 83) {
 			tNetPacket.r_u32	();
@@ -265,8 +265,8 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if ((m_wVersion > 22) && (m_wVersion <= 79))
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
 	
-	if (m_wVersion > 23)
-		tNetPacket.r_stringZ	(m_caGroupControl);
+	if ((m_wVersion > 23) && (m_wVersion < 84))
+		tNetPacket.r_stringZ	(m_spawn_control);
 
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);

@@ -352,6 +352,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwTotalMoney;
 	float							m_fGoingSuccessProbability;
 	float							m_fSearchSuccessProbability;
+	float							m_detect_probability;
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
 	virtual							~CSE_ALifeHumanAbstract	();

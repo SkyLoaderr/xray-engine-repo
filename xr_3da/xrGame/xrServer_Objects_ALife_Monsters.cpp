@@ -1466,6 +1466,7 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurNode					= u32(-1);
 	m_caKnownCustomers			= "m_trader0000";
 	m_tpKnownCustomers.clear	();
+	m_detect_probability		= 0.f;
 	m_cpEquipmentPreferences.resize(5);
 	m_cpMainWeaponPreferences.resize(4);
 #ifdef XRGAME_EXPORTS

@@ -8,9 +8,8 @@
 
 #include "stdafx.h"
 #include "server_entity_wrapper.h"
-#include "xrServer_Object_Base.h"
+#include "xrServer_Objects.h"
 #include "xrmessages.h"
-#include "xrSE_Factory_import_export.h"
 
 struct ISE_Abstract;
 

@@ -30,6 +30,16 @@ class xrClientData;
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
 public:
+	enum ESpawnFlags {
+		flSpawnActive			= u32(1 << 0),
+		flSpawnOnSurgeOnly		= u32(1 << 1),
+		flSpawnSingleItemOnly	= u32(1 << 2),
+		flSpawnIfDestroyedOnly	= u32(1 << 3),
+		flSpawnInfiniteCount	= u32(1 << 4),
+		flSpawnDestroyOnSpawn	= u32(1 << 5),
+	};
+
+public:
 	BOOL							net_Ready;
 	BOOL							net_Processed;	// Internal flag for connectivity-graph
 	
@@ -48,19 +58,27 @@ public:
 	u8								s_gameid;
 	u8								s_RP;
 	Flags16							s_flags;		// state flags
+	xr_vector<u16>					children;
 
 	// update data
 	Fvector							o_Position;
 	Fvector							o_Angle;
 	CLASS_ID						m_tClassID;
-	ALife::_SPAWN_ID				m_tSpawnID;
-	float							m_fProbability;
 	int								m_script_clsid;
+	shared_str						m_ini_string;
 
 	// for ALife control
 	bool							m_bALifeControl;
-	shared_str						m_ini_string;
-	xr_vector<u16>					children;
+	ALife::_SPAWN_ID				m_tSpawnID;
+
+	// ALife spawn params
+	float							m_spawn_probability;
+	Flags32							m_spawn_flags;
+	shared_str						m_spawn_control;
+	u32								m_max_spawn_count;
+	u32								m_spawn_count;
+	u64								m_last_spawn_time;
+
 
 	//client object custom data serialization
 	xr_vector<u8>					client_data;
