@@ -39,22 +39,22 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		E->ID					=	PerformIDgen(E->ID);
 		E->ID_Phantom			=	Phantom->ID;
 		E->owner				=	CL;
-		ids_used[ID]			=	true;	
-		entities.insert			(make_pair(ID,E));
+		ids_used[E->ID]			=	true;	
+		entities.insert			(make_pair(E->ID,E));
 	} else {
 		if (E->s_flags & M_SPAWN_OBJECT_PHANTOM)
 		{
 			// Clone from Phantom
 			E->ID					=	PerformIDgen(0xffff);
 			E->owner				=	CL		= SelectBestClientToMigrateTo	(E);
-			ids_used[ID]			=	true;
-			entities.insert			(make_pair(ID,E));
+			ids_used[E->ID]			=	true;
+			entities.insert			(make_pair(E->ID,E));
 		} else {
 			// Simple spawn
 			E->ID					=	PerformIDgen(E->ID);
 			E->owner				=	CL;
-			ids_used[ID]			=	true;
-			entities.insert			(make_pair(ID,E));
+			ids_used[E->ID]			=	true;
+			entities.insert			(make_pair(E->ID,E));
 		}
 	}
 
