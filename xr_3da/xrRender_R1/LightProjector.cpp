@@ -166,9 +166,8 @@ void CLightProjector::calculate	()
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
 
 		// Clear color to ambience
-		float	c_a				=	LT->ambient;
-		int		c_i				=	iFloor(c_a)/2;
-		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba(c_i,c_i,c_i,c_i), 1, 0 ));
+		Fvector&	cap			=	LT->approximate;
+		CHK_DX					(HW.pDevice->Clear(0,0, D3DCLEAR_TARGET, color_rgba_f(cap.x,cap.y,cap.z, (cap.x+cap.y+cap.z)/3.f), 1, 0 ));
 
 		// calculate uv-gen matrix and clamper
 		Fmatrix					mCombine;		mCombine.mul	(mProject,mView);

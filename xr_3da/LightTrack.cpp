@@ -12,6 +12,7 @@
 CLightTrack::CLightTrack()
 {
 	ambient				= 0;
+	approximate			= { 0,0,0 };
 	dwFrame				= u32(-1);
 	Shadowed_dwFrame	= u32(-1);
 	Shadowed_Slot		= -1;
@@ -67,12 +68,10 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	*/
 	// *******DEBUG
 
-	// Process ambient lighting
+	// Timing
 	float	dt				= Device.fTimeDelta;
 	float	l_f				= dt*lt_smooth;
 	float	l_i				= 1.f-l_f;
-	ambient					= l_i*ambient + l_f*O->renderable_Ambient();
-	clamp					(ambient,0.f,255.f);
 	
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
@@ -147,7 +146,20 @@ void	CLightTrack::ltrack	(IRenderable* O)
 			}
 		}
 	}
-	 
+
 	// Sort lights by importance
-	std::sort(lights.begin(),lights.end(), pred_energy);
+	std::sort	(lights.begin(),lights.end(), pred_energy);
+
+	// Process ambient lighting and approximate average lighting
+	// Process our lights to find average luminiscense
+	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
+	ambient		= l_i*ambient + l_f*O->renderable_Ambient();
+	clamp		(ambient,0.f,255.f);
+	Fvector		accum	= { ambient,ambient,ambient	};
+	accum.div(255.f).add(desc.ambient			);
+	accum.mad			(desc.lmap_color,	.1f	);
+	accum.mad			(desc.hemi_color,	.2f	);
+	for (u32 lit=0; lit<lights.size(); lit++)
+		accum.mad	(lights[lit].color,.5f);
+	approximate			= accum;
 }

@@ -47,6 +47,7 @@ public:
 	xr_vector<Item>			track;
 	xr_vector<Light>		lights;
 	float					ambient;
+	Fvector					approximate;
 	u32						dwFrame;
 public:
 	//CShadowGeomCache		ShadowGeomCache;			
