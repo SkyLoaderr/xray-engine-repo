@@ -464,7 +464,7 @@ LPCSTR InventoryUtilities::GetRankAsText(CHARACTER_RANK_VALUE rankID)
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoRankStrings);
 
-	CharInfoStrings::const_iterator cit = charInfoRankStrings->upper_bound(rankID - 1);
+	CharInfoStrings::const_iterator cit = charInfoRankStrings->upper_bound(rankID);
 	R_ASSERT(charInfoRankStrings->end() != cit);
 	return *cit->second;
 }
@@ -476,7 +476,7 @@ LPCSTR InventoryUtilities::GetReputationAsText(CHARACTER_REPUTATION_VALUE rankID
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoReputationStrings);
 
-	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID - 1);
+	CharInfoStrings::const_iterator cit = charInfoReputationStrings->upper_bound(rankID);
 	R_ASSERT(charInfoReputationStrings->end() != cit);
 	return *cit->second;
 }
@@ -488,7 +488,7 @@ LPCSTR InventoryUtilities::GetGoodwillAsText(CHARACTER_GOODWILL goodwill)
 	InitCharacterInfoStrings();
 	R_ASSERT(charInfoGoodwillStrings);
 
-	CharInfoStrings::const_iterator cit = charInfoGoodwillStrings->upper_bound(goodwill - 1);
+	CharInfoStrings::const_iterator cit = charInfoGoodwillStrings->upper_bound(goodwill);
 	R_ASSERT(charInfoGoodwillStrings->end() != cit);
 	return *cit->second;
 }
