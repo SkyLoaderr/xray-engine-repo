@@ -17,7 +17,7 @@ str_value*	str_container::dock		(str_c value)
 
 	// calc len
 	size_t	s_len				= xr_strlen(value);
-	size_t	s_len_with_zero		= s_len_with_zero+1;
+	size_t	s_len_with_zero		= s_len+1;
 	VERIFY	(HEADER+s_len_with_zero < 4096);
 
 	// setup find structure
