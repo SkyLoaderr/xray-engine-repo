@@ -43,7 +43,7 @@ public:
 	int				p_count;
 
 public:
-	IC EFC_Visible		AABB_OverlapPlane	(const fplane& P, const float* mM) const
+	ICF EFC_Visible		AABB_OverlapPlane	(const fplane& P, const float* mM) const
 	{
 		// calc extreme pts (neg,pos) along normal axis (pos in dir of norm, etc.)
 		u32*	id		= frustum_aabb_remap[P.aabb_overlap_id];
