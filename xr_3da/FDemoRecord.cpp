@@ -63,7 +63,7 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 {
 	if (hFile<=0)	return;
 
-	if ((timeGetTime()/500)%2==0) {
+	if ((Device.dwTimeGlobal()/500)%2==0) {
 		pApp->pFont->Size(0.02f);
 		pApp->pFont->Color(D3DCOLOR_RGBA(255,0,0,255));
 		pApp->pFont->Out(0,-.05f,"~%s","RECORDING");
