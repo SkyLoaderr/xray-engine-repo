@@ -136,7 +136,7 @@ void CRenderDevice::End(void)
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
-void CRenderDevice::_Create	()
+void CRenderDevice::_Create	(LPCSTR shName)
 {
 	// after creation
 	bReady			= TRUE;
@@ -200,7 +200,7 @@ void CRenderDevice::_Create	()
 	
 	// Signal everyone - device created
 	Gamma.Update				();
-	Shader.OnDeviceCreate		();
+	Shader.OnDeviceCreate		(shName);
 	seqDevCreate.Process		(rp_DeviceCreate);
 	Primitive.OnDeviceCreate	();
 	dwFrame						= 0;
@@ -267,10 +267,10 @@ void CRenderDevice::Create	()
     // Hide the cursor if necessary
 	ShowCursor		(FALSE);
 
-	_Create			();
+	_Create			("shaders.xr");
 }
 
-void CRenderDevice._Destroy		()
+void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
 	// before destroy
 	bReady = FALSE;
@@ -289,7 +289,7 @@ void CRenderDevice::Destroy	(void) {
 	ShowCursor					(TRUE);
 	HW.Validate					();
 
-	_Destroy					();
+	_Destroy					(FALSE);
 
 	// real destroy
 	HW.DestroyDevice			();

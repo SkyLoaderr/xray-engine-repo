@@ -31,8 +31,8 @@ private:
 	CTimer									Timer;
 	CTimer									TimerGlobal;
 	
-	void									_Create		();
-	void									_Destroy	();
+	void									_Create		(LPCSTR shName);
+	void									_Destroy	(BOOL	bKeepTextures);
 public:
     HWND									m_hWnd;
 	LRESULT									MsgProc	(HWND,UINT,WPARAM,LPARAM);
