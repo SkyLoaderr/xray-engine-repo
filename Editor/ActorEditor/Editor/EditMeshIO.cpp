@@ -72,14 +72,18 @@ void CEditableMesh::SaveMesh(CFS_Base& F){
     }
 	F.close_chunk     ();
 
-	F.open_chunk	(EMESH_CHUNK_VMAPS_1);
+	F.open_chunk	(EMESH_CHUNK_VMAPS_2);
 	F.Wdword		(m_VMaps.size());
     for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
         F.WstringZ	((*vm_it)->name);
         F.Wbyte		((*vm_it)->dim);
+		F.Wbyte		((*vm_it)->polymap);
         F.Wbyte		((*vm_it)->type);
         F.Wdword	((*vm_it)->size());
-        F.write		((*vm_it)->getdata(), (*vm_it)->datasize() );
+        F.write		((*vm_it)->getVMdata(), (*vm_it)->VMdatasize());
+        F.write		((*vm_it)->getVIdata(), (*vm_it)->VIdatasize());
+		if ((*vm_it)->polymap) 
+	        F.write	((*vm_it)->getPIdata(), (*vm_it)->PIdatasize());
     }
 	F.close_chunk  	();
 }
@@ -145,10 +149,10 @@ bool CEditableMesh::LoadMesh(CStream& F){
 			(*vm_it)->polymap=F.Rbyte();
 			(*vm_it)->type	= EVMType(F.Rbyte());
 			(*vm_it)->resize(F.Rdword());
-			F.Read		((*vm_it)->getdata(), (*vm_it)->datasize() );
-			F.Read		((*vm_it)->vindices.begin(), (*vm_it)->vindices.size()*sizeof(int));
+			F.Read		((*vm_it)->getVMdata(), (*vm_it)->VMdatasize());
+			F.Read		((*vm_it)->getVIdata(), (*vm_it)->VIdatasize());
 			if ((*vm_it)->polymap) 
-				F.Read	((*vm_it)->pindices.begin(), (*vm_it)->pindices.size()*sizeof(int));
+				F.Read	((*vm_it)->getPIdata(), (*vm_it)->PIdatasize());
 		}
 	}else{
 		if(F.FindChunk(EMESH_CHUNK_VMAPS_1)){
@@ -159,7 +163,7 @@ bool CEditableMesh::LoadMesh(CStream& F){
 				(*vm_it)->dim 	= F.Rbyte();
 				(*vm_it)->type	= EVMType(F.Rbyte());
 				(*vm_it)->resize(F.Rdword());
-				F.Read		((*vm_it)->getdata(), (*vm_it)->datasize() );
+				F.Read		((*vm_it)->getVMdata(), (*vm_it)->VMdatasize() );
 			}
 		}else{
 			R_ASSERT(F.FindChunk(EMESH_CHUNK_VMAPS_0));
@@ -170,108 +174,12 @@ bool CEditableMesh::LoadMesh(CStream& F){
 				(*vm_it)->dim 	= 2;
 				(*vm_it)->type	= vmtUV;
 				(*vm_it)->resize(F.Rdword());
-				F.Read		((*vm_it)->getdata(), (*vm_it)->datasize() );
+				F.Read		((*vm_it)->getVMdata(), (*vm_it)->VMdatasize() );
 			}
 		}
 		// update vmaps
-		INTVec			m_PointVMap;
-		m_PointVMap.resize(m_Points.size(),-1);
-		VMapVec nVMaps;
-		for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-			st_Face& F=*f_it;
-			for (int k=0; k<3; k++){
-				VMapPtSVec& pts=m_VMRefs[F.pv[k].vmref];
-				for (VMapPtIt pt_it=pts.begin(); pt_it!=pts.end(); pt_it++){
-					st_VMap* vmap=m_VMaps[pt_it->vmap_index];
-					switch (vmap->type){
-					case vmtUV:{
-						int& pm=m_PointVMap[F.pv[k].pindex];
-						if (-1==pm){ // point map
-							pm=F.pv[k].vmref;
-							int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
-							if (-1==vm_idx){
-								nVMaps.push_back(new st_VMap(vmap->name,vmap->type,false));
-								vm_idx=nVMaps.size()-1;
-							}
-							st_VMap* nVMap=nVMaps[vm_idx];
-							nVMap->appendUV(vmap->getUV(pt_it->index));
-							nVMap->appendVI(F.pv[k].pindex);
-							pt_it->index = nVMap->size()-1;
-							pt_it->vmap_index=vm_idx;
-						}
-						else{ // poly map
-							int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,true);
-							if (-1==vm_idx){
-								nVMaps.push_back(new st_VMap(vmap->name,vmap->type,true));
-								vm_idx=nVMaps.size()-1;
-							}
-							st_VMap* nVMapPM=nVMaps[vm_idx];
-							nVMapPM->appendUV(vmap->getUV(pt_it->index));
-							nVMapPM->appendVI(F.pv[k].pindex);
-							nVMapPM->appendPI(f_it-m_Faces.begin());
-							pt_it->index = nVMapPM->size()-1;
-							pt_it->vmap_index=vm_idx;
-						}
-					}break;
-					case vmtWeight:{
-						int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
-						if (-1==vm_idx){
-							nVMaps.push_back(new st_VMap(vmap->name,vmap->type,false));
-							vm_idx=nVMaps.size()-1;
-						}
-						st_VMap* nWMap=nVMaps[vm_idx];
-						nWMap->appendW(vmap->getW(pt_it->index));
-						nWMap->appendVI(F.pv[k].pindex);
-						pt_it->index = nWMap->size()-1;
-						pt_it->vmap_index=vm_idx;
-					}break;
-					}
-				}
-			}
-		}
-		for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
-			_DELETE(*vm_it);
-		m_VMaps.clear();
-		m_VMaps=nVMaps;
+		RebuildVMaps();
 	}
-	
-/*
-	{ // MAX style
-		st_VMap* vmap	= m_VMaps[0];
-		m_VMaps.clear();
-		st_VMap* nVMap	= new st_VMap(vmap->name,vmtUV,false);
-		st_VMap* nVMapPM= new st_VMap(vmap->name,vmtUV,true);
-		m_VMaps.push_back(nVMap);
-		m_VMaps.push_back(nVMapPM);
-		for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-			st_Face& F=*f_it;
-			for (int k=0; k<3; k++){
-				VMapPtSVec& pts=m_VMRefs[F.pv[k].vmref];
-				for (VMapPtIt pt_it=pts.begin(); pt_it!=pts.end(); pt_it++){
-					R_ASSERT(0==pt_it->vmap_index);
-
-					int& pm=m_PointVMap[F.pv[k].pindex];
-					if (-1==pm)
-					{ // point map
-						pm=F.pv[k].vmref;
-						nVMap->appendUV(vmap->getUV(pt_it->index));
-						nVMap->appendVI(F.pv[k].pindex);
-						pt_it->index = nVMap->size()-1;
-						pt_it->vmap_index=0;
-					}
-					else{ // poly map
-						nVMapPM->appendUV(vmap->getUV(pt_it->index));
-						nVMapPM->appendVI(F.pv[k].pindex);
-						nVMapPM->appendPI(f_it-m_Faces.begin());
-						pt_it->index = nVMapPM->size()-1;
-						pt_it->vmap_index=1;
-					}
-				}
-			}
-		}
-		_DELETE(vmap);
-	}
-*/
 	return true;
 }
 //----------------------------------------------------

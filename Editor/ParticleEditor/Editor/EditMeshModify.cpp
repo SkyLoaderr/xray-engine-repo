@@ -21,6 +21,68 @@ void CEditableMesh::Transform(const Fmatrix& parent){
 }
 //----------------------------------------------------
 
+void CEditableMesh::RebuildVMaps(){
+	INTVec			m_PointVMap;
+	m_PointVMap.resize(m_Points.size(),-1);
+	VMapVec nVMaps;
+	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+		st_Face& F=*f_it;
+		for (int k=0; k<3; k++){
+			VMapPtSVec& pts=m_VMRefs[F.pv[k].vmref];
+			for (VMapPtIt pt_it=pts.begin(); pt_it!=pts.end(); pt_it++){
+				st_VMap* vmap=m_VMaps[pt_it->vmap_index];
+				switch (vmap->type){
+				case vmtUV:{
+					int& pm=m_PointVMap[F.pv[k].pindex];
+					if (-1==pm){ // point map
+						pm=F.pv[k].vmref;
+						int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
+						if (-1==vm_idx){
+							nVMaps.push_back(new st_VMap(vmap->name,vmap->type,false));
+							vm_idx=nVMaps.size()-1;
+						}
+						st_VMap* nVMap=nVMaps[vm_idx];
+						nVMap->appendUV(vmap->getUV(pt_it->index));
+						nVMap->appendVI(F.pv[k].pindex);
+						pt_it->index = nVMap->size()-1;
+						pt_it->vmap_index=vm_idx;
+					}
+					else{ // poly map
+						int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,true);
+						if (-1==vm_idx){
+							nVMaps.push_back(new st_VMap(vmap->name,vmap->type,true));
+							vm_idx=nVMaps.size()-1;
+						}
+						st_VMap* nVMapPM=nVMaps[vm_idx];
+						nVMapPM->appendUV(vmap->getUV(pt_it->index));
+						nVMapPM->appendVI(F.pv[k].pindex);
+						nVMapPM->appendPI(f_it-m_Faces.begin());
+						pt_it->index = nVMapPM->size()-1;
+						pt_it->vmap_index=vm_idx;
+					}
+				}break;
+				case vmtWeight:{
+					int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
+					if (-1==vm_idx){
+						nVMaps.push_back(new st_VMap(vmap->name,vmap->type,false));
+						vm_idx=nVMaps.size()-1;
+					}
+					st_VMap* nWMap=nVMaps[vm_idx];
+					nWMap->appendW(vmap->getW(pt_it->index));
+					nWMap->appendVI(F.pv[k].pindex);
+					pt_it->index = nWMap->size()-1;
+					pt_it->vmap_index=vm_idx;
+				}break;
+				}
+			}
+		}
+	}
+	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
+		_DELETE(*vm_it);
+	m_VMaps.clear();
+	m_VMaps=nVMaps;
+}
+
 bool CEditableMesh::UpdateAdjacency(){
 	if (m_Faces.empty()) return false;
     ELog.Msg(mtInformation,"Update Adjacency...");

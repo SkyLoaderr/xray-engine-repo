@@ -30,6 +30,8 @@ void CEditableMesh::Clear(){
 	m_Points.clear 		();
     m_Adjs.clear		();
 	m_Faces.clear		();
+	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++)
+		_DELETE(*vm_it);
     m_VMaps.clear		();
     m_SurfFaces.clear	();
     m_VMRefs.clear		();
@@ -183,7 +185,7 @@ CSurface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
 	st_Face& F = m_Faces[fid];
     for (int k=0; k<3; k++){
 	    st_VMapPt& vmr = m_VMRefs[F.pv[k].vmref][0];
-    	tc[k] = &(m_VMaps[vmr.vmap_index].getUV(vmr.index));
+    	tc[k] = &(m_VMaps[vmr.vmap_index]->getUV(vmr.index));
     }
     return surf;
 }
@@ -233,9 +235,9 @@ void CEditableMesh::DumpAdjacency(){
 
 //----------------------------------------------------------------------------
 
-int CEditableMesh::FindVMapByName(const char* name, EVMType t, BOOL polymap){
-	for (VMapIt vm_it=m_VMaps.begin(); vm_it!=m_VMaps.end(); vm_it++){
-		if ((vm_it->type==t)&&(stricmp(vm_it->name,name)==0)&&(polymap==vm_it->polymap)) return vm_it-m_VMaps.begin();
+int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap){
+	for (VMapIt vm_it=vmaps.begin(); vm_it!=vmaps.end(); vm_it++){
+		if (((*vm_it)->type==t)&&(stricmp((*vm_it)->name,name)==0)&&(polymap==(*vm_it)->polymap)) return vm_it-vmaps.begin();
 	}
 	return -1;
 }

@@ -39,19 +39,29 @@ public:
 	INTVec			vindices;
 	INTVec			pindices;
 public:
-				    st_VMap		(bool pm=false)			{name[0]=0; type=vmtUV; dim=2; polymap=pm;}
-					st_VMap		(EVMType t,bool pm=false){name[0]=0; type=t; polymap=pm; if (t==vmtUV) dim=2; else dim=1;}
+	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, bool pm=false){
+		type=t; 
+		polymap=pm; 
+		if(nm) strcpy(name,nm); else name[0]=0; 
+		if (t==vmtUV) dim=2; else dim=1;
+	}
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}
     IC float&		getW		(int idx)				{VERIFY(type==vmtWeight);	return vm[idx];}
-    IC FloatVec&	getvm		()						{return vm;}
-    IC float*		getdata		()						{return vm.begin();}
-    IC float*		getdata		(int start)				{return vm.begin()+start*dim;}
-    IC int			datasize	()						{return vm.size()*sizeof(float);}
+    IC FloatVec&	getVM		()						{return vm;}
+    IC float*		getVMdata	()						{return vm.begin();}
+    IC float*		getVMdata	(int start)				{return vm.begin()+start*dim;}
+    IC int			VMdatasize	()						{return vm.size()*sizeof(float);}
+    IC int*			getVIdata	()						{return vindices.begin();}
+    IC int			VIdatasize	()						{return vindices.size()*sizeof(int);}
+    IC int*			getPIdata	()						{return pindices.begin();}
+    IC int			PIdatasize	()						{return pindices.size()*sizeof(int);}
     IC int			size		()						{return vm.size()/dim;}
-    IC void			resize		(int cnt)				{vm.resize(cnt*dim);}
+    IC void			resize		(int cnt)				{vm.resize(cnt*dim);vindices.resize(cnt);if (polymap) pindices.resize(cnt); }
 	IC void			appendUV	(float u, float v)		{vm.push_back(u);vm.push_back(v);}
 	IC void			appendUV	(Fvector2& uv)			{appendUV(uv.x,uv.y);}
 	IC void			appendW		(float w)				{vm.push_back(w);}
+	IC void			appendVI	(int vi)				{vindices.push_back(vi);}
+	IC void			appendPI	(int pi)				{VERIFY(polymap); pindices.push_back(pi);}
     IC void			copyfrom	(float* src, int cnt)	{resize(cnt); CopyMemory(vm.begin(),src,cnt*dim*4);}
 };
 DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
@@ -80,7 +90,7 @@ struct st_MeshOptions{
 #pragma pack( pop )
 
 DEFINE_VECTOR		(INTVec,AdjVec,AdjIt);
-DEFINE_VECTOR		(st_VMap,VMapVec,VMapIt);
+DEFINE_VECTOR		(st_VMap*,VMapVec,VMapIt);
 DEFINE_VECTOR		(st_Face,FaceVec,FaceIt);
 DEFINE_MAP			(CSurface*,INTVec,SurfFaces,SurfFacesPairIt);
 DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
@@ -147,7 +157,6 @@ public:
 protected:
 	Fbox			m_Box;
     FvectorVec		m_Points;	// |
-	INTVec			m_PointVMap;// |
     SVertVec		m_SVertices;// |
     AdjVec			m_Adjs;     // + some array size!!!
     SurfFaces		m_SurfFaces;
@@ -224,7 +233,8 @@ public:
 	bool			ExtractMaterial			(CSurface *surf, StdMat *smtl);
 	bool			Convert					(INode *node);
 #endif
-	int				FindVMapByName			(const char* name, EVMType t, BOOL polymap);
+	int				FindVMapByName			(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap);
+	void			RebuildVMaps			();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/
