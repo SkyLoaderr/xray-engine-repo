@@ -18,6 +18,7 @@
 #include "map_location.h"
 #include "clsid_game.h"
 #include "autosave_manager.h"
+#include "ef_pattern.h"
 
 #define USE_EVALUATOR
 

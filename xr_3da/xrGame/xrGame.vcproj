@@ -1353,6 +1353,9 @@
 					<File
 						RelativePath=".\ef_storage.h">
 					</File>
+					<File
+						RelativePath=".\ef_storage_script.cpp">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter

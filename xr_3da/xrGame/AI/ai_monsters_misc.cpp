@@ -18,6 +18,7 @@
 #include "../group_hierarchy_holder.h"
 #include "../../skeletonanimated.h"
 #include "ai_monsters_anims.h"
+#include "../ef_pattern.h"
 
 bool bfGetActionSuccessProbability(GroupHierarchyHolder::MEMBER_REGISTRY &Members, const xr_vector<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {

@@ -14,6 +14,7 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "weaponmagazined.h"
 #include "ef_storage.h"
+#include "ef_pattern.h"
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
 #include "torch.h"

@@ -20,6 +20,8 @@
 #include "alife_event_personal.h"
 #include "clsid_game.h"
 #include "alife_human.h"
+#include "ef_primary.h"
+#include "ef_pattern.h"
 
 using namespace ALife;
 using namespace ALifeCommunication;

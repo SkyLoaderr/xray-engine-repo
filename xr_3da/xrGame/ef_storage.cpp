@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ef_storage.h
+//	Module 		: ef_storage.cpp
 //	Created 	: 25.03.2002
 //  Modified 	: 11.10.2002
 //	Author		: Dmitriy Iassenev
@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "ef_storage.h"
+#include "ef_primary.h"
+#include "ef_pattern.h"
 
 CEF_Storage::CEF_Storage()
 {	
@@ -84,4 +86,15 @@ CEF_Storage::~CEF_Storage()
 {
 	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; ++i)
 		xr_delete						(m_fpaBaseFunctions[i]);
+}
+
+CBaseFunction *CEF_Storage::function(LPCSTR function) const
+{
+	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; ++i) {
+		if (!m_fpaBaseFunctions[i])
+			continue;
+		if (!xr_strcmp(function,m_fpaBaseFunctions[i]->Name()))
+			return	(m_fpaBaseFunctions[i]);
+	}
+	return			(0);
 }

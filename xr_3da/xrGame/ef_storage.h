@@ -8,13 +8,48 @@
 
 #pragma once
 
-#include "ef_pattern.h"
-#include "ef_primary.h"
+#include "script_export_space.h"
 
 #define AI_MAX_EVALUATION_FUNCTION_COUNT	128
 
 class CGameObject;
+class CEntityAlive;
 class CSE_ALifeSchedulable;
+class CSE_ALifeObject;
+class CBaseFunction;
+class CPatternFunction;
+
+class CDistanceFunction;
+class CGraphPointType0;
+class CEquipmentType;
+class CItemDeterioration;
+class CEquipmentPreference;
+class CMainWeaponType;
+class CMainWeaponPreference;
+class CItemValue;
+class CWeaponAmmoCount;
+class CDetectorType;
+class CPersonalHealthFunction;
+class CPersonalMoraleFunction;
+class CPersonalCreatureTypeFunction;
+class CPersonalWeaponTypeFunction;
+class CPersonalAccuracyFunction;
+class CPersonalIntelligenceFunction;
+class CPersonalRelationFunction;
+class CPersonalGreedFunction;
+class CPersonalAggressivenessFunction;
+class CPersonalEyeRange;
+class CPersonalMaxHealth;
+class CEnemyHealthFunction;
+class CEnemyCreatureTypeFunction;
+class CEnemyWeaponTypeFunction;
+class CEnemyEquipmentCostFunction;
+class CEnemyRukzakWeightFunction;
+class CEnemyAnomalityFunction;
+class CEnemyEyeRange;
+class CEnemyMaxHealth;
+class CEnemyAnomalyType;
+class CEnemyDistanceToGraphPoint;
 
 class CEF_Storage {
 public:
@@ -87,6 +122,11 @@ public:
 	CPatternFunction						*m_pfBirthProbability;
 	CPatternFunction						*m_pfBirthSpeed;
 
-											CEF_Storage();
-	virtual									~CEF_Storage();
+											CEF_Storage		();
+	virtual									~CEF_Storage	();
+			CBaseFunction					*function		(LPCSTR function) const;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CEF_Storage)
+#undef script_type_list
+#define script_type_list save_type_list(CEF_Storage)

@@ -10,6 +10,7 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ef_storage.h"
+#include "ef_pattern.h"
 #include "cover_point.h"
 
 const float DANGER_DISTANCE = 5.f;

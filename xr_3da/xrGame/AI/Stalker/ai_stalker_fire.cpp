@@ -18,6 +18,7 @@
 #include "../../agent_manager.h"
 #include "../../stalker_animation_manager.h"
 #include "../../motivation_action_manager_stalker.h"
+#include "../../ef_pattern.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {

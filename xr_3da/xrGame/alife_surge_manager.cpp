@@ -23,6 +23,7 @@
 #include "alife_artefact_order.h"
 #include "ai_space.h"
 #include "ef_storage.h"
+#include "ef_pattern.h"
 #include "graph_engine.h"
 #include "xrserver.h"
 

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "alife_combat_manager.h"
 #include "ef_storage.h"
+#include "ef_pattern.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "alife_object_registry.h"
 #include "alife_spawn_registry.h"

@@ -22,6 +22,8 @@
 #include "weapon.h"
 #include "customdetector.h"
 #include "ef_storage.h"
+#include "ef_primary.h"
+#include "ef_pattern.h"
 
 IC	bool CAI_Stalker::CTradeItem::operator<	(const CTradeItem &trade_item) const
 {

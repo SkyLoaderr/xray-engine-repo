@@ -13,6 +13,7 @@
 #include "alife_object_registry.h"
 #include "alife_time_manager.h"
 #include "ef_storage.h"
+#include "ef_pattern.h"
 
 using namespace ALife;
 
