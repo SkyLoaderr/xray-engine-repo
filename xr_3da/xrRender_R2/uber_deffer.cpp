@@ -9,9 +9,18 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 	ref_texture		_t;		_t.create			(fname);
 	bool			bump	= _t.bump_exist		();
 
+	// detect lmap
+	bool			lmap	= true;
+	if	(C.L_textures.size()<3)	lmap = false;
+	else {
+		pcstr		tex		= C.L_textures[2].c_str();
+		if (tex[0]=='l' && tex[1]=='m' && tex[2]=='a' && tex[3]=='p')	lmap = true	;
+		else															lmap = false;
+	}
+
 	string256		ps,vs,dt;
-	strconcat		(vs,"deffer_", _vspec	);
-	strconcat		(ps,"deffer_", _pspec	);
+	strconcat		(vs,"deffer_", _vspec, lmap?"lmh":""	);
+	strconcat		(ps,"deffer_", _pspec, lmap?"lmh":""	);
 	strcpy			(dt,C.detail_texture?C.detail_texture:"");
 
 	if	(_aref)		{ strcat(ps,"_aref");	}
@@ -43,5 +52,6 @@ void	uber_deffer	(CBlender_Compile& C, LPCSTR _vspec, LPCSTR _pspec, BOOL _aref)
 	C.r_Sampler		("s_bump",		fnameA,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 	C.r_Sampler		("s_bumpD",		dt,					false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 	C.r_Sampler		("s_detail",	dt,					false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+	C.r_Sampler		("s_hemi",		C.L_textures[2],	false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
 	C.r_End			();
 }

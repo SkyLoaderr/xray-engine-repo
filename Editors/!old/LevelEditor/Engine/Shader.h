@@ -15,11 +15,10 @@
 #include "sh_constant.h"
 #include "sh_rt.h"
 
-typedef svector<string64,8>	sh_list;
-
-class	ENGINE_API			CBlender_Compile;
-class	ENGINE_API			IBlender;
-#define	SHADER_PASSES_MAX	2
+typedef svector<shared_str,16>	sh_list;
+class	ENGINE_API				CBlender_Compile;
+class	ENGINE_API				IBlender;
+#define	SHADER_PASSES_MAX		2
 
 #pragma pack(push,4)
 
