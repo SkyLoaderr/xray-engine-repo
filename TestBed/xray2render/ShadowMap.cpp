@@ -734,7 +734,6 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	return S_OK;
 }
 
-
 HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 {
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET, 0x10101010, 1.0f, 0L);
