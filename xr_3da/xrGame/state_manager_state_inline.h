@@ -60,7 +60,6 @@ void CStateManagerAbstract::reload			(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CStateManagerAbstract::update			(u32 time_delta)
 {
-	VERIFY							(time_delta);
 	execute							();
 	CSStateManagerAbstract::update	(time_delta);
 	IGraphManager					*state_manager_interface = dynamic_cast<IGraphManager*>(&current_state());
