@@ -334,6 +334,7 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			m_needAnswer = TRUE;
 			OnUpdateFrameTitle(TRUE);
 			SetMode(modeDebugBreak);
+			m_wndWatches.Redraw();
 		break;
 
 	case DMSG_WRITE_DEBUG:
@@ -561,11 +562,11 @@ void CMainFrame::OpenDefaultProject()
 	CString sAppName;
 	CString sFullFileName;
 
-	char drive[_MAX_DRIVE];
+/*	char drive[_MAX_DRIVE];
 	char dir[_MAX_DIR];
 	char fname[_MAX_FNAME];
 	char ext[_MAX_EXT];
-
+*/
 	GetUserName			(UserName,&sz_user);
 
 //	AfxGetModuleShortFileName(AfxGetInstanceHandle(),sAppName);
