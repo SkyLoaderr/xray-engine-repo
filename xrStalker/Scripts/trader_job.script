@@ -137,6 +137,6 @@ end
 -- функция генерит текст задания для артефактов 
 function artefacts_task_text(original_text, first_speaker, second_speaker)
 	artefact_list = "this is the artefact list"
-    result_text = string.format("%s\\n%s", original_text, artefact_list))
+    result_text = string.format("%s\\n%s", original_text, artefact_list)
 	return result_text
 end
