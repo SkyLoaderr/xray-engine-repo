@@ -14,7 +14,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="x:\game"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -140,7 +140,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="x:\game"
+			OutputDirectory="x:\"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"
@@ -170,7 +170,7 @@
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
 				BrowseInformation="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="0"
 				CallingConvention="2"/>
