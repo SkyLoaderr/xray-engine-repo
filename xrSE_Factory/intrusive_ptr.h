@@ -8,7 +8,9 @@
 
 #pragma once
 
-#include "object_type_traits.h"
+#ifdef XRGAME_EXPORTS
+#	include "object_type_traits.h"
+#endif //XRGAME_EXPORTS
 
 #pragma pack(push,4)
 
@@ -39,11 +41,14 @@ private:
 	typedef const object_type *(intrusive_ptr::*unspecified_bool_type) () const;
 
 private:
+#ifdef XRGAME_EXPORTS
 	enum {result = 
 		object_type_traits::is_base_and_derived<base_type,object_type>::value ||
 		object_type_traits::is_same<base_type,object_type>::value
 	};
-
+#else 
+	enum {result = true	};
+#endif
 private:
 	object_type					*m_object;
 
