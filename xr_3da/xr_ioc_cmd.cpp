@@ -14,9 +14,8 @@
 #include "xr_object.h"
 
 xr_token							snd_freq_token							[ ]={
-	{ "11khz",						0											},
-	{ "22khz",						1											},
-	{ "44khz",						2											},
+	{ "22khz",						sf_22K										},
+	{ "44khz",						sf_44K										},
 	{ 0,							0											}
 };
 xr_token							snd_model_token							[ ]={
