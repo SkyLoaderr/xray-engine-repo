@@ -619,7 +619,7 @@ return 0;*/
 			Startup	 				();
 		}
 		InitLauncher();
-		int res = pLauncher(2);//show results
+		pLauncher	(2);//show results
 		FreeLauncher();
 
 		Core._destroy			();
