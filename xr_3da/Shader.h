@@ -6,106 +6,11 @@
 #define SHADER__INCLUDED_
 #pragma once
 
-#define	COMBINATIONS_SH		4
-#define	COMBINATIONS_TEX	16
-
-//-----------------------------------------------------------------------------------------------
-class	ENGINE_API	CShader
-{
-protected:
-	struct RFlags
-	{
-		DWORD	iPriority	:	2;
-		DWORD	bStrictB2F	:	1;
-		DWORD	bLighting	:	1;
-		DWORD	bPixelShader:	1;
-	};
-protected:
-	virtual void				internal_Activate	()				= 0;
-	virtual void				internal_Apply		(DWORD dwPass)	= 0;
-	virtual void				internal_Release	()				= 0;
-public:
-	LPSTR						Name;
-	DWORD						dwRefCount;
-	DWORD						dwFrame;
-	DWORD						dwPasses;
-	RFlags						Flags;		
-
-	IC DWORD					Activate	()
-	{
-		if (Device.dwFrame != dwFrame) {
-			dwFrame = Device.dwFrame;
-			internal_Activate	();
-		}
-	}
-	IC void						Apply		(DWORD dwPass)
-	{	internal_Apply	(dwPass);	}
-	IC void						Release		()
-	{	internal_Release();			}
-
-	CShader						();
-	virtual ~CShader			();
-};
-
-class	ENGINE_API	CTextureArray
-{
-public:
-	typedef	svector<CTexture*,8>	VECTOR;	
-
-	svector<VECTOR,8>	textures;
-
-	VECTOR&				Pass		(DWORD ID)	{ return textures[ID]; }
-
-	CTextureArray()
-	{
-		ZeroMemory	(this,sizeof(*this)));
-	}
-};
-
-class	ENGINE_API	CConstant
-{
-public:
-	LPSTR			name;
-	Fcolor			const_float;
-	DWORD			const_dword;
-
-	void			set_float	(float r, float g, float b, float a)
-	{
-		const_float.set	(r,g,b,a);
-		const_dword		= const_float.get();
-	}
-	void			set_float	(Fcolor& c)
-	{
-		const_float.set	(c);
-		const_dword		= const_float.get();
-	}
-	void			set_dword	(DWORD c)
-	{
-		const_float.set(c);
-		const_dword		= c;
-	}
-};
-
-class	ENGINE_API	CConstantArray
-{
-public:
-	typedef svector<CConstant*,8>	VECTOR;
-
-	svector<VECTOR,8>	constants;
-
-	VECTOR&				Pass		(DWORD ID)	{ return constants[ID]; }
-
-	CConstantArray()
-	{
-		ZeroMemory	(this,sizeof(*this)));
-	}
-};
-
-// 
 struct ENGINE_API	Shader
 {
 	CShader*		S;
 	CTextureArray*	T;
+	CMatrixArray*	M;
 	CConstantArray* C;
 };
 

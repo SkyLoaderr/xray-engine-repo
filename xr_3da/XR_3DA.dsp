@@ -554,6 +554,22 @@ SOURCE=.\xrShaderLib.h
 # End Group
 # Begin Source File
 
+SOURCE=.\SH_Constant.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Matrix.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Shader.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_Texture.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Shader.cpp
 # End Source File
 # Begin Source File

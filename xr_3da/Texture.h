@@ -6,33 +6,6 @@
 #define AFX_TEXTURE_H__0E25CF47_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
-class ENGINE_API CAviPlayerCustom;
-
-class ENGINE_API CTexture
-{
-public:
-	sh_name					cName;
-	DWORD					dwRefCount;
-	BOOL					bMipmaps;
-	IDirect3DTexture8*		pSurface;
-	CAviPlayerCustom*		pAVI;
-	DWORD					dwMemoryUsage;
-	
-	// Sequence data
-	DWORD						seqMSPF;	// milliseconds per frame
-	vector<IDirect3DTexture8*>	seqDATA;
-	BOOL						seqCycles;
-
-	DWORD					Calculate_MemUsage(IDirect3DTexture8* T);
-public:
-	void					Load		(void);
-	void					Unload		(void);
-	void					Apply		(DWORD dwStage);
-
-	CTexture				(const char* Name, BOOL bMipmaps);
-	~CTexture				();
-};
-
 // Modes
 enum ETexturePF {	//	Alg. for determining pixel format
 	tpfDefault=0,	//	default
