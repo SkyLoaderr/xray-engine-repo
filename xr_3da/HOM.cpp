@@ -106,10 +106,14 @@ void CHOM::Unload		()
 
 IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
 {
+	float x	= S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41;
+	float y	= S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42;
+	float z	= S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43;
 	float w	= S.x*X._14 + S.y*X._24 + S.z*X._34 + X._44;
-	D.x	= ((S.x*X._11 + S.y*X._21 + S.z*X._31 + X._41)/w+1.f)*dim_2;
-	D.y	= (-(S.x*X._12 + S.y*X._22 + S.z*X._32 + X._42)/w+1.f)*dim_2;
-	D.z	= (S.x*X._13 + S.y*X._23 + S.z*X._33 + X._43)/w;
+	
+	D.x = (1.f+x/w)*dim_2;
+	D.y = (1.f-y/w)*dim_2;
+	D.z	= z/w;
 }
 
 void CHOM::Render		(CFrustum& base)
@@ -121,7 +125,7 @@ void CHOM::Render		(CFrustum& base)
 	Raster.clear		();
 
 	// Query DB
-	XRC.frustum_options	();
+	XRC.frustum_options	(0);
 	XRC.frustum_query	(m_pModel,base);
 
 	// Perfrom selection, sorting, culling
