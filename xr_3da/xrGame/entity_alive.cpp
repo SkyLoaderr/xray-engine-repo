@@ -257,8 +257,8 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 	CEntityAlive* EA = smart_cast<CEntityAlive*>(who);
 	if(EA && EA->g_Alive() && EA->ID() != ID())
 	{
-//		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
-//		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
+		RELATION_REGISTRY().FightRegister(EA->ID(), ID(), this->tfGetRelationType(EA), P);
+		RELATION_REGISTRY().Action(EA, this, RELATION_REGISTRY::ATTACK);
 	}
 		
 	CDamageManager::HitScale(element, conditions().hit_bone_scale(), conditions().wound_bone_scale());
@@ -282,7 +282,7 @@ void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector p
 
 void CEntityAlive::Die	(CObject* who)
 {
-//	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
+	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
 
 	inherited::Die(who);
 	
