@@ -53,6 +53,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
 	Lock	();
+	Msg		("--- Player '%s' ready-switch",get_name_id(id));
 	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
 	{
