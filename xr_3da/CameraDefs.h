@@ -28,7 +28,8 @@ enum EEffectorType		{
 	cefNoise,
 	cefShot,
 	cefRecoil,
-	cefBobbing
+	cefBobbing,
+	cefHit
 };
 
 enum EEffectorPPType		{
