@@ -469,7 +469,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		VERIFY(iMySubNode >= 0);
 		// filling the subnodes with the moving objects
 		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
-		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest;
 		Fvector tCenter;
 
 		int i;
@@ -505,8 +505,9 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 
 		/**/
 		if (!(tpNearestList.empty())) {
-			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) 
+			{
+				CObject* tpCurrentObject = (*tppObjectIterator);
 				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
@@ -606,10 +607,10 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
 		VERIFY(iMySubNode >= 0);
 		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
-		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.q_nearest;
 		if (!tpNearestList.empty()) {
 			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+				CObject* tpCurrentObject = *tppObjectIterator;
 				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
 					continue;
 				float fRadius = tpCurrentObject->Radius();
