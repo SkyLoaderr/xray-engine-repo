@@ -110,9 +110,6 @@ void	CCar::Load					( LPCSTR section )
 
 BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 {
-#ifdef DEBUG
-	Log("car spawn");
-#endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
 	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
 	BOOL							R = inherited::net_Spawn(DC);
@@ -660,9 +657,6 @@ void CCar::CreateSkeleton()
 
 void CCar::Init()
 {
-#ifdef _DEBUG
-	Log("car spawn");
-#endif
 	//get reference wheel radius
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = pKinematics->LL_UserData();
