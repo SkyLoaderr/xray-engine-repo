@@ -173,7 +173,7 @@ no_move    = true
 team       = guards
 snd_greet  = seq_novice_camp_guards, novice_camp_guards
 anim       = backoff
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard1@esc_lager_friend, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
+on_info    = {+tutorial_wounded_help} zoneguard1@esc_lager_friend, {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard1@esc_lager_friend]
@@ -185,7 +185,6 @@ snd_greet  = talk_hello,talk_hello_friend
 no_move    = true
 no_danger  = true
 meet_talk_enabled = true
-on_info    = {+tutorial_wounded_die} zoneguard1@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard1@esc_lager_enemy]
@@ -208,7 +207,7 @@ team       = guards
 no_move    = true
 snd_greet  = seq_novice_camp_guards, novice_camp_guards
 anim       = backoff
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} zoneguard2@esc_lager_friend, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
+on_info    = {+tutorial_wounded_help} zoneguard2@esc_lager_friend, {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard2@esc_lager_friend]
@@ -220,7 +219,6 @@ snd_greet  = talk_hello,talk_hello_friend
 no_move    = true
 no_danger  = true
 meet_talk_enabled = true
-on_info    = {+tutorial_wounded_die} zoneguard2@esc_lager_enemy
 meet_dialog = escape_lager_guard_start_dialog
 
 [zoneguard2@esc_lager_enemy]
