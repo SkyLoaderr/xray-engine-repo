@@ -5,6 +5,8 @@
 
 #include "igame_persistent.h"
 #include "Environment.h"
+#include "SkeletonCustom.h"
+#include "cl_intersect.h"
 
 #ifdef _EDITOR
     #include "ui_toolscustom.h"
@@ -132,13 +134,60 @@ CLensFlare::CLensFlare()
     m_State						= lfsNone;
     m_StateBlend				= 0.f;
 
-    OnDeviceCreate				();	
+	m_ray_cache.verts[0].set	(0,0,0);
+	m_ray_cache.verts[1].set	(0,0,0);
+	m_ray_cache.verts[2].set	(0,0,0);
+
+	OnDeviceCreate				();	
 }
 
 
 CLensFlare::~CLensFlare()
 {
 	OnDeviceDestroy				();
+}
+
+struct STranspParam{
+	const Fvector&				P;
+	const Fvector&				D;
+	float						f;
+	CLensFlare*					parent;
+	float						vis;
+	float						vis_threshold;
+	STranspParam(CLensFlare* p, const Fvector& _P, const Fvector& _D, float _f, float _vis_threshold):P(_P),D(_D),f(_f),parent(p),vis(1.f),vis_threshold(_vis_threshold){}
+};
+IC BOOL __stdcall material_callback(Collide::rq_result& result, LPVOID params)
+{
+	STranspParam* fp= (STranspParam*)params;
+	float vis		= 1.f;
+	if (result.O){
+		vis			= 0.f;
+		CKinematics*K=PKinematics(result.O->renderable.visual);
+		if (K&&(result.element>0))
+			vis		= g_pGamePersistent->MtlTransparent(K->LL_GetData(u16(result.element)).game_mtl_idx);
+	}else{
+		CDB::TRI* T	= g_pGameLevel->ObjectSpace.GetStaticTris()+result.element;
+		vis			= g_pGamePersistent->MtlTransparent(T->material);
+		if (fis_zero(vis)){
+			Fvector* V	= g_pGameLevel->ObjectSpace.GetStaticVerts();
+			fp->parent->m_ray_cache.set				(fp->P,fp->D,fp->f,TRUE);
+			fp->parent->m_ray_cache.verts[0].set	(V[T->verts[0]]);
+			fp->parent->m_ray_cache.verts[1].set	(V[T->verts[1]]);
+			fp->parent->m_ray_cache.verts[2].set	(V[T->verts[2]]);
+		}
+	}
+	fp->vis			*=vis;
+	return (fp->vis>fp->vis_threshold); 
+}
+
+IC void	blend_lerp	(float& cur, float tgt, float speed, float dt)
+{
+	float diff		= tgt - cur;
+	float diff_a	= _abs(diff);
+	if (diff_a<EPS_S)	return;
+	float mot		= speed*dt;
+	if (mot>diff_a) mot=diff_a;
+	cur				+= (diff/diff_a)*mot;
 }
 
 void CLensFlare::OnFrame(int id)
@@ -226,6 +275,9 @@ void CLensFlare::OnFrame(int id)
 #ifdef _EDITOR
 	float dist = flt_max;
     if (Tools->RayPick(Device.m_Camera.GetPosition(),vSunDir,dist))
+		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;
+	else
+		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 	BOOL		o_enable	= FALSE;
@@ -234,13 +286,25 @@ void CLensFlare::OnFrame(int id)
 		o_enable		=	o_main->getEnabled();
 		o_main->setEnabled	(FALSE);
 	}
-	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, Collide::rqtBoth, &m_ray_cache) )
-#endif
-	{
-		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;
+	STranspParam TP			(this,Device.vCameraPosition,vSunDir,1000.f,EPS_L);
+	Collide::ray_defs RD	(TP.P,TP.D,TP.f,0,Collide::rqtBoth);
+	if (m_ray_cache.result&&m_ray_cache.similar(TP.P,TP.D,TP.f)){
+		// similar with previous query == 0
+		TP.vis				= 0.f;
 	}else{
-		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
+		float _u,_v,_range;
+		if (CDB::TestRayTri(TP.P,TP.D,m_ray_cache.verts,_u,_v,_range,false)&&(_range>0 && _range<TP.f)){
+			TP.vis			= 0.f;
+		}else{
+			// cache outdated. real query.
+			if (g_pGameLevel->ObjectSpace.RayQuery(RD,material_callback,&TP))
+				m_ray_cache.result = FALSE;
+		}
 	}
+	blend_lerp(fBlend,TP.vis,BLEND_DEC_SPEED,Device.fTimeDelta);
+
+//	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f, Collide::rqtBoth, &m_ray_cache) )
+#endif
 	clamp( fBlend, 0.0f, 1.0f );
 
 #ifdef _EDITOR

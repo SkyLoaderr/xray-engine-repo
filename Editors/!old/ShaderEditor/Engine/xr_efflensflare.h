@@ -87,6 +87,7 @@ protected:
     LFState				m_State;
     float				m_StateBlend;
 
+public:
 #ifndef _EDITOR
 	Collide::ray_cache	m_ray_cache;
 #endif

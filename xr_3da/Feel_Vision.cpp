@@ -182,7 +182,7 @@ namespace Feel {
 //						Log("cache 1");
 					}else{
 						// cache outdated. real query.
-						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)){
+						if (g_pGameLevel->ObjectSpace.RayQuery(RD,feel_vision_callback,&feel_params)&&fis_zero(feel_params.vis)){
 							I->Cache.set		(P,D,f,TRUE);
 						}else{
 							I->Cache.set		(P,D,f,FALSE);

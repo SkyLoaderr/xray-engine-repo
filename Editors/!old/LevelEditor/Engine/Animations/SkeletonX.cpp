@@ -437,7 +437,9 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 void CSkeletonX::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 {
 	u16* indices		= 0;
-	R_CHK				(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
+//.	R_CHK				(V->pIndices->Lock(iBase,iCount,(void**)&indices,D3DLOCK_READONLY));
+	R_CHK				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
+	indices				+= iBase;
 	switch	(RenderMode){
 	case RM_SKINNING_SOFT:{
 		if (*Vertices1W){
@@ -495,7 +497,7 @@ void CSkeletonX_ST::AfterLoad(CKinematics* parent, u16 child_idx)
 void CSkeletonX_PM::AfterLoad(CKinematics* parent, u16 child_idx)
 {
 	inherited2::AfterLoad			(parent,child_idx);
-	FSlideWindow& SW				= pSWI->sw[0];
+	FSlideWindow& SW				= pSWI->sw[0]; // max LOD
 	inherited2::_CollectBoneFaces	(this,iBase+SW.offset,SW.num_tris*3);
 }
 
@@ -603,17 +605,18 @@ BOOL CSkeletonX::_PickBone			(Fvector& normal, float& dist, const Fvector& start
 	CBoneData& BD					= Parent->LL_GetData(bone_id);
 	CBoneData::FacesVec*	faces	= &BD.child_faces[ChildIDX];
 	u16* indices		= 0;
-	R_CHK				(V->pIndices->Lock(iBase,iCount,		(void**)&indices,	D3DLOCK_READONLY));
+//.	R_CHK				(V->pIndices->Lock(iBase,iCount,		(void**)&indices,	D3DLOCK_READONLY));
+	R_CHK				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
 	// fill vertices
 	BOOL result			= FALSE;
 	switch	(RenderMode){
 	case RM_SKINNING_SOFT:
-		if (*Vertices1W)result = _PickBoneSoft1W	(normal,dist,start,dir,indices,*faces);
-		else			result = _PickBoneSoft2W	(normal,dist,start,dir,indices,*faces);
+		if (*Vertices1W)result = _PickBoneSoft1W	(normal,dist,start,dir,indices+iBase,*faces);
+		else			result = _PickBoneSoft2W	(normal,dist,start,dir,indices+iBase,*faces);
 		break;
 	case RM_SINGLE:
-	case RM_SKINNING_1B:	result = _PickBoneHW1W	(normal,dist,start,dir,V,indices,*faces); 	break;
-	case RM_SKINNING_2B:	result = _PickBoneHW2W	(normal,dist,start,dir,V,indices,*faces);	break;
+	case RM_SKINNING_1B:	result = _PickBoneHW1W	(normal,dist,start,dir,V,indices+iBase,*faces); 	break;
+	case RM_SKINNING_2B:	result = _PickBoneHW2W	(normal,dist,start,dir,V,indices+iBase,*faces);	break;
 	default: NODEFAULT;
 	}
 	R_CHK				(V->pIndices->Unlock());
@@ -779,16 +782,17 @@ void CSkeletonX::_FillVertices(const Fmatrix& view, CSkeletonWallmark& wm, const
 	CBoneData& BD					= Parent->LL_GetData(bone_id);
 	CBoneData::FacesVec*	faces	= &BD.child_faces[ChildIDX];
 	u16* indices		= 0;
-	R_CHK				(V->pIndices->Lock(iBase,iCount,		(void**)&indices,	D3DLOCK_READONLY));
+//.	R_CHK				(V->pIndices->Lock(iBase,iCount,		(void**)&indices,	D3DLOCK_READONLY));
+	R_CHK				(V->pIndices->Lock(0,V->dwPrimitives*3,(void**)&indices,D3DLOCK_READONLY));
 	// fill vertices
 	switch	(RenderMode){
 	case RM_SKINNING_SOFT:
-		if (*Vertices1W)			_FillVerticesSoft1W		(view,wm,normal,size,indices,*faces);
-		else						_FillVerticesSoft2W		(view,wm,normal,size,indices,*faces);
+		if (*Vertices1W)			_FillVerticesSoft1W		(view,wm,normal,size,indices+iBase,*faces);
+		else						_FillVerticesSoft2W		(view,wm,normal,size,indices+iBase,*faces);
 		break;
 	case RM_SINGLE:
-	case RM_SKINNING_1B:			_FillVerticesHW1W		(view,wm,normal,size,V,indices,*faces);		break;
-	case RM_SKINNING_2B:			_FillVerticesHW2W		(view,wm,normal,size,V,indices,*faces);		break;
+	case RM_SKINNING_1B:			_FillVerticesHW1W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
+	case RM_SKINNING_2B:			_FillVerticesHW2W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
 	}
 	R_CHK				(V->pIndices->Unlock());
 }
