@@ -21,9 +21,25 @@ class CUIGameDM: public CUIGameCustom
 private:
 	typedef CUIGameCustom inherited;
 protected:
-	CUIDMFragList*		pFragList;
-	CUIDMPlayerList*	pPlayerList;
-	CUIBuyWeaponWnd*	pBuyMenu;
+	DEF_VECTOR			(FRAGS_LISTS, CUIDMFragList*);
+	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
+	DEF_VECTOR			(TEAMS_LIST, std::string);
+
+	FRAGS_LISTS			m_aFragsLists;
+	PLAYERS_LISTS		m_aPlayersLists;
+	TEAMS_LIST			m_aTeamSections;
+
+//	CUIDMFragList		pFragList;
+//	CUIDMPlayerList		pPlayerList;
+
+	CUIBuyWeaponWnd*		pBuyMenu;
+
+	virtual	void		ClearLists ();
+	virtual void		InitBuyMenu			(s16 Team = -1);
+	virtual void		FillDefItems		(const char* caSection);
+
+	virtual s16			ModifyTeam			(s16 Team)	{return Team;};
+
 public:
 						CUIGameDM			(CUI* parent);
 	virtual 			~CUIGameDM			();
@@ -38,7 +54,6 @@ public:
 	virtual CUIDialogWnd*	GetBuyWnd			()	{ return (CUIDialogWnd*) pBuyMenu; };
 
 	virtual bool		CanBeReady				();
-
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;

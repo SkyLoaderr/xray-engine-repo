@@ -12,10 +12,12 @@
 #define	TEAM2_MENU		"teamdeathmatch_team2"
 
 //--------------------------------------------------------------------
-CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
+CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 {
-	pFragListT1	= xr_new<CUITDMFragList>	();
-	pFragListT2	= xr_new<CUITDMFragList>	();
+	ClearLists();
+	//-----------------------------------------------------------
+	CUITDMFragList* pFragListT1	= xr_new<CUITDMFragList>	();
+	CUITDMFragList* pFragListT2	= xr_new<CUITDMFragList>	();
 
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
@@ -35,9 +37,11 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 
 	pFragListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-
-	pPlayerListT1	= xr_new<CUITDMPlayerList>	();
-	pPlayerListT2	= xr_new<CUITDMPlayerList>	();
+	m_aFragsLists.push_back(pFragListT1);
+	m_aFragsLists.push_back(pFragListT2);
+	//-----------------------------------------------------------
+	CUITDMPlayerList* pPlayerListT1	= xr_new<CUITDMPlayerList>	();
+	CUITDMPlayerList* pPlayerListT2	= xr_new<CUITDMPlayerList>	();
 
 	pPlayerListT1->Init(1);
 	pPlayerListT2->Init(2);
@@ -54,49 +58,59 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 
 	pPlayerListT2->SetWndRect(ScreenW/4*3-FrameW/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
-//	pUITeamSelectWnd->SetCallbackFunc((ButtonClickCallback)OnSelectTeamCallback);
+	m_aPlayersLists.push_back(pPlayerListT1);
+	m_aPlayersLists.push_back(pPlayerListT2);
 	//-----------------------------------------------------------
-	pBuyMenu = NULL;
-
-	game_cl_GameState::Player* pCurPlayer = Game().local_player;
-	if (pCurPlayer->team != -1) InitBuyMenu();
+	string64	Team1, Team2;
+	std::strcpy(Team1, TEAM1_MENU);
+	std::strcpy(Team2, TEAM2_MENU);
+	m_aTeamSections.push_back(Team1);
+	m_aTeamSections.push_back(Team2);
+	//-----------------------------------------------------------
+	pUITeamSelectWnd = xr_new<CUISpawnWnd>	();
 }
 //--------------------------------------------------------------------
-void CUIGameTDM::InitBuyMenu				(s16 Team)
-{
-	if (Team == -1)
-	{
-		Team = Game().local_player->team;
-	}
-	
-
-	if (!pBuyMenu)
-	{
-		if (Team == 1) pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)TEAM1_MENU);
-		if (Team == 2) pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)TEAM2_MENU);
-	}
-	else
-	{
-		if (Team == 1) pBuyMenu->ReInitItems((char*)TEAM1_MENU);
-		if (Team == 2) pBuyMenu->ReInitItems((char*)TEAM2_MENU);
-	};
-};
-//--------------------------------------------------------------------
-
 CUIGameTDM::~CUIGameTDM()
 {
-	xr_delete(pFragListT1);
-	xr_delete(pFragListT2);
-	xr_delete(pPlayerListT1);
-	xr_delete(pPlayerListT2);
-
 	xr_delete(pUITeamSelectWnd);
-
-	xr_delete(pBuyMenu);
 }
 //--------------------------------------------------------------------
+bool CUIGameTDM::IR_OnKeyboardPress(int dik)
+{
+	if(inherited::IR_OnKeyboardPress(dik)) return true;
 
+	if (Game().phase==GAME_PHASE_INPROGRESS){
+		// switch pressed keys
+		switch (dik){
+		case DIK_M:
+			{
+				StartStopMenu(pUITeamSelectWnd);
+				return true;
+			}break;
+		};
+	}
+	return false;
+}
+//--------------------------------------------------------------------
+void CUIGameTDM::OnTeamSelect(int Team)
+{
+	if (Team+1 == Game().local_player->team) return;
+
+	CObject *l_pObj = Level().CurrentEntity();
+
+	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
+	if(!l_pPlayer) return;
+
+	NET_Packet		P;
+	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
+	P.w_s16			(s16(Team+1));
+	//P.w_u32			(0);
+	l_pPlayer->u_EventSend		(P);
+	//-----------------------------------------------------------------
+	InitBuyMenu(s16(Team+1));
+};
+//--------------------------------------------------------------------
+/*
 void CUIGameTDM::OnFrame()
 {
 	inherited::OnFrame();	
@@ -135,38 +149,7 @@ void CUIGameTDM::Render()
 		}break;
 	}
 }
-//--------------------------------------------------------------------
 
-bool CUIGameTDM::IR_OnKeyboardPress(int dik)
-{
-	if(inherited::IR_OnKeyboardPress(dik)) return true;
-
-	switch (dik)
-	{
-	case DIK_I: 
-		StartStopMenu(&InventoryMenu);
-		return true;
-		break;
-	}
-
-	if (Game().phase==GAME_PHASE_INPROGRESS){
-		// switch pressed keys
-		switch (dik){
-		case DIK_TAB:	SetFlag		(flShowFragList,TRUE);	return true;
-		case DIK_M:
-			{
-				StartStopMenu(pUITeamSelectWnd);
-				return true;
-			}break;
-		case DIK_B:
-			{
-				if (!pBuyMenu) InitBuyMenu();
-				StartStopMenu(pBuyMenu);
-			}break;
-		}
-	}
-	return false;
-}
 //--------------------------------------------------------------------
 
 bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
@@ -182,22 +165,7 @@ bool CUIGameTDM::IR_OnKeyboardRelease(int dik)
 	return false;
 }
 //--------------------------------------------------------------------
-void CUIGameTDM::OnTeamSelect(int Team)
-{
-	CObject *l_pObj = Level().CurrentEntity();
 
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return;
-	
-	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_CHANGE_TEAM,l_pPlayer->ID()	);
-	P.w_s16			(s16(Team+1));
-	//P.w_u32			(0);
-	l_pPlayer->u_EventSend		(P);
-	//-----------------------------------------------------------------
-	InitBuyMenu(s16(Team+1));
-};
-//--------------------------------------------------------------------
 void CUIGameTDM::OnBuyMenu_Ok	()
 {
 	CObject *l_pObj = Level().CurrentEntity();
@@ -243,3 +211,4 @@ bool		CUIGameTDM::CanBeReady				()
 	IR_OnKeyboardPress(DIK_B);
 	return false;
 };
+*/

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "UIGameCustom.h"
+#include "UIGameTDM.h"
 
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
@@ -16,11 +17,12 @@ class CUIAHuntFragList;
 class CUIAHuntPlayerList;
 class CUIBuyWeaponWnd;
 
-class CUIGameAHunt: public CUIGameCustom
+class CUIGameAHunt: public CUIGameTDM
 {
 private:
-	typedef CUIGameCustom inherited;
+	typedef CUIGameTDM inherited;
 protected:
+	/*
 	CUIAHuntFragList*		pFragListT1;
 	CUIAHuntFragList*		pFragListT2;
 	CUIAHuntPlayerList*		pPlayerListT1;
@@ -29,10 +31,11 @@ protected:
 	CUISpawnWnd*		pUITeamSelectWnd;
 
 	CUIBuyWeaponWnd*	pBuyMenu;
+	*/
 public:
 	CUIGameAHunt		(CUI* parent);
 	virtual 			~CUIGameAHunt			();
-
+/*
 	virtual void		Render				();
 	virtual void		OnFrame				();
 
@@ -43,8 +46,8 @@ public:
 	virtual void		OnBuyMenu_Ok			();
 
 	virtual bool		CanBeReady				();
+*/
 protected:
-	void				InitBuyMenu				(s16 Team = -1);
 	/////////
 	CUIInventoryWnd		InventoryMenu;
 	CUIMapWnd			MapMenu;
