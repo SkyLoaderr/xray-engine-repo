@@ -54,9 +54,9 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	light_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
 	light_render->set_active(true);
 
-	glow_render->set_texture(lamp->spot_texture[0]?lamp->spot_texture:0);
+	glow_render->set_texture(lamp->glow_texture[0]?lamp->glow_texture:0);
 	glow_render->set_color	(clr);
-	glow_render->set_radius	(lamp->spot_range);
+	glow_render->set_radius	(lamp->glow_radius);
 	glow_render->set_active (true);
 
 	lanim					= LALib.FindItem(lamp->color_animator);
@@ -128,11 +128,17 @@ void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
 {
 	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
 	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
-//	if (element==light_bone_idx)	fHealth = 0.f;
-//	else							
+
+	if (element==light_bone_idx)	
+		fHealth = 0.f;
+	else							
 		fHealth -= P*0.1f;
+
 	if (!Alive())
+	{
 	 	light_render->set_active(false);
+		glow_render->set_active(false);
+	}
 }
 
 void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
