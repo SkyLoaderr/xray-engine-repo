@@ -88,8 +88,8 @@ void CRenderTarget::calc_tc_noise		(Fvector2& p0, Fvector2& p1)
 	// calculate shift from FPSes
 	im_noise_time					-= Device.fTimeDelta;
 	if (im_noise_time<0)			{
-		im_noise_shift_w			= ::Random.randI(tw);
-		im_noise_shift_h			= ::Random.randI(tw);
+		im_noise_shift_w			= ::Random.randI(tw?tw:1);
+		im_noise_shift_h			= ::Random.randI(th?th:1);
 		float	fps_time			= 1/param_noise_fps;
 		while (im_noise_time<0)		im_noise_time += fps_time;
 	}
