@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "object_action_reload.h"
+#include "ai/stalker/ai_stalker.h"
+#include "inventory.h"
 
 CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *owner, u32 type, LPCSTR action_name) :
 	inherited		(item,owner,action_name),
@@ -17,12 +19,7 @@ CObjectActionReload::CObjectActionReload	(CInventoryItem *item, CAI_Stalker *own
 
 void CObjectActionReload::initialize		()
 {
-}
-
-void CObjectActionReload::execute			()
-{
-}
-
-void CObjectActionReload::finalize		()
-{
+	inherited::initialize		();
+	m_object->inventory().Action(kWPN_FIRE,		CMD_STOP);
+	m_object->inventory().Action(kWPN_RELOAD,	CMD_START);
 }

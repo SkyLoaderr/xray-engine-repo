@@ -305,7 +305,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorStrapped),	action);
 
 	// aim1
-	action				= xr_new<CObjectActionAim>(weapon,m_object,0);
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_aimed1);
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch1,	true);
 	add_effect			(action,id,eWorldPropertyAimed1,	true);
@@ -313,7 +313,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	add_operator		(uid(id,eWorldOperatorAim1),		action);
 
 	// aim2
-	action				= xr_new<CObjectActionAim>(weapon,m_object,1);
+	action				= xr_new<CObjectActionAim>(weapon,m_object,&m_aimed2);
 	add_condition		(action,id,eWorldPropertyHidden,	false);
 	add_condition		(action,id,eWorldPropertySwitch2,	true);
 	add_effect			(action,id,eWorldPropertyAimed2,	true);

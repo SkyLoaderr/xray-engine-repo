@@ -19,6 +19,4 @@ protected:
 public:
 						CObjectActionShow	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name = "");
 	virtual void		initialize			();
-	virtual void		execute				();
-	virtual void		finalize			();
 };

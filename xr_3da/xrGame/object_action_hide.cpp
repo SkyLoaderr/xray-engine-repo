@@ -8,6 +8,8 @@
 
 #include "stdafx.h"
 #include "object_action_hide.h"
+#include "ai/stalker/ai_stalker.h"
+#include "inventory.h"
 
 CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, LPCSTR action_name) :
 	inherited		(item,owner,action_name)
@@ -16,12 +18,7 @@ CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, 
 
 void CObjectActionHide::initialize		()
 {
-}
-
-void CObjectActionHide::execute			()
-{
-}
-
-void CObjectActionHide::finalize		()
-{
+	inherited::initialize			();
+	VERIFY							(m_item);
+	m_object->inventory().Activate	(NO_ACTIVE_SLOT);
 }
