@@ -127,7 +127,10 @@ void CDemoRecord::MakeLevelMapProcess()
 		}break;
 	case DEVICE_RESET_PRECACHE_FRAME_COUNT+2:{
 		m_bOverlapped				= FALSE;
-		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,*g_pGameLevel->name());
+		string_path tmp;
+		Fbox bb						= g_pGameLevel->ObjectSpace.GetBoundingVolume();
+		sprintf(tmp,"%s_[%3.3f x %3.3f]",*g_pGameLevel->name(),bb.max.x-bb.min.x,bb.max.z-bb.min.z);
+		Render->Screenshot			(IRender_interface::SM_FOR_LEVELMAP,tmp);
 		psHUD_Flags.assign			(s_hud_flag);
 		BOOL bDevReset				= !psDeviceFlags.equal(s_dev_flags,rsFullscreen);
 		psDeviceFlags				= s_dev_flags;
