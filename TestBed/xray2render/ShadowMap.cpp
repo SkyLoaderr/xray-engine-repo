@@ -1426,14 +1426,24 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 
-	// Switch to BLOOM-2
+	// TARGET: BLOOM-2
 	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
 	m_pd3dDevice->SetTexture				(0, d_Bloom_1		);
 
 	// Shader-params
-	cc.flush								(m_pd3dDevice);
 
 	// Filter over-bright information to BLOOM-2
+	cc.flush								(m_pd3dDevice);
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// TARGET: BLOOM-1
+	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_1_S		);
+	m_pd3dDevice->SetTexture				(0, d_Bloom_2		);
+
+	// Shader-params
+
+	// Filter over-bright information to BLOOM-2
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
