@@ -31,7 +31,7 @@ function evaluator_bobik:evaluate ()
 	local pp = self.object:position()
 
 	if pp ~= nil and bobik_home ~= nil then
-		if bobik_home:distance_to(pp) > 50 then
+		if bobik_home:distance_to(pp) > 100 then
 			return false
 		end
 	end
