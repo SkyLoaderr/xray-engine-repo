@@ -15,17 +15,24 @@
 bool					CCustomMonster::bPatternFunctionLoaded = false;
 CBaseFunction			*CCustomMonster::fpaBaseFunctions[MAX_FUNCTION_COUNT];
 // primary functions
-CHealthFunction			CCustomMonster::pfHealth;
-CMoraleFunction			CCustomMonster::pfMorale;
-CCreatureTypeFunction	CCustomMonster::pfCreatureType;
-CWeaponTypeFunction		CCustomMonster::pfWeaponType;
-CDistanceFunction		CCustomMonster::pfDistance;
+CDistanceFunction				CCustomMonster::pfDistance;
+
+CPersonalHealthFunction			CCustomMonster::pfPersonalHealth;
+CPersonalMoraleFunction			CCustomMonster::pfPersonalMorale;
+CPersonalCreatureTypeFunction	CCustomMonster::pfPersonalCreatureType;
+CPersonalWeaponTypeFunction		CCustomMonster::pfPersonalWeaponType;
+
+CEnemyHealthFunction			CCustomMonster::pfEnemyHealth;
+CEnemyMoraleFunction			CCustomMonster::pfEnemyMorale;
+CEnemyCreatureTypeFunction		CCustomMonster::pfEnemyCreatureType;
+CEnemyWeaponTypeFunction		CCustomMonster::pfEnemyWeaponType;
+
 // complex functions
-CPatternFunction		CCustomMonster::pfEnemyStatus;
-CPatternFunction		CCustomMonster::pfPersonalStatus;
-CPatternFunction		CCustomMonster::pfWeaponEffectiveness;
-CPatternFunction		CCustomMonster::pfAttackSuccessProbability;
-CPatternFunction		CCustomMonster::pfDefendSuccessProbability;
+CPatternFunction				CCustomMonster::pfPersonalStatus;
+CPatternFunction				CCustomMonster::pfEnemyStatus;
+CPatternFunction				CCustomMonster::pfWeaponEffectiveness;
+CPatternFunction				CCustomMonster::pfAttackSuccessProbability;
+CPatternFunction				CCustomMonster::pfDefendSuccessProbability;
 
 DWORD psAI_Flags	= 0;
 ENGINE_API extern float psGravity;
@@ -134,17 +141,16 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	if (!bPatternFunctionLoaded) {
 		bPatternFunctionLoaded = true;
-		fpaBaseFunctions[0] = &pfHealth;
-		fpaBaseFunctions[1] = &pfMorale;
-		fpaBaseFunctions[2] = &pfCreatureType;
-		fpaBaseFunctions[3] = &pfWeaponType;
-		fpaBaseFunctions[4] = &pfDistance;
-		// complex functions
-		fpaBaseFunctions[50] = &pfPersonalStatus;
-		fpaBaseFunctions[51] = &pfEnemyStatus;
-		fpaBaseFunctions[52] = &pfWeaponEffectiveness;
-		fpaBaseFunctions[53] = &pfAttackSuccessProbability;
-		fpaBaseFunctions[54] = &pfDefendSuccessProbability;
+		fpaBaseFunctions[0] = &pfDistance;
+		fpaBaseFunctions[1] = &pfPersonalHealth;
+		fpaBaseFunctions[2] = &pfPersonalMorale;
+		fpaBaseFunctions[3] = &pfPersonalCreatureType;
+		fpaBaseFunctions[4] = &pfPersonalWeaponType;
+		
+		fpaBaseFunctions[21] = &pfEnemyHealth;
+		fpaBaseFunctions[22] = &pfEnemyMorale;
+		fpaBaseFunctions[23] = &pfEnemyCreatureType;
+		fpaBaseFunctions[24] = &pfEnemyWeaponType;
 
 		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
 		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);

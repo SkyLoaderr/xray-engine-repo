@@ -264,6 +264,19 @@ public:
 	// primary functions
 	static	bool					bPatternFunctionLoaded;
 	static  CBaseFunction			*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+
+CDistanceFunction				CCustomMonster::pfDistance;
+
+CPersonalHealthFunction			CCustomMonster::pfPersonalHealth;
+CPersonalMoraleFunction			CCustomMonster::pfPersonalMorale;
+CPersonalCreatureTypeFunction	CCustomMonster::pfPersonalCreatureType;
+CPersonalWeaponTypeFunction		CCustomMonster::pfPersonalWeaponType;
+
+CEnemyHealthFunction			CCustomMonster::pfEnemyHealth;
+CEnemyMoraleFunction			CCustomMonster::pfEnemyMorale;
+CEnemyCreatureTypeFunction		CCustomMonster::pfEnemyCreatureType;
+CEnemyWeaponTypeFunction		CCustomMonster::pfEnemyWeaponType;
+
 	static  CHealthFunction			pfHealth;
 	static  CMoraleFunction			pfMorale;
 	static  CCreatureTypeFunction	pfCreatureType;

@@ -116,7 +116,11 @@ void CAI_Rat::AttackRun()
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 	
 	SelectEnemy(Enemy);
-	
+
+	ERatStates eState = sfChooseAction();
+	if (eState != eCurrentState)
+		SWITCH_TO_NEW_STATE(eState);
+
 	if (Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 	if (!(Enemy.Enemy) && tSavedEnemy && ((tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))

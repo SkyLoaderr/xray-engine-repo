@@ -23,11 +23,13 @@ protected:
 	CCustomMonster	*m_tpLastMonster;
 	float			m_fMinResultValue;
 	float			m_fMaxResultValue;
+	char			m_caName[64];
 
 public:
 
 	virtual	void	vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions) {};
 	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
+					CBaseFunction() {m_caName[0] = 0;};
 	
 	virtual DWORD	dwfGetDiscreteValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
 	{
@@ -100,6 +102,7 @@ public:
 	CHealthFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"Health");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -118,6 +121,7 @@ public:
 	CMoraleFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 100.0;
+		strcat(m_caName,"Morale");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -136,6 +140,7 @@ public:
 	CCreatureTypeFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 22.0;
+		strcat(m_caName,"CreatureType");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -292,6 +297,7 @@ public:
 	CWeaponTypeFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 12.0;
+		strcat(m_caName,"WeaponType");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
@@ -403,6 +409,7 @@ public:
 	CDistanceFunction() {
 		m_fMinResultValue = 0.0;
 		m_fMaxResultValue = 150.0;
+		strcat(m_caName,"Distance");
 	}
 	
 	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)

@@ -233,6 +233,7 @@ class CAI_Rat : public CCustomMonster
 		};		
 		
 		void vfComputeNewPosition();
+		ERatStates sfChooseAction();
 		/**
 		void SenseSomething();
 		void UnderFire();
