@@ -10,7 +10,7 @@
 
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
-class ENGINE_API	Flight;
+struct Flight;
 
 class CLightShadows			: public pureDeviceCreate, public pureDeviceDestroy
 {
