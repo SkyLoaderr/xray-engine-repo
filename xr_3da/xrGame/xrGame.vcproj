@@ -1611,6 +1611,9 @@
 				<File
 					RelativePath="ai_alife_templates.h">
 				</File>
+				<File
+					RelativePath="ai_alife_temporary.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="AStar"
