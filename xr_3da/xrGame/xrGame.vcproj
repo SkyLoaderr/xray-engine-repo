@@ -7574,6 +7574,12 @@
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\nonport.h">
@@ -7588,6 +7594,12 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"/>
@@ -7613,6 +7625,12 @@
 										Name="VCCLCompilerTool"
 										UsePrecompiledHeader="0"/>
 								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32">
+									<Tool
+										Name="VCCLCompilerTool"
+										UsePrecompiledHeader="0"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\GameSpy\Qr2\qr2.h">
@@ -7627,6 +7645,12 @@
 								</FileConfiguration>
 								<FileConfiguration
 									Name="Mixed|Win32">
+									<Tool
+										Name="VCCLCompilerTool"
+										UsePrecompiledHeader="0"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="Release|Win32">
 									<Tool
 										Name="VCCLCompilerTool"
 										UsePrecompiledHeader="0"/>
