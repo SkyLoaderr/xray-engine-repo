@@ -65,7 +65,7 @@ public:
 	// misc func
 	u32					size		()								{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
-	bool				equal		(const ref_str & rhs)			{	return (p_ == rhs.p_);							}
+	bool				equal		(const ref_str & rhs)	const	{	return (p_ == rhs.p_);							}
 };
 
 // res_ptr == res_ptr
@@ -84,7 +84,7 @@ IC bool operator	>	(ref_str const & a, ref_str const & b)		{ return a._get() >  
 // externally visible standart functionality
 IC void swap			(ref_str & lhs, ref_str & rhs)				{ lhs.swap(rhs);		}
 IC u32	xr_strlen		(ref_str & a)								{ return a.size();		}
-IC u32	xr_strcmp		(ref_str & a, ref_str & b)					{ 
+IC u32	xr_strcmp		(const ref_str & a, const ref_str & b)		{ 
 	if (a.equal(b))		return 0;
 	else				return xr_strcmp(*a,*b);
 }
