@@ -4,14 +4,16 @@ void	CRenderTarget::phase_combine	()
 {
 	u32			Offset					= 0;
 	Fvector2	p0,p1;
+	/*
 	if (!ps_r2_ls_flags.test(R2FLAG_AA))
 	{
+	*/
 		u_setrt								( Device.dwWidth,Device.dwHeight,HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
 		RCache.set_Stencil					( FALSE );
 
 		// Draw full-screen quad textured with our SKYBOX
-		if (1)
+		if (0)
 		{
 			u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
 			float	_w					= float			(Device.dwWidth);
@@ -63,6 +65,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
+	/*
 	} else {
 		// Targets
 		u_setrt								(rt_Generic,NULL,NULL,HW.pBaseZB);
@@ -197,11 +200,13 @@ void	CRenderTarget::phase_combine	()
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
+	*/
 
 	//
 	RCache.set_Stencil				(FALSE);
 
 	// ********************* Debug
+	/*
 	if (0)
 	{
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -247,4 +252,5 @@ void	CRenderTarget::phase_combine	()
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
+	*/
 }

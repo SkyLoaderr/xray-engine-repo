@@ -134,6 +134,7 @@ void CRender::Render		()
 	if (RImplementation.b_nv3x)					Target.phase_decompress();
 
 	//******* Directional light
+	/*
 	if (ps_r2_ls_flags.test(R2FLAG_SUN) )
 	{
 		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
@@ -255,13 +256,14 @@ void CRender::Render		()
 			}
 		}
 	}
+	*/
 
 	// Postprocess
-	Target.phase_bloom						();
+	// Target.phase_bloom					();
 	Target.phase_combine					();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
-	g_pGameLevel->pHUD->Render_Direct			();
+	g_pGameLevel->pHUD->Render_Direct		();
 	Device.Statistic.RenderDUMP_HUD.End		();
 }

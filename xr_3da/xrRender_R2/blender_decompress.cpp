@@ -27,7 +27,7 @@ void	CBlender_decompress::Compile(CBlender_Compile& C)
 			break;
 		case 2:		// Color		(should speedup bloom / combine)
 			C.r_Pass			("null",			"decompress_color",	FALSE,	FALSE);
-			C.r_Sampler_rtf		("s_color",			r2_RT_DEFFER,	false,		r2_RT_DEFFER_D_G	);
+			C.r_Sampler_rtf		("s_diffuse",		r2_RT_DEFFER,	false,		r2_RT_DEFFER_D_G	);
 			C.r_End				();
 			break;
 		}
