@@ -3,6 +3,8 @@ guard_see_actor = 0
 
 function main()
 
+	actor   	= get_actor()
+
 	siviy	= get_level_object("siviy_on_the_way")
 	chert	= get_level_object("chert_on_the_way")
 	stalker	= get_level_object("stalker_waiting")
@@ -10,8 +12,6 @@ function main()
 
 	guard01	= get_level_object("guard01")
 	guard02	= get_level_object("guard02")
-
-	actor   	= get_actor()
 
 			wait(1000)			
 
@@ -61,8 +61,8 @@ function main()
 				cond	(cond.time_end, 100000000)
 			)
 
-	while true do
-		if guard01:see(actor) then
+	while guard01:action() do
+		if distance_between(guard01,actor) <= 20 then
 			printf("see = true!")
 			flush()
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
