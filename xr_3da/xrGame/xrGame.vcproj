@@ -6404,6 +6404,16 @@
 						RelativePath=".\ui\UISpawnWnd.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="SkinSelector"
+					Filter="">
+					<File
+						RelativePath=".\ui\UISkinSelector.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UISkinSelector.h">
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
