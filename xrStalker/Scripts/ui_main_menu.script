@@ -71,6 +71,7 @@ function main_menu:InitControls()
 	-- profile button
 	local btn_prof_rect   = {x = 640, y = 40, width = 200, height = 30}
 	
+--[[	
 	-- menu buttons	
 	local btn_new_rect    = {x = self.btn_rect.x,
 							 y = self.btn_rect.y,
@@ -101,7 +102,7 @@ function main_menu:InitControls()
 							 y = btn_quit_rect.y + btn_quit_rect.height ,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
-
+]]
 
 	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
@@ -155,7 +156,8 @@ function main_menu:InitControls()
 --	tabBtn:InitTexture("ui\\ui_button_01", "ui\\ui_button_02", "ui\\ui_button_03")
 --	self.main_frame:AttachChild(tabBtn)
 	
-		
+
+--[[
 	----- CODE -------
 -------- BUTTONS ------------------------------- 
 	--------->> NEW GAME
@@ -237,7 +239,7 @@ function main_menu:InitControls()
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
-	
+]]	
 	
 	local combo = CUIComboBox()
 	combo:SetAutoDelete(true)
