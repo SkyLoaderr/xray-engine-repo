@@ -15,6 +15,7 @@
 #include "script_binder_object.h"
 #include "pdamsg.h"
 #include "ai_script_hit.h"
+#include "cover_point.h"
 
 using namespace luabind;
 
@@ -23,6 +24,10 @@ void CScriptEngine::export_object()
 	module(lua())
 	[
 		class_<CAbstractVertexEvaluator>("vertex_evaluator"),
+
+		class_<CCoverPoint>("cover_point")
+			.def("position",					&CCoverPoint::position)
+			.def("level_vertex_id",				&CCoverPoint::level_vertex_id),
 
 		class_<CLuaGameObject>("game_object")
 			.enum_("relation")
@@ -186,6 +191,7 @@ void CScriptEngine::export_object()
 			.def("set_start_point",				&CLuaGameObject::set_start_point)
 			.def("enable_memory_object",		&CLuaGameObject::enable_memory_object)
 			.def("active_sound_count",			&CLuaGameObject::active_sound_count)
+			.def("best_cover",					&CLuaGameObject::best_cover)
 
 			// sight manager
 			.def("set_sight",					&CLuaGameObject::set_sight)

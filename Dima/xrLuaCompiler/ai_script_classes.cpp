@@ -17,6 +17,8 @@
 #include "inventory.h"
 #include "ai/stalker/ai_stalker.h"
 #include "ai/biting/ai_biting.h"
+#include "cover_point.h"
+#include "cover_evaluators.h"
 
 void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 {
@@ -707,4 +709,16 @@ int  CLuaGameObject::active_sound_count		()
 	}
 	else
 		return								(sound_player->active_sound_count());
+}
+
+const CCoverPoint *CLuaGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
+{
+	CAI_Stalker		*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member best_cover!");
+		return		(0);
+	}
+	stalker->m_ce_best->setup(enemy_position,min_enemy_distance,max_enemy_distance,0.f);
+	CCoverPoint		*point = ai().cover_manager().best_cover(position,radius,*stalker->m_ce_best);
+	return			(point);
 }
