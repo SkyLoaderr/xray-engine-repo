@@ -7,6 +7,7 @@
 #include "inventory.h"
 #include "weapon.h"
 #include "../CameraBase.h"
+#include "xrMessages.h"
 
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
@@ -101,7 +102,19 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		mstate_real				|=mcClimb;
 
 	else
-		mstate_real				&=~mcClimb;
+	{
+		if (mstate_real & mcClimb)
+		{
+			if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
+			{
+
+				NET_Packet	P;
+				u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
+				u_EventSend(P);
+			};
+		}
+		mstate_real				&=~mcClimb;		
+	};
 
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
 
@@ -209,13 +222,36 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	mOrient.rotateY		(-r_model_yaw);
 	mOrient.transform_dir(vControlAccel);
 	//XFORM().transform_dir(vControlAccel);
+	if (mstate_real & mcClimb)
+	{
+		if (mstate_real&mcAnyMove)
+		{
+			if (inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
+			{
+				NET_Packet	P;
+				u_EventGen(P, GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, ID());
+				u_EventSend(P);
+			};
+		}
+		else
+		{
+			if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
+			{
+
+				NET_Packet	P;
+				u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
+				u_EventSend(P);
+			};
+		};
+	};
+	/*
 	if(mstate_real&mcClimb&&mstate_real&mcAnyMove&&
 	inventory().ActiveItem()&&inventory().ActiveItem()->HandDependence()==hd2Hand)
 	{
 		//inventory().ActiveItem()->Deactivate();
 		inventory().Activate(NO_ACTIVE_SLOT);
 	}
-
+*/
 }
 
 void CActor::g_Orientate	(u32 mstate_rl, float dt)

@@ -1013,7 +1013,7 @@ void CUIBuyWeaponWnd::Show()
 		if(!pActor) return;
 
 		NET_Packet	P;
-		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_OPEN, pActor->ID());
+		pActor->u_EventGen(P, GEG_PLAYER_BUYMENU_OPEN, pActor->ID());
 		pActor->u_EventSend(P);
 	}
 }
@@ -1028,7 +1028,7 @@ void CUIBuyWeaponWnd::Hide()
 		if(!pActor) return;
 
 		NET_Packet	P;
-		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_CLOSE, pActor->ID());
+		pActor->u_EventGen(P, GEG_PLAYER_BUYMENU_CLOSE, pActor->ID());
 		pActor->u_EventSend(P);
 	}
 }

@@ -156,6 +156,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		}break;
 	case GEG_PLAYER_BUYMENU_OPEN:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
+	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
 		{
 			if (OnServer())
 			{
@@ -170,6 +171,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		}break;
 	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_CLOSE:
+	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
 		{
 			if (OnServer())
 			{

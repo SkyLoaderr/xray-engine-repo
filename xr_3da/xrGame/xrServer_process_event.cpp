@@ -292,6 +292,9 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
 	case GEG_PLAYER_INVENTORYMENU_CLOSE:
+	case GEG_PLAYER_DEACTIVATE_CURRENT_SLOT:
+	case GEG_PLAYER_RESTORE_CURRENT_SLOT:
+
 		{
 //			SendBroadcast		(sender,P,MODE);
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
