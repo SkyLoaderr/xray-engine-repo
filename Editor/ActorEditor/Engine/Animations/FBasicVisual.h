@@ -14,19 +14,19 @@
 class ENGINE_API	CVisual
 {
 public:
-	DWORD			Type;		// visual's type
-	DWORD			dwFrame;	// mark
+	DWORD					Type;		// visual's type
+	DWORD					dwFrame;	// mark
 
 	// Common data for rendering
-	Shader*			hShader;	// shared
-	Fvector			bv_Position;
-	float			bv_Radius;
-	Fbox			bv_BBox;
+	Shader*					hShader;	// shared
+	Fvector					bv_Position;
+	float					bv_Radius;
+	Fbox					bv_BBox;
 
-	virtual void	Render	(float LOD) {};			// LOD - Level Of Detail  [0..1], Ignored
-	virtual void	Load	(const char* N, CStream *data, DWORD dwFlags);
-	virtual void	Release	();						// Shared memory release
-	virtual void	Copy	(CVisual* from);
+	virtual void			Render					(float LOD) {};			// LOD - Level Of Detail  [0..1], Ignored
+	virtual void			Load					(const char* N, CStream *data, DWORD dwFlags);
+	virtual void			Release					();						// Shared memory release
+	virtual void			Copy					(CVisual* from);
 
 	CVisual	();
 	virtual ~CVisual();
