@@ -996,7 +996,11 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 
 		// Имя поля
 		sprintf(wpnSection, "slot%i", i);
-		if (!pSettings->line_exist(m_SectionName, wpnSection)) break;
+		if (!pSettings->line_exist(m_SectionName, wpnSection)) 
+		{
+			wpnSectStorage.push_back(wpnOneType);
+			continue;
+		}
 
 		// Читаем данные этого поля
 		std::strcpy(wpnNames, pSettings->r_string(m_SectionName, wpnSection));
@@ -1261,7 +1265,7 @@ const u8 CUIBuyWeaponWnd::GetWeaponIndexInBelt(u32 indexInBelt)
 const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
 {
 	// Удаляем информацию о аддонах
-	idx &= 0xe0;
+	idx &= 0x1f;
 
 	if (wpnSectStorage.size() <= slotNum || idx > wpnSectStorage[slotNum].size()) return NULL;
 	return wpnSectStorage[slotNum][idx].c_str();
