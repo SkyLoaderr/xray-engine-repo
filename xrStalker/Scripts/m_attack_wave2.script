@@ -298,7 +298,7 @@ function main ()
 
 	while true do 
    		  for a = 1, table.getn (monsters), 1 do
-			  monsters[a]:process ()
+			  monsters[1]:process ()
 	          if a <= table.getn (stalkers) then
 		         stalkers[a]:process ()
   		      end
