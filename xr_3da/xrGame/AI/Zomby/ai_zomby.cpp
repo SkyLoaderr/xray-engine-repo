@@ -284,14 +284,14 @@ IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const float fRadius, 
 
 IC bool CAI_Zomby::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
 {
-	/**
+	/**/
 	Fvector tLeftDown;
 	Fvector tRightUp;
 	Level().AI.UnpackPosition(tLeftDown,tpNode->p0);
 	Level().AI.UnpackPosition(tRightUp,tpNode->p1);
 	float fSubNodeSize = Level().AI.GetHeader().size;
 	return(((tCenter.x >= tLeftDown.x - fSubNodeSize/2.f) && (tCenter.z >= tLeftDown.z - fSubNodeSize/2.f)) && ((tCenter.x <= tRightUp.x + fSubNodeSize/2.f) && (tCenter.z <= tRightUp.z + fSubNodeSize/2.f)));
-	/**/
+	/**
 	NodePosition tCenterPosition;
 	Level().AI.PackPosition(tCenterPosition,tCenter);
 	return(((tCenterPosition.x >= tpNode->p0.x) && (tCenterPosition.z >= tpNode->p0.z)) && ((tCenterPosition.x <= tpNode->p1.x) && (tCenterPosition.z <= tpNode->p1.z)));
