@@ -248,7 +248,7 @@ int __cdecl main	(int argc, char* argv[])
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60,
-			float((double(bytesDST)/double(1024*1024))/(double(t_compress_total)*double(CPU::cycles2seconds)))
+			float((float(bytesDST)/float(1024*1024))/(float(t_compress_total)*float(CPU::cycles2seconds)))
 			);
 	} else {
 		printf("ERROR: folder not found.\n");

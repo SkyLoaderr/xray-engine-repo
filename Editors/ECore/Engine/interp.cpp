@@ -32,7 +32,7 @@ static float range( float v, float lo, float hi, int *i ){
       if ( i ) *i = 0;
       return lo;
    }
-   v2 = lo + v - r * ( float ) floor(( double ) v / r );
+   v2 = lo + v - r * ( float ) floor(( float ) v / r );
    if ( i ) *i = -( int )(( v2 - v ) / r + ( v2 > v ? 0.5 : -0.5 ));
    return v2;
 }

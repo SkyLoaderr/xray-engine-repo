@@ -1326,7 +1326,7 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 		// Phase 3: Find the experiment that has the most promise
 		//
 		int bestIndex = 0;
-		double bestValue = 0;
+		float bestValue = 0;
 		for (i = 0; i < numExperiments; i++)
 		{
 			const float avgStripSizeWeight = 1.0f;

@@ -22,9 +22,5 @@ private:
 	dBodyID m_body;
 	CCycleConstStorage<Fvector,PH_INTERPOLATION_POINTS>				qPositions;
 	CCycleConstStorage<Fquaternion,PH_INTERPOLATION_POINTS>			qRotations;
-	//xr_deque<double>				qTimes;
-	//Fvector vUpdatePositions[PH_INTERPOLATION_POINTS];
-	//float fUpdateTimes[PH_INTERPOLATION_POINTS];
-	//float fTimeDelta;
 };
 #endif
