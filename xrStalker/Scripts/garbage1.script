@@ -1,3 +1,4 @@
+
 --Кровосос в подемелье
 local zone    = nil
 local mnstr   = nil
@@ -29,15 +30,17 @@ function is_on_line()
     end
 end
 --------------------------------------------------------------------------------
-function main()
+function init()
+end
 
-    while( monsters.ini.garbage1 == false ) do
-		this:is_on_line()
-        wait()
-    end
+function execute()
+	this:is_on_line()
+    return (monsters.ini.garbage1 == false)
+end
 
+function finalize()
     mnstr:script( false, this.script_name() )
-
     zone:clear_callback( true )
 end
+
 

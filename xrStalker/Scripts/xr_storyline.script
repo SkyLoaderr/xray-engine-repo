@@ -201,6 +201,7 @@ function set_storyline(object, char_ini)
         									enabled  	= true,
                                             rest_path 	= nil,
          								    point_path	= nil,
+                                            camper_path = nil,
 			                                enemy		= nil,
                                             monster		= nil
                                           }

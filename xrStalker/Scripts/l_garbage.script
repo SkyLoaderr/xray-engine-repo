@@ -1,3 +1,4 @@
+module("garbage1")
 module("garbage3")
 
 local work = {}
@@ -5,14 +6,21 @@ local work = {}
 function main()
     printf("started")
 
-    garbage3.init                ()
+    garbage1.init		()
+    garbage3.init       ()
 
-    table.insert(work, "garbage3"      )
+    table.insert(work, "garbage1"	)
+    table.insert(work, "garbage3"	)
 
 	while(table.getn(work) > 0) do
     	local deleted = {}
         for k,v in work do
-            if v == "garbage3" then
+            if(v == "garbage1") then
+                if(garbage1.execute() == false) then
+                    garbage1.finalize()
+                    table.insert(deleted, k)
+                end
+            elseif(v == "garbage3") then
                 if(garbage3.execute() == false) then
                     garbage3.finalize()
                     table.insert(deleted, k)
