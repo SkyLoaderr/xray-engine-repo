@@ -68,6 +68,8 @@ public:
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*cast_abstract			() {return 0;};
+	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
 	// end of the virtual inheritance dependant code
 			void __stdcall			OnChangeProfile			(PropValue* sender);
 
@@ -103,6 +105,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem);
 	virtual void					spawn_supplies			();
 #endif
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTrader)
 #define script_type_list save_type_list(CSE_ALifeTrader)
@@ -140,7 +144,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
-	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	virtual u32						ef_anomaly_type			() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_creature_type		() const;
@@ -258,7 +263,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
-	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
+	virtual CSE_ALifeMonsterAbstract*cast_monster_abstract	() {return this;};
 
 	virtual u32						ef_creature_type		() const;
 	virtual u32						ef_weapon_type			() const;
@@ -308,6 +315,8 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
 #endif
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCreatureActor)
 #define script_type_list save_type_list(CSE_ALifeCreatureActor)
@@ -351,6 +360,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 	virtual CSE_Abstract			*init				();
 	virtual CSE_Abstract			*base				();
 	virtual const CSE_Abstract		*base				() const;
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeInventoryItem	*cast_inventory_item	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeMonsterRat)
 #define script_type_list save_type_list(CSE_ALifeMonsterRat)
@@ -466,6 +477,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfChooseGroup			(CSE_ALifeGroupAbstract *tpALifeGroupAbstract);
 	virtual void					spawn_supplies			();
 #endif
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
+	virtual CSE_ALifeHumanAbstract	*cast_human_abstract	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeHumanAbstract)
 #define script_type_list save_type_list(CSE_ALifeHumanAbstract)

@@ -22,6 +22,7 @@
 
 class CSE_ALifeItemWeapon;
 class CSE_ALifeDynamicObject;
+class CSE_ALifeObject;
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
@@ -35,6 +36,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
 	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
+	virtual CSE_Abstract			*cast_abstract			() {return 0;};
 	// end of the virtual inheritance dependant code
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 	virtual u32						ef_creature_type		() const;
@@ -135,6 +137,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeGroupAbstract)
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	() {return this;};
+	virtual CSE_Abstract			*cast_abstract			() {return 0;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeGroupAbstract)
 #define script_type_list save_type_list(CSE_ALifeGroupAbstract)
@@ -198,6 +201,11 @@ public:
    		inherited2::FillProps		(pref, items);
 	};	
 
+	virtual CSE_Abstract			*cast_abstract			()
+	{
+		return						(this);
+	}
+
 	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	()
 	{
 		return						(this);
@@ -210,11 +218,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	
 									CSE_ALifeDynamicObject	(LPCSTR caSection);
 	virtual							~CSE_ALifeDynamicObject	();
-	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	() {return 0;};
-	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return 0;};
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
 #endif
+	virtual CSE_ALifeDynamicObject	*cast_alife_dynamic_object	() {return this;}
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeDynamicObject)
 #define script_type_list save_type_list(CSE_ALifeDynamicObject)
@@ -270,7 +277,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual CSE_Abstract			*base						();
 	virtual const CSE_Abstract		*base						() const;
 	virtual CSE_Abstract			*init						();
-	virtual CSE_ALifeSchedulable	*cast_schedulable			()  {return this;};
+	virtual CSE_Abstract			*cast_abstract				() {return this;};
+	virtual CSE_ALifeSchedulable	*cast_schedulable			() {return this;};
 	virtual void					update						();
 	virtual float					detect_probability			();
 	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);

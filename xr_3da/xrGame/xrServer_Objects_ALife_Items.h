@@ -46,7 +46,8 @@ public:
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
-	virtual CSE_ALifeItemAmmo		*cast_item_ammo			()   {return 0;};
+	virtual CSE_Abstract			*cast_abstract			() {return 0;};
+	virtual CSE_ALifeInventoryItem	*cast_inventory_item	() {return this;};
 	// end of the virtual inheritance dependant code
 
 	IC		bool					attached	() const
@@ -70,6 +71,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALif
 	virtual CSE_Abstract			*base			();
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*cast_abstract			() {return this;};
+	virtual CSE_ALifeInventoryItem	*cast_inventory_item	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItem)
 #define script_type_list save_type_list(CSE_ALifeItem)
@@ -140,6 +143,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u16								get_ammo_total	();
 	u16								get_ammo_elapsed();
 	u16								get_ammo_magsize();
+	virtual CSE_ALifeItemWeapon		*cast_item_weapon	() {return this;}
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemWeapon)
 #define script_type_list save_type_list(CSE_ALifeItemWeapon)
@@ -149,6 +153,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDetector,CSE_ALifeItem)
 									CSE_ALifeItemDetector(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDetector();
 	virtual u32						ef_detector_type() const;
+	virtual CSE_ALifeItemDetector	*cast_item_detector		() {return this;}
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemDetector)
 #define script_type_list save_type_list(CSE_ALifeItemDetector)

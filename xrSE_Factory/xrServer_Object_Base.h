@@ -15,7 +15,18 @@
 #include "client_id.h"
 
 class NET_Packet;
+class xrClientData;
+class CSE_ALifeGroupAbstract;
+class CSE_ALifeSchedulable;
+class CSE_ALifeInventoryItem;
+class CSE_ALifeTraderAbstract;
 class CSE_ALifeObject;
+class CSE_ALifeDynamicObject;
+class CSE_ALifeItemAmmo;
+class CSE_ALifeItemWeapon;
+class CSE_ALifeItemDetector;
+class CSE_ALifeMonsterAbstract;
+class CSE_ALifeHumanAbstract;
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -29,8 +40,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
 };
 add_to_type_list(CPureServerObject)
 #define script_type_list save_type_list(CPureServerObject)
-
-class xrClientData;
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_Abstract,ISE_Abstract,CPureServerObject,CScriptValueContainer)
 public:
@@ -131,11 +140,24 @@ public:
 	virtual CSE_Abstract			*base			();
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init			();
-	virtual CSE_ALifeObject			*cast_alife_object	() {return 0;}
 	virtual bool					match_configuration () const {return true;}
 	// end of the virtual inheritance dependant code
 	IC		int						script_clsid	() const					{VERIFY(m_script_clsid >= 0); return (m_script_clsid);}
 			CInifile				&spawn_ini		();
+
+// for smart cast
+	virtual CSE_ALifeGroupAbstract		*cast_group_abstract	() {return 0;};
+	virtual CSE_ALifeSchedulable		*cast_schedulable		() {return 0;};
+	virtual CSE_ALifeInventoryItem		*cast_inventory_item	() {return 0;};
+	virtual CSE_ALifeTraderAbstract		*cast_trader_abstract	() {return 0;};
+
+	virtual CSE_ALifeObject				*cast_alife_object		() {return 0;}
+	virtual CSE_ALifeDynamicObject		*cast_alife_dynamic_object	() {return 0;}
+	virtual CSE_ALifeItemAmmo			*cast_item_ammo			() {return 0;}
+	virtual CSE_ALifeItemWeapon			*cast_item_weapon		() {return 0;}
+	virtual CSE_ALifeItemDetector		*cast_item_detector		() {return 0;}
+	virtual CSE_ALifeMonsterAbstract	*cast_monster_abstract	() {return 0;};
+	virtual CSE_ALifeHumanAbstract		*cast_human_abstract	() {return 0;};
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)

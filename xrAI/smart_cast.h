@@ -177,21 +177,61 @@
 
 #	endif
 	
-	DECLARE_SPECIALIZATION	(CSE_ALifeGroupAbstract, CSE_ALifeDynamicObject,	cast_group_abstract);
+	DECLARE_SPECIALIZATION	(CSE_Abstract,		CSE_ALifeInventoryItem,	cast_abstract);
 #	undef cast_type_list
-#	define cast_type_list save_cast_list	(CSE_ALifeGroupAbstract, CSE_ALifeDynamicObject)
+#	define cast_type_list save_cast_list	(CSE_Abstract,		CSE_ALifeInventoryItem)
 
-	DECLARE_SPECIALIZATION	(CSE_ALifeSchedulable,	CSE_ALifeDynamicObject,	cast_schedulable);
+	DECLARE_SPECIALIZATION	(CSE_Abstract,		CSE_ALifeTraderAbstract,	cast_abstract);
 #	undef cast_type_list
-#	define cast_type_list save_cast_list	(CSE_ALifeSchedulable,CSE_ALifeDynamicObject)
+#	define cast_type_list save_cast_list	(CSE_Abstract,		CSE_ALifeTraderAbstract)
 
-	DECLARE_SPECIALIZATION	(CSE_ALifeItemAmmo, CSE_ALifeInventoryItem,	cast_item_ammo);
+	DECLARE_SPECIALIZATION	(CSE_Abstract, CSE_ALifeGroupAbstract,	cast_abstract);
 #	undef cast_type_list
-#	define cast_type_list save_cast_list	(CSE_ALifeItemAmmo, CSE_ALifeInventoryItem)
+#	define cast_type_list save_cast_list	(CSE_Abstract, CSE_ALifeGroupAbstract)
+
+	DECLARE_SPECIALIZATION	(CSE_Abstract,	CSE_ALifeSchedulable,	cast_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_Abstract,	CSE_ALifeSchedulable)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeGroupAbstract, CSE_Abstract,		cast_group_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeGroupAbstract, CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeSchedulable,	CSE_Abstract,		cast_schedulable);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeSchedulable,	 CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeInventoryItem,	CSE_Abstract,	cast_inventory_item);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeInventoryItem,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeTraderAbstract,	CSE_Abstract,	cast_trader_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeTraderAbstract,	CSE_Abstract)
 
 	DECLARE_SPECIALIZATION	(CSE_ALifeObject,	CSE_Abstract,			cast_alife_object);
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeObject,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeDynamicObject,	CSE_Abstract,	cast_alife_dynamic_object);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeDynamicObject,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeItemAmmo, CSE_Abstract,			cast_item_ammo);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeItemAmmo, CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeItemWeapon, CSE_Abstract,			cast_item_weapon);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeItemWeapon, CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeItemDetector, CSE_Abstract,			cast_item_detector);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeItemDetector, CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeMonsterAbstract,	CSE_Abstract,	cast_monster_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeMonsterAbstract,	CSE_Abstract)
 
 #	ifndef DO_NOT_DECLARE_TYPE_LIST
 #		include "smart_cast_impl1.h"
