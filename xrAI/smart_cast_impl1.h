@@ -112,7 +112,7 @@ namespace SmartDynamicCast {
 				typedef typename CMatchHelper2<Head,T>::result result;
 			};
 
-			typedef typename selector<object_type_traits::is_base_and_derived<typename Head::Head,Source>::value>::result result;
+			typedef typename selector<object_type_traits::is_base_and_derived<typename Head::Head,Source>::value || object_type_traits::is_same<typename Head::Head,Source>::value>::result result;
 		};
 
 		template <>
