@@ -200,7 +200,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	// initialize lua standard library functions 
 	luaopen_base	(luaVM); 
 	luaopen_table	(luaVM);
-//	luaopen_io		(luaVM);
+	luaopen_io		(luaVM);
 	luaopen_string	(luaVM);
 	luaopen_math	(luaVM);
 	luaopen_debug	(luaVM);
@@ -209,6 +209,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	export2lua		(luaVM);
 
 	// do some stuff
+	lua_dofile		(luaVM, "x:\\extension.lua");
 	lua_dofile		(luaVM, "x:\\test1.lua");
 
 	// close lua
