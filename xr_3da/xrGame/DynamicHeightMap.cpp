@@ -29,11 +29,9 @@ CHM_Static::CHM_Static()
 
 void CHM_Static::Update	()
 {
-#ifdef DEBUG	
 	Fvector&	view	= Device.vCameraPosition;
 	int			v_x		= iFloor(view.x/dhm_size);
 	int			v_z		= iFloor(view.z/dhm_size);
-#endif
 	
 	// *****	SCROLL
 	if (v_x!=c_x)	{
