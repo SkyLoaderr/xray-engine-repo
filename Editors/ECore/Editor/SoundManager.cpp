@@ -190,6 +190,7 @@ void CSoundManager::MakeGameSound(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR 
     F.w_float		(THM->m_fMaxDist);
     F.w_float		(THM->m_fVolume);
     F.w_u32			(THM->m_uGameType);
+    F.w_float		(THM->m_fMaxAIDist);
 	if (!ogg_enc(src_name,game_name, THM->m_fQuality,F.pointer(),F.size())){
     	FS.file_delete(game_name);
     	ELog.DlgMsg(mtError,"Can't make game sound '%s'.",game_name);
@@ -378,12 +379,16 @@ void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
 //------------------------------------------------------------------------------
 void CSoundManager::RefreshSounds(bool bSync)
 {
-	UI->SetStatus("Refresh sounds...");
-    if (bSync){ 
-    	SynchronizeSounds	(true,true,false,0,0);
-        CleanupSounds		();
+    if (FS.can_write_to_alias(_sounds_)){
+        UI->SetStatus("Refresh sounds...");
+        if (bSync){ 
+            SynchronizeSounds	(true,true,false,0,0);
+            CleanupSounds		();
+        }
+        Sound->refresh_sources();
+        UI->SetStatus("");
+    }else{
+        Log("#!You don't have permisions to modify sounds.");
     }
-    Sound->refresh_sources();
-	UI->SetStatus("");
 }
 

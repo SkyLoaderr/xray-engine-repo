@@ -318,7 +318,7 @@ public:
 
 	// IO routines
 	void				Load				();
-	void				Save				();
+	bool				Save				();
 };
 
 #define SELECT_RANDOM1(a_vector)			(a_vector[Random.randI(a_vector.size())])

@@ -258,9 +258,13 @@ void EDetail::Export(LPCSTR name)
     CSurface* surf		= *m_pRefs->FirstSurface();
 	R_ASSERT			(surf);
     IWriter* F 			= FS.w_open(name);
-    Fvector2 offs		= {0,0};
-    Fvector2 scale		= {1,1};
-	Export				(*F,surf->_Texture(),offs,scale,false);
-    FS.w_close			(F);
+    if (F){
+        Fvector2 offs	= {0,0};
+        Fvector2 scale	= {1,1};
+        Export			(*F,surf->_Texture(),offs,scale,false);
+        FS.w_close		(F);
+    }else{
+        Log				("!Can't export detail:",name);
+    }
 }
 

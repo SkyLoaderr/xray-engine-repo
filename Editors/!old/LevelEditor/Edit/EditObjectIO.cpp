@@ -36,7 +36,7 @@ bool CEditableObject::LoadObject(const char* fname)
 }
 #endif
 
-void CEditableObject::SaveObject(const char* fname)
+bool CEditableObject::SaveObject(const char* fname)
 {
 	if (IsModified()){
         // update transform matrix
@@ -56,14 +56,18 @@ void CEditableObject::SaveObject(const char* fname)
 
     // save object
     IWriter* F		= FS.w_open(fname);
+	if (F){
+        F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
+        Save		(*F);
+        F->close_chunk();
 
-    F->open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
-    Save			(*F);
-    F->close_chunk	();
+        FS.w_close	(F);                             
 
-    FS.w_close		(F);
-
-	m_LoadName 		= fname;
+        m_LoadName 	= fname;
+        return		true;
+    }else{
+    	return 		false;
+    }
 }
 
 void CEditableObject::Save(IWriter& F)
@@ -384,8 +388,7 @@ bool CEditableObject::ExportOGF(LPCSTR fn)
 {
 	CMemoryWriter F;
     if (PrepareOGF(F)){
-    	F.save_to(fn);
-        return true;
+    	return F.save_to(fn);
     }
     return false;
 }
@@ -394,8 +397,7 @@ bool CEditableObject::ExportOMF(LPCSTR fn)
 {
 	CMemoryWriter F;
     if (PrepareOMF(F)){
-    	F.save_to(fn);
-        return true;
+    	return F.save_to(fn);
     }
     return false;
 }
@@ -405,8 +407,7 @@ bool CEditableObject::ExportOBJ(LPCSTR fn)
     CExportObjectOGF E(this);
 	CMemoryWriter F;
     if (E.ExportAsWavefrontOBJ(F,fn)){
-    	F.save_to(fn);
-        return true;
+    	return F.save_to(fn);
     }
     return false;
 }

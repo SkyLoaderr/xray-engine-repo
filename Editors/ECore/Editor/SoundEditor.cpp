@@ -62,6 +62,11 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title)
 		form->modif_map.clear();
         m_Flags.zero		();
 	    form->InitItemsList	();
+        if (!FS.can_write_to_alias(_sounds_)){
+        	Log				("#!You don't have permisions to modify sounds.");
+	        form->ebOk->Enabled 				= false;
+            form->m_ItemProps->SetReadOnly		(TRUE);
+        }
     }
 
     form->ShowModal			();

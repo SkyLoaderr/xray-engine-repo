@@ -187,7 +187,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
 	if (0){
     	static u32 chunk_id = 0; chunk_id++;
 		AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
-        IWriter* W 	= FS.w_open(r.c_str());
+        IWriter* W 	= FS._w_open(r.c_str());
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
             SSkelVert& pV 	= *v_it;
 			// vertices
@@ -398,7 +398,7 @@ void CExportSkeleton::SSplit::MakeProgressive()
 /*
     // write SMF
     AnsiString r		= "x:\\import\\test.smf";
-    IWriter* W 			= FS.w_open(r.c_str());
+    IWriter* W 			= FS._w_open(r.c_str());
     // vertices
     for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
         SSkelVert& pV 	= *v_it;

@@ -29,7 +29,7 @@ public:
 
 	void 				OnCreate			();
 	void 				OnDestroy			();
-	void 				Save				();
+	void 				Save				(FS_QueryMap* modif_map=0);
 
     void 				ReloadObjects		();
     void 				RefreshLibrary		();

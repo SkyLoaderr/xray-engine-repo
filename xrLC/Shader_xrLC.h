@@ -70,11 +70,16 @@ public:
 		fs->r				(&*library.begin(),fs->length());
         FS.r_close			(fs);
 	}
-	void					Save	(LPCSTR name)
+	bool					Save	(LPCSTR name)
 	{
 		IWriter* F			= FS.w_open(name);
-		F->w				(&*library.begin(),(u32)library.size()*sizeof(Shader_xrLC));
-        FS.w_close			(F);
+        if (F){
+			F->w			(&*library.begin(),(u32)library.size()*sizeof(Shader_xrLC));
+    	    FS.w_close		(F);
+            return 			true;
+        }else{
+        	return 			false;
+        }
 	}
 	void					Unload	()
 	{

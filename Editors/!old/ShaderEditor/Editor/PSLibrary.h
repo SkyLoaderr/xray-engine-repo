@@ -19,7 +19,7 @@ public:
 
 public:
     bool 				Load			(LPCSTR nm);
-    void				Save			(LPCSTR nm);
+    bool				Save			(LPCSTR nm);
 public:
 						CPSLibrary		(){;}
     		 			~CPSLibrary		(){;}
@@ -45,7 +45,7 @@ public:
     void				RenamePGD		(PS::CPGDef* src, LPCSTR new_name);
 
     void				Reload			();
-    void				Save			();
+    bool				Save			();
 };
 
 #define PSLIB_FILENAME 			"particles.xr"

@@ -85,6 +85,7 @@ private:	// User declarations
     static FS_QueryMap	texture_map;
     static FS_QueryMap	modif_map;
     bool 				bImportMode;
+    bool 				bReadonlyMode;
     void __fastcall 	UpdateLib			();
     static bool 		bFormLocked;
     static void 		LockForm			(){ bFormLocked = true;	form->paProperties->Enabled = false; 	form->paItems->Enabled = false; }

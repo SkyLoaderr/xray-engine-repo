@@ -33,8 +33,12 @@ void CImage::SaveTGA(LPCSTR name, BOOL b24)
 	tga.scanlenght=dwWidth*4;
 
 	IWriter* F	= FS.w_open(name);
-	tga.maketga	(*F);
-    FS.w_close	(F);
+    if (F){
+		tga.maketga	(*F);
+    	FS.w_close	(F);
+    }else{
+        Log			("!Can't save tga:",name);
+    }
 }
 
 void CImage::Vflip()

@@ -288,7 +288,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,".dds");
 
-    bool bProgress = M_BASE.size()>1;
+    bool bProgress 	= M_BASE.size()>1;
     
     // lock rescanning
     FS.lock_rescan	();
@@ -298,7 +298,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     // sync assoc
 	xr_string 	ltx_nm;
     FS.update_path	(ltx_nm,_game_textures_,"textures.ltx");
-	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
+    EFS.BackupFile	(_game_textures_,"textures.ltx",FALSE,10);
+	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, FALSE);
     
 	SPBItem* pb=0;
     if (bProgress) pb = UI->ProgressStart(M_BASE.size(),"Synchronize textures...");
@@ -376,7 +377,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
         }
     }
 
-    xr_delete(ltx_ini);
+    if (!ltx_ini->save_as(ltx_nm.c_str()))	Log("!Can't save ini file:",ltx_nm.c_str());
+    xr_delete			(ltx_ini);
     
     if (bProgress) 	UI->ProgressEnd(pb);
     // lock rescanning
@@ -416,7 +418,7 @@ void CImageManager::WriteAssociation(CInifile* ltx_ini, LPCSTR base_name, const 
 	if (STextureParams::ttImage==fmt.type){
         // save to assoc ltx
         // details
-        if (*fmt.detail_name&&fmt.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
+        if (fmt.detail_name.size()&&fmt.flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
             AnsiString usage;
             if (fmt.flags.is(STextureParams::flDiffuseDetail)) 	usage="diffuse";
             if (fmt.flags.is(STextureParams::flBumpDetail))		usage=usage.Length()?usage+"_or_bump":AnsiString("bump");
@@ -692,13 +694,17 @@ EImageThumbnail* CImageManager::CreateThumbnail(LPCSTR src_name, ECustomThumbnai
 //------------------------------------------------------------------------------
 void CImageManager::RefreshTextures(AStringVec* modif)
 {
-    if (modif) Device.Resources->ED_UpdateTextures(modif);
-	else{
-		UI->SetStatus("Refresh textures...");
-    	AStringVec modif_files;
-    	ImageLib.SynchronizeTextures(true,true,false,0,&modif_files);
-        Device.Resources->ED_UpdateTextures(&modif_files);
-		UI->SetStatus("");
+    if (FS.can_write_to_alias(_textures_)){
+        if (modif) Device.Resources->ED_UpdateTextures(modif);
+        else{
+            UI->SetStatus("Refresh textures...");
+            AStringVec modif_files;
+            ImageLib.SynchronizeTextures(true,true,false,0,&modif_files);
+            Device.Resources->ED_UpdateTextures(&modif_files);
+            UI->SetStatus("");
+        }
+    }else{
+        Log("#!You don't have permisions to modify textures.");
     }
 }
 

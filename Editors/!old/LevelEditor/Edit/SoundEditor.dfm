@@ -1,6 +1,6 @@
 object frmSoundLib: TfrmSoundLib
-  Left = 874
-  Top = 356
+  Left = -578
+  Top = 142
   Width = 350
   Height = 469
   BorderIcons = [biSystemMenu, biMinimize]

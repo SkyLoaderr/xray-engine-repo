@@ -1,6 +1,6 @@
 object frmImageLib: TfrmImageLib
-  Left = 930
-  Top = 539
+  Left = -860
+  Top = 205
   Width = 350
   Height = 455
   BorderIcons = [biSystemMenu, biMinimize]

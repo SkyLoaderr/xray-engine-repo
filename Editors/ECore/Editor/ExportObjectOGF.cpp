@@ -180,7 +180,7 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             }
 /*
 			AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
-            IWriter* W 	= FS.w_open(r.c_str());
+            IWriter* W 	= FS._w_open(r.c_str());
 // optimize
 /*
 			FvectorVec 			pts;

@@ -373,7 +373,7 @@ public:
 	bool 			Reload					();
 	bool 			Load					(LPCSTR fname);
 	bool 			LoadObject				(LPCSTR fname);
-	void 			SaveObject				(LPCSTR fname);
+	bool 			SaveObject				(LPCSTR fname);
   	bool 			Load					(IReader&);
 	void 			Save					(IWriter&);
 #ifdef _EDITOR

@@ -158,18 +158,30 @@ void ELibrary::RemoveEditObject(CEditableObject*& object)
 }
 //---------------------------------------------------------------------------
 
-void ELibrary::Save()
+void ELibrary::Save(FS_QueryMap* modif_map)
 {
 	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
-    for(; O!=E; O++)
-    	if (O->second->IsModified()){
-        	xr_string 			nm;
-            FS.update_path			(nm,_objects_,O->second->GetName());
-            nm						= EFS.ChangeFileExt(nm,".object");
-        	O->second->SaveObject	(nm.c_str());
-        }
+    if (modif_map){
+        for(; O!=E; O++)
+        	if (modif_map->end()!=modif_map->find(O->second->GetName())){
+                xr_string 		nm;
+                FS.update_path	(nm,_objects_,O->second->GetName());
+                nm			  	= EFS.ChangeFileExt(nm,".object");
+                if (!O->second->SaveObject(nm.c_str()))
+                    Log			("!Can't save object:",nm.c_str());
+            }
+    }else{
+        for(; O!=E; O++)
+            if (O->second->IsModified()){
+                xr_string 		nm;
+                FS.update_path	(nm,_objects_,O->second->GetName());
+                nm			  	= EFS.ChangeFileExt(nm,".object");
+                if (!O->second->SaveObject(nm.c_str()))
+                    Log			("!Can't save object:",nm.c_str());
+            }
+    }
 }
 //---------------------------------------------------------------------------
 
