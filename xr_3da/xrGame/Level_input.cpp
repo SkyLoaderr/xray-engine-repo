@@ -48,9 +48,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case kQUIT:	{
-		if( HUD().GetUI()->MainInputReceiver() )
+		if( HUD().GetUI()->MainInputReceiver() ){
+				if(HUD().GetUI()->MainInputReceiver()->IR_OnKeyboardPress(dik))	return;//special case for mp and main_menu
 				HUD().GetUI()->StartStopMenu( HUD().GetUI()->MainInputReceiver(), true);
-		else
+		}else
 			Console->Execute			("main_menu");
 		return;
 		}break;
