@@ -12,6 +12,9 @@
 #include "relation_registry.h"
 #include "monster_community.h"
 #include "entitycondition.h"
+#include "script_space.h"
+#include "script_callback.h"
+#include "script_game_object.h"
 
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"
@@ -47,7 +50,9 @@ STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 CEntityAlive::CEntityAlive()
 {
 	m_PhysicMovementControl = xr_new<CPHMovementControl>();
-	monster_community		= xr_new<MONSTER_COMMUNITY>();
+	monster_community		= xr_new<MONSTER_COMMUNITY>	();
+
+	m_death_script_callback	= xr_new<CScriptCallback>	();
 }
 
 CEntityAlive::~CEntityAlive()
@@ -55,6 +60,7 @@ CEntityAlive::~CEntityAlive()
 	xr_delete				(m_PhysicMovementControl);
 	xr_delete				(monster_community);
 	xr_delete				(m_entity_condition);
+	xr_delete				(m_death_script_callback);
 }
 
 void CEntityAlive::Load		(LPCSTR section)
@@ -169,6 +175,8 @@ void CEntityAlive::reinit			()
 
 	m_fAccuracy				= 25.f;
 	m_fIntelligence			= 25.f;
+
+	m_death_script_callback->clear	();
 }
 
 void CEntityAlive::reload		(LPCSTR section)
@@ -273,6 +281,8 @@ void CEntityAlive::Die	(CObject* who)
 {
 	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);
 	inherited::Die(who);
+
+	death_callback(who);
 }
 
 //вывзывает при подсчете хита
@@ -569,3 +579,34 @@ DLL_Pure *CEntityAlive::_construct	()
 	m_entity_condition		= create_entity_condition();
 	return					(this);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Death Callbacks
+//////////////////////////////////////////////////////////////////////////
+void CEntityAlive::set_death_callback(const luabind::object &lua_object, LPCSTR method)
+{
+	m_death_script_callback->set(lua_object, method);
+}
+
+void CEntityAlive::set_death_callback	(const luabind::functor<void> &lua_function)
+{
+	m_death_script_callback->set(lua_function);
+}
+
+void CEntityAlive::clear_death_callback	(bool member_callback)
+{
+	m_death_script_callback->clear(member_callback);
+}
+
+void CEntityAlive::death_callback(const CObject *who)
+{
+	const CGameObject *who_object = smart_cast<const CGameObject*>(who);
+
+	SCRIPT_CALLBACK_EXECUTE_2((*m_death_script_callback), 
+		lua_game_object(),
+		who_object ? who_object->lua_game_object() : 0
+	);
+
+	m_death_script_callback->clear();
+}
+//////////////////////////////////////////////////////////////////////////

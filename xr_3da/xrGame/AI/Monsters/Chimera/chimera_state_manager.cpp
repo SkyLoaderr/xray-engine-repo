@@ -57,6 +57,7 @@ void CStateManagerChimera::execute()
 		else			state_id = eStateRest;
 	}
 
+	// check jumping conditions
 	if (state_id == eStateAttack) {
 		if (!object->MotionMan.IsCriticalAction()) {
 			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());

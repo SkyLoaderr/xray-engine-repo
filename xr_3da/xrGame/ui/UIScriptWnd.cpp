@@ -5,6 +5,7 @@
 #include "../script_space.h"
 #include <luabind/operator.hpp>
 #include "../object_broker.h"
+#include "../script_callback.h"
 
 struct SCallbackInfo{
 	CScriptCallback		m_callback;

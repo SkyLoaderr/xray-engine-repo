@@ -13,11 +13,6 @@ IC void CMonsterMovement::set_use_covers(bool val)
 	m_cover_info.use_covers	= val;	
 }
 
-IC void CMonsterMovement::force_target_set() 
-{	
-	m_time = 0;
-}
-
 IC void CMonsterMovement::set_rebuild_time(u32 time) 
 {
 	m_time	= time;
@@ -36,11 +31,6 @@ IC bool CMonsterMovement::path_end()
 IC void	CMonsterMovement::set_distance_to_end(float dist)
 {
 	m_distance_to_path_end = dist;
-}
-
-IC bool CMonsterMovement::actual_params()
-{
-	return m_actual;
 }
 
 IC void CMonsterMovement::set_generic_parameters()

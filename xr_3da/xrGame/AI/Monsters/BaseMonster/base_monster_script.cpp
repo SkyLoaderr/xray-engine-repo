@@ -217,7 +217,7 @@ void CBaseMonster::ProcessScripts()
 	b_script_state_must_execute					= false;
 	inherited::ProcessScripts					();
 	
-	m_current_update							= Level().timeServer();
+	m_current_update							= Device.dwTimeGlobal;
 
 	// обновить мир (память, враги, объекты)
 	vfUpdateParameters							();

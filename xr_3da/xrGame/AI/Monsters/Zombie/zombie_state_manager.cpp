@@ -13,6 +13,7 @@
 #include "../states/monster_state_squad_rest_follow.h"
 #include "../ai_monster_debug.h"
 #include "../../../entitycondition.h"
+#include "../../../detail_path_manager.h"
 
 CStateManagerZombie::CStateManagerZombie(CZombie *obj) : inherited(obj)
 {

@@ -126,11 +126,11 @@ void CMonsterSoundMemory::UpdateHearing()
 {
 
 	// удаление устаревших звуков
-	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_nonactual_sounds(Level().timeServer() - time_memory));
+	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), pred_remove_nonactual_sounds(monster->m_current_update - time_memory));
 	Sounds.erase(I,Sounds.end());
 
 	// пересчитать value
-	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(Level().timeServer(), monster->Position());
+	for (I=Sounds.begin(); I!=Sounds.end(); I++) I->CalcValue(monster->m_current_update, monster->Position());
 
 
 

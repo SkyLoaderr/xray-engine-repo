@@ -1,20 +1,13 @@
 #pragma once
 
+#include "../ai_monster_squad.h"
+#include "../ai_monster_squad_manager.h"
+
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
 >
 
 #define CStateMonsterAttackRunAbstract CStateMonsterAttackRun<_Object>
-
-TEMPLATE_SPECIALIZATION
-CStateMonsterAttackRunAbstract::CStateMonsterAttackRun(_Object *obj) : inherited(obj)
-{
-}
-
-TEMPLATE_SPECIALIZATION
-CStateMonsterAttackRunAbstract::~CStateMonsterAttackRun()
-{
-}
 
 TEMPLATE_SPECIALIZATION
 void CStateMonsterAttackRunAbstract::initialize()
@@ -36,6 +29,20 @@ void CStateMonsterAttackRunAbstract::execute()
 	object->movement().set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->movement().set_try_min_time			(false);
 	object->set_state_sound						(MonsterSpace::eMonsterSoundAttack);
+
+	
+	// обработать squad инфо	
+	CMonsterSquad *squad	= monster_squad().get_squad(object);
+	if (squad && squad->SquadActive()) {
+		// Получить команду
+		SSquadCommand command;
+		squad->GetCommand(object, command);
+		
+		if (command.type == SC_ATTACK) {
+			object->movement().set_use_dest_orient	(true);
+			object->movement().set_dest_direction	(command.direction);
+		}
+	}
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiMonsterDebug)) {

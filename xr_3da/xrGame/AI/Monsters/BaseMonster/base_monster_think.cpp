@@ -14,7 +14,7 @@ void CBaseMonster::Think()
 	if (!g_Alive())		return;
 	if (getDestroy())	return;
 
-	m_current_update						= Level().timeServer();
+	m_current_update						= Device.dwTimeGlobal;
 
 	// Инициализировать
 	InitThink								();

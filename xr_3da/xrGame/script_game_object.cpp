@@ -178,7 +178,8 @@ void CScriptGameObject::ClearSoundCallback(bool member_callback)
 	else
 		l_tpScriptMonster->clear_sound_callback(member_callback);
 }
-
+//////////////////////////////////////////////////////////////////////////
+// Hit Callbacks 
 void CScriptGameObject::SetHitCallback(const luabind::object &lua_object, LPCSTR method)
 {
 	CScriptEntity	*l_tpScriptMonster = smart_cast<CScriptEntity*>(&object());
@@ -205,6 +206,36 @@ void CScriptGameObject::ClearHitCallback(bool member_callback)
 	else
 		l_tpScriptMonster->clear_hit_callback(member_callback);
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Death Callbacks 
+void CScriptGameObject::SetDeathCallback(const luabind::object &lua_object, LPCSTR method)
+{
+	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
+	if (!entity)
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member set_death_callback!");
+	else
+		entity->set_death_callback(lua_object,method);
+}
+
+void CScriptGameObject::SetDeathCallback(const luabind::functor<void> &lua_function)
+{
+	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
+	if (!entity)
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member set_death_callback!");
+	else
+		entity->set_death_callback(lua_function);
+}
+
+void CScriptGameObject::ClearDeathCallback(bool member_callback)
+{
+	CEntityAlive *entity = smart_cast<CEntityAlive*>(&object());
+	if (!entity)
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CEntityAlive : cannot access class member clear_death_callback!");
+	else
+		entity->clear_death_callback(member_callback);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

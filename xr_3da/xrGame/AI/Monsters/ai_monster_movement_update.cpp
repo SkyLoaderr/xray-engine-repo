@@ -4,6 +4,7 @@
 #include "critical_action_info.h"
 #include "../../detail_path_manager.h"
 #include "../../level_location_selector.h"
+#include "../../level_path_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Init Movement
@@ -32,8 +33,16 @@ void CMonsterMovement::Update_Execute()
 	detail_path_manager().set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
 	
+	Msg("-- Update  :: Time [%u] --", m_object->m_current_update);
+	
+	// обновить / установить целевую позицию
 	update_target_point								();
+	
+	// строить путь
 	update_path										();
+
+	// проверить на сбой
+	check_failure									();
 }
 
 
@@ -49,29 +58,42 @@ void CMonsterMovement::Update_Finalize()
 // update path with new scheme method
 void CMonsterMovement::update_target_point() 
 {
-	if (!enabled() || !b_enable_movement) return;
+	if (!enabled() || !b_enable_movement)					return;
 	if (path_type() != MovementManager::ePathTypeLevelPath) return;
 	
-	m_path_end	= false;
-	m_failed	= false;
+	// проверить условия, когда путь строить не нужно
+	if (!target_point_need_update())						return; 
 
-	/// проверить условия, когда путь строить не нужно
-	if (!check_build_conditions())	return;
+	// выбрать ноду и позицию в соответствии с желаемыми нодой и позицией
+	select_target			();
 
-	// получить промежуточные позицию и ноду
-	STarget saved_target;
-	saved_target = m_intermediate;
-
-	get_intermediate		();
 	// установить параметры
-	set_parameters			();
+	set_selected_target		();
 
-	if (IsPathEnd(m_distance_to_path_end)) {
-		if (saved_target.position.similar(m_intermediate.position) && (saved_target.node == m_intermediate.node)) {
-			m_failed = true;
-		}
+	if (path_completed() && m_target_selected.position.similar(object().Position())) {
+		Msg("Postselector :: Path End");
+		m_path_end	= true;
 	}
 
-	m_last_time_path_update	= m_object->m_current_update;
+	// сохранить текущее время 
+	m_last_time_target_set	= m_object->m_current_update;
 }
 
+// обновить информацию о построенном пути (m_failed)
+void CMonsterMovement::check_failure()
+{
+	m_failed		= false;
+
+	// если новый построенный путь completed - failed!
+	bool new_path = detail_path_manager().time_path_built() >= m_last_time_target_set;
+	if (path_completed() && IsPathEnd(m_distance_to_path_end) && new_path) {
+		Msg("Failed :: New Path & PathEnd");
+		m_failed	= true;	
+	}
+
+	// если level_path_manager failed
+	if (level_path_manager().failed()) {
+		Msg("Failed :: LevelPathManager");
+		m_failed	= true;
+	}
+}

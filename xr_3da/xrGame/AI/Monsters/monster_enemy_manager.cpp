@@ -3,6 +3,8 @@
 #include "BaseMonster/base_monster.h"
 #include "../ai_monsters_misc.h"
 #include "../../ai_object_location.h"
+#include "../../memory_manager.h"
+#include "../../visual_memory_manager.h"
 
 CMonsterEnemyManager::CMonsterEnemyManager()
 {
@@ -76,9 +78,9 @@ void CMonsterEnemyManager::update()
 	// обновить флаги
 	flags.zero();
 
-	if ((prev_enemy == enemy) && (time_last_seen != Level().timeServer()))	flags.or(FLAG_ENEMY_LOST_SIGHT);		
-	if (prev_enemy && !prev_enemy->g_Alive())								flags.or(FLAG_ENEMY_DIE);
-	if (!enemy_see_me)														flags.or(FLAG_ENEMY_DOESNT_SEE_ME);
+	if ((prev_enemy == enemy) && (time_last_seen != monster->m_current_update))	flags.or(FLAG_ENEMY_LOST_SIGHT);		
+	if (prev_enemy && !prev_enemy->g_Alive())									flags.or(FLAG_ENEMY_DIE);
+	if (!enemy_see_me)															flags.or(FLAG_ENEMY_DOESNT_SEE_ME);
 	
 	float dist_now, dist_prev;
 	if (prev_enemy == enemy) {
@@ -97,7 +99,7 @@ void CMonsterEnemyManager::update()
 		}
 
 		if (flags.is(FLAG_ENEMY_STANDING) && flags.is(FLAG_ENEMY_DOESNT_SEE_ME)) flags.or(FLAG_ENEMY_DOESNT_KNOW_ABOUT_ME);
-	}
+	} else flags.or(FLAG_ENEMY_STATS_NOT_READY);
 
 	// сохранить текущего врага
 	prev_enemy			= enemy;
@@ -113,7 +115,7 @@ void CMonsterEnemyManager::force_enemy (const CEntityAlive *enemy)
 	this->enemy		= enemy;
 	position		= enemy->Position();
 	vertex			= enemy->ai_location().level_vertex_id();
-	time_last_seen	= Level().timeServer();
+	time_last_seen	= monster->m_current_update;
 
 	forced			= true;
 }
@@ -157,10 +159,7 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	//return (monster->memory().visual().visible_now(enemy));
-
-	if (time_last_seen == monster->m_current_update) return true;
-	return false;
+	return (monster->memory().visual().visible_now(enemy) && (time_last_seen == monster->m_current_update)); 
 }
 
 bool CMonsterEnemyManager::is_faced(const CEntityAlive *object0, const CEntityAlive *object1)

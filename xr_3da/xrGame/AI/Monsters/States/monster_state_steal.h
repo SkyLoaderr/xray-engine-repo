@@ -1,15 +1,12 @@
 #pragma once
-
 #include "../state.h"
 
 template<typename _Object>
-class CStateMonsterAttackRun : public CState<_Object> {
+class CStateMonsterSteal : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
-	TTime				m_time_path_rebuild;
-
 public:
-	IC					CStateMonsterAttackRun	(_Object *obj) : inherited(obj) {}
+						CStateMonsterSteal		(_Object *obj);
 
 	virtual void		initialize				();
 	virtual	void		execute					();
@@ -17,6 +14,8 @@ public:
 	virtual bool 		check_completion		();
 	virtual bool 		check_start_conditions	();
 
+private:
+			bool		check_conditions		();
 };
 
-#include "monster_state_attack_run_inline.h"
+#include "monster_state_steal_inline.h"

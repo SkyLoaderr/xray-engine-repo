@@ -14,7 +14,8 @@ protected:
 		eStateMelee,
 		eStateRunAttack,
 		eStateRunAway,
-		eStateFindEnemy
+		eStateFindEnemy,
+		eStateSteal
 	};
 
 	u32		m_time_next_run_away;
@@ -27,6 +28,12 @@ public:
 	virtual void		initialize				();
 	virtual	void		execute					();
 	virtual void		setup_substates			();
+
+private:
+			bool		check_steal_state		();
+			bool		check_find_enemy_state	();
+			bool		check_run_away_state	();
+			bool		check_run_attack_state	();
 };
 
 #include "monster_state_attack_inline.h"

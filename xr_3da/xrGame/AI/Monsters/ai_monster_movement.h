@@ -82,20 +82,31 @@ public:
 		bool		GetNodeInRadius			(u32 src_node, float min_radius, float max_radius, u32 attempts, u32 &dest_node);
 
 //////////////////////////////////////////////////////////////////////////
-public:
+private:
 
 		struct STarget {
 			Fvector		position;
 			u32			node;
-		} m_target, m_intermediate;
+			void		init		() {
+				position.set	(0.f,0.f,0.f);
+				node			= u32(-1);
+			}
+
+			void		set			(const Fvector &pos, u32 vertex) {
+				position.set	(pos);
+				node			= vertex;
+			}
+
+		} m_target_desired, m_target_selected, m_target_required;
 
 		u32			m_time;					// время перестроения пути
-		u32			m_last_time_path_update;
+		u32			m_last_time_target_set;
 		float		m_distance_to_path_end;
 		bool		m_path_end;
 		bool		m_failed;
-		bool		m_actual;
 		bool		m_force_rebuild;
+
+		bool		m_target_actual;		// устанавливаемый таргет соответствует предыдущему
 
 		struct {
 			bool	use_covers;
@@ -110,35 +121,41 @@ public:
 			eRetreatFromTarget,
 		} m_target_type;
 
+		CCoverEvaluatorCloseToEnemy			*m_cover_approach;
+		CAbstractVertexEvaluator			*m_selector_approach;
+
+public:		
 		void		set_target_point		(const Fvector &position, u32 node = u32(-1));
 		void		set_retreat_from_point	(const Fvector &position);
+
 	IC	void		set_rebuild_time		(u32 time);
 	IC	void		set_cover_params		(float min, float max, float dev, float radius);
 	IC	void		set_use_covers			(bool val = true);
-	IC	void		force_target_set		();
 	IC	bool		failed					();
 	IC	bool		path_end				();
 	IC	void		set_distance_to_end		(float dist);
 
-		CCoverEvaluatorCloseToEnemy			*m_cover_approach;
-		CAbstractVertexEvaluator			*m_selector_approach;
-
-		void		get_intermediate		();
-		bool		position_in_direction	(const Fvector &target, u32 &node);
-		void		set_parameters			();
-		void		update_target_point		();
-
 		void		initialize_movement		();
-
-		bool		check_build_conditions	();
-
-	IC	bool		actual_params			();
-		void		fix_position			(const Fvector &pos, u32 node, Fvector &res_pos);
-
-
 		void		detour_graph_points		();
 	IC	void		set_generic_parameters	();
 
+private:
+		// functional
+		void		update_target_point			();
+		void		check_failure				();
+
+		bool		target_point_need_update	();
+		void		select_target				();
+		void		set_selected_target			();
+
+		void		select_target_desired		();
+		
+		// utils
+		bool		valid_destination			(const Fvector &pos, u32 node);
+		void		fix_position				(const Fvector &pos, u32 node, Fvector &res_pos);
+//////////////////////////////////////////////////////////////////////////
+
+public:
 	//////////////////////////////////////////////////////////////////////////
 	// special path
 		bool		build_special			(const Fvector &target, u32 node, u32 vel_mask, bool linear = true);

@@ -2,6 +2,7 @@
 
 #include "entity.h"
 
+
 DEFINE_VECTOR(ref_shader, SHADER_VECTOR, SHADER_VECTOR_IT);
 DEFINE_VECTOR(shared_str, STR_VECTOR, STR_VECTOR_IT);
 
@@ -9,6 +10,8 @@ DEFINE_VECTOR(shared_str, STR_VECTOR, STR_VECTOR_IT);
 class MONSTER_COMMUNITY;
 class CEntityCondition;
 class CWound;
+class CScriptCallback;
+
 
 class CEntityAlive : public CEntity {
 private:
@@ -153,6 +156,17 @@ protected:
 
 public:
 	IC		CEntityCondition	&conditions					() const;
+
+
+private:
+	CScriptCallback				*m_death_script_callback;
+
+	void						death_callback				(const CObject *who);
+
+public:
+	void						set_death_callback			(const luabind::object &lua_object, LPCSTR method);
+	void						set_death_callback			(const luabind::functor<void> &lua_function);
+	void						clear_death_callback		(bool member_callback);
 };
 
 #include "entity_alive_inline.h"

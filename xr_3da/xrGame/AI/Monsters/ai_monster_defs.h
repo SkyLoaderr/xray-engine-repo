@@ -74,6 +74,7 @@ class CBlend;
 #define FLAG_ENEMY_DOESNT_KNOW_ABOUT_ME	( 1 << 9 )
 #define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
+#define FLAG_ENEMY_STATS_NOT_READY		( 1 << 12 )
 
 #define SOUND_ATTACK_HIT_MIN_DELAY		1000
 #define MORALE_NORMAL					0.5f

@@ -303,6 +303,10 @@ public:
 			void				SetHitCallback		(const luabind::object &lua_object, LPCSTR method);
 			void				SetHitCallback		(const luabind::functor<void> &lua_function);
 			void				ClearHitCallback	(bool member_callback);
+			void				SetDeathCallback	(const luabind::object &lua_object, LPCSTR method);
+			void				SetDeathCallback	(const luabind::functor<void> &lua_function);
+			void				ClearDeathCallback	(bool member_callback);
+
 //////////////////////////////////////////////////////////////////////////
 // Inventory Owner
 //////////////////////////////////////////////////////////////////////////
