@@ -95,6 +95,7 @@ int __cdecl main	(int argc, char* argv[])
 	InitMath		();
 	printf			("\n");
 	occ.clear		();
+	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	for (int test=0; test<=3600; test++)
 	{
 		float		a0	= rad(test*p_a);
@@ -129,12 +130,16 @@ int __cdecl main	(int argc, char* argv[])
 		
 		// draw tri
 		TM.Start		();
-		occ.rasterize	(&T1);
-		occ.rasterize	(&T2);
+		for (int t=0; t<100; t++)
+		{
+			occ.rasterize	(&T1);
+			occ.rasterize	(&T2);
+		}
 		total += TM.GetElapsed();
-		count += 2;
+		count += 2*100;
 	}
-
+	SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	
 	// Propagade
 	occ.propagade	();
 	
