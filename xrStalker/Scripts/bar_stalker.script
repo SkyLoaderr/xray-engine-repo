@@ -27,6 +27,181 @@ end
 
 
 ----------------------------------------------------------------------------
+class "evaluator_meat" (property_evaluator)
+-------------------
+function evaluator_meat:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_meat:evaluate ()
+    return self.a.meat
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "evaluator_interlocutor" (property_evaluator)
+-------------------
+function evaluator_interlocutor:__init (storage, name) super ()
+    self.a = storage
+end
+-------------------
+function evaluator_interlocutor:evaluate ()
+    return self.a.interlocutor ~= nil
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "action_meat" (action_base)
+-------------------
+function action_meat:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.anims = {}
+    self.current = 1
+end
+-------------------
+function action_meat:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations          ()
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_body_state            (move.standing)
+    self.object:set_movement_type         (move.stand)
+    self.object:set_mental_state          (anim.free)
+    
+    if self.a.pose == nil then
+       self.anims[1] = "drink_idle9"
+       self.anims[2] = "drink_idle9"
+    elseif self.a.pose == "hiccup" then
+       self.anims[1] = "drink_idle_5"
+       self.anims[2] = "drink_idle_5"
+    elseif self.a.pose == "lie" then
+       self.anims[1] = "drink_idle_7"
+       self.anims[2] = "drink_idle_7"
+    elseif self.a.pose == "sit" then
+       self.anims[1] = "drink_idle_8"
+       self.anims[2] = "drink_idle_8"
+    elseif self.a.pose == "sleep" then
+       self.anims[1] = "drink_idle_9"
+       self.anims[2] = "drink_idle_9"
+    end
+    
+    self.object:add_animation (self.anims[1], true)
+    self.current = 2
+end
+-------------------
+function action_meat:execute ()
+    action_base.execute (self)
+    
+    if self.object:animation_count () < 2 then
+       self.current = self.current + 1
+       if self.current > 2 then self.current = 1 end
+       self.object:add_animation (self.anims[self.current], true)
+    end
+            
+end
+-------------------
+function action_meat:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+end
+-------------------
+
+
+----------------------------------------------------------------------------
+class "action_bar_single" (action_base)
+-------------------
+function action_bar_single:__init (name, storage) super (nil, name)
+    self.a = storage
+    self.anims = {}
+    self.current = 1
+    self.count = 0
+    self.set = 0
+end
+-------------------
+function action_bar_single:initialize ()
+    action_base.initialize (self)
+    self.object:clear_animations ()
+    self:recreate_animations ()
+    self.object:set_use_callback (self, "use_callback")
+end
+-------------------
+function action_bar_single:execute ()
+    action_base.execute (self)
+
+    if self.object:is_talking () == true then
+       if self.object:animation_count () < 2 then
+          self.object:add_animation ("drink_idle_0_talk", true)
+       end
+       return   
+    end
+    
+    if self.object:animation_count () < 2 then
+       if self.anims[self.current].count == 0 then
+          self.current = self.current + 1
+          if self.current > self.count then 
+             self:recreate_animations ()
+          end
+       end   
+       self.object:add_animation (self.anims[self.current].name, true)
+       self.anims[self.current].count = self.anims[self.current].count - 1
+    end
+    
+end
+-------------------
+function action_bar_single:finalize ()
+    action_base.finalize (self)
+    self.object:clear_animations ()
+    self.object:clear_use_callback ()
+end
+-------------------
+function action_bar_single:recreate_animations ()
+    self.anims = {}
+    local num = math.random (1, 3)
+    if num == 1 then
+       self.anims[1] = {name = "drink_idle_1_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_1_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_1_2", count = 1} 
+    elseif num == 2 then
+       self.anims[1] = {name = "drink_idle_2_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_2_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_2_2", count = 1} 
+    else
+       self.anims[1] = {name = "drink_idle_3_0", count = 1} 
+       self.anims[2] = {name = "drink_idle_3_1", count = math.random (3, 10)} 
+       self.anims[3] = {name = "drink_idle_3_2", count = 1} 
+       self.anims[4] = {name = "drink_idle_3_3", count = 1} 
+       self.anims[5] = {name = "drink_idle_3_4", count = 1} 
+    end
+    self.set = num
+    self.current = 1    
+    self.count = table.getn (self.anims)
+end
+-------------------
+function action_bar_single:use_callback ()
+    if self.a.talking == false then 
+       printf ("FUCK OFF !!!")
+       return 
+    end
+    
+    if self.set == 3 and self.current < 4 then
+       printf ("FUCK OFF !!!")
+       return 
+    end
+    
+    self.object:clear_animations ()
+    self.object:add_animation ("drink_idle_0_0", true)
+    self.object:add_animation ("drink_idle_0_talk", true)
+    
+    self.object:enable_talk ()
+    
+    self:recreate_animations ()
+end
+
+
+----------------------------------------------------------------------------
 class "action_bar" (action_base)
 -------------------
 function action_bar:__init (name, storage) super (nil, name)
@@ -167,12 +342,12 @@ end
 
 ----------------------------------------------------------------------------
 function add_to_binder (npc, ini)
-    if true then return end
+    --if true then return end
     
    	if ini == nil or ini:section_exist ("bar") == false or ini:line_exist ("bar", "enabled") == false then 
    	   return 
     end
-    
+     
     local st = xr_motivator.storage[npc:id()].bar
     st.enabled = ini:r_bool ("bar", "enabled")
     if st.enabled == false then return end
@@ -188,23 +363,47 @@ function add_to_binder (npc, ini)
        st.talking = ini:r_bool ("bar", "talk_enable")
     end
     
-    local satiety = ini:r_u32 ("rest", "satiety_threshold") / 100.0
-    
+    if ini:line_exist ("bar", "pose") == true then
+       st.pose = ini:r_string ("bar", "pose")
+    end
+       
     local manager = npc:motivation_action_manager ()
     local property = {}
     local operators = {}
     
-    property["complete"] = xr_evaluators_id.sidor_bar
-    operators["bar"] = xr_actions_id.sidor_act_bar
+    property["complete"]    = xr_evaluators_id.sidor_bar
+    property["meat"]        = xr_evaluators_id.sidor_bar + 1
+    property["inter"]       = xr_evaluators_id.sidor_bar + 2
+    operators["bar"]        = xr_actions_id.sidor_act_bar
+    operators["meat"]       = xr_actions_id.sidor_act_bar + 1
+    operators["single"]     = xr_actions_id.sidor_act_bar + 2
     
-    manager:add_evaluator (property["complete"], this.evaluator_complete (xr_motivator.storage[npc:id()].bar, "property_complete"))
+    manager:add_evaluator (property["complete"], this.evaluator_complete (st, "property_complete"))
+    manager:add_evaluator (property["meat"], this.evaluator_meat (st, "property_meat"))
+    manager:add_evaluator (property["inter"], this.evaluator_interlocutor (st, "property_inter"))
     
-    local action = this.action_bar ("action_bar", xr_motivator.storage[npc:id()].bar)
+    local action = this.action_bar ("action_bar", st)
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition         (world_property (property["complete"],        false))
-    action:add_effect               (world_property (property["complete"],        true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              false))
+    action:add_precondition         (world_property (property["inter"],             true))
+    action:add_effect               (world_property (property["complete"],          true))
     manager:add_action              (operators["bar"], action)
+
+    local action = this.action_meat ("action_meat", st)
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              true))
+    action:add_effect               (world_property (property["complete"],          true))
+    manager:add_action              (operators["meat"], action)
+
+    local action = this.action_bar_single ("action_bar_single", st)
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (property["complete"],          false))
+    action:add_precondition         (world_property (property["meat"],              false))
+    action:add_precondition         (world_property (property["inter"],             false))
+    action:add_effect               (world_property (property["complete"],          true))
+    manager:add_action              (operators["single"], action)
                
     action = manager:action (stalker_ids.action_puzzle_solver)
     action:add_precondition (world_property (property["complete"],  true))
