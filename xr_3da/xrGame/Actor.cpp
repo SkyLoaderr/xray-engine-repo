@@ -113,7 +113,7 @@ CActor::CActor() : CEntityAlive()
 	InitTrade();
 
 	//разрешить использование пояса в inventory
-	m_inventory.m_bBeltUseful = true;
+	m_inventory.SetBeltUseful(true);
 
 	m_pPersonWeLookingAt = NULL;
 	m_pCarWeLookingAt = NULL;
@@ -1010,7 +1010,8 @@ void CActor::shedule_Update	(u32 DT)
 		}
 		pCamBobbing->SetState					(mstate_real);
 		//cam_Update								(dt,Weapons->getZoomFactor());
-		CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.m_activeSlot < 0xffffff ? m_inventory.m_slots[m_inventory.m_activeSlot].m_pIItem : NULL);
+		CWeapon *l_pW = dynamic_cast<CWeapon*>(m_inventory.GetActiveSlot() < 0xffffff ? 
+					m_inventory.m_slots[m_inventory.GetActiveSlot()].m_pIItem : NULL);
 		cam_Update(dt,l_pW?l_pW->GetZoomFactor():DEFAULT_FOV);
 	} else {
 		if (pCamBobbing)						{Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
@@ -1073,7 +1074,7 @@ void CActor::shedule_Update	(u32 DT)
 	Collide::ray_query l_rq;
 	if(g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, 
 										 Device.vCameraDirection, 
-									 	 m_inventory.m_takeDist,  l_rq)) 
+									 	 m_inventory.GetTakeDist(),  l_rq)) 
 	{
 		m_inventory.m_pTarget = dynamic_cast<PIItem>(l_rq.O);
 		m_pPersonWeLookingAt = dynamic_cast<CInventoryOwner*>(l_rq.O);
@@ -1219,7 +1220,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			//уменьшить силу игрока из-за выполненого прыжка
 			if (!psActorFlags.test(AF_GODMODE))	
 					ConditionJump((m_inventory.TotalWeight()+GetMass())/
-								  (m_inventory.m_maxWeight + GetMass()));
+								  (m_inventory.GetMaxWeight() + GetMass()));
 		}
 
 		/*
@@ -1511,7 +1512,7 @@ void CActor::UpdateCondition()
 	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
 	{
 	   ConditionAccel((m_inventory.TotalWeight()+GetMass())/
-						(m_inventory.m_maxWeight+GetMass()));
+						(m_inventory.GetMaxWeight()+GetMass()));
 	}
 	
 	CActorCondition::UpdateCondition();

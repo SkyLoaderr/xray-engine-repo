@@ -33,11 +33,12 @@ void CAI_Trader::Load(LPCSTR section)
 	//fHealth							= pSettings->r_float	(section,"Health");
 	fEntityHealth = pSettings->r_float	(section,"Health");
 
-	m_inventory.m_maxWeight			= pSettings->r_float	(section,"max_item_mass");
-	m_inventory.m_maxRuck			= 10000;
+	float max_weight = pSettings->r_float	(section,"max_item_mass");
+	m_inventory.SetMaxWeight(max_weight);
+	m_inventory.SetMaxRuck(10000);
 	
-	m_trade_storage.m_maxWeight		= m_inventory.m_maxWeight;
-	m_trade_storage.m_maxRuck		= m_inventory.m_maxRuck;
+	m_trade_storage.SetMaxWeight(max_weight);
+	m_trade_storage.SetMaxRuck(m_inventory.GetMaxRuck());
 }
 
 BOOL CAI_Trader::net_Spawn			(LPVOID DC)

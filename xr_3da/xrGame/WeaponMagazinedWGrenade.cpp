@@ -588,11 +588,24 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	animGet				(mhud_idle_g,	"idle_g");
-	animGet				(mhud_reload_g,	"reload_g");
-	animGet				(mhud_shots_g,	"shoot_g");
-	animGet				(mhud_switch_g,	"switch_g");
-	animGet				(mhud_switch,	"switch");
+
+	animGet				(mhud_idle_g,	pSettings->r_string(*hud_sect, "anim_idle_g"));
+	animGet				(mhud_reload_g,	pSettings->r_string(*hud_sect, "anim_reload_g"));
+	animGet				(mhud_shots_g,	pSettings->r_string(*hud_sect, "anim_shoot_g"));
+	animGet				(mhud_switch_g,	pSettings->r_string(*hud_sect, "anim_switch_grenade_on"));
+	animGet				(mhud_switch,	pSettings->r_string(*hud_sect, "anim_switch_grenade_off"));
+	animGet				(mhud_show_g,	pSettings->r_string(*hud_sect, "anim_draw_g"));
+	animGet				(mhud_hide_g,	pSettings->r_string(*hud_sect, "anim_holster_g"));
+
+	animGet				(mhud_idle_w_gl,	pSettings->r_string(*hud_sect, "anim_idle_gl"));
+	animGet				(mhud_reload_w_gl,	pSettings->r_string(*hud_sect, "anim_reload_gl"));
+	animGet				(mhud_show_w_gl,	pSettings->r_string(*hud_sect, "anim_draw_gl"));
+	animGet				(mhud_hide_w_gl,	pSettings->r_string(*hud_sect, "anim_holster_gl"));
+	animGet				(mhud_shots_w_gl,	pSettings->r_string(*hud_sect, "anim_shoot_gl"));
+
+
+
+	grenade_bone_name = pSettings->r_string(*hud_sect, "grenade_bone");
 
 	// load ammo classes SECOND (grenade_class)
 	m_ammoTypes2.clear	(); 
@@ -620,7 +633,7 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 	
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID(*grenade_bone_name)).set_callback(GrenadeCallback, this);
 
 /*	CSE_ALifeObject *l_tpALifeObject = (CSE_ALifeObject*)(DC);
 	m_bHideGrenade = !iAmmoElapsed;
@@ -657,13 +670,14 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 }
 void CWeaponMagazinedWGrenade::switch2_Idle() 
 {
-	if(m_bGrenadeMode) 
+/*	if(m_bGrenadeMode)
 	{
 		m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())],FALSE);
 		bPending = false;
 	}
-	else 
-		inherited::switch2_Idle();
+	else */
+	inherited::switch2_Idle();
+
 }
 void CWeaponMagazinedWGrenade::switch2_Reload()
 {
@@ -678,7 +692,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 		bPending = true;
 	}
 	else 
-		inherited::switch2_Reload();
+	     inherited::switch2_Reload();
 }
 
 void CWeaponMagazinedWGrenade::OnShot		()
@@ -707,41 +721,11 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		pStaticPG->Play();
 	} 
 	else inherited::OnShot();
-	//// Sound
-	//Sound->play_at_pos			(sndShot,H_Root(),vLastFP);
-
-	//// Camera
-	//if (hud_mode)	
-	//{
-	//	CEffectorShot* S		= dynamic_cast<CEffectorShot*>	(Level().Cameras.GetEffector(cefShot)); 
-	//	if (!S)	S				= (CEffectorShot*)Level().Cameras.AddEffector(xr_new<CEffectorShot> (camMaxAngle,camRelaxSpeed));
-	//	R_ASSERT				(S);
-	//	S->Shot					(camDispersion);
-	//}
-	//
-	//// Animation
-	//m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
-	//
-	//// Flames
-	//fFlameTime					= .1f;
-	//
-	//// Shell Drop
-	//OnShellDrop					();
-
-	//CParticlesObject* pStaticPG;/* s32 l_c = m_effects.size();*/
-	//pStaticPG = xr_new<CParticlesObject>("weapons\\generic_shoot",Sector());
-	//Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
-	//Fvector l_vel; l_vel.sub(Position(),ps_Element(0).Position()); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
-	//pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
-	////pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
 //переход в режим подствольника или выход из него
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	//только если оружие в режиме IDLE
-	//char* curre
-	//m_pHUD->animGet()
-	if(STATE != eIdle || bPending)
+	if(!IsGrenadeLauncherAttached() || STATE != eIdle || bPending)
 	{
 		return;
 	}
@@ -1013,4 +997,50 @@ void CWeaponMagazinedWGrenade::SpawFakeGrenade(const char* grenade_section_name)
 		Level().Send		(P,net_flags(TRUE));
 		// Destroy
 		F_entity_Destroy	(D);
+}
+
+
+//виртуальные функции для проигрывания анимации HUD
+void CWeaponMagazinedWGrenade::PlayAnimShow()
+{
+	if(IsGrenadeLauncherAttached())
+		m_pHUD->animPlay(mhud_show_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+	else
+		m_pHUD->animPlay(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+}
+
+void CWeaponMagazinedWGrenade::PlayAnimHide()
+{
+	if(IsGrenadeLauncherAttached())
+		m_pHUD->animPlay(mhud_hide_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+	else
+		m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+}
+
+void CWeaponMagazinedWGrenade::PlayAnimReload()
+{
+	if(IsGrenadeLauncherAttached())
+		m_pHUD->animPlay(mhud_reload_w_gl[Random.randI(mhud_idle.size())],FALSE,this);
+	else
+		m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+}
+
+void CWeaponMagazinedWGrenade::PlayAnimIdle()
+{
+	if(IsGrenadeLauncherAttached())
+	{
+		if(m_bGrenadeMode)
+			m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())],FALSE);
+		else
+			m_pHUD->animPlay(mhud_idle_w_gl[Random.randI(mhud_idle.size())]);	
+	}
+	else
+		m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+}
+void CWeaponMagazinedWGrenade::PlayAnimShoot()
+{
+	if(IsGrenadeLauncherAttached())
+		m_pHUD->animPlay(mhud_shots_w_gl[Random.randI(mhud_idle.size())],TRUE,this);
+	else
+		m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
 }

@@ -232,10 +232,10 @@ void CUIMainIngameWnd::Update()
 
 		
 				
-			if(l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size()) 
+			if(l_pA->m_inventory.GetActiveSlot() < l_pA->m_inventory.m_slots.size()) 
 			{
 				CWeapon* pWeapon = dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[
-												l_pA->m_inventory.m_activeSlot].m_pIItem); 
+												l_pA->m_inventory.GetActiveSlot()].m_pIItem); 
 				UIWeapon.Out(pWeapon);
 				if(pWeapon)
 					UITextWeaponName.SetText((char*)pWeapon->NameShort());

@@ -46,7 +46,7 @@ CCar::CCar(void)
 	m_car_sound			=xr_new<SCarSound>	(this);
 
 	//у машины слотов в инвентаре нет
-	m_inventory.m_bSlotsUseful = false;
+	m_inventory.SetSlotsUseful(false);
 }
 
 CCar::~CCar(void)

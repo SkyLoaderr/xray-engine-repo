@@ -104,6 +104,14 @@ public:
 
 	u32				m_queueSize, m_shotNum;
 	void			SetQueueSize	(u32 size) { m_queueSize = size; }
+
+	//виртуальные функции для проигрывания анимации HUD
+	virtual void	PlayAnimShow();
+	virtual void	PlayAnimHide();
+	virtual void	PlayAnimReload();
+	virtual void	PlayAnimIdle();
+	virtual void	PlayAnimShoot();
+
 };
 
 #endif //__XR_WEAPON_MAG_H__

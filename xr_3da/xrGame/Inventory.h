@@ -227,29 +227,64 @@ public:
 
 	bool Eat(PIItem pIItem);								// скушать предмет :)
 
+	u32 GetActiveSlot() {return m_activeSlot;}
+
+	bool IsSlotsUseful() {return m_bSlotsUseful;}	 
+	void SetSlotsUseful(bool slots_useful) {m_bSlotsUseful = slots_useful;}
+	bool IsBeltUseful() {return m_bBeltUseful;}
+	void SetBeltUseful(bool belt_useful) {m_bBeltUseful = belt_useful;}
+
 	TIItemSet m_all;										// Наборы объектов. m_all - все
 	TIItemList m_ruck, m_belt;								// Списки объектов. m_ruck - рюкзак, m_belt - пояс
 	TISlotArr m_slots;										// Слоты (фиксированное кол-во)
-	u32 m_activeSlot, m_nextActiveSlot;						// Активный слот и слот который станет активным после смены
-	f32 m_maxWeight;										// Максимальный вес инвентаря
-	u32 m_maxRuck, m_maxBelt;								// Максимальное кол-во объектов в рюкзаке и на поясе
-	f32 m_takeDist;											// Максимальное расстояние на котором можно подобрать объект
-	PIItem m_pTarget;										// Объект на который наведен прицел
 
-	//буфферный список
-	TIItemList l_subs; 
+	float GetTakeDist() {return m_takeDist;}
+	
+	float GetMaxWeight() {return m_maxWeight;}
+	void  SetMaxWeight(float weight) {m_maxWeight = weight;}
 
-	bool m_bBeltUseful;					//флаг, показывающий наличие пояса в инвенторе
-	bool m_bSlotsUseful;				//флаг, допускающий использование слотов
+	u32  GetMaxRuck() {return m_maxRuck;}
+	void SetMaxRuck(u32 max_ruck) {m_maxRuck = max_ruck;}
+	u32 GetMaxBelt() {return m_maxBelt;}
 
+	// Объект на который наведен прицел
+	PIItem m_pTarget;
+
+	friend class CInventoryOwner;
+
+protected:
 	//для проверки свободного места
 	bool FreeRuckRoom();
 	bool FreeBeltRoom();
-	
+
+
+	// Активный слот и слот который станет активным после смены
+	u32 m_activeSlot;
+	u32 m_nextActiveSlot;
+
+	CInventoryOwner *m_pOwner;
+
 	//буферный список для сортировки
 	TIItemList ruck_list;
 
-	CInventoryOwner *m_pOwner;
+	//флаг, показывающий наличие пояса в инвенторе
+	bool m_bBeltUseful;
+	//флаг, допускающий использование слотов
+	bool m_bSlotsUseful;
+
+	// Максимальный вес инвентаря
+	float m_maxWeight;
+	// Максимальное кол-во объектов в рюкзаке и 
+	u32 m_maxRuck;
+	//на поясе
+	u32 m_maxBelt;	
+	// Максимальное расстояние на котором можно подобрать объект
+	float m_takeDist;
+
+
+
+	//буфферный список
+	TIItemList l_subs; 
 };
 
 

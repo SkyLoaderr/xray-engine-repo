@@ -134,7 +134,7 @@ void CAI_Stalker::Die				()
 	m_bHammerIsClutched				= !::Random.randI(0,2);
 
 	//запретить использование слотов в инвенторе
-	m_inventory.m_bSlotsUseful = false;
+	m_inventory.SetSlotsUseful(false);
 //#ifdef DEBUG
 //	Msg								("Death position : [%f][%f][%f]",VPUSH(Position()));
 //#endif
@@ -496,7 +496,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if ((I - B) == (int)m_inventory.m_activeSlot) 
+				if ((I - B) == (int)m_inventory.GetActiveSlot()) 
 					(*I).m_pIItem->Drop();
 				else
 					if((*I).m_pIItem) m_inventory.Ruck((*I).m_pIItem);
@@ -511,7 +511,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			xr_vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
 			for ( ; I != E; I++)
-				if ((I - B) != (int)m_inventory.m_activeSlot)
+				if ((I - B) != (int)m_inventory.GetActiveSlot())
 					m_inventory.Ruck((*I).m_pIItem);
 			//		(*I).m_pIItem->Drop();
 			

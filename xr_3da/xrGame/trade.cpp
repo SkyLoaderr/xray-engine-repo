@@ -345,7 +345,7 @@ void CTrade::SellItem(int id)
 			// сумма сделки учитывая ценовой коэффициент
 			u32	dwTransferMoney = GetItemPrice(l_pIItem);
 
-			if ((l_pIItem->Weight() + pPartnerInv.TotalWeight() < pPartnerInv.m_maxWeight) && 
+			if ((l_pIItem->Weight() + pPartnerInv.TotalWeight() < pPartnerInv.GetMaxWeight()) && 
 				(pPartnerInv.m_all.find(l_pIItem) == pPartnerInv.m_all.end()) && 
 				(pPartner.inv_owner->m_dwMoney >= dwTransferMoney )) {
 				

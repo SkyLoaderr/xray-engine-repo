@@ -37,7 +37,7 @@ void CUIWpnDragDropItem::Draw()
 	int down_offset = (GetHeight()-m_UIStaticItem.GetOriginalRectScaled().height())/2;
 
 		
-	if(m_pWeapon->IsScopeAttached())
+	if(m_pWeapon->ScopeAttachable() && m_pWeapon->IsScopeAttached())
 	{
 		m_UIStaticScope.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeX()*GetTextureScale()),
 			                   rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetScopeY()*GetTextureScale()));
@@ -46,7 +46,7 @@ void CUIWpnDragDropItem::Draw()
 									  NULL, m_UIStaticScope);
 		m_UIStaticScope.Render();
 	}
-	if(m_pWeapon->IsSilencerAttached())
+	if(m_pWeapon->SilencerAttachable() && m_pWeapon->IsSilencerAttached())
 	{
 		m_UIStaticSilencer.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetSilencerX()*GetTextureScale()),
 								  rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetSilencerY()*GetTextureScale()));
@@ -57,7 +57,7 @@ void CUIWpnDragDropItem::Draw()
 
 		m_UIStaticSilencer.Render();
 	}
-	if(m_pWeapon->IsGrenadeLauncherAttached())
+	if(m_pWeapon->GrenadeLauncherAttachable() && m_pWeapon->IsGrenadeLauncherAttached())
 	{
 		m_UIStaticGrenadeLauncher.SetPos(rect.left + right_offset + iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherX()*GetTextureScale()),
 										 rect.top + down_offset + iFloor(0.5f+(float)m_pWeapon->GetGrenadeLauncherY()*GetTextureScale()));

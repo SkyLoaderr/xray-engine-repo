@@ -102,6 +102,14 @@ public:
 	void			SwitchMode		();
 	void			OnAnimationEnd	();
 
+	//виртуальные функции для проигрывания анимации HUD
+	virtual void	PlayAnimShow();
+	virtual void	PlayAnimHide();
+	virtual void	PlayAnimReload();
+	virtual void	PlayAnimIdle();
+	virtual void	PlayAnimShoot();
+
+
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
 	ref_sound			sndShotG;
@@ -110,6 +118,17 @@ public:
 	MotionSVec			mhud_reload_g;
 	MotionSVec			mhud_shots_g;
 	MotionSVec			mhud_switch_g, mhud_switch;
+	MotionSVec			mhud_show_g;
+	MotionSVec			mhud_hide_g;
+
+	//анимации дублирующие обычные для WeaponMagazined, но 
+	//с подствольником
+	MotionSVec			mhud_idle_w_gl;
+	MotionSVec			mhud_reload_w_gl;
+	MotionSVec			mhud_shots_w_gl;
+	MotionSVec			mhud_show_w_gl;
+	MotionSVec			mhud_hide_w_gl;
+
 
 	//дополнительные параметры патронов 
 	//для подствольника
@@ -127,6 +146,9 @@ public:
 
 	Fvector* m_pGrenadePoint;
 	CWeaponFakeGrenade* m_pGrenade;
+
+	//название косточки для гранаты подствольника в HUD
+	ref_str grenade_bone_name;
 
 protected:
 	void SpawFakeGrenade(const char*  grenade_section_name);

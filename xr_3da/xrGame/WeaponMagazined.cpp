@@ -68,13 +68,14 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	SoundCreate			(sndRicochet[2],"ric3"    ,m_eSoundRicochet);
 	SoundCreate			(sndRicochet[3],"ric4"    ,m_eSoundRicochet);
 	SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
+	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	animGet				(mhud_idle,		"idle");
-	animGet				(mhud_reload,	"reload");
-	animGet				(mhud_show,		"draw");
-	animGet				(mhud_hide,		"holster");
-	animGet				(mhud_shots,	"shoot");
+	animGet				(mhud_idle,		pSettings->r_string(*hud_sect, "anim_idle"));
+	animGet				(mhud_reload,	pSettings->r_string(*hud_sect, "anim_reload"));
+	animGet				(mhud_show,		pSettings->r_string(*hud_sect, "anim_draw"));
+	animGet				(mhud_hide,		pSettings->r_string(*hud_sect, "anim_holster"));
+	animGet				(mhud_shots,	pSettings->r_string(*hud_sect, "anim_shoot"));
 
 	MediaLOAD	();
 }
@@ -524,8 +525,8 @@ void CWeaponMagazined::OnShot		()
 	}
 	
 	// Animation
-	m_pHUD->animPlay			(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
-	
+	PlayAnimShoot();
+		
 	// Flames
 	fFlameTime					= .1f;
 	
@@ -612,7 +613,7 @@ void CWeaponMagazined::OnAnimationEnd()
 void CWeaponMagazined::switch2_Idle	()
 {
 	bPending = false;
-	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+	PlayAnimIdle();
 }
 void CWeaponMagazined::switch2_Fire	()
 {
@@ -627,7 +628,7 @@ void CWeaponMagazined::switch2_Reload()
 	if (sndReload.feedback)
 		sndReload.feedback->set_volume(.2f);
 	
-	m_pHUD->animPlay		(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+	PlayAnimReload();
 	bPending = true;
 }
 void CWeaponMagazined::switch2_Hiding()
@@ -637,7 +638,8 @@ void CWeaponMagazined::switch2_Hiding()
 	Sound->play_at_pos(sndHide,H_Root(),vLastFP);
 	if (sndHide.feedback) sndHide.feedback->set_volume(.2f);
 	
-	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+
+	PlayAnimHide();
 	bPending = true;
 
 	if (Local()) Level().Cameras.RemoveEffector	(cefShot);
@@ -655,7 +657,7 @@ void CWeaponMagazined::switch2_Showing()
 		sndShow.feedback->set_volume(.3f);
 
 	bPending = true;
-	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+	PlayAnimShow();
 }
 
 bool CWeaponMagazined::Action(s32 cmd, u32 flags) 
@@ -774,4 +776,30 @@ bool CWeaponMagazined::Detach(const char* item_section_name)
 	}
 	else
 		return inherited::Detach(item_section_name);;
+}
+
+
+//виртуальные функции для проигрывания анимации HUD
+void CWeaponMagazined::PlayAnimShow()
+{
+	m_pHUD->animPlay(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
+}
+
+void CWeaponMagazined::PlayAnimHide()
+{
+	m_pHUD->animPlay (mhud_hide[Random.randI(mhud_hide.size())],FALSE,this);
+}
+
+void CWeaponMagazined::PlayAnimReload()
+{
+	m_pHUD->animPlay(mhud_reload[Random.randI(mhud_reload.size())],FALSE,this);
+}
+
+void CWeaponMagazined::PlayAnimIdle()
+{
+	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
+}
+void CWeaponMagazined::PlayAnimShoot()
+{
+	m_pHUD->animPlay(mhud_shots[Random.randI(mhud_shots.size())],TRUE,this);
 }

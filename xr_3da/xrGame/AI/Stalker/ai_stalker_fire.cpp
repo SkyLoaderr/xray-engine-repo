@@ -334,9 +334,9 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 		xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end() - 2;
 		s32 best_slot = -1;
 		for ( ; I != E; I++)
-			if ((*I).m_pIItem && ((I - B) != (int)m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+			if ((*I).m_pIItem && ((I - B) != (int)m_inventory.GetActiveSlot()) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 				best_slot = u32(I - B);
-		if (best_slot > (int)m_inventory.m_activeSlot)
+		if (best_slot > (int)m_inventory.GetActiveSlot())
 			m_inventory.Activate(best_slot);
 	}
 	else
@@ -403,7 +403,7 @@ void CAI_Stalker::vfSetWeaponState(EObjectAction tWeaponState)
 					xr_vector<CInventorySlot>::iterator E = m_inventory.m_slots.end() - 2;
 					u32 best_slot = u32(-1);
 					for ( ; I != E; I++)
-						if ((*I).m_pIItem && ((I - B) != (int)m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+						if ((*I).m_pIItem && ((I - B) != (int)m_inventory.GetActiveSlot()) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
 							best_slot = u32(I - B);
 					if (best_slot != -1)														   
 						m_inventory.Activate(best_slot);

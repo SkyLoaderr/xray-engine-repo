@@ -60,6 +60,7 @@ protected:
 	//CPhysicsShell*			m_pPhysicsShell;
 	CWeaponHUD*				m_pHUD;
 	BOOL					hud_mode;
+	ref_str					hud_sect;
 	int						iSlotBinding;
 
 	ref_str					pstrWallmark;
@@ -314,6 +315,7 @@ public:
 	ref_str				m_ammoName;
 	f32					m_resource, m_abrasion;
 	string64			m_tmpName;
+
 	//
 
 	// Multitype ammo support

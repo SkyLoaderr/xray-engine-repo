@@ -329,8 +329,8 @@ void CWeapon::Load		(LPCSTR section)
 	pstrWallmark		= name;
 	fWallmarkSize		= pSettings->r_float		(section,"wm_size");
 
-	LPCSTR hud_sect		= pSettings->r_string		(section,"hud");
-	m_pHUD->Load		(hud_sect);
+	hud_sect			= pSettings->r_string		(section,"hud");
+	m_pHUD->Load		(*hud_sect);
 
 	// load ammo classes
 	m_ammoTypes.clear	(); 
@@ -1187,18 +1187,21 @@ bool CWeapon::Detach(const char* item_section_name)
 bool CWeapon::IsGrenadeLauncherAttached()
 {
 	return (m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0);
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher) != 0) || 
+			m_eGrenadeLauncherStatus == CSE_ALifeItemWeapon::eAddonPermanent;
 }
 bool CWeapon::IsScopeAttached()
 {
 	return (m_eScopeStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0);
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonScope) != 0) || 
+			m_eScopeStatus == CSE_ALifeItemWeapon::eAddonPermanent;
 
 }
 bool CWeapon::IsSilencerAttached()
 {
 	return (m_eSilencerStatus == CSE_ALifeItemWeapon::eAddondAttachable &&
-			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0);
+			(m_flagsAddOnState&CSE_ALifeItemWeapon::eWeaponAddonSilencer) != 0) || 
+			m_eSilencerStatus == CSE_ALifeItemWeapon::eAddonPermanent;
 }
 
 bool CWeapon::GrenadeLauncherAttachable()
