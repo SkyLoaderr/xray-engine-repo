@@ -125,6 +125,10 @@ void CStalkerActionNoALife::initialize	()
 //	smart_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->CSightManager::setup	(CSightAction(actor,true));
+	Fvector2						start_position  = Fvector2().set(-37.100006f,-42.700001f);
+	Fvector2						finish_position = Fvector2().set(-36.750004f,-45.850002f);
+	u32								start_vertex_id = 34013;
+	ai().level_graph().check_position_in_direction_slow(start_vertex_id,start_position,finish_position);
 #endif
 }
 

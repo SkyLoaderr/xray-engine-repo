@@ -317,7 +317,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 			box.min			= box.max = temp;
 			box.grow		(identity);
 			if (box.pick_exact(start,dir)) {
-				if (box.contains(dest) && inside(next_vertex_id,dest)) {
+				if (/**box.contains(dest) && /**/inside(next_vertex_id,dest)) {
 					TIMER_STOP(CheckPositionInDirection)
 					return	(next_vertex_id);
 				}
