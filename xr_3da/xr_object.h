@@ -71,9 +71,9 @@ public:
 	u32									dwFrame_UpdateCL;
 
 	// Network
-	IC BOOL								Local				()					{ return FLAGS.net_Local;	}
-	IC BOOL								Remote				()					{ return !FLAGS.net_Local;	}
-	IC u32								ID					()					{ return net_ID;			}
+	IC BOOL								Local				()			const	{ return FLAGS.net_Local;	}
+	IC BOOL								Remote				()			const	{ return !FLAGS.net_Local;	}
+	IC u32								ID					()			const	{ return net_ID;			}
 	IC void								setID				(u32 _ID)			{ net_ID = _ID;				}
 	virtual BOOL						Ready				()					{ return FLAGS.net_Ready;	}
 	virtual float						shedule_Scale		()					{ return Device.vCameraPosition.distance_to(Position())/200.f; }
