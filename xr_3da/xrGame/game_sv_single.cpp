@@ -251,3 +251,17 @@ void game_sv_Single::add_restriction	(NET_Packet &packet, u16 id)
 	alife().add_restriction (id,restriction_id,restriction_type);
 }
 
+void game_sv_Single::remove_restriction	(NET_Packet &packet, u16 id)
+{
+	if (!ai().get_alife())
+		return;
+
+	ALife::_OBJECT_ID		restriction_id;
+	packet.r				(&restriction_id,sizeof(restriction_id));
+
+	RestrictionSpace::ERestrictorTypes	restriction_type;
+	packet.r				(&restriction_type,sizeof(restriction_type));
+	
+	alife().remove_restriction (id,restriction_id,restriction_type);
+}
+

@@ -372,6 +372,8 @@ void CCustomZone::net_Destroy()
 		m_pIdleParticles->PSI_destroy();
 		m_pIdleParticles = NULL;
 	}
+
+	m_effector.Stop		();
 }
 
 bool CCustomZone::IdleState()

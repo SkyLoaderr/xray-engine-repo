@@ -107,6 +107,7 @@ void CZoneEffector::Stop()
 {
 	if (!p_effector) return;
 	
+	Level().Cameras.RemoveEffector(EEffectorPPType( u32(u64(this) & u32(-1)) ));
 	p_effector->Destroy();
 	p_effector = 0;
 };

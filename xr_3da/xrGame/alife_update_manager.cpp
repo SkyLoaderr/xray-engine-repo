@@ -365,7 +365,7 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 	}
 
 	switch (restriction_type) {
-		case RestrictionSpace::eRestrictorTypeIn : {
+		case RestrictionSpace::eRestrictorTypeOut : {
 			if (std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id) != creature->m_dynamic_out_restrictions.end()) {
 				Msg							("! cannot add restriction with id %d to the entity with id %d, because it is already added",restriction_id,id);
 				return;
@@ -375,13 +375,69 @@ void CALifeUpdateManager::add_restriction	(ALife::_OBJECT_ID id, ALife::_OBJECT_
 
 			break;
 		}
-		case RestrictionSpace::eRestrictorTypeOut : {
+		case RestrictionSpace::eRestrictorTypeIn : {
 			if (std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id) != creature->m_dynamic_in_restrictions.end()) {
 				Msg							("! cannot add restriction with id %d to the entity with id %d, because it is already added",restriction_id,id);
 				return;
 			}
 
 			creature->m_dynamic_in_restrictions.push_back(restriction_id);
+
+			break;
+		}
+		default :  {
+			Msg								("! Invalid restriction type!");
+			return;
+		}
+	}
+}
+
+void CALifeUpdateManager::remove_restriction(ALife::_OBJECT_ID id, ALife::_OBJECT_ID restriction_id, const RestrictionSpace::ERestrictorTypes &restriction_type)
+{
+	CSE_ALifeDynamicObject					*object = objects().object(id,true);
+	if (!object) {
+		Msg									("! cannot remove restriction with id %d to the entity with id %d, because there is no creature with the specified id",restriction_id,id);
+		return;
+	}
+	
+	CSE_ALifeDynamicObject					*object_restrictor = objects().object(restriction_id,true);
+	if (!object_restrictor) {
+		Msg									("! cannot remove restriction with id %d to the entity with id %d, because there is no space restrictor with the specified id",restriction_id,id);
+		return;
+	}
+
+	CSE_ALifeCreatureAbstract				*creature = smart_cast<CSE_ALifeCreatureAbstract*>(object);
+	if (!creature) {
+		Msg									("! cannot remove restriction with id %d to the entity with id %d, because there is an object with the specified id, but it is not a creature",restriction_id,id);
+		return;
+	}
+	
+	CSE_ALifeSpaceRestrictor				*restrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(object_restrictor);
+	if (!restrictor) {
+		Msg									("! cannot remove restriction with id %d to the entity with id %d, because there is an object with the specified id, but it is not a space restrictor",restriction_id,id);
+		return;
+	}
+
+	switch (restriction_type) {
+		case RestrictionSpace::eRestrictorTypeOut : {
+			xr_vector<ALife::_OBJECT_ID>::iterator	I = std::find(creature->m_dynamic_out_restrictions.begin(),creature->m_dynamic_out_restrictions.end(),restriction_id);
+			if (I == creature->m_dynamic_out_restrictions.end()) {
+				Msg							("! cannot remove restriction with id %d to the entity with id %d, because it is not added",restriction_id,id);
+				return;
+			}
+
+			creature->m_dynamic_out_restrictions.erase(I);
+
+			break;
+		}
+		case RestrictionSpace::eRestrictorTypeIn : {
+			xr_vector<ALife::_OBJECT_ID>::iterator	I = std::find(creature->m_dynamic_in_restrictions.begin(),creature->m_dynamic_in_restrictions.end(),restriction_id);
+			if (I == creature->m_dynamic_in_restrictions.end()) {
+				Msg							("! cannot remove restriction with id %d to the entity with id %d, because it is not added",restriction_id,id);
+				return;
+			}
+
+			creature->m_dynamic_in_restrictions.erase(I);
 
 			break;
 		}

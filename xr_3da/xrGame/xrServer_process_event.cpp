@@ -314,6 +314,10 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		{
 			game->add_restriction	(P,destination);
 		}break;
+	case GE_REMOVE_RESTRICTION:
+		{
+			game->remove_restriction(P,destination);
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;
