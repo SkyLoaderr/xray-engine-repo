@@ -143,6 +143,10 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	net_Local					= TRUE;
 	net_ID						= 0xffff;
 	net_Ready					= TRUE;
+	
+	// Sheduler
+	dwMinUpdate	= 300;
+	dwMaxUpdate	= 1000;
 }
 
 void CCustomEvent::Update (DWORD dt)
