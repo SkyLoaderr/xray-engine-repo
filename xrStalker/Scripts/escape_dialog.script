@@ -29,28 +29,6 @@ end
 --------------------------------------------------------------------------------------------------------
 -- Trader
 --------------------------------------------------------------------------------------------------------
-function have_artefact_nightstar(first_speaker, second_speaker)
-  	return first_speaker:object("af_night_star") ~= nil
-end
-
-function give_artefact_nightstar(first_speaker, second_speaker)
-	local artefact = first_speaker:object("af_night_star")
-	first_speaker:transfer_item (artefact, second_speaker)
-	second_speaker:transfer_money (800, first_speaker)
-	first_speaker:set_task_state(task.completed, "escape_trader_need_artefact", 0)
-end
-
-function trader_need_artefact(first_speaker, second_speaker)
-	local actor = level.actor()
-       	if actor ~= nil and
-	   actor:dont_has_info("escape_trader_need_artefact") and
-	   actor:dont_has_info("escape_trader_have_artefact")
-	then
-		return true
-	end
-	return false
-end
-
 function trader_alredy_give_job(first_speaker, second_speaker)
 	local actor = level.actor()
        	if actor ~= nil and
@@ -66,7 +44,9 @@ function trader_dont_has_job(first_speaker, second_speaker)
 	local actor = level.actor()
        	if actor ~= nil and
 	   (actor:has_info("escape_trader_need_artefact") or
-	   actor:has_info("escape_trader_have_artefact"))
+	   actor:has_info("escape_trader_have_artefact")) and
+   	   (actor:has_info("escape_need_blockpost_case") or
+	   actor:has_info("escape_have_blockpost_case"))
 	then
 		return true
 	end
@@ -74,29 +54,44 @@ function trader_dont_has_job(first_speaker, second_speaker)
 end
 
 
-
-
---' OBSOLETE
+--' Escape blockpost box
 function have_blockpost_case(first_speaker, second_speaker)
   	return first_speaker:object("quest_case_01") ~= nil
 end
-
-
-
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()
        	if actor ~= nil and
 	   actor:dont_has_info("escape_need_blockpost_case") and
 	   actor:dont_has_info("escape_have_blockpost_case")
-	then
+then
 		return true
 	end
 	return false
 end
-
 function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
 	first_speaker:set_task_state(task.completed, "escape_blockpost_case", 0)
+end
+
+--' Escape trader artefact
+function have_artefact_nightstar(first_speaker, second_speaker)
+  	return first_speaker:object("af_night_star") ~= nil
+end
+function give_artefact_nightstar(first_speaker, second_speaker)
+	local artefact = first_speaker:object("af_night_star")
+	first_speaker:transfer_item (artefact, second_speaker)
+	second_speaker:transfer_money (800, first_speaker)
+	first_speaker:set_task_state(task.completed, "escape_trader_need_artefact", 0)
+end
+function trader_need_artefact(first_speaker, second_speaker)
+	local actor = level.actor()
+       	if actor ~= nil and
+	   actor:dont_has_info("escape_trader_need_artefact") and
+	   actor:dont_has_info("escape_trader_have_artefact")
+	then
+		return true
+	end
+	return false
 end
