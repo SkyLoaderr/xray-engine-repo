@@ -33,7 +33,7 @@ public:
 		_size				= V;								// initial size
 		_count				= 0;								// initial count
 	}
-	CList					(CList<T>& from)
+	CList					(const CList<T>& from)
 	{
 		_size				= from._count;
 		_count				= from._count;
@@ -108,7 +108,7 @@ public:
 		else				data	= (T *) realloc(data,_size*sizeof(T));
 	}
 
-	IC	T&			operator[]				( int i )			{ VERIFY(i>=0 && i<_count); return data[i]; };
+	IC	T&			operator[]				( int i )	const	{ VERIFY(i>=0 && i<_count); return data[i]; };
 	IC	T*			begin					( )					{ return data;			}
 	IC	T*			end						( )					{ return data+_count;	}
 	IC	DWORD		size					( )					{ return _count;		}
