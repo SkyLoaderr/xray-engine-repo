@@ -107,10 +107,10 @@ void	CRender::render_lights	(light_Package& LP)
 		xr_vector<light*>	L_spot_s;
 		if	(!LP.v_spot_s.empty())	{
 			// generate spot shadowmap
+			Target.phase_smap_spot_clear	();
 			xr_vector<light*>&	source		= LP.v_spot_s;
 			light*		L		= source.back	()	;
 			u16			sid		= L->vis.smap_ID	;
-
 			while (true)	
 			{
 				if	(source.empty())		break;
