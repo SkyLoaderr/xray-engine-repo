@@ -206,6 +206,7 @@ bool CScriptStorage::load_buffer	(CLuaVirtualMachine *L, LPCSTR caBuffer, size_t
 		strcpy			(script,insert);
 		Memory.mem_copy	(script + str_len,caBuffer,u32(tSize));
 		l_iErrorCode	= luaL_loadbuffer(L,script,tSize + str_len,caScriptName);
+		xr_free			(script);
 	}
 	else
 		l_iErrorCode	= luaL_loadbuffer(L,caBuffer,tSize,caScriptName);
