@@ -144,12 +144,12 @@ function motivator_binder:reload (section)
 		center_point = nil,
 		max_rad = 2,
 		action = 0,
-            last_action = 0,
-            patrol_path = {},
-            pos_id = -1,
-            body_state = 0,
-            timer = { act1 = {begin = nil, time = 120},
-						act4 = {begin = nil, time = 60}}
+        last_action = 0,
+        patrol_path = {},
+        pos_id = -1,
+        body_state = 0,
+        timer = { act1 = {begin = nil, time = 120},
+				act4 = {begin = nil, time = 60}}
 	}
     --' спящий
     xr_motivator.storage[self.object:id()].sleeper = {
