@@ -284,7 +284,7 @@ void CWallmarksEngine::Render()
 			if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)){
 				float dst	= Device.vCameraPosition.distance_to_sqr(W->bounds.P);
 				float ssa	= W->bounds.R * W->bounds.R / dst;
-				if (ssa>=ssaCLIP){
+				if (ssa>=ssaCLIP)	{
 					u32 w_count		= u32(w_verts-w_start);
 					if ((w_count+W->verts.size())>=(MAX_TRIS*3)){
 						if (w_count){
@@ -312,6 +312,7 @@ void CWallmarksEngine::Render()
 				w_it++;
 			}
 		}
+
 		// Flush stream
 		u32 w_count				= u32(w_verts-w_start);
 		RCache.Vertex.Unlock	(w_count,hGeom->vb_stride);
@@ -329,11 +330,12 @@ void CWallmarksEngine::Render()
 	Device.mProject._43			= _43;
 	RCache.set_xform_project	(Device.mProject);
 
-	lock.Leave();	// Physics may add wallmarks in parallel with rendering
+	lock.Leave();				// Physics may add wallmarks in parallel with rendering
 }
 
 void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
 {
+	lock.Enter	();
 	// load level marks
 	IReader* F		= FS.r_open(fn);
 	if (F){
@@ -362,6 +364,7 @@ void CWallmarksEngine::load_LevelWallmarks(LPCSTR fn)
 		}
 	}
     FS.r_close		(F);
+	lock.Leave		();
 }
 
 void CWallmarksEngine::unload_LevelWallmarks()
