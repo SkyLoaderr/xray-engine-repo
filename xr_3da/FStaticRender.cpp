@@ -115,6 +115,7 @@ IC		void		gm_SetLighting		(CObject* O)
 	if (O != gm_Object)
 	{
 		gm_Object			= O;
+		if (0==gm_Object)	return;
 		CLightTrack& LT		= *O->Lights	();
 
 		// set up to 8 lights to device
