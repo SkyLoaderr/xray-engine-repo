@@ -3,31 +3,42 @@ artefact			=	af_medusa
 [artefacthunt_base_cost]
 wpn_knife			=	0
 
-wpn_pm				=	100
+wpn_pm				=       0
 wpn_pb				=	100
-wpn_fort			=	120
-wpn_hpsa			=	160
-wpn_walther			=	180
+wpn_fort			=	125
+wpn_hpsa			=	150
 wpn_usp				=	200
+wpn_desert_eagle	        =       225
+//wpn_colt1911		        =	0  
+//wpn_walther			=	0  
+//wpn_beretta			=	0  
 
-wpn_l85				=	600
-wpn_ak74			=	400
-wpn_fn2000			=	1000
+wpn_bm16 			=	200
+wpn_toz34			=	200
+wpn_spas12                      =       500
+            
+wpn_val				=	400
 wpn_lr300			=	500
-wpn_val				=	600
-wpn_vintorez		=	700
-wpn_svu				=	800
-wpn_svd				=	800
-wpn_groza			=	800
-wpn_toz34			=	300
-wpn_rpg7			=	400
-wpn_gauss			=	2000
-wpn_bm16 			=	300
+wpn_mp5                         =       500
+wpn_ak74			=	600
+wpn_fn2000			=	750
+wpn_l85				=	800
+wpn_groza			=	1100
+//wpn_ak74u			=	0
 
-grenade_f1			=	100
-grenade_rgd5		=	100
-ammo_vog-25			=	150
-ammo_m209			=	150
+
+wpn_vintorez                    =       750
+wpn_svu				=	1000
+wpn_svd				=	1100
+wpn_gauss			=	1200
+
+wpn_rpg7			=	2000
+//wpn_rg-6                         =    0
+
+grenade_f1			=	75
+grenade_rgd5		        =       75
+ammo_vog-25			=	85
+ammo_m209			=	85
 ammo_og-7b			=	200
 
 exo_outfit			=	500
@@ -45,15 +56,15 @@ medkit			= 200
 [artefacthunt_team1]
 slot1 = wpn_knife
 slot2 = wpn_pb, wpn_usp, wpn_fort
-slot3 = wpn_toz34, wpn_val, wpn_l85, wpn_lr300, wpn_groza, wpn_svu, wpn_rpg7, wpn_gauss
+slot3 = wpn_toz34, wpn_spas12, wpn_val, wpn_vintorez, wpn_mp5, wpn_l85, wpn_fn2000, wpn_svd, wpn_rpg7, wpn_gauss
 slot4 = grenade_f1, ammo_vog-25, ammo_m209, ammo_og-7b
 slot5 = military_stalker_outfit, scientific_outfit, exo_outfit
 slot6 = device_torch, detector_simple, wpn_addon_silencer,wpn_addon_grenade_launcher_m203, medkit
 
-;skins = soldat_beret
 skins = stalker_sv_balon_10, stalker_sv_hood_9,stalker_sv_rukzak_3,stalker_sv_rukzak_2
 
-default_items	= wpn_knife, wpn_pb, detector_simple;, device_torch
+
+default_items	= wpn_knife, wpn_pb;, device_torch
 
 ;//соответствие иконок обоорудованию
 exo_outfit			= stalker_sv_exoskeleton
@@ -62,27 +73,25 @@ military_stalker_outfit			= stalker_sv_military
 
 ;//money amounts
 money_start		= 500
-money_respawn	= 100
 money_min		= 0
 
-kill_rival		= 100
+kill_rival		= 500
 kill_self		= 0
-kill_team		= -50
+kill_team		= -100
 
-target_rival	= 200
-target_team		= -100
-target_succeed	= 300
-target_succeed_all	= 200
+target_rival	= 0
+target_team		= 0
+target_succeed	= 0
+target_succeed_all	= 0
 
-round_win		= 200
-round_loose		= 100
-round_draw		= 100
+round_win		= 100
+round_loose		= 50
+round_draw		= 50
 
-round_loose_minor	= 0
-round_win_minor		= 50
-rivals_wiped_out		= 50;
+round_loose_minor		= 0
+round_win_minor		= 0
 
-wpn_pb_cost	=	0
+wpn_pb_cost	= 0
 
 ;//---- indicator data --------
 indicator_r1 = 0.2
@@ -100,16 +109,16 @@ invincible_texture = ui\ui_skull
 
 [artefacthunt_team2]
 slot1 = wpn_knife
-slot2 = wpn_pm, wpn_hpsa, wpn_walther 
-slot3 = wpn_toz34, wpn_vintorez, wpn_svd, wpn_ak74, wpn_fn2000, wpn_rpg7, wpn_gauss
+slot2 = wpn_pm, wpn_hpsa, wpn_desert_eagle
+slot3 = wpn_bm16, wpn_spas12, wpn_lr300,	wpn_ak74,  wpn_svu, wpn_groza, wpn_rpg7, wpn_gauss
 slot4 = grenade_rgd5, ammo_vog-25, ammo_m209, ammo_og-7b
-slot5 = military_stalker_outfit, scientific_outfit, exo_outfit
+slot5 =  military_stalker_outfit, scientific_outfit, exo_outfit
 slot6 = device_torch, detector_simple, wpn_addon_scope, wpn_addon_silencer, wpn_addon_grenade_launcher, medkit
 
-;skins = stalker_bandit
+
 skins = stalker_killer_head_1,stalker_killer_antigas,stalker_killer_head_3,stalker_killer_mask
 
-default_items	= wpn_knife, wpn_pm, detector_simple;, device_torch
+default_items	= wpn_knife, wpn_pm;, device_torch
 
 ;//соответствие иконок обоорудованию
 exo_outfit				= stalker_killer_exoskeleton
@@ -118,25 +127,23 @@ scientific_outfit		= stalker_sci_killer
 
 ;//money amounts
 money_start		= 500
-money_respawn	= 100
 money_min		= 0
 
-kill_rival		= 100
-kill_self		= 0
-kill_team		= -50
+kill_rival		= 500
+kill_self		= 00
+kill_team		= -100
 
-target_rival	= 200
-target_team		= -100
-target_succeed	= 300
-target_succeed_all	= 200
+target_rival	= 0
+target_team		= 0
+target_succeed	= 0
+target_succeed_all	= 0
 
 round_win		= 100
 round_loose		= 50
 round_draw		= 50
 
-round_loose_minor	= 0
-round_win_minor		= 50
-rivals_wiped_out		= 50;
+round_loose_minor		= 0
+round_win_minor		= 0
 
 wpn_pm_cost		= 0
 
