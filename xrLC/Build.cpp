@@ -237,10 +237,13 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	Status	("Post-process materials...");
 	for (DWORD m=0; m<materials.size(); m++)
 	{
-		b_material &M = materials[m];
+		b_material &M	= materials[m];
+		Msg				("*** %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
+
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
+			R_ASSERT	(0);
 		} else {
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {
