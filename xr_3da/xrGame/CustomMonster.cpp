@@ -557,7 +557,7 @@ void CCustomMonster::OnRender()
 		}
 	}
 	{
-		Fvector				P1 = CDetailPathManager::dest_position();
+		Fvector				P1 = ai().level_graph().vertex_position(level_dest_vertex_id());
 		P1.y				+= 1.f;
 		RCache.dbg_DrawAABB	(P1,.5f,1.f,.5f,D3DCOLOR_XRGB(255,0,0));
 	}
