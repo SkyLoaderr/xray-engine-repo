@@ -8,8 +8,8 @@ end
 
 
 function main ()
-	zone0			= get_level_object ("zone_mosquito_bald0000")
-	zone1			= get_level_object ("zone_mosquito_bald0001")
+	zone0			= get_level_object ("script_zone0000")
+	zone1			= get_level_object ("script_zone0001")
 	
 --	zone0:script	(true,stalker_test:script_name())
 --	zone1:script	(true,stalker_test:script_name())
