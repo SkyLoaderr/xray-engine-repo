@@ -69,9 +69,11 @@ void					CRender::create					()
 	Models						= xr_new<CModelPool>		();
 	L_Dynamic					= xr_new<CLightR_Manager>	();
 	PSLibrary.OnCreate			();
+	HWOCC.occq_create			(occq_size);
 }
 void					CRender::destroy				()
 {
+	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);

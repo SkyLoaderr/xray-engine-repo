@@ -1,5 +1,7 @@
 #pragma once
 
+const		u32					occq_size			= 256	;	// queue for occlusion queries
+
 // must conform to following order of allocation/free
 // a(A), a(B), a(C), a(D), ....
 // f(A), f(B), f(C), f(D), ....

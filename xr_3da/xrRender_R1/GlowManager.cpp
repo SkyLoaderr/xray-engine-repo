@@ -191,13 +191,17 @@ IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, float r, u32 clr)
 	pv->set		(b.x+pos.x,b.y+pos.y,b.z+pos.z,	clr, 1.f,0.f);	pv++;
 }
 
-void CGlowManager::Render()
+void CGlowManager::Render			()
 {
-	if (Selected.empty()) return;
+	if (Selected.empty())					return		;
+	RCache.set_xform_world					(Fidentity)	;
 
-	RCache.set_xform_world(Fidentity);
-
-	Device.Statistic.RenderDUMP_Glows.Begin();
+	Device.Statistic.RenderDUMP_Glows.Begin	();
+	render_sw								();
+	Device.Statistic.RenderDUMP_Glows.End	();
+}
+void CGlowManager::render_sw		()
+{
 	{
 		// 0. save main view and disable
 		CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
@@ -283,5 +287,4 @@ void CGlowManager::Render()
 		}
 	}
 	Selected.clear							();
-	Device.Statistic.RenderDUMP_Glows.End	();
 }

@@ -41,6 +41,7 @@ public:
 	xrXRC														Sectors_xrc;
 	CDB::MODEL*													rmPortals;
 	CHOM														HOM;
+	R_occlusion													HWOCC;
 	
 	// Global containers
 	xr_vector<FSlideWindowItem>									SWIs;

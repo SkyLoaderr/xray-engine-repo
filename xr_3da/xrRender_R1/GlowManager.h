@@ -14,19 +14,21 @@ class CGlow				: public IRender_Glow, public ISpatial
 public:
 	struct {
 		u32				bActive	:	1;
-	}					flags;
-	float				fade;
-	ref_shader			shader;
-	u32					dwFrame;
+	}					flags		;
+	float				fade		;
+	ref_shader			shader		;
+	u32					dwFrame		;
 
-	Fvector				position;
-	Fvector				direction;
-	float				radius;
-	Fcolor				color;
+	Fvector				position	;
+	Fvector				direction	;
+	float				radius		;
+	Fcolor				color		;
 
 	// Ray-testing cache
-	BOOL				bTestResult;
-	collide::ray_cache	RayCache;
+	BOOL				bTestResult	;
+	collide::ray_cache	RayCache	;
+	u32					qid_pass	;
+	u32					qid_total	;
 public:
 	CGlow();
 
@@ -45,17 +47,21 @@ public:
 
 class CGlowManager 
 {
-	xr_vector<CGlow*>		Glows;
-	xr_vector<CGlow*>		Selected;
-	ref_geom				hGeom;
+	xr_vector<CGlow*>		Glows			;
+	xr_vector<CGlow*>		Selected		;
+	xr_vector<CGlow*>		SelectedToTest	;
+	ref_geom				hGeom			;
 
-	u32						dwTestID;
+	BOOL					b_hardware		;
+	u32						dwTestID		;
 public:
 	void	add				(CGlow		*G);
 
 	void	Load			(IReader	*fs);
 	void	Unload			();
 
+	void	render_sw		();
+	void	render_hw		();
 	void	Render			();
 
 	CGlowManager			();

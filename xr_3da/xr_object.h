@@ -169,9 +169,6 @@ public:
 	virtual void						OnH_B_Independent	();
 	virtual void						OnH_A_Chield		();		// after
 	virtual void						OnH_A_Independent	();
-	
-	// Device dependance
-	// virtual void						OnEvent				(EVENT E, u64 P1, u64 P2) {};
 };
 
 #pragma pack(pop)
