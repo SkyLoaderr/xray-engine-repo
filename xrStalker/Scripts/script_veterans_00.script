@@ -144,7 +144,7 @@ function main()
 		end
 
 	while stalker_veteran01:action() and stalker_veteran02:action() do
-		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) and distance_between(stalker_veteran01,actor) > 5 then
+		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) then
 			printf("script 2!")
 			flush()
 			stalker_veteran01:script	(false, script_veterans_00.script_name())
@@ -169,7 +169,7 @@ function main()
 			prof_stoyat_pristrelu:play_at_pos		(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(7000)			
 
-		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) and distance_between(stalker_veteran01,actor) > 5 then
+		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) then
 			prof_padla_podslushivala:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
 		
@@ -212,7 +212,7 @@ function main()
 	end
 
 	while stalker_veteran01:action() and stalker_veteran02:action() do
-		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) and distance_between(stalker_veteran01,actor) <= 4 then
+		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) then
 			printf("script 3!")
 			flush()
 			stalker_veteran01:script	(false, script_veterans_00.script_name())
