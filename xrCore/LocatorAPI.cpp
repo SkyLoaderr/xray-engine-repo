@@ -589,6 +589,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	{
 		// Normal file, 100% full path - check cache
 		// Release don't need this at all
+#ifdef	DEBUG
 		if (m_Flags.is(flCacheFiles)){
 			string_path	fname_copy;
 			if (pathes.size()>1)
@@ -641,6 +642,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 				}
 			}
 		}
+#endif
 		if (desc.size_real<256*1024)	R = xr_new<CFileReader>			(fname);
 		else							R = xr_new<CVirtualFileReader>	(fname);
 	} else {
@@ -658,6 +660,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		}
 	}
 
+#ifdef DEBUG
 	if ( R && m_Flags.is(flBuildCopy|flReady) )
 	{
 		string_path	cpy_name;
@@ -707,6 +710,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 			}
 		}
 	}
+#endif
 	return R;
 }
 
