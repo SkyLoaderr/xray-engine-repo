@@ -156,13 +156,13 @@ void CDetailManager::Render		(Fvector& EYE)
 
 			// Transfer visibile and partially visible slot contents
 			DWORD mask		= 0xff;
-			switch (::Render.ViewBase.testAABB(S.BB.min,S.BB.max,mask))
+			switch (::Render->ViewBase.testAABB(S.BB.min,S.BB.max,mask))
 			{
 			case fcvNone:		// nothing to do
 				break;
 			case fcvPartial:	// addition with TEST
 				{
-					if (!::Render.HOM.visible(S.BB))	continue;
+					if (!::Render.occ_visible(S.BB))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
@@ -178,7 +178,7 @@ void CDetailManager::Render		(Fvector& EYE)
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 							
-							if (::Render.ViewBase.testSphere_dirty(siIT->P,R*Item.scale))	
+							if (::Render->ViewBase.testSphere_dirty(siIT->P,R*Item.scale))	
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
@@ -195,7 +195,7 @@ void CDetailManager::Render		(Fvector& EYE)
 				break;
 			case fcvFully:		// addition
 				{
-					if (!::Render.HOM.visible(S.BB))	continue;
+					if (!::Render.occ_visible(S.BB))		continue;
 					for (int sp_id=0; sp_id<3; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];

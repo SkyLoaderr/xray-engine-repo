@@ -135,7 +135,7 @@ void CSector::Render(CFrustum &F)
 			if (0==P)	continue;
 			
 			// Cull by HOM
-			if (!::Render.HOM.visible(*P))	continue;
+			if (!::Render->occ_visible(*P))	continue;
 
 			// Create new frustum and recurse
 			CFrustum Clip;
@@ -229,23 +229,14 @@ void CSector::Load(CStream& fs)
 	DWORD count	= size/2;
 	while (count) {
 		WORD ID		= fs.Rword();
-		CPortal* P	= ::Render.getPortal(ID);
+		CPortal* P	= ::Render->getPortal	(ID);
 		Portals.push_back(P);
 		count--;
 	}
 
 	// Assign visual
 	size = fs.FindChunk(fsP_Root);	R_ASSERT(size==4);
-	pRoot = ::Render.getVisual(fs.Rdword());
-
-	// Load occluders
-	/*
-	CStream* O = fs.OpenChunk(fsP_Occluders);
-	if (O) {
-		Occluders.Load(O);
-		O->Close();
-	}
-	*/
+	pRoot = ::Render->getVisual(fs.Rdword());
 
 	// Load glows
 	size	= fs.FindChunk(fsP_Glows);

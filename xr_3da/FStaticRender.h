@@ -107,6 +107,10 @@ public:
 	virtual CVisual*				model_Duplicate			(CVisual* V);
 	virtual void					model_Delete			(CVisual* &V);
 	
+	// Occlusion culling
+	virtual BOOL					occ_visible				(Fbox&	B);
+	virtual BOOL					occ_visible				(sPoly& P);
+	
 	// Main
 	virtual void					Calculate				();
 	virtual void					Render					();

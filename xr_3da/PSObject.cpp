@@ -7,13 +7,14 @@
 #include "PSObject.h"
 #include "PSVisual.h"
 #include "render.h"
+#include "portal.h"
 
 CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 {
 	m_bAutoRemove	= bAutoRemove;
 
 	// create visual
-	m_pVisual		= Render.Models.CreatePS(ps_name,&m_Emitter);
+	m_pVisual		= Render->model_CreatePS(ps_name,&m_Emitter);
 
 	// registry
 	m_pCurSector	= S;

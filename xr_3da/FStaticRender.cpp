@@ -25,6 +25,9 @@ CSector*	CRender::getSector			(int id)			{ VERIFY(id<Sectors.size()); return Sec
 CSector*	CRender::getSectorActive	()					{ return pLastSector;								}
 CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<Visuals.size()); return Visuals[id];	}
 
+BOOL		CRender::occ_visible		(sPoly& P)			{ return HOM.visible(P);							}
+BOOL		CRender::occ_visible		(Fbox& P)			{ return HOM.visible(P);							}
+
 void		CRender::set_Object			(CObject*		O )	{ L_Shadows.set_object(O);							}
 void		CRender::add_Visual			(CVisual*		V )	{ add_leafs_Dynamic(V);								}
 void		CRender::add_Geometry		(CVisual*		V )	{ add_Static(V,View->getMask());					}
