@@ -252,6 +252,10 @@ void CWeaponKnife::switch2_Showing	()
 
 void CWeaponKnife::FireStart()
 {
+	//-------------------------------------------
+	iHitPower = iHitPower_1;
+	fHitImpulse = fHitImpulse_1;
+	//-------------------------------------------
 	inherited::FireStart();
 	SwitchState(eFire);
 }
@@ -264,6 +268,10 @@ void CWeaponKnife::FireEnd()
 
 void CWeaponKnife::Fire2Start () 
 {
+	//-------------------------------------------
+	iHitPower = iHitPower_2;
+	fHitImpulse = fHitImpulse_2;
+	//-------------------------------------------
 	inherited::Fire2Start();
 	SwitchState(eFire2);
 }
@@ -294,4 +302,16 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 			}break;
 	}
 	return false;
+}
+
+void CWeaponKnife::LoadFireParams		(LPCSTR section, LPCSTR prefix)
+{
+	inherited::LoadFireParams(section, prefix);
+
+	string256 full_name;
+	//сила выстрела и его мощьность
+	iHitPower_1			= iHitPower;
+	fHitImpulse_1		= fHitImpulse;
+	iHitPower_2			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power_2"));
+	fHitImpulse_2		= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse_2"));
 }

@@ -37,6 +37,15 @@ protected:
 
 	float			fWallmarkSize;
 	u16				knife_material_idx;
+
+protected:	
+	int						iHitPower_1;
+	float					fHitImpulse_1;
+
+	int						iHitPower_2;
+	float					fHitImpulse_2;
+protected:
+	virtual void			LoadFireParams		(LPCSTR section, LPCSTR prefix);
 public:
 	CWeaponKnife(); 
 	virtual			~CWeaponKnife();
