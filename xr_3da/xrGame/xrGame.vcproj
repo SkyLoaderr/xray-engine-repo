@@ -1235,6 +1235,16 @@
 					<File
 						RelativePath="CustomZone.h">
 					</File>
+					<Filter
+						Name="MosquitoBald"
+						Filter="">
+						<File
+							RelativePath="MosquitoBald.cpp">
+						</File>
+						<File
+							RelativePath="MosquitoBald.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

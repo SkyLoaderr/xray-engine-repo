@@ -84,3 +84,4 @@
 
 // Zones
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')
+#define CLSID_Z_MBALD				MK_CLSID('Z','_','M','B','A','L','D',' ')

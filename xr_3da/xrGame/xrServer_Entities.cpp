@@ -998,27 +998,27 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 #endif
 
 // Zone
-//xrSE_Zone::xrSE_Zone() {
-//	m_maxPower = 100.f;
-//	m_attn = 1.f;
-//	m_period = 1000;
-//}
+xrSE_Zone::xrSE_Zone() {
+	m_maxPower = 100.f;
+	m_attn = 1.f;
+	m_period = 1000;
+}
 
 void xrSE_Zone::STATE_Read		(NET_Packet& P, u16 size)	{
 	// CForm
 	cform_read			(P);
 
-	//P.r_float(m_maxPower);
-	//P.r_float(m_attn);
-	//P.r_u32(m_period);
+	P.r_float(m_maxPower);
+	P.r_float(m_attn);
+	P.r_u32(m_period);
 };
 void xrSE_Zone::STATE_Write		(NET_Packet& P)				{
 	// CForm
 	cform_write			(P);
 
-	//P.w_float(m_maxPower);
-	//P.w_float(m_attn);
-	//P.w_u32(m_period);
+	P.w_float(m_maxPower);
+	P.w_float(m_attn);
+	P.w_u32(m_period);
 };
 void xrSE_Zone::UPDATE_Read		(NET_Packet& P)
 {
@@ -1030,9 +1030,9 @@ void xrSE_Zone::UPDATE_Write		(NET_Packet& P)
 void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    //PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,1.f,100.f);
-    //PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,1.f);
-    //PHelper.CreateU32	(items,PHelper.PrepareKey(pref,s_name,"Period"), &m_period,20,10000);
+    PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Power"),	&m_maxPower,1.f,100.f);
+    PHelper.CreateFloat	(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),	&m_attn,0.f,1.f);
+    PHelper.CreateU32	(items,PHelper.PrepareKey(pref,s_name,"Period"), &m_period,20,10000);
 }
 #endif
 
@@ -1060,6 +1060,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 
 	// Zones
 	case CLSID_ZONE:				return xr_new<xrSE_Zone>			();
+	case CLSID_Z_MBALD:				return xr_new<xrSE_Zone>			();
 
 	case CLSID_OBJECT_W_M134:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_FN2000:		return xr_new<xrSE_Weapon>			();

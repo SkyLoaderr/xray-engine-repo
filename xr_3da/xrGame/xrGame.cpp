@@ -536,6 +536,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "Spectator.h"
 
 #include "customzone.h"
+#include "mosquitobald.h"
 
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
@@ -579,6 +580,7 @@ extern "C" {
 
 		// Zones
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
+		case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
 		}
 		R_ASSERT		(P);
 		P->SUB_CLS_ID	= cls;

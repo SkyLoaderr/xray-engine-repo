@@ -28,7 +28,6 @@ class CActor:
 private:
 	typedef CEntityAlive	inherited;
 protected:
-	CPHMovementControl ph_Movement;
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4
@@ -40,6 +39,7 @@ protected:
 		eacMaxCam
 	};
 public:
+	CPHMovementControl ph_Movement;
 	enum EMoveCommand
 	{
 		mcFwd		= (1ul<<0ul),

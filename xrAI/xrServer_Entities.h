@@ -348,9 +348,9 @@ xrSE_DECLARE_END
 //***** Zone
 //xrSE_DECLARE_BEGIN(xrSE_Zone,xrServerEntity)
 class xrSE_Zone : public xrServerEntity, public xrSE_CFormed { typedef xrServerEntity inherited; public:
-	//xrSE_Zone();
-	//f32 m_maxPower, m_attn;
-	//u32 m_period;
+	xrSE_Zone();
+	f32 m_maxPower, m_attn;
+	u32 m_period;
 xrSE_DECLARE_END
 
 // 

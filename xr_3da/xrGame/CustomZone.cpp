@@ -32,9 +32,9 @@ BOOL CCustomZone::net_Spawn		(LPVOID DC)
 		l_pShape->ComputeBounds();
 		pCreator->ObjectSpace.Object_Register(this);
 		cfModel->OnMove();
-		//m_maxPower = Z->m_maxPower;
-		//m_attn = Z->m_attn;
-		//m_period = Z->m_period;
+		m_maxPower = Z->m_maxPower;
+		m_attn = Z->m_attn;
+		m_period = Z->m_period;
 
 //		setVisible(true);
 		setEnabled(true);
@@ -61,6 +61,18 @@ void CCustomZone::Update(u32 dt) {
 		if(m_pA) {
 			char l_pow[255]; sprintf(l_pow, "zone hit. %.1f", Power(m_pA->Position().distance_to(P)));
 			Level().HUD()->outMessage(0xffffffff,m_pA->cName(), l_pow);
+			Fvector l_dir; l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(.0f,1.f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
+			m_pA->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(m_pA->Position().distance_to(P)));
+			Fvector position_in_bone_space;
+			position_in_bone_space.set(0.f,0.f,0.f);
+			NET_Packet		l_P;
+			m_pA->u_EventGen		(l_P,GE_HIT,m_pA->ID());
+			l_P.w_u16			(u16(m_pA->ID()));
+			l_P.w_dir			(l_dir);
+			l_P.w_float		(.2f*Power(m_pA->Position().distance_to(P)));
+			l_P.w_s16			((s16)0);
+			l_P.w_vec3		(position_in_bone_space);
+			m_pA->u_EventSend		(l_P);
 		}
 	}
 }
