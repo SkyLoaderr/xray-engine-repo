@@ -1,11 +1,8 @@
 if (editor() == false) then
 //	module	("ce_new_attachable_item")
 end
-//module	("se_new_attachable_item")
+module		("se_smart_terrain")
 
 function register(object_factory)
-//	if true then
-//		return
-//	end
-//	object_factory:register	("CCE_NewAttachableItem","CSE_NewAttachableItem","II_ATTCH","new_attachable_item")
+	object_factory:register	("se_smart_terrain.se_smart_terrain","se_smart_terrain.se_smart_terrain","SMRTTRRN","smart_terrain")
 end
