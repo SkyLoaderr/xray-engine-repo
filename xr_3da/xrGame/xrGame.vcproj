@@ -4460,12 +4460,6 @@
 								RelativePath=".\PHSkeleton.h">
 							</File>
 							<File
-								RelativePath=".\PHSkeleton.cpp">
-							</File>
-							<File
-								RelativePath=".\PHSkeleton.h">
-							</File>
-							<File
 								RelativePath="PhysicObject.cpp">
 							</File>
 							<File
