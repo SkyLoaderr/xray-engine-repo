@@ -8,6 +8,10 @@
 
 #include "StdAfx.h"
 #include "UIPdaKillMessage.h"
+#include "UIInventoryUtilities.h"
+
+
+using namespace InventoryUtilities;
 
 const int INDENT = 10;
 
@@ -82,10 +86,10 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	scale = ((float)selfHeight)/((float)height);
 	refStatic.Init(x, y, width, height);
 	refStatic.SetOriginalRect(info.m_rect);
-	refStatic.SetShader(info.m_shader);
+	refStatic.SetShader(GetCharIconsShader());
 	refStatic.SetTextureScaleXY(scale, scale);
 
-	return width;
+	return (int)((float)width*scale);
 }
 
 void CUIPdaKillMessage::Init(int x, int y, int width, int height){
