@@ -76,4 +76,6 @@ void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path, u
 			}
 		}
 	}
+
+	m_current_travel_point	= 0;
 }
