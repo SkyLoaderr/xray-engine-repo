@@ -254,6 +254,7 @@ void CRender::render_sun				()
 	set_Recorder								(NULL);
 
 	// Compute REAL sheared xform based on receivers/casters information
+	if (0)
 	{
 		//  transform the shadow caster bounding boxes into light projective space.  
 		//  we want to translate along the Z axis so that all shadow casters are 
@@ -463,17 +464,21 @@ void CRender::render_sun				()
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
 			Target.phase_smap_direct			(fuckingsun					);
+			Target.phase_smap_direct_tsh		(fuckingsun);	//.
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	//.
 			r_dsgraph_render_graph				(0);
 			fuckingsun->X.D.transluent			= FALSE;
+			//. 
+			/*
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
 				Target.phase_smap_direct_tsh		(fuckingsun);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
+			*/
 		}
 	}
 

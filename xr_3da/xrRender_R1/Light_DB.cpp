@@ -158,7 +158,7 @@ void			CLight_DB::Update			()
 		sun_original->set_range		(600.f);
 		sun_adapted->set_rotation	(AD,sun_adapted->right	);
 		sun_adapted->set_position	(AP		);
-		sun_adapted->set_color		(2,2,2	);	//.
+		sun_adapted->set_color		(2,2,0	);	//.
 		sun_adapted->set_range		(600.f	);
 	}
 
