@@ -151,10 +151,6 @@ void CCustomMonster::Load		(LPCSTR section)
 	// Health & Armor
 	fArmor					= 0;
 
-	// Sheduler
-	shedule.t_min			= 25;
-	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
-
 	// Msg				("! cmonster size: %d",sizeof(*this));
 }
 
@@ -757,6 +753,12 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 		setVisible				(TRUE);
 		setEnabled				(TRUE);
 	}
+
+	// Sheduler
+	shedule_unregister		();
+	shedule.t_min			= 25;
+	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
+	shedule_register		();
 
 	return TRUE;
 }

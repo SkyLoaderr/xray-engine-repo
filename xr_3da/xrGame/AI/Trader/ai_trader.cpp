@@ -204,34 +204,33 @@ void CAI_Trader::LookAtActor(CBoneInstance *B)
 
 BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)
 {
-	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeTrader					*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
-	
-	clone							(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
-	
-	R_ASSERT						(l_tpTrader);
-
+	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
+	CSE_ALifeTrader			*l_tpTrader = smart_cast<CSE_ALifeTrader*>(e);
+	R_ASSERT				(l_tpTrader);
+	clone					(l_tpTrader->m_tpOrderedArtefacts,m_tpOrderedArtefacts);
 
 	//проспавнить PDA у InventoryOwner
-	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
+	if (!CInventoryOwner::net_Spawn(DC))
+		return				(FALSE);
 
-	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))	return FALSE;
+	if (!inherited::net_Spawn(DC) || !CScriptEntity::net_Spawn(DC))
+		return				(FALSE);
 
-	//m_body.current.yaw			= m_body.target.yaw	= -tpTrader->o_Angle.y;
-	//m_body.current.pitch			= m_body.target.pitch	= 0;
-	
-	//m_tAnimation					= smart_cast<CSkeletonAnimated*>(Visual())->ID_Cycle("rot_5");
+	setVisible				(TRUE);
+	setEnabled				(TRUE);
 
-	setVisible						(TRUE);
-	setEnabled						(TRUE);
-
-	m_dwMoney						= l_tpTrader->m_dwMoney;
+	m_dwMoney				= l_tpTrader->m_dwMoney;
 
 	// Установка callback на кости
-	CBoneInstance *bone_head =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
-	bone_head->set_callback(BoneCallback,this);
+	CBoneInstance			*bone_head =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
+	bone_head->set_callback	(BoneCallback,this);
 
-	return	TRUE;
+	shedule_unregister		();
+	shedule.t_min			= 25;
+	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
+	shedule_register		();
+
+	return					(TRUE);
 }
 
 void CAI_Trader::net_Export		(NET_Packet& P)
