@@ -94,8 +94,21 @@ function mob_was_hit(actor, npc)
 	return false
 end
 
+
 function fighting_actor(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
+end
+
+function esc_tutorial_flesh_died_in_anomaly(actor, npc)
+	local t = db.storage[npc:id()].death
+	if t and t.killer_name then
+		if t.killer_name == "esc_tutorial_mincer_02" or
+		   t.killer_name == "esc_tutorial_mosquito_bald_01" or
+		   t.killer_name == "esc_tutorial_mincer_01" then
+			return true
+		end
+	end
+	return false
 end
 
 function val_fighting_captive(actor, npc)

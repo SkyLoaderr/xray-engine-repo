@@ -26,9 +26,11 @@ function mob_death:death_callback(victim, who)
 			db.storage[victim:id()].death = death
 		end
 		death.killer = who:id()
+		death.killer_name = who:name()
 	else
 		printf("mob_death: [%s] killed by [Unknown]", victim:name())
 		death.killer = -1
+		death.killer_name = nil
 	end
 	if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
 		return
