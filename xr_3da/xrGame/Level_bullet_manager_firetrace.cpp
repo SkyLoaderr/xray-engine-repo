@@ -210,7 +210,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		bullet->impulse_k*speed_factor;
 
 	//уменьшить скорость пропорцианально потраченому импульсу
-	float speed_lost = 1.f - impulse/bullet->hit_impulse;
+	float speed_lost =fis_zero(bullet->hit_impulse) ?	1.f : 1.f - impulse/bullet->hit_impulse;
 	clamp (speed_lost, 0.f , 1.f);
 	bullet->speed *= speed_lost;
 

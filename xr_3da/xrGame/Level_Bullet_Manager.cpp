@@ -202,6 +202,8 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 		bullet->dir.y -= m_fGravityConst*delta_time_sec;
 
 		bullet->speed = bullet->dir.magnitude();
+		VERIFY(_valid(bullet->speed));
+		VERIFY(!fis_zero(bullet->speed));
 		//вместо normalize(),	 чтоб не считать 2 раза magnitude()
 #pragma todo("а как насчет bullet->speed==0")
 		bullet->dir.x /= bullet->speed;
