@@ -293,7 +293,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.distance = utils.cfg_get_number (ini, section, "distance", npc, false)
 	if st.distance == nil then
 	   if st.formation == false then
-          st.distance = 3
+          st.distance = 1.5
 	   else 
           st.distance = 5
 	   end
