@@ -75,7 +75,7 @@ public:
 
 class	ENGINE_API			R_constant_table	: public xr_resource	{
 public:
-	typedef svector<R_constant*,32>		c_table;
+	typedef xr_vector<R_constant*>		c_table;
 	c_table					table;
 private:
 	void					fatal		(LPCSTR s);
@@ -85,7 +85,8 @@ public:
 	void					clear		();
 	BOOL					parse		(void* desc, u16 destination);
 	void					merge		(R_constant_table* C);
-	R_constant*				get			(LPCSTR name);
+	R_constant*				get			(LPCSTR		name);		// slow search
+	R_constant*				get			(ref_str&	name);		// fast search
 
 	BOOL					equal		(R_constant_table& C);
 	BOOL					equal		(R_constant_table* C)	{	return equal(*C);		}

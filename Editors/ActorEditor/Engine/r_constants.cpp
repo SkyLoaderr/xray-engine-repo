@@ -37,6 +37,18 @@ R_constant* R_constant_table::get	(LPCSTR S)
 	if (I==table.end() || (0!=strcmp(*(*I)->name,S)))	return 0;
 	else												return *I;
 }
+R_constant* R_constant_table::get	(ref_str& S)
+{
+	// linear search, but only ptr-compare
+	c_table::iterator I	= table.begin	();
+	c_table::iterator E	= table.end		();
+	for (; I!=E; ++I)
+	{
+		R_constant*		C		= *I;
+		if (C->name.equal(S))	return C;
+	}
+	return	0;
+}
 BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 {
 	D3DXSHADER_CONSTANTTABLE* desc	= (D3DXSHADER_CONSTANTTABLE*) _desc;
