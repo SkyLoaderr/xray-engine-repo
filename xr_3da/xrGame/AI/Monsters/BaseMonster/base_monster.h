@@ -34,9 +34,11 @@ class CCoverEvaluatorCloseToEnemy;
 class CMonsterEventManager;
 class CCriticalActionInfo;
 class CJumping;
+class CControlledEntityBase;
 class CMovementManager;
 class CMonsterMovement;
 class IStateManagerBase;
+
 
 class CBaseMonster : 
 	public CCustomMonster, 
@@ -267,7 +269,7 @@ public:
 	// -----------------------------------------------------------------------------
 	
 	CJumping				*m_jumping;
-	
+	CControlledEntityBase	*m_controlled;	
 
 	// -----------------------------------------------------------------------------
 	// Special Services (refactoring needed)

@@ -28,27 +28,6 @@ BOOL CAI_Flesh::net_Spawn (CSE_Abstract* DC)
 	return TRUE;
 }
 
-void CAI_Flesh::reinit()
-{
-	inherited::reinit	();
-	CControlled::reinit	();
-}
-
-void CAI_Flesh::Die(CObject* who)
-{
-	inherited::Die		(who);
-
-	CControlled::on_die	();
-}
-
-void CAI_Flesh::net_Destroy()
-{
-	// функция должена быть вызвана перед inherited
-	CControlled::on_destroy	();
-	
-	inherited::net_Destroy	();
-}
-
 void CAI_Flesh::Load(LPCSTR section)
 {
 	inherited::Load(section);

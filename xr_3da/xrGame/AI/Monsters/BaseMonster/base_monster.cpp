@@ -29,6 +29,7 @@
 #include "../../../level.h"
 #include "../../../ui/UIMainIngameWnd.h"
 #include "../state_manager.h"
+#include "../controlled_entity.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -60,6 +61,7 @@ CBaseMonster::CBaseMonster()
 	Morale.init_external			(this);
 
 	m_jumping						= 0;
+	m_controlled					= 0;
 }
 
 
@@ -135,6 +137,8 @@ void CBaseMonster::Die(CObject* who)
 		sound().play			(MonsterSpace::eMonsterSoundDie);
 
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
+
+	if (m_controlled)			m_controlled->on_die();
 }
 
 

@@ -7,7 +7,7 @@
 #define CControlledEntityAbstract CControlledEntity<_Object>
 
 TEMPLATE_SPECIALIZATION
-void CControlledEntityAbstract::reinit()
+void CControlledEntityAbstract::on_reinit()
 {
 	m_data.m_object = 0;
 	m_controller	= 0; 

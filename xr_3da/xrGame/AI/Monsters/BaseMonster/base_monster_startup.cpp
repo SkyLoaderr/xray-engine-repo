@@ -14,6 +14,8 @@
 #include "../../../sound_player.h"
 #include "../../../ai_space.h"
 #include "../state_manager.h"
+#include "../controlled_entity.h"
+
 
 void CBaseMonster::reload	(LPCSTR section)
 {
@@ -69,6 +71,10 @@ void CBaseMonster::reinit()
 
 	m_first_update_initialized		= false;
 
+
+	if (m_controlled)				m_controlled->on_reinit();
+
+
 #ifdef DEBUG
 	m_show_debug_info				= 0;
 #endif 
@@ -97,6 +103,9 @@ void CBaseMonster::Load(LPCSTR section)
 
 	if (ability_can_jump())
 		m_jumping					= smart_cast<CJumping *>(this);
+
+	m_controlled					= smart_cast<CControlledEntityBase*>(this);
+
 }
 
 void CBaseMonster::load_shared(LPCSTR section)
@@ -178,6 +187,9 @@ BOOL CBaseMonster::net_Spawn (CSE_Abstract* DC)
 
 void CBaseMonster::net_Destroy()
 {
+	// функция должена быть вызвана перед inherited
+	if (m_controlled) m_controlled->on_destroy();
+
 	inherited::net_Destroy				();
 	m_pPhysics_support->in_NetDestroy	();
 

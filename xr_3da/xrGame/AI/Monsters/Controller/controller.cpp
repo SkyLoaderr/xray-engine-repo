@@ -334,6 +334,7 @@ void CController::net_Destroy()
 void CController::FreeFromControl()
 {
 	for	(u32 i=0; i<m_controlled_objects.size(); i++) smart_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control();
+	m_controlled_objects.clear();
 }
 
 void CController::OnFreedFromControl(const CEntity *entity)

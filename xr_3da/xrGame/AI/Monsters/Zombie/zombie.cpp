@@ -79,7 +79,6 @@ void CZombie::Load(LPCSTR section)
 void CZombie::reinit()
 {
 	inherited::reinit();
-	CControlled::reinit();
 
 	Bones.Reset();
 	
@@ -198,14 +197,3 @@ void CZombie::shedule_Update(u32 dt)
 	}
 }
 
-void CZombie::Die(CObject* who)
-{
-	inherited::Die		(who);
-	CControlled::on_die	();
-}
-
-void CZombie::net_Destroy()
-{
-	CControlled::on_destroy	();
-	inherited::net_Destroy	();
-}

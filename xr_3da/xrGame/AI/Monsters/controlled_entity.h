@@ -29,13 +29,15 @@ public:
 	
 	virtual void			set_under_control	(CController *controller)		= 0;
 	virtual void			free_from_control	()								= 0;
+
+	virtual void			on_reinit			()								= 0;
+	virtual void			on_die				()								= 0;
+	virtual void			on_destroy			()								= 0;
 };
 
 
 template<typename _Object>
 class CControlledEntity : public CControlledEntityBase {
-	
-	friend	class	CController;
 	
 	SControlledInfo		m_data;
 	
@@ -57,16 +59,16 @@ public:
 
 	virtual void			set_task_follow			(const CEntity *e);
 	virtual void			set_task_attack			(const CEntity *e);
-	
-
-protected:
-			void			reinit					();
-			void			init_external			(_Object *obj) {m_object = obj;}
-			void			on_die					();
-			void			on_destroy				();
 
 	virtual void			set_under_control		(CController *controller); 
 	virtual void			free_from_control		();
+
+	virtual void			on_reinit				();
+	virtual void			on_die					();
+	virtual void			on_destroy				();
+
+			void			init_external			(_Object *obj) {m_object = obj;}
+
 };
 
 #include "controlled_entity_inline.h"
