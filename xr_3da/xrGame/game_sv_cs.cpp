@@ -106,6 +106,9 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 	xrServerEntity*		e_entity	= S->ID_to_entity	((u16)eid_target);
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
+		
+		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // Пока не сделан респавн
+
 		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags |= GAME_PLAYER_FLAG_ONCSBASE;
 		return false;
 	}
