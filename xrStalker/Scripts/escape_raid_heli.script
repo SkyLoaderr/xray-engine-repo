@@ -20,9 +20,9 @@ end
 
 function main()
 --    active = true
---    while not active do
---        wait()
---    end
+    while not active do
+        wait()
+    end
 
     local path = patrol( "way_raid_heli" )
     local heli = get_level_object( "heli" )
