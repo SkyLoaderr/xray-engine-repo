@@ -505,7 +505,7 @@ void CActor::Update	(u32 DT)
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
 			// BAD.	extrapolation
-			u32	delta				= dwTime-N.dwTimeStamp;
+			// u32	delta				= dwTime-N.dwTimeStamp;
 
 			if (NET_WasInterpolating)
 			{
