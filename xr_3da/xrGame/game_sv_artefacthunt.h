@@ -28,7 +28,7 @@ protected:
 	u16			m_ArtefactsSpawnedTotal;
 	u16			m_dwArtefactID;	
 
-	ARTEFACT_STATE		m_eAState;
+	ARTEFACT_STATE					m_eAState;
 
 	xr_vector<RPoint>				Artefact_rpoints;
 	xr_vector<u8>					ArtefactsRPoints_ID;
