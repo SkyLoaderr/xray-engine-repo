@@ -37,47 +37,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 void CPHWorld::Render()
 {
 	if (!bDebug)	return;
-	/*
-	RCache.OnFrameEnd		();
-	RCache.set_xform_world	(Fidentity);
-	Fmatrix M;
-	Fvector scale;
 
-
-	Jeep.DynamicData.GetWorldMX(M);
-	scale.set(Jeep.jeepBox[0]/2.f,Jeep.jeepBox[1]/2.f,Jeep.jeepBox[2]/2.f);
-	RCache.dbg_DrawOBB	(M,scale,0xffffffff);
-
-	Jeep.DynamicData.GetTGeomWorldMX(M);
-	scale.set(Jeep.cabinBox[0]/2.f,Jeep.cabinBox[1]/2.f,Jeep.cabinBox[2]/2.f);
-	RCache.dbg_DrawOBB	(M,scale,0xffffffff);
-
-
-
-	scale.set(1.6f/0.8f*0.28f,1.6f/0.8f*0.28f,1.6f/0.8f*0.28f);
-	Jeep.DynamicData[0].GetWorldMX(M);
-
-	Fvector t = M.c;
-	M.scale(scale);
-	M.c = t;
-
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
-	Jeep.DynamicData[1].GetWorldMX(M);
-	t = M.c;
-	M.scale(scale);
-	M.c = t;
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
-	Jeep.DynamicData[2].GetWorldMX(M);
-	t = M.c;
-	M.scale(scale);
-	M.c = t;
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
-	Jeep.DynamicData[3].GetWorldMX(M);
-	t = M.c;
-	M.scale(scale);
-	M.c = t;
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
-	*/
 }
 
 //////////////////////////////////////////////////////////////

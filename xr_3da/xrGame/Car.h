@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "PHDynamicData.h"
 #include "PhysicsShell.h"
-#include "PHJeep.h"
+
 
 // refs
 class ENGINE_API			CBoneInstance;

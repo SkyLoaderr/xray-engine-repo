@@ -2261,12 +2261,6 @@
 				RelativePath="PHInterpolation.h">
 			</File>
 			<File
-				RelativePath="PHjeep.cpp">
-			</File>
-			<File
-				RelativePath="PHJeep.h">
-			</File>
-			<File
 				RelativePath="PHJoint.cpp">
 			</File>
 			<File
