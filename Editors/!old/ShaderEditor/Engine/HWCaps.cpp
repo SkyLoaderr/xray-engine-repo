@@ -37,7 +37,7 @@ void CHWCaps::Update()
 	// ***************** PIXEL processing
 	pixel.dwVersion		= (caps.PixelShaderVersion&(0xf << 8ul))>>4 | (caps.PixelShaderVersion&0xf);
 	pixel.dwStages		= caps.MaxSimultaneousTextures;
-	pixel.bNonPow2		= (caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0;
+	pixel.bNonPow2		= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
 	pixel.bCubemap		= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
 	pixel.op_DP3		= (caps.TextureOpCaps & D3DTEXOPCAPS_DOTPRODUCT3)!=0;
 	pixel.op_LERP		= (caps.TextureOpCaps & D3DTEXOPCAPS_LERP)!=0;

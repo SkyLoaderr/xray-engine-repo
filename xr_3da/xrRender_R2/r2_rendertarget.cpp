@@ -87,7 +87,11 @@ Ivector	vpack			(Fvector src)
 	// dumb test
 	float	e_best	= flt_max;
 	int		r=bx,g=by,b=bz;
+#ifdef DEBUG
+	int		d=0;
+#else
 	int		d=3;
+#endif
 	for (int x=_max(bx-d,0); x<=_min(bx+d,255); x++)
 	for (int y=_max(by-d,0); y<=_min(by+d,255); y++)
 	for (int z=_max(bz-d,0); z<=_min(bz+d,255); z++)
