@@ -510,6 +510,12 @@
 				<File
 					RelativePath=".\Environment.h">
 				</File>
+				<File
+					RelativePath=".\perlin.cpp">
+				</File>
+				<File
+					RelativePath=".\perlin.h">
+				</File>
 				<Filter
 					Name="Effects"
 					Filter="">

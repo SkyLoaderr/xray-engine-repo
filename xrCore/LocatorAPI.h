@@ -101,6 +101,7 @@ public:
         flLockRescan	= (1<<1),
 		flBuildCopy		= (1<<2),
 		flReady			= (1<<3),
+		flEBuildCopy	= (1<<4),
     };    
     Flags32						m_Flags;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
@@ -121,7 +122,7 @@ private:
 public:
 								CLocatorAPI		();
 								~CLocatorAPI	();
-	void						_initialize		(BOOL bBuildCopy);
+	void						_initialize		(u32 flags);
 	void						_destroy		();
 
 	IReader*					r_open			(LPCSTR initial, LPCSTR N);

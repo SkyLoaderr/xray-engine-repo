@@ -59,7 +59,9 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	rtc_initialize			();
 	Debug._initialize		();
 	xr_FS					= xr_new<CLocatorAPI>	();
-	FS._initialize			(0!=strstr(Params,"-build"));
+	u32 flags				= (0!=strstr(Params,"-build"))?CLocatorAPI::flBuildCopy:0;
+	flags					= (0!=strstr(Params,"-ebuild"))?CLocatorAPI::flBuildCopy|CLocatorAPI::flEBuildCopy:0;
+	FS._initialize			(flags);
 	CreateLog				(cb,0!=strstr(Params,"-nolog"));
 
 	bInitialized			= TRUE;
