@@ -84,6 +84,9 @@ function main()
 	local fsm_stalker = fsm.FSM(stalker00)
 
 	local a = {[0]=1}
+	printf("a %d", a)
+	a[0] = 2
+	printf("a %d", a)
 --	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
 --	fsm_stalker:add_transition(0, 2, if_see_actor1)
