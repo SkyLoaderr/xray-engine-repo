@@ -1282,8 +1282,133 @@ struct CClassTemplate {
 	T		*X;
 };
 
+template <typename T1, typename T2>
+struct TT {
+	typedef T1 uu;
+	T1 x;
+	T2 y;
+};
+
+struct PP {
+	int z;
+};
+
+template<
+	typename T1,
+	typename T2,
+	typename T3
+>
+struct CProblemSolver {
+	typedef T1 _index_type;
+	typedef T3 _edge_type;
+};
+
+struct SSS {
+	template <
+		typename _Graph,
+		typename _Parameters
+	>
+	IC		void	search					(
+				const _Graph			&graph, 
+//				const u32				&start_node, 
+//				const u32				&dest_node, 
+//				xr_vector<u32>			*node_path,
+				const _Parameters		&parameters
+			)
+	{
+		printf		("Specialization\n");
+	}
+
+//	template <
+//		typename _Graph,
+//		typename _Parameters
+//	>
+//	IC		void	search					(
+//				const _Graph			&graph, 
+//				const u32				&start_node, 
+//				const u32				&dest_node, 
+//				xr_vector<u32>			*node_path,
+//				_Parameters				&parameters
+//			)
+//	{
+//		printf		("Non-const specialization\n");
+//	}
+//
+	template <
+		typename _condition_type,
+		typename _value_type,
+		typename _operator_id_type,
+		typename _Parameters
+	>
+	IC		void	search					(
+				const CProblemSolver<
+					_condition_type,
+					_value_type,
+					_operator_id_type
+				>						&graph, 
+				const typename CProblemSolver<
+					_condition_type,
+					_value_type,
+					_operator_id_type
+				>::_index_type			&start_node,
+				const typename CProblemSolver<
+					_condition_type,
+					_value_type,
+					_operator_id_type
+				>::_index_type			&dest_node, 
+				xr_vector<
+					typename CProblemSolver<
+						_condition_type,
+						_value_type,
+						_operator_id_type
+					>::_edge_type
+				>						*node_path,
+				const _Parameters		&parameters
+			)
+	{
+		printf		("Partial specialization\n");
+	}
+	template <>
+	IC		void	search					(
+				const CProblemSolver<
+					u32,
+					u32,
+					u32
+				>						&graph, 
+				const CProblemSolver<
+					u32,
+					u32,
+					u32
+				>::_index_type			&start_node,
+				const CProblemSolver<
+					u32,
+					u32,
+					u32
+				>::_index_type			&dest_node, 
+				xr_vector<
+					CProblemSolver<
+						u32,
+						u32,
+						u32
+					>::_edge_type
+				>						*node_path,
+				PP		&parameters
+			)
+	{
+		printf		("Partial partial specialization\n");
+	}
+};
 int __cdecl main(char argc, char *argv[])
 {
+//	SSS								sss;
+//	PP								t0;
+//	CProblemSolver<u32,bool,u32>	t1;
+//	CProblemSolver<u32,u32,u32>		t2;
+
+//	sss.search	(t0,0,t0);//,1,0
+//	sss.search	(t1,0,0,0,t0);//,1,0
+//	sss.search	(t2,0,0,0,t0);//,1,0
+
 //	typedef CEDSB<float>										_data_storage_base;
 //	typedef CEDSBA<_data_storage_base,CDSA>						_data_storage_base_allocator;
 //	typedef CEDSIBA<u32,_data_storage_base_allocator>			_data_storage_index_base_allocator;
@@ -1300,11 +1425,12 @@ int __cdecl main(char argc, char *argv[])
 //	g.back()	= &g;
 ////	g.prev()	= &g;
 //	g.next()	= &g;
-	A<B<CClassTemplate>::BB>::AA	X;
-	X.pointerA	= &X;
-	X.pointerB	= &X;
-	X.x			= 1;
-	X.X			= &X;
-
+//	u64			a = 0x7fffffffffffffff;
+//	printf		("%s : %I64d","string",a);
+//	A<B<CClassTemplate>::BB>::AA	X;
+//	X.pointerA	= &X;
+//	X.pointerB	= &X;
+//	X.x			= 1;
+//	X.X			= &X;
 	return		(0);
 }
