@@ -358,7 +358,7 @@ xr_motivator.storage[self.object:id()].novice = {
             xr_motivator.storage[self.object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
         end
         if( char_ini:line_exist("novice", "enemy") == true ) then
-            xr_motivator.storage[self.object:id()].novice.enemy = patrol(char_ini:r_string("novice", "enemy"))
+            xr_motivator.storage[self.object:id()].novice.enemy = char_ini:r_string("novice", "enemy")
         end
     end
 --Настройка схемы реакции новичка2 - новичок возле аномалии
