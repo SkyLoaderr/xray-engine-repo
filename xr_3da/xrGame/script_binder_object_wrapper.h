@@ -38,4 +38,6 @@ public:
 	static	void		load_static					(CScriptBinderObject *script_binder_object, IReader *input_packet);
 	virtual bool		net_SaveRelevant			();
 	static  bool		net_SaveRelevant_static		(CScriptBinderObject *script_binder_object);
+	virtual void		net_Relcase					(CScriptGameObject *object);
+	static	void		net_Relcase_static			(CScriptBinderObject *script_binder_object, CScriptGameObject *object);
 };

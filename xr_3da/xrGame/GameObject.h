@@ -81,6 +81,7 @@ public:
 	virtual void			Load				(LPCSTR section);
 	virtual BOOL			net_Spawn			(CSE_Abstract* DC);
 	virtual void			net_Destroy			();
+	virtual	void			net_Relcase			( CObject* O );					//
 	
 	//object serialization
 	virtual void			net_Save			(NET_Packet &net_packet);

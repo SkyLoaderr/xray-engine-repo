@@ -64,3 +64,7 @@ bool CScriptBinderObject::net_SaveRelevant	()
 {
 	return		(false);
 }
+
+void CScriptBinderObject::net_Relcase		(CScriptGameObject *object)
+{
+}

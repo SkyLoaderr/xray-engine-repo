@@ -101,5 +101,10 @@ void CObjectHandlerPlanner::add_operators		(CMissile *missile)
 	add_effect			(action,id,eWorldPropertyFiring1,	true);
 	add_operator		(uid(id,eWorldOperatorThreaten),action);
 	
+//	action				= xr_new<CSObjectActionBase>(missile,m_object,&m_storage,"after_threaten");
+//	add_condition		(action,id,eWorldPropertyFiring1,	true);
+//	add_effect			(action,id,eWorldPropertyFiring1,	false);
+//	add_operator		(uid(id,eWorldOperatorAfterThreaten),action);
+
 	this->action(uid(id,eWorldOperatorThrowIdle)).set_inertia_time	(2000);
 }

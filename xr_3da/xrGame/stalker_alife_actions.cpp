@@ -132,9 +132,9 @@ void CStalkerActionNoALife::initialize	()
 //	object().sight().setup			(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
 //	object().movement().set_detail_path_type	(eDetailPathTypeSmooth);
-	object().movement().set_body_state		(eBodyStateStand);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeStand);
-	object().movement().set_mental_state		(eMentalStateFree);
+	object().movement().set_mental_state		(eMentalStateDanger);
 
 //	object().CObjectHandler::set_goal	(eObjectActionUse,object().inventory().GetItemFromInventory("bread"));
 //	smart_cast<CAttachableItem*>(object().inventory().GetItemFromInventory("hand_radio"))->enable(false);
@@ -144,6 +144,7 @@ void CStalkerActionNoALife::initialize	()
 //	Fvector2						finish_position = Fvector2().set(-36.750004f,-45.850002f);
 //	u32								start_vertex_id = 34013;
 //	ai().level_graph().check_position_in_direction_slow(start_vertex_id,start_position,finish_position);
+	object().CObjectHandler::set_goal	(eObjectActionFire1,object().inventory().m_slots[5].m_pIItem);
 #endif
 }
 

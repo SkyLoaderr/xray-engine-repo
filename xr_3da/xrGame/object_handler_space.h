@@ -79,6 +79,7 @@ namespace ObjectHandlerSpace {
 		eWorldOperatorThrowIdle,
 		eWorldOperatorThrow,
 		eWorldOperatorThreaten,
+		eWorldOperatorAfterThreaten,
 
 		eWorldOperatorPrepare,
 		eWorldOperatorUse,

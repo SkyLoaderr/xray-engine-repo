@@ -171,3 +171,16 @@ BOOL CScriptBinder::net_SaveRelevant()
 	}
 	return							(FALSE);
 }
+
+void CScriptBinder::net_Relcase		(CObject *object)
+{
+	CGameObject						*game_object = smart_cast<CGameObject*>(object);
+	if (m_object && game_object) {
+		try {
+			m_object->net_Relcase	(game_object->lua_game_object());
+		}
+		catch(...) {
+			clear			();
+		}
+	}
+}

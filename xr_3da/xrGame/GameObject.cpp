@@ -593,3 +593,8 @@ u32	CGameObject::ef_detector_type		() const
 	R_ASSERT3	(false,"Invalid detector type request, virtual function is not properly overloaded!",temp);
 	return		(u32(-1));
 }
+
+void CGameObject::net_Relcase			(CObject* O)
+{
+	inherited::net_Relcase	(O);
+}
