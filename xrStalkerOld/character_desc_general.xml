@@ -11,8 +11,6 @@
 		этом можно хорошо заработать. —лавитс€ тем, что способен наладить хорошие торговые
 		отношени€ с самыми разношерстными клиентами.</bio>
 
-		<team>Trader</team>
-		
 		<class>trader</class>
 		<community>trader</community>
 		<visual>actors\trader\trader</visual>
@@ -36,9 +34,7 @@
 		<map_icon x="1" y="4"></map_icon>
 		<bio>ѕросто хороший алкаголик. —идел, выдвигалс€ в президенты ”краины.</bio>
 
-		<team>Barman</team>
-		
-		<class>trader</class>
+		<class>Rostok_barman</class>
 		<community>trader</community>
 		
 		<rank>70</rank>
