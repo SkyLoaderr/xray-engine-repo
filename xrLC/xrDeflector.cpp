@@ -129,6 +129,7 @@ BOOL CDeflector::OA_Place	(Face *owner)
 	owner->pDeflector = this;
 	return TRUE;
 }
+
 void CDeflector::OA_Place	(vecFace& lst)
 {
 	tris.clear	();
