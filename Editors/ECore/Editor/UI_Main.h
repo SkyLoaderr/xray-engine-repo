@@ -143,8 +143,8 @@ public:
 // mouse action
     void 			EnableSelectionRect	(bool flag );
     void 			UpdateSelectionRect	(const Ivector2& from, const Ivector2& to );
-	bool 			PickGround			(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0);
-    bool 			SelectionFrustum	(CFrustum& frustum);
+	virtual bool 	PickGround			(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0)=0;
+    virtual bool 	SelectionFrustum	(CFrustum& frustum)=0;
 
     void 			MouseMultiClickCapture(bool b){m_MouseMultiClickCaptured = b;}
 

@@ -530,3 +530,12 @@ void TUI::OnDestroy()
     
 }
 
+bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0)
+{
+	return false;
+}
+bool TUI::SelectionFrustum(CFrustum& frustum)
+{
+	return false;
+}
+
