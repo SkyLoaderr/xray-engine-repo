@@ -159,7 +159,7 @@ bool CRenderDevice::Create(){
     Engine.FS.m_GameRoot.Update(sh);
 
     CStream* FS			= 0;
-	if (!Engine.FS.Exist(sh.c_str()))
+	if (Engine.FS.Exist(sh.c_str()))
 		FS				= Engine.FS.Open(sh.c_str());
     _Create				(FS);
 	Engine.FS.Close		(FS);
