@@ -33,11 +33,11 @@
 
 #define P_EPS 1e-3f
 
-// refs
-struct PAHeader;
 
 extern "C"{
 	namespace PAPI{
+		// refs
+		struct PAHeader;
 		//////////////////////////////////////////////////////////////////////
 		// Type codes for domains
 		PARTICLEDLL_API enum PDomainEnum
