@@ -9,7 +9,7 @@ const int			c_size	= 4;
 static DWORD dwDecl[] =
 {
     D3DVSD_STREAM	(0),
-	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_FLOAT3),	// pos
+	D3DVSD_REG		(D3DVSDE_POSITION,	D3DVSDT_SHORT4),	// pos
 	D3DVSD_REG		(D3DVSDE_DIFFUSE,	D3DVSDT_D3DCOLOR),	// matrix id
 	D3DVSD_REG		(D3DVSDE_TEXCOORD0,	D3DVSDT_SHORT2),	// uv
 	D3DVSD_END		()
@@ -17,7 +17,7 @@ static DWORD dwDecl[] =
 #pragma pack(push,1)
 struct	vertHW
 {
-	Fvector		P;
+	short		x,y,z,w;
 	DWORD		M;
 	short		u,v;
 };
@@ -81,7 +81,11 @@ void CDetailManager::VS_Load()
 				DWORD M		=	D3DCOLOR_RGBA	(mid,mid,mid,mid);
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
-					pV->P.set	(D.vertices[v].P);
+					Fvector&	vP = D.vertices[v].P;
+					pV->x	=	QC(vP.x);
+					pV->y	=	QC(vP.y);
+					pV->z	=	QC(vP.z);
+					pV->w	=	QC(1.f);
 					pV->M	=	M;
 					pV->u	=	QC(D.vertices[v].u);
 					pV->v	=	QC(D.vertices[v].v);
