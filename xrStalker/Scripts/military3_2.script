@@ -11,6 +11,8 @@ function main ()
 	stalker1:script (true, military3_2.script_name ())
 	stalker2:script (true, military3_2.script_name ())
 	stalker3:script (true, military3_2.script_name ())
+	
+    wait (10000)
 
 	action (stalker1, anim ("sidya_kurit_2"), cond (cond.anim_end))
 
