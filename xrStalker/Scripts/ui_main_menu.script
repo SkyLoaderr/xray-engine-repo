@@ -170,7 +170,7 @@ function main_menu:InitControls()
 	self.main_tab:Show(true)
 	self.main_frame:AttachChild(self.main_tab)
 	
---
+--[[
 	----- CODE -------
 -------- BUTTONS ------------------------------- 
 	--------->> NEW GAME
@@ -186,7 +186,7 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 --	tab:AddItem(btn)
---[[		
+
 	--------->> LOAD Game	
 	btn = CUI3tButton()
 --	btn = CUITabButton()	
