@@ -6,7 +6,9 @@ class "CSE_NewAttachableItem"				(cse_alife_item)
 
 function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
-	self._s32					= 1
+//	self._s8					= 8
+	self._s16					= 16
+	self._s32					= 32
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -16,17 +18,23 @@ end
 function CSE_NewAttachableItem:STATE_Write	(packet)
 	log							("CSE_NewAttachableItem::STATE_Write called!")
 	cse_alife_item.STATE_Write	(self,packet)
-	packet:w_u32				(self._s32)
+//	packet:w_s8					(self._s8)
+	packet:w_s16				(self._s16)
+	packet:w_s32				(self._s32)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
 	cse_alife_item.STATE_Read	(self,packet,size)
+//	self._s8					= packet:r_s8	()
+	self._s16					= packet:r_s16	()
 	self._s32					= packet:r_s32	()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
-	properties_helper():create_s32(items,"script\\s32\\0",self,"_s32")
+//	properties_helper():create_s8	(items,"script\\s8\\0",	self,"_s8")
+	properties_helper():create_s16	(items,"script\\s16\\0",self,"_s16")
+	properties_helper():create_s32	(items,"script\\s32\\0",self,"_s32")
 end
