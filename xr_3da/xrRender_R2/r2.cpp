@@ -64,6 +64,32 @@ static class cl_lhdrscale		: public R_constant_setup		{	virtual void setup	(R_co
 // Just two static storage
 void					CRender::create					()
 {
+	// hardware
+	o.smapsize			= 1536;
+	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
+	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
+	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
+	o.fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
+	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
+	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
+
+	// options (smap-pool-size)
+	if (strstr(Core.Params,"-smap1024"))	o.smapsize	= 1024;
+	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
+	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
+	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
+	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
+	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
+
+	// options
+	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE:FALSE;
+	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE:TRUE;
+	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE:TRUE;
+	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE:FALSE;
+	o.nvstencil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE:TRUE;
+	o.nvstencil			= FALSE;
+
+	// constants
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("parallax",	&binder_parallax);
@@ -198,30 +224,6 @@ void					CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
-	// hardware
-	o.smapsize			= 1536;
-	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
-	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
-	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
-	o.fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
-	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
-	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
-
-	// options (smap-pool-size)
-	if (strstr(Core.Params,"-smap1024"))	o.smapsize	= 1024;
-	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
-	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
-	if (strstr(Core.Params,"-smap2560"))	o.smapsize	= 2560;
-	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
-	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
-
-	// options
-	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE:FALSE;
-	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE:TRUE;
-	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE:TRUE;
-	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE:FALSE;
-	o.nvstencil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE:TRUE;
-	o.nvstencil			= FALSE;
 }
 
 CRender::~CRender()
