@@ -275,7 +275,10 @@ CObject* CObject::H_SetParent	(CObject* O)
 {
 	if (O==Parent)	return O;
 
-	if (0==Parent)	
+	CObject* S	= Parent; 
+	Parent		= O; 
+
+	if (0==S)	
 	{
 		// Become chield
 		pCreator->ObjectSpace.Object_Unregister	(this);
@@ -285,7 +288,6 @@ CObject* CObject::H_SetParent	(CObject* O)
 		pCreator->ObjectSpace.Object_Register	(this);
 		Sector_Detect							();
 	} 
-	CObject* S	= Parent; 
-	Parent		= O; 
+
 	return		S;
 }
