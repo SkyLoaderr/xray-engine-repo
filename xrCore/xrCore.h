@@ -9,9 +9,9 @@
 #define xrCoreH
 #pragma once
 
-#ifdef _EDITOR
+//#ifdef _EDITOR
 #	include "xrCore_platform.h"
-#endif
+//#endif
 
 // stl-config
 // *** disable exceptions for both STLport and VC7.1 STL
