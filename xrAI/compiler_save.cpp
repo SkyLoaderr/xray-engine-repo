@@ -75,6 +75,10 @@ float	CalculateHeight(Fbox& BB)
 xr_vector<NodeCompressed>	compressed_nodes;
 
 class CNodeRenumberer {
+	IC	bool operator=	(const CNodeRenumberer&)
+	{
+	}
+
 	struct SSortNodesPredicate {
 
 		IC	bool	operator()			(const NodeCompressed &vertex0, const NodeCompressed &vertex1) const

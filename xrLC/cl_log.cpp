@@ -32,13 +32,13 @@ static INT_PTR CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 			break;
 		case WM_CLOSE:
 			ExitProcess		(0);
-			bClose = TRUE;
+//			bClose = TRUE;
 			break;
 		case WM_COMMAND:
 			if( LOWORD(wp)==IDCANCEL )
 			{
 				ExitProcess	(0);
-				bClose = TRUE;
+//				bClose = TRUE;
 			}
 			break;
 		default:
