@@ -275,6 +275,7 @@ void	CEffect_Rain::Render	()
 		Fvector	wdir;	wdir.set(one.P.x-vCenter.x,0,one.P.z-vCenter.z);
 		float	wlen	=	wdir.magnitude();
 		if (wlen>b_radius_wrap)	{
+			Log("len:",wlen);
 			// Perform wrapping
 			wdir.div	(wlen);
 			one.P.direct(one.P, wdir, -b_radius);
