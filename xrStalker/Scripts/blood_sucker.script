@@ -682,6 +682,7 @@ function CBloodsuckerAmbush:__init(_npc, _can_eat, _state_rest, _state_attack, _
     if(ini:section_exist ("ambush")) then                    --Если радиус задан в кастом дате, то берем его от туда
         if(ini:line_exist ("ambush", "radius")) then
 			self.radius	= ini:r_float("ambush", "radius")
+            printf("name = %s  radius = %f", self.npc:name(), self.radius)
         end
     end
 end
