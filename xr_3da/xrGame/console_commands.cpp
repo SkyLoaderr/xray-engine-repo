@@ -994,14 +994,14 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Net_CL_InputUpdateRate,"net_cl_inputupdaterate",	&net_cl_inputupdaterate,	1, 100)	;
 
 
-	CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
+	CMD3(CCC_Mask,		"g_unlimitedammo",			&psActorFlags,	AF_UNLIMITEDAMMO);
 
 	// adjust mode support
-	CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 3);
-	CMD4(CCC_Float,				"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
+	CMD4(CCC_Integer,	"hud_adjust_mode",			&g_bHudAdjustMode,	0, 3);
+	CMD4(CCC_Float,		"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
 
 	// Enable/disable news
-	CMD4(CCC_Integer,			"hud_news_disable",			&g_bNewsDisable,	0, 1);
+	CMD4(CCC_Integer,	"hud_news_disable",			&g_bNewsDisable,	0, 1);
 
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,1,		100				);
@@ -1012,7 +1012,6 @@ void CCC_RegisterCommands()
 	CMD3(CCC_String,	"net_name",				psNET_Name,			32						);
 	CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		NETFLAG_DBG_DUMPSIZE	);
 	CMD1(CCC_Dbg_NumObjects,	"net_dbg_objects"				);
-	CMD1(CCC_LuaHelp,	"lua_help");
 
 	//Recon params
 	CMD4(CCC_Float,		"recon_min_dist",		&g_fMinReconDist,	1.0f, 50.0f);
@@ -1024,7 +1023,10 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"g_eventdelay",			&g_dwEventDelay,	0,	1000);
 
 	CMD4(CCC_Integer,	"g_corpsenum",			(int*)&g_dwMaxCorpses,		0,	100);
+
 #ifdef DEBUG
+	CMD1(CCC_LuaHelp,	"lua_help");
+
 	CMD4(CCC_Integer,	"center_x",				&x_m_x,	-1000,	1000);
 	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
 

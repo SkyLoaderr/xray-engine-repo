@@ -17,7 +17,11 @@
 #include "squad_hierarchy_holder.h"
 #include "group_hierarchy_holder.h"
 
+#ifdef DEBUG
+Flags32		psAI_Flags	= {0};
+#else
 Flags32		psAI_Flags	= {aiLua};
+#endif
  
 void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 {
