@@ -277,6 +277,9 @@
 	<character id="bar_dolg_ivancov">
 		<class>stalker_bar_ivancov</class>
 	</character>
+	<character id="bar_dolg_leader">
+		<class>stalker_bar_leader</class>
+	</character>
 
 	<character id="svoboda_zombi_stalker">
 		<class>Svoboda_zombi_stalker</class>
