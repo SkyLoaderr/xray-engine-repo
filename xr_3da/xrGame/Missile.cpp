@@ -114,6 +114,7 @@ void CMissile::OnH_B_Chield()
 
 void CMissile::spawn_fake_missile()
 {
+	if (OnClient()) return;
 //#ifdef _DEBUG
 //	//Msg					("%6d : Spawning fake missile for object %s",Level().timeServer(),*cName());
 //#endif
