@@ -187,7 +187,7 @@ public:
 		m_character->IPosition(P);
 	}
 	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos)&&!bExernalImpulse;}
-	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
+	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled()||bExernalImpulse;}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Calculate				(const Fvector& desired_pos,float velocity,float dt);
 

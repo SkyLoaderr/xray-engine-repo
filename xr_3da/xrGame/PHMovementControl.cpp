@@ -75,6 +75,7 @@ void CPHMovementControl::ApplyImpulse(const Fvector& dir,const dReal P)
 	Fvector force;
 	force.set(dir);
 	force.mul(P/fixed_step);
+	
 	AddControlVel(force);
 	/*m_character->ApplyImpulse(dir,P);*/
 }
@@ -98,7 +99,9 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float /**ang_speed/**/,float 
 		bExernalImpulse=false;
 	}
 	//vAccel.y=jump;
-	m_character->SetMaximumVelocity(vAccel.magnitude()/10.f);
+	float mAccel=vAccel.magnitude();
+	m_character->SetMaximumVelocity(mAccel/10.f);
+	if(!fis_zero(mAccel))vAccel.mul(1.f/mAccel);
 	m_character->SetAcceleration(vAccel);
 	if(!fis_zero(jump)) m_character->Jump(vAccel);
 
@@ -218,7 +221,8 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		float radius = dif.magnitude()*2.f;
 		if(m_path_size==1)
 		{
-			m_character->SetMaximumVelocity(0.f);
+			//m_character->SetMaximumVelocity(0.f);
+			speed=0.f;
 			vPosition.set(new_position);	//todo - insert it in PathNearestPoint
 			index=0;
 			vPathPoint.set(path[0].position);
@@ -267,16 +271,18 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		//vAccel.add(vExternalImpulse);
 		Fvector V;
 		V.set(dir);
-		V.mul(speed*fMass/fixed_step);
+		//V.mul(speed*fMass/fixed_step);
+		V.mul(speed*10.f);
 		V.add(vExternalImpulse);
 		m_character->ApplyForce(vExternalImpulse);
 		speed=V.magnitude();
-
-		if(fis_zero(speed))
+		
+		if(!fis_zero(speed))
 		{
 			dir.set(V);
 			dir.mul(1.f/speed);
 		}
+		speed/=10.f;
 		vExternalImpulse.set(0.f,0.f,0.f);
 		bExernalImpulse=false;
 	}
