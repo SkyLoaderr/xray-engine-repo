@@ -218,6 +218,4 @@ IC	void save_data(const T &data, M &stream)
 	save_data(data,stream,object_saver::detail::CEmptyPredicate());
 }
 
-#include "object_saver_inline.h"
-
 #endif // XRAY_OBJECT_SAVER
