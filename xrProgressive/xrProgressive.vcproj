@@ -5,7 +5,9 @@
 	Name="xrProgressive"
 	ProjectGUID="{0F45FA55-BACD-4D7B-A809-24F0104F5E57}"
 	SccProjectName="&quot;$/xrProgressive&quot;, LCCAAAAA"
-	SccLocalPath=".">
+	SccAuxPath=""
+	SccLocalPath="."
+	SccProvider="MSSCCI:Microsoft Visual SourceSafe">
 	<Platforms>
 		<Platform
 			Name="Win32"/>
@@ -71,7 +73,6 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="x:\common\pmesh"
 			IntermediateDirectory=".\Release"
 			ConfigurationType="2"
 			UseOfMFC="0"

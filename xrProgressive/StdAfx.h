@@ -59,6 +59,7 @@ using namespace std;
 #define _MAX(a,b) ((a>b)?a:b)
 #endif
 
+#define _sqrt sqrtf
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}
