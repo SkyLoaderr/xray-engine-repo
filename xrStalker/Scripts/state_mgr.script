@@ -28,8 +28,28 @@ function evaluator_state_mgr_idle_alife:__init(name, state_manager) super (nil, 
 	self.st = state_manager
 end
 function evaluator_state_mgr_idle_alife:evaluate()
-	if db.storage[self.st.npc:id()].active_section == nil then return true end
-	return self.st.target_state == "idle"
+--	printf("SECTION %s", utils.to_str(db.storage[self.st.npc:id()].active_section))
+	mgr = self.object:motivation_action_manager()
+	if mgr:initialized() then
+--		printf("ACTION %s", utils.to_str(mgr:current_action_id()))
+		if mgr:current_action_id() ~= xr_actions_id.alife then
+			self.st.alife = false
+		end
+	end
+	if db.storage[self.st.npc:id()].active_section == nil then
+
+		local t = self.st.target_state == "idle" and 
+			   not self.st.planner:evaluator(self.st.properties["locked"]):evaluate() and
+			   self.st.planner:evaluator(self.st.properties["movement"]):evaluate()	and
+			   self.st.planner:evaluator(self.st.properties["animstate"]):evaluate() and
+			   self.st.planner:evaluator(self.st.properties["animation"]):evaluate()
+		   
+		if t == true then self.st.alife = true end
+		if self.st.alife == true then return true end		
+		return t
+	end
+	
+	return true
 end
 
 
@@ -534,6 +554,7 @@ function state_manager:__init(npc)
 	self.current_direction = nil
 	self.target_position = nil
 	self.combat = false
+	self.alife = true
 end
 function state_manager:set_state(state_name, callback, timeout, target)
 	printf("Set Stated called: %s for %s", state_name, self.npc:name())
