@@ -184,7 +184,7 @@ void CAI_ALife::vfGenerateSpawnPoints(const u32 dwTotalCount, FLOAT_VECTOR &fpFa
 	for (I = B; I != E; I++)
 		dwSpawnCount += *I;
 	
-	dwSpawnCount += 3*dwpSpawnCounts[1];
+	//dwSpawnCount += 3*dwpSpawnCounts[1];
 	m_tpSpawnPoints.resize		(dwSpawnCount);
 	m_tSpawnHeader.dwCount		= dwSpawnCount;
 	m_tSpawnHeader.dwVersion	= SPAWN_POINT_VERSION;
