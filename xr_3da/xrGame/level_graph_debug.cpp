@@ -760,8 +760,8 @@ IC	bool build_circle_trajectory(
 		direction.set	(1.f,0.f);
 
 	float				sina, cosa, sinb, cosb, sini, cosi, temp;
-	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +1.5f);
-	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m;
+	u32					m = fis_zero(position.angular_velocity) ? 1 : iFloor(_abs(angle)/position.angular_velocity*10.f +.5f);
+	u32					n = fis_zero(position.angular_velocity) || !m ? 1 : m, k = vertex_id ? 1 : 0;
 	if (path)
 		path->reserve	(size + n);
 
@@ -769,10 +769,10 @@ IC	bool build_circle_trajectory(
 	cosa				= direction.y;
 	sinb				= _sin(angle/float(n));
 	cosb				= _cos(angle/float(n));
-	sini				= vertex_id ? 0.f : sinb;
-	cosi				= vertex_id ? 1.f : cosb;
+	sini				= 0.f;
+	cosi				= 1.f;
 
-	for (u32 i=vertex_id ? 0 : 1; i<=n; ++i) {
+	for (u32 i=0; i<n + k; ++i) {
 		TIMER_START(BCT_AP)
 		Fvector			t;
 		t.x				= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
@@ -780,8 +780,8 @@ IC	bool build_circle_trajectory(
 		temp			= sin_apb(sinb,cosb,sini,cosi);
 		cosi			= cos_apb(sinb,cosb,sini,cosi);
 		sini			= temp;
-
 		TIMER_STOP(BCT_AP)
+
 		TIMER_START(BCT_CPID)
 		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
 		TIMER_STOP(BCT_CPID)
