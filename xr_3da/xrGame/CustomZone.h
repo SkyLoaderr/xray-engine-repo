@@ -355,4 +355,5 @@ protected:
 public:
 	virtual u32				ef_anomaly_type		() const;
 	virtual u32				ef_weapon_type		() const;
+	virtual BOOL			UsedAI_Locations	();
 };

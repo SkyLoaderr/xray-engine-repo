@@ -1265,8 +1265,13 @@ u32	CCustomZone::ef_anomaly_type	() const
 	return	(m_ef_anomaly_type);
 }
 
-u32	CCustomZone::ef_weapon_type	() const
+u32	CCustomZone::ef_weapon_type		() const
 {
 	VERIFY	(m_ef_weapon_type != u32(-1));
 	return	(m_ef_weapon_type);
+}
+
+BOOL CCustomZone::UsedAI_Locations	()
+{
+	return	(FALSE);
 }
