@@ -253,14 +253,34 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 {
 	__super::OnPlayerBuy	(id_who,eid_who,what);
 
+	xrServerEntity*		E	=	spawn_begin	(name);														// create SE
+	strcpy					(E->s_name_replace,name);													// name
+	E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
+	E->ID_Parent			=	u16(eid_who);
+
 	// cost
 	int cost				= get_option_i	(what,"cost",0);
-	R_ASSERT				(cost);
+	if (0==cost)			
+	{
+		F_entity_Destroy	(E);
+		return;
+	}
 
-	// weapons
-	vector<u16>* C			= get_children(id_who);
+	// check if has same-slot-weapon(s)
+	xrSE_Weapon*		W	=	dynamic_cast<xrSE_Weapon*>(E);
+	if (W)
+	{
+		vector<u16>* C			= get_children(id_who);
+		if (0==C)				
+		{
+			F_entity_Destroy	(E);
+			return;
+		}
+		int slot 
+			for (u32 it=0; it<C->size(); it++)
+	}
+		
 
-	
 	// check if has money to pay
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 	if(ps_who->money_total < cost)	return;
@@ -272,10 +292,6 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u32 eid_who, LPCSTR what)
 	if ( strchr(name,'/') )	*strchr(name,'/') = 0;
 
 	// Spawn item
-	xrServerEntity*		E	=	spawn_begin	(name);														// create SE
-	strcpy					(E->s_name_replace,name);													// name
-	E->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL;							// flags
-	E->ID_Parent			=	u16(eid_who);
 	spawn_end				(E,	id_who);
 }
 

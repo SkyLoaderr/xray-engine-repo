@@ -121,6 +121,10 @@ void	xrSE_Weapon::STATE_Write	(NET_Packet& P)
 	P.w_u16				(a_current);
 	P.w_u16				(a_elapsed);
 }
+u8		xrSE_Weapon::get_slot		()
+{
+	return (u8) pSettings->ReadINT	(s_name,"slot");
+}
 #ifdef _EDITOR
 void	xrSE_Weapon::FillProp		(LPCSTR pref, PropValueVec& values)
     {

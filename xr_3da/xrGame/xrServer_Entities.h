@@ -126,6 +126,8 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 	u16						a_elapsed;
 
 	xrSE_Weapon				();
+
+	u8						get_slot		();
 xrSE_DECLARE_END
 
 //***** Teamed
