@@ -16,6 +16,8 @@ function fract:__init(name)
 
 	self:loadJob(name)
 	self:loadStates(name)
+
+	self.music = gramofon.m_gramofon("blockpost_rupor")
 end
 function fract:addObject(npc)
 	if self.Object[npc:id()] == nil then
@@ -35,8 +37,12 @@ function fract:calculate() -- просчет лагеря
 		
 		if device():time_global() - self.stateBegin > timeout then
 			self.state = 0
+		        self.music:event(0)
 		end
 	end
+	
+	-- матюгальник
+	self.music:update()
 
 	-- убирание мертвых сталкеров	
 	local tt = {}
@@ -383,6 +389,7 @@ function fract:setState(id)
 		if v.id == id then	
 			self.stateBegin = device():time_global()	
 			self.state = id
+		        self.music:event(id)
 			self:calculate()
 			return true
 		end
@@ -482,8 +489,7 @@ function addMember(name, npc)
 		xr_gulag.fraction[name] = xr_gulag.fract(name)
 	end
 	xr_gulag.fraction[name]:addObject(npc)
-	xr_gulag.fraction[name]:print()
-	xr_gulag.fraction[name]:setJob(npc)
+	xr_gulag.fraction[name]:calculate()
 end
 function setFractionState(name, id)
 	xr_gulag.fraction[name]:setState(id)
@@ -501,5 +507,5 @@ function isUnderFraction(npc)
 end             
 function resetJob(fraction, npc)
 	xr_gulag.fraction[fraction]:clearAllJob(npc)
-	xr_gulag.fraction[fraction]:setJob(npc)
+	xr_gulag.fraction[fraction]:calculate()
 end         
