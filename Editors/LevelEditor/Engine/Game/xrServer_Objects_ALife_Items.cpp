@@ -74,10 +74,12 @@ void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	tNetPacket.w_float			(m_fCondition);
-	tNetPacket.w_u32			(m_dwTimeStamp);
-	tNetPacket.w_u16			(m_u16NumItems);
-	if (!m_u16NumItems) return;	
+	tNetPacket.w_float				(m_fCondition);
+	tNetPacket.w_u32				(m_dwTimeStamp);
+	tNetPacket.w_u16				(m_u16NumItems);
+
+	if (!m_u16NumItems)
+		return;	
 
 	tNetPacket.w_u8					( State.enabled );
 
@@ -93,15 +95,18 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_float				( State.quaternion.y );
 	tNetPacket.w_float				( State.quaternion.z );
 	tNetPacket.w_float				( State.quaternion.w );	
+
+	o_Position						= State.position;
 };
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	tNetPacket.r_float			(m_fCondition);
-	tNetPacket.r_u32			(m_dwTimeStamp);
-	tNetPacket.r_u16			(m_u16NumItems);
+	tNetPacket.r_float				(m_fCondition);
+	tNetPacket.r_u32				(m_dwTimeStamp);
+	tNetPacket.r_u16				(m_u16NumItems);
 
-	if (!m_u16NumItems) return;
+	if (!m_u16NumItems)
+		return;
 
 	tNetPacket.r_u8					( *((u8*)&(State.enabled)) );
 
@@ -117,6 +122,8 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_float				( State.quaternion.y );
 	tNetPacket.r_float				( State.quaternion.z );
 	tNetPacket.r_float				( State.quaternion.w );
+
+	o_Position						= State.position;
 };
 
 #ifdef _EDITOR
