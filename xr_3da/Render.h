@@ -21,7 +21,8 @@ public:
 		DIRECT		= 0,
 		POINT		= 1,
 		SPOT		= 2,
-		REFLECTED	= 3,
+		OMNIPART	= 3,
+		REFLECTED	= 4,
 	};
 public:
 	virtual void					set_type			(LT type)							= 0;
