@@ -105,10 +105,10 @@
 		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pm \n
-			ammo_9x18_fmj = 1 \n
-			wpn_ak74u \n
-			ammo_5.45x39_ap = 1 \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_spas12 \n
+			ammo_12x76_dart = 1 \n
 			device_torch \n
 		</supplies>
 					
