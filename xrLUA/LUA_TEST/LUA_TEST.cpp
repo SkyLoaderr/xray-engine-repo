@@ -793,6 +793,12 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 // main
 int __cdecl main(int argc, char* argv[])
 {
+	printf	("xrLuaCompiler v0.1\n");
+	if (argc < 2) {
+		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+		return 0;
+	}
+
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
@@ -810,20 +816,18 @@ int __cdecl main(int argc, char* argv[])
 
 	open			(L);
 
-	if (argc > 1) {
-		for (int i=1; i<argc; i++) {
-			string256	l_caScriptName;
-			strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
-			printf		("File %s : ",l_caScriptName);
-			bool b = load_file_into_namespace(L,l_caScriptName,strlen(argv[i]) ? argv[i] : "_G",false);
-			if (strlen(SSS)) {
-				printf		("\n%s\n",SSS);
-				strcpy		(SSS,"");
-			}
-			else
-				if (b)
-					printf	("0 syntax errors\n");
+	for (int i=1; i<argc; i++) {
+		string256	l_caScriptName;
+		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
+		printf		("File %s : ",l_caScriptName);
+		bool b = load_file_into_namespace(L,l_caScriptName,strlen(argv[i]) ? argv[i] : "_G",false);
+		if (strlen(SSS)) {
+			printf		("\n%s\n",SSS);
+			strcpy		(SSS,"");
 		}
+		else
+			if (b)
+				printf	("0 syntax errors\n");
 	}
 
 	lua_close		(L);

@@ -93,7 +93,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/LUA_TEST.exe"
+				OutputFile="$(OutDir)/xrLuaCompiler.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="1"
