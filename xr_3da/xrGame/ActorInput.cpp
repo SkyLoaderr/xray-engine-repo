@@ -11,20 +11,20 @@ void CActor::OnKeyboardPress(int cmd)
 	if (Remote() || !bAlive)	return;
 
 	switch(cmd){
-	case kACCEL:	mstate_wishful |= mcAccel;		break;
-	case kR_STRAFE:	mstate_wishful |= mcRStrafe;	break;
-	case kL_STRAFE:	mstate_wishful |= mcLStrafe;	break;
-	case kFWD:		mstate_wishful |= mcFwd;		break;
-	case kBACK:		mstate_wishful |= mcBack;		break;
-	case kJUMP:		mstate_wishful |= mcJump;		break;
-	case kCROUCH:	iHealth+=5; mstate_wishful |= mcCrouch;		break;
+	case kACCEL:	iHealth+=5; mstate_wishful |= mcAccel;		break;
+	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
+	case kL_STRAFE:	mstate_wishful |= mcLStrafe;				break;
+	case kFWD:		mstate_wishful |= mcFwd;					break;
+	case kBACK:		mstate_wishful |= mcBack;					break;
+	case kJUMP:		mstate_wishful |= mcJump;					break;
+	case kCROUCH:	mstate_wishful |= mcCrouch;					break;
 
-	case kCAM_1:	cam_Set			(eacFirstEye);	break;
-	case kCAM_2:	cam_Set			(eacLookAt);	break;
-	case kCAM_3:	cam_Set			(eacFreeLook);	break;
+	case kCAM_1:	cam_Set			(eacFirstEye);				break;
+	case kCAM_2:	cam_Set			(eacLookAt);				break;
+	case kCAM_3:	cam_Set			(eacFreeLook);				break;
 
-	case kWPN_FIRE:	g_cl_fireStart(); 				break;
-	case kWPN_ZOOM:	Weapons->Zoom(TRUE);			break;
+	case kWPN_FIRE:	g_cl_fireStart(); 							break;
+	case kWPN_ZOOM:	Weapons->Zoom(TRUE);						break;
 	case kWPN_1:	
 	case kWPN_2:	
 	case kWPN_3:	
