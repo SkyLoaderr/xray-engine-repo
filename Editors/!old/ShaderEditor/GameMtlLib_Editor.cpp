@@ -426,11 +426,11 @@ void SGameMtl::Save(IWriter& fs)
 
 	fs.open_chunk			(GAMEMTL_CHUNK_MAIN);
 	fs.w_u32				(ID);
-	fs.w_stringZ			(*m_Name);
+	fs.w_stringZ			(m_Name);
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_DESC);
-    fs.w_stringZ			(*m_Desc?*m_Desc:"");
+    fs.w_stringZ			(m_Desc);
     fs.close_chunk			();
     
 	fs.open_chunk			(GAMEMTL_CHUNK_FLAGS);
@@ -520,21 +520,21 @@ void SGameMtlPair::Save(IWriter& fs)
 */    
 // save    
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_BREAKING);
-    fs.w_stringZ		(BreakingSounds.c_str());
+    fs.w_stringZ		(BreakingSounds);
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_STEP);
-    fs.w_stringZ		(StepSounds.c_str());
+    fs.w_stringZ		(StepSounds);
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_COLLIDE);
-    fs.w_stringZ		(CollideSounds.c_str());
-    fs.w_stringZ		(CollideParticles.c_str());
-    fs.w_stringZ		(CollideMarks.c_str());
+    fs.w_stringZ		(CollideSounds);
+    fs.w_stringZ		(CollideParticles);
+    fs.w_stringZ		(CollideMarks);
 	fs.close_chunk		();
 }
 
-void CGameMtlLibrary::Save()
+bool CGameMtlLibrary::Save()
 {
 	R_ASSERT			(FALSE==UpdateMtlPairs());
 	// save
@@ -568,6 +568,6 @@ void CGameMtlLibrary::Save()
 
 	xr_string fn;
     FS.update_path		(fn,_game_data_,GAMEMTL_FILENAME);
-    fs.save_to			(fn.c_str());
+    return fs.save_to	(fn.c_str());
 }
 
