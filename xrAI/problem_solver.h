@@ -11,34 +11,46 @@
 #include "operator_abstract.h"
 
 template <
-	typename T1,
-	typename T2,
-	typename T3,
-	typename T4
+	typename _condition_type,
+	typename _value_type,
+	typename _operator_id_type
 >
 class CProblemSolver {
-private:
-	typedef COperatorConditionAbstract<T2,T3>	COperatorCondition;
-	typedef COperatorEffectAbstract<T2,T3>		COperatorEffect;
-	typedef COperatorAbstract<T1,T2,T3>			COperator;
+public:
+	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
+	typedef COperatorAbstract<_condition_type,_value_type>			COperator;
+	typedef CConditionState<_condition_type,_value_type>			CState;
+	typedef CState													_index_type;
+	typedef _operator_id_type										_edge_type;
+	typedef xr_map<_operator_id_type,COperator*>					OPERATOR_MAP;
+	typedef typename OPERATOR_MAP::const_iterator					const_iterator;
 
 protected:
-	xr_map<T4,COperator>			m_operators;
-	CConditionState					m_current_state;
-	CConditionState					m_target_state;
-	T4								m_current_operator;
-
+	OPERATOR_MAP				m_operators;
+	CState						m_current_state;
+	CState						m_target_state;
+	_edge_type					m_current_operator;
+	xr_vector<_edge_type>		m_plan;
+	mutable CState				m_temp;
+	
 public:
-	IC											CProblemSolver		();
-	virtual										~CProblemSolver		();
-	IC		void								add_operator		(COperator &state, const T4 &state_id);
-	IC		void								remove_operator		(const T4 &state_id);
-	IC		const T4							&current_operator	() const;
-	IC		const xr_vector<COperatorCondition>	&current_state		() const;
-	IC		const xr_vector<COperatorCondition>	&target_state		() const;
-	IC		void								set_current_state	(const xr_vector<COperatorCondition> &state);
-	IC		void								set_target_state	(const xr_vector<COperatorCondition> &state);
-	IC		void								set_current_operator(const T4 &state_id);
+	IC							CProblemSolver		();
+	virtual						~CProblemSolver		();
+	IC		void				add_operator		(COperator			*_operator,		const _edge_type	&operator_id);
+	IC		void				remove_operator		(const _edge_type	&operator_id);
+	IC		const _edge_type	&current_operator	() const;
+	IC		void				set_current_state	(const CState		&state);
+	IC		void				set_target_state	(const CState		&state);
+	IC		void				set_current_operator(const _edge_type	&operator_id);
+	IC		void				solve				();
+	IC		const CState		&current_state		() const;
+	IC		const CState		&target_state		() const;
+	IC		const OPERATOR_MAP	&operators			() const;
+	// graph interface
+	IC		u8					get_edge_weight		(const _index_type	&vertex_index0,	const _index_type	vertex_index1,	const const_iterator	&i) const;
+	IC		bool				is_accessible		(const _index_type	&vertex_index) const;
+	IC		const _index_type	&value				(const _index_type	&vertex_index,	const_iterator		&i) const;
+	IC		void				begin				(const _index_type	&vertex_index,	const_iterator		&b,				const_iterator			&e) const;
 };
 
 #include "problem_solver_inline.h"

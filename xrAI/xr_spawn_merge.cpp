@@ -254,7 +254,7 @@ public:
 			if (!l_tpALifeAnomalousZone)
 				continue;
 
-			search_engine.search(*m_tpAI_Map,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_tNodeID,&l_tpaStack,PathManagers::SFlooder<float,u32,u32>((float)l_tpALifeAnomalousZone->m_fRadius,u32(-1),u32(-1)));
+			search_engine.search(*m_tpAI_Map,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_tNodeID,&l_tpaStack,SFlooder<float,u32,u32>((float)l_tpALifeAnomalousZone->m_fRadius,u32(-1),u32(-1)));
 
 //			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->o_Position,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
 

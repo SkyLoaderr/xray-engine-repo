@@ -8,30 +8,36 @@
 
 #pragma once
 
-#include "operator_effect.h"
 #include "condition_state.h"
 
 template <
-	typename T1,
-	typename T2,
-	typename T3
+	typename _condition_type,
+	typename _value_type
 >
-class COperatorAbstract : public CConditionState {
-private:
-	typedef COperatorConditionAbstract<T2,T3>	COperatorCondition;
-	typedef COperatorEffectAbstract<T2,T3>		COperatorEffect;
+class COperatorAbstract : public CConditionState<_condition_type,_value_type> {
+protected:
+	typedef CConditionState<_condition_type,_value_type>			inherited;
+	typedef inherited												CSConditionState;
+	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
 
 protected:
-	xr_vector<COperatorEffect>					m_effects;
-	T1											*m_state;
+	xr_vector<COperatorCondition>				m_effects;
 	u32											m_priority;
 
 public:
-	IC											COperatorAbstract	(T1 *state, u32 priority, const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorEffect> &effects);
+	IC											COperatorAbstract	();
+	IC											COperatorAbstract	(u32 priority, const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects);
 	virtual										~COperatorAbstract	();
-	IC		T1									*state				();
 	IC		u32									priority			() const;
-	IC		const xr_vector<COperatorEffect>	&effects			() const;
+	IC		const xr_vector<COperatorCondition>	&effects			() const;
+	IC		void								add_condition		(const COperatorCondition &condition);
+	IC		void								add_effect			(const COperatorCondition &effect);
+	virtual bool								applicable			(const CSConditionState &condition) const;
+	virtual const CSConditionState				&apply				(const CSConditionState &condition, CSConditionState &result) const;
+	virtual void								initialize			();
+	virtual void								execute				();
+	virtual void								finalize			();
+	virtual bool								completed			() const;
 };
 
 #include "operator_abstract_inline.h"

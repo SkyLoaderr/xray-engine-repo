@@ -79,7 +79,7 @@ IC	float CGameGraph::distance	(const ALife::_GRAPH_ID tGraphID0, const ALife::_G
 	return						(ALife::_GRAPH_ID(-1));
 }
 
-IC	bool CGameGraph::accessible	(const u32 /**vertex_id/**/) const
+IC	bool CGameGraph::accessible	(const u32 vertex_id) const
 {
 	return						(true);
 }
@@ -94,7 +94,7 @@ IC	void CGameGraph::begin		(const u32 vertex_id, const_iterator &start, const_it
 	end							= (start = (const CEdge *)((BYTE *)m_nodes + vertex(ALife::_GRAPH_ID(vertex_id))->edge_offset())) + vertex(ALife::_GRAPH_ID(vertex_id))->edge_count();
 }
 
-IC	u32	 CGameGraph::value		(const u32 /**vertex_id/**/, const_iterator &i) const
+IC	u32	 CGameGraph::value		(const u32 vertex_id, const_iterator &i) const
 {
 	return						(i->vertex_id());
 }

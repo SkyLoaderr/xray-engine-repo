@@ -158,7 +158,7 @@ IC	bool CSAStar::step				(_PathManager &path_manager)
 					neighbour.f()	= neighbour.g() + neighbour.h();
 					// assign correct parent to the node to be able
 					// to retreive a path
-					data_storage().assign_parent	(neighbour,&best);
+					data_storage().assign_parent	(neighbour,&best,path_manager.edge(i));
 					// notify data storage about node decreasing value
 					data_storage().decrease_opened(neighbour,d);
 					// continue iterating on neighbours
@@ -194,7 +194,7 @@ IC	bool CSAStar::step				(_PathManager &path_manager)
 					neighbour.f()	= neighbour.g() + neighbour.h();
 					// assign correct parent to the node to be able
 					// to retreive a path
-					data_storage().assign_parent	(neighbour,&best);
+					data_storage().assign_parent	(neighbour,&best,path_manager.edge(i));
 					// notify data storage about node decreasing value
 					// to make it modify all the node successors
 					data_storage().update_successors(neighbour);
@@ -217,7 +217,7 @@ IC	bool CSAStar::step				(_PathManager &path_manager)
 			neighbour.h()			= path_manager.estimate(neighbour.index());
 			neighbour.f()			= neighbour.g() + neighbour.h();
 			// assign best node as its parent
-			data_storage().assign_parent(neighbour,&best);
+			data_storage().assign_parent(neighbour,&best,path_manager.edge(i));
 			// add start node to the opened list
 			data_storage().add_opened	(neighbour);
 			// continue iterating on neighbours

@@ -168,7 +168,7 @@ IC	bool CSDijkstra::step				(_PathManager &path_manager)
 					neighbour.f()	= f;
 					// assign correct parent to the node to be able
 					// to retreive a path
-					data_storage().assign_parent	(neighbour,&best);
+					data_storage().assign_parent	(neighbour,&best,path_manager.edge(i));
 					// notify data storage about node decreasing value
 					data_storage().decrease_opened(neighbour,d);
 					// continue iterating on neighbours
@@ -188,7 +188,7 @@ IC	bool CSDijkstra::step				(_PathManager &path_manager)
 			// fill the corresponding node parameters 
 			neighbour.f()				= best.f() + path_manager.evaluate(best.index(),neighbour_index,i);
 			// assign best node as its parent
-			data_storage().assign_parent(neighbour,&best);
+			data_storage().assign_parent(neighbour,&best,path_manager.edge(i));
 			// add start node to the opened list
 			data_storage().add_opened	(neighbour);
 			// continue iterating on neighbours

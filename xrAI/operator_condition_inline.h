@@ -9,29 +9,54 @@
 #pragma once
 
 #define TEMPLATE_SPECIALIZATION template<\
-	typename T2,\
-	typename T3\
+	typename _condition_type,\
+	typename _value_type\
 >
 
-#define CAbstractOperatorCondition COperatorConditionAbstract<T2,T3>
+#define CAbstractOperatorCondition COperatorConditionAbstract<_condition_type,_value_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CAbstractOperatorCondition::COperatorConditionAbstract	(const T2 condition, const T3 value) :
-	m_condition(condition),
-	m_value(value)
+IC	CAbstractOperatorCondition::COperatorConditionAbstract	(const _condition_type condition, const _value_type value) :
+	m_condition			(condition),
+	m_value				(value)
 {
 }
 
 TEMPLATE_SPECIALIZATION
-IC	T2	CAbstractOperatorCondition::condition				() const
+CAbstractOperatorCondition::~COperatorConditionAbstract	()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const _condition_type &CAbstractOperatorCondition::condition	() const
 {
 	return				(m_condition);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	T3	CAbstractOperatorCondition::value					() const
+IC	const _value_type &CAbstractOperatorCondition::value			() const
 {
 	return				(m_value);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperatorCondition::operator<			(const COperatorCondition &_condition) const
+{
+	if (condition() < _condition.condition())
+		return			(true);
+	if (condition() > _condition.condition())
+		return			(false);
+	if (value() < _condition.value())
+		return			(true);
+	return				(false);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractOperatorCondition::operator==			(const COperatorCondition &_condition) const
+{
+	if ((condition() == _condition.condition()) && (value() == _condition.value()))
+		return			(true);
+	return				(false);
 }
 
 #undef TEMPLATE_SPECIALIZATION

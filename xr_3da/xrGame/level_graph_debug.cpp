@@ -401,7 +401,7 @@ void CLevelGraph::draw_travel_line() const
 	}
 }
 
-void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /**vertex_id/**/, u32 /**finish_vertex_id/**/) const
+void CLevelGraph::compute_travel_line(xr_vector<u32> &vertex_path, u32 vertex_id, u32 finish_vertex_id) const
 {
 //	Fvector						*tpDestinationPosition = &m_tFinishPoint;
 //

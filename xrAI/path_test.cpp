@@ -7,17 +7,41 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "path_test.h"
+
+// algorithms
+#include "a_star.h"
+#include "dijkstra.h"
+
+//	graphs
 #include "level_graph.h"
 #include "game_graph.h"
 #include "test_table.h"
-#include "data_storage_priority_queue.h"
-#include "data_storage_heap.h"
-#include "data_storage_list.h"
+
+//	pathmanagers
+#include "path_manager.h"
+
+// allocators
+#include "data_storage_allocator.h"
+#include "data_storage_fixed_allocator.h"
+
+// vertex managers
+#include "data_storage_vertex_manager.h"
+#include "data_storage_fixed_vertex_manager.h"
+
+//		lists
+#include "data_storage_bucket_list.h"
+#include "data_storage_cheap_list.h"
+#include "data_storage_single_linked_list.h"
+#include "data_storage_double_linked_list.h"
+
+//		priority queues
 #include "boost/f_heap.hpp"
 #include "boost/p_heap.hpp"
-#include "path_manager.h"
-#include "a_star.h"
-#include "path_test.h"
+#include "data_storage_priority_queue.h"
+#include "data_storage_binary_heap.h"
+#include "data_storage_binary_heap_list.h"
+#include "data_storage_multi_binary_heap.h"
 
 struct SPathParams{
 	SPathParams() {};
@@ -26,18 +50,19 @@ struct SPathParams{
 };
 
 template <
-	typename _DataStorage,
 	typename _dist_type,
+	typename _priority_queue,
+	typename _vertex_manager,
+	typename _vertex_allocator,
 	typename _Graph
 >
-void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type dummy)
+void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params)
 {
-	typedef CPathManager<_Graph,_DataStorage,PathManagers::SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>									_AStarSearch;
+	typedef CAStar<_dist_type,_priority_queue,_vertex_manager,_vertex_allocator>									_AStarSearch;
+	typedef CPathManager<_Graph,_AStarSearch::CDataStorage,SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
 
-	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->header().vertex_count());
+	_AStarSearch			*a_star			= xr_new<_AStarSearch>			(graph->header().vertex_count());
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
-	_AStarSearch			*a_star			= xr_new<_AStarSearch>			();
 
 	xr_vector<u32>			path;
 	u64						start, finish;
@@ -56,13 +81,13 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	for ( ; I != E; ++I) {
 		path_manager->setup		(
 			graph,
-			data_storage,
+			&a_star->data_storage(),
 			&path,
 			(*I).x,
 			(*I).y,
-			PathManagers::SBaseParameters<_dist_type,u32,u32>()
-			);
-		a_star->find		(*data_storage,*path_manager);
+			SBaseParameters<_dist_type,u32,u32>()
+		);
+		a_star->find		(*path_manager);
 	}
 
 	finish					= CPU::GetCycleCount();
@@ -72,26 +97,26 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 #endif
 
-	xr_delete				(data_storage);
-	xr_delete				(path_manager);
 	xr_delete				(a_star);
+	xr_delete				(path_manager);
 
-	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
+	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_AStarSearch::CDataStorage).name());
 }
 
 template <
-	typename _DataStorage,
 	typename _dist_type,
+	typename _priority_queue,
+	typename _vertex_manager,
+	typename _vertex_allocator,
 	typename _Graph
 >
 void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type min_value, _dist_type max_value)
 {
-	typedef CPathManager<_Graph,_DataStorage,PathManagers::SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>									_AStarSearch;
+	typedef CAStar<_dist_type,_priority_queue,_vertex_manager,_vertex_allocator>									_AStarSearch;
+	typedef CPathManager<_Graph,_AStarSearch::CDataStorage,SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
 
-	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->header().vertex_count(),min_value,max_value);
+	_AStarSearch			*a_star			= xr_new<_AStarSearch>			(graph->header().vertex_count(),min_value,max_value);
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
-	_AStarSearch			*a_star			= xr_new<_AStarSearch>			();
 
 	xr_vector<u32>			path;
 	u64						start, finish;
@@ -110,13 +135,13 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	for ( ; I != E; ++I) {
 		path_manager->setup		(
 			graph,
-			data_storage,
+			&a_star->data_storage(),
 			&path,
 			(*I).x,
 			(*I).y,
-			PathManagers::SBaseParameters<_dist_type,u32,u32>()
+			SBaseParameters<_dist_type,u32,u32>()
 		);
-		a_star->find		(*data_storage,*path_manager);
+		a_star->find		(*path_manager);
 	}
 
 	finish					= CPU::GetCycleCount();
@@ -126,11 +151,10 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 #endif
 
-	xr_delete				(data_storage);
-	xr_delete				(path_manager);
 	xr_delete				(a_star);
+	xr_delete				(path_manager);
 
-	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
+	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_AStarSearch::CDataStorage).name());
 }
 
 template <
@@ -236,22 +260,28 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 	path_params.resize		(_min(path_params.size(),test_count));
 				
-	test<CDataStorageUL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageDLUL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageSL				<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageDLSL			<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBinaryHeap		<							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBinaryHeapList	<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageMultiBinaryHeap<4,							_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageCheapList		<32,true,true,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStorageBucketList		<8*1024,false,				_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value,max_value);
-	test<CDataStoragePriorityQueue	<boost::fibonacci_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
-	test<CDataStoragePriorityQueue	<boost::pairing_heap,		_dist_type,u32,u32,true,24,8>	>	(graph,path_params,min_value);
+	typedef CFixedVertexManager<u32,u32,8>				CVertexManager;
+	typedef CFixedAllocator<1048576>					CVertexAllocator;
+//	typedef CDataStorageAllocator CVertexAllocator;
+
+	test<_dist_type,CDataStorageSingleLinkedList<false>,				CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageSingleLinkedList<true>,					CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageDoubleLinkedList<false>,				CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageDoubleLinkedList<true>,					CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageCheapList<32,true,true>,				CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageBucketList<u32,u32,8*1024,false>,		CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageBinaryHeap,								CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageBinaryHeapList<4>,						CVertexManager,CVertexAllocator>	(graph,path_params);
+	test<_dist_type,CDataStorageMultiBinaryHeap<4>,						CVertexManager,CVertexAllocator>	(graph,path_params);
+//	test<_dist_type,CPriorityQueue<boost::fibonacci_heap>,	CVertexManager,CVertexAllocator>	(graph,path_params);
+//	test<_dist_type,CPriorityQueue<boost::pairing_heap>,		CVertexManager,CVertexAllocator>	(graph,path_params);
 
 	xr_delete				(graph);
 }
 
 #define TEST_COUNT 1000
+
+#include "graph_engine.h"
 
 void path_test				(LPCSTR caLevelName)
 {
@@ -260,4 +290,9 @@ void path_test				(LPCSTR caLevelName)
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
 	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
 	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+//	CLevelGraph			*level_graph	= xr_new<CLevelGraph>(caLevelName);
+//	CGraphEngine		*graph_engine	= xr_new<CGraphEngine>(level_graph->header().vertex_count());
+//	graph_engine->search(*level_graph,0,160,0,CGraphEngine::CBaseParameters());
+//	xr_delete			(level_graph);
+//	xr_delete			(graph_engine);
 }

@@ -9,19 +9,23 @@
 #pragma once
 
 template <
-	typename T2,
-	typename T3
+	typename _condition_type,
+	typename _value_type
 >
 class COperatorConditionAbstract {
 protected:
-	T2					m_condition;
-	T3					m_value;
+	typedef COperatorConditionAbstract<_condition_type,_value_type>	COperatorCondition;
+protected:
+	_condition_type		m_condition;
+	_value_type			m_value;
 
 public:
-	IC					COperatorConditionAbstract	(const T2 condition, const T3 value);
-	virtual				~COperatorConditionAbstract	();
-	IC		T2			condition					() const;
-	IC		T3			value						() const;
+	IC								COperatorConditionAbstract	(const _condition_type condition, const _value_type value);
+	virtual							~COperatorConditionAbstract	();
+	IC		const _condition_type	&condition					() const;
+	IC		const _value_type		&value						() const;
+	IC		bool					operator<					(const COperatorCondition &condition) const;
+	IC		bool					operator==					(const COperatorCondition &condition) const;
 };
 
 #include "operator_condition_inline.h"

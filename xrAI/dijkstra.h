@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "data_storage_base.h"
+#include "data_storage_edge_path.h"
 #include "data_storage_constructor.h"
 
 template <
@@ -17,13 +17,13 @@ template <
 	typename _vertex_manager, 
 	typename _vertex_allocator,
 	bool	 euclidian_heuristics = true,
-	typename _data_storage_base = CDataStorageAStar<euclidian_heuristics>,
+	typename _data_storage_base = CDataStoragePath<euclidian_heuristics>,
 	template <typename _T> class _vertex = CEmptyClassTemplate,
 	template <
 		typename _1,
 		typename _2
 	>
-	class	 _base_allocator_constructor = CDataStorageConstructorBaseAllocator,
+	class	 _base_allocator_constructor = CConstructorBaseAllocator,
 	template <
 		typename _1, 
 		typename _2,
@@ -34,7 +34,7 @@ template <
 		>
 		class	 _4
 	>
-	class	 _index_base_allocator_constructor = CDataStorageConstructorIndexBaseAllocator,
+	class	 _index_base_allocator_constructor = CConstructorVertex,
 	template <
 		typename _algorithm, 
 		typename _index, 
@@ -45,7 +45,7 @@ template <
 			typename _1,
 			typename _2
 		>
-		class	 _base_allocator_constructor = CDataStorageConstructorBaseAllocator,
+		class	 _base_allocator_constructor = CConstructorBaseAllocator,
 		template <
 			typename _1, 
 			typename _2,
@@ -56,7 +56,7 @@ template <
 			>
 			class	 _4
 		>
-		class	 _index_base_allocator_constructor = CDataStorageConstructorIndexBaseAllocator
+		class	 _index_base_allocator_constructor = CConstructorVertex
 	>
 	class _data_storage_constructor = CDataStorageConstructor,
 	typename _iteration_type = u32
