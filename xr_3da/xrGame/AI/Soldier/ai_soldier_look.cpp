@@ -16,7 +16,7 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
 #define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
-#define MIN_SOUND_VOLUME				.03f
+#define MIN_SOUND_VOLUME				.05f
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -252,7 +252,7 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 
 	power *= ffGetStartVolume(ESoundTypes(eType));
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = expf(.1f*log(power));
+		power = 1.f;//expf(.1f*log(power));
 
 	DWORD dwTime = Level().timeServer();
 	

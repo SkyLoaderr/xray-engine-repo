@@ -68,6 +68,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierHurtAloneDefend,
 		aiSoldierPatrolDanger,
 		aiSoldierPursuitAlone,
+		aiSoldierAttackAloneRun,
 	};
 	
 	enum EGestureStates {
@@ -411,6 +412,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnDangerAlone();
 		void OnDefendFireAlone();
 		void OnHurtAloneDefend();
+		void OnAttackAloneRun();
 
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);
