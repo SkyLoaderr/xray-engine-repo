@@ -27,7 +27,7 @@ TIndexNode	*tpaIndexes;
 
 #define OPTINAL_ENEMY_DISTANCE 40.f
 
-IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
+IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1)
 {
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -37,14 +37,14 @@ IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 	float y2 = (float)(tNode1.p1.y) + (float)(tNode1.p0.y);
 	float z2 = (float)(tNode1.p1.z) + (float)(tNode1.p0.z);
 
-	float fCover = 1/((float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
+	float fCover = 1/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
 	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*fYSize2*_sqr(y2 - y1))));
 }
 
-IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode, float fOptimalEnemyDistance)
+IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1, NodeCompressed &tEnemyNode, float &fOptimalEnemyDistance)
 {
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -58,7 +58,7 @@ IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed
 	float y3 = (float)(tEnemyNode.p1.y) + (float)(tEnemyNode.p0.y);
 	float z3 = (float)(tEnemyNode.p1.z) + (float)(tEnemyNode.p0.z);
 
-	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+	float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
@@ -80,7 +80,7 @@ IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fvector tEnemy
 	float y3 = tEnemyPosition.y/fYSize;
 	float z3 = tEnemyPosition.z/fSize;
 
-	float fCover = (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f;
+	float fCover = 1.f/(EPS_L + (float)(tNode1.cover[0])/255.f + (float)(tNode1.cover[1])/255.f + (float)(tNode1.cover[2])/255.f  + (float)(tNode1.cover[3])/255.f);
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
@@ -208,11 +208,12 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			for (int i=0; i<iCount; i++) {
+				// checking if that node is in the path of the BESTNODE ones
+				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
 					tpTemp = tpaIndexes[iNodeIndex].tpNode;
@@ -389,11 +390,12 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			for (int i=0; i<iCount; i++) {
+				// checking if that node is in the path of the BESTNODE ones
+				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
 					tpTemp = tpaIndexes[iNodeIndex].tpNode;
@@ -569,11 +571,12 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			for (int i=0; i<iCount; i++) {
+				// checking if that node is in the path of the BESTNODE ones
+				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				iNodeIndex = this->UnpackLink(taLinks[i]);
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
 					tpTemp = tpaIndexes[iNodeIndex].tpNode;
