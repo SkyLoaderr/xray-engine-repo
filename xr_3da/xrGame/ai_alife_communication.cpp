@@ -103,7 +103,7 @@ void CSE_ALifeSimulator::vfAssignItemParents(CSE_ALifeHumanAbstract *tpALifeHuma
 	}
 }
 
-void CSE_ALifeSimulator::vfAttachOwnerItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector, ITEM_P_VECTOR tpOwnItems)
+void CSE_ALifeSimulator::vfAttachOwnerItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector, ITEM_P_VECTOR &tpOwnItems)
 {
 	ITEM_P_IT				I = tpItemVector.begin();
 	ITEM_P_IT				E = tpItemVector.end();
@@ -373,13 +373,20 @@ bool CSE_ALifeSimulator::bfCheckForTrade	(CSE_ALifeHumanAbstract *tpALifeHumanAb
 
 bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, int iItemCount1, int iItemCount2, int iBallance)
 {
-	if (!iBallance)
+	if (!iBallance) {
+#ifdef ALIFE_LOG
+		Msg				("Ballance is null");
+#endif
 		return			(true);
+	}
 
 	if (iBallance < 0) {
 		if (int(tpALifeHumanAbstract1->m_dwMoney) >= -iBallance) {
 			tpALifeHumanAbstract1->m_dwMoney += iBallance;
 			tpALifeHumanAbstract2->m_dwMoney -= iBallance;
+#ifdef ALIFE_LOG
+			Msg			("Ballance is covered by money");
+#endif
 			return	(true);
 		}
 	}
@@ -387,6 +394,9 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeHumanAbstract 
 		if (int(tpALifeHumanAbstract2->m_dwMoney) >= iBallance) {
 			tpALifeHumanAbstract1->m_dwMoney += iBallance;
 			tpALifeHumanAbstract2->m_dwMoney -= iBallance;
+#ifdef ALIFE_LOG
+			Msg			("Ballance is covered by money");
+#endif
 			return	(true);
 		}
 
@@ -494,60 +504,56 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			}
 		}
 		
+		m_tpBlockedItems1.clear();
+		m_tpBlockedItems2.clear();
+			
 		if (l_iItemCount1*l_iItemCount2) {
-			m_tpBlockedItems1.clear();
-			m_tpBlockedItems2.clear();
-			
-			{
-				OBJECT_IT			I = tpALifeHumanAbstract1->children.end() - l_iItemCount1, J;
-				OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
-				for ( ; I != E; I++) {
-					J				= std::find(tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
-					if (J != tpALifeHumanAbstract2->children.end()) {
-						ITEM_P_IT	K = std::find(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
-						if (K != m_tpItems1.end())
-							m_tpBlockedItems2.push_back(*I);
-						else {
-							R_ASSERT2(std::find(m_tpItems2.begin(),m_tpItems2.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I))) != m_tpItems2.end(),"Unknown item parent");
-							m_tpBlockedItems1.push_back(*I);
-						}
-					}
-				}
-			}
-			
-			if (!(m_tpBlockedItems1.size() + m_tpBlockedItems2.size())) {
-				vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
-				vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
-				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1 - l_iItemCount2,m_tpItemVector.end());
-				k					= 0;
-			}
-			else {
-				if (m_tpBlockedItems1.size())
-					if (m_tpBlockedItems2.size()) {
-						tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
-						tpALifeHumanAbstract2->children.resize(tpALifeHumanAbstract2->children.size() - l_iItemCount2);
-						k = 3;
-					}
+			OBJECT_IT			I = tpALifeHumanAbstract1->children.end() - l_iItemCount1, J;
+			OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
+			for ( ; I != E; I++) {
+				J				= std::find(tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
+				if (J != tpALifeHumanAbstract2->children.end()) {
+					ITEM_P_IT	K = std::find(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
+					if (K != m_tpItems1.end())
+						m_tpBlockedItems2.push_back(*I);
 					else {
-						tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
-						vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
-						ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-						m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount2,m_tpItemVector.end());
-						k = 1;
+						R_ASSERT2(std::find(m_tpItems2.begin(),m_tpItems2.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I))) != m_tpItems2.end(),"Unknown item parent");
+						m_tpBlockedItems1.push_back(*I);
 					}
-				else {
-					tpALifeHumanAbstract2->children.resize(tpALifeHumanAbstract2->children.size() - l_iItemCount2);
-					k = 2;
-					vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
-					ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
-					m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1,m_tpItemVector.end());
 				}
-				j--;
 			}
 		}
-		else
-			k			= 0;
+
+		if (!(m_tpBlockedItems1.size() + m_tpBlockedItems2.size())) {
+			vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
+			vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
+			ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+			m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1 - l_iItemCount2,m_tpItemVector.end());
+			k					= 0;
+		}
+		else {
+			if (m_tpBlockedItems1.size())
+				if (m_tpBlockedItems2.size()) {
+					tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
+					tpALifeHumanAbstract2->children.resize(tpALifeHumanAbstract2->children.size() - l_iItemCount2);
+					k = 3;
+				}
+				else {
+					tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
+					vfAssignItemParents	(tpALifeHumanAbstract2,l_iItemCount2);
+					ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+					m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount2,m_tpItemVector.end());
+					k = 1;
+				}
+			else {
+				tpALifeHumanAbstract2->children.resize(tpALifeHumanAbstract2->children.size() - l_iItemCount2);
+				k = 2;
+				vfAssignItemParents	(tpALifeHumanAbstract1,l_iItemCount1);
+				ITEM_P_IT			I = remove_if(m_tpItemVector.begin(),m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+				m_tpItemVector.erase(m_tpItemVector.end() - l_iItemCount1,m_tpItemVector.end());
+			}
+			j--;
+		}
 	}
 
 	int					l_iItemCount1 = tpALifeHumanAbstract1->children.size();
