@@ -32,7 +32,7 @@
 #pragma warning(default:4995)
 #pragma warning(default:4530)
 
-__declspec(dllimport) LPSTR g_ca_stdout;
+string4096 g_ca_stdout;
 
 // I need this because we have to exclude option /EHsc (exception handling) from the project
 namespace boost {
@@ -706,9 +706,9 @@ void print_stack(lua_State *L)
 ////
 ////void TestLua1()
 ////{
-////	string4096		SSS;
-////	strcpy			(SSS,"");
-////	g_ca_stdout		= SSS;
+////	string4096		g_ca_stdout;
+////	strcpy			(g_ca_stdout,"");
+////	g_ca_stdout		= g_ca_stdout;
 ////	lua_State		*L = lua_open();
 ////	if (!L)
 ////		lua_error	(L);
@@ -724,8 +724,8 @@ void print_stack(lua_State *L)
 ////
 ////	luaL_loadfile	(L,"s:\\gamedata\\scripts\\.script");
 ////
-////	if (xr_strlen(SSS))
-////		printf		("%s\n",SSS);
+////	if (xr_strlen(g_ca_stdout))
+////		printf		("%s\n",g_ca_stdout);
 ////
 ////	lua_close		(L);
 ////}
@@ -1174,7 +1174,7 @@ struct CProblemSolver {
 	typedef T3 _edge_type;
 };
 
-struct SSS {
+struct g_ca_stdout {
 	template <
 		typename _Graph,
 		typename _Parameters
@@ -1272,7 +1272,7 @@ struct SSS {
 };
 //int __cdecl main(char argc, char *argv[])
 //{
-////	SSS								sss;
+////	g_ca_stdout								sss;
 ////	PP								t0;
 ////	CProblemSolver<u32,bool,u32>	t1;
 ////	CProblemSolver<u32,u32,u32>		t2;
@@ -1538,132 +1538,6 @@ struct CLuabindClass {
 void print_help(lua_State *L);
 void time_smart_ptr_test();
 
-int __cdecl main(int argc, char* argv[])
-{
-	test1();
-//	test0();
-//	time_smart_ptr_test();
-	return 0;
-
-	printf	("xrLuaCompiler v0.1\n");
-//	if (argc < 2) {
-//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
-//		return 0;
-//	}
-
-	string4096		SSS;
-	strcpy			(SSS,"");
-	g_ca_stdout		= SSS;
-
-	L = lua_open();
-
-	if (!L)
-		lua_error	(L);
-
-	luaopen_base	(L);
-	luaopen_string	(L);
-	luaopen_math	(L);
-	luaopen_table	(L);
-	luaopen_debug	(L);
-
-	lua_settop		(L,0);
-
-	lua_pushstring	(L,"_0");
-	lua_pushstring	(L,"_1");
-	lua_pushstring	(L,"_2");
-	lua_pushstring	(L,"_3");
-	lua_pushstring	(L,"_4");
-
-	open			(L);
-	
-	printf			("Stack level %d\n",lua_gettop(L));
-
-	function		(L,"setup_table",&setup_table);
-
-	module(L)
-	[
-		class_<CLuabindClass<0> >("CLuabindClass0")
-			.def(constructor<>())
-			.def("foo",&CLuabindClass<0>::foo)
-			.def("foo",&CLuabindClass<0>::foo1),
-
-		class_<CLuabindClass<1> >("CLuabindClass1")
-			.def(constructor<>())
-			.def(const_self == other<CLuabindClass<1> >())
-			.def("foo",&CLuabindClass<1>::foo)
-			.def("foo",&CLuabindClass<1>::foo1)
-			.enum_("something")
-			[
-				value("_1",1),
-				value("_2",2)
-			]
-	];
-
-	module(L,"test_module")
-	[
-		def("setup_table",&setup_table)
-	];
-
-//	vfPrintTable	(L,"_G",true);
-//	function		(L,"this",lua_this);
-//	for (int i=1; i<argc; i++) 
-//	{
-//		string256		l_caScriptName;
-//		strcpy			(l_caScriptName,"x:\\test_test.script");
-//		printf			("File %s : ",l_caScriptName);
-//		bool			b = load_file_into_namespace(L,l_caScriptName,"test_test",true);
-//		print_stack		(L);
-//		vfPrintTable	(L,"_G",true);
-//		lua_dostring	(L,"test_test.main()");
-//		if (xr_strlen(SSS)) {
-//			printf		("\n%s\n",SSS);
-//			strcpy		(SSS,"");
-//		}
-//		else
-//			if (b)
-//				printf	("0 syntax errors\n");
-//	}
-//	luaL_loadfile		(L,"x:\\test_test.script");
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
-//	}
-//	lua_pcall			(L,0,0,0);
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
-//	}
-//	lua_dostring		(L,"a.main()");
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
-//	}
-//	lua_dostring		(L,"a.b.main()");
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
-//	}
-//	vfPrintTable	(L,"_G",true);
-//
-//	printf			("Stack level %d\n",lua_gettop(L));
-//	
-//	print_stack		(L);
-//	
-//	printf			("%s\n",lua_tostring(L,1));
-//	printf			("%s\n",lua_tostring(L,2));
-//	printf			("%s\n",lua_tostring(L,3));
-//	printf			("%s\n",lua_tostring(L,4));
-//	printf			("%s\n",lua_tostring(L,5));
-
-	print_help		(L);
-
-	lua_close		(L);
-
-//	check if we are yielded
-
-//	L->ci->state & CI_YIELD
-}
-
 #ifndef BOOST_NO_STRINGSTREAM
 #	include <sstream>
 #else
@@ -1700,7 +1574,7 @@ void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
 {
 	LPSTR	A;
 	int		S_len = xr_strlen(S);
-	while (!!(A = strstr(str.c_str(),S)))
+	while ((A = strstr(str.c_str(),S)) != 0)
 		str.replace(A - str.c_str(),S_len,N);
 }
 
@@ -1909,4 +1783,163 @@ void print_help(lua_State *L)
 	printf					("\n\nList of the classes exported to LUA\n\n");
 	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
 	print_free_functions	(L,luabind::get_globals(L),"","");
+}
+
+int __cdecl main(int argc, char* argv[])
+{
+	test1();
+//	test0();
+//	time_smart_ptr_test();
+	return 0;
+
+	printf	("xrLuaCompiler v0.1\n");
+//	if (argc < 2) {
+//		printf	("Syntax : xrLuaCompiler.exe <file1> <file2> ... <fileN>\nAll the files must be in the directory \"s:\\gamedata\\scripts\" \nwith \".script\" extension\n");
+//		return 0;
+//	}
+
+//	setvbuf				(stderr,g_ca_stdout,_IOFBF,sizeof(g_ca_stdout));
+//	setvbuf				(stdout,g_ca_stdout,_IOFBF,sizeof(g_ca_stdout));
+	g_ca_stdout[0]		= 0;
+	
+	L = lua_open();
+
+	if (!L)
+		lua_error	(L);
+
+	luaopen_base	(L);
+	luaopen_string	(L);
+	luaopen_math	(L);
+	luaopen_table	(L);
+	luaopen_debug	(L);
+
+	lua_settop		(L,0);
+
+	lua_pushstring	(L,"_0");
+	lua_pushstring	(L,"_1");
+	lua_pushstring	(L,"_2");
+	lua_pushstring	(L,"_3");
+	lua_pushstring	(L,"_4");
+
+	open			(L);
+	
+	printf			("Stack level %d\n",lua_gettop(L));
+
+	function		(L,"setup_table",&setup_table);
+
+	module(L)
+	[
+		class_<CLuabindClass<0> >("CLuabindClass0")
+			.def(constructor<>())
+			.def("foo",&CLuabindClass<0>::foo)
+			.def("foo",&CLuabindClass<0>::foo1),
+
+		class_<CLuabindClass<1> >("CLuabindClass1")
+			.def(constructor<>())
+			.def(const_self == other<CLuabindClass<1> >())
+			.def("foo",&CLuabindClass<1>::foo)
+			.def("foo",&CLuabindClass<1>::foo1)
+			.enum_("something")
+			[
+				value("_1",1),
+				value("_2",2)
+			]
+	];
+
+//	module(L,"test_module")
+//	[
+//		def("setup_table",&setup_table)
+//	];
+
+//	vfPrintTable	(L,"_G",true);
+//	function		(L,"this",lua_this);
+//	for (int i=1; i<argc; i++) 
+//	{
+//		string256		l_caScriptName;
+//		strcpy			(l_caScriptName,"x:\\test_test.script");
+//		printf			("File %s : ",l_caScriptName);
+//		bool			b = load_file_into_namespace(L,l_caScriptName,"test_test",true);
+//		print_stack		(L);
+//		vfPrintTable	(L,"_G",true);
+//		lua_dostring	(L,"test_test.main()");
+//		if (xr_strlen(g_ca_stdout)) {
+//			printf		("\n%s\n",g_ca_stdout);
+//			strcpy		(g_ca_stdout,"");
+//		}
+//		else
+//			if (b)
+//				printf	("0 syntax errors\n");
+//	}
+//	luaL_loadfile		(L,"x:\\test_test.script");
+//	if (xr_strlen(g_ca_stdout)) {
+//		printf		("\n%s\n",g_ca_stdout);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	lua_pcall			(L,0,0,0);
+//	if (xr_strlen(g_ca_stdout)) {
+//		printf		("\n%s\n",g_ca_stdout);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	lua_dostring		(L,"a.main()");
+//	if (xr_strlen(g_ca_stdout)) {
+//		printf		("\n%s\n",g_ca_stdout);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	lua_dostring		(L,"a.b.main()");
+//	if (xr_strlen(g_ca_stdout)) {
+//		printf		("\n%s\n",g_ca_stdout);
+//		strcpy		(g_ca_stdout,"");
+//	}
+//	vfPrintTable	(L,"_G",true);
+//
+//	printf			("Stack level %d\n",lua_gettop(L));
+//	
+//	print_stack		(L);
+//	
+//	printf			("%s\n",lua_tostring(L,1));
+//	printf			("%s\n",lua_tostring(L,2));
+//	printf			("%s\n",lua_tostring(L,3));
+//	printf			("%s\n",lua_tostring(L,4));
+//	printf			("%s\n",lua_tostring(L,5));
+
+//	print_help		(L);
+
+	luaL_loadfile	(L,"x:\\test_test.script");
+	if (xr_strlen(g_ca_stdout)) {
+		fputc		(0,stderr);
+		printf		("\n%s\n",g_ca_stdout);
+		fflush		(stderr);
+		strcpy		(g_ca_stdout,"");
+	}
+	lua_pcall			(L,0,0,0);
+	if (xr_strlen(g_ca_stdout)) {
+		fputc		(0,stderr);
+		printf		("\n%s\n",g_ca_stdout);
+		fflush		(stderr);
+		strcpy		(g_ca_stdout,"");
+	}
+	lua_dostring		(L,"test_test.main()");
+	if (xr_strlen(g_ca_stdout)) {
+		fputc		(0,stderr);
+		printf		("\n%s\n",g_ca_stdout);
+		fflush		(stderr);
+		strcpy		(g_ca_stdout,"");
+	}
+//	lua_dostring		(L,"a.b.main()");
+//	if (xr_strlen(g_ca_stdout)) {
+//		fputc		(0,stderr);
+//		printf		("\n%s\n",g_ca_stdout);
+//		fflush		(stderr);
+//		strcpy		(g_ca_stdout,"");
+//	}
+
+
+	luabind::object		my_class(get_globals(L)["class_name"]);
+	CLuabindClass<0>	*p = object_cast<CLuabindClass<0>*>(my_class(),adopt(result));
+
+	lua_close		(L);
+
+//	check if we are yielded
+
+//	L->ci->state & CI_YIELD
 }

@@ -38,7 +38,7 @@
 
 #include "boost/shared_ptr.hpp"
 
-__declspec(dllimport) LPSTR g_ca_stdout;
+extern string4096 g_ca_stdout;
 
 using namespace luabind;
 using namespace std;
@@ -636,9 +636,9 @@ void hook(lua_State *L, lua_Debug *ar)
 //void test0()
 //{
 //	test_shared();
-//	string4096		SSS;
-//	strcpy			(SSS,"");
-//	g_ca_stdout		= SSS;
+//	string4096		g_ca_stdout;
+//	strcpy			(g_ca_stdout,"");
+//	g_ca_stdout		= g_ca_stdout;
 //
 //	strs.push_back	("string0");
 //	strs.push_back	("string1");
@@ -805,9 +805,9 @@ void hook(lua_State *L, lua_Debug *ar)
 //	lua_setgcthreshold	(L,0);
 //	lua_dofile		(L,"x:\\adopt_test.script");
 //
-//	if (xr_strlen(SSS)) {
-//		printf		("\n%s\n",SSS);
-//		strcpy		(SSS,"");
+//	if (xr_strlen(g_ca_stdout)) {
+//		printf		("\n%s\n",g_ca_stdout);
+//		strcpy		(g_ca_stdout,"");
 //		lua_close	(L);
 //		return;
 //	}
@@ -1225,16 +1225,14 @@ extern void print_help(lua_State *);
 
 void test1()
 {
-	broker_test();
+//	broker_test();
 //	printf("%s",y(__LINE__));
 //	aa(z(x));
 //	test0();
 //	box_collision_test	();
 //	directx_test		();
 
-	string4096		SSS;
-	strcpy			(SSS,"");
-	g_ca_stdout		= SSS;
+	g_ca_stdout[0]	= 0;
 
 	L				= lua_open();
 
@@ -1287,17 +1285,22 @@ void test1()
 		def("get_internals",&get_internals)
 	];
 
-	print_help		(L);
+//	print_help		(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
 	lua_dofile		(L,"x:\\beta7_rc4_test.script");
 //	lua_dofile		(L,"x:\\heritage_test.script");
-	if (xr_strlen(SSS)) {
-		printf		("\n%s\n",SSS);
-		strcpy		(SSS,"");
+	if (xr_strlen(g_ca_stdout)) {
+		fputc		(0,stderr);
+		printf		("\n%s\n",g_ca_stdout);
+		fflush		(stderr);
+		strcpy		(g_ca_stdout,"");
 		lua_close	(L);
 		return;
 	}
+
+	luabind::object		my_class(get_globals(L)["lua_class"]);
+	MI2					*p = object_cast<MI2*>(my_class(),adopt(result));
 
 	lua_close		(L);
 }
