@@ -396,6 +396,10 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				}
 			}
 		}
+		else
+			if ((stalker->body_state() == eBodyStateCrouch) && missile)
+				dwCurrentAniSlot	= 0;
+
 		if (!tpTorsoAnimation) {
 			switch (stalker->CObjectHandler::current_state_state_id()) {
 				case eObjectActionAim1 :
