@@ -47,7 +47,7 @@ void CLightProjector::set_object	(IRenderable* O)
 	if ((0==O) || (receivers.size()>=P_o_count))	current		= 0;
 	else
 	{
-		if (!O->renderable_ShadowReceive() || RImplementation.val_bInvisible || ((CLightTrack*)O->renderable.ROS)->Shadowed_dwFrame==Device.dwFrame)	
+		if (!O->renderable_ShadowReceive() || RImplementation.val_bInvisible || ((CROS_impl*)O->renderable.ROS)->shadow_recv_frame==Device.dwFrame)	
 		{
 			current		= 0;
 			return;
@@ -60,8 +60,8 @@ void CLightProjector::set_object	(IRenderable* O)
 		else					current = 0;
 		
 		if (current)				{
-			CLightTrack*	LT		= (CLightTrack*)current->renderable.ROS;
-			LT->Shadowed_dwFrame	= Device.dwFrame;
+			CROS_impl*	LT			= (CROS_impl*)current->renderable.ROS;
+			LT->shadow_recv_frame	= Device.dwFrame;
 			receivers.push_back		(current);
 		}
 	}
@@ -95,8 +95,8 @@ void CLightProjector::calculate	()
 		// validate
 		BOOL				bValid	= TRUE;
 		IRenderable*		O		= receivers[r_it];
-		CLightTrack*		LT		= (CLightTrack*)O->renderable.ROS;
-		int					slot	= LT->Shadowed_Slot;
+		CROS_impl*			LT		= (CROS_impl*)O->renderable.ROS;
+		int					slot	= LT->shadow_recv_slot;
 		if (slot<0 || slot>=P_o_count)		bValid = FALSE;	// invalid slot
 		else if (cache[slot].O!=O)			bValid = FALSE;	// not the same object
 		else {
@@ -132,7 +132,7 @@ void CLightProjector::calculate	()
 		int				tid		= taskid.back();	taskid.pop_back();
 		recv&			R		= cache		[c_it];
 		IRenderable*	O		= receivers	[tid];
-		CLightTrack*	LT		= (CLightTrack*)O->renderable.ROS;
+		CROS_impl*	LT		= (CROS_impl*)O->renderable.ROS;
 		VERIFY2			(_valid(O->renderable.xform),"Invalid object transformation");
 		VERIFY2			(_valid(O->renderable.visual->vis.sphere.P),"Invalid object's visual sphere");
 
@@ -140,7 +140,7 @@ void CLightProjector::calculate	()
 		R.O						= O;
 		R.C						= C;
 		R.BB.xform				(O->renderable.visual->vis.box,O->renderable.xform).scale(0.1f);
-		LT->Shadowed_Slot		= c_it; 
+		LT->shadow_recv_slot	= c_it; 
 
 		// Msg					("[%f,%f,%f]-%f",C.C.x,C.C.y,C.C.z,C.O->renderable.visual->vis.sphere.R);
 		// calculate projection-matrix

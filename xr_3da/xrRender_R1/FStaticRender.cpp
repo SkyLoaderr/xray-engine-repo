@@ -86,7 +86,7 @@ void					CRender::reset_end				()
 }
 
 // Implementation
-IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)					{ return xr_new<CLightTrack>();			}
+IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)					{ return xr_new<CROS_impl>();			}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)			{ xr_delete(p);							}
 IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)			{ return Models->Create(name,data);		}
 IRender_Visual*			CRender::model_CreateChild		(LPCSTR name, IReader* data)			{ return Models->CreateChild(name,data);}
@@ -183,7 +183,7 @@ void					CRender::ApplyObject			(IRenderable*		O )
 	if (0==O)			return;
 	if (PHASE_NORMAL==phase)	{
 		VERIFY				(O->renderable.ROS);
-		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
+		CROS_impl& LT		= *((CROS_impl*)O->renderable.ROS);
 
 		// shadowing
 		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
@@ -363,7 +363,7 @@ void CRender::Calculate				()
 						if (o_it==uID_LTRACK)	{
 							// track lighting environment
 							VERIFY				(renderable->renderable.ROS);
-							CLightTrack*		T = (CLightTrack*)renderable->renderable.ROS;
+							CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
 							T->ltrack			(renderable);
 						}
 						set_Object						(renderable);

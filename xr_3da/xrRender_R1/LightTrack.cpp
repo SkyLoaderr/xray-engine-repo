@@ -19,7 +19,6 @@
 //////////////////////////////////////////////////////////////////////
 CROS_impl::CROS_impl	()
 {
-	ambient				= 0;
 	approximate.set		( 0,0,0 );
 	dwFrame				= u32(-1);
 	shadow_recv_frame	= u32(-1);
@@ -61,6 +60,8 @@ void	CROS_impl::add		(light* source)
 
 IC bool	pred_energy			(const CROS_impl::Light& L1, const CROS_impl::Light& L2)	{ return L1.energy>L2.energy; }
 //////////////////////////////////////////////////////////////////////////
+#pragma warning(push)
+#pragma warning(disable:4305)
 const float		hdir		[lt_hemisamples][3] = 
 {
 	{0.00000,	1.00000,	0.00000	},
@@ -90,6 +91,8 @@ const float		hdir		[lt_hemisamples][3] =
 	{0.58779,	0.00000,	-0.80902},
 	{0.95106,	0.00000,	-0.30902}
 };
+#pragma warning(pop)
+
 //////////////////////////////////////////////////////////////////////////
 void	CROS_impl::update	(IRenderable* O)
 {

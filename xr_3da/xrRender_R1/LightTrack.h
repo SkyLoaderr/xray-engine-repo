@@ -46,7 +46,7 @@ public:
 	u32		shadow_gen_frame	;
 	u32		shadow_recv_frame	;
 	int		shadow_recv_slot	;
-private:
+public:
 	float	hemi_value			;
 	float	hemi_smooth			;
 	float	sun_value			;
@@ -58,7 +58,6 @@ public:
 	virtual float			get_luminocity		()			;
 
 	void					add					(light*			L);
-	void 
 	void					update				(IRenderable*	O);
 
 	CROS_impl				();
