@@ -91,6 +91,7 @@ void	Face::CalcNormal	()
 	}
 };
 
+#define VPUSH(a) a.x,a.y,a.z
 void	Face::CalcNormal2	()
 {
 	FPU::m64r		();
@@ -120,9 +121,9 @@ void	Face::CalcNormal2	()
 				v[1]->P.distance_to(v[2]->P)
 				);
 			Msg		("*        v0[%f,%f,%f], v1[%f,%f,%f], v2[%f,%f,%f]",
-				VPUSH(v[0]),
-				VPUSH(v[1]),
-				VPUSH(v[2])
+				VPUSH(v[0]->P),
+				VPUSH(v[1]->P),
+				VPUSH(v[2]->P)
 				);
 			N.set	(0,1,0); 
 		}
