@@ -39,11 +39,12 @@ void Startup()
 	// Creation
 	pSettings					= new CInifile		("system.ltx",TRUE);
 
+	BOOL bCaptureInput			= !(strstr(GetCommandLine(),"-I") || strstr(GetCommandLine(),"-i"));
 #ifdef DEBUG
-	pInput						= new CInput		(FALSE);
-#else
-	pInput						= new CInput		(TRUE);
+	bCaptureInput				= FALSE;
 #endif
+
+	pInput						= new CInput		(bCaptureInput);
 	pSounds						= new CSoundManager	( );
 
 	pApp						= new CApplication	( );
