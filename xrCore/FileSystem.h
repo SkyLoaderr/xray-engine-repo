@@ -30,7 +30,7 @@ public:
 	bool 		GetSaveName		(LPCSTR initial, AnsiString& buf, LPCSTR offset=0, int start_flt_ext=-1 );
 
 	void 		MarkFile		(const AnsiString& fn, bool bDeleteSource);
-	void 		BackupFile		(LPCSTR initial, const AnsiString& fname);
+	void 		BackupFile		(LPCSTR initial, const AnsiString& fname, bool bMsg=FALSE);
 
 	BOOL		CheckLocking	(LPCSTR initial, LPSTR fn, bool bOnlySelf, bool bMsg);
 	BOOL		LockFile		(LPCSTR initial, LPSTR fn, bool bLog=true);

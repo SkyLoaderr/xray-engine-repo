@@ -282,6 +282,22 @@ void _SequenceToList(AStringVec& lst, LPCSTR in, char separator)
         if (!T.IsEmpty()) lst.push_back(T);
 	}
 }
+
+AnsiString FloatTimeToStrTime(float v)
+{
+    int h,m,s;
+    h=iFloor(v/3600);
+    m=iFloor((v-h*3600)/60);
+    s=iFloor(v-h*3600-m*60);
+    return AnsiString().sprintf("%02d:%02d:%02d",h,m,s);
+}
+
+float StrTimeToFloatTime(LPCSTR buf)
+{
+    int h,m,s;
+	sscanf(buf,"%2d:%2d:%2d",&h,&m,&s);
+    return h*3600+m*60+s;
+}
 #endif
 
 void _SequenceToList(LPSTRVec& lst, LPCSTR in, char separator)

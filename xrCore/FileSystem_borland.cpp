@@ -39,7 +39,7 @@ void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
 	}
 }
 
-void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname)
+void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname, bool bMsg)
 {
 	R_ASSERT(initial);
 	AnsiString src_name; 
@@ -52,7 +52,9 @@ void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname)
 		FS.update_path		("$server_backup$",dst_name);
 		FS.file_copy		(src_name.c_str(),dst_name.c_str());
 		WriteAccessLog		(dst_name.c_str(),"Backup");
-	}
+	}else{
+    	if (bMsg)			Log("!Can't backup file:",fname.c_str());
+    }
 }
 
 AnsiString&	EFS_Utils::UpdateTextureNameWithFolder(AnsiString& tex_name)
@@ -98,7 +100,7 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool b
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
 		CloseHandle(handle);
 		if (bMsg&&(INVALID_HANDLE_VALUE==handle))
-			Msg("!Access denied. File: '%s'currently locked by user: '%s'.",fn,GetLockOwner(0,fn));
+			Msg("#!Access denied. File: '%s'currently locked by user: '%s'.",fn,GetLockOwner(0,fn));
 		return (INVALID_HANDLE_VALUE==handle);
 	}
     return FALSE;

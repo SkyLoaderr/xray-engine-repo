@@ -5,15 +5,17 @@
 struct xr_token;
 
 #ifdef __BORLANDC__
-	XRCORE_API AnsiString&	_Trim					( AnsiString& str );
-	XRCORE_API LPCSTR		_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
-	XRCORE_API LPCSTR		_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
-	XRCORE_API LPCSTR		_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
-	XRCORE_API AnsiString&	_ListToSequence			( const AStringVec& lst );
-	XRCORE_API AnsiString&	_ListToSequence2		( const AStringVec& lst );
-	XRCORE_API void 		_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
-	XRCORE_API AnsiString&	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, AnsiString& dst, char separator );
-	XRCORE_API AnsiString&	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, AnsiString& dst, char separator );
+	XRCORE_API 	AnsiString&	_Trim					( AnsiString& str );
+	XRCORE_API 	LPCSTR		_GetItem				( LPCSTR src, int, AnsiString& p, char separator=',', LPCSTR ="" );
+	XRCORE_API 	LPCSTR		_GetItems 				( LPCSTR src, int idx_start, int idx_end, AnsiString& dst, char separator );
+	XRCORE_API 	LPCSTR		_CopyVal 				( LPCSTR src, AnsiString& dst, char separator=',' );
+	XRCORE_API 	AnsiString&	_ListToSequence			( const AStringVec& lst );
+	XRCORE_API 	AnsiString&	_ListToSequence2		( const AStringVec& lst );
+	XRCORE_API 	void 		_SequenceToList			( AStringVec& lst, LPCSTR in, char separator=',' );
+	XRCORE_API 	AnsiString&	_ReplaceItem 			( LPCSTR src, int index, LPCSTR new_item, AnsiString& dst, char separator );
+	XRCORE_API 	AnsiString&	_ReplaceItems 			( LPCSTR src, int idx_start, int idx_end, LPCSTR new_items, AnsiString& dst, char separator );
+	XRCORE_API 	AnsiString 	FloatTimeToStrTime		(float v);
+	XRCORE_API 	float 		StrTimeToFloatTime		(LPCSTR buf);
 #endif
 
 XRCORE_API int		__stdcall	_GetItemCount			( LPCSTR , char separator=',');

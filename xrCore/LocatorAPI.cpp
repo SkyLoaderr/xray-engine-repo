@@ -520,7 +520,7 @@ CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
 	return I;
 }
 
-void CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm)
+BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
 {
 	string512	fpath;
 	if (path&&path[0]) 	update_path(fpath,path,nm);
@@ -540,20 +540,24 @@ void CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm)
 			const char* end_symbol = entry.name+strlen(entry.name)-1;
 			if ((*end_symbol) !='\\'){
 //		        const char* entry_begin = entry.name+base_len;
+				if (!remove_files) return FALSE;
 		    	unlink		(entry.name);
+				files.erase	(cur_item);
 	        }else{
             	folders.insert(entry);
             }
-			files.erase		(cur_item);
         }
     }
     // remove folders
     files_set::reverse_iterator r_it = folders.rbegin();
     for (;r_it!=folders.rend();r_it++){
 	    const char* end_symbol = r_it->name+strlen(r_it->name)-1;
-    	if ((*end_symbol) =='\\')
-        	_rmdir			(r_it->name);
+    	if ((*end_symbol) =='\\'){
+        	_rmdir		(r_it->name);
+            files.erase	(*r_it);
+        }
     }
+    return TRUE;
 }
 
 void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
