@@ -20,7 +20,7 @@ snd_files = {
 	help_stalker                   = "characters_voice\\human_01\\help\\wounded_not_see_helper\\stalker\\help_",
 	help_stalker_see               = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_",
 	help_stalker_tutor             = "characters_voice\\human_01\\scenario\\tolik\\tolik_help_tutor_",
-	help_stalker_thanx             = "characters_voice\\human_01\\scenario\\dramatic_garbage\\dramatic_newbie_thank_you",
+	help_stalker_thanx             = "characters_voice\\human_01\\scenario\\dramatic_garbage\\dramatic_newbie_thank_you_",
 	
 	hail_stalker                   = "characters_voice\\human_01\\hail\\stalker\\hail_",
 	
@@ -54,7 +54,13 @@ snd_files = {
 	volk_greet1                    = "characters_voice\\human_01\\scenario\\wolf\\wolf_thanks_1",
 	volk_greet2                    = "characters_voice\\human_01\\scenario\\wolf\\wolf_thanks_2",
 	
-	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_"
+	military_radio                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_",
+
+	gar_dm_bandit_backoff          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_back_off_]],
+	gar_dm_bandit_demand           = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_bandits_demand_]],
+	gar_dm_newbie_no_money         = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_no_money_]],
+	gar_dm_newbie_help_me          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
+	gar_dm_newbie_thank_you        = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_thank_you_]]
 }
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
@@ -176,6 +182,18 @@ function load_sound(obj)
 
 	-- radio for military stalkers
 	theme["military_radio"] = load_theme ("military_radio")
+
+	-- Garbage DramMoment
+	theme["gar_dm_bandit_backoff"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_backoff"].types["stalker"] = load_theme("gar_dm_bandit_backoff")
+	theme["gar_dm_bandit_demand"] = { exec = npc_class, types = {}}
+	theme["gar_dm_bandit_demand"].types["stalker"] = load_theme("gar_dm_bandit_demand")
+	theme["gar_dm_newbie_no_money"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_no_money"].types["stalker"] = load_theme("gar_dm_newbie_no_money")
+	theme["gar_dm_newbie_help_me"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_help_me"].types["stalker"] = load_theme("gar_dm_newbie_help_me")
+	theme["gar_dm_newbie_thank_you"] = { exec = npc_class, types = {}}
+	theme["gar_dm_newbie_thank_you"].types["stalker"] = load_theme("gar_dm_newbie_thank_you")
 	
 	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 	--print_table(theme)
