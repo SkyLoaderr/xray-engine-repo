@@ -111,105 +111,107 @@ void CAI_Space::Load(LPCSTR name)
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 void CAI_Space::Render()
 {
-	if (bfCheckIfGraphLoaded()) {
-		Fvector tCameraPosition = Device.vCameraPosition;
-		CGameFont* F		= HUD().pFontDI;
-		for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
-			Fvector t1 = m_tpaGraph[i].tGlobalPoint;
-			t1.y += .6f;
-			NORMALIZE_VECTOR(t1);
-			RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-			for (int j=0; j<(int)m_tpaGraph[i].tNeighbourCount; j++) {
-				Fvector t2 = m_tpaGraph[((CALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
-				t2.y += .6f;
-				NORMALIZE_VECTOR(t2);
-				RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
+	if (psAI_Flags.test(aiBrain)) {
+		if (bfCheckIfGraphLoaded()) {
+			Fvector tCameraPosition = Device.vCameraPosition;
+			CGameFont* F		= HUD().pFontDI;
+			for (int i=0; i<(int)GraphHeader().dwVertexCount; i++) {
+				Fvector t1 = m_tpaGraph[i].tGlobalPoint;
+				t1.y += .6f;
+				NORMALIZE_VECTOR(t1);
+				RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+				for (int j=0; j<(int)m_tpaGraph[i].tNeighbourCount; j++) {
+					Fvector t2 = m_tpaGraph[((CALifeGraph::SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[i].dwEdgeOffset) + j)->dwVertexNumber].tGlobalPoint;
+					t2.y += .6f;
+					NORMALIZE_VECTOR(t2);
+					RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
+				}
+				Fvector         T;
+				Fvector4        S;
+				T.set			(t1);
+				//T.y+= 1.5f;
+				T.y+= 1.5f/10.f;
+				Device.mFullTransform.transform (S,T);
+				F->SetSize	(0.05f/_sqrt(_abs(S.w)));
+				F->SetColor(0xffffffff);
+				F->Out(S.x,-S.y,"%d",i);
 			}
-			Fvector         T;
-			Fvector4        S;
-			T.set			(t1);
-			//T.y+= 1.5f;
-			T.y+= 1.5f/10.f;
-			Device.mFullTransform.transform (S,T);
-			F->SetSize	(0.05f/_sqrt(_abs(S.w)));
-			F->SetColor(0xffffffff);
-			F->Out(S.x,-S.y,"%d",i);
-		}
-		if ((m_tpAStar) && (m_tpAStar->m_tpaNodes.size())) {
-			Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
-			t1.y += .6f;
-			NORMALIZE_VECTOR(t1);
-			RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-			for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
-				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tGlobalPoint;
-				t2.y += .6f;
-				NORMALIZE_VECTOR(t2);
-				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-				RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
-				t1 = t2;
+			if ((m_tpAStar) && (m_tpAStar->m_tpaNodes.size())) {
+				Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
+				t1.y += .6f;
+				NORMALIZE_VECTOR(t1);
+				RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+				for (int i=1; i<(int)m_tpAStar->m_tpaNodes.size(); i++) {
+					Fvector t2 = m_tpaGraph[m_tpAStar->m_tpaNodes[i]].tGlobalPoint;
+					t2.y += .6f;
+					NORMALIZE_VECTOR(t2);
+					RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+					RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
+					t1 = t2;
+				}
+				//			i=1;
+				//			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; i++) {
+				//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tGlobalPoint;
+				//				t2.y += .6f;
+				//				NORMALIZE_VECTOR(t2);
+				//				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+				//			}
 			}
-//			i=1;
-//			for (; m_tpAStar->m_tpIndexes[m_tpAStar->m_tpHeap[i].iIndex].dwTime == m_tpAStar->m_dwAStarStaticCounter; i++) {
-//				Fvector t2 = m_tpaGraph[m_tpAStar->m_tpHeap[i].iIndex].tGlobalPoint;
-//				t2.y += .6f;
-//				NORMALIZE_VECTOR(t2);
-//				RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-//			}
-		}
-		if (Level().game.type == GAME_SINGLE) {
-			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if ((tpGame) && (tpGame->m_bALife)) {
-				OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
-				OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
-				for ( ; I != E; I++) {
-//					{
-//						Fvector t1 = m_tpaGraph[tpGame->m_tpALife->m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
-//						t1.y += .6f;
-//						NORMALIZE_VECTOR(t1);
-//						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
-//					}
-					{
-						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
-						if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
-							CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
-							if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
-								Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
-								t1.y += .6f;
-								NORMALIZE_VECTOR(t1);
-								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-								for (int i=1; i<(int)tpALifeHuman->m_tpaVertices.size(); i++) {
-									Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tGlobalPoint;
-									t2.y += .6f;
-									NORMALIZE_VECTOR(t2);
-									RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
-									RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,0,255));
-									t1 = t2;
+			if (Level().game.type == GAME_SINGLE) {
+				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
+				if ((tpGame) && (tpGame->m_bALife)) {
+					OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
+					OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
+					for ( ; I != E; I++) {
+						//					{
+						//						Fvector t1 = m_tpaGraph[tpGame->m_tpALife->m_tpSpawnPoints[(*I).second->m_tSpawnID]->m_tNearestGraphPointID].tGlobalPoint;
+						//						t1.y += .6f;
+						//						NORMALIZE_VECTOR(t1);
+						//						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+						//					}
+						{
+							CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
+							if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
+								CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
+								if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
+									Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
+									t1.y += .6f;
+									NORMALIZE_VECTOR(t1);
+									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+									for (int i=1; i<(int)tpALifeHuman->m_tpaVertices.size(); i++) {
+										Fvector t2 = m_tpaGraph[tpALifeHuman->m_tpaVertices[i]].tGlobalPoint;
+										t2.y += .6f;
+										NORMALIZE_VECTOR(t2);
+										RCache.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,255));
+										RCache.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,0,255));
+										t1 = t2;
+									}
+								}
+								if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
+									Fvector t1 = m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tGlobalPoint;
+									Fvector t2 = m_tpaGraph[tpALifeMonsterAbstract->m_tNextGraphID].tGlobalPoint;
+									t2.sub(t1);
+									t2.mul(tpALifeMonsterAbstract->m_fDistanceFromPoint/tpALifeMonsterAbstract->m_fDistanceToPoint);
+									t1.add(t2);
+									t1.y += .6f;
+									NORMALIZE_VECTOR(t1);
+									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+								}
+								else {
+									Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
+									t1.y += .6f;
+									NORMALIZE_VECTOR(t1);
+									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 								}
 							}
-							if (tpALifeMonsterAbstract->m_fDistanceToPoint > EPS_L) {
-								Fvector t1 = m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tGlobalPoint;
-								Fvector t2 = m_tpaGraph[tpALifeMonsterAbstract->m_tNextGraphID].tGlobalPoint;
-								t2.sub(t1);
-								t2.mul(tpALifeMonsterAbstract->m_fDistanceFromPoint/tpALifeMonsterAbstract->m_fDistanceToPoint);
-								t1.add(t2);
-								t1.y += .6f;
-								NORMALIZE_VECTOR(t1);
-								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-							}
 							else {
-								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
-								t1.y += .6f;
-								NORMALIZE_VECTOR(t1);
-								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-							}
-						}
-						else {
-							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
-							if (tpALifeItem && !tpALifeItem->bfAttached()) {
-								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
-								t1.y += .6f;
-								NORMALIZE_VECTOR(t1);
-								RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+								CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
+								if (tpALifeItem && !tpALifeItem->bfAttached()) {
+									Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
+									t1.y += .6f;
+									NORMALIZE_VECTOR(t1);
+									RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
+								}
 							}
 						}
 					}
@@ -218,12 +220,14 @@ void CAI_Space::Render()
 		}
 	}
 
-	CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
-	CObjectList::OBJ_IT	E = Level().Objects.objects.end();
-	for ( ; I != E; I++) {
-		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
-		if (tpCustomMonster)
-			tpCustomMonster->OnRender();
+	if (psAI_Flags.test(aiMotion)) {
+		CObjectList::OBJ_IT	I = Level().Objects.objects.begin();
+		CObjectList::OBJ_IT	E = Level().Objects.objects.end();
+		for ( ; I != E; I++) {
+			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
+			if (tpCustomMonster)
+				tpCustomMonster->OnRender();
+		}
 	}
 	
 	if (!bDebug)	return;
