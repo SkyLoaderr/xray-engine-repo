@@ -482,8 +482,17 @@ void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
 	pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->color=_c; pv->uv[0].set(p1.x-kw,p0.y-kh);pv->uv[1].set(p1.x+kw,p0.y+kh);pv->uv[2].set(p1.x+kw,p0.y-kh);pv->uv[3].set(p1.x-kw,p0.y+kh);pv++;
 }
 
-#pragma comment(lib,"d3dx9.lib")
+#include "..\GameFont.h"
+void	CRender::Statistics	(CGameFont* _F)
+{
+	CGameFont&	F	= *_F;
+	F.OutNext	(" **** Occ-Q(%03.1f) **** ",100.f*f32(stats.o_culled)/f32(stats.o_queries?stats.o_queries:1));
+	F.OutNext	(" total  : %2d",	stats.o_queries	);	stats.o_queries = 0;
+	F.OutNext	(" culled : %2d",	stats.o_culled	);	stats.o_culled	= 0;
+	F.OutSkip	();
+}
 
+#pragma comment(lib,"d3dx9.lib")
 HRESULT	CRender::shader_compile			(
 		LPCSTR							name,
 		LPCSTR                          pSrcData,
@@ -552,3 +561,4 @@ HRESULT	CRender::shader_compile			(
 	}
 	return		_result;
 }
+

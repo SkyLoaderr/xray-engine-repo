@@ -33,7 +33,7 @@ public:
 		u32		disasm				: 1;	// config
 	}			o;
 	struct		_stats		{
-		u32		o_queries;
+		u32		o_queries,	o_culled;
 	}			stats;
 public:
 	// Sector detection and visibility
@@ -124,6 +124,7 @@ public:
 		void*							ppConstantTable);
 
 	// Information
+	virtual void					Statistics				(CGameFont* F);
 	virtual LPCSTR					getShaderPath			()									{ return "r1\\";	}
 	virtual ref_shader				getShader				(int id);
 	virtual IRender_Sector*			getSector				(int id);
