@@ -15,7 +15,8 @@ end
 function gametype_tab:__finalize() 
 end
 
-function gametype_tab:InitControls()
+function gametype_tab:InitControls(x_pos, y_pos, width, height)
+	ui_multiplayer_base_tab.multiplayer_base_tab.InitControls(self, "Game Type", x_pos, y_pos, width, height)
 end
 
 function gametype_tab:InitCallbacks()
