@@ -7,7 +7,7 @@
 
 // consts
 const	u32		MAX_BONE_PARAMS		=	5;
-const	u32		UCalc_Interval		=	50;	// 20 fps
+const	u32		UCalc_Interval		=	100;	// 10 fps
 
 // refs
 class	ENGINE_API CKinematics;
