@@ -381,10 +381,6 @@ SOURCE=.\vbm.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\xr_func.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrFace.cpp
 # End Source File
 # Begin Source File
