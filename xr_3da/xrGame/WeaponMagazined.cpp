@@ -494,12 +494,6 @@ void CWeaponMagazined::state_MagEmpty	(float dt)
 {
 }
 
-void CWeaponMagazined::renderable_Render	()
-{
-	inherited::renderable_Render();
-	UpdateXForm();
-}
-
 void CWeaponMagazined::SetDefaults	()
 {
 	CWeapon::SetDefaults		();

@@ -58,7 +58,6 @@ public:
 
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);
 	virtual	void	UpdateCL			();
-	virtual	void	renderable_Render	();
 
 	virtual void	Hide				();
 	virtual void	Show				();

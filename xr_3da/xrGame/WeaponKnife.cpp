@@ -57,12 +57,6 @@ BOOL	CWeaponKnife::net_Spawn			(CSE_Abstract* DC)
 	return bResult;
 };
 
-void CWeaponKnife::renderable_Render()
-{
-	UpdateXForm						();
-	inherited::renderable_Render();
-}
-
 void CWeaponKnife::OnStateSwitch	(u32 S)
 {
 	switch (S)

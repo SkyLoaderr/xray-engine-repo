@@ -96,8 +96,6 @@ public:
 	virtual void	Show			();
 
 	virtual	void	UpdateCL		();
-	virtual	void	renderable_Render();
-
 	virtual void	net_Destroy		();
 
 	virtual bool	Attach(PIItem pIItem);
