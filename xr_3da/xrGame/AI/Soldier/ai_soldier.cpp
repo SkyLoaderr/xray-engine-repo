@@ -56,6 +56,7 @@ CAI_Soldier::~CAI_Soldier()
 	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
+	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 }
 
 // when soldier is dead

@@ -7,8 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\\xr_weapon_list.h"
 #include "ai_monsters_misc.h"
+#include "..\\xr_weapon_list.h"
+#include "..\\WayPointDef.h"
 
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
@@ -669,5 +670,23 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 
 void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints)
 {
+	int iCurPoint = -1;
+	for (int i=0; i<tpPatrolPath.tpaWayPoints.size(); i++)
+		if (tpPatrolPath.tpaWayPoints[i].dwFlags & START_WAYPOINT) {
+			tpaPoints.push_back(tpPatrolPath.tpaWayPoints[i].tWayPoint);
+			iCurPoint = i;
+			break;
+		}
 	
+	tpaPoints.clear();
+	bool bStop = true;
+	do {
+		for ( i=0; i<tpPatrolPath.tpaWayLinks.size(); i++)
+			if (tpPatrolPath.tpaWayLinks[i].wFrom == iCurPoint) {
+				tpaPoints.push_back(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].tWayPoint);
+				bStop = !(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].dwFlags & FINISH_WAYPOINT);
+				break;
+			}
+	}
+	while(bStop);
 }

@@ -27,6 +27,10 @@ enum EWayType{
 #define WAYOBJECT_CHUNK_TYPE		0x0004
 #define WAYOBJECT_CHUNK_NAME		0x0005
 
+//----------------------------------------------------
+#define START_WAYPOINT				0x00000001
+#define FINISH_WAYPOINT				0x00000002
+//----------------------------------------------------
 /*
 - chunk WAY_PATH_CHUNK
 	- chunk #0

@@ -269,36 +269,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 		Level().get_team(team).RespawnPoints.push_back(pos);
 	}
 	
-/*
-- chunk WAY_PATH_CHUNK
-	- chunk #0
-    	chunk WAYOBJECT_CHUNK_VERSION
-        	word (version)
-		chunk WAYOBJECT_CHUNK_NAME
-        	stringZ (Name)
-        chunk WAY_CHUNK_TYPE
-        	dword EWayType (type)
-        chunk WAY_CHUNK_POINTS
-            word (count)
-            for (i=0; i<count; i++){
-            	Fvector (pos)
-                dword	(flags)
-            }
-        chunk WAY_CHUNK_LINKS
-            word (count)
-            for (i=0; i<count; i++){
-            	word 	(from)
-				word 	(to)
-            }
-    ...
-    - chunk #n
-- chunk WAY_JUMP_CHUNK
-	-//-
-- chunk WAY_TRAFFIC_CHUNK
-	-//-
-- chunk WAY_CUSTOM_CHUNK
-	-//-
-*/
 	tpaPatrolPaths.clear();
 	FILE_NAME	fn_game;
 	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
@@ -326,7 +296,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 				for (int i=0; i<dwCount; i++){
 					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
-					#define START_WAYPOINT 1
 					if (tPatrolPath.tpaWayPoints[i].dwFlags & START_WAYPOINT)
 						tPatrolPath.dwStartNode = Level().AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
