@@ -60,10 +60,10 @@ public:
 		vfAddToGraphPoint		(tObjectID,tNextGraphPointID);
 	}
 
-	void							vfCheckForDeletedEvents	(CALifeItem	*tpALifeMonster);
-	void							vfCheckForTheBattle		(CALifeItem	*tpALifeMonster);
-	void							vfChooseNextRoutePoint	(CALifeItem	*tpALifeMonster);
-	void							vfProcessNPC			(CALifeItem	*tpALifeMonster);
+	void							vfCheckForDeletedEvents	(CALifeMonster	*tpALifeMonster);
+	void							vfCheckForTheBattle		(CALifeMonster	*tpALifeMonster);
+	void							vfChooseNextRoutePoint	(CALifeMonster	*tpALifeMonster);
+	void							vfProcessNPC			(CALifeMonster	*tpALifeMonster);
 	void							vfInitTerrain			();
 	void							vfInitLocationOwners	();
 	void							vfInitGraph				();

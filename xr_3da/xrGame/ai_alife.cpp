@@ -319,56 +319,56 @@ void CAI_ALife::Update(u32 dt)
 #endif
 }
 
-void CAI_ALife::vfProcessNPC(CALifeItem	*tpALifeMonster)
+void CAI_ALife::vfProcessNPC(CALifeMonster	*tpALifeMonster)
 {
 //	Msg						("* Monster %d",dwNPCIndex);
-//	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
-//	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
-//	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
+//	Msg						("* * Time       : %d",tpALifeMonster->m_dwLastUpdateTime);
+//	Msg						("* * Spawn      : %d",tpALifeMonster->m_wSpawnPoint);
+//	Msg						("* * Count      : %d",tpALifeMonster->m_wCount);
 	vfCheckForDeletedEvents	(tpALifeMonster);
 	vfChooseNextRoutePoint	(tpALifeMonster);
 	vfCheckForTheBattle		(tpALifeMonster);
 	tpALifeMonster->m_tTimeID = Level().timeServer();
-//	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
-//	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
-//	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
-//	Msg						("* * Speed      : %5.2f",m_tpNPC[dwNPCIndex].fSpeed);
-//	Msg						("* * Distance   : %5.2f",m_tpNPC[dwNPCIndex].fDistanceFromPoint);
-//	Msg						("* * Path       : %5.2f",m_tpNPC[dwNPCIndex].fDistanceToPoint);
-//	Msg						("* * Health     : %d",m_tpNPC[dwNPCIndex].iHealth);
+//	Msg						("* * PrevPoint  : %d",tpALifeMonster->m_tPrevGraphID);
+//	Msg						("* * GraphPoint : %d",tpALifeMonster->m_tGraphID);
+//	Msg						("* * NextPoint  : %d",tpALifeMonster->m_tNextGraphID);
+//	Msg						("* * Speed      : %5.2f",tpALifeMonster->m_fSpeed);
+//	Msg						("* * Distance   : %5.2f",tpALifeMonster->m_fDistanceFromPoint);
+//	Msg						("* * Path       : %5.2f",tpALifeMonster->m_fDistanceToPoint);
+//	Msg						("* * Health     : %d",tpALifeMonster->m_iHealth);
 }
 
-void CAI_ALife::vfChooseNextRoutePoint(CALifeItem	*tpALifeMonster)
+void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
 {
-//	if (tpALifeMonster->m_tNextGraphPointID != tpALifeMonster->m_tGraphPointID) {
-//		u32 dwCurTime = Level().timeServer();
-//		tpALifeMonster->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonster->m_tTimeID)/1000.f * tpALifeMonster->m_fCurfSpeed;
-//		if (tpALifeMonster->m_fDistanceToPoint - tpALifeMonster->m_fDistanceFromPoint < EPS_L) {
-//			vfChangeGraphPoint(tpALifeMonster->m_tObjectID,tpALifeMonster->m_tGraphID,m_tpNPC[dwNPCIndex].wNextGraphPoint);
-//			m_tpNPC[dwNPCIndex].fDistanceToPoint	= m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
-//			m_tpNPC[dwNPCIndex].wPrevGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
-//			m_tpNPC[dwNPCIndex].wGraphPoint			= m_tpNPC[dwNPCIndex].wNextGraphPoint;
-//		}
-//	}
-//	if (m_tpNPC[dwNPCIndex].wNextGraphPoint == m_tpNPC[dwNPCIndex].wGraphPoint) {
-//		u16					wGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
+	if (tpALifeMonster->m_tNextGraphID != tpALifeMonster->m_tGraphID) {
+		u32 dwCurTime = Level().timeServer();
+		tpALifeMonster->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonster->m_tTimeID)/1000.f * tpALifeMonster->m_fCurSpeed;
+		if (tpALifeMonster->m_fDistanceToPoint - tpALifeMonster->m_fDistanceFromPoint < EPS_L) {
+			vfChangeGraphPoint(tpALifeMonster->m_tObjectID,tpALifeMonster->m_tGraphID,tpALifeMonster->m_tNextGraphID);
+			tpALifeMonster->m_fDistanceToPoint	= tpALifeMonster->m_fDistanceFromPoint	= 0.0f;
+			tpALifeMonster->m_tPrevGraphID		= tpALifeMonster->m_tGraphID;
+			tpALifeMonster->m_tGraphID			= tpALifeMonster->m_tNextGraphID;
+		}
+	}
+//	if (tpALifeMonster->m_tNextGraphID == tpALifeMonster->m_tGraphID) {
+//		u16					wGraphPoint		= tpALifeMonster->m_tGraphID;
 //		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
 //		u16					wNeighbourCount = (u16)tpaGraph[wGraphPoint].dwNeighbourCount;
 //		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wGraphPoint].dwEdgeOffset);
-//		int					iPointCount		= (int)m_tpSpawnPoints[m_tpNPC[dwNPCIndex].wSpawnPoint].ucRoutePointCount;
-//		vector<u16>			&wpaVertexes	= m_tpSpawnPoints[m_tpNPC[dwNPCIndex].wSpawnPoint].wpRouteGraphPoints;
+//		int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonster->m_wSpawnPoint].ucRoutePointCount;
+//		vector<u16>			&wpaVertexes	= m_tpSpawnPoints[tpALifeMonster->m_wSpawnPoint].wpRouteGraphPoints;
 //		int					iBranches		= 0;
 //		bool bOk = false;
 //		for (int i=0; i<wNeighbourCount; i++)
 //			for (int j=0; j<iPointCount; j++)
-//				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint))
+//				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonster->m_tPrevGraphID))
 //					iBranches++;
 //		if (!iBranches) {
 //			for (int i=0; i<wNeighbourCount; i++) {
 //				for (int j=0; j<iPointCount; j++)
 //					if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
-//						m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
-//						m_tpNPC[dwNPCIndex].fDistanceToPoint = tpaEdges[i].fPathDistance;
+//						tpALifeMonster->m_tNextGraphID = wpaVertexes[j];
+//						tpALifeMonster->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
 //						bOk = true;
 //						break;
 //					}
@@ -381,10 +381,10 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeItem	*tpALifeMonster)
 //			iBranches = 0;
 //			for (int i=0; i<wNeighbourCount; i++) {
 //				for (int j=0; j<iPointCount; j++)
-//					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint)) {
+//					if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != tpALifeMonster->m_tPrevGraphID)) {
 //						if (iBranches == iChosenBranch) {
-//							m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
-//							m_tpNPC[dwNPCIndex].fDistanceToPoint = tpaEdges[i].fPathDistance;
+//							tpALifeMonster->m_tNextGraphID = wpaVertexes[j];
+//							tpALifeMonster->m_fDistanceToPoint = tpaEdges[i].fPathDistance;
 //							bOk = true;
 //							break;
 //						}
@@ -394,21 +394,21 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeItem	*tpALifeMonster)
 //					break;
 //			}
 //		}
-//		m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
+//		tpALifeMonster->m_fDistanceFromPoint	= 0.0f;
 //		if (!bOk) {
-//			m_tpNPC[dwNPCIndex].fSpeed				= 0.0f;
-//			m_tpNPC[dwNPCIndex].fDistanceToPoint	= 0.0f;
+//			tpALifeMonster->m_fSpeed				= 0.0f;
+//			tpALifeMonster->m_fDistanceToPoint	= 0.0f;
 //		}
 //		else {
-//			m_tpNPC[dwNPCIndex].fSpeed = 1.5f;
+//			tpALifeMonster->m_fSpeed = 1.5f;
 //		}
 //	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(CALifeItem	*tpALifeMonster)
+void CAI_ALife::vfCheckForTheBattle(CALifeMonster	*tpALifeMonster)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(CALifeItem	*tpALifeMonster)
+void CAI_ALife::vfCheckForDeletedEvents(CALifeMonster	*tpALifeMonster)
 {
 }
