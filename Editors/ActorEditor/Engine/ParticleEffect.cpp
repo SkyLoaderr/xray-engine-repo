@@ -254,6 +254,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 				if (m_ElapsedLimit<0){
             		m_ElapsedLimit 	= m_Def->m_TimeLimit;
                     Stop		(true);
+					Msg			("timelimit(%s)",GetDefinition()->m_Name);
 					return;
 				}
 			}
@@ -282,15 +283,11 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 				vis.box.grow		(p_size);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
-			vis.box.grow		(p_size);
-			vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
-            
             if (m_Flags.is(flDefferedStop)&&(0==pg->p_count)){
 				m_Flags.set		(flPlaying|flDefferedStop,FALSE);
                 break;
             }
 		}
-	    Log("Radius:",vis.sphere.R);
 	}
 }
 
