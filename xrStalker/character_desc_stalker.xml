@@ -23,7 +23,7 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-	<specific_character id="stalker_novice_default1" team_default = "1">
+	<specific_character id="stalker_novice_default1">
 		<name>Неизвестный новичок1</name>
 		<icon x="20" y="2"></icon>
 		<map_icon x="0" y="0"></map_icon>
