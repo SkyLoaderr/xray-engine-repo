@@ -216,7 +216,7 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	UIBtnOK.Init("Accept", x, y, w, h);
 	UIBtnOK.SetTextAlign(CGameFont::alCenter);
-	UIBtnOK.SetTextColor(0xFFF0D9B6);
+	UIBtnOK.SetTextColor(0xFFEE9B17);
 
 	AttachChild(&UIBtnCancel);
 //	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
@@ -228,27 +228,20 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 
 	UIBtnCancel.Init("Cancel", x, y, w, h);
 	UIBtnCancel.SetTextAlign(CGameFont::alCenter);
-	UIBtnCancel.SetTextColor(0xFFF0D9B6);
+	UIBtnCancel.SetTextColor(0xFFEE9B17);
 
 	for (int i = 0; i < 20; ++i)
 	{
 		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
 		R_ASSERT(pNewDDList);
 
-		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
-		if (i == UIWeaponsTabControl.GetActiveIndex() + 1)
-		{
-			pNewDDList->Show(true);
-			UIBagWnd.AttachChild(pNewDDList);
-		}
-		else 
-			pNewDDList->Show(false);
-
 		pNewDDList->SetCheckProc(BagProc);
 		// Так только одно подокно всегда аттачено, а, бывает, у нас работа обычно ведется со 
 		// всеми подокнами, то запоминаем адрес this, как парента в MessageTarget'e
 		pNewDDList->SetMessageTarget(this);
 		m_WeaponSubBags.push_back(pNewDDList);
+
+		xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, pNewDDList);
 	}
 	// 1 дополнительный лист для аддонов к оружию
 	CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
@@ -619,6 +612,15 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]->Show(true);
 		UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData) + 1]);
 		UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex() + 1]);
+		SwitchIndicator(true, UIWeaponsTabControl.GetActiveIndex());
+		if (mlRoot == m_mlCurrLevel)
+		{
+			MenuLevelUp();
+		}
+		if (mlAddons == m_mlCurrLevel)
+		{
+			MenuLevelDown();
+		}
 	}
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg)
@@ -666,10 +668,8 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		UIBtnCancel.SetTextColor(0xFFEE9B17);
 	}
-	else
-	{
-		CUIWindow::SendMessage(pWnd, msg, pData);
-	}
+
+	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
 
@@ -683,14 +683,8 @@ void CUIBuyWeaponWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 			UIPropertiesBox.Hide();
 		}
 	}
-	// по левой откатываемся на root уровень в меню
-	if (LBUTTON_DOWN == mouse_action && mlAddons != m_mlCurrLevel)
-	{
-		MenuLevelDown();
-		MenuLevelDown();
-	}
 
-	CUIWindow::OnMouse(x, y, mouse_action);
+	inherited::OnMouse(x, y, mouse_action);
 }
 
 void CUIBuyWeaponWnd::Draw()
@@ -1383,7 +1377,8 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 	case mlRoot:
 		if (UIWeaponsTabControl.OnKeyboard(dik, keyboard_action))
 		{
-			MenuLevelUp();
+			if (mlRoot == m_mlCurrLevel)
+				MenuLevelUp();
 		}
 		break;
 	// Второй уровень - выбор конкретного орцжия в данной группе
