@@ -89,11 +89,13 @@ M_SPAWN
 
 		esAnimated
 		{
+			stringZ		file;
 			u8			count;
-			stringZ		names[...count...];	// names of animations files
+			stringZ		names[...count...];	// names of animations
 		}
 		esSkeleton
 		{
+			stringZ		file;
 			u8			count;
 			stringZ		names[...count...];	// animations
 		}
