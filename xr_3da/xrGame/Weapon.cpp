@@ -633,12 +633,15 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	{
 		if (Local() && RQ.O) 
 		{
+			float power		= float(iHitPower);
+			CEntity* E		= dynamic_cast<CEntity*>(RQ.O);
+			if (E) power	*= E->HitScale(RQ.element);
 			// 
 			NET_Packet		P;
 			u_EventGen		(P,GE_HIT,RQ.O->ID());
 			P.w_u16			(u16(H_Parent()->ID()));
 			P.w_dir			(D);
-			P.w_float		(float(iHitPower));
+			P.w_float		(power);
 			u_EventSend		(P);
 		}
 		FireShotmark		(D,end_point,RQ);

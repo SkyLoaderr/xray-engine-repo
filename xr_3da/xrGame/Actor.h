@@ -65,6 +65,7 @@ protected:
 	float					die_respawn_auto;
 
 	float					hit_slowmo;
+	float					hit_factor;
 
 	// media
 	BOOL					bStep;
@@ -228,6 +229,7 @@ public:
 	virtual void			Die					( );
 	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
 	virtual void			HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
+	virtual	float			HitScale			(int element);
 
 	virtual	float			ffGetFov			()			{ return 90.f;		}	
 	virtual	float			ffGetRange			()			{ return 500.f;		}

@@ -238,6 +238,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Register	(this,TRUE);
 
 	hit_slowmo				= 0.f;
+	hit_factor				= 1.f;
 	die_bWantRespawn		= FALSE;
 	die_bRespawned			= TRUE;
 
@@ -970,7 +971,31 @@ void CActor::OnDeviceCreate()
 
 	//
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
+
+	// load damage params
+	if (pSettings->LineExists(cNameSect(),"damage"))
+	{
+		CInifile::Sect& dam_sect	= pSettings->ReadSection(pSettings->ReadSTRING(cNameSect(),"damage"));
+		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
+		{
+			if (0==strcmp(it->first,"default")){
+				hit_factor	= (float)atof(it->second);
+			}else{
+				int bone	= V->LL_BoneID(it->first); 
+				R_ASSERT2(bone!=BONE_NONE,it->first);
+				V->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
+			}
+		}
+	}
 }
+
+float CActor::HitScale(int element)
+{
+	CKinematics* V		= PKinematics(pVisual);			VERIFY(V);
+	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
+	return hit_factor*scale;
+}
+
 #ifdef DEBUG
 void CActor::OnRender()
 {
