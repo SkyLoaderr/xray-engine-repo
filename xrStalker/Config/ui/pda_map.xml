@@ -27,11 +27,11 @@
 				<minimized_size w="128" h="18" >		</minimized_size>
 				<normal_size	w="128" h="256" >		</normal_size>
 				
-				<minimized_btn x="1" y="1" width="16" height="16">
-					<texture>ui\ui_scb_down_arrow</texture>
+				<minimized_btn x="1" y="1" width="15" height="15">
+					<texture x="0" y="1009">ui\ui_pda_back_big</texture>
 				</minimized_btn>
-				<maximized_btn x="19" y="1" width="16" height="16">
-					<texture>ui\ui_scb_up_arrow</texture>
+				<maximized_btn x="19" y="1" width="15" height="15">
+					<texture x="15" y="1009">ui\ui_pda_back_big</texture>
 				</maximized_btn>
 			</background>
 	
