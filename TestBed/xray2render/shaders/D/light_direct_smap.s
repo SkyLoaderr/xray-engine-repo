@@ -85,13 +85,9 @@ p2f 	p_main	( v2p_in IN )
   
   float	 shadow	= (sA.x + sA.y + sA.z)/12;
   
-  // Normal
+  // Normal, vector2eye, vector2light
   float3 N		= float3	(_N.x,_N.y,_N.z);
-  
-  // Vector to the eye:
   float3 V 		= -normalize(float3(_P.x,_P.y,_P.z));
-
-  // Vector to the light:
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
