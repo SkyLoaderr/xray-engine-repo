@@ -1,13 +1,12 @@
-
 fraction = {}
 
 function addMember(name, npc)
-	if fraction[name] == nil then
-		fraction[name] = self.fract(name)
+	if xr_gulag.fraction[name] == nil then
+		xr_gulag.fraction[name] = xr_gulag.fract(name)
 	end
 end
 
 class "fract"
-function fraction:__init(name)
+function fract:__init(name)
 	self.name = name
 end
