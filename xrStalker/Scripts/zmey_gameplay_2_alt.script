@@ -1,0 +1,86 @@
+-- Created by Zmey
+--   
+--   Используются:
+-- m_stalker_pes
+-- wpn_pes
+-- way_attack_point
+-- way_reload_point
+
+-- Имена звуковых файлов
+local snd_prefix =                    [[scripts\Rolik\stalker_hound\]]
+
+----------------------------------------------------------------------------------------------------
+-- MAIN
+----------------------------------------------------------------------------------------------------
+
+--function nothing_happened_yet(mob)
+--	debug_log(zmey_gameplay_2.script_name(), "MY OWN HANDLER ... " .. game.time())
+--end
+
+function main ()
+	debug_script_name = zmey_gameplay_2.script_name()
+	debug_log(zmey_gameplay_2.script_name(), "SCRIPT ACTIVATED: zmey_gameplay_2")
+
+	-- 1) Кашель
+	-- 1) Скоты трусливые! 2) Падлы!
+	-- 1) Напали в волну! 2) Падлы!
+	-- 1) Будем валить по склонам! 2) Наши подберут
+	dlg_nothing_happened_yet = classes.DialogueFSM()
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-1", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-2", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-3", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-4", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 1, snd_prefix .. "hound-01", {1000, 3000}) -- скоты трусливые
+	dlg_nothing_happened_yet:set(false, 0, 1, snd_prefix .. "hound-02", {1000, 3000}) -- напали в волну
+	dlg_nothing_happened_yet:set(false, 1, 0, snd_prefix .. "hound-03", {3000, 7000}) -- падлы! (assholes)
+	dlg_nothing_happened_yet:set(false, 0, 2, snd_prefix .. "hound-04", {1000, 2000}) -- надо пересидеть и валить по склонам
+	dlg_nothing_happened_yet:set(false, 2, 0, snd_prefix .. "hound-05", {5000, 10000}) -- наши подберут
+	debug_log(zmey_gameplay_2.script_name(), "_bp: dlg_nothing_happened_yet created")
+	
+	-- 1) Только сунься - я тебе кишки выпущу
+	-- 1) Давай давай!
+	-- 1) Гав-гав-гав
+	dlg_see_enemy = classes.DialogueFSM()
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-06", {2000, 5000}) -- только сунься! кишки выпущу
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-07", {2000, 5000}) -- давай, давай!
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-1", {2000, 5000}) -- лай
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-2", {2000, 5000}) -- лай
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-1", {2000, 5000}) -- хриплый смех
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
+
+	-- 1) ха! испугался
+	-- 1) давай давай!
+	-- 1) лай с завыванием, хриплый смех
+	-- 1) эй! куда ты спрятался?
+	-- 1) выходи, стреляться будем!
+	dlg_not_see_enemy = classes.DialogueFSM()
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-11", {1000, 3000}) -- ха! испугался?
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-12", {1000, 3000}) -- эй! куда ты спрятался?
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-13", {1000, 3000}) -- выходи! стреляться будем
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-1", {2000, 5000}) -- лай
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-2", {2000, 5000}) -- лай
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-1", {2000, 5000}) -- хриплый смех
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
+
+	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs are about to be created")
+	local c_stalker_pes = classes.NPC(zmey_gameplay_2.script_name(), get_level_object("m_stalker_pes"), get_level_object("wpn_pes"))
+	c_stalker_pes.default_anim = anim.danger -- анимация при ничего-не-деланьи
+	c_stalker_pes.look_at_target_when_talking = false -- не крутить головой в сторону жертвы при разговоре!
+	local c_actor = classes.NPC(zmey_gameplay_2.script_name(), get_actor())
+	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs created")
+
+	local walker = classes.Camper(zmey_gameplay_2.script_name(),
+		c_stalker_pes, c_actor, dlg_nothing_happened_yet, dlg_see_enemy, dlg_not_see_enemy)
+	--walker:set_nothing_happened_yet_handler(zmey_gameplay_2.nothing_happened_yet)
+	
+	debug_log(zmey_gameplay_2.script_name(), "_bp: entering main loop")
+
+	while walker:heartbeat() do
+		wait()
+	end
+
+	debug_log(zmey_gameplay_2.script_name(), "SCRIPT STOPPED: zmey_gameplay_2")
+end
+
+----------------------------------------------------------------------------------------------------
+
