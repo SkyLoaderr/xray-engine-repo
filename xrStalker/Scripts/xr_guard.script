@@ -385,7 +385,7 @@ function add_to_binder(npc, char_ini)
 		npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",	 20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
 
 		-- FIXME: hack
-		if char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_camp") == true then
+		if char_ini ~= nil and char_ini:section_exist ("guard") == true and char_ini:line_exist("guard", "path_camp") == true then
 			npc:add_sound("script_replics\\bandit_1\\combat\\bandit_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_talk"])
 			npc:add_sound("script_replics\\soldier_1\\combat\\soldier_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_hide"])
 			npc:add_sound("script_replics\\bandit_1\\combat\\bandit_combat_", 20, snd_type.talk, 2, 1, sounds["mad_snd_attack"])
