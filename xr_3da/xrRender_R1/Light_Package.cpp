@@ -4,9 +4,8 @@
 void	light_Package::clear	()
 {
 	v_point.clear		();
-	v_point_s.clear		();
 	v_spot.clear		();
-	v_spot_s.clear		();
+	v_shadowed.clear	();
 }
 
 #if RENDER==R_R2
@@ -25,9 +24,8 @@ IC	bool	pred_light_cmp	(light*	_1, light* _2)
 void	light_Package::sort		()
 {
 	// resort lights (pending -> at the end), maintain stable order
-	std::stable_sort	(v_point_s.begin(),	v_point_s.end(),	pred_light_cmp);
 	std::stable_sort	(v_point.begin(),	v_point.end(),		pred_light_cmp);
-	std::stable_sort	(v_spot_s.begin(),	v_spot_s.end(),		pred_light_cmp);
 	std::stable_sort	(v_spot.begin(),	v_spot.end(),		pred_light_cmp);
+	std::stable_sort	(v_shadowed.begin(),v_shadowed.end(),	pred_light_cmp);
 }
 #endif

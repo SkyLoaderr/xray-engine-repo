@@ -45,8 +45,6 @@ public:
 	{
 		u32		l_total,	l_visible;
 		u32		l_shadowed,	l_unshadowed;
-		u32		l_point_s,	l_point;
-		u32		l_spot_s,	l_spot;
 		s32		s_used,		s_merged;
 		u32		o_queries,	o_culled;
 		u32		ic_total,	ic_culled;

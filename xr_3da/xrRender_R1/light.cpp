@@ -227,7 +227,7 @@ void	light::export		(light_Package& package)
 				break;
 		}
 	}	else	{
-		switch (L->flags.type)	{
+		switch (flags.type)	{
 			case IRender_Light::POINT:		package.v_point.push_back	(this);	break;
 			case IRender_Light::SPOT:		package.v_spot.push_back	(this);	break;
 		}

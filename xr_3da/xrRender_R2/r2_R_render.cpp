@@ -148,43 +148,32 @@ void CRender::Render		()
 		light_Package&	LP	= Lights.package;
 
 		// stats
-		stats.l_shadowed	= LP.v_point_s.size() + LP.v_spot_s.size();
+		stats.l_shadowed	= LP.v_shadowed.size();
 		stats.l_unshadowed	= LP.v_point.size() + LP.v_spot.size();
 		stats.l_total		= stats.l_shadowed + stats.l_unshadowed;
-		stats.l_point_s		= LP.v_point_s.size	();
-		stats.l_point		= LP.v_point.size	();
-		stats.l_spot_s		= LP.v_spot_s.size	();
-		stats.l_spot		= LP.v_spot.size	();
 
 		// perform tests
-		count				= _max(count,LP.v_point_s.size());
-		count				= _max(count,LP.v_spot_s.size());
 		count				= _max(count,LP.v_point.size());
 		count				= _max(count,LP.v_spot.size());
+		count				= _max(count,LP.v_shadowed.size());
 		for (u32 it=0; it<count; it++)	{
-			if (it<LP.v_point_s.size())	{ 
-				light*	L			= LP.v_point_s	[it];
-				L->vis_prepare		(); 
-				if (L->vis.pending)	LP_pending.v_point_s.push_back	(L);
-				else				LP_normal.v_point_s.push_back	(L);
-			}
-			if (it<LP.v_point.size())	{
+			if (it<LP.v_point.size())		{
 				light*	L			= LP.v_point	[it];
 				L->vis_prepare		();
 				if (L->vis.pending)	LP_pending.v_point.push_back	(L);
 				else				LP_normal.v_point.push_back		(L);
 			}
-			if (it<LP.v_spot_s.size())	{
-				light*	L			= LP.v_spot_s	[it];
-				L->vis_prepare		();
-				if (L->vis.pending)	LP_pending.v_spot_s.push_back	(L);
-				else				LP_normal.v_spot_s.push_back	(L);
-			}
-			if (it<LP.v_spot.size())	{
+			if (it<LP.v_spot.size())		{
 				light*	L			= LP.v_spot		[it];
 				L->vis_prepare		();
 				if (L->vis.pending)	LP_pending.v_spot.push_back		(L);
 				else				LP_normal.v_spot.push_back		(L);
+			}
+			if (it<LP.v_shadowed.size())	{
+				light*	L			= LP.v_shadowed	[it];
+				L->vis_prepare		();
+				if (L->vis.pending)	LP_pending.v_shadowed.push_back	(L);
+				else				LP_normal.v_shadowed.push_back	(L);
 			}
 		}
 	}
@@ -196,14 +185,8 @@ void CRender::Render		()
 
 	// Update incremental shadowmap-visibility solver
 	{
-		for (u32 it=0; it<Lights_LastFrame.size(); it++)	{
-			Lights_LastFrame[it]->svis[0].flushoccq	();
-			Lights_LastFrame[it]->svis[1].flushoccq	();
-			Lights_LastFrame[it]->svis[2].flushoccq	();
-			Lights_LastFrame[it]->svis[3].flushoccq	();
-			Lights_LastFrame[it]->svis[4].flushoccq	();
-			Lights_LastFrame[it]->svis[5].flushoccq	();
-		}
+		for (u32 it=0; it<Lights_LastFrame.size(); it++)
+			Lights_LastFrame[it]->svis.flushoccq	();
 		Lights_LastFrame.clear	();
 	}
 
