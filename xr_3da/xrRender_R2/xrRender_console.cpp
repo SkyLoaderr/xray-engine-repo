@@ -93,26 +93,45 @@ float		ps_r2_zfill					= 0.1f;				// .1f
 #include	"..\xr_ioc_cmd.h"
 
 //-----------------------------------------------------------------------
-class CCC_tf_Aniso	: public CCC_Integer
+class CCC_tf_Aniso		: public CCC_Integer
 {
 public:
-	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 1, 16)		{ };
-	virtual void Execute(LPCSTR args)
-	{
-		CCC_Integer::Execute	(args);
+	void	apply	()	{
+		if (0==HW.pDevice)	return	;
 		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
 			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, *value	));
+	}
+	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 1, 16)		{ };
+	virtual void Execute	(LPCSTR args)
+	{
+		CCC_Integer::Execute	(args);
+		apply					();
+	}
+	virtual void	Status	(TStatus& S)
+	{	
+		CCC_Integer::Status		(S);
+		apply					();
 	}
 };
 class CCC_tf_MipBias: public CCC_Float
 {
 public:
+	void	apply	()	{
+		if (0==HW.pDevice)	return	;
+		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
+			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) value)));
+	}
+
 	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -3, +3)	{ };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute	(args);
-		for (u32 i=0; i<HW.Caps.raster.dwStages; i++)
-			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) value)));
+		apply				();
+	}
+	virtual void	Status	(TStatus& S)
+	{	
+		CCC_Float::Status	(S);
+		apply				();
 	}
 };
 class CCC_R2GM		: public CCC_Float
@@ -273,4 +292,13 @@ void		xrRender_initconsole	()
 	tw_min.set			(0,0,0);	tw_max.set	(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_weight",			&ps_r2_aa_weight,			tw_min, tw_max	);
 }
+
+void	xrRender_apply_tf		()
+{
+	Console->Execute	("r1_tf_aniso"	);
+	Console->Execute	("r1_tf_mipbias");
+	Console->Execute	("r2_tf_aniso"	);
+	Console->Execute	("r2_tf_mipbias");
+}
+
 #endif

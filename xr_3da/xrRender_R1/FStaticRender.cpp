@@ -70,6 +70,8 @@ void					CRender::create					()
 	L_Dynamic					= xr_new<CLightR_Manager>	();
 	PSLibrary.OnCreate			();
 	HWOCC.occq_create			(occq_size);
+
+	xrRender_apply_tf			();
 }
 void					CRender::destroy				()
 {
@@ -86,6 +88,7 @@ void					CRender::reset_begin			()
 }
 void					CRender::reset_end				()
 {
+	xrRender_apply_tf			();
 	HWOCC.occq_create			(occq_size);
 	Target						=	xr_new<CRenderTarget>	();
 }

@@ -124,6 +124,8 @@ void					CRender::create					()
 	//rmNormal					();
 	marker						= 0;
 	R_CHK						(HW.pDevice->CreateQuery(D3DQUERYTYPE_EVENT,&q_sync_point));
+
+	xrRender_apply_tf			();
 } 
 void					CRender::destroy				()
 {
@@ -135,11 +137,14 @@ void					CRender::destroy				()
 }
 void					CRender::reset_begin			()
 {
-	xr_delete			(Target);
+	xr_delete					(Target);
+	HWOCC.occq_destroy			();
 }
 void					CRender::reset_end				()
 {
-	Target			=	xr_new<CRenderTarget>			();
+	HWOCC.occq_create			(occq_size);
+	Target						=	xr_new<CRenderTarget>	();
+	xrRender_apply_tf			();
 }
 void					CRender::OnFrame				()
 {
