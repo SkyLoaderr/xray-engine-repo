@@ -26,7 +26,7 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 	CAI_Soldier*		A = dynamic_cast<CAI_Soldier*> (static_cast<CObject*>(B->Callback_Param));
 	
 	Fmatrix				spin;
-	spin.setXYZ			(A->r_current.yaw - A->r_torso_current.yaw, A->r_current.pitch, 0);
+	spin.setXYZ			(-(A->r_current.yaw - A->r_torso_current.yaw), A->r_current.pitch - A->r_torso_current.pitch, 0 );
 	B->mTransform.mulB_43(spin);
 }
 

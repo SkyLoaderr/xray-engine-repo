@@ -806,7 +806,7 @@ IC	float ffGetSquare(float a1, float b1, float fAlpha = PI_DIV_2)
 
 float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b2, float b3)
 {
-	fAngle -= PI_DIV_2;
+	fAngle = PI_DIV_2;
 
 	while (fAngle >= PI_MUL_2)
 		fAngle -= PI_MUL_2;

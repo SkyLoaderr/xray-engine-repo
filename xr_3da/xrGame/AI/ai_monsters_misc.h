@@ -16,7 +16,7 @@
 	// Fuzzy State Machine
 	#define ASSIGN_PROPORTIONAL_POWER(a,b)	if ((eType & a) == a) power*=b;
 
-	//#define WRITE_LOG
+	#define WRITE_LOG
 
 	#ifndef DEBUG
 	#undef WRITE_LOG
@@ -24,7 +24,7 @@
 
 	#ifdef WRITE_LOG
 		#define WRITE_TO_LOG(S) {\
-			Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
+			Msg("%s,%s,%d,p[%.2f,%.2f,%.2f],h[%.2f,%.2f],t[%.2f,%.2f]",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_target.yaw,r_torso_current.yaw,r_torso_target.yaw);\
 			vfUpdateDynamicObjects();\
 			bStopThinking = true;\
 		}

@@ -13,8 +13,6 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const DWORD    patch_frames = 100;
-
 // breakpoints
 #include "..\xr_input.h"
 
@@ -220,20 +218,7 @@ void CActor::Load		(LPCSTR section )
 	m_crouch.Create		(V,"cr");
 
 	// sheduler
-	shedule_Min			= shedule_Max = 1;
-
-	// patch : ZoneAreas
-	if (Level().pLevel->SectionExists("zone_areas"))
-	{
-		Log("...Using zones...");
-		CInifile::Sect&		S = Level().pLevel->ReadSection("zone_areas");
-		for (CInifile::SectIt I = S.begin(); I!=S.end(); I++)
-		{
-			Fvector4 a;
-			sscanf				(I->second,"%f,%f,%f,%f",&a.x,&a.y,&a.z,&a.w);
-			zone_areas.push_back(a);
-		}
-	}
+	dwMinUpdate			= dwMaxUpdate = 1;
 }
 
 BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -260,9 +245,6 @@ BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 	NET_WasInterpolating= TRUE;
 
 	bActive				= TRUE;
-
-	patch_frame			= 0;
-	patch_position.set	(vPosition);
 
 	return				TRUE;
 }
@@ -343,8 +325,6 @@ BOOL CActor::TakeItem		( DWORD CID )
 
 void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
-	if (patch_frame<patch_frames)	return;
-
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
 	float step = 0.1f;
@@ -403,9 +383,9 @@ void CActor::ZoneEffect	(float z_amount)
 	// Fov/Shift + Pulse
 	CCameraBase* C		= cameras	[cam_active];
 	float	shift		= z_amount*F*.1f;
-	C->f_fov			= 90.f+z_amount*15.f + shift;
-	C->f_aspect			= 1.f+cam_shift/3;
-	cam_shift			= shift/(3.f*3.f);
+	C->f_fov			= 90.f+z_amount*45.f + shift;
+	C->f_aspect			= 1.f+cam_shift;
+	cam_shift			= shift/3.f;
 
 	// Sounds
 	Fvector				P;
@@ -422,22 +402,12 @@ void CActor::Update	(DWORD DT)
 {
 	if (!bEnabled)	return;
 
-	// patch
-	if (patch_frame<patch_frames)	{
-		vPosition.set		(patch_position);
-		patch_frame			+= 1;
-	}
-
+/*
 	// zone test
-	float z_amount		= 0;
-	for (int za=0; za<zone_areas.size(); za++)
-	{
-		Fvector	P; 
-		P.set			(zone_areas[za].x,zone_areas[za].y,zone_areas[za].z);
-		float D			= 1-(Position().distance_to(P)/zone_areas[za].w);
-		z_amount		= _max(D,z_amount);
-	}
+	Fvector z_P			= {1.803f, -0.012f, -22.089f};
+	float	z_R			= 15.f;
 
+	float	z_amount	= 1-(Position().distance_to(z_P)/z_R);
 	if (z_amount>EPS)	ZoneEffect	(z_amount);
 	else				{
 		cam_shift		= 0.f;
