@@ -934,7 +934,7 @@ void CAI_Stalker::Think()
 //		H = false;
 //		I = false;
 //	}
-	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && m_tSavedEnemy && m_tSavedEnemy->g_Alive() && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
+	if (!K && _K && m_tSavedEnemy && ((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && m_tSavedEnemy->g_Alive() && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) {
 		K = true;
 		C = _C;
 		E = _E;

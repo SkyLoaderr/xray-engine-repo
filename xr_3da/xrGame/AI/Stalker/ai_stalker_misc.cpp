@@ -350,8 +350,7 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 		pitch1			= angle_normalize_signed(pitch1);
 		yaw2			= angle_normalize_signed(yaw2);
 		pitch2			= angle_normalize_signed(pitch2);
-//		if (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || true)))
-		if (0 != (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov) || false))))
+		if (0 != (I = (getAI().bfTooSmallAngle(yaw1,yaw2,fYawFov) && (getAI().bfTooSmallAngle(pitch1,pitch2,fPitchFov)))))
 			break;
 	}
 	
@@ -368,10 +367,6 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				H = true;
 	}
 	H = true;
-//	if (K) {
-//		C = true;
-//		D = E = F = G = false;
-//	}
 	
 	// is there any items to pick up?
 	L = false;
