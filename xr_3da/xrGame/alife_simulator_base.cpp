@@ -21,6 +21,7 @@
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
 #include "alife_story_registry.h"
+#include "alife_registry_container.h"
 #include "level.h"
 #include "xrserver.h"
 #include "level_graph.h"
@@ -44,6 +45,7 @@ CALifeSimulatorBase::CALifeSimulatorBase	(xrServer *server, LPCSTR section)
 	m_organizations				= 0;
 	m_news						= 0;
 	m_story_objects				= 0;
+	m_registry_container		= 0;
 }
 
 CALifeSimulatorBase::~CALifeSimulatorBase	()
@@ -78,6 +80,7 @@ void CALifeSimulatorBase::unload			()
 	xr_delete					(m_organizations);
 	xr_delete					(m_news);
 	xr_delete					(m_story_objects);
+	xr_delete					(m_registry_container);
 }
 
 void CALifeSimulatorBase::reload			(LPCSTR section)
@@ -95,6 +98,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
 	m_story_objects				= xr_new<CALifeStoryRegistry>		();
+	m_registry_container		= xr_new<CALifeRegistryContainer>	();
 	m_initialized				= true;
 }
 

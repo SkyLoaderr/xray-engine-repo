@@ -13,7 +13,7 @@
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
 // ALife objects, events and tasks
-#define ALIFE_VERSION				0x0001
+#define ALIFE_VERSION				0x0002
 #define ALIFE_CHUNK_DATA			0x0000
 #define SPAWN_CHUNK_DATA			0x0001
 #define OBJECT_CHUNK_DATA			0x0002
@@ -23,6 +23,7 @@
 #define ANOMALY_CHUNK_DATA			0x0006
 #define DISCOVERY_CHUNK_DATA		0x0007
 #define NEWS_CHUNK_DATA				0x0008
+#define REGISTRY_CHUNK_DATA			0x0009
 #define LOCATION_TYPE_COUNT			4
 #define SECTION_HEADER				"location_"
 #define SAVE_EXTENSION				".sav"

@@ -41,7 +41,7 @@ IC	const typename CSALifeAbstractRegistry::OBJECT_REGISTRY &CSALifeAbstractRegis
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSALifeAbstractRegistry::add				(const _index_type &index, _data_type &data, bool no_assert) const
+IC	void CSALifeAbstractRegistry::add				(const _index_type &index, _data_type &data, bool no_assert)
 {
 	const_iterator	I = objects().find(index);
 	if (I != objects().end()) {
@@ -52,7 +52,7 @@ IC	void CSALifeAbstractRegistry::add				(const _index_type &index, _data_type &d
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CSALifeAbstractRegistry::remove			(const _index_type &index, bool no_assert) const
+IC	void CSALifeAbstractRegistry::remove			(const _index_type &index, bool no_assert)
 {
 	iterator		I = m_objects.find(index);
 	if (I == objects().end()) {
@@ -63,7 +63,7 @@ IC	void CSALifeAbstractRegistry::remove			(const _index_type &index, bool no_ass
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_data_type *CSALifeAbstractRegistry::object	(const _index_type &index, bool no_assert)
+IC	_data_type *CSALifeAbstractRegistry::object	(const _index_type &index, bool no_assert) const
 {
 	iterator		I = m_objects.find(index);
 	if (I == objects().end()) {

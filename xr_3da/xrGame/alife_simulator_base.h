@@ -25,6 +25,7 @@ class CALifeAnomalyRegistry;
 class CALifeOrganizationRegistry;
 class CALifeNewsRegistry;
 class CALifeStoryRegistry;
+class CALifeRegistryContainer;
 
 class CSE_Abstract;
 class CSE_ALifeObject;
@@ -48,6 +49,7 @@ protected:
 	CALifeOrganizationRegistry					*m_organizations;
 	CALifeNewsRegistry							*m_news;
 	CALifeStoryRegistry							*m_story_objects;
+	CALifeRegistryContainer						*m_registry_container;
 	CRandom32									m_random;
 	bool										m_initialized;
 	LPSTR										*m_server_command_line;
@@ -67,6 +69,7 @@ protected:
 	IC		CALifeOrganizationRegistry			&organizations				();
 	IC		CALifeNewsRegistry					&news						();
 	IC		CALifeStoryRegistry					&story_objects				();
+	IC		CALifeRegistryContainer				&registry					();
 public:
 	IC		CALifeGraphRegistry					&graph						();
 	IC		CALifeTimeManager					&time_manager				();
@@ -88,9 +91,15 @@ public:
 	IC		const CALifeOrganizationRegistry	&organizations				() const;
 	IC		const CALifeNewsRegistry			&news						() const;
 	IC		const CALifeStoryRegistry			&story_objects				() const;
+	IC		const CALifeRegistryContainer		&registry					() const;
 	IC		CRandom32							&random						();
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;
+	template <typename T>
+	IC		T &registry(T*t)
+	{
+		return	(registry()(t));
+	}
 
 protected:
 			void								create						(CSE_ALifeDynamicObject	*&object, CSE_ALifeDynamicObject *spawn_object,	const ALife::_SPAWN_ID &spawn_id);

@@ -18,6 +18,7 @@
 #include "alife_anomaly_registry.h"
 #include "alife_organization_registry.h"
 #include "alife_news_registry.h"
+#include "alife_registry_container.h"
 #include "xrserver.h"
 
 using namespace ALife;
@@ -73,6 +74,7 @@ void CALifeStorageManager::save	(LPCSTR save_name)
 	anomalies().save			(stream);
 	organizations().save		(stream);
 	news().save					(stream);
+	registry().save				(stream);
 
 	string256					temp;
 	FS.update_path				(temp,"$game_saves$",m_save_name);
@@ -114,6 +116,7 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	anomalies().load			(*stream);
 	organizations().load		(*stream);
 	news().load					(*stream);
+	registry().load				(*stream);
 
 	FS.r_close					(stream);
 	
