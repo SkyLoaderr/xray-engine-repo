@@ -92,7 +92,7 @@ void	CTracer::Render	()
 		sC.mul	(.5f);
 		sR		= sC.magnitude();
 		sC.add	(B.pos_trail);
-		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
+		if (!::Render.ViewBase.testSphere_dirty(sC,sR))	continue;
 
 		// Everything OK - build vertices
 		Fvector	P,lineTop,camDir;

@@ -299,7 +299,7 @@ void	CEffect_Rain::Render	()
 		sC.mul			(.5f);
 		sR				= sC.magnitude();
 		sC.add			(pos_trail);
-		if (!::Render.ViewBase.testSphereDirty(sC,sR))	continue;
+		if (!::Render.ViewBase.testSphere_dirty(sC,sR))	continue;
 		
 		// Everything OK - build vertices
 		Fvector	P,lineTop,camDir;
@@ -352,7 +352,7 @@ void	CEffect_Rain::Render	()
 			}
 
 			// Render
-			if (::Render.ViewBase.testSphereDirty(P->bounds.P, P->bounds.R))
+			if (::Render.ViewBase.testSphere_dirty(P->bounds.P, P->bounds.R))
 			{
 				// Build matrix
 				float scale			=	P->time / particles_time;
