@@ -249,7 +249,7 @@ function sound_update(npc, sound, now)
 			--' играем рандомные звуки
 			local max_seq_cnt = get_sound_count(sounds_seq)
 			if max_seq_cnt > 0 and
-			   (sound["seq_cnt"] == nil or sound["seq_cnt"] < max_seq_cnt)
+			   (sound["seq_cnt"] == nil or sound["seq_cnt"] <= max_seq_cnt)
 			then						
 				if sound["seq_cnt"] == nil then
 					sound["seq_cnt"] = 0
