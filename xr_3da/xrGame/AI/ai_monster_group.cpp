@@ -155,7 +155,7 @@ void CMonsterSquad::CommonAttack(ENTITY_VEC &enemies, ENTITY_VEC &members)
 		if ((pTask.state.type == TS_REQUEST) || (pTask.state.ttl < Level().timeServer())) {
 			
 			if (pTask.state.type == TS_REQUEST) 
-				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*)
+				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
 			else if (pTask.state.type == TS_PROGRESS)
 				LOG_EX2("_______________ TS_REQUEST, TTL = [%u], LTS = [%u] ", *"*/ pTask.state.ttl, Level().timeServer() /*"*);
 			
@@ -187,7 +187,7 @@ CEntity	*CMonsterSquad::GetNearestEnemy(CEntity *t, ENTITY_VEC *ev)
 void CMonsterSquad::Dump()
 {
 	LOG_EX2("SQUAD:: ----- BEGIN Dump for squad #%u,  Time = [%u]-------", *"*/ id, Level().timeServer() /*"*);
-	if (leader) LOG_EX2("SQUAD:: Team size = [%u] Leader = [%s] ", *"*/ squad.size(), leader->cName() /*"*)
+	if (leader) LOG_EX2("SQUAD:: Team size = [%u] Leader = [%s] ", *"*/ squad.size(), leader->cName() /*"*);
 	else LOG_EX2("SQUAD:: Team size = [%u] No leader ", *"*/ squad.size() /*"*);
 	
 	int i=0;
@@ -201,10 +201,10 @@ void CMonsterSquad::Dump()
 			case TS_REFUSED:	strcpy(s_temp, "TS_REFUSED");	break;
 		}
 
-		if (!it->second.state.ttl) LOG_EX("SQUAD:: Task:: No Command")
+		if (!it->second.state.ttl) LOG_EX("SQUAD:: Task:: No Command");
 		else LOG_EX2("SQUAD:: Task:: Command = [%s], Time = [%u]", *"*/ s_temp, it->second.state.ttl /*"*); 
 		
-		if (!it->second.target.entity)	LOG_EX("SQUAD:: Task:: No target")
+		if (!it->second.target.entity)	LOG_EX("SQUAD:: Task:: No target");
 		else LOG_EX2("SQUAD:: Task:: Target: pos = [%f,%f,%f], name = [%s]", *"*/ VPUSH(it->second.target.pos), it->second.target.entity->cName() /*"*); 
 	}
 
