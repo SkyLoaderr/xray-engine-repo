@@ -97,11 +97,10 @@ void CRenderTarget::phase_bloom	()
 
 		// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
 		float lscale				= ps_r2_ls_bloom_threshold;		// must be .25 infact
-		float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
-		float lh					= .25f*.5f;						lh	*= lscale;
-		float s						= .5f;	// Device.fTimeDelta
+		float s						= .25f;	// scale
+		float sp					= .5f;	// speed
 		RCache.set_Element			(s_bloom->E[0]);
-		RCache.set_c				("b_speed", 0,0,0,s	);
+		RCache.set_c				("b_speed", s,s,s,sp);
 		RCache.set_Geometry			(g_bloom_build		);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
