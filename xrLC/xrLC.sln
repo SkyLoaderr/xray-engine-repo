@@ -5,6 +5,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrAI", "xrAI\xrAI.vcproj", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrDO_Light", "xrDO_Light\xrDO_Light.vcproj", "{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA} = {5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "xrHemisphere\xrHemisphere.vcproj", "{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}"
@@ -13,6 +14,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "xrHemispher
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "xrLC.vcproj", "{25B60978-8467-4263-A6EB-CB3BB108F8BF}"
 	ProjectSection(ProjectDependencies) = postProject
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA} = {5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "close", "close\close.vcproj", "{2996B2B8-B3A1-4785-97BD-56F4398C2E97}"
@@ -20,6 +22,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "close", "close\close.vcproj
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 6
 		SccProjectName0 = \u0022$/xrLC\u0022,\u0020TLAAAAAA
