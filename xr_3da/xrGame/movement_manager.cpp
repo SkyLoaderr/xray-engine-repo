@@ -73,9 +73,9 @@ void CMovementManager::reload		(LPCSTR section)
 
 void CMovementManager::update_path()
 {
-	if (!enabled() || actual_all() || ((m_last_update > Level().timeServer()) && !path_completed()))
+	if (!enabled() || ((/**actual_all() || /**/(m_last_update > Level().timeServer())) && !path_completed()))
 		return;
-	
+
 	m_last_update			= Level().timeServer() + m_refresh_rate;
 
 	time_start				();
