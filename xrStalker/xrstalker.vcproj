@@ -186,6 +186,9 @@
 					RelativePath=".\Config\gameplay\character_desc_bandit.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\character_desc_bar.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_desc_dolg.xml">
 				</File>
 				<File
@@ -893,6 +896,9 @@
 				Filter="">
 				<File
 					RelativePath=".\Config\scripts\bar_barman.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\bar_entry_zone.ltx">
 				</File>
 				<File
 					RelativePath=".\Config\scripts\dummy.ltx">
