@@ -332,6 +332,8 @@ protected:
 	float					m_fWalkAccel;
 	float					m_fJumpSpeed;
 	float					m_fRunFactor;
+	float					m_fRunBackFactor;
+	float					m_fWalkBackFactor;
 	float					m_fCrouchFactor;
 	float					m_fClimbFactor;
 	

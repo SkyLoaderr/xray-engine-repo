@@ -256,6 +256,8 @@ void CActor::Load	(LPCSTR section )
 	m_fWalkAccel				= pSettings->r_float(section,"walk_accel");	
 	m_fJumpSpeed				= pSettings->r_float(section,"jump_speed");
 	m_fRunFactor				= pSettings->r_float(section,"run_coef");
+	m_fRunBackFactor			= pSettings->r_float(section,"run_back_coef");
+	m_fWalkBackFactor			= pSettings->r_float(section,"walk_back_coef");
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
 	m_fClimbFactor				= pSettings->r_float(section,"climb_coef");
 	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");

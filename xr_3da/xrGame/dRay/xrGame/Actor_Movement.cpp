@@ -175,7 +175,15 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			float	scale				= vControlAccel.magnitude();
 			if (scale>EPS)	{
 				scale	=	m_fWalkAccel/scale;
-				if (bAccelerated)			scale *= m_fRunFactor;
+				if (bAccelerated)
+					if (mstate_real&mcBack)
+						scale *= m_fRunBackFactor;
+					else
+						scale *= m_fRunFactor;
+				else
+					if (mstate_real&mcBack)
+						scale *= m_fWalkBackFactor;
+
 				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
 				if (mstate_real&mcClimb)	scale *= m_fClimbFactor;
 				vControlAccel.mul			(scale);
