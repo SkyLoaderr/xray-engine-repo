@@ -682,7 +682,16 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Transfer gloss-map
 	{
+		D3DLOCKED_RECT					Rsrc,Rdst;
 
+		height->LockRect				(0,&R,0, 0);
+		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array.begin(),size);
+		T->UnlockRect					(0);
+
+		T->LockRect						(0,&R,0, 0);
+		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array.begin(),size);
+		T->UnlockRect					(0);
+		
 	}
 	height->Release						();
 
