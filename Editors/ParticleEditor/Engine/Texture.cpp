@@ -410,22 +410,9 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (w<1)	w=1;
 	if (h<1)	h=1;
 }
-IC DWORD _MemUsage	(IDirect3DTexture8* T)
-{
-	DWORD dwMemory	= 0;
-	if (T) {
-		for (DWORD L=0; L<T->GetLevelCount(); L++)
-		{
-			D3DSURFACE_DESC	desc;
-			R_CHK			(T->GetLevelDesc(L,&desc));
-			dwMemory		+= desc.Size;
-		}
-	}
-	return	dwMemory;
-}
 
-
-ENGINE_API IDirect3DTexture8*	TWLoader2D(
+ENGINE_API IDirect3DBaseTexture8*	TWLoader2D
+(
 		const char *		fRName,
 		ETexturePF			Algorithm,
 		ETextureMipgen		Mipgen,
@@ -441,8 +428,10 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 		)
 {
 	CImage					Image;
-	DWORD					dwMipCount	= 9;
-	IDirect3DTexture8*		pTexture	= NULL;
+	DWORD					dwMipCount		= 9;
+//	IDirect3DBaseTexture8*	pTexture		= NULL;
+	IDirect3DTexture8*		pTexture2D		= NULL;
+	IDirect3DCubeTexture8*	pTextureCUBE	= NULL;
 	FILE_NAME				fn;
 
 	// validation
@@ -468,13 +457,40 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
  	return 0;
 
 _DDS:
-	{
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		CStream* S				= Engine.FS.Open	(fn);
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->Pointer(),S->Length(),&IMG));
+		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
+		else														goto _DDS_2D;
 
+_DDS_CUBE:
+	{
+		R_CHK(D3DXCreateCubeTextureFromFileInMemoryEx(
+			HW.pDevice,
+			S->Pointer(),S->Length(),
+			D3DX_DEFAULT,
+			IMG.MipLevels,0,
+			IMG.Format,
+			D3DPOOL_MANAGED,
+			D3DX_DEFAULT,
+			D3DX_DEFAULT,
+			0,&IMG,0,
+			&pTextureCUBE
+			));
+
+		// Log
+		Msg						("* T_2 [%d-%d] (%dK): %s",IMG.Width,IMG.Height,CTexture::MemUsage(pTextureCUBE)/1024,fn);
+
+		// OK
+		dwWidth					= IMG.Width;
+		dwHeight				= IMG.Height;
+		fmt						= IMG.Format;
+		return					pTextureCUBE;
+	}
+_DDS_2D:
+	{
 		// Load   SYS-MEM-surface, bound to device restrictions
 		IDirect3DTexture8*		T_sysmem;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx( 
@@ -506,13 +522,12 @@ _DDS:
 			HW.pDevice,
 			top_width,top_height,
 			levels_exist,0,F,
-			D3DPOOL_MANAGED,&pTexture
+			D3DPOOL_MANAGED,&pTexture2D
 			));
-//		R_CHK					(HW.pDevice->CreateTexture(top_width,top_height,levels_exist,0,F,D3DPOOL_MANAGED,&pTexture));
 
 		// Copy surfaces & destroy temporary
 		IDirect3DTexture8* T_src= T_sysmem;
-		IDirect3DTexture8* T_dst= pTexture;
+		IDirect3DTexture8* T_dst= pTexture2D;
 		int		L_src			= T_src->GetLevelCount	()-1;
 		int		L_dst			= T_dst->GetLevelCount	()-1;
 		for (; L_dst>=0; L_src--,L_dst--)
@@ -520,8 +535,6 @@ _DDS:
 			D3DSURFACE_DESC			D_src, D_dst;
 			T_src->GetLevelDesc		(L_src,&D_src);
 			T_dst->GetLevelDesc		(L_dst,&D_dst);
-			// R_ASSERT				(D_src.Width	==	D_dst.Width);
-			// R_ASSERT				(D_src.Height	==	D_dst.Height);
 			R_ASSERT				(D_src.Size		==	D_dst.Size);
 
 			D3DLOCKED_RECT			R_src, R_dst;
@@ -536,13 +549,13 @@ _DDS:
 		_RELEASE				(T_sysmem);
 
 		// Log
-		Msg						("* T[%d-%d](%dK): %s",top_width,top_height,_MemUsage(pTexture)/1024,fn);
+		Msg						("* T_2 [%d-%d] (%dK): %s",top_width,top_height,CTexture::MemUsage(pTexture2D)/1024,fn);
 
 		// OK
 		dwWidth					= top_width;
 		dwHeight				= top_height;
 		fmt						= F;
-		return					pTexture;
+		return					pTexture2D;
 	}
 
 _TGA:
@@ -593,23 +606,23 @@ _TGA:
 	if (Mipgen==tmDisable)
 	{
 		R_CHK(HW.pDevice->CreateTexture(
-			dwWidth,dwHeight,1,0,fmt,D3DPOOL_MANAGED,&pTexture
+			dwWidth,dwHeight,1,0,fmt,D3DPOOL_MANAGED,&pTexture2D
 			));
 	} else {
 		R_CHK(D3DXCreateTexture( 
 			HW.pDevice,dwWidth,dwHeight,
 			D3DX_DEFAULT,
-			0,fmt,D3DPOOL_MANAGED,&pTexture));
+			0,fmt,D3DPOOL_MANAGED,&pTexture2D));
 	}
-	VERIFY2(pTexture,fname);
+	VERIFY2(pTexture2D,fname);
 
 	// fill texture with data from BGRA
-	dwMipCount = pTexture->GetLevelCount();
+	dwMipCount = pTexture2D->GetLevelCount();
 	if (dwMipCount<=1)
 	{
 		// no mip-maps
 		IDirect3DSurface8*	pTMP;
-		R_CHK(pTexture->GetSurfaceLevel(0,&pTMP));
+		R_CHK(pTexture2D->GetSurfaceLevel(0,&pTMP));
 
 		RECT RC = {0,0,dwWidth,dwHeight};
 		R_CHK(D3DXLoadSurfaceFromMemory(
@@ -646,7 +659,7 @@ _TGA:
 		//		dwW,dwH,dwP		- are correct
 		for (DWORD i=0; i<dwMipCount; i++) {
 			IDirect3DSurface8*	pTMP;
-			R_CHK(pTexture->GetSurfaceLevel(i,&pTMP));
+			R_CHK(pTexture2D->GetSurfaceLevel(i,&pTMP));
 			RECT RC = {0,0,dwW,dwH};
 			R_CHK(D3DXLoadSurfaceFromMemory(
 				pTMP,0,0,
@@ -670,5 +683,5 @@ _TGA:
 		_FREE(pImagePixels);
 	}
 
-	return pTexture;
+	return pTexture2D;
 }

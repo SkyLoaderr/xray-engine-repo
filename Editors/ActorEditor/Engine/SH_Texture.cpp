@@ -28,14 +28,14 @@ CTexture::~CTexture()
 	Unload	();
 }
 
-void				CTexture::surface_set	(IDirect3DTexture8* surf)
+void					CTexture::surface_set	(IDirect3DBaseTexture8* surf)
 {
 	if (surf)			surf->AddRef		();
 	_RELEASE			(pSurface);
 	pSurface			= surf;
 }
 
-IDirect3DTexture8*	CTexture::surface_get	()
+IDirect3DBaseTexture8*	CTexture::surface_get	()
 {
 	if (pSurface)		pSurface->AddRef	();
 	return pSurface;
@@ -45,12 +45,15 @@ void CTexture::Apply	(DWORD dwStage)
 {
 	if (pAVI && pAVI->NeedUpdate())
 	{
+		R_ASSERT(D3DRTYPE_TEXTURE == pSurface->GetType());
+		IDirect3DTexture8*	T2D		= (IDirect3DTexture8*)pSurface;
+
 		// AVI
 		D3DLOCKED_RECT R;
-		R_CHK	(pSurface->LockRect(0,&R,NULL,0));
+		R_CHK	(T2D->LockRect(0,&R,NULL,0));
 		R_ASSERT(R.Pitch == int(pAVI->dwWidth*4));
 		R_ASSERT(pAVI->DecompressFrame(LPDWORD(R.pBits)));
-		R_CHK	(pSurface->UnlockRect(0));
+		R_CHK	(T2D->UnlockRect(0));
 	} else if (!seqDATA.empty()) {
 		// SEQ
 		DWORD	frame		= Device.dwTimeGlobal/seqMSPF;
@@ -97,15 +100,17 @@ void CTexture::Load(LPCSTR cName)
 			dwMemoryUsage	= pAVI->dwWidth*pAVI->dwHeight*4;
 
 			// Now create texture
+			IDirect3DTexture8*	pTexture = 0;
 			HRESULT hrr = HW.pDevice->CreateTexture(
 				pAVI->dwWidth,pAVI->dwHeight,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,
-				&pSurface
+				&pTexture
 				);
+			pSurface	= pTexture;
 			if (FAILED(hrr)) 
 			{
 				Device.Fatal("Invalid video stream");
-				R_CHK(hrr);
-				_DELETE(pAVI);
+				R_CHK	(hrr);
+				_DELETE	(pAVI);
 				pSurface = 0;
 			}
 
@@ -159,7 +164,7 @@ void CTexture::Load(LPCSTR cName)
 				if (pSurface)	{
 					pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
-					dwMemoryUsage			+= Calculate_MemUsage	(pSurface);
+					dwMemoryUsage			+= MemUsage	(pSurface);
 				}
 			}
 		}
@@ -185,23 +190,32 @@ void CTexture::Load(LPCSTR cName)
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			pSurface->SetPriority	(PRIORITY_NORMAL);
-			dwMemoryUsage			=	Calculate_MemUsage(pSurface);
+			dwMemoryUsage			=	MemUsage(pSurface);
 		}
 	}
 }
 
-DWORD CTexture::Calculate_MemUsage	(IDirect3DTexture8* T)
+DWORD CTexture::MemUsage	(IDirect3DBaseTexture8* pTexture)
 {
-	DWORD dwMemory	= 0;
-	if (T) {
-		for (DWORD L=0; L<T->GetLevelCount(); L++)
+	switch (pTexture->GetType())
+	{
+	case D3DRTYPE_TEXTURE:
 		{
-			D3DSURFACE_DESC	desc;
-			R_CHK			(T->GetLevelDesc(L,&desc));
-			dwMemory		+= desc.Size;
+			IDirect3DTexture8*	T		= (IDirect3DTexture8*)pTexture;
+			DWORD dwMemory	= 0;
+			if (T) {
+				for (DWORD L=0; L<T->GetLevelCount(); L++)
+				{
+					D3DSURFACE_DESC	desc;
+					R_CHK			(T->GetLevelDesc(L,&desc));
+					dwMemory		+= desc.Size;
+				}
+			}
+			return	dwMemory;
 		}
+	default:
+		return 0;
 	}
-	return	dwMemory;
 }
 
 void CTexture::Unload()
