@@ -33,6 +33,7 @@ class CPHWorld	: public pureFrame
 	PH_OBJECT_STORAGE			m_objects													;
 	PH_OBJECT_STORAGE			m_freezed_objects											;
 	PH_UPDATE_OBJECT_STORAGE	m_update_objects											;
+	dGeomID						m_motion_ray;
 public:
 	xr_vector<ISpatial*>		r_spatial;
 public:
@@ -54,7 +55,7 @@ public:
 	void						RemoveObject					(PH_OBJECT_I i)				;
 	void						RemoveUpdateObject				(PH_UPDATE_OBJECT_I i)		;
 	dGeomID						GetMeshGeom						()							{return Mesh.GetGeom();}
-
+IC	dGeomID						GetMotionRayGeom				()							{return m_motion_ray;}
 	void						Destroy							()							;
 
 	void						FrameStep						(dReal step=0.025f)			;

@@ -24,19 +24,19 @@ struct dxGeomTransform : public dxGeom {
 		dRSetIdentity (final_R);
 	}
 };
-void CPHPositionsPairs::Positions(const dReal* p0,const dReal* p1)
+void CPHPositionsPairs::Positions(const Fvector* &p0,const  Fvector* &p1)
 {
 	CODEGeom	*g=*geom;
 	if(g->is_transformed_bt())
 	{
 		g->geometry_transform()->recomputeAABB();
-		p0=dGeomGetUserData(g->geom())->last_pos;
-		p1=((dxGeomTransform*)g->geometry_transform())->final_pos;
+		p0=(const Fvector*)dGeomGetUserData(g->geom())->last_pos;
+		p1=(const Fvector*)((dxGeomTransform*)g->geometry_transform())->final_pos;
 	}
 	else 
 	{
-		p1=dGeomGetPosition(g->geometry_transform());
-		p0=dGeomGetUserData(g->geometry_transform())->last_pos;
+		p1=(const Fvector*)dGeomGetPosition(g->geometry_transform());
+		p0=(const Fvector*)dGeomGetUserData(g->geometry_transform())->last_pos;
 	}
 
 }

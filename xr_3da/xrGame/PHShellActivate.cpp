@@ -190,4 +190,5 @@ void CPHShell::Deactivate(){
 	spatial_unregister();
 	ZeroCallbacks();
 	m_traced_geoms.clear();
+	CPHObject::UnsetRayMotions();
 }

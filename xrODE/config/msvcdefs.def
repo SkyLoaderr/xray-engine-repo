@@ -64,6 +64,9 @@ dClearUpperTriangle
 dCloseODE
 dClosestLineSegmentPoints
 dCollide
+dCollideRaySphere
+dCollideRayBox
+dCollideRayCCylinder
 dCreateBox
 dCreateCCylinder
 dCreateGeom
@@ -99,6 +102,7 @@ dGeomGetRotation
 dGeomGetSpace
 dGeomIsEnabled
 dGeomIsSpace
+dGeomMoved
 dGeomPlaneGetParams
 dGeomPlanePointDepth
 dGeomPlaneSetParams

@@ -5,7 +5,7 @@ struct dxRayMotions;
 extern int dRayMotionsClassUser;
 
 
-dxGeom *dCreateRayMotions (dSpaceID space, dReal r, dReal lz);
-void dGeomRayMotionsSetParams (dGeomID g, dReal x, dReal y, dReal z);
-void dGeomRayMotionsGetParams (dGeomID g,  dReal x, dReal y, dReal z);
+dxGeom *dCreateRayMotions (dSpaceID space);
+void dGeomRayMotionsSet (dGeomID g,const dReal* p,const dReal* d, dReal l);
+
 #endif //dRayMotions_h

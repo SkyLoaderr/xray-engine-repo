@@ -6,6 +6,7 @@
 #ifdef DRAW_CONTACTS
 #include "ExtendedGeom.h"
 #endif
+#include "draymotions.h"
 
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
@@ -13,7 +14,7 @@
 
 void CPHMesh ::Create(dSpaceID space, dWorldID world){
 	Geom = dCreateTriList(space, 0, 0);
-
+	
 }
 /////////////////////////////////////////////////////////////////////////
 
@@ -111,6 +112,7 @@ void CPHWorld::Create()
 	//dWorldSetERP(phWorld,  0.2f);
 	//dWorldSetCFM(phWorld,  0.000001f);
 	disable_count=0;
+	m_motion_ray=dCreateRayMotions(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -120,6 +122,7 @@ void CPHWorld::Destroy(){
 #ifdef PH_PLAIN
 	dGeomDestroy(plane);
 #endif
+	dGeomDestroy(m_motion_ray);
 	dJointGroupEmpty(ContactGroup);
 	ContactFeedBacks.clear();
 	ContactEffectors.clear();

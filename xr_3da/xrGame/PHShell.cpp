@@ -1188,4 +1188,5 @@ void CPHShell::BonesBindCalculateRecursive(Fmatrix parent,u16 id)
 void CPHShell::AddTracedGeom				(u16 element/*=0*/,u16 geom/*=0*/)
 {
 	m_traced_geoms.add(elements[element]->Geom(geom));
+	CPHObject::SetRayMotions();
 }

@@ -55,6 +55,9 @@ int dCollideCCylinderCCylinder (dxGeom *o1, dxGeom *o2,
 				int flags, dContactGeom *contact, int skip);
 int dCollideCCylinderPlane (dxGeom *o1, dxGeom *o2, int flags,
 			    dContactGeom *contact, int skip);
+#ifdef __cplusplus
+extern "C" {
+#endif
 int dCollideRaySphere (dxGeom *o1, dxGeom *o2, int flags,
 		       dContactGeom *contact, int skip);
 int dCollideRayBox (dxGeom *o1, dxGeom *o2, int flags,
@@ -64,5 +67,7 @@ int dCollideRayCCylinder (dxGeom *o1, dxGeom *o2,
 int dCollideRayPlane (dxGeom *o1, dxGeom *o2, int flags,
 		      dContactGeom *contact, int skip);
 
-
+#ifdef __cplusplus
+}
+#endif
 #endif

@@ -548,6 +548,7 @@ void CMissile::activate_physic_shell()
 
 	XFORM().set(m_throw_matrix);
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
+	m_pPhysicsShell->AddTracedGeom();
 	PKinematics(Visual())->CalculateBones();
 }
 

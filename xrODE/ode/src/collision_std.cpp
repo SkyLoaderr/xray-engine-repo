@@ -1910,7 +1910,7 @@ int dCollideRayCCylinder (dxGeom *o1, dxGeom *o2,
 {
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (o1->type == dRayClass);
-  dIASSERT (o2->type == dCCylinderClass);
+//  dIASSERT (o2->type == dCCylinderClass);
   dxRay *ray = (dxRay*) o1;
   dxCCylinder *ccyl = (dxCCylinder*) o2;
 

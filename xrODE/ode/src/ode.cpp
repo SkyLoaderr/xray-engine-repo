@@ -1247,7 +1247,7 @@ void dWorldDestroy (dxWorld *w)
 
 void dWorldSetGravity (dWorldID w, dReal x, dReal y, dReal z)
 {
-  dAASSERT (w);
+  ///dAASSERT (w);
   w->gravity[0] = x;
   w->gravity[1] = y;
   w->gravity[2] = z;
@@ -1265,7 +1265,7 @@ void dWorldGetGravity (dWorldID w, dVector3 g)
 
 void dWorldSetERP (dWorldID w, dReal erp)
 {
-  dAASSERT (w);
+ // dAASSERT (w);
   w->global_erp = erp;
 }
 
@@ -1279,7 +1279,7 @@ dReal dWorldGetERP (dWorldID w)
 
 void dWorldSetCFM (dWorldID w, dReal cfm)
 {
-  dAASSERT (w);
+  //dAASSERT (w);
   w->global_cfm = cfm;
 }
 

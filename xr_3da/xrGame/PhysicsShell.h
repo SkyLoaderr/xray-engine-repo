@@ -253,6 +253,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				preBuild_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual	void				Build					(bool place_current_forms=true,bool disable=false)	= 0;
 	virtual	void				SetMaxAABBRadius		(float size)										 {};
+	virtual void				AddTracedGeom			(u16 element=0,u16 geom=0)							= 0;
 	virtual	void				RunSimulation			(bool place_current_forms=true)						= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;

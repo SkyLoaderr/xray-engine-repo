@@ -11,8 +11,13 @@ public:
 	{
 		geom=i;
 	}
-	void Positions(const dReal* p0,const dReal* p1);
+	void Positions(const Fvector *&p0,const Fvector *&p1);
 	IC CPHPositionsPairs& operator ++	()
+	{
+		++geom;
+		return *this;
+	}
+	IC CPHPositionsPairs& operator ++	(int)
 	{
 		geom++;
 		return *this;
@@ -24,6 +29,10 @@ public:
 	IC bool operator ==	(const CPHPositionsPairs& right ) const
 	{
 		return geom==right.geom;
+	}
+	IC bool operator !=	(const CPHPositionsPairs& right ) const
+	{
+		return geom!=right.geom;
 	}
 };
 

@@ -3,8 +3,8 @@
 #include "PHObject.h"
 #include "PHWorld.h"
 #include "level.h"
-
-
+#include "PHMoveStorage.h"
+#include "dRayMotions.h"
 
 	CPHObject::CPHObject()
 {
@@ -46,8 +46,32 @@ void CPHObject::spatial_move()
 
 void CPHObject::Collide()
 {
-	
-	
+	if(m_flags.test(fl_ray_motions))
+	{
+		CPHMoveStorage* tracers=MoveStorage();
+		CPHMoveStorage::iterator I=tracers->begin(),E=tracers->end();
+		for(;E!=I;I++)
+		{
+				const Fvector	*from=0,	*to=0;
+				Fvector dir;
+				I.Positions(from,to);
+				if(from->x==-dInfinity) continue;
+				dir.sub(*to,*from);
+				float	magnitude=dir.magnitude();
+				if(magnitude<EPS_L) continue;
+				dir.mul(1.f/magnitude);
+				g_SpatialSpace->q_ray(ph_world->r_spatial,0,STYPE_PHYSIC,*from,dir,magnitude);//|ISpatial_DB::O_ONLYFIRST
+				qResultVec& result=ph_world->r_spatial;
+				qResultIt i=result.begin(),e=result.end();
+				for(;i!=e;++i)	{
+					CPHObject* obj2=static_cast<CPHObject*>(*i);
+					if(obj2==this || !obj2->m_flags.test(st_dirty))		continue;
+					dGeomID	motion_ray=ph_world->GetMotionRayGeom();
+					dGeomRayMotionsSet(motion_ray,(const dReal*) from,(const dReal*)&dir,magnitude);
+					NearCallback(this,obj2,motion_ray,obj2->dSpacedGeom());
+				}
+		}
+	}
 	g_SpatialSpace->q_box(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
 	qResultVec& result=ph_world->r_spatial;
 	qResultIt i=result.begin(),e=result.end();

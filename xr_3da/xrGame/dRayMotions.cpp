@@ -1,11 +1,21 @@
 #include "stdafx.h"
 #include "../dCylinder/dCylinder.h"
+//#pragma warning(disable:4995)
+//#pragma warning(disable:4267)
+//#include "../ode/src/collision_kernel.h"
+//#pragma warning(default:4995)
+//#pragma warning(default:4267)
+//#pragma warning(disable:4995)
+//#pragma warning(disable:4267)
+#include "../ode/src/collision_std.h"
+//#pragma warning(default:4995)
+//#pragma warning(default:4267)
 struct dxRayMotions
 {
-	static dGeomID ray;
+	dGeomID ray;
 };
 
-dGeomID dxRayMotions::ray=0;
+
 
 
 int dRayMotionsClassUser = -1;
@@ -20,19 +30,23 @@ int dRayMotionsClassUser = -1;
 int dCollideRMB (dxGeom *o1, dxGeom *o2, int flags,
 				  dContactGeom *contact, int skip)
 {
-return 0;
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
+	return dCollideRayBox (c->ray,o2, flags,contact,skip);
+
 }
 
 int dCollideRMS(dxGeom *o1, dxGeom *o2, int flags,
 				 dContactGeom *contact, int skip)
 {
-return 0;
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
+	return dCollideRaySphere (c->ray, o2,flags, contact, skip);
 }
 
 int dCollideRMCyl (dxGeom *o1, dxGeom *o2, int flags,
 				 dContactGeom *contact, int skip)
 {
-return 0;
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(o1);
+	return	dCollideRayCCylinder (c->ray, o2,flags,contact,skip);
 }
 
 static  dColliderFn * dRayMotionsColliderFn (int num)
@@ -46,12 +60,12 @@ static  dColliderFn * dRayMotionsColliderFn (int num)
 
 static  void dRayMotionsAABB (dxGeom *geom, dReal aabb[6])
 {
-	aabb[0] = -dInfinity;
-	aabb[1] = dInfinity;
-	aabb[2] = -dInfinity;
-	aabb[3] = dInfinity;
-	aabb[4] = -dInfinity;
-	aabb[5] = dInfinity;
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(geom);
+	dGeomGetAABB(c->ray,aabb);
+}
+void dGeomRayMotionDestroy (dGeomID ray)
+{
+	dGeomDestroy(((dxRayMotions*)dGeomGetClassData(ray))->ray);
 }
 dxGeom *dCreateRayMotions (dSpaceID space)
 {
@@ -62,12 +76,23 @@ dxGeom *dCreateRayMotions (dSpaceID space)
 		c.collider = &dRayMotionsColliderFn;
 		c.aabb = &dRayMotionsAABB;
 		c.aabb_test = 0;
-		c.dtor = 0;
+		c.dtor = &dGeomRayMotionDestroy;
 		dRayMotionsClassUser =dCreateGeomClass (&c);
-
+		
 	}
 	dGeomID g = dCreateGeom (dRayMotionsClassUser);
 	if (space) dSpaceAdd (space,g);
-	//dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(g);
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(g);
+	c->ray=dCreateRay(space,REAL(1.));
 	return g;
+}
+
+void dGeomRayMotionsSet (dGeomID g,const dReal* p,const dReal* d, dReal l)
+{
+	dxRayMotions	*c = (dxRayMotions*) dGeomGetClassData(g);
+	dGeomRaySetLength (c->ray, l);
+	dGeomRaySet (c->ray, p[0], p[1], p[2],
+		d[0], d[1], d[2]);
+	dGeomMoved(g);
+
 }
