@@ -51,13 +51,8 @@ void xrLoad(LPCSTR name)
 		{
 			for (int id=0; O->FindChunk(id); id++)
 			{
-				Fvector		pos,angles;
-				int			team;
-
+				Fvector		pos;
 				O->Rvector	(pos);
-				O->Rvector	(angles);
-				team		= O->Rdword	();
-
 				Emitters.push_back(pos);
 			}
 			O->Close();
