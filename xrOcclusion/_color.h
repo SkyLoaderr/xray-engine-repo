@@ -21,10 +21,10 @@ public:
 	{	r=dw.r; g=dw.g; b=dw.b; a = dw.a;	};
 	IC	DWORD	get( ) const
 	{
-		DWORD _r = iFloor(r*255.f); clamp(_r,0ul,255ul);
-		DWORD _g = iFloor(g*255.f); clamp(_g,0ul,255ul);
-		DWORD _b = iFloor(b*255.f); clamp(_b,0ul,255ul);
-		DWORD _a = iFloor(a*255.f); clamp(_a,0ul,255ul);
+		int	 _r = iFloor(r*255.f); clamp(_r,0,255);
+		int	 _g = iFloor(g*255.f); clamp(_g,0,255);
+		int	 _b = iFloor(b*255.f); clamp(_b,0,255);
+		int	 _a = iFloor(a*255.f); clamp(_a,0,255);
 		return D3DCOLOR_RGBA(_r,_g,_b,_a);
 	};
 	IC	DWORD	get_windows( ) const

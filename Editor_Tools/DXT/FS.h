@@ -14,8 +14,6 @@ extern ENGINE_API void *	FileDecompress	(const char *fn, const char* sign, DWORD
 #define CFS_CompressMark	(1ul << 31ul)
 #define CFS_AlignMark		(1ul << 30ul)
 
-const char term[2]={13,10};
-
 class ENGINE_API CFS_Base {
 private:
 	std::stack<int>	chunk_pos;
@@ -48,8 +46,11 @@ public:
 	IC void	Wbyte(BYTE d)
 	{	write(&d,sizeof(BYTE));		}
 	IC void	Wstring(const char *p)
-	{	write(p,strlen(p));
-		write(term,2);		 	    }
+	{
+    	write(p,strlen(p));
+		Wbyte(13);
+		Wbyte(10);
+    }
 	IC void	WstringZ(const char *p)
 	{	write(p,strlen(p)+1);		}
 	IC void	Wvector(const Fvector &v)
@@ -132,7 +133,11 @@ public:
 	{
     	if (sign) FileCompress(fn,sign,pointer(),size());
         else {
+        #ifdef M_BORLAND
+        	int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+        #else
         	int H = _open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+        #endif
             R_ASSERT(H>0);
             _write(H,pointer(),size());
             _close(H);
@@ -341,31 +346,6 @@ public:
 		R_ASSERT(data);
 	}
 	virtual ~CVirtualFileStream() {
-        UnmapViewOfFile ((void*)data);
-		CloseHandle		(hSrcMap);
-		CloseHandle		(hSrcFile);
-	}
-};
-class ENGINE_API CVirtualFileStreamRW : public CStream
-{
-private:
-   HANDLE	hSrcFile,hSrcMap;
-public:
-	CVirtualFileStreamRW(const char *cFileName) {
-		// Open the file
-		hSrcFile = CreateFile(cFileName, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ, 0, OPEN_EXISTING, 0, 0);
-		R_ASSERT(hSrcFile!=INVALID_HANDLE_VALUE);
-		Size = (int)GetFileSize(hSrcFile, NULL);
-		R_ASSERT(Size);
-
-		hSrcMap = CreateFileMapping (hSrcFile, 0, PAGE_READWRITE, 0, 0, 0);
-		R_ASSERT(hSrcMap!=INVALID_HANDLE_VALUE);
-
-		data = (char*)MapViewOfFile (hSrcMap, FILE_MAP_ALL_ACCESS, 0, 0, 0);
-		R_ASSERT(data);
-	}
-	virtual ~CVirtualFileStreamRW() 
-	{
         UnmapViewOfFile ((void*)data);
 		CloseHandle		(hSrcMap);
 		CloseHandle		(hSrcFile);

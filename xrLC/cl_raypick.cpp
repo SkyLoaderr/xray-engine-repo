@@ -7,7 +7,7 @@
 
 #ifdef ENGINE_BUILD
 #define R_BEGIN Device.Statistic.clRAY.Begin()
-#define R_END	Device.Statistic.clRAY.End()
+#define R_END Device.Statistic.clRAY.End()
 #else
 #define R_BEGIN
 #define R_END
@@ -31,11 +31,16 @@ namespace RAPID {
 	IC DWORD& IR(float &x) { return (DWORD&)x; }
 	IC BOOL TestAABB(const Fvector& bMax, const Fvector& rP, const Fvector& rD, Fvector& coord)
 	{
+    #ifdef M_BORLAND
+    	Fbox		BB;
+        BB.set		(-bMax.x,-bMax.y,-bMax.z,bMax.x,bMax.y,bMax.z);
+        return 		BB.Pick2(rP,rD,coord);
+    #else
 		BOOL		Inside = TRUE;
 		Fvector		MaxT,bMin;
 		MaxT.set	(-1.f,-1.f,-1.f);
 		bMin.set	(-bMax.x,-bMax.y,-bMax.z);
-		
+
 		// Find candidate planes.
 		if(rP[0] < bMin[0]) {
 			Inside		= FALSE;
@@ -64,18 +69,18 @@ namespace RAPID {
 			coord[2]	= bMax[2];
 			MaxT[2]		= (bMax[2] - rP[2]) / rD[2];	// Calculate T distances to candidate planes
 		}
-		
+
 		// Ray rP inside bounding box
 		if(Inside)		{ coord.set	(rP); return true; }
-		
+
 		// Get largest of the maxT's for final choice of intersection
 		DWORD WhichPlane = 0;
 		if(MaxT[1] > MaxT[0])			WhichPlane = 1;
 		if(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
-		
+
 		// Check final candidate actually inside box
 		if(IR(MaxT[WhichPlane])&0x80000000) return false;
-		
+
 		switch (WhichPlane) {
 		case 0:
 			// 1 & 2
@@ -98,19 +103,20 @@ namespace RAPID {
 			coord[1] = rP[1] + MaxT[2] * rD[1];				// 1 1 2 1
 			if(fabsf(coord[1]) > bMax[1])	return false;
 			return true;
-		default: 
+		default:
 			NODEFAULT;
-#ifdef DEBUG
+			#ifdef DEBUG
 			return false;
-#endif
+			#endif
 		}
+	#endif
 	}
 
 	void XRCollide::raypick_fast		(const box *B, const Fvector& rC, const Fvector& rD)
 	{
 		if ((ray_flags&RAY_ONLYFIRST) && (RayContact.size()>1)) return;
 //		if (!B) return;
-		
+
 		// 1. XForm ray from parent to local space
 		Fvector C,D,P;
 		B->pR.MTxV		(D,rD);

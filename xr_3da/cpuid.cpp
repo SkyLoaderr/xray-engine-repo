@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "cpuid.h"
 #ifdef	M_VISUAL
 #include "mmintrin.h"

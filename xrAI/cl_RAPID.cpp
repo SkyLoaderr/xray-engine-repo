@@ -42,7 +42,7 @@ namespace RAPID {
 		}
 	}
 	
-	void Model::UnsetOption	(RAPID_option opt)
+	void Model::UnsetOption(RAPID_option opt)
 	{
 		if (opt == RAPID_BUILD_NUM_TRIS_PER_LEAF){
 			build_opt_num_tris_per_leaf = 2;
@@ -51,7 +51,7 @@ namespace RAPID {
 		}
 	}
 	
-	XRCollide::XRCollide	()
+	XRCollide::XRCollide()
 	{
 		ray_flags			= RAY_CULL;
 		collide_flags		= 0;
@@ -62,7 +62,7 @@ namespace RAPID {
 		
 		min_raypick_id      = -1;
 	}
-	XRCollide::~XRCollide	()
+	XRCollide::~XRCollide()
 	{
 
 	}

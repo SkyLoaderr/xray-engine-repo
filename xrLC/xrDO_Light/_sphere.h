@@ -11,7 +11,7 @@ public:
 	IC void		identity()							{ P.set(0,0,0); R=1; }
 
 	// Ray-sphere intersection
-	IC bool		intersect(const _vector<T>& S, const _vector<T>& D)	
+	IC BOOL		intersect(const _vector<T>& S, const _vector<T>& D)	
 	{
 		_vector<T> Q;	Q.sub(P,S);
 	
@@ -20,18 +20,18 @@ public:
 		T d = R*R - (c*c - v*v);
 		return (d > 0);
 	}
-	IC bool		intersect(const _sphere<T>& S) const
+	IC BOOL		intersect(const _sphere<T>& S) const
 	{	
 		T SumR = R+S.R;
 		return P.distance_to_sqr(S.P) < SumR*SumR;
 	}
-	IC bool		contains(const _vector<T>& PT) const 
+	IC BOOL		contains(const _vector<T>& PT) const 
 	{
 		return P.distance_to_sqr(PT) <= (R*R+EPS_S);
 	}
 	
 	// returns true if this wholly contains the argument sphere
-	IC bool		contains(const _sphere<T>& S) const	
+	IC BOOL		contains(const _sphere<T>& S) const	
 	{
 		// can't contain a sphere that's bigger than me !
 		const T RDiff		= R - S.R;

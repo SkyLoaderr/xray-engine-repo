@@ -1,5 +1,7 @@
 // file: targasaver.cpp
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "tga.h"
 
 VOID TGAdesc::maketga( CFS_Base& fs ){
@@ -64,6 +66,7 @@ VOID TGAdesc::maketga( char *fname )
 	Log("Screenshot saved.");
 }
 #else
+#ifdef XRLC
 VOID TGAdesc::maketga( char *fname )
 {
 	char FN[_MAX_PATH];
@@ -72,4 +75,5 @@ VOID TGAdesc::maketga( char *fname )
 	CFS_File fs	(FN);
 	maketga	(fs);
 }
+#endif
 #endif

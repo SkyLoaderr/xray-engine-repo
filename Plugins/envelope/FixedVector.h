@@ -1,3 +1,5 @@
+#ifndef FixedVectorH
+#define FixedVectorH
 #pragma once
 
 template <class T, const int dim>
@@ -20,26 +22,26 @@ public:
 	IC void		clear()				{ count=0;								}
 	IC void		resize(int c)		{ VERIFY(c<=dim); count=c;				}
 
-	IC void	push_back(T e)			{ VERIFY(count<dim); array[count++]=e;	}
-	IC void	pop_back()				{ VERIFY(count); count--;				}
+	IC void		push_back(T e)		{ VERIFY(count<dim); array[count++]=e;	}
+	IC void		pop_back()			{ VERIFY(count); count--;				}
 
-	IC T&	operator[] (DWORD id)	{ VERIFY(id<count); return array[id];	}
+	IC T&		operator[] (DWORD id){ VERIFY(id<count); return array[id];	}
 
-	IC T&	front()					{ return array[0];						}
-	IC T&	back()					{ return array[count-1];				}
-	IC T&	last()					{ VERIFY(count<dim); return array[count];}
-	IC void	inc	()					{ count++; }
-	IC bool	empty()					{ return 0==count;	}
+	IC T&		front()				{ return array[0];						}
+	IC T&		back()				{ return array[count-1];				}
+	IC T&		last()				{ VERIFY(count<dim); return array[count];}
+	IC void		inc	()				{ count++; }
+	IC bool		empty()				{ return 0==count;	}
 
-	IC void erase(DWORD id)			{
+	IC void		erase(DWORD id)		{
 		VERIFY(id<count);
 		count--;
 		for (DWORD i=id; i<count; i++)
 			array[i] = array[i+1];
 	}
-	IC void	erase(T* it)		{ erase(it-begin());	}
+	IC void		erase(T* it)		{ erase(it-begin());	}
 
-	IC void insert(int id, T& V)
+	IC void		insert(int id, T& V)
 	{
 		VERIFY(id>=0);
 		VERIFY(id<count);
@@ -48,5 +50,13 @@ public:
 		count++;
 		array[id] = V;
 	}
-	IC void	assign(T* p, int c) { VERIFY(c>0 && c<dim); CopyMemory(array,p,c*sizeof(T)); count=c; }
+	IC void		assign(T* p, int c) { VERIFY(c>0 && c<dim); CopyMemory(array,p,c*sizeof(T)); count=c; }
+	IC BOOL		equal (svector<T,dim>& base)
+	{
+		if (size()!=base.size())	return FALSE;
+		for (DWORD cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
+		return TRUE;
+	}
 };
+#endif
+

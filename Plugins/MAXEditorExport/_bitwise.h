@@ -127,10 +127,10 @@ IC float apx_InvSqrt( const float& n )
 // Only for [0..1] (positive) range 
 IC float apx_asin	(const float x)
 {
-	static const float c1 = 0.892399f;
-	static const float c3 = 1.693204f;
-	static const float c5 =-3.853735f;
-	static const float c7 = 2.838933f;
+	const float c1 = 0.892399f;
+	const float c3 = 1.693204f;
+	const float c5 =-3.853735f;
+	const float c7 = 2.838933f;
 	
 	const float x2 = x * x;
 	const float d = x * (c1 + x2 * (c3 + x2 * (c5 + x2 * c7)));

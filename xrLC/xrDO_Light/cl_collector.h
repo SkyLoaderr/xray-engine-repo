@@ -115,6 +115,7 @@ namespace RAPID {
 			T.dummy			= dummy;
 			faces.push_back(T);
 		}
+		vector<Fvector>& getV_Vec()	{ return verts;	}
 		Fvector*		getV()	{ return verts.begin();	}
 		int				getVS()	{ return verts.size();	}
 		tri*			getT()	{ return faces.begin();	}

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 // Initialized on startup
 ENGINE_API Fmatrix			precalc_identity;
@@ -22,11 +23,11 @@ namespace FPU
 
 #ifdef M_BORLAND
 	void BCALL	m24		(u16 p)	{	__asm fldcw p;	}
-	void BCALL	m24r	(u16 p)	{	__asm fldcw p;	}
+	void BCALL	m24r	(u16 p)	{  	__asm fldcw p;  }
 	void BCALL	m53		(u16 p)	{ 	__asm fldcw p;	}
 	void BCALL	m53r	(u16 p)	{ 	__asm fldcw p;	}
 	void BCALL	m64		(u16 p)	{ 	__asm fldcw p;	}
-	void BCALL	m64r	(u16 p)	{ 	__asm fldcw p;	}
+	void BCALL	m64r	(u16 p)	{  	__asm fldcw p;  }
 #endif
 };
 
@@ -51,12 +52,7 @@ namespace CPU
 		// General CPU identification
 		if (!_cpuid	(&ID))	
 		{
-#ifdef M_BORLAND
-			Log->DlgMsg(mtError,"Fatal error: can't detect CPU/FPU.");
-#endif
-#ifdef M_VISUAL
 			Msg					("Fatal error: can't detect CPU/FPU.");
-#endif
 			abort				();
 		}
 
@@ -102,22 +98,9 @@ void InitMath(void)
 {
 	char features[128]="RDTSC";
 
-#ifdef M_BORLAND
-	Log->Msg(mtInformation,
-#endif
-#ifdef M_VISUAL
-	Msg(
-#endif
-		"Initializing geometry pipeline and mathematic routines...");
+	Msg("Initializing geometry pipeline and mathematic routines...");
 	CPU::Detect();
-
-#ifdef M_BORLAND
-	Log->Msg(mtInformation,
-#endif
-#ifdef M_VISUAL
-	Msg(
-#endif
-		"* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d clk overhead",
+	Msg("* Detected CPU: %s %s, F%d/M%d/S%d, %d mhz, %d clk overhead",
 		CPU::ID.v_name,CPU::ID.model_name,
 		CPU::ID.family,CPU::ID.model,CPU::ID.stepping,
 		DWORD(CPU::cycles_per_second/__int64(1000000)),
@@ -127,15 +110,9 @@ void InitMath(void)
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW)	strcat(features,", 3DNow!");
     if (CPU::ID.feature&_CPU_FEATURE_SSE)	strcat(features,", SSE");
     if (CPU::ID.feature&_CPU_FEATURE_SSE2)	strcat(features,", SSE2");
-#ifdef M_BORLAND
-	Log->Msg(mtInformation,
-#endif
-#ifdef M_VISUAL
-	Msg(
-#endif
-	"* CPU Features: %s\n",features);
+	Msg("* CPU Features: %s\n",features);
 
-	
+
 	precalc_identity.identity	();	// Identity matrix
 	pvInitializeStatics			();	// Lookup table for compressed normals
 

@@ -1,3 +1,6 @@
+#ifndef _CLSID_H
+#define _CLSID_H
+
 #pragma once
 
 //***** CLASS ID type
@@ -10,3 +13,4 @@ typedef unsigned __int64	CLASS_ID;
 extern ENGINE_API void		CLSID2TEXT(CLASS_ID id, char *text);
 extern ENGINE_API CLASS_ID	TEXT2CLSID(const char *text);
 
+#endif

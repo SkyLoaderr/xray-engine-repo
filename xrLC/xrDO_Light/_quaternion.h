@@ -145,10 +145,10 @@ typedef struct _quaternion
 private:
 	IC float _asin(const float x)
 	{
-		static const float c1 = 0.892399f;
-		static const float c3 = 1.693204f;
-		static const float c5 =-3.853735f;
-		static const float c7 = 2.838933f;
+		const float c1 = 0.892399f;
+		const float c3 = 1.693204f;
+		const float c5 =-3.853735f;
+		const float c7 = 2.838933f;
 		
 		const float x2 = x * x;
 		const float d = x * (c1 + x2 * (c3 + x2 * (c5 + x2 * c7)));
@@ -220,7 +220,7 @@ public:
 	}
 
 	// validates numerical stability
-	IC	const bool	isValid(void) {
+	IC	const BOOL	isValid(void) {
 		if ((w * w) < 0.0f)	return false;
 		if ((x * x) < 0.0f)	return false;
 		if ((y * y) < 0.0f)	return false;
@@ -229,7 +229,7 @@ public:
 	}
 
 	// checks for Unit-length quanternion
-	IC	const bool	isUnit(void) {
+	IC	const BOOL	isUnit(void) {
 		float m  =  magnitude();
 
 		if (( m < 1.0+UNIT_TOLERANCE ) && ( m > 1.0-UNIT_TOLERANCE ))
@@ -308,7 +308,7 @@ public:
 	// gets an axis and angle of rotation around the axis from a quaternion
 	// returns TRUE if there is an axis.
 	// returns FALSE if there is no axis (and Axis is set to 0,0,0, and Theta is 0)
-	IC	bool	get_axis_angle(Fvector &axis, float &angle)
+	IC	BOOL	get_axis_angle(Fvector &axis, float &angle)
 	{
 		float OneOverSinTheta;
 
@@ -368,7 +368,7 @@ public:
 	}
 
 	// return TRUE if quaternions differ elementwise by less than Tolerance.
-	IC	bool	cmp(_quaternion &Q, float Tolerance=0.0001f)
+	IC	BOOL	cmp(_quaternion &Q, float Tolerance=0.0001f)
 	{
 		if (	// they are the same but with opposite signs
 			(	(fabsf(x + Q.x) <= Tolerance )

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 #include "cl_RAPID.h"
 #include "cl_moments.h"
@@ -25,9 +26,13 @@ namespace RAPID {
 			tris[i].convert_I2P(verts,tris);
 
 		// build hierrarhy
-		FPU::m64r	();
+    #ifdef M_BORLAND
 		int myrc = build_hierarchy();
-		FPU::m24r	();
+    #else
+		FPU::m64r();
+		int myrc = build_hierarchy();
+		FPU::m24r();
+    #endif
 		R_ASSERT	(myrc);
 	}
 

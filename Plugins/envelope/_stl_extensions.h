@@ -12,4 +12,6 @@
 #define DEFINE_MAP_PRED(K,T,N,I,P)	typedef std::map<K,T,P> N;	typedef N::iterator I;
 #define DEFINE_SVECTOR(T,C,N,I)		typedef svector<T,C> N;		typedef N::iterator I;
 
+#include "FixedVector.h"
+
 #endif

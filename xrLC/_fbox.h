@@ -38,25 +38,26 @@ public:
 	IC	void	modify		(const Fvector &p)		{ min.min(p); max.max(p);	}
 	IC	void	merge		(const _fbox &b)		{ modify(b.min); modify(b.max); };
 	IC	void	merge		(const _fbox &b1, const _fbox &b2) { invalidate(); merge(b1); merge(b2); }
-	IC	void	transform_p	(const _matrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
-	IC	void	transform_p	(const _fbox& B, const _matrix &m)	
-	{ 
-		m.transform_tiny(min,B.min);
-		m.transform_tiny(max,B.max);
-	}
+// incorrect!!!
+//	IC	void	transform_tiny	(const _matrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
+//	IC	void	transform_tiny	(const _fbox& B, const _matrix &m)	
+//	{ 
+//		m.transform_tiny(min,B.min);
+//		m.transform_tiny(max,B.max);
+//	}
 
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Fvector& R )	const 	{ getsize(R); R.mul(0.5f); };
-	IC	float	getradius	( )				const 	{ Fvector R; getradius(R); return R.magnitude();	};
-	IC	float	getvolume	()				const	{ Fvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
+	IC	float	getradius	( )				const 	{ Fvector R; getsize(R); R.mul(0.5f); return R.magnitude(); };
+
 	IC	void	getcenter	(Fvector& C )	const 	{
 		C.x = (min.x + max.x) * 0.5f;
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 	};
 	IC	void	getsphere	(Fvector &C, float &R) const {
-		getcenter			(C);
-		R = C.distance_to	(max);
+		getcenter(C);
+		R = C.distance_to(max);
 	};
 
 	// Detects if this box intersect other
@@ -71,13 +72,14 @@ public:
 		return TRUE;
 	};
 
-	// Make's this box valid AABB
-    IC void sort(){
-    	float tmp;
-		if( min.x > max.x ) { tmp = min.x; min.x = max.x; max.x = tmp; }
-		if( min.y > max.y ) { tmp = min.y; min.y = max.y; max.y = tmp; }
-		if( min.z > max.z ) { tmp = min.z; min.z = max.z; max.z = tmp; }
-	};
+// incorrect!!!	
+// Make's this box valid AABB
+//    IC void sort(){
+//    	float tmp;
+//		if( min.x > max.x ) { tmp = min.x; min.x = max.x; max.x = tmp; }
+//		if( min.y > max.y ) { tmp = min.y; min.y = max.y; max.y = tmp; }
+//		if( min.z > max.z ) { tmp = min.z; min.z = max.z; max.z = tmp; }
+//	};
 
 	// Does the vector intersects box
 	IC BOOL Pick( const Fvector& start, const Fvector& dir ){
@@ -225,7 +227,8 @@ public:
 		}
 	}
 	
-	IC void getpoint( int index,  Fvector& result ){
+	IC void getpoint( int index,  Fvector& result ) const 
+	{
 		switch( index ){
 		case 0: result.set( min.x, min.y, min.z ); break;
 		case 1: result.set( min.x, min.y, max.z ); break;
@@ -248,6 +251,25 @@ public:
 		result[7].set( max.x, max.y, min.z );
 	};
 
+	IC void transform(const Fmatrix& M){
+		Fvector pts[8];
+		getpoints(pts);
+		invalidate();
+		for(int i=0; i<8; i++){
+			M.transform_tiny(pts[i]);
+			modify(pts[i]);
+		}
+	}
+
+	IC void transform(const _fbox& src, const Fmatrix& M){
+		Fvector pt;
+		invalidate();
+		for(int i=0; i<8; i++){
+			src.getpoint(i,pt);
+			M.transform_tiny(pt);
+			modify(pt);
+		}
+	}
 } Fbox;
 
 #endif

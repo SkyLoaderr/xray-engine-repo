@@ -12,8 +12,7 @@ public:
 
 	IC	POINT	*d3d(void)				{ return (POINT*)this;	};
 	IC	void	set(int  _x, int  _y)	{ x=_x;	y=_y; };
-	IC   void	set(_ipoint &p)			{ x=p.x;y=p.y;};
-	IC   void	set(_fpoint &p);
+	IC   void	set(const _ipoint &p)	{ x=p.x;y=p.y;};
 	IC   void	null( )					{ x=0;	y=0;  };
 
 	IC   void	add(int  s)				{ x+=s;	y+=s; };

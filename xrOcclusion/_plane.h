@@ -11,7 +11,7 @@ public:
 		n.set(P.n);
 		d = P.d;
 	}
-    IC bool 	similar (Fplane &P, float eps_n=EPS, float eps_d=EPS){
+    IC BOOL 	similar (Fplane &P, float eps_n=EPS, float eps_d=EPS){
     	return (n.similar(P.n,eps_n)&&(fabsf(d-P.d)<eps_d));
     }
 	IC	void	build	(const Fvector &v1, const Fvector &v2, const Fvector &v3) {
@@ -54,7 +54,7 @@ public:
 		return fabsf(classify(v));
 	}
 
-	IC bool intersectRayDist(const Fvector& P, const Fvector& D, float& dist)
+	IC BOOL intersectRayDist(const Fvector& P, const Fvector& D, float& dist)
 	{
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
@@ -65,7 +65,7 @@ public:
 		dist = -(numer / denom);
 		return true;
 	}
-	IC bool intersectRayPoint(const Fvector& P, const Fvector& D, Fvector& dest) {
+	IC BOOL intersectRayPoint(const Fvector& P, const Fvector& D, Fvector& dest) {
 		float numer = classify(P);
 		float denom = n.dotproduct(D);
 	

@@ -43,6 +43,9 @@
     const	float		M_PI		= 3.1415926535897932384626433832795f;
     const	float		PI			= M_PI;
     const	float		PI_MUL_2	= 6.2831853071795864769252867665590f;
+    const	float		PI_MUL_4	= 12.566370614359172953850573533118f;
+    const	float		PI_MUL_6	= 18.849555921538759430775860299677f;
+    const	float		PI_MUL_8	= 25.132741228718345907701147066236f;
     const	float		PI_DIV_2	= 1.5707963267948966192313216916398f;
     const	float		PI_DIV_4	= 0.7853981633974483096156608458199f;
     const	float		PI_DIV_6	= 0.5235987755982988730771072305466f;
@@ -55,6 +58,10 @@
 
     #define				M_PI		3.1415926535897932384626433832795f
     #define				PI			M_PI
+    #define				PI_MUL_2	6.2831853071795864769252867665590f
+    #define				PI_MUL_4	12.566370614359172953850573533118f
+    #define				PI_MUL_6	18.849555921538759430775860299677f
+    #define				PI_MUL_8	25.132741228718345907701147066236f
     #define				PI_MUL_2	6.2831853071795864769252867665590f
     #define				PI_DIV_2	1.5707963267948966192313216916398f
     #define				PI_DIV_4	0.7853981633974483096156608458199f
@@ -150,6 +157,16 @@ struct _color;		// floating point based color definition
 #include "_d3d_extensions.h"
 
 #pragma pack(pop)
+
+
+// normalize angle
+IC float		normalize_angle	(float a){
+	float		div	 =	a/PI_MUL_2;
+	int			rnd  =	(div>0)?iFloor(div):iCeil(div);
+	float		frac =	div-rnd;
+	if (frac<0)	frac +=	1.f;
+	return		frac *	PI_MUL_2;
+}
 
 IC void Fmatrix::get_rapid(_matrix33& R)const{
 	R.m[0][0]	=  m[0][0]; R.m[0][1] =  m[1][0]; R.m[0][2] = m[2][0];

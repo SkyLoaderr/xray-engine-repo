@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "clsid.h"
 
 ENGINE_API void CLSID2TEXT(CLASS_ID id, char *text) {

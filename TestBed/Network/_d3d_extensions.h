@@ -124,31 +124,4 @@ public:
 }F3dbuffer;
 #endif
 
-#ifndef NO_XR_3DLISTENER
-typedef struct _3dlistener{
-public:
-    DWORD			dwSize;
-    Fvector			vPosition;
-    Fvector			vVelocity;
-    Fvector			vOrientFront;
-    Fvector			vOrientTop;
-    float			flDistanceFactor;
-    float			flRolloffFactor;
-    float			flDopplerFactor;
-	
-	IC	DS3DLISTENER *d3d(void) { return (DS3DLISTENER *)this; };
-	IC	void	Init( )
-	{
-		dwSize				= sizeof(DS3DLISTENER);
-		vPosition.set		( 0.0f, 0.0f, 0.0f );
-		vVelocity.set		( 0.0f, 0.0f, 0.0f );
-		vOrientFront.set	( 0.0f, 0.0f, 1.0f );
-		vOrientTop.set		( 0.0f, 1.0f, 0.0f );
-		flDistanceFactor	= 1.0f;
-		flRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
-		flDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
-	}
-}F3dlistener;
-#endif
-
 #endif

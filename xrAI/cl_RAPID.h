@@ -73,9 +73,10 @@ namespace RAPID {
 		int id2;
 	};
 	
-	struct bbox_collide
+	struct bboxpick_info
 	{
 		int id;
+		Fvector p[3];
 	};
 	
 	struct raypick_info
@@ -106,8 +107,7 @@ namespace RAPID {
 	//------------------------------------------------------------------------------
 	// X-Ray Collision class
 	//------------------------------------------------------------------------------
-	class ENGINE_API XRCollide
-	{
+	class ENGINE_API XRCollide{
 		bool		Intersect_RayTri	(const ray&,Fvector**,raypick_info& rp_inf);
 		bool		Intersect_RayTri	(const ray&,Fvector*,raypick_info& rp_inf);
 		bool		Intersect_BBoxTri	(const bbox&,Fvector**);
@@ -120,24 +120,24 @@ namespace RAPID {
 		Fvector		rmodel_C,rmodel_D;
 		float		rmodel_range,rmodel_range_sq;
 		Fmatrix*	rmodel_L2W;
-		
+
 		const Model *model1;
 		const Model *model2;
-		
-		int			tri_contact			(Fvector* P, Fvector** Q);
-		int         obb_disjoint		(const Fmatrix33& B, const Fvector& T, const Fvector& a, const Fvector& b);
+
+		int			tri_contact		(Fvector* P, Fvector** Q);
+		int         obb_disjoint	(const Fmatrix33& B, const Fvector& T, const Fvector& a, const Fvector& b);
 		// raypick
 		void        add_raypick			(const raypick_info& rp_inf);
 		void        raypick_fast		(const box *B, const Fvector& C, const Fvector& D);
 		void        raypick_fast_nearest(const box *B, const Fvector& C, const Fvector& D);
 		// collide model
-		void		add_collision		(int id1, int id2);
-		void		tri_contact			(const box *b1, const box *b2);
-		void        collide_recursive	(const box *b1, const box *b2, const Fmatrix33& R, const Fvector& T, float s);
+		void		add_collision   (int id1, int id2);
+		void		tri_contact     (const box *b1, const box *b2);
+		void        collide_recursive(const box *b1, const box *b2, const Fmatrix33& R, const Fvector& T, float s);
 		// collide bbox
-		void		add_bboxcollide		(int id);
-		void        bbox_contact		(const box *b, const bbox *bb);
-		void		bbox_recursive		(const box *b, const bbox *bb, const Fmatrix33& R, const Fvector& T, float s);
+		void		add_bboxcollide	(const bboxpick_info& bb_inf);
+		void        bbox_contact	(const box *b, const bbox *bb);
+		void		bbox_recursive	(const box *b, const bbox *bb, const Fmatrix33& R, const Fvector& T, float s);
 	protected:
 		// flags
 		DWORD		ray_flags;
@@ -148,10 +148,10 @@ namespace RAPID {
 		// last collide info
 		CList<collision_pair>   ModelContact;
 		CList<raypick_info>     RayContact;
-		CList<bbox_collide>		BBoxContact;
+		CList<bboxpick_info>	BBoxContact;
 	public:
-		XRCollide	();
-		~XRCollide	();
+		XRCollide();
+		~XRCollide();
 		
 		IC const raypick_info*	GetMinRayPickInfo(){return (min_raypick_id>=0)?&(RayContact[min_raypick_id]):NULL;}
 		IC bool GetMinRayPickDistance(float& d){

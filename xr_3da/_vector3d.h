@@ -123,10 +123,20 @@ public:
 		y = p.y + d.y*m;
 		z = p.z + d.z*m;
 	}
+	IC	void	mad(const Self &d, T m) {
+		x += d.x*m;
+		y += d.y*m;
+		z += d.z*m;
+	}
 	IC	void	mad(const Self &p, const Self &d, T m) {
 		x = p.x + d.x*m;
 		y = p.y + d.y*m;
 		z = p.z + d.z*m;
+	}
+	IC	void	mad(const Self& d, const Self& s) {
+		x += d.x*s.x;
+		y += d.y*s.y;
+		z += d.z*s.z;
 	}
 	IC	void	mad(const Self &p, const Self &d, const Self &s) {
 		x = p.x + d.x*s.x;
@@ -269,15 +279,22 @@ public:
     	normalize_safe();
     };
 	IC	void direct(float heading, float pitch){
-		float _sh,_ch;		_sincos(heading,_sh,_ch);
-		float _sp,_cp;		_sincos(pitch,_sp,_cp);
+		float h=-heading;
+		float p=-pitch;
+		float _sh,_ch;		_sincos(h,_sh,_ch);
+		float _sp,_cp;		_sincos(p,_sp,_cp);
 		
 		x = _cp*_sh;
 		y = -_sp;
 		z = _cp*_ch;
     }
+	IC	void reflect(const Self& dir, const Self& norm){
+		direct(dir,norm,-2*dir.dotproduct(norm));
+	}
+	IC	void slide(const Self& dir, const Self& norm){// non normalized
+		direct(dir,norm,-dir.dotproduct(norm));
+	}
 };
-
 typedef _vector<float>	Fvector;
 typedef _vector<double> Dvector;
 

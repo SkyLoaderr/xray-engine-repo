@@ -3,7 +3,32 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "Image.h"
+#include "tga.h"
+
+void CImage::Create(DWORD w, DWORD h)
+{
+	_FREE		(pData);
+	dwWidth		= w;
+	dwHeight	= h;
+	pData		= LPDWORD(malloc(w*h*sizeof(DWORD)));
+}
+
+void CImage::SaveTGA(LPCSTR name, BOOL b24)
+{
+	// Save
+	TGAdesc		tga;
+	tga.data	= pData;
+	tga.format	= b24?IMG_24B:IMG_32B;
+	tga.height	= dwHeight;
+	tga.width	= dwWidth;
+	tga.scanlenght=dwWidth*4;
+
+	CFS_File	fs	(name);
+	tga.maketga	(fs);
+}
 
 void CImage::Vflip()
 {
@@ -32,10 +57,13 @@ void CImage::Hflip()
 	}
 }
 
-IC BYTE ClampColor(float a) {
-	clamp(a,0.f,255.f);
-    return BYTE(a);
+IC BYTE ClampColor(float a) 
+{
+	int c = iFloor(a);
+	if (c<0) c=0; else if (c>255) c=255;
+    return BYTE(c);
 }
+
 void CImage::Contrast(float _fc)
 {
 	R_ASSERT(pData);
@@ -143,7 +171,7 @@ struct TGAHeader
 };
 #pragma pack(pop)
 
-void CImage::LoadTGA(char *name)
+void CImage::LoadTGA(LPCSTR name)
 {
 	CFileStream	TGA(name);
 	TGAHeader	hdr;

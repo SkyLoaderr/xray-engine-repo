@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "vector.h"
 
 ENGINE_API float pvUVAdjustment	[0x2000];
