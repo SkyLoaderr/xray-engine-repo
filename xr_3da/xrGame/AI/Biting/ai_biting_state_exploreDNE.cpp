@@ -49,10 +49,14 @@ void CBitingExploreDNE::Run()
 #pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
 	if (m_bInvisibility) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);	
-		if (pBS->GetPower() > pBS->m_fPowerThreshold) {
-			if (pBS->CMonsterInvisibility::Switch(false)) {
-				pBS->ChangePower(pBS->m_ftrPowerDown);
-				pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
+
+		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
+			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->ChangePower(pBS->m_ftrPowerDown);
+					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
+				}
 			}
 		}
 	}

@@ -105,8 +105,7 @@ void CBitingAttack::Run()
 		}
 	}
 	
-	bool bJumpState	= pMonster->Movement.JumpState();
-	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;
+	//pMonster->MotionMan.CheckJump(pMonster->Position(),m_tEnemy.obj->Position());
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;

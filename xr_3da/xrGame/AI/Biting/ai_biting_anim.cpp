@@ -88,6 +88,14 @@ void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 	Seq_Init				();
 	AA_Clear				();
 
+	// clear jumps
+	m_tJumps.clear			();
+	cur_jump_it				= m_tJumps.end();			
+	bJumpState				= false;				
+	bPhysicalJump			= false;			
+	jump_to_pos.set			(0.f,0.f,0.f);			
+	jump_started			= 0;			
+	jump_next_time			= 0;			
 
 	time_start_stand		= 0;
 	prev_action				= ACT_STAND_IDLE;
@@ -282,7 +290,8 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 // выполняется на каждом шед.апдейте, после выполнения состояния
 void CMotionManager::ProcessAction()
 {
-	if (!seq_playing) {
+	if (!seq_playing && !IsJumping()) {
+	
 		// преобразовать Action в Motion и получить новую анимацию
 		SMotionItem MI = m_tMotions[m_tAction];
 		cur_anim = MI.anim;
@@ -315,7 +324,8 @@ void CMotionManager::ProcessAction()
 		}
 	} 
 
-	if (seq_playing) cur_anim = *seq_it;
+	if (IsJumping()) cur_anim = cur_jump_it->anim;
+	else if (seq_playing) cur_anim = *seq_it;
 
 	ApplyParams();
 
@@ -521,3 +531,83 @@ EPState	CMotionManager::GetState (EMotionAnim a)
 
 	return item_it->second.pos_state;
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// JUMPS
+
+void CMotionManager::AddJump(EMotionAnim ma, TTime time, TTime time_start, float min_d, float max_d, float angle)
+{
+	SJump jump;
+
+	jump.anim				= ma;
+	jump.jump_time			= time;
+	jump.time_start_jump	= time_start;
+	jump.min_dist			= min_d;
+	jump.max_dist			= max_d;
+	jump.max_angle			= angle;
+	
+	m_tJumps.push_back		(jump);
+}
+
+// Возвращает 'true' если прыжок установлен
+void CMotionManager::CheckJump(Fvector from_pos, Fvector to_pos)
+{
+	if (m_tJumps.empty() || IsJumping()) return;
+	if (seq_playing) return;
+	
+	TTime cur_time = Level().timeServer();
+	if (jump_next_time > cur_time) return; // ещё нельзя прыгать
+
+	float dist = from_pos.distance_to(to_pos);
+	
+	Fvector dir;
+	float  dest_yaw, pitch;
+	dir.sub(to_pos, from_pos);
+	dir.getHP(dest_yaw, pitch);
+	dest_yaw *= -1;
+	dest_yaw = angle_normalize(dest_yaw);
+
+	// выбрать соответствующую анимацию и параметры прыжка
+	JUMP_VECTOR_IT it;
+	for (it=m_tJumps.begin(); it!=m_tJumps.end(); it++) {
+		
+		// проверка на max_angle и на dist
+		if (getAI().bfTooSmallAngle(pMonster->r_torso_current.yaw, dest_yaw, it->max_angle) && (it->min_dist <=dist && dist <= it->max_dist)) {
+			
+			pMonster->r_torso_target.yaw = dest_yaw;
+
+			bJumpState		= true;
+			bPhysicalJump	= false;
+			jump_to_pos		= to_pos;
+			jump_started	= cur_time;
+			cur_jump_it		= it;
+			jump_next_time	= cur_time + cur_jump_it->jump_time + JUMP_MIN_TIME_DELAY;
+
+			cur_anim		= cur_jump_it->anim;
+			break;
+		}
+	}
+	return;
+}
+
+// функция для UpdateCL
+void CMotionManager::ProcessJump()
+{
+	if (!IsJumping()) return;
+	
+	TTime cur_time = Level().timeServer();
+
+	// проверить, следует ли вызывать физический прыжок
+	if (!bPhysicalJump) {	
+		if (cur_jump_it->time_start_jump + jump_started < cur_time) {
+			pMonster->Movement.Jump(jump_to_pos, cur_jump_it->jump_time);
+			bPhysicalJump = true;
+		}
+	}
+	// проверить на завершение прыжка
+	if ((cur_jump_it->jump_time + jump_started < cur_time) && !pMonster->Movement.JumpState()) {
+		bPhysicalJump = false;
+		bJumpState	  = false;
+	}
+}
+

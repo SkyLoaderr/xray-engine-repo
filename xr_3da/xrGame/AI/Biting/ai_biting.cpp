@@ -170,6 +170,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_tNextGP						= m_tCurGP = getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	// loading animation stuff
+#pragma	todo("Jim to Jim: Bring all motion loading stuff off from Net_Spawn")
 	MotionMan.Init					(this, PKinematics(Visual()));
 
 	m_pPhysics_support->in_NetSpawn();
@@ -258,7 +259,9 @@ void CAI_Biting::UpdateCL()
 	inherited::UpdateCL();
 	
 	// Проверка состояния анимации (атака)
-	CheckAttackHit();
+	if (g_Alive()) CheckAttackHit();
+
+	MotionMan.ProcessJump();
 
 	m_pPhysics_support->in_UpdateCL();
 
@@ -277,7 +280,7 @@ void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_o
 	if(m_pPhysics_support->isAlive())inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse);
 
-	SET_SOUND_ONCE(SND_TYPE_TAKE_DAMAGE);
+	if (g_Alive()) SET_SOUND_ONCE(SND_TYPE_TAKE_DAMAGE);
 }
 
 CBoneInstance *CAI_Biting::GetBone(LPCTSTR bone_name)

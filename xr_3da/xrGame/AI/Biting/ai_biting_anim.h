@@ -145,7 +145,7 @@ struct SMotionItem {
 
 #define CRITICAL_STAND_TIME 1400
 #define TIME_STAND_RECHECK  2000
-
+#define JUMP_MIN_TIME_DELAY 3000
 
 // Определение времени аттаки по анимации
 typedef struct {
@@ -165,7 +165,17 @@ typedef struct {
 	float		dir_pitch;			//  - || -
 } SAttackAnimation;
 
+// Определение параметров прыжка
+struct SJump {
+	EMotionAnim anim;				// анимация прыжка
 
+	TTime		jump_time;			// время прыжка
+	TTime		time_start_jump;	// время после активации прыжка, через которое выполнять физ. прыжок
+
+	float		min_dist;			// мин. дистанция, возможная для прыжка
+	float		max_dist;			// макс. дистанция возможная для прыжка
+	float		max_angle;			// макс. угол возможный для прыжка между монстром и целью
+};
 
 // Motion and animation management
 class CMotionManager {
@@ -175,6 +185,7 @@ class CMotionManager {
 	DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
 	DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
 	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
+	DEFINE_VECTOR	(SJump,				JUMP_VECTOR,			JUMP_VECTOR_IT);
 
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
@@ -206,6 +217,17 @@ class CMotionManager {
 
 	u32						spec_params;			// дополнительные параметры
 
+	// прыжки
+	JUMP_VECTOR				m_tJumps;				// массив параметров прыжков
+	JUMP_VECTOR_IT			cur_jump_it;			// итератор на текущий прыжок
+	bool					bJumpState;				// true - в состоянии прыжка
+	bool					bPhysicalJump;			// true - если вызван физ. прыжок
+	Fvector					jump_to_pos;			// целевая позиция
+	TTime					jump_started;			// время начала прыжка
+	TTime					jump_next_time;			// время разрешенного следующего прыжка
+	
+	// ----------------------------------------------
+
 public:
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
@@ -232,6 +254,19 @@ public:
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 	
+	// -------------------------------------
+	//	Прыжки
+	// -------------------------------------
+
+	// Добавить в вектор параметры прыжка
+	void		AddJump					(EMotionAnim ma, TTime time, TTime time_start, float min_d, float max_d, float angle);
+	// Проверка на возможность прыжка. Возвращает 'true' если прыжок активирован
+	void		CheckJump				(Fvector from_pos, Fvector to_pos);
+	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
+	void		ProcessJump				();
+	// Возвращает 'true', если монстр в состоянии прыжка 
+IC	bool		IsJumping				() {return bJumpState;}	
+
 	// -------------------------------------
 
 	void		CheckTransition			(EMotionAnim from, EMotionAnim to);

@@ -109,7 +109,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
-	MotionMan.AddAnim(eAnimJump,			"stand_attack_",		 0, 0,						m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimJump,			"stand_attack_",		 0, 0,						m_fsRunAngular*3,			PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -144,14 +144,16 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500, 1600,	right_side, 2.0f, m_fHitPower, 0.f, 0.f);
+	
+	MotionMan.AddJump(eAnimJump, 1000, 10, 2.0f, 30.f, PI_DIV_2);
+	
 	return TRUE;
 }
 
 void CAI_Chimera::Jump(Fvector to_pos)
 {
-	TTime anim_time = 1000;
-
-	//Movement.Jump(to_pos, anim_type);
+	// Select animation and time parameters for jump
+	MotionMan.CheckJump(Position(),to_pos);
 }
 
 bool CAI_Chimera::CanJump() 
