@@ -218,10 +218,10 @@ void CEditableObject::SetVersionToCurrent(BOOL bCreate, BOOL bModif)
 	string512			tmp;
 	if (bCreate){
 		m_CreateName	= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
-		ctime			(&m_CreateTime);
+		m_CreateTime	= time(NULL);
 	}
 	if (bModif){
 		m_ModifName		= strconcat(tmp,"\\\\",Core.CompName,"\\",Core.UserName);
-		ctime			(&m_ModifTime);
+		m_ModifTime		= time(NULL);
 	}
 }

@@ -31,6 +31,10 @@ void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V=0;
 	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
+	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Version\\Owner Name"),	*m_CreateName);
+	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Version\\Modif Name"),	*m_ModifName);
+	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));
+	PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))));
     PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
     PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
     V=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD); V->OnChangeEvent=OnChangeShader;
