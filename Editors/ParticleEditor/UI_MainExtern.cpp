@@ -43,6 +43,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_APPLY_CHANGES:
     	Tools.ApplyChanges();
     	break;
+    case COMMAND_PLAY_CURRENT:
+    	Tools.PlayCurrent();
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -55,6 +58,9 @@ char* TUI::GetCaption()
 	return "particles";
 }
 
+#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
+#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
+
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
@@ -65,6 +71,9 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
+    if (Shift.Empty()){
+        if (Key==VK_F5)    	COMMAND0(COMMAND_PLAY_CURRENT)
+    }
     return bExec;
 }
 //---------------------------------------------------------------------------

@@ -8,6 +8,8 @@ enum {
 
     COMMAND_APPLY_CHANGES,
     COMMAND_SELECT_PREVIEW_OBJ,
+
+    COMMAND_PLAY_CURRENT,
 };
 //------------------------------------------------------------------------------
 

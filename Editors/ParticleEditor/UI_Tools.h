@@ -72,6 +72,8 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
     PS::CPGDef*			m_LibPGD;
     PS::CParticleGroup*	m_EditPG;
 
+    Fmatrix 			m_Transform;
+
     void __fastcall		OnApplyClick		();
     void __fastcall		OnCloseClick		(bool& can_close);
 	bool __fastcall 	OnCodeInsight		(const AnsiString& src_line, AnsiString& hint);
@@ -86,6 +88,9 @@ class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 
     void				RealUpdateProperties();
 	void 				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
+
+    void				RealApplyParent		();
+    void				ApplyParent			(bool bForce=false){m_Flags.set(flApplyParent,TRUE); if (bForce) RealApplyParent();}
 public:
 	EEditMode			m_EditMode;
     
@@ -99,6 +104,7 @@ public:
 	// flags
     enum{
     	flRefreshProps 		= (1<<0),
+        flApplyParent		= (1<<1),
     };
     Flags32				m_Flags;
 public:

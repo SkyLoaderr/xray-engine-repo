@@ -23,6 +23,7 @@
 CParticleTools Tools;
 //------------------------------------------------------------------------------
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
+static Fvector zero_vec={0.f,0.f,0.f};
 
 CParticleTools::CParticleTools()
 {
@@ -34,6 +35,7 @@ CParticleTools::CParticleTools()
     m_EditText			= 0;
     m_bModified			= false;
     m_bReady			= false;
+    m_Transform.identity();
 }
 //---------------------------------------------------------------------------
 
@@ -145,6 +147,10 @@ void CParticleTools::Render()
 	if (!m_bReady) return;
 
 	if (m_EditObject)	m_EditObject->RenderSingle(Fidentity);
+	// draw parent
+	RCache.set_xform_world(m_Transform);
+    Device.SetShader(Device.m_WireShader);
+    DU.DrawCross	(zero_vec,0.20f,0.25f,0.20f,0.20f,0.25f,0.20f,0xFFFFEBAA,false);
 	// Draw the particles.
 	RCache.set_xform_world		(Fidentity);
     switch(m_EditMode){
@@ -167,23 +173,31 @@ void CParticleTools::OnFrame()
 
 	if (m_Flags.is(flRefreshProps))
     	RealUpdateProperties();
+
+	if (m_Flags.is(flApplyParent))
+    	RealApplyParent();
+
+    switch(m_EditMode){
+    case emSystem: 	UI.SetStatus(""); break;
+    case emEffect:	if (m_EditPE->IsPlaying())UI.SetStatus(" PE Playing...",false); else UI.SetStatus(" Stopped.",false); break;
+    case emGroup:	if (m_EditPG->IsPlaying())UI.SetStatus(" PG Playing...",false); else UI.SetStatus(" Stopped.",false); break;
+    }
 }
 
-void CParticleTools::ZoomObject(BOOL bObjectOnly)
+void CParticleTools::ZoomObject(BOOL bSelOnly)
 {
 	VERIFY(m_bReady);
-    if (bObjectOnly&&m_EditObject){
+    if (!bSelOnly&&m_EditObject){
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
 	}else{
-    	if (m_TestObject){
-			Fbox BB;
-	        m_TestObject->GetBox(BB);
-    	    Device.m_Camera.ZoomExtents(BB);
-        }else{
-			Fbox BB;
-    	    BB.set(-5,-5,-5,5,5,5);
-        	Device.m_Camera.ZoomExtents(BB);
+    	Fbox box; box.invalidate();
+        switch(m_EditMode){
+        case emSystem: 	m_TestObject->GetBox(box);	break;
+        case emEffect:	box.set(m_EditPE->vis.box);	break;
+        case emGroup:	box.set(m_EditPG->vis.box);	break;
+        default: ELog.Msg(mtError,"Nothing selected.");
         }
+        if (box.is_valid()){ box.grow(1.f); Device.m_Camera.ZoomExtents(box); }
     }
 }
 
@@ -234,7 +248,7 @@ void CParticleTools::SelectPreviewObject(int p){
     if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_EditObject?m_EditObject->GetName():0)) return;
     Lib.RemoveEditObject(m_EditObject);
     m_EditObject = fn?Lib.CreateEditObject(fn):0;
-	ZoomObject(TRUE);
+//	ZoomObject(TRUE);
     UI.RedrawScene();
 }
 
@@ -426,9 +440,10 @@ void CParticleTools::PlayCurrent()
     StopCurrent		(false);
     switch(m_EditMode){
     case emSystem: 	if (m_TestObject) m_TestObject->Play();	break;
-    case emEffect:	m_EditPE->Play();	break;
-    case emGroup:	m_EditPG->Play();	break;
+    case emEffect:	m_EditPE->Play(); break;
+    case emGroup:	m_EditPG->Play(); break;
     }
+    ApplyParent		();
 }
 
 void CParticleTools::StopCurrent(bool bFinishPlaying)
@@ -469,7 +484,7 @@ void CParticleTools::ChangeAction(EAction action)
 
 bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 {
-	if (!m_TestObject) return false;
+//	if (!m_TestObject) return false;
 	switch(m_Action){
     case eaSelect: return false;
     case eaAdd:{
@@ -484,24 +499,48 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
         }
     }break;
     case eaMove:{
-        if (fraTopBar->ebAxisY->Down){
-            m_MovingXVector.set(0,0,0);
-            m_MovingYVector.set(0,1,0);
+        if (Shift.Contains(ssCtrl)){
+        	if (m_EditObject){
+                float dist = flt_max;
+                SRayPickInfo pinf;
+                if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf))
+                    m_Transform.c.set(pinf.pt);
+            }else{
+                // pick grid
+                Fvector normal={0.f, 1.f, 0.f};
+                float clcheck = UI.m_CurrentRNorm.dotproduct( normal );
+                if( fis_zero( clcheck ) ) return false;
+                float alpha = - UI.m_CurrentRStart.dotproduct(normal) / clcheck;
+                if( alpha <= 0 ) return false;
+
+                m_Transform.c.mad(UI.m_CurrentRStart,UI.m_CurrentRNorm,alpha);
+
+                if (fraTopBar->ebGSnap->Down){
+                    m_Transform.c.x = snapto( m_Transform.c.x, UI.movesnap() );
+                    m_Transform.c.z = snapto( m_Transform.c.z, UI.movesnap() );
+                    m_Transform.c.y = 0.f;
+                }
+            }
         }else{
-            m_MovingXVector.set( Device.m_Camera.GetRight() );
-            m_MovingXVector.y = 0;
-            m_MovingYVector.set( Device.m_Camera.GetDirection() );
-            m_MovingYVector.y = 0;
-            m_MovingXVector.normalize_safe();
-            m_MovingYVector.normalize_safe();
+            if (fraTopBar->ebAxisY->Down){
+                m_MovingXVector.set(0,0,0);
+                m_MovingYVector.set(0,1,0);
+            }else{
+                m_MovingXVector.set( Device.m_Camera.GetRight() );
+                m_MovingXVector.y = 0;
+                m_MovingYVector.set( Device.m_Camera.GetDirection() );
+                m_MovingYVector.y = 0;
+                m_MovingXVector.normalize_safe();
+                m_MovingYVector.normalize_safe();
+            }
+            m_MovingReminder.set(0,0,0);
         }
-        m_MovingReminder.set(0,0,0);
     }break;
     case eaRotate:{
         m_RotateCenter.set(0,0,0);
         m_RotateVector.set(0,0,0);
-        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(0,1,0);
-        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(1,0,0);
+        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
+        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
         else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
         m_fRotateSnapAngle = 0;
     }break;
@@ -509,7 +548,8 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 		m_ScaleCenter.set(0,0,0);
     }break;
     }
-    UpdateEmitter();
+    ApplyParent		();
+    UpdateEmitter	();
     m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 	return m_bHiddenMode;
 }
@@ -521,7 +561,6 @@ bool __fastcall CParticleTools::MouseEnd(TShiftState Shift)
 
 void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 {
-	if (!m_TestObject) return;
 	switch(m_Action){
     case eaSelect: return;
     case eaAdd: break;
@@ -539,21 +578,16 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-		m_EditPS.m_DefaultEmitter.m_Position.add(amount);
+
+		m_Transform.c.add(amount);
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
-        switch (m_EditPS.m_DefaultEmitter.m_EmitterType){
-        case PS::SEmitterDef::emPoint:
-        case PS::SEmitterDef::emBox:
-        case PS::SEmitterDef::emSphere: 	break;
-        case PS::SEmitterDef::emCone:
-        	m_EditPS.m_DefaultEmitter.m_ConeHPB.mad(m_TestObject->m_Emitter.m_ConeHPB,m_RotateVector,amount);
-            m_EditPS.m_DefaultEmitter.UpdateConeOrientation();
-        break;
-        }
-		//m_RotateVector, amount
+
+        Fmatrix mR;
+        mR.rotation		(m_RotateVector,amount);
+        m_Transform.mulB(mR);
     }break;
     case eaScale:{
         float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
@@ -567,24 +601,24 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
             if (!fraTopBar->ebAxisZ->Down && !fraTopBar->ebAxisZX->Down) amount.z = 0.f;
             if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
         }
-
-        switch (m_EditPS.m_DefaultEmitter.m_EmitterType){
-        case PS::SEmitterDef::emCone:
-        case PS::SEmitterDef::emPoint:		break;
-        case PS::SEmitterDef::emBox:
-	        m_EditPS.m_DefaultEmitter.m_BoxSize.add(amount);
-        break;
-        case PS::SEmitterDef::emSphere:
-	        m_EditPS.m_DefaultEmitter.m_SphereRadius += dy;
-        break;
-        }
     }break;
     }
-    UpdateEmitter();
+    ApplyParent		();
+
+    UpdateEmitter	();
     m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }       
-
 //------------------------------------------------------------------------------
+
+void CParticleTools::RealApplyParent()
+{
+    switch(m_EditMode){
+    case emSystem: 	break;
+    case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec); break;
+    case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec); break;
+    }
+	m_Flags.set		(flApplyParent,FALSE);
+}
 
 void __fastcall	CParticleTools::OnApplyClick()
 {
