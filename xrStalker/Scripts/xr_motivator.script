@@ -233,6 +233,14 @@ xr_sleeper.add_to_binder(self.object, char_ini)
             path_hideout = nil
         }
 xr_guard.add_to_binder(self.object, char_ini)
+    xr_motivator.storage[self.object:id()].bodyguard = {
+            enabled = false,
+            action = nil,
+            path_main = nil,
+            path_side = nil,
+			path_guard = nil
+        }
+xr_bodyguard.add_to_binder(self.object, char_ini)
     -- схема командира
     xr_motivator.storage[self.object:id()].commander = {
             enabled = false,
@@ -317,6 +325,7 @@ function checkStorage(npc)
            k == "follower" or
            k == "patrol" or
            k == "guard" or
+           k == "bodyguard" or
            k == "commander"
         then
             if v.enabled == true then
@@ -331,6 +340,7 @@ function checkStorage(npc)
                k == "follower" or
                k == "patrol" or
                k == "guard" or
+           	   k == "bodyguard" or
                k == "commander"
             then
                 if v.enabled == true then
