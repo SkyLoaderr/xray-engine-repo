@@ -5,7 +5,8 @@
 
 cs_money::cs_money() {
 	string256 fn;
-	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
+	if (FS.exist(fn,"$game_data$","game_cs.ltx")) 
+	{
 		CInifile* ini = CInifile::Create(fn);
 		startup = ini->r_s32("cs_money","startup");
 		win = ini->r_s32("cs_money","win");
@@ -55,7 +56,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 
 void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Это надо переделать, чтоб читать ltx только один раз.
 	string256 fn;
-	if (FS.exist(fn,Path.GameData,"game_cs.ltx")) {
+	if (FS.exist(fn,"$game_data$","game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
 		LPCSTR prim = ini->r_string("cs_start_Arms","primary");
 		u32 prim_ammo = ini->r_s32("cs_start_Arms","primary_ammo");

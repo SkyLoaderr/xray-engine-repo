@@ -231,7 +231,7 @@ void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
 void game_sv_GameState::Create					(LPCSTR options)
 {
 	string256	fn_game;
-	if (FS.exist(fn_game, Path.Current, "level.game")) 
+	if (FS.exist(fn_game, "$level$", "level.game")) 
 	{
 		IReader *F = FS.r_open	(fn_game);
 		IReader *O = 0;
