@@ -1,0 +1,60 @@
+
+local state_init = 1
+local state_hunt = 2
+local state_end = 3
+
+function main()
+	local actor = get_actor()
+	local zone = get_level_object("dram_moment_zone")
+	local assassin1 = get_level_object("assassin1")
+	local assassin2 = get_level_object("assassin2")
+	local assassin3 = get_level_object("assassin3")
+	local avict = get_level_object("avict")
+	
+	xr_walker.set_walker(assassin1, true, "assassin1_walk", "assassin1_look", nil)
+	xr_walker.set_walker(assassin2, true, "assassin2_walk", "assassin2_look", nil)
+	xr_walker.set_walker(assassin3, true, "assassin3_walk", "assassin3_look", nil)
+	xr_walker.set_walker(avict, true, "avict_walk", "avict_look", nil)
+	
+	local state = state_init
+	
+	while state ~= state_end do
+		if state == state_init and xr_zones.is_in_zone(actor, zone:id()) then
+			xr_motivator.storage[assassin1:id()].walker.enabled = false
+			xr_motivator.storage[assassin2:id()].walker.enabled = false
+			xr_motivator.storage[assassin3:id()].walker.enabled = false
+			xr_motivator.storage[avict:id()].walker.enabled = false
+			xr_assassin.set_assassin(assassin1, true, "avict")
+			xr_assassin.set_assassin(assassin2, true, "avict")
+			xr_assassin.set_assassin(assassin3, true, "avict")
+			xr_walker.set_walker(avict, true, "runaway_walk", "runaway_look", nil)
+			printf("actor in zone")
+			state = state_hunt
+		end
+
+		if state == state_hunt then
+			if not avict:alive() then
+				xr_motivator.storage[assassin1:id()].assassin.enabled = false
+				xr_motivator.storage[assassin2:id()].assassin.enabled = false
+				xr_motivator.storage[assassin3:id()].assassin.enabled = false
+				xr_motivator.storage[avict:id()].walker.enabled = false
+				xr_robbers.set_robber(assassin1, true, "assr", "assassin1_rob", nil, nil, true, nil)
+				xr_robbers.set_robber(assassin2, true, "assr", "assassin2_rob", nil, nil, true, nil)
+				xr_robbers.set_robber(assassin3, true, "assr", "assassin3_rob", nil, nil, true, nil)
+				printf("_bp: robbers set")
+				state = state_end
+			end
+			if not assassin1:alive() and not assassin2:alive() and not assassin3:alive() then
+				xr_motivator.storage[assassin1:id()].assassin.enabled = false
+				xr_motivator.storage[assassin2:id()].assassin.enabled = false
+				xr_motivator.storage[assassin3:id()].assassin.enabled = false
+				xr_motivator.storage[avict:id()].walker.enabled = false
+				state = state_end
+			end
+		end
+		
+		wait()
+	end
+	
+end
+
