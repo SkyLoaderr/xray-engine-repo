@@ -298,8 +298,6 @@ void CLevel::ProcessGameEvents		()
 
 void CLevel::OnFrame	()
 {
-	SoundEvent_Dispatch			( );
-
 	// Client receive
 	if (net_isDisconnected())	
 	{

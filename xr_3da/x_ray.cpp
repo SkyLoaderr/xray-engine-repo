@@ -514,6 +514,7 @@ void CApplication::OnFrame	( )
 	*/
 	Engine.Event.OnFrame	();
 	g_SpatialSpace->update	();
+	if (g_pGameLevel)		g_pGameLevel->SoundEvent_Dispatch	( );
 }
 
 void CApplication::Level_Scan()
