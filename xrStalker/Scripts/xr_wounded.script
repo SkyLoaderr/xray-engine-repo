@@ -265,8 +265,8 @@ function action_sit:execute ()
     action_base.execute (self)
     if self.object:animation_count () == 1 then 
        self.a.sit = true
-       local act = level.actor ()
-       if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
+       local act = db.actor
+       if act:alive () == true and self.object:relation (act) ~= game_object.enemy then
 			this.show_yourself(self.object)
        end   
        if self.a.on_sit_info ~= nil then
