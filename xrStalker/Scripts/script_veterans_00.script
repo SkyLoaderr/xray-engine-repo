@@ -153,14 +153,14 @@ function main()
 
 			action(
 				stalker_veteran01,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+			  	move	(move.standing, move.stand,move.line,patrol("way0002")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 50000)
 			)
 			action(
 				stalker_veteran02,
-			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+			  	move	(move.standing, move.stand,move.line,patrol("way0002")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 50000)
