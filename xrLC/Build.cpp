@@ -152,7 +152,7 @@ CBuild::CBuild(b_transfer * L)
 		BT.dwWidth	= BT.THM.width;
 		BT.dwHeight	= BT.THM.height;
 		BT.bHasAlpha= BT.THM.HasAlphaChannel();
-		if (BT.bHasAlpha || (BT.THM.flag.bImplicitLighted))	
+		if (BT.bHasAlpha || (BT.THM.flag&STextureParams::flImplicitLighted))	
 		{
 			Msg			("- loading: %s",N);
 			DWORD w=0,	h=0;
