@@ -241,22 +241,14 @@ void CLevel::IR_OnKeyboardPress(int key)
 			monster->Show();
 			break;
 		case DIK_0:
-			pos.mad(Level().CurrentEntity()->XFORM().i, 2.f);
-			monster->FireFlame(pos, Level().CurrentEntity());
+			monster->FireFlame(Level().CurrentEntity());
 			break;
-		case DIK_9:
-			pos.mad(Level().CurrentEntity()->XFORM().i, 3.f);
-			monster->FireFlame(pos, Level().CurrentEntity());
+		case DIK_5:
+			monster->PhysicalImpulse(Level().CurrentEntity()->Position());
 			break;
-		case DIK_8:
-			pos.mad(Level().CurrentEntity()->XFORM().i, 4.f);
-			monster->FireFlame(pos, Level().CurrentEntity());
+		case DIK_6:
+			monster->StrangeSounds(pos);
 			break;
-		case DIK_7:
-			pos.mad(Level().CurrentEntity()->XFORM().i, 5.f);
-			monster->FireFlame(pos, Level().CurrentEntity());
-			break;
-
 
 		}
 	}

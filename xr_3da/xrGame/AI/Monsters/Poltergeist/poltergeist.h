@@ -22,6 +22,7 @@ public:
 	virtual void	reload				(LPCSTR section);
 	virtual void	StateSelector		();
 
+	virtual void	net_Destroy			();
 	virtual void	UpdateCL			();
 	virtual	void	shedule_Update		(u32 dt);
 
@@ -38,23 +39,31 @@ public:
 		
 	// FireBall
 
-			
-
-			void	LoadFlame			(LPCSTR section);
-			void	FireFlame			(const Fvector &position, CObject *target_object);
-			void	UpdateFlame			();
+			void	LoadFlame				(LPCSTR section);
+			void	FireFlame				(CObject *target_object);
+			bool	GetValidFlamePosition	(CObject *target_object, Fvector &res_pos);
+			void	UpdateFlame				();
+			void	RemoveFlames			();
 	
+			// ltx params
 			ref_sound			m_flame_sound;
 			LPCSTR				m_flame_particles;
 			u32					m_flame_fire_delay;
 			float				m_flame_length;
 			float				m_flame_hit_value;
 
-			Fvector				m_flame_position;
-			Fvector				m_flame_target_dir;
-			CObject				*m_flame_target_object;
-			u32					m_time_flame_started;
+
+			struct SFlameElement {
+				CObject		*target_object;
+				Fvector		position;
+				Fvector		target_dir;
+				u32			time_started;
+				ref_sound	sound;
+			};
 			
+			DEFINE_VECTOR(SFlameElement*, FLAME_ELEMS_VEC, FLAME_ELEMS_IT);
+			FLAME_ELEMS_VEC	m_flames;
+		
 
 	// Poltergeist ability
 			void	PhysicalImpulse		(const Fvector &position);

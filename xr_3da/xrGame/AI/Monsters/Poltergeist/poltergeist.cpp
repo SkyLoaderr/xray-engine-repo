@@ -10,8 +10,6 @@ CPoltergeist::CPoltergeist()
 	
 	m_particles_object	= 0;
 	m_hidden			= false;
-
-	m_time_flame_started = 0;
 }
 
 CPoltergeist::~CPoltergeist()
@@ -170,5 +168,13 @@ void CPoltergeist::shedule_Update(u32 dt)
 	
 	UpdateFlame();
 }
+
+void CPoltergeist::net_Destroy()
+{
+	inherited::net_Destroy();
+	RemoveFlames();
+}
+
+
 
 

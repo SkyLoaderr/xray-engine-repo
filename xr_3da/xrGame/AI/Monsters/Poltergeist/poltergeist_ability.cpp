@@ -2,13 +2,14 @@
 #include "poltergeist.h"
 #include "../../../PhysicsShell.h"
 
-#define IMPULSE					2.f
+#define IMPULSE					10.f
+#define IMPULSE_RADIUS			5.f
 #define TRACE_DISTANCE			10.f
 #define TRACE_ATTEMPT_COUNT		3
 
 void CPoltergeist::PhysicalImpulse(const Fvector &position)
 {
-	Level().ObjectSpace.GetNearest(position, 10.f); 
+	Level().ObjectSpace.GetNearest(position, IMPULSE_RADIUS); 
 	xr_vector<CObject*> &tpObjects = Level().ObjectSpace.q_nearest;
 
 	if (tpObjects.empty()) return;
@@ -21,7 +22,8 @@ void CPoltergeist::PhysicalImpulse(const Fvector &position)
 	Fvector dir;
 	dir.sub(obj->Position(), position);
 	dir.normalize();
-	obj->m_pPhysicsShell->applyImpulse(dir,IMPULSE * obj->m_pPhysicsShell->getMass());
+	
+	obj->m_pPhysicsShell->get_ElementByStoreOrder(u16(Random.randI(obj->m_pPhysicsShell->get_ElementsNumber())))->applyImpulse(dir,IMPULSE * obj->m_pPhysicsShell->getMass());
 }
 
 void CPoltergeist::StrangeSounds(const Fvector &position)
