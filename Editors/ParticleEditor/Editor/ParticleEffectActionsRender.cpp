@@ -14,7 +14,7 @@ void RenderDomain(pDomain d, u32 clr)
 	u32 clr_w = subst_alpha	(clr,0xff);
     RCache.set_xform_world	(Fidentity);
     
-    Device.SetShader	(Tools.m_Flags.is(CParticleTools::flDrawSolid)?Device.m_SelectionShader:Device.m_WireShader);
+    Device.SetShader		(Tools.m_Flags.is(CParticleTools::flDrawSolid)?Device.m_WireShader:Device.m_SelectionShader);
     
 	switch(d.type){
     case PDPoint: 	
@@ -29,7 +29,7 @@ void RenderDomain(pDomain d, u32 clr)
         DU.DrawFace			(d.p1, d.p1+d.u, d.p1+d.v, clr_s, clr_w, true, true);
     break;
 	case PDPlane:{
-        Fvector2 sz			= {100.f,100.f};
+        Fvector2 sz			= {25.f,25.f};
         DU.DrawPlane		(d.p1,d.p2,sz,clr_s,clr_w,true,true,true);
     }break;
 	case PDBox: 	
