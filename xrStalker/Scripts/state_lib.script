@@ -195,35 +195,35 @@ states = {
 
 
 	-- Бармен
-	bar_fas = {	weapon = "unstrapped",
+	bar_fas = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "bar_fas"
 			},
-	bar_left= {	weapon = "unstrapped",
+	bar_left= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "bar_left"
 			},
-	bar_head= {	weapon = "unstrapped",
+	bar_head= {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "bar_head"
 			},
-	bar_sleep= {weapon = "unstrapped",
+	bar_sleep= {weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = "bar_sleep"
 			},
-	bar_right= {weapon = "unstrapped",
+	bar_right= {weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
