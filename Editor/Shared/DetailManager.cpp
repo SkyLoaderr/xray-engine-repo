@@ -267,8 +267,8 @@ void CDetailManager::Render		(Fvector& EYE)
 		}
 	}
 
-	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
+//	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
+//	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
 
 	// Render itself
 	float	fPhaseRange	= PI/16;
@@ -351,30 +351,17 @@ void CDetailManager::Render		(Fvector& EYE)
 			IS->Unlock	(iCount_Lock);
 
 			// Render
-			/*
-			Msg	("items(%d), vC_Lock(%d),vBase(%d),iC_Lock(%d),iBase(%d)",item_range,
-				vCount_Lock,vBase,
-				iCount_Lock,iBase
-				);
-			{
-				for (DWORD t=0; t<iCount_Lock; t++)
-					Msg("%4d: %d",t,dbgIndices[t]);
-			}
-			*/
 			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,1);
-			/*
-			Device.Primitive.Draw			(VS,vCount_Lock/3,vBase);
-			*/
 		}
 
 		// Clean up
 		vis.clear	();
 	}
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
+//	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
