@@ -596,7 +596,7 @@ void		game_cl_Deathmatch::OnRender				()
 			CObject* pObject = Level().Objects.net_Find(id);
 			if (!pObject) continue;
 			if (!pObject || pObject->CLS_ID != CLSID_OBJECT_ACTOR) continue;
-//			if (ps == local_player) continue;
+			if (ps == local_player) continue;
 			if (!IsEnemy(ps)) continue;
 			cl_TeamStruct *pTS = &TeamList[ModifyTeam(ps->team)]; 
 

@@ -155,11 +155,24 @@ float CGamePersistent::MtlTransparent(u32 mtl_idx)
 
 void CGamePersistent::OnAppActivate		()
 {
-	Device.Pause(FALSE);
+	if (!g_pGameLevel || GameID() == GAME_SINGLE)
+	{	
+		Device.Pause(FALSE);
+	}
+	else
+	{
+		Device.Pause(FALSE);
+	}
 }
 
 void CGamePersistent::OnAppDeactivate		()
 {
-	if(!bDedicatedServer)
+	if (!g_pGameLevel || GameID() == GAME_SINGLE)
+	{
 		Device.Pause(TRUE);
+	}
+	else
+	{
+		Device.Pause(FALSE);
+	};
 }
