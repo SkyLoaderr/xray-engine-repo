@@ -24,7 +24,14 @@ void CStateMonsterControlledAbstract::execute()
 
 	switch (entity->get_data().m_task) {
 		case eTaskFollow:	select_state(eStateFollow);	break;
-		case eTaskAttack:	select_state(eStateAttack);	break;
+		case eTaskAttack:	{
+			// проверить валидность данных атаки
+			const CEntity *obj = entity->get_data().m_object;
+			if (!m_object || m_object->getDestroy() || !m_object->g_Alive())
+				select_state(eStateFollow);
+			else 
+				select_state(eStateAttack);	break;
+		}
 		default:			NODEFAULT;
 	} 
 	
