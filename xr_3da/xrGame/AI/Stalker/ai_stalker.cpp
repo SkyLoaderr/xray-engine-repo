@@ -82,9 +82,9 @@ void CAI_Stalker::reinit			()
 	m_ce_far						= xr_new<CCoverEvaluatorFarFromEnemy>();
 	m_ce_best						= xr_new<CCoverEvaluatorBest>();
 	m_ce_angle						= xr_new<CCoverEvaluatorAngle>();
-	m_ce_close->set_inertia			(5000);
-	m_ce_far->set_inertia			(5000);
-	m_ce_best->set_inertia			(5000);
+	m_ce_close->set_inertia			(3000);
+	m_ce_far->set_inertia			(3000);
+	m_ce_best->set_inertia			(3000);
 	m_ce_angle->set_inertia			(5000);
 }
 
