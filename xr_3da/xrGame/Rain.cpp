@@ -243,7 +243,7 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Born new if needed
-	float	b_radius		= 15.f;
+	float	b_radius		= 10.f;
 	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
