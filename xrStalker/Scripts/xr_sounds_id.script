@@ -23,6 +23,7 @@ stohe_reaction_base     	= sound_stohe_base + 30
 -- «мей
 sound_zmey_base    =   global_sounds + 3000
 zmey_guard_base     = sound_zmey_base + 0
+zmey_robber_base       = sound_zmey_base + 100
 
 -- „угай
 chugai_sounds          = global_sounds + 4000
