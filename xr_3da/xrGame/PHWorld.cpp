@@ -163,7 +163,7 @@ void CPHWorld::Step()
 #endif
 
 	Device.Statistic.ph_collision.Begin	();
-	//dSpaceCollide		(Space, 0, &NearCallback); 
+
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{
 		CPHObject* obj=(*i_object);
@@ -187,7 +187,8 @@ void CPHWorld::Step()
 	}
 
 	Device.Statistic.ph_core.Begin		();
-#ifdef ODE_SLOW_SOLVER
+
+
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{	
 		CPHObject* obj=(*i_object);
@@ -195,27 +196,8 @@ void CPHWorld::Step()
 		obj->IslandStep(fixed_step);
 	}
 
-	//dWorldStep		(phWorld,	fixed_step);
-#else
-	//IterationCycleI=(++IterationCycleI)%phIterationCycle;
-	for(i_object=m_objects.begin();m_objects.end() != i_object;)
-	{	
-		CPHObject* obj=(*i_object);
-		++i_object;
-		obj->IslandStep(fixed_step);
-	}
-
-	//dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
-
-#endif
 	Device.Statistic.ph_core.End		();
 
-	//for(i_object=m_objects.begin();m_objects.end() != i_object;)
-	//{
-	//	CPHObject* obj=(*i_object);
-	//	++i_object;
-	//	obj->IslandReinit();
-	//}
 
 	for(i_object=m_objects.begin();m_objects.end() != i_object;)
 	{
@@ -245,8 +227,6 @@ void CPHWorld::Step()
 	};
 
 
-	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)
-	//			(*iter)->StepFrameUpdate(step);
 }
 
 u32 CPHWorld::CalcNumSteps (u32 dTime)

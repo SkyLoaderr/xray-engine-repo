@@ -9,7 +9,6 @@ class CPhysicObject : public CGameObject {
 	typedef CGameObject inherited;
 	EPOType				m_type;
 	float				m_mass;
-	bool				b_recalculate;
 	bool				b_removing;
 	static u32			remove_time;
 	u32					m_unsplit_time;
@@ -34,7 +33,8 @@ private:
 			bool	ReadyForRemove		()																				;
 			void	RecursiveBonesCheck	(u16 id)																		;
 			void	SetAutoRemove		()																				;
-
+			void	SaveNetState		(NET_Packet& P)																	;
+			void	LoadNetState		(NET_Packet& P)																	;
 public:
 	CPhysicObject(void);
 	virtual ~CPhysicObject(void);

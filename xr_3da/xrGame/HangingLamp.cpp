@@ -13,6 +13,14 @@
 
 CHangingLamp::CHangingLamp	()
 {
+	Init();
+}
+
+CHangingLamp::~CHangingLamp	()
+{
+}
+void CHangingLamp::Init()
+{
 	fHealth					= 100.f;
 	guid_bone				= BI_NONE;
 	lanim					= 0;
@@ -23,10 +31,11 @@ CHangingLamp::CHangingLamp	()
 	guid_physic_bone		= NULL;
 }
 
-CHangingLamp::~CHangingLamp	()
+void CHangingLamp::RespawnInit()
 {
+	Init();
+	PKinematics(Visual())->LL_SetBonesVisible(u64(-1));
 }
-
 void CHangingLamp::Center	(Fvector& C) const 
 { 
 	if (renderable.visual){
@@ -52,6 +61,7 @@ void CHangingLamp::net_Destroy()
 	::Render->light_destroy	(light_render);
 	::Render->light_destroy	(light_ambient);
 	::Render->glow_destroy	(glow_render);
+	RespawnInit();
 }
 
 BOOL CHangingLamp::net_Spawn(LPVOID DC)
@@ -143,6 +153,7 @@ void CHangingLamp::UpdateCL	()
 		{
 			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
 			xf.mul		(XFORM(),M);
+			VERIFY(!fis_zero(DET(xf)));
 		}
 		else 
 		{

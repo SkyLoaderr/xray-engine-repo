@@ -254,6 +254,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	u32 							type;
 	f32 							mass;
     ref_str 						fixed_bones;
+	u64								bones_mask;
+	u32								unsplit_time;
+	u16								root_bone;
 	u16								source_id;//for break only
 	ref_str							startup_animation;
     enum{

@@ -792,6 +792,9 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
     flags.zero					();
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
+	bones_mask					=u64(-1);
+	unsplit_time				=u32(-1);
+	root_bone					=0;
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -845,6 +848,9 @@ void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 //	flags.set					(tNetPacket.r_u8());
+	unsplit_time				=tNetPacket.r_u32();
+	bones_mask					=tNetPacket.r_u64();
+	root_bone					=tNetPacket.r_u16();
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)

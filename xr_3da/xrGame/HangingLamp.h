@@ -29,6 +29,8 @@ private:
 	CPHElement*		guid_physic_bone;
 	//Fmatrix			guid_bone_offset;
 	void			CreateBody		(CSE_ALifeObjectHangingLamp	*lamp);
+	void			Init();
+	void			RespawnInit		();
 	bool			Alive			(){return fHealth>0.f;}
 
 	void			TurnOn			();

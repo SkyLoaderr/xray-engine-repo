@@ -13,6 +13,28 @@ CPhysicObject::CPhysicObject(void)
 	m_mass = 10.f;
 	Init();
 }
+CPhysicObject::~CPhysicObject(void)
+{
+	ClearUnsplited();
+}
+void CPhysicObject::SaveNetState(NET_Packet& P)
+{
+
+	CKinematics* K	=PKinematics(Visual());
+	P.w_u32(m_unsplit_time);
+	P.w_u64(K->LL_GetBonesVisible());
+	P.w_u16(K->LL_GetBoneRoot());
+}
+
+void CPhysicObject::LoadNetState(NET_Packet& P)
+{
+
+	CKinematics* K=PKinematics(Visual());
+	m_unsplit_time=P.r_u32();
+	b_removing=(m_unsplit_time!=u32(-1));
+	K->LL_SetBonesVisible(P.r_u64());
+	K->LL_SetBoneRoot(P.r_u16());
+}
 
 void CPhysicObject::RespawnInit()
 {
@@ -24,11 +46,9 @@ void CPhysicObject::RespawnInit()
 }
 void CPhysicObject::Init()
 {
-	b_recalculate=false;
 	m_unsplit_time = u32(-1);
 	b_removing=false;
 	m_startup_anim=NULL;
-	//m_source=NULL;
 }
 
 void CPhysicObject::ClearUnsplited()
@@ -40,10 +60,6 @@ void CPhysicObject::ClearUnsplited()
 		xr_delete(i->first);
 	}
 }
-CPhysicObject::~CPhysicObject(void)
-{
-	ClearUnsplited();
-}
 
 BOOL CPhysicObject::net_Spawn(LPVOID DC)
 {
@@ -53,10 +69,11 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	inherited::net_Spawn	(DC);
 
 	m_flags					= po->flags;
-//	m_flags.set				(flSpawnCopy,FALSE);
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 	m_startup_anim=po->startup_animation;
+	m_unsplit_time=po->unsplit_time;
+	b_removing=(m_unsplit_time!=u32(-1));
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -70,10 +87,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	else
 	{
 		CPhysicObject* source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
-		//m_source=dynamic_cast<CPhysicObject*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
-		//setVisible(false);
-		//setEnabled(false);
 		source->UnsplitSingle(this);
 	}
 
@@ -99,6 +113,7 @@ if(!po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
 	setVisible(true);
 	setEnabled(true);
 }
+	m_flags.set				(CSE_ALifeObjectPhysic::flSpawnCopy,FALSE);
 
 	return TRUE;
 }
@@ -263,6 +278,9 @@ void CPhysicObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 {
 	if (!Visual()) return;
+	CKinematics* K= PKinematics(Visual());
+	K->LL_SetBoneRoot(po->root_bone);
+	K->LL_SetBonesVisible(po->bones_mask);
 	LPCSTR	fixed_bones=*po->fixed_bones;
 	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifeObjectPhysic::flActive),fixed_bones);
 }
@@ -271,6 +289,7 @@ void CPhysicObject::net_Export(NET_Packet& P)
 {
 	inherited::net_Export			(P);
 	R_ASSERT						(Local());
+	SaveNetState					(P);
 //	P.w_u8							(m_flags.get());
 	//m_pPhysicsShell->net_Export(P);
 }
@@ -351,47 +370,20 @@ void CPhysicObject::SpawnCopy()
 PHSHELL_PAIR_VECTOR new_shells;
 void CPhysicObject::PHSplit()
 {
-	//if(m_unsplited_shels.empty())
-	{
+
+	
 		u16 spawned=u16(m_unsplited_shels.size());
 		m_pPhysicsShell->SplitProcess(m_unsplited_shels);
 		u16 i=u16(m_unsplited_shels.size())-spawned;
 		//	Msg("%o,spawned,%d",this,i);
 		for(;i;--i) SpawnCopy();
-	}
-	//else
-	//{
-	//	new_shells.clear();
-	//	m_pPhysicsShell->SplitProcess(new_shells);
-	//	m_unsplited_shels.insert(m_unsplited_shels.begin(),new_shells.begin(),new_shells.end());
-	//	u16 i=u16(new_shells.size());
-	//	//	Msg("%o,spawned,%d",this,i);
-	//	for(;i;--i) SpawnCopy();
-	//}
+	
+
 }
 
 void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
-	//u16 id;
-	//switch (type)
-	//{
-	//case GE_OWNERSHIP_TAKE:
-	//	{
-	//		P.r_u16		(id);
-	//		CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-	//		//O->H_SetParent(this);
-	//		UnsplitSingle( dynamic_cast<CPhysicObject*>(O) );
-	//		break;
-	//	}
-	//case GE_OWNERSHIP_REJECT:
-	//	{
-	//		P.r_u16		(id);
-	//		CGameObject* O =dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id));
-	//		//O->H_SetParent(NULL);
-	//		break;
-	//	}
-	//}
 }
 void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
@@ -433,10 +425,6 @@ void CPhysicObject::UnsplitSingle(CPhysicObject* O)
 	O->setEnabled(true);
 	newKinematics->Calculate();
 
-	//NET_Packet				P;
-	//u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-	//P.w_u16					(u16(O->ID()));
-	//u_EventSend				(P);
 
 	O->CopySpawnInit		();
 	CopySpawnInit			();
