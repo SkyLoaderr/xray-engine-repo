@@ -53,11 +53,12 @@ BOOL	CreateNode(Fvector& vAt, vertex& N)
 	for (u32 i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
+		CDB::RESULT	rp = XRC.r_begin()[i];
+		CDB::TRI&	T = *(Level.get_tris()+rp.id);
 
-		D.v[0].set	(*T.verts[0]);
-		D.v[1].set	(*T.verts[1]);
-		D.v[2].set	(*T.verts[2]);
+		D.v[0].set	(rp.verts[0]);
+		D.v[1].set	(rp.verts[1]);
+		D.v[2].set	(rp.verts[2]);
 		D.sector	= T.sector;
 		D.N.mknormal(D.v[0],D.v[1],D.v[2]);
 		if (D.N.y<=0)	continue;
