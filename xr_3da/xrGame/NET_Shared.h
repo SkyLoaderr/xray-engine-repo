@@ -3,6 +3,14 @@
 #include "net_utils.h"
 #include "net_messages.h"
 
+#ifdef XR_NETSERVER_EXPORTS
+	#define XRNETSERVER_API __declspec(dllexport)
+#else
+	#define XRNETSERVER_API __declspec(dllimport)
+	#pragma comment(lib,	"x:\\xrNetServer"	)
+#endif
+
+
 class XRNETSERVER_API IClientStatistic
 {
 	DPN_CONNECTION_INFO	ci_last;
