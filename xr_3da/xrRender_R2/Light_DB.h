@@ -5,9 +5,11 @@
 
 class CLight_DB
 {
+public:
 	Fvector3				sun_dir;
 	Fvector4				sun_color;
 
+private:
 	vector<xrLIGHT_control>	v_static_controls;
 	vector<light*>			v_static;
 	set<light*>				v_dynamic_active;
