@@ -23,9 +23,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>mil_lukash_dialog_rg6</actor_dialog>
-		<actor_dialog>mil_lukash_dialog_after</actor_dialog>
-		<actor_dialog>mil_lukash_dialog_final</actor_dialog>
 	</specific_character>	
 
 <!---------------------------SVOBODA REGULAR----------------------->
@@ -346,12 +343,6 @@
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>mil_max_dialog_first</actor_dialog>
-		<actor_dialog>mil_max_dialog_second</actor_dialog>
-		<actor_dialog>mil_max_dialog_third</actor_dialog>
-		<actor_dialog>mil_max_dialog_flash</actor_dialog>
-		<actor_dialog>mil_max_dialog_common1</actor_dialog>
-		<actor_dialog>mil_max_dialog_common2</actor_dialog>
 	</specific_character>
 
 <!---------------------------SVOBODA MASTER UGRUMIY----------------------->
