@@ -197,13 +197,13 @@ struct SFindPredicate
 void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * material_1,SGameMtl *material_2 )
 {
 
+	bool b1;
+	SFindPredicate fp(c,&b1);
+	RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
+	bool b_restrictor=(r!=end(m_restrictors));
 	if(GameID()==GAME_SINGLE)
 	{
 	
-		bool b1;
-		SFindPredicate fp(c,&b1);
-		RESTRICTOR_I r=std::find_if(begin(m_restrictors),end(m_restrictors),fp);
-		bool b_restrictor=(r!=end(m_restrictors));
 		if(b_restrictor)
 		{
 			b_side_contact=true;
@@ -240,7 +240,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 			CActor* A2=smart_cast<CActor*>(D2->ph_ref_object);
 			if(A1&&A2)
 			{
-				do_collide=(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
+				do_collide=!b_restrictor&&(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
 			}
 		}
 		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
