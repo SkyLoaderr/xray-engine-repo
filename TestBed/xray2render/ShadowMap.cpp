@@ -74,6 +74,11 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
 
+	// Matrices
+	D3DXMATRIX						dm_model2world;
+	D3DXMATRIX						dm_model2world2view;
+	D3DXMATRIX						dm_model2world2view2projection;
+
 	// Shaders
 	R_shader						s_Scene2fat;
 
@@ -115,16 +120,17 @@ public:
     HRESULT RestoreDeviceObjects();
     HRESULT InvalidateDeviceObjects();
     HRESULT DeleteDeviceObjects();
-    HRESULT Render();
-    HRESULT FrameMove();
-    HRESULT FinalCleanup();
+    HRESULT Render			();
+    HRESULT FrameMove		();
+    HRESULT FinalCleanup	();
     HRESULT ConfirmDevice(D3DCAPS9* pCaps, DWORD dwBehavior, D3DFORMAT Format);
 
-	HRESULT RenderShadowMap();
-	HRESULT RenderScene();
-	HRESULT RenderOverlay();
+	HRESULT RenderShadowMap	();
+	HRESULT RenderFAT		();
+	HRESULT RenderScene		();
+	HRESULT RenderOverlay	();
 
-	HRESULT UpdateTransform();
+	HRESULT UpdateTransform	();
 
     LRESULT MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 };
@@ -206,9 +212,8 @@ HRESULT CMyD3DApplication::OneTimeSceneInit()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::FrameMove	()
 {
-	UpdateTransform();
-
-    return S_OK;
+	UpdateTransform	();
+    return			S_OK;
 }
 
 //-----------------------------------------------------------------------------
@@ -222,14 +227,15 @@ HRESULT CMyD3DApplication::Render		()
     // Begin the scene
     if (SUCCEEDED(m_pd3dDevice->BeginScene()))
     {
-		RenderShadowMap	();
-		m_pd3dDevice->Clear(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
-		RenderScene		();
-		RenderOverlay	();
+		// RenderShadowMap	();
+		// RenderScene			();
+		// RenderOverlay		();
+
+		RenderFAT			();
 
         // Output statistics
-        m_pFont->DrawText(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
-        m_pFont->DrawText(OVERLAY_SIZE + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
+        m_pFont->DrawText	(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
+        m_pFont->DrawText	(OVERLAY_SIZE + 12, 20, D3DCOLOR_ARGB(255,255,255,0), m_strDeviceStats);
 
         // End the scene.
         m_pd3dDevice->EndScene();
@@ -355,7 +361,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
     m_pFont->RestoreDeviceObjects();
 
-	UpdateTransform	();
+	UpdateTransform		();
 
 	// Create targets
 	DWORD				w = m_d3dsdBackBuffer.Width, h = m_d3dsdBackBuffer.Height;
@@ -366,6 +372,33 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create shaders
 	s_Scene2fat.compile	(m_pd3dDevice,"shaders\\D\\fat_base.s");
+
+	// Create shadow map texture and retrieve surface
+	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
+		D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
+		return E_FAIL;
+	if (FAILED(m_pShadowMap->GetSurfaceLevel(0, &m_pShadowMapSurf)))
+		return E_FAIL;
+	// Create depth buffer for shadow map rendering
+	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 
+		D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
+		return E_FAIL;
+
+    m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+    // Create model shaders
+	SAFE_RELEASE(m_pSceneVS);
+	LoadVertexShader(m_pd3dDevice, "shaders\\shadowscene.vsh", &m_pSceneVS);
+	SAFE_RELEASE(m_pScenePS);
+	LoadPixelShader(m_pd3dDevice, "shaders\\shadowscene.psh", &m_pScenePS);
+
+	// Create shadow map shaders
+	SAFE_RELEASE(m_pShadowMapVS);
+	LoadVertexShader(m_pd3dDevice, "shaders\\shadowmap.vsh", &m_pShadowMapVS);
+	SAFE_RELEASE(m_pShadowMapPS);
+	LoadPixelShader(m_pd3dDevice, "shaders\\shadowmap.psh", &m_pShadowMapPS);
+	SAFE_RELEASE(m_pShowMapPS);
+	LoadPixelShader(m_pd3dDevice, "shaders\\showmap.psh", &m_pShowMapPS);
 
     m_ArcBall.SetWindow(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
     m_ArcBall.SetRadius(3.0f);
@@ -532,10 +565,12 @@ HRESULT CMyD3DApplication::RenderShadowMap()
 // Name: RenderScene()
 // Desc: Renders the scene objects while performing shadow mapping.
 //-----------------------------------------------------------------------------
-HRESULT CMyD3DApplication::RenderScene()
+HRESULT CMyD3DApplication::RenderScene	()
 {
-	D3DXVECTOR4 vDiffuseFloor(0.75f, 0.75f, 0.75f, 1.0f);
-	D3DXVECTOR4 vDiffuseModel(1.0f, 1.0f, 1.0f, 1.0f);
+	m_pd3dDevice->Clear					(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00404080, 1.0f, 0L);
+
+	D3DXVECTOR4 vDiffuseFloor			(0.75f, 0.75f, 0.75f, 1.0f);
+	D3DXVECTOR4 vDiffuseModel			(1.0f, 1.0f, 1.0f, 1.0f);
 
 	m_pd3dDevice->SetTexture			(0, m_pShadowMap);
 
@@ -560,6 +595,58 @@ HRESULT CMyD3DApplication::RenderScene()
 	// Vertex Shader
 	m_pd3dDevice->SetVertexShader			(m_pSceneVS);
 	m_pd3dDevice->SetVertexDeclaration		(m_pVertDecl);
+
+	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
+	D3DXVECTOR4	vZBias = D3DXVECTOR4(0.1f, -0.01f, 1.0f, 0.0f);
+	m_pd3dDevice->SetVertexShaderConstantF	(32, vZBias, 1);
+	D3DXVECTOR4	vRange = D3DXVECTOR4(1.0f / DEPTH_RANGE, 0.0f, 0.0f, 0.0f);
+	m_pd3dDevice->SetVertexShaderConstantF	(12, vRange, 1);
+
+	// Render floor
+	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matFloorMVP, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(4, m_matShadowFloorMVP, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(8, m_matShadowFloorTex, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(30, m_vecLightDirFloor, 1);
+	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseFloor, 1);
+	m_pd3dDevice->SetStreamSource			(0, m_pFloorVB, 0, sizeof(VERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Render model
+	m_pd3dDevice->SetVertexShaderConstantF	(0, m_matModelMVP, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(4, m_matShadowModelMVP, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(8, m_matShadowModelTex, 4);
+	m_pd3dDevice->SetVertexShaderConstantF	(30, m_vecLightDirModel, 1);
+	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
+	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
+	m_pd3dDevice->SetIndices				(m_pModelIB);
+	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
+
+	m_pd3dDevice->SetTexture(0, NULL);
+
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderScene()
+// Desc: Renders the scene objects while performing shadow mapping.
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderFAT	()
+{
+	m_pd3dDevice->Clear					(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
+
+	m_pd3dDevice->SetTexture			(0, m_pShadowMap);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
+	m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
+
+	// Vertex Shader
+	m_pd3dDevice->SetPixelShader		(s_Scene2fat.ps);
+	m_pd3dDevice->SetVertexShader		(s_Scene2fat.vs);
+	m_pd3dDevice->SetVertexDeclaration	(m_pVertDecl);
+	cc.set								(s_Scene2fat.constants.get("m_model2view"),);
+	cc.set								(s_Scene2fat.constants.get("m_model2view2projection),);
 
 	m_pd3dDevice->SetVertexShaderConstantF	(31, vDiffuseModel, 1);
 	D3DXVECTOR4	vZBias = D3DXVECTOR4(0.1f, -0.01f, 1.0f, 0.0f);
@@ -620,69 +707,69 @@ HRESULT CMyD3DApplication::RenderOverlay()
 HRESULT CMyD3DApplication::UpdateTransform()
 {
 	// Model offset
-	D3DXVECTOR3 vModelOffs = D3DXVECTOR3(0.0f, 2.0f, 0.0f);
+	D3DXVECTOR3 vModelOffs		= D3DXVECTOR3(0.0f, 2.0f, 0.0f);
 
     // Set the transform matrices
-    D3DXVECTOR3 vEyePt      = D3DXVECTOR3(0.0f, 3.0f, -4.0f);
-    D3DXVECTOR3 vLookatPt   = D3DXVECTOR3(0.0f, 2.0f,  0.0f);
-    D3DXVECTOR3 vUpVec      = D3DXVECTOR3(0.0f, 1.0f,  0.0f);
-    FLOAT       fAspect = (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
+    D3DXVECTOR3 vEyePt			= D3DXVECTOR3(0.0f, 3.0f, -4.0f);
+    D3DXVECTOR3 vLookatPt		= D3DXVECTOR3(0.0f, 2.0f,  0.0f);
+    D3DXVECTOR3 vUpVec			= D3DXVECTOR3(0.0f, 1.0f,  0.0f);
+    FLOAT       fAspect			= (FLOAT)m_d3dsdBackBuffer.Width / (FLOAT)m_d3dsdBackBuffer.Height;
 
-	D3DXMATRIX matWorldModel, matWorldFloor, matView, matProj, mat;
-	D3DXMATRIX matShadowView, matShadowProj, mat2;
+	D3DXMATRIX	matWorldModel, matWorldFloor, matView, matProj, mat;
+	D3DXMATRIX	matShadowView, matShadowProj, mat2;
 
-    D3DXMatrixLookAtLH(&matView, &vEyePt, &vLookatPt, &vUpVec);
-    D3DXMatrixPerspectiveFovLH(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
-	D3DXMatrixMultiply(&mat, &matView, &matProj);
+    D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
+    D3DXMatrixPerspectiveFovLH	(&matProj, D3DX_PI / 3, fAspect, 1.0f, 100.0f);
+	D3DXMatrixMultiply			(&mat, &matView, &matProj);
 
 	D3DXMATRIX matTranslate;
-	D3DXMatrixTranslation(&matTranslate, vModelOffs.x, vModelOffs.y, vModelOffs.z);
-	D3DXMatrixMultiply(&matWorldModel, m_ArcBall.GetRotationMatrix(), &matTranslate);
-	D3DXMatrixMultiplyTranspose(&m_matModelMVP, &matWorldModel, &mat);
+	D3DXMatrixTranslation		(&matTranslate, vModelOffs.x, vModelOffs.y, vModelOffs.z);
+	D3DXMatrixMultiply			(&matWorldModel, m_ArcBall.GetRotationMatrix(), &matTranslate);
+	D3DXMatrixMultiplyTranspose	(&m_matModelMVP, &matWorldModel, &mat);
 
-	D3DXMatrixIdentity(&matWorldFloor);
-	D3DXMatrixMultiplyTranspose(&m_matFloorMVP, &matWorldFloor, &mat);
+	D3DXMatrixIdentity			(&matWorldFloor);
+	D3DXMatrixMultiplyTranspose	(&m_matFloorMVP, &matWorldFloor, &mat);
 
 	// Light direction
-	D3DXVECTOR3 vLightDir = D3DXVECTOR3(2.0f, 1.0f, -1.0f);
-	D3DXVec3Normalize(&vLightDir, &vLightDir);
+	D3DXVECTOR3 vLightDir		= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
+	D3DXVec3Normalize			(&vLightDir, &vLightDir);
 
 	// Setup shadow map transform
-	vLookatPt = vModelOffs;
-	vEyePt = vLookatPt + vLightDir * (m_fModelSize / 2.0f);
-    D3DXMatrixLookAtLH(&matView, &vEyePt, &vLookatPt, &vUpVec);
+	vLookatPt					= vModelOffs;
+	vEyePt						= vLookatPt + vLightDir * (m_fModelSize / 2.0f);
+    D3DXMatrixLookAtLH			(&matView, &vEyePt, &vLookatPt, &vUpVec);
 
 	// Projection for directional light
-    D3DXMatrixOrthoLH(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
+    D3DXMatrixOrthoLH			(&matProj, 5.0f, 5.0f, 0.0f, DEPTH_RANGE);
 
 	D3DXMATRIX matShadowModelMVP, matShadowFloorMVP;
-	D3DXMatrixMultiply(&mat, &matView, &matProj);
-	D3DXMatrixMultiply(&matShadowModelMVP, &matWorldModel, &mat);
-	D3DXMatrixTranspose(&m_matShadowModelMVP, &matShadowModelMVP);
-	D3DXMatrixMultiply(&matShadowFloorMVP, &matWorldFloor, &mat);
-	D3DXMatrixTranspose(&m_matShadowFloorMVP, &matShadowFloorMVP);
+	D3DXMatrixMultiply			(&mat, &matView, &matProj);
+	D3DXMatrixMultiply			(&matShadowModelMVP, &matWorldModel, &mat);
+	D3DXMatrixTranspose			(&m_matShadowModelMVP, &matShadowModelMVP);
+	D3DXMatrixMultiply			(&matShadowFloorMVP, &matWorldFloor, &mat);
+	D3DXMatrixTranspose			(&m_matShadowFloorMVP, &matShadowFloorMVP);
 
 	// Texture adjustment matrix
-	FLOAT fTexelOffs = (.5f / SHADOW_MAP_SIZE);
-	D3DXMATRIX matTexAdj(0.5f,      0.0f,        0.0f,        0.0f,
-						 0.0f,     -0.5f,        0.0f,        0.0f,
-						 0.0f,      0.0f,        0.0f,        0.0f,
-						 0.5f + fTexelOffs,	0.5f + fTexelOffs,		1.0f,        1.0f);
+	FLOAT fTexelOffs			= (.5f / SHADOW_MAP_SIZE);
+	D3DXMATRIX matTexAdj	(	0.5f,      0.0f,        0.0f,        0.0f,
+								0.0f,     -0.5f,        0.0f,        0.0f,
+								0.0f,      0.0f,        0.0f,        0.0f,
+								0.5f + fTexelOffs,	0.5f + fTexelOffs,	1.0f, 1.0f);
 
 	D3DXMatrixMultiplyTranspose(&m_matShadowModelTex, &matShadowModelMVP, &matTexAdj);
 	D3DXMatrixMultiplyTranspose(&m_matShadowFloorTex, &matShadowFloorMVP, &matTexAdj);
 
 	// Setup lighting -- transform into model space
 	D3DXVECTOR3 v;
-	D3DXMatrixInverse		(&mat, NULL, &matWorldModel);
-	D3DXVec3TransformNormal	(&v, &vLightDir, &mat);
-	D3DXVec3Normalize		(&v, &v);
-	m_vecLightDirModel		= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
+	D3DXMatrixInverse			(&mat, NULL, &matWorldModel);
+	D3DXVec3TransformNormal		(&v, &vLightDir, &mat);
+	D3DXVec3Normalize			(&v, &v);
+	m_vecLightDirModel			= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
 
-	D3DXMatrixInverse		(&mat, NULL, &matWorldFloor);
-	D3DXVec3TransformNormal	(&v, &vLightDir, &mat);
-	D3DXVec3Normalize		(&v, &v);
-	m_vecLightDirFloor		= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
+	D3DXMatrixInverse			(&mat, NULL, &matWorldFloor);
+	D3DXVec3TransformNormal		(&v, &vLightDir, &mat);
+	D3DXVec3Normalize			(&v, &v);
+	m_vecLightDirFloor			= D3DXVECTOR4(v.x, v.y, v.z, 0.0f);
 
 	return S_OK;
 }
