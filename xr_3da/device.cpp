@@ -175,6 +175,9 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC,			D3DCMP_GREATER		));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_LOCALVIEWER,		FALSE				));
 	
+	float tess = 2;
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_PATCHSEGMENTS, *((DWORD*)&tess)));
+	
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DIFFUSEMATERIALSOURCE, D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_SPECULARMATERIALSOURCE,D3DMCS_MATERIAL	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_AMBIENTMATERIALSOURCE, D3DMCS_MATERIAL	));
