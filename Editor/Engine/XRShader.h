@@ -24,7 +24,7 @@ public:
 	float				tcm_scaleU,tcm_scaleV;
 	float				tcm_rotate;
 	float				tcm_scrollU,tcm_scrollV;
-	SH_Function			tcm_stretch;
+	WaveForm			tcm_stretch;
 
 	void				Calculate		(float t);
 	void				CompileInit		(SH_StageDef& DEF);
@@ -37,7 +37,7 @@ struct ENGINE_API SH_Pass
 public:
 	DWORD				SB;
 	BOOL				bCalcFactor;
-	SH_Function			Factor;
+	WaveForm			Factor;
 	DWORD				Factor_Calculated;
 	DWORD				Stages_Count;
 	SH_Stage			Stages	[sh_STAGE_MAX];

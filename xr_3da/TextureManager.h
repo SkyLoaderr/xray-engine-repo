@@ -8,43 +8,26 @@
 
 #include "xrShaderTypes.h"
 
-#pragma pack(push)
-#pragma pack(4)
-class ENGINE_API Shader
-{
-public:
-	DWORD				dwRefCount;
-	CShader*			shader;
-	tex_handles			H;
-
-	BOOL	isEqual(Shader *S) {
-		return memcmp(LPDWORD(this)+1,LPDWORD(S)+1,sizeof(Shader)-4)==0;
-	}
-	Shader()
-	{	ZeroMemory(this,sizeof(*this)); }
-};
-#pragma pack(pop)
-
 class ENGINE_API CShaderManager
 {
 private:
-	vector<CShader *>	shaders;
-	vector<CTexture *>	textures;
+	map<LPSTR,CShader*>		shaders;	// data
+	vector<CTexture *>		textures;	// data
 
-	vector<Shader *>	sh_list;
-	Shader*				current_shader;
-	DWORD				current_SBH;
-	CTexture*			current_surf	[sh_STAGE_MAX];
+	vector<Shader *>		sh_list;
+	Shader*					current_shader;
+	DWORD					current_SBH;
+	CTexture*				current_surf	[sh_STAGE_MAX];
 
-	BOOL				bDeferredLoad;
+	BOOL					bDeferredLoad;
 public:
-	CTexture*			_CreateTexture	(const char* Name, BOOL bMipmaps=TRUE);
-	CShader*			_CreateShader	(const char* Name);
-	DWORD				_GetMemoryUsage	();
+	CTexture*				_CreateTexture	(const char* Name, BOOL bMipmaps=TRUE);
+	CShader*				_CreateShader	(const char* Name);
+	DWORD					_GetMemoryUsage	();
 
-	DWORD				dwPassesRequired;
+	DWORD					dwPassesRequired;
 
-	CShaderManager		()
+	CShaderManager			()
 	{
 		dwPassesRequired	= 0;
 		bDeferredLoad		= FALSE;
@@ -60,8 +43,8 @@ public:
 	void	OnDeviceCreate	(void);
 
 	// Creation/Destroying
-	Shader*	Create			(const char *sh_name="null", const char *t_name = "$null", BOOL bNeedMipmaps=true);
-	void	Delete			(Shader* &S);
+	Shader	Create			(const char *sh_name="null", const char *t_name = "$null", BOOL bNeedMipmaps=true);
+	void	Delete			(Shader &S);
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 
 	void	TexturesLoad	();

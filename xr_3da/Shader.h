@@ -6,7 +6,11 @@
 #define SHADER__INCLUDED_
 #pragma once
 
-class ENGINE_API CShader
+#define	COMBINATIONS_SH		4
+#define	COMBINATIONS_TEX	16
+
+//-----------------------------------------------------------------------------------------------
+class	ENGINE_API	CShader
 {
 protected:
 	struct RFlags
@@ -21,7 +25,7 @@ protected:
 	virtual void				internal_Release	()				= 0;
 public:
 	DWORD						dwFrame;
-	RFlags						Flags;		// important flags
+	RFlags						Flags;		
 
 	IC void						Activate	()
 	{
@@ -37,6 +41,30 @@ public:
 
 	CShader	();
 	virtual ~CShader();
+};
+
+class	ENGINE_API	CShaderArray
+{
+public:
+	CShader*		shaders		[COMBINATIONS_SH];
+	
+	CShaderCombination()	
+	{
+		ZeroMemory	(this,sizeof(*this));
+	}
+	IC CShader*		select		(DWORD num)	{
+		return shaders			[num];
+	}
+};
+
+// 
+struct ENGINE_API	Shader
+{
+	CShader*		S;
+	tex_handles*	T;
+	DWORD			c[4];		// user-defined constants
+
+	IC void			set_value	(DWORD id, DWORD val)	{ c[id]=val; }
 };
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)

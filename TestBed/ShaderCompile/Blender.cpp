@@ -74,8 +74,8 @@ void	CBlender::Load(	CStream& FS )
 #include "blenderdefault.h"
 #include "blender_default_aref.h"
 #include "blender_vertex.h"
-#include "blender_aref.h"
-CBlender*	CBlender::Create	(CLSID cls)
+#include "blender_vertex_aref.h"
+CBlender*	CBlender::Create	(CLASS_ID cls)
 {	
 	switch (cls)
 	{

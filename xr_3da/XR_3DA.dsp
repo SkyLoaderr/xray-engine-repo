@@ -532,15 +532,7 @@ SOURCE=.\Blender_Params.h
 # Begin Source File
 
 SOURCE=.\XRShader.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
 # PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -553,15 +545,7 @@ SOURCE=.\XRShaderDef.h
 # Begin Source File
 
 SOURCE=.\xrShaderLib.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
 # PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
