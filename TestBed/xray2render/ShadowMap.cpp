@@ -63,6 +63,21 @@ D3DVERTEXELEMENT9 decl_vert[] =
 	D3DDECL_END()
 };
 
+// 2D-bloom combine
+struct TVERTEX
+{
+	D3DXVECTOR4 p;
+	FLOAT       tu, tv;
+};
+#define TVERTEX_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
+D3DVERTEXELEMENT9 decl_vert2D[] =
+{
+	{ 0, 0,		D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITIONT,	0 },
+	{ 0, 16,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
+
+
 //-----------------------------------------------------------------------------
 // Name: class CMyD3DApplication
 // Desc: Main class to run this application. Most functionality is inherited
