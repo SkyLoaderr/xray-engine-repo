@@ -1,5 +1,7 @@
 #pragma once
 
+#include "shader_xrlc.h"
+
 #ifndef IC
 #define IC __forceinline
 #endif
@@ -119,7 +121,7 @@ public:
 		bool		bOpaque;		// For ray-tracing speedup
 	};
 
-	SH_ShaderDef&	Shader			();
+	Shader_xrLC&	Shader			();
 	void			CacheOpacity	();
 	//------------------------------//
 	IC void Failure	(void)
