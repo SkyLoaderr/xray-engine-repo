@@ -1,0 +1,7 @@
+ps.2.0
+
+dcl t0.x
+
+mov r0, t0.x
+
+mov oC0, r0
