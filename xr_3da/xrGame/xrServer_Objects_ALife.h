@@ -24,10 +24,16 @@ using namespace ALife;
 class CSE_ALifeSchedulable : public IPureSchedulableObject, virtual public CSE_Abstract {
 public:
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
+#ifndef _EDITOR
+#ifndef AI_COMPILER
 	CSE_ALifeSimulator				*m_tpALife;
+#endif
+#endif
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
 
 									CSE_ALifeSchedulable	(LPCSTR caSection) : CSE_Abstract(caSection) {};
+#ifndef _EDITOR
+#ifndef AI_COMPILER
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower) = 0;
 	virtual bool					bfPerformAttack			()											{return(true);};
 	virtual	void					vfUpdateWeaponAmmo		()											{};
@@ -36,6 +42,8 @@ public:
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection) = 0;
 	virtual bool					bfActive				()															= 0;
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		()															= 0;
+#endif
+#endif
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeEvent,CPureServerObject)

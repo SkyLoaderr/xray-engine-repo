@@ -814,7 +814,11 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurNode					= u32(-1);
 	strcpy						(m_caKnownCustomers,"m_trader0000");
 	m_tpKnownCustomers.clear	();
+#ifndef _EDITOR
+#ifndef AI_COMPILER
 	m_tpALife					= 0;
+#endif
+#endif
 	m_cpEquipmentPreferences.resize(5);
 	m_cpMainWeaponPreferences.resize(4);
 #ifndef _EDITOR
