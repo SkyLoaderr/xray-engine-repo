@@ -41,20 +41,30 @@ function main ()
 
 	for a = 1, table.getn (t), 1 do
 	    t[a]:script (true, s_test.script_name ())
-		action (t[a], move (move.standing, move.run, move.line, paths[a]),
-			    anim (anim.danger), cond (cond.move_end))
+--		action (t[a], move (move.standing, move.run, move.line, paths[a]),
+--			    anim (anim.danger), cond (cond.move_end))
 		end
-
 
 	wait (5000)
 	local h = hit ()
     h.power = 1
-    h.direction:set (-1, 0, 0)
-    h:bone ("bip01_head")
+    h.direction = vector():set (0, 1, 0)
+    h:bone ("bip01_pelvis")
     h.draftsman = get_actor ()
-    h.impulse = 1000
+    h.impulse = 5000
     h.type  = hit.strike
-    t[a]:hit (h)
+
+	for a = 1, table.getn (t), 1 do  t[a]:hit (h) end
+
+
+
+	wait (5000);
+
+	for a = 1, table.getn (t), 1 do
+	    reset_action (t[a], s_test.script_name ())
+		action (t[a], move (move.standing, move.run, move.line, paths[a]),
+			    anim (anim.danger), cond (cond.move_end))
+		end
 
 	while t[1]:action () do wait () end 
 
