@@ -12,13 +12,13 @@ const float snd_fade		= 0.2f;
 const int	desired_items	= 2000;
 const float	drop_length		= 1.5f;
 const float drop_width		= 0.025f;
-const float drop_angle		= 0.01f;
+const float drop_angle		= 3.01f;
 const float drop_speed_min	= 40.f;
 const float drop_speed_max	= 80.f;
 
 const int	max_particles	= 1000;
 const int	particles_cache	= 200;
-const float particles_time	= 1.2f;
+const float particles_time	= 10.5f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -205,6 +205,8 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 	P->time						= particles_time;
 	P->mXForm.rotateY			(::Random.randF(PI_MUL_2));
 	P->mXForm.translate_over	(pos);
+	P->mXForm.transform_tiny	(P->bounds.P,DM_Drop.bounds.P);
+	P->bounds.R					= DM_Drop.bounds.R;
 }
 
 void	CEffect_Rain::Render	()
@@ -306,9 +308,7 @@ void	CEffect_Rain::Render	()
 		CIndexStream* IS			= Device.Streams.Get_IB();
 		Device.Shader.set_Shader	(DM_Drop.shader);
 		
-		Fmatrix		mXform;
-		Fvector		Center;
-		
+		Fmatrix					mXform,mScale;
 		int						pcount  = 0;
 		DWORD					v_offset,i_offset;
 		DWORD					vCount_Lock		= particles_cache*DM_Drop.number_vertices;
@@ -325,17 +325,16 @@ void	CEffect_Rain::Render	()
 				P				=	next;
 				continue;
 			}
-			float scale			=	P->time / particles_time;
-			Fmatrix& M			=	P->mXForm;
-			mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
-			mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
-			mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
-			mXform._41=M._41;		mXform._42=M._42;		mXform._43=M._43;		mXform._44=1;
-			mXform.transform_tiny	(Center,DM_Drop.bounds.P);
-			
+
 			// Render
-			if (::Render.ViewBase.testSphereDirty(Center, DM_Drop.bounds.R))
+			if (::Render.ViewBase.testSphereDirty(P->bounds.P, P->bounds.R))
 			{
+				// Build matrix
+				float scale			=	P->time / particles_time;
+				mScale.scale		(scale,scale,scale);
+				mXform.mul_43		(P->mXForm,mScale);
+				
+				// XForm verts
 				DM_Drop.Transfer	(mXform,v_ptr,0xffffffff,i_ptr,pcount*DM_Drop.number_vertices);
 				v_ptr			+=	DM_Drop.number_vertices;
 				i_ptr			+=	DM_Drop.number_indices;
