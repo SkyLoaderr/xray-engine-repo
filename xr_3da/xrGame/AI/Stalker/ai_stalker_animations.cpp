@@ -10,6 +10,13 @@
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
 
+static const float y_spin_factor		= 0.4f;
+static const float y_shoulder_factor	= 0.4f;
+static const float y_head_factor		= 0.2f;
+static const float p_spin_factor		= 0.2f;
+static const float p_shoulder_factor	= 0.7f;
+static const float p_head_factor		= 0.1f;
+
 LPCSTR caStateNames			[dwStateCount] = {
 	"cr_",
 	"norm_",
@@ -61,11 +68,59 @@ LPCSTR caGlobalNames		[dwGlobalCount] = {
 
 #define TORSO_ANGLE_DELTA		(PI/30.f)
 
-//static void __stdcall vfPlayCallBack(CBlend* B)
-//{
-//	CAI_Stalker	*tpStalker			= (CAI_Stalker*)B->CallbackParam;
-//	tpStalker->m_bActionStarted = false;
-//}
+void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
+{
+	int head_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadCallback,this);
+	
+	int shoulder_bone	= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_shoulder"));
+	PKinematics(pVisual)->LL_GetInstance(shoulder_bone).set_callback(ShoulderCallback,this);
+	
+	int spin_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_spin"));
+	PKinematics(pVisual)->LL_GetInstance(spin_bone).set_callback(SpinCallback,this);
+}
+
+void __stdcall CAI_Stalker::HeadCallback(CBoneInstance* B)
+{
+	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
+	Fvector c				= B->mTransform.c;
+	Fmatrix					spin;
+	spin.setXYZ				(angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch)*p_head_factor, angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw)*y_head_factor), 0);
+	B->mTransform.mulA_43	(spin);
+	B->mTransform.c			= c;
+}
+
+void __stdcall CAI_Stalker::ShoulderCallback(CBoneInstance* B)
+{
+	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
+	Fvector c				= B->mTransform.c;
+	Fmatrix					spin;
+	spin.setXYZ				(angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch)*p_shoulder_factor, angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw)*y_shoulder_factor), 0);
+	B->mTransform.mulA_43	(spin);
+	B->mTransform.c			= c;
+}
+
+void __stdcall CAI_Stalker::SpinCallback(CBoneInstance* B)
+{
+	CAI_Stalker*			A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
+	Fvector c				= B->mTransform.c;
+	Fmatrix					spin;
+	spin.setXYZ				(angle_normalize_signed(A->r_current.pitch - A->r_torso_current.pitch)*p_spin_factor, angle_normalize_signed(-(A->r_current.yaw - A->r_torso_current.yaw)*y_spin_factor), 0);
+	B->mTransform.mulA_43	(spin);
+	B->mTransform.c			= c;
+}
+
+void __stdcall CAI_Stalker::LegsSpinCallback(CBoneInstance* B)
+{
+//	CAI_Stalker*		A = dynamic_cast<CAI_Stalker*> (static_cast<CObject*>(B->Callback_Param));
+	
+//	Fmatrix				spin;
+//	float				bone_yaw	= A->r_torso_current.yaw - A->r_model_yaw - A->r_model_yaw_delta;
+//	float				bone_pitch	= A->r_torso_current.pitch;
+//	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+//	spin.setXYZ			(bone_yaw,bone_pitch,0);
+//	B->mTransform.mulB_43(spin);
+}
 
 void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {

@@ -15,6 +15,7 @@
 
 #define MAX_STATE_LIST_SIZE				256
 #define MAX_TIME_RANGE_SEARCH			5000.f
+#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 
 class CAI_Stalker : public CCustomMonster, public CStalkerAnimations {
 private:
@@ -45,6 +46,18 @@ private:
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
 	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
+	// visibility constants
+	u32						m_dwMovementIdleTime;
+	float					m_fMaxInvisibleSpeed;
+	float					m_fMaxViewableSpeed;
+	float					m_fMovementSpeedWeight;
+	float					m_fDistanceWeight;
+	float					m_fSpeedWeight;
+	float					m_fCrouchVisibilityMultiplier;
+	float					m_fLieVisibilityMultiplier;
+	float					m_fVisibilityThreshold;
+	float					m_fLateralMultiplier;
+	float					m_fShadowWeight;
 
 
 	IC		void			vfAddStateToList		(EStalkerStates eState)
@@ -70,9 +83,22 @@ private:
 			void			Searching();
 			///
 			void			DropItem();
+			// selectors
 			void			vfBuildPathToDestinationPoint(CAISelectorBase *S);
 			void			vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 			void			vfInitSelector			(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
+			// bones
+			void			vfAssignBones			(CInifile *ini, const char *section);
+	static	void __stdcall	HeadCallback			(CBoneInstance* B);
+	static	void __stdcall	ShoulderCallback		(CBoneInstance* B);
+	static	void __stdcall	SpinCallback			(CBoneInstance* B);
+	static	void __stdcall	LegsSpinCallback		(CBoneInstance* B);
+			// look
+			bool			bfCheckForVisibility	(CEntity* tpEntity);
+			void			SetDirectionLook		();
+			void			SetLook					(Fvector tPosition);
+			void			SetLessCoverLook		(NodeCompressed *tNode);
+			void			SetLessCoverLook		();
 public:
 	typedef CCustomMonster inherited;
 							CAI_Stalker				();

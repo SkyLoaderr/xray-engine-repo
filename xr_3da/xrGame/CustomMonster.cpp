@@ -24,14 +24,14 @@ void CCustomMonster::SAnimState::Create(CKinematics* K, LPCSTR base)
 	rs		= K->ID_Cycle_Safe(strconcat(buf,base,"_rs"));
 }
 
-void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
-{
-	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
-
-	Fmatrix					spin;
-	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
-	B->mTransform.mulB_43	(spin);
-}
+//void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
+//{
+//	CCustomMonster*		M = dynamic_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
+//
+//	Fmatrix					spin;
+//	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);
+//	B->mTransform.mulB_43	(spin);
+//}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -66,12 +66,19 @@ void CCustomMonster::OnDeviceCreate()
 	
 	// Eyes
 	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
+	// weapons
+	if (pSettings->ReadINT(cNameSect(),"weapon_usage")) {
+		Weapons					= xr_new<CWeaponList>(this);
+		LPCSTR S1 = pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),S2 = pSettings->ReadSTRING(cNameSect(),"bone_head_weapon");
+		Weapons->Init			(S1,S2);
+	}
+
 	// Motions
-	CKinematics* skeleton	= PKinematics(pVisual);
+//	CKinematics* skeleton	= PKinematics(pVisual);
 	// take index spine bone
 	//"torso1"
-	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
-	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
+//	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
+//	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
 
 }
 
@@ -90,13 +97,6 @@ void CCustomMonster::Load		(LPCSTR section)
 	// Health & Armor
 	fArmor = 0;
 	
-	// weapons
-	if (pSettings->ReadINT(section,"weapon_usage")) {
-		Weapons					= xr_new<CWeaponList>(this);
-		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
-		Weapons->Init			(S1,S2);
-	}
-
 	// Sheduler
 	shedule_Min	= 50;
 	shedule_Max	= 500; // 30 * NET_Latency / 4;

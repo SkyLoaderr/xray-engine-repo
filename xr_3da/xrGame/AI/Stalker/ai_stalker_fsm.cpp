@@ -121,6 +121,7 @@ void CAI_Stalker::Searching()
 
 	INIT_SQUAD_AND_LEADER;
 	
+	SetLessCoverLook();
 	if (AI_Path.bNeedRebuild) {
 		vfBuildPathToDestinationPoint(0);
 		m_fCurSpeed = 1.f;

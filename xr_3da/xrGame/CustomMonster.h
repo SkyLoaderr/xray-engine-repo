@@ -34,7 +34,7 @@ protected:
 		void			Create(CKinematics* K, LPCSTR base);
 	};
 	
-	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
+//	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 	
 	typedef struct tagSDynamicObject {
 		u32			dwTime;
