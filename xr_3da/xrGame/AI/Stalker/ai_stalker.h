@@ -100,7 +100,9 @@ public:
 	virtual BOOL				feel_vision_isRelevant			(CObject* who);
 	virtual float				Radius							() const;
 	virtual void				OnHUDDraw						(CCustomHUD* hud) {inherited::OnHUDDraw(hud);}
+#ifdef DEBUG
 	virtual void				OnRender						() {inherited::OnRender();}
+#endif
 
 	virtual bool				useful							(const CGameObject *object) const;
 	virtual	float				evaluate						(const CGameObject *object) const;
