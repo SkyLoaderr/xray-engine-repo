@@ -34,6 +34,7 @@ end
 
 function options_dialog:InitControls()
 	ui_base_dialog.base_dialog.InitControls(self, "Options")
+	
 
 	----- DATA ----
 		----- BUTTONS --->>>
