@@ -13,8 +13,9 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TfrmBonePart *frmBonePart;
-TElTree* T[4];
-TEdit* E[4];
+TElTree* 	T[4];
+TEdit* 		E[4];
+TLabel* 	L[4];
 //---------------------------------------------------------------------------
 bool TfrmBonePart::Run(CEditableObject* object)
 {
@@ -40,6 +41,10 @@ __fastcall TfrmBonePart::TfrmBonePart(TComponent* Owner)
     E[1] = edPart2Name;
     E[2] = edPart3Name;
     E[3] = edPart4Name;
+    L[0] = lbPart1;
+    L[1] = lbPart2;
+    L[2] = lbPart3;
+    L[3] = lbPart4;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmBonePart::FormShow(TObject *Sender)
@@ -60,6 +65,14 @@ void __fastcall TfrmBonePart::FillBoneParts()
         	FHelper.AppendObject(T[it-m_BoneParts->begin()],m_EditObject->BoneNameByID(*w_it));
     }
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
+    lbTotalBones->Caption = m_EditObject->BoneCount();
+    UpdateCount();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmBonePart::UpdateCount()
+{
+    for (int k=0; k<4; k++) L[k]->Caption = AnsiString().sprintf("(%d B)",T[k]->Items->Count);
 }
 //---------------------------------------------------------------------------
 
@@ -86,6 +99,7 @@ void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
         if (ebMoveMode->Down) FDragItems[k]->Delete();
     }
     FDragItems.clear();
+    UpdateCount();
 }
 //---------------------------------------------------------------------------
 
@@ -139,14 +153,35 @@ void __fastcall TfrmBonePart::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmBonePart::ExtBtn1Click(TObject *Sender)
 {
-	m_BoneParts->clear();
-    // fill default bone part
-    m_BoneParts->push_back(SBonePart());
-    SBonePart& BP = m_BoneParts->back();
-    BP.alias = "default";
+    for (int k=0; k<4; k++) T[k]->IsUpdating = true;
+    for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
+    E[0]->Text = "default";
     for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
-        BP.bones.push_back(m_EditObject->BoneIDByName((*it)->Name()));
-    FillBoneParts();
+        FHelper.AppendObject(T[0],(*it)->Name());
+    for (k=0; k<4; k++) T[k]->IsUpdating = false;
+    UpdateCount();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmBonePart::ExtBtn2Click(TObject *Sender)
+{
+	TExtBtn* B = dynamic_cast<TExtBtn*>(Sender); VERIFY(B); int idx = B->Tag;
+    T[idx]->IsUpdating = true;
+    T[idx]->Items->Clear();
+    for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
+        FHelper.AppendObject(T[idx],(*it)->Name());
+    T[idx]->IsUpdating = false;
+    UpdateCount();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmBonePart::ExtBtn6Click(TObject *Sender)
+{
+	TExtBtn* B = dynamic_cast<TExtBtn*>(Sender); VERIFY(B); int idx = B->Tag;
+    T[idx]->IsUpdating = true;
+    T[idx]->Items->Clear();
+    T[idx]->IsUpdating = false;
+    UpdateCount();
 }
 //---------------------------------------------------------------------------
 

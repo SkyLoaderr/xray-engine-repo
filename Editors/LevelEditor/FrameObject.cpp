@@ -9,8 +9,9 @@
 #include "SceneObject.h"
 #include "library.h"
 #include "ChoseForm.h"
-#include "xr_trims.h"
+#include "ESceneObjectTools.h"
 #include "ImageThumbnail.h"
+#include "Scene.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -18,11 +19,12 @@
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
-__fastcall TfraObject::TfraObject(TComponent* Owner)
+__fastcall TfraObject::TfraObject(TComponent* Owner,ESceneObjectTools* parent_tools)
         : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
     m_Current 	= 0;
+    ParentTools	= parent_tools;
 }
 //---------------------------------------------------------------------------
 bool __fastcall TfraObject::OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R)
@@ -209,6 +211,8 @@ void __fastcall TfraObject::FormShow(TObject *Sender)
         }
     }
     m_Items->AssignItems	(items,false,"Objects",true);
+
+    ebRandomAppendMode->Down= ParentTools->IsAppendRandomActive();
 }
 //---------------------------------------------------------------------------
 
@@ -229,6 +233,18 @@ void __fastcall TfraObject::FormCreate(TObject *Sender)
 void __fastcall TfraObject::FormDestroy(TObject *Sender)
 {
     TItemList::DestroyForm	(m_Items);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::ebRandomAppendModeClick(TObject *Sender)
+{
+    ParentTools->ActivateAppendRandom(ebRandomAppendMode->Down);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::ExtBtn8Click(TObject *Sender)
+{
+    ParentTools->FillAppendRandomProperties();
 }
 //---------------------------------------------------------------------------
 

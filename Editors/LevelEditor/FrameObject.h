@@ -18,6 +18,7 @@
 
 // refs
 class CEditableObject;
+class ESceneObjectTools;
 //---------------------------------------------------------------------------
 class TfraObject : public TForm
 {
@@ -54,6 +55,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn7;
 	TLabel *Label6;
 	TMultiObjSpinEdit *MultiObjSpinEdit1;
+	TBevel *Bevel4;
+	TExtBtn *ebRandomAppendMode;
+	TExtBtn *ExtBtn8;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
@@ -68,6 +72,8 @@ __published:	// IDE-managed Components
 	void __fastcall FormHide(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall ebRandomAppendModeClick(TObject *Sender);
+	void __fastcall ExtBtn8Click(TObject *Sender);
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
@@ -76,7 +82,9 @@ private:	// User declarations
     LPCSTR m_Current;
 	bool __fastcall OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
 public:		// User declarations
-        __fastcall TfraObject(TComponent* Owner);
+	ESceneObjectTools* ParentTools;
+public:		// User declarations
+        __fastcall TfraObject(TComponent* Owner,ESceneObjectTools* parent_tools);
     LPCSTR 			Current	(){return m_Current;}
 };
 //---------------------------------------------------------------------------

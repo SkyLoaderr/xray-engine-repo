@@ -6,7 +6,7 @@
 #include "library.h"
 #include "scene.h"
 #include "SceneObject.h"
-//#include "EditObject.h"
+#include "ESceneObjectTools.h"
 #include "FrameObject.h"
 #include "leftbar.h"
 #include "EditorPref.h"
@@ -25,13 +25,19 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p,n;
 	if(!UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)) return false;
-    LPCSTR N = ((TfraObject*)parent_tool->pFrame)->Current();
-    if(!N){
-    	ELog.DlgMsg(mtInformation,"Nothing selected.");
-     	return false;
-    }
-
     { // pick already executed (see top)
+		ESceneObjectTools* ot = dynamic_cast<ESceneObjectTools*>(parent_tool);
+    	LPCSTR N;
+        if (ot->IsAppendRandomActive()&&ot->m_AppendRandomObjects.size()){
+        	N = ot->m_AppendRandomObjects[Random.randI(ot->m_AppendRandomObjects.size())].c_str();  
+        }else{
+            N = ((TfraObject*)parent_tool->pFrame)->Current();
+            if(!N){
+                ELog.DlgMsg(mtInformation,"Nothing selected.");
+                return false;
+            }
+        }
+
         string256 namebuffer;
         Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
         CSceneObject *obj = xr_new<CSceneObject>((LPVOID)0,namebuffer);
@@ -46,25 +52,21 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
             xr_delete(obj);
             return false;
         }
-*/        if (fraLeftBar->ebRandomAdd->Down){
+*/
+        if (ot->IsAppendRandomActive()){
             Fvector S;
-            if (frmEditPrefs->cbRandomRotation->Checked){
+            if (ot->IsAppendRandomRotationActive()){
             	Fvector p;
-                p.set(	deg2rad(Random.randF(frmEditPrefs->seRandomRotateMinX->Value,frmEditPrefs->seRandomRotateMaxX->Value)),
-                 		deg2rad(Random.randF(frmEditPrefs->seRandomRotateMinY->Value,frmEditPrefs->seRandomRotateMaxY->Value)),
-                        deg2rad(Random.randF(frmEditPrefs->seRandomRotateMinZ->Value,frmEditPrefs->seRandomRotateMaxZ->Value)));
+                p.set(	Random.randF(ot->m_AppendRandomMinRotation.x,ot->m_AppendRandomMaxRotation.x),
+                 		Random.randF(ot->m_AppendRandomMinRotation.y,ot->m_AppendRandomMaxRotation.y),
+                        Random.randF(ot->m_AppendRandomMinRotation.z,ot->m_AppendRandomMaxRotation.z));
                 obj->PRotation = p;
             }
-            if (frmEditPrefs->cbRandomScale->Checked){
+            if (ot->IsAppendRandomScaleActive()){
             	Fvector s;
-                s.set(	Random.randF(frmEditPrefs->seRandomScaleMinX->Value,frmEditPrefs->seRandomScaleMaxX->Value),
-                        Random.randF(frmEditPrefs->seRandomScaleMinY->Value,frmEditPrefs->seRandomScaleMaxY->Value),
-                        Random.randF(frmEditPrefs->seRandomScaleMinZ->Value,frmEditPrefs->seRandomScaleMaxZ->Value));
-                obj->PScale = s;
-            }
-            if (frmEditPrefs->cbRandomSize->Checked){
-            	Fvector s;
-                s.x=s.y=s.z=Random.randF(frmEditPrefs->seRandomSizeMin->Value,frmEditPrefs->seRandomSizeMax->Value);
+                s.set(	Random.randF(ot->m_AppendRandomMinScale.x,ot->m_AppendRandomMaxScale.x),
+                        Random.randF(ot->m_AppendRandomMinScale.y,ot->m_AppendRandomMaxScale.y),
+                        Random.randF(ot->m_AppendRandomMinScale.z,ot->m_AppendRandomMaxScale.z));
                 obj->PScale = s;
             }
         }

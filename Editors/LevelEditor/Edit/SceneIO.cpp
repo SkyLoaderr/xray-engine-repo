@@ -181,7 +181,7 @@ bool EScene::ReadObject(IReader& F, CCustomObject*& O)
 {
     EObjClass clsid=OBJCLASS_DUMMY;
     R_ASSERT(F.find_chunk(CHUNK_OBJECT_CLASS));
-    clsid = F.r_u32();
+    clsid = EObjClass(F.r_u32());
 	O = GetOTools(clsid)->CreateObject(0,0);
 
     IReader* S = F.open_chunk(CHUNK_OBJECT_BODY);
@@ -280,12 +280,15 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
         // snap list
         if (F->find_chunk(CHUNK_SNAPOBJECTS)){
-        	m_ESO_SnapObjects.resize(F->r_u32());
-		    AnsiString buf;
-		   	for(ObjectIt _F=m_ESO_SnapObjects.begin();_F!=m_ESO_SnapObjects.end();_F++){
-    	    	F->r_stringZ(buf);
-                *_F 	= FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
-                VERIFY	(*_F);
+            AnsiString 	buf;
+            int cnt 	= F->r_u32();
+            if (cnt){
+                for (int i=0; i<cnt; i++){
+                    F->r_stringZ	(buf);
+                    CCustomObject* O = FindObjectByName(buf.c_str(),OBJCLASS_SCENEOBJECT);
+                    if (!O)		ELog.Msg(mtError,"EScene: Can't find snap object '%s'.",buf.c_str());
+                    else		m_ESO_SnapObjects.push_back(O);
+                }
             }
             UpdateSnapList();
         }
@@ -323,7 +326,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 //---------------------------------------------------------------------------------------
 //copy/paste utils
 //---------------------------------------------------------------------------------------
-void EScene::SaveSelection( int classfilter, LPCSTR initial, LPCSTR fname )
+void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname )
 {
 	VERIFY( fname );
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
@@ -334,14 +337,21 @@ void EScene::SaveSelection( int classfilter, LPCSTR initial, LPCSTR fname )
     F.w_u32			(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
-    SceneToolsMapPairIt _I = m_SceneTools.begin();
-    SceneToolsMapPairIt _E = m_SceneTools.end();
-    for (; _I!=_E; _I++)
-        if (_I->second&&_I->second->IsNeedSave()){
-        	F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
-         	_I->second->SaveSelection(F);
-        	F.close_chunk	();
-        }
+    if (OBJCLASS_DUMMY==classfilter){
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++)
+            if (_I->second&&_I->second->IsNeedSave()){
+                F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+                _I->second->SaveSelection(F);
+                F.close_chunk	();
+            }
+    }else{
+    	ESceneCustomMTools* mt = GetMTools(classfilter); VERIFY(mt);
+        F.open_chunk	(CHUNK_TOOLS_OFFSET+classfilter);
+        mt->SaveSelection(F);
+        F.close_chunk	();
+    }
         
     F.save_to		(full_name.c_str());
 }
@@ -431,7 +441,8 @@ struct SceneClipData {
 };
 #pragma pack(pop)
 
-int EScene::CopySelection( EObjClass classfilter ){
+int EScene::CopySelection( EObjClass classfilter )
+{
 	HGLOBAL hmem = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, sizeof(SceneClipData) );
 	SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
 

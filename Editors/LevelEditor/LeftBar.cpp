@@ -394,13 +394,6 @@ void __fastcall TfraLeftBar::ebHideUnselectedClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebRandomAddClick(TObject *Sender)
-{
-	if (ebRandomAdd->Down)
-	    if (frmEditPrefs->Run(frmEditPrefs->tsEdit)==mrCancel)
-        	ebRandomAdd->Down=false;
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebLockAllClick(TObject *Sender)
 {

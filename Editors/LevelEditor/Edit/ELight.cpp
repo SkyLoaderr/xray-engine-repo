@@ -391,7 +391,10 @@ void __fastcall	CLight::OnFuzzyFlagChange(PropValue* value)
 	if (m_Flags.is(flPointFuzzy)){ 
     	m_FuzzyData		= xr_new<SFuzzyData>();
 	    OnFuzzyTypeChange	(value);
-    }else				xr_delete	(m_FuzzyData);
+    }else{
+    	xr_delete		(m_FuzzyData);
+        OnTypeChange 	(value);
+    }
 }
 
 void __fastcall	CLight::OnFuzzyTypeChange(PropValue* value)

@@ -85,7 +85,7 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
     U32Vec data;
     u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)){
-    	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existence",src_name.c_str());
+    	ELog.Msg(mtError,"Can't load texture '%s'.\nCheck file existence",src_name.c_str());
      	return;
     }
     MakeThumbnailImage(THM,data.begin(),w,h,a);

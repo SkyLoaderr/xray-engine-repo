@@ -33,9 +33,9 @@ object frmEditPrefs: TfrmEditPrefs
       Top = 0
       Width = 396
       Height = 243
-      ActivePage = tsCamera
+      ActivePage = tsEdit
       Align = alClient
-      TabIndex = 0
+      TabIndex = 3
       TabOrder = 0
       object tsCamera: TTabSheet
         Caption = 'Camera'
@@ -749,9 +749,9 @@ object frmEditPrefs: TfrmEditPrefs
             end
             object seRandomScaleMinX: TMultiObjSpinEdit
               Left = 63
-              Top = 27
+              Top = 32
               Width = 56
-              Height = 18
+              Height = 13
               LWSensitivity = 0.1
               ButtonKind = bkLightWave
               Increment = 0.01

@@ -46,7 +46,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn8;
 	TExtBtn *ExtBtn9;
 	TExtBtn *ExtBtn10;
-	TExtBtn *ebRandomAdd;
 	TMxPopupMenu *pmSceneFile;
 	TMenuItem *Clear1;
 	TMenuItem *miOpen;
@@ -219,7 +218,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebHideSelectedClick(TObject *Sender);
 	void __fastcall ebUnhideAllClick(TObject *Sender);
 	void __fastcall ebHideUnselectedClick(TObject *Sender);
-	void __fastcall ebRandomAddClick(TObject *Sender);
 	void __fastcall ebLockAllClick(TObject *Sender);
 	void __fastcall ebLockSelClick(TObject *Sender);
 	void __fastcall ebLockUnselClick(TObject *Sender);

@@ -141,7 +141,7 @@ public:
 	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
-	void 			SaveSelection		(int classfilter, LPCSTR initial, LPCSTR fname);
+	void 			SaveSelection		(EObjClass classfilter, LPCSTR initial, LPCSTR fname);
 	void 			Unload				();
 	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);

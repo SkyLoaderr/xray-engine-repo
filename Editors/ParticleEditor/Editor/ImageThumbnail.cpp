@@ -294,46 +294,50 @@ void EImageThumbnail::FillProp(PropItemVec& items)
 
 void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bUseAlpha)
 {
-	if (IsTexture()){
-        TRect r = R; r.left += 1; r.top += 1;
-        float w, h;
-        w = _Width();
-        h = _Height();
-        if (w!=h)	pCanvas->FillRect(R);
-        if (w>h){   r.right = R.left + R.Width()-1; 	r.bottom = R.top + h/w*R.Height()-1;
-        }else{      r.right = R.left + w/h*R.Width()-1; r.bottom = R.top + R.Height()-1;}
-//		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
-		DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
-    }else{
-		TRect r = R; r.left += 1; r.top += 1;
-		r.right -= 1; r.bottom -= 1;
-//		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
-		DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
+	if (Valid()){
+        if (IsTexture()){
+            TRect r = R; r.left += 1; r.top += 1;
+            float w, h;
+            w = _Width();
+            h = _Height();
+            if (w!=h)	pCanvas->FillRect(R);
+            if (w>h){   r.right = R.left + R.Width()-1; 	r.bottom = R.top + h/w*R.Height()-1;
+            }else{      r.right = R.left + w/h*R.Width()-1; r.bottom = R.top + R.Height()-1;}
+    //		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+            DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
+        }else{
+            TRect r = R; r.left += 1; r.top += 1;
+            r.right -= 1; r.bottom -= 1;
+    //		DrawThumbnail(pCanvas->Handle,m_Pixels,r.left,r.top,r.Width(),r.Height(),THUMB_WIDTH,THUMB_HEIGHT);
+            DrawThumbnail(pCanvas,r,m_Pixels,bUseAlpha);
+        }
     }
 }
 
 void EImageThumbnail::Draw(TPaintBox* pbox, bool bUseAlpha)
 {
-	if (IsTexture()){
-        TRect r;
-        r.left = 2; r.top = 2;
-        float w, h;
-        w = _Width();
-        h = _Height();
-        if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
-        if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
-        }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
-//		HDC hdc 	= GetDC	(panel->Handle);
-//		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
-//		ReleaseDC	(panel->Handle,hdc);
-		DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
-    }else{
-        TRect r;	r.left = 2; r.top = 2;
-        r.right 	= pbox->Width-1; r.bottom = pbox->Height-1;
-//		HDC hdc 	= GetDC	(panel->Handle);
-//		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
-//		ReleaseDC	(panel->Handle,hdc);
-		DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
+	if (Valid()){
+        if (IsTexture()){
+            TRect r;
+            r.left = 2; r.top = 2;
+            float w, h;
+            w = _Width();
+            h = _Height();
+            if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
+            if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
+            }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
+    //		HDC hdc 	= GetDC	(panel->Handle);
+    //		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+    //		ReleaseDC	(panel->Handle,hdc);
+            DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
+        }else{
+            TRect r;	r.left = 2; r.top = 2;
+            r.right 	= pbox->Width-1; r.bottom = pbox->Height-1;
+    //		HDC hdc 	= GetDC	(panel->Handle);
+    //		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
+    //		ReleaseDC	(panel->Handle,hdc);
+            DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
+        }
     }
 }
 

@@ -299,7 +299,7 @@ bool EDetailManager::Load(IReader& F){
 	        for (int i=0; i<snap_cnt; i++){
     	    	F.r_stringZ	(buf);
         	    CCustomObject* O = Scene.FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
-            	if (!O)		ELog.Msg(mtError,"EDetailManager: Can't find object '%s' in scene.",buf);
+            	if (!O)		ELog.Msg(mtError,"EDetailManager: Can't find snap object '%s'.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }
         }

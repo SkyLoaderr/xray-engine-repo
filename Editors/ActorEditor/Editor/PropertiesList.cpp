@@ -286,9 +286,9 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
     bModified=false;
 	if (full_expand) tvProperties->FullExpand();
 
-    SelectItem		(last_selected_item);
-
 	UnlockUpdating	();
+
+    SelectItem		(last_selected_item);
 
     Caption 		= title;
 }

@@ -509,29 +509,33 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
     }
     UI.ProgressInc		();
     // motion defs
+    bool bRes=true;
     SMotionVec& sm_lst 		= m_Source->SMotions();
 	F.w_u16(sm_lst.size());
     for (SMotionIt motion_it=sm_lst.begin(); motion_it!=sm_lst.end(); motion_it++){
         CSMotion* motion = *motion_it;
         // verify
         if ((motion->iBoneOrPart==-1)&&(!motion->m_Flags.is(esmFX))){
-        	ELog.Msg(mtError,"Motion '%s' - invalid 'Bone Part' (== -1).",motion->Name());
-            return false;
+        	ELog.Msg(mtError,"Invalid Bone Part of motion: '%s'.",motion->Name());
+            bRes=false;
+            continue;
         }
-    	// export
-        F.w_stringZ	(motion->Name());
-        F.w_u32		(motion->m_Flags.get());
-		F.w_s16		(motion->iBoneOrPart);
-        F.w_u16		(motion_it-sm_lst.begin());
-        F.w_float	(motion->fSpeed);
-        F.w_float	(motion->fPower);
-        F.w_float	(motion->fAccrue);
-        F.w_float	(motion->fFalloff);
+        if (bRes){
+	    	// export
+            F.w_stringZ	(motion->Name());
+            F.w_u32		(motion->m_Flags.get());
+            F.w_s16		(motion->iBoneOrPart);
+            F.w_u16		(motion_it-sm_lst.begin());
+            F.w_float	(motion->fSpeed);
+            F.w_float	(motion->fPower);
+            F.w_float	(motion->fAccrue);
+            F.w_float	(motion->fFalloff);
+        }
     }
     UI.ProgressInc		();
     F.close_chunk();
     UI.ProgressEnd();
-    return true;
+    return bRes;
 }
 
 bool CExportSkeleton::ExportMotions(IWriter& F)

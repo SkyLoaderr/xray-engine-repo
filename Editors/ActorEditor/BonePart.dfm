@@ -1,9 +1,9 @@
 object frmBonePart: TfrmBonePart
-  Left = 1280
-  Top = 249
+  Left = 453
+  Top = 199
   BorderStyle = bsToolWindow
   Caption = 'Bone Part'
-  ClientHeight = 439
+  ClientHeight = 451
   ClientWidth = 441
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
@@ -20,35 +20,35 @@ object frmBonePart: TfrmBonePart
   TextHeight = 13
   object RxLabel29: TLabel
     Left = 0
-    Top = 5
+    Top = 19
     Width = 38
     Height = 13
     Caption = 'Part #1:'
   end
   object RxLabel1: TLabel
     Left = 224
-    Top = 5
+    Top = 19
     Width = 38
     Height = 13
     Caption = 'Part #2:'
   end
   object RxLabel2: TLabel
     Left = 0
-    Top = 213
+    Top = 227
     Width = 38
     Height = 13
     Caption = 'Part #3:'
   end
   object RxLabel3: TLabel
     Left = 224
-    Top = 213
+    Top = 227
     Width = 38
     Height = 13
     Caption = 'Part #4:'
   end
   object ebSave: TExtBtn
     Left = 247
-    Top = 420
+    Top = 434
     Width = 96
     Height = 17
     Align = alNone
@@ -60,7 +60,7 @@ object frmBonePart: TfrmBonePart
   end
   object ebCancel: TExtBtn
     Left = 344
-    Top = 420
+    Top = 434
     Width = 96
     Height = 17
     Align = alNone
@@ -72,7 +72,7 @@ object frmBonePart: TfrmBonePart
   end
   object ebCopyMode: TExtBtn
     Left = 2
-    Top = 420
+    Top = 434
     Width = 50
     Height = 17
     Align = alNone
@@ -131,7 +131,7 @@ object frmBonePart: TfrmBonePart
   end
   object ebMoveMode: TExtBtn
     Left = 50
-    Top = 420
+    Top = 434
     Width = 50
     Height = 17
     Align = alNone
@@ -191,7 +191,7 @@ object frmBonePart: TfrmBonePart
   end
   object ExtBtn1: TExtBtn
     Left = 104
-    Top = 420
+    Top = 434
     Width = 100
     Height = 17
     Align = alNone
@@ -201,9 +201,153 @@ object frmBonePart: TfrmBonePart
     FlatAlwaysEdge = True
     OnClick = ExtBtn1Click
   end
+  object ExtBtn2: TExtBtn
+    Left = 187
+    Top = 18
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'All'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn2Click
+  end
+  object ExtBtn3: TExtBtn
+    Tag = 1
+    Left = 411
+    Top = 18
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'All'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn2Click
+  end
+  object ExtBtn4: TExtBtn
+    Tag = 2
+    Left = 187
+    Top = 226
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'All'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn2Click
+  end
+  object ExtBtn5: TExtBtn
+    Tag = 3
+    Left = 411
+    Top = 226
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'All'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn2Click
+  end
+  object ExtBtn6: TExtBtn
+    Left = 158
+    Top = 18
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'Clear'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn6Click
+  end
+  object ExtBtn7: TExtBtn
+    Tag = 2
+    Left = 158
+    Top = 226
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'Clear'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn6Click
+  end
+  object ExtBtn8: TExtBtn
+    Tag = 3
+    Left = 382
+    Top = 226
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'Clear'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn6Click
+  end
+  object ExtBtn9: TExtBtn
+    Tag = 1
+    Left = 382
+    Top = 18
+    Width = 29
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    CloseButton = False
+    Caption = 'Clear'
+    FlatAlwaysEdge = True
+    OnClick = ExtBtn6Click
+  end
+  object lbPart1: TLabel
+    Left = 40
+    Top = 19
+    Width = 28
+    Height = 13
+    Caption = '(47 B)'
+  end
+  object lbPart3: TLabel
+    Left = 40
+    Top = 227
+    Width = 28
+    Height = 13
+    Caption = '(47 B)'
+  end
+  object lbPart4: TLabel
+    Left = 264
+    Top = 227
+    Width = 28
+    Height = 13
+    Caption = '(47 B)'
+  end
+  object lbPart2: TLabel
+    Left = 264
+    Top = 19
+    Width = 28
+    Height = 13
+    Caption = '(47 B)'
+  end
+  object Label1: TLabel
+    Left = 0
+    Top = 3
+    Width = 60
+    Height = 13
+    Caption = 'Total Bones:'
+  end
+  object lbTotalBones: TLabel
+    Left = 71
+    Top = 3
+    Width = 9
+    Height = 13
+    Caption = '...'
+  end
   object tvPart1: TElTree
     Left = 0
-    Top = 24
+    Top = 38
     Width = 217
     Height = 185
     Cursor = crDefault
@@ -277,9 +421,9 @@ object frmBonePart: TfrmBonePart
     OnStartDrag = tvPartStartDrag
   end
   object edPart1Name: TEdit
-    Left = 40
-    Top = 4
-    Width = 176
+    Left = 71
+    Top = 18
+    Width = 86
     Height = 16
     AutoSize = False
     Color = 10526880
@@ -287,7 +431,7 @@ object frmBonePart: TfrmBonePart
   end
   object tvPart2: TElTree
     Left = 224
-    Top = 24
+    Top = 38
     Width = 217
     Height = 185
     Cursor = crDefault
@@ -361,9 +505,9 @@ object frmBonePart: TfrmBonePart
     OnStartDrag = tvPartStartDrag
   end
   object edPart2Name: TEdit
-    Left = 264
-    Top = 4
-    Width = 176
+    Left = 295
+    Top = 18
+    Width = 86
     Height = 16
     AutoSize = False
     Color = 10526880
@@ -371,7 +515,7 @@ object frmBonePart: TfrmBonePart
   end
   object tvPart3: TElTree
     Left = 0
-    Top = 232
+    Top = 246
     Width = 217
     Height = 185
     Cursor = crDefault
@@ -445,9 +589,9 @@ object frmBonePart: TfrmBonePart
     OnStartDrag = tvPartStartDrag
   end
   object edPart3Name: TEdit
-    Left = 40
-    Top = 212
-    Width = 176
+    Left = 71
+    Top = 226
+    Width = 86
     Height = 16
     AutoSize = False
     Color = 10526880
@@ -455,7 +599,7 @@ object frmBonePart: TfrmBonePart
   end
   object tvPart4: TElTree
     Left = 224
-    Top = 232
+    Top = 246
     Width = 217
     Height = 185
     Cursor = crDefault
@@ -529,9 +673,9 @@ object frmBonePart: TfrmBonePart
     OnStartDrag = tvPartStartDrag
   end
   object edPart4Name: TEdit
-    Left = 264
-    Top = 212
-    Width = 176
+    Left = 295
+    Top = 226
+    Width = 86
     Height = 16
     AutoSize = False
     Color = 10526880
