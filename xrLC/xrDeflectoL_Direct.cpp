@@ -76,40 +76,39 @@ void CDeflector::L_Direct	(HASH& H)
 		{
 			DWORD		Fcount	= 0;
 			
-			try {
-				for (J=0; J<Jcount; J++) 
+			for (J=0; J<Jcount; J++) 
+			{
+				// LUMEL space
+				UVpoint P;
+				P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
+				P.v = float(V)/dim.v + half.v + Jitter[J].v * JS.v;
+				
+				vector<UVtri*>&	space	= H.query(P.u,P.v);
+				
+				// World space
+				Fvector wP,wN,B;
+				C[J].set	(0,0,0,0);
+				for (UVtri** it=space.begin(); it!=space.end(); it++)
 				{
-					// LUMEL space
-					UVpoint P;
-					P.u = float(U)/dim.u + half.u + Jitter[J].u * JS.u;
-					P.v = float(V)/dim.v + half.v + Jitter[J].v * JS.v;
-					
-					vector<UVtri*>&	space	= H.query(P.u,P.v);
-					
-					// World space
-					Fvector wP,wN,B;
-					C[J].set	(0,0,0,0);
-					for (UVtri** it=space.begin(); it!=space.end(); it++)
-					{
-						if ((*it)->isInside(P,B)) {
-							// We found triangle and have barycentric coords
-							Face	*F	= (*it)->owner;
-							Vertex	*V1 = F->v[0];
-							Vertex	*V2 = F->v[1];
-							Vertex	*V3 = F->v[2];
-							wP.from_bary(V1->P,V2->P,V3->P,B);
-							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
-							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
+					if ((*it)->isInside(P,B)) {
+						// We found triangle and have barycentric coords
+						Face	*F	= (*it)->owner;
+						Vertex	*V1 = F->v[0];
+						Vertex	*V2 = F->v[1];
+						Vertex	*V3 = F->v[2];
+						wP.from_bary(V1->P,V2->P,V3->P,B);
+						if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
+						else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
+						try {
 							LightPoint	(&DB, C[J], wP, wN, LightsSelected.begin(), LightsSelected.end());
 							Fcount		+= 1;
-							break;
+						} catch (...) {
+							Msg("* Access violation. Possibly recovered. ");
 						}
+						break;
 					}
-				} 
-			} catch (...)
-			{
-				Msg("* Access violation. Possibly recovered. ");
-			}
+				}
+			} 
 			
 			if (Fcount) {
 				Fcolor	Lumel,R;
