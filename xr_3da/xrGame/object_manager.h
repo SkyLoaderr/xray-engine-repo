@@ -8,14 +8,12 @@
 
 #pragma once
 
-template <
-	typename T
->
+template <typename T>
 class CObjectManager {
-private:
 protected:
 	xr_set<const T*>	m_objects;
 	const T				*m_selected;
+
 public:
 					CObjectManager				();
 	virtual			~CObjectManager				();
