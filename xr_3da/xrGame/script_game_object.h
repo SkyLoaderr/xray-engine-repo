@@ -432,6 +432,8 @@ public:
 			//LAMP
 			CHangingLamp*		get_hanging_lamp		();
 			CHolderCustom*		get_custom_holder		();
+			CHolderCustom*		get_current_holder		(); //actor only
+
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;
