@@ -1305,7 +1305,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 		bActivating=false;
 		if(!m_parent_element) 
 		{
-			m_shell->m_object_in_root.set(mXFORM.c);
+			m_shell->m_object_in_root.set(mXFORM);
 			m_shell->m_object_in_root.invert();
 			m_shell->bActivating=false;
 		}
@@ -1314,7 +1314,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	if(!m_parent_element)
 	{
-			m_shell->InterpolateGlobalPosition(&(m_shell->mXFORM.c));
+			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 	}
 	
 	//if(m_parent_element)

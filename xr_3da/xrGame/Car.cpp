@@ -197,7 +197,9 @@ void	CCar::UpdateCL				( )
 		cam_Update	(Device.fTimeDelta);
 	if(m_owner)
 	{
-		m_owner->XFORM().mul	(XFORM(),m_sits_transforms[0]);
+		m_pPhysicsShell->InterpolateGlobalTransform(&m_owner->XFORM());
+		m_owner->XFORM().mulB	(m_sits_transforms[0]);
+
 		if(m_owner->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
 	}

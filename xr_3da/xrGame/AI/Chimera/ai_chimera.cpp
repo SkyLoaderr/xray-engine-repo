@@ -256,7 +256,7 @@ void CAI_Chimera::UpdateCL()
 	{
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
+		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
 	}
 
 	// Проверка состояния анимации (атака)

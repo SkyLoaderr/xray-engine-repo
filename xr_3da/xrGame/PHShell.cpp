@@ -742,10 +742,12 @@ if( (!(*i)->bActive) || (*i)->bActivating ) return;
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
 (*elements.begin())->InterpolateGlobalTransform(m);
+m->mulB(m_object_in_root);
+//m->c.add(m_object_in_root);
 }
 
 void CPHShell::InterpolateGlobalPosition(Fvector* v)
 {
 	(*elements.begin())->InterpolateGlobalPosition(v);
-	v->add(m_object_in_root);
+	v->add(m_object_in_root.c);
 }

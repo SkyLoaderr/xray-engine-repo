@@ -439,7 +439,7 @@ void CAI_Stalker::UpdateCL(){
 	{
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
+		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
 	}
 		if (Level().CurrentViewEntity() == this) {
 			Exec_Visibility();

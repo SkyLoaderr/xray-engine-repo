@@ -307,7 +307,7 @@ void CAI_Biting::UpdateCL()
 	{
 
 		//XFORM().set(m_pPhysicsShell->mXFORM);
-		m_pPhysicsShell->InterpolateGlobalPosition(&(XFORM().c));
+		m_pPhysicsShell->InterpolateGlobalTransform(&(XFORM()));
 	}
 	// Проверка состояния анимации (атака)
 	TTime cur_time = Level().timeServer();

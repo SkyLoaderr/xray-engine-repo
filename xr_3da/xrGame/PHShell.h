@@ -17,7 +17,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 
 
 public:
-	Fvector											m_object_in_root;
+	Fmatrix											m_object_in_root;
 
 	CPHShell				()							
 			{
@@ -25,7 +25,7 @@ public:
 													bActivating=false;
 													m_space=NULL;
 													m_pKinematics=NULL;
-													m_object_in_root.set(0,0,0);
+													m_object_in_root.identity();
 			};
 
 virtual ~CPHShell				()							
