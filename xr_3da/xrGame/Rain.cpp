@@ -239,8 +239,8 @@ void	CEffect_Rain::Render	()
 		one.P.mad		(one.D,one.fSpeed*dt);
 		
 //		float	height	=	HM.Query(one.P.x,one.P.z);
-		if (P.one.fHeight>one.P.y)	{
-			one.P.y		= height;
+		if (one.fHeight>one.P.y)	{
+			one.P.y		= one.fHeight;
 			Hit			(one.P);
 			Born		(one,b_radius,b_height);
 		}
