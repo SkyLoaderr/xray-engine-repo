@@ -191,7 +191,6 @@ void CScriptEngine::register_script_classes	()
 		parse_script_namespace	(I,script_namespace,script_function);
 		add_file				(script_namespace);
 		process					();
-//		lua_dostring			(lua(),I);
 		luabind::functor<void>	result;
 		R_ASSERT				(functor(I,result));
 		result					(const_cast<CObjectFactory*>(&object_factory()));
