@@ -528,7 +528,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Full-screen-quad VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float _w	= w, _h = h;
+		const float _w	= w-.9f, _h = h-.9f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
 
@@ -1333,6 +1333,42 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 // Name: RenderCombine_Normal			()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderCombine_Normal	()
+{
+	// samplers and texture (diffuse + gloss)
+	m_pd3dDevice->SetTexture				(0, d_Color);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(1, d_Accumulator);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_Combine_Normal.ps);
+	m_pd3dDevice->SetVertexShader			(s_Combine_Normal.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	cc.flush								(m_pd3dDevice);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+	m_pd3dDevice->SetTexture				(1, NULL);
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderCombine_Normal			()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 {
 	// samplers and texture (diffuse + gloss)
 	m_pd3dDevice->SetTexture				(0, d_Color);
