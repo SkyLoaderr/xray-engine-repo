@@ -75,7 +75,7 @@ public:
 		for(int i = 0; i < static_cast<int>(text.size()) - 2; ++i)
 		{
 			// '\n' - переход на новую строку
-			if(text[i] == '\\' && text[i+1]== 'n')
+			if((text[i] == '\\' && text[i+1]== 'n') || (10 == text[i] && 13 == text[i + 1]))
 			{	
 				buf.clear();
 				buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);

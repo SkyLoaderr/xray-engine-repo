@@ -87,6 +87,9 @@ public:
 	// Cмещение текстуры кнопки
 	void		SetTextureOffset(int x, int y) { m_iTexOffsetX = x; m_iTexOffsetY = y; }
 	Ivector2	GetTextureOffeset() const { Ivector2 v; return v.set(m_iTexOffsetX, m_iTexOffsetY); }
+	// Анализируем текст на помещаемость его по длинне в заданную ширину, и если нет, то всталяем 
+	// "\n" реализуем таким образом wordwrap
+	static void PreprocessText(STRING &str, u32 width);
 
 protected:
 	bool m_bClipper;

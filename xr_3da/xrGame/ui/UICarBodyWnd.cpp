@@ -49,7 +49,9 @@ void CUICarBodyWnd::Init()
 	
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	//статические элементы интерфейса
 	AttachChild(&UIStaticTop);
@@ -222,6 +224,8 @@ void CUICarBodyWnd::UpdateLists()
 									(*it)->GetGridHeight()*INV_GRID_HEIGHT);
 
 			UIDragDropItem.SetData((*it));
+
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 			CWeaponAmmo* pWeaponAmmo  = dynamic_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);

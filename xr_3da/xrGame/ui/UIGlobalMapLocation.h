@@ -24,7 +24,7 @@ public:
 	CUIGlobalMapLocation();
 	virtual ~CUIGlobalMapLocation();
 
-	virtual void Init(int width, int height, RECT clipRect);
+	virtual void Init(int width, int height, RECT clipRect, LPCSTR frameBase);
 	void Draw();
 protected:
 	// Фрейм для оторажения рамочки

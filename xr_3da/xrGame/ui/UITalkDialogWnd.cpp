@@ -12,7 +12,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const TALK_XML		= "talk.xml";
+const char * const TALK_XML					= "talk.xml";
+const char * const TRADE_CHARACTER_XML		= "trade_character.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -44,9 +45,9 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	AttachChild(&UIOthersIcon);
 	xml_init.InitStatic(uiXml, "static_icon", 1, &UIOthersIcon);
 	UIOurIcon.AttachChild(&UICharacterInfoLeft);
-	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), "trade_character.xml");
+	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), TRADE_CHARACTER_XML);
 	UIOthersIcon.AttachChild(&UICharacterInfoRight);
-	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
+	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), TRADE_CHARACTER_XML);
 
 	//основной фрейм диалога
 	AttachChild(&UIDialogFrame);
@@ -80,6 +81,9 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 
 	// шрифт для индикации имени персонажа в окне разговора
 	xml_init.InitFont(uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
+
+	CGameFont *pFnt = NULL;
+	xml_init.InitFont(uiXml, "font", 1, m_uOurReplicsColor, pFnt);
 }
 
 

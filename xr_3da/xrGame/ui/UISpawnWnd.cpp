@@ -5,6 +5,10 @@
 #include "../hudmanager.h"
 #include "../level.h"
 
+//////////////////////////////////////////////////////////////////////////
+
+const char * const SPAWN_XML		= "spawn.xml";
+
 //-----------------------------------------------------------------------------/
 //  Ctor and Dtor
 //-----------------------------------------------------------------------------/
@@ -33,12 +37,14 @@ void CUISpawnWnd::Init(	const char *strCaptionPrimary, const u32 ColorPrimary,
 						bool bDual)
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$", "spawn.xml");
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result = uiXml.Init("$game_data$", SPAWN_XML);
+	R_ASSERT3(xml_result, "xml file not found", SPAWN_XML);
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					Device.dwWidth, Device.dwHeight);
 
 	// Читаем из xml файла параметры окна и контролов
 	AttachChild(&UIFrameWndPrimary);

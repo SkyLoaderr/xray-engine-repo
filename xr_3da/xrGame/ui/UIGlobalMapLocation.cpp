@@ -12,10 +12,6 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	BORDER_FRAME	= "ui\\ui_pda_frame_sub";
-
-//////////////////////////////////////////////////////////////////////////
-
 CUIGlobalMapLocation::CUIGlobalMapLocation()
 {
 }
@@ -29,9 +25,9 @@ CUIGlobalMapLocation::~CUIGlobalMapLocation()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIGlobalMapLocation::Init(int width, int height, RECT clipRect)
+void CUIGlobalMapLocation::Init(int width, int height, RECT clipRect, LPCSTR frameBase)
 {
-	UIBorder.Init(BORDER_FRAME, 0, 0, width, height);
+	UIBorder.Init(frameBase, 0, 0, width, height);
 	inherited::SetWidth(width);
 	inherited::SetHeight(height);
 	UIBorder.SetClipper(true, clipRect);

@@ -27,7 +27,8 @@ using namespace InventoryUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	TRADE_XML	= "trade.xml";
+const char * const TRADE_XML			= "trade.xml";
+const char * const TRADE_CHARACTER_XML	= "trade_character.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -55,7 +56,7 @@ void CUITradeWnd::Init()
 	R_ASSERT3(xml_result, "xml file not found", TRADE_XML);
 	CUIXmlInit xml_init;
 	
-	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	CUIWindow::Init(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	//статические элементы интерфейса
 	AttachChild(&UIStaticTop);
@@ -69,9 +70,9 @@ void CUITradeWnd::Init()
 	AttachChild(&UIOthersIcon);
 	xml_init.InitStatic(uiXml, "static_icon", 1, &UIOthersIcon);
 	UIOurIcon.AttachChild(&UICharacterInfoLeft);
-	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), "trade_character.xml");
+	UICharacterInfoLeft.Init(0,0, UIOurIcon.GetWidth(), UIOurIcon.GetHeight(), TRADE_CHARACTER_XML);
 	UIOthersIcon.AttachChild(&UICharacterInfoRight);
-	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), "trade_character.xml");
+	UICharacterInfoRight.Init(0,0, UIOthersIcon.GetWidth(), UIOthersIcon.GetHeight(), TRADE_CHARACTER_XML);
 
 
 	//Списки торговли

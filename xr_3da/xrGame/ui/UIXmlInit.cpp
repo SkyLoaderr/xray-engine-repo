@@ -8,7 +8,7 @@
 #include "../hudmanager.h"
 #include "../UI.h"
 #include "../level.h"
-
+#include "../UICustomItem.h"
 
 #define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
@@ -48,6 +48,7 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
+	InitAlignment(xml_doc, path, index, x, y);
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	pWnd->Init(x, y, width, height);
@@ -67,6 +68,8 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	int y		= xml_doc.ReadAttribInt(path, index, "y");
 	int width	= xml_doc.ReadAttribInt(path, index, "width");
 	int height	= xml_doc.ReadAttribInt(path, index, "height");
+
+	InitAlignment(xml_doc, path, index, x, y);
 
 	int	r		= xml_doc.ReadAttribInt(path, index, "r", 0xff);
 	int	g		= xml_doc.ReadAttribInt(path, index, "g", 0xff);
@@ -120,6 +123,8 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 
+	InitAlignment(xml_doc, path, index, x, y);
+
 	ref_str scale_str = xml_doc.ReadAttrib(path, index, "scale", NULL);
 	float scale = 1.f;
 	if(*scale_str) scale = (float)atof(*scale_str);
@@ -142,6 +147,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	pWnd->SetTextColor(color);
 	pWnd->SetFont(pTmpFont);
 
+	// Text coordinates
 	int text_x = xml_doc.ReadAttribInt(*text_path, index, "x");
 	int text_y = xml_doc.ReadAttribInt(*text_path, index, "y");
 	ref_str text = xml_doc.Read(*text_path, index, NULL);
@@ -177,6 +183,9 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
+
+	InitAlignment(xml_doc, path, index, x, y);
+
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 
@@ -213,6 +222,9 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 	
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
+
+	InitAlignment(xml_doc, path, index, x, y);
+
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	int item_height = xml_doc.ReadAttribInt(path, index, "item_height");
@@ -248,6 +260,9 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
+
+	InitAlignment(xml_doc, path, index, x, y);
+
 	int width = xml_doc.ReadAttribInt(path, index, "length");
 	int height = xml_doc.ReadAttribInt(path, index, "broad");
 	bool is_horizontal = (xml_doc.ReadAttribInt(path, index, "horz")==1);
@@ -415,6 +430,9 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 
 	int x			= xml_doc.ReadAttribInt(path, index, "x");
 	int y			= xml_doc.ReadAttribInt(path, index, "y");
+
+	InitAlignment(xml_doc, path, index, x, y);
+
 	int width		= xml_doc.ReadAttribInt(path, index, "width");
 	int height		= xml_doc.ReadAttribInt(path, index, "height");
 	bool vertical	= !!xml_doc.ReadAttribInt(path, index, "vertical");
@@ -581,4 +599,85 @@ bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUISt
 	}
 
 	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIXmlInit::ApplyAlignX(int coord, u32 align)
+{
+	// Применить выравнивание, только при увеличенном разрешения
+	if (UI_BASE_WIDTH >= Device.dwWidth) return coord;
+
+	int retVal = coord;
+	
+	if (align & alRight)
+	{
+		retVal = UI_BASE_WIDTH - coord;
+		retVal = Device.dwWidth - retVal;
+	}
+	else if (align & alCenter)
+	{
+		retVal += (Device.dwWidth - UI_BASE_WIDTH) / 2;
+	}
+
+	return retVal;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIXmlInit::ApplyAlignY(int coord, u32 align)
+{
+	// Применить выравнивание, только при увеличенном разрешения
+	if (UI_BASE_HEIGHT >= Device.dwHeight) return coord;
+
+	int retVal = coord;
+
+	if (align & alBottom)
+	{
+		retVal = UI_BASE_HEIGHT - coord;
+		retVal = Device.dwHeight - retVal;
+	}
+	else if (align & alCenter)
+	{
+		retVal += (Device.dwHeight - UI_BASE_HEIGHT) / 2;
+	}
+
+	return retVal;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIXmlInit::ApplyAlign(int &x, int &y, u32 align)
+{
+	x = ApplyAlignX(x, align);
+	y = ApplyAlignY(y, align);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitAlignment(CUIXml &xml_doc, const char *path,
+							   int index, int &x, int &y)
+{
+	// Alignment: right: "r", bottom: "b". Top, left - useless
+	ref_str	alignStr = xml_doc.ReadAttrib(path, index, "align", "");
+
+    bool result = false;
+
+	if (strchr(*alignStr, 'r'))
+	{
+		x = ApplyAlignX(x, alRight);
+		result = true;
+	}
+	if (strchr(*alignStr, 'b'))
+	{
+		y = ApplyAlignY(y, alBottom);
+		result = true;
+	}
+	if (strchr(*alignStr, 'c'))
+	{
+		ApplyAlign(x, y, alCenter);
+		result = true;
+	}
+
+	return result;
 }

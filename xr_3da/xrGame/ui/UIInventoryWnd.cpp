@@ -34,8 +34,6 @@
 #include "../eatable_item.h"
 #include "../inventory.h"
 
-
-
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
 
@@ -46,8 +44,9 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-const char * const INVENTORY_ITEM_XML	= "inventory_item.xml";
-const char * const INVENTORY_XML		= "inventory.xml";
+const char * const INVENTORY_ITEM_XML		= "inventory_item.xml";
+const char * const INVENTORY_XML			= "inventory_new.xml";
+const char * const INVENTORY_CHARACTER_XML	= "inventory_character.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -81,7 +80,9 @@ void CUIInventoryWnd::Init()
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	AttachChild(&UIStaticTop);
 	UIStaticTop.Init("ui\\ui_inv_quick_slots", 0,0,UI_BASE_WIDTH,128);
@@ -93,7 +94,6 @@ void CUIInventoryWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
 	
 	AttachChild(&UIBagWnd);
-//	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIBagWnd);
 	xml_init.InitStatic(uiXml, "bag_static", 0, &UIBagWnd);
 
 	////////////////////////////////////////
@@ -101,13 +101,11 @@ void CUIInventoryWnd::Init()
 	
 	//для работы с артефактами
 	AttachChild(&UIArtifactMergerWnd);
-	xml_init.InitWindow(uiXml, "frame_window", 1, &UIArtifactMergerWnd);
+	xml_init.InitWindow(uiXml, "frame_window", 0, &UIArtifactMergerWnd);
 	UIArtifactMergerWnd.Hide();
 
 	AttachChild(&UIDescrWnd);
 	xml_init.InitStatic(uiXml, "descr_static", 0, &UIDescrWnd);
-//	UIDescWnd.AttachChild(&UIStaticDesc);
-//	UIStaticDesc.Init("ui\\ui_inv_info_over_b", 5, UIDescWnd.GetHeight() - 310 ,260,310);
 
 	//информация о предмете
 	UIDescrWnd.AttachChild(&UIItemInfo);
@@ -123,7 +121,7 @@ void CUIInventoryWnd::Init()
 	////////////////////////////////////
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 3, &UIPersonalWnd);
+	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIPersonalWnd);
 
 	//Полосы прогресса
 	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
@@ -145,7 +143,7 @@ void CUIInventoryWnd::Init()
 
 	//информация о персонаже
 	UIStaticPersonal.AttachChild(&UICharacterInfo);
-	UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), "inventory_character.xml");
+	UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), INVENTORY_CHARACTER_XML);
 	
 
 

@@ -3,6 +3,7 @@
 #include "UIStatsWnd.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../UI.h"
 
 const char * const STATS_XML = "stats.xml";
 
@@ -24,11 +25,13 @@ void CUIStatsWnd::Init()
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$", STATS_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	R_ASSERT3(xml_result, "xml file not found", STATS_XML);
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	// Читаем из xml файла параметры окна и контролов
 	AttachChild(&UIFrameWnd);

@@ -104,4 +104,7 @@ protected:
 	// Список локальных карт для глобальной
 	DEF_VECTOR(MapLocations, CUIGlobalMapLocation*);
 	MapLocations	m_MapLocations;
+
+	// Global map locations frame name
+	ref_str m_sGlobalMapLocFrameName;
 };

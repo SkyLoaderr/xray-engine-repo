@@ -93,7 +93,7 @@ void  CUIStatic::Draw()
 
 	if(m_str == NULL) return;
 
-	if(!GetFont() || GetFont()->SizeOf((char*)m_str) == 0) return;	
+	if(!GetFont() || !m_str || !m_str[0]) return;	
 
 	GetFont()->SetAligment(GetTextAlign());
 	GetFont()->SetColor(m_dwFontColor);
@@ -123,7 +123,6 @@ void  CUIStatic::Draw()
 		else
 			//завершить весь вывод пробелом
 			cur_char = ' ';
-
 
 		switch(cur_char)
 		{
@@ -223,8 +222,8 @@ void CUIStatic::WordOut()
 			outY = curretY;
 		}
 		
-		HUD().OutText(GetFont(), GetClipRect(), rect.left+outX + m_iTextOffsetX, 
-					  rect.top + outY + m_iTextOffsetY,  &buf_str.front());
+		HUD().OutText(GetFont(), GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
+					  static_cast<float>(rect.top + outY + m_iTextOffsetY),  &buf_str.front());
 		word_length = 0;
 		new_word = false;
 	}
@@ -516,7 +515,8 @@ Irect CUIStatic::GetClipRect()
 		r.add(GetUIStaticItem().GetPosX(), GetUIStaticItem().GetPosY());
 	}
 	else
-		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+		r.set(0, 0, max<u32>(UI_BASE_WIDTH, Device.dwWidth),
+					max<u32>(UI_BASE_HEIGHT, Device.dwHeight));
 
 	return r;
 }
@@ -536,5 +536,21 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 
 		m_pMask->SetWidth(r.right - r.left);
 		m_pMask->SetHeight(r.bottom - r.top);
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::PreprocessText(STRING &str, u32 width)
+{
+	STRING		processedStr, word;
+	const char	delimSpace		= ' ';
+	const char	delimTab		= '\t';
+	STRING_IT	it				= str.begin();
+	u32			lineWidth		= 0;
+
+	// Идем по словам и считаем их длинну
+	while (str.end() != it)
+	{
 	}
 }

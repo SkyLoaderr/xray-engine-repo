@@ -55,7 +55,9 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	RECT rect, r;
 

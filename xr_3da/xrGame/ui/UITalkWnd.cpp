@@ -53,7 +53,9 @@ CUITalkWnd::~CUITalkWnd()
 
 void CUITalkWnd::Init()
 {
-	inherited::Init(0,0, Device.dwWidth, Device.dwHeight);
+	inherited::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	/////////////////////////
 	//Меню разговора
@@ -310,8 +312,11 @@ void CUITalkWnd::AddAnswer(const CUIString &str, const CUIString &SpeakerName)
 	//для пустой фразы вообще ничего не выводим
 	if(xr_strlen((LPCSTR)str) == 0) return;
 
+	u32 cl = UITalkDialogWnd.UIAnswersList.GetTextColor();
+	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) cl = UITalkDialogWnd.GetOurReplicsColor();
+
 	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(SpeakerName, 0, UITalkDialogWnd.GetHeaderColor(), UITalkDialogWnd.GetHeaderFont());
-	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, UITalkDialogWnd.UIAnswersList.GetTextColor());
+	UITalkDialogWnd.UIAnswersList.AddParsedItem<CUIListItem>(str, MessageShift, cl);
 
 	CUIString Local;
 	Local.SetText(" ");

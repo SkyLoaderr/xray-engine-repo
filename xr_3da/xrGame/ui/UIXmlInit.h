@@ -72,6 +72,11 @@ public:
 
 	bool InitTexture			(CUIXml &xml_doc, const char *path,	int index, CUIStatic *pWnd);
 
+	// ‘ункци€ чтени€ алайна из xml файла и применени€ его к координатам.
+	// Return true если дл€ данного окна есть выравнивание
+	static bool					InitAlignment(CUIXml &xml_doc, const char *path,
+											  int index, int &x, int &y);
+
 	// јвтоматическа€ инициализаци€ статических элеменитов
 	// „тобы вернуть указатели на созданые статики (нам бывает необходимо пр€тать их, например)
 	// создадим тип - вектор указателей на статики
@@ -79,6 +84,15 @@ public:
 	typedef		StaticsVec::iterator	StaticsVec_it;
 
 	StaticsVec InitAutoStatic	(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
+
+	// ‘ункции дл€ пересчета координат дл€ применени€ выравнивани€
+	// Params:
+	// 1. align - выравнивание (см. EUIItemAlign)
+	// 2. coord - координата к которй будет примененно выравнивание
+	// Return: измененна€ координата
+	static int					ApplyAlignX(int coord, u32 align);
+	static int					ApplyAlignY(int coord, u32 align);
+	static void					ApplyAlign(int &x, int &y, u32 align);
 };
 
 #endif // _UI_XML_INIT_H_

@@ -17,6 +17,7 @@
 class CInventoryOwner;
 
 extern const char * const ALL_PDA_HEADER_PREFIX;
+extern const char * const PDA_XML;
 
 ///////////////////////////////////////
 // Подложка и основные кнопки PDA

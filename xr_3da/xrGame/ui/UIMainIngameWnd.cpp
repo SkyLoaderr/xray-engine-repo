@@ -64,7 +64,7 @@ const u32	g_clWhite					= 0xffffffff;
 const char * const PDA_INGAME_SINGLEPLAYER_CFG	= "ingame_msglog_sp.xml";
 const char * const PDA_INGAME_MULTIPLAYER_CFG	= "ingame_msglog_mp.xml";
 const char * const NEWS_TEMPLATES_CFG			= "news_templates.xml";
-const char * const MAININGAME_XML				= "maingame_new.xml";
+const char * const MAININGAME_XML				= "maingame.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction//////////////////////////////////////////////////////////////////////
@@ -106,39 +106,16 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticHealth);
 
 	AttachChild(&UIStaticArmor);
-	xml_init.InitStatic(uiXml, "static", 13, &UIStaticArmor);
-
-//	// Надпись "health"
-//	UIStaticHealth.AttachChild(&UIHealthString);
-//	xml_init.InitStatic(uiXml, "static", 11, &UIHealthString);
-//	
-//	// Надпись "armor"
-//	UIStaticArmor.AttachChild(&UIArmorString);
-//	xml_init.InitStatic(uiXml, "static", 12, &UIArmorString);
-/*	AttachChild(&UIStaticMapBack);
-	xml_init.InitStatic(uiXml, "static", 1, &UIStaticMapBack);*/
-
-//	AttachChild(&UIStaticRadiationLow);
-//	xml_init.InitStatic(uiXml, "static", 2, &UIStaticRadiationLow);
-//	AttachChild(&UIStaticRadiationMedium);
-//	xml_init.InitStatic(uiXml, "static", 3, &UIStaticRadiationMedium);
-//	AttachChild(&UIStaticRadiationHigh);
-//	xml_init.InitStatic(uiXml, "static", 4, &UIStaticRadiationHigh);
-//
-//	AttachChild(&UIStaticWound);
-//	xml_init.InitStatic(uiXml, "static", 5, &UIStaticWound);
-
-#pragma todo ("Vortex to Vortex: не забыть убрать из mainingame_new.xml лишние статики")
+	xml_init.InitStatic(uiXml, "static", 5, &UIStaticArmor);
 
 	AttachChild(&UIWeaponBack);
-	xml_init.InitStatic(uiXml, "static", 6, &UIWeaponBack);
+	xml_init.InitStatic(uiXml, "static", 1, &UIWeaponBack);
 	UIWeaponBack.AttachChild(&UIWeaponSignAmmo);
-	xml_init.InitStatic(uiXml, "static", 7, &UIWeaponSignAmmo);
-//	UIWeaponBack.Show(true);
-//	UIWeaponBack.AttachChild(&UIWeaponSignName);
-//	xml_init.InitStatic(uiXml, "static", 8, &UIWeaponSignName);
+
+	xml_init.InitStatic(uiXml, "static", 2, &UIWeaponSignAmmo);
 	UIWeaponBack.AttachChild(&UIWeaponIcon);
-	xml_init.InitStatic(uiXml, "static", 9, &UIWeaponIcon);
+
+	xml_init.InitStatic(uiXml, "static", 3, &UIWeaponIcon);
 	UIWeaponIcon.SetShader(GetEquipmentIconsShader());
 	UIWeaponIcon.ClipperOn();
 
@@ -148,13 +125,12 @@ void CUIMainIngameWnd::Init()
 	m_iWeaponIconHeight = UIWeaponIcon.GetHeight();
 	m_iWeaponIconX = UIWeaponIcon.GetWndRect().left;
 	m_iWeaponIconY = UIWeaponIcon.GetWndRect().top;
-//	UIWeaponIcon.EnableDragDrop(false);
 
 	UIWeaponIcon.Enable(false);
 
 	//
 	AttachChild(&UIPdaOnline);
-	xml_init.InitStatic(uiXml, "static", 10, &UIPdaOnline);
+	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
 	
 	AttachChild(&UIPdaMsgListWnd);
 
@@ -176,11 +152,11 @@ void CUIMainIngameWnd::Init()
 //						30,30);
 
 	//Полоса прогресса здоровья
-	AttachChild(&UIHealthBar);
+	UIStaticHealth.AttachChild(&UIHealthBar);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 0, &UIHealthBar);
 
 	//Полоса прогресса армора
-	AttachChild(&UIArmorBar);
+	UIStaticArmor.AttachChild(&UIArmorBar);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 1, &UIArmorBar);
 
 	//индикаторы 

@@ -91,7 +91,9 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_WIDTH);
+	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_WIDTH);
 
 	AttachChild(&UIStaticTop);
 	xml_init.InitStatic(uiXml, "slots_static", 0, &UIStaticTop);

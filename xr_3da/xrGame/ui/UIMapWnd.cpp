@@ -137,6 +137,8 @@ void CUIMapWnd::Init()
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
+
+	m_sGlobalMapLocFrameName = uiXml.Read("map_location_frame", 0, "");
 }
 
 void CUIMapWnd::InitLocalMap()
@@ -540,7 +542,7 @@ void CUIMapWnd::AddGlobalMapLocation(float x, float y, int width, int height)
 	R_ASSERT(height > 0);
 
 	CUIGlobalMapLocation *pGML = xr_new<CUIGlobalMapLocation>();
-	pGML->Init(width, height, UIGlobalMapBackground.GetAbsoluteRect());
+	pGML->Init(width, height, UIGlobalMapBackground.GetAbsoluteRect(), *m_sGlobalMapLocFrameName);
 	pGML->m_vWorldPos.x = x;
 	pGML->m_vWorldPos.z = y;
 	m_MapLocations.push_back(pGML);

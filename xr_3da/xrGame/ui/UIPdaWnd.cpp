@@ -47,7 +47,9 @@ void CUIPdaWnd::Init()
 
 	CUIXmlInit xml_init;
 
-	inherited::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+	inherited::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
+					CUIXmlInit::ApplyAlignY(0, alCenter),
+					UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 //	AttachChild(&UIStaticTop);
 //	UIStaticTop.Init("ui\\ui_top_background", 0,0,UI_BASE_WIDTH,128);
