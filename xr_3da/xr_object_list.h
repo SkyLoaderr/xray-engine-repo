@@ -39,6 +39,9 @@ public:
 	void						net_Export			(NET_Packet* P		);
 	void						net_Import			(NET_Packet* P		);
 	CObject*					net_Find			(u32 ID				);
+
+	void						SLS_Save			(CFS_Base&	fs		);
+	void						SLS_Load			(CStream&	fs		);
 };
 
 #endif //__XR_OBJECT_LIST_H__

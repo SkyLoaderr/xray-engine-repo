@@ -31,6 +31,12 @@ enum fsESectorChunks {
 	fsP_Lights,			// - lights, which touches sector
 	fsP_forcedword = DWORD(-1)
 };
+enum fsSLS_Chunks {
+	fsSLS_Description	= 1,	// Name of level
+	fsSLS_ServerState,
+	fsSLS_UnitsSpecific,
+	fsSLS_forcedword = DWORD(-1)
+};
 
 #pragma pack(push,8)
 struct hdrLEVEL

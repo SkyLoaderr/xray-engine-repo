@@ -14,12 +14,6 @@
 class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
 
-struct	SRotation
-{
-	float  yaw, pitch;
-	SRotation() { yaw=pitch=0; }
-};
-
 class CEntity : public CGameObject
 {
 private:

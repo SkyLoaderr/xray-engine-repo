@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "xrServer.h"
-#include "entity.h"
+//#include "entity.h"
 
 // EDITOR, NETWORK, SAVE, LOAD, DEMO
 

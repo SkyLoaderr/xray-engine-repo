@@ -1030,6 +1030,9 @@
 				RelativePath=".\xrServer_Entities.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_Entities.h">
+			</File>
+			<File
 				RelativePath="xrServer_balance.cpp">
 			</File>
 			<File
