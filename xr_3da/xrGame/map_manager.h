@@ -1,5 +1,6 @@
 #pragma once
 #include "map_location.h"
+#include "object_interfaces.h"
 
 struct SLocationKey : public IPureSerializeObject<IReader,IWriter> {
 	shared_str		spot_type;
