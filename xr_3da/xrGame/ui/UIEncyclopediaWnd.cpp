@@ -76,20 +76,23 @@ void CUIEncyclopediaWnd::Init()
 	xml_init.InitFrameWindow(uiXml, "left_frame_window", 0, &UIEncyclopediaInfoBkg);
 	UIEncyclopediaInfoBkg.AttachChild(&UIEncyclopediaInfoHeader);
 
+	UIEncyclopediaInfoHeader.UITitleText.SetElipsis(CUIStatic::eepCenter, 15);
 	xml_init.InitFrameLine(uiXml, "left_frame_line", 0, &UIEncyclopediaInfoHeader);
 	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
-	UIIdxList.EnableScrollBar(true);
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIArticleHeader);
 	xml_init.InitStatic(uiXml, "article_header_static", 0, &UIArticleHeader);
 
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
 	UIIdxList.SetMessageTarget(this);
+	UIIdxList.EnableScrollBar(true);
+
 	UIEncyclopediaInfoBkg.AttachChild(&UIInfoList);
+	UIIdxList.EnableScrollBar(true);
+	UIInfoList.SetNewRenderMethod(true);
 
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
 	UIInfoList.ActivateList(false);
-	UIInfoList.EnableScrollBar(true);
 	// mask
 	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
 	m_iItemX = uiXml.ReadAttribInt("item_static", 0, "x", 0);
@@ -208,8 +211,8 @@ void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX article_index)
 	if (!pTVItemChilds)
 	{
 		pTVItemChilds = xr_new<CUITreeViewItem>();
-		pTVItemChilds->SetText(*groupTree.front());
 		pTVItemChilds->SetFont(m_pTreeRootFont);
+		pTVItemChilds->SetText(*groupTree.front());
 		pTVItemChilds->SetTextColor(m_uTreeRootColor);
 		pTVItemChilds->SetRoot(true);
 		UIIdxList.AddItem<CUITreeViewItem>(pTVItemChilds);
@@ -249,8 +252,8 @@ CUITreeViewItem * CUIEncyclopediaWnd::AddTreeTail(GroupTree_it it, GroupTree &co
 	{
 		pNewItem = xr_new<CUITreeViewItem>();
 		pItemToIns->AddItem(pNewItem);
-		pNewItem->SetText(*(*it2));
 		pNewItem->SetFont(m_pTreeRootFont);
+		pNewItem->SetText(*(*it2));
 		pNewItem->SetTextColor(m_uTreeRootColor);
 		pNewItem->SetRoot(true);
 		pItemToIns = pNewItem;
@@ -284,7 +287,6 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 			str.SetText(*CStringTable()(*m_ArticlesDB[pTVItem->GetValue()]->data()->text));
 			CUIStatic::PreprocessText(str.m_str, UIInfoList.GetItemWidth() - 5, UIInfoList.GetFont());
 			UIInfoList.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
-			UIInfoList.GetItem(UIInfoList.GetSize() - 1)->SetNewRenderMethod(true);
 			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()]->data()->image);
 			m_ArticlesDB[pTVItem->GetValue()]->data()->image.SetMask(&UIImgMask);
 

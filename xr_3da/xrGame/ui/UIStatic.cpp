@@ -12,25 +12,30 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+const char * const	clDefault	= "default";
+
+//////////////////////////////////////////////////////////////////////////
+
 CUIStatic:: CUIStatic()
 {
-	m_str = NULL;
-	m_bAvailableTexture = false;
+	m_str				= NULL;
+	m_bAvailableTexture	= false;
 
-	m_bClipper = false;
-	m_bStretchTexture = false;
+	m_bClipper			= false;
+	m_bStretchTexture	= false;
 
 	SetTextAlign(CGameFont::alLeft);
 
-	m_iTextOffsetX	= 0;
-	m_iTextOffsetY	= 0;
-	m_iTexOffsetY	= 0;
-	m_iTexOffsetX	= 0;
+	m_iTextOffsetX		= 0;
+	m_iTextOffsetY		= 0;
+	m_iTexOffsetY		= 0;
+	m_iTexOffsetX		= 0;
 
-	m_dwFontColor = 0xFFFFFFFF;
+	m_dwFontColor		= 0xFFFFFFFF;
 
-	m_pMask = NULL;
-
+	m_pMask				= NULL;
+	m_ElipsisPos		= eepNone;
+	m_iElipsisIndent	= 0;
 }
 
  CUIStatic::~ CUIStatic()
@@ -113,21 +118,21 @@ void CUIStatic::WordOut(const RECT &rect)
 		buf_str[word_length] = 0;
 		word_width = (int)GetFont()->SizeOf(&buf_str.front());
 
-		// If word splitting enable then cut text trail if it's length more then rect length
-		if (word_width > rect.right - rect.left)
-		{
-			int length = 0;
-			for (STRING_IT it = buf_str.begin(); it != buf_str.end(); ++it)
-			{
-				length = length + static_cast<int>(pFont->SizeOf(*it));
-				if (length > rect.right - rect.left)
-				{
-					*it = 0;
-					word_width = (int)GetFont()->SizeOf(&buf_str.front());
-					break;
-				}
-			}
-		}
+//		// If word splitting enable then cut text trail if it's length more then rect length
+//		if (word_width > rect.right - rect.left)
+//		{
+//			int length = 0;
+//			for (STRING_IT it = buf_str.begin(); it != buf_str.end(); ++it)
+//			{
+//				length = length + static_cast<int>(pFont->SizeOf(*it));
+//				if (length > rect.right - rect.left)
+//				{
+//					*it = 0;
+//					word_width = (int)GetFont()->SizeOf(&buf_str.front());
+//					break;
+//				}
+//			}
+//		}
 
 		if(curretX+word_width<GetWidth())
 		{
@@ -175,7 +180,6 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	char buf[12];
 	u32 symbols_to_copy;
 	u32 str_offset = 0;
-	const char * const	clDefault	= "default";
 
 	// Try default color first
 	if (strstr(static_cast<char*>(m_str + pos), clDefault)== m_str + pos)
@@ -423,6 +427,10 @@ void CUIStatic::SetText(LPCSTR str)
 	buf_str.clear();
 	str_len = m_sEdit.size();
 	buf_str.resize(str_len+1);
+
+	RECT r = GetAbsoluteRect();
+	r.left += GetTextX() + m_iElipsisIndent;
+	Elipsis(r, m_ElipsisPos);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -500,9 +508,32 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 				}
 			}
 
-			if ('\\' == *it && it != str.end() && 'n' == *(it + 1))
+			if ('\\' == *it && 'n' == *(it + 1))
 			{
 				lineWidth = 0;
+			}
+
+			if ('%' == *it && 'c' == *(it + 1))
+			{
+				// Try default color first
+				if (strstr(&*(it + 2), clDefault) == &*(it + 2))
+				{
+					lineWidth -= pFont->SizeOf("%c");
+					lineWidth -= pFont->SizeOf(clDefault);
+				}
+				else
+				{
+					// Try predefined colors
+					for (CUIXmlInit::ColorDefs_it it2 = CUIXmlInit::m_ColorDefs.begin(); it2 != CUIXmlInit::m_ColorDefs.end(); ++it2)
+					{
+						if (strstr(&*(it + 2), *it2->first) == &*(it + 2))
+						{
+							lineWidth -= pFont->SizeOf("%c");
+							lineWidth -= pFont->SizeOf(*it2->first);
+							break;
+						}
+					}
+				}
 			}
 
 			word.push_back(*it);
@@ -633,4 +664,89 @@ void CUIStatic::DrawString(const RECT &rect)
 		}
 	}
 	GetFont()->OnRender();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::Elipsis(const RECT &rect, EElipsisPosition elipsisPos)
+{
+	if (eepNone == elipsisPos) return;
+
+	CGameFont *pFont = GetFont();
+	R_ASSERT(pFont);
+	R_ASSERT(m_str);
+
+	// Quick check
+	if (pFont->SizeOf(m_str) <= rect.right - rect.left) return;
+
+	// Applying elipsis cut
+	int length = 0, elipsisWidth = static_cast<int>(pFont->SizeOf("..."));
+	STRING_IT cutPos = m_sEdit.begin(), left, right;
+	bool moveLeft;
+
+	// Depend elipsis position
+	switch (m_ElipsisPos)
+	{
+	case eepBegin:
+		for (STRING::reverse_iterator it = m_sEdit.rbegin(); it != m_sEdit.rend(); ++it)
+		{
+			length = length + static_cast<int>(pFont->SizeOf(*it));
+			if (length > rect.right - rect.left - elipsisWidth)
+			{
+				STRING tmp;
+				tmp.assign(++it.base(), m_sEdit.end());
+				m_sEdit.swap(tmp);
+				m_sEdit.insert(m_sEdit.end(), 0);
+				cutPos = m_sEdit.begin();
+				break;
+			}
+		}
+		break;
+	case eepEnd:
+		for (STRING_IT it = m_sEdit.begin(); it != m_sEdit.end(); ++it)
+		{
+			length = length + static_cast<int>(pFont->SizeOf(*it));
+			if (length > rect.right - rect.left - elipsisWidth)
+			{
+				*it = 0;
+				m_sEdit.resize(std::distance(m_sEdit.begin(), it));
+				cutPos = m_sEdit.end();
+				break;
+			}
+		}
+		break;
+	case eepCenter:
+		left = m_sEdit.begin();
+		right = m_sEdit.end() - 1;
+		moveLeft = true;
+		while (length < rect.right - rect.left - elipsisWidth && left <= right)
+		{
+			moveLeft ?	length = length + static_cast<int>(pFont->SizeOf(*left++)):
+						length = length + static_cast<int>(pFont->SizeOf(*right--));
+			moveLeft = !moveLeft;
+		}
+
+		// Cut center
+		if (--left < ++right)
+		{
+			m_sEdit.erase(left, right);
+			cutPos = m_sEdit.begin() + std::distance(m_sEdit.begin(), m_sEdit.end()) / 2;
+		}
+		break;
+	default:
+		NODEFAULT;
+	}
+
+	// Now paste elipsis
+	m_sEdit.insert(cutPos, 3, '.');
+	m_str = &m_sEdit.front();
+	str_len = m_sEdit.size();
+	buf_str.resize(str_len + 1);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIStatic::SetElipsis(EElipsisPosition pos, int indent)
+{
+	m_ElipsisPos = pos;
 }

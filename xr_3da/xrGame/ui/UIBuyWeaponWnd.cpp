@@ -26,18 +26,19 @@ using namespace InventoryUtilities;
 
 #define MAX_ITEMS	70
 
-const u32			cDetached				= 0xffffffff;
-const u32			cAttached				= 0xff00ff00;
-const u32			cUnableToBuy			= 0xffff0000;
-const u32			cAbleToBuy				= cDetached;
-const u32			cAbleToBuyOwned			= 0xff8080ff;
-const u8			uIndicatorWidth			= 17;
-const u8			uIndicatorHeight		= 27;
-const float			SECTION_ICON_SCALE		= 4.0f/5.0f;
-const char * const	BUY_WND_XML_NAME		= "inventoryMP_new2.xml";
-const float			fRealItemSellMultiplier	= 0.5f;
-const char * const	weaponFilterName		= "weapon_class";
-const char * const	BUY_MP_ITEM_XML			= "buy_mp_item.xml";
+const u32			cDetached					= 0xffffffff;
+const u32			cAttached					= 0xff00ff00;
+const u32			cUnableToBuy				= 0xffff0000;
+const u32			cAbleToBuy					= cDetached;
+const u32			cAbleToBuyOwned				= 0xff8080ff;
+const u8			uIndicatorWidth				= 17;
+const u8			uIndicatorHeight			= 27;
+const float			SECTION_ICON_SCALE			= 4.0f/5.0f;
+const char * const	BUY_WND_XML_NAME			= "inventoryMP_new2.xml";
+const float			fRealItemSellMultiplier		= 0.5f;
+const char * const	weaponFilterName			= "weapon_class";
+const char * const	BUY_MP_ITEM_XML				= "buy_mp_item.xml";
+const char * const	WEAPON_DESCRIPTION_FIELD	= "inv_name";
 
 int			g_iOkAccelerator, g_iCancelAccelerator;
 
@@ -250,6 +251,11 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
 	UIItemInfo.DetachChild(&UIItemInfo.UI3dStatic);
+
+	UIDescWnd.AttachChild(&UIWeaponDescription);
+	xml_init.InitListWnd(uiXml, "wpn_descr_list", 0, &UIWeaponDescription);
+	UIWeaponDescription.EnableScrollBar(true);
+	UIWeaponDescription.ActivateList(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -2337,6 +2343,18 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 		string64 buf;
 		strconcat(buf, *stbl("Weight"), ": ", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
 		UIItemInfo.UIWeight.SetText(buf);
+	}
+	else
+		UIItemInfo.UIWeight.SetText("");
+
+	if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
+	{
+		UIWeaponDescription.RemoveAll();
+		
+ 		CUIString str;
+		str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
+		CUIStatic::PreprocessText(str.m_str, UIWeaponDescription.GetItemWidth() - 5, UIWeaponDescription.GetFont());
+		UIWeaponDescription.AddParsedItem<CUIListItem>(str, 0, UIWeaponDescription.GetTextColor());
 	}
 	else
 		UIItemInfo.UIWeight.SetText("");

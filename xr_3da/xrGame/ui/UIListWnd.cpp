@@ -36,6 +36,8 @@ CUIListWnd::CUIListWnd(void)
 	m_bForceFocusedItem = false;
 
 	m_iLastUniqueID = 0;
+
+	m_bNewRenderMethod = false;
 }
 
 CUIListWnd::~CUIListWnd(void)

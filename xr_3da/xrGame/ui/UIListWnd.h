@@ -125,6 +125,8 @@ public:
 		pItem->Init(pItem->GetWndRect().left, m_bVertFlip?GetHeight()-GetSize()* m_iItemHeight-m_iItemHeight:GetSize()* m_iItemHeight, 
 			m_iItemWidth, m_iItemHeight);
 
+		pItem->SetNewRenderMethod(m_bNewRenderMethod);
+
 		//добавление в конец или начало списка
 		if(-1 == insertBeforeIdx)
 		{
@@ -224,6 +226,8 @@ public:
 	xr_vector<int> AddInteractiveItem(const char *str2, const int shift = 0,
 		const u32 &MsgColor = 0xffffffff, CGameFont* pFont = 0, int pushAfter = -1);
 
+	void SetNewRenderMethod(bool value) { m_bNewRenderMethod = value; }
+
 protected:
 
 	//полоса прокрутки
@@ -270,6 +274,7 @@ protected:
 
 	// “екущий уникальный идентификатор
 	int m_iLastUniqueID;
+	bool m_bNewRenderMethod;
 };
 
 #endif //_UI_LIST_WND_H_

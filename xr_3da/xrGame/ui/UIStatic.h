@@ -93,6 +93,17 @@ public:
 	static void PreprocessText(STRING &str, u32 width, CGameFont *pFont);
 	// Функция вывода текста
 	void DrawString(const RECT &rect);
+	// Когда текст надписи не влазит в статик, то, иногда, нам необходимо показать троеточие и обрезать
+	// надпись. Вот для этого и предназначена эта функция
+	enum EElipsisPosition
+	{
+		eepNone,
+		eepBegin,
+		eepEnd,
+		eepCenter
+	};
+
+	void SetElipsis(EElipsisPosition pos, int indent);
 
 protected:
 	bool m_bClipper;
@@ -149,6 +160,11 @@ protected:
 
 	// для смещения текстуры
 	int m_iTexOffsetX, m_iTexOffsetY;
+
+	// Обрезка надписи
+	EElipsisPosition	m_ElipsisPos;
+	void Elipsis(const RECT &rect, EElipsisPosition elipsisPos);
+	int	m_iElipsisIndent;
 };
 
 #endif // _UI_STATIC_H_
