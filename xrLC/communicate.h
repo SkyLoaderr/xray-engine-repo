@@ -19,8 +19,8 @@ struct b_uvmap
 };
 struct b_face
 {
-	DWORD	v[3];							// vertices
-	b_uvmap t[3];							// TC
+	DWORD	v		[3];					// vertices
+	b_uvmap t		[3];					// TC
 	WORD	dwMaterial;						// index of material
 };
 struct b_material
@@ -28,16 +28,17 @@ struct b_material
 	WORD	dwTexCount;
 	WORD	surfidx	[XR_MAX_TEXTURES];		// indices of texture surfaces
 	WORD	shader;							// index of shader that combine them
+	WORD	shader_xrlc;					// compiler options
 	WORD	sector;							// ***
 	DWORD	reserved;
 };
 struct b_shader
 {
-	string64 name;
+	char	name	[128];
 };
 struct b_texture
 {
-	string64	name;
+	char	name	[128];
 	DWORD	dwWidth;
 	DWORD	dwHeight;
 	BOOL	bHasAlpha;
@@ -47,8 +48,6 @@ struct b_light : public xrLIGHT
 {
 	DWORD			s_count;
 	WORD			s_sectors[XRLIGHT_MAX_SECTORS];
-
-	float			shadowed_scale;		// by default - .05f	(5%)
 };
 struct b_glow
 {
@@ -108,10 +107,11 @@ struct b_params
 	int			m_lm_jitter_samples;// 1/4/9 - by default		- 4
 	Fcolor		m_lm_amb_color;		// color of lightmaps ambinet lighting  (def: 1,1,1)
 	float		m_lm_amb_fogness;	// in percents
-	float		m_lm_rms;			// Resolution RootMeanSquare error 
+	DWORD		m_lm_rms_zero;		// RMS - after what the lightmap will be shrinked to ZERO pixels
+	DWORD		m_lm_rms;			// RMS - shrink and recalc
 	
 	// Area(hemi-sphere) lighting
-	Fcolor		areaDark,areaGround;//
+	Fcolor		area_color;			//
 	float		area_dispersion;	// Angle of 'sun' - our sun has around 5 degrees, recomended around 7.5 degrees
 	float		area_energy_summary;// Amount of energy distributed across hemisphere
 	int			area_quality;		//
@@ -167,11 +167,11 @@ struct b_params
 		m_lm_jitter_samples		= 4;
         m_lm_amb_color.set      (1,1,1,0);
         m_lm_amb_fogness        = 0.01f;
-		m_lm_rms				= 0.05f;	// 5%
+		m_lm_rms_zero			= 8;
+		m_lm_rms				= 8;		// 5%
 
 		// Area(hemi-sphere) lighting
-		areaDark.set			(1,0,0,0);
-		areaGround.set			(0,1,0,0);
+		area_color.set			(1,1,1,1);
 		area_dispersion			= 7.5f;
 		area_energy_summary		= 0.5f;
 		area_quality			= 1;
