@@ -70,7 +70,7 @@ private:
 	_vertex*			load_create_vertex	(Fvector& P);
 public:
 	void				Load				(CStream& FS);
-	void				Calculate_normals	();
+	void				calc_normals		();
 };
 
 class xrMU_Reference
