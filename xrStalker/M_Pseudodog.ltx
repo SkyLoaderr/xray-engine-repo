@@ -220,18 +220,7 @@ DynamicObjectsCount		= 32
 
 squad_attack_algorithm	= 1
 
-[m_Pseudodog_damage]
-;bone_name		 = <hit_scale>,-1,<wound_scale>
-;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
-;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	1.00
-
-bip01_pelvis 		= 0.01, -1, 0.5
-bip01_spine 		= 0.01, -1, 0.5
-bip01_spine1 		= 0.2, -1, 0.5
-bip01_neck 			= 0.5, -1, 0.5
-bip01_head 			= 10.0, -1, 10.00
 
 attack_effector			= m_pseudodog_attack_effector
 
@@ -271,4 +260,17 @@ ce_time				= 1.0	;1.5
 ce_amplitude		= -30.0
 ce_period_number	= 4.0
 ce_power			= 2 ;0.7
+
+[m_Pseudodog_damage]
+;bone_name		 = <hit_scale>,-1,<wound_scale>
+;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale>	- коэфф. изменения величины открытой раны
+
+default				= 1.00,	-1,	1.00
+
+bip01_pelvis 		= 0.01, -1, 0.5
+bip01_spine 		= 0.01, -1, 0.5
+bip01_spine1 		= 0.2, -1, 0.5
+bip01_neck 			= 0.5, -1, 0.5
+bip01_head 			= 10.0, -1, 10.00
 
