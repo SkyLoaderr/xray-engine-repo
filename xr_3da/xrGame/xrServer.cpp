@@ -184,7 +184,6 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 				ID		= 0;
 				ids_used.push_back	(false);
 			}
-			ids_used[ID]		= true;	
 			
 			// create server entity
 			xrClientData* CL	= ID_to_client	(sender);
@@ -207,7 +206,8 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			ProcessRP			(E);
 			
 			// REGISTER new ENTITY
-			entities.insert		(ID,E);
+			entities.insert		(make_pair(ID,E));
+			ids_used[ID]		= true;	
 			
 			// log
 			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->s_team, E->s_squad, E->s_group, E->ID, CL->Name);
@@ -236,10 +236,10 @@ void xrServer::OnCL_Connected		(IClient* CL)
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
 	for (; I!=E; I++)
 	{
-		xrServerEntity*	Test = *I;
+		xrServerEntity*	Test = I->second;
 
-		Test->msgSpawn	(P,FALSE);
-		SendTo			(CL->ID,P,net_flags(TRUE));
+		Test->Spawn_Write	(P,FALSE);
+		SendTo				(CL->ID,P,net_flags(TRUE));
 	}
 
 	// Send "finished" signal

@@ -104,7 +104,7 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	NET_Packet	P;
 	
 	//*** generic
-	P.w_begin	(M_CL_SPAWN);
+	P.w_begin	(M_SPAWN);
 	P.w_string	("m_event");
 	P.w_u8		(0);
 	P.w_u8		(0);
