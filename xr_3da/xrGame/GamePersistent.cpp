@@ -132,3 +132,8 @@ void CGamePersistent::Statistics	(CGameFont* F)
 	profiler().show_stats	(F,!!psAI_Flags.test(aiStats));
 #endif
 }
+
+float CGamePersistent::MtlTransparent(u32 mtl_idx)
+{
+	return GMLib.GetMaterialByIdx(mtl_idx)->fVisTransparencyFactor;
+}
