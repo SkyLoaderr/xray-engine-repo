@@ -126,13 +126,6 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (!entity_alive->g_Alive())
 		return;
 	
-	if (is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING)) {
-		// this is fake!
-		CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
-		if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
-			m_object->memory().hit().add(_entity_alive);
-	}
-
 	if (is_sound_type(sound_type,SOUND_TYPE_WEAPON))
 		sound_power			*= m_weapon_factor;
 	
@@ -148,8 +141,15 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, CSound
 	if (is_sound_type(sound_type,SOUND_TYPE_WORLD))
 		sound_power			*= m_world_factor;
 	
-	if (sound_power >= m_sound_threshold)
+	if (sound_power >= m_sound_threshold) {
+		if (is_sound_type(sound_type,SOUND_TYPE_WEAPON_SHOOTING)) {
+			// this is fake!
+			CEntityAlive		*_entity_alive = smart_cast<CEntityAlive*>(object);
+			if (_entity_alive && (self->ID() != _entity_alive->ID()) && (_entity_alive->g_Team() != entity_alive->g_Team()))
+				m_object->memory().hit().add(_entity_alive);
+		}
 		add					(object,sound_type,position,sound_power);
+	}
 
 	m_last_sound_time		= Device.dwTimeGlobal;
 	m_sound_threshold		= _max(m_sound_threshold,sound_power);
