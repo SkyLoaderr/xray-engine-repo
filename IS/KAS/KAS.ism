@@ -103,7 +103,9 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>ClientComponent</td><td>{87AE0266-9EA1-407F-BA65-55E48BF83141}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>DefaultComponent</td><td>{39DA26D8-0E02-494D-9EF3-984ED5D4B54C}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ServerComponent</td><td>{5602AF85-FB21-4399-BCAD-C78BA5176006}</td><td>TARGETDIR</td><td>0</td><td/><td/><td>51729</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Control">
@@ -204,6 +206,8 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td>ServerComponent</td></row>
+		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td>ClientComponent</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td>DefaultComponent</td></row>
 	</table>
 
@@ -219,6 +223,23 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>blank.htm</td><td>ClientComponent</td><td>blank.htm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\blank.htm</td><td>1</td><td/></row>
+		<row><td>calc.exe</td><td>ClientComponent</td><td>Calc.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\Calc.exe</td><td>1</td><td/></row>
+		<row><td>client_repl_data.mdf</td><td>ServerComponent</td><td>client_repl_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\client_repl_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>client_repl_log.ldf</td><td>ServerComponent</td><td>client_repl_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\client_repl_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>clientupdate.exe</td><td>ServerComponent</td><td>ClientUpdate.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\ClientUpdate.exe</td><td>1</td><td/></row>
+		<row><td>clock.avi</td><td>ClientComponent</td><td>clock.avi</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\clock.avi</td><td>1</td><td/></row>
+		<row><td>kas.exe</td><td>ClientComponent</td><td>KAS.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\KAS.exe</td><td>1</td><td/></row>
+		<row><td>kas_data.mdf</td><td>ServerComponent</td><td>KAS_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\KAS_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>kas_log.ldf</td><td>ServerComponent</td><td>KAS_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\KAS_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>kasbk.jpg</td><td>ClientComponent</td><td>kasbk.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\kasbk.jpg</td><td>1</td><td/></row>
+		<row><td>kashelp.chm</td><td>DefaultComponent</td><td>KAShelp.chm</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\KAShelp.chm</td><td>1</td><td/></row>
+		<row><td>mdisplit.ico</td><td>DefaultComponent</td><td>MDISplit.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\MDISplit.ico</td><td>1</td><td/></row>
+		<row><td>searchdb_data.mdf</td><td>ServerComponent</td><td>searchdb_Data.MDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Data.MDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>searchdb_log.ldf</td><td>ServerComponent</td><td>searchdb_Log.LDF</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\data\searchdb_Log.LDF</td><td>1</td><td>NewSubFolder1</td></row>
+		<row><td>trident.gif</td><td>ClientComponent</td><td>trident.gif</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\res\trident.gif</td><td>1</td><td/></row>
+		<row><td>updateclient.exe</td><td>ClientComponent</td><td>UpdateClient.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateClient.exe</td><td>1</td><td>NewSubFolder4</td></row>
+		<row><td>updateserver.exe</td><td>ServerComponent</td><td>UpdateServer.exe</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\UpdateServer.exe</td><td>1</td><td>NewSubFolder5</td></row>
 	</table>
 
 	<table name="Font">
@@ -249,7 +270,9 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>ClientComponent</td><td/><td/><td>_4102D33D_43D8_4F2E_8679_B894505F57A5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>DefaultComponent</td><td/><td/><td>_907897D9_883B_47CF_B1B4_2D5FC092A6DC_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ServerComponent</td><td/><td/><td>_40F7C334_2B6E_4108_918C_2807B036C7EA_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISComponentSubFolder">
@@ -257,6 +280,11 @@
 		<col def="s72">Component_</col>
 		<col def="S72">ISSubFolder_Parent</col>
 		<col def="s255">Path</col>
+		<row><td>NewSubFolder1</td><td>ServerComponent</td><td/><td>DATA</td></row>
+		<row><td>NewSubFolder2</td><td>ClientComponent</td><td/><td>DATA</td></row>
+		<row><td>NewSubFolder3</td><td>ClientComponent</td><td/><td>TEMP</td></row>
+		<row><td>NewSubFolder4</td><td>ClientComponent</td><td/><td>UpdateClient</td></row>
+		<row><td>NewSubFolder5</td><td>ServerComponent</td><td/><td>TEMP</td></row>
 	</table>
 
 	<table name="ISDependency">
@@ -769,6 +797,8 @@ EgRLBDEENQRABDgEQgQ1BCAAMgQ4BDQEIABDBEEEQgQwBD0EPgQyBDoEOAQuAA==
 HgRCBDwENQQ9BDAE
 			</td><td>0</td><td/><td>1981329227</td></row>
 		<row><td>IDS__DialogId_10203_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>1981329227</td></row>
+		<row><td>ID_STRING1</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
+		<row><td>ID_STRING1</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
 		<row><td>ID_ST_CLIENT_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981290123</td></row>
 		<row><td>ID_ST_CLIENT_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``/P1`!#X$,P1`!#`$/`0\!#`$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>76</td><td/><td>1981290123</td></row>
 		<row><td>ID_ST_CLIENT_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981324875</td></row>
@@ -988,6 +1018,10 @@ JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
 		<col def="S0">Value</col>
 		<col def="s72">ISRegistrySet_</col>
 		<col def="I4">ISAttributes</col>
+		<row><td>Registry1</td><td>1</td><td>Software</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry2</td><td>1</td><td>Software\KASClient</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry3</td><td>1</td><td>Software\KASClient\Settings</td><td/><td/><td>&lt;Default&gt;</td><td>1</td></row>
+		<row><td>Registry4</td><td>1</td><td>Software\KASClient\Settings</td><td>installDir</td><td>&lt;TARGETDIR&gt;</td><td>&lt;Default&gt;</td><td>0</td></row>
 	</table>
 
 	<table name="Shortcut">
