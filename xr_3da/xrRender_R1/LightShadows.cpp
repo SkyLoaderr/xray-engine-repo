@@ -25,6 +25,8 @@ const	int 		S_clip		= 256-24;
 const	D3DFORMAT	S_rtf		= D3DFMT_A8R8G8B8;
 const	float		S_blur_kernel	= .75f;
 
+const	u32			cache_old	= 30*1000;	// 30 secs
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -70,10 +72,15 @@ CLightShadows::~CLightShadows()
 	RT_temp.destroy			();
 	RT.destroy				();
 
-	//
+	// casters
 	for (u32 it=0; it<casters_pool.size(); it++)
 		xr_delete(casters_pool[it]);
 	casters_pool.clear		();
+
+	// cache
+	for (u32 it=0; it<cache.size(); it++)
+		xr_free	(cache[it].tris);
+	cache.clear				();
 }
 
 void CLightShadows::set_object	(IRenderable* O)
@@ -480,10 +487,19 @@ void CLightShadows::render	()
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 	}
 	
-	// Clear all shadows
+	// Clear all shadows and free old entries in the cache
 	shadows.clear				();
+	for (int cit=0; cit<cache.size(); cit++)	{
+		cache_item&		ci		= cache[cit];
+		u32				time	= Device.dwTimeGlobal - ci.time;
+		if				(time > cache_old)	{
+			xr_free		(ci.tris);
+			cache.erase (cache.begin()+cit);
+			cit			--;
+		}
+	}
 
 	// Projection
-	Device.mProject._43 = _43;
+	Device.mProject._43			= _43;
 	RCache.set_xform_project	(Device.mProject);
 }
