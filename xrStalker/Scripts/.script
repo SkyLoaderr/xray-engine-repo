@@ -511,3 +511,24 @@ end
 function const_evaluator:evaluate()
   	return          self.value
 end
+
+--Wait evaluator
+class "wait_evaluator" (property_evaluator)
+
+function wait_evaluator:__init (wait_time) super ()
+    self.wait_time = wait_time
+    self.first_call = true
+    self.current_time = 0
+end
+
+function wait_evaluator:evaluate ()
+    if self.first_call == true then
+       self.first_call = false 
+       self.current_time = device ():time_global ()
+       return false
+    end
+    
+    local t = device():time_global () - self.current_time;
+    if t > self.wait_time then return true end
+    return false    
+end    
