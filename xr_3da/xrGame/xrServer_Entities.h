@@ -1,5 +1,5 @@
-#ifndef _SRV_ENTITIES_
-#define _SRV_ENTITIES_
+#ifndef xrServer_EntitiesH
+#define xrServer_EntitiesH
 
 #include "xrMessages.h"
 #ifdef _EDITOR
@@ -33,6 +33,10 @@ public:
 class xrSE_CFormed
 {
 public:
+	enum{
+    	cfSphere=0,
+        cfBox
+    };
 	union shape_data
 	{
 		Fsphere		sphere;
@@ -43,10 +47,11 @@ public:
 		u8			type;
 		shape_data	data;
 	};
-	vector<shape_def>	shapes;
+    DEFINE_VECTOR	(shape_def,ShapeVec,ShapeIt);
+    ShapeVec		shapes;
 public:
-	void					cform_read			(NET_Packet& P);
-	void					cform_write			(NET_Packet& P);
+	void			cform_read			(NET_Packet& P);
+	void			cform_write			(NET_Packet& P);
 };
 
 //
