@@ -201,7 +201,7 @@
 	</phrase_list>
 	</dialog>
 
-	<dialog id="escape_trader_talk_flame" pda="1">
+	<dialog id="escape_trader_talk_flame">
 	<phrase_list>
 	   	<phrase id="0">
 			<text>Давай поболтаем.</text>

@@ -6,3 +6,6 @@ end
 function kickass(first_speaker, second_speaker)
 	xr_punch.punch[first_speaker:id()] = second_speaker
 end
+
+function helper_init(first_speaker, second_speaker)
+end

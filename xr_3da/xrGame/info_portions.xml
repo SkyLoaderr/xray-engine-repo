@@ -18,6 +18,7 @@
 		<dialog>escape_trader_talk_about</dialog>
 		<dialog>escape_trader_talk_level</dialog>
 		<dialog>actor_break_dialog</dialog>
+		<dialog>general_pda_talk</dialog>		
 		<task>storyline_eliminate_gunslinger</task>
 	</info_portion>
 
