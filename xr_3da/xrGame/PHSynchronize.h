@@ -11,6 +11,7 @@ struct SPHNetState
 	Fvector		previous_position;
 	Fquaternion quaternion;
 	Fquaternion	previous_quaternion;
+	bool		enabled;
 };
 class CPHSynchronize
 {
