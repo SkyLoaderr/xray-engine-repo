@@ -142,13 +142,14 @@ void CWeapon::StartFlameParticles	()
 		return;
 	}
 
-	//StopFlameParticles();
+	
 	//m_pFlameParticles = m_pFlameParticlesCache[m_iNextParticle];
 	//if(m_pFlameParticles->IsLooped()) m_iNextParticle++;
 	//if(m_iNextParticle>=PARTICLES_CACHE_SIZE) m_iNextParticle = 0;
 
+	StopFlameParticles();
 	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParticlesCurrent,Sector(),false);
-#pragma todo("AlexMX to Ura: на фига ты делаешь Memory Leaks. Удалять кто за тебя будет!!!!")
+//#pragma todo("AlexMX to Ura: на фига ты делаешь Memory Leaks. Удалять кто за тебя будет!!!!")
 	
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
@@ -158,9 +159,10 @@ void CWeapon::StopFlameParticles	()
 	if(!m_sFlameParticlesCurrent) return;
 	if(m_pFlameParticles == NULL) return;
 
+	m_pFlameParticles->SetAutoRemove(true);
 	m_pFlameParticles->Stop();
+	m_pFlameParticles = NULL;
 	//m_pFlameParticles->PSI_destroy();
-	//m_pFlameParticles = NULL;
 }
 
 void CWeapon::UpdateFlameParticles	()
