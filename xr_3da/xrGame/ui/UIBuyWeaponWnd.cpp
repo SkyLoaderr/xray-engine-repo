@@ -1228,7 +1228,8 @@ int CUIBuyWeaponWnd::GetPriceOfOwnItems(){
 
 	price += GetPriceOfItemInSlot(KNIFE_SLOT);
 	price += GetPriceOfItemInSlot(PISTOL_SLOT);
-	price += GetPriceOfItemInSlot(GRENADE_SLOT);
+	price += GetPriceOfItemInSlot(RIFLE_SLOT);
+	price += GetPriceOfItemInSlot(GRENADE_SLOT);	
 	price += GetPriceOfItemInSlot(APPARATUS_SLOT);
 	price += GetPriceOfItemInSlot(OUTFIT_SLOT);
 
