@@ -597,8 +597,11 @@ protected:
 #ifdef DEBUG
 		friend class CLevelGraph;
 #endif
-		virtual void					HideCurrentWeapon		();
-		virtual	void					RestoreHidedWeapon		();
+		bool							m_bCurWeaponHidden		;
+		int								m_iCurWeaponNextState	; //0 - not change; 1 - hide; 2 - restore
+public:
+		virtual void					HideCurrentWeapon		(u32 Msg, bool only2handed);
+		virtual	void					RestoreHidedWeapon		(u32 Msg);
 
 
 };

@@ -1046,10 +1046,12 @@ void CUIBuyWeaponWnd::Show()
 	{
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
-
+		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN, false);
+/*
 		NET_Packet	P;
 		pActor->u_EventGen(P, GEG_PLAYER_BUYMENU_OPEN, pActor->ID());
 		pActor->u_EventSend(P);
+*/
 	}
 }
 
@@ -1062,9 +1064,12 @@ void CUIBuyWeaponWnd::Hide()
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
 
+		pActor->RestoreHidedWeapon(GEG_PLAYER_BUYMENU_CLOSE);
+		/*
 		NET_Packet	P;
 		pActor->u_EventGen(P, GEG_PLAYER_BUYMENU_CLOSE, pActor->ID());
 		pActor->u_EventSend(P);
+		*/
 	}
 }
 

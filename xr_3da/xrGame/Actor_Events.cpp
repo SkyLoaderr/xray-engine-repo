@@ -162,6 +162,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			if (OnServer())
 			{
+				/*
 				u32 InventorySlot = inventory().GetActiveSlot();
 				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
 					inventory().m_slots[InventorySlot].m_pIItem)
@@ -169,6 +170,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 					inventory().SetPrevActiveSlot(InventorySlot);
 					inventory().Activate(NO_ACTIVE_SLOT);
 				}
+				*/
+				m_iCurWeaponNextState = 1;
 			};
 		}break;
 	case GEG_PLAYER_BUYMENU_CLOSE:
@@ -177,12 +180,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		{
 			if (OnServer())
 			{
+				/*
 				u32 InventorySlot = inventory().GetPrevActiveSlot();
 				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
 					inventory().m_slots[InventorySlot].m_pIItem)
 				{
-					inventory().Activate(inventory().GetPrevActiveSlot());
+					inventory().Activate(inventory().InventorySlot);
 				}
+				*/
+				m_iCurWeaponNextState = 2;
 			};
 		}break;
 	case GE_MOVE_ACTOR:

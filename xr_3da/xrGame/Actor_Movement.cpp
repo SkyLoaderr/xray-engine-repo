@@ -95,7 +95,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		{
 			mstate_real				|=mcClimb;
 			cam_SetLadder();
-
+			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
 		}
 	}
 	else
@@ -103,7 +103,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		if (mstate_real & mcClimb)
 		{
 			cam_UnsetLadder();
-			RestoreHidedWeapon();
+			RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
 		}
 		mstate_real				&=~mcClimb;		
 	};
@@ -243,11 +243,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	{
 		if (mstate_real&mcAnyMove)
 		{
-			HideCurrentWeapon();
+			HideCurrentWeapon(GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, true);
 		}
 		else
 		{
-			RestoreHidedWeapon();
+			RestoreHidedWeapon(GEG_PLAYER_RESTORE_CURRENT_SLOT);
 		};
 	};
 	/*

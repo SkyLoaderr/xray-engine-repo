@@ -693,7 +693,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_pActorEffector = xr_new<CActorEffector>();
 	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
-
+	//--------------------------------------------------------------
+	m_iCurWeaponNextState = 0;
+	m_bCurWeaponHidden = false;
 	//--------------------------------------------------------------
 	//добавить отметки на карте, которые актер помнит в info_portions
 	if(m_known_info_registry->registry().objects_ptr())
@@ -712,7 +714,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//-------------------------------------
 	m_States.empty();
-
 	//-------------------------------------
 	if (!g_Alive())
 	{
@@ -1468,24 +1469,27 @@ void	CActor::OnRender_Network()
 
 #endif
 
-void		CActor::HideCurrentWeapon		()
+void		CActor::HideCurrentWeapon		(u32 Msg, bool only2handed)
 {
-	if (inventory().ActiveItem()&& !inventory().ActiveItem()->IsSingleHanded())
+	if (m_bCurWeaponHidden) return;
+	if (inventory().ActiveItem() && (!only2handed || !inventory().ActiveItem()->IsSingleHanded()))
 	{
 		NET_Packet	P;
-		u_EventGen(P, GEG_PLAYER_DEACTIVATE_CURRENT_SLOT, ID());
+		u_EventGen(P, Msg/*GEG_PLAYER_DEACTIVATE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
+		m_bCurWeaponHidden = true;
 	};
 };
 
-void		CActor::RestoreHidedWeapon		()
+void		CActor::RestoreHidedWeapon		(u32 Msg)
 {
-	if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
+	if (!m_bCurWeaponHidden) return;
+//	if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
 	{
-
 		NET_Packet	P;
-		u_EventGen(P, GEG_PLAYER_RESTORE_CURRENT_SLOT, ID());
+		u_EventGen(P, Msg/*GEG_PLAYER_RESTORE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
+		m_bCurWeaponHidden = false;
 	};
 }
 
