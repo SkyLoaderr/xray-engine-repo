@@ -31,7 +31,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		if (E) {
 			E->update	(dt);
 			E->marker	= s_emitters_u;
-			T->priority	= E->priority();
+			E			= T->get_emitter();	// update can stop itself
+			if (E)		T->priority	= E->priority();
+			else		T->priority	= -1;
 		} else {
 			T->priority	= -1;
 		}

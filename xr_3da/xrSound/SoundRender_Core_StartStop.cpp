@@ -10,11 +10,10 @@ void	CSoundRender_Core::i_start		(CSoundRender_Emitter* E)
 {
 	R_ASSERT	(E);
 
-	Msg			("- %10s : %3d[%1.4f] : %s","i_start",E->dbg_ID,E->priority(),E->source->fname);
-
 	// Search lowest-priority target
 	float					Ptest	= E->priority	();
 	float					Ptarget	= flt_max;
+	s32						Pslot	= -1;
 	CSoundRender_Target*	T		= 0;
 	for (u32 it=0; it<s_targets.size(); it++)
 	{
@@ -23,8 +22,10 @@ void	CSoundRender_Core::i_start		(CSoundRender_Emitter* E)
 		{
 			T		= Ttest;
 			Ptarget	= Ttest->priority;
+			Pslot	= it;
 		}
 	}
+	Msg			("- %10s : %3d[%1.4f] : %s --- slot: %d","i_start",E->dbg_ID,E->priority(),E->source->fname,Pslot);
 
 	// Stop currently playing
 	if (T->get_emitter())
@@ -60,8 +61,6 @@ BOOL	CSoundRender_Core::i_allow_play	(CSoundRender_Emitter* E)
 	for (u32 it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T		= s_targets	[it];
-		CSoundRender_Emitter*	Etest	= T->get_emitter	();
-		if (0==Etest)					return TRUE;
 		if (T->priority<Ptest)			return TRUE;
 	}
 	return FALSE;
