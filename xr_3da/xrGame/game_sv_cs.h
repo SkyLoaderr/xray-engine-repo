@@ -4,15 +4,14 @@
 
 class cs_money {
 public:
-	cs_money();
+	cs_money		();
 	s32 startup, win, lose, draw, kill, mission;
 };
 
 class	game_sv_CS					: public game_sv_GameState
 {
-protected:
 public:
-	game_sv_CS(){}
+									game_sv_CS				(){}
 	virtual		void				Create					(LPSTR &options);
 
 	// Events
@@ -40,13 +39,13 @@ public:
 	// Mains
 	virtual		void				Update					();
 
-	u8 AutoTeam();
-	void SavePlayerWeapon(u32 it, CMemoryWriter &store);
-	void SaveDefaultWeapon(CMemoryWriter &store);
-	void SpawnArtifacts();
-	void SpawnPlayer(u32 it, CMemoryWriter &weapon);
+	u8								AutoTeam				();
+	void							SavePlayerWeapon		(u32 it, CMemoryWriter &store);
+	void							SaveDefaultWeapon		(CMemoryWriter &store);
+	void							SpawnArtifacts			();
+	void							SpawnPlayer				(u32 it, CMemoryWriter &weapon);
 
-	BOOL m_delayedRoundEnd;
-	u32 m_roundEndDelay;
-	cs_money money;
+	BOOL							m_delayedRoundEnd;
+	u32								m_roundEndDelay;
+	cs_money						money;
 };
