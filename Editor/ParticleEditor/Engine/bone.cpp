@@ -8,7 +8,7 @@ CBone::~CBone(){
 }
 
 void CBone::Save(CFS_Base& F){
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 	extern char* ReplaceSpace(char* s);
 	ReplaceSpace(name);		strlwr(name);
 	ReplaceSpace(parent);	strlwr(parent);

@@ -2,7 +2,7 @@
 #ifndef _Bone_H_
 #define _Bone_H_
 
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 #include <lwrender.h>
 #include <lwhost.h>
 #endif
@@ -49,7 +49,7 @@ public:
 	void			Save			(CFS_Base& F);
 	void			Load			(CStream& F);
 
-#ifdef LWO_EXPORTS
+#ifdef _LWO_EXPORTS
 	void			ParseBone		(LWItemID bone);
 #endif
 };
