@@ -91,10 +91,6 @@ SOURCE=.\cl_RAPID.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\ReadMe.txt
-# End Source File
-# Begin Source File
-
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
