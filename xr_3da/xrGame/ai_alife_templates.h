@@ -158,6 +158,16 @@ void load_object_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 	}
 };
 
+template <class T, class M>
+void load_object_initialized_vector(xr_vector<T *> &tpVector, M &tNetPacket)
+{
+	R_ASSERT2					(tNetPacket.r_u32() != tpVector.size(),"Initialized and saved vector length mismatch!");
+	xr_vector<T *>::iterator	I = tpVector.begin();
+	xr_vector<T *>::iterator	E = tpVector.end();
+	for ( ; I != E; I++)
+		(*I)->Load				(tNetPacket);
+};
+
 template <class T1, class T2, class M>
 void save_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket)
 {

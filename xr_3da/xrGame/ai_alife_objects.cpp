@@ -95,23 +95,13 @@ CSE_ALifeDiscovery::~CSE_ALifeDiscovery()
 void CSE_ALifeDiscovery::Save	(IWriter &tMemoryStream)
 {
 	tMemoryStream.w_u32			(u32(m_bAlreadyInvented));
-	{
-		DEMAND_P_IT				I = m_tpArtefactDemand.begin();
-		DEMAND_P_IT				E = m_tpArtefactDemand.end();
-		for ( ; I != E; I++)
-			(*I)->Save			(tMemoryStream);
-	}
+	save_object_vector			(m_tpArtefactDemand,tMemoryStream);
 }
 
 void CSE_ALifeDiscovery::Load	(IReader &tFileStream)
 {
 	m_bAlreadyInvented			= !!tFileStream.r_u32();
-	{
-		DEMAND_P_IT				I = m_tpArtefactDemand.begin();
-		DEMAND_P_IT				E = m_tpArtefactDemand.end();
-		for ( ; I != E; I++)
-			(*I)->Load			(tFileStream);
-	}
+	load_object_initialized_vector(m_tpArtefactDemand,tFileStream);
 }
 
 ////////////////////////////////////////////////////////////////////////////
