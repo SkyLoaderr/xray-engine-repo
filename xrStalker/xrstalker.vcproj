@@ -1463,6 +1463,9 @@
 				Name="GP"
 				Filter="">
 				<File
+					RelativePath=".\Scripts\level_psy_antenna.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\level_weathers.script">
 				</File>
 				<Filter
