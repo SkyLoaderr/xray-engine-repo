@@ -93,6 +93,12 @@ public:
 		return			(*m_tpGameObject->cName());
 	}
 
+	IC		ref_str			cName				() const
+	{
+		VERIFY			(m_tpGameObject);
+		return			(*m_tpGameObject->cName());
+	}
+
 	IC		LPCSTR			Section				() const
 	{
 		VERIFY			(m_tpGameObject);
