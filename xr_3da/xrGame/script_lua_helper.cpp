@@ -467,6 +467,15 @@ void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTabl
 			return;
 		break;
 
+/*	case LUA_TUSERDATA:{
+			luabind::detail::object_rep* obj = static_cast<luabind::detail::object_rep*>(lua_touserdata(L, -1));
+			luabind::detail::lua_reference& r = obj->get_lua_table();
+			lua_State * ls = NULL;
+			r.get(ls);
+			DrawTable(ls, name);
+			return;
+		}break;*/
+
 	default:
 		value[0] = '\0';
 		break;
@@ -482,15 +491,8 @@ void CDbgLuaHelper::DrawTable(lua_State *l, LPCSTR S, bool bRecursive)
 	if (!lua_istable(l,-1))
 		return;
 
-//	sprintf			(str,"\nContent of the table \"%s\" :\n",S);
-//	CScriptDebugger::GetDebugger()->Write(str);
-
 	lua_pushnil		(l);  /* first key */
 	while (lua_next(l, -2) != 0) {
-		//		printf		("%16s - %s\n", lua_tostring(l, -2), lua_typename(l, lua_type(l, -1)));
-//		sprintf		(str,"%16s - %s\n", lua_tostring(l, -2), lua_typename(l, lua_type(l, -1)));
-//		CScriptDebugger::GetDebugger()->Write(str);
-//		DrawVariable(l, lua_tostring(l, -2));
 
 
 		char stype[256];
@@ -498,11 +500,7 @@ void CDbgLuaHelper::DrawTable(lua_State *l, LPCSTR S, bool bRecursive)
 		char sFullName[256];
 		sprintf(stype,"%s",lua_typename(l, lua_type(l, -1)));
 		sprintf(sname,"%s",lua_tostring(l, -2));
-//		sprintf(str,"%16s - %s\n", sname, stype);
-		
-//		CScriptDebugger::GetDebugger()->Write(str);
 		sprintf(sFullName,"%s.%s",S,sname);
-//		DrawVariable(l, sFullName, false);
 		DrawVariable(l, sFullName, true);
 
 		lua_pop		(l, 1);  /* removes `value'; keeps `key' for next iteration */
