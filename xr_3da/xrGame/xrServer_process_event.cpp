@@ -56,16 +56,19 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_entity == c_parent);
 			R_ASSERT			(c_parent == c_from);		// assure client only send request for local units
 
-			// Perform migration if needed
-			xrClientData*		c_dest		= SelectBestClientToMigrateTo		(e_entity);
-			if (c_dest	!= c_entity)		PerformMigration(e_entity,c_parent,c_dest);
+			if (game->OnTargetDetouched(sender,id_entity))
+			{
+				// Perform migration if needed
+				xrClientData*		c_dest		= SelectBestClientToMigrateTo		(e_entity);
+				if (c_dest	!= c_entity)		PerformMigration					(e_entity,c_parent,c_dest);
 
-			// Rebuild parentness
-			R_ASSERT			(0xffff != e_entity->ID_Parent);
-			e_entity->ID_Parent	= 0xffff;
+				// Rebuild parentness
+				R_ASSERT			(0xffff != e_entity->ID_Parent);
+				e_entity->ID_Parent	= 0xffff;
 
-			// Signal to everyone (including sender)
-			SendBroadcast		(0xffffffff,P,MODE);
+				// Signal to everyone (including sender)
+				SendBroadcast		(0xffffffff,P,MODE);
+			}
 		}
 		break;
 	case GE_TRANSFER_AMMO:
