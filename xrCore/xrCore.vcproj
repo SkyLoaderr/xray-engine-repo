@@ -421,8 +421,7 @@
 			<File
 				RelativePath="FileSystem.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
@@ -441,6 +440,11 @@
 			</File>
 			<File
 				RelativePath="FileSystem.h">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="FileSystem_borland.cpp">
@@ -481,8 +485,7 @@
 			<File
 				RelativePath=".\LocatorAPI_Notifications.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					ExcludedFromBuild="TRUE">
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"/>
 				</FileConfiguration>

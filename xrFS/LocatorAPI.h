@@ -111,7 +111,7 @@ private:
 
 	void						Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif);
 	void						ProcessArchive	(LPCSTR path);
-	void						ProcessOne		(LPCSTR path, LPVOID F);
+	void						ProcessOne		(LPCSTR path, void* F);
 	bool						Recurse			(LPCSTR path);
 
     void						SetEventNotification	();
@@ -163,6 +163,9 @@ public:
 	void						lock_rescan		();
 	void						unlock_rescan	();
 };
+
+std::string						ChangeFileExt	(LPCSTR src, LPCSTR ext);
+std::string						ChangeFileExt	(const std::string& src, LPCSTR ext);
 
 extern XRCORE_API	CLocatorAPI*			xr_FS;
 #define FS (*xr_FS)

@@ -83,7 +83,7 @@ void FS_Path::rescan_path_cb	()
 	m_Flags.set(flNeedRescan,TRUE);
     FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
-std::string		_ChangeFileExt	(LPCSTR src, LPCSTR ext)				{
+std::string		ChangeFileExt	(LPCSTR src, LPCSTR ext)				{
 	std::string	tmp;
 	LPSTR src_ext	= strext(src);
 	if (src_ext){
@@ -95,8 +95,8 @@ std::string		_ChangeFileExt	(LPCSTR src, LPCSTR ext)				{
 	tmp				+= ext;
 	return tmp;
 }
-std::string		_ChangeFileExt	(const std::string& src, LPCSTR ext)	{
-	return		_ChangeFileExt	(src.c_str(),ext);
+std::string		ChangeFileExt	(const std::string& src, LPCSTR ext)	{
+	return		ChangeFileExt	(src.c_str(),ext);
 }
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -319,23 +319,20 @@ void CLocatorAPI::_initialize	(u32 flags)
 
 #ifdef __BORLANDC__
 	m_Flags.set		(flEventNotificator,TRUE);
-//.    
+#endif
 	if (m_Flags.is(flEventNotificator)){
 	    // set event handlers
 	    SetEventNotification();
     }
-#endif
 	m_Flags.set		(flReady,TRUE);
 }
 
 void CLocatorAPI::_destroy		()
 {
-#ifdef _EDITOR
 	if (m_Flags.is(flEventNotificator)){
         // clear event handlers
         ClearEventNotification		();
     }
-#endif
 
 	for				(files_it I=files.begin(); I!=files.end(); I++)
 	{
@@ -516,7 +513,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			}
 			std::string fn			= entry_begin;
 			// insert file entry
-			if (flags&FS_ClampExt)	fn = _ChangeFileExt(fn,"");
+			if (flags&FS_ClampExt)fn= EFS.ChangeFileExt(fn,"");
 			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
 			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
 		} else {
@@ -549,7 +546,7 @@ bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool c
 
 	size_t base_len		= N.size();
     const file& entry 	= *I;
-    std::string fn		= (clamp_ext)?_ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
+    std::string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
     u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
     dest.set			(entry.size_real,entry.modif,fl);
     return true;

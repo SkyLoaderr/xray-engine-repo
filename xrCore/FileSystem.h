@@ -6,7 +6,7 @@
 #define FileSystemH
 
 class XRCORE_API EFS_Utils {
-	DEFINE_MAP	(std::string,HANDLE,HANDLEMap,HANDLEPairIt);
+	DEFINE_MAP	(std::string,void*,HANDLEMap,HANDLEPairIt);
 
     HANDLEMap 	m_LockFiles;
     std::string	m_LastAccessFN;
@@ -41,8 +41,8 @@ public:
 	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
 	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
 
-    static		std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
-    static		std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
+    std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
+    std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
 };
 extern XRCORE_API	EFS_Utils*	xr_EFS;
 #define EFS (*xr_EFS)
