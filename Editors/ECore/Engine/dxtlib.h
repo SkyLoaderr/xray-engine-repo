@@ -15,7 +15,7 @@
 *****************************************************************************************/
 #pragma once
 
-#include "nvdxt_options.h""
+#include "nvdxt_options.h"
 
 typedef void (*MIPFiltercallback)(int miplevel, int TotalMIPs);
 typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
@@ -114,9 +114,11 @@ void SetWriteDTXnFile(DXTDataTransfer UserWriteDTXnFile);
 void __cdecl WriteDTXnFile(DWORD count, void * buffer);
 void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 
+#pragma message("Note: including lib: nvDXTlibMTDLL.lib") 
+#pragma comment(lib, "nvDXTlibMTDLL.lib")
 
+/*
 #ifndef EXCLUDE_LIBS
-
 
 //#if _DEBUG
 
@@ -169,11 +171,8 @@ void __cdecl ReadDTXnFile(DWORD count, void * buffer);
  #endif // _MSC_VER
 //#endif // _DEBUG
 
-
-
-
-
 #endif
+*/
 
 
 #endif // NVDXTC

@@ -23,6 +23,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="3"
 				InlineFunctionExpansion="1"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;DXT_EXPORTS"
 				StringPooling="TRUE"
