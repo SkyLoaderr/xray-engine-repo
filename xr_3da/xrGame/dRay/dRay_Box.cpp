@@ -1,5 +1,4 @@
-#include "stdafx.h"
-// Ripped from Magic Software
+#include "stdafx.h"// Ripped from Magic Software
 
 
 
@@ -95,7 +94,7 @@ bool FindIntersection(const dVector3 Origin, const dVector3 Direction, const dVe
 
 
 
-int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride){
+int dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& Position = *(const dVector3*)dGeomGetPosition(BoxGeom);
 
@@ -131,7 +130,7 @@ int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeo
 
 	Diff[2] = Origin[2] - Position[2];
 
-	Diff[3] = Origin[3] - Position[3];
+//	Diff[3] = Origin[3] - Position[3];
 
 
 
@@ -141,7 +140,7 @@ int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeo
 
 	Direction[2] *= Length;
 
-	Direction[3] *= Length;
+	//Direction[3] *= Length;
 
 
 
@@ -199,7 +198,7 @@ int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeo
 
 			Contact0->pos[2] = Origin[2] + T[0] * Direction[2];
 
-			Contact0->pos[3] = Origin[3] + T[0] * Direction[3];
+			///Contact0->pos[3] = Origin[3] + T[0] * Direction[3];
 
 			//Contact0->normal = 0;
 
@@ -219,7 +218,7 @@ int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeo
 
 			Contact1->pos[2] = Origin[2] + T[1] * Direction[2];
 
-			Contact1->pos[3] = Origin[3] + T[1] * Direction[3];
+		//	Contact1->pos[3] = Origin[3] + T[1] * Direction[3];
 
 			//Contact1->normal = 0;
 
@@ -245,7 +244,7 @@ int FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeo
 
 			Contact->pos[2] = Origin[2] + T[1] * Direction[2];
 
-			Contact->pos[3] = Origin[3] + T[1] * Direction[3];
+	//		Contact->pos[3] = Origin[3] + T[1] * Direction[3];
 
 			//Contact->normal = 0;
 

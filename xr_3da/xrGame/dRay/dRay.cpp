@@ -1,15 +1,12 @@
-
 #include "stdafx.h"
 #include "Include/dRay.h"
 #include "dxRay.h"
-
+ 
 int dRayClassUser = -1;
 
 void dAABBRay(dxGeom* Ray, dReal AABB[6]){
 
-	dVector3 Start, End;
-	dGeomRayGet(Ray, Start, End);
-	dReal Length = dGeomRayGetLength(Ray);
+	dVector3 Start, End;	dGeomRayGet(Ray, Start, End);	dReal Length = dGeomRayGetLength(Ray);
 
 
 
@@ -19,7 +16,7 @@ void dAABBRay(dxGeom* Ray, dReal AABB[6]){
 
 	End[2] = Start[2] + End[2] * Length;
 
-	End[3] = Start[3] + End[3] * Length;
+	//End[3] = Start[3] + End[3] * Length;
 
 
 
@@ -226,7 +223,7 @@ void dGeomRayGet(dxGeom* g, dVector3 Origin, dVector3 Direction){
 
 	Direction[2] = Rotation[2 * 4 + 2];
 
-	Direction[3] = Rotation[3 * 4 + 2];
+	//Direction[3] = Rotation[3 * 4 + 2];
 
 }
 

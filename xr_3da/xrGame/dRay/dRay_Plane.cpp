@@ -1,5 +1,4 @@
-#include "stdafx.h"
-// Ripped from Paul Bourke
+#include "stdafx.h"// Ripped from Paul Bourke
 
 
 
@@ -9,7 +8,7 @@
 
 
 
-int  FUNCCALL  dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contact, int Stride){
+int   dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contact, int Stride){
 
 	dVector3 Plane;
 

@@ -1,5 +1,4 @@
-#include "stdafx.h"
-// Ripped from Magic Software
+#include "stdafx.h"// Ripped from Magic Software
 
 
 
@@ -25,7 +24,7 @@ int Find(const dVector3 Origin, dVector3 Direction, dReal Length, const dVector3
 
 	CCOrigin[2] = CCPos[2] - (W[2] * CCLength / 2);
 
-	CCOrigin[3] = CCPos[3] - (W[3] * CCLength / 2);
+	//CCOrigin[3] = CCPos[3] - (W[3] * CCLength / 2);
 
 	
 
@@ -53,7 +52,7 @@ int Find(const dVector3 Origin, dVector3 Direction, dReal Length, const dVector3
 
 	Diff[2] = Origin[2] - CCOrigin[2];
 
-	Diff[3] = Origin[3] - CCOrigin[3];
+	//Diff[3] = Origin[3] - CCOrigin[3];
 
 
 
@@ -335,7 +334,7 @@ int Find(const dVector3 Origin, dVector3 Direction, dReal Length, const dVector3
 
 
 
-int  FUNCCALL dCollideCCR(dxGeom* RayGeom, dxGeom* CCGeom, int Flags, dContactGeom* Contacts, int Stride){
+int  dCollideCCR(dxGeom* RayGeom, dxGeom* CCGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& CCPos = *(const dVector3*)dGeomGetPosition(CCGeom);
 

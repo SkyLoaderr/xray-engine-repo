@@ -1,5 +1,6 @@
-#include "stdafx.h"
-// Ripped from Magic Software
+ 
+
+#include "stdafx.h"// Ripped from Magic Software
 
 
 
@@ -7,9 +8,8 @@
 
 #include "dxRay.h"
 
-
-
-int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride){
+ 
+int  dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride){
 
 	const dVector3& Position = *(const dVector3*)dGeomGetPosition(SphereGeom);
 
@@ -33,7 +33,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 	Diff[2] = Origin[2] - Position[2];
 
-	Diff[3] = Origin[3] - Position[3];
+	//Diff[3] = Origin[3] - Position[3];
 
 
 
@@ -43,7 +43,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 	Direction[2] *= Length;
 
-	Direction[3] *= Length;
+	//Direction[3] *= Length;
 
 
 
@@ -79,7 +79,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 		if (T[0] >= REAL(0.0)){
 
-			dContactGeom* Contact0 = CONTACT(Flags, Contacts, 0, Stride);
+	 		dContactGeom* Contact0 = CONTACT(Flags, Contacts, 0, Stride);
 
 			Contact0->pos[0] = Origin[0] + T[0] * Direction[0];
 
@@ -87,7 +87,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 			Contact0->pos[2] = Origin[2] + T[0] * Direction[2];
 
-			Contact0->pos[3] = Origin[3] + T[0] * Direction[3];
+		//	Contact0->pos[3] = Origin[3] + T[0] * Direction[3];
 
 			//Contact0->normal = 0;
 
@@ -107,7 +107,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 			Contact1->pos[2] = Origin[2] + T[1] * Direction[2];
 
-			Contact1->pos[3] = Origin[3] + T[1] * Direction[3];
+		//	Contact1->pos[3] = Origin[3] + T[1] * Direction[3];
 
 			//Contact1->normal = 0;
 
@@ -133,7 +133,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 			Contact->pos[2] = Origin[2] + T[1] * Direction[2];
 
-			Contact->pos[3] = Origin[3] + T[1] * Direction[3];
+		//	Contact->pos[3] = Origin[3] + T[1] * Direction[3];
 
 			//Contact->normal = 0;
 
@@ -169,7 +169,7 @@ int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContac
 
 			Contact->pos[2] = Origin[2] + T * Direction[2];
 
-			Contact->pos[3] = Origin[3] + T * Direction[3];
+		//	Contact->pos[3] = Origin[3] + T * Direction[3];
 
 			//Contact->normal = 0;
 

@@ -1,11 +1,10 @@
-
 struct dxRay{
 
 	dReal Length;
 
 };
 
-
+  
 
 inline void Decompose(const dMatrix3 Matrix, dVector3 Right, dVector3 Up, dVector3 Direction){
 
@@ -15,7 +14,7 @@ inline void Decompose(const dMatrix3 Matrix, dVector3 Right, dVector3 Up, dVecto
 
 	Right[2] = Matrix[2 * 4 + 0];
 
-	Right[3] = Matrix[3 * 4 + 0];
+	//Right[3] = Matrix[3 * 4 + 0];
 
 	Up[0] = Matrix[0 * 4 + 1];
 
@@ -23,7 +22,7 @@ inline void Decompose(const dMatrix3 Matrix, dVector3 Right, dVector3 Up, dVecto
 
 	Up[2] = Matrix[2 * 4 + 1];
 
-	Up[3] = Matrix[3 * 4 + 1];
+	//Up[3] = Matrix[3 * 4 + 1];
 
 	Direction[0] = Matrix[0 * 4 + 2];
 
@@ -31,7 +30,7 @@ inline void Decompose(const dMatrix3 Matrix, dVector3 Right, dVector3 Up, dVecto
 
 	Direction[2] = Matrix[2 * 4 + 2];
 
-	Direction[3] = Matrix[3 * 4 + 2];
+	//Direction[3] = Matrix[3 * 4 + 2];
 
 }
 
@@ -55,11 +54,11 @@ inline dContactGeom* CONTACT(int Flags, dContactGeom* Contacts, int Index, int S
 
 
 
-int  FUNCCALL dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contacts, int Stride);
+int dCollidePR(dxGeom* RayGeom, dxGeom* PlaneGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int  FUNCCALL dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  dCollideSR(dxGeom* RayGeom, dxGeom* SphereGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int  FUNCCALL dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  dCollideBR(dxGeom* RayGeom, dxGeom* BoxGeom, int Flags, dContactGeom* Contacts, int Stride);
 
-int  FUNCCALL dCollideCCR(dxGeom* RayGeom, dxGeom* CCylinderGeom, int Flags, dContactGeom* Contacts, int Stride);
+int  dCollideCCR(dxGeom* RayGeom, dxGeom* CCylinderGeom, int Flags, dContactGeom* Contacts, int Stride);
 ///////
