@@ -36,7 +36,10 @@
 	<info_portion id="bar_bar_kill_svoboda_leader_done">
 		<disable>bar_bar_kill_svoboda_leader_start</disable>
 	</info_portion>	
-	<info_portion id="bar_kill_veteran_start"></info_portion>
+	<info_portion id="bar_kill_veteran_start">
+		<task>bar_crazy_veterans_quest</task>
+		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="bar_kill_veteran_killed"></info_portion>
 	<info_portion id="bar_kill_veteran_done">
 		<disable>bar_kill_veteran_start</disable>

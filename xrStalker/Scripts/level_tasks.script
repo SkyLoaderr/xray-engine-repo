@@ -149,6 +149,7 @@ function proceed(actor)
 		actor:object("bar_lucky_pda") ~= nil 
 	then		
 		actor:give_info_portion("bar_kill_veteran_killed")
+		set_task_state(task.completed, "bar_crazy_veterans_quest", 1)
 	end 
 
 	if	actor:has_info("bar_resque_research_start") and 

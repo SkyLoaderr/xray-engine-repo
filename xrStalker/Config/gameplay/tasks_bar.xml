@@ -82,5 +82,20 @@
 		</objective>
 	</game_task>
 	
+	<game_task id="bar_crazy_veterans_quest">
+		<title>bar_crazy_veterans_quest</title>
+		<objective>
+			<text>bar_kill_veterans</text>
+			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_kill_crazy_veterans</text>
+			<icon x="50" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_bring_pda_lucky</text>
+			<icon x="400" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
 
 </game_tasks_data>
