@@ -104,6 +104,7 @@
 			</phrase>
 			<phrase id="2">
 				<dont_has_info>trader_start2</dont_has_info>
+				<dont_has_info>job_box_finished</dont_has_info>
 				<goodwill>70</goodwill>
 				<text>Я возьмусь за ящик с блокпоста.</text>
 				<next>4</next>
@@ -270,6 +271,7 @@
 			<phrase id="0">
 				<text>Я выполнил работу! Принес ящик с блокпоста.</text>
 				<next>1</next>
+				<give_info>job_box_finished</give_info>
 			</phrase>
 			<phrase id="1">
 				<text>Отлично, ты хорошо поработал. Вот твои деньги.</text>

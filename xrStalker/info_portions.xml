@@ -33,5 +33,10 @@
 		<dialog>job_box</dialog>
 	</info_portion>
 
+	<info_portion id="job_box_finished">
+	<disable>trader_start2</disable>
+	</info_portion>
+
+
 
 </game_information_portions>
