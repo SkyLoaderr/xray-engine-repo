@@ -220,12 +220,16 @@ xr_motivator.storage[self.object:id()].talker = {
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
         actor = nil,
+	noweap = false, -- игнорируем наличие оружия у актора
         distance = 15, -- расстояние, в пределах которого мы реагируем
         shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
     }
-        if char_ini:section_exist ("meet") == true then
+    if char_ini:section_exist ("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
                 xr_motivator.storage[self.object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
+        end
+        if char_ini:line_exist("meet", "noweap") == true then
+                xr_motivator.storage[self.object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
         end
     end
 -- Настройка scout
