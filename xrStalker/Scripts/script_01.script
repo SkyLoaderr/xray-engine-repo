@@ -39,6 +39,33 @@ function main()
 
 	event:set_callback(script_01.on_enter,true)
 	event:set_callback(script_01.on_exit,false)
+
+	while stalker1:action() do		
+		if 	event:set_callback(on_enter) == true then
+			printf("alarm!")
+			flush()
+			stalker1:script	(false, stalker_01.script_name())
+			stalker1:script	(true,  stalker_01.script_name())
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				particle("ghoul\\fx-01-camp-fire","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
+				look	(look.fire_point, stalker2),
+				anim	(anim.danger),
+				cond	(cond.time_end, 150000)
+			)
+			ps:play_at_pos		(stalker1:position());
+			wait		(4000)	
+        		stalker1:hit		(h)
+			wait		(10)			
+			stalker1:hit		(h2)
+                	break		
+		end
+		wait()
+	end
+
+
 	
 	while stalker1:action() and stalker2:action() do
 	    wait	()
