@@ -30,8 +30,8 @@ local zones        = {} -- объекты управления для каждой зоны
 local zones_inside = {} -- списки сталкеров, находящихся в каждой зоне
 
 -- находится ли объект в скриптовой зоне
-function is_in_zone( obj, zone )
-	return zones_inside[zone:id()][obj:id()] == true
+function is_in_zone( obj, zone_id )
+	return zones_inside[zone_id][obj:id()] == true
 end
 
 -------------- помощники для чтения spawn_ini -------------------
