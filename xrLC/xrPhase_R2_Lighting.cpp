@@ -57,18 +57,24 @@ public:
 
 void CBuild::Light_R2			()
 {
-	FPU::m64r				();
-	Phase					("LIGHT: Hemisphere...");
-	mem_Compact				();
-
-	// Start threads, wait, continue --- perform all the work
-	Status					("Calculating... (%d lights)",L_static.hemi.size());
-	u32	start_time			= timeGetTime();
+	// start V-light
 	CThreadManager			Threads;
 	u32	stride				= g_vertices.size()/NUM_THREADS;
 	u32	last				= g_vertices.size()-stride*(NUM_THREADS-1);
 	for (u32 thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CR2Light>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+
+	// impl
+	FPU::m64r				();
+	Phase					("LIGHT: Implicit...");
+	ImplicitLighting		();
+	mem_Compact				();
+
+	// hemi
+	FPU::m64r				();
+	Phase					("LIGHT: Hemisphere...");
+	Status					("Calculating... (%d lights)",L_static.hemi.size());
+	u32	start_time			= timeGetTime();
 	Threads.wait			();
 	clMsg					("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 }
