@@ -204,6 +204,8 @@ void CEntity::Load		(LPCSTR section)
 				if(!strcmp(*item.first,"bone"))
 				{
 					bone_info.index = pKinematics->LL_BoneID(_GetItem(*item.second,0,str_buf));
+					R_ASSERT3(bone_info.index != BI_NONE, "Particles bone not found", _GetItem(*item.second,0,str_buf));
+
 					bone_info.offset.x = (float)atof(_GetItem(*item.second,1,str_buf));
 					bone_info.offset.y = (float)atof(_GetItem(*item.second,2,str_buf));
 					bone_info.offset.z = (float)atof(_GetItem(*item.second,3,str_buf));

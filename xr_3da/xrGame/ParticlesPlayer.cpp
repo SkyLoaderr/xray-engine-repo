@@ -11,6 +11,12 @@
 
 CParticlesPlayer::CParticlesPlayer ()
 {
+	//добавить одну косточку для партиклов по дефаулту
+	SBoneInfo bone_info;
+	m_ParticlesBonesList.clear();
+	bone_info.index = 0;
+	bone_info.offset.set(0,0,0);
+	m_ParticlesBonesList.push_back(bone_info);
 }
 
 CParticlesPlayer::~CParticlesPlayer ()
