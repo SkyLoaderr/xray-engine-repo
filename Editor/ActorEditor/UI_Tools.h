@@ -80,6 +80,8 @@ public:
     bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
+
+    bool				Pick				(){return false;}
 };
 extern CActorTools	Tools;
 //---------------------------------------------------------------------------

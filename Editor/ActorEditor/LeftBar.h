@@ -76,7 +76,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Export2;
 	TMenuItem *SaevAs1;
 	TMenuItem *N5;
-	TBevel *Bevel3;
 	TBevel *Bevel4;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
@@ -91,7 +90,6 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall tvMotionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall PreviewClick(TObject *Sender);
 	void __fastcall ebEngineApplyChangesClick(TObject *Sender);
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);

@@ -45,7 +45,6 @@ bool CActorTools::OnCreate(){
 
     m_bReady = true;
 
-    Load();
 //	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
 

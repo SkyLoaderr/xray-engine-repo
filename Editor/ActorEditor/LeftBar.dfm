@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 614
+  Height = 650
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 212
-    Height = 614
+    Height = 650
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -152,7 +152,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 69
       Width = 210
-      Height = 152
+      Height = 188
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -174,13 +174,13 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 208
-        Height = 121
+        Height = 157
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 120
+          Top = 156
           Width = 208
           Height = 1
           Align = alBottom
@@ -198,7 +198,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 35
           Width = 208
-          Height = 85
+          Height = 121
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -283,7 +283,6 @@ object fraLeftBar: TfraLeftBar
           OnDragOver = tvMotionsDragOver
           OnStartDrag = tvMotionsStartDrag
           OnMouseDown = tvMotionsMouseDown
-          OnKeyDown = tvMotionsKeyDown
         end
         object Panel1: TPanel
           Left = 0
@@ -393,7 +392,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = 135
+        Top = 171
         Width = 208
         Height = 16
         Align = alBottom
@@ -424,11 +423,12 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 263
+      Top = 299
       Width = 210
       Height = 350
       Hint = 'Scene commands'
       Align = alBottom
+      Color = 10528425
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
@@ -468,14 +468,6 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object Bevel3: TBevel
-        Left = 1
-        Top = 14
-        Width = 208
-        Height = 1
-        Align = alTop
-        Shape = bsLeftLine
-      end
       object Bevel4: TBevel
         Left = 1
         Top = 348
@@ -486,9 +478,9 @@ object fraLeftBar: TfraLeftBar
       end
       object paPSProps: TPanel
         Left = 1
-        Top = 15
+        Top = 14
         Width = 208
-        Height = 333
+        Height = 334
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -497,7 +489,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentPS: TPanel
       Left = 1
-      Top = 221
+      Top = 257
       Width = 210
       Height = 42
       Hint = 'Scene commands'

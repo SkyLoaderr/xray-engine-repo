@@ -22,7 +22,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 	switch( _Command ){
 	case COMMAND_INITIALIZE:{
-		FS.OnCreate			();
+		FS.OnCreate			(Device.m_hWnd);
 		InitMath			();
         // make interface
 	    fraBottomBar		= new TfraBottomBar(0);
@@ -66,9 +66,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
     case COMMAND_LOAD:{
-    	AnsiString fn=m_EditObject?;
+//    	AnsiString fn=m_EditObject?;
 //S    	if (FS.GetOpenName(&FS.m_Objects,fn))
-    	Tools.Load(fn.c_str());
+//    	Tools.Load(fn.c_str());
     	}break;
     case COMMAND_RELOAD:
 		if (!Tools.IfModified()) return false;
@@ -79,7 +79,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CLEAR:
 		{
 			Device.m_Camera.Reset();
-            Tools.ResetPreviewObject();
+//S            Tools.ResetPreviewObject();
 			Command(COMMAND_UPDATE_CAPTION);
 		}
 		break;
@@ -103,9 +103,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_SELECT_PREVIEW_OBJ:
-		Tools.SelectPreviewObject(p1);
-    	break;
     case COMMAND_APPLY_CHANGES:
     	Tools.ApplyChanges();
     	break;
