@@ -51,6 +51,7 @@ void CStats::Show()
 		RenderDUMP_Glows.FrameEnd	();	
 		RenderDUMP_Shads.FrameEnd	();	
 		RenderDUMP_WM.FrameEnd		();	
+		RenderDUMP_Detail.FrameEnd	();	
 		
 		Sound.FrameEnd				();
 		Input.FrameEnd				();
@@ -108,6 +109,7 @@ void CStats::Show()
 		F.OutNext	("R_DUMP:      %2.2fms",RenderDUMP.result);	
 		F.OutNext	("  Skinning:  %2.2fms",RenderDUMP_SKIN.result);	
 		F.OutNext	("  Cached:	   %2.2fms",RenderDUMP_Cached.result);	
+		F.OutNext	("  Details:   %2.2fms",RenderDUMP_Detail.result);	
 		F.OutNext	("  Shadows:   %2.2fms",RenderDUMP_Shads.result);
 		F.OutNext	("  Wallmarks: %2.2fms",RenderDUMP_WM.result);
 		F.OutNext	("  Glows:     %2.2fms",RenderDUMP_Glows.result);	
@@ -147,6 +149,7 @@ void CStats::Show()
 		RenderDUMP_Glows.FrameStart	();	
 		RenderDUMP_Shads.FrameStart	();	
 		RenderDUMP_WM.FrameStart	();	
+		RenderDUMP_Detail.FrameStart();	
 		
 		Sound.FrameStart			();
 		Input.FrameStart			();
