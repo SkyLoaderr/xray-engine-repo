@@ -94,7 +94,6 @@ void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
 			vertices.erase(vertices.begin()+VertCount,vertices.end());
 	}
 }
-
 BOOL OGF::dbg_SphereContainsVertex(Fvector& c, float R)
 {
 	Fsphere	S;	S.set(c,R);
