@@ -12,6 +12,17 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	if (Device.bReady) return;
 
 	//************************************************************************************
+	// RTargets
+	for (map<LPSTR,CRT*,str_pred>::iterator r=rtargets.begin(); r!=rtargets.end(); r++)
+	{
+		R_ASSERT	(0==r->second->dwReference);
+		free		(r->first);
+		r->second->Destroy	();
+		delete		r->second;
+	}
+	rtargets.clear	();
+	
+	//************************************************************************************
 	// Shaders
 	for (it=0; it!=shaders.size(); it++)	
 	{
