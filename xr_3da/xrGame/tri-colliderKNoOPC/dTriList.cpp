@@ -94,15 +94,15 @@ int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* 
 
 
 
-   dColliderFn* FUNCCALL dTriListColliderFn(int num){
+dColliderFn* FUNCCALL dTriListColliderFn(int num){
 	int i=dBoxClass;
-	   if (num == dBoxClass){ 
+	if (num == dBoxClass){ 
 		return 	(dColliderFn*)&dCollideBTL;
-	   }
-	   if (num == dSphereClass) {
+	}
+	if (num == dSphereClass) {
 		return (dColliderFn*)&dCollideSTL;
-	   }
-	
+	}
+
 
 	return 0;
 
@@ -182,7 +182,7 @@ dxGeom* dCreateTriList(dSpaceID space, dTriCallback* Callback, dTriArrayCallback
 
 		c.aabb_test = &dAABBTestTL;
 
-	//	c.aabb_test=NULL;
+		//	c.aabb_test=NULL;
 		c.dtor = &dDestroyTriList;
 
 
