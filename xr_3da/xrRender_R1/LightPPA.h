@@ -29,6 +29,8 @@ public:
 
 	void			add				(light* L);
 	void			render			();
+	void			render_point	();
+	void			render_spot		();
 };
 
 #endif // !defined(AFX_LIGHTPPA_H__E5B97AC9_84A6_4773_9FEF_3BC5D1CEF8B6__INCLUDED_)

@@ -5,10 +5,10 @@
 #include "stdafx.h"
 #include "LightPPA.h"
 
-const u32	MAX_POLYGONS=1024*8;
-const float MAX_DISTANCE=50.f;
+const u32	MAX_POLYGONS			=	1024*8;
+const float MAX_DISTANCE			=	50.f;
 
-IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
+IC void mk_vertex					(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
 	D.P.set	(P);
 	D.N.set	(P);
@@ -18,7 +18,7 @@ IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, flo
 	D.v1	=.5f;
 }
 
-void CLightR_Manager::Render	(ref_geom& hGeom)
+void CLightR_Manager::Render		(ref_geom& hGeom)
 {
 	VERIFY	(g_pGameLevel);
 
@@ -77,7 +77,7 @@ void CLightR_Manager::Render	(ref_geom& hGeom)
 	if (actual) RCache.Render	(D3DPT_TRIANGLELIST,vOffset,actual);
 }
 
-void CLightR_Manager::Render	()
+void CLightR_Manager::render_point	()
 {
 	// Projection
 	float _43					 = Device.mProject._43;
@@ -110,13 +110,35 @@ void CLightR_Manager::Render	()
 	RCache.set_xform_project	(Device.mProject);
 }
 
-CLightR_Manager::CLightR_Manager()
+void CLightR_Manager::render_spot	()
+{
+}
+
+void CLightR_Manager::render		()
+{
+	if (selected_point.size())	{ render_point	();	selected_point.clear(); }
+	if (selected_spot.size())	{ render_spot	();	selected_spot.clear();	}
+}
+
+void CLightR_Manager::add			(light* L)
+{
+	if (IRender_Light::POINT==L->flags.type)
+	{
+		// PPA
+		selected_point.push_back	(L);
+	} else {
+		// spot/flash
+		selected_spot.push_back		(L);
+	}
+}
+
+CLightR_Manager::CLightR_Manager	()
 {
 	hShader.create				("effects\\light","effects\\light,effects\\light");
 	hGeom.create				(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
-CLightR_Manager::~CLightR_Manager()
+CLightR_Manager::~CLightR_Manager	()
 {
 	hGeom.destroy				();
 	hShader.destroy				();

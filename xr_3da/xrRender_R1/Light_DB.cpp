@@ -91,15 +91,7 @@ void			CLight_DB::add_light		(light* L)
 	L->dwFrame	=	Device.dwFrame;
 	if (L->flags.bStatic)			return;
 
-
-	if (IRender_Light::POINT==L->flags.type)
-	{
-		// PPA
-		RImplementation.L_Dynamic->Add	(L);
-	} else {
-		// spot/flash
-		v_selected_unshadowed.push_back	(L);
-	}
+	RImplementation.L_Dynamic->add	(L);
 }
 #endif
 
