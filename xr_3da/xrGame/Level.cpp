@@ -451,11 +451,16 @@ void __stdcall		CLevel::PhisStepsCallback	( u32 Time0, u32 Time1 )
 
 #pragma todo("Oles to all: highly inefficient and slow!!!")
 
-	for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); O++) 
+	for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); ++O) 
 	{
-		CActor* pActor = dynamic_cast<CActor*>(*O);
+		if( (*O)->SUB_CLS_ID == CLSID_OBJECT_ACTOR){
+			CActor* pActor = dynamic_cast<CActor*>(*O);
+			if (!pActor || pActor->Remote()) continue;
+				pActor->UpdatePosStack(Time0, Time1);
+		}
+/*		CActor* pActor = dynamic_cast<CActor*>(*O);
 		if (!pActor || pActor->Remote()) continue;
-		pActor->UpdatePosStack(Time0, Time1);
+		pActor->UpdatePosStack(Time0, Time1);*/
 	};
 };
 
