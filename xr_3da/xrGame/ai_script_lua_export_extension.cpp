@@ -303,6 +303,8 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
+		class_<CAbstractVertexEvaluator>("vertex_evaluator"),
+
 		class_<CLuaGameObject>("game_object")
 			.enum_("relation")
 			[
@@ -420,15 +422,20 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
 			
 			// movement manager
-			.def("set_desired_position",		&CLuaGameObject::set_desired_position	)
-			.def("set_desired_direction",		&CLuaGameObject::set_desired_direction	)
 			.def("set_body_state",				&CLuaGameObject::set_body_state			)
 			.def("set_movement_type",			&CLuaGameObject::set_movement_type		)
 			.def("set_mental_state",			&CLuaGameObject::set_mental_state		)
 			.def("set_path_type",				&CLuaGameObject::set_path_type			)
 			.def("set_detail_path_type",		&CLuaGameObject::set_detail_path_type	)
-			.def("set_node_evaluator",			&CLuaGameObject::set_node_evaluator		)
-			.def("set_path_evaluator",			&CLuaGameObject::set_path_evaluator		)
+			//
+			.def("set_desired_position",		(void (CLuaGameObject::*)())(CLuaGameObject::set_desired_direction))
+			.def("set_desired_position",		(void (CLuaGameObject::*)(const Fvector *))(CLuaGameObject::set_desired_direction))
+			.def("set_desired_direction",		(void (CLuaGameObject::*)())(CLuaGameObject::set_desired_direction))
+			.def("set_desired_direction",		(void (CLuaGameObject::*)(const Fvector *))(CLuaGameObject::set_desired_direction))
+			.def("set_node_evaluator",			(void (CLuaGameObject::*)())(CLuaGameObject::set_node_evaluator))
+			.def("set_node_evaluator",			(void (CLuaGameObject::*)(CAbstractVertexEvaluator *))(CLuaGameObject::set_node_evaluator))
+			.def("set_path_evaluator",			(void (CLuaGameObject::*)())(CLuaGameObject::set_path_evaluator))
+			.def("set_path_evaluator",			(void (CLuaGameObject::*)(CAbstractVertexEvaluator *))(CLuaGameObject::set_path_evaluator))
 			
 			// sound_player
 //			.def("add_sound",					&CLuaGameObject::add_sound)
@@ -445,6 +452,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_sight",					&CLuaGameObject::set_sight)
 
 			// object handler
-			.def("set_item",					&CLuaGameObject::set_item)
+			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction ))(CLuaGameObject::set_item))
+			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction, CLuaGameObject *))(CLuaGameObject::set_item))
 	];
 }

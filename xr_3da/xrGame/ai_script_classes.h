@@ -524,24 +524,29 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////
-			void				set_desired_position	(const Fvector *desired_position);
-			void				set_desired_direction	(const Fvector *desired_direction);
 			void				set_body_state			(EBodyState body_state);
 			void				set_movement_type		(EMovementType movement_type);
 			void				set_mental_state		(EMentalState mental_state);
 			void				set_path_type			(CMovementManager::EPathType path_type);
 			void				set_detail_path_type	(CMovementManager::EDetailPathType detail_path_type);
-			void				set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
-			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 			void				add_sound				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name);
 			void				remove_sound			(u32 internal_type);
 			void				set_sound_mask			(u32 sound_mask);
 			void				set_sight				(ELookType tLookType, const Fvector	*tPointToLook = 0, u32 dwLookOverDelay = u32(-1));
-			void				set_item				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
 			u32					GetRank					();
 			void				play_sound				(u32 internal_type);
 			void				play_sound				(u32 internal_type, u32 max_start_time);
 			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time);
 			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time);
 			void				play_sound				(u32 internal_type, u32 max_start_time, u32 min_start_time, u32 max_stop_time, u32 min_stop_time);
+			void				set_item				(MonsterSpace::EObjectAction object_action);
+			void				set_item				(MonsterSpace::EObjectAction object_action, CLuaGameObject *game_object);
+			void				set_desired_position	();
+			void				set_desired_position	(const Fvector *desired_position);
+			void				set_desired_direction	();
+			void				set_desired_direction	(const Fvector *desired_direction);
+			void				set_node_evaluator		();
+			void				set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
+			void				set_path_evaluator		();
+			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
 };

@@ -272,24 +272,6 @@ CLuaGameObject *CLuaGameObject::GetCorpse() const
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-void CLuaGameObject::set_desired_position	(const Fvector *desired_position)
-{
-	CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-	if (!stalker)
-		LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->set_desired_position	(desired_position);
-}
-
-void  CLuaGameObject::set_desired_direction	(const Fvector *desired_direction)
-{
-	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->set_desired_direction	(desired_direction);
-}
-
 void  CLuaGameObject::set_body_state			(EBodyState body_state)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
@@ -335,24 +317,6 @@ void  CLuaGameObject::set_detail_path_type	(CMovementManager::EDetailPathType de
 		stalker->set_detail_path_type	(detail_path_type);
 }
 
-void  CLuaGameObject::set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
-{
-	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->set_node_evaluator	(node_evaluator);
-}
-
-void  CLuaGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
-{
-	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
-	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
-	else
-		stalker->set_path_evaluator	(path_evaluator);
-}
-
 void  CLuaGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
@@ -387,15 +351,6 @@ void CLuaGameObject::set_sight		(ELookType tLookType, const Fvector	*tPointToLoo
 		LuaOut					(Lua::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
 		sight_manager->update	(tLookType,tPointToLook,dwLookOverDelay);
-}
-
-void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
-{
-	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
-	if (!object_handler)
-		LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-	else
-		object_handler->set_goal(object_action,game_object);
 }
 
 u32 CLuaGameObject::GetRank		()
@@ -454,3 +409,92 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min
 		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time);
 }
 
+void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action)
+{
+	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+	if (!object_handler)
+		LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+	else
+		object_handler->set_goal(object_action);
+}
+
+void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action, CLuaGameObject *lua_game_object)
+{
+	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+	if (!object_handler)
+		LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+	else
+		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0);
+}
+
+void CLuaGameObject::set_desired_position	()
+{
+	CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_desired_position	(0);
+}
+
+void CLuaGameObject::set_desired_position	(const Fvector *desired_position)
+{
+	CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_desired_position	(desired_position);
+}
+
+void  CLuaGameObject::set_desired_direction	()
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_desired_direction	(0);
+}
+
+void  CLuaGameObject::set_desired_direction	(const Fvector *desired_direction)
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_desired_direction	(desired_direction);
+}
+
+void  CLuaGameObject::set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator)
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_node_evaluator	(node_evaluator);
+}
+
+void  CLuaGameObject::set_node_evaluator		()
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_node_evaluator	(0);
+}
+
+void  CLuaGameObject::set_path_evaluator		()
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_path_evaluator	(0);
+}
+
+void  CLuaGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_path_evaluator	(path_evaluator);
+}
