@@ -22,6 +22,7 @@ extern const u32	dis_frames;
 extern const dReal	world_gravity;
 
 void BodyCutForce	(dBodyID body,float l_limit,float w_limit);
+void dMassSub		(dMass *a,const dMass *b)				  ;
 void SaveContacts	(dGeomID o1, dGeomID o2,dJointGroupID jointGroup);
 
 #define ERP(k_p,k_d)		((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)))

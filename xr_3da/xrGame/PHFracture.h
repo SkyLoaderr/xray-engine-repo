@@ -30,6 +30,8 @@ public:
 CPHFracturesHolder			();
 #pragma todo("Dima to Kostia : check if you need here a non-virtual destructor!")
 ~CPHFracturesHolder			();
+void				DistributeAdditionalMass	(u16 geom_num,const dMass& m);//
+void				SubFractureMass				(u16 fracture_num);
 void				AddImpact		(const Fvector& force,const Fvector& point);
 protected:
 private:
@@ -44,6 +46,7 @@ void				SplitProcess	(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements);
 CPHFracture&		AddFracture		(const CPHFracture& fracture);
 void				PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
 bool				PhDataUpdate	(dBodyID body);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
+
 };
 
 class CShellSplitInfo 
@@ -78,6 +81,16 @@ public:
 bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
 IC bool			Breaked(){return m_breaked;}
 void			SetMassParts(const dMass& first,const dMass& second);
+void			MassSetZerro();
+void			MassAddToFirst(const dMass& m);
+void			MassAddToSecond(const dMass& m);
+void			MassSubFromFirst(const dMass& m);
+void			MassSubFromSecond(const dMass& m);
+void			MassSetFirst(const dMass& m);
+void			MassSetSecond(const dMass& m);
+const dMass&	MassFirst(){return m_firstM;}
+const dMass&	MassSecond(){return m_seccondM;}
+void			MassUnsplitFromFirstToSecond(const dMass& m);
 };
 
 

@@ -118,6 +118,7 @@ public:
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;
+	virtual	dMass*			getMassTensor			()												= 0;
 	virtual void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
 	virtual ~CPhysicsElement						()												{};
 };

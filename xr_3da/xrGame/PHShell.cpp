@@ -400,7 +400,7 @@ void CPHShell::SmoothElementsInertia(float k)
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 
-		dMassAdd(&m_avrg,(*i)->GetMass());
+		dMassAdd(&m_avrg,(*i)->getMassTensor());
 
 	}
 	int n = (int)elements.size();
@@ -410,7 +410,7 @@ void CPHShell::SmoothElementsInertia(float k)
 	for(i=elements.begin();i!=elements.end();i++)
 	{
 		dVector3 tmp;
-		dMass* m=(*i)->GetMass();
+		dMass* m=(*i)->getMassTensor();
 		Memory.mem_copy(tmp,m->c,sizeof(dVector3));
 
 		m->mass*=krc;
@@ -445,21 +445,42 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint*   J	= 0;
+	bool breakable=joint_data.ik_flags.test(SJointIKData::flBreakable) && root_e;
+	CPHFracture fracture;
+
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//
 	{	
 		
 		if(joint_data.type==jtRigid && root_e ) //
 		{
-			
+			//for non local///////////////////////////////////////////////
 			//Fmatrix inv_root;
 			//inv_root.set(root_e->mXFORM);
 			//inv_root.invert();
 			//fm_position.mulA(inv_root);
-			root_e->add_Shape(bone_data.shape,bone_data.bind_transform);
-			root_e->add_Mass(bone_data.shape,bone_data.bind_transform,bone_data.center_of_mass,bone_data.mass);
+			//for non local///////////////////////////////////////////////
+			E=root_e;
+			if(breakable)
+			{
+				fracture.m_bone_id					=id;
+				fracture.m_start_geom_num			=E->numberOfGeoms();
+				fracture.m_end_geom_num				=u16(-1);
+				fracture.m_start_el_num				=u16(elements.size());
+				fracture.m_start_jt_num				=u16(joints.size());	 
+				fracture.MassSetFirst				(*(E->getMassTensor()));
+				VERIFY(fracture.m_start_geom_num	!=u16(-1));
+				root_e->add_Shape(bone_data.shape,bone_data.bind_transform);
+				root_e->add_Mass(bone_data.shape,bone_data.bind_transform,bone_data.center_of_mass,bone_data.mass,&fracture);
+			}
+			else
+			{
+				root_e->add_Shape(bone_data.shape,bone_data.bind_transform);
+				root_e->add_Mass(bone_data.shape,bone_data.bind_transform,bone_data.center_of_mass,bone_data.mass);
+			}
+	
 			B.Callback_Param=root_e;
 			B.Callback=NULL;
-			E=root_e;
+		
 		}
 		else										//
 		{
@@ -729,11 +750,14 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 
 				default: NODEFAULT;
 				}
-
+				add_Joint	(J);
+				if(breakable)
+				{
+					setEndJointSplitter();
+					J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
+				}
 			}
-			add_Joint	(J);
-		}
-
+		}	
 	}
 	else
 	{	
@@ -751,25 +775,25 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 	}
 	
-	bool breakable=joint_data.ik_flags.test(SJointIKData::flBreakable) && root_e;
-	CPHFracture fracture;
-	if(breakable)
-	{
-		if(joint_data.type==jtRigid)
-		{
-			fracture.m_bone_id					=id;
-			fracture.m_start_geom_num			=E->numberOfGeoms()-1;
-			fracture.m_start_el_num				=u16(elements.size());
-			fracture.m_start_jt_num				=u16(joints.size());	 
-			VERIFY(fracture.m_start_geom_num	!=u16(-1));
 
-		}
-		else
-		{
-			setEndJointSplitter();
-			J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
-		}
-	}
+	//if(breakable)
+	//{
+	//	if(joint_data.type==jtRigid)
+	//	{
+	//		fracture.m_bone_id					=id;
+	//		fracture.m_start_geom_num			=E->numberOfGeoms()-1;
+	//		fracture.m_start_el_num				=u16(elements.size());
+	//		fracture.m_start_jt_num				=u16(joints.size());	 
+	//		fracture.MassSetFirst				(*(E->getMassTensor()));
+	//		VERIFY(fracture.m_start_geom_num	!=u16(-1));
+
+	//	}
+	//	else
+	//	{
+	//		setEndJointSplitter();
+	//		J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
+	//	}
+	//}
 /////////////////////////////////////////////////////////////////////////////////////
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
 		AddElementRecursive		(E,(*it)->SelfID,fm_position,element_number);

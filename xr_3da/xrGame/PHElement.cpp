@@ -1182,9 +1182,13 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 	dMassTranslate(&m,mc.x,mc.y,mc.z);
 	m_mass_center.sub(new_mc);
 	dMassTranslate(&m_mass,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+	if(m_fratures_holder)
+	{
+		m_fratures_holder->DistributeAdditionalMass(u16(m_geoms.size()-1),m);
+	}
 	if(fracture)
 	{
-		fracture->SetMassParts(m_mass,m);
+		fracture->MassAddToSecond(m);
 	}
 	dMassAdd(&m_mass,&m);
 	m_mass_center.set(new_mc);

@@ -175,7 +175,7 @@ public:
 			void			ReInitDynamics			(const Fmatrix &shift_pivot,float density);//set body & geom positions
 			void			SplitProcess			(ELEMENT_PAIR_VECTOR &new_elements);
 			void			PresetActive			();
-	dMass*					GetMass					()
+virtual		dMass*			getMassTensor			()
 	{
 		return &m_mass;
 	}
