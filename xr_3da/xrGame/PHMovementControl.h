@@ -3,6 +3,11 @@
 #define CPHMOVEMENT_CONTROL_H
 
 #include "PHCharacter.h"
+
+namespace ALife {
+	enum EHitType;
+};
+
 namespace DetailPathManager {
 	struct STravelPathPoint;
 };

@@ -10,6 +10,7 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 		return;
 	}
 
+#if 0
 	dest_position		= m_current_position;
 
 	// Если нет движения по пути
@@ -102,6 +103,7 @@ void CPoltergeist::move_along_path(CPHMovementControl *movement_control, Fvector
 	m_current_position	= dest_position;
 	Position()			= CalculateRealPosition();
 	dest_position		= Position();
+#endif
 }
 
 Fvector CPoltergeist::CalculateRealPosition()
