@@ -297,6 +297,42 @@ SOURCE=.\Opcode.h
 # Begin Group "Trees"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\OPC_AABBTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_AABBTree.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_BVTCache.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Common.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_Common.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OptimizedTree.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_OptimizedTree.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeBuilders.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\OPC_TreeBuilders.h
+# End Source File
 # End Group
 # Begin Group "Overlap tests"
 
