@@ -41,5 +41,9 @@ function main ()
 		cond			(cond.time_end,2000)
     )
     
+    while stalker:action() != nil do
+		wait			()
+    end
+    
     stalker:script		(false,stalker_test:script_name());
 end
