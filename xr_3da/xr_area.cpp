@@ -176,7 +176,12 @@ void CObjectSpace::Load	(CStream *F)
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	if (2 == H.version)
 	{
-		u32(-1)
+		// fill materials-guids (.dummy) with u32(-1)
+		for (u32 it=0; it<H.facecount; it++)
+		{
+			CDB::TRI*	T	= tris+it;
+			T->dummy		= u32(-1);
+		}
 	} else {
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 	}
