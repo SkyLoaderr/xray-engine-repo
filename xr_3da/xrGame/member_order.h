@@ -16,6 +16,7 @@
 
 class CAI_Stalker;
 class CCoverPoint;
+class CExplosive;
 
 class CMemberOrder {
 public:
@@ -41,6 +42,26 @@ public:
 		}
 	};
 
+	struct CGrenadeReaction {
+		const CExplosive		*m_grenade;
+		const CGameObject		*m_game_object;
+		u32						m_time;
+		bool					m_processing;
+
+		IC			CGrenadeReaction	()
+		{
+			clear				();
+		}
+
+		IC	void	clear				()
+		{
+			m_grenade			= 0;
+			m_game_object		= 0;
+			m_time				= 0;
+			m_processing		= false;
+		}
+	};
+
 protected:
 	CAI_Stalker					*m_object;
 	mutable CCoverPoint			*m_cover;
@@ -53,6 +74,7 @@ protected:
 	bool						m_processed;
 	u32							m_selected_enemy;
 	mutable CMemberDeathReaction m_member_death_reaction;
+	mutable CGrenadeReaction	m_grenade_reaction;
 
 public:
 	IC							CMemberOrder			(CAI_Stalker *object);
@@ -66,6 +88,7 @@ public:
 	IC		u32					selected_enemy			() const;
 	IC		CCoverPoint			*cover					() const;
 	IC		CMemberDeathReaction&member_death_reaction	() const;
+	IC		CGrenadeReaction	&grenade_reaction		() const;
 	IC		CSetupAction		&action					();
 	IC		xr_vector<u32>		&enemies				();
 	IC		void				cover					(CCoverPoint *object_cover) const;

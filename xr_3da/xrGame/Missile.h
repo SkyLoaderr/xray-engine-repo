@@ -127,4 +127,5 @@ protected:
 
 public:
 	virtual u32				ef_weapon_type		() const;
+	IC		u32				destroy_time		() const {return m_dwDestroyTime;};
 };

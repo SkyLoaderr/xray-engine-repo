@@ -22,8 +22,13 @@
 #include "visual_memory_manager.h"
 #include "enemy_manager.h"
 #include "sound_player.h"
+#include "missile.h"
+#include "explosive.h"
 
-const u32 TOLLS_INTERVAL = 2000;
+const u32 TOLLS_INTERVAL	= 2000;
+const u32 GRENADE_INTERVAL	= 0*1000;
+const float GRENADE_RADIUS	= 20.f;
+const u32 AFTER_GRENADE_DESTROYED_INTERVAL = 20000;
 
 using namespace StalkerDecisionSpace;
 
@@ -79,11 +84,36 @@ IC	void CStalkerCombatPlanner::update_cover	()
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
 }
 
-void CStalkerCombatPlanner::update				()
+void CStalkerCombatPlanner::react_on_grenades		()
 {
-	update_cover			();
-	inherited::update		();
-	
+	CMemberOrder::CGrenadeReaction	&reaction = m_object->agent_manager().member(m_object).grenade_reaction();
+	if (!reaction.m_processing)
+		return;
+
+	if (Device.dwTimeGlobal < reaction.m_time + GRENADE_INTERVAL)
+		return;
+
+	u32							interval = AFTER_GRENADE_DESTROYED_INTERVAL;
+	const CMissile				*missile = smart_cast<const CMissile*>(reaction.m_grenade);
+	if (missile && (missile->destroy_time() > Device.dwTimeGlobal))
+		interval				= missile->destroy_time() - Device.dwTimeGlobal + AFTER_GRENADE_DESTROYED_INTERVAL;
+
+	m_object->agent_manager().add_danger_location(reaction.m_game_object->Position(),Device.dwTimeGlobal,interval,GRENADE_RADIUS);
+
+	if (missile && m_object->agent_manager().group_behaviour()) {
+		Msg						("%6d : Stalker %s : grenade reaction",Device.dwTimeGlobal,*m_object->cName());
+		CEntityAlive			*initiator = smart_cast<CEntityAlive*>(Level().Objects.net_Find(reaction.m_grenade->CurrentParentID()));
+		if (m_object->tfGetRelationType(initiator) == ALife::eRelationTypeEnemy)
+			m_object->sound().play	(StalkerSpace::eStalkerSoundGrenadeAlarm);
+		else
+			m_object->sound().play	(StalkerSpace::eStalkerSoundFriendlyGrenadeAlarm);
+	}
+
+	reaction.clear				();
+}
+
+void CStalkerCombatPlanner::react_on_member_death	()
+{
 	CMemberOrder::CMemberDeathReaction	&reaction = m_object->agent_manager().member(m_object).member_death_reaction();
 	if (!reaction.m_processing)
 		return;
@@ -95,6 +125,14 @@ void CStalkerCombatPlanner::update				()
 		m_object->sound().play(StalkerSpace::eStalkerSoundTolls);
 
 	reaction.clear			();
+}
+
+void CStalkerCombatPlanner::update				()
+{
+	update_cover			();
+	inherited::update		();
+	react_on_grenades		();
+	react_on_member_death	();
 }
 
 void CStalkerCombatPlanner::initialize			()

@@ -121,3 +121,8 @@ IC	CMemberOrder::CMemberDeathReaction &CMemberOrder::member_death_reaction	() co
 {
 	return			(m_member_death_reaction);
 }
+
+IC	CMemberOrder::CGrenadeReaction &CMemberOrder::grenade_reaction			() const
+{
+	return			(m_grenade_reaction);
+}

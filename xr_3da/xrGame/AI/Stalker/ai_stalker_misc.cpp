@@ -15,9 +15,16 @@
 #include "../../memory_manager.h"
 #include "../../item_manager.h"
 #include "../../stalker_movement_manager.h"
+#include "../../explosive.h"
+#include "../../agent_manager.h"
 
 bool CAI_Stalker::useful		(const CGameObject *object) const
 {
+	const CExplosive	*explosive = smart_cast<const CExplosive*>(object);
+	if (explosive && (explosive->CurrentParentID() != 0xffff)) {
+		agent_manager().register_grenade(explosive,object);
+	}
+
 	if (!memory().item().useful(object))
 		return			(false);
 

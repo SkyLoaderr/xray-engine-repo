@@ -18,8 +18,6 @@
 #include "hit_memory_manager.h"
 #include "enemy_manager.h"
 
-const float DANGER_DISTANCE = 5.f;
-
 struct CEnemyFiller {
 	xr_vector<CAgentManager::CEnemy>	*m_enemies;
 	MemorySpace::squad_mask_type		m_mask;
@@ -48,6 +46,22 @@ struct CEnemyFiller {
 		}
 	}
 };
+
+IC	CAgentManager::CDangerCover *CAgentManager::danger_cover	(CCoverPoint *cover) const
+{
+	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),cover->position());
+	if (I != m_danger_covers.end())
+		return							(&*I);
+	return								(0);
+}
+
+IC	CAgentManager::CDangerCover *CAgentManager::danger_location	(const Fvector &position) const
+{
+	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),position);
+	if (I != m_danger_covers.end())
+		return							(&*I);
+	return								(0);
+}
 
 template <typename T>
 IC	void CAgentManager::setup_mask	(xr_vector<T> &objects, CEnemy &enemy)
@@ -323,17 +337,28 @@ void CAgentManager::setup_actions		()
 {
 }
 
-void CAgentManager::add_danger_cover	(CCoverPoint *cover, u32 time) const
+void CAgentManager::add_danger_cover	(CCoverPoint *cover, u32 time, u32 interval, float radius) const
 {
-	CDangerCover					*danger = danger_cover(cover);
+	add_danger_location				(cover->position(),time,interval,radius);
+}
+
+void CAgentManager::add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius) const
+{
+	CDangerCover					*danger = danger_location(position);
 	if (!danger) {
 		CDangerCover				danger;
-		danger.m_cover				= cover;
+		danger.m_position			= position;
 		danger.m_level_time			= time;
+		danger.m_interval			= interval;
+		danger.m_radius				= radius;
 		m_danger_covers.push_back	(danger);
 		return;
 	}
 	danger->m_level_time			= time;
+	if (danger->m_interval < interval)
+		danger->m_interval			= interval;
+	if (danger->m_radius < radius)
+		danger->m_radius			= radius;
 }
 
 void CAgentManager::remove_old_danger_covers	()
@@ -348,14 +373,14 @@ float CAgentManager::cover_danger		(CCoverPoint *cover) const
 	xr_vector<CDangerCover>::const_iterator	I = m_danger_covers.begin();
 	xr_vector<CDangerCover>::const_iterator	E = m_danger_covers.end();
 	for ( ; I != E; ++I) {
-		if (Device.dwTimeGlobal > (*I).m_level_time + DANGER_INTERVAL)
+		if (Device.dwTimeGlobal > (*I).m_level_time + (*I).m_interval)
 			continue;
 
-		float		distance = 1.f + (*I).m_cover->position().distance_to(cover->position());
-		if (distance > DANGER_DISTANCE)
+		float		distance = 1.f + (*I).m_position.distance_to(cover->position());
+		if (distance > (*I).m_radius)
 			continue;
 
-		result		*= distance/DANGER_DISTANCE*float(Device.dwTimeGlobal - (*I).m_level_time)/float(DANGER_INTERVAL);
+		result		*= distance/(*I).m_radius*float(Device.dwTimeGlobal - (*I).m_level_time)/float((*I).m_interval);
 	}
 
 	return			(result);
@@ -368,7 +393,7 @@ bool CAgentManager::process_corpse			(CMemberOrder &member)
 	xr_vector<CMemberCorpse>::iterator	I = m_corpses.begin();
 	xr_vector<CMemberCorpse>::iterator	E = m_corpses.end();
 	for ( ; I != E; ++I) {
-		if (!member.object().memory().visual().visible_now(&member.object()))
+		if (!member.object().memory().visual().visible_now((*I).m_member))
 			continue;
 
 		float		dist_sqr = (*I).m_member->Position().distance_to_sqr(member.object().Position());
@@ -426,5 +451,74 @@ void CAgentManager::react_on_member_death	()
 
 		I				= remove_if(m_corpses.begin(),m_corpses.end(),CRemoveMemberCorpsesPredicate());
 		m_corpses.erase	(I,m_corpses.end());
+	}
+}
+
+bool CAgentManager::process_grenade			(CMemberOrder &member)
+{
+	float			min_dist_sqr = flt_max;
+	CMemberGrenade	*best_grenade = 0;
+	xr_vector<CMemberGrenade>::iterator	I = m_grenades.begin();
+	xr_vector<CMemberGrenade>::iterator	E = m_grenades.end();
+	for ( ; I != E; ++I) {
+		if (!member.object().memory().visual().visible_now((*I).m_game_object))
+			continue;
+
+		float		dist_sqr = (*I).m_game_object->Position().distance_to_sqr(member.object().Position());
+		if (dist_sqr < min_dist_sqr) {
+			if	(
+				(*I).m_reactor && 
+				((*I).m_reactor->Position().distance_to_sqr((*I).m_game_object->Position()) <= min_dist_sqr)
+				)
+				continue;
+			min_dist_sqr	= dist_sqr;
+			best_grenade	= &*I;
+		}
+	}
+
+	if (!best_grenade)
+		return				(false);
+
+	best_grenade->m_reactor	= &member.object();
+	return					(true);
+}
+
+struct CRemoveGrenadesPredicate {
+	IC	bool operator()		(CAgentManager::CMemberGrenade &grenade) const
+	{
+		return				(!!grenade.m_reactor);
+	}
+};
+
+void CAgentManager::react_on_grenades	()
+{
+	for (;;) {
+		bool						changed = false;
+		MEMBER_STORAGE::iterator	I = members().begin();
+		MEMBER_STORAGE::iterator	E = members().end();
+		for ( ; I != E; ++I)
+			if (!(*I).grenade_reaction().m_processing)
+				changed				= process_grenade(*I);
+
+		if (!changed)
+			break;
+	}
+
+	{
+		xr_vector<CMemberGrenade>::iterator	I = m_grenades.begin();
+		xr_vector<CMemberGrenade>::iterator	E = m_grenades.end();
+		for ( ; I != E; ++I) {
+			if (!(*I).m_reactor)
+				continue;
+
+			CMemberOrder::CGrenadeReaction	&reaction = member((*I).m_reactor).grenade_reaction();
+			reaction.m_grenade		= (*I).m_grenade;
+			reaction.m_game_object	= (*I).m_game_object;
+			reaction.m_time			= (*I).m_time;
+			reaction.m_processing	= true;
+		}
+
+		I					= remove_if(m_grenades.begin(),m_grenades.end(),CRemoveGrenadesPredicate());
+		m_grenades.erase	(I,m_grenades.end());
 	}
 }

@@ -13,15 +13,12 @@
 
 class CEntity;
 class CAI_Stalker;
+class CGameObject;
+class CExplosive;
 class CSetupAction;
 class CAgentManagerMotivationPlanner;
 
 class CAgentManager : public ISheduled {
-private:
-	enum {
-		DANGER_INTERVAL = u32(30000),
-	};
-
 public:
 	class CMemberPredicate {
 	protected:
@@ -67,19 +64,21 @@ public:
 	};
 
 	struct CDangerCover {
-		CCoverPoint		*m_cover;
+		Fvector			m_position;
 		u32				m_level_time;
+		u32				m_interval;
+		float			m_radius;
 
-		IC	bool	operator==	(CCoverPoint *cover) const
+		IC	bool	operator==	(const Fvector &position) const
 		{
-			return		(m_cover == cover);
+			return		(!!m_position.similar(position));
 		}
 	};
 
 	struct CRemoveOldDangerCover {
 		IC	bool	operator()	(const CAgentManager::CDangerCover &cover) const
 		{
-			return						(Device.dwTimeGlobal > cover.m_level_time + CAgentManager::DANGER_INTERVAL);
+			return						(Device.dwTimeGlobal > cover.m_level_time + cover.m_interval);
 		}
 	};
 
@@ -101,6 +100,27 @@ public:
 		}
 	};
 
+	struct CMemberGrenade {
+		const CExplosive	*m_grenade;
+		const CGameObject	*m_game_object;
+		CAI_Stalker			*m_reactor;
+		u32					m_time;
+
+		IC			CMemberGrenade	(const CExplosive *grenade, const CGameObject *game_object, CAI_Stalker *reactor, u32 time)
+		{
+			m_grenade	= grenade;
+			m_game_object = game_object;
+			VERIFY		(!m_grenade || m_game_object);
+			m_reactor	= reactor;
+			m_time		= time;
+		}
+
+		IC	bool	operator==		(const CExplosive *grenade) const
+		{
+			return		(m_grenade == grenade);
+		}
+	};
+
 public:
 	typedef xr_vector<CMemberOrder>					MEMBER_STORAGE;
 	typedef MEMBER_STORAGE::iterator				iterator;
@@ -113,6 +133,7 @@ protected:
 	xr_vector<CHitObject>					*m_hit_objects;
 	xr_vector<CEnemy>						m_enemies;
 	mutable xr_vector<CMemberCorpse>		m_corpses;
+	mutable xr_vector<CMemberGrenade>		m_grenades;
 	mutable xr_vector<CDangerCover>			m_danger_covers;
 	CAgentManagerMotivationPlanner			*m_brain;
 
@@ -137,6 +158,7 @@ protected:
 			void							exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1);
 			void							remove_old_danger_covers	();
 			bool							process_corpse		(CMemberOrder &member);
+			bool							process_grenade		(CMemberOrder &member);
 
 public:
 											CAgentManager		();
@@ -149,6 +171,7 @@ public:
 			void							distribute_enemies	();
 			void							distribute_locations();
 			void							setup_actions		();
+			void							react_on_grenades	();
 			void							react_on_member_death();
 	IC		const CSetupAction				&action				(CAI_Stalker *object) const;
 	IC		const CMemberOrder				&member				(CAI_Stalker *object) const;
@@ -160,14 +183,22 @@ public:
 	IC		void							set_squad_objects	(xr_vector<CHitObject> *objects);
 			bool							suitable_location	(CAI_Stalker *object, CCoverPoint *location, bool use_enemy_info) const;
 	IC		bool							group_behaviour		() const;
-			void							add_danger_cover	(CCoverPoint *cover, u32 time) const;
+			void							add_danger_cover	(CCoverPoint *cover, u32 time, u32 interval, float radius) const;
+			void							add_danger_location	(const Fvector &position, u32 time, u32 interval, float radius) const;
 	IC		CDangerCover					*danger_cover		(CCoverPoint *cover) const;
+	IC		CDangerCover					*danger_location	(const Fvector &position) const;
 			float							cover_danger		(CCoverPoint *cover) const;
 	IC		void							clear_danger_covers	();
 	IC		shared_str						cName				() const;
 	IC		CAgentManagerMotivationPlanner	&brain				() const;
+
+public:
 	IC		void							register_corpse		(CAI_Stalker *corpse) const;
 	IC		xr_vector<CMemberCorpse>		&member_corpses		();
+
+public:
+	IC		void							register_grenade	(const CExplosive *grenade, const CGameObject *game_object) const;
+	IC		xr_vector<CMemberGrenade>		&member_grenades	();
 };
 
 #include "agent_manager_inline.h"

@@ -129,6 +129,7 @@ void CAgentManagerActionKillEnemy::execute			()
 	m_object->distribute_enemies	();
 	m_object->distribute_locations	();
 	m_object->setup_actions			();
+	m_object->react_on_grenades		();
 	m_object->react_on_member_death	();
 
 	CAgentManager::iterator			I = m_object->members().begin();

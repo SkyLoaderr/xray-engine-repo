@@ -37,6 +37,8 @@ public:
 	virtual void				OnAfterExplosion();
 	virtual void				OnBeforeExplosion();
 	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
+	IC		u16 				CurrentParentID		() const {return m_iCurrentParentID;}
+
 	virtual void 				GenExplodeEvent (const Fvector& pos, const Fvector& normal);
 	virtual void 				FindNormal(Fvector& normal);
 	virtual CGameObject			*cast_game_object()=0;

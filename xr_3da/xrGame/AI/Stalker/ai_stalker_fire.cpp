@@ -28,6 +28,9 @@
 #include "../../entitycondition.h"
 #include "../../sound_player.h"
 
+const float DANGER_DISTANCE = 5.f;
+const u32	DANGER_INTERVAL = 30000;
+
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
 	float				base = PI/180.f;
@@ -87,7 +90,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	if (g_Alive()) {
 		CCoverPoint				*cover = agent_manager().member(this).cover();
 		if (cover && who && (who->ID() != ID()) && !fis_zero(amount) && brain().affect_cover())
-			agent_manager().add_danger_cover	(cover,Device.dwTimeGlobal);
+			agent_manager().add_danger_cover	(cover,Device.dwTimeGlobal,DANGER_INTERVAL,DANGER_DISTANCE);
 
 		// Play hit-ref_sound
 		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);

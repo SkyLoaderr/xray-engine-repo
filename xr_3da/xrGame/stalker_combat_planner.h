@@ -25,6 +25,8 @@ protected:
 			void		add_evaluators			();
 			void		add_actions				();
 	IC		void		update_cover			();
+			void		react_on_grenades		();
+			void		react_on_member_death	();
 
 public:
 						CStalkerCombatPlanner	(CAI_Stalker *object = 0, LPCSTR action_name = "");

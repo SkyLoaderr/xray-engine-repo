@@ -104,14 +104,6 @@ IC	bool CAgentManager::group_behaviour					() const
 	return							(members().size() > 1);
 }
 
-IC	CAgentManager::CDangerCover *CAgentManager::danger_cover	(CCoverPoint *cover) const
-{
-	xr_vector<CDangerCover>::iterator	I = std::find(m_danger_covers.begin(),m_danger_covers.end(),cover);
-	if (I != m_danger_covers.end())
-		return							(&*I);
-	return								(0);
-}
-
 IC	void CAgentManager::clear_danger_covers	()
 {
 	m_danger_covers.clear			();
@@ -137,5 +129,18 @@ IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse) const
 
 IC	xr_vector<CAgentManager::CMemberCorpse> &CAgentManager::member_corpses	()
 {
-	return							(m_corpses);
+	return								(m_corpses);
+}
+
+IC	void CAgentManager::register_grenade	(const CExplosive *grenade, const CGameObject *game_object) const
+{
+	xr_vector<CMemberGrenade>::iterator	I = std::find(m_grenades.begin(),m_grenades.end(),grenade);
+	if (I != m_grenades.end())
+		return;
+	m_grenades.push_back				(CMemberGrenade(grenade,game_object,0,Device.dwTimeGlobal));
+}
+
+IC	xr_vector<CAgentManager::CMemberGrenade> &CAgentManager::member_grenades	()
+{
+	return								(m_grenades);
 }
