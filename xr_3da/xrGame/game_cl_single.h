@@ -4,8 +4,10 @@
 class game_cl_Single :public game_cl_GameState
 {
 public :
+				game_cl_Single();
 	virtual			CUIGameCustom*		createGameUI			();
-
+	virtual			char*				getTeamSection			(int Team);
 };
+
 
 

@@ -5,9 +5,12 @@
 #include "level.h"
 #include "UIGameAHunt.h"
 
+#define	TEAM1_MENU		"artefacthunt_team1"
+#define	TEAM2_MENU		"artefacthunt_team2"
+
 game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 {
-	m_gameUI = NULL;
+	m_game_ui = NULL;
 	pMessageSounds[0].create(TRUE, "messages\\multiplayer\\mp_artifact_lost");
 	pMessageSounds[1].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base");
 	pMessageSounds[2].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base_radio");
@@ -17,6 +20,17 @@ game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 
 	pMessageSounds[6].create(TRUE, "messages\\multiplayer\\mp_artifact_delivered_by_enemy");
 	pMessageSounds[7].create(TRUE, "messages\\multiplayer\\mp_artifact_stolen.ogg ");
+	
+	m_bBuyEnabled	= FALSE;
+}
+
+void game_cl_ArtefactHunt::Init ()
+{
+	string64	Team1, Team2;
+	std::strcpy(Team1, TEAM1_MENU);
+	std::strcpy(Team2, TEAM2_MENU);
+	m_aTeamSections.push_back(Team1);
+	m_aTeamSections.push_back(Team2);
 }
 
 game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
@@ -60,13 +74,14 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 	LPSTR	TeamsNames[3]		= {"Zero Team", "Team Green", "Team Blue"};
 
 	switch(msg)	{
-	case GMSG_ARTEFACT_TAKEN: //ahunt
+//-------------------UI MESSAGES
+	case GAME_EVENT_ARTEFACT_TAKEN: //ahunt
 		{
 			u16 PlayerID, Team;
 			P.r_u16 (PlayerID);
 			P.r_u16 (Team);
 
-			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas taken the %sArtefact", 
@@ -86,13 +101,13 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				else
 					pMessageSounds[7].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
-	case GMSG_ARTEFACT_DROPPED: //ahunt
+	case GAME_EVENT_ARTEFACT_DROPPED: //ahunt
 		{
 			u16 PlayerID, Team;
 			P.r_u16 (PlayerID);
 			P.r_u16 (Team);
 
-			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %shas dropped the %sArtefact", 
@@ -104,13 +119,13 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
-	case GMSG_ARTEFACT_ONBASE: //ahunt
+	case GAME_EVENT_ARTEFACT_ONBASE: //ahunt
 		{
 			u16 PlayerID, Team;
 			P.r_u16 (PlayerID);
 			P.r_u16 (Team);
 
-			game_cl_GameState::Player* pPlayer = GetPlayerByGameID(PlayerID);
+			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
 			if (!pPlayer) break;
 
 			sprintf(Text, "%s%s %sscores", 
@@ -135,7 +150,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				pMessageSounds[2].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 */
 		}break;
-	case GMSG_ARTEFACT_SPAWNED: //ahunt
+	case GAME_EVENT_ARTEFACT_SPAWNED: //ahunt
 		{
 			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
 				Color_Main);
@@ -143,14 +158,50 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 
 			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
-	case GMSG_ARTEFACT_DESTROYED:  //ahunt
+	case GAME_EVENT_ARTEFACT_DESTROYED:  //ahunt
 		{
 			sprintf(Text, "%sArtefact has been destroyed.", 
 				Color_Main);
 			CommonMessageOut(Text);
 
 		}break;
-	
+
+//-----GAME MESSAGES
+	case GAME_EVENT_PLAYER_ENTER_TEAM_BASE:
+		{
+			u16 player_id;
+			u8  base_team_id;
+			P.r_u16(player_id);
+			P.r_u8(base_team_id);
+			OnObjectEnterTeamBase(player_id, base_team_id);
+
+			if(OnServer()){
+				NET_Packet			P_;
+				sv_GameEventGen		(P_);
+				P_.w_u16			(GAME_EVENT_PLAYER_ENTER_TEAM_BASE);
+				P_.w_u16			(player_id);
+				P_.w_u8				(base_team_id);
+				sv_EventSend		(P_);
+			};
+
+		}break;
+	case GAME_EVENT_PLAYER_LEAVE_TEAM_BASE:
+		{
+			u16 player_id;
+			u8  base_team_id;
+			P.r_u16(player_id);
+			P.r_u8(base_team_id);
+			OnObjectLeaveTeamBase(player_id, base_team_id);
+
+			if(OnServer()){
+				NET_Packet			P_;
+				sv_GameEventGen		(P_);
+				P_.w_u16			(GAME_EVENT_PLAYER_LEAVE_TEAM_BASE);
+				P_.w_u16			(player_id);
+				P_.w_u8				(base_team_id);
+				sv_EventSend		(P_);
+			};
+		}break;
 
 	default:
 		inherited::TranslateGameMessage(msg,P);
@@ -160,11 +211,21 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 {
 	CLASS_ID clsid			= CLSID_GAME_UI_ARTEFACTHUNT;
-	m_gameUI	= dynamic_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
-	R_ASSERT(m_gameUI);
-	m_gameUI->SetClGame(this);
-	m_gameUI->Init();
-	return m_gameUI;
+	m_game_ui	= dynamic_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(m_game_ui);
+	m_game_ui->SetClGame(this);
+	m_game_ui->Init();
+
+	//----------------------------------------------------------------
+	pBuyMenuTeam1 = InitBuyMenu("artefacthunt_base_cost", 1);
+	pBuyMenuTeam2 = InitBuyMenu("artefacthunt_base_cost", 2);
+	//----------------------------------------------------------------
+	pSkinMenuTeam1 = InitSkinMenu(1);
+	pSkinMenuTeam2 = InitSkinMenu(2);
+
+	pInventoryMenu = xr_new<CUIInventoryWnd>();
+
+	return m_game_ui;
 }
 
 void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
@@ -200,7 +261,7 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		VERIFY(pBearer);
 		D.pos	= pBearer->Position();
 
-		Player*	ps  =	GetPlayerByGameID		(artefactBearerID);
+		game_PlayerState*	ps  =	GetPlayerByGameID		(artefactBearerID);
 		(ps->team==local_team)? D.color=color_friend_with_artefact:D.color=color_enemy_with_artefact;
 		
 		//remove previous record about this actor !!!
@@ -215,11 +276,11 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	inherited::shedule_Update		(dt);
 
 	//out game information
-	m_gameUI->SetReinforcementCaption("");
-	m_gameUI->SetBuyMsgCaption		("");
-	m_gameUI->SetScoreCaption		("");
-	m_gameUI->SetTodoCaption		("");
-	m_gameUI->SetRoundResultCaption	("");
+	m_game_ui->SetReinforcementCaption("");
+	m_game_ui->SetBuyMsgCaption		("");
+	m_game_ui->SetScoreCaption		("");
+	m_game_ui->SetTodoCaption		("");
+	m_game_ui->SetRoundResultCaption	("");
 
 	switch (phase)
 	{
@@ -227,15 +288,15 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 		{
 			HUD().GetUI()->ShowIndicators();
 
-			if (m_gameUI->m_bBuyEnabled)
+			if (m_bBuyEnabled)
 			{
 				if (local_player && Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
 				{
-					m_gameUI->SetBuyMsgCaption("Press B to access Buy Menu");
+					m_game_ui->SetBuyMsgCaption("Press B to access Buy Menu");
 				};
 			};
 
-			if (local_player/*pCurActor && !m_gameUI->pCurBuyMenu->IsShown()*/)
+			if (local_player/*pCurActor && !m_game_ui->pCurBuyMenu->IsShown()*/)
 			{
 				game_TeamState team0 = teams[0];
 				game_TeamState team1 = teams[1];
@@ -257,9 +318,9 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 
 					if (Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR || 
 						(pActor && !pActor->g_Alive()))
-							m_gameUI->SetReinforcementCaption(S);
+							m_game_ui->SetReinforcementCaption(S);
 					else
-						m_gameUI->SetReinforcementCaption("");
+						m_game_ui->SetReinforcementCaption("");
 
 				};
 
@@ -270,28 +331,28 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 									teams[lt-1].score, 
 									teams[(lt==1)?0:1].score, 
 									artefactsNum);
-					m_gameUI->SetScoreCaption(S);
+					m_game_ui->SetScoreCaption(S);
 				};
 	
 			if ( (artefactBearerID==0))// && (artefactID!=0) )
 				{
-					m_gameUI->SetTodoCaption("Grab the Artefact");
+					m_game_ui->SetTodoCaption("Grab the Artefact");
 				}
 				else
 				{
 					if (teamInPossession != local_player->team )
 					{
-						m_gameUI->SetTodoCaption("Stop ArtefactBearer");
+						m_game_ui->SetTodoCaption("Stop ArtefactBearer");
 					}
 					else
 					{
 						if (local_player->GameID == artefactBearerID)
 						{
-							m_gameUI->SetTodoCaption("You got the Artefact. Bring it to your base.");
+							m_game_ui->SetTodoCaption("You got the Artefact. Bring it to your base.");
 						}
 						else
 						{
-							m_gameUI->SetTodoCaption("Protect your ArtefactBearer");
+							m_game_ui->SetTodoCaption("Protect your ArtefactBearer");
 						};
 					};
 				};
@@ -300,12 +361,12 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	case GAME_PHASE_TEAM1_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
-			m_gameUI->SetRoundResultCaption("Team Green WINS!");
+			m_game_ui->SetRoundResultCaption("Team Green WINS!");
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
-			m_gameUI->SetRoundResultCaption("Team Blue WINS!");
+			m_game_ui->SetRoundResultCaption("Team Blue WINS!");
 		}break;
 	default:
 		{
@@ -314,3 +375,74 @@ void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
 	};
 
 }
+
+BOOL game_cl_ArtefactHunt::CanCallBuyMenu			()
+{
+	if (!m_bBuyEnabled) return FALSE;
+
+	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
+	if (!pCurActor || !pCurActor->g_Alive()) return FALSE;
+
+	return TRUE;
+};
+
+bool game_cl_ArtefactHunt::CanBeReady				()
+{
+	SetCurrentSkinMenu();
+	SetCurrentBuyMenu();
+
+	if (!m_bTeamSelected)
+	{
+		StartStopMenu(pUITeamSelectWnd);
+		return false;
+	};
+
+	if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+		ClearBuyMenu();
+
+	return true;
+};
+
+///-------------------------------------------------------------------
+void game_cl_ArtefactHunt::OnObjectEnterTeamBase	(u16 player_id, u8 zone_team_id)
+{
+	game_PlayerState*	pl = GetPlayerByGameID (player_id);
+	if(!pl || !Level().CurrentEntity() )
+		return;
+
+	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
+	{
+		m_bBuyEnabled = TRUE;
+	};
+
+};
+
+void game_cl_ArtefactHunt::OnObjectLeaveTeamBase	(u16 player_id, u8 zone_team_id)
+{
+	game_PlayerState*	pl = GetPlayerByGameID (player_id);
+	if(!pl || !Level().CurrentEntity() )
+		return;
+
+	if (pl->GameID == Level().CurrentEntity()->ID() && pl->team == zone_team_id)
+	{
+		m_bBuyEnabled = FALSE;
+	};
+};
+
+char*	game_cl_ArtefactHunt::getTeamSection(int Team)
+{
+	switch (Team)
+	{
+	case 1:
+		{
+			return "artefacthunt_team1";
+		}break;
+	case 2:
+		{
+			return "artefacthunt_team2";
+		}break;
+	default:
+		NODEFAULT;
+	};
+	return NULL;
+};
