@@ -90,6 +90,7 @@ public:
     void				Rename				(LPCSTR src_name, LPCSTR dest_name);
 
     // PS routine
+    PS::SDef*			FindPS				(LPCSTR name);
     PS::SDef*			AppendPS			(LPCSTR folder_name, PS::SDef* src);
     void				RemovePS			(LPCSTR name);
     void				ResetCurrent		();
@@ -100,6 +101,7 @@ public:
     void				UpdateEmitter		();
 
     // PG routine
+    PS::CPGDef*			FindPG				(LPCSTR name);
     PS::CPGDef*			AppendPG			(LPCSTR folder_name, PS::CPGDef* src);
     void 				SetCurrentPG		(PS::CPGDef* P);
 

@@ -247,9 +247,12 @@ void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
     if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
 		FHelper.MakeName(pNode,0,full_name,false);
-        PS::SDef* P = Tools.ClonePS(full_name.c_str());
-		Tools.SetCurrentPS(P);
-		Tools.Modified();
+        PS::SDef* P = Tools.FindPS(full_name.c_str());
+        if (P){
+	        PS::SDef* C = Tools.ClonePS(full_name.c_str());
+			Tools.SetCurrentPS(C);        
+			Tools.Modified();
+        }
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }

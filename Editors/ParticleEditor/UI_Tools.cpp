@@ -320,6 +320,16 @@ void CParticleTools::SetCurrentPG(PS::CPGDef* P)
     }
 }
 
+PS::SDef* CParticleTools::FindPS(LPCSTR name)
+{
+	return PSLib.FindPS(name);
+}
+
+PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
+{
+	return PSLib.FindPG(name);
+}
+
 void CParticleTools::SetCurrent(LPCSTR name)
 {
 	PS::SDef* 	ps=0;
