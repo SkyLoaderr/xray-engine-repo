@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "DetailManager.h"
 #include "fstaticrender.h"
+#include "xr_creator.h"
+#include "collide\cl_intersect.h"
 
 const DWORD	vs_size				= 3000;
 const float slot_size			= 4.f;
@@ -21,6 +23,7 @@ static int magic4x4[4][4] =
 	12,  2, 15,  1,
 	 7,  9,  4, 10
 };
+
 void bwdithermap	(int levels, int magic[16][16] )
 {
 	/* Get size of each step */
@@ -172,8 +175,8 @@ void CDetailManager::Render		(Fvector& EYE)
 
 	UpdateCache					(1);
 
-	float fade_limit	= 11.5f;fade_limit=fade_limit*fade_limit;
-	float fade_start	= 6.f;	fade_start=fade_start*fade_start;
+	float fade_limit	= 13.5f;fade_limit=fade_limit*fade_limit;
+	float fade_start	= 8.f;	fade_start=fade_start*fade_start;
 
 	// Collect objects for rendering
 	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
@@ -377,6 +380,13 @@ void CDetailManager::UpdateCache	(int limit)
 		DetailSlot&	DS	= QueryDB(D.sx,D.sz);
 		D.type			= stReady;
 		
+		// Select polygons
+		XRC.BBoxMode		(BBOX_TRITEST);
+		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,D.BB);
+		DWORD	triCount	= XRC.GetBBoxContactCount();
+		if (0==triCount)	continue;
+		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
+
 		// Build shading table
 		float		alpha255	[dm_obj_in_slot][4];
 		for (int i=0; i<dm_obj_in_slot; i++)
@@ -388,10 +398,6 @@ void CDetailManager::UpdateCache	(int limit)
 			D.G[i].id		= DS.items[i].id;
 		}
 		
-		// Select polygons
-		XRC.BBoxMode	(BBOX_TRITEST);
-		XRC.BBoxCollide	(precalc_identity,pCreator->ObjectSpace.,precalc_identity,BB);
-
 		// Prepare to selection
 		float		density		= 0.1f;
 		float		jitter		= density/2.f;
@@ -424,10 +430,29 @@ void CDetailManager::UpdateCache	(int limit)
 				
 				SlotItem	Item;
 				
-				// Position
+				// Position (XZ)
 				float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
 				float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
-				Item.P.set	(rx + r_jitter.randFs(jitter), 0, rz + r_jitter.randFs(jitter));
+				Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
+
+				// Position (Y)
+				float y		= D.BB.min.y;
+				Fvector	dir; dir.set(0,-1,0);
+
+				float		r_u,r_v,r_range;
+				for (DWORD tid=0; tid<triCount; tid++)
+				{
+					RAPID::tri&	T		= tris[XRC.BBoxContact[tid].id];
+					if (RAPID::TestRayTri(Item.P,dir,T.verts,r_u,r_v,r_range,TRUE))
+					{
+						if (r_range>=0)	{
+							float y_test	= Item.P.y - r_range;
+							if (y_test>y)	y = y_test;
+						}
+					}
+				}
+				Item.P.y	= y;
+
 				
 				// Angles and scale
 				Item.yaw	= r_yaw.randF		(0,PI_MUL_2);
