@@ -199,6 +199,12 @@ void CObject::Update	( DWORD T )
 	}
 }
 
+CObject::SavedPosition CObject::ps_Element(DWORD ID)
+{
+	VERIFY(ID<ps_Size());
+	return PositionStack[ID];
+}
+
 float CObject::OnVisible	()
 {
 	return 1.f;

@@ -114,11 +114,15 @@ public:
 	
 	// Update
 	virtual float						OnVisible		(void);								// returns lighting level
-	virtual void						Update			(DWORD dt);
+	virtual void						Update			(DWORD dt);							// Called by sheduler
 	virtual void						UpdateCL		();									// Called each frame, so no need for dt
 	virtual void						net_Export		(NET_Packet* P) {};					// export to server
 	virtual void						net_Import		(NET_Packet* P) {};					// import from server
 	virtual BOOL						net_Relevant	()				{ return FALSE; };	// relevant for export to server
+
+	// Position stack
+	IC DWORD							ps_Size			()				{ return PositionStack.size(); }
+	virtual	SavedPosition				ps_Element		(DWORD ID);
 
 	// Collision
 	virtual void						OnNear			(CObject* near)		{};
