@@ -226,7 +226,7 @@ function Monster:process ()
 	if self.first_start == true then
 	   self.first_start = false	
 	   reset_action (self.npc, self.script)
-	   action (self.npc, move (move.act_run, move.force_type, self.way), cond (cond.move_end))
+	   action (self.npc, move (move.act_walk_fwd, move.force_type, self.way), cond (cond.move_end))
 	   printf ("Move attacker : %s", self.npc:name ())	
 	   return	
 	end
