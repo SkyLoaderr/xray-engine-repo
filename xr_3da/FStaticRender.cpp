@@ -346,6 +346,9 @@ void	CRender::Render()
 {
 	Device.Statistic.RenderDUMP.Begin();
 	
+	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
+	Details.Render			(Device.vCameraPosition);
+	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on "shader" minimal distance
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
@@ -362,17 +365,18 @@ void	CRender::Render()
 		}
 		vecNormalNodes.clear	();
 		mapNormal[pr].clear		();
+
+		if (1==pr)			Wallmarks.Render();		// Wallmarks has priority as normal geometry
 	}
-	
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-	Details.Render			(Device.vCameraPosition);
 	
 	// NORMAL-matrix	*** actors and dyn. objects
 	mapMatrix.traverseANY	(matrix_L1);
 	mapMatrix.clear			();
 
+	/*
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 	Wallmarks.Render		();
+	*/
 
 	// Sorted (back to front)
 	Lights.BeginStatic		();
