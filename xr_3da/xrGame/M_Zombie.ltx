@@ -215,6 +215,10 @@ step_params				= m_zombie_step_params
 attack_params			= m_zombie_attack_params
 damage					= m_zombie_damage
 
+;открытые раны
+bleeding_v					= 0						;потеря крови при номинальной ране в секунду
+wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size				= 0.01
 
 [m_zombie_damage]
 ;bone_name		 = <hit_scale>,-1,<wound_scale>
@@ -229,7 +233,4 @@ bip01_spine1 		= 0.2, -1, 0.5
 bip01_neck 			= 0.5, -1, 0.5
 bip01_head 			= 10.0, -1, 10.00
 
-;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
-min_wound_size				= 0.01
+
