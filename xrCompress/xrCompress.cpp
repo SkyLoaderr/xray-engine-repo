@@ -8,26 +8,71 @@ CFS_File*				fs=0;
 CFS_Memory				fs_desc;
 
 DWORD					bytesSRC=0,bytesDST=0;
+DWORD					filesSKIP=0,filesVFS=0;
 
-void Compress			(const char* path)
+BOOL	testSKIP		(LPCSTR path)
+{
+	string256			p_name;
+	string256			p_ext;
+	_splitpath			(path, 0, 0, p_name, p_ext );
+	
+	if (0==stricmp(p_ext,".key"))	return TRUE;
+	if (0==stricmp(p_name,"build"))	return TRUE;
+	return FALSE;
+}
+BOOL	testVFS			(LPCSTR path)
+{
+	string256			p_name;
+	string256			p_ext;
+	_splitpath			(path, 0, 0, p_name, p_ext );
+	
+	if (0==stricmp(p_name,"level"))	return TRUE;
+	return FALSE;
+}
+
+void Compress			(LPCSTR path)
 {
 	printf				("\n%-80s   ",path);
+	if (testSKIP(path))	{
+		filesSKIP	++;
+		printf("SKIP");
+		return;
+	}
+	if (testVFS(path))	{
+		filesVFS	++;
+		printf("VFS");
 
-	// Compress into BaseFS
-	CVirtualFileStream	src(path);
-	DWORD		c_ptr	= fs->tell();
-	BYTE*		c_data	= 0;
-	unsigned	c_size	= 0;
-	_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
-	fs->write			(c_data,c_size);
-	printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
-	bytesSRC			+= src.Length();
-	bytesDST			+= c_size;
-
-	// Write description
-	fs_desc.WstringZ	(path);
-	fs_desc.Wdword		(c_ptr);
-	fs_desc.Wdword		(c_size);
+		// Write into BaseFS
+		CVirtualFileStream	src(path);
+		DWORD		c_ptr	= fs->tell();
+		DWORD		c_size	= src.Length();
+		fs->write			(src.Pointer(),c_size);
+		bytesSRC			+= c_size;
+		bytesDST			+= c_size;
+		
+		// Write description
+		fs_desc.WstringZ	(path	);
+		fs_desc.Wdword		(1		);	// VFS file
+		fs_desc.Wdword		(c_ptr	);
+		fs_desc.Wdword		(c_size	);
+	} else {
+		// Compress into BaseFS
+		CVirtualFileStream	src(path);
+		DWORD		c_ptr	= fs->tell();
+		BYTE*		c_data	= 0;
+		unsigned	c_size	= 0;
+		_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
+		fs->write			(c_data,c_size);
+		printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
+		bytesSRC			+= src.Length();
+		bytesDST			+= c_size;
+		
+		// Write description
+		fs_desc.WstringZ	(path	);
+		fs_desc.Wdword		(0		);	// Normal file
+		fs_desc.Wdword		(c_ptr	);
+		fs_desc.Wdword		(c_size	);
+	}
 }
 
 void Recurse		(const char* path);
