@@ -182,8 +182,8 @@ void CSHEngineTools::Load(){
 
     fraLeftBar->tvEngine->IsUpdating = true;
     if (Engine.FS.Exist(fn.c_str())){
-        CCompressedStream		FS(fn.c_str(),"shENGINE");
-        char					name[256];
+        CFileStream		FS(fn.c_str());
+        char			name[256];
 
         // Load constants
         {
@@ -310,7 +310,7 @@ void CSHEngineTools::Save()
 
     // save new file
     Engine.FS.UnlockFile		(0,fn.c_str(),false);
-    F.SaveTo					(fn.c_str(), "shENGINE");
+    F.SaveTo					(fn.c_str(), 0);
     Engine.FS.LockFile			(0,fn.c_str(),false);
 
     m_bModified	= FALSE;

@@ -157,8 +157,12 @@ bool CRenderDevice::Create(){
 
 	AnsiString sh		= "shaders.xr";
     Engine.FS.m_GameRoot.Update(sh);
-	CCompressedStream	FS(sh.c_str(), "shENGINE");
-    _Create				(&FS);
+
+    CStream* FS			= 0;
+	if (!Engine.FS.Exist(sh.c_str()))
+		FS				= Engine.FS.Open(sh.c_str());
+    _Create				(FS);
+	Engine.FS.Close		(FS);
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
 	return true;

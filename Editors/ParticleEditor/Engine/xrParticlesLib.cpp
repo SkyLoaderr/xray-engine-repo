@@ -49,13 +49,7 @@ void psLibrary_Save(const char *Name, PS::PSVec &LIB)
     F.Wword	(PARTICLESYSTEM_VERSION);
     F.Wdword(LIB.size());
 	F.write	(&*LIB.begin(), LIB.size()*sizeof(PS::SDef));
-    F.SaveTo(Name,PS_LIB_SIGN);
-}
-
-u32	psLibrary_GetCount	(const char *Name)
-{
-    CCompressedStream F(Name,PS_LIB_SIGN);
-    return F.Rdword();
+    F.SaveTo(Name,0);
 }
 
 PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)
