@@ -100,6 +100,24 @@ void CEntity::Load(CInifile* ini, const char* section)
 	id_Team = -1; if (ini->LineExists(section,"team"))	id_Team		= ini->ReadINT	(section,"team");
 	id_Squad= -1; if (ini->LineExists(section,"squad"))	id_Squad	= ini->ReadINT	(section,"squad");
 	id_Group= -1; if (ini->LineExists(section,"group"))	id_Group	= ini->ReadINT	(section,"group");
+	
+	// Movement: BOX
+	Fbox	bb;	
+	Fvector	vBOX_center	= ini->ReadVECTOR	(section,"ph_box_center"	);
+	Fvector	vBOX_size	= ini->ReadVECTOR	(section,"ph_box_size"		);
+	bb.set	(vBOX_center,vBOX_center); bb.grow	(vBOX_size);
+	Movement.SetBox		(bb);
+	
+	// Movement: Foots
+	Fvector	vFOOT_center= ini->ReadVECTOR	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= ini->ReadVECTOR	(section,"ph_foot_size"		);
+	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
+	Movement.SetFoots	(bb);
+
+	// Movement: Crash speed and mass
+	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_min"		);
+	float	cs_max		= ini->ReadFLOAT	(section,"ph_crash_max"		);
+	float	mass		= ini->ReadFLOAT	(section,"ph_mass"			);
 }
 
 BOOL CEntity::Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)
