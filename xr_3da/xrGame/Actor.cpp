@@ -316,6 +316,7 @@ void CActor::net_OwnershipTake		(CObject* O)
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 	if (W) 
 	{
+		R_ASSERT							(W->Local());
 		W->H_SetParent						(this);
 		int id	= Weapons->weapon_add		(W);
 		Weapons->ActivateWeaponID			(id);
@@ -329,6 +330,7 @@ void CActor::net_OwnershipReject	(CObject* O)
 	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
 	if (W) 
 	{
+		R_ASSERT							(W->Local());
 		W->H_SetParent						(0);
 		int id	= Weapons->weapon_remove	(W);
 		Weapons->ActivateWeaponID			(id-1);

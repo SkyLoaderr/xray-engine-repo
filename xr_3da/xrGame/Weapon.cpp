@@ -373,15 +373,16 @@ void CWeapon::net_Import	(NET_Packet& P)
 	P.r_vec3				(N.fpos);
 	P.r_dir					(N.fdir);
 
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-	}
-
-	if (N.flags&M_UPDATE_WEAPON_wfWorking)
+	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
 	{
-		if (!IsWorking())	FireStart();
-	} else {
-		if (IsWorking())	FireEnd();
+		NET.push_back			(N);
+
+		if (N.flags&M_UPDATE_WEAPON_wfWorking)
+		{
+			if (!IsWorking())	{ FireStart(); Log("! START"); }
+		} else {
+			if (IsWorking())	{ FireEnd(); Log("! END"); }
+		}
 	}
 }
 

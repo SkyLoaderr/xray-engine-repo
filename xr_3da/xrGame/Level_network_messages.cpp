@@ -40,6 +40,7 @@ void CLevel::ClientReceive()
 				CObject*	O	= Objects.net_Find		(ID);
 				CObject*	C	= Objects.net_Find		(ID_child);
 				if (O && C)		O->net_OwnershipTake	(C);
+				Log("! OWNERSHIP_TAKE",O->cName());
 			}
 			break;
 		case M_OWNERSHIP_REJECT:		// DUAL: Client request ownership rejection
@@ -50,6 +51,7 @@ void CLevel::ClientReceive()
 				CObject*	O	= Objects.net_Find		(ID);
 				CObject*	C	= Objects.net_Find		(ID_child);
 				if (O && C)		O->net_OwnershipReject	(C);
+				Log("! OWNERSHIP_REJECT",O->cName());
 			}
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
@@ -57,6 +59,7 @@ void CLevel::ClientReceive()
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find		(ID);
 				if (O)			O->net_MigrateInactive	(*P);
+				Log("! MIGRATE_DEACTIVATE",O->cName());
 			}
 			break;
 		case M_MIGRATE_ACTIVATE:	// TO:   Changing server, full state
@@ -64,6 +67,7 @@ void CLevel::ClientReceive()
 				P->r_u16		(ID);
 				CObject*	O	= Objects.net_Find		(ID);
 				if (O)			O->net_MigrateActive	(*P);
+				Log("! MIGRATE_ACTIVATE",O->cName());
 			}
 			break;
 		case M_HIT:
