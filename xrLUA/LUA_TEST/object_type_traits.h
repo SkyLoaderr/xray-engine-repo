@@ -18,6 +18,14 @@
 #	include <boost/type_traits/remove_const.hpp>
 	namespace object_type_traits = boost;
 #else
+	#define declare_has(a) \
+		template <typename T>\
+		struct has_##a {\
+			template <typename P> static detail::yes	select(typename P::a*);\
+			template <typename P> static detail::no		select(...);\
+			enum { value = sizeof(detail::yes) == sizeof(select<T>(0)) };\
+		};
+
 	namespace object_type_traits {
 		namespace detail {
 
@@ -87,23 +95,23 @@
 			};
 		};
 
-		template <typename T>
-		struct has_iterator {
-			template <typename P> static detail::yes	select(typename P::iterator*);
-			template <typename P> static detail::no		select(...);
-
-			enum { 
-				value = sizeof(detail::yes) == sizeof(select<T>(0))
-			};
-		};
+		declare_has(iterator);
+		declare_has(const_iterator);
+		declare_has(reference);
+		declare_has(const_reference);
+		declare_has(value_type);
+		declare_has(size_type);
 
 		template <typename T>
-		struct has_const_iterator {
-			template <typename P> static detail::yes	select(typename P::const_iterator*);
-			template <typename P> static detail::no		select(...);
-
+		struct is_stl_container {
 			enum { 
-				value = sizeof(detail::yes) == sizeof(select<T>(0))
+				value = 
+					has_iterator<T>::value &&
+					has_const_iterator<T>::value &&
+					has_reference<T>::value &&
+					has_const_reference<T>::value &&
+					has_size_type<T>::value &&
+					has_value_type<T>::value
 			};
 		};
 	};

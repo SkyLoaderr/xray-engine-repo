@@ -197,17 +197,17 @@ struct CEqualityChecker {
 	template <typename T>
 	IC	static bool equal(const T &_1, const T &_2)
 	{
-		return						(CHelper4<T>::equal<object_type_traits::has_const_iterator<T>::value>(_1,_2));
+		return						(CHelper4<T>::equal<object_type_traits::is_stl_container<T>::value>(_1,_2));
 	}
 };
 
-bool equal(LPCSTR p0, LPCSTR p1)
+IC	bool equal(LPCSTR p0, LPCSTR p1)
 {
 	return			(CEqualityChecker::equal(p0,p1));
 }
 
 template <typename T>
-bool equal(const T &p0, const T &p1)
+IC	bool equal(const T &p0, const T &p1)
 {
 	return			(CEqualityChecker::equal(p0,p1));
 }
