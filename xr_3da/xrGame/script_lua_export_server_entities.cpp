@@ -15,34 +15,18 @@
 
 using namespace luabind;
 
-//ALife::_OBJECT_ID	abstract_id(const CSE_Abstract *abstract)
-ALife::_OBJECT_ID	abstract_id(const CSE_ALifeObject *abstract)
-{
-	return			(abstract->ID);
-}
-
-//ALife::_OBJECT_ID	abstract_parent_id(const CSE_Abstract *abstract)
-ALife::_OBJECT_ID	abstract_parent_id(const CSE_ALifeObject *abstract)
-{
-	return			(abstract->ID_Parent);
-}
-
 void CScriptEngine::export_server_entities()
 {
 	module(lua())
 	[
-//		class_<CSE_Abstract>("abstract_object")
-//			.def("id",						&abstract_id)
-//			.def("parent_id",				&abstract_parent_id),
-//
-//		class_<CSE_ALifeObject,CSE_Abstract>("alife_object")
-//		class_<CSE_Abstract>("base_server_class"),
+		class_<CSE_Abstract>("abstract_object")
+			.def_readonly("id",				&CSE_Abstract::ID)
+			.def_readonly("parent_id",		&CSE_Abstract::ID_Parent),
+
 		class_<CSE_Visual>("visual_server_class"),
 		
-		class_<CSE_ALifeObject>("alife_object")
+		class_<CSE_ALifeObject,CSE_Abstract>("alife_object")
 			.def(							constructor<LPCSTR>())
-			.def("id",						&abstract_id)
-			.def("parent_id",				&abstract_parent_id)
 			.def("can_switch_online",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_online))
 			.def("can_switch_offline",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_offline))
 			.def("interactive",				(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::interactive)),

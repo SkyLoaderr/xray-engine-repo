@@ -21,7 +21,7 @@
 
 #ifndef NO_XR_GAME
 	class CAttachableItem;
-	class CSE_ALifeObject;
+	class CSE_Abstract;
 #endif
 
 
@@ -30,7 +30,7 @@ private:
 #ifndef NO_XR_GAME
 	typedef DLL_Pure				CLIENT_BASE_CLASS;
 	typedef CAttachableItem			CLIENT_SCRIPT_BASE_CLASS;
-	typedef CSE_ALifeObject			SERVER_SCRIPT_BASE_CLASS;
+	typedef CSE_Abstract			SERVER_SCRIPT_BASE_CLASS;
 #endif
 	typedef CSE_Abstract			SERVER_BASE_CLASS;
 
