@@ -370,7 +370,11 @@ CUIXmlInit::StaticsVec CUIXmlInit::InitAutoStatic(CUIXml& xml_doc, LPCSTR tag_na
 bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, CGameFont *&pFnt)
 {
 	ref_str font_name = xml_doc.ReadAttrib(path, index, "font", NULL);
-	R_ASSERT2(*font_name && xr_strlen(*font_name)>0 , "font not found");
+	if(*font_name == NULL || xr_strlen(*font_name)<1)
+	{
+		pFnt = NULL;
+		return false;
+	}
 
 	int r = xml_doc.ReadAttribInt(path, index, "r", 255);
 	int g = xml_doc.ReadAttribInt(path, index, "g", 255);

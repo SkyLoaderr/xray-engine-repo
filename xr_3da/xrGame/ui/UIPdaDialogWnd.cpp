@@ -20,6 +20,7 @@
 
 CUIPdaDialogWnd::CUIPdaDialogWnd()
 {
+	m_iClickedQuestion = -1;
 }
 CUIPdaDialogWnd::~CUIPdaDialogWnd()
 {
@@ -83,6 +84,11 @@ void CUIPdaDialogWnd::Init(int x, int y, int width, int height)
 	//Элементы автоматического добавления
 //	xml_init.InitAutoStatic(uiXml, "auto_static", this);
 
+	// шрифт для индикации имени персонажа в окне разговора
+	xml_init.InitFont(uiXml, "font", 0, m_iNameTextColor, m_pNameTextFont);
+	CGameFont * pFont = NULL;
+	xml_init.InitFont(uiXml, "font", 1, m_uOurReplicsColor, pFont);
+
 	inherited::Init(x, y, width, height);
 }
 
@@ -93,6 +99,7 @@ void CUIPdaDialogWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		if(msg == CUIListWnd::LIST_ITEM_CLICKED)
 		{
 			m_iMsgNum = EPdaMsg(((CUIListItem*)pData)->GetValue());
+			m_iClickedQuestion = ((CUIListItem*)pData)->GetValue();
 			
 			if(m_iMsgNum == ePdaMsgMax)
 				GetTop()->SendMessage(this, BACK_BUTTON_CLICKED);

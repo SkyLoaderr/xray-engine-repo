@@ -14,9 +14,14 @@
 #include "UIEditBox.h"
 #include "UIListWnd.h"
 #include "UIFrameWindow.h"
-#include "UITabControl.h"
+
+#include "../PhraseDialogDefs.h"
+
+
 
 class CInventoryOwner;
+class CActor;
+class CPhraseDialogManager;
 
 ///////////////////////////////////////
 // Подложка и основные кнопки PDA
@@ -64,19 +69,34 @@ protected:
 	CInventoryOwner*	m_pContactInvOwner;
 	CPda*				m_pContactPda;
 
-
 	//потеря контакта во время диалога
 	bool m_bContactLoss;
 
-	//элементы декоративного интерфейса
-//	CUIStatic			UIStaticTop;
-//	CUIStatic			UIStaticBottom;
 
-//	//верхушка PDA для кнопочек переключения режима
-//	CUIStatic			UIPDAHeader;
+	//указатель на владельца инвентаря вызвавшего менюшку
+	//и его собеседника
+	CActor*			 m_pActor;
+	CInventoryOwner* m_pOurInvOwner;
+	CInventoryOwner* m_pOthersInvOwner;
 
-	// кнопки PDA
-//	CUITabControl		UITabControl;
+	CPhraseDialogManager* m_pOurDialogManager;
+	CPhraseDialogManager* m_pOthersDialogManager;
+
+	//текущий диалог, если NULL, то переходим в режим выбора темы
+	DIALOG_SHARED_PTR m_pCurrentDialog;
+	bool TopicMode	();
+	void ToTopicMode();
+
+	//диалог
+	void InitTalkDialog();
+	void UpdateQuestions();
+	void AskQuestion();
+
+	void SayPhrase(PHRASE_ID phrase_id);
+
+	// Функции добавления строк в листы вопросов и ответов
+	void AddQuestion(CUIString str, void* pData, int value = 0);
+	void AddAnswer(CUIString str, const CUIString &SpeakerName);
 };
 
 #endif

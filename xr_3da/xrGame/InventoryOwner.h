@@ -71,7 +71,7 @@ public:
 
 	//для включения разговора
 	virtual bool OfferTalk		(CInventoryOwner* talk_partner);
-	virtual void StartTalk		(CInventoryOwner* talk_partner);
+	virtual void StartTalk		(CInventoryOwner* talk_partner, bool start_trade = true);
 	virtual void StopTalk		();
 	virtual bool IsTalking		();
 	

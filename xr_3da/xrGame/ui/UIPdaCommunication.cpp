@@ -13,6 +13,9 @@
 #include "../HUDManager.h"
 #include "../actor.h"
 #include "../level.h"
+#include "../character_info.h"
+
+#include "../PhraseDialog.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -26,6 +29,8 @@ CUIPdaCommunication::CUIPdaCommunication()
 	m_pPda = NULL;
 
 	SetFont(HUD().pFontMedium);
+
+	m_pOurDialogManager = m_pOthersDialogManager = NULL;
 }
 
 CUIPdaCommunication::~CUIPdaCommunication()
@@ -103,7 +108,7 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		}
 		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
 		{
-			EPdaMsg pda_msg = ePdaMsgAccept;
+/*			EPdaMsg pda_msg = ePdaMsgAccept;
 			u32 id_pda_contact = m_pContactPda->ID();
 
 			if(m_pPda->NeedToAnswer(id_pda_contact))
@@ -137,6 +142,8 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				}
 			}
 			m_pPda->SendMessageID(id_pda_contact, pda_msg, NO_INFO_INDEX);
+			*/
+			AskQuestion();
 			UpdateMessageLog();
 		}
 	}
@@ -235,28 +242,26 @@ void CUIPdaCommunication::InitPdaDialog()
 	m_pContactObject =  Level().Objects.net_Find(m_idContact);
 
 	R_ASSERT2(m_pContactObject, "wrong ID");
-	m_pContactInvOwner = dynamic_cast<CInventoryOwner*>(m_pContactObject);
+	m_pOthersInvOwner = m_pContactInvOwner = dynamic_cast<CInventoryOwner*>(m_pContactObject);
 	R_ASSERT2(m_pContactInvOwner, "can't cast to inventory owner");
 	m_pContactPda = m_pContactInvOwner->GetPDA();
 	VERIFY(m_pContactPda);
 
-	//что за глюк?! херит память если выводить m_pContactObject->cName()
-
-	//	sprintf(UIPdaDialogWnd.m_sContactName, "%s", *m_pContactObject->cName());
-	//	UIPdaDialogWnd.UIStaticContactName.SetText(UIPdaDialogWnd.m_sContactName);
-
-	m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
+	m_pOurInvOwner = m_pInvOwner  = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());;
 	R_ASSERT2(m_pInvOwner, "wrong inventory owner");
 
-	//инициализировать окошко с информацие о собеседнике
+	//инициализировать окошко с информацией о собеседнике
 	UIPdaDialogWnd.UICharacterInfo.InitCharacter(m_pContactInvOwner, false);
 
-	CActor* pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
-	if(pActor)
+	m_pActor  = dynamic_cast<CActor*>(Level().CurrentEntity());;
+	if(m_pActor)
 	{
 		CEntityAlive* ContactEA = dynamic_cast<CEntityAlive*>(m_pContactInvOwner);
-		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(pActor)), false);
+		UIPdaDialogWnd.UICharacterInfo.SetRelation(ContactEA->tfGetRelationType(dynamic_cast<CEntityAlive*>(m_pActor)), false);
 	}
+
+	m_pOurDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOurInvOwner);
+	m_pOthersDialogManager = dynamic_cast<CPhraseDialogManager*>(m_pOthersInvOwner);
 
 	UpdateMessageLog();
 	UpdateMsgButtons();
@@ -264,7 +269,6 @@ void CUIPdaCommunication::InitPdaDialog()
 	std::string		buf;
 	string128		buf2;
 	buf = UIPdaDialogWnd.UICharacterInfo.UIName.GetText();
-//	strcpy(buf, UIPdaDialogWnd.UICharacterInfo.UIName.GetText());
 	UIPdaDialogWnd.UICharIconHeader.UITitleText.SetText(buf.c_str());
 	strconcat(buf2, ALL_PDA_HEADER_PREFIX, PDA_CONTACTS_HEADER_SUFFIX, "/", buf.c_str());
 	UIPdaDialogWnd.UIMsglogHeader.UITitleText.SetText(buf2);
@@ -273,7 +277,7 @@ void CUIPdaCommunication::InitPdaDialog()
 //заполнить окно логами сообщений с текущим контактом
 void CUIPdaCommunication::UpdateMessageLog()
 {
-	UIPdaDialogWnd.UILogListWnd.RemoveAll();
+/*	UIPdaDialogWnd.UILogListWnd.RemoveAll();
 
 	u32 id_pda_contact;
 
@@ -294,7 +298,7 @@ void CUIPdaCommunication::UpdateMessageLog()
 		else
 			UIPdaDialogWnd.AddOurMessageToLog((*it).msg, m_pInvOwner);
 	}
-
+*/
 	UIPdaDialogWnd.UILogListWnd.ScrollToEnd();
 }
 
@@ -320,12 +324,157 @@ void CUIPdaCommunication::UpdateMsgButtons()
 	}
 
 
-	if(m_pPda->NeedToAnswer(id_pda_contact))
+	UpdateQuestions();
+/*	if(m_pPda->NeedToAnswer(id_pda_contact))
 	{
 		UIPdaDialogWnd.PhrasesAnswer();
 	}
 	else
 	{
 		UIPdaDialogWnd.PhrasesAsk();
+	}*/
+}
+
+const int MessageShift = 30;
+
+// Функции добавления строк в листы вопросов и ответов
+void CUIPdaCommunication::AddQuestion(CUIString str, void* pData, int value)
+{
+	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UIPhrasesListWnd.GetWidth() - MessageShift - 25, 
+		UIPdaDialogWnd.UIPhrasesListWnd.GetFont());
+	UIPdaDialogWnd.UIPhrasesListWnd.AddParsedItem<CUIListItem>(str, 0, 
+		UIPdaDialogWnd.UIPhrasesListWnd.GetTextColor(), 
+		UIPdaDialogWnd.UIPhrasesListWnd.GetFont(), pData, value);
+}
+
+void CUIPdaCommunication::AddAnswer(CUIString str, const CUIString &SpeakerName)
+{
+		//для пустой фразы вообще ничего не выводим
+	if(xr_strlen((LPCSTR)str) == 0) return;
+
+	// Делаем препроцессинг строки
+	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UILogListWnd.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
+							  UIPdaDialogWnd.UILogListWnd.GetFont());
+
+	u32 cl = UIPdaDialogWnd.UILogListWnd.GetTextColor();
+	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) 
+		cl = UIPdaDialogWnd.GetOurReplicsColor();
+
+	UIPdaDialogWnd.UILogListWnd.AddParsedItem<CUIListItem>(SpeakerName, 0, 
+		UIPdaDialogWnd.GetHeaderColor(), UIPdaDialogWnd.GetHeaderFont());
+	UIPdaDialogWnd.UILogListWnd.AddParsedItem<CUIListItem>(str, MessageShift, cl);
+
+	CUIString Local;
+	Local.SetText(" ");
+	UIPdaDialogWnd.UILogListWnd.AddParsedItem<CUIListItem>(Local, 0, 
+		UIPdaDialogWnd.UILogListWnd.GetTextColor());
+	UIPdaDialogWnd.UILogListWnd.ScrollToEnd();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool  CUIPdaCommunication::TopicMode			() 
+{
+	return NULL == m_pCurrentDialog.get();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void  CUIPdaCommunication::ToTopicMode		() 
+{
+	m_pCurrentDialog = DIALOG_SHARED_PTR((CPhraseDialog*)NULL);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaCommunication::AskQuestion()
+{
+	//очистить лог сообщений
+	PHRASE_ID phrase_id;
+
+	//игрок выбрал тему разговора
+	if(TopicMode())
+	{
+		m_pCurrentDialog = m_pOurDialogManager->AvailableDialogs()[UIPdaDialogWnd.m_iClickedQuestion];
+		
+		m_pOurDialogManager->InitDialog(m_pOthersDialogManager, m_pCurrentDialog);
+		phrase_id = START_PHRASE;
+	}
+	else
+	{
+		phrase_id = (PHRASE_ID)UIPdaDialogWnd.m_iClickedQuestion;
+	}
+
+	SayPhrase(phrase_id);
+	UpdateQuestions();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaCommunication::SayPhrase(PHRASE_ID phrase_id)
+{
+	//сказать фразу
+	CUIString speaker_name;
+	speaker_name.SetText(m_pOurInvOwner->CharacterInfo().Name());
+
+	AddAnswer(m_pCurrentDialog->GetPhraseText(phrase_id), speaker_name);
+	m_pOurDialogManager->SayPhrase(m_pCurrentDialog, phrase_id);
+
+	//добавить ответ собеседника в список, если он что-то сказал
+	if(m_pCurrentDialog->GetLastPhraseID() !=  phrase_id)
+	{
+		speaker_name.SetText(m_pOthersInvOwner->CharacterInfo().Name());
+		AddAnswer(m_pCurrentDialog->GetLastPhraseText(), speaker_name);
+	}
+
+	//если диалог завершился, перейти в режим выбора темы
+	if(m_pCurrentDialog->IsFinished()) ToTopicMode();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIPdaCommunication::UpdateQuestions()
+{
+	UIPdaDialogWnd.UIPhrasesListWnd.RemoveAll();
+	R_ASSERT2(m_pOurInvOwner->GetPDA(), "PDA for character does not init yet");
+
+	//если нет активного диалога, то
+	//режима выбора темы
+	if(!m_pCurrentDialog)
+	{
+		m_pOurDialogManager->UpdateAvailableDialogs(m_pOthersDialogManager);
+		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
+		{
+			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
+			if(phrase_dialog->GetDialogType() == eDialogTypePDA)
+				AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
+		}
+	}
+	else
+	{
+		if(m_pCurrentDialog->IsWeSpeaking(m_pOurDialogManager))
+		{
+			//если в списке допустимых фраз только одна фраза пустышка, то просто
+			//сказать (игрок сам не производит никаких действий)
+			if(m_pCurrentDialog->PhraseList().size() == 1)
+			{
+				CPhrase* phrase = m_pCurrentDialog->PhraseList().front();
+				if(phrase->IsDummy()) SayPhrase(phrase->GetIndex());
+			}
+
+			//выбор доступных фраз из активного диалога
+			if(m_pCurrentDialog)
+			{			
+				for(PHRASE_VECTOR::const_iterator   it = m_pCurrentDialog->PhraseList().begin();
+					it != m_pCurrentDialog->PhraseList().end();
+					it++)
+				{
+					CPhrase* phrase = *it;
+					AddQuestion(phrase->GetText(), NULL, (PHRASE_ID)phrase->GetIndex());
+				}
+			}
+			else
+				UpdateQuestions();
+		}
 	}
 }

@@ -174,8 +174,6 @@ void CUITextBanner::EffectFlicker()
 
 void CUITextBanner::SetTextColor(u32 cl)
 {
-	R_ASSERT(m_pFont);
-	if (!m_pFont) return;
 
 	m_Cl = cl;
 }

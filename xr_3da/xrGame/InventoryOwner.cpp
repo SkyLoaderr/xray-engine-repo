@@ -284,13 +284,14 @@ bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 }
 
 
-void CInventoryOwner::StartTalk(CInventoryOwner* talk_partner)
+void CInventoryOwner::StartTalk(CInventoryOwner* talk_partner, bool start_trade)
 {
 	m_bTalking = true;
 	m_pTalkPartner = talk_partner;
 
 	//тут же включаем торговлю
-	GetTrade()->StartTrade(talk_partner);
+	if(start_trade)
+		GetTrade()->StartTrade(talk_partner);
 }
 
 void CInventoryOwner::StopTalk()

@@ -46,6 +46,20 @@ public:
 	void PhrasesAnswer();
 	void PhrasesAsk();
 
+	u32			GetHeaderColor()		{ return m_iNameTextColor; }
+	CGameFont *	GetHeaderFont()			{ return m_pNameTextFont; }
+	u32			GetOurReplicsColor()	{ return m_uOurReplicsColor; }
+
+private:
+	// Ўрифт и цвет текста с именем персонажа
+	CGameFont			*m_pNameTextFont;
+	u32					m_iNameTextColor;
+	// ÷вет тeкста и шрифт наших реплик
+	u32					m_uOurReplicsColor;
+
+public:
+	//номер выбранного вопроса
+	int m_iClickedQuestion;
 
 	//номер отправленного сообщени€
 	EPdaMsg m_iMsgNum;
