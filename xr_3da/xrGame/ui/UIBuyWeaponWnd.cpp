@@ -1300,14 +1300,34 @@ const u8 CUIBuyWeaponWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
+const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 grpNum, u8 idx)
 {
 	// Удаляем информацию о аддонах
 	idx &= 0x1f;
 
-	if (wpnSectStorage.size() <= slotNum || idx > wpnSectStorage[slotNum].size()) return NULL;
-	return wpnSectStorage[slotNum][idx].c_str();
+	if (wpnSectStorage.size() <= grpNum || idx > wpnSectStorage[grpNum].size()) return NULL;
+	return wpnSectStorage[grpNum][idx].c_str();
 }
+
+void CUIBuyWeaponWnd::GetWeaponIndexByName(const std::string sectionName, u8 &grpNum, u8 &idx)
+{
+	grpNum	= static_cast<u32>(-1);
+	idx		= static_cast<u32>(-1);
+
+	for (u8 i = 0; i < wpnSectStorage.size(); ++i)
+	{
+		for (u8 j = 0; j < wpnSectStorage[i].size(); ++j)
+		{
+			if (sectionName == wpnSectStorage[i][j])
+			{
+				grpNum	= i;
+				idx		= j;
+				return;
+			}
+		}
+	}
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1556,14 +1576,14 @@ CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::IsItemAnAddon(CUIDragDropI
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::MoveWeapon(const u8 uSlotNum, const u8 uIndexInSlot)
+void CUIBuyWeaponWnd::MoveWeapon(const u8 grpNum, const u8 uIndexInSlot)
 {
 	CUIDragDropItemMP *pDDItemMP = NULL;
 
 	// Получаем оружие
 	for (int i = 0; i < m_iUsedItems; ++i)
 	{
-		if (uSlotNum == m_vDragDropItems[i].GetSectionGroupID()			&&
+		if (grpNum == m_vDragDropItems[i].GetSectionGroupID()			&&
 			uIndexInSlot == m_vDragDropItems[i].GetPosInSectionsGroup())
 		{
 			pDDItemMP = &m_vDragDropItems[i];
@@ -1573,6 +1593,19 @@ void CUIBuyWeaponWnd::MoveWeapon(const u8 uSlotNum, const u8 uIndexInSlot)
 
 	if (pDDItemMP)
 		SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::MoveWeapon(const char *sectionName)
+{
+	u8 grpNum, idx;
+	GetWeaponIndexByName(sectionName, grpNum, idx);
+	if (grpNum	!= static_cast<u32>(-1)	&& 
+		idx		!= static_cast<u32>(-1))
+	{
+		MoveWeapon(grpNum, idx);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

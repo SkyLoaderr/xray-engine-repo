@@ -351,15 +351,26 @@ public:
 	CUIDragDropItemMP * IsItemAnAddon(CUIDragDropItemMP *pPossibleAddon, CUIDragDropItemMP::AddonIDs &ID);
 	// Обработчик нажатий на кнопки клавы
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
+	// Params:	slotNum		- номер слота в котором смотрим
+	// Result:	указатель на внутренний буфер с именем (удалять его не надо!)
 	const char	*GetWeaponName(u32 slotNum);
+	// Params:	indexInBelt	- номер вещи на поясе
+	// Result:	указатель на внутренний буфер с именем (удалять его не надо!)
 	const char	*GetWeaponNameInBelt(u32 indexInBelt);
+
 	// Получить индекс оружия в массиве доступных, из заданного слота.
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
 	const u8	GetWeaponIndex(u32 slotNum);
 	const u8	GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId);
+	
 	// Получить имя оружия по индексу, и номеру слота
-	const char	*GetWeaponNameByIndex(u32 slotNum, u8 idx);
+	const char	*GetWeaponNameByIndex(u32 grpNum, u8 idx);
+	// Получить номер в списке секций и номер списка секций по имени
+	// Если не найдено, то grpNum == -1 и idx == -1
+	void		GetWeaponIndexByName(const std::string sectionName, u8 &grpNum, u8 &idx);
+
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope
 	const u8	GetWeaponAddonInfoByIndex(u8 idx);
@@ -367,8 +378,12 @@ public:
 	const u8	GetBeltSize();
 	// Перезагрузка предметов
 	void		ReInitItems	(char *strSectionName);
-	// Процедура принудительного перемещения оружия (эмуляция даблклика).
-	// Params:	uSlotNum		- номер слота
+
+	// Процедуры принудительного перемещения оружия (эмуляция даблклика).
+	// Params:	grpNum			- номер группы секций
 	//			uIndexInSlot	- порядковый уровень оружия в списке группы секций
-	void		MoveWeapon(const u8 uSlotNum, const u8 uIndexInSlot);
+	void		MoveWeapon(const u8 grpNum, const u8 uIndexInSlot);
+	// Params:	sectionName		- имя конфигурационной секции оружия
+	void		MoveWeapon(const char *sectionName);
+
 };
