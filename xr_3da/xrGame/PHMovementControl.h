@@ -3,12 +3,17 @@
 #define CPHMOVEMENT_CONTROL_H
 
 #include "PHCharacter.h"
+#include "AI_Space.h"
+using namespace AI;
 
 class CPHAICharacter;
 class CPHSimpleCharacter;
 
 class CPHMovementControl 
 {
+static const path_few_point=10;
+public:
+bool			b_exect_position;
 public:
 
 	enum EEnvironment
@@ -49,6 +54,12 @@ private:
 
 	Fvector				vVelocity;
 	Fvector				vPosition;
+
+	Fvector				vPathPoint;
+	Fvector				vPathDir;
+	int					m_path_size;
+	int					m_start_index;
+	float				m_path_distance;
 
 	float				fLastMotionMag;
 
@@ -146,6 +157,43 @@ public:
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Calculate				(const Fvector& desired_pos,float velocity,float dt);
+
+	void				Calculate				(const xr_vector<CTravelNode>& path, //in path
+												float speed,						 //in speed
+												u32& travel_point,					 //in- travel start, out - current trev point
+												float& precesition					 //in- tolerance, out - precesition
+												);
+	void				PathNearestPoint		(const xr_vector<CTravelNode>	&path,		//in path
+												 const Fvector					&new_position,  //in position
+												 int							&index,			//out nearest
+												 bool							&type          //out type
+												);	//return nearest point
+	void				PathNearestPointFindUp(const xr_vector<CTravelNode>		&path,			//in path
+											   const Fvector					&new_position,  //in position
+											   int								&index,			//out nearest
+											   float							radius,			//in exit radius
+											   bool								&near_line      //out type
+											   );
+	void				PathNearestPointFindDown(const xr_vector<CTravelNode>	&path,			//in path
+												 const Fvector					&new_position,  //in position
+												 int							&index,			//out nearest
+												 float							radius,			//in exit radius
+												 bool							&near_line      //out type
+												 );
+
+	void				PathDIrPoint			(const xr_vector<CTravelNode>				&path,		//in path
+															 int							index,			//in index
+															 float							distance,	//in distance
+															 float							precesition,//in precesition
+															 Fvector						&dir        //out dir
+															 );
+	void				PathDIrLine				(const xr_vector<CTravelNode>	&path,		//in path
+												int								index,		//in point
+												float							distance,	//in distance
+												float							precesition,//in precesition
+												Fvector							&dir        //out dir
+												);
+
 	//	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
 	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}

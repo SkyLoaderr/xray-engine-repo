@@ -420,6 +420,11 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			//Msg				("TIME DELTA : %d",DT);
 			Exec_Movement	(dt);  
 	}
+///ниже по коду вызывается Engine.Sheduler.Slice			(),который может перехренячить позицию полученную 
+// в Exec_Movement	(dt) взяв ее из сетевого пакета пакета который отправляется после (	uNext.p_pos			= Position();) 
+// если такое однажды получается Engine.Sheduler.Slice			() может все время устанавливать неправильную позицию
+// поетому сохраним позицию
+Fvector vNewPosition=Position();
 
 	VERIFY				(_valid(Position()));
 	// *** general stuff
@@ -459,7 +464,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.dwTimeStamp		= Level().timeServer();
 			uNext.o_model			= r_torso_current.yaw;
 			uNext.o_torso			= r_current;
-			uNext.p_pos				= Position();
+			uNext.p_pos				= vNewPosition;
 			uNext.fHealth			= fEntityHealth;
 			NET.push_back			(uNext);
 		}
@@ -469,7 +474,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			uNext.dwTimeStamp	= Level().timeServer();
 			uNext.o_model		= r_torso_current.yaw;
 			uNext.o_torso		= r_current;
-			uNext.p_pos			= Position();
+			uNext.p_pos			= vNewPosition;
 			uNext.fHealth		= fEntityHealth;
 			NET.push_back		(uNext);
 		}

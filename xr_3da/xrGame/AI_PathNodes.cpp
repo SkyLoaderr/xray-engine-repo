@@ -399,13 +399,16 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)
 {
 	Fvector				motion;
+#ifndef NO_PHYSICS_IN_AI_MOVE
+float precesition=1.f;
+#endif
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(Me->Movement.IsCharacterEnabled()) {
 			motion.set(0,0,0);
-			Me->Movement.GetDesiredPos(p_dest);
-			Me->Movement.Calculate(p_dest,0.f,dt);
+
+			Me->Movement.Calculate(TravelPath,0.f,TravelStart,precesition);
 			Me->Movement.GetPosition(p_dest);
 		}
 
@@ -422,11 +425,9 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		return;
 	float	dist		=	speed*dt;
 	float	dist_save	=	dist;
-#ifndef NO_PHYSICS_IN_AI_MOVE
-		Me->Movement.GetDesiredPos(p_dest);
-#else
-		p_dest				=	p_src;
-#endif
+
+	p_dest				=	p_src;
+
 	// move full steps
 	Fvector	mdir,target;
 	target.set		(TravelPath[TravelStart+1].P);
@@ -460,7 +461,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Me->setEnabled(false);
-	Level().ObjectSpace.GetNearest		(p_dest,3.f); 
+	Level().ObjectSpace.GetNearest		(p_dest,30.f); 
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
 	Me->setEnabled(true);
 #endif
@@ -475,12 +476,17 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		{
 			//motion.mul			(mdir,speed*10.f/mdir.magnitude());
 			//Me->Movement.Calculate(motion,0,0,0,0);
-			Me->Movement.Calculate(p_dest,speed*10.f/mdir.magnitude(),dt);
+			Me->Movement.Calculate(TravelPath,speed,TravelStart,precesition);
 			Me->Movement.GetPosition(p_dest);
+
 			if (Me->Movement.gcontact_HealthLost)	
 			{
 				Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,0,p_dest,0);
 			}
+		}
+		else
+		{
+			Me->Movement.b_exect_position=true;
 		}
 
 	}
@@ -489,8 +495,8 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		//motion.mul			(mdir,speed*10.f/mdir.magnitude());
 		//Me->Movement.Calculate(motion,0,0,0,0);
 
-		Me->Movement.Calculate(p_dest,speed*10.f/mdir.magnitude(),dt);
-		Me->Movement.GetPosition(p_dest);
+			Me->Movement.Calculate(TravelPath,speed,TravelStart,precesition);
+			Me->Movement.GetPosition(p_dest);
 		if (Me->Movement.gcontact_HealthLost)	
 		{
 			Me->Hit	(Me->Movement.gcontact_HealthLost,mdir,Me,0,p_dest,0);

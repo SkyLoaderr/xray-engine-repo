@@ -344,7 +344,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	if(m_acceleration.magnitude()>0.f) is_control=true;
 	else							   is_control=false;
 
-	b_pure_climb=b_pure_climb&&b_any_contacts;
+	b_pure_climb=b_pure_climb&&b_any_contacts&&(!b_lose_control);
 	if(b_pure_climb) b_at_wall=true;
 
 	if(b_lose_control || (!b_climb&&is_contact)||
@@ -628,11 +628,16 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	//	i=5;
 	//	}
 
-	dMass m;
-	dBodyGetMass(m_body,&m);
+
+
 	m_control_force[0]=0.f;
 	m_control_force[1]=0.f;
 	m_control_force[2]=0.f;
+
+	if(m_max_velocity<EPS) return;
+	dMass m;
+	dBodyGetMass(m_body,&m);
+
 	//if(b_jump) 
 	//	m_control_force[1]=60.f*m.mass*2.f;
 
