@@ -29,6 +29,7 @@ public:
 	struct _vis		{
 		u32			frame2test;		// frame the test is sheduled to
 		u32			query_id;		// ID of occlusion query
+		u32			query_order;	// order of occlusion query
 		bool		visible;		// visible/invisible
 		bool		pending;		// test is still pending
 	}				vis;

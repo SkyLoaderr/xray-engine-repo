@@ -375,6 +375,9 @@
 					RelativePath="r2_rendertarget_phase_combine.cpp">
 				</File>
 				<File
+					RelativePath=".\r2_rendertarget_phase_occq.cpp">
+				</File>
+				<File
 					RelativePath="r2_rendertarget_phase_scene.cpp">
 				</File>
 				<File
@@ -536,6 +539,12 @@
 			</File>
 			<File
 				RelativePath="blender_light_mask.h">
+			</File>
+			<File
+				RelativePath=".\blender_light_occq.cpp">
+			</File>
+			<File
+				RelativePath=".\blender_light_occq.h">
 			</File>
 			<File
 				RelativePath="blender_light_point.cpp">

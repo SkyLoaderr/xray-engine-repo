@@ -27,7 +27,7 @@ public:
 
 	void			occq_create		(u32	limit	);
 	void			occq_destroy	(				);
-	void			occq_begin		(u32&	ID		);
+	u32				occq_begin		(u32&	ID		);	// returns 'order'
 	void			occq_end		(u32&	ID		);
 	u32				occq_get		(u32&	ID		);
 };

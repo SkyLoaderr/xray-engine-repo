@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\resourcemanager.h"
+#include "blender_light_occq.h"
 #include "blender_light_mask.h"
 #include "blender_light_direct.h"
 #include "blender_light_point.h"
@@ -122,6 +123,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	CHK_DX							(HW.pDevice->CreateQuery(D3DQUERYTYPE_OCCLUSION,&Q));
 
 	// Blenders
+	b_occq							= xr_new<CBlender_light_occq>			();
 	b_accum_mask					= xr_new<CBlender_accum_direct_mask>	();
 	b_accum_direct					= xr_new<CBlender_accum_direct>			();
 	b_accum_point					= xr_new<CBlender_accum_point>			();
@@ -149,6 +151,9 @@ void	CRenderTarget::OnDeviceCreate	()
 		rt_Accumulator.create		(r2_RT_accum,	w,h,D3DFMT_A8R8G8B8		);
 		rt_Generic.create			(r2_RT_generic,	w,h,D3DFMT_A8R8G8B8		);
 	}
+
+	// OCCLUSION
+	s_occq.create					(b_occq,		"r2\\occq");
 
 	// DECOMPRESSION
 	if (RImplementation.b_nv3x)
@@ -420,4 +425,5 @@ void	CRenderTarget::OnDeviceDestroy	()
 	xr_delete					(b_accum_point			);
 	xr_delete					(b_accum_direct			);
 	xr_delete					(b_accum_mask			);
+	xr_delete					(b_occq					);
 }

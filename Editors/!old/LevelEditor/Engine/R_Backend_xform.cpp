@@ -11,9 +11,7 @@ void	R_xforms::set_W			(const Fmatrix& m)
 	if (c_w)		RCache.set_c(c_w,	m_w);
 	if (c_wv)		RCache.set_c(c_wv,	m_wv);
 	if (c_wvp)		RCache.set_c(c_wvp,	m_wvp);
-#ifdef _EDITOR
 	RCache.set_xform(D3DTS_WORLD,m);
-#endif
 }
 void	R_xforms::set_V			(const Fmatrix& m)
 {
@@ -25,9 +23,7 @@ void	R_xforms::set_V			(const Fmatrix& m)
 	if (c_vp)		RCache.set_c(c_vp,	m_vp);
 	if (c_wv)		RCache.set_c(c_wv,	m_wv);
 	if (c_wvp)		RCache.set_c(c_wvp,	m_wvp);
-#ifdef _EDITOR
 	RCache.set_xform(D3DTS_VIEW,m);
-#endif
 }
 void	R_xforms::set_P			(const Fmatrix& m)
 {

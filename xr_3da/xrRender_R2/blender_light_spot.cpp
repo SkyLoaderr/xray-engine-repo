@@ -43,7 +43,5 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_d_surf);
 		C.r_End				();
 		break;
-	case 3:	// OCC-Q
-		break;
 	}
 }

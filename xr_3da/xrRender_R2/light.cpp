@@ -144,9 +144,9 @@ void	light::vis_prepare			()
 	// testing
 	vis.pending							= true;
 	xform_calc							();
-	RImplementation.occq_begin			(vis.query_id);
-	RImplementation.Target.draw_volume	(this);
-	RImplementation.occq_end			(vis.query_id);
+	vis.query_order	= RImplementation.occq_begin	(vis.query_id);
+	RImplementation.Target.draw_volume				(this);
+	RImplementation.occq_end						(vis.query_id);
 }
 
 void	light::vis_update			()

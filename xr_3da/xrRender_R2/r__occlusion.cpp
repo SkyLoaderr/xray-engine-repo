@@ -32,7 +32,7 @@ void	R_occlusion::occq_destroy	(				)
 	}
 	fids.clear	();
 }
-void	R_occlusion::occq_begin		(u32&	ID		)
+u32		R_occlusion::occq_begin		(u32&	ID		)
 {
 	if (!fids.empty())	{
 		ID				= fids.back	();	
@@ -44,6 +44,7 @@ void	R_occlusion::occq_begin		(u32&	ID		)
 	}
 	pool.pop_back	();
 	CHK_DX			(used[ID].Q->Issue	(D3DISSUE_BEGIN));
+	return			used[ID].order;
 }
 void	R_occlusion::occq_end		(u32&	ID		)
 {

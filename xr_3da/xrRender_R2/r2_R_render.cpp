@@ -9,6 +9,17 @@ IC	bool	pred_sp_sort	(ISpatial* _1, ISpatial* _2)
 	float	d2		= _2->spatial.center.distance_to_sqr(Device.vCameraPosition);
 	return	d1<d2;
 }
+IC	bool	pred_light_cmp	(light*	_1, light* _2)
+{
+	if	(_1->vis.pending)
+	{
+		if (_2->vis.pending)	return	_1->vis.query_order < _2->vis.query_order;	// q-order
+		else					return	false;										// _2 should be first
+	} else {
+		if (_2->vis.pending)	return	true;										// _1 should be first 
+		else					return	_1->range > _2->range;						// sort by range
+	}
+}
 
 void CRender::Render		()
 {
@@ -132,6 +143,28 @@ void CRender::Render		()
 		mapSorted.clear							();		// unsupported
 	}
 
+	//******* Occlusion testing of volume-limited light-sources
+	Target.phase_occq							();
+	{
+		// perform tests
+		int	count	= 0;
+		count		= _max(count,Lights.v_point_s.size());
+		count		= _max(count,Lights.v_spot_s.size());
+		count		= _max(count,Lights.v_point.size());
+		count		= _max(count,Lights.v_spot.size());
+		for (int it=0; it<count; it++)	{
+			if (it<Lights.v_point_s.size())	Lights.v_point_s[it]->vis_prepare	();
+			if (it<Lights.v_point.size())	Lights.v_point	[it]->vis_prepare	();
+			if (it<Lights.v_spot_s.size())	Lights.v_spot_s	[it]->vis_prepare	();
+			if (it<Lights.v_spot.size())	Lights.v_spot	[it]->vis_prepare	();
+		}
+		// resort lights (pending -> at the end), maintain stable order
+		std::stable_sort	(Lights.v_point_s.begin(),	Lights.v_point_s.end(),	pred_light_cmp);
+		std::stable_sort	(Lights.v_point.begin(),	Lights.v_point.end(),	pred_light_cmp);
+		std::stable_sort	(Lights.v_spot_s.begin(),	Lights.v_spot_s.end(),	pred_light_cmp);
+		std::stable_sort	(Lights.v_spot.begin(),		Lights.v_spot.end(),	pred_light_cmp);
+	}
+
 	//******* Decompression on some HW :)
 	Target.phase_decompress						();
 
@@ -182,6 +215,7 @@ void CRender::Render		()
 	HOM.Disable							();
 	// Target.accum_direct				();
 
+	//////////////////////////////////////////////////////////////////////////
 	// sort lights by importance???
 	// while (has_any_lights_that_cast_shadows) {
 	//		if (has_point_shadowed)		->	generate point shadowmap

@@ -17,6 +17,7 @@ smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
 433/1.08Ghz:optimized spot-shadow-shaders + aref( 31.3  )
 433/1.08Ghz:agressive scissoring				( 33.8  )
 same,60.50 :all + optimized sphere				( 42.83 )
+same,			+ occlusion culling				( 56.84	)
 ----------------------------
 BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection

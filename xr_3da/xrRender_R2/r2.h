@@ -88,9 +88,9 @@ public:
 	IRender_Sector*					detectSector				(Fvector& P, Fvector& D);
 
 	// HW-occlusion culling
-	IC void							occq_begin					(u32&	ID		)	{ HWOCC.occq_begin	(ID);		}
-	IC void							occq_end					(u32&	ID		)	{ HWOCC.occq_end	(ID);		}
-	IC u32							occq_get					(u32&	ID		)	{ return HWOCC.occq_get(ID);	}
+	IC u32							occq_begin					(u32&	ID		)	{ return HWOCC.occq_begin	(ID);	}
+	IC void							occq_end					(u32&	ID		)	{ HWOCC.occq_end	(ID);			}
+	IC u32							occq_get					(u32&	ID		)	{ return HWOCC.occq_get		(ID);	}
 
 public:
 	// Loading / Unloading

@@ -16,6 +16,7 @@ private:
 	u32							dwLightMarkerID;
 public:
 	// 
+	IBlender*					b_occq;
 	IBlender*					b_accum_mask;
 	IBlender*					b_accum_direct;
 	IBlender*					b_accum_point;
@@ -61,6 +62,7 @@ private:
 	// Decompress
 	ref_geom					g_decompress;
 	ref_shader					s_decompress;	// 0=pos,1=norm
+	ref_shader					s_occq;
 
 	// Accum
 	ref_shader					s_accum_mask;
@@ -114,6 +116,7 @@ public:
 
 	void						phase_scene				();
 	void						phase_decompress		();
+	void						phase_occq				();
 	void						phase_smap_direct		();
 	void						phase_smap_point		(u32 pls_phase);
 	void						phase_smap_spot			();
