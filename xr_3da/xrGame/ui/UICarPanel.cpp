@@ -20,7 +20,7 @@ void CUICarPanel::Init			(int x, int y, int width, int height)
 	xml_init.InitProgressBar(uiXml, "car_health_progress_bar", 0, &UICarHealthBar);
 	SetCarHealth(1.0f);
 
-
+/*
 	AttachChild(&UISpeedometer);
 	xml_init.InitStatic(uiXml, "speedometer", 0, &UISpeedometer);
 	UISpeedometer.InitPointer(POINTER_ARROW_TEX, 0, 0, M_PI*1.f/3.f, -M_PI*1.f/3.f);
@@ -30,7 +30,7 @@ void CUICarPanel::Init			(int x, int y, int width, int height)
 	xml_init.InitStatic(uiXml, "tachometer", 0, &UITachometer);
 	UITachometer.InitPointer(POINTER_ARROW_TEX,  0, 0, M_PI*1.f/3.f, -M_PI*1.f/3.f);
 	SetSpeed(0.3f);
-
+*/
 	Show(false);
 	Enable(false);
 
@@ -52,14 +52,14 @@ void CUICarPanel::SetCarHealth(float value)
 
 void CUICarPanel::SetSpeed(float speed)
 {
-	clamp(speed,0.f,1.f);
-	UISpeedometer.SetValue(speed);
+//	clamp(speed,0.f,1.f);
+//	UISpeedometer.SetValue(speed);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUICarPanel::SetRPM(float rpm)
 {
-	clamp(rpm,0.f,1.f);
-	UITachometer.SetValue(rpm);
+//	clamp(rpm,0.f,1.f);
+//	UITachometer.SetValue(rpm);
 }

@@ -284,7 +284,7 @@ void	CCar::UpdateCL				( )
 	inherited::UpdateCL();
 	CExplosive::UpdateCL();
 	#ifdef DEBUG
-	if(m_pPhysicsShell&&Owner())
+	if(m_pPhysicsShell&&Owner() && bDebug)
 	{
 		Fvector v;
 		m_pPhysicsShell->get_LinearVel(v);
