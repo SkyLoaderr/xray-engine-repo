@@ -57,6 +57,13 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	};
 	// Start client
 	bResult						= net_Start_client(m_caClientOptions);
+	// Send Ready message to server
+	if (bResult && Game().type != GAME_SINGLE) 
+	{
+		NET_Packet		NP;
+		NP.w_begin		(M_CLIENTREADY);
+		Send(NP,net_flags(TRUE,TRUE));
+	};
 
 	//init the fog of war for the current level
 	FogOfWar().Init();

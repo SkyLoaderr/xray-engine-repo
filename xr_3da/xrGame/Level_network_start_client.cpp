@@ -47,25 +47,18 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		else								Device.seqFrame.Add		(g_pNetProcessor,REG_PRIORITY_LOW	- 2);
 
 		// Waiting for connection/configuration completition
+		pApp->LoadTitle						("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect())	Sleep(5);
 		while (!net_isCompleted_Sync())		{ ClientReceive(); Sleep(5); }
+		while (!game_configured)			{ ClientReceive(); Sleep(5); }
+		// HUD
+		pHUD->Load							();
 		
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
 		Device.Resources->DeferredLoad		(FALSE);
 		Device.Resources->DeferredUpload	();
 		LL_CheckTextures					();
-
-		//-----------------------------------------------------------------------
-		NET_Packet		NP;
-		NP.w_begin		(M_CLIENTREADY);
-		Send(NP,net_flags(TRUE,TRUE));
-
-		pApp->LoadTitle						("CLIENT: Spawning...");
-		while (!game_configured)			{ ClientReceive(); Sleep(5); }
-		// HUD
-		pHUD->Load							();
-		//-----------------------------------------------------------------------
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Synchronising...");
