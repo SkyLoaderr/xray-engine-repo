@@ -91,13 +91,10 @@ p2f 	p_main	( v2p_in IN )
   float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float D 		= dot		(L, N);
-
-  // Half-angle vector:
-  float3 H 		= normalize	(L + V);
+  float D 		= saturate	(dot	(L, N));
 
   // Specular = (H • N)^m
-  float S 		= tex1D		(s_power,	saturate(dot(H, N)));
+  float S 		= tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
   float4 C		= shadow*light_color*D;
