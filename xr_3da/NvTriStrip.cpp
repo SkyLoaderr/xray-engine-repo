@@ -102,7 +102,7 @@ void GenerateStrips(const unsigned short* in_indices, const unsigned int in_numI
 	{
 		//if we're outputting only lists, we're done
 		*numGroups = 1;
-		(*primGroups) = xr_alloc<PrimitiveGroup>(numGroups);
+		(*primGroups) = xr_alloc<PrimitiveGroup>(*numGroups);
 		PrimitiveGroup* primGroupArray = *primGroups;
 
 		//count the total number of indices

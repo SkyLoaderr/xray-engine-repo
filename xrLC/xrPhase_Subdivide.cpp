@@ -98,8 +98,8 @@ void CBuild::xrPhase_Subdivide()
 				}
 				
 				// Create _new deflectors
-				CDeflector*		D1	= xr_new<CDeflector>; D1->OA_Place(s1); D1->OA_Export(); g_deflectors.push_back(D1);
-				CDeflector*		D2	= xr_new<CDeflector>; D2->OA_Place(s2); D2->OA_Export(); g_deflectors.push_back(D2);
+				CDeflector*		D1	= xr_new<CDeflector>(); D1->OA_Place(s1); D1->OA_Export(); g_deflectors.push_back(D1);
+				CDeflector*		D2	= xr_new<CDeflector>(); D2->OA_Place(s2); D2->OA_Export(); g_deflectors.push_back(D2);
 			}
 			
 			// Delete old SPLIT and push two new
