@@ -1021,24 +1021,24 @@ function loadStates(gname, type)
 		return function(gulag)
 			if gulag.state == 1 then return 1 end
 			
-			local actor = level.actor()
-			local zone = level.object("gar_shooting")
-			if actor ~= nil and zone ~= nil then
-				if actor:position():distance_to(zone:position()) < 50 then
-					return 1
-				else
-					return 0
-				end
-			else
+			local actor = db.actor
+--			local zone = level.object("gar_shooting")
+--			if actor ~= nil and zone ~= nil then
+--				if actor:position():distance_to(zone:position()) < 50 then
+--					return 1
+--				else
+--					return 0
+--				end
+--			else
 				return 0
-			end
+--			end
 		end
 	end
 	
 	if type == "gar_dolg" then
 		return function(gulag)
 			--if gulag.state == 1 then return 1 end
-			local actor = level.actor()
+			local actor = db.actor
 			if actor and actor:has_info ("gar_monsters_rush_wave1") then
 			   printf ("GARBAGE DOLG GULAG STATE 1") 
                return 1
@@ -1062,7 +1062,7 @@ function loadStates(gname, type)
 	if type == "agr_factory" then
 		return function( gulag )
 			if gulag:getCasualities() >= 3 then
-				local actor = level.actor()
+				local actor = db.actor
 				if actor and actor:dont_has_info( "agr_factory_need_help" ) then
 					actor:give_info_portion( "agr_factory_need_help" )
 				end
