@@ -429,12 +429,6 @@
 				RelativePath="log.h">
 			</File>
 			<File
-				RelativePath="LzHuf.cpp">
-			</File>
-			<File
-				RelativePath="lzhuf.h">
-			</File>
-			<File
 				RelativePath="Xr_ini.cpp">
 			</File>
 			<File
@@ -534,6 +528,25 @@
 			</File>
 			<File
 				RelativePath="xrDebug_macros.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Compression"
+			Filter="">
+			<File
+				RelativePath="LzHuf.cpp">
+			</File>
+			<File
+				RelativePath="lzhuf.h">
+			</File>
+			<File
+				RelativePath=".\rt_lzo.cpp">
+			</File>
+			<File
+				RelativePath=".\rt_lzo.h">
+			</File>
+			<File
+				RelativePath=".\rt_lzo_config.h">
 			</File>
 		</Filter>
 		<File
