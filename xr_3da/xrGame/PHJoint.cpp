@@ -454,7 +454,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 	axis_angleA(m2,axes[ax].direction,zer);
 
 	axes[ax].zero=zer;
-	m2.invert();
+	//m2.invert();
 	//axes[ax].zero_transform.set(m2);
 
 }
@@ -810,8 +810,8 @@ void CPHJoint::SetAxisSDfactors(float spring_factor,float damping_factor,int axi
 		}
 	else
 	{
-		axes[axis_num].erp=erp;
-		axes[axis_num].cfm=cfm;
+		axes[ax].erp=erp;
+		axes[ax].cfm=cfm;
 	}
 }
 
@@ -890,8 +890,8 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatr
 	if(shift_angle<-M_PI) shift_angle+=2.f*M_PI;
 
 
-	lo=axes[ax_num].low+shift_angle;
-	hi=axes[ax_num].high+shift_angle;
+	lo=axes[ax_num].low;//+shift_angle;
+	hi=axes[ax_num].high;//+shift_angle;
 	if(lo<-M_PI){ 
 		hi-=(lo+M_PI);
 		lo=-M_PI;
@@ -910,4 +910,23 @@ void CPHJoint::CalcAxis(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatr
 	}
 
 
+}
+
+CPHJoint::SPHAxis::SPHAxis(){
+	high=M_PI/15.f;
+	low=-M_PI/15.f;;
+	zero=0.f;
+	//erp=ERP(world_spring/5.f,world_damping*5.f);
+	//cfm=CFM(world_spring/5.f,world_damping*5.f);
+#ifndef ODE_SLOW_SOLVER
+	erp=world_erp;
+	cfm=world_cfm;
+#else
+	erp=0.3f;
+	cfm=0.000001f;
+#endif
+	direction.set(0,0,1);
+	vs=vs_first;
+	force=0.f;
+	velocity=0.f;
 }

@@ -13,6 +13,7 @@ CPHActorCharacter::~CPHActorCharacter(void)
 
 void CPHActorCharacter::Create(dVector3 sizes)
 {
+	if(b_exist) return;
 	inherited::Create(sizes);
 	m_cap=dCreateSphere(0,m_radius+m_radius/30.f);
 	dGeomSetPosition(m_cap,0.f,m_radius,0.f);
@@ -35,6 +36,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 
 void CPHActorCharacter::Destroy()
 {
+	if(!b_exist) return;
 	if(m_cap) {
 		dGeomDestroyUserData(m_cap);
 		dGeomDestroy(m_cap);

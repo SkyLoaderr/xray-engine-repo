@@ -85,6 +85,7 @@ public:
 		k_l=linear;
 	}
 	void					CallBack						(CBoneInstance* B);
+	void					CallBack1						(CBoneInstance* B);
 	void					PhDataUpdate					(dReal step);
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
 
@@ -105,6 +106,7 @@ public:
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void			get_LinearVel					(Fvector& velocity);
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);
+	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
 
 	void			SetShell								(CPHShell* p){m_shell=p;}
 	void			SetPhObjectInGeomData					(CPHObject* O);

@@ -106,6 +106,19 @@ public:
 		R[6]=aTransform._32;
 		R[10]=aTransform._33;
 		};
+	static inline FMXtoDMX(const Fmatrix& aTransform,dReal* R){	
+		R[0]=aTransform._11;
+		R[4]=aTransform._12;
+		R[8]=aTransform._13;
+
+		R[1]=aTransform._21;
+		R[5]=aTransform._22;
+		R[9]=aTransform._23;
+
+		R[2]=aTransform._31;
+		R[6]=aTransform._32;
+		R[10]=aTransform._33;
+	};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
 public:

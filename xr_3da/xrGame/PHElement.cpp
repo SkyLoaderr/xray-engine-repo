@@ -549,17 +549,14 @@ void		CPHElement::	setMassMC		(float M,const Fvector& mass_center)
 	calculate_it_data(mass_center,M);
 }
 
+
+
 void		CPHElement::Start(){
-	//mXFORM.set(m0);
+
 	build(m_space);
 	RunSimulation();
 
-	//dBodySetPosition(m_body,m_m0.c.x,m_m0.c.y,m_m0.c.z);
-	//Fmatrix33 m33;
-	//m33.set(m_m0);
-	//dMatrix3 R;
-	//PHDynamicData::FMX33toDMX(m33,R);
-	//dBodySetRotation(m_body,R);
+
 }
 
 void		CPHElement::Deactivate(){
@@ -586,6 +583,8 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dBodySetRotation(m_body,R);
 
 }
+
+
 CPHElement::~CPHElement	(){
 	m_boxes_data.clear();
 	m_spheras_data.clear();
@@ -1126,12 +1125,14 @@ void CPHElement::Activate(bool place_current_forms,bool disable){
 }
 
 void CPHElement::Activate(const Fmatrix& start_from,bool disable){
-
+	if(bActive) return;
+	bActive=true;
+	bActivating=true;
 	Start();
 	//	if(place_current_forms)
 	{
 		Fmatrix globe;
-		globe.mul(mXFORM,start_from);
+		globe.mul(start_from,mXFORM);
 		SetTransform(globe);
 	}
 	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
@@ -1245,6 +1246,44 @@ void CPHElement::CallBack(CBoneInstance* B){
 		//parent.invert();
 		//m_shell->mXFORM.mulB(parent);
 		
+	}
+
+	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+}
+
+void CPHElement::CallBack1(CBoneInstance* B)
+{
+	Fmatrix parent;
+
+	if(bActivating){
+		mXFORM.set(B->mTransform);
+		m_start_time=Device.fTimeGlobal;
+		Fmatrix global_transform;
+		global_transform.set(m_shell->mXFORM);
+		global_transform.mulB(mXFORM);
+		SetTransform(global_transform);
+		bActivating=false;
+		return;
+	}
+
+	if(m_parent_element){
+		InterpolateGlobalTransform(&mXFORM);
+
+		parent.set(m_shell->mXFORM);
+		parent.invert();
+		mXFORM.mulA(parent);
+		B->mTransform.set(mXFORM);
+	}
+	else{
+
+		InterpolateGlobalTransform(&m_shell->mXFORM);
+		mXFORM.identity();
+		B->mTransform.set(mXFORM);
+		//parent.set(B->mTransform);
+		//parent.invert();
+		//m_shell->mXFORM.mulB(parent);
+
 	}
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
@@ -1376,6 +1415,9 @@ switch(shape.type) {
 	
 	case SBoneShape::stCylinder :
 	break;
+
+	case SBoneShape::stNone :
+		break;
 default: NODEFAULT;
 }
 }
@@ -1397,6 +1439,61 @@ void CPHElement::add_Shape(const SBoneShape& shape)
 
 	case SBoneShape::stCylinder :
 		break;
+
+	case SBoneShape::stNone :
+		break;
 	default: NODEFAULT;
 	}
+}
+
+void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)
+{
+
+dMass m;
+dMatrix3 DMatx;
+switch(shape.type) 
+{
+	case SBoneShape::stBox	:
+		{
+			dMassSetBox(&m,1.f,shape.box.m_halfsize.x*2.f,shape.box.m_halfsize.y*2.f,shape.box.m_halfsize.z*2.f);
+			dMassAdjust(&m,mass);
+			Fmatrix box_transform;
+			shape.box.xform_get(box_transform);
+			PHDynamicData::FMX33toDMX(shape.box.m_rotate,DMatx);
+			dMassRotate(&m,DMatx);
+			dMassTranslate(&m,shape.box.m_translate.x-mass_center.x,shape.box.m_translate.y-mass_center.y,shape.box.m_translate.z-mass_center.z);
+			break;
+		}
+	case SBoneShape::stSphere	:
+		{
+			shape.sphere;
+			dMassSetSphere(&m,1.f,shape.sphere.R);
+			dMassAdjust(&m,mass);
+			dMassTranslate(&m,shape.sphere.P.x-mass_center.x,shape.sphere.P.y-mass_center.y,shape.sphere.P.z-mass_center.z);
+			break;
+		}
+
+
+	case SBoneShape::stCylinder :
+		break;
+
+	case SBoneShape::stNone :
+		break;
+	default: NODEFAULT;
+}
+PHDynamicData::FMXtoDMX(offset,DMatx);
+dMassRotate(&m,DMatx);
+
+Fvector mc;
+offset.transform_tiny(mc,mass_center);
+//calculate new mass_center
+m_mass_center.mul(m_mass.mass);
+Fvector tmp;
+tmp.set(mc);
+tmp.mul(mass);
+m_mass_center.add(tmp);
+m_mass_center.mul(1.f/(mass+m_mass.mass));
+mc.sub(m_mass_center);
+dMassTranslate(&m,mc.x,mc.y,mc.z);
+dMassAdd(&m_mass,&m);
 }

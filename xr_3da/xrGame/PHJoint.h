@@ -9,7 +9,30 @@ class CPHJoint: public CPhysicsJoint{
 	dJointID m_joint;
 	dJointID m_joint1;
 
+	float m_erp;				 //joint erp
+	float m_cfm;				 //joint cfm
 
+	enum eVs {				//coordinate system 
+		vs_first,			//in first local
+		vs_second,			//in second local 
+		vs_global			//in global 
+	};
+	struct SPHAxis {
+		float high;			//high limit
+		float low;			//law limit
+		float zero;			//zero angle position
+		float erp;			//limit erp
+		float cfm;			//limit cfm
+		eVs   vs;			//coordinate system 
+		float force;		//max force
+		float velocity;		//velocity to achieve
+		Fvector direction;	//axis direction
+		IC void set_limits(float h, float l) {high=h; low=l;}
+		IC void set_direction(const Fvector& v){direction.set(v);}
+		IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
+		IC void set_param(const float e,const float c){erp=e;cfm=c;}	
+		SPHAxis();
+	};
 
 	xr_vector<SPHAxis> axes;
 	Fvector anchor;
@@ -55,6 +78,7 @@ class CPHJoint: public CPhysicsJoint{
 
 
 public:
+	virtual void Activate					();
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1);
 	virtual void SetForce					(const float force,const int axis_num=-1);
 	virtual void SetVelocity				(const float velocity=0.f,const int axis_num=-1);
@@ -66,7 +90,6 @@ public:
 
 	};
 	void SetShell					(CPHShell* p)			 {pShell=p;}
-	void Activate();
 	void Deactivate();
 };
 
