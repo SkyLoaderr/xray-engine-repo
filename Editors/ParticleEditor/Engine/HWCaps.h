@@ -14,6 +14,7 @@ public:
 		u32	bPointSprites	: 1;
 		u32	bMPS			: 1;		// matrix-palette-skinning
 		u32	bNPatches		: 1;
+		u32 dwClipPlanes	: 4;
 		u32 dwVertexCache	: 8;
 	};
 	struct		caps_Texturing
