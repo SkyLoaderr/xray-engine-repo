@@ -236,8 +236,8 @@ void CRender::Calculate				()
 	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor*(EPS_S+ps_r__LOD);
 	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD/2)	/g_fSCREEN;
 	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT/2)	/g_fSCREEN;
-	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A/2)		/g_fSCREEN;
-	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B/2)		/g_fSCREEN;
+	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A/3)		/g_fSCREEN;
+	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B/3)		/g_fSCREEN;
 	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start/2)/g_fSCREEN;
 	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end/2)	/g_fSCREEN;
 	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX/2)	/g_fSCREEN;
