@@ -88,34 +88,6 @@ LPCSTR caGlobalNames		[] = {
 	0
 };
 
-void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
-{
-	if (Weapons->ActiveWeapon()) {
-		Weapons->GetFireParams(fire_pos,fire_dir);
-//		fire_pos.set(Weapons->ActiveWeapon()->Position());
-//		float					yaw_factor = 0, pitch_factor = 0;
-//		switch(m_tLookType) {
-//			case eLookTypeFirePoint : {
-//				yaw_factor		= y_shoulder_fire_factor;
-//				pitch_factor	= p_shoulder_fire_factor;
-//				break;
-//			}
-//			case eLookTypePatrol :
-//			case eLookTypeSearch :
-//			case eLookTypeDanger :
-//			case eLookTypePoint : {
-//				yaw_factor		= y_shoulder_factor;
-//				pitch_factor	= p_shoulder_factor;
-//				break;
-//			}
-//			default : NODEFAULT;
-//		}
-//		float					yaw		= angle_normalize_signed(-(yaw_factor * angle_normalize_signed(NET_Last.o_torso.yaw - NET_Last.o_model) + NET_Last.o_model));
-//		float					pitch	= angle_normalize_signed(-pitch_factor * (NET_Last.o_torso.pitch));
-//		fire_dir.setHP(yaw,pitch);
-	}
-}
-
 void CAI_Stalker::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone		= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));

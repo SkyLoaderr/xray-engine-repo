@@ -117,6 +117,8 @@ void CAI_Stalker::AccomplishTask()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tEnemy.Enemy,eStalkerStateAttack);
 
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
+
 	if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
 		vfBuildPathToDestinationPoint		(0,true);
 
@@ -138,10 +140,10 @@ void CAI_Stalker::Recharge()
 	Weapons->ActiveWeapon()->Reload();
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(Weapons->ActiveWeapon()->GetAmmoElapsed());
 
-	vfChoosePointAndBuildPath	(m_tSelectorReload);
-
-	if (m_tEnemy.Enemy)
-		vfSetMovementType		(eBodyStateStand,eMovementTypeWalk,eLookTypePoint, m_tEnemy.Enemy->Position());
+	if (m_tEnemy.Enemy) {
+		vfChoosePointAndBuildPath	(m_tSelectorReload);
+		vfSetMovementType		(eBodyStateStand,eMovementTypeRun,eLookTypePoint, m_tEnemy.Enemy->Position());
+	}
 	else
 		vfSetMovementType		(eBodyStateStand,eMovementTypeStand,eLookTypeDanger);
 	
@@ -163,16 +165,16 @@ void CAI_Stalker::Attack()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
-	//vfChoosePointAndBuildPath	(m_tSelectorReload);
-	AI_Path.TravelPath.clear();
-	AI_Path.DestNode = u32(-1);
+	vfChoosePointAndBuildPath	(m_tSelectorReload);
+//	AI_Path.TravelPath.clear();
+//	AI_Path.DestNode = u32(-1);
 
 	vfSetFire					(true,*getGroup());
 
 	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());
 	
-	if (m_fCurSpeed < EPS_L)
-		r_torso_target.yaw		= r_target.yaw;
+//	if (m_fCurSpeed < EPS_L)
+//		r_torso_target.yaw		= r_target.yaw;
 }
 
 void CAI_Stalker::Think()

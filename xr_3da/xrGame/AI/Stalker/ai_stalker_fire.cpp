@@ -11,6 +11,12 @@
 
 #define	FIRE_SAFETY_ANGLE				PI/10
 
+void CAI_Stalker::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
+{
+	if (Weapons->ActiveWeapon())
+		Weapons->GetFireParams(fire_pos,fire_dir);
+}
+
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	// Save event
@@ -112,20 +118,17 @@ bool CAI_Stalker::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvec
 
 bool CAI_Stalker::bfCheckIfCanKillEnemy() 
 {
-	return(true);
-//	Fvector tMyLook;
-//	tMyLook.setHP	(-r_torso_current.yaw - m_fAddWeaponAngle,-r_torso_current.pitch);
-//	if (Enemy.Enemy) {
-//		Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
-//		tFireVector.sub(tEnemyPosition,tMyPosition);
-//		vfNormalizeSafe(tFireVector);
-//		float fAlpha = tFireVector.dotproduct(tMyLook);
-//		clamp(fAlpha,-.99999f,+.99999f);
-//		fAlpha = acosf(fAlpha);
-//		return(fAlpha < FIRE_SAFETY_ANGLE);
-//	}
-//	else
-//		return(false);
+	if (!Weapons->ActiveWeapon() || !m_tEnemy.Enemy)
+		return(false);
+
+	Fvector fire_pos, fire_dir;
+	Weapons->GetFireParams(fire_pos,fire_dir);
+	fire_pos.sub(m_tEnemy.Enemy->Position(),fire_pos);
+	fire_pos.normalize_safe();
+	float fAlpha = fire_dir.dotproduct(fire_pos);
+	clamp(fAlpha,-.99999f,+.99999f);
+	fAlpha = acosf(fAlpha);
+	return(fAlpha < PI_DIV_4);
 }
 
 bool CAI_Stalker::bfCheckIfCanKillMember()
