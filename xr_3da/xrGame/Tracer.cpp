@@ -17,7 +17,7 @@ const float TRACER_SIZE = 0.2f;
 CTracer::CTracer()
 {
 	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
-	VS			= Device.Streams.Create	(FVF::F_LIT,MAX_TRACERS*4);
+	VS			= Device.Streams.Create	(FVF::F_V, MAX_TRACERS*4);
 }
 
 CTracer::~CTracer()
@@ -49,8 +49,8 @@ void	CTracer::Render	()
 	if (bullets.empty())	return;
 	
 	DWORD	vOffset;
-	FVF::LIT	*verts	=	(FVF::LIT	*) VS->Lock(bullets.size()*4,vOffset);
-	FVF::LIT	*start	=	verts;
+	FVF::V	*verts		=	(FVF::V	*) VS->Lock(bullets.size()*4,vOffset);
+	FVF::V	*start		=	verts;
 	float	dt			=	Device.fTimeDelta;
 
 	Fvector&	vTop	=	Device.vCameraTop;
@@ -86,10 +86,10 @@ void	CTracer::Render	()
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
 		float	w = B.width;
-		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,0,1);	verts++;
-		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0,0);	verts++;
-		P.mad(B.pos_head, lineTop,-w);	verts->set(P,0,1,1);	verts++;
-		P.mad(B.pos_head, lineTop,w);	verts->set(P,0,1,0);	verts++;
+		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,1);	verts++;
+		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0);	verts++;
+		P.mad(B.pos_head, lineTop,-w);	verts->set(P,1,1);	verts++;
+		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	verts++;
 	}
 
 	DWORD vCount			= verts-start;

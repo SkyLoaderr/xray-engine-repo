@@ -13,6 +13,16 @@ namespace FVF {
 		IC void		set(const Fvector& _p, DWORD C) { p.set(_p); color=C; }
 	};
 	const DWORD F_L		= D3DFVF_XYZ | D3DFVF_DIFFUSE;
+	
+	struct V {
+		Fvector		p;
+		Fvector2	t;
+		IC void		set(const V& src) {*this = src;};
+		IC void		set(float x, float y, float z, float u, float v)	{ p.set(x,y,z); t.set(u,v);}
+		IC void		set(const Fvector& _p,float u, float v)				{ p.set(_p);	t.set(u,v);}
+	};
+	const DWORD F_V		= D3DFVF_XYZ | D3DFVF_TEX1;
+
 	struct LIT {
 		Fvector		p;
 		DWORD		color;
@@ -21,7 +31,7 @@ namespace FVF {
 		IC void		set(float x, float y, float z, DWORD C, float u, float v) { p.set(x,y,z); color=C; t.set(u,v);}
 		IC void		set(const Fvector& _p, DWORD C, float u, float v) { p.set(_p); color=C; t.set(u,v);}
 	};
-	const DWORD F_LIT = D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
+	const DWORD F_LIT	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 	
 	struct TL {
 		Fvector4	p;
