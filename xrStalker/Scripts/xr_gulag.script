@@ -20,7 +20,7 @@ function fract:__init(name, type)
 	
 	gulag_tasks.loadJob(self.Job, name, type)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
-	gulag_tasks.loadStates(self.States, name, type, self.calculateStates)
+	self.calculateStates = gulag_tasks.loadStates(self.States, name, type)
 end
 function fract:addObject(npc)
 	if self:checkNpc(npc) == true then
