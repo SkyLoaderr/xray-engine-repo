@@ -30,9 +30,9 @@ void CLevel::ClientReceive()
 				P->r_u16		(type);
 				P->r_u16		(ID);
 				CObject*	 O	= Objects.net_Find	(ID);
-				if (0==O)		break;
+				if	(0==O)		break;
 				CGameObject* GO = dynamic_cast<CGameObject*>(O);
-				if (0==GO)		break;
+				if	(0==GO)		break;
 				GO->net_Event	(*P);
 			}
 			break;

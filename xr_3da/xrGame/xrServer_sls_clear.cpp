@@ -12,7 +12,7 @@ void xrServer::SLS_Clear	()
 		xrServerEntity*	E	= I->second;
 
 		P.w_begin			(M_EVENT);
-		P.w_u32				(Device.dwTimeGlobal);
+		P.w_u32				(Device.dwTimeGlobal-NET_Latency*2);
 		P.w_u16				(GE_DESTROY);
 		P.w_u16				(E->ID);
 		Msg					("*** SERVER-destroy: %s, ID=%d",E->s_name, E->ID);

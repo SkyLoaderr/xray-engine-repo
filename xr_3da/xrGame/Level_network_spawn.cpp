@@ -42,6 +42,8 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	R_ASSERT			(E);
 	E->Spawn_Read		(P);
 
+	Msg					("CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
+
 	// Client spawn
 	CObject*	O		= Objects.LoadOne	(s_name);
 	if (0==O || (!O->net_Spawn	(E))) 
