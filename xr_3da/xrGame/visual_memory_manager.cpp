@@ -38,6 +38,7 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 //	m_fLateralMultiplier		= pSettings->r_float(section,"LateralMultiplier");
 //	m_fShadowWeight				= pSettings->r_float(section,"ShadowWeight");
 
+	
 	m_max_object_count		= pSettings->r_s32(section,"DynamicObjectsCount");
 }
 

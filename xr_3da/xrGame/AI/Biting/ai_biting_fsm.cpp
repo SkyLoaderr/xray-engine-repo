@@ -28,8 +28,6 @@ void CAI_Biting::Think()
 //	
 //	HDebug->SetActive(true);	
 
-
-
 	// pre-update path parameters
 	enable_movement							(true);
 	CLevelLocationSelector::set_evaluator	(0);

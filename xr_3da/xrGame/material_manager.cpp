@@ -27,6 +27,10 @@ void CMaterialManager::Init			()
 
 void CMaterialManager::Load			(LPCSTR section)
 {
+	if (!pSettings->line_exist(section,"material")) {
+		R_ASSERT3(false,"Material not found in the section ",dynamic_cast<CObject*>(this)->cNameSect());
+	}
+	
 	m_my_material_id		= GMLib.GetMaterialIdx(pSettings->r_string(section,"material"));
 }
 
