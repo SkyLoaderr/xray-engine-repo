@@ -677,7 +677,6 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			
 			.def("use",							&CLuaGameObject::UseObject)				// time
 			.def("rank",						&CLuaGameObject::GetRank)
-			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
 //			.def("command",						(void (CLuaGameObject::*)(const CEntityAction*))(CLuaGameObject::AddAction))
 //			.def("command",						(void (CLuaGameObject::*)(const CEntityAction*, BOOL))(CLuaGameObject::AddAction))
 			.def("command",						CLuaGameObject::AddAction)
@@ -691,6 +690,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("set_callback",				(void (CLuaGameObject::*)(const luabind::functor<void> &, const CScriptMonster::EActionType))(CLuaGameObject::SetCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(bool))(CLuaGameObject::ClearCallback))
 			.def("clear_callback",				(void (CLuaGameObject::*)(const CScriptMonster::EActionType))(CLuaGameObject::ClearCallback))
+			
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("patrol",						&CLuaGameObject::GetPatrolPathName)

@@ -503,7 +503,6 @@ public:
 	}
 
 	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
-	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
 	
 			CLuaGameObject	*GetCurrentWeapon	() const;
 			CLuaGameObject	*GetCurrentEquipment() const;

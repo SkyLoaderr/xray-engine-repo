@@ -167,13 +167,33 @@ int get_sound_type(const CSoundObject &sound_object)
 	return			((int)sound_object.m_sound_type);
 }
 
+u32 bit_and(const u32 i, const u32 j)
+{
+	return			(i & j);
+}
+
+u32 bit_or(const u32 i, const u32 j)
+{
+	return			(i | j);
+}
+
+u32 bit_xor(const u32 i, const u32 j)
+{
+	return			(i ^ j);
+}
+
+u32 bit_not(const u32 i)
+{
+	return			(~i);
+}
+
 void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	module(tpLuaVirtualMachine)
 	[
 		class_<SRotation>("rotation")
-			.def_readonly("direction",		&SRotation::yaw)
-			.def_readonly("direction",		&SRotation::pitch),
+			.def_readonly("yaw",			&SRotation::yaw)
+			.def_readonly("pitch",			&SRotation::pitch),
 			
 		class_<MemorySpace::SObjectParams>("object_params")
 			.def_readonly("level_vertex",	&MemorySpace::SObjectParams::m_level_vertex_id)
@@ -243,6 +263,11 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def_readonly("power",			&MemorySpace::CSoundObject::m_power),
 
 		def("get_memory_object",			get_memory_object<CHitObject>),
-		def("get_memory_object",			get_memory_object<CSoundObject>)
+		def("get_memory_object",			get_memory_object<CSoundObject>),
+		def("bit_and",						bit_and),
+		def("bit_or",						bit_or),
+		def("bit_xor",						bit_xor),
+		def("bit_not",						bit_and)
+
 	];
 }

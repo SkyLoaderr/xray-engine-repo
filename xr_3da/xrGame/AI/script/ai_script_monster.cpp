@@ -24,6 +24,7 @@ CScriptMonster::CScriptMonster()
 
 CScriptMonster::~CScriptMonster()
 {
+	FreeAll								();
 }
 
 void CScriptMonster::Init()
@@ -53,6 +54,16 @@ void CScriptMonster::Init()
 
 void CScriptMonster::ResetScriptData(void *pointer)
 {
+	m_caScriptName						= "";
+	m_bScriptControl					= false;
+
+	m_tpScriptAnimation					= 0;
+	m_tpCurrentEntityAction				= 0;
+	m_tpNextAnimation					= 0;
+}
+
+void CScriptMonster::FreeAll()
+{
 	while (!m_tpActionQueue.empty()) {
 		xr_delete						(m_tpActionQueue.front());
 		m_tpActionQueue.erase			(m_tpActionQueue.begin());
@@ -71,18 +82,12 @@ void CScriptMonster::ResetScriptData(void *pointer)
 	xr_delete							(m_tHitCallback.m_lua_function);
 	xr_delete							(m_tHitCallback.m_lua_object);
 	m_tHitCallback.m_method_name		= "";
-
-	m_caScriptName						= "";
-	m_bScriptControl					= false;
-
-	m_tpScriptAnimation					= 0;
-	m_tpCurrentEntityAction				= 0;
-	m_tpNextAnimation					= 0;
 }
 
 void CScriptMonster::reinit()
 {
 	inherited::reinit					();
+	FreeAll								();
 	ResetScriptData						();
 }
 

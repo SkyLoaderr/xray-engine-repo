@@ -97,4 +97,6 @@ public:
 			bool				bfScriptAnimation		();
 			u32					GetActionCount			() const;
 	const CEntityAction			*GetActionByIndex		(u32 action_index) const;
+private:
+			void				FreeAll					();
 };
