@@ -305,7 +305,7 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeInventoryItem			*pSE_InventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(e);
-	VERIFY(pSE_InventoryItem);
+	if(!pSE_InventoryItem) return res;
 	
 	m_fCondition = pSE_InventoryItem->m_fCondition;
 
