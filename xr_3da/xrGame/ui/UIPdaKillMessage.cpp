@@ -79,18 +79,20 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	int		y = 0;
 	int		selfHeight = GetHeight();
 	float	scale = 0;
-	Irect	rect = info.m_rect;;
+	Irect	rect = info.m_rect;
 
 	int width = rect.width();
 	int height = rect.height();
 	scale = ((float)selfHeight)/((float)height);
+	width  = (int)((float)width*scale);
+	height = (int)((float)height*scale);
 	refStatic.Init(x, y, width, height);
 	refStatic.SetOriginalRect(info.m_rect);
 	refStatic.SetShader(info.m_shader/*GetEquipmentIconsShader()*/);
 //	refStatic.SetTextureScaleXY(scale, scale);
 	refStatic.SetStretchTexture(true);
 
-	return (int)((float)width*scale);
+	return width;
 }
 
 void CUIPdaKillMessage::Init(int x, int y, int width, int height){
