@@ -117,10 +117,10 @@ public:
 
 		for (u32 i=0; i<N; ++i) {
 			for (u32 j=0; j<4; ++j) {
-				u32			vertex_id = m_nodes[i].link(j);
+				u32			vertex_id = m_nodes[i].link(u8(j));
 				if (vertex_id >= N)
 					continue;
-				m_nodes[i].link(j,m_renumbering[vertex_id]);
+				m_nodes[i].link(u8(j),m_renumbering[vertex_id]);
 			}
 		}
 

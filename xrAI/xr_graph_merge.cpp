@@ -126,7 +126,7 @@ public:
 			for (int i=0; i<(int)tpCrossTable->header().level_vertex_count(); i++) {
 				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
 				VERIFY				(u32(tCrossTableUpdate[i].tGraphIndex) < tpCrossTable->header().game_vertex_count());
-				tCrossTableUpdate[i].tGraphIndex += (ALife::_GRAPH_ID)dwOffset;
+				tCrossTableUpdate[i].tGraphIndex = tCrossTableUpdate[i].tGraphIndex + (ALife::_GRAPH_ID)dwOffset;
 			}
 
 			CMemoryWriter					tMemoryStream;
