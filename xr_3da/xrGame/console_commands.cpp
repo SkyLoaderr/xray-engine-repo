@@ -664,7 +664,7 @@ public:
 			Level().Send		(net_packet,net_flags(TRUE));
 		}
 		finish					= CPU::GetCycleCount();
-		Msg						("Autosave overhead : %f",CPU::cycles2milisec*(finish - start));
+		Msg						("Game save overhead  : %f milliseconds",CPU::cycles2milisec*(finish - start));
 
 		strcat					(S,".dds");
 		FS.update_path			(S1,"$game_saves$",S);
@@ -673,7 +673,7 @@ public:
 		::Render->Screenshot	(IRender_interface::SM_FOR_GAMESAVE,S1);
 		finish					= CPU::GetCycleCount();
 
-		Msg						("Screenshot overhead : %f",CPU::cycles2milisec*(finish - start));
+		Msg						("Screenshot overhead : %f milliseconds",CPU::cycles2milisec*(finish - start));
 	}
 };
 
