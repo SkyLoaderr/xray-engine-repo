@@ -250,9 +250,7 @@ void CSE_ALifeGraphRegistry::Init()
 		}
 	}
 	
-	xr_delete						(m_tpCurrentLevel);
-	
-	m_tpCurrentLevel			= 0;
+	xr_delete					(m_tpCurrentLevel);
 	m_tpActor					= 0;
 	m_tNextFirstSwitchObjectID	= _OBJECT_ID(-1);
 }
@@ -314,6 +312,9 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObje
 			m_tNextFirstSwitchObjectID	= (*J).second->ID;
 		else
 			m_tNextFirstSwitchObjectID	= _OBJECT_ID(-1);
+		if (psAI_Flags.test(aiALife)) {
+			Msg					("[LSS] changing next first switch object id [%d] -> [%d]",tpALifeDynamicObject->ID,m_tNextFirstSwitchObjectID);
+		}
 	}
 	m_tpCurrentLevel->erase		(I);
 	m_bSwitchChanged			= true;
@@ -358,6 +359,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 {
+	VERIFY								(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject));
 	vfRemoveObjectFromGraphPoint		(tpALifeDynamicObject,tGraphPointID);
 	vfAddObjectToGraphPoint				(tpALifeDynamicObject,tNextGraphPointID);
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;

@@ -275,8 +275,9 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 			R_ASSERT2	(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Object online - parent offline...");
 }
 
-void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
+bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 {
+#ifdef DEBUG
 	VERIFY					(ai().level_graph().level_id() == ai().game_graph().vertex(I->m_tGraphID)->level_id());
 	xr_vector<u16>			test = I->children;
 	std::sort				(test.begin(),test.end());
@@ -284,25 +285,28 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 		if (test[i - 1] == test[i]) {
 			VERIFY			(false);
 		}
+#endif
 
 	// check if we do not use ai locations
 	if (!I->used_ai_locations())
-		return;
+		return				(true);
 
 	// check if we are not attached
 	if (0xffff != I->ID_Parent)
-		return;
+		return				(true);
 
 	// check if we are not online and have an invalid level vertex id
 	if	(!I->m_bOnline && !ai().level_graph().valid_vertex_id(I->m_tNodeID))
-		return;
+		return				(true);
 
 	// checking if it is a group of objects
 	CSE_ALifeGroupAbstract	*tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 	if (tpALifeGroupAbstract) {
 		// checking if group is empty then remove it
-		if (tpALifeGroupAbstract->m_tpMembers.empty())
-			vfReleaseObject(I);
+		if (tpALifeGroupAbstract->m_tpMembers.empty()) {
+			vfReleaseObject	(I);
+			return			(false);
+		}
 		else {
 			// assign group position to the member position
 			I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
@@ -340,12 +344,14 @@ void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 			I->m_fDistance			= ai().cross_table().vertex(I->m_tNodeID).distance();
 		}
 	}
+	return							(true);
 }
 
 void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 {
 	// updating vertex if it is invalid and object is not attached and online
-	vfValidatePosition			(I);
+	if (!bfValidatePosition(I))
+		return;
 
 	// checking if the object is online
 	if (I->m_bOnline) {
@@ -466,7 +472,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 					Msg				("! uncontrolled situation [%d][%d][%s][%f]",I->ID,I->ID_Parent,l_tpALifeCreatureAbstract->s_name_replace,l_tpALifeCreatureAbstract->fHealth);
 			}
 #endif
-			R_ASSERT2			(!tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
+			R_ASSERT2				(!tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 		}
 	}
 }

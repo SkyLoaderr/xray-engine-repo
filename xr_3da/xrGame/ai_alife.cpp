@@ -61,17 +61,17 @@ CSE_ALifeSimulator::~CSE_ALifeSimulator()
 
 float CSE_ALifeSimulator::shedule_Scale()
 {
-	return(.5f); // (schedule_min + schedule_max)*0.5f
+	return					(.5f); // (schedule_min + schedule_max)*0.5f
 }
 
 BOOL CSE_ALifeSimulator::shedule_Ready()
 {
-	return(TRUE);
+	return					(TRUE);
 }
 
 ref_str CSE_ALifeSimulator::cName()
 {
-	return		(ref_str("Simulator"));
+	return					(ref_str("Simulator"));
 }; 
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDynamicObject)

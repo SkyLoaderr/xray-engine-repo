@@ -96,7 +96,7 @@ class CSE_ALifeSimulator :
 			void					vfUpdateTasks				();
 			void					vfAssignStalkerCustomers	();
 	// switch online/offline routines
-			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
+			bool					bfValidatePosition			(CSE_ALifeDynamicObject		*I);
 			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bAddToRegistries = true);
 			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject,		bool					bRemoveFromRegistries = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
