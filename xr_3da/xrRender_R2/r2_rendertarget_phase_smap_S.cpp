@@ -3,9 +3,9 @@
 void	CRenderTarget::phase_smap_spot	()
 {
 	// Targets
-	dwWidth								= SSM_size;
-	dwHeight							= SSM_size;
-	u_setrt								(rt_smap_s, NULL, NULL, rt_smap_s_ZB);
+	dwWidth								= DSM_size;
+	dwHeight							= DSM_size;
+	u_setrt								(rt_smap_d, NULL, NULL, rt_smap_d_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear

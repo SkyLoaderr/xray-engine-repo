@@ -37,18 +37,13 @@ private:
 	CRT*						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
 	IDirect3DSurface9*			rt_Bloom_ZB;
 
-
 	// D-smap
-	CRT*						rt_smap_d;		// 32bit, (depth)	(eye-space)
+	CRT*						rt_smap_d;		// 32bit, depth or dummy, depending on shadowmap support
 	IDirect3DSurface9*			rt_smap_d_ZB;
 
 	// P-smap
 	CRTC*						rt_smap_p;
 	IDirect3DSurface9*			rt_smap_p_ZB;
-
-	// S-smap
-	CRT*						rt_smap_s;		// 32bit, (depth)	(eye-space)
-	IDirect3DSurface9*			rt_smap_s_ZB;
 
 	// Textures
 	IDirect3DTexture9*			t_material_surf;

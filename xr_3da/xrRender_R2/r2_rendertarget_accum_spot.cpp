@@ -6,7 +6,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	float			z_bias				= +0.005f;
 
 	// texture adjustment matrix
-	float			fTexelOffs			= (.5f / SSM_size);
+	float			fTexelOffs			= (.5f / DSM_size);
 	Fmatrix			m_TexelAdjust		= 
 	{
 		0.5f,				0.0f,				0.0f,			0.0f,
@@ -60,7 +60,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,L_spec);
 
 		// Shader + constants
-		float circle				= ps_r2_ls_ssm_kernel / SSM_size;
+		float circle				= ps_r2_ls_ssm_kernel / DSM_size;
 		Fvector4 J; float scale		= circle/11.f;
 
 		// 1
