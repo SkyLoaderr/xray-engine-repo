@@ -418,15 +418,15 @@ void CObjectHandler::update(u32 time_delta)
 	inherited::update	(time_delta);
 
 #ifdef DEBUG
-	if (!path().empty()) {
-		Msg				("Path : ");
-		xr_vector<u32>::const_iterator	I = path().begin();
-		xr_vector<u32>::const_iterator	E = path().end();
-		for ( ; I != E; ++I)
-			Msg			("%s",to_string(*I));
-	}
-	else
-		Msg			("Path : %s",to_string(current_state_id()));
+//	if (!path().empty()) {
+//		Msg				("Path : ");
+//		xr_vector<u32>::const_iterator	I = path().begin();
+//		xr_vector<u32>::const_iterator	E = path().end();
+//		for ( ; I != E; ++I)
+//			Msg			("%s",to_string(*I));
+//	}
+//	else
+//		Msg			("Path : %s",to_string(current_state_id()));
 #endif
 }
 
