@@ -6,7 +6,7 @@
 #include "cameralook.h"
 #include "camerafirsteye.h"
 #include "Actor.h"
-
+//#include "math.h"
 
 static float car_snd_volume=1.f;
 
@@ -738,6 +738,7 @@ void CCar::Transmision(size_t num)
 	{
 		m_current_transmission_num=num;
 		m_current_gear_ratio=m_gear_ratious[num];
+		m_current_rpm=m_torque_rpm;
 	}
 }
 void CCar::CircleSwitchTransmission()
@@ -770,16 +771,28 @@ void CCar::TransmisionDown()
 }
 void CCar::InitParabola()
 {
-	float t1=(m_power_rpm-m_torque_rpm);
-	float t2=m_max_power/m_power_rpm;
-	m_c = t2* (3.f*m_power_rpm - 4.f*m_torque_rpm)/t1/2.f;
-	t2/=m_power_rpm;
-	m_a = -t2/t1/2.f;
-	m_b = t2*m_torque_rpm/t1;
+	//float t1=(m_power_rpm-m_torque_rpm);
+	//float t2=m_max_power/m_power_rpm;
+	//m_c = t2* (3.f*m_power_rpm - 4.f*m_torque_rpm)/t1/2.f;
+	//t2/=m_power_rpm;
+	//m_a = -t2/t1/2.f;
+	//m_b = t2*m_torque_rpm/t1;
+
 
 	//m_c = m_max_power* (3.f*m_power_rpm - 4.f*m_torque_rpm)/(m_power_rpm-m_torque_rpm)/2.f/m_power_rpm;
 	//m_a = -m_max_power/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm/2.f;
 	//m_b = m_max_power*m_torque_rpm/(m_power_rpm-m_torque_rpm)/m_power_rpm/m_power_rpm;
+
+
+
+
+	m_a=(m_max_power*(-4*powf(m_power_rpm,2) + 6*powf(m_torque_rpm,2)))/
+		(3.f*powf(m_power_rpm,4)*(powf(m_power_rpm,5) - 5*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 4*powf(m_torque_rpm,5)));
+	m_b=(m_max_power*(7*powf(m_power_rpm,5) - 12*powf(m_torque_rpm,5)))/
+		(3.f*powf(m_power_rpm,4)*(powf(m_power_rpm,5) - 5*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 4*powf(m_torque_rpm,5)));
+	m_c=(m_max_power*(-7*powf(m_power_rpm,3)*powf(m_torque_rpm,2) + 8*powf(m_torque_rpm,5)))/
+		(powf(m_power_rpm,7) - 5*powf(m_power_rpm,5)*powf(m_torque_rpm,2) + 4*powf(m_power_rpm,2)*powf(m_torque_rpm,5));
+
 
 }
 void CCar::PhTune(dReal step)
@@ -881,7 +894,8 @@ return false;
 
 float CCar::Parabola(float rpm)
 {
-	float value=(m_a*rpm*rpm+m_b*rpm+m_c)*rpm;
+	float rpm_2=rpm*rpm;
+	float value=(m_a*rpm_2*rpm_2*rpm+m_b*rpm_2+m_c)*rpm_2;
 	if(value<0.f) return 0.f;
 	return value;
 }
