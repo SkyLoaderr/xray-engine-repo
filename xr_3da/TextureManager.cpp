@@ -806,16 +806,24 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 	DeferredUpload	();
 }
 
-u32	CShaderManager::_GetMemoryUsage()
+void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
 {
-	u32 mem = 0;
+	m_base=c_base=m_lmaps=c_lmaps=0;
+
 	map<LPSTR,CTexture*,str_pred>::iterator I = m_textures.begin	();
 	map<LPSTR,CTexture*,str_pred>::iterator E = m_textures.end		();
 	for (; I!=E; I++)
 	{
-		mem += I->second->dwMemoryUsage;
+		u32 m = I->second->dwMemoryUsage;
+		if (strstr(I->first,"lmap"))
+		{
+			c_lmaps	++;
+			m_lmaps	+= m;
+		} else {
+			c_base	++;
+			m_base	+= m;
+		}
 	}
-	return mem;
 }
 
 void	CShaderManager::Evict()

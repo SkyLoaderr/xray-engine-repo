@@ -64,7 +64,7 @@ public:
 	void							_ParseList			(sh_list& dest, LPCSTR names);
 	CBlender*						_GetBlender			(LPCSTR Name);
 	CBlender* 						_FindBlender		(LPCSTR Name);
-	u32								_GetMemoryUsage		();
+	void							_GetMemoryUsage		(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps);
 	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
 
     map_Blender&					_GetBlenders		()		{	return m_blenders;	}
