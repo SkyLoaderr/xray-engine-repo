@@ -21,13 +21,11 @@ function main ()
     local stalker1 = get_level_object ("stalker1")
     local stalker2 = get_level_object ("stalker2")
     local stalker3 = get_level_object ("stalker3")
+	local artefact = get_level_object ("artefact")
     local weapon = get_level_object ("ak74")
     local torch = get_level_object ("torch")
     local testway = patrol ("way_test")
 	local baseway = patrol ("way_base")
-
-    --local artefact = get_level_object ("artefact")
-    --if artefact ~= nil then printf ("Getting artefact") end
 
     local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")
     local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
