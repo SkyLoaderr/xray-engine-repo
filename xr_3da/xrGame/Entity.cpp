@@ -218,7 +218,11 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
 
 	// Initialize variables
-	fEntityHealth			= 100;
+	if(E)
+		fEntityHealth			= E->fHealth;
+	else
+		fEntityHealth			= 100.f;
+
 	fArmor					= 0;
 
 	G.Member_Add			(this);
