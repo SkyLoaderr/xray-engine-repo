@@ -1,0 +1,12 @@
+class 'Guardian'
+
+function Guardian:__init (npc_object, script_name)
+    self.npc = npc_object
+    self.script_name = script_name
+end
+
+function Guardian:start ()
+    self.npc:script (true, self.script_name)
+end
+
+    
