@@ -19,7 +19,8 @@
 #define ATTACK_DISTANCE						.5f
 #define ATTACK_ANGLE					PI_DIV_6
 #define LOST_MEMORY_TIME				30000
-#define UNDER_FIRE_TIME					20000
+#define UNDER_FIRE_TIME					10000
+#define UNDER_FIRE_DISTACNE				12000
 
 void CAI_Rat::Die()
 {
@@ -216,7 +217,7 @@ void CAI_Rat::FreeHunting()
 		Fvector tTemp;
 		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 		tTemp.normalize_safe();
-		tTemp.mul(50.f);
+		tTemp.mul(UNDER_FIRE_DISTACNE);
 		m_tSpawnPosition.add(vPosition,tTemp);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
@@ -285,16 +286,21 @@ void CAI_Rat::UnderFire()
 		Fvector tTemp;
 		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 		tTemp.normalize_safe();
-		tTemp.mul(50.f);
+		tTemp.mul(UNDER_FIRE_DISTACNE);
 		m_tSpawnPosition.add(vPosition,tTemp);
 		m_fGoalChangeTime = 0;
 	}
 
-	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME);
+	if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {
+		m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
+		GO_TO_PREV_STATE;
+	}
 
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_fASpeed				= .2f;
+	
+	bfCheckIfGoalChanged();
 	
 	m_fSpeed = m_fMaxSpeed;
 	
