@@ -610,6 +610,9 @@ void	CRender::Render		()
 			L_Shadows.render		();
 		}
 	}
+
+	// LODs
+	flush_LODs				();
 	
 	// Sorted (back to front)
 	mapSorted.traverseRL	(sorted_L1);

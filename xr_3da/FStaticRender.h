@@ -39,6 +39,7 @@ public:
 	SceneGraph::vecPatches_T						vecPatches;
 
 	vector<FCached*>								vecCached;
+	vector<int>										vecGroups;
 	vector<SceneGraph::mapNormalCodes::TNode*>		lstCodes;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
