@@ -80,7 +80,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	if (g_Alive())
 		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
 
-			int i1,i2,i3;
+			int i1, i2, i3;
 			MotionToAnim(m_tAnim,i1,i2,i3);
 			if (i3 == -1) {
 				i3 = ::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size());
@@ -123,5 +123,6 @@ void CAI_Biting::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int 
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
 		case eMotionAttackJump:		index1 = 0; index2 = 19; index3 = -1;	break;
+		default:					NODEFAULT;
 	}
 }

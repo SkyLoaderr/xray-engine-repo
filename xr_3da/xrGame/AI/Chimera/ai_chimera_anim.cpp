@@ -79,7 +79,7 @@ void CAI_Chimera::SelectAnimation(const Fvector &_view, const Fvector &_move, fl
 	if (g_Alive())
 		if (!m_tpCurrentGlobalAnimation) {
 
-			int i1,i2,i3;
+			int i1, i2, i3;
 			MotionToAnim(m_tAnim,i1,i2,i3);
 			if (i3 == -1) {
 				i3 = ::Random.randI((int)m_tAnimations.A[i1].A[i2].A.size());
@@ -119,5 +119,6 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
+		default:					NODEFAULT;
 	} 
 }
