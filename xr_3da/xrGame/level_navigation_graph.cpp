@@ -490,11 +490,11 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 {
 	VERIFY					(!v->m_mark);
 
-	if (v->m_all_computed_dirs) {
-		right				= v->m_computed_right;
-		down				= v->m_computed_down;
-		return;
-	}
+//	if (v->m_all_computed_dirs) {
+//		right				= v->m_computed_right;
+//		down				= v->m_computed_down;
+//		return;
+//	}
 
 	if (v->m_right >= v->m_down) {
 		right				= v->m_right;
@@ -562,10 +562,14 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 		if (u32((*I)->m_right)*u32((*I)->m_down) <= max_square)
 			return			(true);
 
+		bool				can_continue = !(*I)->m_all_computed_dirs;
 		select_sector		(*I,current_right,current_down,max_square);
 
 		if (current_right*current_down <= max_square)
-			continue;
+			if (can_continue)
+				continue;
+			else
+				return		(!!max_square);
 
 		right				= current_right;
 		down				= current_down;
