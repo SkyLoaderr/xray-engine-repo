@@ -108,7 +108,7 @@ void CBuild::SaveTREE	(IWriter &fs)
 	mem_Compact			();
 
 	SaveGEOMs			("level.geom",	g_VB,g_IB,g_SWI);	// Normal
-	SaveGEOMs			("level.geomx",	x_VB,x_IB,x_SWI);	// Normal
+	SaveGEOMs			("level.geomx",	x_VB,x_IB,x_SWI);	// Fast-Path
 
 	Status				("Shader table...");
 	fs.open_chunk		(fsL_SHADERS);
