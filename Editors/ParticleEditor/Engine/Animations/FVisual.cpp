@@ -40,28 +40,27 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 	if ((dwFlags&VLOAD_NOVERTICES)==0) {
 		if (data->FindChunk(OGF_VCONTAINER)) {
 #ifndef _EDITOR
-			DWORD ID			= data->Rdword			();
-			vBase				= data->Rdword			();
-			vCount				= data->Rdword			();
-			vShader				= ::Render->getFVF		(ID);
-			vSize				= D3DXGetFVFVertexSize	(vShader);
-			pVertices			= ::Render->getVB		(ID);
+			DWORD ID			= data->Rdword				();
+			vBase				= data->Rdword				();
+			vCount				= data->Rdword				();
+			hVS					= Device.Shader._CreateVS	(::Render->getFVF(ID));
+			pVertices			= ::Render->getVB			(ID);
 			pVertices->AddRef	();
 #endif
 		} else {
 			R_ASSERT			(data->FindChunk(OGF_VERTICES));
 			vBase				= 0;
-			vShader				= data->Rdword			();
+			DWORD F				= data->Rdword			();
 			vCount				= data->Rdword			();
-			vSize				= D3DXGetFVFVertexSize	(vShader);
+			hVS					= Device.Shader._CreateVS	(F);
 
 			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 			DWORD	dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 			D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 			BYTE*	bytes		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vShader,dwPool,&pVertices));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*hVS->dwStride,dwUsage,0,dwPool,&pVertices));
 			R_CHK				(pVertices->Lock(0,0,&bytes,0));
-			PSGP.memCopy		(bytes, data->Pointer(), vCount*vSize);
+			PSGP.memCopy		(bytes, data->Pointer(), vCount*hVS->dwStride);
 			pVertices->Unlock	();
 		}
 	}
@@ -99,7 +98,7 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 
 void Fvisual::Render	(float LOD)
 {
-	Device.Primitive.setVertices	(vShader,vSize,pVertices);
+	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,pVertices);
 	Device.Primitive.setIndices		(vBase,	pIndices);
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,iBase,dwPrimitives);
 }
@@ -114,8 +113,6 @@ void	Fvisual::Copy			(CVisual *pSrc)
 	PCOPY(pVertices);
 	PCOPY(vBase);
 	PCOPY(vCount);
-	PCOPY(vShader);
-	PCOPY(vSize);
 
 	PCOPY(pIndices);
 	PCOPY(iBase);

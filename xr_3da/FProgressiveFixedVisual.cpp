@@ -120,7 +120,7 @@ void FProgressiveFixedVisual::Render(float LOD)
 		SetLOD(LOD);
 	}
 	if (V_Current && I_Current) {
-		Device.Primitive.setVertices	(vShader,vSize,pVertices);
+		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,pVertices);
 		Device.Primitive.setIndices		(vBase,	pIndices);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,V_Current,iBase,I_Current/3);
 	}

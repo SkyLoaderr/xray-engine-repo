@@ -14,8 +14,6 @@ protected:
 	IDirect3DVertexBuffer8*		pVertices;
 	DWORD						vBase;
 	DWORD						vCount;
-	DWORD						vShader;
-	DWORD						vSize;
 
 	IDirect3DIndexBuffer8*		pIndices;
 	DWORD						iBase;
