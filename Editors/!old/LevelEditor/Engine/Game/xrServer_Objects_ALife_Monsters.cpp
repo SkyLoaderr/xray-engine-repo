@@ -226,11 +226,11 @@ PROFILE_INDEX CSE_ALifeTraderAbstract::character_profile()
 {
 	if(m_character_profile_init) return	m_iCharacterProfile;
 
-	LPCSTR profile_id = CCharacterInfo::IndexToId(m_iCharacterProfile, NULL, true);
-	if(!profile_id)
+	shared_str profile_id = CCharacterInfo::IndexToId(m_iCharacterProfile, NULL, true);
+	if(!*profile_id)
 	{
 		CSE_ALifeObject* O = smart_cast<CSE_ALifeObject*>(base()); VERIFY(O);
-		Debug.fatal("wrong profile id %s, for %s at level %s", profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
+		Debug.fatal("wrong profile id %s, for %s at level %s", *profile_id, O->name_replace(),ai().game_graph().header().level(ai().game_graph().vertex(O->m_tGraphID)->level_id()).name());
 	}
 
 	m_character_profile_init = true;
