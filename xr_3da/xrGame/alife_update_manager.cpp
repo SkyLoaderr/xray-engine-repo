@@ -108,27 +108,27 @@ void CALifeUpdateManager::init_ef_storage() const
 bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 {
 	if (m_changing_level)
-		return					(false);
+		return						(false);
 
-	prepare_objects_for_save	();
+	prepare_objects_for_save		();
 
-	m_changing_level			= true;
+	m_changing_level				= true;
 	
 	GameGraph::_GRAPH_ID			safe_graph_vertex_id	= graph().actor()->m_tGraphID;
-	u32							safe_level_vertex_id	= graph().actor()->m_tNodeID;
-	Fvector						safe_position			= graph().actor()->o_Position;
-	Fvector						safe_angles				= graph().actor()->o_Angle;
+	u32								safe_level_vertex_id	= graph().actor()->m_tNodeID;
+	Fvector							safe_position			= graph().actor()->o_Position;
+	Fvector							safe_angles				= graph().actor()->o_Angle;
 	
 	GameGraph::_GRAPH_ID			holder_safe_graph_vertex_id = GameGraph::_GRAPH_ID(-1);
-	u32							holder_safe_level_vertex_id = u32(-1);
-	Fvector						holder_safe_position = Fvector().set(flt_max,flt_max,flt_max);
-	Fvector						holder_safe_angles = Fvector().set(flt_max,flt_max,flt_max);
-	CSE_ALifeObject				*holder = 0;
+	u32								holder_safe_level_vertex_id = u32(-1);
+	Fvector							holder_safe_position = Fvector().set(flt_max,flt_max,flt_max);
+	Fvector							holder_safe_angles = Fvector().set(flt_max,flt_max,flt_max);
+	CSE_ALifeObject					*holder = 0;
 
-	net_packet.r				(&graph().actor()->m_tGraphID,sizeof(graph().actor()->m_tGraphID));
-	net_packet.r				(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
-	net_packet.r_vec3			(graph().actor()->o_Position);
-	net_packet.r_vec3			(graph().actor()->o_Angle);
+	net_packet.r					(&graph().actor()->m_tGraphID,sizeof(graph().actor()->m_tGraphID));
+	net_packet.r					(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
+	net_packet.r_vec3				(graph().actor()->o_Position);
+	net_packet.r_vec3				(graph().actor()->o_Angle);
 
 	if (graph().actor()->m_holderID != 0xffff) {
 		holder						= objects().object(graph().actor()->m_holderID);
