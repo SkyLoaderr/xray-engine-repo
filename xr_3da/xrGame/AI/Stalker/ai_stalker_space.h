@@ -29,7 +29,7 @@
 //#define SILENCE
 
 #ifndef SILENCE
-	#define OUT_TEXT(S)						Msg(S);
+	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
 #else
 	#define OUT_TEXT(S)						;
 #endif

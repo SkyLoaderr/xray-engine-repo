@@ -13,7 +13,7 @@ static const float p_spin_factor		= 0.2f;
 static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
 
-#define OLD_ANIM_NAMES
+//#define OLD_ANIM_NAMES
 
 void __stdcall CActor::SpinCallback(CBoneInstance* B)
 {

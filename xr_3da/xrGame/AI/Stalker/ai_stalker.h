@@ -321,7 +321,9 @@ private:
 		tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 		if (tDirection.magnitude() < EPS_L)
 			return;
-		
+//		if (AI_Path.TravelPath.empty())
+//			return;
+//		tDirection.sub(vPosition,AI_Path.TravelPath[AI_Path.TravelStart].P);
 		tDirection.getHP		(yaw,pitch);
 	};
 	

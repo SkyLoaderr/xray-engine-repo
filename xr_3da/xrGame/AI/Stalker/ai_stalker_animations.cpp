@@ -87,9 +87,9 @@ LPCSTR caInPlaceNames		[] = {
 };
 
 LPCSTR caGlobalNames		[] = {
-//	"death_",
 	"damage_",
 	"escape_",
+	"dead_stop_",
 	0
 };
 
@@ -200,8 +200,12 @@ void __stdcall CAI_Stalker::SpinCallback(CBoneInstance *B)
 
 void CAI_Stalker::vfAssignGlobalAnimation(CMotionDef *&tpGlobalAnimation)
 {
-	if (g_Alive() && (m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
-		tpGlobalAnimation = m_tAnims.A[m_tBodyState].m_tGlobal.A[2].A[0];
+	if (g_Alive()) {
+		if ((m_tStateType == eStateTypePanic) && (AI_Path.fSpeed > EPS_L))
+			tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[1].A[0];
+	}
+	else
+		tpGlobalAnimation = m_tAnims.A[eBodyStateStand].m_tGlobal.A[2].A[0];
 }
 
 void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
@@ -398,13 +402,10 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	vfAssignGlobalAnimation	(tpGlobalAnimation);
 
 	if (tpGlobalAnimation) {
-		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation) {
-			Msg("Starting animation panic!");
+		m_tpCurrentTorsoAnimation	= 0;
+		m_tpCurrentLegsAnimation	= 0;
+		if (m_tpCurrentGlobalAnimation != tpGlobalAnimation)
 			m_tpCurrentGlobalBlend = tVisualObject.PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
-		}
-		else {
-			Msg("Playing animation panic!");
-		}
 	}
 	else
 		if (g_Alive()) {

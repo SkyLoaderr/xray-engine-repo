@@ -737,17 +737,18 @@ void CAI_Stalker::Think()
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	int						iIndex;
-	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
-	if (m_tSavedEnemy && !m_tSavedEnemy->g_Alive()) {
-		_K = false;
-		_C = false;
-		_E = false;
-		_D = false;
-		_F = false;
-		_G = false;
-		_H = false;
-		_I = false;
-	}
+//	if (m_tSavedEnemy && !m_tSavedEnemy->g_Alive()) {
+//		A = false;
+//		B = false;
+//		K = false;
+//		C = false;
+//		E = false;
+//		D = false;
+//		F = false;
+//		G = false;
+//		H = false;
+//		I = false;
+//	}
 	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && m_tSavedEnemy && m_tSavedEnemy->g_Alive() && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
 		K = true;
 		C = _C;
@@ -760,6 +761,7 @@ void CAI_Stalker::Think()
 		m_bStateChanged = false;
 		vfUpdateVisibilityBySensitivity();
 	}
+	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 
 	if (m_tEnemy.Enemy && (_K != K))
 		AI_Path.TravelPath.clear();
