@@ -1906,6 +1906,9 @@
 					RelativePath="SoundRender_Core_Processor.cpp">
 				</File>
 				<File
+					RelativePath="SoundRender_Core_SourceManager.cpp">
+				</File>
+				<File
 					RelativePath="SoundRender_Core_StartStop.cpp">
 				</File>
 				<Filter
