@@ -1,4 +1,3 @@
-local this = stalker
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
@@ -71,6 +70,7 @@ end
 
 function action_alive:execute()
 	action_base.execute					(self)
+	printf								("action %s is executed",self.name)
 	
 	self.object:play_sound				(2,60000,10000)
 
