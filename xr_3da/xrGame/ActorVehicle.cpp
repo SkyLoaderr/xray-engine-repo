@@ -23,9 +23,9 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	// temp play animation
 	V->PlayCycle(m_anims.m_steering_legs_idle);
 	V->PlayCycle(m_anims.m_steering_torso_idle);
-	int spine_bone		= V->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
-	int head_bone		= V->LL_BoneID("bip01_head");
+	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
+	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	u16 head_bone		= V->LL_BoneID("bip01_head");
 	V->LL_GetInstance(u16(spine_bone)).set_callback		(NULL,NULL);
 	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
 	V->LL_GetInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
@@ -50,9 +50,9 @@ void CActor::detach_Vehicle()
 	m_vehicle=NULL;
 	CKinematics* V		= PKinematics(Visual());
 	R_ASSERT			(V);
-	int spine_bone		= V->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
-	int head_bone		= V->LL_BoneID("bip01_head");
+	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
+	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	u16 head_bone		= V->LL_BoneID("bip01_head");
 	V->LL_GetInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
 	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
 	V->LL_GetInstance(u16(head_bone)).set_callback		(HeadCallback,this);

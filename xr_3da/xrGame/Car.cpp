@@ -227,6 +227,8 @@ void CCar::detach_Actor()
 	m_owner->setVisible(1);
 	m_owner=NULL;
 	NeutralDrive();
+	Unclutch();
+	ResetKeys();
 	///Break();
 }
 
@@ -995,6 +997,14 @@ float CCar::AddFuel(float ammount)
 		m_fuel=m_fuel_tank;
 		return free_space;
 	}
+}
+
+void CCar::ResetKeys()
+{
+	bkp=false;
+	fwp=false;
+	lsp=false;
+	rsp=false;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()

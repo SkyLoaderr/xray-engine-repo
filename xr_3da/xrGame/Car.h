@@ -291,6 +291,7 @@ private:
 	void NeutralDrive();
 	void UpdatePower();
 	void ReleasePedals();
+	void ResetKeys();
 
 	////////////////////////////////////////////////////////////////////////
 	float RefWheelMaxSpeed()
