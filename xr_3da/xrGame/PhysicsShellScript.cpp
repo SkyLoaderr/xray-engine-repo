@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "physicsshell.h"
 #include "script_space.h"
+#include <luabind/out_value_policy.hpp>
 
 using namespace luabind;
 
@@ -52,7 +53,7 @@ void CPhysicsJoint::script_register(lua_State *L)
 			.def("set_max_force_and_velocity",			&CPhysicsJoint::SetForceAndVelocity)
 			.def("get_max_force_and_velocity",			&CPhysicsJoint::GetMaxForceAndVelocity)
 			.def("get_axis_angle",						&CPhysicsJoint::GetAxisAngle)
-			.def("get_limits",							&CPhysicsJoint::GetLimits)
+			.def("get_limits",							&CPhysicsJoint::GetLimits,out_value(_2) + out_value(_3))
 			.def("get_axis_dir",						&CPhysicsJoint::GetAxisDirDynamic)
 			.def("get_anchor",							&CPhysicsJoint::GetAnchorDynamic)
 		];
