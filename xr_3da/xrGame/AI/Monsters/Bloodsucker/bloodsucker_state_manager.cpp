@@ -1,41 +1,63 @@
 #include "stdafx.h"
 #include "bloodsucker_state_manager.h"
 #include "bloodsucker.h"
-#include "../BaseMonster/base_monster_state.h"
+#include "../ai_monster_debug.h"
+#include "../states/monster_state_rest.h"
+#include "../states/monster_state_attack.h"
+#include "../states/monster_state_panic.h"
+#include "../states/monster_state_eat.h"
+#include "../states/monster_state_hear_int_sound.h"
+#include "../states/monster_state_hitted.h"
 
-CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : m_object(monster), inherited(monster)
+CStateManagerBloodsucker::CStateManagerBloodsucker(CAI_Bloodsucker *monster) : inherited(monster)
 {
-	add_state(eStateRest,					xr_new<CBaseMonsterRest>		(monster));
-	add_state(eStateEat,					xr_new<CBaseMonsterEat>			(monster));
-	add_state(eStateAttack,					xr_new<CBaseMonsterAttack>		(monster));
-	add_state(eStatePanic,					xr_new<CBaseMonsterPanic>		(monster));
-	add_state(eStateHearInterestingSound,	xr_new<CBaseMonsterExploreNDE>	(monster));
-	add_state(eStateHitted,					xr_new<CBaseMonsterRunAway>		(monster));
+	add_state(eStateRest,				xr_new<CStateMonsterRest<CAI_Bloodsucker> >					(monster));
+	add_state(eStatePanic,				xr_new<CStateMonsterPanic<CAI_Bloodsucker> >				(monster));
+	add_state(eStateAttack,				xr_new<CStateMonsterAttack<CAI_Bloodsucker> >				(monster));
+	add_state(eStateEat,				xr_new<CStateMonsterEat<CAI_Bloodsucker> >					(monster));
+	add_state(eStateInterestingSound,	xr_new<CStateMonsterHearInterestingSound<CAI_Bloodsucker> >	(monster));
+	add_state(eStateHitted,				xr_new<CStateMonsterHitted<CAI_Bloodsucker> >				(monster));
 }
 
-void CStateManagerBloodsucker::update()
+void CStateManagerBloodsucker::execute()
 {
-	EGlobalStates state = eStateUnknown;
+	u32 state_id = u32(-1);
 
-	TTime last_hit_time = 0;
-	if (m_object->HitMemory.is_hit()) last_hit_time = m_object->HitMemory.get_last_hit_time();
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	if (m_object->EnemyMan.get_enemy()) {
-		switch (m_object->EnemyMan.get_danger_type()) {
-			case eVeryStrong:				state = eStatePanic; break;
+	if (enemy) {
+		switch (object->EnemyMan.get_danger_type()) {
+			case eVeryStrong:	state_id = eStatePanic; break;
 			case eStrong:		
 			case eNormal:
-			case eWeak:						state = eStateAttack; break;
+			case eWeak:			state_id = eStateAttack; break;
 		}
-	} else if (m_object->HitMemory.is_hit() && (last_hit_time + 10000 > m_object->m_current_update)) state = eStateHitted;
-	else if (m_object->hear_dangerous_sound || m_object->hear_interesting_sound) {
-		state = eStateHearInterestingSound;	
-	} else if (m_object->can_eat_now())	state = eStateEat;	
-	else								state = eStateRest;
 
-	set_state(state);
+	} else if (object->HitMemory.is_hit()) {
+		state_id = eStateHitted;
+	} else if (object->hear_dangerous_sound || object->hear_interesting_sound) {
+		state_id = eStateInterestingSound;
+	} else {
+		bool can_eat = false;
+		if (corpse) {
+			if (prev_substate == eStateEat) {
+				if (!get_state_current()->check_completion())				can_eat = true;
+			} else {
+				if (object->GetSatiety() < object->get_sd()->m_fMinSatiety) can_eat = true;
+			}
+		}
 
-	execute();
+		if (can_eat)	state_id = eStateEat;
+		else			state_id = eStateRest;
+	}
 
-	m_object->CEnergyHolder::set_aggressive(get_state(state)->GetStateAggressiveness());
+	select_state(state_id); 
+
+	// выполнить текущее состояние
+	get_state_current()->execute();
+
+	prev_substate = current_substate;
+
+	//object->CEnergyHolder::set_aggressive(get_state(state)->GetStateAggressiveness());
 }

@@ -193,7 +193,7 @@ BOOL CBaseMonster::net_Spawn (LPVOID DC)
 	
 	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
 
-	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
+	//HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect	("monster", "controller\\controller_blood_01");
 
 	return(TRUE);
 }

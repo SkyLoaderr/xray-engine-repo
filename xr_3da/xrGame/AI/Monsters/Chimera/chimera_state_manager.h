@@ -17,7 +17,6 @@ class CStateManagerChimera : public CStateManagerSecond<CChimera> {
 		eStateInterestingSound,
 		eStateFindEnemy,
 		eStateHitted,
-		eStateHitObject,
 	};
 
 public:

@@ -1,13 +1,21 @@
 #pragma once
-#include "../state_manager_first.h"
+#include "../state_manager_second.h"
 
 class CPseudoGigant;
 
-class CStateManagerGigant : public CStateManagerFirst {
-	typedef CStateManagerFirst inherited;
-	CPseudoGigant *m_object;
+class CStateManagerGigant : public CStateManagerSecond<CPseudoGigant> {
+	typedef CStateManagerSecond<CPseudoGigant> inherited;
+	enum {
+		eStateRest					 = u32(0),
+		eStateEat,
+		eStateAttack,
+		eStateThreaten,
+		eStateInterestingSound,
+		eStateDangerousSound,
+		eStateHitted,
+	};
 public:
 
 					CStateManagerGigant	(CPseudoGigant *monster); 
-	virtual void	update				();
+	virtual void	execute				();
 };

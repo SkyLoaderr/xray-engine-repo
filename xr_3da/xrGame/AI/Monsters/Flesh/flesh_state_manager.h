@@ -1,13 +1,23 @@
 #pragma once
-#include "../state_manager_first.h"
+#include "../state_manager_second.h"
 
 class CAI_Flesh;
 
-class CStateManagerFlesh : public CStateManagerFirst {
-	typedef CStateManagerFirst inherited;
-	CAI_Flesh *m_object;
+class CStateManagerFlesh : public CStateManagerSecond<CAI_Flesh> {
+	typedef CStateManagerSecond<CAI_Flesh> inherited;
+
+	enum {
+		eStateRest					 = u32(0),
+		eStateEat,
+		eStateAttack,
+		eStateThreaten,
+		eStateInterestingSound,
+		eStateDangerousSound,
+		eStateHitted,
+	};
+
 public:
 
 					CStateManagerFlesh	(CAI_Flesh *monster); 
-	virtual void	update				();
+	virtual void	execute				();
 };
