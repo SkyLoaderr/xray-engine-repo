@@ -57,12 +57,12 @@ end
 
 function action_no_weapon:zone_enter()
 	self.state = state_inside
-	actor:hide_weapon()
+	db.actor:hide_weapon()
 end
 
 function action_no_weapon:zone_leave()
 	self.state = state_outside
-	actor:restore_weapon()
+	db.actor:restore_weapon()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
