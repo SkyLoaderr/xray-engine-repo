@@ -23,8 +23,6 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 {
 	eCurrentAlignment			= alLeft;
 	uFlags						= flags;
-	pShader						= 0;
-	pGeom						= 0;
 	vInterval.set				(1.f,1.f);
 
 	for (int i=0; i<256; i++)	CharMap[i] = i;
@@ -65,8 +63,8 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 	CInifile::Destroy			(ini);
 
 	// Shading
-	pShader						= Device.Shader.Create		(cShader,cTexture);
-	pGeom						= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	pShader.create				(cShader,cTexture);
+	pGeom.create				(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 CGameFont::~CGameFont()
@@ -78,7 +76,7 @@ CGameFont::~CGameFont()
 
 void CGameFont::OnRender()
 {
-	if (pShader()) RCache.set_Shader	(pShader);
+	if (pShader)		RCache.set_Shader	(pShader);
 
 	if (!(uFlags&fsValid))
 	{
