@@ -695,11 +695,6 @@
 						Filter="">
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera.h">
@@ -711,11 +706,6 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_anim.h">
@@ -727,43 +717,18 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_feel.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_fire.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_fsm.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_misc.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_path.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_space.h">
@@ -775,11 +740,6 @@
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_state.cpp">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Chimera\ai_chimera_state.h">
@@ -2347,6 +2307,9 @@
 		</Filter>
 		<File
 			RelativePath="Error.txt">
+		</File>
+		<File
+			RelativePath=".\future.txt">
 		</File>
 		<File
 			RelativePath=".\notes.txt">
