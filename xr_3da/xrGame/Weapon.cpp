@@ -362,7 +362,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 {
 	net_update				N;
 
-	P.r_u32					(N.timestamp);
+	P.r_u32					(N.dwTimeStamp);
 	P.r_u8					(N.flags);
 
 	P.r_u16					(N.ammo_current);
