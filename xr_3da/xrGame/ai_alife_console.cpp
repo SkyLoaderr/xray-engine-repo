@@ -87,19 +87,19 @@ void CAI_ALife::vfListTasks()
 
 void CAI_ALife::vfListLocations()
 {
-	OBJECT_VECTOR_IT	it = m_tpLocationOwners.begin();
-	OBJECT_VECTOR_IT	E  = m_tpLocationOwners.end();
+	ALIFE_MONSTER_P_VECTOR_IT	it = m_tpLocationOwners.begin();
+	ALIFE_MONSTER_P_VECTOR_IT	E  = m_tpLocationOwners.end();
 	Msg("%s->Listing location owners :",cName());
 	string4096			S;
 	for (int i=0; it != E; it++, i++) {
-		OBJECT_IT   it1 = (*it).begin();
-		OBJECT_IT   E1  = (*it).end();
+		ALIFE_MONSTER_P_IT   it1 = (*it).begin();
+		ALIFE_MONSTER_P_IT   E1  = (*it).end();
 		S[0] = 0;
 		string16		S1;
 		for (int j=0; it1 != E1; it1++, j++) {
 			if (j)
 				strcat(S,",");
-			strcat(S,itoa(*it1,S1,10));
+			strcat(S,itoa((*it1)->m_tObjectID,S1,10));
 		}
 
 		if (j)

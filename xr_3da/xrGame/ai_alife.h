@@ -14,6 +14,14 @@
 
 #define ALIFE_SUPPORT_CONSOLE_COMMANDS
 
+class CCompareTraderRanksPredicate {
+public:
+	bool operator()(const CALifeHuman *tpALifeHuman1, const CALifeHuman *tpALifeHuman2) const
+	{
+		return(tpALifeHuman1->m_tHumanParams.m_tRank < tpALifeHuman2->m_tHumanParams.m_tRank);
+	};
+};
+
 class CAI_ALife : public CSheduled {
 public:
 	typedef CSheduled inherited;
@@ -35,7 +43,7 @@ public:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
-	OBJECT_VECTOR_VECTOR			m_tpLocationOwners;		// массив списков : по точке графа 
+	ALIFE_MONSTER_P_VECTOR_VECTOR	m_tpLocationOwners;		// массив списков : по точке графа 
 															//  получить список её владельцев
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 															//  динамические объекты
@@ -48,51 +56,75 @@ public:
 	CALifeTaskRegistry				m_tTaskRegistry;		// карта заданий
 
 	// objects
-	IC void vfRemoveObjectFromGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphID)
+	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
 	{
-		for (int i=0; i<(int)m_tpGraphObjects[tGraphID].tpObjectIDs.size(); i++)
-			if (m_tpGraphObjects[tGraphID].tpObjectIDs[i] == tObjectID) {
-				m_tpGraphObjects[tGraphID].tpObjectIDs.erase(m_tpGraphObjects[tGraphID].tpObjectIDs.begin() + i);
+		DYNAMIC_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+		DYNAMIC_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
+		for ( ; I != E; I++)
+			if ((*I) == tpALifeDynamicObject) {
+				m_tpGraphObjects[tGraphID].tpObjects.erase(I);
 				break;
 			}
 	}
 	
-	IC void vfAddObjectToGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddObjectToGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID)
 	{
-		m_tpGraphObjects[tNextGraphPointID].tpObjectIDs.push_back(tObjectID);
+		m_tpGraphObjects[tNextGraphPointID].tpObjects.push_back(tpALifeDynamicObject);
 	}
 
-	IC void vfChangeObjectGraphPoint(_OBJECT_ID tObjectID, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeObjectGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
-		vfRemoveObjectFromGraphPoint	(tObjectID,tGraphPointID);
-		vfAddObjectToGraphPoint		(tObjectID,tNextGraphPointID);
+		vfRemoveObjectFromGraphPoint	(tpALifeDynamicObject,tGraphPointID);
+		vfAddObjectToGraphPoint			(tpALifeDynamicObject,tNextGraphPointID);
 	}
 
 	// events
-	IC void vfRemoveEventFromGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tGraphID)
+	IC void vfRemoveEventFromGraphPoint(SEvent *tpEvent, _GRAPH_ID tGraphID)
 	{
-		for (int i=0; i<(int)m_tpGraphObjects[tGraphID].tpEventIDs.size(); i++)
-			if (m_tpGraphObjects[tGraphID].tpEventIDs[i] == tEventID) {
-				m_tpGraphObjects[tGraphID].tpEventIDs.erase(m_tpGraphObjects[tGraphID].tpEventIDs.begin() + i);
+		EVENT_P_IT						I = m_tpGraphObjects[tGraphID].tpEvents.begin();
+		EVENT_P_IT						E = m_tpGraphObjects[tGraphID].tpEvents.end();
+		for ( ; I != E; I++)
+			if ((*I) == tpEvent) {
+				m_tpGraphObjects[tGraphID].tpEvents.erase(I);
 				break;
 			}
 	}
 	
-	IC void vfAddEventToGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tNextGraphPointID)
+	IC void vfAddEventToGraphPoint(SEvent *tpEvent, _GRAPH_ID tNextGraphPointID)
 	{
-		m_tpGraphObjects[tNextGraphPointID].tpEventIDs.push_back(tEventID);
+		m_tpGraphObjects[tNextGraphPointID].tpEvents.push_back(tpEvent);
 	}
 
-	IC void vfChangeEventGraphPoint(_EVENT_ID tEventID, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
+	IC void vfChangeEventGraphPoint(SEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 	{
-		vfRemoveEventFromGraphPoint	(tEventID,tGraphPointID);
-		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
+		vfRemoveEventFromGraphPoint	(tpEvent,tGraphPointID);
+		vfAddEventToGraphPoint		(tpEvent,tNextGraphPointID);
 	}
 
-	IC void vfCreateNewDynamicObject(SPAWN_IT I, bool bTemp = false)
+	IC void vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
+	{
+		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		if (tpALifeMonsterAbstract) {
+			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
+			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjects.push_back(tpALifeDynamicObject);
+			CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeDynamicObject);
+			if (tpALifeHuman) {
+				if (tpALifeHuman->m_bIsTrader) {
+					m_tpTraders.push_back(tpALifeHuman);
+					sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
+				}
+			}
+			GRAPH_IT			I = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints.begin(); 
+			GRAPH_IT			E = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID].tpRouteGraphPoints.end(); 
+			for ( ; I != E; I++)
+				m_tpLocationOwners[*I].push_back(tpALifeMonsterAbstract);
+		}
+	}
+	
+	IC void vfCreateNewDynamicObject(SPAWN_IT I)
 	{
 		CALifeDynamicObject	*tpALifeDynamicObject;
-		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled"))
+		if (pSettings->LineExists((*I).caModel, "scheduled") && pSettings->ReadBOOL((*I).caModel, "scheduled")) {
 			if (pSettings->LineExists((*I).caModel, "human") && pSettings->ReadBOOL((*I).caModel, "human"))
 				if (((*I).wCount > 1) && pSettings->LineExists((*I).caModel, "single") && pSettings->ReadBOOL((*I).caModel, "single"))
 					tpALifeDynamicObject	= new CALifeHumanGroup;
@@ -103,13 +135,13 @@ public:
 					tpALifeDynamicObject	= new CALifeMonsterGroup;
 				else
 					tpALifeDynamicObject	= new CALifeMonster;
+		}
 		else
-			tpALifeDynamicObject		= new CALifeItem;
+			tpALifeDynamicObject			= new CALifeItem;
 
-		tpALifeDynamicObject->Init(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
-		m_tObjectRegistry.Add(tpALifeDynamicObject);
-		if (bTemp)
-			m_tpGraphObjects[tpALifeDynamicObject->m_tGraphID].tpObjectIDs.push_back(tpALifeDynamicObject->m_tObjectID);
+		tpALifeDynamicObject->Init			(_SPAWN_ID(I - m_tpSpawnPoints.begin()),m_tpSpawnPoints);
+		m_tObjectRegistry.Add				(tpALifeDynamicObject);
+		vfUpdateDynamicData					(tpALifeDynamicObject);
 	};
 
 	IC void vfCreateNewTask(CALifeHuman *tpTrader)
@@ -147,9 +179,6 @@ public:
 	void							vfChooseNextRoutePoint	(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfProcessNPC			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfInitTerrain			();
-	void							vfInitLocationOwners	();
-	void							vfInitGraph				();
-	void							vfInitScheduledObjects	();
 	void							vfLoadSpawnPoints		(CStream *tpStream);
 	// temporary
 	void							vfGenerateSpawnPoints	(const u32 dwTotalCount, FLOAT_VECTOR &fpFactors);
@@ -177,18 +206,4 @@ public:
 			void					vfTaskInfo				(_TASK_ID &tTaskID);
 			void					vfSpawnPointInfo		(_SPAWN_ID &tSpawnID);
 #endif
-};
-  		
-class CCompareTraderRanksPredicate {
-	CAI_ALife	*m_tpALife;
-public:
-	CCompareTraderRanksPredicate	(CAI_ALife &tALife)
-	{
-		m_tpALife = &tALife;
-	};
-
-	bool operator()(const CALifeHuman *tpALifeHuman1, const CALifeHuman *tpALifeHuman2) const
-	{
-		return(tpALifeHuman1->m_tHumanParams.m_tRank < tpALifeHuman2->m_tHumanParams.m_tRank);
-	};
 };

@@ -15,7 +15,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 		u32 dwCurTime = Level().timeServer();
 		tpALifeMonsterAbstract->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonsterAbstract->m_tTimeID)/1000.f * tpALifeMonsterAbstract->m_fCurSpeed;
 		if (tpALifeMonsterAbstract->m_fDistanceToPoint - tpALifeMonsterAbstract->m_fDistanceFromPoint < EPS_L) {
-			vfChangeObjectGraphPoint(tpALifeMonsterAbstract->m_tObjectID,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
+			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
 			tpALifeMonsterAbstract->m_tGraphID			= tpALifeMonsterAbstract->m_tNextGraphID;
@@ -123,11 +123,11 @@ void CAI_ALife::vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALif
 {
 	tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
 	tpALifeItem->m_bAttached = true;
-	OBJECT_IT	I = m_tpGraphObjects[tGraphID].tpObjectIDs.begin();
-	OBJECT_IT	E  = m_tpGraphObjects[tGraphID].tpObjectIDs.end();
+	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+	DYNAMIC_OBJECT_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	for ( ; I != E; I++)
-		if (*I == tpALifeItem->m_tObjectID) {
-			m_tpGraphObjects[tGraphID].tpObjectIDs.erase(I);
+		if (*I == tpALifeItem) {
+			m_tpGraphObjects[tGraphID].tpObjects.erase(I);
 			break;
 		}
 	tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
@@ -136,16 +136,16 @@ void CAI_ALife::vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALif
 void CAI_ALife::vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 {
 	tpALifeItem->m_bAttached = true;
-	m_tpGraphObjects[tGraphID].tpObjectIDs.push_back(tpALifeItem->m_tObjectID);
+	m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
 	tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 }
 
 void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraphID, float fMaxItemMass)
 {
-	OBJECT_IT	I = m_tpGraphObjects[tGraphID].tpObjectIDs.begin();
-	OBJECT_IT	E  = m_tpGraphObjects[tGraphID].tpObjectIDs.end();
+	DYNAMIC_OBJECT_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+	DYNAMIC_OBJECT_P_IT		E  = m_tpGraphObjects[tGraphID].tpObjects.end();
 	for ( ; I != E; I++) {
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find(*I);
+		OBJECT_PAIR_IT	i = m_tObjectRegistry.m_tppMap.find((*I)->m_tObjectID);
 		VERIFY(i != m_tObjectRegistry.m_tppMap.end());
 		CALifeDynamicObject *tpALifeDynamicObject = (*i).second;
 		VERIFY(tpALifeDynamicObject);
@@ -234,7 +234,7 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if (!tpTrader->m_tpTaskIDs.size()) {
-		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2),true);
+		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + ::Random.randI(m_tpSpawnPoints.size() - 2));
 		vfCreateNewTask				(m_tpTraders[0]);
 	}
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -102,55 +102,6 @@ void CAI_ALife::vfInitTerrain()
 		m_tpTerrain[Level().AI.m_tpaGraph[i].ucVertexType].push_back(i);
 }
 
-void CAI_ALife::vfInitLocationOwners()
-{
-	m_tpLocationOwners.resize(Level().AI.GraphHeader().dwVertexCount);
-	OBJECT_PAIR_IT   I = m_tObjectRegistry.m_tppMap.begin();
-	OBJECT_PAIR_IT   E  = m_tObjectRegistry.m_tppMap.end();
-	for ( ; I != E; I++) {
-		_SPAWN_ID	tSpawnID	= (*I).second->m_tSpawnID;
-		_OBJECT_ID	tObjectID	= (*I).second->m_tObjectID;
-		for (int j=0, iCount = (int)m_tpSpawnPoints[tSpawnID].ucRoutePointCount; j<iCount; j++)
-			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].tpRouteGraphPoints[j]].push_back(tObjectID);
-	}
-}
-
-void CAI_ALife::vfInitGraph()
-{
-	m_tpGraphObjects.resize(Level().AI.GraphHeader().dwVertexCount);
-	{
-		OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
-		OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
-		for ( ; I != E; I++)
-			m_tpGraphObjects[(*I).second->m_tGraphID].tpObjectIDs.push_back((*I).second->m_tObjectID);
-	}
-	{
-		EVENT_PAIR_IT	I = m_tEventRegistry.m_tpMap.begin();
-		EVENT_PAIR_IT	E = m_tEventRegistry.m_tpMap.end();
-		for ( ; I != E; I++)
-			m_tpGraphObjects[(*I).second.tGraphID].tpEventIDs.push_back((*I).second.tEventID);
-	}
-}
-
-void CAI_ALife::vfInitScheduledObjects()
-{
-	m_tpScheduledObjects.clear();
-	OBJECT_PAIR_IT	I = m_tObjectRegistry.m_tppMap.begin();
-	OBJECT_PAIR_IT	E = m_tObjectRegistry.m_tppMap.end();
-	for ( ; I != E; I++) {
-		CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
-		if (tpALifeMonsterAbstract)
-			m_tpScheduledObjects.push_back(tpALifeMonsterAbstract);
-	}
-	I = m_tObjectRegistry.m_tppMap.begin();
-	for ( ; I != E; I++) {
-		CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*I).second);
-		if (tpALifeHuman && (tpALifeHuman->m_bIsTrader))
-			m_tpTraders.push_back(tpALifeHuman);
-	}
-	sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate(*this));
-}
-
 // temporary
 IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
 {
@@ -373,7 +324,7 @@ void CAI_ALife::Load()
 {
 	shedule_Min					=     1;
 	shedule_Max					=    20;
-	m_dwObjectsBeingProcessed		=     0;
+	m_dwObjectsBeingProcessed	=     0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
 	
 	m_tALifeHeader.dwVersion	=	ALIFE_VERSION;
@@ -382,6 +333,9 @@ void CAI_ALife::Load()
 	// checking if graph is loaded
 	if (!Level().AI.m_tpaGraph)
 		return;
+
+	// initializing terrain
+	vfInitTerrain();
 
 	// loading spawn-points
 	CStream		*tpStream;
@@ -432,11 +386,6 @@ void CAI_ALife::Load()
 	m_tTaskRegistry.Load(*tpStream);
 	
 	Engine.FS.Close(tpStream);
-
-	vfInitTerrain();
-	vfInitLocationOwners();
-	vfInitGraph();
-	vfInitScheduledObjects();
 
 	m_bLoaded = true;
 }
