@@ -138,9 +138,6 @@
 			Name="Core"
 			Filter="">
 			<File
-				RelativePath=".\FastDelegate.h">
-			</File>
-			<File
 				RelativePath=".\import_export.h">
 			</File>
 			<File

@@ -13,9 +13,8 @@
 #include "import_export.h"
 
 extern "C" {
-	DLL_API CSE_Abstract *	__cdecl create_object(const CLASS_ID &clsid, LPCSTR section);
-	DLL_API LPCSTR			__cdecl get_string();
-	DLL_API CTestInterface*	__cdecl get_object(int index);
+	DLL_API CSE_Abstract	*create_object	(const CLASS_ID &clsid, LPCSTR section);
+	DLL_API void			destroy_object	(CSE_Abstract *&abstract);
 };
 
 #endif // XRSE_FACTORY_H
