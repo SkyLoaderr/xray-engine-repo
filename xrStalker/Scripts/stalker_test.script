@@ -8,6 +8,15 @@ end
 
 
 function main ()
+    stalker				= get_level_object ("m_stalker_e0000")
+    actor				= get_actor()
+
+    stalker:script		(true,stalker_test:script_name());
+    
+	stalker:sdfsadfsda	()
+	
+	
+	
 --[	zone0				= get_level_object ("script_zone0000")
 	zone1				= get_level_object ("script_zone0001")
 	
@@ -21,7 +30,6 @@ function main ()
 		wait			()
 	end
 --]
-	sdfsadfsdafadsfs	()
 --[
     stalker				= get_level_object ("m_stalker_e0000")
     actor				= get_actor()
