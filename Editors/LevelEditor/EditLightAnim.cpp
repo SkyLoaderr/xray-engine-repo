@@ -219,7 +219,11 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
 void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
 {
     // folder name
-    AnsiString name				= FHelper.GenerateName	("la",2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
+    AnsiString pref;
+    TElTreeItem* item 			= m_Items->GetSelected(); 
+    if (item) 					FHelper.MakeName(item,0,pref,true);
+    pref 						+= "la";
+    AnsiString name				= FHelper.GenerateName	(pref.c_str(),2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
     CLAItem* I 					= LALib.AppendItem(name.c_str(),0);
     InitItems					();
     m_Items->SelectItem			(*I->cName,true,false,true);
@@ -257,6 +261,7 @@ void __fastcall TfrmEditLightAnim::ebSaveClick(TObject *Sender)
 {
 	ebSave->Enabled				 = false;
 	LALib.Save					();
+    UpdateView					();
 }
 //---------------------------------------------------------------------------
 
