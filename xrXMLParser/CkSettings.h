@@ -15,9 +15,9 @@ public:
 	CkSettings();
 	virtual ~CkSettings();
 
-	static void disableStringCaching(void);
+	static void __cdecl disableStringCaching(void);
 
-	static void cleanupMemory(void);
+	static void __cdecl cleanupMemory(void);
 };
 
 #endif // !defined(AFX_CKSETTINGS_H__62E2D44A_4858_429D_994D_A6EAAD2FFEA1__INCLUDED_)

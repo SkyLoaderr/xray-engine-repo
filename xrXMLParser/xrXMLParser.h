@@ -30,7 +30,6 @@ XRXMLPARSER_API void FunctionSampleExport();
 
 #pragma once
 
-
 typedef CkXml XML_NODE;
 
 

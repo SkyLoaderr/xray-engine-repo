@@ -139,6 +139,8 @@
 				OutputFile="$(OutDir)\xrXMLParser.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
+				IgnoreAllDefaultLibraries="FALSE"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)\xrXMLParser.pdb"
 				GenerateMapFile="TRUE"

@@ -22,6 +22,7 @@ XRXMLPARSER_API CUIXml::CUIXml()
 	// internal caches before checking for memory leaks.
 	
 	//CkSettings::disableStringCaching();
+	CkSettings::disableStringCaching();
 	m_root				= xr_new<XML_NODE>();
 }
 
@@ -33,6 +34,7 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 	//CkSettings::cleanupMemory();
 
 	xr_delete			(m_root);
+	CkSettings::cleanupMemory();
 }
 
 
