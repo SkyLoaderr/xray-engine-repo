@@ -16,31 +16,32 @@ public:
 	svector(T* p, int c) 
 	{ assign(p,c); }
 
-	IC T*		begin()				{ return array;							}
-	IC T*		end	 ()				{ return array+count;					}
-	IC u32		size()		const	{ return count;							}
-	IC void		clear()				{ count=0;								}
-	IC void		resize(int c)		{ VERIFY(c<=dim); count=c;				}
-	IC void		reserve(int c)		{ }
+	IC T*		begin()						{ return array;							}
+	IC T*		end	 ()						{ return array+count;					}
+	IC u32		size()		const			{ return count;							}
+	IC void		clear()						{ count=0;								}
+	IC void		resize(int c)				{ VERIFY(c<=dim); count=c;				}
+	IC void		reserve(int c)				{ }
 
-	IC void		push_back(T e)		{ VERIFY(count<dim); array[count++]=e;	}
-	IC void		pop_back()			{ VERIFY(count); count--;				}
+	IC void		push_back(T e)				{ VERIFY(count<dim); array[count++]=e;	}
+	IC void		pop_back()					{ VERIFY(count); count--;				}
 
-	IC T&		operator[] (u32 id)	{ VERIFY(id<count); return array[id];	}
+	IC T&		operator[] (u32 id)			{ VERIFY(id<count); return array[id];	}
+	IC const T&	operator[] (u32 id)	const	{ VERIFY(id<count); return array[id];	}
 
-	IC T&		front()				{ return array[0];						}
-	IC T&		back()				{ return array[count-1];				}
-	IC T&		last()				{ VERIFY(count<dim); return array[count];}
-	IC void		inc	()				{ count++; }
-	IC bool		empty()		const	{ return 0==count;	}
+	IC T&		front()						{ return array[0];						}
+	IC T&		back()						{ return array[count-1];				}
+	IC T&		last()						{ VERIFY(count<dim); return array[count];}
+	IC void		inc	()						{ count++; }
+	IC bool		empty()		const			{ return 0==count;	}
 
-	IC void		erase(u32 id)		{
+	IC void		erase(u32 id)				{
 		VERIFY(id<count);
 		count--;
 		for (u32 i=id; i<count; i++)
 			array[i] = array[i+1];
 	}
-	IC void		erase(T* it)		{ erase(u32(it-begin()));	}
+	IC void		erase(T* it)				{ erase(u32(it-begin()));	}
 
 	IC void		insert(u32 id, T& V)
 	{
