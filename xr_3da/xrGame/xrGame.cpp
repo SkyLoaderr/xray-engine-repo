@@ -900,6 +900,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);
 		CMD4(CCC_Float,				"net_cl_maxdesync",				&g_fMaxDesyncLen,		0, 10);
 		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
+		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
 		CMD4(CCC_Integer,			"skin",						&SkinID,			-1,20);
 		
 		// adjust mode support
