@@ -252,7 +252,7 @@ function update()
 			heli_mgr:set_path( "heli_path_patrol" )
 			heli_mgr.not_die = false
 
-			fly_away_time = CTime()
+			fly_away_time = game.CTime()
 			fly_away_time:set( 0, 0, 0, 0, 6, 0 )
 			fly_away_time:add( game.get_game_time() )
 
