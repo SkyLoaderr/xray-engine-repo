@@ -348,7 +348,7 @@ void	CRender::Render()
 
 	TEST.SetPosition	(Device.vCameraPosition);
 	TEST.SetRange		(8.f);
-	TEST.SetColor		();
+	TEST.SetColor		(1,1,1);
 	Lights_Dynamic.Add	(&TEST);
 
 	Device.Statistic.RenderDUMP.Begin();
