@@ -310,7 +310,7 @@ CCF_Shape::CCF_Shape(CObject* _owner) : CCFModel(_owner)
 {
 }
 BOOL CCF_Shape::_svRayTest(RayQuery& Q)
-{	return FALSE; }
+{	return TRUE; }
 BOOL CCF_Shape::_clRayTest(RayQuery& Q)
 {	return FALSE; }
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
