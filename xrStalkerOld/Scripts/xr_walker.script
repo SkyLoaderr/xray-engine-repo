@@ -42,7 +42,7 @@ end
 function action_walker_activity:reset_scheme()
 	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
 
-	self.object:clear_animations()
+	--self.object:clear_animations()
 
 	self.st.signals = {}
 	
@@ -68,7 +68,7 @@ end
 
 function action_walker_activity:finalize()
 	self.move_mgr:finalize()
-	self.object:clear_animations()
+	--self.object:clear_animations()
 	action_base.finalize(self)
 end
 
