@@ -36,9 +36,14 @@
 
 #define SPAWNPOINT_CHUNK_ATTACHED_OBJ	0xE421
 
+#define SPAWNPOINT_CHUNK_ENVMOD			0xE422
+
 //----------------------------------------------------
+#define RPOINT_SIZE 0.5f
+#define ENVMOD_SIZE 0.25f
 #define MAX_TEAM 6
 const u32 RP_COLORS[MAX_TEAM]={0xff0000,0x00ff00,0x0000ff,0xffff00,0x00ffff,0xff00ff};
+//----------------------------------------------------
 
 ShaderMap CSpawnPoint::m_Icons;
 //----------------------------------------------------
@@ -183,16 +188,23 @@ CSpawnPoint::CSpawnPoint(LPVOID data, LPCSTR name):CCustomObject(data,name)
 	Construct(data);
 }
 
-void CSpawnPoint::Construct(LPVOID data){
+void CSpawnPoint::Construct(LPVOID data)
+{
 	ClassID			= OBJCLASS_SPAWNPOINT;
-    m_dwTeamID		= 0;
     m_AttachedObject= 0;
-    m_Type			= ptRPoint;
     if (data){
 	    CreateSpawnData(LPCSTR(data));
     	if (!m_SpawnData.Valid()){
     		if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
-	        	m_Type = ptRPoint;
+	        	m_Type 		= ptRPoint;
+			    m_RP_TeamID	= 0;
+    		}else if (strcmp(LPSTR(data),ENVMOD_CHOOSE_NAME)==0){
+	        	m_Type 			= ptEnvMod;
+                m_EM_Radius		= 10.f;
+                m_EM_Power		= 1.f;
+                m_EM_ViewDist	= 300.f;
+                m_EM_FogColor	= 0x00FFFFFF;
+                m_EM_FogDensity	= 1.f;
     	    }else{
         		SetValid(false);
 	        }
@@ -274,16 +286,31 @@ bool CSpawnPoint::CreateSpawnData(LPCSTR entity_ref)
 }
 //----------------------------------------------------
 
-bool CSpawnPoint::GetBox( Fbox& box ){
-	box.set( PPosition, PPosition );
-	box.min.x -= RPOINT_SIZE;
-	box.min.y -= 0;
-	box.min.z -= RPOINT_SIZE;
-	box.max.x += RPOINT_SIZE;
-	box.max.y += RPOINT_SIZE*2.f;
-	box.max.z += RPOINT_SIZE;
-//	box.min.sub(RPOINT_SIZE);
-//	box.max.add(RPOINT_SIZE);
+bool CSpawnPoint::GetBox( Fbox& box )
+{
+    switch (m_Type){
+    case ptRPoint: 	
+        box.set		( PPosition, PPosition );
+        box.min.x 	-= RPOINT_SIZE;
+        box.min.y 	-= 0;
+        box.min.z 	-= RPOINT_SIZE;
+        box.max.x 	+= RPOINT_SIZE;
+        box.max.y 	+= RPOINT_SIZE*2.f;
+        box.max.z 	+= RPOINT_SIZE;
+    break;
+    case ptEnvMod: 	
+        box.set		(PPosition, PPosition);
+        box.grow	(Selected()?m_EM_Radius:ENVMOD_SIZE);
+    break;
+    default:
+        box.set		( PPosition, PPosition );
+        box.min.x 	-= RPOINT_SIZE;
+        box.min.y 	-= 0;
+        box.min.z 	-= RPOINT_SIZE;
+        box.max.x 	+= RPOINT_SIZE;
+        box.max.y 	+= RPOINT_SIZE*2.f;
+        box.max.z 	+= RPOINT_SIZE;
+    }
 	return true;
 }
 
@@ -309,12 +336,22 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->s_name);
                 DU.DrawEntity		(0xffffffff,s);
             }else{
-                float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
-                int r = m_dwTeamID%MAX_TEAM;
-                Fcolor c;
-                c.set(RP_COLORS[r]);
-                c.mul_rgb(k*0.9f+0.1f);
-                DU.DrawEntity(c.get(),Device.m_WireShader);
+                switch (m_Type){
+                case ptRPoint:{
+                    float k = 1.f/(float(m_RP_TeamID+1)/float(MAX_TEAM));
+                    int r = m_RP_TeamID%MAX_TEAM;
+                    Fcolor c;
+                    c.set(RP_COLORS[r]);
+                    c.mul_rgb(k*0.9f+0.1f);
+                    DU.DrawEntity(c.get(),Device.m_WireShader);
+                }break;
+                case ptEnvMod:{
+                	Fvector pos={0,0,0};
+                    DU.DrawCross(pos,0.25f,0x20FFAE00,true);
+                    if (Selected()) DU.DrawSphere(Fidentity,PPosition,m_EM_Radius,subst_alpha(m_EM_FogColor,0x30),m_EM_FogColor,true,true);
+                }break;
+                default: THROW2("CSpawnPoint:: Unknown Type");
+                }
             }
         }else{
             ESceneSpawnTools* st = dynamic_cast<ESceneSpawnTools*>(ParentTools); VERIFY(st);
@@ -324,7 +361,10 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     s_name	= m_SpawnData.m_Data->s_name;
                 }else{
                     switch (m_Type){
-                    case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
+                    case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_RP_TeamID); break;
+                    case ptEnvMod: 	
+                    	s_name.sprintf("EnvMod V:%3.2f, F:%3.2f",m_EM_ViewDist,m_EM_FogDensity); 
+					break;
                     default: THROW2("CSpawnPoint:: Unknown Type");
                     }
                 }
@@ -359,14 +399,19 @@ bool CSpawnPoint::RayPick(float& distance, const Fvector& start, const Fvector& 
 	bool bPick = false;
     if (m_AttachedObject) bPick = m_AttachedObject->RayPick(distance, start, direction, pinf);
 
-	Fvector pos,ray2;
-    pos.set(PPosition.x,PPosition.y+RPOINT_SIZE,PPosition.z);
-	ray2.sub( pos, start );
+    Fbox 		bb;
+    Fvector 	pos;
+    float 		radius;
+    GetBox		(bb);
+    bb.getsphere(pos,radius);
+    
+	Fvector ray2;
+	ray2.sub	(pos, start);
 
     float d = ray2.dotproduct(direction);
     if( d > 0  ){
         float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (RPOINT_SIZE*RPOINT_SIZE)) && (d>RPOINT_SIZE) ){
+        if( ((d2*d2-d*d) < (radius*radius)) && (d>radius) ){
         	if (d<distance){
 	            distance = d;
     	        return true;
@@ -406,17 +451,22 @@ bool CSpawnPoint::Load(IReader& F){
         SetValid	(true);
     }else{
 	    if (F.find_chunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.r_u32();
-        if (m_Type==ptReserved){
-            ELog.Msg( mtError, "SPAWNPOINT: Unsupported spawn element.");
-            return false;
-        }
         if (m_Type>=ptMaxType){
             ELog.Msg( mtError, "SPAWNPOINT: Unsupported spawn version.");
             return false;
         }
     	switch (m_Type){
         case ptRPoint:
-		    if (F.find_chunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_dwTeamID	= F.r_u32();
+		    if (F.find_chunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_RP_TeamID	= F.r_u32();
+        break;
+        case ptEnvMod:
+		    if (F.find_chunk(SPAWNPOINT_CHUNK_ENVMOD)){ 
+                m_EM_Radius		= F.r_float();
+                m_EM_Power		= F.r_float();
+                m_EM_ViewDist	= F.r_float();
+                m_EM_FogColor	= F.r_u32();
+                m_EM_FogDensity	= F.r_float();
+            }
         break;
         default: THROW;
         }
@@ -449,7 +499,16 @@ void CSpawnPoint::Save(IWriter& F){
 		F.w_chunk	(SPAWNPOINT_CHUNK_TYPE,		&m_Type,	sizeof(u32));
     	switch (m_Type){
         case ptRPoint:
-	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(u32));
+	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_RP_TeamID,sizeof(u32));
+        break;
+        case ptEnvMod:
+        	F.open_chunk(SPAWNPOINT_CHUNK_ENVMOD);
+            F.w_float	(m_EM_Radius);
+            F.w_float	(m_EM_Power);
+            F.w_float	(m_EM_ViewDist);
+            F.w_u32		(m_EM_FogColor);
+            F.w_float	(m_EM_FogDensity);
+            F.close_chunk();
         break;
         default: THROW;
         }
@@ -467,10 +526,19 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
         switch (m_Type){
         case ptRPoint:
 	        F.rpoint.stream.open_chunk	(F.rpoint.chunk++);
-            F.rpoint.stream.w_fvector3		(PPosition);
-            F.rpoint.stream.w_fvector3		(PRotation);
-            F.rpoint.stream.w_u32		(m_dwTeamID);
+            F.rpoint.stream.w_fvector3	(PPosition);
+            F.rpoint.stream.w_fvector3	(PRotation);
+            F.rpoint.stream.w_u32		(m_RP_TeamID);
 			F.rpoint.stream.close_chunk	();
+        break;
+        case ptEnvMod:
+	        F.envmodif.stream.open_chunk(F.envmodif.chunk++);
+            F.envmodif.w_float			(m_EM_Radius);
+            F.envmodif.w_float			(m_EM_Power);
+            F.envmodif.w_float			(m_EM_ViewDist);
+            F.envmodif.w_u32			(m_EM_FogColor);
+            F.envmodif.w_float			(m_EM_FogDensity);
+			F.envmodif.stream.close_chunk();
         break;
         default: THROW;
         }
@@ -488,7 +556,14 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper.CreateU32(items, FHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
+			PHelper.CreateU32	(items, FHelper.PrepareKey(pref,"Respawn Point\\Team"), &m_RP_TeamID, 0,64,1);
+        }break;
+        case ptEnvMod:{
+        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
+        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
+        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
+        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
+        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
         }break;
         default: THROW;
         }

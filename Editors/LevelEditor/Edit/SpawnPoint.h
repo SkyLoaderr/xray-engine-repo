@@ -8,8 +8,6 @@
 #include "xrServer_Objects_ALife_All.h"
 #include "LevelGameDef.h"
 
-#define RPOINT_SIZE 0.5f
-
 DEFINE_MAP(AnsiString,ref_shader,ShaderMap,ShaderPairIt);
 
 class CSpawnPoint : public CCustomObject {
@@ -50,7 +48,16 @@ public:
 	CCustomObject*	m_AttachedObject;
 
     EPointType		m_Type;
-    u32			m_dwTeamID;
+    union{
+	    u32			m_RP_TeamID;
+        struct{
+        	float	m_EM_Radius;
+            float 	m_EM_Power;
+            float	m_EM_ViewDist;
+            u32		m_EM_FogColor;
+            float	m_EM_FogDensity;
+        };
+    };
 
     static ShaderMap m_Icons;
     static ref_shader 	CreateIcon(LPCSTR name);
