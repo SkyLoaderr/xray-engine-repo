@@ -60,7 +60,6 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	//----------------------------------------------------
 	//получить материал пули
-	CShootingObject::bullet_material_idx  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	BulletManager().bullet_material_idx   = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);;
 
 //----------------------------------------------------

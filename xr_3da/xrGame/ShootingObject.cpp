@@ -15,10 +15,13 @@
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
-u16 CShootingObject::bullet_material_idx = GAMEMTL_NONE_IDX;
-
 CShootingObject::CShootingObject(void)
 {
+	fTimeToFire			= 0;
+	iHitPower			= 0;
+	m_fStartBulletSpeed = 1000.f;
+
+
 	m_fCurrentHitPower = 0.0f;
 	m_fCurrentHitImpulse = 0.0f;
 	m_fCurrentFireDist = 0.0f;
@@ -28,229 +31,287 @@ CShootingObject::CShootingObject(void)
 	m_vCurrentShootPos = Fvector().set(0,0,0);
 	m_vEndPoint = Fvector().set(0,0,0);
 	m_iCurrentParentID = 0xFFFF;
-	m_fCurrentHitType = ALife::eHitTypeFireWound;
+	m_eCurrentHitType = ALife::eHitTypeFireWound;
+
+
+	//lights
+	light_render				= ::Render->light_create();
+	light_render->set_shadow	(true);
+	m_bShotLight = true;
+
+	//particles
+	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
+	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
+	m_sShellParticles = NULL;
+
 }
 CShootingObject::~CShootingObject(void)
 {
+	//lights
+	::Render->light_destroy	(light_render);
+}
+
+void CShootingObject::reinit()
+{
+}
+
+void CShootingObject::Load	(LPCSTR section)
+{
+	//базова€ дисперси€ оружи€
+	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
+	fireDispersionBase	= deg2rad					(fireDispersionBase);
+
+	// tracer
+	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
+	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
+	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
+	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
+
+
+	//врем€ затрачиваемое на выстрел
+	fTimeToFire			= pSettings->r_float		(section,"rpm");
+	VERIFY(fTimeToFire>0.f);
+	fTimeToFire			= 60.f / fTimeToFire;
+
+	LoadFireParams			(section, "");
+	LoadLights				(section, "");
+	LoadShellParticles		(section, "");
+	LoadFlameParticles		(section, "");
+}
+
+void CShootingObject::LoadFireParams(LPCSTR section, LPCSTR prefix)
+{
+	string256 full_name;
+
+	//сила выстрела и его мощьность
+	iHitPower			= pSettings->r_s32		(section,strconcat(full_name, prefix, "hit_power"));
+	fHitImpulse			= pSettings->r_float	(section,strconcat(full_name, prefix, "hit_impulse"));
+	//максимальное рассто€ние полета пули
+	fireDistance		= pSettings->r_float	(section,strconcat(full_name, prefix, "fire_distance"));
+	//начальна€ скорость пули
+	m_fStartBulletSpeed = pSettings->r_float	(section,strconcat(full_name, prefix, "bullet_speed"));
 }
 
 
-
-void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
+void CShootingObject::LoadLights(LPCSTR section, LPCSTR prefix)
 {
-	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet_material_idx, target_material);
-	
-	Fvector particle_dir;
+	string256 full_name;
 
-	if (R.O) 
+	// light
+	if(m_bShotLight) 
 	{
-		if (R.O->CLS_ID==CLSID_ENTITY)
-		{
-			//тут добавить отметки крови
-		}
-		particle_dir = vDir;
-		particle_dir.invert();
-	} 
-	else 
-	{
-		//вычислить нормаль к пораженной поверхности
-        Fvector N;
-		Fvector*	pVerts	= Level().ObjectSpace.GetStaticVerts();
-		CDB::TRI*	pTri	= Level().ObjectSpace.GetStaticTris()+R.element;
-		N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
-		particle_dir = N;
+		Fvector clr			= pSettings->r_fvector3		(section, strconcat(full_name, prefix, "light_color"));
+		light_base_color.set(clr.x,clr.y,clr.z,1);
+		light_base_range	= pSettings->r_float		(section, strconcat(full_name, prefix, "light_range")		);
+		light_var_color		= pSettings->r_float		(section, strconcat(full_name, prefix, "light_var_color")	);
+		light_var_range		= pSettings->r_float		(section, strconcat(full_name, prefix, "light_var_range")	);
+		light_lifetime		= pSettings->r_float		(section, strconcat(full_name, prefix, "light_time")		);
+		light_time			= -1.f;
+	}
+}
 
-		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
-					 NULL:
-					 &mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+
+void CShootingObject::Light_Start	()
+{
+	if (Device.dwFrame	!= light_frame)
+	{
+		light_frame					= Device.dwFrame;
+		light_time					= light_lifetime;
 		
-		if (pWallmarkShader)
-		{
-			//добавить отметку на материале
-			::Render->add_Wallmark	(*pWallmarkShader, vEnd,
-				m_fCurrentWallmarkSize, pTri, pVerts);
-		}
-	}		
+		light_build_color.set		(Random.randFs(light_var_color,light_base_color.r),Random.randFs(light_var_color,light_base_color.g),Random.randFs(light_var_color,light_base_color.b),1);
+		light_build_range			= Random.randFs(light_var_range,light_base_range);
 
-	ref_sound* pSound = (!mtl_pair || mtl_pair->CollideSounds.empty())?
-				NULL:
-				&mtl_pair->CollideSounds[::Random.randI(0,mtl_pair->CollideSounds.size())];
-	//проиграть звук
-	if(pSound)
-	{
-		pSound->play_at_pos_unlimited(this, vEnd, false);
-	}
-
-	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
-			NULL:
-			*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-	if(ps_name)
-	{
-
-		//отыграть партиклы попадани€ в материал
-		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name, this->Sector());
-
-		Fmatrix pos;
-		pos.k.normalize(particle_dir);
-		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
-		pos.c.set(vEnd);
-
-		ps->UpdateParent(pos,zero_vel);
-		Level().ps_needtoplay.push_back(ps);
-
+		light_render->set_active	(true);
 	}
 }
 
-
-//callback функци€ 
-//	result.O;		// 0-static else CObject*
-//	result.range;	// range from start to element 
-//	result.element;	// if (O) "num tri" else "num bone"
-//	params;			// user defined abstract data
-//	Device.Statistic.TEST0.End();
-//return TRUE-продолжить трассировку / FALSE-закончить трассировку
-BOOL __stdcall CShootingObject::firetrace_callback(Collide::rq_result& result, LPVOID params)
+void CShootingObject::Light_Render	(Fvector& P)
 {
-
-	CShootingObject* pThisWeapon = (CShootingObject*)params;
-	//вычислить точку попадани€
-	pThisWeapon->m_vEndPoint.mad(pThisWeapon->m_vCurrentShootPos,
-		pThisWeapon->m_vCurrentShootDir,result.range);
-
-	u16 hit_material_idx = GAMEMTL_NONE_IDX;
-
-	//динамический объект
-	if(result.O)
-	{
-		//получить косточку и ее материал
-		CKinematics* V = 0;
-		if (0!=(V=PKinematics(result.O->Visual())))
-		{
-			CBoneData& B = V->LL_GetData((u16)result.element);
-			hit_material_idx = B.game_mtl_idx;
-			pThisWeapon->DynamicObjectHit(result, hit_material_idx);
-		}
-		else
-		{
-			hit_material_idx = 0*GAMEMTL_NONE_IDX;
-			pThisWeapon->DynamicObjectHit(result, hit_material_idx);
-		}
-	}
-	//статический объект
-	else
-	{
-		//получить треугольник и узнать его материал
-		CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+result.element;
-		hit_material_idx	= T->material;
-		pThisWeapon->StaticObjectHit(result, hit_material_idx);
-	}
-
-	//проверить достаточно ли силы хита, чтобы двигатьс€ дальше
-	if(pThisWeapon->m_fCurrentHitPower>HIT_POWER_EPSILON)
-		return TRUE;
-	else
-		return FALSE;
+	float light_scale			= light_time/light_lifetime;
+	light_render->set_position	(P);
+	light_render->set_color		(light_build_color.r*light_scale,light_build_color.g*light_scale,light_build_color.b*light_scale);
+	light_render->set_range		(light_build_range*light_scale);
 }
 
-void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_material)
+
+//////////////////////////////////////////////////////////////////////////
+// Particles
+//////////////////////////////////////////////////////////////////////////
+
+void CShootingObject::StartParticles (CParticlesObject*& pParticles, LPCSTR particles_name, 
+									 const Fvector& pos, const  Fvector& vel, bool auto_remove_flag)
 {
-	//только дл€ динамических объектов
-	R_ASSERT(R.O);
+	if(!particles_name) return;
 
-	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
-	float shoot_factor = mtl->fShootFactor;
-	float pierce = (m_pCurrentCartridge?m_pCurrentCartridge->m_kPierce:1.f);
-
-	//получить силу хита выстрела с учетом патрона
-	float power = m_fCurrentHitPower * pierce *
-		(m_pCurrentCartridge?m_pCurrentCartridge->m_kHit:1.f);
-
-	//коэффициент уменьшение силы с рассто€нием
-	float scale = 1-(R.range/(m_fCurrentFireDist*
-		(m_pCurrentCartridge?m_pCurrentCartridge->m_kDist:1.f)));
-	clamp(scale,0.f,1.f);
-	//!!! почему мы берем квадратный корень
-	scale = _sqrt(scale);
-	power *= scale;
-
-	//сила хита физического импульса
-	//вычисл€етс€ с учетом пробиваемости материалов
-	float material_pierce = 1.f - shoot_factor * pierce;
-	clamp(material_pierce, 0.f, 1.f);
-	float impulse = m_fCurrentHitImpulse*
-		material_pierce*
-		(m_pCurrentCartridge?m_pCurrentCartridge->m_kImpulse:1.f)
-		*scale;
-
-	VERIFY(impulse>=0);
-
-	CEntity* E = dynamic_cast<CEntity*>(R.O);
-	//учитываем попадание в разные части 
-	if(E) power *= E->HitScale(R.element);
-
-	// object-space
-	//вычислить координаты попадани€
-	Fvector p_in_object_space,position_in_bone_space;
-	Fmatrix m_inv;
-	m_inv.invert(R.O->XFORM());
-	m_inv.transform_tiny(p_in_object_space, m_vEndPoint);
-
-	// bone-space
-	CKinematics* V = PKinematics(R.O->Visual());
-
-	if(V)
+	if(pParticles != NULL) 
 	{
-		Fmatrix& m_bone = (V->LL_GetBoneInstance(u16(R.element))).mTransform;
-		Fmatrix  m_inv_bone;
-		m_inv_bone.invert(m_bone);
-		m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);
-	}
-	else
-	{
-		position_in_bone_space.set(p_in_object_space);
+		UpdateParticles(pParticles, pos, vel);
+		return;
 	}
 
-	//отправить хит пораженному объекту
-	if(OnServer())
-	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_HIT,R.O->ID());
-		P.w_u16			(u16(m_iCurrentParentID));
-		P.w_u16			(ID());
-		P.w_dir			(m_vCurrentShootDir);
-		P.w_float		(power);
-		P.w_s16			((s16)R.element);
-		P.w_vec3		(position_in_bone_space);
-		P.w_float		(impulse);
-		P.w_u16			(u16(m_fCurrentHitType));
-		u_EventSend		(P);
-	}
-
-	//визуальное обозначение попадание на объекте
-	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
-
-
-
-	//уменьшить хит и импульс перед тем как передать его дальше 
-	m_fCurrentHitPower *= scale;
-	m_fCurrentHitImpulse *= scale;
-		
-	m_fCurrentHitPower *= (shoot_factor*pierce);
-	m_fCurrentHitImpulse *= material_pierce;
-}
-
-void CShootingObject::StaticObjectHit(Collide::rq_result& R, u16 target_material)
-{
-	FireShotmark(m_vCurrentShootDir, m_vEndPoint, R, target_material);
-
-	SGameMtl* mtl = GMLib.GetMaterialByIdx(target_material);
-
-	float shoot_factor = mtl->fShootFactor;
-	float pierce = (m_pCurrentCartridge?m_pCurrentCartridge->m_kPierce:1.f);
-	float material_pierce = 1.f - shoot_factor * pierce;
-	clamp(material_pierce, 0.f, 1.f);
+	pParticles = xr_new<CParticlesObject>(particles_name,Sector(),auto_remove_flag);
 	
-	m_fCurrentHitPower*= mtl->fShootFactor;
-	m_fCurrentHitPower *= (shoot_factor*pierce);
-	m_fCurrentHitImpulse *= material_pierce;
+	UpdateParticles(pParticles, pos, vel);
+	pParticles->Play();
+}
+void CShootingObject::StopParticles (CParticlesObject*&	pParticles)
+{
+	if(pParticles == NULL) return;
+
+	pParticles->Stop();
+	pParticles->PSI_destroy();
+	pParticles = NULL;
+
+}
+void CShootingObject::UpdateParticles (CParticlesObject*& pParticles, 
+							   const Fvector& pos, const Fvector& vel)
+{
+	if(!pParticles) return;
+
+	Fmatrix particles_pos; 
+	particles_pos.set(XFORM());
+	particles_pos.c.set(pos);
+	
+	//pParticles->UpdateParent(particles_pos,vel);
+	pParticles->SetXFORM(particles_pos);
+
+	
+	if(!pParticles->IsAutoRemove() && !pParticles->IsLooped() 
+		&& !pParticles->PSI_alive())
+	{
+		pParticles->Stop();
+		pParticles->PSI_destroy();
+		pParticles = NULL;
+	}
+}
+
+
+void CShootingObject::LoadShellParticles (LPCSTR section, LPCSTR prefix)
+{
+	string256 full_name;
+	strconcat(full_name, prefix, "shell_particles");
+
+	if(pSettings->line_exist(section,full_name)) 
+	{
+		m_sShellParticles = pSettings->r_string (section,full_name);
+		vShellPoint	= pSettings->r_fvector3	(section,strconcat(full_name, prefix, "shell_point"));
+	}
+}
+
+void CShootingObject::LoadFlameParticles (LPCSTR section, LPCSTR prefix)
+{
+	string256 full_name;
+
+	// flames
+	strconcat(full_name, prefix, "flame_particles");
+	if(pSettings->line_exist(section, full_name))
+		m_sFlameParticles	= pSettings->r_string (section, full_name);
+
+	strconcat(full_name, prefix, "flame_particles_2");
+	if(pSettings->line_exist(section, full_name))
+		m_sFlameParticles2 = pSettings->r_string(section, full_name);
+
+	strconcat(full_name, prefix, "smoke_particles");
+	if(pSettings->line_exist(section, full_name))
+		m_sSmokeParticles = pSettings->r_string (section, full_name);
+
+	//текущие партиклы
+	m_sFlameParticlesCurrent = m_sFlameParticles;
+	m_sSmokeParticlesCurrent = m_sSmokeParticles;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+// Weapon particles
+//////////////////////////////////////////////////////////////////////////
+//партиклы гильз
+void CShootingObject::OnShellDrop	(const Fvector& play_pos,
+									 const Fvector& parent_vel)
+{
+	if(!m_sShellParticles) return;
+
+	CParticlesObject* pShellParticles = xr_new<CParticlesObject>(*m_sShellParticles,Sector());
+
+	Fmatrix particles_pos; 
+	particles_pos.set(XFORM());
+	particles_pos.c.set(play_pos);
+
+	pShellParticles->UpdateParent(particles_pos, parent_vel); 
+	pShellParticles->Play();
+}
+
+
+
+void CShootingObject::StartFlameParticles2	()
+{
+	StartParticles (m_pFlameParticles2, *m_sFlameParticles2, CurrentFirePoint2());
+}
+void CShootingObject::StopFlameParticles2	()
+{
+	StopParticles (m_pFlameParticles2);
+}
+void CShootingObject::UpdateFlameParticles2	()
+{
+	UpdateParticles (m_pFlameParticles2, CurrentFirePoint2());
+}
+
+
+
+//партиклы дыма
+void CShootingObject::StartSmokeParticles	(const Fvector& play_pos,
+											const Fvector& parent_vel)
+{
+	CParticlesObject* pSmokeParticles = NULL;
+	StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, play_pos, parent_vel, true);
+}
+
+
+void CShootingObject::StartFlameParticles	()
+{
+	if(!m_sFlameParticlesCurrent) return;
+
+	//если партиклы циклические
+	if(m_pFlameParticles && m_pFlameParticles->IsLooped() && 
+		m_pFlameParticles->IsPlaying()) 
+	{
+		UpdateFlameParticles();
+		return;
+	}
+
+	StopFlameParticles();
+	m_pFlameParticles = xr_new<CParticlesObject>(*m_sFlameParticlesCurrent,Sector(),false);
+	UpdateFlameParticles();
+	m_pFlameParticles->Play();
+
+}
+void CShootingObject::StopFlameParticles	()
+{
+	if(!m_sFlameParticlesCurrent) return;
+	if(m_pFlameParticles == NULL) return;
+
+	m_pFlameParticles->SetAutoRemove(true);
+	m_pFlameParticles->Stop();
+	m_pFlameParticles = NULL;
+}
+
+void CShootingObject::UpdateFlameParticles	()
+{
+	if(!m_sFlameParticlesCurrent) return;
+	if(!m_pFlameParticles) return;
+
+	Fmatrix pos; 
+	pos.set(XFORM()); 
+	pos.c.set(CurrentFirePoint());
+
+	m_pFlameParticles->SetXFORM(pos);
+
+
+	if(!m_pFlameParticles->IsLooped() && 
+		!m_pFlameParticles->IsPlaying() &&
+		!m_pFlameParticles->PSI_alive())
+	{
+		m_pFlameParticles->Stop();
+		m_pFlameParticles->PSI_destroy();
+		m_pFlameParticles = NULL;
+	}
 }

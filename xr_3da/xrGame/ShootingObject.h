@@ -14,27 +14,17 @@ class CCartridge;
 
 
 
-class CShootingObject: virtual public CGameObject
+class CShootingObject
 {
 private:
 	typedef CGameObject inherited;
 protected: //чтоб нельзя было вызвать на прямую
 	CShootingObject(void);
 	virtual ~CShootingObject(void);
-public:
-	//материал для пули и осколков (инициализируется в CWeapon::Load)
-	static u16 bullet_material_idx;
-protected:
 
-	//функция обработки хитов объектов
-	static BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
-
-	//попадание по динамическому объекту
-	virtual void DynamicObjectHit	(Collide::rq_result& R, u16 target_material);
-	//попадание по статическому объекту
-	virtual void StaticObjectHit	(Collide::rq_result& R, u16 target_material);
-	//Отметка на пораженном объекте
-	virtual void FireShotmark (const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
+	void	reinit	();
+	void	reload	(LPCSTR section) {};
+	void	Load	(LPCSTR section);
 
 	//текущие значения хита и импульса для выстрела 
 	//используются для пробиваемости стен при RayPick
@@ -47,7 +37,124 @@ protected:
 	Fvector		m_vCurrentShootPos;
 	Fvector		m_vEndPoint;
 	//ID персонажа который иницировал действие
-	u32			m_iCurrentParentID;
+	u16			m_iCurrentParentID;
 	//тип наносимого хита
-	ALife::EHitType m_fCurrentHitType;
+	ALife::EHitType m_eCurrentHitType;
+
+
+//////////////////////////////////////////////////////////////////////////
+// Fire Params
+//////////////////////////////////////////////////////////////////////////
+protected:
+	virtual void			LoadFireParams		(LPCSTR section, LPCSTR prefix);
+
+protected:
+	float					fTimeToFire;
+	int						iHitPower;
+	float					fHitImpulse;
+
+	//скорость вылета пули из ствола
+	float					m_fStartBulletSpeed;
+	//максимальное расстояние стрельбы
+	float					fireDistance;
+
+	//рассеивание во время стрельбы
+	float					fireDispersionBase;
+
+	//трассеры
+	float					tracerHeadSpeed;
+	float					tracerTrailCoeff;
+	float					tracerStartLength;
+	float					tracerWidth;
+	u32						tracerFrame;
+
+protected:
+	//для сталкеров, чтоб они знали эффективные границы использования 
+	//оружия
+	float					m_fMinRadius;
+	float					m_fMaxRadius;
+
+
+//////////////////////////////////////////////////////////////////////////
+// Lights
+//////////////////////////////////////////////////////////////////////////
+protected:
+	Fcolor					light_base_color;
+	float					light_base_range;
+	Fcolor					light_build_color;
+	float					light_build_range;
+	IRender_Light*			light_render;
+	float					light_var_color;
+	float					light_var_range;
+	float					light_lifetime;
+	u32						light_frame;
+	float					light_time;
+	//включение подсветки во время выстрела
+	bool					m_bShotLight;
+protected:
+	void					Light_Start			();
+	void					Light_Render		(Fvector& P);
+
+	virtual	void			LoadLights			(LPCSTR section, LPCSTR prefix);
+	
+	
+//////////////////////////////////////////////////////////////////////////
+// партикловая система
+//////////////////////////////////////////////////////////////////////////
+protected:
+	//функции родительского объекта
+	virtual const Fmatrix&	XFORM()	 const = 0;
+	virtual IRender_Sector*	Sector() = 0;
+	virtual const Fvector&	CurrentFirePoint()	= 0;
+	virtual const Fvector&	CurrentFirePoint2() = 0;
+		
+
+	////////////////////////////////////////////////
+	//общие функции для работы с партиклами оружия
+	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);
+	virtual void			StopParticles		(CParticlesObject*& pParticles);
+	virtual void			UpdateParticles		(CParticlesObject*& pParticles, const Fvector& pos, const  Fvector& vel = zero_vel);
+
+	virtual	void			LoadShellParticles	(LPCSTR section, LPCSTR prefix);
+	virtual	void			LoadFlameParticles	(LPCSTR section, LPCSTR prefix);
+	
+	////////////////////////////////////////////////
+	//спецефические функции для партиклов
+	//партиклы огня
+	virtual void			StartFlameParticles	();
+	virtual void			StopFlameParticles	();
+	virtual void			UpdateFlameParticles();
+	//для второго ствола
+	virtual void			StartFlameParticles2();
+	virtual void			StopFlameParticles2	();
+	virtual void			UpdateFlameParticles2();
+
+	//партиклы дыма
+	virtual void			StartSmokeParticles	(const Fvector& play_pos,
+												 const Fvector& parent_vel);
+	//партиклы гильз
+	virtual void			OnShellDrop			(const Fvector& play_pos,
+												 const Fvector& parent_vel);
+protected:
+	//имя пратиклов для гильз
+	ref_str				m_sShellParticles;
+	Fvector				vShellPoint;
+
+protected:
+	//имя пратиклов для огня
+	ref_str				m_sFlameParticlesCurrent;
+	//для выстрела 1м и 2м видом стрельбы
+	ref_str				m_sFlameParticles;
+	ref_str				m_sFlameParticles2;
+
+	//объект партиклов огня
+	CParticlesObject*	m_pFlameParticles;
+
+	//объект партиклов для стрельбы из 2-го ствола
+	CParticlesObject*	m_pFlameParticles2;
+
+	//имя пратиклов для дыма
+	ref_str				m_sSmokeParticlesCurrent;
+	ref_str				m_sSmokeParticles;
+
 };

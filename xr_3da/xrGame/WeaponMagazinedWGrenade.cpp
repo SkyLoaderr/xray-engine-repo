@@ -193,6 +193,8 @@ bool CWeaponMagazinedWGrenade::Action(s32 cmd, u32 flags)
 
 void CWeaponMagazinedWGrenade::state_Fire(float dt) 
 {
+	VERIFY(fTimeToFire>0.f);
+
 	//режим стрельбы подствольника
 	if(m_bGrenadeMode)
 	{

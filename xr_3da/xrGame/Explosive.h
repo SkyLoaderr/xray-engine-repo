@@ -10,11 +10,9 @@
 
 #include "../feel_touch.h"
 #include "inventory_item.h"
-#include "ShootingObject.h"
 
 class CExplosive:
 	virtual public CInventoryItem,
-	public CShootingObject,
     public Feel::Touch
 {
 private:
@@ -49,6 +47,9 @@ public:
 
 
 protected:
+	//ID персонажа который иницировал действие
+	u16			m_iCurrentParentID;
+
 	//параметры взрыва
 	float m_fBlastHit;
 	float m_fBlastRadius;

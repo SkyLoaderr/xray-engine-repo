@@ -400,6 +400,7 @@ void CWeaponMagazined::UpdateSounds	()
 
 void CWeaponMagazined::state_Fire	(float dt)
 {
+	VERIFY(fTimeToFire>0.f);
 
 	fTime					-=dt;
 
@@ -420,6 +421,7 @@ void CWeaponMagazined::state_Fire	(float dt)
 	{
 		m_bFireSingleShot = false;
 
+		VERIFY(fTimeToFire>0.f);
 		fTime			+=	fTimeToFire;
 
 		++m_shotNum;
@@ -490,13 +492,15 @@ void CWeaponMagazined::OnShot		()
 	PlayAnimShoot		();
 	
 	// Shell Drop
-	OnShellDrop			();
+	Fvector vel; 
+	PHGetLinearVell(vel);
+	OnShellDrop					(vLastSP, vel);
 	
 	// Огонь из ствола
 	StartFlameParticles	();
 
 	//дым из ствола
-	StartSmokeParticles	();
+	StartSmokeParticles			(vLastFP, vel);
 }
 
 
@@ -751,21 +755,9 @@ void CWeaponMagazined::InitAddons()
 		m_pSndShotCurrent = &sndSilencerShot;
 
 		//сила выстрела
-		iHitPower			= pSettings->r_s32		(cNameSect(),"silencer_hit_power"		);
-		fHitImpulse			= pSettings->r_float	(cNameSect(),"silencer_hit_impulse"		);
-		fireDistance		= pSettings->r_float	(cNameSect(),"silencer_fire_distance"	);
-
+		LoadFireParams	(*cNameSect(), "silencer_");
 		//подсветка от выстрела
-		if(m_bShotLight) 
-		{
-			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"silencer_light_color"		);
-			light_base_color.set(clr.x,clr.y,clr.z,1);
-			light_base_range	= pSettings->r_float		(cNameSect(),"silencer_light_range"		);
-			light_var_color		= pSettings->r_float		(cNameSect(),"silencer_light_var_color"	);
-			light_var_range		= pSettings->r_float		(cNameSect(),"silencer_light_var_range"	);
-			light_lifetime		= pSettings->r_float		(cNameSect(),"silencer_light_time"		);
-			light_time			= -1.f;
-		}
+		LoadLights		(*cNameSect(), "silencer_");
 	}
 	else
 	{
@@ -774,21 +766,9 @@ void CWeaponMagazined::InitAddons()
 		m_pSndShotCurrent = &sndShot;
 
 		//сила выстрела
-		iHitPower			= pSettings->r_s32		(cNameSect(),"hit_power"		);
-		fHitImpulse			= pSettings->r_float	(cNameSect(),"hit_impulse"		);
-		fireDistance		= pSettings->r_float	(cNameSect(),"fire_distance"	);
-
+		LoadFireParams	(*cNameSect(), "");
 		//подсветка от выстрела
-		if(m_bShotLight) 
-		{
-			Fvector clr			= pSettings->r_fvector3		(cNameSect(),"light_color"		);
-			light_base_color.set(clr.x,clr.y,clr.z,1);
-			light_base_range	= pSettings->r_float		(cNameSect(),"light_range"		);
-			light_var_color		= pSettings->r_float		(cNameSect(),"light_var_color"	);
-			light_var_range		= pSettings->r_float		(cNameSect(),"light_var_range"	);
-			light_lifetime		= pSettings->r_float		(cNameSect(),"light_time"		);
-			light_time			= -1.f;
-		}
+		LoadLights		(*cNameSect(), "");
 	}
 
 	inherited::InitAddons();

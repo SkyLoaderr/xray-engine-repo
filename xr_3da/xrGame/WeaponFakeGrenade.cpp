@@ -149,7 +149,7 @@ void CWeaponFakeGrenade::OnH_B_Independent()
 	CExplosive::OnH_B_Independent();
 }
 
-void CWeaponFakeGrenade::UpdateCL() 
+void CWeaponFakeGrenade::UpdateCL()
 {
 	
 	switch (m_state)

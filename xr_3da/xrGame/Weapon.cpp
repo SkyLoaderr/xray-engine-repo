@@ -42,10 +42,6 @@ static float RandNormal(float m, float s)
 
 CWeapon::CWeapon(LPCSTR name)
 {
-	fTimeToFire			= 0;
-	iHitPower			= 0;
-	m_fStartBulletSpeed = 1000.f;
-
 	STATE				= NEXT_STATE		= eHidden;
 
 	SetDefaults			();
@@ -71,20 +67,13 @@ CWeapon::CWeapon(LPCSTR name)
 
 	m_pAmmo				= NULL;
 
-	light_render				= ::Render->light_create();
-	light_render->set_shadow	(true);
-	m_bShotLight = true;
 
 
-	m_sFlameParticlesCurrent = m_sFlameParticles = m_sFlameParticles2 = NULL;
-	m_sSmokeParticlesCurrent = m_sSmokeParticles = NULL;
-	m_sShellParticles = NULL;
 }
 
 CWeapon::~CWeapon		()
 {
-	::Render->light_destroy	(light_render);
-}
+	}
 
 void CWeapon::Hit(float P, Fvector &dir,	
 		    CObject* who, s16 element,
@@ -209,6 +198,9 @@ void CWeapon::Load		(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float("weapon","explosion_immunity");
 
 	inherited::Load					(section);
+	CShootingObject::Load			(section);
+	
+
 
 	Fvector				pos,ypr;
 	pos					= pSettings->r_fvector3		(section,"position");
@@ -217,9 +209,6 @@ void CWeapon::Load		(LPCSTR section)
 
 	m_Offset.setHPB			(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over	(pos);
-
-	fTimeToFire			= pSettings->r_float		(section,"rpm");
-	fTimeToFire			= 60 / fTimeToFire;
 
 	// load ammo classes
 	m_ammoTypes.clear	(); 
@@ -241,22 +230,8 @@ void CWeapon::Load		(LPCSTR section)
 	iAmmoElapsed		= pSettings->r_s32		(section,"ammo_elapsed"		);
 	iMagazineSize		= pSettings->r_s32		(section,"ammo_mag_size"	);
 	
-	//сила выстрела
-	iHitPower			= pSettings->r_s32		(section,"hit_power"		);
-	fHitImpulse			= pSettings->r_float	(section,"hit_impulse"		);
-	fireDistance		= pSettings->r_float	(section,"fire_distance"	);
-
-	m_fStartBulletSpeed = pSettings->r_float	(section,"bullet_speed"		);
-
-
 	////////////////////////////////////////////////////
 	// дисперсия стрельбы
-
-
-	//базовая дисперсия оружия
-	fireDispersionBase	= pSettings->r_float		(section,"fire_dispersion_base"	);
-	fireDispersionBase	= deg2rad					(fireDispersionBase);
-	
 
 	//подбрасывание камеры во время отдачи
 	camMaxAngle			= pSettings->r_float		(section,"cam_max_angle"	); 
@@ -272,24 +247,7 @@ void CWeapon::Load		(LPCSTR section)
 	misfireProbability			  = pSettings->r_float(section,"misfire_probability"); 
 	conditionDecreasePerShot	  = pSettings->r_float(section,"condition_shot_dec"); 
 
-	// tracer
-	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
-	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
-	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
-
-	// light
-	if(m_bShotLight) 
-	{
-		Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
-		light_base_color.set(clr.x,clr.y,clr.z,1);
-		light_base_range	= pSettings->r_float		(section,"light_range"		);
-		light_var_color		= pSettings->r_float		(section,"light_var_color"	);
-		light_var_range		= pSettings->r_float		(section,"light_var_range"	);
-		light_lifetime		= pSettings->r_float		(section,"light_time"		);
-		light_time			= -1.f;
-	}
-	
+		
 	vFirePoint			= pSettings->r_fvector3		(section,"fire_point"		);
 	
 	if(pSettings->line_exist(section,"fire_point2")) 
@@ -298,27 +256,6 @@ void CWeapon::Load		(LPCSTR section)
 		vFirePoint2 = vFirePoint;
 
 	
-	// flames
-	if(pSettings->line_exist(section,"flame_particles"))
-		m_sFlameParticles	= pSettings->r_string		(section,"flame_particles" );
-	if(pSettings->line_exist(section,"flame_particles_2"))
-		m_sFlameParticles2 = pSettings->r_string(section, "flame_particles_2");
-
-	if(pSettings->line_exist(section,"smoke_particles"))
-			m_sSmokeParticles = pSettings->r_string (section,"smoke_particles" );
-
-	if(pSettings->line_exist(section,"shell_particles")) 
-	{
-		m_sShellParticles = pSettings->r_string (section,"shell_particles");
-		vShellPoint	= pSettings->r_fvector3	(section,"shell_point");
-	}
-
-	//текущие партиклы
-	m_sFlameParticlesCurrent = m_sFlameParticles;
-	m_sSmokeParticlesCurrent = m_sSmokeParticles;
-
-
-
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));
 	// 
@@ -666,28 +603,6 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 {
 	Position().set	(trans.c);
 	XFORM().mul	(trans,m_Offset);
-}
-
-void CWeapon::Light_Start	()
-{
-	if (Device.dwFrame	!= light_frame)
-	{
-		light_frame					= Device.dwFrame;
-		light_time					= light_lifetime;
-		
-		light_build_color.set		(Random.randFs(light_var_color,light_base_color.r),Random.randFs(light_var_color,light_base_color.g),Random.randFs(light_var_color,light_base_color.b),1);
-		light_build_range			= Random.randFs(light_var_range,light_base_range);
-
-		light_render->set_active	(true);
-	}
-}
-
-void CWeapon::Light_Render	(Fvector& P)
-{
-	float light_scale			= light_time/light_lifetime;
-	light_render->set_position	(P);
-	light_render->set_color		(light_build_color.r*light_scale,light_build_color.g*light_scale,light_build_color.b*light_scale);
-	light_render->set_range		(light_build_range*light_scale);
 }
 
 

@@ -134,7 +134,9 @@ void CWeaponPistol::OnShot		()
 	PlayAnimShoot();
 
 	// Shell Drop
-	OnShellDrop					();
+	Fvector vel; 
+	PHGetLinearVell(vel);
+	OnShellDrop					(vLastSP,  vel);
 
 	// ќгонь из ствола
 	
@@ -143,7 +145,7 @@ void CWeaponPistol::OnShot		()
 			  "can't set looped particles system for shoting with pistol");
 	
 	//дым из ствола
-	StartSmokeParticles	();
+	StartSmokeParticles	(vLastFP, vel);
 }
 
 void CWeaponPistol::UpdateSounds()

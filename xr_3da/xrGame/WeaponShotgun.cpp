@@ -114,7 +114,9 @@ void CWeaponShotgun::OnShotBoth()
 	m_pHUD->animPlay			(mhud_shot_boths[Random.randI(mhud_shot_boths.size())],FALSE,this);
 	
 	// Shell Drop
-	OnShellDrop					();
+	Fvector vel; 
+	PHGetLinearVell(vel);
+	OnShellDrop					(vLastSP, vel);
 
 	//огонь из 2х стволов
 	StartFlameParticles			();
@@ -122,16 +124,16 @@ void CWeaponShotgun::OnShotBoth()
 
 	//дым из 2х стволов
 	CParticlesObject* pSmokeParticles = NULL;
-	StartParticles(pSmokeParticles, m_sSmokeParticlesCurrent, vLastFP,  zero_vel, true);
+	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, vLastFP,  zero_vel, true);
 	pSmokeParticles = NULL;
-	StartParticles(pSmokeParticles, m_sSmokeParticlesCurrent, vLastFP2, zero_vel, true);
+	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, vLastFP2, zero_vel, true);
 
 }
 
 void CWeaponShotgun::switch2_Fire	()
 {
 	inherited::switch2_Fire	();
-	bWorking = FALSE;
+	bWorking = false;
 /*	if (fTime<=0)
 	{
 		UpdateFP					();
@@ -155,6 +157,8 @@ void CWeaponShotgun::switch2_Fire	()
 
 void CWeaponShotgun::switch2_Fire2	()
 {
+	VERIFY(fTimeToFire>0.f);
+
 	if (fTime<=0)
 	{
 		//UpdateFP					();

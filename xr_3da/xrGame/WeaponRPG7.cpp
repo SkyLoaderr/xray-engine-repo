@@ -148,6 +148,8 @@ void CWeaponRPG7::FireStart()
 
 void CWeaponRPG7::switch2_Fire	()
 {
+	VERIFY(fTimeToFire>0.f);
+
 	if (fTime<=0)
 	{
 		///UpdateFP					();

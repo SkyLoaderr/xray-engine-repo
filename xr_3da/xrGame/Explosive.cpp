@@ -146,39 +146,15 @@ void CExplosive::Explode()
 	{
 		frag_dir.random_dir();
 		frag_dir.normalize();
-		/*
-		frag_dir.set(::Random.randF(-.5f,.5f), 
-			::Random.randF(-.5f,.5f), 
-			::Random.randF(-.5f,.5f)); 
-		*/
-			
-		// ...and trace line
-		m_vEndPoint.set(0,0,0);
-
-
-		m_fCurrentFireDist = m_fFragsRadius;
-		m_fCurrentHitPower = m_fFragHit;
-		m_fCurrentHitImpulse = m_fFragHit;
-		m_fCurrentHitType = m_eHitTypeFrag;
-		m_fCurrentWallmarkSize = fWallmarkSize;
-		m_pCurrentCartridge = NULL;
-		m_vCurrentShootDir = frag_dir;
-		m_vCurrentShootPos = Position();
 		
-/*		Collide::ray_defs RD(Position(), frag_dir, m_fFragsRadius, 0,Collide::rqtBoth);
-		Level().ObjectSpace.RayQuery(RD, firetrace_callback, dynamic_cast<CShootingObject*>(this));
-
-		//сделать так чтоб трассы разлетались только на фиксированное расстояние
-		Fvector v;
-		v.sub(Position(), m_vEndPoint);
-		if(v.magnitude()> tracerDist) 
-			m_vEndPoint.mad(Position(), frag_dir, tracerDist);
+		float		m_fCurrentFireDist = m_fFragsRadius;
+		float		m_fCurrentHitPower = m_fFragHit;
+		float		m_fCurrentHitImpulse = m_fFragHit;
+		ALife::EHitType m_eCurrentHitType = m_eHitTypeFrag;
+		float		m_fCurrentWallmarkSize = fWallmarkSize;
+		Fvector		m_vCurrentShootDir = frag_dir;
+		Fvector		m_vCurrentShootPos = Position();
 		
-		// добавить трассеры для полета осколков
-/*		
-		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
-							 tracerTrailCoeff,tracerStartLength,tracerWidth);
-*/
 		CCartridge cartridge;
 		cartridge.m_kDist = 1.f;
 		cartridge.m_kHit = 1.f;
@@ -191,9 +167,9 @@ void CExplosive::Explode()
 			tracerHeadSpeed,
 			m_fCurrentHitPower,
 			m_fCurrentHitImpulse,
-			(u16)m_iCurrentParentID,
-			(u16)ID(),
-			m_fCurrentHitType,
+			m_iCurrentParentID,
+			ID(),
+			m_eCurrentHitType,
 			m_fCurrentFireDist,
 			cartridge);
 		Level().BulletManager().AddBullet(bullet);
@@ -269,7 +245,7 @@ void CExplosive::Explode()
 				Fvector l_bs_pos = *l_bs_positions.begin();
 				NET_Packet		P;
 				u_EventGen		(P,GE_HIT,l_pGO->ID());
-				P.w_u16			(u16(m_iCurrentParentID));
+				P.w_u16			(m_iCurrentParentID);
 				P.w_u16			(ID());
 				P.w_dir			(l_dir);
 				P.w_float		(l_impuls);

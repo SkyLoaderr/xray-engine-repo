@@ -45,6 +45,11 @@ public:
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
 
+
+	virtual const Fmatrix&	XFORM()	 const		{return inherited::XFORM();}
+	virtual		  Fmatrix&	XFORM()				{return inherited::XFORM();}
+	virtual IRender_Sector*	Sector()			{return inherited::Sector();}
+
 	virtual void			renderable_Render	();
 
 	virtual void			OnH_B_Chield		();
@@ -210,7 +215,7 @@ protected:
 	bool			m_bZoomMode;
 	//от 0 до 1, показывает насколько процентов
 	//мы перемещаем HUD  
-	float m_fZoomRotationFactor;
+	float			m_fZoomRotationFactor;
 public:
 
 	IC bool					IsZoomEnabled		()	const	{return m_bZoomEnabled;}
@@ -251,13 +256,15 @@ protected:
 	//загружаемые параметры
 	Fvector					vFirePoint;
 	Fvector					vFirePoint2;
-	Fvector					vShellPoint;
 
 protected:
 	virtual void			UpdatePosition		(const Fmatrix& transform);
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
 	virtual void			UpdateHudPosition	();
+
+	virtual const Fvector&	CurrentFirePoint	() {return vLastFP;}
+	virtual const Fvector&	CurrentFirePoint2	() {return vLastFP2;}
 
 //////////////////////////////////////////////////////////////////////////
 // Weapon fire
@@ -293,18 +300,6 @@ public:
 
 
 protected:
-	float					fTimeToFire;
-	int						iHitPower;
-	float					fHitImpulse;
-
-	//скорость вылета пули из ствола
-	float					m_fStartBulletSpeed;
-	//максимальное расстояние стрельбы
-	float					fireDistance;
-
-protected:
-	//рассеивание во время стрельбы
-	float					fireDispersionBase;
 	//фактор увеличения дисперсии при максимальной изношености 
 	//(на сколько процентов увеличится дисперсия)
 	float					fireDispersionConditionFactor;
@@ -318,12 +313,6 @@ protected:
 	float					camRelaxSpeed;
 	float					camDispersion;
 
-	//трассеры
-	float					tracerHeadSpeed;
-	float					tracerTrailCoeff;
-	float					tracerStartLength;
-	float					tracerWidth;
-	u32						tracerFrame;
 
 protected:
 	//для отдачи оружия
@@ -333,26 +322,6 @@ protected:
 	//оружия
 	float					m_fMinRadius;
 	float					m_fMaxRadius;
-
-//////////////////////////////////////////////////////////////////////////
-// Lights
-//////////////////////////////////////////////////////////////////////////
-protected:
-	Fcolor					light_base_color;
-	float					light_base_range;
-	Fcolor					light_build_color;
-	float					light_build_range;
-	IRender_Light*			light_render;
-	float					light_var_color;
-	float					light_var_range;
-	float					light_lifetime;
-	u32						light_frame;
-	float					light_time;
-	//включение подсветки во время выстрела
-	bool					m_bShotLight;
-public:
-	void					Light_Start			();
-	void					Light_Render		(Fvector& P);
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -382,55 +351,6 @@ public:
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
-
-//////////////////////////////////////////////////////////////////////////
-// партикловая система
-//////////////////////////////////////////////////////////////////////////
-protected:
-	////////////////////////////////////////////////
-	//общие функции для работы с партиклами оружия
-	virtual void			StartParticles		(CParticlesObject*& pParticles, LPCSTR particles_name, const Fvector& pos, const Fvector& vel = zero_vel, bool auto_remove_flag = false);
-	virtual void			StopParticles		(CParticlesObject*& pParticles);
-	virtual void			UpdateParticles		(CParticlesObject*& pParticles, const Fvector& pos, const  Fvector& vel = zero_vel);
-
-	//спецефические функции для партиклов
-	//партиклы огня
-	virtual void			StartFlameParticles	();
-	virtual void			StopFlameParticles	();
-	virtual void			UpdateFlameParticles();
-	//для второго ствола
-	virtual void			StartFlameParticles2();
-	virtual void			StopFlameParticles2	();
-	virtual void			UpdateFlameParticles2();
-
-	//партиклы дыма
-	virtual void			StartSmokeParticles	();
-	//партиклы гильз
-	virtual void			OnShellDrop		();
-
-protected:
-	//имя пратиклов для огня
-	LPCSTR				m_sFlameParticlesCurrent;
-	//для выстрела 1м и 2м видом стрельбы
-	LPCSTR				m_sFlameParticles;
-	LPCSTR				m_sFlameParticles2;
-	
-//	#define PARTICLES_CACHE_SIZE 4
-	//объект партиклов огня
-	CParticlesObject*	m_pFlameParticles;
-//	CParticlesObject*	m_pFlameParticlesCache[PARTICLES_CACHE_SIZE];
-//	int					m_iNextParticle;
-
-
-	//объект партиклов для стрельбы из 2-го ствола
-	CParticlesObject*	m_pFlameParticles2;
-
-	//имя пратиклов для дыма
-	LPCSTR				m_sSmokeParticlesCurrent;
-	LPCSTR				m_sSmokeParticles;
-
-	//имя пратиклов для гильз
-	LPCSTR				m_sShellParticles;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)
