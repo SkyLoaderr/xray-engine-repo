@@ -11,6 +11,7 @@ private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
 	vector<u32>				m_ZB;
+	BOOL					bEnabled;
 
 	/*
 	Shader*					h_Shader;
@@ -29,6 +30,9 @@ public:
 	void					Render		(CFrustum& base);
 	void					Render_ZB	();
 	void					Debug		();
+
+	void					Disable		();
+	void					Enable		();
 
 	BOOL					visible		(vis_data& vis);
 	BOOL					visible		(Fbox& B);

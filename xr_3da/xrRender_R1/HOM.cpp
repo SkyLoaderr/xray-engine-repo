@@ -14,8 +14,9 @@ float	psOSSR		= .001f;
 
 CHOM::CHOM()
 {
-	m_pModel	= 0;
-	m_pTris		= 0;
+	bEnabled		= FALSE;
+	m_pModel		= 0;
+	m_pTris			= 0;
 }
 
 CHOM::~CHOM()
@@ -88,6 +89,7 @@ void CHOM::Load			()
 	// Create AABB-tree
 	m_pModel			= xr_new<CDB::MODEL> ();
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	bEnabled			= TRUE;
 	m_ZB.clear			();
 
 	/*
@@ -114,6 +116,7 @@ void CHOM::Unload		()
 	*/
 	xr_delete	(m_pModel);
 	xr_free		(m_pTris);
+	bEnabled	= FALSE;
 }
 
 IC	void	xform		(Fmatrix& X, Fvector& D, Fvector& S, float dim_2)
@@ -187,7 +190,7 @@ void CHOM::Render_DB	(CFrustum& base)
 
 void CHOM::Render		(CFrustum& base)
 {
-	if (0==m_pModel)	return;
+	if (!bEnabled)		return;
 	
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	m_ZB.clear			();
@@ -313,14 +316,14 @@ IC	BOOL	_visible	(Fbox& B)
 
 BOOL CHOM::visible		(Fbox& B)
 {
-	if (0==m_pModel)	return TRUE;
+	if (!bEnabled)		return TRUE;
 	return _visible		(B);
 }
 
 BOOL CHOM::visible		(vis_data& vis)
 {
 	if (Device.dwFrame<vis.hom_frame)	return TRUE;	// not at this time :)
-	if (0==m_pModel) {
+	if (!bEnabled)	{
 		vis.hom_frame	= u32	(-1);					// delay testing as much as possible
 		return TRUE;									// return - everything visible
 	}
@@ -373,7 +376,7 @@ BOOL CHOM::visible		(vis_data& vis)
 
 BOOL CHOM::visible		(sPoly& P)
 {
-	if (0==m_pModel)	return TRUE;
+	if (!bEnabled)		return TRUE;
 
 	// Find min/max points of xformed-box
 	Fmatrix&	XF		= Device.mFullTransform;
@@ -384,4 +387,14 @@ BOOL CHOM::visible		(sPoly& P)
 	for (u32 it=1; it<P.size(); it++)
 		if (xform_b1(min,max,z,XF, P[it].x, P[it].y, P[it].z)) return TRUE;
 	return Raster.test	(min.x,min.y,max.x,max.y,z);
+}
+
+void CHOM::Disable		()
+{
+	bEnabled			= FALSE;
+}
+
+void CHOM::Enable		()
+{
+	bEnabled			= m_pModel?TRUE:FALSE;
 }

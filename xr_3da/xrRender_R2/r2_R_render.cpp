@@ -12,8 +12,8 @@ void CRender::Render	()
 		// Frustum & HOM rendering
 		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 		View									= 0;
+		HOM.Enable								();
 		HOM.Render								(ViewBase);
-		rmNormal								();
 
 		// Calculate sector(s) and their objects
 		set_Object								(0);
@@ -26,6 +26,7 @@ void CRender::Render	()
 	Device.Statistic.RenderDUMP.Begin();
 	{
 		Target.phase_scene					();
+		rmNormal							();
 
 		render_hud							();
 		render_scenegraph					();
