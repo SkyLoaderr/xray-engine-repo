@@ -203,7 +203,8 @@ void CUIGameDM::OnFrame()
 				m_iCurrentPlayersMoney = P->money_for_round;
 			};
 			//-----------------------------------------------------------
-			if (Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
+///			if (Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
+			if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
 			{
 				if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 				{

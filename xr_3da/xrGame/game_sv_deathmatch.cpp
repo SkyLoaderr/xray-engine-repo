@@ -169,7 +169,8 @@ void	game_sv_Deathmatch::Update					()
 			//-----------------------------------------------------
 			if (m_bSpectatorMode)
 			{
-				SM_SwitchOnNextActivePlayer();
+				if (m_dwSM_LastSwitchTime<Level().timeServer())
+					SM_SwitchOnNextActivePlayer();
 			};
 		}
 		break;
@@ -184,8 +185,7 @@ void	game_sv_Deathmatch::Update					()
 
 void	game_sv_Deathmatch::SM_SwitchOnNextActivePlayer()
 {
-	if (m_dwSM_LastSwitchTime>Level().timeServer()) return;
-
+	
 	u32		PossiblePlayers[32];
 	u32		cnt		= get_count	();
 	u32		PPlayersCount = 0;
@@ -353,8 +353,11 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			if (ps->Skip) break;
 			if (!(ps->flags & GAME_PLAYER_FLAG_VERY_VERY_DEAD)) break;
 			xrClientData* xrSCData	=	m_server->GetServer_client();
-			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) break;
-
+			if (xrSCData && xrSCData->ID == id && m_bSpectatorMode) 
+			{
+				SM_SwitchOnNextActivePlayer();
+				return;
+			}
 			//------------------------------------------------------------
 			RespawnPlayer(id, false);
 		}break;
@@ -1157,6 +1160,11 @@ void game_sv_Deathmatch::OnPlayerChangeSkin(u32 id_who, u8 skin)
 
 void game_sv_Deathmatch::OnDestroyObject			(u16 eid_who)
 {
+	if (eid_who == m_dwSM_CurViewEntity)
+	{
+		SM_SwitchOnNextActivePlayer();
+	};
+
 	for (u32 i=0; i<m_CorpseList.size();)
 	{
 		if (m_CorpseList[i] == eid_who)
