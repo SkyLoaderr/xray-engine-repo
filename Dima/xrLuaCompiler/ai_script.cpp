@@ -13,6 +13,8 @@
 #include "ai_script.h"
 #include "ai_space.h"
 
+#include "script_debugger.h"
+
 CScript::CScript(LPCSTR caNamespaceName)
 {
 	string256			S;
@@ -28,6 +30,7 @@ CScript::CScript(LPCSTR caNamespaceName)
 	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 	
 #ifdef DEBUG
+	if( !CScriptDebugger::GetDebugger()->Active() )
 	lua_sethook			(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 

@@ -56,8 +56,9 @@
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
-				AdditionalOptions="/MACHINE:I386 "
-				AdditionalDependencies="odbc32.lib odbccp32.lib x:\xr_3da.lib"
+				AdditionalOptions="/MACHINE:I386 
+"
+				AdditionalDependencies="x:\xr_3da.lib"
 				ShowProgress="0"
 				OutputFile="x:\xrGame.dll"
 				LinkIncremental="2"
@@ -3922,6 +3923,46 @@
 							RelativePath=".\script_stack_tracker_inline.h">
 						</File>
 					</Filter>
+				</Filter>
+				<Filter
+					Name="ScriptDebugger"
+					Filter="">
+					<File
+						RelativePath=".\mslotutils.h">
+					</File>
+					<File
+						RelativePath=".\script_callStack.cpp">
+					</File>
+					<File
+						RelativePath=".\script_callStack.h">
+					</File>
+					<File
+						RelativePath=".\script_debugger.cpp">
+					</File>
+					<File
+						RelativePath=".\script_debugger.h">
+					</File>
+					<File
+						RelativePath=".\script_debugger_messages.h">
+					</File>
+					<File
+						RelativePath=".\script_debugger_utils.cpp">
+					</File>
+					<File
+						RelativePath=".\script_debugger_utils.h">
+					</File>
+					<File
+						RelativePath=".\script_file.cpp">
+					</File>
+					<File
+						RelativePath=".\script_file.h">
+					</File>
+					<File
+						RelativePath=".\script_lua_helper.cpp">
+					</File>
+					<File
+						RelativePath=".\script_lua_helper.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
