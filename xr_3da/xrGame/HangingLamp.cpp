@@ -104,7 +104,7 @@ void CHangingLamp::UpdateCL	()
 			xf.set		(XFORM());
 		}
 
-		light_render->set_direction	(xf.k);
+		light_render->set_rotation	(xf.k,xf.i);
 		light_render->set_position	(xf.c);
 		glow_render->set_position	(xf.c);
 		//glow_render->set_direction	(xf.k);

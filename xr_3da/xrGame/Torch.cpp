@@ -131,7 +131,7 @@ void CTorch::UpdateCL()
 	if (H_Parent()) {
 		PKinematics(H_Parent()->Visual())->Calculate();
 		M.mul						(XFORM(),BI.mTransform);
-		light_render->set_direction	(M.k);
+		light_render->set_rotation	(M.k,M.i);
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
 		glow_render->set_direction	(M.k);
@@ -141,7 +141,7 @@ void CTorch::UpdateCL()
 			M.mul					(XFORM(),BI.mTransform);
 
 			if (light_render->get_active()){
-				light_render->set_direction	(M.k);
+				light_render->set_rotation	(M.k,M.i);
 				light_render->set_position	(M.c);
 				glow_render->set_position	(M.c);
 				glow_render->set_direction	(M.k);

@@ -90,7 +90,7 @@ void SCarLight::Update()
 	CBoneInstance& BI = PKinematics(pcar->Visual())->LL_GetBoneInstance(bone_id);
 	Fmatrix M;
 	M.mul(pcar->XFORM(),BI.mTransform);
-	light_render->set_direction	(M.k);
+	light_render->set_rotation	(M.k,M.i);
 	light_render->set_position	(M.c);
 	glow_render->set_position	(M.c);
 }
