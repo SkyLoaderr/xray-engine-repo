@@ -17,7 +17,6 @@ using namespace AI;
 
 CAI_Space::CAI_Space	()
 {
-//	Msg("CAI_Space::CAI_Space()");
 	sh_debug					= 0;
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
@@ -35,7 +34,6 @@ CAI_Space::CAI_Space	()
 
 CAI_Space::~CAI_Space	()
 {
-//	Msg("CAI_Space::~CAI_Space()");
 	Unload();
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
