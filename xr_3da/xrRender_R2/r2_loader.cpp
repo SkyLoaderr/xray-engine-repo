@@ -37,10 +37,10 @@ void CRender::level_Load()
 	Details.Load		();
 
 	// Wallmarks
-	Wallmarks			= xr_new<CWallmarksEngine>	();
+	// Wallmarks			= xr_new<CWallmarksEngine>	();
 
 	// Streams
-	hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	// hGeomPatches		= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// HOM
 	HOM.Load			();
@@ -59,10 +59,10 @@ void CRender::level_Unload()
 	HOM.Unload				();
 
 	//*** Streams
-	Device.Shader.DeleteGeom(hGeomPatches);
+	// Device.Shader.DeleteGeom(hGeomPatches);
 
 	// Wallmarks
-	xr_delete				(Wallmarks);
+	// xr_delete			(Wallmarks);
 
 	//*** Details
 	Details.Unload			();
@@ -80,9 +80,8 @@ void CRender::level_Unload()
 	Portals.clear			();
 
 	//*** Lights
-	Glows.Unload			();
-	L_DB.Unload				();
-	L_Dynamic.Destroy		();
+	// Glows.Unload			();
+	Lights.Unload			();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -207,12 +206,12 @@ void CRender::LoadVisuals(IReader *fs)
 void CRender::LoadLights(IReader *fs)
 {
 	// lights
-	L_DB.Load	(fs);
+	Lights.Load	(fs);
 
 	// glows
 	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
-	Glows.Load(chunk);
+	// Glows.Load(chunk);
 	chunk->close();
 }
 

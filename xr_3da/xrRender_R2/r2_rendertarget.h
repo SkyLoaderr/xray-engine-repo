@@ -18,7 +18,7 @@ public:
 	void				Begin				();
 	void				End					();
 
-	virtual void		eff_load			(LPCSTR n);
+	virtual void		eff_load			(LPCSTR n)		{};
 
 	virtual void		set_blur			(float f)		{ param_blur=f;						}
 	virtual void		set_gray			(float f)		{ param_gray=f;						}
