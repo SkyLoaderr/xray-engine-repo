@@ -88,8 +88,8 @@ void CAI_Rat::Think()
 				ReturnHome();
 				break;
 			}
-			case aiRatEatCorp : {
-				EatCorp();
+			case aiRatEatCorpse : {
+				EatCorpse();
 				break;
 			}
 		}
@@ -144,6 +144,16 @@ void CAI_Rat::Death()
 			vPosition.set(vPosition.x,fY,vPosition.z);
 		UpdateTransform();
 	}
+	else {
+		if (m_fFood <= 0) {
+			if (Local()) {
+				// Request destroy
+				NET_Packet			P;
+				u_EventGen			(P,GE_DESTROY,ID());
+				u_EventSend			(P);
+			}
+		}
+	}
 }
 
 void CAI_Rat::Turn()
@@ -193,7 +203,7 @@ void CAI_Rat::FreeHuntingActive()
     
 	SelectCorp(m_Enemy);
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatEatCorp);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatEatCorpse);
 	
 	m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
@@ -726,9 +736,9 @@ void CAI_Rat::ReturnHome()
 	vfSetFire(false,Group);
 }
 
-void CAI_Rat::EatCorp()
+void CAI_Rat::EatCorpse()
 {
-	WRITE_TO_LOG("Eating a corp");
+	WRITE_TO_LOG("Eating a corpse");
 
 	m_bFiring = false;
 

@@ -37,7 +37,7 @@ class CAI_Rat : public CCustomMonster
 			aiRatPursuit,
 			aiRatFreeRecoil,
 			aiRatReturnHome,
-			aiRatEatCorp,
+			aiRatEatCorpse,
 		};
 
 	
@@ -193,9 +193,9 @@ class CAI_Rat : public CCustomMonster
 		float				m_fSoundThreshold;
 
 		// eat troops
-		BOOL				m_bEatMemberCorps;
+		BOOL				m_bEatMemberCorpses;
 		BOOL				m_bCannibalism;
-		u32					m_dwEatCorpInterval;
+		u32					m_dwEatCorpseInterval;
 
 		//////////////////////////
 		// INLINE FUNCTIONS
@@ -324,7 +324,7 @@ class CAI_Rat : public CCustomMonster
 		void	Pursuit();
 		void	FreeRecoil();
 		void	ReturnHome();
-		void	EatCorp();
+		void	EatCorpse();
 	public:
 					   CAI_Rat();
 		virtual		  ~CAI_Rat();

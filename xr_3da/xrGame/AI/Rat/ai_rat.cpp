@@ -129,9 +129,9 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
 
-	m_bEatMemberCorps				= pSettings->ReadBOOL  (section,"EatMemberCorps");
+	m_bEatMemberCorpses				= pSettings->ReadBOOL  (section,"EatMemberCorpses");
 	m_bCannibalism					= pSettings->ReadBOOL  (section,"Cannibalism");
-	m_dwEatCorpInterval				= pSettings->ReadINT   (section,"EatCorpInterval");
+	m_dwEatCorpseInterval			= pSettings->ReadINT   (section,"EatCorpseInterval");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
