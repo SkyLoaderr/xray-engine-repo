@@ -82,7 +82,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 
 	server().Perform_destroy		(object,net_flags(TRUE,TRUE));
 	_OBJECT_ID						l_tObjectID = object->ID;
-	object->ID		= server().PerformIDgen(l_tObjectID);
+	object->ID						= server().PerformIDgen(l_tObjectID);
 	R_ASSERT2						(l_tObjectID == object->ID,"Can't reserve a particular object identifier");
 
 #ifdef DEBUG
@@ -92,25 +92,6 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 #endif
 
 	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(object);
-//	if (tpTraderParams) {
-//		OBJECT_IT					I = object->children.begin();
-//		OBJECT_IT					E = object->children.end();
-//		for ( ; I != E; ++I) {
-//			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = objects().object(*I);
-//			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
-//			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
-//#ifdef DEBUG
-//			if (psAI_Flags.test(aiALife)) {
-//				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID);
-//			}
-//#endif
-//			server().Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
-//			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
-//			l_tpALifeInventoryItem->ID	= server().PerformIDgen(l_tpALifeInventoryItem->ID);
-//			R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
-//			l_tpALifeDynamicObject->m_bOnline = false;
-//		}
-//	}
 	if (tpTraderParams) {
 		for (int i=0, n=(int)object->children.size(); i<n; ++i) {
 			CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(objects().object(object->children[i],true));
@@ -142,6 +123,11 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 		}
 	}
 	else {
+		while (!object->children.empty()) {
+			CSE_ALifeDynamicObject	*child = objects().object(object->children.back(),true);
+			if (child)
+				release				(child);
+		}
 		object->children.clear		();
 	}
 
