@@ -282,14 +282,23 @@ void CUIDiaryWnd::SetContractTrader()
 			character_info.InitSpecificCharacter(pTrader->specific_character());
 			UIContractsWnd.UICharInfo.InitCharacter(&character_info);
 
-			LPCSTR artefact_list_func = pSettings->r_string("artefacts_tasks", "script_func");
+			LPCSTR artefact_list_func = READ_IF_EXISTS(pSettings,r_string,"artefacts_tasks","script_func",""));
+			if (!xr_strlen(artefact_list_func)) {
+				UIContractsWnd.UIListWnd.RemoveAll();
+				return;
+			}
+
 			luabind::functor<LPCSTR> lua_function;
 			bool functor_exists = ai().script_engine().functor(artefact_list_func ,lua_function);
+			if (!functor_exists) {
+				UIContractsWnd.UIListWnd.RemoveAll();
+				return;
+			}
+
 			R_ASSERT3(functor_exists, "Cannot find artefacts tasks func", artefact_list_func);
 			LPCSTR artefact_list = lua_function	(NULL, m_TraderID);
 			UIContractsWnd.UIListWnd.RemoveAll();
-			if(artefact_list)
-			{
+			if (artefact_list) {
 				CUIString str;
 				str.SetText(artefact_list);
 //				CUIStatic::PreprocessText(str.m_str, UIContractsWnd.UIListWnd.GetItemWidth() - 5, UIContractsWnd.UIListWnd.GetFont());
