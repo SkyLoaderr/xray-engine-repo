@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_rat.cpp
 //	Created 	: 25.04.2002
-//  Modified 	: 06.11.2002
+//  Modified 	: 07.11.2002
 //	Author		: Dmitriy Iassenev
 //	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
@@ -363,18 +363,6 @@ void CAI_Rat::Retreat()
 		
 		INIT_SQUAD_AND_LEADER;
 		
-//		if (this == Leader) {
-//			Fvector tTemp;
-//			tTemp.sub(vPosition,m_Enemy.Enemy->Position());
-//			tTemp.normalize_safe();
-//			tTemp.mul(RETREAT_DISTANCE);
-//			m_tSafeSpawnPosition.add(vPosition,tTemp);
-//		}
-//		else {
-//			CAI_Rat *tpRatLeader = dynamic_cast<CAI_Rat *>(Leader);
-//			if (tpRatLeader)
-//				m_tSafeSpawnPosition.set(tpRatLeader->m_tSafeSpawnPosition);
-//		}
 		Fvector tTemp;
 		tTemp.sub(vPosition,m_Enemy.Enemy->Position());
 		tTemp.normalize_safe();
