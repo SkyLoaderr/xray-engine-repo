@@ -58,7 +58,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	game->OnPlayerConnect			(CL->ID);
 	csPlayers.Leave					();
 
-	Find_Server_Client();
+	Server_Client_Check(CL);
 
 	/*
 	IDirectPlay8Address* pAddr = NULL;
