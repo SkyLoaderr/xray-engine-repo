@@ -44,7 +44,7 @@ class CLightPPA_Manager
 	xr_set<CLightPPA*>				active;
 	xr_set<CLightPPA*>				inactive;
 	
-	Shader*							hShader;
+	ref_shader						hShader;
 	ref_geom						hGeom;
 public:
 	void			Initialize		();

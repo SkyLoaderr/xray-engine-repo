@@ -14,12 +14,12 @@ private:
 	BOOL					bEnabled;
 
 	/*
-	Shader*					h_Shader;
+	ref_shader					h_Shader;
 	ref_geom				h_Geom;
 
 	IDirect3DTexture9*		dbg_surf;
 	CTexture*				dbg_texture;
-	Shader*					dbg_shader;
+	ref_shader					dbg_shader;
 	ref_geom				dbg_geom;
 	*/
 	

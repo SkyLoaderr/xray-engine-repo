@@ -106,7 +106,7 @@ void CDetailManager::hw_Load	()
 	}
 
 	// Create shader to access constant storage
-	Shader*		S		= Device.Shader.Create	("details\\set");
+	ref_shader		S		= Device.Shader.Create	("details\\set");
 	R_constant_table&	T0	= *(S->E[0]->Passes[0]->constants);
 	R_constant_table&	T1	= *(S->E[1]->Passes[0]->constants);
 	hwc_consts			= T0.get("consts");

@@ -17,10 +17,10 @@ public:
 	float			cone;
 	Fcolor			color;
 
-	Shader*			s_spot_s;
-	Shader*			s_spot_uns;
-	Shader*			s_point_s;
-	Shader*			s_point_uns;
+	ref_shader		s_spot_s;
+	ref_shader		s_spot_uns;
+	ref_shader		s_point_s;
+	ref_shader		s_point_uns;
 
 	u32				dwFrame;
 public:

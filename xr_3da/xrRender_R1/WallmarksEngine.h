@@ -10,7 +10,7 @@ public:
 	{
 	public:
 		Fsphere				bounds;
-		Shader*				shader;
+		ref_shader			shader;
 		xr_vector<FVF::LIT>	verts;
 		float				ttl;
 	};
@@ -27,11 +27,11 @@ private:
 	void		BuildMatrix			(Fmatrix &dest, float invsz, const Fvector& from);
 	void		RecurseTri			(CDB::TRI* T, Fmatrix &mView, wallmark	&W, CFrustum &F);
 
-	wallmark*	wm_allocate			(Shader*	S	);
+	wallmark*	wm_allocate			(ref_shader&	S	);
 	void		wm_render			(wallmark*	W, FVF::LIT* &V);
 	void		wm_destroy			(wallmark*	W	);
 public:
-	void		AddWallmark			(CDB::TRI* tri, const Fvector &contact_point, Shader* hTexture, float sz);
+	void		AddWallmark			(CDB::TRI* tri, const Fvector &contact_point, ref_shader hTexture, float sz);
 	void		Render				();
 
 	CWallmarksEngine				();

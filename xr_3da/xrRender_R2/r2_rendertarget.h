@@ -57,15 +57,15 @@ public:
 	CTexture*					t_ds2fade;
 private:
 	// Decompress
-	Shader*						s_decompress;	// 0=pos,1=norm,2=color
+	ref_shader					s_decompress;	// 0=pos,1=norm,2=color
 
 	// Accum
-	Shader*						s_accum_mask;
-	Shader*						s_accum_direct;
-	Shader*						s_accum_point_s;
-	Shader*						s_accum_point_uns;
-	Shader*						s_accum_spot_s;
-	Shader*						s_accum_spot_uns;
+	ref_shader					s_accum_mask;
+	ref_shader					s_accum_direct;
+	ref_shader					s_accum_point_s;
+	ref_shader					s_accum_point_uns;
+	ref_shader					s_accum_spot_s;
+	ref_shader					s_accum_spot_uns;
 	ref_geom					g_accum_point;
 	ref_geom					g_accum_spot;
 	ref_geom					g_accum_point_tl;
@@ -77,18 +77,18 @@ private:
 	// Bloom
 	ref_geom					g_bloom_build;
 	ref_geom					g_bloom_filter;
-	Shader*						s_bloom_dbg_1;
-	Shader*						s_bloom_dbg_2;
-	Shader*						s_bloom;
+	ref_shader						s_bloom_dbg_1;
+	ref_shader						s_bloom_dbg_2;
+	ref_shader						s_bloom;
 
 	// Combine
 	ref_geom					g_combine;
 	ref_geom					g_aa_blur;
 	ref_geom					g_aa_AA;
-	Shader*						s_combine_dbg_DepthD;
-	Shader*						s_combine_dbg_Normal;
-	Shader*						s_combine_dbg_Accumulator;
-	Shader*						s_combine;
+	ref_shader						s_combine_dbg_DepthD;
+	ref_shader						s_combine_dbg_Normal;
+	ref_shader						s_combine_dbg_Accumulator;
+	ref_shader						s_combine;
 private:
 	float						param_blur;
 	float						param_gray;

@@ -27,10 +27,10 @@ private:
 
 	CRT*					RT;
 	CRT*					RT_temp;
-	Shader*					sh_BlurTR;
-	Shader*					sh_BlurRT;
+	ref_shader				sh_BlurTR;
+	ref_shader				sh_BlurRT;
 	ref_geom				geom_Blur;
-	Shader*					sh_Screen;
+	ref_shader				sh_Screen;
 	ref_geom				geom_Screen;
 public:
 	void					set_object		(IRenderable*	O);

@@ -44,13 +44,13 @@ private:
 
 	CRT*					RT;
 	CRT*					RT_temp;
-	Shader*					sh_Texture;
-	Shader*					sh_BlurTR;
-	Shader*					sh_BlurRT;
+	ref_shader				sh_Texture;
+	ref_shader				sh_BlurTR;
+	ref_shader				sh_BlurRT;
 	ref_geom				geom_Blur;
-	Shader*					sh_World;
+	ref_shader				sh_World;
 	ref_geom				geom_World;
-	Shader*					sh_Screen;
+	ref_shader				sh_Screen;
 	ref_geom				geom_Screen;
 private:
 public:
