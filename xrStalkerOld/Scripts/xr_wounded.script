@@ -8,7 +8,7 @@ function send_sos (npc)
        return 
     end
         
-    if distance_between (npc, act) > 200.0  then
+    if distance_between (npc, act) > 100.0  then
        return 
     end
     
@@ -59,7 +59,11 @@ function evaluator_wound:evaluate ()
 	
 	self.wound = self.a.enabled and this.is_wounded(self.object, self.a.hp_max)
     this.process_map_spot(self.object, self.wound, self.a)
-	
+	if self.wound then
+		self.a.state_talkable = false
+	else
+		self.a.state_talkable = true
+	end
     return self.wound
 end
 ------------------------------------------------------------------------------------------
@@ -249,7 +253,7 @@ end
 function action_help:initialize ()
     action_base.initialize (self)
     
-    self.object:enable_talk ()
+    this.usable(self.object, true)
     
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
@@ -278,13 +282,8 @@ end
 ------------
 function action_help:execute ()
     action_base.execute (self)
-       
---    if distance_between (self.object, self.a.npc) < 5 then
-       -- ÂÑÒÀÂÈÒÜ ÌÀÕÀÍÈÅ ÐÓÊÎÉ ÑÈÄÎÐÎÂÈ×À
---       state_mgr.set_state(self.object, "help_me")
---    else
---       state_mgr.set_state(self.object, "wounded")
---    end
+    this.usable(self.object, true)
+    
     if self.object:is_talking () == false then
        if self.object:active_sound_count() == 0 and self.first_sound == true then 
 	      xr_sound.sound_update(self.object, self.sounds, true)
@@ -305,6 +304,7 @@ end
 ------------
 function action_help:finalize ()
     action_base.finalize (self)
+    this.usable(self.object, false)
     xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
@@ -357,7 +357,6 @@ end
 ------------
 function action_stand:finalize ()   
     xr_meet.override_meet (self.object, false)
-    --self.object:restore_default_start_dialog ()
     action_base.finalize (self)
     self.a.sit = false
 end    
@@ -383,19 +382,21 @@ function action_enemy:initialize ()
     action_base.initialize (self)
     
     xr_meet.override_meet (self.object, true)    
-    self.send_time = device ():time_global ()    
+    self.send_time = device ():time_global ()
+    this.usable(self.object, true)
 end
 ------------
 function action_enemy:execute ()
     action_base.execute (self)
-
+	this.usable(self.object, true)
+	
     local enemy = self.object:best_enemy ()
     state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
 	
 	if enemy and distance_between(self.object, enemy) < 20 and self.object:see(enemy) == true then
 		if enemy:alive() == true then 
 			state_mgr.set_state(self.object, "hide_fire", nil,nil, {look_object = enemy})
-		else   
+		else 
 			state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy, look_position = enemy:position()})
 		end	
     end
@@ -412,6 +413,7 @@ end
 ------------
 function action_enemy:finalize ()
     action_base.finalize (self)
+    this.usable(self.object, false)
     xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
@@ -460,6 +462,15 @@ function hide_yourself(npc)
 	end		
 end
 
+function usable(obj, type)
+	if type then
+		if db.actor and obj:relation(db.actor) ~= game_object.enemy then
+			obj:enable_talk()
+			return
+		end
+	end
+	obj:disable_talk()
+end
 ------------------------------------------------------------------------------------------
 function add_to_binder (object, ini, scheme, section, st)
 

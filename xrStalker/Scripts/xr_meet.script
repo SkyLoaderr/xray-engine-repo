@@ -204,7 +204,7 @@ function evaluator_state_talk:evaluate()
 	if overrides and overrides.meet_state == "nil" then
 		return false
 	end
-	return self.object:is_talking()
+	return self.object:is_talking() and self.a.state_talkable == true
 end
 
 class "evaluator_need_exit" (property_evaluator)
