@@ -59,7 +59,6 @@ public:
     SJointIKData		IK_data;
     float				mass;
     Fvector				center_of_mass;
-
 public:    
 						CBoneData		(u16 ID):SelfID(ID){}
 	void				DebugQuery		(BoneDebug& L);
