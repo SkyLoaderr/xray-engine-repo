@@ -185,6 +185,20 @@ void CRender::Render		()
 	LP_normal.sort			();
 	LP_pending.sort			();
 
+	//******* Elevation maps render
+	if (b_emap)
+	{
+		// level
+		marker									++;
+		phase									= PHASE_NORMAL;
+		Target.phase_scene						();
+
+		for (emapslice=0; emapslice<ps_r2_emap_slices; emapslice++)
+		{
+			r_dsgraph_render_graph				(0);
+		}
+	}
+
 	//******* Decompression on some HW :)
 	Target.phase_decompress				();
 
