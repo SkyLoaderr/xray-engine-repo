@@ -33,7 +33,9 @@
 
 	<!-- FONT FOR INDICATE MESSAGE AUTORS -->
 	<font font="normal" r="250" g="151" b="22"></font>
-
+	<!-- Font for indicate our replics> -->
+	<font font="normal" r="216" g="186" b="140"></font>
+	
 	<!-- STATIC FOR DISPLAYING NAME OF CHARACTER -->
 	<static x="20" y="430" width="347" height="212">
 		<text font="letterica18" r="250" g="151" b="22"></text>
