@@ -49,8 +49,6 @@ public:
 
 	union			_xform	{
 		struct		_D		{
-			Fmatrix						view;
-			Fmatrix						project;
 			Fmatrix						combine;
 			BOOL						transluent;
 		}	D;

@@ -411,63 +411,58 @@ void CRender::render_sun				()
 	{
 		Fmatrix&	xform	= *((Fmatrix*)&m_LightViewProj);
 		Fbox3		b_casters, b_receivers;
-		b_casters.invalidate	();
-		b_receivers.invalidate	();
 
 		// casters
-		for		(int c=0; c<s_casters.size(); c++)	{
-			Fvector3				pt;
-			minmax_xform.transform	(pt,s_casters[c].min);
-			b_casters.modify		(pt);
-			minmax_xform.transform	(pt,s_casters[c].max);
-			b_casters.modify		(pt);
+		b_casters.invalidate	();
+		for		(int c=0; c<s_casters.size(); c++)		{
+			Fvector3			pt;
+			xform.transform		(pt,s_casters[c].min);
+			b_casters.modify	(pt);
+			xform.transform		(pt,s_casters[c].max);
+			b_casters.modify	(pt);
 		}
 
 		// receivers
-		for		(int c=0; c<s_casters.size(); c++)	{
-			Fvector3				pt;
-			minmax_xform.transform	(pt,s_casters[c].min);
-			b_casters.modify		(pt);
-			minmax_xform.transform	(pt,s_casters[c].max);
-			b_casters.modify		(pt);
+		b_receivers.invalidate	();
+		for		(int c=0; c<s_receivers.size(); c++)	{
+			Fvector3			pt;
+			xform.transform		(pt,s_receivers[c].min);
+			b_receivers.modify	(pt);
+			xform.transform		(pt,s_receivers[c].max);
+			b_receivers.modify	(pt);
 		}
-
-		// box around receivers/casters in light's post-projective space
-		D3DXVECTOR3*	shadowCasterPnts	= new D3DXVECTOR3[8*m_ShadowCasterPoints.size()		];
-		D3DXVECTOR3*	shadowReceiverPnts	= new D3DXVECTOR3[8*m_ShadowReceiverPoints.size()	];
-		for ( int i=0; i<m_ShadowCasterPoints.size(); i++ )
-			for ( int j=0; j<8; j++ ) shadowCasterPnts[i*8+j] = m_ShadowCasterPoints[i].Point(j);
-		for ( int i=0; i<m_ShadowReceiverPoints.size(); i++ )
-			for ( int j=0; j<8; j++ ) shadowReceiverPnts[i*8+j] = m_ShadowReceiverPoints[i].Point(j);
-		D3DXVec3TransformCoordArray	( shadowCasterPnts,		sizeof(D3DXVECTOR3), shadowCasterPnts,   sizeof(D3DXVECTOR3), &xform, m_ShadowCasterPoints.size()*8		);
-		D3DXVec3TransformCoordArray	( shadowReceiverPnts,	sizeof(D3DXVECTOR3), shadowReceiverPnts, sizeof(D3DXVECTOR3), &xform, m_ShadowReceiverPoints.size()*8	);
-		BoundingBox casterAABB		( shadowCasterPnts,		m_ShadowCasterPoints.size()*8);		delete [] shadowCasterPnts;
-		BoundingBox receiverAABB	( shadowReceiverPnts,	m_ShadowReceiverPoints.size()*8);	delete [] shadowReceiverPnts;
 
 		// because caster points are from coarse representation only allow to "shrink" box, not grow
 		// that is the same as if we first clip casters by frustum
-		if (receiverAABB.minPt.x<-1)	receiverAABB.minPt.x=-1;
-		if (receiverAABB.minPt.y<-1)	receiverAABB.minPt.y=-1;
-		if (casterAABB.minPt.z<0)		casterAABB.minPt.z=0;
-		if (receiverAABB.maxPt.x>+1)	receiverAABB.maxPt.x=+1;
-		if (receiverAABB.maxPt.y>+1)	receiverAABB.maxPt.y=+1;
-		if (casterAABB.maxPt.z>+1)		casterAABB.maxPt.z=+1;
+		if (b_receivers.min.x<-1)	b_receivers.min.x	=-1;
+		if (b_receivers.min.y<-1)	b_receivers.min.y	=-1;
+		if (b_casters.min.z<0)		b_casters.min.z		=0;
+		if (b_receivers.max.x>+1)	b_receivers.max.x	=+1;
+		if (b_receivers.max.y>+1)	b_receivers.max.y	=+1;
+		if (b_casters.max.z>+1)		b_casters.max.z		=+1;
 
 		// refit?
 		const float EPS				= 0.001f;
-		D3DXMatrixOrthoOffCenterLH	( &refit, receiverAABB.minPt.x, receiverAABB.maxPt.x, receiverAABB.minPt.y, receiverAABB.maxPt.y, casterAABB.minPt.z-EPS, casterAABB.maxPt.z+EPS );
+		D3DXMATRIX					refit;
+		D3DXMatrixOrthoOffCenterLH	( &refit, b_receivers.min.x, b_receivers.max.x, b_receivers.min.y, b_receivers.max.y, b_casters.min.z-EPS, b_casters.maxPt.z+EPS );
 		D3DXMatrixMultiply			( &m_LightViewProj, &m_LightViewProj, &refit);
 	}
 
+	// Finalize & Cleanup
+	fuckingsun->X.D.combine			= *((Fmatrix*)&m_LightViewProj);
+	s_receivers.clear				();
+	s_casters.clear					();
+
 	// Render shadow-map
+	//. !!! We should clip based on shrinked frustum (again)
 	{
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target.phase_smap_direct			(fuckingsun		);
-			RCache.set_xform_world				(Fidentity		);
-			RCache.set_xform_view				(Fidentity		);
-			RCache.set_xform_project			(fuckingsun->X.D.project	);	//.
+			Target.phase_smap_direct			(fuckingsun					);
+			RCache.set_xform_world				(Fidentity					);
+			RCache.set_xform_view				(Fidentity					);
+			RCache.set_xform_project			(fuckingsun->X.D.combine	);	//.
 			r_dsgraph_render_graph				(0);
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
