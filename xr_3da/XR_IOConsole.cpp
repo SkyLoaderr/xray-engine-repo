@@ -334,9 +334,9 @@ void CConsole::IR_OnKeyboardHold(int dik)
 
 void CConsole::ExecuteCommand()
 {
-	char	first_word[2*64];
-	char	last_word [2*64];
-	char	converted [2*256];
+	char	first_word[MAX_LEN];
+	char	last_word [MAX_LEN];
+	char	converted [MAX_LEN];
 	int		i,j,len;
 
 	scroll_delta	= 0;
