@@ -11,6 +11,11 @@ class CBitingPanic : public IState {
 	} m_tAction;
 
 	Fvector			position;
+	
+	Fvector			target_pos;
+	u32				target_vertex_id;
+
+	TTime			last_time_cover_selected;
 
 public:
 					CBitingPanic	(CAI_Biting *p);

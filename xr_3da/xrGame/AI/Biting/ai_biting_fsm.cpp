@@ -51,7 +51,6 @@ void CAI_Biting::Think()
 	
 	TranslateActionToPathParams				();
 
-	// построить путь
 	CMonsterMovement::Frame_Update			();
 	
 	MotionMan.Update						();
@@ -63,7 +62,7 @@ void CAI_Biting::Think()
 #ifdef DEBUG
 	HDebug->SetActive						(true);
 #endif
-	
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,7 @@ class CMonsterDebug;
 class CCharacterPhysicsSupport;
 class CAnimTriple;
 class CMonsterCorpseCoverEvaluator;
+class CCoverEvaluatorFarFromEnemy;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
@@ -213,6 +214,7 @@ public:
 
 	// Cover
 			bool			GetCorpseCover					(Fvector &position, u32 &vertex_id);
+			bool			GetCoverFromEnemy				(const Fvector &enemy_pos, Fvector &position, u32 &vertex_id);
 
 // members
 public:
@@ -234,7 +236,8 @@ public:
 	SCurrentAnim				cur_anim;
 
 
-	CMonsterCorpseCoverEvaluator *m_corpse_cover_evaluator;
+	CMonsterCorpseCoverEvaluator	*m_corpse_cover_evaluator;
+	CCoverEvaluatorFarFromEnemy		*m_enemy_cover_evaluator;
 
 	// -----------------------------------------------------------------------
 	// FSM
@@ -306,6 +309,13 @@ public:
 	u32						m_dwFrameSpawn;
 	u32						m_dwFrameDestroy;
 	u32						m_dwFrameClient;
+
+/////////////////////////////////////////////////////////
+// TEMP
+	u32						prev_size;
+////////////////////////////////////////////////////////
+
+
 
 
 #ifdef DEBUG

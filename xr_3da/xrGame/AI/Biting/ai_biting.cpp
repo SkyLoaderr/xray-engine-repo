@@ -12,7 +12,7 @@
 #include "../ai_monster_debug.h"
 #include "../ai_monster_group.h"
 #include "../corpse_cover.h"
-
+#include "../../cover_evaluators.h"
 
 CAI_Biting::CAI_Biting()
 {
@@ -54,7 +54,7 @@ CAI_Biting::CAI_Biting()
 	AS_Init							();
 
 	m_corpse_cover_evaluator		= xr_new<CMonsterCorpseCoverEvaluator>();
-
+	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>();
 }
 
 CAI_Biting::~CAI_Biting()
@@ -65,6 +65,7 @@ CAI_Biting::~CAI_Biting()
 #endif	
 
 	xr_delete(m_corpse_cover_evaluator);
+	xr_delete(m_enemy_cover_evaluator);
 }
 
 void CAI_Biting::reinit()
@@ -105,6 +106,7 @@ void CAI_Biting::reinit()
 	time_next_update				= 0;
 #endif
 
+	prev_size						= 0;
 }
 
 void CAI_Biting::Load(LPCSTR section)

@@ -147,7 +147,7 @@ void CMonsterMovement::MoveToTarget(const Fvector &position)
 			CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 			InitSelector(*m_tSelectorApproach, position);
 
-			CLevelLocationSelector::set_query_interval(3000);	
+			CLevelLocationSelector::set_query_interval(0);	
 			SetSelectorPathParams ();
 		}
 	}
@@ -250,3 +250,6 @@ void CMonsterMovement::update_velocity()
 		
 	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
 }
+
+
+

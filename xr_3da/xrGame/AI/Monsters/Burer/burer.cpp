@@ -4,6 +4,8 @@
 #include "burer_states.h"
 #include "../../../PhysicsShell.h"
 #include "../../../actor.h"
+#include "../../ai_monster_debug.h"
+
 
 CBurer::CBurer()
 {
@@ -368,23 +370,31 @@ void CBurer::StopTeleObjectParticle(CGameObject *pO)
 void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
 {
 	if (m_shield_active && (hit_type == ALife::eHitTypeFireWound)) {
-		// установить particles
-		CParticlesObject* ps = xr_new<CParticlesObject>(particle_fire_shield);
 
 		// вычислить позицию и направленность партикла
 		Fmatrix pos; 
 
 		// установить направление
-		pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+		pos.k.set(dir);
 		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
-		// установить позицию
-		pos.c.set(p_in_object_space);
 		
-		Fmatrix transformed;
-		transformed.set(XFORM());
-		transformed.mulB(pos);
+		Fvector real_pos;
+		Center(real_pos);
+		real_pos.add(p_in_object_space);
 
-		ps->UpdateParent(transformed,Fvector().set(0.f,0.f,0.f));
+		Fvector hit_dir;
+		hit_dir.set(dir);
+		hit_dir.normalize();
+		hit_dir.invert();
+		
+		// установить позицию
+		pos.c.mad(real_pos, hit_dir, 5.f);
+
+
+		// установить particles
+		CParticlesObject* ps = xr_new<CParticlesObject>(particle_fire_shield);
+		
+		ps->UpdateParent(pos,Fvector().set(0.f,0.f,0.f));
 		Level().ps_needtoplay.push_back(ps);
 
 		return;
