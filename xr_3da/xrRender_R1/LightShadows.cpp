@@ -487,7 +487,7 @@ void CLightShadows::render	()
 	
 	// Clear all shadows and free old entries in the cache
 	shadows.clear				();
-	for (int cit=0; cit<cache.size(); cit++)	{
+	for (int cit=0; cit<int(cache.size()); cit++)	{
 		cache_item&		ci		= cache[cit];
 		u32				time	= Device.dwTimeGlobal - ci.time;
 		if				(time > cache_old)	{
