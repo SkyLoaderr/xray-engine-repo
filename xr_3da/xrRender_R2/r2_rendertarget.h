@@ -128,6 +128,7 @@ public:
 	void						phase_scene				();
 	void						phase_decompress		();
 	void						phase_occq				();
+	void						phase_wallmarks			();
 	void						phase_smap_direct		(light* L);
 	void						phase_smap_point		(light* L, u32 pls_phase);
 	void						phase_smap_spot_clear	();

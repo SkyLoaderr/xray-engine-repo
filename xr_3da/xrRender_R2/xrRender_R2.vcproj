@@ -724,6 +724,9 @@
 			<File
 				RelativePath="r2_rendertarget_phase_smap_S.cpp">
 			</File>
+			<File
+				RelativePath=".\r2_rendertarget_wallmarks.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath="todo.txt">
