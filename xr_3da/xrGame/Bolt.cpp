@@ -37,14 +37,16 @@ void CBolt::OnH_A_Chield() {
 void CBolt::OnEvent(NET_Packet& P, u16 type) {
 	inherited::OnEvent(P,type);
 	u16 id;
-	P.r_u16(id);
-	CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
-	if(l_pB) switch (type) {
+	switch (type) {
 		case GE_OWNERSHIP_TAKE : {
+			P.r_u16(id);
+			CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
 			Attach(l_pB, true);
 			l_pB->H_SetParent(this);
 		} break;
 		case GE_OWNERSHIP_REJECT : {
+			P.r_u16(id);
+			CBolt *l_pB = dynamic_cast<CBolt*>(Level().Objects.net_Find(id));
 			Detach(l_pB);
 			l_pB->H_SetParent(0);
 		} break;
