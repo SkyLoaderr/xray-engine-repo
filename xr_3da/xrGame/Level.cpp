@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "Level.h"
 #include "entity.h"
+#include "ai_funcs.h"
 
 // events
 #include "..\fdemorecord.h"
