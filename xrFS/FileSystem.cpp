@@ -18,9 +18,9 @@ EFS_Utils::~EFS_Utils()
 {
 }
 
-std::string	EFS_Utils::ChangeFileExt(LPCSTR src, LPCSTR ext)
+xr_string	EFS_Utils::ChangeFileExt(LPCSTR src, LPCSTR ext)
 {
-	std::string	tmp;
+	xr_string	tmp;
 	LPSTR src_ext	= strext(src);
     if (src_ext){
 	    size_t		ext_pos	= src_ext-src;
@@ -32,7 +32,7 @@ std::string	EFS_Utils::ChangeFileExt(LPCSTR src, LPCSTR ext)
     return tmp;
 }
 
-std::string	EFS_Utils::ChangeFileExt(const std::string& src, LPCSTR ext)
+xr_string	EFS_Utils::ChangeFileExt(const xr_string& src, LPCSTR ext)
 {
 	return ChangeFileExt(src.c_str(),ext);
 }

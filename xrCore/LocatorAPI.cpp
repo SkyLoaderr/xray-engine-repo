@@ -78,10 +78,10 @@ LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
 	return xr_strlwr(strconcat(dest,m_Path,temp));
 }
 
-void FS_Path::_update(std::string& dest, LPCSTR src)const
+void FS_Path::_update(xr_string& dest, LPCSTR src)const
 {
     R_ASSERT(src);
-    dest			= std::string(m_Path)+src;
+    dest			= xr_string(m_Path)+src;
     xr_strlwr		(dest);
 }
 void FS_Path::rescan_path_cb	()
@@ -474,7 +474,7 @@ xr_vector<char*>* CLocatorAPI::file_list_open			(const char* _path, u32 flags)
 	// проверить нужно ли пересканировать пути
 	check_pathes	();
 
-	std::string		N;
+	xr_string		N;
 	if (path_exist(_path))	update_path(N,_path,"");
 	else						N=_path;
 
@@ -539,7 +539,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 	// проверить нужно ли пересканировать пути
     check_pathes	();
                
-	std::string		N;
+	xr_string		N;
 	if (path_exist(path))	update_path(N,path,"");
     else						N=path;
 
@@ -581,7 +581,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			// check extension
 			if (b_mask){
-                std::string 		nm;
+                xr_string 		nm;
                 _GetItem			(entry_begin,0,nm,'.');
 				LPCSTR ext			= strext(entry_begin);
                 bool bOK			= false;
@@ -595,7 +595,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mas
                 }
                 if (!bOK)			continue;
 			}
-			std::string fn			= entry_begin;
+			xr_string fn			= entry_begin;
 			// insert file entry
 			if (flags&FS_ClampExt)fn= EFS.ChangeFileExt(fn,"");
 			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
@@ -619,9 +619,9 @@ bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool c
 	// проверить нужно ли пересканировать пути
     check_pathes		();
 
-	std::string			N;
+	xr_string			N;
 	if (path_exist(path))	update_path(N,path,name);
-    else						N=std::string(path)+name;
+    else						N=xr_string(path)+name;
 
 	file				desc;
 	desc.name			= N.c_str();
@@ -630,7 +630,7 @@ bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool c
 
 	size_t base_len		= N.size();
     const file& entry 	= *I;
-    std::string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
+    xr_string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):xr_string(entry.name+base_len);
     u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
     dest.set			(entry.size_real,entry.modif,fl);
     return true;
@@ -965,7 +965,7 @@ LPCSTR CLocatorAPI::update_path(LPSTR dest, LPCSTR initial, LPCSTR src)
     return get_path(initial)->_update(dest,src);
 }
 
-void CLocatorAPI::update_path(std::string& dest, LPCSTR initial, LPCSTR src)
+void CLocatorAPI::update_path(xr_string& dest, LPCSTR initial, LPCSTR src)
 {
     return get_path(initial)->_update(dest,src);
 }

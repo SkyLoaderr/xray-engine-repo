@@ -31,20 +31,20 @@ struct SSpecificCharacterData : CSharedResource
 	virtual ~SSpecificCharacterData ();
 
 	//игровое имя персонажа
-	std::string m_sGameName;
+	xr_string m_sGameName;
 	//текст с биографией персонажа (линк на string table)
-	std::string m_sBioText;
+	xr_string m_sBioText;
 	//строка содержащая предметы, которые нужно проспавнить 
-	std::string m_sSupplySpawn;
+	xr_string m_sSupplySpawn;
 	//имя секции конфигурации настроек NPC для персонажа
-	std::string m_sNpcConfigSect;
+	xr_string m_sNpcConfigSect;
 	//имя секции конфигурации звука для NPC персонажа
-	std::string m_sSndConfigSect;
+	xr_string m_sSndConfigSect;
 
 #endif
 
 	//имя модели
-	std::string m_sVisual;
+	xr_string m_sVisual;
 
 #ifdef  XRGAME_EXPORTS
 	

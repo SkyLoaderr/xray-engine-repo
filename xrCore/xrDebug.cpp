@@ -105,9 +105,9 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	CS.Leave			();
 }
 
-std::string xrDebug::error2string	(long code)
+xr_string xrDebug::error2string	(long code)
 {
-	std::string			desc;
+	xr_string			desc;
 
 #ifdef _M_AMD64
 #else

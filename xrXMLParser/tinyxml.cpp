@@ -721,8 +721,8 @@ bool TiXmlDocument::LoadFile( const char* filename )
 
 	// There was a really terrifying little bug here. The code:
 	//		value = filename
-	// in the STL case, cause the assignment method of the std::string to
-	// be called. What is strange, is that the std::string had the same
+	// in the STL case, cause the assignment method of the xr_string to
+	// be called. What is strange, is that the xr_string had the same
 	// address as it's c_str() method, and so bad things happen. Looks
 	// like a bug in the Microsoft STL implementation.
 	// See STL_STRING_BUG above.
@@ -1142,7 +1142,7 @@ TIXML_OSTREAM & operator<< (TIXML_OSTREAM & out, const TiXmlNode & base)
 
 
 #ifdef TIXML_USE_STL	
-std::string & operator<< (std::string& out, const TiXmlNode& base )
+xr_string & operator<< (xr_string& out, const TiXmlNode& base )
 {
    std::ostringstream os_stream( std::ostringstream::out );
    base.StreamOut( &os_stream );

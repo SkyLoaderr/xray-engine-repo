@@ -108,7 +108,7 @@ void CStringTable::Load	(LPCSTR xml_file)
 STRING_VALUE CStringTable::ParseLine(LPCSTR str)
 {
 //	LPCSTR str = "1 $$action_left$$ 2 $$action_right$$ 3 $$action_left$$ 4";
-	std::string res;
+	xr_string res;
 	int k = 0;
 	const char* b;
 	#define ACTION_STR "$$ACTION_"

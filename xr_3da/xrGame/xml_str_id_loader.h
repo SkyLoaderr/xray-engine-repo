@@ -154,7 +154,7 @@ typename CSXML_IdToIndex::T_VECTOR&	CSXML_IdToIndex::ItemDataVector ()
 			_GetItem	(file_str, it, xml_file);
 
 			CUIXml uiXml;
-			std::string xml_file_full;
+			xr_string xml_file_full;
 			xml_file_full = xml_file;
 			xml_file_full += ".xml";
 			//strconcat(xml_file_full, *shared_str(xml_file), ".xml");

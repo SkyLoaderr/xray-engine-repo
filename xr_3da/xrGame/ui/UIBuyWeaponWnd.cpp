@@ -398,7 +398,7 @@ void CUIBuyWeaponWnd::ReInitItems	(LPCSTR strSectionName)
 		WPN_SECT_NAMES WpnSectName = wpnSectStorage[i];
 		for (u32 j=0; j<WpnSectName.size(); j++)
 		{
-			std::string WpnName = WpnSectName[j];
+			xr_string WpnName = WpnSectName[j];
 			WpnName.clear();
 		};
 		WpnSectName.clear();
@@ -1111,7 +1111,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 		// Так как оружие еще в сумке, то просматриваем его список аддонов и модифицируем меню
 		if (m_pCurrentDragDropItem->bAddonsAvailable)
 		{
-			std::string strMenuItem;
+			xr_string strMenuItem;
 			for (int i = 0; i < 3; ++i)
 			{
 				switch (m_pCurrentDragDropItem->m_AddonInfo[i].iAttachStatus)
@@ -1121,12 +1121,12 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 					// Если денег на аддон хватает
 					if (GetAddonByID(m_pCurrentDragDropItem, static_cast<CUIDragDropItemMP::AddonIDs>(i))->GetCost() <= GetMoneyAmount())
 					{
-						strMenuItem = std::string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
+						strMenuItem = xr_string("Attach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
 						UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, ATTACH_SILENCER_ADDON + i);
 					}
 					break;
 				case 1:
-					strMenuItem = std::string("Detach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
+					strMenuItem = xr_string("Detach ") + m_pCurrentDragDropItem->m_strAddonTypeNames[i];
 					UIPropertiesBox.AddItem(strMenuItem.c_str(), NULL, DETACH_SILENCER_ADDON + i);
 					break;
 				default:
@@ -1320,8 +1320,8 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 		// Читаем стоимость оружия
-		if (pSettings->line_exist(m_StrSectionName, static_cast<std::string>(wpnSectStorage[slotNum][j] + "_cost").c_str()))
-			UIDragDropItem.SetCost(pSettings->r_u32(m_StrSectionName, static_cast<std::string>(wpnSectStorage[slotNum][j] + "_cost").c_str()));
+		if (pSettings->line_exist(m_StrSectionName, static_cast<xr_string>(wpnSectStorage[slotNum][j] + "_cost").c_str()))
+			UIDragDropItem.SetCost(pSettings->r_u32(m_StrSectionName, static_cast<xr_string>(wpnSectStorage[slotNum][j] + "_cost").c_str()));
 		else if (pSettings->line_exist(m_StrPricesSection, wpnSectStorage[slotNum][j].c_str()))
 			UIDragDropItem.SetCost(pSettings->r_u32(m_StrPricesSection, wpnSectStorage[slotNum][j].c_str()));
 		else
@@ -1392,13 +1392,13 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::string &sectioName)
+void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName)
 {
 	// Для каждого аддона проверяем его запись в ltx файле, и заполняем структуру
 
 	for (u8 i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
 	{
-		std::string status, strX, strY, name;
+		xr_string status, strX, strY, name;
 
 		switch (static_cast<CUIDragDropItemMP::AddonIDs>(i))
 		{
@@ -1626,7 +1626,7 @@ const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 grpNum, u8 idx)
 	return wpnSectStorage[grpNum][idx].c_str();
 }
 
-void CUIBuyWeaponWnd::GetWeaponIndexByName(const std::string sectionName, u8 &grpNum, u8 &idx)
+void CUIBuyWeaponWnd::GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx)
 {
 	grpNum	= (u8)(-1);
 	idx		= (u8)(-1);
@@ -2304,8 +2304,8 @@ bool CUIBuyWeaponWnd::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) con
 	R_ASSERT(pPossibleAddon);
 	if (!pPossibleAddon) return false;
 
-	std::string str = pPossibleAddon->GetSectionName();
-	return str.find("addon") != std::string::npos;
+	xr_string str = pPossibleAddon->GetSectionName();
+	return str.find("addon") != xr_string::npos;
 }
 
 //////////////////////////////////////////////////////////////////////////

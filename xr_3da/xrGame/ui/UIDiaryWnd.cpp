@@ -152,7 +152,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 		{
 			pPrtevTVItem = pTVItem;
 
-			std::string caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) + pTVItem->GetHierarchyAsText();
+			xr_string caption = static_cast<xr_string>(ALL_PDA_HEADER_PREFIX) + pTVItem->GetHierarchyAsText();
 			UIFrameWndHeader.UITitleText.SetText(caption.c_str());
 
 
@@ -237,7 +237,7 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 				if (idActorDiary == id)
 				{
-					caption = static_cast<std::string>(ALL_PDA_HEADER_PREFIX) +
+					caption = static_cast<xr_string>(ALL_PDA_HEADER_PREFIX) +
 						m_pActorDiaryRoot->GetHierarchyAsText() +
 						*UIActorDiaryWnd.m_pCore->SetCurrentArtice(pTVItem);
 					UIFrameWndHeader.UITitleText.SetText(caption.c_str());

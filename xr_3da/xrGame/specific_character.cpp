@@ -152,10 +152,10 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	
 	if(!data()->m_sSupplySpawn.empty())
 	{
-		std::string &str = data()->m_sSupplySpawn;
-		std::string::size_type pos = str.find("\\n");
+		xr_string &str = data()->m_sSupplySpawn;
+		xr_string::size_type pos = str.find("\\n");
 
-		while (std::string::npos != pos)
+		while (xr_string::npos != pos)
 		{
 			str.replace(pos, 2, "\n");
 			pos = str.find("\\n", pos + 1);

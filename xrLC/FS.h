@@ -46,7 +46,7 @@ public:
 	IC void			w_stringZ(const char *p)		{	w(p,(u32)xr_strlen(p)+1);					}
 	IC void			w_stringZ(const shared_str& p) 	{	w(*p?*p:"",p.size());w_u8(0);		}
 	IC void			w_stringZ(shared_str& p)		{	w(*p?*p:"",p.size());w_u8(0);		}
-	IC void			w_stringZ(const std::string& p)	{	w(p.c_str()?p.c_str():"",(u32)p.size());w_u8(0);	}
+	IC void			w_stringZ(const xr_string& p)	{	w(p.c_str()?p.c_str():"",(u32)p.size());w_u8(0);	}
 	IC void			w_fcolor(const Fcolor &v)		{	w(&v,sizeof(Fcolor));	}
 	IC void			w_fvector4(const Fvector4 &v)	{	w(&v,sizeof(Fvector4));	}
 	IC void			w_fvector3(const Fvector3 &v)	{	w(&v,sizeof(Fvector3));	}
@@ -151,13 +151,13 @@ public:
 	void			r			(void *p,int cnt);
 
 	void			r_string	(char *dest, u32 tgt_sz);
-	void			r_string	(std::string& dest);
+	void			r_string	(xr_string& dest);
 
 	void			skip_stringZ();
 
 	void			r_stringZ	(char *dest, u32 tgt_sz);
 	void			r_stringZ	(shared_str& dest);
-	void			r_stringZ	(std::string& dest);
+	void			r_stringZ	(xr_string& dest);
 
 	IC u64			r_u64		()			{	u64 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u32			r_u32		()			{	u32 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};

@@ -169,8 +169,8 @@ void CUIOutfitSlot::SetMPOutfit()
 	if (!pInvOwner) return;
 	if (pInvOwner->cNameVisual() == NULL) return;
 
-	std::string a = *pInvOwner->cNameVisual();
-	std::string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 
+	xr_string a = *pInvOwner->cNameVisual();
+	xr_string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 
 
 	// Cut leading full path
 	if (it != a.begin())

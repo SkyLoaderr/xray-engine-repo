@@ -31,7 +31,7 @@ public :
 
 // from UIGameDM
 protected:
-//	DEF_VECTOR						(TEAMS_LIST, std::string);
+//	DEF_VECTOR						(TEAMS_LIST, xr_string);
 	DEF_VECTOR						(PRESET_ITEMS, s16);
 
 //	TEAMS_LIST						m_aTeamSections;

@@ -267,7 +267,7 @@ void CUIPdaCommunication::InitPdaDialog()
 	UpdateMessageLog	();
 	UpdateMsgButtons	();
 
-	std::string		buf;
+	xr_string		buf;
 	string128		buf2;
 	buf = UIPdaDialogWnd.UICharacterInfo.UIName.GetText();
 	UIPdaDialogWnd.UICharIconHeader.UITitleText.SetText(buf.c_str());

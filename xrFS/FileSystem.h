@@ -6,7 +6,7 @@
 #define FileSystemH
 
 class XRCORE_API EFS_Utils {
-	DEFINE_MAP	(std::string,void*,HANDLEMap,HANDLEPairIt);
+	DEFINE_MAP	(xr_string,void*,HANDLEMap,HANDLEPairIt);
 
     HANDLEMap 	m_LockFiles;
 public:
@@ -18,10 +18,10 @@ public:
 	LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name);
 
 	bool 		GetOpenName		(LPCSTR initial, LPSTR buffer, int sz_buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
-	bool 		GetOpenName		(LPCSTR initial, std::string& buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
+	bool 		GetOpenName		(LPCSTR initial, xr_string& buf, bool bMulti=false, LPCSTR offset=0, int start_flt_ext=-1 );
 
 	bool 		GetSaveName		(LPCSTR initial, LPSTR buffer, int sz_buf, LPCSTR offset=0, int start_flt_ext=-1 );
-	bool 		GetSaveName		(LPCSTR initial, std::string& buf, LPCSTR offset=0, int start_flt_ext=-1 );
+	bool 		GetSaveName		(LPCSTR initial, xr_string& buf, LPCSTR offset=0, int start_flt_ext=-1 );
 
 	void 		MarkFile		(LPCSTR fn, bool bDeleteSource);
 	void 		BackupFile		(LPCSTR initial, LPCSTR fname, bool bMsg=FALSE);
@@ -34,13 +34,13 @@ public:
 	void		RegisterAccess	(LPCSTR fn, LPCSTR start_msg, bool bLog=true);
 	void		WriteAccessLog	(LPCSTR fn, LPCSTR start_msg);
 
-	std::string AppendFolderToName(std::string& tex_name, int depth, BOOL full_name);
+	xr_string AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name);
 
 	LPCSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
 	LPCSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
 
-    std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
-    std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
+    xr_string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
+    xr_string	ChangeFileExt	(const xr_string& src, LPCSTR ext);
 };
 extern XRCORE_API	EFS_Utils*	xr_EFS;
 #define EFS (*xr_EFS)

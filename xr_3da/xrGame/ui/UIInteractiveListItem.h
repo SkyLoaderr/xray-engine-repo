@@ -24,7 +24,7 @@ class CUIInteractiveListItem: public CUIListItem
 		// оконные координаты 
 		std::pair<int, int>	pairScreenCrd;
 		// текст интерактивного элемента
-		std::string			subStr;
+		xr_string			subStr;
 		// идентификатор интерактивного подэлемента
 		int					ID;
 	} InteractiveItemData;
@@ -67,7 +67,7 @@ protected:
 	// Итератор на координаты текущего активного интерактивного элемента
 	FIELDS_COORDS_VECTOR_c_it	itCurrIItem;
 	// Текущая подстрока
-	std::string	sub_str;
+	xr_string	sub_str;
 private:
 	// Бинарная функция для проверки попадания курсора мыши в диапазон
 	struct mouse_hit: 

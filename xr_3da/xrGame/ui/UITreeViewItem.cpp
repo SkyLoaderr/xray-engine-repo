@@ -54,14 +54,14 @@ CUITreeViewItem::~CUITreeViewItem()
 
 void CUITreeViewItem::OnRootChanged()
 {
-	std::string str;
+	xr_string str;
 	if (isRoot)
 	{
 		// Вставляем после последнего пробела перед текстом знак + или -
 		str = GetText();
 
-		std::string::size_type pos = str.find_first_not_of(" ");
-		if (std::string::npos == pos) pos = 0;
+		xr_string::size_type pos = str.find_first_not_of(" ");
+		if (xr_string::npos == pos) pos = 0;
 
 		if (pos == 0)
 		{
@@ -84,7 +84,7 @@ void CUITreeViewItem::OnRootChanged()
 	{
 		str = GetText();
 		// Remove "+/-" sign
-		std::string::size_type pos = str.find_first_of("+-");
+		xr_string::size_type pos = str.find_first_of("+-");
 
 		if (pos == 0)
 		{
@@ -105,12 +105,12 @@ void CUITreeViewItem::OnOpenClose()
 	// Если мы не являемся узлом дерева, значит ничего не делаем
 	if (!isRoot) return;
 
-	std::string str;
+	xr_string str;
 
 	str = GetText();
-	std::string::size_type pos = str.find_first_of("+-");
+	xr_string::size_type pos = str.find_first_of("+-");
 
-	if (std::string::npos != pos)
+	if (xr_string::npos != pos)
 	{
 		if (isOpened)
 			// Change minus sign to plus
@@ -231,15 +231,15 @@ void CUITreeViewItem::SetRoot(bool set)
 
 void CUITreeViewItem::SetText(LPCSTR str)
 {
-	std::string s = str;
-	std::string::size_type pos = s.find_first_not_of(" +-");
+	xr_string s = str;
+	xr_string::size_type pos = s.find_first_not_of(" +-");
 
-	if (pos < static_cast<std::string::size_type>(iTextShift))
+	if (pos < static_cast<xr_string::size_type>(iTextShift))
 	{
 		for (u32 i = 0; i < iTextShift - pos; ++i)
 			s.insert(0, " ");
 	}
-	else if (pos > static_cast<std::string::size_type>(iTextShift))
+	else if (pos > static_cast<xr_string::size_type>(iTextShift))
 	{
 		s.erase(0, pos - iTextShift);
 	}
@@ -290,13 +290,13 @@ CUITreeViewItem * CUITreeViewItem::Find(LPCSTR text) const
 	// Пробегаемся по списку подчиненных элементов, и ищем элемент с заданным текстом
 	// Если среди подч. эл-тов есть root'ы, то ищем рекурсивно в них
 	CUITreeViewItem *pResult = NULL;
-	std::string caption;
+	xr_string caption;
 
 	for (SubItems::const_iterator it = vSubItems.begin(); it != vSubItems.end(); ++it)
 	{
 		caption = (*it)->GetText();
-		std::string::size_type pos = caption.find_first_not_of(" +-");
-		if (pos != std::string::npos)
+		xr_string::size_type pos = caption.find_first_not_of(" +-");
+		if (pos != xr_string::npos)
 		{
 			caption.erase(0, pos);
 		}
@@ -353,21 +353,21 @@ CUITreeViewItem * CUITreeViewItem::Find(CUITreeViewItem * pItem) const
 
 //////////////////////////////////////////////////////////////////////////
 
-std::string CUITreeViewItem::GetHierarchyAsText()
+xr_string CUITreeViewItem::GetHierarchyAsText()
 {
-	std::string name;
+	xr_string name;
 
 	if (GetOwner())
 	{
 		name = GetOwner()->GetHierarchyAsText();
 	}
 
-	std::string::size_type prevPos = name.size() + 1;
-	name += static_cast<std::string>("/") + static_cast<std::string>(GetText());
+	xr_string::size_type prevPos = name.size() + 1;
+	name += static_cast<xr_string>("/") + static_cast<xr_string>(GetText());
 
 	// Удаляем мусор: [ +-]
-	std::string::size_type pos = name.find_first_not_of("/ +-", prevPos);
-	if (std::string::npos != pos)
+	xr_string::size_type pos = name.find_first_not_of("/ +-", prevPos);
+	if (xr_string::npos != pos)
 	{
 		name.erase(prevPos, pos - prevPos);
 	}
@@ -482,18 +482,18 @@ void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pList
 	R_ASSERT(pListToAdd);
 	R_ASSERT(pLeafFont);
 	R_ASSERT(pRootFont);
-	std::string group = *nesting;
+	xr_string group = *nesting;
 
 	// Парсим строку группы для определения вложенности
 	GroupTree					groupTree;
 
-	std::string::size_type		pos;
-	std::string					oneLevel;
+	xr_string::size_type		pos;
+	xr_string					oneLevel;
 
 	while (true)
 	{
 		pos = group.find('/');
-		if (pos != std::string::npos)
+		if (pos != xr_string::npos)
 		{
 			oneLevel.assign(group, 0, pos);
 			shared_str str(oneLevel.c_str());
@@ -519,7 +519,7 @@ void CreateTreeBranch(shared_str nesting, shared_str leafName, CUIListWnd *pList
 
 		pTVItem->Close();
 
-		std::string	caption = pTVItem->GetText();
+		xr_string	caption = pTVItem->GetText();
 		// Remove "+" sign
 		caption.erase(0, 1);
 

@@ -42,7 +42,7 @@ struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
 
 private:
 	//полный текст новостей, формируется при первом обращении
-	std::string full_news_text;
+	xr_string full_news_text;
 
 	// Структурка описывающая ньюс
 	typedef struct tagNewsTemplate

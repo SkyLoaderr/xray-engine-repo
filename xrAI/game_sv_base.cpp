@@ -657,7 +657,7 @@ void game_sv_GameState::SaveMapList				()
 	IWriter*		fs	= FS.w_open(MAPROT_LIST);
 	while(m_pMapRotation_List.size())
 	{
-		std::string MapName = m_pMapRotation_List.front();
+		xr_string MapName = m_pMapRotation_List.front();
 		m_pMapRotation_List.pop_front();
 
 		fs->w_printf("sv_addmap %s\n", MapName.c_str());

@@ -319,7 +319,7 @@ void _SequenceToList(RStringVec& lst, LPCSTR in, char separator)
 {
 	lst.clear	();
 	int t_cnt	= _GetItemCount(in,separator);
-	std::string	T;
+	xr_string	T;
 	for (int i=0; i<t_cnt; i++){
 		_GetItem(in,i,T,separator,0);
         _Trim	(T);
@@ -327,19 +327,19 @@ void _SequenceToList(RStringVec& lst, LPCSTR in, char separator)
 	}
 }
 
-std::string	_ListToSequence(const SStringVec& lst)
+xr_string	_ListToSequence(const SStringVec& lst)
 {
-	static std::string	out;
+	static xr_string	out;
 	out = "";
 	if (lst.size()){
     	out			= lst.front();
 		for (SStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++)
-        	out		+= std::string(",")+(*s_it);
+        	out		+= xr_string(",")+(*s_it);
 	}
 	return out;
 }
 
-std::string& _TrimLeft( std::string& str )
+xr_string& _TrimLeft( xr_string& str )
 {
 	LPCSTR b		= str.c_str();
 	LPCSTR p 		= str.c_str();
@@ -349,7 +349,7 @@ std::string& _TrimLeft( std::string& str )
 	return str;
 }
 
-std::string& _TrimRight( std::string& str )
+xr_string& _TrimRight( xr_string& str )
 {
 	LPCSTR b		= str.c_str();
     size_t l		= str.length();
@@ -361,14 +361,14 @@ std::string& _TrimRight( std::string& str )
 	return str;
 }
 
-std::string& _Trim( std::string& str )
+xr_string& _Trim( xr_string& str )
 {
 	_TrimLeft		( str );
 	_TrimRight		( str );
 	return str;
 }
 
-LPCSTR _CopyVal ( LPCSTR src, std::string& dst, char separator )
+LPCSTR _CopyVal ( LPCSTR src, xr_string& dst, char separator )
 {
 	LPCSTR		p;
 	ptrdiff_t	n;
@@ -379,7 +379,7 @@ LPCSTR _CopyVal ( LPCSTR src, std::string& dst, char separator )
 	return		dst.c_str();
 }
 
-LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCSTR def, bool trim )
+LPCSTR _GetItem ( LPCSTR src, int index, xr_string& dst, char separator, LPCSTR def, bool trim )
 {
 	LPCSTR	ptr;
 	ptr			= _SetPos	( src, index, separator );
@@ -391,7 +391,7 @@ LPCSTR _GetItem ( LPCSTR src, int index, std::string& dst, char separator, LPCST
 
 shared_str	_ListToSequence(const RStringVec& lst)
 {
-	std::string		out;
+	xr_string		out;
 	if (lst.size()){
     	out			= *lst.front();
 		for (RStringVec::const_iterator s_it=lst.begin()+1; s_it!=lst.end(); s_it++){

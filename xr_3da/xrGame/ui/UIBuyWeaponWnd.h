@@ -182,7 +182,7 @@ protected:
 	shared_str		m_StrPricesSection;
 
 	// массив в котором хратнятся названия секций для оружия 
-	DEF_VECTOR(WPN_SECT_NAMES, std::string);
+	DEF_VECTOR(WPN_SECT_NAMES, xr_string);
 	// Вектор массивов с именами секций для оружия
 	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
 	WPN_LISTS	wpnSectStorage;
@@ -193,7 +193,7 @@ protected:
 	// заполнить отдельную секцию оружием
 	void FillWpnSubBag(const u32 slotNum);
 	// Инициализируем аддоны у вещи
-	void InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::string &sectioName);
+	void InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName);
 	// удаляем все из секций
 	void ClearWpnSubBags();
 	// удаляем все из заданной секции
@@ -328,7 +328,7 @@ public:
 	const char	*GetWeaponNameByIndex(u32 grpNum, u8 idx);
 	// Получить номер в списке секций и номер списка секций по имени
 	// Если не найдено, то grpNum == -1 и idx == -1
-	void		GetWeaponIndexByName(const std::string sectionName, u8 &grpNum, u8 &idx);
+	void		GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
 
 	// Получить данные о аддонах к оружию. Младшие 3 бита, если установлены в 1 означают:
 	// 2 - Silencer, 1 - Grenade Launcher, 0 - Scope

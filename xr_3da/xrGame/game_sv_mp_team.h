@@ -6,7 +6,7 @@
 	struct		WeaponDataStruct
 	{
 		u16				SlotItem_ID		;    //SlotID << 8 | ItemID;
-		std::string		WeaponName		;
+		xr_string		WeaponName		;
 		u16				Cost			;
 		bool			operator	==		(s16 ID){return		(SlotItem_ID == ID);}
 		bool			operator	==		(LPCSTR name){int res = xr_strcmp(WeaponName.c_str(), name);return	res	 == 0;}
@@ -15,7 +15,7 @@
 	DEF_VECTOR(TEAM_WPN_LIST, WeaponDataStruct);
 
 	// Вектор имен скинов комманды
-	DEF_VECTOR(TEAM_SKINS_NAMES, std::string);	
+	DEF_VECTOR(TEAM_SKINS_NAMES, xr_string);	
 
 	// Вектор имен скинов комманды
 	DEF_VECTOR(DEF_ITEMS_LIST, u16);	

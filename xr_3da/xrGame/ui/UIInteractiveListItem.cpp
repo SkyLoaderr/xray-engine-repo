@@ -36,7 +36,7 @@ void CUIInteractiveListItem::Init(const char *str, const xr_vector<char *> &Data
 	// Cмещение в пиксел€х.
 	u32 shift = 0;
 
-	std::string	strTmp;
+	xr_string	strTmp;
 	// Ќачальна€ и конечна€ координата в пиксел€х текущего интерактивного блока
 	FIELDS_COORDS_VECTOR::value_type tmpPairs;
 

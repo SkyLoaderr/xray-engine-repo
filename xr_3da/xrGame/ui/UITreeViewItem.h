@@ -73,7 +73,7 @@ public:
 	CUITreeViewItem * Find(CUITreeViewItem *pItem) const;
 	// Вернуть иерархию от верха до текущего элемента в виде строки-пути
 	// Рутовые элементы заканчиваются символом "/"
-	std::string GetHierarchyAsText();
+	xr_string GetHierarchyAsText();
 
 	// Redefine some stuff
 	// ATTENTION! Для корректного функционирования значков [+-] вызов SetText

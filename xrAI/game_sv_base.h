@@ -35,7 +35,7 @@ public:
 	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
 	
 	// Вектор имен скинов комманды
-	DEF_DEQUE(MAP_ROTATION_LIST,	std::string);
+	DEF_DEQUE(MAP_ROTATION_LIST,	xr_string);
 
 	bool							m_bMapRotation;
 	bool							m_bMapNeedRotation;

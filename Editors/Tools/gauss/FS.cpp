@@ -238,7 +238,7 @@ void	IReader::r_string	(char *dest, u32 tgt_sz)
     strncpy		(dest,src,sz);
     dest[sz]	= 0;
 }
-void	IReader::r_string	(std::string& dest)
+void	IReader::r_string	(xr_string& dest)
 {
 	char *src 	= (char *) data+Pos;
 	u32 sz 		= advance_term_string();
@@ -258,7 +258,7 @@ void 	IReader::r_stringZ	(shared_str& dest)
 	dest		= (char*)(data+Pos);
     Pos			+=(dest.size()+1);
 }
-void	IReader::r_stringZ	(std::string& dest)
+void	IReader::r_stringZ	(xr_string& dest)
 {
     dest 		= (char*)(data+Pos);
     Pos			+=int(dest.size()+1);

@@ -32,7 +32,7 @@ protected:
 
 	LPCSTR							pWinnigPlayerName;
 	/////////////////////////////////////////////////////////////
-	DEF_VECTOR(ANOMALIES, std::string);
+	DEF_VECTOR(ANOMALIES, xr_string);
 	DEF_VECTOR(ANOMALY_SETS, ANOMALIES);
 
 	ANOMALY_SETS					m_AnomalySetsList;

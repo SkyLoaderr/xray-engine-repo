@@ -11,7 +11,7 @@
 #include <fcntl.h>
 #include <sys\stat.h>
 
-bool EFS_Utils::GetOpenName(LPCSTR initial, std::string& buffer, bool bMulti, LPCSTR offset, int start_flt_ext )
+bool EFS_Utils::GetOpenName(LPCSTR initial, xr_string& buffer, bool bMulti, LPCSTR offset, int start_flt_ext )
 {
 	string4096 buf;
 	strcpy(buf,buffer.c_str());
@@ -20,7 +20,7 @@ bool EFS_Utils::GetOpenName(LPCSTR initial, std::string& buffer, bool bMulti, LP
 	return bRes;
 }
 
-bool EFS_Utils::GetSaveName( LPCSTR initial, std::string& buffer, LPCSTR offset, int start_flt_ext )
+bool EFS_Utils::GetSaveName( LPCSTR initial, xr_string& buffer, LPCSTR offset, int start_flt_ext )
 {
 	string4096 buf;
 	strcpy(buf,buffer.c_str());
@@ -32,9 +32,9 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, std::string& buffer, LPCSTR offset,
 
 void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 {
-	std::string ext = strext(fn);
+	xr_string ext = strext(fn);
 	ext.insert		(1,"~");
-	std::string backup_fn = EFS.ChangeFileExt(fn,ext.c_str());
+	xr_string backup_fn = EFS.ChangeFileExt(fn,ext.c_str());
 	if (bDeleteSource){
 		FS.file_rename(fn,backup_fn.c_str(),true);
 	}else{
@@ -47,19 +47,19 @@ void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
 {
 	R_ASSERT(initial);
-	std::string src_name; 
+	xr_string src_name; 
 	FS.update_path(src_name,initial,fname);
 	if (FS.exist(src_name.c_str())){
-		std::string			dst_name,dst_path,del_name;
+		xr_string			dst_name,dst_path,del_name;
 		FS_Path* P 			= FS.get_path(initial);
 		string64			t_stemp;
-        dst_name			= std::string(P->m_Add)+fname+"."+Core.UserName+"_"+timestamp(t_stemp);
+        dst_name			= xr_string(P->m_Add)+fname+"."+Core.UserName+"_"+timestamp(t_stemp);
 		FS.update_path		(dst_name,"$server_backup$",dst_name.c_str());
         FS.update_path		(dst_path,"$server_backup$",P->m_Add);
 
         // удалить лишние бэкап файлы
         FS_QueryMap lst;
-        std::string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
+        xr_string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
 		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=BACKUP_FILE_LEVEL){
         	do{
             	FS_QueryPairIt  min_it  = lst.begin();
@@ -80,7 +80,7 @@ void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
     }
 }
 
-std::string	EFS_Utils::AppendFolderToName(std::string& tex_name, int depth, BOOL full_name)
+xr_string	EFS_Utils::AppendFolderToName(xr_string& tex_name, int depth, BOOL full_name)
 {
 	string1024 nm;
 	strcpy(nm,tex_name.c_str());
@@ -93,7 +93,7 @@ void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 	string1024		buf;
 	string256		dt_buf, tm_buf;
 	sprintf			(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
-	std::string		m_AccessLog;
+	xr_string		m_AccessLog;
 	FS.update_path	(m_AccessLog,"$server_data_root$","access.log");
 	int hf 			= open( m_AccessLog.c_str(), _O_WRONLY|_O_APPEND|_O_BINARY );
 	if( hf<=0 )
@@ -109,7 +109,7 @@ void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 
 void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
 {
-	std::string		m_LastAccessFN;
+	xr_string		m_LastAccessFN;
 	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
 	CInifile*	ini	= CInifile::Create(m_LastAccessFN.c_str(),false);
 	ini->w_string	("last_access",fn,Core.CompName);
@@ -175,7 +175,7 @@ shared_str EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
 
-	std::string		m_LastAccessFN;
+	xr_string		m_LastAccessFN;
 	FS.update_path	(m_LastAccessFN,"$server_data_root$","access.ini");
 	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),true);
 	static string256 comp;

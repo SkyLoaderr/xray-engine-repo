@@ -137,7 +137,7 @@ void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
 //				UIImgMask.Show(false);
 //			else
 //				UIImgMask.Show(true);
-		std::string caption = static_cast<std::string>(*m_InfosHeaderStr) + *UIInfo.SetCurrentArtice(pTVItem);
+		xr_string caption = static_cast<xr_string>(*m_InfosHeaderStr) + *UIInfo.SetCurrentArtice(pTVItem);
 		UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
 		caption.erase(0, caption.find_last_of("/") + 1);
 		UIArticleHeader.SetText(caption.c_str());

@@ -423,7 +423,7 @@ LPCSTR		CPda::Name				()
 		CSpecificCharacter spec_char;
 		spec_char.Load(m_iSpecificChracterOwner);
 		m_sFullName += " ";
-		m_sFullName += std::string(spec_char.Name());
+		m_sFullName += xr_string(spec_char.Name());
 	}
 	
 	return m_sFullName.c_str();

@@ -114,7 +114,7 @@ protected:
 	//присоединенный info portion
 	INFO_INDEX m_iInfoPortion;
 	//полное название PDA с именем владельца
-	std::string m_sFullName;
+	xr_string m_sFullName;
 
 	//пассивный режим работы PDA
 	bool m_bPassiveMode;

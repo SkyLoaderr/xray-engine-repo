@@ -229,7 +229,7 @@ BOOL IPureServer::Connect(LPCSTR options)
 			0 );					// dwFlags
 		if (HostSuccess != S_OK)
 		{
-//			std::string res = Debug.error2string(HostSuccess);
+//			xr_string res = Debug.error2string(HostSuccess);
 			Msg("xrServer : trying port %d - FAILED!\n", psNET_Port++);
 //			psNET_Port++;
 		};

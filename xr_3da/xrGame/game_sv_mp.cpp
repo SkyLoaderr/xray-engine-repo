@@ -479,7 +479,7 @@ bool game_sv_mp::OnNextMap				()
 	if (!m_bMapRotation) return false;
 	if (!m_pMapRotation_List.size()) return false;
 
-	std::string MapName = m_pMapRotation_List.front();
+	xr_string MapName = m_pMapRotation_List.front();
 	m_pMapRotation_List.pop_front();
 	m_pMapRotation_List.push_back(MapName);
 
@@ -499,7 +499,7 @@ void game_sv_mp::OnPrevMap				()
 	if (!m_bMapRotation) return;
 	if (!m_pMapRotation_List.size()) return;
 	
-	std::string MapName = m_pMapRotation_List.back();
+	xr_string MapName = m_pMapRotation_List.back();
 	m_pMapRotation_List.pop_back();
 	m_pMapRotation_List.push_front(MapName);
 

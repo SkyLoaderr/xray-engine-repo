@@ -236,7 +236,7 @@ void CMainUI::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, .
 		va_list	lst;
 		static string512 buf;
 		::ZeroMemory(buf, 512);
-		std::string str;
+		xr_string str;
 
 		va_start(lst, fmt);
 		vsprintf(buf, fmt, lst);

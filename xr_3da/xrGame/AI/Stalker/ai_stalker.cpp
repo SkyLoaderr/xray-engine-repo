@@ -664,7 +664,7 @@ void CAI_Stalker::Think			()
 		try {
 			brain().update			(update_delta);
 		}
-		catch (std::string &message) {
+		catch (xr_string &message) {
 			Msg						("! Expression \"%s\"",message.c_str());
 			throw;
 		}

@@ -37,7 +37,7 @@ public:
 				FS_Path		(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt=0, LPCSTR _FilterString=0, u32 flags=0);
 				~FS_Path	();
 	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
-	void		_update		(std::string& dest, LPCSTR src) const;
+	void		_update		(xr_string& dest, LPCSTR src) const;
 	void		_set		(LPSTR add);
 
     void __stdcall rescan_path_cb	();
@@ -62,7 +62,7 @@ struct FS_QueryItem
         flags.assign(fl);
     }
 };
-DEFINE_MAP(std::string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
+DEFINE_MAP(xr_string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
 
 class XRCORE_API CLocatorAPI  
 {
@@ -167,7 +167,7 @@ public:
     // editor functions
 	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
 	bool						file_find		(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext);
-    void						update_path		(std::string& dest, LPCSTR initial, LPCSTR src);
+    void						update_path		(xr_string& dest, LPCSTR initial, LPCSTR src);
 	void						lock_rescan		();
 	void						unlock_rescan	();
 

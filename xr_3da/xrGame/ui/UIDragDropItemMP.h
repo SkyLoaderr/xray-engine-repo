@@ -76,7 +76,7 @@ public:
 	typedef struct tAddonInfo
 	{
 		// Имя секции для аддона
-		std::string			strAddonName;
+		xr_string			strAddonName;
 		// -1 - вообще нельзя приаттачить, 0 - не приаттачен, 1 - приаттачен
 		int					iAttachStatus;
 		// Координаты смещения относительно иконки оружия
