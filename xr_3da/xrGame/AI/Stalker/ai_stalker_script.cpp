@@ -82,8 +82,9 @@ bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
 	set_movement_type				(l_tMovementAction.m_tMovementType);
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
 	CSightManager::update			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector,0);
+	CStalkerMovementManager::update	(Device.dwTimeDelta);
 
-	return			(true);
+	return							(true);
 }
 
 bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
