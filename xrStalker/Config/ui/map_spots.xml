@@ -121,7 +121,7 @@
 	<bar_killer_sniper_location hint="bar_killer_sniper_destination">
 		<level_map spot="bar_water_tower_spot" pointer="quest_pointer"></level_map>
 		<mini_map spot="bar_water_tower_spot" pointer="quest_pointer"></mini_map>
-	</bar_killer_s_location>
+	</bar_killer_sniper_location>
 
 	<bar_bar_drunk_dolg_location hint="bar_bar_drunk_dolg">
 		<level_map spot="bar_bar_drunk_dolg_spot" pointer="quest_pointer"></level_map>
