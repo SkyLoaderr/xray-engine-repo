@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "car.h"
+#include "..\\camerabase.h"
 
 CCar::CCar(void)
 {
@@ -7,6 +8,16 @@ CCar::CCar(void)
 
 CCar::~CCar(void)
 {
+}
+
+void	CCar::cam_Update			(float dt)
+{
+	Fvector							P,Da;
+	clCenter						(P);
+	Da.set							(0,0,0);
+
+	camera->Update					(P,Da);
+	Level().Cameras.Update			(camera);
 }
 
 // Core events
