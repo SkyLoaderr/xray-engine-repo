@@ -15,7 +15,7 @@ const float drop_width		= 0.025f;
 const float drop_angle		= 3.f;
 const float drop_speed_min	= 20.f;
 const float drop_speed_max	= 40.f;
-const int	max_particles	= 3;
+const int	max_particles	= 300;
 const int	particles_update= 50;
 
 //////////////////////////////////////////////////////////////////////
@@ -141,7 +141,8 @@ void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 	Particle*	next		= P->next;	P->next	= NULL;
 	if (prev) prev->next	= next;
 	if (next) next->prev	= prev;
-	if ((0==prev) && (0==next))	LST = 0;
+	if (LST==P)	LST			= next;
+//	if ((0==prev) && (0==next))	LST = 0;
 }
 
 // insert node at the top of the head
@@ -171,20 +172,16 @@ CEffect_Rain::Particle*	CEffect_Rain::p_allocate	()
 {
 	Particle*	P			= particle_idle;
 	if (0==P)				return NULL;
-	Msg			("ALLOC: 1---A/I = %d,%d",p_size(particle_active),p_size(particle_idle));
 	p_remove	(P,particle_idle);
 	p_insert	(P,particle_active);
-	Msg			("ALLOC: 2---A/I = %d,%d",p_size(particle_active),p_size(particle_idle));
 	return		P;
 }
 
 // free node
 void	CEffect_Rain::p_free(Particle* P)
 {
-	Msg			("FREE:  1---A/I = %d,%d",p_size(particle_active),p_size(particle_idle));
 	p_remove	(P,particle_active);
 	p_insert	(P,particle_idle);
-	Msg			("FREE:  2---A/I = %d,%d",p_size(particle_active),p_size(particle_idle));
 }
 
 // startup new particle system
