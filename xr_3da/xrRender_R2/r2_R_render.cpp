@@ -92,7 +92,7 @@ void CRender::Render	()
 	}
 
 	// Point/spot lighting (shadowed)
-	if (0)
+	if (1)
 	{
 		HOM.Disable								();
 		vector<light*>&	Lvec	= Lights.v_selected_shadowed;
@@ -101,6 +101,8 @@ void CRender::Render	()
 			light*	L	= Lvec[pid];
 			if (IRender_Light::POINT==L->flags.type)	
 			{
+				R_ASSERT2	(!RImplementation.b_nv3x, "Shadowed point lights aren't implemented for nv3X HW");
+
 				// Render shadowmap
 				for (u32 pls_phase=0; pls_phase<6; pls_phase++)
 				{
