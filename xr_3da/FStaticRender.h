@@ -41,7 +41,6 @@ public:
 	SceneGraph::mapNormal_T			mapNormal[4];
 	SceneGraph::mapMatrix_T			mapMatrix;
 	SceneGraph::mapSorted_T			mapSorted;
-	SceneGraph::mapLine_T			mapLines;
 	SceneGraph::vecPatches_T		vecPatches;
 
 	CVertexStream*					vsPatches;
@@ -97,12 +96,6 @@ public:
 
 	void	Calculate				();
 
-	void	add_Line				(Fvector& P1, Fvector& P2, float w, DWORD c, Shader* S)
-	{
-		SceneGraph::mapLine_Node*	N = mapLines.insert(S);
-		SceneGraph::_LineItem L;	L.P1 = P1; L.P2 = P2; L.w = w; L.C = c;
-		N->val.push_back			(L);
-	}
 	void	add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)
 	{
 		vecPatches.push_back(SceneGraph::_PatchItem());

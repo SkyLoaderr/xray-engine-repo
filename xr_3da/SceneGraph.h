@@ -14,12 +14,6 @@ namespace SceneGraph
 		Fvector			vCenter;
 		int				iLighting;
 	};
-	struct _LineItem	{
-		Fvector			P1;
-		Fvector			P2;
-		float			w;
-		DWORD			C;
-	};
 	struct _PatchItem	{
 		Shader*			S;
 		Fvector			P;
@@ -47,20 +41,21 @@ namespace SceneGraph
 		mapNormalCached						cached;
 	};
 	typedef FixedMAP<float,_MatrixItem>		mapMatrixItem;
-	typedef vector<_LineItem>				mapLineItem;
+
+	// Shader sorting
+	typedef FixedMAP<SConstantList*,mapNormalItem>			mapNormal_Constants;
+	typedef FixedMAP<SMatrixList*,mapNormal_Constants>		mapNormal_Matrices;
+	typedef FixedMAP<STextureList*,mapNormal_Matrices>		mapNormal_Textures;
+	typedef FixedMAP<DWORD,mapNormal_Textures>				mapNormal_Code;
 
 	// Top level
-	typedef FixedMAP<Shader*,mapNormalItem>	mapNormal_T;
-	typedef mapNormal_T::TNode				mapNormal_Node;
+	typedef mapNormal_Code					mapNormal_T		[8];
 
 	typedef FixedMAP<Shader*,mapMatrixItem>	mapMatrix_T;
 	typedef mapMatrix_T::TNode				mapMatrix_Node;
 
 	typedef FixedMAP<float,_MatrixItem>		mapSorted_T;
 	typedef mapSorted_T::TNode				mapSorted_Node;
-
-	typedef FixedMAP<Shader*,mapLineItem>	mapLine_T;
-	typedef mapLine_T::TNode				mapLine_Node;
 
 	typedef CList<_PatchItem>				vecPatches_T;
 };
