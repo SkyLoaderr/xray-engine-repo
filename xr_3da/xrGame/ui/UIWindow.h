@@ -45,7 +45,7 @@ public:
 	int						GetChildNum			()								{return m_ChildWndList.size();} 
 
 	void					SetParent			(CUIWindow* pNewParent);
-IC	CUIWindow*				GetParent			()	const							{return m_pParentWnd;}
+	CUIWindow*				GetParent			()	const							{return m_pParentWnd;}
 	
 	//получить окно самого верхнего уровня
 	CUIWindow*				GetTop				()								{if(m_pParentWnd == NULL) return  this; 
@@ -212,9 +212,6 @@ protected:
 	//время прошлого клика мышки
 	//для определения DoubleClick
 	u32						m_dwLastClickTime;
-
-    // need for CLICK generation
-	bool					m_bMouseDown;
 
 	//флаг автоматического удаления во время вызова деструктора
 	bool					m_bAutoDelete;
