@@ -81,9 +81,10 @@ Oles:
 	+ TODO: Equal-sort-order shaders must be resorted on "SSA" distance (major speedup on Ge3/R200)
 	. TODO: !!! Network !!!
 		+ TODO:	Remote actor	+ latency
-		. TODO: Remote monster	+ latency
+		+ TODO: Remote monster	+ latency
 		. TODO:	Local  actor	+ latency
-		. TODO: Local  monster	+ latency
+		+ TODO: Local  monster	+ latency
+		. TODO: Monsters fire-attack
 	. TODO: Per sector wallmarks
 	+ TODO: Detail objects
 		+ TODO: Interpolation
@@ -91,8 +92,9 @@ Oles:
 		+ TODO: Fastest rendering :)
 		. TODO: Lighting
 		. TODO: File reader
+	+ TODO: Semi-Static, vertex-cache optimized LOD (only on static)
+		..........UNRELIABLE..........
 	. TODO: Lighting on models
-	. TODO: Semi-Static, vertex-cache optimized LOD (only on static)
 	. TODO: AI
 		. TODO: не стрелять в своего если он находится на линии огня (отойти в сторону, и т.п.)
 		. TODO: модели поведения
