@@ -337,11 +337,12 @@ void CPracticalPSM::DrawStats()
     }
     
     //. OLES
-    static const char* _types	[] = 
+    static const char* _types	[smap_count] = 
     {
     "Uniform",
     "PSM",
-    "LiPSM"
+    "LiPSM",
+    "TSM"
     };
     
     sprintf (buff, "type: %s  Depth Bias(%8d), Slope Scale Bias(%.2f), LiSPSM-Nscale(%.2f))", _types[m_smap_mode], m_iDepthBias, m_fBiasSlope, m_fBiasLiSPSM);			//. OLES:

@@ -24,7 +24,7 @@ typedef		D3DXMATRIX	matrix;
 using namespace	std;
 
 //. OLES: I don't know D3DX's equivalent for the following
-vector3	xform			(const vector3& v, const matrix& m)
+inline		vector3	xform			(const vector3& v, const matrix& m)
 {
 	float	x = v.x*m._11 + v.y*m._21 + v.z*m._31 + m._41;
 	float	y = v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
@@ -33,7 +33,7 @@ vector3	xform			(const vector3& v, const matrix& m)
 //	assert	(w>0);
 	return	vector3(x/w,y/w,z/w);	// RVO
 }
-bool	xformv			(vector3&	dest, const vector3& v, const matrix& m)
+inline		bool	xformv			(vector3&	dest, const vector3& v, const matrix& m)
 {
 	float	x = v.x*m._11 + v.y*m._21 + v.z*m._31 + m._41;
 	float	y = v.x*m._12 + v.y*m._22 + v.z*m._32 + m._42;
@@ -45,11 +45,11 @@ bool	xformv			(vector3&	dest, const vector3& v, const matrix& m)
 		return	true;
 	}
 }
-void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
+inline		void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
 {
 	for (int p=0; p<count; p++)	dst[p] = xform(src[p],m);
 }
-void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
+inline		void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
 {
 	min = max = xform(ps[0],m);
 	for (size_t i=1; i<count; i++)
@@ -62,7 +62,7 @@ void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m
 		}
 	}
 }
-void	calc_xaabbv		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
+inline		void	calc_xaabbv		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
 {
 	min = vector3	(FLT_MAX,FLT_MAX,FLT_MAX);
 	max = vector3	(FLT_MIN,FLT_MIN,FLT_MIN);

@@ -187,12 +187,12 @@ protected:
     HRESULT SetRenderStates( bool shadowPass );
     void    RandomizeObjects( );
 
+	void    BuildTSMProjectionMatrix();		//. OLES
 	void    BuildLIPSMProjectionMatrix();	//. OLES
     void    BuildPSMProjectionMatrix();
     void    BuildOrthoShadowProjectionMatrix();
     void    Tick( );
     void    DrawStats( );
 };
-
 
 #endif
