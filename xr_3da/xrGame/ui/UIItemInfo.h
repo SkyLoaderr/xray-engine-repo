@@ -36,5 +36,6 @@ public:
 	CUIListWnd	UIDesc;
 
 	//для изображения предмета крупным планом
+	Ivector2	UIItemImageSize; 
 	CUIStatic	UIItemImage;
 };

@@ -18,6 +18,7 @@ const char * const 		fieldsCaptionColor		= "%c216,186,140";
 CUIItemInfo::CUIItemInfo()
 {
 //	y_rotate_angle = 0;
+	UIItemImageSize.set(0,0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -59,13 +60,14 @@ void CUIItemInfo::Init(int x, int y, int width, int height, const char* xml_name
 	UIDesc.SetRightIndention(static_cast<int>(5 * UI()->GetScaleX()));
 
 	if (uiXml.NavigateToNode("image_static", 0))
-	{
+	{	
 		AttachChild(&UIItemImage);
 		xml_init.InitStatic(uiXml, "image_static", 0, &UIItemImage);
 		UIItemImage.TextureAvailable(true);
 	}
 	UIItemImage.TextureOff();
 	UIItemImage.ClipperOn();
+	UIItemImageSize.set(UIItemImage.GetWidth(),UIItemImage.GetHeight());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -105,55 +107,22 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		int m_iXPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_x");
 		int m_iYPos			= pSettings->r_u32(pInvItem->object().cNameSect(), "inv_grid_y");
 
-		UIItemImage.GetUIStaticItem().SetOriginalRect(
-			m_iXPos * INV_GRID_WIDTH,
-			m_iYPos * INV_GRID_HEIGHT,
-			m_iGridWidth * INV_GRID_WIDTH,
-			m_iGridHeight * INV_GRID_HEIGHT);
-		UIItemImage.TextureOn();
-		UIItemImage.ClipperOn();
-
-		// –азместить текстуру по центру статика
-		Irect	r	= UIItemImage.GetUIStaticItem().GetOriginalRect();
-		Irect	r2	= UIItemImage.GetWndRect();
-
-		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
-		{
-			UIItemImage.SetTextureOffset((r2.right - r2.left - r.width()) / 2, (r2.bottom - r2.top - r.height()) / 2);
-			UIItemImage.SetTextureScaleXY(1.0f,1.0f);
-		}
-		else
-		{
-			float xFactor = (r2.right - r2.left) / static_cast<float>(r.width()) ;
-			float yFactor = (r2.bottom - r2.top) / static_cast<float>(r.height());
-//			float scale = std::min(xFactor, yFactor);
-
-			int xOffset = 0, yOffset = 0;
-
-			if (xFactor > yFactor)
-			{
-				xOffset = (r2.right - r2.left - r.width()) / 2;
-			}
-			else
-			{
-				yOffset = (r2.bottom - r2.top - r.height()) / 2;
-			}
-
-			UIItemImage.SetTextureOffset(xOffset, yOffset);
-			UIItemImage.SetTextureScaleXY(xFactor, yFactor);
-		}
-
-//		UIItemImage.SetTextureOffset((r.right - r.left - m_iGridWidth * INV_GRID_WIDTH) / 2,
-//									 (r.bottom - r.top - m_iGridHeight* INV_GRID_HEIGHT) / 2);
-	}
-	else
-	{
-		UIName.SetText(NULL);
-		UIWeight.SetText(NULL);
-		UICost.SetText(NULL);
-		UICondition.SetText(NULL);
-		UIDesc.RemoveAll();
-		UIItemImage.TextureOff();
+		UIItemImage.GetUIStaticItem().SetOriginalRect(	m_iXPos * INV_GRID_WIDTH,		m_iYPos * INV_GRID_HEIGHT,
+														m_iGridWidth * INV_GRID_WIDTH,	m_iGridHeight * INV_GRID_HEIGHT);
+		UIItemImage.TextureOn	();
+		UIItemImage.ClipperOn	();
+		UIItemImage.SetStretchTexture(true);
+		Irect v_r				= {0,0,m_iGridWidth * INV_GRID_WIDTH,	m_iGridHeight * INV_GRID_HEIGHT};
+		UIItemImage.GetUIStaticItem().SetRect(v_r);
+		UIItemImage.SetWidth	(_min(v_r.width(),	UIItemImageSize.x));
+		UIItemImage.SetHeight	(_min(v_r.height(),	UIItemImageSize.y));
+	}else{
+		UIName.SetText			(NULL);
+		UIWeight.SetText		(NULL);
+		UICost.SetText			(NULL);
+		UICondition.SetText		(NULL);
+		UIDesc.RemoveAll		();
+		UIItemImage.TextureOff	();
 	}
 }
 
