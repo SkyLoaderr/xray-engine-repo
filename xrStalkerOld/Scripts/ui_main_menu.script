@@ -11,6 +11,7 @@ module("ui_new_game_dialog")
 module("ui_multiplayer_dialog")
 module("ui_main_base_tab")
 module("ui_main_main_tab")
+module("ui_main_new_tab")
 
 
 
@@ -78,13 +79,13 @@ function main_menu:InitControls()
 	-- profile button
 	local btn_prof_rect   = {x = 640, y = 40, width = 200, height = 30}
 	
---	
+--[[
 	-- menu buttons	
 	local btn_new_rect    = {x = self.btn_rect.x,
 							 y = self.btn_rect.y,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
---[[
+
 	local btn_load_rect   = {x = self.btn_rect.x,
 							 y = btn_new_rect.y + btn_new_rect.height ,
 							 width = self.btn_rect.width,
@@ -293,7 +294,7 @@ end
 
 function main_menu:OnButton_back()
 	self:HideAllTabs()
-	self:main_tab:Show(true)
+	self.main_tab:Show(true)
 end
 
 function main_menu:OnButton_new_game_clicked()
