@@ -1,5 +1,6 @@
 #include	"stdafx.h"
 #include	"ETools.h"
+#include	"xrXRC.h"
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
 					  DWORD  fdwReason, 

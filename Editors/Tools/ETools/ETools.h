@@ -7,7 +7,7 @@
 #define ETOOLS_API __declspec( dllimport )
 #endif
 
-#include "xrXRC.h"
+#include "xrCDB.h"
 
 extern "C" {
 	// fast functions
