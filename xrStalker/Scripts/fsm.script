@@ -82,8 +82,9 @@ function main()
 	actor = get_actor()
 
 	local fsm_stalker = fsm.FSM(stalker00)
-	fsm_stalker:add_transition(0, 1, 
-							   fsm.if_see_actor)
+
+	local a = {[0]=1}
+--	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
 --	fsm_stalker:add_transition(0, 2, if_see_actor1)
 --	fsm_stalker:run()
