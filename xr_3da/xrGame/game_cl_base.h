@@ -25,6 +25,8 @@ class	game_cl_GameState	: public game_GameState, public ISheduled
 	typedef game_GameState	inherited;
 	string256							m_game_type_name;
 	CUIGameCustom*						m_game_ui_custom;
+	bool								m_bCrosshair;	//был ли показан прицел-курсор HUD перед вызовом меню
+
 public:
 	typedef xr_map<ClientID,game_PlayerState*> PLAYERS_MAP;
 	typedef PLAYERS_MAP::iterator PLAYERS_MAP_IT;

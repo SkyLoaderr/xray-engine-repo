@@ -24,9 +24,9 @@ public:
 	virtual bool IR_OnKeyboardPress(int dik);
 	virtual bool IR_OnKeyboardRelease(int dik);
 	virtual bool IR_OnMouseMove(int dx, int dy);
-protected:
-	//был ли показан прицел-курсор HUD перед вызовом меню
-	bool m_bCrosshair;
+//protected:
+//	//был ли показан прицел-курсор HUD перед вызовом меню
+//	bool m_bCrosshair;
 };
 
 #endif // _UI_DIALOG_WND_H_

@@ -21,15 +21,15 @@ CUIDialogWnd::~ CUIDialogWnd()
 
 void CUIDialogWnd::Show()
 {
-	HUD().GetUI()->HideIndicators();
-	HUD().GetUI()->ShowCursor();
+//	HUD().GetUI()->HideIndicators();
+//	HUD().GetUI()->ShowCursor();
 
 	inherited::Enable(true);
 	inherited::Show(true);
 
-	m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
-	if(m_bCrosshair) 
-		psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+//	m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
+//	if(m_bCrosshair) 
+//		psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
 
 
 	ResetAll();
@@ -38,14 +38,14 @@ void CUIDialogWnd::Show()
 
 void CUIDialogWnd::Hide()
 {
-	HUD().GetUI()->ShowIndicators();
-	HUD().GetUI()->HideCursor();
+//	HUD().GetUI()->ShowIndicators();
+//	HUD().GetUI()->HideCursor();
 
 	inherited::Enable(false);
 	inherited::Show(false);
 	
-	if(m_bCrosshair) 
-		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+//	if(m_bCrosshair) 
+//		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 }
 
 

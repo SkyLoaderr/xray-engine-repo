@@ -8477,6 +8477,19 @@
 						RelativePath=".\ui\UITreeViewItem.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="ScriptWnd"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIScriptWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIScriptWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIScriptWnd_script.cpp">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"

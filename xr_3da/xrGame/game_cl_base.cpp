@@ -232,47 +232,45 @@ void game_cl_GameState::shedule_Update		(u32 dt)
 
 void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog)
 {
-	CUIGameCustom* pGameUI = HUD().GetUI()->UIGame();
-
-	if( pDialog->IsShown() ){
-		pGameUI->RemoveDialogToRender(pDialog);
-		
-		if( pGameUI->MainInputReceiver()==pDialog)
-			pGameUI->SetMainInputReceiver(NULL);
-		pDialog->Hide();
-	}else{
-		if(pGameUI->MainInputReceiver() != NULL) return;
-		
-		pGameUI->AddDialogToRender(pDialog);
-		
-		R_ASSERT( pGameUI->MainInputReceiver() == NULL );
-		pGameUI->SetMainInputReceiver(pDialog);
-		pDialog->Show();
-	};
+	if( pDialog->IsShown() )
+		StopMenu(pDialog);
+	else
+		StartMenu(pDialog);
 }
 
 void game_cl_GameState::StartMenu (CUIDialogWnd* pDialog)
 {
-	CUIGameCustom* pGameUI = HUD().GetUI()->UIGame();
-	if(pGameUI->MainInputReceiver() != NULL) return;
+	if(m_game_ui_custom->MainInputReceiver() != NULL) return;
 
 	R_ASSERT( !pDialog->IsShown() );
-	R_ASSERT( pGameUI->MainInputReceiver() == NULL );
+	R_ASSERT( m_game_ui_custom->MainInputReceiver() == NULL );
 
-	pGameUI->AddDialogToRender(pDialog);
-	pGameUI->SetMainInputReceiver(pDialog);
+	m_game_ui_custom->AddDialogToRender(pDialog);
+	m_game_ui_custom->SetMainInputReceiver(pDialog);
 	pDialog->Show();
+
+	HUD().GetUI()->HideIndicators();
+	HUD().GetUI()->ShowCursor();
+	m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
+	if(m_bCrosshair) 
+		psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+
 }
 
 void game_cl_GameState::StopMenu (CUIDialogWnd* pDialog)
 {
-	CUIGameCustom* pGameUI = HUD().GetUI()->UIGame();
 	R_ASSERT( pDialog->IsShown() );
-	R_ASSERT( pGameUI->MainInputReceiver()==pDialog );
+	R_ASSERT( m_game_ui_custom->MainInputReceiver()==pDialog );
 
-	pGameUI->RemoveDialogToRender(pDialog);
-	pGameUI->SetMainInputReceiver(NULL);
+	m_game_ui_custom->RemoveDialogToRender(pDialog);
+	m_game_ui_custom->SetMainInputReceiver(NULL);
 	pDialog->Hide();
+
+	HUD().GetUI()->ShowIndicators();
+	HUD().GetUI()->HideCursor();
+	if(m_bCrosshair) 
+		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+
 }
 
 
