@@ -4826,6 +4826,9 @@
 						RelativePath=".\script_engine_export.h">
 					</File>
 					<File
+						RelativePath=".\script_engine_help.cpp">
+					</File>
+					<File
 						RelativePath=".\script_engine_inline.h">
 					</File>
 					<File
