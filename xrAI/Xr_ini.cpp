@@ -3,7 +3,7 @@
 
 #include "fs_internal.h"
 
-XRFS_API CInifile *pSettings	= NULL;
+XRCORE_API CInifile *pSettings	= NULL;
 
 CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
 {	return xr_new<CInifile>(szFileName,ReadOnly); }
@@ -25,7 +25,7 @@ bool item_pred(const CInifile::Item& x, LPCSTR val)
 //------------------------------------------------------------------------------
 //Тело функций Inifile
 //------------------------------------------------------------------------------
-XRFS_API void _parse(LPSTR dest, LPCSTR src)
+XRCORE_API void _parse(LPSTR dest, LPCSTR src)
 {
 	if (src) {
 		BOOL bInsideSTR = false;
@@ -43,7 +43,7 @@ XRFS_API void _parse(LPSTR dest, LPCSTR src)
 	*dest = 0;
 }
 
-XRFS_API void _decorate(LPSTR dest, LPCSTR src)
+XRCORE_API void _decorate(LPSTR dest, LPCSTR src)
 {
 	if (src) {
 		BOOL bInsideSTR = false;

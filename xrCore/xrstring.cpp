@@ -111,7 +111,7 @@ ref_str& __cdecl ref_str::sprintf(const char* format, ...)
 	string4096 	buf;
 	va_list		p;
 	va_start	(p,format);
-	int vs_sz	= vsnprintf(buf,sizeof(buf)-1,format,p); buf[sizeof(buf)-1]=0;
+	int vs_sz	= _vsnprintf(buf,sizeof(buf)-1,format,p); buf[sizeof(buf)-1]=0;
 	va_end		(p);
     if (vs_sz)	_set(buf);	
     return 		(ref_str&)*this;

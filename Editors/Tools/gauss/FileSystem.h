@@ -7,7 +7,7 @@
 
 DEFINE_MAP(std::string,HANDLE,HANDLEMap,HANDLEPairIt);
 
-class XRFS_API EFS_Utils {
+class XRCORE_API EFS_Utils {
     HANDLEMap 	m_LockFiles;
     std::string	m_LastAccessFN;
     std::string	m_AccessLog;
@@ -44,7 +44,7 @@ public:
     std::string	ChangeFileExt	(LPCSTR src, LPCSTR ext);
     std::string	ChangeFileExt	(const std::string& src, LPCSTR ext);
 };
-extern XRFS_API	EFS_Utils*	xr_EFS;
+extern XRCORE_API	EFS_Utils*	xr_EFS;
 #define EFS (*xr_EFS)
 
 #endif /*_INCDEF_FileSystem_H_*/

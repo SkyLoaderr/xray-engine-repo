@@ -18,7 +18,7 @@ enum FS_List
 	FS_forcedword	=u32(-1)
 };
 
-class XRFS_API FS_Path
+class XRCORE_API FS_Path
 {
 public:
 	enum{
@@ -64,7 +64,7 @@ struct FS_QueryItem
 };
 DEFINE_MAP(std::string,FS_QueryItem,FS_QueryMap,FS_QueryPairIt);
 
-class XRFS_API CLocatorAPI  
+class XRCORE_API CLocatorAPI  
 {
 public:
 	struct	file
@@ -164,7 +164,7 @@ public:
 	void						unlock_rescan	();
 };
 
-extern XRFS_API	CLocatorAPI*			xr_FS;
+extern XRCORE_API	CLocatorAPI*			xr_FS;
 #define FS (*xr_FS)
 
 #endif // LocatorAPIH
