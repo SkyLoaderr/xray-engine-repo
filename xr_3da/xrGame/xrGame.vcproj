@@ -5624,6 +5624,26 @@
 					</File>
 				</Filter>
 				<Filter
+					Name="GamePersistent"
+					Filter="">
+					<File
+						RelativePath="GamePersistent.cpp">
+					</File>
+					<File
+						RelativePath="GamePersistent.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="LevelController"
+					Filter="">
+					<File
+						RelativePath="xr_level_controller.cpp">
+					</File>
+					<File
+						RelativePath="xr_level_controller.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="ObjectFactory"
 					Filter="">
 					<File
@@ -5657,16 +5677,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="GamePersistent"
-					Filter="">
-					<File
-						RelativePath="GamePersistent.cpp">
-					</File>
-					<File
-						RelativePath="GamePersistent.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="StatGraph"
 					Filter="">
 					<File
@@ -5674,16 +5684,6 @@
 					</File>
 					<File
 						RelativePath=".\StatGraph.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="LevelController"
-					Filter="">
-					<File
-						RelativePath="xr_level_controller.cpp">
-					</File>
-					<File
-						RelativePath="xr_level_controller.h">
 					</File>
 				</Filter>
 			</Filter>
