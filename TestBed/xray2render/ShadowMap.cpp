@@ -640,9 +640,16 @@ HRESULT CMyD3DApplication::RenderScene	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderFAT	()
 {
-	// targets and clear
+	LPDIRECT3DSURFACE9						pBaseTarget;
+
+	// Save old render taget
+	m_pd3dDevice->GetRenderTarget			(0, &pBaseTarget);
+
+	// Set new render targets
+	m_pd3dDevice->SetRenderTarget			(0, d_Position	);
+	m_pd3dDevice->SetRenderTarget			(1, d_Normal	);
+	m_pd3dDevice->SetRenderTarget			(2, d_Color		);
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
-	
 
 	// samplers and texture
 	m_pd3dDevice->SetTexture				(0, 0);
@@ -665,7 +672,9 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetIndices				(m_pModelIB);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
-	m_pd3dDevice->SetTexture(0, NULL);
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 
 	return S_OK;
 }
