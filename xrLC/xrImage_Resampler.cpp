@@ -50,8 +50,8 @@ Image *	new_image(int xsize, int ysize)		/* create a blank image */
 
 void	free_image(Image* image)
 {
-	free(image->data);
-	free(image);
+	_FREE(image->data);
+	_FREE(image);
 }
 
 Pixel	get_pixel	(Image* image, int x, int y)
@@ -235,7 +235,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 {
 	// SRC & DST images
 	Image		src;	src.xsize	= srcW;	src.ysize	= srcH;	src.data	= srcI;	src.span	= srcW;
-	Image		dst;	dst.xsize	= srcW;	dst.ysize	= srcH;	dst.data	= srcI;	dst.span	= srcW;
+	Image		dst;	dst.xsize	= dstW;	dst.ysize	= dstH;	dst.data	= dstI;	dst.span	= dstW;
 
 	// Select filter
 	double		(*filterf)(double);	filterf		= 0;
@@ -342,11 +342,11 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 			put_pixel(tmp, i, k, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a)));
 		}
 	}
-	free(raster);
+	_FREE(raster);
 
-	/* free the memory allocated for horizontal filter weights */
-	for(i = 0; i < tmp->xsize; ++i) free(contrib[i].p);
-	free(contrib);
+	/* _FREE the memory allocated for horizontal filter weights */
+	for(i = 0; i < tmp->xsize; ++i) _FREE(contrib[i].p);
+	_FREE(contrib);
 
 	/* pre-calculate filter contributions for a column */
 	contrib = (CLIST *)calloc(dst.ysize, sizeof(CLIST));
@@ -423,11 +423,11 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 		}
 
 	}
-	free(raster);
+	_FREE(raster);
 
-	/* free the memory allocated for vertical filter weights */
-	for	(i = 0; i < tmp->xsize; ++i) free(contrib[i].p);
-	free(contrib);
+	/* _FREE the memory allocated for vertical filter weights */
+	for	(i = 0; i < tmp->ysize; ++i) _FREE(contrib[i].p);
+	_FREE(contrib);
 
 	free_image(tmp);
 }
