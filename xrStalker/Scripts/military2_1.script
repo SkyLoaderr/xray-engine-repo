@@ -97,8 +97,8 @@ function main ()
 
     --check move
     reset_action (stalker3, military2_1.script_name ())
-    action (stalker3, move (pos, 0.38), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
-    action (stalker3, move (pos, 0.1), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
+    action (stalker3, move (pos, 0.33), look (look.search), anim ("walk_fwd_crawl"), cond (cond.move_end))
+    action (stalker3, move (pos, 0.05), anim ("walk_fwd_crawl_stop"), cond (cond.anim_end))
     action (stalker3, anim ("prisluh"), cond (cond.anim_end))
 	action (stalker3, anim ("prisluh_v_torso_idle_2"), sound ("scripts\\Rolik\\Stalker3_2", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),
 			cond (cond.sound_end))
@@ -106,7 +106,7 @@ function main ()
 	while stalker3:action () do wait () end
 
 	reset_action (stalker3, military2_1.script_name ())
-	action (stalker3, anim (anim.free), cond (cond.time_end, 1000);
+	action (stalker3, anim (anim.free), cond (cond.time_end, 1000))
 	while stalker3:action () do wait () end
 
 	--last
@@ -126,7 +126,7 @@ function main ()
             anim (anim.danger), look (look.search), cond (cond.move_end))
 
 	while true do 
-	      if distance_between (stalker3, stalker1) <= 5 and distance_between (stalker3, stalker2) then
+	      if distance_between (stalker3, stalker1) <= 3 and distance_between (stalker3, stalker2) <= 3 then
 			 break;
 		  end
 		  wait ()
