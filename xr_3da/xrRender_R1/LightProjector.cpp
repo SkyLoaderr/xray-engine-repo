@@ -95,7 +95,7 @@ void CLightProjector::setup		(int id)
 		Log		("! CLightProjector::setup - ID out of range");
 		return;
 	}
-	RCache.set_xform	(D3DTS_TEXTURE0,receivers[id].UVgen);
+	RCache.set_c	("m_plmap_xform",receivers[id].UVgen);
 }
 
 //
