@@ -118,17 +118,17 @@ void CBuild::Run	(string& P)
 
 	//****************************************** Modify lighting
 	// If it is R2 - leave just high quality identical hemisphere
-	if (b_R2)		xrPhase_R2_Lights();
+	if (b_R2)					xrPhase_R2_Lights();
 
 	//****************************************** Starting MU
-	FPU::m64r		();
-	Phase			("LIGHT: Starting MU...");
-	mem_Compact		();
+	FPU::m64r					();
+	Phase						("LIGHT: Starting MU...");
+	mem_Compact					();
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
 	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
 
-	CThreadManager	mu;
-	mu.start		(xr_new<CMUThread> (0));
+	CThreadManager				mu;
+	mu.start					(xr_new<CMUThread> (0));
 
 	//****************************************** Resolve materials
 	FPU::m64r					();
@@ -155,7 +155,8 @@ void CBuild::Run	(string& P)
 	IsolateVertices				();
 
 	//****************************************** All lighting + lmaps building and saving
-	Light						();
+	if (b_R2)					Light_R2		();
+	else						Light			();
 
 	//****************************************** Merge geometry
 	FPU::m64r					();

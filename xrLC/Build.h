@@ -107,6 +107,7 @@ public:
 	void	xrPhase_Subdivide		();
 	void	ImplicitLighting		();
 	void	Light					();
+	void	Light_R2				();
 	void	LightVertex				();
 	void	xrPhase_MergeLM			();
 	void	xrPhase_MergeGeometry	();
