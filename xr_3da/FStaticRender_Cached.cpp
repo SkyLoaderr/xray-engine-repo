@@ -75,7 +75,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 
 		for (DWORD dwPass = 0; dwPass<dwPassesRequired; dwPass++)
 		{
-			Device.Shader.SetupPass			(0);
+			Device.Shader.SetupPass			(dwPass);
 			CHK_DX(HW.pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives));
 		}
 		UPDATEC(v_count,dwNumPrimitives,dwPassesRequired);
