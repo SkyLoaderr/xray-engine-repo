@@ -332,8 +332,7 @@ xr_formation.add_to_binder( self.object )
 xr_motivator.storage[self.object:id ()].sos = 
     {
     enabled = false,
-    npc = nil,
-    code = 0
+    npc = nil
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
@@ -342,7 +341,7 @@ end
 function pda_call_back(recepient, who, msg, info_index)
     if msg == game_object.trade_pda_msg then
         xr_motivator.trade_arhive[recepient:id()]:save(who)
-    elseif msg == game_object.help_pda_msg then
+    elseif msg == game_object.help_pda_msg and xr_motivator.storage[recepient:id()].sos == nil then
         xr_motivator.storage[recepient:id()].sos.npc = who
     else
         recepient:send_pda_message(4, who)
