@@ -43,7 +43,7 @@ public:
 	virtual void	UpdateSounds	();
 
 	//переключение в режим подствольника
-	void			SwitchMode		();
+	virtual void	SwitchMode		();
 	void			PerformSwitch	();
 	void			OnAnimationEnd	();
 

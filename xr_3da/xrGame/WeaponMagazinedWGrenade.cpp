@@ -142,9 +142,19 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	else inherited::OnShot();
 }
 //переход в режим подствольника или выход из него
+//если мы в режиме стрельбы очеред€ми, переключитьс€
+//на одиночные, а уже потом на подствольник
 void CWeaponMagazinedWGrenade::SwitchMode() 
 {
-	if(!IsGrenadeLauncherAttached() || eIdle != STATE || IsPending())
+	/*if(!SingleShotMode() || 
+	   !IsGrenadeLauncherAttached() || 
+	   eIdle != STATE || IsPending()) 
+	{
+		inherited::SwitchMode();
+		return;
+	}*/
+
+	if(!IsGrenadeLauncherAttached() || eIdle != STATE || IsPending()) 
 		return;
 
 	m_bPending = true;
@@ -155,6 +165,13 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	PlaySound(sndSwitch,vLastFP);
 
 	PlayAnimModeSwitch();
+
+	//после стрельбы из подствольника вернутьс€ в стрельбу очеред€ми
+/*	if(!m_bGrenadeMode)
+	{
+		if(SingleShotMode())
+			inherited::SwitchMode();
+	}*/
 }
 
 void  CWeaponMagazinedWGrenade::PerformSwitch()
@@ -214,7 +231,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 
 			fTime			+=	fTimeToFire;
 
-			++m_shotNum;
+			++m_iShotNum;
 			OnShot			();
 			
 			// Ammo
@@ -227,7 +244,7 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 			}
 		}
 		UpdateSounds			();
-		if(m_shotNum == m_queueSize) FireEnd();
+		if(m_iShotNum == m_iQueueSize) FireEnd();
 	} 
 	//режим стрельбы очеред€ми
 	else inherited::state_Fire(dt);

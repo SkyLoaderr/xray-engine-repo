@@ -174,8 +174,8 @@ void CWeaponShotgun::switch2_Fire2	()
 		OnShotBoth						();
 
 		//выстрел из обоих стволов
-		FireTrace					(p1,vLastFP,d);
-		FireTrace					(p1,vLastFP2,d);
+		FireTrace					(p1,d);
+		FireTrace					(p1,d);
 		fTime						+= fTimeToFire*2.f;
 
 		// Patch for "previous frame position" :)))

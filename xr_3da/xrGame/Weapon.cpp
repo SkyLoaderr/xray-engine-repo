@@ -353,16 +353,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	UpdateAddonsVisibility();
 	InitAddons();
 
-	//подготовить объекты партиклов
-/*	if(m_sFlameParticles)
-	{
-		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
-		{
-			m_pFlameParticlesCache[i] = 
-				xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
-		}
-		m_iNextParticle = 0;
-	}*/
 
 	m_dwWeaponIndependencyTime = 0;
 
@@ -380,16 +370,6 @@ void CWeapon::net_Destroy	()
 	StopFlameParticles2	();
 
 	while (m_magazine.size()) m_magazine.pop();
-/*	if(m_sFlameParticles)
-	{
-		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)
-		{
-			m_pFlameParticlesCache[i]->Stop();
-			m_pFlameParticlesCache[i]->PSI_destroy();
-			m_pFlameParticlesCache[i] = NULL;
-		}
-		m_iNextParticle = 0;
-	}*/
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -540,18 +520,12 @@ void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
 
-	float dt				= Device.fTimeDelta;
+	UpdateFP();
 
 	//подсветка от выстрела
-	if (m_bShotLight && light_time>0)		
-	{
-		light_time -= dt;
-		if (light_time<=0)
-			light_render->set_active(false);
-	}
+	UpdateLight();
 
 	//нарисовать партиклы
-	UpdateFP();
 	if(m_pFlameParticles)UpdateFlameParticles();
 	if(m_pFlameParticles2) UpdateFlameParticles2();
 
@@ -561,11 +535,10 @@ void CWeapon::UpdateCL		()
 
 void CWeapon::renderable_Render		()
 {
-	if (m_bShotLight && light_time>0) 
-	{
-		UpdateFP	();
-		Light_Render(vLastFP);
-	}
+	UpdateFP();
+	
+	//нарисовать подсветку
+	RenderLight();	
 
 	UpdateXForm();
 
@@ -590,8 +563,6 @@ void CWeapon::SetDefaults()
 	bWorking			= false;
 	bWorking2			= false;
 	m_bPending			= false;
-	m_pFlameParticles	= NULL;
-	m_pFlameParticles2	= NULL;
 
 	m_bUsingCondition = true;
 	bMisfire = false;

@@ -273,7 +273,7 @@ protected:
 	virtual void			SetDefaults			();
 
 	//трассирование полета пули
-	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
+	virtual void			FireTrace			(const Fvector& P, Fvector& D);
 
 	virtual void			FireStart			();
 	virtual void			FireEnd				();

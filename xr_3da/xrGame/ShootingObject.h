@@ -32,10 +32,8 @@ protected: //чтоб нельзя было вызвать на прямую
 	float		m_fCurrentHitPower;
 	float		m_fCurrentHitImpulse;
 	float		m_fCurrentWallmarkSize;
-	CCartridge*	m_pCurrentCartridge;
 	Fvector		m_vCurrentShootDir;
 	Fvector		m_vCurrentShootPos;
-	Fvector		m_vEndPoint;
 	//ID персонажа который иницировал действие
 	u16			m_iCurrentParentID;
 	//тип наносимого хита
@@ -47,7 +45,12 @@ protected: //чтоб нельзя было вызвать на прямую
 //////////////////////////////////////////////////////////////////////////
 protected:
 	virtual void			LoadFireParams		(LPCSTR section, LPCSTR prefix);
-
+	virtual void			FireBullet			(const Fvector& pos, 
+        										const Fvector& dir, 
+												float fire_disp,
+												const CCartridge& cartridge,
+												u16 parent_id,
+												u16 weapon_id);
 protected:
 	float					fTimeToFire;
 	int						iHitPower;
@@ -93,10 +96,11 @@ protected:
 	bool					m_bShotLight;
 protected:
 	void					Light_Start			();
-	void					Light_Render		(Fvector& P);
+	void					Light_Render		(const Fvector& P);
 
 	virtual	void			LoadLights			(LPCSTR section, LPCSTR prefix);
-	
+	virtual void			RenderLight();
+	virtual void			UpdateLight();
 	
 //////////////////////////////////////////////////////////////////////////
 // партикловая система

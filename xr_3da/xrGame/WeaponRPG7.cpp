@@ -168,7 +168,7 @@ void CWeaponRPG7::switch2_Fire	()
 		//u_EventSend(P);
 
 		OnShot						();
-		FireTrace					(p1,vLastFP,d);
+		FireTrace					(p1,d);
 		fTime						+= fTimeToFire;
 
 		CParticlesObject* pStaticPG;

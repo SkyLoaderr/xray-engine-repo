@@ -145,7 +145,7 @@ void CWeaponKnife::OnAnimationEnd()
 				cartridge.fWallmarkSize = fWallmarkSize;
 
 				while(m_magazine.size() < 2) m_magazine.push(cartridge);
-				FireTrace(p1,vLastFP,d);
+				FireTrace(p1,d);
 			} 
 			else 
 				SwitchState(eIdle);
@@ -176,7 +176,7 @@ void CWeaponKnife::OnAnimationEnd()
 				cartridge.fWallmarkSize = fWallmarkSize;
 
 				while(m_magazine.size() < 2) m_magazine.push(cartridge);
-				FireTrace(p1,vLastFP,d);
+				FireTrace(p1,d);
 			} else 
 				SwitchState(eIdle);
 		} break;

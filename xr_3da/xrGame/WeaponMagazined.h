@@ -6,6 +6,10 @@
 
 class ENGINE_API CMotionDef;
 
+//размер очереди считается бесконечность
+//заканчиваем стрельбу, только, если кончились патроны
+#define WEAPON_ININITE_QUEUE -1
+
 class CWeaponMagazined: public CWeapon
 {
 private:
@@ -43,7 +47,7 @@ protected:
 	//счетчик времени, затрачиваемого на выстрел
 	float			fTime;
 	//флаг того, что хотя бы один выстрел мы должны сделать
-	//(даже если очень быстро нажали на курок)
+	//(даже если очень быстро нажали на курок и вызвалось FireEnd)
 	bool			m_bFireSingleShot;
 
 	//кадр момента пересчета UpdateSounds
@@ -92,7 +96,7 @@ public:
 	virtual void	Show			();
 
 	virtual	void	UpdateCL		();
-	virtual	void	renderable_Render		();
+	virtual	void	renderable_Render();
 
 	virtual void	net_Destroy		();
 
@@ -105,10 +109,30 @@ public:
 
 	virtual bool	Action			(s32 cmd, u32 flags);
 	bool			IsAmmoAvailable	();
-	
-	u32				m_queueSize, m_shotNum;
-	void			SetQueueSize	(u32 size) { m_queueSize = size; }
 
+
+	//////////////////////////////////////////////
+	// для стрельбы очередями или одиночными
+	//////////////////////////////////////////////
+public:
+	virtual void	SwitchMode				();
+	virtual bool	SingleShotMode			()			{return 1 == m_iQueueSize;}
+	virtual void	SetQueueSize			(int size)  {m_iQueueSize = size; }
+	virtual bool	StopedAfterQueueFired	()			{return m_bStopedAfterQueueFired; }
+
+protected:
+	//максимальный размер очереди, которой можно стрельнуть
+	int				m_iQueueSize;
+	//количество реально выстреляных патронов
+	int				m_iShotNum;
+	//флаг того, что мы остановились после того как выстреляли
+	//ровно столько патронов, сколько было задано в m_iQueueSize
+	bool			m_bStopedAfterQueueFired;
+
+	//////////////////////////////////////////////
+	// режим приближения
+	//////////////////////////////////////////////
+public:
 	virtual void	OnZoomIn			();
 	virtual void	OnZoomOut			();
 

@@ -18,6 +18,7 @@
 
 
 
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -30,12 +31,13 @@ CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapo
 	m_eSoundReload		= ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
 	
 	fTime				= 0;
-	m_queueSize = m_shotNum = 0;
-
+	
 	m_pSndShotCurrent = NULL;
 	m_sSilencerFlameParticles = m_sSilencerSmokeParticles = NULL;
 
 	m_bFireSingleShot = false;
+	m_iShotNum = 0;
+	m_iQueueSize = WEAPON_ININITE_QUEUE;	
 }
 
 CWeaponMagazined::~CWeaponMagazined()
@@ -94,8 +96,6 @@ void CWeaponMagazined::Load	(LPCSTR section)
 
 void CWeaponMagazined::FireStart		()
 {
-	if(dynamic_cast<CActor*>(H_Parent())) m_queueSize = 0;
-	
 	if(IsValid() && !IsMisfire()) 
 	{
 		if(!IsWorking() || AllowFireWhileWorking())
@@ -121,8 +121,6 @@ void CWeaponMagazined::FireStart		()
 
 void CWeaponMagazined::FireEnd() 
 {
-	m_shotNum = 0;
-
 	inherited::FireEnd();
 
 	CActor	*actor = dynamic_cast<CActor*>(H_Parent());
@@ -360,7 +358,10 @@ void CWeaponMagazined::UpdateCL			()
 		case eFire:			
 			VERIFY(iAmmoElapsed);
 			state_Fire		(dt);	
-			if(fTime<=0 || iAmmoElapsed == 0)
+			
+			if(fTime<=0 || iAmmoElapsed == 0/*	|| 
+				SingleShotMode() || 
+				StopedAfterQueueFired()*/)
 				StopShooting();
 			break;
 		case eMisfire:		state_Misfire	(dt);	break;
@@ -424,16 +425,16 @@ void CWeaponMagazined::state_Fire	(float dt)
 		VERIFY(fTimeToFire>0.f);
 		fTime			+=	fTimeToFire;
 
-		++m_shotNum;
+		++m_iShotNum;
 		OnShot			();
-		FireTrace		(p1,vLastFP,d);
+		FireTrace		(p1,d);
 	}
 
-	UpdateSounds			();
+	if(m_iShotNum == m_iQueueSize)
+		m_bStopedAfterQueueFired = true;
 
-	//для стрельбы очередями сталкеров, 
-	//к которым апдейты приходят редко
-	//if(m_shotNum == m_queueSize) FireEnd();
+
+	UpdateSounds			();
 }
 
 void CWeaponMagazined::state_Misfire	(float /**dt/**/)
@@ -528,10 +529,16 @@ void CWeaponMagazined::switch2_Idle	()
 
 void CWeaponMagazined::switch2_Fire	()
 {
+	m_bStopedAfterQueueFired = false;
 	m_bFireSingleShot = true;
+	m_iShotNum = 0;
+	
 
-	if(OnClient() && !IsWorking())
+    if(OnClient() && !IsWorking())
 		FireStart();
+
+	if(SingleShotMode())
+		bWorking = false;
 }
 void CWeaponMagazined::switch2_Empty()
 {
@@ -833,4 +840,17 @@ void CWeaponMagazined::OnZoomOut		()
 	if(pActor)
 		pActor->EffectorManager().RemoveEffector	(eCEZoom);
 
+}
+
+//переключение режимов стрельбы одиночными и очередями
+void CWeaponMagazined::SwitchMode			()
+{
+	if(eIdle != STATE || IsPending()) return;
+
+	if(SingleShotMode())
+		m_iQueueSize = WEAPON_ININITE_QUEUE;
+	else
+		m_iQueueSize = 1;
+	
+	PlaySound(sndEmptyClick, vLastFP);
 }
