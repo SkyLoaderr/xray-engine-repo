@@ -39,10 +39,18 @@ void CLight_DB::Load			(IReader *fs)
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
-				// directional
-				sun					= L;
+				// directional (base)
+				sun_base			= L;
 				L->set_type			(IRender_Light::DIRECT);
 				L->set_shadow		(true);
+				L->set_direction	(Ldata->direction);
+				
+				// copy to env-sun
+				sun		=	L		= Create();
+				L->flags.bStatic	= true;
+				L->set_type			(IRender_Light::DIRECT);
+				L->set_shadow		(true);
+				L->set_direction	(Ldata->direction);
 			}
 			else
 			{
@@ -81,6 +89,7 @@ void			CLight_DB::Unload	()
 	for	(u32 it=0; it<v_static.size(); it++)	Destroy(v_static[it]);
 	v_static.clear			();
 	Destroy					(sun);
+	Destroy					(sun_base);
 }
 
 light*			CLight_DB::Create	()
@@ -136,8 +145,11 @@ void			CLight_DB::Update			()
 		P.mad						(Device.vCameraPosition,E.sun_dir,-500.f);
 		sun->set_direction			(E.sun_dir);
 		sun->set_color				(E.sun_color.x,E.sun_color.y,E.sun_color.z);
+		sun_base->set_color			(E.sun_color.x,E.sun_color.y,E.sun_color.z);
 		sun->set_position			(P);
+		sun_base->set_position		(P);
 		sun->set_range				(600.f);
+		sun_base->set_range			(600.f);
 	}
 
 	// Clear selection

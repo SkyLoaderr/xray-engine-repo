@@ -8,6 +8,7 @@ private:
 	xr_vector<light*>		v_static;
 public:
 	light*					sun;
+	light*					sun_base;
 	xr_vector<light*>		v_selected_shadowed;
 	xr_vector<light*>		v_selected_unshadowed;
 public:
