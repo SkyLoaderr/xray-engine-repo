@@ -604,7 +604,7 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
 
 
-const float CHWON_ACCLEL_SHIFT=0.1f;
+const float CHWON_ACCLEL_SHIFT=0.5f;
 const float CHWON_AABB_FACTOR =1.f;
 const float CHWON_ANG_COS	  =M_SQRT1_2;
 const float CHWON_CALL_UP_SHIFT=0.05f;
