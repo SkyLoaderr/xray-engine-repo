@@ -285,7 +285,8 @@ void CLevel::OnEvent(EVENT E, u64 P1, u64 /**P2/**/)
 }
 
 
-int	lvInterpSteps = 0;
+int	lvInterp = 0;
+u32	lvInterpSteps = 0;
 
 void CLevel::make_NetCorrectionPrediction	()
 {
@@ -304,8 +305,6 @@ void CLevel::make_NetCorrectionPrediction	()
 //////////////////////////////////////////////////////////////////////////////////
 	//first prediction from "delivered" to "real current" position
 	//making enought PH steps to calculate current objects position based on their updated state
-	if (lvInterpSteps >= 0)
-	{
 		for (u32 i =0; i<m_dwNumSteps; i++)	
 			ph_world->Step();
 		//////////////////////////////////////////////////////////////////////////////////
@@ -317,7 +316,9 @@ void CLevel::make_NetCorrectionPrediction	()
 			P->PH_I_CrPr();
 		}
 		//////////////////////////////////////////////////////////////////////////////////
-		for (u32 i =0; i<(u32)lvInterpSteps; i++)	//second prediction "real current" to "future" position
+	if (!InterpolationDisabled())
+	{
+		for (u32 i =0; i<lvInterpSteps; i++)	//second prediction "real current" to "future" position
 			ph_world->Step();
 		//////////////////////////////////////////////////////////////////////////////////
 		for (xr_vector<CObject*>::iterator O=Objects.objects.begin(); O!=Objects.objects.end(); O++) 
@@ -330,9 +331,14 @@ void CLevel::make_NetCorrectionPrediction	()
 	ph_world->UnFreeze();
 };
 
-u32			CLevel::InterpolationSteps	()
+u32			CLevel::GetInterpolationSteps	()
 {
 	return lvInterpSteps;
+};
+
+void		CLevel::SetInterpolationSteps	(u32 InterpSteps)
+{
+	lvInterpSteps = InterpSteps;
 };
 
 void		CLevel::UpdateDeltaUpd	( u32 LastTime )
@@ -340,10 +346,17 @@ void		CLevel::UpdateDeltaUpd	( u32 LastTime )
 	u32 CurrentDelta = iFloor(float(m_dwDeltaUpdate * 10 + (LastTime - m_dwLastNetUpdateTime)) / 11);
 	m_dwLastNetUpdateTime = LastTime;
 	m_dwDeltaUpdate = CurrentDelta;
+
+	if (0 == lvInterp) ReculcInterpolationSteps();
 };
 
 void		CLevel::ReculcInterpolationSteps ()
 {
 	lvInterpSteps = iFloor(float(m_dwDeltaUpdate) / (fixed_step*1000));
-	if (lvInterpSteps < 1) lvInterpSteps = 1;
+	if (lvInterpSteps < 3) lvInterpSteps = 3;
+};
+
+bool		CLevel::InterpolationDisabled	()
+{
+	return lvInterp < 0; 
 };

@@ -78,7 +78,10 @@ public:
 	////////////// network ////////////////////////
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
-	u32							InterpolationSteps ();
+	u32							GetInterpolationSteps ();
+	void						SetInterpolationSteps (u32 InterpSteps);
+	bool						InterpolationDisabled ();
+
 
 	void						ReculcInterpolationSteps ();
 private:
