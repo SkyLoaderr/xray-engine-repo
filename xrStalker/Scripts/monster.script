@@ -1,27 +1,16 @@
 function main()
 	wait(10000)                                                                                                    
 	                                                                                                              
-	flesh  	= 	get_level_object("m_flesh_e0000")                                                                     
+	flesh  	= 	get_level_object("m_flesh")                                                                     
 	actor   = 	get_actor()
 
-	flesh:script(true,monster.script_name())                                                                                
-
-	
+	flesh:script(true,monster.script_name()) 
 
 	action(                                                                                                       
     	flesh,                                                                                                      
-		move(move.act_eat,actor),
-    	cond(cond.time_end,100000000) 
+		move(move.act_walk_fwd,actor),
+    	cond(cond.time_end,20000) 
 	)                                                                                                             
-
-	while flesh:action() do	
-		if flesh:see(actor) then
-		end
-
-		flesh,
-		move(move.act_walk_fwd, actor),
-	    cond(cond.time_end,3000)                                                                                 
-	)	                                               	
 
 	while flesh:action() do                                                        
 	    wait			()                                                                                                    
