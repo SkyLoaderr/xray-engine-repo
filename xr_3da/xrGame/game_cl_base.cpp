@@ -242,6 +242,10 @@ void game_cl_GameState::StartStopMenu(CUIDialogWnd* pDialog)
 		StopMenu(pDialog);
 	else
 		StartMenu(pDialog);
+
+	xr_vector<CUIWindow*>::iterator it = std::find(m_game_ui_custom->m_dialogsToErase.begin(), m_game_ui_custom->m_dialogsToErase.end(), pDialog);
+	if (m_game_ui_custom->m_dialogsToErase.end() != it)
+		m_game_ui_custom->m_dialogsToErase.erase(it);
 }
 
 void game_cl_GameState::StartMenu (CUIDialogWnd* pDialog)
