@@ -72,8 +72,6 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	c_wind				= T.get	("wind");
 	c_c_bias			= T.get	("c_bias");
 	c_c_scale			= T.get	("c_scale");
-	c_l_dir				= T.get	("l_dir");
-	c_l_color			= T.get	("l_color");
 }
 
 struct	FTreeVisual_setup
