@@ -34,13 +34,13 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 	Device.Shader.DeferredLoad	(TRUE);
 	pHUD->Load		();
 
-	if (Connect(name_of_server)) 
+	if (net_Connect(name_of_server)) 
 	{
 		// Determine internal level-ID
-		LPCSTR	level_name	= SessionName	();
+		LPCSTR	level_name	= net_SessionName	();
 		int		level_id	= pApp->Level_ID(level_name);
 		if	(level_id<0)	{
-			Disconnect		();
+			net_Disconnect	();
 			pApp->LoadEnd	();
 			return FALSE;
 		}
@@ -50,7 +50,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 		// Waiting for connection completition
 		pApp->LoadTitle				("CLIENT: Spawning...");
-		while (!isCompleted_Connect()) Sleep(5);
+		while (!net_isCompleted_Connect()) Sleep(5);
 
 		// Signal main actor spawn
 		LPCSTR		s_cmd			= Engine.Params;
@@ -85,7 +85,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		BOOL bFinished	= FALSE;
 		while (!bFinished) 
 		{
-			for (NET_Packet* P = Retreive(); P; P=Retreive())
+			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
 			{
 				u16			m_type;	
 				P->r_begin	(m_type);
@@ -101,7 +101,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		// Waiting for actor spawn
 		while (0==CurrentEntity()) 
 		{
-			for (NET_Packet* P = Retreive(); P; P=Retreive())
+			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
 			{
 				u16			m_type;	
 				P->r_begin	(m_type);
@@ -118,7 +118,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");
-		while (!isCompleted_Sync())			Sleep(5);
+		while (!net_isCompleted_Sync())		Sleep(5);
 
 		if (strstr(Path.Current,"escape"))	Engine.Event.Signal	("level.weather.rain.start");
 
@@ -135,8 +135,8 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 
 void CLevel::net_Disconnect	( )
 {
-	Msg			("- Disconnect");
-	Disconnect	();
+	Msg				("- Disconnect");
+	net_Disconnect	();
 	if (Server)
 	{
 		Server->Disconnect	();
@@ -147,7 +147,7 @@ void CLevel::net_Disconnect	( )
 
 void CLevel::ClientReceive()
 {
-	for (NET_Packet* P = Retreive(); P; P=Retreive())
+	for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())
 	{
 		u16			m_type;
 		u16			ID;
@@ -225,7 +225,7 @@ void CLevel::ClientReceive()
 
 void CLevel::ClientSend	()
 {
-	if (!HasBandwidth())	return;
+	if (!net_HasBandwidth())	return;
 
 	NET_Packet				P;
 	P.w_begin				(M_UPDATE);
