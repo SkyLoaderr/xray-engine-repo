@@ -363,6 +363,32 @@ void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+
+
+//-------------------------------------------------------------------------
+//
+//void CSE_ALifeAnomalousZoneMoving::UPDATE_Write(NET_Packet &tNetPacket)
+//{
+//	inherited::UPDATE_Write		(tNetPacket);
+//
+//	tNetPacket.w_u32			(timestamp		);
+//	tNetPacket.w_vec3			(o_Position		);
+//	tNetPacket.w_vec3			(o_Angle		);	
+//	tNetPacket.w_u32			(m_tNodeID		);
+//};
+//
+//void CSE_ALifeAnomalousZoneMoving::UPDATE_Read	(NET_Packet &tNetPacket)
+//{
+//	inherited::UPDATE_Read		(tNetPacket);
+//
+//	tNetPacket.w_u32			(timestamp		);
+//	tNetPacket.w_vec3			(o_Position		);
+//	tNetPacket.w_vec3			(o_Angle		);	
+//	tNetPacket.w_u32			(m_tNodeID		);
+//};
+//
+//-------------------------------------------------------------------------
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////

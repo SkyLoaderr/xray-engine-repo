@@ -20,6 +20,16 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
+	if (I) {
+		HDebug->M_Add(0,"Enemy SEE me",D3DCOLOR_XRGB(0,255,255));
+	} else {
+		HDebug->M_Add(0,"Enemy DONT SEE! me",D3DCOLOR_XRGB(255,0,0));
+	}
+	
+	HDebug->SetActive(true);	
+
+
+
 	// pre-update path parameters
 	enable_movement							(true);
 	CLevelLocationSelector::set_evaluator	(0);
@@ -30,8 +40,8 @@ void CAI_Biting::Think()
 		SetState							(stateRest);
 	}
 
-	StateSelector							();
-	CurrentState->Execute					(m_current_update);
+	//StateSelector							();
+	//CurrentState->Execute					(m_current_update);
 
 	// update path
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
@@ -195,11 +205,6 @@ void CAI_Biting::UpdateVelocities(STravelParams cur_velocity)
 		if (b_path_end) break;		
 	}
 
-	LOG_EX("----------------- VELOCITIES --------------------");
-	for (u32 i=0;i<velocities.size();i++) {
-		LOG_EX2("V%u = [%f]", *"*/ i+1, velocities[i].linear_velocity /*"*);
-	}
-	LOG_EX("-------------------------------------------------");
 }
 
 

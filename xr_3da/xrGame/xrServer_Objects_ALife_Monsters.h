@@ -92,6 +92,23 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 #endif
 SERVER_ENTITY_DECLARE_END
 
+
+//---------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+//SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeAnomalousZoneMoving, CSE_ALifeAnomalousZone)
+//	
+//	u32								timestamp;				
+//
+//									CSE_ALifeAnomalousZoneMoving	(LPCSTR caSection);
+//	virtual							~CSE_ALifeAnomalousZoneMoving	();
+//
+//SERVER_ENTITY_DECLARE_END
+//---------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------
+
+
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisual)
 	u8								s_team;
 	u8								s_squad;

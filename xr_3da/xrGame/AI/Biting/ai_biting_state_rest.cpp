@@ -96,11 +96,7 @@ void CBitingRest::Run()
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 			// ходить по точкам графа
-			if (IS_NEED_REBUILD()) {
-				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
-				
-				pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
-			}
+			pMonster->WalkNextGraphPoint();
 
 			break;
 		case ACTION_SATIETY_GOOD:				// стоять, ничего не делать
@@ -115,11 +111,7 @@ void CBitingRest::Run()
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 			// ходить по точкам графа
-			if (IS_NEED_REBUILD()) {
-				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
-				
-				pMonster->SetPathParams(vertex_id, ai().level_graph().vertex_position(vertex_id));
-			}
+			pMonster->WalkNextGraphPoint();
 			break;
 		case ACTION_WALK_PATH_END:
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

@@ -60,12 +60,6 @@ void CAI_Biting::Path_GetAwayFromPoint(const CEntity *pE, Fvector position, floa
 	m_tSelectorGetAway->m_fOptEnemyDistance = m_tSelectorGetAway->m_fMaxEnemyDistance;
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
-
-//	LOG_EX2("GA_SEL:EnemyPos=[%f,%f,%f] enemy_dist=[min=%f][max=%f]", *"*/ VPUSH(m_tSelectorGetAway->m_tEnemyPosition), m_tSelectorGetAway->m_fMinEnemyDistance, m_tSelectorGetAway->m_fMaxEnemyDistance/*"*);
-//	LOG_EX2("My Pos =[%f,%f,%f]", *"*/ VPUSH(Position()) /*"*);
-//		
-//	LOG_EX("----------------- SELECTOR_SHOW -------------------");
-	
 }
 
 
@@ -213,12 +207,7 @@ bool CAI_Biting::IsMovingOnPath()
 
 bool CAI_Biting::NeedRebuildPath(u32 n_points)
 {
-	if (CDetailPathManager::path().empty() || !IsMovingOnPath() || (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) {
-		if (IsMovingOnPath() && (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) LOG_EX("u32(-1) Works!");		
-		else LOG_EX("u32 MoveEnd Works!");
-	
-		return true;
-	}
+	if (CDetailPathManager::path().empty() || !IsMovingOnPath() || (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) return true;
 	return false;
 }
 
@@ -231,12 +220,7 @@ bool CAI_Biting::NeedRebuildPath(float dist_to_end)
 		cur_dist_to_end += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
 	}
 
-	if (!IsMovingOnPath() || (cur_dist_to_end < dist_to_end)) {
-		if (IsMovingOnPath() && (cur_dist_to_end < dist_to_end)) LOG_EX("float(-1) Works!");		
-		else LOG_EX("float MoveEnd Works!");
-
-		return true;
-	}
+	if (!IsMovingOnPath() || (cur_dist_to_end < dist_to_end)) return true;
 	return false;
 }
 bool CAI_Biting::NeedRebuildPath(u32 n_points, float dist_to_end)
@@ -381,5 +365,14 @@ u32 CAI_Biting::GetNextGameVertex(float R)
 
 	if (level_nodes.empty()) return ai().game_graph().vertex(nearest_game_vertex)->level_vertex_id();
 	else return ai().game_graph().vertex(level_nodes[::Random.randI(level_nodes.size())])->level_vertex_id();
+}
+
+
+void CAI_Biting::WalkNextGraphPoint()
+{
+	set_path_type		(CMovementManager::ePathTypeGamePath);
+	set_selection_type	(CMovementManager::eSelectionTypeRandomBranching);
+
+	SetupVelocityMasks();
 }
 

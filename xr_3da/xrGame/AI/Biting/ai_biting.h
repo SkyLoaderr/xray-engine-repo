@@ -405,6 +405,9 @@ public:
 
 	u16		fire_bone_id;
 	float	GetRealDistToEnemy();
+
+
+	void	WalkNextGraphPoint();
 };
 
 

@@ -53,41 +53,8 @@ void CAI_Biting::vfUpdateParameters()
 	SEnemy ve;
 
 	if (GetEnemy(ve)) {
-		// определить, видит ли меня враг
-		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
-		
-
-		const CCustomMonster *tpCustomMonster = dynamic_cast<const CCustomMonster *>(ve.obj);
-		if (tpCustomMonster) {
-			yaw1		= -tpCustomMonster->m_body.current.yaw;
-			pitch1		= -tpCustomMonster->m_body.current.pitch;
-			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
-			fRange		= tpCustomMonster->ffGetRange();
-		}
-		else {
-			const CActor *tpActor = dynamic_cast<const CActor *>(ve.obj);
-			if (tpActor) {
-				yaw1	= tpActor->Orientation().yaw;
-				pitch1	= tpActor->Orientation().pitch;
-				fYawFov	= angle_normalize_signed(tpActor->ffGetFov()*PI/180.f);
-				fRange	= tpActor->ffGetRange();
-			}
-		}
-
-		if (ve.position.distance_to(Position()) <= fRange) {
-			
-			fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/ve.position.distance_to(Position()))))/2.f);
-			fPitchFov		= angle_normalize_signed(fYawFov*1.f);
-			ve.position.sub	(Position());
-			ve.position.mul	(-1);
-			ve.position.getHP	(yaw2,pitch2);
-			yaw1			= angle_normalize_signed(yaw1);
-			pitch1			= angle_normalize_signed(pitch1);
-			yaw2			= angle_normalize_signed(yaw2);
-			pitch2			= angle_normalize_signed(pitch2);
-			
-			I = (angle_difference(yaw1,yaw2) <= fYawFov) && (angle_difference(pitch1,pitch2) <= fPitchFov);
-		}
+		const CEntityAlive *pEA = dynamic_cast<const CEntityAlive*>(ve.obj);
+		if (CVisualMemoryManager::see(pEA, this)) I = true;
 	}
 
 	//------------------------------------
