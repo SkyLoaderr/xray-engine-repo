@@ -164,9 +164,9 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 	case M_EVENT:	Process_event		(P,sender); break;	
 	case M_CL_INPUT:
 		{
-			xrClientData* CL		= ID_to_client(sender);
+			xrClientData* CL		= ID_to_client	(sender);
 			if (CL)	CL->net_Ready	= TRUE;
-			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+			if (SV_Client) SendTo	(SV_Client->ID, P, net_flags(TRUE, TRUE));
 		}break;
 	case M_GAMEMESSAGE:
 		{
@@ -177,7 +177,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 			xrClientData* CL		= ID_to_client(sender);
 			if (CL)	CL->net_Ready	= TRUE;
 			game->signal_Syncronize();
-///			SendConnectionData(CL);
+///			SendConnectionData		(CL);
 //			game->OnPlayerReady		(CL->ID);			
 		}break;
 	case M_CHANGE_LEVEL:
