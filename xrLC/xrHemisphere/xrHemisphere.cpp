@@ -416,12 +416,13 @@ extern "C"
 		float total = 0;
 		for (int i=0; i<h_count; i++)
 		{
+			float y		=	-float(hemi[i][h_table[1]]);
 			float E		=	(y<0)?ground_scale:1;
 			total		+=	E;
 		}
 		
 		// Iterate
-		for (int i=0; i<h_count; i++)
+		for (i=0; i<h_count; i++)
 		{
 			float x		=	-float(hemi[i][h_table[0]]);
 			float y		=	-float(hemi[i][h_table[1]]);
