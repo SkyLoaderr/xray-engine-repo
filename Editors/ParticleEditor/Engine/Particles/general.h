@@ -150,7 +150,7 @@ enum PActionEnum
 struct ParticleAction
 {
 	enum{
-		ALLOW_PARENT = (1<<0),
+		ALLOW_PARENT	= (1<<0)
 	};
 	static float	dt;	// This is copied to here from global state.
 	Flags32			flags;
@@ -165,7 +165,7 @@ struct PAHeader : public ParticleAction
 {
 	int actions_allocated;
 	int count;			// Total actions in the list.
-	float padding[125];	// This must be the largest action.
+	float padding[126];	// This must be the largest action.
 	
 	ExecMethod
 };
@@ -385,6 +385,7 @@ struct PASource : public ParticleAction
 	float age_sigma;	// St. dev. of initial age of the particles
 	BOOL vertexB_tracks;// True to get positionB from position.
 	pVector parent_vel;	
+	float parent_motion;
 	
 	ExecMethod
 };
@@ -466,6 +467,7 @@ struct _ParticleState
 	float Alpha;
 	float Age;
 	float AgeSigma;
+	float parent_motion;
 	
 	_ParticleState();
 

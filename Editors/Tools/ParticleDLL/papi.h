@@ -66,6 +66,8 @@ extern "C"{
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
 		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
+	PARTICLEDLL_API void __stdcall pParentMotion(float scale);
+	
 	PARTICLEDLL_API void __stdcall pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);
 
 	PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,

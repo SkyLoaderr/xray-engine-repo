@@ -190,14 +190,15 @@ _ParticleState::_ParticleState()
 
 void _ParticleState::ResetState()
 {
-	Size		= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Vel			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
-	VertexB		= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
-	Color		= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Rot			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
-	Alpha		= 1.0f;
-	Age			= 0.0f;
-	AgeSigma	= 0.0f;
+	Size			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Vel				= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
+	VertexB			= pDomain(PDPoint, 0.0f, 0.0f, 0.0f);
+	Color			= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Rot				= pDomain(PDPoint, 1.0f, 1.0f, 1.0f);
+	Alpha			= 1.0f;
+	Age				= 0.0f;
+	AgeSigma		= 0.0f;
+	parent_motion	= 0.f;
 }
 
 ParticleGroup *_ParticleState::GetGroupPtr(int p_group_num)
@@ -499,6 +500,13 @@ PARTICLEDLL_API void __stdcall pVertexBTracks(BOOL trackVertex)
 	_ps.vertexB_tracks = trackVertex;
 }
 
+PARTICLEDLL_API void __stdcall pParentMotion(float scale)
+{
+	_ParticleState &_ps = _GetPState();
+
+	_ps.parent_motion = scale;
+}
+
 PARTICLEDLL_API void __stdcall pSize(float size_x, float size_y, float size_z)
 {
 	_ParticleState &_ps = _GetPState();
@@ -672,7 +680,7 @@ PARTICLEDLL_API void __stdcall pCallActionList(int action_list_num)
 	}
 }
 
-PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, const Fmatrix& m, const Fvector& vel)
+PARTICLEDLL_API void __stdcall pSetActionListParenting(int action_list_num, const Fmatrix& m, const Fvector& vel)
 {
 	_ParticleState &_ps = _GetPState();
 
@@ -739,7 +747,7 @@ PARTICLEDLL_API void __stdcall pSetActionListTransform(int action_list_num, cons
 			break;
 		case PASourceID:
 			((PASource *)pa)->Transform(m);
-			((PASource *)pa)->parent_vel = pVector(vel.x,vel.y,vel.z);
+			((PASource *)pa)->parent_vel = pVector(vel.x,vel.y,vel.z)*((PASource *)pa)->parent_motion;
 			break;
 		case PASpeedLimitID:			break;
 		case PATargetColorID:			break;

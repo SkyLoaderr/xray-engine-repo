@@ -328,6 +328,7 @@ PARTICLEDLL_API void __stdcall pSource(float particle_rate, PDomainEnum dtype,
 	S.age_sigma		= _ps.AgeSigma;
 	S.vertexB_tracks= _ps.vertexB_tracks;
 	S.parent_vel	= pVector(0,0,0);
+	S.parent_motion	= _ps.parent_motion;
 	S.flags.zero	();
 	S.flags.set		(ParticleAction::ALLOW_PARENT,allow_parent);
 
