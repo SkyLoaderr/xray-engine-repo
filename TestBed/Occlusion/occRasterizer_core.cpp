@@ -129,8 +129,10 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	}
 	
 	// right connector
-	int X;
-	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=limRight; X--, i--, Z-=dZ)
+	i				= i_base+maxT-1;
+	limit			= i_base+limRight;
+	Z				= Zend-dZ;
+	for (; i>=limit; i--, Z-=dZ)
 	{
 		if (shared(currentTri,pFrame[i+1])) {
 			float ZR = (Z+pDepth[i+1])/2;
