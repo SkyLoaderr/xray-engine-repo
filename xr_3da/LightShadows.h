@@ -27,6 +27,7 @@ private:
 	struct	shadow 
 	{
 		int					slot;
+		Fvector				C;
 		Fmatrix				M;
 		xrLIGHT*			L;
 	};
