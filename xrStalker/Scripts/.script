@@ -45,6 +45,7 @@ module ("xr_report")
 module ("xr_rest")
 module ("xr_chaser")
 module ("xr_formation")
+module ("xr_sos")
 
 module ("bar_stalker")
 module ("barman")
