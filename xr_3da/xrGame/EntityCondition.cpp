@@ -393,7 +393,11 @@ CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHi
 		break;
 	}
 
-	return AddWound(hit_power, hit_type, element);
+	//раны добавляются только живому
+	if(GetHealth()>0)
+		return AddWound(hit_power, hit_type, element);
+	else
+		return NULL;
 }
 
 

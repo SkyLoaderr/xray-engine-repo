@@ -74,7 +74,8 @@ public:
 	void					StopParticles			(const ref_str& particles_name, u16 bone_id=BI_NONE);
 	void					AutoStopParticles		(const ref_str& ps_name, u16 bone_id);
 
-	void					MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
+	static void				MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
+	static void				GetBonePos				(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result);
 	u16						GetNearestBone			(CKinematics* K, u16 bone_id);
 	IC u16					GetRandomBone			(){return m_Bones.size()?(u16)Random.randI(m_Bones.size()):BI_NONE;}
 

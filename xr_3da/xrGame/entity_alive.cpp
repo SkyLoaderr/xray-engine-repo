@@ -11,8 +11,6 @@
 
 
 #define SMALL_ENTITY_RADIUS		0.6f
-#define BLOOD_DROPS_SIZE		0.03f
-
 
 
 //отметки крови на стенах 
@@ -29,6 +27,7 @@ float CEntityAlive::m_fNominalHit = 0.f;
 SHADER_VECTOR* CEntityAlive::m_pBloodDropsVector = NULL;
 float CEntityAlive::m_fStartBloodWoundSize = 0.3f;
 float CEntityAlive::m_fStopBloodWoundSize = 0.1f;
+float CEntityAlive::m_fBloodDropSize = 0.03f;
 
 
 //минимальный размер ожега, после которого горят партиклы
@@ -117,6 +116,7 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 	m_fBloodDropTime		= pSettings->r_float(section, "blood_drop_time");	
 	m_fStartBloodWoundSize  = pSettings->r_float(section, "start_blood_size");
 	m_fStopBloodWoundSize   = pSettings->r_float(section, "stop_blood_size");
+	m_fBloodDropSize		= pSettings->r_float(section, "blood_drop_size");
 }
 
 void CEntityAlive::UnloadBloodyWallmarks	()
@@ -474,9 +474,15 @@ void CEntityAlive::UpdateBloodDrops()
 			if(pWound->m_fUpdateTime>drop_time)
 			{
 				VERIFY(m_pBloodDropsVector);
-				PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
-								Position(), m_fBloodMarkDistance, 
-								BLOOD_DROPS_SIZE, *m_pBloodDropsVector);
+				if(pWound->GetBoneNum() != BI_NONE)
+				{
+					Fvector pos;
+					CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0,0,0), pos);
+					PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
+									pos, m_fBloodMarkDistance, 
+									m_fBloodDropSize, *m_pBloodDropsVector);
+
+				}
 			}
 		}
 		it++;

@@ -230,20 +230,22 @@ void CParticlesPlayer::UpdateParticles()
 	}
 }
 
+
+void CParticlesPlayer::GetBonePos	(CObject* pObject, u16 bone_id, const Fvector& offset, Fvector& result)
+{
+	CBoneInstance&		l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance(bone_id);
+
+	result = offset;
+	l_tBoneInstance.mTransform.transform_tiny(result);
+	pObject->XFORM().transform_tiny(result);
+}
+
 void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result)
 {
-	CBoneInstance&		l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_id);
-
 	result.identity		();
 	result.k.normalize	(dir);
 	Fvector::generate_orthonormal_basis(result.k, result.j, result.i);
-
-
-	Fvector pos;
-	pos = offset;
-	l_tBoneInstance.mTransform.transform_tiny(pos);
-	pObject->XFORM().transform_tiny(pos);
-	result.c.set(pos);
+	GetBonePos(pObject, bone_id, offset, result.c);
 }
 
 u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
