@@ -277,5 +277,5 @@ void game_sv_GameState::u_EventGen(NET_Packet& P, u16 type, u16 dest)
 
 void game_sv_GameState::u_EventSend(NET_Packet& P)
 {
-	Level().Server->SendBroadcast(0xfffffffff,P,net_flags(TRUE,TRUE));
+	Level().Server->SendBroadcast(0xffffffff,P,net_flags(TRUE,TRUE));
 }

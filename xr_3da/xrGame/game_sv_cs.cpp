@@ -383,8 +383,9 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				int		a_cost			= iAmmoMagCount*cost;
 
 				// Event
-				u_EventGen			(P, GE_ADD_AMMO, W->eid_who);
-				P.w_u16				(iAmmoMagCount * a_magsize);	// Amount of ammo to add
+				NET_Packet			P;
+				u_EventGen			(P, GE_ADD_AMMO, W->ID);	   
+				P.w_u16				(u16(iAmmoMagCount) * a_magsize);	// Amount of ammo to add
 				u_EventSend			(P);
 				return;
 			}
