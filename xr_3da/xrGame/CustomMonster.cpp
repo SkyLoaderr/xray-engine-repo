@@ -510,7 +510,7 @@ void CCustomMonster::OnRender()
 		else 
 			RCache.dbg_DrawAABB			(P1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
 		
-		/**/
+		/**
 		Fvector         T;
         Fvector4        S;
         
@@ -536,38 +536,38 @@ void CCustomMonster::OnRender()
 	*/
 	{
 	
-	for (int I=0, N = (int)CDetailPathManager::path().size(); I<N - 1; ++I)
-	{
-		Fvector P1 = CDetailPathManager::path()[I].position;		P1.y+=0.1f;
-		Fvector P2 = CDetailPathManager::path()[I + 1].position;	P2.y+=0.1f;
-		{
-			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I].velocity);
-			VERIFY						(i != m_movement_params.end());
-			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
-			Fmatrix						V = Fidentity;
-			V.c							= P1;
-			V.c.y						+= r + float(I)/100.f;
-			V.i.x						= .05f;//r;
-			V.j.y						= .05f;//r;
-			V.k.z						= .05f;//r;
-			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
-		}
-		{
-			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I + 1].velocity);
-			VERIFY										(i != m_movement_params.end());
-			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
-			Fmatrix						V = Fidentity;
-			V.c							= P2;
-			V.c.y						+= r + float(I + 1)/100.f;
-			V.i.x						= .05f;//r;
-			V.j.y						= .05f;//r;
-			V.k.z						= .05f;//r;
-			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
-		}
-		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
-		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
-	}
+//	for (int I=0, N = (int)CDetailPathManager::path().size(); I<N - 1; ++I)
+//	{
+//		Fvector P1 = CDetailPathManager::path()[I].position;		P1.y+=0.1f;
+//		Fvector P2 = CDetailPathManager::path()[I + 1].position;	P2.y+=0.1f;
+//		{
+//			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I].velocity);
+//			VERIFY						(i != m_movement_params.end());
+//			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
+//			Fmatrix						V = Fidentity;
+//			V.c							= P1;
+//			V.c.y						+= r + float(I)/100.f;
+//			V.i.x						= .05f;//r;
+//			V.j.y						= .05f;//r;
+//			V.k.z						= .05f;//r;
+//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+//		}
+//		{
+//			xr_map<u32,STravelParams>::const_iterator	i = m_movement_params.find(CDetailPathManager::path()[I + 1].velocity);
+//			VERIFY										(i != m_movement_params.end());
+//			float	r = (*i).second.linear_velocity/(*i).second.angular_velocity;
+//			Fmatrix						V = Fidentity;
+//			V.c							= P2;
+//			V.c.y						+= r + float(I + 1)/100.f;
+//			V.i.x						= .05f;//r;
+//			V.j.y						= .05f;//r;
+//			V.k.z						= .05f;//r;
+//			RCache.dbg_DrawEllipse		(V,D3DCOLOR_XRGB(255,0,0));
+//		}
+//		RCache.dbg_DrawAABB(P1,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+//		RCache.dbg_DrawAABB(P2,.01f,.01f,.01f,D3DCOLOR_XRGB(255,255,255));
+//		RCache.dbg_DrawLINE(Fidentity,P1,P2,D3DCOLOR_XRGB(255,255,255));
+//	}
 	}
 
 	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
