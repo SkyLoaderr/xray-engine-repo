@@ -93,8 +93,8 @@ public:
 	IC float 	cross_product	(const Self &p) const		{ return y*p.x - x*p.y; }
 	IC float 	getH			(void) const
 	{
-        if (fis_zero(x))
-			if (fis_zero(y))
+        if (fis_zero(y))
+			if (fis_zero(x))
 				return		(0.f);
 			else
 				return		((x > 0.0f) ? -PI_DIV_2 : PI_DIV_2);
