@@ -107,6 +107,8 @@ void CGameObject::net_Destroy	()
 	inherited::net_Destroy						();
 	setReady									(FALSE);
 	g_pGameLevel->Objects.net_Unregister		(this);
+	shedule_unregister							();
+
 	
 	if (this == Level().CurrentEntity())
 	{
