@@ -239,7 +239,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	f32								m_attn;
 	u32								m_period;
 	float							m_fRadius;
-	string512						m_caParameters;
 	float							m_fGlobalProbability;
 	u16								m_wItemCount;
 	u32								*m_dwaWeights;

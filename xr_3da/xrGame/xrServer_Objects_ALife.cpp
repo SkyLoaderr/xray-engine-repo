@@ -457,8 +457,8 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_fRadius					= 30.f;
 	m_fGlobalProbability		= pSettings->r_float(caSection,"GlobalProbability");
 	
-	strcpy						(m_caParameters,pSettings->r_string(caSection,"artefacts"));
-	m_wItemCount				= (u16)_GetItemCount(m_caParameters);
+	LPCSTR						l_caParameters = pSettings->r_string(caSection,"artefacts");
+	m_wItemCount				= (u16)_GetItemCount(l_caParameters);
 	R_ASSERT2					(!(m_wItemCount & 1),"Invalid number of parameters in string 'artefacts' in the 'system.ltx'!");
 	m_wItemCount				>>= 1;
 	
@@ -466,8 +466,8 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 	m_cppArtefactSections		= (string64*)xr_malloc(m_wItemCount*sizeof(string64));
 	string512					l_caBuffer;
 	for (u32 i=0; i<m_wItemCount; i++) {
-		m_dwaWeights[i]			= atoi(_GetItem(m_caParameters,i << 1,l_caBuffer));
-		strcpy					(m_cppArtefactSections[i],_GetItem(m_caParameters,(i << 1) | 1,l_caBuffer));
+		m_dwaWeights[i]			= atoi(_GetItem(l_caParameters,i << 1,l_caBuffer));
+		strcpy					(m_cppArtefactSections[i],_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 }
 
