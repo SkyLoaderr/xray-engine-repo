@@ -46,8 +46,8 @@ protected:
 			void	cpu_name		(u32 family, u32 model, LPCSTR vendor_name, LPSTR model_name);
 
 public:
-	IC		bool	detected		();
 	IC				CProcessorInfo	();
+	IC		bool	detected		() const;
 };
 
 #include "processor_info_inline.h"
