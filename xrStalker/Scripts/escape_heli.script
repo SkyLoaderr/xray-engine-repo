@@ -73,7 +73,7 @@ function update()
 		end
 
 		-- после первого захода стрелять ракетами
-		if heli_mgr.attack_passes == 999 then
+		if heli_mgr.attack_passes < 1000 then
 			heli_mgr.heliObject.m_use_rocket_on_attack = true
 		end
 
