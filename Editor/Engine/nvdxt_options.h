@@ -5,7 +5,7 @@ enum
     dSaveButton = 1,
 
 	dDXT1 = 10,
-	dTextureFormatStart = dDXT1,
+	dTextureFormatFirst = dDXT1,
 
 	dDXT1a = 11,  // DXT1 with one bit alpha
 	dDXT3 = 12,   // explicit alpha
@@ -34,19 +34,31 @@ enum
 
 
     dGenerateMipMaps = 30,
+    dMIPMapSourceFirst = dGenerateMipMaps,
 	dUseExistingMipMaps = 31,
 	dNoMipMaps = 32,
+    dMIPMapSourceLast = dNoMipMaps,
 
-	dNormalMap = 33,
+    // MIP filters
+    dMIPFilterBox = 33,
+    dMIPFilterFirst = dMIPFilterBox,
+    dMIPFilterCubic = 34,
+    dMIPFilterFullDFT = 35,
+    dMIPFilterKaiser = 36,
+    dMIPFilterLinearLightKaiser = 37,
+
+    dMIPFilterLast = dMIPFilterLinearLightKaiser,
+
 
     dShowDifferences = 40,
     dShowFiltering = 41,
     dShowMipMapping = 42,
+    dShowAnisotropic = 43,
 
     dChangeClearColor = 50,
     dViewXBOX1c = 51,
     dViewXBOX1a = 52,
-    dDither = 53,
+    dDitherColor = 53,
 
     dLoadBackgroundImage = 54,
     dUseBackgroundImage = 55,
@@ -54,21 +66,26 @@ enum
     dBinaryAlpha = 56,
     dAlphaBlending = 57,
     dFade = 58,
+    dFadeAlpha = 59,
+
     dFadeToColor = 60,
     dAlphaBorder = 61,
     dBorder = 62,
     dBorderColor = 63,
+	dNormalMap = 64,
+	dDuDvMap = 65,
 
     dZoom = 70,
-    dFadeToMIPMaps = 71,
 
 	dTextureType2D = 80,
-	dTextureTypeStart = dTextureType2D,
+	dTextureTypeFirst = dTextureType2D,
 
 	dTextureTypeCube = 81,
 	dTextureTypeImage = 82,
 	//dTextureTypeVolume = 83,  to be added
-	dTextureTypeLast = dTextureTypeImage
+	dTextureTypeLast = dTextureTypeImage,
+
+    dFadeAmount = 90,
 
 
 };
@@ -99,34 +116,51 @@ class CMyD3DApplication;
 
 typedef struct CompressionOptions
 {
-    bool        MipMapsInImage;  // mip have been loaded in during read
+    bool        bMipMapsInImage;  // mip have been loaded in during read
     short       MipMapType;      // dNoMipMaps, dUseExistingMipMaps, dGenerateMipMaps
 
-    bool        BinaryAlpha;   // zero or one 
 
-    bool        NormalMap;     // only renormalize MIP maps
+    short       MIPFilterType;    // for MIP maps
+    /* 
+        dMIPFilterBox 
+        dMIPFilterCubic 
+        dMIPFilterFullDFT 
+        dMIPFilterKaiser 
+        dMIPFilterLinearLightKaiser 
+        */
 
-    bool        AlphaBorder;   // make an alpha border
-    bool        Border;        // make a color border
+
+    bool        bBinaryAlpha;   // zero or one 
+
+    bool        bNormalMap;     // Is a normal Map
+    bool        bDuDvMap;     // Is a DuDv map
+
+    bool        bAlphaBorder;   // make an alpha border
+    bool        bBorder;        // make a color border
     tPixel      BorderColor;   // color of border
 
 
-    bool        Fade;          // fade to color over MIP maps
+    bool        bFade;          // fade to color over MIP maps
+    bool        bFadeAlpha;          // fade to color over MIP maps
     tPixel      FadeToColor;   // color to fade to
-    int         FadeToMipMaps; // number of MIPs to fade over
+    int         FadeAmount;    // percentage of color to fade in
 
-
-    bool        Dither;        // enable dithering during 16 bit conversion
+    bool        bDitherColor;        // enable dithering during 16 bit conversion
 
 
 	short 		TextureType;    // regular decal, cube or volume  
-	//dTextureType2D 
-	//dTextureTypeCube 
-	//dTextureTypeImage 
+	/*
+        dTextureType2D 
+    	dTextureTypeCube 
+    	dTextureTypeImage 
+     */
 
 	short 		TextureFormat;
 	//  dDXT1, dDXT1a, dDXT3, dDXT5, d4444, 
 	//  d1555, 	d565,	d8888, 	d888, 	d555, 
+
+    bool        bSwapRGB;
+
 
 
 } CompressionOptions;

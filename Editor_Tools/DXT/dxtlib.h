@@ -1,7 +1,7 @@
 #ifndef __DXTLIB_H__
 #define __DXTLIB_H__
 
-#include "nvdxt_options.h"
+#include <nvdxt_options.h>
 /*********************************************************************NVMH2****
 Path:  C:\Dev\devrel\Nv_sdk_4\Dx8_private\PhotoShop\dxtlib
 File:  dxtlib.h
@@ -48,7 +48,22 @@ union tPixel
 };
 #endif
 
+#ifndef ISPOWER2
+inline bool IsPower2(unsigned int x)
+{              
+    if ( x < 1 )
+        return false;
 
+    if (x == 1)
+        return true;
+
+    if ( x & (x-1) )        
+        return false;
+
+    return true;
+}
+#define ISPOWER2
+#endif
 
 
 /*
