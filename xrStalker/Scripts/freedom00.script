@@ -7,7 +7,7 @@ first_warning = 0
 ----------------------------------------------------------------------------------------------------------------
 function on_enter(zone,object)
   if script_zone_id == zone:id () and actor_id == object:id () then
-    printf("actor entering in our zone")
+--    printf("actor entering in our zone")
     actor_entered = true
   end
 end
@@ -18,18 +18,24 @@ end
 ----------------------------------------------------------------------------------------------------------------
 function on_exit(zone,object)
   if script_zone_id == zone:id () and actor_id == object:id () then
-    printf("actor exited in our zone")
+--    printf("actor exited in our zone")
     actor_entered = false
   end
 end
 ----------------------------------------------------------------------------------------------------------------
 
-
+function check_stalker (object)
+	if object:action () then return end
+	object:script (false, freedom00.script_name ())
+end
 
 ----------------------------------------------------------------------------------------------------------------
 -- ожидание, пока игрок умрет
 ----------------------------------------------------------------------------------------------------------------
 function wait_for_kill_actor (actor)
+
+	local trap = 0
+	local free = 0
 
 	while true do
 		  if actor.health <= 0 then
@@ -37,6 +43,9 @@ function wait_for_kill_actor (actor)
 			 prof_hrom_pust_trup_uberet:play_at_pos (stalker1, stalker1:position (), 0)
 			 return 1
 			 end
+		  freedom00.check_stalker (stalker3)
+		  freedom00.check_stalker (stalker4)
+		  freedom00.check_stalker (stalker5)	
 		  wait (500)
 		  end	 	
 
@@ -49,13 +58,34 @@ end
 function stalkers_attacked (actor)
 
 	rainbow_hrom_u_nas_problema:play_at_pos (stalker2, stalker2:position (), 0)
+
 	stalker3:script	(false, freedom00.script_name())
 	stalker3:script	(true,  freedom00.script_name())
 
     action (stalker3, 
-			move (move.standing, move.run, move.line, patrol ("outway")), 
+			move (move.standing, move.walk, move.line, patrol ("outway3")), 
 			look (look.fire_point, actor),
-			anim (anim.free), 
+			anim (anim.danger), 
+			cond (cond.move_end)
+            )
+
+	stalker4:script	(false, freedom00.script_name())
+	stalker4:script	(true,  freedom00.script_name())
+
+    action (stalker4, 
+			move (move.standing, move.walk, move.line, patrol ("outway4")), 
+			look (look.fire_point, actor),
+			anim (anim.danger), 
+			cond (cond.move_end)
+            )
+
+	stalker5:script	(false, freedom00.script_name())
+	stalker5:script	(true,  freedom00.script_name())
+
+    action (stalker5, 
+			move (move.standing, move.walk, move.line, patrol ("outway5")), 
+			look (look.fire_point, actor),
+			anim (anim.danger), 
 			cond (cond.move_end)
             )
 
@@ -139,6 +169,8 @@ function main()
 	stalker1 = get_level_object("stalker_1")
 	stalker2 = get_level_object("stalker_2")
 	stalker3 = get_level_object("stalker_3")
+	stalker4 = get_level_object("stalker_4")
+	stalker5 = get_level_object("stalker_5")
 
 --set callbacks for enter player to script zone
 	zone  = level.object ("freedom_script_zone")
@@ -156,6 +188,8 @@ function main()
 	stalker2:script	(true,  freedom00.script_name())
 
 	stalker3:script (true, freedom00.script_name())
+	stalker4:script (true, freedom00.script_name())
+	stalker5:script (true, freedom00.script_name())
 
     action (stalker1, 
 			move (move.standing, move.stand, move.line, patrol ("way0000")), 
@@ -170,7 +204,19 @@ function main()
 			cond (cond.time_end, 100000000))
 
     action (stalker3, 
-			move (move.standing, move.stand, move.line, patrol ("outway")), 
+			move (move.standing, move.stand, move.line, patrol ("outway3")), 
+			look (look.fire_point, actor), 
+			anim (anim.free), 
+			cond (cond.time_end, 100000000))
+
+    action (stalker4, 
+			move (move.standing, move.stand, move.line, patrol ("outway4")), 
+			look (look.fire_point, actor), 
+			anim (anim.free), 
+			cond (cond.time_end, 100000000))
+
+    action (stalker5, 
+			move (move.standing, move.stand, move.line, patrol ("outway5")), 
 			look (look.fire_point, actor), 
 			anim (anim.free), 
 			cond (cond.time_end, 100000000))
