@@ -132,7 +132,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 		l_trailEffectsSTR++;
 	}
 
-	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
+	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b); m_lightColor.a=1.f;
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
 
@@ -144,9 +144,10 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 	SoundCreate(sndRicochet[4], "ric5", m_eSoundRicochet);
 }
 
+static const u32 EXPLODE_TIME = 5000;
 void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 	m_engineTime = 0xffffffff;
-	m_explodeTime = 5000;
+	m_explodeTime = EXPLODE_TIME;
 	setVisible(false);
 	list<CPGObject*>::iterator l_it;
 	for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) (*l_it)->Stop();
@@ -222,7 +223,10 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) {
 		pStaticPG->SetTransform(l_m);
 		pStaticPG->Play();
 	}
-	m_pLight->set_position(vPosition); m_pLight->set_active(true);
+	m_curColor.set(m_lightColor);
+	m_pLight->set_color(m_curColor);
+	m_pLight->set_position(vPosition); 
+	m_pLight->set_active(true);
 	setEnabled(true);
 	m_pOwner = NULL;
 }
@@ -397,6 +401,11 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		u_EventGen(P, GE_DESTROY, ID());
 		u_EventSend(P);
 		return;
+	}
+	if(m_pLight->get_active()){
+		float scale			= 1.f-(m_explodeTime/EXPLODE_TIME)*10.f;
+		m_curColor.mul_rgb	(m_lightColor,scale);
+		m_pLight->set_color	(m_curColor);
 	}
 	if(m_explodeTime < 0xffffffff) m_explodeTime -= Device.dwTimeDelta;
 	if(getVisible() && m_pPhysicsShell) {

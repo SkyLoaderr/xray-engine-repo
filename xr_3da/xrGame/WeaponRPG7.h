@@ -45,6 +45,7 @@ public:
 	list<CPGObject*> m_trailEffectsPSs;
 	IRender_Light* m_pLight;
 	Fcolor m_lightColor;
+	Fcolor m_curColor;
 	f32 m_lightRange;
 	u32 m_lightTime;
 	f32 m_mass, m_engine_f, m_engine_u;
