@@ -11,6 +11,7 @@
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "UIMainIngameWnd.h"
 
 #include "../InfoPortionDefs.h"
 #include "../Actor.h"
@@ -24,6 +25,7 @@
 #include "../script_engine.h"
 
 #include "../string_table.h"
+#include "../hudmanager.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -180,6 +182,10 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 				ArticleCaption(*(m_pActiveSubdialog->WindowName()));
 				break;
 			case idJobsCurrent:
+
+				//сбростить флажок необходимости прочтения PDA
+				HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, false);
+
 				UIJobsWnd.SetFilter(eTaskStateInProgress);
 				m_pActiveSubdialog = &UIJobsWnd;
 				ArticleCaption(*(m_pActiveSubdialog->WindowName()));

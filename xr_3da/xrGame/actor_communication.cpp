@@ -94,9 +94,23 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 	{
 		task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
 	}
+
+
+	//добавить иконку с изображением PDA
+
+/*	RECT rect;
+	rect.left = INV_GRID_WIDTH;
+	rect.top = INV_GRID_HEIGHT;
+	rect.right = 2*INV_GRID_WIDTH;
+	rect.bottom = 2*INV_GRID_HEIGHT;
+	HUD().GetUI()->UIMainIngameWnd.AddIconedGameMessage("ui\\ui_icon_equipment",
+		rect, "Task Update Press P");*/
+
+	//установить флажок необходимости прочтения тасков в PDA
+	HUD().GetUI()->UIMainIngameWnd.SetFlashIconState(CUIMainIngameWnd::efiPdaTask, true);
 }
 
-//information receive
+
 void CActor::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//только если находимся в режиме single

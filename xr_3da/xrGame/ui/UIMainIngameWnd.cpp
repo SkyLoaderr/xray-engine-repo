@@ -247,7 +247,7 @@ void CUIMainIngameWnd::Init()
 	// Flashing icons initialize
 	uiXml.SetLocalRoot(uiXml.NavigateToNode("flashing_icons"));
 	InitFlashingIcons(uiXml);
-	SetFlashIconState(efiPda, true);
+	SetFlashIconState(efiPdaTask, true);
 }
 
 void CUIMainIngameWnd::Draw()
@@ -1135,9 +1135,9 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml &node)
 		ref_str iconType = node.ReadAttrib(flashingIconNodeName, i, "type", "none");
 
 		// Теперь запоминаем иконку и ее тип
-		EFlashingIcons type = efiPda;
+		EFlashingIcons type = efiPdaTask;
 
-		if		(iconType == "pda")		type = efiPda;
+		if		(iconType == "pda")		type = efiPdaTask;
 		else if (iconType == "mail")	type = efiMail;
 		else	R_ASSERT(!"Unknown type of mainingame flashing icon");
 
