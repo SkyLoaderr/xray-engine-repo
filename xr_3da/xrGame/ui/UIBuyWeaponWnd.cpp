@@ -790,7 +790,7 @@ void CUIBuyWeaponWnd::Update()
 	static flag = true;
 	if (UITopList[OUTFIT_SLOT].GetDragDropItemsList().empty() && flag)
 	{
-		SetDefaultSuit();
+		UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT);
 		flag = false;
 	}
 
@@ -1685,11 +1685,6 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 }
 
 //////////////////////////////////////////////////////////////////////////
-
-void CUIBuyWeaponWnd::SetDefaultSuit( )
-{
-	UIOutfitIcon.GetUIStaticItem().SetOriginalRect(m_iIconTextureX, m_iIconTextureY, SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT);
-}
 
 void CUIBuyWeaponWnd::SetSkin(u8 SkinID)
 {
