@@ -63,6 +63,8 @@ void CEngine::Destroy	()
 
 void CEngine::mem_Compact()
 {
+	RegFlushKey			( HKEY_CLASSES_ROOT );
+	RegFlushKey			( HKEY_CURRENT_USER );
 	_heapmin			();
 	HeapCompact			(GetProcessHeap(),0);
 }
