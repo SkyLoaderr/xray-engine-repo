@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 12:12:39 , by user : Oles , from computer : OLES
 #if !defined(AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_)
 #define AFX_XR_CUSTOMFONT_H__6CFEF2C0_D4F5_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
@@ -51,6 +52,7 @@ public:
 	void __cdecl 			Out		(float _x, float _y, char *fmt, ...);
 
 	virtual void			OnRender		();
+	virtual void			OnDeviceCreate	();
 	virtual void			OnDeviceDestroy	();
 
 	IC	void				Clear	()  { strings.clear(); }

@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 11:44:58 , by user : Oles , from computer : OLES
 #include "stdafx.h"
 #include "fstaticrender.h"
 #include "fhierrarhyvisual.h"
@@ -142,12 +143,12 @@ void CRender::InsertSG_Cached(FCached *pVisual)
 void CRender::add_leafs_Dynamic(FBasicVisual *pVisual)
 {
 	// Visual is 100% visible - simply add it
-	vector<FBasicVisual*>::iterator I,E;	// it may be usefull for 'hierrarhy' visuals
+	vector<FBasicVisual*>::iterator I,E;	// it may be useful for 'hierrarhy' visual
 
 	switch (pVisual->Type) {
 	case MT_HIERRARHY:
 		{
-			// Add all chields, doesn't perform any tests
+			// Add all children, doesn't perform any tests
 			FHierrarhyVisual* pV = (FHierrarhyVisual*)pVisual;
 			I = pV->chields.begin	();
 			E = pV->chields.end		();
