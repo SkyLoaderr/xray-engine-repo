@@ -94,7 +94,7 @@ void	CRender::render_lights	(light_Package& LP)
 			Lights_LastFrame.push_back	(L);
 
 			// render
-			phase									= PHASE_SMAP_S;
+			phase									= PHASE_SMAP;
 			if (RImplementation.o.Tshadows)	r_pmask	(true,true	);
 			else							r_pmask	(true,false	);
 			L->svis.begin							();
