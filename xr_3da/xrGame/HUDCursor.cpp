@@ -71,7 +71,6 @@ void CHUDCursor::Render()
 		F->Size		(0.02f);
 		F->Out		(PT.p.x,PT.p.y+di_size*4,"~%s",RQ.O->cName());
 	}
-	
 	// actual rendering
 	DWORD			vOffset;
 	FVF::TL*	pv	= (FVF::TL*)Stream->Lock(4,vOffset);
@@ -90,6 +89,5 @@ void CHUDCursor::Render()
 	Stream->Unlock	(4);
 	Device.Shader.Set		(hShader);
 	Device.Primitive.Draw	(Stream,4,2,vOffset,Device.Streams_QuadIB);
-
 	// Device.Primitive.dbg_DrawLINE(precalc_identity,p1,p2,C);
 }
