@@ -64,7 +64,7 @@ p2f 	p_main	( v2p_in IN )
   float3 H 	= normalize	(L + V);
 
   // Specular = (H • N)^m
-  float S 	= tex1D		(s_power,	saturate(dot(H, N))); //pow		(saturate(dot(H, N)), 32);
+  float S 	= tex1D		(s_power,	saturate(dot(H, N)));
   
   // Final color
   float4 C	= light_color*D;
