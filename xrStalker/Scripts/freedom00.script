@@ -13,8 +13,6 @@ function on_enter(zone,object)
 end
 ----------------------------------------------------------------------------------------------------------------
 
-
-
 ----------------------------------------------------------------------------------------------------------------
 -- callback для проверки выхода игрока из зоны скрипта
 ----------------------------------------------------------------------------------------------------------------
@@ -29,99 +27,39 @@ end
 
 
 ----------------------------------------------------------------------------------------------------------------
--- общие для двух сталкеров действия при первом предупреждении
+-- ожидание, пока игрок умрет
 ----------------------------------------------------------------------------------------------------------------
-function stalkers_first_common (object, actor)
-
-	if object == nil 
-	   then 
-           printf ("Null object")
-           return 
-       end
-
-    action (
-    		object, 
-    		move (move.standing, move.walk, move.line, patrol ("way0000")), 
-			look (look.fire_point, actor),
-    		anim (anim.danger), 
-    		cond (cond.look_end + cond.time_end, 1000)
-    	   )
-	object:script (true, freedom_test.script_name())
-    action (
-    		object, 
-    		move (move.standing, move.stand, move.line, patrol ("way0000")), 
-    		anim (anim.danger), 
-    		cond (cond.time_end, 10000000000)
-    	   )
-end
-----------------------------------------------------------------------------------------------------------------
-
-
-	
-----------------------------------------------------------------------------------------------------------------
--- предупреждение от первого сталкера
-----------------------------------------------------------------------------------------------------------------
-function stalker1_first_warning (actor)
-	prof_eto_territoriya_svobodi:play_at_pos (stalker1, stalker1:position (),0)	
-	freedom_test.stalkers_first_common (stalker1, actor)	
-	passed_time = game.time ()
-	first_warning = 1
-end
-
-----------------------------------------------------------------------------------------------------------------
--- пояснение от второго сталкера
-----------------------------------------------------------------------------------------------------------------
-function stalker2_first_warning (actor)
-	rainbow_ti_chto_gluhoy:play_at_pos (stalker2, stalker2:position (),0)	
-	freedom_test.stalkers_first_common (stalker2, actor)	
---	wait (1000)
-end
-----------------------------------------------------------------------------------------------------------------
-
-
-----------------------------------------------------------------------------------------------------------------
--- выход сталкеров (подкрепление)
-----------------------------------------------------------------------------------------------------------------
-function get_reinforcement (actor)
-
-	action (
-			stalker_3,
-			move	(move.standing, move.walk, move.line, patrol("outway")),
-			look (look.fire_point, actor),
-			anim	(anim.danger),
-			cond	(cond.time_end, 100000000)
-			)
-
-    action (
-    	   stalker4, 
-    		move (move.standing, move.run, move.line, patrol ("outway")), 
-			look (look.fire_point, actor),
-    		anim (anim.free), 
-    		cond (cond.move_end)
-    	   )
-
-    action (
-    	   stalker5, 
-    		move (move.standing, move.run, move.line, patrol ("outway")), 
-			look (look.fire_point, actor),
-    		anim (anim.free), 
-    		cond (cond.move_end)
-    	   )
-
-end
-
-----------------------------------------------------------------------------------------------------------------
--- проверка повреждений сталкеров
-----------------------------------------------------------------------------------------------------------------
-function is_stalkers_attacked ()
-
-	if stalker1 ~= nil and stalker1_health > stalker1.health then return 1 end
-	if stalker2 ~= nil and stalker2_health > stalker2.health then return 1 end
-	return 0
-end
-
 function wait_for_kill_actor (actor)
 
+	while true do
+		  if actor.health <= 0 then
+			 wait (2000)
+			 prof_hrom_pust_trup_uberet:play_at_pos (stalker1, stalker1:position (), 0)
+			 return 1
+			 end
+		  wait (500)
+		  end	 	
+
+end
+
+
+----------------------------------------------------------------------------------------------------------------
+-- сообщение от второго сталкера, что возникла проблема и атака сталкеров
+----------------------------------------------------------------------------------------------------------------
+function stalkers_attacked (actor)
+
+	rainbow_hrom_u_nas_problema:play_at_pos (stalker2, stalker2:position (), 0)
+	stalker1:script	(false,  freedom00.script_name())
+
+    action (stalker3, 
+			move (move.standing, move.run, move.line, patrol ("outway")), 
+			look (look.fire_point, actor),
+			anim (anim.free), 
+			cond (cond.move_end)
+            )
+
+    wait (1000)	
+	stalker2:script	(false,  freedom00.script_name())
 end
 
 ----------------------------------------------------------------------------------------------------------------
@@ -129,21 +67,22 @@ end
 ----------------------------------------------------------------------------------------------------------------
 function actor_in_zone (actor)
 
-	
+-- если игрок уже получил предупреждение при первом входе в зону, то второго не будет
 	if first_warning == 1 then
  	   prof_sam_naprosilsya:play_at_pos (stalker1, stalker1:position (), 0)
 	   wait (1000)
-	   stalker1:script	(false,  freedom_test.script_name())
- 	   stalker2:script	(false,  freedom_test.script_name())
-	   freedom_test.wait_for_kill_actor (actor)	
+	   stalker1:script	(false,  freedom00.script_name())
+ 	   stalker2:script	(false,  freedom00.script_name())
+	   freedom00.wait_for_kill_actor (actor)	
 	   return 1
 	   end
-	 
-	stalker1_health = stalker1.health
-	stalker2_health = stalker2.health
 
-	freedom_test.stalker1_first_warning (actor)	 	
-	local player_attack = 0
+-- первое предупреждение
+	prof_eto_territoriya_svobodi:play_at_pos (stalker1, stalker1:position (),0)	
+	passed_time = game.time ()
+	first_warning = 1
+
+-- флажок, для указания того, что rainbow уже произнес свой текст
 	local first_say = 0
 	
     while true do
@@ -156,61 +95,37 @@ function actor_in_zone (actor)
           -- если Проф закончил болтовню, то второе предупреждение
 		  if temptime > 6500 and temptime < 8000 then
 			 if first_say == 0 then
-  			    freedom_test.stalker2_first_warning (actor) 
+				rainbow_ti_chto_gluhoy:play_at_pos (stalker2, stalker2:position (),0)	
 	 			first_say = 1
 			    end
 			 end 
 
 		  -- если было второе предупреждение, то выжидаем время
-		  if temptime > 8000 and temptime < 13000 then break end
+--		  if temptime > 8000 and temptime < 13000 then 
+--			 break 
+--			 end
 			 
-
-		  -- тест на повреждение от игрока. если повреждения нанесены, то зовем подкрепление и мочим сами
- 		  if freedom_test.is_stalkers_attacked () == 1 then
-			 printf ("Attacked !!!")
-			 freedom_test.stalkers_first_common (stalker_1, actor)
-			 printf ("First common called")
-			 freedom_test.stalkers_first_common	(stalker_2, actor)
-			 printf ("Second common called")
-			 rainbow_hrom_u_nas_problema:play_at_pos (stalker2, stalker2:position (), 0)
-			 freedom_test.get_reinforcement (actor)	
-			 printf ("get_reinforcement called")
-			 wait (1000)
+		  -- проверка сталкеров на повреждения
+		  if stalker1.health < 1.0 or stalker2.health < 1.0 then
+			 freedom00.stalkers_attacked (actor)
 			 break
-			 end
-
---		  printf ("health1 : %d, health2 : %d", stalker1.health, stalker2.health)
+			 end 
 
 		  -- время вышло - атакуем 
 		  if temptime > 13000 then
 			 prof_sam_naprosilsya:play_at_pos (stalker1, stalker1:position (), 0)
 			 wait (1000)
---			 stalker1:script	(false,  freedom_test.script_name())
--- 		     stalker2:script	(false,  freedom_test.script_name())
 			 break
              end
 
 		  wait (500)	
 		  end
 
-	stalker1:script	(false,  freedom_test.script_name())
-	stalker2:script	(false,  freedom_test.script_name())
+--	stalker1:script	(false,  freedom00.script_name())
+--	stalker2:script	(false,  freedom00.script_name())
 
-	local help = 0
-
-	while true do
-		  if freedom_test.is_stalkers_attacked () == 1 and help == 0 then
-			 freedom_test.get_reinforcement ()
-			 rainbow_hrom_u_nas_problema:play_at_pos (stalker2, stalker2:position (), 0)
-			 help = 1
-			 end
-          if actor.health <= 0 then
-			 wait (2000)
-			 prof_hrom_pust_trup_uberet:play_at_pos (stalker1, stalker1:position (), 0)
-			 return 1
-			 end
-		  wait (500)	
-		  end
+--	freedom00.wait_for_kill_actor (actor)	
+	return 1
 
 end
 
@@ -218,12 +133,11 @@ end
 -- основная функция скрипта
 ----------------------------------------------------------------------------------------------------------------
 function main()
+
 -- set stalkers for script control
 	stalker1 = get_level_object("stalker_1")
 	stalker2 = get_level_object("stalker_2")
 	stalker3 = get_level_object("stalker_3")
-	stalker4 = get_level_object("stalker_4")
-	stalker5 = get_level_object("stalker_5")
 
 --set callbacks for enter player to script zone
 	zone  = level.object ("freedom_script_zone")
@@ -233,72 +147,52 @@ function main()
     zone:set_callback (this.on_exit,false)
 
 	local actor   	= get_actor()
---	printf ("Actor name %s", actor:name ())
 
 	script_zone_id = zone:id ()
 	actor_id = actor:id ()
 
+	stalker1:script	(true,  freedom00.script_name())
+	stalker2:script	(true,  freedom00.script_name())
 
-	stalker1:script	(true,  freedom_test.script_name())
-	stalker2:script	(true,  freedom_test.script_name())
-	stalker3:script	(true,  freedom_test.script_name())
-	stalker4:script	(true,  freedom_test.script_name())
-	stalker5:script	(true,  freedom_test.script_name())
+	stalker3:script (true, freedom00.script_name())
 
-    action (
-			stalker1, 
+    action (stalker1, 
 			move (move.standing, move.stand, move.line, patrol ("way0000")), 
-			anim (anim.free), 
-			cond (cond.time_end, 100000000)
-			)
+			look (look.fire_point, actor),
+			anim (anim.danger), 
+			cond (cond.time_end, 100000000))
 
-	action (
-			stalker2, 
-			move (move.standing, move.stand, move.line, patrol ("way0000")),	
+    action (stalker2, 
+			move (move.standing, move.stand, move.line, patrol ("way0000")), 
+			look (look.fire_point, actor), 
+			anim (anim.danger), 
+			cond (cond.time_end, 100000000))
+
+    action (stalker3, 
+			move (move.standing, move.stand, move.line, patrol ("outway")), 
+			look (look.fire_point, actor), 
 			anim (anim.free), 
-			cond (cond.time_end, 100000000)
-			)
-	action (
-			stalker3, 
-			move (move.standing, move.stand, move.line, patrol ("outway")),	
-			anim (anim.free), 
-			cond (cond.time_end, 100000000)
-			)
-	action (
-			stalker4, 
-			move (move.standing, move.stand, move.line, patrol ("outway")),	
-			anim (anim.free), 
-			cond (cond.time_end, 100000000)
-			)
-	action (
-			stalker5, 
-			move (move.standing, move.stand, move.line, patrol ("outway")),	
-			anim (anim.free), 
-			cond (cond.time_end, 100000000)
-			)
+			cond (cond.time_end, 100000000))
 
 	wait (1000)
 
---	printf ("Actor health : %d", actor.health)
-
 	while true
           do 
- 		    if (actor_entered == true) then 
-			   if freedom_test.actor_in_zone (actor) == 1 then break end
+ 		    if actor_entered == true then 
+			   if freedom00.actor_in_zone (actor) == 1 then break end
 			   end
-		    --if (actor_entered == false) then wait () end	
-			wait (1000)
+ 	  	    if stalker1.health < 1.0 or stalker2.health < 1.0 then
+			   printf ("Attack !!")
+			   freedom00.stalkers_attacked (actor)
+			   break	
+		  	   end
+			wait (500)
 		  end
 
---	printf ("Actor health : %d", actor.health)
+	stalker1:script	(false,  freedom00.script_name())
+	stalker2:script	(false,  freedom00.script_name())
 
-
-	stalker1:script	(false,  freedom_test.script_name())
-	stalker2:script	(false,  freedom_test.script_name())
-	stalker3:script	(false,  freedom_test.script_name())
-	stalker4:script	(false,  freedom_test.script_name())
-	stalker5:script	(false,  freedom_test.script_name())
-
+	freedom00.wait_for_kill_actor (actor)	
 end
 
 
