@@ -23,11 +23,13 @@ void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract)
 		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
 	}
 	
-	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpSE_Abstract);
+	CSE_ALifeMonsterAbstract		*tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpSE_Abstract);
 	if (tpALifeMonsterAbstract && !tpALifeMonsterAbstract->m_bOnline && (m_tpScheduledObjects.find(tpALifeMonsterAbstract->ID) != m_tpScheduledObjects.end()))
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
 
-	xr_delete						(tpSE_Abstract);
+	tpSE_Abstract->m_bALifeControl	= false;
+
+	m_tpServer->entity_Destroy		(tpSE_Abstract);
 }
 
 void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bRemoveFromScheduled)
