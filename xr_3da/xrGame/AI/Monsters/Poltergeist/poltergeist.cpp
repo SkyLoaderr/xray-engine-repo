@@ -91,17 +91,17 @@ void CPoltergeist::Load(LPCSTR section)
 #endif
 
 
-	m_flame_delay.min			= pSettings->r_float(section,"Delay_Flame_Min");
-	m_flame_delay.normal		= pSettings->r_float(section,"Delay_Flame_Normal");
-	m_flame_delay.aggressive	= pSettings->r_float(section,"Delay_Flame_Aggressive");
+	m_flame_delay.min			= pSettings->r_u32(section,"Delay_Flame_Min");
+	m_flame_delay.normal		= pSettings->r_u32(section,"Delay_Flame_Normal");
+	m_flame_delay.aggressive	= pSettings->r_u32(section,"Delay_Flame_Aggressive");
 
-	m_tele_delay.min			= pSettings->r_float(section,"Delay_Tele_Min");
-	m_tele_delay.normal			= pSettings->r_float(section,"Delay_Tele_Normal");
-	m_tele_delay.aggressive		= pSettings->r_float(section,"Delay_Tele_Aggressive");
+	m_tele_delay.min			= pSettings->r_u32(section,"Delay_Tele_Min");
+	m_tele_delay.normal			= pSettings->r_u32(section,"Delay_Tele_Normal");
+	m_tele_delay.aggressive		= pSettings->r_u32(section,"Delay_Tele_Aggressive");
 
-	m_scare_delay.min			= pSettings->r_float(section,"Delay_Scare_Min");
-	m_scare_delay.normal		= pSettings->r_float(section,"Delay_Scare_Normal");
-	m_scare_delay.aggressive	= pSettings->r_float(section,"Delay_Scare_Aggressive");
+	m_scare_delay.min			= pSettings->r_u32(section,"Delay_Scare_Min");
+	m_scare_delay.normal		= pSettings->r_u32(section,"Delay_Scare_Normal");
+	m_scare_delay.aggressive	= pSettings->r_u32(section,"Delay_Scare_Aggressive");
 }
 
 void CPoltergeist::reload(LPCSTR section)

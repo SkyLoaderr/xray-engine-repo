@@ -31,7 +31,7 @@ class CPoltergeist :	public CBaseMonster ,
 
 public:
 	struct SDelay {
-		float min, normal, aggressive;
+		u32 min, normal, aggressive;
 	} m_flame_delay, m_tele_delay, m_scare_delay;
 
 public:
