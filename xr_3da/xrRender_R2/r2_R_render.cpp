@@ -203,7 +203,7 @@ void CRender::Render		()
 		render_sun_near						();
 		render_sun							();
 		render_sun_filtered					();
-		Target->dwLightMarkerID				+= 2;
+		Target->accum_direct_blend			();
 	}
 
 	// Lighting, non dependant on OCCQ

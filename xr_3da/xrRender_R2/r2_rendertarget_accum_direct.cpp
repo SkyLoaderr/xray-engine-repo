@@ -136,6 +136,7 @@ void CRenderTarget::accum_direct_blend	()
 		RCache.set_Element			(s_accum_mask->E[SE_MASK_ACCUM_2D]	);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2	);
 	}
+	Target->dwLightMarkerID				+= 2;
 }
 
 void CRenderTarget::accum_direct_f		(u32 sub_phase)
