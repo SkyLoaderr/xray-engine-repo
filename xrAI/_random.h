@@ -21,7 +21,7 @@ IC u32 dwfRandom(u32 dwRange)
 class CRandom
 {
 private:
-	s32			holdrand;
+	volatile	s32		holdrand;
 public:
 	CRandom()			: holdrand(1)				{};
 	CRandom(s32 _seed)	: holdrand(_seed)			{};
