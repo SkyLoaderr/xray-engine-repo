@@ -58,7 +58,7 @@ void CLightShadows::set_object	(CObject* O)
 void CLightShadows::add_element	(NODE* N)
 {
 	if (0==current)	return;
-	casters.back().nodes.push_back	(N);
+	casters.back().nodes.push_back	(*N);
 }
 
 
@@ -137,9 +137,9 @@ void CLightShadows::calculate	()
 			// Render object-parts
 			for (int n_it=0; n_it<C.nodes.size(); n_it++)
 			{
-				NODE* N			=	C.nodes[n_it];
-				CVisual *V		=	N->val.pVisual;
-				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N->val.Matrix.d3d()));
+				NODE& N			=	C.nodes[n_it];
+				CVisual *V		=	N.val.pVisual;
+				CHK_DX				(HW.pDevice->SetTransform(D3DTS_WORLD,N.val.Matrix.d3d()));
 				V->Render			(.5f);
 			}
 
