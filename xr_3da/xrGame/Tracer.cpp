@@ -41,6 +41,8 @@ void	CTracer::OnDeviceDestroy()
 
 void	CTracer::Add	(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width)
 {
+	if (from.distance_to(to)<.1f)	return;
+
 	bullets.push_back	(Bullet());
 	Bullet&	B			= bullets.back();
 
