@@ -2,8 +2,9 @@
 
 #include "FixedMap.h"
 
-class ENGINE_API FCached;
-class ENGINE_API CVisual;
+class ENGINE_API		FCached;
+class ENGINE_API		CVisual;
+class ENGINE_API		CObject;
 
 namespace SceneGraph
 {

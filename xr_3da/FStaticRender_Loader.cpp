@@ -14,7 +14,7 @@ void CRender::level_Load()
 {
 	if (0==pCreator)	return;
 
-	shDEBUG				= Device.Shader.Create("debug\\wireframe");
+	// shDEBUG			= Device.Shader.Create("debug\\wireframe");
 
 	// Begin
 	pApp->LoadBegin	();
