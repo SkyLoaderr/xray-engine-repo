@@ -45,9 +45,7 @@ CWallmarksEngine::wm_slot* CWallmarksEngine::AppendSlot	(ref_shader shader)
 CWallmarksEngine::CWallmarksEngine	()
 {
 	static_pool.reserve		(256);
-	skeleton_pool.reserve	(256);
 	marks.reserve			(256);
-
 	hGeom.create			(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
 }
 
@@ -71,11 +69,6 @@ void CWallmarksEngine::clear()
 		for (u32 it=0; it<static_pool.size(); it++)
 			xr_delete		(static_pool[it]);
 		static_pool.clear	();
-	}
-	{
-		for (u32 it=0; it<skeleton_pool.size(); it++)
-			xr_delete		(skeleton_pool[it]);
-		skeleton_pool.clear	();
 	}
 }
 
@@ -111,22 +104,7 @@ void		CWallmarksEngine::static_wm_render		(CWallmarksEngine::static_wallmark*	W,
 		V->t.set		(S->t);
 	}
 }
-
-// allocate
-CSkeletonWallmark*	CWallmarksEngine::skeleton_wm_allocate		()
-{
-	CSkeletonWallmark*			W = 0;
-	if (skeleton_pool.empty())	W = xr_new<CSkeletonWallmark> ();
-	else						{ W = skeleton_pool.back(); skeleton_pool.pop_back(); }
-	W->Clear					();
-	return W;
-}
-// destroy
-void		CWallmarksEngine::skeleton_wm_destroy		(CSkeletonWallmark*	W	)
-{
-	skeleton_pool.push_back		(W);
-}
-// render
+// render skeleton wm 
 void		CWallmarksEngine::skeleton_wm_render		(CSkeletonWallmark*	W, FVF::LIT* &dst)
 {
 	Memory.mem_copy				(dst,&*W->r_verts.begin	(),W->r_verts.size()*sizeof(FVF::LIT));
@@ -287,14 +265,6 @@ void CWallmarksEngine::AddStaticWallmark	(CDB::TRI* pTri, const Fvector* pVerts,
 	lock.Leave				();
 }
 
-CSkeletonWallmark* CWallmarksEngine::AllocateSkeletonWallmark()
-{
-	lock.Enter				();
-	CSkeletonWallmark* wm	= skeleton_wm_allocate();
-	lock.Leave				();
-	return wm;
-}
-
 void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 {
 	lock.Enter				();
@@ -304,12 +274,6 @@ void CWallmarksEngine::AddSkeletonWallmark(CSkeletonWallmark* wm)
 	// no similar - register _new_
 	slot->skeleton_items.push_back(wm);
 	lock.Leave				();
-}
-
-void CWallmarksEngine::RemoveSkeletonWallmark(CSkeletonWallmark*& wm)
-{
-	skeleton_pool.push_back	(wm);
-	wm						= 0;
 }
 
 extern float r_ssaDISCARD;

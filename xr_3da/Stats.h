@@ -45,7 +45,10 @@ public:
 	CStatTimer	RenderDUMP_HUD;		// ...hud rendering
 	CStatTimer	RenderDUMP_Glows;	// ...glows vis-testing,sorting,render
 	CStatTimer	RenderDUMP_Lights;	// ...d-lights building/rendering
-	CStatTimer	RenderDUMP_WM;		// ...walmark sorting, rendering
+	CStatTimer	RenderDUMP_WM;		// ...wallmark sorting, rendering
+	u32			RenderDUMP_WMS_Count;// ...number of static wallmark
+	u32			RenderDUMP_WMD_Count;// ...number of dynamic wallmark
+	u32			RenderDUMP_WMT_Count;// ...number of wallmark tri
 	CStatTimer	RenderDUMP_DT_VIS;	// ...details visibility detection
 	CStatTimer	RenderDUMP_DT_Render;// ...details rendering
 	CStatTimer	RenderDUMP_DT_Cache;// ...details slot cache access
@@ -68,6 +71,9 @@ public:
 	CStatTimer	TEST2;				// debug counter
 	CStatTimer	TEST3;				// debug counter
 
+	shared_str	eval_line_1;
+	shared_str	eval_line_2;
+	shared_str	eval_line_3;
 
 	void		Show				(void);
 	void		OnDeviceCreate		(void);

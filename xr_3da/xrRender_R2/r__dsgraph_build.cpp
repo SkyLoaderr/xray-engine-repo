@@ -257,6 +257,7 @@ void CRender::add_leafs_Dynamic(IRender_Visual *pVisual)
 			// Add all children, doesn't perform any tests
 			CKinematics * pV			= (CKinematics*)pVisual;
 			pV->CalculateBones			(TRUE);
+			pV->CalculateWallmarks		();
 			I = pV->children.begin		();
 			E = pV->children.end		();
 			for (; I!=E; I++)	add_leafs_Dynamic	(*I);

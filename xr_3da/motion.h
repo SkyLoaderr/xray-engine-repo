@@ -53,7 +53,7 @@ protected:
 	int				iFrameStart, iFrameEnd;
 	float			fFPS;
 public:
-	shared_str			name;
+	shared_str		name;
 public:
 					CCustomMotion	();
 					CCustomMotion	(CCustomMotion* src);

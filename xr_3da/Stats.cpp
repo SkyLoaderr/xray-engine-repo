@@ -9,10 +9,6 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-	shared_str	eval_line_1;
-	shared_str	eval_line_2;
-	shared_str	eval_line_3;
- 
 CStats::CStats()
 {
 	fFPS		= 30.f;
@@ -159,7 +155,7 @@ void CStats::Show()
 		F.OutNext	("  Query:     %2.2fms",	AI_Vis_Query.result);
 		F.OutNext	("  RayCast:   %2.2fms",	AI_Vis_RayTests.result);
 		F.OutSkip	();
-
+								   
 #undef  PPP
 #define PPP(a) (100.f*float(a)/float(RenderTOTAL.result))
 		F.OutNext	("*** RENDER:  %2.2fms",RenderTOTAL.result);
@@ -172,7 +168,7 @@ void CStats::Show()
 		F.OutNext	("  DT_Vis/Cnt:%2.2fms",RenderDUMP_DT_VIS.result,RenderDUMP_DT_Count);	
 		F.OutNext	("  DT_Render: %2.2fms",RenderDUMP_DT_Render.result);	
 		F.OutNext	("  DT_Cache:  %2.2fms",RenderDUMP_DT_Cache.result);	
-		F.OutNext	("  Wallmarks: %2.2fms",RenderDUMP_WM.result);
+		F.OutNext	("  Wallmarks: %2.2fms, %d/%d - %d",RenderDUMP_WM.result,RenderDUMP_WMS_Count,RenderDUMP_WMD_Count,RenderDUMP_WMT_Count);
 		F.OutNext	("  Glows:     %2.2fms",RenderDUMP_Glows.result);	
 		F.OutNext	("  Lights:    %2.2fms, %d",RenderDUMP_Lights.result,RenderDUMP_Lights.count);
 		F.OutNext	("  RT:        %2.2fms, %d",RenderDUMP_RT.result,RenderDUMP_RT.count);

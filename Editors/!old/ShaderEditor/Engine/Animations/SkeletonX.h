@@ -8,6 +8,7 @@
 
 #include "FVisual.h"
 #include "FProgressive.h"
+#include "SkeletonCustom.h"
 
 // refs
 class ENGINE_API CKinematics;
@@ -51,17 +52,18 @@ protected:
 	ref_smem<vertBoned1W>	Vertices1W;		// shared
 	ref_smem<vertBoned2W>	Vertices2W;		// shared
 
-	u16						RenderMode;		
+	u16						RenderMode;	
+	u16						ChildIDX;
 
 	// render-mode specifics
 	union {
 		struct {			// soft-skinning only
-			u32					cache_DiscardID;
-			u32					cache_vCount;
-			u32					cache_vOffset;
+			u32				cache_DiscardID;
+			u32				cache_vCount;
+			u32				cache_vOffset;
 		};
-		u32						RMS_boneid;		// single-bone-rendering
-		u32						RMS_bonecount;	// skinning, maximal bone ID
+		u32					RMS_boneid;		// single-bone-rendering
+		u32					RMS_bonecount;	// skinning, maximal bone ID
 	};
 
 	void					_Copy			(CSkeletonX *V);
@@ -69,38 +71,57 @@ protected:
 	void					_Render			(ref_geom& hGeom, 	u32 vCount,	u32 iOffset, u32 pCount);
 	void					_Load			(const char* N,		IReader *data,	u32& dwVertCount);
 	void					_Load_hw		(Fvisual& V,		void *data);
-public:
-	virtual void			SetParent		(CKinematics* K) { Parent = K; }
 
-	CSkeletonX()
-	{
-		Parent		= 0;
-	}
+	void					_CollectBoneFaces	(Fvisual* V, u32 iBase, u32 iCount);
+
+//	void					_FillVerticesSoft1W	(CSkeletonWallmark& wm, const Fvector& pt, float size, Fvisual* V, CBoneData::IndicesVec& indices, u16 bone_id);
+//	void					_FillVerticesSoft2W	(CSkeletonWallmark& wm, const Fvector& pt, float size, Fvisual* V, CBoneData::IndicesVec& indices, u16 bone_id);
+	void					_FillVerticesHW1W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	void					_FillVerticesHW2W	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	void					_FillVertices		(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
+
+//	BOOL					_PickBoneSoft1W		(float& range, const Fvector& S, const Fvector& D, Fvisual* V, CBoneData::IndicesVec& indices);
+//	BOOL					_PickBoneSoft2W		(float& range, const Fvector& S, const Fvector& D, Fvisual* V, CBoneData::IndicesVec& indices);
+	BOOL					_PickBoneHW1W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBoneHW2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
+	BOOL					_PickBone			(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
+public:
+							CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
+
+	virtual void			SetParent		(CKinematics* K)					{ Parent = K; }
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx)=0{SetParent(parent);ChildIDX=child_idx;}
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)=0;
+	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)=0;
 };
 
 class ENGINE_API CSkeletonX_ST	: public Fvisual, public CSkeletonX
 {
 private:
-	typedef Fvisual	inherited;
+	typedef Fvisual			inherited1;
+	typedef CSkeletonX		inherited2;
 public:
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
 class ENGINE_API CSkeletonX_PM	: public FProgressive, public CSkeletonX
 {
 private:
-	typedef FProgressive	inherited;
-	u16*					indices;
+	typedef FProgressive	inherited1;
+	typedef CSkeletonX		inherited2;
 public:
-	CSkeletonX_PM()	: indices(0) {};
-	
 	virtual void			Render			(float LOD);
 	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void			Copy			(IRender_Visual *pFrom);
 	virtual void			Release			();
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
 #endif // SkeletonXH

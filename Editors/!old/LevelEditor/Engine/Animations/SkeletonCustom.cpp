@@ -118,11 +118,6 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 CKinematics::~CKinematics	()
 {
 	IBoneInstances_Destroy	();
-/*
-//.	for (SkeletonWMVecIt it=wallmarks.begin(); it!=wallmarks.end(); it++)
-		::Render->remove_SkeletonWallmark(*it);
-	wallmarks.clear			();
-*/
 }
 
 void	CKinematics::IBoneInstances_Create()
@@ -456,7 +451,6 @@ void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, cons
 		CSkeletonWallmark*& wm = wallmarks[wm_idx];
 		if (wm->contact_point.similar(cp,0.02f)&&(wm->shader==shader)){ 
 			xr_delete		(wm);
-//.			::Render->remove_SkeletonWallmark(wm);
 			if (wm_idx<wallmarks.size()-1) 
 				wm = wallmarks.back();
 			wallmarks.pop_back();
@@ -465,7 +459,6 @@ void CKinematics::AddWallmark(const Fmatrix* parent, const Fvector3& start, cons
 	}
 
 	// ok. allocate wallmark
-//.	CSkeletonWallmark* wm	= ::Render->alloc_SkeletonWallmark();
 	CSkeletonWallmark* wm	= xr_new<CSkeletonWallmark>();
 	wm->fTimeStart			= Device.fTimeGlobal;
 	wm->contact_point		= cp;
@@ -539,7 +532,6 @@ void CKinematics::CalculateWallmarks()
 					::Render->add_SkeletonWallmark	(wm);
 			}else{
 				// remove wallmark
-//.				::Render->remove_SkeletonWallmark	(wm);
 				xr_delete							(wm);
 				need_remove							= true;
 			}

@@ -9,6 +9,7 @@
 class ENGINE_API	IRenderable;
 class ENGINE_API	IRender_Visual;
 class ENGINE_API	IBlender;
+class ENGINE_API	CSkeletonWallmark;
 
 const	float		fLightSmoothFactor = 4.f;
 
@@ -154,7 +155,8 @@ public:
 	virtual	void					add_Occluder			(Fbox2&	bb_screenspace	)					= 0;	// mask screen region as oclluded (-1..1, -1..1)
 	virtual void					add_Visual				(IRender_Visual*	V	)					= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	)					= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)	= 0;
+	virtual void					add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V)=0;
+	virtual void					add_SkeletonWallmark	(CSkeletonWallmark* wm)						= 0;
 
 	virtual IBlender*				blender_create			(CLASS_ID cls)								= 0;
 	virtual void					blender_destroy			(IBlender* &)								= 0;

@@ -4,8 +4,8 @@
 #include "ObjectAnimator.h"
 #include "motion.h"
  
-bool motion_sort_pred	(COMotion* a, 	COMotion* b)	{	return xr_strcmp(a->Name(),b->Name())<0;}
-bool motion_find_pred	(COMotion* a, 	LPCSTR b) 		{	return xr_strcmp(a->Name(),b)<0;}
+bool motion_sort_pred	(COMotion* a, 	COMotion* b)	{	return a->name<b->name;}
+bool motion_find_pred	(COMotion* a, 	shared_str b)	{	return a->name<b;}
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -132,7 +132,8 @@ public:
 	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
 
 	// wallmarks
-	virtual void					add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
+	virtual void					add_StaticWallmark		(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* V);
+	virtual void					add_SkeletonWallmark	(CSkeletonWallmark* wm);
 	
 	//
 	virtual IBlender*				blender_create			(CLASS_ID cls);

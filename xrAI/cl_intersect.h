@@ -103,14 +103,14 @@ namespace CDB
 	}
 
 	//-- Ray-Triangle(always return range) : 1st level of indirection --------------------------------
-	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector& p0, Fvector& p1, Fvector& p2, float& range)
+	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector* p, float& range)
 	{
 		Fvector edge1, edge2, tvec, pvec, qvec;
 		float det,inv_det,u,v;
 
 		// find vectors for two edges sharing vert0
-		edge1.sub(p1, p0);
-		edge2.sub(p2, p0);
+		edge1.sub(p[1], p[0]);
+		edge2.sub(p[2], p[0]);
 		// begin calculating determinant - also used to calculate U parameter
 		pvec.crossproduct(D, edge2);
 		// if determinant is near zero, ray lies in plane of triangle
@@ -118,7 +118,7 @@ namespace CDB
 
 		if (_abs(det) < EPS_S)		{ range=-1; return false; }
 		inv_det = 1.0f / det;
-		tvec.sub(C, p0);					// calculate distance from vert0 to ray origin
+		tvec.sub(C, p[0]);					// calculate distance from vert0 to ray origin
 		u = tvec.dotproduct(pvec)*inv_det;	// calculate U parameter and test bounds
 		qvec.crossproduct(tvec, edge1);		// prepare to test V parameter
 		range = edge2.dotproduct(qvec)*inv_det;// calculate t, ray intersects plane
@@ -127,9 +127,29 @@ namespace CDB
 		if (v < 0.0f || u + v > 1.0f) return false;
 		return true;
 	}
-	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector* p, float& range)
+	IC bool TestRayTri2(const Fvector& C, const Fvector& D, Fvector** p, float& range)
 	{
-		return TestRayTri2(C,D,p[0],p[1],p[2],range);
+		Fvector edge1, edge2, tvec, pvec, qvec;
+		float det,inv_det,u,v;
+
+		// find vectors for two edges sharing vert0
+		edge1.sub(*p[1], *p[0]);
+		edge2.sub(*p[2], *p[0]);
+		// begin calculating determinant - also used to calculate U parameter
+		pvec.crossproduct(D, edge2);
+		// if determinant is near zero, ray lies in plane of triangle
+		det = edge1.dotproduct(pvec);
+
+		if (_abs(det) < EPS_S)		{ range=-1; return false; }
+		inv_det = 1.0f / det;
+		tvec.sub(C, *p[0]);					// calculate distance from vert0 to ray origin
+		u = tvec.dotproduct(pvec)*inv_det;	// calculate U parameter and test bounds
+		qvec.crossproduct(tvec, edge1);		// prepare to test V parameter
+		range = edge2.dotproduct(qvec)*inv_det;// calculate t, ray intersects plane
+		if (u < 0.0f || u > 1.0f)		return false;
+		v = D.dotproduct(qvec)*inv_det;		// calculate V parameter and test bounds
+		if (v < 0.0f || u + v > 1.0f) return false;
+		return true;
 	}
 	//---------------------------------------------------------------------------
 	// macros for fast arithmetic
@@ -550,7 +570,13 @@ namespace CDB
 		return _abs(fSqrDist);
 }
 
-IC bool TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
+enum EST_Result{
+	stNone		= 0,
+	stIntersect	= 1,
+	stInside	= 2,
+};
+
+IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
 					  const Fvector& orig, const Fvector& e0,const Fvector& e1)
 {
 
@@ -577,19 +603,34 @@ IC bool TestSphereTri(const Fvector& sphereOrigin, float sphereRadius,
         iInside++;
 
     // triangle does not traversely intersect sphere
-	if ( iInside == 3 ) return false;
+	if ( iInside == 3 ) return stInside;
 
 	// triangle transversely intersects sphere
-    if ( iInside > 0 ) return true;
+    if ( iInside > 0 ) return stIntersect;
 
     // All vertices are outside the sphere, but the triangle might still
     // intersect the sphere.  This is the case when the distance from the
     // sphere center to the triangle is smaller than the radius.
     float fSqrDist = MgcSqrDistance(sphereOrigin,orig,e0,e1);
-    return fSqrDist < fRSqr;
+	return (fSqrDist < fRSqr)?stIntersect:stNone;
 }
 //---------------------------------------------------------------------------
-
+IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector* p)
+{
+	Fvector e0, e1;
+	// find vectors for two edges sharing vert0
+	e0.sub(p[1], p[0]);
+	e1.sub(p[2], p[0]);
+	return TestSphereTri(sphereOrigin,sphereRadius,p[0],e0,e1);
+}
+IC EST_Result TestSphereTri(const Fvector& sphereOrigin, float sphereRadius, Fvector** p)
+{
+	Fvector e0, e1;
+	// find vectors for two edges sharing vert0
+	e0.sub(*p[1], *p[0]);
+	e1.sub(*p[2], *p[0]);
+	return TestSphereTri(sphereOrigin,sphereRadius,*p[0],e0,e1);
+}
 };
 
 #endif
