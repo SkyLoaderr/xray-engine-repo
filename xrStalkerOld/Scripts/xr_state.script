@@ -394,12 +394,12 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- ѕроверка, изменилось ли уже положение тела или нет
 function finish_state(npc)
-	return xr_motivator.storage[npc:id()].state:finish_state()
+	return db.storage[npc:id()].state:finish_state()
 end
 function change_state(npc, id)
-	return xr_motivator.storage[npc:id()].state:set_state(id)
+	return db.storage[npc:id()].state:set_state(id)
 end
 
 function anim_update(type, npc)
-	return xr_motivator.storage[npc:id()].state:anim_update(type)
+	return db.storage[npc:id()].state:anim_update(type)
 end

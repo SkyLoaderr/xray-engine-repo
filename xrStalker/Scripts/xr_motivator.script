@@ -3,7 +3,6 @@ module ("xr_light")
 --  автор: Диденко Руслан (Stohe)
 --  TODO:
 ----------------------------------------------------------------------------------------------------------------------
-storage = {}
 memtsg = {} --' временная таблица
 lasthealth = 0
 lastime = nil
@@ -50,8 +49,8 @@ function motivator_binder:reinit()
 ----------------------------------------------------------------------------------------------------------------------
 -- Общие скрипты
 ----------------------------------------------------------------------------------------------------------------------
-    xr_motivator.storage[self.object:id()] = {  followers = {} }
-    self.st = xr_motivator.storage[self.object:id()]
+    db.storage[self.object:id()] = {  followers = {} }
+    self.st = db.storage[self.object:id()]
 
     --' Положения тела
     self.st.state = xr_state.body_state(self.object)
@@ -90,7 +89,7 @@ function motivator_binder:reinit()
 	--' Компаньон
 	xr_assistance.add_to_binder(self.object)		
 //	--' помощник, мля !!!
-//	xr_motivator.storage[self.object:id ()].sos = {
+//	db.storage[self.object:id ()].sos = {
 //		enabled = false,
 //		npc = nil,
 //		initialized = false,
@@ -113,12 +112,19 @@ function motivator_binder:net_spawn(sobject)
 	if sim ~= nil then 
 		xr_spawner.spawn(sobject)
 	end
-	return object_binder.net_spawn(self, sobject)
+
+	local r = object_binder.net_spawn(self, sobject)
+
+	db.add_obj(self.object)
+
+	return r
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
 	printf("motivator_binder:net_destroy(): self.object:name()='%s'", self.object:name())
-	xr_motivator.storage[self.object:id()] = nil
+
+	db.del_obj(self.object)
+
 	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -183,7 +189,7 @@ function motivator_binder:save(packet)
 	object_binder.save( self, packet )
 	-- Logic:
 	local npc_id = self.object:id()
-	local st = xr_motivator.storage[npc_id]
+	local st = db.storage[npc_id]
 
 	if st.active_section then
 		packet:w_stringZ(st.active_section)
@@ -211,7 +217,7 @@ function motivator_binder:load(reader)
 	object_binder.load(self, reader)
 	-- Logic:
 	local npc_id = self.object:id()
-	local st = xr_motivator.storage[npc_id]
+	local st = db.storage[npc_id]
 	
 	local active_section = reader:r_stringZ()
 	if active_section == "" then

@@ -13,12 +13,12 @@ end
 function action_process_death:death_callback(victim, who)
 	if who ~= nil then
 		printf("[%s] killed by [%s]", victim:name(), who:name() )
-		xr_motivator.storage[victim:id()].death.killer = who:id()
+		db.storage[victim:id()].death.killer = who:id()
 	else
 		printf("[%s] killed by [Unknown]", victim:name())
 	end
 
-	if xr_motivator.storage[self.object:id()].active_scheme then
+	if db.storage[self.object:id()].active_scheme then
 		local actor = level.actor()
 		if actor then
 			if xr_logic.try_switch_to_another_section(victim, self.st, actor) then

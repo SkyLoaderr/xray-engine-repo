@@ -27,11 +27,11 @@ end
 -------------
 function evaluator_escape:evaluate ()
     if self.a.escape_path == nil then return false end
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    local size = table.getn (db.storage[self.object:id()].followers)
     if size == 0 then return false end
     for count = 1, size, 1 do
-        local npc_id = xr_motivator.storage[self.object:id()].followers[count].npc_id
-        local npc = xr_motivator.storage[self.object:id()].followers[count].npc
+        local npc_id = db.storage[self.object:id()].followers[count].npc_id
+        local npc = db.storage[self.object:id()].followers[count].npc
         if is_object_online (npc_id) == false or npc == nil or npc:alive () == false then
            return true
         end
@@ -221,7 +221,7 @@ function action_patrol:process_radio ()
 end
 -------------
 function action_patrol:set_soldier_positions ()
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    local size = table.getn (db.storage[self.object:id()].followers)
     if size == 0 then return end
     local dir = self.object:direction ()
     dir.y = 0.0
@@ -232,13 +232,13 @@ function action_patrol:set_soldier_positions ()
         if a == 1 then angle = angle + step * 0.5
         else angle = angle + step end
         local vec = vector_rotate_y (dir, angle)
-        xr_motivator.storage[self.object:id()].followers[a].direction = vec
-        xr_motivator.storage[self.object:id()].followers[a].distance = 3.0
+        db.storage[self.object:id()].followers[a].direction = vec
+        db.storage[self.object:id()].followers[a].distance = 3.0
     end
 end
 -------------
 function action_patrol:set_soldier_positions_raid ()
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    local size = table.getn (db.storage[self.object:id()].followers)
     if size == 0 then return end
     local dir = self.object:direction ()
     dir.y = 0.0
@@ -254,8 +254,8 @@ function action_patrol:set_soldier_positions_raid ()
            v = vector_rotate_y (dir, 90.0)
            side = false
         end
-        xr_motivator.storage[self.object:id()].followers[count].direction = v
-        xr_motivator.storage[self.object:id()].followers[count].distance = dist
+        db.storage[self.object:id()].followers[count].direction = v
+        db.storage[self.object:id()].followers[count].distance = dist
         if count == 2 or count == 4 or count == 6 or count == 8 or count == 10 then
            dist = dist + dist
         end
@@ -264,10 +264,10 @@ function action_patrol:set_soldier_positions_raid ()
 end
 -------------
 function action_patrol:set_command (command)
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    local size = table.getn (db.storage[self.object:id()].followers)
     if size == 0 then return end
     for a = 1, size, 1 do
-        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+        db.storage[self.object:id()].followers[a].leader_command = command
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -327,10 +327,10 @@ function action_escape:move_callback (obj, action_type, index)
 end
 ----------------------------------------------------------------------------------------
 function action_escape:set_command (command)
-    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    local size = table.getn (db.storage[self.object:id()].followers)
     if size == 0 then return end
     for a = 1, size, 1 do
-        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+        db.storage[self.object:id()].followers[a].leader_command = command
     end
 end
 
@@ -381,12 +381,12 @@ function action_raid:reset_scheme ()
 	end   
 	self.move_mgr:reset(self.a.raid_path, self.a.raid_walk_info, self.a.raid_look, self.a.raid_look_info, self.a.team, nil, {obj = self, func = self.callback})
 	local id = self.object:id()
-    local size = table.getn (xr_motivator.storage[id].followers)
+    local size = table.getn (db.storage[id].followers)
     if size == 0 then return end
     for a = 1, size, 1 do
-        xr_motivator.storage[id].followers[a].raid_process = true
-        --local npc = xr_motivator.storage[self.object:id()].followers[a].npc
-        --xr_motivator.storage[npc:id ()].patrol.raid_process = true
+        db.storage[id].followers[a].raid_process = true
+        --local npc = db.storage[self.object:id()].followers[a].npc
+        --db.storage[npc:id ()].patrol.raid_process = true
     end
 end	
 -------------

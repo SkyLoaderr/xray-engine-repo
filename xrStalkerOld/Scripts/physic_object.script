@@ -10,7 +10,7 @@ module("xr_logic")
 module("modules")
 
 function init(obj)
-	xr_motivator.storage[obj:id()] = { }
+	db.storage[obj:id()] = { }
 
 	local ini = obj:spawn_ini()
 	if not ini then
@@ -56,9 +56,9 @@ function generic_physics_binder:reinit()
 	printf("generic_physics_binder:reinit()")
 
 	printf("_bp: generic_physics_binder: %s", self.object:name())
-	xr_motivator.storage[self.object:id()] = { }
+	db.storage[self.object:id()] = { }
 
-	self.st = xr_motivator.storage[self.object:id()]
+	self.st = db.storage[self.object:id()]
 
 	----------------------------------------------------------------------------------------
 	-- Новые схемы

@@ -192,7 +192,7 @@ function action_wait_for_buyer:execute ()
 	end
 
 	-- проверять условия завершения ожидания
-	if xr_motivator.storage[self.object:id()].meet.actor ~= nil then
+	if db.storage[self.object:id()].meet.actor ~= nil then
 		self.a.Buyer = nil
 	end
 end
@@ -361,14 +361,14 @@ function disable_meet(npc)
 	if npc ~= nil and
 	   is_object_online(npc:id()) == true 
 	then
-		xr_motivator.storage[npc:id()].meet.enabled = false
+		db.storage[npc:id()].meet.enabled = false
 	end
 end
 function enable_meet(npc)
 	if npc ~= nil and
 	   is_object_online(npc:id()) == true 
 	then
-		xr_motivator.storage[npc:id()].meet.enabled = true
+		db.storage[npc:id()].meet.enabled = true
 	end
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -394,13 +394,13 @@ function add_to_binder(object, char_ini)
 	operators["talk"]				= xr_actions_id.stohe_meet_base + 6
 
 	-- Evaluators
-	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", xr_motivator.storage[object:id()].meet, "meet_wait_buyer"))
-	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", xr_motivator.storage[object:id()].meet, "meet_contact"))
-	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", xr_motivator.storage[object:id()].meet, "meet_weapon"))
-	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", xr_motivator.storage[object:id()].meet, "meet_threat"))
+	manager:add_evaluator (properties["wait_buyer"], 	evaluator_wait		("meet_wait_buyer", db.storage[object:id()].meet, "meet_wait_buyer"))
+	manager:add_evaluator (properties["contact"], 		evaluator_contact	("meet_contact", db.storage[object:id()].meet, "meet_contact"))
+	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	("meet_weapon", db.storage[object:id()].meet, "meet_weapon"))
+	manager:add_evaluator (properties["threat"], 		evaluator_threat	("meet_threat", db.storage[object:id()].meet, "meet_threat"))
 
 	-- Actions
-	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet, char_ini)
+	local action = action_meet_wait (object:name(),"action_meet_wait", db.storage[object:id()].meet, char_ini)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -409,7 +409,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect 			(world_property(properties["contact"], 		false))
 	manager:add_action (operators["wait_trade"], action)
 
-	action = action_weapon (object:name(),"action_weapon", xr_motivator.storage[object:id()].meet)
+	action = action_weapon (object:name(),"action_weapon", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -417,7 +417,7 @@ function add_to_binder(object, char_ini)
 	action:add_effect 		(world_property(properties["weapon"], 			false))
 	manager:add_action (operators["weapon"], action)
 
-	action = action_threat (object:name(),"action_threat", xr_motivator.storage[object:id()].meet)
+	action = action_threat (object:name(),"action_threat", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["contact"], 		true))
@@ -426,7 +426,7 @@ function add_to_binder(object, char_ini)
 	manager:add_action (operators["threat"], action)
 
 	-- Ожидание торговца
-	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].meet)
+	action = action_wait_for_buyer (object:name(),"action_wait_for_buyer", db.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
@@ -440,16 +440,16 @@ function add_to_binder(object, char_ini)
 
     if char_ini ~= nil and char_ini:section_exist("meet") == true then
         if char_ini:line_exist("meet", "enabled") == true then
-                xr_motivator.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
+                db.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
         end
         if char_ini:line_exist("meet", "noweap") == true then
-                xr_motivator.storage[object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
+                db.storage[object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
         end
     end
 end
 
 function override_meet(npc, flag)
-	xr_motivator.storage[npc:id()].meet.over = flag
+	db.storage[npc:id()].meet.over = flag
 end
 
 --' ВНИМАНИЕ: Эта функция вызывается и для сталкеров, и для монстров!
@@ -493,7 +493,7 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 	if actor_dialogs_string ~= nil then
 		printf("*ACTOR_DIALOGS*: actor_dialogs=%s", actor_dialogs_string)
 		--' Создаем в массиве запись где будут храниться считанные диалоги.
-		xr_motivator.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
+		db.storage[npc:id()].actor_dialogs = parse_names(actor_dialogs_string)
 	else
 		printf("*ACTOR_DIALOGS*: actor_dialogs=nil")
 	end
@@ -502,7 +502,7 @@ function set_actor_dialogs(npc, ini, name, dialog_section)
 	if actor_disable ~= nil then
 		printf("*ACTOR_DIALOGS*: actor_disable=%s", actor_disable)
 		--' Создаем в массиве запись где будут храниться считанные диалоги.
-		xr_motivator.storage[npc:id()].actor_disable = parse_names(actor_disable)
+		db.storage[npc:id()].actor_disable = parse_names(actor_disable)
 	else
 		printf("*ACTOR_DIALOGS*: actor_disable=nil")
 	end

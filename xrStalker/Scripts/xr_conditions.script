@@ -20,7 +20,7 @@ function talking_or_tutor(actor, npc)
 end
 
 function actor_enemy(actor, npc)
-	local t = xr_motivator.storage[npc:id()].death
+	local t = db.storage[npc:id()].death
 	return npc:relation(actor) == game_object.enemy or (t ~= nil and t.killer == actor:id())
 end
 
@@ -37,15 +37,15 @@ function gar_dm_2nd_nearest_bandit(actor, npc)
 end
 
 function trade_exchanged(actor, npc)
-	return xr_motivator.storage[npc:id()].trade.exchanged
+	return db.storage[npc:id()].trade.exchanged
 end
 
 function trading(actor, npc)
-	return xr_motivator.storage[npc:id()].trade.trading
+	return db.storage[npc:id()].trade.trading
 end
 
 function hit_by_actor(actor, npc)
-	local t = xr_motivator.storage[npc:id()].hit
+	local t = db.storage[npc:id()].hit
 	local hit_by_actor = t ~= nil and t.who == actor:id()
 	printf("_bp: hit_by_actor: %s", if_then_else(hit_by_actor, "true", "false"))
 end

@@ -33,6 +33,7 @@ module ("xr_conditions_impl")
 module ("xr_effects")
 module ("xr_zones")
 module ("xr_spawner")
+module ("db")
 
 module ("xr_reactions")
 module ("xr_position")

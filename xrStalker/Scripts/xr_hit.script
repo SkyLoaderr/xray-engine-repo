@@ -8,12 +8,12 @@ end
 function action_process_hit:hit_callback(obj, amount, local_direction, who, bone_index)
 	if who then
 		printf("[%s] hit by [%s]", obj:name(), who:name())
-		xr_motivator.storage[obj:id()].hit.who = who:id()
+		db.storage[obj:id()].hit.who = who:id()
 	else
 		printf("[%s] hit by [Unknown]", victim:name())
-		xr_motivator.storage[obj:id()].hit.who = -1
+		db.storage[obj:id()].hit.who = -1
 	end
-	if xr_motivator.storage[self.object:id()].active_scheme then
+	if db.storage[self.object:id()].active_scheme then
 		local actor = level.actor()
 		if actor then
 			if xr_logic.try_switch_to_another_section(obj, self.st, actor) then

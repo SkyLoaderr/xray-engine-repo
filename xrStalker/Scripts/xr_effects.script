@@ -64,7 +64,7 @@ end
 -- уже выполнены, и повторно выполн€ть их во врем€ бо€ нельз€ (а услови€ секции [combat] провер€ютс€ на каждом
 -- апдейте, когда персонаж в бою, если, конечно, не отключены вызовом этой функции).
 function disable_combat_handler(actor, npc)
-	xr_motivator.storage[npc:id()].combat.enabled = false
+	db.storage[npc:id()].combat.enabled = false
 end
 
 function log_bp1(actor, npc)
@@ -76,7 +76,7 @@ local need_monsters = 0
 function garbage_monster_death (actor, npc)
     printf ("Monster %s killed...", npc:name ())
     
-    local st = xr_motivator.storage[npc:id ()]
+    local st = db.storage[npc:id ()]
     if st.death.killer == -1 then return end
     
     -- remove from spawner 

@@ -152,7 +152,7 @@ function add_to_binder(npc, char_ini)
 	local operators  = {}
 	local properties = {}
 	
-	xr_motivator.storage[npc:id()].assistance = {
+	db.storage[npc:id()].assistance = {
 			actor = nil,
 			desired_distance = 5,			
 			assist_point = nil
@@ -166,9 +166,9 @@ function add_to_binder(npc, char_ini)
 	operators["action_assistance"]      = xr_actions_id.assistance + 1
 	operators["action_change_position"] = xr_actions_id.assistance + 2
 
-	manager:add_evaluator (properties["need_assistance"],		evaluator_assistance		(xr_motivator.storage[npc:id()].assistance, "assistance_assistance"))
+	manager:add_evaluator (properties["need_assistance"],		evaluator_assistance		(db.storage[npc:id()].assistance, "assistance_assistance"))
 
-	local action = action_assistance(npc, "action_assistance", xr_motivator.storage[npc:id()].assistance)
+	local action = action_assistance(npc, "action_assistance", db.storage[npc:id()].assistance)
 	action:add_precondition (world_property(stalker_ids.property_alive,			true))
 	action:add_precondition (world_property(stalker_ids.property_enemy,			false))
 	action:add_precondition (world_property(properties["event"],				false))
@@ -180,7 +180,7 @@ function add_to_binder(npc, char_ini)
 	action:add_precondition (world_property(properties["need_assistance"],      false))
 end
 function set_assistance(object, victim)
-	xr_motivator.storage[object:id()].assistance.actor = victim
+	db.storage[object:id()].assistance.actor = victim
 end
 
 -----------------------------------------------------------------

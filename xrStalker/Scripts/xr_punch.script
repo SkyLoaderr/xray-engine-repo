@@ -134,9 +134,9 @@ function add_to_binder(npc)
 	operators["action_punch"]   = xr_actions_id.zmey_punch_base + 1
 
 	-- // evaluators
-	manager:add_evaluator (properties["need_punch"],   this.evaluator_need_punch  (xr_motivator.storage[npc:id()].punch, "punch_need_punch"))
+	manager:add_evaluator (properties["need_punch"],   this.evaluator_need_punch  (db.storage[npc:id()].punch, "punch_need_punch"))
 
-	local new_action = this.action_punch_activity(npc, "action_punch_activity", xr_motivator.storage[npc:id()].punch)
+	local new_action = this.action_punch_activity(npc, "action_punch_activity", db.storage[npc:id()].punch)
 	new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
 	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
 	new_action:add_precondition    (world_property(properties["need_punch"],   true))

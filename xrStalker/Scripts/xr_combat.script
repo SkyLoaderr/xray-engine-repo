@@ -8,7 +8,7 @@ function evaluator_check_combat:__init(name, storage) super (nil, name)
 end
 function evaluator_check_combat:evaluate ()
 	if self.st.enabled and self.object:best_enemy() then
-		if xr_motivator.storage[self.object:id()].active_scheme then
+		if db.storage[self.object:id()].active_scheme then
 			local actor = level.actor()
 			if actor then
 				if xr_logic.try_switch_to_another_section(self.object, self.st, actor) then

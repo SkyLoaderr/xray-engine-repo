@@ -479,13 +479,13 @@ function add_to_binder (obj, char_ini)
 	operators["follow"]             = xr_actions_id.sidor_act_sos + 3
 	
 	local manager  = obj:motivation_action_manager ()
-  	manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("property_enabled", xr_motivator.storage[obj:id()].sos))
-  	manager:add_evaluator (properties["pda"],     this.evaluator_pda     ("property_pda", xr_motivator.storage[obj:id()].sos))
-  	manager:add_evaluator (properties["init"],    this.evaluator_init    ("property_init", xr_motivator.storage[obj:id()].sos))
-  	manager:add_evaluator (properties["action"],  this.evaluator_action  ("property_action", xr_motivator.storage[obj:id()].sos))
-  	manager:add_evaluator (properties["follow"],  this.evaluator_follow  ("property_follow", xr_motivator.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["enabled"], this.evaluator_enabled ("property_enabled", db.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["pda"],     this.evaluator_pda     ("property_pda", db.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["init"],    this.evaluator_init    ("property_init", db.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["action"],  this.evaluator_action  ("property_action", db.storage[obj:id()].sos))
+  	manager:add_evaluator (properties["follow"],  this.evaluator_follow  ("property_follow", db.storage[obj:id()].sos))
 
-  	local action = this.action_initialize ("action_initialize", xr_motivator.storage[obj:id()].sos)
+  	local action = this.action_initialize ("action_initialize", db.storage[obj:id()].sos)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["enabled"],         true))
@@ -494,7 +494,7 @@ function add_to_binder (obj, char_ini)
    	action:add_effect           	(world_property (properties["init"],            true))
    	manager:add_action              (operators["init"], action)
 
-  	action = this.action_help       ("action_help", xr_motivator.storage[obj:id()].sos)
+  	action = this.action_help       ("action_help", db.storage[obj:id()].sos)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["enabled"],         true))
@@ -505,7 +505,7 @@ function add_to_binder (obj, char_ini)
 	action:add_effect           	(world_property (properties["pda"],             false))
    	manager:add_action              (operators["help"], action)
 
-  	action = this.action_follow_npc ("action_follow", xr_motivator.storage[obj:id()].sos)
+  	action = this.action_follow_npc ("action_follow", db.storage[obj:id()].sos)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["enabled"],         true))
@@ -522,7 +522,7 @@ end
 -----------------------------------------------------------------------
 function set_sos (npc, enabled)
 	local char_ini = npc:spawn_ini()
-	local st = xr_motivator.storage[npc:id()].sos
+	local st = db.storage[npc:id()].sos
     if enabled == nil then
        if char_ini:section_exist ("sos") == true and char_ini:line_exist("sos", "enabled") == true then
           st.enabled = char_ini:r_bool("sos", "enabled")

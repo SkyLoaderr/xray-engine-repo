@@ -18,10 +18,10 @@ function mob_trade:update(delta)
 end
 
 function mob_trade:storage_trade_section()
-	local trade = xr_motivator.storage[self.object:id()].trade
+	local trade = db.storage[self.object:id()].trade
 	if not trade then
 		trade = {}
-		xr_motivator.storage[self.object:id()].trade = trade
+		db.storage[self.object:id()].trade = trade
 	end
 	return trade
 end

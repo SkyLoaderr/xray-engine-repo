@@ -20,10 +20,10 @@ end
 function mob_death:death_callback(victim, who)
 	if who ~= nil then
 		printf("mob_death: [%s] killed by [%s]", victim:name(), who:name())
-		local death = xr_motivator.storage[victim:id()].death
+		local death = db.storage[victim:id()].death
 		if not death then
 			death = {}
-			xr_motivator.storage[victim:id()].death = death
+			db.storage[victim:id()].death = death
 		end
 		death.killer = who:id()
 	else

@@ -15,8 +15,8 @@ function kickass(first_speaker, second_speaker)
 end
 
 function get_money_then_leave(first_speaker, second_speaker)
-	xr_motivator.storage[first_speaker:id()].meet.enabled = false
-	xr_motivator.storage[first_speaker:id()].robber.enabled = true
+	db.storage[first_speaker:id()].meet.enabled = false
+	db.storage[first_speaker:id()].robber.enabled = true
 end
 
 function is_wounded(first_speaker, second_speaker)
@@ -66,8 +66,8 @@ function dialog_allowed(object, victim, id)
 	else
 		printf("*DIALOGS*: dialog_allowed:nil")
 	end
-	if xr_motivator.storage[victim:id()].actor_dialogs ~= nil then
-		for k,v in xr_motivator.storage[victim:id()].actor_dialogs do
+	if db.storage[victim:id()].actor_dialogs ~= nil then
+		for k,v in db.storage[victim:id()].actor_dialogs do
 			if v == id then return true end
 		end
 	end
@@ -79,8 +79,8 @@ function dialog_not_disable(object, victim, id)
 	else
 		printf("*DIALOGS*: dialog_disable:nil")
 	end
-	if xr_motivator.storage[victim:id()].actor_disable ~= nil then
-		for k,v in xr_motivator.storage[victim:id()].actor_disable do
+	if db.storage[victim:id()].actor_disable ~= nil then
+		for k,v in db.storage[victim:id()].actor_disable do
 			if v == id then return false end
 		end
 	end
@@ -130,10 +130,10 @@ end
 -----------------------------------------------------------------------------------
 --' Инициализация торговли
 function trade_init(seller, buyer)
-	xr_motivator.storage[seller:id()].meet.begin_wait_to_see.begin = device():time_global()/1000
-	xr_position.setPosition(xr_motivator.storage[seller:id()].meet.Seller, 
-							xr_motivator.storage[seller:id()].meet.Seller:level_vertex_id())
-	xr_motivator.storage[seller:id()].meet.Buyer = buyer
+	db.storage[seller:id()].meet.begin_wait_to_see.begin = device():time_global()/1000
+	xr_position.setPosition(db.storage[seller:id()].meet.Seller, 
+							db.storage[seller:id()].meet.Seller:level_vertex_id())
+	db.storage[seller:id()].meet.Buyer = buyer
 end
 
 function want_trade(seller, buyer)
@@ -154,9 +154,9 @@ end
 -- helper
 -----------------------------------------------------------------------------------
 function helper_init(first_speaker, second_speaker)
-	if xr_motivator.storage[first_speaker:id()].sos.npc == nil and 
+	if db.storage[first_speaker:id()].sos.npc == nil and 
 	   first_speaker:relation (second_speaker) ~= game_object.enemy then
-	   xr_motivator.storage[first_speaker:id()].sos.npc = second_speaker
+	   db.storage[first_speaker:id()].sos.npc = second_speaker
 	end
 end
 -------------------
@@ -221,7 +221,7 @@ end
 -------------------
 function activate_helper_follow (helper, player)
     printf ("activate_helper_follow")
-    xr_motivator.storage[helper:id ()].sos.need_follow = true
+    db.storage[helper:id ()].sos.need_follow = true
     xr_meet.override_meet (helper, true)
 end
 -------------------
@@ -229,14 +229,14 @@ function disable_helper (helper, player)
     printf ("disable_helper")
     helper:stop_talk ()
     xr_meet.override_meet (helper, false)
-    xr_motivator.storage[helper:id ()].sos.npc = nil
+    db.storage[helper:id ()].sos.npc = nil
 end
 -------------------
 function disable_helper_2 (player, helper)
     printf ("disable_helper")
     helper:stop_talk ()
     xr_meet.override_meet (helper, false)
-    xr_motivator.storage[helper:id ()].sos.npc = nil
+    db.storage[helper:id ()].sos.npc = nil
 end
 -------------------
 function dialogs.trade_help (helper, player)

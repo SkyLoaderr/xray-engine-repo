@@ -282,7 +282,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
 
 	-- // evaluators
 	manager:add_evaluator(properties["need_zoneguard"],
-	this.evaluator_need_zoneguard(xr_motivator.storage[npc:id()].zoneguard, "zoneguard_need"))
+	this.evaluator_need_zoneguard(db.storage[npc:id()].zoneguard, "zoneguard_need"))
 
 	local new_action = this.action_zoneguard_activity(npc, "action_zoneguard_activity", storage)
 	new_action:add_precondition(world_property(stalker_ids.property_alive, true))

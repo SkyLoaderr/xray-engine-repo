@@ -139,8 +139,8 @@ function mob_walker:waypoint_callback(obj, action_type, index)
 	if sig then
 		-- HACK, fixme:
 		local npc_id = self.object:id()
-		local scheme = xr_motivator.storage[npc_id]["active_scheme"]
-		local signals = xr_motivator.storage[npc_id][scheme].signals
+		local scheme = db.storage[npc_id]["active_scheme"]
+		local signals = db.storage[npc_id][scheme].signals
 		signals[sig] = true
 		printf("_bp: mob_walker [%s]: SIGNALLING: %s", self.object:name(), sig)
 	end

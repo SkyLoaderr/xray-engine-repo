@@ -290,10 +290,10 @@ function add_to_binder(object, char_ini)
 	operators["wait"] 		= xr_actions_id.stohe_reactions_base + 0
 
 	-- Evaluators
-	manager:add_evaluator (properties["event"], 		this.evaluator_new		("reaction_event", xr_motivator.storage[object:id()].reactions))
+	manager:add_evaluator (properties["event"], 		this.evaluator_new		("reaction_event", db.storage[object:id()].reactions))
 
 	-- Actions
-	local action = this.action_reaction_wait (object:name(),"action_reaction_wait", xr_motivator.storage[object:id()].reactions)
+	local action = this.action_reaction_wait (object:name(),"action_reaction_wait", db.storage[object:id()].reactions)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["event"],		true))
@@ -305,11 +305,11 @@ function add_to_binder(object, char_ini)
 
     if char_ini ~= nil and char_ini:section_exist ("reactions") == true then
         if char_ini:line_exist("reactions", "enabled") == true then
-                xr_motivator.storage[object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
+                db.storage[object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
         end
     	local i = 1
         while char_ini:line_exist("reactions", "rule_"..i) == true do
-        table.insert(xr_motivator.storage[object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
+        table.insert(db.storage[object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
             i = i + 1
         end
     end
@@ -491,7 +491,7 @@ end
 function events:isRuled(obj)
 	if self.npc == nil then return false end
 
-	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
+	local tt = db.storage[self.npc:id()].reactions.rules
 
 	for k,v in tt do
 		if v == "no_item" then
@@ -505,7 +505,7 @@ end
 function events:ruleExist(rule)
 	if self.npc == nil then return false end
 
-	local tt = xr_motivator.storage[self.npc:id()].reactions.rules
+	local tt = db.storage[self.npc:id()].reactions.rules
 
 	for k,v in tt do
 		if v == rule then
@@ -964,8 +964,8 @@ function events:isTrash(obj)
 	end
 end
 function add_rule(obj, rule)
-	if xr_motivator.storage[obj:id()].reactions.evn:ruleExist(rule) == false then
-		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
+	if db.storage[obj:id()].reactions.evn:ruleExist(rule) == false then
+		table.insert(db.storage[obj:id()].reactions.rules, rule)
 	end
 end
 function reset_rules(obj)
@@ -974,17 +974,17 @@ function reset_rules(obj)
 	if overrides ~= nil and
 		overrides.reactions ~= nil
 	then
-		xr_motivator.storage[obj:id()].reactions.rules = overrides.reactions
+		db.storage[obj:id()].reactions.rules = overrides.reactions
 	end		
 end
 function remove_rule(obj, rule)
 	local tt = {}
-	for k,v in xr_motivator.storage[obj:id()].reactions.rules do
+	for k,v in db.storage[obj:id()].reactions.rules do
 		if v == rule then
 			table.insert(tt, k)
 		end
 	end
 	for k,v in tt do
-		table.remove(xr_motivator.storage[obj:id()].reactions.rules, v)
+		table.remove(db.storage[obj:id()].reactions.rules, v)
 	end
 end

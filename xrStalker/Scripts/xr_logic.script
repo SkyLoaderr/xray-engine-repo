@@ -141,10 +141,10 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dial
 	local npc_id = npc:id()
 
 	local stype = stypes[utils.get_scheme_by_section(section)]
-	xr_motivator.storage[npc_id]["active_section"] = nil
-	xr_motivator.storage[npc_id]["active_scheme"] = nil
-	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
-	xr_motivator.storage[npc_id]["stype"] = stype
+	db.storage[npc_id]["active_section"] = nil
+	db.storage[npc_id]["active_scheme"] = nil
+	db.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
+	db.storage[npc_id]["stype"] = stype
 
 	set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs, trade, hit)
 
@@ -157,10 +157,10 @@ function enable_scripts(npc, ini, stype)
 
 	local npc_id = npc:id()
 
-	xr_motivator.storage[npc_id]["active_section"] = nil
-	xr_motivator.storage[npc_id]["active_scheme"] = nil
-	xr_motivator.storage[npc_id]["gulag_name"] = ""
-	xr_motivator.storage[npc_id]["stype"] = stype
+	db.storage[npc_id]["active_section"] = nil
+	db.storage[npc_id]["active_scheme"] = nil
+	db.storage[npc_id]["gulag_name"] = ""
+	db.storage[npc_id]["stype"] = stype
 
 	if ini:section_exist("logic") then
 		local cfg_filename = utils.cfg_get_string(ini, "logic", "cfg", npc, false, "")
@@ -277,19 +277,19 @@ function activate_by_section(npc, ini, section)
 	printf("DEBUG: object '%s': activate_by_section: looking for section '%s'", npc:name(), section)
 
 	local npc_id = npc:id()
-	if xr_motivator.storage[npc_id]["active_section"] then
+	if db.storage[npc_id]["active_section"] then
 		utils.abort("xr_logic: activate_by_section: while processing section '%s': character '%s': trying to " ..
 			"activate more than one schemes at once (section '%s' is active)",
-			section, npc:name(), xr_motivator.storage[npc_id]["active_section"])
+			section, npc:name(), db.storage[npc_id]["active_section"])
 	end
 
-	xr_motivator.storage[npc_id].activation_time = device():time_global()
+	db.storage[npc_id].activation_time = device():time_global()
 
 	if section == "nil" then
-		xr_motivator.storage[npc_id].overrides = nil
+		db.storage[npc_id].overrides = nil
 		reset_generic_schemes_on_scheme_switch(npc)
-		xr_motivator.storage[npc_id]["active_section"] = nil
-		xr_motivator.storage[npc_id]["active_scheme"] = nil
+		db.storage[npc_id]["active_section"] = nil
+		db.storage[npc_id]["active_scheme"] = nil
 		return
 	end
 
@@ -301,7 +301,7 @@ function activate_by_section(npc, ini, section)
 		end
 
 		-- Загрузить оверрайды:
-		xr_motivator.storage[npc_id].overrides = cfg_get_overrides(ini, section, npc)
+		db.storage[npc_id].overrides = cfg_get_overrides(ini, section, npc)
 
 		-- Сбросить общие схемы:
 		reset_generic_schemes_on_scheme_switch(npc)
@@ -314,12 +314,12 @@ function activate_by_section(npc, ini, section)
 		if not _G[schemes[scheme]] then
 			utils.abort("xr_logic: can't call %s.set_scheme() - a nil value", schemes[scheme])
 		end
-		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, xr_motivator.storage[npc_id]["gulag_name"])
+		_G[schemes[scheme]].set_scheme(npc, ini, scheme, section, db.storage[npc_id]["gulag_name"])
 		--printf("DEBUG: activate_by_section: scheme '%s' activated from section '%s'", scheme, section)
-		xr_motivator.storage[npc_id]["active_section"] = section
-		xr_motivator.storage[npc_id]["active_scheme"] = scheme
+		db.storage[npc_id]["active_section"] = section
+		db.storage[npc_id]["active_scheme"] = scheme
 
-		reset_actions_event(npc, xr_motivator.storage[npc_id][scheme])
+		reset_actions_event(npc, db.storage[npc_id][scheme])
 	else
 		utils.abort("object '%s': activate_by_section: section '%s' does not exist",
 			npc:name(), section)
@@ -328,7 +328,7 @@ end
 
 function reset_generic_schemes_on_scheme_switch(npc)
 	--printf("_bp: reset_generic_schemes_on_scheme_switch: npc:name()='%s'", npc:name())
-	local st = xr_motivator.storage[npc:id()]
+	local st = db.storage[npc:id()]
 
 	if not st.stype then
 		return
@@ -352,9 +352,9 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 	local npc_id = npc:id()
 	local st
 	
-	if not xr_motivator.storage[npc_id][scheme] then
-		xr_motivator.storage[npc_id][scheme] = {}
-		st = xr_motivator.storage[npc_id][scheme]
+	if not db.storage[npc_id][scheme] then
+		db.storage[npc_id][scheme] = {}
+		st = db.storage[npc_id][scheme]
 
 		st["npc"] = npc
 		
@@ -362,7 +362,7 @@ function assign_storage_and_bind(npc, ini, scheme, section)
 		--printf("DEBUG: assign_storage_and_bind: bind scheme: '%s'", scheme)
 		_G[schemes[scheme]].add_to_binder(npc, ini, scheme, section, st)
 	else
-		st = xr_motivator.storage[npc_id][scheme]
+		st = db.storage[npc_id][scheme]
 	end
 
 	st["scheme"] = scheme
@@ -386,7 +386,7 @@ end
 function reset_actions_event(npc, st)
 	--printf("DEBUG: reset_actions_event")
 	if not st.actions then
-		local global_st = xr_motivator.storage[npc:id()]
+		local global_st = db.storage[npc:id()]
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
@@ -399,10 +399,10 @@ function reset_actions_event(npc, st)
 end
 
 function non_goap_update_actions_event(npc, st, delta)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(db.storage[npc:id()].active_section))
 	
 	if not st.actions then
-		local global_st = xr_motivator.storage[npc:id()]
+		local global_st = db.storage[npc:id()]
 		printf("WARNING: non_goap_update_actions_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
@@ -413,10 +413,10 @@ function non_goap_update_actions_event(npc, st, delta)
 end
 
 function non_goap_waypoint_callback_event(npc, st, action_type, index)
-	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(xr_motivator.storage[npc:id()].active_section))
+	--printf("DEBUG: non_goap_update_actions_event [%s]", utils.to_str(db.storage[npc:id()].active_section))
 	
 	if not st.actions then
-		local global_st = xr_motivator.storage[npc:id()]
+		local global_st = db.storage[npc:id()]
 		printf("WARNING: non_goap_waypoint_callback_event: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
@@ -430,7 +430,7 @@ end
 
 function extrapolate_callback_event(npc, st)
 	if not st.actions then
-		local global_st = xr_motivator.storage[npc:id()]
+		local global_st = db.storage[npc:id()]
 		printf("WARNING: extrapolate_callback_event: scheme '%s', section '%s': at least one action in a scheme " ..
 			"must be subscribed for events", global_st.active_scheme, global_st.active_section)
 		return
@@ -519,8 +519,11 @@ function pick_section_from_condlist(actor, npc, condlist)
 	return nil
 end
 
-function stalker_in_zone(stalker, zone)
+function npc_in_zone(npc, zone_id)
 	-- FIXME
+--    function inside(const vector&, number) const;
+--    function inside(const vector&) const;
+
 	return false
 end
 
@@ -530,8 +533,8 @@ function switch_to_section(npc, st, section)
 	if section == nil or section == "" then
 		return false
 	end
-	xr_motivator.storage[npc:id()]["active_section"] = nil
-	xr_motivator.storage[npc:id()]["active_scheme"] = nil
+	db.storage[npc:id()]["active_section"] = nil
+	db.storage[npc:id()]["active_scheme"] = nil
 	activate_by_section(npc, st.ini, section)
 	return true
 end
@@ -585,16 +588,16 @@ function try_switch_to_another_section(npc, st, actor)
 			switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 		elseif c.name == "on_timer" or c.name == "on_timer2" then
 			--printf("_bp: on_timer: %d >= %d", device():time_global(),
-			--	xr_motivator.storage[npc_id].activation_time + c.v1)
-			if device():time_global() >= xr_motivator.storage[npc_id].activation_time + c.v1 then
+			--	db.storage[npc_id].activation_time + c.v1)
+			if device():time_global() >= db.storage[npc_id].activation_time + c.v1 then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_in_zone" then
-			if stalker_in_zone(actor, c.v1) then
+			if npc_in_zone(actor, c.v1) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_not_in_zone" then
-			if not stalker_in_zone(actor, c.v1) then
+			if not npc_in_zone(actor, c.v1) then
 				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		else
@@ -613,7 +616,7 @@ function try_switch_to_another_section(npc, st, actor)
 end
 
 function is_active(npc, st)
-	local is_act = (st.section == xr_motivator.storage[npc:id()]["active_section"])
+	local is_act = (st.section == db.storage[npc:id()]["active_section"])
 
 	-- Текущая секция активна и не сработало ни одно из условий переключения на другие секции
 	return is_act
@@ -829,7 +832,7 @@ end
 -- Возвращает ссылку на оверрайды, зарегистрированные в активной на данный момент секции,
 -- либо nil, если ни одна из секций не активна, или оверрайдов нет.
 function generic_scheme_overrides(npc)
-	return xr_motivator.storage[npc:id()].overrides
+	return db.storage[npc:id()].overrides
 end
 
 function mob_release(mob)

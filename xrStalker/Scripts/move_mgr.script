@@ -213,8 +213,8 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	-- Подписаться на уведомления о extrapolate_callback
 	local npc_id = self.object:id()
-	local scheme = xr_motivator.storage[npc_id]["active_scheme"]
-	xr_logic.subscribe_action_for_events(self.object, xr_motivator.storage[npc_id][scheme], self)
+	local scheme = db.storage[npc_id]["active_scheme"]
+	xr_logic.subscribe_action_for_events(self.object, db.storage[npc_id][scheme], self)
 
 	-- Пока этот флаг не станет true (он будет установлен в extrapolate_callback), нельзя использовать
 	-- значение, которое возвращает get_current_point_index().
@@ -771,8 +771,8 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if sig then
 		-- HACK, fixme:
 		local npc_id = self.object:id()
-		local scheme = xr_motivator.storage[npc_id]["active_scheme"]
-		local signals = xr_motivator.storage[npc_id][scheme].signals
+		local scheme = db.storage[npc_id]["active_scheme"]
+		local signals = db.storage[npc_id][scheme].signals
 		signals[sig] = true
 	end
 

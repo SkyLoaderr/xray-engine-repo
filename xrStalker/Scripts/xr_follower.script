@@ -31,7 +31,7 @@ function evaluator_leader_present:evaluate ()
        if self.a.leader == nil then 
           return false 
        else
-          table.insert (xr_motivator.storage[self.a.leader:id()].followers, self.a)
+          table.insert (db.storage[self.a.leader:id()].followers, self.a)
           self.a.leader_id = self.a.leader:id ()
        end   
     end

@@ -162,7 +162,7 @@ function fract:print()
 		if v.object ~= nil then
 			printf("    ObjID: %d", v.object:id())
 			printf("    Actor: %s", self.Object[v.object:id()]:name())
-			printf("    current section: %s", xr_motivator.storage[v.object:id()].active_section or "<<<nil>>>")
+			printf("    current section: %s", db.storage[v.object:id()].active_section or "<<<nil>>>")
 			if v.actor_dialogs ~= nil then
 				printf("    Actor dialogs: %s", v.actor_dialogs)
 			end
