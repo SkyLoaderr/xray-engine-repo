@@ -34,11 +34,32 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	Phase		("CFORM: simplification...");
 	Status		("Building base mesh...");
 
-	_Mesh        mesh;             // a mesh object
-	_Decimater   decimater(mesh);  // a decimater object, connected to a mesh
-	_HModQuadric hModQuadric;      // use a quadric module
-	decimater.add( hModQuadric ); // register module at the decimater
+	_Mesh        mesh;				// a mesh object
+	_Decimater   decimater(mesh);	// a decimater object, connected to a mesh
+	_HModQuadric hModQuadric;		// use a quadric module
+	decimater.add( hModQuadric );	// register module at the decimater
 
+	// Initializing mesh
+	xr_vector<_mesh::VertexHandle>	vhandles;
+	vhandles.resize	(CL.getVS());
+	for (u32 v_it=0; v_it<CL.getVS(); v_it++)		{
+		Fvector3&	v	= CL.getV()[v_it];
+		vhandles[v_it]	= mesh.add_vertex	(_mesh::Point(v.x,v.y,v.z));
+	}
+	xr_vector<_mesh::VertexHandle>	fhandles;
+	for (u32 f_it=0; f_it<CL.getTS(); f_it++)		{
+		CDB::TRI&	f		= CL.getT()[f_it];
+		fhandles.clear		();
+		fhandles.push_back	(vhandles[f.IDvert(0)]);
+		fhandles.push_back	(vhandles[f.IDvert(1)]);
+		fhandles.push_back	(vhandles[f.IDvert(2)]);
+		mesh.add_face		(fhandles);
+	}
+	vhandles.clear_and_free	();
+	fhandles.clear_and_free	();
+
+	// Decimate
+	Status		("Reconstructing mesh-topology...");
 	decimater.initialize();       // let the decimater initialize the mesh and the modules
 
 	float	nv_before		= float	(mesh.n_vertices());
