@@ -178,7 +178,7 @@ function action_zoneguard_activity:execute()
 				self.object:set_body_state(move.standing) -- тут обязательно standing, т.к. mental_state может быть danger
 				self.object:set_mental_state(mental_state)
 				if self.st.anim then
-					printf("_bp: anim_update: %s", self.st.anim)
+					--printf("_bp: anim_update: %s", self.st.anim)
 					xr_state.anim_update(self.st.anim, self.object)
 				end
 				self.state = state_standing
@@ -238,7 +238,7 @@ function action_zoneguard_activity:execute()
 			end
 		end
 		if self.st.anim then
-			printf("_bp: anim_update: %s", self.st.anim)
+			--printf("_bp: anim_update: %s", self.st.anim)
 			xr_state.anim_update(self.st.anim, self.object)
 		end
 		return
