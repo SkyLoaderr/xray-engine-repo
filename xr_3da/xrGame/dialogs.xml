@@ -136,6 +136,7 @@
 			</phrase>
 			<phrase id="8">
 				<text>Ок. Я принесу то, что раскопали военные сталкеры.</text>
+				<give_info>trader_start4</give_info>
 				<next>9</next>
 			</phrase>
 			<phrase id="9">
