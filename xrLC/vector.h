@@ -131,8 +131,6 @@ struct _color;		// floating point based color definition
 #include "_plane.h"
 #include "_flags.h"
 
-#include "_stl_extensions.h"
-
 #pragma pack(pop)
 
 

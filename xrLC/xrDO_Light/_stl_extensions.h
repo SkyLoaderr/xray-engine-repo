@@ -1,15 +1,27 @@
 #ifndef _STL_EXT_internal
 #define _STL_EXT_internal
 
-struct pred_str		: public std::binary_function<char*, char*, bool> 
-{	
-	IC bool operator()(const char* x, const char* y) const
-	{	return strcmp(x,y)<0;	}
+template <typename T>
+class	xr_allocator	: public std::allocator<T>	{
+public:
+	IC pointer			allocate	(size_type n, xr_allocator<void>::const_pointer p=0)	{	return xr_alloc<T>((u32)n);	}
+	IC void				deallocate	(pointer p, size_type n)								{	xr_free	(p);				}
 };
-struct pred_stri	: public std::binary_function<char*, char*, bool> 
-{	
-	IC bool operator()(const char* x, const char* y) const
-	{	return strcmp(x,y)<0;	}
+
+template	<typename T>							class	xr_vector	: public std::vector<T,xr_allocator<T> >		{};
+template	<typename T>							class	xr_list 	: public std::list<T,xr_allocator<T> >			{};
+template	<typename T>							class	xr_deque 	: public std::deque<T,xr_allocator<T> >			{};
+template	<typename T>							class	xr_stack 	: public std::stack<T,xr_deque<T> >				{};
+template	<typename K, class P=less<K> >			class	xr_set		: public std::set<K,P,xr_allocator<K> >			{};
+template	<typename K, class P=less<K> >			class	xr_multiset	: public std::multiset<K,P,xr_allocator<K> >	{};
+template	<typename K, class V, class P=less<K> >	class	xr_map 		: public std::map<K,V,P,xr_allocator<T> >		{};
+template	<typename K, class V, class P=less<K> >	class	xr_multimap : public std::multimap<K,V,P,xr_allocator<T> >	{};
+
+struct pred_str		: public std::binary_function<char*, char*, bool>	{	
+	IC bool operator()(const char* x, const char* y) const				{	return strcmp(x,y)<0;	}
+};
+struct pred_stri	: public std::binary_function<char*, char*, bool>	{	
+	IC bool operator()(const char* x, const char* y) const				{	return strcmp(x,y)<0;	}
 };
 
 // STL extensions

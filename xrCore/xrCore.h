@@ -133,14 +133,14 @@
 #endif
 
 // stl-config
-#define _STLP_NO_EXCEPTIONS			
+#define _STLP_NO_EXCEPTIONS	1
 #ifdef __BORLANDC__
 #else
 	#ifdef XRCORE_EXPORTS				// no exceptions, export allocator and common stuff
-		#define _STLP_DESIGNATED_DLL 
-		#define _STLP_USE_DECLSPEC 
+		#define _STLP_DESIGNATED_DLL 1
+		#define _STLP_USE_DECLSPEC 1
 	#else
-		#define _STLP_USE_DECLSPEC		// no exceptions, import allocator and common stuff
+		#define _STLP_USE_DECLSPEC 1	// no exceptions, import allocator and common stuff
 	#endif
 #endif
 
@@ -172,14 +172,16 @@ using namespace std;
 #define XRCORE_API __declspec(dllimport)
 #endif
 
-
 #define VERIFY assert
-
 #include "vector.h"
 #undef  VERIFY
+
 #include "clsid.h"
 #include "xrSyncronize.h"
 #include "xrMemory.h"
+
+#include "_stl_extensions.h"
+
 #include "xrDebug.h"
 #include "FS.h"
 #include "log.h"
