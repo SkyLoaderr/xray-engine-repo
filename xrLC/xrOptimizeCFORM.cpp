@@ -52,7 +52,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 
 	// Initializing mesh
 	Status		("Building base mesh : vertices[%d]...",CL.getVS());
-	xr_vector<_mesh::VertexHandle>	vhandles;
+	xr_vector<_mesh::VertexHandle>		vhandles;
 	vhandles.resize	(CL.getVS());
 	for (u32 v_it=0; v_it<CL.getVS(); v_it++)		{
 		Fvector3&	v	= CL.getV()[v_it];
@@ -66,14 +66,9 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 		fhandles.push_back	(vhandles[f.IDvert(0)]);
 		fhandles.push_back	(vhandles[f.IDvert(1)]);
 		fhandles.push_back	(vhandles[f.IDvert(2)]);
-		mesh.add_face		(fhandles);
-	}
-	{
-		_mesh::FaceIter		fit=mesh.faces_begin();
-		for (u32 f_it=0; f_it<CL.getTS(); f_it++,fit++)		{
-			CDB::TRI&	f		= CL.getT()[f_it];
-			fit->set_props		(f.dummy);
-		}
+		_mesh::FaceHandle	hface	= mesh.add_face		(fhandles);
+		if (hface != _mesh::InvalidFaceHandle)
+			mesh.face(hface).set_props	(f.dummy);
 	}
 	Status		("Building base mesh : normals...");
 	mesh.request_vertex_normals	();
