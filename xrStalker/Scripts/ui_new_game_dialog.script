@@ -15,24 +15,24 @@ function main()
 end
 
 
-class "new_game_dialog" (CUIScriptWnd)
+class "new_game_dlg" (CUIScriptWnd)
 
-function new_game_dialog:__init() super()
+function new_game_dlg:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
    
    self:InitControls()
    self:InitCallBacks()
 end
 
-function new_game_dialog:__finalize()
+function new_game_dlg:__finalize()
 
 end
 
-function new_game_dialog:SetClGame(game_cl)
+function new_game_dlg:SetClGame(game_cl)
    self.m_game_cl = game_cl
 end
 
-function new_game_dialog:InitControls()
+function new_game_dlg:InitControls()
 	printf("hello bill gates")
 	----- DATA ----
 	local indent          = 35
@@ -96,7 +96,7 @@ function new_game_dialog:InitControls()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")
 	txt_caption:SetFont(GetFontLetterica25())
-	txt_caption:SetText("new_game_dialog")
+	txt_caption:SetText("new_game_dlg")
 
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
@@ -152,11 +152,11 @@ function new_game_dialog:InitControls()
 	main_frame:AttachChild(btn)
 end
 
-function new_game_dialog:InitCallBacks()
+function new_game_dlg:InitCallBacks()
 	
 end
 
-function new_game_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
      
    DIK_RETURN = 28
