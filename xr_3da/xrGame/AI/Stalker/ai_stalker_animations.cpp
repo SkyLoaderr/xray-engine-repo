@@ -259,7 +259,27 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
 				case CWeapon::eIdle : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[m_tStateType];
+					if (m_tBodyState == eBodyStateStand)
+						switch (m_tMovementType) {
+							case eMovementTypeStand : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+								break;
+							}
+							case eMovementTypeWalk : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								break;
+							}
+							case eMovementTypeRun : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[8].A[0];
+								break;
+							}
+							default : {
+								NODEFAULT;
+								break;
+							}
+						}
+					else
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
 					break;
 				}
 				case CWeapon::eReload : {
@@ -282,8 +302,30 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[1].A[0];
 					break;
 				}
-				default :
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+				default : {
+					if (m_tBodyState == eBodyStateStand)
+						switch (m_tMovementType) {
+							case eMovementTypeStand : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+								break;
+							}
+							case eMovementTypeWalk : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[7].A[0];
+								break;
+							}
+							case eMovementTypeRun : {
+								tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[8].A[0];
+								break;
+							}
+							default : {
+								NODEFAULT;
+								break;
+							}
+						}
+					else
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[6].A[0];
+					break;
+				}
 			}
 		}
 	}
@@ -422,6 +464,10 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			m_tpCurrentGlobalAnimation = 0;
 			vfAssignTorsoAnimation	(tpTorsoAnimation);
 			vfAssignLegsAnimation	(tpLegsAnimation);
+
+			if (tpTorsoAnimation == (CMotionDef*)0xcdcdcdcd) {
+				vfAssignTorsoAnimation	(tpTorsoAnimation);
+			}
 			
 			if (tpTorsoAnimation && (m_tpCurrentTorsoAnimation != tpTorsoAnimation))
 				m_tpCurrentTorsoBlend	= tVisualObject.PlayCycle(m_tpCurrentTorsoAnimation = tpTorsoAnimation);

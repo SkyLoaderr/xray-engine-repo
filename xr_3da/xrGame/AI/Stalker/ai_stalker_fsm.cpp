@@ -381,7 +381,7 @@ void CAI_Stalker::ForwardCover()
 
 	m_dwInertion = 60000;
 
-	if (!m_tEnemy.Enemy) {
+	if (!m_tEnemy.Enemy && (m_tActionState != eActionStateWatchGo)) {
 		if (!E || (vPosition.distance_to(m_tSavedEnemyPosition) < 5.f) || (Level().timeServer() - m_dwLostEnemyTime > 6000))
 			SearchEnemy();
 		else
@@ -392,7 +392,7 @@ void CAI_Stalker::ForwardCover()
 	if (m_bStateChanged) {
 		m_tActionState			= eActionStateWatchLook;
 		m_dwActionStartTime		= Level().timeServer();
-		float					fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
+		float					fDistance = m_tSavedEnemyPosition.distance_to(vPosition);
 		CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon)
 			m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
@@ -429,6 +429,7 @@ void CAI_Stalker::ForwardCover()
 			m_tpCurrentSound->feedback->set_position(eye_matrix.c);
 
 	switch (m_tActionState) {
+/**
 		case eActionStateWatchGo : {
 			WRITE_TO_LOG			("WatchGo : Forward cover");
 			if (bBackMove)
@@ -451,6 +452,34 @@ void CAI_Stalker::ForwardCover()
 			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 			vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000)))) {
+				m_tActionState		= eActionStateWatchGo;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
+		}
+/**/
+		case eActionStateWatchGo : {
+			WRITE_TO_LOG			("WatchGo : ForwardCover");
+			if ((Level().timeServer() - m_dwActionStartTime < 5500) && (AI_Path.TravelPath.size() > AI_Path.TravelStart + 1))
+				vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, /**(m_tSavedEnemyPosition.distance_to(vPosition) > 3.f) && m_tEnemy.Enemy ? eMovementTypeRun : eMovementTypeWalk/**/eMovementTypeRun,eStateTypeDanger,eLookTypeDirection);
+			else
+				vfSetParameters			(0,0,true,eWeaponStateIdle,ePathTypeDodgeCriteria,eBodyStateStand, eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+			if ((Level().timeServer() - m_dwActionStartTime > 7000) && ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,tPoint) != u32(-1)) || (Level().timeServer() - m_dwActionStartTime > 8000))) {
+				m_tActionState		= eActionStateWatchLook;
+				m_dwActionStartTime = Level().timeServer();
+			}
+			break;
+		}
+		case eActionStateWatchLook : {
+			WRITE_TO_LOG			("WatchLook : ForwardCover");
+			float					fDistance = m_tSavedEnemyPosition.distance_to(vPosition);
+			CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon)
+				m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
+			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
+			vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+			if (!tpWeapon || ((tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000))))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
 			}
