@@ -44,45 +44,47 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// Create common node
 	// NOTE: Invisible elements exist only in R1
 	_MatrixItem		item	= {SSA,RI.val_pObject,pVisual,*RI.val_pTransform};
-#if RENDER==R_R1
-	if (!RI.val_bHUD)		RI.L_Shadows->add_element		(item);
-	if (RI.val_bInvisible)	return;
-#endif
 
 	// HUD rendering
 	if (RI.val_bHUD)			{
 		mapHUD_Node* N			= mapHUD.insertInAnyWay		(distSQ);
 		N->val					= item;
-	} else 
+		return;
+	}
+
+	// Shadows registering
+#if RENDER==R_R1
+	RI.L_Shadows->add_element	(item);
+	if (RI.val_bInvisible)		return;
+#endif
 
 	// strict-sorting selection
 	if (sh->Flags.bStrictB2F) {
 		mapSorted_Node* N		= mapSorted.insertInAnyWay	(distSQ);
 		N->val					= item;
-	} else
+		return;
+	}
 
 	// the most common node
-	{
-		SPass&						pass	= *sh->Passes.front	();
-		mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
-		mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
-		mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
-		mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
-		mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
-		mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
-		mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
-		mapMatrixItems&				items	= Nvb->val;
-		items.push_back						(item);
+	SPass&						pass	= *sh->Passes.front	();
+	mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
+	mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
+	mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
+	mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
+	mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
+	mapMatrixVB::TNode*			Nvb		= Ntex->val.insert	(pVisual->hGeom->vb);
+	mapMatrixItems&				items	= Nvb->val;
+	items.push_back						(item);
 
-		// Need to sort for HZB efficient use
-		if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
-		if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
-		if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
-		if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
-		if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
-		if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
-		} } } } } }
-	}
+	// Need to sort for HZB efficient use
+	if (SSA>Nvb->val.ssa)		{ Nvb->val.ssa = SSA;
+	if (SSA>Ntex->val.ssa)		{ Ntex->val.ssa = SSA;
+	if (SSA>Nstate->val.ssa)	{ Nstate->val.ssa = SSA;
+	if (SSA>Ncs->val.ssa)		{ Ncs->val.ssa = SSA;
+	if (SSA>Nps->val.ssa)		{ Nps->val.ssa = SSA;
+	if (SSA>Nvs->val.ssa)		{ Nvs->val.ssa = SSA;
+	} } } } } }
 }
 
 void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
