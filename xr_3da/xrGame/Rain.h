@@ -73,6 +73,7 @@ private:
 
 	// Some methods
 	void				Born			(Item& dest, float radius, float height);
+	void				RayTest			(Item& dest, float height);
 	void				Hit				(Fvector& pos);
 public:
 	virtual void		OnDeviceCreate	();

@@ -91,6 +91,7 @@ void	CEffect_Rain::OnEvent	(EVENT E, DWORD P1, DWORD P2)
 	}
 }
 
+// Born
 void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 {
 	Fvector		axis;	axis.set			(0,-1,0);
@@ -103,7 +104,12 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.D.random_dir	(axis,deg2rad(drop_angle));
 	dest.fSpeed			= ::Random.randF	(drop_speed_min,drop_speed_max);
 
-	// Raytrace
+	RayTest		(dest,height);
+}
+
+// Raytrace
+void	CEffect_Rain::RayTest	(Item& dest, float height)
+{
 	Collide::ray_query	RQ;
 	if (Level().ObjectSpace.RayPick(dest.P,dest.D,height*2,RQ))	
 	{
@@ -111,8 +117,8 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 		dest.fTime_Hit	= RQ.range/dest.fSpeed;
 		dest.Phit.direct(dest.P,dest.D,RQ.range);
 	} else {
-		dest.fTime_Life	= (height*3)/dest.fSpeed;
-		dest.fTime_Hit	= (height*4)/dest.fSpeed;
+		dest.fTime_Life	= (height*2)/dest.fSpeed;
+		dest.fTime_Hit	= (height*3)/dest.fSpeed;
 		dest.Phit.set	(dest.P);
 	}
 }
@@ -237,7 +243,8 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Born new if needed
-	float	b_radius		= 30.f;	// Need to ask from heightmap
+	float	b_radius		= 30.f;
+	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
 		items.reserve	(desired_items);
@@ -263,6 +270,18 @@ void	CEffect_Rain::Render	()
 		one.fTime_Life	-=	dt; if (one.fTime_Life<0)	Born(one,b_radius,b_height);
 
 		one.P.mad		(one.D,one.fSpeed*dt);
+		
+		// Cylindrical wrap
+		Fvector	wdir;	wdir.set(one.P.x-vCenter.x,0,one.P.z-vCenter.z);
+		float	wlen	=	wdir.magnitude();
+		if (wlen>b_radius_wrap)	{
+			// Perform wrapping
+			wdir.div	(-wlen);
+			one.P.direct(one.P,wdir,b_radius);
+			RayTest		(one,b_height);
+		}
+
+		// Build line
 		Fvector&	pos_head	= one.P;
 		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length);
 		
