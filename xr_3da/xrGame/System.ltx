@@ -1134,6 +1134,12 @@ visual					= actors\Different_stalkers\stalker_hood_multiplayer.ogf
 ;visual					= actors\alpha\pidarka_urban.ogf
 ;visual					= temp\_crc_qmt_.ogf
 walk_accel              = 17 ;40 ;17  ;54 ;40
+
+; torch params
+torch_angle_offset	  = 0,0,0
+torch_position_offset = 0,0.5,0.5
+torch_bone_name		  = bip01_spin2
+
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
 ph_box1_center 			= 0.0,  0.6,  0.0
@@ -1369,15 +1375,20 @@ Health			     = 100			; option for ALife Simulator
 MinSpeed		     = 1.0			; option for ALife Simulator
 MaxSpeed		     = 5.0			; option for ALife Simulator
 money				 = 5000;
-rank					= 1;
-going_speed                  = 1.5                      ; option for ALife Simulator
-search_speed				 = 0.5
+rank				 = 1;
+going_speed          = 1.5                      ; option for ALife Simulator
+search_speed		 = 0.5
 going_item_detect_probability = 0.1
 search_item_detect_probability = 0.9
-eye_fov                      = 170	;145	;170
-eye_range                    = 30	;70	;150
-max_item_mass				 = 40.0
-MaxHealthValue		     = 100			; range [0..200]
+eye_fov              = 170	;145	;170
+eye_range            = 30	;70	;150
+max_item_mass		 = 40.0
+MaxHealthValue		 = 100			; range [0..200]
+
+; torch params
+torch_angle_offset	  = 0,0,0
+torch_position_offset = 0,0.5,0.5
+torch_bone_name		  = bip01_spin2
 
 ; State                = 7
 ; 0 - бежать прямо на врага
@@ -1533,6 +1544,11 @@ eye_fov                      = 145	;170
 eye_range                    = 80	;150
 max_item_mass				 = 40.0
 MaxHealthValue		     = 100			; range [0..200]
+
+; torch params
+torch_angle_offset	  = 0,0,0
+torch_position_offset = 0,0.5,0.5
+torch_bone_name		  = bip01_spin2
 
 State                = 7
 ; 0 - бежать прямо на врага
