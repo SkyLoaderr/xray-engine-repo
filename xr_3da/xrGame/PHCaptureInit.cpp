@@ -171,7 +171,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,i
 		return;
 	}
 
-	CBoneInstance& tag_bone=K->LL_GetInstance(a_taget_element);
+	CBoneInstance& tag_bone=K->LL_GetInstance(u16(a_taget_element));
 
 	if(!tag_bone.Callback_Param)
 	{

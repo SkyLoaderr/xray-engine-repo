@@ -4,11 +4,11 @@
 void CAI_Chimera::vfAssignBones(CInifile *ini, const char *section)
 {
 	int spin_bone		= PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_spin"));
-	PKinematics(Visual())->LL_GetInstance(spin_bone).set_callback(SpinCallback,this);
+	PKinematics(Visual())->LL_GetInstance(u16(spin_bone)).set_callback(SpinCallback,this);
 
 	// Bones settings
 	Bones.Reset();
-	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(spin_bone),AXIS_Z); 
+	Bones.AddBone(&PKinematics(Visual())->LL_GetInstance(u16(spin_bone)),AXIS_Z); 
 }
 
 void __stdcall CAI_Chimera::SpinCallback(CBoneInstance *B)

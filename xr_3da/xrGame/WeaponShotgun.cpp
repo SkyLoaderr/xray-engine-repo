@@ -265,7 +265,7 @@ BOOL CWeaponShotgun::FireTrace2		(const Fvector& P, const Fvector& Peff, Fvector
 
 				// bone-space
 				CKinematics* V	=	PKinematics(RQ.O->Visual());
-				Fmatrix& m_bone	=	(V->LL_GetInstance(RQ.element)).mTransform;
+				Fmatrix& m_bone	=	(V->LL_GetInstance(u16(RQ.element))).mTransform;
 				Fmatrix  m_inv_bone;
 				m_inv_bone.invert			(m_bone);
 				m_inv_bone.transform_tiny	(position_in_bone_space, p_in_object_space);

@@ -422,9 +422,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
 	int head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetInstance(spine_bone).set_callback		(SpinCallback,this);
-	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
-	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
+	V->LL_GetInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
+	V->LL_GetInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
+	V->LL_GetInstance(u16(head_bone)).set_callback		(HeadCallback,this);
 
 	m_anims.Create			(V);
 	//
@@ -442,7 +442,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 			}else{
 				int bone	= V->LL_BoneID(*it->first); 
 				R_ASSERT2(bone!=BI_NONE,*it->first);
-				CBoneInstance& B = V->LL_GetInstance(bone);
+				CBoneInstance& B = V->LL_GetInstance(u16(bone));
 				B.set_param(0,(float)atof(_GetItem(*it->second,0,buf)));
 				B.set_param(1,float(atoi(_GetItem(*it->second,1,buf))));
 			}
@@ -1414,7 +1414,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 float CActor::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
+	float scale			= fis_zero(V->LL_GetInstance(u16(element)).get_param(0))?1.f:V->LL_GetInstance(u16(element)).get_param(0);
 	return hit_factor*scale;
 }
 

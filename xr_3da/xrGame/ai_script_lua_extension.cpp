@@ -198,16 +198,16 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def(constructor<const char *, bool>())
 			.def("Position",					&CParticlesObject::Position)
 			.def("PlayAtPos",					&CParticlesObject::play_at_pos)
-			.def("Stop",						&CParticlesObject::Stop)
+			.def("Stop",						&CParticlesObject::Stop),
 
-//		class_<CLuaGameObject>("CGameObject")
-//			.def(constructor<LPCSTR>())
-//			.def(constructor<const CLuaGameObject *>())
-//			.def("Position",					&CLuaGameObject::Position)
-//			.def("Class",						&CLuaGameObject::Visible),
-//			.def("Section",						&CLuaGameObject::Visible),
-//			.def("Name",						&CLuaGameObject::cName)
-//			.def("Parent",						&CLuaGameObject::Parent)
+		class_<CLuaGameObject>("CGameObject")
+			.def(constructor<LPCSTR>())
+			.def(constructor<const CLuaGameObject *>())
+			.def("Position",					&CLuaGameObject::Position)
+//			.def("ClassID",						&CLuaGameObject::ClassID)
+			.def("Section",						&CLuaGameObject::Section)
+			.def("Name",						&CLuaGameObject::Name)
+			.def("Parent",						&CLuaGameObject::Parent)
 //			.def("Enabled",						&CLuaGameObject::Enabled)
 //			.def("Visible",						&CLuaGameObject::Visible),
 //
@@ -234,28 +234,6 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 	];
 
-//class CItemObject {
-//public:
-//	Active();
-//	Visible(); // only for NPC
-//	Condition();
-//	get_parent();
-//	get_mass();
-//	get_cost();
-//};
-//
-//class CAliveObject {
-//public:
-//	rank();
-//	health();
-//	activeweapon();
-//	equipment();
-//	asleep();
-//	zombied();
-//	checkifobjectvisible();
-//
-//};
-//
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }
 

@@ -82,15 +82,15 @@ public:
 			Fvector l_dir; l_dir.set(0, -1.f, 0);
 			Fvector position_in_bone_space;
 			position_in_bone_space.set(0.f,0.f,0.f);
-			NET_Packet		P;
-			l_pActor->u_EventGen		(P,GE_HIT,l_pActor->ID());
-			P.w_u16			(u16(l_pActor->ID()));
-			P.w_dir			(l_dir);
-			P.w_float		(10000.f);
-			P.w_s16			((s16)0);
-			P.w_vec3		(position_in_bone_space);
-			P.w_float		(.0f);
-//.			P.w_u16			(eHitTypeWound);	//hit type
+				NET_Packet		P;
+				l_pActor->u_EventGen		(P,GE_HIT,l_pActor->ID());
+				P.w_u16			(u16(l_pActor->ID()));
+				P.w_dir			(l_dir);
+				P.w_float		(10000.f);
+				P.w_s16			((s16)0);
+				P.w_vec3		(position_in_bone_space);
+				P.w_float		(.0f);
+	//.			P.w_u16			(eHitTypeWound);	//hit type
 			l_pActor->u_EventSend		(P);
 			//NET_Packet		P;
 			//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);

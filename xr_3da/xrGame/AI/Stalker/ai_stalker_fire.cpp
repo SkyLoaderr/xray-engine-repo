@@ -15,7 +15,7 @@
 float CAI_Stalker::HitScale	(int element)
 {
 	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
-	float scale			= fis_zero(V->LL_GetInstance(element).get_param(0))?1.f:V->LL_GetInstance(element).get_param(0);
+	float scale			= fis_zero(V->LL_GetInstance(u16(element)).get_param(0))?1.f:V->LL_GetInstance(u16(element)).get_param(0);
 	return				(m_fHitFactor*scale);
 }
 

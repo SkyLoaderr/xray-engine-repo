@@ -65,9 +65,9 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 	CKinematics* K		= PKinematics(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
-	CBoneInstance& B	= K->LL_GetInstance(id);
-	E->mXFORM.set		(K->LL_GetTransform(id));
-	Fobb bb			= K->LL_GetBox(id);
+	CBoneInstance& B	= K->LL_GetInstance(u16(id));
+	E->mXFORM.set		(K->LL_GetTransform(u16(id)));
+	Fobb bb			= K->LL_GetBox(u16(id));
 
 
 	if(bb.m_halfsize.magnitude()<0.05f)
@@ -92,7 +92,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 		m_pPhysicsShell->add_Joint	(J);	
 	}
 
-	CBoneData& BD		= K->LL_GetData(id);
+	CBoneData& BD		= K->LL_GetData(u16(id));
 	for (vecBonesIt it=BD.children.begin(); it!=BD.children.end(); it++){
 		AddElement		(E,(*it)->SelfID);
 	}

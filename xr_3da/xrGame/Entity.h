@@ -74,19 +74,19 @@ public:
 	bool					IsFocused			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
 	bool					IsMyCamera			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}
 
-	float					g_Armor				()	{ return fArmor;	}
-	virtual float			g_Health			()	{ return fEntityHealth;}
-	virtual float			g_MaxHealth			()	{ return m_fMaxHealthValue;	}
-	float					g_Accuracy			()	{ return fAccuracy;	}
-	virtual BOOL			g_Alive				()	{ return fEntityHealth>0; }
+	float					g_Armor				()const	{ return fArmor;	}
+	virtual float			g_Health			()		{ return fEntityHealth;}
+	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
+	float					g_Accuracy			()const	{ return fAccuracy;	}
+	virtual BOOL			g_Alive				()		{ return fEntityHealth>0; }
 	virtual BOOL			g_State				(SEntityState& state)	{return FALSE;}
 	virtual bool			AlreadyDie()		{return  m_dwDeathTime!=0?true:false;}
 
 	virtual float			CalcCondition		(float hit);
 
-	int						g_Team				()	{ return id_Team;	}
-	int						g_Squad				()	{ return id_Squad;	}
-	int						g_Group				()	{ return id_Group;	}
+	int						g_Team				()const	{ return id_Team;	}
+	int						g_Squad				()const	{ return id_Squad;	}
+	int						g_Group				()const	{ return id_Group;	}
 
 	// misc
 	virtual CWeaponList*	GetItemList			()	{ return 0;			}
@@ -97,7 +97,7 @@ public:
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual	float			HitScale			(int element){return 1.f;}
 	virtual void			Die					() = 0;
-	virtual void			KillEntity(CObject* who);
+	virtual void			KillEntity			(CObject* who);
 		
 	// Events
 	virtual void			OnEvent				( NET_Packet& P, u16 type		);

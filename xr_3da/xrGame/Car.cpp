@@ -245,7 +245,7 @@ bool CCar::attach_Actor(CActor* actor)
 		m_owner->setVisible(0);
 		id=K->LL_BoneRoot();
 	}
-	CBoneInstance& instance=K->LL_GetInstance				(id);
+	CBoneInstance& instance=K->LL_GetInstance				(u16(id));
 	m_sits_transforms.push_back(instance.mTransform);
 
 	//CBoneData&	bone_data=K->LL_GetData(id);
@@ -1006,7 +1006,7 @@ void CCar::SExhaust::Init()
 {
 	pelement=(bone_map.find(bone_id))->second.element;
 	CKinematics* K=PKinematics(pcar->Visual());
-	CBoneData&	bone_data=K->LL_GetData(bone_id);
+	CBoneData&	bone_data=K->LL_GetData(u16(bone_id));
 	transform.setXYZi(bone_data.bind_xyz);
 	transform.c.set(bone_data.bind_translate);
 	transform.mulA(pcar->XFORM());

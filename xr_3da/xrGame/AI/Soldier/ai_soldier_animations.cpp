@@ -15,10 +15,10 @@
 void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
 {
 	int head_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_head"));
-	PKinematics(Visual())->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	PKinematics(Visual())->LL_GetInstance(u16(head_bone)).set_callback(HeadSpinCallback,this);
 	
 //	int legs_bone = PKinematics(Visual())->LL_BoneID(ini->r_string(section,"bone_legs"));
-//	PKinematics(Visual())->LL_GetInstance(head_bone).set_callback(LegsSpinCallback,this);
+//	PKinematics(Visual())->LL_GetInstance(u16(head_bone)).set_callback(LegsSpinCallback,this);
 }
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)

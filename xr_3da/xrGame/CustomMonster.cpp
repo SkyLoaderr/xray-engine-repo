@@ -419,7 +419,7 @@ void CCustomMonster::eye_pp_s0			( )
 	// Eye matrix
 	CKinematics* V							= PKinematics(Visual());
 	V->Calculate							();
-	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
+	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
 	eye_matrix.setHPB						(-r_current.yaw + m_fEyeShiftYaw,-r_current.pitch,0);

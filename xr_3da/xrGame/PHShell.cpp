@@ -372,8 +372,8 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data)
 {
 
-	CBoneInstance& B	= m_pKinematics->LL_GetInstance(id);
-	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
+	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
+	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 
 
 	CPhysicsElement* E  = 0;
@@ -697,8 +697,8 @@ ZeroCallbacksRecursive(m_pKinematics->LL_BoneRoot());
 void CPHShell::ZeroCallbacksRecursive(int id)
 {
 
-	CBoneInstance& B	= m_pKinematics->LL_GetInstance(id);
-	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
+	CBoneInstance& B	= m_pKinematics->LL_GetInstance(u16(id));
+	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 		B.set_callback(0,0);
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
 		ZeroCallbacksRecursive		((*it)->SelfID);

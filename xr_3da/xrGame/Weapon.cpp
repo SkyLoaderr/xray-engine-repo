@@ -222,8 +222,8 @@ void CWeapon::UpdateXForm	()
 		if ((STATE == eReload) || (!E->g_Alive()))
 			boneL = boneR2;
 		V->Calculate	();
-		Fmatrix& mL		= V->LL_GetTransform(boneL);
-		Fmatrix& mR		= V->LL_GetTransform(boneR);
+		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
 		// Calculate
 		Fmatrix			mRes;
 		Fvector			R,D,N;
@@ -263,7 +263,7 @@ void CWeapon::UpdateFP		()
 			V->Calculate			();
 
 			// fire point&direction
-			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
+			Fmatrix& fire_mat		= V->LL_GetTransform(u16(m_pHUD->iFireBone));
 			Fmatrix& parent			= m_pHUD->Transform	();
 			Fvector& fp				= m_pHUD->vFirePoint;
 			Fvector& sp				= m_pHUD->vShellPoint;
@@ -806,7 +806,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 				
 				if(V)
 				{
-					Fmatrix& m_bone = (V->LL_GetInstance(RQ.element)).mTransform;
+					Fmatrix& m_bone = (V->LL_GetInstance(u16(RQ.element))).mTransform;
 					Fmatrix  m_inv_bone;
 					m_inv_bone.invert(m_bone);
 					m_inv_bone.transform_tiny(position_in_bone_space, p_in_object_space);

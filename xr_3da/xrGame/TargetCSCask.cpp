@@ -33,7 +33,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 				char l_num[2] = { char(0x30+m_targets.size()), 0 };
 				int l_boneID = l_V->LL_BoneID(l_num);
 				VERIFY(l_V); l_V->Calculate();
-				Fmatrix& l_pos	= l_V->LL_GetTransform(l_boneID);
+				Fmatrix& l_pos	= l_V->LL_GetTransform(u16(l_boneID));
 				l_pBall->SetPos(l_pos);
 				return;
 			}
