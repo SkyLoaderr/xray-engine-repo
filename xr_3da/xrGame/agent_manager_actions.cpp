@@ -51,7 +51,7 @@ void CAgentManagerActionNoOrders::initialize		()
 
 void CAgentManagerActionNoOrders::finalize			()
 {
-	m_corpses.clear				();
+	m_object->member_corpses().clear	();
 }
 
 void CAgentManagerActionNoOrders::execute			()

@@ -134,3 +134,8 @@ IC	void CAgentManager::register_corpse	(CAI_Stalker *corpse) const
 	VERIFY2								(I == m_corpses.end(),"Cannot register corpse more than a time!");
 	m_corpses.push_back					(CMemberCorpse(corpse,0,Device.dwTimeGlobal));
 }
+
+IC	xr_vector<CAgentManager::CMemberCorpse> &CAgentManager::member_corpses	()
+{
+	return							(m_corpses);
+}

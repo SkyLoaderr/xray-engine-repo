@@ -166,6 +166,7 @@ public:
 	IC		shared_str						cName				() const;
 	IC		CAgentManagerMotivationPlanner	&brain				() const;
 	IC		void							register_corpse		(CAI_Stalker *corpse) const;
+	IC		xr_vector<CMemberCorpse>		&member_corpses		();
 };
 
 #include "agent_manager_inline.h"
