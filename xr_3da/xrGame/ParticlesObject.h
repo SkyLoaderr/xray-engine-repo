@@ -3,6 +3,9 @@
 
 #include "../PS_instance.h"
 
+
+extern const Fvector zero_vel;
+
 class CParticlesObject		:	public CPS_Instance
 {
 	Fmatrix				m_XFORM;

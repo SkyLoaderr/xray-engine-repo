@@ -8,6 +8,10 @@
 #include "../ParticleCustom.h"
 #include "../render.h"
 
+
+static const Fvector zero_vel		= {0.f,0.f,0.f};
+
+
 CParticlesObject::CParticlesObject	(LPCSTR p_name, BOOL bAutoRemove)
 {
 	Init					(p_name,0,bAutoRemove);
@@ -128,7 +132,6 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 	// Msg	("update(%s): %3.1f,%3.1f,%3.1f,%3.1f",V->GetDefinition()->m_Name,VPUSH(spatial.center),spatial.radius);
 }
 
-static const Fvector zero_vel		= {0.f,0.f,0.f};
 void CParticlesObject::SetXFORM		(const Fmatrix& m)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
