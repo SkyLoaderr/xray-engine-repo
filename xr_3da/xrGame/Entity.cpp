@@ -24,9 +24,8 @@ CEntity::CEntity()
 	
 	eHealthLost_Begin	= Engine.Event.Handler_Attach	("level.entity.healthlost.begin",	this);
 	eHealthLost_End		= Engine.Event.Handler_Attach	("level.entity.healthlost.end",		this);
-
 	eye_fov = 90.f;
-	eye_range = Level().Environment.c_Far;
+	eye_range = 1000.f;
 }
 
 CEntity::~CEntity()
@@ -170,6 +169,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
+	
 }
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)

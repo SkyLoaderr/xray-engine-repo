@@ -1241,7 +1241,10 @@ void CAI_Soldier::OnSenseSomethingAlone()
 		m_bStateChanged = false;
 		GO_TO_PREV_STATE;
 	}
+
 	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+	
+	vfAimAtEnemy();
 }
 
 void CAI_Soldier::OnAttackFireAlone()
@@ -1275,7 +1278,7 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierSteal);
+	CHECK_IF_SWITCH_TO_NEW_STATE(!bfCheckForEntityVisibility(Enemy.Enemy) && (vPosition.distance_to(Enemy.Enemy->Position()) > 5.f),aiSoldierSteal);
 
 	AI_Path.TravelPath.clear();
 	
@@ -1323,7 +1326,7 @@ void CAI_Soldier::OnSteal()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierRecharge)
 
-	CHECK_IF_GO_TO_PREV_STATE(!bfCheckForEntityVisibility(Enemy.Enemy));
+	CHECK_IF_GO_TO_PREV_STATE(bfCheckForEntityVisibility(Enemy.Enemy) || (vPosition.distance_to(Enemy.Enemy->Position()) <= 5.f));
 
 	vfSaveEnemy();
 
@@ -1338,12 +1341,9 @@ void CAI_Soldier::OnSteal()
 
 	vfAimAtEnemy();
 	
-	vfSetFire(true,Group);
+	vfSetFire(false,Group);
 	
-	if (m_cBodyState != BODY_STATE_STAND)
-		vfSetMovementType(m_cBodyState,0);
-	else
-		vfSetMovementType(BODY_STATE_CROUCH,0);
+	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
 }
 
 void CAI_Soldier::Think()

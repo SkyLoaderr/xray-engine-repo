@@ -599,6 +599,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					float dot = view.dotproduct(move);
 					
 					if ((speed >= m_fMaxSpeed - EPS_L) && (m_cBodyState == BODY_STATE_STAND) && (dot > .7f)) {
+						/**
 						for (int i=0; i<4; i++)
 							if (tSoldierAnimations.tNormal.tGlobal.tpaRunForward[i] == m_tpCurrentGlobalAnimation) {
 								tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -606,6 +607,8 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							}
 						if (!tpGlobalAnimation)
 							tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[::Random.randI(0,4)];
+						/**/
+						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaRunForward[::Random.randI(4,5)];
 					}
 					else
 						if (dot > .7f)

@@ -201,7 +201,7 @@ void CAI_Soldier::vfAimAtEnemy()
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
-	//r_torso_target.yaw += PI_DIV_6/2;
+	r_torso_target.yaw -= 0*PI_DIV_6/2;
 	ASSIGN_SPINE_BONE;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	//q_look.o_look_speed=_FB_look_speed;
@@ -448,7 +448,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	float fAlpha = tDirection.dotproduct(tMonsterDirection);
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
-	bool bVisible = fAlpha <= tpEntity->ffGetFov()/180.f*PI + EPS_L;
+	bool bVisible = fAlpha >= tpEntity->ffGetFov()/180.f*PI + EPS_L;
 	return(bVisible);
 }
 /**/
