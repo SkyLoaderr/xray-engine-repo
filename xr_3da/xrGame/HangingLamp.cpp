@@ -144,9 +144,8 @@ void CHangingLamp::UpdateCL	()
 		guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
 
 	}
-		
 
-	if (Alive()&&light_render->get_active())
+	if (Alive() && light_render->get_active())
 	{
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
@@ -177,7 +176,7 @@ void CHangingLamp::UpdateCL	()
 			fclr.mul_rgb			(fBrightness/255.f);
 			light_render->set_color	(fclr);
 			if (glow_render)		glow_render->set_color	(fclr);
-			if (light_ambient){
+			if (light_ambient) {
 				fclr.mul_rgb		(ambient_power);
 				light_ambient->set_color(fclr);
 			}
@@ -190,20 +189,22 @@ void CHangingLamp::renderable_Render()
 	inherited::renderable_Render	();
 }
 
-void CHangingLamp::TurnOn()
+void CHangingLamp::TurnOn	()
 {
 	light_render->set_active						(true);
 	if (glow_render)	glow_render->set_active		(true);
 	if (light_ambient)	light_ambient->set_active	(true);
 	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	processing_activate		();
 }
 
-void CHangingLamp::TurnOff()
+void CHangingLamp::TurnOff	()
 {
 	light_render->set_active						(false);
 	if (glow_render)	glow_render->set_active		(false);
 	if (light_ambient)	light_ambient->set_active	(false);
 	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
+	processing_deactivate	();
 }
 
 void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
@@ -221,12 +222,11 @@ void CHangingLamp::Hit(float P,Fvector &dir, CObject* who,s16 element,
 static BONE_P_MAP bone_map=BONE_P_MAP();
 void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 {
-
 	if (!Visual())			return;
 	if (m_pPhysicsShell)	return;
-	CKinematics* pKinematics=PKinematics(Visual());
+	CKinematics* pKinematics= PKinematics	(Visual());
 
-	m_pPhysicsShell		= P_create_Shell();
+	m_pPhysicsShell			= P_create_Shell();
 
 	bone_map					.clear();
 	LPCSTR	fixed_bones=*lamp->fixed_bones;

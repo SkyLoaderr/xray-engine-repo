@@ -72,8 +72,8 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 				return TRUE;
 			}
 		} else {
-			xrc.ray_query	(&Static,start,dir,range);
-			return xrc.r_count();
+			xrc.ray_query		(&Static,start,dir,range);
+			return xrc.r_count	();
 		}
 	}
 	return FALSE;
