@@ -78,3 +78,15 @@ void CScriptProcessor::Update()
 	}
 	g_ca_stdout = S;
 }
+
+void CScriptProcessor::AddScript(LPCSTR	script_name)
+{
+	string256		S,S1;
+	FS.update_path(S,"$game_scripts$",strconcat(S1,script_name,".script"));
+	R_ASSERT3		(FS.exist(S),"Script file not found!",S);
+	CScript			*l_tpScript = xr_new<CScript>(m_tpLuaVirtualMachine,S);
+	if (l_tpScript->m_bActive)
+		m_tpScripts.push_back(l_tpScript);
+	else
+		xr_delete	(l_tpScript);
+}

@@ -33,6 +33,7 @@
 #include "HangingLamp.h"
 #include "trade.h"
 #include "actor.h"
+#include "ai_script_processor.h"
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -707,6 +708,22 @@ public:
 	}
 };
 
+class CCC_Script : public CConsoleCommand {
+public:
+	CCC_Script(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		string256	S;
+		S[0]		= 0;
+		sscanf		(args ,"%s",S);
+		if (!xr_strlen(S))
+			Log("* Specify script name!");
+		else {
+			VERIFY(Level().GetScriptProcessor());
+			Level().GetScriptProcessor()->AddScript(S);
+		}
+	}
+};
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -779,6 +796,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_Mask,				"ai_dbg_funcs",			&psAI_Flags,	aiFuncs);
 		CMD3(CCC_Mask,				"ai_dbg_alife",			&psAI_Flags,	aiALife);
 		CMD3(CCC_Mask,				"ai_dbg_lua",			&psAI_Flags,	aiLua);
+		CMD1(CCC_Script,			"run_script");
 
 		// Trader
 		CMD1(CCC_Trader,			"trade");		
