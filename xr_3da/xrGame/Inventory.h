@@ -83,6 +83,7 @@ public:
 	PIItem SameSlot(u32 slot);								// Ищет на поясе IItem для указанного слота
 	PIItem Get(const char *name, bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (cName())
 	PIItem Get(const u16  id,	 bool bSearchRuck);			// Ищет на поясе или в рюкзаке IItem с указанным именем (id)
+	void   Clear();											// clearing Inventory
 
 	TIItemSet m_all;										// Наборы объектов. m_all - все
 	TIItemList m_ruck, m_belt;								// Списки объектов. m_ruck - рюкзак, m_belt - пояс

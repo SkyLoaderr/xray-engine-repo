@@ -317,6 +317,7 @@ private:
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			bool			bfIfHuman						(CEntity *tpEntity = 0);
 			void			vfSelectItemToTake				(CInventoryItem *&tpItemToTake);
+			void			Init							();
 
 			// physics
 			void			CreateSkeleton					();

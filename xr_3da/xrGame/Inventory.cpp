@@ -416,6 +416,13 @@ f32 CInventory::TotalWeight() {
 	return l_weight;
 }
 
+void CInventory::Clear()
+{
+	m_all.clear();
+	m_ruck.clear();
+	m_belt.clear();
+}
+
 // CInventoryOwner class //////////////////////////////////////////////////////////////////////////
 
 CInventoryOwner::CInventoryOwner() {

@@ -15,6 +15,37 @@ FILE *ST_VF = 0;
 
 CAI_Stalker::CAI_Stalker			()
 {
+	Init();
+
+//#ifdef LOG_PARAMETERS
+//	if (ST_VF)
+//		return;
+//	
+//	string4096						S;
+//	for (int i=0; ; i++) {
+//		sprintf(S,"C:\\vf_%d.dat",i);
+//		ST_VF = fopen(S,"rt");
+//		if (!ST_VF) {
+//			ST_VF = fopen(S,"wt");
+//			if (ST_VF)
+//				break;
+//		}
+//		fclose(ST_VF);
+//	}
+//#endif
+}
+
+CAI_Stalker::~CAI_Stalker			()
+{
+//	Msg								("FSM report for %s :",cName());
+//	for (int i=0; i<(int)m_tStateStack.size(); i++)
+//		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
+//	Msg								("Total updates : %d",m_dwUpdateCount);
+//	fclose							(ST_VF);
+}
+
+void CAI_Stalker::Init()
+{
 	m_tStateList.clear				();
 	while (m_tStateStack.size())
 		m_tStateStack.pop			();
@@ -98,31 +129,8 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_dwLastUpdate					= 0;
 
-//#ifdef LOG_PARAMETERS
-//	if (ST_VF)
-//		return;
-//	
-//	string4096						S;
-//	for (int i=0; ; i++) {
-//		sprintf(S,"C:\\vf_%d.dat",i);
-//		ST_VF = fopen(S,"rt");
-//		if (!ST_VF) {
-//			ST_VF = fopen(S,"wt");
-//			if (ST_VF)
-//				break;
-//		}
-//		fclose(ST_VF);
-//	}
-//#endif
-}
-
-CAI_Stalker::~CAI_Stalker			()
-{
-//	Msg								("FSM report for %s :",cName());
-//	for (int i=0; i<(int)m_tStateStack.size(); i++)
-//		Msg							("%3d %6d",m_tStateList[i].eState,m_tStateList[i].dwTime);
-//	Msg								("Total updates : %d",m_dwUpdateCount);
-//	fclose							(ST_VF);
+	AI_Path.TravelPath.clear		();
+	AI_Path.Nodes.clear				();
 }
 
 // when soldier is dead
@@ -336,6 +344,8 @@ void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy	();
 	xr_delete				(m_pPhysicsShell);
+	Init					();
+	m_inventory.Clear		();
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)
