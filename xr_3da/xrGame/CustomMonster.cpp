@@ -429,7 +429,7 @@ void CCustomMonster::GetVisible			(objVisible& R)
 	for (; I!=E; I++)	if (positive(I->fuzzy)) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
 		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
-		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && tpEntityAlive->g_Alive() && !tpActor)
+		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && tpEntityAlive->g_Alive())// && !tpActor)
 			R.insert(I->O);
 	}
 }
