@@ -599,6 +599,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 
 		string64				s_name;
 		tNetPacket.r_string		(s_name);
+		Msg						("Loading spawn point %s",s_name);
 		CSE_Abstract			*E = F_entity_Create(s_name);
 
 		R_ASSERT2				(E,"Can't create entity.");
@@ -615,7 +616,7 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 
 		R_ASSERT2				((GAME_SINGLE == E->s_gameid) || (GAME_ANY == E->s_gameid),"Invalid game type!");
 		R_ASSERT2				(0 != (*I = dynamic_cast<CSE_ALifeDynamicObject*>(E)),"Non-ALife object in the 'game.spawn'");
-		R_ASSERT3				(ai().level_graph().valid_vertex_id((*I)->m_tNodeID),"Invalid vertex for object ",(*I)->s_name_replace);
+//		R_ASSERT3				(ai().level_graph().valid_vertex_id((*I)->m_tNodeID),"Invalid vertex for object ",(*I)->s_name_replace);
 		
 		// building map of sets : get all the zone types which can generate given artefact
 		CSE_ALifeAnomalousZone	*l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
