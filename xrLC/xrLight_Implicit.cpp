@@ -128,7 +128,7 @@ public:
 								wP.from_bary(V1->P,V2->P,V3->P,B);
 								wN.from_bary(V1->N,V2->N,V3->N,B);
 								wN.normalize();
-								LightPoint	(&DB, RCAST_Model, C, wP, wN, pBuild->L_static, LP_dont_hemi, F);
+								LightPoint	(&DB, RCAST_Model, C, wP, wN, pBuild->L_static, 0, F);
 								Fcount		++;
 							}
 						}
@@ -218,9 +218,46 @@ void CBuild::ImplicitLighting()
 		Status	("Processing lightmap...");
 		for (u32 ref=254; ref>0; ref--)	if (!ApplyBorders(defl.lmap,ref)) break;
 
-		Status	("Saving...");
+		Status	("Mixing lighting with texture...");
+		{
+			b_BuildTexture& TEX		=	*defl.texture;
+			VERIFY					(TEX.pSurface);
+			u32*			color	= TEX.pSurface;
+			for (u32 V=0; V<defl.Height(); V++)	{
+				for (u32 U=0; U<defl.Width(); U++)	{
+					// Retreive Texel
+					float	h	= defl.Lumel(U,V).hemi;
+					u32 &C		= color[V*defl.Width() + U];
+					C			= subst_alpha(C,u8_clr(h));
+				}
+			}
+		}
 
-		// Save local copy of the map
+
+
+		// base
+		Status	("Saving base...");
+		{
+			string256				name, out_name;
+			sscanf					(strstr(GetCommandLine(),"-f")+2,"%s",name);
+			b_BuildTexture& TEX		=	*defl.texture;
+			strconcat				(out_name,"gamedata\\levels\\",name,"\\",TEX.name,".dds");
+			clMsg					("Saving texture '%s'...",out_name);
+			VerifyPath				(out_name);
+			BYTE* raw_data			= LPBYTE(TEX.pSurface);
+			u32	w					= TEX.dwWidth;
+			u32	h					= TEX.dwHeight;
+			u32	pitch				= w*4;
+			STextureParams			fmt	= TEX.THM;
+			fmt.fmt					= STextureParams::tfDXT5;
+			fmt.flags.set			(STextureParams::flDitherColor,		TRUE);
+			fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
+			fmt.flags.set			(STextureParams::flBinaryAlpha,		FALSE);
+			DXTCompress				(out_name,raw_data,w,h,pitch,&fmt,4);
+		}
+
+		// lmap
+		Status	("Saving lmap...");
 		{
 			xr_vector<u32>			packed;
 			defl.lmap.Pack			(packed);

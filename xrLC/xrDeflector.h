@@ -11,10 +11,17 @@ typedef hash2D<UVtri*,128,128>	HASH;
 
 struct lm_layer
 {
+	enum LMODE
+	{
+		LMODE_RGBS			= 0,
+		LMODE_HS			= 1,
+	};
+
 	u32						width;
 	u32						height;
 	xr_vector<base_color>	surface;
 	xr_vector<u8>			marker;
+	LMODE					mode;	
 
 	void					create						(u32 w, u32 h)
 	{
