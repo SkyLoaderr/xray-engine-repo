@@ -757,12 +757,16 @@ public:
 
 	virtual void	Execute	(LPCSTR args)
 	{
+#ifdef _DEBUG
+		CCC_Float::Execute(args);
+#else
 		if (!g_pGameLevel || Game().type == GAME_SINGLE)
 			CCC_Float::Execute(args);
 		else
 		{
 			Msg ("! Command disabled for this type of game");
 		}
+#endif
 	}
 };
 class CCC_Net_CL_Resync : public IConsole_Command {

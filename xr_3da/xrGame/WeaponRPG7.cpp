@@ -109,10 +109,13 @@ void CWeaponRPG7::SwitchState(u32 S)
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(H_Parent()->ID());
 
-		NET_Packet P;
-		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16(u16(/*m_pRocket->ID()*/getCurrentRocket()->ID()));
-		u_EventSend(P);
+		if (OnServer())
+		{
+			NET_Packet P;
+			u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+			P.w_u16(u16(/*m_pRocket->ID()*/getCurrentRocket()->ID()));
+			u_EventSend(P);
+		}
 	}
 }
 
