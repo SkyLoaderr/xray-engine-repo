@@ -1,60 +1,36 @@
 <?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8.00"
+	Version="7.10"
 	Name="xrRender_R2"
 	ProjectGUID="{963BA4E5-499A-454D-B002-1D5ECE0527A6}"
 	SccProjectName="SAK"
 	SccAuxPath="SAK"
 	SccLocalPath="SAK"
 	SccProvider="SAK"
-	Keyword="Win32Proj"
-	>
+	Keyword="Win32Proj">
 	<Platforms>
 		<Platform
-			Name="Win32"
-		/>
-		<Platform
-			Name="Win64 (AMD64)"
-		/>
+			Name="Win32"/>
 	</Platforms>
-	<ToolFiles>
-	</ToolFiles>
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Debug"
 			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
 				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
-				BufferSecurityCheck="TRUE"
 				EnableFunctionLevelLinking="TRUE"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
@@ -62,17 +38,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				IgnoreImportLibrary="TRUE"
@@ -85,70 +53,52 @@
 				MapFileName="$(OutDir)/xrRender_R1.map"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Release"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				AssemblerOutput="0"
@@ -156,17 +106,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrRender_R2.dll"
@@ -178,69 +120,52 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Mixed|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory="Mixed"
 			ConfigurationType="2"
-			UseOfATL="0"
 			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-			/>
+			WholeProgramOptimization="FALSE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
+				GlobalOptimizations="TRUE"
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="TRUE"
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="3"
 				PreprocessorDefinitions="MIXED;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
 				StringPooling="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
 				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				AssemblerOutput="0"
@@ -248,17 +173,9 @@
 				WarningLevel="4"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
+				CallingConvention="2"/>
 			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
+				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
 				OutputFile="$(OutDir)/xrRender_R2.dll"
@@ -269,294 +186,27 @@
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
 				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="1"
-			/>
+				TargetMachine="1"/>
 			<Tool
-				Name="VCALinkTool"
-			/>
+				Name="VCMIDLTool"/>
 			<Tool
-				Name="VCManifestTool"
-			/>
+				Name="VCPostBuildEventTool"/>
 			<Tool
-				Name="VCXDCMakeTool"
-			/>
+				Name="VCPreBuildEventTool"/>
 			<Tool
-				Name="VCBscMakeTool"
-			/>
+				Name="VCPreLinkEventTool"/>
 			<Tool
-				Name="VCAppVerifierTool"
-			/>
+				Name="VCResourceCompilerTool"/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
+				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Debug|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
+				Name="VCXMLDataGeneratorTool"/>
 			<Tool
-				Name="VCPreBuildEventTool"
-			/>
+				Name="VCWebDeploymentTool"/>
 			<Tool
-				Name="VCCustomBuildTool"
-			/>
+				Name="VCManagedWrapperGeneratorTool"/>
 			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="0"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
-				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
-				BasicRuntimeChecks="3"
-				SmallerTypeCheck="TRUE"
-				RuntimeLibrary="3"
-				EnableFunctionLevelLinking="TRUE"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				IgnoreImportLibrary="TRUE"
-				OutputFile="$(OutDir)/xrRender_R2.dll"
-				LinkIncremental="2"
-				SuppressStartupBanner="TRUE"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="TRUE"
-				MapFileName="$(OutDir)/xrRender_R1.map"
-				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Release|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			WholeProgramOptimization="1"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="TRUE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerOutput="0"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrRender_R2.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				GenerateMapFile="FALSE"
-				SubSystem="0"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
-		</Configuration>
-		<Configuration
-			Name="Mixed|Win64 (AMD64)"
-			OutputDirectory="$(SolutionDir)amd64\$(ConfigurationName)"
-			IntermediateDirectory="amd64\$(ConfigurationName)"
-			ConfigurationType="2"
-			UseOfATL="0"
-			CharacterSet="2"
-			>
-			<Tool
-				Name="VCPreBuildEventTool"
-			/>
-			<Tool
-				Name="VCCustomBuildTool"
-			/>
-			<Tool
-				Name="VCXMLDataGeneratorTool"
-			/>
-			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
-				Name="VCMIDLTool"
-				TargetEnvironment="3"
-			/>
-			<Tool
-				Name="VCCLCompilerTool"
-				Optimization="3"
-				InlineFunctionExpansion="2"
-				EnableIntrinsicFunctions="TRUE"
-				FavorSizeOrSpeed="1"
-				OmitFramePointers="FALSE"
-				EnableFiberSafeOptimizations="TRUE"
-				PreprocessorDefinitions="MIXED;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R2_EXPORTS"
-				StringPooling="TRUE"
-				ExceptionHandling="0"
-				RuntimeLibrary="2"
-				BufferSecurityCheck="FALSE"
-				EnableFunctionLevelLinking="FALSE"
-				EnableEnhancedInstructionSet="0"
-				FloatingPointModel="2"
-				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="3"
-				AssemblerOutput="0"
-				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
-				WarningLevel="4"
-				Detect64BitPortabilityProblems="TRUE"
-				DebugInformationFormat="3"
-				CallingConvention="2"
-			/>
-			<Tool
-				Name="VCManagedResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCResourceCompilerTool"
-			/>
-			<Tool
-				Name="VCPreLinkEventTool"
-			/>
-			<Tool
-				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrRender_R2.dll"
-				LinkIncremental="1"
-				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
-				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)/xrRender_R2.lib"
-				TargetMachine="17"
-			/>
-			<Tool
-				Name="VCALinkTool"
-			/>
-			<Tool
-				Name="VCManifestTool"
-			/>
-			<Tool
-				Name="VCXDCMakeTool"
-			/>
-			<Tool
-				Name="VCBscMakeTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
-				Name="VCPostBuildEventTool"
-			/>
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
@@ -564,675 +214,498 @@
 	<Files>
 		<Filter
 			Name="Kernel"
-			>
+			Filter="">
 			<File
-				RelativePath="cl_intersect.h"
-				>
+				RelativePath="cl_intersect.h">
 			</File>
 			<File
-				RelativePath="stdafx.cpp"
-				>
+				RelativePath="stdafx.cpp">
 				<FileConfiguration
-					Name="Debug|Win32"
-					>
+					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Mixed|Win32"
-					>
+					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Mixed|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"
-					/>
+						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="stdafx.h"
-				>
+				RelativePath="stdafx.h">
 			</File>
 			<File
-				RelativePath="xrRender_console.cpp"
-				>
+				RelativePath="xrRender_console.cpp">
 			</File>
 			<File
-				RelativePath="xrRender_console.h"
-				>
+				RelativePath="xrRender_console.h">
 			</File>
 			<File
-				RelativePath="xrRender_R2.cpp"
-				>
+				RelativePath="xrRender_R2.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Core"
-			>
+			Filter="">
 			<File
-				RelativePath=".\Particle.h"
-				>
+				RelativePath=".\Particle.h">
 			</File>
 			<File
-				RelativePath=".\ParticleSystem.h"
-				>
+				RelativePath=".\ParticleSystem.h">
 			</File>
 			<File
-				RelativePath=".\PSLibrary.cpp"
-				>
+				RelativePath=".\PSLibrary.cpp">
 			</File>
 			<File
-				RelativePath=".\PSLibrary.h"
-				>
+				RelativePath=".\PSLibrary.h">
 			</File>
 			<File
-				RelativePath="r2.cpp"
-				>
+				RelativePath="r2.cpp">
 			</File>
 			<File
-				RelativePath="r2.h"
-				>
+				RelativePath="r2.h">
 			</File>
 			<File
-				RelativePath="r2_blenders.cpp"
-				>
+				RelativePath="r2_blenders.cpp">
 			</File>
 			<File
-				RelativePath="r2_loader.cpp"
-				>
+				RelativePath="r2_loader.cpp">
 			</File>
 			<File
-				RelativePath="r2_R_calculate.cpp"
-				>
+				RelativePath="r2_R_calculate.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_R_lights.cpp"
-				>
+				RelativePath=".\r2_R_lights.cpp">
 			</File>
 			<File
-				RelativePath="r2_R_render.cpp"
-				>
+				RelativePath="r2_R_render.cpp">
 			</File>
 			<File
-				RelativePath="r2_R_smap_direct.cpp"
-				>
+				RelativePath="r2_R_smap_direct.cpp">
 			</File>
 			<File
-				RelativePath="r2_screenshot.cpp"
-				>
+				RelativePath="r2_screenshot.cpp">
 			</File>
 			<File
-				RelativePath="r2_sector_detect.cpp"
-				>
+				RelativePath="r2_sector_detect.cpp">
 			</File>
 			<File
-				RelativePath="r2_types.h"
-				>
+				RelativePath="r2_types.h">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_build.cpp"
-				>
+				RelativePath=".\r__dsgraph_build.cpp">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_render.cpp"
-				>
+				RelativePath=".\r__dsgraph_render.cpp">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_render_lods.cpp"
-				>
+				RelativePath=".\r__dsgraph_render_lods.cpp">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_structure.h"
-				>
+				RelativePath=".\r__dsgraph_structure.h">
 			</File>
 			<File
-				RelativePath=".\r__dsgraph_types.h"
-				>
+				RelativePath=".\r__dsgraph_types.h">
 			</File>
 			<File
-				RelativePath=".\r__occlusion.cpp"
-				>
+				RelativePath=".\r__occlusion.cpp">
 			</File>
 			<File
-				RelativePath=".\r__occlusion.h"
-				>
+				RelativePath=".\r__occlusion.h">
 			</File>
 			<File
-				RelativePath=".\Texture.cpp"
-				>
+				RelativePath=".\Texture.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Details"
-			>
+			Filter="">
 			<File
-				RelativePath="DetailFormat.h"
-				>
+				RelativePath="DetailFormat.h">
 			</File>
 			<File
-				RelativePath="DetailManager.cpp"
-				>
+				RelativePath="DetailManager.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager.h"
-				>
+				RelativePath="DetailManager.h">
 			</File>
 			<File
-				RelativePath="DetailManager_CACHE.cpp"
-				>
+				RelativePath="DetailManager_CACHE.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_Decompress.cpp"
-				>
+				RelativePath="DetailManager_Decompress.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_soft.cpp"
-				>
+				RelativePath="DetailManager_soft.cpp">
 			</File>
 			<File
-				RelativePath="DetailManager_VS.cpp"
-				>
+				RelativePath="DetailManager_VS.cpp">
 			</File>
 			<File
-				RelativePath="DetailModel.cpp"
-				>
+				RelativePath="DetailModel.cpp">
 			</File>
 			<File
-				RelativePath="DetailModel.h"
-				>
+				RelativePath="DetailModel.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Stripifier"
-			>
+			Filter="">
 			<File
-				RelativePath="NvTriStrip.cpp"
-				>
+				RelativePath="NvTriStrip.cpp">
 			</File>
 			<File
-				RelativePath="NvTriStrip.h"
-				>
+				RelativePath="NvTriStrip.h">
 			</File>
 			<File
-				RelativePath="NvTriStripObjects.cpp"
-				>
+				RelativePath="NvTriStripObjects.cpp">
 			</File>
 			<File
-				RelativePath="NvTriStripObjects.h"
-				>
+				RelativePath="NvTriStripObjects.h">
 			</File>
 			<File
-				RelativePath="VertexCache.cpp"
-				>
+				RelativePath="VertexCache.cpp">
 			</File>
 			<File
-				RelativePath="VertexCache.h"
-				>
+				RelativePath="VertexCache.h">
 			</File>
 			<File
-				RelativePath="xrStripify.cpp"
-				>
+				RelativePath="xrStripify.cpp">
 			</File>
 			<File
-				RelativePath="xrStripify.h"
-				>
+				RelativePath="xrStripify.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Lights"
-			>
+			Filter="">
 			<File
-				RelativePath="light.cpp"
-				>
+				RelativePath="light.cpp">
 			</File>
 			<File
-				RelativePath="light.h"
-				>
+				RelativePath="light.h">
 			</File>
 			<File
-				RelativePath="Light_DB.cpp"
-				>
+				RelativePath="Light_DB.cpp">
 			</File>
 			<File
-				RelativePath="Light_DB.h"
-				>
+				RelativePath="Light_DB.h">
 			</File>
 			<File
-				RelativePath=".\light_GI.cpp"
-				>
+				RelativePath=".\light_GI.cpp">
 			</File>
 			<File
-				RelativePath=".\light_gi.h"
-				>
+				RelativePath=".\light_gi.h">
 			</File>
 			<File
-				RelativePath=".\Light_Package.cpp"
-				>
+				RelativePath=".\Light_Package.cpp">
 			</File>
 			<File
-				RelativePath=".\Light_Package.h"
-				>
+				RelativePath=".\Light_Package.h">
 			</File>
 			<File
-				RelativePath="Light_Render_Direct.cpp"
-				>
+				RelativePath="Light_Render_Direct.cpp">
 			</File>
 			<File
-				RelativePath="Light_Render_Direct.h"
-				>
+				RelativePath="Light_Render_Direct.h">
 			</File>
 			<File
-				RelativePath="Light_Render_Direct_ComputeXF1.cpp"
-				>
+				RelativePath="Light_Render_Direct_ComputeXF1.cpp">
 			</File>
 			<File
-				RelativePath="Light_Render_Direct_ComputeXFP.cpp"
-				>
+				RelativePath="Light_Render_Direct_ComputeXFP.cpp">
 			</File>
 			<File
-				RelativePath="Light_Render_Direct_ComputeXFS.cpp"
-				>
+				RelativePath="Light_Render_Direct_ComputeXFS.cpp">
 			</File>
 			<File
-				RelativePath=".\light_smapvis.cpp"
-				>
+				RelativePath=".\light_smapvis.cpp">
 			</File>
 			<File
-				RelativePath=".\light_smapvis.h"
-				>
+				RelativePath=".\light_smapvis.h">
 			</File>
 			<File
-				RelativePath=".\light_vis.cpp"
-				>
+				RelativePath=".\light_vis.cpp">
 			</File>
 		</Filter>
 		<Filter
 			Name="Glows"
-			>
+			Filter="">
 		</Filter>
 		<Filter
 			Name="Wallmarks"
-			>
+			Filter="">
 		</Filter>
 		<Filter
 			Name="Shading templates"
-			>
+			Filter="">
 			<File
-				RelativePath="blender_bloom_build.cpp"
-				>
+				RelativePath="blender_bloom_build.cpp">
 			</File>
 			<File
-				RelativePath="blender_bloom_build.h"
-				>
+				RelativePath="blender_bloom_build.h">
 			</File>
 			<File
-				RelativePath="blender_combine.cpp"
-				>
+				RelativePath="blender_combine.cpp">
 			</File>
 			<File
-				RelativePath="blender_combine.h"
-				>
+				RelativePath="blender_combine.h">
 			</File>
 			<File
-				RelativePath="blender_decompress.cpp"
-				>
+				RelativePath="blender_decompress.cpp">
 			</File>
 			<File
-				RelativePath="blender_decompress.h"
-				>
+				RelativePath="blender_decompress.h">
 			</File>
 			<File
-				RelativePath="blender_deffer_aref.cpp"
-				>
+				RelativePath="blender_deffer_aref.cpp">
 			</File>
 			<File
-				RelativePath="blender_deffer_aref.h"
-				>
+				RelativePath="blender_deffer_aref.h">
 			</File>
 			<File
-				RelativePath="blender_deffer_flat.cpp"
-				>
+				RelativePath="blender_deffer_flat.cpp">
 			</File>
 			<File
-				RelativePath="blender_deffer_flat.h"
-				>
+				RelativePath="blender_deffer_flat.h">
 			</File>
 			<File
-				RelativePath="blender_deffer_model.cpp"
-				>
+				RelativePath="blender_deffer_model.cpp">
 			</File>
 			<File
-				RelativePath="blender_deffer_model.h"
-				>
+				RelativePath="blender_deffer_model.h">
 			</File>
 			<File
-				RelativePath="blender_light_direct.cpp"
-				>
+				RelativePath="blender_light_direct.cpp">
 			</File>
 			<File
-				RelativePath="blender_light_direct.h"
-				>
+				RelativePath="blender_light_direct.h">
 			</File>
 			<File
-				RelativePath="blender_light_mask.cpp"
-				>
+				RelativePath="blender_light_mask.cpp">
 			</File>
 			<File
-				RelativePath="blender_light_mask.h"
-				>
+				RelativePath="blender_light_mask.h">
 			</File>
 			<File
-				RelativePath=".\blender_light_occq.cpp"
-				>
+				RelativePath=".\blender_light_occq.cpp">
 			</File>
 			<File
-				RelativePath=".\blender_light_occq.h"
-				>
+				RelativePath=".\blender_light_occq.h">
 			</File>
 			<File
-				RelativePath="blender_light_point.cpp"
-				>
+				RelativePath="blender_light_point.cpp">
 			</File>
 			<File
-				RelativePath="blender_light_point.h"
-				>
+				RelativePath="blender_light_point.h">
 			</File>
 			<File
-				RelativePath=".\blender_light_reflected.cpp"
-				>
+				RelativePath=".\blender_light_reflected.cpp">
 			</File>
 			<File
-				RelativePath=".\blender_light_reflected.h"
-				>
+				RelativePath=".\blender_light_reflected.h">
 			</File>
 			<File
-				RelativePath="blender_light_spot.cpp"
-				>
+				RelativePath="blender_light_spot.cpp">
 			</File>
 			<File
-				RelativePath="blender_light_spot.h"
-				>
+				RelativePath="blender_light_spot.h">
 			</File>
 			<File
-				RelativePath=".\blender_luminance.cpp"
-				>
+				RelativePath=".\blender_luminance.cpp">
 			</File>
 			<File
-				RelativePath=".\blender_luminance.h"
-				>
+				RelativePath=".\blender_luminance.h">
 			</File>
 			<Filter
 				Name="R1"
-				>
+				Filter="">
 				<File
-					RelativePath="Blender_detail_still.cpp"
-					>
+					RelativePath="Blender_detail_still.cpp">
 				</File>
 				<File
-					RelativePath="Blender_detail_still.h"
-					>
+					RelativePath="Blender_detail_still.h">
 				</File>
 				<File
-					RelativePath="Blender_Screen_SET.cpp"
-					>
+					RelativePath="Blender_Screen_SET.cpp">
 				</File>
 				<File
-					RelativePath="Blender_Screen_SET.h"
-					>
+					RelativePath="Blender_Screen_SET.h">
 				</File>
 				<File
-					RelativePath="Blender_tree.cpp"
-					>
+					RelativePath="Blender_tree.cpp">
 				</File>
 				<File
-					RelativePath="Blender_tree.h"
-					>
+					RelativePath="Blender_tree.h">
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Models"
-			>
+			Filter="">
 			<File
-				RelativePath="ModelPool.cpp"
-				>
+				RelativePath="ModelPool.cpp">
 			</File>
 			<File
-				RelativePath="ModelPool.h"
-				>
+				RelativePath="ModelPool.h">
 			</File>
 			<Filter
 				Name="Visuals"
-				>
+				Filter="">
 				<File
-					RelativePath="FTreeVisual.cpp"
-					>
+					RelativePath="FTreeVisual.cpp">
 				</File>
 				<File
-					RelativePath="FTreeVisual.h"
-					>
+					RelativePath="FTreeVisual.h">
 				</File>
 				<File
-					RelativePath=".\ParticleEffect.cpp"
-					>
+					RelativePath=".\ParticleEffect.cpp">
 				</File>
 				<File
-					RelativePath=".\ParticleEffect.h"
-					>
+					RelativePath=".\ParticleEffect.h">
 				</File>
 				<File
-					RelativePath=".\ParticleEffectDef.cpp"
-					>
+					RelativePath=".\ParticleEffectDef.cpp">
 				</File>
 				<File
-					RelativePath=".\ParticleEffectDef.h"
-					>
+					RelativePath=".\ParticleEffectDef.h">
 				</File>
 				<File
-					RelativePath=".\ParticleGroup.cpp"
-					>
+					RelativePath=".\ParticleGroup.cpp">
 				</File>
 				<File
-					RelativePath=".\ParticleGroup.h"
-					>
+					RelativePath=".\ParticleGroup.h">
 				</File>
 				<File
-					RelativePath=".\psvisual.cpp"
-					>
+					RelativePath=".\psvisual.cpp">
 				</File>
 				<File
-					RelativePath=".\psvisual.h"
-					>
+					RelativePath=".\psvisual.h">
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Visibility"
-			>
+			Filter="">
 			<Filter
 				Name="Sector/Portal"
-				>
+				Filter="">
 				<File
-					RelativePath=".\r__sector.cpp"
-					>
+					RelativePath=".\r__sector.cpp">
 				</File>
 				<File
-					RelativePath=".\r__sector.h"
-					>
+					RelativePath=".\r__sector.h">
 				</File>
 				<File
-					RelativePath=".\r__sector_traversal.cpp"
-					>
+					RelativePath=".\r__sector_traversal.cpp">
 				</File>
 			</Filter>
 			<Filter
 				Name="HOM Occlusion"
-				>
+				Filter="">
 				<File
-					RelativePath="HOM.cpp"
-					>
+					RelativePath="HOM.cpp">
 				</File>
 				<File
-					RelativePath="HOM.h"
-					>
+					RelativePath="HOM.h">
 				</File>
 				<File
-					RelativePath="occRasterizer.cpp"
-					>
+					RelativePath="occRasterizer.cpp">
 				</File>
 				<File
-					RelativePath="occRasterizer.h"
-					>
+					RelativePath="occRasterizer.h">
 				</File>
 				<File
-					RelativePath="occRasterizer_core.cpp"
-					>
+					RelativePath="occRasterizer_core.cpp">
 				</File>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Core_Target"
-			>
+			Filter="">
 			<File
-				RelativePath="r2_rendertarget.cpp"
-				>
+				RelativePath="r2_rendertarget.cpp">
 				<FileConfiguration
-					Name="Release|Win32"
-					>
+					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win64 (AMD64)"
-					>
-					<Tool
-						Name="VCCLCompilerTool"
-						AssemblerOutput="4"
-					/>
+						AssemblerOutput="4"/>
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="r2_rendertarget.h"
-				>
+				RelativePath="r2_rendertarget.h">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_accum_direct.cpp"
-				>
+				RelativePath="r2_rendertarget_accum_direct.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_accum_point.cpp"
-				>
+				RelativePath="r2_rendertarget_accum_point.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_accum_point_geom.cpp"
-				>
+				RelativePath="r2_rendertarget_accum_point_geom.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_accum_reflected.cpp"
-				>
+				RelativePath=".\r2_rendertarget_accum_reflected.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_accum_spot.cpp"
-				>
+				RelativePath="r2_rendertarget_accum_spot.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_accum_spot_geom.cpp"
-				>
+				RelativePath="r2_rendertarget_accum_spot_geom.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_decompress.cpp"
-				>
+				RelativePath="r2_rendertarget_decompress.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_draw_volume.cpp"
-				>
+				RelativePath=".\r2_rendertarget_draw_volume.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_enable_scissor.cpp"
-				>
+				RelativePath=".\r2_rendertarget_enable_scissor.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_accumulator.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_accumulator.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_accumulator_init.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_accumulator_init.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_bloom.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_bloom.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_combine.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_combine.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_phase_distortion.cpp"
-				>
+				RelativePath=".\r2_rendertarget_phase_distortion.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_phase_luminance.cpp"
-				>
+				RelativePath=".\r2_rendertarget_phase_luminance.cpp">
 			</File>
 			<File
-				RelativePath=".\r2_rendertarget_phase_occq.cpp"
-				>
+				RelativePath=".\r2_rendertarget_phase_occq.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_scene.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_scene.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_smap_D.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_smap_D.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_smap_P.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_smap_P.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_smap_S.cpp"
-				>
+				RelativePath="r2_rendertarget_phase_smap_S.cpp">
 			</File>
 		</Filter>
 		<File
-			RelativePath="todo.txt"
-			>
+			RelativePath="todo.txt">
 		</File>
 	</Files>
 	<Globals>
