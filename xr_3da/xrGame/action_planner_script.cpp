@@ -24,6 +24,11 @@ void add_evaluator_impl(CScriptActionPlanner *action_planner, const CScriptActio
 	action_planner->add_evaluator	(evaluator_id,evaluator);
 }
 
+void set_goal_world_state(CScriptActionPlanner *action_planner, CScriptActionPlanner::CState *world_state)
+{
+	action_planner->set_target_state	(*world_state);
+}
+
 void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 {
 	module(L)
@@ -43,7 +48,7 @@ void CActionPlanner<CScriptGameObject>::script_register(lua_State *L)
 			.def("current_action_id",			&CScriptActionPlanner::current_action_id)
 			.def("current_action",				&CScriptActionPlanner::current_action)
 			.def("initialized",					&CScriptActionPlanner::initialized)
-			.def("set_goal_world_state",		&CScriptActionPlanner::set_target_state)
+			.def("set_goal_world_state",		&set_goal_world_state)
 			.def("clear",						&CScriptActionPlanner::clear)
 #ifdef LOG_ACTION
 			.def("show",						&CScriptActionPlanner::show)
