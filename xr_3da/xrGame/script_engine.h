@@ -49,7 +49,7 @@ public:
 			void				remove_script_process		(LPCSTR process_name);
 			void				add_file					(LPCSTR file_name);
 			void				process						();
-			void				export						();
+			void				script_export				();
 	IC		void				set_current_thread			(CScriptStackTracker *new_thread);
 	IC		CScriptStackTracker	*current_thread				();
 	IC		CScriptStackTracker	&script_stack_tracker		();

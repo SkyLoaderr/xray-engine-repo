@@ -23,10 +23,10 @@ void CScriptTokenList::script_register(lua_State *L)
 
 		class_<CScriptTokenList>("token_list")
 			.def(					constructor<>())
-			.def("add",				CScriptTokenList::add)
-			.def("remove",			CScriptTokenList::remove)
-			.def("clear",			CScriptTokenList::clear)
-			.def("id",				CScriptTokenList::id)
-			.def("name",			CScriptTokenList::name)
+			.def("add",				&CScriptTokenList::add)
+			.def("remove",			&CScriptTokenList::remove)
+			.def("clear",			&CScriptTokenList::clear)
+			.def("id",				&CScriptTokenList::id)
+			.def("name",			&CScriptTokenList::name)
 	];
 }

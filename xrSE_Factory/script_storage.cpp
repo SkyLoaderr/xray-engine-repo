@@ -335,7 +335,7 @@ bool CScriptStorage::namespace_loaded(LPCSTR N, bool remove_from_stack)
 	lua_gettable 			(lua(),LUA_GLOBALSINDEX); 
 	string256				S2;
 	strcpy					(S2,N);
-	LPCSTR					S = S2;
+	LPSTR					S = S2;
 	for (;;) { 
 		if (!xr_strlen(S))
 			return			(false); 

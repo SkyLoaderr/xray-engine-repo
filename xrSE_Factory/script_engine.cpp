@@ -71,7 +71,7 @@ void CScriptEngine::lua_cast_failed(CLuaVirtualMachine *L, LUABIND_TYPE_INFO inf
 	Debug.fatal				("LUA error: cannot cast lua value to %s",info->name());
 }
 
-void CScriptEngine::export()
+void CScriptEngine::script_export()
 {
 	luabind::open						(lua());
 	
