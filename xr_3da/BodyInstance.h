@@ -297,6 +297,8 @@ public:
 	CBlend*						PlayCycle		(LPCSTR  N,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0);
 	CBlend*						PlayCycle		(CMotionDef* M,  BOOL bMixIn=TRUE, PlayCallback Callback=0, LPVOID CallbackParam=0)
 	{	VERIFY(M); return M->PlayCycle(this,bMixIn,Callback,CallbackParam); }
+	void						Invalidate		()
+	{	dwFrame = 0xffffff; }
 
 	// fx'es
 	CMotionDef*					ID_FX			(LPCSTR  N);
