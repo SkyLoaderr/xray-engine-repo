@@ -38,12 +38,12 @@ protected:
 	
 	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 	
-	typedef struct SRotation
-	{
-		float yaw;
-		float pitch;
-		SRotation() { yaw=pitch=0; }
-	};
+//	typedef struct SRotation
+//	{
+//		float yaw;
+//		float pitch;
+//		SRotation() { yaw=pitch=0; }
+//	};
 	
 	typedef struct tagSDynamicObject {
 		DWORD			dwTime;
@@ -61,7 +61,9 @@ protected:
 		float			fPower;
 		DWORD			dwUpdateCount;
 		Fvector			tSavedPosition;
+		SRotation		tOrientation;
 		Fvector			tMySavedPosition;
+		SRotation		tMyOrientation;
 		CEntity			*tpEntity;
 	} SDynamicSound;
 

@@ -1169,38 +1169,38 @@ void CAI_Soldier::OnSenseSomethingAlone()
 	if (iSoundIndex >= 0) {
 		m_iSoundIndex = iSoundIndex;
 		if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON) {
-			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
-				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);				
-				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
-				GO_TO_NEW_STATE(aiSoldierPatrolHurt);
-			}
-			else {
-				m_bStateChanged = false;
-				GO_TO_PREV_STATE;
-//				Fvector tCurrentPosition = vPosition;
-//				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
-//				if (tWatchDirection.magnitude() > EPS_L) {
-//					tWatchDirection.normalize();
-//					mk_rotation(tWatchDirection,r_torso_target);
-//					r_target.yaw = r_torso_target.yaw;
-//					ASSIGN_SPINE_BONE;
-//				}
-//				
-//				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
-//
-//				vfInitSelector(SelectorPatrol,Squad,Leader);
-//		
-//				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-//
-//				if (AI_Path.bNeedRebuild) {
-//					vfBuildPathToDestinationPoint(0);
-//				}
-//				else {
-//					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
-//					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
-//				}
-			}
+//			if ((tpaDynamicSounds[iSoundIndex].eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) {
+//				tHitDir.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tpaDynamicSounds[iSoundIndex].tMySavedPosition);				
+//				tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+//				dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+//				GO_TO_NEW_STATE(aiSoldierPatrolHurt);
+//			}
+//			else {
+//				m_bStateChanged = false;
+//				GO_TO_PREV_STATE;
+				Fvector tCurrentPosition = vPosition;
+				tWatchDirection.sub(tpaDynamicSounds[iSoundIndex].tSavedPosition,tCurrentPosition);
+				if (tWatchDirection.magnitude() > EPS_L) {
+					tWatchDirection.normalize();
+					mk_rotation(tWatchDirection,r_torso_target);
+					r_target.yaw = r_torso_target.yaw;
+					ASSIGN_SPINE_BONE;
+				}
+				
+				CHECK_IF_SWITCH_TO_NEW_STATE(fabsf(r_torso_target.yaw - r_torso_current.yaw) > PI_DIV_6,aiSoldierTurnOver)
+
+				vfInitSelector(SelectorPatrol,Squad,Leader);
+		
+				SelectorPatrol.m_tEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+
+				if (AI_Path.bNeedRebuild) {
+					vfBuildPathToDestinationPoint(0);
+				}
+				else {
+					//SelectorFindEnemy.m_tLastEnemyPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+					vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+				}
+//			}
 		}
 		else {
 			m_bStateChanged = false;

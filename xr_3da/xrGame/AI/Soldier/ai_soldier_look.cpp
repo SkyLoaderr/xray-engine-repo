@@ -216,103 +216,71 @@ void CAI_Soldier::OnVisible()
 	//return(0);
 }
 
+SRotation CAI_Soldier::tfGetOrientation(CEntity *tpEntity)
+{
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (tpCustomMonster)
+		return(tpCustomMonster->r_torso_current);
+	else {
+		SRotation tTemp;
+		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
+		if (tpActor)
+			return(tpActor->Orientation());
+		else
+			return(tTemp);
+	}
+}
+
 void CAI_Soldier::vfUpdateDynamicObjects()
 {
 	ai_Track.o_get(tpaVisibleObjects);
 	DWORD dwTime = Level().timeServer();
 	for (int i=0; i<tpaVisibleObjects.size(); i++) {
+		
 		CEntity *tpEntity = dynamic_cast<CEntity *>(tpaVisibleObjects[i]);
+		
 		if (!tpEntity || !bfCheckForVisibility(tpEntity))
 			continue;
-		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpaVisibleObjects[i]);
-		if (tpCustomMonster) {
-			for (int j=0; j<tpaDynamicObjects.size(); j++)
-				if (tpCustomMonster == tpaDynamicObjects[j].tpEntity) {
-					tpaDynamicObjects[j].dwTime = dwTime;
-					tpaDynamicObjects[j].dwUpdateCount++;
-					tpaDynamicObjects[j].tSavedPosition = tpCustomMonster->Position();
-					tpaDynamicObjects[j].tOrientation = tpCustomMonster->r_torso_current;
-					tpaDynamicObjects[j].tMySavedPosition = Position();
-					tpaDynamicObjects[j].tMyOrientation = r_torso_current;
-					break;
-				}
-			if (j >= tpaDynamicObjects.size()) {
-				if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
-					DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-					for (int j=0; j<tpaDynamicObjects.size(); j++)
-						if (tpaDynamicObjects[j].dwTime < dwBest) {
-							dwIndex = i;
-							dwBest = tpaDynamicObjects[j].dwTime;
-						}
-					if (dwIndex < tpaDynamicObjects.size()) {
-						tpaDynamicObjects[dwIndex].dwTime = dwTime;
-						tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
-						tpaDynamicObjects[dwIndex].tSavedPosition = tpCustomMonster->Position();
-						tpaDynamicObjects[dwIndex].tOrientation = tpCustomMonster->r_torso_current;
-						tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
-						tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
-						tpaDynamicObjects[dwIndex].tpEntity = tpCustomMonster;
+		
+		for (int j=0; j<tpaDynamicObjects.size(); j++)
+			if (tpEntity == tpaDynamicObjects[j].tpEntity) {
+				tpaDynamicObjects[j].dwTime = dwTime;
+				tpaDynamicObjects[j].dwUpdateCount++;
+				tpaDynamicObjects[j].tSavedPosition = tpEntity->Position();
+				tpaDynamicObjects[j].tOrientation = tfGetOrientation(tpEntity);
+				tpaDynamicObjects[j].tMySavedPosition = Position();
+				tpaDynamicObjects[j].tMyOrientation = r_torso_current;
+				break;
+			}
+		
+		if (j >= tpaDynamicObjects.size()) {
+			if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
+				DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+				for (int j=0; j<tpaDynamicObjects.size(); j++)
+					if (tpaDynamicObjects[j].dwTime < dwBest) {
+						dwIndex = i;
+						dwBest = tpaDynamicObjects[j].dwTime;
 					}
-				}
-				else {
-					SDynamicObject tDynamicObject;
-					tDynamicObject.dwTime = dwTime;
-					tDynamicObject.dwUpdateCount = 1;
-					tDynamicObject.tSavedPosition = tpCustomMonster->Position();
-					tDynamicObject.tOrientation = tpCustomMonster->r_torso_current;
-					tDynamicObject.tMySavedPosition = Position();
-					tDynamicObject.tMyOrientation = r_torso_current;
-					tDynamicObject.tpEntity = tpCustomMonster;
-					tpaDynamicObjects.push_back(tDynamicObject);
+				if (dwIndex < tpaDynamicObjects.size()) {
+					tpaDynamicObjects[dwIndex].dwTime = dwTime;
+					tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
+					tpaDynamicObjects[dwIndex].tSavedPosition = tpEntity->Position();
+					tpaDynamicObjects[dwIndex].tOrientation = tfGetOrientation(tpEntity);
+					tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
+					tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
+					tpaDynamicObjects[dwIndex].tpEntity = tpEntity;
 				}
 			}
-		}
-		else {
-			CActor *tpActor = dynamic_cast<CActor *>(tpaVisibleObjects[i]);
-			if (tpActor) {
-				for (int j=0; j<tpaDynamicObjects.size(); j++)
-					if (tpActor == tpaDynamicObjects[j].tpEntity) {
-						tpaDynamicObjects[j].dwTime = dwTime;
-						tpaDynamicObjects[j].dwUpdateCount++;
-						tpaDynamicObjects[j].tSavedPosition = tpActor->Position();
-						tpaDynamicObjects[j].tOrientation.pitch = tpActor->Orientation().pitch;
-						tpaDynamicObjects[j].tOrientation.yaw = tpActor->Orientation().yaw;
-						tpaDynamicObjects[j].tMySavedPosition = Position();
-						tpaDynamicObjects[j].tMyOrientation = r_torso_current;
-						break;
-					}
-				if (j >= tpaDynamicObjects.size()) {
-					if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
-						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-						for (int j=0; j<tpaDynamicObjects.size(); j++)
-							if (tpaDynamicObjects[j].dwTime < dwBest) {
-								dwIndex = i;
-								dwBest = tpaDynamicObjects[j].dwTime;
-							}
-						if (dwIndex < tpaDynamicObjects.size()) {
-							tpaDynamicObjects[dwIndex].dwTime = dwTime;
-							tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
-							tpaDynamicObjects[dwIndex].tSavedPosition = tpActor->Position();
-							tpaDynamicObjects[dwIndex].tOrientation.pitch = tpActor->Orientation().pitch;
-							tpaDynamicObjects[dwIndex].tOrientation.yaw = tpActor->Orientation().yaw;
-							tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
-							tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
-							tpaDynamicObjects[dwIndex].tpEntity = tpCustomMonster;
-						}
-					}
-					else {
-						SDynamicObject tDynamicObject;
-						tDynamicObject.dwTime = dwTime;
-						tDynamicObject.dwUpdateCount = 1;
-						tDynamicObject.tSavedPosition = tpActor->Position();
-						tDynamicObject.tOrientation.pitch = tpActor->Orientation().pitch;
-						tDynamicObject.tOrientation.yaw = tpActor->Orientation().yaw;
-						tDynamicObject.tMySavedPosition = Position();
-						tDynamicObject.tMyOrientation = r_torso_current;
-						tDynamicObject.tpEntity = tpCustomMonster;
-						tpaDynamicObjects.push_back(tDynamicObject);
-					}
-				}
+			else {
+				SDynamicObject tDynamicObject;
+				tDynamicObject.dwTime = dwTime;
+				tDynamicObject.dwUpdateCount = 1;
+				tDynamicObject.tSavedPosition = tpEntity->Position();
+				tDynamicObject.tOrientation = tfGetOrientation(tpEntity);
+				tDynamicObject.tMySavedPosition = Position();
+				tDynamicObject.tMyOrientation = r_torso_current;
+				tDynamicObject.tpEntity = tpEntity;
+				tpaDynamicObjects.push_back(tDynamicObject);
 			}
 		}
 	}
@@ -344,7 +312,7 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 
 	DWORD dwTime = Level().timeServer();
 	
-	if (power >= m_fSensetivity*m_fSoundPower) {
+	if ((power >= m_fSensetivity*m_fSoundPower) && ((eType & SOUND_TYPE_MONSTER) != SOUND_TYPE_MONSTER)) {
 		if (this != who) {
 			int j = tpaDynamicObjects.size();
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
@@ -356,7 +324,9 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 						tpaDynamicSounds[j].fPower = power;
 						tpaDynamicSounds[j].dwUpdateCount++;
 						tpaDynamicSounds[j].tSavedPosition = Position;
+						tpaDynamicSounds[j].tOrientation = tfGetOrientation(tpEntity);
 						tpaDynamicSounds[j].tMySavedPosition = vPosition;
+						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
 						tpaDynamicSounds[j].tpEntity = tpEntity;
 					}
 				if (j >= tpaDynamicSounds.size()) {
@@ -373,7 +343,9 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 							tpaDynamicSounds[dwIndex].fPower = power;
 							tpaDynamicSounds[dwIndex].dwUpdateCount = 1;
 							tpaDynamicSounds[dwIndex].tSavedPosition = Position;
+							tpaDynamicSounds[dwIndex].tOrientation = tfGetOrientation(tpEntity);
 							tpaDynamicSounds[dwIndex].tMySavedPosition = vPosition;
+							tpaDynamicSounds[dwIndex].tMyOrientation = r_torso_current;
 							tpaDynamicSounds[dwIndex].tpEntity = tpEntity;
 						}
 					}
@@ -384,7 +356,9 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 						tDynamicSound.fPower = power;
 						tDynamicSound.dwUpdateCount = 1;
 						tDynamicSound.tSavedPosition = Position;
+						tDynamicSound.tOrientation = tfGetOrientation(tpEntity);
 						tDynamicSound.tMySavedPosition = vPosition;
+						tDynamicSound.tMyOrientation = r_torso_current;
 						tDynamicSound.tpEntity = tpEntity;
 						tpaDynamicSounds.push_back(tDynamicSound);
 					}
