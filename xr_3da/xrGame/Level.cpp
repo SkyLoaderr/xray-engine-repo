@@ -457,7 +457,7 @@ void CLevel::OnFrame	()
 
 	// Physics
 	Device.Statistic.Physics.Begin		();
-	ph_world->Step						(Device.fTimeDelta);
+	// ph_world->Step					(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
 
 	// Merge visibility data from all units in the team
