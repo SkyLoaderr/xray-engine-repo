@@ -363,6 +363,8 @@ void CCar::detach_Actor()
 	if(!m_owner) return;
 	m_owner->setVisible(1);
 	m_owner=NULL;
+	NeutralDrive();
+	Break();
 }
 
 bool CCar::attach_Actor(CActor* actor)
@@ -582,6 +584,7 @@ m_pPhysicsShell->set_DynamicScales(1.f,1.f);
 	for(;i!=e;i++)
 		i->second.Init();
 }
+Break();
 }
 
 void CCar::Revert()
