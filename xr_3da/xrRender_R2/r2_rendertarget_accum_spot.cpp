@@ -131,7 +131,9 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	{
 		// General: if stencil>=light_id && alpha<="small_value" => stencil=0x1
 		// Unmasking (note: alpha-func assumed to be "greater" we need "less" here
+		// Another: projective divide controlled by sampler-state in ps_1_1
 		CHK_DX						(HW.pDevice->SetRenderState( D3DRS_ALPHAFUNC, D3DCMP_LESS		));
+		CHK_DX						(HW.pDevice->SetTextureStageState(0,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT4|D3DTTFF_PROJECTED));
 		RCache.set_Element			(shader->E[1]);
 		RCache.set_c				("light_direction",	-L_dir.x,-L_dir.y,-L_dir.z,0.f);
 		RCache.set_c				("m_texgen",		m_Texgen);
