@@ -304,7 +304,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 			bOk = true;
 			break;
 		}
-	R_ASSERT2						(bOk,"Specified object not foudn on the given graph point");
+	R_ASSERT3						(bOk,"Specified object (%s) not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
 #ifdef DEBUG_LOG
 	Msg("ALife : removing object %s from graph point %d",tpALifeDynamicObject->s_name_replace,tGraphID);
 #endif
