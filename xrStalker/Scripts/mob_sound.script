@@ -89,7 +89,25 @@ local snd = {
 	},
 
 	trader_bye = {
-		[[characters_voice\human_01\scenario\trader\trader3c]]
+		[[characters_voice\human_01\scenario\trader\trader3c]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_5]]
+	},
+
+	trader_exchanged = {
+		[[characters_voice\human_01\scenario\trader\trader_script1c_1]]
+	},
+
+	trader_good_trade = {
+		[[characters_voice\human_01\scenario\trader\trader_script1c_2]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_3]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_4]]
+	},
+
+	trader_bad_trade = {
+		[[characters_voice\human_01\scenario\trader\trader_script1c_6]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_7]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_8]],
+		[[characters_voice\human_01\scenario\trader\trader_script1c_9]]
 	},
 
 	-- UNUSED:
@@ -101,20 +119,6 @@ local snd = {
 			[[characters_voice\human_01\scenario\trader\trader_script1b_5]]
 	},
 
-	good_trade = {
-			[[characters_voice\human_01\scenario\trader\trader_script1c_1]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_2]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_3]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_4]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_5]]
-	},
-
-	bad_trade = {
-			[[characters_voice\human_01\scenario\trader\trader_script1c_6]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_7]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_8]],
-			[[characters_voice\human_01\scenario\trader\trader_script1c_9]]
-	},
 	monolog2 = {
 			[[characters_voice\human_01\scenario\trader\trader_monolog2]]
 	},

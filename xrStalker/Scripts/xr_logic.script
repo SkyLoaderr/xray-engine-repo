@@ -11,7 +11,7 @@
 ----------------------------------------------------------------------------------------------------
 	Активация схем производится с помощью функций:
 	
-function gulag_activate(npc, ini, section, gulag_name, death, combat)
+function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs, trade)
 Предназначение:
 	активирует заданную схему, используется схемой гулаг. Тип скрипта определяется автоматически по имени секции.
 Здесь:
@@ -19,7 +19,7 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat)
 	ini - его customdata
 	section - имя секции, которая должна быть активирована
 	gulag_name - имя гулага, которое будет добавлено спереди к именам путей
-	death, combat - имена секций, задающих поведение при смерти и в бою
+	death, combat, actor_dialogs, trade - имена секций, задающих поведение при смерти и в бою
 	
 function enable_scripts(npc, ini, stype)
 Предназначение:
@@ -130,7 +130,7 @@ function generic_scheme_overrides(npc)
 	
 --]]
 
-function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs)
+function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dialogs, trade)
 	if npc == nil then
 		utils.abort("gulag_activate: npc is nil")
 	end
@@ -146,7 +146,7 @@ function gulag_activate(npc, ini, section, gulag_name, death, combat, actor_dial
 	xr_motivator.storage[npc_id]["gulag_name"] = if_then_else(gulag_name, gulag_name, "")
 	xr_motivator.storage[npc_id]["stype"] = stype
 
-	set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
+	set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs, trade)
 
 	activate_by_section(npc, ini, section)
 end
@@ -192,7 +192,8 @@ function enable_scripts(npc, ini, stype)
 	--printf("DEBUG: stalker_enable_scripts end")
 end
 
-function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
+-- FIXME: параметры death, combat, trade не используются!!!
+function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs, trade)
 	if stype == modules.stype_stalker then
 		local combat_section = utils.cfg_get_string(ini, "logic", "on_combat", npc, false, "")
 		--printf("_bp: npc='%s': combat section: %s", npc:name(), if_then_else(combat_section ~= nil, "found",
@@ -238,6 +239,13 @@ function set_generic_schemes(ini, npc, stype, death, combat, actor_dialogs)
 		--	"not_found"))
 		if death_section then
 			mob_death.set_scheme(npc, ini, "mob_death", death_section)
+		end
+
+		local trade_section = utils.cfg_get_string(ini, "logic", "on_trade", npc, false, "")
+		--printf("_bp: npc='%s': trade section: %s", npc:name(), if_then_else(trade_section ~= nil, "found",
+		--	"not_found"))
+		if trade_section then
+			mob_trade.set_scheme(npc, ini, "mob_trade", trade_section)
 		end
 	end
 end

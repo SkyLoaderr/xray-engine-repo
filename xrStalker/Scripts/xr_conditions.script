@@ -58,3 +58,11 @@ function gar_dm_nearest_bandit(actor, npc)
 	return false
 end
 
+function trade_exchanged(actor, npc)
+	return xr_motivator.storage[npc:id()].trade.exchanged
+end
+
+function trading(actor, npc)
+	return xr_motivator.storage[npc:id()].trade.trading
+end
+
