@@ -53,8 +53,10 @@ void CStepManager::reinit()
 
 void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 {
-	m_time_anim_started = Level().timeServer(); 
+	if (!m_blend) return;
 
+	m_time_anim_started = Level().timeServer(); 
+	
 	// искать текущую анимацию в STEPS_MAP
 	STEPS_MAP_IT it = m_steps_map.find(anim);
 	if (it == m_steps_map.end()) {
@@ -79,6 +81,7 @@ void CStepManager::on_animation_start(shared_str anim, CBlend *blend)
 void CStepManager::update()
 {
 	if (m_step_info.disable)	return;
+	if (!m_blend)				return;
 
 	SGameMtlPair* mtl_pair		= m_object->CMaterialManager::get_current_pair();
 	if (!mtl_pair)				return;
