@@ -54,7 +54,7 @@ end
 
 function main()
 	local dlg = test_avi_dlg()
-	
+--[[	
 	local snd = sound_object(
 		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream_l",
 		sound_object.s2d
@@ -75,7 +75,7 @@ function main()
 	wait(16000)
 	level.remove_dialog_to_render(dlg)
 	level.show_indicators()
-	
+	]]
 --	wait(10000)
 end
 
