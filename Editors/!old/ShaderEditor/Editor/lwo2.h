@@ -12,7 +12,9 @@ Ernie Wright  17 Sep 00
 
 /* chunk and subchunk IDs */
 
+#ifndef LWID_
 #define LWID_(a,b,c,d) (((a)<<24)|((b)<<16)|((c)<<8)|(d))
+#endif 
 
 #define ID_FORM  LWID_('F','O','R','M')
 #define ID_LWO2  LWID_('L','W','O','2')
