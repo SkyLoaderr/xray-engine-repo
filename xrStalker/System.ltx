@@ -1648,6 +1648,93 @@ orientation              = 5.7, 0, -1
 position                 = 0.063, -0.015, 0.02
 visual                   = weapon\ak74\wpn_ak74_hud.ogf
 
+[wpn_groza]
+$spawn 					= on
+$npc					= on				; option for Level Editor
+;$prefetch 				= 16
+scheduled				= off              ; option for ALife Simulator
+cform                   = skeleton
+class                   = W_GROZA
+min_radius              = 30
+max_radius              = 100
+
+ammo_limit				= 210
+ammo_current			= 180
+ammo_elapsed			= 30
+
+resource				= 6000
+
+ammo_mag_size		 = 30
+ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
+
+hand_dependence		 = 2
+
+slot 			 = 2		; // secondary
+inv_name	         = Groza
+inv_name_short		 = Groza
+inv_weight		 = 2.5
+
+cam_relax_speed          = 10.0
+cam_dispersion           = 2.1
+cam_max_angle		 = 9
+
+fire_dispersion          = 2.5
+fire_dispersion_add      = 1.0
+fire_dispersion_relax    = 0.5
+fire_dispersion_base	 = 1.0
+disp_vel_factor		 = 0.2
+disp_crouch_factor	 = 0.75
+disp_jump_factor	 = 3.7
+
+direction                = 0, 0, 1
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.1, 0.75
+flame_div                = 7
+flame_length             = .3
+flame_size               = 0.07
+flame			 = ShotFlame1, ShotFlame2, ShotFlame3
+rpm_empty_click 	 = 200
+
+; ttc
+hit_power                = 45
+hit_impulse		 		 = 70
+fire_distance            = 300
+rpm                      = 600
+; end ttc
+
+hud                      = wpn_groza_hud
+normal                   = 0, 1, 0
+
+;----------------------------------------------------------
+position                 = -0.05, 0.0, 0.06
+orientation              = -4.5, -8, 0
+
+startup_ammo             = 90
+visual                   = weapon\groza\wpn_groza.ogf
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.05
+ui_icon			 = ui\hud_wpn_groza
+tracer_head_speed	 = 300
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.07
+light_color		 = 0.17,0.13,0.12
+light_range		 = 3.0
+light_var_color		 = 0.05
+light_var_range		 = 0.5
+light_time 		 = 0.2
+
+ph_mass			 = 5
+cost			 = 2100
+ 
+[wpn_groza_hud]
+shell_point		 = 0.0, 0.0, 0.0
+fire_point               = 0.0, 0.03, 0.27
+fire_bone                = rifle
+orientation              = 5.7, 0, -1
+position                 = 0.063, -0.015, 0.02
+visual                   = weapon\groza\wpn_groza_hud.ogf
+
 [wpn_hpsa]
 $spawn 			 = on
 $npc			 = on				; option for Level Editor
