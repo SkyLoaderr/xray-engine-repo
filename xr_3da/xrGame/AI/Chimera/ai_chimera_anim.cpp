@@ -120,6 +120,6 @@ void CAI_Chimera::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int
 		case eMotionStandUp:		index1 = 2; index2 = 17; index3 = -1;	break;
 		case eMotionCheckCorpse:	index1 = 2; index2 = 0;	 index3 = 0;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
-		default:					NODEFAULT;
+		//default:					NODEFAULT;
 	} 
 }

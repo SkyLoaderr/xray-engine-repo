@@ -124,6 +124,6 @@ void CAI_Biting::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int 
 		case eMotionCheckCorpse:	index1 = 0; index2 = 0;	 index3 = 2;	break;
 		case eMotionLieDownEat:		index1 = 0; index2 = 18; index3 = -1;	break;
 		case eMotionAttackJump:		index1 = 0; index2 = 19; index3 = -1;	break;
-		default:					NODEFAULT;
+		//default:					NODEFAULT;
 	}
 }

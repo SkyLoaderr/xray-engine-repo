@@ -27,6 +27,7 @@ using namespace AI_Biting;
 
 void CAI_Biting::Think()
 {
+	//Msg			("CAI_Biting : %d",m_tAnim);
 	if (!g_Alive()) return;
 
 

@@ -810,7 +810,7 @@ void CAI_Biting::ControlAnimation()
 		
 		// Если нет пути и есть анимация движения, то играть анимацию отдыха
 		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
-			if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
+			if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
 				m_tAnim = eMotionStandIdle;
 			}
 		}
@@ -820,7 +820,7 @@ void CAI_Biting::ControlAnimation()
 		if (i > 1) {
 			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 			if (tCurrentPosition.vPosition.similar(tPreviousPosition.vPosition)) {
-				if (m_tAnim == eMotionWalkFwd || m_tAnim == eMotionRun) {
+				if ((m_tAnim == eMotionWalkFwd) || (m_tAnim == eMotionRun)) {
 					m_tAnim = eMotionStandIdle;
 				}
 			}
