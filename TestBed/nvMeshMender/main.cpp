@@ -83,14 +83,6 @@ a: tangent basis\
 // Main function
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-	// Gauss filtering coeffs
-	const int	n = 7;
-	const float r = 3;
-	float		a [2*n+1];
-	float*		p = a;
-	for (int i=-n; i<=n; i++)
-		*p ++	= float(i*i)/(2*r*r);
-
 	// Create window
 	HWND hWnd = InitInstance(hInstance, nCmdShow);
 	assert(hWnd);
