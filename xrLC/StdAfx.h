@@ -88,6 +88,12 @@
 #include <limits>
 using namespace std;
 
+// boost
+#define __WIN32__
+#include <boost\config.hpp>
+#include <boost\pool\pool.hpp>
+using namespace boost;
+
 #define RGBA_GETALPHA(rgb)      ((rgb) >> 24)
 #define RGBA_GETRED(rgb)        (((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      (((rgb) >> 8) & 0xff)
