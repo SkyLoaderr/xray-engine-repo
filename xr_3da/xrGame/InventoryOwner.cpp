@@ -29,6 +29,7 @@ CInventoryOwner::~CInventoryOwner			()
 
 void CInventoryOwner::Init					()
 {
+	m_pTrade					= NULL;
 	m_torch_angle_offset		= Fvector().set(0,0,0);
 	m_torch_position_offset		= Fvector().set(0,0,0);
 	m_torch_bone_name			= "";
@@ -47,7 +48,6 @@ void CInventoryOwner::reinit				()
 {
 	m_inventory.m_pOwner		= this;
 	m_trade_storage.m_pOwner	= this;
-	m_pTrade					= NULL;
 
 	m_dwMoney					= 0;
 	m_tRank						= eStalkerRankNone;
