@@ -183,10 +183,10 @@ BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
 	pApp->LoadTitle	("Loading AI objects...");
-	getAI().Load(Path.Current);
+	getAI().Load	();
 
 	string256		fn_game;
-	if (FS.exist(fn_game, Path.Current, "level.game")) {
+	if (FS.exist(fn_game, "$level$", "level.game")) {
 		IReader *F = FS.r_open	(fn_game);
 		IReader *O = 0;
 

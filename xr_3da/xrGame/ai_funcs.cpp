@@ -54,11 +54,10 @@ CPatternFunction::~CPatternFunction()
 
 void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 {
-	inherited::vfLoadEF(caFileName,tpAI_DDD);
-	char		caPath[260];
-	strconcat	(caPath,Path.GameData,AI_PATH);
-
-	if (!FS.exist(caPath, caPath, caFileName)) {
+	inherited::vfLoadEF		(caFileName,tpAI_DDD);
+	char			caPath	[260];
+	strconcat		(caPath,AI_PATH,caFileName);
+	if (!FS.exist	(caPath, "$game_data$", caPath)) {
 		Msg("! Evaluation function : File not found \"%s\"",caPath);
 		R_ASSERT(false);
 		return;

@@ -72,7 +72,7 @@ public:
 						CAI_Space		();
 	virtual				~CAI_Space		();
 
-	void				Load			(LPCSTR name);
+	void				Load			();
 	void				Unload			();
 	void				Render			();
 
