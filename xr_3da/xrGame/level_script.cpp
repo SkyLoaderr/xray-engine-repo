@@ -27,35 +27,6 @@
 
 using namespace luabind;
 
-CScriptGameObject *tpfGetActor()
-{
-#ifdef DEBUG
-	static bool first_time = true;
-	if (first_time)
-		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use level.actor function!");
-	first_time = false;
-#endif
-	CActor *l_tpActor = smart_cast<CActor*>(Level().CurrentEntity());
-	if (l_tpActor)
-		return	(smart_cast<CGameObject*>(l_tpActor)->lua_game_object());
-	else
-		return	(0);
-}
-
-CScriptGameObject *get_object_by_name(LPCSTR caObjectName)
-{
-#ifdef DEBUG
-	static bool first_time = true;
-	if (first_time)
-		ai().script_engine().script_log(eLuaMessageTypeError,"Do not use level.object function!");
-	first_time = false;
-#endif
-	CGameObject		*l_tpGameObject	= smart_cast<CGameObject*>(Level().Objects.FindObjectByName(caObjectName));
-	if (l_tpGameObject)
-		return		(l_tpGameObject->lua_game_object());
-	else
-		return		(0);
-}
 CScriptGameObject *get_object_by_id(u32 id)
 {
 #ifdef DEBUG
@@ -70,14 +41,6 @@ CScriptGameObject *get_object_by_id(u32 id)
 
 	return pGameObject->lua_game_object();
 }
-//CScriptGameObject *get_object_by_id(ALife::_OBJECT_ID id)
-//{
-//	CGameObject		*l_tpGameObject	= smart_cast<CGameObject*>(Level().Objects.FindObjectByID(id));
-//	if (l_tpGameObject)
-//		return		(l_tpGameObject->lua_game_object());
-//	else
-//		return		(0);
-//}
 
 LPCSTR get_weather	()
 {
@@ -102,9 +65,6 @@ float get_time_factor()
 	return			(Level().GetGameTimeFactor());
 }
 
-
-//////////////////////////////////////////////////////////////////////////
-
 u32 get_time_days()
 {
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
@@ -125,10 +85,6 @@ u32 get_time_minutes()
 	split_time(Level().GetGameTime(), year, month, day, hours, mins, secs, milisecs);
 	return			mins;
 }
-
-
-//////////////////////////////////////////////////////////////////////////
-
 
 float cover_in_direction(u32 level_vertex_id, const Fvector &direction)
 {
@@ -260,9 +216,7 @@ void CLevel::script_register(lua_State *L)
 	module(L,"level")
 	[
 		// obsolete\deprecated
-		def("object",							get_object_by_name),
 		def("object_by_id",						get_object_by_id),
-		def("actor",							tpfGetActor),
 		
 		def("get_weather",						get_weather),
 		def("set_weather",						set_weather),
