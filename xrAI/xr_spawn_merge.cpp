@@ -17,9 +17,9 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 
-DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
+DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
-CALifeGraph						*tpGraph = 0;
+CSE_ALifeGraph						*tpGraph = 0;
 
 class CSpawnComparePredicate {
 private:
@@ -40,13 +40,13 @@ public:
 
 class CSpawn : public CThread {
 public:
-	CALifeGraph::SLevel			m_tLevel;
+	CSE_ALifeGraph::SLevel			m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	CAI_Map						*m_tpAI_Map;
-	CALifeCrossTable			*m_tpCrossTable;
+	CSE_ALifeCrossTable			*m_tpCrossTable;
 
-								CSpawn(LPCSTR name, const CALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(LPCSTR name, const CSE_ALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -57,7 +57,7 @@ public:
 		strconcat				(fName,fName,"\\");
 		m_tpAI_Map				= xr_new<CAI_Map>(fName);
 		strcat					(fName,CROSS_TABLE_NAME);
-		m_tpCrossTable			= xr_new<CALifeCrossTable>(fName);
+		m_tpCrossTable			= xr_new<CSE_ALifeCrossTable>(fName);
 		// loading spawn points
 		fName[0]				= 0;
 		strconcat				(fName,name,m_tLevel.caLevelName);
@@ -66,7 +66,7 @@ public:
 		IReader					*S = 0;
 		NET_Packet				P;
 		int						S_id	= 0;
-		xr_map<u32,xr_vector<CALifeObject*> >	tpSGMap;
+		xr_map<u32,xr_vector<CSE_ALifeObject*> >	tpSGMap;
 		while (0!=(S = SP->open_chunk(S_id)))
 		{
 			P.B.count			= S->length();
@@ -78,7 +78,7 @@ public:
 			string64			s_name;
 			P.r_string			(s_name);
 			// create server entity
-			CAbstractServerObject*	E	= F_entity_Create	(s_name);
+			CSE_Abstract*	E	= F_entity_Create	(s_name);
 			if (!E) {
 				string4096		S;
 				sprintf			(S,"Can't create entity '%s' !\n",E->s_name_replace);
@@ -87,12 +87,12 @@ public:
 			E->Spawn_Read		(P);
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
-				CALifeObject	*tpALifeObject = dynamic_cast<CALifeObject*>(E);
+				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					xr_map<u32,xr_vector<CALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
+					xr_map<u32,xr_vector<CSE_ALifeObject*> >::iterator I = tpSGMap.find(tpALifeObject->m_dwSpawnGroup);
 					if (I == tpSGMap.end()) {
-						xr_vector<CALifeObject*> tpTemp;
+						xr_vector<CSE_ALifeObject*> tpTemp;
 						tpTemp.clear();
 						tpTemp.push_back(tpALifeObject);
 						tpSGMap.insert(mk_pair(tpALifeObject->m_dwSpawnGroup,tpTemp));
@@ -111,7 +111,7 @@ public:
 		ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
-			xr_map<u32,xr_vector<CALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
+			xr_map<u32,xr_vector<CSE_ALifeObject*> >::iterator J = tpSGMap.find((*I)->m_dwSpawnGroup);
 			if (J != tpSGMap.end()) {
 				if ((*I)->m_dwSpawnGroup > 0) {
 					for (u32 i=0; i<(*J).second.size(); i++)
@@ -194,7 +194,7 @@ public:
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
-			CAbstractServerObject*	E	= m_tpSpawnPoints[i];
+			CSE_Abstract*	E	= m_tpSpawnPoints[i];
 
 			fs.open_chunk		(dwID);
 
@@ -220,7 +220,7 @@ void xrMergeSpawns(LPCSTR name)
 	Phase						("Loading game graph");
 	char						S[256];
 	FS.update_path				(S,"$game_data$","game.graph");
-	tpGraph						= xr_new<CALifeGraph>(S);
+	tpGraph						= xr_new<CSE_ALifeGraph>(S);
 	
 	Phase						("Reading level graphs");
 	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);
@@ -230,7 +230,7 @@ void xrMergeSpawns(LPCSTR name)
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
 	xr_vector<CSpawn *>			tpLevels;
-	CALifeGraph::SLevel			tLevel;
+	CSE_ALifeGraph::SLevel			tLevel;
     LPCSTR						N,V;
 	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {

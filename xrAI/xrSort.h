@@ -8,4 +8,4 @@
 
 #pragma once
 
-extern void vfQuickSortEdges(CALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n);
+extern void vfQuickSortEdges(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n);

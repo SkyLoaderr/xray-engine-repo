@@ -53,7 +53,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	strconcat			(caFileName,caProjectName,"level.graph");
 	
 	Phase				("Loading level graph");
-	CALifeGraph			tGraph(caFileName);
+	CSE_ALifeGraph			tGraph(caFileName);
 	
 	Phase				("Loading AI map");
 	CAI_Map				tMap(caProjectName);
@@ -139,7 +139,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 	
 	Phase				("Saving cross table");
 	CMemoryWriter			tMemoryStream;
-	CALifeCrossTable	tCrossTable;
+	CSE_ALifeCrossTable	tCrossTable;
 	
 	tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
 	tCrossTable.m_tCrossTableHeader.dwNodeCount = iNodeCount;
@@ -154,7 +154,7 @@ void					xrBuildCrossTable(LPCSTR caProjectName)
 		for (int i=0; i<iNodeCount; i++) {
 			FLOAT_VECTOR_IT		I = tDistances.begin(), B = I;
 			FLOAT_VECTOR_IT		E = tDistances.end();
-			CALifeCrossTable::SCrossTableCell tCrossTableCell;
+			CSE_ALifeCrossTable::SCrossTableCell tCrossTableCell;
 			tCrossTableCell.fDistance = fDistanceToSearch;
 			tCrossTableCell.tGraphIndex = u16(-1);
 			for ( ; I != E; I++)

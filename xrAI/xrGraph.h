@@ -18,16 +18,16 @@ typedef struct tagSDynamicGraphVertex {
 	u8							tVertexTypes[LOCATION_TYPE_COUNT];
 	u32							tLevelID;
 	u32							tNeighbourCount;
-	CALifeGraph::SGraphEdge		*tpaEdges;
+	CSE_ALifeGraph::SGraphEdge		*tpaEdges;
 } SDynamicGraphVertex;
 
 #define MAX_DISTANCE_TO_CONNECT		4096.f
 
 DEFINE_VECTOR(SDynamicGraphVertex,		GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
-DEFINE_VECTOR(CALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
+DEFINE_VECTOR(CSE_ALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 extern xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
-extern CALifeGraph::SGraphHeader	tGraphHeader;
+extern CSE_ALifeGraph::SGraphHeader	tGraphHeader;
 
 void xrBuildGraph(LPCSTR name);
 void xrMergeSpawns();

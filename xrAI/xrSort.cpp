@@ -26,7 +26,7 @@ typedef struct tagSQuickStructure {
 	*j = uiTemp;\
 }
 
-void vfSimpleInsertionSort(CALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int i,int j)
+void vfSimpleInsertionSort(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int i,int j)
 {
 	for (int k=1; k < j - i + 1; k++) {
 		for (u32 *uipPointer = uiaSortOrder + i + k, *uipStop = uiaSortOrder + i; uipPointer > uipStop; uipPointer--) {
@@ -50,7 +50,7 @@ __forceinline void vfSwapVectors(u32 *i, u32 *j, int n)
 	}
 }
 
-void vfQuickSortEdges(CALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
+void vfQuickSortEdges(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
 {
 	SQuickStructure tpStack[QUICK_SORT_STACK_SIZE], *tpStackPointer = tpStack;
 	int iStartI;

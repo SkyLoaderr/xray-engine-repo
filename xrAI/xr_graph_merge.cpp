@@ -36,14 +36,14 @@ public:
 DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CComparePredicate());
 
-class CLevelGraph : public CALifeGraph {
+class CLevelGraph : public CSE_ALifeGraph {
 public:
 	GRAPH_VERTEX_VECTOR			m_tpVertices;
 	SLevel						m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 
-								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID) : CALifeGraph()
+								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID) : CSE_ALifeGraph()
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
@@ -52,8 +52,8 @@ public:
 		// updating cross-table
 		{
 			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
-			CALifeCrossTable	*tpCrossTable = xr_new<CALifeCrossTable>(caFileName);
-			xr_vector<CALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
+			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
 			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
 			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
 				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
@@ -61,7 +61,7 @@ public:
 			}
 
 			CMemoryWriter		tMemoryStream;
-			CALifeCrossTable	tCrossTable;
+			CSE_ALifeCrossTable	tCrossTable;
 			
 			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
 			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
@@ -84,7 +84,7 @@ public:
 
 		// loading graph
 		strconcat				(caFileName,S,"level.graph");
-		CALifeGraph::Load		(caFileName);
+		CSE_ALifeGraph::Load		(caFileName);
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			I = B;
@@ -121,10 +121,10 @@ public:
 				P.r_begin							(ID);
 				R_ASSERT							(M_SPAWN==ID);
 				P.r_string							(fName);
-				CAbstractServerObject				*E = F_entity_Create	(fName);
+				CSE_Abstract				*E = F_entity_Create	(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
-				CALifeGraphPoint					*tpGraphPoint = dynamic_cast<CALifeGraphPoint*>(E);
+				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 				if (tpGraphPoint) {
 					Fvector							tVector;
 					tVector							= tpGraphPoint->o_Position;
@@ -224,7 +224,7 @@ void xrMergeGraphs(LPCSTR name)
 		THROW;
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
-	CALifeGraph::SLevel				tLevel;
+	CSE_ALifeGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
 	R_ASSERT						(Ini->section_exist("levels"));
     LPCSTR N,V;
@@ -255,7 +255,7 @@ void xrMergeGraphs(LPCSTR name)
 				if ((*i).second.caConnectName[0]) {
 					GRAPH_P_PAIR_IT				K;
 					VERTEX_PAIR_IT				M;
-					CALifeGraph::SGraphEdge		tGraphEdge;
+					CSE_ALifeGraph::SGraphEdge		tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
 					R_ASSERT					((K = tpGraphs.find(tConnectionVertex.dwLevelID)) != tpGraphs.end());
 					R_ASSERT					((M = (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName)) != (*K).second->m_tVertexMap.end());
@@ -280,8 +280,8 @@ void xrMergeGraphs(LPCSTR name)
 	F.w_u32					(tGraphHeader.dwVertexCount);
 	F.w_u32					(tGraphHeader.dwLevelCount);
 	{
-		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			F.w_stringZ	((*I).caLevelName);
 			F.w_fvector3((*I).tOffset);
@@ -289,14 +289,14 @@ void xrMergeGraphs(LPCSTR name)
 		}
 	}
 
-	dwOffset						*= sizeof(CALifeGraph::SGraphVertex);
+	dwOffset						*= sizeof(CSE_ALifeGraph::SGraphVertex);
 	{
 //		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
 //		GRAPH_P_PAIR_IT				E = tpGraphs.end();
 //		for ( ; I != E; I++)
 //			(*I).second->vfSaveVertices	(F,dwOffset);
-		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
 			R_ASSERT				(i != tpGraphs.end());
@@ -304,8 +304,8 @@ void xrMergeGraphs(LPCSTR name)
 		}
 	}
 	{
-		xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			GRAPH_P_PAIR_IT			i = tpGraphs.find((*I).dwLevelID);
 			R_ASSERT				(i != tpGraphs.end());

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "xrServer_Objects_ALife.h"
+#include "game_base.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGraphPoint

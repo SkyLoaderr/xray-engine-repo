@@ -36,9 +36,9 @@ typedef struct tagRPoint {
 	Fvector A;
 } RPoint;
 
-CALifeGraph::SGraphHeader		tGraphHeader;
-CALifeGraph::SGraphEdge		*	tpaEdges;		// graph edges
-CALifeGraph::SGraphEdge		*	tpaFullEdges;	// graph edges
+CSE_ALifeGraph::SGraphHeader		tGraphHeader;
+CSE_ALifeGraph::SGraphEdge		*	tpaEdges;		// graph edges
+CSE_ALifeGraph::SGraphEdge		*	tpaFullEdges;	// graph edges
 xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
 xr_stack<u32>					dwaStack;		// stack
 u32							*	dwaSortOrder;  // edge sort order
@@ -59,10 +59,10 @@ void vfLoadGraphPoints(LPCSTR name)
 		P.r_begin							(ID);
 		R_ASSERT							(M_SPAWN==ID);
 		P.r_string							(fName);
-		CAbstractServerObject						*E = F_entity_Create	(fName);
+		CSE_Abstract						*E = F_entity_Create	(fName);
 		R_ASSERT2							(E,"Can't create entity.");
 		E->Spawn_Read						(P);
-		CALifeGraphPoint						*tpGraphPoint = dynamic_cast<CALifeGraphPoint*>(E);
+		CSE_ALifeGraphPoint						*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 		if (tpGraphPoint) {
 			SDynamicGraphVertex					tDynamicGraphVertex;
 			tDynamicGraphVertex.tLocalPoint		= tpGraphPoint->o_Position;
@@ -182,23 +182,23 @@ void vfAllocateMemory()
 {
 	Progress(0.0f);
 	int N = tpaGraph.size();
-	tpaFullEdges = (CALifeGraph::SGraphEdge *)xr_malloc(N*(N - 1)*sizeof(CALifeGraph::SGraphEdge));
-	CALifeGraph::SGraphEdge	*tpPointer = tpaFullEdges;
+	tpaFullEdges = (CSE_ALifeGraph::SGraphEdge *)xr_malloc(N*(N - 1)*sizeof(CSE_ALifeGraph::SGraphEdge));
+	CSE_ALifeGraph::SGraphEdge	*tpPointer = tpaFullEdges;
 	for (int i=0; i<N; tpPointer += (N - 1), i++)
 		tpaGraph[i].tpaEdges = tpPointer;
-	Msg("* %d memory allocated",N*(N - 1)*sizeof(CALifeGraph::SGraphEdge));
+	Msg("* %d memory allocated",N*(N - 1)*sizeof(CSE_ALifeGraph::SGraphEdge));
 	Progress(1.0f);
 }
 
 void vfPreprocessEdges(u32 dwEdgeCount)
 {
 	Progress(0.0f);
-	CALifeGraph::SGraphEdge *tpPointer = tpaEdges = (CALifeGraph::SGraphEdge *)xr_malloc(dwEdgeCount*sizeof(CALifeGraph::SGraphEdge));
+	CSE_ALifeGraph::SGraphEdge *tpPointer = tpaEdges = (CSE_ALifeGraph::SGraphEdge *)xr_malloc(dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge));
 	dwaSortOrder = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
 	dwaEdgeOwner = (u32 *)xr_malloc(dwEdgeCount*sizeof(u32));
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SDynamicGraphVertex &tDynamicGraphVertex = tpaGraph[i]; 
-		Memory.mem_copy(tpPointer,tDynamicGraphVertex.tpaEdges,tDynamicGraphVertex.tNeighbourCount*sizeof(CALifeGraph::SGraphEdge));
+		Memory.mem_copy(tpPointer,tDynamicGraphVertex.tpaEdges,tDynamicGraphVertex.tNeighbourCount*sizeof(CSE_ALifeGraph::SGraphEdge));
 		tDynamicGraphVertex.tpaEdges = tpPointer;
 		tpPointer += tDynamicGraphVertex.tNeighbourCount;
 		for (int k=0; k<(int)tDynamicGraphVertex.tNeighbourCount; k++, j++) {
@@ -227,7 +227,7 @@ void vfOptimizeGraph(u32 dwEdgeCount, CAI_Map *tpAI_Map)
 		for (int i0=0; (i0<(int)tVertex0.tNeighbourCount) && bOk; i0++) {
 			if (tpAI_Map->q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
 				continue;
-			CALifeGraph::SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
+			CSE_ALifeGraph::SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
 			for (int i1=0; i1<(int)tVertex1.tNeighbourCount; i1++)
 				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !tpAI_Map->q_mark_bit[tVertex1.tpaEdges + i1 - tpaEdges]) {
 					tpAI_Map->q_mark_bit[dwaSortOrder[i]] = true;
@@ -252,7 +252,7 @@ void vfNormalizeGraph()
 			bOk = true;
 			for (int j=1; j<(int)tpaGraph[i].tNeighbourCount; j++)
 				if (tpaGraph[i].tpaEdges[j - 1].dwVertexNumber > tpaGraph[i].tpaEdges[j].dwVertexNumber) {
-					CALifeGraph::SGraphEdge tTemp = tpaGraph[i].tpaEdges[j - 1];
+					CSE_ALifeGraph::SGraphEdge tTemp = tpaGraph[i].tpaEdges[j - 1];
 					tpaGraph[i].tpaEdges[j - 1] = tpaGraph[i].tpaEdges[j];
 					tpaGraph[i].tpaEdges[j] = tTemp;
 					bOk = false;
@@ -272,7 +272,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
 	tGraphHeader.dwVertexCount	= tpaGraph.size();
 	tGraphHeader.dwLevelCount	= 1;
-	CALifeGraph::SLevel			tLevel;
+	CSE_ALifeGraph::SLevel			tLevel;
 	tLevel.tOffset.set			(0,0,0);
 	tLevel.dwLevelID			= 0;
 	Memory.mem_copy(tLevel.caLevelName,name,strlen(name) + 1);
@@ -280,8 +280,8 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	tGraph.w_u32				(tGraphHeader.dwVersion);
 	tGraph.w_u32				(tGraphHeader.dwVertexCount);
 	tGraph.w_u32				(tGraphHeader.dwLevelCount);
-	xr_vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-	xr_vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+	xr_vector<CSE_ALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+	xr_vector<CSE_ALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 	for ( ; I != E; I++) {
 		tGraph.w_stringZ((*I).caLevelName);
 		tGraph.w_fvector3((*I).tOffset);
@@ -291,10 +291,10 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	u32		dwPosition = tGraph.size();
 	
 	Progress(0.0f);
-	CALifeGraph::SGraphVertex tGraphVertex;
-	Memory.mem_fill(&tGraphVertex,0,sizeof(CALifeGraph::SGraphVertex));
+	CSE_ALifeGraph::SGraphVertex tGraphVertex;
+	Memory.mem_fill(&tGraphVertex,0,sizeof(CSE_ALifeGraph::SGraphVertex));
 	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
-		tGraph.w(&tGraphVertex,sizeof(CALifeGraph::SGraphVertex));
+		tGraph.w(&tGraphVertex,sizeof(CSE_ALifeGraph::SGraphVertex));
 	
 	Progress(0.25f);
 	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
@@ -310,7 +310,7 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 	
 	Progress(.75f);
 	tGraph.seek(dwPosition);
-	for (int i=0, j=0, k=tpaGraph.size()*sizeof(CALifeGraph::SGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
+	for (int i=0, j=0, k=tpaGraph.size()*sizeof(CSE_ALifeGraph::SGraphVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
 		SDynamicGraphVertex &tDynamicGraphVertex = tpaGraph[i];
 		tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
 		tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
@@ -318,8 +318,8 @@ void vfSaveGraph(LPCSTR name, CAI_Map *tpAI_Map)
 		Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
 		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
 		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
-		tGraphVertex.dwEdgeOffset		= k + j*sizeof(CALifeGraph::SGraphEdge);
-		tGraph.w						(&tGraphVertex,	sizeof(CALifeGraph::SGraphVertex));
+		tGraphVertex.dwEdgeOffset		= k + j*sizeof(CSE_ALifeGraph::SGraphEdge);
+		tGraph.w						(&tGraphVertex,	sizeof(CSE_ALifeGraph::SGraphVertex));
 	}
 	tGraph.save_to(fName);
 	Progress(1.0f);
