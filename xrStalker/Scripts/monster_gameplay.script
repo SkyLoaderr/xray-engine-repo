@@ -15,8 +15,8 @@ function bind(obj, char_ini)
 		obj:bind_object(bind_escape.CBoarPlayWithCorpse(obj))
 	elseif(script_name == "escape_dogs") then
 		obj:bind_object(bind_escape.CDangerDogs(obj))
-	elseif(script_name == "garbage_rush") then
-	    obj:bind_object(bind_garbage.CRushMonster(obj))	
+	--elseif(script_name == "garbage_rush") then
+	--    obj:bind_object(bind_garbage.CRushMonster(obj))	
 	end 
 end 
 
