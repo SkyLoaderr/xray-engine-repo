@@ -88,7 +88,7 @@ void destroySettings()
 }
 void destroyConsole()
 {
-	Console->Destroy				( );
+	Console->Destroy			( );
 	xr_delete					(Console);
 }
 void destroyEngine()
@@ -97,7 +97,7 @@ void destroyEngine()
 	Engine.Destroy				( );
 }
 
-void execUserScript()
+void execUserScript				( )
 {
 // Execute script
 	strcpy						(Console->ConfigFile,"user.ltx");
@@ -111,7 +111,26 @@ void execUserScript()
 	Console->ExecuteScript		(Console->ConfigFile);
 }
 
-void Startup				( )
+void __cdecl	slowdownthread	( void* )
+{
+	Sleep	(10*1000);
+	for (;;)	{
+		if (Device.mt_bMustExit)	return;
+		if (0==pSettings)			return;
+		if (0==Console)				return;
+	}
+}
+
+void CheckPrivilegySlowdown		( )
+{
+#ifdef	DEBUG
+	BOOL	bDima	= (0==stricmp(Core.CompName,"dima-ai"))&&(0==stricmp(Core.CompName,"dima"));
+	BOOL	bJim	= (0==stricmp(Core.CompName,"shuttle"))&&(0==stricmp(Core.CompName,"jim"));
+	if	(bDima || bJim)	_beginthread(slowdownthread,0,0);
+#endif
+}
+
+void Startup					( )
 {
 	execUserScript();
 	InitInput();
@@ -141,6 +160,7 @@ void Startup				( )
 
 	// Main cycle
 	CheckCopyProtection			( );
+	CheckPrivilegySlowdown		( );
 	Device.Run					( );
 
 	// Destroy APP

@@ -121,7 +121,7 @@ void __cdecl	mt_Thread	(void *ptr)	{
 		}
 		// we has granted permission to execute
 		mt_Thread_marker			= Device.dwFrame;
-			Device.seqFrameMT.Process	(rp_Frame);
+		Device.seqFrameMT.Process	(rp_Frame);
 
 		// now we give control to device - signals that we are ended our work
 		LeaveCriticalSection	(&Device.mt_csEnter);
