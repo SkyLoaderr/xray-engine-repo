@@ -52,7 +52,7 @@ void CGamePersistent::OnAppCycleEnd	()
 
 void CGamePersistent::OnFrame		()
 {
-	inherited::OnFrame	();
+	__super::OnFrame	();
 
 	VERIFY	(pDemoFile);
 	

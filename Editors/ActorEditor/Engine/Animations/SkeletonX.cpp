@@ -123,7 +123,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 	// Load vertices
 	R_ASSERT(data->find_chunk(OGF_VERTICES));
 			
-	u32 dwVertType,size,it,bpv;
+	u32 dwVertType,size,it,bpv=0;
 	dwVertType	= data->r_u32(); 
 	dwVertCount	= data->r_u32();
 
@@ -148,8 +148,8 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		data->r		(Vertices2W,size);
 		for (it=0; it<dwVertCount; it++)
 		{
-			bids.insert(Vertices1W[it].matrix0);
-			bids.insert(Vertices1W[it].matrix1);
+			bids.insert(Vertices2W[it].matrix0);
+			bids.insert(Vertices2W[it].matrix1);
 		}
 		break;
 	default:
