@@ -348,6 +348,22 @@ IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
 	return V;
 }
 
+void CModelPool::dump()
+{
+	Log	("--- model pool --- begin:");
+	u32 sz					= 0;
+	u32 k					= 0;
+	for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++) {
+		CKinematics* K		= PKinematics(I->model);
+		if (K){
+			sz				+= K->mem_usage	();
+			Msg("#%3d: [%3d/%5d Kb] - %s",k++,I->refs,K->mem_usage()/1024,I->name.c_str());
+		}
+	}
+	Msg ("--- kinematics: %d, mem usage: %d Kb ",k,sz/1024);
+	Log	("--- model pool --- end.");
+}
+
 #ifdef _EDITOR
 IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
 {

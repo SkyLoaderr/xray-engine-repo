@@ -61,6 +61,7 @@ public:
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 
+	void					dump 				();
 #ifdef _EDITOR    
 	void					OnDeviceDestroy		();
 	void 					Render				(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD);
