@@ -408,9 +408,12 @@ BOOL CCF_Shape::Contact		( CObject* O )
 {
 	// Build object-sphere in World-Space
 	Fsphere			S;
-	if (0==O->Visual())	return FALSE;
-	O->clCenter		(S.P);
-	S.R				= O->Radius();
+	if (O->Visual()){
+		O->clCenter		(S.P);
+		S.R				= O->Radius();
+	}else if (O->CFORM()){
+		S = O->CFORM()->getSphere();
+	}else return FALSE;
 	
 	// Get our matrix
 	const Fmatrix& XF	= Owner()->svXFORM();
