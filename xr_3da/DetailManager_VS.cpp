@@ -66,7 +66,7 @@ void CDetailManager::VS_Load()
 			CDetail& D		=	objects[o];
 			for (u32 batch=0; batch<VS_BatchSize; batch++)
 			{
-				DWORD mid	=	batch*4+5;
+				DWORD mid	=	batch*4+6;
 				DWORD M		=	D3DCOLOR_RGBA	(mid,mid,mid,mid);
 				for (u32 v=0; v<D.number_vertices; v++)
 				{
@@ -142,7 +142,7 @@ void CDetailManager::VS_Render()
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
-				DWORD	cBase			= dwBatch*4+5;
+				DWORD	cBase			= dwBatch*4+6;
 				
 				// Build matrix
 				if (scale>0.7f)	
@@ -162,13 +162,13 @@ void CDetailManager::VS_Render()
 					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
 				}
 				VSC.set					(cBase,		mXform);
-				VSC.set					(cBase+4,	Instance.C);
+				VSC.set					(cBase+3,	Instance.C);
 				
 				dwBatch	++;
 				if (dwBatch == VS_BatchSize)	
 				{
 					// flush
-					VSC.flush						(5,dwBatch*4);
+					VSC.flush						(6,dwBatch*4);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
@@ -183,7 +183,7 @@ void CDetailManager::VS_Render()
 			// flush if nessecary
 			if (dwBatch)
 			{
-				VSC.flush						(5,dwBatch*4);
+				VSC.flush						(6,dwBatch*4);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
 				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
