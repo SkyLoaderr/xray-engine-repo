@@ -61,7 +61,7 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 		tmp.set(-10000.0f,-10000.0f,10000.0f,10000.0f);
 	}
 	m_BoundRect.set		(tmp.x, tmp.y, tmp.z, tmp.w);
-	CUIStatic::Init		(tex, sh_name, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
+	CUIStatic::InitEx	(tex, sh_name, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
 	
 	SetStretchTexture	(true);
 	ClipperOn			();

@@ -111,7 +111,7 @@ void CUIGameLog::Update()
 		}
 
 		// Remove at animation end
-		if (anm->Done())
+		if (anm->Done() || !pItem->IsShown())
 		{
 			xr_delete(anm);
 			toDelIndexes.insert(i);

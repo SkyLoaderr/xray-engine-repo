@@ -31,7 +31,7 @@ public:
 	void			SetLightAnim			(LPCSTR lanim);
 	virtual void	Init					(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void	Init					(int x, int y, int width, int height);
-			void	Init					(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width, int height);
+			void	InitEx					(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width, int height);
 	//прорисовка окна
 	virtual void	Draw					();
 	virtual void	DrawTexture				();
@@ -55,8 +55,9 @@ public:
 	u32			GetColor					() const						{ return m_UIStaticItem.GetColor();		}
 	// Получения цвета по референсу используется для анимации
 	u32&		GetColorRef					()								{ return m_UIStaticItem.GetColorRef();	}
-	
-	virtual void	InitTexture(LPCSTR tex_name, LPCSTR sh_name="hud\\default");
+    
+	virtual void	InitTexture(LPCSTR tex_name);
+	virtual void	InitTextureEx(LPCSTR tex_name, LPCSTR sh_name="hud\\default");
 	void			SetOriginalRect (int x, int y, int width, int height)	{m_UIStaticItem.SetOriginalRect(x,y,width,height);};
 	void			SetOriginalRect (const Irect& r)						{m_UIStaticItem.SetOriginalRect(r.x1, r.y1, r.x2 - r.x1, r.y2 - r.y1);}
 	CUIStaticItem*	GetStaticItem			()								{return &m_UIStaticItem;}
