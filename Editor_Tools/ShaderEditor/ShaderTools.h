@@ -91,7 +91,7 @@ public:
 
     // misc
     void				SetCurrentBlender(CBlender* B);
-    CBlender*			AppendBlender	(CLASS_ID cls_id, CBlender* parent);
+    CBlender*			AppendBlender	(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);
     bool				GetCurrentBlender(CFS_Base& data);
     void				SetCurrentBlender(CStream& data);
 };

@@ -6,6 +6,7 @@
 #include "UI_Main.h"
 #include "main.h"
 #include "Blender.h"
+#include "xr_trims.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -15,6 +16,29 @@
 #pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfraLeftBar *fraLeftBar;
+
+#define TYPE_RAZDEL 0
+#define TYPE_FOLDER 1
+#define TYPE_OBJECT 2
+
+//---------------------------------------------------------------------------
+bool __fastcall FolderLookupFunc(TElTreeItem* Item, void* SearchDetails){
+	if (((DWORD)Item->Data)!=TYPE_FOLDER) return false;
+    AnsiString& s1 = *(AnsiString*)SearchDetails;
+    AnsiString& s2 = Item->Text;
+	return (s1==s2);
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* TfraLeftBar::FindFolderItem(TElTreeItem* start_item, const AnsiString& name){
+	if (start_item) return tvShaders->Items->LookForItemEx(start_item,-1,false,true,false,(LPVOID)&name,FolderLookupFunc);
+    else{
+    	for (TElTreeItem* node=tvShaders->Items->GetFirstNode(); node; node=node->GetNextSibling())
+        	if (node->Text==name) return node;
+    }
+    return 0;
+}
+//---------------------------------------------------------------------------
 
 #define MIN_PANEL_HEIGHT 15
 //---------------------------------------------------------------------------
@@ -143,7 +167,7 @@ void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ElTree1MouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::tvShadersMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbRight)	ShowPPMenu(pmShaderList,Sender);
@@ -189,8 +213,116 @@ void __fastcall TfraLeftBar::ebShaderCreateMouseDown(TObject *Sender,
 void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
 {
 	TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
-	SHTools.SetCurrentBlender(SHTools.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,0));
-	UI->Command( COMMAND_SHADER_PROPERTIES );
+    AnsiString folder;
+	MakeFolderName(tvShaders->Selected,folder);
+    CBlender* B = SHTools.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
+	SHTools.SetCurrentBlender(B);
+	UI->Command(COMMAND_SHADER_PROPERTIES);
+}
+//---------------------------------------------------------------------------
+
+TElTreeItem* TfraLeftBar::FindFolder(LPCSTR full_name){
+	int cnt = _GetItemCount(full_name,'\\')-1;
+    if (cnt<=0) return 0;
+    int itm = 0;
+	char fld[64];
+	TElTreeItem* node = 0;
+    do _GetItem(full_name,itm++,fld,'\\');
+    while ((node = FindFolderItem(node,fld))&&(itm<cnt));
+
+	return node;
+}
+/*
+LookForItem 	(StartItem: TElTreeItem; TextToFind: TElFString; 							DataToFind: pointer; ColumnNum: integer; LookForData, CheckStartItem, SubItemsOnly, VisibleOnly, 					NoCase: boolean): TElTreeItem;
+LookForItem2	(StartItem: TElTreeItem; TextToFind: TElFString; WholeTextOnly: boolean; 	DataToFind: pointer; ColumnNum: integer; LookForData, CheckStartItem, SubItemsOnly, VisibleOnly, CheckCollapsed, 	NoCase: boolean): TElTreeItem;
+LookForItemEx	(StartItem: TElTreeItem; ColumnNum: integer; CheckStartItem, SubItemsOnly, VisibleOnly: boolean; 					SearchDetails: pointer; CompareProc: TElLookupCompareProc): TElTreeItem;
+LookForItemEx2	(StartItem: TElTreeItem; ColumnNum: integer; CheckStartItem, SubItemsOnly, VisibleOnly, CheckCollapsed: boolean; 	SearchDetails: pointer; CompareProc: TElLookupCompareProc): TElTreeItem;
+*/
+
+/*
+TElTreeItem* TfraLeftBar::AppendFolder(LPCSTR folder_name){
+	int cnt = _GetItemCount(full_name,'\\');
+    R_ASSERT2(cnt,"Blender name empty.");
+    int itm = 0;
+    cnt--;
+    char fld[64];
+    TElTreeItem* node = 0;
+    bool bCreate=false;
+    do{ _GetItem(full_name,itm++,fld,'\\');
+        if (!bCreate) node = tvShaders->Items->LookForItem2(node,fld,true,0,0,false,false,true,false,true,true);
+        if (!node) 	bCreate = true;
+        else 		folder = node;
+        if (bCreate) folder = tvShaders->Items->AddChildObject(folder,fld,(LPVOID)TYPE_FLD);
+    }while (itm<cnt);
+}
+*/
+void TfraLeftBar::AddBlender(LPCSTR full_name){
+	int cnt = _GetItemCount(full_name,'\\');
+    R_ASSERT2(cnt,"Blender name empty.");
+    TElTreeItem* folder = FindFolder(full_name);
+	char obj[64];
+	_GetItem(full_name,cnt-1,obj,'\\');
+    if (!folder&&(cnt>1)){
+	    int itm = 0;
+        cnt--;
+		char fld[64];
+		TElTreeItem* node = 0;
+        bool bCreate=false;
+    	do{ _GetItem(full_name,itm++,fld,'\\');
+            if (!bCreate) node = FindFolderItem(node,fld);
+            if (!node) 	bCreate = true;
+        	else 		folder = node;
+            if (bCreate) folder = tvShaders->Items->AddChildObject(folder,fld,(LPVOID)TYPE_FOLDER);
+	    }while (itm<cnt);
+    }
+	TElTreeItem* node = tvShaders->Items->AddChildObject(folder,obj,(LPVOID)TYPE_OBJECT);
+    if (folder) folder->Expand(false);
+    node->Selected = true;
+	tvShaders->Selected = node; 
+}
+
+void TfraLeftBar::MakeFolderName(TElTreeItem* select_item, AnsiString& folder){
+	if (select_item){
+    	TElTreeItem* node = (DWORD(select_item->Data)==TYPE_OBJECT)?select_item->Parent:select_item;
+        do	folder.Insert(node->Text+AnsiString('\\'),0);
+        while (node=node->Parent);
+    }else{
+		folder = "";
+    }
+}
+
+void TfraLeftBar::FillBlenderTree(BlenderMap* blenders){
+	for (BlenderPairIt b=blenders->begin(); b!=blenders->end(); b++)
+        AddBlender(b->first);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::GenerateFolderName(TElTreeItem* node,AnsiString& name){
+	name = "folder";
+    int cnt = 0;
+    while (FindFolderItem(node,name))
+    	name.sprintf("%s_%04d","folder",cnt++);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
+{
+	AnsiString folder;
+    GenerateFolderName(tvShaders->Selected,folder);
+	TElTreeItem* node = tvShaders->Items->AddChildObject(tvShaders->Selected,folder,(LPVOID)TYPE_FOLDER);
+    if (tvShaders->Selected) tvShaders->Selected->Expand(false);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::ExpandAll1Click(TObject *Sender)
+{
+	tvShaders->FullExpand();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::CollapseAll1Click(TObject *Sender)
+{
+	tvShaders->FullCollapse();
 }
 //---------------------------------------------------------------------------
 

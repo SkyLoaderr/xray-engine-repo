@@ -27,7 +27,12 @@ bool TUI::Command( int _Command, int p1 ){
 	case COMMAND_EDITOR_PREF:
 	    frmEditorPreferences->ShowModal();
         break;
-
+	case COMMAND_SAVE:
+    	SHTools.Save();
+    	break;
+    case COMMAND_RELOAD:
+//S    	SHTools.Reload();
+    	break;
 	case COMMAND_CLEAR:
 		{
 	    	if (!SHTools.IfModified()) return false;

@@ -207,11 +207,25 @@ object fraLeftBar: TfraLeftBar
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
-        object ElTree1: TElTree
+        object Bevel1: TBevel
           Left = 0
           Top = 0
           Width = 141
-          Height = 124
+          Height = 2
+          Align = alTop
+        end
+        object Bevel2: TBevel
+          Left = 0
+          Top = 122
+          Width = 141
+          Height = 2
+          Align = alBottom
+        end
+        object tvShaders: TElTree
+          Left = 0
+          Top = 2
+          Width = 141
+          Height = 120
           Cursor = crDefault
           LeftPosition = 0
           DragCursor = crDrag
@@ -221,7 +235,11 @@ object fraLeftBar: TfraLeftBar
           DefaultSectionWidth = 120
           BorderStyle = bsNone
           BorderSides = [ebsLeft, ebsRight, ebsTop, ebsBottom]
+          CustomPlusMinus = True
+          DrawFocusRect = False
           ExplorerEditMode = False
+          FocusedSelectColor = 10526880
+          FocusedSelectTextColor = clBlack
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clBlack
           Font.Height = -11
@@ -236,28 +254,55 @@ object fraLeftBar: TfraLeftBar
           HeaderFont.Height = -11
           HeaderFont.Name = 'MS Sans Serif'
           HeaderFont.Style = []
+          HorizontalLines = True
+          HorzDivLinesColor = 7368816
           HorzScrollBarStyles.ShowTrackHint = False
           HorzScrollBarStyles.Width = 16
           HorzScrollBarStyles.ButtonSize = 16
           IgnoreEnabled = False
           IncrementalSearch = False
+          ItemIndent = 14
           KeepSelectionWithinLevel = False
           LineBorderActiveColor = clBlack
           LineBorderInactiveColor = clBlack
-          LineHeight = 17
+          LineHeight = 16
+          MinusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            808080808080808080808080808080808080808080808080808080E0E0E08080
+            80808080808080808080808080808080808080E0E0E080808080808080808080
+            8080808080808080E0E0E0E0E0E0E0E0E0808080808080808080808080808080
+            E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0E0E0E0808080808080808080E0E0E0E0E0E0E0E0E0E0E0E0E0E0E080808080
+            8080808080808080808080808080808080808080808080808080}
           MouseFrameSelect = True
+          MultiSelect = False
           OwnerDrawMask = '~~@~~'
+          PlusMinusTransparent = True
+          PlusPicture.Data = {
+            F6000000424DF600000000000000360000002800000008000000080000000100
+            180000000000C0000000120B0000120B00000000000000000000808080808080
+            8080808080808080808080808080808080808080808080808080808080808080
+            80808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080E0E0E0E0E0E0E0E0E0E0E0E0808080808080808080808080E0E0E0
+            E0E0E0E0E0E0E0E0E0E0E0E0E0E0E0808080808080E0E0E0E0E0E0E0E0E0E0E0
+            E0808080808080808080808080E0E0E0E0E0E080808080808080808080808080
+            8080808080808080808080808080808080808080808080808080}
           ScrollbarOpposite = False
           ShowLeafButton = False
+          ShowLines = False
           StoragePath = '\Tree'
           TabOrder = 0
           TabStop = True
+          Tracking = False
+          TrackColor = 10526880
+          VertDivLinesColor = 7368816
           VertScrollBarStyles.ShowTrackHint = True
           VertScrollBarStyles.Width = 16
           VertScrollBarStyles.ButtonSize = 16
           VirtualityLevel = vlNone
           BkColor = clGray
-          OnMouseDown = ElTree1MouseDown
+          OnMouseDown = tvShadersMouseDown
         end
       end
       object Panel1: TPanel
@@ -504,17 +549,20 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 117
     Top = 138
-    object ExpandAll1: TMenuItem
-      Caption = 'Expand All'
-    end
-    object CollapseAll1: TMenuItem
-      Caption = 'Collapse All'
+    object CreateFolder1: TMenuItem
+      Caption = 'Create Folder'
+      OnClick = CreateFolder1Click
     end
     object N1: TMenuItem
       Caption = '-'
     end
-    object CreateFolder1: TMenuItem
-      Caption = 'Create Folder'
+    object ExpandAll1: TMenuItem
+      Caption = 'Expand All'
+      OnClick = ExpandAll1Click
+    end
+    object CollapseAll1: TMenuItem
+      Caption = 'Collapse All'
+      OnClick = CollapseAll1Click
     end
   end
   object pmBlenderList: TMxPopupMenu

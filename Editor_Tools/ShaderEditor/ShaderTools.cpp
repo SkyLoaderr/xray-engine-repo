@@ -31,6 +31,7 @@ void CShaderTools::OnCreate(){
     Device.seqDevDestroy.Add(this);
 	CBlender::CreatePalette(m_TemplatePalette);
     fraLeftBar->InitPalette(m_TemplatePalette);
+    Load();
 }
 
 void CShaderTools::OnDestroy(){
@@ -50,18 +51,14 @@ void CShaderTools::OnDestroy(){
 	m_Blenders.clear	();
 
 	// Matrices
-	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++)
-	{
-		R_ASSERT	(0==m->second->dwReference);
+	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++){
 		free		(m->first);
 		delete		m->second;
 	}
 	m_Matrices.clear	();
 
 	// Constants
-	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++)
-	{
-		R_ASSERT	(0==c->second->dwReference);
+	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++){
 		free		(c->first);
 		delete		c->second;
 	}
@@ -205,6 +202,7 @@ void CShaderTools::Load(){
                 fs->Seek		(fs->Tell()-sizeof(desc));
                 B->Load			(*fs);
                 m_Blenders.insert(make_pair(strdup(desc.cName),B));
+                fraLeftBar->AddBlender(desc.cName);
             }
             fs->Close();
         }
@@ -217,6 +215,9 @@ void CShaderTools::Load(){
 
 void CShaderTools::Save(){
 	CollapseReferences();
+    // save
+    //...
+    ExpandReferences();
 }
 
 CBlender* CShaderTools::FindBlender(LPCSTR name){
@@ -245,10 +246,11 @@ CConstant* CShaderTools::FindConstant(LPCSTR name){
 
 LPCSTR CShaderTools::GenerateBlenderName(LPSTR name, LPCSTR source){
     int cnt = 0;
-    if (source) strcpy(name,source); else sprintf(name,"shader_%04d",cnt++);
+	char fld[128]; strcpy(fld,name);
+    if (source) strcpy(name,source); else sprintf(name,"%s\shader_%04d",fld,cnt++);
 	while (FindBlender(name))
     	if (source) sprintf(name,"%s_%04d",source,cnt++);
-        else sprintf(name,"shader_%04d",cnt++);
+        else sprintf(name,"%s\shader_%04d",fld,cnt++);
 	return name;
 }
 
@@ -266,11 +268,12 @@ LPCSTR CShaderTools::GenerateConstantName(LPSTR name){
     return name;
 }
 
-CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, CBlender* parent){
+CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
 	// append blender
     CBlender* B = CBlender::Create(cls_id);
     if (parent) *B = *parent;
     char name[128];
+    strcpy(name,folder_name);
     B->getDescription().Setup(GenerateBlenderName(name,parent?parent->getName():0));
     // append matrix& constant
     CFS_Memory M;
@@ -298,6 +301,7 @@ CBlender* CShaderTools::AppendBlender(CLASS_ID cls_id, CBlender* parent){
     }
     // insert blender
 	m_Blenders.insert(make_pair(strdup(name),B));
+	fraLeftBar->AddBlender(name);
     return B;
 }
 
@@ -471,18 +475,15 @@ void CShaderTools::ExpandReferences(){
 }
 
 void CShaderTools::CollapseReferences(){
-	m_OptConstants.clear();
-    m_OptMatrices.clear();
 	for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
     	ParseBlender(b->second,CollapseBlender);
-	// Matrices
-	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++)
-		free		(m->first);
+	for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++) free(m->first);
+	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++) free(c->first);
 	m_Matrices.clear	();
-	// Constants
-	for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++)
-		free		(c->first);
 	m_Constants.clear	();
-//	m_Matrices.assign();
+	m_Matrices 			= m_OptMatrices;
+    m_Constants 		= m_OptConstants;
+	m_OptConstants.clear();
+    m_OptMatrices.clear	();
 }
 

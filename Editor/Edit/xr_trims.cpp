@@ -62,11 +62,11 @@ char* _GetFileExt ( char* name )
 	return NULL;
 }
 
-const char* _SetPos (const char* src, DWORD pos )
+const char* _SetPos (const char* src, DWORD pos, char separator )
 {
 	const char*	res			= src;
 	DWORD		p			= 0;
-	while( p<pos && (res=strchr(res,',')) )
+	while( p<pos && (res=strchr(res,separator)) )
 	{
 		res		++;
 		p		++;
@@ -74,22 +74,22 @@ const char* _SetPos (const char* src, DWORD pos )
 	return		res;
 }
 
-const char* _CopyVal ( const char* src, char* dst )
+const char* _CopyVal ( const char* src, char* dst, char separator )
 {
 	const char*	p;
 	DWORD		n;
-	p			= strchr	( src, ',' );
+	p			= strchr	( src, separator );
 	n			= (p>0) ? (p-src) : strlen(src);
 	strncpy		( dst, src, n );
 	dst[n]		= 0;
 	return		dst;
 }
 
-int				_GetItemCount ( const char* src )
+int				_GetItemCount ( const char* src, char separator )
 {
 	const char*	res			= src;
 	DWORD		p			= 0;
-	while( res=strchr(res,',') )
+	while( res=strchr(res,separator) )
 	{
 		res		++;
 		p		++;
@@ -97,11 +97,11 @@ int				_GetItemCount ( const char* src )
 	return		++p;
 }
 
-char* _GetItem ( const char* src, int index, char* dst, char* def )
+char* _GetItem ( const char* src, int index, char* dst, char separator, char* def )
 {
 	const char*	ptr;
-	ptr			= _SetPos	( src, index );
-	if( ptr )	_CopyVal	( ptr, dst );
+	ptr			= _SetPos	( src, index, separator );
+	if( ptr )	_CopyVal	( ptr, dst, separator );
 		else	strcpy		( dst, def );
 	_Trim( dst );
 	return		dst;

@@ -40,7 +40,7 @@ __published:	// IDE-managed Components
 	TPanel *paShaders;
 	TLabel *Label1;
 	TPanel *paShaderList;
-	TElTree *ElTree1;
+	TElTree *tvShaders;
 	TPanel *Panel1;
 	TExtBtn *ebShaderCreate;
 	TExtBtn *ebShaderRemove;
@@ -62,6 +62,8 @@ __published:	// IDE-managed Components
 	TMenuItem *CreateFolder1;
 	TExtBtn *ebApplyChanges;
 	TMxPopupMenu *pmBlenderList;
+	TBevel *Bevel1;
+	TBevel *Bevel2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -73,22 +75,31 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall ElTree1MouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall tvShadersMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall ebShaderPropertiesClick(TObject *Sender);
 	void __fastcall PreviewClick(TObject *Sender);
 	void __fastcall ebApplyChangesClick(TObject *Sender);
 	void __fastcall ebShaderCreateMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall CreateFolder1Click(TObject *Sender);
+	void __fastcall ExpandAll1Click(TObject *Sender);
+	void __fastcall CollapseAll1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall TemplateClick(TObject *Sender);
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
+	TElTreeItem* 	FindFolder(LPCSTR full_name);
+	TElTreeItem* 	AppendFolder(LPCSTR full_name);
+	void __fastcall MakeFolderName(TElTreeItem* select_item, AnsiString& folder);
+	void __fastcall GenerateFolderName(TElTreeItem* node,AnsiString& name);
+	TElTreeItem* 	FindFolderItem(TElTreeItem* start_item, const AnsiString& name);
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
-	void ChangeTarget	(int tgt);
-    void UpdateBar		();
-    void UpdateSnapList	();
-    void InitPalette	(TemplateVec& lst);
+	void 			ChangeTarget	(int tgt);
+    void 			UpdateBar		();
+    void 			InitPalette	(TemplateVec& lst);
+    void 			FillBlenderTree(BlenderMap* blenders);
+	void 			AddBlender(LPCSTR full_name);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

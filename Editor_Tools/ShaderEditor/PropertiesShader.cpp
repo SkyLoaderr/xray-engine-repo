@@ -76,7 +76,7 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
 
     switch (type){
     case BPID_MARKER:	CS->CellType = sftUndef;	break;
-    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add (LPSTR(value));break;//"[Matrix]");   break;
+    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Matrix]");   break;
     case BPID_CONSTANT:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Color]");	break;
     case BPID_TEXTURE:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Textures]");	break;
     case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->Add	(AnsiString(*(int*)value));		break;
@@ -241,6 +241,8 @@ void __fastcall TfrmShaderProperties::LoadProperties(){
         char key[255];
         TElTreeItem* marker_node=0;
         TElTreeItem* node;
+		form->tvProperties->IsUpdating = true;
+    	form->tvProperties->Items->Clear();
 
         while (!data.Eof()){
 	        int sz=0;
@@ -261,14 +263,13 @@ void __fastcall TfrmShaderProperties::LoadProperties(){
             if (type==BPID_MARKER) marker_node = node;
             data.Advance(sz);
         }
+		form->tvProperties->IsUpdating = false;
 	    form->tvProperties->FullExpand();
     }
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmShaderProperties::SaveProperties(){
-//	CFS_Memory m_Stream;
-//S заполнить ???    SHTools.GetCurrentBlender(m_Stream);
 	CStream data(m_Stream.pointer(), m_Stream.size());
     SHTools.SetCurrentBlender(data);
 }

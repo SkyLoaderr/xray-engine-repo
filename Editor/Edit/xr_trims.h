@@ -4,10 +4,10 @@
 // refs
 struct xr_token;
 
-int							_GetItemCount			( const char* );
-char*						_GetItem				( const char*, int, char*, char* ="" );
-const char*		  			_SetPos					( const char* src, DWORD pos );
-const char*					_CopyVal				( const char* src, char* dst );
+int							_GetItemCount			( const char* , char separator=',');
+char*						_GetItem				( const char*, int, char*, char separator=',', char* ="" );
+const char*		  			_SetPos					( const char* src, DWORD pos, char separator=',' );
+const char*					_CopyVal				( const char* src, char* dst, char separator=',' );
 char*						_Trim					( char* str );
 char*						_TrimLeft				( char* str );
 char*						_TrimRight				( char* str );
