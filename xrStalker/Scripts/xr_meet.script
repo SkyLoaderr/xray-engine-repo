@@ -289,10 +289,10 @@ function dialog_manager_reset(npc, stype)
 		local overrides = xr_logic.generic_scheme_overrides(npc)
 		if overrides ~= nil then
 			if overrides.meet_talk_enabled then
---				printf("*DIALOGS*: Enable talk", overrides.meet_dialog)
+				printf("*DIALOGS*: Enable talk")
 				npc:enable_talk()
 			else
---				printf("*DIALOGS*: Disable talk", overrides.meet_dialog)
+				printf("*DIALOGS*: Disable talk")
 				npc:disable_talk()
 			end
 
