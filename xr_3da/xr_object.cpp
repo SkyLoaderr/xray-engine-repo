@@ -19,23 +19,23 @@ void CObject::StatusBegin	()
 	Device.mFullTransform.transform	(S,T);
 }
 
-void CObject::cName_set			(LPCSTR N)
+void CObject::cName_set			(ref_str N)
 { 
 	NameObject	=	N; 
 }
-void CObject::cNameSect_set		(LPCSTR N)
+void CObject::cNameSect_set		(ref_str N)
 { 
 	NameSection	=	N; 
 }
-void CObject::cNameVisual_set	(LPCSTR N)
+void CObject::cNameVisual_set	(ref_str N)
 { 
 	// check if equal
-	if (N && *NameVisual)
-		if (0==stricmp(N,*NameVisual))	return;
+	if (*N && *NameVisual)
+		if (N==NameVisual)	return;
 
 	// replace model
 	::Render->model_Delete	(renderable.visual);
-	if (N && N[0]) 
+	if (*N && N[0]) 
 	{
 		NameVisual			= N;
 		renderable.visual	= Render->model_Create	(N);
