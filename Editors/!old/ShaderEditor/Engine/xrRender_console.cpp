@@ -102,6 +102,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
 	CMD3(CCC_Mask,		"r2_spot_unmask",		&ps_r2_ls_flags,			R2FLAG_SPOT_UNMASK);
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
+	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
 
 	tw_min.set			(0,0,0);	tw_max.set			(1,1,1);

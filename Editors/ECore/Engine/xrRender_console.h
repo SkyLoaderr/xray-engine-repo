@@ -54,7 +54,8 @@ enum
 	R2FLAG_SKY			= (1<<1),
 	R2FLAG_BUMP_AF		= (1<<2),
 	R2FLAG_SPOT_UNMASK	= (1<<3),
-	R2FLAG_AA			= (1<<4)
+	R2FLAG_AA			= (1<<4),
+	R2FLAG_PARALLAX		= (1<<5)
 };
 
 extern void			xrRender_initconsole	();
