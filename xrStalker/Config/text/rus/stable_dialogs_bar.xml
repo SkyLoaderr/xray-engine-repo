@@ -211,7 +211,7 @@
         <text>Подумай над этим, Меченый. Кроме тебя действительно некому.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_666">
-        <text>Пошли обратно, посетители ждут. </text>
+        <text>Пошли обратно, посетители ждут.</text>
     </string>
     <string id="bar_bar_barmen_jobs_room_complete_0">
         <text>Да, есть кое-что. Пошли, поговорим.</text>
@@ -646,7 +646,7 @@
         <text>Хорошо, вот деньги.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_3111">
-        <text>Вот и отлично, держи пропуск, и дуй с ним к администратору, я тебя отметил на карте.</text>
+        <text>Вот и отлично, держи пропуск, и дуй с ним к администратору Петренко, я тебя отметил на карте.</text>
     </string>
     <string id="bar_dolg_base_guard_acces_312">
         <text>Нет, я передумал.</text>
