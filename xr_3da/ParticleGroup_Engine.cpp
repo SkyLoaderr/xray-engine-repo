@@ -102,7 +102,7 @@ u32 CParticleGroup::RenderTO	(FVF::TL* dest)
 		Fvector2 lt,rb;
 		lt.set		(0.f,0.f);
 		rb.set		(1.f,1.f);
-		if (m_Def->m_Flags.is(CPGDef::flFramed)){
+		if (m_Def->m_Flags.is(CPGDef::dfFramed)){
 			//        	||m_Flags.test(flAnimated)){
 			m_Def->m_Frame.CalculateTC(iFloor(m.frame),lt,rb);
 			FillSprite(pv,mSpriteTransform,(Fvector&)m.pos,lt,rb,m.size.x*.5f,C,m.rot.x,fov_scale,w_2,h_2);

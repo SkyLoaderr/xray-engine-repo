@@ -17,7 +17,7 @@ CPGObject::CPGObject(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 	VERIFY			(m_pVisual);
 	PS::CParticleGroup* V	= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(V);
 	
-	if (bAutoRemove&&V->GetDefinition()->m_Flags.is(PS::CPGDef::flTimeLimit)){
+	if (bAutoRemove&&V->GetDefinition()->m_Flags.is(PS::CPGDef::dfTimeLimit)){
 		m_iLifeTime	= V->GetDefinition()->m_TimeLimit;
 	}else{
 		R_ASSERT3	(!m_bAutoRemove,"Can't set auto-remove flag for looped particle system.",ps_name);
