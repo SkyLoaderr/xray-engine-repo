@@ -152,9 +152,10 @@ void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 	void*					converted;
 
 	SoundRender.pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
-	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=44100))
+	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=44100)||(pFormat->wBitsPerSample!=16))
 	{
-		Msg("! WARNING: Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
+		if (0==strstr(Core.Params,"-sound_any_fmt"))	Debug.fatal	("! Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
+		else											Msg			("! Invalid wave format (must be 44KHz,16bit,mono), file: %s",pName);
 	}
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
@@ -208,8 +209,8 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	else				LoadWaveAs2D		( fn );
 	R_ASSERT			(wave);
 
-	if (dwTimeTotal<250)
+	if (dwTimeTotal<100)
 	{
-		Msg	("! WARNING: Invalid wave length (must be at least 250ms), file: %s",fn);
+		Msg	("! WARNING: Invalid wave length (must be at least 100ms), file: %s",fn);
 	}
 }
