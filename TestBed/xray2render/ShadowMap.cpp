@@ -996,7 +996,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		*(Fmatrix*)&dm_model2world2view2projection_light	);
 	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
 
-	if (0)
+	if (1)
 	{
 		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9);
 
