@@ -76,9 +76,13 @@ void CHelicopterMovManager::makeNewPoint (const Fbox& fbox,
 	if((kp4>EPS_L)&&(kp4<resK))
 		resK = kp4;
 
-
 	dir.y = 0.0f;
 	newPoint.add(point, dir.mul(resK) );
+
+	Fbox b = fbox;
+	b.scale(0.05f);
+	if(!b.contains(point) )
+		newPoint.set((fbox.max.x-fbox.min.x)/2.0f, 0.0f, (fbox.max.z-fbox.min.z)/2.0f);
 
 	getPathAltitude(newPoint,m_baseAltitude);
 	VERIFY( m_boundingAssert.contains(newPoint) );
