@@ -40,14 +40,14 @@ namespace CDB
 		COLLIDER		();
 		~COLLIDER		();
 		
-		void			ray_mode		(DWORD f)	{	ray_mode = f;		}
-		void			ray_query		(const Model *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
+		void			ray_options		(DWORD f)	{	ray_mode = f;		}
+		void			ray_query		(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
 		
-		void			box_mode		(DWORD f)	{	box_mode = f;		}
-		void			box_query		(const Model *m_def, const Fvector& b_center, const Fvector& b_dim);
+		void			box_options		(DWORD f)	{	box_mode = f;		}
+		void			box_query		(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim);
 		
-		void			frustum_mode	(DWORD f)	{	frustum_mode = f;	}
-		void			frustum_query	(const Model *m_def, const CFrustum& F);
+		void			frustum_options	(DWORD f)	{	frustum_mode = f;	}
+		void			frustum_query	(const MODEL *m_def, const CFrustum& F);
 		
 		void			r_add			(int id);
 		int*			r_begin			()	{	return rd_ptr;				};
