@@ -297,7 +297,7 @@ void __cdecl clMsg( const char *format, ...)
 
 	char _out_	[256];
 	strconcat	(_out_,"         | ", _out_ );
-	LOut		( buf );
+	LOut		(_out_);
 }
 
 void Log(const char *msg, const char *dop) {
