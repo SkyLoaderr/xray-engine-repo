@@ -38,6 +38,8 @@ struct STextureParams{
 		flFadeToColor		= (1<<6),
 		flFadeToAlpha		= (1<<7),
 		flDitherColor		= (1<<8),
+		flDitherEachMIPLevel= (1<<9),
+		flGreyScale			= (1<<10),
 		flImplicitLighted	= (1<<24)
 	};
 	struct Flags{
@@ -50,6 +52,8 @@ struct STextureParams{
 		DWORD bFadeToColor		: 1;
 		DWORD bFadeToAlpha		: 1;
 		DWORD bDitherColor		: 1;
+		DWORD bDitherEachMIPLevel:1;
+		DWORD bGreyScale		: 1;
 		DWORD reserved0			: 15;
 
 		DWORD bImplicitLighted	: 1;

@@ -17,20 +17,24 @@ enum
 	d8888 = 17,   // a8 r8 g8 b8
 	d888 = 18,    // a0 r8 g8 b8
 	d555 = 19,    // a0 r5 g5 b5
+    dNVHS = 20,   // signed HILO
+    dNVHU = 21,   // unsighed HILO
 
-	dTextureFormatLast = d555,
+
+	dTextureFormatLast = dNVHU,
 
 
     // 3d viewing options
-    d3DPreview = 21, 
-    dViewDXT1 = 22,
-    dViewDXT2 = 23,
-    dViewDXT3 = 24,
-    dViewDXT5 = 25,
-    dViewA4R4G4B4 = 26,
-    dViewA1R5G5B5 = 27,
-    dViewR5G6B5 = 28,
-    dViewA8R8G8B8 = 29,
+    d3DPreview = 300, 
+
+    dViewDXT1 = 200,
+    dViewDXT2 = 201,
+    dViewDXT3 = 202,
+    dViewDXT5 = 203,
+    dViewA4R4G4B4 = 204,
+    dViewA1R5G5B5 = 205,
+    dViewR5G6B5 = 206,
+    dViewA8R8G8B8 = 207,
 
 
     dGenerateMipMaps = 30,
@@ -74,6 +78,8 @@ enum
     dBorderColor = 63,
 	dNormalMap = 64,
 	dDuDvMap = 65,
+    dDitherEachMIPLevel = 66,
+    dGreyScale = 67,
 
     dZoom = 70,
 
@@ -146,6 +152,8 @@ typedef struct CompressionOptions
     int         FadeAmount;    // percentage of color to fade in
 
     bool        bDitherColor;        // enable dithering during 16 bit conversion
+    bool        bDitherEachMIPLevel;        // enable dithering during 16 bit conversion for each MIP level (after filtering)
+    bool        bGreyScale;        // trat image as a grey scale
 
 
 	short 		TextureType;    // regular decal, cube or volume  
@@ -157,7 +165,7 @@ typedef struct CompressionOptions
 
 	short 		TextureFormat;
 	//  dDXT1, dDXT1a, dDXT3, dDXT5, d4444, 
-	//  d1555, 	d565,	d8888, 	d888, 	d555, 
+	//  d1555, 	d565,	d8888, 	d888, 	d555, dNVHS, dNVHU
 
     bool        bSwapRGB;
 
