@@ -172,7 +172,7 @@ void CCF_Skeleton::BuildState()
 	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
-	Fmatrix &L2W	= owner->svTransform;
+	Fmatrix &L2W	= owner->clTransform;
 	Fmatrix Mbox,T,TW;
 	for (DWORD i=0; i<model.size(); i++)
 	{
@@ -210,7 +210,7 @@ BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
 
-	if (dwFrame!=Device.dwFrame)	BuildState();
+	if (dwFrame!=Device.dwFrame)			BuildState();
 
 	BOOL bHIT = FALSE;
 	for (vector<xOBB>::iterator I=model.begin(); I!=model.end(); I++) 
