@@ -14,6 +14,8 @@
 #pragma warning (disable : 4786)
 #endif
 
+inline bool streq(const char *a, const char *b) { return !xr_strcmp(a,b); }
+
 #pragma comment( lib, "x:\\xrCore.lib"	)
 
 #endif
