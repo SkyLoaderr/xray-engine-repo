@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_alife_space.h"
+
 #define GRAPH_NAME							"game.graph"
 
 class CALifeGraph {
