@@ -31,8 +31,7 @@ C,	Fvector C,rgb;
 	C.mad						(c_hemi,h);
 	C.mad						(c_sun,	s + sun_factor);
 
-	return s	C.mul						(1.0f);		//. hack to make lods look better/brighter - +10% total energy
-ub	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
+	return sub	return subst_alpha			(color_rgba_f(C.x,C.y,C.z,0),Alpha);
 _dsgraph_structure::r_dsgraph_render_lods	()
 {
 	mapLOD.getRL				(lstLODs);
