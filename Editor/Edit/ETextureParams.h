@@ -1,20 +1,8 @@
-
 //----------------------------------------------------
 // file: TextureParam.h
 //----------------------------------------------------
 #ifndef _INCDEF_TextureParam_H_
 #define _INCDEF_TextureParam_H_
-
-//----------------------------------------------------
-#define EF_GENMIPMAP		0x00000001
-#define EF_DITHER			0x00000002
-#define EF_BINARYALPHA		0x00000004
-#define EF_ALPHAZEROBORDER	0x00000008
-#define EF_NORMALMAP		0x00000010
-#define EF_FADE				0x00000020
-#define EF_USE_EXIST_MIPMAP	0x00000040
-#define EF_NO_MIPMAP		0x00000080
-#define EF_IMPLICIT_LIGHTED	0x00000100
 
 #pragma pack(push,1)
 struct STextureParams{
@@ -30,12 +18,42 @@ struct STextureParams{
         tfRGBA,
 		ForceDWORD	= DWORD(-1)
 	};
+	enum{
+        dMIPFilterBox				= 0,
+        dMIPFilterCubic				= 1,
+        dMIPFilterFullDFT			= 2,
+        dMIPFilterKaiser			= 3,
+        dMIPFilterLinearLightKaiser	= 4,
+		dMIPFilterAdvanced			= 5
+	};
+	struct {
+		DWORD bGenerateMipMaps	: 1,
+		DWORD bBinaryAlpha		: 1,
+		DWORD bNormalMap		: 1,
+		DWORD bDuDvMap			: 1,
+		DWORD bAlphaBorder		: 1,
+		DWORD bColorBorder		: 1,
+		DWORD bFadeToColor		: 1,
+		DWORD bFadeToAlpha		: 1,
+		DWORD bDitherColor		: 1,
+		DWORD eMIPFilter		: 3,
+		DWORD reserved0			: 12,
+
+		DWORD bImplicitLighted	: 1,
+	}flag;
+
 	ETFormat		fmt;
-    DWORD			flag;
+	DWORD			border_color;
     DWORD			fade_color;
-    WORD			fade_mips;
-    WORD			reserved;
-    STextureParams(){ZeroMemory(this,sizeof(STextureParams)); flag=EF_GENMIPMAP|EF_DITHER;}
+    int				fade_amount;
+    DWORD			reserved[4];
+    STextureParams	()
+	{
+		ZeroMemory(this,sizeof(STextureParams)); 
+		flag.bGenerateMipMaps	= TRUE;
+		flag.bDitherColor		= TRUE;
+		flag.eMIPFilter			= dMIPFilterBox;
+	}
 	IC BOOL HasAlphaChannel()
 	{
 		switch (fmt)
