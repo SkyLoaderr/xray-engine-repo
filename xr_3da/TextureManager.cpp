@@ -305,6 +305,35 @@ LPCSTR	CShaderManager::DBG_GetRTName	(CRT* T)
 		return 0;
 }
 //--------------------------------------------------------------------------------------------------------------
+CRTC*	CShaderManager::_CreateRTC		(LPCSTR Name, u32 size,	D3DFORMAT f)
+{
+	R_ASSERT(Name && Name[0] && size);
+
+	// ***** first pass - search already created RTC
+	LPSTR N = LPSTR(Name);
+	map_RTC::iterator I = m_rtargets_c.find	(N);
+	if (I!=m_rtargets_c.end())
+	{
+		CRTC *RT			=	I->second;
+		RT->dwReference		+=	1;
+		return		RT;
+	}
+	else
+	{
+		CRTC *RT			=	xr_new<CRTC>();
+		RT->dwReference		=	1;
+		m_rtargets.insert		(make_pair(xr_strdup(Name),RT));
+		if (Device.bReady)	RT->Create	(Name,size,f);
+		return				RT;
+	}
+}
+void	CShaderManager::_DeleteRTC		(CRTC* &RT)
+{
+	if	(0==RT)		return;
+	RT->dwReference	--;
+	RT				= 0;
+}
+//--------------------------------------------------------------------------------------------------------------
 void	CShaderManager::DBG_VerifyGeoms	()
 {
 	for (u32 it=0; it<v_geoms.size(); it++)

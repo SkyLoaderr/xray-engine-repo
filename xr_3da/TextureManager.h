@@ -28,6 +28,7 @@ public:
 	DEFINE_MAP_PRED(LPSTR,CMatrix*,		map_Matrix,		map_MatrixIt,		str_pred);
 	DEFINE_MAP_PRED(LPSTR,CConstant*,	map_Constant,	map_ConstantIt,		str_pred);
 	DEFINE_MAP_PRED(LPSTR,CRT*,			map_RT,			map_RTIt,			str_pred);
+	DEFINE_MAP_PRED(LPSTR,CRTC*,		map_RTÑ,		map_RTÑIt,			str_pred);
 	DEFINE_MAP_PRED(LPSTR,SVS*,			map_VS,			map_VSIt,			str_pred);
 	DEFINE_MAP_PRED(LPSTR,SPS*,			map_PS,			map_PSIt,			str_pred);
 	DEFINE_MAP_PRED(LPSTR,texture_detail,map_TD,		map_TDIt,			str_pred);
@@ -38,6 +39,7 @@ private:
 	map_Matrix						m_matrices;
 	map_Constant					m_constants;
 	map_RT							m_rtargets;
+	map_RTÑ							m_rtargets_ñ;
 	map_VS							m_vs;
 	map_PS							m_ps;
 	map_TD							m_td;
@@ -99,6 +101,9 @@ public:
 
 	CRT*							_CreateRT			(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f);
 	void							_DeleteRT			(CRT* &RT	);
+
+	CRTC*							_CreateRTC			(LPCSTR Name, u32 size,	D3DFORMAT f);
+	void							_DeleteRTC			(CRTC* &RT	);
 
 	SPS*							_CreatePS			(LPCSTR Name);
 	void							_DeletePS			(IDirect3DPixelShader9* &PS);

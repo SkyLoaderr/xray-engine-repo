@@ -26,4 +26,25 @@ public:
 	IC BOOL				Valid	()	{ return 0!=pTexture; }
 };
 
+class	ENGINE_API	CRTC
+{
+public:
+	IDirect3DCubeTexture9*	pSurface;
+	IDirect3DSurface9*		pRT[6];
+	CTexture*				pTexture;
+
+	u32						dwReference;
+	u32						dwSize;
+	D3DFORMAT				fmt;
+
+	CRT						()
+	{
+		Memory.mem_fill		(this,0,sizeof(CRT));
+	}
+
+	void				Create	(LPCSTR name, u32 size, D3DFORMAT f);
+	void				Destroy	();
+	IC BOOL				Valid	()	{ return 0!=pTexture; }
+};
+
 #endif // SH_RT_H
