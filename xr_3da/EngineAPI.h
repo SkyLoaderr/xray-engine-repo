@@ -28,7 +28,8 @@ typedef DLL_API  void		  __cdecl Factory_Destroy	(DLL_Pure*	O);
 class ENGINE_API CEngineAPI
 {
 private:
-	HMODULE				hModule;
+	HMODULE				hGame;
+	HMODULE				hRender;
 public:
 	Factory_Create*		pCreate;
 	Factory_Destroy*	pDestroy;
