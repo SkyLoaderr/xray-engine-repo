@@ -107,6 +107,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 #endif
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
 	virtual CSE_ALifeTraderAbstract	*cast_trader_abstract	() {return this;};
+	virtual CSE_ALifeTrader			*cast_trader			() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeTrader)
 #define script_type_list save_type_list(CSE_ALifeTrader)
@@ -146,6 +147,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	virtual const CSE_Abstract		*base					() const;
 	virtual CSE_Abstract			*cast_abstract			() {return this;};
 	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
+	virtual CSE_ALifeAnomalousZone	*cast_anomalous_zone	() {return this;};
 	virtual u32						ef_anomaly_type			() const;
 	virtual u32						ef_weapon_type			() const;
 	virtual u32						ef_creature_type		() const;

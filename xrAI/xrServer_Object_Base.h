@@ -27,6 +27,8 @@ class CSE_ALifeItemWeapon;
 class CSE_ALifeItemDetector;
 class CSE_ALifeMonsterAbstract;
 class CSE_ALifeHumanAbstract;
+class CSE_ALifeAnomalousZone;
+class CSE_ALifeTrader;
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -158,6 +160,8 @@ public:
 	virtual CSE_ALifeItemDetector		*cast_item_detector		() {return 0;}
 	virtual CSE_ALifeMonsterAbstract	*cast_monster_abstract	() {return 0;};
 	virtual CSE_ALifeHumanAbstract		*cast_human_abstract	() {return 0;};
+	virtual CSE_ALifeAnomalousZone		*cast_anomalous_zone	() {return 0;};
+	virtual CSE_ALifeTrader				*cast_trader			() {return 0;};
 };
 add_to_type_list(CSE_Abstract)
 #define script_type_list save_type_list(CSE_Abstract)

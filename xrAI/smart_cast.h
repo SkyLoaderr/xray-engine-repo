@@ -241,6 +241,18 @@
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeTraderAbstract,	CSE_Abstract)
 
+	DECLARE_SPECIALIZATION	(CSE_Visual,	CSE_Abstract,	visual);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_Visual,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_Motion,	CSE_Abstract,	motion);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_Motion,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(ISE_Shape,		CSE_Abstract,	shape);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(ISE_Shape,		CSE_Abstract)
+
 	DECLARE_SPECIALIZATION	(CSE_ALifeObject,	CSE_Abstract,			cast_alife_object);
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeObject,	CSE_Abstract)
@@ -268,6 +280,14 @@
 	DECLARE_SPECIALIZATION	(CSE_ALifeHumanAbstract,	CSE_Abstract,	cast_human_abstract);
 #	undef cast_type_list
 #	define cast_type_list save_cast_list	(CSE_ALifeHumanAbstract,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeAnomalousZone,	CSE_Abstract,	cast_anomalous_zone);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeAnomalousZone,	CSE_Abstract)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeTrader,			CSE_Abstract,	cast_trader);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeTrader,			CSE_Abstract)
 
 #	ifndef DO_NOT_DECLARE_TYPE_LIST
 #		include "smart_cast_impl1.h"
