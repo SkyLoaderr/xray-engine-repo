@@ -56,14 +56,15 @@ void CAI_Stalker::vfSetParameters(
 		tMovementType,
 		tMentalState
 	);
+
 	CSightManager::update			(
 		tLookType,
 		&tPointToLook,
 		dwLookOverDelay
 	);
 	
-//	if (!GetScriptControl())
-	CObjectHandler::set_dest_state	(tWeaponState);
+	if (!GetScriptControl())
+		CObjectHandler::set_dest_state	(tWeaponState);
 }
 
 bool CAI_Stalker::useful		(const CGameObject *object) const

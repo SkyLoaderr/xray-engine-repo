@@ -30,7 +30,7 @@ void LuaLog(LPCSTR caMessage)
 
 double get_time()
 {
-	return((double)Device.TimerAsync());
+	return((double)Level().GetGameTime());
 }
 
 void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
