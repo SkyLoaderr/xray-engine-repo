@@ -24,6 +24,9 @@ public:
 #ifdef _EDITOR
     ogf_desc					desc;
 #endif
+#ifdef DEBUG
+	ref_str						dbg_name;
+#endif
 public:
 	u32							Type;					// visual's type
 	vis_data					vis;

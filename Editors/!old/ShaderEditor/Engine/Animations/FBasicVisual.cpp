@@ -34,6 +34,10 @@ CStatTimer						tscreate;
 
 void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
+#ifdef DEBUG
+	dbg_name	= N;
+#endif
+
 	// header
 	VERIFY		(data);
 	ogf_header	hdr;
