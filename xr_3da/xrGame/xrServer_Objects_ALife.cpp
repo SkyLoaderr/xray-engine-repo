@@ -1124,7 +1124,7 @@ CSE_ALifeSchedulable::~CSE_ALifeSchedulable	()
 
 bool CSE_ALifeSchedulable::need_update		(CSE_ALifeDynamicObject *object)
 {
-	return						(!object || (object->m_bDirectControl && /**/object->interactive() && /**/object->used_ai_locations() && !object->m_bOnline));
+	return						(!object || (object->m_bDirectControl && /**object->interactive() && /**/object->used_ai_locations() && !object->m_bOnline));
 }
 
 CSE_Abstract *CSE_ALifeSchedulable::init	()

@@ -295,37 +295,37 @@ bool CALifeUpdateManager::load_game		(LPCSTR game_name, bool no_assert)
 void CALifeUpdateManager::set_switch_online		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	if (object->can_switch_online() == value)
-		return;
+//	if (object->can_switch_online() == value)
+//		return;
 
-	unregister_object				(object,object->m_bOnline);
-	object->m_alife_simulator		= 0;
+//	unregister_object				(object,object->m_bOnline);
+//	object->m_alife_simulator		= 0;
 	object->can_switch_online		(value);
-	register_object					(object,true);
+//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_switch_offline	(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	if (object->can_switch_offline() == value)
-		return;
+//	if (object->can_switch_offline() == value)
+//		return;
 
-	unregister_object				(object,object->m_bOnline);
-	object->m_alife_simulator		= 0;
+//	unregister_object				(object,object->m_bOnline);
+//	object->m_alife_simulator		= 0;
 	object->can_switch_offline		(value);
-	register_object					(object,true);
+//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::set_interactive		(ALife::_OBJECT_ID id, bool value)
 {
 	CSE_ALifeDynamicObject			*object = objects().object(id);
-	if (object->interactive() == value)
-		return;
+//	if (object->interactive() == value)
+//		return;
 
-	unregister_object				(object,object->m_bOnline);
-	object->m_alife_simulator		= 0;
+//	unregister_object				(object,object->m_bOnline);
+//	object->m_alife_simulator		= 0;
 	object->interactive				(value);
-	register_object					(object,true);
+//	register_object					(object,true);
 }
 
 void CALifeUpdateManager::jump_to_level			(LPCSTR level_name) const

@@ -39,14 +39,12 @@ void CALifeInteractionManager::check_for_interaction(CSE_ALifeSchedulable *tpALi
 {
 	if (!tpALifeSchedulable->bfActive())
 		return;
+
 	CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(tpALifeSchedulable);
 	R_ASSERT2					(l_tpALifeDynamicObject,"Unknown schedulable object class");
 	GameGraph::_GRAPH_ID		l_tGraphID = l_tpALifeDynamicObject->m_tGraphID;
 	check_for_interaction		(tpALifeSchedulable,l_tGraphID);
 	
-	if (!l_tpALifeDynamicObject->interactive())
-		return;
-
 	CGameGraph::const_iterator	I, E;
 	ai().game_graph().begin		(l_tGraphID,I,E);
 	for ( ; I != E; ++I)

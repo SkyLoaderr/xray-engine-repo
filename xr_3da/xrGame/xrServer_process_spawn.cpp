@@ -4,6 +4,10 @@
 #include "xrserver_objects.h"
 #include "game_sv_mp_script.h"//fake
 
+#ifdef DEBUG
+#	include "xrserver_objects_alife_items.h"
+#endif
+
 CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpawnWithClientsMainEntityAsParent, CSE_Abstract* tpExistedEntity)
 {
 	// create server entity
@@ -22,13 +26,25 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 			){
 			// Msg			("- SERVER: Entity [%s] incompatible with current game type.",*E->s_name);
 			F_entity_Destroy(E);
-			return NULL;
+			return			NULL;
 		}
+
 //		E->m_bALifeControl = false;
 	}
 	else {
 		VERIFY				(E->m_bALifeControl);
 //		E->m_bALifeControl = true;
+	}
+
+	CSE_Abstract			*e_parent = 0;
+	if (E->ID_Parent != 0xffff) {
+		e_parent			= ID_to_entity(E->ID_Parent);
+		if (!e_parent) {
+			R_ASSERT		(!tpExistedEntity);
+			VERIFY3			(smart_cast<CSE_ALifeItemBolt*>(E) || smart_cast<CSE_ALifeItemGrenade*>(E),*E->s_name,E->name_replace());
+			F_entity_Destroy(E);
+			return			NULL;
+		}
 	}
 
 	// check if we can assign entity to some client
@@ -94,13 +110,12 @@ CSE_Abstract* xrServer::Process_spawn(NET_Packet& P, ClientID sender, BOOL bSpaw
 		game->OnCreate		(E->ID);
 		
 		if (0xffff != E->ID_Parent) {
-			CSE_Abstract					*e_parent = ID_to_entity(E->ID_Parent);
-			R_ASSERT						(e_parent);
+			R_ASSERT					(e_parent);
 			
-			if (!tpExistedEntity && !smart_cast<game_sv_mp_script*>(game) )
-				game->OnTouch				(E->ID_Parent,E->ID);
+			if (!smart_cast<game_sv_mp_script*>(game) )
+				game->OnTouch			(E->ID_Parent,E->ID);
 
-			e_parent->children.push_back	(E->ID);
+			e_parent->children.push_back(E->ID);
 		}
 	}
 
