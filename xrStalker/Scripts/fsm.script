@@ -53,10 +53,11 @@ function FSM:run()
 	while true do
 		table.foreach(transition_vector, 
 					  function(k,cond_func) 
-							if cond_func(self.npc) == true then
-								self.current_state = k
-								return true
-							end
+							printf("check_condition %d", to_state_num1)
+							--if cond_func(self.npc) == true then
+							--	self.current_state = k
+							--	return true
+							--end
 							return nil
 					  end)
 		wait()
