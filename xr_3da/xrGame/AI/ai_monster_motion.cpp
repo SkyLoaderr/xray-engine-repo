@@ -182,7 +182,7 @@ void CMotionManager::ApplyParams()
 
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
 	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
-	if (!b_forced_velocity) pMonster->m_velocity_angular.target = item_it->second.velocity->velocity.angular;
+	if (!b_forced_velocity) pMonster->m_velocity_angular.target = item_it->second.velocity->velocity.angular_real;
 
 }
 
@@ -458,14 +458,14 @@ void CMotionManager::SelectVelocities()
 		} 
 		
 		const CDetailPathManager::STravelParams &current_velocity = pMonster->CDetailPathManager::velocity(cur_point_velocity_index);
-		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.angular_velocity);
+		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.real_angular_velocity);
 	}
 
 	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	// получить скорости движения по анимации
-	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular);
+	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular_real);
 
 //	// проверить на совпадение
 //	R_ASSERT(fsimilar(path_vel.linear,	anim_vel.linear));
@@ -506,7 +506,7 @@ void CMotionManager::SelectVelocities()
 		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
+		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular_real;
 	}
 	
 	// применить 

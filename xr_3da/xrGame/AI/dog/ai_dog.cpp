@@ -49,7 +49,7 @@ void CAI_Dog::Load(LPCSTR section)
 	CJumping::Load	(section);
 
 	// todo: PUT visual from load OFF
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);

@@ -158,7 +158,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 void CAI_PseudoDog::reload(LPCSTR section)
 {
 	inherited::reload(section);
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real);
 	CSoundPlayer::add(pSettings->r_string(section,"sound_psy_attack"),	16,	SOUND_TYPE_MONSTER_ATTACKING,	1,	u32(1 << 31) | 15,	MonsterSpace::eMonsterSoundPsyAttack, "bip01_head");
 }
 

@@ -117,24 +117,27 @@ struct SAttackEffector {
 struct SVelocityParam {
 	struct {
 		float linear;
-		float angular;
+		float angular_path;
+		float angular_real;
 	} velocity;
 	float	min_factor;
 	float	max_factor;
 
 	SVelocityParam() {
-		velocity.linear		= 0.f;
-		velocity.angular	= 0.f;
-		min_factor			= 1.0f;
-		max_factor			= 1.0f;
+		velocity.linear			= 0.f;
+		velocity.angular_real	= 0.f;
+		velocity.angular_path	= 0.f;
+		min_factor				= 1.0f;
+		max_factor				= 1.0f;
 	}
 
 	void	Load (LPCSTR section, LPCSTR line) {
 		string32 buffer;
-		velocity.linear		= float(atof(_GetItem(pSettings->r_string(section,line),0,buffer)));
-		velocity.angular	= float(atof(_GetItem(pSettings->r_string(section,line),1,buffer)));
-		min_factor			= float(atof(_GetItem(pSettings->r_string(section,line),2,buffer)));
-		max_factor			= float(atof(_GetItem(pSettings->r_string(section,line),3,buffer)));
+		velocity.linear			= float(atof(_GetItem(pSettings->r_string(section,line),0,buffer)));
+		velocity.angular_real	= float(atof(_GetItem(pSettings->r_string(section,line),1,buffer)));
+		velocity.angular_path	= float(atof(_GetItem(pSettings->r_string(section,line),2,buffer)));
+		min_factor				= float(atof(_GetItem(pSettings->r_string(section,line),3,buffer)));
+		max_factor				= float(atof(_GetItem(pSettings->r_string(section,line),4,buffer)));
 	}
 };
 
