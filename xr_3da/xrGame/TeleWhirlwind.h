@@ -27,12 +27,14 @@ public:
 	virtual		void				switch_state			(ETelekineticState new_state);
 	virtual		bool				destroy_object			(const Fvector dir,float val);
 
+
 };
 
 class CTeleWhirlwind : public CTelekinesis
 {
 typedef	CTelekinesis inherited;
 		Fvector				m_center;
+		float				m_keep_radius;
 		CGameObject*		m_owner_object;
 		PH_IMPACT_STORAGE	m_saved_impacts;
 		shared_str			m_destroying_particles;
@@ -50,6 +52,7 @@ public:
 virtual void					clear					()										;
 virtual	void					clear_notrelevant		()										;
 virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}
+		float					keep_radius				()										{return m_keep_radius;}
 };
 
 

@@ -11,6 +11,7 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 {
 	m_owner_object=NULL;
 	m_center.set(0.f,0.f,0.f);
+	m_keep_radius=1.f;
 }
 void CTeleWhirlwind::clear_impacts()
 {
@@ -76,10 +77,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 				obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
 				obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 			}
-			else
-			{
 
-			}
 
 			return result;
 }
@@ -114,7 +112,7 @@ void		CTeleWhirlwindObject::		release					()
 	}
 	else
 	{
-		dir_inv.set(0,-1.f,0);
+		dir_inv.random_dir();
 		impulse=throw_power*100.f;
 	}
 /////////////////////////////////////////////////
@@ -153,16 +151,17 @@ void		CTeleWhirlwindObject::		raise					(float step)
 {
 
 		CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
+	
 		if(!p||!p->bActive)	
 			return;
 		else
 			{
 				p->SetAirResistance(0.f,0.f);
-				p->set_ApplyByGravity(FALSE);
+				p->set_ApplyByGravity(TRUE);
 			}
 		u16				element_number		=	p				->get_ElementsNumber();
 		Fvector			center				=	m_telekinesis	->Center();
-
+		CPhysicsElement* maxE=p->get_ElementByStoreOrder(0);
 		for(u16 element=0;element<element_number;++element)
 		{
 			float k=strength;//600.f;
@@ -170,6 +169,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			float mag_eps	   =.1f;
 
 			CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
+			if(maxE->getMass()<E->getMass())	maxE=E;
 			if (!E->bActive) continue;
 			Fvector pos=E->mass_Center();
 
@@ -188,7 +188,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			if(mag<mag_eps)
 			{
 				accel=k/mag_eps/mag_eps/mag_eps;
-				Fvector zer;zer.set(0,0,0);
+				//Fvector zer;zer.set(0,0,0);
 				//E->set_LinearVel(zer);
 				dir.set(0.f,-1.f,0.f);
 			}
@@ -224,38 +224,62 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			{
 				force.mul(accel*E->getMass());
 			}
-
-
-			//float cur_vel_to_center=vel.dotproduct(dir);
-			//
-			//Fvector v_to_c; v_to_c.set(dir);v_to_c.mul(cur_vel_to_center);
-			//Fvector tangent_vel; tangent_vel.sub(vel,v_to_c);
-			//float  t_vel=tangent_vel.magnitude();
-
-			//float predict_vel_to_center=cur_vel_to_center+delta_v;
-			//float max_vel_to_center=mag/fixed_step;
-			//Fvector force;force.set(dir);
-			//if(abs(predict_vel_to_center)>abs(max_vel_to_center))
-			//{
-			//	
-			//	float	max_delta_v=cur_vel_to_center-max_vel_to_center;
-			//	force.mul(E->getMass()*max_delta_v/fixed_step);////1.f/mag*E->getMass()*max_vel_to_center*fixed_step
-			//}
-			//else
-			//{
-			//	force.mul(accel*E->getMass());
-			//}
-	
-
-		
-			E->applyForce(force.x,force.y,force.z);
+			
+			
+			E->applyForce(force.x,force.y+world_gravity*E->getMass(),force.z);
+		}
+		Fvector dist;dist.sub(center,maxE->mass_Center());
+		if(dist.magnitude()<m_telekinesis->keep_radius())
+		{
+			p->set_LinearVel(Fvector().set(0,0,0));
+			p->set_AngularVel(Fvector().set(0,0,0));
+			switch_state(TS_Keep);
 		}
 }
 
 
 void		CTeleWhirlwindObject::		keep					()
 {
-	//inherited::keep();
+	CPhysicsShell*	p					=	get_object()	->PPhysicsShell();
+	if(!p||!p->bActive)	
+		return;
+	else
+	{
+		p->SetAirResistance(0.f,0.f);
+		p->set_ApplyByGravity(FALSE);
+	}
+
+	u16				element_number		=	p				->get_ElementsNumber();
+	Fvector			center				=	m_telekinesis	->Center();
+
+	CPhysicsElement* maxE=p->get_ElementByStoreOrder(0);
+	for(u16 element=0;element<element_number;++element)
+	{
+		
+		CPhysicsElement* E=	p->get_ElementByStoreOrder(element);
+		if(maxE->getMass()<E->getMass())maxE=E;
+		Fvector			dir;dir.sub(center,E->mass_Center());
+		dir.normalize_safe();
+		Fvector vel;
+		E->get_LinearVel(vel);
+		float force=dir.dotproduct(vel)*E->getMass()/2.f;
+		if(force<0.f)
+		{
+			dir.mul(force);
+			E->applyForce(dir.x,dir.y+world_gravity*E->getMass(),dir.z);
+		}
+	}
+	
+	maxE->setTorque(Fvector().set(0,500.f,0));
+
+	Fvector dist;dist.sub(center,maxE->mass_Center());
+	if(dist.magnitude()>m_telekinesis->keep_radius()*1.5f)
+	{
+		p->set_LinearVel(Fvector().set(0,0,0));
+		p->set_AngularVel(Fvector().set(0,0,0));
+		switch_state(TS_Raise);
+	}
+
 }
 void		CTeleWhirlwindObject::		fire					(const Fvector &target)
 {
