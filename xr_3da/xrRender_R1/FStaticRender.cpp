@@ -46,6 +46,10 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 void					CRender::create					()
 {
 	::Device.Resources->SetHLSL_path("R1\\");
+	::Device.Resources->RegisterConstantSetup("L_dynamic_pos",		&r1_dlight_binder_PR);
+	::Device.Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
+	::Device.Resources->RegisterConstantSetup("L_dynamic_xform",	&r1_dlight_binder_xform);
+
 	Models						= xr_new<CModelPool>		();
 	L_Dynamic					= xr_new<CLightR_Manager>	();
 
@@ -169,9 +173,6 @@ IC		void			gm_SetNearer		(BOOL bNearer)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender	()
 {
-	Device->Resources->RegisterConstantSetup("L_dynamic_pos",	&r1_dlight_binder_PR)
-	Device->Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
-	Device->Resources->RegisterConstantSetup("L_dynamic_xform",	&r1_dlight_binder_xform);
 }
 
 CRender::~CRender	()
