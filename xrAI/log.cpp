@@ -198,7 +198,8 @@ void __cdecl logThread(void *dummy)
 			_process_messages	( );
 			Sleep				(1);
 		}
-		if (progress>1.f) progress=1.f;
+		if (progress>1.f)		progress = 1.f;
+		else if (progress<0)	progress = 0;
 
 		BOOL bWasChanges = FALSE;
 		char tbuf	[256];
