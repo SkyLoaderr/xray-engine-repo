@@ -207,12 +207,7 @@ u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	P.BackBufferCount		= 1;
 
 	// Multisample
-	if ((!bWindowed) && psDeviceFlags.is(rsAntialias))
-	{
-		P.MultiSampleType	= D3DMULTISAMPLE_2_SAMPLES;
-	} else {
-	    P.MultiSampleType	= D3DMULTISAMPLE_NONE;
-	}
+    P.MultiSampleType		= D3DMULTISAMPLE_NONE;
 	P.MultiSampleQuality	= 0;
 
 	// Windoze

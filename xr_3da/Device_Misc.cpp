@@ -10,12 +10,9 @@ static struct _DF {
 	u32	mask;
 } DF[] = {
 	{"rsFullscreen",	rsFullscreen	},
-	{"rsTriplebuffer",	rsTriplebuffer  },
 	{"rsClearBB",		rsClearBB 		},
 	{"rsNoVSync",		rsNoVSync 		},
 	{"rsWireframe",		rsWireframe		},
-	{"rsAntialias",		rsAntialias		},
-	{"rsNormalize",		rsNormalize		},
     {NULL,0}
 };
 
