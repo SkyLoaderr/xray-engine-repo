@@ -95,7 +95,6 @@ MotionID CStalkerAnimationManager::unknown_object_animation(u32 slot, const EBod
 #endif
 		default : {
 			if (eMentalStateFree == object().movement().mental_state()) {
-				//. hack
 				R_ASSERT3	(eBodyStateStand == object().movement().body_state(),"Cannot run !free! animation when body state is not stand!",*object().cName());
 				if ((eMovementTypeStand == object().movement().movement_type()) || fis_zero(object().movement().speed(object().m_PhysicMovementControl)))
 					return m_part_animations.A[body_state].m_torso.A[slot].A[9].A[1];

@@ -46,8 +46,16 @@ void CAttachmentOwner::reinit	()
 
 void CAttachmentOwner::net_Destroy()
 {
-	while (!attached_objects().empty())
-		detach					(*attached_objects().begin());
+#ifdef DEBUG
+	if (!attached_objects().empty()) {
+		Msg						("Object %s has attached items :",*smart_cast<CGameObject*>(this)->cName());
+		xr_vector<CAttachableItem*>::const_iterator	I = attached_objects().begin();
+		xr_vector<CAttachableItem*>::const_iterator	E = attached_objects().end();
+		for ( ; I != E; ++I)
+			Msg					("* %s",*(*I)->cName());
+	}
+#endif
+	R_ASSERT					(attached_objects().empty());
 }
 
 void CAttachmentOwner::renderable_Render		()
