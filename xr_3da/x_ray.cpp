@@ -58,7 +58,7 @@ void Startup()
 
 	BOOL bCaptureInput			= !strstr(Engine.Params,"-i");
 #ifdef DEBUG
-	bCaptureInput				= FALSE;
+	bCaptureInput				= !bCaptureInput;
 #endif
 
 	pInput						= new CInput		(bCaptureInput);
