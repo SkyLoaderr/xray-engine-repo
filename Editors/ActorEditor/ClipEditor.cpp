@@ -433,12 +433,12 @@ void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TClipMaker::BPOnPaint(TObject *Sender)
+void __fastcall TClipMaker::BPPaint(TObject *Sender)
 {
-	TGradient* bp 		= dynamic_cast<TGradient*>(Sender); VERIFY(bp);
+	TControlBar* bp 		= dynamic_cast<TControlBar*>(Sender); VERIFY(bp);
     CEditableObject* O	= 	m_CurrentObject;
     if (O&&(bp->Tag<(int)O->BoneParts().size())){
-        TCanvas* canvas 	= bp->GetCanvas();
+        TCanvas* canvas 	= bp->Canvas;
         canvas->Font->Name 	= "MS Sans Serif";
         canvas->Font->Style	= TFontStyles();
         canvas->Font->Color = clBlack;
@@ -491,10 +491,8 @@ void TClipMaker::RealRepaintClips()
 	paFrame->Width		= m_TotalLength*m_Zoom;
     // repaint
     gtClip->Repaint		();
-    gtBP0->Repaint		();
-    gtBP1->Repaint		();
-    gtBP2->Repaint		();
-    gtBP3->Repaint		();          
+    // paint BP
+    BPPaint				(paBP0);
 	// set BP name                   
     CEditableObject* O	= m_CurrentObject;
     u32 k				= 0;

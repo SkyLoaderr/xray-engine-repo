@@ -56,7 +56,7 @@ object ClipMaker: TClipMaker
         BorderStyle = bsNone
         TabOrder = 0
         object paFrame: TPanel
-          Left = 21
+          Left = 97
           Top = 0
           Width = 241
           Height = 121
@@ -65,24 +65,6 @@ object ClipMaker: TClipMaker
           ParentColor = True
           TabOrder = 0
           object Bevel6: TBevel
-            Left = 0
-            Top = 34
-            Width = 241
-            Height = 1
-            Align = alTop
-            Shape = bsBottomLine
-            Style = bsRaised
-          end
-          object Bevel7: TBevel
-            Left = 0
-            Top = 82
-            Width = 241
-            Height = 1
-            Align = alTop
-            Shape = bsBottomLine
-            Style = bsRaised
-          end
-          object Bevel8: TBevel
             Left = 0
             Top = 50
             Width = 241
@@ -102,6 +84,24 @@ object ClipMaker: TClipMaker
           end
           object Bevel3: TBevel
             Left = 0
+            Top = 34
+            Width = 241
+            Height = 1
+            Align = alTop
+            Shape = bsBottomLine
+            Style = bsRaised
+          end
+          object Bevel7: TBevel
+            Left = 0
+            Top = 82
+            Width = 241
+            Height = 1
+            Align = alTop
+            Shape = bsBottomLine
+            Style = bsRaised
+          end
+          object Bevel8: TBevel
+            Left = 0
             Top = 66
             Width = 241
             Height = 1
@@ -117,7 +117,7 @@ object ClipMaker: TClipMaker
             Height = 18
             Align = alTop
             BevelOuter = bvNone
-            Color = 6316128
+            Color = 5460819
             TabOrder = 0
             OnDragDrop = ClipDragDrop
             OnDragOver = ClipDragOver
@@ -156,125 +156,75 @@ object ClipMaker: TClipMaker
             Align = alTop
             OnPaint = gtClipPaint
           end
-          object gtBP0: TGradient
-            Left = 0
-            Top = 19
-            Width = 241
-            Height = 15
-            BeginColor = 5460819
-            EndColor = 6908265
-            NumberOfColors = 32
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            Caption = ' '
-            TextTop = 5
-            TextLeft = 12
-            Border = True
-            BorderWidth = 0
-            BorderColor = clGray
-            Color = 5460819
-            Align = alTop
-            OnPaint = BPOnPaint
-          end
-          object gtBP3: TGradient
+          object paBP3: TControlBar
             Tag = 3
             Left = 0
             Top = 67
             Width = 241
             Height = 15
-            BeginColor = 5460819
-            EndColor = 6908265
-            NumberOfColors = 32
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            Caption = ' '
-            TextTop = 5
-            TextLeft = 12
-            Border = True
-            BorderWidth = 0
-            BorderColor = clGray
-            Color = 5460819
             Align = alTop
-            OnPaint = BPOnPaint
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BevelKind = bkNone
+            Color = 6316128
+            ParentColor = False
+            TabOrder = 2
           end
-          object gtBP2: TGradient
+          object paBP2: TControlBar
             Tag = 2
             Left = 0
             Top = 51
             Width = 241
             Height = 15
-            BeginColor = 5460819
-            EndColor = 6908265
-            NumberOfColors = 32
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            Caption = ' '
-            TextTop = 5
-            TextLeft = 12
-            Border = True
-            BorderWidth = 0
-            BorderColor = clGray
-            Color = 5460819
             Align = alTop
-            OnPaint = BPOnPaint
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BevelKind = bkNone
+            Color = 6316128
+            ParentColor = False
+            TabOrder = 3
           end
-          object gtBP1: TGradient
+          object paBP1: TControlBar
             Tag = 1
             Left = 0
             Top = 35
             Width = 241
             Height = 15
-            BeginColor = 5460819
-            EndColor = 6908265
-            NumberOfColors = 32
-            Font.Charset = DEFAULT_CHARSET
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'MS Sans Serif'
-            Font.Style = [fsBold]
-            Caption = ' '
-            TextTop = 5
-            TextLeft = 12
-            Border = True
-            BorderWidth = 0
-            BorderColor = clGray
-            Color = 5460819
             Align = alTop
-            OnPaint = BPOnPaint
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BevelKind = bkNone
+            Color = 6316128
+            ParentColor = False
+            TabOrder = 4
+          end
+          object paBP0: TControlBar
+            Left = 0
+            Top = 19
+            Width = 241
+            Height = 15
+            Align = alTop
+            BevelInner = bvNone
+            BevelOuter = bvNone
+            BevelKind = bkNone
+            Color = 6316128
+            ParentColor = False
+            TabOrder = 5
           end
         end
-        object Gradient1: TGradient
+        object ControlBar1: TControlBar
+          Tag = 3
           Left = 0
           Top = 0
-          Width = 21
+          Width = 97
           Height = 121
-          BeginColor = 5460819
-          EndColor = 6908265
-          FillDirection = fdUpToBottom
-          NumberOfColors = 32
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = [fsBold]
-          Caption = ' '
-          TextTop = 5
-          TextLeft = 12
-          Border = True
-          BorderWidth = 0
-          BorderColor = clGray
-          Color = 5460819
           Align = alLeft
-          OnPaint = gtClipPaint
+          BevelInner = bvNone
+          BevelOuter = bvNone
+          BevelKind = bkNone
+          Color = 6316128
+          ParentColor = False
+          TabOrder = 1
         end
       end
     end
