@@ -492,7 +492,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 const dReal spring_rate=0.5f;
 const dReal dumping_rate=20.1f;
 void CPHSimpleCharacter::InitContact(dContact* c){
-	
+		*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_geom_shell))->tri_material;
 		bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform;
 		if(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform){//
 		dNormalize3(m_control_force);

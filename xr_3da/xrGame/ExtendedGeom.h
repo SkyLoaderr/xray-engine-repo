@@ -38,6 +38,7 @@ struct dxGeomUserData
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
 	u32			material;
+	u32			tri_material;
 //	struct ContactsParameters
 //	{
 //	dReal damping;
@@ -60,6 +61,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 	((dxGeomUserData*)dGeomGetData(geom))->last_pos[2]=-dInfinity;
 	((dxGeomUserData*)dGeomGetData(geom))->ph_object=NULL;
 	((dxGeomUserData*)dGeomGetData(geom))->material=0;
+	((dxGeomUserData*)dGeomGetData(geom))->tri_material=0;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::mu=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::damping=1.f;
 	//((dxGeomUserData*)dGeomGetData(geom))->ContactsParameters::spring=1.f;

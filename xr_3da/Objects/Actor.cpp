@@ -234,6 +234,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	ph_Movement.CreateCharacter();
+	ph_Movement.SetPLastMaterial(&last_gmtl_id);
 	ph_Movement.SetPosition	(vPosition);
 	ph_Movement.SetVelocity	(0,0,0);
 
@@ -1226,6 +1227,7 @@ void CActor::create_Skeleton(){
 	CPhysicsElement* element=P_create_Element				();
 	element->mXFORM.set(m1);
 	instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
+
 	element->add_Box(M->LL_GetBox(id));
 	//Fsphere sphere;
 	//sphere.P.set(0,0,0);

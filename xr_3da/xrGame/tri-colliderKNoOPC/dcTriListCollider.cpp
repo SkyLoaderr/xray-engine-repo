@@ -565,6 +565,7 @@ const dReal* v2=(dReal*)T->verts[2];
 					Contacts->pos[2]=ContactPos[2];
 					Contacts->g1 = Geometry;
 					Contacts->g2 = Sphere;
+					((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
 					SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
 					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
 					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
@@ -623,7 +624,7 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					Contacts->pos[2]=ContactPos[2];
 					Contacts->g1 = Geometry;
 					Contacts->g2 = Sphere;
-
+					((dxGeomUserData*)dGeomGetData(Sphere))->tri_material=T->material;
 					SURFACE(Contacts,0)->mu=GMLib.GetMaterial(T->material)->fPHFriction;
 					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
 					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;

@@ -82,6 +82,7 @@ dVector3 previous_p1;
 dReal previous_v;
 UINT dis_count_f;
 UINT dis_count_f1;
+u32* p_lastMaterial;
 /////////////////////////////////////////////////////////////////////////////
 
 void Disable										();
@@ -89,6 +90,7 @@ public:
 bool b_exist;
 float m_update_time;
 public:
+void		SetPLastMaterial						(u32* p){p_lastMaterial=p;}
 void		SetMaximumVelocity						(dReal vel){m_max_velocity=vel; }
 void		SetJupmUpVelocity								(dReal velocity){jump_up_velocity=velocity;}
 const Fvector&	Position									() {return m_position;}
