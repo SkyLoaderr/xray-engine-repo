@@ -76,14 +76,14 @@ u32					smem_container::stat_economy	()
 	cs.Enter		();
 	cdb::iterator	it		= container.begin	();
 	cdb::iterator	end		= container.end		();
-	s32				counter	= 0;
+	s64				counter	= 0;
 	for (; it!=end; it++)	{
-		counter		+=		(*it)->dwReference * (*it)->dwLength;
-		counter		-=		(*it)->dwLength;
+		counter		+=		s64( s64((*it)->dwReference) * s64((*it)->dwLength) );
+		counter		-=		s64( (*it)->dwLength );
 	}
 	cs.Leave		();
 
-	return			u32(counter);
+	return			u32(s64(counter)/s64(1024));
 }
 
 smem_container::~smem_container	()

@@ -57,16 +57,55 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
+extern __declspec(dllimport)	size_t	__cdecl lua_memusage	();
 class CCC_MemStat : public IConsole_Command
 {
 public:
 	CCC_MemStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-		Memory.mem_statistic();
-		Msg	("* ----- shared memory -----");
-		g_pSharedMemoryContainer->dump();
-		Msg	("* ----- string storage -----");
-		g_pStringContainer->dump();
+		Memory.mem_statistic				();
+		Msg	("* ----- lua VM storage -----"	);
+		Msg ("- %d bytes",u32(lua_memusage()));
+		Msg	("* ----- string storage -----"	);
+		g_pStringContainer->dump			();
+		Msg	("* ----- shared memory -----"	);
+		g_pSharedMemoryContainer->dump		();
+	}
+};
+static void vminfo (size_t *free, size_t *reserved, size_t *committed) {
+	MEMORY_BASIC_INFORMATION memory_info;
+	memory_info.BaseAddress = 0;
+	*free = *reserved = *committed = 0;
+	while (VirtualQuery (memory_info.BaseAddress, &memory_info, sizeof (memory_info))) {
+		switch (memory_info.State) {
+		case MEM_FREE:
+			*free += memory_info.RegionSize;
+			break;
+		case MEM_RESERVE:
+			*reserved += memory_info.RegionSize;
+			break;
+		case MEM_COMMIT:
+			*committed += memory_info.RegionSize;
+			break;
+		}
+		memory_info.BaseAddress = (char *) memory_info.BaseAddress + memory_info.RegionSize;
+	}
+}
+class CCC_MemStats : public IConsole_Command
+{
+public:
+	CCC_MemStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		Memory.mem_compact		();
+		size_t  w_free, w_reserved, w_committed;
+		vminfo	(&w_free, &w_reserved, &w_committed);
+		u32		_total			= Memory.mem_usage	();
+		u32		_lua			= u32 (lua_memusage());
+		u32		_eco_strings	= g_pStringContainer->stat_economy			();
+		u32		_eco_smem		= g_pSharedMemoryContainer->stat_economy	();
+		Msg		("*[win32]: free[%d K], reserved[%d K], committed[%d K]",w_free/1024,w_reserved/1024,w_committed/1024);
+		Msg		("*[x-ray]: total[%d K], lua[%d K]",_total/1024,_lua/(1024*1024));
+		Msg		("*[x-ray]: economy: strings[%d K], smem[%d K]",_eco_strings/1024,_eco_smem);
 	}
 };
 //-----------------------------------------------------------------------
@@ -309,11 +348,12 @@ void CCC_Register()
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
 
-	CMD1(CCC_MotionsStat,"stat_motions"			);
+	CMD1(CCC_MotionsStat,	"stat_motions"		);
+	CMD1(CCC_MemStats,		"stat_memory"		);
+	CMD1(CCC_MemStat,		"stat_mem_dump"		);
 
 	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
 #ifdef DEBUG
-	CMD1(CCC_MemStat,	"stat_mem"				);
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);
