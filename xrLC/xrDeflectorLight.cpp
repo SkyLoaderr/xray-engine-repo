@@ -5,9 +5,9 @@
 #include "std_classes.h"
 #include "xrImage_Resampler.h"
 
-const	DWORD	rms_zero		= 8;
-const	DWORD	rms_shrink		= 16;
-const	DWORD	rms_discard		= 16;
+const	DWORD	rms_zero		= 4;
+const	DWORD	rms_shrink		= 8;
+const	DWORD	rms_discard		= 8;
 
 void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
 {
