@@ -140,6 +140,10 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 	}
 
 	bNeedToTurn = !getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, min_angle);
+	bool bMoveLeft = false;
+
+	if (((r_torso_current.yaw < PI) && (r_torso_current.yaw + PI > r_torso_target.yaw)) ||
+		!((r_torso_current.yaw > PI) && (r_torso_current.yaw - PI < r_torso_target.yaw))) bMoveLeft = true;
 
 	// необходим поворот?
 	if (bNeedToTurn) {
@@ -148,12 +152,15 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 			r_torso_speed	= PI;
 			m_fCurSpeed		= PI;
 
-			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, PI))
-				// right
-				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
-			else 
-				// left
-				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+			if (bMoveLeft) vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
+			else vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+			
+//			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, PI))
+//				// right
+//				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+//			else 
+//				// left
+//				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
 
 		} else if (m_tMovementType == eMovementTypeWalk) {				// поворот в ходьбе
 
@@ -165,12 +172,15 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 				m_fCurSpeed		= PI_DIV_4;
 				r_torso_speed	= PI_DIV_2;
 
-				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
-					// right
-					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
-				else 
-					// left
-					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
+				if (bMoveLeft) vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+				else vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);
+
+//				if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
+//					// right
+//					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
+//				else 
+//					// left
+//					vfSetMotionActionParams(m_tBodyState, eMovementTypeWalk, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
 			}
 
 		} else {				// поворот на месте
