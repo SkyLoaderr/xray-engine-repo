@@ -130,7 +130,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			getAI().ref_add  (AI_NodeID);
 		}
 	}
-	Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
+	//Msg			("--spawn--ai-node: %f ms",1000.f*T.GetAsync());
 
 	// Phantom
 	// respawnPhantom			= E->ID_Phantom;

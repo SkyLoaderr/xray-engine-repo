@@ -77,6 +77,6 @@ void CLevel::ClientReceive()
 
 		T.Stop		();
 		u32			m1	= Memory.stat_calls;
-		Msg			("--spawn--TOTAL: %f ms, %d mo",1000.f*T.Get(),m1-m0);
+		//Msg			("--spawn--TOTAL: %f ms, %d mo",1000.f*T.Get(),m1-m0);
 	}
 }
