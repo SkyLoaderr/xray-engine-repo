@@ -196,6 +196,7 @@ function options_dialog:HideAllTabs()
 	self.tab_sound:Show(false)
 	self.tab_game:Show(false)
 	self.tab_controls:Show(false)
+	self.tab_profiles:Show(false)
 end
 
 function options_dialog:OnButton_video()
