@@ -85,7 +85,7 @@ public:
 
 		// loading graph
 		strconcat			(caFileName,S,"level.graph");
-		CVirtualFileStream		F(S);
+		CVirtualFileStream		F(caFileName);
 		m_tGraphHeader.dwVersion		= F.Rdword();
 		m_tGraphHeader.dwVertexCount	= F.Rdword();
 		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount = F.Rdword());
@@ -246,9 +246,9 @@ void xrMergeGraphs()
 		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
 		Memory.mem_copy				(S1,V,strlen(V) + 1);
 		strconcat					(S2,"gamedata\\levels\\",S1);
-		//strconcat					(S1,S2,"\\level.graph");
+		strconcat					(S1,S2,"\\");//level.graph");
 		u32							id = Ini->ReadINT(N,"id");
-		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S2,dwOffset,id)));
+		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S1,dwOffset,id)));
 		dwOffset					+= tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
 		tGraphHeader.tpLevels.push_back(tLevel);
     }
