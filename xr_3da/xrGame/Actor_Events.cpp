@@ -79,7 +79,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 						pGameSP->InventoryMenu.AddItemToBag(smart_cast<CInventoryItem*>(O));
 					}
 				}
-
+				
+				CWeapon* pWeapon = smart_cast<CWeapon*>(O);
+				if (pWeapon) SelectBestWeapon();
 			} 
 			else 
 			{
@@ -88,7 +90,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				P.w_u16(u16(O->ID()));
 				u_EventSend(P);
 			}
-
 		}
 		break;
 	case GE_TRADE_SELL:
@@ -110,6 +111,8 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				feel_touch_deny(O,2000);
 			}
 
+			CWeapon* pWeapon = smart_cast<CWeapon*>(O);
+			if (pWeapon) SelectBestWeapon();
 		}
 		break;
 	case GE_INV_ACTION:

@@ -609,6 +609,7 @@ protected:
 #endif
 		u32								m_iCurWeaponHideState;
 		void							Check_Weapon_ShowHideState	();
+		void							SelectBestWeapon	();
 public:
 		virtual void					HideCurrentWeapon		(u32 Msg);//, bool only2handed);
 		virtual	void					RestoreHidedWeapon		(u32 Msg);

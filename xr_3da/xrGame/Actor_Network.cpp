@@ -1567,6 +1567,28 @@ void		CActor::Check_Weapon_ShowHideState	()
 	}
 };
 
+static	u16 BestWeaponSlots [] = {
+	RIFLE_SLOT		,		// 2
+	PISTOL_SLOT		,		// 1
+	GRENADE_SLOT	,		// 3
+	KNIFE_SLOT		,		// 0
+};
+void CActor::SelectBestWeapon	()
+{
+	if (GameID() == GAME_SINGLE) return;
+	for (int i=0; i<4; i++)
+	{
+		if (inventory().m_slots[BestWeaponSlots[i]].m_pIItem)
+		{
+			if (inventory().GetActiveSlot() != BestWeaponSlots[i])
+			{
+				inventory().Activate(BestWeaponSlots[i]);
+			}
+			return;
+		};
+	};
+}
+
 void CActor::net_Save(NET_Packet& P)
 {
 #ifdef DEBUG
