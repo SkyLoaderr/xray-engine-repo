@@ -4,6 +4,13 @@
 	<!-- destroy name ID after next update  -->
 	<!-- PERSON INFORMATION  -->
 	
+	<character id="first_default_profile">
+		<!--<rank>none</rank>
+		<team>none</team>
+		-->
+		<>
+	</character>
+	
 	<character name_id="novice" id="default">
 		<name>Undefined Character</name>
 		<icon x="0" y="0"></icon>
@@ -12,7 +19,7 @@
 		<team>none</team>
 		<start_dialog></start_dialog>
 	</character>
-
+	
 	
 	<character name_id="novice" id="novice">
 		<name>Unknown Stalker</name>
