@@ -86,7 +86,7 @@ p2f 	p_main	( v2p_in IN )
   half3 Ns	= ((half3)Nu)*2 - half3(1,1,1);					// Signed normal
   half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), Ns);
   half3 NeN	= normalize	(Ne);								// texCUBE	(s_NCM,Ne);	
-  OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
-  OUT.C		= half4		(D.x,D.y,D.z,Nu.w);
+  OUT.Ne 	= half4		(NeN.x,	NeN.y,	NeN.z,	0);
+  OUT.C		= half4		(D.x,	D.y,	D.z,	Nu.w);
   return OUT;
 }
