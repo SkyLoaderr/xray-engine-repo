@@ -388,14 +388,14 @@ void CPHElement::PhDataUpdate(dReal step){
 
 
 	////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
-	bool b_valide=true;
+
 
 	if(!dV_valid(linear_velocity))
 	{
 		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
 		linear_velocity_smag=dDOT(m_safe_velocity,m_safe_velocity);
 		linear_velocity_mag =dSqrt(linear_velocity_smag);
-		b_valide=false;
+
 	}
 	else if(linear_velocity_mag>m_l_limit)
 	{
@@ -421,7 +421,7 @@ void CPHElement::PhDataUpdate(dReal step){
 			m_safe_position[1]-m_safe_velocity[1]*fixed_step,
 			m_safe_position[2]-m_safe_velocity[2]*fixed_step
 			);
-		b_valide=false;
+
 	}
 	else
 	{
@@ -435,7 +435,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	if(!dV_valid(angular_velocity))
 	{
 		dBodySetAngularVel(m_body,0.f,0.f,0.f);
-		b_valide=false;
+
 	}
 	else if(angular_velocity_mag>m_w_limit)
 	{
@@ -457,7 +457,7 @@ void CPHElement::PhDataUpdate(dReal step){
 		{
 
 			dBodySetQuaternion(m_body,m_safe_quaternion);
-			b_valide=false;
+
 		}
 		else dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 
@@ -466,7 +466,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////disable///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	if(dBodyIsEnabled(m_body)&&b_valide) Disabling();
+	if(dBodyIsEnabled(m_body)) Disabling();
 	if(!dBodyIsEnabled(m_body)) return;
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
