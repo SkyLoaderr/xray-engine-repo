@@ -3,269 +3,160 @@
 Чугай Саша
 
 Сделать:
-    - ждёт актёра по дороге к комнатке
-    - расстояние USE
-    - сказать про запутывания
-    - настоящие звуки
-    - анимации
-    - двери
+	- звуки
+	- переход от анимации к втыканию
+
 --------------------------------------------------------------------------------------------------------------------]]
 
-local prop_base           = xr_evaluators_id.chugai_barman_base
-local prop_barman         = prop_base
-local prop_bar            = prop_base + 1 -- тру = за стойкой, фолс = в комнате
-local prop_actor_is_close = prop_base + 2
+local prop_barman = xr_evaluators_id.chugai_barman_base
+local act_bar     = xr_actions_id.chugai_barman_base
 
-local act_base          = xr_actions_id.chugai_barman_base
-local act_bar           = act_base
-local act_small_room    = act_base + 1
-local act_look_at_actor = act_base + 2
+local walking, animating, in_room, in_bar = 0, 1, 2, 3
 
-local change_act_timeout
-
-local subtheme_misc      = 1
-local subtheme_idle_bar  = 2
-local subtheme_idle_room = 3
-
----------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "нужно стоять за стойкой" = "не нужно быть в комнатке"
----------------------------------------------------------------------------------------------------------------------
-class "evaluator_bar" ( property_evaluator )
-
-function evaluator_bar:__init( name ) super()
-end
-
-function evaluator_bar:evaluate()
-    return this.near_bar
-end
-
----------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "актёр близко"
----------------------------------------------------------------------------------------------------------------------
-class "evaluator_actor_is_close" ( property_evaluator )
-
-function evaluator_actor_is_close:__init( name, barman ) super()
-    self.barman = barman
-end
-
-function evaluator_actor_is_close:evaluate()
-    if not the_actor then
-        the_actor = level.actor()
-    end
-
-    return the_actor ~= nil and the_actor:position():distance_to_sqr( self.barman:position() ) < 6.25
-end
+local i, a, ra
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Действие "за стойкой"
 ----------------------------------------------------------------------------------------------------------------------
 class "action_bar" ( action_base )
 
-function action_bar:__init( name, bar_point )  super ( nil, name )
-    self.bar_point = bar_point
+function action_bar:__init( name )  super ( nil, name )
+	self.move_mgr = move_mgr.move_mgr()
+	self.state = walking
 end
 
 function action_bar:initialize()
-    action_base.initialize( self )
+	action_base.initialize( self )
 
-    self.object:set_sight               ( look.direction, this.path:point( self.bar_point + 1 ):sub( self.object:position() ), 0 )
-    self.object:set_movement_type       ( move.stand )
-    self.object:set_mental_state        ( anim.free )
-    self.object:set_item                ( object.idle, nil )
+	self.move_mgr:initialize( self.object )
 
-    self.turn_end = game.time() + 12000
-
-    -- close door
+	if a.path == a.path_bar then
+		self.move_mgr:reset( a.path_bar, a.path_bar_info, a.path_bar_look, a.path_bar_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	elseif a.path == a.path_bar2room then
+		self.move_mgr:reset( a.path_bar2room, a.path_bar2room_info, a.path_bar2room_look, a.path_bar2room_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	elseif a.path == a.path_room2bar then
+		self.move_mgr:reset( a.path_room2bar, a.path_room2bar_info, nil, nil, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	end
 end
 
 function action_bar:execute()
-    action_base.execute( self )
+	action_base.execute( self )
 
-    if self.turn_end and self.turn_end < game.time() then
-        for i = 1, math.random( 1 ) + 1 do 
-            self.object:add_animation( "komandir_4", true )
-        end
-
-        self.turn_end = nil
-    end
-
-    if self.object:animation_count() == 1 then
-        self.bar_point = this.SendToBar( self.object, self.bar_point )
-    end
-
-    xr_sounds.set_sound( self.object, this.snds_idle_bar )
-
-    this.check_change( self.object )
+	if self.state == walking then
+		self.move_mgr:update()
+	elseif self.state == animating then
+		if self.object:animation_count() == 0 then
+			self.state = walking
+			self.move_mgr:update_movement_state()
+		end
+	end
 end
 
 function action_bar:finalize()
-    action_base.finalize( self )
+	action_base.finalize( self )
+
+	-- чтобы вызвался move_mgr:update() при возврате к этому действию
+	self.state = walking
 end
 
-----------------------------------------------------------------------------------------------------------------------
--- Действие "в каморке"
-----------------------------------------------------------------------------------------------------------------------
-class "action_small_room" ( action_base )
+function action_bar:move_cb( mode, num )
+	printf( "move callback num = %d", num )
 
-function action_small_room:__init( name )  super ( nil, name )
+	if num == animating then
+		self.state = num
+
+		i = random_choice_weighted{ 30, 10, 20 }
+		if i == 1 then
+			for j = 1, math.random( 4 ) do
+				self.object:add_animation( random_choice( "idle_0_idle_0", "idle_0_idle_1", "idle_0_idle_4" ), true )
+			end
+		elseif i == 2 then
+			self.object:add_animation( random_choice( "idle_0_idle_5", "idle_0_idle_6" ), true )
+		else
+			self.object:add_animation( "idle_0_idle_7_0", true )
+			self.object:add_animation( "idle_0_idle_7_1", true )
+			self.object:add_animation( "idle_0_idle_7_2", true )
+		end
+	elseif num == in_room then
+		self.state = num
+
+		ra.restriction = false
+		self.object:set_start_dialog( "barman_room" )
+
+		self.move_mgr:reset_path_info()
+	elseif num == in_bar then
+		self.state = walking
+
+		ra.restriction = false
+		self.object:set_start_dialog( "barman_bar" )
+
+		a.path = a.path_bar
+		self.move_mgr:reset( a.path_bar, a.path_bar_info, a.path_bar_look, a.path_bar_look_info, nil,
+		                     { walk=true }, { obj=self, func=self.move_cb } )
+	end
+
+	return true
 end
 
-function action_small_room:initialize()
-    action_base.initialize( self )
-
-    self.object:set_sight               ( look.direction, vector():set( 1, 0, 0 ), 0 )
-    self.object:set_movement_type       ( move.stand )
-    self.object:set_mental_state        ( anim.free )
-    self.object:set_item                ( object.idle, nil )
-
-    self.turn_end = game.time() + 25000
-
-    self.object:enable_talk()
-    self.object:set_start_dialog( "barman_room" )
-
-    --close door
-end
-
-function action_small_room:execute()
-    action_base.execute( self )
-
-    if self.turn_end < game.time() then
-        if self.object:animation_count() < 3 then
-            self.object:add_animation( "komandir_4", true )
-        end
-
-        if not self.object:is_talking() then
-            xr_sounds.set_sound( self.object, this.snds_idle_room )
-        end
-    end
-
-    this.check_change( self.object )
-end
-
-function action_small_room:finalize()
-    action_base.finalize( self )
-
-    self.object:disable_talk()
-end
-
-----------------------------------------------------------------------------------------------------------------------
--- Действие "втыкать на актёра"
-----------------------------------------------------------------------------------------------------------------------
-class "action_look_at_actor" ( action_base )
-
-function action_look_at_actor:__init( name )  super ( nil, name )
-end
-
-function action_look_at_actor:initialize()
-    action_base.initialize( self )
-
-    self.object:clear_animations()
-
-    self.object:set_movement_type       ( move.stand )
-    self.object:set_mental_state        ( anim.free )
-    self.object:set_item                ( object.idle, nil )
-
-    self.object:enable_talk()
-    self.object:set_start_dialog( "barman_bar" )
-
-    xr_sounds.play_sound( self.object, 0, "barman", subtheme_misc, 2, 1 )
-end
-
-function action_look_at_actor:execute()
-    action_base.execute( self )
-    
-    self.object:set_sight( look.direction, vector():set( the_actor:position() ):sub( self.object:position() ), 0 )
-
---    xr_sounds.set_sound( self.object, this.snds_idle_bar )
-
-    this.check_change( self.object )
-end
-
-function action_look_at_actor:finalize()
-    action_base.finalize( self )
-
-    self.object:disable_talk()
-end
-
-----------------------------------------------------------------------------------------------------------------------
-function check_change( npc )
-    if change_act_timeout and change_act_timeout < game.time() then
-        if this.near_bar then
-            xr_position.setPosition( npc, this.path:level_vertex_id( 8 ) )
-            xr_sounds.play_sound( npc, 0, "barman", subtheme_misc, 1, random_choice( 8, 9 ) )
-        else
-            this.SendToBar( npc )
-        end
-
-        npc:set_sight( look.danger, nil, 0 )
-
-        this.near_bar = not this.near_bar
-        change_act_timeout = nil
-    end
-end
-
-function SendToBar( npc, old_point )
-    local p
-
-    repeat
-        p = math.random( 0, 3 ) * 2
-    until p ~= old_point
-
-    xr_position.setPosition( npc, this.path:level_vertex_id( p ) )
-
-    return p
-end
 ----------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc )
-    this.path = patrol( "way_barman" )
+	a = {}
 
-    this.near_bar = true
-    xr_motivator.storage[npc:id()].state.dist = 0.01
-    local p = this.SendToBar( npc )
+	a.path_bar                = "bar"
+	a.path_bar_look           = "bar_look"
+	a.path_bar2room           = "bar2room"
+	a.path_bar2room_look      = "bar2room_look"
+	a.path_room2bar           = "room2bar"
+	a.path_bar_info           = utils.path_parse_waypoints( a.path_bar )
+	a.path_bar_look_info      = utils.path_parse_waypoints( a.path_bar_look )
+	a.path_bar2room_info      = utils.path_parse_waypoints( a.path_bar2room )
+	a.path_bar2room_look_info = utils.path_parse_waypoints( a.path_bar2room_look )
+	a.path_room2bar_info      = utils.path_parse_waypoints( a.path_room2bar )
 
-    -- sounds
-    this.snds_idle_bar  = xr_sounds.create_sound_constructor( "barman", subtheme_idle_bar )
-    this.snds_idle_room = xr_sounds.create_sound_constructor( "barman", subtheme_idle_room )
+	a.path = a.path_bar
 
-    -- GOAP
+	local manager = npc:motivation_action_manager()
 
-    local manager = npc:motivation_action_manager()
+	xr_motivator.storage[npc:id()].replics = { npc = npc }
+	ra = xr_motivator.storage[npc:id()].replics
 
-    manager:add_evaluator( prop_barman,         const_evaluator( true ) )
-    manager:add_evaluator( prop_bar,            this.evaluator_bar( "property_barman_bar" ) )
-    manager:add_evaluator( prop_actor_is_close, this.evaluator_actor_is_close( "property_actor_is_close", npc ) )
-    
-    local action = this.action_look_at_actor( "action_look_at_actor" )
-    action:add_effect( world_property( prop_actor_is_close, false ) )
-    manager:add_action( act_look_at_actor, action )
+	manager:add_evaluator( prop_barman, const_evaluator( true ) )
+	manager:add_evaluator( xr_evaluators_id.chugai_replics_base, xr_replics.evaluator_play( "property_play", ra ) )
 
-    action = this.action_bar( "action_bar", p )
-    action:add_precondition( world_property( xr_evaluators_id.position, true ) )
-    action:add_precondition( world_property( prop_bar, true ) )
-    action:add_precondition( world_property( prop_actor_is_close, false ) )
-    action:add_effect( world_property( prop_barman, false ) )
-    manager:add_action( act_bar, action )
+	local action = xr_replics.action_play( "action_play", ra )
+	action:add_effect( world_property( xr_evaluators_id.chugai_replics_base, false ) )
+	manager:add_action( xr_actions_id.chugai_replics_base, action )
 
-    action = this.action_small_room( "action_small_room" )
-    action:add_precondition( world_property( xr_evaluators_id.position, true ) )
-    action:add_precondition( world_property( prop_bar, false ) )
-    action:add_effect( world_property( prop_barman, false ) )
-    manager:add_action( act_small_room, action )
+	action = this.action_bar( "action_bar", a )
+	action:add_precondition( world_property( prop_barman, true ) )
+	action:add_precondition( world_property( xr_evaluators_id.chugai_replics_base, false ) )
+	action:add_effect( world_property( prop_barman, false ) )
+	manager:add_action( act_bar, action )
 
-    action = manager:action( stalker_ids.action_puzzle_solver )
-    action:add_precondition( world_property( prop_barman, false ) )
+	action = manager:action( stalker_ids.action_puzzle_solver )
+	action:add_precondition( world_property( prop_barman, false ) )
+
+	npc:set_start_dialog( "barman_bar" )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
 
 function to_small_room( barman, actor )
-    change_act_timeout = game.time() + 20000
---    open_door
+	ra.restriction = true
+	barman:disable_talk()
+	a.path = a.path_bar2room
 end
 
 function from_small_room( barman, actor )
-    change_act_timeout = game.time() + 20000
---  Открывай!
---  open_door
+	ra.restriction = true
+	barman:disable_talk()
+	a.path = a.path_room2bar
+end
+
+function about_bobik( barman, actor )
+	xr_replics.set_scenario( barman, "barman_test" )
 end
