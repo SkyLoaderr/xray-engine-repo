@@ -46,13 +46,14 @@ void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 
 			// decompression
 			void*	ptr			= SoundRender.cache.get_dataptr	(source->CAT,line);
+			void	seek_offs	= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
 
-//			Memory.mem_fill		(ptr,0,_min(size,line_size));	// debug only
 			int					dummy;
-			ov_pcm_seek			(&source->ovf,(psSoundFreq==sf_22K)?offset:offset/2);
+			ov_pcm_seek			(&source->ovf,seek_offs);
 			{
 				char* dest		= (char*)ptr;
-				u32	left		= _min(size,line_size);
+				u32 left_file	= source->dwBytesTotal - seek_offs;
+				u32	left		= _min(left_file,line_size);
 				while (left)
 				{
 					int ret		= ov_read(&source->ovf,dest,left,0,2,1,&dummy);
