@@ -74,7 +74,7 @@ function action_alive:execute()
 
 	self.object:set_sight				(look.search,nil,0);
 
-	self.object:set_object				(object.idle,nil);
+	self.object:set_item				(object.idle,nil);
 
 	self.object:set_path_type			(game_object.game_path)
 	self.object:set_detail_path_type	(path.line)
