@@ -7,6 +7,7 @@
 #include "alife_space.h"
 
 #define DEFAULT_CHARACTER_FILE "npc_profile.xml"
+#define NO_GOODWILL -1
 
 
 class CInventoryOwner;

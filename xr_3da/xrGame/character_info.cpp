@@ -124,7 +124,7 @@ int  CCharacterInfo::GetGoodwill (u16 person_id) const
 		return relation.Goodwill();
 	}
 	else
-		return -1;
+		return NO_GOODWILL;
 }
 void CCharacterInfo::SetGoodwill	(u16 person_id, int goodwill)
 {

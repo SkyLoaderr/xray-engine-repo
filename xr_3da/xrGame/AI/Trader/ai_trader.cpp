@@ -342,8 +342,6 @@ void CAI_Trader::DropItemSendMessage(CObject *O)
 void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
-	//inventory().Update			(dt);
-	//GetTrade()->UpdateTrade		();
 	UpdateInventoryOwner(dt);
 
 	if (GetScriptControl()) ProcessScripts();

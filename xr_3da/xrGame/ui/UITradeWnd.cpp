@@ -466,7 +466,7 @@ void CUITradeWnd::EnableAll()
 
 void CUITradeWnd::UpdatePrices()
 {
-	m_iOurTradePrice = CalcItemsPrice(&UIOurTradeList, m_pOthersTrade);
+	m_iOurTradePrice = CalcItemsPrice(&UIOurTradeList,		 m_pTrade);
 	m_iOthersTradePrice = CalcItemsPrice(&UIOthersTradeList, m_pOthersTrade);
 
 

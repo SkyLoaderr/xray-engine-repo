@@ -6,12 +6,10 @@ class CInventoryItem;
 class CEntity;
 
 struct TradeFactors {
-	float	TraderBuyPriceFactor;
-	float	TraderSellPriceFactor;
-	float	StalkerNeutralBuyPriceFactor;
-	float	StalkerNeutralSellPriceFactor;
-	float	StalkerFriendBuyPriceFactor;
-	float	StalkerFriendSellPriceFactor;
+	float   fBuyFactorHostile;
+	float   fBuyFactorFriendly;
+	float   fSellFactorHostile;
+	float   fSellFactorFriendly;
 
 	bool	Loaded;
 
@@ -63,9 +61,6 @@ public:
 	
 	bool		OfferTrade(SInventoryOwner man);					// man предлагает торговать
 	
-	void		ShowItems();
-	void		ShowMoney();
-	void		ShowArtifactPrices();
 	void		SellItem(int id);
 	void		SellItem(CInventoryItem* pItem);
 

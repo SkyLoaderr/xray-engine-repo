@@ -7,6 +7,8 @@
 #include "inventory.h"
 #include "xrmessages.h"
 
+#include "character_info.h"
+
 class CInventoryOwner;
 
 TradeFactors CTrade::m_tTradeFactors;
@@ -44,12 +46,11 @@ CTrade::CTrade(CInventoryOwner	*p_io)
 	// Загрузка коэффициентов торговли
 	if (!m_tTradeFactors.Loaded) 
 	{
-		m_tTradeFactors.TraderBuyPriceFactor			= pSettings->r_float("trade","trader_buy_price_factor");
-		m_tTradeFactors.TraderSellPriceFactor			= pSettings->r_float("trade","trader_sell_price_factor");
-		m_tTradeFactors.StalkerNeutralBuyPriceFactor	= pSettings->r_float("trade","stalker_neutral_buy_price_factor");
-		m_tTradeFactors.StalkerNeutralSellPriceFactor	= pSettings->r_float("trade","stalker_neutral_sell_price_factor");
-		m_tTradeFactors.StalkerFriendBuyPriceFactor		= pSettings->r_float("trade","stalker_friend_buy_price_factor");
-		m_tTradeFactors.StalkerFriendSellPriceFactor	= pSettings->r_float("trade","stalker_friend_sell_price_factor");
+		m_tTradeFactors.fBuyFactorHostile		= pSettings->r_float("trade","buy_price_factor_hostile");
+		m_tTradeFactors.fBuyFactorFriendly		= pSettings->r_float("trade","buy_price_factor_friendly");
+		m_tTradeFactors.fSellFactorHostile		= pSettings->r_float("trade","sell_price_factor_hostile");
+		m_tTradeFactors.fSellFactorFriendly		= pSettings->r_float("trade","sell_price_factor_friendly");
+
 		m_tTradeFactors.Loaded = true;
 	}
 }
@@ -218,89 +219,9 @@ void CTrade::StopTrade()
 
 void CTrade::UpdateTrade()
 {
-	/*if (TradeState) 
-	{
-		u32 cur_time = Level().timeServer();
-		
-		// если через 10 сек нет команды - прервать
-		if (m_dwLastTradeTime + 20000 < cur_time) 
-		{ 
-			StopTrade();
-		}
-	}*/
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-// Commands
-void CTrade::ShowItems()
-{
-	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { 
-		//Msg("I'm not ready to trade"); 
-		return;
-	}
-
-//	Msg("--TRADE:: ----------------------------------------------");
-//	Msg("--TRADE:: [%s]: Here are my items: ",*pThis.base->cName());
-
-	// определение коэффициента
-	float factor = 1.0f;
-	
-	if (pThis.type == TT_TRADER) {
-		factor = m_tTradeFactors.TraderSellPriceFactor;
-	} else {
-		if (pPartner.type == TT_TRADER) {
-			factor = m_tTradeFactors.TraderBuyPriceFactor;
-		} else if (pPartner.type == TT_STALKER) {
-			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
-			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-			if (pEAThis->tfGetRelationType(pPAPartner) == ALife::eRelationTypeFriend) {
-				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
-			} else factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
-		}
-	}
-
-	string128	CurName;
-	u32			num = 0;
-//	u32			i = 0;
-	u32			l_dwCost = 0;
-	CurName[0]	= 0;
-
-	PSPIItem	B = GetTradeInv(pThis).m_all.begin(), I = B;
-	PSPIItem	E = GetTradeInv(pThis).m_all.end();
-
-	for ( ; I != E; ++I) {
-		if (0 != xr_strcmp(CurName, (*I)->Name())) {
-			if (!num) {
-//				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
-//					*pThis.base->cName(),++i,
-//					CurName,l_dwCost, num);
-			} 
-			l_dwCost = (int)(((float) (*I)->Cost()) * factor );
-			num = 1;
-			strcpy(CurName,(*I)->Name());
-		} else {
-			++num;
-		}
-	}
-
-	// Вывести последний item
-	if (B != E) {
-//		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",*pThis.base->cName(),++i,CurName,l_dwCost, num);
-	}
-}
-
-void CTrade::ShowMoney()
-{
-	if (TradeState) m_dwLastTradeTime = Level().timeServer();
-	else { 
-	//	Msg("I'm not ready to trade"); 
-		return;
-	}
-
-//	Msg("--TRADE:: [%s]: Money = %i ",*pThis.base->cName(),pThis.inv_owner->m_dwMoney);
-}
-
+/*
 void CTrade::ShowArtifactPrices()
 {
 	if (TradeState) m_dwLastTradeTime = Level().timeServer();
@@ -333,8 +254,9 @@ void CTrade::ShowArtifactPrices()
 	else {
 //		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",*pThis.base->cName());
 	}
-
 }
+*/
+
 
 void CTrade::SellItem(int id)
 {
@@ -408,17 +330,17 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	// актер цену не говорит никогда, все делают за него
 	u32	dwTransferMoney;
 
-	if (TT_ACTOR != pPartner.type) 
+/*	if (TT_ACTOR != pPartner.type) 
 		dwTransferMoney = GetPartnerTrade()->GetItemPrice(pItem);
-	else
-		dwTransferMoney = GetItemPrice(pItem);
+	else*/
+	dwTransferMoney = GetItemPrice(pItem);
 
 
 	// выбросить у себя 
 	NET_Packet				P;
 	CGameObject				*O = dynamic_cast<CGameObject *>(pThis.inv_owner);
 	O->u_EventGen			(P,GE_TRADE_SELL,O->ID());
-	P.w_u16					(u16(pItem->ID()));
+	P.w_u16					(pItem->ID());
 	O->u_EventSend			(P);
 
 	// добавить себе денег
@@ -427,7 +349,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	// взять у партнера
 	O						= dynamic_cast<CGameObject *>(pPartner.inv_owner);
 	O->u_EventGen			(P,GE_TRADE_BUY,O->ID());
-	P.w_u16					(u16(pItem->ID()));
+	P.w_u16					(pItem->ID());
 	O->u_EventSend			(P);
 
 	// уменьшить денег у партнера
@@ -464,27 +386,34 @@ u32	CTrade::GetItemPrice(PIItem pItem)
 	// определение коэффициента
 	float factor = 1.0f;
 	
-	if (pThis.type == TT_TRADER) 
+	//для актера цену вещи всегда определяют 
+	//его собеседники
+	if (pThis.type == TT_ACTOR)
 	{
-		factor = m_tTradeFactors.TraderSellPriceFactor;
+		int goodwill = pPartner.inv_owner->CharacterInfo().GetGoodwill(pThis.base->ID());
+		float goodwill_factor;
+		
+		if(NO_GOODWILL == goodwill)
+			goodwill_factor = 0.f;
+		else
+			goodwill_factor = float(goodwill)/100.f;
+
+		factor = m_tTradeFactors.fBuyFactorHostile +
+			(m_tTradeFactors.fBuyFactorFriendly - m_tTradeFactors.fBuyFactorHostile)*goodwill_factor;
 	}
-	else 
+	else if(pPartner.type == TT_ACTOR)
 	{
-		if (pPartner.type == TT_TRADER) 
-		{
-			factor = m_tTradeFactors.TraderBuyPriceFactor;
-		} 
-		else if (pPartner.type == TT_STALKER) 
-		{
-			CEntityAlive	*pEAThis = dynamic_cast<CEntityAlive*> (pThis.base);
-			CEntityAlive    *pPAPartner = dynamic_cast<CEntityAlive*> (pPartner.base);
-			if (pEAThis->tfGetRelationType(pPAPartner) == ALife::eRelationTypeFriend) 
-			{
-				factor = m_tTradeFactors.StalkerFriendBuyPriceFactor;
-			} 
-			else 
-				factor = m_tTradeFactors.StalkerNeutralBuyPriceFactor;
-		}
+		int goodwill = pThis.inv_owner->CharacterInfo().GetGoodwill(pPartner.base->ID());
+		float goodwill_factor;
+
+		if(NO_GOODWILL == goodwill)
+			goodwill_factor = 0.f;
+		else
+			goodwill_factor = float(goodwill)/100.f;
+
+		factor = m_tTradeFactors.fSellFactorFriendly +
+			(m_tTradeFactors.fSellFactorHostile - m_tTradeFactors.fSellFactorFriendly) *goodwill_factor;
+
 	}
 
 	// сумма сделки учитывая ценовой коэффициент

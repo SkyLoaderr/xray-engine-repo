@@ -612,60 +612,6 @@ public:
 	  }
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Trader
-class CCC_Trader : public IConsole_Command {
-public:
-	CCC_Trader(LPCSTR N) : IConsole_Command(N)  { };
-	virtual void Execute(LPCSTR args) {
-		CActor *pActor = dynamic_cast<CActor *>(Level().CurrentEntity());
-		if (!pActor) return;
-		
-		string128 param1, param2;
-		_GetItem(args,0,param1,' ');
-		_GetItem(args,1,param2,' ');
-		if (xr_strcmp(param1,"show_items") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) 
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowItems();
-		} else if (xr_strcmp(param1,"show_my_items") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) 
-				pActor->GetTrade()->ShowItems();
-		} else if (xr_strcmp(param1,"show_money") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) 
-				pActor->GetTrade()->ShowMoney();
-		} else if (xr_strcmp(param1,"show_your_money") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) 
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowMoney();
-		} else if (xr_strcmp(param1,"show_artifact_prices") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) 
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowArtifactPrices();
-		} else if (xr_strcmp(param1,"show_all") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) {
-				pActor->GetTrade()->ShowItems();
-				pActor->GetTrade()->ShowMoney();
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowItems();
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->ShowArtifactPrices();
-			}
-		} else if (xr_strcmp(param1,"sell") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) {
-				int id = 0;
-				sscanf(param2 ,"%d",&id);
-				pActor->GetTrade()->SellItem(id);
-			}
-		} else if (xr_strcmp(param1,"buy") == 0) {
-			if (pActor->GetTrade()->IsInTradeState()) {
-				int id = 0;
-				sscanf(param2 ,"%d",&id);
-				pActor->GetTrade()->pPartner.inv_owner->GetTrade()->SellItem(id);
-			}
-		} else if (xr_strcmp(param1,"help") == 0) {
-			Msg("	show_all");		Msg("	show_items");		Msg("	show_my_items"); 
-			Msg("	show_money");	Msg("	show_your_money");	Msg("	show_artifact_prices");
-			Msg("	sell");			Msg("	buy");			
-		}
-	}
-};
-
 class CCC_ALifeSave : public IConsole_Command {
 public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -986,9 +932,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 
 			CMD1(CCC_ScriptDbg,			"script_debug_break");
 
-			// Trader
-			CMD1(CCC_Trader,			"trade");
-			
 			CMD1(CCC_PostprocessTest,	"pp_test");
 
 			// Physics
