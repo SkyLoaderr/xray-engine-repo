@@ -30,10 +30,10 @@ enum
 /*
 CL_SPAWN
 {
-	char		Name[];
-	BYTE		team;
-	BYTE		squad;
-	BYTE		group;
+	char		Name	[];
+	BYTE		g_team;
+	BYTE		g_squad;
+	BYTE		g_group;
 	BYTE		respawn_point; // 0xFF = AutoSelect, 0xFE = UsePosition
 	Fvector		o_Pos;
 	Fvector		o_Angle;
@@ -44,20 +44,58 @@ CL_SPAWN
 
 SV_SPAWN
 {
-	char		Name[];
-	char		NameReplace[];
+	char		Name		[];
+	char		NameReplace	[];
 	BYTE		team;
 	BYTE		squad;
 	BYTE		group;
 	
-	BYTE		server_id;
 
 	BYTE		local;
 
 	// position & orientation
 	Fvector		o_Position;
 	u8			o_Angle;
-}
+};
+
+M_SPAWN
+{	
+	char		Name_section[];
+	char		Name_replace[];
+
+	u8			g_team;
+	u8			g_squad;
+	u8			g_group;
+
+	u8			o_Point;	// 0xFF = AutoSelect, 0xFE = UseSupplied
+	Fvector		o_Position;
+	Fvector		o_Angle;
+
+	u16			server_id;
+	u8			local;
+
+	u16			data_size;
+	...
+
+	event
+	{
+		cform {
+			
+		}
+		actions {
+			P.w_u8			(number);
+
+			action {
+				u8			bOnce;
+				u64			clsid_target;
+				stringZ		OnEnter;
+				stringZ		OnLeave;
+			}
+			...
+		}
+	}
+};
+
 
 M_UPDATE
 {
