@@ -124,43 +124,37 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- Action path
 ----------------------------------------------------------------------------------------------------------------------
-
---Action alive
-----------------------------------------------------------------------------------------------------------------------
-class "action_alive"			(action_base)
-----------------------------------------------------------------------------------------------------------------------
-function action_alive:__init() super()
+function action_path:__init (path) super ()
+    self.path = path
 end
-----------------------------------------------------------------------------------------------------------------------
-function action_alive:initialize()
-	action_base.initialize				(self)
 
+function action_path:initialize ()
+	action_base.initialize (self)
 	self.object:set_node_evaluator		()
 	self.object:set_path_evaluator		()
 	self.object:set_desired_position	()
-	self.object:set_desired_direction	()
-	printf								("script action is initialized!")
-end
-----------------------------------------------------------------------------------------------------------------------
-function action_alive:execute()
-	action_base.execute					(self)
+	self.object:set_desired_direction	()    
 	
-	self.object:play_sound				(2,60000,10000)
-
-	self.object:set_sight				(look.search,nil,0);
-
-	self.object:set_item				(object.idle);
-
-	self.object:set_path_type			(game_object.game_path)
+	self.object:play_sound				(2, 60000, 10000)
+	self.object:set_sight				(look.search, nil, 0)
+	self.object:set_item				(object.idle)
+	self.object:set_path_type			(game_object.patrol_path)
+	self.object:set_patrol_path			("way0000", patrol.start, patrol.continue, true)
 	self.object:set_detail_path_type	(move.line)
 	self.object:set_body_state			(move.standing)
 	self.object:set_movement_type		(move.walk)
 	self.object:set_mental_state		(anim.free)
+	
 end
-----------------------------------------------------------------------------------------------------------------------
-function action_alive:finalize()
-	action_base.finalize	(self)
+
+function action_path:execute ()
+	action_base.execute					(self)
 end
+
+function action_path:finalize ()
+	action_base.finalize (self)
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -180,36 +174,25 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:reload (section)
 	object_binder.reload	(self, section)
-	local					operators = {}
+	local					actions = {}
 	local					properties = {}
 	local					manager	= self.object:motivation_action_manager ()
 	local					goal = world_state ()
 
-	properties["alive"]		= 0
-	properties["dead"]		= 1
-	properties["solved"]	= 2
-
-	operators["dead"]		= 0
-	operators["free"]		= 1
-
+	properties["path_end"]	= self.npc.property_script + 1
+	actions["move"]		    = self.npc.action_script   + 1
+	
 	goal:clear ()
 	-- // evaluators
-	manager:add_evaluator	(properties["alive"],		this.evaluator_alive	())
-	manager:add_evaluator	(properties["dead"],		this.evaluator_const	(false))
-	manager:add_evaluator	(properties["solved"],		this.evaluator_const	(false))
+	manager:add_evaluator	(properties["path_end"],	this.evaluator_const	(false))
 
-	-- // operators/actions
-	local action = action_base()
-	action:add_precondition	(world_property(properties["alive"],	false))
-	action:add_precondition	(world_property(properties["dead"],		false))
-	action:add_effect		(world_property(properties["dead"],		true))
-	manager:add_action		(operators["dead"],			action)
-
-	action					= this.action_alive()
-	action:add_precondition	(world_property(properties["alive"],	true))
-	action:add_precondition	(world_property(properties["solved"],	false))
-	action:add_effect		(world_property(properties["solved"],	true))
-	manager:add_action		(operators["free"],			action)
+	action = this.action_path (PathsAndSoldiers (self.npc:name ())
+	action:add_precondition	(world_property(self.npc.property_alive,	true))
+	action:add_precondition	(world_property(self.npc.property_items,	false))
+	action:add_precondition	(world_property(self.npc.property_enemy,	false))
+	action:add_effect		(world_property(properties["path_end"],	    true))
+	manager:add_action		(actions["move"],			                action)
+	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_spawn	(server_object)
@@ -233,5 +216,6 @@ end
 
 function AddToPatrol (npc, group, command, member)
     npc:bind_object	(this.patrol_binder (npc))
+    --this.PrintTable ()
 end
 
