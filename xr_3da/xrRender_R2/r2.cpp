@@ -106,6 +106,14 @@ void					CRender::destroy				()
 	LR.Destroy					();
 	Target.OnDeviceDestroy		();
 }
+void					CRender::reset_begin			()
+{
+	Target.OnDeviceDestroy		();
+}
+void					CRender::reset_end				()
+{
+	Target.OnDeviceCreate		();
+}
 
 // Implementation
 IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)				{ return 0;								}

@@ -131,6 +131,8 @@ public:
 	// Loading / Unloading
 	virtual void					create						();
 	virtual void					destroy						();
+	virtual	void					reset_begin					();
+	virtual	void					reset_end					();
 
 	virtual	void					level_Load					();
 	virtual void					level_Unload				();
