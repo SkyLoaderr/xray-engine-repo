@@ -47,7 +47,7 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_use_callback(self, "door_callback")
 
-	--level.add_call(self, "close_check", "close_action")
+	level.add_call(self, "close_check", "close_action")
 
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
@@ -110,12 +110,20 @@ function action_door:update(delta)
 		end
 	end
 	--]]
+
+	--[[
 	if self:close_check() then
 		self:close_action()
 	end
+	--]]
 end
 
 function action_door:close_check()
+	printf("_bp: close_check()")
+	if not self.initialized then
+		return false
+	end
+
 	if self.block then
 		local angle = self.joint:get_axis_angle(90)
 		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
@@ -127,6 +135,8 @@ function action_door:close_check()
 end
 
 function action_door:close_action()
+	printf("_bp: close_action()")
+
 	printf("_bp: action_door:update(): door blocked")
 	-- «акрыли до предела, будем блокировать
 	self.joint:set_max_force_and_velocity(10000, 1, 1)
