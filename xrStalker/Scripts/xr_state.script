@@ -96,6 +96,7 @@ function change_state(object, new)
 	-- 1 - сидит в положении для курения
 	-- 2 - сидит в положении для водки
 	-- 3 - сидит в положении для еды
+	-- 4 - спит сидя
 	local st = xr_motivator.storage[object:id()].state
 	   	            
 	if st.body_state ~= new then 
@@ -111,6 +112,9 @@ function change_state(object, new)
 				object:add_animation("stalker_2_down", true)
 			elseif new == 3 then
 				object:add_animation("stalker_3_down", true)
+			elseif new == 4 then
+				object:add_animation("stalker_2_down", true)
+				object:add_animation("spit_0", true)
 			end
 		elseif st.body_state == 1 then
 			if new == 0 then
@@ -120,6 +124,8 @@ function change_state(object, new)
 			elseif new == 2 then
 				--!!!!
 			elseif new == 3 then
+				--!!!!
+			elseif new == 4 then
 				--!!!!
 			end
 		elseif st.body_state == 2 then
@@ -131,6 +137,8 @@ function change_state(object, new)
 				--
 			elseif new == 3 then
 				object:add_animation("stalker_2v3", true)
+			elseif new == 4 then
+				object:add_animation("spit_0", true)
 			end
 		elseif st.body_state == 3 then
 			if new == 0 then
@@ -140,6 +148,22 @@ function change_state(object, new)
 			elseif new == 2 then
 				object:add_animation("stalker_3v2", true)
 			elseif new == 3 then
+				--
+			elseif new == 4 then
+				--!!!!
+			end
+
+		elseif st.body_state == 4 then
+			if new == 0 then
+				object:add_animation("spit_3", true)
+				object:add_animation("stalker_2_up", true)
+			elseif new == 1 then
+				--!!!!
+			elseif new == 2 then
+				object:add_animation("spit_3", true)
+			elseif new == 3 then
+				--!!!!
+			elseif new == 4 then
 				--
 			end
 		end
@@ -152,6 +176,8 @@ function change_state(object, new)
 			object:add_animation("stalker_2_1", true)
 		elseif new == 3 then
 			object:add_animation("stalker_3_2", true)
+		elseif new == 4 then
+			object:add_animation("spit_2", true)
 		end
 	      	st.target_state = new
 	end
