@@ -144,58 +144,17 @@ public:
 #define NUM_THREADS	8
 void	xrLight			()
 {
-	Fvector P,D,PLP;
-	D.set	(0,1,0);
-	float coeff = 0.5f*g_params.fPatchSize/float(LIGHT_Count);
-	XRC.RayMode	(RAY_ONLYFIRST|RAY_CULL);
-	
-	LSelection	Selected;
-	float		LperN	= float(g_lights.size());
-	for (DWORD i=0; i<g_nodes.size(); i++)
-	{
-		Node& N = g_nodes[i];
-		
-		// select lights
-		Selected.clear();
-		for (DWORD L=0; L<g_lights.size(); L++)
-		{
-			R_Light&	R = g_lights[L];
-			if (R.type==LT_DIRECT)	Selected.push_back(R);
-			else {
-				float dist = N.Pos.distance_to(R.position);
-				if (dist-g_params.fPatchSize < R.range)
-					Selected.push_back(R);
-			}
-		}
-		LperN = 0.9f*LperN + 0.1f*float(Selected.size());
+	// Start threads, wait, continue --- perform all the work
+	DWORD	start_time		= timeGetTime();
+	CThreadManager			Threads;
+	DWORD	stride			= g_nodes.size()/NUM_THREADS;
+	DWORD	last			= g_nodes.size()-stride*(NUM_THREADS-1);
+	for (DWORD thID=0; thID<NUM_THREADS; thID++)
+		Threads.start(new LightThread(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
+	Threads.wait			();
+	Msg("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
 
-		// lighting itself
-		float amount=0;
-		for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
-		{
-			P.x = N.Pos.x + coeff*float(x);
-			for (int z=-LIGHT_Count; z<=LIGHT_Count; z++) 
-			{
-				// compute position
-				P.z = N.Pos.z + coeff*float(z);
-				P.y = N.Pos.y;
-				N.Plane.intersectRayPoint(P,D,PLP);	// "project" position
-				P.y = PLP.y;
-				
-				// light point
-				amount += LightPoint(P,N.Plane.n,Selected);
-			}
-		}
-
-		// calculation of luminocity
-		N.LightLevel = amount/float(LIGHT_Total);
-
-		if (0==i%32)	{
-			Progress(float(i)/float(g_nodes.size()));
-			Status("%d lights on level\n%2.1f lights per node",g_lights.size(),LperN);
-		}
-	}
-
+	// Smooth
 	Status("Smoothing lighting...");
 	for (int pass=0; pass<3; pass++) {
 		Nodes	Old = g_nodes;
