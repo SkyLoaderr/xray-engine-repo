@@ -39,7 +39,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 	// Client spawn
 	T.Start		();
 	CObject*	O		= Objects.Create	(E->s_name);
-	Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
+	Msg			("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
 	T.Start		();
 	if (0==O || (!O->net_Spawn	(E))) 
