@@ -57,6 +57,13 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	raid_fire = {weapon = "fire",
+				movement = move.walk,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	sneak = {	weapon = "unstrapped",
 				movement = move.walk,
 				mental = anim.danger,
