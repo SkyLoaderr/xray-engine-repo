@@ -4,8 +4,9 @@
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 
-void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
+void CRender::RenderBox			(IRender_Sector* _S, Fbox& BB, int sh)
 {
+	CSector*	S			= (CSector*)_S;
 	lstVisuals.clear		();
 	lstVisuals.push_back	(S->Root());
 	

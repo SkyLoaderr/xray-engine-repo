@@ -240,8 +240,9 @@ void CRender::LoadSectors(IReader* fs)
 		IReader* P = S->open_chunk(i);
 		if (0==P) break;
 
-		Sectors.push_back(xr_new<CSector> (i));
-		Sectors.back()->Load(*P);
+		CSector* __S		= xr_new<CSector> (i);
+		S->Load				(*P);
+		Sectors.push_back	(S);
 
 		P->close();
 	}

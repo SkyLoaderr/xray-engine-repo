@@ -158,7 +158,7 @@ void CSector::Render(CFrustum &F)
 	}
 
 	// Search visible portals and go through them
-	CSector*	pLastSector		= ::Render->getSectorActive();
+	CSector*	pLastSector		= (CSector*)::Render->getSectorActive();
 	for (u32 I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
@@ -285,7 +285,7 @@ void CSector::Load(IReader& fs)
 	u32 count	= size/2;
 	while (count) {
 		WORD ID		= fs.r_u16();
-		CPortal* P	= ::Render->getPortal	(ID);
+		CPortal* P	= (CPortal*)::Render->getPortal	(ID);
 		Portals.push_back(P);
 		count--;
 	}

@@ -13,6 +13,7 @@
 #include "..\lightPPA.h"
 #include "..\PSLibrary.h"
 
+#include "portal.h"
 #include "lightShadows.h"
 #include "lightProjector.h"
 #include "detailmanager.h"
@@ -108,15 +109,15 @@ public:
 	
 	// Information
 	virtual int						getVisualsCount			();
-	virtual CPortal*				getPortal				(int id);
-	virtual CSector*				getSector				(int id);
-	virtual CSector*				getSectorActive			();
+	virtual IRender_Portal*			getPortal				(int id);
+	virtual IRender_Sector*			getSector				(int id);
+	virtual IRender_Sector*			getSectorActive			();
 	virtual CVisual*				getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);
-	virtual CSector*				detectSector			(Fvector& P);
-	virtual CRender_target*			getTarget				();
+	virtual IRender_Sector*			detectSector			(Fvector& P);
+	virtual IRender_target*			getTarget				();
 	
 	// Main 
 	virtual void					flush					();
@@ -147,7 +148,7 @@ public:
 	// Main
 	virtual void					Calculate				();
 	virtual void					Render					();
-	virtual void					RenderBox				(CSector* S, Fbox& BB, int sh);
+	virtual void					RenderBox				(IRender_Sector* S, Fbox& BB, int sh);
 	virtual void					Screenshot				(BOOL bSquare=FALSE);
 	
 	// Render mode

@@ -6,9 +6,8 @@
 #define AFX_PORTAL_H__1FC2D371_4A19_49EA_BD1E_2D0F8DEBBF15__INCLUDED_
 #pragma once
 
-class ENGINE_API CVisual;
-class ENGINE_API CObject;
-class ENGINE_API CTempObject;
+class CPortal;
+class CSector;
 
 // Connector
 class CPortal				: public IRender_Portal
