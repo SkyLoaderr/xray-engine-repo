@@ -138,8 +138,6 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 
 IC void i_test_micro( int x, int y)
 {
-	occTri**	pFrame	= Raster.get_frame();
-	float*		pDepth	= Raster.get_depth();
 	
 	if (x<1) return; else if (x>=occ_dim0-1)	return;
 	if (y<1) return; else if (y>=occ_dim0-1)	return;
@@ -147,11 +145,13 @@ IC void i_test_micro( int x, int y)
 	int	pos_up	= pos-occ_dim0;
 	int	pos_down= pos+occ_dim0;
 	
+	occTri**	pFrame	= Raster.get_frame();
 	occTri* T1	= pFrame[pos_up		];
 	occTri* T2	= pFrame[pos_down	];
 	if (T1 && shared(T1,T2))	
 	{
-		float ZR = (pDepth[pos_up]+pDepth[pos_down])/2;
+		float*		pDepth	= Raster.get_depth();
+		float ZR			= (pDepth[pos_up]+pDepth[pos_down])/2;
 		if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
 	}
 }
