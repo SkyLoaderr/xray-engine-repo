@@ -667,7 +667,7 @@ void CUIDragDropList::ScrollBarRecalculate()
 		// Иначе требуется и необходим пересчет
 		EnableScrollBar(true);
 
-		m_ScrollBar.SetRange(0, s16(bottom-1));
+		m_ScrollBar.SetRange(0, s16(bottom));
 		m_ScrollBar.SetPageSize(s16(m_iViewRowsNum));
 		m_ScrollBar.SetScrollPos(0);
 	}
