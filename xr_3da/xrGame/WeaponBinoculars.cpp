@@ -75,7 +75,6 @@ void CWeaponBinoculars::Load	(LPCSTR section)
 	animGet				(mhud_hide,		"holster");
 }
 
-
 void CWeaponBinoculars::OnVisible	()
 {
 	inherited::OnVisible			();
@@ -145,7 +144,7 @@ void CWeaponBinoculars::UpdateCL	()
 	sndHide.set_position		(vLastFP);
 	sndGyro.set_position		(vLastFP);
 	sndZoomIn.set_position		(vLastFP);
-	sndZoomOut.set_position	(vLastFP);
+	sndZoomOut.set_position		(vLastFP);
 }
 
 void CWeaponBinoculars::Hide	()

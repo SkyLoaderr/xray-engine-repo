@@ -72,6 +72,7 @@ void	CSoundRender_Target::_initialize		()
 	R_CHK	(pBuffer->QueryInterface(IID_IDirectSound3DBuffer8,(void **)&pControl));
 
 	// DMOs
+	/*
 	DSEFFECTDESC	desc	[2];
 	desc[0].dwSize			= sizeof(DSEFFECTDESC);
 	desc[0].dwFlags			= DSFX_LOCSOFTWARE;
@@ -88,6 +89,7 @@ void	CSoundRender_Target::_initialize		()
 	R_CHK	(pBuffer->SetFX(2,desc,NULL));
 	R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,(void**)&pFX_Reverb));
 	R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
+	*/
 }
 
 void	CSoundRender_Target::_destroy		()
@@ -183,6 +185,7 @@ void	CSoundRender_Target::fill_parameters()
 	}
 	
 	// 2. Set 2D params (volume, freq) + position(rewind)
+	if (0)
 	{
 		float	_volume				= pEmitter->smooth_volume;				clamp	(_volume,EPS_S,1.f);
 		s32		hw_volume			= iFloor	(7000.f*logf(_volume)/5.f);	clamp	(hw_volume,DSBVOLUME_MIN,DSBVOLUME_MAX);
@@ -202,6 +205,7 @@ void	CSoundRender_Target::fill_parameters()
 	}
 	
 	// 3. Set FX params (environment)
+	if (0)
 	{
 		CSoundRender_Environment& E		= pEmitter->e_current;
 

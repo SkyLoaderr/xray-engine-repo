@@ -193,6 +193,6 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 	static CSoundRender_Environment	identity;
 
 	identity.set_identity	(true,true,true);
-	identity.set_default	(true,false,false);
+	// identity.set_default	(false,false,false);
 	return &identity;
 }
