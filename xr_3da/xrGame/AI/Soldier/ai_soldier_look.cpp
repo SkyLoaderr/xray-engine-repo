@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_soldier.h"
 #include "..\\..\\xr_weapon_list.h"
+#include "..\\..\\actor.h"
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -210,8 +211,11 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 	ai_Track.o_get(tpaVisibleObjects);
 	DWORD dwTime = Level().timeServer();
 	for (int i=0; i<tpaVisibleObjects.size(); i++) {
+		CEntity *tpEntity = dynamic_cast<CEntity *>(tpaVisibleObjects[i]);
+		if (!tpEntity || !bfCheckForVisibility(tpEntity))
+			continue;
 		CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpaVisibleObjects[i]);
-		if (tpCustomMonster && bfCheckForVisibility(tpCustomMonster)) {
+		if (tpCustomMonster) {
 			for (int j=0; j<tpaDynamicObjects.size(); j++)
 				if (tpCustomMonster == tpaDynamicObjects[j].tpEntity) {
 					tpaDynamicObjects[j].dwTime = dwTime;
@@ -250,6 +254,54 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 					tDynamicObject.tMyOrientation = r_torso_current;
 					tDynamicObject.tpEntity = tpCustomMonster;
 					tpaDynamicObjects.push_back(tDynamicObject);
+				}
+			}
+		}
+		else {
+			CActor *tpActor = dynamic_cast<CActor *>(tpaVisibleObjects[i]);
+			if (tpActor) {
+				for (int j=0; j<tpaDynamicObjects.size(); j++)
+					if (tpActor == tpaDynamicObjects[j].tpEntity) {
+						tpaDynamicObjects[j].dwTime = dwTime;
+						tpaDynamicObjects[j].dwUpdateCount++;
+						tpaDynamicObjects[j].tSavedPosition = tpActor->Position();
+						tpaDynamicObjects[j].tOrientation.pitch = tpActor->Orientation().pitch;
+						tpaDynamicObjects[j].tOrientation.yaw = tpActor->Orientation().yaw;
+						tpaDynamicObjects[j].tMySavedPosition = Position();
+						tpaDynamicObjects[j].tMyOrientation = r_torso_current;
+						break;
+					}
+				if (j >= tpaDynamicObjects.size()) {
+					if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
+						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+						for (int j=0; j<tpaDynamicObjects.size(); j++)
+							if (tpaDynamicObjects[j].dwTime < dwBest) {
+								dwIndex = i;
+								dwBest = tpaDynamicObjects[j].dwTime;
+							}
+						if (dwIndex < tpaDynamicObjects.size()) {
+							tpaDynamicObjects[dwIndex].dwTime = dwTime;
+							tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
+							tpaDynamicObjects[dwIndex].tSavedPosition = tpActor->Position();
+							tpaDynamicObjects[dwIndex].tOrientation.pitch = tpActor->Orientation().pitch;
+							tpaDynamicObjects[dwIndex].tOrientation.yaw = tpActor->Orientation().yaw;
+							tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
+							tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
+							tpaDynamicObjects[dwIndex].tpEntity = tpCustomMonster;
+						}
+					}
+					else {
+						SDynamicObject tDynamicObject;
+						tDynamicObject.dwTime = dwTime;
+						tDynamicObject.dwUpdateCount = 1;
+						tDynamicObject.tSavedPosition = tpActor->Position();
+						tDynamicObject.tOrientation.pitch = tpActor->Orientation().pitch;
+						tDynamicObject.tOrientation.yaw = tpActor->Orientation().yaw;
+						tDynamicObject.tMySavedPosition = Position();
+						tDynamicObject.tMyOrientation = r_torso_current;
+						tDynamicObject.tpEntity = tpCustomMonster;
+						tpaDynamicObjects.push_back(tDynamicObject);
+					}
 				}
 			}
 		}

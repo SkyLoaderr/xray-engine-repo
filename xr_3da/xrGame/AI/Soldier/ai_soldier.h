@@ -139,7 +139,7 @@ class CAI_Soldier : public CCustomMonster
 			SRotation		tOrientation;
 			Fvector			tMySavedPosition;
 			SRotation		tMyOrientation;
-			CCustomMonster	*tpEntity;
+			CEntity			*tpEntity;
 		} SDynamicObject;
 
 		vector<SDynamicObject>	tpaDynamicObjects;

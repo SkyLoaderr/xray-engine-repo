@@ -191,6 +191,8 @@ public:
 		state.fVelocity		= Movement.GetVelocityActual();
 		return TRUE;
 	}
+	
+			SRotation		Orientation() {return r_torso;};
 
 	// Network
 	virtual void			net_Export			(NET_Packet* P);				// export to server
