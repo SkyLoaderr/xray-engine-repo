@@ -18,7 +18,19 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 
-	C.r2_Pass				("r2_deffer_base_flat","r2_deffer_base_flat");
-	C.r2_Sampler			("s_base",C.L_textures[0]);
-	C.r2_End				();
+	switch(C.iElement) 
+	{
+	case 0: 	// deffer
+		C.r2_Pass			("r2_deffer_base_flat","r2_deffer_base_flat");
+		C.r2_Sampler		("s_base",C.L_textures[0]);
+		C.r2_End			();
+		break;
+	case 1:		// smap-direct
+		C.r2_Pass			("r2_shadow_direct_base","r2_shadow_direct_base");
+		C.r2_Sampler		("s_base",C.L_textures[0]);
+		C.r2_End			();
+		break;
+	case 2:		// smap-point
+		break;
+	}
 }
