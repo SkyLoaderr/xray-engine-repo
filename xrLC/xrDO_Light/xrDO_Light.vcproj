@@ -175,7 +175,7 @@
 				OmitFramePointers="FALSE"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
-				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS"
+				PreprocessorDefinitions="WIN32,NDEBUG,_WINDOWS,DEBUG,MIXED"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
