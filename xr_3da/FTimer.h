@@ -27,13 +27,13 @@ protected:
 	BOOL		bPause;
 public:
 				CTimer			()		: qwStartTime(0),qwPausedTime(0),qwPauseAccum(0),bPause(FALSE) { }
-	IC void		Start			()		{	if(bPause) return; qwStartTime = CPU::GetCycleCount()-qwPauseAccum;	}
-	IC float	Stop			()		{	return (fResult = GetElapsed_sec());							}
-	IC float	Get				()		{	return fResult;													}
-	IC u64		GetElapsed_clk	()		{	if(bPause) return qwPausedTime; else return CPU::GetCycleCount()-qwStartTime-CPU::cycles_overhead-qwPauseAccum; }
-	IC u32		GetElapsed_ms	()		{	return u32(u64(GetElapsed_clk())/u64(CPU::cycles_per_milisec)); }
-	IC float	GetElapsed_sec	()		{	return float(GetElapsed_clk())*CPU::cycles2seconds;				}
-	IC void		Dump			()
+	IC	void	Start			()		{	if(bPause) return; qwStartTime = CPU::GetCycleCount()-qwPauseAccum;	}
+	IC	float	Stop			()		{	return (fResult = GetElapsed_sec());							}
+	IC	float	Get				()		{	return fResult;													}
+	ICF u64		GetElapsed_clk	()		{	if(bPause) return qwPausedTime; else return CPU::GetCycleCount()-qwStartTime-CPU::cycles_overhead-qwPauseAccum; }
+	IC	u32		GetElapsed_ms	()		{	return u32(u64(GetElapsed_clk())/u64(CPU::cycles_per_milisec)); }
+	IC	float	GetElapsed_sec	()		{	return float(GetElapsed_clk())*CPU::cycles2seconds;				}
+	IC	void	Dump			()
 	{
 		Msg("* Elapsed time (sec): %f",GetElapsed_sec());
 	}
@@ -73,13 +73,13 @@ public:
 	void		FrameStart		();
 	void		FrameEnd		();
 
-	IC void		Begin			()		{	count++; T.Start(); }
-	IC void		End				()		{	accum += T.GetElapsed_clk(); }
+	ICF void	Begin			()		{	count++; T.Start(); }
+	ICF void	End				()		{	accum += T.GetElapsed_clk(); }
 
-	IC u64		GetElapsed_clk	()		{	return accum; }
-	IC u32		GetElapsed_ms	()		{	return u32(u64(GetElapsed_clk())/u64(CPU::cycles_per_milisec)); }
-	IC float	GetElapsed_sec	()		{	return float(GetElapsed_clk())*CPU::cycles2seconds; }
-	IC float	GetFrame_sec	()		{	return result; }
+	ICF u64		GetElapsed_clk	()		{	return accum; }
+	ICF u32		GetElapsed_ms	()		{	return u32(u64(GetElapsed_clk())/u64(CPU::cycles_per_milisec)); }
+	ICF float	GetElapsed_sec	()		{	return float(GetElapsed_clk())*CPU::cycles2seconds; }
+	ICF float	GetFrame_sec	()		{	return result; }
 };
 
 #endif // FTimerH
