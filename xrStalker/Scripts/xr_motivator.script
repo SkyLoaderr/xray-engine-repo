@@ -443,6 +443,10 @@ xr_motivator.storage[self.object:id()].reactions = {
 --  action:add_precondition         (world_property(properties["scripts"],      false))
 ]]--
 
+    --загрузка озвучки
+    xr_sounds.load_sounds (self.object)
+
+    
     -- общие скрипты
     xr_state.add_to_binder(self.object)
     xr_reactions.add_to_binder(self.object)
