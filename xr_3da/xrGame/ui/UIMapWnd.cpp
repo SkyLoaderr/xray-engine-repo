@@ -547,8 +547,14 @@ void CUIMapWnd::Init()
 
 
 	// initialize local maps
-	if (gameLtx.section_exist("level_maps_single")){
-		CInifile::Sect& S		= gameLtx.r_section("level_maps_single");
+	xr_string sect_name;
+	if(GameID()==GAME_SINGLE)
+		sect_name = "level_maps_single";
+	else
+		sect_name = "level_maps_mp";
+
+	if (gameLtx.section_exist(sect_name.c_str())){
+		CInifile::Sect& S		= gameLtx.r_section(sect_name.c_str());
 		CInifile::SectIt	it	= S.begin(), end = S.end();
 		for (;it!=end; it++){
 			shared_str map_name = it->first;
