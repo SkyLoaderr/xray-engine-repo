@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<VisualStudioProject
+<VisualStudioProject 
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ParticleDLL"
@@ -9,11 +9,11 @@
 	SccLocalPath="SAK"
 	SccProvider="SAK">
 	<Platforms>
-		<Platform
+		<Platform 
 			Name="Win32"/>
 	</Platforms>
 	<Configurations>
-		<Configuration
+		<Configuration 
 			Name="Release|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory=".\Release"
@@ -21,7 +21,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			WholeProgramOptimization="TRUE">
-			<Tool
+			<Tool 
 				Name="VCCLCompilerTool"
 				Optimization="3"
 				GlobalOptimizations="TRUE"
@@ -52,10 +52,29 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"
-				CompileAs="2"/>
-			<Tool
+				CompileAs="2">
+				<IntelOptions 
+					WholeProgramOptimization="1"
+					Optimization="3"
+					GlobalOptimizations="1"
+					InlineFunctionExpansion="2"
+					EnableIntrinsicFunctions="1"
+					FavorSizeOrSpeed="1"
+					OmitFramePointers="1"
+					EnableFiberSafeOptimizations="1"
+					OptimizeForProcessor="3"
+					StringPooling="1"
+					ExceptionHandling="0"
+					BasicRuntimeChecks="0"
+					RuntimeLibrary="2"
+					BufferSecurityCheck="0"
+					EnableFunctionLevelLinking="0"
+					RuntimeTypeInfo="1"
+					AllOptions="/c  /GL /I &quot;..&quot; /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Release/ParticleDLL.pch&quot; /Fo&quot;./Release/&quot; /Fd&quot;./Release/&quot; /Gz /TP"/>
+			</Tool>
+			<Tool 
 				Name="VCCustomBuildTool"/>
-			<Tool
+			<Tool 
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
@@ -67,43 +86,48 @@
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="$(OutDir)\ParticleDLL.lib"/>
-			<Tool
+				ImportLibrary="$(OutDir)\ParticleDLL.lib">
+				<IntelOptions 
+					AllOptions="/NOLOGO /DLL /LTCG /OUT:&quot;x:\\ParticleDLL.dll&quot; /INCREMENTAL:NO odbc32.lib odbccp32.lib /DEBUG /PDB:&quot;x:\\ParticleDLL.pdb&quot; /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /TLBID:1 /IMPLIB:&quot;x:\\ParticleDLL.lib&quot; /MACHINE:I386 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"/>
+			</Tool>
+			<Tool 
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="NDEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
 				TypeLibraryName=".\Release/ParticleDLL.tlb"/>
-			<Tool
+			<Tool 
 				Name="VCPostBuildEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCPreBuildEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCPreLinkEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="NDEBUG"
 				Culture="1033"/>
-			<Tool
+			<Tool 
 				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCWebDeploymentTool"/>
-			<Tool
+			<Tool 
 				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+			<IntelOptions 
+				WholeProgramOptimization="1"/>
 		</Configuration>
-		<Configuration
+		<Configuration 
 			Name="Debug|Win32"
 			OutputDirectory="x:\"
 			IntermediateDirectory=".\Debug"
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE">
-			<Tool
+			<Tool 
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				EnableFiberSafeOptimizations="TRUE"
@@ -126,10 +150,22 @@
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
 				CallingConvention="2"
-				CompileAs="2"/>
-			<Tool
+				CompileAs="2">
+				<IntelOptions 
+					Optimization="0"
+					EnableFiberSafeOptimizations="1"
+					StringPooling="0"
+					MinimalRebuild="1"
+					ExceptionHandling="0"
+					SmallerTypeCheck="1"
+					BasicRuntimeChecks="3"
+					RuntimeLibrary="3"
+					RuntimeTypeInfo="1"
+					AllOptions="/c  /I &quot;..&quot; /ZI /nologo /W4 /Wp64 /Od /GT /D &quot;_DEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /Gm /RTCc /RTC1 /MDd /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/ParticleDLL.pch&quot; /Fo&quot;./Debug/&quot; /Fd&quot;./Debug/&quot; /Gz /TP"/>
+			</Tool>
+			<Tool 
 				Name="VCCustomBuildTool"/>
-			<Tool
+			<Tool 
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib"
@@ -139,117 +175,145 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)\ParticleDLL.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)\ParticleDLL.lib"/>
-			<Tool
+				ImportLibrary="$(OutDir)\ParticleDLL.lib">
+				<IntelOptions 
+					AllOptions="/NOLOGO /DLL /OUT:&quot;x:\\ParticleDLL.dll&quot; /INCREMENTAL odbc32.lib odbccp32.lib /DEBUG /PDB:&quot;x:\\ParticleDLL.pdb&quot; /SUBSYSTEM:WINDOWS /TLBID:1 /IMPLIB:&quot;x:\\ParticleDLL.lib&quot; /MACHINE:I386 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"/>
+			</Tool>
+			<Tool 
 				Name="VCMIDLTool"
 				PreprocessorDefinitions="_DEBUG"
 				MkTypLibCompatible="TRUE"
 				SuppressStartupBanner="TRUE"
 				TargetEnvironment="1"
 				TypeLibraryName=".\Debug/ParticleDLL.tlb"/>
-			<Tool
+			<Tool 
 				Name="VCPostBuildEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCPreBuildEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCPreLinkEventTool"/>
-			<Tool
+			<Tool 
 				Name="VCResourceCompilerTool"
 				PreprocessorDefinitions="_DEBUG"
 				Culture="1033"/>
-			<Tool
+			<Tool 
 				Name="VCWebServiceProxyGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCXMLDataGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCWebDeploymentTool"/>
-			<Tool
+			<Tool 
 				Name="VCManagedWrapperGeneratorTool"/>
-			<Tool
+			<Tool 
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
 	<References>
 	</References>
 	<Files>
-		<Filter
+		<Filter 
 			Name="Kernel"
 			Filter="">
-			<File
+			<File 
 				RelativePath="psystem.h">
 			</File>
-			<File
+			<File 
 				RelativePath="StdAfx.cpp">
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Release|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1">
+						<IntelOptions 
+							AllOptions="/c  /GL /I &quot;..&quot; /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /GF /FD /MD /GR /Yc&quot;StdAfx.h&quot; /Fp&quot;./Release/ParticleDLL.pch&quot; /Fo&quot;./Release/&quot; /Fd&quot;./Release/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Debug|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1">
+						<IntelOptions 
+							AllOptions="/c  /I &quot;..&quot; /ZI /nologo /W4 /Wp64 /Od /GT /D &quot;_DEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /Gm /RTCc /RTC1 /MDd /GR /Yc&quot;StdAfx.h&quot; /Fp&quot;./Debug/ParticleDLL.pch&quot; /Fo&quot;./Debug/&quot; /Fd&quot;./Debug/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
 			</File>
-			<File
+			<File 
 				RelativePath="stdafx.h">
 			</File>
 		</Filter>
-		<Filter
+		<Filter 
 			Name="PAPI"
 			Filter="">
-			<File
+			<File 
 				RelativePath=".\action_api.cpp">
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Release|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /GL /I &quot;..&quot; /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Release/ParticleDLL.pch&quot; /Fo&quot;./Release/&quot; /Fd&quot;./Release/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Debug|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /I &quot;..&quot; /ZI /nologo /W4 /Wp64 /Od /GT /D &quot;_DEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /Gm /RTCc /RTC1 /MDd /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/ParticleDLL.pch&quot; /Fo&quot;./Debug/&quot; /Fd&quot;./Debug/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
 			</File>
-			<File
+			<File 
 				RelativePath=".\actions.cpp">
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Release|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /GL /I &quot;..&quot; /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Release/ParticleDLL.pch&quot; /Fo&quot;./Release/&quot; /Fd&quot;./Release/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Debug|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /I &quot;..&quot; /ZI /nologo /W4 /Wp64 /Od /GT /D &quot;_DEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /Gm /RTCc /RTC1 /MDd /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/ParticleDLL.pch&quot; /Fo&quot;./Debug/&quot; /Fd&quot;./Debug/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
 			</File>
-			<File
+			<File 
 				RelativePath=".\system.cpp">
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Release|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /GL /I &quot;..&quot; /Zi /nologo /W4 /Wp64 /O3 /Og /Ob2 /Oi /Ot /Oy /GT /G7 /D &quot;NDEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /GF /FD /MD /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Release/ParticleDLL.pch&quot; /Fo&quot;./Release/&quot; /Fd&quot;./Release/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
-				<FileConfiguration
+				<FileConfiguration 
 					Name="Debug|Win32">
-					<Tool
+					<Tool 
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="3"/>
+						UsePrecompiledHeader="3">
+						<IntelOptions 
+							AllOptions="/c  /I &quot;..&quot; /ZI /nologo /W4 /Wp64 /Od /GT /D &quot;_DEBUG&quot; /D &quot;WIN32&quot; /D &quot;_WINDOWS&quot; /D &quot;PARTICLEDLL_EXPORTS&quot; /D &quot;_WINDLL&quot; /Gm /RTCc /RTC1 /MDd /GR /Yu&quot;StdAfx.h&quot; /Fp&quot;./Debug/ParticleDLL.pch&quot; /Fo&quot;./Debug/&quot; /Fd&quot;./Debug/&quot; /Gz /TP"/>
+					</Tool>
 				</FileConfiguration>
 			</File>
 		</Filter>
 	</Files>
 	<Globals>
-		<Global
+		<Global 
 			Name="DevPartner_IsInstrumented"
 			Value="1"/>
 	</Globals>
 </VisualStudioProject>
+
