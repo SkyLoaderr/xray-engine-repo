@@ -813,14 +813,14 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		// add the gravity force to all bodies
 		if ((body->flags & dxBodyNoGravity) == 0)
 		{
-			body->facc[0] = (saveFacc[b * 4 + 0] + body->mass.mass * world->gravity[0]);
-			body->facc[1] = (saveFacc[b * 4 + 1] + body->mass.mass * world->gravity[1]);
-			body->facc[2] = (saveFacc[b * 4 + 2] + body->mass.mass * world->gravity[2]);
+			body->facc[0] = saveFacc[b * 4 + 0] + body->mass.mass * world->gravity[0];
+			body->facc[1] = saveFacc[b * 4 + 1] + body->mass.mass * world->gravity[1];
+			body->facc[2] = saveFacc[b * 4 + 2] + body->mass.mass * world->gravity[2];
 			body->facc[3] = 0;
 		} else {
-			body->facc[0] = (saveFacc[b * 4 + 0]);
-			body->facc[1] = (saveFacc[b * 4 + 1]);
-			body->facc[2] = (saveFacc[b * 4 + 2]);
+			body->facc[0] = saveFacc[b * 4 + 0];
+			body->facc[1] = saveFacc[b * 4 + 1];
+			body->facc[2] = saveFacc[b * 4 + 2];
 			body->facc[3] = 0;
 		}
 	}
@@ -828,7 +828,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 	///////////////////////////////small steps starts/////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	int jdir=1,jfrom=0,jto=nj;
-
+	float scale	= dReal(1)/dReal(maxiterations);
 	for (iter = 0; iter < maxiterations; iter++)
 	{
 #	ifdef TIMING
@@ -893,7 +893,7 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			//modification: the calculated forces are added back to the facc and tacc
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)	{
-				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], stepsize, cforces);
+				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], stepsize /*???*/, cforces);
 			}
 		}
 
@@ -909,63 +909,9 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		{
 			body = bodies[b];
 			for (j = 0; j < 4; j++)	{
-				// gravity ???
-				body->facc[j] = (saveFacc[b*4 + j] + cforces[j + b*8] + (body->flags & dxBodyNoGravity)?0:(body->mass.mass * world->gravity[j]));
-				body->tacc[j] = (saveTacc[b*4 + j] + cforces[j + b*8 + 4]);
+				body->facc[j] += scale*cforces[j + b*8];
+				body->tacc[j] += scale*cforces[j + b*8 + 4];
 			}
-
-			/*
-			for (j = 0; j < 4; j++)
-			{
-			body->facc[j] *= ministep;
-			body->tacc[j] *= ministep;
-			}
-
-			//apply torque
-			dMULTIPLYADD0_331 (body->avel, globalInvI + b * 12, body->tacc);
-
-			//apply force
-			for (i = 0; i < 3; i++)
-			body->lvel[i] += body->invMass * body->facc[i];
-
-			//move It!
-			moveAndRotateBody (body, ministep);
-			*/
-
-			//// for all bodies, compute the inertia tensor and its inverse in the global
-			//// frame, and compute the rotational force and add it to the torque
-			//// accumulator. I and invI are vertically stacked 3x4 matrices, one per body.
-			//// @@@ check computation of rotational force.
-
-			//// compute inertia tensor in global frame
-			//dMULTIPLY2_333 (tmp, body->mass.I, body->R);
-			//dMULTIPLY0_333 (globalI + b * 12, body->R, tmp);
-			//// compute inverse inertia tensor in global frame
-			//dMULTIPLY2_333 (tmp, body->invI, body->R);
-			//dMULTIPLY0_333 (globalInvI + b * 12, body->R, tmp);
-
-			//for (i = 0; i < 4; i++)
-			//	body->tacc[i] = saveTacc[b * 4 + i];
-
-			//// compute rotational force
-			//dMULTIPLY0_331 (tmp, globalI + b * 12, body->avel);
-			//dCROSS (body->tacc, -=, body->avel, tmp);
-
-			//for (i = 0; i < 4; i++)
-			//	body->tacc[i] += saveTacc[b * 4 + i];
-			//// compute rotational force
-			//dMULTIPLY0_331 (tmp, globalI + b * 12, body->avel);
-			//dCROSS (body->tacc, -=, body->avel, tmp);
-
-			//// add the gravity force to all bodies
-			//if ((body->flags & dxBodyNoGravity) == 0)
-			//{
-			//	body->facc[0] = saveFacc[b * 4 + 0] + body->mass.mass * world->gravity[0];
-			//	body->facc[1] = saveFacc[b * 4 + 1] + body->mass.mass * world->gravity[1];
-			//	body->facc[2] = saveFacc[b * 4 + 2] + body->mass.mass * world->gravity[2];
-			//	body->facc[3] = 0;
-			//}
-
 		}
 		dSetZero (cforces,nb * 8);
 	}
