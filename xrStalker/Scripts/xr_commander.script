@@ -155,9 +155,11 @@ function action_commander:finalize()
         xr_gulag.setFractionState( self.a.fraction, 1 )
 
         if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
-            self.object:play_sound( snd_enemy_stalker, 1, 0 )
+            --self.object:play_sound( snd_enemy_stalker, 1, 0 )
+            xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_enemy_stalker )
         else
-            self.object:play_sound( snd_enemy_monster, 1, 0 )
+            --self.object:play_sound( snd_enemy_monster, 1, 0 )
+            xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_enemy_monster )
         end
     end
 end
