@@ -261,7 +261,13 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
+//////////////////////////////////////////////////////////////////////////
 
+void CUIDiaryWnd::MarkNewsAsRead ()
+{
+	R_ASSERT(m_pNews);
+	m_pNews->MarkArticleAsRead(true);
+}
 //////////////////////////////////////////////////////////////////////////
 
 void CUIDiaryWnd::SetContractTrader()

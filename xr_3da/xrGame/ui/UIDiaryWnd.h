@@ -38,13 +38,15 @@ public:
 	void				SetActiveSubdialog(EPdaSections section);
 	void				OpenDiaryTree(int idx) { UIActorDiaryWnd.m_pCore->OpenTree(idx); }
 
-protected:
+	void				MarkNewsAsRead ();
+
+public:
 	// Дочерние окна входящие в окно информации
 	CUINewsWnd			UINewsWnd;
 	CUIJobsWnd			UIJobsWnd;
 	CUIContractsWnd		UIContractsWnd;
 	CUIActorDiaryWnd	UIActorDiaryWnd;
-
+protected:
 	// Текущий активный поддиалог
 	CUIWindow			*m_pActiveSubdialog;
 	// TreeView
