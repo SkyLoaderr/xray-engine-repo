@@ -1,33 +1,27 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
 	<string id="esc_trader_how_to_talk">
-		<text>Default tips</text>
-		<text ln="rus">Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
+		<text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
 	</string>
 
 	<string id="tutorial_trader_search_corpses">
-		<text>Default tips</text>
-		<text ln="rus">Обыщи трупы, там может быть что-нибудь полезное.</text>
+		<text>Обыщи трупы, там может быть что-нибудь полезное.</text>
 	</string>
 
 	<string id="tutorial_trader_help_wounded">
-		<text>Default tips</text>
-		<text ln="rus">Помни! Помогая раненым, ты помогаешь самому себе.</text>
+		<text>Помни! Помогая раненым, ты помогаешь самому себе.</text>
 	</string>
 
 	<string id="tutorial_trader_give_medikit">
-		<text>Default tips</text>
-		<text ln="rus">Дай аптечку этому придурку.</text>
+		<text>Дай аптечку этому придурку.</text>
 	</string>
 	
 	<string id="tips_esc_trader_about_pda">
-		<text>Default tips</text>
-		<text ln="rus">Нажми Contact (С). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
+		<text>Нажми Contact (С). В контактах и на минимапе на лицевом визоре ты видишь людей в радиусе 250 метров с включенными ПДА. Там указывается их отношение к тебе. Будь внимателен если там появляются враги. Впрочем бандиты и гы-ыы, мутанты не включают обычно ПДА так, что будь внимателен в Зоне.</text>
 	</string>
 	
 	<string id="esc_trader_about_anomalies">
-		<text>Default tips</text>
-		<text ln="rus">Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
+		<text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
 	</string>
 	
 </string_table>
