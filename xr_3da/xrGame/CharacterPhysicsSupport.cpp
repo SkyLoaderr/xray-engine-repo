@@ -66,13 +66,24 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
 }
 
-void CCharacterPhysicsSupport::in_NetSpawn()
+void CCharacterPhysicsSupport::in_NetSpawn(CSE_Abstract* e)
 {
+	CPHSkeleton::Spawn(e);
+}
 
-	m_PhysicMovementControl.CreateCharacter();
-	m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
-	
+void CCharacterPhysicsSupport::SpawnInitPhysics(CSE_Abstract* e)
+{
 	if(!m_physics_skeleton)CreateSkeleton(m_physics_skeleton);
+
+	if(m_EntityAlife.g_Alive())
+	{
+		m_PhysicMovementControl.CreateCharacter();
+		m_PhysicMovementControl.SetPhysicsRefObject(&m_EntityAlife);
+	}
+	else
+	{
+		ActivateShell();
+	}
 }
 void CCharacterPhysicsSupport::in_NetDestroy()
 {
@@ -84,7 +95,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 			b_skeleton_in_shell=false;
 	}
 	
-
+	CPHSkeleton::RespawnInit();
 	//if(m_pPhysicsShell)	
 	//{
 	//	//m_pPhysicsShell->Deactivate();
@@ -97,6 +108,11 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 	//xr_delete				(m_pPhysicsShell);
 }
 
+void	CCharacterPhysicsSupport::in_NetSave(NET_Packet& P)
+{
+	CPHSkeleton::SaveNetState(P);
+}
+
 void CCharacterPhysicsSupport::in_Init()
 {
 	//b_death_anim_on					= false;
@@ -104,9 +120,9 @@ void CCharacterPhysicsSupport::in_Init()
 	//m_saved_impulse					= 0.f;
 }
 
-void CCharacterPhysicsSupport::in_shedule_Update(u32 /**DT/**/)
+void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 {
-
+	CPHSkeleton::Update(DT);
 }
 
 void CCharacterPhysicsSupport::in_Hit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)

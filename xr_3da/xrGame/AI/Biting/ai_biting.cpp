@@ -73,7 +73,6 @@ void CAI_Biting::reinit()
 	if (!frame_check(m_dwFrameReinit))
 		return;
 	
-	m_pPhysics_support->in_NetSpawn		();
 	
 	inherited::reinit					();
 	CMonsterMovement::reinit			();
@@ -222,7 +221,10 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
-//	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
+	CSE_Abstract						*e	= (CSE_Abstract*)(DC);
+	m_pPhysics_support->in_NetSpawn		(e);
+
+
 //	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 //	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 	
@@ -255,6 +257,15 @@ void CAI_Biting::net_Destroy()
 	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
 }
 
+void CAI_Biting::net_Save			(NET_Packet& P)
+{
+	inherited::net_Save(P);
+	m_pPhysics_support->in_NetSave(P);
+}
+BOOL CAI_Biting::net_SaveRelevant	()
+{
+	return BOOL(PPhysicsShell()!=NULL);
+}
 void CAI_Biting::net_Export(NET_Packet& P) 
 {
 	R_ASSERT				(Local());

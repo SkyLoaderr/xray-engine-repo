@@ -47,7 +47,7 @@ void CAI_Stalker::Init()
 
 void CAI_Stalker::reinit			()
 {
-	m_pPhysics_support->in_NetSpawn	();
+
 	CCustomMonster::reinit			();
 	CObjectHandler::reinit		(this);
 	CSightManager::reinit			(this);
@@ -174,6 +174,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeHumanAbstract			*tpHuman = dynamic_cast<CSE_ALifeHumanAbstract*>(e);
+
+	m_pPhysics_support->in_NetSpawn	(e);
 	R_ASSERT						(tpHuman);
 	m_dwMoney						= tpHuman->m_dwMoney;
 
@@ -228,6 +230,17 @@ void CAI_Stalker::net_Destroy()
 	xr_delete							(m_ce_angle);
 }
 
+
+void CAI_Stalker::net_Save			(NET_Packet& P)
+{
+	inherited::net_Save(P);
+	m_pPhysics_support->in_NetSave(P);
+}
+
+BOOL CAI_Stalker::net_SaveRelevant	()
+{
+	return BOOL(PPhysicsShell()!=NULL);
+}
 void CAI_Stalker::net_Export		(NET_Packet& P)
 {
 	R_ASSERT						(Local());

@@ -270,12 +270,12 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 u16	CEntityAlive::PHGetSyncItemsNumber()
 {
 	if(m_PhysicMovementControl->CharacterExist()) return 1;
-	else										  return 0;
+	else										  return inherited::PHGetSyncItemsNumber();
 }
-CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16/*item*/)
+CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16 item)
 {
 	if(m_PhysicMovementControl->CharacterExist()) return m_PhysicMovementControl->GetSyncItem();
-	else										 return 0;
+	else										 return inherited::PHGetSyncItem(item);
 }
 void CEntityAlive::PHUnFreeze()
 {

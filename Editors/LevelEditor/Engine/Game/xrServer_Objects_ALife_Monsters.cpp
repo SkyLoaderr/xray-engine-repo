@@ -1209,7 +1209,7 @@ void CSE_ALifeMonsterZombie::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterBiting
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection)
+CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection),CSE_PHSkeleton(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
 }
@@ -1220,28 +1220,38 @@ CSE_ALifeMonsterBiting::~CSE_ALifeMonsterBiting()
 
 void CSE_ALifeMonsterBiting::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket,size);
+	inherited1::STATE_Read		(tNetPacket,size);
+	if(m_wVersion>=68)
+		inherited2::STATE_Read		(tNetPacket,size);
 }
 
 void CSE_ALifeMonsterBiting::STATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeMonsterBiting::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeMonsterBiting::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
+	inherited2::UPDATE_Write		(tNetPacket);
 }
-
+void CSE_ALifeMonsterBiting::load(NET_Packet &tNetPacket)
+{
+	inherited1::load(tNetPacket);
+	inherited2::load(tNetPacket);
+}
 #ifdef _EDITOR
 void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited1::FillProp			(pref,values);
+	inherited2::FillProp			(pref,values);
 }
 #endif
 
@@ -1362,7 +1372,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection)
+CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection),CSE_PHSkeleton(caSection)
 {
 	m_dwTotalMoney				= 0;
 }
@@ -1373,28 +1383,38 @@ CSE_ALifeHumanStalker::~CSE_ALifeHumanStalker()
 
 void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
+	inherited2::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeHumanStalker::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket, size);
+	inherited1::STATE_Read		(tNetPacket, size);
+	if(m_wVersion>=68)
+		inherited2::STATE_Read		(tNetPacket, size);
 }
 
 void CSE_ALifeHumanStalker::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write		(tNetPacket);
+	inherited2::UPDATE_Write		(tNetPacket);
 };
 
 void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
+	inherited2::UPDATE_Read		(tNetPacket);
 };
-
+void CSE_ALifeHumanStalker::load(NET_Packet &tNetPacket)
+{
+	inherited1::load(tNetPacket);
+	inherited2::load(tNetPacket);
+}
 #ifdef _EDITOR
 void CSE_ALifeHumanStalker::FillProp		(LPCSTR pref, PropItemVec& values)
 {
-	inherited::FillProp			(pref,values);
+	inherited1::FillProp			(pref,values);
+	inherited2::FillProp			(pref,values);
 }
 #endif
 

@@ -20,7 +20,7 @@ public:
 	{
 		return m_pPhysicsShell;
 	}
-protected:
+
 	IC CPhysicsShellHolder*	PhysicsShellHolder	()
 	{
 		return this;
