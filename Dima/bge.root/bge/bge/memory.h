@@ -1,22 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: hardware.cpp
+//	Module 		: memory.h
 //	Created 	: 12.11.2004
 //  Modified 	: 12.11.2004
 //	Author		: Dmitriy Iassenev
 //	Description : Hardware namespace
 ////////////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
-#include "hardware.h"
-#include "cpu.h"
-#include "fpu.h"
-#include "gpu.h"
-#include "memory.h"
+#pragma once
 
-void Hardware::detect	()
-{
-	CPU::detect		();
-	FPU::detect		();
-	GPU::detect		();
-	Memory::init	();
-}
+namespace Memory {
+	void	init();
+};

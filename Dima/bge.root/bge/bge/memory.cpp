@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: hardware.cpp
+//	Module 		: memory.cpp
 //	Created 	: 12.11.2004
 //  Modified 	: 12.11.2004
 //	Author		: Dmitriy Iassenev
@@ -7,16 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "hardware.h"
-#include "cpu.h"
-#include "fpu.h"
-#include "gpu.h"
 #include "memory.h"
 
-void Hardware::detect	()
+void Memory::init	()
 {
-	CPU::detect		();
-	FPU::detect		();
-	GPU::detect		();
-	Memory::init	();
 }

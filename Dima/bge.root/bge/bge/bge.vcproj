@@ -260,13 +260,21 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="memory"
+					>
+					<File
+						RelativePath=".\memory.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\memory.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="file_system"
-				>
-			</Filter>
-			<Filter
-				Name="memory"
 				>
 			</Filter>
 			<Filter

@@ -10,7 +10,7 @@
 #include "hardware.h"
 #include "ui.h"
 
-void main(char argc, char *argv[])
+void __cdecl main(char argc, char *argv[])
 {
 	Hardware::detect	();
 	ui().execute		(argc,argv);
