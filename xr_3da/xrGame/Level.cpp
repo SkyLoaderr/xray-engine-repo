@@ -88,7 +88,7 @@ CLevel::~CLevel()
 	if(m_pFogOfWar) xr_delete(m_pFogOfWar);
 
 	xr_delete			(m_tpScriptProcessor);
-	xr_delete			(tpAI_Space);
+	xr_delete			(g_tpAI_Space);
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
 }

@@ -14,7 +14,7 @@
 #include "ai_alife.h"
 using namespace AI;
 
-CAI_Space *	tpAI_Space = 0;
+CAI_Space *g_tpAI_Space = 0;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -773,7 +773,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		}
 		break;
 	case DLL_PROCESS_DETACH:
-		xr_delete			(tpAI_Space);
+		xr_delete			(g_tpAI_Space);
 		break;
 	}
     return TRUE;

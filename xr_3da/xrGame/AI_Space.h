@@ -178,13 +178,13 @@ public:
 	void	vfFindGraphPointNodeInDirection	(u32 dwStartNode, Fvector tStartPoint, Fvector tDirection, u32 &dwFinishNode, _GRAPH_ID tGraphID);
 };
 
-extern CAI_Space *tpAI_Space;
+extern CAI_Space *g_tpAI_Space;
 
 IC CAI_Space &getAI()
 {
-	if (!tpAI_Space)
-		 tpAI_Space = xr_new<CAI_Space>();
-	return(*((CAI_Space*)tpAI_Space));
+	if (!g_tpAI_Space)
+		 g_tpAI_Space = xr_new<CAI_Space>();
+	return(*g_tpAI_Space);
 };
 
 #endif // !defined(AFX_AI_SPACE_H__58DA6D1C_2A38_4242_8327_A4EDF2D8EC0C__INCLUDED_)
