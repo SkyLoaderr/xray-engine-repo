@@ -28,59 +28,53 @@ function loadJob(sj, gname, type)
 			leader_name = nil,
 			escape_path = gname.."_escape_0" }
 		table.insert(sj, t)	
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 10, state = {0,1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_guard_house",
-			path_hideout = gname.."_guard_house" }
+			path_walk = gname.."_guard_house_walk",
+			path_look = nil }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {0},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_guard_left",
-			path_hideout = gname.."_guard_left" }
+			path_walk = gname.."_guard_left_walk",
+			path_look = nil }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {0},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_guard_right",
-			path_hideout = gname.."_guard_right" }
+			path_walk = gname.."_guard_right_walk",
+			path_look = nil }
 		table.insert(sj, t)
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 9, state = {0,1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_guard_light",
-			path_hideout = gname.."_guard_light" }
+			path_walk = gname.."_guard_light_walk",
+			path_look = gname.."_guard_light_look" }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 5, state = {0,1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_gb_left",
-			path_hideout = gname.."_gb_left" }
+			path_walk = gname.."_gb_left_walk",
+			path_look = nil }
 		table.insert(sj, t)
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 5, state = {0,1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_gb_right",
-			path_hideout = gname.."_gb_right" }
+			path_walk = gname.."_gb_right_walk",
+			path_look = nil }
 		table.insert(sj, t)
 		t = { name = "sleeper",
 			object = nil, begin = nil, idle = 0,
@@ -126,32 +120,29 @@ function loadJob(sj, gname, type)
 		table.insert(sj, t)			
 
 		--' STATE 1			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_alarm_left",
-			path_hideout = gname.."_alarm_left" }
+			path_walk = gname.."_alarm_left_walk",
+			path_look = gname.."_alarm_left_look" }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_alarm_right",
-			path_hideout = gname.."_alarm_right" }
+			path_walk = gname.."_alarm_right_walk",
+			path_look = gname.."_alarm_right_look" }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "walker",
 			object = nil, begin = nil, idle = 0,
 			prior = 6, state = {1},
 			squad = 0, group = 0,
 			in_rest = "", out_rest = gname.."_zone",
-			running = false, search_light = nil,
-			path_main = gname.."_alarm_house",
-			path_hideout = gname.."_alarm_house" }
+			path_walk = gname.."_alarm_walk",
+			path_look = gname.."_alarm_look" }
 		table.insert(sj, t)			
 	end
 end
