@@ -288,3 +288,9 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 
 	clients_Unlock();
 };
+
+bool		xrServer::OnCL_QueryHost		() 
+{
+	if (Game().type == GAME_SINGLE) return false;
+	return (client_Count() != 0); 
+};
