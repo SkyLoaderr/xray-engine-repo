@@ -765,7 +765,10 @@ void CUIMapWnd::InitLocalMaps()
 	for (CGameGraph::LEVEL_MAP::const_iterator it = levelMap.begin(); it != levelMap.end(); ++it)
 	{
 		ref_str		levelLtxRecord	= it->second.section	();
- 		ref_str		levelName		= gameLtx.r_string		(levelLtxRecord, "name");
+ 		string32    levelName;
+		strcpy		(levelName, gameLtx.r_string(levelLtxRecord, "name"));
+		_strlwr		(levelName);
+		
 
 		Ivector4	mapCoords;	
 		ref_str		mapTextureName;
