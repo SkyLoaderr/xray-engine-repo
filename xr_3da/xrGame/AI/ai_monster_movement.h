@@ -144,6 +144,7 @@ public:
 		bool		check_build_conditions	();
 
 	IC	bool		actual_params			();
+		void		fix_position			(const Fvector &pos, u32 node, Fvector &res_pos);
 };
 
 #include "ai_monster_movement_inline.h"

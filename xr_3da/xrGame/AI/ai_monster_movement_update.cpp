@@ -22,17 +22,12 @@ void CMonsterMovement::Update_Initialize()
 void CMonsterMovement::Update_Execute()
 {
 #ifdef _DEBUG	
-	update_target_point								();
+	//update_target_point								();
 #endif
 	
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
-
-	//if (m_object->m_PhysicMovementControl->JumpState()) 
-	//	enable_movement								(false);
-	//else 
-	//	enable_movement								(b_enable_movement);
-
+	enable_movement									(b_enable_movement);
 	update_path										();
 }
 
