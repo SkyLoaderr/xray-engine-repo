@@ -187,19 +187,19 @@ void CActor::Load(CInifile* ini, const char* section )
 	
 	// sounds
 	char buf[256];
-	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"));
-	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"));
-	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"));
+	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"),0,SOUND_TYPE_MONSTER_WALKING_NORMAL_HUMAN);
+	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"),0,SOUND_TYPE_MONSTER_WALKING_NORMAL_HUMAN);
+	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"),0,SOUND_TYPE_MONSTER_FALLING_HUMAN);
 	pSounds->Create		(sndZoneHeart,		FALSE,	"heart\\1");
 	pSounds->Create		(sndZoneDetector,	FALSE,	"detectors\\geiger");
-	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"));
-	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"));
-	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"));
-	pSounds->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"));
-	pSounds->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"));
-	pSounds->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"));
-	pSounds->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"));
-	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"));
+	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create		(sndHit[3],			TRUE,	strconcat(buf,cName(),"\\hurt4"),0,SOUND_TYPE_MONSTER_INJURING_HUMAN);
+	pSounds->Create		(sndDie[0],			TRUE,	strconcat(buf,cName(),"\\die0"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create		(sndDie[1],			TRUE,	strconcat(buf,cName(),"\\die1"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
+	pSounds->Create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),0,SOUND_TYPE_MONSTER_DYING_HUMAN);
 
 	// take index spine bone
 	int spine_bone		= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
