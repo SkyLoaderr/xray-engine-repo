@@ -57,30 +57,6 @@
 	#define CHECK_IF_GO_TO_NEW_STATE(a,b)\
 		if (a)\
 			GO_TO_NEW_STATE(b)
-	/**
-	#define CHECK_FOR_DEATH \
-		CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiMonsterDie)
-		/**
-		if (g_Health() <= 0) {\
-			eCurrentState = aiMonsterDie;\
-			return;\
-		}
-		/**/
-	
-	/**
-	#define CHECK_FOR_STATE_TRANSITIONS(S) \
-		WRITE_TO_LOG(S);\
-		CHECK_FOR_DEATH\
-		SelectEnemy(Enemy);\
-		CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiMonsterAttackFire)\
-		DWORD dwCurTime = Level().timeServer();\
-		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiMonsterPatrolHurt)\
-		CHECK_IF_SWITCH_TO_NEW_STATE(dwCurTime - dwSenseTime < SENSE_JUMP_TIME,aiMonsterSenseSomething)\
-		INIT_SQUAD_AND_LEADER;\
-		CGroup &Group = Squad.Groups[g_Group()];\
-		CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiMonsterPatrolUnderFire)
-	/**/
-
 	/************************************************************************/
 	/* 		
 	tHitDir = Group.m_tLastHitDirection;\
@@ -122,55 +98,6 @@
 		ASSIGN_SPINE_BONE\
 	}
 
-	// Tests
-	//#define TEST_ACTIONS
-
-	#ifdef TEST_ACTIONS
-		#define TEST_MICRO_ACTION(A) \
-			if (Level().iGetKeyState(DIK_##A)) {\
-				if (!m_bMicroAction##A) {\
-					m_bMicroAction##A = true;\
-					tStateStack.push(eCurrentState);\
-					eCurrentState = aiMonsterTestMicroAction##A;\
-					return;\
-				}\
-			}\
-			else\
-				m_bMicroAction##A = false;
-				
-		#define CASE_MICRO_ACTION(A) \
-			case aiMonsterTestMicroAction##A : {\
-				TestMicroAction##A();\
-				break;\
-			}
-				
-		#define DECLARE_MICRO_ACTION(A)\
-			void TestMicroAction##A();\
-			bool m_bMicroAction##A;
-		
-		#define TEST_MACRO_ACTION(A) \
-			if (Level().iGetKeyState(DIK_##A)) {\
-				if (!m_bMacroAction##A) {\
-					m_bMacroAction##A = true;\
-					tStateStack.push(eCurrentState);\
-					eCurrentState = aiMonsterTestMacroAction##A;\
-					return;\
-				}\
-			}\
-			else\
-				m_bMacroAction##A = false;
-				
-		#define CASE_MACRO_ACTION(A) \
-			case aiMonsterTestMacroAction##A : {\
-				TestMacroAction##A();\
-				break;\
-			}
-				
-		#define DECLARE_MACRO_ACTION(A)\
-			void TestMacroAction##A();\
-			bool m_bMacroAction##A;
-	#endif
-	
 	#define INIT_SQUAD_AND_LEADER \
 		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 		CEntity* Leader = Squad.Leader;\

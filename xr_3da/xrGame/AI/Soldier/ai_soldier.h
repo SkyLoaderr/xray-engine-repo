@@ -54,54 +54,6 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRetreat,
 		aiSoldierSenseSomething,
 		aiSoldierUnderFire,
-		
-		#ifdef TEST_ACTIONS
-			aiMonsterTestMicroActions,
-			aiMonsterTestMicroActionA,
-			aiMonsterTestMicroActionD,
-			aiMonsterTestMicroActionQ,
-			aiMonsterTestMicroActionE,
-			aiMonsterTestMicroActionZ,
-			aiMonsterTestMicroActionC,
-			aiMonsterTestMicroActionW,
-			aiMonsterTestMicroActionS,
-			aiMonsterTestMicroActionX,
-			aiMonsterTestMicroActionR,
-			aiMonsterTestMicroActionF,
-			aiMonsterTestMicroActionV,
-			aiMonsterTestMicroActionT,
-			aiMonsterTestMicroActionG,
-			aiMonsterTestMicroActionB,
-			aiMonsterTestMicroActionY,
-			aiMonsterTestMicroActionH,
-			aiMonsterTestMicroActionN,
-			aiMonsterTestMicroActionU,
-			aiMonsterTestMicroActionJ,
-			aiMonsterTestMicroActionM,
-
-			aiMonsterTestMacroActions,
-			aiMonsterTestMacroActionA,
-			aiMonsterTestMacroActionD,
-			aiMonsterTestMacroActionQ,
-			aiMonsterTestMacroActionE,
-			aiMonsterTestMacroActionZ,
-			aiMonsterTestMacroActionC,
-			aiMonsterTestMacroActionW,
-			aiMonsterTestMacroActionS,
-			aiMonsterTestMacroActionX,
-			aiMonsterTestMacroActionR,
-			aiMonsterTestMacroActionF,
-			aiMonsterTestMacroActionV,
-			aiMonsterTestMacroActionT,
-			aiMonsterTestMacroActionG,
-			aiMonsterTestMacroActionB,
-			aiMonsterTestMacroActionY,
-			aiMonsterTestMacroActionH,
-			aiMonsterTestMacroActionN,
-			aiMonsterTestMacroActionU,
-			aiMonsterTestMacroActionJ,
-			aiMonsterTestMacroActionM,
-		#endif
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -420,54 +372,6 @@ class CAI_Soldier : public CCustomMonster
 		void Retreat();
 		void SenseSomething();
 		void UnderFire();
-		
-		// test
-		void TestMicroActions();
-		#ifdef TEST_ACTIONS
-			DECLARE_MICRO_ACTION(A);
-			DECLARE_MICRO_ACTION(D);
-			DECLARE_MICRO_ACTION(Q);
-			DECLARE_MICRO_ACTION(E);
-			DECLARE_MICRO_ACTION(Z);
-			DECLARE_MICRO_ACTION(C);
-			DECLARE_MICRO_ACTION(W);
-			DECLARE_MICRO_ACTION(S);
-			DECLARE_MICRO_ACTION(X);
-			DECLARE_MICRO_ACTION(R);
-			DECLARE_MICRO_ACTION(F);
-			DECLARE_MICRO_ACTION(V);
-			DECLARE_MICRO_ACTION(T);
-			DECLARE_MICRO_ACTION(G);
-			DECLARE_MICRO_ACTION(B);
-			DECLARE_MICRO_ACTION(Y);
-			DECLARE_MICRO_ACTION(H);
-			DECLARE_MICRO_ACTION(N);
-			DECLARE_MICRO_ACTION(U);
-			DECLARE_MICRO_ACTION(J);
-			DECLARE_MICRO_ACTION(M);
-			void TestMacroActions();
-			DECLARE_MACRO_ACTION(A);
-			DECLARE_MACRO_ACTION(D);
-			DECLARE_MACRO_ACTION(Q);
-			DECLARE_MACRO_ACTION(E);
-			DECLARE_MACRO_ACTION(Z);
-			DECLARE_MACRO_ACTION(C);
-			DECLARE_MACRO_ACTION(W);
-			DECLARE_MACRO_ACTION(S);
-			DECLARE_MACRO_ACTION(X);
-			DECLARE_MACRO_ACTION(R);
-			DECLARE_MACRO_ACTION(F);
-			DECLARE_MACRO_ACTION(V);
-			DECLARE_MACRO_ACTION(T);
-			DECLARE_MACRO_ACTION(G);
-			DECLARE_MACRO_ACTION(B);
-			DECLARE_MACRO_ACTION(Y);
-			DECLARE_MACRO_ACTION(H);
-			DECLARE_MACRO_ACTION(N);
-			DECLARE_MACRO_ACTION(U);
-			DECLARE_MACRO_ACTION(J);
-			DECLARE_MACRO_ACTION(M);
-		#endif
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
