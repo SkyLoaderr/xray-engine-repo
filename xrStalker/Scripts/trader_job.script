@@ -137,12 +137,12 @@ end
 -- функция генерит текст задания для артефактов 
 function artefacts_task_text(original_text, first_speaker, second_speaker)
 
-	tasks = first_speaker:artefact_tasks()
+	local task_list = first_speaker:artefact_tasks()
 
-	printf("task num %d", table.getn(tasks))
+	printf("task num %d", table.getn(task_list))
 
 	result_text = string.format("%s\\n", original_text)
-	for K,V in tasks do
+	for K,V in task_list do
 		result_text = string.format("%s\\n-%s", result_text, V.name)
 	end
     
