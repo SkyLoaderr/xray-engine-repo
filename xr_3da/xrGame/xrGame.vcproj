@@ -1214,6 +1214,12 @@
 				RelativePath="PhysicsShell.h">
 			</File>
 			<File
+				RelativePath="dBoxGeomA.cpp">
+			</File>
+			<File
+				RelativePath="dBoxGeomA.h">
+			</File>
+			<File
 				RelativePath="dCylinder\dCylinder.cpp">
 			</File>
 			<File

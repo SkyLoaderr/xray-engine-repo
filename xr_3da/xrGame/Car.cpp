@@ -14,6 +14,7 @@ CCar::CCar(void)
 	camera		= new CCameraLook		(this, pSettings, "car_look_cam",		false);
 	m_jeep.Create(ph_world->GetSpace(),phWorld);
 	ph_world->AddObject((CPHObject*)this);
+	m_repairing=false;
 }
 
 CCar::~CCar(void)
@@ -231,6 +232,7 @@ void	CCar::OnKeyboardRelease		(int cmd)
 					m_jeep.Drive();
 					//m_jeep.Drive();//vPosition.z-=1; 
 					break;
+	case kREPAIR:	m_repairing=false; break;
 	case kJUMP:		m_jeep.Breaks=false;
 					m_jeep.Drive();
 					break;
@@ -254,7 +256,7 @@ void	CCar::OnKeyboardHold		(int cmd)
 	case kLEFT:
 	case kRIGHT:
 		camera->Move(cmd); break;
-	case kREPAIR:	m_jeep.Revert(); break;
+	case kREPAIR:	m_repairing=true; break;//m_jeep.Revert(); break;
 	case kJUMP:		
 					//m_jeep.Drive(0);
 					break; 
@@ -276,6 +278,7 @@ void CCar::PhDataUpdate(dReal step){
 }
 void CCar:: PhTune(dReal step){
 	m_jeep.JointTune(step);
+	if(m_repairing) m_jeep.Revert();
 }
 
 void CCar::OnDeviceCreate()

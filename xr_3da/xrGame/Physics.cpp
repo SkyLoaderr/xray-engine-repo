@@ -534,8 +534,8 @@ void CPHJeep::NeutralDrive(){
 }
 //////////////////////////////////////////////////////////
 void CPHJeep::Revert(){
-dBodyAddForce(Bodies[0], 0, 2*33600, 0);
-dBodyAddRelTorque(Bodies[0], 700, 0, 0);
+dBodyAddForce(Bodies[0], 0, 2*9000, 0);
+dBodyAddRelTorque(Bodies[0], 300, 0, 0);
 }
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
@@ -590,7 +590,7 @@ void CPHWorld::Step(dReal step)
 	//step+=astep;
 	const dReal max_step=0.01f;//0.0034f;
 	//const dReal min_step=0.005f;
-	const  dReal k_p=12000000.f;//550000.f;///1000000.f;
+	const  dReal k_p=24000000.f;//550000.f;///1000000.f;
 	const dReal k_d=400000.f;
 	//if(step>0.019){
 	//step=0.03f;
@@ -609,6 +609,11 @@ void CPHWorld::Step(dReal step)
 
 //			Jeep.JointTune(step);
 
+			
+			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
+				(*iter)->PhTune(step);	
+			
+			
 			dSpaceCollide(Space, 0, &NearCallback);
 		
 			/*
@@ -620,8 +625,7 @@ void CPHWorld::Step(dReal step)
 			
 		*/
 			
-			for(iter=m_objects.begin();iter!=m_objects.end();iter++)
-				(*iter)->PhTune(step);	
+	
 
 			dWorldStep(phWorld, step);
 

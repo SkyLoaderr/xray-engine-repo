@@ -12,7 +12,7 @@ private:
 	typedef CEntity			inherited;
 private:
 	CPHJeep					m_jeep;
- 
+	bool					m_repairing;
 	CCameraBase*			camera;
 	
 	void					cam_Update			(float dt);

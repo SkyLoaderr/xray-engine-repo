@@ -62,6 +62,8 @@ public:
 		dMatrix3 relRot;
 		dMULTIPLYOP1_333(relRot,=,R,currentR);
 		dBodySetRotation(Bodies[0],R);
+		//return;
+		
 		for(unsigned int i=1;i<NofBodies; i++ ){
 			const dReal* currentPos=dBodyGetPosition(Bodies[i]);
 			dVector3 relPos={currentPos[0]-currentPos0[0],currentPos[1]-currentPos0[1],currentPos[2]-currentPos0[2]};
@@ -76,6 +78,7 @@ public:
 			dMULTIPLYOP0_333(newRotation,=,currentR,relRot);
 			dBodySetRotation(Bodies[i],newRotation);
 		}
+		
 	}
 	Fvector GetVelocity(){
 		Fvector ret;

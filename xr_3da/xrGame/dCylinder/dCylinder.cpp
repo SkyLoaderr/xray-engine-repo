@@ -177,7 +177,7 @@ return true;
 
 
 
-static void lineClosestApproach (const dVector3 pa, const dVector3 ua,
+void lineClosestApproach (const dVector3 pa, const dVector3 ua,
 				 const dVector3 pb, const dVector3 ub,
 				 dReal *alpha, dReal *beta)
 {
