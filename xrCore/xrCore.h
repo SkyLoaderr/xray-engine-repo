@@ -112,6 +112,8 @@ using namespace std;
 #define XRCORE_API __declspec(dllimport)
 #endif
 
+/*
 #include "engine.h"
+*/
 
 #endif

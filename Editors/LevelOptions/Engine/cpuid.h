@@ -10,7 +10,7 @@ struct _processor_info {
     string32	v_name;								// vendor name
     string32	model_name;							// Name of model eg. Intel_Pentium_Pro
     int			family;								// family of the processor, eg. Intel_Pentium_Pro is family 6 processor
-    int			model;								// madel of processor, eg. Intel_Pentium_Pro is model 1 of family 6 processor
+    int			model;								// model of processor, eg. Intel_Pentium_Pro is model 1 of family 6 processor
     int			stepping;							// Processor revision number
     int			feature;							// processor Feature ( same as return value).
     int			os_support;							// does OS Support the feature
