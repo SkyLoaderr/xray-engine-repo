@@ -9,7 +9,7 @@
 #define M_SIN_PI_3		REAL(0.8660254037844386467637231707529362)
 #define M_COS_PI_3		REAL(0.5000000000000000000000000000000000)
 
-extern "C" int dSortedTriBox (
+ int dSortedTriBox (
 						const dReal* triSideAx0,const dReal* triSideAx1,
 						const dReal* triAx,
 						//const dReal* v0,
@@ -177,7 +177,7 @@ contact->depth = outDepth;
 
 }
 
-extern "C" int dTriBox (
+ int dTriBox (
 						const dReal* v0,const dReal* v1,const dReal* v2,
 						CDB::TRI* T,
 						dxGeom *o1, dxGeom *o2,
