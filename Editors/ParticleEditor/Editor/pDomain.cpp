@@ -2,25 +2,26 @@
 #pragma hdrstop
 
 #include "pDomain.h"
-//#include "mmath.h"
-//#include "basetypes.h"
+#include "d3dutils.h"
+#include "ui_main.h"
+#include "PropertiesListHelper.h"
+
+using namespace PAPI;
 
 PDomain::PDomain(PDomainEnum t,	float inA0,	float inA1,	float inA2,	
-								float inA3,	float inA4,	float inA5,
-								float inA6,	float inA7,	float inA8	)
+										float inA3,	float inA4,	float inA5,
+										float inA6,	float inA7,	float inA8	)
 {
-	updated = true;
 	type = t;
-	a0 = inA0;
-	a1 = inA1;
-	a2 = inA2;
-	a3 = inA3;
-	a4 = inA4;
-	a5 = inA5;
-	a6 = inA6;
-	a7 = inA7;
-	a8 = inA8;
-	SetFloatNames();
+	f[0] = inA0;
+	f[1] = inA1;
+	f[2] = inA2;
+	f[3] = inA3;
+	f[4] = inA4;
+	f[5] = inA5;
+	f[6] = inA6;
+	f[7] = inA7;
+	f[8] = inA8;
 }
 
 PDomain::~PDomain()
@@ -28,54 +29,47 @@ PDomain::~PDomain()
 }
 
 //--------------------------------------------------------------------
-PDomain::PDomain(PDomain& inDomain)
-//	: QObject()
+PDomain::PDomain(const PDomain& inDomain)
 {
-	updated = true;
-	type = inDomain.Type();
-	a0 = *(inDomain.PFloatA0());
-	a1 = *(inDomain.PFloatA1());
-	a2 = *(inDomain.PFloatA2());
-	a3 = *(inDomain.PFloatA3());
-	a4 = *(inDomain.PFloatA4());
-	a5 = *(inDomain.PFloatA5());
-	a6 = *(inDomain.PFloatA6());
-	a7 = *(inDomain.PFloatA7());
-	a8 = *(inDomain.PFloatA8());
-	SetFloatNames();
+	type 	= inDomain.type;
+	f[0]	= inDomain.f[0];
+	f[1]	= inDomain.f[1];
+	f[2]	= inDomain.f[2];
+	f[3]	= inDomain.f[3];
+	f[4]	= inDomain.f[4];
+	f[5]	= inDomain.f[5];
+	f[6]	= inDomain.f[6];
+	f[7]	= inDomain.f[7];
+	f[8]	= inDomain.f[8];
 }
 
 PDomain& PDomain::operator = (PDomain& inDomain)
 {
-	updated = true;
-	type = inDomain.Type();
-	a0 = *(inDomain.PFloatA0());
-	a1 = *(inDomain.PFloatA1());
-	a2 = *(inDomain.PFloatA2());
-	a3 = *(inDomain.PFloatA3());
-	a4 = *(inDomain.PFloatA4());
-	a5 = *(inDomain.PFloatA5());
-	a6 = *(inDomain.PFloatA6());
-	a7 = *(inDomain.PFloatA7());
-	a8 = *(inDomain.PFloatA8());
-	SetFloatNames();
+	type 	= inDomain.type;
+	f[0]	= inDomain.f[0];
+	f[1]	= inDomain.f[1];
+	f[2]	= inDomain.f[2];
+	f[3]	= inDomain.f[3];
+	f[4]	= inDomain.f[4];
+	f[5]	= inDomain.f[5];
+	f[6]	= inDomain.f[6];
+	f[7]	= inDomain.f[7];
+	f[8]	= inDomain.f[8];
 	return *this;
 }
 
 PDomain& PDomain::operator = (PDomainEnum in)
 {
-	updated = true;
 	type = in;
-	a0 = 0.0;
-	a1 = 0.0;
-	a2 = 0.0;
-	a3 = 0.0;
-	a4 = 0.0;
-	a5 = 0.0;
-	a6 = 0.0;
-	a7 = 0.0;
-	a8 = 0.0;
-	SetFloatNames();
+	f[0] = 0.0;
+	f[1] = 0.0;
+	f[2] = 0.0;
+	f[3] = 0.0;
+	f[4] = 0.0;
+	f[5] = 0.0;
+	f[6] = 0.0;
+	f[7] = 0.0;
+	f[8] = 0.0;
 	return *this;
 }
 	
@@ -86,238 +80,188 @@ void	PDomain::set(PDomainEnum t,
 					float inA3, float inA4, float inA5, 
 					float inA6, float inA7, float inA8	)
 {
-	updated = true;
 	type = t;
-	a0 = inA0;
-	a1 = inA1;
-	a2 = inA2;
-	a3 = inA3;
-	a4 = inA4;
-	a5 = inA5;
-	a6 = inA6;
-	a7 = inA7;
-	a8 = inA8;
-	SetFloatNames();
+	f[0] = inA0;
+	f[1] = inA1;
+	f[2] = inA2;
+	f[3] = inA3;
+	f[4] = inA4;
+	f[5] = inA5;
+	f[6] = inA6;
+	f[7] = inA7;
+	f[8] = inA8;
 }
 //--------------------------------------------------------------------
-PDomainEnum	PDomain::SetType(PDomainEnum in)
+void 	PDomain::Render		(u32 color)
 {
-	updated = true;
-	type = in;
-	SetFloatNames();
-	return type;
+    RCache.set_xform_world	(Fidentity);
+	switch(type){
+    case PDPoint: 	
+		Device.SetShader	(Device.m_WireShader);
+//    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
+    break;
+	case PDLine: 	
+		Device.SetShader	(Device.m_WireShader);
+//    	DU.DrawCross		(p1, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
+//  	DU.DrawCross		(p1+p2, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, clr);
+//    	DU.DrawLine 		(p1, p1+p2, clr);
+    break;
+    case PDTriangle: 	
+		Device.SetShader	(Device.m_SelectionShader);
+//        DU.DrawFace			(p1, p1+u, p1+v, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//        DU.DrawFace			(p1, p1+u, p1+v, clr, false, true);
+    break;
+	case PDPlane:{
+		Device.SetShader	(Device.m_SelectionShader);
+//        Fvector2 sz			= {100.f,100.f};
+//        DU.DrawPlane		(p1,p2,radius1,sz,clr,true,true,false);
+    }break;
+	case PDBox: 	
+		Device.SetShader	(Device.m_SelectionShader);
+//    	DU.DrawAABB			(p1, p2, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//    	DU.DrawAABB			(p1, p2, clr, false, true);
+    break;
+	case PDSphere: 	
+		Device.SetShader	(Device.m_SelectionShader);
+//    	DU.DrawSphere		(Fidentity, p1, radius2, clr, true, false);
+//    	DU.DrawSphere		(Fidentity, p1, radius1, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//    	DU.DrawSphere		(Fidentity, p1, radius2, clr, false, true);
+//    	DU.DrawSphere		(Fidentity, p1, radius1, clr, false, true);
+    break;
+	case PDCylinder:{
+    	pVector c,d;
+//        float h 			= p2.length	();
+//        c 					= (p1+p1+p2)/2.f;
+//        d 					= p2/h;
+		Device.SetShader	(Device.m_SelectionShader);
+//		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//		DU.DrawCylinder		(Fidentity, c, d, h, radius1, clr, false, true);
+    }break;
+	case PDCone:{ 	
+    	pVector d;
+//        float h = p2.length	();
+//        d = p2/h;
+		Device.SetShader	(Device.m_SelectionShader);
+//		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, true, false);
+//		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//		DU.DrawCone			(Fidentity, p1, d, h, radius2, clr, false, true);
+//		DU.DrawCone			(Fidentity, p1, d, h, radius1, clr, false, true);
+    }break;
+	case PDBlob: 	
+		Device.SetShader	(Device.m_WireShader);
+//    	DU.DrawCross		(p1, 0.1f,0.1f,0.1f, 0.1f,0.1f,0.1f, clr);
+    break;
+	case PDDisc:{
+		Device.SetShader	(Device.m_SelectionShader);
+//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, true, false);
+//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius2, clr, false, true);
+//		DU.DrawCylinder		(Fidentity, p1, p2, EPS, radius1, clr, false, true);
+    }break;
+	case PDRectangle: 	
+		Device.SetShader	(Device.m_SelectionShader);
+//        DU.DrawRectangle	(p1, u, v, clr, true, false);
+		Device.SetShader	(Device.m_WireShader);
+//        DU.DrawRectangle	(p1, u, v, clr, false, true);
+    break;
+    }
 }
 
-float	PDomain::SetA0(float in)
+xr_token					domain_token	[ ]={
+	{ "Point",				PDPoint		},
+	{ "Line",			   	PDLine		},
+	{ "Triangle",			PDTriangle	},
+	{ "Plane",			   	PDPlane		},
+	{ "Box",				PDBox		},
+	{ "Sphere",				PDSphere	},
+	{ "Cylinder",			PDCylinder	},
+	{ "Cone",		   		PDCone		},
+	{ "Blob",		   		PDBlob		},
+	{ "Disc",		  		PDDisc		},
+	{ "Rectangle",	   		PDRectangle	},
+	{ 0,					0		   	}
+};
+
+void __fastcall PDomain::OnTypeChange(PropValue* sender)
 {
-	updated = true;
-	return a0 = in;
-}
-float	PDomain::SetA1(float in)
-{
-	updated = true;
-	return a1 = in;
-}
-float	PDomain::SetA2(float in)
-{
-	updated = true;
-	return a2 = in;
+	UI.Command				(COMMAND_UPDATE_PROPERTIES);
 }
 
-float	PDomain::SetA3(float in)
+void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref)
 {
-	updated = true;
-	return a3 = in;
-}
-float	PDomain::SetA4(float in)
-{
-	updated = true;
-	return a4 = in;
-}
-float	PDomain::SetA5(float in)
-{
-	updated = true;
-	return a5 = in;
-}
-float	PDomain::SetA6(float in)
-{
-	updated = true;
-	return a6 = in;
-}
-float	PDomain::SetA7(float in)
-{
-	updated = true;
-	return a7 = in;
-}
-float	PDomain::SetA8(float in)
-{
-	updated = true;
-	return a8 = in;
-}
-//--------------------------------------------------------------------
-void	PDomain::SetA0(PFloat& in)  {	updated = true;	a0 = in;  }
-void	PDomain::SetA1(PFloat& in)  {	updated = true;	a1 = in;  }
-void	PDomain::SetA2(PFloat& in)  {	updated = true;	a2 = in;  }
-void	PDomain::SetA3(PFloat& in)  {	updated = true;	a3 = in;  }
-void	PDomain::SetA4(PFloat& in)  {	updated = true;	a4 = in;  }
-void	PDomain::SetA5(PFloat& in)  {	updated = true;	a5 = in;  }
-void	PDomain::SetA6(PFloat& in)  {	updated = true;	a6 = in;  }
-void	PDomain::SetA7(PFloat& in)  {	updated = true;	a7 = in;  }
-void	PDomain::SetA8(PFloat& in)  {	updated = true;	a8 = in;  }
-
-
-//--------------------------------------------------------------------
-void	PDomain::SetFloatNames()
-{
-	switch(type)
-	{
+    PropValue* V;
+    V=PHelper.CreateToken	(items,pref,&type,domain_token,sizeof(type));
+    V->OnChangeEvent		= OnTypeChange;
+    
+	switch(type){
 		case PDPoint:
-			numFloats_v = 3;
-			typeName = "point- ";
-			a0Name = "x";			
-			a1Name = "y";			
-			a2Name = "z";			
-			a3Name = "NO_NAME";
-			a4Name = "NO_NAME";
-			a5Name = "NO_NAME";
-			a6Name = "NO_NAME";
-			a7Name = "NO_NAME";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point",		"Center"), 		&v[0],flt_min,flt_max,0.001f,3);
 			break;
 		case PDLine:
-			numFloats_v = 6;
-			typeName = "line- ";
-			a0Name = "x1";		
-			a1Name = "y1";		
-			a2Name = "z1";		
-			a3Name = "x2";		
-			a4Name = "y2";		
-			a5Name = "z2";		
-			a6Name = "NO_NAME";
-			a7Name = "NO_NAME";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Line",		"Point 1"), 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Line",		"Point 2"), 	&v[1],flt_min,flt_max,0.001f,3);
 			break;
 		case PDTriangle:
-			numFloats_v = 9;
-			typeName = "triangle- ";
-			a0Name = "x1";		
-			a1Name = "y1";		
-			a2Name = "z1";		
-			a3Name = "x2";		
-			a4Name = "y2";		
-			a5Name = "z2";		
-			a6Name = "x3";		
-			a7Name = "y3";		
-			a8Name = "z3";		
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Triangle",	"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Triangle",	"Vertex 2"), 	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Triangle",	"Vertex 3"), 	&v[2],flt_min,flt_max,0.001f,3);
 			break;
 		case PDPlane:
-			numFloats_v = 9;
-			typeName = "plane- ";
-			a0Name = "ox";		
-			a1Name = "oy";		
-			a2Name = "oz";		
-			a3Name = "Ux";		
-			a4Name = "Uy";		
-			a5Name = "Uz";		
-			a6Name = "Vx";		
-			a7Name = "Vy";		
-			a8Name = "Vz";		
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Plane",		"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Plane",		"Normal"), 	 	&v[1],flt_min,flt_max,0.001f,3);
 			break;
 		case PDBox:
-			numFloats_v = 6;
-			typeName = "box- ";
-			a0Name = "x1";		
-			a1Name = "y1";		
-			a2Name = "z1";		
-			a3Name = "x2";		
-			a4Name = "y2";		
-			a5Name = "z2";		
-			a6Name = "NO_NAME";
-			a7Name = "NO_NAME";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Box",		"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Box",		"Max"), 	 	&v[1],flt_min,flt_max,0.001f,3);
 			break;
 		case PDSphere:
-			numFloats_v = 5;
-			typeName = "sphere- ";
-			a0Name = "x";			
-			a1Name = "y";			
-			a2Name = "z";			
-			a3Name = "radius1";	
-			a4Name = "radius2";	
-			a5Name = "NO_NAME";
-			a6Name = "NO_NAME";
-			a7Name = "NO_NAME";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Sphere",	"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Sphere",	"Radius Inner"),&f[3],0,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Sphere",	"Radius Outer"),&f[4],0,flt_max,0.001f,3);
 			break;
 		case PDCylinder:
-			numFloats_v = 8;
-			typeName = "cylinder- ";
-			a0Name = "x1";		
-			a1Name = "y1";		
-			a2Name = "z1";		
-			a3Name = "x2";		
-			a4Name = "y2";		
-			a5Name = "z2";		
-			a6Name = "radius1";	
-			a7Name = "radius2";	
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Cylinder",	"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Cylinder",	"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Cylinder",	"Radius Inner"),&f[6],0,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Cylinder",	"Radius Outer"),&f[7],0,flt_max,0.001f,3);
 			break;
 		case PDCone:
-			numFloats_v = 8;
-			typeName = "cone- ";
-			a0Name = "x1";		
-			a1Name = "y1";		
-			a2Name = "z1";		
-			a3Name = "x2";		
-			a4Name = "y2";		
-			a5Name = "z2";		
-			a6Name = "radius1";	
-			a7Name = "radius2";	
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Cone",		"Apex"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Cone",		"End Point"),	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Cone",		"Radius Inner"),&f[6],0,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Cone",		"Radius Outer"),&f[7],0,flt_max,0.001f,3);
 			break;
 		case PDBlob:
-			numFloats_v = 4;
-			typeName = "blob- ";
-			a0Name = "x";			
-			a1Name = "y";			
-			a2Name = "z";			
-			a3Name = "stdev";		
-			a4Name = "NO_NAME";
-			a5Name = "NO_NAME";
-			a6Name = "NO_NAME";
-			a7Name = "NO_NAME";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Blob",		"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Blob",		"Radius Outer"),&f[3],0,flt_max,0.001f,3);
 			break;
 		case PDDisc:
-			numFloats_v = 8;
-			typeName = "disk- ";
-			a0Name = "x";			
-			a1Name = "y";			
-			a2Name = "z";			
-			a3Name = "normal x";		
-			a4Name = "normal y";
-			a5Name = "normal z";
-			a6Name = "radius 1";
-			a7Name = "radius 2";
-			a8Name = "NO_NAME";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Disk",		"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Disk",		"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Disk",		"Radius Inner"),&f[6],0,flt_max,0.001f,3);
+            PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Disk",		"Radius Outer"),&f[7],0,flt_max,0.001f,3);
+			break;
+        case PDRectangle:
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Rectangle",	"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Rectangle",	"Basis U"),	 	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Rectangle",	"Basis V"),	 	&v[2],flt_min,flt_max,0.001f,3);
 			break;
 		default:
-			numFloats_v = 9;
-			typeName = "transform- ";
-			a0Name = "trans x";		
-			a1Name = "trans y";		
-			a2Name = "trans z";		
-			a3Name = "rotate x";		
-			a4Name = "rotate y";		
-			a5Name = "rotate z";		
-			a6Name = "scale x";	
-			a7Name = "scale y";	
-			a8Name = "scale z";
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Transform",	"Translate"),	&v[0],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Transform",	"Rotate"),	 	&v[1],flt_min,flt_max,0.001f,3);
+            PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Transform",	"Scale"),	 	&v[2],flt_min,flt_max,0.001f,3);
 			break;
 	}
 }
 
 //--------------------------------------------------------------------
+/*
 void	PDomain::MoveXYZ(float x, float y, float z)
 {
 	switch(type)
@@ -528,3 +472,4 @@ MVertex&	PDomain::GetCenter()
 	}
 	return center;
 }
+*/

@@ -2,181 +2,265 @@
 #ifndef ParticleEffectActionsH
 #define ParticleEffectActionsH
 
-struct EPAAvoid : public PAPI::PAAvoid
+#include "pDomain.h"
+
+struct EParticleAction
 {
-    virtual void 	Render		();
+	struct PFloat{
+    	float		val;
+        float		mn;
+        float		mx;
+        PFloat		()	{val=0.f;mn=0.f;mx=0.f;}
+        PFloat		(float _val, float _mn, float _mx):val(_val),mn(_mn),mx(_mx){;}
+    };
+	DEFINE_VECTOR(PDomain,PDomainVec,PDomainVecIt);
+	DEFINE_VECTOR(PFloat,PFloatVec,PFloatVecIt);
+
+	ref_str 		actionName;
+	ref_str 		actionType;
+    enum{
+    	flEnabled	= (1<<0),
+    	flDrawDomain= (1<<1),
+    };
+	Flags32				flags;
+    PAPI::PActionEnum	type;
+
+    RStrVec			floatNames;
+	RStrVec			domainNames;
+	RStrVec			boolNames;
+
+	PFloatVec		floats;
+	PDomainVec		domains;
+	BOOLVec			bools;
+
+    EParticleAction	(PAPI::PActionEnum	_type)
+    {
+    	flags.set	(flEnabled);
+        type		= _type;
+    }
+protected:
+	void			appendFloat	(LPCSTR name, float v, float mn=flt_min, float mx=flt_max);
+	void			appendDomain(LPCSTR name, PDomain v);
+	void			appendBool	(LPCSTR name, BOOL b);
+public:    
+    virtual void	Execute		()=0;
+    virtual void	WriteCode	()=0;
     virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+
+    virtual void 	Load		(IReader& F);
+    virtual void 	Save		(IWriter& F);
+    virtual void 	Render		();
+};
+
+struct EPAAvoid : public EParticleAction
+{
+					EPAAvoid	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
  
-struct EPABounce : public PAPI::PABounce
+struct EPABounce : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPABounce	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPACallActionList : public PAPI::PACallActionList
+struct EPACallActionList : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPACallActionList();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPACopyVertexB : public PAPI::PACopyVertexB
+struct EPACopyVertexB : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPACopyVertexB();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPADamping : public PAPI::PADamping
+struct EPADamping : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPADamping	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAExplosion : public PAPI::PAExplosion
+struct EPAExplosion : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAExplosion();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAFollow : public PAPI::PAFollow
+struct EPAFollow : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAFollow	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAGravitate : public PAPI::PAGravitate
+struct EPAGravitate : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAGravitate();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAGravity : public PAPI::PAGravity
+struct EPAGravity : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAGravity	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAJet : public PAPI::PAJet
+struct EPAJet : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAJet		();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAKillOld : public PAPI::PAKillOld
+struct EPAKillOld : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAKillOld	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAMatchVelocity : public PAPI::PAMatchVelocity
+struct EPAMatchVelocity : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAMatchVelocity();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAMove : public PAPI::PAMove
+struct EPAMove : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAMove		();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAOrbitLine : public PAPI::PAOrbitLine
+struct EPAOrbitLine : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAOrbitLine();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAOrbitPoint : public PAPI::PAOrbitPoint
+struct EPAOrbitPoint : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAOrbitPoint();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPARandomAccel : public PAPI::PARandomAccel
+struct EPARandomAccel : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPARandomAccel();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPARandomDisplace : public PAPI::PARandomDisplace
+struct EPARandomDisplace : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPARandomDisplace();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPARandomVelocity : public PAPI::PARandomVelocity
+struct EPARandomVelocity : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPARandomVelocity();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPARestore : public PAPI::PARestore
+struct EPARestore : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPARestore	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPASink : public PAPI::PASink
+struct EPASink : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPASink		();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPASinkVelocity : public PAPI::PASinkVelocity
+struct EPASinkVelocity : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPASinkVelocity();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPASpeedLimit : public PAPI::PASpeedLimit
+struct EPASpeedLimit : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPASpeedLimit();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPASource : public PAPI::PASource
+struct EPASource : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPASource	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPATargetColor : public PAPI::PATargetColor
+struct EPATargetColor : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPATargetColor();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPATargetSize : public PAPI::PATargetSize
+struct EPATargetSize : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPATargetSize();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPATargetRotate : public PAPI::PATargetRotate
+struct EPATargetRotate : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPATargetRotate();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPATargetVelocity : public PAPI::PATargetVelocity
+struct EPATargetVelocity : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPATargetVelocity();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAVelocityD : public PAPI::PAVelocityD
+struct EPAVortex : public EParticleAction
 {
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
+					EPAVortex	();
+    virtual void	Execute		();
+    virtual void	WriteCode	();
 };
 
-struct EPAVortex : public PAPI::PAVortex
-{
-    virtual void 	Render		();
-    virtual void 	FillProp	(PropItemVec& items, LPCSTR pref);
-};
-
-PAPI::ParticleAction* 	pCreateEAction(PAPI::PActionEnum type);
-PAPI::ParticleAction* 	pCreateEAction(PAPI::ParticleAction* src);
+EParticleAction* 	pCreateEAction(PAPI::PActionEnum type);
+EParticleAction* 	pCreateEAction(PAPI::ParticleAction* src);
 //---------------------------------------------------------------------------
 #endif
+
+/*
+
+	 void pTargetVelocityD(float scale, PDomainEnum dtype,
+		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
+		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
+
+	 void pVertex(float x, float y, float z);
+
+}
+*/

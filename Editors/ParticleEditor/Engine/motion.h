@@ -173,7 +173,6 @@ public:
     void			Pause	(){bPlay=!bPlay;}
 };
 
-DEFINE_VECTOR(ref_str,RStrVec,RStrIt);
 class ENGINE_API CClip{
 public:
 	ref_str			name;

@@ -191,11 +191,7 @@ BOOL CPEDef::Load(IReader& F)
     R_ASSERT		(F.find_chunk(PED_CHUNK_ACTIONLIST));
     m_ActionList.resize(F.r_u32());
     for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++){
-#ifdef _PARTICLE_EDITOR
-    	*it			= pCreateEAction((PActionEnum)F.r_u32());
-#else
     	*it			= PAPI::pCreateAction((PActionEnum)F.r_u32());
-#endif
         (*it)->Load	(F);
     }
 
@@ -245,6 +241,9 @@ BOOL CPEDef::Load(IReader& F)
 	    F.r_stringZ	(m_SourceText);
 //        Compile		();
     }
+
+    if (F.find_chunk(PED_CHUNK_EDATA)){
+    }    
 #endif
 
     return TRUE;

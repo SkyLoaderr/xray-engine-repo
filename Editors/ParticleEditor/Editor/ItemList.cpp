@@ -441,10 +441,11 @@ void __fastcall	TItemList::RenameItem(LPCSTR fn0, LPCSTR fn1, EItemType type)
 {
 	if (OnItemRename) OnItemRename	(fn0,fn1,type);
     if (type==TYPE_OBJECT){
-        TElTreeItem* item			= FHelper.FindObject(tvItems,fn1); 	VERIFY(item);
-        ListItem* prop				= (ListItem*)item->Tag; 			VERIFY(prop);
+        TElTreeItem* item0			= FHelper.FindObject(tvItems,fn0); 	VERIFY(item0);
+        ListItem* prop				= (ListItem*)item0->Tag; 			VERIFY(prop);
 		prop->SetName				(fn1);
-        prop->item					= item;
+        TElTreeItem* item1			= FHelper.FindObject(tvItems,fn1);
+        if (item1) prop->item		= item1;
     }
 }
 //---------------------------------------------------------------------------

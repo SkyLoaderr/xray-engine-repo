@@ -99,8 +99,6 @@ public:
     enum{
     	flRefreshProps 		= (1<<0),
         flApplyParent		= (1<<1),
-
-        flDrawDomain		= (1<<10),
     };
     Flags32				m_Flags;
 public:

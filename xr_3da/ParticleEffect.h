@@ -20,6 +20,7 @@ namespace PAPI
 	struct ParticleAction;
     DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
 }
+struct EParticleAction;
 
 namespace PS
 {
@@ -116,9 +117,13 @@ namespace PS
         time_t				m_CreateTime;
         time_t				m_ModifTime;
         
+	    DEFINE_VECTOR(EParticleAction*,EPAVec,EPAVecIt);
+		EPAVec 				m_EActionList;
 		AnsiString			m_SourceText;
+        
 		void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
 		void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
+		void __fastcall 	OnActionsClick		(PropValue* sender, bool& bDataModified);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
 		BOOL				Equal				(const CPEDef* pe);
@@ -238,6 +243,7 @@ namespace PS
 #define PED_CHUNK_COLLISION	   	0x0021
 #define PED_CHUNK_VEL_SCALE		0x0022
 #define PED_CHUNK_OWNER			0x0023
+#define PED_CHUNK_EDATA			0x0024
 
 //---------------------------------------------------------------------------
 #endif

@@ -193,8 +193,8 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
 {
-//	Tools.ResetState();
-	Tools.m_EditPE->ApplyExplosion();
+	Tools.ResetState();
+//.	Tools.m_EditPE->ApplyExplosion();
 }
 //---------------------------------------------------------------------------
 

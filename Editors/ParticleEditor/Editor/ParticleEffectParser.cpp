@@ -8,7 +8,17 @@
 using namespace PAPI;
 using namespace PS;
               
-xr_token					domain_token		[ ]={
+enum PParamType{
+	ptUnknown=-1,
+    ptDomain=0,
+    ptBOOL,
+    ptFloat,
+    ptInt,
+    ptWORD,
+    ptDWORD,
+    ptString,
+};
+xr_token					pddomain_token		[ ]={
 	{ "PDPoint",	  		PDPoint				},
 	{ "PDLine",	  			PDLine				},
 	{ "PDTriangle",	  		PDTriangle			},
@@ -21,17 +31,6 @@ xr_token					domain_token		[ ]={
 	{ "PDDisc",	  			PDDisc				},
 	{ "PDRectangle",	  	PDRectangle			},
 	{ 0,					0				   	},
-};
-
-enum PParamType{
-	ptUnknown=-1,
-    ptDomain=0,
-    ptBOOL,
-    ptFloat,
-    ptInt,
-    ptWORD,
-    ptDWORD,
-    ptString,
 };
 xr_token					type_token		[ ]={
 	{ "PDomainEnum",		ptDomain			},
@@ -127,7 +126,7 @@ IC int get_token_ID(xr_token* token_list, LPCSTR name){
 
 IC bool get_domain_type(LPCSTR src, var& val)
 {
-	val = (PDomainEnum)get_token_ID(domain_token,src);
+	val = (PDomainEnum)get_token_ID(pddomain_token,src);
     return (int)val>=0;
 }
 
@@ -515,7 +514,7 @@ void TransferActions(PAVec& src, PAVec& dest)
     	xr_delete(*d_it);
     dest.clear();
 	for (PAVecIt s_it=src.begin(); s_it!=src.end(); s_it++)
-    	dest.push_back(pCreateEAction(*s_it));
+    	dest.push_back(pCreateAction((*s_it)->type,*s_it));
 }
 
 
@@ -579,24 +578,27 @@ void CPEDef::Compile()
     // reset state (одинаковые начальные условия)
     pResetState				();
     
-    // execute commands
-    PFuncIt pf_it;
-    // at first state commands
-    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
-    	if (PFunction::ftState==pf_it->type) pf_it->Execute();             
-    // at next action commands
-	pNewActionList			(action_list_handle);
-    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
-    	if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
-	pEndActionList			();
-
-    // save effect data
-	ParticleEffect *pe 		= _GetEffectPtr(effect_handle); R_ASSERT(pe);
-    m_MaxParticles			= pe->max_particles;
+    try{
+        // execute commands
+        PFuncIt pf_it;
+        // at first state commands
+        for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+            if (PFunction::ftState==pf_it->type) pf_it->Execute();             
+        // at next action commands
+        pNewActionList			(action_list_handle);
+        for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+            if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
+        pEndActionList			();
+        
+        // save effect data
+        ParticleEffect *pe 		= _GetEffectPtr(effect_handle); R_ASSERT(pe);
+        m_MaxParticles			= pe->max_particles;
     
-    // save action list
-	PAVec*	pa				= _GetListPtr(action_list_handle); R_ASSERT(pa);
-    TransferActions			(*pa,m_ActionList);
+        // save action list
+        PAVec*	pa				= _GetListPtr(action_list_handle); R_ASSERT(pa);
+        TransferActions			(*pa,m_ActionList);
+    }catch(...){
+    }
 
     // destroy temporary handls
 	pDeleteParticleEffects	(effect_handle);

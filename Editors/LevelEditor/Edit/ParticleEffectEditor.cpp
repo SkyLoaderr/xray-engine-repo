@@ -5,8 +5,10 @@
 #ifdef _PARTICLE_EDITOR
 
 #include "ParticleEffect.h"
+#include "ParticleEffectActions.h"
 #include "PropertiesListHelper.h"
 #include "ui_tools.h"
+#include "ui_main.h"
              
 BOOL PS::CPEDef::Equal(const CPEDef* pe)
 {
@@ -68,6 +70,17 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
     bDataModified		= false;
 }
 
+void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModified)
+{
+	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
+    switch (B->btn_num){
+    case 0:
+    	m_EActionList.push_back(pCreateEAction(PAPI::PASourceID));
+        UI.Command		(COMMAND_UPDATE_PROPERTIES);
+    break;
+    }
+}
+
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
 	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
@@ -80,8 +93,12 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	::PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
     B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnSourceTextEdit;
-//	for (PAPI::PAVecIt s_it=m_ActionList.begin(); s_it!=m_ActionList.end(); s_it++)
-//    	(*s_it)->FillProp	(items,FHelper.PrepareKey(pref,"Actions").c_str());
+/*
+	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Actions"),"Append",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent		= OnActionsClick;
+	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++)
+    	(*s_it)->FillProp	(items,FHelper.PrepareKey(pref,"Actions",AnsiString().sprintf("%02d - %s",s_it-m_EActionList.begin(),*(*s_it)->actionType).c_str()).c_str());
+*/
 }
 #endif
 

@@ -7,7 +7,7 @@
 
 void PS::CPEDef::Render()
 {
-	for (PAPI::PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++)
+	for (EPAVecIt it=m_EActionList.begin(); it!=m_EActionList.end(); it++)
     	(*it)->Render();
 }
 
@@ -91,7 +91,7 @@ void PAPI::pDomain::Render(u32 clr)
     break;
     }
 }
-
+/*
 void 	EPAAvoid::Render			()
 {
 	position.Render(0x6096FF96);
@@ -132,7 +132,9 @@ void 	EPAGravity::Render		()
 
 void 	EPAJet::Render			()
 {
-//.	0x600000ff
+    RCache.set_xform_world	(Fidentity);
+    Device.SetShader		(Device.m_WireShader);
+    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x600000ff);
 }
 
 void 	EPAKillOld::Render		()
@@ -149,12 +151,18 @@ void 	EPAMove::Render			()
 
 void 	EPAOrbitLine::Render		()
 {
-//.	0x600000ff
+    RCache.set_xform_world	(Fidentity);
+    Device.SetShader		(Device.m_WireShader);
+    DU.DrawCross			(p, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
+    DU.DrawCross			(p+axis, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
+    DU.DrawLine 			(p, p+axis, 0x6000ff00);
 }
 
 void 	EPAOrbitPoint::Render		()
 {
-//.	0x600000ff
+    RCache.set_xform_world	(Fidentity);
+    Device.SetShader		(Device.m_WireShader);
+    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ff00);
 }
 
 void 	EPARandomAccel::Render	()
@@ -213,5 +221,8 @@ void 	EPAVelocityD::Render		()
 
 void 	EPAVortex::Render			()
 {
-//.	0x600000ff
+    RCache.set_xform_world	(Fidentity);
+    Device.SetShader		(Device.m_WireShader);
+    DU.DrawCross			(center, 0.05f,0.05f,0.05f, 0.05f,0.05f,0.05f, 0x6000ffff);
 }
+*/

@@ -85,7 +85,7 @@
       Intermediate\Blender_Recorder_StandartBinding.obj 
       Intermediate\ItemDialog.obj Intermediate\ParticleEffectActions.obj 
       Intermediate\ParticleEffectActionsProps.obj 
-      Intermediate\ParticleEffectActionsRender.obj"/>
+      Intermediate\ParticleEffectActionsRender.obj Intermediate\pDomain.obj"/>
     <RESFILES value="resource.res ParticleEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -302,6 +302,7 @@
       <FILE FILENAME="Editor\ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ParticleEffectActionsProps.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ParticleEffectActionsRender.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
