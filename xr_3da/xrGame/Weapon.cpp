@@ -77,8 +77,8 @@ CWeapon::~CWeapon		()
 	xr_delete			(m_pPhysicsShell);
 	xr_free				(pstrWallmark);
 
-	Device.Shader.Delete(hUIIcon);
-	if (hWallmark)		Device.Shader.Delete(hWallmark);
+	hUIIcon.destroy		();
+	hWallmark.destroy	();
 }
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
@@ -417,8 +417,8 @@ void CWeapon::net_Destroy	()
 	if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate	();
 	xr_delete				(m_pPhysicsShell);
 
-	ShaderDestroy			(hUIIcon);
-	Device.Shader.Delete	(hWallmark);
+	hUIIcon.destroy			();
+	hWallmark.destroy		();
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -662,7 +662,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	if (0==hWallmark)	return;
+	if (0==hWallmark())	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -677,7 +677,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 		}
 	} else {
 		::Render->add_Wallmark	(
-			hWallmark,
+			hWallmark(),
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element);
@@ -815,7 +815,7 @@ void CWeapon::OnDrawFlame	()
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())](),P,S,A,hud_mode);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;

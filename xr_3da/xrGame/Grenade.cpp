@@ -46,8 +46,8 @@ CGrenade::CGrenade(void) {
 }
 
 CGrenade::~CGrenade(void) {
-	if(hWallmark) Device.Shader.Delete(hWallmark);
-	::Render->light_destroy(m_pLight);
+	hWallmark.destroy		();
+	::Render->light_destroy	(m_pLight);
 	SoundDestroy(sndExplode);
 	SoundDestroy(sndCheckout);
 	SoundDestroy(sndRicochet[0]);
@@ -100,9 +100,10 @@ BOOL CGrenade::net_Spawn(LPVOID DC) {
 	return inherited::net_Spawn(DC);
 }
 
-void CGrenade::net_Destroy() {
-	if(hWallmark) Device.Shader.Delete(hWallmark);
-	inherited::net_Destroy();
+void CGrenade::net_Destroy() 
+{
+	hWallmark.destroy		();
+	inherited::net_Destroy	();
 }
 
 void CGrenade::OnH_A_Chield() {
@@ -251,7 +252,7 @@ void CGrenade::Explode() {
 }
 
 void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) {
-	if (0==hWallmark)	return;
+	if (0==hWallmark())	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -267,7 +268,7 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 	} else {
 		R_ASSERT(R.element >= 0);
 		::Render->add_Wallmark	(
-			hWallmark,
+			hWallmark(),
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element/**/);
