@@ -18,7 +18,7 @@
       Intermediate\clsid.obj Intermediate\cl_collector.obj 
       Intermediate\xr_ini.obj Intermediate\ColorPicker.obj 
       Intermediate\LzHuf.obj Intermediate\UI_Camera.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\FS.obj Intermediate\HW.obj 
+      Intermediate\UI_MainCommand.obj Intermediate\FS.obj 
       Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
       Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
       Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
@@ -66,7 +66,9 @@
       Intermediate\LightAnimLibrary.obj Intermediate\render.obj 
       Intermediate\Frustum.obj Intermediate\UI_MainMail.obj 
       Intermediate\SoundManager.obj Intermediate\xrSkin2W.obj 
-      Intermediate\GameFont.obj Intermediate\GameMtlLib.obj"/>
+      Intermediate\GameFont.obj Intermediate\GameMtlLib.obj 
+      Intermediate\Blender_B.obj Intermediate\defines.obj 
+      Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -161,7 +163,6 @@
       <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\FS.cpp" FORMNAME="" UNITNAME="FS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\SharedPrimitive.cpp" FORMNAME="" UNITNAME="SharedPrimitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -262,6 +263,10 @@
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -216,8 +216,8 @@ void __fastcall TfrmPropertiesPSDef::FormClose(TObject *Sender,
 void __fastcall TfrmPropertiesPSDef::ebSelectShaderClick(TObject *Sender)
 {
 	if (!m_PS) return;
-	LPCSTR S = TfrmChoseItem::SelectShader(m_PS->m_ShaderName[0]?m_PS->m_ShaderName:0);
-    if (S){
+	LPCSTR S;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smShader,S,1,m_PS->m_ShaderName[0]?m_PS->m_ShaderName:0)){
     	lbShader->Caption=S;
         ApplyObjectsInfo();
 		Tools.UpdateCurrent();
@@ -228,8 +228,8 @@ void __fastcall TfrmPropertiesPSDef::ebSelectShaderClick(TObject *Sender)
 void __fastcall TfrmPropertiesPSDef::ebSelectTextureClick(TObject *Sender)
 {
 	if (!m_PS) return;
-	LPCSTR S = TfrmChoseItem::SelectTexture(false,m_PS->m_TextureName[0]?m_PS->m_TextureName:0);
-    if (S){
+	LPCSTR S;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smTexture,S,1,m_PS->m_TextureName[0]?m_PS->m_TextureName:0)){
     	lbTexture->Caption=S;
         ApplyObjectsInfo();
 		Tools.UpdateCurrent();

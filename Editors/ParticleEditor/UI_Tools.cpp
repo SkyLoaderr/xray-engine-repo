@@ -168,9 +168,8 @@ void CParticleTools::OnDeviceDestroy(){
 }
 
 void CParticleTools::SelectPreviewObject(int p){
-    LPCSTR fn=m_EditObject?m_EditObject->GetName():"";
-    fn=TfrmChoseItem::SelectObject(false,0,fn);
-    if (!fn) return;
+    LPCSTR fn;
+    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn,1,m_EditObject?m_EditObject->GetName():0)) return;
     Lib.RemoveEditObject(m_EditObject);
     m_EditObject = Lib.CreateEditObject(fn);
     if (!m_EditObject)

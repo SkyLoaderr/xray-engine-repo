@@ -74,6 +74,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Tools.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
+    case COMMAND_SAVE_BACKUP:
+		Command(COMMAND_SAVE);
+    break;
     case COMMAND_RELOAD:
 		if (!Tools.IfModified()) return false;
         if (ELog.DlgMsg(mtConfirmation,"Reload library?")==mrYes)
