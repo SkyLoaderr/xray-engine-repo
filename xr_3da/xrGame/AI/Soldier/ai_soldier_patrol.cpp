@@ -1022,7 +1022,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 					AI_Path.TravelPath[j].P = SoldierLeader->AI_Path.TravelPath[i].P;
 					Fvector tTemp;
 					tTemp.sub(SoldierLeader->AI_Path.TravelPath[i < SoldierLeader->AI_Path.TravelPath.size() - 1 ? i + 1 : 0].P, SoldierLeader->AI_Path.TravelPath[i].P);
-					if (tTemp.magnitude() < .1f) {
+					if ((tTemp.magnitude() < .1f) || ((j > 0) && (COMPUTE_DISTANCE_2D(SoldierLeader->AI_Path.TravelPath[i - 1].P,SoldierLeader->AI_Path.TravelPath[i].P) >= COMPUTE_DISTANCE_2D(SoldierLeader->AI_Path.TravelPath[i - 1].P,SoldierLeader->AI_Path.TravelPath[i < SoldierLeader->AI_Path.TravelPath.size() - 1 ? i + 1 : 0].P)))) {
 						j--;
 						continue;
 					}
