@@ -4,7 +4,7 @@
 #include "xr_sndman.h"
 #include "xr_ini.h"
 
-CCDA::CCDA( HMIXER _hMixer ) {
+CCDA::CCDA( ) {
 	retLen			= sizeof(retStr);
 	dwCurTrack		= 0;
 	lKeepTime		= 0;

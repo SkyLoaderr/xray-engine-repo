@@ -69,14 +69,11 @@ CSoundManager::~CSoundManager( )
 	_DELETE			( pCDA			);
 
 	if (bPresent){
-		psSoundVMaster = fSaveMasterVol;
-		SetVMaster	( );
-		pBuffer->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
+//		pBuffer->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
 	}
 
-	_RELEASE		( pBuffer	);
-	_SHOW_REF		( "DirectSound", pDevice );
-	_RELEASE		( pDevice );
+	_RELEASE		( pBuffer		);
+	_RELEASE		( pDevice		);
 }
 
 void CSoundManager::Restart()
@@ -151,11 +148,13 @@ void CSoundManager::Initialize( )
 
 	bPresent		= true;
 
+	/*
 	fSaveMasterVol	= GetVMaster	( );
 	LONG 			lVol;
 	pBuffer->GetVolume( &lVol );
 	fSaveWaveVol	= (1-float(lVol)/float(DSBVOLUME_MIN));
-//	pBuffer->SetVolume( DSBVOLUME_MAX );
+	pBuffer->SetVolume( DSBVOLUME_MAX );
+	*/
 
 	GetDeviceInfo	();
 }
@@ -274,9 +273,11 @@ float CSoundManager::GetVMaster( )
 {
 	if ( !bPresent ) return 0;
 	DWORD			vol = 0;
+	/*
 	if (bVolume)
 		if (MMSYSERR_NOERROR==mixerGetControlDetails((HMIXEROBJ)hMixer, &master_detail, MIXER_GETCONTROLDETAILSF_VALUE))
 			return	float(LOWORD( master_volume.dwValue ))/0xFFFF;
+	*/
 	return			0;
 }
 
@@ -284,18 +285,21 @@ void CSoundManager::SetVMaster( )
 {
 	if (!bPresent)	return;
 
+	/*
 	if (bVolume){
 		clamp			( psSoundVMaster, 0.0f, 1.0f );
 		master_volume.dwValue = (int)(psSoundVMaster*0xFFFF);
 		mixerSetControlDetails((HMIXEROBJ)hMixer, &master_detail, MIXER_SETCONTROLDETAILSF_VALUE);
 	}
+	*/
+
 	fMasterVolume	= psSoundVMaster;
 }
 
 void CSoundManager::SetVMusic( )
 {
 	if (!bPresent)	return;
-	if (pCDA)		pCDA->SetVolume( psSoundVMusic );
+//	if (pCDA)		pCDA->SetVolume( psSoundVMusic );
 	pMusicStreams->Update();
 }
 

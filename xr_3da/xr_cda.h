@@ -24,8 +24,8 @@ class ENGINE_API CCDA
 
 	CDA_STATE				GetState( );
 public:
-							CCDA				( HMIXER _hMixer );
-							~CCDA			( );
+							CCDA					( );
+							~CCDA					( );
 
 	void					Open					( );
 	void					Close					( );

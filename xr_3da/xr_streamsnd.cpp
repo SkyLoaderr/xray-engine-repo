@@ -314,5 +314,5 @@ void CSoundStream::LoadADPCM( )
 	// wave source -- alloc on Play
 
     // DSound----------------------------------------------------------------
-	ADPCMCreateSoundBuffer(pSounds->lpDirectSound,&pBuffer, pwfx);
+	ADPCMCreateSoundBuffer	(pSounds->pDevice, &pBuffer, pwfx);
 }
