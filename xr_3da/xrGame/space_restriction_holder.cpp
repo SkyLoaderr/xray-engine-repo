@@ -35,7 +35,6 @@ SpaceRestrictionHolder::CBaseRestrictionPtr CSpaceRestrictionHolder::restriction
 
 	collect_garbage			();
 
-//	Msg						("INTRUSIVE : adding CSpaceRestrictionBase %s",*space_restrictors);
 	CSpaceRestrictionBase	*composition = xr_new<CSpaceRestrictionComposition>(this,space_restrictors);
 	CSpaceRestrictionBridge	*bridge = xr_new<CSpaceRestrictionBridge>(composition);
 	m_restrictions.insert	(std::make_pair(space_restrictors,bridge));
@@ -80,7 +79,6 @@ IC	void CSpaceRestrictionHolder::collect_garbage			()
 		if (!(*I).second->shape() && !(*I).second->m_ref_count && (Device.dwTimeGlobal >= (*I).second->m_last_time_dec + time_to_delete)) {
 			J				= I;
 			++I;
-//			Msg				("INTRUSIVE : removing CSpaceRestrictionBase %s",*(*J).second->name());
 			xr_delete		((*J).second);
 			m_restrictions.erase(J);
 		}
