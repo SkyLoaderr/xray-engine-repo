@@ -46,8 +46,37 @@
 		<level_map spot="esc_wolf_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="esc_wolf_spot" pointer="quest_pointer"></mini_map>
 	</esc_wolf_location>
-	
-	
+
+
+<!-- agroprom quest locations and spots-->
+	<agr_krot_location hint="agr_krot">
+		<level_map spot="agr_krot_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="agr_krot_spot" pointer="quest_pointer"></mini_map>
+	</agr_krot_location>
+
+    <agr_krot_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="32" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</agr_krot_spot>
+
+	<agr_gunslinger_cache_location hint="agr_gunslinger_cache">
+		<level_map spot="agr_gunslinger_cache_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="agr_gunslinger_cache_spot" pointer="quest_pointer"></mini_map>
+	</agr_gunslinger_cache_location>
+
+    <agr_gunslinger_cache_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="128" y="128" width="32" height="32">ui\ui_icons_map</texture>
+	</agr_gunslinger_cache_spot>
+
+	<agr_military_case_location hint="agr_military_case">
+		<level_map spot="agr_military_case_spot" pointer="quest_pointer"></level_map>
+		<mini_map  spot="agr_military_case_spot" pointer="quest_pointer"></mini_map>
+	</agr_military_case_location>
+
+    <agr_military_case_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="32" width="32" height="32">ui\ui_icons_map</texture>
+	</agr_military_case_spot>
+
+
 <!-- military locations and spots-->
 	<mil_max_location hint="mil_max">
 		<level_map spot="mil_max_spot" pointer="quest_pointer"></level_map>

@@ -538,6 +538,9 @@
 						RelativePath=".\Config\text\rus\string_table_outfit.xml">
 					</File>
 					<File
+						RelativePath=".\Config\text\rus\string_table_tasks_agroprom.xml">
+					</File>
+					<File
 						RelativePath=".\Config\text\rus\string_table_tasks_darkvalley.xml">
 					</File>
 					<File
@@ -545,6 +548,9 @@
 					</File>
 					<File
 						RelativePath=".\config\text\rus\string_table_tasks_military.xml">
+					</File>
+					<File
+						RelativePath=".\Config\text\rus\string_table_tasks_radar.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_tips.xml">
