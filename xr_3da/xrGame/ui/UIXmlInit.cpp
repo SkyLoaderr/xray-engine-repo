@@ -333,14 +333,14 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	
 	pWnd->SetRange((s16)min,(s16)max);
 	pWnd->SetProgressPos((s16)pos);
-	
+
+	// progress
 	strconcat(buf,path,":texture");
 
 	LPCSTR texture = xml_doc.Read(buf, index, NULL);
 	if(!texture) return false;
 
 	int progress_length = xml_doc.ReadAttribInt(buf, index, "length");
-	bool tile = (xml_doc.ReadAttribInt(buf, index, "tile")==1);
 	int r = xml_doc.ReadAttribInt(buf, index, "r");
 	int g = xml_doc.ReadAttribInt(buf, index, "g");
 	int b = xml_doc.ReadAttribInt(buf, index, "b");
@@ -351,14 +351,19 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 
 	u32 color = RGB_ALPHA(0xFF, r,g,b);
 
-	pWnd->SetProgressTexture(texture,progress_length,tile,tex_x, tex_y, tex_w, tex_h, color);
+	pWnd->SetProgressTexture(texture,progress_length,tex_x, tex_y, tex_w, tex_h, color);
 
+	// background
+	strconcat(buf,path,":background");
+	texture = xml_doc.Read(buf, index, NULL);
+	tex_x = xml_doc.ReadAttribInt(buf, index, "x");
+	tex_y = xml_doc.ReadAttribInt(buf, index, "y");
+	tex_w = xml_doc.ReadAttribInt(buf, index, "width");
+	tex_h = xml_doc.ReadAttribInt(buf, index, "height");
+	x = xml_doc.ReadAttribInt(buf, index, "offs_x");
+	y = xml_doc.ReadAttribInt(buf, index, "offs_y");
 
-	texture = xml_doc.Read(strconcat(buf,path,":background"), index, NULL);
-	x = xml_doc.ReadAttribInt(buf, index, "x");
-	y = xml_doc.ReadAttribInt(buf, index, "y");
-
-	pWnd->SetBackgroundTexture(texture,x,y);
+	pWnd->SetBackgroundTexture(texture,tex_x,tex_y,tex_w,tex_h,x,y);
 	
 	return true;
 }

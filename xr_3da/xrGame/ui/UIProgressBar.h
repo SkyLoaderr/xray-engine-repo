@@ -12,79 +12,69 @@
 #include "../script_export_space.h"
 
 
-class CUIProgressBar :
-	public CUIWindow
+class CUIProgressBar : public CUIWindow
 {
+protected:
+	//горизонтальный или вертикальный 
+	bool			m_bIsHorizontal;
+
+	//текущая позиция
+	s16				m_iProgressPos;
+
+	//границы отображения
+	s16				m_iMinPos;
+	s16				m_iMaxPos;
+
+	//текущий состояние полосы в пикселях
+	int				m_iCurrentLength;
+
+	///////////////////////////////////////	
+	//Графический интрефейс для рисования
+	///////////////////////////////////////
+	//вывод при помощи тайлов, иначе вся текстура - показывает 100% прогресса
+	int				m_iProgressLength;
+
+	//items
+	CUIStaticItem	m_UIProgressItem;
+	CUIStaticItem	m_UIBackgroundItem;
+	bool			m_bBackgroundPresent;
+	Ivector2		m_BackgroundOffset;
+
+	//обновить полосу
+	void			UpdateProgressBar();
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 public:
-	CUIProgressBar(void);
-	virtual ~CUIProgressBar(void);
+					CUIProgressBar(void);
+	virtual			~CUIProgressBar(void);
 
 
-	virtual void Init(int x, int y, int length, int broad, bool bIsHorizontal);
+	virtual void	Init(int x, int y, int length, int broad, bool bIsHorizontal);
 
-	void SetProgressTexture(const char* tex_name, int progress_length, bool tile,
-						int x, int y,
-						int width, int height,
-						u32 color = 0xFFFFFFFF);
-	void SetBackgroundTexture(const char* tex_name, int left_offset, int up_offset);
+	void			SetProgressTexture(LPCSTR tex_name, int progress_length, 
+						int x, int y, int width, int height, u32 color = 0xFFFFFFFF);
+	void			SetBackgroundTexture(LPCSTR tex_name, int x, int y, int width, int height, int offs_x, int offs_y);
 
-
-	void SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
+	void			SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
 						UpdateProgressBar();}
-	void GetRange(s16& iMin, s16& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
+	void			GetRange(s16& iMin, s16& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
 
-	s16 GetRange_min() {return  m_iMinPos;}
-	s16 GetRange_max() {return  m_iMaxPos;}
+	s16				GetRange_min() {return  m_iMinPos;}
+	s16				GetRange_max() {return  m_iMaxPos;}
 
-	void SetProgressPos(s16 iPos) { m_iProgressPos = iPos; 
+	void			SetProgressPos(s16 iPos) { m_iProgressPos = iPos; 
 						UpdateProgressBar();}
-	s16 GetScrollPos() {return m_iProgressPos;}
+	s16				GetScrollPos() {return m_iProgressPos;}
 
 	//базовые размеры для кнопок
 	//enum {PROGRESSBAR_WIDTH = 32, PROGRESSBAR_HEIGHT = 32};
 
 
 	//передвинуть каретку, если возможно
-	bool ProgressInc();
-	bool ProgressDec();
+	bool			ProgressInc();
+	bool			ProgressDec();
 
-
-	virtual void Draw();
-						
-
-protected:
-	//обновить полосу
-	void UpdateProgressBar();
-
-	//горизонтальный или вертикальный 
-	bool m_bIsHorizontal;
-	
-	//текущая позиция
-	s16 m_iProgressPos;
-
-	//границы отображения
-	s16 m_iMinPos;
-	s16 m_iMaxPos;
-	
-	//текущий состояние полосы в пикселях
-	int m_iCurrentLength;
-
-	///////////////////////////////////////	
-	//Графический интрефейс для рисования
-	///////////////////////////////////////
-	//полоса прогресса
-	CUIStaticItem m_UIStaticItem;
-	//вывод при помощи тайлов, иначе вся текстура - показывает 100% прогресса
-	bool m_bProgressTile;
-	int m_iProgressLength;
-	
-	//подложка
-	CUIStaticItem m_UIBackgroundItem;
-
-	bool m_bBackgroundPresent;
-	int m_iBackgroundLeftOffset;
-	int m_iBackgroundUpOffset;
-	DECLARE_SCRIPT_REGISTER_FUNCTION
+	virtual void	Draw();
 };
 
 add_to_type_list(CUIProgressBar)

@@ -77,7 +77,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 			v_cnt	+=4;
 		}
 	}
-
+ 
 	Irect clip_rect			= {bp.x,bp.y,iFloor(bp.x+fw*iTileX+iRemX),iFloor(bp.y+fh*iTileY+iRemY)};
 	UI()->PushScissor		(clip_rect);
 

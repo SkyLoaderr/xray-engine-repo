@@ -3,7 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include ".\uiprogressbar.h"
+#include "uiprogressbar.h"
+#include "..\MainUI.h"
 
 CUIProgressBar::CUIProgressBar(void)
 {
@@ -23,63 +24,53 @@ void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizonta
 {
 	m_bIsHorizontal = bIsHorizontal;
 
-
 	if(m_bIsHorizontal){
-	//	m_UIStaticItem.Init("ui\\ui_scb_scroll_box", "hud\\default",
-	//						x,y, alNone);
-
 		CUIWindow::Init(x,y, length, broad);
-		
-/*		m_DecButton.Init("ui\\ui_scb_left_arrow", 0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init("ui\\ui_scb_rigth_arrow",length-SCROLLBAR_WIDTH, 0,
-						SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_ScrollBox.Init(SCROLLBAR_WIDTH, 0, length/2, SCROLLBAR_HEIGHT, m_bIsHorizontal);*/
 	}else{
-	//	m_UIStaticItem.Init("ui\\ui_scb_scroll_box", "hud\\default",
-	//						x,y, alNone);
-
 		CUIWindow::Init(x,y, broad, length);
-/*		CUIWindow::Init(x,y, SCROLLBAR_WIDTH, length);
-		m_DecButton.Init(0, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-		m_IncButton.Init(0, length-SCROLLBAR_HEIGHT, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
-	
-	m_ScrollBox.Init(0, SCROLLBAR_HEIGHT, length/2, SCROLLBAR_WIDTH, m_bIsHorizontal);*/
 	}
-
 
 	UpdateProgressBar();
 }
 
-void CUIProgressBar::SetProgressTexture(const char* tex_name, 
-											int progress_length, bool tile, 
+void CUIProgressBar::SetProgressTexture(LPCSTR tex_name, 
+											int progress_length, 
 											int x, int y,
 											int width, int height,
 											u32 color)
 {
-	m_bProgressTile = tile;
-	m_iProgressLength = progress_length;
+	m_iProgressLength			= progress_length;
 	
-	m_UIStaticItem.Init(tex_name, "hud\\default", x, y, alNone);
-	m_UIStaticItem.SetColor(color);
+	m_UIProgressItem.Init		(tex_name, "hud\\default", x, y, alNone);
+	m_UIProgressItem.SetColor	(color);
 
-	if (width != 0 && height != 0)
-	{
-		m_UIStaticItem.SetOriginalRect(x, y, width, height);
-//		ClipperOn();
+	if (width!=0 && height!=0)
+		m_UIProgressItem.SetOriginalRect(x, y, width, height);
+
+	if(m_bIsHorizontal){
+		m_UIProgressItem.SetRect(0, 0, m_iProgressLength, GetHeight());	
+	}else{
+		m_UIProgressItem.SetRect(0, 0, GetWidth(), m_iProgressLength);
 	}
 }
-void CUIProgressBar::SetBackgroundTexture(const char* tex_name, 
-													int left_offset, int up_offset)
+void CUIProgressBar::SetBackgroundTexture(LPCSTR tex_name, int x, int y, int width, int height, int offs_x, int offs_y)
 {
-	m_bBackgroundPresent = true;
-	m_iBackgroundLeftOffset = left_offset;
-	m_iBackgroundUpOffset = up_offset;
+	if (tex_name&&tex_name[0]){
+		m_bBackgroundPresent = true;
 
-	m_UIBackgroundItem.Init(tex_name, "hud\\default", 0, 0, alNone);
+		m_UIBackgroundItem.Init		(tex_name, "hud\\default", 0, 0, alNone);
+		m_BackgroundOffset.set		(offs_x,offs_y);
+
+		if (width!=0 && height!=0)
+			m_UIBackgroundItem.SetOriginalRect(x, y, width, height);
+
+		if(m_bIsHorizontal){
+			m_UIBackgroundItem.SetRect(0, 0, m_iProgressLength, GetHeight());	
+		}else{
+			m_UIBackgroundItem.SetRect(0, 0, GetWidth(), m_iProgressLength);
+		}
+	}
 }
-
-
-
 
 void CUIProgressBar::UpdateProgressBar()
 {
@@ -90,22 +81,13 @@ void CUIProgressBar::UpdateProgressBar()
 	float fCurrentLength = m_iProgressPos*progressbar_unit;
 
 	//утановить размер и положение каретки
-	if(m_bIsHorizontal)
-	{	
-		m_iCurrentLength = (int)(GetWidth()*fCurrentLength); 	
-	}
-	else
-	{
-		m_iCurrentLength = (int)(GetHeight()*fCurrentLength); 	
-	}
+	if(m_bIsHorizontal)	m_iCurrentLength = (int)(GetWidth()*fCurrentLength); 	
+	else				m_iCurrentLength = (int)(GetHeight()*fCurrentLength); 	
 }
-
-
 
 bool CUIProgressBar::ProgressDec()
 {
-	if(m_iProgressPos>m_iMinPos)
-	{
+	if(m_iProgressPos>m_iMinPos){
 		--m_iProgressPos;
 		UpdateProgressBar();
 		return true;
@@ -114,11 +96,9 @@ bool CUIProgressBar::ProgressDec()
 	return false;
 }
 
-
 bool CUIProgressBar::ProgressInc()
 {
-	if(m_iProgressPos<m_iMaxPos)
-	{
+	if(m_iProgressPos<m_iMaxPos){
 		++m_iProgressPos;
 		UpdateProgressBar();
 		return true;
@@ -127,38 +107,30 @@ bool CUIProgressBar::ProgressInc()
 	return false;	
 }
 
-
 void CUIProgressBar::Draw()
 {
 	Irect rect = GetAbsoluteRect();
 
 	//нарисовать подложку
 	if(m_bBackgroundPresent){
-		m_UIBackgroundItem.SetPos(rect.left - m_iBackgroundLeftOffset, 
-								  rect.top - m_iBackgroundUpOffset);
+		m_UIBackgroundItem.SetPos(rect.left+m_BackgroundOffset.x, rect.top+m_BackgroundOffset.y);
 		m_UIBackgroundItem.Render();
 	}
 
-	m_UIStaticItem.SetPos(rect.left, rect.top);
+	Irect progress_rect;
+	m_UIProgressItem.SetPos	(rect.left, rect.top);
 
 	if(m_bIsHorizontal){
-		if(m_bProgressTile){
-			m_UIStaticItem.SetTile(m_iCurrentLength/(m_iProgressLength*2),1,	
-							m_iCurrentLength%m_iProgressLength,0);
-		}else{
-			m_UIStaticItem.SetRect(0, 0, m_iCurrentLength, GetHeight());	
-		}
+		progress_rect.set	(0, 0, m_iCurrentLength, GetHeight());
 	}else{
-		if(m_bProgressTile){
-			m_UIStaticItem.SetTile(1,m_iCurrentLength/(m_iProgressLength*2),0,
-								m_iCurrentLength%m_iProgressLength);
-		}else{
-			//m_UIStaticItem.SetRect(health_rect.x1,health_rect.y1,iFloor(float(health_rect.x2)*val),health_rect.y2);
-			m_UIStaticItem.SetRect(0, m_iProgressLength-m_iCurrentLength,
-											GetWidth(), m_iProgressLength);
-		}
+		progress_rect.set	(0, m_iProgressLength-m_iCurrentLength,
+							GetWidth(), m_iProgressLength);
 	}
 	
-	if(m_iCurrentLength>0)
-		m_UIStaticItem.Render();
+	if(m_iCurrentLength>0){
+		progress_rect.add	(rect.left,rect.top);
+		UI()->PushScissor	(progress_rect);
+		m_UIProgressItem.Render();
+		UI()->PopScissor	();
+	}
 }
