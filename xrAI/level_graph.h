@@ -255,6 +255,14 @@ private:
 
 public:
 			void	render						();
+			void	on_render1					();
+			void	on_render2					();
+			void	on_render3					();
+			void	on_render4					();
+			void	on_render5					();
+			void	on_render6					();
+			void	on_render7					();
+
 			void	set_start_point				();
 			void	set_dest_point				();
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;

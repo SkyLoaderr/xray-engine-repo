@@ -21,6 +21,7 @@ class CEntity;
 class ENGINE_API CMotionDef;
 class CSE_ALifeItemWeapon;
 class CSE_ALifeItemWeaponAmmo;
+class CWeaponMagazined;
 
 class CWeapon : public CHudItem,
 				public CShootingObject
@@ -41,6 +42,9 @@ public:
 	virtual void			net_Destroy			();
 	virtual void			net_Export			(NET_Packet& P);	// export to server
 	virtual void			net_Import			(NET_Packet& P);	// import from server
+	virtual CWeapon			*cast_weapon			()		 {return this;}
+	virtual CWeaponMagazined*cast_weapon_magazined	()		 {return 0;}
+
 
 	//serialization
 	virtual void	save				(NET_Packet &output_packet);

@@ -20,6 +20,10 @@ enum EHandDependence{
 	hd2Hand	= 2
 };
 
+class CFoodItem;
+class CMissile;
+class CHudItem;
+
 class CInventoryItem : public CPhysicItem, public CHitImmunity
 {
 	typedef CPhysicItem	inherited;
@@ -28,7 +32,11 @@ public:
 	virtual			~CInventoryItem		();
 
 public:
-	virtual CInventoryItem*		cast_inventory_item		()		 {return this;}
+	virtual CInventoryItem	*cast_inventory_item()	{return this;}
+	virtual CWeapon			*cast_weapon		()	{return 0;}
+	virtual CFoodItem		*cast_food_item		()	{return 0;}
+	virtual CMissile		*cast_missile		()	{return 0;}
+	virtual CHudItem		*cast_hud_item		()	{return 0;}
 
 public:
 	virtual void	Load				(LPCSTR section);

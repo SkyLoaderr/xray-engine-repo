@@ -12,6 +12,11 @@ class CPhysicsShellHolder:  virtual public CGameObject,
 									public CParticlesPlayer
 	
 {
+private:
+	u32						m_dwFrameSpawn;
+	u32						m_dwFrameDestroy;
+	u32						m_dwFrameClient;
+
 public:
 	typedef CGameObject inherited;
 	
@@ -34,6 +39,7 @@ public:
 	}
 	virtual CPHDestroyable				*ph_destroyable		(){return NULL;}
 	virtual CPHCollisionDamageReceiver	*PHCollisionDamageReceiver(){return NULL;}
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 public:
 	virtual void			PHGetLinearVell		(Fvector& velocity);
 	virtual void			PHSetLinearVell		(Fvector& velocity);

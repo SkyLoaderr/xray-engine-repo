@@ -145,6 +145,7 @@ void CSE_ALifeInventoryItem::FillProps		(LPCSTR pref, PropItemVec& values)
 	CSE_ALifeObject					*alife_object = smart_cast<CSE_ALifeObject*>(base());
 	R_ASSERT						(alife_object);
 	PHelper().CreateFlag32			(values, PrepareKey(pref, *base()->s_name,"ALife\\Useful for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flUsefulForAI);
+	PHelper().CreateFlag32			(values, PrepareKey(pref, *base()->s_name,"ALife\\Visible for AI"),	&alife_object->m_flags,	CSE_ALifeObject::flVisibleForAI);
 }
 
 bool CSE_ALifeInventoryItem::bfUseful		()

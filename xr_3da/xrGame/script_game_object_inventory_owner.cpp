@@ -9,7 +9,6 @@
 #include "Pda.h"
 #include "xrMessages.h"
 #include "character_info.h"
-#include "ai_phrasedialogmanager.h"
 #include "gametask.h"
 #include "actor.h"
 #include "level.h"
@@ -18,14 +17,11 @@
 #include "hudmanager.h"
 #include "restricted_object.h"
 #include "script_engine.h"
-#include "visual_memory_manager.h"
-#include "sound_memory_manager.h"
 #include "attachable_item.h"
 #include "ai/script/ai_script_monster.h"
 #include "string_table.h"
 #include "alife_registry_wrappers.h"
 #include "relation_registry.h"
-#include "ai/stalker/ai_stalker.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -42,7 +38,6 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 	pInventoryOwner->TransferInfo(CInfoPortion::IdToIndex(info_id), false);
 	return true;
 }
-
 
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2)
 {
@@ -269,20 +264,6 @@ int	CScriptGameObject::GetAttitude			(CScriptGameObject* pToWho)
 
 //////////////////////////////////////////////////////////////////////////
 
-bool CScriptGameObject::NeedToAnswerPda		()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return false;
-	return pDialogManager->NeedAnswerOnPDA();
-}
-void CScriptGameObject::AnswerPda			()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return;
-	pDialogManager->AnswerOnPDA();
-}
-
-
 LPCSTR CScriptGameObject::ProfileName			()
 {
 	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
@@ -425,26 +406,6 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-
-void CScriptGameObject::SetStartDialog(LPCSTR dialog_id)
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return;
-	pDialogManager->SetStartDialog(dialog_id);
-}
-
-void CScriptGameObject::GetStartDialog		()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return;
-	pDialogManager->GetStartDialog();
-}
-void CScriptGameObject::RestoreDefaultStartDialog()
-{
-	CAI_PhraseDialogManager* pDialogManager = smart_cast<CAI_PhraseDialogManager*>(m_tpGameObject);
-	if(!pDialogManager) return;
-	pDialogManager->RestoreDefaultStartDialog();
-}
 
 void  CScriptGameObject::SwitchToTrade		()
 {
@@ -606,46 +567,6 @@ bool CScriptGameObject::limping				() const
 	return									(entity_condition->IsLimping());
 }
 
-void CScriptGameObject::enable_vision			(bool value)
-{
-	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(m_tpGameObject);
-	if (!visual_memory_manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member enable_vision!");
-		return;
-	}
-	visual_memory_manager->enable			(value);
-}
-
-bool CScriptGameObject::vision_enabled			() const
-{
-	CVisualMemoryManager					*visual_memory_manager = smart_cast<CVisualMemoryManager*>(m_tpGameObject);
-	if (!visual_memory_manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CVisualMemoryManager : cannot access class member vision_enabled!");
-		return								(false);
-	}
-	return									(visual_memory_manager->enabled());
-}
-
-void CScriptGameObject::set_sound_threshold		(float value)
-{
-	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(m_tpGameObject);
-	if (!sound_memory_manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member set_sound_threshold!");
-		return;
-	}
-	sound_memory_manager->set_threshold		(value);
-}
-
-void CScriptGameObject::restore_sound_threshold	()
-{
-	CSoundMemoryManager						*sound_memory_manager = smart_cast<CSoundMemoryManager*>(m_tpGameObject);
-	if (!sound_memory_manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSoundMemoryManager : cannot access class member restore_sound_threshold!");
-		return;
-	}
-	sound_memory_manager->restore_threshold	();
-}
-
 void CScriptGameObject::enable_attachable_item	(bool value)
 {
 	CAttachableItem							*attachable_item = smart_cast<CAttachableItem*>(m_tpGameObject);
@@ -664,13 +585,4 @@ bool CScriptGameObject::attachable_item_enabled	() const
 		return								(false);
 	}
 	return									(attachable_item->enabled());
-}
-
-
-Flags32 CScriptGameObject::get_actor_relation_flags () const
-{
-	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(m_tpGameObject);
-	VERIFY(stalker);
-
-	return stalker->m_actor_relation_flags;
 }

@@ -79,4 +79,6 @@ public:
 	virtual void			create_physic_shell		();
 
 	virtual BOOL			UsedAI_Locations		();
+	virtual CMissile		*cast_missile			()	{return this;}
+	virtual CHudItem*		cast_hud_item			()	{return this;}
 };

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_trader.h"
-#include "../../bolt.h"
 #include "../../trade.h"
 #include "../../script_entity_action.h"
 #include "../../script_game_object.h"
@@ -306,9 +305,8 @@ void CAI_Trader::feel_touch_new				(CObject* O)
 
 	// Now, test for game specific logical objects to minimize traffic
 	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
-	CBolt				*E	= smart_cast<CBolt*>			(O);
 
-	if (I && !E) {
+	if (I && I->useful_for_NPC()) {
 		Msg("Taking item %s!",*I->cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());

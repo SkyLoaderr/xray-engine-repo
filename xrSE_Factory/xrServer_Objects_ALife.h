@@ -33,6 +33,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
+	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return this;};
 	// end of the virtual inheritance dependant code
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 #ifdef XRGAME_EXPORTS
@@ -94,6 +95,7 @@ public:
 	virtual bool					can_switch_offline	() const;
 	virtual bool					interactive			() const;
 	virtual void					on_surge			();
+	virtual CSE_ALifeObject			*cast_alife_object	() {return this;}
 			bool					move_offline		() const;
 			void					can_switch_online	(bool value);
 			void					can_switch_offline	(bool value);
@@ -119,6 +121,7 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeGroupAbstract)
 	virtual	CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
+	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	() {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeGroupAbstract)
 #define script_type_list save_type_list(CSE_ALifeGroupAbstract)
@@ -181,6 +184,11 @@ public:
    		inherited1::FillProps		(pref, items);
    		inherited2::FillProps		(pref, items);
 	};	
+
+	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	()
+	{
+		return						(this);
+	}
 };
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
@@ -189,6 +197,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 	
 									CSE_ALifeDynamicObject	(LPCSTR caSection);
 	virtual							~CSE_ALifeDynamicObject	();
+	virtual CSE_ALifeGroupAbstract	*cast_group_abstract	() {return 0;};
+	virtual CSE_ALifeSchedulable	*cast_schedulable		() {return 0;};
 #ifdef XRGAME_EXPORTS
 	virtual void					on_spawn				();
 #endif
@@ -246,6 +256,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual CSE_Abstract			*base						();
 	virtual const CSE_Abstract		*base						() const;
 	virtual CSE_Abstract			*init						();
+	virtual CSE_ALifeSchedulable	*cast_schedulable			()  {return this;};
 	virtual void					update						();
 	virtual float					detect_probability			();
 	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);

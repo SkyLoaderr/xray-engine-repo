@@ -21,24 +21,29 @@ namespace SmartDynamicCast {
 		struct add {
 			typedef typename T1::Head Head;
 
-			typedef typename 
-				_if<
-					is_type<T,typename Head::Head>::value,
-					Loki::Typelist<
-						Loki::Typelist<
-							typename Head::Head,
+			template <bool a>
+			struct selector {
+				typedef Loki::Typelist<
 							Loki::Typelist<
-								P,
-								typename Head::Tail
-							>
-						>,
-						typename Loki::TL::Erase<
-							List,
-							Head
-						>::Result
-					>,
-					typename add<typename T1::Tail>::result
-				>::result result;
+								typename Head::Head,
+								Loki::Typelist<
+									P,
+									typename Head::Tail
+								>
+							>,
+							typename Loki::TL::Erase<
+								List,
+								Head
+							>::Result
+						> result;
+			};
+
+			template <>
+			struct selector<false> {
+				typedef typename add<typename T1::Tail>::result result;
+			};
+
+			typedef typename selector<is_type<T,typename Head::Head>::value>::result result;
 		};
 
 		template <>

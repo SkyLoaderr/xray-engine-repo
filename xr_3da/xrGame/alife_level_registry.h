@@ -12,6 +12,8 @@
 #include "xrServer_Objects_ALife.h"
 #include "game_graph.h"
 
+//#define FULL_LEVEL_UPDATE
+
 class CSE_ALifeDynamicObject;
 
 class CALifeLevelRegistry : public CSafeMapIterator<ALife::_OBJECT_ID,CSE_ALifeDynamicObject> {

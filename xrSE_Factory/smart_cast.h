@@ -103,8 +103,56 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CAI_Rat,			CCustomMonster)
 
+		DECLARE_SPECIALIZATION	(CWeapon,			CInventoryItem,			cast_weapon);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CWeapon,			CInventoryItem)
+
+		DECLARE_SPECIALIZATION	(CFoodItem,			CInventoryItem,			cast_food_item);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CFoodItem,			CInventoryItem)
+
+		DECLARE_SPECIALIZATION	(CMissile,			CInventoryItem,			cast_missile);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CMissile,			CInventoryItem)
+
+		DECLARE_SPECIALIZATION	(CUIDragDropItem,	CUIWindow,				cast_drag_drop_item);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CUIDragDropItem,	CUIWindow)
+
+		DECLARE_SPECIALIZATION	(CCustomZone,		CGameObject,			cast_custom_zone);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CCustomZone,		CGameObject)
+
+//		DECLARE_SPECIALIZATION	(CWeaponMagazined,	CWeapon,				cast_weapon_magazined);
+//#		undef cast_type_list
+//#		define cast_type_list save_cast_list	(CWeaponMagazined,	CWeapon)
+//
+//		DECLARE_SPECIALIZATION	(CHudItem,			CInventoryItem,			cast_hud_item);
+//#		undef cast_type_list
+//#		define cast_type_list save_cast_list	(CHudItem,			CInventoryItem)
+//
+//		DECLARE_SPECIALIZATION	(CPhysicsShellHolder,CGameObject,			cast_physics_shell_holder);
+//#		undef cast_type_list
+//#		define cast_type_list save_cast_list	(CPhysicsShellHolder,CGameObject)
+
 #	endif
 	
+	DECLARE_SPECIALIZATION	(CSE_ALifeGroupAbstract, CSE_ALifeDynamicObject,	cast_group_abstract);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeGroupAbstract, CSE_ALifeDynamicObject)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeSchedulable,	CSE_ALifeDynamicObject,	cast_schedulable);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeSchedulable,CSE_ALifeDynamicObject)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeItemAmmo, CSE_ALifeInventoryItem,	cast_item_ammo);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeItemAmmo, CSE_ALifeInventoryItem)
+
+	DECLARE_SPECIALIZATION	(CSE_ALifeObject,	CSE_Abstract,			cast_alife_object);
+#	undef cast_type_list
+#	define cast_type_list save_cast_list	(CSE_ALifeObject,	CSE_Abstract)
+
 #	ifndef DO_NOT_DECLARE_TYPE_LIST
 #		include "smart_cast_impl1.h"
 #	endif

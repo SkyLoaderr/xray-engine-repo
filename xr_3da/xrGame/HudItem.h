@@ -20,6 +20,7 @@ protected: //чтоб нельзя было вызвать на прямую
 	virtual ~CHudItem(void);
 public:
 	virtual void	Load		(LPCSTR section);
+	virtual CHudItem*cast_hud_item		()	{return this;}
 
 
 		   void		PlaySound	(HUD_SOUND& snd,

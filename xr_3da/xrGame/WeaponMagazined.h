@@ -83,6 +83,7 @@ public:
 	virtual			~CWeaponMagazined	();
 
 	virtual void	Load			(LPCSTR section);
+	virtual CWeaponMagazined*cast_weapon_magazined	()		 {return this;}
 
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();

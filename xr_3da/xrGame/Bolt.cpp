@@ -39,10 +39,10 @@ void CBolt::Deactivate()
 
 void CBolt::Throw() 
 {
-	CBolt						*l_pBolt = smart_cast<CBolt*>(m_fake_missile);
+	CMissile					*l_pBolt = smart_cast<CMissile*>(m_fake_missile);
 	VERIFY						(l_pBolt);
 ///	l_pBolt->m_dwDestroyTime = m_dwDestroyTimeMax;
-	l_pBolt->set_destroy_time(m_dwDestroyTimeMax);
+	l_pBolt->set_destroy_time	(m_dwDestroyTimeMax);
 	inherited::Throw			();
 	spawn_fake_missile			();
 }

@@ -23,6 +23,7 @@ public:
 	virtual ~CMissile	(void);
 
 	virtual void reinit				();
+	virtual CMissile		*cast_missile		()	{return this;}
 
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);

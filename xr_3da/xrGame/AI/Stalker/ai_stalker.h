@@ -119,6 +119,7 @@ public:
 	virtual CEntityAlive*				cast_entity_alive			()						{return this;}
 	virtual CEntity*					cast_entity					()						{return this;}
 	virtual CGameObject*				cast_game_object			()						{return this;}
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return this;}
 	virtual	Feel::Sound*				dcast_FeelSound				()						{return this;}
 
 public:

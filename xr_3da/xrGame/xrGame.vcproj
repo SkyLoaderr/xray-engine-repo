@@ -3607,6 +3607,9 @@
 						RelativePath=".\level_graph_debug.cpp">
 					</File>
 					<File
+						RelativePath=".\level_graph_debug2.cpp">
+					</File>
+					<File
 						RelativePath=".\level_graph_inline.h">
 					</File>
 					<File
@@ -4412,10 +4415,22 @@
 							RelativePath=".\script_game_object.h">
 						</File>
 						<File
+							RelativePath=".\script_game_object2.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object3.cpp">
+						</File>
+						<File
 							RelativePath=".\script_game_object_inventory_owner.cpp">
 						</File>
 						<File
 							RelativePath=".\script_game_object_script.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object_script2.cpp">
+						</File>
+						<File
+							RelativePath=".\script_game_object_script3.cpp">
 						</File>
 						<File
 							RelativePath=".\script_game_object_trader.cpp">
@@ -7731,6 +7746,9 @@
 						<File
 							RelativePath=".\xrServer_Objects_ALife_Monsters_script2.cpp">
 						</File>
+						<File
+							RelativePath=".\xrserver_objects_alife_monsters_script3.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="script_value_container"
@@ -8410,6 +8428,9 @@
 						RelativePath=".\ui\UIInventoryWnd.h">
 					</File>
 					<File
+						RelativePath=".\ui\uiinventorywnd2.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UIItemInfo.cpp">
 					</File>
 					<File
@@ -8968,6 +8989,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIScriptWnd_script.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\uiscriptwnd_script.h">
+					</File>
+					<File
+						RelativePath=".\ui\uiscriptwnd_script2.cpp">
 					</File>
 				</Filter>
 			</Filter>

@@ -205,6 +205,7 @@ public:
 	
 	virtual void				UpdatePositionAnimation	();
 	virtual void				set_ready_to_save		();
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 };
 
 #include "custommonster_inline.h"

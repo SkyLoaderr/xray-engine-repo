@@ -14,7 +14,8 @@
 #include "alife_space.h"
 #include "client_id.h"
 
-class	NET_Packet;
+class NET_Packet;
+class CSE_ALifeObject;
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -118,6 +119,7 @@ public:
 	virtual CSE_Abstract			*base			();
 	virtual const CSE_Abstract		*base			() const;
 	virtual CSE_Abstract			*init			();
+	virtual CSE_ALifeObject			*cast_alife_object	() {return 0;}
 	// end of the virtual inheritance dependant code
 	IC		int						script_clsid	() const					{VERIFY(m_script_clsid >= 0); return (m_script_clsid);}
 			CInifile				&spawn_ini		();

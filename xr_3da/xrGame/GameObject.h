@@ -25,7 +25,7 @@ class CEntity;
 class CEntityAlive;
 class CInventoryOwner;
 class CActor;
-
+class CPhysicsShellHolder;
 
 class CGameObject : 
 	public CObject, 
@@ -52,12 +52,14 @@ protected:
 
 public:
 	//functions used for avoiding most of the smart_cast
-	virtual CInventoryOwner*			cast_inventory_owner	()						{return NULL;}
-	virtual CInventoryItem*				cast_inventory_item		()						{return NULL;}
-	virtual CEntity*					cast_entity				()						{return NULL;}
-	virtual CEntityAlive*				cast_entity_alive		()						{return NULL;}
-	virtual CActor*						cast_actor				()						{return NULL;}
-	virtual CGameObject*				cast_game_object		()						{return this;}
+	virtual CInventoryOwner*			cast_inventory_owner		()						{return NULL;}
+	virtual CInventoryItem*				cast_inventory_item			()						{return NULL;}
+	virtual CEntity*					cast_entity					()						{return NULL;}
+	virtual CEntityAlive*				cast_entity_alive			()						{return NULL;}
+	virtual CActor*						cast_actor					()						{return NULL;}
+	virtual CGameObject*				cast_game_object			()						{return this;}
+	virtual CCustomZone*				cast_custom_zone			()						{return NULL;}
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}

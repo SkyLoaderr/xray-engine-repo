@@ -61,10 +61,10 @@ float CEnemyManager::evaluate				(const CEntityAlive *object) const
 #ifdef USE_EVALUATOR
 	ai().ef_storage().m_tpCurrentMember = m_self_entity_alive;
 	ai().ef_storage().m_tpCurrentEnemy	= object;
-	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+	float				distance = m_self_entity_alive->Position().distance_to_sqr(object->Position());
 	return				(1000.f*(visible ? 0.f : 1.f) + distance/100.f + ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
 #else
-	float				distance = smart_cast<const CEntityAlive *>(this)->Position().distance_to_sqr(object->Position());
+	float				distance = m_self_entity_alive->Position().distance_to_sqr(object->Position());
 	distance			= !fis_zero(distance) ? distance : EPS_L;
 	return				(1000.f*(visible ? 0.f : 1.f) + 1.f/distance);
 #endif

@@ -15,23 +15,97 @@
 	void add_smart_cast_stats	(LPCSTR,LPCSTR);
 #endif
 
+#define MAX_SEQUENCE_LENGTH 1
+
 namespace SmartDynamicCast {
-	
-	template <typename Base, typename Source, typename List>
-	struct has_conversion {
+
+	template <typename List, typename Target>
+	struct exists {
+		template <typename P>
+		struct iterator {
+			typedef typename P::Head Head;
+			typedef typename P::Tail Tail;
+			
+			template <typename T>
+			struct selector {
+				enum { value = iterator<Tail>::value };
+			};
+
+			template <>
+			struct selector<Target> {
+				enum { value = true };
+			};
+
+			enum { value = selector<Head>::value };
+		};
+
+		template <>
+		struct iterator<Loki::NullType> {
+			enum { value = false };
+		};
+
+		enum { value = iterator<List>::value };
+	};
+
+    template <typename List1, typename List2> 
+    struct merge
+    {
 		template <typename T>
+		struct iterator {
+			typedef Loki::Typelist<typename T::Head,typename iterator<typename T::Tail>::result > result;
+		};
+
+		template <>
+		struct iterator<Loki::NullType> {
+			typedef List2 result;
+		};
+
+		typedef typename iterator<List1>::result result;
+	};
+
+//	struct fill_target_list {
+//		template <typename T>
+//		struct iterator {
+//			typedef typename T::Head Head;
+//			typedef typename T::Tail Tail;
+//			typedef typename Head::Tail Tail2;
+//
+//			typedef typename merge<Tail2,typename iterator<Tail>::result>::result result;
+//		};
+//
+//		template <>
+//		struct iterator<Loki::NullType> {
+//			typedef Loki::NullType result;
+//		};
+//
+//		typedef Loki::TL::NoDuplicates<iterator<cast_type_list>::result>::Result result;
+//	};
+//
+//	typedef fill_target_list::result target_list;
+//	
+	template <typename Base, typename Source>
+	struct has_conversion {
+	template <typename T>
 		struct search_base {
 			typedef typename T::Head Head;
 			typedef typename T::Tail Tail;
 
+			template <bool>
+			struct selector {
+				typedef typename Head result;
+			};
+
+			template <>
+			struct selector<false> {
+				typedef typename search_base<Tail>::result result;
+			};
+
 			typedef typename 
-				_if<
-					is_type<Base,typename Head::Head>::value,
-					Head,
-					typename search_base<Tail>::result
+				selector<
+					is_type<Base,typename Head::Head>::value
 				>::result result;
 		};
-		
+
 		template <>
 		struct search_base<Loki::NullType> {
 			typedef Loki::NullType result;
@@ -39,7 +113,25 @@ namespace SmartDynamicCast {
 
 		template <typename T>
 		struct search_conversion {
-			enum { value = object_type_traits::is_same<typename T::Head,Source>::value || search_conversion<typename T::Tail>::value};
+			template <bool>
+			struct selector {
+				enum { value = true };
+			};
+
+			template <>
+			struct selector<false> {
+				enum { value = search_conversion<typename T::Tail>::value };
+			};
+
+			enum { 
+				value = 
+					selector<
+						object_type_traits::is_same<
+							typename T::Head,
+							Source
+						>::value
+					>::value
+			};
 		};
 
 		template <>
@@ -47,10 +139,38 @@ namespace SmartDynamicCast {
 			enum { value = false};
 		};
 
-		enum { value = search_conversion<search_base<List>::result>::value};
+		enum { value = search_conversion<search_base<cast_type_list>::result>::value };
 	};
 
-	template <typename Target, typename Source, typename List>
+	template <typename T>
+	struct has_any_conversion {
+		template <typename P>
+		struct iterator {
+			typedef typename P::Head Head;
+			typedef typename P::Tail Tail;
+
+			template <typename Q>
+			struct _selector {
+				enum { value = iterator<Tail>::value };
+			};
+
+			template <>
+			struct _selector<T> {
+				enum { value = true };
+			};
+
+			enum { value = _selector<typename Head::Head>::value };
+		};
+
+		template <>
+		struct iterator<Loki::NullType> {
+			enum { value = false };
+		};
+
+		enum { value = iterator<cast_type_list>::value };
+	};
+
+	template <typename Target, typename Source>
 	struct CMatcher {
 
 		template <typename T>
@@ -64,16 +184,33 @@ namespace SmartDynamicCast {
 				typedef typename P::Tail	Tail;
 				typedef typename T::Head	PrevHead;
 
-				typedef typename 
-					_if<
-						has_conversion<Head,Target,List>::value,
-						typename _if<
-							object_type_traits::is_same<Head,typename PrevHead::Head>::value,
-							Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Target,Loki::NullType> >,
-							Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Head,Loki::Typelist<Target,Loki::NullType> > >
-						>::result,
-						typename CMatchHelper3<Tail>::result
-					>::result result;
+				template <bool>
+				struct selector {
+					template <bool>
+					struct _selector {
+						typedef Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Target,Loki::NullType> > result;
+					};
+
+					template <>
+					struct _selector<false> {
+						typedef Loki::Typelist<typename PrevHead::Head,Loki::Typelist<Head,Loki::Typelist<Target,Loki::NullType> > > result;
+					};
+
+					typedef typename 
+						_selector<
+							object_type_traits::is_same<
+								Head,
+								typename PrevHead::Head
+							>::value
+						>::result result;
+				};
+
+				template <>
+				struct selector<false> {
+					typedef typename CMatchHelper3<Tail>::result result;
+				};
+
+				typedef typename selector<has_conversion<Head,Target>::value>::result result;
 			};
 
 			template <>
@@ -90,11 +227,18 @@ namespace SmartDynamicCast {
 			typedef typename T::Tail		Tail;
 			typedef typename Head::Tail		HeadTail;
 
-			typedef typename 
-				_if<
-					object_type_traits::is_base_and_derived<typename Head::Head,Source>::value || object_type_traits::is_same<typename Head::Head,Source>::value,
-					typename CMatchHelper2<Head,T>::result,
-					typename CMatchHelper<Tail>::result
+			template <bool>
+			struct selector {
+				typedef typename CMatchHelper2<Head,T>::result result;
+			};
+
+			template <>
+			struct selector<false> {
+				typedef typename CMatchHelper<Tail>::result result;
+			};
+
+			typedef typename selector<
+					object_type_traits::is_base_and_derived<typename Head::Head,Source>::value || object_type_traits::is_same<typename Head::Head,Source>::value
 				>::result result;
 		};
 
@@ -103,7 +247,162 @@ namespace SmartDynamicCast {
 			typedef Loki::NullType result;
 		};
 
-		typedef typename CMatchHelper<List>::result result;
+		typedef typename CMatchHelper<cast_type_list>::result result;
+	};
+
+	template <typename Target, typename Source, int max_length, bool can_use_heritage>//, typename Visited = Loki::NullType>
+	struct conversion_sequence {
+		
+		template <typename T>
+		struct list_iterator {
+			typedef typename T::Head		Head;
+			typedef typename T::Tail		Tail;
+			typedef typename Head::Tail		HeadTail;
+
+			template <typename T, int length, bool use_heritage>
+			struct helper {
+//				typedef Loki::Typelist<T,Visited> new_visited;
+				typedef typename conversion_sequence<Target,T,length,use_heritage/**,new_visited/**/>::result search_result;
+
+				template <bool>
+				struct selector {
+					typedef typename list_iterator<Tail>::result result;
+				};
+
+				template <>
+				struct selector<false> {
+					typedef search_result result;
+				};
+
+				typedef typename
+					selector<
+						is_type<Loki::NullType,search_result>::value
+					>::result result;
+			};
+
+			template <bool>
+			struct selector {
+				typedef typename helper<typename Head::Head,max_length,false>::result helper_result;
+
+				template <bool>
+				struct _selector {
+					typedef helper_result result;
+				};
+
+				template <>
+				struct _selector<false> {
+					typedef typename list_iterator<Tail>::result result;
+				};
+
+				typedef typename _selector<!is_type<Loki::NullType,helper_result>::value>::result result;
+			};
+
+			template <>
+			struct selector<false> {
+				template <bool>
+				struct _selector {
+					typedef typename helper<typename Head::Head,max_length-1,true>::result helper_result;
+
+					template <bool>
+					struct _selector2 {
+						typedef Loki::Typelist<Source,helper_result> result;
+					};
+
+					template <>
+					struct _selector2<false> {
+						typedef typename list_iterator<Tail>::result result;
+					};
+
+					typedef typename _selector2<!is_type<Loki::NullType,helper_result>::value>::result result;
+				};
+
+				template <>
+				struct _selector<false> {
+					typedef typename list_iterator<Tail>::result result;
+				};
+
+				template <bool>
+				struct _selector1 {
+					typedef typename _selector<has_conversion<Source,typename Head::Head>::value>::result result;
+				};
+
+				template <>
+				struct _selector1<false> {
+					typedef typename _selector<false>::result result;
+				};
+
+				typedef typename 
+					_selector1<
+						true//has_any_conversion<typename Head::Head>::value
+					>::result result;
+			};
+
+			typedef typename 
+				selector<
+					can_use_heritage &&
+					object_type_traits::is_base_and_derived<
+						typename Head::Head,
+						Source
+					>::value// &&
+//					!visited<typename Head::Head>::value
+				>::result result;
+		};
+
+		template <>
+		struct list_iterator<Loki::NullType> {
+			typedef Loki::NullType result;
+		};
+
+
+		template <int length>
+		struct selector {
+			STATIC_CHECK(length > 1,Internal_error_please_report);
+
+			typedef typename selector<1>::result nearest;
+
+			template <bool>
+			struct _selector {
+				typedef nearest result;
+			};
+
+			template <>
+			struct _selector<false> {
+				typedef typename list_iterator<cast_type_list>::result result;
+			};
+
+			typedef typename 
+				_selector<
+					!is_type<Loki::NullType,nearest>::value
+				>::result result;
+		};
+
+		template <>
+		struct selector<1> {
+			typedef typename CMatcher<Target,Source>::result result;
+		};
+
+		template <>
+		struct selector<0> {
+			typedef Loki::NullType result;
+		};
+
+		typedef typename selector<max_length>::result result;
+	};
+
+	template <typename T1, typename T2>
+	struct get_conversion_sequence {
+//		template <bool>
+//		struct verify {
+//			typedef typename conversion_sequence<T1,T2,MAX_SEQUENCE_LENGTH,true>::result result;
+//		};
+//
+//		template <>
+//		struct verify<false> {
+//			typedef Loki::NullType result;
+//		};
+//
+//		typedef typename verify<exists<fill_target_list::result,T2>::value/**/>::result result;
+		typedef typename conversion_sequence<T1,T2,MAX_SEQUENCE_LENGTH,true>::result result;
 	};
 
 	template <typename T, typename Target>
@@ -150,7 +449,7 @@ namespace SmartDynamicCast {
 #ifdef DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(T1*).name());
 #endif
-			return				(dynamic_cast<T1*>(p));
+			return		(dynamic_cast<T1*>(p));
 		}
 	};
 
@@ -159,7 +458,7 @@ namespace SmartDynamicCast {
 		template <bool base>
 		IC	static T1* smart_cast(T2 *p)
 		{
-			return				(CSmartMatcher<T1,T2>::smart_cast<CMatcher<T1,T2,cast_type_list>::result>(p));
+			return				(CSmartMatcher<T1,T2>::smart_cast<get_conversion_sequence<T1,T2>::result>(p));
 		}
 
 		template <>
@@ -199,6 +498,8 @@ namespace SmartDynamicCast {
 #ifdef DEBUG
 			add_smart_cast_stats(typeid(T2*).name(),typeid(void*).name());
 #endif
+			if (!p)
+				return			((void*)0);
 			return				(dynamic_cast<void*>(p));
 		}
 	};

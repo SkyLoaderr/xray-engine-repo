@@ -136,6 +136,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeCustomZone,CSE_ALif
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
+	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -228,6 +229,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
+	virtual CSE_ALifeSchedulable	*cast_schedulable		()  {return this;};
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else

@@ -652,7 +652,7 @@ void CCar::CreateSkeleton()
 
 void CCar::Init()
 {
-#ifdef DEBUG
+#ifdef _DEBUG
 	Log("car spawn");
 #endif
 	//get reference wheel radius

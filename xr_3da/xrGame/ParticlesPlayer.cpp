@@ -39,15 +39,17 @@ CParticlesPlayer::CParticlesPlayer ()
 {
 	bone_mask			= u64(1)<<u64(0);
 	
-	m_bActiveBones = false;
+	m_bActiveBones		= false;
 
 	m_Bones.push_back	(SBoneInfo(0,Fvector().set(0,0,0)));
 
-	SetParentVel(zero_vel);
+	SetParentVel		(zero_vel);
+	m_self_object		= 0;
 }
 
 CParticlesPlayer::~CParticlesPlayer ()
 {
+	VERIFY				(!m_self_object);
 }
 
 void CParticlesPlayer::LoadParticles(CKinematics* K)
@@ -79,7 +81,7 @@ void CParticlesPlayer::LoadParticles(CKinematics* K)
 //уничтожение партиклов на net_Destroy
 void	CParticlesPlayer::net_DestroyParticles	()
 {
-	VERIFY(smart_cast<CObject*>(this));
+	VERIFY(m_self_object);
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
 	{
@@ -92,6 +94,8 @@ void	CParticlesPlayer::net_DestroyParticles	()
 		}
 		b_info.particles.clear();
 	}
+
+	m_self_object	= 0;
 }
 
 CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics* K, u16 bone_index)
@@ -113,7 +117,7 @@ void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone
 {
 	R_ASSERT(*particles_name);
 	
-	CObject* object					= smart_cast<CObject*>(this);
+	CObject* object					= m_self_object;
 	VERIFY(object);
 
 	//найти ближайшую допустимую косточку, чтобы повесить партиклы
@@ -141,7 +145,7 @@ void CParticlesPlayer::StartParticles(const shared_str& particles_name, u16 bone
 
 void CParticlesPlayer::StartParticles(const shared_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
 {
-	CObject* object					= smart_cast<CObject*>(this);
+	CObject* object					= m_self_object;
 	VERIFY(object);
 	for(BoneInfoVecIt it = m_Bones.begin(); it!=m_Bones.end(); it++){
 		SParticlesInfo* particles_info	= it->AppendParticles(object,ps_name);
@@ -206,7 +210,7 @@ void CParticlesPlayer::UpdateParticles()
 
 	m_bActiveBones  = false;
 
-    CObject* object			= smart_cast<CObject*>(this);
+    CObject* object			= m_self_object;
 	VERIFY(object);
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
@@ -267,4 +271,11 @@ u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
 	}
 	//return cur_bone;
 	return play_bone;
+}
+
+void CParticlesPlayer::net_SpawnParticles	()
+{
+	VERIFY				(!m_self_object);
+	m_self_object		= smart_cast<CObject*>(this);
+	VERIFY				(m_self_object);
 }

@@ -13,6 +13,17 @@
 
 using namespace luabind;
 
+void CSE_ALifeCreatureCrow::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_creature1(
+			CSE_ALifeCreatureCrow,
+			"cse_alife_creature_crow",
+			CSE_ALifeCreatureAbstract
+		)
+	];
+}
+
 void CSE_ALifeMonsterRat::script_register(lua_State *L)
 {
 	module(L)[
@@ -83,14 +94,3 @@ void CSE_ALifeObjectIdol::script_register(lua_State *L)
 	];
 }
 
-void CSE_ALifeTorridZone::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_alife2(
-			CSE_ALifeTorridZone,
-			"cse_torrid_zone",
-			CSE_ALifeCustomZone,
-			CSE_Motion
-			)
-	];
-}

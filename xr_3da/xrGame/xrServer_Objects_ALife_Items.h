@@ -19,6 +19,8 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
+class CSE_ALifeItemAmmo;
+
 SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeInventoryItem)
 	enum EFlags {
 		FLAG_NO_POSITION = u16(0x8000),
@@ -44,6 +46,7 @@ public:
 	virtual CSE_Abstract			*base					() = 0;
 	virtual const CSE_Abstract		*base					() const = 0;
 	virtual CSE_Abstract			*init					();
+	virtual CSE_ALifeItemAmmo		*cast_item_ammo			()   {return 0;};
 	// end of the virtual inheritance dependant code
 
 	IC		bool					attached	() const
@@ -85,6 +88,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
 
 									CSE_ALifeItemAmmo	(LPCSTR caSection);
 	virtual							~CSE_ALifeItemAmmo	();
+	virtual CSE_ALifeItemAmmo		*cast_item_ammo		()  {return this;};
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemAmmo)
 #define script_type_list save_type_list(CSE_ALifeItemAmmo)

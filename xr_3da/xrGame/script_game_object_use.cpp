@@ -8,6 +8,7 @@
 #include "motivation_action_manager.h"
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
+#include "script_space.h"
 
 void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
 {
@@ -254,7 +255,6 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 	return			(ret_val);
 }
 
-#include "script_space.h"
 void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
 {
 	P.read_start();
@@ -263,3 +263,4 @@ void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
 		return;
 	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
 }
+

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_idol.h"
-#include "../../bolt.h"
 #include "../../inventory.h"
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
@@ -144,9 +143,8 @@ void CAI_Idol::feel_touch_new				(CObject* O)
 
 	// Now, test for game specific logical objects to minimize traffic
 	CInventoryItem		*I	= smart_cast<CInventoryItem*>	(O);
-	CBolt				*E	= smart_cast<CBolt*>			(O);
 
-	if (I && !E) {
+	if (I && I->useful_for_NPC()) {
 		Msg("Taking item %s!",*I->cName());
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());

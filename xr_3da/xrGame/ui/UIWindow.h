@@ -10,6 +10,8 @@
 #include "UIMessages.h"
 #include "../script_export_space.h"
 
+class CUIDragDropItem;
+
 //////////////////////////////////////////////////////////////////////////
 
 #define SHOW_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(true); (UI_WINDOW).Enable(true);
@@ -29,6 +31,8 @@ public:
 	//инициализация
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init(RECT* pRect);
+
+	virtual CUIDragDropItem*	cast_drag_drop_item	()	{return NULL;}
 
 	////////////////////////////////////
 	//работа с дочерними и родительскими окнами

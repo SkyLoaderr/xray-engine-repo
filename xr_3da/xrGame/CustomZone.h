@@ -88,6 +88,8 @@ public:
 	//абсолютный размер
 	virtual float Power(float dist);
 
+	virtual CCustomZone	*cast_custom_zone	()	{return this;}
+
 protected:
 	//список объетков, находящихся в зоне
 	xr_set<CObject*> m_inZone;

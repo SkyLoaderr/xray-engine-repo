@@ -1044,6 +1044,7 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeMonsterAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProps		(pref,items);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),	&m_flags,			flOfflineNoMove);
 	if (pSettings->line_exist(s_name,"SpaceRestrictionSection")) {
 		LPCSTR					gcs = pSettings->r_string(s_name,"SpaceRestrictionSection");
 		PHelper().CreateChoose	(items, PrepareKey(pref,*s_name,"out space restrictions"),&m_out_space_restrictors, smSpawnItem, 0, (void*)gcs, 16);

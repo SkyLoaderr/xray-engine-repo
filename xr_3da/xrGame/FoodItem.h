@@ -63,6 +63,10 @@ public:
 
 	virtual	void	UpdateXForm	();
 
+	virtual CFoodItem		*cast_food_item		()	{return this;}
+	virtual CHudItem		*cast_hud_item		()	{return this;}
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
+
 protected:
 	bool m_bReadyToEat;
 

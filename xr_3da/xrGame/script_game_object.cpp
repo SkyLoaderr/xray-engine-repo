@@ -18,18 +18,11 @@
 #include "movement_manager.h"
 #include "entity_alive.h"
 #include "weaponmagazined.h"
-#include "memory_manager.h"
-#include "script_hit.h"
 #include "xrmessages.h"
 #include "inventory.h"
-#include "explosive.h"
-#include "object_handler.h"
 #include "script_ini_file.h"
-#include "script_zone.h"
 #include "script_callback.h"
 #include "../skeletoncustom.h"
-#include "pda.h"
-#include "InfoPortion.h"
 
 class CScriptBinderObject;
 
@@ -347,10 +340,8 @@ u32 CScriptGameObject::GetAmmoCurrent() const
 
 void CScriptGameObject::SetQueueSize(u32 queue_size)
 {
-	CWeaponMagazined	*weapon = smart_cast<CWeaponMagazined*>(m_tpGameObject);
-	if (!weapon)
-		return;
-	weapon->SetQueueSize(queue_size);
+	CWeaponMagazined		*weapon = smart_cast<CWeaponMagazined*>(m_tpGameObject);
+	weapon->SetQueueSize	(queue_size);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -410,78 +401,6 @@ void CScriptGameObject::ClearInfoCallback()
 		pInvOwner->clear_info_callback();
 }
 
-const CHitObject *CScriptGameObject::GetBestHit	() const
-{
-	const CHitMemoryManager	*hit_memory_manager = smart_cast<const CHitMemoryManager*>(m_tpGameObject);
-	if (!hit_memory_manager)
-		return				(0);
-	return					(hit_memory_manager->hit());
-}
-
-const CSoundObject *CScriptGameObject::GetBestSound	() const
-{
-	const CSoundMemoryManager	*sound_memory_manager = smart_cast<const CSoundMemoryManager*>(m_tpGameObject);
-	if (!sound_memory_manager)
-		return				(0);
-	return					(sound_memory_manager->sound());
-}
-
-CScriptGameObject *CScriptGameObject::GetBestEnemy()
-{
-	const CEnemyManager		*enemy_manager = smart_cast<const CEnemyManager*>(m_tpGameObject);
-	if (!enemy_manager || !enemy_manager->selected())
-		return				(0);
-	return					(smart_cast<const CGameObject*>(enemy_manager->selected())->lua_game_object());
-}
-
-CScriptGameObject *CScriptGameObject::GetBestItem()
-{
-	const CItemManager		*item_manager = smart_cast<const CItemManager*>(m_tpGameObject);
-	if (!item_manager || !item_manager->selected())
-		return				(0);
-	return					(smart_cast<const CGameObject*>(item_manager->selected())->lua_game_object());
-}
-
-MemorySpace::CMemoryInfo *CScriptGameObject::memory(const CScriptGameObject &lua_game_object)
-{
-	CMemoryManager	*memory_manager = smart_cast<CMemoryManager*>(m_tpGameObject);
-	if (!memory_manager) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
-		return			(0);
-	}
-	else
-		return			(xr_new<MemorySpace::CMemoryInfo>(memory_manager->memory(lua_game_object.m_tpGameObject)));
-}
-
-void CScriptGameObject::enable_memory_object	(CScriptGameObject *object, bool enable)
-{
-	CMemoryManager	*memory_manager = smart_cast<CMemoryManager*>(m_tpGameObject);
-	if (!memory_manager)
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member enable_memory_object!");
-	else
-		memory_manager->enable				(object->m_tpGameObject,enable);
-}
-
-const xr_vector<CNotYetVisibleObject> &CScriptGameObject::not_yet_visible_objects() const
-{
-	CMemoryManager	*manager = smart_cast<CMemoryManager*>(m_tpGameObject);
-	if (!manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member not_yet_visible_objects!");
-		NODEFAULT;
-	}
-	return					(manager->not_yet_visible_objects());
-}
-
-float CScriptGameObject::visibility_threshold	() const
-{
-	CMemoryManager	*manager = smart_cast<CMemoryManager*>(m_tpGameObject);
-	if (!manager) {
-		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member visibility_threshold!");
-		NODEFAULT;
-	}
-	return					(manager->visibility_threshold());
-}
-
 u32	CScriptGameObject::Cost			() const
 {
 	CInventoryItem		*inventory_item = smart_cast<CInventoryItem*>(m_tpGameObject);
@@ -500,207 +419,4 @@ float CScriptGameObject::GetCondition	() const
 		return			(false);
 	}
 	return				(inventory_item->GetCondition());
-}
-
-u32	CScriptGameObject::GetInventoryObjectCount() const
-{
-	CInventoryOwner		*l_tpInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
-	if (l_tpInventoryOwner)
-		return			(l_tpInventoryOwner->inventory().dwfGetObjectCount());
-	else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member obj_count!");
-		return			(0);
-	}
-}
-
-CScriptGameObject	*CScriptGameObject::GetActiveItem()
-{
-	CInventoryOwner		*l_tpInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
-	if (l_tpInventoryOwner)
-		if (l_tpInventoryOwner->inventory().ActiveItem())
-			return		(l_tpInventoryOwner->inventory().ActiveItem()->lua_game_object());
-		else
-			return		(0);
-	else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member activge_item!");
-		return			(0);
-	}
-}
-
-CScriptGameObject	*CScriptGameObject::GetObjectByName	(LPCSTR caObjectName) const
-{
-	CInventoryOwner		*l_tpInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
-	if (l_tpInventoryOwner) {
-		CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->inventory().GetItemFromInventory(caObjectName);
-		CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tpInventoryItem);
-		if (!l_tpGameObject)
-			return		(0);
-		else
-			return		(l_tpGameObject->lua_game_object());
-	}
-	else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member object!");
-		return			(0);
-	}
-}
-
-CScriptGameObject	*CScriptGameObject::GetObjectByIndex	(int iIndex) const
-{
-	CInventoryOwner		*l_tpInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
-	if (l_tpInventoryOwner) {
-		CInventoryItem	*l_tpInventoryItem = l_tpInventoryOwner->inventory().tpfGetObjectByIndex(iIndex);
-		CGameObject		*l_tpGameObject = smart_cast<CGameObject*>(l_tpInventoryItem);
-		if (!l_tpGameObject)
-			return		(0);
-		else
-			return		(l_tpGameObject->lua_game_object());
-	}
-	else {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member object!");
-		return			(0);	
-	}
-}
-
-
-void		CScriptGameObject::set_character_pda_info	(LPCSTR info_id)
-{
-	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pInventoryOwner);
-	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
-	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
-}
-
-LPCSTR		CScriptGameObject::get_character_pda_info	()
-{
-	CInventoryOwner	 *pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject); VERIFY(pInventoryOwner);
-	CPda* pda = pInventoryOwner->GetPDA(); VERIFY(pda);
-	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
-}
-
-void		CScriptGameObject::set_pda_info				(LPCSTR info_id)
-{
-	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
-	pda->SetInfoPortion(CInfoPortion::IdToIndex(info_id));
-}
-
-LPCSTR		CScriptGameObject::get_pda_info				()
-{
-	CPda* pda = smart_cast<CPda*>(m_tpGameObject); VERIFY(pda);
-	return *CInfoPortion::IndexToId(pda->GetInfoPortion());
-}
-
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////
-
-void CScriptGameObject::Hit(CScriptHit *tpLuaHit)
-{
-	CScriptHit		&tLuaHit = *tpLuaHit;
-	NET_Packet		P;
-	m_tpGameObject->u_EventGen(P,GE_HIT,m_tpGameObject->ID());
-	P.w_u16			(u16(tLuaHit.m_tpDraftsman->ID()));
-	P.w_u16			(0);
-	P.w_dir			(tLuaHit.m_tDirection);
-	P.w_float		(tLuaHit.m_fPower);
-	CKinematics		*V = smart_cast<CKinematics*>(m_tpGameObject->Visual());
-	VERIFY			(V);
-	if (xr_strlen	(tLuaHit.m_caBoneName))
-		P.w_s16		(V->LL_BoneID(tLuaHit.m_caBoneName));
-	else
-		P.w_s16		(s16(0));
-	P.w_vec3		(Fvector().set(0,0,0));
-	P.w_float		(tLuaHit.m_fImpulse);
-	P.w_u16			(u16(tLuaHit.m_tHitType));
-	m_tpGameObject->u_EventSend(P);
-}
-
-#pragma todo("Dima to Dima : find out why user defined conversion operators work incorrect")
-
-CScriptGameObject::operator CObject*()
-{
-	return			(m_tpGameObject);
-}
-
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-CScriptGameObject *CScriptGameObject::best_weapon()
-{
-	CObjectHandler	*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
-	if (!object_handler) {
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
-		return			(0);
-	}
-	else {
-		CGameObject		*game_object = object_handler->best_weapon();
-		return			(game_object ? game_object->lua_game_object() : 0);
-	}
-}
-
-void CScriptGameObject::set_item		(MonsterSpace::EObjectAction object_action)
-{
-	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
-	if (!object_handler)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-	else
-		object_handler->set_goal(object_action);
-}
-
-void CScriptGameObject::set_item		(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object)
-{
-	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
-	if (!object_handler)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-	else
-		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0);
-}
-
-void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object, u32 queue_size)
-{
-	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
-	if (!object_handler)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-	else
-		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0, queue_size);
-}
-
-void CScriptGameObject::set_item(MonsterSpace::EObjectAction object_action, CScriptGameObject *lua_game_object, u32 queue_size, u32 queue_interval)
-{
-	CObjectHandler			*object_handler = smart_cast<CObjectHandler*>(m_tpGameObject);
-	if (!object_handler)
-		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
-	else
-		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0, queue_size, queue_interval);
-}
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-void CScriptGameObject::explode	(u32 level_time)
-{
-	CExplosive			*explosive = smart_cast<CExplosive*>(m_tpGameObject);
-	if (m_tpGameObject->H_Parent())
-	{
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CExplosive : cannot explode object wiht parent!");
-		return;
-	}
-	
-	if (!explosive)
-		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CExplosive : cannot access class member explode!");
-	else {
-		Fvector normal;
-		explosive->FindNormal(normal);
-		explosive->SetCurrentParentID(m_tpGameObject->ID());
-		explosive->GenExplodeEvent(m_tpGameObject->Position(), normal);
-	}
-}
-
-bool CScriptGameObject::active_zone_contact		(u16 id)
-{
-	CScriptZone		*script_zone = smart_cast<CScriptZone*>(m_tpGameObject);
-	if (!script_zone) {
-		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member active_zone_contact!");
-		return		(false);
-	}
-	return			(script_zone->active_contact(id));
 }

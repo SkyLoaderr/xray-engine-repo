@@ -295,8 +295,6 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),	&m_flags,			flSwitchOffline);
 	}                            
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Interactive"),			&m_flags,			flInteractive);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Visible for AI"),		&m_flags,			flVisibleForAI);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),	&m_flags,			flOfflineNoMove);
 	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),				&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 

@@ -526,5 +526,5 @@ private:
 	
 	virtual	void reinit			();
 	virtual	void reload			(LPCSTR section);
-
+	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()	{return this;}
 };

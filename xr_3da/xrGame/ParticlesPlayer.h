@@ -11,6 +11,7 @@
 
 DEFINE_VECTOR(CParticlesObject*, PARTICLES_PTR_VECTOR, PARTICLES_PTR_VECTOR_IT);
 
+class CObject;
 
 class CParticlesPlayer 
 {
@@ -50,6 +51,8 @@ private:
 	u64						bone_mask; // используемые кости
 	BoneInfoVec				m_Bones;
 	bool					m_bActiveBones;	//есть ли косточки на которых играются партиклы
+	CObject					*m_self_object;
+
 public:
 	IC SBoneInfo*			get_bone_info			(u16 bone_index)
 	{
@@ -65,6 +68,7 @@ public:
 	virtual					~CParticlesPlayer		(void);
 	void					LoadParticles			(CKinematics* K);
 	void					net_DestroyParticles	();
+	void					net_SpawnParticles		();
 	
 	void					UpdateParticles			();
 
