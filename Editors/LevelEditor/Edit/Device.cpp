@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
-#include "xr_hudfont.h"
+#include "gamefont.h"
 #include "dxerr8.h"
 #include "ImageManager.h"
 #include "ui_main.h"
@@ -98,7 +98,7 @@ void CRenderDevice::Initialize()
 	// Startup shaders
 	Create				();
 
-	pHUDFont 			= new CFontHUD();
+	pSystemFont			= new CGameFont("hud_font_small");
 }
 
 void CRenderDevice::ShutDown()
@@ -107,7 +107,7 @@ void CRenderDevice::ShutDown()
 
 	// destroy context
 	Destroy				();
-	_DELETE				(pHUDFont);
+	_DELETE				(pSystemFont);
 
 	// destroy shaders
 //	PSLib.xrShutDown	();
@@ -275,8 +275,8 @@ void CRenderDevice::End(){
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
-	Statistic.Show(pHUDFont);
-	pHUDFont->OnRender();
+	Statistic.Show(pSystemFont);
+	pSystemFont->OnRender();
 
 	// end scene
 	Shader.OnFrameEnd();

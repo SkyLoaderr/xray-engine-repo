@@ -418,7 +418,10 @@ bool EDetailManager::UpdateSlotObjects(int x, int z){
             if (bNotFound) break;
         }
 
-        slot->color					= 0xff7f7f7f;
+        slot->color.a0 = 8;
+        slot->color.a1 = 8;
+        slot->color.a2 = 8;
+        slot->color.a3 = 8;
         // density
         float f = objects[slot->items[k].id]->m_fDensityFactor;
 

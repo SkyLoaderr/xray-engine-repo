@@ -13,7 +13,7 @@
 #include "ModelPool.h"
 //---------------------------------------------------------------------------
 // refs
-class CFontHUD;
+class CGameFont;
 class CInifile;
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public:
 
 	CStats					Statistic;
 
-	CFontHUD* 				pHUDFont;
+	CGameFont* 				pSystemFont;
 
 	// registrators
 	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
@@ -177,8 +177,7 @@ enum {
 	rsLighting			= (1ul<<23ul),
     rsFog				= (1ul<<24ul),
     rsRenderRealTime	= (1ul<<25ul),
-    rsDrawGrid			= (1ul<<26ul),
-    rsForceHWTransform	= (1ul<<27ul)
+    rsDrawGrid			= (1ul<<26ul)
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555

@@ -83,7 +83,7 @@ struct DetailSlot			// 4+4+3*4+2 = 22b
 {
 	float			y_min,y_max;
 	DetailItem		items[4];
-	u16				color;
+	DetailPalette	color;
 };
 
 #pragma pack(pop)

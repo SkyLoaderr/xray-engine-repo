@@ -67,9 +67,9 @@ public:
 		Shader*			shader_blended;
         Shader*			shader_overlap;
         string128		name;
-        int 			w;
-        int 			h;
-		DWORDVec		data;
+        u32 			w;
+        u32 			h;
+		U32Vec			data;
 	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
 		TVertVec		mesh;
 	    CVS*			stream;
@@ -85,7 +85,7 @@ public:
         bool			LoadImage			(LPCSTR nm);
 		IC LPCSTR 		GetName				(){ return name; }
 		IC bool 		GetColor			(DWORD& color, int U, int V){
-        	if (Valid()&&(U<w)&&(V<h)){
+        	if (Valid()&&(U<(int)w)&&(V<(int)h)){
     			color 	= data[V*w+U];
     			return true;
             }

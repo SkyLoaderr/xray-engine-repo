@@ -7,7 +7,7 @@
 #pragma once
 
 // refs
-class CFontBase;
+class CGameFont;
 
 class ENGINE_API CStatTimer
 {
@@ -78,7 +78,7 @@ public:
 	CStatTimer	TEST2;				// debug counter
 	CStatTimer	TEST3;				// debug counter
 
-	void	Show		(CFontBase* font);
+	void	Show		(CGameFont* font);
 
 	CStats	();
 	~CStats	();

@@ -58,7 +58,6 @@
       intermediate\HWCaps.obj intermediate\PrimitivesR.obj 
       intermediate\SharedPrimitive.obj intermediate\EditObject.obj 
       intermediate\Xr_input.obj intermediate\fcontroller.obj 
-      intermediate\XR_CustomFont.obj intermediate\XR_HUDFont.obj 
       intermediate\c_dinput.obj intermediate\pure.obj 
       intermediate\CustomObject.obj intermediate\SceneObject.obj 
       intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
@@ -107,7 +106,7 @@
       intermediate\EditObjectExportLWO.obj intermediate\FS2.obj 
       intermediate\UI_MainMail.obj intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_CACHE.obj intermediate\HW.obj 
-      intermediate\defines.obj"/>
+      intermediate\defines.obj intermediate\GameFont.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -296,8 +295,6 @@
       <FILE FILENAME="edit\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\XR_CustomFont.cpp" FORMNAME="" UNITNAME="XR_CustomFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\XR_HUDFont.cpp" FORMNAME="" UNITNAME="XR_HUDFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DX\dinput.lib" FORMNAME="" UNITNAME="dinput" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\DX\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -401,6 +398,7 @@
       <FILE FILENAME="Engine\DetailManager_CACHE.cpp" FORMNAME="" UNITNAME="DetailManager_CACHE.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

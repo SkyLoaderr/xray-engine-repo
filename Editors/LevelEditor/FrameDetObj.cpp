@@ -23,7 +23,6 @@ __fastcall TfraDetailObject::TfraDetailObject(TComponent* Owner)
         : TFrame(Owner)
 {
     DEFINE_INI(fsStorage);
-	ebBaseBlended->Down = fraBottomBar->miDrawDOBlended->Checked;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraDetailObject::PaneMinClick(TObject *Sender)
@@ -134,28 +133,6 @@ void __fastcall TfraDetailObject::seDensityLWChange(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ebBaseBlendedClick(TObject *Sender)
-{
-	fraBottomBar->miDrawDOBlended->Checked = ebBaseBlended->Down;
-    UI.RedrawScene();
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ebImportColorIndicesClick(
-      TObject *Sender)
-{
-	AnsiString fname;
-	if (Engine.FS.GetOpenName(Engine.FS.m_DetailObjects,fname))
-		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ebExportColorIndicesClick(
-      TObject *Sender)
-{
-	AnsiString fname;
-	if (Engine.FS.GetSaveName(Engine.FS.m_DetailObjects,fname))
-		Scene.m_DetailObjects->ExportColorIndices(fname.c_str());
-}
-//---------------------------------------------------------------------------
 

@@ -358,9 +358,12 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
         EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
 	    UI.ProgressInc(it->first.c_str());
         if (m_Thm->Valid()&&(m_Thm->_Format().flag&STextureParams::flHasDetailTexture)){
-        	AnsiString tmp;
-            tmp.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);
-	    	ini->WriteString("association", it->first.c_str(), tmp.c_str());
+        	AnsiString det;
+            string128 src;
+            det.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);
+            strcpy(src,it->first.c_str());
+	    	if (strext(src)) *strext(src)=0;
+	    	ini->WriteString("association", src, det.c_str());
         }
         _DELETE(m_Thm);
 		if (UI.NeedAbort()){ bRes=false; break; }

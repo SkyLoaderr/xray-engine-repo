@@ -92,11 +92,6 @@ bool TUI::OnCreate(){
     pInput			= new CInput(FALSE,mouse_device_key);
     UI.iCapture		();
 
-    // game configure
-    AnsiString si_name = "system.ltx";
-    Engine.FS.m_GameRoot.Update(si_name);
-	pSettings		= new CInifile(si_name.c_str(),TRUE);// FALSE,TRUE,TRUE);
-
     m_bReady		= true;
 
     Engine.FS.WriteAccessLog(_EDITOR_FILE_NAME_,"Started");
@@ -111,7 +106,6 @@ void TUI::OnDestroy()
 
 	VERIFY(m_bReady);
 	m_bReady		= false;
-    _DELETE			(pSettings);
 	UI.iRelease		();
     _DELETE			(pInput);
     EndEState		();

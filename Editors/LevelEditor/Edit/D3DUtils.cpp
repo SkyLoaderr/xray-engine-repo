@@ -3,7 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xr_hudfont.h"
+#include "gamefont.h"
 #include "d3dutils.h"
 
 #define LINE_DIVISION  32  // не меньше 6!!!!!
@@ -545,8 +545,8 @@ void DrawAxis(const Fmatrix& T){
     DWORD vBase;
 	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
     // transform to screen
-    float dx=-Device.dwWidth/2.2f;
-    float dy=Device.dwHeight/2.25f;
+    float dx=-float(Device.dwWidth)/2.2f;
+    float dy=float(Device.dwHeight)/2.25f;
 
     for (int i=0; i<6; i++,pv++){
 	    pv->color = c[i]; pv->transform(p[i],Device.mFullTransform);
@@ -561,14 +561,14 @@ void DrawAxis(const Fmatrix& T){
     Device.DP(D3DPT_LINELIST,vs_TL,vBase,3);
 	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    Device.pHUDFont->Color(0xFF909090);
-    Device.pHUDFont->Out(p[1].x,p[1].y,"x");
-    Device.pHUDFont->Out(p[3].x,p[3].y,"y");
-    Device.pHUDFont->Out(p[5].x,p[5].y,"z");
-    Device.pHUDFont->Color(0xFF000000);
-    Device.pHUDFont->Out(p[1].x-1,p[1].y-1,"x");
-    Device.pHUDFont->Out(p[3].x-1,p[3].y-1,"y");
-    Device.pHUDFont->Out(p[5].x-1,p[5].y-1,"z");
+    Device.pSystemFont->SetColor(0xFF909090);
+    Device.pSystemFont->Out(p[1].x,p[1].y,"x");
+    Device.pSystemFont->Out(p[3].x,p[3].y,"y");
+    Device.pSystemFont->Out(p[5].x,p[5].y,"z");
+    Device.pSystemFont->SetColor(0xFF000000);
+    Device.pSystemFont->Out(p[1].x-1,p[1].y-1,"x");
+    Device.pSystemFont->Out(p[3].x-1,p[3].y-1,"y");
+    Device.pSystemFont->Out(p[5].x-1,p[5].y-1,"z");
 }
 
 void DrawObjectAxis(const Fmatrix& T){
@@ -603,14 +603,14 @@ void DrawObjectAxis(const Fmatrix& T){
     Device.DP		(D3DPT_LINELIST,vs_TL,vBase,3);
 	Device.SetRS	(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    Device.pHUDFont->Color(0xFF909090);
-    Device.pHUDFont->Out(r.x,r.y,"x");
-    Device.pHUDFont->Out(n.x,n.y,"y");
-    Device.pHUDFont->Out(d.x,d.y,"z");
-    Device.pHUDFont->Color(0xFF000000);
-    Device.pHUDFont->Out(r.x-1,r.y-1,"x");
-    Device.pHUDFont->Out(n.x-1,n.y-1,"y");
-    Device.pHUDFont->Out(d.x-1,d.y-1,"z");
+    Device.pSystemFont->SetColor(0xFF909090);
+    Device.pSystemFont->Out(r.x,r.y,"x");
+    Device.pSystemFont->Out(n.x,n.y,"y");
+    Device.pSystemFont->Out(d.x,d.y,"z");
+    Device.pSystemFont->SetColor(0xFF000000);
+    Device.pSystemFont->Out(r.x-1,r.y-1,"x");
+    Device.pSystemFont->Out(n.x-1,n.y-1,"y");
+    Device.pSystemFont->Out(d.x-1,d.y-1,"z");
 }
 
 void DrawGrid(){

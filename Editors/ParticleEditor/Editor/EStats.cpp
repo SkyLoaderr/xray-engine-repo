@@ -3,7 +3,7 @@
 
 #include "Stats.h"
 #include "hw.h"
-#include "xr_customfont.h"
+#include "gamefont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -26,7 +26,7 @@ CStats::~CStats()
 }
 
 #define QS if(psDeviceFlags&rsStatistic)
-void CStats::Show(CFontBase* font)
+void CStats::Show(CGameFont* font)
 {
 	// Stop timers
 	{
@@ -69,8 +69,8 @@ void CStats::Show(CFontBase* font)
 	// Show them
 	if (psDeviceFlags & rsStatistic)
 	{
-	    CFontBase& 	F = *font;
-		F.Color		(0xFFFFFFFF	);
+	    CGameFont& 	F = *font;
+		F.SetColor	(0xFFFFFFFF	);
 		F.OutSet	(5,5);
 		F.OutNext	("FPS/RFPS:     %3.1f/%3.1f",	fFPS,fRFPS);
 		F.OutNext	("TPS:          %2.2f M",		fTPS);
@@ -97,7 +97,7 @@ void CStats::Show(CFontBase* font)
 		F.OutNext	("TEST 1:       %2.2fms, %d",TEST1.result,TEST1.count);
 		F.OutNext	("TEST 2:       %2.2fms, %d",TEST2.result,TEST2.count);
 		F.OutNext	("TEST 3:       %2.2fms, %d",TEST3.result,TEST3.count);
-		F.OutSkip	();
+		F.OutSkip	(2.f);
         F.OutNext	("Level summary:");
         F.OutNext	(" Total Faces: %d",			dwLevelFaceCount);
         F.OutNext	(" Total Verts: %d",			dwLevelVertexCount);

@@ -374,10 +374,17 @@ void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 {
 	AnsiString fname;
 	if (Engine.FS.GetOpenName(Engine.FS.m_DetailObjects,fname)){
+        Scene.m_DetailObjects->InvalidateSlots();
 		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
 		ClearInfo();
         GetInfo();
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmDOShuffle::ebClearListClick(TObject *Sender)
+{
+	ClearInfo();
 }
 //---------------------------------------------------------------------------
 

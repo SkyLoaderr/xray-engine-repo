@@ -9,7 +9,7 @@
 #include "clsid_game.h"
 #include "d3dutils.h"
 #include "render.h"
-#include "xr_hudfont.h"
+#include "gamefont.h"
 #include "bottombar.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
@@ -111,8 +111,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                         P.transform		( PPosition, Device.mFullTransform );
                         cx				= iFloor(Device._x2real(P.p.x));
                         cy				= iFloor(Device._y2real(P.p.y));
-                        Device.pHUDFont->Color	(0xffffffff);
-                        Device.pHUDFont->Out	(cx,cy,m_SpawnData->s_name);
+                        Device.pSystemFont->SetColor(0xffffffff);
+                        Device.pSystemFont->Out		(cx,cy,m_SpawnData->s_name);
                     }
                     Shader* s = GetIcon(m_SpawnData->s_name);
                     DU::DrawEntity(0xffffffff,s);
@@ -137,8 +137,8 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                         P.transform		( PPosition, Device.mFullTransform );
                         cx				= iFloor(Device._x2real(P.p.x));
                         cy				= iFloor(Device._y2real(P.p.y));
-                        Device.pHUDFont->Color	(0xffffffff);
-                        Device.pHUDFont->Out	(cx,cy,s_name.c_str());
+                        Device.pSystemFont->SetColor(0xffffffff);
+                        Device.pSystemFont->Out		(cx,cy,s_name.c_str());
                     }
                 }
             }else{

@@ -52,6 +52,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebDOProperties;
 	TExtBtn *ebLoadList;
 	TExtBtn *ebSaveList;
+	TExtBtn *ebClearList;
+	TExtBtn *ExtBtn2;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -81,6 +83,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall ebSaveListClick(TObject *Sender);
 	void __fastcall ebLoadListClick(TObject *Sender);
+	void __fastcall ebClearListClick(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;

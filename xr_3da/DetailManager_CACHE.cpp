@@ -178,7 +178,10 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 		DS_empty.items[2].id		= 0xff;
 		DS_empty.items[3].id		= 0xff;
 
-		DS_empty.color				= 0xffff;
+		DS_empty.color.a0			= 8;
+		DS_empty.color.a1			= 8;
+		DS_empty.color.a2			= 8;
+		DS_empty.color.a3			= 8;
 		return DS_empty;
 	}
 }
