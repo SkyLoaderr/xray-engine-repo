@@ -42,14 +42,16 @@ void CBuild::PreOptimize()
 	// Pre-alloc memory
 	int		_size	= (HDIM_X+1)*(HDIM_Y+1)*(HDIM_Z+1);
 	int		_average= (Vcount/_size)/2;	if (_average<2)	_average = 2;
-	for (int ix=0; ix<HDIM_X+1; ix++)
-		for (int iy=0; iy<HDIM_Y+1; iy++)
-			for (int iz=0; iz<HDIM_Z+1; iz++)
-			{
-				HASH[ix][iy][iz] = new vecVertex;
-				HASH[ix][iy][iz]->reserve	(_average);
-			}
-			
+	{
+		for (int ix=0; ix<HDIM_X+1; ix++)
+			for (int iy=0; iy<HDIM_Y+1; iy++)
+				for (int iz=0; iz<HDIM_Z+1; iz++)
+				{
+					HASH[ix][iy][iz] = new vecVertex;
+					HASH[ix][iy][iz]->reserve	(_average);
+				}
+	}
+	
 	// 
 	Status("Processing...");
 	g_bUnregister		= false;
@@ -134,13 +136,15 @@ void CBuild::PreOptimize()
 	g_bUnregister = true;
 
 	DWORD M1 = mem_Usage();
-	for (int ix=0; ix<HDIM_X+1; ix++)
-		for (int iy=0; iy<HDIM_Y+1; iy++)
-			for (int iz=0; iz<HDIM_Z+1; iz++)
-			{
-				HASH[ix][iy][iz] = new vecVertex;
-				HASH[ix][iy][iz]->reserve	(_average);
-			}
+	{
+		for (int ix=0; ix<HDIM_X+1; ix++)
+			for (int iy=0; iy<HDIM_Y+1; iy++)
+				for (int iz=0; iz<HDIM_Z+1; iz++)
+				{
+					HASH[ix][iy][iz] = new vecVertex;
+					HASH[ix][iy][iz]->reserve	(_average);
+				}
+	}
 	mem_Compact	();
 	DWORD M2 = mem_Usage();
 	Msg("M1(%d) / M2(%d) (M1-M2)=%d",M1/1024,M2/1024,(M1-M2)/1024);
