@@ -89,7 +89,6 @@ function transfer_vodka (player, stalker)
 end    
 
 function have_a_vodka (stalker, player)
-    printf ("STALKER NAME IS : %s", stalker:name ())
     return stalker:object ("vodka") ~= nil
 end
 
