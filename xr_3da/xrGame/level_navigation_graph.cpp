@@ -240,7 +240,7 @@ IC	void CLevelNavigationGraph::check_vertices	()
 }
 #endif
 
-#if 1
+#if 0
 struct CRemoveNonBorderPredicate {
 	IC	bool operator() (const LevelNavigationGraph::CCellVertex *v) const
 	{
@@ -251,13 +251,11 @@ struct CRemoveNonBorderPredicate {
 
 IC	void CLevelNavigationGraph::build_edges		()
 {
-#if 1
-	const_vertex_iterator		i = begin(), b = i;
+	CROSS_TABLE::const_iterator	_i = m_cross.begin();
+	const_vertex_iterator		i = begin();
 	const_vertex_iterator		e = end();
-	for ( ; i != e; ++i) {
-		u32						current_vertex_id = u32(i - b);
-		
-		CCellVertex				*current_cell = m_cross[current_vertex_id];
+	for ( ; i != e; ++i, ++_i) {
+		CCellVertex				*current_cell = *_i;
 		VERIFY					(current_cell);
 
 		if (!current_cell->m_use)
@@ -291,88 +289,6 @@ IC	void CLevelNavigationGraph::build_edges		()
 		}
 		while (usage);
 	}
-#else
-#if 0
-	const_vertex_iterator		i;
-	CROSS_TABLE::iterator		_i = m_cross.begin();
-	CROSS_TABLE::iterator		_e = m_cross.end();
-	for ( ; _i != _e; ++_i) {
-		if (!(*_i)->m_use)
-			continue;
-
-		CCellVertex				*current_cell = *_i;
-		VERIFY					(current_cell);
-
-		i						= vertex(current_cell->m_vertex_id);
-
-		u32						current_mark = current_cell->m_mark - 1;
-		CSectorGraph::CVertex	*sector_vertex = sectors().vertex(current_mark);
-		u32						usage = current_cell->m_use;
-		u32						I;
-		do {
-			I					= usage;
-			usage				&= usage - 1;
-			I					^= usage;
-			I					= (I >> 1) + 1;
-			I					= (I ^ (I >> 2)) - 1;
-
-			u32					vertex_id = (*i).link(I);
-			if (!valid_vertex_id(vertex_id))
-				continue;
-
-			CCellVertex			*cell = m_cross[vertex_id];
-			VERIFY				(cell);
-
-			u32					mark = cell->m_mark - 1;
-			VERIFY				(mark != current_mark);
-
-			if (sector_vertex->edge(mark))
-				continue;
-
-			sectors().add_edge	(current_mark,mark,1.f);
-		}
-		while (usage);
-	}
-#else
-	CROSS_TABLE					temp = m_cross;
-	CROSS_TABLE::iterator		_e = remove_if(temp.begin(),temp.end(),CRemoveNonBorderPredicate());
-	CROSS_TABLE::iterator		_i = temp.begin();
-	for ( ; _i != _e; ++_i) {
-		const_vertex_iterator	i = vertex((*_i)->m_vertex_id);
-		CCellVertex				*current_cell = *_i;
-		VERIFY					(current_cell);
-		VERIFY					(current_cell->m_use);
-
-		u32						current_mark = current_cell->m_mark - 1;
-		CSectorGraph::CVertex	*sector_vertex = sectors().vertex(current_mark);
-		u32						usage = current_cell->m_use;
-		u32						I;
-		do {
-			I					= usage;
-			usage				&= usage - 1;
-			I					^= usage;
-			I					= (I >> 1) + 1;
-			I					= (I ^ (I >> 2)) - 1;
-
-			u32					vertex_id = (*i).link(I);
-			if (!valid_vertex_id(vertex_id))
-				continue;
-
-			CCellVertex			*cell = m_cross[vertex_id];
-			VERIFY				(cell);
-
-			u32					mark = cell->m_mark - 1;
-			VERIFY				(mark != current_mark);
-
-			if (sector_vertex->edge(mark))
-				continue;
-
-			sectors().add_edge	(current_mark,mark,1.f);
-		}
-		while (usage);
-	}
-#endif
-#endif
 }
 
 #ifdef DEBUG
