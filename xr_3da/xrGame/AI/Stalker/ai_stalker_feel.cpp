@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
+#include "..\\..\\hudmanager.h"
 
 #define LOG_PARAMETERS
 #define MIN_SOUND_VOLUME				.05f
@@ -43,8 +44,9 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
 #ifdef LOG_PARAMETERS
-	int			iLogParameters = Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0;
-	string4096	S = "";
+	bool		bMessage = !!Level().iGetKeyState(DIK_RCONTROL);
+//	int			iLogParameters = Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0;
+//	string4096	S = "";
 #endif
 	float fResult = 0.f;
 	
@@ -81,8 +83,10 @@ bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 		fResult += m_fShadowWeight*fTemp;
 	
 #ifdef LOG_PARAMETERS
-	if (iLogParameters)
-		Msg("%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+	if (bMessage)
+		HUD().outMessage(0xffffffff,cName(),"%s",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor");
+//	if (iLogParameters)
+//		Msg("%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
 #endif
 	return(fResult >= m_fVisibilityThreshold);
 }
