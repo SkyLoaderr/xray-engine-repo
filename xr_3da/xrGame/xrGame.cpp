@@ -551,6 +551,21 @@ public:
 		  pCreator->Cameras.AddEffector(xr_new<CDemoPlay> (fn,1.3f));
 	  }
 };
+class CCC_Rain : public CConsoleCommand {
+public:
+	CCC_Rain(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		int id1 = 0;
+		sscanf(args ,"%d",&id1);
+		if (id1 == 1) {
+			Engine.Event.Signal	("level.weather.rain.start");
+		}
+		else
+			if (id1 == 0) {
+				Engine.Event.Signal	("level.weather.rain.stop");
+			}
+	}
+};
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        u32  ul_reason_for_call, 
@@ -591,6 +606,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeScheduleMin,	"al_schedule_min"		);		// set time factor
 		CMD1(CCC_ALifeScheduleMax,	"al_schedule_max"		);		// set time factor
 #endif
+		// temp
+		CMD1(CCC_Rain,				"rain"					);		// start rain
 
 		// hud
 		CMD3(CCC_Mask,				"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
