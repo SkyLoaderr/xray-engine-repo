@@ -36,13 +36,13 @@ public:
 	// Добавляем статью и возвращаем путь к ней
 	shared_str		SetCurrentArtice(CUITreeViewItem *pTVItem);
 	// Добавлем 1 энциклопедиционную статью
-	void			AddArticle		(ARTICLE_INDEX, bool bReaded);
+	void			AddArticle		(ARTICLE_ID, bool bReaded);
 	void			DeleteArticles	();
-	bool			HasArticle		(ARTICLE_INDEX article_index);
+	bool			HasArticle		(ARTICLE_ID article_id);
 	virtual void	SendMessage		(CUIWindow* pWnd, s16 msg, void* pData);
 	virtual void	Show			(bool status);
 	// Opens tree at item with specified value
-	void			OpenTree		(int value);
+	void			OpenTree		(ARTICLE_ID value);
 
 
 	// Хранилище статей

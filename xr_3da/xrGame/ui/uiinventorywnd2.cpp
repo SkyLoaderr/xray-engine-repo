@@ -88,7 +88,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pScope))
 		 {
-			 UIPropertiesBox.AddItem("Attach scope to pitol",  NULL, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach scope to pistol",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
@@ -103,7 +103,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
-			 UIPropertiesBox.AddItem("Attach silencer to pitol",  NULL, INVENTORY_ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach silencer to pistol",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&

@@ -262,7 +262,7 @@ void CUIPdaWnd::Update()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, int addiotionalValue)
+void CUIPdaWnd::SetActiveSubdialog(EPdaSections section, ARTICLE_ID addiotionalValue)
 {
 	switch (section)
 	{

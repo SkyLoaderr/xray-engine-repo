@@ -136,7 +136,7 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					break;
 				}
 			}*/
-			m_pPda->SendMessageID(id_pda_contact, pda_msg, NO_INFO_INDEX);
+			m_pPda->SendMessageID(id_pda_contact, pda_msg, NULL);
 			
 			AskQuestion();
 			UpdateMessageLog();

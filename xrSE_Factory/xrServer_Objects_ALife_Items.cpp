@@ -592,9 +592,9 @@ void CSE_ALifeItemArtefact::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
-	m_original_owner = 0xffff;
-	m_specific_character = NO_SPECIFIC_CHARACTER;
-	m_info_portion = NO_INFO_INDEX;
+	m_original_owner		= 0xffff;
+	m_specific_character	= NULL;
+	m_info_portion			= NULL;
 }
 
 
@@ -607,10 +607,20 @@ void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	inherited::STATE_Read		(tNetPacket,size);
 	if (m_wVersion > 58)
 		tNetPacket.r			(&m_original_owner,sizeof(m_original_owner));
+
 	if (m_wVersion > 89)
+
+	if ( (m_wVersion > 89)&&(m_wVersion < 97)  )
 	{
-		tNetPacket.r			(&m_specific_character,	sizeof(SPECIFIC_CHARACTER_INDEX));
-		tNetPacket.r			(&m_info_portion,		sizeof(INFO_INDEX));
+		int tmp,tmp2;
+		tNetPacket.r			(&tmp,		sizeof(int));
+		tNetPacket.r			(&tmp2,		sizeof(int));
+		m_info_portion			=	NULL;
+		m_specific_character	= NULL;
+	}else{
+		tNetPacket.r_stringZ	(m_specific_character);
+		tNetPacket.r_stringZ	(m_info_portion);
+	
 	}
 }
 
@@ -619,13 +629,14 @@ void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
 	inherited::STATE_Write		(tNetPacket);
 	tNetPacket.w				(&m_original_owner,sizeof(m_original_owner));
 #ifdef XRGAME_EXPORTS
-	tNetPacket.w				(&m_specific_character,	sizeof(SPECIFIC_CHARACTER_INDEX));
-	tNetPacket.w				(&m_info_portion,		sizeof(INFO_INDEX));
+	tNetPacket.w_stringZ		(m_specific_character);
+	tNetPacket.w_stringZ		(m_info_portion);
 #else
-	SPECIFIC_CHARACTER_INDEX	tmp_1	= NO_SPECIFIC_CHARACTER;
-	INFO_INDEX					tmp_2	= NO_INFO_INDEX;
-	tNetPacket.w				(&tmp_1,	sizeof(SPECIFIC_CHARACTER_INDEX));
-	tNetPacket.w				(&tmp_2,	sizeof(INFO_INDEX));
+	SPECIFIC_CHARACTER_ID		tmp_1	= NULL;
+	INFO_ID						tmp_2	= NULL;
+
+	tNetPacket.w_stringZ		(tmp_1);
+	tNetPacket.w_stringZ		(tmp_2);
 #endif
 
 }
@@ -650,7 +661,7 @@ void CSE_ALifeItemPDA::FillProps		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
-	m_wDocIndex					= 0;
+	m_wDoc					= NULL;
 }
 
 CSE_ALifeItemDocument::~CSE_ALifeItemDocument()
@@ -660,13 +671,19 @@ CSE_ALifeItemDocument::~CSE_ALifeItemDocument()
 void CSE_ALifeItemDocument::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
-	tNetPacket.r_u16			(m_wDocIndex);
+
+	if ( m_wVersion < 97  ){
+		u16 tmp;
+		tNetPacket.r_u16			(tmp);
+		m_wDoc = NULL;
+	}else
+		tNetPacket.r_stringZ		(m_wDoc);
 }
 
 void CSE_ALifeItemDocument::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_u16			(m_wDocIndex);
+	tNetPacket.w_stringZ		(m_wDoc);
 }
 
 void CSE_ALifeItemDocument::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -682,7 +699,8 @@ void CSE_ALifeItemDocument::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeItemDocument::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps			(pref,items);
-	PHelper().CreateU16			(items, PrepareKey(pref, *s_name, "Document index :"), &m_wDocIndex, 0, 65535);
+//	PHelper().CreateU16			(items, PrepareKey(pref, *s_name, "Document index :"), &m_wDocIndex, 0, 65535);
+	PHelper().CreateRText		(items, PrepareKey(pref, *s_name, "Info portion :"), &m_wDoc);
 }
 
 ////////////////////////////////////////////////////////////////////////////

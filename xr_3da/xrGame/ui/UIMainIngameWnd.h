@@ -75,7 +75,7 @@ public:
 
 	// PDA MESSAGES
 		//для отображения сообщения пришедшего по PDA
-	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index);
+	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id);
 
 	bool SetDelayForPdaMessage          (int iValue, int iDelay);
 	void AddGameMessage	(LPCSTR message, int iId = -1, int iDelay = 0);

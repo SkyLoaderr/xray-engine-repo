@@ -124,9 +124,9 @@ void CAI_Stalker::DropItemSendMessage(CObject *O)
 //PDA functions
 /////////////////////////
 
-void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index)
+void CAI_Stalker::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 {
-	CInventoryOwner::ReceivePdaMessage(who, msg, info_index);
+	CInventoryOwner::ReceivePdaMessage(who, msg, info_id);
 }
 
 

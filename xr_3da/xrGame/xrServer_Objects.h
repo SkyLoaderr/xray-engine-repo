@@ -113,10 +113,10 @@
 // 94 - CSE_Abstract					client_data size increased
 // 95 - CSE_ALifeCreatureAbstract		appended with m_killer_id property
 // 96 - CSE_ALifeTraderAbstract			changed m_iCharacterProfile(int) to m_sCharacterProfile(shared_str)
-// 97 - CSE_ALifeObjectHangingLamp		appended with ambient bone
-
+// 97 - CSE_ALifeItemPDA				changed m_info_portion(int) to m_info_portion(shared_str) +m_specific_character +CSE_ALifeItemDocument m_wDoc (int-> shared_str)
+// 98 - CSE_ALifeItemPDA				changed m_info_portion(int) to m_info_portion(shared_str) +m_specific_character +CSE_ALifeItemDocument m_wDoc (int-> shared_str)
 //------------------------------------------------------------------------------
-#define SPAWN_VERSION	u16(97)
+#define SPAWN_VERSION	u16(98)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_Shape,ISE_Shape,CShapeData)
 public:

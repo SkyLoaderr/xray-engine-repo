@@ -14,7 +14,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "UIListItem.h"
-
+#include "../encyclopedia_article_defs.h"
 //////////////////////////////////////////////////////////////////////////
 
 class CUIJobItem: public CUIListItem
@@ -28,8 +28,8 @@ public:
 	void			ScalePictureXY			(float x, float y);
 	void			SetCaption				(LPCSTR caption);
 	void			SetDescription			(LPCSTR description);
-	void			SetAdditionalMaterialID	(int id) { m_id = id; UIAdditionalMaterials.Show(true); }
-	int				GetAdditionalMaterialID	() const { return m_id; }
+	void			SetAdditionalMaterialID	(ARTICLE_ID id) { m_id = id; UIAdditionalMaterials.Show(true); }
+	ARTICLE_ID		GetAdditionalMaterialID	() const { return m_id; }
 	void			SetCallbackMessage		(EUIMessages msg) { articleTypeMsg = msg; }
 
 	virtual void	SendMessage				(CUIWindow *pWnd, s16 msg, void *pData);
@@ -44,7 +44,7 @@ protected:
 	// Кнопка на дополнительные материалы
 	CUIButton		UIAdditionalMaterials;
 	// ID на статью с доп инфой
-	int				m_id;
+	ARTICLE_ID		m_id;
 	// Принадлежность артикла к энциклопедии ли дневнику
 	EUIMessages		articleTypeMsg;
 };

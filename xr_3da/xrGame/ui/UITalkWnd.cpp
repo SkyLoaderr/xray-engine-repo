@@ -155,11 +155,15 @@ void CUITalkWnd::UpdateQuestions()
 		{
 			//если в списке допустимых фраз только одна фраза пустышка, то просто
 			//сказать (игрок сам не производит никаких действий)
-			if(m_pCurrentDialog->PhraseList().size() == 1)
+			if( m_pCurrentDialog->allIsDummy() ){
+				CPhrase* phrase = m_pCurrentDialog->PhraseList()[Random.randI(m_pCurrentDialog->PhraseList().size())];
+				SayPhrase(phrase->GetIndex());
+			};
+/*			if(m_pCurrentDialog->PhraseList().size() == 1)
 			{
 				CPhrase* phrase = m_pCurrentDialog->PhraseList().front();
 				if(phrase->IsDummy()) SayPhrase(phrase->GetIndex());
-			}
+			}*/
 
 			//выбор доступных фраз из активного диалога
 			if(m_pCurrentDialog)

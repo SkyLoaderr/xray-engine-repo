@@ -36,7 +36,7 @@ public:
 
 	// Открыть соответсвующий раздел ПДА
 	void				SetActiveSubdialog(EPdaSections section);
-	void				OpenDiaryTree(int idx) { UIActorDiaryWnd.m_pCore->OpenTree(idx); }
+	void				OpenDiaryTree(ARTICLE_ID id) { UIActorDiaryWnd.m_pCore->OpenTree(id); }
 
 	void				MarkNewsAsRead (bool status);
 	//записи в дневнике у актера

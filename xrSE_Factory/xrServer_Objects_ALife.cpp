@@ -29,10 +29,10 @@
 
 bool SortStringsByAlphabetPred (const shared_str& s1, const shared_str& s2)
 {
-	R_ASSERT(xr_strlen(*s1)>0);
-	R_ASSERT(xr_strlen(*s2)>0);
+	R_ASSERT(s1.size());
+	R_ASSERT(s2.size());
 
-	return (xr_strcmp(*s1,*s2)<0);
+	return (xr_strcmp(s1,s2)<0);
 };
 
 
@@ -85,7 +85,7 @@ struct SFillPropData{
 #ifndef AI_COMPILER
 		//character profiles indexes
 		VERIFY					(character_profiles.empty());
-		for(PROFILE_INDEX i = 0; i<=CCharacterInfo::GetMaxIndex(); i++)
+		for(int i = 0; i<=CCharacterInfo::GetMaxIndex(); i++)
 		{
 			character_profiles.push_back(CCharacterInfo::IndexToId(i));
 		}
@@ -1663,7 +1663,7 @@ void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
 
 void CSE_ALifeTraderAbstract::OnChangeProfile(PropValue* sender)
 {
-	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
+	m_SpecificCharacter = NULL;
 #ifndef AI_COMPILER
 	specific_character();
 #endif
@@ -1675,10 +1675,6 @@ void CSE_ALifeTraderAbstract::FillProps	(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateU32			(items, PrepareKey(pref,*base()->s_name,"Money"), 	&m_dwMoney,	0, u32(-1));
 	PHelper().CreateFlag32		(items,	PrepareKey(pref,*base()->s_name,"Trader\\Infinite ammo"),&m_trader_flags, eTraderFlagInfiniteAmmo);
 #ifndef AI_COMPILER
-/*	RToken32Value *value		= PHelper().CreateRToken32	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
-		(u32*)&m_iCharacterProfile, 
-		&*fp_data.character_profile_indxs.begin(), fp_data.character_profile_indxs.size());
-	*/
 	RListValue *value		= PHelper().CreateRList	(items,	PrepareKey(pref,*base()->s_name,"npc profile"),	 
 		&m_sCharacterProfile, 
 		&*fp_data.character_profiles.begin(), fp_data.character_profiles.size());

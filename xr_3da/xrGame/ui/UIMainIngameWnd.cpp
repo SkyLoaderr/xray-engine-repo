@@ -927,7 +927,7 @@ void CUIMainIngameWnd::ShowAll()
 }
 
 
-void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index)
+void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_ID info_id)
 {
 	R_ASSERT(pSender);
 
@@ -962,7 +962,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	if(msg == ePdaMsgInfo)
 	{
 		CInfoPortion info_portion;
-		info_portion.Load(info_index);
+		info_portion.Load(info_id);
 		pItem->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
 		pItem2->UIMsgText.SetText(*CStringTable()(info_portion.GetText()));
 	}

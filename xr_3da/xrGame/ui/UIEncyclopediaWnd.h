@@ -41,11 +41,11 @@ public:
 	virtual void	SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 	virtual void	Draw();
 
-	void			AddArticle(ARTICLE_INDEX, bool bReaded);
+	void			AddArticle(ARTICLE_ID, bool bReaded);
 	void			DeleteArticles();
-	bool			HasArticle(ARTICLE_INDEX);
+	bool			HasArticle(ARTICLE_ID);
 
-	void			OpenTree(int idx) { UIInfo.OpenTree(idx); }
+	void			OpenTree(ARTICLE_ID id) { UIInfo.OpenTree(id); }
 	//  нопка возврата в меню заданий
 	CUIButton			UIBack;
 

@@ -277,7 +277,7 @@ void CUIDiaryWnd::SetContractTrader()
 	if(pTrader)
 	{
 		CCharacterInfo character_info;
-		if(xr_strlen( *pTrader->character_profile()) )
+		if(pTrader->character_profile().size() )
 		{				
 			character_info.Load(pTrader->character_profile());
 			character_info.InitSpecificCharacter(pTrader->specific_character());
@@ -443,7 +443,7 @@ void  CUIDiaryWnd::ReloadArticles()
 		{
 			if (ARTICLE_DATA::eDiaryArticle == it->article_type)
 			{
-				UIActorDiaryWnd.AddArticle((*it).index, true);
+				UIActorDiaryWnd.AddArticle((*it).article_id, true);
 			}
 		}
 	}

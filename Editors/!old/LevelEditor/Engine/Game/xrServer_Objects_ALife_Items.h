@@ -163,8 +163,9 @@ add_to_type_list(CSE_ALifeItemArtefact)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 	u16								m_original_owner;
-	SPECIFIC_CHARACTER_INDEX		m_specific_character;
-	INFO_INDEX						m_info_portion;
+	SPECIFIC_CHARACTER_ID			m_specific_character;
+//	INFO_INDEX						m_info_portion;
+	INFO_ID							m_info_portion;
 
 									CSE_ALifeItemPDA(LPCSTR caSection);
 	virtual							~CSE_ALifeItemPDA();
@@ -173,7 +174,7 @@ add_to_type_list(CSE_ALifeItemPDA)
 #define script_type_list save_type_list(CSE_ALifeItemPDA)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemDocument,CSE_ALifeItem)
-	u16								m_wDocIndex;
+	INFO_ID							m_wDoc;
 									CSE_ALifeItemDocument(LPCSTR caSection);
 	virtual							~CSE_ALifeItemDocument();
 SERVER_ENTITY_DECLARE_END

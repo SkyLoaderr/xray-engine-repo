@@ -260,7 +260,7 @@ LPCSTR CUIXml::ReadAttrib(XML_NODE* node, LPCSTR attrib, LPCSTR   default_str_va
 		if(el)
 		{
 			result_str = el->Attribute(attrib);
-			if (result_str != NULL)
+			if (result_str.size())
 				return *result_str;
 			else
 				return default_str_val;

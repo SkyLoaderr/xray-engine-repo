@@ -29,7 +29,7 @@ public:
 	virtual			~CUIActorDiaryWnd	();
 	void			Init				(CUIListWnd *idxList);
 
-	void			AddArticle			(ARTICLE_INDEX idx, bool bReaded)	{ m_pCore->AddArticle(idx, bReaded); }
+	void			AddArticle			(ARTICLE_ID id, bool bReaded)	{ m_pCore->AddArticle(id, bReaded); }
 	void			DeleteArticles		(CUITreeViewItem *pRoot);
 	void			ShowArticle			(CUITreeViewItem *pItem);
 	virtual void	Show				(bool status);

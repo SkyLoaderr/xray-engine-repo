@@ -1068,6 +1068,7 @@ private:
 class TiXmlDocument : public TiXmlNode
 {
 public:
+	
 	/// Create an empty document, that has no name.
 	TiXmlDocument();
 	/// Create a document with a name. The name of the document is also the filename of the xml.

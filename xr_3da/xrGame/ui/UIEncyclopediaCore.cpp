@@ -119,7 +119,7 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 					it != pActor->encyclopedia_registry->registry().objects().end(); it++)
 				{
 					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type &&
-						m_pCurrArticle->Index() == it->index)
+						m_pCurrArticle->Id() == it->article_id)
 					{
 						it->readed = true;
 						break;
@@ -146,27 +146,27 @@ void CUIEncyclopediaCore::DeleteArticles()
 }
 
 //////////////////////////////////////////////////////////////////////////
-bool CUIEncyclopediaCore::HasArticle		(ARTICLE_INDEX article_index)
+bool CUIEncyclopediaCore::HasArticle		(ARTICLE_ID article_id)
 {
 	for(std::size_t i = 0; i<m_ArticlesDB.size(); ++i)
 	{
-		if(m_ArticlesDB[i]->Index() == article_index) return true;
+		if(m_ArticlesDB[i]->Id() == article_id) return true;
 	}
 	return false;
 }
 
-void CUIEncyclopediaCore::AddArticle(ARTICLE_INDEX article_index, bool bReaded)
+void CUIEncyclopediaCore::AddArticle(ARTICLE_ID article_id, bool bReaded)
 {
 	for(std::size_t i = 0; i<m_ArticlesDB.size(); i++)
 	{
-		if(m_ArticlesDB[i]->Index() == article_index) return;
+		if(m_ArticlesDB[i]->Id() == article_id) return;
 	}
 
 	// Добавляем элемент
 	m_ArticlesDB.resize(m_ArticlesDB.size() + 1);
 	CEncyclopediaArticle*& a = m_ArticlesDB.back();
 	a = xr_new<CEncyclopediaArticle>();
-	a->Load(article_index);
+	a->Load(article_id);
 
 	CUIStatic &img = a->data()->image;
 
@@ -233,12 +233,12 @@ void CUIEncyclopediaCore::Show(bool status)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaCore::OpenTree(int value)
+void CUIEncyclopediaCore::OpenTree(ARTICLE_ID value)
 {
 	int itemVal = -1;
 	for(std::size_t k = 0; k<m_ArticlesDB.size(); ++k)
 	{
-		if(m_ArticlesDB[k]->Index() == value)
+		if(m_ArticlesDB[k]->Id() == value)
 		itemVal = (int)k;
 	}
 

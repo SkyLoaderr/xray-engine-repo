@@ -174,7 +174,7 @@ void CUIEncyclopediaWnd::ReloadArticles()
 		{
 			if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 			{
-				UIInfo.AddArticle(it->index, it->readed);
+				UIInfo.AddArticle(it->article_id, it->readed);
 			}
 		}
 		prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
@@ -200,15 +200,15 @@ void CUIEncyclopediaWnd::Show(bool status)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIEncyclopediaWnd::AddArticle(ARTICLE_INDEX idx, bool bReaded)
+void CUIEncyclopediaWnd::AddArticle(ARTICLE_ID id, bool bReaded)
 {
-	UIInfo.AddArticle(idx, bReaded);
+	UIInfo.AddArticle(id, bReaded);
 }
 
-bool CUIEncyclopediaWnd::HasArticle(ARTICLE_INDEX index)
+bool CUIEncyclopediaWnd::HasArticle(ARTICLE_ID id)
 {
 	ReloadArticles();
-	return UIInfo.HasArticle(index);
+	return UIInfo.HasArticle(id);
 }
 
 //////////////////////////////////////////////////////////////////////////

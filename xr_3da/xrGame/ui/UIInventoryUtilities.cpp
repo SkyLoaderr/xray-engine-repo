@@ -507,6 +507,6 @@ void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(actor)
 	{
-		actor->TransferInfo(CInfoPortion::IdToIndex(info_id), true);
+		actor->TransferInfo(info_id, true);
 	}
 }

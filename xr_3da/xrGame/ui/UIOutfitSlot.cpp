@@ -164,7 +164,7 @@ void CUIOutfitSlot::SetMPOutfit()
 	UIOutfitIcon.SetShader(GetMPCharIconsShader());
 	CObject *pInvOwner = smart_cast<CObject*>(Level().CurrentEntity());
 	if (!pInvOwner) return;
-	if (pInvOwner->cNameVisual() == NULL) return;
+	if (!pInvOwner->cNameVisual().size() ) return;
 
 	xr_string a = *pInvOwner->cNameVisual();
 	xr_string::iterator it = std::find(a.rbegin(), a.rend(), '\\').base(); 

@@ -81,21 +81,6 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	CUIJobItem			*pJobItem = NULL;
 	u32					color = 0xffffffff;
 
-/*	// Устанавливаем цвет иконок
-	switch (task->ObjectiveState(0))
-	{
-	case eTaskStateCompleted:
-		color = 0xff00ff00;
-		break;
-	case eTaskStateFail:
-		color = 0xffff0000;
-		break;
-	case eTaskStateInProgress:
-		color = 0xffffffff;
-		break;
-	default:
-		NODEFAULT;
-	}*/
 
 	// Пробегаемся по таскам и заносим их как задания
 	int tmp = 0;
@@ -135,7 +120,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		if(i == 0)
 			pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
 		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
-		if (task->ObjectiveArticle(i) != NO_ARTICLE)
+		if (task->ObjectiveArticle(i).size() )
 		{
 			pJobItem->SetAdditionalMaterialID	(task->ObjectiveArticle(i));
 		}
@@ -146,7 +131,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 			for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
 				it != pActor->encyclopedia_registry->registry().objects().end(); it++)
 			{
-				if (task->ObjectiveArticle(i) == it->index)
+				if (task->ObjectiveArticle(i) == it->article_id)
 				{
 					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 						pJobItem->SetCallbackMessage(PDA_OPEN_ENCYCLOPEDIA_ARTICLE);

@@ -118,7 +118,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 
 //	m_iCharacterProfile			= DEFAULT_PROFILE;
 	m_sCharacterProfile			= "default";
-	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
+	m_SpecificCharacter			= NULL;
 
 #ifdef XRGAME_EXPORTS
 //	m_character_profile_init	= false;
@@ -155,9 +155,10 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_dwMoney);
 
 #ifdef XRGAME_EXPORTS
-	tNetPacket.w_s32			(m_iSpecificCharacter);
+	tNetPacket.w_stringZ		(m_SpecificCharacter);
 #else
-	tNetPacket.w_s32			(NO_SPECIFIC_CHARACTER);
+	shared_str s;
+	tNetPacket.w_stringZ		(s);
 #endif
 	tNetPacket.w_u32			(m_trader_flags.get());
 //	tNetPacket.w_s32			(m_iCharacterProfile);
@@ -184,8 +185,21 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			load_data			(l_tpTaskIDs,tNetPacket);
 		if (m_wVersion > 62)
 			tNetPacket.r_u32	(m_dwMoney);
-		if (m_wVersion > 75)
-			tNetPacket.r_s32	(m_iSpecificCharacter);
+		if ((m_wVersion > 75) && (m_wVersion < 97)){
+			int tmp;
+			tNetPacket.r_s32	(tmp);
+#ifndef AI_COMPILER
+			if(tmp!=-1)
+				m_SpecificCharacter = CSpecificCharacter::IndexToId(tmp);
+			else
+				m_SpecificCharacter = NULL;
+
+#else
+			m_SpecificCharacter = NULL;
+#endif
+		}else
+			tNetPacket.r_stringZ	(m_SpecificCharacter);
+
 		if (m_wVersion > 77)
 			m_trader_flags.assign(tNetPacket.r_u32());
 
@@ -223,27 +237,26 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 
 #endif
 
-SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
+SPECIFIC_CHARACTER_ID CSE_ALifeTraderAbstract::specific_character()
 {
 #ifdef XRGAME_EXPORTS
 #pragma todo("Dima to Yura, MadMax : Remove that hacks, please!")
-	if (Level().game && (GameID() != GAME_SINGLE)) return m_iSpecificCharacter;
+	if (Level().game && (GameID() != GAME_SINGLE)) return m_SpecificCharacter;
 #endif
 
-	if(NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
-		return m_iSpecificCharacter;
+	if(m_SpecificCharacter.size()) 
+		return m_SpecificCharacter;
 
 
-	VERIFY (xr_strlen( *character_profile() ) );
 	CCharacterInfo char_info;
 	char_info.Load(character_profile());
 
 
 	//профиль задан индексом
-	if(NO_SPECIFIC_CHARACTER != char_info.data()->m_iCharacterIndex)
+	if(char_info.data()->m_CharacterId.size() )
 	{
-		set_specific_character(char_info.data()->m_iCharacterIndex);
-		return m_iSpecificCharacter;
+		set_specific_character(char_info.data()->m_CharacterId);
+		return m_SpecificCharacter;
 	}
 	//профиль задан шаблоном
 	//
@@ -254,10 +267,11 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 		m_CheckedCharacters.clear();
 		m_DefaultCharacters.clear();
 
-		for(SPECIFIC_CHARACTER_INDEX i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
+		for(int i=0; i<=CSpecificCharacter::GetMaxIndex(); i++)
 		{
 			CSpecificCharacter spec_char;
-			spec_char.Load(i);
+			SPECIFIC_CHARACTER_ID id = CSpecificCharacter::IndexToId(i);
+			spec_char.Load(id);
 
 			if(spec_char.data()->m_bNoRandom) continue;
 
@@ -270,12 +284,11 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 					break;
 				}
 			}
-			
-			if(char_info.data()->m_Class == NO_CHARACTER_CLASS || class_found)
+			if(!char_info.data()->m_Class.size() || class_found)
 			{
 				//запомнить пподходящий персонаж с флажком m_bDefaultForCommunity
 				if(spec_char.data()->m_bDefaultForCommunity)
-					m_DefaultCharacters.push_back(i);
+					m_DefaultCharacters.push_back(id);
 
 				if(char_info.data()->m_Rank == NO_RANK || _abs(spec_char.Rank() - char_info.data()->m_Rank)<RANK_DELTA)
 				{
@@ -284,11 +297,11 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 #ifdef XRGAME_EXPORTS
 						int* count = NULL;
 						if(ai().get_alife())
-							count = ai().alife().registry(specific_characters).object(i, true);
+							count = ai().alife().registry(specific_characters).object(id, true);
 						//если индекс еще не был использован
 						if(NULL == count)
 #endif
-							m_CheckedCharacters.push_back(i);
+							m_CheckedCharacters.push_back(id);
 					}
 				}
 			}
@@ -298,31 +311,31 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 
 #ifdef XRGAME_EXPORTS
 		if(m_CheckedCharacters.empty())
-			char_info.m_iSpecificCharacterIndex = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
+			char_info.m_SpecificCharacterId = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
 		else
-			char_info.m_iSpecificCharacterIndex = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
+			char_info.m_SpecificCharacterId = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
 #else
-			char_info.m_iSpecificCharacterIndex = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
+			char_info.m_SpecificCharacterId = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
 #endif
 
-		set_specific_character(char_info.m_iSpecificCharacterIndex);
-		return m_iSpecificCharacter;
+		set_specific_character(char_info.m_SpecificCharacterId);
+		return m_SpecificCharacter;
 	}
 }
 
-void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX new_spec_char)
+void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_ID new_spec_char)
 {
-	R_ASSERT(new_spec_char != NO_SPECIFIC_CHARACTER);
+	R_ASSERT(new_spec_char.size());
 
 #ifdef XRGAME_EXPORTS
 	//убрать предыдущий номер из реестра
-	if (NO_SPECIFIC_CHARACTER != m_iSpecificCharacter) 
+	if ( m_SpecificCharacter.size() ) 
 	{
 		if(ai().get_alife())
-			ai().alife().registry(specific_characters).remove(m_iSpecificCharacter, true);
+			ai().alife().registry(specific_characters).remove(m_SpecificCharacter, true);
 	}
 #endif
-	m_iSpecificCharacter = new_spec_char;
+	m_SpecificCharacter = new_spec_char;
 
 
 #ifdef XRGAME_EXPORTS
@@ -330,12 +343,12 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 	{
 		//запомнить, то что мы использовали индекс
 		int a = 1;
-		ai().alife().registry(specific_characters).add(m_iSpecificCharacter, a, true);
+		ai().alife().registry(specific_characters).add(m_SpecificCharacter, a, true);
 	}
 #endif
 
 	CSpecificCharacter selected_char;
-	selected_char.Load(m_iSpecificCharacter);
+	selected_char.Load(m_SpecificCharacter);
 	if(selected_char.Visual())
 	{
 		CSE_Visual* visual = smart_cast<CSE_Visual*>(base()); VERIFY(visual);
@@ -361,7 +374,7 @@ void CSE_ALifeTraderAbstract::set_specific_character	(SPECIFIC_CHARACTER_INDEX n
 
 #else
 	//в редакторе специфический профиль оставляем не заполненым
-	m_iSpecificCharacter = NO_SPECIFIC_CHARACTER;
+	m_SpecificCharacter = NULL;
 #endif
 }
 
