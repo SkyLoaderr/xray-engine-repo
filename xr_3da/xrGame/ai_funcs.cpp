@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_funcs.h"
 
-#define WRITE_TO_LOG
+//#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
 
 CPatternFunction::CPatternFunction()
