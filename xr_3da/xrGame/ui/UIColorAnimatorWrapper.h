@@ -9,10 +9,6 @@
 //	Device.fTimeDelta нельз€ - анимаци€ тормознута€ получаетс€. ѕриходитс€ 
 //	посто€нно считать врем€ между апдейтами.
 //=============================================================================
-
-#ifndef UI_COLOR_ANIMATOR_WRAPPER_H_
-#define UI_COLOR_ANIMATOR_WRAPPER_H_
-
 #pragma once
 
 //////////////////////////////////////////////////////////////////////////
@@ -73,5 +69,3 @@ private:
 public:
 	CLAItem				*GetAnimation			() const		{ return colorAnimation; } 
 };
-
-#endif
