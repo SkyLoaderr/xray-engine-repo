@@ -695,7 +695,7 @@ if(who==this)
 //
 //			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_HIT,P_);
 
-			callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,*who->cName());
+			callback(GameObject::eHelicopterOnHit)(P,impulse,hit_type,who->ID());
 		}break;
 		default:
 			break;
