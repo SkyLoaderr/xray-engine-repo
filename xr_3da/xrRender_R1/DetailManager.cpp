@@ -224,10 +224,10 @@ void CDetailManager::Render		()
 	Device.Statistic.RenderDUMP_DT_VIS.End	();
 
 	Device.Statistic.RenderDUMP_DT_Render.Begin	();
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
+	RCache.set_CullMode		(CULL_NONE);
 	RCache.set_xform_world	(Fidentity);
 	if (UseVS())			hw_Render	();
 	else					soft_Render	();
-	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
+	RCache.set_CullMode		(CULL_CCW);
 	Device.Statistic.RenderDUMP_DT_Render.End	();
 }

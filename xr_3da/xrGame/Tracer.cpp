@@ -96,11 +96,11 @@ void	CTracer::Render	()
 	RCache.Vertex.Unlock		(vCount,sh_Geom->vb_stride);
 	
 	if (vCount)	{
-		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
+		RCache.set_CullMode			(CULL_NONE);
 		RCache.set_xform_world		(Fidentity);
 		RCache.set_Shader			(sh_Tracer);
 		RCache.set_Geometry			(sh_Geom);
 		RCache.Render				(D3DPT_TRIANGLELIST,vOffset,0,vCount,0,vCount/2);
-		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
+		RCache.set_CullMode			(CULL_CCW);
 	}
 }

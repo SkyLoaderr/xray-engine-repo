@@ -88,7 +88,7 @@ void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	ProjDirs[2].sub(sPts[2],COP);
 	ProjDirs[3].sub(sPts[3],COP);
 
-    CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_NONE		));
+	RCache.set_CullMode	(CULL_NONE);
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,		0xffffffff			));
 
 	Fvector _F[4];
@@ -116,7 +116,7 @@ void dbg_draw_frustum	(float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	RCache.dbg_DrawLINE	(M,_F[2],_F[3],CL);
 	RCache.dbg_DrawLINE	(M,_F[3],_F[0],CL);
 
-    CHK_DX(HW.pDevice->SetRenderState	(D3DRS_CULLMODE,	D3DCULL_CCW			));
+	RCache.set_CullMode			(CULL_CCW);
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,	0						));
 }
 #endif

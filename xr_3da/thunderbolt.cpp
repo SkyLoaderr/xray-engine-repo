@@ -202,7 +202,7 @@ void CEffect_Thunderbolt::Render()
         float dv			= lightning_phase*0.5f;
         dv					= (lightning_phase>0.5f)?Random.randI(2)*0.5f:dv;
 
-        HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
+		RCache.set_CullMode	(CULL_NONE);
         u32					v_offset,i_offset;
         u32					vCount_Lock		= current->l_model->number_vertices;
         u32					iCount_Lock		= current->l_model->number_indices;
@@ -217,7 +217,7 @@ void CEffect_Thunderbolt::Render()
         RCache.set_Shader	(current->l_model->shader);
         RCache.set_Geometry	(hGeom_model);
         RCache.Render		(D3DPT_TRIANGLELIST,v_offset,0,vCount_Lock,i_offset,iCount_Lock/3);
-        HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
+		RCache.set_CullMode	(CULL_CCW);
 
         // gradient
         Fvector				vecSx, vecSy;

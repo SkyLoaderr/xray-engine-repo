@@ -680,12 +680,6 @@
 				<File
 					RelativePath=".\Fmesh.h">
 				</File>
-				<File
-					RelativePath=".\FShotMarkVisual.cpp">
-				</File>
-				<File
-					RelativePath=".\FShotMarkVisual.h">
-				</File>
 				<Filter
 					Name="ShadowForm"
 					Filter="">
@@ -1140,11 +1134,6 @@
 						</File>
 						<File
 							RelativePath=".\ResourceManager_Scripting.cpp">
-							<FileConfiguration
-								Name="Mixed|Win32">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
 						</File>
 					</Filter>
 					<Filter
