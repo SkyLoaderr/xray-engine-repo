@@ -1,0 +1,108 @@
+---------------------------------------
+-- демонстрация работы FSM  
+-- пример 01. FSM одного сталкера с двумя
+-- состояниями	
+--
+-- ходит сталкер, видит актера, предупреждает, 
+-- а потом начинает стрелять
+---------------------------------------
+
+
+
+-- глобальная переменная, указываюшая на то что сталкер уже
+-- не первый раз видит актера
+stalker_already_saw_actor = false
+if_actor_is_dead = false
+
+local sound_baran = sound_object("scripts\\idle\\say_baran")
+
+
+-- функция перехода в первое состояние из нулевого
+function if_see_actor_tell_warning(npc, fsm)
+	if npc:see(actor) == true and not stalker_already_saw_actor then
+		-- да, условие выполнено, FSM перейдет в состояние 
+		-- как только мы сделаем return true
+		log("i saw a fucking actor")
+
+		-- при переходе из нулевого состояния всегда 
+		-- незабываем взять контроль скрипта над FSM
+		fsm:set_script_control()
+
+		log("setting action")
+
+
+		--	задаем новое состояние сталкера
+		-- "стрелять буду"	
+		action(                                                                                                       
+	    		npc,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000)
+		)
+
+		-- мы уже видели актера, больше предупреждать не нужно	
+		stalker_already_saw_actor = true
+
+		return true
+	end
+	-- нет, условие не сработало, все оталось как есть
+	return false
+end
+
+function if_actor_is_dead(npc, fsm)
+	if not actor:alive() then
+		-- да, условие выполнено, FSM перейдет в состояние 
+		-- как только мы сделаем return true
+		-- при переходе из нулевого состояния всегда 
+		-- незабываем взять контроль скрипта над FSM
+
+		fsm:set_script_control()
+
+		log("actor is dead")
+
+
+		--	задаем новое состояние сталкера
+		-- "стрелять буду"	
+
+		sound_baran:play_at_pos		(npc,npc:position(),0);
+
+		-- мы уже видели актера, больше предупреждать не нужно	
+		if_actor_is_dead = true
+
+		return true
+	end
+	-- нет, условие не сработало, все оталось как есть
+	return false
+end
+
+
+-- функция перехода из первого состояние в нулевое
+function finished_talking(npc, fsm)
+	if not npc:action() then
+		log("i lost a trace of this fucking actor")
+		return true
+	end
+
+	return false
+end
+
+
+function main()
+	log	("FSM demo 01")
+
+	stalker00	= get_level_object("m_stalker_e0000")
+	actor = get_actor()
+
+	-- инициализация FSM сталкера
+	local fsm_stalker = FSM(this.script_name(), stalker00)
+
+	-- установка функций перехода 
+	fsm_stalker:set_transition(0, 1, this.if_see_actor_tell_warning)
+	fsm_stalker:set_transition(1, 0, this.finished_talking)
+	fsm_stalker:set_transition(0, 2, this.if_actor_is_dead)
+
+	-- запуск бесконечного цикла для одного FSM
+	fsm_stalker:run_loop()
+end
