@@ -47,7 +47,9 @@ void CHW::Reset		(HWND hwnd)
 #ifdef DEBUG
 	R_CHK				(pDevice->CreateStateBlock			(D3DSBT_ALL,&dwDebugSB));
 #endif
+#ifndef _EDITOR
 	updateWindowProps	(hwnd);
+#endif
 }
 
 void CHW::CreateD3D	()
@@ -267,7 +269,9 @@ void		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	u32	memory									= pDevice->GetAvailableTextureMem	();
 	Msg		("*     Texture memory: %d M",		memory/(1024*1024));
 	Msg		("*          DDI-level: %2.1f",		float(D3DXGetDriverLevel(pDevice))/100.f);
+#ifndef _EDITOR
 	updateWindowProps	(m_hWnd);
+#endif
 }
 
 u32	CHW::selectPresentInterval	()

@@ -320,12 +320,14 @@ void TfrmImageLib::OnItemsFocused(ListItemsVec& items)
             	ETextureThumbnail* thm=0;
                 if (bImportMode){
                     thm = FindUsedTHM(prop->Key());
-                    if (!thm) m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key(),false));
-                    std::string fn = prop->Key();
-                    ImageLib.UpdateFileName(fn);
-                    if (!thm->Load(prop->Key(),_import_)){
-                        bool bLoad = thm->Load(fn.c_str(),_textures_);
-                        ImageLib.CreateTextureThumbnail(thm,prop->Key(),_import_,!bLoad);
+                    if (!thm){ 
+                    	m_THM_Used.push_back(thm=xr_new<ETextureThumbnail>(prop->Key(),false));
+	                    std::string fn = prop->Key();
+    	                ImageLib.UpdateFileName(fn);
+        	            if (!thm->Load(prop->Key(),_import_)){
+            	            bool bLoad = thm->Load(fn.c_str(),_textures_);
+                	        ImageLib.CreateTextureThumbnail(thm,prop->Key(),_import_,!bLoad);
+                    	}
                     }
                 }else{ 
                     thm = FindUsedTHM(prop->Key());

@@ -264,7 +264,7 @@ void CRenderDevice::Reset  	()
     Memory.mem_compact		();
     HW.DevPP.BackBufferWidth= dwWidth;
     HW.DevPP.BackBufferHeight= dwHeight;
-    HW.Reset				(m_hWnd);
+    HW.Reset				(m_hRenderWnd);
     dwWidth					= HW.DevPP.BackBufferWidth;
     dwHeight				= HW.DevPP.BackBufferHeight;
     m_RenderWidth_2 		= dwWidth * 0.5f;
