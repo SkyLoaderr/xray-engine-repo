@@ -240,7 +240,7 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 			CActor* A2=smart_cast<CActor*>(D2->ph_ref_object);
 			if(A1&&A2)
 			{
-				do_collide=!b_restrictor&&(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
+				do_collide=do_collide&&!b_restrictor&&(A1->PPhysicsShell()==0)==(A2->PPhysicsShell()==0);
 			}
 		}
 		if(do_collide)inherited::InitContact(c,do_collide,material_1,material_2);
