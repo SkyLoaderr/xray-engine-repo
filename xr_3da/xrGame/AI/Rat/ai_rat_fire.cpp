@@ -80,12 +80,14 @@ void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	tHitDir.normalize();
 	tHitPosition = who->Position();
 	
+	/**	
 	INIT_SQUAD_AND_LEADER;
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	Group.m_dwLastHitTime = dwHitTime;
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
+	/**/
 	
 	// Play hit-sound
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];

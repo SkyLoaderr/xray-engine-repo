@@ -97,7 +97,6 @@ void CAI_Zombie::FreeHunting()
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 				else
 					SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-				SelectorFreeHunting.m_tDirection.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 			}
 		else
 			SelectorFreeHunting.m_tDirection.set(::Random.randF(0,1),0,::Random.randF(0,1));
@@ -181,7 +180,7 @@ void CAI_Zombie::AttackFire()
 	/**/
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiZombieFindEnemy)
-	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
 		
 	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy->Position().distance_to(vPosition) > 2.f),aiZombieAttackRun)
 
@@ -230,7 +229,7 @@ void CAI_Zombie::AttackRun()
 	/**/
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiZombieFindEnemy)
-	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy))
+	CHECK_IF_GO_TO_PREV_STATE(!(Enemy.Enemy) || !(Enemy.bVisible))
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 

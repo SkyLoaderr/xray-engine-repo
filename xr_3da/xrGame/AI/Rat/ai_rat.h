@@ -25,6 +25,8 @@ class CAI_Rat : public CCustomMonster
 	enum ERatStates 	{
 		aiRatDie = 0,
 		aiRatJumping,
+		aiRatFreeHunting,
+		aiRatFollowLeader,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -161,20 +163,14 @@ class CAI_Rat : public CCustomMonster
 		
 		CRatSelectorAttack				SelectorAttack;
 		CRatSelectorFreeHunting			SelectorFreeHunting;
-		CRatSelectorFollowLeader		SelectorFollowLeader;
-		CRatSelectorPursuit				SelectorPursuit;
-		CRatSelectorUnderFire			SelectorUnderFire;
 
+		/**
 		void AttackRun();
 		void AttackFire();
 		
-		void Die();
 		void Defend();
 		void FindEnemy();
-		void FollowLeader();
-		void FreeHunting();
 		void Injuring();
-		void Jumping();
 		void MoreDeadThanAlive();
 		void NoWeapon();
 
@@ -196,6 +192,11 @@ class CAI_Rat : public CCustomMonster
 		void Retreat();
 		void SenseSomething();
 		void UnderFire();
+		/**/
+		void Die();
+		void Jumping();
+		void FollowLeader();
+		void FreeHunting();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};

@@ -65,6 +65,8 @@ void CAI_Rat::Death()
 
 void CAI_Rat::vfLoadSelectors(CInifile *ini, const char *section)
 {
+	SelectorAttack.Load(ini,section);
+	SelectorFreeHunting.Load(ini,section);
 }
 
 void CAI_Rat::Load(CInifile* ini, const char* section)
@@ -105,7 +107,7 @@ BOOL CAI_Rat::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angl
 	
 	INIT_SQUAD_AND_LEADER;
 
-	/**
+	/**/
 	if (Leader == this)
 		eCurrentState = aiRatFreeHunting;
 	else
