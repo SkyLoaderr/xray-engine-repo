@@ -60,6 +60,7 @@ chugai_formation_base               = chugai_actions + 80
 chugai_replics_base                 = chugai_actions + 90
 chugai_heli_hunter_base             = chugai_actions + 100
 combat_zombied_base                 = chugai_actions + 110
+combat_monolith_base                = chugai_actions + 120
 
 -- «мей
 zmey_actions = chugai_actions + 1024

@@ -53,6 +53,7 @@ chugai_formation_base               = id_start + 3080
 chugai_replics_base                 = id_start + 3090
 chugai_heli_hunter_base             = id_start + 3100
 combat_zombied_base                 = id_start + 3110
+combat_monolith_base                = id_start + 3120
 
 zmey_guard_base                     = id_start + 4000
 zmey_property_guard_activity_end    = id_start + 4100
