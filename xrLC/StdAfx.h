@@ -117,6 +117,7 @@ using namespace boost;
 #define xr_free free
 #define xr_realloc realloc
 #define xr_strdup strdup
+#endif
 
 #ifndef	NDEBUG
 #define X_TRY 
