@@ -1028,6 +1028,12 @@
 						<File
 							RelativePath="TargetCSBase.h">
 						</File>
+						<File
+							RelativePath="TargetCSCask.cpp">
+						</File>
+						<File
+							RelativePath="TargetCSCask.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Artifacts"
