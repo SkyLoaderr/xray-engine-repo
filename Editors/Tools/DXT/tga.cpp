@@ -3,7 +3,7 @@
 #pragma hdrstop
 
 #include "tga.h"
-
+/*
 void	tga_save	(LPCSTR name, u32 w, u32 h, void* data, BOOL alpha )
 {
 	// Save
@@ -18,6 +18,7 @@ void	tga_save	(LPCSTR name, u32 w, u32 h, void* data, BOOL alpha )
 	tga.maketga	(hf);
 	_close		(hf);
 }
+*/
 
 void TGAdesc::maketga( IWriter& fs ){
 	R_ASSERT(data);
@@ -57,17 +58,22 @@ void TGAdesc::maketga( IWriter& fs ){
 		}
 	}
 	else{
-		for( int j=0; j<height; j++){
-			BYTE *p = (LPBYTE)data + scanlenght*j;
-			for( int i=0; i<width; i++){
-				BYTE buffer[4] = {p[0],p[1],p[2],p[3]};
-				fs.w(buffer, 4 );
-				p+=4;
+		if (width*4 == scanlenght)	fs.w	(data,width*height*4);
+		else {
+			// bad pitch, it seems :(
+			for( int j=0; j<height; j++){
+				BYTE *p = (LPBYTE)data + scanlenght*j;
+				for( int i=0; i<width; i++){
+					BYTE buffer[4] = {p[0],p[1],p[2],p[3]};
+					fs.w(buffer, 4 );
+					p+=4;
+				}
 			}
 		}
 	}
 }
 
+/*
 void TGAdesc::maketga( int hf ){
 	R_ASSERT(data);
 	R_ASSERT(width);
@@ -109,3 +115,4 @@ void TGAdesc::maketga( int hf ){
 		_write	(hf,data,width*height*4);
 	}
 }
+*/

@@ -37,7 +37,7 @@ public:
 	~TGAdesc()	{};
 
 	void maketga( IWriter &fs );
-	void maketga( int hf );
+//	void maketga( int hf );
 };
 
 void	ENGINE_API	tga_save	(LPCSTR name, u32 w, u32 h, void* data, BOOL alpha );
