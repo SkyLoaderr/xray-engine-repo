@@ -203,8 +203,8 @@ double MxEdgeQSlim::check_local_inversion(unsigned int v1,unsigned int/*v2*/,con
 			for(unsigned int j=0; j<3; j++)
 				f_after[j] = (f[j]==v1)?Vec3(vnew):Vec3(m->vertex(f[j]));
 
-			double delta = n_before *
-				triangle_normal(f_after[0], f_after[1], f_after[2]);
+			Vec3 n_after = triangle_normal(f_after[0], f_after[1], f_after[2]);
+			double delta = n_before * n_after;
 
 			if( delta < Nmin ) Nmin = delta;
 		}
@@ -308,6 +308,15 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 	if( nfailed )
 		bias += nfailed*meshing_penalty;
 
+	static u32 a = 0;
+//	if (a)
+	{
+		double Nmin1 = check_local_inversion(info->v1, info->v2, info->vnew);
+		double Nmin2 = check_local_inversion(info->v2, info->v1, info->vnew);
+		if( _min(Nmin1, Nmin2) < 0.0 )
+			bias += meshing_penalty;
+	}
+
 	float _scale = 1.f;
 	if( compactness_ratio > 0.0 )
 	{
@@ -325,9 +334,11 @@ void MxEdgeQSlim::apply_mesh_penalties(MxQSlimEdge *info)
 		//  NOTE: The prior heuristic was
 		//        if( ratio*cmin_before > cmin_after ) apply penalty;
 		//
-		if( c_min < compactness_ratio ) 
+		if( c_min < compactness_ratio )
 			_scale += float((compactness_ratio-c_min)/compactness_ratio);
-		// bias += (1-c_min);
+
+//		if( c_min < compactness_ratio ) 
+//			bias += (1-c_min);
 	}
 
 #if USE_OLD_INVERSION_CHECK
@@ -496,19 +507,36 @@ void MxEdgeQSlim::apply_contraction(const MxPairContraction& conx)
 	//
 	// Pre-contraction update
 	valid_verts--;
-	valid_faces -= conx.dead_faces.length();
-	quadrics(conx.v1) += quadrics(conx.v2);
+	valid_faces				-= conx.dead_faces.length();
+	quadrics(conx.v1)		+= quadrics(conx.v2);
+	
+	update_pre_contract		(conx);
 
-	update_pre_contract(conx);
+	m->apply_contraction	(conx);
 
-	m->apply_contraction(conx);
-
-	update_post_contract(conx);
+	update_post_contract	(conx);
 
 	// Must update edge info here so that the meshing penalties
 	// will be computed with respect to the new mesh rather than the old
-	for(unsigned int i=0; i<(unsigned int)edge_links(conx.v1).length(); i++)
-		compute_edge_info(edge_links(conx.v1)[i]);
+//.	for(unsigned int i=0; i<(unsigned int)edge_links(conx.v1).length(); i++)
+//.		compute_edge_info(edge_links(conx.v1)[i]);
+	star.reset				();
+	m->collect_vertex_star	(conx.v1, star);
+	star.add				(conx.v1);
+
+	edges.clear				();
+	for(unsigned int j=0; j<(unsigned int)star.length(); j++)
+		for(unsigned int i=0; i<(unsigned int)edge_links(star(j)).length(); i++)
+			edges.push_back	(edge_links(star(j))[i]);
+
+//	u32 r=edges.size();
+	std::sort				(edges.begin(),edges.end());
+	EdgeVecIt new_end		= std::unique	(edges.begin(),edges.end());
+	edges.erase				(new_end,edges.end());
+//	u32 rr=edges.size();
+//	Msg	("%d: %d/%d - %d",(unsigned int)edge_links(conx.v1).length(),r,rr,r-rr);
+	for (EdgeVecIt it=edges.begin(); it!=edges.end(); it++)
+		compute_edge_info	(*it);
 }
 
 void MxEdgeQSlim::update_pre_expand(const MxPairContraction&)

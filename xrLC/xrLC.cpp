@@ -59,7 +59,7 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Faster FPU 
 	CTimer	dwStartupTime;	dwStartupTime.Start();
-	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
+	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	/*
 	u32	dwMin			= 1800*(1024*1024);

@@ -150,9 +150,6 @@
 				RelativePath=".\src\mixvops.h">
 			</File>
 			<File
-				RelativePath=".\src\MxBlock2.h">
-			</File>
-			<File
 				RelativePath=".\src\MxDefines.h">
 			</File>
 			<File
@@ -218,6 +215,9 @@
 			Filter="">
 			<File
 				RelativePath=".\src\MxBlock.h">
+			</File>
+			<File
+				RelativePath=".\src\MxBlock2.h">
 			</File>
 			<File
 				RelativePath=".\src\MxDynBlock.h">

@@ -3,10 +3,10 @@
 #include <MxStdModel.h>
 #include <MxQSlim.h>
 
-//#pragma comment (lib,"x:/xrQSlim.lib")
+#pragma comment (lib,"x:/xrQSlim.lib")
 
-#define MAX_DECIMATE_ERROR 0.000005f
-#define COMPACTNESS_RATIO  0.01f
+#define MAX_DECIMATE_ERROR 0.0005f
+#define COMPACTNESS_RATIO  0.001f
 
 void SaveAsSMF			(LPCSTR fname, CDB::CollectorPacked& CL)
 {
@@ -65,11 +65,11 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 
 	// create and initialize qslim
 	MxEdgeQSlim* slim		= xr_new<MxEdgeQSlim>(mdl);
-	slim->boundary_weight	= 10000.f;
+	slim->boundary_weight	= 1000000.f;
 	slim->compactness_ratio	= COMPACTNESS_RATIO;
-	slim->meshing_penalty	= 10000.f;
+	slim->meshing_penalty	= 1000000.f;
 	slim->placement_policy	= MX_PLACE_ENDPOINTS;//MX_PLACE_ENDPOINTS;//MX_PLACE_ENDORMID;//MX_PLACE_OPTIMAL;
-	slim->weighting_policy	= MX_WEIGHT_AREA;
+	slim->weighting_policy	= MX_WEIGHT_UNIFORM;//MX_WEIGHT_UNIFORM;//MX_WEIGHT_AREA;
 	slim->initialize		();
 
 	// constraint material&sector vertex

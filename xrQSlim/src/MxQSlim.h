@@ -53,12 +53,14 @@ class MxEdgeQSlim : public MxQSlim
 private:
     typedef MxSizedDynBlock<MxQSlimEdge*, 6> edge_list;
 
-    MxBlock<edge_list> edge_links;
+    MxBlock<edge_list>	edge_links;
 
     //
     // Temporary variables used by methods
-    MxVertexList star, star2;
-    MxPairContraction conx_tmp;
+	DEFINE_VECTOR(MxQSlimEdge*,EdgeVec,EdgeVecIt);
+	EdgeVec				edges;
+	MxVertexList		star, star2;
+    MxPairContraction	conx_tmp;
 
 protected:
     double check_local_compactness(unsigned int v1, unsigned int v2, const float *vnew);
