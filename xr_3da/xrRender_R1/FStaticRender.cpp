@@ -14,12 +14,12 @@
 CRender										RImplementation;
 
 // Implementation
-IRender_ObjectSpecific*	CRender::ros_create				(CObject* parent)				{ return xr_new<CLightTrack>();			}
+IRender_ObjectSpecific*	CRender::ros_create				(IRenderable* parent)			{ return xr_new<CLightTrack>();			}
 void					CRender::ros_destroy			(IRender_ObjectSpecific* &p)	{ xr_delete(p);							}
 IRender_Visual*			CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
 IRender_Visual*			CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)					{ return Models.Instance_Duplicate(V);	}
-void					CRender::model_Delete			(IRender_Visual* &V)					{ Models.Delete(V);						}
+IRender_Visual*			CRender::model_Duplicate		(IRender_Visual* V)				{ return Models.Instance_Duplicate(V);	}
+void					CRender::model_Delete			(IRender_Visual* &V)			{ Models.Delete(V);						}
 IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 {
 	CDetail*	D		= xr_new<CDetail> ();
@@ -70,8 +70,6 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 			
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Lights				(xr_vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
-void					CRender::add_Glows				(xr_vector<WORD> &	V )	{ Glows.add(V);										}
 void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
 	vecPatches.push_back(SceneGraph::_PatchItem());
@@ -283,6 +281,8 @@ void CRender::Calculate()
 			);
 
 		// Determine visibility for dynamic part of scene
+		set_Object							(0);
+		g_pGameLevel->pHUD->Render_First	();	
 		for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 		{
 			ISpatial*	spatial		= g_SpatialSpace.q_result[o_it];
@@ -292,13 +292,13 @@ void CRender::Calculate()
 			for (u32 v_it=0; v_it<sector->r_frustums.size(); v_it++)
 			{
 				CFrustum&	view	= sector->r_frustums[v_it];
-				if (view.testSphere_dirty(spatial->spatial_center,spatial->spatial_radius))
+				if (view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))
 				{
 					// visible: check if it is "renderable" or "lightsource"
-					if (spatial->spatial_type & STYPE_RENDERABLE)
+					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{
 						// renderable
-						???????????????
+						
 					} else {
 						// lightsource
 						???????????????
@@ -306,13 +306,10 @@ void CRender::Calculate()
 				}
 			}
 		}
-
-		// Calculate sector(s) and their objects
-		calc_DetailTexturing								();
-		set_Object											(0);
-		g_pGameLevel->pHUD->Render_First					();	
-		if (0!=pLastSector) pLastSector->Render				(ViewBase);
 		g_pGameLevel->pHUD->Render_Last						();	
+
+		// Calculate miscelaneous stuff
+		calc_DetailTexturing								();
 		L_Shadows.calculate									();
 		L_Projector.calculate								();
 	}

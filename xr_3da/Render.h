@@ -152,8 +152,6 @@ public:
 	virtual void					set_Object				(IRenderable*		O	)		= 0;
 	virtual void					add_Visual				(IRender_Visual*	V	)		= 0;	// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	)		= 0;	// add visual(s)	(all culling performed)
-	virtual void					add_Lights				(xr_vector<u16> &V)				= 0;
-	virtual void					add_Glows				(xr_vector<u16> &V)				= 0;
 	virtual void					add_Patch				(Shader* S, const Fvector& P, float s, float a, BOOL bNearer)	= 0;
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T)				= 0;
 

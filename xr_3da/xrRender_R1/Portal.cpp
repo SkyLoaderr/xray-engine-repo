@@ -29,7 +29,7 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	poly.assign			(V,vcnt);
 	pFace				= face; 
 	pBack				= back;
-	dwFrame				= 0xffffffff; 
+	marker				= 0xffffffff; 
 
 	Fvector				N,T;
 	N.set				(0,0,0);
@@ -68,11 +68,11 @@ void CSector::traverse			(CFrustum &F)
 
 	// Search visible portals and go through them
 	sPoly	S,D;
-	for	(u32 I=0; I<Portals.size(); I++)
+	for	(u32 I=0; I<m_portals.size(); I++)
 	{
-		if (Portals[I]->marker == PortalTraverser.i_marker) continue;
+		if (m_portals[I]->marker == PortalTraverser.i_marker) continue;
 
-		CPortal* PORTAL = Portals[I];
+		CPortal* PORTAL = m_portals[I];
 		CSector* pSector;
 
 		// Select sector (allow intersecting portals to be finely classified)
@@ -115,37 +115,20 @@ void CSector::traverse			(CFrustum &F)
 	}
 }
 
-void CSector::Load(IReader& fs)
+void CSector::load(IReader& fs)
 {
 	// Assign portal polygons
-	u32 size	= fs.find_chunk(fsP_Portals); R_ASSERT(0==(size&1));
-	u32 count	= size/2;
+	u32 size			= fs.find_chunk(fsP_Portals); R_ASSERT(0==(size&1));
+	u32 count			= size/2;
+	m_portals.reserve	(count);
 	while (count) {
 		WORD ID		= fs.r_u16();
 		CPortal* P	= (CPortal*)RImplementation.getPortal	(ID);
-		Portals.push_back(P);
+		m_portals.push_back(P);
 		count--;
 	}
 
 	// Assign visual
 	size	= fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
-	pRoot	= RImplementation.getVisual(fs.r_u32());
-
-	// Load glows
-	size	= fs.find_chunk(fsP_Glows);
-	if (size) {
-		R_ASSERT	(0==(size&1));
-		count		= size/sizeof(WORD);
-		Glows.resize(count);
-		fs.r		(&*Glows.begin(),size);
-	}
-
-	// Load lights
-	size	= fs.find_chunk(fsP_Lights);	
-	if (size) {
-		R_ASSERT		(0==(size&1));
-		count			= size/sizeof(WORD);
-		Lights.resize	(count);
-		fs.r			(&*Lights.begin(),size);
-	}
+	m_root	= RImplementation.getVisual(fs.r_u32());
 }

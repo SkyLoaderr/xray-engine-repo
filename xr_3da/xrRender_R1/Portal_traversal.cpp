@@ -6,7 +6,7 @@ CPortalTraverser::CPortalTraverser	()
 {
 	i_marker			=	0xffffffff;
 }
-CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& vBase, Fmatrix& mXFORM, u32 options)
+void CPortalTraverser::traverse			(IRender_Sector* start, CFrustum& F, Fvector& vBase, Fmatrix& mXFORM, u32 options)
 {
 	VERIFY				(start);
 	i_marker			++;
