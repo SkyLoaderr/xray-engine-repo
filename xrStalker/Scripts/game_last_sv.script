@@ -61,7 +61,7 @@ end
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerConnect	(cl_id_who)
 	printf("---------PLAYER CONNECTED---------%d",cl_id_who:value() )
-   game_sv_mp_script.OnPlayerConnect	(self, cl_id_who)
+--   game_sv_mp_script.OnPlayerConnect	(self, cl_id_who)
 
 	local	ps_who	=	self:get_id	(cl_id_who)
 
@@ -78,22 +78,24 @@ function game_sv_LastStanding:OnPlayerConnect	(cl_id_who)
    self:GenerateGameMessage (P)
    P:w_u32				(game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED)
    P:w_stringZ			(self:get_player_name_id(cl_id_who) )
-
    self:u_EventSend(P)
+
+   self:signal_Syncronize()
 end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerDisconnect(cl_id_who)
-   game_sv_mp_script.OnPlayerDisconnect	(self, cl_id_who)
+   --game_sv_mp_script.OnPlayerDisconnect	(self, cl_id_who)
    
    self:KillPlayer(cl_id_who)
-   self:AllowDeadBodyRemove(id_who)
 
    local P = net_packet()
    self:GenerateGameMessage (P)
    P:w_u32				   (game_messages.game_messages.GAME_EVENT_PLAYER_DISCONNECTED)
    P:w_stringZ			(self:get_player_name_id(cl_id_who) )
    self:u_EventSend(P)
+
+   self:signal_Syncronize()
 --TODO if its local->shutDown Server
 end
 
@@ -103,7 +105,7 @@ function game_sv_LastStanding:initializeNewPlayer(ps)
 	local    min = 9999999
    for	it=0, cnt-1 	do
 		local ps_		=	self:get_it	(it)
-      if ps_.lifecount < min  then   min = ps_.lifecount    end
+      if ps_.lifecount>0 and ps_.lifecount < min  then   min = ps_.lifecount    end
    end
 
    ps.lifecount = min
@@ -119,10 +121,27 @@ end
 ---------------------------------------------------------
 function game_sv_LastStanding:OnEvent (P, type, time, cl_id )
    if type == game_messages.game_messages.GAME_EVENT_PLAYER_READY then
-
       self:player_ready(cl_id)
 
-  else
+  elseif type == game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED then
+      local cl_id = P:r_clientID()
+      self:OnPlayerConnect(cl_id)
+
+   elseif type == game_messages.game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
+      local cl_id = P:r_clientID()
+      self:OnPlayerDisconnect(cl_id)
+   elseif type == game_messages.game_messages.GAME_EVENT_PLAYER_KILL then --g_kill console command
+		
+      self:KillPlayer(cl_id)
+	   local	ps_who	=	self:get_id	(cl_id)
+      ps_who.lifecount = ps_who.lifecount-1
+      ps_who.deaths = ps_who.deaths+1
+
+   elseif type == game_messages.game_messages.GAME_EVENT_PLAYER_KILLED then
+      local cl_id_killer    = P:r_clientID()
+      local cl_id_killed   = P:r_clientID()
+      self:OnPlayerKillPlayer(cl_id_killer, cl_id_killed)
+   else
       game_sv_mp_script.OnEvent (self, P, type, time, cl_id )
   end      
 end
@@ -135,17 +154,13 @@ function game_sv_LastStanding:player_ready (player_cl_id )
    if self:Phase() == game_phases.game_phases.GAME_PHASE_PENDING then
       if ps_who:testFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)==true then
          ps_who:resetFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)
-         printf("---------reset Ready")
       else
          ps_who:setFlag(game_player_flags.flags.GAME_PLAYER_FLAG_READY)
-         printf("---------set Ready")
       end
    elseif self:Phase() == game_phases.game_phases.GAME_PHASE_INPROGRESS then
-         local rp = RPoint()
-         rp.P = vector():set(0,5,0)
-         rp.A = vector():set(0,0,0)
 
-         self:SpawnPlayer(player_cl_id, self.actor_entity, "", rp)
+          local r_p = self:GetRespawnPoint(1)
+         self:SpawnPlayer(player_cl_id, self.actor_entity, "", r_p)
          self:SpawnItemsForActor(ps_who.GameID)
          self:initializeNewPlayer(ps_who)
   end
@@ -169,6 +184,7 @@ function game_sv_LastStanding:all_players_ready()
    end
 
 	if (ready_cnt == cnt) then 
+      self:signal_Syncronize()
       return true
    else
       return false
@@ -189,8 +205,7 @@ end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnRoundEnd()
-   printf("---------onRoundEnd")
-   game_sv_mp_script.OnRoundEnd(self,"REASON")
+   game_sv_mp_script.OnRoundEnd(self,"SOME REASON")
 
 end
 
@@ -205,10 +220,8 @@ end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnRoundStart()
-   printf("---------onRoundStart")
    game_sv_mp_script.OnRoundStart(self)
 
-   local rp = RPoint()
 
 --spawn all players
 	local		cnt		= self:get_players_count	()
@@ -217,17 +230,9 @@ function game_sv_LastStanding:OnRoundStart()
       ps:clear()
       if ps.Skip ~= true then
          local clientID = self:get_it_2_id(it)
-         if it == 0 then 
-                rp.P = vector():set(-20,2,-20)
-                rp.A = vector():set(0,0,0)
-               printf("-------player 0 spawned")
-         else
-                rp.P = vector():set(-30,2,-30)
-                rp.A = vector():set(0,0,0)
-               printf("-------player 1 spawned")
-         end
 
-          self:SpawnPlayer( clientID, self.actor_entity, "", rp )
+          local r_p = self:GetRespawnPoint(1)
+          self:SpawnPlayer( clientID, self.actor_entity, "", r_p )
           self:SpawnItemsForActor(ps.GameID) 
           ps.lifecount = self.lifecount
          
@@ -236,7 +241,14 @@ function game_sv_LastStanding:OnRoundStart()
 
 end
 
-
+---------------------------------------------------------
+function game_sv_LastStanding:GetRespawnPoint(team_idx)
+      local sz = self:getRPcount(team_idx)
+      local idx = math.random(sz-1)
+      
+      local rp = self:getRP(team_idx,idx)
+      return rp
+end 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerHitPlayer(id_hitter, id_hitted, P)
 
@@ -248,20 +260,17 @@ function game_sv_LastStanding:OnPlayerKillPlayer(cl_id_killer, cl_id_killed)
    local	ps_killer	=	self:get_id	(cl_id_killer)
    local	ps_killed	=	self:get_id	(cl_id_killed)
 
-   ps_killer.kills = ps_killer.kills+1
+
    ps_killed.lifecount = ps_killed.lifecount -1
    ps_killed.deaths = ps_killed.deaths+1
+   ps_killed:setFlag(game_player_flags.flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)
+   if ps_killed.ID ~=ps_killer.ID then 
+      ps_killer.kills = ps_killer.kills+1
+   end
+   
+   self:SendPlayerKilledMessage(cl_id_killer, cl_id_killed)
+   self:signal_Syncronize()
 end
-
---function game_sv_LastStanding:OnTouch(id_who, id_target)
---   printf("-------OnTouch")   
---   return true
---end
-
---function game_sv_LastStanding:OnDetach(id_who, id_target)
---   printf("-------OnDetach")   
---      return true
---end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:SpawnItemsForActor(actorGameID) 

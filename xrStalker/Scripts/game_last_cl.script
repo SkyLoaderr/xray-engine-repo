@@ -38,7 +38,17 @@ function game_cl_LastStanding:shedule_Update (dt)
 
    if self.m_game_ui ~= nil then
       self.m_game_ui:ShowPlayersList(self:Phase()==game_phases.game_phases.GAME_PHASE_PENDING)
+
+      if self:Phase()==game_phases.game_phases.GAME_PHASE_INPROGRESS then
+         local ps_local	= self:GetLocalPlayer()
+         local msg = string.format("You have %d lives", ps_local.lifecount)
+         self.m_game_ui:SetLifeCaption(msg)
+      else
+         self.m_game_ui:SetLifeCaption("")
+      end
+
    end
+
 end
 
 function game_cl_LastStanding:createGameUI ()
@@ -69,15 +79,15 @@ end
 
 function game_cl_LastStanding:TranslateGameMessage(msg, P)
    if msg == game_messages.game_messages.GAME_EVENT_ROUND_STARTED then
-      self:CommonMessageOut("R O U N D  S T A R T E D")
+      self:CommonMessageOut("R O U N D  S T A R T E D !!!")
    elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_CONNECTED then
       local name = P:r_stringZ()
-      local msg = "Player connected"
+      local msg = string.format("Player %s connected.", name)
       self:CommonMessageOut(msg)
 
    elseif msg == game_messages.game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
       local name = P:r_stringZ()
-      local msg = "Player disconnected"
+      local msg = string.format("Player %s disconnected.", name)
       self:CommonMessageOut(msg)
 
    else
