@@ -58,10 +58,10 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
     //	                Osf->shader = SHLib->FindShader(sh_info->sh_name);
                         shader_name = (char*)Isf->shader->data;
                     }
-//S                    if (!SHLib->FindShader(shader_name)){
-//S						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
-//S	                    shader_name = "default";
-//S                    }
+                    if (!Device.Shader._FindBlender(shader_name.c_str())){
+						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
+	                    shader_name = "default";
+                    }
                     // fill texture layers
                     int cidx;
                     st_lwClip* Icl;
@@ -90,19 +90,19 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-                            Osf->_Textures().push_back(tex_name);
+                            Osf->SetTexture(tex_name);
                             // get vmap refs
-                            Osf->_VMaps().push_back(Itx->param.imap.vmap_name);
+                            Osf->SetVMap(Itx->param.imap.vmap_name);
                         }
                     }
                     if (!bResult) break;
-                    if (Osf->_Textures().empty()){
+                    if (Osf->_Texture()){
 						ELog.DlgMsg(mtError, "Can't create shader. Invalid surface '%s'. Textures empty.",Osf->_Name());
                         bResult = false;
                         break;
                     }
 
-//S                    Osf->shader = Device.Shader.Create(shader_name.c_str(),Osf->textures);
+                    Osf->SetShader(shader_name.c_str(),Device.Shader.Create(shader_name.c_str(),Osf->_Texture()));
 
                     Osf->SetFVF(D3DFVF_XYZ|D3DFVF_NORMAL|(dwNumTextures<<D3DFVF_TEXCOUNT_SHIFT));
                     i++;

@@ -27,6 +27,7 @@
 #define EOBJ_CHUNK_ACTIVE_OMOTION	0x0915
 #define EOBJ_CHUNK_SMOTIONS			0x0916
 #define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
+#define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 //----------------------------------------------------
 
 bool CEditableObject::Load(const char* fname){
@@ -101,16 +102,18 @@ bool CEditableObject::Load(CStream& F){
             (*s_it)->Set2Sided	(F.Rbyte());
             (*s_it)->SetFVF		(F.Rdword());
             cnt 				= F.Rdword();
-            (*s_it)->_Textures().resize(cnt);
-            (*s_it)->_VMaps().resize(cnt);
-            for (AStringIt n_it=(*s_it)->_Textures().begin(); n_it!=(*s_it)->_Textures().end(); n_it++){
-                F.RstringZ		(buf); *n_it = buf;
-            }
-            for (AStringIt v_it=(*s_it)->_VMaps().begin(); v_it!=(*s_it)->_VMaps().end(); v_it++){
-                F.RstringZ		(buf); *v_it = buf;
-            }
-            (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,ListToSequence((*s_it)->_Textures()).c_str()));
+            R_ASSERT(1==cnt);
+			F.RstringZ			(buf); (*s_it)->SetTexture(buf);
+			F.RstringZ			(buf); (*s_it)->SetVMap(buf);
+            (*s_it)->SetShader	(sh_name,Device.Shader.Create(sh_name,(*s_it)->_Texture()));
+            (*s_it)->SetShaderXRLC("default");
         }
+
+        // surfaces xrlc part
+        if(F.FindChunk(EOBJ_CHUNK_SURFACES_XRLC))
+	        for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
+    	        F.RstringZ(buf); (*s_it)->SetShaderXRLC(buf);
+        	}
 
         // Load meshes
         CStream* OBJ = F.OpenChunk(EOBJ_CHUNK_EDITMESHES);
@@ -216,11 +219,15 @@ void CEditableObject::Save(CFS_Base& F){
         F.WstringZ	((*sf_it)->_ShaderName());
         F.Wbyte		((*sf_it)->_2Sided());
         F.Wdword	((*sf_it)->_FVF());
-        F.Wdword	((*sf_it)->_Textures().size());
-        for (AStringIt n_it=(*sf_it)->_Textures().begin(); n_it!=(*sf_it)->_Textures().end(); n_it++)
-            F.WstringZ(n_it->c_str());
-        for (AStringIt v_it=(*sf_it)->_VMaps().begin(); v_it!=(*sf_it)->_VMaps().end(); v_it++)
-            F.WstringZ(v_it->c_str());
+        F.Wdword	(1);
+		F.WstringZ	((*sf_it)->_Texture());
+		F.WstringZ	((*sf_it)->_VMap());
+    }
+    F.close_chunk	();
+
+    F.open_chunk	(EOBJ_CHUNK_SURFACES_XRLC);
+    for (sf_it=m_Surfaces.begin(); sf_it!=m_Surfaces.end(); sf_it++){
+        F.WstringZ	((*sf_it)->_ShaderXRLCName());
     }
     F.close_chunk	();
 

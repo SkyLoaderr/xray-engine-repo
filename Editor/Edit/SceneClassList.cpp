@@ -12,7 +12,6 @@
 #include "Sound.h"
 #include "Occluder.h"
 #include "glow.h"
-#include "dpatch.h"
 #include "rpoint.h"
 #include "AITraffic.h"
 #include "sector.h"
@@ -82,7 +81,6 @@ EObjClass ClassIDFromTargetID( int cls_id ){
 	case etGlow:    return OBJCLASS_GLOW;
 	case etRPoint:  return OBJCLASS_RPOINT;
 	case etAITPoint:return OBJCLASS_AITPOINT;
-    case etDPatch:	return OBJCLASS_DPATCH;
     case etSector:	return OBJCLASS_SECTOR;
     case etPortal:	return OBJCLASS_PORTAL;
     case etEvent:	return OBJCLASS_EVENT;

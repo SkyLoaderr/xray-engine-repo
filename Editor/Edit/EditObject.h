@@ -19,27 +19,33 @@ class	CBone;
 class CSurface
 {
 	AnsiString		m_Name;
-    AStringVec		m_Textures;		//
-    AStringVec		m_VMaps;		// одинаковый размер массивов!!!
+    AnsiString		m_Texture;	//
+    AnsiString		m_VMap;		//
     AnsiString		m_ShaderName;
+    AnsiString		m_ShaderXRLCName;
     Shader*			m_Shader;
     BYTE			m_Sideflag;
     DWORD			m_dwFVF;
 public:
     				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
 				    ~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
-    int				_Priority		()const {return m_Shader->Flags.iPriority;}
+    IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
+    IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC Shader*		_Shader			()const {return m_Shader;}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
+    IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
     IC DWORD		_FVF			()const {return m_dwFVF;}
     IC BOOL			_2Sided			()const {return !!m_Sideflag;}
-    IC AStringVec&	_Textures		(){return m_Textures;}
-    IC AStringVec&	_VMaps			(){return m_VMaps;}
+    IC LPCSTR		_Texture		(){return m_Texture.c_str();}
+    IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-    IC void			SetShader		(LPCSTR name, Shader* sh){VERIFY(name&&name[0]&&sh); m_ShaderName=name; m_Shader=sh;}
+    IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]&&sh); m_ShaderName=name; m_Shader=sh;}
+    IC void 		SetShaderXRLC	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderXRLCName=name;}
     IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
+    IC void			SetTexture		(LPCSTR name){m_Texture=name;}
+    IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
@@ -161,7 +167,7 @@ public:
 
     // render methods
 //	virtual bool 	IsRender				(Fmatrix& parent);
-	virtual void 	Render					(Fmatrix& parent, int priority);
+	virtual void 	Render					(Fmatrix& parent, int priority, bool strictB2F);
 	void 			RenderSelection			(Fmatrix& parent);
 	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);

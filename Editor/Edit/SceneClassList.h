@@ -37,7 +37,7 @@ class CCustomObject;
 
 enum EObjClass{
     OBJCLASS_DUMMY     	= -1,
-    OBJCLASS_DPATCH    	= 0,
+//S    OBJCLASS_DPATCH    	= 0,
     OBJCLASS_GLOW	   	= 1,
     OBJCLASS_SCENEOBJECT= 2,
     OBJCLASS_LIGHT	   	= 3,
