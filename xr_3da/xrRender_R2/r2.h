@@ -32,6 +32,14 @@ public:
 	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp;
 	vector<SceneGraph::mapNormalVB::TNode*>					lstVB;
 
+	vector<SceneGraph::mapNormalVS::TNode*>					lstVS_mat;
+	vector<SceneGraph::mapNormalPS::TNode*>					lstPS_mat;
+	vector<SceneGraph::mapNormalCS::TNode*>					lstCS_mat;
+	vector<SceneGraph::mapNormalStates::TNode*>				lstStates_mat;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTextures_mat;
+	vector<SceneGraph::mapNormalTextures::TNode*>			lstTexturesTemp_mat;
+	vector<SceneGraph::mapNormalVB::TNode*>					lstVB_mat;
+
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;
