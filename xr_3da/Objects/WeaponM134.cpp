@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\effectornoise.h"
+#include "effectornoise.h"
 #include "..\fstaticrender.h"
 #include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
