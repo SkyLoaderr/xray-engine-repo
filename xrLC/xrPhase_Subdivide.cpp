@@ -132,6 +132,7 @@ void CBuild::xrPhase_Subdivide()
 		Msg("Compact: %d / %d (%d), %d verts removed",M1,M2,M1-M2,verts_old-g_vertices.size());
 	}
 	{
+		Msg("Compacting subdivs...");
 		DWORD M1			= mem_Usage();
 		mem_CompactSubdivs	();
 		DWORD M2			= mem_Usage();
