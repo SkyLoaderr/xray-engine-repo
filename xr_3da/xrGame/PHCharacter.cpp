@@ -30,10 +30,6 @@ CPHCharacter::CPHCharacter(void)
 
 m_body=NULL;
 
-m_wheel_joint=NULL;
-
-
-
 }
 
 CPHCharacter::~CPHCharacter(void)
@@ -46,7 +42,7 @@ CPHCharacter::~CPHCharacter(void)
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
 CPHSimpleCharacter::CPHSimpleCharacter()
 {
-	m_wheel_body=NULL;
+
 	m_geom_shell=NULL;
 	m_wheel=NULL;
 	m_cap=NULL;
@@ -234,10 +230,7 @@ void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
 	ph_world->RemoveObject(m_ident);
-	if(m_wheel_joint){
-		dJointDestroy(m_wheel_joint);
-		m_wheel_joint=NULL;
-	}
+
 
 
 	if(m_geom_shell){
@@ -296,10 +289,7 @@ void CPHSimpleCharacter::Destroy(){
 		m_body=NULL;
 	}
 
-	if(m_wheel_body){
-		dBodyDestroy(m_wheel_body);
-		m_wheel_body=NULL;
-	}
+
 }
 
 void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
@@ -1191,12 +1181,19 @@ void CPHWheeledCharacter::Destroy(){
 		dBodyDestroy(m_body);
 		m_body=NULL;
 	}
+*/
+
+	if(m_wheel_joint){
+		dJointDestroy(m_wheel_joint);
+		m_wheel_joint=NULL;
+	}
 
 	if(m_wheel_body){
 		dBodyDestroy(m_wheel_body);
 		m_wheel_body=NULL;
 	}
 
+/*
 	if(m_geom_shell){
 		dGeomDestroyUserData(m_geom_shell);
 		dGeomDestroy(m_geom_shell);
@@ -1251,6 +1248,11 @@ EEnvironment	 CPHWheeledCharacter::CheckInvironment(){
 
 	return peOnGround;
 */
+}
+CPHWheeledCharacter::CPHWheeledCharacter()
+{
+		m_wheel_body=NULL;
+		m_wheel_joint=NULL;
 }
 
 void	CPHSimpleCharacter::Disabling(){
