@@ -1066,15 +1066,15 @@ private:
 
 struct C_ : public B_{
 	typedef B_ inherited;
-	static void cc(C_ *c_)
+	static void cc(B_ *c_)
 	{
-		printf("%d\n",c_->inherited::a);
+//		printf("%d\n",c_->inherited::a);
 	}
 };
 
 void test1()
 {
-	C_	cc;
+	B_	cc;
 	C_::cc(&cc);
 //	script_test();
 ////	printf	("%s\n",typeid(final::Head).name());
