@@ -25,49 +25,34 @@ local patrols = {
                       dead = false,
                       npc = nil
                       }
-                   }
+                   },
                 --command 2
---[[                   {
+                   {
                    on_patrol = false,
                    script_zone = "raid_script_zone",
                    zone_obj = nil,
                       {
-                      name = "raid_soldier_1_1",
+                      name = "raid_1_soldier_1",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "raid_soldier_1_2",
+                      name = "raid_1_commander",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       },
                       {
-                      name = "raid_soldier_1_3",
-                      id = -1,
-                      on_move = false,
-                      dead = false,
-                      npc = nil
-                      }, 
-                      {
-                      name = "raid_soldier_1_4",
-                      id = -1,
-                      on_move = false,
-                      dead = false,
-                      npc = nil
-                      },
-                      {
-                      name = "raid_soldier_1_5",
+                      name = "raid_1_soldier_2",
                       id = -1,
                       on_move = false,
                       dead = false,
                       npc = nil
                       }
                    }
-]]--                   
                 }
                 
 local patrol_params = 
