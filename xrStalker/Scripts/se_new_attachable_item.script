@@ -46,5 +46,12 @@ end
 function CSE_NewAttachableItem:FillProps	(pref,items)
 	log							("CSE_NewAttachableItem::FillProps called!")
 	cse_alife_item.FillProps	(self,pref,items)
-	properties_helper():create_flag32(items,pref,self.script_property0,-1)
+	properties_helper():create_flag32(items,"script\\flags32_0",self.script_property0,1)
+	properties_helper():create_flag32(items,"script\\flags32_1",self.script_property0,2)
+	properties_helper():create_flag32(items,"script\\flags32_2",self.script_property0,4)
+	properties_helper():create_flag32(items,"script\\flags32_3",self.script_property0,8)
+	properties_helper():create_flag32(items,"script\\flags32_4",self.script_property0,16)
+	properties_helper():create_flag32(items,"script\\flags32_5",self.script_property0,32)
+	properties_helper():create_flag32(items,"script\\flags32_6",self.script_property0,64)
+	properties_helper():create_flag32(items,"script\\flags32_7",self.script_property0,128)
 end
