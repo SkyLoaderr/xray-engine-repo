@@ -89,7 +89,8 @@ public:
 	}
 	IC	void		compact					( )
 	{
-		_size		= _count;
+		if (_size==_count)	return;
+		_size				= _count;
 		if (0==_size)		_FREE	(data);
 		else				data	= (T *) realloc(data,_size*sizeof(T));
 	}
