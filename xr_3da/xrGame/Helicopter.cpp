@@ -212,7 +212,7 @@ void CHelicopter::reload(LPCSTR section)
 
 void CollisionCallbackAlife(bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2)
 {
-//	do_colide=false;
+	do_colide=false;
 }
 BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
@@ -328,7 +328,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_light_render->set_range	(m_light_range);
 	m_light_render->set_color	(m_light_color);
 
-
+	if(g_Alive())processing_activate();
 	return				(TRUE);
 }
 
@@ -352,6 +352,7 @@ void	CHelicopter::SpawnInitPhysics	(CSE_Abstract	*D)
 	{
 		PPhysicsShell()->EnabledCallbacks(FALSE);
 		PPhysicsShell()->set_ObjectContactCallback(CollisionCallbackAlife);
+		PPhysicsShell()->Disable();
 	}
 }
 
@@ -666,7 +667,10 @@ if(who==this)
 	}
 
 }
-
+void CHelicopter::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	if(!g_Alive())inherited::PHHit(P,dir,element,p_in_object_space,impulse,hit_type);
+}
 void CHelicopter::doHunt(CObject* dest)
 {
 	VERIFY(this != dest);
@@ -740,6 +744,7 @@ void CHelicopter::Die()
 
 	setState(CHelicopter::eDead);
 	m_engineSound.stop();
+	processing_deactivate();
 }
 
 void CHelicopter::gotoStayPoint(float time, Fvector* pos)
