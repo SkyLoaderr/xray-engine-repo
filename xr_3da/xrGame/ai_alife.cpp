@@ -450,22 +450,6 @@ void CSE_ALifeSimulator::vfNewGame()
 	Save						();
 }
 
-void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
-{
-}
-
-void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
-{
-}
-
 void CSE_ALifeSimulator::vfPerformSurge()
 {
 	vfGenerateAnomalousZones	();
@@ -575,4 +559,20 @@ void CSE_ALifeSimulator::vfKillCreatures()
 void CSE_ALifeSimulator::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
 {
 	tTrader.m_dwMoney = u32(float(tTrader.m_dwMoney)*.9f);
+}
+
+void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
+{
+}
+
+void CSE_ALifeSimulator::vfAssignPrices(CSE_ALifeTrader &tTrader)
+{
 }
