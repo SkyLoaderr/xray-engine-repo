@@ -227,7 +227,7 @@ bool CUIScrollBar::ScrollDec()
 {
 	if(m_iScrollPos>m_iMinPos)
 	{
-		m_iScrollPos--;
+		--m_iScrollPos;
 		UpdateScrollBar();
 		return true;
 	}
@@ -240,7 +240,7 @@ bool CUIScrollBar::ScrollInc()
 {
 	if(m_iScrollPos+m_iPageSize<=m_iMaxPos)
 	{
-		m_iScrollPos++;
+		++m_iScrollPos;
 		UpdateScrollBar();
 		return true;
 	}
