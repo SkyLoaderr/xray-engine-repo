@@ -79,6 +79,12 @@ void	CBlender_Compile::PassEnd			()
 	SH->Passes.push_back	(Device.Shader._CreatePass(P));
 }
 
+void	CBlender_Compile::PassSET_VS		(LPCSTR name)
+{
+	strcpy	(pass_vs,name);
+	strlwr	(pass_vs);
+}
+
 void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 {
 	// Parse texture
