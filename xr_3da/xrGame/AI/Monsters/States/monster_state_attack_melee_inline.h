@@ -22,6 +22,6 @@ void CStateMonsterAttackMeleeAbstract::execute()
 {
 	object->MotionMan.m_tAction	= ACT_ATTACK;
 	object->FaceTarget			(object->EnemyMan.get_enemy());
-	object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundAttack, 0,0,object->_sd->m_dwAttackSndDelay);
+	object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 }
 

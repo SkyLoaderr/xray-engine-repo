@@ -34,7 +34,7 @@ void CAI_Biting::vfUpdateParameters()
 	}
 
 	// Setup is own additional flags
-	m_bDamaged = ((GetHealth() < _sd->m_fDamagedThreshold) ? true : false);
+	m_bDamaged = ((GetHealth() < get_sd()->m_fDamagedThreshold) ? true : false);
 }
 
 

@@ -1,5 +1,5 @@
 #pragma once 
-#include "ai_monster_share.h"
+#include "../shared_data.h"
 #include "ai_monster_defs.h"
 
 class _biting_shared : public CSharedResource {

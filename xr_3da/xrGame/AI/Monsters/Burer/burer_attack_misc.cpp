@@ -40,7 +40,7 @@ void CBurerAttackRunAround::Run()
 {
 	pMonster->MotionMan.m_tAction = ACT_RUN;
 	pMonster->MoveToTarget(selected_point);
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 	
 }
 
@@ -85,7 +85,7 @@ void CBurerAttackFaceTarget::Run()
 {
 	pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
 	pMonster->FaceTarget(point);
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 
 void CBurerAttackFaceTarget::Done()

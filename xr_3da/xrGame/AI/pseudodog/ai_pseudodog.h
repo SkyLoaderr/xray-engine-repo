@@ -45,4 +45,6 @@ public:
 	virtual u8		get_legs_number		() {return QUADRUPEDAL;}
 	virtual void	play_effect_sound	();
 
+	virtual void	load_shared			(LPCSTR section);
+
 };

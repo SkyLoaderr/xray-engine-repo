@@ -22,8 +22,8 @@ CStateMonsterRestAbstract::~CStateMonsterRest	()
 TEMPLATE_SPECIALIZATION
 void CStateMonsterRestAbstract::execute()
 {
-	bool bNormalSatiety =	(object->GetSatiety() > object->_sd->m_fMinSatiety) && 
-		(object->GetSatiety() < object->_sd->m_fMaxSatiety); 
+	bool bNormalSatiety =	(object->GetSatiety() > object->get_sd()->m_fMinSatiety) && 
+		(object->GetSatiety() < object->get_sd()->m_fMaxSatiety); 
 
 	if (bNormalSatiety) {
 		select_state	(eStateSleep);

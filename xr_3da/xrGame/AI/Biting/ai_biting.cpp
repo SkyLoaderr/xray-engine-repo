@@ -122,7 +122,7 @@ void CAI_Biting::Load(LPCSTR section)
 
 	inherited_shared::load_shared	(SUB_CLS_ID, section);
 
-	m_fCurMinAttackDist				= _sd->m_fMinAttackDist;
+	m_fCurMinAttackDist				= get_sd()->m_fMinAttackDist;
 
 	CSoundPlayer::add(pSettings->r_string(section,"sound_idle"),		16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
 	CSoundPlayer::add(pSettings->r_string(section,"sound_eat"),			16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
@@ -142,64 +142,64 @@ void CAI_Biting::Load(LPCSTR section)
 void CAI_Biting::load_shared(LPCSTR section)
 {
 	// Загрузка параметров из LTX
-	_sd->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
+	get_sd()->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
 
-	_sd->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
-	_sd->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
-	_sd->m_fsVelocityWalkFwdDamaged.Load(section,"Velocity_WalkFwdDamaged");
-	_sd->m_fsVelocityRunFwdNormal.Load	(section,"Velocity_RunFwdNormal");
-	_sd->m_fsVelocityRunFwdDamaged.Load (section,"Velocity_RunFwdDamaged");
-	_sd->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
-	_sd->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
+	get_sd()->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
+	get_sd()->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
+	get_sd()->m_fsVelocityWalkFwdDamaged.Load(section,"Velocity_WalkFwdDamaged");
+	get_sd()->m_fsVelocityRunFwdNormal.Load	(section,"Velocity_RunFwdNormal");
+	get_sd()->m_fsVelocityRunFwdDamaged.Load (section,"Velocity_RunFwdDamaged");
+	get_sd()->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
+	get_sd()->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
 
-	_sd->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
-	_sd->m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
-	_sd->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
-	_sd->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
+	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
+	get_sd()->m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
+	get_sd()->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
+	get_sd()->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
 
-	_sd->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
-	_sd->m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
-	_sd->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
+	get_sd()->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
+	get_sd()->m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
+	get_sd()->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
-	_sd->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
+	get_sd()->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
 
-	_sd->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
-	_sd->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
-	_sd->m_dwAttackSndDelay				= pSettings->r_u32	(section,"attack_sound_delay");
+	get_sd()->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
+	get_sd()->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
+	get_sd()->m_dwAttackSndDelay				= pSettings->r_u32	(section,"attack_sound_delay");
 
-	_sd->m_fMoraleSuccessAttackQuant	= pSettings->r_float(section,"MoraleSuccessAttackQuant");
-	_sd->m_fMoraleDeathQuant			= pSettings->r_float(section,"MoraleDeathQuant");
-	_sd->m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
-	_sd->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
-	_sd->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
+	get_sd()->m_fMoraleSuccessAttackQuant	= pSettings->r_float(section,"MoraleSuccessAttackQuant");
+	get_sd()->m_fMoraleDeathQuant			= pSettings->r_float(section,"MoraleDeathQuant");
+	get_sd()->m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
+	get_sd()->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
+	get_sd()->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
 
-	_sd->m_fEatFreq						= pSettings->r_float(section,"eat_freq");
-	_sd->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
-	_sd->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
+	get_sd()->m_fEatFreq						= pSettings->r_float(section,"eat_freq");
+	get_sd()->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
+	get_sd()->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
 
 	// Load attack postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
-	_sd->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
-	_sd->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
-	_sd->m_attack_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
-	_sd->m_attack_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
-	_sd->m_attack_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-	_sd->m_attack_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-	_sd->m_attack_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+	get_sd()->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
+	get_sd()->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
+	get_sd()->m_attack_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
+	get_sd()->m_attack_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
+	get_sd()->m_attack_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
+	get_sd()->m_attack_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
+	get_sd()->m_attack_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
 
-	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_base.r, &_sd->m_attack_effector.ppi.color_base.g, &_sd->m_attack_effector.ppi.color_base.b);
-	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_gray.r, &_sd->m_attack_effector.ppi.color_gray.g, &_sd->m_attack_effector.ppi.color_gray.b);
-	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_add.r,	&_sd->m_attack_effector.ppi.color_add.g,&_sd->m_attack_effector.ppi.color_add.b);
+	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_base.r, &get_sd()->m_attack_effector.ppi.color_base.g, &get_sd()->m_attack_effector.ppi.color_base.b);
+	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_gray.r, &get_sd()->m_attack_effector.ppi.color_gray.g, &get_sd()->m_attack_effector.ppi.color_gray.b);
+	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_add.r,	&get_sd()->m_attack_effector.ppi.color_add.g,&get_sd()->m_attack_effector.ppi.color_add.b);
 
-	_sd->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
-	_sd->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
-	_sd->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
+	get_sd()->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
+	get_sd()->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
+	get_sd()->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
 
-	_sd->m_attack_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
-	_sd->m_attack_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-	_sd->m_attack_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-	_sd->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
+	get_sd()->m_attack_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
+	get_sd()->m_attack_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
+	get_sd()->m_attack_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
+	get_sd()->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
 
 	// --------------------------------------------------------------------------------
 
@@ -223,13 +223,13 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
-	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(_sd->m_fsVelocityStandTurn.velocity.linear,		_sd->m_fsVelocityStandTurn.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(_sd->m_fsVelocityWalkFwdNormal.velocity.linear,	_sd->m_fsVelocityWalkFwdNormal.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(_sd->m_fsVelocityRunFwdNormal.velocity.linear,	_sd->m_fsVelocityRunFwdNormal.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(_sd->m_fsVelocityWalkFwdDamaged.velocity.linear,	_sd->m_fsVelocityWalkFwdDamaged.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(_sd->m_fsVelocityRunFwdDamaged.velocity.linear,	_sd->m_fsVelocityRunFwdDamaged.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(_sd->m_fsVelocitySteal.velocity.linear,			_sd->m_fsVelocitySteal.velocity.angular)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-_sd->m_fsVelocityDrag.velocity.linear,			_sd->m_fsVelocityDrag.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular)));
+	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular)));
 
 	return(TRUE);
 }
@@ -419,7 +419,7 @@ void CAI_Biting::MoraleBroadcast(float fValue)
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.Members[i]);
 		if (!pE) continue;
 		
-		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < _sd->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
+		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < get_sd()->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
 	}
 }
 
@@ -525,7 +525,7 @@ float CAI_Biting::GetEnemyDistances(float &min_dist, float &max_dist)
 {
 	// обновить минимальную и максимальную дистанции до врага
 	min_dist = m_fCurMinAttackDist;
-	max_dist = _sd->m_fMaxAttackDist - (_sd->m_fMinAttackDist - m_fCurMinAttackDist);
+	max_dist = get_sd()->m_fMaxAttackDist - (get_sd()->m_fMinAttackDist - m_fCurMinAttackDist);
 
 	// определить расстояние до противника
 	float cur_dist = EnemyMan.get_enemy()->Position().distance_to(Position()); 

@@ -18,7 +18,7 @@ IC void CAI_Biting::AS_Start() {
 }
 IC void CAI_Biting::AS_Stop() {
 	_as.active				= false;
-	m_fCurMinAttackDist		= _sd->m_fMinAttackDist;
+	m_fCurMinAttackDist		= get_sd()->m_fMinAttackDist;
 }
 IC void CAI_Biting::AS_Check(bool hit_success) {
 	if (!_as.active) return;
@@ -28,7 +28,7 @@ IC void CAI_Biting::AS_Check(bool hit_success) {
 
 	if ((!_as.prev_prev_hit && !_as.prev_prev_hit) && ((m_fCurMinAttackDist >= _as.min_dist) && (m_fCurMinAttackDist >= _as.min_dist + _as.step))) {
 		m_fCurMinAttackDist -= _as.step;
-	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < _sd->m_fMinAttackDist - _as.step)) {
+	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < get_sd()->m_fMinAttackDist - _as.step)) {
 		m_fCurMinAttackDist += _as.step;
 	}
 }

@@ -21,6 +21,6 @@ void CStateMonsterRestWalkGraphAbstract::execute()
 {
 	object->MotionMan.m_tAction	= ACT_WALK_FWD;
 	object->WalkNextGraphPoint	();
-	object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundIdle, 0,0,object->_sd->m_dwIdleSndDelay);
+	object->CSoundPlayer::play	(MonsterSpace::eMonsterSoundIdle, 0,0,object->get_sd()->m_dwIdleSndDelay);
 }
 

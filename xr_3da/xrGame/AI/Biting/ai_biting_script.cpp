@@ -119,16 +119,16 @@ bool CAI_Biting::bfAssignSound(CEntityAction *tpEntityAction)
 
 
 	switch (l_tAction.m_monster_sound) {
-	case	eMonsterSoundIdle:			CSoundPlayer::play(eMonsterSoundIdle,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;
-	case 	eMonsterSoundEat:			CSoundPlayer::play(eMonsterSoundEat,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwEatSndDelay		: l_tAction.m_monster_sound_delay);		break;
-	case 	eMonsterSoundAttack:		CSoundPlayer::play(eMonsterSoundAttack,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay	: l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundIdle:			CSoundPlayer::play(eMonsterSoundIdle,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwIdleSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundEat:			CSoundPlayer::play(eMonsterSoundEat,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwEatSndDelay		: l_tAction.m_monster_sound_delay);		break;
+	case 	eMonsterSoundAttack:		CSoundPlayer::play(eMonsterSoundAttack,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwAttackSndDelay	: l_tAction.m_monster_sound_delay);		break;
 	case	eMonsterSoundAttackHit:		CSoundPlayer::play(eMonsterSoundAttackHit);		break;
 	case	eMonsterSoundTakeDamage:	CSoundPlayer::play(eMonsterSoundTakeDamage);	break;
 	case	eMonsterSoundDie:			CSoundPlayer::play(eMonsterSoundDie);			break;
-	case	eMonsterSoundThreaten:		CSoundPlayer::play(eMonsterSoundThreaten,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
-	case	eMonsterSoundSteal:			CSoundPlayer::play(eMonsterSoundSteal,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
-	case	eMonsterSoundPanic:			CSoundPlayer::play(eMonsterSoundPanic,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
-	case	eMonsterSoundGrowling:		CSoundPlayer::play(eMonsterSoundGrowling,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? _sd->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundThreaten:		CSoundPlayer::play(eMonsterSoundThreaten,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundSteal:			CSoundPlayer::play(eMonsterSoundSteal,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundPanic:			CSoundPlayer::play(eMonsterSoundPanic,		0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
+	case	eMonsterSoundGrowling:		CSoundPlayer::play(eMonsterSoundGrowling,	0, 0, (l_tAction.m_monster_sound_delay == int(-1)) ? get_sd()->m_dwAttackSndDelay : l_tAction.m_monster_sound_delay);		break;
 	}
 
 	return				(true);

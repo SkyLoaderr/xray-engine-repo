@@ -43,7 +43,7 @@ void CBitingEat::Init()
 	pCorpse = const_cast<CEntityAlive *>(p_corpse);
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
-	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->_sd->m_fDistToCorpse); 
+	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->get_sd()->m_fDistToCorpse); 
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа
 	m_fDistToDrag		= 20.f;
@@ -149,9 +149,9 @@ void CBitingEat::Run()
 		if (pMonster->GetSatiety() >= 0.9f) bHideAfterLunch = true;
 
 		// съесть часть
-		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, u32(1000/pMonster->_sd->m_fEatFreq));
-			pMonster->ChangeSatiety(pMonster->_sd->m_fEatSlice);
-			pCorpse->m_fFood -= pMonster->_sd->m_fEatSliceWeight;
+		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, u32(1000/pMonster->get_sd()->m_fEatFreq));
+			pMonster->ChangeSatiety(pMonster->get_sd()->m_fEatSlice);
+			pCorpse->m_fFood -= pMonster->get_sd()->m_fEatSliceWeight;
 		DO_IN_TIME_INTERVAL_END();
 	
 
@@ -238,8 +238,8 @@ void CBitingEat::Run()
 
 
 	(pMonster->MotionMan.m_tAction == ACT_EAT) ?
-		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundEat, pMonster->_sd->m_dwEatSndDelay)	:
-		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->_sd->m_dwIdleSndDelay) ;		
+		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundEat, pMonster->get_sd()->m_dwEatSndDelay)	:
+		pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->get_sd()->m_dwIdleSndDelay) ;		
 
 }
 

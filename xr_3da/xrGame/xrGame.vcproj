@@ -1503,9 +1503,6 @@
 							RelativePath=".\ai\ai_monster_effector.h">
 						</File>
 						<File
-							RelativePath=".\ai\ai_monster_share.h">
-						</File>
-						<File
 							RelativePath=".\ai\ai_monster_shared_data.h">
 						</File>
 						<File
@@ -2442,6 +2439,36 @@
 						<Filter
 							Name="General"
 							Filter="">
+							<Filter
+								Name="Movement"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\state_move_to_point.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_move_to_point_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Look"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\state_look_point.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_look_point_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="Custom Action"
+								Filter="">
+								<File
+									RelativePath=".\ai\Monsters\States\state_custom_action.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\States\state_custom_action_inline.h">
+								</File>
+							</Filter>
 						</Filter>
 					</Filter>
 					<Filter

@@ -45,7 +45,7 @@ void CStateMonsterAttackRunAbstract::execute()
 	// установка параметров функциональных блоков
 	object->MotionMan.m_tAction					= ACT_RUN;
 	object->CMonsterMovement::set_try_min_time	(false);
-	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->_sd->m_dwAttackSndDelay);
+	object->CSoundPlayer::play					(MonsterSpace::eMonsterSoundAttack, 0,0,object->get_sd()->m_dwAttackSndDelay);
 	object->MotionMan.accel_activate			(eAT_Aggressive);
 	object->MotionMan.accel_set_braking			(false);
 }

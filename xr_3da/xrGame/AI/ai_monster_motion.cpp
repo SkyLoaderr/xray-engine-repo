@@ -78,7 +78,7 @@ bool CMotionManager::PrepareAnimation()
 	if (!pMonster->g_Alive()) 
 		if (should_play_die_anim) {
 			should_play_die_anim = false;  // отыграть анимацию смерти только раз
-			if (_sd->m_tAnims.find(eAnimDie) != _sd->m_tAnims.end()) cur_anim = eAnimDie;
+			if (get_sd()->m_tAnims.find(eAnimDie) != get_sd()->m_tAnims.end()) cur_anim = eAnimDie;
 			else return false;
 		} else return false;
 
@@ -93,8 +93,8 @@ bool CMotionManager::PrepareAnimation()
 	}
 
 	// получить элемент SAnimItem соответствующий cur_anim
-	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
-	VERIFY(_sd->m_tAnims.end() != anim_it);
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
+	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
 	// определить необходимый индекс
 	int index;
@@ -131,8 +131,8 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	EPState		state_from	= GetState(cur_from);
 	EPState		state_to	= GetState(to);
 
-	TRANSITION_ANIM_VECTOR_IT I = _sd->m_tTransitions.begin();
-	bool bVectEmpty = _sd->m_tTransitions.empty();
+	TRANSITION_ANIM_VECTOR_IT I = get_sd()->m_tTransitions.begin();
+	bool bVectEmpty = get_sd()->m_tTransitions.empty();
 
 	while (!bVectEmpty) {		// вход в цикл, если вектор переходов не пустой
 
@@ -148,11 +148,11 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 			if (I->chain) {
 				cur_from	= I->anim_transition;
 				state_from	= GetState(cur_from);
-				I = _sd->m_tTransitions.begin();			// начать сначала
+				I = get_sd()->m_tTransitions.begin();			// начать сначала
 				continue;
 			} else break;
 		}
-		if (_sd->m_tTransitions.end() == ++I) break;
+		if (get_sd()->m_tTransitions.end() == ++I) break;
 	}
 
 	if (bActivated) {
@@ -166,8 +166,8 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 // Установка линейной и угловой скоростей для cur_anim
 void CMotionManager::ApplyParams()
 {
-	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
 	pMonster->m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
@@ -250,7 +250,7 @@ void CMotionManager::Seq_Finish()
 		prev_anim = cur_anim = saved_anim;
 		b_end_transition = false;
 	} else {
-		prev_anim = cur_anim = _sd->m_tMotions[m_tAction].anim;
+		prev_anim = cur_anim = get_sd()->m_tMotions[m_tAction].anim;
 	}
 }
 
@@ -270,8 +270,8 @@ bool CMotionManager::AA_TimeTest(SAAParam &params)
 	if (aa_time_last_attack + TIME_DELTA > cur_time) return false;
 
 	// искать текущую анимацию в AA_MAP
-	AA_MAP_IT it = _sd->aa_map.find(pMonster->cur_anim.name);
-	if (it == _sd->aa_map.end()) return false;
+	AA_MAP_IT it = get_sd()->aa_map.find(pMonster->cur_anim.name);
+	if (it == get_sd()->aa_map.end()) return false;
 	
 	// вычислить смещённое время хита в соответствии с параметрами анимации атаки
 	TTime offset_time = pMonster->cur_anim.started + u32(1000 * GetAnimTime(*pMonster->cur_anim.name) * it->second.time);
@@ -289,8 +289,8 @@ void CMotionManager::AA_GetParams(SAAParam &params, LPCSTR anim_name)
 	ref_str st = anim_name;
 
 	// искать текущую анимацию в AA_MAP
-	AA_MAP_IT it = _sd->aa_map.find(st);
-	if (it == _sd->aa_map.end()) return;
+	AA_MAP_IT it = get_sd()->aa_map.find(st);
+	if (it == get_sd()->aa_map.end()) return;
 	
 	params = it->second;
 }
@@ -300,21 +300,10 @@ void CMotionManager::AA_GetParams(SAAParam &params, LPCSTR anim_name)
 EPState	CMotionManager::GetState (EMotionAnim a)
 {
 	// найти анимацию 
-	ANIM_ITEM_MAP_IT  item_it = _sd->m_tAnims.find(a);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT  item_it = get_sd()->m_tAnims.find(a);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	return item_it->second.pos_state;
-}
-
-
-void CMotionManager::PrepareSharing()
-{
-	CSharedClass<_motion_shared>::Prepare(pMonster->SUB_CLS_ID);
-}
-
-void CMotionManager::NotifyShareLoaded() 
-{
-	CSharedClass<_motion_shared>::Finish();
 }
 
 void CMotionManager::ForceAnimSelect() 
@@ -329,8 +318,8 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 {
 	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > pMonster->m_dwCurrentTime) return;
 
-	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(cur_anim);
-	VERIFY(_sd->m_tAnims.end() != anim_it);
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
+	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 	
 	clamp(amount,0.f,1.f);
 
@@ -351,8 +340,8 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 float CMotionManager::GetAnimTime(EMotionAnim anim, u32 index)
 {
 	// получить элемент SAnimItem соответствующий anim
-	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
-	VERIFY(_sd->m_tAnims.end() != anim_it);
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(anim);
+	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
 	CMotionDef			*def = get_motion_def(anim_it, index);
 	CBoneData			&bone_data = PKinematics(pMonster->Visual())->LL_GetData(0);
@@ -373,8 +362,8 @@ float CMotionManager::GetAnimTime(LPCSTR anim_name)
 
 float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 {
-	ANIM_ITEM_MAP_IT anim_it = _sd->m_tAnims.find(anim);
-	VERIFY(_sd->m_tAnims.end() != anim_it);
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(anim);
+	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
 	CMotionDef *def = get_motion_def(anim_it, 0);
 
@@ -390,8 +379,8 @@ void CMotionManager::ForceAngularSpeed(float vel)
 
 bool CMotionManager::IsStandCurAnim()
 {
-	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
 	return false;
@@ -427,7 +416,7 @@ void CMotionManager::SelectAnimation()
 	EAction							action = m_tAction;
 	if (pMonster->IsMovingOnPath()) action = GetActionFromPath();
 
-	cur_anim						= _sd->m_tMotions[action].anim;
+	cur_anim						= get_sd()->m_tMotions[action].anim;
 	
 	pMonster->CheckSpecParams		(spec_params);	
 	if (Seq_Active()) return;
@@ -474,8 +463,8 @@ void CMotionManager::SelectVelocities()
 		path_vel.set(_abs((*it).second.linear_velocity), (*it).second.angular_velocity);
 	}
 
-	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(cur_anim);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	// получить скорости движения по анимации
 	anim_vel.set(item_it->second.velocity->velocity.linear, item_it->second.velocity->velocity.angular);
@@ -508,8 +497,8 @@ void CMotionManager::SelectVelocities()
 
 	// установка угловой скорости
 	if (!b_forced_velocity) {
-		item_it = _sd->m_tAnims.find(cur_anim);
-		VERIFY(_sd->m_tAnims.end() != item_it);
+		item_it = get_sd()->m_tAnims.find(cur_anim);
+		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
 	}
@@ -564,8 +553,8 @@ EAction CMotionManager::GetActionFromPath()
 
 LPCSTR CMotionManager::GetAnimationName(EMotionAnim anim)
 {
-	ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(anim);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(anim);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	return *item_it->second.target_name;
 }
@@ -664,8 +653,8 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 void CMotionManager::STEPS_Initialize() 
 {
 	// искать текущую анимацию в STEPS_MAP
-	STEPS_MAP_IT it = _sd->steps_map.find(pMonster->cur_anim.name);
-	if (it == _sd->steps_map.end()) {
+	STEPS_MAP_IT it = get_sd()->steps_map.find(pMonster->cur_anim.name);
+	if (it == get_sd()->steps_map.end()) {
 		step_info.disable = true;
 		return;
 	}
@@ -716,8 +705,8 @@ bool CMotionManager::TA_IsActive()
 
 void CMotionManager::CheckAnimWithPath()
 {
-	ANIM_ITEM_MAP_IT item_it = _sd->m_tAnims.find(pMonster->cur_anim.anim);
-	VERIFY(_sd->m_tAnims.end() != item_it);
+	ANIM_ITEM_MAP_IT item_it = get_sd()->m_tAnims.find(pMonster->cur_anim.anim);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	bool is_moving_anim		= !fis_zero(item_it->second.velocity->velocity.linear);
 	bool is_moving_on_path	= pMonster->IsMovingOnPath();
@@ -743,7 +732,7 @@ void CMotionManager::CheckAnimWithPath()
 ///////////////////////////////////////////////////////////////////////////////////////
 void CMotionManager::UpdateAnimCount()
 {
-	for (ANIM_ITEM_MAP_IT it = _sd->m_tAnims.begin(); it != _sd->m_tAnims.end(); it++)	{
+	for (ANIM_ITEM_MAP_IT it = get_sd()->m_tAnims.begin(); it != get_sd()->m_tAnims.end(); it++)	{
 		
 		// проверить, были ли уже загружены данные
 		if (it->second.count != 0) return;

@@ -416,20 +416,6 @@ DEFINE_MAP		(u16,				t_fx_index,				FX_MAP_U16,					FX_MAP_U16_IT);
 DEFINE_MAP		(ref_str,			t_fx_index,				FX_MAP_STRING,				FX_MAP_STRING_IT);
 
 
-//////////////////////////////////////////////////////////////////////////
-// Sharing
-#define BEGIN_LOAD_SHARED_MOTION_DATA() {MotionMan.PrepareSharing();}
-#define END_LOAD_SHARED_MOTION_DATA()	{MotionMan.NotifyShareLoaded();}
-
-#define SHARE_ON_LOAD(pmt) {							\
-	pmt::Prepare(SUB_CLS_ID);						\
-	if (!pmt::IsLoaded()) LoadShared(section);		\
-	pmt::Finish();									\
-}
-
-#define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
-//////////////////////////////////////////////////////////////////////////
-
 DEFINE_VECTOR	(SEQ_VECTOR, VELOCITY_CHAIN_VEC, VELOCITY_CHAIN_VEC_IT);
 
 

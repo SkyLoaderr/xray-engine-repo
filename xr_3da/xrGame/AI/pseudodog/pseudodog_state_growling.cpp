@@ -48,7 +48,7 @@ void CPseudodogGrowling::Run()
 	/********************/
 		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;	
 		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->_sd->m_dwAttackSndDelay);
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
 		break;
 	/*************************/
 	case ACTION_PSI_ATTACK:
@@ -64,7 +64,7 @@ void CPseudodogGrowling::Run()
 	case ACTION_ANGRY_IDLE:
 	/**********************/
 		pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;	
-		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->_sd->m_dwAttackSndDelay);
+		pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundThreaten, 0,0, pMonster->get_sd()->m_dwAttackSndDelay);
 		break;
 	}
 	

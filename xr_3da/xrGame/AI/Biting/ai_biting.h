@@ -31,12 +31,13 @@ class CAnimTriple;
 
 class CAI_Biting : public CCustomMonster, 
 				   virtual public CMonsterMovement,
-				   public CSharedClass<_biting_shared> {
+				   public CSharedClass<_biting_shared, CLASS_ID> {
 
-	typedef	CCustomMonster					inherited;
-	typedef CSharedClass<_biting_shared>	_sd_biting;
-	typedef CMovementManager				MoveMan;
-	typedef CSharedClass<_biting_shared>	inherited_shared;
+	typedef	CCustomMonster							inherited;
+	typedef CSharedClass<_biting_shared,CLASS_ID>	inherited_shared;
+	typedef CSharedClass<_biting_shared,CLASS_ID>	_sd_biting;
+	typedef CMovementManager						MoveMan;
+	
 
 
 	// -------------------------------------------------------

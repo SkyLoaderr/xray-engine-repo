@@ -31,15 +31,15 @@ CStateManagerChimera::CStateManagerChimera(CChimera *obj) : inherited(obj)
 		)
 	);
 
-	add_state(
-		eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
-			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
-			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj),
-			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
-			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
-		)
-	);
-	
+//	add_state(
+//		eStateFindEnemy, xr_new<CStateMonsterFindEnemy<CChimera> > (obj,
+//			xr_new<CStateMonsterFindEnemyRun<CChimera> >(obj), 
+//			xr_new<CStateMonsterFindEnemyLook<CChimera> >(obj),
+//			xr_new<CStateMonsterFindEnemyAngry<CChimera> >(obj), 
+//			xr_new<CStateMonsterFindEnemyWalkAround<CChimera> >(obj)
+//		)
+//	);
+//	
 	
 //	add_state(
 //		eStateThreaten, xr_new<CStateChimeraThreaten<CChimera> > (

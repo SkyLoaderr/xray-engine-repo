@@ -58,5 +58,7 @@ public:
 
 	virtual	void			set_visible				(bool val);
 	virtual	void			ProcessTurn				();
+
+	virtual void			load_shared				(LPCSTR section);
 	
 };

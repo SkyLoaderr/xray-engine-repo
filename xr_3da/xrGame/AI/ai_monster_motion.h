@@ -8,7 +8,9 @@ class		CJumping;
 class		CAnimTriple;
 
 //////////////////////////////////////////////////////////////////////////
-class CMotionManager : public CSharedClass<_motion_shared> {
+class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
+
+	
 
 	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 
@@ -69,7 +71,7 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 
 
 public:
-	
+
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
 
@@ -104,11 +106,6 @@ public:
 	
 	// -------------------------------------
 
-	void		PrepareSharing			(); 
-	void		NotifyShareLoaded		(); 
-	
-	// -------------------------------------- 	
-	
 	void		ApplyParams				();
 
 	// -------------------------------------- 	

@@ -75,15 +75,25 @@ public:
 	void			load_shared		(KEY_TYPE key, LPCSTR section) {
 		_sd = pSharedObj->get_shared(key);
 
-		if (!_sd->IsLoaded()) {
+		if (!get_sd()->IsLoaded()) {
 			load_shared(section);
-			_sd->SetLoad();
+			get_sd()->SetLoad();
 		}
 	}
 
 	virtual void	load_shared	(LPCSTR section) {}
 
 	SHARED_TYPE		*get_sd			() {return _sd;}
+	
+	
+	// управление загрузкой данных при компонентном подходе (загрузка данных вручную)
+	bool start_load_shared	 (KEY_TYPE key){ 
+		_sd = pSharedObj->get_shared(key);
+		if (get_sd()->IsLoaded()) return false;
+		return true;
+	}
+	void finish_load_shared	 (){get_sd()->SetLoad();}
+
 };
 
 
@@ -91,7 +101,7 @@ public:
 // Usage
 //-----------------------------------------
 ////1. define shared class storage
-//struct shared_struc : CSharedResource {
+//struct shared_struc : public CSharedResource {
 //	u8 a;
 //	u8 b;
 //};

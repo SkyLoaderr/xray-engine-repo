@@ -192,7 +192,7 @@ void CBitingAttack::Run()
 			if (squad_active)
 				pMonster->set_use_dest_orient	(true);
 			
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			
 			break;
 
@@ -228,7 +228,7 @@ void CBitingAttack::Run()
 
 			if (flags.is(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -240,7 +240,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			pMonster->MoveToTarget(enemy);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundSteal, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			break;
 		
 		// ******************
@@ -269,7 +269,7 @@ void CBitingAttack::Run()
 			pMonster->MoveToTarget				(enemy->Position());
 			pMonster->MotionMan.accel_activate	(eAT_Calm);
 			
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -280,7 +280,7 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
 			pMonster->MoveAwayFromTarget		(random_position(pMonster->EnemyMan.get_enemy_position(), 2.f));
-			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 			pMonster->MotionMan.accel_activate	(eAT_Calm);
 		
 			break;
@@ -300,7 +300,7 @@ void CBitingAttack::Run()
 		// ********************
 			LOG_EX("ATTACK: Attack Run");
 
-			pMonster->CSoundPlayer::play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);			
+			pMonster->CSoundPlayer::play				(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);			
 			pMonster->MotionMan.m_tAction				= ACT_RUN;
 			pMonster->CMonsterMovement::set_try_min_time(false);
 

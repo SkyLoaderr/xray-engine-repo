@@ -29,6 +29,6 @@ void CBitingRunAway::Run()
 		pMonster->FaceTarget(danger_pos);
 		break;
 	}
-	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundPanic, pMonster->_sd->m_dwAttackSndDelay);
+	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundPanic, pMonster->get_sd()->m_dwAttackSndDelay);
 
 }

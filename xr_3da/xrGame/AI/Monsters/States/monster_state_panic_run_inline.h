@@ -35,7 +35,7 @@ void CStateMonsterPanicRunAbstract::execute()
 	m_object->MotionMan.accel_activate		(eAT_Aggressive);
 	m_object->MotionMan.accel_set_braking	(false);
 
-	m_object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,m_object->_sd->m_dwAttackSndDelay);
+	m_object->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,m_object->get_sd()->m_dwAttackSndDelay);
 }
 
 TEMPLATE_SPECIALIZATION

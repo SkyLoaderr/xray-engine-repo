@@ -33,9 +33,9 @@ void CBitingRest::Replanning()
 {
 	u8		day_time = Level().GetDayTime();
 
-	if ((day_time >= pMonster->_sd->m_dwDayTimeBegin) && (day_time <= pMonster->_sd->m_dwDayTimeEnd)) {  // день?
+	if ((day_time >= pMonster->get_sd()->m_dwDayTimeBegin) && (day_time <= pMonster->get_sd()->m_dwDayTimeEnd)) {  // день?
 
-		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->_sd->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->_sd->m_fMaxSatiety); 
+		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->get_sd()->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->get_sd()->m_fMaxSatiety); 
 		if (bNormalSatiety) {		// отдых
 			m_tAction = ACTION_SATIETY_GOOD;
 		} else {					// бродит, ищет еду
@@ -100,7 +100,7 @@ void CBitingRest::Run()
 			break;
 	}
 
-	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->_sd->m_dwIdleSndDelay);
+	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->get_sd()->m_dwIdleSndDelay);
 
 }
 

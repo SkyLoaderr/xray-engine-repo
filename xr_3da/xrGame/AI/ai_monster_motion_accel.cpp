@@ -60,7 +60,7 @@ bool CMotionManager::accel_chain_get(float cur_speed, EMotionAnim target_anim, E
 		for (IT = IT_B; IT != IT_E; IT++) {
 
 
-			ANIM_ITEM_MAP_IT	item_it = _sd->m_tAnims.find(*IT);
+			ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(*IT);
 			SVelocityParam		*param	= item_it->second.velocity;
 			float				from	= param->velocity.linear * param->min_factor;
 			float				to		= param->velocity.linear * param->max_factor;

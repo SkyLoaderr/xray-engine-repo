@@ -54,7 +54,7 @@ void CBurerAttackMelee::Run()
 				pMonster->FaceTarget(enemy);
 			DO_IN_TIME_INTERVAL_END();
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 
@@ -74,7 +74,7 @@ void CBurerAttackMelee::Run()
 
 			if (b_need_rebuild) pMonster->MoveToTarget(enemy);
 
-			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 
 			break;
 	}

@@ -23,5 +23,7 @@ public:
 
 	virtual bool	ability_earthquake	() {return true;}
 	virtual void	event_on_step		();
+
+	virtual void	load_shared			(LPCSTR section);
 };
 

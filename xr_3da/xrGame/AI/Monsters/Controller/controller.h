@@ -14,5 +14,8 @@ public:
 	virtual void	StateSelector		();
 	virtual void	ProcessTurn			();
 	virtual u8		get_legs_number		() {return BIPEDAL;}
+
+	virtual void	load_shared			(LPCSTR section);
+
 };
 

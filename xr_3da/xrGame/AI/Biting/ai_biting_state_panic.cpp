@@ -62,7 +62,7 @@ void CBitingPanic::Run()
 			break;
 	}
 	
-	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+	pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPanic, 0,0,pMonster->get_sd()->m_dwAttackSndDelay);
 }
 
 bool CBitingPanic::CheckCompletion()

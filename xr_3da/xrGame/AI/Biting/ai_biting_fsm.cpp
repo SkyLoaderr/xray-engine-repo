@@ -98,7 +98,7 @@ void CAI_Biting::SetState(IState *pS, bool bSkipInertiaCheck)
 void CAI_Biting::State_PlaySound(u32 internal_type, u32 max_stop_time)
 {
 	if (m_bAngry && ((internal_type == eMonsterSoundIdle) ||  (internal_type == eMonsterSoundEat)))
-		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, _sd->m_dwAttackSndDelay);
+		CSoundPlayer::play(MonsterSpace::eMonsterSoundGrowling, 0, 0, get_sd()->m_dwAttackSndDelay);
 	else 
 		CSoundPlayer::play(internal_type, 0, 0, max_stop_time);
 }

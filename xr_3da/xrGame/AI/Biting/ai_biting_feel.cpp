@@ -38,7 +38,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
 
-	if (power >= _sd->m_fSoundThreshold) {
+	if (power >= get_sd()->m_fSoundThreshold) {
 		if (this != who) {
 			SoundMemory.HearSound(who,eType,Position,power,m_current_update);
 		}
@@ -156,8 +156,8 @@ void CAI_Biting::SetAttackEffector()
 {
 	CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
 	if (pA) {
-		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(_sd->m_attack_effector.ce_time,_sd->m_attack_effector.ce_amplitude,_sd->m_attack_effector.ce_period_number,_sd->m_attack_effector.ce_power));
-		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(_sd->m_attack_effector.ppi, _sd->m_attack_effector.time, _sd->m_attack_effector.time_attack, _sd->m_attack_effector.time_release));
+		pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(get_sd()->m_attack_effector.ce_time,get_sd()->m_attack_effector.ce_amplitude,get_sd()->m_attack_effector.ce_period_number,get_sd()->m_attack_effector.ce_power));
+		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(get_sd()->m_attack_effector.ppi, get_sd()->m_attack_effector.time, get_sd()->m_attack_effector.time_attack, get_sd()->m_attack_effector.time_release));
 	}
 }
 

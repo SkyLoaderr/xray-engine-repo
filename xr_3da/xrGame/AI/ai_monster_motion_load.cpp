@@ -2,11 +2,10 @@
 #include "ai_monster_motion.h"
 #include "biting\ai_biting.h"
 
+// Shared
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
 void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s, LPCSTR fx_front, LPCSTR fx_back, LPCSTR fx_left, LPCSTR fx_right)
 {
-	CHECK_SHARED_LOADED();
-
 	SAnimItem new_item;
 
 	new_item.target_name	= tn;
@@ -21,14 +20,13 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 
 	new_item.count			= 0;
 
-	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
+	get_sd()->m_tAnims.insert			(mk_pair(ma, new_item));
 }
 
+// Shared
 // Загрузка параметров анимации. Вызывать необходимо на Monster::Load
 void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam *vel, EPState p_s)
 {
-	CHECK_SHARED_LOADED();
-
 	SAnimItem new_item;
 
 	new_item.target_name	= tn;
@@ -38,13 +36,12 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCSTR tn, int s_id, SVelocityParam
 
 	new_item.count			= 0;
 
-	_sd->m_tAnims.insert			(mk_pair(ma, new_item));
+	get_sd()->m_tAnims.insert			(mk_pair(ma, new_item));
 }
 
+// Shared
 void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
-	CHECK_SHARED_LOADED();
-
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -56,14 +53,12 @@ void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	_sd->m_tTransitions.push_back(new_item);
+	get_sd()->m_tTransitions.push_back(new_item);
 }
 
-
+// Shared
 void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
 {
-	CHECK_SHARED_LOADED();
-
 	STransition new_item;
 
 	new_item.from.state_used	= false;
@@ -75,13 +70,12 @@ void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim tra
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	_sd->m_tTransitions.push_back(new_item);
+	get_sd()->m_tTransitions.push_back(new_item);
 }
 
+// Shared
 void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
 {
-	CHECK_SHARED_LOADED();
-
 	STransition new_item;
 
 	new_item.from.state_used	= true;
@@ -94,13 +88,12 @@ void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim tra
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	_sd->m_tTransitions.push_back(new_item);
+	get_sd()->m_tTransitions.push_back(new_item);
 }
 
+// Shared
 void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain)
 {
-	CHECK_SHARED_LOADED();
-
 	STransition new_item;
 
 	new_item.from.state_used	= true;
@@ -112,12 +105,12 @@ void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, 
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
-	_sd->m_tTransitions.push_back(new_item);
+	get_sd()->m_tTransitions.push_back(new_item);
 }
 
+// Shared
 void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle)
 {
-	CHECK_SHARED_LOADED();
 
 	SMotionItem new_item;
 
@@ -127,19 +120,18 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion, EMotionAnim
 	new_item.turn.anim_right	= pmt_right;
 	new_item.turn.min_angle		= pmt_angle;
 
-	_sd->m_tMotions.insert	(mk_pair(act, new_item));
+	get_sd()->m_tMotions.insert	(mk_pair(act, new_item));
 }
 
+// Shared
 void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 {
-	CHECK_SHARED_LOADED();
-
 	SMotionItem new_item;
 
 	new_item.anim				= pmt_motion;
 	new_item.is_turn_params		= false;
 
-	_sd->m_tMotions.insert	(mk_pair(act, new_item));
+	get_sd()->m_tMotions.insert	(mk_pair(act, new_item));
 }
 
 // не может быть shared!!! поле на которое указывает b_flag, у каждого экземпляра класса biting - содержит свои данные
@@ -154,11 +146,9 @@ void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMo
 	m_tReplacedAnims.push_back(ra);
 }
 
-
+// Shared
 void CMotionManager::AA_Load(LPCSTR section)
 {
-	CHECK_SHARED_LOADED();
-
 	if (!pSettings->section_exist(section)) return;
 
 	SAAParam	anim;
@@ -179,14 +169,13 @@ void CMotionManager::AA_Load(LPCSTR section)
 		_GetItem	(val,10,cur_elem);		anim.dist			= float(atof(cur_elem));
 
 		anim.impulse_dir.normalize();
-		_sd->aa_map.insert(mk_pair(anim_name, anim));
+		get_sd()->aa_map.insert(mk_pair(anim_name, anim));
 	}
 }
 
+// Shared
 void CMotionManager::STEPS_Load(LPCSTR section, u8 legs_num)
 {
-	CHECK_SHARED_LOADED();
-
 	if (!pSettings->section_exist(section)) return;
 	R_ASSERT((legs_num>=0) && (legs_num<=4));
 
@@ -207,7 +196,7 @@ void CMotionManager::STEPS_Load(LPCSTR section, u8 legs_num)
 			_GetItem	(val,1+j*2,cur_elem);		anim.step[j].time	= float(atof(cur_elem));
 			_GetItem	(val,1+j*2+1,cur_elem);		anim.step[j].power	= float(atof(cur_elem));
 		}
-		_sd->steps_map.insert(mk_pair(anim_name, anim));
+		get_sd()->steps_map.insert(mk_pair(anim_name, anim));
 	}
 }
 
