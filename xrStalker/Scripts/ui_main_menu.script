@@ -136,9 +136,9 @@ function main_menu:InitControls()
 
 	-- TEST ---
 	
---	local tab = CUITabControl()
---	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
---	self.main_frame:AttachChild(tab)
+	local tab = CUITabControl()
+	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
+	self.main_frame:AttachChild(tab)
 	
 --	local tabBtn = CUITabButton()
 --	tabBtn:SetAutoDelete(true)
@@ -162,7 +162,8 @@ function main_menu:InitControls()
 	btn:SetTextY(self.button_indent)
 	
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)
+	--self.main_frame:AttachChild(btn)
+	tab:AttachChild(btn)
 		
 	--------->> LOAD Game	
 	btn = CUI3tButton()
@@ -174,7 +175,8 @@ function main_menu:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)	
+	--self.main_frame:AttachChild(btn)	
+	tab:AttachChild(btn)
 	
 		
 	--------->> MULTIPLAYER
