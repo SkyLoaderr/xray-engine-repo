@@ -183,18 +183,18 @@ CAI_DDD::CAI_DDD()
 	m_fpaBaseFunctions[45]				= m_pfEnemyRukzakWeight		= xr_new<CEnemyRukzakWeightFunction>	();		
 	m_fpaBaseFunctions[46]				= m_pfEnemyAnomality		= xr_new<CEnemyAnomalityFunction>		();			
 
-	m_pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.dat",		this);
-	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.dat",	this);
-	m_pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.dat",this);
-	m_pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>	("common\\AccWeaponEffectiveness.dat",	this);
-	m_pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.dat",this);
-	m_pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.dat",		this);
-	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.dat",				this);
-	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.dat",				this);
-	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.dat",	this);
-//	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.dat",				this);
-//	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.dat",			this);
-//	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.dat",		this);
+	m_pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.efd",		this);
+	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.efd",	this);
+	m_pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.efd",this);
+	m_pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>	("common\\AccWeaponEffectiveness.efd",	this);
+	m_pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.efd",this);
+	m_pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.efd",		this);
+	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.efd",				this);
+	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.efd",				this);
+	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.efd",	this);
+//	m_pfTerrainType						= xr_new<CPatternFunction>	("alife\\TerrainType.efd",				this);
+//	m_pfNoticability					= xr_new<CPatternFunction>	("alife\\Noticability.efd",			this);
+//	m_pfNoticeProbability				= xr_new<CPatternFunction>	("alife\\NoticeProbability.efd",		this);
 }
 
 CAI_DDD::~CAI_DDD()
