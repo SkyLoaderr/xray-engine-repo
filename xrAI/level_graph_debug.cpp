@@ -223,6 +223,18 @@ void CLevelGraph::render()
 				temp.y += .1f;
 				RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
 			}
+
+			CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator II = (*I).second->m_free_in_restrictions.begin();
+			CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator EE = (*I).second->m_free_in_restrictions.end();
+			for ( ; II != EE; ++II) {
+				xr_vector<u32>::const_iterator	i = (*II).m_restriction->border().begin();
+				xr_vector<u32>::const_iterator	e = (*II).m_restriction->border().end();
+				for ( ; i != e; ++i) {
+					Fvector temp = ai().level_graph().vertex_position(*i);
+					temp.y += .1f;
+					RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+				}
+			}
 		}
 	}
 

@@ -17,6 +17,9 @@ class CSpaceRestrictionBridge;
 
 class CSpaceRestriction : public RestrictionSpace::CTimeIntrusiveBase {
 	friend struct CRemoveMergedFreeInRestrictions;
+#ifdef DEBUG
+	friend class CLevelGraph;
+#endif
 private:
 	typedef SpaceRestrictionHolder::CBaseRestrictionPtr CBaseRestrictionPtr;
 

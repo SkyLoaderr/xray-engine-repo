@@ -20,11 +20,10 @@ template <typename _1, typename _2> class intrusive_ptr;
 class CSpaceRestriction;
 
 class CSpaceRestrictionManager : public CSpaceRestrictionHolder {
-#ifndef DEBUG
-protected:
-#else
-public:
+#ifdef DEBUG
+	friend class CLevelGraph;
 #endif
+protected:
 	typedef intrusive_ptr<CSpaceRestriction,RestrictionSpace::CTimeIntrusiveBase> CRestrictionPtr;
 	typedef xr_map<ref_str,CSpaceRestriction*>				SPACE_RESTRICTIONS;
 	typedef xr_map<ALife::_OBJECT_ID,CRestrictionPtr>		CLIENT_RESTRICTIONS;
