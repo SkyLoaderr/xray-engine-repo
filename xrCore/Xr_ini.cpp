@@ -81,13 +81,8 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
     	}
 		destructor<IReader>	file(Engine.FS.Open(szFileName));
 #else
-#ifdef _EDITOR
-	    if (!bReadOnly&&!FS.exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
-#endif
 		destructor<IReader>	file(FS.r_open(szFileName));
 #endif
-
-
         Sect	Current;	Current.Name = 0;
         char	str			[1024];
         char	str2		[1024];
