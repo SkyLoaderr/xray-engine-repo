@@ -588,10 +588,23 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
 		CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
-		if ((Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 3000) && (SoldierLeader->m_dwLastRangeSearch)) {
-			//if (m_bStateChanged)
-			//	m_dwLoopCount = 0;
+		if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 10000) && (SoldierLeader->m_dwLastRangeSearch)) {
 			m_dwLoopCount = SoldierLeader->m_dwLoopCount;
+			if (!m_bLooped) {
+				Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
+				tTemp1.sub(vPosition);
+				vfNormalizeSafe(tTemp1);
+				SRotation sRot;
+				mk_rotation(tTemp1,sRot);
+				//if ((fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) || ((fabsf(fabsf(sRot.yaw - r_torso_target.yaw) - PI_MUL_2) >= PI_DIV_6))) {
+				if (fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) {
+					AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
+					r_torso_target.yaw = sRot.yaw > PI ? sRot.yaw - 2*PI : sRot.yaw;
+					r_spine_target.yaw = r_torso_target.yaw; 
+					r_target.yaw = 0;//r_torso_target.yaw; 
+					SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
+				}
+			}
 			AI_Path.TravelPath.clear();
 			AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
 			for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
@@ -700,18 +713,37 @@ void CAI_Soldier::Patrol()
 	
 	//if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4) || (AI_Path.TravelPath.empty())) {
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
-		
 		if (m_bStateChanged)
 			m_dwLoopCount = 0;
 		
-		//if (m_dwLoopCount % 2 == 0) {
+		if (!m_bLooped) {
+			Fvector tTemp1 = m_tpaPatrolPoints[m_tpaPatrolPoints.size() - 2];
+			tTemp1.sub(vPosition);
+			vfNormalizeSafe(tTemp1);
+			SRotation sRot;
+			mk_rotation(tTemp1,sRot);
+			//if ((fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) || ((fabsf(fabsf(sRot.yaw - r_torso_target.yaw) - PI_MUL_2) >= PI_DIV_6))) {
+			if (fabsf(sRot.yaw - r_torso_target.yaw) >= PI_DIV_6) {
+				AI_Path.TravelStart = AI_Path.TravelPath.size() - 1;
+				r_torso_target.yaw = sRot.yaw > PI ? sRot.yaw - PI_MUL_2 : sRot.yaw;
+				r_spine_target.yaw = r_torso_target.yaw; 
+				r_target.yaw = 0;//r_torso_target.yaw; 
+				SWITCH_TO_NEW_STATE(aiSoldierTurnOver);
+			}
+			for (int i=0; i<Group.Members.size(); i++)
+				if (((CCustomMonster*)(Group.Members[i]))->AI_Path.fSpeed > EPS_L) {
+					return;
+				}
+		}
+		
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
 		if ((m_bLooped) || (m_dwLoopCount % 2 == 0)) {
 			vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
 			m_dwStartPatrolNode = tpaPatrolPaths[m_dwPatrolPathIndex].dwStartNode;
 			vfCreatePointSequence(tpaPatrolPaths[m_dwPatrolPathIndex],m_tpaPatrolPoints,m_bLooped);
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
-		AI_Path.TravelStart = 0;
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped);
 		if (AI_Path.TravelPath.size()) {
 			if (!m_bLooped) {
@@ -727,9 +759,6 @@ void CAI_Soldier::Patrol()
 			}
 			m_dwLastRangeSearch = Level().timeServer();
 		}
-		else
-			AI_Path.TravelPath.clear();
-		//	m_dwLoopCount = 0;
 	}
 	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
@@ -1635,6 +1664,44 @@ void CAI_Soldier::TestMacroActionM()
 }
 #endif
 
+void CAI_Soldier::TurnOver()
+{
+	WRITE_TO_LOG("Turning over...");
+
+	CHECK_FOR_DEATH
+		
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	m_dwLastRangeSearch = dwCurTime;
+
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierUnderFire)
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime),aiSoldierSenseSomething)
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
+
+	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))) {
+		m_ePreviousState = tStateStack.top();
+		GO_TO_PREV_STATE
+	}
+
+	vfSetFire(m_bFiring,Group);
+
+	vfSetMovementType(m_cBodyState,0);
+
+	r_torso_speed = PI_DIV_4;
+	r_spine_speed = PI_DIV_4;
+	q_look.o_look_speed = PI_DIV_4;
+}
+
 void CAI_Soldier::Think()
 {
 	bStopThinking = false;
@@ -1743,6 +1810,10 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierUnderFire : {
 				UnderFire();
+				break;
+			}
+			case aiSoldierTurnOver : {
+				TurnOver();
 				break;
 			}
 			#ifdef TEST_ACTIONS

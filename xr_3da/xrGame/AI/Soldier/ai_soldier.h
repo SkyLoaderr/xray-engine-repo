@@ -47,6 +47,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierPatrolHurtAggressiveUnderFire,
 		aiSoldierPatrolHurtNonAggressiveUnderFire,
 		aiSoldierPatrolUnderFire,
+		aiSoldierTurnOver,
 
 		aiSoldierPursuit,
 		aiSoldierReload,
@@ -393,6 +394,7 @@ class CAI_Soldier : public CCustomMonster
 		void PatrolHurtNonAggressiveUnderFire();
 		void PatrolUnderFire();
 		void FollowLeaderPatrol();
+		void TurnOver();
 		
 		void Pursuit();
 		void Reload();
