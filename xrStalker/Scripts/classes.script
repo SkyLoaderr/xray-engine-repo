@@ -123,29 +123,20 @@ function Guardian:__init (npc, script_name, path_name, anims_check)
 	self.anims_check = anims_check
 end
 
-function Guardian:callback (obj, action_type, index)
-
-  	local ptr = patrol (obj:patrol ())
-
-	--обработаем точку осмотра
-	if ptr:flag (index, 2) and math.random (1, 100) > 50 then
-	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
-					 self.anims_check:get_animation (), cond (cond.anim_end))
-	   return 
-	   end	  	
-
-end
 
 function Guardian:process ()
 
 	if self.started == false then
 	   self.npc:script (true, self.script_name)
-	   action (self.npc, move (move.standing, move.walk, move.line, patrol (self.path_name)),
-			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+	   action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+			   look (look.search), anim (anim.free), cond (cond.anim_end))
 	   self.started = true
-	   self.npc:set_callback (self, "callback", game_object.movement)
 	   return 
 	   end
+	if self.npc:action () then return end
+	reset_action (self.npc, self.script_name)
+    action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+ 		    look (look.search), self.anims_check:get_animation (), cond (cond.anim_end))
 end
 
 function Guardian:finish ()

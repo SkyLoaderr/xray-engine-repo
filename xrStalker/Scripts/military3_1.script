@@ -7,6 +7,7 @@ function main ()
 	anims:add_animation ("vishka_1", true)
 	anims:add_animation ("vishka_2", false)
 	anims:add_animation ("vishka_3", false)
+
 	
 	local guard1 = classes.Guardian (get_level_object ("stalker_tower1"), military3_1.script_name (), "way_tower1", anims)
 	local guard2 = classes.Guardian (get_level_object ("stalker_tower2"), military3_1.script_name (), "way_tower2", anims)
