@@ -35,6 +35,7 @@ float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	CHECK_RESULT;
 	vfAddEnemyLookCost();
 	CHECK_RESULT;
+	/**
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
 			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
@@ -48,6 +49,7 @@ float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 			vfAddSurroundEnemyCost();
 		}
 	}
+	/**/
 	// checking for epsilon
 	vfCheckForEpsilon(bStop);
 	// returning a value

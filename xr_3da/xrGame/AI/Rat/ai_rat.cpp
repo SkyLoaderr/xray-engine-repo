@@ -224,261 +224,6 @@ void CAI_Rat::SetLessCoverLook(NodeCompressed *tNode)
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-void CAI_Rat::Attack()
-{
-	// if no more health then rat is dead
-#ifdef WRITE_LOG
-	Msg("creature : %s, mode : %s",cName(),"Attack");
-#endif
-	if (g_Health() <= 0) {
-		eCurrentState = aiRatDie;
-		return;
-	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do I see the enemies?
-		if (!(Enemy.Enemy)) {
-			// did we kill the enemy ?
-			if (tSavedEnemy->g_Health() <= 0) {
-				eCurrentState = tStateStack.top();
-				tStateStack.pop();
-			}
-			//  no, we lost him
-			else {
-				dwLostEnemyTime = Level().timeServer();
-				eCurrentState = aiRatPursuit;
-			}
-			return;
-		}
-		else {
-			if (Enemy.bVisible) {
-				bBuildPathToLostEnemy = false;
-				// saving an enemy
-				tSavedEnemy = Enemy.Enemy;
-				tSavedEnemyPosition = Enemy.Enemy->Position();
-				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
-				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
-				// determining the team
-				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-				// determining who is leader
-				CEntity* Leader = Squad.Leader;
-				// checking if the leader exists
-				R_ASSERT (Leader);
-				// checking if leader is dead then make myself a leader
-				if (Leader->g_Health() <= 0)
-					Leader = this;
-				// setting watch mode to false
-				bool bWatch = false;
-				// get pointer to the class of node estimator 
-				// for finding the best node in the area
-				CRatSelectorAttack S = SelectorAttack;
-				// if i am not a leader then assign leader
-				if (Leader != this) {
-					S.m_tLeader = Leader;
-					S.m_tLeaderPosition = Leader->Position();
-					S.m_tpLeaderNode = Leader->AI_Node;
-					S.m_tLeaderNode = Leader->AI_NodeID;
-				}
-				// otherwise assign leader to null
-				else {
-					S.m_tLeader = 0;
-					S.m_tLeaderPosition.set(0,0,0);
-					S.m_tpLeaderNode = NULL;
-					S.m_tLeaderNode = -1;
-				}
-				S.m_tHitDir			= tHitDir;
-				S.m_dwHitTime		= dwHitTime;
-				
-				S.m_dwCurTime		= Level().timeServer();
-				//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
-				
-				S.m_tMe				= this;
-				S.m_tpMyNode		= AI_Node;
-				S.m_tMyPosition		= Position();
-				
-				S.m_tEnemy			= Enemy.Enemy;
-				S.m_tEnemyPosition	= Enemy.Enemy->Position();
-				S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-				
-				S.taMembers = Squad.Groups[g_Group()].Members;
-				if (S.m_tLeader)
-					S.taMembers.push_back(S.m_tLeader);
-
-				// checking if I need to rebuild the path i.e. previous search
-				// has found better destination node
-				if (AI_Path.bNeedRebuild) {
-					// building a path from and to
-					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
-					if (AI_Path.Nodes.size() > 2) {
-					// if path is long enough then build travel line
-						AI_Path.BuildTravelLine(Position());
-					}
-					else {
-					// if path is too short then clear it (patch for ExecMove)
-						AI_Path.TravelPath.clear();
-						AI_Path.bNeedRebuild = FALSE;
-					}
-				} 
-				else {
-					Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
-					// search for the best node according to the 
-					// SelectFollow evaluation function in the radius N meteres
-					float fOldCost;
-					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-					// if search has found new best node then 
-					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-						AI_Path.DestNode		= S.BestNode;
-						AI_Path.bNeedRebuild	= TRUE;
-					} 
-					else
-						// search hasn't found a better node we have to look around
-						bWatch = true;
-					if (AI_Path.Nodes.size() <= 2)
-						AI_Path.bNeedRebuild = TRUE;
-				}
-				// setting up a look
-				q_look.setup(
-					AI::AIC_Look::Look, 
-					AI::t_Object, 
-					&Enemy,
-					1000);
-				q_look.o_look_speed=_FB_look_speed;
-				
-				/**/
-				// setting up an action
-				Fvector tFireVector, tMyPosition = S.m_tMyPosition, tEnemyPosition = S.m_tEnemyPosition;
-				tFireVector.x = tMyPosition.x - tEnemyPosition.x;
-				tFireVector.y = tMyPosition.y - tEnemyPosition.y;
-				tFireVector.z = tMyPosition.z - tEnemyPosition.z;
-				vfNormalizeSafe(tFireVector);
-
-				bool bCanKillMember = false;
-				for (int i=0; i<S.taMemberPositions.size(); i++)
-					if ((S.taMembers[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
-						bCanKillMember = true;
-						break;
-					}
-					
-				if (!bCanKillMember)
-					q_action.setup(AI::AIC_Action::FireBegin);
-				else
-					q_action.setup(AI::AIC_Action::FireEnd);
-				/**/
-				// checking flag to stop processing more states
-				//q_action.setup(AI::AIC_Action::FireBegin);
-				m_fCurSpeed = m_fMaxSpeed;
-				bStopThinking = true;
-				return;
-			}
-			/**/
-			else {
-				tSavedEnemy = Enemy.Enemy;
-				tSavedEnemyPosition = Enemy.Enemy->Position();
-				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
-				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
-				if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
-					bBuildPathToLostEnemy = true;
-					// determining the team
-					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					// determining who is leader
-					CEntity* Leader = Squad.Leader;
-					// checking if the leader exists
-					R_ASSERT (Leader);
-					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
-						Leader = this;
-					// setting watch mode to false
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CRatSelectorAttack S = SelectorAttack;
-					// if i am not a leader then assign leader
-					/**/
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
-					}
-					// otherwise assign leader to null
-					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
-					}
-					/**/
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
-					
-					S.m_dwCurTime		= Level().timeServer();
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode        = AI_Node;
-					S.m_tMyPosition		= Position();
-					
-					S.m_tEnemy			= Enemy.Enemy;
-					S.m_tEnemyPosition	= Enemy.Enemy->Position();
-					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-					
-					S.taMembers = Squad.Groups[g_Group()].Members;
-					if (S.m_tLeader)
-						S.taMembers.push_back(S.m_tLeader);
-					// building a path from and to
-					AI_Path.DestNode = dwSavedEnemyNodeID;
-					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-					if (AI_Path.Nodes.size() > 2) {
-					// if path is long enough then build travel line
-						AI_Path.BuildTravelLine(Position());
-					}
-					else
-					// if path is too short then clear it (patch for ExecMove)
-						AI_Path.TravelPath.clear();
-				}
-				q_look.setup(
-					AI::AIC_Look::Look, 
-					AI::t_Object, 
-					&Enemy,
-					1000);
-				q_look.o_look_speed=_FB_look_speed;
-				
-				q_action.setup(AI::AIC_Action::FireEnd);
-
-				// checking flag to stop processing more states
-				m_fCurSpeed = m_fMaxSpeed;
-				bStopThinking = true;
-				return;
-			}
-			/**/
-		}
-	}
-}
-
-void CAI_Rat::Cover()
-{
-	bStopThinking = true;
-}
-
-void CAI_Rat::Defend()
-{
-	bStopThinking = true;
-}
-
-void CAI_Rat::Die()
-{
-	q_look.setup(0,AI::t_None,0,0	);
-	q_action.setup(AI::AIC_Action::FireEnd);
-	AI_Path.TravelPath.clear();
-	
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
-
-	bStopThinking = true;
-}
-
 IC bool CAI_Rat::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
 {
 	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) && ((tCenter.x <= tpSubNode.tRightUp.x) && (tCenter.z <= tpSubNode.tRightUp.z)));
@@ -544,6 +289,21 @@ IC float CAI_Rat::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighb
 	return(SQR(tLeaderPosition.x - tCurrentSubNode.x) + 0*SQR(tLeaderPosition.y - tCurrentSubNode.y) + SQR(tLeaderPosition.z - tCurrentSubNode.z));
 }
 
+IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
+{
+	// unpack plane
+	Fvector	DUP, vNorm, v, v1, P0;
+	DUP.set(0,1,0);
+	pvDecompress(vNorm,tNode.plane);
+	Fplane PL; 
+	Level().AI.UnpackPosition(P0,tNode.p0);
+	PL.build(P0,vNorm);
+	v.set(X,P0.y,Z);	
+	PL.intersectRayPoint(v,DUP,v1);	
+	//v1.direct(v1,PL.n,.01f);
+	return(v1.y);
+}
+
 int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
 	CAI_Space &AI = Level().AI;
@@ -558,10 +318,10 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
 		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 			tNode.tLeftDown.x = i;
-			tNode.tLeftDown.y = tLeftDown.y;
+			tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
 			tNode.tLeftDown.z = j;
 			tNode.tRightUp.x = i + fSubNodeSize;
-			tNode.tRightUp.y = tLeftDown.y;
+			tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
 			tNode.tRightUp.z = j + fSubNodeSize;
 			tNode.bEmpty = true;
 			tpSubNodes.push_back(tNode);
@@ -579,16 +339,465 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 		for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize)
 			for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 				tNode.tLeftDown.x = i;
-				tNode.tLeftDown.y = tLeftDown.y;
+				tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
 				tNode.tLeftDown.z = j;
 				tNode.tRightUp.x = i + fSubNodeSize;
-				tNode.tRightUp.y = tLeftDown.y;
+				tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
 				tNode.tRightUp.z = j + fSubNodeSize;
 				tNode.bEmpty = true;
 				tpSubNodes.push_back(tNode);
 			}
 	}
 	return(iResult);
+}
+
+int CAI_Rat::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+{
+	CAI_Space &AI = Level().AI;
+	float fSubNodeSize = AI.GetHeader().size;
+	SSubNode tNode;
+	tpSubNodes.clear();
+	int iCount = 0, iMySubNode = -1;
+	float fBestCost = 100000000.f;
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	AI.UnpackPosition(tLeftDown,tpStartNode->p0);
+	AI.UnpackPosition(tRightUp,tpStartNode->p1);
+	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+			tNode.tLeftDown.x = i;
+			tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+			tNode.tLeftDown.z = j;
+			tNode.tRightUp.x = i + fSubNodeSize;
+			tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+			tNode.tRightUp.z = j + fSubNodeSize;
+			tNode.bEmpty = true;
+			tpSubNodes.push_back(tNode);
+			float fCurrentCost = ffComputeCost(tCurrentPosition,tNode);
+			if (fCurrentCost < fBestCost) {
+				fBestCost = fCurrentCost;
+				iMySubNode = iCount;
+			}
+			iCount++;
+		}
+	}
+	return(iMySubNode);
+}
+
+void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader) 
+{
+	Fvector tCurrentPosition = Position();
+	NodeCompressed* tpCurrentNode = AI_Node;
+	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
+		vector<SSubNode> tpSubNodes;
+		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
+		//Level().AI.UnpackPosition(tCurrentPosition,AI_Node->p0);
+		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		// filling the subnodes with the moving objects
+		/**
+		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
+		if (Squad.Leader != this)
+			Members.push_back(Squad.Leader);
+		for (int i=0; i<Members.size(); i++)
+			Members[i]->tpfGetCCFModel()->Enable(TRUE);
+		//Level().ObjectSpace.GetNearest(tCurrentPosition,3*(Level().AI.GetHeader().size));
+		//Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE tpNearestList = Level().ObjectSpace.nearest_list;
+		Fvector tCenter;
+		if (!(tpNearestList.empty())) {
+			int i=0;
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+				if (tpCurrentObject == this)
+					continue;
+				float fRadius = tpCurrentObject->Radius();
+				tpCurrentObject->clCenter(tCenter);
+				for (int i=0; i<tpSubNodes.size(); i++)
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
+						tpSubNodes[i].bEmpty = false;
+				i++;
+			}
+			Msg("%d",i);
+		}
+		else {
+			Msg("empty");
+		}
+		/**/
+		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
+		if (Squad.Leader != this)
+			Members.push_back(Squad.Leader);
+		for (int i=0; i<Members.size(); i++)
+			if (Members[i] != this) {
+				float fRadius = Members[i]->Radius();
+				Fvector tCenter;
+				Members[i]->clCenter(tCenter);
+				for (int i=0; i<tpSubNodes.size(); i++)
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
+						tpSubNodes[i].bEmpty = false;
+			}
+		/**/
+		// checking the nearest nodes
+		vector<SSubNode> tpFreeNeighbourNodes;
+		tpFreeNeighbourNodes.clear();
+		for ( i=0; i<tpSubNodes.size(); i++)
+			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
+				tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
+		tpSubNodes.clear();
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
+		if (!tpFreeNeighbourNodes.empty()) {
+			Fvector tLeaderPosition = Leader->Position();
+			float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
+			for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
+				float fCurCost = ffComputeCost(tLeaderPosition,tpFreeNeighbourNodes[i]);
+				if (fCurCost < fBestCost) {
+					iBestI = i;
+					fBestCost = fCurCost;
+				}
+			}
+			if (iBestI >= 0) {
+				Fvector tFinishPosition;
+				tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
+				tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
+				tFinishPosition.z = (tpFreeNeighbourNodes[iBestI].tLeftDown.z + tpFreeNeighbourNodes[iBestI].tRightUp.z)/2.f;
+				CTravelNode	tCurrentPoint,tFinishPoint;
+				tCurrentPoint.P.set(tCurrentPosition);
+				tCurrentPoint.floating = FALSE;
+				AI_Path.TravelPath.push_back(tCurrentPoint);
+				tFinishPoint.P.set(tFinishPosition);
+				tFinishPoint.floating = FALSE;
+				AI_Path.TravelPath.push_back(tFinishPoint);
+			}
+			tpFreeNeighbourNodes.clear();
+		}
+	}
+	else {
+		vector<SSubNode> tpSubNodes;
+
+		Msg("Outside the node");
+
+		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+
+		/**
+		//Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,3*(Level().AI.GetHeader().size));
+		//Level().ObjectSpace.GetNearest(tCurrentPosition,3*(Level().AI.GetHeader().size));
+		Level().ObjectSpace.GetNearest(this->cfModel,3*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		if (!tpNearestList.empty()) {
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+				if (tpCurrentObject == this)
+					continue;
+				float fRadius = tpCurrentObject->Radius();
+				Fvector tCenter;
+				tpCurrentObject->clCenter(tCenter);
+				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+					tpSubNodes[iMySubNode].bEmpty = false;
+					break;
+				}
+			}
+		}
+		/**/
+		CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+		vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
+		if (Squad.Leader != this)
+			Members.push_back(Squad.Leader);
+		for (int i=0; i<Members.size(); i++)
+			if (Members[i] != this) {
+				float fRadius = Members[i]->Radius();
+				Fvector tCenter;
+				Members[i]->clCenter(tCenter);
+				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+					tpSubNodes[iMySubNode].bEmpty = false;
+					break;
+				}
+			}
+		/**/
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
+		if (tpSubNodes[iMySubNode].bEmpty) {
+			Fvector tFinishPosition;
+			tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
+			tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
+			tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
+			CTravelNode	tCurrentPoint,tFinishPoint;
+			tCurrentPoint.P.set(tCurrentPosition);
+			tCurrentPoint.floating = FALSE;
+			AI_Path.TravelPath.push_back(tCurrentPoint);
+			tFinishPoint.P.set(tFinishPosition);
+			tFinishPoint.floating = FALSE;
+			AI_Path.TravelPath.push_back(tFinishPoint);
+		}
+		tpSubNodes.clear();
+	}
+}
+
+float ffGetDistance(Fvector P1, Fvector P2)
+{
+	return(float(sqrt(float(SQR(P2.x - P1.x) + SQR(P2.z - P1.z) + SQR(P2.y - P1.y)))));
+}
+
+void CAI_Rat::Attack()
+{
+	// if no more health then rat is dead
+#ifdef WRITE_LOG
+	Msg("creature : %s, mode : %s",cName(),"Attack");
+#endif
+	if (g_Health() <= 0) {
+		eCurrentState = aiRatDie;
+		return;
+	}
+	else {
+		// selecting enemy if any
+		SEnemySelected	Enemy;
+		SelectEnemy(Enemy);
+		// do I see the enemies?
+		if (!(Enemy.Enemy)) {
+			// did we kill the enemy ?
+			if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
+				eCurrentState = tStateStack.top();
+				tStateStack.pop();
+			}
+			//  no, we lost him
+			else {
+				dwLostEnemyTime = Level().timeServer();
+				eCurrentState = aiRatPursuit;
+			}
+			return;
+		}
+		else {
+			CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+			// determining who is leader
+			CEntity* Leader = Squad.Leader;
+			// checking if the leader exists
+			R_ASSERT (Leader);
+			// checking if leader is dead then make myself a leader
+			if (Leader->g_Health() <= 0)
+				Leader = this;
+			
+			if (Leader == this) {
+				if (Enemy.bVisible) {
+					bBuildPathToLostEnemy = false;
+					// saving an enemy
+					tSavedEnemy = Enemy.Enemy;
+					tSavedEnemyPosition = Enemy.Enemy->Position();
+					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
+					dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
+					// determining the team
+					// setting watch mode to false
+					bool bWatch = false;
+					// get pointer to the class of node estimator 
+					// for finding the best node in the area
+					CRatSelectorAttack S = SelectorAttack;
+					// if i am not a leader then assign leader
+					if (Leader != this) {
+						S.m_tLeader = Leader;
+						S.m_tLeaderPosition = Leader->Position();
+						S.m_tpLeaderNode = Leader->AI_Node;
+						S.m_tLeaderNode = Leader->AI_NodeID;
+					}
+					// otherwise assign leader to null
+					else {
+						S.m_tLeader = 0;
+						S.m_tLeaderPosition.set(0,0,0);
+						S.m_tpLeaderNode = NULL;
+						S.m_tLeaderNode = -1;
+					}
+					S.m_tHitDir			= tHitDir;
+					S.m_dwHitTime		= dwHitTime;
+					
+					S.m_dwCurTime		= Level().timeServer();
+					//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
+					
+					S.m_tMe				= this;
+					S.m_tpMyNode		= AI_Node;
+					S.m_tMyPosition		= Position();
+					
+					S.m_tEnemy			= Enemy.Enemy;
+					S.m_tEnemyPosition	= Enemy.Enemy->Position();
+					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
+					
+					S.taMembers = Squad.Groups[g_Group()].Members;
+					if (S.m_tLeader)
+						S.taMembers.push_back(S.m_tLeader);
+
+					// checking if I need to rebuild the path i.e. previous search
+					// has found better destination node
+					if (AI_Path.bNeedRebuild) {
+						// building a path from and to
+						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
+						if (AI_Path.Nodes.size() > 2) {
+						// if path is long enough then build travel line
+							AI_Path.BuildTravelLine(Position());
+						}
+						else {
+						// if path is too short then clear it (patch for ExecMove)
+							AI_Path.TravelPath.clear();
+							AI_Path.bNeedRebuild = FALSE;
+						}
+					} 
+					else {
+						Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+						// search for the best node according to the 
+						// SelectFollow evaluation function in the radius N meteres
+						float fOldCost;
+						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+						// if search has found new best node then 
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							AI_Path.DestNode		= S.BestNode;
+							AI_Path.bNeedRebuild	= TRUE;
+						} 
+						else
+							// search hasn't found a better node we have to look around
+							bWatch = true;
+						if (AI_Path.Nodes.size() <= 2)
+							AI_Path.bNeedRebuild = TRUE;
+					}
+					// setting up a look
+					q_look.setup(
+						AI::AIC_Look::Look, 
+						AI::t_Object, 
+						&Enemy,
+						1000);
+					q_look.o_look_speed=_FB_look_speed;
+					
+					if (ffGetDistance(Position(),Enemy.Enemy->Position()) < S.fOptEnemyDistance) 
+						q_action.setup(AI::AIC_Action::FireBegin);
+					else
+						q_action.setup(AI::AIC_Action::FireEnd);
+
+					m_fCurSpeed = m_fMaxSpeed;
+					bStopThinking = true;
+					return;
+				}
+				else {
+					tSavedEnemy = Enemy.Enemy;
+					tSavedEnemyPosition = Enemy.Enemy->Position();
+					tpSavedEnemyNode = Enemy.Enemy->AI_Node;
+					dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
+					if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
+						bBuildPathToLostEnemy = true;
+						// determining the team
+						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
+						// determining who is leader
+						CEntity* Leader = Squad.Leader;
+						// checking if the leader exists
+						R_ASSERT (Leader);
+						// checking if leader is dead then make myself a leader
+						if (Leader->g_Health() <= 0)
+							Leader = this;
+						// setting watch mode to false
+						bool bWatch = false;
+						// get pointer to the class of node estimator 
+						// for finding the best node in the area
+						CRatSelectorAttack S = SelectorAttack;
+						// if i am not a leader then assign leader
+						/**/
+						if (Leader != this) {
+							S.m_tLeader = Leader;
+							S.m_tLeaderPosition = Leader->Position();
+							S.m_tpLeaderNode = Leader->AI_Node;
+							S.m_tLeaderNode = Leader->AI_NodeID;
+						}
+						// otherwise assign leader to null
+						else {
+							S.m_tLeader = 0;
+							S.m_tLeaderPosition.set(0,0,0);
+							S.m_tpLeaderNode = NULL;
+							S.m_tLeaderNode = -1;
+						}
+						/**/
+						S.m_tHitDir			= tHitDir;
+						S.m_dwHitTime		= dwHitTime;
+						
+						S.m_dwCurTime		= Level().timeServer();
+						
+						S.m_tMe				= this;
+						S.m_tpMyNode        = AI_Node;
+						S.m_tMyPosition		= Position();
+						
+						S.m_tEnemy			= Enemy.Enemy;
+						S.m_tEnemyPosition	= Enemy.Enemy->Position();
+						S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
+						
+						S.taMembers = Squad.Groups[g_Group()].Members;
+						if (S.m_tLeader)
+							S.taMembers.push_back(S.m_tLeader);
+						// building a path from and to
+						AI_Path.DestNode = dwSavedEnemyNodeID;
+						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+						if (AI_Path.Nodes.size() > 2) {
+						// if path is long enough then build travel line
+							AI_Path.BuildTravelLine(Position());
+						}
+						else
+						// if path is too short then clear it (patch for ExecMove)
+							AI_Path.TravelPath.clear();
+					}
+					q_look.setup(
+						AI::AIC_Look::Look, 
+						AI::t_Object, 
+						&Enemy,
+						1000);
+					q_look.o_look_speed=_FB_look_speed;
+					
+					q_action.setup(AI::AIC_Action::FireEnd);
+
+					// checking flag to stop processing more states
+					m_fCurSpeed = m_fMaxSpeed;
+					bStopThinking = true;
+					return;
+				}
+			}
+			else {
+				FollowLeader(Squad,Leader);				
+				q_look.setup(
+					AI::AIC_Look::Look, 
+					AI::t_Object, 
+					&Enemy,
+					1000);
+				q_look.o_look_speed=_FB_look_speed;
+				
+				q_action.setup(AI::AIC_Action::FireEnd);
+
+				if (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fOptEnemyDistance) 
+					q_action.setup(AI::AIC_Action::FireBegin);
+				else
+					q_action.setup(AI::AIC_Action::FireEnd);
+				// checking flag to stop processing more states
+				m_fCurSpeed = m_fMaxSpeed;
+				bStopThinking = true;
+				return;
+			}
+			/**/
+		}
+	}
+}
+
+void CAI_Rat::Cover()
+{
+	bStopThinking = true;
+}
+
+void CAI_Rat::Defend()
+{
+	bStopThinking = true;
+}
+
+void CAI_Rat::Die()
+{
+	q_look.setup(0,AI::t_None,0,0	);
+	q_action.setup(AI::AIC_Action::FireEnd);
+	AI_Path.TravelPath.clear();
+	
+	Fvector	dir;
+	AI_Path.Direction(dir);
+	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+
+	bStopThinking = true;
 }
 
 void CAI_Rat::FollowMe()
@@ -602,7 +811,6 @@ void CAI_Rat::FollowMe()
 		return;
 	}
 	else {
-		/**
 		// selecting enemy if any
 		SEnemySelected	Enemy;
 		SelectEnemy(Enemy);
@@ -627,7 +835,6 @@ void CAI_Rat::FollowMe()
 					return;
 				}
 				else {
-		/**/
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
@@ -643,141 +850,7 @@ void CAI_Rat::FollowMe()
 						return;
 					}
 					else {
-						Fvector tCurrentPosition = Position();
-						NodeCompressed* tpCurrentNode = AI_Node;
-						if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
-							vector<SSubNode> tpSubNodes;
-							// divide the nearest nodes into the subnodes 0.7x0.7 m^2
-							//Level().AI.UnpackPosition(tCurrentPosition,AI_Node->p0);
-							int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
-							// filling the subnodes with the moving objects
-							/**
-							Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
-							CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
-							Fvector tCenter;
-							if (!tpNearestList.empty()) {
-								for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-									CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-									if (tpCurrentObject == this)
-										continue;
-									float fRadius = tpCurrentObject->Radius();
-									tpCurrentObject->clCenter(tCenter);
-									for (int i=0; i<tpSubNodes.size(); i++)
-										if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
-											tpSubNodes[i].bEmpty = false;
-								}
-							}
-							/**/
-							CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-							vector<CEntity*> Members = Squad.Groups[g_Group()].Members;
-							if (Squad.Leader != this)
-								Members.push_back(Squad.Leader);
-							for (int i=0; i<Members.size(); i++)
-								if (Members[i] != this) {
-									float fRadius = Members[i]->Radius()/2.f;
-									Fvector tCenter;
-									Members[i]->clCenter(tCenter);
-									for (int i=0; i<tpSubNodes.size(); i++)
-										if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[i]))
-											tpSubNodes[i].bEmpty = false;
-								}
-							/**/
-							// checking the nearest nodes
-							vector<SSubNode> tpFreeNeighbourNodes;
-							tpFreeNeighbourNodes.clear();
-							for ( i=0; i<tpSubNodes.size(); i++)
-								if ((i != iMySubNode) && (tpSubNodes[i].bEmpty) && (bfNeighbourNode(tpSubNodes[i],tpSubNodes[iMySubNode])))
-									tpFreeNeighbourNodes.push_back(tpSubNodes[i]);
-							tpSubNodes.clear();
-							AI_Path.TravelPath.clear();
-							AI_Path.TravelStart = 0;
-							if (!tpFreeNeighbourNodes.empty()) {
-								Fvector tLeaderPosition = Leader->Position();
-								float fBestCost = SQR(tLeaderPosition.x - tCurrentPosition.x) + 0*SQR(tLeaderPosition.y - tCurrentPosition.y) + SQR(tLeaderPosition.z - tCurrentPosition.z);
-								for (int i=0, iBestI=-1; i<tpFreeNeighbourNodes.size(); i++) {
-									float fCurCost = ffComputeCost(tLeaderPosition,tpFreeNeighbourNodes[i]);
-									if (fCurCost < fBestCost) {
-										iBestI = i;
-										fBestCost = fCurCost;
-									}
-								}
-								if (iBestI >= 0) {
-									Fvector tFinishPosition;
-									tFinishPosition.x = (tpFreeNeighbourNodes[iBestI].tLeftDown.x + tpFreeNeighbourNodes[iBestI].tRightUp.x)/2.f;
-									tFinishPosition.y = (tpFreeNeighbourNodes[iBestI].tLeftDown.y + tpFreeNeighbourNodes[iBestI].tRightUp.y)/2.f;
-									tFinishPosition.z = (tpFreeNeighbourNodes[iBestI].tLeftDown.z + tpFreeNeighbourNodes[iBestI].tRightUp.z)/2.f;
-									CTravelNode	tCurrentPoint,tFinishPoint;
-									tCurrentPoint.P.set(tCurrentPosition);
-									tCurrentPoint.floating = FALSE;
-									AI_Path.TravelPath.push_back(tCurrentPoint);
-									tFinishPoint.P.set(tFinishPosition);
-									tFinishPoint.floating = FALSE;
-									AI_Path.TravelPath.push_back(tFinishPoint);
-								}
-								tpFreeNeighbourNodes.clear();
-							}
-						}
-						else {
-							vector<SSubNode> tpSubNodes;
-							CAI_Space &AI = Level().AI;
-							float fSubNodeSize = AI.GetHeader().size;
-							SSubNode tNode;
-							tpSubNodes.clear();
-							int iCount = 0, iMySubNode = -1;
-							float fBestCost = 100.f;
-							Fvector tLeftDown;
-							Fvector tRightUp;
-							AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
-							AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
-							for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
-								for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
-									tNode.tLeftDown.x = i;
-									tNode.tLeftDown.y = tLeftDown.y;
-									tNode.tLeftDown.z = j;
-									tNode.tRightUp.x = i + fSubNodeSize;
-									tNode.tRightUp.y = tLeftDown.y;
-									tNode.tRightUp.z = j + fSubNodeSize;
-									tNode.bEmpty = true;
-									tpSubNodes.push_back(tNode);
-									float fCurrentCost = ffComputeCost(tCurrentPosition,tNode);
-									if (fCurrentCost < fBestCost) {
-										fBestCost = fCurrentCost;
-										iMySubNode = iCount;
-									}
-									iCount++;
-								}
-							}
-							Level().ObjectSpace.GetNearest(tCurrentPosition,2*Level().AI.GetHeader().size);
-							CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
-							if (!tpNearestList.empty()) {
-								for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
-									CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
-									float fRadius = tpCurrentObject->Radius();
-									Fvector tCenter;
-									tpCurrentObject->clCenter(tCenter);
-									if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
-										tpSubNodes[iMySubNode].bEmpty = false;
-										break;
-									}
-								}
-							}
-							AI_Path.TravelPath.clear();
-							AI_Path.TravelStart = 0;
-							if (tpSubNodes[iMySubNode].bEmpty) {
-								Fvector tFinishPosition;
-								tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
-								tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
-								tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
-								CTravelNode	tCurrentPoint,tFinishPoint;
-								tCurrentPoint.P.set(tCurrentPosition);
-								tCurrentPoint.floating = FALSE;
-								AI_Path.TravelPath.push_back(tCurrentPoint);
-								tFinishPoint.P.set(tFinishPosition);
-								tFinishPoint.floating = FALSE;
-								AI_Path.TravelPath.push_back(tFinishPoint);
-							}
-							tpSubNodes.clear();
-						}
+						FollowLeader(Squad,Leader);
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
@@ -802,11 +875,9 @@ void CAI_Rat::FollowMe()
 						bStopThinking = true;
 						return;
 					}
-		/**
 				}
 			}
 		}
-		/**/
 	}
 }
 
@@ -825,7 +896,7 @@ void CAI_Rat::FreeHunting()
 		SEnemySelected	Enemy;
 		SelectEnemy(Enemy);
 		// do I see the enemies?
-		/**
+		/**/
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiRatAttack;
@@ -845,33 +916,6 @@ void CAI_Rat::FreeHunting()
 					return;
 				}
 				else {
-		/**/
-					AI_Path.DestNode = 8;
-					AI_Path.bNeedRebuild = FALSE;
-					if (AI_NodeID != AI_Path.DestNode) {
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-						if (AI_Path.Nodes.size() > 2) {
-							AI_Path.BuildTravelLine(Position());
-							CTravelNode	tCurrentNode,tNextNode;
-							tCurrentNode = AI_Path.TravelPath[0];
-							tNextNode = AI_Path.TravelPath[1];
-							if (
-								(tCurrentNode.P.x == tNextNode.P.x) &&
-								(tCurrentNode.P.y == tNextNode.P.y) &&
-								(tCurrentNode.P.z == tNextNode.P.z)) {
-								Msg("illegal leader direction");
-							}
-						}
-						else
-							AI_Path.TravelPath.clear();
-					}
-					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
-					SetLessCoverLook(tNode);
-					q_action.setup(AI::AIC_Action::FireEnd);
-					// checking flag to stop processing more states
-					m_fCurSpeed = m_fMaxSpeed;
-					bStopThinking = true;
-		/**
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
@@ -881,70 +925,77 @@ void CAI_Rat::FreeHunting()
 					// checking if leader is dead then make myself a leader
 					if (Leader->g_Health() <= 0)
 						Leader = this;
-					// setting up watch mode to false
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CRatSelectorFreeHunting S = SelectorFreeHunting;
-					// if i am not a leader then assign leader
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
-					}
-					// otherwise assign leader to null
-					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
-					}
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
 					
-					S.m_dwCurTime		= Level().timeServer();
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode		= AI_Node;
-					S.m_tMyPosition		= Position();
-					
-					S.m_tEnemy			= 0;
-					S.m_tEnemyPosition.set(0,0,0);
-					S.m_tpEnemyNode		= NULL;
-					
-					S.taMembers = Squad.Groups[g_Group()].Members;
-					// checking if I need to rebuild the path i.e. previous search
-					// has found better destination node
-					if (AI_Path.bNeedRebuild) {
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-						if (AI_Path.Nodes.size() > 2) {
-						// if path is long enough then build travel line
-							AI_Path.BuildTravelLine(Position());
+					if (Leader == this) {
+						// setting up watch mode to false
+						bool bWatch = false;
+						// get pointer to the class of node estimator 
+						// for finding the best node in the area
+						CRatSelectorFreeHunting S = SelectorFreeHunting;
+						// if i am not a leader then assign leader
+						if (Leader != this) {
+							S.m_tLeader = Leader;
+							S.m_tLeaderPosition = Leader->Position();
+							S.m_tpLeaderNode = Leader->AI_Node;
+							S.m_tLeaderNode = Leader->AI_NodeID;
 						}
+						// otherwise assign leader to null
 						else {
-						// if path is too short then clear it (patch for ExecMove)
-							AI_Path.TravelPath.clear();
-							AI_Path.bNeedRebuild = FALSE;
+							S.m_tLeader = 0;
+							S.m_tLeaderPosition.set(0,0,0);
+							S.m_tpLeaderNode = NULL;
+							S.m_tLeaderNode = -1;
 						}
-					} 
-					else {
-						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-						// SelectFollow evaluation function in the radius 35 meteres
-						float fOldCost;
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-						// if search has found new best node then 
-						//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-						if (((AI_Path.DestNode != S.BestNode)) && (S.BestCost < (fOldCost - S.fLaziness))){
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
+						S.m_tHitDir			= tHitDir;
+						S.m_dwHitTime		= dwHitTime;
+						
+						S.m_dwCurTime		= Level().timeServer();
+						
+						S.m_tMe				= this;
+						S.m_tpMyNode		= AI_Node;
+						S.m_tMyPosition		= Position();
+						
+						S.m_tEnemy			= 0;
+						S.m_tEnemyPosition.set(0,0,0);
+						S.m_tpEnemyNode		= NULL;
+						
+						S.taMembers = Squad.Groups[g_Group()].Members;
+						// checking if I need to rebuild the path i.e. previous search
+						// has found better destination node
+						if (AI_Path.bNeedRebuild) {
+							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+							if (AI_Path.Nodes.size() > 2) {
+							// if path is long enough then build travel line
+								AI_Path.BuildTravelLine(Position());
+							}
+							else {
+							// if path is too short then clear it (patch for ExecMove)
+								AI_Path.TravelPath.clear();
+								AI_Path.bNeedRebuild = FALSE;
+							}
 						} 
-						else 
-							// search hasn't found a better node we have to look around
-							bWatch = true;
-						if (AI_Path.TravelPath.size() < 2)
-							AI_Path.bNeedRebuild	= TRUE;
+						else {
+							// fill arrays of members and exclude myself
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							// SelectFollow evaluation function in the radius 35 meteres
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+							// if search has found new best node then 
+							//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							if (((AI_Path.DestNode != S.BestNode)) && (S.BestCost < (fOldCost - S.fLaziness))){
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
+							} 
+							else 
+								// search hasn't found a better node we have to look around
+								bWatch = true;
+							if (AI_Path.TravelPath.size() < 2)
+								AI_Path.bNeedRebuild	= TRUE;
+						}
+			/**/
+					}
+					else {
+						FollowLeader(Squad,Leader);
 					}
 					// setting up a look
 					// getting my current node
@@ -957,7 +1008,6 @@ void CAI_Rat::FreeHunting()
 					m_fCurSpeed = m_fMaxSpeed;
 					bStopThinking = true;
 					return;
-		/**
 				}
 			}
 		}
