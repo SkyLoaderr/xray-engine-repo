@@ -26,8 +26,8 @@ private:
 		ePathStateBuildGamePath = u32(0),
 		ePathStateBuildLevelPath,
 		ePathStateBuildDetailPath,
-		ePathStateSearchGameNode,
-		ePathStateSearchLevelNode,
+		ePathStateSelectGameNode,
+		ePathStateSelectLevelNode,
 		ePathStateDummy = u32(-1),
 	};
 	
@@ -45,6 +45,6 @@ public:
 					CMovementManager		();
 	virtual			~CMovementManager		();
 	virtual void	init					();
-			void	build_path				(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode);
+			void	build_path				(PathManagers::CAbstractNodeEvaluator *node_evaluator, Fvector *target_position);
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 };

@@ -126,6 +126,25 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	Device.Statistic.Physics.End	();
 }
 
+template <u64 flags>
+void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+{
+	if (!m_locate_query_time ||
+		(m_locate_query_time < m_location_query_interval + m_current_update) ||
+		m_detail_path.empty() ||
+		(int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) ||
+		(speed() < EPS_L)
+		) 
+	{
+	   select_location	(node_evaluator);
+	   if ((m_level_dest_node != node_evaluator->m_dwBestNode) && !m_selector_failed){
+		   m_level_dest_node	= node_evaluator->m_dwBestNode;
+		   m_level_path.clear	();
+//		   m_tPathState			= ePathStateBuildNodePath;
+	   }
+	}
+}
+
 //void CMovementManager::find_path(PathManagers::CAbstractNodeEvaluator *tpNodeEvaluator)
 //{
 //	Device.Statistic.AI_Path.Begin();
@@ -165,10 +184,10 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 //	Device.Statistic.AI_Path.End();
 //}
 
-void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evluator, Fvector *tpDestinationPosition, bool bSearchForNode)
+void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
 {
-	if (node_evluator)
-		init_evaluator			(node_evluator);
+	if (node_evaluator)
+		init_evaluator			(node_evaluator);
 
 //	if (m_path_state_previous != m_path_state) {
 //		m_path_state_previous	= m_path_state;
@@ -239,23 +258,4 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evl
 //		}
 //	}
 //	m_tPathType = tPathType;
-}
-
-template <u64 flags>
-void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
-{
-	if (!m_locate_query_time ||
-		(m_locate_query_time < m_location_query_interval + m_current_update) ||
-		m_detail_path.empty() ||
-		(int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) ||
-		(speed() < EPS_L)
-		) 
-	{
-	   select_location	(node_evaluator);
-	   if ((m_level_dest_node != node_evaluator->m_dwBestNode) && !m_selector_failed){
-		   m_level_dest_node	= node_evaluator->m_dwBestNode;
-		   m_level_path.clear	();
-//		   m_tPathState			= ePathStateBuildNodePath;
-	   }
-	}
 }
