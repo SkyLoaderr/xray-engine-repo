@@ -237,5 +237,5 @@ void CStalkerMovementManager::update(
 	update_path						();
 
 #pragma todo("Dima to Dima : This method will be automatically removed after 22.12.2003 00:00")
-	set_desirable_speed				(1+0*custom_monster->m_fCurSpeed);
+	set_desirable_speed				(custom_monster->m_fCurSpeed);
 }
