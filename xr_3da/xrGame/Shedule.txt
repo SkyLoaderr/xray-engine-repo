@@ -1,0 +1,5 @@
+	.TODO: Batch culling
+	.TODO: Blurred output
+	.TODO: Rain with collisions
+	.TODO: Sound-wave-tracing
+	.TODO: Flash-lighting (ala Kreed :)

@@ -621,6 +621,10 @@ SOURCE=.\notes.txt
 # End Source File
 # Begin Source File
 
+SOURCE=.\Shedule.txt
+# End Source File
+# Begin Source File
+
 SOURCE=.\todo.txt
 # End Source File
 # End Target
