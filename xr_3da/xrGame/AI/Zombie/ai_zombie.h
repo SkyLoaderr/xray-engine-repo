@@ -18,6 +18,9 @@ class CAI_Zombie : public CCustomMonster
 		//////////////////////////
 		// STRUCTURES
 		//////////////////////////
+		#define TIME_TO_GO		2000
+		#define TIME_TO_RETURN	 500
+
 		enum ESoundCcount {
 			SND_ATTACK_COUNT=4,
 			SND_DEATH_COUNT=3,

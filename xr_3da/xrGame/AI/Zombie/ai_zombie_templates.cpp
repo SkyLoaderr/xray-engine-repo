@@ -209,30 +209,19 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed)
 	bool m_bResult = false;
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			if (m_Enemy.Enemy) {
-				if (!::Random.randI(4)) {
-					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				}
-				else {
-					Fvector tTemp;
-					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-					tTemp.normalize_safe();
-					mk_rotation(tTemp,r_torso_target);
-				}
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-			else {
+		if (m_bNoWay)
+			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {
 				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 				r_torso_target.yaw = r_torso_current.yaw + fAngle;
 				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+				Fvector tTemp;
+				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
+				tTemp.mul(100.f);
+				m_tGoalDir.add(vPosition,tTemp);
+				m_dwLastRangeSearch = Level().timeServer();
 			}
-		}
 		m_bResult = true;
 	}
-	else 
-		m_fSpeed = m_fSafeSpeed;
 
 	return(m_bResult);
 }
@@ -341,30 +330,19 @@ bool CAI_Zombie::bfComputeNextDirectionPosition(bool bCanAdjustSpeed)
 	bool m_bResult = false;
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			if (m_Enemy.Enemy) {
-				if (!::Random.randI(4)) {
-					float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-					r_torso_target.yaw = r_torso_current.yaw + fAngle;
-				}
-				else {
-					Fvector tTemp;
-					tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-					tTemp.normalize_safe();
-					mk_rotation(tTemp,r_torso_target);
-				}
-				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			}
-			else {
+		if (m_bNoWay)
+			if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_RETURN) || (!m_dwLastRangeSearch)) {
 				float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
 				r_torso_target.yaw = r_torso_current.yaw + fAngle;
 				r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+				Fvector tTemp;
+				tTemp.setHP(-r_torso_target.yaw,-r_torso_target.pitch);
+				tTemp.mul(100.f);
+				m_tGoalDir.add(vPosition,tTemp);
+				m_dwLastRangeSearch = Level().timeServer();
 			}
-		}
 		m_bResult = true;
 	}
-	//else 
-	//	m_fSpeed = m_fSafeSpeed;
 
 	return(m_bResult);
 }

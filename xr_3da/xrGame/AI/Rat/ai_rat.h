@@ -18,7 +18,9 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// STRUCTURES
 		//////////////////////////
-		#define TIME_TO_GO 2000
+		#define TIME_TO_GO		2000
+		#define TIME_TO_RETURN	 500
+
 		enum ESoundCcount {
 			SND_HIT_COUNT=1,
 			SND_DIE_COUNT=1,

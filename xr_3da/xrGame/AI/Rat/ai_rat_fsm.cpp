@@ -578,8 +578,10 @@ void CAI_Rat::ReturnHome()
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
 	m_fASpeed				= m_fAngleSpeed;
-	m_tGoalDir.set			(m_tSafeSpawnPosition);
 	m_fSpeed = m_fSafeSpeed = m_fAttackSpeed;
+
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set			(m_tSafeSpawnPosition);
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -622,7 +624,7 @@ void CAI_Rat::EatCorpse()
 		m_dwLostEnemyTime = Level().timeServer();
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
-
+	
 	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
 		m_tGoalDir.set(m_Enemy.Enemy->Position());
 	

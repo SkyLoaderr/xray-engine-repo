@@ -337,6 +337,8 @@ void CAI_Zombie::AttackRun()
 
 	SelectEnemy(m_Enemy);
 
+	vfSaveEnemy();
+
 	if (!(m_Enemy.Enemy) && m_tSavedEnemy && (Level().timeServer() - m_dwLostEnemyTime < m_dwLostMemoryTime))
 		m_Enemy.Enemy = m_tSavedEnemy;
 
@@ -367,10 +369,9 @@ void CAI_Zombie::AttackRun()
 
 	INIT_SQUAD_AND_LEADER;
 	
-	m_tGoalDir.set			(m_Enemy.Enemy->Position());
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_Enemy.Enemy->Position());
 	
-	vfSaveEnemy();
-
 	vfUpdateTime(m_fTimeUpdateDelta);
 
 	m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
@@ -429,7 +430,8 @@ void CAI_Zombie::Pursuit()
 		m_dwLostEnemyTime = Level().timeServer();
 	}
 
-	m_tGoalDir.set(m_tSavedEnemyPosition);
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set(m_tSavedEnemyPosition);
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -464,8 +466,10 @@ void CAI_Zombie::ReturnHome()
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
 	m_fASpeed				= m_fAngleSpeed;
-	m_tGoalDir.set			(m_tSafeSpawnPosition);
 	m_fSpeed = m_fSafeSpeed = m_fAttackSpeed;
+
+	if ((Level().timeServer() - m_dwLastRangeSearch > TIME_TO_GO) || !m_dwLastRangeSearch)
+		m_tGoalDir.set			(m_tSafeSpawnPosition);
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
