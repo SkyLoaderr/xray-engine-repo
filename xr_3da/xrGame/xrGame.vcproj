@@ -1515,6 +1515,12 @@
 				RelativePath="xrServer_Entities.h">
 			</File>
 			<File
+				RelativePath="xrServer_Entity_Custom.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_Entity_Custom.h">
+			</File>
+			<File
 				RelativePath="xrServer_balance.cpp">
 			</File>
 			<File

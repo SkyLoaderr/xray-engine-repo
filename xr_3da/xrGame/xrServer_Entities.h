@@ -6,11 +6,12 @@
 #ifdef _EDITOR
 	#include "PropertiesListHelper.h"
 #endif
+#include "xrServer_Entity_Custom.h"
 #include "ai_alife_server_objects.h"
 
 // refs
 //class xrServerEntity;
-class xrClientData;
+//class xrClientData;
 
 // t-defs
 struct	SRotation

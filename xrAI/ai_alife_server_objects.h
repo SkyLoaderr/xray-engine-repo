@@ -11,72 +11,7 @@
 
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
-
-class xrClientData;
-
-class xrServerEntity : public IPureMainObject {
-public:
-	BOOL							net_Ready;
-	BOOL							net_Processed;	// Internal flag for connectivity-graph
-	
-	u8								m_ucVersion;
-	u16								RespawnTime;
-
-	u16								ID;				// internal ID
-	u16								ID_Parent;		// internal ParentID, 0xffff means no parent
-	u16								ID_Phantom;		// internal PhantomID, 0xffff means no phantom
-	xrClientData*					owner;
-	vector<u16>						children;
-
-	// spawn data
-	string64						s_name;
-	string64						s_name_replace;
-	u8								s_gameid;
-	u8								s_RP;
-	Flags16							s_flags;		// state flags
-
-	// update data
-	Fvector							o_Position;
-	Fvector							o_Angle;
-
-	// for ALife control
-	bool							m_bALifeControl;
-
-									xrServerEntity()
-	{
-		RespawnTime					= 0;
-		net_Ready					= FALSE;
-		ID							= 0xffff;
-        ID_Parent					= 0xffff;
-		ID_Phantom					= 0xffff;
-		owner						= 0;
-		s_gameid					= 0;
-		s_RP						= 0xFE;			// Use supplied coords
-        s_flags.set					(M_SPAWN_OBJECT_ACTIVE);
-		ZeroMemory					(s_name,		sizeof(string64));
-		ZeroMemory					(s_name_replace,sizeof(string64));
-        o_Angle.set					(0.f,0.f,0.f);
-        o_Position.set				(0.f,0.f,0.f);
-		m_bALifeControl				= false;
-	}
-	
-	virtual							~xrServerEntity()
-	{
-	}
-	
-	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
-	virtual u8						g_team			(){return 0;};
-	virtual u8						g_squad			(){return 0;};
-	virtual u8						g_group			(){return 0;};
-
-	virtual void					Init			(LPCSTR	caSection){};
-	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
-	void							Spawn_Read		(NET_Packet &tNetPacket);
-	// editor integration
-#ifdef _EDITOR
-    virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
-#endif
-};
+#include "xrServer_Entity_Custom.h"
 
 class CALifeObject : public xrServerEntity {
 public:
@@ -97,164 +32,61 @@ public:
 		m_tGraphID					= _GRAPH_ID(-1);
 	};
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tClassID,sizeof(m_tClassID));
-		tNetPacket.w				(&m_tObjectID,sizeof(m_tObjectID));
-		tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
-		tNetPacket.w_float			(m_fDistance);
-		tNetPacket.w_u16			(m_wCount);
-		tNetPacket.w_u32			(m_bOnline);
-	}
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tClassID,sizeof(m_tClassID));
-		tNetPacket.r				(&m_tObjectID,sizeof(m_tObjectID));
-		tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
-		tNetPacket.r_float			(m_fDistance);
-		tNetPacket.r_u16			(m_wCount);
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_bOnline					= !!dwDummy;
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
-class CALifeMonsterParams : public IPureServerEditorObject {
+class CALifeMonsterParams : public IPureServerInitObject {
 public:
 	int								m_iHealth;
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w_s32			(m_iHealth);
-	};
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r_s32			(m_iHealth);
-	};
-	
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
-class CALifeTraderParams : public IPureServerEditorObject {
+class CALifeTraderParams : public IPureServerInitObject {
 public:
 	float							m_fCumulativeItemMass;
 	u32								m_dwMoney;
 	EStalkerRank					m_tRank;
 	OBJECT_VECTOR					m_tpItemIDs;
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w_float			(m_fCumulativeItemMass);
-		tNetPacket.w_u32			(m_dwMoney);
-		tNetPacket.w_u32			(m_tRank);
-		save_base_vector			(m_tpItemIDs,tNetPacket);
-	};
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r_float			(m_fCumulativeItemMass);
-		tNetPacket.r_u32			(m_dwMoney);
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_tRank						= EStalkerRank(m_tRank);
-		load_base_vector			(m_tpItemIDs,tNetPacket);
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeHumanParams : public CALifeMonsterParams, public CALifeTraderParams {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterParams::STATE_Write(tNetPacket);
-		CALifeTraderParams::STATE_Write(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeMonsterParams::STATE_Read(tNetPacket, size);
-		CALifeTraderParams::STATE_Read(tNetPacket, size);
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterParams::UPDATE_Write(tNetPacket);
-		CALifeTraderParams::UPDATE_Write(tNetPacket);
-	};
-	
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterParams::UPDATE_Read(tNetPacket);
-		CALifeTraderParams::UPDATE_Read(tNetPacket);
-	};
-	
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeMonsterParams::Init	(caSection);
-		CALifeTraderParams::Init	(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
-class CALifeTraderAbstract : public IPureServerEditorObject {
+class CALifeTraderAbstract : public IPureServerInitObject {
 public:
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
 	TASK_VECTOR						m_tpTaskIDs;
 	float							m_fMaxItemMass;
 
-	virtual							~CALifeTraderAbstract()
+									~CALifeTraderAbstract()
 	{
 		free_vector					(m_tpEvents);
 	};
-	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
 
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		save_vector					(m_tpEvents,tNetPacket);
-		save_base_vector			(m_tpTaskIDs,tNetPacket);
-		tNetPacket.w_float			(m_fMaxItemMass);
-	};
-
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		load_vector					(m_tpEvents,tNetPacket);
-		load_base_vector			(m_tpTaskIDs,tNetPacket);
-		tNetPacket.r_float			(m_fMaxItemMass);
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
@@ -263,32 +95,11 @@ public:
 	typedef	CALifeObject inherited;
 	u16								m_wCountAfter;
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		tNetPacket.w				(&m_wCountAfter,sizeof(m_wCountAfter));
-	};
-
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		tNetPacket.r				(&m_wCountAfter,sizeof(m_wCountAfter));
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		m_wCountAfter				= m_wCount;
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeEvent : public IPureServerObject {
@@ -300,33 +111,11 @@ public:
 	CALifeEventGroup				*m_tpMonsterGroup1;
 	CALifeEventGroup				*m_tpMonsterGroup2;
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tEventID,		sizeof(m_tEventID));
-		tNetPacket.w				(&m_tTimeID,		sizeof(m_tTimeID));
-		tNetPacket.w				(&m_tGraphID,		sizeof(m_tGraphID));
-		tNetPacket.w				(&m_tBattleResult,	sizeof(m_tBattleResult));
-		m_tpMonsterGroup1->UPDATE_Write(tNetPacket);
-		m_tpMonsterGroup2->UPDATE_Write(tNetPacket);
-	};
-	
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tEventID,		sizeof(m_tEventID));
-		tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
-		tNetPacket.r				(&m_tGraphID,		sizeof(m_tGraphID));
-		tNetPacket.r				(&m_tBattleResult,	sizeof(m_tBattleResult));
-		m_tpMonsterGroup1->UPDATE_Read(tNetPacket);
-		m_tpMonsterGroup2->UPDATE_Read(tNetPacket);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifePersonalEvent : public IPureServerObject {
@@ -338,33 +127,10 @@ public:
 	ERelation						m_tRelation;
 	OBJECT_VECTOR					m_tpItemIDs;
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tEventID,			sizeof(m_tEventID));
-		tNetPacket.w				(&m_tTimeID,			sizeof(m_tTimeID));
-		tNetPacket.w				(&m_tTaskID,			sizeof(m_tTaskID));
-		tNetPacket.w_u32			(m_iHealth);
-		tNetPacket.w				(&m_tRelation,			sizeof(m_tRelation));
-		save_base_vector			(m_tpItemIDs, tNetPacket);
-	};
-	
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tEventID,		sizeof(m_tEventID));
-		tNetPacket.r				(&m_tTimeID,		sizeof(m_tTimeID));
-		tNetPacket.r				(&m_tTaskID,		sizeof(m_tTaskID));
-		tNetPacket.r_s32			(m_iHealth);
-		tNetPacket.r				(&m_tRelation,		sizeof(m_tRelation));
-		load_base_vector			(m_tpItemIDs, tNetPacket);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
 class CALifeTask : public IPureServerObject {
@@ -383,81 +149,10 @@ public:
 		_GRAPH_ID					m_tGraphID;
 	};
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tTaskID,	sizeof(m_tTaskID));
-		tNetPacket.w				(&m_tTimeID,	sizeof(m_tTimeID));
-		tNetPacket.w				(&m_tCustomerID,sizeof(m_tCustomerID));
-		tNetPacket.w_float			(m_fCost);
-		tNetPacket.w				(&m_tTaskType,	sizeof(m_tTaskType));
-		switch (m_tTaskType) {
-			case eTaskTypeSearchForItemCL : {
-				tNetPacket.w		(&m_tClassID,	sizeof(m_tClassID));
-				tNetPacket.w		(&m_tLocationID,sizeof(m_tLocationID));
-				break;
-			}
-			case eTaskTypeSearchForItemCG : {
-				tNetPacket.w		(&m_tClassID,	sizeof(m_tClassID));
-				tNetPacket.w		(&m_tGraphID,	sizeof(m_tGraphID));
-				break;
-			}
-			case eTaskTypeSearchForItemOL : {
-				tNetPacket.w		(&m_tObjectID,	sizeof(m_tObjectID));
-				tNetPacket.w		(&m_tLocationID,sizeof(m_tLocationID));
-				break;
-			}
-			case eTaskTypeSearchForItemOG : {
-				tNetPacket.w		(&m_tObjectID,	sizeof(m_tObjectID));
-				tNetPacket.w		(&m_tGraphID,	sizeof(m_tGraphID));
-				break;
-			}
-			default : {
-				break;
-			}
-		};
-	};
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tTaskID,	sizeof(m_tTaskID));
-		tNetPacket.r				(&m_tTimeID,	sizeof(m_tTimeID));
-		tNetPacket.r				(&m_tCustomerID,sizeof(m_tCustomerID));
-		tNetPacket.r_float			(m_fCost);
-		tNetPacket.r				(&m_tTaskType,	sizeof(m_tTaskType));
-		switch (m_tTaskType) {
-			case eTaskTypeSearchForItemCL : {
-				tNetPacket.r		(&m_tClassID,	sizeof(m_tClassID));
-				tNetPacket.r		(&m_tLocationID,sizeof(m_tLocationID));
-				break;
-			}
-			case eTaskTypeSearchForItemCG : {
-				tNetPacket.r		(&m_tClassID,	sizeof(m_tClassID));
-				tNetPacket.r		(&m_tGraphID,	sizeof(m_tGraphID));
-				break;
-			}
-			case eTaskTypeSearchForItemOL : {
-				tNetPacket.r		(&m_tObjectID,	sizeof(m_tObjectID));
-				tNetPacket.r		(&m_tLocationID,sizeof(m_tLocationID));
-				break;
-			}
-			case eTaskTypeSearchForItemOG : {
-				tNetPacket.r		(&m_tObjectID,	sizeof(m_tObjectID));
-				tNetPacket.r		(&m_tGraphID,	sizeof(m_tGraphID));
-				break;
-			}
-			default : {
-				break;
-			}
-		};
-	}
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
 class CALifePersonalTask : public CALifeTask {
@@ -470,51 +165,20 @@ public:
 		m_dwTryCount = 0;
 	};
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket,size);
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		tNetPacket.w_u32			(m_dwTryCount);
-	};
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		tNetPacket.r_u32			(m_dwTryCount);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
-class CALifeZone : public IPureServerEditorObject {
+class CALifeZone : public IPureServerInitObject {
 public:
 	EAnomalousZoneType				m_tAnomalousZone;
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
-	};
-	
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tAnomalousZone,sizeof(m_tAnomalousZone));
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
@@ -529,27 +193,10 @@ public:
 		m_tTimeID					= 0;
 	}
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		tNetPacket.w				(&m_tTimeID,	sizeof(m_tTimeID));
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		tNetPacket.r				(&m_tTimeID,	sizeof(m_tTimeID));
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 };
 
 class CALifeItem : public CALifeDynamicObject {
@@ -561,108 +208,29 @@ public:
 	s32								m_iHealthValue;
 	bool							m_bAttached;
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		tNetPacket.w_float			(m_fMass);
-		tNetPacket.w_u32			(m_dwCost);
-		tNetPacket.w_u32			(m_iHealthValue);
-		tNetPacket.w_u32			(m_bAttached);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		tNetPacket.r_float			(m_fMass);
-		tNetPacket.r_u32			(m_dwCost);
-		tNetPacket.r_s32			(m_iHealthValue);
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_bAttached					= !!dwDummy;
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeAnomalousZone : public CALifeDynamicObject, public CALifeZone {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::STATE_Write(tNetPacket);
-		CALifeZone::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeDynamicObject::STATE_Read(tNetPacket, size);
-		CALifeZone::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::UPDATE_Write(tNetPacket);
-		CALifeZone::UPDATE_Write	(tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::UPDATE_Read(tNetPacket);
-		CALifeZone::UPDATE_Read	(tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeDynamicObject::Init	(caSection);
-		CALifeZone::Init			(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeTrader : public CALifeDynamicObject, public CALifeTraderParams, public CALifeTraderAbstract {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::STATE_Write(tNetPacket);
-		CALifeTraderParams::STATE_Write(tNetPacket);
-		CALifeTraderAbstract::STATE_Write(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeDynamicObject::STATE_Read(tNetPacket, size);
-		CALifeTraderParams::STATE_Read(tNetPacket, size);
-		CALifeTraderAbstract::STATE_Read(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::UPDATE_Write(tNetPacket);
-		CALifeTraderParams::UPDATE_Write(tNetPacket);
-		CALifeTraderAbstract::UPDATE_Write(tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeDynamicObject::UPDATE_Read(tNetPacket);
-		CALifeTraderParams::UPDATE_Read(tNetPacket);
-		CALifeTraderAbstract::UPDATE_Read(tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeDynamicObject::Init	(caSection);
-		CALifeTraderParams::Init	(caSection);
-		CALifeTraderAbstract::Init	(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeMonsterAbstract : public CALifeDynamicObject {
@@ -676,105 +244,29 @@ public:
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-		tNetPacket.w				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-		tNetPacket.w				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-		tNetPacket.w				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-		tNetPacket.w				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-		tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-		tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-		tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-		tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-		tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeDynamicAnomalousZone : public CALifeMonsterAbstract, public CALifeZone {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::STATE_Write(tNetPacket);
-		CALifeZone::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeMonsterAbstract::STATE_Read(tNetPacket, size);
-		CALifeZone::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::UPDATE_Write(tNetPacket);
-		CALifeZone::UPDATE_Write	(tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::UPDATE_Read(tNetPacket);
-		CALifeZone::UPDATE_Read		(tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeMonsterAbstract::Init	(caSection);
-		CALifeZone::Init			(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeMonster : public CALifeMonsterAbstract, public CALifeMonsterParams {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::STATE_Write(tNetPacket);
-		CALifeMonsterParams::STATE_Write(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeMonsterAbstract::STATE_Read(tNetPacket, size);
-		CALifeMonsterParams::STATE_Read(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::UPDATE_Write(tNetPacket);
-		CALifeMonsterParams::UPDATE_Write(tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::UPDATE_Read(tNetPacket);
-		CALifeMonsterParams::UPDATE_Read(tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeMonsterAbstract::Init	(caSection);
-		CALifeMonsterParams::Init	(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeMonsterGroup : public CALifeMonsterAbstract {
@@ -788,34 +280,11 @@ public:
 		free_vector					(m_tpMembers);
 	};
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		save_vector					(m_tpMembers,tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		load_vector					(m_tpMembers,tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		inherited::Init				(caSection);
-		m_tpMembers.resize			(m_wCount);
-		init_vector					(m_tpMembers,caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeHumanAbstract : public CALifeMonsterAbstract, public CALifeTraderAbstract {
@@ -834,82 +303,20 @@ public:
 		free_vector					(m_tpTasks);
 	};
 	
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeMonsterAbstract::STATE_Write(tNetPacket);
-		CALifeTraderAbstract::STATE_Write(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeMonsterAbstract::STATE_Read(tNetPacket, size);
-		CALifeTraderAbstract::STATE_Read(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		// calling inherited
-		CALifeMonsterAbstract::UPDATE_Write(tNetPacket);
-		CALifeTraderAbstract::UPDATE_Write(tNetPacket);
-		save_base_vector			(m_tpaVertices,tNetPacket);
-		save_bool_vector			(m_baVisitedVertices,tNetPacket);
-		save_vector					(m_tpTasks,tNetPacket);
-		tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
-		tNetPacket.w_u32			(m_dwCurNode);
-		tNetPacket.w_u32			(m_dwCurTaskLocation);
-		tNetPacket.w_u32			(m_dwCurTask);
-		tNetPacket.w_float			(m_fSearchSpeed);
-	};
-
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		// calling inherited
-		CALifeMonsterAbstract::UPDATE_Read	(tNetPacket);
-		CALifeTraderAbstract::UPDATE_Read	(tNetPacket);
-		load_base_vector			(m_tpaVertices,tNetPacket);
-		load_bool_vector			(m_baVisitedVertices,tNetPacket);
-		load_vector					(m_tpTasks,tNetPacket);
-		tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
-		tNetPacket.r_u32			(m_dwCurNode);
-		tNetPacket.r_u32			(m_dwCurTaskLocation);
-		tNetPacket.r_u32			(m_dwCurTask);
-		tNetPacket.r_float			(m_fSearchSpeed);
-	};
-
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeHuman : public CALifeHumanAbstract, public CALifeHumanParams {
 public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeHumanAbstract::STATE_Write(tNetPacket);
-		CALifeHumanParams::STATE_Write(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		CALifeHumanAbstract::STATE_Read(tNetPacket, size);
-		CALifeHumanParams::STATE_Read(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		CALifeHumanAbstract::UPDATE_Write(tNetPacket);
-		CALifeHumanParams::UPDATE_Write(tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		CALifeHumanAbstract::UPDATE_Read(tNetPacket);
-		CALifeHumanParams::UPDATE_Read(tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		CALifeHumanAbstract::Init	(caSection);
-		CALifeHumanParams::Init		(caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 
 class CALifeHumanGroup : public CALifeHumanAbstract {
@@ -923,33 +330,10 @@ public:
 		free_vector					(m_tpMembers);
 	};
 
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::STATE_Write		(tNetPacket);
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-		inherited::STATE_Read		(tNetPacket, size);
-	}
-
-	virtual	void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Write		(tNetPacket);
-		save_vector					(m_tpMembers,tNetPacket);
-	};
-	
-	virtual	void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		inherited::UPDATE_Read		(tNetPacket);
-		load_vector					(m_tpMembers,tNetPacket);
-	};
-
-	virtual void					Init(LPCSTR caSection)
-	{
-		inherited::Init				(caSection);
-		m_tpMembers.resize			(m_wCount);
-		init_vector					(m_tpMembers,caSection);
-	};
+	virtual void					STATE_Write(NET_Packet &tNetPacket);
+	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
+	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
+	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
+	virtual void					Init(LPCSTR caSection);
 };
 #endif

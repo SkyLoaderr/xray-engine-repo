@@ -41,17 +41,8 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
 };
 
-interface IPureServerEditorObject : public IPureServerObject {
+interface IPureServerInitObject : public IPureServerObject {
 public:
 	virtual void					Init		(LPCSTR caSection)						= 0;
-#ifdef _EDITOR
-    virtual void					FillProp	(LPCSTR pref, PropItemVec &items)		= 0;
-#endif
-};
-
-class IPureMainObject : public IPureServerEditorObject {
-public:
-	virtual void					Spawn_Write	(NET_Packet &tNetPacket, BOOL bLocal)	= 0;
-	virtual void					Spawn_Read	(NET_Packet &tNetPacket)				= 0;
 };
 #endif
