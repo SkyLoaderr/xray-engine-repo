@@ -18,14 +18,8 @@
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 
-typedef struct tagSAlife {
-	u16			tGraphID;
-	float		fDistance;
-} SALife;
-
 DEFINE_VECTOR(u32,				DWORD_VECTOR,			DWORD_IT);
-DEFINE_VECTOR(SALife,			ALIFE_VECTOR,			ALIFE_IT);
-DEFINE_VECTOR(xrServerEntity *, SERVER_ENTITY_P_VECTOR, SERVER_ENTITY_P_IT);
+DEFINE_VECTOR(xrALifeEntity *,	ALIFE_ENTITY_P_VECTOR,	ALIFE_ENTITY_P_IT);
 
 CVirtualFileStream				*tpGraphVFS = 0;
 SCompressedGraphVertex			*tpaGameGraph;
@@ -50,7 +44,7 @@ public:
 class CSpawn : public CThread {
 public:
 	SLevel						m_tLevel;
-	SERVER_ENTITY_P_VECTOR		m_tpSpawnPoints;
+	ALIFE_ENTITY_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	u32							m_dwAStarStaticCounter;
 	SNode						*m_tpHeap;
@@ -62,7 +56,6 @@ public:
 	u32							m_dwMaxNodeCount;
 	DWORD_VECTOR				m_tpSpawnNodes;
 	DWORD_VECTOR				m_tpGraphNodes;
-	ALIFE_VECTOR				m_tpResultNodes;
 	CAI_Map						*m_tpAI_Map;
 
 								CSpawn(const SLevel &tLevel, u32 dwLevelID) : CThread(dwLevelID)
@@ -99,8 +92,11 @@ public:
 			R_ASSERT2(E,"Can't create entity.");
 			E->Spawn_Read		(P);
 			//
-			if (E->s_gameid == GAME_SINGLE)
-				m_tpSpawnPoints.push_back(E);
+			if (E->s_gameid == GAME_SINGLE) {
+				xrALifeEntity	*tpALifeEntity;
+				R_ASSERT(tpALifeEntity = dynamic_cast<xrALifeEntity*>(E));
+				m_tpSpawnPoints.push_back(tpALifeEntity);
+			}
 			else
 				xr_delete(E);
 			S_id++;
@@ -135,7 +131,6 @@ public:
 		thProgress				= 0.0f;
 		m_tpGraphNodes.resize	(tGraphHeader.dwVertexCount);
 		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
-		m_tpResultNodes.resize	(m_tpSpawnPoints.size());
 		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount, dwCount = 0;
 		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
 			if (tpaGameGraph[i].tLevelID == m_dwLevelID)
@@ -195,8 +190,8 @@ public:
 					dwBest = I - B;
 				}
 			}
-			m_tpResultNodes[i].tGraphID		= dwBest;
-			m_tpResultNodes[i].fDistance	= fCurrentBestDistance;
+			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
+			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 			thProgress						= 1.0f;
 		}
 	};
@@ -225,9 +220,6 @@ public:
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
 
-			FS.close_chunk		();
-			FS.open_chunk		(dwID++);
-			FS.write			(m_tpResultNodes.begin() + i,sizeof(SALife));
 			FS.close_chunk		();
 		}
 	};
