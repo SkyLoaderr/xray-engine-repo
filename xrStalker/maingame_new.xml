@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 
 	<!-- health -->
@@ -120,7 +120,7 @@
 		
 		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
 		<phrase x="20" y="65" font="graffiti32" r="238" g="155" b="23" a="255">
-			<animation anim="fade" period="10" cyclic="0"></animation>
+			<animation anim="fade" period="5" cyclic="0"></animation>
 		</phrase>
 	</money_mt_static>
 
