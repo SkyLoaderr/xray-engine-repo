@@ -24,17 +24,6 @@ IC	void CStalkerMovementManager::setup_head_speed		()
 		m_head.speed			= 3*PI_DIV_2;
 }
 
-IC	void CStalkerMovementManager::validate_mental_state	()
-{
-//	if (m_mental_state == eMentalStateFree) {
-//		float						max_angle = PI_DIV_4;
-//		if ((m_movement_type == eMovementTypeStand) || (speed() < EPS_L))
-//			max_angle				= PI_DIV_2;
-//		if (path_direction_angle() >= max_angle)
-//			m_mental_state			= eMentalStateDanger;
-//	}
-}
-
 IC	void CStalkerMovementManager::setup_body_orientation	()
 {
 	if (!path().empty() && (path().size() > curr_travel_point_index() + 1)) {
@@ -306,10 +295,8 @@ void CStalkerMovementManager::parse_velocity_mask	()
 			m_stalker->m_body.speed		= PI_MUL_2;
 		set_desirable_speed				(m_stalker->m_fCurSpeed);
 		setup_head_speed				();
-		validate_mental_state			();
-		if ((mental_state() != eMentalStateDanger) && (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_body.current.yaw,-m_head.current.yaw) ? PI_DIV_6 : PI_DIV_3))) {
+		if (angle_difference(m_body.current.yaw,m_head.current.yaw) > (left_angle(-m_head.current.yaw,-m_body.current.yaw) ? PI_DIV_6 : PI_DIV_3))
 			m_body.target.yaw			= m_head.current.yaw;
-		}
 		return;
 	}
 
@@ -380,7 +367,6 @@ void CStalkerMovementManager::parse_velocity_mask	()
 	}
 
 	setup_head_speed		();
-	validate_mental_state	();
 }
 
 void CStalkerMovementManager::update(u32 time_delta)

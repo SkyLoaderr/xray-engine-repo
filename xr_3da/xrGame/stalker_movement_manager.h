@@ -59,7 +59,6 @@ public:
 	u32									m_last_turn_index;
 
 protected:
-	IC		void	validate_mental_state	();
 	IC		void	setup_head_speed		();
 	IC		void	add_velocity			(int mask, float linear, float compute_angular, float angular);
 	IC		void	add_velocity			(int mask, float linear, float compute_angular);
