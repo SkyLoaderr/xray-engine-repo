@@ -358,7 +358,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 {
-	VERIFY								(tpALifeDynamicObject->used_ai_locations() && tpALifeDynamicObject->interactive());
+	VERIFY3								(tpALifeDynamicObject->used_ai_locations() && tpALifeDynamicObject->interactive(),tpALifeDynamicObject->s_name,tpALifeDynamicObject->s_name_replace);
 	vfRemoveObjectFromGraphPoint		(tpALifeDynamicObject,tGraphPointID);
 	vfAddObjectToGraphPoint				(tpALifeDynamicObject,tNextGraphPointID);
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;
