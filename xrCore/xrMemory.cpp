@@ -70,7 +70,9 @@ void	xrMemory::_destroy()
 	xr_delete					(g_pStringContainer);
 
 #ifndef M_BORLAND
+#ifdef DEBUG
 	if (debug_mode)				dbg_dump_leaks();
+#endif
 #endif    
 
 	mem_initialized				= FALSE;
