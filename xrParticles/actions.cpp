@@ -175,7 +175,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 				
 				S.normalize();
 				
-				// We now have a vector to safety.
+				// We now have a vector3 to safety.
 				float vm = m.vel.length();
 				pVector Vn = m.vel / vm;
 				
@@ -266,7 +266,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 				
 				S.normalize();
 				
-				// We now have a vector to safety.
+				// We now have a vector3 to safety.
 				float vm = m.vel.length();
 				pVector Vn = m.vel / vm;
 				
@@ -329,7 +329,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 				pVector S = offset;
 				S.normalize();
 				
-				// We now have a vector to safety.
+				// We now have a vector3 to safety.
 				float vm = m.vel.length();
 				pVector Vn = m.vel / vm;
 				
@@ -366,7 +366,7 @@ void PAAvoid::Execute(ParticleGroup *group)
 				if(t < 0 || t > (vm * look_ahead))
 					continue;
 				
-				// Get a vector to safety.
+				// Get a vector3 to safety.
 				pVector C = Vn ^ L;
 				C.normalize();
 				pVector S = Vn ^ C;
@@ -1516,10 +1516,10 @@ void PAVortex::Execute(ParticleGroup *group)
 			
 			float r = _sqrt(rSqr);
 			
-			// Compute normalized offset vector.
+			// Compute normalized offset vector3.
 			pVector offnorm(offset / r);
 			
-			// Construct orthogonal vector frame in which to rotate
+			// Construct orthogonal vector3 frame in which to rotate
 			// transformed point around origin
 			float axisProj = offnorm * axis; // offnorm . axis
 			
@@ -1556,10 +1556,10 @@ void PAVortex::Execute(ParticleGroup *group)
 			
 			float r = _sqrt(rSqr);
 			
-			// Compute normalized offset vector.
+			// Compute normalized offset vector3.
 			pVector offnorm(offset / r);
 			
-			// Construct orthogonal vector frame in which to rotate
+			// Construct orthogonal vector3 frame in which to rotate
 			// transformed point around origin
 			float axisProj = offnorm * axis; // offnorm . axis
 			
@@ -1607,7 +1607,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 		{
 			p1 = pVector(a0, a1, a2);
 			pVector tmp(a3, a4, a5);
-			// p2 is vector from p1 to other endpoint.
+			// p2 is vector3 from p1 to other endpoint.
 			p2 = tmp - p1;
 		}
 		break;
@@ -1705,7 +1705,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 	case PDCone:
 	case PDCylinder:
 		{
-			// p2 is a vector from p1 to the other end of cylinder.
+			// p2 is a vector3 from p1 to the other end of cylinder.
 			// p1 is apex of cone.
 			
 			p1 = pVector(a0, a1, a2);
@@ -1722,7 +1722,7 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			}
 			radius1Sqr = _sqr(radius1);
 			
-			// Given an arbitrary nonzero vector n, make two orthonormal
+			// Given an arbitrary nonzero vector3 n, make two orthonormal
 			// vectors u and v forming a frame [u,v,n.normalize()].
 			pVector n = p2;
 			float p2l2 = n.length2(); // Optimize this.
@@ -1732,13 +1732,13 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 			// XXX Used to have an actual if.
 			radius2Sqr = p2l2 ? 1.0f / p2l2 : 0.0f;
 			
-			// Find a vector orthogonal to n.
+			// Find a vector3 orthogonal to n.
 			pVector basis(1.0f, 0.0f, 0.0f);
 			if(_abs(basis * n) > 0.999)
 				basis = pVector(0.0f, 1.0f, 0.0f);
 			
 			// Project away N component, normalize and cross to get
-			// second orthonormal vector.
+			// second orthonormal vector3.
 			u = basis - n * (basis * n);
 			u.normalize();
 			v = n ^ u;
@@ -1768,13 +1768,13 @@ pDomain::pDomain(PDomainEnum dtype, float a0, float a1,
 				radius1 = a7; radius2 = a6;
 			}
 			
-			// Find a vector orthogonal to n.
+			// Find a vector3 orthogonal to n.
 			pVector basis(1.0f, 0.0f, 0.0f);
 			if(_abs(basis * p2) > 0.999)
 				basis = pVector(0.0f, 1.0f, 0.0f);
 			
 			// Project away N component, normalize and cross to get
-			// second orthonormal vector.
+			// second orthonormal vector3.
 			u = basis - p2 * (basis * p2);
 			u.normalize();
 			v = p2 ^ u;
@@ -1808,13 +1808,13 @@ BOOL pDomain::Within(const pVector &pos) const
 		{
 			// This is painful and slow. Might be better to do quick
 			// accept/reject tests.
-			// Let p2 = vector from base to tip of the cylinder
-			// x = vector from base to test point
+			// Let p2 = vector3 from base to tip of the cylinder
+			// x = vector3 from base to test point
 			// x . p2
 			// dist = ------ = projected distance of x along the axis
 			// p2. p2 ranging from 0 (base) to 1 (tip)
 			//
-			// rad = x - dist * p2 = projected vector of x along the base
+			// rad = x - dist * p2 = projected vector3 of x along the base
 			// p1 is the apex of the cone.
 			
 			pVector x(pos - p1);
@@ -1906,7 +1906,7 @@ void pDomain::Generate(pVector &pos) const
 			// Distance from axis
 			float r = radius2 + drand48() * (radius1 - radius2);
 			
-			float x = r * _cos(theta); // Weighting of each frame vector
+			float x = r * _cos(theta); // Weighting of each frame vector3
 			float y = r * _sin(theta);
 			
 			// Scale radius along axis for cones
@@ -1931,7 +1931,7 @@ void pDomain::Generate(pVector &pos) const
 			// Distance from center
 			float r = radius2 + drand48() * (radius1 - radius2);
 			
-			float x = r * _cos(theta); // Weighting of each frame vector
+			float x = r * _cos(theta); // Weighting of each frame vector3
 			float y = r * _sin(theta);
 			
 			pos = p1 + u * x + v * y;

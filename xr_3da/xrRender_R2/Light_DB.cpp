@@ -148,9 +148,9 @@ void			CLight_DB::Deactivate	(light* L)
 	v_dynamic_inactive.insert			(L);
 }
 
-void			CLight_DB::add_sector_lights(vector<WORD> &L)
+void			CLight_DB::add_sector_lights(xr_vector<WORD> &L)
 {
-	for (vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
+	for (xr_vector<WORD>::iterator I=L.begin(); I!=L.end(); I++)
 	{
 		WORD ID		= *I;
 		light*  T	= v_static[ID];

@@ -420,7 +420,7 @@ Matrix& Matrix::ComputeAxisMatrix(Point& axis, float angle)
 	axis /= length;
 
 	// Get the dot product, and calculate the projection of the z basis
-	// vector3 onto the up vector. The projection is the y basis vector.
+	// vector3 onto the up vector3. The projection is the y basis vector3.
 	float dotProduct = Point(0, 1, 0) | axis;
 	Point Up = Point(0, 1, 0) - dotProduct * axis;
 
