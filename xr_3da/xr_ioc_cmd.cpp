@@ -288,6 +288,7 @@ extern int			psNET_ClientUpdate;
 extern int			psNET_ClientPending;
 extern int			psNET_ServerUpdate;
 extern int			psNET_ServerPending;
+extern int			psNET_DedicatedSleep;
 extern char			psNET_Name[32];
 extern int			psNET_Port;
 //.extern Flags32		psNET_Flags;
@@ -345,7 +346,8 @@ void CCC_Register()
 	CMD4(CCC_Float,		"rs_dt_range",			&rsDT_Range,		5,		50	);
 	
 	// Texture manager	
-	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,		0,			4	);
+	CMD4(CCC_Integer,	"texture_lod",			&psTextureLOD,				0,	4	);
+	CMD4(CCC_Integer,	"net_dedicated_sleep",	&psNET_DedicatedSleep,		0,	64	);
 
 	// General video control
 	CMD3(CCC_Token,		"vid_mode",				&psCurrentMode, vid_mode_token);

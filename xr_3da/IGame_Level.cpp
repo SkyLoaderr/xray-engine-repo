@@ -110,7 +110,8 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	return TRUE;
 }
 
-void IGame_Level::OnRender		( ) 
+int		psNET_DedicatedSleep	= 5;
+void	IGame_Level::OnRender		( ) 
 {
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
@@ -118,13 +119,15 @@ void IGame_Level::OnRender		( )
 	if (!g_pGamePersistent->bDedicatedServer)	{
 		Render->Calculate			();
 		Render->Render				();
+	} else {
+		Sleep						(psNET_DedicatedSleep);
 	}
 
 	// Font
 	pApp->pFontSystem->OnRender	();
 }
 
-void IGame_Level::OnFrame		( ) 
+void	IGame_Level::OnFrame		( ) 
 {
 	// Log				("- level:on-frame: ",u32(Device.dwFrame));
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
