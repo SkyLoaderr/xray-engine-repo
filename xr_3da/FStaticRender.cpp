@@ -324,12 +324,19 @@ void	CRender::rmNormal	()
 	CHK_DX(HW.pDevice->SetViewport(&VP));
 }
 
-IC	bool	cmp_nodes		(SceneGraph::mapNormal_Node* N1, SceneGraph::mapNormal_Node* N2)
-{
-	return (N1->val.ssa > N2->val.ssa);
-}
+IC	bool	cmp_codes		(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
 
-void	CRender::Render()
+IC	bool	cmp_textures	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_matrices	(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_constants	(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
+{	return (N1->val.ssa > N2->val.ssa);		}
+
+void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 	
