@@ -968,8 +968,14 @@ function add_rule(obj, rule)
 		table.insert(xr_motivator.storage[obj:id()].reactions.rules, rule)
 	end
 end
-function reset_rules(obj, rules)
-	xr_motivator.storage[obj:id()].reactions.rules = rules
+function reset_rules(obj)
+	--' Смена стартового диалога
+	local overrides = xr_logic.generic_scheme_overrides(obj)
+	if overrides ~= nil and
+		overrides.reactions ~= nil
+	then
+		xr_motivator.storage[obj:id()].reactions.rules = overrides.reactions
+	end		
 end
 function remove_rule(obj, rule)
 	local tt = {}
