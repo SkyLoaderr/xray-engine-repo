@@ -62,7 +62,7 @@ protected:
 	float			light_time;
 
 	void			Light_Start		();
-	void			Light_Render	();
+	void			Light_Render	(Fvector& P);
 
 	virtual BOOL	FireTrace		(const Fvector& P, const Fvector& Peff,	Fvector& D);
 	virtual void	FireShotmark	(const Fvector& vDir,	const Fvector &vEnd, Collide::ray_query& R);

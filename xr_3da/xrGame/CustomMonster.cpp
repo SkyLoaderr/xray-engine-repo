@@ -129,7 +129,7 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// Sheduler
 	dwMinUpdate	= 25;
-	dwMaxUpdate	= 200;
+	dwMaxUpdate	= 80;
 
 	//
 }
