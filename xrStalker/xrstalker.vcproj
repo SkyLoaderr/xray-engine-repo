@@ -373,7 +373,7 @@
 					Name="rus"
 					Filter="">
 					<File
-						RelativePath=".\stable_dialogs.xml">
+						RelativePath=".\Config\text\rus\stable_dialogs.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
@@ -388,7 +388,7 @@
 						RelativePath=".\Config\text\rus\stable_dialogs_garbage.xml">
 					</File>
 					<File
-						RelativePath=".\stable_dialogs_test.xml">
+						RelativePath=".\Config\text\rus\stable_dialogs_test.xml">
 					</File>
 					<File
 						RelativePath=".\Config\text\rus\string_table_artefacts.xml">
