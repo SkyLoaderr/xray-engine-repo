@@ -2,17 +2,32 @@
 #include "build.h"
 
 #define VPUSH(a) a.x,a.y,a.z
+
+IC float	SqrDistance2Segment(const Fvector& P, const Fvector& A, const Fvector& B)
+{
+	// Determine t (the length of the vector from ‘a’ to ‘p’)
+	Fvector c; c.sub(P,A);
+	Fvector V; V.sub(B,A); 
+	
+	float d = V.magnitude	();
+	
+	V.div	(d); 
+	float t = V.dotproduct	(c);
+	
+	// Check to see if ‘t’ is beyond the extents of the line segment
+	if (t <= 0.0f)	return P.distance_to_sqr(A);
+	if (t >= d)		return P.distance_to_sqr(B);
+	
+	// Return the point between ‘a’ and ‘b’
+	// set length of V to t. V is normalized so this is easy
+	Fvector	R;	R.direct(A,V,t);
+	return P.distance_to_sqr(R);
+}
+
 void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
-	Fvector	E1;	E1.sub(vTEST->P,vE1->P);
-	Fvector	E2;	E2.sub(vTEST->P,vE2->P);
-	float	A	= E1.magnitude();
-	float	B	= E2.magnitude();
-	float	C	= vE1->P.distance_to(vE2->P);
-	float	X	= (A*A - B*B + C*C)/(2*C);
-	float	h2	= A*A - X*X;
-	if (h2<0)	return;
-	if (sqrtf(h2)<0.005f)	{
+	if (_sqrt(SqrDistance2Segment(vTEST->P,vE1->P,vE2->P))<0.005f)	
+	{
 		Msg	("ERROR. edge [%3.1f,%3.1f,%3.1f]-[%3.1f,%3.1f,%3.1f], vertex [%3.1f,%3.1f,%3.1f]",
 			VPUSH(vE1->P),VPUSH(vE2->P),VPUSH(vTEST->P)
 			);
@@ -42,8 +57,8 @@ void CBuild::CorrectTJunctions()
 				{
 					Vertex			*v1,*v2;
 					F1->EdgeVerts	(e1,&v1,&v2);
-					if (v1==vA)			check(vA,vB,v2);
-					else if (v2==vA)	check(vA,vB,v1);
+					if (v1==vA && v2!=vB)		check(vA,vB,v2);
+					else if (v2==vA && v1!=vB)	check(vA,vB,v1);
 				}
 			}
 			// Iterate on 'vB'-adjacent faces
@@ -56,8 +71,8 @@ void CBuild::CorrectTJunctions()
 				{
 					Vertex			*v1,*v2;
 					F2->EdgeVerts	(e1,&v1,&v2);
-					if (v1==vB)			check(vA,vB,v2);
-					else if (v2==vB)	check(vA,vB,v1);
+					if (v1==vB && v2!=vA)		check(vA,vB,v2);
+					else if (v2==vB && v1!=vA)	check(vA,vB,v1);
 				}
 			}
 		}
