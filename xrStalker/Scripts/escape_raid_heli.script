@@ -1,11 +1,11 @@
--- Уѓа†ҐЂ•≠®• Ґ•авЃЂсвЃђ
--- Чг£†© С†и†
+-- ”правление вертолЄтом
+-- „угай —аша
 
 local active = false
 local enemy
 
 --------------------------------------------------------------------------------------------------------------------
--- дг≠™ж®® §Ђп а•©§†
+-- функции дл€ рейда
 --------------------------------------------------------------------------------------------------------------------
 
 function activate()
@@ -21,7 +21,7 @@ function set_enemy( obj )
 end
 
 --------------------------------------------------------------------------------------------------------------------
--- ™Ђ†бб гѓа†ҐЂ•≠®п
+-- класс управлени€
 --------------------------------------------------------------------------------------------------------------------
 
 class "HeliManager"
@@ -73,7 +73,7 @@ function HeliManager:HeliOnPoint(p)
 	end
 
 	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
-		-- •бЂ® ѓаЃЂ•в•Ђ ≠†§ ѓЃІ®ж®•© Ґа†£†, вЃ І†™Ѓ≠з®вм †в†™г
+		-- если пролетел над позицией врага, то закончить атаку
 		self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 )  --0==from_idx
 		printf( "[heli] attack pass finished" )
 --		self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
@@ -83,9 +83,9 @@ end
 function HeliManager:Run()
 	self.m_b_exploded        = false
 	self.m_b_prepered_to_die = false
-	self.m_run               = true
+--	self.m_run               = true
 
-	local state, health, altitude
+	local state, health, altitude, last_alt, alt_check_time
 
 --	while self.m_run do
 	while not self.m_b_exploded do
@@ -106,9 +106,13 @@ function HeliManager:Run()
 		if state ~= CHelicopter.eDead and health <= 0.0 then
 			printf( "[heli] DIE" )
 			self.m_heliObject:Die()
+
+			last_alt       = self.m_heliObject:GetRealAltitude()
+			alt_check_time = device():time_global() + 1000
 		end
 
-		if self.m_b_exploded == false and state == CHelicopter.eDead then
+		if state == CHelicopter.eDead then
+			-- вертолЄт должен взорватьс€, если высота меньше 3 м или он замедлил падение (меньше 1 м за 0.5 с)
 			altitude = self.m_heliObject:GetRealAltitude()
 
 			if altitude < 3.0 then
@@ -118,7 +122,33 @@ function HeliManager:Run()
 --				self.m_heliObject:TurnLighting( true )
 --				self.m_end_lighting = device():time_global() + 15000
 			end
+
+			if alt_check_time < device():time_global() then
+				alt_check_time = device():time_global() + 500
+
+				if last_alt - altitude < 1 then
+					self.m_b_exploded = true
+					printf("[heli] EXPLODE (hanged)")
+					self.m_heliObject:Explode()
+--					self.m_heliObject:TurnLighting( true )
+--					self.m_end_lighting = device():time_global() + 15000
+				end
+
+				last_alt = altitude
+			end
 		end
+
+--[[		if self.m_b_exploded == false and state == CHelicopter.eDead then
+			altitude = self.m_heliObject:GetRealAltitude()
+
+			if altitude < 3.0 then
+				self.m_b_exploded = true
+				printf("[heli] EXPLODE")
+				self.m_heliObject:Explode()
+--				self.m_heliObject:TurnLighting( true )
+--				self.m_end_lighting = device():time_global() + 15000
+			end
+		end]]
 
 --[[		if self.m_b_exploded and self.m_end_lighting < device():time_global() then
 			self.m_heliObject:TurnLighting( false )
