@@ -13,7 +13,7 @@ CPSLibrary PSLib;
 void CPSLibrary::OnCreate()
 {
 	AnsiString fn;
-    FS.update_path(fn,"$game_data$",PSLIB_FILENAME);
+    FS.update_path(fn,_game_data_,PSLIB_FILENAME);
 	if (FS.exist(fn.c_str())){
     	if (!Load(fn.c_str())) Msg("PS Library: Unsupported version.");
     }else{
@@ -74,35 +74,23 @@ void CPSLibrary::Remove(const char* nm)
 //----------------------------------------------------
 bool CPSLibrary::Load(const char* nm)
 {
-	// Check if file is compressed already
-	string32	ID			= PS_LIB_SIGN;
-	string32	id;
 	IReader*	F			= FS.r_open(nm);
-	F->r		(&id,8);
-	if (0==strncmp(id,ID,8)){
-		FS.r_close			(F);
-		F					= xr_new<CCompressedReader> (nm,ID);
-	}else{
-    	F->seek	(0);
-    }
-	IReader&				f	= *F;
-
 	m_PSs.clear				();
 
 	bool bRes 				= true;
-    R_ASSERT(f.find_chunk(PS_CHUNK_VERSION));
-    u16 ver					= f.r_u16();
+    R_ASSERT(F->find_chunk(PS_CHUNK_VERSION));
+    u16 ver					= F->r_u16();
     if (ver!=PS_VERSION) return false;
     // two version
     // first generation
-    R_ASSERT(f.find_chunk(PS_CHUNK_FIRSTGEN));
-    u32 count 				= f.r_u32();
+    R_ASSERT(F->find_chunk(PS_CHUNK_FIRSTGEN));
+    u32 count 				= F->r_u32();
     if (count){
         m_PSs.resize		(count);
-        f.r					(m_PSs.begin(), count*sizeof(PS::SDef));
+        F->r				(m_PSs.begin(), count*sizeof(PS::SDef));
     }
     // second generation
-    IReader* OBJ 			= f.open_chunk(PS_CHUNK_SECONDGEN);
+    IReader* OBJ 			= F->open_chunk(PS_CHUNK_SECONDGEN);
     if (OBJ){
         IReader* O   		= OBJ->open_chunk(0);
         for (int count=1; O; count++) {

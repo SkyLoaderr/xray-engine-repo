@@ -35,7 +35,7 @@ void EScene::UndoSave(){
     UI.RedrawScene();
 
 	UndoItem item;
-	GetTempFileName( Engine.FS.m_Temp.m_Path, "undo", 0, item.m_FileName );
+	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );
 
 	Save( item.m_FileName, true );
 	m_UndoStack.push_back( item );

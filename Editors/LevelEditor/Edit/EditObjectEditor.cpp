@@ -276,7 +276,7 @@ void CEditableObject::DefferedLoadRP()
 	AnsiString l_name = GetLODTextureName();
     AnsiString fname = l_name+AnsiString(".tga");
     Device.Shader.Delete(m_LODShader);
-    if (FS.exist("$textures$",fname.c_str()))
+    if (FS.exist(_textures_,fname.c_str()))
     	m_LODShader = Device.Shader.Create(GetLODShaderName(),l_name.c_str());
     m_LoadState |= EOBJECT_LS_DEFFEREDRP;
 }
@@ -387,20 +387,43 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 }
 //---------------------------------------------------------------------------
 
+#include "Blender.h"
+IC BOOL BE      (BOOL A, BOOL B)
+{
+        bool a = !!A;
+        bool b = !!B;
+        return a==b;
+}
+bool CEditableObject::CheckShaderCompatible()
+{
+	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+    {
+    	CBlender* 		B = Device.Shader._FindBlender((*s_it)->m_ShaderName.c_str()); 
+        Shader_xrLC* 	C = Device.ShaderXRLC.Get((*s_it)->m_ShaderXRLCName.c_str());
+        R_ASSERT(B&&C);
+    	if (!BE(B->canBeLMAPped(),!C->flags.bLIGHT_Vertex)){ 
+        	ELog.DlgMsg	(mtError,"Engine shader '%s' non compatible with compiler shader '%s'",(*s_it)->m_ShaderName.c_str(),(*s_it)->m_ShaderXRLCName.c_str());
+        	return false;
+        }
+    }
+    return true;
+}
+//---------------------------------------------------------------------------
+
 #ifdef _LEVEL_EDITOR
 #include "Scene.h"
 bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (IsStatic()||IsMUStatic()){
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            inf->textures.push_back(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
+            inf->textures.insert(ChangeFileExt((*s_it)->m_Texture,"").LowerCase());
         if (m_Flags.is(eoUsingLOD)){
-            inf->textures.push_back(GetLODTextureName());
-            inf->lod_objects.push_back(m_LibName);
+            inf->textures.insert(GetLODTextureName());
+            inf->lod_objects.insert(m_LibName);
             inf->object_lod_ref_cnt++;
         }
         if (m_Flags.is(eoMultipleUsage)){
-            inf->mu_objects.push_back(m_LibName);
+            inf->mu_objects.insert(m_LibName);
             inf->object_mu_ref_cnt++;
         }
 

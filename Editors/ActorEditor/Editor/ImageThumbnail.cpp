@@ -65,7 +65,7 @@ int EImageThumbnail::MemoryUsage()
         case STextureParams::tfRGBA:	break;
         }
 		AnsiString fn 	= ChangeFileExt(m_Name,".seq");
-        FS.update_path("$game_textures$",fn);
+        FS.update_path(_game_textures_,fn);
         if (FS.exist(fn.c_str())){
         	string128		buffer;
 			IReader* F		= FS.r_open(0,fn.c_str());
@@ -140,15 +140,20 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
     if (path) FS.update_path(path,fn);
     else{
 	    switch (m_Type){
-    	case EITObject: FS.update_path("$objects$",fn); 	break;
-	    case EITTexture:FS.update_path("$textures$",fn); 	break;
+    	case EITObject: FS.update_path(_objects_,fn); 	break;
+	    case EITTexture:FS.update_path(_textures_,fn); 	break;
     	}
     }
     if (!FS.exist(fn.c_str())) return false;
     
-//    IReader* F 	= FS.r_open(fn.c_str());
-	CCompressedReader* F =xr_new<CCompressedReader>(fn.c_str(),THM_SIGN);
-    
+    IReader* F 	= FS.r_open(fn.c_str());
+/*    string32 id;
+    F->r(&id,8);
+    if (strncmp(id,THM_SIGN,8)==0){
+    	FS.r_close(F);
+		F = xr_new<CCompressedReader>(fn.c_str(),THM_SIGN);
+    }
+*/    
     u32 version = 0;
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
@@ -157,9 +162,10 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
         return false;
     }
 
-    R_ASSERT(F->find_chunk(THM_CHUNK_DATA));
+    IReader* D 	= F->open_chunk(THM_CHUNK_DATA); R_ASSERT(D);
     m_Pixels.resize(THUMB_SIZE);
-    F->r(m_Pixels.begin(),THUMB_SIZE*sizeof(u32));
+    D->r(m_Pixels.begin(),THUMB_SIZE*sizeof(u32));
+    D->close	();
 
     R_ASSERT(F->find_chunk(THM_CHUNK_TYPE));
     m_Type	= THMType(F->r_u32());
@@ -195,8 +201,8 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
     return true;
 }
 
-void EImageThumbnail::Save(int age, LPCSTR path){
-	THROW;
+void EImageThumbnail::Save(int age, LPCSTR path)
+{
 	if (!Valid()) return;
 
     CMemoryWriter F;
@@ -242,8 +248,8 @@ void EImageThumbnail::Save(int age, LPCSTR path){
     if (path) FS.update_path(path,fn);
     else{
         switch (m_Type){
-        case EITObject: FS.update_path("$objects$",fn); 	break;
-        case EITTexture:FS.update_path("$textures$",fn); 	break;
+        case EITObject: FS.update_path(_objects_,fn); 	break;
+        case EITTexture:FS.update_path(_textures_,fn); 	break;
         }
     }
     F.save_to		(fn.c_str());

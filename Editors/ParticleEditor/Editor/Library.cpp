@@ -115,41 +115,42 @@ void ELibrary::EvictObjects()
 }
 //----------------------------------------------------
 
-CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age)
+CEditableObject* ELibrary::LoadEditObject(LPCSTR name)
 {
 	VERIFY(m_bReady);
     CEditableObject* m_EditObject = xr_new<CEditableObject>(name);
     AnsiString fn=ChangeFileExt(name,".object");
-    FS.update_path("$objects$",fn);
-    if (FS.exist(fn.c_str())){
+    FS.update_path(_objects_,fn);
+    const CLocatorAPI::file* F = FS.exist(fn.c_str());
+    if (F){
         if (m_EditObject->Load(fn.c_str())){
-            m_EditObject->m_ObjVer.f_age = age;
+        	if (m_EditObject->m_Version!=F->modif){
+	            m_EditObject->m_Version = F->modif;
+//                m_EditObject->Modified();
+            }
             return m_EditObject;
         }
     }else{
-		ELog.Msg(mtError,"Can't find object '%s'",name);
+		ELog.Msg(mtError,"Can't find file '%s'",fn);
     }
     xr_delete(m_EditObject);
 	return 0;
 }
 //---------------------------------------------------------------------------
 
-CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
+CEditableObject* ELibrary::CreateEditObject(LPCSTR nm)
 {
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
-    AnsiString name;
-    FS.update_path(name,"$objects$",nm);
-    UI.ProgressInfo(name.c_str());
+    UI.ProgressInfo		(nm);
+    AnsiString name		= AnsiString(nm).LowerCase();
+    // file exist - find in already loaded
     CEditableObject* m_EditObject = 0;
-    const CLocatorAPI::file* F = FS.exist(name.c_str());
-    if (!F) return 0;
-    if (age) *age 		= F->modif;
 	EditObjPairIt it 	= m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
-    else if (m_EditObject=LoadEditObject(name.c_str(),F->modif))
+    else if (m_EditObject=LoadEditObject(name.c_str()))
 		m_EditObjects[name]	= m_EditObject;
-	if (m_EditObject) m_EditObject->m_RefCount++;
+    if (m_EditObject)	m_EditObject->m_RefCount++;
 	return m_EditObject;
 }
 //---------------------------------------------------------------------------
@@ -173,7 +174,7 @@ void ELibrary::Save()
     for(; O!=E; O++)
     	if (O->second->IsModified()){
         	AnsiString nm;
-		    FS.update_path(nm,"$objects$",O->second->GetName());
+		    FS.update_path(nm,_objects_,O->second->GetName());
         	O->second->SaveObject(nm.c_str());
         }
 }
@@ -181,7 +182,7 @@ void ELibrary::Save()
 
 int ELibrary::GetObjects(FS_QueryMap& files)
 {
-    return FS.file_list(files,"$objects$",FS_ListFiles|FS_ClampExt,".object");
+    return FS.file_list(files,_objects_,FS_ListFiles|FS_ClampExt,".object");
 }
 //---------------------------------------------------------------------------
 

@@ -187,26 +187,29 @@ void CEditableObject::ClearSMotions(){
 }
 
 bool CEditableObject::LoadSMotions(const char* fname){
-	CFileReader F(fname);
+	IReader* F	= FS.r_open(fname);
     ClearSMotions();
     // object motions
-    m_SMotions.resize(F.r_u32());
+    m_SMotions.resize(F->r_u32());
 	SetActiveSMotion(0);
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++){
         *m_it = xr_new<CSMotion>();
-        if (!(*m_it)->Load(F)){
+        if (!(*m_it)->Load(*F)){
             ELog.DlgMsg(mtError,"Motions has different version. Load failed.");
             xr_delete(*m_it);
             m_SMotions.clear();
+            FS.r_close(F);
             return false;
         }
 	  	if (!CheckBoneCompliance(*m_it)){
         	ClearSMotions();
             ELog.DlgMsg(mtError,"Load failed.",fname);
             xr_delete(m_it);
+            FS.r_close(F);
             return false;
         }
     }
+	FS.r_close(F);
 	return true;
 }
 

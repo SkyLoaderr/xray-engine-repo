@@ -186,7 +186,7 @@ void ELightAnimLibrary::Unload()
 void ELightAnimLibrary::Load()
 {
 	AnsiString fn;
-    FS.update_path(fn,"$game_data$","lanims.xr");
+    FS.update_path(fn,_game_data_,"lanims.xr");
 	IReader* fs=FS.r_open(fn.c_str());
     if (fs){
         IReader* OBJ = fs->open_chunk(CHUNK_ITEM_LIST);
@@ -219,7 +219,7 @@ void ELightAnimLibrary::Save()
 	F.close_chunk	();
 
 	AnsiString fn;
-    FS.update_path(fn,"$game_data$","lanims.xr");
+    FS.update_path(fn,_game_data_,"lanims.xr");
     F.save_to(fn.c_str());
 }
 

@@ -105,9 +105,8 @@ void SceneBuilder::SaveBuild()
 	F.w				(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
     F.close_chunk	();
 
-    AnsiString fn	= "build.prj";
-	m_LevelPath.Update(fn);
-    F.save_to		(fn.c_str(),BUILD_PROJECT_MARK);
+    AnsiString fn	= m_LevelPath+"build.prj";
+    F.save_to		(fn.c_str());
 }
 
 int SceneBuilder::CalculateSector(const Fvector& P, float R){
@@ -647,7 +646,7 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int 
     AnsiString lod_name = e->GetLODTextureName();
 
 	AnsiString fname = lod_name+AnsiString(".tga");
-    if (!Engine.FS.Exist(&Engine.FS.m_Textures,fname.c_str())){
+    if (!FS.exist(_textures_,fname.c_str())){
 		ELog.DlgMsg(mtError,"Can't find object LOD texture: %s",fname.c_str());
     	return -2;
     }

@@ -150,6 +150,7 @@ public:		// User declarations
 		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Name.c_str()),tvProperties->HeaderSections->Item[1]->Width);
         miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
+        RefreshForm			();
     }
 
     void 			IsUpdating				(bool bVal)

@@ -95,7 +95,7 @@ protected:
 
 	AStringVec m_TexNames;
 public:
-	FSPath 	m_LevelPath;
+	AnsiString m_LevelPath;
 protected:
 	bool 	EvictResource			();
 	bool 	PrepareFolders          ();

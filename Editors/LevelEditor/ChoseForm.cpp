@@ -142,7 +142,7 @@ void __fastcall TfrmChoseItem::FillGameObject()
 {
     form->Caption					= "Select OGF";
     FS_QueryMap lst;
-    if (FS.file_list(lst,"$game_meshes$",FS_ListFiles|FS_ClampExt,".ogf")){
+    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".ogf")){
 	    FS_QueryPairIt	it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
@@ -457,7 +457,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 	        AnsiString nm,fn;
         	FHelper.MakeName		(Item,0,nm,false);
             fn						= ChangeFileExt(nm,".thm");
-		    FS.update_path			("$objects$",fn);
+		    FS.update_path			(_objects_,fn);
             if (FS.exist(fn.c_str())){
 	    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
     	        if (!m_Thm->Valid()) 	pbImage->Repaint();

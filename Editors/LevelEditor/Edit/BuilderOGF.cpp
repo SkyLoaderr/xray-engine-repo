@@ -17,9 +17,7 @@
 bool SceneBuilder::BuildSkyModel(){
 	// build sky ogf
     if (Scene.m_SkyDome){
-	    AnsiString ogf_name;
-        ogf_name.sprintf("%s.ogf",Scene.m_SkyDome->Name);
-        m_LevelPath.Update(ogf_name);
+	    AnsiString ogf_name = m_LevelPath+Scene.m_SkyDome->Name+".ogf";
         CEditableObject* O = Scene.m_SkyDome->GetReference(); R_ASSERT(O);
         return O->ExportObjectOGF(ogf_name.c_str());
     }
@@ -46,9 +44,8 @@ bool SceneBuilder::BuildHOMModel()
     BOOL bValid = !!F.chunk_size();
     F.close_chunk();
     if (bValid){
-	    AnsiString hom_name = "level.hom";
-		m_LevelPath.Update(hom_name);
-	    F.save_to(hom_name.c_str(),0);
+	    AnsiString hom_name = m_LevelPath+"level.hom";
+	    F.save_to(hom_name.c_str());
     }
 	return bValid;
 }

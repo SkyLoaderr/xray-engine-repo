@@ -175,7 +175,6 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
 {
     if (Key==VK_ESCAPE){
 		if (bFormLocked)UI.Command(COMMAND_BREAK_LAST_OPERATION);
-        ebCancel->Click	();
         Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
     }
 }
@@ -204,7 +203,7 @@ void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::SaveTextureParams(){
 	if (m_Thm&&(ImageProps->IsModified()||bImportMode)){
-        m_Thm->Save(0,bImportMode?"$import$":0);
+        m_Thm->Save(0,bImportMode?_import_:0);
 	    FS_QueryPairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
         modif_map.insert(*it);
     }
@@ -225,9 +224,9 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
             AnsiString fn = m_SelectedName;
             EFS.UpdateTextureNameWithFolder(fn);
 //            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
-            if (!m_Thm->Load(m_SelectedName.c_str(),"$import$")){
-            	bool bLoad = m_Thm->Load(fn.c_str(),"$textures$");
-            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),"$import$",!bLoad);
+            if (!m_Thm->Load(m_SelectedName.c_str(),_import_)){
+            	bool bLoad = m_Thm->Load(fn.c_str(),_textures_);
+            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),_import_,!bLoad);
             }
         }else			 m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
         if (!m_Thm->Valid()){
@@ -324,7 +323,7 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 	if (tvItems->Selected){
     	int compl=0;
         AnsiString 	fname;
-        FS.update_path			(fname,"$textures$",m_SelectedName.c_str());
+        FS.update_path			(fname,_textures_,m_SelectedName.c_str());
 	    if (ImageManager.CheckCompliance(fname.c_str(),compl)){
 	    	compl_map.insert	(make_pair(m_SelectedName,FS_QueryItem(0,compl)));
             tvItemsItemFocused(Sender);
@@ -337,14 +336,14 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
+void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 {
-	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Export assosiation?")==mrNo) return;
+	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Are you sure to export assosiation?")==mrNo) return;
     // save previous data
     SaveTextureParams();
 
 	AnsiString nm;
-    FS.update_path			(nm,"$game_textures$","textures.ltx");
+    FS.update_path			(nm,_game_textures_,"textures.ltx");
 	CInifile* ini 			= xr_new<CInifile>(nm.c_str(), FALSE, FALSE, TRUE);
 
 	LockForm();
@@ -380,6 +379,51 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 {
   	FHelper.RemoveItem(tvItems,tvItems->Selected,ImageManager.RemoveTexture);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::ExtBtn1Click(TObject *Sender)
+{
+	LockForm();
+	{
+        string256 fn;
+        FS_QueryPairIt it		= texture_map.begin();
+        FS_QueryPairIt _E		= texture_map.end();
+        UI.ProgressStart		(texture_map.size(),"Resave Texture THM");
+        bool bRes=true;
+        for (;it!=_E; it++){
+	        UI.ProgressInc(it->first.c_str());
+            EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
+            if ( m_Thm){ 
+                m_Thm->Save			();
+                xr_delete(m_Thm);
+            }
+            if (UI.NeedAbort()){ bRes=false; break; }
+        }
+        UI.ProgressEnd();
+    }
+    {
+	    FS_QueryMap mp;
+    	FS.file_list(mp,_objects_,FS_ListFiles|FS_ClampExt,".thm");
+
+        string256 fn;
+        FS_QueryPairIt it		= mp.begin();
+        FS_QueryPairIt _E		= mp.end();
+        UI.ProgressStart		(mp.size(),"Resave Object THM");
+        bool bRes=true;
+        for (;it!=_E; it++){
+	        UI.ProgressInc(it->first.c_str());
+            EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITObject);
+            if ( m_Thm){ 
+                m_Thm->Save			();
+                xr_delete(m_Thm);
+            }
+            if (UI.NeedAbort()){ bRes=false; break; }
+        }
+        UI.ProgressEnd();
+    }
+    
+	UnlockForm();
 }
 //---------------------------------------------------------------------------
 

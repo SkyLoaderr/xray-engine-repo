@@ -11,6 +11,6 @@ CSoundManager SoundManager;
 //------------------------------------------------------------------------------
 int CSoundManager::GetSounds(FS_QueryMap& files)
 {
-    return FS.file_list(files,"$game_sounds$",FS_ListFiles|FS_ClampExt,".wav");
+    return FS.file_list(files,_game_sounds_,FS_ListFiles|FS_ClampExt,".wav");
 }
 

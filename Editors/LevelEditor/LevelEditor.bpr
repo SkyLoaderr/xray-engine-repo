@@ -31,34 +31,32 @@
       intermediate\PropertiesPS.obj intermediate\PSObject.obj 
       intermediate\ChoseForm.obj intermediate\ImageEditor.obj 
       intermediate\FramePS.obj intermediate\previewimage.obj 
-      intermediate\FrameEmitter.obj intermediate\xr_trims.obj 
-      intermediate\FrameRPoint.obj intermediate\interp.obj 
-      intermediate\Envelope.obj intermediate\motion.obj intermediate\bone.obj 
-      intermediate\clsid.obj intermediate\WayPoint.obj 
+      intermediate\FrameEmitter.obj intermediate\FrameRPoint.obj 
+      intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
+      intermediate\bone.obj intermediate\WayPoint.obj 
       intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
-      intermediate\FrameDetObj.obj intermediate\Xr_ini.obj 
-      intermediate\ColorPicker.obj intermediate\UI_WayPointTools.obj 
-      intermediate\UI_Camera.obj intermediate\ui_control.obj 
-      intermediate\UI_CustomTools.obj intermediate\UI_DOTools.obj 
-      intermediate\UI_EventTools.obj intermediate\UI_GlowTools.obj 
-      intermediate\UI_LightTools.obj intermediate\UI_Main.obj 
-      intermediate\UI_MainCommand.obj intermediate\UI_ObjectTools.obj 
-      intermediate\UI_PortalTools.obj intermediate\UI_PSTools.obj 
-      intermediate\UI_RPointTools.obj intermediate\UI_SectorTools.obj 
-      intermediate\UI_SoundTools.obj intermediate\ui_tools.obj 
-      intermediate\ELight.obj intermediate\DOShuffle.obj 
-      intermediate\DOOneColor.obj intermediate\PropertiesDetailObject.obj 
-      intermediate\DetailObjectsPick.obj intermediate\HWCaps.obj 
-      intermediate\EditObject.obj intermediate\Xr_input.obj 
-      intermediate\fcontroller.obj intermediate\pure.obj 
-      intermediate\CustomObject.obj intermediate\SceneObjectIO.obj 
-      intermediate\xrImage_Resampler.obj intermediate\TextureManager_Loader.obj 
-      intermediate\Texture.obj intermediate\Cursor3D.obj 
-      intermediate\SH_Matrix.obj intermediate\SH_Texture.obj 
-      intermediate\Shader.obj intermediate\SH_Constant.obj 
-      intermediate\xr_avi.obj intermediate\Blender_Recorder.obj 
-      intermediate\Blender.obj intermediate\Blender_Vertex.obj 
-      intermediate\Blender_Editor_Selection.obj 
+      intermediate\FrameDetObj.obj intermediate\ColorPicker.obj 
+      intermediate\UI_WayPointTools.obj intermediate\UI_Camera.obj 
+      intermediate\ui_control.obj intermediate\UI_CustomTools.obj 
+      intermediate\UI_DOTools.obj intermediate\UI_EventTools.obj 
+      intermediate\UI_GlowTools.obj intermediate\UI_LightTools.obj 
+      intermediate\UI_Main.obj intermediate\UI_MainCommand.obj 
+      intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
+      intermediate\UI_PSTools.obj intermediate\UI_RPointTools.obj 
+      intermediate\UI_SectorTools.obj intermediate\UI_SoundTools.obj 
+      intermediate\ui_tools.obj intermediate\ELight.obj 
+      intermediate\DOShuffle.obj intermediate\DOOneColor.obj 
+      intermediate\PropertiesDetailObject.obj intermediate\DetailObjectsPick.obj 
+      intermediate\HWCaps.obj intermediate\EditObject.obj 
+      intermediate\Xr_input.obj intermediate\fcontroller.obj 
+      intermediate\pure.obj intermediate\CustomObject.obj 
+      intermediate\SceneObjectIO.obj intermediate\xrImage_Resampler.obj 
+      intermediate\TextureManager_Loader.obj intermediate\Texture.obj 
+      intermediate\Cursor3D.obj intermediate\SH_Matrix.obj 
+      intermediate\SH_Texture.obj intermediate\Shader.obj 
+      intermediate\SH_Constant.obj intermediate\xr_avi.obj 
+      intermediate\Blender_Recorder.obj intermediate\Blender.obj 
+      intermediate\Blender_Vertex.obj intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
@@ -134,7 +132,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR"/>
+    <USERDEFINES value="_EDITOR;_LEVEL_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="LevelEditor.cpp"/>
     <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Game;R:\sdk\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\xrCore;edit;engine;Engine\Animations;Engine\Blenders;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\alexmx;R:\Borland\Components6\ElPack\Code\Source"/>
@@ -148,13 +146,13 @@
       -IP:\xrCore -Iedit -Iengine -IEngine\Animations -IEngine\Blenders 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\alexmx 
       -IR:\Borland\Components6\ElPack\Code\Source -src_suffix cpp -D_EDITOR 
-      -D_LEVEL_EDITOR -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
-      -b- -k -vi -He -c -tW -tWM"/>
-    <PFLAGS value="-N2intermediate -N0intermediate -$Y- -$R -$Q -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
+    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
+      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -228,18 +226,15 @@
       <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="previewimage.cpp" FORMNAME="frmPreviewImage" UNITNAME="previewimage" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameEmitter.cpp" FORMNAME="fraEmitter" UNITNAME="FrameEmitter" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\xr_trims.cpp" FORMNAME="" UNITNAME="xr_trims" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameRPoint.cpp" FORMNAME="fraSpawnPoint" UNITNAME="FrameRPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\motion.cpp" FORMNAME="" UNITNAME="motion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\bone.cpp" FORMNAME="" UNITNAME="bone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\clsid.cpp" FORMNAME="" UNITNAME="clsid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\WayPoint.cpp" FORMNAME="" UNITNAME="WayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\DetailObjects.cpp" FORMNAME="" UNITNAME="DetailObjects" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameDetObj.cpp" FORMNAME="fraDetailObject" UNITNAME="FrameDetObj" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\Xr_ini.cpp" FORMNAME="" UNITNAME="xr_ini" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\Communicate.h" FORMNAME="" UNITNAME="Communicate" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_WayPointTools.cpp" FORMNAME="" UNITNAME="UI_WayPointTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -496,8 +491,8 @@ Item4=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=10
-Item0=_EDITOR;_LEVEL_EDITOR
-Item1=_EDITOR;_LEVEL_EDITOR;_DEBUG
+Item0=_EDITOR;_LEVEL_EDITOR;_DEBUG
+Item1=_EDITOR;_LEVEL_EDITOR
 Item2=_EDITOR;_LEVEL_EDITOR;_DEBUG;DEBUG
 Item3=_EDITOR;_DEBUG
 Item4=_EDITOR

@@ -23,22 +23,14 @@ bool CEditableObject::Load(const char* fname){
 }
 #endif
 
-bool CEditableObject::LoadObject(const char* fname){
-    IReader* F;
-    F = xr_new<CFileReader>(fname);
-    char MARK[8];
-    F->r(MARK,8);
-    if (strcmp(MARK,"OBJECT")==0){
-        xr_delete(F);
-        F = xr_new<CCompressedReader>(fname,"OBJECT");
-    }else{
-    	F->seek(0);
-    }
+bool CEditableObject::LoadObject(const char* fname)
+{
+    IReader* F = FS.r_open(fname);
     IReader* OBJ = F->open_chunk(EOBJ_CHUNK_OBJECT_BODY);
     R_ASSERT(OBJ);
     bool bRes = Load(*OBJ);
     OBJ->close();
-	xr_delete(F);
+	FS.r_close(F);
     if (bRes) m_LoadName = fname;
     return bRes;
 }
@@ -95,7 +87,8 @@ bool CEditableObject::Load(IReader& F){
         }
 
         // file version
-        R_ASSERT(F.r_chunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
+        R_ASSERT(F.find_chunk(EOBJ_CHUNK_LIB_VERSION));
+        m_Version			= F.r_s32();
         // surfaces
         if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
             u32 cnt = F.r_u32();
@@ -225,7 +218,8 @@ bool CEditableObject::Load(IReader& F){
     return bRes;
 }
 
-void CEditableObject::Save(IWriter& F){
+void CEditableObject::Save(IWriter& F)
+{
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.w_u16			(EOBJ_CURRENT_VERSION);
 	F.close_chunk	();
@@ -237,7 +231,10 @@ void CEditableObject::Save(IWriter& F){
     F.w_chunk		(EOBJ_CHUNK_FLAGS,&m_Flags.flags,sizeof(m_Flags.flags));
 
     // object version
-    F.w_chunk		(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
+    F.open_chunk	(EOBJ_CHUNK_LIB_VERSION);
+    F.w_s32			(m_Version);
+    F.w_s32			(0);
+    F.close_chunk	();
     // meshes
     F.open_chunk	(EOBJ_CHUNK_EDITMESHES);
     int count = 0;
@@ -366,3 +363,5 @@ bool CEditableObject::ExportHOM(LPCSTR fname)
 }
 //------------------------------------------------------------------------------
 #endif
+
+

@@ -94,10 +94,10 @@ void CStats::Show(CGameFont* font)
 		F.OutNext	("TEST 1:       %2.2fms, %d",TEST1.result,TEST1.count);
 		F.OutNext	("TEST 2:       %2.2fms, %d",TEST2.result,TEST2.count);
 		F.OutNext	("TEST 3:       %2.2fms, %d",TEST3.result,TEST3.count);
-		F.OutSkip	(2.f);
-        F.OutNext	("Level summary:");
-        F.OutNext	(" Sel Faces:   %d",			dwLevelSelFaceCount);
-        F.OutNext	(" Sel Verts:   %d",			dwLevelSelVertexCount);
+//		F.OutSkip	(2.f);
+//        F.OutNext	("Level summary:");
+//        F.OutNext	(" Sel Faces:   %d",			dwLevelSelFaceCount);
+//        F.OutNext	(" Sel Verts:   %d",			dwLevelSelVertexCount);
 	}
 
 	{

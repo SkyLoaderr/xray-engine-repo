@@ -12,11 +12,11 @@
 #include "ui_main.h"
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::PreparePath(){
-    char temp[1024];
-    strcpy(temp, Scene.m_LevelOp.m_FNLevelPath.c_str());
-    if(!ExtractFileDrive(Scene.m_LevelOp.m_FNLevelPath).Length())Engine.FS.m_GameLevels.Update(temp);
-   	m_LevelPath.Init( temp, "\\", "", "");
+bool SceneBuilder::PreparePath()
+{
+	if (Scene.m_LevelOp.m_FNLevelPath.IsEmpty()) return false;
+    FS.update_path	(m_LevelPath,_game_levels_,Scene.m_LevelOp.m_FNLevelPath.c_str());
+    m_LevelPath		+= "\\";
     return true;
 }
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void SceneBuilder::PF_Recurse(const char* path)
 
 bool SceneBuilder::PrepareFolders()
 {
-	PF_Recurse		(m_LevelPath.m_Path);
+	PF_Recurse		(m_LevelPath.c_str());
 	return true;
 }
 //------------------------------------------------------------------------------

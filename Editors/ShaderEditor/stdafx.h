@@ -134,20 +134,6 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	#include "CustomObject.h"
 #endif
 
-struct st_Version{
-    union{
-        struct{
-            int f_age;
-            int res0;
-        };
-        __int64 ver;
-    };
-    st_Version   (){reset();}
-    int size	(){return sizeof(st_Version);}
-    bool operator == (st_Version& v)	{return v.f_age==f_age;}
-    void reset	(){ver=0;}
-};
-
 #ifdef _LEVEL_EDITOR
 	#define _EDITOR_FILE_NAME_ 	"level"
 	#define _EDITOR_NAME_ 		"Level Editor"
@@ -173,7 +159,7 @@ struct st_Version{
     #endif
 #endif
 
-#define DEFINE_INI(storage){string256 buf;	strconcat(buf,_EDITOR_FILE_NAME_,".ini"); FS.update_path("$local_root$",buf); storage->IniFileName=buf;}
+#define DEFINE_INI(storage){string256 buf;	strconcat(buf,_EDITOR_FILE_NAME_,".ini"); FS.update_path(buf,"$local_root$",buf); storage->IniFileName=buf;}
 #define NONE_CAPTION "<none>"
 #define MULTIPLESEL_CAPTION "<multiple selection>"
 
@@ -191,6 +177,28 @@ struct st_Version{
 #pragma comment(lib,"xrHemisphere.lib")
 #pragma comment(lib,"ParticleDLLB.lib")
 
+// path definition
+#define _server_root_		"$server_root$"
+#define _server_data_root_	"$server_data_root$"
+#define _local_root_		"$local_root$"
+
+#define _game_data_			"$game_data$"
+#define _game_textures_		"$game_textures$"
+#define _game_levels_		"$game_levels$"
+#define _game_sounds_		"$game_sounds$"
+#define _game_meshes_		"$game_meshes$"
+#define _game_shaders_		"$game_shaders$"
+
+#define _import_			"$import$"
+#define _textures_			"$textures$"
+#define _objects_			"$objects$"
+#define _maps_				"$maps$"
+#define _temp_				"$temp$"
+#define _omotion_			"$omotion$"
+#define _omotions_			"$omotions$"
+#define _smotion_			"$smotion$"
+#define _smotions_			"$smotions$"
+#define _detail_objects_	"$detail_objects$"
 #endif
 
 #pragma hdrstop

@@ -29,8 +29,9 @@
 #define SCENEOBJ_CHUNK_SOUNDS			0xF920
 #define SCENEOBJ_CHUNK_ACTIVE_SOUND		0xF921
 //----------------------------------------------------
-COMotion* CSceneObject::LoadOMotion(const char* fname){
-	if (Engine.FS.Exist(fname)){
+COMotion* CSceneObject::LoadOMotion(LPCSTR fname)
+{
+	if (FS.exist(fname)){
     	COMotion* M = xr_new<COMotion>();
         if (!M->LoadMotion(fname)){
         	xr_delete(M);
@@ -63,8 +64,9 @@ bool CSceneObject::Load(IReader& F){
 		CCustomObject::Load(F);
 
         R_ASSERT(F.find_chunk(SCENEOBJ_CHUNK_REFERENCE));
-        F.r(&m_ObjVer, sizeof(m_ObjVer));
-        F.r_stringZ(buf);
+        m_Version	= F.r_s32();
+        F.r_s32		(); // advance (old read vers)
+        F.r_stringZ	(buf);
         if (!SetReference(buf)){
             ELog.Msg( mtError, "CSceneObject: '%s' not found in library", buf );
             bRes = false;
@@ -122,7 +124,8 @@ void CSceneObject::Save(IWriter& F){
 
     // reference object version
     F.open_chunk	(SCENEOBJ_CHUNK_REFERENCE); R_ASSERT2(m_pReference,"Empty SceneObject REFS");
-    F.w				(&m_pReference->m_ObjVer,sizeof(m_pReference->m_ObjVer));
+    F.w_s32			(m_pReference->m_Version);
+    F.w_s32			(0); // reserved
     F.w_stringZ		(m_ReferenceName.c_str());
     F.close_chunk	();
 
@@ -180,14 +183,14 @@ bool CSceneObject::ExportGame(SExportStreams& F)
         if (IsOMotionable()){
 	        string256 anm_name;	strconcat(anm_name,Name,".anms");
             dummy.s_Animation = xr_strdup(anm_name);
-        	strconcat		(anm_name,Builder.m_LevelPath.m_Path,Name,".anms");
+        	strconcat		(anm_name,Builder.m_LevelPath.c_str(),Name,".anms");
 	        VerifyPath		(anm_name);
     	    SaveOMotions	(anm_name);
         }
 		// esModel
         string256 mdl_name;	strconcat(mdl_name,Name,".ogf");
         dummy.s_Model 		= xr_strdup(mdl_name);
-        strconcat			(mdl_name,Builder.m_LevelPath.m_Path,Name,".ogf");
+        strconcat			(mdl_name,Builder.m_LevelPath.c_str(),Name,".ogf");
 		VerifyPath			(mdl_name);
         if (m_pReference->IsSkeleton()) m_pReference->ExportSkeletonOGF(mdl_name); else m_pReference->ExportObjectOGF(mdl_name);
 		// esSound

@@ -174,9 +174,8 @@ void TfrmEditLightAnim::GetItemData()
 	if (m_CurrentItem){
         PropValue* V=0;
         V = PHelper.CreateText	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName));
-        V->OnAfterEditEvent		= FHelper.NameAfterEdit;
-        V->OnBeforeEditEvent	= FHelper.NameBeforeEdit;
-        V->Owner()->OnDrawEvent = FHelper.NameDraw;
+        V->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit);
+        V->Owner()->SetEvents	(FHelper.NameDraw);
         PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
         PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
 		// set name
@@ -618,13 +617,13 @@ void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
 void __fastcall TfrmEditLightAnim::fsStorageRestorePlacement(
       TObject *Sender)
 {
-	m_Props->RestoreColumnWidth(fsStorage);
+	m_Props->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::fsStorageSavePlacement(TObject *Sender)
 {
-	m_Props->SaveColumnWidth(fsStorage);
+	m_Props->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 

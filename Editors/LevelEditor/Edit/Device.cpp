@@ -65,7 +65,7 @@ void CRenderDevice::Initialize()
 
 	// game materials
 	AnsiString fn_gm;
-    FS.update_path(fn_gm,"$game_data$","gamemtl.xr");
+    FS.update_path(fn_gm,_game_data_,"gamemtl.xr");
     if (FS.exist(fn_gm.c_str())){
     	GMLib.Load(fn_gm.c_str());
     }else{
@@ -74,7 +74,7 @@ void CRenderDevice::Initialize()
 
 	// compiler shader
 	AnsiString fn;
-    FS.update_path(fn,"$game_data$","shaders_xrlc.xr");
+    FS.update_path(fn,_game_data_,"shaders_xrlc.xr");
     if (FS.exist(fn.c_str())){
     	ShaderXRLC.Load(fn.c_str());
     }else{
@@ -128,7 +128,7 @@ bool CRenderDevice::Create(){
 	dwFrame				= 0;
 
 	AnsiString sh;
-    FS.update_path		(sh,"$game_data$","shaders.xr");
+    FS.update_path		(sh,_game_data_,"shaders.xr");
 
     IReader* F			= 0;
 	if (FS.exist(sh.c_str()))

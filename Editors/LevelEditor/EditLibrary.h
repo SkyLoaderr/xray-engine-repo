@@ -39,10 +39,7 @@ __published:	// IDE-managed Components
 	TPanel *paImage;
 	TPaintBox *pbImage;
 	TExtBtn *ebSave;
-	TExtBtn *ebExportDO;
 	TExtBtn *ebImport;
-	TExtBtn *ebExportHOM;
-	TExtBtn *ExtBtn1;
 	TExtBtn *ebMakeLOD;
 	TPanel *Panel3;
 	TLabel *lbFaces;
@@ -64,11 +61,8 @@ __published:	// IDE-managed Components
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvObjectsItemFocused(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall ebExportDOClick(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
-	void __fastcall ebExportHOMClick(TObject *Sender);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
-	void __fastcall ExtBtn1Click(TObject *Sender);
 	void __fastcall ebMakeLODClick(TObject *Sender);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall ebMakeLWOClick(TObject *Sender);
@@ -78,7 +72,7 @@ private:	// User declarations
 	static TfrmEditLibrary*	form;
     CSceneObject* 			m_pEditObject;
 	static AnsiString 		m_LastSelection;
-    static FileMap 			modif_map;
+    static FS_QueryMap		modif_map;
     static bool 			bFinalExit;
     static bool 			bExitResult;
     TfrmPropertiesEObject*  m_Props;

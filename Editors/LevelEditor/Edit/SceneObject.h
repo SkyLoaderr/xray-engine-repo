@@ -9,7 +9,7 @@
 class CSceneObject : public CCustomObject {
 	AnsiString		m_ReferenceName;
 	CEditableObject*m_pReference;
-    st_Version		m_ObjVer;
+    int				m_Version;
 	void __fastcall ReferenceChange			(PropValue* sender);
 public:
 	enum{
@@ -84,7 +84,7 @@ public:
 	virtual void 	Select					(BOOL flag);
 	void 			Construct				(LPVOID data);
 
-    IC bool			CheckVersion			()  {return m_pReference?(m_ObjVer==m_pReference->m_ObjVer):false;}
+    IC bool			CheckVersion			()  {return m_pReference?(m_Version==m_pReference->m_Version):false;}
     // get object properties methods
 	IC bool 		RefCompare				(CEditableObject *to){return m_pReference?!!(m_pReference==to):false; }
 	IC bool 		RefCompare				(LPCSTR ref){return m_pReference?(strcmp(ref,m_pReference->GetName())==0):false; }

@@ -19,8 +19,8 @@ EFS_Utils::~EFS_Utils()
 
 void EFS_Utils::OnCreate()
 {
-    FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
-    FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
+    FS.update_path			(m_LastAccessFN,_server_data_root_,"access.ini");
+    FS.update_path			(m_AccessLog,	_server_data_root_,"access.log");
 }                                               
 //----------------------------------------------------
 #ifdef _MSC_VER
@@ -34,24 +34,27 @@ bool FileExists(LPCSTR fn){
 }
 #endif
 
-LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
+LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
+{
 	ZeroMemory(dest,sizeof(dest));
-	int icnt=_GetItemCount(ext,';');
-	LPSTR dst=dest;
-    if (icnt>1){
-		strconcat(dst,info," (",ext,")");
-		dst+=(strlen(dst)+1);
-		strcpy(dst,ext);
-		dst+=(strlen(ext)+1);
+    if (ext){
+        int icnt=_GetItemCount(ext,';');
+		LPSTR dst=dest;
+        if (icnt>1){
+            strconcat(dst,info," (",ext,")");
+            dst+=(strlen(dst)+1);
+            strcpy(dst,ext);
+            dst+=(strlen(ext)+1);
+        }
+        for (int i=0; i<icnt; i++){
+            string64 buf;
+            _GetItem(ext,i,buf,';');
+            strconcat(dst,info," (",buf,")");
+            dst+=(strlen(dst)+1);
+            strcpy(dst,buf);
+            dst+=(strlen(buf)+1);
+        }
     }
-	for (int i=0; i<icnt; i++){
-		string64 buf;
-		_GetItem(ext,i,buf,';');
-		strconcat(dst,info," (",buf,")");
-		dst+=(strlen(dst)+1);
-		strcpy(dst,buf);
-		dst+=(strlen(buf)+1);
-	}
 	return dest;
 }
 
@@ -247,7 +250,7 @@ void EFS_Utils::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
 BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool bMsg)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) FS.update_path(initial,fn);
+	if (initial) FS.update_path(fn,initial,fn);
 
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
     if (FS.exist(fn)){
@@ -262,7 +265,7 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool b
 BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) FS.update_path(initial,fn);
+	if (initial) FS.update_path(fn,initial,fn);
 
     BOOL bRes=false;
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
@@ -281,7 +284,7 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) FS.update_path(initial,fn);
+	if (initial) FS.update_path(fn,initial,fn);
 
 	HANDLEPairIt it = m_LockFiles.find(fn);
 	if (it!=m_LockFiles.end()){
@@ -297,7 +300,7 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
 LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPSTR fname)
 {
 	string256 fn; strcpy(fn,fname);
-	if (initial) FS.update_path(initial,fn);
+	if (initial) FS.update_path(fn,initial,fn);
 
     CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
 	static string256 comp;

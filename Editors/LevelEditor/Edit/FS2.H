@@ -134,19 +134,16 @@ public:
 	u8*	pointer	()	{ return data; }
 	u32	size	()	{ return file_size;	}
 	void	clear	()  { file_size=0; position=0;	}
-	void	SaveTo	(const char* fn, const char* sign)
+	void	SaveTo	(const char* fn)
 	{
-    	if (sign) FileCompress(fn,sign,pointer(),size());
-        else {
-        #ifdef M_BORLAND
-        	int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
-        #else
-        	int H = _open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
-        #endif
-            R_ASSERT(H>0);
-            _write(H,pointer(),size());
-            _close(H);
-        }
+    #ifdef M_BORLAND
+        int H = open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+    #else
+        int H = _open(fn,O_WRONLY|O_CREAT|O_TRUNC|O_BINARY,S_IREAD|S_IWRITE);
+    #endif
+        R_ASSERT(H>0);
+        _write(H,pointer(),size());
+        _close(H);
 	}
 };
 
@@ -167,7 +164,7 @@ class ENGINE_API CLWMemoryStream: public CMemoryStream{
 
 public:
 	IC void		begin_save		()				{ open_chunk(ID_FORM); w_u32(ID_LWO2);}
-	IC void		end_save		(LPCSTR name)	{ close_chunk(); SaveTo(name,0);}
+	IC void		end_save		(LPCSTR name)	{ close_chunk(); SaveTo(name);}
 	IC void		w_layer			(u16 number, LPCSTR name){
 		open_chunk(ID_LAYR);
 			w_u16	(number);	// num

@@ -184,15 +184,15 @@ void EDetailManager::ExportColorIndices(LPCSTR fname)
 {
 	CMemoryWriter F;
     SaveColorIndices(F);
-    F.save_to(fname,0);
+    F.save_to(fname);
 }
 
 void EDetailManager::ImportColorIndices(LPCSTR fname)
 {
 	ClearColorIndices	();
-	IReader* F=Engine.FS.Open(fname); R_ASSERT(F);
+	IReader* F=FS.r_open(fname); R_ASSERT(F);
 	LoadColorIndices	(*F);
-	Engine.FS.Close		(F);
+	FS.r_close			(F);
 }
 
 void EDetailManager::SaveColorIndices(IWriter& F)
@@ -392,7 +392,7 @@ bool EDetailManager::Export(LPCSTR fn)
 		UI.ProgressInc	();
     }
 
-    if (bRes)			F.save_to(fn,0);
+    if (bRes)			F.save_to(fn);
 
 	UI.ProgressInc();
     UI.ProgressEnd		();

@@ -18,7 +18,7 @@ class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 	EditObjMap			m_EditObjects;
     AnsiString			m_Current;
 
-    CEditableObject*	LoadEditObject		(LPCSTR name, int age);
+    CEditableObject*	LoadEditObject		(LPCSTR full_name);
 public:
 						ELibrary			();
 	virtual 			~ELibrary			();
@@ -33,7 +33,7 @@ public:
 
     void				SetCurrentObject	(LPCSTR T);
     LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
-    CEditableObject*	CreateEditObject	(LPCSTR name,int* age=0);
+    CEditableObject*	CreateEditObject	(LPCSTR name);
     void				RemoveEditObject	(CEditableObject*& object);
 
     int					GetObjects			(FS_QueryMap& files);

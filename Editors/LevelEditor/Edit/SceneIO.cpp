@@ -198,13 +198,12 @@ void EScene::Save(char *_FileName, bool bUndo){
 	F.close_chunk	();
 //	Msg("TOTAL: %d",F.tell());
 
+	if (!bUndo) EFS.UnlockFile		(0,_FileName,false);
     // back up previous
-    if (!bUndo) Engine.FS.MarkFile		(_FileName,false);
-
+    if (!bUndo) EFS.MarkFile		(_FileName,false);
     // save data
-	if (!bUndo) Engine.FS.UnlockFile	(0,_FileName,false);
-    F.save_to							(_FileName,0);
-	if (!bUndo) Engine.FS.LockFile		(0,_FileName,false);
+    F.save_to						(_FileName);
+	if (!bUndo) EFS.LockFile		(0,_FileName,false);
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -275,28 +274,21 @@ void EScene::OnLoadAppendObject(CCustomObject* O)
 }
 //----------------------------------------------------
 
-bool EScene::Load(char *_FileName){
+bool EScene::Load(char *_FileName)
+{
     DWORD version = 0;
 
 	VERIFY( _FileName );
 	ELog.Msg( mtInformation, "EScene: loading %s...", _FileName );
 
-    if (Engine.FS.Exist(_FileName,true)){
-        IReader* F;
-        F = xr_new<CFileReader>(_FileName);
-		char MARK[8];
-        F->r(MARK,8);
-        if (strcmp(MARK,"LEVEL")==0){
-        	xr_delete(F);
-            F = xr_new<CCompressedReader>(_FileName,"LEVEL");
-        }
-
+    if (FS.exist(_FileName)){
+        IReader* F = FS.r_open(_FileName);
         // Version
         R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI.UpdateScene();
-        	xr_delete(F);
+            FS.r_close(F);
             return false;
         }
 
@@ -351,11 +343,13 @@ bool EScene::Load(char *_FileName){
 
         UI.UpdateScene();
 
-		xr_delete(F);
+		FS.r_close(F);
 
         SynchronizeObjects();
 
 		return true;
+    }else{
+    	ELog.Msg(mtError,"Can't fibd file: ",_FileName);
     }
 	return false;
 }
@@ -390,7 +384,7 @@ void EScene::SaveSelection( int classfilter, char *filename ){
             }
     }
 	F.close_chunk	();
-    F.save_to		(filename,0);//"LEVEL");
+    F.save_to		(filename);
 }
 
 //----------------------------------------------------
@@ -413,27 +407,29 @@ bool EScene::LoadSelection( const char *_FileName )
 
     bool res = true;
 
-    if (Engine.FS.Exist(_FileName)){
+    if (FS.exist(_FileName)){
 		SelectObjects( false );
 
-        CFileReader F(_FileName);
+        IReader* F = FS.r_open(_FileName);
 
         // Version
-        R_ASSERT(F.r_chunk(CHUNK_VERSION, &version));
+        R_ASSERT(F->r_chunk(CHUNK_VERSION, &version));
         if (version!=CURRENT_FILE_VERSION){
             ELog.DlgMsg( mtError, "EScene: unsupported file version. Can't load Level.");
             UI.UpdateScene();
+            FS.r_close(F);
             return false;
         }
 
         // Objects
-        if (!ReadObjects(F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject)){
+        if (!ReadObjects(*F,CHUNK_OBJECT_LIST,OnLoadSelectionAppendObject)){
             ELog.DlgMsg(mtError,"EScene. Failed to load selection.");
             res = false;
         }
 
         // Synchronize
 		SynchronizeObjects();
+		FS.r_close(F);
     }
 	return res;
 }
@@ -451,7 +447,7 @@ int EScene::CopySelection( EObjClass classfilter ){
 	SceneClipData *sceneclipdata = (SceneClipData *)GlobalLock(hmem);
 
 	sceneclipdata->m_ClassFilter = classfilter;
-	GetTempFileName( Engine.FS.m_Temp.m_Path, "clip", 0, sceneclipdata->m_FileName );
+	GetTempFileName( FS.get_path(_temp_)->m_Path, "clip", 0, sceneclipdata->m_FileName );
 	SaveSelection( classfilter, sceneclipdata->m_FileName );
 
 	GlobalUnlock( hmem );
@@ -500,20 +496,21 @@ int EScene::CutSelection( EObjClass classfilter )
 
 void EScene::LoadCompilerError(LPCSTR fn)
 {
-	CFileReader F(fn);
+	IReader* F	= FS.r_open(fn);
 
     m_CompilerErrors.Clear();
-    if (F.find_chunk(0)){ // lc error (TJ)
-        m_CompilerErrors.m_TJVerts.resize(F.r_u32());
-        F.r(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
+    if (F->find_chunk(0)){ // lc error (TJ)
+        m_CompilerErrors.m_TJVerts.resize(F->r_u32());
+        F->r(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
     }
-    if (F.find_chunk(1)){ // lc error (multiple edges)
-        m_CompilerErrors.m_MultiEdges.resize(F.r_u32());
-        F.r(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
+    if (F->find_chunk(1)){ // lc error (multiple edges)
+        m_CompilerErrors.m_MultiEdges.resize(F->r_u32());
+        F->r(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
     }
-    if (F.find_chunk(2)){ // lc error (invalid faces)
-        m_CompilerErrors.m_InvalidFaces.resize(F.r_u32());
-        F.r(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
+    if (F->find_chunk(2)){ // lc error (invalid faces)
+        m_CompilerErrors.m_InvalidFaces.resize(F->r_u32());
+        F->r(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
     }
+    FS.r_close(F);
 }
 

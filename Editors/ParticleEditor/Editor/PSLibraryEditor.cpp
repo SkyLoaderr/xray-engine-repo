@@ -54,8 +54,7 @@ PS::CPGDef* CPSLibrary::AppendPG(PS::CPGDef* src)
 void CPSLibrary::Save()
 {
 	AnsiString fn;
-    fn = PSLIB_FILENAME;
-    Engine.FS.m_GameRoot.Update(fn);
+    FS.update_path(fn,_game_data_,PSLIB_FILENAME);
     Save(fn.c_str());
 }
 //------------------------------------------------------------------------------
@@ -81,7 +80,7 @@ void CPSLibrary::Save(const char* nm)
     }
 	F.close_chunk	();
 
-    F.save_to		(nm,0);
+    F.save_to		(nm);
 }
 //------------------------------------------------------------------------------
 

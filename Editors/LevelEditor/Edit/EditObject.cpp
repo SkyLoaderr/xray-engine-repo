@@ -20,7 +20,7 @@ CEditableObject::CEditableObject(LPCSTR name)
 	m_LibName		= name;
 
 	m_Flags.zero	();
-    m_ObjVer.reset	();
+    m_Version		= 0;
 
 	m_Box.invalidate();
 

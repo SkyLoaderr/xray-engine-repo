@@ -44,7 +44,7 @@ void st_LevelOptions::WriteToLTX(CInifile* pIni){
         			e_it->m_FogColor.r,e_it->m_FogColor.g,e_it->m_FogColor.b,
                     e_it->m_Fogness, e_it->m_ViewDist,
         			e_it->m_SkyColor.r,e_it->m_SkyColor.g,e_it->m_SkyColor.b, e_it->m_SkyColor.a);
-		pIni->WriteString("environment", ln.c_str(), temp.c_str());
+		pIni->w_string("environment", ln.c_str(), temp.c_str());
     }
 }
 
@@ -53,7 +53,7 @@ void EScene::WriteToLTX(CInifile* pIni){
     if (m_SkyDome){
         AnsiString name = m_SkyDome->Name;
         name = ChangeFileExt(name,".ogf");
-        pIni->WriteString("environment", "sky", name.c_str() );
+        pIni->w_string("environment", "sky", name.c_str() );
     }
 }
 
@@ -661,7 +661,8 @@ void EScene::Unload(){
 }
 
 
-bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow){
+bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTestGlow, bool bTestShaderCompatible)
+{
 	if (bTestPortal){
 		if (!PortalUtils.Validate(false)){
 			ELog.DlgMsg(mtError,"*ERROR: Scene has non associated face!");
@@ -696,6 +697,17 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     if (FindDuplicateName()){
     	ELog.DlgMsg(mtError,"*ERROR: Found duplicate object name.\nResolve this problem and try again.");
         return false;
+    }
+    if (bTestShaderCompatible){
+    	bool bRes = true;
+        ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
+        for(ObjectIt it=lst.begin();it!=lst.end();it++){
+        	CSceneObject* S = (CSceneObject*)(*it);
+        	if (S->IsStatic()||S->IsMUStatic()){
+	            CEditableObject* O = ((CSceneObject*)(*it))->GetReference(); R_ASSERT(O);
+    	        if (!(bRes = O->CheckShaderCompatible())) return false;
+            }
+        }
     }
     if (bNeedOkMsg)
     	ELog.DlgMsg(mtInformation,"Validation OK!");
@@ -845,25 +857,6 @@ ObjectList* EScene::GetSnapList()
 #include "ImageThumbnail.h"
 void SSceneSummary::FillProp(PropItemVec& items)
 {
-	AStringIt new_end;
-    // unique textures
-    sort				(textures.begin(),textures.end());
-	new_end	= unique	(textures.begin(),textures.end());
-    textures.erase		(new_end,textures.end());
-	// unique lod
-    sort				(lod_objects.begin(),lod_objects.end());
-    new_end = unique	(lod_objects.begin(),lod_objects.end());
-    lod_objects.erase	(new_end,lod_objects.end());
-    // unique mu
-    sort				(mu_objects.begin(),mu_objects.end());
-    new_end = unique	(mu_objects.begin(),mu_objects.end());
-    mu_objects.erase	(new_end,mu_objects.end());
-    // unique waves
-    sort				(waves.begin(),waves.end());
-	new_end	= unique	(waves.begin(),waves.end());
-    waves.erase			(new_end,waves.end());
-
-    int mem_usage		= 0;
     // fill items
     PHelper.CreateCaption(items,"Level Name",					Scene.m_LevelOp.m_FNLevelPath);
     PHelper.CreateCaption(items,"Geometry\\Total Faces",   		face_cnt);
@@ -886,36 +879,70 @@ void SSceneSummary::FillProp(PropItemVec& items)
     PHelper.CreateCaption(items,"Lights\\By Usage\\Procedural",	light_procedural_cnt);
     PHelper.CreateCaption(items,"Glows\\Count",					glow_cnt);
     // textures
-    PHelper.CreateCaption(items,"Textures\\Count",				textures.size());
-    PropValue* item = PHelper.CreateCaption(items,"Textures\\Memory Usage",	"");
-    UI.ProgressStart(textures.size(),"Collect textures info: ");
-    for (AStringIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
+    AnsiString temp;
+    int base_mem_usage		= 0;
+    int det_mem_usage		= 0;
+    PropValue* total_count	= PHelper.CreateCaption	(items,"Textures\\Count","");
+    PropValue* total_mem	= PHelper.CreateCaption(items,"Textures\\Memory Usage","");
+    PHelper.CreateCaption	(items,"Textures\\Base\\Count",		textures.size());
+    PropValue* base_mem		= PHelper.CreateCaption(items,"Textures\\Base\\Memory Usage",	"");
+    UI.ProgressStart(textures.size(),"Collect base textures info: ");
+    for (AStringSetIt t_it=textures.begin(); t_it!=textures.end(); t_it++){
+        UI.ProgressInc	(t_it->c_str());
+        EImageThumbnail* T 	= xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
+        if (!T->Valid()){
+        	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
+        }else{
+            int tex_mem		= T->MemoryUsage();
+            base_mem_usage	+= tex_mem;
+            AnsiString pref	= AnsiString("Textures\\Base\\")+*t_it;
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
+            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
+        	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
+            	det_textures.insert(T->_Format().detail_name);
+	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
+	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
+            }
+//            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
+        }
+        xr_delete			(T);
+    }
+    UI.ProgressEnd			();
+    temp.sprintf			("%d Kb",iFloor(base_mem_usage/1024));
+    base_mem->ApplyValue	(&temp);
+
+    PropValue* base_count	= PHelper.CreateCaption(items,"Textures\\Detail\\Count",			det_textures.size());
+    PropValue* det_mem		= PHelper.CreateCaption(items,"Textures\\Detail\\Memory Usage",	"");
+    UI.ProgressStart(textures.size(),"Collect detail textures info: ");
+    for (t_it=det_textures.begin(); t_it!=det_textures.end(); t_it++){
         UI.ProgressInc	(t_it->c_str());
         EImageThumbnail* T = xr_new<EImageThumbnail>(t_it->c_str(),EImageThumbnail::EITTexture,true);
         if (!T->Valid()){
         	ELog.Msg(mtError,"Can't get info from texture: '%s'",t_it->c_str());
         }else{
             int tex_mem		= T->MemoryUsage();
-            mem_usage		+= tex_mem;
-            AnsiString pref	= AnsiString("Textures\\")+*t_it;
+            det_mem_usage	+= tex_mem;
+            AnsiString pref	= AnsiString("Textures\\Detail\\")+*t_it;
             PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Format"),			T->FormatString());
             PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
-        	if (T->_Format().flags.is(STextureParams::flHasDetailTexture)){
-	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Texture"),	T->_Format().detail_name);
-	            PHelper.CreateCaption(items,PHelper.PrepareKey(pref.c_str(),"Detail Scale"),	T->_Format().detail_scale);
-            }
         }
-        xr_delete(T);
+        xr_delete			(T);
     }
-    AnsiString temp;
-    temp.sprintf("%d Kb",iFloor(mem_usage/1024));
-    item->ApplyValue(&temp);
-    UI.ProgressEnd();
+    UI.ProgressEnd			();
+    temp.sprintf			("%d Kb",iFloor(det_mem_usage/1024));
+    det_mem->ApplyValue		(&temp);
+
+    temp.sprintf			("%d",det_textures.size()+textures.size());
+    total_count->ApplyValue	(&temp);
+    temp.sprintf			("%d Kb",iFloor((det_mem_usage+base_mem_usage)/1024));
+    total_mem->ApplyValue	(&temp);
+    
 	// sound
     PHelper.CreateCaption(items,"Sounds\\Sources",				sound_source_cnt);
     PHelper.CreateCaption(items,"Sounds\\Waves\\Count",			waves.size());
-    for (AStringIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
+    for (AStringSetIt w_it=waves.begin(); w_it!=waves.end(); w_it++)
         PHelper.CreateCaption(items,PHelper.PrepareKey("Sounds\\Waves",w_it->c_str()),"...");
 }
 
@@ -929,13 +956,15 @@ void EScene::ShowSummaryInfo()
             if ((*_F)->GetSummaryInfo(&summary)) bRes=true;
         }
 	}
+    // append sky dome
+	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&summary);
+/*	низя так
     // append detail textures
-	AnsiString nm = "textures.ltx";
-    Engine.FS.m_GameTextures.Update(nm);
-    if (Engine.FS.Exist(nm.c_str())){
-        CInifile* ini = xr_new<CInifile>(nm.c_str());
-        if (ini->SectionExists("association")){
-            CInifile::Sect& 	data = ini->ReadSection("association");
+	string256 nm;
+    if (FS.exist(nm,_game_textures_,"textures.ltx")){
+        CInifile* ini = xr_new<CInifile>(nm);
+        if (ini->section_exist("association")){
+            CInifile::Sect& 	data = ini->r_section("association");
             for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
                 string256		T;
                 CInifile::Item& item		= *I;
@@ -945,7 +974,7 @@ void EScene::ShowSummaryInfo()
         }
         xr_delete(ini);
     }
-
+*/
 
 	PropItemVec items;
 	if (bRes){

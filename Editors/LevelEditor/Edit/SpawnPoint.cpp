@@ -52,11 +52,11 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
     }
 
     if (m_Data){
-        if (pSettings->LineExists(entity_ref,"$player")){
-            if (pSettings->ReadBOOL(entity_ref,"$player"))
+        if (pSettings->line_exist(entity_ref,"$player")){
+            if (pSettings->r_bool(entity_ref,"$player"))
                 m_Data->s_flags.set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
         }
-        m_ClassID = pSettings->ReadCLSID(entity_ref,"class");
+        m_ClassID = pSettings->r_clsid(entity_ref,"class");
         strcpy(m_Data->s_name,entity_ref);
     }
 }
@@ -466,8 +466,8 @@ void CSpawnPoint::OnDeviceDestroy()
 Shader* CSpawnPoint::CreateIcon(LPCSTR name)
 {
     Shader* S = 0;
-    if (pSettings->LineExists(name,"$ed_icon")){
-	    LPCSTR tex_name = pSettings->ReadSTRING(name,"$ed_icon");
+    if (pSettings->line_exist(name,"$ed_icon")){
+	    LPCSTR tex_name = pSettings->r_string(name,"$ed_icon");
     	S = Device.Shader.Create("editor\\spawn_icon",tex_name);
         m_Icons[name] = S;
     }else{

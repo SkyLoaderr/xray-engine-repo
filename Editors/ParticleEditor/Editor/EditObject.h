@@ -212,7 +212,7 @@ public:
     AnsiString		m_LoadName;
     int				m_RefCount;
 protected:
-    st_Version		m_ObjVer;
+    int				m_Version;
 
     void 			ClearGeometry			();
 
@@ -341,6 +341,7 @@ public:
     void			FillPropSurf			(LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillSummaryProps		(LPCSTR pref, PropItemVec& items);
+	bool			CheckShaderCompatible	();
 #endif
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 

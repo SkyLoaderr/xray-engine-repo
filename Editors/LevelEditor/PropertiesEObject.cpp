@@ -96,16 +96,16 @@ void __fastcall TfrmPropertiesEObject::FormDestroy(TObject *Sender)
 void __fastcall TfrmPropertiesEObject::fsStorageRestorePlacement(
       TObject *Sender)
 {
-	m_BasicProp->RestoreColumnWidth(fsStorage);
-	m_SurfProp->RestoreColumnWidth(fsStorage);
+	m_BasicProp->RestoreParams(fsStorage);
+	m_SurfProp->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEObject::fsStorageSavePlacement(
       TObject *Sender)
 {
-	m_BasicProp->SaveColumnWidth(fsStorage);
-	m_SurfProp->SaveColumnWidth(fsStorage);
+	m_BasicProp->SaveParams(fsStorage);
+	m_SurfProp->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 

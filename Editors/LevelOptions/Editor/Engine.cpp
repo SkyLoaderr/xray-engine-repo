@@ -47,7 +47,7 @@ void CEngine::Initialize(void)
 
 	string256               fn;
     strconcat               (fn,_EDITOR_FILE_NAME_,".log");
-    FS.update_path			("$local_root$",fn);
+    FS.update_path			(fn,_local_root_,fn);
 
 #ifdef _EDITOR
 	// Bind PSGP
@@ -64,7 +64,7 @@ void CEngine::Initialize(void)
 
     // game configure
     string256 si_name		= "system.ltx";
-    FS.update_path			("$game_data$",si_name);
+    FS.update_path			(si_name,_game_data_,si_name);
 	pSettings				= xr_new<CInifile>(si_name,TRUE);// FALSE,TRUE,TRUE);
 }
 

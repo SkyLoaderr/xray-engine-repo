@@ -55,17 +55,17 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
             else	strcpy( filebuffer, m_LastFileName );
-			if( p1 || Engine.FS.GetOpenName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+			if( p1 || EFS.GetOpenName( _maps_, filebuffer, sizeof(filebuffer) ) ){
                 if (!Scene.IfModified()){
                 	bRes=false;
                     break;
                 }
-                if ((0!=stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,false,true)){
+                if ((0!=stricmp(filebuffer,m_LastFileName))&&EFS.CheckLocking(0,filebuffer,false,true)){
                 	bRes=false;
                     break;
                 }
-                if ((0==stricmp(filebuffer,m_LastFileName))&&Engine.FS.CheckLocking(0,filebuffer,true,false)){
-	                Engine.FS.UnlockFile(0,filebuffer);
+                if ((0==stricmp(filebuffer,m_LastFileName))&&EFS.CheckLocking(0,filebuffer,true,false)){
+	                EFS.UnlockFile(0,filebuffer);
                 }
                 SetStatus("Level loading...");
             	Command( COMMAND_CLEAR );
@@ -78,7 +78,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			    Command(COMMAND_UPDATE_CAPTION);
                 Command(COMMAND_CHANGE_ACTION,eaSelect);
                 // lock
-                Engine.FS.LockFile(0,filebuffer);
+                EFS.LockFile(0,filebuffer);
                 fraLeftBar->AppendRecentFile(filebuffer);
                 // update props
 		        Command(COMMAND_UPDATE_PROPERTIES);
@@ -117,22 +117,22 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
     case COMMAND_SAVE_BACKUP:{
     	AnsiString fn = AnsiString(Core.CompName)+"_"+Core.UserName+"_backup.level";
-        Engine.FS.m_Maps.Update(fn);
+        FS.update_path(_maps_,fn);
     	Command(COMMAND_SAVEAS,(int)fn.c_str());
     }break;
 	case COMMAND_SAVEAS:
 		if( !Scene.locked() ){
 			filebuffer[0] = 0;
-			if(p1 || Engine.FS.GetSaveName( Engine.FS.m_Maps, filebuffer, sizeof(filebuffer) ) ){
+			if(p1 || EFS.GetSaveName( _maps_, filebuffer, sizeof(filebuffer) ) ){
             	if (p1)	strcpy(filebuffer,(LPCSTR)p1);
                 SetStatus("Level saving...");
 				Scene.Save( filebuffer, false );
                 SetStatus("");
                 Scene.m_Modified = false;
 				// unlock
-    	        Engine.FS.UnlockFile(0,m_LastFileName);
+    	        EFS.UnlockFile(0,m_LastFileName);
                 // set new name
-                Engine.FS.LockFile(0,filebuffer);
+                EFS.LockFile(0,filebuffer);
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
                 fraLeftBar->AppendRecentFile(filebuffer);
@@ -148,7 +148,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
             if (!Scene.IfModified()) return false;
 			// unlock
-			Engine.FS.UnlockFile(0,m_LastFileName);
+			EFS.UnlockFile(0,m_LastFileName);
 			Device.m_Camera.Reset();
 			Scene.Unload();
             Scene.m_LevelOp.Reset();
@@ -178,14 +178,14 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
     case COMMAND_IMPORT_COMPILER_ERROR:{
     	AnsiString fn;
-    	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
+    	if(EFS.GetOpenName(_server_root_, fn)){
         	Scene.LoadCompilerError(fn.c_str());
         }
     	}break;
 
 	case COMMAND_VALIDATE_SCENE:
 		if( !Scene.locked() ){
-            Scene.Validate(true,false);
+            Scene.Validate(true,false,true,true,true);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

@@ -14,7 +14,8 @@
 
 SceneBuilder Builder;
 //----------------------------------------------------
-SceneBuilder::SceneBuilder(){
+SceneBuilder::SceneBuilder()
+{
     m_iDefaultSectorNum = 0;
     l_verts			= 0;
     l_faces			= 0;
@@ -24,7 +25,8 @@ SceneBuilder::SceneBuilder(){
 	l_face_it		= 0;
 }
 
-SceneBuilder::~SceneBuilder(){
+SceneBuilder::~SceneBuilder()
+{
 }
 
 //------------------------------------------------------------------------------
@@ -46,7 +48,7 @@ BOOL SceneBuilder::Compile()
 	        // check debug
             bool bTestPortal = Scene.ObjCount(OBJCLASS_SECTOR)||Scene.ObjCount(OBJCLASS_PORTAL);
 	        // validate scene
-    	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal),"Validation failed. Invalid scene.");
+    	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal,true,true,true),"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
             VERIFY_COMPILE(EvictResource(),				"Failed to evict resource.");
@@ -85,7 +87,7 @@ BOOL SceneBuilder::MakeGame( )
     try{
         do{
 	        // validate scene
-    	    VERIFY_COMPILE(Scene.Validate(false,false,false,false),	"Validation failed. Invalid scene.");
+    	    VERIFY_COMPILE(Scene.Validate(false,false,false,false,false),	"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
@@ -126,8 +128,7 @@ BOOL SceneBuilder::MakeDetails()
 	AnsiString error_text;
     do{
 		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-        AnsiString fn="level.details";
-        m_LevelPath.Update(fn);
+        AnsiString fn			= m_LevelPath+"level.details";
         // save details
 		VERIFY_COMPILE(Scene.m_DetailObjects->Export(fn.c_str()), "Export failed.");
     }while(0);

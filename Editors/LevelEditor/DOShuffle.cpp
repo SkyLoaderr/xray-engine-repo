@@ -367,7 +367,7 @@ void __fastcall TfrmDOShuffle::tvItemsDblClick(TObject *Sender)
 void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
 {
 	AnsiString fname;
-	if (Engine.FS.GetSaveName(Engine.FS.m_DetailObjects,fname)){
+	if (EFS.GetSaveName(_detail_objects_,fname)){
 		Scene.m_DetailObjects->ExportColorIndices(fname.c_str());
     }
 }
@@ -376,7 +376,7 @@ void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
 void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 {
 	AnsiString fname;
-	if (Engine.FS.GetOpenName(Engine.FS.m_DetailObjects,fname)){
+	if (EFS.GetOpenName(_detail_objects_,fname)){
         Scene.m_DetailObjects->InvalidateSlots();
 		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
 		ClearInfo();

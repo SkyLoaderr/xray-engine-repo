@@ -28,7 +28,7 @@ void CSceneObject::Construct(LPVOID data){
 
     m_ReferenceName = "";
 	m_pReference 	= 0;
-    m_ObjVer.reset	();
+    m_Version		= 0;
 
     m_TBBox.invalidate();
     m_iBlinkTime	= 0;
@@ -368,15 +368,16 @@ void CSceneObject::ClearOMotions()
 
 void CSceneObject::LoadOMotions(const char* fname)
 {
-	CFileReader F(fname);
+	IReader* F = FS.r_open(fname);
     ClearOMotions();
     // object motions
-    m_OMotions.resize(F.r_u32());
+    m_OMotions.resize(F->r_u32());
 	SetActiveOMotion(0);
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++){
         *m_it = xr_new<COMotion>();
-        (*m_it)->Load(F);
+        (*m_it)->Load(*F);
     }
+    FS.r_close	(F);
 }
 
 void CSceneObject::SaveOMotions(const char* fname)
@@ -384,7 +385,7 @@ void CSceneObject::SaveOMotions(const char* fname)
 	CMemoryWriter F;
     F.w_u32		(m_OMotions.size());
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++) (*m_it)->Save(F);
-    F.save_to		(fname,0);
+    F.save_to		(fname);
 }
 
 void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
@@ -396,7 +397,7 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp		(pref,items);
     PropValue* V=0;
-	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->OnChangeEvent = ReferenceChange;
+	V=PHelper.CreateALibObject	(items,PHelper.PrepareKey(pref,"Reference"),	&m_ReferenceName); V->SetEvents(0,0,ReferenceChange);
 //	PHelper.CreateFlag32		(items,PHelper.PrepareKey(pref,"Flags\\Dummy"),	&m_Flags,flDummy);
 }
 

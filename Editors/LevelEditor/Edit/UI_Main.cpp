@@ -95,7 +95,7 @@ bool TUI::OnCreate(){
         return 		false;
     }
 
-    if (!FS.path_exist("$local_root$")){
+    if (!FS.path_exist(_local_root_)){
     	ELog.DlgMsg	(mtError,"Undefined Editor local directory.");
         return 		false;
     }
@@ -436,7 +436,7 @@ void TUI::Redraw(){
     u32 fog_color;
 	float fog_start, fog_end;
     Tools.GetCurrentFog	(fog_color, fog_start, fog_end);
-	Device.SetRS( D3DRS_FOGCOLOR,		fog_color			);
+	Device.SetRS( D3DRS_FOGCOLOR,		fog_color			);         
 	Device.SetRS( D3DRS_RANGEFOGENABLE,	FALSE				);
 	if (HW.Caps.bTableFog)	{
 		Device.SetRS( D3DRS_FOGTABLEMODE,	D3DFOG_LINEAR 	);

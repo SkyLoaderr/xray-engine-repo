@@ -252,9 +252,9 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
         prop->item->ShowCheckBox 	= prop->m_Flags.is(PropItem::flShowCB);
         prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(PropItem::flCBChecked);
         // set flags
-        if (prop->m_Flags.is(PropItem::flDrawThumbnail)){ 
+        if (prop->m_Flags.is(PropItem::flDrawThumbnail)){
         	prop->item->Height 		= 64;
-			prop->item->OwnerHeight	= !miDrawThumbnails->Checked;
+        	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
         }
         // set style
         TElCellStyle* CS    = prop->item->AddStyle();
@@ -1261,8 +1261,6 @@ void __fastcall TProperties::FormDeactivate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TProperties::FormShow(TObject *Sender)
 {
 	// check window position
@@ -1325,11 +1323,13 @@ void __fastcall TProperties::miDrawThumbnailsClick(TObject *Sender)
 
 void __fastcall TProperties::RefreshForm()
 {
+	tvProperties->IsUpdating 	= true;
     for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	PropItem* prop = *it;
     	if (prop->m_Flags.is(PropItem::flDrawThumbnail)) 
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
     }
+	tvProperties->IsUpdating 	= false;
 	tvProperties->Repaint();
 }
 
