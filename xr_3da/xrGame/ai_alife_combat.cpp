@@ -265,11 +265,11 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 
 void CSE_ALifeSimulator::vfAssignArtefactPosition(CSE_ALifeAnomalousZone *tpALifeAnomalousZone, CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
-	tpALifeDynamicObject->m_tGraphID	= tpALifeAnomalousZone->m_tGraphID;
-	u32									l_dwIndex = tpALifeAnomalousZone->m_dwStartIndex + randI(tpALifeAnomalousZone->m_wArtefactSpawnCount);
-	tpALifeDynamicObject->o_Position	= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
-	tpALifeDynamicObject->m_tNodeID		= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
-	tpALifeDynamicObject->m_fDistance	= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
+	tpALifeDynamicObject->m_tGraphID		= tpALifeAnomalousZone->m_tGraphID;
+	u32										l_dwIndex = tpALifeAnomalousZone->m_dwStartIndex + randI(tpALifeAnomalousZone->m_wArtefactSpawnCount);
+	tpALifeDynamicObject->o_Position		= m_tpArtefactSpawnPositions[l_dwIndex].tPoint;
+	tpALifeDynamicObject->m_tNodeID			= m_tpArtefactSpawnPositions[l_dwIndex].tNodeID;
+	tpALifeDynamicObject->m_fDistance		= m_tpArtefactSpawnPositions[l_dwIndex].fDistance;
 }
 
 void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALifeCreatureAbstract, _GRAPH_ID tGraphID, CSE_ALifeSchedulable *tpALifeSchedulable)
