@@ -69,12 +69,21 @@ function send_help(actor)
 	actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500, 0)
 end
 
-function send_task(actor, news_id)
+function send_task(actor, type, news_id)
 	if actor == nil or news_id == nil then return false end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_objective]])
 	if snd_obj ~= nil then
 		snd_obj:play(actor, 0, sound_object.s2d)
-	end	
-	actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
+	end
+	if type == "new" then
+		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
+	elseif type == "update" then
+		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 250,100,50,500, 0)
+	elseif type == "complete" then
+		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+	elseif type == "fail" then
+		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+	end
+	
 end

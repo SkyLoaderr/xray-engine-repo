@@ -130,46 +130,82 @@ end
 
 
 function process_task_changing(actor, info)
-	if info == "tutorial_artefact_start" or
-	   info == "tutorial_artefact_gain" or
-	   info == "tutorial_artefact_done" or
-	   
-	   info == "tutorial_wounded_start" or
+	--' Новое задание
+	if (info == "tutorial_artefact_start" and
+	   actor:dont_has_info("tutorial_artefact_gain") and
+	   actor:dont_has_info("tutorial_artefact_done")) or
+
+	   (info == "tutorial_wounded_start" and
+	   actor:dont_has_info("tutorial_wounded_help") and
+	   actor:dont_has_info("tutorial_wounded_die")) or
+
+	   (info == "escape_artefact_start" and
+	   actor:dont_has_info("escape_artefact_gain") and
+	   actor:dont_has_info("escape_artefact_done")) or
+
+	   (info == "escape_stalker_meet" and
+	   actor:dont_has_info("escape_stalker_give") and
+	   actor:dont_has_info("escape_stalker_done")) or
+
+	   (info == "escape_blockpost_case" and
+	   actor:dont_has_info("escape_blockpost_case_have") and
+	   actor:dont_has_info("escape_blockpost_case_done")) or
+
+	   (info == "escape_dynamite_meet" and
+	   actor:dont_has_info("escape_dynamite_gain") and
+	   actor:dont_has_info("escape_dynamite_have") and
+	   actor:dont_has_info("escape_dynamite_done")) or
+
+	   (info == "garbage_meetstalker_start" and
+	   actor:dont_has_info("garbage_meetstalker_done") and
+	   actor:dont_has_info("garbage_meetstalker_die"))
+	then
+		news_manager.send_task(actor, "new", info)
+	end
+
+	--' Обновление задания
+	if (info == "tutorial_artefact_gain" and
+	   actor:dont_has_info("tutorial_artefact_done")) or
+
+	   (info == "escape_artefact_gain" and
+	   actor:dont_has_info("escape_artefact_done")) or
+
+	   (info == "escape_stalker_give" and
+	   actor:dont_has_info("escape_stalker_done")) or
+
+	   (info == "escape_blockpost_case_have" and
+	   actor:dont_has_info("escape_blockpost_case_done")) or
+
+	   ((info == "escape_dynamite_gain" or
+	   info == "escape_dynamite_have") and
+	   actor:dont_has_info("escape_dynamite_done"))
+	then
+		news_manager.send_task(actor, "update", info)
+	end
+	
+	--' Выполнение задания
+	if info == "tutorial_artefact_done" or
+
 	   info == "tutorial_wounded_help" or
-	   info == "tutorial_wounded_die" or
 	   
-	   info == "escape_artefact_start" or
-	   info == "escape_artefact_gain" or
 	   info == "escape_artefact_done" or
 	   
-	   info == "escape_stalker_meet" or
-	   info == "escape_stalker_give" or
 	   info == "escape_stalker_done" or
-
-	   info == "escape_blockpost_case" or
-	   info == "escape_blockpost_case_have" or
-	   info == "escape_blockpost_case_done" or
-
-	   info == "escape_dynamite_meet" or
-	   info == "escape_dynamite_gain" or
-	   info == "escape_dynamite_have" or
-	   info == "escape_dynamite_done" or
-
-	   info == "garbage_meetstalker_start" or
-	   info == "garbage_meetstalker_done" or
-	   info == "garbage_meetstalker_die" or
-
-	   info == "agroprom_military_case" or
-	   info == "agroprom_military_case_have" or
-	   info == "agroprom_military_case_done" or
-
-	   info == "agr_krot_band" or
-	   info == "agr_krot_band_done" or
-
-	   info == "agr_find_gunslinger_hide" or
-	   info == "agr_find_gunslinger_hide_done"
 	   
+	   info == "escape_blockpost_case_done" or
+	   
+	   info == "escape_dynamite_done" or
+	   
+	   info == "garbage_meetstalker_done"
 	then
-		news_manager.send_task(actor, info)
+		news_manager.send_task(actor, "complete", info)
 	end
+		
+	--' Фейл задания
+	if info == "tutorial_wounded_die" or
+
+	   info == "garbage_meetstalker_die"
+	then
+		news_manager.send_task(actor, "fail", info)
+	end	
 end
