@@ -3,6 +3,10 @@
 
 punch = {}
 
+local state_end = 0
+local state_approaching = 1
+local state_punch = 2
+
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_need_punch" (property_evaluator)
 
@@ -20,10 +24,6 @@ class "action_punch_activity" (action_base)
 
 function action_punch_activity:__init(npc_name, action_name, storage) super (nil, action_name)
 	self.st = storage
-
-	self.state_none = 0
-	self.state_approaching = 1
-	self.state_punch = 2
 end
 
 function action_punch_activity:initialize()
@@ -45,7 +45,7 @@ function action_punch_activity:initialize()
 		nil,
 		{ look_object = db.actor }, 
 		{animation = true})
-	self.state = self.state_approaching
+	self.state = state_approaching
 
 	--xr_reactions.add_rule(self.object, "ignore")
 end
@@ -61,18 +61,18 @@ function action_punch_activity:execute()
 		return
 	end
 
-	if self.state == self.state_approaching then
+	if self.state == state_approaching then
 		--printf("approaching")
 		if self.object:position():distance_to(whom:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
-			state_mgr.set_state(self.object, "guard",
+			state_mgr.set_state(self.object, "punch",
 				nil,
 				nil,
 				{ look_object = db.actor }, 
 				{animation = true})
 			--self.object:add_animation("udar_0", true)
 			self.expiration_time = device():time_global() + 700
-			self.state = self.state_punch
+			self.state = state_punch
 		else
 			self.object:set_desired_direction(whom:direction())
 			self.object:set_dest_level_vertex_id(whom:level_vertex_id())
@@ -80,7 +80,7 @@ function action_punch_activity:execute()
 		return
 	end
 
-	if self.state == self.state_punch then
+	if self.state == state_punch then
 		if device():time_global() >= self.expiration_time then
 			local actor_st = db.storage[db.actor:id()].punch
 			if not actor_st then
@@ -89,15 +89,21 @@ function action_punch_activity:execute()
 			end
 			actor_st.enabled = true
 
-			self.state = self.state_none
+			self.state = state_end
 
-			self.st.enabled = false
-			
 			whom:actor_sleep(0, 30)
 		end
 		return
 	end
+	
+	if self.state == state_end then
+		local actor_st = db.storage[db.actor:id()].punch
+		if not actor_st.enabled then
+			self.st.enabled = false
+		end
+	end
 end
+
 
 function action_punch_activity:finalize()
 	action_base.finalize(self)

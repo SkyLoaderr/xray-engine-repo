@@ -244,7 +244,14 @@ states = {
 				animation = "suicide",
 				reset = true
 			},
-
+	punch = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "punch",
+				reset = true
+			},
 
 	-- Раненый
 	wounded = {	weapon = "strapped",

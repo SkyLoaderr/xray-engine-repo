@@ -2,14 +2,12 @@
 <game_information_portions>
 
 <!-- Нападение на игрока около входа на уровень -->
+<info_portion id="val_ambush_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_started"></info_portion>
-<info_portion id="val_ambush_t1_kill_plr"></info_portion>
 <info_portion id="val_ambush_t1_plr_near"></info_portion>
 <info_portion id="val_ambush_t2_started"></info_portion>
-<info_portion id="val_ambush_t2_kill_plr"></info_portion>
 <info_portion id="val_ambush_t2_plr_near"></info_portion>
 <info_portion id="val_ambush_t3_started"></info_portion>
-<info_portion id="val_ambush_t3_kill_plr"></info_portion>
 <info_portion id="val_ambush_t3_plr_near"></info_portion>
 
 <!-- Сцена 2 - кровосос падает с обрыва -->

@@ -9,6 +9,8 @@ class "actor_binder" (object_binder)
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:__init (obj) super(obj)
 	self.bCheckStart = false
+	
+	self.delayed_sleep_callback_start_tm = device():time_global()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:net_spawn(data)
@@ -51,17 +53,29 @@ function actor_binder:info_callback(npc, info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:sleep_callback()
+	self.delayed_sleep_callback_start_tm = device():time_global() + 1500
+end
+----------------------------------------------------------------------------------------------------------------------
+function actor_binder:delayed_sleep_callback()
+	self.delayed_sleep_callback_start_tm = nil
+
 	printf("*SLEEP CALLBACK*")
 	if self.st.punch and self.st.punch.enabled then
-		self.st.punch.enabled = false
-		
 		self.object:set_actor_position(self.st.punch.dest_walk)
 		self.object:set_actor_direction(self.st.punch.dest_look.y)
+	
+		self.st.punch.enabled = false
 	end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
 	object_binder.update(self, delta)
+	
+	if self.delayed_sleep_callback_start_tm and
+	   device():time_global() >= self.delayed_sleep_callback_start_tm then
+		self:delayed_sleep_callback()
+	end
+	
 	--' Проверка потери жизни
 if false then
 	printf("%f * %f | %d", self.object.health, self.object.health - lasthealth, game.time() - lasttime)
