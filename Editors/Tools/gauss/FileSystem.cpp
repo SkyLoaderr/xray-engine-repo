@@ -151,14 +151,14 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	return bRes;
 }
 //----------------------------------------------------
-LPSTR EFS_Utils::AppendFolderToName(LPSTR tex_name, int depth)
+LPSTR EFS_Utils::AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name)
 {
 	string256 _fn;
-	strcpy(tex_name,AppendFolderToName(tex_name, _fn, depth));
+	strcpy(tex_name,AppendFolderToName(tex_name, _fn, depth, full_name));
 	return tex_name;
 }
 
-LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth)
+LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name)
 {
 	ref_str tmp = src_name;
     LPCSTR s 	= src_name;
@@ -166,8 +166,13 @@ LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth)
 	for (; *s&&depth; s++, d++){
 		if (*s=='_'){depth--; *d='\\';}else{*d=*s;}
 	}
-    *d			= 0;
-	strcat		(dest_name,*tmp);
+	if (full_name){
+		*d			= 0;
+		strcat		(dest_name,*tmp);
+	}else{
+		for (; *s; s++, d++) *d=*s;
+		*d			= 0;
+	}
     return dest_name;
 /*    
 	if (_GetItemCount(src_name,'_')>1){

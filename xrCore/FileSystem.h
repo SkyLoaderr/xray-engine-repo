@@ -40,10 +40,10 @@ public:
 	void		RegisterAccess	(LPSTR fn, LPSTR start_msg, bool bLog=true);
 	void		WriteAccessLog	(LPSTR fn, LPSTR start_msg);
 
-	AnsiString&	AppendFolderToName(AnsiString& tex_name, int depth);
+	AnsiString&	AppendFolderToName(AnsiString& tex_name, int depth, BOOL full_name);
 #endif
-	LPSTR		AppendFolderToName(LPSTR tex_name, int depth);
-	LPSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth);
+	LPSTR		AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name);
+	LPSTR		AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name);
 };
 extern XRCORE_API EFS_Utils EFS;
 //#endif
