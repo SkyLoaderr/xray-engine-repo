@@ -25,6 +25,7 @@ extern float				psSqueezeVelocity;
 DWORD						GAME			= GAME_SINGLE;
 int							g_fraglimit		= 0;
 int							g_timelimit		= 0;
+DWORD						g_flags			= 0;
 
 xr_token					game_type_token						[ ]={
 	{ "single",				GAME_SINGLE								},
@@ -64,6 +65,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		// game
 		CMD3(CCC_Mask,		"g_always_run",			&psActorFlags,	AF_ALWAYSRUN);
 		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
+		// CMD3(CCC_Mask,	"g_cheats",				&g_flags,		AF_GODMODE	);
 		CMD1(CCC_Spawn,		"g_spawn"				);
 		CMD3(CCC_Token,		"g_type",				&GAME,			game_type_token);
 		CMD4(CCC_Integer,	"g_fraglimit",			&g_fraglimit,	0,1000);

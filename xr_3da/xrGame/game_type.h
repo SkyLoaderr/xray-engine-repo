@@ -9,8 +9,15 @@ enum
 	GAME_ASSAULT		= 4
 };
 
+enum
+{
+	GAME_FLAG_CHEATS	= (1<<0)
+};
+
+
 #ifndef _EDITOR
 extern DWORD	GAME;
 extern int		g_fraglimit;
 extern int		g_timelimit;
+extern DWORD	g_flags;
 #endif

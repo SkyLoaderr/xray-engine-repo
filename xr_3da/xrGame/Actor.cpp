@@ -236,8 +236,18 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 {
-	if (psActorFlags&AF_GODMODE)	return;
-	inherited::Hit		(iLost,dir,who);
+	switch (GAME)
+	{
+	case GAME_SINGLE:		
+		{
+			if (psActorFlags&AF_GODMODE)	return;
+			else inherited::Hit		(iLost,dir,who);
+		}
+		break;
+	default:
+		inherited::Hit	(iLost,dir,who);
+		break;
+	}
 }
 
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
