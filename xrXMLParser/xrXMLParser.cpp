@@ -50,8 +50,8 @@ bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 	W.w_stringZ("");
 	if(!m_root.LoadXml((const char*)W.pointer()))
 		return false;
-	
-
+		
+	F->close();
 
 	return true;
 
