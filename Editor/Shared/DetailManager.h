@@ -84,6 +84,10 @@ public:
 public:	
 	int						dither			[16][16];
 public:
+	CVirtualFileStream*		dtFS;
+	DetailHeader			dtH;
+	DetailSlot*				dtSlots;		// note: pointer into VFS
+public:
 	svector<CDetail,dm_max_objects>			objects;
 	svector<Slot,dm_cache_size>				cache;
 

@@ -61,6 +61,8 @@ void CDetail::Load		(CStream* S)
 	flags			= S->Rdword	();
 	number_vertices	= S->Rdword	();
 	number_indices	= S->Rdword	();
+	float s_min		= S->Rfloat	();
+	float s_max		= S->Rfloat	();
 	R_ASSERT		(0==(number_indices%3));
 
 	// Vertices
@@ -103,49 +105,44 @@ CDetailManager::CDetailManager	()
 
 CDetailManager::~CDetailManager	()
 {
-
+	
 }
-
+/*
+*/
 void CDetailManager::Load		()
 {
+	// Open file stream
+	FILE_NAME	fn;
+	if (!Engine.FS.Exist(fn,Path.Current,"level.details"))
 	{
-		CFileStream fs("x:\\dbg\\flower_list.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
+		dtFS	= NULL;
+		return;
 	}
+	dtFS = new CVirtualFileStream(fn);
+
+	// Header
+	dtFS->ReadChunk	(0,&dtH);
+	R_ASSERT		(dtH.version == DETAIL_VERSION);
+	DWORD m_count	= dtH.object_count;
+
+	// Models
+	CStream* m_fs	= dtFS->OpenChunk(1);
+	for (DWORD m_id = 0; m_id < m_count; m_id++)
 	{
-		CFileStream fs("x:\\dbg\\flower_yellow.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
+		CDetail				dt;
+		CStream* S			= m_fs->OpenChunk(m_id);
+		dt.Load				(S);
+		objects.push_back	(dt);
+		S->Close			();
 	}
-	/*
-	{
-		CFileStream fs("x:\\dbg\\gr_bush.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
-	}
-	*/
-	{
-		CFileStream fs("x:\\dbg\\flower_podor.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
-	}
-	{
-		CFileStream fs("x:\\dbg\\flower_violet.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
-	}
-	{
-		CFileStream fs("x:\\dbg\\grass.do");
-		CDetail		dt;
-		dt.Load		(&fs);
-		objects.push_back(dt);
-	}
+	m_fs->Close		();
+
+	// Get pointer to database (slots)
+	CStream* m_slots= dtFS->OpenChunk(2);
+	dtSlots			= m_slots->Pointer();
+	m_slots->Close	();
+
+	// Initialize 'vis' and 'cache'
 	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
 	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
 	for (DWORD s=0; s<cache.size(); s++)	cache[s].type	= stInvalid;
@@ -161,6 +158,7 @@ void CDetailManager::Unload		()
 	objects.clear	();
 	cache.clear		();
 	visible.clear	();
+	_DELETE			(dtFS);
 }
 
 extern float g_fSCREEN;
@@ -168,6 +166,8 @@ extern float ssaLIMIT;
 
 void CDetailManager::Render		(Fvector& EYE)
 {
+	if (0==dtFS)	return;
+
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
@@ -209,7 +209,7 @@ void CDetailManager::Render		(Fvector& EYE)
 						{
 							SlotItem& Item	= *siIT;
 
-							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
+							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 							
 							if (::Render.ViewBase.testSphereDirty(siIT->P,R*Item.scale))	
@@ -241,7 +241,7 @@ void CDetailManager::Render		(Fvector& EYE)
 						{
 							SlotItem& Item	= *siIT;
 
-							float	dist_sq = Device.vCameraPosition.distance_to_sqr(Item.P);
+							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 							
 							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
@@ -576,35 +576,25 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 {
 	static DetailSlot	DS;
 
-	// Debug purposes
-	DS.y_min				= 0;
-	DS.y_max				= .3f;
-	DS.r_yaw				= 0xaaaaaaaa;
-	DS.r_scale				= 0xaaaaaaaa;
-
-	DS.items[0].id			= 4;
-	DS.items[0].palette.a0	= 15/3;
-	DS.items[0].palette.a1	= 7/3;
-	DS.items[0].palette.a2	= 15/3;
-	DS.items[0].palette.a3	= 2/3;
-
-	DS.items[1].id			= 2;
-	DS.items[1].palette.a0	= 2/3;
-	DS.items[1].palette.a1	= 7/3;
-	DS.items[1].palette.a2	= 15/3;
-	DS.items[1].palette.a3	= 8/3;
-
-	DS.items[2].id			= 3;
-	DS.items[2].palette.a0	= 4/3;
-	DS.items[2].palette.a1	= 0/3;
-	DS.items[2].palette.a2	= 1/3;
-	DS.items[2].palette.a3	= 8/3;
-
-//	DS.items[1].id			= 0xff;
-//	DS.items[2].id			= 0xff;
-	DS.items[3].id			= 0xff;
-
-	DS.color				= 0xffff;
-
-	return DS;
+	int db_x = sx+dtH.offs_x;
+	int db_z = sz+dtH.offs_z;
+	if (db_x>=0 && db_x<dtH.size_x && db_z>=0 && db_z<dtH.size_z)
+	{
+		DWORD linear_id = db_z*dtH.size_x + db_x;
+		return dtSlots			[linear_id];
+	} else {
+		// Empty slot
+		DS.y_min				= 0;
+		DS.y_max				= EPS_L;
+		DS.r_yaw				= 0xaaaaaaaa;
+		DS.r_scale				= 0xaaaaaaaa;
+		
+		DS.items[0].id			= 0xff;
+		DS.items[1].id			= 0xff;
+		DS.items[2].id			= 0xff;
+		DS.items[3].id			= 0xff;
+		
+		DS.color				= 0xffff;
+		return DS;
+	}
 }
