@@ -194,16 +194,20 @@ bool CBone::ExportOGF(IWriter& F)
 
     F.w_u32		(IK_data.type);
     for (int k=0; k<3; k++){
-    	F.w_float	(IK_data.limits[k].limit.x); // min
-    	F.w_float	(IK_data.limits[k].limit.y); // max
+    	F.w_float	(_min(-IK_data.limits[k].limit.x,-IK_data.limits[k].limit.y)); // min (swap special for ODE)
+    	F.w_float	(_max(-IK_data.limits[k].limit.x,-IK_data.limits[k].limit.y)); // max (swap special for ODE)
         F.w_float	(IK_data.limits[k].spring_factor);
         F.w_float	(IK_data.limits[k].damping_factor);
     }
     F.w_float	(IK_data.spring_factor);
     F.w_float	(IK_data.damping_factor);
-    Fvector xyz; _RTransform().getXYZi(xyz);
+
+    Fvector xyz;
+    Fmatrix& R	= _RTransform();
+	R.getXYZi	(xyz);
+
     F.w_fvector3(xyz);
-    F.w_fvector3(_RTransform().c);
+    F.w_fvector3(R.c);
     F.w_float	(mass);
     F.w_fvector3(center_of_mass);
     return true;

@@ -121,7 +121,7 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
     	Fmatrix& R	= bone->_RTransform();
         R.setXYZi	(bone->_RestRotate());
         R.c.set		(bone->_RestOffset());
-        L.mul		(parent_bone?parent_bone->_RTransform():Fidentity,M);
+        if (parent_bone) R.mulA(parent_bone->_RTransform());
     }
     bone->flags.set(CBone::flCalculate,TRUE);
 }
