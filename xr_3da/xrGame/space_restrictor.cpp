@@ -138,7 +138,7 @@ bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
 #else
 	if (!actual())
 		prepare	();
-#if 1//def _DEBUG
+#if 0//def _DEBUG
 	bool		value0 = prepared_inside(position, radius);
 	bool		value1 = CCF_Shape_inside((CCF_Shape*)collidable.model,position,radius);
 	VERIFY		(value0 == value1);
