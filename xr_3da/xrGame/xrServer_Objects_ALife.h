@@ -11,7 +11,7 @@
 
 #include "xrServer_Objects.h"
 #include "alife_space.h"
-
+#include "phsynchronize.h"
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	class CALifeSimulator;
@@ -256,6 +256,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
     ref_str 						fixed_bones;
 	u64								bones_mask;
 	u16								root_bone;
+	PHNETSTATE_VECTOR				saved_bones;
+	u16								saved_bones_number;
 	u16								source_id;//for break only
 	ref_str							startup_animation;
     enum{
@@ -270,6 +272,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_save				() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
+
+	private:
+			void					data_load				(NET_Packet &tNetPacket);
+	public:
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)

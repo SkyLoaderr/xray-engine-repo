@@ -794,6 +794,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	m_flags.set					(flSwitchOffline,FALSE);
 	bones_mask					=u64(-1);
 	root_bone					=0;
+	saved_bones_number			=0;
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -828,8 +829,7 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u16		(source_id);
 
 	if (m_wVersion>60	&&	flags.test(flSavedData)) {
-		bones_mask					=tNetPacket.r_u64();
-		root_bone					=tNetPacket.r_u16();
+		data_load(tNetPacket);
 	}
 #ifdef _EDITOR    
 	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
@@ -850,6 +850,14 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	{
 		tNetPacket.w_u64			(bones_mask);
 		tNetPacket.w_u16			(root_bone);
+		tNetPacket.w_u16			((u16)saved_bones.size());//bones number;
+		PHNETSTATE_I	i=saved_bones.begin(),e=saved_bones.end();
+		for(;e!=i;i++)
+		{
+			(*i).net_Save(tNetPacket);
+		}
+		saved_bones.clear();
+		flags.set(flSavedData,FALSE);
 	}
 }
 
@@ -863,13 +871,26 @@ void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 	inherited::UPDATE_Write		(tNetPacket);
 }
 
+void CSE_ALifeObjectPhysic::data_load(NET_Packet &tNetPacket)
+{
+
+	bones_mask					=tNetPacket.r_u64();
+	root_bone					=tNetPacket.r_u16();
+	u16 bones_number			=tNetPacket.r_u16();//bones number
+	for(int i=0;i<bones_number;i++)
+	{
+		SPHNetState	S;
+		S.net_Load(tNetPacket);
+		saved_bones.push_back(S);
+	}
+	flags.set(flSavedData,TRUE);
+}
 void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 {
 	inherited::load(tNetPacket);
 	flags.set					(tNetPacket.r_u8());
-	bones_mask					=tNetPacket.r_u64();
-	root_bone					=tNetPacket.r_u16();
-	flags.set(flSavedData,TRUE);
+	data_load					(tNetPacket);
+
 }
 
 #ifdef _EDITOR
