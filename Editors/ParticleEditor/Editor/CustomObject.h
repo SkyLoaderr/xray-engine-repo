@@ -5,6 +5,7 @@
 #define CustomObjectH
 
 #include "SceneClassList.h"
+#include "SceneSummaryInfo.h"
 
 #define CHUNK_OBJECT_BODY   0x7777
 //----------------------------------------------------

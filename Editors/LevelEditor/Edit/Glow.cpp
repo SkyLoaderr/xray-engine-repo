@@ -7,7 +7,6 @@
 #include "Log.h"
 #include "Glow.h"
 #include "Frustum.h"
-#include "Scene.h"
 #include "xr_trims.h"
 #include "bottombar.h"
 #include "d3dutils.h"

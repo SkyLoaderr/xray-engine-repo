@@ -855,6 +855,7 @@ ObjectList* EScene::GetSnapList()
 //--------------------------------------------------------------------------------------------------
 
 #include "ImageThumbnail.h"
+#include "SceneSummaryInfo.h"
 void SSceneSummary::FillProp(PropItemVec& items)
 {
     // fill items

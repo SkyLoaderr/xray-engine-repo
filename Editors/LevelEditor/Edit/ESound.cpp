@@ -123,7 +123,6 @@ void ESound::FillProp(LPCSTR pref, PropItemVec& values)
 }
 //----------------------------------------------------
 
-#include "scene.h"
 bool ESound::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (!m_WAVName.IsEmpty()) inf->waves.insert(m_WAVName);
