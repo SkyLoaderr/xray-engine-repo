@@ -485,9 +485,29 @@ int EScene::PasteSelection(){
 	return true;
 }
 
-int EScene::CutSelection( EObjClass classfilter ){
+int EScene::CutSelection( EObjClass classfilter )
+{
 	CopySelection( classfilter );
 	return RemoveSelection( classfilter );
 }
 //----------------------------------------------------
+
+void EScene::LoadCompilerError(LPCSTR fn)
+{
+	CFileStream F(fn);
+    
+    m_CompilerErrors.Clear();
+    if (F.FindChunk(0)){ // lc error (TJ)
+        m_CompilerErrors.m_TJVerts.resize(F.Rdword());
+        F.Read(m_CompilerErrors.m_TJVerts.begin(),sizeof(ERR::Vert)*m_CompilerErrors.m_TJVerts.size());
+    }
+    if (F.FindChunk(1)){ // lc error (multiple edges)
+        m_CompilerErrors.m_MultiEdges.resize(F.Rdword());
+        F.Read(m_CompilerErrors.m_MultiEdges.begin(),sizeof(ERR::Edge)*m_CompilerErrors.m_MultiEdges.size());
+    }
+    if (F.FindChunk(2)){ // lc error (invalid faces)
+        m_CompilerErrors.m_InvalidFaces.resize(F.Rdword());
+        F.Read(m_CompilerErrors.m_InvalidFaces.begin(),sizeof(ERR::Face)*m_CompilerErrors.m_InvalidFaces.size());
+    }
+}
 

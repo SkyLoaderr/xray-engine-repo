@@ -156,6 +156,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N18;
 	TMenuItem *N19;
 	TMenuItem *N20;
+	TMenuItem *N21;
+	TMenuItem *ImportCompilerErrors;
+	TMenuItem *NextError1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -231,6 +234,7 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall MenuItem9Click(TObject *Sender);
 	void __fastcall UpdateSceneTextures1Click(TObject *Sender);
+	void __fastcall ImportCompilerErrorsClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);

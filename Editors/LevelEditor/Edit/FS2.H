@@ -194,7 +194,7 @@ public:
 		open_chunk(polymap?ID_VMAD:ID_VMAP);
 		w_u32	(type);
 		w_u16	(dim);
-		R_ASSERT(name&&name[0]);//,"Empty vmap name!");
+		R_ASSERT2(name&&name[0],"Empty vmap name!");
 		w_stringZ(name);
 	}
 	IC void		end_vmap		()

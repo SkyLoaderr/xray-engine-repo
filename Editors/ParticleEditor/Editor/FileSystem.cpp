@@ -77,7 +77,7 @@ void CFileSystem::OnCreate(){
     strcpy(m_ServerBackup,	"\\\\X-Ray\\stalkerdata$\\Backup\\");
 
 	m_LocalRoot.Init  		(m_Local, 		"",               		"",     			"" );
-	m_ServerRoot.Init  		(m_Server, 		"",               		"",     			"" );
+	m_ServerRoot.Init  		(m_Server, 		"",               		"*.err",			"Files" );
     m_ServerDataRoot.Init	(m_ServerData, 	"",               		"",     			"" );
     m_ServerBackupRoot.Init	(m_ServerBackup,"",               		"",     			"" );
     m_GameLevels.Init		(m_Server, 		"gamedata\\levels\\",	"",     			"" );

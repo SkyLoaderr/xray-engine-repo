@@ -106,7 +106,8 @@
       intermediate\EditObjectExportLWO.obj intermediate\FS2.obj 
       intermediate\UI_MainMail.obj intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_CACHE.obj intermediate\HW.obj 
-      intermediate\defines.obj intermediate\GameFont.obj"/>
+      intermediate\defines.obj intermediate\GameFont.obj 
+      intermediate\Blender_Model_EbB.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -399,6 +400,7 @@
       <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

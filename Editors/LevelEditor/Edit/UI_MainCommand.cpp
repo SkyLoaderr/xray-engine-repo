@@ -267,6 +267,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
 		break;
 
+    case COMMAND_IMPORT_COMPILER_ERROR:{
+    	AnsiString fn;
+    	if(Engine.FS.GetOpenName(Engine.FS.m_ServerRoot, fn)){
+        	Scene.LoadCompilerError(fn.c_str());
+        }
+    	}break;
+    
 	case COMMAND_VALIDATE_SCENE:
 		if( !Scene.locked() ){
             Scene.Validate(true,false);

@@ -21,6 +21,7 @@ CGroupObject::CGroupObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
 void CGroupObject::Construct(LPVOID data)
 {
 	ClassID		= OBJCLASS_GROUP;
+    m_Flags		= 0;
     m_BBox.invalidate();
 }
 
@@ -287,7 +288,7 @@ void CGroupObject::OnDeviceDestroy(){
 //----------------------------------------------------
 #define GROUPOBJ_CHUNK_VERSION		  	0x0000
 #define GROUPOBJ_CHUNK_OBJECT_LIST     	0x0001
-#define GROUPOBJ_CHUNK_BBOX		     	0x0002
+#define GROUPOBJ_CHUNK_FLAGS	     	0x0003
 //----------------------------------------------------
 
 bool CGroupObject::Load(CStream& F)
@@ -301,8 +302,6 @@ bool CGroupObject::Load(CStream& F)
     }
 	CCustomObject::Load(F);
 
-	R_ASSERT(F.ReadChunk	(GROUPOBJ_CHUNK_BBOX,&m_BBox));
-
 	// objects
     CStream* OBJ = F.OpenChunk(GROUPOBJ_CHUNK_OBJECT_LIST);
     if (OBJ){
@@ -315,6 +314,12 @@ bool CGroupObject::Load(CStream& F)
         }
         OBJ->Close();
     }
+
+    F.ReadChunk(GROUPOBJ_CHUNK_FLAGS,&m_Flags);
+
+	// update bounding volume    
+	UpdateBBoxAndPivot(m_Flags&flInitFromFirstObject);
+
     return true;
 }
 
@@ -326,8 +331,6 @@ void CGroupObject::Save(CFS_Base& F)
 	F.Wword			(GROUPOBJ_CURRENT_VERSION);
 	F.close_chunk	();
 
-	F.write_chunk	(GROUPOBJ_CHUNK_BBOX,&m_BBox,sizeof(m_BBox));
-
     // objects
     F.open_chunk	(GROUPOBJ_CHUNK_OBJECT_LIST);
     int count = 0;
@@ -337,6 +340,8 @@ void CGroupObject::Save(CFS_Base& F)
         F.close_chunk();
     }
 	F.close_chunk	();
+
+    F.write_chunk	(GROUPOBJ_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
 }
 //----------------------------------------------------
 

@@ -568,3 +568,9 @@ void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
+{
+	UI.Command(COMMAND_IMPORT_COMPILER_ERROR);
+}
+//---------------------------------------------------------------------------
+

@@ -535,6 +535,28 @@ void EScene::Render( const Fmatrix& camera )
 			(*_F)->Render(1,true);
         }
         
+    // draw compiler errors
+	if (1){
+	 	Device.SetShader		(Device.m_SelectionShader);
+ 		Device.SetTransform		(D3DTS_WORLD,Fidentity);
+		Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
+        AnsiString temp;
+        int cnt=0;
+        for (ERR::VertIt vit=m_CompilerErrors.m_TJVerts.begin(); vit!=m_CompilerErrors.m_TJVerts.end(); vit++){
+        	temp.sprintf		("TJ: %d",cnt++);
+        	DU::dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
+        }
+        for (ERR::EdgeIt eit=m_CompilerErrors.m_MultiEdges.begin(); eit!=m_CompilerErrors.m_MultiEdges.end(); eit++){
+        	temp.sprintf		("ME: %d",cnt++);
+        	DU::dbgDrawEdge(eit->p[0],eit->p[1],			0xff00ff00,	temp.c_str());
+        }
+        for (ERR::FaceIt fit=m_CompilerErrors.m_InvalidFaces.begin(); fit!=m_CompilerErrors.m_InvalidFaces.end(); fit++){
+        	temp.sprintf		("IF: %d",cnt++);
+        	DU::dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
+        }
+	    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
+	}
+    
     mapRenderObjects.clear			();
 
 	ClearLights();
@@ -574,6 +596,7 @@ void EScene::ClearObjects(bool bDestroy){
     m_DetailObjects->Clear();
     _DELETE(m_SkyDome);
     ClearSnapList();
+    m_CompilerErrors.Clear();
 }
 //----------------------------------------------------
 
@@ -712,7 +735,6 @@ void EScene::ZoomExtents( BOOL bSel )
 	EObjClass cls = Tools.CurrentClassID();
 	Fbox BB;	BB.invalidate();
 	Fbox bb;
-    BB.set(-5,-5,-5,5,5,5);
 	if (cls==OBJCLASS_DUMMY){
         for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
             ObjectList& lst = (*it).second;
@@ -727,8 +749,8 @@ void EScene::ZoomExtents( BOOL bSel )
             if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
 				if ((*_F)->GetBox(bb)) BB.merge(bb);
     }
-    Device.m_Camera.ZoomExtents(BB);
-//    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
+    if (BB.is_valid()) Device.m_Camera.ZoomExtents(BB);
+    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -385,6 +385,61 @@ void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross){
     if (bCross) DrawCross(p, radius,radius,radius, radius,radius,radius, c);
 }
 
+//----------------------------------------------------
+void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption, DWORD clr_font)
+{
+	VERIFY( Device.bReady );
+    Fvector c,r,n,d;
+	float w	= p.x*Device.mFullTransform._14 + p.y*Device.mFullTransform._24 + p.z*Device.mFullTransform._34 + Device.mFullTransform._44;
+    if (w<0) return; // culling
+
+	float s = sz;
+	Device.mFullTransform.transform(c,p);
+	c.x = iFloor(Device._x2real(c.x)); c.y = iFloor(Device._y2real(-c.y));
+
+    DWORD vBase;      
+	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(5,vs_TL->dwStride,vBase);
+	pv->p.set(c.x-s,c.y-s,0,1); pv->color=clr; pv++;
+	pv->p.set(c.x+s,c.y-s,0,1); pv->color=clr; pv++;
+	pv->p.set(c.x+s,c.y+s,0,1); pv->color=clr; pv++;
+	pv->p.set(c.x-s,c.y+s,0,1); pv->color=clr; pv++;
+	pv->p.set(c.x-s,c.y-s,0,1); pv->color=clr; pv++;
+	Device.Streams.Vertex.Unlock(5,vs_TL->dwStride);
+
+	// Render it as line strip
+    Device.DP		(D3DPT_LINESTRIP,vs_TL,vBase,4);
+    if (caption){
+	    Device.pSystemFont->SetColor(clr_font);
+    	Device.pSystemFont->Out(c.x,c.y+s,"%s",caption);
+    }
+}
+
+void dbgDrawVert(const Fvector& p0, DWORD clr, LPCSTR caption)
+{
+	dbgDrawPlacement(p0,3,clr,caption);
+	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+}
+
+void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, DWORD clr, LPCSTR caption)
+{
+	dbgDrawPlacement(p0,3,clr,caption);
+	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+	DrawCross		(p1,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+    DrawLine		(p0,p1,clr);
+}
+
+void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, DWORD clr, LPCSTR caption)
+{
+	dbgDrawPlacement(p0,3,clr,caption);
+	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+	DrawCross		(p1,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+	DrawCross		(p2,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
+    DrawLine		(p0,p1,clr);
+    DrawLine		(p1,p2,clr);
+    DrawLine		(p2,p0,clr);
+}
+//----------------------------------------------------
+
 void DrawLine(const Fvector& p0, const Fvector& p1, DWORD c){
 	// fill VB
 	DWORD			vBase;

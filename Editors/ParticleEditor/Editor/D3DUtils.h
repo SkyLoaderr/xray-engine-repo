@@ -26,6 +26,12 @@ namespace DU{
 
     void DrawSound(const Fvector& p, float radius, DWORD clr);
     void DrawLineSphere(const Fvector& p, float radius, DWORD clr, bool bCross);
+
+	void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption=0, DWORD clr_font=0xffffffff);
+    void dbgDrawVert(const Fvector& p0, DWORD clr, LPCSTR caption=0);
+    void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, DWORD clr, LPCSTR caption=0);
+    void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, DWORD clr, LPCSTR caption=0);
+
     void DrawLine(const Fvector& p0,	const Fvector& p1, DWORD clr);
     IC void DrawLine(const Fvector* p, DWORD clr){DrawLine(p[0],p[1],clr);}
     void DrawLink(const Fvector& p0, const Fvector& p1, float sz, DWORD clr);

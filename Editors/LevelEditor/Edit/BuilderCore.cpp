@@ -85,8 +85,13 @@ bool SceneBuilder::EvictResource(){
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::GetBounding(){
-	return Scene.GetBox(m_LevelBox,OBJCLASS_SCENEOBJECT);
+bool SceneBuilder::GetBounding()
+{
+	Fbox b0;
+    bool r0 = Scene.GetBox(m_LevelBox,OBJCLASS_SCENEOBJECT);
+    bool r1 = Scene.GetBox(b0,OBJCLASS_GROUP);
+    m_LevelBox.merge(b0);
+	return (r0||r1);
 }
 //------------------------------------------------------------------------------
 

@@ -105,6 +105,31 @@ protected:
 
 	deque<UndoItem> m_UndoStack;
 	deque<UndoItem> m_RedoStack;
+
+    struct ERR{
+	    struct Face{
+    		Fvector		p[3];
+	    };
+	    struct Edge{
+    		Fvector		p[2];
+	    };
+	    struct Vert{
+    		Fvector		p[1];
+	    };
+	    DEFINE_VECTOR(Face,FaceVec,FaceIt);
+	    DEFINE_VECTOR(Edge,EdgeVec,EdgeIt);
+	    DEFINE_VECTOR(Vert,VertVec,VertIt);
+    	FaceVec			m_InvalidFaces;
+	    EdgeVec			m_MultiEdges;
+	    VertVec			m_TJVerts;
+        void			Clear()
+        {
+        	m_InvalidFaces.clear();
+	    	m_MultiEdges.clear	();
+	    	m_TJVerts.clear		();
+        }
+    };
+    ERR				m_CompilerErrors;
 public:
     bool m_Modified;
 
@@ -118,6 +143,7 @@ public:
 	void SaveSelection				(int classfilter, char *_FileName);
 	void Unload						();
 	void ClearObjects				(bool bDestroy);
+	void LoadCompilerError			(LPCSTR fn);
 
 	IC bool valid					()           	{ return m_Valid; }
 

@@ -10,7 +10,12 @@ class CGroupObject: public CCustomObject{
     typedef CCustomObject inherited;
     void			AppendObject	(CCustomObject* object);
     void			RemoveObject	(CCustomObject* object);
-    Fbox			m_BBox;                                    
+    Fbox			m_BBox; 
+
+    enum{
+    	flInitFromFirstObject
+    };
+    u32				m_Flags;                                   
 public:
 					CGroupObject	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);
