@@ -34,7 +34,6 @@ end
 
 function options_dialog:InitControls()
 	ui_base_dialog.base_dialog.InitControls(self, "Options")
-	
 
 	----- DATA ----
 		----- BUTTONS --->>>
@@ -70,7 +69,7 @@ function options_dialog:InitControls()
 	
 	----- CODE -------
 
--------- BUTTONS ------------------------------- 
+-------- BUTTONS AND TABS ------------------------------- 
 	--------->> VIDEO
     local btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -83,6 +82,9 @@ function options_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
+	self.tab_video = ui_options_video_tab.options_video_tab()
+	self.tab_video:InitControls(btn_video_rect.x + btn_video_rect.width + self.indent, self.top_alingn_y)
+	
 	--------->> SOUND
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -93,7 +95,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	self.main_frame:AttachChild(btn)	
+	self.main_frame:AttachChild(btn)
 	
 	--------->> GAME
 	btn = CUIButton()
@@ -144,8 +146,18 @@ function options_dialog:InitControls()
 end
 
 function options_dialog:InitCallBacks()
-	self:AddCallback("btn_accept",  ui_events.BUTTON_CLICKED,        self,"OnButton_accept")
-	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED,         self,"OnButton_cancel")
+	self:AddCallback("btn_accept", ui_events.BUTTON_CLICKED, self, "OnButton_accept")
+	self:AddCallback("btn_cancel", ui_events.BUTTON_CLICKED, self, "OnButton_cancel")
+	self:AddCallback("btn_video",  ui_events.BUTTON_CLICKED, self, "OnButton_video")
+end
+
+function options_dialog:HideAllTabs()
+	self.tab_video:Show(false)
+end
+
+function options_dialog:OnButton_video()
+	self:HideAllTabs()
+	tab_video:Show(true)
 end
 
 function options_dialog:OnButton_accept()

@@ -22,6 +22,7 @@ function options_base_tab:__finalize()
 end
 
 function options_base_tab:InitControls(caption, x_pos, y_pos)
+	self:Show(false)
 	--<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< INIT DATA
 	self.indent = 10
 	self.button_indent = -1
