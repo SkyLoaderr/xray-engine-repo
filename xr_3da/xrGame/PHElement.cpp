@@ -935,8 +935,9 @@ void CPHElement::CallBack1(CBoneInstance* B)
 	{
 			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 	}
-//	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
-	//if(m_parent_element)
+	
+	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
+
 	{
 		InterpolateGlobalTransform(&mXFORM);
 

@@ -50,7 +50,8 @@ shell_root CPHShellSplitterHolder::SplitJoint(u16 aspl)
 	new_shell_desc->PresetActive();
 	m_pShell->PassEndElements(start_element,end_element,new_shell_desc);
 	m_pShell->PassEndJoints(start_joint+1,end_joint,new_shell_desc);
-	new_shell_desc->AfterSetActive();
+	new_shell_desc->PureActivate();
+	//new_shell_desc->ObjectInRoot().identity();
 	m_pShell->DeleteJoint(start_joint);
 
 

@@ -83,6 +83,7 @@ virtual ~CPHShell				()
 	virtual void			Activate				(const Fmatrix& start_from, bool disable=false){};
 			void			PresetActive			();
 			void			AfterSetActive			();
+			void			PureActivate			();
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;

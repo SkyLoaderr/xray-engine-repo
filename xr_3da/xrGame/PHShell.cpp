@@ -147,21 +147,22 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 }
 void CPHShell::AfterSetActive()
 {
-
-	if(bActive)
-		return;
-	CPHObject::Activate();
-
+	if(bActive)	return;
+	PureActivate();
 	bActive=true;
 	bActivating=true;
 	ELEMENT_I i=elements.begin(),e=elements.end();
 	for(;i!=e;i++)(*i)->PresetActive();
-	if(m_spliter_holder)m_spliter_holder->Activate();
-
-
-
-
 }
+
+void CPHShell::PureActivate()
+{
+	if(bActive)	return;
+	CPHObject::Activate();
+	if(m_spliter_holder)m_spliter_holder->Activate();
+	m_object_in_root.identity();
+}
+
 void CPHShell::PresetActive()
 {
 	VERIFY(!bActive);
@@ -788,6 +789,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 				//if(element==elements.size())	return;
 				CPHElement* E=(CPHElement*)(elements[element]);
 				B.set_callback(BonesCallback1,E);
+				B.Callback_overwrite=TRUE;
 		}
 	}
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
@@ -892,7 +894,11 @@ void CPHShell::PassEndElements(u16 from,u16 to,CPHShell *dest)
 {
 
 	ELEMENT_I i_from=elements.begin()+from,e=elements.begin()+to;
-	
+	if(from!=to)
+	{
+		if(!dest->elements.empty())	(*i_from)->set_ParentElement(dest->elements.back());
+		else						(*i_from)->set_ParentElement(NULL);
+	}
 	for(ELEMENT_I i=i_from;i!=e;i++)
 	{
 		dGeomID spaced_geom=(*i)->dSpacedGeometry();
