@@ -116,8 +116,8 @@ end
 -- 
 class "pp_linear_lerp" (effector)
 
-function pp_linear_lerp:__init(effector_type,start_time,start_power,dest_power,life_time) super(effector_type,start_time)
-	self.start_time = start_time
+function pp_linear_lerp:__init(effector_type,start_power,dest_power,life_time) super(effector_type,start_time)
+	self.start_time = device():time_global()
 	self.stop_time	= start_time + life_time
 	self.min_power	= start_power
 	self.max_power	= dest_power
