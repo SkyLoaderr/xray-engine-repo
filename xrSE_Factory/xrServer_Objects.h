@@ -17,7 +17,6 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-#define SPAWN_VERSION	u16(69)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -91,6 +90,7 @@
 //		CSE_ALifeHelicopter				heritage changed
 // 70 -	CSE_Abstract					appended with m_script_version, script version support
 //------------------------------------------------------------------------------
+#define SPAWN_VERSION	u16(70)
 
 SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
 	virtual							~CPureServerObject(){}
