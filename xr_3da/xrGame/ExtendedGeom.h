@@ -21,14 +21,14 @@ struct Triangle
 
 typedef  void __stdcall ContactCallbackFun		(CDB::TRI* T,		dContactGeom* c);
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
-class CPhysicsRefObject;
+class CGameObject;
 struct dxGeomUserData
 {
 	dVector3	last_pos;
 	bool		pushing_neg,pushing_b_neg;
 	Triangle	neg_tri,b_neg_tri;
 	CPHObject*	ph_object;
-	CPhysicsRefObject* ph_ref_object;
+	CGameObject* ph_ref_object;
 	u16			material;
 	u16			tri_material;
 	ContactCallbackFun* callback;
@@ -95,7 +95,7 @@ IC void dGeomUserDataSetPhObject(dxGeom* geom,CPHObject* phObject)
 	(dGeomGetUserData(geom))->ph_object=phObject;
 }
 
-IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CPhysicsRefObject* phRefObject)
+IC void dGeomUserDataSetPhysicsRefObject(dxGeom* geom,CGameObject* phRefObject)
 {
 	(dGeomGetUserData(geom))->ph_ref_object=phRefObject;
 }

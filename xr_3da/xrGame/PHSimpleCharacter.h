@@ -1,7 +1,7 @@
 #pragma once
 #include "PHCharacter.h"
 
-extern float object_demage_factor;
+
 
 class CPHSimpleCharacter : public CPHCharacter
 {
@@ -127,7 +127,7 @@ public:
 																					};
 	virtual		void		SetMas								(dReal mass)		;
 
-	virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
+	virtual		void		SetPhysicsRefObject					(CGameObject* ref_object);
 
 	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
 	virtual		void		CapturedSetPosition					(const dReal* position);

@@ -12,6 +12,12 @@ class CPHStaticGeomShell;
 class CBreakableObject: public CGameObject {
 	typedef	CGameObject		inherited;
 private:
+		bool				b_resived_damage;
+		float				m_max_frame_damage;
+		float				m_damage_threshold;
+		Fvector				m_contact_damage_pos;
+		Fvector				m_contact_damage_dir;
+
 		float				fHealth;
 		CPHStaticGeomShell	*m_pUnbrokenObject;
 		CPhysicsShell		*m_Shell;
@@ -45,6 +51,7 @@ private:
 	void			ActivateBroken		();
 	void			Split				();
 	void			Break				();
+	void			ProcessDamage		();
 	void			SendDestroy			();
 static 	void __stdcall ObjectContactCallback(bool& /**do_colide/**/,dContact& c);
 };

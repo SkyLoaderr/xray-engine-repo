@@ -10,10 +10,11 @@
 #include "PHContactBodyEffector.h"
 #include "ui/uistatic.h"
 #include "SpaceUtils.h"
+#include "PhysicsGamePars.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
 static u16 lastMaterial;
-float object_demage_factor=4.f;
+
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////class//CPHSimpleCharacter////////////////////
 CPHSimpleCharacter::CPHSimpleCharacter()
@@ -934,7 +935,7 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 
 
 
-void CPHSimpleCharacter::SetPhysicsRefObject					(CPhysicsRefObject* ref_object)
+void CPHSimpleCharacter::SetPhysicsRefObject					(CGameObject* ref_object)
 {
 	m_phys_ref_object=ref_object;
 	if(b_exist)

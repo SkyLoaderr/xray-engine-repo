@@ -4,7 +4,7 @@
 #include "PHSynchronize.h"
 #include "PHDisabling.h"
 typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
-class CPhysicsRefObject;
+class CGameObject;
  static enum EEnvironment
 			{
 				peOnGround,
@@ -32,7 +32,7 @@ float					m_contact_velocity;
 
 CPHInterpolation m_body_interpolation;
 dBodyID				m_body;
-CPhysicsRefObject* m_phys_ref_object;
+CGameObject* m_phys_ref_object;
 
 
 dReal m_mass;
@@ -88,8 +88,8 @@ virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;
 virtual		void		SetMas								(dReal mass)												=0 ;
-virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object)								=0 ;
-virtual		CPhysicsRefObject* PhysicsRefObject				(){return m_phys_ref_object;}
+virtual		void		SetPhysicsRefObject					(CGameObject* ref_object)								=0 ;
+virtual		CGameObject* PhysicsRefObject					(){return m_phys_ref_object;}
 
 //AICharacter
 virtual		void		GetDesiredPosition					(Fvector& /**dpos/**/)										{}

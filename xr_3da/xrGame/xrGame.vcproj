@@ -4922,6 +4922,12 @@
 				<File
 					RelativePath=".\PhysicsCommon.h">
 				</File>
+				<File
+					RelativePath=".\PhysicsGamePars.cpp">
+				</File>
+				<File
+					RelativePath=".\PhysicsGamePars.h">
+				</File>
 				<Filter
 					Name="Objects"
 					Filter="">
@@ -4948,9 +4954,6 @@
 					</File>
 					<File
 						RelativePath=".\PHStaticGeomShell.h">
-					</File>
-					<File
-						RelativePath=".\PhysicsRefObject.h">
 					</File>
 					<Filter
 						Name="Element"

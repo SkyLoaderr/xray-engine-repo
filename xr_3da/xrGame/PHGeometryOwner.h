@@ -9,7 +9,7 @@ protected:
 		GEOM_STORAGE			m_geoms;					//e					//bl
 		dSpaceID				m_group;					//e					//bl
 		Fvector					m_mass_center;				//e ??				//bl
-		CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??		//bl
+		CGameObject*			m_phys_ref_object;			//->to shell ??		//bl
 		float					m_volume;					//e ??				//bl
 		u16						ul_material;				//e ??				//bl
 		ContactCallbackFun*			contact_callback;		//->to shell ??		//bt
@@ -25,8 +25,8 @@ public:
 		bool					has_geoms								(){return !m_geoms.empty();}
 		void					set_ContactCallback						(ContactCallbackFun* callback);													//aux (may not be)
 		void					set_ObjectContactCallback				(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
-		void					set_PhysicsRefObject					(CPhysicsRefObject* ref_object);												//aux
-		CPhysicsRefObject*		PhysicsRefObject						(){return m_phys_ref_object;}													//aux
+		void					set_PhysicsRefObject					(CGameObject* ref_object);												//aux
+		CGameObject*			PhysicsRefObject						(){return m_phys_ref_object;}													//aux
 		void					SetPhObjectInGeomData					(CPHObject* O);		
 
 		void					SetMaterial								(u16 m)		  ;

@@ -634,4 +634,17 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c)
 	//c.surface.soft_erp*=3.1623f;
 	MulSprDmp(c.surface.soft_cfm,c.surface.soft_erp,1.f,3.1623f);
 }
+//
+float E_NlS(dBodyID body,dReal* norm,float norm_sign)
+{
+	const dReal* vel=dBodyGetLinearVel(body);
+	dReal prg=-dDOT(vel,norm)*norm_sign;
+	prg=prg<0.f ? prg=0.f : prg;
+	dMass mass;
+	dBodyGetMass(body,&mass);
+	return mass.mass*prg*prg/2;
+}
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////

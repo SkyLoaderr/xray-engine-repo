@@ -19,7 +19,7 @@ inline void dMULTIPLY3_333(dReal *A, const dReal *B, const dReal *C)
 { dMULTIPLYOP3_333(A,=,B,C) }
 
 
-class CPhysicsRefObject;
+class CGameObject;
 class CPHObject;
 class CODEGeom
 {
@@ -72,7 +72,7 @@ virtual			void		set_local_form		(const Fmatrix& form)												=0;
 				void		set_material		(u16 ul_material)													;
 				void		set_contact_cb		(ContactCallbackFun* ccb)											;
 				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
-				void		set_ref_object		(CPhysicsRefObject* ro)												;
+				void		set_ref_object		(CGameObject* ro)												;
 				void		set_ph_object		(CPHObject* o)														;
 	//build/destroy
 protected:

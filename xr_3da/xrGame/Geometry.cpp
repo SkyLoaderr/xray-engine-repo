@@ -228,7 +228,7 @@ void CODEGeom::set_obj_contact_cb(ObjectContactCallbackFun* occb)
 		dGeomUserDataSetObjectContactCallback(m_geom_transform,occb);
 	}
 }
-void CODEGeom::set_ref_object(CPhysicsRefObject* ro)
+void CODEGeom::set_ref_object(CGameObject* ro)
 {
 	if(!m_geom_transform) return;
 	if(geom())

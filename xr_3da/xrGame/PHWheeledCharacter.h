@@ -32,6 +32,6 @@ public:
 	virtual		void		GetPosition							(Fvector& /**pos/**/)	{}	;
 	virtual		void		SetMas								(dReal mass)		;
 	virtual		bool		TryPosition							(Fvector /**pos/**/)	{return false;};
-	virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* /**ref_object/**/){};
+	virtual		void		SetPhysicsRefObject					(CGameObject* /**ref_object/**/){};
 };
 
