@@ -86,26 +86,21 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 
     SaveTextureParams();
     if (bCheckMode&&!check_tex_list.empty()){
-        AnsiString info;
-        UI.ProgressStart(check_tex_list.size(),"");
-        for (AStringIt s_it=check_tex_list.begin(); s_it!=check_tex_list.end(); s_it++){
-            info.sprintf("Making '%s'...",s_it->c_str());
-            if (UI.NeedAbort()) break;
-            ImageManager.Synchronize(s_it->c_str());
-            UI.ProgressInc();
-        }
-        UI.ProgressEnd();
+	    UI.Command(COMMAND_REFRESH_TEXTURES);
+//		ImageManager.SynchronizeTextures(); внутри команды определено
     }else{
 	    // save game textures
+        if (modif_tex_list.size())
+			UI.Command(COMMAND_REFRESH_TEXTURES);
+/*
         UI.ProgressStart(modif_tex_list.size(),"Save modified textures...");
     	for (AStringIt it=modif_tex_list.begin(); it!=modif_tex_list.end(); it++){
 			ImageManager.CreateGameTexture(it->c_str());
             UI.ProgressInc();
         }
         UI.ProgressEnd();
+*/
 	}
-
-    UI.Command(COMMAND_REFRESH_TEXTURES,false);
 
 	_DELETE(m_Thm);
     m_SelectedName = "";

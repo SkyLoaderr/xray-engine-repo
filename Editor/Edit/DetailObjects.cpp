@@ -402,7 +402,7 @@ bool CDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     }
     if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
     m_pBaseShader = Device.Shader.Create("editor\\do_base",fn.c_str());
-    UI.Command(COMMAND_REFRESH_TEXTURES);
+//S    UI.Command(COMMAND_REFRESH_TEXTURES);
     return true;
 }
 

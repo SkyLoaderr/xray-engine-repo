@@ -134,8 +134,8 @@ bool TfrmEditLibrary::CloseEditLibrary(bool bReload){
 		if (res==mrYes) ebSaveClick(0);
     }
     if (bReload){
-        UI.SetStatus("Library reloading...");
-        UI.Command(COMMAND_RELOAD_LIBRARY);
+        UI.SetStatus("Objects reloading...");
+        UI.Command(COMMAND_RELOAD_OBJECTS);
         UI.SetStatus("");
     }
     Close();
@@ -243,10 +243,9 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmEditLibrary::ebCancelClick(TObject *Sender)
 {
-    CloseEditLibrary(true);
+    CloseEditLibrary(ebSave->Enabled);
 }
 //---------------------------------------------------------------------------
 
@@ -353,7 +352,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 			fn = ChangeFileExt(nm,".object");
 		    if (FS.GetSaveName(&FS.m_Objects,fn)){
             	O->SaveObject(fn.c_str());
-                Lib.ReloadLibrary();
+                Lib.RefreshLibrary();
                 InitObjects();
             }
         }

@@ -72,7 +72,7 @@ bool SceneBuilder::LightenObjects(){
 	}
 	UI.ProgressEnd();
 	// unload texture
-    UI.Command(COMMAND_REFRESH_TEXTURES);
+//S    UI.Command(COMMAND_REFRESH_TEXTURES);
 
     return true;
 }

@@ -6,7 +6,7 @@
 #include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
-
+#include "UI_Main.h"
 CImageManager ImageManager;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -19,6 +19,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 //------------------------------------------------------------------------------
 // проверяет было ли изменение
 //------------------------------------------------------------------------------
+/*
 BOOL CImageManager::IfChanged(const AnsiString& name)
 {
 	AnsiString base_name 	= name;
@@ -37,6 +38,7 @@ BOOL CImageManager::IfChanged(const AnsiString& name)
 
     return ((base_age!=thm_age)||(base_age!=game_age));
 }
+*/
 
 //------------------------------------------------------------------------------
 // создает тхм
@@ -124,7 +126,8 @@ bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data, 
 //------------------------------------------------------------------------------
 // синхронизирует все три файла на диске
 //------------------------------------------------------------------------------
-void CImageManager::Synchronize(const AnsiString& name)
+/*
+void CImageManager::SynchronizeTextures()
 {
 	AnsiString base_name 	= name;
 	AnsiString thm_name		= name; thm_name 	= ChangeFileExt(thm_name,".thm");
@@ -181,35 +184,111 @@ void CImageManager::SynchronizePath()
 //------------------------------------------------------------------------------
 // возвращает список не синхронизированных (модифицированных) текстур
 //------------------------------------------------------------------------------
-int CImageManager::GetModifiedFiles(AStringVec& files)
+void CImageManager::SynchronizeTextures(LPSTRVec* files)
 {
-    int count = strlen(FS.m_Textures.m_Path);
-    AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
-    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-	    AnsiString ext = ExtractFileExt(*it).LowerCase();
-        ext = ext.SubString(2,ext.Length());
-        if (ext=="thm") continue;
-        if (!IsFormatRegister(ext.c_str())) continue;
-        AnsiString t = it->Delete(1,count);
-		if (IfChanged(t.c_str())) files.push_back(t);
+	FindDataMap M_BASE;
+	FindDataMap M_THUM;
+    FindDataMap M_GAME;
+
+    AnsiString p_base;
+    AnsiString p_game;
+    FS.m_Textures.Update(p_base);
+    FS.m_GameTextures.Update(p_game);
+
+    if (0==FS.GetFiles(p_base.c_str(),M_BASE,true,false,"*.tga,*.bmp")) return;
+    FS.GetFiles(p_base.c_str(),M_THUM,true,true,"*.thm");
+    FS.GetFiles(p_game.c_str(),M_GAME,true,true,"*.dds");
+
+    UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
+	for (FindDataPairIt it=M_BASE.begin(); it!=M_BASE.end(); it++){
+        UI.ProgressInc();
+		FIBITMAP* bm=0;
+
+        sh_name base_name; strcpy(base_name,it->first.c_str());
+        AnsiString fn = it->first;
+        FS.m_Textures.Update(fn);
+        if (strext(base_name)) *strext(base_name)=0;
+
+		FindDataPairIt th = M_THUM.find(base_name);
+    	bool bThm = ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second!=it->second)));
+		FindDataPairIt gm = M_GAME.find(base_name);
+    	bool bGame= ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second!=it->second)));
+
+        if (!bThm&&!bGame){
+        	continue;
+        }
+
+		EImageThumbnail THM(it->first.c_str(),EImageThumbnail::EITTexture);
+
+    	// check thumbnail
+    	if (bThm){
+			bm = Surface_Load(fn.c_str()); R_ASSERT(bm);
+            MakeThumbnail(&THM,bm);
+            THM.Save	(it->second);
+        }
+        // check game textures
+    	if (bGame){
+            if (!bm) bm = Surface_Load(fn.c_str()); R_ASSERT(bm);
+            AnsiString game_name=AnsiString(base_name)+".dds";
+            FS.m_GameTextures.Update(game_name);
+            MakeGameTexture(&THM,game_name.c_str(),bm);
+            FS.SetFileAge(game_name, it->second);
+            if (files) files->push_back(strdup(base_name));
+		}
+		if (bm) FreeImage_Free(bm);
+		if (UI.NeedAbort()) break;
+    }
+    UI.ProgressEnd();
+}
+
+int	CImageManager::GetModifiedFiles(AStringVec& files)
+{
+	FindDataMap M_BASE;
+	FindDataMap M_THUM;
+    FindDataMap M_GAME;
+
+    AnsiString p_base;
+    AnsiString p_game;
+    FS.m_Textures.Update(p_base);
+    FS.m_GameTextures.Update(p_game);
+
+    if (0==FS.GetFiles(p_base.c_str(),M_BASE,true,false,"*.tga,*.bmp")) return 0;
+    FS.GetFiles(p_base.c_str(),M_THUM,true,true,"*.thm");
+    FS.GetFiles(p_game.c_str(),M_GAME,true,true,"*.dds");
+
+	for (FindDataPairIt it=M_BASE.begin(); it!=M_BASE.end(); it++){
+        sh_name base_name; strcpy(base_name,it->first.c_str());
+        if (strext(base_name)) *strext(base_name)=0;
+    	// check thumbnail
+		FindDataPairIt th = M_THUM.find(base_name);
+    	if ((th==M_THUM.end()) || ((th!=M_THUM.end())&&(th->second!=it->second))){
+        	files.push_back(it->first);
+            continue;
+        }
+        // check game textures
+		FindDataPairIt gm = M_GAME.find(base_name);
+    	if ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second!=it->second))){
+        	files.push_back(it->first);
+            continue;
+        }
     }
     return files.size();
 }
-
 //------------------------------------------------------------------------------
 // возвращает список всех текстур
 //------------------------------------------------------------------------------
 int CImageManager::GetFiles(AStringVec& files)
 {
-    int count = strlen(FS.m_Textures.m_Path);
-    AStringVec& lst = FS.GetFiles(FS.m_Textures.m_Path);
-    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-	    AnsiString ext = ExtractFileExt(*it).LowerCase();
-        ext = ext.SubString(2,ext.Length());
-        if (ext=="thm") continue;
-        if (!IsFormatRegister(ext.c_str())) continue;
-     	files.push_back(it->Delete(1,count));
-    }
+	FindDataMap M_BASE;
+    AnsiString p_base;
+    FS.m_Textures.Update(p_base);
+
+    if (0==FS.GetFiles(p_base.c_str(),M_BASE,true,false,"*.tga,*.bmp")) return 0;
+
+    files.resize(M_BASE.size());
+    AStringIt s_it=files.begin();
+	for (FindDataPairIt it=M_BASE.begin(); it!=M_BASE.end(); it++,s_it++)
+		*s_it = it->first;
     return files.size();
 }
 

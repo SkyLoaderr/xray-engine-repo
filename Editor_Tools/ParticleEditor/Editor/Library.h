@@ -29,7 +29,7 @@ public:
 	void 				OnDestroy			();
 	void 				Save				();
 
-    void 				ReloadLibrary		();
+    void 				ReloadObjects		();
     void 				RefreshLibrary		();
     void 				UnloadMeshes		();
 //    void				ResetAnimation		();

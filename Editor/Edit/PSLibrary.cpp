@@ -108,10 +108,10 @@ void CPSLibrary::Backup(){
     FS.BackupFile(fn);
 }
 //----------------------------------------------------
-void CPSLibrary::RestoreBackup(){
-	AnsiString fn = PSLIB_FILENAME;
-	if (FS.RestoreBackup(fn)==1) Load(fn.c_str());
-}
+//void CPSLibrary::RestoreBackup(){
+//	AnsiString fn = PSLIB_FILENAME;
+//	if (FS.RestoreBackup(fn)==1) Load(fn.c_str());
+//}
 //----------------------------------------------------
 PS::SDef* CPSLibrary::ChoosePS(bool bSetCurrent){
 	LPCSTR T = TfrmChoseItem::SelectPS();

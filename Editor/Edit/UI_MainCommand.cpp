@@ -228,19 +228,23 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		break;
 
 	case COMMAND_REFRESH_TEXTURES:
-		Device.RefreshTextures(bool(p1));
+		Device.RefreshTextures();
 		break;
+
+    case COMMAND_UNLOAD_TEXTURES:
+		Device.UnloadTextures();
+    	break;
 
     case COMMAND_UNLOAD_LIBMESHES:
     	Lib.UnloadMeshes();
     	break;
 
-    case COMMAND_RELOAD_LIBRARY:
-    	Lib.ReloadLibrary();
-    	break;
-
     case COMMAND_REFRESH_LIBRARY:
     	Lib.RefreshLibrary();
+    	break;
+
+    case COMMAND_RELOAD_OBJECTS:
+    	Lib.ReloadObjects();
     	break;
 
 	case COMMAND_CUT:

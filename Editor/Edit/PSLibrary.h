@@ -28,7 +28,7 @@ public:
     void				Save			();
     void				Reload			();
     void 				Backup			();
-    void 				RestoreBackup	();
+//    void 				RestoreBackup	();
 
     char*				GenerateName	(char* buffer, LPCSTR pref=0);
 

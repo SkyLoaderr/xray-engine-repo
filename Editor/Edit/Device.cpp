@@ -6,14 +6,15 @@
 #include "main.h"
 #include "xr_hudfont.h"
 #include "dxerr8.h"
+#include "ImageManager.h"
 
 #pragma package(smart_init)
 
 CRenderDevice Device;
 
 int psTextureLOD	= 0;
-DWORD psDeviceFlags 	= rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
-DWORD dwClearColor		= 0x00555555;
+DWORD psDeviceFlags = rsStatistic|rsFilterLinear|rsFog|rsDrawGrid;
+DWORD dwClearColor	= 0x00555555;
 
 //---------------------------------------------------------------------------
 void CRenderDevice::Error(HRESULT hr, const char *file, int line)
@@ -397,43 +398,6 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
     UPDATEC(vc,pc,dwRequired);
 }
 
-void CRenderDevice::Validate()
-{
-/*    DWORD Pass,Res;
-    Res =  HW.pDevice->ValidateDevice(&Pass);
-    char* E = 0;
-    switch (Res)
-    {
-    	case D3DERR_CONFLICTINGTEXTUREFILTER
-		case D3DERR_CONFLICTINGTEXTUREPALETTE
-		case D3DERR_DEVICELOST
-		case D3DERR_TOOMANYOPERATIONS
-		case D3DERR_UNSUPPORTEDALPHAARG
-		case D3DERR_UNSUPPORTEDALPHAOPERATION
-		case D3DERR_UNSUPPORTEDCOLORARG
-		case D3DERR_UNSUPPORTEDCOLOROPERATION
-		case D3DERR_UNSUPPORTEDFACTORVALUE
-		case D3DERR_UNSUPPORTEDTEXTUREFILTER
-		case D3DERR_WRONGTEXTUREFORMAT
-    	case
-		case D3DERR_INVALIDOBJECT:				E = "DDERR_INVALIDOBJECT"; break;
-		case DDERR_INVALIDPARAMS:               E = "DDERR_INVALIDPARAMS"; break;
-		case D3DERR_CONFLICTINGTEXTUREFILTER:   E = "D3DERR_CONFLICTINGTEXTUREFILTER"; break;
-		case D3DERR_CONFLICTINGTEXTUREPALETTE:  E = "D3DERR_CONFLICTINGTEXTUREPALETTE"; break;
-		case D3DERR_TOOMANYOPERATIONS:          E = "D3DERR_TOOMANYOPERATIONS"; break;
-		case D3DERR_UNSUPPORTEDALPHAARG:        E = "D3DERR_UNSUPPORTEDALPHAARG"; break;
-		case D3DERR_UNSUPPORTEDALPHAOPERATION:  E = "D3DERR_UNSUPPORTEDALPHAOPERATION"; break;
-		case D3DERR_UNSUPPORTEDCOLORARG:        E = "D3DERR_UNSUPPORTEDCOLORARG"; break;
-		case D3DERR_UNSUPPORTEDCOLOROPERATION:  E = "D3DERR_UNSUPPORTEDCOLOROPERATION"; break;
-		case D3DERR_UNSUPPORTEDFACTORVALUE:     E = "D3DERR_UNSUPPORTEDFACTORVALUE"; break;
-		case D3DERR_UNSUPPORTEDTEXTUREFILTER:   E = "D3DERR_UNSUPPORTEDTEXTUREFILTER"; break;
-		case D3DERR_WRONGTEXTUREFORMAT:         E = "D3DERR_WRONGTEXTUREFORMAT"; break;
-    }
-    if (E)
-    	ELog.DlgMsg(mtError, E);
-*/
-}
-
 void CRenderDevice::ReloadShaders(){
 	OnDeviceDestroy();
 	OnDeviceCreate();
@@ -452,22 +416,18 @@ void CRenderDevice::ReloadShaders(){
 */
 }
 
-void CRenderDevice::RefreshTextures(bool bOnlyNew){
-	UI.SetStatus("Reload textures...");
-//S	Shader.RefreshTextures(bOnlyNew);
+void CRenderDevice::RefreshTextures(){
+	UI.SetStatus("Refresh textures...");
+	LPSTRVec modif;
+    ImageManager.SynchronizeTextures(&modif);
+    Shader.ED_UpdateTextures(modif);
+    for (LPSTRIt it=modif.begin(); it!=modif.end(); it++) _FREE(*it);
 	UI.SetStatus("");
 }
 
-struct clr_16{
-	unsigned b	: 5;
-	unsigned g	: 6;
-	unsigned r	: 5;
-    void set(WORD val){CopyMemory(this,&val,2);}
-    DWORD get(){
-    	Fcolor C; C.set(float(r)/31.f,float(g)/63.f,float(b)/31.f,0);
-    	return C.get();
-    }
-};
+void CRenderDevice::UnloadTextures(){
+    Shader.DeferredUnload();
+}
 
 bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
 	if (!bReady) return false;

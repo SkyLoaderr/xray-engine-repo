@@ -6,7 +6,9 @@
 #pragma hdrstop
 
 #include "CustomObject.h"
+#include "xr_trims.h"
 #include <io.h>
+#include <utime.h>
 
 CFileSystem FS;
 //----------------------------------------------------
@@ -52,12 +54,11 @@ void FSPath::VerifyPath(){
 
 CFileSystem::CFileSystem( ){
 	m_Root[0] = 0;
-	hFindHandle	= -1;
     m_FindItems = 0;
+	_tzset();
 }
 
 CFileSystem::~CFileSystem(){
-	if (hFindHandle!=-1) _findclose(hFindHandle);
 }
 
 void CFileSystem::OnCreate(){
@@ -213,21 +214,21 @@ void CFileSystem::CopyFileTo(LPCSTR src, LPCSTR dest, bool bOverwrite){
 //----------------------------------------------------
 // Age routines
 //----------------------------------------------------
-BOOL CFileSystem::GetFileAge( const AnsiString& name, int FT ){
-	int hfile	= _open(name.c_str(),O_BINARY|O_RDONLY);
-	if	(hfile<=0) return FALSE;
-	int handle	= _get_osfhandle(hfile);
-//	BOOL res	= GetFileTime(HANDLE(handle),0,0,&FT);
-	_close		(hfile);
-//	return		res;
+
+int CFileSystem::GetFileAge( const AnsiString& name ){
+    _finddata_t		sFile;
+    int	hFile		= _findfirst(name.c_str(), &sFile);
+	if (hFile<=0) 	return -1;
+    return			sFile.time_write;
 }
 //----------------------------------------------------
-void CFileSystem::SetFileAge( const AnsiString& name, int FT ){
-	int hfile	= _open(name.c_str(),O_BINARY|O_RDWR); R_ASSERT(hfile>0);
-	int handle	= _get_osfhandle(hfile);
-//	BOOL res	= SetFileTime(HANDLE(handle),0,0,&FT); R_ASSERT(res);
-	_close		(hfile);
+void CFileSystem::SetFileAge( const AnsiString& name, int age ){
+    utimbuf 	tm;
+    tm.actime	= age;
+    tm.modtime	= age;
+    _utime(name.c_str(),&tm);
 }
+/*
 //----------------------------------------------------
 void CFileSystem::SetFileAgeFrom(const AnsiString& src_name, const AnsiString& dest_name){
 	FILETIME FT;
@@ -242,6 +243,7 @@ int CFileSystem::CompareFileAge(const AnsiString& fn1, const AnsiString& fn2){
 	if (!fn1_res||!fn2_res) return -1;
 //	return (0==CompareFileTime(&FT1,&FT2));
 }
+*/
 //----------------------------------------------------
 //
 //----------------------------------------------------
@@ -271,16 +273,15 @@ void CFileSystem::BackupFile(const AnsiString& fn){
 	CopyFileTo(fn.c_str(),backup_fn.c_str(),true);
 }
 
-int CFileSystem::RestoreBackup(const AnsiString& fn){
+bool CFileSystem::RestoreBackup(const AnsiString& fn){
 	AnsiString ext = ExtractFileExt(fn);
     ext.Insert("~",2);
 	AnsiString backup_fn = ChangeFileExt(fn,ext);
     if (Exist(backup_fn.c_str(),false)){
-    	if (CompareFileAge(backup_fn,fn)==0){
-			CopyFileTo(backup_fn.c_str(),fn.c_str(),true);
-            return 1;
-        }else return -1;
-    }else return 0;
+		CopyFileTo(backup_fn.c_str(),fn.c_str(),true);
+		return true;
+    }
+    return false;
 }
 
 bool CFileSystem::CreateNullFile(const char* fn){
@@ -289,38 +290,22 @@ bool CFileSystem::CreateNullFile(const char* fn){
     return true;
 }
 
-LPCSTR CFileSystem::FindFirst(LPSTR mask){
-	if (hFindHandle!=-1) _findclose(hFindHandle);
-	hFindHandle = _findfirst(mask, &FData);
-    if (hFindHandle!=-1) return FData.name;
-    return 0;
-}
-
-LPCSTR CFileSystem::FindNext(){
-	VERIFY(hFindHandle!=-1);
-    if (_findnext(hFindHandle, &FData)!=-1) return FData.name;
-    return 0;
-}
-
-void CFileSystem::ProcessOne(_finddata_t& F, const char* path)
+void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir)
 {
 	FILE_NAME	N;
+	FILE_NAME	M;
 	strcpy		(N,path);
 	strcat		(N,F.name);
-
-    FILETIME 	FT;
-	int hfile	= _open(F.name,O_BINARY|O_RDONLY);
-	int handle	= _get_osfhandle(hfile);
-	BOOL res	= GetFileTime(HANDLE(handle),0,0,&FT);
 
 	if (F.attrib&_A_SUBDIR) {
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
 		strcat(N,"\\");
-        if (!bFiles) m_FindItems->insert(make_pair(strlwr(N),F.time_write));
 		Recurse(N);
 	} else {
-		if (bFiles) m_FindItems->insert(make_pair(strlwr(N),F.time_write));
+    	if (bOnlyDir) return;
+    	if (bClampExt) if (strext(N)) *strext(N)=0;
+		m_FindItems->insert(make_pair(strlwr(N+path_size),F.time_write));
 	}
 }
 
@@ -330,31 +315,49 @@ void CFileSystem::Recurse(const char* path)
     int				hFile;
 
 	FILE_NAME		N;
-	strcpy			(N,path);
-	strcat			(N,"*.*");
+	FILE_NAME		dst;
+
+    strcpy			(N,path);
+    strcat			(N,"*.*");
+    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
+    ProcessOne		(sFile,path,true);
+    while			( _findnext( hFile, &sFile ) == 0 )
+        ProcessOne(sFile,path,true);
+    _findclose		( hFile );
+
+    int cnt			= _GetItemCount(ext_mask,',');
+    for (int i=0; i<cnt; i++){
+	    strcpy		(N,path);
+    	strcat		(N,_GetItem(ext_mask,i,dst,','));
+    	if ((hFile=_findfirst(N, &sFile))==-1) continue;
+        ProcessOne(sFile,path,false);
+	    while		( _findnext( hFile, &sFile ) == 0 )
+	        ProcessOne(sFile,path,false);
+	    _findclose	( hFile );
+	}
+
+/*
+    strcpy			(N,path);
+    strcat			(N,"*.*");
 
     R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
-	ProcessOne		(sFile,path);
+    ProcessOne		(sFile,path);
 
     while			( _findnext( hFile, &sFile ) == 0 )
-		ProcessOne	(sFile,path);
+        ProcessOne(sFile,path);
 
     _findclose		( hFile );
+*/
 }
 
-int CFileSystem::GetFiles(LPCSTR path, FindDataMap& items)
+int CFileSystem::GetFiles(LPCSTR path, FindDataMap& items, bool clamp_path, bool clamp_ext, LPCSTR ext_m)
 {
-	bFiles			= true;
+    ext_mask		= strdup(ext_m);
 	m_FindItems		= &items;
+    bClampExt		= clamp_ext;
+    path_size		= clamp_path?strlen(path):0;
 	Recurse			(path);
-    return m_FindItems->size();
-}
-
-int CFileSystem::GetDirectories(LPCSTR path, FindDataMap& items)
-{
-	bFiles			= false;
-	m_FindItems		= &items;
-	Recurse			(path);
+    _FREE			(ext_mask);
     return m_FindItems->size();
 }
 

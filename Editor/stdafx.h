@@ -166,6 +166,7 @@ DEFINE_VECTOR(Fplane,PlaneVec,PlaneIt);
 DEFINE_VECTOR(Fvector2,Fvector2Vec,Fvector2It);
 DEFINE_VECTOR(Fvector,FvectorVec,FvectorIt);
 DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
+DEFINE_VECTOR(LPSTR,LPSTRVec,LPSTRIt);
 
 #include "FS.h"
 #include "FileSystem.h"

@@ -22,13 +22,13 @@ public:
 DEFINE_MAP(AnsiString,int,FindDataMap,FindDataPairIt);
 
 class CFileSystem {
-	_finddata_t	FData;
-	int 	hFindHandle;
-	void 	ProcessOne(_finddata_t& F, const char* path);
+	void 	ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir);
 	void 	Recurse(const char* path);
 
 	FindDataMap* m_FindItems;
-    bool	bFiles;
+    LPSTR 	ext_mask;
+	bool 	bClampExt;
+    int		path_size;
 public:
 	char 	m_Root[MAX_PATH];
 	char 	m_Server[MAX_PATH];
@@ -68,22 +68,16 @@ public:
 	void 	CopyFileTo		(LPCSTR src, LPCSTR dest, bool bOverwrite=true);
     int		FileLength		(LPCSTR src);
 
-    BOOL  	GetFileAge		(const AnsiString& name, int FT);
+    int  	GetFileAge		(const AnsiString& name);
     void 	SetFileAge		(const AnsiString& name, int FT);
-    void 	SetFileAgeFrom	(const AnsiString& src_name, const AnsiString& dest_name);
-    int 	CompareFileAge	(const AnsiString& fn1, const AnsiString& fn2); // result - 1-equal, 0-different, -1-error
 
     bool 	CreateNullFile	(const char* fn);
 
     void 	MarkFile		(const AnsiString& fn);
-    void 	BackupFile		(const AnsiString& fn);
-	int 	RestoreBackup	(const AnsiString& fn);
+	void 	BackupFile		(const AnsiString& fn);
+	bool 	RestoreBackup	(const AnsiString& fn);
 
-    LPCSTR	FindFirst(LPSTR mask);
-    LPCSTR	FindNext();
-
-    int		GetFiles		(LPCSTR path, FindDataMap& items); // return item count
-	int		GetDirectories	(LPCSTR path, FindDataMap& items); // return item count
+    int		GetFiles		(LPCSTR path, FindDataMap& items, bool bClampPath, bool bClampExt, LPCSTR ext_mask="*.*"); // return item count
 
     void	VerifyPath		(LPCSTR path);
 };

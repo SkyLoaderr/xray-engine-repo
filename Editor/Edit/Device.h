@@ -84,7 +84,8 @@ public:
 	void 					Destroy			();
     void 					Resize			(int w, int h);
     void					ReloadShaders	();
-	void 					RefreshTextures	(bool bOnlyNew);
+	void 					RefreshTextures	();
+	void 					UnloadTextures	();
 
     void 					RenderNearer	(float f_Near);
     void 					ResetNearer		();
@@ -132,7 +133,6 @@ public:
                                 			CHK_DX(HW.pDevice->SetMaterial(m_DefaultMat.d3d()));}
 
 	// update
-    void					Validate		();
     void					UpdateView		();
 	void					UpdateTimer		();
     void					UpdateFog		(DWORD color, float fogness, float view_dist);

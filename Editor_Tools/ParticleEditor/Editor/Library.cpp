@@ -45,15 +45,12 @@ ELibrary::~ELibrary(){
 void ELibrary::OnCreate(){
 	m_Current = "";
     int count = strlen(FS.m_Objects.m_Path);
-    AStringVec& lst = FS.GetFiles(FS.m_Objects.m_Path);
-    for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-	    AnsiString ext = ExtractFileExt(*it).LowerCase();
-        if (ext==".object"){
-        	AnsiString name = it->Delete(1,count);
-            name = name.Delete(name.Length()-6,7);
-        	m_Objects.push_back(name);
-        }
-    }
+    FindDataMap lst;
+    FS.GetFiles(FS.m_Objects.m_Path,lst,true,true,"*.object");
+    m_Objects.resize(lst.size());
+    AStringIt s_it=m_Objects.begin();
+    for (FindDataPairIt it=lst.begin(); it!=lst.end(); it++)
+		*s_it = it->first;
 	std::sort(m_Objects.begin(),m_Objects.end(),sort_pred);
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
@@ -75,7 +72,6 @@ void ELibrary::OnDestroy(){
 	m_EditObjects.clear();
 
     m_Objects.clear();
-	ELog.Msg( mtInformation, "Lib: cleared" );
 }
 //----------------------------------------------------
 
@@ -98,13 +94,13 @@ void ELibrary::UnloadMeshes(){
 	m_EditObjects.clear();
 }
 //----------------------------------------------------
-void ELibrary::ReloadLibrary(){
+void ELibrary::RefreshLibrary(){
 	VERIFY(m_bReady);
     OnDestroy();
     OnCreate();
 }
 //----------------------------------------------------
-void ELibrary::RefreshLibrary(){
+void ELibrary::ReloadObjects(){
 	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();

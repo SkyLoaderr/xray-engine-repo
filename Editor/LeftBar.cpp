@@ -186,6 +186,12 @@ void __fastcall TfraLeftBar::ebRefreshEditorClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::RefreshObjects1Click(TObject *Sender)
 {
+	UI.Command( COMMAND_RELOAD_OBJECTS );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::RefreshLibrary1Click(TObject *Sender)
+{
 	UI.Command( COMMAND_REFRESH_LIBRARY );
 }
 //---------------------------------------------------------------------------

@@ -14,12 +14,11 @@ class CImageManager{
 public:
 				CImageManager		(){;}
 				~CImageManager		(){;}
-    BOOL		IfChanged			(const AnsiString& name);
-	void		Synchronize			(const AnsiString& name);  // return some as IfUpdated
+	int			GetModifiedFiles	(AStringVec& files);
+	void		SynchronizeTexture	(const AnsiString& src_name);
+	void		SynchronizeTextures	(LPSTRVec* files=0);
     void		CreateThumbnail		(EImageThumbnail* THM, const AnsiString& src_name);
     void		CreateGameTexture	(const AnsiString& src_name, EImageThumbnail* thumb=0);
-//	void		SynchronizePath		();
-    int			GetModifiedFiles	(AStringVec& files);
     int			GetFiles			(AStringVec& files);
     bool		LoadTextureData		(const AnsiString& src_name, DWORDVec& data, int& w, int& h);
 };

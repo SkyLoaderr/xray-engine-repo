@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 585
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -1512,10 +1512,6 @@ object fraLeftBar: TfraLeftBar
       Caption = 'RefreshTextures'
       OnClick = ebRefreshEditorClick
     end
-    object RefreshObjects1: TMenuItem
-      Caption = 'Refresh Objects'
-      OnClick = RefreshObjects1Click
-    end
     object Checknewtextures1: TMenuItem
       Caption = 'Check New Textures'
       OnClick = Checknewtextures1Click
@@ -1523,6 +1519,14 @@ object fraLeftBar: TfraLeftBar
     object ResetAniamation1: TMenuItem
       Caption = 'Reset Animation'
       OnClick = ebResetAnimationClick
+    end
+    object RefreshObjects1: TMenuItem
+      Caption = 'Reload Objects'
+      OnClick = RefreshObjects1Click
+    end
+    object RefreshLibrary1: TMenuItem
+      Caption = 'Refresh Library'
+      OnClick = RefreshLibrary1Click
     end
   end
   object pmToolsEdit: TMxPopupMenu

@@ -139,6 +139,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Scale1;
 	TMenuItem *N4;
 	TMenuItem *miProperties;
+	TMenuItem *RefreshLibrary1;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -210,6 +211,7 @@ __published:	// IDE-managed Components
 	void __fastcall Rotation1Click(TObject *Sender);
 	void __fastcall Scale1Click(TObject *Sender);
 	void __fastcall miPropertiesClick(TObject *Sender);
+	void __fastcall RefreshLibrary1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu(TMxPopupMenu* M, TObject* btn);
 public:		// User declarations
