@@ -168,7 +168,7 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 					Level().Cameras.unaffected_Right(),
 					Level().Cameras.unaffected_Up(),
 					Level().Cameras.unaffected_Dir(),
-					Level().Cameras.unaffected_Pos(),
+					Level().Cameras.unaffected_Pos()
 					);
 				m_pHUD->UpdatePosition(trans);
 			}
