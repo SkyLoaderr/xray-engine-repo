@@ -7,12 +7,12 @@
 #include "Level.h"
 	CPHDestroyable::CPHDestroyable()
 	{
-		b_canbe_destroyed=false;
+		m_flags.flags=0;
 	}
 
 void CPHDestroyable::Destroy()
 {
-	if(!b_canbe_destroyed)return;
+	if(!m_flags.test(fl_destroyable)||m_flags.test(fl_destroyed))return;
 //////////send destroy to self //////////////////////////////////////////////////////////////////
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 
@@ -57,21 +57,21 @@ void CPHDestroyable::Destroy()
 		F_entity_Destroy	(D);
 	}
 ///////////////////////////////////////////////////////////////////////////
-	b_canbe_destroyed=false;
+	m_flags.set(fl_destroyed,TRUE);
 }
 
 void CPHDestroyable::Load(LPCSTR section)
 {
 	if(pSettings->line_exist(section,"destroyed_vis_name"))
 	{
-		b_canbe_destroyed=true;
+		m_flags.set(fl_destroyable,TRUE);
 		m_destroyed_obj_visual_name=pSettings->r_string(section,"destroyed_vis_name");
 	}
 }
 
 void CPHDestroyable::Init()
 {
-	if(!b_canbe_destroyed)return;
+	if(!m_flags.test(fl_destroyable))return;
 	CPhysicsShellHolder * shell_holder=PPhysicsShellHolder();
 	ref_str visual_name;
 	visual_name=shell_holder->cNameVisual();
@@ -79,3 +79,7 @@ void CPHDestroyable::Init()
 	shell_holder->cNameVisual_set(visual_name);
 }
 
+void CPHDestroyable::RespawnInit()
+{
+	m_flags.set(fl_destroyed,FALSE);
+}

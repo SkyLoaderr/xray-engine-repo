@@ -6,12 +6,17 @@ class CPhysicsShellHolder;
 class CPHDestroyable
 {
 			ref_str						m_destroyed_obj_visual_name	;
-			bool						b_canbe_destroyed			;//temporarely for objects wich do not have desroyed model
-protected:
+			Flags8						m_flags						;
+			enum
+			{
+				fl_destroyable		= 1<<0,
+				fl_destroyed		= 1<<1
+			};
 	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						=0;
 public:
 										CPHDestroyable				()						;
 			void						Init						()						;
+			void						RespawnInit					()						;
 			void						Destroy						()						;	
 			void						Load						(LPCSTR section)		;
 };
