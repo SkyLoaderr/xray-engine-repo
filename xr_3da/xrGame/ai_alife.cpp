@@ -148,7 +148,7 @@ void CAI_ALife::Update(u32 dt)
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i > m_qwMaxProcessTime)
 				break;
 		}
-	u64 t2x = CPU::GetCycleCount() - qwStartTime;
+	//u64 t2x = CPU::GetCycleCount() - qwStartTime;
 	//Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
 }
 
