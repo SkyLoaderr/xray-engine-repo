@@ -782,7 +782,22 @@ public:
 			Level().SetInterpolationSteps(*value_blin);
 	}
 };
+class CCC_FloatBlock : public CCC_Float {
+public:
+	CCC_FloatBlock(LPCSTR N, float* V, float _min=0, float _max=1) :
+		CCC_Float(N,V,_min,_max)
+	{};
 
+	virtual void	Execute	(LPCSTR args)
+	{
+		if (!g_pGameLevel || Game().type == GAME_SINGLE)
+			CCC_Float::Execute(args);
+		else
+		{
+			Msg ("! Command disabled for this type of game");
+		}
+	}
+};
 class CCC_Net_CL_Resync : public IConsole_Command {
 public:
 	CCC_Net_CL_Resync(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -999,7 +1014,9 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		// Physics
 		CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,		100);
 		CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,		50)	;
-		CMD4( CCC_Float,			"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
+
+		CMD4( CCC_FloatBlock,			"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
+
 		// Mad Max
 		// Net Interpolation
 		CMD4(CCC_Net_CL_Interpolation,		"net_cl_interpolation",	&lvInterp,			-1,100);
