@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../../state_manager_state.h"
+#include "../../../PhysicsShell.h"
 
 template<typename _Object>
 class	CStateBurerAttack : public CStateManagerState<_Object> {

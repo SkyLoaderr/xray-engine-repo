@@ -180,19 +180,19 @@ void CLevel::IR_OnKeyboardPress(int key)
 		pos = Level().CurrentEntity()->Position();
 		pos.y+=3.f;
 
-		if (monster) {
-			switch (key) {
-		case DIK_1:
-			monster->TTelekinesis::Activate(monster->Position());
-			break;
-		case DIK_2:
-			monster->TTelekinesis::Deactivate();
-			break;
-		case DIK_3:
-			monster->TTelekinesis::Throw(pos);						
-			break;
-			}
-		}
+//		if (monster) {
+//			switch (key) {
+//		case DIK_1:
+//			monster->TTelekinesis::Activate(monster->Position());
+//			break;
+//		case DIK_2:
+//			monster->TTelekinesis::Deactivate();
+//			break;
+//		case DIK_3:
+//			monster->TTelekinesis::Throw(pos);						
+//			break;
+//			}
+//		}
 	}
 
 //////////////////////////////////////////////////////////////////////////

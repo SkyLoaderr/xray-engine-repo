@@ -88,7 +88,7 @@ void CStateBurerAttackAbstract::execute()
 					if (!obj || !obj->m_pPhysicsShell || (obj->m_pPhysicsShell->getMass() < MINIMAL_MASS) || (obj->m_pPhysicsShell->getMass() > MINIMAL_MASS)) continue;
 
 					// проверить, активен ли уже объект
-					(m_object->CTelekinesis::is_active_object(obj)) continue;
+					if (m_object->CTelekinesis::is_active_object(obj)) continue;
 
 					// применить телекинез на объект
 					m_object->CTelekinesis::activate(obj, 3.f, 3.f, 10000);
@@ -103,7 +103,7 @@ void CStateBurerAttackAbstract::execute()
 		set_dest_state(eStateTelekinetic);
 	} else {
 		// бить вплотную
-		set_dest_state(eStateMelee)
+		set_dest_state(eStateMelee);
 	}
 	
 	inherited::execute();

@@ -47,7 +47,6 @@ void CBurer::reinit()
 	inherited::reinit			();
 	CStateManagerBurer::reinit	(this);	
 	
-	TTelekinesis::InitExtern	(3.f, 1.7f, 10000);
 }
 
 void CBurer::Load(LPCSTR section)
@@ -151,7 +150,7 @@ void CBurer::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	TTelekinesis::UpdateSched();
+	TTelekinesis::schedule_update();
 }
 
 
