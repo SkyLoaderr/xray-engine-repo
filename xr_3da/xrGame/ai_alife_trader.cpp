@@ -20,19 +20,19 @@ void CSE_ALifeTraderAbstract::vfAttachItem(CSE_ALifeInventoryItem *tpALifeInvent
 	if (bALifeRequest) {
 		if (bAddChildren) {
 #ifdef ALIFE_LOG
-			Msg							("[LSS] : Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+			Msg							("[LSS] Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
 
 			R_ASSERT2					(std::find(children.begin(),children.end(),tpALifeInventoryItem->ID) == children.end(),"Item is already inside the inventory");
 			children.push_back			(tpALifeInventoryItem->ID);
 		}
 #ifdef ALIFE_LOG
-		Msg							("[LSS] : Assigning parent [%s] to item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+		Msg								("[LSS] Assigning parent [%s] to item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 		tpALifeInventoryItem->ID_Parent	= ID;
 	}
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+	Msg							("[LSS] Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume				+= tpALifeInventoryItem->m_iVolume;
@@ -46,14 +46,14 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 				OBJECT_IT						I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
 				R_ASSERT2						(I != children.end(),"Can't detach an item which is not on my own");
 #ifdef ALIFE_LOG
-				Msg								("[LSS] : Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+				Msg								("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
 				children.erase					(I);
 			}
 		}
 		else {
 #ifdef ALIFE_LOG
-			Msg									("[LSS] : Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+			Msg									("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
 #endif
 			children.erase						(*I);
 		}
@@ -62,7 +62,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		CSE_ALifeDynamicObject					*l_tpALifeDynamicObject2 = dynamic_cast<CSE_ALifeDynamicObject*>(this);
 		R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
 #ifdef ALIFE_LOG
-		Msg										("[LSS] : Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
+		Msg										("[LSS] Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
 #endif
 		l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
 		l_tpALifeDynamicObject1->m_tGraphID		= l_tpALifeDynamicObject2->m_tGraphID;
@@ -70,7 +70,7 @@ void CSE_ALifeTraderAbstract::vfDetachItem(CSE_ALifeInventoryItem *tpALifeInvent
 		tpALifeInventoryItem->m_tPreviousParentID = l_tpALifeDynamicObject2->ID;
 	}
 #ifdef ALIFE_LOG
-	Msg							("[LSS] : Updating [%s] inventory with detached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+	Msg							("[LSS] Updating [%s] inventory with detached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
 	m_iCumulativeItemVolume		-= tpALifeInventoryItem->m_iVolume;

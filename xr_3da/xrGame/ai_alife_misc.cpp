@@ -57,7 +57,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 		switch (m_tpaCombatObjects[l_iGroupIndex]->tfGetActionType(m_tpaCombatObjects[l_iGroupIndex ^ 1],l_iGroupIndex,l_bMutualDetection)) {
 			case eMeetActionTypeAttack : {
 #ifdef ALIFE_LOG
-				Msg("[LSS] : %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+				Msg("[LSS] %s started combat versus %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 				break;
 #endif
 				ECombatResult			l_tCombatResult = eCombatResultRetreat12;
@@ -65,7 +65,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 				for (int i=0; i<2*int(m_dwMaxCombatIterationCount); i++) {
 					if (tfChooseCombatAction(l_iGroupIndex) == eCombatActionAttack) {
 #ifdef ALIFE_LOG
-						Msg("[LSS] : %s choosed to attack %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s choosed to attack %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 						vfPerformAttackAction(l_iGroupIndex);
 
@@ -75,18 +75,18 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 						if (l_bDoNotContinue)
 							break;
 #ifdef ALIFE_LOG
-						Msg("[LSS] : %s choosed to retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s choosed to retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 						if (bfCheckIfRetreated(l_iGroupIndex)) {
 #ifdef ALIFE_LOG
-							Msg("[LSS] : %s did retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+							Msg("[LSS] %s did retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 							l_tCombatResult	= l_iGroupIndex ? eCombatResultRetreat2 : eCombatResultRetreat1;
 							break;
 						}
 						l_bDoNotContinue = true;
 #ifdef ALIFE_LOG
-						Msg("[LSS] : %s didn't retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+						Msg("[LSS] %s didn't retreat from %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 					}
 
@@ -94,7 +94,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 
 					if (m_tpaCombatGroups[l_iGroupIndex].empty()) {
 #ifdef ALIFE_LOG
-						Msg("[LSS] : %s is dead",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
+						Msg("[LSS] %s is dead",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
 #endif
 						l_tCombatResult	= l_iGroupIndex ? eCombatResult1Kill2 : eCombatResult2Kill1;
 						break;
@@ -102,7 +102,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 				}
 #ifdef ALIFE_LOG
 				if (l_tCombatResult == eCombatResultRetreat12)
-					Msg("[LSS] : both combat groups decided not to continue combat");
+					Msg("[LSS] both combat groups decided not to continue combat");
 #endif
 				vfFinishCombat			(l_tCombatResult);
 				break;
@@ -112,14 +112,14 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 				CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract2 = dynamic_cast<CSE_ALifeHumanAbstract*>(l_tpALifeSchedulable);
 				R_ASSERT2				(l_tpALifeHumanAbstract2,"Non-human objects ñannot communicate with each other");
 #ifdef ALIFE_LOG
-				Msg						("[LSS] : %s interacted with %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
+				Msg						("[LSS] %s interacted with %s",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,m_tpaCombatObjects[l_iGroupIndex ^ 1]->s_name_replace);
 #endif
 				vfPerformCommunication	();
 				break;
 			}
 			case eMeetActionTypeIgnore : {
 #ifdef ALIFE_LOG
-				Msg("[LSS] : %s refused from combat",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
+				Msg("[LSS] %s refused from combat",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
 #endif
 				continue;
 			}

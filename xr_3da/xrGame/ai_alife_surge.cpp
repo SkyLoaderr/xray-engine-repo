@@ -66,9 +66,9 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 
 	i->m_tSpawnID				= tSpawnID;
 	if (!m_tpActor && dynamic_cast<CSE_ALifeCreatureActor*>(i))
-		i->ID						= 0;
+		i->ID					= 0;
 	else
-		i->ID						= m_tpServer->PerformIDgen(0xffff);
+		i->ID					= m_tpServer->PerformIDgen(0xffff);
 	CSE_ALifeObjectRegistry::Add(i);
 	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;

@@ -14,7 +14,7 @@
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bALifeRequest)
 {
 #ifdef ALIFE_LOG
-	Msg								("[LSS] : Releasing object [%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->ID);
+	Msg								("[LSS] Releasing object [%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->ID);
 #endif
 	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
 	VERIFY							(tpALifeDynamicObject);
@@ -46,7 +46,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	R_ASSERT3						(tpALifeDynamicObject->m_tNodeID && (tpALifeDynamicObject->m_tNodeID < getAI().Header().count),"Invalid node for object ",tpALifeDynamicObject->s_name_replace);
 
 #ifdef ALIFE_LOG
-	Msg("[LSS] : Spawning object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+	Msg("[LSS] Spawning object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
 #endif
 
 	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
@@ -62,7 +62,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			m_tpServer->entity_Destroy(l_tpAbstract);
 
 #ifdef ALIFE_LOG
-			Msg						("[LSS] : Spawning item [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeDynamicObject->ID);
+			Msg						("[LSS] Spawning item [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeDynamicObject->ID);
 #endif
 
 			R_ASSERT3				(u32(l_tpALifeDynamicObject->m_tNodeID) < getAI().Header().count,"Invalid node for object ",l_tpALifeInventoryItem->s_name_replace);
@@ -90,7 +90,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 	R_ASSERT2						(l_tObjectID == tpALifeDynamicObject->ID,"Can't reserve a particular object identifier");
 
 #ifdef ALIFE_LOG
-	Msg("[LSS] : Destroying object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
+	Msg("[LSS] Destroying object [%s][%d]",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID);
 #endif
 
 	CSE_ALifeTraderAbstract			*tpTraderParams = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALifeDynamicObject);
@@ -102,7 +102,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef ALIFE_LOG
-			Msg						("[LSS] : Destroying item [%s]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID);
+			Msg						("[LSS] Destroying item [%s]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID);
 #endif
 
 			m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
@@ -124,7 +124,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 	R_ASSERT						(!tpALifeDynamicObject->m_bOnline);
 
 #ifdef ALIFE_LOG
-	Msg								("[LSS] : Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
+	Msg								("[LSS] Going online [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
 #endif
 	
 	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);
@@ -161,7 +161,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 {
 	R_ASSERT						(tpALifeDynamicObject->m_bOnline);
 #ifdef ALIFE_LOG
-	Msg								("[LSS] : Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
+	Msg								("[LSS] Going offline [%d][%s][%d] ([%f][%f][%f] : [%f][%f][%f]), on '%s'",Device.TimerAsync(),tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->ID,VPUSH(m_tpActor->o_Position),VPUSH(tpALifeDynamicObject->o_Position), "*SERVER*");
 #endif
 	
 	CSE_ALifeAnomalousZone			*l_tpAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(tpALifeDynamicObject);

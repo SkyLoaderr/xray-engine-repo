@@ -114,6 +114,7 @@ class CSE_ALifeSimulator :
 			u32						dwfComputeItemCost			(ITEM_P_VECTOR				&tpItemVector);
 			void					vfRunFunctionByIndex		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpBlockedItems,				ITEM_P_VECTOR	&tpItems,					int						i,						int						&j);
 			void					vfAssignItemParents			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount);
+			void					vfAppendBlockedItems		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		OBJECT_VECTOR			&tpObjectVector1,				OBJECT_VECTOR	&tpObjectVector2,			int						l_iItemCount1);
 			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	&tpOwnItems);
 			void					vfRestoreItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 #ifdef FAST_OWNERSHIP

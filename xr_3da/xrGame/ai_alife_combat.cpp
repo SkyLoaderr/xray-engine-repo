@@ -373,7 +373,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	
 	if (m_tpItemVector.empty() || (m_tCombatType != eCombatTypeMonsterMonster)) {
 #ifdef ALIFE_LOG
-		Msg								("[LSS] : There is nothing to take");
+		Msg								("[LSS] There is nothing to take");
 #endif
 		return;
 	}
@@ -397,7 +397,7 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	
 	if (l_iGroupIndex >= 0) {
 #ifdef ALIFE_LOG
-		Msg								("[LSS] : Starting taking items [%s][%f]",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[l_iGroupIndex])->fHealth);
+		Msg								("[LSS] Starting taking items [%s][%f]",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[l_iGroupIndex])->fHealth);
 #endif
 		m_tpaCombatObjects[l_iGroupIndex]->vfAttachItems();
 	}
