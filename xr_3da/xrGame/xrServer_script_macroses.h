@@ -10,12 +10,13 @@
 
 #include "script_export_macroses.h"
 #include "xrEProps.h"
+#include <luabind/out_value_policy.hpp>
 
 template <typename T>
 struct CWrapperPure : public T, public luabind::wrap_base {
 	typedef T inherited;
 	typedef CWrapperPure<T>	self_type;
-	CWrapperPure				(LPCSTR section) : inherited(section){}
+	CWrapperPure					(LPCSTR section) : inherited(section){}
 	DEFINE_LUA_WRAPPER_METHOD_V1	(save,			NET_Packet&)
 	DEFINE_LUA_WRAPPER_METHOD_V1	(load,			NET_Packet&)
 //	DEFINE_LUA_WRAPPER_METHOD_V1	(save,			IWriter&)
@@ -27,7 +28,8 @@ struct CWrapperAbstract : public CWrapperPure<T> {
 	typedef CWrapperPure<T> inherited;
 	typedef CWrapperAbstract<T>	self_type;
 
-	CWrapperAbstract			(LPCSTR section) : inherited(section){}
+	CWrapperAbstract				(LPCSTR section) : inherited(section){}
+	
 	DEFINE_LUA_WRAPPER_METHOD_V2	(FillProps,		LPCSTR,	PropItemVec &)
 	DEFINE_LUA_WRAPPER_METHOD_V1	(STATE_Write,	NET_Packet&)
 	DEFINE_LUA_WRAPPER_METHOD_V2	(STATE_Read,	NET_Packet&,	u16)
@@ -41,7 +43,7 @@ template <typename T>
 struct CWrapperAbstractALife : CWrapperAbstract<T> {
 	typedef CWrapperAbstract<T>			inherited;
 	typedef CWrapperAbstractALife<T>	self_type;
-	CWrapperAbstractALife		(LPCSTR section) : inherited(section){}
+	CWrapperAbstractALife				(LPCSTR section) : inherited(section){}
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(used_ai_locations,	bool)
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(can_save,			bool)
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(can_switch_online,	bool)
@@ -51,28 +53,28 @@ struct CWrapperAbstractALife : CWrapperAbstract<T> {
 
 template <typename T>
 struct CWrapperAbstractCreature : CWrapperAbstractALife<T> {
-	typedef CWrapperAbstractALife<T> inherited;
+	typedef CWrapperAbstractALife<T>	inherited;
 	typedef CWrapperAbstractCreature<T>	self_type;
-	CWrapperAbstractCreature	(LPCSTR section) : inherited(section){}
-	DEFINE_LUA_WRAPPER_METHOD_0	(g_team,	u8)
-	DEFINE_LUA_WRAPPER_METHOD_0	(g_squad,	u8)
-	DEFINE_LUA_WRAPPER_METHOD_0	(g_group,	u8)
+	CWrapperAbstractCreature			(LPCSTR section) : inherited(section){}
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_team,	u8)
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_squad,	u8)
+	DEFINE_LUA_WRAPPER_METHOD_0			(g_group,	u8)
 };
 
 template <typename T>
 struct CWrapperAbstractMonster : CWrapperAbstractCreature<T> {
 	typedef CWrapperAbstractCreature<T> inherited;
 	typedef CWrapperAbstractMonster<T>	self_type;
-	CWrapperAbstractMonster		(LPCSTR section) : inherited(section){}
-	DEFINE_LUA_WRAPPER_METHOD_V0	(update)
+	CWrapperAbstractMonster				(LPCSTR section) : inherited(section){}
+	DEFINE_LUA_WRAPPER_METHOD_V0		(update)
 };
 
 template <typename T>
 struct CWrapperAbstractItem : CWrapperAbstractALife<T> {
-	typedef CWrapperAbstractALife<T> inherited;
-	typedef CWrapperAbstractItem<T>	self_type;
-	CWrapperAbstractItem		(LPCSTR section) : inherited(section){}
-	DEFINE_LUA_WRAPPER_METHOD_0	(bfUseful,	bool)
+	typedef CWrapperAbstractALife<T>	inherited;
+	typedef CWrapperAbstractItem<T>		self_type;
+	CWrapperAbstractItem				(LPCSTR section) : inherited(section){}
+	DEFINE_LUA_WRAPPER_METHOD_0			(bfUseful,	bool)
 };
 
 #define luabind_virtual_pure(a,b) \
@@ -82,6 +84,7 @@ struct CWrapperAbstractItem : CWrapperAbstractALife<T> {
 //	DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,save,void,IWriter&) 
 //	DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,load,void,IReader&) 
 
+/**/
 #define luabind_virtual_abstract(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,FillProps	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,STATE_Write	) \
@@ -90,6 +93,7 @@ struct CWrapperAbstractItem : CWrapperAbstractALife<T> {
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,UPDATE_Read	) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,OnEvent		) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,init		)
+/**/
 
 #define luabind_virtual_alife(a,b) \
 	DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_CONST_0(a,b,can_switch_online,bool) \
