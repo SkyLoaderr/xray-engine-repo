@@ -81,5 +81,5 @@ void	CLight_Render_Direct::compute_xf_1	()
 	float				d	= 2*DSM_distance/cosf(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
-	D3DXMatrixOrthoLH		((D3DXMATRIX*)&L_project,dx,dy,1.f,DSM_d_range+50);
+	L_project.build_projection_ortho(dx,dy,1.f,DSM_d_range+50);
 }
