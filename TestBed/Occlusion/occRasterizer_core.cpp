@@ -78,13 +78,15 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	// guard-banding and clipping
 	int minX	= minPixel(startX), maxX = maxPixel(endX);
 	int minT	= maxPixel(startT), maxT = minPixel(endT);
-	Vclamp		(minX,0,occ_dim0);
-	Vclamp		(maxX,0,occ_dim0);
 	Vclamp		(minT,1,occ_dim0-1);
 	Vclamp		(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
-	if (minX >  maxX)		return;
-
+	Vclamp		(minX,0,occ_dim0);
+	Vclamp		(maxX,0,occ_dim0);
+	int limLeft,limRight;
+	if (minX >  maxX)	{ limLeft=maxX; limRight=minX;	}
+	else				{ limLeft=minX; limRight=maxX;	}
+	
 	// interpolate
 	float lenR	= endR - startR;
 	float Zlen	= endZ - startZ;
@@ -96,7 +98,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	int	i		= curY*occ_dim0+X;
 	
 	// left connector
-	for (; X<minX; X++, i++, Z+=dZ)
+	for (; X<limLeft; X++, i++, Z+=dZ)
 	{
 		occTri* test = pFrame[i-1];
 		if (shared(T,test))
@@ -111,7 +113,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 		if (Z < pDepth[i])	{ pFrame[i]	= T; pDepth[i] = Z; }
 
 	// right connector
-	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=maxX; X--, i--, Z-=dZ)
+	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=limRight; X--, i--, Z-=dZ)
 	{
 		occTri* test = pFrame[i+1];
 		if (shared(T,test)) {
