@@ -433,6 +433,7 @@ public:
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;
+			bool				weapon_strapped			() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)

@@ -23,6 +23,8 @@
 
 #include "customzone.h"
 #include "patrol_path_manager.h"
+#include "object_handler_planner.h"
+#include "object_handler_space.h"
 
 const CCoverPoint *CScriptGameObject::best_cover	(const Fvector &position, const Fvector &enemy_position, float radius, float min_enemy_distance, float max_enemy_distance)
 {
@@ -531,4 +533,29 @@ void CScriptGameObject::DisableAnomaly()
 {
 	CCustomZone		*zone = smart_cast<CCustomZone*>(object()); VERIFY(zone);
 	zone->ZoneDisable();
+}
+
+bool CScriptGameObject::weapon_strapped	() const
+{
+	CAI_Stalker		*stalker = smart_cast<CAI_Stalker*>(object());
+	if (!stalker) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member weapon_strapped!");
+		return		(false);
+	}
+	if (!stalker->inventory().ActiveItem())
+		return		(false);
+	
+	CWeapon			*weapon = smart_cast<CWeapon*>(stalker->inventory().ActiveItem());
+	if (!weapon)
+		return		(false);
+	
+	if	(
+			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping2Idle) ||
+			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorStrapping) ||
+			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping2Idle) ||
+			(stalker->CObjectHandler::planner().current_action_state_id() == ObjectHandlerSpace::eWorldOperatorUnstrapping)
+		)
+		return		(true);
+
+	return			(weapon->strapped_mode());
 }
