@@ -3210,51 +3210,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_dolg_leader_quest_borov_finish">
-        <has_info>bar_kill_borov_start</has_info>
-        <has_info>val_borov_info_gain</has_info>
-        <dont_has_info>bar_kill_borov_done</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_borov_finish_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_borov_finish_0</text>
-                <give_info>bar_kill_borov_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_quest_borov_start">
-        <has_info>bar_dolg_community_leader_done</has_info>
-        <dont_has_info>bar_kill_borov_start</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_borov_start_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_borov_start_0</text>
-                <give_info>bar_kill_borov_start</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_dolg_leader_quest_rg6_finish">
-        <precondition>bar_dialogs.have_rg6</precondition>
-        <has_info>bar_svoboda_rg6_start</has_info>
-        <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-        <phrase_list>
-            <phrase id="1">
-                <text>bar_dolg_leader_quest_rg6_finish_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>bar_dolg_leader_quest_rg6_finish_0</text>
-                <action>bar_dialogs.give_rg6</action>
-                <give_info>bar_svoboda_rg6_done</give_info>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_dolg_leader_quest_svoboda_ambush_finish">
         <has_info>bar_kill_svoboda_ambush_start</has_info>
         <has_info>bar_kill_svoboda_ambush_killed</has_info>
@@ -3316,31 +3271,6 @@
     </dialog>
     <dialog id="bar_dolg_leader_start">
         <phrase_list>
-            <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-                <next>7</next>
-                <next>8</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
-                <next>11</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_dolg_leader_start_11</text>
-            </phrase>
-            <phrase id="2">
-                <text></text>
-                <dont_has_info>bar_kill_borov_start</dont_has_info>
-                <has_info>bar_dolg_community_leader_done</has_info>
-                <next>21</next>
-            </phrase>
             <phrase id="21">
                 <text>bar_dolg_leader_start_21</text>
             </phrase>
@@ -3396,6 +3326,77 @@
                 <text></text>
                 <has_info>bar_kill_svoboda_leader_done</has_info>
                 <next>81</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+                <next>8</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_dolg_leader_start_11</text>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="2">
+                <text></text>
+                <dont_has_info>bar_kill_borov_start</dont_has_info>
+                <has_info>bar_dolg_community_leader_done</has_info>
+                <next>21</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_borov_finish">
+        <has_info>bar_kill_borov_start</has_info>
+        <has_info>val_borov_info_gain</has_info>
+        <dont_has_info>bar_kill_borov_done</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_borov_finish_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_borov_finish_0</text>
+                <give_info>bar_kill_borov_done</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_borov_start">
+        <has_info>bar_dolg_community_leader_done</has_info>
+        <dont_has_info>bar_kill_borov_start</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_borov_start_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_borov_start_0</text>
+                <give_info>bar_kill_borov_start</give_info>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_leader_quest_rg6_finish">
+        <precondition>bar_dialogs.have_rg6</precondition>
+        <has_info>bar_svoboda_rg6_start</has_info>
+        <dont_has_info>bar_dolg_community_leader_done</dont_has_info>
+        <phrase_list>
+            <phrase id="1">
+                <text>bar_dolg_leader_quest_rg6_finish_1</text>
+            </phrase>
+            <phrase id="0">
+                <text>bar_dolg_leader_quest_rg6_finish_0</text>
+                <action>bar_dialogs.give_rg6</action>
+                <give_info>bar_svoboda_rg6_done</give_info>
+                <give_info>bar_dolg_community_leader_done</give_info>
+                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
