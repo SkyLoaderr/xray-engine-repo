@@ -7,7 +7,6 @@
 #pragma once
 
 #include "..\portal.h"
-//#include "..\lightPPA.h"
 #include "entity.h"
 #include "custommonster_vistrack.h"
 #include "ai_commands.h"
@@ -24,6 +23,7 @@ private:
 	typedef	CEntityAlive	inherited;
 protected:
 	float				m_fBananPadlaCorrection;
+
 	// weapons
 	CWeaponList*		Weapons;
 	
@@ -38,13 +38,6 @@ protected:
 	};
 	
 	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
-	
-//	typedef struct SRotation
-//	{
-//		float yaw;
-//		float pitch;
-//		SRotation() { yaw=pitch=0; }
-//	};
 	
 	typedef struct tagSDynamicObject {
 		DWORD			dwTime;
@@ -75,8 +68,6 @@ public:
 		BODY_STATE_CROUCH,
 		BODY_STATE_LIE,
 	};
-	// Lighting and effects
-//	CLightPPA			TEST;
 
 	// Pathfinding cache
 	CPathNodes			AI_Path;
@@ -87,6 +78,11 @@ public:
 	int					eye_bone;
 	float				eye_fov;
 	float				eye_range;
+
+	u32					eye_pp_stage;
+	u32					eye_pp_timestamp;
+	objSET				eye_pp_seen;
+
 
 	// AI
 	AI::AIC_Look		q_look;
@@ -164,8 +160,11 @@ public:
 	// stream executors
 	void				Exec_Look				( float dt );
 	virtual void		Exec_Movement			( float dt );
-	void				Exec_Visibility			( float dt );
 	void				Exec_Physics			( float dt );
+	void				Exec_Visibility			( );
+	void				eye_pp_s0				( );
+	void				eye_pp_s1				( );
+	void				eye_pp_s2				( );
 
 	void				BuildCamera				( );
 public:

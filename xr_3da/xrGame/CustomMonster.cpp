@@ -39,14 +39,15 @@ CCustomMonster::CCustomMonster()
 	Device.seqRender.Add	(this,REG_PRIORITY_LOW-999);
 
 	Weapons				= 0;
-	tWatchDirection = Direction();
-	m_cBodyState = BODY_STATE_STAND;
-	r_torso_speed = PI;
-	r_spine_speed = PI;
+	tWatchDirection		= Direction();
+	m_cBodyState		= BODY_STATE_STAND;
+	r_torso_speed		= PI;
+	r_spine_speed		= PI;
 	q_look.o_look_speed = PI;
-	m_fSoundPower = m_fStartPower = 0;
-	m_dwSoundUpdate = 0;
+	m_fSoundPower		= m_fStartPower = 0;
+	m_dwSoundUpdate		= 0;
 	m_fBananPadlaCorrection = 0;
+	eye_pp_stage		= 0;
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -294,8 +295,8 @@ void CCustomMonster::Update	( DWORD DT )
 		if (iHealth>0) {
 			Exec_Look			(dt);
 			Exec_Movement		(dt);
-			Exec_Visibility		(dt);
 			Exec_Physics		(dt);
+			Exec_Visibility		();
 			
 			net_update			uNext;
 			uNext.dwTimeStamp	= Level().timeServer();
@@ -410,51 +411,65 @@ void CCustomMonster::GetVisible			(objVisible& R)
 	ai_Track.o_get	(R);
 }
 
-void CCustomMonster::Exec_Visibility	( float dt )
+void CCustomMonster::eye_pp_s0			( )
+{
+	eye_pp_stage						++;
+
+	// Eye matrix
+	Device.Statistic.TEST0.Begin			();
+	CKinematics* V							= PKinematics(Visual());
+	V->Calculate							();
+	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
+	Fmatrix		X;							X.mul_43	(svTransform,mEye);
+	eye_matrix.setHPB						(-r_current.yaw + 0*m_fBananPadlaCorrection,-r_current.pitch,0);
+	eye_matrix.c.set						(X.c);
+	Device.Statistic.TEST0.End				();
+}
+void CCustomMonster::eye_pp_s1			( )
+{
+	eye_pp_stage						++;
+
+	// Standart visibility
+	Device.Statistic.AI_Vis_Query.Begin		();
+	Fmatrix									mProject,mFull,mView;
+	CFrustum								Frustum;
+	mView.build_camera_dir					(eye_matrix.c,eye_matrix.k,eye_matrix.j);
+	mProject.build_projection				(deg2rad(eye_fov),1,0.1f,eye_range);
+	mFull.mul								(mProject,mView);
+	Frustum.CreateFromMatrix				(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+	eye_pp_seen.clear						();
+	pSector->GetObjects						(Frustum,eye_matrix.c,mFull,eye_pp_seen,GetQualifier(),&id_Team);
+	Device.Statistic.AI_Vis_Query.End		();
+}
+void CCustomMonster::eye_pp_s2			( )
+{
+	eye_pp_stage						++;
+
+	// Tracing
+	Device.Statistic.AI_Vis_RayTests.Begin	();
+	u32 dwTime			= Level().timeServer();
+	u32 dwDT			= dwTime-eye_pp_timestamp;
+	eye_pp_timestamp	= dwTime;
+	ai_Track.o_update						(eye_pp_seen,this,eye_matrix.c,float(dwDT)/1000.f);
+	Device.Statistic.AI_Vis_RayTests.End	();
+}
+
+void CCustomMonster::Exec_Visibility	( )
 {
 	if (0==pSector) return;
 
-	// ************** first - detect visibility
-	// 1. VIEW: From, Dir and Up vector
-	Device.Statistic.TEST0.Begin	();
-	CKinematics* V				= PKinematics(Visual());
-	V->Calculate				();
-	Fmatrix&	mEye			= V->LL_GetTransform(eye_bone);
-	Fmatrix		X;				X.mul_43(svTransform,mEye);
-
-	eye_matrix.setHPB			(-r_current.yaw + 0*m_fBananPadlaCorrection,-r_current.pitch,0);
-	eye_matrix.c.set			(X.c);
-	Device.Statistic.TEST0.End		();
-	
-	Device.Statistic.AI_Vis.Begin();		//--------------
-
-	// 2. Build matrix and frustum
-	Fmatrix		mProject,mFull,mView;
-	CFrustum	Frustum;
-	
-	mView.build_camera_dir		(eye_matrix.c,eye_matrix.k,eye_matrix.j);
-	mProject.build_projection	(deg2rad(eye_fov),1,0.1f,eye_range);
-	mFull.mul					(mProject,mView);
-	Frustum.CreateFromMatrix	(mFull,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-	
-	// 3. Detection itself
-	Device.Statistic.AI_Vis_Query.Begin	();
-	R_ASSERT			(pSector);
-	objSET				seen;
-	seen.clear			();
-	pSector->GetObjects	(Frustum,eye_matrix.c,mFull,seen,GetQualifier(),&id_Team);
-	Device.Statistic.AI_Vis_Query.End	();
-
-	// 4. Visibility processing
-	Device.Statistic.AI_Vis_RayTests.Begin	();
-	ai_Track.o_update	(seen,this,eye_matrix.c,dt);
-	Device.Statistic.AI_Vis_RayTests.End	();
-
-	Device.Statistic.AI_Vis.End();			//--------------
+	Device.Statistic.AI_Vis.Begin	();
+	switch (eye_pp_stage%3)	
+	{
+	case 0:	eye_pp_s0();			break;
+	case 1:	eye_pp_s1();			break;
+	case 2:	eye_pp_s2();			break;
+	}
+	Device.Statistic.AI_Vis.End		();
 
 	// 5. Camera
-	if (IsMyCamera())
-		pCreator->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
+	if (IsMyCamera())						
+		pCreator->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
 }
 
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
