@@ -237,8 +237,8 @@ public:
 	virtual	void						net_Relcase			( CObject* O );					//
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who);
-	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element);
+	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 
 	virtual	float						ffGetFov			()			{ return 90.f;		}	

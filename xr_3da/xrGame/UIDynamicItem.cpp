@@ -26,7 +26,7 @@ void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh)
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
 }
 
-void CUIDynamicItem::Out(int left, int top, u32 color, u32 align)
+void CUIDynamicItem::Out(int left, int top, u32 color)
 {
 	SDynamicItemData* D = 0;
 	if (data.size()<=item_cnt){ 
@@ -35,7 +35,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color, u32 align)
 	}else{
 		D = &data[item_cnt];
 	}
-	Level().HUD()->ClientToScreenScaled(D->pos,left,top,align);
+	Level().HUD()->ClientToScreenScaled(D->pos,left,top,uAlign);
 	D->color = color;
 	item_cnt++;
 }
@@ -44,6 +44,9 @@ void CUIDynamicItem::Out(int left, int top, u32 color, u32 align)
 void CUIDynamicItem::Render	()
 {
 	if (!item_cnt)	return;
+
+	// установить обязательно перед вызовом CustomItem::Render() !!!
+	Device.Shader.set_Shader		(hShader);
 
 	// actual rendering
 	u32			vOffset;

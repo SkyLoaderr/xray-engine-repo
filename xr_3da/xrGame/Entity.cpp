@@ -37,10 +37,12 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 			u16				id;
 			Fvector			dir;
 			float			power;
+			s16				element;
 			P.r_u16			(id);
 			P.r_dir			(dir);
 			P.r_float		(power);
-			Hit				(power,dir,Level().Objects.net_Find(id));
+			P.r_s16			(element);
+			Hit				(power,dir,Level().Objects.net_Find(id),element);
 		}
 		break;
 	case GE_DIE:
@@ -58,7 +60,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
-void CEntity::Hit			(float perc, Fvector &dir, CObject* who) 
+void CEntity::Hit			(float perc, Fvector &dir, CObject* who, s16 element) 
 {
 	// *** process hit calculations
 	// Calc impulse
@@ -87,7 +89,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	}
 
 	// Signal hit
-	HitSignal				(lost_health,vLocalDir,who);
+	HitSignal				(lost_health,vLocalDir,who,element);
 
 	// If Local() - perform some logic
 	if (Local() && (fHealth>0))

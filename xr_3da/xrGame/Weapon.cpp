@@ -657,6 +657,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			P.w_u16			(u16(H_Parent()->ID()));
 			P.w_dir			(D);
 			P.w_float		(power);
+			P.w_s16			((s16)RQ.element);
 			u_EventSend		(P);
 		}
 		FireShotmark		(D,end_point,RQ);

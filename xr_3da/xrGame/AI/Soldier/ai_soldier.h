@@ -717,7 +717,7 @@ class CAI_Soldier : public CCustomMonster
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
 		virtual void  Update(u32 DT);
-		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
+		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 		virtual void  Death();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();

@@ -253,7 +253,7 @@ void CActor::net_Relcase	(CObject* O)
 	Msg		("---- RELCASE ---- %s, ID=%d",O->cName(),O->ID());
 }
 
-void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
 {
 	if (g_Alive()<=0) return;
 
@@ -262,16 +262,16 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who)
 	case GAME_SINGLE:		
 		{
 			if (psActorFlags&AF_GODMODE)	return;
-			else inherited::Hit		(iLost,dir,who);
+			else inherited::Hit		(iLost,dir,who,element);
 		}
 		break;
 	default:
-		inherited::Hit	(iLost,dir,who);
+		inherited::Hit	(iLost,dir,who,element);
 		break;
 	}
 }
 
-void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
+void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	if (g_Alive()) 
 	{
@@ -301,6 +301,8 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 		}
 		hit_slowmo				= perc/100.f;
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
+
+		// check damage bone
 	}
 }
 
@@ -353,7 +355,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
-			if (Movement.gcontact_HealthLost)	Hit	(Movement.gcontact_HealthLost,D,this);
+			if (Movement.gcontact_HealthLost)	Hit	(Movement.gcontact_HealthLost,D,this,-1);
 		}
 	}
 }

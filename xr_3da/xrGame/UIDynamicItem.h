@@ -17,14 +17,14 @@ class CUIDynamicItem: public CUICustomItem
 	CVS*			hVS;	
 		
 	DIDVec			data;
-	u32			item_cnt;
+	u32				item_cnt;
 protected:
 	typedef CUICustomItem inherited;
 public:
 					CUIDynamicItem	();
 	virtual			~CUIDynamicItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh);
-	void			Out				(int left, int top, u32 color, u32 align);
+	void			Out				(int left, int top, u32 color);
 	void			Clear			(){item_cnt=0;}
 	void			Render			();
 	void			Render			(float angle);

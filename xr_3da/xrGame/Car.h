@@ -54,10 +54,10 @@ public:
 	virtual void			OnKeyboardHold		(int dik);
 
 	// Hits
-	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who)		{};
-	virtual void			HitImpulse			(float amount,		Fvector& vWorldDir, Fvector& vLocalDir)	{};
-	virtual void			Die					()															{};
-	virtual void			g_fireParams		(Fvector& P, Fvector& D)									{};
+	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who, s16 element)	{};
+	virtual void			HitImpulse			(float amount,		Fvector& vWorldDir, Fvector& vLocalDir)			{};
+	virtual void			Die					()																	{};
+	virtual void			g_fireParams		(Fvector& P, Fvector& D)											{};
 
 	// HUD
 	virtual void			OnHUDDraw			(CCustomHUD* hud);

@@ -299,7 +299,7 @@ class CAI_Zombie : public CCustomMonster
 		virtual BOOL  net_Spawn(LPVOID DC);
 		virtual void  net_Export(NET_Packet& P);
 		virtual void  net_Import(NET_Packet& P);
-		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who);
+		virtual void  HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element);
 		virtual void  Die();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();

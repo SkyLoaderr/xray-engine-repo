@@ -107,7 +107,7 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 }
 
 // when someone hit soldier
-void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who)
+void CAI_Soldier::HitSignal	(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	// Save event
 	Fvector D;

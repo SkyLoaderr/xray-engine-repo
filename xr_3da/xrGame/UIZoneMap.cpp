@@ -9,6 +9,7 @@
 #define COLOR_ENEMY		0xffff0000
 #define COLOR_FRIEND	0xffffffff
 #define COLOR_SELF		0xff00ff00
+#define COLOR_TARGET	0x80FF00A2
 
 #define BASE_LEFT		9
 #define BASE_TOP		6
@@ -37,6 +38,7 @@ void CUIZoneMap::Init()
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
 	entity.Init	("ui\\hud_map_point",	"hud\\default");
 	entity.SetRect(0,0,3,3);
+	entity.SetAlign(alLeft|alTop);
 
 	Level().HUD()->ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = iFloor(MAP_RADIUS*Level().HUD()->GetScale());
@@ -47,14 +49,14 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2
 {
 	float k = map_radius/VIEW_DISTANCE;
 	Fvector p;
-	Ivector2 Pt;
+	Fvector2 Pt;
 	LM.transform_tiny(p,src);
 	p.mul(k);
-	Pt.set(iFloor(p.x),iFloor(p.z));
-	int r=Pt.magnitude();
-	if (r>map_radius) Pt.mul(map_radius/r);
-	Pt.y*=-1;
-	dest.add(map_center,Pt);
+	Pt.set(p.x,p.z);
+	float r=Pt.magnitude();
+	if (r>map_radius) Pt.mul((float)map_radius/r);
+	dest.x = iFloor(map_center.x+Pt.x);
+	dest.y = iFloor(map_center.y-Pt.y);
 }
 //--------------------------------------------------------------------
 
@@ -70,7 +72,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
-	entity.Out		(P.x,P.y,COLOR_SELF,alLeft|alTop);
+	entity.Out		(P.x,P.y,COLOR_SELF);
 
 	// render enemy
 	/*
@@ -104,14 +106,14 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 					if (G.Members[k]->IsVisibleForHUD()){
 						ConvertToLocal(LM,G.Members[k]->Position(),P);
-						entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+						entity.Out	(P.x,P.y,COLOR_FRIEND);
 					}
 				}
 			}
 		}
 		for(u32 i=0; i<Game().targets.size(); i++) {
 			ConvertToLocal(LM,Game().targets[i]->Position(),P);
-			entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+			entity.Out	(P.x,P.y,COLOR_FRIEND);
 		}
 	}
 }

@@ -76,8 +76,8 @@ public:
 	virtual CWeaponList*	GetItemList			()	{ return 0;			}
 
 	// Health calculations
-	virtual	void			Hit					(float P, Fvector &dir,			CObject* who);
-	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who)		= 0;
+	virtual	void			Hit					(float P, Fvector &dir,			CObject* who, s16 element);
+	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who, s16 element)		= 0;
 	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual	float			HitScale			(int element){return 1.f;}
 	virtual void			Die					()													= 0;

@@ -26,7 +26,7 @@ void CAI_Rat::Exec_Action(float dt)
 				tDirection.normalize();
 				
 				if ((this->Local()) && (m_tSavedEnemy) && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY))
-					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this);
+					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,-1);
 			}
 			else
 				m_bActionStarted = false;
@@ -44,7 +44,7 @@ void CAI_Rat::Exec_Action(float dt)
 		L->setTimeout();
 }
 
-void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
+void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	// Save event
 	Fvector D;
