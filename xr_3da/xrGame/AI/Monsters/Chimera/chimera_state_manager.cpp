@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "chimera.h"
 #include "chimera_state_manager.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 #include "../../../actor.h"
 #include "../../../level.h"
 #include "../states/monster_state_rest.h"

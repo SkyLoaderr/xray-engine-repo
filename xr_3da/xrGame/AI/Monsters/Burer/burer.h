@@ -1,16 +1,16 @@
 #pragma once
-#include "../../biting/ai_biting.h"
-#include "../../telekinesis.h"
-#include "../../anim_triple.h"
-#include "../../scanning_ability.h"
+#include "../BaseMonster/base_monster.h"
+#include "../telekinesis.h"
+#include "../anim_triple.h"
+#include "../scanning_ability.h"
 
 class CCharacterPhysicsSupport;
 
-class CBurer :	public CAI_Biting,
+class CBurer :	public CBaseMonster,
 				public CTelekinesis,
 				public CScanningAbility<CBurer> {
 
-	typedef		CAI_Biting					inherited;
+	typedef		CBaseMonster					inherited;
 	typedef		CScanningAbility<CBurer>	TScanner;
 
 	u32			last_hit_frame;

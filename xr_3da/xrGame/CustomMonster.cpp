@@ -7,9 +7,8 @@
 #include "CustomMonster.h"
 #include "hudmanager.h"
 #include "ai_space.h"
-#include "ai/rat/ai_rat.h"
-#include "ai/biting/ai_biting.h"
-#include "ai/stalker/ai_stalker.h"
+//#include "ai/rat/ai_rat.h"
+#include "ai/monsters/BaseMonster/base_monster.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
 #include "seniority_hierarchy_holder.h"
@@ -392,33 +391,7 @@ void CCustomMonster::UpdateCL	()
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
 		
-		if (CLSID_AI_RAT != SUB_CLS_ID) {
-			move_along_path			(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
-			if (!bfScriptAnimation())
-				SelectAnimation		(XFORM().k,direction(),speed());
-		}
-		else {
-			CAI_Rat				*l_tpRat = smart_cast<CAI_Rat*>(this);
-			R_ASSERT			(l_tpRat);
-//			if (((dwTime > N.dwTimeStamp) || (NET.size() < 2))) {// && (_abs(l_tpRat->m_fSpeed) > EPS_L)) 
-			{
-				Fmatrix				l_tSavedTransform = XFORM();
-				m_fTimeUpdateDelta	= Device.fTimeDelta;
-				l_tpRat->vfComputeNewPosition(l_tpRat->m_bCanAdjustSpeed,l_tpRat->m_bStraightForward);
-				float				y,p,b;
-				XFORM().getHPB		(y,p,b);
-				NET_Last.p_pos		= Position();
-				NET_Last.o_model	= -y;
-				NET_Last.o_torso.yaw= -y;
-				NET_Last.o_torso.pitch= -p;
-				XFORM()				= l_tSavedTransform;
-				if (!bfScriptAnimation())
-					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
-			}
-//			else
-//				if (!bfScriptAnimation())
-//					SelectAnimation		(XFORM().k,Fvector().set(1,0,0),l_tpRat->m_fSpeed);
-		}
+		UpdatePositionAnimation();
 	}
 
 	// Use interpolated/last state
@@ -432,6 +405,13 @@ void CCustomMonster::UpdateCL	()
 			XFORM().mulB(M);
 		}
 	}
+}
+
+void CCustomMonster::UpdatePositionAnimation()
+{
+	move_along_path			(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+	if (!bfScriptAnimation())
+		SelectAnimation		(XFORM().k,direction(),speed());
 }
 
 BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
@@ -452,8 +432,9 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
 	VERIFY									(_valid(mEye));
-	const CAI_Stalker						*stalker = smart_cast<const CAI_Stalker*>(this);
-	const MonsterSpace::SBoneRotation		&rotation = stalker ? stalker->head_orientation() : m_body;
+	
+	const MonsterSpace::SBoneRotation		&rotation = head_orientation();
+	
 	eye_matrix.setHPB						(-rotation.current.yaw + m_fEyeShiftYaw,-rotation.current.pitch,0);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 }

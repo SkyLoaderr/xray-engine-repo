@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ai_space.h"
 #include "object_factory.h"
-#include "ai/ai_monster_squad_manager.h"
+#include "ai/monsters/ai_monster_squad_manager.h"
 #include "string_table.h"
 
 #include "entity_alive.h"

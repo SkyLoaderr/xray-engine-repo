@@ -1,25 +1,25 @@
 #include "stdafx.h"
 #include "burer.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_utils.h"
 #include "burer_states.h"
 #include "../../../PhysicsShell.h"
 #include "../../../actor.h"
-#include "../../ai_monster_debug.h"
+#include "../ai_monster_debug.h"
 
 
 #define SCAN_STATE_TIME 4000
 
 CBurer::CBurer()
 {
-	stateRest			= xr_new<CBitingRest>		(this);
+	stateRest			= xr_new<CBaseMonsterRest>		(this);
 	stateAttack			= xr_new<CBurerAttack>		(this);
-	stateEat			= xr_new<CBitingEat>		(this);
-	stateHide			= xr_new<CBitingHide>		(this);
-	stateDetour			= xr_new<CBitingDetour>		(this);
-	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
-	stateNull			= xr_new<CBitingNull>		();
+	stateEat			= xr_new<CBaseMonsterEat>		(this);
+	stateHide			= xr_new<CBaseMonsterHide>		(this);
+	stateDetour			= xr_new<CBaseMonsterDetour>		(this);
+	statePanic			= xr_new<CBaseMonsterPanic>		(this);
+	stateExploreNDE		= xr_new<CBaseMonsterExploreNDE>	(this);
+	stateExploreDNE		= xr_new<CBaseMonsterExploreDNE>	(this);
+	stateNull			= xr_new<CBaseMonsterNull>		();
 	stateScan			= xr_new<CBurerScan>		(this);
 
 	CurrentState					= stateRest;

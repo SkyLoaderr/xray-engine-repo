@@ -1,8 +1,8 @@
 #include "stdafx.h"
-#include "../../ai_monster_state.h"
+#include "../ai_monster_state.h"
 #include "burer_attack_misc.h"
 #include "burer.h"
-#include "../../ai_monster_utils.h"
+#include "../ai_monster_utils.h"
 
 #define DIST_QUANT 10.f
 

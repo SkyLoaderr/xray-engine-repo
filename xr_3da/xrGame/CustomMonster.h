@@ -10,7 +10,6 @@
 #include "entity_alive.h"
 
 #include "ai_space.h"
-#include "AI/ai_monster_state.h"
 #include "AI/script/ai_script_monster.h"
 #include "ai_monster_space.h"
 
@@ -197,7 +196,12 @@ public:
 	virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
 	virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
+	
+	virtual	const MonsterSpace::SBoneRotation &head_orientation		() const		{return m_body;}
+	
 	virtual CAI_Rat				*dcast_Rat				() {return 0;}
+	
+	virtual void				UpdatePositionAnimation	();
 };
 
 #include "custommonster_inline.h"

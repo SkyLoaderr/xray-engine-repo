@@ -1,7 +1,7 @@
 #ifndef TELE_WHIRLWIND
 #define TELE_WHIRLWIND
-#include "ai/telekinesis.h"
-#include "ai/telekinetic_object.h"
+#include "ai/monsters/telekinesis.h"
+#include "ai/monsters/telekinetic_object.h"
 #include "PHImpact.h"
 
 class CTeleWhirlwind;

@@ -80,7 +80,7 @@ void CStepManager::update()
 
 	// получить параметры шага
 	SStepParam	&step		= m_step_info.params;
-	TTime		cur_time	= Level().timeServer();
+	u32		cur_time	= Level().timeServer();
 
 	// время одного цикла анимации
 	float cycle_anim_time	= get_current_animation_time() / step.cycles;
@@ -91,7 +91,7 @@ void CStepManager::update()
 		if (m_step_info.activity[i].handled && (m_step_info.activity[i].cycle == m_step_info.cur_cycle)) continue;
 
 		// вычислить смещённое время шага в соответствии с параметрами анимации ходьбы
-		TTime offset_time = m_time_anim_started + u32(1000 * (cycle_anim_time * (m_step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
+		u32 offset_time = m_time_anim_started + u32(1000 * (cycle_anim_time * (m_step_info.cur_cycle-1) + cycle_anim_time * step.step[i].time));
 
 		if ((offset_time >= (cur_time - TIME_OFFSET)) && (offset_time <= (cur_time + TIME_OFFSET)) ){
 

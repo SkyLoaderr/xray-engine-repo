@@ -1,11 +1,11 @@
 #pragma once
-#include "../../biting/ai_biting.h"
+#include "../../monsters/BaseMonster/base_monster.h"
 
 class CStateManagerChimera;
 
-class CChimera : public CAI_Biting {
+class CChimera : public CBaseMonster {
 
-	typedef		CAI_Biting	inherited;
+	typedef		CBaseMonster	inherited;
 
 	bool		b_upper_state;
 

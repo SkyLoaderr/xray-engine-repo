@@ -10,7 +10,7 @@
 
 #pragma once
 #include "customzone.h"
-#include "ai/telekinesis.h"
+#include "ai/monsters/telekinesis.h"
 
 
 

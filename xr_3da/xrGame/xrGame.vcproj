@@ -1877,22 +1877,7 @@
 						Name="miscellaneous"
 						Filter="">
 						<File
-							RelativePath=".\ai\ai_monster_defs.h">
-						</File>
-						<File
-							RelativePath=".\ai\ai_monster_shared_data.h">
-						</File>
-						<File
 							RelativePath=".\ai_monster_space.h">
-						</File>
-						<File
-							RelativePath=".\ai\ai_monster_types.h">
-						</File>
-						<File
-							RelativePath=".\ai\ai_monster_utils.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\ai_monster_utils.h">
 						</File>
 						<File
 							RelativePath="AI\ai_monsters_anims.h">
@@ -1903,144 +1888,147 @@
 						<File
 							RelativePath=".\AI\ai_monsters_misc.h">
 						</File>
-						<File
-							RelativePath=".\ai\monster_corpse_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\monster_corpse_manager.h">
-						</File>
-						<File
-							RelativePath=".\ai\monster_enemy_manager.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\monster_enemy_manager.h">
-						</File>
 						<Filter
 							Name="Components"
 							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\ai_monster_defs.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\ai_monster_shared_data.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\ai_monster_utils.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\ai_monster_utils.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_corpse_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_corpse_manager.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_enemy_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\monster_enemy_manager.h">
+							</File>
 							<Filter
 								Name="Bones"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_bones.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_bones.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_bones.h">
+									RelativePath=".\ai\Monsters\ai_monster_bones.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="Memory"
 								Filter="">
 								<File
-									RelativePath=".\ai\monster_corpse_memory.cpp">
+									RelativePath=".\ai\Monsters\monster_corpse_memory.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\monster_corpse_memory.h">
+									RelativePath=".\ai\Monsters\monster_corpse_memory.h">
 								</File>
 								<File
-									RelativePath=".\ai\monster_enemy_memory.cpp">
+									RelativePath=".\ai\Monsters\monster_enemy_memory.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\monster_enemy_memory.h">
+									RelativePath=".\ai\Monsters\monster_enemy_memory.h">
 								</File>
 								<File
-									RelativePath=".\ai\monster_hit_memory.cpp">
+									RelativePath=".\ai\Monsters\monster_hit_memory.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\monster_hit_memory.h">
+									RelativePath=".\ai\Monsters\monster_hit_memory.h">
 								</File>
 								<File
-									RelativePath=".\ai\monster_sound_memory.cpp">
+									RelativePath=".\ai\Monsters\monster_sound_memory.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\monster_sound_memory.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="Sound"
-								Filter="">
-								<File
-									RelativePath=".\ai\ai_monster_sound.cpp">
-								</File>
-								<File
-									RelativePath=".\ai\ai_monster_sound.h">
+									RelativePath=".\ai\Monsters\monster_sound_memory.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="State"
 								Filter="">
 								<File
-									RelativePath=".\Ai\ai_monster_state.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_state.cpp">
 								</File>
 								<File
-									RelativePath=".\Ai\ai_monster_state.h">
+									RelativePath=".\ai\Monsters\ai_monster_state.h">
 								</File>
 								<File
-									RelativePath=".\ai\state.h">
+									RelativePath=".\ai\Monsters\state.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\state_defs.h">
+									RelativePath=".\ai\Monsters\state.h">
 								</File>
 								<File
-									RelativePath=".\ai\state_inline.h">
+									RelativePath=".\ai\Monsters\state_defs.h">
 								</File>
 								<File
-									RelativePath=".\ai\state_movement.h">
+									RelativePath=".\ai\Monsters\state_inline.h">
 								</File>
 								<File
-									RelativePath=".\ai\state_movement_inline.h">
+									RelativePath=".\ai\Monsters\state_movement.h">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\state_movement_inline.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="Movement"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_movement.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_movement.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_movement.h">
-									<FileConfiguration
-										Name="Debug|Win32">
-										<Tool
-											Name="VCCustomBuildTool"/>
-									</FileConfiguration>
+									RelativePath=".\ai\Monsters\ai_monster_movement.h">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_movement_inline.h">
+									RelativePath=".\ai\Monsters\ai_monster_movement_inline.h">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_movement_path.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_movement_path.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_movement_update.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_movement_update.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\Monsters\ai_monster_movement_update.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="Squad"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_squad.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_squad.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_squad.h">
+									RelativePath=".\ai\Monsters\ai_monster_squad.h">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_squad_attack.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_squad_attack.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_squad_rest.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_squad_rest.cpp">
 								</File>
 								<Filter
 									Name="Squad Manager"
 									Filter="">
 									<File
-										RelativePath=".\ai\ai_monster_squad_manager.cpp">
+										RelativePath=".\ai\Monsters\ai_monster_squad_manager.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\ai_monster_squad_manager.h">
+										RelativePath=".\ai\Monsters\ai_monster_squad_manager.h">
 									</File>
 									<File
-										RelativePath=".\ai\ai_monster_squad_manager_inline.h">
+										RelativePath=".\ai\Monsters\ai_monster_squad_manager_inline.h">
 									</File>
 								</Filter>
 							</Filter>
@@ -2048,29 +2036,29 @@
 								Name="Motion Stats"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_motion_stats.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_motion_stats.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_motion_stats.h">
+									RelativePath=".\ai\Monsters\ai_monster_motion_stats.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="Monster Motion"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_motion.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_motion.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_motion.h">
+									RelativePath=".\ai\Monsters\ai_monster_motion.h">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_motion_accel.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_motion_accel.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_motion_load.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_motion_load.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_motion_update.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_motion_update.cpp">
 								</File>
 							</Filter>
 							<Filter
@@ -2081,20 +2069,20 @@
 								Name="TripleAnimation"
 								Filter="">
 								<File
-									RelativePath=".\ai\anim_triple.cpp">
+									RelativePath=".\ai\Monsters\anim_triple.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\anim_triple.h">
+									RelativePath=".\ai\Monsters\anim_triple.h">
 								</File>
 							</Filter>
 							<Filter
 								Name="Cover"
 								Filter="">
 								<File
-									RelativePath=".\ai\corpse_cover.cpp">
+									RelativePath=".\ai\Monsters\corpse_cover.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\corpse_cover.h">
+									RelativePath=".\ai\Monsters\corpse_cover.h">
 								</File>
 							</Filter>
 							<Filter
@@ -2104,16 +2092,19 @@
 									Name="Telekinesis"
 									Filter="">
 									<File
-										RelativePath=".\ai\telekinesis.cpp">
+										RelativePath=".\ai\Monsters\telekinesis.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\telekinesis.h">
+										RelativePath=".\ai\Monsters\telekinesis.h">
 									</File>
 									<File
-										RelativePath=".\ai\telekinetic_object.cpp">
+										RelativePath=".\ai\Monsters\telekinesis_inline.h">
 									</File>
 									<File
-										RelativePath=".\ai\telekinetic_object.h">
+										RelativePath=".\ai\Monsters\telekinetic_object.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\telekinetic_object.h">
 									</File>
 									<File
 										RelativePath=".\TeleWhirlwind.cpp">
@@ -2126,72 +2117,72 @@
 									Name="Invisibility"
 									Filter="">
 									<File
-										RelativePath=".\ai\invisibility.cpp">
+										RelativePath=".\ai\Monsters\ai_monster_invisibility.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\invisibility.h">
+										RelativePath=".\ai\Monsters\ai_monster_invisibility.h">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\invisibility.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\Monsters\invisibility.h">
 									</File>
 								</Filter>
 								<Filter
 									Name="Jump"
 									Filter="">
 									<File
-										RelativePath=".\ai\ai_monster_jump.cpp">
+										RelativePath=".\ai\Monsters\ai_monster_jump.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\ai_monster_jump.h">
+										RelativePath=".\ai\Monsters\ai_monster_jump.h">
 									</File>
 									<File
-										RelativePath=".\ai\jump_ability.cpp">
+										RelativePath=".\ai\Monsters\jump_ability.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\jump_ability.h">
+										RelativePath=".\ai\Monsters\jump_ability.h">
 									</File>
 								</Filter>
 								<Filter
 									Name="Scan"
 									Filter="">
 									<File
-										RelativePath=".\ai\scanning_ability.h">
+										RelativePath=".\ai\Monsters\scanning_ability.h">
 									</File>
 									<File
-										RelativePath=".\ai\scanning_ability_inline.h">
+										RelativePath=".\ai\Monsters\scanning_ability_inline.h">
 									</File>
 								</Filter>
 								<Filter
 									Name="Controlled"
 									Filter="">
 									<File
-										RelativePath=".\ai\controlled_entity.h">
+										RelativePath=".\ai\Monsters\controlled_entity.h">
 									</File>
 									<File
-										RelativePath=".\ai\controlled_entity_inline.h">
+										RelativePath=".\ai\Monsters\controlled_entity_inline.h">
 									</File>
 								</Filter>
 								<Filter
 									Name="Psy Aura"
 									Filter="">
 									<File
-										RelativePath=".\ai\psy_aura.cpp">
+										RelativePath=".\ai\Monsters\psy_aura.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\psy_aura.h">
-										<FileConfiguration
-											Name="Debug|Win32"
-											ExcludedFromBuild="TRUE">
-											<Tool
-												Name="VCCustomBuildTool"/>
-										</FileConfiguration>
+										RelativePath=".\ai\Monsters\psy_aura.h">
 									</File>
 								</Filter>
 								<Filter
 									Name="Energy Holder"
 									Filter="">
 									<File
-										RelativePath=".\ai\energy_holder.cpp">
+										RelativePath=".\ai\Monsters\energy_holder.cpp">
 									</File>
 									<File
-										RelativePath=".\ai\energy_holder.h">
+										RelativePath=".\ai\Monsters\energy_holder.h">
 									</File>
 								</Filter>
 							</Filter>
@@ -2199,16 +2190,16 @@
 								Name="Event Handler"
 								Filter="">
 								<File
-									RelativePath=".\ai\event_handler.cpp">
+									RelativePath=".\ai\Monsters\event_handler.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\event_handler.h">
+									RelativePath=".\ai\Monsters\event_handler.h">
 								</File>
 								<Filter
 									Name="Custom Events"
 									Filter="">
 									<File
-										RelativePath=".\ai\custom_events.h">
+										RelativePath=".\ai\Monsters\custom_events.h">
 									</File>
 								</Filter>
 							</Filter>
@@ -2216,10 +2207,10 @@
 								Name="Debug"
 								Filter="">
 								<File
-									RelativePath=".\ai\ai_monster_debug.cpp">
+									RelativePath=".\ai\Monsters\ai_monster_debug.cpp">
 								</File>
 								<File
-									RelativePath=".\ai\ai_monster_debug.h">
+									RelativePath=".\ai\Monsters\ai_monster_debug.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -2258,109 +2249,118 @@
 						Name="base monster"
 						Filter="">
 						<File
-							RelativePath="AI\Biting\ai_biting.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster.cpp">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting.h">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster.h">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_anim.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_anim.cpp">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_feel.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_feel.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\biting\ai_biting_inline.h">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_inline.h">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_misc.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_misc.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\biting\ai_biting_net.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_net.cpp">
 						</File>
 						<File
-							RelativePath="AI\Biting\ai_biting_path.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_path.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\biting\ai_biting_script.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_script.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\biting\ai_biting_startup.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_shared.h">
 						</File>
 						<File
-							RelativePath=".\ai\biting\ai_biting_think.cpp">
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_startup.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\BaseMonster\base_monster_think.cpp">
 						</File>
 						<Filter
 							Name="States"
 							Filter="">
 							<File
-								RelativePath=".\ai\biting\ai_biting_run_away.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_run_away.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_run_away.h">
 							</File>
 							<File
-								RelativePath=".\Ai\Biting\ai_biting_state.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_attack.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_attack.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_controlled.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_attack.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_controlled.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_detour.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_controlled.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_eat.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_detour.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreDE.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_eat.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreDNE.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDE.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreDNE.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreNDE.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreDNE.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreNDE.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_exploreNDNE.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDE.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_hide.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_exploreNDNE.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_misc.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_hide.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_misc.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_misc.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_misc.h">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_panic.h">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_panic.h">
 							</File>
 							<File
-								RelativePath=".\Ai\Biting\ai_biting_state_squadtask.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_rest.cpp">
 							</File>
 							<File
-								RelativePath=".\ai\biting\ai_biting_state_test.cpp">
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_squadtask.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_squadtask.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\BaseMonster\base_monster_state_test.cpp">
 							</File>
 						</Filter>
 					</Filter>
@@ -2639,20 +2639,20 @@
 						Name="Bloodsucker"
 						Filter="">
 						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.cpp">
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker.cpp">
 						</File>
 						<File
-							RelativePath=".\Ai\Bloodsucker\ai_bloodsucker.h">
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker.h">
 						</File>
 					</Filter>
 					<Filter
 						Name="Boar"
 						Filter="">
 						<File
-							RelativePath=".\ai\boar\ai_boar.cpp">
+							RelativePath=".\ai\Monsters\Boar\boar.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\boar\ai_boar.h">
+							RelativePath=".\ai\Monsters\Boar\boar.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2669,20 +2669,20 @@
 						Name="Dog"
 						Filter="">
 						<File
-							RelativePath=".\Ai\Dog\ai_dog.cpp">
+							RelativePath=".\ai\Monsters\Dog\dog.cpp">
 						</File>
 						<File
-							RelativePath=".\Ai\Dog\ai_dog.h">
+							RelativePath=".\ai\Monsters\Dog\dog.h">
 						</File>
 					</Filter>
 					<Filter
 						Name="Flesh"
 						Filter="">
 						<File
-							RelativePath=".\Ai\Flesh\ai_flesh.cpp">
+							RelativePath=".\ai\Monsters\Flesh\flesh.cpp">
 						</File>
 						<File
-							RelativePath=".\Ai\Flesh\ai_flesh.h">
+							RelativePath=".\ai\Monsters\Flesh\flesh.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2743,34 +2743,22 @@
 						Name="PseudoDog"
 						Filter="">
 						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog.cpp">
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog.h">
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog.h">
 						</File>
 						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog_psi_effector.cpp">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCLCompilerTool"/>
-							</FileConfiguration>
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_psi_effector.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\pseudodog\ai_pseudodog_psi_effector.h">
-							<FileConfiguration
-								Name="Debug|Win32"
-								ExcludedFromBuild="TRUE">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_psi_effector.h">
 						</File>
 						<File
-							RelativePath=".\ai\pseudodog\pseudodog_state_growling.cpp">
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_growling.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\pseudodog\pseudodog_state_growling.h">
+							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_growling.h">
 						</File>
 					</Filter>
 					<Filter
@@ -2916,17 +2904,12 @@
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
-							<FileConfiguration
-								Name="Debug|Win32">
-								<Tool
-									Name="VCCustomBuildTool"/>
-							</FileConfiguration>
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant_step_effector.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant_step_effector.h">
 						</File>
 					</Filter>
 					<Filter
@@ -6922,16 +6905,34 @@
 						Name="Monsters"
 						Filter="">
 						<File
-							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.cpp">
+							RelativePath=".\ai\Monsters\ai_monster_effector.cpp">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Mixed|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+							</FileConfiguration>
 						</File>
 						<File
-							RelativePath=".\ai\bloodsucker\ai_bloodsucker_effector.h">
+							RelativePath=".\ai\Monsters\ai_monster_effector.h">
 						</File>
 						<File
-							RelativePath=".\ai\ai_monster_effector.cpp">
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_effector.cpp">
 						</File>
 						<File
-							RelativePath=".\ai\ai_monster_effector.h">
+							RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_effector.h">
 						</File>
 					</Filter>
 					<Filter

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "../../ai_monster_state.h"
+#include "../ai_monster_state.h"
 #include "burer_attack_gravi.h"
 #include "burer.h"
 

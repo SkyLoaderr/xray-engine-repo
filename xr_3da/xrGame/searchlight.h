@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ai/script/ai_script_monster.h"
-#include "ai/ai_monster_bones.h"
 
 class CLAItem;
 

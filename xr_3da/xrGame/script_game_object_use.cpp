@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "script_storage_space.h"
 #include "script_engine.h"
-#include "ai/bloodsucker/ai_bloodsucker.h"
+#include "ai/monsters/bloodsucker/bloodsucker.h"
 #include "motivation_action_manager.h"
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
@@ -222,7 +222,7 @@ CScriptSoundInfo CScriptGameObject::GetSoundInfo()
 {
 	CScriptSoundInfo	ret_val;
 
-	CAI_Biting *l_tpMonster = smart_cast<CAI_Biting *>(m_tpGameObject);
+	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(m_tpGameObject);
 	if (l_tpMonster) {
 		if (l_tpMonster->SoundMemory.IsRememberSound()) {
 			SoundElem se; 
@@ -242,7 +242,7 @@ CScriptMonsterHitInfo CScriptGameObject::GetMonsterHitInfo()
 {
 	CScriptMonsterHitInfo	ret_val;
 
-	CAI_Biting *l_tpMonster = smart_cast<CAI_Biting *>(m_tpGameObject);
+	CBaseMonster *l_tpMonster = smart_cast<CBaseMonster *>(m_tpGameObject);
 	if (l_tpMonster) {
 		if (l_tpMonster->HitMemory.is_hit()) {
 			CGameObject *pO = smart_cast<CGameObject *>(l_tpMonster->HitMemory.get_last_hit_object());

@@ -108,7 +108,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 				current.y = ai().level_graph().vertex_plane_y(selected,current.x,current.z);
 
 			VERIFY	(ai().level_graph().inside(selected,current));
-			VERIFY	(restriction->inside(selected,false));
+			VERIFY	(restriction->inside(selected,!out_restriction) == out_restriction);
 			VERIFY	(restriction->inside(current) == out_restriction);
 			float	distance_sqr = current.distance_to(position);
 			if (distance_sqr < min_dist_sqr) {
