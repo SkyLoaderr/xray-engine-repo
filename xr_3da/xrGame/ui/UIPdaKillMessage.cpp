@@ -64,8 +64,8 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	int height = (int)pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
-	if (width > 100)
-		width = 100;
+	if (width > 200)
+		width = 200;
 
 	refStatic.Init(x, y, width + 1, height);
 	refStatic.SetElipsis(CUIStatic::eepEnd, 0);
