@@ -344,6 +344,9 @@
 					RelativePath=".\Config\misc\smart_terrain.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\trigger.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zones.ltx">
 				</File>
 			</Filter>
