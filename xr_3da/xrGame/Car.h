@@ -54,7 +54,7 @@ public:
 	bool b_stalling;
 	u32	 m_dwStartTime;
 	float m_fuel;
-	float m_fuel_expence_per_rotation;
+	float m_fuel_consumption;
 	struct SWheel 
 	{
 		int bone_id;
@@ -337,7 +337,8 @@ private:
 	void StopExhausts					();
 	void UpdateExhausts					();
 	void ClearExhausts					();
-	void StallSound						();
+	void UpdateFuel						(float time_delta);
+	void AddFuel						(float ammount);
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);

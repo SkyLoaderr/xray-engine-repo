@@ -154,6 +154,7 @@ void	CCar::UpdateCL				( )
 		HUD().pFontSmall->OutNext		("rpm:      [%3.2f]",m_current_rpm/(1.f/60.f*2.f*M_PI));
 		HUD().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
 		HUD().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
+		HUD().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
 		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
 		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
 	}
@@ -360,11 +361,13 @@ void CCar::ParseDefinitions()
 		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
 		m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num)*main_gear_ratio);
 	}
-	///////////////////////////////steer/////////////////////////////////////////////////////////////////
 
 	///////////////////////////////sound///////////////////////////////////////////////////////
 	m_car_sound->Init();
-
+    ///////////////////////////////fuel///////////////////////////////////////////////////
+	m_fuel=ini->r_float("car_definition","fuel");
+	m_fuel_consumption=ini->r_float("car_definition","fuel_consumption");
+	m_fuel_consumption/=100000.f;
 }
 
 void CCar::CreateSkeleton()
@@ -487,7 +490,7 @@ void CCar::Unbreak()
 void CCar::Drive()
 {
 	
-	if(!(b_clutch&&b_engine_on)) return;
+	if(!b_clutch||!b_engine_on) return;
 	m_pPhysicsShell->Enable();
 	m_current_rpm=EngineDriveSpeed();
 	m_current_engine_power=EnginePower();
@@ -502,6 +505,7 @@ void CCar::Drive()
 
 void CCar::StartEngine()
 {
+if(m_fuel<EPS) return;
 PlayExhausts();
 //m_car_sound.Start();
 m_car_sound->Drive();
@@ -512,8 +516,8 @@ void CCar::StopEngine()
 m_car_sound->Stop();
 StopExhausts();
 NeutralDrive();//set zero speed
-UpdatePower();//set engine friction;
 b_engine_on=false;
+UpdatePower();//set engine friction;
 }
 
 void CCar::Stall()
@@ -521,8 +525,9 @@ void CCar::Stall()
 	m_car_sound->Stall();
 	StopExhausts();
 	NeutralDrive();//set zero speed
-	UpdatePower();//set engine friction;
 	b_engine_on=false;
+	UpdatePower();//set engine friction;
+
 }
 void CCar::ReleasePedals()
 {
@@ -806,7 +811,7 @@ void CCar::PhTune(dReal step)
 {
 	if(m_repairing)Revert();
 	LimitWheels();
-
+	UpdateFuel(step);
 	if(fwp||bkp)
 	{	
 		UpdatePower();
@@ -949,12 +954,19 @@ float CCar::EngineDriveSpeed()
 
 
 
-void CCar::StallSound()
+void CCar::UpdateFuel(float time_delta)
 {
-	
-	if(!b_stalling||b_engine_on) return;
+	if(!b_engine_on) return;
+	if(m_current_rpm>m_min_rpm)
+		m_fuel-=time_delta*(m_current_rpm-m_min_rpm)*m_fuel_consumption;
+	else
+		m_fuel-=time_delta*m_min_rpm*m_fuel_consumption;
+	if(m_fuel<EPS) StopEngine();
+}
 
-	
+void CCar::AddFuel(float ammount)
+{
+m_fuel+=ammount;
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
