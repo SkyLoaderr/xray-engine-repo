@@ -4857,6 +4857,12 @@
 						<File
 							RelativePath="PHElement.h">
 						</File>
+						<File
+							RelativePath=".\PHGeometryOwner.cpp">
+						</File>
+						<File
+							RelativePath=".\PHGeometryOwner.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="Joint"

@@ -7,32 +7,29 @@
 #include "PhysicsCommon.h"
 #include "PHSynchronize.h"
 #include "PHDisabling.h"
-
+#include "PHGeometryOwner.h"
 #ifndef PH_ELEMENT
 #define PH_ELEMENT
 class CPHElement;
 class CPHShell;
 class CPHFracture;
-DEFINE_VECTOR(CODEGeom*,GEOM_STORAGE,GEOM_I)
+
 class CPHFracturesHolder;
 class CPHElement	:  
 	public	CPhysicsElement ,
 	public	CPHSynchronize,
-	public	CPHDisablingFull
+	public	CPHDisablingFull,
+	public	CPHGeometryOwner
 {
 	friend class CPHFracturesHolder;
-	GEOM_STORAGE			m_geoms;					//e					//bl
+
 	float					m_start_time;				//uu ->to shell ??	//aux
-	float					m_volume;					//e ??				//bl
-	Fvector					m_mass_center;				//e ??				//bl
-	u16						ul_material;				//e ??				//bl
+
+
 	dMass					m_mass;						//e ??				//bl
 	dBodyID					m_body;						//e					//st
-	dSpaceID				m_group;					//e					//bl
-
 	dReal					m_l_scale;					// ->to shell ??	//bl
 	dReal					m_w_scale;					// ->to shell ??	//bl
-	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??		//bl
 	CPHElement				*m_parent_element;			//bool !			//bl
 	CPHShell				*m_shell;					//e					//bl
 	CPHInterpolation		m_body_interpolation;		//e					//bl
@@ -54,12 +51,7 @@ class CPHElement	:
 
 	dReal						k_w;					//->to shell ??		//st
 	dReal						k_l;//1.8f;				//->to shell ??		//st
-
-
-	ContactCallbackFun*			contact_callback;		//->to shell ??		//bt
-	ObjectContactCallbackFun*	object_contact_callback;//->to shell ??		//st
 	ObjectContactCallbackFun*	temp_for_push_out;		//->to shell ??		//aux
-
 	u32							push_untill;			//->to shell ??		//st
 	bool						bUpdate;				//->to shell ??		//st
 	bool						b_enabled_onstep;
@@ -69,8 +61,6 @@ public:
 
 	////////////////////////////
 private:
-	void					build_Geom						(CODEGeom&	V);																	//aux
-	void					build_Geom						(u16 i);																		//aux
 	void					calculate_it_data				(const Fvector& mc,float mass);													//aux
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);												//aux
 	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass	//aux
@@ -90,6 +80,17 @@ IC	void					UpdateInterpolation				()																				//interpolation called 
 		bUpdate=true;
 	}
 public:
+	virtual	void			add_Sphere						(const Fsphere&		V);															//aux
+	virtual	void			add_Box							(const Fobb&		V);															//aux
+	virtual	void			add_Cylinder					(const Fcylinder&	V);															//aux
+	virtual void			add_Shape						(const SBoneShape& shape);														//aux
+	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
+	virtual CODEGeom*		last_geom						(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
+	virtual bool			has_geoms						(){return !m_geoms.empty();}
+	virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
+	virtual float			getRadius						();
+
+
 	virtual void			Disable							();																				//
 	virtual	void			ReEnable						();																				//
 	void					Enable							();																				//aux
@@ -114,16 +115,6 @@ public:
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}							//aux
 	virtual void			applyImpulseTrace				(const Fvector& pos, const Fvector& dir, float val,const u16 id)	;					//called anywhere ph state influent
 	virtual	void			set_DisableParams				(const SAllDDOParams& params)										;
-
-	///
-	virtual	void			add_Sphere						(const Fsphere&		V);															//aux
-	virtual	void			add_Box							(const Fobb&		V);															//aux
-	virtual	void			add_Cylinder					(const Fcylinder&	V);															//aux
-	virtual void			add_Shape						(const SBoneShape& shape);														//aux
-	virtual void			add_Shape						(const SBoneShape& shape,const Fmatrix& offset);								//aux
-	virtual CODEGeom*		last_geom						(){if(m_geoms.empty())return NULL; return m_geoms.back();}						//aux
-	virtual bool			has_geoms						(){return !m_geoms.empty();}
-	virtual void			set_ContactCallback				(ContactCallbackFun* callback);													//aux (may not be)
 	virtual void			set_DynamicLimits				(float l_limit=default_l_limit,float w_limit=default_w_limit);					//aux (may not be)
 	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);					//aux (may not be)
 	virtual void			set_ObjectContactCallback		(ObjectContactCallbackFun* callback);											//called anywhere ph state influent
@@ -150,7 +141,7 @@ public:
 	virtual void			cv2obj_Xfrom					(const Fquaternion& q,const Fvector& pos, Fmatrix& xform);
 	virtual void			cv2bone_Xfrom					(const Fquaternion& q,const Fvector& pos, Fmatrix& xform);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);//aux
-	virtual float			getRadius						();																				//aux
+																			//aux
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
 	virtual void			InterpolateGlobalPosition		(Fvector* v);																	//aux
 	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);																	//aux

@@ -70,27 +70,8 @@ void CPHElement::			add_Box		(const Fobb&		V)
 
 }
 
-void CPHElement::			build_Geom	(CODEGeom& geom)
-{
 
-	geom.build(m_mass_center);
-	geom.set_body(m_body);
-	geom.set_material(ul_material);
-	if(contact_callback)geom.set_contact_cb(contact_callback);
-	if(object_contact_callback)geom.set_obj_contact_cb(object_contact_callback);
-	if(m_phys_ref_object) geom.set_ref_object(m_phys_ref_object);
-	if(m_group)
-	{
-		geom.add_to_space((dSpaceID)m_group);
-	}
-}
 
-void CPHElement::build_Geom(u16 i)
-{
-	CODEGeom& geom=*m_geoms[i];
-	build_Geom(geom);
-	geom.element_position()=i;
-}
 
 void CPHElement::			add_Sphere	(const Fsphere&	V)
 {
@@ -127,6 +108,7 @@ void CPHElement::			build	(){
 	//for(;i_geom!=e;++i_geom) build_Geom(**i_geom);
 	u16 geoms_size=u16(m_geoms.size());
 	for(u16 i=0;i<geoms_size;++i) build_Geom(i);
+	set_body(m_body);
 }
 
 void CPHElement::RunSimulation()
