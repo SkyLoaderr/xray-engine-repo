@@ -1,35 +1,28 @@
 Microsoft Visual Studio Solution File, Format Version 8.00
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "scripts", "Scripts.vcproj", "{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Config", "..\Config\Config.vcproj", "{C802EC7C-7F25-4A6E-8E78-45C230393B49}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrStalker", "..\xrstalker.vcproj", "{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 2
-		SccProjectUniqueName0 = Scripts.vcproj
 		SccLocalPath0 = .
 		CanCheckoutShared = true
-		SccLocalPath1 = .
-		CanCheckoutShared = true
 		SolutionUniqueID = {767954C0-A2CE-4930-A58F-7192D6D7BF43}
+		SccProjectUniqueName1 = ..\\xrstalker.vcproj
+		SccProjectName1 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath1 = ..
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
-		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Debug.ActiveCfg = Debug|Win32
-		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Debug.Build.0 = Debug|Win32
-		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Release.ActiveCfg = Release|Win32
-		{ACEE94F7-890A-43A2-9DD2-0E649E89E7AE}.Release.Build.0 = Release|Win32
-		{C802EC7C-7F25-4A6E-8E78-45C230393B49}.Debug.ActiveCfg = Debug|Win32
-		{C802EC7C-7F25-4A6E-8E78-45C230393B49}.Debug.Build.0 = Debug|Win32
-		{C802EC7C-7F25-4A6E-8E78-45C230393B49}.Release.ActiveCfg = Release|Win32
-		{C802EC7C-7F25-4A6E-8E78-45C230393B49}.Release.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.ActiveCfg = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.Build.0 = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
