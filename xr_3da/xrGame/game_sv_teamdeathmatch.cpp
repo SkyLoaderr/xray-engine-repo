@@ -189,6 +189,12 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	P.r_u16			(hit_type);	//hit type
 	P.r_pos = RPos;
 	//---------------------------------------
+	if (Device.dwTimeGlobal<ps_hitted->m_RespawnTime + damgeblocklimit)
+	{
+		power = 0;
+		impulse = 0;
+	}
+	//---------------------------------------
 	if (ps_hitted->team != ps_hitter->team)
 	{
 	}
@@ -199,11 +205,10 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 
 		power *= m_fFriendlyFireModifier;
 		impulse *= m_fFriendlyFireModifier;
-
-		P.B.count	= PowRPos;	P.w_float(power);
-		P.B.count	= ImpRPos;	P.w_float(impulse);
-		//---------------------------------------
 	};
+	//---------------------------------------
+	P.B.count	= PowRPos;	P.w_float(power);
+	P.B.count	= ImpRPos;	P.w_float(impulse);
 	//---------------------------------------
 	if (power > 0)
 	{

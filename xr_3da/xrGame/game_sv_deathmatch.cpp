@@ -11,6 +11,7 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
+	damgeblocklimit	= get_option_i		(options,"timelimit",5)*1000;	// in (ms)
 
 	/////////////////////////////////////////////////////////////////////////
 	LoadTeams();
@@ -362,6 +363,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 		assign_RP				(pA);
 		SetSkin(E, pA->s_team, ps_who->m_skin);
 		ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		ps_who->m_RespawnTime = Device.dwTimeGlobal;
 	}
 	else
 		if (pS)
@@ -829,6 +831,16 @@ void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_P
 	P.r_u16			(hit_type);	//hit type
 	P.r_pos = RPos;
 	
+	//---------------------------------------
+	if (Device.dwTimeGlobal<ps_hitted->m_RespawnTime + damgeblocklimit)
+	{
+		power = 0;
+		impulse = 0;
+	}
+	//---------------------------------------
+	P.B.count	= PowRPos;	P.w_float(power);
+	P.B.count	= ImpRPos;	P.w_float(impulse);
+	//---------------------------------------
 	if (power > 0)
 	{
 		ps_hitted->m_lasthitter = a_hitter->ID;

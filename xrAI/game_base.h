@@ -57,6 +57,8 @@ struct	game_PlayerState
 	u16			m_lasthitter;
 	u16			m_lasthitweapon;
 	u8			m_skin;
+	//---------------------------
+	u32				m_RespawnTime;
 
 	game_PlayerState();
 	~game_PlayerState();
@@ -103,6 +105,7 @@ public:
 	u32								buy_time;
 	s32								fraglimit;
 	s32								timelimit;
+	u32								damgeblocklimit;
 	xr_vector<game_TeamState>		teams;
 	// for Artefact Hunt
 	u8								m_ArtefactsNum;
