@@ -11,6 +11,8 @@
 
 using namespace	Collide;
 
+IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
+
 //----------------------------------------------------------------------
 // Class	: CObjectSpace
 // Purpose	: stores space slots

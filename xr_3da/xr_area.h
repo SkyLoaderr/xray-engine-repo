@@ -4,7 +4,6 @@
 #include "xr_qlist.h"
 #include "xr_collide_form.h"
 #include "xr_collide_defs.h"
-#include "fixedvector.h"
 
 const float CL_SLOT_SIZE		= 16.f;
 const float CL_INV_SLOT_SIZE	= 1.f/CL_SLOT_SIZE;
@@ -24,12 +23,10 @@ class ENGINE_API CObject;
 //-----------------------------------------------------------------------------------------------------------
 //Space Area
 //-----------------------------------------------------------------------------------------------------------
-class	ENGINE_API			CObjectSpace
+class	ENGINE_API			CObjectSpace : public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	friend class			CCFModel;
-
-	IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
 public:
 	struct SCollisionData{
 		// data about player movement
@@ -49,8 +46,11 @@ public:
 		Fvector				vRadius;
 	};
 private:
-	DWORD					dwQueryID;
-	BOOL					nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
+	// Debug
+	Shader*							sh_debug;
+	
+	DWORD							dwQueryID;
+	BOOL							nl_append		( int x, int z, const Fvector2& O, const Fvector2& D );
 
 	struct SLOT
 	{
@@ -58,40 +58,40 @@ private:
 		CList<CObject*>	lst;
 	};
 
-	CQList<SLOT>			Dynamic;
-	RAPID::Model			Static;
-	Fvector					Static_Shift;
+	CQList<SLOT>					Dynamic;
+	RAPID::Model					Static;
+	Fvector							Static_Shift;
 
-	void					GetRect			( const Fvector &center, Irect &rect, float range );
-	void					GetRect			( const CCFModel *obj, Irect &rect );
+	void							GetRect			( const Fvector &center, Irect &rect, float range );
+	void							GetRect			( const CCFModel *obj, Irect &rect );
 
-	BOOL					TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
-	void					CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
+	BOOL							TestRaySlot		(int x, int z, const Fvector2& start, const Fvector2& dir);
+	void							CaptureSlots	(const Fvector& start, const Fvector& dir, float range);
 
-	IC int 					TransA			( float d ) { return iFloor(d*CL_INV_SLOT_SIZE); }
-	IC int 					TransX			( float d ) { return TransA(d+Static_Shift.x); }
-	IC int 					TransZ			( float d ) { return TransA(d+Static_Shift.z); }
-	IC void					InvTrans		( Fvector2& v, int x, int z)	{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
-	IC void					InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
+	IC int 							TransA			( float d ) { return iFloor(d*CL_INV_SLOT_SIZE); }
+	IC int 							TransX			( float d ) { return TransA(d+Static_Shift.x); }
+	IC int 							TransZ			( float d ) { return TransA(d+Static_Shift.z); }
+	IC void							InvTrans		( Fvector2& v, int x, int z)	{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
+	IC void							InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 
 	// safe translate auxilary routines
-	CList<Collide::tri>		clContactedT;
-	CList<Collide::elipsoid>clContactedE;
-	void					clCheckCollision(SCollisionData& cl);
-	void					clResolveStuck	(SCollisionData& cl, Fvector& position);
-	Fvector					CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
+	CList<Collide::tri>				clContactedT;
+	CList<Collide::elipsoid>		clContactedE;
+	void							clCheckCollision(SCollisionData& cl);
+	void							clResolveStuck	(SCollisionData& cl, Fvector& position);
+	Fvector							CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
 public:
 	typedef svector<CCFModel*,128>	NL_TYPE;
 	typedef CCFModel**				NL_IT;
 
 public:
-	NL_TYPE						nearest_list;
-	clQueryCollision			q_result;
+	NL_TYPE							nearest_list;
+	clQueryCollision				q_result;
 
-	clQueryCollision			q_debug;
-	CList<Fmatrix>				dbg_E;
-	CList<pair<Fsphere,DWORD> >	dbg_S;
-	CList<Fvector2>				dbg_Slot;
+	clQueryCollision				q_debug;
+	CList<Fmatrix>					dbg_E;
+	CList<pair<Fsphere,DWORD> >		dbg_S;
+	CList<Fvector2>					dbg_Slot;
 public:
 							CObjectSpace		( );
 							~CObjectSpace		( );
