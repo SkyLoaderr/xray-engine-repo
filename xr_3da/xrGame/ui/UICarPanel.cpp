@@ -21,11 +21,15 @@ void CUICarPanel::Init			(int x, int y, int width, int height)
 	SetCarHealth(1.0f);
 
 
-	AttachChild(&UIPointerGage);
-	xml_init.InitStatic(uiXml, "speedometer", 0, &UIPointerGage);
-	UIPointerGage.InitPointer(POINTER_ARROW_TEX, 0, 0, 0, 120.f);
+	AttachChild(&UISpeedometer);
+	xml_init.InitStatic(uiXml, "speedometer", 0, &UISpeedometer);
+	UISpeedometer.InitPointer(POINTER_ARROW_TEX, 0, 0, 0, 120.f);
 	SetSpeed(0.3f);
 
+	//AttachChild(&UITachometer);
+	//xml_init.InitStatic(uiXml, "speedometer", 0, &UITachometer);
+	//UITachometer.InitPointer(POINTER_ARROW_TEX, 0, 0, 0, 120.f);
+	//SetSpeed(0.3f);
 
 	Show(false);
 	Enable(false);
@@ -48,11 +52,14 @@ void CUICarPanel::SetCarHealth(float value)
 
 void CUICarPanel::SetSpeed(float speed)
 {
-	UIPointerGage.SetValue(speed);
+	clamp(speed,0.f,1.f);
+	UISpeedometer.SetValue(speed);
 }
 
 //////////////////////////////////////////////////////////////////////////
 
 void CUICarPanel::SetRPM(float rpm)
 {
+	clamp(rpm,0.f,1.f);
+	UITachometer.SetValue(rpm);
 }

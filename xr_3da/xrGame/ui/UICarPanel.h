@@ -11,7 +11,8 @@ private:
 
 	CUIStatic			UIStaticCarHealth;
 	CUIProgressBar		UICarHealthBar;
-	CUIPointerGage		UIPointerGage;
+	CUIPointerGage		UISpeedometer;
+	CUIPointerGage		UITachometer;
 public: 
 
 	// Установить 

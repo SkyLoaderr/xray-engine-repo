@@ -295,6 +295,8 @@ void	CCar::UpdateCL				( )
 
 		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
+		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
+		
 	}
 
 	UpdateExhausts();
