@@ -21,3 +21,9 @@ void CLevel::ClientSend	()
 	if (P.B.count>2)		Send(P,net_flags(FALSE));
 }
 
+void CLevel::Send		(NET_Packet& P, u32 dwFlags, u32 dwTimeout)
+{
+	// optimize the case when server located in our memory
+	if (Server)			Server->OnMessage	(P,Game().local_svdpnid	);
+	else				IPureClient::Send	(P,dwFlags,dwTimeout	);
+}

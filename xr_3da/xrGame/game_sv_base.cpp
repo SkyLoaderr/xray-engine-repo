@@ -9,7 +9,7 @@
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
 	xrServer*		S	= Level().Server;
-	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
+	xrClientData*	C	= (xrClientData*)S->client_Get			(it);
 	if (0==C)			return 0;
 	else				return &C->ps;
 }
@@ -133,6 +133,7 @@ void				game_sv_GameState::switch_Phase				(u32 new_phase)
 void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 {
 	// Generic
+	P.w_u32			(to);
 	P.w_s32			(type);
 	P.w_u16			(phase);
 	P.w_s32			(round);

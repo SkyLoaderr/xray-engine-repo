@@ -191,21 +191,10 @@ void CLevel::OnFrame	()
 		}
 	}
 	//Net sync
-	if (m_bNeed_CrPr) make_NetCorrectionPrediction();
+	if (m_bNeed_CrPr)					make_NetCorrectionPrediction();
 
 	// Inherited update
 	inherited::OnFrame					();
-
-	// Physics
-	/*
-	if (!psDeviceFlags.test(mtPhysics))
-	{
-		// Physics in single-threaded mode
-		Device.Statistic.Physics.Begin		();
-		if (ph_world) ph_world->Step		(Device.fTimeDelta);
-		Device.Statistic.Physics.End		();
-	}
-	*/
 
 	// If we have enought bandwidth - replicate client data on to server
 	Device.Statistic.netClient.Begin();
@@ -253,7 +242,7 @@ void CLevel::OnFrame	()
 		}
 	}
 	
-	g_pGamePersistent->Environment.SetGameTime(GetGameDayTimeSec(),GetGameTimeFactor());
+	g_pGamePersistent->Environment.SetGameTime	(GetGameDayTimeSec(),GetGameTimeFactor());
 
 	ai().script_engine().script_processor("level")->update();
 

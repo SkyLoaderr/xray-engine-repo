@@ -16,6 +16,7 @@ void	game_cl_GameState::Create(LPSTR &options)
 void	game_cl_GameState::net_import_state	(NET_Packet& P)
 {
 	// Generic
+	P.r_u32			(local_svdpnid);
 	P.r_s32			(type);
 	P.r_u16			(phase);
 	P.r_s32			(round);
@@ -25,7 +26,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	P.r_u32			(buy_time);
 
 	// Teams
-	u16 t_count;
+	u16				t_count;
 	P.r_u16			(t_count);
 	teams.clear		();
 	for (u16 t_it=0; t_it<t_count; ++t_it)
@@ -69,15 +70,16 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 		Memory.mem_copy	(&IP,&PS,sizeof(PS));
 	}
 
-	if (OnServer()) return;
-	//Syncronize GameTime
-	u64 GameTime;
-	P.r_u64(GameTime);
-	float TimeFactor;
-	P.r_float(TimeFactor);
+	if (OnServer())		return;
 
-	Level().SetGameTime(GameTime);
-	Level().SetGameTimeFactor(TimeFactor);
+	//Syncronize GameTime
+	u64				GameTime;
+	P.r_u64			(GameTime);
+	float			TimeFactor;
+	P.r_float		(TimeFactor);
+
+	Level().SetGameTime			(GameTime);
+	Level().SetGameTimeFactor	(TimeFactor);
 }
 
 void	game_cl_GameState::net_signal		(NET_Packet& P)

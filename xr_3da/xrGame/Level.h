@@ -15,8 +15,8 @@
 #include "ai/ai_monster_group.h"
 #include "memory_space.h"
 
-class CHUDManager;
-class CParticlesObject;
+class	CHUDManager;
+class	CParticlesObject;
 
 #define DEFAULT_FOV				90.f
 const int maxGroups				= 32;
@@ -77,16 +77,12 @@ protected:
 	EVENT						eEntitySpawn;
 public:
 	////////////// network ////////////////////////
-	u32							GetInterpolationSteps ();
-	void						SetInterpolationSteps (u32 InterpSteps);
-	bool						InterpolationDisabled ();
-
-
-	void						ReculcInterpolationSteps ();
-
-	void						SetNumCrSteps		( u32 NumSteps );
-
-	static void __stdcall		PhisStepsCallback	( u32 Time0, u32 Time1 );
+	u32							GetInterpolationSteps	();
+	void						SetInterpolationSteps	(u32 InterpSteps);
+	bool						InterpolationDisabled	();
+	void						ReculcInterpolationSteps();
+	void						SetNumCrSteps			( u32 NumSteps );
+	static void __stdcall		PhisStepsCallback		( u32 Time0, u32 Time1 );
 private:
 	BOOL						m_bNeed_CrPr;
 	u32							m_dwNumSteps;
@@ -94,24 +90,21 @@ private:
 
 	u32							m_dwDeltaUpdate ;
 	u32							m_dwLastNetUpdateTime;
-	void						UpdateDeltaUpd	( u32 LastTime );
+	void						UpdateDeltaUpd					( u32 LastTime );
 public:
 	//////////////////////////////////////////////	
-	
 	// static particles
-	DEFINE_VECTOR(CParticlesObject*,POVec,POIt);
+	DEFINE_VECTOR				(CParticlesObject*,POVec,POIt);
 	POVec						m_StaticParticles;
 
 	game_cl_GameState			game;
 	BOOL						game_configured;
 	NET_Queue_Event				game_events;
 	xr_deque<CSE_Abstract*>		game_spawn_queue;
-
 	xrServer*					Server;
-
+public:
 	svector<CTeam,maxTeams>		Teams;
 	CSquadManager				SquadMan;
-	
 
 	CTracer						Tracers;
 
@@ -221,6 +214,7 @@ public:
 	// Game
 	void						ClientReceive			();
 	void						ClientSend				();
+	virtual	void				Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	
 	void						g_cl_Spawn				(LPCSTR name, u8 rp, u16 flags);		// only ask server
 	void						g_sv_Spawn				(CSE_Abstract* E);					// server reply/command spawning

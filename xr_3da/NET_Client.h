@@ -68,7 +68,7 @@ public:
 	IC void					net_msg_Release			()	{ net_Queue.Release();			}
 
 	// send
-	void					Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
+	virtual	void			Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	BOOL					net_HasBandwidth		();
 	
 	// time management

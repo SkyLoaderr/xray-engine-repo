@@ -12,6 +12,7 @@ public:
 		string64	name;
 	};
 	xr_map<u32,Player>				players;
+	u32								local_svdpnid;
 	Player*							local_player;
 	xr_vector<CGameObject*>			targets;
 public:
