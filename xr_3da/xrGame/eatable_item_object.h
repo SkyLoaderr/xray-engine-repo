@@ -21,6 +21,7 @@ public:
 	virtual DLL_Pure		*_construct			();
 
 public:
+	virtual CPhysicsShellHolder*cast_physics_shell_holder	()						{return NULL;}
 	virtual CInventoryItem	*cast_inventory_item()	{return this;}
 	virtual CWeapon			*cast_weapon		()	{return 0;}
 	virtual CFoodItem		*cast_food_item		()	{return 0;}
