@@ -534,6 +534,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 			F.w_stringZ	((*I).second.name());
 			F.w_fvector3((*I).second.offset());
 			F.w_u32		((*I).second.id());
+			F.w_stringZ	((*I).second.section());
 		}
 	}
 
