@@ -25,8 +25,8 @@
 SCharacterProfile::SCharacterProfile()
 {
 	m_iCharacterIndex = NO_SPECIFIC_CHARACTER;
-	m_Rank.set(NO_RANK);
-	m_Reputation.set(NO_REPUTATION);
+	m_Rank = NO_RANK;
+	m_Reputation = NO_REPUTATION;
 }
 
 SCharacterProfile::~SCharacterProfile()
@@ -120,8 +120,8 @@ void CCharacterInfo::load_shared	(LPCSTR)
 		else
 			data()->m_Class				= NO_CHARACTER_CLASS;
 			
-		data()->m_Rank.set(uiXml.ReadInt	("rank",		0,	NO_RANK));
-		data()->m_Reputation.set(uiXml.ReadInt	("reputation",	0,	NO_REPUTATION));
+		data()->m_Rank = uiXml.ReadInt	("rank",		0,	NO_RANK);
+		data()->m_Reputation = uiXml.ReadInt	("reputation",	0,	NO_REPUTATION);
 	}
 	else
 		data()->m_iCharacterIndex = CSpecificCharacter::IdToIndex(spec_char);
