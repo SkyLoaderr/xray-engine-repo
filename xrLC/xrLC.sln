@@ -1,0 +1,62 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrAI", "xrAI\xrAI.vcproj", "{4E9E2169-B88E-44A8-978E-C6DBF32DE074}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrDO_Light", "xrDO_Light\xrDO_Light.vcproj", "{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrHemisphere", "xrHemisphere\xrHemisphere.vcproj", "{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "xrLC.vcproj", "{25B60978-8467-4263-A6EB-CB3BB108F8BF}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 5
+		SccProjectUniqueName0 = xrAI\\xrAI.vcproj
+		SccProjectName0 = \u0022$/xrAI\u0022,\u0020KVDAAAAA
+		SccLocalPath0 = xrAI
+		CanCheckoutShared = true
+		SccProjectUniqueName1 = xrDO_Light\\xrDO_Light.vcproj
+		SccProjectName1 = \u0022$/xrLC/xrDO_Light\u0022,\u0020CHEAAAAA
+		SccLocalPath1 = xrDO_Light
+		CanCheckoutShared = true
+		SccProjectUniqueName2 = xrHemisphere\\xrHemisphere.vcproj
+		SccProjectName2 = \u0022$/xrLC/xrHemisphere\u0022,\u0020BGFAAAAA
+		SccLocalPath2 = xrHemisphere
+		CanCheckoutShared = true
+		SccProjectUniqueName3 = xrLC.vcproj
+		SccLocalPath3 = .
+		CanCheckoutShared = true
+		SccProjectName4 = \u0022$/xrLC\u0022,\u0020TLAAAAAA
+		SccLocalPath4 = .
+		SccProvider4 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SolutionUniqueID = {F03D8C9E-6425-4DB3-99C8-9F328A66E815}
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Debug.ActiveCfg = Debug|Win32
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Debug.Build.0 = Debug|Win32
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Release.ActiveCfg = Release|Win32
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Release.Build.0 = Release|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Debug.ActiveCfg = Debug|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Debug.Build.0 = Debug|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Release.ActiveCfg = Release|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Release.Build.0 = Release|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Debug.ActiveCfg = Debug|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Debug.Build.0 = Debug|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Release.ActiveCfg = Release|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Release.Build.0 = Release|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Debug.ActiveCfg = Debug|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Debug.Build.0 = Debug|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.ActiveCfg = Release|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
