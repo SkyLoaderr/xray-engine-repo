@@ -55,7 +55,7 @@ protected:
 	EVENT						eEnvironment;
 	EVENT						eEntitySpawn;
 public:
-	game_cl_GameState			Game;
+	game_cl_GameState			game;
 
 	CAI_DDD*					m_tpAI_DDD;
 	xrServer*					Server;
@@ -171,8 +171,9 @@ public:
 	virtual ~CLevel();
 };
 
-IC CLevel&	Level()				{ return *((CLevel*) pCreator); }
-IC DWORD	Game()				{ return Level().Game.type;		}
+IC CLevel&				Level()		{ return *((CLevel*) pCreator); }
+IC game_cl_GameState&	Game()		{ return Level().game;			}
+IC DWORD				GameID()	{ return Game().type;			}
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;
