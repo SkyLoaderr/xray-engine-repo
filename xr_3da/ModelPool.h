@@ -9,7 +9,7 @@
 // refs
 class ENGINE_API CVisual;
 namespace PS	{ 
-	struct ENGINE_API SDef;
+	struct ENGINE_API SDef_RT;
 	struct ENGINE_API SEmitter; 
 };
 
@@ -20,8 +20,8 @@ class ENGINE_API CModelPool : public pureDeviceDestroy
 
 	struct ModelDef
 	{
-		char			name[64];
-		CVisual*	model;
+		string128		name;
+		CVisual*		model;
 	};
 
 	vector<ModelDef>	Models;
@@ -35,7 +35,7 @@ public:
 
 	virtual void		OnDeviceDestroy		();
 
-	CVisual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
+	CVisual*			CreatePS			(PS::SDef_RT* source, PS::SEmitter* E);
 	CVisual*			Create				(LPCSTR name);
 	CVisual*			Create				(CStream* data);
 	void				Delete				(CVisual* &V);

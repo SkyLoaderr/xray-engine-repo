@@ -26,7 +26,7 @@ public:
 	void				OnDeviceCreate	();
 	void				OnDeviceDestroy	();
 
-    PS::SDef*			FindPS			(LPCSTR name);
+    PS::SDef_RT*		FindPS			(LPCSTR name);
 };
 
 #endif /*_INCDEF_PSLibrary_H_*/

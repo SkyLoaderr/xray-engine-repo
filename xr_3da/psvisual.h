@@ -25,7 +25,7 @@ public:
 
 	// Functionality
 	void				Update			(DWORD dt);
-	void				Compile			(PS::SDef* source, PS::SEmitter* E);
+	void				Compile			(PS::SDef_RT* source, PS::SEmitter* E);
 	IC int				ParticleCount	()	{ return m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }
 	IC CVertexStream*	GetStream		()	{ return m_Stream;			}

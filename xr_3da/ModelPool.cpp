@@ -187,7 +187,7 @@ void	CModelPool::Delete(CVisual* &V)
 	_DELETE			(V);
 }
 
-CVisual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
+CVisual* CModelPool::CreatePS	(PS::SDef_RT* source, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
 	V->Compile		(source,E);

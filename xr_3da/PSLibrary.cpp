@@ -34,10 +34,10 @@ void CPSLibrary::xrShutDown()
 IC bool sort_pred(const PS::SDef_RT& A, const PS::SDef_RT& B)
 {	return strcmp(A.m_Name,B.m_Name)<0; }
 
-PS::SDef* CPSLibrary::FindPS	(const char* Name)
+PS::SDef_RT* CPSLibrary::FindPS	(const char* Name)
 {
-	PS::SDef	D; strcpy(D.m_Name,Name);
-	PS::SDef*	P = std::lower_bound(m_PSs.begin(),m_PSs.end(),D,sort_pred);
+	PS::SDef_RT	D;	strcpy(D.m_Name,Name);
+	PS::SDef_RT*	P = std::lower_bound(m_PSs.begin(),m_PSs.end(),D,sort_pred);
 	if ((P!=m_PSs.end()) && (0==strcmp(P->m_Name,Name)) ) return P;
 	return NULL;
 }

@@ -266,7 +266,7 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 }
 
 //----------------------------------------------------
-void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
+void CPSVisual::Compile(PS::SDef_RT* source, PS::SEmitter* E)
 {
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
