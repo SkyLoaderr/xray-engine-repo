@@ -24,7 +24,7 @@ class	ENGINE_API CBoneInstance;
 class	CWeaponList;
 class   CPHMovementControl;
  
-class CEntity : public virtual  CGameObject
+class CEntity : virtual public CGameObject
 {
 private:
 	typedef	CGameObject	inherited;			

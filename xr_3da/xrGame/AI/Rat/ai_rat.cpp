@@ -427,3 +427,9 @@ bool CAI_Rat::Useful()
 
 	return false;
 }
+
+void CAI_Rat::OnRender()
+{
+	inherited::OnRender();
+	CEatableItem::OnRender();
+}
