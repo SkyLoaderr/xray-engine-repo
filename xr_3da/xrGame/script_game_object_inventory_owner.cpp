@@ -481,7 +481,8 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	if(0 == objective_num){//setState for task and all sub-tasks
 		TASK_STATE_IT iit =(*it).states.begin();
 		for(;iit!=(*it).states.end();++iit)
-			(*iit)=state;
+			if( (*iit)==eTaskStateInProgress )
+				(*iit)=state;
 	}
 
 	//если мы устанавливаем финальное состояние для основного задания, то
