@@ -69,16 +69,12 @@ BOOL CRenderTarget::Create	()
 
 void CRenderTarget::OnDeviceCreate	()
 {
-	Log	("void CRenderTarget::OnDeviceCreate	()");
-	
 	bAvailable	= FALSE;
 	bAvailable	= Create	();
 }
 
 void CRenderTarget::OnDeviceDestroy	()
 {
-	Log	("void CRenderTarget::OnDeviceDestroy	()");
-
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
