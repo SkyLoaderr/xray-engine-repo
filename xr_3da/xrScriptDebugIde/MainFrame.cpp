@@ -725,16 +725,6 @@ void CMainFrame::UpdateFrameTitleForDocument(LPCTSTR lpszDocName)
 		else
 			lstrcat(szText, _T(" [NOT ACTIVE] "));
 
-
-		if (lpszDocName != NULL)
-		{
-			lstrcat(szText, _T(" - ["));
-			lstrcat(szText, lpszDocName);
-			// add current window # if needed
-			if (m_nWindow > 0)
-				wsprintf(szText + lstrlen(szText), _T(":%d"), m_nWindow);
-			lstrcat(szText, _T("]"));
-		}
 	}
 
 	// set title if changed, but don't remove completely
