@@ -147,8 +147,8 @@ function motivator_binder:reload (section)
 -- Модели поведения
 ----------------------------------------------------------------------------------------------------------------------
 	--' 
-	xr_sleeper.set_sleeper("sleeper",self.object)
-
+	xr_logic.stalker_enable_scripts(self.object, char_ini)
+	--xr_sleeper.set_sleeper("sleeper",self.object)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)

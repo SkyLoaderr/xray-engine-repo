@@ -12,27 +12,8 @@ function evaluator_need_walker:__init(storage) super()
 end
 
 function evaluator_need_walker:evaluate()
-	--printf("walker [%s] best_enemy = ", self.object:name()--[[,
-	--	if_then_else(self.object:best_enemy(), self.object:best_enemy():name(), "none")]])
-  	return self.st.enabled == true
+  	return xr_logic.is_active(self.object, self.st)
 end
-
----------------------------------------------------------------------------------------------------------------------
---[[
-class "evaluator_override_fight" (property_evaluator)
-
-function evaluator_override_fight:__init(storage) super()
-  	self.st = storage
-end
-
-function evaluator_override_fight:evaluate()
-	--local best_enemy = self.object:best_enemy()
-	--if best_enemy then
-		--printf("walker [%s] best_enemy = %s", self.object:name(), best_enemy:name())
-	--end
-  	return false
-end
-]]
 
 ----------------------------------------------------------------------------------------------------------------------
 class "action_walker_activity" (action_base)
@@ -80,6 +61,9 @@ end
 function action_walker_activity:execute()
 	action_base.execute(self)
 	self.move_mgr:update()
+	if self.move_mgr:arrived_to_first_waypoint() then
+		xr_logic.try_switch_to_another_section(self.object, self.st)
+	end
 end
 
 function action_walker_activity:finalize()
@@ -91,7 +75,8 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --walker binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc, char_ini)
+function add_to_binder(npc, ini, scheme, section, storage)
+		printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
   		local operators	= {}
 	  	local properties  = {}
 		
@@ -100,16 +85,13 @@ function add_to_binder(npc, char_ini)
 		properties["event"] = xr_evaluators_id.reaction
 		properties["state_end"] = xr_evaluators_id.state_change
 	 	properties["need_walker"] = xr_evaluators_id.zmey_walker_base + 1
-		--properties["override_fight"] = xr_evaluators_id.zmey_walker_base + 2
 
 	 	operators["action_walker"] = xr_actions_id.zmey_walker_base + 1
-	 	operators["action_walker_2"] = xr_actions_id.zmey_walker_base + 2
 
 	   	-- // evaluators
-		manager:add_evaluator(properties["need_walker"], this.evaluator_need_walker(xr_motivator.storage[npc:id()].walker))
-		--manager:add_evaluator(properties["override_fight"], this.evaluator_override_fight(xr_motivator.storage[npc:id()].walker))
+		manager:add_evaluator(properties["need_walker"], this.evaluator_need_walker(storage))
 
-		local new_action = this.action_walker_activity(npc, "action_walker_activity", xr_motivator.storage[npc:id()].walker)
+		local new_action = this.action_walker_activity(npc, "action_walker_activity", storage)
 		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
 		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
 		new_action:add_precondition(world_property(properties["need_walker"], true))
@@ -118,27 +100,11 @@ function add_to_binder(npc, char_ini)
 	   	new_action:add_effect(world_property(properties["need_walker"], false))
 		manager:add_action(operators["action_walker"], new_action)
 
-		local st = xr_motivator.storage[npc:id()].walker
-		st.action = new_action
-
---[[
-		local new_action = this.action_walker_activity(npc, "action_walker_activity", xr_motivator.storage[npc:id()].walker)
-		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
-	  	--------new_action:add_precondition(world_property(properties["need_walker"], true))
-		new_action:add_precondition(world_property(properties["override_fight"], true))
-	   	new_action:add_effect(world_property(stalker_ids.property_enemy, false))
-		manager:add_action(operators["action_walker_2"], new_action)
-]]
+		-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+		xr_logic.subscribe_action_for_events(storage, new_action)
 
 	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
 	  	new_action:add_precondition(world_property(properties["need_walker"], false))
-
-		--new_action = manager:action(stalker_ids.action_combat_planner)
-		--new_action:add_precondition(world_property(properties["override_fight"], false))
-
-		if  char_ini ~= nil and char_ini:section_exist ("walker") == true then
-			xr_walker.set_walker(npc)
-		end
 end
 
 -- Включение схемы
@@ -148,23 +114,22 @@ end
 -- path_look [опционально] - путь, куда смотрит охранник
 -- team [опционально] - команда для синхронизации
 --
-function set_walker(object, enabled, path_walk, path_look, team)
-	--printf("_bp: set_walker (path_walk=%s)", path_walk)
-	local char_ini = object:spawn_ini()
-	local st = xr_motivator.storage[object:id()].walker
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	printf("DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	printf("DEBUG: set_scheme: storage assigned")
 
-	st.enabled = utils.conf_get_bool(char_ini, "walker", "enabled", enabled, object, true)
-	st.path_walk = utils.conf_get_string(char_ini, "walker", "path_walk", path_walk, object, true)
-	st.path_look = utils.conf_get_string(char_ini, "walker", "path_look", path_look, object, false)
-	st.team = utils.conf_get_string(char_ini, "walker", "team", team, object, false)
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
+	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
+	st.team      = utils.cfg_get_string(ini, section, "team",      npc, false, gulag_name)
 
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
 
-	if st.action ~= nil then
-		printf("_bp: set_walker: reset_scheme")
-		st.action:reset_scheme()
-	end
-	xr_motivator.checkStorage(object)
+	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
+	printf("DEBUG: set_scheme: about to call xr_logic.reset_actions()")
+	xr_logic.reset_actions(st)
 end
 

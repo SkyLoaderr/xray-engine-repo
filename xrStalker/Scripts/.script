@@ -1,3 +1,25 @@
+schemes = {}
+
+-- Загружает схему из файла на диске и активирует в мотиваторе.
+-- Здесь:
+-- 	filename - имя файла, в котором реализована схема, без расширения
+-- 	scheme - имя схемы
+function load_scheme(filename, scheme)
+	module(filename)
+	schemes[scheme] = filename
+end
+
+----------------------------------------------------------------------
+-- Загрузка схем:
+----------------------------------------------------------------------
+
+load_scheme("xr_walker", "walker")
+
+
+----------------------------------------------------------------------
+-- Загрузка остальных модулей:
+----------------------------------------------------------------------
+
 module ("stalker")
 module ("monsters")
 module ("globals")
@@ -14,6 +36,7 @@ module ("move_mgr")
 module ("gramofon")
 
 module ("xr_motivator")
+module ("xr_logic")
 module ("xr_sounds")
 module ("xr_zones")
 module ("xr_spawner")
@@ -30,7 +53,6 @@ module ("gulag_tasks")
 module ("xr_bandit")
 module ("xr_meet")
 module ("xr_kamp")
-module ("xr_walker")
 module ("xr_assassin")
 module ("xr_robbers")
 module ("xr_guide")

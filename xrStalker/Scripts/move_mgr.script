@@ -137,6 +137,10 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- self:simulate_callback_if_neccessary() WORKAROUND
 end
 
+function move_mgr:arrived_to_first_waypoint()
+	return self.last_index ~= nil
+end
+
 --[[ WORKAROUND
 function move_mgr:simulate_callback_if_neccessary()
 	-- FIXME - переделать на вертексы

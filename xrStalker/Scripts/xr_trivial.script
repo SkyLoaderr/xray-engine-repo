@@ -724,7 +724,7 @@ function novice3_attack:execute ()
     self.object:set_item             ( object.idle, self.object:best_weapon() )
 
 	if(self.state == 0 and self.object:active_sound_count() == 0) then
-		if(self.move_mgr.last_index == nil) then 
+		if not self.move_mgr:arrived_to_first_waypoint() then 
 			self.move_mgr.running = true
 			self.move_mgr.danger  = true
 			self.move_mgr:update_movement_state()

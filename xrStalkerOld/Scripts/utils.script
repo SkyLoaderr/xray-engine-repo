@@ -16,9 +16,9 @@ function to_str(what)
 function vector_copy_by_val(vec)
 
 -- Настройка параметров игровых объектов:
-function conf_get_bool(char_ini, section, field, override, object, mandatory)
-function conf_get_string(char_ini, section, field, override, object, mandatory)
-function conf_get_number(char_ini, section, field, override, object, mandatory)
+function cfg_get_bool(char_ini, section, field, object, mandatory)
+function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name)
+function cfg_get_number(char_ini, section, field, object, mandatory)
 
 -- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
 function stalker_at_waypoint(stalker, patrol_path, path_point)
@@ -71,16 +71,16 @@ end
 -- char_ini - указатель на customdata (обычно object:spawn_ini())
 -- section - имя секции в customdata
 -- field - имя поля в customdata
--- override - nil, если переменную нужно прочесть из customdata,
---            иначе - значение, которое взять вместо того, которое в customdata
 -- object - игровой объект, от которого будет взято имя для сообщения об ошибке
 -- mandatory - поле обязательно должно быть задано
 --
 -- Возвращает true или false
-function conf_get_bool(char_ini, section, field, override, object, mandatory)
-	if override ~= nil then
-		return override ~= false
+function cfg_get_bool(char_ini, section, field, object, mandatory)
+	if mandatory == nil then
+		utils.abort("section '%s': wrong arguments order in call to cfg_get_bool", section)
 	end
+	
+	printf("DEBUG: conf_get_bool: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		local ret = char_ini:r_bool(section, field)
 		return ret
@@ -88,17 +88,22 @@ function conf_get_bool(char_ini, section, field, override, object, mandatory)
 	if not mandatory then
 		return false
 	end
-	local err = "object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
-		field .. "' in section '" .. section .. "'";
-	utils.abort("%s", err)
+	utils.abort("object '%s': attempt to read a non-existant boolean field '%s' in " ..
+		"section '%s'", object:name(), field, section)
 end
 
-function conf_get_string(char_ini, section, field, override, object, mandatory)
-	if override ~= nil then
-		return override
+function cfg_get_string(char_ini, section, field, object, mandatory, gulag_name)
+	if mandatory == nil or gulag_name == nil then
+		utils.abort("section '%s': wrong arguments order in call to cfg_get_string", section)
 	end
+
+	printf("DEBUG: conf_get_string: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
-		return char_ini:r_string(section, field)
+		if gulag_name and gulag_name ~= "" then
+			return gulag_name .. "_" .. char_ini:r_string(section, field)
+		else
+			return char_ini:r_string(section, field)
+		end
 	end
 	if not mandatory then
 		return nil
@@ -108,10 +113,12 @@ function conf_get_string(char_ini, section, field, override, object, mandatory)
 	utils.abort("%s", err)
 end
 
-function conf_get_number(char_ini, section, field, override, object, mandatory)
-	if override ~= nil then
-		return override
+function cfg_get_number(char_ini, section, field, object, mandatory)
+	if mandatory == nil then
+		utils.abort("section '%s': wrong arguments order in call to cfg_get_number", section)
 	end
+
+	printf("DEBUG: conf_get_number: section='%s', field='%s'", section, field)
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
 		return char_ini:r_s32(section, field)
 	end
@@ -330,4 +337,25 @@ function wpn_info_equal(wpn_info1, wpn_info2)
 	return wpn_info1["id"] == wpn_info2["id"] and wpn_info1["ammo"] == wpn_info2["ammo"]
 end
 
+function get_scheme_by_section(section)
+	local scheme = string.gsub(section, "%d", "")
+	return scheme
+end
+
+-- a | b | c  ==>  { 1 = "a", 2 = "b", 3 = "c" }
+function parse_params(params)
+	local par_num
+	local fld_num
+	local fld
+	local val
+
+	local rslt = {}
+
+	par_num = 1
+	for param in string.gfind(params, "([%w_\\%=%-%,]+)|*") do
+		rslt[par_num] = param
+		par_num = par_num + 1
+	end
+	return rslt
+end
 
