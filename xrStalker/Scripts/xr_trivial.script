@@ -38,6 +38,18 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluator
 ---------------------------------------------------------------------------------------------------------------------
+--Пока нет донной информации, работаем, только получили, перестаем выполнятся
+class "info_portion_evaluator" (property_evaluator)
+function info_portion_evaluator:__init (name, info_portion) super ()
+    self.info = info_portion
+end
+
+function info_portion_evaluator:evaluate()
+    return level.actor():has_info(self.info) == false
+end
+---------------------------------------------------------------------------------------------------------------------
+-- Evaluator
+---------------------------------------------------------------------------------------------------------------------
 class "artifact_evaluator" (property_evaluator)
 --Пока self.a.enabled и артефакт а аномалии возвращает
 function artifact_evaluator:__init (name, storage) super ()
@@ -71,13 +83,18 @@ end
 
 function can_attack_enemy_evaluator:evaluate()
 
-    local wpn = self.object:best_weapon()
-
-    if(isWeapon(wpn) == false) then
-        return false
+--    local wpn = self.object:best_weapon()
+	if(self.object:object("wpn_ak74") or self.object:object("wpn_toz34") ) then
+    	return true
     end
 
-    return true
+    return false
+
+--    if(isWeapon(wpn) == false) then
+--        return false
+--    end
+
+--    return true
 end
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
@@ -725,10 +742,10 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 
 	-- Инициализируем инфопоршн
---	local actor = level.actor()
---	if actor ~= nil then
---		actor:give_info_portion("escape_novice_has_weapon")
---	end
+	local actor = level.actor()
+	if actor ~= nil then
+		actor:give_info_portion("escape_novice_has_weapon")
+	end
 
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -789,7 +806,7 @@ function add_novice3(obj)
     operators [ "stalker_attack" ]  = xr_actions_id.jon_stalker_attack
 
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "work" ],   this.enabled_evaluator("enabled evaluator", xr_motivator.storage[obj:id()].novice3 ) )
+    manager:add_evaluator ( properties[ "work" ],   this.info_portion_evaluator("enabled evaluator", "escape_factory_bandits_dead" ) )
     manager:add_evaluator ( properties[ "attack" ], this.can_attack_enemy_evaluator("go to attack enemy", xr_motivator.storage[obj:id()].novice3, obj ) )
 
     local action = this.stalker_novice3_action ( "stalker_novice3_action", xr_motivator.storage[obj:id()].novice3 )
@@ -831,4 +848,3 @@ function bind_object( obj, name )
         this.add_novice3( obj )
     end
 end
-
