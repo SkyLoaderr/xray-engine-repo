@@ -22,6 +22,9 @@ struct CProfilePortion : public CProfileResultPortion {
 struct CProfileStats {
 	float			m_time;
 	ref_str			m_name;
+	u32				m_update_time;
+
+	IC				CProfileStats		();
 };
 
 class CProfiler {
