@@ -3,9 +3,9 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.35,		25,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.35,		25,		    150,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 ;Jump attack
-jump_glide_0	=		0.55,		20,		    1350,        0.0, 1.0, 3.0,		 -1.8, 1.8, -1.8, 1.8,								  3.8
+jump_glide_0	=		0.55,		20,		    450,        0.0, 1.0, 4.0,		 -1.8, 1.8, -1.8, 1.8,								  3.8
 
 [m_pseudodog_attack_effector]
 
@@ -199,8 +199,8 @@ idle_sound_delay		= 22000
 eat_sound_delay			= 3000
 attack_sound_delay		= 6500
 
-jump_factor				= 2			;(¢õü ñþû¹°õ, ªõü òv°õ ÿ¨vöþú)
-jump_delay				= 2000	;3000	;4000	;6000	;(¢ð¸ªþªð ÿ¨vöúþò)
+jump_factor				= 1.5			;(¢õü ñþû¹°õ, ªõü òv°õ ÿ¨vöþú)
+jump_delay				= 3000	;3000	;4000	;6000	;(¢ð¸ªþªð ÿ¨vöúþò)
 jump_min_dist			= 4.0 ; 2.0
 jump_max_dist			= 7.0	;10.0	;5.0
 jump_max_angle			= 0.3	;0.5	;1.0	;1.8
