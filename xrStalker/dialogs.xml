@@ -122,8 +122,8 @@
 			</phrase>
 			<phrase id="5">
 				<text>На Агропроме что-то раскопали военные сталкеры... \n Принеси мне это и я тебе хорошо заплачу.</text>
-				<next>7</next>
 				<next>8</next>
+				<next>7</next>
 			</phrase>
 			<phrase id="6">
 				<text>Ок. Я принесу ящик.</text>
