@@ -70,7 +70,7 @@ void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID*
 {
 	Device.Shader.Evict		();
 	
-	dwBaseVertex=dwBaseVert;
+	dwBaseVertex			= dwBaseVert;
 	if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 	R_CHK(HW.pDevice->CreateIndexBuffer(
 		dwCount*2,dwUsage,D3DFMT_INDEX16,D3DPOOL_DEFAULT,

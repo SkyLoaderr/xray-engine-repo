@@ -58,7 +58,7 @@ public:
 	vector<DWORD>									FVF;
 	vector<IDirect3DVertexBuffer8*>					VB;
 	vector<IDirect3DIndexBuffer8*>					IB;
-	vecGEO											Visuals;
+	vector<CVisual*>								Visuals;
 	CPSLibrary										PSystems;
 
 	CLightDB_Static									L_DB;

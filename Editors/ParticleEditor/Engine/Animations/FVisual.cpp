@@ -88,7 +88,7 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 			R_CHK				(HW.pDevice->CreateIndexBuffer(iCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices));
 			R_CHK				(pIndices->Lock(0,0,&bytes,0));
 			PSGP.memCopy		(bytes, data->Pointer(), iCount*2);
-			pVertices->Unlock	();
+			pIndices->Unlock	();
 		}
 	}
 }
