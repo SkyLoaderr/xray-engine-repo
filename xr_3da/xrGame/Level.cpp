@@ -184,34 +184,6 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			Sleep	(1);
 		}
 
-		//
-#pragma todo("spawning monsters")
-/*		char		Parsed	[128];
-		{
-			int id		= Level().get_RPID	("RP_04");
-			R_ASSERT	(id>=0);
-			sprintf		(Parsed,"m_enemy,%d,1,0,0",id);
-			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
-		}
-		{
-			int id		= Level().get_RPID	("RP_F01");
-			R_ASSERT	(id>=0);
-			sprintf		(Parsed,"m_friend,%d,0,0,0",id);
-			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
-		}
-		{
-			int id		= Level().get_RPID	("RP_F02");
-			R_ASSERT	(id>=0);
-			sprintf		(Parsed,"m_friend,%d,0,0,0",id);
-			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
-		}
-		{
-			int id		= Level().get_RPID	("RP_F03");
-			R_ASSERT	(id>=0);
-			sprintf		(Parsed,"m_friend,%d,0,0,0",id);
-			Engine.Event.Signal	("LEVEL:spawn",DWORD(LPCSTR(Parsed)));
-		}
-*/
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
 		Device.Shader.DeferredLoad			(FALSE);
@@ -223,6 +195,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		while (!isCompleted_Sync())			Sleep(5);
 
 		// signal OK
+		pApp->LoadEnd	();
 		return TRUE;
 	}
 	Device.Shader.DeferredLoad	(FALSE);
