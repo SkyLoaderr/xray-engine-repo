@@ -119,7 +119,6 @@ VOID CDeflector::OA_Export()
 	UVpoint		dim, guard, half, scale;
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
 	guard.set	(BORDER/dim.u,BORDER/dim.v);
-	half.set	(.5f/512.f, .5f/512.f);
 	scale.set	(1.f-2.f*guard.u, 1.f-2.f*guard.v); 
 
 	// *** Addressing 
@@ -133,8 +132,8 @@ VOID CDeflector::OA_Export()
 
 		for (int i=0; i<3; i++) 
 		{
-			R.uv[i].u = scale.u*(T->uv[i].u-min.u)/size.u + guard.u + half.u; 
-			R.uv[i].v = scale.v*(T->uv[i].v-min.v)/size.v + guard.v + half.v; 
+			R.uv[i].u = scale.u*(T->uv[i].u-min.u)/size.u + guard.u; 
+			R.uv[i].v = scale.v*(T->uv[i].v-min.v)/size.v + guard.v; 
 			bb.modify(F->v[i]->P);
 		}
 		*T = R;
@@ -171,17 +170,18 @@ VOID CDeflector::GetRect(UVpoint &min, UVpoint &max)
 
 VOID CDeflector::Capture(CDeflector *D,UVpoint &fBase,UVpoint &fScale)
 {
+	UVpoint half; half.set(.5f/512.f, .5f/512.f);
 	for (UVIt T=D->tris.begin(); T!=D->tris.end(); T++)
 	{
 		UVtri	P;
 		Face	*F = T->owner;
 
-		P.uv[0].set(T->uv[0]); P.uv[0].mul(fScale); P.uv[0].add(fBase); 
-		P.uv[1].set(T->uv[1]); P.uv[1].mul(fScale); P.uv[1].add(fBase); 
-		P.uv[2].set(T->uv[2]); P.uv[2].mul(fScale); P.uv[2].add(fBase); 
+		P.uv[0].set(T->uv[0]); P.uv[0].mul(fScale); P.uv[0].add(fBase); P.uv[0].add(half);
+		P.uv[1].set(T->uv[1]); P.uv[1].mul(fScale); P.uv[1].add(fBase); P.uv[1].add(half);
+		P.uv[2].set(T->uv[2]); P.uv[2].mul(fScale); P.uv[2].add(fBase); P.uv[2].add(half); 
 
-		P.owner = F;
-		F->pDeflector=this;
+		P.owner			= F;
+		F->pDeflector	= this;
 		F->AddChannel	(P.uv[0], P.uv[1], P.uv[2]);
 		tris.push_back	(P);
 	}
