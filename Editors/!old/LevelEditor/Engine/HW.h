@@ -55,6 +55,6 @@ public:
 #endif
 };
 
-extern ENGINE_API CHW HW;
+extern ENGINE_API CHW		HW;
 
 #endif // !defined(AFX_HW_H__0E25CF4A_FFEC_11D3_B4E3_4854E82A090D__INCLUDED_)
