@@ -18,6 +18,7 @@
 #include "ai_script_classes.h"
 #include "xrserver_objects_alife.h"
 
+#define OBJECT_REMOVE_TIME 100000
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -60,7 +61,6 @@ void CGameObject::Load(LPCSTR section)
 		self->spatial.type	|=	STYPE_VISIBLEFORAI;
 		self->spatial.type	&= ~STYPE_REACTTOSOUND;
 	}
-	//////////////////////////////////////
 }
 
 void CGameObject::reinit	()
@@ -206,6 +206,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		}
  		inherited::net_Spawn	(DC);
 	}
+
+	m_bObjectRemoved = false;
 
 	create_physic_shell			();
 	return						(TRUE);
@@ -523,4 +525,29 @@ void CGameObject::activate_physic_shell()
 void CGameObject::setup_physic_shell	()
 {
 	m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
+}
+
+bool CGameObject::NeedToDestroyObject()	
+{
+	return false;
+}
+
+void CGameObject::DestroyObject()			
+{
+	if(m_bObjectRemoved) return;
+	m_bObjectRemoved = true;
+
+	NET_Packet			P;
+	u_EventGen			(P,GE_DESTROY,ID());
+	Msg					("DestroyEntity: ge_destroy: [%d] - %s",ID(),*cName());
+	if (Local()) u_EventSend			(P);
+}
+
+void CGameObject::shedule_Update	(u32 dt)
+{
+	//уничтожить
+	if(NeedToDestroyObject())
+		DestroyObject();
+
+	inherited::shedule_Update	(dt);
 }
