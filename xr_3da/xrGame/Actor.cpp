@@ -1626,6 +1626,7 @@ void CActor::NetUpdate_Apply(net_update &NetUpdate, float dt)
 	g_sv_Orientate				(NET_Last.mstate,dt			);
 	g_Orientate					(NET_Last.mstate,dt			);
 	g_Physics					(NET_Last.p_accel,Jump,dt	);
-	g_SetAnimation				(NET_Last.mstate			);
+//	g_SetAnimation				(NET_Last.mstate			);
 
+	mstate_real	= NET_Last.mstate;
 };
