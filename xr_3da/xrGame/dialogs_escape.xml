@@ -632,11 +632,9 @@
                 <text>escape_trader_tutorial_1121</text>
             </phrase>
             <phrase id="0">
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <give_info>esc_trader_monolog_1</give_info>
-                <next>3</next>
+				<text>escape_trader_tutorial_3</text>
+				<give_info>esc_trader_monolog_1</give_info>
+                <next>1</next>
             </phrase>
             <phrase id="11">
                 <text>escape_trader_tutorial_11</text>
@@ -647,10 +645,6 @@
                 <text>escape_trader_tutorial_1</text>
                 <give_info>esc_trader_tutorial_choice</give_info>
                 <next>11</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_trader_tutorial_3</text>
-                <next>1</next>
             </phrase>
             <phrase id="1111">
                 <text>escape_trader_tutorial_1111</text>
