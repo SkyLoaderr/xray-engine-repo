@@ -118,7 +118,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="3"
 				AdditionalIncludeDirectories=".."
-				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;XRXMLPARSER_EXPORTS"
+				PreprocessorDefinitions="MIXED,NDEBUG;WIN32;_WINDOWS;XRXMLPARSER_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
 				RuntimeLibrary="2"
