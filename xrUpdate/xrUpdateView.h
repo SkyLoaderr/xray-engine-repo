@@ -101,7 +101,9 @@ public:
 
 	LRESULT					OnTvCheckbox										(WPARAM wp, LPARAM lp);
 	LRESULT					OnAddLogMsg											(WPARAM wp, LPARAM lp);
-
+	void					updateCheckedItems									();
+	void					RedrawChecks										(CTask* t);
+	void					SetCheckItem										(HTREEITEM itm, BOOL b);
 	afx_msg void OnTvnBegindragTree1(NMHDR *pNMHDR, LRESULT *pResult);
 	virtual void OnMouseMove(UINT nFlags, CPoint point);
 	virtual void OnLButtonUp(UINT nFlags, CPoint point);
@@ -110,3 +112,6 @@ public:
 
 inline CxrUpdateDoc* CxrUpdateView::GetDocument() const
    { return reinterpret_cast<CxrUpdateDoc*>(m_pDocument); }
+extern void updateTaskTree();
+extern void RunTask();
+extern CxrUpdateView* g_view;

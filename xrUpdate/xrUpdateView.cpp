@@ -19,7 +19,7 @@
 #endif
 
 extern CTreeCtrl* g_tree_ctrl = NULL;
-
+extern CxrUpdateView* g_view  = NULL;
 
 void updateTreeItemName(HTREEITEM itm,CTask* t)
 {
@@ -27,6 +27,21 @@ void updateTreeItemName(HTREEITEM itm,CTask* t)
 		return;
 
 	g_tree_ctrl->SetItemText( itm, t->name() );
+}
+
+void updateTaskTree()
+{
+	if(!g_tree_ctrl||!g_view)
+		return;
+	
+	g_view->updateCheckedItems();
+}
+void RunTask()
+{
+	if(!g_tree_ctrl||!g_view)
+		return;
+	
+	g_view->OnBnClickedBtnRun();
 }
 // CxrUpdateView
 
@@ -92,10 +107,12 @@ CxrUpdateView::CxrUpdateView()
 	m_copy_folder_dlg = xr_new<CCopyFolderDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_CPY_FOLDER),this);
 	m_exec_process_dlg = xr_new<CExecAppTaskDlgProp>(MAKEINTRESOURCE(IDD_DIALOG_EXEC_PROCESS),this);
 	m_batch_process_dlg = xr_new<CBatchTaskDlgProp>(MAKEINTRESOURCE(IDD_BATCH_TASK),this);
+	g_view = this;
 }
 CxrUpdateView::~CxrUpdateView()
 {
 	g_tree_ctrl = NULL;
+	g_view		= NULL;
 	
 	m_copy_files_dlg->DestroyWindow();
 	xr_delete(m_copy_files_dlg);
@@ -190,22 +207,6 @@ void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pH
 	CTask* t = GetDocument()->m_task;
 	if(!t)
 		return;
-/*
-	if(!m_root)
-		CreateRoot();
-*/
-
-/*
-	while(HTREEITEM i = m_tree_ctrl.GetChildItem(m_root))
-		m_tree_ctrl.DeleteItem(i);
-*/
-
-//	FillTaskTree(t,m_root);
-
-//	m_tree_ctrl.DeleteAllItems();
-
-//	deleteItemRecurs(&m_tree_ctrl, TVI_ROOT, FALSE);
-
 
     m_tree_ctrl.SetRedraw(FALSE);
 	if (m_tree_ctrl.GetCount() > 0)
@@ -218,7 +219,7 @@ void CxrUpdateView::OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pH
 	FillTaskTree(t,TVI_ROOT);
 
 	m_tree_ctrl.SetRedraw(TRUE);
-//	GetDocument()->SetModifiedFlag(TRUE);
+
 }
 
 //8-067-441-52-07 саша гулова
@@ -743,4 +744,29 @@ HTREEITEM CxrUpdateView::CopyItem( HTREEITEM hItem, HTREEITEM htiNewParent,
  // Вызываем виртуальную функцию для дальнейшей обработки наследованного класса
 // OnItemCopied( hItem, hNewItem);
  return hNewItem;
+}
+
+void CxrUpdateView::SetCheckItem(HTREEITEM itm, BOOL b)
+{
+	m_tree_ctrl.SetCheck(itm,b);//self
+}
+void CxrUpdateView::RedrawChecks (CTask* t)
+{
+	if(!t)
+		return;
+
+	u32	 cnt = t->sub_task_count		();
+	for(u32 i=0; i<cnt; ++i)
+		RedrawChecks( t->get_sub_task(i) );
+
+	SetCheckItem(t->m_tree_itm, t->is_enabled());
+}
+
+void CxrUpdateView::updateCheckedItems ()
+{
+	CTask* t = GetDocument()->m_task;
+	if(!t)
+		return;
+	
+	RedrawChecks(t);
 }

@@ -35,7 +35,7 @@ void	__stdcall log_cb_fn (LPCSTR string)
 {
 	DWORD a;
 	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);  
-	BOOL ss = WriteConsole(hStdout,string,strlen(string),&a,NULL);
+	BOOL ss = WriteConsole(hStdout,string,xr_strlen(string),&a,NULL);
 	ss = WriteConsole(hStdout,"\n",1,&a,NULL);
 
 /*	if(!g_log_dlg)
@@ -104,11 +104,15 @@ BOOL CxrUpdateApp::InitInstance()
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-	if (!ProcessShellCommand(cmdInfo))
-		return FALSE;
+	ProcessShellCommand(cmdInfo);
+
 	m_pMainWnd->ShowWindow(SW_SHOW);
 	m_pMainWnd->UpdateWindow();
 
+	updateTaskTree();
+	
+	if(strstr( strlwr(m_lpCmdLine), "-run"))
+		RunTask();
 
 	return TRUE;
 }
