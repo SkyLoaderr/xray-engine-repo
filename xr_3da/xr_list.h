@@ -87,6 +87,11 @@ public:
 		CopyMemory					( data+_count, L, cnt*sizeof(T) );
 		_count						+= cnt;
 	}
+	IC	void		compact					( )
+	{
+		_size		= _count;
+		data		= (T *) realloc(data,_size*sizeof(T));
+	}
 
 	IC	T&			operator[]				( int i )			{ VERIFY(i>=0 && i<_count); return data[i]; };
 	IC	T*			begin					( )					{ return data; }
