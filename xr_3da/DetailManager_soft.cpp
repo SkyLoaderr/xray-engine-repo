@@ -104,13 +104,14 @@ void CDetailManager::soft_Render	()
 					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
 					{
 						Fvector& src		= srcIt->P;
+						Fcolor clr;			clr.set				(Instance.C,Instance.C,Instance.C,1.f);
 
 						//
 						Fvector pos;		mXform.transform_tiny	(pos,src);			// normal coords
-						Fvector pos2D;		pos2D.set				(pos.x,0,pos.z);	// 2D pos
+						float	angle		= pos.x*cx + pos.y*cy + pos.z*cz + 1.f*tm;
+						float	dot			= sinf					(angle);
 						float	H			= pos.y - mXform.c.y;						// height of vertex (scaled)
 						float	frac		= src.y/height;								// fraction of model height
-						float	dot			= sinf		(tm + pos.x*cx+pos.y*cy+pos.z*cz);
 						float	inten		= .1f * H * dot;
 
 						//
@@ -122,9 +123,7 @@ void CDetailManager::soft_Render	()
 						Fvector temp;		temp.lerp	(ctrl1, ctrl2, frac);
 						Fvector temp2;		temp2.lerp	(ctrl2, ctrl3, frac);
 						Fvector result;		result.lerp	(temp,	temp2, frac);
-						pos2D.add			(pos2D,result);
-						pos2D.y				+=	mXform.c.y;
-						dstIt->P			=	pos2D;
+						dstIt->P.add		(pos,result);
 
 						// 
 						/*
@@ -132,7 +131,6 @@ void CDetailManager::soft_Render	()
 						norm.normalize		();
 						float	dot			= norm.dotproduct	(ldir);
 						*/
-						Fcolor clr;			clr.set				(Instance.C,Instance.C,Instance.C,1.f);
 						clamp				(dot,0.f,1.f		);
 						clr.mul_rgb			(.9f+dot*dot*frac	);
 
