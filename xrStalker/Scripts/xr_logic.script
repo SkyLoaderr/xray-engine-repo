@@ -744,3 +744,9 @@ function mob_capture(mob, reset_actions)
 		end
 	end
 end
+
+function mob_captured(mob)
+	return mob:get_script()
+end
+
+

@@ -35,6 +35,8 @@ function abort(fmt, ...)
 	local reason = string.format(fmt, unpack(arg))
 	printf("ERROR: %s", reason)
 	patrol(".." .. reason .. "..")
+	--printf("! Assertion failed : %s", reason)
+	--printf("%s",nil)
 end
 
 -- Выводит отладочное сообщение в лог, если скрипт активен (активный скрипт выбирается с помощью

@@ -106,10 +106,12 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		self.crouch = false
 		self.running = true
 		self.danger = false
+		self.sprint = false
 	else
 		self.crouch = if_then_else(mode.crouch, true, false)
 		self.running = if_then_else(mode.running, true, false)
 		self.danger = if_then_else(mode.danger, true, false)
+		self.sprint = if_then_else(mode.sprint, true, false)
 	end
 	self.standing_crouch = self.crouch
 	self.standing_danger = self.danger
@@ -439,9 +441,12 @@ function move_mgr:update(no_dialog_mgr_update)
 				-- Кто-то сдвинул нас с точки, вернуться путем сброса схемы
 				-- (нельзя просто продолжить движение, потому что сталкерный move manager попытается
 				-- идти к следующей точке, которой нет)
-				self:reset(self.path_walk, self.path_walk_info, self.path_look, self.path_look_info, self.team,
-					{ crouch = self.crouch, running = self.running, danger = self.danger },
-					{ obj = self.move_cb_obj, func = self.move_cb_func })
+				self:reset(self.path_walk, self.path_walk_info,
+					self.path_look, self.path_look_info,
+					self.team,
+					{ crouch = self.crouch, running = self.running,
+					  danger = self.danger, sprint = self.sprint },
+					{ obj = self.move_cb_obj, func = self.move_cb_func } )
 			end
 		else
 			if self.object:animation_count() ~= 0 then
@@ -490,9 +495,13 @@ end
 -------------------------------------------------------------------------------
 
 function move_mgr:update_movement_state()
-	self.object:set_body_state(if_then_else(self.crouch, move.crouch, move.standing))
-	self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
-	self.object:set_movement_type(if_then_else(self.running, move.run, move.walk))
+	self.object:set_body_state(if_then_else(self.crouch and not self.sprint, move.crouch, move.standing))
+	if self.sprint then
+		self.object:set_mental_state(2--[[anim.panic]]) -- FIXME: убрать заплатку
+	else
+		self.object:set_mental_state(if_then_else(self.danger or self.crouch, anim.danger, anim.free))
+	end
+	self.object:set_movement_type(if_then_else(self.running or self.sprint, move.run, move.walk))
 	self.moving = true
 
 	self.object:set_sight(look.danger, nil, 0)
@@ -601,6 +610,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 	self.standing_danger = self.danger
 
+	local suggested_sprint = self.path_walk_info[index]["spr"]
+	if suggested_sprint == "true" then
+		self.sprint = true
+	else
+		self.sprint = false
+	end
+
 	self.no_wpn = (self.path_walk_info[index]["nowpn"] == "true")
 	self.standing_no_wpn = self.no_wpn
 	
@@ -649,25 +665,6 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		local section = xr_motivator.storage[npc_id]["active_section"]
 		local signals = xr_motivator.storage[npc_id][utils.get_scheme_by_section(section)].signals
 		signals[sig] = true
-	end
-
-	local new_path_walk = self.path_walk_info[index]["w"]
-	if new_path_walk then
-		self.path_walk = new_path_walk
-
-		local new_path_look = self.path_walk_info[index]["l"]
-		self.path_look = new_path_look -- can also be nil, it's ok
-
-		self.path_walk_info = utils.path_parse_waypoints(self.path_walk)
-		if self.path_look then
-			self.path_look_info = utils.path_parse_waypoints(self.path_look)
-		else
-			self.path_look_info = nil
-		end
-		self:reset(self.path_walk, self.path_walk_info, self.path_look, self.path_look_info, self.team,
-			{ crouch = self.crouch, running = self.running, danger = self.danger },
-			{ obj = self.move_cb_obj, func = self.move_cb_func })
-		return
 	end
 
 	local stop_probability = self.path_walk_info[index]["p"]
