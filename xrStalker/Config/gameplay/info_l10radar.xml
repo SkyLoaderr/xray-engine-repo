@@ -23,5 +23,11 @@
 	</info_portion>
 	<info_portion id="rad_find_stalkers_free_start">
 	</info_portion>
+	<info_portion id="rad_find_stalkers_done">
+	</info_portion>
+	<info_portion id="rad_find_treasurer_start">
+	</info_portion>
+	<info_portion id="rad_find_treasurer_done">
+	</info_portion>
 
 </game_information_portions>
