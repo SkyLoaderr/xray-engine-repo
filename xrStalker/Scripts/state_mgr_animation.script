@@ -457,7 +457,9 @@ function animation:set_state(id, reset)
 	--' выход из старого состояния
 	self.npc:clear_animations()	
 	if self.animations[self.states.current_state] ~= nil then
-		if self.animations[self.states.current_state].out ~= nil then
+		if self.animations[self.states.current_state].out ~= nil and
+		   self.animations[self.states.current_state].out[self:weapon_slot()] ~= nil		
+		then
 			if type(self.animations[self.states.current_state].out[self:weapon_slot()]) == "table" then
 				for k,v in self.animations[self.states.current_state].out[self:weapon_slot()] do
 					self.npc:add_animation(v, true)
