@@ -18,7 +18,7 @@ void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Pack
 		if (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 		{
 			CL->owner		= E;
-			strcpy			(E->s_name_replace,CL->Name);
+			strcpy			(E->s_name_replace,*CL->Name);
 		}
 
 		// Associate
