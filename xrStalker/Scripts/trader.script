@@ -1,8 +1,11 @@
 is_creature_entered = false
 is_actor_entered = false
-stalker_already_saw_actor = false
+is_creature_entered_2 = false
+is_actor_entered_2 = false
+trader_already_saw_actor = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
+
 function on_enter(zone,object)
 	is_creature_entered = true
 	printf("Object %s entered zone %s",object:name(),zone:name())
@@ -18,12 +21,33 @@ function on_exit(zone,object)
 	printf("Object %s exited zone %s",object:name(),zone:name())
 end
 
+function on_enter_2(zone,object)
+	is_creature_entered_2 = true
+	printf("Object %s entered zone %s",object:name(),zone:name())
+	if event_zone_id == zone:id() and actor_id == object:id() then 
+		printf("actor entering in our zone")
+		is_actor_entered_2 = true
+	end
+end
+
+function on_exit_2(zone,object)
+	is_creature_entered_2 = false
+	is_actor_entered_2 = false
+	printf("Object %s exited zone %s",object:name(),zone:name())
+end
+
+
 function main()
 
 	local event	= get_level_object("script_zone0000")
 --  создаем глоб. переменную содержащую id зоны объект который доступен по переменной event 
 	event_zone_id = event:id()
  
+	local event2	= get_level_object("script_zone0001")
+--  создаем глоб. переменную содержащую id зоны объект который доступен по переменной event 
+	event_zone_id = event2:id()
+
+
 	local actor   	= get_actor()
 	local trader	= get_level_object("m_trader0000")
 
@@ -38,6 +62,8 @@ function main()
 	local sound_skuchno = sound_object("scripts\\idle\\say_skuchno")
 	local sound_baran = sound_object("scripts\\idle\\say_baran")
 	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
+	local sound_vikladivay = sound_object("scripts\\trader\\vikladivay")
+
 
 
 	event:clear_callback(true)
@@ -46,8 +72,14 @@ function main()
 	event:set_callback(this.on_enter,true)
 	event:set_callback(this.on_exit,false)
 
+	event2:clear_callback(true)
+	event2:clear_callback(false)
+
+	event2:set_callback(this.on_enter_2,true)
+	event2:set_callback(this.on_exit_2,false)
+
 	while true do
-		if is_actor_entered and actor.health > 0 then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
 			printf("entered")
 			flush()
 			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
@@ -58,7 +90,7 @@ function main()
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
 			printf("entered")
 			flush()
 			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
@@ -69,7 +101,7 @@ function main()
 	end
 
 	while true do
-		if is_actor_entered and actor.health > 0 then 
+		if is_actor_entered and actor.health > 0 and trader_already_saw_actor = false then 
 			printf("entered")
 			flush()
 			sound_baran:play_at_pos		(trader,trader:position(),0);
@@ -84,6 +116,19 @@ function main()
 			printf("exit")
 			flush()
 			sound_skuchno:play_at_pos		(trader,trader:position(),0);
+			trader_already_saw_actor = false
+			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if is_actor_entered_2 and actor.health > 0 then 
+			printf("entered 2")
+			flush()
+			sound_vikladivay:play_at_pos		(trader,trader:position(),0);
+			trader_already_saw_actor = true
 			wait(3000)			
 			break
 		end
@@ -100,6 +145,7 @@ function main()
 			wait(3000)			
 			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
 			wait(3000)			
+			trader_already_saw_actor = true
 			break
 		end
 		wait()			
