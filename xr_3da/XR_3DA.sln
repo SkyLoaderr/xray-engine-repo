@@ -59,11 +59,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrRender_R2", "xrRender_R2\
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleDLL", "..\xrParticles\ParticleDLL.vcproj", "{94A1C366-3D19-48E6-8170-4ADC2E70DF97}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrXMLParser", "..\xrXMLParser\xrXMLParser.vcproj", "{94A1C366-3D19-48E6-8170-4ADC2E70DF98}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
@@ -74,16 +69,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "..\xrLUA\xrLUA.vcp
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "P:\xrODE\contrib\msvc7\ode_default\default.vcproj", "{1BF75FEB-87DD-486C-880B-227987D191C2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ode", "..\xrODE\contrib\msvc7\ode_default\default.vcproj", "{1BF75FEB-87DD-486C-880B-227987D191C2}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrParticles", "..\xrParticles\xrParticles.vcproj", "{94A1C366-3D19-48E6-8170-4ADC2E70DF97}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
+	EndProjectSection
+EndProject
 Global
-	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
-		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
-	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 13
+		SccNumberOfProjects = 12
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -119,23 +116,18 @@ Global
 		SccLocalPath8 = .
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection8 = xrRender_R2\\
-		SccProjectUniqueName9 = ..\\xrParticles\\ParticleDLL.vcproj
-		SccProjectName9 = \u0022$/xrParticles\u0022,\u0020GQJAAAAA
-		SccLocalPath9 = ..\\xrParticles
+		SccProjectUniqueName9 = ..\\xrXMLParser\\xrXMLParser.vcproj
+		SccProjectName9 = \u0022$/xrXMLParser\u0022,\u0020MGLAAAAA
+		SccLocalPath9 = ..\\xrXMLParser
 		CanCheckoutShared = true
-		SccProjectUniqueName10 = ..\\xrXMLParser\\xrXMLParser.vcproj
-		SccProjectName10 = \u0022$/xrXMLParser\u0022,\u0020MGLAAAAA
-		SccLocalPath10 = ..\\xrXMLParser
+		SccProjectUniqueName10 = ..\\xrLUA\\xrLUA.vcproj
+		SccProjectName10 = \u0022$/xrLUA\u0022,\u0020LCMAAAAA
+		SccLocalPath10 = ..\\xrLUA
 		CanCheckoutShared = true
-		SccProjectUniqueName11 = ..\\xrLUA\\xrLUA.vcproj
-		SccProjectName11 = \u0022$/xrLUA\u0022,\u0020LCMAAAAA
-		SccLocalPath11 = ..\\xrLUA
+		SccProjectUniqueName11 = ..\\xrParticles\\xrParticles.vcproj
+		SccProjectName11 = \u0022$/xrParticles\u0022,\u0020IRQAAAAA
+		SccLocalPath11 = ..\\xrParticles
 		CanCheckoutShared = true
-		SccProjectUniqueName12 = P:\\xrODE\\contrib\\msvc7\\ode_default\\default.vcproj
-		SccProjectName12 = \u0022$/xrODE\u0022,\u0020AJPAAAAA
-		SccLocalPath12 = P:\\xrODE
-		CanCheckoutShared = true
-		SccProjectFilePathRelativizedFromConnection12 = contrib\\msvc7\\ode_default\\
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -191,12 +183,6 @@ Global
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Mixed.Build.0 = Mixed|Win32
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Release.ActiveCfg = Release|Win32
 		{963BA4E5-499A-454D-B002-1D5ECE0527A6}.Release.Build.0 = Release|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.ActiveCfg = Debug|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.Build.0 = Debug|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.ActiveCfg = Mixed|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.Build.0 = Mixed|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.ActiveCfg = Release|Win32
-		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.Build.0 = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Debug.ActiveCfg = Debug|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Debug.Build.0 = Debug|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98}.Mixed.ActiveCfg = Mixed|Win32
@@ -215,11 +201,20 @@ Global
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.Mixed.Build.0 = Mixed|Win32
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.Release.ActiveCfg = Release|Win32
 		{1BF75FEB-87DD-486C-880B-227987D191C2}.Release.Build.0 = Release|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.ActiveCfg = Debug|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.Build.0 = Debug|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.ActiveCfg = Mixed|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.Build.0 = Mixed|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.ActiveCfg = Release|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
 	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 EndGlobal

@@ -23,6 +23,7 @@
 #include "..\igame_level.h"
 #include "..\blenders\blender.h"
 #include "..\blenders\blender_clsid.h"
+#include "..\psystem.h"
 #include "xrRender_console.h"
 #include "FStaticRender.h"
 

@@ -100,7 +100,7 @@ namespace PS
                             ~CPEDef				();
         
 		void				SetName				(LPCSTR name);
-        IC LPCSTR			Name				(){return *m_Name;}
+        IC LPCSTR			Name				()const{return *m_Name;}
         void				CreateShader		();
         void				DestroyShader		();
 
