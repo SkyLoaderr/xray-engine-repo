@@ -325,9 +325,10 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
-	while (dt>.05f)			{
-		Movement.Calculate		(accel,0,jump,0.05f,false);
-		dt -= .05f;
+	float step = 0.03f;
+	while (dt>step)			{
+		Movement.Calculate		(accel,0,jump,step,false);
+		dt -= step;
 	}
 	if (dt>0)	{
 		Movement.Calculate		(accel,0,jump,dt,false);
