@@ -91,8 +91,9 @@ function load_sound(obj)
 	theme["state"].types["starvation"].types["stalker"] = load_theme("state_starvation_stalker")
 	theme["state"].types["idle"] = { exec = npc_class, types = {}}
 	theme["state"].types["idle"].types["stalker"] = load_theme("state_idle_stalker")
-	theme["state"].types["sleep"] = { exec = npc_class, types = {}}
-	theme["state"].types["sleep"].types["stalker"] = load_theme("state_sleep_stalker")
+	
+	theme["sleep"] = { exec = npc_class, types = {}}
+	theme["sleep"].types["stalker"] = load_theme("state_sleep_stalker")
 
 	-- просьба о помощи
 	theme["help"] = { exec = npc_class, types = {}}
@@ -284,9 +285,6 @@ function state_class(avail_types, npc, target)
 	end
 	if npc.power < 0.5 then
 		table.insert(type, "fatique")
-	end
-	if xr_motivator.storage[npc:id()].state.body_state == xr_state.sleep then
-		type = {"sleep"}
 	end
 	return type
 end
