@@ -146,7 +146,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 
     visimask.zero	();
 	u32 dwCount 	= data->r_u32();
-	R_ASSERT2		(bones->size() < 64, "More than 64 bones is a crazy thing!");
+	R_ASSERT3		(bones->size() < 64, "More than 64 bones is a crazy thing!",N);
 	for (; dwCount; dwCount--)		{
 		string256 buf;
 
