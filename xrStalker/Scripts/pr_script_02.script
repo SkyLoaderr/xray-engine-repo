@@ -70,8 +70,8 @@ function main()
 
 			wait(1000)			
 
-			stalker1:script	(true,  this.script_name())
-			stalker2:script	(true,  this.script_name())
+			stalker1:script	(true,  pr_script_02.script_name())
+			stalker2:script	(true,  pr_script_02.script_name())
 
 			action(
 				stalker1,
@@ -321,10 +321,10 @@ function main()
 		if stalker1:see(actor) or stalker2:see(actor) then
 			printf("script 2!")
 			flush()
-			stalker1:script	(false, this.script_name())
-			stalker1:script	(true,  this.script_name())
-			stalker2:script	(false, this.script_name())
-			stalker2:script	(true,  this.script_name())
+			stalker1:script	(false, pr_script_02.script_name())
+			stalker1:script	(true,  pr_script_02.script_name())
+			stalker2:script	(false, pr_script_02.script_name())
+			stalker2:script	(true,  pr_script_02.script_name())
 
 			action(
 				stalker1,
@@ -376,14 +376,14 @@ function main()
 			wait(1000)			
 
 			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
-			stalker2:script	(false, this.script_name())
+			stalker2:script	(false, pr_script_02.script_name())
 		end
 		wait()
 		break
 	end
 
-	stalker1:script	(false, this.script_name())
-	stalker2:script	(false, this.script_name())
+	stalker1:script	(false, pr_script_02.script_name())
+	stalker2:script	(false, pr_script_02.script_name())
 
 	while true do
 		if actor.health <= 0 and stalker1.health > 0 then
