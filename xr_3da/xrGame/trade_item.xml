@@ -7,12 +7,12 @@ text x="0" y="0" font="letterica25" r="238" g="155" b="23"></text>
 	</static>
 
 	<!-- WEIGHT -->
-	<s	<static x="160" y="15" width="140" height="18">
+	<s	<static x="160" y="33" width="140" height="18">
 text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- COST -->
-	<s	<static x="160" y="33" width="240" height="18">
+	<s	<static x="160" y="15" width="240" height="18">
 text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 	
