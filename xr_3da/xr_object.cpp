@@ -24,10 +24,15 @@ void CObject::StatusBegin	()
 	pApp->pFont->OutSet	(S.x,-S.y);
 }
 
-void CObject::cNameSET		(LPCSTR N)
+void CObject::cName_set			(LPCSTR N)
 { 
-	_FREE(ObjectName); 
-	ObjectName=strdup(N); 
+	_FREE(NameObject);
+	NameObject=strdup(N); 
+}
+void CObject::cNameSect_set		(LPCSTR N)
+{ 
+	_FREE(NameObject);
+	NameObject=strdup(N); 
 }
 
 //----------------------------------------------------------------------
@@ -54,7 +59,8 @@ CObject::CObject		( )
 	pSector						= 0;
 	SectorMode					= EPM_AUTO;
 
-	ObjectName					= 0;
+	NameObject					= 0;
+	NameSection					= 0;
 	dwMinUpdate					= 20;
 	dwMaxUpdate					= 500;
 
@@ -70,8 +76,9 @@ CObject::~CObject( )
 	Device.seqDevDestroy.Remove	(this);
 
 	OnDeviceDestroy				();
-	_DELETE	( cfModel );
-	_FREE	( ObjectName	);
+	_DELETE	( cfModel		);
+	_FREE	( NameObject	);
+	_FREE	( NameSection	);
 	_FREE	( pVisualName	);
 }
 
@@ -89,9 +96,9 @@ void CObject::Load				( CInifile* ini, const char *section )
 {
 	// Name
 	R_ASSERT					(section);
-	_FREE						(ObjectName);
-	ObjectName					= strdup(section);
-
+	cName_set					(section);
+	cNameSect_set				(section);
+	
 	// Geometry and transform
 	Fvector dir,norm;
 	vPosition					= ini->ReadVECTOR(section,"position");

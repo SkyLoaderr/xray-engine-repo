@@ -38,7 +38,8 @@ protected:
 	bool								rbEnabled;
 	bool								rbVisible;
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
-	char*								ObjectName;
+	LPSTR								NameObject;
+	LPSTR								NameSection;
 protected:
 	// Geometric (transformation)
 	Fvector								vPosition;
@@ -97,9 +98,11 @@ public:
 	IC float							shadowSize		()					{ return sh_Size;	}
 
 	// Name management
-	IC const char *						cName			()					{ return ObjectName; }
-	void								cNameSET		(LPCSTR N);
-
+	IC LPCSTR							cName			()					{ return NameObject;	}
+	void								cName_set		(LPCSTR N);
+	IC LPCSTR							cNameSect		()					{ return NameSection;	}
+	void								cNameSect_set	(LPCSTR N);
+	
 	// Visible property
 	PropertyGP(getVisible,setVisible)	BOOL bVisible;
 	void								setVisible		(bool _Visible)		{ rbVisible = _Visible; }
