@@ -6,7 +6,7 @@
 #define	GI_THREADS		4
 const	u32				gi_num_photons		= 256;
 const	float			gi_optimal_range	= 15.f;
-const	float			gi_reflect			= .77f;
+const	float			gi_reflect			= .8f;
 const	float			gi_clip				= 0.1f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
@@ -54,6 +54,8 @@ Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
 		}
 	}
 	R.div	(25.f);
+	R.add	(1.f);	// make it appear more like white material
+	R.div	(2.f);
 	return	R;
 }
 
@@ -83,13 +85,14 @@ public:
 			} else {
 				src				= (*task)[task_it];
 				dst				= src;
-				//.if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
+				//if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type		= LT_SECONDARY;
 				dst.level		++;
 				task_it			++;
 				thProgress		= float(task_it)/float(task->size());
 			}
 			task_cs.Leave		();
+			if (dst.level>3)	continue;
 
 			// analyze
 			CRandom				random;
