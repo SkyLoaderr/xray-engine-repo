@@ -37,13 +37,13 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/xrLUA.dll"
+				OutputFile="x:\xrLUA.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/xrLUA.pdb"
+				ProgramDatabaseFile="x:\xrLUA.pdb"
 				SubSystem="2"
-				ImportLibrary="$(OutDir)/xrLUA.lib"
+				ImportLibrary=""
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"/>
