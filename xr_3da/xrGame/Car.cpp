@@ -1232,3 +1232,50 @@ BOOL CCar::UsedAI_Locations()
 {
 	return					(TRUE);
 }
+
+//void CCar::object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
+//{
+//
+//	dxGeomUserData *l_pUD1 = NULL;
+//	dxGeomUserData *l_pUD2 = NULL;
+//	l_pUD1 = retrieveGeomUserData(c.geom.g1);
+//	l_pUD2 = retrieveGeomUserData(c.geom.g2);
+//
+//	if(! l_pUD1) return;
+//	if(!l_pUD2) return;
+//
+//	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
+//	if(capturer)
+//	{
+//		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
+//		if(capture)
+//		{
+//			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object)
+//			{
+//				do_colide = false;
+//				capture->m_taget_element->Enable();
+//				if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+//			}
+//
+//		}
+//
+//
+//	}
+//
+//	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
+//	if(capturer)
+//	{
+//		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
+//		if(capture)
+//		{
+//			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object)
+//			{
+//				do_colide = false;
+//				capture->m_taget_element->Enable();
+//				if(capture->e_state==CPHCapture::cstReleased) capture->ReleaseInCallBack();
+//			}
+//
+//		}
+//
+//	}
+//}

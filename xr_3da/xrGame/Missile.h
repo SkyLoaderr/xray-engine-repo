@@ -28,6 +28,7 @@ public:
 	virtual void net_Destroy();
 
 	virtual void UpdateCL();
+	virtual void shedule_Update(u32 dt);
 	virtual void renderable_Render();
 
 	virtual void OnH_B_Chield();

@@ -27,7 +27,7 @@ public:
 	
 	virtual void OnAnimationEnd();
 	virtual void UpdateCL();
-	
+	virtual void shedule_Update(u32 dt);
 	virtual bool Activate();
 	virtual void Deactivate();
 	

@@ -199,7 +199,9 @@ void CMissile::UpdateCL()
 		}
 	}
 	
-	
+}
+void CMissile::shedule_Update(u32 dt)
+{
 	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
 	{
 		if(m_dwDestroyTime <= Device.dwTimeDelta) 

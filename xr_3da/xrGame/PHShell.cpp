@@ -989,7 +989,7 @@ void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 	if(!CPHObject::is_active()&&!CPHObject::NetInterpolation()) return;
 	(*elements.begin())->InterpolateGlobalTransform(m);
 	m->mulB_43	(m_object_in_root);
-	
+	//mXFORM.set(*m);
 	//m->c.add(m_object_in_root);
 }
 

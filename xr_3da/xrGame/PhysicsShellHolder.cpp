@@ -62,6 +62,8 @@ void CPhysicsShellHolder::activate_physic_shell()
 	l_p2.c.add					(l_fw);
 
 	m_pPhysicsShell->Activate	(l_p1, 0, l_p2);
+	PKinematics			(Visual())->CalculateBones_Invalidate	();
+	PKinematics			(Visual())->CalculateBones();
 	///XFORM().set					(l_p1);
 }
 

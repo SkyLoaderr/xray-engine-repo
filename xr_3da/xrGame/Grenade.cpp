@@ -238,6 +238,10 @@ void CGrenade::UpdateCL()
 	make_Interpolation();
 }
 
+void CGrenade::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+}
 
 
 bool CGrenade::Action(s32 cmd, u32 flags) 
