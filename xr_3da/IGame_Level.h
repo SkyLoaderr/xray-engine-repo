@@ -19,9 +19,6 @@ class ENGINE_API	IGame_Level		:
 	public pureFrame,
 	public IEventReceiver
 {
-public:
-	// Loader
-	IReader*					LL_Stream;
 protected:
 	// Network interface
 	CObject*					pCurrentEntity;

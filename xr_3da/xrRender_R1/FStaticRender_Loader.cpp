@@ -5,15 +5,14 @@
 #include "..\x_ray.h"
 #include "..\IGame_Persistent.h"
 
-void CRender::level_Load()
+void CRender::level_Load(IReader* fs)
 {
 	R_ASSERT			(0!=g_pGameLevel);
 
 	// Begin
 	pApp->LoadBegin					();
 	Device.Resources->DeferredLoad	(TRUE);
-	IReader*	fs					= g_pGameLevel->LL_Stream;
-	IReader*	chunk;
+	IReader*						chunk;
 
 	// Shaders
 	pApp->LoadTitle				("Loading shaders...");

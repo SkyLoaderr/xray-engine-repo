@@ -9,23 +9,23 @@
 #include "..\fbasicvisual.h"
 #include "..\CustomHUD.h"
  
-const	float		S_distance	= 48;
-const	float		S_distance2	= S_distance*S_distance;
+const	float		S_distance		= 48;
+const	float		S_distance2		= S_distance*S_distance;
+const	float		S_ideal_size	= 4.f;		// ideal size for the object
+const	float		S_fade			= 5.5;
+const	float		S_fade2			= S_fade*S_fade;
 
-const	float		S_fade		= 5.5;
-const	float		S_fade2		= S_fade*S_fade;
-
-const	float		S_level		= .1f;
-const	int			S_size		= 73;
-const	int			S_rt_size	= 512;
-const	int			batch_size	= 256;
-const	float		S_tess		= .5f;
-const	int 		S_ambient	= 64;
-const	int 		S_clip		= 256-24;
-const	D3DFORMAT	S_rtf		= D3DFMT_A8R8G8B8;
+const	float		S_level			= .05f;		// clip by energy level
+const	int			S_size			= 73;
+const	int			S_rt_size		= 512;
+const	int			batch_size		= 256;
+const	float		S_tess			= .5f;
+const	int 		S_ambient		= 64;
+const	int 		S_clip			= 256-16;
+const	D3DFORMAT	S_rtf			= D3DFMT_A8R8G8B8;
 const	float		S_blur_kernel	= .75f;
 
-const	u32			cache_old	= 30*1000;	// 30 secs
+const	u32			cache_old		= 30*1000;	// 30 secs
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -93,9 +93,12 @@ void CLightShadows::set_object	(IRenderable* O)
 		}
 
 		Fvector		C;	O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
-		float		R	= O->renderable.visual->vis.sphere.R;
-		float		D = C.distance_to(Device.vCameraPosition)+R;
-		if (D < S_distance)		current	= O;
+		float		R				= O->renderable.visual->vis.sphere.R;
+		float		D				= C.distance_to(Device.vCameraPosition)+R;
+					// D=0 -> P=0; 
+					// R<S_ideal_size -> P=max, R>S_ideal_size -> P=min
+		float		_priority		= (D/S_distance)*(S_ideal_size/(R+EPS));
+		if (_priority<1.f)		current	= O;
 		else					current = 0;
 		
 		if (current)
@@ -195,8 +198,8 @@ void CLightShadows::calculate	()
 		// iterate on lights
 		for (u32 l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)
 		{
-			CROS_impl::Light&	L	=	lights[l_it];
-			if (L.energy<S_level)	continue;
+			CROS_impl::Light&	L			=	lights[l_it];
+			if (L.energy<S_level)			continue;
 			
 			// setup rt+state(s) for first use
 			if (!bRTS)	{
@@ -278,13 +281,13 @@ void CLightShadows::calculate	()
 			}
 			
 			// register shadow and increment slot
-			shadows.push_back	(shadow());
-			shadows.back().O	=	C.O;
-			shadows.back().slot	=	slot_id;
-			shadows.back().C	=	C.C;
-			shadows.back().M	=	mCombineR;
-			shadows.back().L	=	L.source;
-			shadows.back().E	=	L.energy;
+			shadows.push_back		(shadow());
+			shadows.back().O		=	C.O;
+			shadows.back().slot		=	slot_id;
+			shadows.back().C		=	C.C;
+			shadows.back().M		=	mCombineR;
+			shadows.back().L		=	L.source;
+			shadows.back().E		=	L.energy;
 #ifdef DEBUG
 			shadows.back().dbg_HAT	=	p_hat;
 #endif
@@ -340,21 +343,21 @@ void CLightShadows::render	()
 	CDB::TRI*		TRIS	= DB->get_tris();
 	Fvector*		VERTS	= DB->get_verts();
 
-	int slot_line	= S_rt_size/S_size;
+	int			slot_line	= S_rt_size/S_size;
 	
 	// Projection and xform
-	float _43				= Device.mProject._43;
-	Device.mProject._43    -= 0.002f; 
-	RCache.set_xform_world	(Fidentity);
-	RCache.set_xform_project(Device.mProject);
-	Fvector	View			= Device.vCameraPosition;
+	float _43					=	Device.mProject._43;
+	Device.mProject._43			-=	0.002f; 
+	RCache.set_xform_world		(Fidentity);
+	RCache.set_xform_project	(Device.mProject);
+	Fvector	View				= Device.vCameraPosition;
 	
 	// Render shadows
 	RCache.set_Shader			(sh_World);
 	RCache.set_Geometry			(geom_World);
 	int batch					= 0;
 	u32 Offset					= 0;
-	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock(batch_size*3,geom_World->vb_stride,Offset);
+	FVF::LIT* pv				= (FVF::LIT*) RCache.Vertex.Lock	(batch_size*3,geom_World->vb_stride,Offset);
 	for (u32 s_it=0; s_it<shadows.size(); s_it++)
 	{
 		Device.Statistic.RenderDUMP_Srender.Begin	();
@@ -465,10 +468,14 @@ void CLightShadows::render	()
 			Fvector		T;
 			Fplane		ttp;	ttp.build_unit_normal(v[0],TT.N);
 
-			if (ttp.classify(View)<0)										continue;
-			int	c0		= PLC_calc(v[0],TT.N,S.L,Le,S.C);	if (c0>S_clip)	continue;	clamp(c0,S_ambient,255);
-			int	c1		= PLC_calc(v[1],TT.N,S.L,Le,S.C);	if (c1>S_clip)	continue;	clamp(c1,S_ambient,255);
-			int	c2		= PLC_calc(v[2],TT.N,S.L,Le,S.C);	if (c2>S_clip)	continue;	clamp(c2,S_ambient,255);
+			if (ttp.classify(View)<0)						continue;
+			int	c0		= PLC_calc(v[0],TT.N,S.L,Le,S.C);
+			int	c1		= PLC_calc(v[1],TT.N,S.L,Le,S.C);
+			int	c2		= PLC_calc(v[2],TT.N,S.L,Le,S.C);
+			if (c0>S_clip && c1>S_clip && c2>S_clip)		continue;	
+			clamp		(c0,S_ambient,255);
+			clamp		(c1,S_ambient,255);
+			clamp		(c2,S_ambient,255);
 
 			S.M.transform(T,v[0]); pv->set(v[0],CLS(c0),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 			S.M.transform(T,v[1]); pv->set(v[1],CLS(c1),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;

@@ -69,7 +69,7 @@ BOOL IGame_Level::Load			(u32 dwNum)
 
 	// Open
 	pApp->LoadTitle				("Opening stream...");
-	LL_Stream					= FS.r_open	("$level$","level");
+	IReader* LL_Stream			= FS.r_open	("$level$","level");
 	IReader	&fs					= *LL_Stream;
 
 	// HUD + Environment
@@ -86,7 +86,7 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	pApp->LoadSwitch			();
 
 	// Render-level Load
-	Render->level_Load			();
+	Render->level_Load			(LL_Stream);
 	tscreate.FrameEnd			();
 	// Msg						("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 
@@ -99,6 +99,7 @@ BOOL IGame_Level::Load			(u32 dwNum)
 
 	// Done
 	pApp->LoadTitle				("Syncronizing...");
+	FS.r_close					( LL_Stream );
 	bReady						= true;
 	if (!g_pGamePersistent->bDedicatedServer)	IR_Capture();
 	Device.seqRender.Add		(this);
