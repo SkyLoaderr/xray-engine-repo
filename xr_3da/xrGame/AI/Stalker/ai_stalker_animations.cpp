@@ -249,6 +249,7 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				dwCurrentAniSlot = 4;
 				break;
 			}
+			default : NODEFAULT;
 		}
 	if (m_tStateType == eStateTypeNormal) {
 		tpTorsoAnimation = 0;
