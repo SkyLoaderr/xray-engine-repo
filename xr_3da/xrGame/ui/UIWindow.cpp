@@ -8,6 +8,24 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+//#define LOG_ALL_WINDOWS
+
+#ifdef LOG_ALL_WINDOWS
+xr_vector<CUIWindow*> g_globalWnds;
+#endif
+
+void dump_all_wnds()
+{
+#ifdef LOG_ALL_WINDOWS
+	xr_vector<CUIWindow*>::iterator it = g_globalWnds.begin();
+	Msg("---g_globalWnds.size()==[%d]",g_globalWnds.size());
+	for(;it!=g_globalWnds.end();++it)
+	{
+		CUIWindow* w = *it;
+		shared_str name = w->WindowName();
+	}
+#endif
+}
 
 CUIWindow::CUIWindow()
 {
@@ -31,6 +49,9 @@ CUIWindow::CUIWindow()
 	Enable					(true);
 	EnableDoubleClick		(true);
 	m_bCursorOverWindow		= false;
+#ifdef LOG_ALL_WINDOWS
+	g_globalWnds.push_back(this);
+#endif
 }
 
 CUIWindow::~CUIWindow()
@@ -43,6 +64,12 @@ CUIWindow::~CUIWindow()
 		parent->CUIWindow::DetachChild( this );
 
 	DetachAll();
+
+#ifdef LOG_ALL_WINDOWS
+	xr_vector<CUIWindow*>::iterator it = std::find(g_globalWnds.begin(),g_globalWnds.end(),this);
+	VERIFY(it!=g_globalWnds.end());
+	g_globalWnds.erase(it);
+#endif
 }
 
 
@@ -84,7 +111,6 @@ void CUIWindow::AttachChild(CUIWindow* pChild)
 	
 	VERIFY( !IsChild(pChild) );
 	pChild->SetParent(this);
-
 	m_ChildWndList.push_back(pChild);
 }
 
@@ -100,11 +126,12 @@ void CUIWindow::DetachChild(CUIWindow* pChild)
 		SetCapture(pChild, false);
 
 	SafeRemoveChild(pChild);
-//	m_ChildWndList.remove(pChild);
 	pChild->SetParent(NULL);
 
 	if(pChild->IsAutoDelete())
 		xr_delete(pChild);
+
+
 }
 
 void CUIWindow::DetachAll()
