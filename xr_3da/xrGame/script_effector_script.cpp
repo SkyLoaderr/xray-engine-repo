@@ -24,20 +24,25 @@ void CScriptEffector::script_register(lua_State *L)
 		class_<SPPInfo::SDuality>("duality")
 			.def_readwrite("h",					&SPPInfo::SDuality::h)
 			.def_readwrite("v",					&SPPInfo::SDuality::v)
-			.def(								constructor<>()),
+			.def(								constructor<>())
+			.def(								constructor<float,float>())
+			.def("set",							&SPPInfo::SDuality::set),
 
 		class_<SPPInfo::SColor>	("color")
 			.def_readwrite("r",					&SPPInfo::SColor::r)
 			.def_readwrite("g",					&SPPInfo::SColor::g)
 			.def_readwrite("b",					&SPPInfo::SColor::b)
 			.def(								constructor<>())
+			.def(								constructor<float,float,float>())
 			.def("set",							&SPPInfo::SColor::set),
 
 		class_<SPPInfo::SNoise>("noise")
 			.def_readwrite("intensity",			&SPPInfo::SNoise::intensity)
 			.def_readwrite("grain",				&SPPInfo::SNoise::grain)
 			.def_readwrite("fps",				&SPPInfo::SNoise::fps)
-			.def(								constructor<>()),
+			.def(								constructor<>())
+			.def(								constructor<float,float,float>())
+			.def("set",							&SPPInfo::SNoise::set),
 
 		class_<SPPInfo>("effector_params")
 			.def_readwrite("blur",				&SPPInfo::blur)
