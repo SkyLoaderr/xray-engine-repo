@@ -43,12 +43,14 @@ function transfer_medkit(first_speaker, second_speaker)
 	local obj = first_speaker:object("medkit")
 	if obj ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
+		second_speaker:set_relation(game_object.friend, first_speaker)
 	end
 end
 function transfer_bandage(first_speaker, second_speaker)
 	local obj = first_speaker:object("bandage")
 	if obj ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
+		second_speaker:set_relation(game_object.friend, first_speaker)
 	end
 end
 
