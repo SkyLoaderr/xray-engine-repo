@@ -96,7 +96,7 @@ function main()
 	local eval3				= stalker_test.const_evaluator(false)
 	local eval4				= stalker_test.random_evaluator()
 	local eval5				= stalker_test.random_evaluator()
-	local eval6				= stalker_test.random_evaluator()
+	local eval6				= stalker_test.const_evaluator(false)
 	local eval7				= stalker_test.random_evaluator()
 	
 	-- define actions
@@ -210,6 +210,8 @@ operator   7 : ? ? ? ? ? ? ? ?  -> 0 ? ? 0 0 1 ? 0
 	while true do
 		planner:update		(1000)
 		wait				(1000)
+		planner:set_goal_world_state(world_state())
+		planner:set_goal_world_state(goal)
 	end
 	
 	-- the end
