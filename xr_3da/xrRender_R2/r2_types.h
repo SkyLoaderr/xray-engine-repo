@@ -10,3 +10,13 @@
 #define	r2_RT_smap_d	"$user$smap_d"			// ---
 #define	r2_RT_smap_p	"$user$smap_p"			// ---
 #define r2_material		"$user$material"		// ---
+
+const u32				DSM_size			= 1024;
+const float				DSM_distance_1		= 15.f;
+const float				DSM_distance_2		= 100.f;
+const float				DSM_d_range			= 100.f;
+
+const u32				PSM_size			= 512;
+const float				PSM_near_plane		= .07f;
+
+const u32				TEX_material_size	= 256;

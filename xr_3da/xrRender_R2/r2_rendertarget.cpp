@@ -56,6 +56,31 @@ void	CRenderTarget::OnDeviceCreate	()
 		g_combine					= Device.Shader.CreateGeom	(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
+	// Build material(s)
+	{
+		// Surface
+		R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_material_size,TEX_material_size,1,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED,&t_material_surf));
+		t_material					= Device.Shader._CreateTexture(r2_material);
+		t_material->surface_set		(t_material_surf);
+
+		// Fill it (x=dot(L,N),y=dot(L,H))
+		D3DLOCKED_RECT				R;
+		R_CHK						(t_material_surf->LockRect	(0,&R,0,0));
+		for (u32 y=0; y<TEX_material_size; y++)
+		{
+			for (u32 x=0; x<TEX_material_size; x++)
+			{
+				u32*	p	= (u32*)	(LPBYTE (R.pBits) + y*R.Pitch + x*4);
+				float	ld	= float(x) / float	(TEX_material_size-1);
+				float	ls	= float(y) / float	(TEX_material_size-1);
+				s32		_d	= iFloor	(ld*255.5f);			clamp(_d,0,255);
+				s32		_s	= iFloor	(pow(ls,32.f*255.5f));	clamp(_s,0,255);
+				*p			= color_rgba(_d,_d,_d,_s);
+			}
+		}
+		R_CHK						(t_material_surf->UnlockRect	(0));
+	}
+
 	// 
 	dwWidth		= Device.dwWidth;
 	dwHeight	= Device.dwHeight;
