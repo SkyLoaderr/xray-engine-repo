@@ -43,10 +43,10 @@ void xrServer::Process_save(NET_Packet& P, ClientID sender)
 	{
 		// find entity
 		u16				ID;
-		u8				size;
+		u16				size;
 
 		P.r_u16			(ID);
-		P.r_u8			(size);
+		P.r_u16			(size);
 		CSE_Abstract	*E	= ID_to_entity(ID);
 
 		if (E) {
