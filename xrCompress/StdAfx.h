@@ -23,6 +23,7 @@
 
 #include "limits"
 #include "list"
+#include "set"
 
 #undef min
 #undef max

@@ -3,12 +3,12 @@
 
 #include "stdafx.h"
 
-struct pred_str		: public std::binary_function<char*, char*, bool> 
+struct pred		: public std::binary_function<char*, char*, bool> 
 {	
 	IC bool operator()(const char* x, const char* y) const
 	{	return strcmp(x,y)<0;	}
 };
-
+	
 typedef set<char*,pred_str>	set_cstr;
 typedef set_cstr::iterator	set_cstr_it;
 	
