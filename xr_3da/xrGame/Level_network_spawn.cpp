@@ -52,7 +52,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
 		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
 
-		T.Start		();
+		T.Start					( );
 		O->OnDeviceCreate		( );
 		// Msg			("--spawn--DEV: %f ms",1000.f*T.GetAsync());
 
