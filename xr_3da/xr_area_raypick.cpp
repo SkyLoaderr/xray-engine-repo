@@ -2,7 +2,7 @@
 #include "xr_area.h"
 #include "xr_collide_form.h"
 #include "xr_object.h"
-#include "collide\cl_intersect.h"
+#include "cl_intersect.h"
 
 #include "xr_creator.h"
 #include "x_ray.h"
@@ -122,12 +122,12 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 
 //--------------------------------------------------------------------------------
 // Occluded/No
-BOOL CObjectSpace::RayTest( const Fvector &start, const Fvector &dir, float range, BOOL bDynamic, Collide::ray_cache* cache)
+BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float range, BOOL bDynamic, Collide::ray_cache* cache)
 {
 	VERIFY(fabsf(dir.magnitude()-1)<EPS);
 
-	XRC.RayMode			(RAY_ONLYFIRST);
-	CCFModel::RayQuery	Q;
+	XRC.ray_options			(CDB::OPT_ONLYFIRST);
+	CCFModel::RayQuery		Q;
 	Q.start = start; Q.dir = dir; Q.range=range; Q.element=0;
 	if (bDynamic) 
 	{
@@ -158,20 +158,21 @@ BOOL CObjectSpace::RayTest( const Fvector &start, const Fvector &dir, float rang
 		}
 		
 		// 2. Polygon doesn't pick - real database query
-		XRC.RayPick(0,&Static,start,dir,Q.range);
-		if (0==XRC.GetRayContactCount()) {
+		XRC.ray_query(&Static,start,dir,Q.range);
+		if (0==XRC.r_count()) {
 			return FALSE;
 		} else {
 			// cache polygon
-			RAPID::raypick_info&	rpinf	= XRC.RayContact[0];
-			cache->verts[0].set	(rpinf.p[0]);
-			cache->verts[1].set	(rpinf.p[1]);
-			cache->verts[2].set	(rpinf.p[2]);
+			CDB::RESULT*	R	= XRC.r_begin();
+			CDB::TRI&		T	= Static.get_tris() [ R->id ];
+			cache->verts[0].set	(*T.verts[0]);
+			cache->verts[1].set	(*T.verts[1]);
+			cache->verts[2].set	(*T.verts[2]);
 			return TRUE;
 		}
 	} else {
 		XRC.RayPick(0,&Static,start,dir,Q.range);
-		return XRC.GetRayContactCount();
+		return XRC.r_count();
 	}
 }
 

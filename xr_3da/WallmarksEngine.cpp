@@ -29,7 +29,7 @@ CWallmarksEngine::~CWallmarksEngine()
 }
 
 //--------------------------------------------------------------------------------
-IC void AddTri(RAPID::tri* pTri,Fmatrix &mView,CWallmark	&W)
+IC void AddTri(CDB::TRI* pTri,Fmatrix &mView,CWallmark	&W)
 {
 	Fvector				UV;
 	CWallmark::Vertex	V;

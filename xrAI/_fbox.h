@@ -46,29 +46,28 @@ public:
 	}
 	IC	void	xform		(const _fbox &B, const _matrix &m)
 	{
-			// The three edges transformed: you can efficiently transform an X-only vector
-			// by just getting the "X" column of the matrix
-			Fvector vx,vy,vz;
-			vx.mul				(m.i, B.max.x-B.min.x);	
-			vy.mul				(m.j, B.max.y-B.min.y);	
-			vz.mul				(m.k, B.max.z-B.min.z);	
-			
-			// Transform the min point
-			m.transform_tiny	(min,B.min);
-			max.set				(min);
-			
-			// Take the transformed min & axes and find new extents
-			// Using CPU code in the right place is faster...
-			if(negative(vx.x))	min.x += vx.x; else max.x += vx.x;
-			if(negative(vx.y))	min.y += vx.y; else max.y += vx.y;
-			if(negative(vx.z))	min.z += vx.z; else max.z += vx.z;
-			if(negative(vy.x))	min.x += vy.x; else max.x += vy.x;
-			if(negative(vy.y))	min.y += vy.y; else max.y += vy.y;
-			if(negative(vy.z))	min.z += vy.z; else max.z += vy.z;
-			if(negative(vz.x))	min.x += vz.x; else max.x += vz.x;
-			if(negative(vz.y))	min.y += vz.y; else max.y += vz.y;
-			if(negative(vz.z))	min.z += vz.z; else max.z += vz.z;
-		}
+		// The three edges transformed: you can efficiently transform an X-only vector
+		// by just getting the "X" column of the matrix
+		Fvector vx,vy,vz;
+		vx.mul				(m.i, B.max.x-B.min.x);	
+		vy.mul				(m.j, B.max.y-B.min.y);	
+		vz.mul				(m.k, B.max.z-B.min.z);	
+		
+		// Transform the min point
+		m.transform_tiny	(min,B.min);
+		max.set				(min);
+		
+		// Take the transformed min & axes and find new extents
+		// Using CPU code in the right place is faster...
+		if(negative(vx.x))	min.x += vx.x; else max.x += vx.x;
+		if(negative(vx.y))	min.y += vx.y; else max.y += vx.y;
+		if(negative(vx.z))	min.z += vx.z; else max.z += vx.z;
+		if(negative(vy.x))	min.x += vy.x; else max.x += vy.x;
+		if(negative(vy.y))	min.y += vy.y; else max.y += vy.y;
+		if(negative(vy.z))	min.z += vy.z; else max.z += vy.z;
+		if(negative(vz.x))	min.x += vz.x; else max.x += vz.x;
+		if(negative(vz.y))	min.y += vz.y; else max.y += vz.y;
+		if(negative(vz.z))	min.z += vz.z; else max.z += vz.z;
 	}
 	
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
@@ -80,6 +79,12 @@ public:
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 	};
+	IC	void	get_CD		(Fvector& bc, Fvector& bd)	// center + dimensions
+	{
+		bd.sub	(max,min);
+		bd.mul	(.5f);
+		bc.add	(min,bd);
+	}
 	IC	void	getsphere	(Fvector &C, float &R) const {
 		getcenter			(C);
 		R = C.distance_to	(max);

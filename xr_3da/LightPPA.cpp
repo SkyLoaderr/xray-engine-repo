@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "LightPPA.h"
-#include "collide\cl_rapid.h"
+#include "cl_rapid.h"
 #include "xr_creator.h"
 #include "fstaticrender.h"
 
