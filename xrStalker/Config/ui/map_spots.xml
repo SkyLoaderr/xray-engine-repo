@@ -285,7 +285,7 @@
 		<texture x="224" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</mil_crazy_spot>
 
-	<mil_secret_location hint="mil_secret" store="1"
+	<mil_secret_location hint="mil_secret" store="1">
 		<level_map spot="mil_secret_spot" pointer="quest_pointer"></level_map>
 		<mini_map  spot="mil_secret_spot" pointer="quest_pointer"></mini_map>
 	</mil_secret_location>
