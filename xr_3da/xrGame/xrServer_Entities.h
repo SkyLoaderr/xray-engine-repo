@@ -207,8 +207,34 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
+	// model
 	string64				caModel;
-	u16						u16ActionRefreshRate;	// attack refresh rate
+	
+	// Personal characteristics:
+	float					fEyeFov;
+	float					fEyeRange;
+	float					fHealth;
+	float					fMinSpeed;
+	float					fMaxSpeed;
+	float					fAttackSpeed;
+	float					fMaxPursuitRadius;
+	float					fMaxHomeRadius;
+	// morale
+	float					fMoraleSuccessAttackQuant;
+	float					fMoraleDeathQuant;
+	float					fMoraleFearQuant;
+	float					fMoraleRestoreQuant;
+	u16						u16MoraleRestoreTimeInterval;
+	float					fMoraleMinValue;
+	float					fMoraleMaxValue;
+	float					fMoraleNormalValue;
+	// attack
+	float					fHitPower;
+	u16						u16HitInterval;
+	float					fAttackDistance;
+	float					fAttackAngle;
+	float					fAttackSuccessProbability;
+
 							xrSE_Rat();				// constructor for variable initialization
 xrSE_DECLARE_END
 

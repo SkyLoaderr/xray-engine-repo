@@ -488,8 +488,16 @@ void CAI_Rat::AttackRun()
 	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
 		m_fSpeed = EPS_S;//.1f;
 		if (m_bNoWay) {
-			float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			if (!::Random.randI(4)) {
+				float fAngle = ::Random.randF(MIN_TURN_VALUE,MAX_TURN_VALUE);
+				r_torso_target.yaw = r_torso_current.yaw + fAngle;
+			}
+			else {
+				Fvector tTemp;
+				tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+				tTemp.normalize_safe();
+				mk_rotation(tTemp,r_torso_target);
+			}
 			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 		}

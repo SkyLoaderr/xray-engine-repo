@@ -188,6 +188,7 @@ class CAI_Rat : public CCustomMonster
 
 		// DDD
 		DWORD				m_dwActionRefreshRate;
+		float				m_fAttackSuccessProbability;
 
 		//////////////////////////
 		// INLINE FUNCTIONS

@@ -86,37 +86,20 @@ void CAI_Rat::OnDeviceCreate()
 void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load	(section);
+	inherited::Load(section);
 	
 	// initialize start position
-	Fvector			P = vPosition;
-	P.x				+= ::Random.randF();
-	P.z				+= ::Random.randF();
+	Fvector	P						= vPosition;
+	P.x								+= ::Random.randF();
+	P.z								+= ::Random.randF();
 	
 	vfLoadSounds();
 	
-	m_fMaxHealthValue = fHealth = pSettings->ReadFLOAT(section,"health");
 	// sounds
-	m_fMinVoiceIinterval = pSettings->ReadFLOAT(section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
+	m_fMinVoiceIinterval			= pSettings->ReadFLOAT(section,"MinVoiceInterval");
+	m_fMaxVoiceIinterval			= pSettings->ReadFLOAT(section,"MaxVoiceInterval");
+	m_fVoiceRefreshRate				= pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	
-	// fire
-	m_fHitPower			= (float)pSettings->ReadINT(section,"HitPower");
-	m_dwHitInterval		= pSettings->ReadINT(section,"HitInterval");
-	m_fSpeed			= m_fCurSpeed;
-	m_fAttackSpeed		= pSettings->ReadFLOAT(section,"attack_speed");
-
-	// morale
-	m_fMoraleSuccessAttackQuant		= pSettings->ReadFLOAT	(section, "MoraleSuccessAttackQuant");
-	m_fMoraleDeathQuant				= pSettings->ReadFLOAT	(section, "MoraleDeathQuant");
-	m_fMoraleFearQuant				= pSettings->ReadFLOAT	(section, "MoraleFearQuant");
-	m_fMoraleRestoreQuant			= pSettings->ReadFLOAT	(section, "MoraleRestoreQuant");
-	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT	(section, "MoraleRestoreTimeInterval");
-	m_fMoraleMinValue				= pSettings->ReadFLOAT	(section, "MoraleMinValue");
-	m_fMoraleMaxValue				= pSettings->ReadFLOAT	(section, "MoraleMaxValue");
-	m_fMoraleNormalValue			= pSettings->ReadFLOAT	(section, "MoraleNormalValue");
-
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT(section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
@@ -124,17 +107,11 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwActiveCountPercent			= pSettings->ReadINT(section,"ActiveCountPercent");
 	m_dwStandingCountPercent		= pSettings->ReadINT(section,"StandingCountPercent");
 
-	// attack
-	m_fAttackDistance				= pSettings->ReadFLOAT(section,"AttackDistance");
-	m_fAttackAngle					= pSettings->ReadFLOAT(section,"AttackAngle")/180.f*PI;
-	m_fMaxPursuitRadius				= pSettings->ReadFLOAT(section,"MaxPursuitRadius");
-	m_fMaxHomeRadius				= pSettings->ReadFLOAT(section,"MaxHomeRadius");
-
 	// eye shift
 	m_tEyeShift.y					= pSettings->ReadFLOAT(section,"EyeYShift");
 
-	m_dwActiveScheduleMin = shedule_Min;
-	m_dwActiveScheduleMax = shedule_Max;
+	m_dwActiveScheduleMin			= shedule_Min;
+	m_dwActiveScheduleMax			= shedule_Max;
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
@@ -142,7 +119,32 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
-	m_dwActionRefreshRate = tpSE_Rat->u16ActionRefreshRate;
+	// model
+	//P.w_string(caModel);
+	// personal characteristics
+	eye_fov							= tpSE_Rat->fEyeFov;
+	eye_range						= tpSE_Rat->fEyeRange;
+	fHealth							= tpSE_Rat->fHealth;
+	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
+	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
+	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
+	m_fMaxPursuitRadius				= tpSE_Rat->fMaxPursuitRadius;
+	m_fMaxHomeRadius				= tpSE_Rat->fMaxHomeRadius;
+	// morale
+	m_fMoraleSuccessAttackQuant		= tpSE_Rat->fMoraleSuccessAttackQuant;
+	m_fMoraleDeathQuant				= tpSE_Rat->fMoraleDeathQuant;
+	m_fMoraleFearQuant				= tpSE_Rat->fMoraleFearQuant;
+	m_fMoraleRestoreQuant			= tpSE_Rat->fMoraleRestoreQuant;
+	m_dwMoraleRestoreTimeInterval	= tpSE_Rat->u16MoraleRestoreTimeInterval;
+	m_fMoraleMinValue				= tpSE_Rat->fMoraleMinValue;
+	m_fMoraleMaxValue				= tpSE_Rat->fMoraleMaxValue;
+	m_fMoraleNormalValue			= tpSE_Rat->fMoraleNormalValue;
+	// attack
+	m_fHitPower						= tpSE_Rat->fHitPower;
+	m_dwHitInterval					= tpSE_Rat->u16HitInterval;
+	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
+	m_fAttackAngle					= tpSE_Rat->fAttackAngle;
+	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
 
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
