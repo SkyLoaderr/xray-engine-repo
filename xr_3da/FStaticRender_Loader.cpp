@@ -37,9 +37,13 @@ void CRender::level_Load()
 	pApp->LoadTitle("Loading sectors & portals...");
 	LoadSectors(fs);
 	
+	// Details
+	pApp->LoadTitle("Loading details...");
+	Details.Load();
+
 	// Streams
 	vsPatches = Device.Streams.Create(FVF::F_TL,max_patches*4);
-
+	
 	// End
 	pApp->LoadEnd	();
 }
@@ -52,6 +56,9 @@ void CRender::level_Unload()
 
 	//*** Streams
 	vsPatches			= 0;
+
+	//*** Details
+	Details.Unload		();
 
 	//*** Sectors
 	// 1.

@@ -348,6 +348,8 @@ void	CRender::Render()
 		mapNormal[pr].clear		();
 	}
 	
+	Details.Render			(Device.vCameraPosition);
+	
 	// NORMAL-matrix	*** actors and dyn. objects
 	mapMatrix.traverseANY	(matrix_L1);
 	mapMatrix.clear			();
