@@ -44,6 +44,7 @@ void CAI_Stalker::reinit			()
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
 	CStateManagerStalker::reinit	(this);
+	CStateInternal::reinit			(this);
 
 	m_pPhysics_support->in_Init		();
 	m_dwRandomFactor				= 100;
@@ -65,6 +66,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
 	CStateManagerStalker::reload	(section);
+	CStateInternal::reload			(section);
 }
 
 void CAI_Stalker::Die				()
@@ -89,6 +91,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 	CStateManagerStalker::Load		(section);
+	CStateInternal::Load			(section);
 
 	CSelectorManager::add<
 		PathManagers::CVertexEvaluator<
@@ -117,7 +120,6 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_humming"),	100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	4, u32(1 << 31) | 0,	eStalkerSoundHumming,	head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_alarm"),	100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	2, u32(1 << 31) | 1,	eStalkerSoundAlarm,		head_bone_name);
 	CSoundPlayer::add				(pSettings->r_string(section,"sound_surrender"),100, SOUND_TYPE_MONSTER_TALKING_HUMAN,	3, u32(1 << 31) | 2,	eStalkerSoundSurrender,	head_bone_name);
-
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);

@@ -9,13 +9,14 @@
 #pragma once
 
 #include "../../CustomMonster.h"
-#include "ai_stalker_animations.h"
 #include "../../stalker_movement_manager.h"
-#include "ai_stalker_space.h"
 #include "../../inventory.h"
 #include "../../weapon_manager.h"
 #include "../../sight_manager.h"
 #include "../../state_manager_stalker.h"
+#include "../../state_internal.h"
+#include "ai_stalker_animations.h"
+#include "ai_stalker_space.h"
 
 using namespace StalkerSpace;
 
@@ -37,7 +38,8 @@ class CAI_Stalker :
 	public CSightManager,
 	public CStalkerAnimations, 
 	public CStalkerMovementManager,
-	public CStateManagerStalker
+	public CStateManagerStalker,
+	public CStateInternal
 {
 private:
 	typedef CCustomMonster inherited;

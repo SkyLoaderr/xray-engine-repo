@@ -1034,48 +1034,6 @@
 				<Filter
 					Name="ai_stalker"
 					Filter="">
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker.h">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_alife.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_alife_fsm.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_alife_misc.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_feel.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_fire.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_fsm.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\stalker\ai_stalker_inline.h">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_path.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_space.h">
-					</File>
 					<Filter
 						Name="AnimationManager"
 						Filter="">
@@ -1262,6 +1220,52 @@
 						</File>
 						<File
 							RelativePath=".\weapon_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="Stalker"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker.h">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_alife.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_alife_fsm.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_alife_misc.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_feel.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_fire.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_fsm.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\stalker\ai_stalker_inline.h">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_path.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_space.h">
 						</File>
 					</Filter>
 				</Filter>

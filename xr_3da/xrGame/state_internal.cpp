@@ -11,27 +11,27 @@
 #include "ai/stalker/ai_stalker.h"
 #include "ai/ai_monsters_misc.h"
 
-CStateInternal::CStateInternal		(CAI_Stalker *object)
+CStateInternal::CStateInternal		()
 {
-	Init				(object);
+	Init				();
 }
 
 CStateInternal::~CStateInternal		()
 {
 }
 
-void CStateInternal::Init			(CAI_Stalker *object)
+void CStateInternal::Init			()
 {
-	m_object			= object;
-	VERIFY				(m_object);
 }
 
 void CStateInternal::Load			(LPCSTR section)
 {
 }
 
-void CStateInternal::reinit			()
+void CStateInternal::reinit			(CAI_Stalker *object)
 {
+	m_object			= object;
+	VERIFY				(m_object);
 	m_sound_info		= eSoundInfoNoSound;
 	m_enemy_info		= eEnemyInfoNoEnemy;
 	m_condition_info	= eConditionInfoNoWishes;
@@ -46,7 +46,7 @@ void CStateInternal::reload			(LPCSTR section)
 	m_attack_success_probability[3]	= 0.8f;
 }
 
-void CStateInternal::update			()
+void CStateInternal::update			(u32 time_delta)
 {
 	update_sound_info		();
 	update_enemy_info		();

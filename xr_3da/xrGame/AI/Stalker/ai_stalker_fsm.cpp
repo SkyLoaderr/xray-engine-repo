@@ -916,7 +916,6 @@ void CAI_Stalker::TakeItems()
 
 void CAI_Stalker::Think()
 {
-	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
 //	if (!m_dwLastUpdate) {
 //		Level().ObjectSpace.GetNearest(Position(),3.f);
 //		if (Level().ObjectSpace.q_nearest.size()) {
@@ -1158,4 +1157,6 @@ void CAI_Stalker::Think()
 //	_K	= K;
 //	_L	= L;
 //	_M	= M;
+	CStateInternal::update			(Level().timeServer() - m_dwLastUpdateTime);
+	CStateManagerStalker::update	(Level().timeServer() - m_dwLastUpdateTime);
 }

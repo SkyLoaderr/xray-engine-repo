@@ -60,11 +60,11 @@ private:
 			void		update_condition_info	();
 			void		update_object_info		();
 public:
-						CStateInternal			(CAI_Stalker *object);
+						CStateInternal			();
 	virtual				~CStateInternal			();
-			void		Init					(CAI_Stalker *object);
+			void		Init					();
 	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					();
+	virtual	void		reinit					(CAI_Stalker *object);
 	virtual	void		reload					(LPCSTR section);
-	virtual	void		update					();
+	virtual	void		update					(u32 time_delta);
 };
