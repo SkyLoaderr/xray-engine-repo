@@ -187,18 +187,31 @@ public:
 
 void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range)
 {
+	// Binary dispatcher
 	if (ray_mode&OPT_CULL)
 	{
 		if (ray_mode&OPT_ONLYFIRST)
 		{
 			if (ray_mode&OPT_ONLYNEAREST)
 			{
+				ray_collider<true,true,true>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			} else {
+				ray_collider<true,true,false>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			}
 		} else {
 			if (ray_mode&OPT_ONLYNEAREST)
 			{
+				ray_collider<true,false,true>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			} else {
+				ray_collider<true,false,false>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			}
 		}
 	} else {
@@ -206,12 +219,24 @@ void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fve
 		{
 			if (ray_mode&OPT_ONLYNEAREST)
 			{
+				ray_collider<false,true,true>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			} else {
+				ray_collider<false,true,false>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			}
 		} else {
 			if (ray_mode&OPT_ONLYNEAREST)
 			{
+				ray_collider<false,false,true>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			} else {
+				ray_collider<false,false,false>	RC;
+				RC._init(this,m_def->tris,r_start,r_dir,r_range);
+				RC._stab(m_def->tree->GetNodes());
 			}
 		}
 	}
