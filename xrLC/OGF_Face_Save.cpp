@@ -190,7 +190,7 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.close_chunk		();
 
 	// Special
-	fs.open_chunk		(OGF_TREEDEF);
+	fs.open_chunk		(OGF_TREEDEF2);
 	fs.w				(&xform,	sizeof(xform));
 	fs.w				(&c_scale,	sizeof(c_scale));
 	fs.w				(&c_bias,	sizeof(c_bias));
