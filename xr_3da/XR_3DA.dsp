@@ -1915,6 +1915,18 @@ SOURCE=.\FCached.cpp
 SOURCE=.\FCached.h
 # End Source File
 # End Group
+# Begin Group "Particles"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\psvisual.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\psvisual.h
+# End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\FBasicVisual.cpp
@@ -2026,14 +2038,6 @@ SOURCE=.\PSObject.cpp
 # Begin Source File
 
 SOURCE=.\PSObject.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\psvisual.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\psvisual.h
 # End Source File
 # Begin Source File
 
