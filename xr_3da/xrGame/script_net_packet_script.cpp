@@ -14,9 +14,6 @@
 
 using namespace luabind;
 
-LPCSTR script_section = "script";
-LPCSTR current_version = "current_server_entity_version";
-
 bool r_eof(NET_Packet *self)
 {
 	return			(!!self->r_eof());

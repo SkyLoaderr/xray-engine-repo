@@ -24,6 +24,9 @@
 	}
 #endif
 
+LPCSTR script_section = "script";
+LPCSTR current_version = "current_server_entity_version";
+
 IC	u16	script_server_object_version	()
 {
 	static bool initialized		= false;
