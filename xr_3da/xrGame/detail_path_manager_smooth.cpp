@@ -10,7 +10,7 @@
 #include "detail_path_manager.h"
 #include "ai_space.h"
 
-#define SMOOTH_PATH
+//#define SMOOTH_PATH
 
 template<
 	typename T
