@@ -658,7 +658,7 @@ function stalker_novice3_action:state_actor()
 		--иногда машем рукой
         self.object:add_animation("torg_1", true)
         if(distance_between(self.object, level.actor()) > 13) then
-        	self.object:add_animation("torg_6", true)
+        	self.object:add_animation("hello_0_idle_0", true)
         end
         self.object:add_animation("torg_2", true)
         self.object:add_animation("torg_4", true)
