@@ -133,8 +133,8 @@ public:
 		u8	count;	P.r_u8(count);
 		while (count) {
 			shape_def	S;
-			P.r_u8		(S.type);
-			switch (S.type)
+			P.r_u8	(S.type);
+			switch	(S.type)
 			{
 			case 0:	P.r			(&S.data.sphere,sizeof(S.data.sphere));	break;
 			case 1:	P.r_matrix	(S.data.box);							break;
