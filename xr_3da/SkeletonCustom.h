@@ -110,7 +110,7 @@ public:
 	LPCSTR						LL_BoneName_dbg	(u16 ID);
 
     CInifile*					LL_UserData		(){return pUserData;}
-	accel*						LL_Bones		(){return bone_map;}
+	accel*						LL_Bones		(){return bone_map_N;}
 	CBoneInstance&				LL_GetBoneInstance(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return bone_instances[bone_id];	}
 	CBoneData&					LL_GetData		(u16 bone_id)		{	VERIFY(bone_id<LL_BoneCount()); return *((*bones)[bone_id]);	}
 	u16							LL_BoneCount	()					{	return u16(bones->size());										}
