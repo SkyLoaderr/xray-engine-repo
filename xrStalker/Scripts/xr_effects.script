@@ -157,6 +157,18 @@ function val_sacrifice_victim_dead(actor, npc)
 	npc:hit(h)
 end
 
+function val_suicide_kill_self(actor, npc)
+	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())
+	local h = hit()
+	h.power = 10000
+	h.direction = npc:direction()
+	h.bone = "bip01_head"
+	h.draftsman = npc 
+	h.impulse = 2000
+	h.type = hit.wound
+	npc:hit(h)
+end
+
 function test_hit_in_actor_dir(actor, npc)
 --
 	-- TODO: реагировать только на смерть от пули (last hit = пуля)

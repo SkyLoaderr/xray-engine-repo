@@ -216,6 +216,14 @@ states = {
 				animation = "backoff2",
 				reset = true
 			},
+	suicide = {	weapon = "fire",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "suicide",
+				reset = true
+			},
 
 
 	-- Раненый

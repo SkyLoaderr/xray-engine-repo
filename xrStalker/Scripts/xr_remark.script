@@ -64,6 +64,7 @@ function action_remark_activity:reset_scheme()
 	self.sound_end_signalled = false
 	self.move_end_signalled = false
 	self.action_end_signalled = false
+	self.anim_end_signalled = false
 end	
 
 function action_remark_activity:signal_arrival()
@@ -71,11 +72,7 @@ function action_remark_activity:signal_arrival()
 		self.move_end_signalled = true
 		self.st.signals["move_end"] = true
 		printf("xr_remark: signalling move_end")
-		if not self.action_end_signalled and self.sound_end_signalled then
-			self.action_end_signalled = true
-			self.st.signals["action_end"] = true
-			printf("xr_remark: signalling action_end")
-		end
+		self:signal_action_end()
 	end
 end
 
@@ -115,7 +112,24 @@ function action_remark_activity:get_sug_body_state()
 	end
 end
 
+function action_remark_activity:signal_action_end()
+	if not self.action_end_signalled and self.move_end_signalled and
+	   self.sound_end_signalled and self.anim_end_signalled then
+		self.action_end_signalled = true
+		self.st.signals["action_end"] = true
+		printf("xr_remark: signalling action_end")
+	end
+end
+
 function action_remark_activity:time_callback()
+	if not self.anim_end_signalled then
+		self.anim_end_signalled = true
+		self.st.signals["anim_end"] = true
+		printf("xr_remark: signalling anim_end")
+		if self.st.anim then
+			self:signal_action_end()
+		end
+	end
 end
 
 function action_remark_activity:turn_end_callback()
@@ -136,12 +150,12 @@ function action_remark_activity:stand_still()
 	local cb = { obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback }
 	
 	if self.st.anim then
-		state_mgr.set_state(self.object, self.st.anim, cb, nil, look_tbl)
+		state_mgr.set_state(self.object, self.st.anim, cb, 0, look_tbl)
 	else
 		state_mgr.set_state(self.object,
 			if_then_else(sug_body_state == body_state_free, "guard", "threat"),
 			cb,
-			nil,
+			0,
 			look_tbl)
 	end
 end
@@ -168,11 +182,7 @@ function action_remark_activity:step()
 		self.sound_end_signalled = true
 		self.st.signals["sound_end"] = true
 		printf("xr_remark [%s]: signalling sound_end", self.object:name())
-		if not self.action_end_signalled and self.move_end_signalled then
-			self.action_end_signalled = true
-			self.st.signals["action_end"] = true
-			printf("xr_remark: signalling action_end")
-		end
+		self:signal_action_end()
 	end
 
 	-- Try to switch to another scheme:
