@@ -15,19 +15,6 @@ void	CBlender_deffer_flat::Load	(	IReader& FS, WORD version )
 	CBlender::Load	(FS,version);
 }
 
-class cl_chpos	: public R_constant_setup 
-{
-	u32			dwFrame;
-	Fvector4	c_hpos;
-
-	virtual void setup (R_constant* C) 
-	{ 
-		Fvector& P		= Device.vCameraPosition;
-		RCache.set_c	(C,P.x,P.y,P.z,0);
-	}
-};
-static cl_chpos	binder_chpos;
-
 void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
