@@ -27,6 +27,12 @@ void	CBlender_Compile::r_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bFog, BOOL bZtest, 
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
 	SetMapping				();
+
+	// Last Stage - disable
+	if (0==stricmp(_ps,"null"))	{
+		RS.SetTSS				(0,D3DTSS_COLOROP,D3DTOP_DISABLE);
+		RS.SetTSS				(0,D3DTSS_ALPHAOP,D3DTOP_DISABLE);
+	}
 }
 
 void	CBlender_Compile::r_Constant	(LPCSTR name, R_constant_setup* s)
