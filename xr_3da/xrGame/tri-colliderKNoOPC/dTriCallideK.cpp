@@ -865,7 +865,7 @@ contact->pos[2] = pos[2];
 contact->depth = outDepth;
 
 //}
- for (int i=0; i<ret; i++) {
+ for (u32 i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
 	CONTACT(contact,i*skip)->normal[0] = norm[0];

@@ -1135,8 +1135,10 @@ struct dxPlane {
 };
 
 
-int dCollideCylPlane (const dxGeom *o1, const dxGeom *o2, int flags,
-					  dContactGeom *contact, int skip){
+int dCollideCylPlane 
+	(
+	const dxGeom *o1, const dxGeom *o2, int flags,
+			  dContactGeom *contact, int skip){
   dIASSERT (skip >= (int)sizeof(dContactGeom));
   dIASSERT (o1->_class->num == dCylinderClass);
   dIASSERT (o2->_class->num == dPlaneClass);

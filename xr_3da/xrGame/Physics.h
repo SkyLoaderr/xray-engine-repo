@@ -1,7 +1,6 @@
 #ifndef PHYSICS_H
 #define PHYSICS_H
 
-#include <ode/ode.h>
 #include "dCylinder/dCylinder.h"
 #include "PhysicsShell.h"
 
