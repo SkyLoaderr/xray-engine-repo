@@ -25,7 +25,7 @@ CAI_ALife::~CAI_ALife()
 
 void CAI_ALife::vfInitTerrain()
 {
-	m_tpTerrain.resize(256);
+	m_tpTerrain.resize(LOCATION_COUNT);
 	for (u16 i=0; i<Level().AI.GraphHeader().dwVertexCount; i++)
 		m_tpTerrain[Level().AI.m_tpaGraph[i].ucVertexType].push_back(i);
 }

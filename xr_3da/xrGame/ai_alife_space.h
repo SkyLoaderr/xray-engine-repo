@@ -34,15 +34,19 @@ namespace ALife {
 	typedef u32	_TASK_ID;									// Event ID
 	typedef u16	_GRAPH_ID;									// Graph ID
 	typedef u16	_SPAWN_ID;									// Spawn ID
-	typedef u8	_LOCATION_ID;								// Location ID
 	typedef u16	_TERRAIN_ID;								// Terrain ID
+	typedef u8	_LOCATION_ID;								// Location ID
+
+	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
 	DEFINE_VECTOR	(_OBJECT_ID,	OBJECT_VECTOR,			OBJECT_IT);
 	DEFINE_VECTOR	(_GRAPH_ID,		GRAPH_VECTOR,			GRAPH_IT);
 	DEFINE_VECTOR	(_TASK_ID,		TASK_VECTOR,			TASK_IT);
 	DEFINE_VECTOR	(CALifeMonster*,ALIFE_MONSTER_P_VECTOR, ALIFE_MONSTER_P_IT);
 	DEFINE_VECTOR	(OBJECT_VECTOR,	OBJECT_VECTOR_VECTOR,	OBJECT_VECTOR_IT);
-	DEFINE_SVECTOR	(GRAPH_VECTOR,	256,			GRAPH_VECTOR_SVECTOR, GRAPH_VECTOR_IT);
+	
+	DEFINE_SVECTOR	(GRAPH_VECTOR,	LOCATION_COUNT,	GRAPH_VECTOR_SVECTOR, GRAPH_VECTOR_IT);
+	
 	DEFINE_MAP		(_OBJECT_ID,	CALifeItem *,	OBJECT_MAP,	OBJECT_PAIR_IT);
 
 	enum EInjureType {
@@ -52,12 +56,16 @@ namespace ALife {
 		eInjureTypeDummy = u32(-1),
 	};
 
-	enum EPerception {
-		ePerceptSee = u32(0),
-		ePerceptHear,
-		ePerceptNotice,
-		ePerceptMeet,
-		ePerceptDummy = u32(-1),
+	enum ERelation {
+		eRelationMeet = u32(0),
+		eRelationWatch,
+		eRelationHear,
+		eRelationSeeResult,
+		eRelationMeetTold,
+		eRelationWatchTold,
+		eRelationHearTold,
+		eRelationSeeResultTold,
+		eRelationDummy = u32(-1),
 	};
 
 	enum EBattleResult {
@@ -100,7 +108,7 @@ namespace ALife {
 		_TASK_ID					tTaskID;
 		OBJECT_VECTOR				tpItemIDs;
 		int							iHealth;
-		EPerception					tPerception;
+		ERelation					tRelation;
 	} SPersonalEvent;
 	
 	typedef struct tagSALifeCorp {

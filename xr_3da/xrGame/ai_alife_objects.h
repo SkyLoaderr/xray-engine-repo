@@ -195,7 +195,7 @@ public:
 				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
 					tMemoryStream.write	(&(tPersonalEvent.tpItemIDs[j]),sizeof(tPersonalEvent.tpItemIDs[j]));
 				tMemoryStream.write	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-				tMemoryStream.write	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+				tMemoryStream.write	(&tPersonalEvent.tRelation,		sizeof(tPersonalEvent.tRelation));
 			}
 		}
 		// saving tasks
@@ -235,7 +235,7 @@ public:
 				for (int j=0; j<(int)tPersonalEvent.tpItemIDs.size(); j++)
 					tFileStream.Read(&(tPersonalEvent.tpItemIDs[j]),	sizeof(tPersonalEvent.tpItemIDs[j]));
 				tFileStream.Read	(&tPersonalEvent.iHealth,			sizeof(tPersonalEvent.iHealth));
-				tFileStream.Read	(&tPersonalEvent.tPerception,		sizeof(tPersonalEvent.tPerception));
+				tFileStream.Read	(&tPersonalEvent.tRelation,		sizeof(tPersonalEvent.tRelation));
 			}
 		}
 		// loading tasks
