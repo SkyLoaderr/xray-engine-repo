@@ -11,16 +11,41 @@ function main ()
     zone:clear_callback (true)
     zone:set_callback (barricade.on_enter, true)
 
+	local bones = {
+				  "bone01", 
+				  "bone02", 
+				  "bone03", 
+				  "bone04", 
+				  "bone05", 
+				  "bone06", 
+				  "bone07", 
+				  "bone08", 
+				  "bone09", 
+				  "bone10", 
+				  "bone11", 
+				  "bone12", 
+				  "bone13", 
+				  "bone14", 
+				  "bone15", 
+				  "bone16", 
+				  "bone17", 
+				  "bone18", 
+				  "bone19", 
+				  "bone20"
+				  } 
+
     while entered == false do  wait () end
 
-    local h = hit ()
-    h.power = 1
-    h.direction = vector ():set (0, 0.5, -1)
-    h:bone ("root")
-    h.draftsman = get_actor ()
-    h.impulse = 5000
-    h.type  = hit.strike
-    bar:hit (h)
+	for a = 1, table.getn (bones), 1 do
+        local h = hit ()
+        h.power = 1
+        h.direction = vector ():set (0, 0.8, -1)
+        h:bone (bones[a])
+        h.draftsman = get_actor ()
+        h.impulse = 5000
+        h.type  = hit.strike
+        bar:hit (h)
+	end
 
     zone:clear_callback (true)
 
