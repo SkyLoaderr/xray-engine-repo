@@ -98,12 +98,12 @@ void CScriptMonster::ProcessScripts()
 
 bool CScriptMonster::bfAssignWatch(CEntityAction *tpEntityAction)
 {
-	return			(true);
+	return			(GetCurrentAction() && !GetCurrentAction()->m_tWatchAction.m_bCompleted);
 }
 
 bool CScriptMonster::bfAssignAnimation(CEntityAction *tpEntityAction)
 {
-	return			(true);
+	return			(GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted);
 }
 
 bool CScriptMonster::bfAssignSound(CEntityAction *tpEntityAction)
@@ -170,7 +170,7 @@ bool CScriptMonster::bfAssignParticles(CEntityAction *tpEntityAction)
 
 bool CScriptMonster::bfAssignObject(CEntityAction *tpEntityAction)
 {
-	return			(true);
+	return			(GetCurrentAction() && !GetCurrentAction()->m_tObjectAction.m_bCompleted);
 }
 
 bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)

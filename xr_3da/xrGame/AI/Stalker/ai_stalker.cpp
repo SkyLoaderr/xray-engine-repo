@@ -12,6 +12,7 @@
 #include "..\\..\\weapon.h"
 #include "..\\..\\CharacterPhysicsSupport.h"
 #include "..\\..\\pda.h"
+#include "..\\..\\ai_script_actions.h"
 
 CAI_Stalker::CAI_Stalker			()
 {
@@ -450,7 +451,18 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		VERIFY				(_valid(Position()));
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
-		Think							();
+		if (GetScriptControl()) {
+			ProcessScripts();
+			return;
+		}
+		else {
+			while (!m_tpActionQueue.empty()) {
+				ResetScriptData(false);
+				xr_delete	(m_tpActionQueue.back());
+				m_tpActionQueue.erase(m_tpActionQueue.begin());
+			}
+			Think						();
+		}
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 		Engine.Sheduler.Slice			();
