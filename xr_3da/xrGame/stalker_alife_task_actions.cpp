@@ -118,9 +118,9 @@ CStalkerActionAccomplishTask::CStalkerActionAccomplishTask	(CAI_Stalker *object,
 {
 }
 
-void CStalkerActionAccomplishTask::reinit	(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all)
+void CStalkerActionAccomplishTask::setup	(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::reinit					(object,storage,clear_all);
+	inherited::setup					(object,storage);
 	
 	m_inertia_time						= 60000;
 	m_max_search_distance				= 30.f;

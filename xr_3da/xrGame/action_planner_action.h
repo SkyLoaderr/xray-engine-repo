@@ -31,9 +31,7 @@ public:
 	IC					CActionPlannerAction	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual				~CActionPlannerAction	();
 	IC		void		init					();
-	virtual	void		Load					(LPCSTR section);
-	virtual	void		reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all = false);
-	virtual	void		reload					(LPCSTR section);
+	virtual	void		setup					(_object_type *object, CPropertyStorage *storage);
 	virtual void		initialize				();
 	virtual void		execute					();
 	virtual void		finalize				();

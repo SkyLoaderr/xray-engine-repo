@@ -29,13 +29,18 @@ CStalkerCombatPlanner::~CStalkerCombatPlanner	()
 {
 }
 
-void CStalkerCombatPlanner::reinit				(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all)
+void CStalkerCombatPlanner::setup				(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::reinit		(object,storage,clear_all);
+	inherited::setup		(object,storage);
+
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyInCover,			false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyLookedOut,		false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyPositionHolded,	false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyEnemyDetoured,	false);
+
+	clear					();
+	add_evaluators			();
+	add_actions				();
 }
 
 IC	void CStalkerCombatPlanner::update_cover	()
@@ -71,14 +76,6 @@ void CStalkerCombatPlanner::update				()
 {
 	update_cover			();
 	inherited::update		();
-}
-
-void CStalkerCombatPlanner::reload			(LPCSTR section)
-{
-	inherited::reload		(section);
-	clear					();
-	add_evaluators			();
-	add_actions				();
 }
 
 void CStalkerCombatPlanner::initialize			()

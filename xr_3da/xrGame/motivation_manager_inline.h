@@ -34,43 +34,22 @@ IC	void CSMotivationManager::init				()
 	m_graph					= xr_new<CSGraphAbstract>();
 	m_edges.reserve			(16);
 	m_actions.reserve		(100);
+	m_selected_id			= u32(-1);
+	m_actuality				= false;
+	m_object				= 0;
+}
+
+TEMPLATE_SPECIALIZATION
+void CSMotivationManager::setup					(_object_type *object)
+{
+	VERIFY					(object);
+	m_object				= object;
 }
 
 TEMPLATE_SPECIALIZATION
 void CSMotivationManager::clear	()
 {
-	xr_delete				(m_graph);
-	m_graph					= xr_new<CSGraphAbstract>();
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivationManager::reinit				(_object_type *object, bool clear_all)
-{
-	if (clear_all) {
-		clear				();
-		m_motivations.clear	();
-		m_actions.clear		();
-	}
-	
-	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i]->data()->reinit(object);
-
-	m_selected_id			= u32(-1);
-	m_actuality				= false;
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivationManager::Load					(LPCSTR section)
-{
-	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i]->data()->Load(section);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivationManager::reload				(LPCSTR section)
-{
-	for (u32 i=0, n=graph().vertices().size(); i<n; ++i)
-		graph().vertices()[i]->data()->reload(section);
+	m_graph->clear			();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -91,6 +70,7 @@ IC	void CSMotivationManager::add_motivation	(u32 motivation_id, CSMotivation *mo
 	VERIFY					(!graph().vertex(motivation_id));
 	graph().add_vertex		(motivation,motivation_id);
 	VERIFY					(graph().vertex(motivation_id));
+	motivation->setup		(m_object);
 	m_actuality				= false;
 }
 

@@ -29,19 +29,9 @@ IC	void CSMotivation::init			()
 }
 
 TEMPLATE_SPECIALIZATION
-void CSMotivation::reinit			(_object_type *object)
+void CSMotivation::setup			(_object_type *object)
 {
 	m_object			= object;
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivation::Load				(LPCSTR section)
-{
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivation::reload			(LPCSTR section)
-{
 }
 
 TEMPLATE_SPECIALIZATION

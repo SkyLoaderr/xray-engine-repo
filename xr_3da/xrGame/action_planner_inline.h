@@ -50,60 +50,13 @@ void CPlanner::init				()
 }
 
 TEMPLATE_SPECIALIZATION
-void CPlanner::Load				(LPCSTR section)
+void CPlanner::setup				(_object_type *object)
 {
-	{
-		OPERATOR_VECTOR::iterator	I = m_operators.begin();
-		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
-			(*I).get_operator()->Load(section);
-	}
-	{
-		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
-		EVALUATOR_MAP::iterator		E = m_evaluators.end();
-		for ( ; I != E; ++I)
-			(*I).second->Load		(section);
-	}
-}
-
-TEMPLATE_SPECIALIZATION
-void CPlanner::reinit				(_object_type *object, bool clear_all)
-{
-	inherited::reinit		(clear_all);
+	inherited::setup		();
 	m_object				= object;
 	m_current_action_id		= _action_id_type(-1);
 	m_storage.clear			();
-	{
-		OPERATOR_VECTOR::iterator	I = m_operators.begin();
-		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I)
-			(*I).get_operator()->reinit(object,&m_storage,clear_all);
-	}
-	{
-		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
-		EVALUATOR_MAP::iterator		E = m_evaluators.end();
-		for ( ; I != E; ++I)
-			(*I).second->reinit		(object,&m_storage);
-	}
 	m_initialized			= false;
-}
-
-TEMPLATE_SPECIALIZATION
-void CPlanner::reload				(LPCSTR section)
-{
-	{
-		OPERATOR_VECTOR::iterator	I = m_operators.begin();
-		OPERATOR_VECTOR::iterator	E = m_operators.end();
-		for ( ; I != E; ++I) {
-			(*I).get_operator()->reload(section);
-		}
-	}
-	{
-		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
-		EVALUATOR_MAP::iterator		E = m_evaluators.end();
-		for ( ; I != E; ++I)
-			(*I).second->reload		(section);
-	}
 }
 
 TEMPLATE_SPECIALIZATION
@@ -228,13 +181,27 @@ LPCSTR CPlanner::action2string		(const _action_id_type &action_id)
 TEMPLATE_SPECIALIZATION
 LPCSTR CPlanner::property2string	(const _condition_type &property_id)
 {
-	return			(itoa(property_id,m_temp_string,10));
+	return			(evaluator(property_id).name());//itoa(property_id,m_temp_string,10));
 }
 
 TEMPLATE_SPECIALIZATION
 LPCSTR CPlanner::object_name		() const
 {
-	return			("");
+	return			("");//*m_object->cName());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_operator		(const _edge_type &operator_id,	_operator_ptr _operator)
+{
+	inherited::add_operator	(operator_id,_operator);
+	_operator->setup		(m_object,&m_storage);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CPlanner::add_evaluator	(const _condition_type &condition_id, _condition_evaluator_ptr evaluator)
+{
+	inherited::add_evaluator(condition_id,evaluator);
+	evaluator->setup		(m_object,&m_storage);
 }
 
 #ifdef LOG_ACTION

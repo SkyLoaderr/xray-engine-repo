@@ -14,8 +14,8 @@
 class CScriptActionWrapper : public CScriptActionBase, public luabind::wrap_base {
 public:
 	IC							CScriptActionWrapper(CScriptGameObject *object = 0, LPCSTR action_name = "");
-	virtual void				reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
-	static	void				reinit_static		(CScriptActionBase *action, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
+	virtual void				setup				(CScriptGameObject *object, CPropertyStorage *storage);
+	static	void				setup_static		(CScriptActionBase *action, CScriptGameObject *object, CPropertyStorage *storage);
 	virtual void				initialize			();
 	static	void				initialize_static	(CScriptActionBase *action);
 	virtual void				execute				();

@@ -42,12 +42,7 @@ void CAbstractOperator::Load						(LPCSTR section)
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractOperator::reinit						(bool clear_all)
-{
-}
-
-TEMPLATE_SPECIALIZATION
-void CAbstractOperator::reload						(LPCSTR section)
+void CAbstractOperator::setup						()
 {
 }
 

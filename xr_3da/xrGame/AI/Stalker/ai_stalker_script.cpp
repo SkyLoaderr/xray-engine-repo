@@ -73,7 +73,7 @@ bool CAI_Stalker::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 	set_body_state					(l_tMovementAction.m_tBodyState);
 	set_movement_type				(l_tMovementAction.m_tMovementType);
 	set_mental_state				(l_tAnimationAction.m_tMentalState);
-	setup							(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+	CSightManager::setup			(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 	CStalkerMovementManager::update	(Device.dwTimeDelta);
 	CSightManager::update			();
 
@@ -102,11 +102,11 @@ bool CAI_Stalker::bfAssignWatch(CScriptEntityAction *tpEntityAction)
 
 				l_tWatchAction.m_tWatchVector	= l_tMatrix.c;
 			}
-			setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+			CSightManager::setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CScriptWatchAction::eGoalTypeDirection : {
-			setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
+			CSightManager::setup(l_tWatchAction.m_tWatchType,&l_tWatchAction.m_tWatchVector);
 			break;
 		}
 		case CScriptWatchAction::eGoalTypeWatchType : {

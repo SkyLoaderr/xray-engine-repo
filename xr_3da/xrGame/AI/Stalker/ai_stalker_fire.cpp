@@ -17,6 +17,7 @@
 #include "../../../skeletonanimated.h"
 #include "../../agent_manager.h"
 #include "../../stalker_animation_manager.h"
+#include "../../motivation_action_manager_stalker.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -319,7 +320,7 @@ bool CAI_Stalker::can_kill_enemy		()
 
 bool CAI_Stalker::undetected_anomaly	()
 {
-	return					(inside_anomaly() || CMotivationActionManagerStalker::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
+	return					(inside_anomaly() || brain().CMotivationActionManagerStalker::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
 }
 
 bool CAI_Stalker::inside_anomaly		()

@@ -28,6 +28,7 @@
 #include "../../actor.h"
 #include "../../relation_registry.h"
 #include "../../stalker_animation_manager.h"
+#include "../../motivation_action_manager_stalker.h"
 
 extern int g_AI_inactive_time;
 
@@ -42,12 +43,14 @@ CAI_Stalker::CAI_Stalker			()
 
 	m_animation_manager				= xr_new<CStalkerAnimationManager>();
 	CStepManager::init_external		(this);
+	m_brain							= xr_new<CMotivationActionManagerStalker>();
 }
 
 CAI_Stalker::~CAI_Stalker			()
 {
 	xr_delete						(m_pPhysics_support);
 	xr_delete						(m_animation_manager);
+	xr_delete						(m_brain);
 }
 
 void CAI_Stalker::init()
@@ -59,7 +62,6 @@ void CAI_Stalker::init()
 
 void CAI_Stalker::reinit			()
 {
-	CMotivationActionManagerStalker::reinit(this,false);
 	CCustomMonster::reinit			();
 	CObjectHandler::reinit			(this);
 	CSightManager::reinit			(this);
@@ -120,7 +122,7 @@ void CAI_Stalker::LoadSounds		(LPCSTR section)
 
 void CAI_Stalker::reload			(LPCSTR section)
 {
-	CMotivationActionManagerStalker::reload(section);
+	brain().setup					(this);
 	CCustomMonster::reload			(section);
 	
 	CObjectHandler::reload			(section);
@@ -141,6 +143,8 @@ void CAI_Stalker::reload			(LPCSTR section)
 	m_r_finger2						= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(section,"weapon_bone2"));
 
 	m_panic_threshold				= pSettings->r_float(section,"panic_threshold");
+
+	m_brain->setup					(this);
 }
 
 void CAI_Stalker::Die				(CObject* who)
@@ -164,9 +168,8 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CObjectHandler::Load			(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
-	CMotivationActionManagerStalker::Load	(section);
 	CStepManager::load				(section);
-
+	
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
 	m_demo_mode						= false;
@@ -625,7 +628,7 @@ void CAI_Stalker::OnRender			()
 
 void CAI_Stalker::Think			()
 {
-	CMotivationActionManagerStalker::update(Level().timeServer() - m_dwLastUpdateTime);
+	brain().update					(Level().timeServer() - m_dwLastUpdateTime);
 	CStalkerMovementManager::update	(Level().timeServer() - m_dwLastUpdateTime);
 	CSSetupManager::update			();
 }

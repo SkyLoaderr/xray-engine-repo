@@ -24,6 +24,12 @@ IC	CStalkerAnimationManager &CAI_Stalker::animation_manager() const
 	return	(*m_animation_manager);
 }
 
+IC	CMotivationActionManagerStalker &CAI_Stalker::brain() const
+{
+	VERIFY	(m_brain);
+	return	(*m_brain);
+}
+
 IC	LPCSTR CAI_Stalker::Name						() const
 {
 	return	(CInventoryOwner::Name());
@@ -33,3 +39,4 @@ IC	float CAI_Stalker::panic_threshold				() const
 {
 	return	(m_panic_threshold);
 }
+

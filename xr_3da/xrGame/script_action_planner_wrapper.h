@@ -13,8 +13,8 @@
 
 class CScriptActionPlannerWrapper : public CScriptActionPlanner, public luabind::wrap_base {
 public:
-	virtual void		reinit						(CScriptGameObject *object, bool clear_all);
-	static	void		reinit_static				(CScriptActionPlanner *planner, CScriptGameObject *object, bool clear_all);
+	virtual void		setup						(CScriptGameObject *object);
+	static	void		setup_static				(CScriptActionPlanner *planner, CScriptGameObject *object);
 	virtual void		update						();
 	static	void		update_static				(CScriptActionPlanner *planner);
 };

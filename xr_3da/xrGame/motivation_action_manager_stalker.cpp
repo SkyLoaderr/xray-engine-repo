@@ -54,26 +54,16 @@ LPCSTR CMotivationActionManagerStalker::object_name		() const
 }
 #endif
 
-void CMotivationActionManagerStalker::Load				(LPCSTR section)
-{
-	inherited::Load			(section);
-}
-
-void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_all)
+void CMotivationActionManagerStalker::setup			(CAI_Stalker *object)
 {
 #ifdef LOG_ACTION
 	set_use_log				(!!psAI_Flags.test(aiGOAP));
 #endif
-	inherited::reinit		(object,clear_all);
-}
-
-void CMotivationActionManagerStalker::reload			(LPCSTR section)
-{
+	inherited::setup		(object);
 	clear					();
 	add_motivations			();
 	add_evaluators			();
 	add_actions				();
-	inherited::reload		(section);
 }
 
 void CMotivationActionManagerStalker::update			(u32 time_delta)

@@ -101,9 +101,7 @@ public:
 	IC									CProblemSolver			();
 	virtual								~CProblemSolver			();
 			void						init					();
-	virtual	void						Load					(LPCSTR section);
-	virtual void						reinit					(bool clear_all);
-	virtual void						reload					(LPCSTR section);
+	virtual void						setup					();
 	IC		bool						actual					() const;
 
 	// graph interface
@@ -115,7 +113,7 @@ public:
 	IC		_edge_value_type			estimate_edge_weight	(const _index_type	&vertex_index) const;
 
 	// operator interface
-	IC		void						add_operator			(const _edge_type	&operator_id,	_operator_ptr _operator);
+	IC		virtual void				add_operator			(const _edge_type	&operator_id,	_operator_ptr _operator);
 	IC		void						remove_operator			(const _edge_type	&operator_id);
 	IC		_operator_ptr				get_operator			(const _operator_id_type &operator_id);
 	IC		const OPERATOR_VECTOR		&operators				() const;
@@ -126,7 +124,7 @@ public:
 	IC		const CState				&target_state			() const;
 
 	// evaluator interface
-	IC		void						add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
+	IC		virtual void				add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
 	IC		void						remove_evaluator		(const _condition_type &condition_id);
 	IC		_condition_evaluator_ptr	evaluator				(const _condition_type &condition_id) const;
 	IC		const EVALUATOR_MAP			&evaluators				() const;

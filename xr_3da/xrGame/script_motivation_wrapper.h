@@ -20,12 +20,8 @@ protected:
 
 public:
 	virtual					~CScriptMotivationWrapper	();
-	virtual void			reinit						(_object_type *object);
-	static	void			reinit_static				(inherited *motivation, _object_type *object);
-	virtual void			Load						(LPCSTR section);
-	static	void			Load_static					(inherited *motivation, LPCSTR section);
-	virtual void			reload						(LPCSTR section);
-	static	void			reload_static				(inherited *motivation, LPCSTR section);
+	virtual void			setup						(_object_type *object);
+	static	void			setup_static				(inherited *motivation, _object_type *object);
 	virtual float			evaluate					(u32 sub_motivation_id);
 	static	float			evaluate_static				(inherited *motivation, u32 sub_motivation_id);
 };

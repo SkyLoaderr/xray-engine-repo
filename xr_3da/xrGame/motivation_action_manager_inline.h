@@ -20,7 +20,6 @@
 TEMPLATE_SPECIALIZATION
 IC	CSMotivationActionManager::CMotivationActionManager	()
 {
-	m_object			= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -29,24 +28,10 @@ CSMotivationActionManager::~CMotivationActionManager	()
 }
 
 TEMPLATE_SPECIALIZATION
-void CSMotivationActionManager::reinit	(_object_type *object, bool clear_all)
+void CSMotivationActionManager::setup	(_object_type *object)
 {
-	CSMotivationManager::reinit	(object,clear_all);
-	CSActionPlanner::reinit		(object,clear_all);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivationActionManager::Load	(LPCSTR section)
-{
-	CSMotivationManager::Load	(section);
-	CSActionPlanner::Load		(section);
-}
-
-TEMPLATE_SPECIALIZATION
-void CSMotivationActionManager::reload	(LPCSTR section)
-{
-	CSMotivationManager::reload	(section);
-	CSActionPlanner::reload		(section);
+	CSMotivationManager::setup	(object);
+	CSActionPlanner::setup		(object);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -85,7 +70,7 @@ IC	void CSMotivationActionManager::add_condition	(CWorldState &goal, _condition_
 TEMPLATE_SPECIALIZATION
 IC	void CSMotivationActionManager::add_action		(const _edge_type &a, CScriptActionPlannerAction *b)
 {
-	add_operator(a,b);
+	CSActionPlanner::add_operator		(a,b);
 }
 
 #undef TEMPLATE_SPECIALIZATION

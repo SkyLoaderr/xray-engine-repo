@@ -12,11 +12,12 @@
 #define CEvaluator				CPropertyEvaluatorMember<_object_type>
 
 TEMPLATE_SPECIALIZATION
-CEvaluator::CPropertyEvaluatorMember	(CPropertyStorage *storage, _condition_type condition_id, _value_type value, bool equality) :
+CEvaluator::CPropertyEvaluatorMember	(CPropertyStorage *storage, _condition_type condition_id, _value_type value, bool equality, LPCSTR evaluator_name) :
 	m_condition_id		(condition_id),
 	m_value				(value),
 	m_equality			(equality)
 {
+	m_evaluator_name	= evaluator_name;
 	m_storage			= storage;
 }
 

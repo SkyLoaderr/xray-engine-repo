@@ -19,11 +19,9 @@ void CMotivation<CScriptGameObject>::script_register(lua_State *L)
 	module(L)
 	[
 		class_<CScriptMotivation,CScriptMotivationWrapper>("motivation")
-			.def_readonly("object",				&CScriptMotivation::m_object)
-			.def(								constructor<>())
-			.def("reinit",						&CScriptMotivation::reinit,		&CScriptMotivationWrapper::reinit_static)
-			.def("load",						&CScriptMotivation::Load,		&CScriptMotivationWrapper::Load_static)
-			.def("reload",						&CScriptMotivation::reload,		&CScriptMotivationWrapper::reload_static)
-			.def("evaluate",					&CScriptMotivation::evaluate,	&CScriptMotivationWrapper::evaluate_static)
+			.def_readonly("object",	&CScriptMotivation::m_object)
+			.def(					constructor<>())
+			.def("setup",			&CScriptMotivation::setup,		&CScriptMotivationWrapper::setup_static)
+			.def("evaluate",		&CScriptMotivation::evaluate,	&CScriptMotivationWrapper::evaluate_static)
 	];
 }

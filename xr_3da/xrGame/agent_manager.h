@@ -131,7 +131,6 @@ public:
 	virtual float							shedule_Scale		();
 	virtual void							shedule_Update		(u32 time_delta);	
 	virtual BOOL							shedule_Ready		();
-	virtual void							reload				(LPCSTR section);	
 			void							add					(CEntity *member);
 			void							remove				(CEntity *member, bool no_assert = false);
 			void							distribute_enemies	();
@@ -151,6 +150,7 @@ public:
 	IC		CDangerCover					*danger_cover		(CCoverPoint *cover) const;
 			float							cover_danger		(CCoverPoint *cover) const;
 	IC		void							clear_danger_covers	();
+	IC		shared_str						cName				() const {return "agent_manager";}
 };
 
 #include "agent_manager_inline.h"

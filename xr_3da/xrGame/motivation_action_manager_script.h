@@ -38,7 +38,7 @@ protected:
 public:
 	IC				CMotivationActionManagerScript	();
 	virtual			~CMotivationActionManagerScript	();
-	virtual void	reinit							(_object_type *object, bool clear_all = false);
+	virtual void	setup							(_object_type *object);
 };
 
 #include "motivation_action_manager_script_inline.h"

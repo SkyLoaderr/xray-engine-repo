@@ -10,14 +10,14 @@
 #include "script_action_planner_wrapper.h"
 #include "script_game_object.h"
 
-void CScriptActionPlannerWrapper::reinit		(CScriptGameObject *object, bool clear_all)
+void CScriptActionPlannerWrapper::setup			(CScriptGameObject *object)
 {
-	luabind::call_member<void>				(this,"reinit",object,clear_all);
+	luabind::call_member<void>				(this,"setup",object);
 }
 
-void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, CScriptGameObject *object, bool clear_all)
+void CScriptActionPlannerWrapper::setup_static	(CScriptActionPlanner *planner, CScriptGameObject *object)
 {
-	planner->CScriptActionPlanner::reinit	(object,clear_all);
+	planner->CScriptActionPlanner::setup	(object);
 }
 
 void CScriptActionPlannerWrapper::update		()

@@ -55,6 +55,7 @@ protected:
 	bool							m_actuality;
 	xr_set<u32>						m_temp;
 	xr_vector<float>				m_edges;
+	_object_type					*m_object;
 
 protected:
 	IC		CSGraphAbstract			&graph				();
@@ -66,11 +67,9 @@ public:
 	IC								CMotivationManager	();
 	virtual							~CMotivationManager	();
 	IC		void					init				();
-	virtual void					reinit				(_object_type *object, bool clear_all = false);
-	virtual void					Load				(LPCSTR section);
-	virtual void					reload				(LPCSTR section);
 	virtual void					update				();
 	virtual void					clear				();
+	virtual void					setup				(_object_type *object);
 
 public:
 	IC		void					add_motivation		(u32 motivation_id, CSMotivation *motivation);

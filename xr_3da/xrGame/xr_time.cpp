@@ -2,13 +2,12 @@
 #include "xr_time.h"
 #include "ui/UIInventoryUtilities.h"
 #include "level.h"
-
+#include "date_time.h"
 
 #define sec2ms		1000
 #define min2ms		60*sec2ms
 #define hour2ms		60*min2ms
 #define day2ms		24*hour2ms
-
 
 u32 get_time()
 {
@@ -44,13 +43,24 @@ void	xrTime::sub				(const xrTime& other)
 void	xrTime::setHMS			(int h, int m, int s)					
 { 
 	m_time=0; 
-	m_time+=(h*hour2ms+m*min2ms+s*sec2ms);
+	m_time+=generate_time(1,1,1,h,m,s);
 }
 
 void	xrTime::setHMSms		(int h, int m, int s, int ms)			
 { 
 	m_time=0; 
-	m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);
+	m_time+=generate_time(1,1,1,h,m,s,ms);
+}
+
+void	xrTime::set				(int y, int mo, int d, int h, int mi, int s, int ms)
+{ 
+	m_time=0; 
+	m_time+=generate_time(y,mo,d,h,mi,s,ms);
+}
+
+void	xrTime::get				(u32 &y, u32 &mo, u32 &d, u32 &h, u32 &mi, u32 &s, u32 &ms)
+{
+	split_time(m_time,y,mo,d,h,mi,s,ms);
 }
 
 float	xrTime::diffSec			(const xrTime& other)					

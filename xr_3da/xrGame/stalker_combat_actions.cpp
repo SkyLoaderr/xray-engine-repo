@@ -214,17 +214,17 @@ void CStalkerActionRetreatFromEnemy::execute		()
 		m_object->set_level_dest_vertex			(point->level_vertex_id());
 		m_object->set_desired_position			(&point->position());
 		m_object->CObjectHandler::set_goal		(eObjectActionIdle);
-		m_object->setup							(CSightAction(SightManager::eSightTypePathDirection,false));
+		m_object->CSightManager::setup			(CSightAction(SightManager::eSightTypePathDirection,false));
 	}
 	else {
 		if (m_object->visible_now(m_object->enemy())) {
 			m_object->set_mental_state			(eMentalStateDanger);
 			m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
-			m_object->setup						(CSightAction(m_object->enemy(),true));
+			m_object->CSightManager::setup		(CSightAction(m_object->enemy(),true));
 		}
 		else {
 			m_object->CObjectHandler::set_goal	(eObjectActionIdle);
-			m_object->setup						(CSightAction(SightManager::eSightTypeCover,true));
+			m_object->CSightManager::setup		(CSightAction(SightManager::eSightTypeCover,true));
 		}
 	}
 

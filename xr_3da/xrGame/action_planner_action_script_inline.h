@@ -31,20 +31,20 @@ CSActionPlannerActionScript::~CActionPlannerActionScript		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CSActionPlannerActionScript::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
+void CSActionPlannerActionScript::setup		(_object_type *object, CPropertyStorage *storage)
 {
 	VERIFY				(object);
 	VERIFY				(m_object);
 }
 
 TEMPLATE_SPECIALIZATION
-void CSActionPlannerActionScript::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CSActionPlannerActionScript::setup		(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY				(object);
-	inherited::reinit	(object,storage,clear_all);
+	inherited::setup	(object,storage);
 	m_object			= smart_cast<_object_type*>(object->object());
 	VERIFY				(m_object);
-	reinit				(m_object,storage,clear_all);
+	setup				(m_object,storage);
 }
 
 #undef TEMPLATE_SPECIALIZATION

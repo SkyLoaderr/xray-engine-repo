@@ -23,6 +23,8 @@ public:
 
 	void	setHMS			(int h, int m, int s);
 	void	setHMSms		(int h, int m, int s, int ms);
+	void	set				(int y, int mo, int d, int h, int mi, int s, int ms);
+	void	get				(u32 &y, u32 &mo, u32 &d, u32 &h, u32 &mi, u32 &s, u32 &ms);
 
 	LPCSTR	dateToString	(int mode);
 	LPCSTR	timeToString	(int mode);

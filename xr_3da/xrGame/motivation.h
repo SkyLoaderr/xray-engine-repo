@@ -21,9 +21,7 @@ public:
 	IC				CMotivation		();
 	virtual			~CMotivation	();
 	IC		void	init			();
-	virtual void	reinit			(_object_type *object);
-	virtual void	Load			(LPCSTR section);
-	virtual void	reload			(LPCSTR section);
+	virtual void	setup			(_object_type *object);
 	virtual float	evaluate		(u32 sub_motivation_id);
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

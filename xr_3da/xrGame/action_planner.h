@@ -75,9 +75,7 @@ public:
 								CActionPlanner			();
 	virtual						~CActionPlanner			();
 			void				init					();
-	virtual	void				Load					(LPCSTR section);
-	virtual	void				reinit					(_object_type *object, bool clear_all = false);
-	virtual	void				reload					(LPCSTR section);
+	virtual	void				setup					(_object_type *object);
 	virtual	void				update					();
 	IC		COperator			&action					(const _action_id_type &action_id);
 	IC		CConditionEvaluator	&evaluator				(const _condition_type &evaluator_id);
@@ -86,6 +84,9 @@ public:
 	IC		bool				initialized				() const;
 	IC		void				add_condition			(_world_operator *action, _condition_type condition_id, _value_type condition_value);
 	IC		void				add_effect				(_world_operator *action, _condition_type condition_id, _value_type condition_value);
+	IC		virtual void		add_operator			(const _edge_type &operator_id,	_operator_ptr _operator);
+	IC		virtual void		add_evaluator			(const _condition_type &condition_id, _condition_evaluator_ptr evaluator);
+
 #ifdef LOG_ACTION
 	virtual LPCSTR				action2string			(const _action_id_type &action_id);
 	virtual LPCSTR				property2string			(const _condition_type &action_id);

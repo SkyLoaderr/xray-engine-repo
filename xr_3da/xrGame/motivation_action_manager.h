@@ -39,9 +39,7 @@ protected:
 public:
 	IC				CMotivationActionManager	();
 	virtual			~CMotivationActionManager	();
-	virtual void	reinit						(_object_type *object, bool clear_all = false);
-	virtual void	Load						(LPCSTR section);
-	virtual void	reload						(LPCSTR section);
+	virtual void	setup						(_object_type *object);
 	virtual void	update						();
 	virtual void	clear						();
 	IC		void	add_action					(const _edge_type &, CScriptActionPlannerAction *);

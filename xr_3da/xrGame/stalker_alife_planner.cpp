@@ -26,18 +26,15 @@ CStalkerALifePlanner::~CStalkerALifePlanner	()
 {
 }
 
-void CStalkerALifePlanner::reinit			(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all)
+void CStalkerALifePlanner::setup			(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::reinit		(object,storage,clear_all);
+	inherited::setup		(object,storage);
+
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyReachedTaskLocation,false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyTaskCompleted,false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyReachedCustomerLocation,false);
 	CScriptActionPlanner::m_storage.set_property(eWorldPropertyCustomerSatisfied,false);
-}
-
-void CStalkerALifePlanner::reload			(LPCSTR section)
-{
-	inherited::reload		(section);
+	
 	clear					();
 	add_evaluators			();
 	add_actions				();

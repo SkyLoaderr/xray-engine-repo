@@ -17,8 +17,8 @@ class CScriptActionPlannerActionWrapper : public CScriptActionPlannerAction, pub
 	typedef CScriptActionPlannerAction inherited;
 public:
 	IC			 CScriptActionPlannerActionWrapper	(CScriptGameObject *object = 0, LPCSTR action_name = "");
-	virtual void				reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
-	static	void				reinit_static		(CScriptActionPlannerAction *action, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
+	virtual void				setup				(CScriptGameObject *object, CPropertyStorage *storage);
+	static	void				setup_static		(CScriptActionPlannerAction *action, CScriptGameObject *object, CPropertyStorage *storage);
 	virtual void				initialize			();
 	static	void				initialize_static	(CScriptActionPlannerAction *action);
 	virtual void				execute				();

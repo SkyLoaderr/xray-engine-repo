@@ -12,14 +12,14 @@
 #include "ai_space.h"
 #include "script_engine.h"
 
-void CScriptActionWrapper::reinit				(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionWrapper::setup				(CScriptGameObject *object, CPropertyStorage *storage)
 {
-	luabind::call_member<void>			(this,"reinit",object,storage,clear_all);
+	luabind::call_member<void>			(this,"setup",object,storage);
 }
 
-void CScriptActionWrapper::reinit_static		(CScriptActionBase *action, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptActionWrapper::setup_static			(CScriptActionBase *action, CScriptGameObject *object, CPropertyStorage *storage)
 {
-	action->CScriptActionBase::reinit		(object,storage,clear_all);
+	action->CScriptActionBase::setup		(object,storage);
 }
 
 void CScriptActionWrapper::initialize			()

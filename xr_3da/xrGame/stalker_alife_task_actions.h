@@ -40,7 +40,7 @@ protected:
 
 public:
 						CStalkerActionAccomplishTask(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual	void		reinit						(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all);
+	virtual	void		setup						(CAI_Stalker *object, CPropertyStorage *storage);
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();

@@ -31,18 +31,18 @@ CScriptBaseAction::~CActionScriptBase		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CScriptBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
+void CScriptBaseAction::setup		(_object_type *object, CPropertyStorage *storage)
 {
 	VERIFY				(object);
 	m_object			= object;
 }
 
 TEMPLATE_SPECIALIZATION
-void CScriptBaseAction::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
+void CScriptBaseAction::setup		(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY				(object);
-	inherited::reinit	(object,storage,clear_all);
-	reinit				(smart_cast<_object_type*>(object->object()),storage,clear_all);
+	inherited::setup	(object,storage);
+	setup				(smart_cast<_object_type*>(object->object()),storage);
 }
 
 #undef TEMPLATE_SPECIALIZATION

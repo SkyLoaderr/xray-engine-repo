@@ -25,9 +25,7 @@ protected:
 protected:
 	enum EActionStates {
 		eActionStateConstructed		= u32(0),
-		eActionStateLoaded,
-		eActionStateReinitialized,
-		eActionStateReloaded,
+		eActionStateSetup,
 		eActionStateInitialized,
 		eActionStateExecuted,
 		eActionStateFinalized,
@@ -57,12 +55,10 @@ public:
 
 public:
 	IC							CActionBase			(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object = 0, LPCSTR action_name = "");
-	IC							CActionBase			(_object_type *object = 0, LPCSTR action_name = "");
+	IC							CActionBase			(_object_type *object, LPCSTR action_name = "");
 	virtual						~CActionBase		();
 			void				init				(_object_type *object, LPCSTR action_name);
-	virtual	void				Load				(LPCSTR section);
-	virtual	void				reinit				(_object_type *object, CPropertyStorage *storage, bool clear_all);
-	virtual	void				reload				(LPCSTR section);
+	virtual void				setup				(_object_type *object, CPropertyStorage *storage);
 	virtual void				initialize			();
 	virtual void				execute				();
 	virtual void				finalize			();

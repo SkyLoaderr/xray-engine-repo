@@ -25,8 +25,8 @@ public:
 	IC				CActionPlannerActionScript	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object = 0, LPCSTR action_name = "");
 	IC				CActionPlannerActionScript	(_object_type *object = 0, LPCSTR action_name = "");
 	virtual			~CActionPlannerActionScript	();
-	virtual	void	reinit						(_object_type *object, CPropertyStorage *storage, bool clear_all);
-	virtual	void	reinit						(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all);
+	virtual	void	setup						(_object_type *object, CPropertyStorage *storage);
+	virtual	void	setup						(CScriptGameObject *object, CPropertyStorage *storage);
 };
 
 #include "action_planner_action_script_inline.h"

@@ -63,8 +63,8 @@ function custom_planner:__init	() super()
 	printf					("planner is constructed!")
 end
 
-function custom_planner:reinit	(obj, clear_all)
-	action_planner.reinit	(self, obj, clear_all)
+function custom_planner:reinit	(obj)
+	action_planner.reinit	(self, obj)
 	printf					("planner is reinitialized!")
 end
 

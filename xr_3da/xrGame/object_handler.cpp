@@ -37,15 +37,16 @@ void CObjectHandler::init			()
 
 void CObjectHandler::Load			(LPCSTR section)
 {
-	inherited::Load				(section);
 	CInventoryOwner::Load		(section);
-	m_hammer_is_clutched		= false;
 }
 
 void CObjectHandler::reinit			(CAI_Stalker *object)
 {
-	inherited::reinit			(object,true);
+	inherited::setup			(object);
+	inherited::clear			();
 	CInventoryOwner::reinit		();
+	m_hammer_is_clutched		= false;
+
 	CActionBase<CAI_Stalker>	*action;
 
 	m_storage.set_property		(eWorldPropertyAimed1,false);
@@ -68,7 +69,6 @@ void CObjectHandler::reinit			(CAI_Stalker *object)
 
 void CObjectHandler::reload			(LPCSTR section)
 {
-	inherited::reload			(section);
 	CInventoryOwner::reload		(section);
 }
 

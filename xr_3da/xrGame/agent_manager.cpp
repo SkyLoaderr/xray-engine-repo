@@ -20,8 +20,16 @@ using namespace AgentManager;
 
 CAgentManager::CAgentManager		()
 {
-	reload						(SECTION);
-	inherited::reinit			(this);
+	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
+	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
+	shedule_register			();
+	
+	inherited::setup			(this);
+
+	clear						();
+	add_motivations				();
+	add_evaluators				();
+	add_actions					();
 }
 
 CAgentManager::~CAgentManager		()
@@ -46,20 +54,6 @@ void CAgentManager::shedule_Update	(u32 time_delta)
 BOOL CAgentManager::shedule_Ready	()
 {
 	return						(!m_members.empty());
-}
-
-void CAgentManager::reload			(LPCSTR section)
-{
-	shedule.t_min				= pSettings->r_s32	(section,"schedule_min");
-	shedule.t_max				= pSettings->r_s32	(section,"schedule_max");
-	shedule_register			();
-
-	inherited::reload			(section);
-
-	clear						();
-	add_motivations				();
-	add_evaluators				();
-	add_actions					();
 }
 
 void CAgentManager::add				(CEntity *member)

@@ -68,7 +68,7 @@ void CStalkerActionGatherItems::execute		()
 
 	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
 	m_object->set_desired_position	(&m_object->item()->Position());
-	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
+	m_object->CSightManager::setup	(SightManager::eSightTypePosition,&m_object->item()->Position());
 }
 
 //////////////////////////////////////////////////////////////////////////

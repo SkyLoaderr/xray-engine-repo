@@ -29,10 +29,10 @@ CSMotivationActionManager::~CMotivationActionManagerScript	()
 }
 
 TEMPLATE_SPECIALIZATION
-void CSMotivationActionManager::reinit	(_object_type *object, bool clear_all)
+void CSMotivationActionManager::setup	(_object_type *object)
 {
 	VERIFY				(object);
-	inherited::reinit	(object->lua_game_object(),clear_all);
+	inherited::setup	(object->lua_game_object());
 	m_object			= object;
 }
 

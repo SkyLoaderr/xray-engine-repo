@@ -6,10 +6,11 @@
 #include "script_storage_space.h"
 #include "script_engine.h"
 #include "ai/monsters/bloodsucker/bloodsucker.h"
-#include "motivation_action_manager.h"
+#include "motivation_action_manager_stalker.h"
 #include "script_sound_info.h"
 #include "script_monster_hit_info.h"
 #include "script_space.h"
+#include "ai/stalker/ai_stalker.h"
 
 void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
 {
@@ -207,15 +208,15 @@ ALife::ERelationType CScriptGameObject::GetRelationType	(CScriptGameObject* who)
 template <typename T>
 IC	T	*CScriptGameObject::motivation_action_manager()
 {
-	T	*manager = smart_cast<T*>(object());
+	CAI_Stalker	*manager = smart_cast<CAI_Stalker*>(object());
 	if (!manager)
 		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
-	return					(manager);
+	return					(&manager->brain());
 }
 
 CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
 {
-	return							(obj->motivation_action_manager<CScriptMotivationActionManager>());
+	return					(obj->motivation_action_manager<CScriptMotivationActionManager>());
 }
 
 CScriptSoundInfo CScriptGameObject::GetSoundInfo()

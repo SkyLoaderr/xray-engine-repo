@@ -10,14 +10,14 @@
 #include "script_property_evaluator_wrapper.h"
 #include "script_game_object.h"
 
-void CScriptPropertyEvaluatorWrapper::reinit			(CScriptGameObject *object, CPropertyStorage *storage)
+void CScriptPropertyEvaluatorWrapper::setup			(CScriptGameObject *object, CPropertyStorage *storage)
 {
-	luabind::call_member<void>	(this,"reinit",object,storage);
+	luabind::call_member<void>	(this,"setup",object,storage);
 }
 
-void CScriptPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CScriptGameObject *object, CPropertyStorage *storage)
+void CScriptPropertyEvaluatorWrapper::setup_static	(CScriptPropertyEvaluator *evaluator, CScriptGameObject *object, CPropertyStorage *storage)
 {
-	evaluator->CScriptPropertyEvaluator::reinit(object,storage);
+	evaluator->CScriptPropertyEvaluator::setup(object,storage);
 }
 
 bool CScriptPropertyEvaluatorWrapper::evaluate		()

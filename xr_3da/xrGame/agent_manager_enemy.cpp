@@ -69,8 +69,8 @@ void CAgentManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &membe
 void CAgentManager::fill_enemies		()
 {
 	m_enemies.clear					();
-	iterator						I = m_object->members().begin();
-	iterator						E = m_object->members().end();
+	iterator						I = members().begin();
+	iterator						E = members().end();
 	for ( ; I != E; ++I) {
 		(*I).probability			(1.f);
 		(*I).object()->fill_enemies	(CEnemyFiller(&m_enemies,mask((*I).object())));

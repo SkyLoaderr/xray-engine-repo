@@ -18,12 +18,8 @@ protected:
 
 public:
 	virtual					~CScriptMotivationManagerWrapper();
-	virtual void			reinit							(_object_type *object, bool clear_all = false);
-	static	void			reinit_static					(CScriptMotivationManager *manager, CScriptGameObject *object, bool clear_all = false);
-	virtual void			Load							(LPCSTR section);
-	static	void			Load_static						(CScriptMotivationManager *manager, LPCSTR section);
-	virtual void			reload							(LPCSTR section);
-	static	void			reload_static					(CScriptMotivationManager *manager, LPCSTR section);
+	virtual void			setup							(_object_type *object);
+	static	void			setup_static					(CScriptMotivationManager *manager, CScriptGameObject *object);
 	virtual void			update							();
 	static	void			update_static					(CScriptMotivationManager *manager);
 };

@@ -35,8 +35,7 @@ public:
 	IC								COperatorAbstract	(const CSConditionState &conditions, const CSConditionState &effects);
 	virtual							~COperatorAbstract	();
 	virtual	void					Load				(LPCSTR section);
-	virtual void					reinit				(bool clear_all);
-	virtual void					reload				(LPCSTR section);
+	virtual void					setup				();
 	IC		const CSConditionState	&conditions			() const;
 	IC		const CSConditionState	&effects			() const;
 	IC		void					add_condition		(const COperatorCondition &condition);

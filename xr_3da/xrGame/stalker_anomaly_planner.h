@@ -19,8 +19,7 @@ private:
 public:
 						CStalkerAnomalyPlanner	(CAI_Stalker *object = 0, LPCSTR action_name = "");
 	virtual				~CStalkerAnomalyPlanner	();
-	virtual	void		reinit					(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all = false);
-	virtual	void		reload					(LPCSTR section);
+	virtual	void		setup					(CAI_Stalker *object, CPropertyStorage *storage);
 	virtual	void		update					();
 			void		add_evaluators			();
 			void		add_actions				();

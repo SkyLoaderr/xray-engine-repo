@@ -48,18 +48,18 @@ CWrapper::~CWrapperAbstract		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper::reinit				(_object_type *object)
+void CWrapper::setup				(_object_type *object)
 {
 	VERIFY					(object);
-	inherited::reinit		(object->lua_game_object());
+	inherited::setup		(object->lua_game_object());
 	m_object				= object;
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper::reinit				(CScriptGameObject *object)
+void CWrapper::setup				(CScriptGameObject *object)
 {
 	VERIFY					(object);
-	inherited::reinit		(object);
+	inherited::setup		(object);
 	m_object				= smart_cast<_object_type*>(object->object());
 	VERIFY					(m_object);
 }
@@ -104,18 +104,18 @@ CWrapper2::~CWrapperAbstract2		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper2::reinit				(_object_type *object, CPropertyStorage *storage)
+void CWrapper2::setup				(_object_type *object, CPropertyStorage *storage)
 {
 	VERIFY					(object);
-	inherited::reinit		(object->lua_game_object(),storage);
+	inherited::setup		(object->lua_game_object(),storage);
 	m_object				= object;
 }
 
 TEMPLATE_SPECIALIZATION
-void CWrapper2::reinit				(CScriptGameObject *object, CPropertyStorage *storage)
+void CWrapper2::setup				(CScriptGameObject *object, CPropertyStorage *storage)
 {
 	VERIFY					(object);
-	inherited::reinit		(object,storage);
+	inherited::setup		(object,storage);
 	m_object				= smart_cast<_object_type*>(object->object());
 	VERIFY					(m_object);
 }

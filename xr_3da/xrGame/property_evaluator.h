@@ -23,16 +23,17 @@ public:
 public:
 	_object_type		*m_object;
 	CPropertyStorage	*m_storage;
+	LPCSTR				m_evaluator_name;
 
 public:
-								CPropertyEvaluator	(_object_type *object = 0);
+	IC							CPropertyEvaluator	(_object_type *object = 0, LPCSTR evaluator_name = "");
 	virtual 					~CPropertyEvaluator	();
-			void				init				(_object_type *object);
-	virtual void				reinit				(_object_type *object, CPropertyStorage *storage);
+	IC		void				init				(_object_type *object, LPCSTR evaluator_name);
+	virtual void				setup				(_object_type *object, CPropertyStorage *storage);
 	virtual void				Load				(LPCSTR section);
-	virtual void				reload				(LPCSTR section);
 	virtual	_value_type			evaluate			();
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
+	IC		LPCSTR				name				() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CPropertyEvaluator<CScriptGameObject> CScriptPropertyEvaluator;

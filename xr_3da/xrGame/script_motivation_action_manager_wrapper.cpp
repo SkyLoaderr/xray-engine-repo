@@ -14,34 +14,14 @@ CScriptMotivationActionManagerWrapper::~CScriptMotivationActionManagerWrapper	()
 {
 }
 
-void CScriptMotivationActionManagerWrapper::reinit			(_object_type *object, bool clear_all)
+void CScriptMotivationActionManagerWrapper::setup			(_object_type *object)
 {
-	luabind::call_member<void>						(this,"reinit",object,clear_all);
+	luabind::call_member<void>						(this,"setup",object);
 }
 
-void CScriptMotivationActionManagerWrapper::reinit_static	(CScriptMotivationActionManager *manager, CScriptGameObject *object, bool clear_all)
+void CScriptMotivationActionManagerWrapper::setup_static	(CScriptMotivationActionManager *manager, CScriptGameObject *object)
 {
-	manager->CScriptMotivationActionManager::reinit		(object,clear_all);
-}
-
-void CScriptMotivationActionManagerWrapper::Load			(LPCSTR section)
-{
-	luabind::call_member<void>						(this,"load",section);
-}
-
-void CScriptMotivationActionManagerWrapper::Load_static		(CScriptMotivationActionManager *manager, LPCSTR section)
-{
-	manager->CScriptMotivationActionManager::Load		(section);
-}
-
-void CScriptMotivationActionManagerWrapper::reload			(LPCSTR section)
-{
-	luabind::call_member<void>						(this,"reload",section);
-}
-
-void CScriptMotivationActionManagerWrapper::reload_static	(CScriptMotivationActionManager *manager, LPCSTR section)
-{
-	manager->CScriptMotivationActionManager::reload	(section);
+	manager->CScriptMotivationActionManager::setup	(object);
 }
 
 void CScriptMotivationActionManagerWrapper::update			()

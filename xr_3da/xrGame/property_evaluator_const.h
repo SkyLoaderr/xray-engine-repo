@@ -19,7 +19,7 @@ protected:
 	_value_type			m_value;
 
 public:
-	IC					CPropertyEvaluatorConst	(_value_type value);
+	IC					CPropertyEvaluatorConst	(_value_type value, LPCSTR evaluator_name = "");
 	virtual _value_type	evaluate				();
 };
 

@@ -25,15 +25,12 @@ CStalkerDeathPlanner::~CStalkerDeathPlanner	()
 {
 }
 
-void CStalkerDeathPlanner::reinit			(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all)
+void CStalkerDeathPlanner::setup			(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::reinit		(object,storage,clear_all);
-	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyDead,false);
-}
+	inherited::setup		(object,storage);
 
-void CStalkerDeathPlanner::reload			(LPCSTR section)
-{
-	inherited::reload		(section);
+	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyDead,false);
+
 	clear					();
 	add_evaluators			();
 	add_actions				();

@@ -16,7 +16,6 @@
 #include "../../object_handler.h"
 #include "ai_stalker_space.h"
 #include "../../AI_PhraseDialogManager.h"
-#include "../../motivation_action_manager_stalker.h"
 #include "../../seniority_hierarchy_holder.h"
 #include "../../team_hierarchy_holder.h"
 #include "../../squad_hierarchy_holder.h"
@@ -40,13 +39,13 @@ class CAgentManager;
 class CALifeTask;
 class CMotionDef;
 class CStalkerAnimationManager;
+class CMotivationActionManagerStalker;
 
 class CAI_Stalker : 
 	public CCustomMonster, 
 	public CObjectHandler,
 	public CSightManager,
 	public CStalkerMovementManager,
-	public CMotivationActionManagerStalker,
 	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
 	public CAI_PhraseDialogManager,
 	public CStepManager
@@ -58,7 +57,8 @@ public:
 	typedef CSetupManager<CSetupAction,CAI_Stalker,u32>	CSSetupManager;
 
 private:
-	CStalkerAnimationManager	*m_animation_manager;
+	CStalkerAnimationManager		*m_animation_manager;
+	CMotivationActionManagerStalker	*m_brain;
 	// demo mode
 private:
 	bool						m_demo_mode;
@@ -326,6 +326,7 @@ public:
 			bool						alife_task_completed			();
 			void						communicate						(CInventoryOwner *trader);
 	IC	CStalkerAnimationManager		&animation_manager				() const;
+	IC	CMotivationActionManagerStalker &brain							() const;
 	IC	float							panic_threshold					() const;
 };
 

@@ -41,9 +41,7 @@ public:
 							CMotivationActionManagerStalker		();
 	virtual					~CMotivationActionManagerStalker	();
 			void			init								();
-	virtual	void			Load								(LPCSTR section);
-	virtual	void			reinit								(CAI_Stalker *object, bool clear_all = false);
-	virtual	void			reload								(LPCSTR section);
+	virtual	void			setup								(CAI_Stalker *object);
 	virtual	void			update								(u32 time_delta);
 #ifdef LOG_ACTION
 	virtual	LPCSTR			object_name							() const;

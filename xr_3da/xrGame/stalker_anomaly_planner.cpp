@@ -25,16 +25,13 @@ CStalkerAnomalyPlanner::~CStalkerAnomalyPlanner	()
 {
 }
 
-void CStalkerAnomalyPlanner::reinit				(CAI_Stalker *object, CPropertyStorage *storage, bool clear_all)
+void CStalkerAnomalyPlanner::setup				(CAI_Stalker *object, CPropertyStorage *storage)
 {
-	inherited::reinit		(object,storage,clear_all);
+	inherited::setup		(object,storage);
+
 	CScriptActionPlanner::m_storage.set_property	(eWorldPropertyAnomaly,false);
 	CScriptActionBase::m_storage->set_property		(eWorldPropertyAnomaly,false);
-}
 
-void CStalkerAnomalyPlanner::reload				(LPCSTR section)
-{
-	inherited::reload		(section);
 	clear					();
 	add_evaluators			();
 	add_actions				();

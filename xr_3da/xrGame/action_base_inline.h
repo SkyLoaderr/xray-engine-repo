@@ -48,16 +48,7 @@ void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 }
 
 TEMPLATE_SPECIALIZATION
-void CBaseAction::Load			(LPCSTR section)
-{
-#ifdef LOG_ACTION
-//	if (xr_strlen(m_action_name))
-//		debug_log		(eActionStateLoaded);
-#endif
-}
-
-TEMPLATE_SPECIALIZATION
-void CBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
+void CBaseAction::setup			(_object_type *object, CPropertyStorage *storage)
 {
 	VERIFY				(object);
 	VERIFY				(storage);
@@ -67,16 +58,7 @@ void CBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool
 #ifdef LOG_ACTION
 	m_switched			= false;
 	if (m_use_log && xr_strlen(m_action_name))
-		debug_log		(eActionStateReinitialized);
-#endif
-}
-
-TEMPLATE_SPECIALIZATION
-void CBaseAction::reload			(LPCSTR section)
-{
-#ifdef LOG_ACTION
-	if (m_use_log && xr_strlen(m_action_name))
-		debug_log		(eActionStateReloaded);
+		debug_log		(eActionStateSetup);
 #endif
 }
 
@@ -152,16 +134,8 @@ IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 			Msg			("[%6d] action %s is constructed",Level().timeServer(),m_action_name);
 			break;
 		}
-		case eActionStateLoaded : {
-			Msg			("[%6d] action %s is loaded",Level().timeServer(),m_action_name);
-			break;
-		}
-		case eActionStateReinitialized : {
-			Msg			("[%6d] action %s is reinitialized",Level().timeServer(),m_action_name);
-			break;
-		}
-		case eActionStateReloaded : {
-			Msg			("[%6d] action %s is reloaded",Level().timeServer(),m_action_name);
+		case eActionStateSetup : {
+			Msg			("[%6d] action %s is setup",Level().timeServer(),m_action_name);
 			break;
 		}
 		case eActionStateInitialized : {

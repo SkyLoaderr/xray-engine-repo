@@ -59,12 +59,7 @@ void CProblemSolverAbstract::init						()
 }
 
 TEMPLATE_SPECIALIZATION
-void CProblemSolverAbstract::Load						(LPCSTR section)
-{
-}
-
-TEMPLATE_SPECIALIZATION
-void CProblemSolverAbstract::reinit						(bool clear_all)
+void CProblemSolverAbstract::setup				()
 {
 	m_target_state.clear	();
 	m_current_state.clear	();
@@ -74,14 +69,6 @@ void CProblemSolverAbstract::reinit						(bool clear_all)
 	m_solution_changed		= false;
 	m_actuality				= true;
 	m_failed				= false;
-
-	if (clear_all)
-		clear				();
-}
-
-TEMPLATE_SPECIALIZATION
-void CProblemSolverAbstract::reload						(LPCSTR section)
-{
 }
 
 TEMPLATE_SPECIALIZATION
