@@ -894,6 +894,8 @@ void CAI_Soldier::OnPatrolReturn()
 	}
 
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,Leader != this ? m_fMaxSpeed : m_fMinSpeed)
+	
+	SetDirectionLook();
 }
 
 void CAI_Soldier::OnFollowLeaderPatrol()
@@ -1073,6 +1075,8 @@ void CAI_Soldier::OnFollowLeaderPatrol()
 	else {
 		SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,.9f*m_fMinSpeed);
 	}
+
+	SetDirectionLook();
 }
 
 void CAI_Soldier::OnPatrol()
@@ -1167,7 +1171,7 @@ void CAI_Soldier::OnPatrol()
 	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 
-	//SetDirectionLook();
+	SetDirectionLook();
 }
 
 void CAI_Soldier::OnSenseSomethingAlone()

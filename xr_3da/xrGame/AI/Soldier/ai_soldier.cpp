@@ -138,8 +138,8 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	m_dwMaxDynamicObjectsCount = ini->ReadINT(section,"DynamicObjectsCount");
 	m_dwMaxDynamicSoundsCount = ini->ReadINT(section,"DynamicSoundsCount");
 
-	tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
-	m_fAddAngle = ini->ReadFLOAT(section,"AddAngle");
+	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
+	//m_fAddAngle = ini->ReadFLOAT(section,"AddAngle");
 }
 
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)

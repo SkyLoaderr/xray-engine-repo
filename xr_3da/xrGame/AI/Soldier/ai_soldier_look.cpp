@@ -77,13 +77,13 @@ void CAI_Soldier::SetDirectionLook()
 	if (i > 1) {
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-		if (tWatchDirection.square_magnitude() > EPS_L) {
+		if (tWatchDirection.magnitude() > EPS_L) {
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
 
-			r_torso_target.yaw += m_fAddAngle;
-			while (r_torso_target.yaw > PI_MUL_2)
-				r_torso_target.yaw -= PI_MUL_2;
+//			r_torso_target.yaw += m_fAddAngle;
+//			while (r_torso_target.yaw > PI_MUL_2)
+//				r_torso_target.yaw -= PI_MUL_2;
 
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
@@ -432,7 +432,7 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(tpEntity);
 	if (tpEntityAlive) {
 		fEyeRange = tpEntityAlive->ffGetRange();
-		fEyeFov = tpEntityAlive->ffGetFov();
+		fEyeFov = tpEntityAlive->ffGetFov() + 20.f;
 	}
 	
 	tDirection.sub(vPosition,tpEntity->Position());

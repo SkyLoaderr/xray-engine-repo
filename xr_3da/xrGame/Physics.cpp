@@ -291,6 +291,7 @@ void CPHWorld::Destroy(){
 
 void CPHWorld::Step(dReal step){
 			// compute contact joints and forces
+	return;
 			dSpaceCollide(Space, 0, &NearCallback);
 		
 			
