@@ -9,6 +9,7 @@
 #include "flightscontroller.h"
 #include "xr_creator.h"
 #include "fbasicvisual.h"
+#include "lightrack.h"
 
 int		psSH_Blur			= 1;
 
@@ -178,8 +179,8 @@ void CLightShadows::calculate	()
 		if (C.nodes.empty())	continue;
 		
 		// Select lights and calc importance
-		lights.clear			();
-		::Render->L_select		(C.C,C.O->Radius(),lights);
+		CLightTrack* LT			= C.O->Lights();
+		vector<CLightTrack::Light>& lights = LT->lights;
 		
 		// iterate on lights
 		for (int l_it=0; (l_it<lights.size()) && (slot_id<slot_max); l_it++)

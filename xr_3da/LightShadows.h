@@ -41,7 +41,6 @@ private:
 	vector<caster>			casters;
 	vector<shadow>			shadows;
 	vector<int>				id;
-	vector<xrLIGHT*>		lights;
 	vector<tess_tri>		tess;
 
 	CRT*					RT;
