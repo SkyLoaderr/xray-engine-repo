@@ -401,8 +401,11 @@ void CAI_Stalker::Think()
 		I = _I;
 	}
 
-	if (!A && _A  && (m_iSoundIndex > -1) && (Level().timeServer() - m_tpaDynamicSounds[m_iSoundIndex].dwTime < m_dwInertion))
-		A = _A;
+	if (((!A && _A) || (!B && _B))  && (m_iSoundIndex > -1) && (Level().timeServer() - m_tpaDynamicSounds[m_iSoundIndex].dwTime < m_dwInertion)) {
+		_A = A;
+		_B = B;
+		m_iSoundIndex = -1;
+	}
 
 	if (m_tEnemy.Enemy && (_K != K))
 		AI_Path.TravelPath.clear();
