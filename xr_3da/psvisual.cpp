@@ -215,7 +215,8 @@ void CPSVisual::Render(float LOD)
 			bv_BBox.modify(Pos);
         }
     }
-	bv_BBox.grow	(p_size);
+	bv_BBox.grow		(p_size);
+	bv_BBox.getsphere	(bv_Position,bv_Radius);
 	
 	// unlock VB and Render it as triangle list
 	DWORD dwNumVerts = pv-pv_start;
