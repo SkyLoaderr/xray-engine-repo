@@ -166,6 +166,7 @@ void CPSVisual::Render(float LOD)
             mb_step 	=	m_Definition->m_BlurTime.start*k_inv+m_Definition->m_BlurTime.end*k;
             mb_step		/=	mb_samples;
         }
+
         // update
 		for (int sample=mb_samples-1; sample>=0; sample--)
 		{
@@ -189,10 +190,10 @@ void CPSVisual::Render(float LOD)
                 float PT = T-0.1f;
 				float kk = PT/(P->m_Time.end-P->m_Time.start);
                 PS::SimulatePosition(p,P,PT,kk);
-				D.sub(Pos,p);
-                D.normalize_safe();
+				D.sub				(Pos,p);
+                D.normalize_safe	();
 			}else{
-				PS::SimulateAngle(angle,P,T,k,k_inv);
+				PS::SimulateAngle	(angle,P,T,k,k_inv);
             }
 			
 			// Animation
