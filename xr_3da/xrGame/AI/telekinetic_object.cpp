@@ -48,6 +48,32 @@ bool CTelekineticObject::init(CTelekinesis* tele,CPhysicsShellHolder *obj, float
 	return true;
 }
 
+void CTelekineticObject::raise_update()
+{
+	if (check_height()) prepare_keep();// начать удержание предмета
+	else if (check_raise_time_out()) release();
+	else {
+
+		rotate();
+	}
+}
+void CTelekineticObject::keep_update()
+{
+	if (time_keep_elapsed())release();
+}
+void CTelekineticObject::fire_update()
+{
+	if (time_fire_elapsed())release();
+}
+void CTelekineticObject::update_state()
+{
+	switch (get_state()) {
+		case TS_Raise:	raise_update();	break;
+		case TS_Keep:	keep_update();	break;
+		case TS_Fire:	fire_update();	break;
+		case TS_None:					break; 
+	}
+}
 void CTelekineticObject::raise(float power) 
 {
 	if (!object || !object->m_pPhysicsShell || !object->m_pPhysicsShell->bActive) return;
@@ -127,6 +153,7 @@ void CTelekineticObject::release()
 		// приложить небольшую силу для того, чтобы объект начал падать
 		object->m_pPhysicsShell->applyImpulse(dir_inv, 0.5f * object->m_pPhysicsShell->getMass());
 	}
+	state = TS_None;
 }
 
 void CTelekineticObject::fire(const Fvector &target)

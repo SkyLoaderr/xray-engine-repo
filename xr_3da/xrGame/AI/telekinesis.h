@@ -26,7 +26,7 @@ public:
 			void	deactivate			();
 			// деактивировать объект
 			void	deactivate			(CPhysicsShellHolder *obj);
-
+			void	remove_object		(TELE_OBJECTS_IT it);
 			// бросить объект 'obj' в позицию 'target'
 			void	fire				(CPhysicsShellHolder *obj, const Fvector &target);
 	

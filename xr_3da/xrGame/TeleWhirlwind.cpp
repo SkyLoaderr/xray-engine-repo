@@ -20,7 +20,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 
 void		CTeleWhirlwindObject::		raise					(float power)
 {
-		float time=1.f;
+
 		CPhysicsShell*	p			=	get_object()	->PPhysicsShell();
 		u16				element		=	p				->get_ElementsNumber()-1;
 		Fvector			center		=	m_telekinesis	->Center();
@@ -34,7 +34,7 @@ void		CTeleWhirlwindObject::		raise					(float power)
 			Fvector diff;
 			diff.sub(center,pos);
 			float mag=diff.magnitude();
-			diff.mul(100.f*E->getMass()/mag/mag/mag);
+			diff.mul(1000000.f*E->getMass()/mag/mag/mag);
 			E->applyForce(diff.x,diff.y,diff.z);
 		}
 }

@@ -53,6 +53,12 @@ void CTelekinesis::deactivate(CPhysicsShellHolder *obj)
 	// отпустить объект
 	(*it)->release();
 
+	//remove from list, delete...
+	remove_object(it);
+}
+
+void CTelekinesis::remove_object		(TELE_OBJECTS_IT it)
+{
 	// release memory
 	xr_delete(*it);
 
@@ -65,8 +71,6 @@ void CTelekinesis::deactivate(CPhysicsShellHolder *obj)
 		active = false;
 	}
 }
-
-
 void CTelekinesis::fire(const Fvector &target)
 {
 	if (!active) return;
@@ -116,28 +120,8 @@ void CTelekinesis::schedule_update()
 	for (u32 i = 0; i < objects.size(); i++) {
 
 		CTelekineticObject *cur_obj = objects[i];
-
-		switch (cur_obj->get_state()) {
-		case TS_Raise: 
-			if (cur_obj->check_height()) cur_obj->prepare_keep();// начать удержание предмета
-			else if (cur_obj->check_raise_time_out()) deactivate(cur_obj->get_object());
-			else {
-				
-
-				cur_obj->rotate();
-			}
-			
-			
-
-			break;
-		case TS_Keep:
-			if (cur_obj->time_keep_elapsed()) deactivate(cur_obj->get_object());
-			break;
-		case TS_Fire:
-			if (cur_obj->time_fire_elapsed()) deactivate(cur_obj->get_object());
-			break;
-		case TS_None: continue; 
-		}
+		cur_obj->update_state();
+		if(cur_obj->is_released())	remove_object(objects.begin()+i);
 	}
 }
 

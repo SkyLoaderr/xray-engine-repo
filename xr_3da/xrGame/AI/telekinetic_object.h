@@ -38,14 +38,17 @@ public:
 virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
 	
 virtual		void				raise					(float power);
-	
+virtual		void				raise_update			();
+
 			void				prepare_keep			();
 virtual		void				keep					();
+virtual		void				keep_update				();
 			void				release					();
 virtual		void				fire					(const Fvector &target);
 virtual		void				fire					(const Fvector &target, float power);
-
-
+virtual		void				fire_update				();
+virtual		void				update_state			();
+			bool				is_released				(){return state==TS_None;}
 			ETelekineticState	get_state				() {return state;}
 			CPhysicsShellHolder *get_object				() {return object;}
 
