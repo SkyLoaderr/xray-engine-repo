@@ -11,6 +11,7 @@ function cfg_get_mode(ini, section, npc)
 	alife.actor_friendly  = utils.cfg_get_bool(ini, section, "actor_friendly", npc, false)
 	alife.npc_friendly    = utils.cfg_get_bool(ini, section, "npc_friendly", npc, false)
 	alife.friendly        = utils.cfg_get_bool(ini, section, "friendly", npc, false)
+	alife.braindead       = utils.cfg_get_bool(ini, section, "braindead", npc, false)
 	return alife
 end
 
@@ -34,7 +35,8 @@ function alife_control(obj, actor, mode)
 	local enemy = obj:get_enemy()
 	if enemy then
 		--printf("_bp: got enemy")
-		if not mode.friendly and
+		if not mode.braindead and
+		   not mode.friendly and
 		   (not mode.actor_friendly or enemy:id () ~= actor:id ()) and
 		   (not mode.npc_friendly or enemy:id() == actor:id()) then
 			issue_combat_event(obj)
@@ -46,6 +48,10 @@ function alife_control(obj, actor, mode)
 	-- ќтпускать в alife монстров, которых обстрел€ли
 	local h = obj:get_monster_hit_info()
 	if h.who and h.time ~= 0 then
+		if mode.braindead then
+			-- Braindead монстры не уход€т из под скрипта даже если их обстрел€ть
+			return false
+		end
 		if h.who:id() == actor:id() and mode.actor_friendly then
 			-- ≈сли хот€ бы раз был атакован actor-ом, то больше не дружественен к нему
 			mode.actor_friendly = false

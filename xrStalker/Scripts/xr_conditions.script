@@ -72,19 +72,27 @@ function is_day (actor, npc)
     return utils.is_day ()
 end    
 
-function mob_has_enemy (actor, npc)
+function mob_has_enemy(actor, npc)
     return false
     --if npc == nil then return false end
     --if npc:get_enemy () then printf ("ENEMY PRESENT") else printf ("ENEMY NOT PRESENT") end
     --return npc:get_enemy () ~= nil
 end    
 
-function mob_actor_nearest (actor, npc)
+function mob_actor_nearest(actor, npc)
     return false
     --if npc == nil then return false end
     --printf ("Distance to actor : %d", distance_between (actor, npc))
     --return distance_between (actor, npc) < 20
 end    
+
+function mob_was_hit(actor, npc)
+	local h = npc:get_monster_hit_info()
+	if h.who and h.time ~= 0 then
+		return true
+	end
+	return false
+end
 
 function fighting_actor(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
