@@ -297,7 +297,7 @@ BOOL	Face::hasImplicitLighting()
 	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
 
-IC		double rsqrt	(double v)		{	return 1.0/_sqrt(v);			}
+/*
 BOOL	exact_normalize	(Fvector3& a)	{	return exact_normalize(&a.x);	}
 BOOL	exact_normalize (float* a)
 {
@@ -360,3 +360,4 @@ aa2_largest:	// aa2 is largest
 	}
 	return	TRUE;
 }
+*/
