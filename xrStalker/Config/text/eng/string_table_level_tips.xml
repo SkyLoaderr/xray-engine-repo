@@ -50,5 +50,8 @@
     </string>
     <string id="info_esc_give_agroprom_task">
         <text>empty text</text>
-    </string>    
+    </string>
+	<string id="gar_dolg_warning">
+		<text>Сталкер, ты на территории Долга. Будешь буянить - получишь 4-ю степень инвалидности !</text>
+	</string>     
 </string_table>
