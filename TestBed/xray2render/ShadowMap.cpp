@@ -130,10 +130,10 @@ class CMyD3DApplication : public CD3DApplication
 	D3DXVECTOR4						m_vecLightDirFloor;
 
 	// Shadow map
-	LPDIRECT3DTEXTURE9				m_pShadowMap;
-	LPDIRECT3DSURFACE9				m_pShadowMapSurf;
-	LPDIRECT3DSURFACE9				m_pShadowMapZ;
-    LPDIRECT3DVERTEXBUFFER9			m_pOverlayVB;
+	LPDIRECT3DTEXTURE9				sm_pShadowMap;
+	LPDIRECT3DSURFACE9				sm_pShadowMapSurf;
+	LPDIRECT3DSURFACE9				sm_pShadowMapZ;
+    LPDIRECT3DVERTEXBUFFER9			sm_pOverlayVB;
 
 	// Shaders
 	LPDIRECT3DVERTEXSHADER9			m_pSceneVS;
@@ -445,17 +445,14 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	}
 
 	// Create shadow map texture and retrieve surface
-	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
-		D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
+	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, D3DUSAGE_RENDERTARGET, SHADOW_MAP_FORMAT, D3DPOOL_DEFAULT, &m_pShadowMap, NULL)))
 		return E_FAIL;
 	if (FAILED(m_pShadowMap->GetSurfaceLevel(0, &m_pShadowMapSurf)))
 		return E_FAIL;
-	// Create depth buffer for shadow map rendering
-	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 
-		D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
-		return E_FAIL;
 
-    m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	// Create depth buffer for shadow map rendering
+	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, D3DFMT_D24X8, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pShadowMapZ, NULL)))
+		return E_FAIL;
 
     // Create model shaders
 	SAFE_RELEASE(m_pSceneVS);
