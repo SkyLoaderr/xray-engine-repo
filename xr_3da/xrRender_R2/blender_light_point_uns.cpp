@@ -24,7 +24,6 @@ void	CBlender_accum_point_uns::Compile(CBlender_Compile& C)
 		C.r2_Pass				(r2s("r2_accum_point"),	r2s("r2_accum_point_uns"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
-		C.r2_Sampler_rtf		("s_smap",			r2_RT_smap_p);
 		C.r2_Sampler			("s_material",		r2_material, D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 		C.r2_End				();
 		break;
