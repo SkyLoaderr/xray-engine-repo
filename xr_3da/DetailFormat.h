@@ -56,6 +56,8 @@
 	WORD*			indices;
 */
 
+#define DO_NO_WAVING	0x0001
+
 struct ENGINE_API DetailHeader
 {
 	DWORD		version;

@@ -16,7 +16,9 @@ class Shader;
 struct SIndexDist{
     DWORD 	index;
     float 	dist;
-    float	density[4];
+    float	dens[4];
+    float	cnt[4];
+	SIndexDist(){ZeroMemory(this,sizeof(SIndexDist));}
 };
 DEFINE_SVECTOR		(SIndexDist,4,SIndexDistVec,SIndexDistIt);
 
@@ -34,7 +36,16 @@ class CDetail{
 	struct fvfVertexIn{
 		Fvector 		P;
 		float			u,v;
+        				fvfVertexIn(const Fvector& _P, float _u, float _v){P.set(_P); u=_u; v=_v;};
         void			set(fvfVertexIn& src){P.set(src.P); u=src.u; v=src.v;};
+        void			set(const Fvector& _P, float _u, float _v){P.set(_P); u=_u; v=_v;};
+        BOOL			similar(fvfVertexIn& V)
+        {
+            if (!fsimilar	(u,V.u))	return FALSE;
+            if (!fsimilar	(v,V.v))	return FALSE;
+            if (!P.similar	(V.P))		return FALSE;
+            return TRUE;
+        }
 	};
     DEFINE_VECTOR		(fvfVertexIn,DOVertVec,DOVertIt);
     float				m_fMinScale;
@@ -52,6 +63,8 @@ class CDetail{
 
     // references
 	CEditableObject*	m_pRefs;
+
+	int 				_AddVert		(const Fvector& p, float u, float v);
 public:
     bool				m_bMarkDel;
 public:
@@ -123,6 +136,7 @@ public:
 		float			phase_x;
 		float			phase_z;
 		DWORD			C;
+        DWORD			flag;
 
 		float			scale_calculated;
 		Fmatrix			mRotY;

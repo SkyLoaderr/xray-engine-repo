@@ -56,6 +56,7 @@ void TfrmDOShuffle::GetInfo(){
         dd->m_fMinScale 		= (*d_it)->m_fMinScale;
         dd->m_fMaxScale 		= (*d_it)->m_fMaxScale;
         dd->m_fDensityFactor 	= (*d_it)->m_fDensityFactor;
+        dd->m_dwFlags			= (*d_it)->m_dwFlags;
         AddItem(0,(*d_it)->GetName(),(void*)dd);
     }
     // indices
@@ -89,6 +90,7 @@ void TfrmDOShuffle::ApplyInfo(){
         DO->m_fMinScale 	= DD->m_fMinScale;
         DO->m_fMaxScale 	= DD->m_fMaxScale;
         DO->m_fDensityFactor= DD->m_fDensityFactor;
+        DO->m_dwFlags		= DD->m_dwFlags;
     }
     DM->RemoveObjects(true);
 	// update indices
@@ -173,7 +175,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
     	m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
         SDOData* dd			= (SDOData*)Item->Data;
 		lbItemName->Caption = "\""+dd->m_RefName+"\"";
-		AnsiString temp; 	temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
+		AnsiString temp; 	temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)\nNo waving: %s",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale,(dd->m_dwFlags&DO_NO_WAVING)?"on":"off");
         lbInfo->Caption		= temp;
     }else{
 		lbItemName->Caption = "-";
@@ -249,6 +251,7 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
                 dd->m_fMinScale 	= 0.5f;
                 dd->m_fMaxScale 	= 2.f;
                 dd->m_fDensityFactor= 1.f;
+                dd->m_dwFlags		= 0;
              	AddItem(0,s_it->c_str(),(void*)dd);
             }
     }

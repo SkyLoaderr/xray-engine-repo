@@ -21,6 +21,7 @@
 #include "multi_edit.hpp"
 #include "ExtBtn.hpp"
 #include "MXCtrls.hpp"
+#include "multi_check.hpp"
 
 
 class TfrmPropertiesDO : public TForm
@@ -36,6 +37,7 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seScaleMaxY;
 	TLabel *RxLabel1;
 	TMultiObjSpinEdit *seDensityFactor;
+	TMultiObjCheck *cbNoWaving;
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebCancelClick(TObject *Sender);

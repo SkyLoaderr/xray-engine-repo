@@ -3,7 +3,7 @@ object frmPropertiesDO: TfrmPropertiesDO
   Top = 307
   BorderStyle = bsDialog
   Caption = 'Detail properties'
-  ClientHeight = 99
+  ClientHeight = 112
   ClientWidth = 177
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object frmPropertiesDO: TfrmPropertiesDO
   TextHeight = 13
   object paBottom: TPanel
     Left = 0
-    Top = 80
+    Top = 93
     Width = 177
     Height = 19
     Align = alBottom
@@ -58,7 +58,7 @@ object frmPropertiesDO: TfrmPropertiesDO
     Left = 0
     Top = 0
     Width = 177
-    Height = 80
+    Height = 93
     Align = alClient
     Caption = ' Properties '
     TabOrder = 1
@@ -130,6 +130,16 @@ object frmPropertiesDO: TfrmPropertiesDO
       AutoSize = False
       TabOrder = 2
       OnChange = OnModified
+    end
+    object cbNoWaving: TMultiObjCheck
+      Left = 3
+      Top = 72
+      Width = 91
+      Height = 17
+      Alignment = taLeftJustify
+      Caption = 'No waving:'
+      TabOrder = 3
+      OnClick = OnModified
     end
   end
 end

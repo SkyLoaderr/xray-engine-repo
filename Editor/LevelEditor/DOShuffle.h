@@ -108,6 +108,7 @@ struct SDOData{
     float		m_fMinScale;
     float		m_fMaxScale;
     float 		m_fDensityFactor;
+    DWORD		m_dwFlags;
     SDOData		();
 };
 DEFINE_VECTOR(SDOData*,DDVec,DDIt);

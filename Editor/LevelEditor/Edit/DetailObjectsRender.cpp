@@ -248,7 +248,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 		// Fill VB (and flush it as nesessary)
 		Device.Shader.set_Shader		(Object.m_pShader,0);
 
-		Fmatrix		mXform,mRotXZ;
+		Fmatrix		mXform,mRotXZ,mScale;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
 		{
 			// Calculate params
@@ -275,22 +275,15 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 				float	scale			= Instance.scale_calculated;
 
 				// Build matrix
-				if (scale>0.7f)
-				{
-					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
-					mXform.mul_43			(mRotXZ,Instance.mRotY);
-					mXform._11				*= scale;
-					mXform._22				*= scale;
-					mXform._33				*= scale;
-					mXform.translate_over	(Instance.P);
-				} else {
-					Fmatrix& M = Instance.mRotY;
-					Fvector& P = Instance.P;
-					mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
-					mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
-					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
-					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
-				}
+                if (Instance.flag&DO_NO_WAVING){
+    	            mXform.set			(Instance.mRotY);
+                }else{
+	                mRotXZ.setXYZ		(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
+    	            mXform.mul_43		(mRotXZ,Instance.mRotY);
+                }
+                mScale.scale 			(scale,scale,scale);
+                mXform.mul_43 			(mScale);
+                mXform.translate_over	(Instance.P);
 
 				// Transfer vertices
 				{
@@ -507,6 +500,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);
 				Item.mRotY.rotateY(r_yaw.randF	(0,PI_MUL_2));
+                Item.flag	= m_Objects[ID]->m_dwFlags;
 
 				// Color
 				DetailPalette*	c_pal	= (DetailPalette*)&DS.color;

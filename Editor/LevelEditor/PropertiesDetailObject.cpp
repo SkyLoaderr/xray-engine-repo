@@ -5,8 +5,10 @@
 #include "SceneClassList.h"
 #include "Sector.h"
 #include "ui_main.h"
+#include "DetailFormat.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "multi_check"
 #pragma resource "*.dfm"
 TfrmPropertiesDO *frmPropertiesDO=0;
 //---------------------------------------------------------------------------
@@ -29,15 +31,17 @@ void TfrmPropertiesDO::GetObjectsInfo(){
 
     DDIt _I = m_Data->begin();
 
-	seScaleMinY->ObjFirstInit( (*_I)->m_fMinScale );
-	seScaleMaxY->ObjFirstInit( (*_I)->m_fMaxScale );
+	seScaleMinY->ObjFirstInit	( (*_I)->m_fMinScale );
+	seScaleMaxY->ObjFirstInit	( (*_I)->m_fMaxScale );
 	seDensityFactor->ObjFirstInit( (*_I)->m_fDensityFactor );
+    cbNoWaving->ObjFirstInit    ( (*_I)->m_dwFlags&DO_NO_WAVING );
 
 	_I++;
 	for(;_I!=m_Data->end();_I++){
 		seScaleMinY->ObjNextInit( (*_I)->m_fMinScale );
 		seScaleMaxY->ObjNextInit( (*_I)->m_fMaxScale );
-		seDensityFactor->ObjFirstInit( (*_I)->m_fDensityFactor );
+		seDensityFactor->ObjNextInit( (*_I)->m_fDensityFactor );
+	    cbNoWaving->ObjNextInit( (*_I)->m_dwFlags&DO_NO_WAVING );
 	}
 }
 
@@ -49,6 +53,9 @@ bool TfrmPropertiesDO::ApplyObjectsInfo(){
 		seScaleMinY->ObjApplyFloat( (*_I)->m_fMinScale );
 		seScaleMaxY->ObjApplyFloat( (*_I)->m_fMaxScale );
 		seDensityFactor->ObjApplyFloat( (*_I)->m_fDensityFactor );
+		seDensityFactor->ObjApplyFloat( (*_I)->m_fDensityFactor );
+        if (cbNoWaving->Checked)  (*_I)->m_dwFlags|=DO_NO_WAVING;
+        else					  (*_I)->m_dwFlags&=~DO_NO_WAVING;
 	}
     return true;
 }
