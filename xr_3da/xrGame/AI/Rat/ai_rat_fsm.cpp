@@ -634,7 +634,7 @@ void CAI_Rat::EatCorpse()
 
 	SelectEnemy(m_Enemy);
 
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(m_Enemy.Enemy);
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(((m_Enemy.Enemy) && ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))));
 
 	SelectCorp(m_Enemy);
 
