@@ -12,6 +12,11 @@ extern float		ps_r__Detail_l_ambient;
 extern float		ps_r__Detail_l_aniso;
 extern float		ps_r__Detail_density;
 
+extern float		ps_r__Tree_w_rot;
+extern float		ps_r__Tree_w_speed;
+extern float		ps_r__Tree_w_amp;
+extern Fvector		ps_r__Tree_Wave;
+
 // R1
 extern float		ps_r1_ssaDISCARD;
 extern float		ps_r1_ssaDONTSORT;

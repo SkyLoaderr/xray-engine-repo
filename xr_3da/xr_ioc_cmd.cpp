@@ -280,12 +280,6 @@ extern int			psNET_Port;
 extern int			psSheduler;
 extern Flags32		psEnvFlags;
 
-extern float		psTree_w_rot;
-extern float		psTree_w_speed;
-extern float		psTree_w_amp;
-extern Fvector		psTree_Wave;
-
-
 void CCC_Register()
 {
 	// Input
@@ -334,14 +328,6 @@ void CCC_Register()
 
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 
-	Fvector	tw_min,tw_max;
-	tw_min.set			(EPS,EPS,EPS);
-	tw_max.set			(2,2,2);
-	CMD4(CCC_Float,		"rs_d_tree_w_rot",		&psTree_w_rot,		.01f, 100.f		);
-	CMD4(CCC_Float,		"rs_d_tree_w_speed",	&psTree_w_speed,	1.0f, 4.f		);
-	CMD4(CCC_Float,		"rs_d_tree_w_amp",		&psTree_w_amp,		.001f, 1.f		);
-	CMD4(CCC_Vector3,	"rs_d_tree_wave",		&psTree_Wave,		tw_min, tw_max	);
-	
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
 	CMD1(CCC_Gamma,		"rs_c_brightness"		);
 	CMD1(CCC_Gamma,		"rs_c_contrast"			);

@@ -76,11 +76,6 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	c_l_color			= T.get	("l_color");
 }
 
-float	psTree_w_rot		= 10.0f;
-float	psTree_w_speed		= 1.00f;
-float	psTree_w_amp		= 0.01f;
-Fvector psTree_Wave			= {.1f, .01f, .11f};
-
 struct	FTreeVisual_setup
 {
 	u32			dwFrame;
