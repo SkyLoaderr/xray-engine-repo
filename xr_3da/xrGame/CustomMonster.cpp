@@ -445,6 +445,9 @@ void CCustomMonster::eye_pp_s1			( )
 {
 	++eye_pp_stage;
 
+	//float	fog			= g_pGamePersistent->Environment.CurrentEnv.fog_density	;	// 0=no_fog, 1=full_fog, >1 = super-fog
+	//float	dist		= g_pGamePersistent->Environment.CurrentEnv.far_plane	;	// 300=standart, 50=super-fog
+
 	// Standart visibility
 	Device.Statistic.AI_Vis_Query.Begin		();
 	Fmatrix									mProject,mFull,mView;
