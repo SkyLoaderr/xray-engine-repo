@@ -3,8 +3,9 @@
 Чугай Саша
 
 Сделать:
-    - настоящие звуки
-    - анимации
+    - уразнообразить анимации
+    - говорят по очереди. пауза 2-10 с
+    - ходят туда-сюда
 --------------------------------------------------------------------------------------------------------------------]]
 
 local snd_base         = xr_sounds_id.chugai_escape_factory_bandits_base
@@ -13,8 +14,6 @@ local snd_about_zone   = snd_base + 1
 local snd_hiding_place = snd_base + 2
 local snd_novice_again = snd_base + 3
 local snd_on_actor     = snd_base + 4
-
-local actor
 
 local storage = {}
 
@@ -26,7 +25,9 @@ function check_enemy( npc )
         npc:set_sound_mask( -1 )
         npc:set_sound_mask( 0 )
 
-        if enemy:id() == actor:id() then
+        local actor = level.actor()
+
+        if actor and enemy:id() == actor:id() then
             npc:play_sound( snd_on_actor, 1, 0 )
         elseif enemy:name() == "novice" then
             npc:play_sound( snd_novice_again, 1, 0 )
@@ -221,10 +222,6 @@ function add_to_binder( obj )
     local way = patrol( way_name )
     local positions = { way:level_vertex_id( 0 ),
                         way:level_vertex_id( way:count() - 1 ) }
-
-    if not actor then
-        actor = level.actor()
-    end
 
     -- звуки
 
