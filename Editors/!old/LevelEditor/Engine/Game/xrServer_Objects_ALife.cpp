@@ -109,7 +109,7 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	if(level_ids.empty()) {
 		LPCSTR					N,V;
 		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
-			level_ids.push_back	(Ini->r_string(N,"caption"));
+			level_ids.push_back	(Ini->r_string_wb(N,"caption"));
 	}
 	if (Ini)
 		xr_delete				(Ini);
@@ -584,7 +584,7 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
     if(level_ids.empty()) {
         LPCSTR				N,V;
         for (u32 k = 0; Ini->r_line("levels",k,&N,&V); ++k)
-            level_ids.push_back	(Ini->r_string(N,"caption"));
+            level_ids.push_back	(Ini->r_string_wb(N,"caption"));
     }
 	if (Ini)
 		xr_delete				(Ini);

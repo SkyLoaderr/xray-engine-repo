@@ -43,7 +43,7 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 {
 	LPCSTR				N,V;
 	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
-		if (!xr_strcmp(Ini->r_string(N,"caption"),caLevelName))
+		if (!xr_strcmp(Ini->r_string_wb(N,"caption"),caLevelName))
 			return(Ini->r_u32(N,"id"));
 	return(-1);
 }
