@@ -9,7 +9,7 @@ CSoundRender_Source*	CSoundRender_Core::i_create_source		(LPCSTR name, BOOL _3D	
 	// Search
 	string256			id;
 	strlwr				(strcpy(id,name));
-	if (strext(id))		*strext(N) = 0;
+	if (strext(id))		*strext(id) = 0;
 	for (u32 it=0; it<s_sources.size(); it++)		{
 		if (0==strcmp(*s_sources[it]->fname,id))	return s_sources[it];
 	}
