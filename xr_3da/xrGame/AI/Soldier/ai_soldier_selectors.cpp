@@ -248,6 +248,22 @@ float CSoldierSelectorNoWeapon::Estimate(NodeCompressed* tNode, float fDistance,
 	return(m_fResult);
 }
 
+CSoldierSelectorPatrol::CSoldierSelectorPatrol()
+{ 
+	Name = "selector_patrol"; 
+}
+
+float CSoldierSelectorPatrol::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
+{
+	// initialization
+	m_tpCurrentNode = tNode;
+	m_fDistance = fDistance;
+	vfInit();
+	// computations
+	vfAddDistanceToEnemyCost();
+	return(m_fResult);
+}
+
 CSoldierSelectorPursuit::CSoldierSelectorPursuit()
 { 
 	Name = "selector_pursuit"; 

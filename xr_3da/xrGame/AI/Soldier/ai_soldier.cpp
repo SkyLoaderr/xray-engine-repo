@@ -12,9 +12,10 @@
 #include "ai_soldier.h"
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
+#include "..\\..\\..\\xr_trims.h"
 
 //#define WRITE_LOG
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	500.f
+#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 #define MAX_TIME_RANGE_SEARCH			150000.f
 #define	FIRE_ANGLE						PI/30
 #define	FIRE_SAFETY_ANGLE				PI/30
@@ -65,6 +66,29 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 
 void CAI_Soldier::Load(CInifile* ini, const char* section)
 { 
+	// patrol path
+	if (Level().pLevel->LineExists("patrol_path","path_00")){
+		
+		LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path","path_00"), buf2 = buf;
+		
+		int path_count = _GetItemCount(buf);
+
+		R_ASSERT(path_count && (path_count % 3 == 0));
+
+		path_count /= 3;
+		tpaPatrolPoints.resize(path_count);
+
+		for (int i=0; i<path_count; i++) {
+			sscanf(buf2,"%f,%f,%f",&(tpaPatrolPoints[i].x),&(tpaPatrolPoints[i].y),&(tpaPatrolPoints[i].z));
+			for (int komas=0; komas<3; buf2++)
+				if (*buf2 == ',')
+					komas++;
+		}
+
+		m_iCurrentPoint = 0;
+		AI_Path.bNeedRebuild = FALSE;
+	}
+
 	// load parameters from ".ini" file
 	inherited::Load	(ini,section);
 	
@@ -93,6 +117,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	SelectorFreeHunting.Load(ini,section);
 	SelectorMoreDeadThanAlive.Load(ini,section);
 	SelectorNoWeapon.Load(ini,section);
+	SelectorPatrol.Load(ini,section);
 	SelectorPursuit.Load(ini,section);
 	SelectorReload.Load(ini,section);
 	SelectorRetreat.Load(ini,section);
@@ -948,7 +973,10 @@ void CAI_Soldier::FollowLeader()
 	}
 
 	if (Leader == this) {
-		eCurrentState = aiSoldierFreeHunting;
+		if (tpaPatrolPoints.size())
+			eCurrentState = aiSoldierPatrolDetour;
+		else
+			eCurrentState = aiSoldierFreeHunting;
 		return;
 	}
 
@@ -1089,6 +1117,88 @@ void CAI_Soldier::NoWeapon()
 
 	vfSetMovementType(false,m_fMaxSpeed);
 	// stop processing more rules
+	bStopThinking = true;
+}
+
+void CAI_Soldier::Patrol()
+{
+	// if no more health then soldier is dead
+#ifdef WRITE_LOG
+	Msg("creature : %s, mode : %s",cName(),"Patrol detour");
+#endif
+	if (g_Health() <= 0) {
+		eCurrentState = aiSoldierDie;
+		return;
+	}
+
+	SelectEnemy(Enemy);
+	
+	if (Enemy.Enemy) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierAttackFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierSenseSomething;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	/////////////////////////
+	if (AI_Path.bNeedRebuild) {
+		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
+		if (AI_Path.Nodes.size() > 1)
+			AI_Path.BuildTravelLine(Position());
+		else {
+			AI_Path.TravelPath.clear();
+			AI_Path.bNeedRebuild = FALSE;
+		}
+	}
+	else {
+		Fvector tTemp;
+		tTemp.sub(Position(),tpaPatrolPoints[m_iCurrentPoint]);
+		
+		if (tTemp.square_magnitude() < 6.f)
+			m_iCurrentPoint = m_iCurrentPoint == tpaPatrolPoints.size() - 1 ? 0 : m_iCurrentPoint + 1;
+		
+		SelectorPatrol.m_tEnemyPosition = tpaPatrolPoints[m_iCurrentPoint];
+		SelectorPatrol.m_tCurrentPosition = Position();
+		m_dwLastRangeSearch = 0;
+		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+	}
+	/////////////////////////
+
+	SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,Group);
+
+	vfSetMovementType(false,m_fMinSpeed);
+	
 	bStopThinking = true;
 }
 
@@ -1369,6 +1479,10 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierNoWeapon : {
 				NoWeapon();
+				break;
+			}
+			case aiSoldierPatrolDetour : {
+				Patrol();
 				break;
 			}
 			case aiSoldierPursuit : {

@@ -32,6 +32,7 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierJumping,
 		aiSoldierMoreDeadThanAlive,
 		aiSoldierNoWeapon,
+		aiSoldierPatrolDetour,
 		aiSoldierPursuit,
 		aiSoldierReload,
 		aiSoldierRetreat,
@@ -85,6 +86,10 @@ class CAI_Soldier : public CCustomMonster
 
 		// firing
 		bool			m_bFiring;
+
+		// patrol array
+		vector<Fvector>	tpaPatrolPoints;
+		int				m_iCurrentPoint;
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
@@ -96,6 +101,7 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorFreeHunting			SelectorFreeHunting;
 		CSoldierSelectorMoreDeadThanAlive	SelectorMoreDeadThanAlive;
 		CSoldierSelectorNoWeapon			SelectorNoWeapon;
+		CSoldierSelectorPatrol				SelectorPatrol;
 		CSoldierSelectorPursuit				SelectorPursuit;
 		CSoldierSelectorReload				SelectorReload;
 		CSoldierSelectorRetreat				SelectorRetreat;
@@ -114,6 +120,7 @@ class CAI_Soldier : public CCustomMonster
 		void Jumping();
 		void MoreDeadThanAlive();
 		void NoWeapon();
+		void Patrol();
 		void Pursuit();
 		void Reload();
 		void Retreat();

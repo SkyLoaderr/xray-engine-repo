@@ -741,6 +741,12 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 	pUI->OutWeapon	(Weapons->ActiveWeapon());
 	pUI->SetHeading	(-r_torso.yaw);
 
+	/**
+	char buf[128];
+	sprintf(buf,"Position : %3.2f,%3.2f,%3.2f",VPUSH(vPosition));
+
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->Out	(400,320,buf);
 /*
 	char buf[128];
 	buf[0] = 0;
