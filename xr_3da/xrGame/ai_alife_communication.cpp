@@ -440,10 +440,10 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			m_tpBlockedItems1.clear();
 			m_tpBlockedItems2.clear();
 			
-			OBJECT_IT			I = tpALifeHumanAbstract1->children.begin() + l_iItemCount1, J;
+			OBJECT_IT			I = tpALifeHumanAbstract1->children.end() - l_iItemCount1, J;
 			OBJECT_IT			E = tpALifeHumanAbstract1->children.end();
 			for ( ; I != E; I++) {
-				J				= std::find(tpALifeHumanAbstract2->children.begin() + l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
+				J				= std::find(tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end(),*I);
 				if (J != tpALifeHumanAbstract2->children.end()) {
 					ITEM_P_IT	K = std::find(m_tpItems1.begin(),m_tpItems1.end(),dynamic_cast<CSE_ALifeInventoryItem*>(tpfGetObjectByID(*I)));
 					if (K != m_tpItems1.end())
