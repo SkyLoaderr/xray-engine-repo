@@ -167,8 +167,9 @@ void CActorTools::MakePreview()
 
 void CActorTools::MotionOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
+	FlagValue* V = (FlagValue*)sender;
 	R_ASSERT(edit_val);
-    if (0==*(LPDWORD)edit_val){
+    if (!(*(LPDWORD)edit_val&V->mask)){
 	    m_pCycleNode->Hidden	= false;
     	m_pFXNode->Hidden		= true;
     }else{
@@ -241,7 +242,7 @@ void CActorTools::FillMotionProperties()
             m_MotionProps->AddItem(m_pFXNode,PROP_TOKEN2,	"Start bone",m_MotionProps->MakeTokenValue2(&SM->iBoneOrPart,&lst));
             m_MotionProps->AddItem(m_pFXNode,PROP_FLOAT, 	"Power", 	m_MotionProps->MakeFloatValue(&SM->fPower,	0.f,20.f,0.01f,2));
         }
-        MotionOnAfterEdit(m_pFXNode,TV,TV->val);
+        MotionOnAfterEdit(0,TV,TV->val);
     }else{
 		m_pCycleNode=0;
         m_pFXNode	=0;
