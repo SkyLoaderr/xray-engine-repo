@@ -2792,24 +2792,40 @@
 						<File
 							RelativePath="ActorVehicle.cpp">
 						</File>
-						<File
-							RelativePath=".\EffectorBobbing.cpp">
-						</File>
-						<File
-							RelativePath=".\EffectorBobbing.h">
-						</File>
-						<File
-							RelativePath="EffectorHit.cpp">
-						</File>
-						<File
-							RelativePath="EffectorHit.h">
-						</File>
-						<File
-							RelativePath="EffectorPPHit.cpp">
-						</File>
-						<File
-							RelativePath="EffectorPPHit.h">
-						</File>
+						<Filter
+							Name="Effectors"
+							Filter="">
+							<File
+								RelativePath=".\EffectorBobbing.cpp">
+							</File>
+							<File
+								RelativePath=".\EffectorBobbing.h">
+							</File>
+							<File
+								RelativePath="EffectorHit.cpp">
+							</File>
+							<File
+								RelativePath="EffectorHit.h">
+							</File>
+							<File
+								RelativePath="EffectorPPHit.cpp">
+							</File>
+							<File
+								RelativePath="EffectorPPHit.h">
+							</File>
+							<File
+								RelativePath=".\ShootingHitEffector.cpp">
+							</File>
+							<File
+								RelativePath=".\ShootingHitEffector.h">
+							</File>
+							<File
+								RelativePath=".\SleepEffector.cpp">
+							</File>
+							<File
+								RelativePath=".\SleepEffector.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Basic"
@@ -3059,12 +3075,6 @@
 								<Filter
 									Name="Weapon Generic"
 									Filter="">
-									<File
-										RelativePath=".\ShootingHitEffector.cpp">
-									</File>
-									<File
-										RelativePath=".\ShootingHitEffector.h">
-									</File>
 									<File
 										RelativePath=".\ShootingObject.cpp">
 									</File>
@@ -4906,6 +4916,12 @@
 				<Filter
 					Name="PdaWnd"
 					Filter="">
+					<File
+						RelativePath=".\ui\UIPdaCommunication.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIPdaCommunication.h">
+					</File>
 					<File
 						RelativePath=".\ui\UIPdaContactsWnd.cpp">
 					</File>
