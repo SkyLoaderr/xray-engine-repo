@@ -5,7 +5,7 @@
 -- Mail:        narrator@gsc-game.com
 --
 
-class "mutliplayer_create_dialog" (ui_base_dialog.base_dialog)
+class "multiplayer_create_dialog" (ui_base_dialog.base_dialog)
 
 function multiplayer_create_dialog:__init() super()
 	self:InitControls()

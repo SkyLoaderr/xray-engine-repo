@@ -23,10 +23,11 @@ function multiplayer_find_dialog:InitControls()
 	
 	
 	-- Bottom align
-	local btn_back_rect   = {x = self.btn_rect.x,
+	local btn_back_rect   = {0,
 							 y = self.bottom_align_y - self.btn_rect.height,							 
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}	
+	btn_back_rect.x = self.main_rect.width - btn_back_rect.width - self.indent
 	
 	--------->> BACK
 	btn = CUIButton()
