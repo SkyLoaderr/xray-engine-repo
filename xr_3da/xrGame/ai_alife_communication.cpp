@@ -252,8 +252,8 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract
 			else
 				Debug.fatal("Item has inconsistent parent");
 
-	sort				(m_tpTrader1.begin(),m_tpTrader1.end(),CSortItemPredicate());
-	sort				(m_tpTrader2.begin(),m_tpTrader2.end(),CSortItemPredicate());
+	sort				(m_tpTrader1.begin(),m_tpTrader1.end(),CSortItemByValuePredicate());
+	sort				(m_tpTrader2.begin(),m_tpTrader2.end(),CSortItemByValuePredicate());
 
 #ifdef ALIFE_LOG
 	{
@@ -307,11 +307,39 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBallance(CSE_ALifeTraderAbstract
 		return			(bfCheckForTrade(tpALifeTraderAbstract2, m_tpTrader2, m_tpSums2, tpALifeTraderAbstract2->m_dwMoney, tpALifeTraderAbstract1, m_tpTrader1, m_tpSums1, tpALifeTraderAbstract1->m_dwMoney, iBallance));
 }
 
+int  CSE_ALifeSimulator::ifComputeBallance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
+{
+	return(0);
+}
+
 void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItemVector);
 	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItemVector);
 
+	sort				(m_tpItemVector.begin(),m_tpItemVector.end(),CSortItemPredicate());
+
+	tpALifeHumanAbstract1->vfChooseEquipment	();
+	tpALifeHumanAbstract2->vfChooseEquipment	();
+	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeKnife);
+	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeKnife);
+	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeSecondary);
+	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeSecondary);
+	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypePrimary);
+	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypePrimary);
+	tpALifeHumanAbstract1->vfChooseWeapon		(eWeaponPriorityTypeGrenade);
+	tpALifeHumanAbstract2->vfChooseWeapon		(eWeaponPriorityTypeGrenade);
+	tpALifeHumanAbstract1->vfChooseFood			();
+	tpALifeHumanAbstract2->vfChooseFood			();
+	tpALifeHumanAbstract1->vfChooseMedikit		();
+	tpALifeHumanAbstract2->vfChooseMedikit		();
+	tpALifeHumanAbstract1->vfChooseDetector		();
+	tpALifeHumanAbstract2->vfChooseDetector		();
+
+	if (!bfCheckIfCanNullTradersBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2,ifComputeBallance(tpALifeHumanAbstract1,tpALifeHumanAbstract2))) {
+	}
+	else {
+	}
 }
 
 void CSE_ALifeSimulator::vfPerformCommunication()

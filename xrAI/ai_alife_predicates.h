@@ -67,6 +67,14 @@ public:
 	};
 };
 
+class CSortItemByValuePredicate {
+public:
+	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem1, const CSE_ALifeInventoryItem *tpALifeInventoryItem2)  const
+	{
+		return						(tpALifeInventoryItem1->m_dwCost < tpALifeInventoryItem2->m_dwCost);
+	};
+};
+
 class CRemoveAttachedItemsPredicate {
 public:
 	IC bool							operator()							(const CSE_ALifeInventoryItem *tpALifeInventoryItem)
