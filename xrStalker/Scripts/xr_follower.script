@@ -27,12 +27,12 @@ function evaluator_leader_present:evaluate ()
              return false 
           end   
        end
-       printf ("Leader name : %s", self.a.leader_name)
        self.a.leader = level.object (self.a.leader_name)
        if self.a.leader == nil then 
           return false 
        else
           table.insert (xr_motivator.storage[self.a.leader:id()].followers, self.a)
+          self.a.leader_id = self.a.leader:id ()
        end   
     end
     return true
@@ -211,6 +211,12 @@ function action_follow:execute ()
        self:free ()
        return 
     end   
+    
+    if is_object_online (self.a.leader_id) == false then
+       self.a.leader_command = leader_return
+       self:check_path ()
+       return
+    end    
     
     --if self.dist ~= self.a.distance then
        self:recalculate_position ()
@@ -529,6 +535,8 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
     st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, false, "")
+    
+    st.leader_id = -1
     
     if st.leader_name == "empty" then st.leader_name = nil end
 	
