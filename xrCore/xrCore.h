@@ -51,8 +51,8 @@
 // ...and VC7.1 really don't miss opportunities for inline :)
 #define _inline			inline
 #define __inline		inline
-#define __forceinline	inline
 #define IC				inline
+#define ICF				__forceinline		// !!! this should be used only in critical places found by PROFILER
 
 #ifndef DEBUG
 	#pragma inline_depth	( 254 )

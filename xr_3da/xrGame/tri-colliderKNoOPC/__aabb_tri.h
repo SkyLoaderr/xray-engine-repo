@@ -4,34 +4,34 @@
 		public:
 
 		//! Empty constructor
-		__forceinline				Point()														{}
+		IC				Point()														{}
 		//! Constructor from floats
-		__forceinline				Point(float _x, float _y, float _z) : x(_x), y(_y), z(_z)	{}
+		IC				Point(float _x, float _y, float _z) : x(_x), y(_y), z(_z)	{}
 		//! Constructor from array
-		__forceinline				Point(float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
+		IC				Point(float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
 		//! Constructor from array
-		__forceinline				Point(const float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
+		IC				Point(const float f[3]) : x(f[0]), y(f[1]), z(f[2])				{}
 		//! Copy constructor
-		__forceinline				Point(const Point& p) : x(p.x), y(p.y), z(p.z)				{}
+		IC				Point(const Point& p) : x(p.x), y(p.y), z(p.z)				{}
 		//! Destructor
-		__forceinline				~Point()													{}
+		IC				~Point()													{}
 
 		//! Returns MIN(x, y, z);
-		//__forceinline	float		Min()								const		{ return MIN(x, MIN(y, z));												}
+		//IC	float		Min()								const		{ return MIN(x, MIN(y, z));												}
 		//! Returns MAX(x, y, z);
-		//__forceinline	float		Max()								const		{ return MAX(x, MAX(y, z));												}
+		//IC	float		Max()								const		{ return MAX(x, MAX(y, z));												}
 		//! TO BE DOCUMENTED
-		//__forceinline	Point&		Min(const Point& p)								{ x = MIN(x, p.x); y = MIN(y, p.y); z = MIN(z, p.z);	return *this;	}
+		//IC	Point&		Min(const Point& p)								{ x = MIN(x, p.x); y = MIN(y, p.y); z = MIN(z, p.z);	return *this;	}
 		//! TO BE DOCUMENTED
-		//__forceinline	Point&		Max(const Point& p)								{ x = MAX(x, p.x); y = MAX(y, p.y); z = MAX(z, p.z);	return *this;	}
+		//IC	Point&		Max(const Point& p)								{ x = MAX(x, p.x); y = MAX(y, p.y); z = MAX(z, p.z);	return *this;	}
 
 		//! Computes square magnitude
-		__forceinline	float		SquareMagnitude()					const		{ return x*x + y*y + z*z;												}
+		IC	float		SquareMagnitude()					const		{ return x*x + y*y + z*z;												}
 		//! Computes magnitude
-		__forceinline	float		Magnitude()							const		{ return _sqrt(x*x + y*y + z*z);										}
+		IC	float		Magnitude()							const		{ return _sqrt(x*x + y*y + z*z);										}
 
 		//! Return largest axis
-		__forceinline	u32		LargestAxis()						const
+		IC	u32		LargestAxis()						const
 						{
 							const float* Vals = &x;
 							u32 m = 0;
@@ -42,23 +42,23 @@
 
 		// Arithmetic operators
 		//! Operator for Point Negate = - Point
-		__forceinline	Point		operator-()							const		{ return Point(-x, -y, -z);							}
+		IC	Point		operator-()							const		{ return Point(-x, -y, -z);							}
 
 		//! Operator for Point Plus = Point + Point.
-		__forceinline	Point		operator+(const Point& p)			const		{ return Point(x + p.x, y + p.y, z + p.z);			}
+		IC	Point		operator+(const Point& p)			const		{ return Point(x + p.x, y + p.y, z + p.z);			}
 		//! Operator for Point Minus = Point - Point.
-		__forceinline	Point		operator-(const Point& p)			const		{ return Point(x - p.x, y - p.y, z - p.z);			}
+		IC	Point		operator-(const Point& p)			const		{ return Point(x - p.x, y - p.y, z - p.z);			}
 		//! Operator for Point Scale = Point * float.
-		__forceinline	Point		operator*(float s)					const		{ return Point(x * s,   y * s,   z * s );			}
+		IC	Point		operator*(float s)					const		{ return Point(x * s,   y * s,   z * s );			}
 		//! Operator for Point Scale = float * Point.
 		friend			Point		operator*(float s, const Point& p)				{ return Point(s * p.x, s * p.y, s * p.z);			}
 		//! Operator for Point Scale = Point / float.
-		__forceinline	Point		operator/(float s)					const		{ s = 1.0f / s; return Point(x * s, y * s, z * s);	}
+		IC	Point		operator/(float s)					const		{ s = 1.0f / s; return Point(x * s, y * s, z * s);	}
 
 		//! Operator for float DotProd = Point | Point.
-		__forceinline	float		operator|(const Point& p)			const		{ return x*p.x + y*p.y + z*p.z;						}
+		IC	float		operator|(const Point& p)			const		{ return x*p.x + y*p.y + z*p.z;						}
 		//! Operator for Point VecProd = Point ^ Point.
-		__forceinline	Point		operator^(const Point& p)			const
+		IC	Point		operator^(const Point& p)			const
 						{
 							return Point(
 							y * p.z - z * p.y,
@@ -67,18 +67,18 @@
 						}
 
 		//! Operator for Point += Point.
-		__forceinline	Point&		operator+=(const Point& p)						{ x += p.x; y += p.y; z += p.z;	return *this;		}
+		IC	Point&		operator+=(const Point& p)						{ x += p.x; y += p.y; z += p.z;	return *this;		}
 		//! Operator for Point += float.
-		__forceinline	Point&		operator+=(float s)								{ x += s;   y += s;   z += s;	return *this;		}
+		IC	Point&		operator+=(float s)								{ x += s;   y += s;   z += s;	return *this;		}
 
 		//! Operator for Point -= Point.
-		__forceinline	Point&		operator-=(const Point& p)						{ x -= p.x; y -= p.y; z -= p.z;	return *this;		}
+		IC	Point&		operator-=(const Point& p)						{ x -= p.x; y -= p.y; z -= p.z;	return *this;		}
 		//! Operator for Point -= float.
-		__forceinline	Point&		operator-=(float s)								{ x -= s;   y -= s;   z -= s;	return *this;		}
+		IC	Point&		operator-=(float s)								{ x -= s;   y -= s;   z -= s;	return *this;		}
 		//! Operator for Point *= float.
-		__forceinline	Point&		operator*=(float s)								{ x *= s; y *= s; z *= s;		return *this;		}
+		IC	Point&		operator*=(float s)								{ x *= s; y *= s; z *= s;		return *this;		}
 		//! Operator for Point /= float.
-		__forceinline	Point&		operator/=(float s)								{ s = 1.0f/s; x *= s; y *= s; z *= s; return *this; }
+		IC	Point&		operator/=(float s)								{ s = 1.0f/s; x *= s; y *= s; z *= s; return *this; }
 
 		// Arithmetic operators
 		//! Operator for Point Mul = Point * Matrix3x3.
@@ -91,9 +91,9 @@
 	//					Point&		operator*=(const Matrix4x4& mat);
 
 		//! Access as array
-		__forceinline				operator	const	float*() const	{ return &x; }
+		IC				operator	const	float*() const	{ return &x; }
 		//! Access as array
-		__forceinline				operator			float*()		{ return &x; }
+		IC				operator			float*()		{ return &x; }
 
 		public:
 						float		x;		//!< x coordinate
