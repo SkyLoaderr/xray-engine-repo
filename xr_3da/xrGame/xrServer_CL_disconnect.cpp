@@ -25,8 +25,8 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 			P.w_u16				(E->ID);
 
 			SendBroadcast		(CL->ID,P,net_flags(TRUE,TRUE));
+			entities.erase		(E->ID);
 			entity_Destroy		(E);
-			entities.erase		(ID);
 		}
 	}
 }
