@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "..\irenderable.h"
 
-const	float	tweak_COP_initial_offs			= - 10000.f;
-const	float	tweak_ortho_xform_initial_offs	= - 100.f	;
+const	float	tweak_COP_initial_offs			= - 100000.f;
+const	float	tweak_ortho_xform_initial_offs	= - 1000.f	;
 
 //////////////////////////////////////////////////////////////////////////
 #define DW_AS_FLT(DW) (*(FLOAT*)&(DW))
@@ -205,7 +205,7 @@ void CRender::render_sun				()
 	Fbox3		frustumBox		;
 	{
 		//	Prepare to interact with D3DX code
-		D3DXVECTOR3			m_lightDir	= D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
+		D3DXVECTOR3			m_lightDir	= -D3DXVECTOR3(fuckingsun->direction.x,fuckingsun->direction.y,fuckingsun->direction.z);
 
 		//  we need to transform the eye into the light's post-projective space.
 		//  however, the sun is a directional light, so we first need to find an appropriate
@@ -215,15 +215,15 @@ void CRender::render_sun				()
 		const D3DXVECTOR3		eyeVector	( 0.f, 0.f, -1.f );			//  eye is always -Z in eye space
 
 		//  code copied straight from BuildLSPSMProjectionMatrix
-		D3DXVec3TransformNormal	( &upVector,	&m_lightDir, &m_View );	// lightDir is defined in eye space, so xform it
-		D3DXVec3Cross			( &leftVector,	&upVector,	&eyeVector	);
-		D3DXVec3Normalize		( &leftVector,	&leftVector );
-		D3DXVec3Cross			( &viewVector,	&upVector,	&leftVector );
+		D3DXVec3TransformNormal	( &upVector,	&m_lightDir,	&m_View		);	// lightDir is defined in eye space, so xform it
+		D3DXVec3Cross			( &leftVector,	&upVector,		&eyeVector	);
+		D3DXVec3Normalize		( &leftVector,	&leftVector		);
+		D3DXVec3Cross			( &viewVector,	&upVector,		&leftVector );
 
-		lightSpaceBasis._11 = leftVector.x; lightSpaceBasis._12 = viewVector.x; lightSpaceBasis._13 = -upVector.x; lightSpaceBasis._14 = 0.f;
-		lightSpaceBasis._21 = leftVector.y; lightSpaceBasis._22 = viewVector.y; lightSpaceBasis._23 = -upVector.y; lightSpaceBasis._24 = 0.f;
-		lightSpaceBasis._31 = leftVector.z; lightSpaceBasis._32 = viewVector.z; lightSpaceBasis._33 = -upVector.z; lightSpaceBasis._34 = 0.f;
-		lightSpaceBasis._41 = 0.f;          lightSpaceBasis._42 = 0.f;          lightSpaceBasis._43 = 0.f;        lightSpaceBasis._44 = 1.f;
+		lightSpaceBasis._11 = leftVector.x; lightSpaceBasis._12 = viewVector.x; lightSpaceBasis._13 = -upVector.x;	lightSpaceBasis._14 = 0.f;
+		lightSpaceBasis._21 = leftVector.y; lightSpaceBasis._22 = viewVector.y; lightSpaceBasis._23 = -upVector.y;	lightSpaceBasis._24 = 0.f;
+		lightSpaceBasis._31 = leftVector.z; lightSpaceBasis._32 = viewVector.z; lightSpaceBasis._33 = -upVector.z;	lightSpaceBasis._34 = 0.f;
+		lightSpaceBasis._41 = 0.f;          lightSpaceBasis._42 = 0.f;          lightSpaceBasis._43 = 0.f;			lightSpaceBasis._44 = 1.f;
 
 		// rotate the view frustum into light space, find AABB
 		D3DXVec3TransformCoordArray	( frustumPnts, sizeof(D3DXVECTOR3), frustumPnts, sizeof(D3DXVECTOR3), &lightSpaceBasis, sizeof(frustumPnts)/sizeof(D3DXVECTOR3) );
