@@ -235,8 +235,6 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 	if (tDirection.magnitude() < EPS_L)
 		return;
 	
-//	AI_Path.Direction	(tDirection);
-	
 	tDirection.getHP	(yaw,pitch);
 	yaw					= angle_normalize_signed(-yaw);
 	// moving
