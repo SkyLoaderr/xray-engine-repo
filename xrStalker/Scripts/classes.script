@@ -643,7 +643,13 @@ function Projector:__init (obj, speedh, speedv, script, points, rand)
 	self.first_call = true
 	self.script = script
 	self.current = 1
---	self.time = 0
+	self.wait_time = 2000
+	self.time_cycle = false
+	self.ctime = 0
+end
+
+function Projector:set_wait_time (t)
+	self.wait_time = t
 end
 
 function Projector:process ()
@@ -651,11 +657,19 @@ function Projector:process ()
 	if self.first_call == true then
 	   self.projector:script (true, self.script)
 	   self.first_call = false
+  	   action (self.projector, look (self.points[1], self.speedh, self.speedv), cond (cond.look_end))
+	   return	
     end	
 
-	if self.projector:action () then return end
---    if self.time - game.time () > 0 then return end
+	if self.projector:action () then return
+	else 
+       self.time_cycle = true 
+	   self.ctime = game.time () 
+	end
 
+	if self.time_cycle == true and game.time () - self.ctime < self.wait_time then return end
+	self.time_cycle = false	
+	
 
 	local point
 	if self.rand == true and table.getn (self.points) > 1 then 
@@ -673,11 +687,6 @@ function Projector:process ()
 	   point = self.points[self.current]
 	end
 
-	printf ("Set projector target  x:%f, y:%f, z:%f", point.x, point.y, point.z)
 	reset_action (self.projector, self.script)
 	action (self.projector, look (point, self.speedh, self.speedv), cond (cond.look_end))
-
---	self.time = game.time () + 5000
-	
-
 end	  
