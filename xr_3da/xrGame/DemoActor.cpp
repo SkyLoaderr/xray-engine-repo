@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\CameraFirstEye.h"
+#include "CameraFirstEye.h"
 #include "..\environment.h"
 
 #include "DemoActor.h"

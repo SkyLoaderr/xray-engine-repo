@@ -1,11 +1,9 @@
 #ifndef __CAMERALOOK_H__
 #define __CAMERALOOK_H__
 
-#include "CameraBase.h"
+#include "..\CameraBase.h"
 
-class ENGINE_API CInifile;
-
-class ENGINE_API CCameraLook	: public CCameraBase
+class CCameraLook	: public CCameraBase
 {
 	Fvector2		lim_zoom;
 	float			dist, prev_d;

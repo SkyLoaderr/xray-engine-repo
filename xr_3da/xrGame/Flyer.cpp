@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "Flyer.h"
 #include "..\CameraLook.h"
-#include "..\CameraFirstEye.h"
+#include "CameraFirstEye.h"
 #include "..\environment.h"
 
 #define	FLY_ACCEL		10.0f

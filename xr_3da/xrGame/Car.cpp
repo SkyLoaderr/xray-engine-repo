@@ -4,7 +4,7 @@
 #include "hudmanager.h"
 #include "..\camerabase.h"
 #include "..\cameralook.h"
-#include "..\camerafirsteye.h"
+#include "camerafirsteye.h"
 #include "Actor.h"
 
 static float car_snd_volume=1.f;

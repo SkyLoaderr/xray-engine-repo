@@ -1,9 +1,9 @@
 #ifndef __CAMERA_FE_H__
 #define __CAMERA_FE_H__
 
-#include "CameraBase.h"
+#include "..\CameraBase.h"
 
-class ENGINE_API CCameraFirstEye : public CCameraBase
+class CCameraFirstEye : public CCameraBase
 {
 public:
 					CCameraFirstEye	( CObject* p, CInifile* ini, LPCSTR section, BOOL rlink );

@@ -879,12 +879,6 @@
 					RelativePath=".\CameraDefs.h">
 				</File>
 				<File
-					RelativePath=".\CameraFirstEye.cpp">
-				</File>
-				<File
-					RelativePath=".\CameraFirstEye.h">
-				</File>
-				<File
 					RelativePath=".\CameraManager.cpp">
 				</File>
 				<File
@@ -907,12 +901,6 @@
 				</File>
 				<File
 					RelativePath="EffectorPP.h">
-				</File>
-				<File
-					RelativePath=".\cameralook.cpp">
-				</File>
-				<File
-					RelativePath=".\cameralook.h">
 				</File>
 			</Filter>
 			<Filter

@@ -4,8 +4,8 @@
 
 #include "stdafx.h"
 #include "..\effectorfall.h"
-#include "..\CameraLook.h"
-#include "..\CameraFirstEye.h"
+#include "CameraLook.h"
+#include "CameraFirstEye.h"
 #include "EffectorBobbing.h"
 #include "EffectorPPHit.h"
 #include "EffectorHit.h"

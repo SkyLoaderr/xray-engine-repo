@@ -2,7 +2,7 @@
 #define PGObjectH
 
 #include "TempObject.h"
-#include "PSRuntime.h"
+#include "ParticleSystem.h"
 
 class ENGINE_API IRender_Sector;
 

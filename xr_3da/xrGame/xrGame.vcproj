@@ -283,10 +283,22 @@
 			Name="Game"
 			Filter="">
 			<File
+				RelativePath="CameraFirstEye.cpp">
+			</File>
+			<File
+				RelativePath="CameraFirstEye.h">
+			</File>
+			<File
 				RelativePath="GamePersistent.cpp">
 			</File>
 			<File
 				RelativePath="GamePersistent.h">
+			</File>
+			<File
+				RelativePath="cameralook.cpp">
+			</File>
+			<File
+				RelativePath="cameralook.h">
 			</File>
 			<File
 				RelativePath="xr_level_controller.cpp">
