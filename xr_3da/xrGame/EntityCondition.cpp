@@ -149,7 +149,7 @@ void CEntityCondition::ChangeEntityMorale(float value)
 void CEntityCondition::ChangeBleeding(float percent)
 {
 	//затянуть раны на заданное кол-во процентов
-	for(WOUND_PAIR_IT it = m_mWound.begin(); it!=m_mWound.end(); it++)
+	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
 	{
 		(*it).second -= (*it).second*percent;
 		//рана полность зажила
@@ -387,7 +387,7 @@ float CEntityCondition::BleedingSpeed()
 {
 	float bleeding_speed =0;
 
-	for(WOUND_PAIR_IT it = m_mWound.begin(); it!=m_mWound.end(); it++)
+	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
 	{
 		bleeding_speed += (*it).second;
 	}
@@ -400,7 +400,7 @@ void CEntityCondition::UpdateHealth()
 	m_fDeltaHealth -= BleedingSpeed() * m_iDeltaTime/1000;
 
 	//затянуть раны
-	for(WOUND_PAIR_IT it = m_mWound.begin(); it!=m_mWound.end(); it++)
+	for(WOUND_PAIR_IT it = m_mWound.begin(); m_mWound.end() != it; ++it)
 	{
 		(*it).second -= m_fV_WoundIncarnation * m_iDeltaTime/1000;
 		//рана полность зажила
@@ -423,14 +423,14 @@ void CEntityCondition::UpdateHealth()
 		previous_bone_num = -1;
 
 		for(WOUND_PAIR_IT it = begin_it; 
-						  it!=m_mWound.end();)
+						  m_mWound.end() != it;)
 		{
 			if((*it).second == 0)
 				break;
 
 			//запомнить номер последней кости
 			previous_bone_num = (*it).first;
-			it++;
+			++it;
 		}
 
 
