@@ -18,8 +18,8 @@ private:
 	};
 	struct texture_detail
 	{
-		LPCSTR T;
-		LPCSTR M;
+		const char*			T;
+		R_constant_setup*	M;
 	};
 public:
 	DEFINE_MAP_PRED(LPSTR,IBlender*,	map_Blender,	map_BlenderIt,		str_pred);
@@ -66,7 +66,7 @@ public:
 	IBlender*						_GetBlender			(LPCSTR Name);
 	IBlender* 						_FindBlender		(LPCSTR Name);
 	void							_GetMemoryUsage		(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps);
-	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, LPCSTR& M);
+	BOOL							_GetDetailTexture	(LPCSTR Name, LPCSTR& T, R_constant_setup* &M);
 
 	map_Blender&					_GetBlenders		()		{	return m_blenders;	}
 

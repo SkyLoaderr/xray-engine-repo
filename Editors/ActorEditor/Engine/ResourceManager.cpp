@@ -288,7 +288,7 @@ void	CResourceManager::Evict()
 	CHK_DX	(HW.pDevice->EvictManagedResources());
 }
 
-BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
+BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup* &M)
 {
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
