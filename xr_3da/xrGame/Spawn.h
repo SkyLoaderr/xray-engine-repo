@@ -33,7 +33,6 @@ public:
 class CSpawn  
 {
 	CSpawn_DESC				description;
-	
 public:
 	static		CSpawn*		Create			(CLASS_ID cls);
 	static		void		CreatePalette	(vector<CSpawn*> & palette);
@@ -42,8 +41,8 @@ public:
 	IC			LPCSTR		getName			(){return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
-	virtual		void		Save			(CFS_Base&  FS) = 0;
-	virtual		void		Load			(CStream&	FS) = 0;
+	virtual		void		Save			(CFS_Base&  FS);
+	virtual		void		Load			(CStream&	FS);
 	
 	virtual		void		Execute			()				= 0;
 
