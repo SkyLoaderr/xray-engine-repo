@@ -24,8 +24,7 @@ void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizonta
 	m_bIsHorizontal = bIsHorizontal;
 
 
-	if(m_bIsHorizontal)
-	{
+	if(m_bIsHorizontal){
 	//	m_UIStaticItem.Init("ui\\ui_scb_scroll_box", "hud\\default",
 	//						x,y, alNone);
 
@@ -35,9 +34,7 @@ void CUIProgressBar::Init(int x, int y, int length, int broad, bool bIsHorizonta
 		m_IncButton.Init("ui\\ui_scb_rigth_arrow",length-SCROLLBAR_WIDTH, 0,
 						SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
 		m_ScrollBox.Init(SCROLLBAR_WIDTH, 0, length/2, SCROLLBAR_HEIGHT, m_bIsHorizontal);*/
-	}
-	else
-	{
+	}else{
 	//	m_UIStaticItem.Init("ui\\ui_scb_scroll_box", "hud\\default",
 	//						x,y, alNone);
 
@@ -136,38 +133,26 @@ void CUIProgressBar::Draw()
 	Irect rect = GetAbsoluteRect();
 
 	//нарисовать подложку
-	if(m_bBackgroundPresent)
-	{
+	if(m_bBackgroundPresent){
 		m_UIBackgroundItem.SetPos(rect.left - m_iBackgroundLeftOffset, 
 								  rect.top - m_iBackgroundUpOffset);
 		m_UIBackgroundItem.Render();
 	}
 
-
-
 	m_UIStaticItem.SetPos(rect.left, rect.top);
 
-	if(m_bIsHorizontal)
-	{
-		if(m_bProgressTile)
-		{
+	if(m_bIsHorizontal){
+		if(m_bProgressTile){
 			m_UIStaticItem.SetTile(m_iCurrentLength/(m_iProgressLength*2),1,	
 							m_iCurrentLength%m_iProgressLength,0);
-		}
-		else
-		{
+		}else{
 			m_UIStaticItem.SetRect(0, 0, m_iCurrentLength, GetHeight());	
 		}
-	}
-	else
-	{
-		if(m_bProgressTile)
-		{
-			m_UIStaticItem.SetTile(1,GetHeight()/(m_iProgressLength*2),0,
-								GetHeight()%m_iProgressLength);
-		}
-		else
-		{
+	}else{
+		if(m_bProgressTile){
+			m_UIStaticItem.SetTile(1,m_iCurrentLength/(m_iProgressLength*2),0,
+								m_iCurrentLength%m_iProgressLength);
+		}else{
 			//m_UIStaticItem.SetRect(health_rect.x1,health_rect.y1,iFloor(float(health_rect.x2)*val),health_rect.y2);
 			m_UIStaticItem.SetRect(0, m_iProgressLength-m_iCurrentLength,
 											GetWidth(), m_iProgressLength);
