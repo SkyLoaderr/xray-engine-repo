@@ -137,6 +137,7 @@ extern ENGINE_API CRenderDevice Device;
 
 IC void	CRenderDevice::set_xform	(DWORD ID, const Fmatrix& M)
 {
+	Statistic.dwXFORMs++;
 	CHK_DX(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));
 }
 

@@ -89,6 +89,7 @@ void CStats::Show()
 		F.OutNext	("POLY:        %d/%d",dwPoly,dwPoly/dwCalls);
 		F.OutNext	("DIP/DP:      %d",dwCalls);
 		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
+		F.OutNext	("xforms:      %d",dwXFORMs);
 		F.OutSkip	();
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
 		F.OutNext	("uSheduled:   %2.2fms",UpdateSheduled.result);
@@ -175,6 +176,7 @@ void CStats::Show()
 	dwVert = dwPoly = dwCalls = 0;
 	dwSND_Played = dwSND_Allocated = 0;
 	dwShader_Codes = dwShader_Textures = dwShader_Matrices = dwShader_Constants = 0;
+	dwXFORMs = 0;
 }
 
 void CStats::OnDeviceCreate			()
