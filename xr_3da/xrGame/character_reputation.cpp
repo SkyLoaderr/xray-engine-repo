@@ -36,9 +36,9 @@ int   CHARACTER_REPUTATION::ValueToIndex    (CHARACTER_REPUTATION_VALUE val)
 	for(int i=0; i<(int)ItemDataVector().size(); i++)
 	{
 		if(val < ItemDataVector()[i].threshold)
-			break;
+			return i;
 	}
-	return i;
+	return int(ItemDataVector().size()-1);
 }
 
 void  CHARACTER_REPUTATION::set	(CHARACTER_REPUTATION_VALUE new_val)

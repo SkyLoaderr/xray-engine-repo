@@ -38,9 +38,9 @@ int   CHARACTER_RANK::ValueToIndex    (CHARACTER_RANK_VALUE val)
 	for(int i=0; i<(int)ItemDataVector().size(); i++)
 	{
 		if(val < ItemDataVector()[i].threshold)
-			break;
+			return i;
 	}
-	return i;
+	return int(ItemDataVector().size()-1);
 }
 
 void  CHARACTER_RANK::set	(CHARACTER_RANK_VALUE new_val)
