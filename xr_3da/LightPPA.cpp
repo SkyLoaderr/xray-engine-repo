@@ -104,7 +104,7 @@ void CLightPPA_Manager::Render()
 	// Create D3D unattenuated light
 	Flight					D3D;
 	D3D.type				= D3DLIGHT_POINT;
-	D3D.specular.set		(0,0,0,0)
+	D3D.specular.set		(0,0,0,0);
 	D3D.ambient.set			(0,0,0,0);
 	D3D.range				= 100.f;
 	D3D.attenuation0		= 1.f;

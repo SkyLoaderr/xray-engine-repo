@@ -148,7 +148,7 @@ IC float calcLOD	(float fDistSq, float R)
 void __fastcall normal_L2(FixedMAP<float,FBasicVisual*>::TNode *N)
 {
 	FBasicVisual *V = N->val;
-	::Render.Lights.Select		(V->bv_Position,V->bv_Radius);
+//	::Render.Lights.Select		(V->bv_Position,V->bv_Radius);
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
@@ -169,7 +169,7 @@ void __fastcall normal_L1(SceneGraph::mapNormal_Node *N)
 		for (; I!=E; I++)
 		{
 			FBasicVisual *V = *I;
-			::Render.Lights.Select		(V->bv_Position,V->bv_Radius);
+//			::Render.Lights.Select		(V->bv_Position,V->bv_Radius);
 			V->Render	(0);	// zero lod 'cause it is too small onscreen
 		}
 		L.clear	();
