@@ -124,17 +124,17 @@ void CBuild::Run	(LPCSTR P)
 	PreOptimize					();
 	CorrectTJunctions			();
 
-	//****************************************** HEMI-Tesselate
-	FPU::m64r					();
-	Phase						("Adaptive HT...");
-	mem_Compact					();
-	xrPhase_AdaptiveHT			();
-
 	//****************************************** Building normals
 	FPU::m64r					();
 	Phase						("Building normals...");
 	mem_Compact					();
 	CalcNormals					();
+
+	//****************************************** HEMI-Tesselate
+	FPU::m64r					();
+	Phase						("Adaptive HT...");
+	mem_Compact					();
+	xrPhase_AdaptiveHT			();
 
 	//****************************************** Collision DB
 	//should be after normals, so that double-sided faces gets separated
