@@ -159,14 +159,15 @@ public:
 		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 		ZeroMemory				(m_tpIndexes,S2);
 		u32 S3					= (m_tpAI_Map->m_header.count)*sizeof(SNode *);
-		m_tppHeap				= (SNode **)xr_malloc(S1);
-		ZeroMemory				(m_tpHeap,S1);
+		m_tppHeap				= (SNode **)xr_malloc(S3);
+		ZeroMemory				(m_tppHeap,S3);
 	}
 
 	~CGraphThread()
 	{
 		xr_free(m_tpHeap);
 		xr_free(m_tpIndexes);
+		xr_free(m_tppHeap);
 	}
 	
 	virtual void Execute()

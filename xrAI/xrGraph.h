@@ -21,7 +21,7 @@ typedef struct tagSDynamicGraphVertex {
 	CALifeGraph::SGraphEdge		*tpaEdges;
 } SDynamicGraphVertex;
 
-#define MAX_DISTANCE_TO_CONNECT		512.f
+#define MAX_DISTANCE_TO_CONNECT		4096.f
 
 DEFINE_VECTOR(SDynamicGraphVertex,		GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
 DEFINE_VECTOR(CALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
