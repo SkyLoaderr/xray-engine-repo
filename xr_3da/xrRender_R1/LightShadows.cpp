@@ -18,7 +18,7 @@ const	float		S_fade2		= S_fade*S_fade;
 const	float		S_level		= .1f;
 const	int			S_size		= 73;
 const	int			S_rt_size	= 512;
-const	int			batch_size	= 128;
+const	int			batch_size	= 256;
 const	float		S_tess		= .5f;
 const	int 		S_ambient	= 64;
 const	int 		S_clip		= 256-24;
@@ -316,7 +316,17 @@ void CLightShadows::calculate	()
 	RCache.set_xform_view		(Device.mView);
 }
 
-#define CLS(a) color_rgba(a,a,a,a)
+#define CLS(a)	color_rgba	(a,a,a,a)
+
+IC	bool		cache_search(const cache_item& A, const cache_item& B)
+{
+	if (A.O < B.O)	return true;
+	if (A.O > B.O)	return false;
+	if (A.L < B.L)	return true;
+	if (A.L > B.L)	return false;
+	return			false;	// eq
+}
+
 void CLightShadows::render	()
 {
 	// Gain access to collision-DB
@@ -352,55 +362,90 @@ void CLightShadows::render	()
 		t_offset.x	+= .5f/S_rt_size;
 		t_offset.y	+= .5f/S_rt_size;
 		
-		// Frustum
-		CFrustum	F;
-		F.CreateFromMatrix		(S.M,FRUSTUM_P_ALL);
+		// Search the cache
+		cache_item*						CI		= 0; BOOL	bValid = FALSE;
+		cache_item						CI_what; CI_what.O	= S.O; CI_what.L = S.L; CI_what.tris=0;
+		xr_vector<cache_item>::iterator	CI_ptr	= lower_bound(cache.begin(),cache.end(),CI_what,cache_search);
+		if (CI_ptr==cache.end())		
+		{	// empty ?
+			CI_ptr	= cache.insert		(CI_ptr,CI_what);
+			CI		= &*CI_ptr;
+			bValid	= FALSE;
+		} else {
+			if (CI_ptr->O != CI_what.O  || CI_ptr->L != CI_what->L)	
+			{	// we found something different
+				CI_ptr	= cache.insert		(CI_ptr,CI_what);
+				CI		= &*CI_ptr;
+				bValid	= FALSE;
+			} else {
+				// Everything, OK. Check if info is still relevant...
+				CI		= &*CI_ptr;
+				bValid	= TRUE;
+				if (!fsimilar(CI->O->renderable.xform.c,CI->Op))	bValid = FALSE;
+				else if (!fsimilar(CI->L->position,		CI->Lp))	bValid = FALSE;
+			}
+		}
+		CI->time				= Device.dwTimeGlobal;	// acess time
 
-		// Query
-		xrc.frustum_options		(0);
-		xrc.frustum_query		(DB,F);
-		if (0==xrc.r_count())	continue;
-		
-		// Clip polys by frustum
-		tess.clear				();
-		for (CDB::RESULT* p = xrc.r_begin(); p!=xrc.r_end(); p++)
-		{
-			VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
-			// 
-			CDB::TRI&	t		= TRIS[p->id];
-			sPoly		A,B;
-			A.push_back			(VERTS[t.verts[0]]);
-			A.push_back			(VERTS[t.verts[1]]);
-			A.push_back			(VERTS[t.verts[2]]);
+		if (!bValid)			{
+			// Frustum
+			CFrustum				F;
+			F.CreateFromMatrix		(S.M,FRUSTUM_P_ALL);
 
-			// Calc plane
-			Fplane		P;
-			P.build				(A[0],A[1],A[2]);
-			if (P.classify(View)<0)				continue;
-			if (P.classify(S.L->position)<0)	continue;
-			
-			// Clip polygon
-			sPoly*		clip	= F.ClipPoly(A,B);
-			if (0==clip)		continue;
-			
-			// Triangulate poly 
-			for (u32 v=2; v<clip->size(); v++)
+			// Query
+			xrc.frustum_options		(0);
+			xrc.frustum_query		(DB,F);
+			if (0==xrc.r_count())	continue;
+
+			// Clip polys by frustum
+			tess.clear				();
+			for (CDB::RESULT* p = xrc.r_begin(); p!=xrc.r_end(); p++)
 			{
-				tess.push_back	(tess_tri());
-				tess_tri& T		= tess.back();
-				T.v[0]			= (*clip)[0];
-				T.v[1]			= (*clip)[v-1];
-				T.v[2]			= (*clip)[v];
-				T.N				= P.n;
+				VERIFY((p->id>=0)&&(p->id<DB->get_tris_count()));
+				// 
+				CDB::TRI&	t		= TRIS[p->id];
+				sPoly		A,B;
+				A.push_back			(VERTS[t.verts[0]]);
+				A.push_back			(VERTS[t.verts[1]]);
+				A.push_back			(VERTS[t.verts[2]]);
+
+				// Calc plane
+				Fplane		P;
+				P.build				(A[0],A[1],A[2]);
+				//			if (P.classify(View)<0)				continue;
+				if (P.classify(S.L->position)<0)	continue;
+
+				// Clip polygon
+				sPoly*		clip	= F.ClipPoly(A,B);
+				if (0==clip)		continue;
+
+				// Triangulate poly 
+				for (u32 v=2; v<clip->size(); v++)	{
+					tess.push_back	(tess_tri());
+					tess_tri& T		= tess.back();
+					T.v[0]			= (*clip)[0];
+					T.v[1]			= (*clip)[v-1];
+					T.v[2]			= (*clip)[v];
+					T.N				= P.n;
+				}
+			}
+
+			// Remember params which builded cache item
+			CI->O					= S.O;
+			CI->Op					= CI->O->renderable.xform.c;
+			CI->L					= S.L;
+			CI->Lp					= CI->L->position;
+			CI->tcnt				= tess.size();
+			xr_free					(CI->tris);
+			if (tess.size())		{
+				CI->tris			= xr_alloc<tess_tri>(CI->tcnt);
+				Memory.mem_copy		(CI->tris,&*tess.begin(),CI->tcnt * sizeof(tess_tri));
 			}
 		}
 
-		// Tesselate
-		
 		// Fill VB
-		for (u32 tid=0; tid<tess.size(); tid++)
-		{
-			tess_tri&	TT		= tess[tid];
+		for (u32 tid=0; tid<CI->tcnt; tid++)	{
+			tess_tri&	TT		= CI->tris[tid];
 			Fvector* 	v		= TT.v;
 			Fvector		T;
 
@@ -430,8 +475,7 @@ void CLightShadows::render	()
 
 	// Flush if nessesary
 	RCache.Vertex.Unlock	(batch*3,geom_World->vb_stride);
-	if (batch)				
-	{
+	if (batch)				{
 		RCache.set_Geometry		(geom_World);
 		RCache.Render			(D3DPT_TRIANGLELIST,Offset,batch);
 	}
