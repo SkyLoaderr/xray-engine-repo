@@ -311,6 +311,7 @@ void CCC_Register()
 
 	CMD1(CCC_MotionsStat,"stat_motions"			);
 
+	CMD3(CCC_Mask,		"mt_particles",			&psDeviceFlags,			mtParticles);
 #ifdef DEBUG
 	CMD1(CCC_MemStat,	"stat_mem"				);
 
