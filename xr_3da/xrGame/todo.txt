@@ -93,7 +93,7 @@ Oles:
 		. TODO: File reader
 	+ TODO: Semi-Static, vertex-cache optimized LOD (only on static)
 		..........UNRELIABLE..........
-	. TODO: SoundMangager - 3D control on/off
+	+ TODO: SoundMangager - 3D control on/off
 	. TODO: Per sector wallmarks
 	. TODO: Lighting on models
 	. TODO: AI
