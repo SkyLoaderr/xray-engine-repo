@@ -124,6 +124,6 @@ IC int							xr_strcmp				( const char* S1, const char* S2 )
 {	return (int)strcmp(S1,S2);  }
 #endif
 
-char*							timestamp				(string64& dest);
+XRCORE_API	char*				timestamp				(string64& dest);
 
 #endif
