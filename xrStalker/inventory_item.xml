@@ -23,8 +23,8 @@
 	</static>
 
 	<!-- DESCRIPTION -->
-	<descr_list x="20" y="230" width="306" height="144" item_height="20">
-		<font font="letterica18" r="240" g="217" b="182"/>
+	<descr_list x="20" y="230" width="306" height="144" item_height="15">
+		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
 	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
