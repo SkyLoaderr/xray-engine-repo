@@ -12,6 +12,11 @@
 
 using namespace luabind;
 
+CScriptIniFile *get_system_ini()
+{
+	return	((CScriptIniFile*)pSettings);
+}
+
 void CScriptIniFile::script_register(lua_State *L)
 {
 	module(L)
@@ -28,6 +33,8 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def("r_s32",			(int	(CScriptIniFile::*)	(LPCSTR, LPCSTR))(CScriptIniFile::r_s32))
 			.def("r_float",			(float	(CScriptIniFile::*)	(LPCSTR, LPCSTR))(CScriptIniFile::r_float))
 			.def("r_vector",		(Fvector(CScriptIniFile::*)	(LPCSTR, LPCSTR))(CScriptIniFile::r_fvector3))
-			.def("line_count",		(u32	(CScriptIniFile::*)	(LPCSTR))		 (CScriptIniFile::line_count))
+			.def("line_count",		(u32	(CScriptIniFile::*)	(LPCSTR))		 (CScriptIniFile::line_count)),
+
+		def("system_ini",			&get_system_ini)
 	];
 }

@@ -146,7 +146,9 @@ void CAI_Stalker::collect_items						()
 {
 	m_temp_items.clear	();
 	m_total_money		= m_dwMoney;
-	m_total_money		+= fill_items(inventory(),this,m_trader_game_object->ID());
+	u32					money_delta = fill_items(inventory(),this,m_trader_game_object->ID());
+	m_total_money		+= money_delta;
+	m_current_trader->m_dwMoney -= money_delta;
 	fill_items			(m_current_trader->inventory(),m_trader_game_object,m_trader_game_object->ID());
 	std::sort			(m_temp_items.begin(),m_temp_items.end());
 }
@@ -180,10 +182,7 @@ void CAI_Stalker::process_items						()
 
 IC	void CAI_Stalker::buy_item_virtual				(CTradeItem &item)
 {
-	item.m_new_owner_id	= ID();
-	if (item.m_owner_id == ID())
-		return;
-
+	item.m_new_owner_id			= ID();
 	m_total_money				-= item.m_item->Cost();
 	m_current_trader->m_dwMoney += item.m_item->Cost();
 }
