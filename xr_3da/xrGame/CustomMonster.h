@@ -240,7 +240,6 @@ public:
 	virtual	float				ffGetRange				()										{return eye_range;}
 //	virtual	void				feel_touch_new			(CObject	*O);
 	virtual BOOL				feel_visible_isRelevant	(CObject		*O);
-	virtual	void				ResetScriptData			(void *P = 0);
 	virtual void				renderable_Render		();
 	virtual	void				Hit						(float P, Fvector &dir,			CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type = eHitTypeWound);
 	virtual void				OnEvent					( NET_Packet& P, u16 type		);

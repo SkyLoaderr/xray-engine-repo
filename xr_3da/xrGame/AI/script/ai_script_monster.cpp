@@ -19,7 +19,7 @@ CScriptMonster::CScriptMonster()
 	m_tpActionQueue.clear	();
 	strcpy					(m_caScriptName,"");
 	m_bScriptControl		= false;
-	Init					();
+	InitScript				();
 }
 
 CScriptMonster::~CScriptMonster()
@@ -401,11 +401,15 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 
 void CScriptMonster::ResetScriptData(void *P)
 {
-	Init					();
+	InitScript				();
 }
 
-void CScriptMonster::Init()
+void CScriptMonster::InitScript()
 {
+	while (!m_tpActionQueue.empty()) {
+		xr_delete	(m_tpActionQueue.front());
+		m_tpActionQueue.erase(m_tpActionQueue.begin());
+	}
 	// movement
 	m_iCurrentPatrolPoint	= m_iPreviousPatrolPoint = -1;
 	// animation
@@ -418,5 +422,5 @@ void CScriptMonster::Init()
 void CScriptMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
-	Init					();
+	InitScript				();
 }

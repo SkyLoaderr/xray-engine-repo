@@ -24,7 +24,7 @@ protected:
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
-			void				Init					();
+			void				InitScript				();
 	virtual void				net_Destroy				();
 			const Fmatrix		GetUpdatedMatrix		(LPCSTR caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
 			void				vfUpdateParticles		();

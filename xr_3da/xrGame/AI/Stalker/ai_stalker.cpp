@@ -442,16 +442,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
 		if (GetScriptControl())
-			ProcessScripts();
-		else {
-			if (!m_tpActionQueue.empty())
-				ResetScriptData				(false);
-			while (!m_tpActionQueue.empty()) {
-				xr_delete	(m_tpActionQueue.front());
-				m_tpActionQueue.erase(m_tpActionQueue.begin());
-			}
+			ProcessScripts				();
+		else
 			Think						();
-		}
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 		Engine.Sheduler.Slice			();

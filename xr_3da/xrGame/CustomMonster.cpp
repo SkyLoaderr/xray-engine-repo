@@ -778,10 +778,6 @@ void CCustomMonster::net_Destroy()
 	Init					();
 }
 
-void CCustomMonster::ResetScriptData(void *P)
-{
-}
-
 void ScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
