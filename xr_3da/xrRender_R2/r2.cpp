@@ -12,7 +12,7 @@ CRender										RImplementation;
 class CGlow				: public IRender_Glow
 {
 public:
-	BOOL				bActive;
+	bool				bActive;
 public:
 	virtual void					set_active			(bool)						{ bActive=TRUE;		}
 	virtual bool					get_active			()							{ return bActive;	}
@@ -188,9 +188,15 @@ CRender::~CRender()
 {
 }
 
-extern	LPCSTR WINAPI D3DXGetPixelShaderProfile(LPDIRECT3DDEVICE9 pDevice);														);
-
+/////////
 #pragma comment(lib,"d3dx_r2")
+
+extern "C"
+{
+	LPCSTR WINAPI	D3DXGetPixelShaderProfile	(LPDIRECT3DDEVICE9  pDevice);
+	LPCSTR WINAPI	D3DXGetVertexShaderProfile	(LPDIRECT3DDEVICE9	pDevice);
+};
+
 HRESULT	CRender::CompileShader			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
@@ -230,7 +236,8 @@ HRESULT	CRender::CompileShader			(
 	def_it							++;
 
 	// 
-	LPCSTR	profile					= D3DXGetPixelShaderProfile				(HW.pDevice);
+	if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex
+	else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel
 
 	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
     LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
