@@ -1430,6 +1430,26 @@
 								RelativePath=".\GraviArtifact.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="BlackDrops"
+							Filter="">
+							<File
+								RelativePath=".\BlackDrops.cpp">
+							</File>
+							<File
+								RelativePath=".\BlackDrops.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Needles"
+							Filter="">
+							<File
+								RelativePath=".\Needles.cpp">
+							</File>
+							<File
+								RelativePath=".\Needles.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Devices"

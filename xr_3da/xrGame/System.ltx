@@ -81,10 +81,16 @@ inv_name_short		= "Torch"
 inv_weight			= .4
 position			= .35,.25,0
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Artifacts
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 [af_magnet]
 GroupControlSection	= spawn_group
 $spawn				= "artifacts\magnet"
 class				= ARTEFACT
+;class				= AF_GRAVI
+
 cform				= skeleton
 $prefetch 			= 64
 ;visual				= weapon\bolt\wpn_bolt.ogf
@@ -116,7 +122,7 @@ energy				= 1
 GroupControlSection	= spawn_group
 $spawn 			= "artifacts\mercury ball"
 $npc			= on				; option for Level Editor
-$prefetch 		= 3
+;$prefetch 		= 3
 cform           = skeleton
 class   		= AF_MBALL
 
@@ -142,6 +148,63 @@ detector_sound		= zone_mosquito_bald.wav
 time_to_update		= 1000
 impulse_min			= 45.0
 impulse_max			= 90.0
+
+
+[af_black_drops]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\black drops"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_BDROP
+
+visual				= artifacts\artifact_rtut-sphere.ogf
+inv_name			= "Black Drops"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
+
+
+[af_needles]
+GroupControlSection	= spawn_group
+$spawn 			= "artifacts\needles"
+$npc			= on				; option for Level Editor
+;$prefetch 		= 3
+cform           = skeleton
+class   		= AF_NEEDL
+
+visual				= artifacts\artifact_rtut-sphere.ogf
+inv_name			= "Needles"
+inv_name_short		= 
+inv_weight			= 1
+
+food_value			= 0
+health_value		= 0
+
+inv_icon			= ui\ui_inv_pmm_ammo				; for inventory menu
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+cost				= 1000
+
+detector_dist		= 8
+detector_sound		= zone_mosquito_bald.wav
+
 
 
 [bolt]
