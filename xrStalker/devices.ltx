@@ -109,6 +109,49 @@ inv_grid_x			= 6
 inv_grid_y			= 13
 cost				= 250
 
+[garbage_letter]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\garbage_letter"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_book_open_01.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Letter
+inv_name_short		= Letter
+inv_weight			= 3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 13
+cost				= 1000
+
+
+[agroprom_notebook]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\agroprom_notebook"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_document_01.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Notebook
+inv_name_short		= Notebook
+inv_weight			= 3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 13
+cost				= 1000
+
 [quest_case_02]
 GroupControlSection	= spawn_group
 discovery_dependency = 
@@ -129,3 +172,4 @@ inv_grid_height		= 1
 inv_grid_x			= 6
 inv_grid_y			= 13
 cost				= 1000
+
