@@ -22,6 +22,8 @@
 ENGINE_API float	psGravity	= 20.f;
 ENGINE_API Flags32	psEnvFlags	= {effSunGlare};
 
+//////////////////////////////////////////////////////////////////////////
+// shader/blender
 class CBlender_skybox		: public IBlender  
 {
 public:
@@ -37,12 +39,24 @@ public:
 		C.r_End				();
 	}
 };
+static CBlender_skybox		b_skybox;
 
+//////////////////////////////////////////////////////////////////////////
+// vertex
+struct v_skybox				{
+	Fvector4	p;
+	u32			color;
+	Fvector3	uv	[2];
+};
+const	u32 v_skybox_fvf	= D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX2 | D3DFVF_TEXCOORDSIZE3(0) | D3DFVF_TEXCOORDSIZE3(1);
+
+//////////////////////////////////////////////////////////////////////////
+// environment
 CEnvironment::CEnvironment	()
 {
-	sh_2sky					= 
+	sh_2sky.create			(&b_skybox,"skybox_2t");
+	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.QuadIB);
 }
-
 CEnvironment::~CEnvironment	()
 {
 	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
