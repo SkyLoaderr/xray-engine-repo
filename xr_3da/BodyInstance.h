@@ -151,10 +151,12 @@ public:
 	typedef svector<int,128>	BoneDebug;
 public:
 	int				SelfID;
-	vecBones		children;	// bones which are slaves to this
+	vecBones		children;		// bones which are slaves to this
 	xr_vector<CMotion>	Motions;	// all known motions
 	Fobb			obb;
 
+	Fvector			bind_hpb;
+	Fvector			bind_translate;
     SBoneShape		shape;
     string64		game_mtl;
     SJointIKData	IK_data;
