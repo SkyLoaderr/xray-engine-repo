@@ -16,13 +16,13 @@
 		<static x="0" y="0" width="200" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
-		<static x="150" y="0" width="100" height="15">
-			<text font="letterica18" r="192" g="192" b="192"></text>
-		</static>
 		<static x="200" y="0" width="100" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
 		<static x="250" y="0" width="100" height="15">
+			<text font="letterica18" r="192" g="192" b="192"></text>
+		</static>
+		<static x="300" y="0" width="100" height="15">
 			<text font="letterica18" r="192" g="192" b="192"></text>
 		</static>
 
