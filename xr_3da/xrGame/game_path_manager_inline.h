@@ -30,3 +30,4 @@ IC	bool CGameManagerTemplate::actual() const
 }
 
 #undef TEMPLATE_SPECIALIZATION
+#undef CGameManagerTemplate

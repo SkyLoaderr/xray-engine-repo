@@ -19,21 +19,21 @@ template <
 class 
 	CBaseLocationSelector<
 		CGameGraph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_VertexEvaluator,
+		_vertex_id_type
 	> :
 	public CAbstractLocationSelector <
 		CGameGraph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_VertexEvaluator,
+		_vertex_id_type
 	>,
 	virtual public CAI_ObjectLocation
 {
 	typedef CGameGraph _Graph;
 	typedef CAbstractLocationSelector <
 		_Graph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_VertexEvaluator,
+		_vertex_id_type
 	> inherited;
 public:
 	enum ESelectionType {

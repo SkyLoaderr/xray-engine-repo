@@ -18,13 +18,13 @@ template <
 class 
 	CBaseLocationSelector<
 		CLevelGraph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_VertexEvaluator,
+		_vertex_id_type
 	> :
 	public CAbstractLocationSelector <
 		CLevelGraph,
-		typename _VertexEvaluator,
-		typename _vertex_id_type
+		_VertexEvaluator,
+		_vertex_id_type
 	>
 {
 public:

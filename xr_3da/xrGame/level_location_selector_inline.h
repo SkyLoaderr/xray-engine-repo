@@ -8,4 +8,12 @@
 
 #pragma once
 
+#define TEMPLATE_SPECIALIZATION template <\
+	typename _VertexEvaluator,\
+	typename _vertex_id_type\
+>
+
+#define CLevelLocationSelector CBaseLocationSelector<CLevelGraph,_VertexEvaluator,_vertex_id_type>
+
 #undef TEMPLATE_SPECIALIZATION
+#undef CLevelLocationSelector

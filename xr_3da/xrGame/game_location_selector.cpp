@@ -114,3 +114,4 @@ IC	void CGameLocationSelector::select_random_location(const _vertex_id_type star
 }
 
 #undef TEMPLATE_SPECIALIZATION
+#undef CGameLocationSelector

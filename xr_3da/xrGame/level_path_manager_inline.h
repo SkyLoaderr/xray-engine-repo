@@ -30,3 +30,4 @@ IC	bool CLevelManagerTemplate::actual() const
 }
 
 #undef TEMPLATE_SPECIALIZATION
+#undef CLevelManagerTemplate

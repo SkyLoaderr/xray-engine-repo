@@ -38,3 +38,4 @@ IC	void CGameLocationSelector::get_selection_type	() const
 }
 
 #undef TEMPLATE_SPECIALIZATION
+#undef CGameLocationSelector
