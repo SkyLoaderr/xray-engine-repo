@@ -141,6 +141,9 @@ void CAI_Rat::vfUpdateMorale()
 		m_fMorale += m_fMoraleRestoreQuant;
 		if (m_fMorale > m_fMoraleMaxValue)
 			m_fMorale = m_fMoraleMaxValue;
+		else
+			if ((m_fMorale >= m_fMoraleNormalValue) && (m_fMorale - m_fMoraleRestoreQuant <= m_fMoraleNormalValue))
+				m_fMorale = m_fMoraleNormalValue;
 	}
 }
 

@@ -90,6 +90,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_dwHitInterval		= pSettings->ReadINT(section,"HitInterval");
 
 	// morale
+	m_fMoraleNormalValue			= m_fMorale;
 	m_fMoraleDecreaseQuant			= (float)pSettings->ReadINT(section,"MoraleDecreaseQuant");
 	m_fMoraleIncreaseQuant			= (float)pSettings->ReadINT(section,"MoraleIncreaseQuant");
 	m_fMoraleRestoreQuant			= (float)pSettings->ReadINT(section,"MoraleRestoreQuant");
@@ -99,7 +100,7 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMoraleIncreaseRadius			= (float)pSettings->ReadINT(section,"MoraleIncreaseRadius");
 	m_fMoraleUESDecreaseQuant		= (float)pSettings->ReadINT(section,"MoraleUESDecreaseQuant");
 	m_fMoraleMaxUESDistance			= (float)pSettings->ReadINT(section,"MoraleMaxUESDistance");
-	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT(section,"RestoreMoraleTimeInterval");
+	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT(section,"MoraleRestoreTimeInterval");
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)

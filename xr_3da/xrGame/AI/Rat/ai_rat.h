@@ -152,6 +152,7 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMoraleIncreaseRadius;
 		float				m_fMoraleUESDecreaseQuant;
 		float				m_fMoraleMaxUESDistance;
+		float				m_fMoraleNormalValue;
 		DWORD				m_dwMoraleRestoreTimeInterval;
 		DWORD				m_dwMoraleLastUpdateTime;
 
