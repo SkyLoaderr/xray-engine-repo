@@ -112,12 +112,12 @@ void CAI_Space::Load(LPCSTR name)
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 
-	vector<u32>	tpPath;
-	float		fDistance;
-	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,1,2,1000.f,fDistance,tpPath);
-	Msg("%7.2f",fDistance);
-	for (int i=0; i<(int)tpPath.size(); i++)
-		Msg("* %d",tpPath[i]);
+//	vector<u32>	tpPath;
+//	float		fDistance;
+//	m_tpGraphPath.vfFindOptimalPath(m_tpHeap,m_tpIndexes,m_dwAStarStaticCounter,1,2,1000.f,fDistance,tpPath);
+//	Msg("%7.2f",fDistance);
+//	for (int i=0; i<(int)tpPath.size(); i++)
+//		Msg("* %d",tpPath[i]);
 }
 
 void CAI_Space::Render()
