@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <time.h>
 #include "errors.h"
 #include "resource.h"
 #include "log.h"
