@@ -119,12 +119,12 @@ public:
 	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}
 
 	// Name management
-	IC LPCSTR							cName				()			const	{ return *NameObject;				}
-	void								cName_set			(LPCSTR N);
-	IC LPCSTR							cNameSect			()			const	{ return *NameSection;				}
-	void								cNameSect_set		(LPCSTR N);
-	IC LPCSTR							cNameVisual			()			const	{ return *NameVisual;				}
-	void								cNameVisual_set		(LPCSTR N);
+	IC ref_str							cName				()			const	{ return *NameObject;				}
+	void								cName_set			(ref_str N);
+	IC ref_str							cNameSect			()			const	{ return *NameSection;				}
+	void								cNameSect_set		(ref_str N);
+	IC ref_str							cNameVisual			()			const	{ return *NameVisual;				}
+	void								cNameVisual_set		(ref_str N);
 	
 	// Properties
 	void								setVisible			(BOOL _visible);
