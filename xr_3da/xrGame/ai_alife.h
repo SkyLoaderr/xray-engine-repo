@@ -28,8 +28,8 @@ public:
 
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
-	u64								m_qwGameTime;
-	u32								m_dwLastUpdate;
+	_TIME_ID						m_tGameTime;
+	u32								m_dwStartTime;
 	float							m_fTimeFactor;
 	bool							m_bLoaded;
 	
@@ -63,11 +63,9 @@ public:
 		m_fTimeFactor = fTimeFactor;
 	}
 
-	IC u64  qwfGetGameTime()
+	IC _TIME_ID tfGetGameTime()
 	{
-		u32 dwTime = Level().timeServer(), dwTimeDifference = u32(dwTime - m_dwLastUpdate);
-		m_dwLastUpdate = dwTime;
-		return(m_qwGameTime += iFloor(m_fTimeFactor*float(dwTimeDifference)));
+		return(m_tGameTime + iFloor(m_fTimeFactor*float(Level().timeServer() - m_dwStartTime)));
 	}
 
 	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
@@ -210,7 +208,7 @@ public:
 				tTask.tCustomerID			= tpTrader->m_tObjectID;
 				tTask.tLocationID			= Level().AI.m_tpaGraph[tpALifeItem->m_tGraphID].tVertexType;
 				tTask.tObjectID				= tpALifeItem->m_tObjectID;
-				tTask.tTimeID				= Level().timeServer();
+				tTask.tTimeID				= tfGetGameTime();
 				tTask.tTaskType				= eTaskTypeSearchForItemOL;
 				m_tTaskRegistry.Add			(tTask);
 				tpTrader->m_tpTaskIDs.push_back(tTask.tTaskID);

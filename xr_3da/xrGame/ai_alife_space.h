@@ -40,7 +40,7 @@ class CALifeHuman;
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
 	typedef u32	_OBJECT_ID;									// Object ID
-	typedef u32	_TIME_ID;									// Time  ID
+	typedef u64	_TIME_ID;									// Time  ID
 	typedef u32	_EVENT_ID;									// Event ID
 	typedef u32	_TASK_ID;									// Event ID
 	typedef u16	_GRAPH_ID;									// Graph ID
@@ -177,7 +177,6 @@ namespace ALife {
 
 	typedef struct tagSALifeHeader {
 		u32							dwVersion;
-		_TIME_ID					tTimeID;
 	} SALifeHeader;
 
 	DEFINE_VECTOR	(SEvent *,					EVENT_P_VECTOR,			EVENT_P_IT);

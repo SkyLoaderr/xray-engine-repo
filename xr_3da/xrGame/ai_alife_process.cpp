@@ -51,7 +51,7 @@ void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonsterAbstract)
 	}
 	else
 		vfUpdateMonster(tpALifeMonsterAbstract);
-	tpALifeMonsterAbstract->m_tTimeID = Level().timeServer();
+	tpALifeMonsterAbstract->m_tTimeID = tfGetGameTime();
 }
 
 void CAI_ALife::vfUpdateMonster(CALifeMonsterAbstract *tpALifeMonsterAbstract)
