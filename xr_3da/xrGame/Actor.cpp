@@ -723,6 +723,7 @@ void CActor::Update	(u32 DT)
 
 	R_ASSERT(last_gmtl_id!=GAMEMTL_NONE);
 	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_gmtl_id,last_gmtl_id);
+	R_ASSERT3(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(last_gmtl_id)->name);
 	// sound step
 	if ((mstate_real&mcAnyMove)&&(!(mstate_real&(mcJump|mcFall|mcLanding|mcLanding2)))){
 		if(m_fTimeToStep<0){
@@ -1478,7 +1479,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
+	element->setMass(density*5.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1526,7 +1527,7 @@ void CActor::create_Skeleton(){
 	element->mXFORM.set(m6);
 	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
 	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
+	element->setMass(density*20.f);
 	element->set_ParentElement(parent);
 	m_phSkeleton->add_Element(element);
 	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
@@ -1542,7 +1543,7 @@ void CActor::create_Skeleton(){
 	m.set(mRotate);
 	ph_Movement.GetDeathPosition(m.c);
 	m_phSkeleton->mXFORM.set(m);
-	m_phSkeleton->SetAirResistance(0.0003f,0.4f);
+	m_phSkeleton->SetAirResistance(0.001f,0.1f);
 
 }
 

@@ -51,7 +51,8 @@ enum enumType{
 	universal_hinge,
 	shoulder1,
 	shoulder2,
-	car_wheel
+	car_wheel,
+	welding
 };
 protected:
 

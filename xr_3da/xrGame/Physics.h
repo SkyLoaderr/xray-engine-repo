@@ -237,7 +237,7 @@ private:
 	void			calculate_it_data_use_density(const Fvector& mc,float density);
 	void			Disable						();
 public:
-
+	void					DynamicAttach			(CPHElement * E);
 	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f) {
 													k_w= angular;
 													k_l=linear;}
@@ -341,6 +341,7 @@ void CreateHinge2();
 void CreateShoulder1();
 void CreateShoulder2();
 void CreateCarWeel();
+void CreateWelding();
 void CreateUniversalHinge();
 
 	virtual void SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	

@@ -1622,6 +1622,45 @@ void CPHElement::InterpolateGlobalTransform(Fmatrix* m){
 	
 }
 
+void CPHElement::DynamicAttach(CPHElement* E)
+{
+	const dReal* p1=dBodyGetPosition(m_body);
+	const dReal* p2=dBodyGetPosition(E->m_body);
+	const dReal* R1=dBodyGetRotation(m_body);
+	const dReal* R2=dBodyGetRotation(E->m_body);
+	dVector3 pp={p2[0]-p1[0],p2[1]-p1[1],p2[2]-p1[2]};
+	dMatrix3 RR;
+	dMULTIPLY0_333(RR,R2,R1);
+	vector<dGeomID>::iterator i;
+	for(i=E->m_geoms.begin();i!=E->m_geoms.end();i++){
+		if(dGeomGetBody(*i)){
+		dGeomID trans=dCreateGeomTransform(0);
+		dGeomSetBody((*i),0);
+		dGeomSetPosition((*i),pp[0],pp[1],pp[2]);
+		dGeomSetRotation((*i),RR);
+		dGeomTransformSetGeom(trans,(*i));
+		dGeomTransformSetInfo(trans,1);
+		dGeomSetBody(trans,m_body);
+		E->m_trans.push_back(trans);
+		}
+		for(i=E->m_trans.begin();i!=E->m_trans.end();i++){
+		dGeomID geom=dGeomTransformGetGeom(*i);
+		const dReal* pos=dGeomGetPosition(geom);
+		const dReal* rot=dGeomGetRotation(geom);
+		dMatrix3 rr;
+		dMULTIPLY1_333(rr,rot,RR);
+		dGeomSetPosition(geom,pos[0]+pp[0],pos[1]+pp[1],pos[2]+pp[2]);
+		dGeomSetRotation(geom,rr);
+		dGeomSetBody(*i,m_body);
+
+		}
+		dBodyDestroy(E->m_body);
+		E->m_body=m_body;
+	}
+	//E->m_body;
+
+}
+
 void CPHShell::Activate(){
 	if(bActive)
 		return;
@@ -1814,6 +1853,11 @@ void CPHJoint::CreateUniversalHinge()
 
 }
 
+void CPHJoint::CreateWelding()
+{
+	
+
+}
 void CPHJoint::SetAnchor(const float x,const float y,const float z)
 {
 vs_anchor=vs_global;
@@ -1837,7 +1881,9 @@ void CPHJoint::SetAxis(const float x,const float y,const float z,const int axis_
 	int ax=axis_num;
 
 	switch(eType){
-	case ball:					return;						break;
+	case ball:
+	case welding:
+								return;						break;
 	case hinge:					ax=0;
 															break;
 	case hinge2:
@@ -1913,7 +1959,9 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 	int ax=axis_num;
 
 	switch(eType){
-	case ball:					return;						break;
+	case ball:					
+	case welding:
+								return;						break;
 	case hinge:					ax=0;
 															break;
 	case hinge2:
@@ -1973,6 +2021,7 @@ vs_anchor=vs_first;
 
 	switch(eType){
 	case ball:					;						break;
+	case welding:				;						break;
 	case hinge:					axes.push_back(axis);	
 														break;
 	case hinge2:
@@ -2011,6 +2060,7 @@ if(bActive) return;
 	case shoulder1:				CreateShoulder1();		break;
 	case shoulder2:				CreateShoulder2();		break;
 	case car_wheel:				CreateCarWeel();		break;
+	case welding:				CreateWelding();		break;
 	}
 	bActive=true;
 }
@@ -2018,7 +2068,8 @@ if(bActive) return;
 void CPHJoint::Deactivate()
 {
 if(!bActive) return;
-dJointDestroy(m_joint);
+if(eType!=welding)
+		dJointDestroy(m_joint);
 bActive=false;
 }
 
