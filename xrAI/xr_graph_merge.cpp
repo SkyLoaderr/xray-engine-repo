@@ -17,6 +17,7 @@
 #include "level_graph.h"
 #include "net_utils.h"
 #include "ai_alife_templates.h"
+#include "xr_graph_merge.h"
 using namespace ALife;
 
 class CLevelGameGraph;
@@ -338,24 +339,6 @@ public:
 class CGraphMerger {
 public:
 	CGraphMerger(LPCSTR name);
-};
-
-struct CLevelInfo {
-	u32				id;
-	LPCSTR			name;
-	Fvector			offset;
-
-					CLevelInfo	(u32 _id, LPCSTR _name, const Fvector &_offset) :
-						id(_id),
-						name(_name),
-						offset(_offset)
-	{
-	}
-
-	IC	bool	operator< (const CLevelInfo &info) const
-	{
-		return		(id < info.id);
-	}
 };
 
 void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels)

@@ -342,80 +342,86 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 	return					("game.spawn");
 }
 
-class CLevelAssigner {
+#include "xr_graph_merge.h"
+
+extern void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels);
+
+class CSpawnMerger {
 public:
-	void assign(CGameGraph::SLevel &level, LPCSTR S)
+			CSpawnMerger	(LPCSTR name)
 	{
-		Memory.mem_copy(level.caLevelName,S,(u32)xr_strlen(S) + 1);
+		xr_vector<CGameGraph::CLevelPoint>		l_tpLevelPoints;
+		l_tpLevelPoints.clear		();
+
+		// load all the graphs
+		Phase						("Loading game graph");
+		char						S[256];
+		FS.update_path				(S,"$game_data$","game.graph");
+		tpGraph						= xr_new<CGameGraph>(S);
+
+		Phase						("Reading level graphs");
+		CInifile					*Ini = xr_new<CInifile>(INI_FILE);
+		if (!Ini->section_exist("levels"))
+			THROW;
+		R_ASSERT					(Ini->section_exist("levels"));
+
+		xr_set<CLevelInfo>			levels;
+		read_levels					(Ini,levels);
+
+		SSpawnHeader				tSpawnHeader;
+		tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
+		tSpawnHeader.dwLevelCount	= 0;
+		tSpawnHeader.dwSpawnCount	= 0;
+		u32							dwGroupOffset = 0;
+		xr_vector<CSpawn *>			tpLevels;
+
+		CGameGraph::SLevel				tLevel;
+		xr_set<CLevelInfo>::const_iterator	I = levels.begin();
+		xr_set<CLevelInfo>::const_iterator	E = levels.end();
+		for ( ; I != E; ++I) {
+			tLevel.tOffset			= (*I).offset;
+			strcpy					(tLevel.caLevelName,(*I).name);
+			tLevel.tLevelID			= (*I).id;
+			Msg						("%9s %2d %s","level",tLevel.tLevelID,(*I).name);
+			tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,tLevel.tLevelID,&dwGroupOffset));
+		}
+
+		R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
+
+		CThreadManager				tThreadManager;		// multithreading
+
+		Phase						("Searching for corresponding graph vertices");
+		for (u32 i=0, N = tpLevels.size(); i<N; i++)
+			tThreadManager.start	(tpLevels[i]);
+		tThreadManager.wait			();
+
+		Phase						("Merging spawn files");
+		for (u32 i=0, N = tpLevels.size(); i<N; i++)
+			tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
+
+		CMemoryWriter				tMemoryStream;
+		tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
+		tMemoryStream.w				(&tSpawnHeader,sizeof(tSpawnHeader));
+		tMemoryStream.close_chunk	();
+		for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
+			tpLevels[i]->Save		(tMemoryStream,dwID,l_tpLevelPoints);
+
+		tMemoryStream.open_chunk	(dwID++);
+		save_data					(l_tpLevelPoints,tMemoryStream);
+		tMemoryStream.close_chunk	();
+
+		string256					l_caFileName;
+		FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
+		tMemoryStream.save_to		(l_caFileName);
+
+		Phase						("Freeing resources being allocated");
+		xr_delete					(tpGraph);
+		for (u32 i=0, N = tpLevels.size(); i<N; i++)
+			xr_delete				(tpLevels[i]);
 	}
 };
 
 void xrMergeSpawns(LPCSTR name)
 {
-	xr_vector<CGameGraph::CLevelPoint>		l_tpLevelPoints;
-	l_tpLevelPoints.clear		();
-
-	// load all the graphs
-	Phase						("Loading game graph");
-	char						S[256];
-	FS.update_path				(S,"$game_data$","game.graph");
-	tpGraph						= xr_new<CGameGraph>(S);
-	
-	Phase						("Reading level graphs");
-	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);
-	SSpawnHeader				tSpawnHeader;
-	tSpawnHeader.dwVersion		= XRAI_CURRENT_VERSION;
-	tSpawnHeader.dwLevelCount	= 0;
-	tSpawnHeader.dwSpawnCount	= 0;
-	u32							dwGroupOffset = 0;
-	xr_vector<CSpawn *>			tpLevels;
-	CGameGraph::SLevel			tLevel;
-    LPCSTR						N,V;
-	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
-    for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-		if (!Ini->section_exist(N)) {
-			string4096			S;
-			sprintf				(S,"There is no level section '%s' being included in the section levels in the 'game.ltx'\n",N);
-			R_ASSERT2			(Ini->section_exist(N),S);
-		}
-		V						= Ini->r_string(N,"name");
-		if (xr_strlen(name) && stricmp(name,V))
-			continue;
-		CLevelAssigner().assign	(tLevel,V);
-		Msg						("Reading level %s...",tLevel.name());
-		u32						id = Ini->r_s32(N,"id");
-		tpLevels.push_back		(xr_new<CSpawn>("$game_levels$",tLevel,id,&dwGroupOffset));
-    }
-	R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
-	
-	CThreadManager				tThreadManager;		// multithreading
-
-	Phase						("Searching for corresponding graph vertices");
-	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		tThreadManager.start	(tpLevels[i]);
-	tThreadManager.wait			();
-	
-	Phase						("Merging spawn files");
-	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		tSpawnHeader.dwSpawnCount += tpLevels[i]->m_tpSpawnPoints.size();
-	
-	CMemoryWriter				tMemoryStream;
-	tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
-	tMemoryStream.w				(&tSpawnHeader,sizeof(tSpawnHeader));
-	tMemoryStream.close_chunk	();
-	for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
-		tpLevels[i]->Save		(tMemoryStream,dwID,l_tpLevelPoints);
-	
-	tMemoryStream.open_chunk	(dwID++);
-	save_data					(l_tpLevelPoints,tMemoryStream);
-	tMemoryStream.close_chunk	();
-
-	string256					l_caFileName;
-	FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
-	tMemoryStream.save_to		(l_caFileName);
-
-	Phase						("Freeing resources being allocated");
-	xr_delete					(tpGraph);
-	for (u32 i=0, N = tpLevels.size(); i<N; i++)
-		xr_delete				(tpLevels[i]);
+	CSpawnMerger	A(name);
 }

@@ -44,7 +44,7 @@ public:
 		friend class CGraphSaver;
 		friend class CGraphMerger;
 		friend class CSpawn;
-		friend class CLevelAssigner;
+		friend class CSpawnMerger;
 		friend class CRenumbererConverter;
 #endif
 	};
