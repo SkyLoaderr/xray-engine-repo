@@ -249,14 +249,14 @@ void CApplication::OnFrame( )
 void CApplication::Level_Scan()
 {
 	vector<char*>	folder	= FS.file_list_open	("$game_levels$",FS_ListFolders|FS_RootOnly);
-	R_ASSERT		(!folder.empty());
-	for (u32 i=0; i<folder.size(); i++)
+	R_ASSERT		(!folder->empty());
+	for (u32 i=0; i<folder->size(); i++)
 	{
 		string256	N1,N2,N3,N4;
-		strconcat	(N1,folder[i],"level");
-		strconcat	(N2,folder[i],"level.ltx");
-		strconcat	(N3,folder[i],"level.game");
-		strconcat	(N4,folder[i],"level.spawm");
+		strconcat	(N1,(*folder)[i],"level");
+		strconcat	(N2,(*folder)[i],"level.ltx");
+		strconcat	(N3,(*folder)[i],"level.game");
+		strconcat	(N4,(*folder)[i],"level.spawm");
 		if	(
 			FS.exist("$game_levels$",N1)		&&
 			FS.exist("$game_levels$",N2)		&&
@@ -273,6 +273,7 @@ void CApplication::Level_Scan()
 			xr_free	(folder[i]);
 		}
 	}
+	FS.file_list_close	(folder);
 }
 
 void CApplication::Level_Set(u32 L)
