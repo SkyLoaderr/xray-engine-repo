@@ -25,8 +25,7 @@ struct b_face
 };
 struct b_material
 {
-	WORD	dwTexCount;
-	WORD	surfidx	[XR_MAX_TEXTURES];		// indices of texture surfaces
+	WORD	surfidx;						// indices of texture surfaces
 	WORD	shader;							// index of shader that combine them
 	WORD	shader_xrlc;					// compiler options
 	WORD	sector;							// ***

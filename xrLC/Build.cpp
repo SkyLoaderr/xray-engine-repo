@@ -72,15 +72,11 @@ CBuild::CBuild(b_transfer * L)
 		}
 
 		// transfer TC
-		DWORD	tCnt	= L->material[B->dwMaterial].dwTexCount;
-		for (it=0; it<tCnt; it++) {
 			UVpoint uv1,uv2,uv3;
-
-			uv1.set(B->t[it][0].tu,B->t[it][0].tv);
-			uv2.set(B->t[it][1].tu,B->t[it][1].tv);
-			uv3.set(B->t[it][2].tu,B->t[it][2].tv);
+			uv1.set(B->t[0].tu,B->t[0].tv);
+			uv2.set(B->t[1].tu,B->t[1].tv);
+			uv3.set(B->t[2].tu,B->t[2].tv);
 			F->AddChannel( uv1, uv2, uv3 );
-		}
 	}
 	Progress(p_total+=p_cost);
 	Msg("%d faces processed.",g_faces.size());
