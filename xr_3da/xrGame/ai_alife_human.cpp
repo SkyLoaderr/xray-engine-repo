@@ -383,6 +383,114 @@ void CSE_ALifeHumanAbstract::vfDetachAll()
 	m_iCumulativeItemVolume			= 0;
 }
 
+EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
+{
+	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
+		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
+		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
+		return						(m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) == eRelationTypeFriend ? eMeetActionTypeInteract : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
+	}
+	else
+		return(eMeetActionTypeAttack);
+}
+
+CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
+{
+	m_tpBestDetector				= 0;
+	CSE_ALifeGroupAbstract			*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
+	if (l_tpALifeGroupAbstract) {
+		u32							l_dwBestValue = 0;
+		if (!l_tpALifeGroupAbstract->m_wCount)
+			return					(0);
+		OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
+		OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
+			R_ASSERT				(l_tpALifeHumanAbstract);
+			getAI().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
+			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);
+			if (l_dwCurrentValue > l_dwBestValue) {
+				l_dwBestValue		= l_dwCurrentValue;
+				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeObject);
+			}
+		}
+		return						(m_tpBestDetector);
+	}
+	
+	OBJECT_IT						I = children.begin();
+	OBJECT_IT						E = children.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(*I);
+		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+		R_ASSERT2					(l_tpALifeInventoryItem,"Non-item object in the inventory found");
+		switch (l_tpALifeDynamicObject->m_tClassID) {
+			case CLSID_DETECTOR_SIMPLE		: {
+				m_tpBestDetector	= l_tpALifeDynamicObject;
+				break;
+			}
+			case CLSID_DETECTOR_VISUAL		: {
+				m_tpBestDetector	= l_tpALifeDynamicObject;
+				return				(m_tpBestDetector);
+			}
+		}
+	}
+	return							(m_tpBestDetector);
+}
+
+bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInventoryItem)
+{
+	if ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME))
+		return		(false);
+	
+	m_tpTempItemBuffer.resize(children.size() + 1);
+	
+	{
+		OBJECT_IT	i = children.begin();
+		OBJECT_IT	e = children.end();
+		ITEM_P_IT	I = m_tpTempItemBuffer.begin();
+		for ( ; i != e; i++, I++)
+			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
+		*I			= tpALifeInventoryItem;
+	}
+
+	m_tpALife->m_tpWeaponVector.assign(m_tpALife->m_tpWeaponVector.size(),0);
+	{
+		ITEM_P_IT		I = m_tpTempItemBuffer.begin();
+		ITEM_P_IT		E = m_tpTempItemBuffer.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(*I);
+			if (l_tpALifeItemWeapon && (!m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] || (m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot]->m_iVolume < l_tpALifeItemWeapon->m_iVolume)))
+				m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] = l_tpALifeItemWeapon;
+		}
+	}
+	{
+		ITEM_P_IT		I = remove_if(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
+		m_tpTempItemBuffer.erase(I,m_tpTempItemBuffer.end());
+	}
+
+	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
+
+#pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
+
+	u64				l_qwInventoryBitMask = 0;
+	ITEM_P_IT		I = m_tpTempItemBuffer.begin();
+	ITEM_P_IT		E = m_tpTempItemBuffer.end();
+	for ( ; I != E; I++) {
+		bool		l_bOk = true;
+		u64			l_qwItemBitMask = (*I)->m_qwGridBitMask;
+		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; i++, l_qwItemBitMask >>= RUCK_WIDTH - m)
+			for (int j=0; j<=m; j++, l_qwItemBitMask >>= 1)
+				if ((l_qwInventoryBitMask ^ l_qwItemBitMask) == (l_qwInventoryBitMask | l_qwItemBitMask)) {
+					l_qwInventoryBitMask |= l_qwItemBitMask;
+					l_bOk = false;
+					break;
+				}
+		if (l_bOk)
+			return	(false);
+	}
+	return			(true);
+}
+
 void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 {
 	R_ASSERT2						(fHealth >= EPS_L,"Cannot attach items to dead human");
@@ -409,6 +517,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		return;
 	}
 	else {
+		// fast check if I can pick up all the items
 		u32								l_dwCurrentItemCount = children.size();
 		float							l_fCumulativeItemMass = m_fCumulativeItemMass;
 		int								l_iCumulativeItemVolume = m_iCumulativeItemVolume;
@@ -605,119 +714,12 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 			sort(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 		ITEM_P_IT				I = m_tpALife->m_tpItemVector.begin();
 		ITEM_P_IT				E = m_tpALife->m_tpItemVector.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; I++)
 			if (bfCanGetItem(*I))
 				m_tpALife->vfAttachItem	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
-		}
-		I							= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
+		
+		I						= remove_if(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CRemoveAttachedItemsPredicate());
 		m_tpALife->m_tpItemVector.erase(I,m_tpALife->m_tpItemVector.end());
 	}
 }
 
-bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInventoryItem)
-{
-	if ((m_fCumulativeItemMass + tpALifeInventoryItem->m_fMass > m_fMaxItemMass) || (m_iCumulativeItemVolume + tpALifeInventoryItem->m_iVolume > MAX_ITEM_VOLUME))
-		return		(false);
-	
-	m_tpTempItemBuffer.resize(children.size() + 1);
-	
-	{
-		OBJECT_IT	i = children.begin();
-		OBJECT_IT	e = children.end();
-		ITEM_P_IT	I = m_tpTempItemBuffer.begin();
-		for ( ; i != e; i++, I++)
-			*I		= dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*i));
-		*I			= tpALifeInventoryItem;
-	}
-
-	m_tpALife->m_tpWeaponVector.assign(m_tpALife->m_tpWeaponVector.size(),0);
-	{
-		ITEM_P_IT		I = m_tpTempItemBuffer.begin();
-		ITEM_P_IT		E = m_tpTempItemBuffer.end();
-		for ( ; I != E; I++) {
-			CSE_ALifeItemWeapon	*l_tpALifeItemWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(*I);
-			if (l_tpALifeItemWeapon && (!m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] || (m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot]->m_iVolume < l_tpALifeItemWeapon->m_iVolume)))
-				m_tpALife->m_tpWeaponVector[l_tpALifeItemWeapon->m_dwSlot] = l_tpALifeItemWeapon;
-		}
-	}
-	{
-		ITEM_P_IT		I = remove_if(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CRemoveSlotAndCellItemsPredicate(&m_tpALife->m_tpWeaponVector,6));
-		m_tpTempItemBuffer.erase(I,m_tpTempItemBuffer.end());
-	}
-
-	sort			(m_tpTempItemBuffer.begin(),m_tpTempItemBuffer.end(),CSortItemVolumePredicate());
-
-#pragma todo("Dima to Dima,Oles,AlexMX,Yura,Jim,Kostia : Instead of greeding algorithm implement faster algorithm which _always_ computes _correct_ result (though this problem seems to be NP)")
-
-	u64				l_qwInventoryBitMask = 0;
-	ITEM_P_IT		I = m_tpTempItemBuffer.begin();
-	ITEM_P_IT		E = m_tpTempItemBuffer.end();
-	for ( ; I != E; I++) {
-		bool		l_bOk = true;
-		u64			l_qwItemBitMask = (*I)->m_qwGridBitMask;
-		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; i++, l_qwItemBitMask >>= RUCK_WIDTH - m)
-			for (int j=0; j<=m; j++, l_qwItemBitMask >>= 1)
-				if ((l_qwInventoryBitMask ^ l_qwItemBitMask) == (l_qwInventoryBitMask | l_qwItemBitMask)) {
-					l_qwInventoryBitMask |= l_qwItemBitMask;
-					l_bOk = false;
-					break;
-				}
-		if (l_bOk)
-			return	(false);
-	}
-	return			(true);
-}
-
-EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)
-{
-	if (m_tpALife->m_tCombatType == eCombatTypeMonsterMonster) {
-		CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable);
-		R_ASSERT2					(l_tpALifeMonsterAbstract,"Inconsistent meet action type");
-		return						(m_tpALife->tfGetRelationType(this,dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeSchedulable)) == eRelationTypeFriend ? eMeetActionTypeInteract : ((bMutualDetection || m_tpALife->tfChooseCombatAction(iGroupIndex)==eCombatActionAttack) ? eMeetActionTypeAttack : eMeetActionTypeIgnore));
-	}
-	else
-		return(eMeetActionTypeAttack);
-}
-
-CSE_ALifeDynamicObject *CSE_ALifeHumanAbstract::tpfGetBestDetector()
-{
-	m_tpBestDetector				= 0;
-	CSE_ALifeGroupAbstract			*l_tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(this);
-	if (l_tpALifeGroupAbstract) {
-		u32							l_dwBestValue = 0;
-		if (!l_tpALifeGroupAbstract->m_wCount)
-			return					(0);
-		OBJECT_IT					I = l_tpALifeGroupAbstract->m_tpMembers.begin();
-		OBJECT_IT					E = l_tpALifeGroupAbstract->m_tpMembers.end();
-		for ( ; I != E; I++) {
-			CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(m_tpALife->tpfGetObjectByID(l_tpALifeGroupAbstract->m_tpMembers[0]));
-			R_ASSERT				(l_tpALifeHumanAbstract);
-			getAI().m_tpCurrentALifeObject = l_tpALifeHumanAbstract->tpfGetBestDetector();
-			u32						l_dwCurrentValue = iFloor(getAI().m_pfDetectorType->ffGetValue()+.5f);
-			if (l_dwCurrentValue > l_dwBestValue) {
-				l_dwBestValue		= l_dwCurrentValue;
-				m_tpBestDetector	= dynamic_cast<CSE_ALifeDynamicObject*>(getAI().m_tpCurrentALifeObject);
-			}
-		}
-		return						(m_tpBestDetector);
-	}
-	
-	OBJECT_IT						I = children.begin();
-	OBJECT_IT						E = children.end();
-	for ( ; I != E; I++) {
-		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(*I);
-		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
-		R_ASSERT2					(l_tpALifeInventoryItem,"Non-item object in the inventory found");
-		switch (l_tpALifeDynamicObject->m_tClassID) {
-			case CLSID_DETECTOR_SIMPLE		: {
-				m_tpBestDetector	= l_tpALifeDynamicObject;
-				break;
-			}
-			case CLSID_DETECTOR_VISUAL		: {
-				m_tpBestDetector	= l_tpALifeDynamicObject;
-				return				(m_tpBestDetector);
-			}
-		}
-	}
-	return							(m_tpBestDetector);
-}
