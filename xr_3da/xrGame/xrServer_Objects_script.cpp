@@ -227,14 +227,3 @@ void CSE_Temporary::script_register(lua_State *L)
 	];
 }
 
-void CSE_Event::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_abstract2(
-			CSE_Event,
-			"cse_event",
-			CSE_Shape,
-			CSE_Abstract
-		)
-	];
-}
