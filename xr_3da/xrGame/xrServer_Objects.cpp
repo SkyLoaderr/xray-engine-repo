@@ -226,11 +226,6 @@ void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
 CSE_Visual::CSE_Visual		   	(LPCSTR name)
 {
 	visual_name					= name;
-#ifdef _EDITOR
-	play_animation				= "$editor";
-	visual						= 0;
-	OnChangeVisual				(0);
-#endif
 }
 
 CSE_Visual::~CSE_Visual			()
@@ -239,65 +234,20 @@ CSE_Visual::~CSE_Visual			()
 
 void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
 {
-//.
 	string_path tmp;
     strcpy						(tmp,name);
     if (strext(tmp))		 	*strext(tmp) = 0;
 	visual_name					= tmp; 
-#ifdef _EDITOR
-	if (load)					OnChangeVisual(0);
-#endif
 }
 
 void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.r_stringZ		(visual_name);
-#ifdef _EDITOR
-	OnChangeVisual				(0);
-#endif
 }
 
 void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_stringZ			(visual_name);
-}
-
-#ifdef _EDITOR
-void CSE_Visual::PlayAnimation 	(LPCSTR name)
-{
-    // play motion if skeleton
-    if (PSkeletonAnimated(visual)){ 
-	    play_animation			= name;
-        CMotionDef				*M = PSkeletonAnimated(visual)->ID_Cycle_Safe(play_animation.c_str());
-        if (M)					PSkeletonAnimated(visual)->PlayCycle(M); 
-    }
-    if (PKinematics(visual))	PKinematics(visual)->CalculateBones();
-/*
-    PSkeletonAnimated(visual)->LL_SetBonesVisible(0);
-    PSkeletonAnimated(visual)->LL_SetBoneVisible(1,TRUE,TRUE);
-    PSkeletonAnimated(visual)->LL_SetBoneRoot(1);
-*/
-//        PSkeletonAnimated(visual)->LL_SetBonesVisible((1<<1)|(1<<2)|(1<<3)|(1<<4)|(1<<5)|(1<<6)|(1<<7)|(1<<8)|(1<<9));
-//        PSkeletonAnimated(visual)->LL_SetBoneRoot(1);
-}
-
-void CSE_Visual::OnChangeVisual	(PropValue* sender)
-{
-	::Render->model_Delete		(visual,TRUE);
-    if (visual_name.size()) {
-        visual					= ::Render->model_Create(visual_name.c_str());
-        PlayAnimation			(play_animation.c_str());
-    }
-//.	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-}
-#endif
-
-void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
-{
-#ifdef _EDITOR
-	ChooseValue *V 				= PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Model"),&visual_name, smGameObject);
-	V->OnChangeEvent.bind		(this,&CSE_Visual::OnChangeVisual);
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -306,10 +256,6 @@ void CSE_Visual::FillProp		(LPCSTR pref, PropItemVec& values)
 CSE_Motion::CSE_Motion			(LPCSTR name)
 {
 	motion_name					= name;
-#ifdef _EDITOR
-	animator					= 0;
-	OnChangeMotion				(0);
-#endif
 }
 
 CSE_Motion::~CSE_Motion			()
@@ -319,50 +265,16 @@ CSE_Motion::~CSE_Motion			()
 void CSE_Motion::set_motion		(LPCSTR name)
 {
 	motion_name					= name;
-#ifdef _EDITOR
-	OnChangeMotion				(0);
-#endif
 }
 
 void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.r_stringZ		(motion_name);
-#ifdef _EDITOR
-	OnChangeMotion				(0);
-#endif
 }
 
 void CSE_Motion::motion_write	(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_stringZ			(motion_name);
-}
-
-#ifdef _EDITOR
-#include "ObjectAnimator.h"
-void CSE_Motion::PlayMotion(LPCSTR name)
-{
-    // play motion if skeleton
-    if (animator) animator->Play(name);
-}
-
-void CSE_Motion::OnChangeMotion	(PropValue* sender)
-{
-	xr_delete					(animator);
-    if (*motion_name) {
-        animator				= xr_new<CObjectAnimator>();
-        animator->Load			(*motion_name);
-        PlayMotion				();
-    }
-	UI->Command					(COMMAND_UPDATE_PROPERTIES);
-}
-#endif
-
-void CSE_Motion::FillProp		(LPCSTR pref, PropItemVec& values)
-{
-#ifdef _EDITOR
-    PropValue					*V = PHelper().CreateChoose(values, PHelper().PrepareKey(pref,"Motion"),&motion_name, smGameAnim);
-    V->OnChangeEvent.bind		(this,&CSE_Motion::OnChangeMotion);
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////
