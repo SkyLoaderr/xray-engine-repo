@@ -230,7 +230,7 @@ public:
 												);
 
 	//	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
-	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
+	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag;if(m_character&&m_character->b_exist)m_character->SetApplyGravity(flag); }
 	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}
 	void				SetEnvironment			( int enviroment,int old_enviroment);
 	void				ApplyImpulse			(const Fvector& dir,const dReal P)										{m_character->ApplyImpulse(dir,P);};
