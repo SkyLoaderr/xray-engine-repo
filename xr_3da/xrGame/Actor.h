@@ -304,6 +304,7 @@ public:
 
 	static bool				isAccelerated			(u32 mstate);
 	bool					CanAccelerate			();
+	bool					CanJump					();
 
 protected:
 	u32						mstate_wishful;	

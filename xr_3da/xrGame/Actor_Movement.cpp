@@ -122,7 +122,8 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		// jump
 		m_fJumpTime				-=	dt;
 
-		if (((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed)
+		if (CanJump() && (mstate_wf&mcJump)/*((mstate_real&mcJump)==0) && (mstate_wf&mcJump) && (m_fJumpTime<=0.f) && !m_bJumpKeyPressed
+			&&*/ )
 		{
 			mstate_real			|=	mcJump;
 			m_bJumpKeyPressed	=	TRUE;
@@ -302,4 +303,12 @@ bool CActor::CanAccelerate			()
 		!m_bZoomAimingMode;
 
 	return can_accel;
+}
+
+bool	CActor::CanJump				()
+{
+	bool can_Jump = ((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
+		&& !m_bJumpKeyPressed &&!m_bZoomAimingMode;
+
+	return can_Jump;
 }
