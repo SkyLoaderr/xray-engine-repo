@@ -11,7 +11,10 @@
 
 CEngineAPI::CEngineAPI()
 {
-
+	hGame			= 0;
+	hRender			= 0;
+	pCreate			= 0;
+	pDestroy		= 0;
 }
 
 CEngineAPI::~CEngineAPI()

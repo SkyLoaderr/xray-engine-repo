@@ -42,11 +42,14 @@ private:
 
 	CGameFont		*pFont;
 public:
+	virtual ~CConsole(){};
 	string64		ConfigFile;
 	BOOL			bVisible;
 	vecCMD			Commands;
 
 	void			AddCommand			(IConsole_Command*);
+	void			RemoveCommand		(IConsole_Command*);
+	void			Reset				();
 
 	void			Show				();
 	void			Hide				();

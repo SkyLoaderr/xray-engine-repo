@@ -27,7 +27,10 @@ public		:
 	  bEmptyArgsHandled	(FALSE)
 	{};
 	virtual ~IConsole_Command()
-	{};
+	{
+		if(Console)
+			Console->RemoveCommand(this);
+	};
 
 	LPCSTR			Name()			{ return cName;	}
 	void			InvalidSyntax() {

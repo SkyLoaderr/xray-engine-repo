@@ -726,21 +726,6 @@
 					Filter="">
 					<File
 						RelativePath=".\FProgressive.cpp">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\FProgressive.h">
@@ -1255,12 +1240,6 @@
 				</File>
 				<File
 					RelativePath=".\xr_ioc_cmd.h">
-				</File>
-				<File
-					RelativePath=".\xr_ioc_wrapper.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_ioc_wrapper.h">
 				</File>
 				<File
 					RelativePath=".\XR_IOConsole.cpp">

@@ -38,6 +38,10 @@ struct _SoundProcessor	: public pureFrame
 ENGINE_API	CApplication*	pApp			= NULL;
 static		HWND			logoWindow		= NULL;
 
+int				doLauncher					();
+ENGINE_API	bool			g_bBenchmark	= false;
+
+// -------------------------------------------
 // startup point
 
 void InitEngine()
@@ -57,8 +61,43 @@ void InitConsole()
 {
 	Console						= xr_new<CConsole>	();
 	Console->Initialize			( );
-	Engine.External.Initialize	( );
+//	Engine.External.Initialize	( );
 }
+
+void InitInput()
+{
+	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
+
+	pInput						= xr_new<CInput>		(bCaptureInput);
+}
+void destroyInput()
+{
+	xr_delete					( pInput		);
+}
+void InitSound()
+{
+	CSound_manager_interface::_create					(u64(Device.m_hWnd));
+}
+void destroySound()
+{
+	CSound_manager_interface::_destroy				( );
+}
+void destroySettings()
+{
+	xr_delete					( pSettings		);
+}
+void destroyConsole()
+{
+	Console->Destroy				( );
+	xr_delete					(Console);
+}
+void destroyEngine()
+{
+	Device.Destroy				( );
+	Engine.Destroy				( );
+}
+
+
 void Startup				( )
 {
 /* --andy
@@ -89,10 +128,12 @@ void Startup				( )
 		Console->ExecuteScript		(Console->ConfigFile);
 	}
 
-	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
-
-	pInput						= xr_new<CInput>		(bCaptureInput);
-	CSound_manager_interface::_create					(u64(Device.m_hWnd));
+	InitInput();
+//	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
+//	pInput						= xr_new<CInput>		(bCaptureInput);
+	
+	InitSound();
+	//CSound_manager_interface::_create					(u64(Device.m_hWnd));
 
 	// ...command line for auto start
 	{
@@ -126,15 +167,27 @@ void Startup				( )
 	Engine.Event.Dump			( );
 
 	// Destroying
-	CSound_manager_interface::_destroy				( );
-	xr_delete					( pInput		);
-	xr_delete					( pSettings		);
+	destroySound();
+//	CSound_manager_interface::_destroy				( );
+	destroyInput();
+//	xr_delete					( pInput		);
+	if(!g_bBenchmark)
+		destroySettings();
+//	xr_delete					( pSettings		);
 
 	LALib.OnDestroy				( );
-	Console->Destroy			( );
-	xr_delete					(Console);
-	Device.Destroy				( );
-	Engine.Destroy				( );
+	
+	if(!g_bBenchmark)
+		destroyConsole();
+	else
+		Console->Reset();
+
+//	Console->Destroy				( );
+//	xr_delete					(Console);
+	destroyEngine();
+//	Device.Destroy				( );
+//	Engine.Destroy				( );
+
 }
 
 static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
@@ -223,25 +276,52 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
-	// test_rtc				();
-
 
 	InitEngine();
 	InitSettings();
 	InitConsole();
-	if (strstr(lpCmdLine,"-launcher ")) 
-	{
-		HMODULE hLauncher	= LoadLibrary	("xrLauncher.dll");
-		if (0==hLauncher)	R_CHK			(GetLastError());
-		typedef int	  launcherFunc	();
-		launcherFunc* pLauncher = (launcherFunc*)GetProcAddress(hLauncher,"RunXRLauncher");
-		Console->Execute("snd_volume_eff 0.3");
-		int res = pLauncher();
-		
-		FreeLibrary(hLauncher);
-	}
-	Startup	 				();
 	
+//	g_bBenchmark = true;
+	if (strstr(lpCmdLine,"-launcher")) 
+	{
+		int l_res = doLauncher();
+		if (l_res != 0)
+			return 0;
+	};
+/*	{
+		InitLauncher();
+		int res = pLauncher(0);
+		FreeLauncher();
+		if(res == 1) // do benchmark
+			g_bBenchmark = true;
+	}
+	if(g_bBenchmark){ //perform benchmark cycle
+			string_path in_file;
+			FS.update_path(in_file,"$local_root$","tmp_benchmark.ini");
+			CInifile ini(in_file);
+			int test_count = ini.line_count("benchmark");
+			LPCSTR test_name,t;
+			ref_str test_command;
+			for(int i=0;i<test_count;++i){
+			ini.r_line( "benchmark", i, &test_name, &t);
+			
+			test_command = ini.r_string_wb("benchmark",test_name);
+			strlwr				(strcpy(Core.Params,*test_command));
+			
+			if(i){
+				ZeroMemory(&HW,sizeof(CHW));
+				InitEngine();
+			}
+
+			Engine.External.Initialize	( );
+			Startup	 				();
+		}
+		Core._destroy			();
+		return 0;
+
+	};*/
+	Engine.External.Initialize	( );
+	Startup	 				();
 	Core._destroy			();
 
 	// check for need to execute something external
@@ -461,4 +541,63 @@ int CApplication::Level_ID(LPCSTR name)
 		if (0==stricmp(buffer,Levels[I].folder))	return int(I);
 	}
 	return -1;
+}
+
+
+//launcher stuff----------------------------
+extern "C"{
+	typedef int	 __cdecl LauncherFunc	(int);
+}
+HMODULE			hLauncher		= NULL;
+LauncherFunc*	pLauncher		= NULL;
+
+void InitLauncher(){
+	if(hLauncher)
+		return;
+	hLauncher	= LoadLibrary	("xrLauncher.dll");
+	if (0==hLauncher)	R_CHK			(GetLastError());
+	pLauncher = (LauncherFunc*)GetProcAddress(hLauncher,"RunXRLauncher");
+};
+
+void FreeLauncher(){
+	if (hLauncher)	{ 
+		FreeLibrary(hLauncher); 
+		hLauncher = NULL; pLauncher = NULL; };
+}
+
+int doLauncher()
+{
+	InitLauncher();
+	int res = pLauncher(0);
+	FreeLauncher();
+	if(res == 1) // do benchmark
+		g_bBenchmark = true;
+
+	if(g_bBenchmark){ //perform benchmark cycle
+			string_path in_file;
+			FS.update_path(in_file,"$local_root$","tmp_benchmark.ini");
+			CInifile ini(in_file);
+			int test_count = ini.line_count("benchmark");
+			LPCSTR test_name,t;
+			shared_str test_command;
+			for(int i=0;i<test_count;++i){
+			ini.r_line( "benchmark", i, &test_name, &t);
+			
+			test_command = ini.r_string_wb("benchmark",test_name);
+			strlwr				(strcpy(Core.Params,*test_command));
+			
+			if(i){
+				ZeroMemory(&HW,sizeof(CHW));
+				InitEngine();
+			}
+
+			Engine.External.Initialize	( );
+			Startup	 				();
+		}
+		Core._destroy			();
+		return 1;
+
+	};
+	return 0;
+
 }

@@ -164,6 +164,7 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 	strcat				(base,"\\");
 
 	// Read headers
+//	RStringVec fv;
 	IReader*	hdr		= A.vfs->open_chunk(1);
 	while (!hdr->eof())
 	{
@@ -176,11 +177,27 @@ void CLocatorAPI::ProcessArchive(const char* _path)
 		u32 size_real	= hdr->r_u32();
 		u32 size_compr	= hdr->r_u32();
 		Register		(full,(u32)vfs,ptr,size_real,size_compr,0);
+/*	
+		//tmp
+		if(ptr)
+			fv.push_back(full);
+*/		
 	}
 	hdr->close			();
 
+
 	// Seek to zero for safety
 	A.vfs->seek		(0);
+/*
+	for(RStringVecIt it=fv.begin();it!=fv.end();++it){
+		IReader* ird = FS.r_open(**it);
+		IWriter* iwr = FS.w_open("$s_dir$",**it);
+
+		iwr->w(ird->pointer(),ird->length());
+		FS.w_close(iwr);
+		FS.r_close(ird);
+	}
+*/
 }
 
 void CLocatorAPI::ProcessOne	(const char* path, void* _F)
@@ -309,7 +326,15 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 			R_ASSERT	(I.second);
 		}
 		r_close			(F);
-	}
+	};
+
+	if(strstr(Core.Params,"-pack ")){
+			string512 pack_name;
+			sscanf					(strstr(Core.Params,"-pack ")+6,"%[^ ] ",pack_name);
+			update_path(pack_name,"$server_root$",pack_name);
+			register_archieve		(pack_name);
+	};
+
 	u32	M2		= Memory.mem_usage();
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 

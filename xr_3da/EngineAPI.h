@@ -25,6 +25,7 @@ typedef DLL_API  DLL_Pure*	  __cdecl Factory_Create	(CLASS_ID	CLS_ID);
 typedef DLL_API  void		  __cdecl Factory_Destroy	(DLL_Pure*	O);
 };
 
+
 class ENGINE_API CEngineAPI
 {
 private:
@@ -33,7 +34,6 @@ private:
 public:
 	Factory_Create*		pCreate;
 	Factory_Destroy*	pDestroy;
-
 	void				Initialize	();
 	void				Destroy		();
 

@@ -68,6 +68,9 @@ void CDemoPlay::stat_Stop()
 	u32	dwTimeTotal		= Device.dwTimeGlobal-dwStartTime;
 
 	Msg("* [DEMO] FPS archivied: %f",float(1000.0 * float(dwFramesTotal)/float(dwTimeTotal)));
+
+	if(g_bBenchmark)
+		Console->Execute("quit");
 }
 
 #define FIX(a) while (a>=m_count) a-=m_count

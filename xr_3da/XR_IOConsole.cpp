@@ -23,7 +23,18 @@ const char *			ioc_prompt	=	">>> ";
 //////////////////////////////////////////////////////////////////////
 void CConsole::AddCommand(IConsole_Command* C)
 {
-	Commands[LPSTR(C->Name())] = C;
+	Commands[C->Name()] = C;
+}
+void CConsole::RemoveCommand(IConsole_Command* C)
+{
+	vecCMD_IT it = Commands.find(C->Name());
+	if(Commands.end()!=it)
+		Commands.erase(it);
+}
+void CConsole::Reset()
+{
+	if(pFont)
+		xr_delete(pFont);
 }
 
 void CConsole::Initialize()
@@ -466,7 +477,6 @@ void CConsole::ExecuteScript(LPCSTR N)
 
 BOOL CConsole::GetBool(LPCSTR cmd, BOOL& val)
 {
-	IConsole_Command::TStatus stat;
 	vecCMD_IT I = Commands.find(cmd);
 	if (I!=Commands.end()) {
 		IConsole_Command* C = I->second;
@@ -478,7 +488,6 @@ BOOL CConsole::GetBool(LPCSTR cmd, BOOL& val)
 
 float CConsole::GetFloat(LPCSTR cmd, float& val, float& min, float& max)
 {
-	IConsole_Command::TStatus stat;
 	vecCMD_IT I = Commands.find(cmd);
 	if (I!=Commands.end()) {
 		IConsole_Command* C = I->second;
@@ -493,7 +502,6 @@ float CConsole::GetFloat(LPCSTR cmd, float& val, float& min, float& max)
 
 int CConsole::GetInteger(LPCSTR cmd, int& val, int& min, int& max)
 {
-	IConsole_Command::TStatus stat;
 	vecCMD_IT I = Commands.find(cmd);
 	if (I!=Commands.end()) {
 		IConsole_Command* C = I->second;

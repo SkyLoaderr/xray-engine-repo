@@ -256,7 +256,7 @@ public:
 	}
 };
 //-----------------------------------------------------------------------
-class CCC_Contrast : public CCC_Float
+class CCC_Contrast  : public CCC_Float
 {
 	float	value;
 public:
@@ -296,6 +296,8 @@ void CCC_Register()
 	CMD1(CCC_Disconnect,"disconnect"			);
 	CMD1(CCC_SaveCFG,	"cfg_save"				);
 	CMD1(CCC_LoadCFG,	"cfg_load"				);
+
+
 #ifdef DEBUG
 	CMD1(CCC_MemStat,	"stat_mem"				);
 
