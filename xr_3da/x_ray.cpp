@@ -306,7 +306,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._destroy			();
 
 	// check for need to execute something external
-	if (strstr(lpCmdLine,"-exec ")) 
+	if (lpCmdLine && strstr(lpCmdLine,"-exec ")) 
 	{
 		char *N = strstr(lpCmdLine,"-exec ")+6;
 		return (int)_execl(N,N,0);
