@@ -1598,6 +1598,12 @@
 								<File
 									RelativePath=".\Ai\ai_monster_state.h">
 								</File>
+								<File
+									RelativePath=".\ai\state.h">
+								</File>
+								<File
+									RelativePath=".\ai\state_inline.h">
+								</File>
 							</Filter>
 							<Filter
 								Name="Movement"
