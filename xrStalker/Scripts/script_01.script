@@ -1,8 +1,12 @@
+is_actor_entered = false
+
 function on_enter(zone,object)
+	is_actor_entered = true
 	printf("Object %s entered zone %s",object:name(),zone:name())
 end
 
 function on_exit(zone,object)
+	is_actor_entered = false
 	printf("Object %s exited zone %s",object:name(),zone:name())
 end
 
@@ -41,7 +45,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() do		
-		if 	event:set_callback(on_enter) == true then
+		if 	is_actor_entered then
 			printf("alarm!")
 			flush()
 			stalker1:script	(false, stalker_01.script_name())
