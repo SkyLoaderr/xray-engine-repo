@@ -80,7 +80,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process ()
 
-    self.process_trade == false then return end
+    if self.process_trade == false then return end
 
     if self.entered == false then
        if self.exit_time ~= 0 and device ():time_global () - self.exit_time > wait_for_clear then
@@ -157,8 +157,7 @@ function Trader:process_idle ()
     if self.npc:action () then return end    
     
     if self.need_interrupt == true then
-       reset_action (self.npc, self.script)
-       
+       reset_action (self.npc, self.script)  
        if self.current.use_start_end == true then
           action (self.npc, anim (self.current.end_anim), cond (cond.anim_end))
        end
