@@ -18,4 +18,5 @@
 #include "..\render.h"
 #include "..\xr_creator.h"
 #include "..\blenders\blender.h"
+#include "..\blenders\blender_clsid.h"
 #include "FStaticRender.h"
