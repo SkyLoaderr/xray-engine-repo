@@ -6,6 +6,7 @@
 #include "3DSound.h"
 #include "xr_sndman.h"
 #include "xr_creator.h"
+#include "xr_object.h"
 
 extern	DWORD			psSoundModel;
 extern	DWORD			psSoundFreq;
@@ -100,7 +101,34 @@ void C3DSound::Update_Occlusion()
 void C3DSound::PropagadeEvent()
 {
 	dwTimeToPropagade		+= soundEventPulse;
+	if (0==owner)			return;
+	if (0==owner->g_type)	return;
 	if (0==pCreator)		return;
+
+	// Calculate range
+	float	limitV			= .05f;
+	float	clip			= (ps.flMinDistance*fVolume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
+	float	range			= _min(ps.flMaxDistance,clip);
+
+	// Query objects
+	pCreator->ObjectSpace.GetNearest	(ps.vPosition,range);
+
+	// Iterate
+	CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
+	CObjectSpace::NL_IT		end	= pCreator->ObjectSpace.q_nearest.end	();
+	for (; it!=end; it++)
+	{
+		CObject*	O		= *it;
+		soundListener* L	= dynamic_cast<soundListener*>(O);
+		if (0==L)			continue;
+
+		// Energy and signal
+		Fvector				Oc;
+		O->clCenter			(Oc);
+		float D				= ps.vPosition.distance_to(Oc);
+		float Power			= (ps.flMinDistance*fVolume)/(psSoundRolloff*D);		// (Dmin*V)/(R*D) 
+		L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
+	}
 }
 
 void C3DSound::OnMove		()
@@ -220,7 +248,7 @@ void C3DSound::SetMinMax	(float min, float max)
 	bNeedUpdate			= true;
 }
 
-void C3DSound::Play			(C3DSound** P, BOOL bLoop, int LoopCount)
+void C3DSound::Play			(sound3D* P, BOOL bLoop, int LoopCount)
 {
 	R_ASSERT	(dwState == stStopped);
 	owner		= P;
@@ -234,7 +262,7 @@ void C3DSound::Stop			()
 	bMustPlay					= false;
 	pBuffer->Stop				();
 	pBuffer->SetCurrentPosition	(0);
-	if (owner)					{ *owner = 0; owner	= 0; }
+	if (owner)					{ owner->feedback = 0; owner	= 0; }
 	ps.dwMode					= DS3DMODE_DISABLE;
 	dwState						= stStopped;
 	bNeedUpdate					= true;

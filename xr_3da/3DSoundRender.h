@@ -45,7 +45,7 @@ public:
 	int							CreateSound			(LPCSTR name, BOOL bCtrlFreq=FALSE, BOOL bNotClip=FALSE );
 	int							CreateSound			(CInifile *pIni, LPCSTR section);
 	void						DeleteSound			(int& hSound);
-	void						Play				(int  hSound, C3DSound** P, BOOL bLoop=false, int iLoopCnt=0);
+	void						Play				(int  hSound, sound3D* P, BOOL bLoop=false, int iLoopCnt=0);
 
 	void						Reload				();
 

@@ -319,7 +319,7 @@ void	CSoundManager::Play3D			( sound3D& S, BOOL bLoop, int iLoopCnt)
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	if (S.feedback)	S.feedback->Rewind	();
-	else			pSoundRender->Play	(S.handle,&S.feedback,bLoop,iLoopCnt);
+	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
 }
 void	CSoundManager::Play3D_Unlimited	( sound3D& S, BOOL bLoop, int iLoopCnt)
 {
@@ -330,7 +330,7 @@ void	CSoundManager::Play3DAtPos		( sound3D& S, const Fvector &pos, BOOL bLoop, i
 {
 	if (!bPresent || S.handle==SND_UNDEFINED) return;
 	if (S.feedback)	S.feedback->Rewind	();
-	else			pSoundRender->Play	(S.handle,&S.feedback,bLoop,iLoopCnt);
+	else			pSoundRender->Play	(S.handle,&S,bLoop,iLoopCnt);
 	S.feedback->SetPosition				(pos);
 }
 void	CSoundManager::Play3DAtPos_Unlimited	( sound3D& S, const Fvector &pos, BOOL bLoop, int iLoopCnt)

@@ -27,7 +27,7 @@ public:
 		stFORCEDWORD	= DWORD(-1)
 	};
 private:
-	C3DSound**				owner;
+	sound3D*				owner;
 
 	float 					fVolume;				// USER
 	float					fBaseVolume;			// CLIPPING
@@ -57,17 +57,17 @@ private:
 
 	DWORD					dwLastTimeActive;
 private:
-	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name, BOOL bCtrlFreq);
-	void					Load					(CInifile *, LPCSTR sect);			// wav+params
-	void					Load					(LPCSTR, BOOL bCtrlFreq=FALSE);		// wav-file
-	void					Load					(const C3DSound *);					// clone
+	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name,	BOOL bCtrlFreq);
+	void					Load					(CInifile *,	LPCSTR sect);				// wav+params
+	void					Load					(LPCSTR,		BOOL bCtrlFreq=FALSE);		// wav-file
+	void					Load					(const C3DSound *);							// clone
 
 	void					PropagadeEvent			();
 	void					internalStopOrComplete	();
 public:
 	BOOL					isPlaying				(void)	{ return (dwState!=stStopped) || bMustPlay; }
 
-	void					Play					(C3DSound** P, BOOL bLoop=false, int lcnt=0);
+	void					Play					(sound3D* P, BOOL bLoop=false, int lcnt=0);
 	void					Rewind					();
 	void					Stop					(void);
 	void					SetPosition				(const Fvector &pos);

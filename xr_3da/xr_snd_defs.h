@@ -18,15 +18,17 @@ struct	sound3D
 {
 	int			handle;
 	C3DSound*	feedback;
-	int			type;
-	sound3D()	{ handle = SND_UNDEFINED; feedback=0; type=0; }
+	int			g_type;
+	CObject*	g_object;
+	sound3D()	{ handle = SND_UNDEFINED; feedback=0; g_type=0; g_object=0; }
 };
 struct	sound2D
 {
 	int			handle;
 	C2DSound*	feedback;
-	int			type;
-	sound2D()	{ handle = SND_UNDEFINED; feedback=0; type=0; }
+	int			g_type;
+	CObject*	g_object;
+	sound2D()	{ handle = SND_UNDEFINED; feedback=0; g_type=0; g_object=0; }
 };
 struct	soundListener
 {

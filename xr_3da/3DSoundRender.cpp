@@ -193,10 +193,10 @@ C3DSound* C3DSoundRender::GetFreeSound(int hSound)
 	return pSnd;
 }
 
-void C3DSoundRender::Play(int hSound, C3DSound** P, BOOL bLoop, int iLoopCnt)
+void C3DSoundRender::Play(int hSound, sound3D* P, BOOL bLoop, int iLoopCnt)
 {
-	*P	= GetFreeSound	(hSound);
-	(*P)->Play			(P, bLoop, iLoopCnt);
+	P->feedback			= GetFreeSound	(hSound);
+	P->feedback->Play	(P, bLoop, iLoopCnt);
 }
 
 void C3DSoundRender::Reload()
