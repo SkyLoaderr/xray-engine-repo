@@ -14,8 +14,6 @@
 
 void CAI_Biting::Think()
 {
-	bool BRITPOP_RULEZ= false;
-	R_ASSERT2(BRITPOP_RULEZ,"Listen to RAIOHEAD");
 	if (!g_Alive())		return;
 	if (getDestroy())	return;
 
