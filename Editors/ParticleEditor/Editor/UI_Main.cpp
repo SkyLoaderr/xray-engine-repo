@@ -24,7 +24,6 @@
 
 #include "itemlist.h"
 
-#include "igame_persistent.h"
 TUI UI;
 
 TUI::TUI()

@@ -6,21 +6,17 @@
 #include "igame_persistent.h"
 #include "Environment.h"
 
-#ifdef _LEVEL_EDITOR
-	#include "ELight.h"
-	#include "scene.h"
-	#include "ui_main.h"
+#ifdef _EDITOR
+	#ifdef _LEVEL_EDITOR
+		#include "scene.h"
+		#include "ui_main.h"
+    #endif
 #else
 	#include "xr_object.h"
 	#include "igame_level.h"
 #endif
 
-
-#ifdef _LEVEL_EDITOR
-	#define FAR_DIST UI.ZFar()
-#else
-	#define FAR_DIST g_pGamePersistent->Environment.Current.far_plane
-#endif
+#define FAR_DIST g_pGamePersistent->Environment.Current.far_plane
 
 #define MAX_Flares	24
 //////////////////////////////////////////////////////////////////////////////
@@ -173,17 +169,11 @@ void CLensFlare::lerp(int a, int b, float f)
 	matEffCamPos.identity();
 	// Calculate our position and direction
 
-#ifdef _LEVEL_EDITOR
-	matEffCamPos.i.set(Device.m_Camera.GetRight());
-	matEffCamPos.j.set(Device.m_Camera.GetNormal());
-	matEffCamPos.k.set(Device.m_Camera.GetDirection());
-	vecPos.set(Device.m_Camera.GetPosition());
-#else
 	matEffCamPos.i.set(Device.vCameraRight);
 	matEffCamPos.j.set(Device.vCameraTop);
 	matEffCamPos.k.set(Device.vCameraDirection);
 	vecPos.set(Device.vCameraPosition);
-#endif
+
 	vecDir.set(0.0f, 0.0f, 1.0f);
 	matEffCamPos.transform_dir(vecDir);
 	vecDir.normalize();
@@ -213,8 +203,12 @@ void CLensFlare::lerp(int a, int b, float f)
 	vecX.normalize();
 	vecY.crossproduct(vecX, vecDir);
 
-#ifdef _LEVEL_EDITOR
-	if ( Scene.RayPickObject(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
+#ifdef _EDITOR
+	#ifdef _LEVEL_EDITOR
+    if (Scene.RayPickObject(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
+    #else
+    if (0)
+    #endif
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 	BOOL		o_enable	= FALSE;
@@ -232,7 +226,7 @@ void CLensFlare::lerp(int a, int b, float f)
 	}
 	clamp( fBlend, 0.0f, 1.0f );
 
-#ifdef _LEVEL_EDITOR
+#ifdef _EDITOR
 #else
 	if (o_main)				o_main->setEnabled	(o_enable);
 #endif

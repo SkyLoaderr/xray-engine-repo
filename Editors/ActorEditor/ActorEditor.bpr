@@ -73,7 +73,11 @@
       Intermediate\UI_MainCommand.obj Intermediate\UI_MainMail.obj 
       Intermediate\ResourceManager_Resources.obj 
       Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
-      Intermediate\SH_Atomic.obj"/>
+      Intermediate\SH_Atomic.obj 
+      Intermediate\Blender_Recorder_StandartBinding.obj 
+      Intermediate\IGame_Persistent.obj Intermediate\DetailModel.obj 
+      Intermediate\Environment.obj Intermediate\xr_efflensflare.obj 
+      Intermediate\Rain.obj"/>
     <RESFILES value="resource.res ActorEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -273,6 +277,12 @@
       <FILE FILENAME="Engine\ResourceManager.cpp" FORMNAME="" UNITNAME="ResourceManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\SH_Atomic.cpp" FORMNAME="" UNITNAME="SH_Atomic" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder_StandartBinding.cpp" FORMNAME="" UNITNAME="Blender_Recorder_StandartBinding" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\IGame_Persistent.cpp" FORMNAME="" UNITNAME="IGame_Persistent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\DetailModel.cpp" FORMNAME="" UNITNAME="DetailModel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Environment.cpp" FORMNAME="" UNITNAME="Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xr_efflensflare.cpp" FORMNAME="" UNITNAME="xr_efflensflare" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Rain.cpp" FORMNAME="" UNITNAME="Rain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -284,7 +294,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=92
+Build=94
 Debug=1
 PreRelease=0
 Special=0
@@ -296,7 +306,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.92
+FileVersion=1.0.2.94
 InternalName=
 LegalCopyright=
 LegalTrademarks=

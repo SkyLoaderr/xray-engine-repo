@@ -7,7 +7,9 @@
 #include "render.h"
 
 #ifdef _EDITOR
-	#include "scene.h"
+	#ifdef _LEVEL_EDITOR
+		#include "scene.h"
+    #endif
 #else
 	#include "igame_level.h"
 	#include "xr_area.h"
@@ -83,17 +85,23 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 void	CEffect_Rain::RayTest	(Item& dest, float height)
 {
 #ifdef _EDITOR
-	SRayPickInfo pinf;
-    pinf.inf.range		= height*2;
-	if (Scene.RayPickObject(dest.P,dest.D,OBJCLASS_SCENEOBJECT,&pinf,0)){
-		dest.fTime_Life	= pinf.inf.range/dest.fSpeed;
-		dest.fTime_Hit	= pinf.inf.range/dest.fSpeed;
-		dest.Phit.mad	(dest.P,dest.D,pinf.inf.range);
-    }else{
-		dest.fTime_Life	= (height*2)/dest.fSpeed;
-		dest.fTime_Hit	= (height*3)/dest.fSpeed;
-		dest.Phit.set	(dest.P);
-    }
+	#ifdef _LEVEL_EDITOR
+        SRayPickInfo pinf;
+        pinf.inf.range		= height*2;
+        if (Scene.RayPickObject(dest.P,dest.D,OBJCLASS_SCENEOBJECT,&pinf,0)){
+            dest.fTime_Life	= pinf.inf.range/dest.fSpeed;
+            dest.fTime_Hit	= pinf.inf.range/dest.fSpeed;
+            dest.Phit.mad	(dest.P,dest.D,pinf.inf.range);
+        }else{
+            dest.fTime_Life	= (height*2)/dest.fSpeed;
+            dest.fTime_Hit	= (height*3)/dest.fSpeed;
+            dest.Phit.set	(dest.P);
+        }
+    #else
+        dest.fTime_Life	= 0.f;
+        dest.fTime_Hit	= 0.f;
+        dest.Phit.set	(dest.P);
+    #endif
 #else
 	Collide::ray_query	RQ;
 	CObject* E = g_pGameLevel->CurrentViewEntity();

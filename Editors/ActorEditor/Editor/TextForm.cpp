@@ -138,6 +138,7 @@ void __fastcall TfrmText::ebLoadClick(TObject *Sender)
         F->r_stringZ	(buf);
         mmText->Text	= buf;
         FS.r_close		(F);
+	    ebOk->Enabled 	= true;
     }
 }
 //---------------------------------------------------------------------------

@@ -125,6 +125,8 @@ CActorTools::CActorTools()
     m_KeyBar			= 0;
     m_Flags.zero		();
     m_EditMode			= emObject;
+    fFogness			= 0.9f;
+    dwFogColor			= 0xffffffff;
 }
 //---------------------------------------------------------------------------
 
@@ -356,37 +358,57 @@ void CActorTools::Clear()
     UI.RedrawScene		();
 }
 
-bool CActorTools::Load(LPCSTR name)
+bool CActorTools::Import(LPCSTR initial, LPCSTR obj_name)
 {
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
 	VERIFY(m_bReady);
-	CEditableObject* O = xr_new<CEditableObject>(name);
-	if (O->Load(name)){
-    	O->m_Flags.set(CEditableObject::eoDynamic,TRUE);
-//    	if (O->m_Flags.is(CEditableObject::eoDynamic))
-        {
-            xr_delete(m_pEditObject);
-            m_pEditObject = O;
-            // delete visual
-            m_RenderObject.Clear();
-            fraLeftBar->SetRenderStyle(false);
+	CEditableObject* O = xr_new<CEditableObject>(obj_name);
+	if (O->Load(full_name.c_str())){
+        O->m_Flags.set(CEditableObject::eoDynamic,TRUE);
+        xr_delete(m_pEditObject);
+        m_pEditObject = O;
+        // delete visual
+        m_RenderObject.Clear();
+        fraLeftBar->SetRenderStyle(false);
 
-            UpdateProperties();
-            return true;
-        }
-//        else{ ELog.DlgMsg(mtError,"Can't load non dynamic object '%s'.",name); }
+        UpdateProperties();
+        return true;
     }else{
-       	ELog.DlgMsg(mtError,"Can't load object file '%s'.",name);
+       	ELog.DlgMsg(mtError,"Can't load object file '%s'.",obj_name);
     }
     xr_delete(O);
 
     return false;
 }
 
-bool CActorTools::Save(LPCSTR name, bool bInternal)
+bool CActorTools::Load(LPCSTR initial, LPCSTR obj_name)
 {
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
+	VERIFY(m_bReady);
+	CEditableObject* O = xr_new<CEditableObject>(obj_name);
+	if (O->Load(full_name.c_str())){
+        xr_delete(m_pEditObject);
+        m_pEditObject = O;
+        // delete visual
+        m_RenderObject.Clear();
+        fraLeftBar->SetRenderStyle(false);
+
+        UpdateProperties();
+        return true;
+    }else{
+       	ELog.DlgMsg(mtError,"Can't load object file '%s'.",obj_name);
+    }
+    xr_delete(O);
+
+    return false;
+}
+
+bool CActorTools::Save(LPCSTR initial, LPCSTR obj_name, bool bInternal)
+{
+    AnsiString full_name = (initial)?FS.update_path(full_name,initial,obj_name):AnsiString(obj_name);
 	VERIFY(m_bReady);
     if (m_pEditObject){
-    	m_pEditObject->SaveObject(name);
+    	m_pEditObject->SaveObject(full_name.c_str());
 		if (!bInternal) m_bObjectModified = false;
         return true;
     }
@@ -642,9 +664,9 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
 
 void CActorTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 {
-	s_fog		= 0.99f*UI.ZFar();
-	e_fog		= UI.ZFar();
-	fog_color	= DEFAULT_CLEARCOLOR;
+    s_fog				= psDeviceFlags.is(rsFog)?(1.0f - fFogness)* 0.85f * UI.ZFar():0.99f*UI.ZFar();
+    e_fog				= psDeviceFlags.is(rsFog)?0.91f * UI.ZFar():UI.ZFar();
+    fog_color 			= dwFogColor;
 }
 
 LPCSTR CActorTools::GetInfo()

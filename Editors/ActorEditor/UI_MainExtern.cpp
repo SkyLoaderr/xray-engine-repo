@@ -26,59 +26,67 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	Command(COMMAND_SAVEAS,(int)fn.c_str());
     }break;
     case COMMAND_SAVEAS:{
-		AnsiString fn = ChangeFileExt(m_LastFileName,".object");
-		if (p1||EFS.GetSaveName("$objects$",fn,NULL,0)){ 
-        	if (p1) fn= (LPCSTR)p1;
-        	bRes=Command(COMMAND_SAVE, (u32)fn.c_str());
-        }else{
-        	bRes=false;
-        }
-        if (bRes){
-			// unlock
-   	        EFS.UnlockFile(0,m_LastFileName);
-        	strcpy(m_LastFileName,fn.c_str());
-        	Command(COMMAND_UPDATE_CAPTION);
-            EFS.LockFile(0,m_LastFileName);
-            AppendRecentFile(m_LastFileName);
+        AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+        bRes 				= false;
+        if(p1||EFS.GetSaveName(_objects_,temp_fn)){
+            if (p1||(1==temp_fn.Pos(FS.get_path(_objects_)->m_Path))){
+                if (!p1) temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path)).LowerCase();
+                bRes=Command(COMMAND_SAVE, (u32)temp_fn.c_str());
+                // unlock
+                EFS.UnlockFile(_objects_,m_LastFileName.c_str());
+                m_LastFileName=temp_fn;
+                Command(COMMAND_UPDATE_CAPTION);
+                EFS.LockFile(_objects_,m_LastFileName.c_str());
+                AppendRecentFile(m_LastFileName.c_str());
+            }else{
+            	ELog.DlgMsg	(mtError,"Invalid file path.");
+            }
         }
     	}break;
 	case COMMAND_SAVE:{
-    	AnsiString fn;
-        if (p1)	fn = (char*)p1;
-        else	fn = m_LastFileName;
-        EFS.UnlockFile(0,m_LastFileName);
+    	AnsiString temp_fn;
+        if (p1)	temp_fn = (char*)p1;
+        else	temp_fn = m_LastFileName;
+        EFS.UnlockFile(_objects_,m_LastFileName.c_str());
         CTimer T;
         T.Start();
-		if (Tools.Save(fn.c_str())){
+		if (Tools.Save(_objects_,temp_fn.c_str())){
             ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
         	Command(COMMAND_UPDATE_CAPTION);
-			AppendRecentFile(fn.c_str());
+			AppendRecentFile(temp_fn.c_str());
         }else{
         	bRes=false;
         }
-        EFS.LockFile(0,m_LastFileName);
+        EFS.LockFile(_objects_,m_LastFileName.c_str());
     	}break;
     case COMMAND_IMPORT:{
-    	AnsiString fn;
-    	if (EFS.GetOpenName("$import$",fn)){
-            if (!Tools.IfModified()){
-                bRes=false;
-                break;
-            }
-			Command( COMMAND_CLEAR );
-            CTimer T;
-            T.Start();
-	    	if (!Tools.Load(fn.c_str())){
-            	bRes=false;
-            	break;
-            }
-			strcpy(m_LastFileName,ExtractFileName(fn).c_str());
-            ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
-			if (Command( COMMAND_SAVEAS )){
-	            EFS.MarkFile(fn.c_str(),true);
-//.			    fraLeftBar->UpdateMotionList();
-            }else{
-            	Command( COMMAND_CLEAR );
+        AnsiString temp_fn;
+        if(EFS.GetOpenName(_import_,temp_fn)){
+            if (1==temp_fn.Pos(FS.get_path(_import_)->m_Path)){
+                temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_import_)->m_Path)).LowerCase();
+                if (!Tools.IfModified()){
+                    bRes=false;
+                    break;
+                }
+                Command( COMMAND_CLEAR );
+                CTimer T;
+                T.Start();
+                if (!Tools.Import(_import_,temp_fn.c_str())){
+                    bRes=false;
+                    break;
+                }
+                m_LastFileName = temp_fn;
+                ELog.Msg(mtInformation,"Object '%s' successfully imported. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+                if (Command( COMMAND_SAVEAS )){
+                	AnsiString mfn;
+                    FS.update_path(mfn,_import_,temp_fn.c_str());
+                    EFS.MarkFile(mfn.c_str(),true);
+    //.			    fraLeftBar->UpdateMotionList();
+                }else{
+                    Command( COMMAND_CLEAR );
+                }
+    		}else{
+            	ELog.DlgMsg	(mtError,"Invalid file path. ");
             }
         }
     	}break;
@@ -86,49 +94,52 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	AnsiString fn;
     	if (EFS.GetSaveName("$game_meshes$",fn))
             if (Tools.ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
-            else			        		    	ELog.DlgMsg(mtError,"Export failed.");
+            else		        		    	ELog.DlgMsg(mtError,"Export failed.");
     	}break;
     case COMMAND_LOAD:{
-    	AnsiString fn;
-        if (p1)	fn = (char*)p1;
-        else	fn = m_LastFileName;
-        if( p1 || EFS.GetOpenName("$objects$", fn ) ){
-            if (!Tools.IfModified()){
-                bRes=false;
-                break;
+        AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+        if( p1 || EFS.GetOpenName( _objects_, temp_fn ) ){
+            if (p1||(1==temp_fn.Pos(FS.get_path(_objects_)->m_Path))){
+                if (!p1) temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_objects_)->m_Path)).LowerCase();
+                if (!Tools.IfModified()){
+                    bRes=false;
+                    break;
+                }
+                if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
+                    bRes=false;
+                    break;
+                }
+                if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
+                    EFS.UnlockFile(_objects_,temp_fn.c_str());
+                }
+                Command( COMMAND_CLEAR );
+                CTimer T;
+                T.Start();                
+                if (!Tools.Load(_objects_,temp_fn.c_str())){
+                    bRes=false;
+                    break;
+                }
+                m_LastFileName = temp_fn;
+                ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+                AppendRecentFile(m_LastFileName.c_str());
+    //.		    fraLeftBar->UpdateMotionList();
+                Command	(COMMAND_UPDATE_CAPTION);
+                Command	(COMMAND_UPDATE_PROPERTIES);
+                // lock
+                EFS.LockFile(_objects_,m_LastFileName.c_str());
+                Tools.UndoClear();
+                Tools.UndoSave();
+    		}else{
+            	ELog.DlgMsg	(mtError,"Invalid file path.");
             }
-            if ((0!=stricmp(fn.c_str(),m_LastFileName))&&EFS.CheckLocking(0,fn.c_str(),false,true)){
-                bRes=false;
-                break;
-            }
-            if ((0==stricmp(fn.c_str(),m_LastFileName))&&EFS.CheckLocking(0,fn.c_str(),true,false)){
-                EFS.UnlockFile(0,fn.c_str());
-            }
-			Command( COMMAND_CLEAR );
-            CTimer T;
-            T.Start();
-	    	if (!Tools.Load(fn.c_str())){
-            	bRes=false;
-            	break;
-            }
-			strcpy(m_LastFileName,fn.c_str());
-            ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
-			AppendRecentFile(m_LastFileName);
-//.		    fraLeftBar->UpdateMotionList();
-        	Command	(COMMAND_UPDATE_CAPTION);
-	        Command	(COMMAND_UPDATE_PROPERTIES);
-			// lock
-			EFS.LockFile(0,m_LastFileName);
-            Tools.UndoClear();
-            Tools.UndoSave();
         }
     	}break;
 	case COMMAND_CLEAR:
 		{
             if (!Tools.IfModified()) return false;
 			// unlock
-			EFS.UnlockFile(0,m_LastFileName);
-			m_LastFileName[0]=0;
+			EFS.UnlockFile(_objects_,m_LastFileName.c_str());
+			m_LastFileName="";
 			Device.m_Camera.Reset();
             Tools.Clear();
 			Command	(COMMAND_UPDATE_CAPTION);
@@ -169,7 +180,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 char* TUI::GetCaption()
 {
-	return GetEditFileName()[0]?GetEditFileName():"noname";
+	return GetEditFileName().IsEmpty()?"noname":GetEditFileName().c_str();
 }
 
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)

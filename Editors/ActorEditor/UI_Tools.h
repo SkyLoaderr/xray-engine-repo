@@ -189,6 +189,9 @@ public:
 	bool 				Undo				();
 	bool 				Redo				();
 public:
+    float 				fFogness;
+    u32					dwFogColor;
+public:
 						CActorTools			();
     virtual 			~CActorTools		();
 
@@ -224,6 +227,7 @@ public:
     void				PauseMotion			();
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
+    void				SetFog				(u32 fog_color, float fogness){dwFogColor=fog_color;fFogness=fogness;}
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
     
@@ -235,8 +239,9 @@ public:
 	void				SetNumRotation		(CCustomObject* p1){;}
 	void				SetNumScale			(CCustomObject* p1){;}
 
-    bool				Load				(LPCSTR name);
-    bool				Save				(LPCSTR name, bool bInternal=false);
+    bool				Import				(LPCSTR path, LPCSTR name);
+    bool				Load				(LPCSTR path, LPCSTR name);
+    bool				Save				(LPCSTR path, LPCSTR name, bool bInternal=false);
     bool				ExportOGF			(LPCSTR name);
     bool				SaveMotions			(LPCSTR name, bool bSelOnly);
     bool				AppendMotion		(LPCSTR fn);

@@ -216,7 +216,7 @@ void ComputeSphere(Fsphere &B, FvectorVec& V)
 	BOOL B2				= SphereValid(V,S2);
 
 	// 3: calc magic-fm
-	Mgc::Sphere _S3		= Mgc::MinSphere(V.size(), (const Mgc::Vector3*) V.begin());
+	Mgc::Sphere _S3 = Mgc::MinSphere(V.size(), (const Mgc::Vector3*) V.begin());
 	Fsphere	S3;
 	S3.P.set			(_S3.Center().x,_S3.Center().y,_S3.Center().z);
 	S3.R				= _S3.Radius();
@@ -349,7 +349,10 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
         for (FaceIt f_it=_faces.begin(); f_it!=_faces.end(); f_it++){
             for (int k=0; k<3; k++){
                 st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
-		        bone_points[sv.bone0].push_back(sv.offs0);       
+                FvectorVec& P 	= bone_points[sv.bone0];
+                bool bFound		= false;
+                for (FvectorIt p_it=P.begin(); p_it!=P.end(); p_it++)  if (p_it->similar(sv.offs0)){ bFound=true; break; }
+                if (!bFound)	P.push_back(sv.offs0);       
 //		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);
             }
         }
@@ -358,7 +361,7 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     BoneVec& lst 	= m_Bones;    
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
     	if (bSelOnly&&!(*b_it)->flags.is(CBone::flSelected)) continue;
-        FvectorVec& positions	= bone_points[b_it-lst.begin()];
+        FvectorVec& positions = bone_points[b_it-lst.begin()];
         ComputeOBB		((*b_it)->shape.box,positions);
         ComputeSphere	((*b_it)->shape.sphere,positions);
         ComputeCylinder	((*b_it)->shape.cylinder,(*b_it)->shape.box,positions);

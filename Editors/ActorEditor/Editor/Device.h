@@ -71,6 +71,7 @@ public:
     Fvector					vCameraPosition;
     Fvector					vCameraDirection;
     Fvector					vCameraTop;
+    Fvector					vCameraRight;
     
 	Fmatrix					mView;
 	Fmatrix 				mProjection;
