@@ -198,7 +198,9 @@ function action_follow:execute ()
     else
        self.object:set_item (object.activate, self.object:best_weapon ())     
     end   
-            
+
+    printf ("FOLLOWER DISTANCE %f", self.a.distance)            
+                
     if self.stage == 0 then 
        if self:check_path () == false then
           self:update_stage_0 ()
