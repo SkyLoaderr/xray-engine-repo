@@ -558,7 +558,7 @@ void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("actors\Different_stalkers\stalker_hood_multiplayer.ogf");
+	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 }
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
@@ -669,7 +669,7 @@ void CSE_ALifeCreatureCrow::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("monsters\rat\rat_1");
+	set_visual					("monsters\\rat\\rat_1");
 	// personal charactersitics
 	fEyeFov						= 120;
 	fEyeRange					= 10;
@@ -812,7 +812,7 @@ bool CSE_ALifeMonsterRat::bfUseful		()
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
 {
-	set_visual					("monsters/zombie/zombie_1");
+	set_visual					("monsters\\zombie\\zombie_1");
 	// personal charactersitics
 	fEyeFov						= 120;
 	fEyeRange					= 30;
@@ -1039,7 +1039,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
-	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife/Known traders"),	m_caKnownCustomers,  sizeof(m_caKnownCustomers), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
+	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	m_caKnownCustomers,  sizeof(m_caKnownCustomers), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
 	V->Owner()->subitem			= 8;
 }
 #endif
