@@ -24,7 +24,7 @@ CGameObject::~CGameObject()
 
 void CGameObject::net_Destroy	()
 {
-	net_Ready									= FALSE;
+	setReady									(FALSE);
 	pCreator->Objects.net_Unregister			(this);
 	pCreator->ObjectSpace.Object_Unregister		(this);
 	Sector_Move									(0);
@@ -37,6 +37,7 @@ void CGameObject::OnEvent(NET_Packet& P, u16 type)
 	case GE_DESTROY:
 		{
 			net_Destroy	();
+			setDestroy	(TRUE);
 		}
 		break;
 	}
@@ -69,9 +70,9 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 
 	// Net params
-	setLocal					(E->s_flags&M_SPAWN_OBJECT_LOCAL);
-	setReady					(TRUE);
-	net_ID						= E->ID;
+	setLocal						(E->s_flags&M_SPAWN_OBJECT_LOCAL);
+	setReady						(TRUE);
+	setID							(E->ID);
 	pCreator->Objects.net_Register	(this);
 
 	// Sector detection

@@ -8,6 +8,7 @@ public:
 	DWORD								shedule_TimeStamp;	// last update global device time
 	float								shedule_PMON;		// performance monitor (microseconds)
 	BOOL								shedule_RT;
+	BOOL								shedule_Locked;
 
 	CSheduled			();
 	virtual ~CSheduled	();

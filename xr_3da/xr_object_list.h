@@ -16,6 +16,7 @@ public:
 	// data
 	vector<CObject*>			objects;
 	map<u32,CObject*>			map_NETID;
+	vector<CObject*>			destroy_queue;
 
 	// methods
 								CObjectList			( );
@@ -31,6 +32,7 @@ public:
 	void						DestroyObject		( CObject*	O		);
 	void						DestroyObject		( u32		ID		);
 
+	void						SingleUpdate		(CObject*	O		);
 	void						OnMove				( );
 
 	void						net_Register		(CObject*	O		);

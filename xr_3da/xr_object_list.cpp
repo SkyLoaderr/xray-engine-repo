@@ -75,13 +75,14 @@ void CObjectList::DestroyObject	( u32 ID )
 	DestroyObject(net_Find(ID));
 }
 
-IC void SingleUpdate			(CObject* O)
+void CObjectList::SingleUpdate	(CObject* O)
 {
 	if (Device.dwFrame != O->dwFrame_UpdateCL)
 	{
 		if (O->H_Parent())		SingleUpdate(O->H_Parent());
 		O->dwFrame_UpdateCL		= Device.dwFrame;
 		O->UpdateCL				();
+		if (O->getDestroy() && !O->shedule_Locked)	destroy_queue.push_back(O);
 	}
 }
 
@@ -92,12 +93,21 @@ void CObjectList::OnMove		()
 	for (OBJ_IT O=objects.begin(); O!=objects.end(); O++) 
 		SingleUpdate(*O);
 	Device.Statistic.UpdateClient.End		();
+
+	// Destroy
+	if (!destroy_queue.empty()) 
+	{
+		for (int it = destroy_queue.size()-1; it>=0; it--)
+			DestroyObject	(destroy_queue[it]);
+		destroy_queue.clear	();
+	}
 }
 
 void CObjectList::net_Register	(CObject* O)
 {
 	map_NETID.insert(make_pair(O->ID(),O));
 }
+
 void CObjectList::net_Unregister(CObject* O)
 {
 	map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());

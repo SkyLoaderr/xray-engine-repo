@@ -12,6 +12,7 @@ CSheduled::CSheduled	()
 	shedule_Max			= 1000;
 	shedule_TimeStamp	= 0;
 	shedule_PMON		= 0;
+	shedule_Locked		= FALSE;
 	shedule_Register	();
 }
 
@@ -154,7 +155,11 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
-		if (T.Object->Ready())		T.Object->Update		(Elapsed);
+		if (T.Object->Ready())		{
+			T.Object->shedule_Locked	= TRUE;
+			T.Object->Update			(Elapsed);
+			T.Object->shedule_Locked	= FALSE;
+		}
 
 		Slice						();
 	}
