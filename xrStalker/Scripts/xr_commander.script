@@ -169,8 +169,7 @@ function action_commander:finalize()
     end
 
     if self.object:alive() then
-        self.object:set_sound_mask( -1 )
-        self.object:set_sound_mask( 0 )
+		stop_play_sound(self.object)
     end
 
     local enemy = self.object:best_enemy()
@@ -461,9 +460,8 @@ function action_commander:exec_alarm_look_after()
                     self.object:add_animation( "poisk_idle_4", true )
                 end
 
-                self.object:set_sound_mask( -1 )
-                self.object:set_sound_mask( 0 )
-
+				stop_play_sound(self.object)
+				
                 if self.drunk then
                     --self.object:play_sound( snd_lost_box_drunk, 1, 0 )
                     xr_sounds.play_sound( self.object, 0, self.a.snd_theme, 1, snd_lost_box_drunk )
@@ -665,8 +663,7 @@ function action_commander:radio()
     table.insert (self.phrases, {namespace = radio_commander, phrase = 25})
     table.insert (self.phrases, {namespace = radio_off,       phrase = 0})
 
-    self.object:set_sound_mask (2147483647)
-    self.object:set_sound_mask (0)
+	stop_play_sound(self.object)
 end
 
 function action_commander:process_radio()

@@ -44,8 +44,7 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
        sub_phrase = sub_phrase - 1
     end
 --    printf ("Sub_phrase %d", sub_phrase)
-    obj:set_sound_mask (-1)
-    obj:set_sound_mask (0)
+	stop_play_sound(obj)
     obj:play_sound (themes[theme][sub_theme][1] + phrase_set - 1, max_delay, min_delay, 1, 0, sub_phrase)
 end
 -----------------------------------------------------------------------------------------------------------------------------------

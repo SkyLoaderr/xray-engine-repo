@@ -361,6 +361,7 @@ function action_follow:recalculate_position ()
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
     if cv_id == self.current_vertex_id then return end
     if cv_id == -1 then cv_id = self.a.leader:level_vertex_id () end
+	stop_play_sound(self.object)
     if self.object:accessible (cv_id) == false then
        cv_id = self.a.leader:level_vertex_id ()
     end  
@@ -373,16 +374,13 @@ end
 function action_follow:update_stage_0 ()
 
 	if self.a.leader_command == leader_speak then
-       self.object:set_sound_mask (-1)
-       self.object:set_sound_mask (0)
+		stop_play_sound(self.object)
        self.a.leader_command = 0
     end   
     
 	if self.a.leader_command == leader_speak_enable then
 	   self.current_phrase = self.current_phrase + 1 
 	   if self.current_phrase >= num_phrases then self.current_phrase = 0 end
-       --self.object:set_sound_mask (2147483647)
-       --self.object:set_sound_mask (0)
        xr_sounds.play_sound (self.object, 0, "commander_patrol", 1, 2, self.current_phrase)
        --self.object:play_sound (soldiers_idle_snd, 1, 0, 1, 0, self.current_phrase)
        self.a.leader_command = 0

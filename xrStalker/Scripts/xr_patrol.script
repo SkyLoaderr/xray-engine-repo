@@ -344,9 +344,7 @@ function action_single_patrol:radio ()
     table.insert (self.phrases, {namespace = radio_commander_end, phrase = math.random (0, 2)})
     table.insert (self.phrases, {namespace = radio_off, phrase = 0})
 
-    self.object:set_sound_mask (-1)
-    self.object:set_sound_mask (0)
-
+	stop_play_sound(self.object)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:check_return ()

@@ -238,11 +238,7 @@ function action_report_soldier:create_report ()
 		table.insert (self.phrases, {namespace = report_soldier_end,     phrase = 0,   our = true})
 	end
 
-    self.object:set_sound_mask (2147483647)
-    self.object:set_sound_mask (0)
-    
-    self.leader:set_sound_mask (2147483647)
-    self.leader:set_sound_mask (0)
+	stop_play_sound(self.object)
     
     self.current_phrase = 1
 end
