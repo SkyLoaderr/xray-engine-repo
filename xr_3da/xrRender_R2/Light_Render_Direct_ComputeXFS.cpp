@@ -63,7 +63,7 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	//float	g_alpha		= 2*rad2deg		(alpha);
 	//float	g_beta		= 2*rad2deg		(atanf(tan_beta));
 	//Msg				("x(%f) : a(%f), b(%f)",x,g_alpha,g_beta);
-	L->X.S.project.build_projection		(L->cone + deg2rad(3.f), 1.f,SMAP_near_plane,L->range+EPS_S);
+	L->X.S.project.build_projection		(L->cone + deg2rad(3.6f), 1.f,SMAP_near_plane,L->range+EPS_S);
 	L->X.S.combine.mul					(L->X.S.project,L->X.S.view);
 }
 
