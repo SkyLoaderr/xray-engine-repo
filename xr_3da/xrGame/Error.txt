@@ -64,8 +64,8 @@ To ALEX-MX:
 -J  глюк с консолью. вылетает на: 
     Msg("[ ACTION_LOOK_DESTINATION ]  :: CurrentTime = [%i] CurYaw = [%f] TargetYaw = [%f]  SoundPos = [%f,%f,%f]", m_dwCurrentTime, pMonster->r_torso_current.yaw, pMonster->r_torso_target.yaw,VPUSH(m_tSound.position));
 
-детальные объекты в редакторе
-- вылет при попытке заменить объектный лист
+ДЕТАЛЬНЫЕ ОБЪЕКТЫ В РЕДАКТОРЕ
+--вылет при попытке заменить объектный лист
 - не меняются параметры объекта в листе
 - компиляция не пошла (возможно устаревший уровень , но не похоже)
 
