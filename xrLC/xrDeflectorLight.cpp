@@ -105,7 +105,7 @@ BOOL ApplyBorders(b_texture &lm, DWORD ref)
 	return bNeedContinue;
 }
 
-float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)
+float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 {
 	DWORD	tris_count  = DB->r_count();
 	float	scale		= 1.f;
@@ -120,6 +120,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)
 			CDB::TRI& clT								= RCAST_Model.get_tris()[rpinf.id];
 			Face* F										= (Face*)(clT.dummy);
 			if (0==F)									continue;
+			if (skip==F)								continue;
 			
 			Shader_xrLC&	SH							= F->Shader();
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
@@ -163,7 +164,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)
 	return scale;
 }
 
-float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)
+float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R, Face* skip)
 {
 	R_ASSERT	(DB);
 	
@@ -181,12 +182,12 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)
 	if (0==DB->r_count()) {
 		return 1;
 	} else {
-		return getLastRP_Scale(DB,L);
+		return getLastRP_Scale(DB,L,skip);
 	}
 	return 0;
 }
 
-void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end)
+void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end, Face* skip)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.direct(P,N,0.01f);
@@ -201,7 +202,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 			if( D <=0 ) continue;
 			
 			// Trace Light
-			float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
+			float scale	= D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f,skip);
 			C.r += scale * L->diffuse.r; 
 			C.g += scale * L->diffuse.g;
 			C.b += scale * L->diffuse.b;
@@ -218,7 +219,7 @@ void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* b
 			
 			// Trace Light
 			float R		= sqrtf(sqD);
-			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
+			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R,skip);
 			float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 			
 			C.r += A * L->diffuse.r;
