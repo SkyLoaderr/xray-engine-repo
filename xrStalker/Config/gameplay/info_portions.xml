@@ -36,6 +36,14 @@
    <info_portion id="ui_pda_jobs_accomplished"></info_portion>
    <info_portion id="ui_pda_jobs_current"></info_portion>
    
+    <info_portion id="ui_pda_jobs">
+		<disable>ui_pda_jobs_hide</disable>
+    </info_portion>
+    <info_portion id="ui_pda_jobs_hide">
+		<disable>ui_pda_jobs</disable>
+    </info_portion>
+
+   
    <info_portion id="ui_pda_contracts"></info_portion>
    
    <info_portion id="ui_pda_diary"></info_portion>
