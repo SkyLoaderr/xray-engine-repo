@@ -44,7 +44,11 @@ element_fracture CPHFracturesHolder::SplitFromEnd(CPHElement* element,u16 fractu
 	shift_pivot.mulB(old_bi.mTransform);
 	/////////////////////////////////////////////
 	float density=element->getDensity();
+	new_element->SetShell(element->PHShell());
+	Fmatrix current_transtform;
+	element->GetGlobalTransformDynamic(&current_transtform);
 	InitNewElement(new_element,shift_pivot,density);
+	new_element->SetTransform(current_transtform);
 
 	dBodyID new_element_body=new_element->get_body();
 	dBodyAddForce(new_element_body,fract_i->m_pos_in_element[0],
@@ -124,9 +128,9 @@ void CPHFracturesHolder::SplitProcess(CPHElement* element,ELEMENT_PAIR_VECTOR &n
 	{
 		if(m_fractures[i].Breaked())
 		{
-			float density = element->getDensity();
+			//float density = element->getDensity();
 			new_elements.push_back(SplitFromEnd(element,i));
-			element->ResetMass(density);
+			//element->ResetMass(density);
 		}
 	}
 

@@ -92,7 +92,25 @@ Fvector CPHGeometryOwner::			get_mc_geoms	(){
 	mc.set(0.f,0.f,0.f);
 	return mc;
 }
+void CPHGeometryOwner::get_mc_kinematics(CKinematics* K,Fvector& mc,float& mass)
+{
 
+	mc.set(0.f,0.f,0.f);
+	mass=0.f;
+	m_volume=0.f;
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
+	for(;i_geom!=e;++i_geom)
+	{
+		CBoneData& data=K->LL_GetData((*i_geom)->bone_id());
+		Fvector add;
+		mass+=data.mass;
+		m_volume+=(*i_geom)->volume();
+		add.set(data.center_of_mass);
+		add.mul(data.mass);
+		mc.add(add);
+	}
+	mc.mul(1.f/mass);
+}
 void CPHGeometryOwner::			calc_volume_data	()
 {
 	m_volume=0.f;

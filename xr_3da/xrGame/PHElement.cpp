@@ -1067,7 +1067,10 @@ CPhysicsShell* CPHElement::PhysicsShell()
 	return dynamic_cast<CPhysicsShell*>(m_shell);
 }
 
-
+CPHShell* CPHElement::PHShell()
+{
+	return (m_shell);
+}
 
 void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 {
@@ -1118,8 +1121,15 @@ void CPHElement::ReAdjustMassPositions(const Fmatrix &shift_pivot,float density)
 	{
 		(*i)->move_local_basis(shift_pivot);
 	}
+	
+	if(m_shell->PKinematics())
+	{
+		float mass;
+		get_mc_kinematics(m_shell->PKinematics(),m_mass_center,mass);
+		calculate_it_data(m_mass_center,mass);
+	}
+	else setDensity(density);
 
-	setDensity(density);
 	dBodySetMass(m_body,&m_mass);
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
