@@ -79,7 +79,6 @@ public:
 	bool							m_bOnline;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
-	shared_str						m_caGroupControl;
 	flags32							m_flags;
 	ALife::_STORY_ID				m_story_id;
 

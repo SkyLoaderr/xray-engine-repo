@@ -181,7 +181,6 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_bDirectControl			= true;
 	m_bALifeControl				= true;
 	m_tNodeID					= u32(-1);
-	m_caGroupControl			= "";
 	m_flags.one					();
 	m_story_id					= INVALID_STORY_ID;
 #ifdef XRGAME_EXPORTS
@@ -224,7 +223,6 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fDistance);
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
-	tNetPacket.w_stringZ		(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
 	tNetPacket.w_stringZ		(m_ini_string);
 	tNetPacket.w				(&m_story_id,sizeof(m_story_id));
@@ -305,8 +303,6 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref, 	items);
 	PHelper().CreateRText		(items,	PrepareKey(pref,*s_name,"Custom data"),&m_ini_string);
-	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
-    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl,	smSpawnItem,	0, (void*)gcs, 16);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),	&m_flags,			flSwitchOffline);
