@@ -11,7 +11,6 @@
 #define WALLMARK_SIZE 0.04f
 
 float CBulletManager::m_fMinBulletSpeed = 3.f;
-u16	  CBulletManager::bullet_material_idx = (u16)-1;
 
 
 SBullet::SBullet()

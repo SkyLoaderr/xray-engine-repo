@@ -114,9 +114,6 @@ public:
 	void Render		();
 
 
-	//default материал для пули и осколков (инициализируется в CLevel::Load)
-	static u16 bullet_material_idx;
-
 protected:
 
 	//функция обработки хитов объектов

@@ -18,7 +18,7 @@ CCartridge::CCartridge()
 	m_buckShot = 1;
 	m_impair = 1.f;
 
-	bullet_material_idx = Level().BulletManager().bullet_material_idx;
+	bullet_material_idx = u16(-1);
 }
 
 void CCartridge::Load(LPCSTR section) 
@@ -34,7 +34,7 @@ void CCartridge::Load(LPCSTR section)
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
 	m_ricochet = true;
-	bullet_material_idx = Level().BulletManager().bullet_material_idx;
+	bullet_material_idx =  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 
 	R_ASSERT(fWallmarkSize>0);
 }

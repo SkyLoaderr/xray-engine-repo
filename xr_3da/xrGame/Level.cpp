@@ -81,10 +81,6 @@ CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 
 	m_pBulletManager			= xr_new<CBulletManager>();
 
-	//----------------------------------------------------
-	//получить материал пули
-	BulletManager().bullet_material_idx   = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
-
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
 	m_bIn_CrPr						= false;
