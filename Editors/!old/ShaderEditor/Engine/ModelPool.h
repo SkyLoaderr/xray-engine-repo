@@ -63,6 +63,9 @@ public:
 	void					DeleteQueue			();
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
+	
+	void					Prefetch			();
+	void					ClearPool			();
 
 	void					dump 				();
 #ifdef _EDITOR    

@@ -18,8 +18,8 @@ private:
 	POOL						map_POOL;
 
 public:
-	void						load				( );
-	void						unload				( );
+	void						prefetch			( );
+	void						clear				( );
 
 	CObject*					create				( LPCSTR	name	);
 	void						destroy				( CObject*	O		);

@@ -173,6 +173,8 @@ public:
 	virtual void					model_Delete			(IRender_Visual* &	V, BOOL bDiscard);
 	virtual void 					model_Delete			(IRender_DetailModel* & F);
 	virtual void					model_Logging			(BOOL bEnable)				{ Models->Logging(bEnable);	}
+	virtual void					models_Prefetch			();
+	virtual void					models_Clear			();
 	
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V);

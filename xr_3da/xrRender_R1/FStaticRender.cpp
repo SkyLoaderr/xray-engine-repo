@@ -133,6 +133,16 @@ IRender_Visual*			CRender::model_CreateParticles	(LPCSTR name)
 	}
 }
 
+void					CRender::models_Prefetch		()
+{
+	Models->Prefetch	();
+}
+
+void					CRender::models_Clear			()
+{
+	Models->ClearPool	();
+}
+
 ref_shader				CRender::getShader				(int id)			{ VERIFY(id<int(Shaders.size()));	return Shaders[id];	}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
 IRender_Sector*			CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}

@@ -15,10 +15,9 @@ IGame_ObjectPool::~IGame_ObjectPool(void)
 
 //#define NEW_PREFETCH_IMPL
 
-void IGame_ObjectPool::load	()
+void IGame_ObjectPool::prefetch	()
 {
 	R_ASSERT			(map_POOL.empty());
-	if (strstr(Core.Params,"-noprefetch"))	return;
 
 	u32	mem_0			= Memory.mem_usage();
 	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
@@ -78,7 +77,7 @@ void IGame_ObjectPool::load	()
 	}
 }
 
-void IGame_ObjectPool::unload	( )
+void IGame_ObjectPool::clear	( )
 {
 	// Clear POOL
 	for (POOL_IT it=map_POOL.begin(); it!=map_POOL.end(); it++)	

@@ -6,6 +6,7 @@
 #ifndef _EDITOR
 #	include "IGame_Level.h"
 #	include "XR_IOConsole.h"
+#	include "Render.h"
 #endif
 
 ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
@@ -73,15 +74,19 @@ void IGame_Persistent::Disconnect	()
 void IGame_Persistent::OnGameStart	()
 {
 #ifndef _EDITOR
-	// prefetch game objects
-	ObjectPool.load					();
+	if (0==strstr(Core.Params,"-noprefetch")){
+		// prefetch game objects
+		ObjectPool.prefetch				();
+		Render->models_Prefetch			();
+	}
 #endif
 }
 
 void IGame_Persistent::OnGameEnd	()
 {
 #ifndef _EDITOR
-	ObjectPool.unload				();
+	ObjectPool.clear				();
+	Render->models_Clear			();
 #endif
 }
 

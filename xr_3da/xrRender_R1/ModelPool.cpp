@@ -352,6 +352,29 @@ void	CModelPool::Discard	(IRender_Visual* &V)
 	V	=	NULL;
 }
 
+void CModelPool::Prefetch()
+{
+	Logging					(FALSE);
+	// prefetch visuals
+	string256 section;
+	strconcat				(section,"prefetch_visuals_",g_pGamePersistent->m_game_params.m_game_type);
+	CInifile::Sect& sect	= pSettings->r_section(section);
+	for (CInifile::SectIt I=sect.begin(); I!=sect.end(); I++)	{
+		CInifile::Item& item= *I;
+		IRender_Visual* V	= Create(item.first.c_str());
+		Delete				(V,FALSE);
+	}
+	Logging					(TRUE);
+}
+
+void CModelPool::ClearPool()
+{
+	POOL_IT	_I			=	Pool.begin();
+	POOL_IT	_E			=	Pool.end();
+	for (;_I!=_E;_I++)	Discard(_I->second);
+	Pool.clear			();
+}
+
 IRender_Visual* CModelPool::CreatePE	(PS::CPEDef* source)
 {
 	PS::CParticleEffect* V	= (PS::CParticleEffect*)Instance_Create(MT_PARTICLE_EFFECT);
