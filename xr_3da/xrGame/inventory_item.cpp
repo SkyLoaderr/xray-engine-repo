@@ -398,8 +398,11 @@ void CInventoryItem::net_Import			(NET_Packet& P)
 	if (NET_IItem.empty() || (NET_IItem.back().dwTimeStamp<N.dwTimeStamp))
 	{
 		long dTime = Level().timeServer() - N.dwTimeStamp;
-		if (dTime < (fixed_step*500)) return;
-		u32 NumSteps = ph_world->CalcNumSteps(dTime);
+		u32 NumSteps = 0;
+		if (dTime < (fixed_step*500))
+			NumSteps = 0;
+		else
+			NumSteps = ph_world->CalcNumSteps(dTime);
 
 		m_bHasUpdate = true;
 		Level().m_bNeed_CrPr = true;
