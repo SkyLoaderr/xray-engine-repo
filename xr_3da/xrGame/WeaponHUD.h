@@ -92,6 +92,7 @@ public:
 	Fvector&			FirePoint		()	{return m_pSharedHudInfo->vFirePoint;}
 	Fvector&			FirePoint2		()	{return m_pSharedHudInfo->vFirePoint2;}
 	Fvector&			ShellPoint		()	{return m_pSharedHudInfo->vShellPoint;}
+	void				SetFirePoint	(const Fvector &fp)			{m_pSharedHudInfo->vFirePoint.set(fp);}
 
 	const Fvector&		ZoomOffset		()	const {return m_fZoomOffset;}
 	float				ZoomRotateX		()	const {return m_fZoomRotateX;}

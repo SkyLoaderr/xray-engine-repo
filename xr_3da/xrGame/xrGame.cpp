@@ -904,7 +904,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Integer,			"skin",						&SkinID,			-1,20);
 		
 		// adjust mode support
-		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 1);
+		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 2);
 		CMD4(CCC_Float,				"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
 
 		// keyboard binding
