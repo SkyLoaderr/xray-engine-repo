@@ -62,12 +62,12 @@ end
 
 -- взятие под контроль скрипта NPC (переход из нулевого состояния)
 function FSM:set_script_control()
-	npc:script(true, self.script_name)
+	self.npc:script(true, self.script_name)
 end
 
 -- отпускание из под контроля скрипта NPC (переход в нулевое состояние)
 function FSM:reset_script_control()
-	npc:script(false, self.script_name)
+	self.npc:script(false, self.script_name)
 end
 
 
