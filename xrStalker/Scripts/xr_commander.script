@@ -68,6 +68,8 @@ local radio_commander     = snd_base + 14
 
 local h2ms = 60 * 60 * 1000
 
+local the_actor
+
 ---------------------------------------------------------------------------------------------------------------------
 -- Эвалуатор свойства "схема командира активна"
 ---------------------------------------------------------------------------------------------------------------------
@@ -208,6 +210,19 @@ end
 
 function action_commander:execute()
     action_base.execute( self )
+
+    if not the_actor then
+        the_actor = level.actor()
+    end
+
+    if the_actor and self.object:see( the_actor ) then
+        local item = the_actor:active_item()
+
+        if item and isWeapon( item ) then
+            self.object:set_relation( game_object.enemy, the_actor )
+            return
+        end
+    end
 
     if self.decision then
         self.decision = false
@@ -364,8 +379,11 @@ function action_commander:exec_walk_random()
 end
 
 function action_commander:actor_has_box()
-    local actor = level.actor()
-    return actor and actor:object( "quest_case_01" )
+    if not the_actor then
+        the_actor = level.actor()
+    end
+
+    return the_actor and the_actor:object( "quest_case_01" )
 end
 
 function action_commander:exec_look_after()
