@@ -61,6 +61,7 @@ public:
 
 	void				phase_scene			();
 	void				phase_smap_direct	();
+	void				phase_smap_point	(u32 pls_phase);
 	void				phase_accumulator	();
 	void				shadow_direct		(u32 dls_phase);
 	void				accum_direct		();
