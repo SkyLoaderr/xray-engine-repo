@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "feel_touch.h"
 #include "xr_creator.h"
+#include "xr_object.h"
 using namespace Feel;
 
 void Touch::feel_touch_update	(Fvector& C, float R)
@@ -15,6 +16,7 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
 	{
 		CObject* O = *it;
+		if (O->getDestroy())	continue;							// Don't touch candidates for destroy
 		if (find(feel_touch.begin(),feel_touch.end(),O) == feel_touch.end())
 		{
 			// new 
@@ -27,7 +29,7 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 	for (int d = 0; d<int(feel_touch.size()); d++)
 	{
 		CObject* O	= feel_touch[d];
-		if (find(n_begin,n_end,O) == n_end)
+		if (O->getDestroy() || (find(n_begin,n_end,O) == n_end))	// Don't touch candidates for destroy
 		{
 			// delete
 			feel_touch_delete		(O);
