@@ -1,3 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: ai_stalker_fire.cpp
+//	Created 	: 25.02.2003
+//  Modified 	: 25.02.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Fire and enemy parameters for monster "Soldier"
+////////////////////////////////////////////////////////////////////////////
+
 #include "stdafx.h"
 #include "ai_stalker.h"
 
