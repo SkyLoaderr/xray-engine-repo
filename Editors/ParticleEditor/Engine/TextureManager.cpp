@@ -143,7 +143,7 @@ SVS*	CShaderManager::_CreateVS		(LPCSTR name)
 		LPD3DXBUFFER				pErrorBuf	= NULL;
 		LPD3DXSHADER_CONSTANTTABLE	pConstants	= NULL;
 		HRESULT						_hr			= S_OK;
-		string64					cname;
+		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".vs"));
 		LPCSTR						target		= NULL;
 
@@ -208,7 +208,7 @@ SPS*	CShaderManager::_CreatePS			(LPCSTR name)
 		}
 
 		// Open file
-		string64					cname;
+		string256					cname;
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,name,".ps"));
 		IReader*					fs			= FS.r_open(cname);
 
