@@ -128,22 +128,14 @@ CBuild::CBuild(b_transfer * L)
 		
 		// load surface if it has an alpha channel or has "implicit lighting" flag
 		BT.pSurface = 0;
-		if (BT.THM.flag&bHasAlpha || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
+		if (BT.THM.HasAlphaChannel() || (BT.THM.flag&EF_IMPLICIT_LIGHTED))	
 		{
 			Msg("- loading: %s",N);
 			// load & flip
 			DWORD		w=0,h=0;
 			BT.pSurface = Surface_Load(N,w,h);
-			if ((BT.dwWidth!=w) || (BT.dwHeight!=h))
-			{
-				Msg	("* ERROR: Surface marked as [%d x %d], actually [%d x %d]",
-					BT.dwWidth,BT.dwHeight,
-					w,h
-					);
-				BT.dwWidth	= w;
-				BT.dwHeight	= h;
-			}
-
+			BT.dwWidth	= w;
+			BT.dwHeight	= h;
 			BT.Vflip	();
 		}
 		
