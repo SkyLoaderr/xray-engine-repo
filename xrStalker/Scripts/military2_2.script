@@ -19,6 +19,7 @@ function main ()
 	for a = 1, table.getn (stalkers), 1 do
 		action (stalkers[a], move (move.standing, move.run, move.line, ways[a]),
 				look (look.path_dir), anim (anim.danger), cond (cond.move_end))
+	end
 
 	while stalkers[1]:action () do wait () end
 
