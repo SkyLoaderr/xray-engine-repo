@@ -109,7 +109,7 @@ void CMonsterDebug::L_Update()
 
 #ifdef DISABLE_MONSTER_DEBUG
 	if (active) return;
-#endif
+#else
 
 	for (u32 i=0; i<_points.size(); i++) {
 		RCache.dbg_DrawAABB(_points[i].pos,_points[i].box_size,_points[i].box_size,_points[i].box_size,_points[i].col);
@@ -125,6 +125,7 @@ void CMonsterDebug::L_Update()
 	for (i=0; i<_lines.size(); i++) {
 		RCache.dbg_DrawLINE(Fidentity,_lines[i].p1,_lines[i].p2,_lines[i].col);		
 	}
+#endif
 }
 
 //-------------------------------------------------------------------------------------
