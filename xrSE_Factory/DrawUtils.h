@@ -13,7 +13,6 @@ public:
     //----------------------------------------------------
     virtual void __stdcall DrawCross			(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, u32 clr, bool bRot45=false)=0;
     virtual void __stdcall DrawCross			(const Fvector& p, float sz, u32 clr, bool bRot45=false)=0;
-    virtual void __stdcall DrawEntity			(u32 clr, ref_shader s)=0;
     virtual void __stdcall DrawFlag				(const Fvector& p, float heading, float height, float sz, float sz_fl, u32 clr, bool bDrawEntity)=0;
     virtual void __stdcall DrawRomboid			(const Fvector& p, float radius, u32 clr)=0;
     virtual void __stdcall DrawJoint			(const Fvector& p, float radius, u32 clr)=0;
@@ -63,10 +62,6 @@ public:
 	virtual void __stdcall DrawAxis				(const Fmatrix& T)=0;
 	virtual void __stdcall DrawObjectAxis	   	(const Fmatrix& T, float sz, bool sel)=0;
 	virtual void __stdcall DrawSelectionRect   	(const Ivector2& m_SelStart, const Ivector2& m_SelEnd)=0;
-
-    virtual void __stdcall DrawPrimitiveL	   	(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle)=0;
-    virtual void __stdcall DrawPrimitiveTL		(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle)=0;
-    virtual void __stdcall DrawPrimitiveLIT		(D3DPRIMITIVETYPE pt, u32 pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle)=0;
 
     virtual void __stdcall DrawText				(const Fvector& pos, LPCSTR text, u32 color=0xFF000000, u32 shadow_color=0xFF909090)=0;
 };
