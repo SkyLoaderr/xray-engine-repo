@@ -172,11 +172,12 @@ bool CDetailPathManager::build_circle_trajectory(
 				*vertex_id	= position.vertex_id;
 			return			(true);
 		}
-		if (vertex_id)// {
+		if (vertex_id)
 			*vertex_id		= position.vertex_id;
 
 		t.position		= ai().level_graph().v3d(position.position);
 		if (vertex_id || (!path->empty() && !path->back().position.similar(t.position))) {
+			VERIFY			(t.velocity != u32(-1));
 			t.vertex_id		= position.vertex_id;
 			path->push_back	(t);
 		}
@@ -212,6 +213,7 @@ bool CDetailPathManager::build_circle_trajectory(
 	cosi				= 1.f;
 
 	for (u32 i=0; i<=n + k; ++i) {
+		VERIFY			(t.velocity != u32(-1));
 		t.position.x	= -sin_apb(sina,cosa,sini,cosi)*position.radius + position.center.x;
 		t.position.z	= cos_apb(sina,cosa,sini,cosi)*position.radius + position.center.y;
 		
@@ -802,7 +804,6 @@ void CDetailPathManager::build_path_via_key_points2(
 {
 	STrajectoryPoint					s,d,p;
 	s 									= start;
-	xr_vector<STravelParamsIndex>		&dest_params = m_start_params;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), B = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for (B != E ? ++I : I; I != E; ++I) {
@@ -815,12 +816,10 @@ void CDetailPathManager::build_path_via_key_points2(
 			VERIFY						(!fis_zero(d.direction.magnitude()));
 			d.direction.normalize		();
 		}
-		else {
+		else
 			d							= dest;
-			dest_params					= finish_params;
-		}
 
-		bool							succeed = compute_path(s,d,&m_path,m_start_params,dest_params,straight_line_index,straight_line_index_negative);
+		bool							succeed = compute_path(s,d,&m_path,m_start_params,last_point ? finish_params : m_start_params,straight_line_index,straight_line_index_negative);
 		if (!succeed) {
 			m_path.clear();
 			return;
