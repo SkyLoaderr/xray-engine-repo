@@ -25,7 +25,7 @@
     <!-------------------------------- Detect1 ----------------------------->
 
     <article id="equipment_items_detect1" name="Detect1" group="Equipment">
-        <ltx>device_atifact_merger</ltx>
+        <ltx>detector_simple</ltx>
         <text>enc_equipment_items_detect1</text>
     </article>
 
