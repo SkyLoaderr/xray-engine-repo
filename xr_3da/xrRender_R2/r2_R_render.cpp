@@ -365,7 +365,7 @@ void CRender::Render		()
 void	CRender::render_indirect			(light* L)
 {
 	light									LIGEN;
-	LIGEN.set_type							(IRender_Light::SPOT);
+	LIGEN.set_type							(IRender_Light::INDIRECT);
 	LIGEN.set_shadow						(false);
 	LIGEN.set_cone							(PI_DIV_2);
 

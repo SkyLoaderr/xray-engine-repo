@@ -102,20 +102,26 @@ void	light::spatial_move			()
 {
 	//spatial.center				= position;
 	//spatial.radius				= range;
-	if (flags.type == IRender_Light::POINT)				{
+	switch(flags.type)	{
+	case IRender_Light::POINT		:	{
 		spatial.center				= position;
 		spatial.radius				= range;
-	} else if (flags.type == IRender_Light::SPOT)		{
-		// minimal enclosing sphere around cone
-		if (cone>=PI_DIV_2)			{
-			// obtused-angled
-			spatial.center.mad			(position,direction,range);
-			spatial.radius				= range * tanf(cone/2.f);
-		} else {
-			// acute-angled
-			spatial.radius				= range / (2.f * _sqr(_cos(cone/2.f)));
-			spatial.center.mad			(position,direction,spatial.radius);
+		} 
+		break;
+	case IRender_Light::REFLECTED	:	
+	case IRender_Light::SPOT		:	{
+			// minimal enclosing sphere around cone
+			if (cone>=PI_DIV_2)			{
+				// obtused-angled
+				spatial.center.mad			(position,direction,range);
+				spatial.radius				= range * tanf(cone/2.f);
+			} else {
+				// acute-angled
+				spatial.radius				= range / (2.f * _sqr(_cos(cone/2.f)));
+				spatial.center.mad			(position,direction,spatial.radius);
+			}
 		}
+		break;
 	}
 	ISpatial::spatial_move		();
 
