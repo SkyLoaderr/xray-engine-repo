@@ -239,7 +239,8 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 				break;
 			}
 			case CLSID_OBJECT_W_BINOCULAR	: {
-				dwCurrentAniSlot = 5;
+//				dwCurrentAniSlot = 5;
+				dwCurrentAniSlot = 1;
 				break;
 			}
 			case CLSID_OBJECT_W_SHOTGUN		: {
