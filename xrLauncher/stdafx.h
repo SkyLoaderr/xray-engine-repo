@@ -17,3 +17,6 @@
 #include "xrLauncher.h"
 
 void convert(System::String* src, char* dst);
+void setCoreParam(LPCSTR str);
+void resetCoreParam(LPCSTR str);
+bool testCoreParam(LPCSTR str);

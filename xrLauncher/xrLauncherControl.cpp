@@ -20,17 +20,19 @@ int	 xrLauncherControl::_Show(int initial_state)
 
 bool xrLauncherControl::isChanged()
 {
-	return SoundChanged();
+	return SoundChanged() || RenderChanged();
 }
 
 void xrLauncherControl::ApplyChanges()
 {
 	ApplySoundPage();
+	ApplyRenderPage();
 }
 
 void xrLauncherControl::Init()
 {
 	InitSoundPage();
+	InitRenderPage();
 }
 
 
@@ -39,6 +41,27 @@ void xrLauncherControl::Init()
 #define SND_ACCEL				"snd_acceleration"
 #define SND_EFX					"snd_efx"
 #define SND_TARGETS				"snd_targets"
+#define SND_RATE				"snd_freq"
+#define SND_MODEL				"snd_model"
+
+void setCBActive(ComboBox* box, LPCSTR str)
+{
+	String* s = new String(str);
+	int idx = box->Items->IndexOf(s);
+	box->SelectedIndex = idx;
+}
+
+LPCSTR getCBActive(ComboBox* box)
+{
+	static string512 buff;
+	ZeroMemory(&buff,sizeof(string512));
+	convert(box->SelectedItem->ToString(),buff);
+	return buff;
+}
+bool testCBActive(ComboBox* box, LPCSTR str)
+{
+	return 0 == box->SelectedItem->ToString()->CompareTo(str);
+}
 
 void xrLauncherControl::InitSoundPage()
 {
@@ -47,56 +70,58 @@ void xrLauncherControl::InitSoundPage()
 	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
 
-	con->GetFloat( SND_VOLUME_EFFECT, fval, fmin, fmax);
-	this->sndVolEffectTrack->set_Minimum(0);
-	this->sndVolEffectTrack->set_Maximum(100);
-	this->sndVolEffectTrack->set_Value((int)(fval*100.0f) );
-
-	con->GetFloat( SND_VOLUME_MUSIC, fval, fmin, fmax);
-	this->sndVolMusicTrack->set_Minimum(0);
-	this->sndVolMusicTrack->set_Maximum(100);
-	this->sndVolMusicTrack->set_Value((int)(fval*100.0f));
-
 	con->GetBool( SND_ACCEL, bval);
-	this->sndAccelCheck->set_Checked(!!bval);
+	sndAccelCheck->set_Checked(!!bval);
 
 	con->GetBool( SND_EFX, bval);
-	this->sndEfxCheck->set_Checked(!!bval);
+	sndEfxCheck->set_Checked(!!bval);
 
 	con->GetInteger( SND_TARGETS, ival, imin, imax);
-	this->sndTargetsUpDown->set_Value(ival);
-	this->sndTargetsUpDown->set_Minimum(imin);
-	this->sndTargetsUpDown->set_Maximum(imax);
+	sndTargetsUpDown->set_Value(ival);
+	sndTargetsUpDown->set_Minimum(imin);
+	sndTargetsUpDown->set_Maximum(imax);
+	
+	setCBActive(soundSampleRateCombo, con->GetToken(SND_RATE));
+	setCBActive(soundQualityCombo, con->GetToken(SND_MODEL) );
+	disableSoundCheck->set_Checked( testCoreParam("-nosound") );
+
 
 }
 
 void xrLauncherControl::ApplySoundPage()
 {
+	if(!SoundChanged())
+		return;
 	string256 buff;
 	int  ival=0, imin=0, imax=0;
 	float  fval=.0f, fmin=.0f, fmax=.0f;
 	int  bval=false;
-
-	ival = this->sndVolEffectTrack->get_Value();
 	CConsole* con = ::Console;
-	sprintf		(buff,"%s %f", SND_VOLUME_EFFECT, (ival==0)?0.0f:ival/100.0f);
-	con->Execute(buff);
 
-	ival = this->sndVolMusicTrack->get_Value();
-	sprintf		(buff,"%s %f", SND_VOLUME_MUSIC, (ival==0)?0.0f:ival/100.0f);
-	con->Execute(buff);
-
-	bval = this->sndAccelCheck->get_Checked();
+	bval = sndAccelCheck->get_Checked();
 	sprintf		(buff,"%s %s",SND_ACCEL,(bval)?"on":"off" );
 	con->Execute(buff);
 
-	bval = this->sndEfxCheck->get_Checked();
+	bval = sndEfxCheck->get_Checked();
 	sprintf		(buff,"%s %s",SND_EFX,(bval)?"on":"off" );
 	con->Execute(buff);
 
-	ival = (int)this->sndTargetsUpDown->get_Value();
+	ival = (int)sndTargetsUpDown->get_Value();
 	sprintf		(buff,"%s %d", SND_TARGETS, ival);
 	con->Execute(buff);
+
+	sprintf		(buff,"%s %s", SND_RATE, getCBActive(soundSampleRateCombo) );
+	con->Execute(buff);
+
+	sprintf		(buff,"%s %s", SND_MODEL, getCBActive(soundQualityCombo));
+	con->Execute(buff);
+
+	if(disableSoundCheck->get_Checked()){
+		setCoreParam(" -nosound");
+	}else{
+		resetCoreParam(" -nosound");
+
+	}
 
 }
 
@@ -107,24 +132,163 @@ bool xrLauncherControl::SoundChanged()
 	int  bval=false;
 	CConsole* con = ::Console;
 
-	con->GetFloat( SND_VOLUME_EFFECT, fval, fmin, fmax);
-	if( fabs(fval-sndVolEffectTrack->get_Value()/100.0f)>0.1)
-		return true;
-
-	con->GetFloat( SND_VOLUME_MUSIC, fval, fmin, fmax);
-	if( fabs(fval-sndVolMusicTrack->get_Value()/100.0f)>0.1)
-		return true;
-
 	con->GetBool( SND_ACCEL, bval);
-	if(!!sndAccelCheck->get_Checked()!=bval)
+	if(!!sndAccelCheck->get_Checked()!=!!bval)
 		return true;
 
 	con->GetBool( SND_EFX, bval);
-	if(!!sndEfxCheck->get_Checked()!=bval)
+	if(!!sndEfxCheck->get_Checked()!=!!bval)
 		return true;
 
 	con->GetInteger( SND_TARGETS, ival, imin, imax);
 	if(ival != sndTargetsUpDown->get_Value())
+		return true;
+
+	if( !testCBActive(soundSampleRateCombo, con->GetToken(SND_RATE)) )
+		return true;
+
+	if( !testCBActive(soundQualityCombo, con->GetToken(SND_MODEL)) )
+		return true;
+
+	if( testCoreParam("-nosound") !=disableSoundCheck->get_Checked() )
+		return true;
+
+	return false;
+}
+
+#define RND_VSYNC				"rs_no_v_sync"
+#define RND_FORCE60				"rs_refresh_60hz"
+#define RND_RASTER				"r__supersample"
+#define RND_TEXTURELOD			"texture_lod"
+
+
+
+void xrLauncherControl::InitRenderPage()
+{
+	int  ival=0, imin=0, imax=0;
+	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  bval=false;
+	CConsole* con = ::Console;
+	string16 sss;
+	if(testCoreParam("-r2"))
+		strcpy(sss,"R2");
+	else
+		strcpy(sss,"R1");
+
+	setCBActive(renderCombo,sss);
+	
+	con->GetBool( RND_VSYNC, bval);
+	vertSyncCheck->set_Checked(!bval);
+
+	con->GetBool( RND_FORCE60, bval);
+	force60HzCheck->set_Checked(!!bval);
+
+	disableDistortionCheck->set_Checked( testCoreParam("-nodistort") );
+
+	con->GetInteger( RND_TEXTURELOD, ival, imin, imax);
+	textureLodTrack->set_Value(ival);
+
+	con->GetInteger( RND_RASTER, ival, imin, imax);
+	rasterTrack->set_Value(ival);
+
+	ditherShadowsCheck->set_Checked( testCoreParam("-sjitter")   );
+	disableDistortionCheck->set_Checked( testCoreParam("-notsh") );
+}
+
+void xrLauncherControl::ApplyRenderPage()
+{
+	string256 buff;
+	int  ival=0, imin=0, imax=0;
+	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  bval=false;
+	CConsole* con = ::Console;
+
+	if(!RenderChanged())
+		return;
+
+	if( testCBActive(renderCombo,"R2") ){
+			// todo: add "-r2" into command line
+			setCoreParam(" -r2");
+	}else{
+			// todo: remove "-r2" from command line, if exists
+			resetCoreParam(" -r2");
+	};
+
+	bval = vertSyncCheck->get_Checked();
+	sprintf		(buff,"%s %s",RND_VSYNC,(!bval)?"on":"off" );
+	con->Execute(buff);
+
+	bval = force60HzCheck->get_Checked();
+	sprintf		(buff,"%s %s",RND_FORCE60,(bval)?"on":"off" );
+	con->Execute(buff);
+
+	ival = textureLodTrack->get_Value();
+	sprintf		(buff,"%s %d", RND_TEXTURELOD, ival);
+	con->Execute(buff);
+
+	ival = rasterTrack->get_Value();
+	sprintf		(buff,"%s %d", RND_RASTER, ival);
+	con->Execute(buff);
+
+	if(disableDistortionCheck->get_Checked()){
+		//add -nodistort
+		setCoreParam(" -nodistort");
+	}else{
+		//remove -nodistort
+		resetCoreParam(" -nodistort");
+	}
+
+	if(ditherShadowsCheck->get_Checked() ){
+		//add -sjitter
+		setCoreParam(" -sjitter");
+	}else{
+		//remove -sjitter
+		resetCoreParam(" -sjitter");
+	};
+
+	if(disableDistortionCheck->get_Checked() ){
+		//add -notsh
+		setCoreParam(" -notsh");
+	}else{
+		//remove -notsh
+		resetCoreParam(" -notsh");
+	};
+
+}
+
+bool xrLauncherControl::RenderChanged()
+{
+	int  ival=0, imin=0, imax=0;
+	float  fval=.0f, fmin=.0f, fmax=.0f;
+	int  bval=false;
+	CConsole* con = ::Console;
+
+	if( ( testCBActive(renderCombo,"R1") && testCoreParam("-r2") ) ||
+		( testCBActive(renderCombo,"R2") && !testCoreParam("-r2"))    )
+			return true;
+	
+	con->GetBool( RND_VSYNC, bval);
+	if(!bval != vertSyncCheck->get_Checked())
+		return true;
+
+	con->GetBool( RND_FORCE60, bval);
+	if(!!bval != force60HzCheck->get_Checked())
+		return true;
+	if(disableDistortionCheck->get_Checked() != testCoreParam("-nodistort") )
+		return true;
+
+	con->GetInteger( RND_TEXTURELOD, ival, imin, imax);
+	if(textureLodTrack->get_Value() != ival)
+		return true;
+
+	con->GetInteger( RND_RASTER, ival, imin, imax);
+	if(rasterTrack->get_Value() != ival)
+		return true;
+
+	if(ditherShadowsCheck->get_Checked() != testCoreParam("-sjitter"))
+		return true;
+
+	if(disableDistortionCheck->get_Checked() != testCoreParam("-notsh"))
 		return true;
 
 	return false;
@@ -150,3 +314,4 @@ System::Void xrLauncherControl::OkButton_Click(System::Object *  sender, System:
 	}else
 		_Close(0);
 }
+

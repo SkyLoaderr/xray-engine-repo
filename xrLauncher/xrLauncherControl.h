@@ -35,6 +35,10 @@ namespace xrLauncher
 	private: void ApplySoundPage();
 	private: bool SoundChanged();
 
+	private: void InitRenderPage();
+	private: void ApplyRenderPage();
+	private: bool RenderChanged();
+
 	public : void _Close(int res);
 	public : int  _Show(int initial_state);
 
@@ -51,7 +55,7 @@ namespace xrLauncher
 	private : int		m_init_state;
 
 	private: System::Windows::Forms::TabControl *  tabControl1;
-	private: System::Windows::Forms::TabPage *  lanPage;
+
 	private: System::Windows::Forms::TabPage *  soundPage;
 	private: System::Windows::Forms::Button *  ApplyButton;
 	private: System::Windows::Forms::Button *  OkButton;
@@ -61,15 +65,37 @@ namespace xrLauncher
 
 
 
-	private: System::Windows::Forms::TrackBar *  sndVolEffectTrack;
-	private: System::Windows::Forms::TrackBar *  sndVolMusicTrack;
+
+
 	private: System::Windows::Forms::CheckBox *  sndAccelCheck;
 	private: System::Windows::Forms::CheckBox *  sndEfxCheck;
 	private: System::Windows::Forms::NumericUpDown *  sndTargetsUpDown;
-	private: System::Windows::Forms::Label *  label1;
-	private: System::Windows::Forms::Label *  label2;
+
+
 	private: System::Windows::Forms::Label *  label3;
 	private: System::Windows::Forms::Panel *  panel1;
+	private: System::Windows::Forms::TabPage *  renderPage;
+	private: System::Windows::Forms::CheckBox *  vertSyncCheck;
+
+
+	private: System::Windows::Forms::Label *  label1;
+
+	private: System::Windows::Forms::CheckBox *  disableDistortionCheck;
+	private: System::Windows::Forms::CheckBox *  disableSoundCheck;
+	private: System::Windows::Forms::CheckBox *  ditherShadowsCheck;
+	private: System::Windows::Forms::CheckBox *  checkBox2;
+	private: System::Windows::Forms::ComboBox *  renderCombo;
+	private: System::Windows::Forms::Label *  label2;
+
+	private: System::Windows::Forms::Label *  label4;
+
+	private: System::Windows::Forms::Label *  label5;
+	private: System::Windows::Forms::ComboBox *  soundSampleRateCombo;
+	private: System::Windows::Forms::Label *  label6;
+	private: System::Windows::Forms::ComboBox *  soundQualityCombo;
+	private: System::Windows::Forms::CheckBox *  force60HzCheck;
+	private: System::Windows::Forms::TrackBar *  textureLodTrack;
+	private: System::Windows::Forms::TrackBar *  rasterTrack;
 
 
 
@@ -97,15 +123,27 @@ namespace xrLauncher
 		{
 			this->tabControl1 = new System::Windows::Forms::TabControl();
 			this->soundPage = new System::Windows::Forms::TabPage();
+			this->label6 = new System::Windows::Forms::Label();
+			this->soundQualityCombo = new System::Windows::Forms::ComboBox();
+			this->label5 = new System::Windows::Forms::Label();
+			this->soundSampleRateCombo = new System::Windows::Forms::ComboBox();
+			this->disableSoundCheck = new System::Windows::Forms::CheckBox();
 			this->label3 = new System::Windows::Forms::Label();
-			this->label2 = new System::Windows::Forms::Label();
-			this->label1 = new System::Windows::Forms::Label();
 			this->sndTargetsUpDown = new System::Windows::Forms::NumericUpDown();
 			this->sndEfxCheck = new System::Windows::Forms::CheckBox();
 			this->sndAccelCheck = new System::Windows::Forms::CheckBox();
-			this->sndVolMusicTrack = new System::Windows::Forms::TrackBar();
-			this->sndVolEffectTrack = new System::Windows::Forms::TrackBar();
-			this->lanPage = new System::Windows::Forms::TabPage();
+			this->renderPage = new System::Windows::Forms::TabPage();
+			this->rasterTrack = new System::Windows::Forms::TrackBar();
+			this->textureLodTrack = new System::Windows::Forms::TrackBar();
+			this->label4 = new System::Windows::Forms::Label();
+			this->label2 = new System::Windows::Forms::Label();
+			this->checkBox2 = new System::Windows::Forms::CheckBox();
+			this->ditherShadowsCheck = new System::Windows::Forms::CheckBox();
+			this->disableDistortionCheck = new System::Windows::Forms::CheckBox();
+			this->label1 = new System::Windows::Forms::Label();
+			this->renderCombo = new System::Windows::Forms::ComboBox();
+			this->force60HzCheck = new System::Windows::Forms::CheckBox();
+			this->vertSyncCheck = new System::Windows::Forms::CheckBox();
 			this->ApplyButton = new System::Windows::Forms::Button();
 			this->OkButton = new System::Windows::Forms::Button();
 			this->CancelButton = new System::Windows::Forms::Button();
@@ -113,15 +151,16 @@ namespace xrLauncher
 			this->tabControl1->SuspendLayout();
 			this->soundPage->SuspendLayout();
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndTargetsUpDown))->BeginInit();
-			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolMusicTrack))->BeginInit();
-			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolEffectTrack))->BeginInit();
+			this->renderPage->SuspendLayout();
+			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->rasterTrack))->BeginInit();
+			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->textureLodTrack))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// tabControl1
 			// 
 			this->tabControl1->Controls->Add(this->soundPage);
-			this->tabControl1->Controls->Add(this->lanPage);
+			this->tabControl1->Controls->Add(this->renderPage);
 			this->tabControl1->Location = System::Drawing::Point(3, 4);
 			this->tabControl1->Name = S"tabControl1";
 			this->tabControl1->SelectedIndex = 0;
@@ -130,54 +169,91 @@ namespace xrLauncher
 			// 
 			// soundPage
 			// 
+			this->soundPage->Controls->Add(this->label6);
+			this->soundPage->Controls->Add(this->soundQualityCombo);
+			this->soundPage->Controls->Add(this->label5);
+			this->soundPage->Controls->Add(this->soundSampleRateCombo);
+			this->soundPage->Controls->Add(this->disableSoundCheck);
 			this->soundPage->Controls->Add(this->label3);
-			this->soundPage->Controls->Add(this->label2);
-			this->soundPage->Controls->Add(this->label1);
 			this->soundPage->Controls->Add(this->sndTargetsUpDown);
 			this->soundPage->Controls->Add(this->sndEfxCheck);
 			this->soundPage->Controls->Add(this->sndAccelCheck);
-			this->soundPage->Controls->Add(this->sndVolMusicTrack);
-			this->soundPage->Controls->Add(this->sndVolEffectTrack);
 			this->soundPage->Location = System::Drawing::Point(4, 22);
 			this->soundPage->Name = S"soundPage";
 			this->soundPage->Size = System::Drawing::Size(357, 246);
 			this->soundPage->TabIndex = 3;
 			this->soundPage->Text = S"Sound";
 			// 
+			// label6
+			// 
+			this->label6->Location = System::Drawing::Point(8, 168);
+			this->label6->Name = S"label6";
+			this->label6->Size = System::Drawing::Size(168, 16);
+			this->label6->TabIndex = 12;
+			this->label6->Text = S"Sound quality";
+			// 
+			// soundQualityCombo
+			// 
+			this->soundQualityCombo->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			System::Object* __mcTemp__1[] = new System::Object*[4];
+			__mcTemp__1[0] = S"Default";
+			__mcTemp__1[1] = S"Normal";
+			__mcTemp__1[2] = S"Light";
+			__mcTemp__1[3] = S"High";
+			this->soundQualityCombo->Items->AddRange(__mcTemp__1);
+			this->soundQualityCombo->Location = System::Drawing::Point(200, 168);
+			this->soundQualityCombo->Name = S"soundQualityCombo";
+			this->soundQualityCombo->Size = System::Drawing::Size(144, 21);
+			this->soundQualityCombo->TabIndex = 11;
+			// 
+			// label5
+			// 
+			this->label5->Location = System::Drawing::Point(10, 109);
+			this->label5->Name = S"label5";
+			this->label5->Size = System::Drawing::Size(168, 16);
+			this->label5->TabIndex = 10;
+			this->label5->Text = S"Sample rate";
+			// 
+			// soundSampleRateCombo
+			// 
+			this->soundSampleRateCombo->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			System::Object* __mcTemp__2[] = new System::Object*[2];
+			__mcTemp__2[0] = S"22khz";
+			__mcTemp__2[1] = S"44khz";
+			this->soundSampleRateCombo->Items->AddRange(__mcTemp__2);
+			this->soundSampleRateCombo->Location = System::Drawing::Point(202, 109);
+			this->soundSampleRateCombo->Name = S"soundSampleRateCombo";
+			this->soundSampleRateCombo->Size = System::Drawing::Size(144, 21);
+			this->soundSampleRateCombo->TabIndex = 9;
+			// 
+			// disableSoundCheck
+			// 
+			this->disableSoundCheck->Location = System::Drawing::Point(8, 136);
+			this->disableSoundCheck->Name = S"disableSoundCheck";
+			this->disableSoundCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->disableSoundCheck->Size = System::Drawing::Size(336, 16);
+			this->disableSoundCheck->TabIndex = 8;
+			this->disableSoundCheck->Text = S"Disable sound";
+			this->disableSoundCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
 			// label3
 			// 
-			this->label3->Location = System::Drawing::Point(8, 160);
+			this->label3->Location = System::Drawing::Point(8, 80);
 			this->label3->Name = S"label3";
 			this->label3->Size = System::Drawing::Size(280, 16);
 			this->label3->TabIndex = 7;
 			this->label3->Text = S"Sound target count";
 			// 
-			// label2
-			// 
-			this->label2->Location = System::Drawing::Point(8, 40);
-			this->label2->Name = S"label2";
-			this->label2->Size = System::Drawing::Size(144, 16);
-			this->label2->TabIndex = 6;
-			this->label2->Text = S"Sound music volume";
-			// 
-			// label1
-			// 
-			this->label1->Location = System::Drawing::Point(8, 16);
-			this->label1->Name = S"label1";
-			this->label1->Size = System::Drawing::Size(144, 16);
-			this->label1->TabIndex = 5;
-			this->label1->Text = S"Sound effect volume";
-			// 
 			// sndTargetsUpDown
 			// 
-			this->sndTargetsUpDown->Location = System::Drawing::Point(304, 160);
+			this->sndTargetsUpDown->Location = System::Drawing::Point(304, 80);
 			this->sndTargetsUpDown->Name = S"sndTargetsUpDown";
 			this->sndTargetsUpDown->Size = System::Drawing::Size(40, 20);
 			this->sndTargetsUpDown->TabIndex = 4;
 			// 
 			// sndEfxCheck
 			// 
-			this->sndEfxCheck->Location = System::Drawing::Point(8, 120);
+			this->sndEfxCheck->Location = System::Drawing::Point(8, 40);
 			this->sndEfxCheck->Name = S"sndEfxCheck";
 			this->sndEfxCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->sndEfxCheck->Size = System::Drawing::Size(336, 16);
@@ -187,7 +263,7 @@ namespace xrLauncher
 			// 
 			// sndAccelCheck
 			// 
-			this->sndAccelCheck->Location = System::Drawing::Point(8, 96);
+			this->sndAccelCheck->Location = System::Drawing::Point(8, 16);
 			this->sndAccelCheck->Name = S"sndAccelCheck";
 			this->sndAccelCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
 			this->sndAccelCheck->Size = System::Drawing::Size(336, 16);
@@ -195,35 +271,137 @@ namespace xrLauncher
 			this->sndAccelCheck->Text = S"Enable sound acceleration";
 			this->sndAccelCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			// 
-			// sndVolMusicTrack
+			// renderPage
 			// 
-			this->sndVolMusicTrack->AutoSize = false;
-			this->sndVolMusicTrack->LargeChange = 1;
-			this->sndVolMusicTrack->Location = System::Drawing::Point(200, 40);
-			this->sndVolMusicTrack->Name = S"sndVolMusicTrack";
-			this->sndVolMusicTrack->Size = System::Drawing::Size(152, 16);
-			this->sndVolMusicTrack->TabIndex = 1;
-			this->sndVolMusicTrack->TabStop = false;
-			this->sndVolMusicTrack->TickStyle = System::Windows::Forms::TickStyle::None;
+			this->renderPage->Controls->Add(this->rasterTrack);
+			this->renderPage->Controls->Add(this->textureLodTrack);
+			this->renderPage->Controls->Add(this->label4);
+			this->renderPage->Controls->Add(this->label2);
+			this->renderPage->Controls->Add(this->checkBox2);
+			this->renderPage->Controls->Add(this->ditherShadowsCheck);
+			this->renderPage->Controls->Add(this->disableDistortionCheck);
+			this->renderPage->Controls->Add(this->label1);
+			this->renderPage->Controls->Add(this->renderCombo);
+			this->renderPage->Controls->Add(this->force60HzCheck);
+			this->renderPage->Controls->Add(this->vertSyncCheck);
+			this->renderPage->Location = System::Drawing::Point(4, 22);
+			this->renderPage->Name = S"renderPage";
+			this->renderPage->Size = System::Drawing::Size(357, 246);
+			this->renderPage->TabIndex = 2;
+			this->renderPage->Text = S"Render";
 			// 
-			// sndVolEffectTrack
+			// rasterTrack
 			// 
-			this->sndVolEffectTrack->AutoSize = false;
-			this->sndVolEffectTrack->LargeChange = 1;
-			this->sndVolEffectTrack->Location = System::Drawing::Point(200, 16);
-			this->sndVolEffectTrack->Name = S"sndVolEffectTrack";
-			this->sndVolEffectTrack->Size = System::Drawing::Size(152, 16);
-			this->sndVolEffectTrack->TabIndex = 0;
-			this->sndVolEffectTrack->TabStop = false;
-			this->sndVolEffectTrack->TickStyle = System::Windows::Forms::TickStyle::None;
+			this->rasterTrack->AutoSize = false;
+			this->rasterTrack->Enabled = false;
+			this->rasterTrack->LargeChange = 1;
+			this->rasterTrack->Location = System::Drawing::Point(208, 176);
+			this->rasterTrack->Maximum = 4;
+			this->rasterTrack->Minimum = 1;
+			this->rasterTrack->Name = S"rasterTrack";
+			this->rasterTrack->Size = System::Drawing::Size(136, 16);
+			this->rasterTrack->TabIndex = 17;
+			this->rasterTrack->TickStyle = System::Windows::Forms::TickStyle::None;
+			this->rasterTrack->Value = 1;
 			// 
-			// lanPage
+			// textureLodTrack
 			// 
-			this->lanPage->Location = System::Drawing::Point(4, 22);
-			this->lanPage->Name = S"lanPage";
-			this->lanPage->Size = System::Drawing::Size(357, 246);
-			this->lanPage->TabIndex = 2;
-			this->lanPage->Text = S"LAN";
+			this->textureLodTrack->AutoSize = false;
+			this->textureLodTrack->LargeChange = 1;
+			this->textureLodTrack->Location = System::Drawing::Point(208, 104);
+			this->textureLodTrack->Maximum = 3;
+			this->textureLodTrack->Name = S"textureLodTrack";
+			this->textureLodTrack->Size = System::Drawing::Size(136, 16);
+			this->textureLodTrack->TabIndex = 16;
+			this->textureLodTrack->TickStyle = System::Windows::Forms::TickStyle::None;
+			// 
+			// label4
+			// 
+			this->label4->Location = System::Drawing::Point(10, 96);
+			this->label4->Name = S"label4";
+			this->label4->Size = System::Drawing::Size(168, 16);
+			this->label4->TabIndex = 15;
+			this->label4->Text = S"Texture quality";
+			// 
+			// label2
+			// 
+			this->label2->Location = System::Drawing::Point(10, 176);
+			this->label2->Name = S"label2";
+			this->label2->Size = System::Drawing::Size(168, 16);
+			this->label2->TabIndex = 13;
+			this->label2->Text = S"Rasterization quality. R1 only";
+			// 
+			// checkBox2
+			// 
+			this->checkBox2->Location = System::Drawing::Point(8, 224);
+			this->checkBox2->Name = S"checkBox2";
+			this->checkBox2->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->checkBox2->Size = System::Drawing::Size(336, 16);
+			this->checkBox2->TabIndex = 11;
+			this->checkBox2->Text = S"Disable shadows from transluent surfaces. R2 only";
+			this->checkBox2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
+			// ditherShadowsCheck
+			// 
+			this->ditherShadowsCheck->Location = System::Drawing::Point(8, 200);
+			this->ditherShadowsCheck->Name = S"ditherShadowsCheck";
+			this->ditherShadowsCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->ditherShadowsCheck->Size = System::Drawing::Size(336, 16);
+			this->ditherShadowsCheck->TabIndex = 10;
+			this->ditherShadowsCheck->Text = S"Dither shadows. R2 only";
+			this->ditherShadowsCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
+			// disableDistortionCheck
+			// 
+			this->disableDistortionCheck->Location = System::Drawing::Point(8, 75);
+			this->disableDistortionCheck->Name = S"disableDistortionCheck";
+			this->disableDistortionCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->disableDistortionCheck->Size = System::Drawing::Size(336, 16);
+			this->disableDistortionCheck->TabIndex = 9;
+			this->disableDistortionCheck->Text = S"Disable screen distortion effect";
+			this->disableDistortionCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
+			// label1
+			// 
+			this->label1->Location = System::Drawing::Point(8, 8);
+			this->label1->Name = S"label1";
+			this->label1->Size = System::Drawing::Size(168, 16);
+			this->label1->TabIndex = 7;
+			this->label1->Text = S"Renderer";
+			this->label1->Click += new System::EventHandler(this, label1_Click);
+			// 
+			// renderCombo
+			// 
+			this->renderCombo->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			System::Object* __mcTemp__3[] = new System::Object*[2];
+			__mcTemp__3[0] = S"R1";
+			__mcTemp__3[1] = S"R2";
+			this->renderCombo->Items->AddRange(__mcTemp__3);
+			this->renderCombo->Location = System::Drawing::Point(200, 8);
+			this->renderCombo->Name = S"renderCombo";
+			this->renderCombo->Size = System::Drawing::Size(144, 21);
+			this->renderCombo->TabIndex = 6;
+			this->renderCombo->SelectedIndexChanged += new System::EventHandler(this, qualityComboBox_SelectedIndexChanged);
+			// 
+			// force60HzCheck
+			// 
+			this->force60HzCheck->Location = System::Drawing::Point(8, 54);
+			this->force60HzCheck->Name = S"force60HzCheck";
+			this->force60HzCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->force60HzCheck->Size = System::Drawing::Size(336, 16);
+			this->force60HzCheck->TabIndex = 5;
+			this->force60HzCheck->Text = S"Force 60Hz refresh-rate";
+			this->force60HzCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
+			// 
+			// vertSyncCheck
+			// 
+			this->vertSyncCheck->Location = System::Drawing::Point(8, 35);
+			this->vertSyncCheck->Name = S"vertSyncCheck";
+			this->vertSyncCheck->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
+			this->vertSyncCheck->Size = System::Drawing::Size(336, 16);
+			this->vertSyncCheck->TabIndex = 4;
+			this->vertSyncCheck->Text = S"Vertival syncronisation";
+			this->vertSyncCheck->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			// 
 			// ApplyButton
 			// 
@@ -285,8 +463,9 @@ namespace xrLauncher
 			this->tabControl1->ResumeLayout(false);
 			this->soundPage->ResumeLayout(false);
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndTargetsUpDown))->EndInit();
-			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolMusicTrack))->EndInit();
-			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolEffectTrack))->EndInit();
+			this->renderPage->ResumeLayout(false);
+			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->rasterTrack))->EndInit();
+			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->textureLodTrack))->EndInit();
 			this->panel1->ResumeLayout(false);
 			this->ResumeLayout(false);
 
@@ -303,6 +482,14 @@ private: System::Void CancelButton_Click(System::Object *  sender, System::Event
 private: System::Void OkButton_Click(System::Object *  sender, System::EventArgs *  e);
 
 private: System::Void panel1_Paint(System::Object *  sender, System::Windows::Forms::PaintEventArgs *  e)
+		 {
+		 }
+
+private: System::Void label1_Click(System::Object *  sender, System::EventArgs *  e)
+		 {
+		 }
+
+private: System::Void qualityComboBox_SelectedIndexChanged(System::Object *  sender, System::EventArgs *  e)
 		 {
 		 }
 

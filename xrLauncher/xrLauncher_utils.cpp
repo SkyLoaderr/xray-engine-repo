@@ -60,3 +60,32 @@ void convert(System::String* src, char* dst)
 	for(int i=0; i< src->Length; ++i)
 		dst[i] = (char)src->get_Chars(i);
 }
+
+void setCoreParam(LPCSTR str)
+{
+	string1024 new_param;
+	strconcat(new_param,str,Core.Params);
+	strcat(Core.Params,new_param);
+}
+
+void resetCoreParam(LPCSTR str)
+{
+	char* c = strstr(Core.Params,str);
+	if(!c)
+		return;
+
+	int len = xr_strlen(str);
+	int core_len = xr_strlen(Core.Params);
+	int start = c-Core.Params;
+	string1024 new_param;
+	strncpy(new_param,Core.Params,start);
+
+	strcpy(new_param+start,Core.Params+start+len);
+
+	strcpy(Core.Params,new_param);
+}
+
+bool testCoreParam(LPCSTR str)
+{
+	return !!strstr(Core.Params,str);
+}
