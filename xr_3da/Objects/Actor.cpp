@@ -510,7 +510,7 @@ void CActor::Update	(DWORD DT)
 			Level().Cameras.AddEffector(pCamBobbing);
 		}
 		pCamBobbing->SetState(mstate_real);
-		cam_Update	(dt,Weapons->isZoomed());
+		cam_Update	(dt,Weapons->getZoomFactor());
 	} else {
 		if (pCamBobbing){ Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0; }
 	}

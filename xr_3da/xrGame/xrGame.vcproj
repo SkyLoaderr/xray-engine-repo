@@ -521,10 +521,10 @@
 					Name="Binocular"
 					Filter="">
 					<File
-						RelativePath="WeaponBinocular.cpp">
+						RelativePath="WeaponBinoculars.cpp">
 					</File>
 					<File
-						RelativePath="WeaponBinocular.h">
+						RelativePath="WeaponBinoculars.h">
 					</File>
 				</Filter>
 			</Filter>

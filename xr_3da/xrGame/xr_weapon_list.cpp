@@ -133,11 +133,15 @@ BOOL CWeaponList::ActivateWeaponID(int id)
 
 void CWeaponList::Zoom(BOOL bZoom)
 {
-	if (bZoom)	{
-		CWeapon*	W = ActiveWeapon();
-		if (W && W->HasOpticalAim())	m_bZoomed = TRUE;
-	} else {
-		m_bZoomed	= FALSE;
+	CWeapon*	W = ActiveWeapon();
+	if (W && W->HasOpticalAim()){
+		if (bZoom)	{
+			m_bZoomed	= TRUE;
+			W->OnZoomIn	();
+		} else {
+			m_bZoomed	= FALSE;
+			W->OnZoomOut();
+		}
 	}
 }
 void CWeaponList::Reload()

@@ -90,7 +90,6 @@ protected:
 	float			light_lifetime;
 	DWORD			light_frame;
 	float			light_time;
-
 protected:
 	void			Light_Start		();
 	void			Light_Render	(Fvector& P);
@@ -112,6 +111,8 @@ public:
 	virtual void	OnAnimationEnd	()			{};
 	virtual void	OnHide			()			{};
 	virtual void	OnShow			()			{};
+	virtual void	OnZoomIn		()			{};
+	virtual void	OnZoomOut		()			{};
 public:
 					CWeapon			(LPCSTR name);
 	virtual			~CWeapon		();
@@ -135,6 +136,7 @@ public:
 	IC BOOL			IsVisible		()				{ return bVisible;							}	// Weapon change occur only after visibility change
 	IC BOOL			IsUpdating		()				{ return bWorking || bPending || bVisible;	}	// Does weapon need's update?
 	virtual BOOL	HasOpticalAim	()				{ return FALSE; }
+	virtual float	GetZoomFactor	()				{ return DEFAULT_FOV; }
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);

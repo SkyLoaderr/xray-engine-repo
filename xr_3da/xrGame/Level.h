@@ -16,6 +16,8 @@
 
 class CHUDManager;
 
+#define DEFAULT_FOV 90.f
+
 const int maxGroups				= 32;
 class CSquad
 {

@@ -9,8 +9,11 @@ class CWeaponBinoculars: public CWeapon
 private:
 	typedef CWeapon inherited;
 protected:
+	float			fMaxZoomFactor;
 	// Media :: sounds
-	sound			sndIdle;
+	sound			sndZoomIn;
+	sound			sndZoomOut;
+	sound			sndGyro;
 	sound			sndShow;
 	sound			sndHide;
 	// HUD :: Animations
@@ -18,14 +21,17 @@ protected:
 	MotionSVec		mhud_hide;
 	MotionSVec		mhud_show;
 
+	DWORD			dwFP_Frame;
 	DWORD			dwXF_Frame;
 
-	virtual void	UpdateFP		(BOOL bHUD){;}
+	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);
 protected:
 	enum EState
 	{
 		eIdle,
+		eZoomIn,
+		eZoomOut,
 		eShowing,
 		eHiding
 	};
@@ -35,6 +41,8 @@ protected:
 	virtual void	switch2_Showing	(BOOL bHUD);
 	virtual void	OnShow			();
 	virtual void	OnHide			();
+	virtual void	OnZoomIn		();
+	virtual void	OnZoomOut		();
 	virtual void	OnAnimationEnd	();
 public:
 					CWeaponBinoculars(); 
@@ -47,6 +55,8 @@ public:
 
 	virtual void	Hide			();
 	virtual void	Show			();
+
+	virtual float	GetZoomFactor	()		{ return fMaxZoomFactor; }
 };
 
 #endif //__XR_WEAPON_BINOCULAR_H__

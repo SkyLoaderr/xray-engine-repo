@@ -18,8 +18,6 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 
-#define DEFAULT_FOV 90.f
-
 class CActor: public CEntityAlive, public pureRender
 {
 private:
@@ -161,7 +159,7 @@ private:
 	void					g_SetAnimation			(DWORD mstate_rl);
 
 	void					cam_Set					(EActorCameras style);
-	void					cam_Update				(float dt, BOOL bZoom);
+	void					cam_Update				(float dt, float fFOV);
 
 public:
 							CActor					( );

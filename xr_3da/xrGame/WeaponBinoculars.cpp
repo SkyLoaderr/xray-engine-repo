@@ -13,10 +13,16 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponBinoculars::CWeaponBinoculars() : CWeapon("BINOCULARS")
 {
+	fMaxZoomFactor		= 35.f;
 }
 
 CWeaponBinoculars::~CWeaponBinoculars()
 {
+	SoundDestroy		(sndShow		);
+	SoundDestroy		(sndHide		);
+	SoundDestroy		(sndGyro		);
+	SoundDestroy		(sndZoomIn		);
+	SoundDestroy		(sndZoomOut		);
 }
 
 void CWeaponBinoculars::Load(CInifile* ini, const char* section)
@@ -35,6 +41,8 @@ void CWeaponBinoculars::Load(CInifile* ini, const char* section)
 	pos					= ini->ReadVECTOR(section,"position");
 	ypr					= ini->ReadVECTOR(section,"orientation");
 	ypr.mul				(PI/180.f);
+
+	fMaxZoomFactor		= ini->ReadFLOAT	(section,"max_zoom_factor");
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
@@ -57,7 +65,10 @@ void CWeaponBinoculars::Load(CInifile* ini, const char* section)
 	// Sounds
 	SoundCreate			(sndShow,		"draw");
 	SoundCreate			(sndHide,		"holster");
-	SoundCreate			(sndIdle,		"idle");
+	SoundCreate			(sndGyro,		"gyro");
+	SoundCreate			(sndZoomIn,		"zoomin");
+	SoundCreate			(sndZoomOut,	"zoomout");
+	
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	animGet				(mhud_idle,		"idle");
@@ -90,6 +101,44 @@ void CWeaponBinoculars::UpdateXForm(BOOL bHUDView)
 			mRes.set		(R,N,D,mR.c);
 			mRes.mulA_43	(H_Parent()->clXFORM());
 			UpdatePosition	(mRes);
+		}
+	}
+}
+
+void CWeaponBinoculars::UpdateFP		(BOOL bHUDView)
+{
+	if (Device.dwFrame!=dwFP_Frame) 
+	{
+		dwFP_Frame = Device.dwFrame;
+
+		UpdateXForm		(bHUDView);
+
+		if (bHUDView)	
+		{
+			// 1st person view - skeletoned
+			CKinematics* V			= PKinematics(m_pHUD->Visual());
+			V->Calculate			();
+
+			// fire point&direction
+			Fmatrix& fire_mat		= V->LL_GetTransform(m_pHUD->iFireBone);
+			Fmatrix& parent			= m_pHUD->Transform	();
+			Fvector& fp				= m_pHUD->vFirePoint;
+			Fvector& sp				= m_pHUD->vShellPoint;
+			fire_mat.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastFP);
+			fire_mat.transform_tiny	(vLastSP,sp);
+			parent.transform_tiny	(vLastSP);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
+		} else {
+			// 3rd person
+			Fmatrix& parent			= svTransform;
+			Fvector& fp				= vFirePoint;
+			Fvector& sp				= vShellPoint;
+			parent.transform_tiny	(vLastFP,fp);
+			parent.transform_tiny	(vLastSP,sp);
+			vLastFD.set				(0.f,0.f,1.f);
+			parent.transform_dir	(vLastFD);
 		}
 	}
 }
@@ -139,15 +188,18 @@ void CWeaponBinoculars::Update			(float dt, BOOL bHUDView)
 	bPending			= FALSE;
 	
 	// sound fire loop
-//	UpdateFP					(bHUDView);
+	UpdateFP					(bHUDView);
 	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
 	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
+	if (sndGyro.feedback)		sndGyro.feedback->SetPosition		(vLastFP);
+	if (sndZoomIn.feedback)		sndZoomIn.feedback->SetPosition		(vLastFP);
+	if (sndZoomOut.feedback)	sndZoomOut.feedback->SetPosition	(vLastFP);
 }
-void CWeaponBinoculars::Hide		()
+void CWeaponBinoculars::Hide	()
 {
 	inherited::Hide				();
 }
-void CWeaponBinoculars::Show		()
+void CWeaponBinoculars::Show	()
 {
 	inherited::Show				();
 }
@@ -158,6 +210,18 @@ void CWeaponBinoculars::OnShow	()
 void CWeaponBinoculars::OnHide	()
 {
 	st_target	= eHiding;
+}
+void CWeaponBinoculars::OnZoomIn()
+{
+	inherited::OnZoomIn			();
+	pSounds->PlayAtPos			(sndZoomIn,H_Root(),vLastFP);
+	pSounds->PlayAtPos			(sndGyro,H_Root(),vLastFP,true);
+}
+void CWeaponBinoculars::OnZoomOut()
+{
+	inherited::OnZoomOut();
+	pSounds->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
+	if (sndGyro.feedback)		sndGyro.feedback->Stop();
 }
 void CWeaponBinoculars::OnAnimationEnd()
 {

@@ -10,7 +10,7 @@ void CActor::cam_Set	(EActorCameras style)
 	cameras[cam_active]->OnActivate(old_cam);
 }
 
-void CActor::cam_Update(float dt, BOOL bZoom)
+void CActor::cam_Update(float dt, float fFOV)
 {
 	Fvector point, dangle;
 	
@@ -49,5 +49,5 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 	C->Update					(point,dangle);
 	pCreator->Cameras.Update	(C);
 	// ::Render.Target.set_gray	(cam_gray);
-	C->f_fov					= bZoom?15.f:DEFAULT_FOV;
+	C->f_fov					= fFOV;
 }
