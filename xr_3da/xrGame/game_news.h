@@ -39,11 +39,11 @@ struct GAME_NEWS_DATA: public IPureSerializeObject
 	LPCSTR texture_name;
 	int x1, y1, x2, y2;
 
-	ref_str FullText();
+	LPCSTR FullText();
 
 private:
 	//полный текст новостей, формируется при первом обращении
-	ref_str full_news_text;
+	std::string full_news_text;
 
 	// Структурка описывающая ньюс
 	typedef struct tagNewsTemplate

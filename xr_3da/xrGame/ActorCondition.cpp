@@ -14,9 +14,9 @@ CActorCondition::~CActorCondition(void)
 {
 }
 
-void CActorCondition::Load(LPCSTR section)
+void CActorCondition::LoadCondition(LPCSTR section)
 {
-	inherited::Load(section);
+	inherited::LoadCondition(section);
 
 	m_fAccelPower = pSettings->r_float(section,"accel_power_v");
 	m_fJumpPower = pSettings->r_float(section,"jump_power_v");

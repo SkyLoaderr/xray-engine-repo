@@ -12,6 +12,7 @@
 #include "physic_item.h"
 #include "phsynchronize.h"
 #include "entitycondition.h"
+#include "hit_immunity.h"
 
 enum EHandDependence{
 	hdNone	= 0,
@@ -19,7 +20,8 @@ enum EHandDependence{
 	hd2Hand	= 2
 };
 
-class CInventoryItem : public CPhysicItem {
+class CInventoryItem : public CPhysicItem, public CHitImmunity
+{
 	typedef CPhysicItem	inherited;
 public:
 					CInventoryItem		();
@@ -134,10 +136,6 @@ protected:
 	float			m_fCondition;
 	//флаг использования состояния для вещи
 	bool			m_bUsingCondition;
-
-	//коэффициенты изменения типов хитов (задается только там где надо)
-	//коэффициенты хита
-	HitTypeSVec		m_HitTypeK;
 
 	int				m_iGridWidth;										//ширина в сетке инвенторя
 	int				m_iGridHeight;										//высота в сетке инвенторя

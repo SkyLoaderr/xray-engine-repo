@@ -203,17 +203,6 @@ void CWeapon::Load		(LPCSTR section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT			(load_cls==SUB_CLS_ID);
 
-	//станадртные настройки коэффициентов хитов попадания для всех типов оружия
-	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float("weapon","burn_immunity");
-	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float("weapon","strike_immunity");
-	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float("weapon","shock_immunity");
-	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float("weapon","wound_immunity");
-	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float("weapon","radiation_immunity");
-	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float("weapon","telepatic_immunity");
-	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float("weapon","chemical_burn_immunity");
-	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float("weapon","fire_wound_immunity");
-	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float("weapon","explosion_immunity");
-
 	inherited::Load					(section);
 	CShootingObject::Load			(section);
 

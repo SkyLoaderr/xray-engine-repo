@@ -6,15 +6,11 @@
 #define _ENTITY_CONDITION_H_
 #pragma once
 
-#include "alife_space.h"
-
-//раны полученные различными типами хитов
-typedef	svector<float,ALife::eHitTypeMax> HitTypeSVec;
-
-
 class CWound;
 
-class CEntityCondition
+#include "hit_immunity.h"
+
+class CEntityCondition: public CHitImmunity
 {
 private:
 	bool			m_use_limping_state;
@@ -23,7 +19,7 @@ public:
 	CEntityCondition(void);
 	virtual ~CEntityCondition(void);
 
-	virtual void Load(LPCSTR section);
+	virtual void LoadCondition (LPCSTR section);
 
 	//serialization
 	virtual void save	(NET_Packet &output_packet);
@@ -103,13 +99,13 @@ protected:
 	float m_fEntityMorale;			//мораль
 
 	//максимальные величины
-	float m_fHealthMax;				
-	float m_fPowerMax;					
-	float m_fSatietyMax;				
-	float m_fRadiationMax;				
+	float m_fHealthMax;
+	float m_fPowerMax;
+	float m_fSatietyMax;
+	float m_fRadiationMax;
 
-	float m_fCircumspectionMax;		
-	float m_fEntityMoraleMax;				
+	float m_fCircumspectionMax;
+	float m_fEntityMoraleMax;
 
 	//величины изменения параметров на каждом обновлении
 	float m_fDeltaHealth;
@@ -123,17 +119,17 @@ protected:
 	//скорости изменения характеристик состояния
 	//в секунду
 	float m_fV_Health;
-	float m_fV_Power;				
-	float m_fV_Satiety;	
+	float m_fV_Power;
+	float m_fV_Satiety;
 	float m_fV_Radiation;
 
-	float m_fV_Circumspection;		
+	float m_fV_Circumspection;
 	float m_fV_EntityMorale;
 
 	//коэффициенты скоростей изменения параметров во время сна
 	float m_fK_SleepHealth;
-	float m_fK_SleepPower;				
-	float m_fK_SleepSatiety;	
+	float m_fK_SleepPower;
+	float m_fK_SleepSatiety;
 	float m_fK_SleepRadiation;
 
 	//текущие состояния
@@ -165,11 +161,6 @@ protected:
 	//части хита, затрачиваемые на уменьшение здоровья и силы
 	float m_fHealthHitPart;
 	float m_fPowerHitPart;
-
-	//коэффициенты на которые домножается хит
-	//при соответствующем типе воздействия
-	//(для защитных костюмов и специфичных животных)
-	HitTypeSVec m_HitTypeK;
 
 	//состояние сна
 	bool m_bIsSleeping;

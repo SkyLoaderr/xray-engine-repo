@@ -25,6 +25,11 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 
 
+static LPCSTR	m_sMapSpotAnimEnemy = NULL;
+static LPCSTR	m_sMapSpotAnimNeutral = NULL;
+static LPCSTR	m_sMapSpotAnimFriend = NULL;
+
+
 void CActor::AddMapLocationsFromInfo(const CInfoPortion* info_portion)
 {
 	VERIFY(info_portion);
@@ -296,13 +301,36 @@ void CActor::UpdateContact		(u16 contact_id)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
+	static LPCSTR	m_sMapSpotAnimEnemy		= pSettings->r_string("game_map", "map_spots_enemy");	
+	static LPCSTR	m_sMapSpotAnimNeutral	= pSettings->r_string("game_map", "map_spots_neutral");
+	static LPCSTR	m_sMapSpotAnimFriend	= pSettings->r_string("game_map", "map_spots_friend");
+	
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 
 	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
 	
 	SMapLocation map_location;
 	map_location.attached_to_object = true;
-	map_location.object_id = GO->ID(); 
+	map_location.object_id = GO->ID();
+
+	ALife::ERelationType relation =  pInvOwner->CharacterInfo().GetRelationType(ID());
+	LPCSTR anim_name = NULL;
+
+	switch(relation)
+	{
+	case ALife::eRelationTypeEnemy:
+		anim_name = m_sMapSpotAnimEnemy;
+		break;
+	case ALife::eRelationTypeNeutral:
+		anim_name = m_sMapSpotAnimNeutral;
+		break;
+	case ALife::eRelationTypeFriend:
+		anim_name = m_sMapSpotAnimFriend;
+		break;
+	default:
+		anim_name = m_sMapSpotAnimNeutral;
+	}
+	map_location.SetColorAnimation(anim_name);
 	Level().AddMapLocation(map_location, eMapLocationPDAContact);
 }
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)

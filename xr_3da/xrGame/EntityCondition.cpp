@@ -54,12 +54,6 @@ CEntityCondition::CEntityCondition(void)
 	m_fV_WoundIncarnation = 0.001f;
 
 	
-	m_HitTypeK.resize(ALife::eHitTypeMax);
-	for(int i=0; i<ALife::eHitTypeMax; i++)
-	{
-		m_HitTypeK[i] = 1.0f;
-	}
-
 	m_fHealthHitPart = 1.0f;
 	m_fPowerHitPart = 0.5f;
 
@@ -97,8 +91,15 @@ void CEntityCondition::ClearWounds()
 	m_WoundVector.clear();
 }
 
-void CEntityCondition::Load(LPCSTR section)
+void CEntityCondition::LoadCondition(LPCSTR entity_section)
 {
+	LPCSTR section = entity_section;
+	if(pSettings->line_exist(entity_section, "condition_sect"))
+	{
+		section = pSettings->r_string(section, "condition_sect");
+	}
+
+
 	//скорости изменения характеристик состояния
 	//в секунду
 	m_fV_Satiety = pSettings->r_float(section,"satiety_v");		
@@ -114,16 +115,6 @@ void CEntityCondition::Load(LPCSTR section)
 	
 	m_fHealthHitPart = pSettings->r_float(section,"health_hit_part");
 	m_fPowerHitPart = pSettings->r_float(section,"power_hit_part");
-
-	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
-	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
-	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_immunity");
-	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_immunity");
-	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_immunity");
-	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_immunity");
-	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
-	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
-	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 	
 
 	m_fK_SleepHealth = pSettings->r_float(section,"sleep_health");

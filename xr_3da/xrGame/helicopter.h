@@ -6,6 +6,7 @@
 #include "rocketlauncher.h"
 #include "entity.h"
 #include "phskeleton.h"
+#include "hit_immunity.h"
 
 #include "script_export_space.h"
 class CScriptGameObject;
@@ -54,7 +55,8 @@ class CHelicopter :
 	public CEntity,
 	public CShootingObject,
 	public CRocketLauncher,
-	public CPHSkeleton
+	public CPHSkeleton,
+	public CHitImmunity
 {
 	typedef CPhysicsShellHolder inherited;
 public:
@@ -120,8 +122,6 @@ protected:
 //////////////////////////////////////////////////
 	EHeliState						m_curState;
 
-
-	HitTypeSVec						m_HitTypeK;
 
 	ref_sound						m_engineSound;
 	ref_sound						m_explodeSound;

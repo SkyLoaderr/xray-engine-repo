@@ -59,8 +59,10 @@ void CEntityAlive::init			()
 
 void CEntityAlive::Load		(LPCSTR section)
 {
-	CEntity::Load			(section);
-	CEntityCondition::Load	(section);
+	CEntity::Load					(section);
+	CEntityCondition::LoadCondition	(section);
+	CEntityCondition::LoadImmunities(section);
+
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
 	//bloody wallmarks
@@ -475,7 +477,11 @@ void CEntityAlive::UpdateBloodDrops()
 				if(pWound->GetBoneNum() != BI_NONE)
 				{
 					Fvector pos;
+					Fvector pos_distort;
+					pos_distort.random_dir();
+					pos_distort.mul(0.15f);
 					CParticlesPlayer::GetBonePos(this, pWound->GetBoneNum(), Fvector().set(0,0,0), pos);
+					pos.add(pos_distort);
 					PlaceBloodWallmark(Fvector().set(0.f, -1.f, 0.f),
 									pos, m_fBloodMarkDistance, 
 									m_fBloodDropSize, *m_pBloodDropsVector);

@@ -52,9 +52,8 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 
 	GAME_NEWS_DATA news_data;
 	news_data.news_text = CStringTable().IndexById(news);
-	if(news_data.news_text == NO_STRING)
-		Msg("[warrning] no entrance found for %s news in string table", news);
-	
+
+	R_ASSERT3(news_data.news_text != NO_STRING, "no entrance found for news in string table", news);
 	pActor->AddGameNews(news_data);
 
 	return true;

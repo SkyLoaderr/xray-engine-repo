@@ -947,10 +947,10 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 		rect.right = news.x2;
 		rect.top = news.y1;
 		rect.bottom = news.y2;
-		AddIconedGameMessage(news.texture_name, rect, *news.FullText());
+		AddIconedGameMessage(news.texture_name, rect, news.FullText());
 	}
 	else
-		AddGameMessage(*news.FullText());
+		AddGameMessage(news.FullText());
 
 //	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 //	pGameSP->PdaMenu.AddNewsItem(result);

@@ -16,7 +16,7 @@ public:
 	CActorCondition(void);
 	virtual ~CActorCondition(void);
 
-	virtual void Load(LPCSTR section);
+	virtual void LoadCondition(LPCSTR section);
 
 	virtual CWound* ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element = 0);
 	virtual void UpdateCondition();

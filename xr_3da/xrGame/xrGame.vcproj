@@ -5320,6 +5320,12 @@
 								RelativePath=".\EntityCondition.h">
 							</File>
 							<File
+								RelativePath=".\hit_immunity.cpp">
+							</File>
+							<File
+								RelativePath=".\hit_immunity.h">
+							</File>
+							<File
 								RelativePath=".\Wound.cpp">
 							</File>
 							<File

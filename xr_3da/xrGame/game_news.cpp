@@ -54,18 +54,20 @@ void GAME_NEWS_DATA::save (IWriter& stream)
 }
 
 
-ref_str GAME_NEWS_DATA::FullText()
+LPCSTR GAME_NEWS_DATA::FullText()
 {
-	if(xr_strlen(full_news_text) > 1)
-		return full_news_text;
+	if(xr_strlen(full_news_text.c_str()) > 1)
+		return full_news_text.c_str();
 	
-	string256	newsPhrase = "";
+	string1024	newsPhrase = "";
 	string128	time = "";
-	string128	locationName = "";
-	string512	result = "";
+	string512	locationName = "";
+	string2048	result = "";
 
 	if(news_id == NOT_SIMULATION_NEWS)
 	{
+		VERIFY(news_text != NO_STRING);
+		VERIFY(xr_strlen(*CStringTable()((STRING_INDEX)news_text))<sizeof(newsPhrase));
 		strcpy(newsPhrase, *CStringTable()((STRING_INDEX)news_text)) ;
 	}
 	else
@@ -123,7 +125,7 @@ ref_str GAME_NEWS_DATA::FullText()
 
 	full_news_text = result;
 
-	return full_news_text;
+	return full_news_text.c_str();
 }
 
 void GAME_NEWS_DATA::LoadNewsTemplates()

@@ -176,6 +176,8 @@ public:
 	virtual void		Awoke();
 			void		UpdateSleep();
 
+	virtual void		LoadCondition(LPCSTR section) {CActorCondition::LoadCondition(section);}
+
 protected:
 	//хромание
 	virtual bool		IsLimping() const {return CActorCondition::IsLimping();	}

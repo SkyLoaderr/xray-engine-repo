@@ -117,12 +117,6 @@ void CHelicopter::init()
 	SetfHealth(100.0f);
 
 	m_data.m_stayPoint.set(0.0f, 0.0f, 0.0f);
-
-	m_HitTypeK.resize(ALife::eHitTypeMax);
-
-	for(int i=0; i<ALife::eHitTypeMax; i++)
-		m_HitTypeK[i] = 1.0f;
-
 }
 
 void CHelicopter::reinit()
@@ -184,16 +178,7 @@ void CHelicopter::Load(LPCSTR section)
 
 	m_sRocketSection						= pSettings->r_string	(section,"rocket_class");
 
-	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
-	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
-	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_immunity");
-	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_immunity");
-	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_immunity");
-	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_immunity");
-	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
-	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
-	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
-
+	CHitImmunity::LoadImmunities(section);
 
 	m_use_rocket_on_attack				= !!pSettings->r_bool(section,"use_rocket");
 	m_use_mgun_on_attack				= !!pSettings->r_bool(section,"use_mgun");

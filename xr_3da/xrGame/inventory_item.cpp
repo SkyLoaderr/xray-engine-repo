@@ -30,10 +30,6 @@ CInventoryItem::CInventoryItem()
 	m_fCondition = 1.0f;
 	m_bUsingCondition = false;
 
-	m_HitTypeK.resize(ALife::eHitTypeMax);
-	for(int i=0; i<ALife::eHitTypeMax; i++)
-		m_HitTypeK[i] = 1.0f;
-
 	m_iGridWidth	= 1;
 	m_iGridHeight	= 1;
 
@@ -69,7 +65,8 @@ void CInventoryItem::Load(LPCSTR section)
 	if (!frame_check(m_dwFrameLoad))
 		return;
 
-	inherited::Load	(section);
+	inherited::Load				(section);
+	CHitImmunity::LoadImmunities	(section);
 
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
 	if (self)		self->spatial.type	|=	STYPE_VISIBLEFORAI;	

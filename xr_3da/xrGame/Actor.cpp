@@ -81,6 +81,9 @@ static Fvector	vFootExt;
 
 Flags32			psActorFlags={0};
 
+
+
+
 //--------------------------------------------------------------------
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -276,7 +279,7 @@ void CActor::Load	(LPCSTR section )
 	m_fSleepTimeFactor	= pSettings->r_float(section,"sleep_time_factor");
 
 	//actor condition variables
-	CActorCondition::Load(section);
+//	CActorCondition::LoadCondition(section);
 
 	//загрузить параметры эффектора
 	LoadShootingEffector	("shooting_effector");
