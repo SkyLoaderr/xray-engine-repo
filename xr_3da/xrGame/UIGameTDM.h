@@ -17,8 +17,10 @@ class CUIGameTDM: public CUIGameCustom
 private:
 	typedef CUIGameCustom inherited;
 protected:
-	CUITDMFragList*		pFragList;
-	CUITDMPlayerList*	pPlayerList;
+	CUITDMFragList*		pFragListT1;
+	CUITDMFragList*		pFragListT2;
+	CUITDMPlayerList*	pPlayerListT1;
+	CUITDMPlayerList*	pPlayerListT2;
 public:
 	CUIGameTDM			(CUI* parent);
 	virtual 			~CUIGameTDM			();

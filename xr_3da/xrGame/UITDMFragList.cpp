@@ -7,12 +7,15 @@
 
 CUITDMFragList::CUITDMFragList()
 {
+	m_u8Team = 0;
 }
 //--------------------------------------------------------------------
 
-void CUITDMFragList::Init()
+void CUITDMFragList::Init(u8 Team)
 {
-	inherited::Init		("ui\\ui_hud_frame",0,0,500,400,alCenter);
+	inherited::Init		("ui\\ui_hud_frame",(Team-1)*320,0,300,400,alNone);
+
+	m_u8Team = Team;
 }
 //--------------------------------------------------------------------
 IC bool	pred_player		(LPVOID v1, LPVOID v2)
@@ -44,6 +47,7 @@ void CUITDMFragList::OnFrame()
 	int k=1;
 	for (ItemIt mI=items.begin(); items.end() != mI; ++mI){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
+		if (P->team != m_u8Team) continue;
 		u32	color = 0;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	color = 0xf0a0ffa0; //H->SetColor(0xf0a0ffa0);
 		else									color = 0xf0a0a0ff; //H->SetColor(0xe0a0eea0);		

@@ -7,9 +7,11 @@
 class CUITDMPlayerList:public CUIListBox
 {
 	typedef CUIListBox inherited;
+private:
+	u8				m_u8Team;
 public:
 	CUITDMPlayerList	();
-	void			Init			();
+	void			Init			(u8	Team);
 	virtual void	OnFrame			();
 };
 

@@ -9,17 +9,25 @@
 //--------------------------------------------------------------------
 CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameCustom(parent)
 {
-	pFragList	= xr_new<CUITDMFragList>		();
-	pPlayerList	= xr_new<CUITDMPlayerList>	();
-	pFragList->Init							();
-	pPlayerList->Init						();
+	pFragListT1	= xr_new<CUITDMFragList>	();
+	pFragListT2	= xr_new<CUITDMFragList>	();
+	pPlayerListT1	= xr_new<CUITDMPlayerList>	();
+	pPlayerListT2	= xr_new<CUITDMPlayerList>	();
+
+	pFragListT1->Init						(1);
+	pFragListT2->Init						(2);
+
+	pPlayerListT1->Init						(1);
+	pPlayerListT2->Init						(2);
 }
 //--------------------------------------------------------------------
 
 CUIGameTDM::~CUIGameTDM()
 {
-	xr_delete(pFragList);
-	xr_delete(pPlayerList);
+	xr_delete(pFragListT1);
+	xr_delete(pFragListT2);
+	xr_delete(pPlayerListT1);
+	xr_delete(pPlayerListT2);
 }
 //--------------------------------------------------------------------
 
@@ -29,11 +37,15 @@ void CUIGameTDM::OnFrame()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerList->OnFrame();
+		pPlayerListT1->OnFrame();
+		pPlayerListT2->OnFrame();
 		break;
 	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) pFragList->OnFrame	();
-		break;
+		if (uFlags&flShowFragList) 
+		{
+			pFragListT1->OnFrame	();
+			pFragListT2->OnFrame	();
+		}break;
 	}
 }
 //--------------------------------------------------------------------
@@ -44,11 +56,15 @@ void CUIGameTDM::Render()
 
 	switch (Game().phase){
 	case GAME_PHASE_PENDING: 
-		pPlayerList->Render();
+		pPlayerListT1->Render();
+		pPlayerListT2->Render();
 		break;
 	case GAME_PHASE_INPROGRESS:
-		if (uFlags&flShowFragList) pFragList->Render		();
-		break;
+		if (uFlags&flShowFragList) 
+		{
+			pFragListT1->Render		();
+			pFragListT2->Render		();
+		}break;
 	}
 }
 //--------------------------------------------------------------------
