@@ -120,7 +120,6 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 	}
 
 	// Players
-	Lock			();
 	u32	p_count		= get_count();
 	P.w_u16			(u16(p_count));
 	game_PlayerState*	Base	= get_id(to);
@@ -138,12 +137,10 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 		P.w_string				(p_name);
 		P.w						(&copy,sizeof(game_PlayerState));
 	}
-	Unlock			();
 }
 
 void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id)
 {
-	Lock		();
 	game_PlayerState* A		= get_id		(id);
 	if (A)
 	{
@@ -156,7 +153,6 @@ void game_sv_GameState::net_Export_Update						(NET_Packet& P, u32 id_to, u32 id
 		P.w_u32	(id);
 		P.w		(&copy,sizeof(game_PlayerState));
 	}
-	Unlock		();
 }
 
 void game_sv_GameState::OnRoundStart			()
@@ -165,14 +161,12 @@ void game_sv_GameState::OnRoundStart			()
 	round			++;
 
 	// clear "ready" flag
-	Lock	();
 	u32		cnt		= get_count	();
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
 		ps->flags				&=	~GAME_PLAYER_FLAG_READY;
 	}
-	Unlock	();
 
 	// 1. We have to destroy all player-entities and entities
 	Level().Server->SLS_Clear	();

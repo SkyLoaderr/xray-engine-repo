@@ -14,7 +14,6 @@ void	game_sv_Deathmatch::OnRoundStart			()
 	__super::OnRoundStart	();
 
 	// Respawn all players and some info
-	Lock	();
 	u32		cnt = get_count();
 	for		(u32 it=0; it<cnt; it++)	
 	{
@@ -33,12 +32,10 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		assign_RP				(A);
 		spawn_end				(A,get_it_2_id(it));
 	}
-	Unlock	();
 }
 
 void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 {
-	Lock	();
 	game_PlayerState*	ps_killer	=	get_id	(id_killer);
 	game_PlayerState*	ps_killed	=	get_id	(id_killed);
 	ps_killed->deaths				+=	1;
@@ -51,7 +48,6 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		ps_killer->kills			+=	1;
 		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
-	Unlock	();
 }
 
 void	game_sv_Deathmatch::OnTimelimitExceed		()
@@ -91,7 +87,6 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 {
 	if	(GAME_PHASE_INPROGRESS == phase) return;
 
-	Lock	();
 	game_PlayerState*	ps	=	get_id	(id);
 	if (ps)
 	{
@@ -116,7 +111,6 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 			}
 		}
 	}
-	Unlock	();
 }
 
 void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
