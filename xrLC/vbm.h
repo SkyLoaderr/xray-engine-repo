@@ -90,6 +90,9 @@ public:
 class IBContainer
 {
 	vector<vector<WORD> >	data;
+	enum {
+		LIMIT = 1024ul * 1024ul
+	};
 public:
 	void	Register		(WORD* begin, WORD* end, DWORD* dwContainerID, DWORD *dwStart)
 	{
@@ -98,7 +101,7 @@ public:
 		// 
 		for	(DWORD ID=0; ID<data.size(); ID++)
 		{
-			if ((data[ID].size()+size) < 65535)	
+			if ((data[ID].size()+size) < LIMIT)	
 			{
 				*dwContainerID	= ID;
 				*dwStart		= data[ID].size();
