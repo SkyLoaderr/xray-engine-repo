@@ -208,9 +208,9 @@ namespace CDB
 	{
 		verts.clear	();
 		faces.clear	();
-		for (u32 _x=0; x<=clpMX; x++)
-			for (u32 _y=0; y<=clpMY; y++)
-				for (u32 _z=0; z<=clpMZ; z++)
+		for (u32 _x=0; _x<=clpMX; _x++)
+			for (u32 _y=0; _y<=clpMY; _y++)
+				for (u32 _z=0; _z<=clpMZ; _z++)
 					VM[_x][_y][_z].clear();
 	}
 };
