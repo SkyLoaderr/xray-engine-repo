@@ -127,6 +127,8 @@ public:
 	// Events
 	virtual void			OnEvent				( EVENT E, DWORD P1, DWORD P2	);
 	virtual BOOL			TakeItem			( DWORD CID ) { return FALSE; }
+
+	virtual BOOL			IsVisibleForHUD		(){return TRUE;}
 };
 
 class CEntityAlive			: public CEntity

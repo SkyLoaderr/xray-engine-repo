@@ -16,15 +16,51 @@
 
 void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 {
+	int max_idx			= MAX_ANIM_COUNT;
 	CMotionDef* M		= visual->ID_Cycle_Safe(prefix);
-	if (M)				m_Animations.push_back(M);
-	for (int i=0; i<MAX_ANIM_COUNT; i++){
+	if (M){				
+		m_Animations.push_back(M);
+		max_idx--;
+	}
+	for (int i=0; i<max_idx; i++){
 		string128		sh_anim;
 		sprintf			(sh_anim,"%s_%d",prefix,i);
 		M				= visual->ID_Cycle_Safe(sh_anim);
 		if (M)			m_Animations.push_back(M);
 	}
 	R_ASSERT(m_Animations.size());
+}
+
+void CAI_Crow::SSound::Load(LPCSTR prefix)
+{
+	int max_idx			= MAX_SND_COUNT;
+	string128 fn;
+	if (Engine.FS.Exist(fn,Path.Sounds,prefix,".wav")){
+		m_Sounds.push_back(sound());
+		pSounds->Create(m_Sounds.back(),TRUE,prefix,false,0);
+		max_idx--;
+	}
+	for (int i=0; i<1/*max_idx*/; i++){
+		string64		name;
+		sprintf			(name,"%s_%d",prefix,i);
+		if (Engine.FS.Exist(fn,Path.Sounds,name,".wav")){
+			m_Sounds.push_back(sound());
+			pSounds->Create(m_Sounds.back(),TRUE,name,false,0);
+		}
+	}
+	R_ASSERT(m_Sounds.size());
+}
+
+void CAI_Crow::SSound::SetPosition(const Fvector& pos)
+{
+	for (int i=0; i<m_Sounds.size(); i++)
+		if (m_Sounds[i].feedback) m_Sounds[i].feedback->SetPosition(pos);
+}
+
+void CAI_Crow::SSound::Unload()
+{
+	for (int i=0; i<m_Sounds.size(); i++)
+		pSounds->Delete	(m_Sounds[i]);
 }
 
 void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
@@ -51,11 +87,14 @@ CAI_Crow::CAI_Crow()
 	fASpeed				= 0.2f;
 	fMinHeight			= 40.f;
 	vVarGoal.set		(10.f,10.f,100.f);
+	fIdleSoundDelta		= 10.f;
+	fIdleSoundTime		= fIdleSoundDelta;
 }
 
 CAI_Crow::~CAI_Crow()
 {
 	// removing all data no more being neded 
+	m_Sounds.m_idle.Unload		();
 }
 
 void CAI_Crow::Load( LPCSTR section )
@@ -68,6 +107,8 @@ void CAI_Crow::Load( LPCSTR section )
 	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
 	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
 	m_Anims.m_idle.Load			(M,"norm_idle");
+	// sounds
+	m_Sounds.m_idle.Load		("monsters\\crow\\idle");
 	// play defaut
 	M->PlayCycle				(m_Anims.m_idle.GetRandom());
 	
@@ -76,6 +117,8 @@ void CAI_Crow::Load( LPCSTR section )
 	fGoalChangeDelta			= pSettings->ReadFLOAT	(section,"goal_change_delta");
 	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
 	vVarGoal					= pSettings->ReadVECTOR	(section,"goal_variability");
+	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
+	fIdleSoundTime				= 30.f*fIdleSoundDelta*Random.randF();
 
 	Movement.SetParent			(this);
 }
@@ -140,7 +183,7 @@ void CAI_Crow::Update(DWORD DT)
 		state_DeathFall();
 		break;
 	}
-//	if ((st_current!=eDeathFall)&&(st_current!=eDeathDead)){
+	if ((st_current!=eDeathFall)&&(st_current!=eDeathDead)){
 		// At random times, change the direction (goal) of the plane
 		if(fGoalChangeTime<=0){
 			fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
@@ -151,7 +194,20 @@ void CAI_Crow::Update(DWORD DT)
 			vGoalDir.z = vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
 		}
 		fGoalChangeTime-=float(DT)/1000.f;
-//	}
+		// sounds
+		static BOOL bSound=TRUE;
+		if (Level().iGetKeyState(DIK_G)) 
+			bSound=FALSE;
+		if (fIdleSoundTime<=0){
+			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
+			if (bSound){ 
+				pSounds->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+				Level().HUD()->outMessage(0xffffffff,cName(),"cry");
+			}
+		}
+		fIdleSoundTime-=float(DT)/1000.f;
+	}
+	m_Sounds.m_idle.SetPosition(vPosition);
 }
 
 void CAI_Crow::state_Flying()

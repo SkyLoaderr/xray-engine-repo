@@ -75,8 +75,10 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	// render enemy
 	for (DWORD i=0; i<Team.KnownEnemys.size(); i++){
 		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
-		ConvertToLocal(LM,E->Position(),P);
-		entity.Out	(P.x,P.y,COLOR_ENEMY,alLeft|alTop);
+		if (E->IsVisibleForHUD()){
+			ConvertToLocal(LM,E->Position(),P);
+			entity.Out	(P.x,P.y,COLOR_ENEMY,alLeft|alTop);
+		}
 	}
 	// render friend
 	for (i=0; i<Team.Squads.size(); i++){
@@ -84,8 +86,10 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 		for (DWORD j=0; j<S.Groups.size(); j++){
 			CGroup& G = S.Groups[j];
 			for (DWORD k=0; k<G.Members.size(); k++){
-				ConvertToLocal(LM,G.Members[k]->Position(),P);
-				entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+				if (G.Members[k]->IsVisibleForHUD()){
+					ConvertToLocal(LM,G.Members[k]->Position(),P);
+					entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+				}
 			}
 		}
 	}

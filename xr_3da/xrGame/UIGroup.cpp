@@ -36,9 +36,6 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 	// out labels
 	CHUDManager* HUD	= Level().HUD();
 	float sc			= HUD->GetScale();
-	HUD->pHUDFont->Color(0xffffffff);
-	HUD->pHUDFont->Out	(offset+5,	10,	"#%02d",grp_index+1);
-	HUD->pHUDFont->Out	(offset+30,	40,	"%02d",G.Size());
 	float sc_offset		= offset*sc;
 
 	if (bSelected){
@@ -50,27 +47,36 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 	}
 	list_top.SetPosX	(sc_offset+3*sc);
 	list_top.Render		();
+	float item_cnt=0;
 	float Y = GROUP_FIRST_ITEM;
 	for (int i=0; i<G.Size(); i++,Y+=GROUP_ITEM_SIZE){
 		CEntity* E = G.Members[i];
-		// update item back
-		list_item.SetPos			(sc_offset+3*sc,Y*sc);
-		// update item health
-		int val = iFloor			(3*float(E->g_Health())/100.f); clamp(val,0,2);
-		list_item_health.SetColor	(DET_COLOR[val]);	
-		list_item_health.SetPos		(sc_offset+3*sc,Y*sc);	
-		// update item ammo 
-		list_item_ammo.SetColor		(DET_COLOR[2]);	
-		list_item_ammo.SetPos		(sc_offset+7*sc,Y*sc);	
-		// render all
-		list_item.Render			();
-		list_item_health.Render		();
-		list_item_ammo.Render		();
-		// out name
-		HUD->pHUDFont->Out			(offset+11,Y,"%6.6s",E->cName());
+		if (E->IsVisibleForHUD())
+		{
+			// update item back
+			list_item.SetPos			(sc_offset+3*sc,Y*sc);
+			// update item health
+			int val = iFloor			(3*float(E->g_Health())/100.f); clamp(val,0,2);
+			list_item_health.SetColor	(DET_COLOR[val]);	
+			list_item_health.SetPos		(sc_offset+3*sc,Y*sc);	
+			// update item ammo 
+			list_item_ammo.SetColor		(DET_COLOR[2]);	
+			list_item_ammo.SetPos		(sc_offset+7*sc,Y*sc);	
+			// render all
+			list_item.Render			();
+			list_item_health.Render		();
+			list_item_ammo.Render		();
+			// out name
+			HUD->pHUDFont->Out			(offset+11,Y,"%6.6s",E->cName());
+			item_cnt++;
+		}
 	}
 	list_bottom.SetPos(sc_offset+3*sc,Y*sc);
 	list_bottom.Render();
+	// counters
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->Out	(offset+5,	10,	"#%02d",grp_index+1);
+	HUD->pHUDFont->Out	(offset+30,	40,	"%02d",item_cnt);
 }
 //--------------------------------------------------------------------
 

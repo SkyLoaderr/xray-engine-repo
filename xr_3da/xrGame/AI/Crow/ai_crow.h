@@ -26,6 +26,15 @@ class CAI_Crow : public CEntityAlive//GameObject
 		CMotionDef*	GetRandom	(){return m_Animations[Random.randI(0,m_Animations.size())];}
 		void		Load		(CKinematics* visual, LPCSTR prefix);
 	};
+	struct SSound{
+		#define MAX_SND_COUNT 8
+		typedef svector<sound,MAX_SND_COUNT> MotionSVec;
+		MotionSVec	m_Sounds;
+		sound&		GetRandom	(){return m_Sounds[Random.randI(0,m_Sounds.size())];}
+		void		Load		(LPCSTR prefix);
+		void		SetPosition	(const Fvector& pos);
+		void		Unload		();
+	};
 public:
 	void			OnHitEndPlaying(CBlend* B);
 protected:
@@ -37,6 +46,10 @@ protected:
 		SAnim		m_death_dead;
 	};
 	SCrowAnimations	m_Anims;
+	struct SCrowSounds{
+		SSound		m_idle;
+	};
+	SCrowSounds		m_Sounds;
 
 	Fvector			vOldPosition;
 	ECrowStates		st_current, st_target;
@@ -52,9 +65,11 @@ protected:
 	float			fASpeed;
 	float			fMinHeight;
 	Fvector			vVarGoal;
+	float			fIdleSoundDelta;
 
 	// variables
 	float			fGoalChangeTime;
+	float			fIdleSoundTime;
 
 	void			switch2_FlyUp	();
 	void			switch2_FlyIdle	();
@@ -81,6 +96,8 @@ public:
 	virtual void	Die				(){};
 	virtual	float	ffGetFov		(){return 150.f;}
 	virtual	float	ffGetRange		(){return 30.f;}
+
+	virtual BOOL	IsVisibleForHUD	(){return FALSE;}
 };
 		
 #endif
