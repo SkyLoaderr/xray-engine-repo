@@ -107,7 +107,7 @@ function fract:updateJob()
 
 	for k,v in self.Job do
 		-- проверка на доступность при текущем стейте
-		if availState(v.state, self.state) == true then
+		if availState(v.state, self.state) ~= true then
 			v.object = nil
 		else
 			if v.object == nil and
