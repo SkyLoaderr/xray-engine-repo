@@ -660,7 +660,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderTarget			(0, d_Position_S	);
 	m_pd3dDevice->SetRenderTarget			(1, d_Normal_S		);
 	m_pd3dDevice->SetRenderTarget			(2, d_Color_S		);
-	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
+	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER|D3DCLEAR_STENCIL, 0x00, 1.0f, 0L);
 
 	// samplers and texture
 	m_pd3dDevice->SetTexture				(0, 0);
@@ -670,6 +670,7 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
+	// Setup stencil and culling
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	// Shader and params
