@@ -11,19 +11,19 @@
 
 CAI_ALife::CAI_ALife()
 {
-	// constructor
 }
 
 CAI_ALife::~CAI_ALife()
 {
-	// destructor
-	Save();
+	shedule_Unregister	();
+//	Save				();
 }
 
 void CAI_ALife::Load()
 {
 	shedule_Min					=   100;
-	shedule_Max					=  5000;
+	shedule_Max					= 10000;
+	m_dwNPCBeingProcessed		=     0;
 
 	FILE_NAME	caFileName;
 	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
@@ -74,8 +74,6 @@ void CAI_ALife::Load()
 		m_tpNPC[i].wSpawnPoint	= tpStream->Rword();
 	}
 	Engine.FS.Close(tpStream);
-	
-	m_dwNPCBeingProcessed		=     0;
 }
 
 void CAI_ALife::Save()

@@ -51,7 +51,7 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 
 void	game_sv_Single::OnRoundStart	()
 {
-	tALife.Load();
+	m_tALife.Load();
 }
 
 void	game_sv_Single::Update			()

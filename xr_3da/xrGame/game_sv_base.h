@@ -19,6 +19,7 @@ public:
 	BOOL							sv_force_sync;
 	vector<RPoint>					rpoints	[4];
 public:
+	virtual							~game_sv_GameState		()		{};
 	// Main accessors
 	virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(u32 id);								// DPNID

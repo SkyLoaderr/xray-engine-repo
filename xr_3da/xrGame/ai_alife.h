@@ -60,12 +60,12 @@ private:
 
 public:
 					CAI_ALife();
-					~CAI_ALife();
+	virtual			~CAI_ALife();
 	virtual void	Load				();
 	virtual void	Update				(u32 dt);	
 			void	Save();
 			void	Generate();
-	virtual float	shedule_Scale		()			{return 1;};
+	virtual float	shedule_Scale		()			{return .5f;};
 	virtual BOOL	Ready				()			{return TRUE;};
 	virtual LPCSTR	cName				()			{return "ALife simulator";}; 
 };
