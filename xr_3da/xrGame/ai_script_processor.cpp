@@ -78,7 +78,7 @@ void CScriptProcessor::update()
 		if (xr_strlen(m_caOutput))
 			ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo,"%s",m_caOutput);
 	}
-	g_ca_stdout		= S;
+	g_ca_stdout			= S;
 }
 
 void CScriptProcessor::add_script	(LPCSTR	script_name)

@@ -11,6 +11,13 @@
 #include "script_engine.h"
 #include "ai_script.h"
 
+//void print_stack(lua_State *L)
+//{
+//	Msg					("Lua stack");
+//	for (int i=0; lua_type(L, -i-1); i++)
+//		Msg				("%2d : %s",-i-1,lua_typename(L, lua_type(L, -i-1)));
+//}
+//
 CScript::CScript(LPCSTR caNamespaceName)
 {
 	string256			S;
@@ -23,9 +30,10 @@ CScript::CScript(LPCSTR caNamespaceName)
 
 	m_tpLuaThread		= lua_newthread(ai().script_engine().lua());
 	
-	sprintf				(S,"\n%s.main()\n",caNamespaceName);
-	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
-		lua_pop			(ai().script_engine().lua(),2);
+	sprintf				(S,"\n\n%s.main()\n",caNamespaceName);
+	if (!luaL_loadbuffer(m_tpLuaThread,S,xr_strlen(S) + 1,"@internal.script")) {
+		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,1))
+			ai().script_engine().print_error(m_tpLuaThread,1);
 		return;
 	}
 
@@ -43,6 +51,7 @@ CScript::~CScript()
 
 bool CScript::Update()
 {
+	Msg					("Updating script %s",m_script_name);
 	if (!m_bActive)
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
 	ai().script_engine().set_current_thread	(m_script_name);
