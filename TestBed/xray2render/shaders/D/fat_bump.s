@@ -43,33 +43,29 @@ uniform sampler2D 	s_nmap;
 // Vertex
 v2p_out v_main	( a2v  	IN )
 {
-  v2p_out 	OUT;
+	v2p_out 	OUT;
   
-  // Positions and TC
-  OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
-  float3 Pe 	= mul	(m_model2view, 				IN.Position	);
-  OUT.Pe 		= float4(Pe.x,Pe.y,Pe.z,0);
+	// Positions and TC
+	OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
+	float3 Pe 		= mul	(m_model2view, 				IN.Position	);
+	OUT.Pe 			= float4(Pe.x,Pe.y,Pe.z,0);
 	OUT.Tex0 		= IN.TexCoords;
 
 	// Calculate the 3x3 transform from tangent space to eye-space
-	// TangentToCubeSpace = object2cube * tangent2object
-	//              = object2cube * transpose(objToTangentSpace) (since the inverse of a rotation is its transpose)
-	// so a row of TangentToCubeSpace is the transform by objToTangentSpace of the corresponding row of ObjToCubeSpace
-	OUT.TangentToCubeSpace0.xyz = mul(objToTangentSpace, ObjToCubeSpace[0].xyz);
-	OUT.TangentToCubeSpace1.xyz = mul(objToTangentSpace, ObjToCubeSpace[1].xyz);
-	OUT.TangentToCubeSpace2.xyz = mul(objToTangentSpace, ObjToCubeSpace[2].xyz);
-  float3x3 xform= mul	(m_model2view, float3x3(
-							IN.T.x,IN.T.y,IN.T.z,
-							IN.B.x,IN.B.y,IN.B.z,
-							IN.N.x,IN.N.y,IN.N.z) 
+	// TangentToEyeSpace = object2eye * tangent2object
+	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
+	float3x3 xform	= mul	(m_model2view, float3x3(
+								IN.T.x,IN.B.y,IN.N.z,
+								IN.T.x,IN.B.y,IN.N.z,
+								IN.T.x,IN.B.y,IN.N.z) 
 							);
   
-  // Feed this transform to pixel shader
-  OUT.M1 		= float4(xform[0].x,xform[0].y,xform[0].z,0);
-  OUT.M2 		= float4(xform[1].x,xform[1].y,xform[1].z,0);
-  OUT.M3 		= float4(xform[2].x,xform[2].y,xform[2].z,0);
+	// Feed this transform to pixel shader
+	OUT.M1 			= float4(xform[0].x,xform[0].y,xform[0].z,0);
+	OUT.M2 			= float4(xform[1].x,xform[1].y,xform[1].z,0);
+	OUT.M3 			= float4(xform[2].x,xform[2].y,xform[2].z,0);
 
-  return OUT;
+	return OUT;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
