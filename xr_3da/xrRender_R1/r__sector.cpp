@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "Portal.h"
+#include "r__sector.h"
 #include "..\xrLevel.h"
 #include "..\xr_object.h"
 #include "..\fbasicvisual.h"
