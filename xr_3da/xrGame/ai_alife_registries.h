@@ -81,6 +81,7 @@ public:
 			tNetPacket.r_begin		(u_id);
 			R_ASSERT				(M_UPDATE==u_id);
 			tpALifeDynamicObject->UPDATE_Read(tNetPacket);
+			tpALifeDynamicObject->Init(tpALifeDynamicObject->s_name);
 
 			m_tObjectRegistry.insert(make_pair(tpALifeDynamicObject->m_tObjectID,tpALifeDynamicObject));
 		}

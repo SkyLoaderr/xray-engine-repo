@@ -176,6 +176,14 @@ namespace ALife {
 		eArtefactTypeBlackDroplets,
 		eArtefactTypeDummy = u32(-1),
 	};
+		
+	typedef struct tagSTerrainPlace{
+		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
+		u32											dwMinTime;
+		u32											dwMaxTime;
+	} STerrainPlace;
+
+	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
 };
 
 #endif

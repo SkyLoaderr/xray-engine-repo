@@ -65,12 +65,6 @@ class CAI_Rat : public CCustomMonster
 		typedef struct tagSRatAnimations{
 			SNormalAnimations	tNormal;
 		}SRatAnimations;
-		
-		typedef struct tagSTerrainPlace{
-			svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
-			u32											dwMinTime;
-			u32											dwMaxTime;
-		}STerrainPlace;
 		//////////////////////////
 		// END OF STRUCTURES
 		//////////////////////////
@@ -83,7 +77,7 @@ class CAI_Rat : public CCustomMonster
 		_GRAPH_ID			m_tCurGP;
 		_GRAPH_ID			m_tNextGP;
 		u32					m_dwTimeToChange;
-		vector<STerrainPlace> m_tpaTerrain;
+		TERRAIN_VECTOR		m_tpaTerrain;
 
 		// FSM
 		stack<ERatStates>	m_tStateStack;

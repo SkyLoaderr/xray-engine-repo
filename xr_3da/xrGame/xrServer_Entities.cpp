@@ -5,6 +5,7 @@
 #include "game_base.h"
 #include "clsid_game.h"
 #include "xrServer_Entities.h"
+#include "..\\xr_trims.h"
 
 #ifdef _EDITOR
 	#include "xr_tokens.h"
@@ -575,6 +576,69 @@ public:
 			P.w_u64		(A.cls	);
 			P.w_string	(A.event);
 		}
+	}
+};
+
+// CALifeMonsterAbstract
+void CALifeMonsterAbstract::STATE_Write(NET_Packet &tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CALifeMonsterAbstract::STATE_Read(NET_Packet &tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket, size);
+}
+
+void CALifeMonsterAbstract::UPDATE_Write(NET_Packet &tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+	tNetPacket.w				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
+	tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+	tNetPacket.w				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+	tNetPacket.w				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
+	tNetPacket.w				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
+};
+
+void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+	if (m_wVersion >= 7) {
+		tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+		tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
+		tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
+		tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
+		tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
+		tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
+	}
+};
+
+void CALifeMonsterAbstract::Init(LPCSTR caSection)
+{
+	inherited::Init				(caSection);
+	
+	m_tpaTerrain.clear				();
+	LPCSTR							S;
+	if (pSettings->LineExists(caSection,"monster_section")) {
+		S							= pSettings->ReadSTRING(pSettings->ReadSTRING(caSection,"monster_section"),"terrain");
+		m_fGoingSpeed				= pSettings->ReadFLOAT	(pSettings->ReadSTRING(caSection,"monster_section"), "going_speed");
+	}
+	else {
+		S							= pSettings->ReadSTRING(caSection,"terrain");
+		m_fGoingSpeed				= pSettings->ReadFLOAT	(caSection, "going_speed");
+	}
+	u32								N = _GetItemCount(S);
+	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	STerrainPlace					tTerrainPlace;
+	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
+	string16						I;
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
+		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
+		m_tpaTerrain.push_back(tTerrainPlace);
 	}
 };
 

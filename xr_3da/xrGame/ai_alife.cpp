@@ -104,12 +104,25 @@ void CAI_ALife::vfNewGame()
 				vfCreateObject		(tp2);
 				*II					= tp2->m_tObjectID = tp2->ID;
 				m_tObjectRegistry.insert(make_pair(tp2->m_tObjectID,tp2));
+				CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(tp2);
+				if (tp3) 
+					vfAssignGraphPosition(tp3);
+			}
+			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			if (tp3) {
+				tp3->m_tNextGraphID = tp3->m_tPrevGraphID = tp3->m_tGraphID;
+				tp3->m_fDistanceToPoint	= tp3->m_fDistanceFromPoint = 0;
 			}
 		}
 		else {
             vfCreateObject		(i);
 			i->m_tObjectID		= i->ID;
 			m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
+			CALifeMonsterAbstract *tp3 = dynamic_cast<CALifeMonsterAbstract*>(i);
+			if (tp3) {
+				tp3->m_tNextGraphID = tp3->m_tPrevGraphID = tp3->m_tGraphID;
+				tp3->m_fDistanceToPoint	= tp3->m_fDistanceFromPoint = 0;
+			}
 		}
 		I						= m;
 	}

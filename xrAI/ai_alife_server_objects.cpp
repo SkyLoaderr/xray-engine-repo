@@ -11,6 +11,7 @@
 
 #include "xr_ini.h"
 #include "ai_alife_server_objects.h"
+#include "..\\xr_trims.h"
 
 // CALifeObject
 void CALifeObject::STATE_Write(NET_Packet &tNetPacket)
@@ -83,7 +84,6 @@ void CALifeMonsterParams::UPDATE_Read(NET_Packet &tNetPacket)
 void CALifeMonsterParams::Init(LPCSTR caSection)
 {
 	m_iHealth					= pSettings->ReadINT(caSection, "health");
-	ID							= u16(-1);
 };
 
 // CALifeTraderParams
@@ -117,10 +117,10 @@ void CALifeTraderParams::Init(LPCSTR caSection)
 {
 	m_fCumulativeItemMass		= 0.0f;
 	m_dwMoney					= 0;
+	m_tpItemIDs.clear			();
 	if (pSettings->LineExists(caSection, "money"))
 		m_dwMoney = pSettings->ReadINT(caSection, "money");
 	m_tRank						= EStalkerRank(pSettings->ReadINT(caSection, "rank"));
-	m_tpItemIDs.clear			();
 };
 
 // CALifeHumanParams
@@ -518,50 +518,6 @@ void CALifeTrader::Init(LPCSTR caSection)
 	CALifeDynamicObject::Init	(caSection);
 	CALifeTraderParams::Init	(caSection);
 	CALifeTraderAbstract::Init	(caSection);
-};
-
-// CALifeMonsterAbstract
-void CALifeMonsterAbstract::STATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::STATE_Write		(tNetPacket);
-}
-
-void CALifeMonsterAbstract::STATE_Read(NET_Packet &tNetPacket, u16 size)
-{
-	inherited::STATE_Read		(tNetPacket, size);
-}
-
-void CALifeMonsterAbstract::UPDATE_Write(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Write		(tNetPacket);
-	tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-	tNetPacket.w				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-	tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	tNetPacket.w				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-	tNetPacket.w				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-	tNetPacket.w				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-};
-
-void CALifeMonsterAbstract::UPDATE_Read(NET_Packet &tNetPacket)
-{
-	inherited::UPDATE_Read		(tNetPacket);
-	tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
-	tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
-	tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	tNetPacket.r				(&m_fCurSpeed,				sizeof(m_fCurSpeed));
-	tNetPacket.r				(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
-	tNetPacket.r				(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-};
-
-void CALifeMonsterAbstract::Init(LPCSTR caSection)
-{
-	inherited::Init				(caSection);
-	m_tNextGraphID				= m_tGraphID;
-	m_tPrevGraphID				= m_tGraphID;
-	m_fGoingSpeed				= pSettings->ReadFLOAT	(caSection, "going_speed");
-	m_fCurSpeed					= 0.0f;
-	m_fDistanceFromPoint		= 0.0f;
-	m_fDistanceToPoint			= 0.0f;
 };
 
 // CALifeDynamicAnomalousZone

@@ -63,9 +63,18 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 		if (I != E) {
 			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
 			VERIFY					(J != m_tObjectRegistry.end());
-			xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
-			if (tpEnemy)
-				tpALifeDynamicObject->o_Position = tpEnemy->o_Position;
+			CALifeMonsterAbstract	*tpEnemy = dynamic_cast<CALifeMonsterAbstract*>((*J).second);
+			CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(tpALifeAbstractGroup);
+			if (tpEnemy && tpALifeMonsterAbstract) {
+				tpALifeMonsterAbstract->m_fCurSpeed		= tpALifeMonsterAbstract->m_fGoingSpeed;
+				u32 dwNodeID = getAI().q_LoadSearch(tpALifeMonsterAbstract->o_Position = tpEnemy->o_Position);
+				tpALifeMonsterAbstract->m_tGraphID		= getAI().m_tpaCrossTable[dwNodeID].tGraphIndex;
+				tpALifeMonsterAbstract->m_fDistanceToPoint = getAI().m_tpaCrossTable[dwNodeID].fDistance;
+				tpALifeMonsterAbstract->m_tNextGraphID	= tpALifeMonsterAbstract->m_tGraphID;
+				u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tNeighbourCount;
+				CALifeGraph::SGraphEdge			*tpaEdges		= (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].dwEdgeOffset);
+				tpALifeMonsterAbstract->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[::Random.randI(0,wNeighbourCount)].dwVertexNumber);
+			}
 			vfReleaseObject			((*J).second);
 			I++;
 		}
@@ -104,16 +113,16 @@ void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
 						xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
 						if (tpEnemy)
 							if (tpEnemy->fHealth <= 0) {
-								tpEnemy->m_bDirectControl	= true;
-								tpEnemy->m_bOnline			= true;
+								(*J).second->m_bDirectControl	= true;
+								(*J).second->m_bOnline			= true;
 								tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-								vfUpdateDynamicData(tpEnemy);
+								vfUpdateDynamicData((*J).second);
 								i--;
 								N--;
 								continue;
 							}
 							else
-								if (m_tpActor->o_Position.distance_to(tpEnemy->o_Position) > m_fOnlineDistance)
+								if (m_tpActor->o_Position.distance_to((*J).second->o_Position) > m_fOnlineDistance)
 									dwCount++;
 					}
 					if (tpALifeAbstractGroup->m_tpMembers.size() && (dwCount == tpALifeAbstractGroup->m_tpMembers.size())) {

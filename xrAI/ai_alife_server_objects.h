@@ -59,6 +59,10 @@ public:
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
+									CALifeMonsterParams()
+	{
+		ID	= u16(-1);
+	};
 };
 
 class CALifeTraderParams : public IPureServerInitObject {
@@ -243,74 +247,6 @@ public:
 };
 
 class CALifeTrader : public CALifeDynamicObject, public CALifeTraderParams, public CALifeTraderAbstract {
-public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
-class CALifeMonsterAbstract : public CALifeDynamicObject {
-public:
-	typedef	CALifeDynamicObject inherited;
-	
-	_GRAPH_ID						m_tNextGraphID;
-	_GRAPH_ID						m_tPrevGraphID;
-	float							m_fGoingSpeed;
-	float							m_fCurSpeed;
-	float							m_fDistanceFromPoint;
-	float							m_fDistanceToPoint;
-	
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
-class CALifeDynamicAnomalousZone : public CALifeMonsterAbstract, public CALifeZone {
-public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
-class CALifeMonster : public CALifeMonsterAbstract, public CALifeMonsterParams {
-public:
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
-class CALifeHumanAbstract : public CALifeMonsterAbstract, public CALifeTraderAbstract {
-public:
-	DWORD_VECTOR					m_tpaVertices;
-	BOOL_VECTOR						m_baVisitedVertices;
-	PERSONAL_TASK_P_VECTOR			m_tpTasks;
-	ETaskState						m_tTaskState;
-	u32								m_dwCurNode;
-	u32								m_dwCurTaskLocation;
-	u32								m_dwCurTask;
-	float							m_fSearchSpeed;
-
-	virtual							~CALifeHumanAbstract()
-	{
-		free_vector					(m_tpTasks);
-	};
-	
-	virtual void					STATE_Write(NET_Packet &tNetPacket);
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
-	virtual void					Init(LPCSTR caSection);
-};
-
-class CALifeHuman : public CALifeHumanAbstract, public CALifeHumanParams {
 public:
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);

@@ -168,8 +168,9 @@ void CAI_Space::Render()
 //						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 //					}
 					{
+						CALifeDynamicObject *tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>((*I).second);
 						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
-						if (tpALifeMonsterAbstract) {
+						if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
 							CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);
 							if (tpALifeHuman && tpALifeHuman->m_tpaVertices.size()) {
 								Fvector t1 = m_tpaGraph[tpALifeHuman->m_tpaVertices[0]].tGlobalPoint;
