@@ -5,7 +5,7 @@ class CPhysicsShellHolder;
 
 class CPHDestroyable
 {
-			shared_str						m_destroyed_obj_visual_name	;
+			shared_str					m_destroyed_obj_visual_name	;
 			Flags8						m_flags						;
 			enum
 			{
@@ -18,9 +18,10 @@ public:
 			void						Init						()						;
 			void						RespawnInit					()						;
 	
-			void						Destroy						(u16 parent_id=u16(-1))	;	
+			void						Destroy						(u16 source_id=u16(-1))	;	
 			void						Load						(LPCSTR section)		;
-IC			bool						CanDestroy					()						{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
+			void						Load						(CInifile* ini,LPCSTR section);
+IC			bool						CanDestroy					()								{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
 };
 
 

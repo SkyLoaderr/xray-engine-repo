@@ -125,13 +125,15 @@
 #define CLSID_TARGET_CS				MK_CLSID('T','_','C','S',' ',' ',' ',' ')
 #define CLSID_TARGET_CS_CASK		MK_CLSID('T','_','C','S','C','A','S','K')
 
-// Standart level object
+// Standard level object
 #define CLSID_OBJECT_ITEM_STD		MK_CLSID('O','_','I','T','E','M',' ',' ')
-#define CLSID_OBJECT_PHYSIC			MK_CLSID('O','_','P','H','Y','S','I','C')
 #define CLSID_OBJECT_BREAKABLE		MK_CLSID('O','_','B','R','K','B','L',' ')
 #define CLSID_OBJECT_CLIMABLE		MK_CLSID('O','_','C','L','M','B','L',' ')
 
+//
 #define CLSID_PH_SKELETON_OBJECT	MK_CLSID('P','_','S','K','E','L','E','T')
+#define CLSID_OBJECT_PHYSIC			MK_CLSID('O','_','P','H','Y','S','I','C')
+#define CLSID_PHYSICS_DESTROYABLE	MK_CLSID('P','_','D','S','T','R','B','L')
 
 // Zones 
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')

@@ -5343,16 +5343,6 @@
 							</File>
 						</Filter>
 						<Filter
-							Name="PhysicObject"
-							Filter="">
-							<File
-								RelativePath="PhysicObject.cpp">
-							</File>
-							<File
-								RelativePath="PhysicObject.h">
-							</File>
-						</Filter>
-						<Filter
 							Name="ParticlesPlayer"
 							Filter="">
 							<File
@@ -6843,6 +6833,26 @@
 							</File>
 							<File
 								RelativePath=".\PHCollisionDamageReceiver.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="DestroyablePhysicsObject"
+							Filter="">
+							<File
+								RelativePath=".\DestroyablePhysicsObject.cpp">
+							</File>
+							<File
+								RelativePath=".\DestroyablePhysicsObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PhysicObject"
+							Filter="">
+							<File
+								RelativePath="PhysicObject.cpp">
+							</File>
+							<File
+								RelativePath="PhysicObject.h">
 							</File>
 						</Filter>
 					</Filter>

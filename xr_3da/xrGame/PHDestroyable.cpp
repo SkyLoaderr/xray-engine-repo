@@ -17,7 +17,7 @@ CPHDestroyable::CPHDestroyable()
 	m_flags.flags=0;
 }
 
-void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
+void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/)
 {
 	
 	if(!CanDestroy())return ;
@@ -58,7 +58,7 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 		D->s_gameid			=	u8(GameID());
 		D->s_RP				=	0xff;
 		D->ID				=	0xffff;
-		D->ID_Parent		=	parent_id;
+		D->ID_Parent		=	source_id;
 		D->ID_Phantom		=	0xffff;
 		D->o_Position		=	obj->Position();
 		if (ai().get_alife())
@@ -80,18 +80,22 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 	return;
 }
 
-void CPHDestroyable::Load(LPCSTR section)
+void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 {
-	if(pSettings->line_exist(section,"destroyed_vis_name"))
+	if(ini->line_exist(section,"destroyed_vis_name"))
 	{
 		m_flags.set(fl_destroyable,TRUE);
-		m_destroyed_obj_visual_name=pSettings->r_string(section,"destroyed_vis_name");
+		m_destroyed_obj_visual_name=ini->r_string(section,"destroyed_vis_name");
 		CPhysicsShellHolder * shell_holder=PPhysicsShellHolder();
 		shared_str visual_name;
 		visual_name=shell_holder->cNameVisual();
 		shell_holder->cNameVisual_set(m_destroyed_obj_visual_name);
 		shell_holder->cNameVisual_set(visual_name);
 	}
+}
+void CPHDestroyable::Load(LPCSTR section)
+{
+	Load(pSettings,section);
 }
 
 void CPHDestroyable::Init()

@@ -131,6 +131,7 @@
 #	include "ai/script/ai_script_monster.h"
 #	include "BreakableObject.h"
 #	include "PhysicsSkeletonObject.h"
+#	include "DestroyablePhysicsObject.h"
 
 #	include "game_sv_single.h"
 #	include "game_sv_deathmatch.h"
@@ -325,6 +326,7 @@ void CObjectFactory::register_classes	()
 	ADD(CBreakableObject		,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE			,"obj_breakable");
 	ADD(CClimableObject			,CSE_ALifeObjectClimable		,CLSID_OBJECT_CLIMABLE			,"obj_climable");
 	ADD(CPhysicsSkeletonObject	,CSE_ALifePHSkeletonObject		,CLSID_PH_SKELETON_OBJECT		,"obj_phskeleton");
+	ADD(CDestroyablePhysicsObject,CSE_ALifeObjectPhysic			,CLSID_PHYSICS_DESTROYABLE		,"obj_phys_destroyable");
 
 
 }
