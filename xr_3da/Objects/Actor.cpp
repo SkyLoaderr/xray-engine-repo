@@ -176,10 +176,10 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
-	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
+//	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
+//	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
 	Weapons->TakeItem	(CLSID_OBJECT_W_AK74,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_LR300,0);
+//	Weapons->TakeItem	(CLSID_OBJECT_W_LR300,0);
 	
 	// sounds
 	char buf[256];
