@@ -636,19 +636,17 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.a.curState == say_hello) then
-    	if(device():time_global() > self.a.time and self.object:is_body_turning() ) then
-            xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4,2)
+    	if(self.object:active_sound_count() == 0 and self.object:is_body_turning() ) then
+            xr_sounds.play_sound_rnd    (self.object, 5000, 6000, "trivial", 4,2)
             self.a.curState    = wait_actor
-            self.a.time		   = device():time_global() + 6000
         end
     end
 
     if(self.a.curState == wait_actor and self.b.talk == false) then
     	--Изредка зовем актера
-        if(device():time_global() > self.a.time and distance_between(self.object, level.actor()) > 4 ) then
-            xr_sounds.play_sound         (self.object, 0, "trivial", 4, 2)
+        if(self.object:active_sound_count() == 0 and distance_between(self.object, level.actor()) > 4 ) then
+            xr_sounds.play_sound_rnd    (self.object, 5000, 6000, "trivial", 4,2)
             self.a.curState    = wait_actor
-            self.a.time        = device():time_global() + 6000
 		end
     end
 
