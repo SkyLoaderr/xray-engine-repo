@@ -145,7 +145,7 @@ public:
 
 	IWriter*					w_open			(LPCSTR initial, LPCSTR N);
 	IC IWriter*					w_open			(LPCSTR N){return w_open(0,N);}
-	void						w_close			(IWriter* &S, bool bDiscard=false);
+	void						w_close			(IWriter* &S);
 
 	const file*					exist			(LPCSTR N);
 	const file*					exist			(LPCSTR path, LPCSTR name);

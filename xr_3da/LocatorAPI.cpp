@@ -195,10 +195,6 @@ bool CLocatorAPI::Recurse		(const char* path)
 	FFVec			rec_files;
 	rec_files.reserve(256);
 
-	// insert self
-    if (path&&path[0])
-		Register	(path,0xffffffff,0,0,0,0);
-
 	// find all files    
 	if (-1==(hFile=_findfirst(N, &sFile))){
     	Log			("Wrong path: ",path);
@@ -214,6 +210,11 @@ bool CLocatorAPI::Recurse		(const char* path)
 
 	for (FFIt it=rec_files.begin(); it!=rec_files.end(); it++)
 		ProcessOne	(path,it);
+
+	// insert self
+    if (path&&path[0])
+		Register	(path,0xffffffff,0,0,0,0);
+
     return true;
 }
 
@@ -427,15 +428,15 @@ void	CLocatorAPI::r_close	(IReader* &fs)
 IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 {
 	string512	fname;
-	strconcat	(fname,_fname,".$");
-	strlwr		(fname);
+	strlwr(strcpy(fname,_fname));//,".$");
 	if (path&&path[0]) update_path(fname,path,fname);
 	return xr_new<CFileWriter>(fname);
 }
 
-void	CLocatorAPI::w_close(IWriter* &fs, bool bDiscard)
+void	CLocatorAPI::w_close(IWriter* &S)
 {
-	R_ASSERT	(fs->fName&&fs->fName[0]);
+	R_ASSERT	(S->fName&&S->fName[0]);
+/*
 	string256	temp_name,new_name;
 	strcpy		(new_name,fs->fName);
 	strcpy		(temp_name,fs->fName);
@@ -451,8 +452,23 @@ void	CLocatorAPI::w_close(IWriter* &fs, bool bDiscard)
         _stat		(new_name,&st);
 		Register	(new_name,0xffffffff,0,0,0,(u32)st.st_mtime);
 	}
+*/
+	string256	fname;
+	strcpy		(fname,S->fName);
+	xr_delete	(S);
+    struct _stat st;
+    _stat		(fname,&st);
+    Register	(fname,0xffffffff,0,0,0,(u32)st.st_mtime);
 }
-
+/*
+void	CLocatorAPI::w_close1(IWriter* &S)
+{
+	R_ASSERT	(S->fName&&S->fName[0]);
+    struct _stat st;
+    _stat		(S->fName,&st);
+    Register	(S->fName,0xffffffff,0,0,0,(u32)st.st_mtime);
+}
+*/
 CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
 {
 	// проверить нужно ли пересканировать пути
