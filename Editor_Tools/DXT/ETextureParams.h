@@ -87,8 +87,8 @@ struct STextureParams{
 };
 #pragma pack( pop )
 
-xr_token	tparam_token[];
-xr_token	tfmt_token[];
+extern xr_token	tparam_token[];
+extern xr_token	tfmt_token[];
 
 	//----------------------------------------------------
 #define THM_CURRENT_VERSION				0x0011
