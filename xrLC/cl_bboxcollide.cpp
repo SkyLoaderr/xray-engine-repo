@@ -3,6 +3,7 @@
 
 #include "cl_RAPID.h"
 #include "cl_defs.h"
+#include "cl_intersect.h"
 
 #ifdef ENGINE_BUILD
 #define B_BEGIN Device.Statistic.clBOX.Begin()
