@@ -13,9 +13,9 @@
 void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						tNetPacket;
-//	tpALifeDynamicObject->s_flags.set(M_SPAWN_UPDATE);
+	tpALifeDynamicObject->s_flags.or(M_SPAWN_UPDATE);
 	m_tpServer->Process_spawn		(tNetPacket,0,FALSE,tpALifeDynamicObject);
-//	tpALifeDynamicObject->s_flags.clear(M_SPAWN_UPDATE);
+	tpALifeDynamicObject->s_flags.and(u16(-1) ^ M_SPAWN_UPDATE);
 //	xrClientData* CL				= m_tpServer->ID_to_client(0);
 //	if (CL) {
 //		tNetPacket.w_begin			(M_UPDATE);
