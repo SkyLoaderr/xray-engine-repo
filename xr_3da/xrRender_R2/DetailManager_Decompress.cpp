@@ -159,7 +159,7 @@ Device.Statistic.TEST0.End		();
 			Item_P.y	= y;
 
 			// Angles and scale
-			Item.scale	= r_scale.randF		(Dobj->m_fMinScale,Dobj->m_fMaxScale);
+			Item.scale	= r_scale.randF		(Dobj->m_fMinScale*0.9f,Dobj->m_fMaxScale*1.1f);
 
 			// X-Form BBox
 			Fmatrix		mScale,mXform;
@@ -190,8 +190,8 @@ Device.Statistic.TEST0.End		();
 			Item.c_rgb.x					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_r,15);
 			Item.c_rgb.y					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_g,15);
 			Item.c_rgb.z					=	ps_r__Detail_rainbow_hemi*DS.r_qclr	(DS.c_b,15);
-			Item.c_hemi						=	.75f*DS.r_qclr	(DS.c_hemi,15);
-			Item.c_sun						=	DS.r_qclr		(DS.c_dir,15);
+			Item.c_hemi						=	DS.r_qclr	(DS.c_hemi,	15);
+			Item.c_sun						=	DS.r_qclr	(DS.c_dir,	15);
 
 			//. hack: RGB = hemi
 			//. Item.c_rgb.add					(ps_r__Detail_rainbow_hemi*Item.c_hemi);
