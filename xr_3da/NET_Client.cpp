@@ -408,7 +408,7 @@ void	IPureClient::Sync_Thread	()
 	//***** Ping server
 	net_DeltaArray.clear();
 	R_ASSERT			(NET);
-	for (; NET; )
+	for (; NET && !net_Disconnected; )
 	{
 		// Waiting for queue empty state
 		if (net_Syncronised)	Sleep(3000);
@@ -427,11 +427,12 @@ void	IPureClient::Sync_Thread	()
 
 		// Send it
 		try {
-			DPN_BUFFER_DESC		desc;
-			DPNHANDLE			hAsync=0;
-			desc.dwBufferSize	= sizeof(clPing);
-			desc.pBufferData	= LPBYTE(&clPing);
-			if (0==NET)			break;
+			DPN_BUFFER_DESC					desc;
+			DPNHANDLE						hAsync=0;
+			desc.dwBufferSize				= sizeof(clPing);
+			desc.pBufferData				= LPBYTE(&clPing);
+			if (0==NET || net_Disconnected)	break;
+
 			if (FAILED(NET->Send(&desc,1,0,0,&hAsync,net_flags(FALSE,FALSE,TRUE))))	{
 				Msg("* CLIENT: Thread: EXIT. (failed to send - disconnected?)");
 				break;
