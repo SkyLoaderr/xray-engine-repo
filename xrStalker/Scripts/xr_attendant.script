@@ -142,6 +142,7 @@ function action_follow:execute ()
        
     if db.storage[self.st.leader_id].active_section ~= self.st.leader_section then
        self.st.signals["leader_section_changed"] = true 
+       self:free ()
     end    
     
     if xr_logic.try_switch_to_another_section (self.object, self.st, db.actor) then
