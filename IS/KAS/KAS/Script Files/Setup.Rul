@@ -57,6 +57,7 @@ prototype 				ClearFolder					(byval string);
 prototype BOOL 			CheckAdminRights			();
 prototype				CleanupTargetFolder			();
 prototype				StopClientUpdater			();
+prototype 				SetTargetFolderAccess		();
 // SQL server management function
 prototype 				StartServer					();
 prototype 				StopServer					();
@@ -194,6 +195,14 @@ begin
     ClearFolder				(TARGETDIR);
 end;
 //---------------------------------------------------------------------------                                                                        
+function SetTargetFolderAccess()          
+string tmp;
+begin                
+ 	if (SYSINFO.WINNT.bWinNT ) then
+ 		LaunchAppAndWait 	("grant_rights.cmd", "\""+TARGETDIR+"\"", LAAW_OPTION_WAIT|LAAW_OPTION_HIDDEN);
+ 	endif;              
+end;
+//---------------------------------------------------------------------------                                                                        
 function ConfigureServer()
 	number 	nResult;
 	BOOL 	bRes;
@@ -203,9 +212,6 @@ function ConfigureServer()
 begin
 	bRes = CheckMSDEStatus();    
 	if (TRUE=bRes) then
-		// register our SQLDMO.dll
-		LaunchAppAndWait (WINSYSDIR^"regsvr32" , "/s sqldmo.dll", WAIT); // /s 
-		           
 		// load dll
 	    nResult 	= UseDLL (DLL_FILE);
 	    if (nResult != 0) then
@@ -660,7 +666,11 @@ begin
 	 	endif;
 	endif;                                   
 	if (mdac_need_install=TRUE) then
-		LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
+		if (SYSINFO.WIN9X.bWinMe) then
+			LaunchAppAndWait ("mdac_typ.exe", "", WAIT);
+		else
+			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
+		endif;
 		g_bNeedReboot 		= TRUE;
 	endif;
            
@@ -669,7 +679,10 @@ begin
            
 	// create uninstall shortcut
 	CreateUninstallShortcut();
-
+         
+    // set folder everyone access
+    SetTargetFolderAccess();
+         
 	// set reboot flag 
 	if (g_bNeedReboot=TRUE) then BATCH_INSTALL = TRUE; endif;
         

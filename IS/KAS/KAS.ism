@@ -324,6 +324,7 @@
 		<col def="s255">ISBuildSourcePath</col>
 		<col def="I4">Disk</col>
 		<row><td>NewDisk1File1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\setupMSDE.ini</td><td>1</td></row>
+		<row><td>NewDisk1File2</td><td>&lt;ISPROJECTDIR&gt;\source\setup\grant_rights.cmd</td><td>1</td></row>
 		<row><td>NewDisk1File3</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDAC_TYP.EXE</td><td>1</td></row>
 	</table>
 
