@@ -99,7 +99,7 @@ void OGF::Optimize()
 		for (int j=0; j<8; j++)
 		{
 			if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
-			else							UV[j].set(0,0 );
+			// else							UV[j].set(0,0 );
 		}
 	}
 }
