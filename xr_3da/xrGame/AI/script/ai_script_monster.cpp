@@ -26,16 +26,21 @@ CScriptMonster::~CScriptMonster()
 
 void CScriptMonster::Init()
 {
+	while (!m_tpActionQueue.empty()) {
+		xr_delete	(m_tpActionQueue.front());
+		m_tpActionQueue.erase(m_tpActionQueue.begin());
+	}
+	// animation
+	m_tpScriptAnimation		= 0;
+
+	// callbacks
+	if (Visual())
+		PKinematics(Visual())->Callback(0,0);
 }
 
 void CScriptMonster::reinit()
 {
 	inherited::reinit				();
-
-	while (!m_tpActionQueue.empty()) {
-		xr_delete	(m_tpActionQueue.front());
-		m_tpActionQueue.erase(m_tpActionQueue.begin());
-	}
 
 	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
 		m_tpCallbacks[i].m_lua_object = 0;
@@ -44,9 +49,6 @@ void CScriptMonster::reinit()
 
 	m_caScriptName					= "";
 	m_bScriptControl				= false;
-	m_tpScriptAnimation				= 0;
-	
-	PKinematics(Visual())->Callback	(0,0);
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
