@@ -49,3 +49,25 @@ CSE_ALifeDynamicObject *CSE_ALifeAnomalousZone::tpfGetBestDetector()
 	return						(0);
 #endif
 }
+
+CSE_ALifeItemWeapon	*CSE_ALifeSmartZone::tpfGetBestWeapon	(ALife::EHitType		&tHitType,			float		&fHitPower)
+{
+	m_tpCurrentBestWeapon		= 0;
+	return						(m_tpCurrentBestWeapon);
+}
+
+ALife::EMeetActionType CSE_ALifeSmartZone::tfGetActionType	(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection)
+{
+	return						(eMeetActionSmartTerrain);
+}
+
+bool CSE_ALifeSmartZone::bfActive							()
+{
+	return						(true);
+}
+
+CSE_ALifeDynamicObject *CSE_ALifeSmartZone::tpfGetBestDetector	()
+{
+	VERIFY2						(false,"This function shouldn't be called");
+	return						(0);
+}

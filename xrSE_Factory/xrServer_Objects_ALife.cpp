@@ -1416,6 +1416,64 @@ void CSE_ALifeTeamBaseZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeTeamBaseZone::FillProps		(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProps			(pref,items);
+	inherited::FillProps		(pref,items);
 	PHelper().CreateU8			(items, PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
+}
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeSmartZone
+////////////////////////////////////////////////////////////////////////////
+
+CSE_ALifeSmartZone::CSE_ALifeSmartZone	(LPCSTR caSection) : CSE_ALifeSpaceRestrictor(caSection), CSE_ALifeSchedulable(caSection)
+{
+}
+
+CSE_ALifeSmartZone::~CSE_ALifeSmartZone	()
+{
+}
+
+CSE_Abstract *CSE_ALifeSmartZone::base		()
+{
+	return						(this);
+}
+
+const CSE_Abstract *CSE_ALifeSmartZone::base	() const
+{
+	return						(this);
+}
+
+CSE_Abstract *CSE_ALifeSmartZone::init		()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(this);
+}
+
+void CSE_ALifeSmartZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeSmartZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeSmartZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeSmartZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+void CSE_ALifeSmartZone::FillProps		(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProps		(pref,items);
+}
+
+void CSE_ALifeSmartZone::update		()
+{
 }

@@ -11,6 +11,7 @@
 #include "space_restrictor.h"
 #include "../feel_touch.h"
 #include "script_space_forward.h"
+#include "script_export_space.h"
 
 class CScriptGameObject;
 class CScriptCallback;
@@ -39,4 +40,8 @@ public:
 #ifdef DEBUG
 	virtual	void	OnRender			();
 #endif
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CScriptZone)
+#undef script_type_list
+#define script_type_list save_type_list(CScriptZone)

@@ -93,3 +93,16 @@ void CSE_ALifeTeamBaseZone::script_register(lua_State *L)
 		)
 	];
 }
+
+void CSE_ALifeSmartZone::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_zone2(
+			CSE_ALifeSmartZone,
+			"cse_alife_smart_zone",
+			CSE_ALifeSpaceRestrictor,
+			CSE_ALifeSchedulable
+		)
+	];
+}
+

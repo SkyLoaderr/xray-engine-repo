@@ -45,6 +45,10 @@ class NET_Packet;
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(can_switch_offline,bool)\
 	DEFINE_LUA_WRAPPER_CONST_METHOD_0	(interactive,		bool)
 
+#define INHERIT_ZONE \
+	INHERIT_ALIFE\
+	DEFINE_LUA_WRAPPER_METHOD_V0		(update)
+
 #define INHERIT_CREATURE \
 	INHERIT_ALIFE\
 	DEFINE_LUA_WRAPPER_METHOD_0			(g_team,	u8)\
@@ -82,6 +86,14 @@ struct CWrapperAbstractALife : public T, public luabind::wrap_base {
 	typedef CWrapperAbstractALife<T>	self_type;
 	CWrapperAbstractALife				(LPCSTR section) : inherited(section){}
 	INHERIT_ALIFE;
+};
+
+template <typename T>
+struct CWrapperAbstractZone : public T, public luabind::wrap_base {
+	typedef T							inherited;
+	typedef CWrapperAbstractZone<T>		self_type;
+	CWrapperAbstractZone				(LPCSTR section) : inherited(section){}
+	INHERIT_ZONE;
 };
 
 template <typename T>
@@ -164,6 +176,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	luabind_virtual_Alife(a,b) \
 	luabind_virtual_creature(a,b)
 
+#define luabind_virtual_Zone(a,b) \
+	luabind_virtual_Alife(a,b) \
+	luabind_virtual_monster(a,b)
+
 #define luabind_virtual_Monster(a,b) \
 	luabind_virtual_Creature(a,b) \
 	luabind_virtual_monster(a,b)
@@ -186,6 +202,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife0(a,b) \
 	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractALife<a>,b) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_zone0(a,b) \
+	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractZone<a>,b) \
+	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
 
 #define luabind_class_creature0(a,b) \
 	DEFINE_LUABIND_CLASS_WRAPPER_0(a,CWrapperAbstractCreature<a>,b) \
@@ -214,6 +234,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractALife<a>,b,c) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
 
+#define luabind_class_zone1(a,b,c) \
+	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractZone<a>,b,c) \
+	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
+
 #define luabind_class_creature1(a,b,c) \
 	DEFINE_LUABIND_CLASS_WRAPPER_1(a,CWrapperAbstractCreature<a>,b,c) \
 	luabind_virtual_Creature(a,CWrapperAbstractCreature<a>)
@@ -240,6 +264,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife2(a,b,c,d) \
 	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractALife<a>,b,c,d) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_zone2(a,b,c,d) \
+	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractZone<a>,b,c,d) \
+	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
 
 #define luabind_class_creature2(a,b,c,d) \
 	DEFINE_LUABIND_CLASS_WRAPPER_2(a,CWrapperAbstractCreature<a>,b,c,d) \
@@ -268,6 +296,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractALife<a>,b,c,d,e) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
 
+#define luabind_class_zone3(a,b,c,d,e) \
+	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractZone<a>,b,c,d,e) \
+	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
+
 #define luabind_class_creature3(a,b,c,d,e) \
 	DEFINE_LUABIND_CLASS_WRAPPER_3(a,CWrapperAbstractCreature<a>,b,c,d,e) \
 	luabind_virtual_Creature(a,CWrapperAbstractCreature<a>)
@@ -294,6 +326,10 @@ struct CWrapperAbstractItem : public T, public luabind::wrap_base {
 #define luabind_class_alife4(a,b,c,d,e,f) \
 	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractALife<a>,b,c,d,e,f) \
 	luabind_virtual_Alife(a,CWrapperAbstractALife<a>)
+
+#define luabind_class_zone4(a,b,c,d,e,f) \
+	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractZone<a>,b,c,d,e,f) \
+	luabind_virtual_Zone(a,CWrapperAbstractZone<a>)
 
 #define luabind_class_creature4(a,b,c,d,e,f) \
 	DEFINE_LUABIND_CLASS_WRAPPER_4(a,CWrapperAbstractCreature<a>,b,c,d,e,f) \

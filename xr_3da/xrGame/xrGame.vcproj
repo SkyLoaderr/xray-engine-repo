@@ -6510,6 +6510,9 @@
 							<File
 								RelativePath=".\script_zone.h">
 							</File>
+							<File
+								RelativePath=".\script_zone_script.cpp">
+							</File>
 						</Filter>
 						<Filter
 							Name="TeamBaseZone"

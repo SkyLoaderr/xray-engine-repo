@@ -231,14 +231,31 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeSpaceRestrictor)
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;
 	Fvector							m_tAngles;
-	shared_str							m_caLevelToChange;
-	shared_str							m_caLevelPointToChange;
+	shared_str						m_caLevelToChange;
+	shared_str						m_caLevelPointToChange;
 
-									CSE_ALifeLevelChanger	(LPCSTR caSection);
-	virtual							~CSE_ALifeLevelChanger	();
+									CSE_ALifeLevelChanger		(LPCSTR caSection);
+	virtual							~CSE_ALifeLevelChanger		();
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeLevelChanger)
 #define script_type_list save_type_list(CSE_ALifeLevelChanger)
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALifeSchedulable)
+									CSE_ALifeSmartZone			(LPCSTR caSection);
+	virtual							~CSE_ALifeSmartZone			();
+	virtual CSE_Abstract			*base						();
+	virtual const CSE_Abstract		*base						() const;
+	virtual CSE_Abstract			*init						();
+	virtual void					update						();
+#ifdef XRGAME_EXPORTS
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
+	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
+	virtual bool					bfActive					();
+	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector			();
+#endif
+SERVER_ENTITY_DECLARE_END
+add_to_type_list(CSE_ALifeSmartZone)
+#define script_type_list save_type_list(CSE_ALifeSmartZone)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 	u32 							type;

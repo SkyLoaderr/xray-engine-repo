@@ -81,4 +81,5 @@
 #	include "script_string_table.h"
 #	include "script_reader.h"
 #	include "client_spawn_manager.h"
+#	include "script_zone.h"
 #endif
