@@ -64,24 +64,27 @@ BOOL	CInifile::Sect::line_exist( LPCSTR L, LPCSTR* val )
 }
 //------------------------------------------------------------------------------
 
-CInifile::CInifile(IReader* F)
+CInifile::CInifile(IReader* F ,LPCSTR path)
 {
 	fName		= 0;
 	bReadOnly	= TRUE;
 	bSaveAtEnd	= FALSE;
-	Load		(F);
+	Load		(F,path);
 }
 
-CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
+CInifile::CInifile(LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd)
 {
 	fName		= szFileName?xr_strdup(szFileName):0;
     bReadOnly	= ReadOnly;
     bSaveAtEnd	= SaveAtEnd;
 	if (bLoad)
 	{	
-		IReader* R = FS.r_open(szFileName);
-		Load	(R);
-		FS.r_close(R);
+    	string256 	path,folder; 
+		_splitpath	(fName, path, folder, 0, 0 );
+        strcat		(path,folder);
+		IReader* R 	= FS.r_open(szFileName);
+		Load		(R,path);
+		FS.r_close	(R);
 	}
 }
 
@@ -103,7 +106,7 @@ CInifile::~CInifile( )
 	}
 }
 
-void	CInifile::Load(IReader* F)
+void	CInifile::Load(IReader* F, LPCSTR path)
 {
 	Sect	Current;	Current.Name = 0;
 	char	str			[1024];
@@ -120,8 +123,17 @@ void	CInifile::Load(IReader* F)
 			comment		= xr_strdup(semi+1);
 		}
 
-		if (str[0] && (str[0]=='['))
-		{
+        if (str[0] && (str[0]=='#') && strstr(str,"#include")){
+        	string64	inc_name;	
+			R_ASSERT	(path&&path[0]);
+        	if (_GetItem	(str,1,inc_name,'"')){
+            	string256 	fn;
+                strconcat	(fn,path,inc_name);
+            	IReader* I 	= FS.r_open(fn); R_ASSERT3(I,"Can't find include file:",inc_name);
+            	Load		(I,path);
+                FS.r_close	(I);
+            }
+        }else if (str[0] && (str[0]=='[')){
 			xr_free(comment);
 			if (Current.Name && Current.Name[0])
 			{
@@ -132,8 +144,8 @@ void	CInifile::Load(IReader* F)
 //#pragma todo("find real section-name-end ']'")
 //			size_t L = strlen(str); str[L-1] = 0;
 			R_ASSERT3(strchr(str,']'),"Bad ini section found: ",str);
-			*strchr(str,']') = 0;
-			Current.Name = strlwr(xr_strdup(str+1));
+			*strchr(str,']') 	= 0;
+			Current.Name 		= strlwr(xr_strdup(str+1));
 		} else {
 			if (0==Current.Name)	{
 				xr_free(comment);

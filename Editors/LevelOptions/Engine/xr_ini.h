@@ -58,11 +58,11 @@ private:
 	LPSTR		fName;
 	Root		DATA;
 	BOOL		bReadOnly;
-	void		Load			(IReader* F);
+	void		Load			(IReader* F, LPCSTR path);
 public:
     BOOL		bSaveAtEnd;
 public:
-				CInifile		( IReader* F );
+				CInifile		( IReader* F, LPCSTR path=0 );
 				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);
 	virtual 	~CInifile		( );
     void		save_as         ( LPCSTR new_fname=0 );
