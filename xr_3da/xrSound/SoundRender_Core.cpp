@@ -244,7 +244,7 @@ void	CSoundRender_Core::create				( ref_sound& S, BOOL _3D, const char* fName, i
 	char*		E = strext(fn);
 	if (E)		*E = 0;
 	S.handle	= i_create_source				(fn,_3D);
-	S.g_type	= type;
+	S.g_type	= (type==st_SourceType)?S.handle->game_type():type;
 }
 
 void	CSoundRender_Core::play					( ref_sound& S, CObject* O, BOOL bLoop)

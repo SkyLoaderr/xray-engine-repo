@@ -62,6 +62,11 @@ enum {
 	sq_forcedword = u32(-1)
 };
 
+enum {
+	st_Undefined		= 0,
+	st_SourceType		= u32(-1),
+	st_forcedword		= u32(-1),
+};
 /*! \class ref_sound
 	\brief Sound source + control
 	
@@ -80,7 +85,7 @@ struct	ref_sound
     /*!
 		\sa ~ref_sound()
 	*/
-	ref_sound()							{ handle = 0; feedback=0; g_type=0; g_object=0; }
+	ref_sound()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; }
 	~ref_sound()						{ destroy(); }
 
 	//! Loader/initializer
@@ -91,7 +96,7 @@ struct	ref_sound
 		\param name Name of wave-file
 		\param type Sound type, usually for \a AI
 	*/
-	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=0);
+	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=st_SourceType);
 
 	//! Clones ref_sound from another
 	/*!
@@ -140,6 +145,7 @@ class XRSOUND_API	CSound_source
 {
 public:
 	virtual	u32				length_ms				( )		= 0;
+	virtual u32				game_type				( )		= 0;
 };
 
 /// definition (Sound Source)
@@ -203,7 +209,7 @@ public:
 
 	//@{
 	/// Sound interface
-	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=0)								= 0;
+	virtual void					create					( ref_sound& S, BOOL _3D,	LPCSTR fName,	int		type=st_SourceType)					= 0;
 	virtual void					destroy					( ref_sound& S)																			= 0;
 	virtual void					play					( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;
 	virtual void					play_unlimited			( ref_sound& S, CObject* O,								BOOL bLoop=false)				= 0;

@@ -34,6 +34,7 @@ public:
     void					unload					();
 	void					decompress				(u32	line);
 
-	virtual	u32				length_ms				( )	{return dwTimeTotal;	}
+	virtual	u32				length_ms				()	{return dwTimeTotal;	}
+	virtual u32				game_type				()	{return m_uGameType;	}
 };
 #endif
