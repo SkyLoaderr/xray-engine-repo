@@ -20,6 +20,10 @@ To SLIPCH:
 
 
 To OLES : 
+---D	[CLevel::ClientSend][Objects.net_Export(&P)][NET_Packet.w] :
+		VERIFY		(B.count<NET_PacketSizeLimit);
+		B.count == 16260, я так понял слишком много объектов за один раз, всё не помещается в пакет
+		
 +++S		вылетает CHOM::Render_DB (CHOM-CDB)
 ---O	(?) LightPPA (line 202) - inactive.empty() = false
 ---K	(?) глюк с тенью от первого лица (-noprefetch -ltx user_w.ltx -start server(anomaly_test/single) client(localhost))
