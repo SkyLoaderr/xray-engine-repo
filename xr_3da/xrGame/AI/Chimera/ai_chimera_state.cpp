@@ -792,6 +792,8 @@ void CChimeraExploreNDE::Init()
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
 	m_tEnemy.position = se.Position;
 
+	if (m_tEnemy.obj) pMonster->AI_Path->DestNode = m_tEnemy.obj->AI_NodeID;
+
 	// проиграть анимацию испуга
 	SetInertia(6000);
 }

@@ -46,6 +46,9 @@ void CSoundMemory::HearSound(const SoundElem &s)
 	if (s.type == SOUND_TYPE_MONSTER_DYING) return;		// todo
 	if (s.type == NONE_DANGEROUS_SOUND) return;			// todo
 	if (s.type == WEAPON_BULLET_RICOCHET) return;		// todo
+	
+	// не регистрировать звуки, у которых владелец не известен
+	if (!s.who) return;									// todo
 
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
