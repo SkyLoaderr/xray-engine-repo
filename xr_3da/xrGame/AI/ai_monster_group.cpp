@@ -81,7 +81,10 @@ void CMonsterSquad::RegisterMember(CEntity *pE)
 	GTask blank_task;
 	InitTask(&blank_task);
 	squad.insert(mk_pair(pE, blank_task));
-	states.insert(mk_pair(pE, 0));
+	
+	SEntityState S;
+	S.pEnemy = 0;
+	states.insert(mk_pair(pE, S));
 
 	if (!leader) leader = pE;
 }
@@ -339,6 +342,7 @@ void CMonsterSquad::UpdateMonsterData(CEntity *pE, CEntity *pEnemy)
 {
 	SEntityState S;
 	S.pEnemy = pEnemy;
+	S.target_pos.set(0.f,0.f,0.f);
 	
 	ENTITY_STATE_MAP_IT it = states.find(pE);
 	if (it == states.end()) {
@@ -358,65 +362,35 @@ Fvector CMonsterSquad::GetTargetPoint(CEntity *pE)
 }
 
 
-
-struct predicate_remove_members {
-	CEntity	*pEntity;
-	predicate_remove_members(CEntity *pE)	{pEntity = pE;}
-	
-	
-	bool operator() (const )	{return (x.time < new_time); }
-};
-
-
-template<class Collection, class Predicate>
-void remove_if2 (Collection &_map, Collection::iterator it1, Collection::iterator it2, Predicate pr)
-{
-	for (Collection::iterator it = it1, nit; it != it2;	)
-	{
-		nit = it; ++nit;
-		if (pr(*it))
-			_map.erase (it);
-	}
-}
-
-template<class Collection, class Predicate>
-inline void remove_if2 (Collection &doc, Predicate pr)
-{
-	remove_if2 (doc, doc.begin(), doc.end(), pr);
-}
-
-
-
-
 void CMonsterSquad::UpdateDecentalized()
 {
 	
-	ENTITY_STATE_MAP	new_map;
-	new_map				= states;	
-	ENTITY_STATE_MAP	cur_map;
-	
-	while (!new_map.empty()) {
-		ENTITY_STATE_MAP_IT	it	= new_map.begin();
-		CEntity	*pGeneralEnemy	= it->second.pEnemy;
-
-		for (;it != new_map.end(); it++) {
-			if (it->second.pEnemy == pGeneralEnemy) cur_map.insert(*it);
-		}
-		
-		// work with cur_map
-		// ... 
-		
-		
-		//---------------------------------
-		// 
-		cur_map.clear();
-		
-		// remove from new_map all with pGeneralEnemy
-		
-		for (it = new_map.begin(); it != )
-		
-		it = std::remove_if(new_map.begin(), new_map.end(), predicate_remove_members(pGeneralEnemy));
-		new_map.erase(it, new_map.end());
+//	ENTITY_STATE_MAP	new_map;
+//	new_map				= states;	
+//	ENTITY_STATE_MAP	cur_map;
+//	
+//	while (!new_map.empty()) {
+//		ENTITY_STATE_MAP_IT	it	= new_map.begin();
+//		CEntity	*pGeneralEnemy	= it->second.pEnemy;
+//
+//		for (;it != new_map.end(); it++) {
+//			if (it->second.pEnemy == pGeneralEnemy) cur_map.insert(*it);
+//		}
+//		
+//		// work with cur_map
+//		// ... 
+//		
+//		
+//		//---------------------------------
+//		// 
+//		cur_map.clear();
+//		
+//		// remove from new_map all with pGeneralEnemy
+//		
+////		for (it = new_map.begin(); it != )
+////		
+////		it = std::remove_if(new_map.begin(), new_map.end(), predicate_remove_members(pGeneralEnemy));
+////		new_map.erase(it, new_map.end());
 
 	}
 
@@ -440,6 +414,5 @@ void CMonsterSquad::UpdateDecentalized()
 //		
 //		current_state_it++;
 //	}
-}
 
 
