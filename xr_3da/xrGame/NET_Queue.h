@@ -18,8 +18,11 @@ public:
 		P.r_u16			(destination);
 
 		DWORD size		= P.r_elapsed();
-		data.resize		(size);
-		P.r				(data.begin(),size);
+		if (size)	
+		{
+			data.resize		(size);
+			P.r				(data.begin(),size);
+		}
 	}
 	void				export		(NET_Packet& P)
 	{
@@ -28,7 +31,7 @@ public:
 		P.w_u32			(timestamp	);
 		P.w_u16			(type		);
 		P.w_u16			(destination);
-		P.w				(data.begin(),data.size());
+		if (data.size())	P.w(data.begin(),data.size());
 	}
 	void				implication	(NET_Packet& P) const
 	{
