@@ -19,11 +19,9 @@
 class CInventoryItem;
 class CInventory;
 
-typedef CInventoryItem*			PIItem;
-typedef xr_set<PIItem>			TIItemSet;
-typedef xr_list<PIItem>			TIItemList;
-typedef TIItemSet::iterator		PSPIItem;
-typedef TIItemList::iterator	PPIItem;
+typedef CInventoryItem*				PIItem;
+typedef xr_vector<PIItem>			TIItemContainer;
+typedef TIItemContainer::iterator	PSPIItem;
 
 
 //положение вещи в инвенторе (используется актером 
