@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_BODYINSTANCE_H__68A83E66_CEC3_4207_84A0_B7997A253B87__INCLUDED_)
-#define AFX_BODYINSTANCE_H__68A83E66_CEC3_4207_84A0_B7997A253B87__INCLUDED_
+#ifndef BodyInstanceH
+#define BodyInstanceH
 #pragma once
 
 #include "skeletonX.h"
@@ -345,4 +345,4 @@ public:
 IC CKinematics* PKinematics		(IVisual* V) { return dynamic_cast<CKinematics*>(V); }
 
 
-#endif // !defined(AFX_BODYINSTANCE_H__68A83E66_CEC3_4207_84A0_B7997A253B87__INCLUDED_)
+#endif // BodyInstanceH

@@ -118,6 +118,7 @@ CActorTools::CActorTools()
 	m_pEditObject		= 0;
     m_bObjectModified	= false;
     m_bMotionModified	= false;
+    m_bNeedUpdateMotion	= false;
     m_ObjectProps 		= 0;
     m_MotionProps 		= 0;
     m_bReady			= false;
@@ -319,8 +320,9 @@ void CActorTools::Clear(){
     m_MotionProps->ClearProperties();
     fraLeftBar->SkeletonPartEnabled(false);
 
-	m_bObjectModified = false;
-	m_bMotionModified = false;
+	m_bObjectModified 	= false;
+	m_bMotionModified 	= false;
+    m_bNeedUpdateMotion = false;
 
     UI.RedrawScene();
 }

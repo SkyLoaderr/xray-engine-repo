@@ -101,16 +101,20 @@ void CActorTools::EngineModel::Render(const Fmatrix& mTransform)
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::MotionModified(){
+void CActorTools::MotionModified()
+{
 	m_bMotionModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
-    if (fraLeftBar->ebRenderEngineStyle->Down)
-    	if (m_RenderObject.UpdateVisual(m_pEditObject,false,true)){
-        	PlayMotion();
+	m_bNeedUpdateMotion = true;
+    if (fraLeftBar->ebRenderEngineStyle->Down){ // ошибка при переименовании в Editor режиме
+		m_bNeedUpdateMotion = false;
+        if (m_RenderObject.UpdateVisual(m_pEditObject,false,true)){
+            PlayMotion();
         }else{
-        	m_RenderObject.DeleteVisual();
-	        fraLeftBar->SetRenderStyle(false);
+            m_RenderObject.DeleteVisual();
+            fraLeftBar->SetRenderStyle(false);
         }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -160,6 +164,7 @@ void CActorTools::MakePreview()
         	m_RenderObject.DeleteVisual();
 	        fraLeftBar->SetRenderStyle(false);
         }
+		m_bNeedUpdateMotion = false;
     }else{
     	ELog.DlgMsg(mtError,"Scene empty. Load object first.");
     }
@@ -197,6 +202,11 @@ void __fastcall CActorTools::BPOnDraw(PropValue* sender, LPVOID draw_val)
     (*((DWORD*)draw_val))++;
 }
 //------------------------------------------------------------------------------
+void __fastcall CActorTools::OnMotionNameChange(PropValue* V)
+{
+    MotionModified	();
+}
+//------------------------------------------------------------------------------
 void CActorTools::FillMotionProperties()
 {
 	R_ASSERT(m_pEditObject);
@@ -205,7 +215,7 @@ void CActorTools::FillMotionProperties()
 		PropItemVec items;
         PropValue* P=0;
         P=PHelper.CreateText	(items,"Name",		&SM->Name(), sizeof(SM->Name()));
-        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,0);
+        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMotionNameChange);
         P->Owner()->SetEvents	(FHelper.NameDraw);
         P->Owner()->tag			= (int)FHelper.FindObject(fraLeftBar->tvMotions,SM->Name()); VERIFY(P->Owner()->tag);
         PHelper.CreateFloat		(items,"Speed",		&SM->fSpeed,  0.f,20.f,0.01f,2);
@@ -252,6 +262,7 @@ void CActorTools::PlayMotion()
 	if (m_pEditObject)
     	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPlay();
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
+        	if (m_bNeedUpdateMotion){ MotionModified(); }
             CSMotion* M=m_pEditObject->GetActiveSMotion();
             if (M&&m_RenderObject.IsRenderable())
             	if (M->m_Flags.is(esmFX))	m_RenderObject.m_pBlend = PKinematics(m_RenderObject.m_pVisual)->PlayFX(M->Name());

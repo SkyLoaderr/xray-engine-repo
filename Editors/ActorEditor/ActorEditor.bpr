@@ -67,7 +67,9 @@
       Intermediate\R_Backend_Runtime.obj Intermediate\r_constants.obj 
       Intermediate\R_Backend.obj Intermediate\R_DStreams.obj 
       Intermediate\Blender_detail_still.obj Intermediate\Blender_tree.obj 
-      Intermediate\ELog.obj Intermediate\Blender_Palette.obj"/>
+      Intermediate\ELog.obj Intermediate\Blender_Palette.obj 
+      Intermediate\du_box.obj Intermediate\du_sphere.obj 
+      Intermediate\Blender_Recorder_R2.obj Intermediate\R_Backend_xform.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -91,7 +93,7 @@
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ActorEditor.cpp"/>
     <INCLUDEPATH value="Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;P:\xrCDB;P:\xrSound"/>
-    <LIBPATH value="Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib"/>
+    <LIBPATH value="Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;&quot;x:\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
@@ -251,6 +253,10 @@
       <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -262,7 +268,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=62
+Build=63
 Debug=1
 PreRelease=0
 Special=0
@@ -274,7 +280,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.2.62
+FileVersion=1.0.2.63
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -318,36 +324,36 @@ Item29=R:\STLport-4.5\stlport\BC50;c:\rad\borland\CBuilder5\Projects\;$(BCB)\inc
 
 [HistoryLists\hlLibraryPath]
 Count=30
-Item0=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib
-Item1=lib;Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib;..\lib\dx
-Item2=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib;..\lib\dx
-Item3=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source
-Item4=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\Components\Eldos\Code
-Item5=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx\;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\Components\Eldos\Code\
-Item6=Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item7=Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item8=c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item9=c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item10=lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx;R:\Borland\Components\Eldos\Code\Source;R:\Borland\Components\Eldos\Code
-Item11=r:\borland\components\alexmx;editor;lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item12=lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item13=engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item14=engine;engin;eng;en\;e\;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item15=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item16=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item17=c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item18=c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item19=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item20=edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item21=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item22=c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item23=QHull;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item24=c:\rad\borland\components\gradient;c:\rad\borland\components\temp;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item25=c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item26=c:\rad\borland\CBuilder5\Projects;c:\rad\borland\components\renderwindow;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item27=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item28=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn;c:\rad\borland\components\multi;C:\RAD\borland\Components\RX\Units;C:\RAD\borland\Components\ElTree\Code\Source
-Item29=Collide;c:\rad\borland\components\extbtn\;C:\RAD\bcb5\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ElTree\Code\;c:\rad\borland\components\mstree\;c:\rad\borland\components\enhtree\;$(BCB)\Imports;c:\rad\bcb5\CBuilder5\Projects\;$(BCB)\Projects\Lib;c:\rad\borland\components\multi\;edit;c:\rad\borland\CBuilder5\Projects\;$(BCB)\lib\obj;$(BCB)\lib;C:\RAD\borland\Components\RX\Units\;C:\RAD\bcb5\Components\rx\Units\;C:\RAD\bcb5\Components\Multi\;C:\RAD\borland\Components\ElTree\Code\Source\;C:\RAD\bcb5\Components\ExtBtn\
+Item0=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib;x:\
+Item1=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;x:\;..\lib\dx;..\lib
+Item2=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;x:;..\lib\dx;..\lib
+Item3=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib\dx;..\lib
+Item4=lib;Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib;..\lib\dx
+Item5=Engine\Animations;Engine\BLENDERS;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;..\lib;..\lib\dx
+Item6=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source
+Item7=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\Components\Eldos\Code
+Item8=Engine\Animations;Engine\BLENDERS;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx\;R:\Borland\Components6\ElPack\Code;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\Components\Eldos\Code\
+Item9=Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
+Item10=Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
+Item11=c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
+Item12=c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
+Item13=lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx;R:\Borland\Components\Eldos\Code\Source;R:\Borland\Components\Eldos\Code
+Item14=r:\borland\components\alexmx;editor;lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item15=lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item16=engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item17=engine;engin;eng;en\;e\;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item18=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item19=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item20=c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item21=c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item22=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item23=edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item24=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item25=c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item26=QHull;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item27=c:\rad\borland\components\gradient;c:\rad\borland\components\temp;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item28=c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item29=c:\rad\borland\CBuilder5\Projects;c:\rad\borland\components\renderwindow;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
 
 [HistoryLists\hlDebugSourcePath]
 Count=3

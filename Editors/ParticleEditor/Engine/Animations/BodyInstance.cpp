@@ -205,7 +205,8 @@ void	CKinematics::LL_FadeCycle(int part, float falloff)
 		CBlend& B		= *Blend[I];
 		B.blend			= CBlend::eFalloff;
 		B.blendFalloff	= falloff;
-		if (!B.playing)	{
+//		if (!B.playing)	{
+		if (!B.playing&&!B.noloop){ //.
 			B.playing	= TRUE;
 			B.noloop	= FALSE;
 			B.blendAmount=EPS_S;
@@ -301,10 +302,12 @@ void CKinematics::Update ()
 		for (; I!=E; I++)
 		{
 			CBlend& B = *(*I);
-			if (!B.playing)					continue;
+//			if (!B.playing) continue;
+			if (!B.playing&&!B.noloop) 		continue; //.
 			if (B.dwFrame==Device.dwFrame)	continue;
 			B.dwFrame		=	Device.dwFrame;
-			B.timeCurrent	+=	dt*B.speed;
+//			B.timeCurrent += dt*B.speed;
+			if (B.playing) 	B.timeCurrent += dt*B.speed; //.
 			switch (B.blend) 
 			{
 			case CBlend::eFREE_SLOT: 

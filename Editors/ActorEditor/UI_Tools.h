@@ -88,6 +88,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bObjectModified;
     bool				m_bMotionModified;
     bool				m_bReady;
+    bool				m_bNeedUpdateMotion;
 
     EAction				m_Action;
     bool				m_bHiddenMode;
@@ -110,6 +111,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall 	BPOnAfterEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnBeforeEdit			(PropValue* sender, LPVOID edit_val);
 	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
+	void __fastcall 	OnMotionNameChange		(PropValue* sender);
 public:
 	EngineModel			m_RenderObject;
     PreviewModel		m_PreviewObject;
