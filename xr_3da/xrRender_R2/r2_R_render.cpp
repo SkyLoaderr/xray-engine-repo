@@ -224,7 +224,7 @@ void CRender::Render		()
 		Lights_LastFrame.clear	();
 	}
 
-	// Lighting
+	// Lighting and sync-point
 	Target.phase_accumulator			();
 	HOM.Disable							();
 	render_lights						(LP_normal);
