@@ -24,18 +24,10 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierDie = 0,
 		aiSoldierUnderFire,
 		aiSoldierSenseSomething,
-		aiSoldierGoInThisDirection,
-		aiSoldierGoToThisPosition,
-		aiSoldierWaitOnPosition,
-		aiSoldierHoldThisPosition,
-		aiSoldierHoldPositionUnderFire,
 		aiSoldierFreeHunting,
 		aiSoldierFollowMe,
 		aiSoldierAttack,
-		aiSoldierDefend,
 		aiSoldierPursuit,
-		aiSoldierRetreat,
-		aiSoldierCover,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -45,7 +37,7 @@ class CAI_Soldier : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		// ai
-		ESoldierStates		eCurrentState;
+		ESoldierStates	eCurrentState;
 		bool			bStopThinking;
 		// hit data
 		DWORD			dwHitTime;
@@ -96,13 +88,13 @@ class CAI_Soldier : public CCustomMonster
 
 		void SetLessCoverLook(NodeCompressed *tNode);
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
-		void vfInitAttack(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader);
+		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S);
-		void vfSearchForBetterPosition(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader);
+		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
-		bool bfCheckIfCanKillMember(CSoldierSelectorAttack &S, CEntity* &Leader);
-		void vfSetFire(bool bFire, CSoldierSelectorAttack &S, CEntity* &Leader);
-		void vfSetMovementType();
+		bool bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader);
+		void vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader);
+		void vfSetMovementType(bool bCrouched, float fSpeed);
 		void vfCheckForSavedEnemy();
 
 	public:

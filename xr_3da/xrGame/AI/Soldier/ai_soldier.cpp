@@ -13,7 +13,7 @@
 #include "ai_soldier_selectors.h"
 #include "..\\..\\..\\bodyinstance.h"
 
-#define WRITE_LOG
+//#define WRITE_LOG
 #define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
@@ -288,22 +288,13 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	/**/
 }
 
-void CAI_Soldier::vfInitAttack(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-	bBuildPathToLostEnemy = false;
-	// saving an enemy
-	tSavedEnemy = Enemy.Enemy;
-	tSavedEnemyPosition = Enemy.Enemy->Position();
-	tpSavedEnemyNode = Enemy.Enemy->AI_Node;
-	dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 	// checking if leader is dead then make myself a leader
 	if (Leader->g_Health() <= 0)
 		Leader = this;
 	// setting watch mode to false
 	bool bWatch = false;
-	// get pointer to the class of node estimator 
-	// for finding the best node in the area
-	S = SelectorAttack;
 	// if i am not a leader then assign leader
 	if (Leader != this) {
 		S.m_tLeader = Leader;
@@ -328,9 +319,18 @@ void CAI_Soldier::vfInitAttack(CSoldierSelectorAttack &S, CSquad &Squad, CEntity
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 	
-	S.m_tEnemy			= Enemy.Enemy;
-	S.m_tEnemyPosition	= Enemy.Enemy->Position();
-	S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
+	if (Enemy.Enemy) {
+		bBuildPathToLostEnemy = false;
+		// saving an enemy
+		tSavedEnemy = Enemy.Enemy;
+		tSavedEnemyPosition = Enemy.Enemy->Position();
+		tpSavedEnemyNode = Enemy.Enemy->AI_Node;
+		dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
+
+		S.m_tEnemy			= Enemy.Enemy;
+		S.m_tEnemyPosition	= Enemy.Enemy->Position();
+		S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
+	}
 	
 	S.taMembers = &(Squad.Groups[g_Group()].Members);
 	
@@ -357,7 +357,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	}
 }
 
-void CAI_Soldier::vfSearchForBetterPosition(CSoldierSelectorAttack &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
 	if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
 		m_dwLastRangeSearch = S.m_dwCurTime;
@@ -391,7 +391,7 @@ void CAI_Soldier::vfAimAtEnemy()
 	q_look.o_look_speed=_FB_look_speed;
 }
 
-bool CAI_Soldier::bfCheckIfCanKillMember(CSoldierSelectorAttack &S, CEntity* &Leader)
+bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
 {
 	// setting up an action
 	Fvector tFireVector, tMyPosition = S.m_tMyPosition, tEnemyPosition = S.m_tEnemyPosition;
@@ -411,30 +411,35 @@ bool CAI_Soldier::bfCheckIfCanKillMember(CSoldierSelectorAttack &S, CEntity* &Le
 				break;
 			}
 
-	return(false);
-	//return(bCanKillMember);
+	//return(false);
+	return(bCanKillMember);
 }
 
-void CAI_Soldier::vfSetFire(bool bFire, CSoldierSelectorAttack &S, CEntity* &Leader)
+void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
 {
-	if (bFire)
-		if (Weapons->ActiveWeapon()->GetAmmoElapsed())
+	if (bFire) {
+		if (!(Weapons->ActiveWeapon()->GetAmmoElapsed())) {
 			q_action.setup(AI::AIC_Action::FireEnd);
+			Weapons->ActiveWeapon()->Reload();
+		}
 		else
 			if (!bfCheckIfCanKillMember(S,Leader))
 				q_action.setup(AI::AIC_Action::FireBegin);
 			else
 				q_action.setup(AI::AIC_Action::FireEnd);
+	}
 	else
 		q_action.setup(AI::AIC_Action::FireEnd);
 }
 
-void CAI_Soldier::vfSetMovementType()
+void CAI_Soldier::vfSetMovementType(bool bCrouched, float fSpeed)
 {
-	if (m_bCrouched)
+	if (bCrouched)
+		Squat();
+	else
 		StandUp();
 	
-	m_fCurSpeed = m_fMaxSpeed;
+	m_fCurSpeed = fSpeed;
 }
 
 void CAI_Soldier::vfCheckForSavedEnemy()
@@ -450,6 +455,8 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 #define INIT_SQUAD_AND_LEADER \
 	CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];\
 	CEntity* Leader = Squad.Leader;\
+	if (Leader->g_Health() <= 0)\
+		Leader = this;\
 	R_ASSERT (Leader);
 
 
@@ -458,30 +465,18 @@ void CAI_Soldier::Attack()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Attack");
 #endif
-	/************************************************************************/
-	/* Is the soldier dead then go to the state Death                      */
-	/************************************************************************/
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
 		return;
 	}
-	/************************************************************************/
-	/* If there is no enemy then 1) it is killed 2) it si lost		        */
-	/************************************************************************/
 	SelectEnemy(Enemy);
-	/************************************************************************/
-	/* Probably we should better search for another enemy...				*/
-	/************************************************************************/
-	// do I see the enemies?
 	if (!(Enemy.Enemy)) {
-		// did we kill the enemy ?
 		if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
 			eCurrentState = tStateStack.top();
 			tStateStack.pop();
 			q_action.setup(AI::AIC_Action::FireEnd);
 			m_dwLastRangeSearch = 0;
 		}
-		//  no, we lost him
 		else {
 			dwLostEnemyTime = Level().timeServer();
 			eCurrentState = aiSoldierPursuit;
@@ -490,14 +485,11 @@ void CAI_Soldier::Attack()
 		}
 		return;
 	}
-	/************************************************************************/
-	/* If enemy visible then attack him                                     */
-	/************************************************************************/
 	if (Enemy.bVisible) {
 		
 		INIT_SQUAD_AND_LEADER;
 		
-		vfInitAttack(SelectorAttack,Squad,Leader);
+		vfInitSelector(SelectorAttack,Squad,Leader);
 		
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(&SelectorAttack);
@@ -508,15 +500,13 @@ void CAI_Soldier::Attack()
 		
 		vfSetFire(true,SelectorAttack,Leader);
 		
-		vfSetMovementType();
+		vfSetMovementType(false,m_fMaxSpeed);
 
 		bStopThinking = true;
 		return;
 	}
 	else {
-		/************************************************************************/
-		/* if i didn't see the enemy - save it's parameters						*/
-		/************************************************************************/
+		
 		INIT_SQUAD_AND_LEADER;
 		
 		vfCheckForSavedEnemy();
@@ -532,21 +522,11 @@ void CAI_Soldier::Attack()
 		
 		vfSetFire(false,SelectorAttack,Leader);
 		
-		vfSetMovementType();
+		vfSetMovementType(false,m_fMaxSpeed);
 		
 		bStopThinking = true;
 		return;
 	}
-}
-
-void CAI_Soldier::Cover()
-{
-	bStopThinking = true;
-}
-
-void CAI_Soldier::Defend()
-{
-	bStopThinking = true;
 }
 
 void CAI_Soldier::Die()
@@ -559,8 +539,8 @@ void CAI_Soldier::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	bActive = false;
-	bEnabled = false;
+	//bActive = false;
+	//bEnabled = false;
 	
 	bStopThinking = true;
 }
@@ -575,146 +555,64 @@ void CAI_Soldier::FollowMe()
 		eCurrentState = aiSoldierDie;
 		return;
 	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do I see the enemies?
-		if (Enemy.Enemy)		{
-			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
-			m_dwLastRangeSearch = 0;
-			return;
-		}
-		else {
-			// checking if I am under fire
-			DWORD dwCurTime = Level().timeServer();
-			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-				tStateStack.push(eCurrentState);
-				eCurrentState = aiSoldierUnderFire;
-				m_dwLastRangeSearch = 0;
-				return;
-			}
-			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
-					m_dwLastRangeSearch = 0;
-					return;
-				}
-				else {
-					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					CGroup& Group = Squad.Groups[g_Group()];
-					if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-						tHitDir = Group.m_tLastHitDirection;
-						dwHitTime = Group.m_dwLastHitTime;
-						tStateStack.push(eCurrentState);
-						eCurrentState = aiSoldierUnderFire;
-						m_dwLastRangeSearch = 0;
-						return;
-					}
-					else {
-						// determining who is leader
-						CEntity* Leader = Squad.Leader;
-						// checking if the leader exists
-						R_ASSERT (Leader);
-						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
-							Leader = this;
-						// I am leader then go to state "Free Hunting"
-						if (Leader == this) {
-							eCurrentState = aiSoldierFreeHunting;
-							return;
-						}
-						else {
-							bool bWatch = false;
-							// get pointer to the class of node estimator 
-							// for finding the best node in the area
-							CSoldierSelectorFollow S = SelectorFollow;
-							if (Leader != this) {
-								S.m_tLeader = Leader;
-								S.m_tLeaderPosition = Leader->Position();
-								S.m_tpLeaderNode = Leader->AI_Node;
-								S.m_tLeaderNode = Leader->AI_NodeID;
-							}
-							// otherwise assign leader to null
-							else {
-								S.m_tLeader = 0;
-								S.m_tLeaderPosition.set(0,0,0);
-								S.m_tpLeaderNode = NULL;
-								S.m_tLeaderNode = -1;
-							}
-							S.m_tHitDir			= tHitDir;
-							S.m_dwHitTime		= dwHitTime;
-							
-							S.m_dwCurTime		= Level().timeServer();
-							
-							S.m_tMe				= this;
-							S.m_tpMyNode		= AI_Node;
-							S.m_tMyPosition		= Position();
-							
-							S.m_tEnemy			= 0;
-							S.m_tEnemyPosition.set(0,0,0);
-							S.m_tpEnemyNode		= NULL;
-							
-							//S.taMembers = Squad.Groups[g_Group()].Members;
-							// checking if I need to rebuild the path i.e. previous search
-							// has found better destination node
-							if (AI_Path.bNeedRebuild) {
-								Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-								if (AI_Path.Nodes.size() > 2) {
-								// if path is long enough then build travel line
-									AI_Path.BuildTravelLine(Position());
-								}
-								else {
-								// if path is too short then clear it (patch for ExecMove)
-									AI_Path.TravelPath.clear();
-									AI_Path.bNeedRebuild = FALSE;
-								}
-							} 
-							else 
-								if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH) {
-									m_dwLastRangeSearch = S.m_dwCurTime;
-									// fill arrays of members and exclude myself
-									Device.Statistic.AI_Node.Begin();
-									Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-									Device.Statistic.AI_Node.End();
-									// search for the best node according to the 
-									// SelectFollow evaluation function in the radius 35 meteres
-									float fOldCost;
-									Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
-									// if search has found new best node then 
-									if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-										// if old cost minus new cost is a little then soldier is too lazy
-										// to move there
-										AI_Path.DestNode		= S.BestNode;
-										AI_Path.bNeedRebuild	= TRUE;
-									}
-									else { 
-										// search hasn't found a better node we have to look around
-										bWatch = true;
-									}
-									
-									if (AI_Path.TravelPath.size() < 2)
-										AI_Path.bNeedRebuild	= TRUE;
-								}
-							// setting up a look
-							// getting my current node
-							NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
-							// if we are going somewhere
-							SetLessCoverLook(tNode);
-							// setting up an action
-							q_action.setup(AI::AIC_Action::FireEnd);
-							// checking flag to stop processing more states
-							m_fCurSpeed = m_fMinSpeed;
-							bStopThinking = true;
-							return;
-						}
-					}
-				}
-			}
-		}
+		
+	SelectEnemy(Enemy);
+	// do I see the enemies?
+	if (Enemy.Enemy)		{
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierAttack;
+		m_dwLastRangeSearch = 0;
+		return;
 	}
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierSenseSomething;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	if (Leader == this) {
+		eCurrentState = aiSoldierFreeHunting;
+		return;
+	}
+
+	vfInitSelector(SelectorFollow,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorFollow,Squad,Leader);
+		
+	SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,SelectorFollow,Leader);
+
+	vfSetMovementType(false,m_fMinSpeed);
+	// stop processing more rules
+	bStopThinking = true;
 }
 
 void CAI_Soldier::FreeHunting()
@@ -727,150 +625,58 @@ void CAI_Soldier::FreeHunting()
 		eCurrentState = aiSoldierDie;
 		return;
 	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do I see the enemies?
-		if (Enemy.Enemy)		{
-			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
-			m_dwLastRangeSearch = 0;
-			return;
-		}
-		else {
-			DWORD dwCurTime = Level().timeServer();
-			if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-				tStateStack.push(eCurrentState);
-				eCurrentState = aiSoldierUnderFire;
-				m_dwLastRangeSearch = 0;
-				return;
-			}
-			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
-					m_dwLastRangeSearch = 0;
-					return;
-				}
-				else {
-					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					CGroup& Group = Squad.Groups[g_Group()];
-					if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-						tHitDir = Group.m_tLastHitDirection;
-						dwHitTime = Group.m_dwLastHitTime;
-						tStateStack.push(eCurrentState);
-						eCurrentState = aiSoldierUnderFire;
-						m_dwLastRangeSearch = 0;
-						return;
-					}
-					else {
-						// determining who is leader
-						CEntity* Leader = Squad.Leader;
-						// checking if the leader exists
-						R_ASSERT (Leader);
-						// checking if leader is dead then make myself a leader
-						if (Leader->g_Health() <= 0)
-							Leader = this;
-						// setting up watch mode to false
-						bool bWatch = false;
-						// get pointer to the class of node estimator 
-						// for finding the best node in the area
-						CSoldierSelectorFreeHunting S = SelectorFreeHunting;
-						// if i am not a leader then assign leader
-						if (Leader != this) {
-							S.m_tLeader = Leader;
-							S.m_tLeaderPosition = Leader->Position();
-							S.m_tpLeaderNode = Leader->AI_Node;
-							S.m_tLeaderNode = Leader->AI_NodeID;
-						}
-						// otherwise assign leader to null
-						else {
-							S.m_tLeader = 0;
-							S.m_tLeaderPosition.set(0,0,0);
-							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
-						}
-						S.m_tHitDir			= tHitDir;
-						S.m_dwHitTime		= dwHitTime;
-						
-						S.m_dwCurTime		= Level().timeServer();
-						
-						S.m_tMe				= this;
-						S.m_tpMyNode		= AI_Node;
-						S.m_tMyPosition		= Position();
-						
-						S.m_tEnemy			= 0;
-						S.m_tEnemyPosition.set(0,0,0);
-						S.m_tpEnemyNode		= NULL;
-						
-						//S.taMembers = Squad.Groups[g_Group()].Members;
-						// checking if I need to rebuild the path i.e. previous search
-						// has found better destination node
-						if (AI_Path.bNeedRebuild) {
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-							if (AI_Path.Nodes.size() > 2) {
-							// if path is long enough then build travel line
-								AI_Path.BuildTravelLine(Position());
-							}
-							else
-							// if path is too short then clear it (patch for ExecMove)
-								AI_Path.TravelPath.clear();
-						} 
-						else 
-							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-								m_dwLastRangeSearch = S.m_dwCurTime;
-								// fill arrays of members and exclude myself
-								Device.Statistic.AI_Node.Begin();
-								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-								Device.Statistic.AI_Node.End();
-								// SelectFollow evaluation function in the radius 35 meteres
-								float fOldCost;
-								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-								// if search has found new best node then 
-								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-									AI_Path.DestNode		= S.BestNode;
-									AI_Path.bNeedRebuild	= TRUE;
-								} 
-								else 
-									// search hasn't found a better node we have to look around
-									bWatch = true;
-								if (AI_Path.TravelPath.size() < 2)
-									AI_Path.bNeedRebuild	= TRUE;
-							}
-						// setting up a look
-						// getting my current node
-						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
-						
-						SetLessCoverLook(tNode);
-						
-						q_action.setup(AI::AIC_Action::FireEnd);
-						// checking flag to stop processing more states
-						m_fCurSpeed = m_fMinSpeed;
-						bStopThinking = true;
-						return;
-					}
-				}
-			}
-		}
+		
+	SelectEnemy(Enemy);
+	// do I see the enemies?
+	if (Enemy.Enemy)		{
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierAttack;
+		m_dwLastRangeSearch = 0;
+		return;
 	}
-}
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierSenseSomething;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
 
-void CAI_Soldier::GoInThisDirection()
-{
-}
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
 
-void CAI_Soldier::GoToThisPosition()
-{
-}
+	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
-void CAI_Soldier::HoldPositionUnderFire()
-{
-	bStopThinking = true;
-}
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorFreeHunting,Squad,Leader);
 
-void CAI_Soldier::HoldThisPosition()
-{
+	SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,SelectorFreeHunting,Leader);
+
+	vfSetMovementType(false,m_fMinSpeed);
+	// stop processing more rules
 	bStopThinking = true;
 }
 
@@ -884,149 +690,76 @@ void CAI_Soldier::Pursuit()
 		eCurrentState = aiSoldierDie;
 		return;
 	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do the enemies exist?
-		if (Enemy.Enemy) {
-			eCurrentState = aiSoldierAttack;
-			m_dwLastRangeSearch = 0;
-			return;
-		}
-		else {
-			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwLostEnemyTime < LOST_ENEMY_REACTION_TIME) {
-				if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierUnderFire;
-					m_dwLastRangeSearch = 0;
-					return;
-				}
-				else {
-					if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-						tStateStack.push(eCurrentState);
-						eCurrentState = aiSoldierSenseSomething;
-						m_dwLastRangeSearch = 0;
-						return;
-					}
-					else {
-						CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-						CGroup& Group = Squad.Groups[g_Group()];
-						if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-							tHitDir = Group.m_tLastHitDirection;
-							dwHitTime = Group.m_dwLastHitTime;
-							tStateStack.push(eCurrentState);
-							eCurrentState = aiSoldierUnderFire;
-							m_dwLastRangeSearch = 0;
-							return;
-						}
-						else {
-							// determining who is leader
-							CEntity* Leader = Squad.Leader;
-							// checking if the leader exists
-							R_ASSERT (Leader);
-							// checking if leader is dead then make myself a leader
-							if (Leader->g_Health() <= 0)
-								Leader = this;
-							// get pointer to the class of node estimator 
-							// for finding the best node in the area
-							CSoldierSelectorPursuit S = SelectorPursuit;
-							// if i am not a leader then assign leader
-							if (Leader != this) {
-								S.m_tLeader = Leader;
-								S.m_tLeaderPosition = Leader->Position();
-								S.m_tpLeaderNode = Leader->AI_Node;
-								S.m_tLeaderNode = Leader->AI_NodeID;
-							}
-							// otherwise assign leader to null
-							else {
-								S.m_tLeader = 0;
-								S.m_tLeaderPosition.set(0,0,0);
-								S.m_tpLeaderNode = NULL;
-								S.m_tLeaderNode = -1;
-							}
-							S.m_tHitDir			= tHitDir;
-							S.m_dwHitTime		= dwHitTime;
-							
-							S.m_dwCurTime		= Level().timeServer();
-							
-							S.m_tMe				= this;
-							S.m_tpMyNode		= AI_Node;
-							S.m_tMyPosition		= Position();
-							
-							S.m_tEnemy			= tSavedEnemy;
-							S.m_tEnemyPosition	= tSavedEnemyPosition;
-							S.m_tpEnemyNode		= tpSavedEnemyNode;
-							
-							//S.taMembers = Squad.Groups[g_Group()].Members;
-							bool bWatch = false;
-							// checking if I need to rebuild the path i.e. previous search
-							// has found better destination node
-							if (AI_Path.bNeedRebuild) {
-								Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-								if (AI_Path.Nodes.size() > 2) {
-								// if path is long enough then build travel line
-									AI_Path.BuildTravelLine(Position());
-								}
-								else {
-								// if path is too short then clear it (patch for ExecMove)
-									AI_Path.TravelPath.clear();
-									AI_Path.bNeedRebuild = FALSE;
-								}
-							} 
-							else 
-								if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-									m_dwLastRangeSearch = S.m_dwCurTime;
-									// fill arrays of members and exclude myself
-									Device.Statistic.AI_Node.Begin();
-									Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-									Device.Statistic.AI_Node.End();
-									// search for the best node according to the 
-									// SelectFollow evaluation function in the radius 35 meteres
-									float fOldCost;
-									Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-									// if search has found new best node then 
-									if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-										AI_Path.DestNode		= S.BestNode;
-										AI_Path.bNeedRebuild	= TRUE;
-									} 
-									else
-										// search hasn't found a better node we have to look around
-										bWatch = true;
-									if (AI_Path.TravelPath.size() < 2)
-										AI_Path.bNeedRebuild	= TRUE;
-								}
-							// setting up a look
-							// getting my current node
-							tWatchDirection.sub(tSavedEnemyPosition,Position());
-							if (tWatchDirection.magnitude() > 0.0001f)
-								SetSmartLook(AI_Node,tWatchDirection);
-							else
-								SetLessCoverLook(AI_Node);
-							// checking flag to stop processing more states
-							q_action.setup(AI::AIC_Action::FireEnd);
-							bStopThinking = true;
-							m_fCurSpeed = m_fMaxSpeed;
-							return;
-						}
-					}
-				}
-			}
-			else {
-				eCurrentState = tStateStack.top();
-				tStateStack.pop();
-				q_action.setup(AI::AIC_Action::FireEnd);
-				m_fCurSpeed = m_fMaxSpeed;
-				bStopThinking = true;
-				return;
-			}
-		}
-	}
-}
 
-void CAI_Soldier::Retreat()
-{
+	SelectEnemy(Enemy);
+	
+	if (Enemy.Enemy) {
+		eCurrentState = aiSoldierAttack;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	DWORD dwCurTime = Level().timeServer();
+	
+	if (dwCurTime - dwLostEnemyTime > LOST_ENEMY_REACTION_TIME) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		q_action.setup(AI::AIC_Action::FireEnd);
+		m_fCurSpeed = m_fMaxSpeed;
+		bStopThinking = true;
+		return;
+	}
+				
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierSenseSomething;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
+		tHitDir = Group.m_tLastHitDirection;
+		dwHitTime = Group.m_dwLastHitTime;
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierUnderFire;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	if (!tSavedEnemy) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		return;
+	}
+
+	vfInitSelector(SelectorPursuit,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorPursuit,Squad,Leader);
+
+	tWatchDirection.sub(tSavedEnemyPosition,Position());
+	if (tWatchDirection.magnitude() > 0.0001f)
+		SetSmartLook(AI_Node,tWatchDirection);
+	else
+		SetLessCoverLook(AI_Node);
+
+	vfSetFire(false,SelectorPursuit,Leader);
+
+	vfSetMovementType(true,0.3*m_fMaxSpeed);
+	// stop processing more rules
 	bStopThinking = true;
 }
 
@@ -1049,179 +782,45 @@ void CAI_Soldier::UnderFire()
 #ifdef WRITE_LOG
 	Msg("creature : %s, mode : %s",cName(),"Under fire");
 #endif
-	/**
-	//bStopThinking = true;
-	// dwHitTime = 0;
-	// setting up a look to watch at the least safe direction
-	q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
-	// setting up look speed
-	q_look.o_look_speed=_FB_look_speed;
-
-	eCurrentState = tStateStack.top();
-	tStateStack.pop();
-	bStopThinking = true;
-	/**/
 	if (g_Health() <= 0) {
 		eCurrentState = aiSoldierDie;
 		return;
 	}
-	else {
-		// selecting enemy if any
-		SEnemySelected	Enemy;
-		SelectEnemy(Enemy);
-		// do I see the enemies?
-		if (Enemy.Enemy)		{
-			tStateStack.push(eCurrentState);
-			eCurrentState = aiSoldierAttack;
-			m_dwLastRangeSearch = 0;
-			return;
-		}
-		else {
-			// checking if I am under fire
-			DWORD dwCurTime = Level().timeServer();
-			if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
-				eCurrentState = tStateStack.top();
-				tStateStack.pop();
-				m_dwLastRangeSearch = 0;
-				return;
-			}
-			else {
-				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-					tStateStack.push(eCurrentState);
-					eCurrentState = aiSoldierSenseSomething;
-					m_dwLastRangeSearch = 0;
-					return;
-				}
-				else {
-					
-					// determining the team
-					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
-					Squad.Groups[g_Group()].m_tLastHitDirection = tHitDir;
-					Squad.Groups[g_Group()].m_dwLastHitTime = dwHitTime;
-					// determining who is leader
-					CEntity* Leader = Squad.Leader;
-					// checking if the leader exists
-					R_ASSERT (Leader);
-					// checking if leader is dead then make myself a leader
-					if (Leader->g_Health() <= 0)
-						Leader = this;
-					// I am leader then go to state "Free Hunting"
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CSoldierSelectorUnderFire S = SelectorUnderFire;
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
-					}
-					// otherwise assign leader to null
-					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
-					}
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
-					
-					S.m_dwCurTime		= Level().timeServer();
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode		= AI_Node;
-					S.m_tMyPosition		= Position();
-					S.m_tDirection		= tHitDir;
-					
-					S.m_tEnemy			= 0;
-					S.m_tEnemyPosition.set(0,0,0);
-					S.m_tpEnemyNode		= NULL;
-					
-					S.taMembers = &(Squad.Groups[g_Group()].Members);
-					// checking if I need to rebuild the path i.e. previous search
-					// has found better destination node
-					if (AI_Path.bNeedRebuild) {
-						// building a path from and to
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
-						if (AI_Path.Nodes.size() > 2) {
-						// if path is long enough then build travel line
-							AI_Path.BuildTravelLine(Position());
-						}
-						else {
-						// if path is too short then clear it (patch for ExecMove)
-							AI_Path.TravelPath.clear();
-							AI_Path.bNeedRebuild = FALSE;
-						}
-					} 
-					else 
-						if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
-							m_dwLastRangeSearch = S.m_dwCurTime;
-							// fill arrays of members and exclude myself
-							Device.Statistic.AI_Node.Begin();
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							Device.Statistic.AI_Node.End();
-							// search for the best node according to the 
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							}
-							else
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
-					// setting up a look
-					// getting my current node
-					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
-					// if we are going somewhere
-					if (dwCurTime - dwHitTime < 30000) {
-						q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
-						
-						bool bCanKillMember = false;
-						if (Leader)
-							if ((Leader->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,Leader->Position())))
-								bCanKillMember = true;
-						if (!bCanKillMember)
-							for (int i=0; i<S.taMemberPositions.size(); i++)
-								if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,S.taMemberPositions[i]))) {
-									bCanKillMember = true;
-									break;
-								}
-							
-						if (Weapons->ActiveWeapon()->GetAmmoElapsed()) {
-							q_action.setup(AI::AIC_Action::FireEnd);
-							//Weapons->ActiveWeapon()->Reload();
-						}
-						else
-							if (!bCanKillMember)
-								q_action.setup(AI::AIC_Action::FireBegin);
-							else
-								q_action.setup(AI::AIC_Action::FireEnd);
-						m_fCurSpeed = m_fMaxSpeed;
-					}
-					else {
-						SetLessCoverLook(tNode);
-						q_action.setup(AI::AIC_Action::FireEnd);
-						m_fCurSpeed = m_fMaxSpeed;
-					}
-					// setting up look speed
-					q_look.o_look_speed=8*_FB_look_speed;
-					// checking flag to stop processing more states
-					bStopThinking = true;
-					return;
-				}
-			}
-		}
-	}
-}
 
-void CAI_Soldier::WaitOnPosition()
-{
+	SelectEnemy(Enemy);
+
+	if (Enemy.Enemy)		{
+		tStateStack.push(eCurrentState);
+		eCurrentState = aiSoldierAttack;
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+
+	DWORD dwCurTime = Level().timeServer();
+
+	if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
+		eCurrentState = tStateStack.top();
+		tStateStack.pop();
+		m_dwLastRangeSearch = 0;
+		return;
+	}
+	
+	INIT_SQUAD_AND_LEADER;
+	
+	vfInitSelector(SelectorUnderFire,Squad,Leader);
+
+	if (AI_Path.bNeedRebuild)
+		vfBuildPathToDestinationPoint(0);
+	else
+		vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
+
+	q_look.setup(AI::AIC_Look::Look,AI::t_Direction,&tHitDir,1000);
+	q_look.o_look_speed=8*_FB_look_speed;
+
+	vfSetFire(true,SelectorUnderFire,Leader);
+
+	vfSetMovementType(true,0.3f*m_fMaxSpeed);
+	// stop processing more rules
 	bStopThinking = true;
 }
 
@@ -1242,26 +841,6 @@ void CAI_Soldier::Think()
 				SenseSomething();
 				break;
 			}
-			case aiSoldierGoInThisDirection : {
-				GoInThisDirection();
-				break;
-			}
-			case aiSoldierGoToThisPosition : {
-				GoToThisPosition();
-				break;
-			}
-			case aiSoldierWaitOnPosition : {
-				WaitOnPosition();
-				break;
-			}
-			case aiSoldierHoldThisPosition : {
-				HoldThisPosition();
-				break;
-			}
-			case aiSoldierHoldPositionUnderFire : {
-				HoldPositionUnderFire();
-				break;
-			}
 			case aiSoldierFreeHunting : {
 				FreeHunting();
 				break;
@@ -1274,20 +853,8 @@ void CAI_Soldier::Think()
 				Attack();
 				break;
 			}
-			case aiSoldierDefend : {
-				Defend();
-				break;
-			}
 			case aiSoldierPursuit : {
 				Pursuit();
-				break;
-			}
-			case aiSoldierRetreat : {
-				Retreat();
-				break;
-			}
-			case aiSoldierCover : {
-				Cover();
 				break;
 			}
 		}
