@@ -30,6 +30,7 @@ public:
 	IC void			SetPosition		(Fvector& P)	{ sphere.P.set(P);	}
 	IC void			SetRange		(float R)		{ sphere.R = R;		}
 	IC void			SetColor		(Fcolor& C)		{ color.set(C);		}
+	IC void			SetColor		(float r, float g, float b)		{ color.set(r,g,b,1); }
 
 	void			Render			(PPA_VB& vlist);
 };
