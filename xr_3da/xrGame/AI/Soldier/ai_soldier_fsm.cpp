@@ -1699,11 +1699,6 @@ void CAI_Soldier::OnSteal()
 		else if (Level().iGetKeyState(DIK_H))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]);
 		else if (Level().iGetKeyState(DIK_J))
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]);
-
-
-
-		else if (Level().iGetKeyState(DIK_J))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpPointSign);
 		else if (Level().iGetKeyState(DIK_K))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaDeath[0]);
@@ -1716,9 +1711,9 @@ void CAI_Soldier::OnSteal()
 		else if (Level().iGetKeyState(DIK_C))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaDeath[4]);
 		else if (Level().iGetKeyState(DIK_V))
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpAim);
+			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpAim);
 		else if (Level().iGetKeyState(DIK_B))
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpAttack);
+			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpAttack);
 		else if (Level().iGetKeyState(DIK_N))
 			tpVisualObject->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
 		else if (Level().iGetKeyState(DIK_M))
@@ -1731,7 +1726,7 @@ void CAI_Soldier::OnSteal()
 			else if (Level().iGetKeyState(DIK_W))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpRaiseHandSign);
 			else if (Level().iGetKeyState(DIK_E))
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpReload);
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpReload);
 			else if (Level().iGetKeyState(DIK_R))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tLegs.tpJumpBegin);
 			else if (Level().iGetKeyState(DIK_T))
@@ -1749,7 +1744,7 @@ void CAI_Soldier::OnSteal()
 			else if (Level().iGetKeyState(DIK_A))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpIdle);
 			else if (Level().iGetKeyState(DIK_S))
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpLieDown);
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0]);
 			else if (Level().iGetKeyState(DIK_D))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpPointSign);
 			else if (Level().iGetKeyState(DIK_F))
@@ -1761,9 +1756,9 @@ void CAI_Soldier::OnSteal()
 			else if (Level().iGetKeyState(DIK_J))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpWalkRight);
 			else if (Level().iGetKeyState(DIK_K))
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tTorso.tpAim);
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpAim);
 			else if (Level().iGetKeyState(DIK_L))
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tTorso.tpAttack);
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpAttack);
 			else if (Level().iGetKeyState(DIK_Z))
 				tpVisualObject->PlayFX(tSoldierAnimations.tCrouch.tTorso.tpDamageLeft);
 			else if (Level().iGetKeyState(DIK_X))
@@ -1773,7 +1768,7 @@ void CAI_Soldier::OnSteal()
 			else if (Level().iGetKeyState(DIK_V))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tTorso.tpRaiseHandSign);
 			else if (Level().iGetKeyState(DIK_B))
-				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tTorso.tpReload);
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpReload);
 			else if (Level().iGetKeyState(DIK_N))
 				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tLegs.tpJumpBegin);
 			else if (Level().iGetKeyState(DIK_M))
@@ -1811,6 +1806,14 @@ void CAI_Soldier::OnSteal()
 					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tLie.tGlobal.tpWalkLeft);
 				else if (Level().iGetKeyState(DIK_G))
 					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tLie.tGlobal.tpWalkRight);
+				else if (Level().iGetKeyState(DIK_H))
+					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[3]);
+				else if (Level().iGetKeyState(DIK_J))
+					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[4]);
+				else if (Level().iGetKeyState(DIK_K))
+					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1]);
+				else if (Level().iGetKeyState(DIK_L))
+					m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1]);
 			}
 }
 
@@ -1819,8 +1822,8 @@ void CAI_Soldier::Think()
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
+		/**
 		switch(eCurrentState) {
-			/**
 			case aiSoldierAttackRun : {
 				AttackRun();
 				break;
@@ -1966,9 +1969,9 @@ void CAI_Soldier::Think()
 				OnDangerAlone();
 				break;
 			}
-			/**/
-			OnSteal();
 		}
+		/**/
+		OnSteal();
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
 	while (!bStopThinking);
