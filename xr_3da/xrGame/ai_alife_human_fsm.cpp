@@ -195,13 +195,21 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 			m_tTaskState		= eTaskStateBringToCustomer;
 		}
 		else {
-			switch (m_tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tTaskType) {
+			CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			switch (l_tpALifeTask->m_tTaskType) {
 				case eTaskTypeSearchForItemCG :
 				case eTaskTypeSearchForItemOG : {
 					if ((m_dwCurNode + 1>= (m_tpPath.size())) && (m_tGraphID == m_tNextGraphID)) {
-						m_tpALife->tpfGetTaskByID	(m_dwCurTaskID)->m_dwTryCount++;
+						l_tpALifeTask->m_dwTryCount++;
 						m_tTaskState = eTaskStateChooseTask;
 					}
+					else
+						if (m_tNextGraphID == l_tpALifeTask->m_tGraphID) {
+							m_tTaskState	= eTaskStateSearchItem;
+							m_fCurSpeed		= m_fSearchSpeed;
+							m_fProbability	= m_fSearchSuccessProbability; 
+							break;
+						}
 					break;
 				}
 				case eTaskTypeSearchForItemCL :
@@ -226,4 +234,29 @@ void CSE_ALifeHumanAbstract::vfAccomplishTask()
 
 void CSE_ALifeHumanAbstract::vfSearchObject()
 {
+	if (bfCheckIfTaskCompleted()) {
+		m_tpPath.clear		();
+		m_tTaskState		= eTaskStateBringToCustomer;
+	}
+	else {
+		CSE_ALifeTask		*l_tpALifeTask = m_tpALife->tpfGetTaskByID(m_dwCurTaskID);
+		switch (l_tpALifeTask->m_tTaskType) {
+			case eTaskTypeSearchForItemCG :
+			case eTaskTypeSearchForItemOG : {
+				if (m_tNextGraphID != l_tpALifeTask->m_tGraphID) {
+					m_tTaskState	= eTaskStateAccomplishTask;
+					m_fCurSpeed		= m_fGoingSpeed;
+					m_fProbability	= m_fGoingSuccessProbability; 
+					break;
+				}
+				break;
+			}
+			case eTaskTypeSearchForItemCL :
+			case eTaskTypeSearchForItemOL : {
+				m_tTaskState	= eTaskStateChooseTask;
+				break;
+			}
+			default :				NODEFAULT;
+		}
+	}
 }

@@ -228,6 +228,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	svector<char,5>					m_cpEquipmentPreferences;
 	svector<char,4>					m_cpMainWeaponPreferences;
 	u32								m_dwTotalMoney;
+	float							m_fGoingSuccessProbability;
+	float							m_fSearchSuccessProbability;
 
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);

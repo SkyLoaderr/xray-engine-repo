@@ -73,7 +73,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint()
 			if (++m_dwCurNode < m_tpPath.size()) {
 				m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
 				m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
-				bContinue = true;
+				bContinue			= true;
 			}
 			else
 				m_fCurSpeed	= 0.f;

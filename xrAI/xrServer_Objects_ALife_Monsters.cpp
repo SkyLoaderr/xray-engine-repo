@@ -941,6 +941,8 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 		for (int i=0, n=m_cpMainWeaponPreferences.size(); i<n; i++)
 			m_cpMainWeaponPreferences[i] = u8(::Random.randI(3));
 	}
+	m_fGoingSuccessProbability	= pSettings->r_float(caSection, "going_item_detect_probability");
+	m_fSearchSuccessProbability	= pSettings->r_float(caSection, "search_item_detect_probability");
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
