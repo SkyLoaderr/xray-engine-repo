@@ -94,7 +94,7 @@ LPCSTR to_string(const u32 id)
 		case eObjectActionHide		 : {strcat(S,"Hide"); break;}		
 		case eObjectActionTake		 : {strcat(S,"Take"); break;}		
 		case eObjectActionDrop		 : {strcat(S,"Drop"); break;}		
-		case eObjectActionStrap		 : {strcat(S,"Strap"); break;}		
+		case eObjectActionStrapped	 : {strcat(S,"Strapped"); break;}		
 		case eObjectActionAim1		 : {strcat(S,"Aim1"); break;}		
 		case eObjectActionAim2		 : {strcat(S,"Aim2"); break;}		
 		case eObjectActionReload1	 : {strcat(S,"Reload1"); break;}	
@@ -644,7 +644,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
 		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),	uid(eObjectActionShow,id),		0);
 		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),		uid(eObjectActionHide,id),		0);
-		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionStrap,id),		0);
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionStrapped,id),	0);
 		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim1,id),		0);
 		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim2,id),		0);
 		add_state		(xr_new<CObjectStateReload>(inventory_item,CWeapon::eReload),	uid(eObjectActionReload1,id),	0);
@@ -659,7 +659,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
 		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionDrop,id),		1);
-		add_transition	(uid(eObjectActionStrap,id),		uid(eObjectActionIdle,id),		1,		1);
+		add_transition	(uid(eObjectActionStrapped,id),		uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionAim1,id),			uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionAim2,id),			uid(eObjectActionIdle,id),		1,		1);
 		add_transition	(uid(eObjectActionReload1,id),		uid(eObjectActionIdle,id),		1,		1);
@@ -744,7 +744,7 @@ void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 		remove_state	(uid(eObjectActionIdle,id));
 		remove_state	(uid(eObjectActionShow,id));
 		remove_state	(uid(eObjectActionHide,id));
-		remove_state	(uid(eObjectActionStrap,id));
+		remove_state	(uid(eObjectActionStrapped,id));
 		remove_state	(uid(eObjectActionAim1,id));
 		remove_state	(uid(eObjectActionAim2,id));
 		remove_state	(uid(eObjectActionReload1,id));

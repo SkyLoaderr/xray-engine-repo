@@ -15,9 +15,10 @@ class CAI_Stalker;
 class CObjectActionBase : public CActionBase<CAI_Stalker> {
 protected:
 	typedef CActionBase<CAI_Stalker> inherited;
+	CGameObject			*m_item;
 
 public:
-						CObjectActionBase(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name = "");
+	IC					CObjectActionBase(CGameObject *item, CAI_Stalker *owner, LPCSTR action_name = "");
 };
 
 #include "object_action_base_inline.h"

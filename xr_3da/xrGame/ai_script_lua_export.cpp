@@ -570,7 +570,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("hide",					int(MonsterSpace::eObjectActionHide)),		
 				value("take",					int(MonsterSpace::eObjectActionTake)),		
 				value("drop",					int(MonsterSpace::eObjectActionDrop)),		
-				value("strap",					int(MonsterSpace::eObjectActionStrap)),		
+				value("strap",					int(MonsterSpace::eObjectActionStrapped)),		
 				value("aim1",					int(MonsterSpace::eObjectActionAim1)),		
 				value("aim2",					int(MonsterSpace::eObjectActionAim2)),		
 				value("reload",					int(MonsterSpace::eObjectActionReload1)),	

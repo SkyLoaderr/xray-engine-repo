@@ -20,8 +20,9 @@
 #include "fooditem.h"
 
 #include "object_handler_goap.h"
-#include "object_action_base.h"
-#include "object_property_evaluator_base.h"
+#include "object_property_evaluator_const.h"
+#include "object_property_evaluator_state.h"
+#include "object_property_evaluator_member.h"
 //#include "object_state_base.h"
 //#include "object_state_show.h"
 //#include "object_state_hide.h"
@@ -66,6 +67,8 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit			(object,true);
 	CInventoryOwner::reinit		();
+	m_aimed1					= false;
+	m_aimed2					= false;
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
@@ -83,7 +86,7 @@ void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake	(inventory_item);
 	Msg							("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
-	add_item				(inventory_item);
+	add_item					(inventory_item);
 }
 
 void CObjectHandlerGOAP::OnItemDrop		(CInventoryItem *inventory_item)
@@ -162,139 +165,312 @@ u32 CObjectHandlerGOAP::weapon_state(const CWeapon *weapon) const
 
 u32 CObjectHandlerGOAP::object_action() const
 {
-	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent() || inventory().ActiveItem()->getDestroy())
-		return			(eObjectActionNoItems);
-
-	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
-	if (weapon) {
-		if (weapon->ID() != current_action_object_id()) {
-			switch (weapon_state(weapon)) {
-				case CWeapon::eIdle		: return(uid(eObjectActionIdle,weapon->ID()));
-				case CWeapon::eFire		: return(uid(eObjectActionFire1,weapon->ID()));
-				case CWeapon::eFire2	: return(uid(eObjectActionFire2,weapon->ID()));
-				case CWeapon::eReload	: return(uid(eObjectActionReload1,weapon->ID()));
-				case CWeapon::eShowing	: return(uid(eObjectActionShow,weapon->ID()));
-				case CWeapon::eHiding	: return(uid(eObjectActionHide,weapon->ID()));
-				case CWeapon::eMisfire	: return(uid(eObjectActionMisfire1,weapon->ID()));
-				case CWeapon::eMagEmpty : return(uid(eObjectActionEmpty1,weapon->ID()));
-				case CWeapon::eHidden	: return(eObjectActionNoItems);
-				default			: NODEFAULT;
-			}
-		}
-		switch (weapon_state(weapon)) {
-			case CWeapon::eIdle : {
-				switch (current_action_state_id()) {
-					case eObjectActionIdle :
-					case eObjectActionAim1 :
-					case eObjectActionAim2 :
-					case eObjectActionSwitch1 :
-					case eObjectActionSwitch2 : 
-						return	(current_action_id());
-					default :
-						if (!weapon->IsWorking())
-							return	(uid(eObjectActionIdle,weapon->ID()));
-						else
-							return	(current_action_id());
-				}
-			}
-			case CWeapon::eFire : {
-				switch (current_action_state_id()) {
-					case eObjectActionFire1 :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionFire1,weapon->ID()));
-				}
-			}
-			case CWeapon::eFire2 : {
-				switch (current_action_state_id()) {
-					case eObjectActionFire2 :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionFire2,weapon->ID()));
-				}
-			}
-			case CWeapon::eReload : {
-				switch (current_action_state_id()) {
-					case eObjectActionReload1 :
-					case eObjectActionReload2 :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionReload1,weapon->ID()));
-				}
-			}
-			case CWeapon::eShowing : {
-				switch (current_action_state_id()) {
-					case eObjectActionShow :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionShow,weapon->ID()));
-				}
-			}
-			case CWeapon::eHiding : {
-				switch (current_action_state_id()) {
-					case eObjectActionHide :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionHide,weapon->ID()));
-				}
-			}
-			case CWeapon::eMisfire : {
-				switch (current_action_state_id()) {
-					case eObjectActionMisfire1 :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionMisfire1,weapon->ID()));
-				}
-			}
-			case CWeapon::eMagEmpty : {
-				switch (current_action_state_id()) {
-					case eObjectActionEmpty1 :
-						return	(current_action_id());
-					default : 
-						return	(uid(eObjectActionEmpty1,weapon->ID()));
-				}
-			}
-			case CWeapon::eHidden :
-				return	(current_action_id());
-			default : NODEFAULT;
-		}
-	}
-
-	CMissile		*missile = dynamic_cast<CMissile*>(inventory().ActiveItem());
-	if (missile) {
-		switch (missile->State()) {
-			case MS_HIDDEN	 : return(eObjectActionNoItems);
-			case MS_SHOWING	 : return(uid(eObjectActionShow,missile->ID()));
-			case MS_HIDING	 : return(uid(eObjectActionHide,missile->ID()));
-			case MS_IDLE	 : return(uid(eObjectActionIdle,missile->ID()));
-			case MS_EMPTY	 : return(uid(eObjectActionEmpty1,missile->ID()));
-			case MS_THREATEN : return(uid(eObjectActionFire2,missile->ID()));
-			case MS_READY	 : return(uid(eObjectActionSwitch1,missile->ID()));
-			case MS_THROW	 : return(uid(eObjectActionFire1,missile->ID()));
-			case MS_END		 : return(uid(eObjectActionFire1,missile->ID()));
-			case MS_PLAYING	 : return(uid(eObjectActionIdle,missile->ID()));
-			default			 : NODEFAULT;
-		}
-	}
-
-	CFoodItem		*food_item = dynamic_cast<CFoodItem*>(inventory().ActiveItem());
-	if (food_item) {
-		switch (food_item->STATE) {
-			case FOOD_HIDDEN : return(eObjectActionNoItems);
-			case FOOD_SHOWING: return(uid(eObjectActionShow,food_item->ID()));
-			case FOOD_HIDING : return(uid(eObjectActionHide,food_item->ID()));
-			case FOOD_IDLE	 : return(uid(eObjectActionIdle,food_item->ID()));
-			case FOOD_PREPARE: return(uid(eObjectActionSwitch1,food_item->ID()));
-			case FOOD_EATING : return(uid(eObjectActionFire1,food_item->ID()));
-			default			 : NODEFAULT;
-		}
-	}
-	
-	NODEFAULT;
-
+//	if (!inventory().ActiveItem() || !inventory().ActiveItem()->H_Parent() || inventory().ActiveItem()->getDestroy())
+//		return			(eObjectActionNoItems);
+//
+//	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory().ActiveItem());
+//	if (weapon) {
+//		if (weapon->ID() != current_action_object_id()) {
+//			switch (weapon_state(weapon)) {
+//				case CWeapon::eIdle		: return(uid(eObjectActionIdle,weapon->ID()));
+//				case CWeapon::eFire		: return(uid(eObjectActionFire1,weapon->ID()));
+//				case CWeapon::eFire2	: return(uid(eObjectActionFire2,weapon->ID()));
+//				case CWeapon::eReload	: return(uid(eObjectActionReload1,weapon->ID()));
+//				case CWeapon::eShowing	: return(uid(eObjectActionShow,weapon->ID()));
+//				case CWeapon::eHiding	: return(uid(eObjectActionHide,weapon->ID()));
+//				case CWeapon::eMisfire	: return(uid(eObjectActionMisfire1,weapon->ID()));
+//				case CWeapon::eMagEmpty : return(uid(eObjectActionEmpty1,weapon->ID()));
+//				case CWeapon::eHidden	: return(eObjectActionNoItems);
+//				default			: NODEFAULT;
+//			}
+//		}
+//		switch (weapon_state(weapon)) {
+//			case CWeapon::eIdle : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionIdle :
+//					case eObjectActionAim1 :
+//					case eObjectActionAim2 :
+//					case eObjectActionSwitch1 :
+//					case eObjectActionSwitch2 : 
+//						return	(current_action_id());
+//					default :
+//						if (!weapon->IsWorking())
+//							return	(uid(eObjectActionIdle,weapon->ID()));
+//						else
+//							return	(current_action_id());
+//				}
+//			}
+//			case CWeapon::eFire : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionFire1 :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionFire1,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eFire2 : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionFire2 :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionFire2,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eReload : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionReload1 :
+//					case eObjectActionReload2 :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionReload1,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eShowing : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionShow :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionShow,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eHiding : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionHide :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionHide,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eMisfire : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionMisfire1 :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionMisfire1,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eMagEmpty : {
+//				switch (current_action_state_id()) {
+//					case eObjectActionEmpty1 :
+//						return	(current_action_id());
+//					default : 
+//						return	(uid(eObjectActionEmpty1,weapon->ID()));
+//				}
+//			}
+//			case CWeapon::eHidden :
+//				return	(current_action_id());
+//			default : NODEFAULT;
+//		}
+//	}
+//
+//	CMissile		*missile = dynamic_cast<CMissile*>(inventory().ActiveItem());
+//	if (missile) {
+//		switch (missile->State()) {
+//			case MS_HIDDEN	 : return(eObjectActionNoItems);
+//			case MS_SHOWING	 : return(uid(eObjectActionShow,missile->ID()));
+//			case MS_HIDING	 : return(uid(eObjectActionHide,missile->ID()));
+//			case MS_IDLE	 : return(uid(eObjectActionIdle,missile->ID()));
+//			case MS_EMPTY	 : return(uid(eObjectActionEmpty1,missile->ID()));
+//			case MS_THREATEN : return(uid(eObjectActionFire2,missile->ID()));
+//			case MS_READY	 : return(uid(eObjectActionSwitch1,missile->ID()));
+//			case MS_THROW	 : return(uid(eObjectActionFire1,missile->ID()));
+//			case MS_END		 : return(uid(eObjectActionFire1,missile->ID()));
+//			case MS_PLAYING	 : return(uid(eObjectActionIdle,missile->ID()));
+//			default			 : NODEFAULT;
+//		}
+//	}
+//
+//	CFoodItem		*food_item = dynamic_cast<CFoodItem*>(inventory().ActiveItem());
+//	if (food_item) {
+//		switch (food_item->STATE) {
+//			case FOOD_HIDDEN : return(eObjectActionNoItems);
+//			case FOOD_SHOWING: return(uid(eObjectActionShow,food_item->ID()));
+//			case FOOD_HIDING : return(uid(eObjectActionHide,food_item->ID()));
+//			case FOOD_IDLE	 : return(uid(eObjectActionIdle,food_item->ID()));
+//			case FOOD_PREPARE: return(uid(eObjectActionSwitch1,food_item->ID()));
+//			case FOOD_EATING : return(uid(eObjectActionFire1,food_item->ID()));
+//			default			 : NODEFAULT;
+//		}
+//	}
+//	
+//	NODEFAULT;
+//
 #ifdef DEBUG
 	return			(u32(eObjectActionDummy));
 #endif
+}
+
+void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
+{
+	u16					id = weapon->ID();
+	// dynamic state properties
+	add_evaluator		(uid(id,eWorldPropertyHidden)		,xr_new<CObjectPropertyEvaluatorState>(weapon,m_object,CWeapon::eHidden));
+	// dynamic member properties
+	add_evaluator		(uid(id,eWorldPropertyAimed1)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed1));
+	add_evaluator		(uid(id,eWorldPropertyAimed2)		,xr_new<CObjectPropertyEvaluatorMember>(weapon,m_object,&m_aimed2));
+	// dynamic properties
+	add_evaluator		(uid(id,eWorldPropertyEmpty1)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyEmpty2)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyReady1)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyReady2)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyAmmo1)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyAmmo2)		,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	add_evaluator		(uid(id,eWorldPropertyQueueWait)	,xr_new<CSObjectPropertyEvaluatorBase>(weapon,m_object));
+	// temporarile const properties
+	add_evaluator		(uid(id,eWorldPropertyStrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyStrapped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyUnstrapping)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertySwitch1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertySwitch2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	// const properties
+	add_evaluator		(uid(id,eWorldPropertyFiring1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyFiring2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyIdleStrap)	,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyDropped)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyAiming1)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+	add_evaluator		(uid(id,eWorldPropertyAiming2)		,xr_new<CObjectPropertyEvaluatorConst>(weapon,m_object,false));
+}
+
+void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
+{
+	u16					id = weapon->ID();
+	CObjectActionBase	*action;
+	
+	// show
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	true);
+	add_effect			(action,id,eWorldPropertyHidden,	false);
+	add_operator		(uid(id,eWorldOperatorShow),		action);
+
+	// hide
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyHidden,	true);
+	add_operator		(uid(id,eWorldOperatorHide),		action);
+
+	// drop
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyDropped,	true);
+	add_operator		(uid(id,eWorldOperatorDrop),		action);
+
+	// idle
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyIdle,		true);
+	add_operator		(uid(id,eWorldOperatorIdle),		action);
+
+	// strapping
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyStrapped,	false);
+	add_effect			(action,id,eWorldPropertyStrapped,	true);
+	add_operator		(uid(id,eWorldOperatorStrapping),	action);
+
+	// unstrapping
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyStrapped,	true);
+	add_effect			(action,id,eWorldPropertyStrapped,	false);
+	add_operator		(uid(id,eWorldOperatorUnstrapping),	action);
+
+	// strapped
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_effect			(action,id,eWorldPropertyIdleStrap,	true);
+	add_operator		(uid(id,eWorldOperatorStrapped),	action);
+
+	// aim1
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_effect			(action,id,eWorldPropertyAimed1,	true);
+	add_effect			(action,id,eWorldPropertyAiming1,	true);
+	add_operator		(uid(id,eWorldOperatorAim1),		action);
+
+	// aim2
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertyAimed2,	true);
+	add_effect			(action,id,eWorldPropertyAiming2,	true);
+	add_operator		(uid(id,eWorldOperatorAim2),		action);
+
+	// aim_queue1
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait,	false);
+	add_effect			(action,id,eWorldPropertyQueueWait,	true);
+	add_operator		(uid(id,eWorldOperatorQueueWait),	action);
+
+	// fire1
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyEmpty1,	false);
+	add_condition		(action,id,eWorldPropertyAimed1,	true);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertyQueueWait,	false);
+	add_effect			(action,id,eWorldPropertyFiring1,	true);
+	add_operator		(uid(id,eWorldOperatorFire1),		action);
+
+	// fire2
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyEmpty2,	false);
+	add_condition		(action,id,eWorldPropertyAimed2,	true);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertyFiring2,	true);
+	add_operator		(uid(id,eWorldOperatorFire2),		action);
+
+	// reload1
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady1,	false);
+	add_condition		(action,id,eWorldPropertyAmmo1,		true);
+	add_effect			(action,id,eWorldPropertyEmpty1,	false);
+	add_operator		(uid(id,eWorldOperatorReload1),		action);
+
+	// reload2
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertyHidden,	false);
+	add_condition		(action,id,eWorldPropertyReady2,	false);
+	add_condition		(action,id,eWorldPropertyAmmo2,		true);
+	add_effect			(action,id,eWorldPropertyEmpty2,	false);
+	add_operator		(uid(id,eWorldOperatorReload2),		action);
+
+	// switch1
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertySwitch1,	false);
+	add_condition		(action,id,eWorldPropertySwitch2,	true);
+	add_effect			(action,id,eWorldPropertySwitch1,	true);
+	add_effect			(action,id,eWorldPropertySwitch2,	false);
+	add_operator		(uid(id,eWorldOperatorSwitch1),		action);
+
+	// switch2
+	action				= xr_new<CObjectActionBase>(weapon,m_object);
+	add_condition		(action,id,eWorldPropertySwitch1,	true);
+	add_condition		(action,id,eWorldPropertySwitch2,	false);
+	add_effect			(action,id,eWorldPropertySwitch1,	false);
+	add_effect			(action,id,eWorldPropertySwitch2,	true);
+	add_operator		(uid(id,eWorldOperatorSwitch2),		action);
+}
+
+void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
+{
+}
+
+void CObjectHandlerGOAP::add_operators		(CMissile *missile)
+{
+}
+
+void CObjectHandlerGOAP::add_evaluators		(CEatableItem *eatable_item)
+{
+}
+
+void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
+{
 }
 
 void CObjectHandlerGOAP::add_item			(CInventoryItem *inventory_item)
@@ -307,49 +483,8 @@ void CObjectHandlerGOAP::add_item			(CInventoryItem *inventory_item)
 	CEatableItem		*eatable	= dynamic_cast<CEatableItem*>	(inventory_item);
 
 	if (weapon) {
-//		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
-//		add_state		(xr_new<CObjectStateShow>(inventory_item,CWeapon::eShowing),	uid(eObjectActionShow,id),		0);
-//		add_state		(xr_new<CObjectStateHide>(inventory_item,CWeapon::eHiding),		uid(eObjectActionHide,id),		0);
-//		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionStrap,id),		0);
-//		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim1,id),		0);
-//		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionAim2,id),		0);
-//		add_state		(xr_new<CObjectStateReload>(inventory_item,CWeapon::eReload),	uid(eObjectActionReload1,id),	0);
-//		add_state		(xr_new<CObjectStateReload>(inventory_item,CWeapon::eReload),	uid(eObjectActionReload2,id),	0);
-//		add_state		(xr_new<CObjectStateFirePrimary>(inventory_item,CWeapon::eFire),uid(eObjectActionFire1,id),		0);
-//		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eFire2),		uid(eObjectActionFire2,id),		0);
-//		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch1,id),	0);
-//		add_state		(xr_new<CObjectStateIdle>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionSwitch2,id),	0);
-//		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionMisfire1,id),	0);
-//		add_state		(xr_new<CObjectStateEmpty>(inventory_item,CWeapon::eFire),		uid(eObjectActionEmpty1,id),	0);
-//
-//		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
-//		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionDrop,id),		1);
-//		add_transition	(uid(eObjectActionStrap,id),		uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionAim1,id),			uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionAim2,id),			uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionReload1,id),		uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionReload2,id),		uid(eObjectActionIdle,id),		1,		1);
-//		add_transition	(uid(eObjectActionFire1,id),		uid(eObjectActionIdle,id),		1);
-//		add_transition	(uid(eObjectActionFire2,id),		uid(eObjectActionIdle,id),		1);
-//		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionIdle,id),		1);
-//		add_transition	(uid(eObjectActionSwitch2,id),		uid(eObjectActionIdle,id),		1);
-//		add_transition	(uid(eObjectActionReload1,id),		uid(eObjectActionAim1,id),		1,		1);
-//		add_transition	(uid(eObjectActionReload2,id),		uid(eObjectActionAim1,id),		1,		1);
-//		add_transition	(uid(eObjectActionReload1,id),		uid(eObjectActionAim2,id),		1,		1);
-//		add_transition	(uid(eObjectActionReload2,id),		uid(eObjectActionAim2,id),		1,		1);
-//		add_transition	(uid(eObjectActionAim1,id),			uid(eObjectActionAim2,id),		1,		1);
-//		add_transition	(uid(eObjectActionFire1,id),		uid(eObjectActionAim1,id),		1,		1);
-//		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionAim1,id),		1);
-//		add_transition	(uid(eObjectActionAim1,id),			uid(eObjectActionSwitch2,id),	1);
-//		add_transition	(uid(eObjectActionFire2,id),		uid(eObjectActionAim2,id),		1,		1);
-//		add_transition	(uid(eObjectActionSwitch2,id),		uid(eObjectActionAim2,id),		1);
-//		add_transition	(uid(eObjectActionAim2,id),			uid(eObjectActionSwitch1,id),	1);
-//		add_transition	(uid(eObjectActionMisfire1,id),		uid(eObjectActionReload1,id),	1);
-//		add_transition	(uid(eObjectActionMisfire1,id),		uid(eObjectActionHide,id),		10);
-//		add_transition	(uid(eObjectActionEmpty1,id),		uid(eObjectActionReload1,id),	1);
-//		add_transition	(uid(eObjectActionEmpty1,id),		uid(eObjectActionHide,id),		10);
-//
+		add_evaluators	(weapon);
+		add_operators	(weapon);
 //		state(uid(eObjectActionIdle,id)).set_inertia_time(0);
 //		state(uid(eObjectActionAim1,id)).set_inertia_time(1000);
 //		state(uid(eObjectActionAim2,id)).set_inertia_time(1000);

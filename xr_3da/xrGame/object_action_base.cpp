@@ -9,7 +9,3 @@
 #include "stdafx.h"
 #include "object_action_base.h"
 
-CObjectActionBase::CObjectActionBase(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name) :
-		inherited	(conditions,effects,action_name)
-{
-}

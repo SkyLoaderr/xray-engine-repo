@@ -8,12 +8,14 @@
 
 #pragma once
 
+#include "object_action_base.h"
+
 IC	bool CObjectHandlerGOAP::firing		() const
 {
 	return					(m_bFiring);
 }
 
-IC	u32 CObjectHandlerGOAP::uid(const u32 id0, const u32 id1) const
+IC	u32 CObjectHandlerGOAP::uid(const u32 id1, const u32 id0) const
 {
 	VERIFY				(!((id0 << 16) & id1));
 	return				((id0 << 16) | id1);
@@ -37,4 +39,14 @@ IC	u32	CObjectHandlerGOAP::current_action_state_id	() const
 IC	bool CObjectHandlerGOAP::goal_reached			() const
 {
 	return				(solution().size() < 2);
+}
+
+IC	void CObjectHandlerGOAP::add_condition			(CObjectActionBase *action, u16 id, EWorldProperties property, bool value)
+{
+	action->add_condition(CWorldProperty(uid(id,property),value));
+}
+
+IC	void CObjectHandlerGOAP::add_effect				(CObjectActionBase *action, u16 id, EWorldProperties property, bool value)
+{
+	action->add_effect	(CWorldProperty(uid(id,property),value));
 }

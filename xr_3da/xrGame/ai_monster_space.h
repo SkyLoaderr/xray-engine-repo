@@ -71,7 +71,6 @@ namespace MonsterSpace {
 		eObjectActionHide,		
 		eObjectActionTake,		
 		eObjectActionDrop,		
-		eObjectActionStrap,		
 		eObjectActionAim1,		
 		eObjectActionAim2,		
 		eObjectActionReload1,	
@@ -80,14 +79,22 @@ namespace MonsterSpace {
 		eObjectActionFire2,		
 		eObjectActionSwitch1,	
 		eObjectActionSwitch2,	
+		eObjectActionMisfire1,
+		eObjectActionMisfire2,
+		eObjectActionEmpty1,
+		eObjectActionEmpty2,
+		eObjectActionStrapping,
+		eObjectActionStrapped,
+		eObjectActionUnstrapping,
+		
 		eObjectActionActivate,
 		eObjectActionDeactivate,
-		eObjectActionMisfire1,
-		eObjectActionEmpty1,
 		eObjectActionUse,
 		eObjectActionTurnOn,
 		eObjectActionTurnOff,
+		
 		eObjectActionNoItems = eObjectActionIdle | u16(-1),
+		
 		eObjectActionDummy = u32(-1)
 	};
 

@@ -35,7 +35,9 @@ protected:
 		u32
 	>												CProblemSolver;
 	typedef CProblemSolver							inherited;
-	typedef typename CProblemSolver::_edge_type		_action_id_type;
+	typedef typename inherited::_edge_type			_action_id_type;
+	typedef CGraphEngine::CWorldProperty			CWorldProperty;
+	typedef CGraphEngine::CWorldState				CWorldState;
 
 protected:
 	bool					m_initialized;

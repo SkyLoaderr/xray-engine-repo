@@ -8,3 +8,9 @@
 
 #pragma once
 
+template <typename _item_type>
+IC	CObjectPropertyEvaluatorBase<_item_type>::CObjectPropertyEvaluatorBase(_item_type *item, CAI_Stalker *owner)
+{
+	m_object		= owner;
+	m_item			= item;
+}

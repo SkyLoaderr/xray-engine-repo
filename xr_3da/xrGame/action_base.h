@@ -43,9 +43,10 @@ protected:
 #endif
 
 public:
-	IC						CActionBase			(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, LPCSTR action_name = "");
+	IC						CActionBase			(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object = 0, LPCSTR action_name = "");
+	IC						CActionBase			(_object_type *object = 0, LPCSTR action_name = "");
 	virtual					~CActionBase		();
-			void			init				(LPCSTR action_name);
+			void			init				(_object_type *object, LPCSTR action_name);
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reinit				(_object_type *object, bool clear_all);
 	virtual	void			reload				(LPCSTR section);

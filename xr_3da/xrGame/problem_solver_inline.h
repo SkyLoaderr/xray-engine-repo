@@ -85,7 +85,7 @@ IC	bool CProblemSolverAbstract::actual			() const
 
 // operators
 TEMPLATE_SPECIALIZATION
-IC	void CProblemSolverAbstract::add_operator			(COperator *_operator, const _edge_type &operator_id)
+IC	void CProblemSolverAbstract::add_operator			(const _edge_type &operator_id, COperator *_operator)
 {
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY					((I == m_operators.end()) || ((*I).m_operator_id != operator_id));

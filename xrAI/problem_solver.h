@@ -83,7 +83,7 @@ public:
 	IC		bool						is_goal_reached			(const _index_type	&vertex_index) const;
 
 	// operator interface
-	IC		void						add_operator			(COperator			*_operator,		const _edge_type	&operator_id);
+	IC		void						add_operator			(const _edge_type	&operator_id,	COperator			*_operator);
 	IC		void						remove_operator			(const _edge_type	&operator_id);
 	IC		COperator					*get_operator			(const _operator_id_type &operator_id);
 	IC		const OPERATOR_VECTOR		&operators				() const;
