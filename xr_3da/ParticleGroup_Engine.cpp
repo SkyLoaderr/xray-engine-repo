@@ -10,7 +10,7 @@ using namespace PAPI;
 using namespace PS;
 
 #pragma comment(lib,"x:\\ParticleDLL.lib")
-
+/*
 void CParticleGroup::Copy(IRender_Visual* pFrom)
 {
 	Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");
@@ -124,3 +124,4 @@ void CParticleGroup::Render		(float LOD)
 		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
 	}
 }
+*/

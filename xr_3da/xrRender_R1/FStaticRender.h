@@ -135,7 +135,7 @@ public:
 	
 	// Models
 	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E);
-	virtual IRender_Visual*			model_CreatePG			(LPCSTR name);
+	virtual IRender_Visual*			model_CreatePE			(LPCSTR name);
 	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
 	virtual IRender_Visual*			model_Create			(LPCSTR name);
 	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data);

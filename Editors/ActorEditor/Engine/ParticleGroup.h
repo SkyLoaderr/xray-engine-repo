@@ -3,6 +3,7 @@
 #define ParticleGroupH
 
 namespace PS{
+/*
 class CParticleGroup{
 	struct SEffect{
     	CParticleEffect*	effect;
@@ -18,6 +19,6 @@ public:
 
 	void					Compile			();
     void					FillProp		(LPCSTR pref, PropItemVec& items);
-};
+};*/
 }
 #endif

@@ -42,11 +42,11 @@ IRender_Visual*				CRender::model_CreatePS			(LPCSTR name, PS::SEmitter* E)
 	VERIFY					(source);
 	return Models.CreatePS	(source,E);
 }
-IRender_Visual*				CRender::model_CreatePG			(LPCSTR name)	
+IRender_Visual*				CRender::model_CreatePE			(LPCSTR name)	
 { 
-	PS::CPGDef*	source		= PSystems.FindPG	(name);
+	PS::CPEDef*	source		= PSystems.FindPE	(name);
 	VERIFY					(source);
-	return Models.CreatePG	(source);
+	return Models.CreatePE	(source);
 }
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}

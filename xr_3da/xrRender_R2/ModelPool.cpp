@@ -44,7 +44,7 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 		V	= xr_new<CPSVisual> ();
 		break;
 	case MT_PARTICLE_GROUP:
-		V	= xr_new<PS::CParticleGroup> ();
+		V	= xr_new<PS::CParticleEffect> ();
 		break;
 	case MT_CACHED:
 		V	= xr_new<FCached> ();
@@ -251,9 +251,9 @@ IRender_Visual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
 	return V;
 }
 
-IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
+IRender_Visual* CModelPool::CreatePE	(PS::CPEDef* source)
 {
-	PS::CParticleGroup* V	= (PS::CParticleGroup*)Instance_Create(MT_PARTICLE_GROUP);
+	PS::CParticleEffect* V	= (PS::CParticleEffect*)Instance_Create(MT_PARTICLE_GROUP);
 	V->Compile		(source);
 	return V;
 }

@@ -252,9 +252,13 @@ void CGameFont::OutSkip(float val)
 
 float CGameFont::SizeOf(char *s,float size)
 {
-	int		len			= strlen(s);
-	float	X			= 0;
-	if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
-	return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
+	if (uFlags&fsValid){
+		int		len			= strlen(s);
+		float	X			= 0;
+		if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
+		return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
+	}else{
+		return 0;
+	}
 }
 

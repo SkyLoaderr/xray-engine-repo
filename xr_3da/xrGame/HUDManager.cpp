@@ -148,6 +148,8 @@ void CHUDManager::Render_Direct	()
 		bAlready = ! (pUI && !pUI->Render());
 		pFontDI->OnRender		();
 		pFontSmall->OnRender	();
+
+
 		pFontMedium->OnRender	();
 		pFontBigDigit->OnRender	();
 	}

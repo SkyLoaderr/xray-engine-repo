@@ -883,6 +883,12 @@
 					Name="Particles"
 					Filter="">
 					<File
+						RelativePath=".\ParticleEffect.cpp">
+					</File>
+					<File
+						RelativePath=".\ParticleEffect.h">
+					</File>
+					<File
 						RelativePath="ParticleGroup.cpp">
 					</File>
 					<File

@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "ParticleEffect.h"
+#include "render.h"
 #include "psystem.h"
 
 using namespace PAPI;
