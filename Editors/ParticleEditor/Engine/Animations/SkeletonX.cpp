@@ -17,34 +17,34 @@
 //////////////////////////////////////////////////////////////////////
 // Body Part
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX::_Copy(CSkeletonX *B)
+void CSkeletonX::_Copy		(CSkeletonX *B)
 {
-	Parent				= NULL;
-	Vertices1W			= B->Vertices1W;
-	Vertices2W			= B->Vertices2W;
-	cache_DiscardID		= 0xffffffff;
+	Parent					= NULL;
+	Vertices1W				= B->Vertices1W;
+	Vertices2W				= B->Vertices2W;
+	cache_DiscardID			= 0xffffffff;
 }
-void CSkeletonX_PM::Copy(IRender_Visual *V) 
+void CSkeletonX_PM::Copy	(IRender_Visual *V) 
 {
-	Fvisual::Copy		(V);
-	pm_copy				(V);
+	Fvisual::Copy			(V);
+	pm_copy					(V);
 
-	CSkeletonX_PM *X	= (CSkeletonX_PM*)(V);
-	_Copy				((CSkeletonX*)X);
-	indices				= X->indices;
+	CSkeletonX_PM *X		= (CSkeletonX_PM*)(V);
+	_Copy					((CSkeletonX*)X);
+	indices					= X->indices;
 
-	u32		dwCount		= dwPrimitives*3;
-	BOOL	bSoft		= HW.Caps.vertex.bSoftware;
-	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
-	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
-	BYTE*	bytes		= 0;
+	u32		dwCount			= dwPrimitives*3;
+	BOOL	bSoft			= HW.Caps.vertex.bSoftware;
+	u32		dwUsage			= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	D3DPOOL	dwPool			= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
+	BYTE*	bytes			= 0;
 
-	R_CHK				(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices,0));
-	R_CHK				(pIndices->Lock(0,0,(void**)&bytes,0));
-	Memory.mem_copy		(bytes, indices, dwCount*2);
-	pIndices->Unlock	();
+	R_CHK					(HW.pDevice->CreateIndexBuffer(dwCount*2,dwUsage,D3DFMT_INDEX16,dwPool,&pIndices,0));
+	R_CHK					(pIndices->Lock(0,0,(void**)&bytes,0));
+	Memory.mem_copy			(bytes, indices, dwCount*2);
+	pIndices->Unlock		();
 }
-void CSkeletonX_ST::Copy(IRender_Visual *P) 
+void CSkeletonX_ST::Copy	(IRender_Visual *P) 
 {
 	inherited::Copy		(P);
 	CSkeletonX_ST *X	= (CSkeletonX_ST*)P;
