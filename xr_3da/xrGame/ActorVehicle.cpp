@@ -30,7 +30,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	V->LL_GetInstance(shoulder_bone).set_callback	(NULL,NULL);
 	V->LL_GetInstance(head_bone).set_callback		(CarHeadCallback,this);
 
-	ph_Movement.DestroyCharacter();
+	Movement.DestroyCharacter();
 	//PIItem iitem=m_inventory.ActiveItem();
 	//if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
@@ -42,8 +42,8 @@ void CActor::detach_Vehicle()
 {
 	if(!m_vehicle) return;
 	m_vehicle->detach_Actor();//
-	ph_Movement.CreateCharacter();
-	ph_Movement.SetPosition(m_vehicle->ExitPosition());
+	Movement.CreateCharacter();
+	Movement.SetPosition(m_vehicle->ExitPosition());
 	r_model_yaw=-m_vehicle->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;
@@ -61,30 +61,35 @@ void CActor::detach_Vehicle()
 	//mstate_wishful &=~mcAnyMove;
 }
 
-void CActor::use_Vehicle()
+bool CActor::use_Vehicle(CGameObject* object,int element)
 {
-	int element=-1;
-	CCar* vehicle=pick_VehicleObject(element);
+	
+	CCar* vehicle=dynamic_cast<CCar*>(object);
 	Fvector center;
 	Center(center);
 	if(m_vehicle){
 		if(!vehicle&& m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
 		else
 		{
-		 if(m_vehicle==vehicle)
-			 if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
+			if(m_vehicle==vehicle)
+				if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
 		}
+		return true;
 	}else{
-		if(vehicle && vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))
+		if(vehicle)
 		{
-			if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
+			if( vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))
+			{
+				if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 
-			attach_Vehicle(vehicle);
+				attach_Vehicle(vehicle);
+			}
+			return true;
 		}
+		return false;
 	}
 }
-
-CCar* CActor::pick_VehicleObject(int& element)
+CGameObject* CActor::pick_Object(int& element)
 {
 
 	setEnabled(false);
@@ -93,6 +98,6 @@ CCar* CActor::pick_VehicleObject(int& element)
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);
 	element=l_rq.element;
-	return dynamic_cast<CCar*>(l_rq.O);
+	return dynamic_cast<CGameObject*>(l_rq.O);
 
 }

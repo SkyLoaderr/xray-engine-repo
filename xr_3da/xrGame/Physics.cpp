@@ -266,7 +266,19 @@ static dContact contacts[N];
 		else
 			usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
 /////////////////////////////////////////////////////////////////////////////////////////////////
-		if(usr_data_2){ 
+		if(usr_data_2&&usr_data_2->object_callback){
+			bool do_colide=true;
+			usr_data_2->object_callback(do_colide,contacts[i]);
+			if(!do_colide) continue;
+		}
+		if(usr_data_1&&usr_data_1->object_callback){
+			bool do_colide=true;
+			usr_data_1->object_callback(do_colide,contacts[i]);
+			if(!do_colide) continue;
+		}
+
+		if(usr_data_2){
+
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
 				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
@@ -279,11 +291,7 @@ static dContact contacts[N];
 					//continue;
 
 			}
-			if(usr_data_2->object_callback){
-				bool do_colide=true;
-				usr_data_2->object_callback(do_colide,contacts[i]);
-				if(!do_colide) continue;
-			}
+
 		}
 ///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
@@ -301,11 +309,7 @@ static dContact contacts[N];
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 				}
-			if(usr_data_1->object_callback){
-				bool do_colide=true;
-				usr_data_1->object_callback(do_colide,contacts[i]);
-				if(!do_colide) continue;
-			}
+
 		}
 
 		contacts[i].surface.mode =dContactBounce|dContactApprox1|dContactSoftERP|dContactSoftCFM;
@@ -387,7 +391,18 @@ dContact contacts[N];
 		else
 			usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
 /////////////////////////////////////////////////////////////////////////////////////////////////
+		if(usr_data_2&&usr_data_2->object_callback){
+			bool do_colide=true;
+			usr_data_2->object_callback(do_colide,contacts[i]);
+			if(!do_colide) continue;
+		}
+		if(usr_data_1&&usr_data_1->object_callback){
+			bool do_colide=true;
+			usr_data_1->object_callback(do_colide,contacts[i]);
+			if(!do_colide) continue;
+		}
 		if(usr_data_2){ 
+
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
 				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
@@ -399,15 +414,10 @@ dContact contacts[N];
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 			}
-			if(usr_data_2->object_callback){
-				bool do_colide=true;
-				usr_data_2->object_callback(do_colide,contacts[i]);
-				if(!do_colide) continue;
-			}
+
 		}
 ///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
-
 				pushing_neg=usr_data_1->pushing_b_neg||
 				usr_data_1->pushing_neg;
 				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
@@ -420,11 +430,7 @@ dContact contacts[N];
 					//dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					//continue;
 				}
-			if(usr_data_1->object_callback){
-				bool do_colide=true;
-				usr_data_1->object_callback(do_colide,contacts[i]);
-				if(!do_colide) continue;
-			}
+
 
 		}
 

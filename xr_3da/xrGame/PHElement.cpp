@@ -1066,7 +1066,9 @@ void CPHElement::InterpolateGlobalPosition(Fvector* v){
 
 void CPHElement::GetGlobalPositionDynamic(Fvector* v)
 {
-	v->sub(*((Fvector*)dBodyGetPosition(m_body)),m_inverse_local_transform.c);
+	//PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
+	v->add(*((Fvector*)dBodyGetPosition(m_body)),m_inverse_local_transform.c);
+
 }
 
 void CPHElement::DynamicAttach(CPHElement* E)
@@ -1709,4 +1711,9 @@ void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_e
 const Fvector& CPHElement::mass_Center()
 {
 	return *((const Fvector*)dBodyGetPosition(m_body));
+}
+
+CPhysicsShell* CPHElement::PhysicsShell()
+{
+	return dynamic_cast<CPhysicsShell*>(m_shell);
 }

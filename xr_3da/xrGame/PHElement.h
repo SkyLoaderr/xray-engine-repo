@@ -102,6 +102,7 @@ public:
 	void					CallBack1						(CBoneInstance* B);
 	void					PhDataUpdate					(dReal step);
 
+	virtual CPhysicsShell*	PhysicsShell					();
 	virtual void			get_Extensions					(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext);
 	virtual void			set_ParentElement				(CPhysicsElement* p){m_parent_element=(CPHElement*)p;}
 	virtual void			set_DisableParams				(float dis_l=default_disl,float dis_w=default_disw);

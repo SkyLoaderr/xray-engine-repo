@@ -26,6 +26,7 @@ extern const dReal default_disw;
 extern const dReal default_disl;
 class CPhysicsJoint;
 class CPhysicsElement;
+class CPhysicsShell;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -87,6 +88,7 @@ class	CPhysicsElement		: public CPhysicsBase
 
 public:
 	int						m_SelfID;
+	virtual CPhysicsShell*	PhysicsShell			()												= 0;		
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
 	virtual CPhysicsRefObject*	PhysicsRefObject	()												= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;

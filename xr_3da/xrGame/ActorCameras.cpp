@@ -22,7 +22,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	
 	// get calc eye point 90% from player height
 	Fvector						R;
-	ph_Movement.Box().getsize		(R);
+	Movement.Box().getsize		(R);
 	point.set					(0.f,.91f*R.y,0.f);
 	XFORM().transform_tiny	(point);
 

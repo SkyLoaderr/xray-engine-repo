@@ -51,7 +51,7 @@ protected:
 	enum EDamages {DAMAGE_FX_COUNT = 12};
 public:
 	
-	CPHMovementControl ph_Movement;
+	//CPHMovementControl Movement;
 
 	enum EMoveCommand
 	{
@@ -267,8 +267,9 @@ private:
 	void					create_Skeleton			();
 	void					create_Skeleton1		();
 	void					attach_Vehicle			(CCar* vehicle);
-	void					use_Vehicle				();
-	CCar*					pick_VehicleObject		(int& element);
+	bool					use_Vehicle				(CGameObject* object,int element);
+	CGameObject*			pick_Object				(int& element);
+	void					ActorUse				();
 
 
 public:
@@ -322,7 +323,7 @@ public:
 	{
 		state.bJump			= !!(mstate_real&mcJump);
 		state.bCrouch		= !!(mstate_real&mcCrouch);
-		state.fVelocity		= ph_Movement.GetVelocityActual();
+		state.fVelocity		= Movement.GetVelocityActual();
 		return TRUE;
 	}
 	virtual BOOL						renderable_ShadowGenerate	( ) {
@@ -351,7 +352,7 @@ public:
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
-	virtual f32 GetMass() { return g_Alive()?ph_Movement.GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
+	virtual f32 GetMass() { return g_Alive()?Movement.GetMass():m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 	virtual float						Radius				() const;
 
 #ifdef DEBUG

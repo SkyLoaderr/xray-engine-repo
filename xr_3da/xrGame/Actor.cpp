@@ -102,7 +102,7 @@ CActor::CActor() : CEntityAlive()
 	m_saved_dir.set(0,0,0);
 	m_saved_impulse=0.f;
 	m_vehicle				=	NULL;
-	ph_Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::actor);
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::actor);
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
@@ -154,26 +154,26 @@ void CActor::Load		(LPCSTR section )
 	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
 	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	ph_Movement.SetBox		(0,bb);
+	Movement.SetBox		(0,bb);
 
 	// Movement: BOX
 	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	ph_Movement.SetBox		(1,bb);
+	Movement.SetBox		(1,bb);
 
 	// Movement: Foots
 	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	ph_Movement.SetFoots	(vFOOT_center,vFOOT_size);
+	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
 	// Movement: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	ph_Movement.SetCrashSpeeds	(cs_min,cs_max);
-	ph_Movement.SetMass		(mass);
+	Movement.SetCrashSpeeds	(cs_min,cs_max);
+	Movement.SetMass		(mass);
 
 
 	// Movement: Frictions
@@ -182,13 +182,13 @@ void CActor::Load		(LPCSTR section )
 	af					= pSettings->r_float	(section,"ph_friction_air"	);
 	gf					= pSettings->r_float	(section,"ph_friction_ground");
 	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	ph_Movement.SetFriction	(af,wf,gf);
+	Movement.SetFriction	(af,wf,gf);
 
 	// BOX activate
-	ph_Movement.ActivateBox	(0);
+	Movement.ActivateBox	(0);
 
-	ph_Movement.Load(section);
-	ph_Movement.SetParent(this);
+	Movement.Load(section);
+	Movement.SetParent(this);
 
 	m_fWalkAccel				= pSettings->r_float(section,"walk_accel");	
 	m_fJumpSpeed				= pSettings->r_float(section,"jump_speed");
@@ -203,7 +203,7 @@ void CActor::Load		(LPCSTR section )
 	hinge_force_factor2 		= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
 	hinge_vel					= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
-	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
+	Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 
 
@@ -230,8 +230,8 @@ void CActor::Load		(LPCSTR section )
 	::Sound->create		(sndDie[2],			TRUE,	strconcat(buf,cName(),"\\die2"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 	::Sound->create		(sndDie[3],			TRUE,	strconcat(buf,cName(),"\\die3"),SOUND_TYPE_MONSTER_DYING_HUMAN);
 
-//	ph_Movement.ActivateBox	(0);
-	//ph_Movement.ActivateBox	(0);
+//	Movement.ActivateBox	(0);
+	//Movement.ActivateBox	(0);
 	cam_Set					(eacFirstEye);
 
 	// motions
@@ -270,7 +270,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 
 	P.w_u16				(u16(mstate_real));
 	P.w_sdir			(NET_SavedAccel);
-	P.w_sdir			(ph_Movement.GetVelocity());
+	P.w_sdir			(Movement.GetVelocity());
 	P.w_float_q16		(fArmor,-1000,1000);
 
 	int w_id = -1;//Weapons->ActiveWeaponID	();
@@ -332,11 +332,11 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 
 	
-	ph_Movement.CreateCharacter();
-	ph_Movement.SetPhysicsRefObject(this);
-	ph_Movement.SetPLastMaterial(&last_gmtl_id);
-	ph_Movement.SetPosition	(Position());
-	ph_Movement.SetVelocity	(0,0,0);
+	Movement.CreateCharacter();
+	Movement.SetPhysicsRefObject(this);
+	Movement.SetPLastMaterial(&last_gmtl_id);
+	Movement.SetPosition	(Position());
+	Movement.SetVelocity	(0,0,0);
 	
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
@@ -469,7 +469,7 @@ void CActor::net_Destroy	()
 	u32 it;
 	for (it=0; it<SND_HIT_COUNT; it++)	::Sound->destroy	(sndHit[it]);
 	for (it=0; it<SND_DIE_COUNT; it++)	::Sound->destroy	(sndDie[it]);
-	ph_Movement.DestroyCharacter();
+	Movement.DestroyCharacter();
 	if(m_pPhysicsShell) 
 		m_pPhysicsShell->Deactivate();
 
@@ -523,7 +523,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 {
 	if (g_Alive() && (hit_type == eHitTypeWound || hit_type == eHitTypeStrike))
 	{
-		ph_Movement.ApplyImpulse(dir,impulse);
+		Movement.ApplyImpulse(dir,impulse);
 		m_saved_dir.set(dir);
 		m_saved_position.set(position_in_bone_space);
 		m_saved_impulse=impulse*skel_fatal_impulse_factor;
@@ -603,11 +603,11 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		}
 
 		// stop-motion
-		if (ph_Movement.Environment()==CPHMovementControl::peOnGround || ph_Movement.Environment()==CPHMovementControl::peAtWall)
+		if (Movement.Environment()==CPHMovementControl::peOnGround || Movement.Environment()==CPHMovementControl::peAtWall)
 		{
 			Fvector zeroV;
 			zeroV.set			(0,0,0);
-			ph_Movement.SetVelocity(zeroV);
+			Movement.SetVelocity(zeroV);
 		}
 		
 		//slow actor, only when wound hit
@@ -695,47 +695,47 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 	// Calculate physics
 
-	//ph_Movement.SetPosition		(Position());
-	//ph_Movement.Calculate		(accel,0,jump,dt,false);
-	//ph_Movement.GetPosition		(Position());
+	//Movement.SetPosition		(Position());
+	//Movement.Calculate		(accel,0,jump,dt,false);
+	//Movement.GetPosition		(Position());
 	//Fvector vAccel;
-	//ph_Movement.vExternalImpulse.div(dt);
+	//Movement.vExternalImpulse.div(dt);
 
-	//ph_Movement.SetPosition		(Position());
+	//Movement.SetPosition		(Position());
 
-	ph_Movement.Calculate			(_accel,0,jump,dt,false);
-	ph_Movement.GetPosition		(Position());
-	ph_Movement.bSleep=false;
+	Movement.Calculate			(_accel,0,jump,dt,false);
+	Movement.GetPosition		(Position());
+	Movement.bSleep=false;
 	///////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////Update ph_Movement///////////////////////////
+	/////////////////////////////////////////////Update Movement///////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 
-	//ph_Movement.SetEnvironment(ph_Movement.Environment(),ph_Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
-	//ph_Movement.SetPosition		(Position());
-	//Fvector velocity=ph_Movement.GetVelocity();
-	//ph_Movement.SetVelocity(velocity);
-	//ph_Movement.gcontact_Was=ph_Movement.gcontact_Was;
-	//ph_Movement.SetContactSpeed(ph_Movement.GetContactSpeed());
+	//Movement.SetEnvironment(Movement.Environment(),Movement.OldEnvironment());//peOnGround,peAtWall,peInAir
+	//Movement.SetPosition		(Position());
+	//Fvector velocity=Movement.GetVelocity();
+	//Movement.SetVelocity(velocity);
+	//Movement.gcontact_Was=Movement.gcontact_Was;
+	//Movement.SetContactSpeed(Movement.GetContactSpeed());
 	//velocity.y=0.f;
-	//	ph_Movement.SetActualVelocity(velocity.magnitude());
+	//	Movement.SetActualVelocity(velocity.magnitude());
 
-	//ph_Movement.gcontact_HealthLost=ph_Movement.gcontact_HealthLost;
-	//ph_Movement.gcontact_Power=ph_Movement.gcontact_Power;
+	//Movement.gcontact_HealthLost=Movement.gcontact_HealthLost;
+	//Movement.gcontact_Power=Movement.gcontact_Power;
 
 	/////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////
 	/*
-	if (ph_Movement.gcontact_Was) 
+	if (Movement.gcontact_Was) 
 	{
-	Fvector correctV					= ph_Movement.GetVelocity	();
+	Fvector correctV					= Movement.GetVelocity	();
 	correctV.x							*= 0.1f;
 	correctV.z							*= 0.1f;
-	ph_Movement.SetVelocity				(correctV);
+	Movement.SetVelocity				(correctV);
 
 	if (Local()) {
-	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+	g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (Movement.gcontact_Power));
 	Fvector D; D.set					(0,1,0);
-	if (ph_Movement.gcontact_HealthLost)	Hit	(1.5f * ph_Movement.gcontact_HealthLost,D,this,-1);
+	if (Movement.gcontact_HealthLost)	Hit	(1.5f * Movement.gcontact_HealthLost,D,this,-1);
 	}
 	}
 	*/	
@@ -748,13 +748,13 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 
 		if (Local()) {
 
-			if (ph_Movement.gcontact_Was) 
-				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (ph_Movement.gcontact_Power));
+			if (Movement.gcontact_Was) 
+				g_pGameLevel->Cameras.AddEffector		(xr_new<CEffectorFall> (Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
-			if (ph_Movement.gcontact_HealthLost)	{
-				Hit	(ph_Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
+			if (Movement.gcontact_HealthLost)	{
+				Hit	(Movement.gcontact_HealthLost,D,this,s16(6 + 2*::Random.randI(0,2)),0);
 				if(g_Alive()<=0)
-					ph_Movement.GetDeathPosition(Position());
+					Movement.GetDeathPosition(Position());
 			}
 		}
 	}	
@@ -869,7 +869,7 @@ void CActor::shedule_Update	(u32 DT)
 	if (patch_frame<patch_frames)	{
 		Position().set		(patch_position);
 		if(!m_pPhysicsShell)
-			ph_Movement.SetPosition(patch_position);
+			Movement.SetPosition(patch_position);
 		patch_frame			+= 1;
 	}
 	cam_shift				= 0.f;
@@ -902,7 +902,7 @@ void CActor::shedule_Update	(u32 DT)
 
 		// Check for game-contacts
 		Fvector C; float R;		
-		//ph_Movement.GetBoundingSphere	(C,R);
+		//Movement.GetBoundingSphere	(C,R);
 		
 		Center(C);
 		R=Radius();
@@ -930,11 +930,11 @@ void CActor::shedule_Update	(u32 DT)
 				NET_Last				= N;
 
 				// Setup last known data
-				ph_Movement.SetVelocity	(NET_Last.p_velocity);
-				ph_Movement.SetVelocity	(NET_Last.p_velocity);
+				Movement.SetVelocity	(NET_Last.p_velocity);
+				Movement.SetVelocity	(NET_Last.p_velocity);
 				Position().set			(NET_Last.p_pos);
 				if(!m_pPhysicsShell)
-					ph_Movement.SetPosition	(NET_Last.p_pos);
+					Movement.SetPosition	(NET_Last.p_pos);
 			}
 
 			g_sv_Orientate				(NET_Last.mstate,dt			);
@@ -967,7 +967,7 @@ void CActor::shedule_Update	(u32 DT)
 				g_Orientate		(NET_Last.mstate,dt);
 				Position().set	(NET_Last.p_pos);		// physics :)
 				if(!m_pPhysicsShell)
-					ph_Movement.SetPosition(NET_Last.p_pos);
+					Movement.SetPosition(NET_Last.p_pos);
 				g_SetAnimation	(NET_Last.mstate);
 
 				// Change weapon if needed
@@ -1075,19 +1075,19 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			//bbStandBox.getcenter(start_pos);
 			start_pos.add		(Position());
 			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,bbStandBox))
-			Fbox stand_box=ph_Movement.Boxes()[0];
-			stand_box.y1+=ph_Movement.FootExtent().y;
-			ph_Movement.GetPosition(start_pos);
+			Fbox stand_box=Movement.Boxes()[0];
+			stand_box.y1+=Movement.FootExtent().y;
+			Movement.GetPosition(start_pos);
 			start_pos.y+=(
-				//-(ph_Movement.Box().y2-ph_Movement.Box().y1)+
-				(ph_Movement.Boxes()[0].y2-ph_Movement.Boxes()[0].y1)
+				//-(Movement.Box().y2-Movement.Box().y1)+
+				(Movement.Boxes()[0].y2-Movement.Boxes()[0].y1)
 				)/2.f;
-			start_pos.y+=ph_Movement.FootExtent().y/2.f;
+			start_pos.y+=Movement.FootExtent().y/2.f;
 			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
-				ph_Movement.ActivateBox	(0);
-				//ph_Movement.ActivateBox(0);
+				Movement.ActivateBox	(0);
+				//Movement.ActivateBox(0);
 			}
 		}
 	}
@@ -1100,10 +1100,10 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		}
 	}
 	// закончить падение
-	if (ph_Movement.gcontact_Was){
+	if (Movement.gcontact_Was){
 		if (mstate_real&mcFall){
-			if (ph_Movement.GetContactSpeed()>4.f){
-				if (fis_zero(ph_Movement.gcontact_HealthLost)){	
+			if (Movement.GetContactSpeed()>4.f){
+				if (fis_zero(Movement.gcontact_HealthLost)){	
 					m_fLandingTime	= s_fLandingTime1;
 					mstate_real		|= mcLanding;
 				}else{
@@ -1120,11 +1120,11 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		m_bJumpKeyPressed	=	FALSE;
 
 	// Зажало-ли меня/уперся - не двигаюсь
-	if (((ph_Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&(mcFall|mcJump)))) || ph_Movement.bSleep) 
+	if (((Movement.GetVelocityActual()<0.2f)&&(!(mstate_real&(mcFall|mcJump)))) || Movement.bSleep) 
 	{
 		mstate_real				&=~ mcAnyMove;
 	}
-	if (ph_Movement.Environment()==CPHMovementControl::peOnGround || ph_Movement.Environment()==CPHMovementControl::peAtWall)
+	if (Movement.Environment()==CPHMovementControl::peOnGround || Movement.Environment()==CPHMovementControl::peAtWall)
 	{
 		// если на земле гарантированно снимать флажок Jump
 		if (((s_fJumpTime-m_fJumpTime)>s_fJumpGroundTime)&&(mstate_real&mcJump))
@@ -1133,7 +1133,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			m_fJumpTime			= s_fJumpTime;
 		}
 	}
-	if(ph_Movement.Environment()==CPHMovementControl::peAtWall)
+	if(Movement.Environment()==CPHMovementControl::peAtWall)
 
 		mstate_real				|=mcClimb;
 
@@ -1146,7 +1146,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 	// ****************************** Check keyboard input and control acceleration
 	vControlAccel.set	(0,0,0);
 
-	if (!(mstate_real&mcFall) && (ph_Movement.Environment()==CPHMovementControl::peInAir)) 
+	if (!(mstate_real&mcFall) && (Movement.Environment()==CPHMovementControl::peInAir)) 
 	{
 		m_fFallTime				-=	dt;
 		if (m_fFallTime<=0.f){
@@ -1156,7 +1156,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}
 	}
 
-	if (ph_Movement.Environment()==CPHMovementControl::peOnGround || ph_Movement.Environment()==CPHMovementControl::peAtWall )
+	if (Movement.Environment()==CPHMovementControl::peOnGround || Movement.Environment()==CPHMovementControl::peAtWall )
 	{
 		// jump
 		m_fJumpTime				-=	dt;
@@ -1183,9 +1183,9 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		if ((0==(mstate_real&mcCrouch))&&(mstate_wf&mcCrouch))
 		{
 			mstate_real			|=	mcCrouch;
-			ph_Movement.EnableCharacter();
-			ph_Movement.ActivateBox(1);
-			//ph_Movement.ActivateBox(1);
+			Movement.EnableCharacter();
+			Movement.ActivateBox(1);
+			//Movement.ActivateBox(1);
 		}
 
 		// mask input into "real" state
@@ -1391,10 +1391,10 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	HUD().pFontSmall->SetColor(0xffffffff);
 	HUD().pFontSmall->OutSet	(120,530);
 	HUD().pFontSmall->OutNext("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
-	HUD().pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(ph_Movement.GetVelocity()));
-	HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",ph_Movement.GetVelocityMagnitude());
-	HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",ph_Movement.GetVelocityActual());
-	switch (ph_Movement.Environment())
+	HUD().pFontSmall->OutNext("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(Movement.GetVelocity()));
+	HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",Movement.GetVelocityMagnitude());
+	HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",Movement.GetVelocityActual());
+	switch (Movement.Environment())
 	{
 	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
@@ -1414,7 +1414,7 @@ float CActor::HitScale	(int element)
 
 void CActor::SetPhPosition(const Fmatrix &pos)
 {
-	if(!m_pPhysicsShell) ph_Movement.SetPosition(pos.c);
+	if(!m_pPhysicsShell) Movement.SetPosition(pos.c);
 	//else m_phSkeleton->S
 }
 
@@ -1422,8 +1422,8 @@ void CActor::ForceTransform(const Fmatrix& m)
 {
 	if(g_Alive()<=0)			return;
 	XFORM().set					(m);
-	if(ph_Movement.CharacterExist()) ph_Movement.EnableCharacter	();
-	ph_Movement.SetPosition		(m.c);
+	if(Movement.CharacterExist()) Movement.EnableCharacter	();
+	Movement.SetPosition		(m.c);
 }
 
 #ifdef DEBUG
@@ -1432,9 +1432,9 @@ void CActor::OnRender	()
 {
 	if (!bDebug)				return;
 
-	ph_Movement.dbg_Draw			();
+	Movement.dbg_Draw			();
 	//if(g_Alive()>0)
-	ph_Movement.dbg_Draw();
+	Movement.dbg_Draw();
 	//CCameraBase* C				= cameras	[cam_active];
 	//dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->Position(), C->vDirection, C->vNormal);
 }
@@ -1463,7 +1463,7 @@ void CActor::UpdateCondition()
 
 	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
 	{
-		ConditionAccel((m_inventory.TotalWeight()+GetMass())/
+	   ConditionAccel((m_inventory.TotalWeight()+GetMass())/
 						(m_inventory.m_maxWeight+GetMass()));
 	}
 	

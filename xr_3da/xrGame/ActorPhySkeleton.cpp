@@ -6,8 +6,8 @@
 void CActor::create_Skeleton(){
 	if(m_pPhysicsShell) return;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-	ph_Movement.GetDeathPosition	(Position());
-	ph_Movement.DestroyCharacter();
+	Movement.GetDeathPosition	(Position());
+	Movement.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;

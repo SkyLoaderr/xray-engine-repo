@@ -83,7 +83,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 		//Weapons->Reload			();
 		break;
 	case kUSE:
-		use_Vehicle();
+		ActorUse();
 		break;
 	case kDROP:
 		b_DropActivated			= TRUE;
@@ -168,5 +168,14 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 		float d = ((psMouseInvert.test(1))?-1:1)*float(dy)*scale*3.f/4.f;
 		cam_Active()->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
+}
+
+void CActor::ActorUse()
+{
+	int element=-1;
+	CGameObject* object =pick_Object(element);	
+	if(use_Vehicle(object,element)) return;
+	Movement.PHCaptureObject(object);
+	
 }
 //void CActor::IR_OnMousePress(int btn)
