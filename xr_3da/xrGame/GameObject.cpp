@@ -173,7 +173,7 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 
 	u32		l_dwNewLevelVertexID	= ai().level_graph().vertex(level_vertex_id(),Position());
 
-	if (level_vertex_id() == l_dwNewLevelVertexID)
+	if (decrement_reference && (level_vertex_id() == l_dwNewLevelVertexID))
 		return;
 
 	if (!ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID)) {

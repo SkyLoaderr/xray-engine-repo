@@ -38,6 +38,7 @@ IC	u32	CLevelGraph::vertex	(const CVertex &vertex_r) const
 IC u8	CLevelGraph::ref_add		(u32 id)	
 {
 	VERIFY				(valid_vertex_id(id));
+	VERIFY				(m_ref_counts[id] < u8(-1));
 	m_ref_counts[id]	+= u8(1);	
 	return				(m_ref_counts[id]);	
 }
@@ -45,6 +46,7 @@ IC u8	CLevelGraph::ref_add		(u32 id)
 IC u8	CLevelGraph::ref_dec		(u32 id)
 {
 	VERIFY				(valid_vertex_id(id));
+	VERIFY				(m_ref_counts[id]);
 	m_ref_counts[id]	-= u8(1);	
 	return				(m_ref_counts[id]);	
 }
