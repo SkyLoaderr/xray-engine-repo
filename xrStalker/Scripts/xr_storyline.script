@@ -152,13 +152,13 @@ function set_storyline(object, char_ini)
     end
 
     --' алкоголики в баре :)
-	xr_motivator.storage[self.object:id ()].bar = {
+	xr_motivator.storage[object:id ()].bar = {
 		enabled = false,
 		meat = false,
 		interlocutor = nil,
 		talking = false,
 		pose = nil
 	}
-	bar_stalker.add_to_binder (self.object, char_ini)
+	bar_stalker.add_to_binder (object, char_ini)
 
 end
