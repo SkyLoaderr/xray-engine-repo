@@ -71,7 +71,9 @@ void occRasterizer::propagade	()
 	{
 		for (int x=0; x<occ_dim_0; x++)
 		{
-			bufDepth_0[y][x]	= d2int(bufDepth[y+1][x+1]);
+			float d				= bufDepth[y+1][x+1];
+			clamp				(d,-1.8f,1.8f);
+			bufDepth_0[y][x]	= d2int(d);
 		}
 	}
 
