@@ -27,12 +27,12 @@ void CGraviZone::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	m_dwThrowInTime = 5000;
-	m_fThrowInImpulse = 800.f;
-	m_fBlowoutRadiusPercent = 0.3f;
+	m_fThrowInImpulse = pSettings->r_float(section,	"throw_in_impulse");//800.f;
+	m_fBlowoutRadiusPercent = pSettings->r_float(section,"blowout_radius_percent");//0.3f;
 
-	m_fTeleHeight = 1.5f;
-    m_dwTimeToTele = 7000;
+	m_fTeleHeight = pSettings->r_float(section,		 "tele_height");//1.5f;
+    m_dwTimeToTele = pSettings->r_u32(section,		"time_to_tele");//7000;
+	m_dwTelePause = pSettings->r_u32(section,		"tele_pause");//1000
 }
 
 BOOL CGraviZone::net_Spawn(LPVOID DC)
@@ -76,10 +76,8 @@ bool CGraviZone::IdleState()
 
 	if(!result)
 	{
-
-		if(m_dwTeleTime> m_dwTimeToTele + 1000)
+		if(m_dwTeleTime> m_dwTimeToTele + m_dwTelePause)
 		{
-
 			m_dwTeleTime = 0;
 
 			xr_set<CObject*>::iterator it;

@@ -35,8 +35,6 @@ public:
 	virtual bool	IdleState();
 
 protected:
-	//врем€ вт€гивани€ объектов в зону
-	u32				m_dwThrowInTime;
 	//сила импульса вт€гивани€ в зону
 	float			m_fThrowInImpulse;
 	//радиус действи€ выброса (в процентах от всего)
@@ -45,5 +43,6 @@ protected:
 	//параметры телекинеза	
 	float			m_fTeleHeight;
 	u32				m_dwTimeToTele;
+	u32				m_dwTelePause;
 	u32				m_dwTeleTime;
 };
