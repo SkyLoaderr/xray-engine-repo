@@ -20,6 +20,7 @@
 #include "item_manager.h"
 #include "hit_memory_manager.h"
 #include "sound_memory_manager.h"
+#include "missile.h"
 
 class CInventoryItem;
 class CLuaHit;
@@ -476,6 +477,18 @@ public:
 		else {
 			CGameObject		*game_object = object_handler->best_weapon();
 			return			(game_object ? game_object->lua_game_object() : 0);
+		}
+	}
+
+			void explode	(u32 level_time)
+	{
+		CMissile			*missile = dynamic_cast<CMissile*>(m_tpGameObject);
+		if (!missile)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member explode!");
+		else {
+			NET_Packet			P;
+			missile->u_EventGen	(P,GE_GRENADE_EXPLODE,missile->ID());	
+			missile->u_EventSend(P);
 		}
 	}
 };

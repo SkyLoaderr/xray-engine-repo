@@ -719,6 +719,7 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("clear_hear_callback",			&CLuaGameObject::ClearSoundCallback)
 			.def("memory",						&CLuaGameObject::memory, adopt(return_value))
 			.def("best_weapon",					&CLuaGameObject::best_weapon)
+			.def("explode",						&CLuaGameObject::explode)
 	];
 }
 

@@ -106,4 +106,8 @@ public:
 	virtual void	activate_physic_shell	();
 	virtual void	setup_physic_shell		();
 	virtual void	create_physic_shell		();
+	IC		void	set_destroy_time		(u32 destroy_time)
+	{
+		m_dwDestroyTime		= destroy_time;
+	}
 };
