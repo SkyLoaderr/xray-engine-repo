@@ -111,10 +111,11 @@ void CDemoPlay::stat_Stop	()
 		else				sscanf	(param+xr_strlen("-benchmark "),"%s",fname);
 		FS.update_path		(fname,"$server_root$",fname);
 		CInifile			res		(fname,FALSE,FALSE,TRUE);
-		res.w_float			("general","min",		rfps_min,			"absolute minimum"		);
-		res.w_float			("general","max",		rfps_max,			"absolute maximum"		);
-		res.w_float			("general","average",	rfps_average,		"average for this run"	);
-		res.w_float			("general","middle",	rfps_middlepoint,	"per-frame middle-point");
+		res.w_float			("general","renderer",	float(::Render->get_generation())/10.f,	"dx-level required"		);
+		res.w_float			("general","min",		rfps_min,								"absolute minimum"		);
+		res.w_float			("general","max",		rfps_max,								"absolute maximum"		);
+		res.w_float			("general","average",	rfps_average,							"average for this run"	);
+		res.w_float			("general","middle",	rfps_middlepoint,						"per-frame middle-point");
 		for (u32	it=1; it<stat_table.size(); it++)
 		{
 			string32		id;
