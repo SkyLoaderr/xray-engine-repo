@@ -43,6 +43,7 @@ public:
 	SinglePhrase * AddPhrase();
 	// Получить запись по номеру
 	SinglePhrase * GetPhraseByIndex(u32 idx);
+			void SetCaption(float, float, LPCSTR);
 };
 
 

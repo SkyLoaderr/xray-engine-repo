@@ -54,6 +54,20 @@ CUIMultiTextStatic::SinglePhrase * CUIMultiTextStatic::GetPhraseByIndex(u32 idx)
 	return &m_vPhrases[idx];
 }
 
+void CUIMultiTextStatic::SetCaption(float x, float y, LPCSTR str)
+{
+	if( m_vPhrases.size() )
+	{
+		CUIMultiTextStatic::SinglePhrase * sp =GetPhraseByIndex(0);
+		sp->outX = x;
+		sp->outY = y;
+		sp->str  = str;
+	}else{
+		AddPhrase();
+		SetCaption(x,y,str);
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 //-----------------------------------------------------------------------------/
