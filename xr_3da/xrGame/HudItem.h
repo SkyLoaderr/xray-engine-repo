@@ -71,6 +71,7 @@ public:
 	virtual void	Show() = 0;
 
 	virtual void	UpdateHudPosition	();
+	virtual	void	UpdateXForm			() = 0;
 
 	CWeaponHUD*		GetHUD				() {return m_pHUD;}
 

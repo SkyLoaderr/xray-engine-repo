@@ -75,30 +75,18 @@ void CHudItem::renderable_Render()
 	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
 		// HUD render
-		//UpdateHudPosition			();
-
 		if(m_bRenderHud)
 		{
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());
 		}
 	}
-	//else if(!pActor || !hud_mode)
 	else
 		if(!H_Parent() || (!hud_mode && m_pHUD && !m_pHUD->IsHidden() && !IsHidden()))
+		{
 			inherited::renderable_Render();
-
-	
+		}
 }
-/*
-BOOL CHudItem::renderable_ShadowGenerate() 
-{
-	return TRUE;
-	if(hud_mode)
-		return FALSE;
-	else
-		return 	inherited::renderable_ShadowGenerate();
-}*/
 
 bool CHudItem::Action(s32 cmd, u32 flags) 
 {
@@ -183,9 +171,9 @@ void CHudItem::UpdateCL()
 	inherited::UpdateCL();
 	m_dwStateTime += Device.dwTimeDelta;
 
-	if(m_pHUD) 
-		m_pHUD->UpdateHud();
+	if(m_pHUD) m_pHUD->UpdateHud();
 	UpdateHudPosition	();
+	UpdateXForm			();
 }
 
 void CHudItem::OnH_A_Chield		()

@@ -63,6 +63,8 @@ public:
 	IC		u32  animation_slot	() const {return	(m_animation_slot);}
 	IC		bool ready_to_eat	() const {return	(m_bReadyToEat);}
 
+	virtual	void	UpdateXForm	();
+
 protected:
 	bool m_bReadyToEat;
 
@@ -72,4 +74,7 @@ protected:
 	ref_str m_sAnimPlay;
 	ref_str m_sAnimPrepare;
 	ref_str m_sAnimEat;
+
+	//смещения для render
+	Fmatrix m_offset;
 };

@@ -10,12 +10,14 @@
 #include "WeaponHud.h"
 #include "PhysicsShell.h"
 #include "xr_level_controller.h"
+#include "entity_alive.h"
 
 #define PLAYING_ANIM_TIME 10000
 
 CFoodItem::CFoodItem(void) 
 {
 	m_bReadyToEat = false;
+	m_offset.identity	();
 }
 
 CFoodItem::~CFoodItem(void) 
@@ -44,6 +46,12 @@ void CFoodItem::Load(LPCSTR section)
 		m_sAnimPrepare	= pSettings->r_string(*hud_sect, "anim_prepare");
 		m_sAnimEat		= pSettings->r_string(*hud_sect, "anim_eat");
 	}
+
+	Fvector	position_offset, angle_offset;
+	position_offset		= pSettings->r_fvector3(section,"position_offset");
+	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
+	m_offset.setHPB			(VPUSH(angle_offset));
+	m_offset.translate_over	(position_offset);
 }
 
 void CFoodItem::net_Destroy() 
@@ -176,5 +184,44 @@ void CFoodItem::OnStateSwitch	(u32 S)
 			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlay), true, this);
 			break;
 		default: NODEFAULT;
+	}
+}
+
+void CFoodItem::UpdateXForm	()
+{
+	if (Device.dwFrame!=dwXF_Frame)
+	{
+		dwXF_Frame = Device.dwFrame;
+
+		if (0==H_Parent())	return;
+
+		// Get access to entity and its visual
+		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+
+		if(!E) return;
+
+		R_ASSERT		(E);
+		CKinematics*	V		= PKinematics	(E->Visual());
+		VERIFY			(V);
+
+		// Get matrices
+		int				boneL,boneR,boneR2;
+		E->g_WeaponBones(boneL,boneR,boneR2);
+
+		boneL = boneR2;
+
+		V->Calculate	();
+		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+
+		// Calculate
+		Fmatrix			mRes;
+		Fvector			R,D,N;
+		D.sub			(mL.c,mR.c);	D.normalize_safe();
+		R.crossproduct	(mR.j,D);		R.normalize_safe();
+		N.crossproduct	(D,R);			N.normalize_safe();
+		mRes.set		(R,N,D,mR.c);
+		mRes.mulA_43	(E->XFORM());
+		XFORM().mul		(mRes, m_offset);
 	}
 }
