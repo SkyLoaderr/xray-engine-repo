@@ -93,7 +93,8 @@
       intermediate\UI_MainExtern.obj intermediate\xr_efflensflare.obj 
       intermediate\PropertiesSceneObject.obj intermediate\EditObjectEditor.obj 
       intermediate\Blender_LaEmB.obj intermediate\Blender_Lm(EbB).obj 
-      intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj"/>
+      intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj 
+      intermediate\Blender_BmmD.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>

@@ -123,7 +123,6 @@ bool SceneBuilder::BuildLTX(){
 
 	// -- add flares --
 	if (Scene.ObjCount(OBJCLASS_LIGHT)) {
-    	ELog.DlgMsg(mtInformation,"Test me!");
         AnsiString suns;
 		i = Scene.FirstObj(OBJCLASS_LIGHT);
         _E  = Scene.LastObj(OBJCLASS_LIGHT);
@@ -141,13 +140,14 @@ bool SceneBuilder::BuildLTX(){
                 pIni->WriteString	(l->GetName(), "source_texture", 	l->m_LensFlare.m_Source.texture);
                 pIni->WriteFloat	(l->GetName(), "source_radius", 	l->m_LensFlare.m_Source.fRadius);
                 AnsiString FT=""; AnsiString FR=""; AnsiString FO=""; AnsiString FP="";
+                AnsiString T="";
                 int i=l->m_LensFlare.m_Flares.size();
                 for (CEditFlare::FlareIt it = l->m_LensFlare.m_Flares.begin(); it!=l->m_LensFlare.m_Flares.end(); it++,i--){
                 	FT += it->texture;
-                	FR += it->fRadius;
-                	FO += it->fOpacity;
-                	FP += it->fPosition;
-                    if (i>=1){FT+=","; FR+=","; FO+=","; FP+=",";}
+                	T.sprintf("%.3f",it->fRadius); 	FR += T;
+                	T.sprintf("%.3f",it->fOpacity);	FO += T;
+                	T.sprintf("%.3f",it->fPosition);FP += T;
+                    if (i>1){FT+=","; FR+=","; FO+=","; FP+=",";}
                 }
                	pIni->WriteString	(l->GetName(), "flare_textures",	FT.c_str());
                	pIni->WriteString	(l->GetName(), "flare_radius",		FR.c_str());

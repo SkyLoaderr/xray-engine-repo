@@ -200,6 +200,7 @@ USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
 USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
 USEUNIT("Engine\fmesh.cpp");
+USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
