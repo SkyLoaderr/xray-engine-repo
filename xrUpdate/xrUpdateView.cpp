@@ -20,6 +20,7 @@
 
 extern CTreeCtrl* g_tree_ctrl = NULL;
 
+
 void updateTreeItemName(HTREEITEM itm,CTask* t)
 {
 	if(!g_tree_ctrl)
@@ -29,6 +30,15 @@ void updateTreeItemName(HTREEITEM itm,CTask* t)
 }
 // CxrUpdateView
 
+#define UWM_TV_CHECKBOX    WM_APP   // the custom message we post to ourself
+class CDlgOrWhatever
+{
+  // ...
+  CTreeCtrl    m_tree;
+  afx_msg LRESULT OnTvCheckbox(WPARAM wp, LPARAM lp); // our message handler for the posted message
+};
+
+
 IMPLEMENT_DYNCREATE(CxrUpdateView, CFormView)
 
 BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
@@ -36,6 +46,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnTvnSelchangedTree1)
 	ON_BN_CLICKED(IDC_BTN_RUN, OnBnClickedBtnRun)
 
+	ON_MESSAGE(UWM_TV_CHECKBOX, OnTvCheckbox)
 
 	ON_COMMAND(ID_COPYFILESTASK_S,  OnAddCopyFilesTask)
 	ON_COMMAND(ID_COPYFILESTASK_COPYFOLDERTASK,  OnAddCopyFolderTask)
@@ -49,6 +60,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_BN_CLICKED(IDC_BUTTON4, OnBnClickedButtonCopyTask)
 	ON_BN_CLICKED(IDC_BUTTON5, OnBnClickedButtonMoveUp)
 	ON_BN_CLICKED(IDC_BUTTON6, OnBnClickedButtonMoveDown)
+	ON_BN_CLICKED(IDC_UPD_BTN, OnBnClickedUpdBtn)
 END_MESSAGE_MAP()
 
 // CxrUpdateView construction/destruction
@@ -305,7 +317,7 @@ void CxrUpdateView::OnBnClickedBtnRun()
 	AfxGetApp()->DoWaitCursor(1); // 0 => restore, 1=> begin, -1=> end
 
 	CTask* t = GetDocument()->m_task;
-	t->run();
+	t->exec();
 
 	AfxGetApp()->DoWaitCursor(-1); // 0 => restore, 1=> begin, -1=> end
 }
@@ -377,45 +389,8 @@ void CxrUpdateView::OnEnChangeEditTaskName()
 }
 
 
-void CxrUpdateView::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	CPoint pt;
-	GetCursorPos(&pt);
-	m_tree_ctrl.ScreenToClient(&pt);
-	UINT nFlags;
-	HTREEITEM itm = m_tree_ctrl.HitTest(pt, &nFlags);
-	if(!itm)
-		return;
-	CTask* t = (CTask*)m_tree_ctrl.GetItemData( itm );
-	
-	if(!t)
-		return;
 
-//    MSG         msg_;
-	
-/*	while(PeekMessage( &msg_, m_tree_ctrl.GetSafeHwnd(), 0U, 0U, PM_REMOVE )){
-              TranslateMessage	( &msg_ );
-              DispatchMessage	( &msg_ );
-		}
-*/
-	BOOL b = m_tree_ctrl.GetCheck(itm);
-	*pResult = 0;
 
-/*
-void CTreeappView::OnLButtonDown(UINT nFlags, CPoint point) 
-{
-     CTreeView::OnLButtonDown(nFlags, point);
-
-    HTREEITEM hItem = GetTreeCtrl().HitTest(point);
-
-    if (!hItem)
-        return;
-
-    bool bCheck = GetTreeCtrl().GetCheck(hItem) != 0;
-}
-*/
-
-}
 
 void CxrUpdateView::CheckChildren(HTREEITEM itm, BOOL b)
 {
@@ -537,11 +512,55 @@ void CxrUpdateView::SortItems(HTREEITEM itm)
 	CTask* t = GetDocument()->m_task;
 	if(!t)
 		return;
-//   tvs.hParent = t->m_tree_itm;
-	tvs.hParent = itm;
-//   tvs.hParent = TVI_ROOT;
+   tvs.hParent = itm;
    tvs.lpfnCompare = MyCompareProc;
    tvs.lParam = (LPARAM)&m_tree_ctrl;
 
 	m_tree_ctrl.SortChildrenCB(&tvs);
 }
+
+void CxrUpdateView::OnBnClickedUpdBtn()
+{
+	HTREEITEM itm = m_tree_ctrl.GetSelectedItem();
+	if(!itm)
+		return;
+	CTask* t = (CTask*)m_tree_ctrl.GetItemData(itm);
+	if(!t)
+		return;
+	BOOL b = m_tree_ctrl.GetCheck(itm);
+	CheckChildren(itm,b);
+}
+
+
+LRESULT CxrUpdateView::OnTvCheckbox(WPARAM wp, LPARAM lp)
+{
+  HTREEITEM hitem = (HTREEITEM) lp;
+
+	CTask* t = (CTask*)m_tree_ctrl.GetItemData(hitem);
+	if(!t)
+		return 0;
+
+	BOOL b = m_tree_ctrl.GetCheck(hitem);
+	CheckChildren(hitem,b);
+	m_tree_ctrl.SelectItem(hitem);
+
+  return 0;
+}
+
+
+void CxrUpdateView::OnNMClickTree1(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  DWORD dw = GetMessagePos();                   // retrieve mouse cursor position when msg was sent
+  CPoint p(GET_X_LPARAM(dw), GET_Y_LPARAM(dw)); // ..and put into point structure
+  m_tree_ctrl.ScreenToClient(&p);                    // make coords local to tree client area
+
+  UINT htFlags = 0;
+  HTREEITEM it = m_tree_ctrl.HitTest(p, &htFlags);   // See where the click was on
+
+  if (it != NULL && ( htFlags & TVHT_ONITEMSTATEICON)) {   
+    // the check box was hit - we just post a message for later processing
+    PostMessage(UWM_TV_CHECKBOX, pNMHDR->idFrom, (LPARAM) it);
+  }
+
+}
+

@@ -289,6 +289,7 @@ BEGIN
     PUSHBUTTON      "Move Up",IDC_BUTTON5,57,189,50,14
     PUSHBUTTON      "MoveDown",IDC_BUTTON6,58,204,50,14
     LTEXT           "Static",IDC_STATIC_TASK_TYPE2,123,7,80,11
+    PUSHBUTTON      "Button7",IDC_UPD_BTN,108,174,12,44
 END
 
 IDD_COPY_TASK_DLG DIALOGEX 0, 0, 247, 148
@@ -332,23 +333,26 @@ BEGIN
     PUSHBUTTON      "...",IDC_BTN_SEL_WRK_FOLDER,222,40,17,13
 END
 
-IDD_BATCH_TASK DIALOGEX 0, 0, 248, 188
+IDD_BATCH_TASK DIALOGEX 0, 0, 248, 156
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_BORDER
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    LTEXT           "formatted command",IDC_STATIC,7,10,72,11
-    EDITTEXT        IDC_EDIT_CMD,78,7,163,12,ES_AUTOHSCROLL
-    LISTBOX         IDC_LIST_FILES_3,7,58,172,123,LBS_SORT | LBS_MULTIPLESEL | 
+    LTEXT           "formatted command",IDC_STATIC,7,32,72,11
+    EDITTEXT        IDC_EDIT_CMD,78,29,163,12,ES_AUTOHSCROLL
+    LISTBOX         IDC_LIST_FILES_3,7,72,172,77,LBS_SORT | LBS_MULTIPLESEL | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Files:",IDC_STATIC,7,47,68,8
-    PUSHBUTTON      "Add file(s)",IDC_BTN_ADD_FILE_3,181,55,55,12
-    PUSHBUTTON      "Remove file(s)",IDC_BTN_REMOVE_FILE_3,181,70,56,12
-    PUSHBUTTON      "Remove all",IDC_BTN_REMOVE_ALL_FILES_3,181,87,56,12
-    LTEXT           "$dir$  -directory",IDC_STATIC,20,22,57,8
-    LTEXT           "$file$ -file name",IDC_STATIC,18,35,57,8
-    LTEXT           "$ext$  -file extention",IDC_STATIC,83,22,158,8
+    LTEXT           "Files:",IDC_STATIC,7,62,68,8
+    PUSHBUTTON      "Add file(s)",IDC_BTN_ADD_FILE_3,185,74,55,12
+    PUSHBUTTON      "Remove file(s)",IDC_BTN_REMOVE_FILE_3,185,90,56,12
+    PUSHBUTTON      "Remove all",IDC_BTN_REMOVE_ALL_FILES_3,185,106,56,12
+    LTEXT           "$dir$  -directory",IDC_STATIC,20,7,57,8
+    LTEXT           "$file$ -file name",IDC_STATIC,18,20,57,8
+    LTEXT           "$ext$  -file extention",IDC_STATIC,83,7,158,8
     LTEXT           "$full_file_name$ -given full file name with path",
-                    IDC_STATIC,81,33,160,8
+                    IDC_STATIC,81,18,160,8
+    LTEXT           "Working folder",IDC_STATIC,7,45,63,11
+    EDITTEXT        IDC_EDIT_WRK_FOLDER,77,42,143,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BTN_SEL_WRK_FOLDER_5,222,42,17,13
 END
 
 
@@ -444,7 +448,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 241
         TOPMARGIN, 7
-        BOTTOMMARGIN, 181
+        BOTTOMMARGIN, 149
     END
 END
 #endif    // APSTUDIO_INVOKED

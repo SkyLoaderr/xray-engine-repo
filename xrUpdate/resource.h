@@ -13,7 +13,6 @@
 #define IDD_DIALOG_EXEC_PROCESS         134
 #define IDD_BATCH_TASK                  135
 #define IDD_LOG_DIALOG                  136
-#define IDR_MENU1                       137
 #define IDR_LOG_MENU                    137
 #define IDC_TREE1                       1000
 #define IDC_BUTTON1                     1002
@@ -49,6 +48,9 @@
 #define IDC_BTN_REMOVE_ALL_FILES_3      1033
 #define IDC_LIST_FILES_3                1034
 #define IDC_LIST2                       1036
+#define IDC_BTN_SEL_WRK_FOLDER_5        1037
+#define IDC_BUTTON7                     1038
+#define IDC_UPD_BTN                     1038
 #define ID_COPYFILESTASK_S              32771
 #define ID_COPYFILESTASK_COPYFOLDERTASK 32772
 #define ID_COPYFILESTASK_EXECUTEPROCESS 32773
@@ -61,7 +63,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        138
 #define _APS_NEXT_COMMAND_VALUE         32776
-#define _APS_NEXT_CONTROL_VALUE         1037
+#define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

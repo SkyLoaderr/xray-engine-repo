@@ -31,4 +31,7 @@ public:
 	afx_msg void OnBnClickedBtnRemoveFile3();
 	afx_msg void OnBnClickedBtnRemoveAllFiles3();
 	CListBox m_files_list_box;
+	afx_msg void OnBnClickedBtnSelWrkFolder();
+	CString m_wrk_folder;
+	afx_msg void OnEnChangeEditWrkFolder();
 };

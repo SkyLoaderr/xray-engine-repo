@@ -288,7 +288,7 @@ BOOL CTaskBatchExecute::load				(CInifile& ini, LPCSTR section)
 
 //	m_app_name		= ini.r_string(section,	"app_name");
 	m_params		= ini.r_string_wb(section,	"params");
-//	m_working_folder		= ini.r_string(section,	"working_folder");
+	m_working_folder= ini.r_string(section,	"working_folder");
 
 	u32 file_count		= ini.r_u32(section,		"file_count");
 	for(u32 i=0; i<file_count; ++i){
@@ -307,6 +307,7 @@ BOOL CTaskBatchExecute::save				(CInifile& ini, LPCSTR section)
 	CTask::save(ini, section);
 
 	SaveStringWithBrackets(ini,section,"params",m_params);
+	SaveStringWithBrackets(ini,section,"working_folder",m_working_folder);
 
 	ini.w_u32(section,"file_count",m_file_names.size());
 	for(u32 i=0; i<m_file_names.size(); ++i){
@@ -326,6 +327,7 @@ void CTaskBatchExecute::copy_to(CTask*t)
 
 	tt->m_file_names			= m_file_names;
 	tt->m_params				= m_params;
+	tt->m_working_folder		= m_working_folder;
 }
 
 
