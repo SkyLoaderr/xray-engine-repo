@@ -18,7 +18,7 @@ class COutputWnd : public CScintillaBar
 {
 public:
 	void GotoLine(CString strLine);
-	virtual BOOL Create(CWnd* pParentWnd, UINT nID, LPCTSTR lpszWindowName = NULL, CSize sizeDefault = CSize(200,100), DWORD dwStyle = CBRS_LEFT);
+	virtual BOOL Create(CWnd* pParentWnd, UINT nID, LPCTSTR lpszWindowName = NULL, CSize sizeDefault = CSize(200,100), DWORD dwStyle = CBRS_LEFT, LPCSTR caption="");
 	CScintillaView* GetOutput(int nOutput) { return (CScintillaView*)GetView(nOutput); };
 	void SetActiveOutput(int nOutput) { if ( GetActiveView()!=GetView(nOutput) ) SetActiveView(nOutput); };
 

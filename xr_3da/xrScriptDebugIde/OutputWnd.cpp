@@ -28,14 +28,14 @@ COutputWnd::~COutputWnd()
 
 }
 
-BOOL COutputWnd::Create(CWnd *pParentWnd, UINT nID, LPCTSTR lpszWindowName, CSize sizeDefault, DWORD dwStyle)
+BOOL COutputWnd::Create(CWnd *pParentWnd, UINT nID, LPCTSTR lpszWindowName, CSize sizeDefault, DWORD dwStyle, LPCSTR caption)
 {
 	BOOL bRet = CCJTabCtrlBar::Create(pParentWnd, nID, lpszWindowName, sizeDefault, dwStyle);
 	if ( !bRet )
 		return FALSE;
 
 //	AddView(_T("Build"),    RUNTIME_CLASS(CScintillaView));
-	AddView(_T("Debug"),    RUNTIME_CLASS(CScintillaView));
+	AddView(caption,    RUNTIME_CLASS(CScintillaView));
 //	AddView(_T("Find in Files"),    RUNTIME_CLASS(CScintillaView));
 //	AddView(_T("Lua runtime"),    RUNTIME_CLASS(CRichEditView));
 
