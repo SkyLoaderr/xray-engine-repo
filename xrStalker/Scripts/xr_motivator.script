@@ -272,6 +272,7 @@ function addCommonPrecondition(action)
 	--action:add_precondition (world_property(xr_evaluators_id.reaction,			false))
 	action:add_precondition (world_property(xr_evaluators_id.assistance + 1,	false))
 	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
+	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 3,false))
 	action:add_precondition (world_property(xr_evaluators_id.sidor_wounded_base + 1,  false))
 	action:add_precondition (world_property(xr_evaluators_id.chugai_heli_hunter_base, false))		
 end
