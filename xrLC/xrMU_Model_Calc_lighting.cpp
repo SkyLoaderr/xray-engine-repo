@@ -85,7 +85,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		Fvector					vP,vN;
 		xform.transform_tiny	(vP,V->P);
 		Rxform.transform_dir	(vN,V->N);
-		vN.normalize			();
+		exact_normalize			(vN); 
 
 		// multi-sample
 		const int n_samples		= 6;

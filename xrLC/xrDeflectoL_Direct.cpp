@@ -97,8 +97,8 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 //. не нужно использовать	if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 //							else								
 							{ 
-								wN.from_bary(V1->N,V2->N,V3->N,B).normalize	(); 
-								wN.add		(F->N).normalize				();
+								wN.from_bary(V1->N,V2->N,V3->N,B);	exact_normalize	(wN); 
+								wN.add		(F->N);					exact_normalize	(wN);
 							}
 							try {
 								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, LP_UseFaceDisable, F); //.

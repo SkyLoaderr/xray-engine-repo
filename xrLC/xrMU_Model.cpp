@@ -35,6 +35,8 @@ void			xrMU_Model::_face::CalcNormal	()
 	t1.sub			(*v1,*v0);
 	t2.sub			(*v2,*v1);
 	N.crossproduct	(t1,t2);
+	exact_normalize	(N); 
+	/*
 	float mag		= N.magnitude();
 	if (mag<EPS_S)
 	{
@@ -43,6 +45,7 @@ void			xrMU_Model::_face::CalcNormal	()
 		N.div(mag);
 	}
 	N.normalize		();
+	*/
 };
 
 // Does the face contains this vertex?
