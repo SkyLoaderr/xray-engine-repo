@@ -104,6 +104,7 @@ class CMyD3DApplication : public CD3DApplication
 	// Special textures
 	LPDIRECT3DTEXTURE9				t_SpecularPower_32;
 	LPDIRECT3DTEXTURE9				t_Base;
+	LPDIRECT3DTEXTURE9				t_Normals;
 
 	// Matrices
 	D3DXMATRIX						dm_model2world;
