@@ -87,6 +87,7 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 		case SE_R1_NORMAL_HQ:
 		case SE_R1_NORMAL_LQ:
 			// Level view
+			/*
 			if (C.bDetail_Diffuse)
 			{
 				if (oBlend.value)	C.r_Pass	("lmapE_dt","lmapE_dt",TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,TRUE,0);
@@ -98,13 +99,15 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 				C.r_End		();
 			} else
 			{
-				if (oBlend.value)	C.r_Pass	("lmapE","lmapE",TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
-				else				C.r_Pass	("lmapE","lmapE",TRUE);
-				C.r_Sampler	("s_base",	C.L_textures[0]);
-				C.r_Sampler	("s_lmap",	C.L_textures[1]);
-				C.r_Sampler	("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
-				C.r_End		();
-			}
+			*/
+			if (oBlend.value)	C.r_Pass	("lmapE","lmapE",TRUE,TRUE,FALSE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,0);
+			else				C.r_Pass	("lmapE","lmapE",TRUE);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler		("s_lmap",	C.L_textures[1]);
+			C.r_Sampler_clf	("s_hemi",	C.L_textures[2]);
+			C.r_Sampler		("s_env",	oT2_Name,false,D3DTADDRESS_CLAMP);
+			C.r_End			();
+			// }
 			break;
 		case SE_R1_LPOINT:
 			C.r_Pass		("lmap_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE);
@@ -125,6 +128,7 @@ void	CBlender_LmEbB::Compile(CBlender_Compile& C)
 			C.r_Pass		("lmap_l","lmap_l",FALSE);
 			C.r_Sampler		("s_base",C.L_textures[0]);
 			C.r_Sampler		("s_lmap",C.L_textures[1]);
+			C.r_Sampler_clf	("s_hemi",C.L_textures[2]);
 			C.r_End			();
 			break;
 		}
