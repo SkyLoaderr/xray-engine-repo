@@ -16,7 +16,7 @@ void CDetail::Load		(CStream* S)
 	number_vertices	= S->Rdword	();
 	number_indices	= S->Rdword	();
 	R_ASSERT		(0==(number_indices%3));
-	Log				("DM: %d verts, %d indices");
+	Msg				("DM: %d verts, %d indices",number_vertices,number_indices);
 	
 	// Vertices
 	DWORD			size_vertices		= number_vertices*sizeof(fvfVertexIn); 
