@@ -315,7 +315,7 @@ void CAI_Rat::AttackRun()
 	WRITE_TO_LOG("Attack enemy");
 	bStopThinking = true;
 
-	Msg("%d : %d",Level().timeServer(),m_dwLostEnemyTime);
+	//Msg("%d : %d",Level().timeServer(),m_dwLostEnemyTime);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
 	
