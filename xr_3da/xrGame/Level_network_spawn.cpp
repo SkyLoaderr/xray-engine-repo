@@ -2,7 +2,7 @@
 #include "gameobject.h"
 #include "xrServer_entities.h"
 
-void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, DWORD flags)
+void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 {
 	// Create
 	xrServerEntity*		E	= F_entity_Create(name);
