@@ -29,6 +29,7 @@ function stalker_enable_scripts(npc, ini)
 		local active_section = utils.cfg_get_string(ini, "logic", "active", npc, true, "")
 		if active_section == "nil" then
 			printf("WARNING: object '%s': active section is 'nil'", npc:name())
+		
 		else
 			activate_by_section(npc, ini, active_section)
 		end
@@ -113,13 +114,40 @@ function reset_actions(st)
 	end
 end
 
-function pick_random_section_from_list(lst)
-	-- FIXME
-	for n, s in pairs(lst) do
-		printf("pick_random_section_from_list: picked '%s'", s)
-		return s
+function pick_section_from_condlist(npc, condlist)
+	local newsect = nil
+	local infop_conditions_met
+	for n, cond in pairs(condlist) do
+		infop_conditions_met = true -- изначально считаем, что все условия переключения удовлетворены
+		for inum, infop in pairs(cond.infop_presence) do
+			if npc:has_info(infop.name) then
+				if not infop.required then
+					infop_conditions_met = false -- инфопоршен есть, но он не должен присутствовать
+					break
+				end
+			else
+				if infop.required then
+					infop_conditions_met = false -- инфопоршена нет, но он нужен
+					break
+				end
+			end
+		end
+		if infop_conditions_met then
+			return cond.section
+		end
 	end
+
 	return nil
+end
+
+-- Выполняет переключение на указанную секцию, если задана.
+-- Если section == nil, остается работать старая секция.
+function switch_to_section(npc, st, section)
+	if section == nil then
+		return
+	end
+	xr_motivator.storage[npc:id()]["active_section"] = nil
+	activate_by_section(npc, st.ini, section)
 end
 
 function try_switch_to_another_section(npc, st)
@@ -127,16 +155,13 @@ function try_switch_to_another_section(npc, st)
 	local npc_id = npc:id()
 
 	if not l then
-		utils.abort("Can't find script switching information in storage, scheme '%s'",
-			st.scheme)
+		utils.abort("Can't find script switching information in storage, scheme '%s'", st.scheme)
 	end
 
 	if l.on_actor_dist_le then
 		local actor = level.actor()
-		if npc:see(actor) and distance_between(actor, npc) <= l.on_actor_dist_le.dist then
-			xr_motivator.storage[npc_id]["active_section"] = nil
-			activate_by_section(npc, st.ini, pick_random_section_from_list(l.on_actor_dist_le.sections))
-			printf("DEBUG: try_switch_to_another_section: returning true")
+		if npc:see(actor) and distance_between(actor, npc) <= l.on_actor_dist_le.v1 then
+			switch_to_section(npc, st, pick_section_from_condlist(npc, l.on_actor_dist_le.condlist))
 			return true
 		end
 	end
@@ -146,29 +171,98 @@ end
 function is_active(npc, st)
 	local is_act = (st.section == xr_motivator.storage[npc:id()]["active_section"])
 
-	--[[
-	if is_act then
-		printf("DEBUG: trying to switch to another section")
-		try_switch_to_another_section(npc, st)
-	end
-	--]]
-
 	-- Текущая секция активна и не сработало ни одно из условий переключения на другие секции
 	return is_act
 end
 
-function conf_get_number_and_list(ini, section, field, npc)
+
+function abort_syntax_error_in_cond(npc, section, field)
+	utils.abort("object '%s': section '%s': field '%s': syntax error in switch condition",
+		npc:name(), section, field)
+end
+
+-- Распарсивает строку src вида:
+-- {+infop1 -infop2} section1, {+infop3 -infop4} section2 ...
+-- в таблицу:
+-- {
+--   1 = { infop_presence = { 1 = {"infop1" = true}, 2 = {"infop2" = false} }, section = "section1" },
+--   2 = { infop_presence = { 1 = {"infop3" = true}, 2 = {"infop4" = false} }, section = "section2" },
+-- }
+function parse_condlist(npc, section, field, src)
+	local lst = {}
+
+	-- 1) Разбиваем на разделенные запятыми части:
+	local at, to, infop_lst, newsect, sign, infop_name
+
+	local n = 1
+	local infop_n
+	for fld in string.gfind(src, "%s*([^,]+)%s*") do
+		-- Здесь fld это набор infoportions в {} и имя секции, на которую переключиться.
+		lst[n] = {}
+		--printf("_bp: %d: %s", n, fld)
+
+		-- Выделяем список infoportions:	
+		at, to, infop_lst = string.find(fld, "{%s*(.*)%s*}")
+		if infop_lst then
+			--print("infop_lst: [" .. infop_lst .. "]")
+
+			-- Выделяем оставшуюся часть поля, т.е. имя секции:
+			newsect = string.sub(fld, 1, at - 1) .. string.sub(fld, to + 1)
+		else
+			-- Список infoportions не был задан, следовательно, fld и есть имя секции.
+			newsect = fld
+		end
+
+		-- И сразу trim имя секции:
+		at, to, newsect = string.find(newsect, "%s*(.*)%s*")
+		if not newsect then
+			abort_syntax_error_in_cond(npc, section, field)
+		end
+		
+		-- Имя секции теперь можно сохранить:
+		lst[n].section = newsect
+
+		-- Теперь нужно распарсить infoportions в строке infop_lst и 
+		-- заполнить массив infop_presence: { "infop_name" = true/false }.
+		-- На входе имеем строку вида "  +infop1  -infop2 +infop3 ... "
+		lst[n].infop_presence = {}
+		infop_n = 1
+		if infop_lst then
+			for s in string.gfind(infop_lst, "%s*([^%s]+)%s*") do
+				sign = string.sub(s, 1, 1)
+				infop_name = string.sub(s, 2)
+				if sign == "+" then
+					lst[n].infop_presence[infop_n] = { name = infop_name, required = true }
+				elseif sign == "-" then
+					lst[n].infop_presence[infop_n] = { name = infop_name, required = false }
+				else
+					abort_syntax_error_in_cond(npc, section, field)
+				end
+			end
+		end
+
+		n = n + 1
+	end
+
+	return lst
+end
+
+function conf_get_number_and_condlist(ini, section, field, npc)
 	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
 	if not str then
 		return nil
 	end
 
 	local par = utils.parse_params(str)
-	
+	if not par[1] or not par[2] then
+		abort_syntax_error_in_cond(npc, section, field)
+	end
+
 	local t = {}
-	t.number = tonumber(par[1])
-	t.list = {}
-	t.list[1] = par[2]
+
+	t.v1 = tonumber(par[1])
+	t.condlist = parse_condlist(npc, section, field, par[2])
+
 	return t
 end
 
@@ -176,10 +270,7 @@ function cfg_get_switch_conditions(ini, section, npc)
 	local l = {}
 	local t
 
-	t = conf_get_number_and_list(ini, section, "on_actor_dist_le", npc)
-	if t then
-		l.on_actor_dist_le = { dist = t.number, sections = t.list }
-	end
+	l.on_actor_dist_le = conf_get_number_and_condlist(ini, section, "on_actor_dist_le", npc)
 
 	return l
 end
