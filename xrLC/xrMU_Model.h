@@ -6,12 +6,23 @@
 class xrMU_Model
 {
 public:
+	//** 
 	struct	_vertex;
 	struct	_face;
+
+	struct	_subdiv
+	{
+		u32	start;
+		u32 count;
+	};
+
+	//** 
 	typedef	vector<_vertex*>		v_vertices;
 	typedef	v_vertices::iterator	v_vertices_it;
 	typedef vector<_face*>			v_faces;
 	typedef v_faces::iterator		v_faces_it;
+	typedef vector<_subdiv>			v_subdivs;
+	typedef v_subdivs::iterator		v_subdivs_it;
 
 	//** 
 	struct	_vertex	: public ::base_Vertex
