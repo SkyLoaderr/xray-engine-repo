@@ -1,6 +1,6 @@
 local actor_entered = false
 
-function on_enter (zone,object)
+function on_enter (zone, object)
 	printf ("Actor entered")
     actor_entered = true
 end
@@ -20,7 +20,7 @@ function main ()
 
   	zone:clear_callback(true)
     zone:clear_callback(false)
-    zone:set_callback (this.on_enter, true)
+    zone:set_callback (military2_1.on_enter, true)
 
 	action (stalker1, move (move.standing, move.stand, move.line, patrol ("way_test")),
 			anim (anim.free), cond (cond.time_end, 100000000))		
@@ -32,6 +32,7 @@ function main ()
 	while actor_entered == false do wait () end
 
 	printf ("actor entered")
+
 	reset_action (stalker1, military2_1.script_name ())
 	reset_action (stalker2, military2_1.script_name ())
 	reset_action (stalker3, military2_1.script_name ())
@@ -45,7 +46,7 @@ function main ()
 	action (stalker3, move (move.standing, move.stand, move.line, patrol ("way_test")),
 			anim ("stalker_3_1"), cond (cond.time_end, 100000000))		
 
-	while true do wait () end	
+	while true do wait () end
 
 	stalker1:script (false, military2_1.script_name ())
 	stalker2:script (false, military2_1.script_name ())
