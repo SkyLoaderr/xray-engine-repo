@@ -111,9 +111,6 @@ void CAI_Biting::ControlAnimation()
 	m_tAnimPrevFrame = m_tAnim;
 }
 
-
-
-
 bool CAI_Biting::IsInMotion()
 {
 	if ((m_tAnim != eMotionStandTurnLeft) && (m_tAnim != eMotionWalkFwd) && (m_tAnim != eMotionWalkBkwd) && 
@@ -122,6 +119,39 @@ bool CAI_Biting::IsInMotion()
 		return false;
 	}
 	return true;
+}
+
+void CAI_Biting::CheckAttackHit()
+{
+	// Проверка состояния анимации (атака)
+	TTime cur_time = Level().timeServer();
+	SAttackAnimation apt_anim;
+
+	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
+
+	if (bGoodTime) {
+		VisionElem ve;
+		if (!GetEnemy(ve)) return;
+		CObject *obj = dynamic_cast<CObject *>(ve.obj);
+
+		// определить точку, откуда будем пускать луч 
+		Fvector trace_from;
+		Center(trace_from);
+		trace_from.add(apt_anim.trace_offset);
+
+		this->setEnabled(false);
+		Collide::ray_query	l_rq;
+
+		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
+			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
+				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir,apt_anim.impulse);
+				m_tAttackAnim.UpdateLastAttack(cur_time);
+			}
+		}
+		this->setEnabled(true);			
+
+		if (!ve.obj->g_Alive()) AddCorpse(ve);
+	}
 }
 
 
@@ -141,7 +171,7 @@ void CAttackAnim::PushAttackAnim(SAttackAnimation AttackAnim)
 	m_all.push_back(AttackAnim);
 }
 
-void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, u32 flags)
+void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, Fvector &ray, float dist, float damage, Fvector dir, float impulse, u32 flags)
 {
 	SAttackAnimation anim;
 
@@ -156,6 +186,8 @@ void CAttackAnim::PushAttackAnim(u32 i1, u32 i2, u32 i3, TTime from, TTime to, F
 	anim.dist			= dist;
 
 	anim.damage			= damage;
+	anim.dir			= dir;
+	anim.impulse		= impulse;
 	anim.flags			= flags;
 
 	PushAttackAnim		(anim);

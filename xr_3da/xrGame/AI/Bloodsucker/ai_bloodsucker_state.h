@@ -63,3 +63,53 @@ private:
 };
 
 
+//////////////////////////////////////////////////////////////////////////
+// State Attack
+//////////////////////////////////////////////////////////////////////////
+class CBloodsuckerAttack : public IState {
+	typedef	IState inherited;
+	CAI_Bloodsucker	*pMonster;
+	
+	enum {
+		ACTION_RUN,
+		ACTION_ATTACK_MELEE,
+	} m_tAction;
+
+	SEnemy			m_tEnemy;
+
+	float			m_fDistMin;						//!< минимально допустимое рассто€ни€ дл€ аттаки
+	float			m_fDistMax;						//!< максимально допустимое рассто€ние дл€ аттаки
+
+	TTime			m_dwFaceEnemyLastTime;
+	TTime			m_dwFaceEnemyLastTimeInterval;
+
+public:
+					CBloodsuckerAttack	(CAI_Bloodsucker *p);
+	virtual void	Reset			();
+private:
+	virtual	void	Init			();
+	virtual	void	Run				();
+};
+
+//////////////////////////////////////////////////////////////////////////
+// State Hear DNE Sound
+//////////////////////////////////////////////////////////////////////////
+class CBloodsuckerHearDNE : public IState {
+	typedef	IState inherited;
+	CAI_Bloodsucker	*pMonster;
+
+	enum {
+		ACTION_LOOK_AROUND,
+	} m_tAction;
+
+	SoundElem		m_tSound;
+	bool			look_left;
+
+public:
+					CBloodsuckerHearDNE	(CAI_Bloodsucker *p);
+	virtual void	Reset			();
+private:
+	virtual	void	Init			();
+	virtual	void	Run				();
+};
+

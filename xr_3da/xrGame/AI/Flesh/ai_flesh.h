@@ -16,7 +16,7 @@ public:
 
 	virtual	void	MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual	void	LoadAttackAnim			();
-			void	CheckAttackHit			();
+	virtual	void	CheckAttackHit			();
 
 			bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
 											 Fvector SphereCenter, float SphereRadius);

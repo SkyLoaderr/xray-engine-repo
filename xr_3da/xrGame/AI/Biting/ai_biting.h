@@ -109,7 +109,7 @@ public:
 			
 			void			vfUpdateParameters				();
 		
-			void			DoDamage						(CEntity *pEntity, float fDamage);
+			void			DoDamage						(CEntity *pEntity, float fDamage, Fvector dir, float impulse);
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
 	// Animation control
@@ -121,8 +121,9 @@ public:
 	virtual void			OnMotionSequenceStart			();
 	virtual	void			OnMotionSequenceEnd				();
 
-
 	virtual	void			LoadAttackAnim					() {}
+	virtual void			CheckAttackHit					();
+	
 // members
 public:
 
@@ -159,14 +160,11 @@ public:
 	IState					*CurrentState;
 
 	// State properties
-	float					m_fAttackSuccessProbability0;
-	float					m_fAttackSuccessProbability1;
-	float					m_fAttackSuccessProbability2;
-	float					m_fAttackSuccessProbability3;
+	float					m_fAttackSuccessProbability[4];
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
 	// Combat flags 
-	u32						flagsEnemy;
+	u32						flagsEnemy; 
 
 	// Enemy
 	SEnemy					m_tEnemy;				// Current frame enemy 

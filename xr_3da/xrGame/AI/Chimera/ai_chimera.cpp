@@ -116,8 +116,6 @@ void CAI_Chimera::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	// Проверка состояния анимации (атака)
-	CheckAttackHit();
 }
 
 

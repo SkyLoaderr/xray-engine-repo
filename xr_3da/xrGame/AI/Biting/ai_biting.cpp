@@ -39,10 +39,10 @@ void CAI_Biting::Init()
 
 	m_tPathState					= PATH_STATE_SEARCH_NODE;
 
-	m_fAttackSuccessProbability0	= .8f;
-	m_fAttackSuccessProbability1	= .6f;
-	m_fAttackSuccessProbability2	= .4f;
-	m_fAttackSuccessProbability3	= .2f;
+	m_fAttackSuccessProbability[0]	= .8f;
+	m_fAttackSuccessProbability[1]	= .6f;
+	m_fAttackSuccessProbability[2]	= .4f;
+	m_fAttackSuccessProbability[3]	= .2f;
 
 	bShowDeath						= false;
 	
@@ -247,10 +247,12 @@ void CAI_Biting::Exec_Movement		(float dt)
 
 void CAI_Biting::UpdateCL()
 {
-	//SetText();
 	inherited::UpdateCL();
+	
+	// Проверка состояния анимации (атака)
+	CheckAttackHit();
 
-m_pPhysics_support->in_UpdateCL();
+	m_pPhysics_support->in_UpdateCL();
 }
 
 void CAI_Biting::shedule_Update(u32 dt)

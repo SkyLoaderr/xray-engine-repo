@@ -18,7 +18,6 @@ public:
 
 	virtual	void			MotionToAnim		(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual	void			LoadAttackAnim		();
-			void			CheckAttackHit		();
 
 	// Bone manipulation
 			void			vfAssignBones		(CInifile *ini, const char *section);

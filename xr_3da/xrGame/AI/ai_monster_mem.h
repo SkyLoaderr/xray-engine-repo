@@ -48,55 +48,56 @@ typedef struct tagSoundElement
 {
 	CObject				*who;
 	TSoundDangerValue	type;
-	Fvector				Position;		// позиция звука, не объекта, издавшего звук
+	Fvector				position;		// позиция звука, не объекта, издавшего звук
 	float				power;
 	TTime				time;			// время обнаружения звука
 
-	tagSoundElement() {
-		Fvector pos;
-		pos.set(0,0,0);
-		Set(0,NONE_DANGEROUS_SOUND,pos,0.f,0);
+	tagSoundElement() {  
+		who = 0; type = NONE_DANGEROUS_SOUND; position.set(0,0,0); power = 0.f; time = 0;
 	}
-	bool operator < (const tagSoundElement &s) const  {
+	bool operator < (const tagSoundElement &s) const  { 
 		return (type < s.type);
 	}
-	void operator = (const tagSoundElement &s) {
-		Set(s.who, s.type, s.Position, s.power, s.time);
-	}
-	IC void SetConvert(CObject* who, int eType, const Fvector &Position, float power, TTime time) {
-		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->Position = Position; this->power = power; this->time = time;
-	}
-	IC void Set(CObject* who, TSoundDangerValue eType, const Fvector &Position, float power, TTime time) {
-		this->who = who; type = eType; this->Position = Position; this->power = power; this->time = time;
+	IC void SetConvert(CObject* who, int eType, const Fvector &position, float power, TTime time) {
+		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->position = position; this->power = power; this->time = time;
 	}
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
 } SoundElem;
 
 // удаление звуков от объектов перешедших в оффлайн
-struct remove_sound_pred : public std::unary_function<SoundElem, bool>
-{
-	bool operator()(const SoundElem &x){ return (x.who && x.who->getDestroy()); }
+struct remove_offline_sound_pred {
+	bool operator() (const SoundElem &x){ return (x.who && x.who->getDestroy()); }
 };
+
+// предикат удаления 'старых' старых
+struct predicate_remove_old_sounds {
+	TTime new_time;
+	predicate_remove_old_sounds(TTime time) { new_time = time; }
+	bool operator() (const SoundElem &x) { return (x.time < new_time); }
+};
+
 
 class CSoundMemory
 {
-	TTime	MemoryTime;				// время хранения звуков
-	xr_vector<SoundElem> Sounds;
+	TTime					timeMemory;				// время хранения звуков
+	xr_vector<SoundElem>	Sounds;
 
-	TTime	CurrentTime;			// текущее время
+	TTime					timeCurrent;			// текущее время
+
 public:
-	void HearSound(const SoundElem &s);
-	void HearSound(CObject* who, int eType, const Fvector &Position, float power, TTime time);
-	bool IsRememberSound();		//
-	void GetMostDangerousSound(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
+		void	HearSound				(const SoundElem &s);
+		void	HearSound				(CObject* who, int eType, const Fvector &Position, float power, TTime time);
+	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		
+		void	GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 
 protected:
-	void Init(TTime mem_time) {Deinit(); MemoryTime = mem_time; }
-	void Deinit() {Sounds.clear();}
+	IC	void	Init					(TTime mem_time) {Deinit(); timeMemory = mem_time; }
+	IC	void	Deinit					() {Sounds.clear();}
 
-	void UpdateHearing(TTime dt);
+		void	UpdateHearing			(TTime dt);
+
 private:
-	void CheckValidObjects(); 		// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
+		void	CheckValidObjects		(); 		// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
 };
 
 

@@ -146,53 +146,24 @@ void CAI_Chimera::LoadAttackAnim()
 	left_side.set	(-0.3f,0.f,0.f);
 	right_side.set	(0.3f,0.f,0.f);
 
+	float	impulse = 120.f;
+	Fvector	dir;
+	dir.set(XFORM().k);
+	dir.invert();
+	
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		3.f, 20.f);
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		3.f, m_fHitPower, dir, impulse);
 	
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 500,	600,	right_side, 2.5f, 20.f);
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 500,	600,	right_side, 2.5f, m_fHitPower, dir, impulse);
 	
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 600,	700,	center,		3.5f, 20.f);
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 600,	700,	center,		3.5f, m_fHitPower, dir, impulse);
 
 	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 3, 800,	900,	left_side,	1.0f, 20.f);
+	m_tAttackAnim.PushAttackAnim(0, 9, 3, 800,	900,	left_side,	1.0f, m_fHitPower, dir, impulse);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 5, 1500, 1600,	right_side, 3.0f, 20.f);
-}
-
-
-void CAI_Chimera::CheckAttackHit()
-{
-	// Проверка состояния анимации (атака)
-	TTime cur_time = Level().timeServer();
-	SAttackAnimation apt_anim;
-
-	bool bGoodTime = m_tAttackAnim.CheckTime(cur_time,apt_anim);
-
-	if (bGoodTime) {
-		VisionElem ve;
-		if (!GetEnemy(ve)) return;
-		CObject *obj = dynamic_cast<CObject *>(ve.obj);
-
-		// определить точку, откуда будем пускать луч 
-		Fvector trace_from;
-		Center(trace_from);
-		trace_from.add(apt_anim.trace_offset);
-
-		this->setEnabled(false);
-		Collide::ray_query	l_rq;
-
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
-			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-				DoDamage(ve.obj, apt_anim.damage);
-				m_tAttackAnim.UpdateLastAttack(cur_time);
-			}
-		}
-		this->setEnabled(true);			
-
-		if (!ve.obj->g_Alive()) AddCorpse(ve);
-	}
+	m_tAttackAnim.PushAttackAnim(0, 9, 5, 1500, 1600,	right_side, 3.0f, m_fHitPower, dir, impulse);
 }
 

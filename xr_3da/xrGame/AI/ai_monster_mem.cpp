@@ -61,6 +61,9 @@ void CSoundMemory::HearSound(const SoundElem &s)
 	}
 
 	Sounds.push_back(s);
+
+	// отсортировать по "опасности" звука
+	std::sort(Sounds.begin(),Sounds.end());
 }
 
 void CSoundMemory::HearSound(CObject* who, int eType, const Fvector &Position, float power, TTime time)
@@ -71,13 +74,7 @@ void CSoundMemory::HearSound(CObject* who, int eType, const Fvector &Position, f
 	HearSound(s);
 }
 
-bool CSoundMemory::IsRememberSound()
-{
-	if (!Sounds.empty()) return true;
-	return false;
-}
-
-void CSoundMemory::GetMostDangerousSound(SoundElem &s, bool &bDangerous)
+void CSoundMemory::GetSound(SoundElem &s, bool &bDangerous)
 {
 	if (!IsRememberSound()) return;
 
@@ -90,18 +87,11 @@ void CSoundMemory::GetMostDangerousSound(SoundElem &s, bool &bDangerous)
 
 void CSoundMemory::UpdateHearing(TTime dt)
 {
-	CurrentTime = dt;
+	timeCurrent = dt;
 
 	// удаление устаревших звуков
-	for (u32 i = 0; i < Sounds.size(); i++) {
-		if ((TTime)Sounds[i].time + MemoryTime < CurrentTime) {
-			Sounds[i] = Sounds.back();
-			Sounds.pop_back();
-		}
-	}
-
-	// отсортировать по "опасности" звука
-	std::sort(Sounds.begin(),Sounds.end());
+	xr_vector<SoundElem>::iterator I = remove_if(Sounds.begin(), Sounds.end(), predicate_remove_old_sounds(timeCurrent - timeMemory));
+	Sounds.erase(I,Sounds.end());
 
 	// удалить объекты, которые ушли в оффлайн
 	CheckValidObjects();
@@ -109,7 +99,7 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 void CSoundMemory::CheckValidObjects()
 {
-	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_pred());
+	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_offline_sound_pred());
 	Sounds.erase   (Result,Sounds.end());
 }
 

@@ -167,24 +167,29 @@ void CAI_Flesh::LoadAttackAnim()
 	right_side.set	(0.1f,0.f,0.f);
 	special_side.set(-0.5f,0.f,0.5f);
 
+	float	impulse = 120.f;
+	Fvector	dir;
+	dir.set(XFORM().k);
+	dir.invert();
+
 
 	// 1 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower);
+	m_tAttackAnim.PushAttackAnim(0, 9, 0, 700,	800,	center,		2.f, m_fHitPower, dir, impulse);
 
 	// 2 //
-	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower);
+	m_tAttackAnim.PushAttackAnim(0, 9, 1, 600,	800,	center,		2.5f, m_fHitPower, dir, impulse);
 
 	// 3 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower);
+	m_tAttackAnim.PushAttackAnim(0, 9, 2, 1100,	1250,	right_side,	1.5f, m_fHitPower, dir, impulse);
 
 	// 4 // 
-	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower);
+	m_tAttackAnim.PushAttackAnim(0, 9, 3, 1300,	1400,	left_side,	0.6f, m_fHitPower, dir, impulse);
 
 	// 5 // 
-	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, AA_FLAG_ATTACK_RAT);
+	m_tAttackAnim.PushAttackAnim(0, 10, 0, 600, 800,	special_side,	2.6f, m_fHitPower, dir, impulse, AA_FLAG_ATTACK_RAT);
 
 	// 6 //
-	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, AA_FLAG_FIRE_ANYWAY);
+	m_tAttackAnim.PushAttackAnim(0, 19, 0, 700, 850,	center,		2.6f, m_fHitPower, dir, impulse, AA_FLAG_FIRE_ANYWAY);
 
 }
 
@@ -207,7 +212,7 @@ void CAI_Flesh::CheckAttackHit()
 
 		// трассировка нужна?
 		if ((apt_anim.flags & AA_FLAG_FIRE_ANYWAY) == AA_FLAG_FIRE_ANYWAY) {
-			DoDamage(ve.obj, apt_anim.damage);	// не нужна
+			DoDamage(ve.obj, apt_anim.damage,apt_anim.dir, apt_anim.impulse);	// не нужна
 			m_tAttackAnim.UpdateLastAttack(cur_time);
 		} else if ((apt_anim.flags & AA_FLAG_ATTACK_RAT) == AA_FLAG_ATTACK_RAT) {
 
@@ -216,7 +221,7 @@ void CAI_Flesh::CheckAttackHit()
 			Fvector vC;		ve.obj->Center(vC);			// центр сферы
 
 			if (ConeSphereIntersection(trace_from, PI_DIV_6, dir, vC, ve.obj->Radius())) {
-				DoDamage(ve.obj,apt_anim.damage);
+				DoDamage(ve.obj,apt_anim.damage,apt_anim.dir, apt_anim.impulse);
 				m_tAttackAnim.UpdateLastAttack(cur_time);
 			}
 
@@ -226,7 +231,7 @@ void CAI_Flesh::CheckAttackHit()
 			
 			if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
 				if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
-					DoDamage(ve.obj, apt_anim.damage);
+					DoDamage(ve.obj, apt_anim.damage,apt_anim.dir, apt_anim.impulse);
 					m_tAttackAnim.UpdateLastAttack(cur_time);
 				}
 			}
@@ -418,111 +423,4 @@ void CAI_Flesh::MoveInAxis(Fvector &Pos, const Fvector &dir,  float dx)
 	shift.mul(dir, dx);
 	Pos.add(shift);
 }
-
-// ----
-
-
-//bool CAI_Flesh::CheckPath(u32 start_node, FvectorVec &points)
-//{
-//	if (points.size() <= 1) return true;
-//	
-//	u32 node_id = start_node;
-//
-//	for (int i=1; i<points.size(); i++) {
-//		// 1. проверить точку
-//		// 1.1. ≈сли точка внутри ноды предыдущей точки, дальнейша€ проверка не требуетс€
-//		if (getAI().bfInsideNode(Node(node_id), points[i])) continue;
-//		
-//
-//
-//		// check line between point[i] and point[i-1]
-//		// if smth wrong return false
-//	}
-//	return true;
-//}
-
-
-//
-//bool CAI_Space::bfCreateStraightPTN_Path(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint)
-//{
-//	PContour				tCurContour;
-//	NodeCompressed			*tpNode;
-//	NodeLink				*taLinks;
-//	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
-//	Fvector					tTempPoint = tStartPoint;
-//	float					fDistance = tStartPoint.distance_to(tFinishPoint), fCurDistance = 0.f;
-//	u32						dwCurNode = dwStartNode;
-//
-//	tpaOutputPoints.clear	();
-//	tpaOutputNodes.clear	();
-//	if (bAddFirstPoint) {
-//		tpaOutputPoints.push_back(tStartPoint);
-//		tpaOutputNodes.push_back(dwStartNode);
-//	}
-//
-//	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {
-//		tpNode				= Node(dwCurNode);
-//		taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-//		iCount				= tpNode->links;
-//		iSavedIndex			= -1;
-//		UnpackContour		(tCurContour,dwCurNode);
-//		for ( i=0; i < iCount; i++)
-//			if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
-//				vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
-//
-//		if (iSavedIndex > -1) {
-//			fCurDistance		= tStartPoint.distance_to_xz(tTempPoint);
-//			PContour			tNextContour;
-//			PSegment			tNextSegment;
-//			Fvector				tIntersectPoint;
-//			UnpackContour		(tNextContour,iSavedIndex);
-//			vfIntersectContours	(tNextSegment,tNextContour,tCurContour);
-//			u32					dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
-//			VERIFY				(dwIntersect);
-//			tIntersectPoint.y	= ffGetY(*tpNode,tIntersectPoint.x,tIntersectPoint.z);
-//
-//			tpaOutputPoints.push_back(tIntersectPoint);
-//			tpaOutputNodes.push_back(iSavedIndex);
-//
-//			iPrevIndex			= dwCurNode;
-//			dwCurNode			= iSavedIndex;
-//		}
-//		else {
-//			int					iNodeIndex;
-//			taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-//			bool				bOk = false;
-//			for ( i=0; i < iCount; i++) {
-//				NodeCompressed *tpLastNode = Node(iNodeIndex = UnpackLink(taLinks[i]));
-//				if (bfInsideNode(tpLastNode,tFinishPoint)) {
-//					PContour			tNextContour;
-//					PSegment			tNextSegment;
-//					UnpackContour		(tNextContour,iNodeIndex);
-//					vfIntersectContours	(tNextSegment,tNextContour,tCurContour);
-//					Fvector				tAdditionalPoint = tFinishPoint.distance_to_xz(tNextSegment.v1) < tFinishPoint.distance_to_xz(tNextSegment.v2) ? tNextSegment.v1 : tNextSegment.v2;
-//					tAdditionalPoint.y	= ffGetY(*tpNode,tAdditionalPoint.x,tAdditionalPoint.z);
-//
-//					tpaOutputPoints.push_back(tAdditionalPoint);
-//					tpaOutputNodes.push_back(iNodeIndex);
-//
-//					fCurDistance		= fDistance;
-//					dwCurNode			= iNodeIndex;
-//					bOk					= true;
-//					break;
-//				}
-//			}
-//			if (!bOk)
-//				return(false);
-//		}
-//	}
-//
-//	if (bfInsideNode(Node(dwCurNode),tFinishPoint)) {
-//		tpaOutputPoints.push_back(tFinishPoint);
-//		tpaOutputNodes.push_back(dwCurNode);
-//		return(true);
-//	}
-//	else
-//		return(false);
-//}
-//
-
 

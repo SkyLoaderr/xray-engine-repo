@@ -626,9 +626,9 @@ void CBitingExploreDNE::Init()
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
-	m_tEnemy.position = se.Position;
+	m_tEnemy.position = se.position;
 	m_tEnemy.time = se.time;
 
 	Fvector dir; 
@@ -717,9 +717,9 @@ void CBitingExploreDE::Init()
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
-	m_tEnemy.position = se.Position;
+	m_tEnemy.position = se.position;
 	m_dwSoundTime	  = se.time;
 
 	float	yaw,pitch;
@@ -741,7 +741,7 @@ void CBitingExploreDE::Run()
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetMostDangerousSound(se,bDangerous);	// возвращает самый опасный звук
+	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
 	
 	switch(m_tAction) {
 	case ACTION_LOOK_AROUND:
@@ -805,9 +805,9 @@ void CBitingExploreNDE::Init()
 
 	SoundElem se;
 	bool bDangerous;
-	pMonster->GetMostDangerousSound(se,bDangerous);			// возвращает самый опасный звук
+	pMonster->GetSound(se,bDangerous);			// возвращает самый опасный звук
 	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
-	m_tEnemy.position = se.Position;
+	m_tEnemy.position = se.position;
 
 	if (m_tEnemy.obj) pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
 

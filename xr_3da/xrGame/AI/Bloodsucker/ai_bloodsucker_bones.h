@@ -9,50 +9,44 @@ struct bonesAxis {
 	float			cur_yaw;
 	float			target_yaw;
 	float			r_speed;
+	float			dist_yaw;		// необходимо лишь для определения текущей скорости по оси
 };
 
 // бона с параметрами движения по осям
 struct bonesBone {
 	CBoneInstance	*bone;
-	bonesAxis		axis[3];
-	u32				axis_used;
+	bonesAxis		params;
+	u8				axis;
 	
-			bonesBone	() {bone = 0; axis_used = 0;}
-	bool	NeedTurn	(u32 p_axis);					// необходим поворот по оси p_axis
-	void	Turn		(u32 dt, u32 p_axis);			// выполнить поворот по оси p_axis
+			bonesBone	() {bone = 0;}
+	void	Set			(CBoneInstance *b, u8 a, float ty, float cy, float r_s);
+	bool	NeedTurn	();					// необходим поворот по оси p_axis?
+	void	Turn		(u32 dt);			// выполнить поворот по оси p_axis
 	void	Apply		();								// установить углы у боны
-	void	Setup		(CBoneInstance *b, u32 a);
+	
 };
 
-// массив бон для движения нескольких бон дновременно + параметры движения
-struct bonesMotion {
-	xr_vector<bonesBone>	bones;				// элемент движения, вращается сразу несколько костей
-	u32						time;				// время нахождения в таргете для бон
-
-	void AddBone	(CBoneInstance *bone, u32 axis_used, float target_yaw_1, float r_speed_1, 
-					 float target_yaw_2, float r_speed_2, float target_yaw_3, float r_speed_3, u32 time);
-	void Clear() { bones.clear(); time = 0;}
-};
 
 // управление движениями костей
 class bonesManipulation {
-	xr_vector<bonesMotion>				motions; 
-	xr_vector<bonesMotion>::iterator	cur_motion;
-
 	xr_vector<bonesBone>	m_Bones;
-		
+	u32		freeze_time;
+
 	bool	in_return_state;				// если идёт возврат к исходному положению
 	u32		time_started;
 	u32		time_last_update;
+	u32		time_last_delta;
 
+	bool	bActive;
 public:
-	void SetupMotionBones	(xr_vector<bonesBone> &bones) {m_Bones = bones;}
-	void Init				();
+	void Reset				();
 	
-	void Update				(u32 time);
-	void AddMotion			(bonesMotion m);
+	void AddBone			(CBoneInstance *bone, u8 axis_used);
+	void SetMotion			(CBoneInstance *bone, u8 axis_used, float target_yaw, float r_speed, u32 t);
 
-	bool isActive()			{return (!motions.empty());}
+	void Update				(CBoneInstance *bone, u32 cur_time);
+	bool IsActive			() {return bActive;}
+	bool IsReturn			() {return in_return_state;}
 };
 
 

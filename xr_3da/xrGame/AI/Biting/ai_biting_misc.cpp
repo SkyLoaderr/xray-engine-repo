@@ -25,7 +25,7 @@ void CAI_Biting::vfUpdateParameters()
 	SoundElem se;
 	
 	if (IsRememberSound()) {
-		GetMostDangerousSound(se,A);
+		GetSound(se,A);
 		B = !A;
 	}
 
@@ -86,7 +86,7 @@ void CAI_Biting::vfUpdateParameters()
 	C = D = E = F = G	= false;
 
 	if (bfIsAnyAlive(VisibleEnemies)) {
-		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
+		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
 				C = true;
 				break;
