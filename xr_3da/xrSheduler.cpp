@@ -60,7 +60,12 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 	DWORD	dwCount					= 0;
 	if (Items[Priority].empty())	return;
 
-	while (Top().dwTimeForExecute < dwTime)
+	DWORD	cycles_per_mcs			= iFloor	(1.f/CPU::cycles2microsec);
+	u64		cycles_limit			= u64(cycles_per_mcs) * u64(mcs);
+	u64		cycles_start			= CPU::GetCycleCount();
+	u64		cycles_elapsed			= 0; 
+
+	while ((cycles_elapsed<cycles_limit) && (Top().dwTimeForExecute < dwTime))
 	{
 		dwCount	++;
 
@@ -86,9 +91,15 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 		Push						(Priority, TNext);
 
 		// Real update call
-		if (T.Object->Ready())		T.Object->Update(Elapsed);
+		if (T.Object->Ready())		{
+			u64		cycles_save		= cycles_elapsed;
+			T.Object->Update		(Elapsed);
+			cycles_elapsed			= CPU::GetCycleCount()-cycles_start;
+			T.Object->shedule_PMON	= float(u64(cycles_elapsed-cycles_save))*CPU::cycles2microsec;
+		}
 	}
 }
+
 void CSheduler::Update				()
 {
 	UpdateLevel		(0, 500);	// LOW

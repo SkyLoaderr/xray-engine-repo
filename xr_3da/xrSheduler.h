@@ -13,7 +13,7 @@ public:
 	DWORD								shedule_Min;		// minimal bound of update time (sample: 20ms)
 	DWORD								shedule_Max;		// maximal bound of update time (sample: 200ms)
 	DWORD								shedule_TimeStamp;	// last update global device time
-	DWORD								shedule_PMON;
+	float								shedule_PMON;		// performance monitor (microseconds)
 
 	CSheduled			();
 	virtual ~CSheduled	();
