@@ -78,13 +78,13 @@ BOOL CWeaponList::WeaponChange		(int idx)
 	return true;
 }
 
-int	CWeaponList::weapon_add			(CWeapon* W)		// add, return index
+void	CWeaponList::weapon_add			(CWeapon* W)		// add, return index
 {
 	int slot						= W->GetSlot		();
 	R_ASSERT						(0==m_Weapons[slot]);
 	m_Weapons[slot]					= W;
 }
-int	CWeaponList::weapon_remove		(CWeapon* W)		// remove, return last
+void	CWeaponList::weapon_remove		(CWeapon* W)		// remove, return last
 {
 	int slot						= W->GetSlot		();
 	R_ASSERT						(W==m_Weapons[slot]);
@@ -137,13 +137,6 @@ BOOL CWeaponList::ActivateWeaponID(int id)
 BOOL CWeaponList::ActivateWeaponHistory()
 {
 	return ActivateWeaponNext(TRUE);
-}
-
-int	CWeaponList::FindWeapon(CLASS_ID cls)
-{
-	WeaponIt W=find_if(m_Weapons.begin(),m_Weapons.end(),fClassEQ(cls));
-	if (W!=m_Weapons.end()) return W-m_Weapons.begin();
-	return -1;
 }
 
 void CWeaponList::Zoom(BOOL bZoom)

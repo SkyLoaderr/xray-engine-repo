@@ -218,7 +218,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//
 	r_model_yaw				= E->o_Angle.y;
 	cameras[cam_active]->Set(E->o_Angle.y,0,0);		// set's camera orientation
-	Weapons->Reset			();
 	
 	// *** movement state - respawn
 	mstate_wishful			= 0;
