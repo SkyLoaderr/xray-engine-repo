@@ -13,28 +13,42 @@ class ENGINE_API C3DSound
 	friend class C3DSoundRender;
 public:
 	char*					fName;
+
+	enum State
+	{
+		stStopped		= 0,
+		stPlaying,
+		stPlayingLooped,
+		stSimulating,
+		stSimulatingLooped,
+		
+		stFORCEDWORD	= DWORD(-1)
+	};
 private:
 	C3DSound**				owner;
 
 	float 					fVolume;				// USER
 	float					fBaseVolume;			// CLIPPING
 	float 					fRealVolume;
-	float					fTimeTotal;				// всего
-	float					fTimeRested;			// осталось
+	DWORD					dwTimeTotal;			// всего
+	DWORD					dwTimeStarted;			// time of "Start"
+	DWORD					dwTimeToStop;			// time to "Stop"
 
-	DWORD					dwStatus;
+	DWORD					dwState;
 
     LPDIRECTSOUNDBUFFER     pBuffer;
     LPDIRECTSOUND3DBUFFER   pBuffer3D;
 	LPKSPROPERTYSET			pExtensions;
+	DWORD					dwBytesPerMS;
 	F3dbuffer				ps;						// property sets for the 3d-buffer
 	BOOL					bNeedUpdate;
 
 	BOOL					bMustPlay;
 	BOOL					bMustLoop;
+	int						iLoopCount;
+
 	BOOL					bCtrlFreq;
 	DWORD					dwFreq;
-	int						iLoopCountRested;
 
 	DWORD					dwLastTimeActive;
 private:
@@ -55,11 +69,11 @@ public:
 	void					SetMinMax				(float min, float max);
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
-	float					GetPercentageRested	()	{ return fTimeRested/fTimeTotal; }
-
-	void					OnMove					(void);
+	void					state_Process			(void);
+	void					state_Set				(DWORD state);
+	
 	void					Update					(void);
-	void					Update_Volume			(void);
+	BOOL					Update_Volume			(void);			// returns TRUE if not "silent"
 
 	C3DSound();
 	~C3DSound();

@@ -166,7 +166,8 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
                 CopyMemory(pMem2, (char*)converted+dwSize1, dwSize2);
             pBuf->Unlock(pMem1, dwSize1, pMem2, dwSize2);
 
-			fTimeTotal = float(dwLen) / float(wfxdest.nAvgBytesPerSec);
+			dwTimeTotal		= 1000 * dwLen / wfxdest.nAvgBytesPerSec;
+			dwBytesPerMS	= wfxdest.nAvgBytesPerSec / 1000;
         } else {
 			_FREE	(converted);
 			_RELEASE(pBuf);
