@@ -69,7 +69,6 @@ namespace ALife {
 	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
 	DEFINE_VECTOR	(CSE_ALifePersonalEvent*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
-	DEFINE_VECTOR	(CSE_ALifePersonalTask*,	PERSONAL_TASK_P_VECTOR,			PERSONAL_TASK_P_IT);
 	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
@@ -87,6 +86,11 @@ namespace ALife {
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
 	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);
 	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,		pred_str);
+
+	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
+
+	DEFINE_MAP		(_TASK_ID,					CSE_ALifePersonalTask*,			PERSONAL_TASK_P_MAP,		PERSONAL_TASK_P_PAIR_IT);
 
 	typedef struct tagSGraphPoint {
 		ALIFE_ENTITY_P_VECTOR		tpObjects;
@@ -201,8 +205,9 @@ namespace ALife {
 
 	enum ETaskState {
 		eTaskStateChooseTask = u32(0),
-		eTaskStateGoing,
 		eTaskStateAccomplishing,
+		eTaskStateGoToCustomer,
+		eTaskStateSearching,
 		eTaskStateDummy = u32(-1),
 	};
 
