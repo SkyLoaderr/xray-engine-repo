@@ -322,6 +322,7 @@ void CCar::SDoor::ClosedToOpening()
 void CCar::SDoor::ClosingToClosed()
 {
 	state =closed;
+	if(!joint) return;
 	PKinematics(pcar->Visual())->CalculateBones();
 
 //	Fmatrix door_form;

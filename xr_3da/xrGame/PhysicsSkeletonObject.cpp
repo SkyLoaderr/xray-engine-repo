@@ -56,9 +56,6 @@ void CPhysicsSkeletonObject::CreatePhysicsShell(CSE_Abstract* e)
 	CSE_ALifePHSkeletonObject	*po=dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
 	if(m_pPhysicsShell) return;
 	if (!Visual()) return;
-	CKinematics* K= PKinematics(Visual());
-	K->LL_SetBoneRoot(po->saved_bones.root_bone);
-	K->LL_SetBonesVisible(po->saved_bones.bones_mask);
 	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifePHSkeletonObject::flActive));
 }
 

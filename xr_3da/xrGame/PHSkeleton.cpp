@@ -43,6 +43,8 @@ bool CPHSkeleton::Spawn(CSE_ALifePHSkeletonObject *po)
 	m_flags					= po->flags;
 	m_startup_anim			= po->startup_animation;
 
+
+
 	if(po->flags.test(CSE_ALifePHSkeletonObject::flSpawnCopy))
 	{
 		CPHSkeleton* source=dynamic_cast<CPHSkeleton*>(Level().Objects.net_Find(po->source_id));
@@ -51,6 +53,19 @@ bool CPHSkeleton::Spawn(CSE_ALifePHSkeletonObject *po)
 		m_flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
 		po->flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
 		return true;
+	}
+	else 
+	{
+		CPhysicsShellHolder* obj=PPhysicsShellHolder();
+		if (obj->Visual())
+		{
+			CKinematics* K= PKinematics(obj->Visual());
+			if(K)
+			{
+				K->LL_SetBoneRoot(po->saved_bones.root_bone);
+				K->LL_SetBonesVisible(po->saved_bones.bones_mask);
+			}
+		}
 	}
 	return false;
 }
