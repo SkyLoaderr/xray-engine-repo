@@ -54,8 +54,12 @@ void CObjectHandlerPlanner::set_goal	(MonsterSpace::EObjectAction object_action,
 	EWorldProperties		goal = object_property(object_action);
 	u32						condition_id = goal;
 
-	if (game_object && (eWorldPropertyNoItemsIdle != goal))
+	if (game_object && (eWorldPropertyNoItemsIdle != goal)) {
+		CWeapon				*weapon = smart_cast<CWeapon*>(game_object);
+		if (weapon && (goal == eWorldPropertyIdleStrap) && !weapon->can_be_strapped())
+			goal			= eWorldPropertyIdle;
 		condition_id		= uid(game_object->ID(), goal);
+	}
 	else
 		condition_id		= u32(eWorldPropertyNoItemsIdle);
 

@@ -278,6 +278,7 @@ protected:
 	LPCSTR					m_strap_bone1;
 	Fmatrix					m_StrapOffset;
 	bool					m_strapped_mode;
+	bool					m_can_be_strapped;
 
 	Fmatrix					m_Offset;
 	// 0-используется без участия рук, 1-одна рука, 2-две руки
@@ -413,6 +414,8 @@ public:
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;
 	float					m_fCurrentCartirdgeDisp;
+
+	IC	bool				can_be_strapped	() const {return m_can_be_strapped;};
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

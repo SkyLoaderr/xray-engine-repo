@@ -74,6 +74,7 @@ CWeapon::CWeapon(LPCSTR name)
 	m_strap_bone1			= 0;
 	m_StrapOffset.identity	();
 	m_strapped_mode			= false;
+	m_can_be_strapped		= false;
 }
 
 CWeapon::~CWeapon		()
@@ -993,11 +994,19 @@ void CWeapon::reload			(LPCSTR section)
 {
 	CShootingObject::reload		(section);
 	CHudItem::reload			(section);
+	
+	m_can_be_strapped			= true;
 	m_strapped_mode				= false;
+	
 	if (pSettings->line_exist(section,"strap_bone0"))
 		m_strap_bone0			= pSettings->r_string(section,"strap_bone0");
+	else
+		m_can_be_strapped		= false;
+	
 	if (pSettings->line_exist(section,"strap_bone1"))
 		m_strap_bone1			= pSettings->r_string(section,"strap_bone1");
+	else
+		m_can_be_strapped		= false;
 
 	{
 		Fvector				pos,ypr;
@@ -1019,6 +1028,8 @@ void CWeapon::reload			(LPCSTR section)
 		m_StrapOffset.setHPB			(ypr.x,ypr.y,ypr.z);
 		m_StrapOffset.translate_over	(pos);
 	}
+	else
+		m_can_be_strapped	= false;
 }
 
 void CWeapon::create_physic_shell()
