@@ -6,6 +6,7 @@
                                       
 #include "Bone.h"
 #include "SceneClassList.h"
+#include "PropertiesListTypes.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
 class 	CEditableMesh;
@@ -306,6 +307,9 @@ public:
     CSMotion*		LoadSMotion				(LPCSTR fname);
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
+    void			FillPropSummary			(PropValueVec& values);
+    void			FillPropSurf			(PropValueVec& values, TAfterEdit after_eshader=0, TAfterEdit after_texture=0);
+
 	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 
     // contains methods

@@ -86,23 +86,16 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
         PropValueVec values;
 
-        FILL_PROP(values, "Name", 					(LPVOID)S->GetRefName(),PROP::CreateMarkerValue());
-        FILL_PROP(values, "Dynamic",				&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoDynamic));
-        FILL_PROP(values, "HOM",					&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoHOM));
-        FILL_PROP(values, "Use LOD",				&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoUsingLOD));
+	    FILL_PROP(values, "Reference Name",			(LPVOID)S->GetRefName(),PROP::CreateMarkerValue());
+	    FILL_PROP(values, "Flags\\Dynamic",			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoDynamic));
+	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoHOM));
+	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoUsingLOD));
 
-        FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
-        FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
-        FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PROP::CreateVectorValue(0.01,	10000,0.01,2,OnAfterTransformation));
-        
-        AnsiString t; t.sprintf("V: %d, F: %d",	S->GetVertexCount(),S->GetFaceCount());
-        FILL_PROP(values, "Summary\\Object",		t.c_str(), 			PROP::CreateMarkerValue());
-        for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
-        	CEditableMesh* MESH=*m_it;
-	        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-	        FILL_PROP(values, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),		t.c_str(), 			PROP::CreateMarkerValue());
-        }
-        FILL_PROP(values, "Game options\\Script",	&O->m_ClassScript,		PROP::CreateATextValue());
+		O->FillPropSummary(values);
+
+	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 	PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
+    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 	PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 	PROP::CreateVectorValue(0.01,	10000,0.01,2,OnAfterTransformation));
 
         m_BasicProp->AssignValues(values,true);
     }else{
@@ -119,13 +112,7 @@ void TfrmPropertiesEObject::FillSurfProps()
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
         PropValueVec values;
-		for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++){
-        	CSurface* SURF=*s_it;
-            AnsiString nm = SURF->_Name();
-		    FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShaderValue(OnAfterShaderEdit));
-		    FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShaderValue());
-		    FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATextureValue(OnAfterTextureEdit));
-        }
+        O->FillPropSurf		(values,OnAfterShaderEdit,OnAfterTextureEdit);
         m_SurfProp->AssignValues(values,true);
     }else{
     	m_SurfProp->ClearProperties();

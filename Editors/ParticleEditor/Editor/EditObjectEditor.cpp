@@ -307,3 +307,26 @@ bool CEditableObject::PrepareSV(CFS_Base& F)
     return E.Export(F);
 }
 
+void CEditableObject::FillPropSummary(PropValueVec& values)
+{
+    AnsiString t; t.sprintf("V: %d, F: %d",		GetVertexCount(),GetFaceCount());
+    FILL_PROP(values, "Summary\\Object",		t.c_str(), 			PROP::CreateMarkerValue());
+    for (EditMeshIt m_it=FirstMesh(); m_it!=LastMesh(); m_it++){
+        CEditableMesh* MESH=*m_it;
+        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
+        FILL_PROP(values, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),	t.c_str(), PROP::CreateMarkerValue());
+    }
+    FILL_PROP(values, "Game options\\Script",	&m_ClassScript,		PROP::CreateATextValue());
+}
+
+void CEditableObject::FillPropSurf(PropValueVec& values, TAfterEdit after_eshader, TAfterEdit after_texture)
+{
+    for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
+        CSurface* SURF=*s_it;
+        AnsiString nm = AnsiString("Surfaces\\")+SURF->_Name();
+        FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATextureValue(after_texture));
+        FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShaderValue(after_eshader));
+        FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShaderValue());
+    }
+}
+
