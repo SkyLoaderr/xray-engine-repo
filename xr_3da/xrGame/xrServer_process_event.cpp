@@ -58,7 +58,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GE_TRANSFER_AMMO:
 		{
-			Log					("~~~!!!~~~ SV: receive 'GE_TRANSFER_AMMO'");
 			u16					id_parent=destination,id_entity;
 			P.r_u16				(id_entity);
 			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);	// кто забирает (для своих нужд)

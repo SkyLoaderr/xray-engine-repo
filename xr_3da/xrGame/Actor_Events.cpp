@@ -54,7 +54,6 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_TRANSFER_AMMO:
 		{
-			Log					("~~~!!!~~~ CL: receive 'GE_TRANSFER_AMMO'");
 			u16					from;
 			P.r_u16				(from);
 
