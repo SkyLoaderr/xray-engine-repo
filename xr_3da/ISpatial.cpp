@@ -283,5 +283,6 @@ void			ISpatial_DB::remove		(ISpatial* S)
 
 void			ISpatial_DB::update		(u32 nodes/* =8 */)
 {
-	VERIFY		(verify());
+	if (0==m_root)	return;
+	VERIFY			(verify());
 }

@@ -10,6 +10,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 
 	if (Device.bReady) return;
 
+	/*
 	//************************************************************************************
 	// RTargets
 	for (xr_map<LPSTR,CRT*,str_pred>::iterator r=m_rtargets.begin(); r!=m_rtargets.end(); r++)
@@ -27,11 +28,9 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	{
 		Shader& S = *(v_shaders[it]);
 		if (0!=S.dwReference)	{
-			/*
-			STextureList*		T	= S.lod0->Passes.front()->T;
-			if (T)	Debug.fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
-			else	Debug.fatal	("Shader still referenced (%d).",S.dwReference);
-			*/
+//			STextureList*		T	= S.lod0->Passes.front()->T;
+//			if (T)	Debug.fatal	("Shader still referenced (%d). Texture: %s",S.dwReference,DBG_GetTextureName(T->front()));
+//			else	Debug.fatal	("Shader still referenced (%d).",S.dwReference);
 		}
 		xr_delete(v_shaders[it]);
 	}
@@ -149,6 +148,14 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	}
 	m_blenders.clear	();
 
+	// clear Geoms
+	for (u32 g_it=0; g_it<v_geoms.size(); g_it++)
+	{
+	xr_delete(v_geoms[g_it]);
+	}
+	v_geoms.clear();
+	*/
+
 	// destroy TD
 	for (map_TDIt _t=m_td.begin(); _t!=m_td.end(); _t++)
 	{
@@ -157,13 +164,6 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_free((char*&)_t->second.M);
 	}
 	m_td.clear			();
-
-    // clear Geoms
-	for (u32 g_it=0; g_it<v_geoms.size(); g_it++)
-	{
-		xr_delete(v_geoms[g_it]);
-    }
-    v_geoms.clear();
 }
 
 void	CShaderManager::OnDeviceCreate	(IReader* F)
