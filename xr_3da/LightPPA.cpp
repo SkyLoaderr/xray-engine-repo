@@ -45,9 +45,10 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	// Calculate XForms
 	Fmatrix	XForm, invXForm;
 	float	R			= sphere.R;
-	XForm.scale			(R,R,R);
-	XForm.translate_over(sphere.P);
-	invXForm.invert		(XForm);
+//	XForm.scale			(R,R,R);
+//	XForm.translate_over(sphere.P);
+
+	invXForm.translate	(-sphere.P.x,-sphere.P.y,-sphere.P.z);
 
 	// Create clipper
 	CFrustum			clipper;
@@ -101,15 +102,15 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
 		Fvector			uv;
-		vert1.P.set		((*P)[0]);	vert1.N.set(N);	invXForm.transform_tiny(uv,vert1.P); vert1.u0=uv.x; vert1.v0=uv.y; vert1.u1=uv.z; vert1.v1=.5f;
-		vert2.P.set		((*P)[0]);	vert2.N.set(N);	invXForm.transform_tiny(uv,vert2.P); vert2.u0=uv.x; vert2.v0=uv.y; vert2.u1=uv.z; vert2.v1=.5f;
+		vert1.P.set		((*P)[0]);	vert1.N.set(N);	invXForm.transform_tiny(uv,vert1.P); vert1.u0=uv.x+.5f; vert1.v0=uv.y+.5f; vert1.u1=uv.z+.5f; vert1.v1=.5f;
+		vert2.P.set		((*P)[1]);	vert2.N.set(N);	invXForm.transform_tiny(uv,vert2.P); vert2.u0=uv.x+.5f; vert2.v0=uv.y+.5f; vert2.u1=uv.z+.5f; vert2.v1=.5f;
 		vert3.N.set		(N);
 		for (DWORD i=2; i<P->size(); i++)
 		{
 			vert3.P.set		((*P)[i]);
 			invXForm.transform_tiny(uv,vert1.P); 
-			vert3.u0=uv.x; vert3.v0=uv.y; 
-			vert3.u1=uv.z; vert3.v1=.5f;			
+			vert3.u0=uv.x+.5f; vert3.v0=uv.y+.5f; 
+			vert3.u1=uv.z+.5f; vert3.v1=.5f;			
 			vlist.push_back	(vert1);
 			vlist.push_back	(vert2);
 			vlist.push_back	(vert3);
