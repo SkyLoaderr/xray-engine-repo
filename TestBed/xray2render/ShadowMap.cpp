@@ -305,8 +305,10 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_NORMAL);
+		/*
 		RenderCombine_Bloom			();
 		RenderOverlay				();
+		*/
 
 		// Output statistics
 		m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -559,7 +561,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		const float	 w		= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float	 bw		= float(m_d3dsdBackBuffer.Width/2),	bh = float(m_d3dsdBackBuffer.Height/2);
 		const float	 _bw	= bw-1,	_bh = bh-1;
-		const float  eps	= 0.01f;
+		const float  eps	= 0.03f;
 
 		// uv-offsets
 		D3DXVECTOR2		one	= D3DXVECTOR2(1.f/w,1.f/h);
@@ -609,7 +611,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Full-screen-quad VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
-		const float  eps= 0.01f;
+		const float  eps= 0.03f;
 		const float _w	= w-1.f, _h = h-1.f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
@@ -638,7 +640,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	// Bloom-filter VB
 	{
 		const float	 w	= float(m_d3dsdBackBuffer.Width/2),	h = float(m_d3dsdBackBuffer.Height/2);
-		const float  eps= 0.01f;
+		const float  eps= 0.03f;
 		const float _w	= w-1.f, _h = h-1.f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
@@ -1639,7 +1641,7 @@ HRESULT CMyD3DApplication::RenderOverlay()
 	m_pd3dDevice->SetFVF				(TVERTEX_FVF);
 	m_pd3dDevice->SetStreamSource		(0, m_pOverlayVB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->SetPixelShader		(0);
-	m_pd3dDevice->SetTexture			(0, sm_ShadowMap);
+	m_pd3dDevice->SetTexture			(0, d_Bloom_1);
 	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLORARG1,	D3DTA_TEXTURE);
 	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLOROP,		D3DTOP_SELECTARG1);
 	m_pd3dDevice->DrawPrimitive			(D3DPT_TRIANGLESTRIP, 0, 2);
