@@ -45,4 +45,9 @@
 <!-- Игрок нашел флешку Борова -->
 <info_portion id="val_player_knows_password"></info_portion>
 
+<!-- Развод лоха -->
+<info_portion id="val_rob_buyng"></info_portion>
+<info_portion id="val_rob_no_thanx"></info_portion>
+<info_portion id="val_rob_no_money"></info_portion>
+
 </game_information_portions>
