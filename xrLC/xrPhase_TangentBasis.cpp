@@ -112,8 +112,8 @@ void CBuild::xrPhase_TangentBasis()
 	clMsg		("duplication: was[%d] / become[%d] - %2.1f%%",v_was,v_become,100.f*float(v_become-v_was)/float(v_was));
 
 	// ************************************* Perform mungle
-	Status						("Calculating basis...");
-	NVMeshMender mender;
+	Status			("Calculating basis...");
+	NVMeshMender	mender;
 	if (!mender.Munge(
 		input,										// input attributes
 		output,										// outputs attributes
