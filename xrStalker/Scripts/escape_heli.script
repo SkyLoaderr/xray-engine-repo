@@ -73,7 +73,8 @@ function update()
 		end
 
 		-- после первого захода стрелять ракетами
-		if heli_mgr.attack_passes < 1000 then
+		if heli_mgr.attack_pass_state == 1 then
+			printf( "enable rockets" )
 			heli_mgr.heliObject.m_use_rocket_on_attack = true
 		end
 
