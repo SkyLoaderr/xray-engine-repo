@@ -533,7 +533,7 @@ void CObjectHandlerGOAP::update(u32 time_delta)
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I) {
 				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
-				if (current_action_state_id((*I).first) == eWorldPropertyCurItemID) {
+				if (action_state_id((*I).first) == eWorldPropertyCurItemID) {
 					if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first))
 						Msg			("%5d : %s",(*J).value(),property2string((*I).first));
 					else
