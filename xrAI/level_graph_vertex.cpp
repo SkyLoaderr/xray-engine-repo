@@ -563,4 +563,3 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector2 &
 		}
 	}
 }
-
