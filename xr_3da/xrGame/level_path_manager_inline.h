@@ -21,3 +21,5 @@ IC	bool CLevelManagerTemplate::actual(const _vertex_id_type start_vertex_id, con
 {
 	return		(inherited::actual(start_vertex_id,dest_vertex_id));
 }
+
+#undef TEMPLATE_SPECIALIZATION

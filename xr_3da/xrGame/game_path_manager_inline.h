@@ -21,3 +21,5 @@ IC	bool CGameManagerTemplate::actual(const _vertex_id_type start_vertex_id, cons
 {
 	return		(inherited::actual(start_vertex_id,dest_vertex_id));
 }
+
+#undef TEMPLATE_SPECIALIZATION

@@ -27,8 +27,26 @@ class
 		typename _vertex_id_type
 	>
 {
+	typedef CAbstractLocationSelector <
+		CGameGraph,
+		typename _VertexEvaluator,
+		typename _vertex_id_type
+	> inherited;
 public:
+	enum ESelectionType {
+		eSelectionTypeMask				= u32(1),
+		eSelectionTypeRandomBranching	= u32(1) << 1,
+		eSelectionTypeDummy				= u32(-1),
+	};
 
+private:
+	ESelectionType			m_selection_type;
+public:
+	IC						CBaseLocationSelector	();
+	IC	virtual				~CBaseLocationSelector	();
+	IC	virtual void		Init					(_Graph *graph = 0);
+	IC				void	set_selection_type		(const ESelectionType selection_type);
+	IC				void	get_selection_type		() const;
 };
 
 #include "game_location_selector_inline.h"
