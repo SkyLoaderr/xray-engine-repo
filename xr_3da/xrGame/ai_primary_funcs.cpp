@@ -88,7 +88,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			m_fLastValue =  5;
 			break;
 		}
-		case CLSID_AI_DOG				: {
+		case CLSID_AI_DOG_RED			: {
 			m_fLastValue =  6;
 			break;
 		}
@@ -150,7 +150,6 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 			break;
 		}
 		case CLSID_AI_FRACTURE	:
-		case CLSID_AI_DOG_RED	:
 		case CLSID_AI_DOG_BLACK	: {
 			m_fLastValue = 21;
 			break;
