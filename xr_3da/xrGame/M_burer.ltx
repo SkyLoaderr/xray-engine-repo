@@ -48,10 +48,10 @@ Human		     		= off						; option for ALife Simulator
 Health					= 400						; option for ALife Simulator
 MinSpeed				= 1.0						; option for ALife Simulator
 MaxSpeed				= 5.0						; option for ALife Simulator
-going_speed				= 4.5                      ; option for ALife Simulator
+going_speed				= 4.5                      	; option for ALife Simulator
 search_speed			= 1.5                       ; option for ALife Simulator
 visual					= monsters\burer\burer
-MaxHealthValue		    = 200			; range [0..200]
+MaxHealthValue		    = 100						; range [0..200]
 DynamicObjectsCount		= 32
 
 cform					= skeleton					; collision class
@@ -59,10 +59,10 @@ class					= AI_BURER					; AI class
 
 script_binding  		= monster.bind
 
-bone_torso				= bip01_spine1 			; bone name
+bone_torso				= bip01_spine1 				; bone name
 bone_head				= bip01_head				; bone name
 bone_fire				= bip01_head				; bone name
-weapon_usage			= 0						; boolean
+weapon_usage			= 0							; boolean
 
 ph_box0_center 			= 0.0,  0.9,  0.0
 ph_box0_size 			= 0.35, 0.9,  0.35
@@ -79,13 +79,13 @@ ph_skeleton_airr_ang_factor			= 1.5
 ph_skeleton_hinger_factor1			= 1.
 ph_skeleton_ddelay	     			= 300
 ph_skel_fatal_impulse_factor		= 12.0
-ph_after_death_velocity_factor		= 1.5
+ph_after_death_velocity_factor		= 1.2
 ph_skel_shot_up_factor				= 2.4
 
 SoundThreshold						= 0.06             ; range [0..1]
 
-EyeFov								= 100;
-eye_range							= 90	;50;
+EyeFov								= 100
+eye_range							= 90
 max_hear_dist						= 60
 
 ; speed factors			linear | angular_real | angular_path | min |  max
@@ -103,8 +103,8 @@ Accel_Calm				= 1.5
 Accel_Aggressive		= 200 ;6.5
 
 ;attack parameters
-MinAttackDist			= 1.0	;0.5
-MaxAttackDist			= 2.5	;3.8
+MinAttackDist			= 1.0
+MaxAttackDist			= 2.5
 
 as_min_dist				= 0.1
 as_step					= 0.3
@@ -137,39 +137,39 @@ hit_type = wound
 
 ;entity condition
 
-satiety_v				= 0.0001				;0.01			;скорость уменьшения сытости со временем
-radiation_v				= 0.00001		;0.004			;скорость уменьшения радиации
-satiety_power_v			= 0.001		;0.01			;увеличение силы при уменьшении сытости 
-satiety_health_v		= 0.00007	;0.03			;увеличение здоровья при уменьшении сытости 
-satiety_critical		= -1.0		;0.25						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
-radiation_health_v		= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
-morale_v				= 0.01					;скорость восстановления морали
-health_hit_part			= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part			= 1.0		;0.9			;процент хита, уходящий на отнимание силы
+satiety_v				= 0.0001					;скорость уменьшения сытости со временем
+radiation_v				= 0.00001					;скорость уменьшения радиации
+satiety_power_v			= 0.001						;увеличение силы при уменьшении сытости 
+satiety_health_v		= 0.00007					;увеличение здоровья при уменьшении сытости 
+satiety_critical		= -1.0						;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v		= 0.01						;уменьшение здоровья при воздействии радиации
+morale_v				= 0.01						;скорость восстановления морали
+health_hit_part			= 1.0						;процент хита, уходящий на отнимание здоровья
+power_hit_part			= 1.0						;процент хита, уходящий на отнимание силы
 
-burn_immunity			= 0.8				;коэффициенты иммунитета 
+burn_immunity			= 0.8						;коэффициенты иммунитета 
 strike_immunity			= 0.7
 shock_immunity			= 1.0
-wound_immunity			= 0.3	;0.30	;1.0		
+wound_immunity			= 1.0
 radiation_immunity		= 0.2
 telepatic_immunity		= 1.0
-chemical_burn_immunity	= 0.9
-explosion_immunity		= 0.07
-fire_wound_immunity		= 0.068	;0.7
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.5
 
 ;открытые раны
-bleeding_v					= 0						;потеря крови при номинальной ране в секунду
-wound_incarnation_v			= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
-min_wound_size				= 0.01
+bleeding_v						= 0						;потеря крови при номинальной ране в секунду
+wound_incarnation_v				= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+min_wound_size					= 0.01
 
-sleep_health			= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
-sleep_power				= 1.0		;1.5
-sleep_satiety			= 1.0		;0.8
-sleep_radiation			= 1.0	;1.1
+sleep_health					= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
+sleep_power						= 1.0		;1.5
+sleep_satiety					= 1.0		;0.8
+sleep_radiation					= 1.0		;1.1
 
-eat_freq				=	5.0		; частота укусов в сек
-eat_slice				=	0.01	; увеличение сытости при 1 укусе
-eat_slice_weight		=	10.0	; уменьшение еды у трупа
+eat_freq						= 5.0		; частота укусов в сек
+eat_slice						= 0.01	; увеличение сытости при 1 укусе
+eat_slice_weight				= 10.0	; уменьшение еды у трупа
 
 
 ; Morale
@@ -223,19 +223,19 @@ Particle_Tele_Object	= static\fire_distort
 Particle_Shield			= anomaly2\burer_shield_01
 
 ; Gravi Strike
-Gravi_Speed					= 50 ;62	; meter/sec	
+Gravi_Speed					= 76	; meter/sec	
 Gravi_Step					= 2		; meter
 Gravi_Time_To_Hold			= 1300	; milisec
 Gravi_Radius				= 3.0
-Gravi_Impulse_To_Objects	= 8.0
-Gravi_Impulse_To_Enemy		= 800;400.0
+Gravi_Impulse_To_Objects	= 60.0
+Gravi_Impulse_To_Enemy		= 400.0
 Gravi_Hit_Power				= 50.0
 
 ; Tele Strike
 Tele_Max_Handled_Objects = 3	
-Tele_Time_To_Hold		 = 800 ;1200
+Tele_Time_To_Hold		 = 800
 Tele_Object_Min_Mass	 = 40.0
-Tele_Object_Max_Mass	 = 5000.0
+Tele_Object_Max_Mass	 = 1000.0
 Tele_Find_Radius		 = 10.0
 
 ; Scanner
@@ -257,10 +257,10 @@ species					= burer
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	0.1
+default				= 0.1, -1, 0.1
 
-bip01_pelvis 		= 1, -1, 0.1
-bip01_spine 		= 1, -1, 0.1
-bip01_spine1 		= 1, -1, 0.1
-bip01_neck 			= 1, -1, 0.1
-bip01_head 			= 10.0, -1, 0.50
+bip01_pelvis 		= 1.0, -1, 0.1
+bip01_spine 		= 1.0, -1, 0.1
+bip01_spine1 		= 1.0, -1, 0.1
+bip01_neck 			= 1.0, -1, 0.1
+bip01_head 			= 3.0, -1, 0.50
