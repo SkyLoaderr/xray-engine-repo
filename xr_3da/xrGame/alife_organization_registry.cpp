@@ -36,12 +36,14 @@ struct COrganizationLoader : public object_loader::detail::CEmptyPredicate {
 	{
 		data.second		= (*I).second;
 		load_data		(*data.second,stream);
-		VERIFY2			((I != E) && !xr_strcmp(data.second->m_name,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
+		VERIFY2			(I != E,"Data key value mismatch : DELETE saved game and try again!");
 	}
 
 	template <typename T1, typename T2>
 	IC	bool operator()	(T1 &data, T2 &value) const
 	{
+		if (!m_load)
+			return		(true);
 		(*I).second = value.second;
 		++I;
 		return			(false);
@@ -69,12 +71,14 @@ struct CDiscoveryLoader : public object_loader::detail::CEmptyPredicate {
 	{
 		data.second		= (*I).second;
 		load_data		(*data.second,stream);
-		VERIFY2			((I != E) && !xr_strcmp(data.second->m_id,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
+		VERIFY2			(I != E,"Data key value mismatch : DELETE saved game and try again!");
 	}
 
 	template <typename T1, typename T2>
 	IC	bool operator()	(T1 &data, T2 &value) const
 	{
+		if (!m_load)
+			return		(true);
 		(*I).second = value.second;
 		++I;
 		return			(false);

@@ -21,6 +21,7 @@ CALifeOrganization::CALifeOrganization	(LPCSTR section)
 {
 	LPCSTR						S;
 	string64					S1;
+	m_name						= pSettings->r_string	(section,"name");
 	S							= pSettings->r_string	(section,"discoveries");
 	m_possible_discoveries.resize(_GetItemCount(S));
 	LPSTR_IT					B = m_possible_discoveries.begin(), I = B;
