@@ -4,7 +4,7 @@
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
 #include "level.h"
-
+#include "phsynchronize.h"
 u32 CPhysicObject::remove_time=5000;
 
 CPhysicObject::CPhysicObject(void) 

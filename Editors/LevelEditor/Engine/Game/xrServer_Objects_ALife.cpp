@@ -829,7 +829,7 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	m_flags.set					(flSwitchOffline,FALSE);
 	bones_mask					=u64(-1);
 	root_bone					=0;
-	saved_bones_number			=0;
+
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 

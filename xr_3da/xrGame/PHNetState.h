@@ -29,4 +29,5 @@ struct SPHNetState
 	void								net_Load			(		NET_Packet&		P,const Fvector& min,const Fvector& max);
 };
 DEFINE_VECTOR(SPHNetState,PHNETSTATE_VECTOR,PHNETSTATE_I);
+
 #endif
