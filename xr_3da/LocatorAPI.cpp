@@ -332,7 +332,7 @@ vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 	files_it	I	= files.find(desc);
 	if (I==files.end())	return 0;
 	
-	vector<char*>	dest	= xr_new<vector<char*> > ();
+	vector<char*>*	dest	= xr_new<vector<char*> > ();
 
 	size_t base_len	= strlen(N);
 	for (++I; I!=files.end(); I++)
@@ -347,7 +347,7 @@ vector<char*>* CLocatorAPI::file_list_open			(const char* initial, u32 flags)
 			const char* entry_begin = entry.name+base_len;
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			dest->push_back			(xr_strdup(entry_begin));
-            LPSTR fname 			= dest.back();
+            LPSTR fname 			= dest->back();
             if (flags&FS_ClampExt)	if (0!=strext(fname)) *strext(fname)=0;
 		} else {
 			// folder
