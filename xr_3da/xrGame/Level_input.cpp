@@ -4,7 +4,6 @@
 #include "..\xr_ioconsole.h"
 
 // Обработка нажатия клавиш
-ENGINE_API extern BOOL	ShowLM;
 void CLevel::OnKeyboardPress(int key)
 {
 //	if (pHUD->IsUIActive())			
@@ -17,9 +16,6 @@ void CLevel::OnKeyboardPress(int key)
 		return;
 	case DIK_F12:
 		Render->Screenshot			();
-		return;
-	case DIK_RALT:
-		ShowLM						= TRUE;
 		return;
 	case DIK_BACK:
 		HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
@@ -50,12 +46,6 @@ void CLevel::OnKeyboardRelease(int key)
 //	if (pHUD->IsUIActive()) 
 	if (pHUD->GetUI()->OnKeyboardRelease(key)) return;
 
-	switch (key)
-	{
-	case DIK_RALT:
-		ShowLM	= FALSE;
-		return;
-	}
 	if (CurrentEntity())	CurrentEntity()->OnKeyboardRelease(key_binding[key]);
 }
 
