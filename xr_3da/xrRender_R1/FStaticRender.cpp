@@ -373,7 +373,7 @@ void CRender::Calculate				()
 					// lightsource
 					light*			L					= (light*)	spatial->dcast_Light	();
 					VERIFY								(L);
-					L_DB->add_light						(L);
+					if	(HOM.visible(L->get_homdata()))	L_DB->add_light	(L);
 				}
 				break;	// exit loop on frustums
 			}
