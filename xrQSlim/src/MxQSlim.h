@@ -22,6 +22,7 @@ class MxQSlim : public MxStdSlim
 protected:
     MxBlock<MxQuadric3> quadrics;
 
+	void discontinuity_constraint(MxVertexID, MxVertexID, MxFaceID);
     void discontinuity_constraint(MxVertexID, MxVertexID, const MxFaceList&);
     void collect_quadrics();
     void transform_quadrics(const Mat4&);
@@ -38,6 +39,7 @@ public:
     virtual void initialize();
 
     const MxQuadric3& vertex_quadric(MxVertexID v) { return quadrics(v); }
+    void constraint_manual(MxVertexID, MxVertexID, MxFaceID);
 };
 
 class MxQSlimEdge : public MxEdge, public MxHeapable

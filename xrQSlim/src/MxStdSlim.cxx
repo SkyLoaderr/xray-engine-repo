@@ -17,11 +17,11 @@ MxStdSlim::MxStdSlim(MxStdModel *m0)
     m = m0;
 
     // Externally visible variables
-    placement_policy = MX_PLACE_OPTIMAL;
+    placement_policy = MX_PLACE_ENDPOINTS;
     weighting_policy = MX_WEIGHT_AREA;
     boundary_weight = 1000.0;
-    compactness_ratio = 0.0;
-    meshing_penalty = 1.0;
+    compactness_ratio = 1.0;
+    meshing_penalty = 1000.0;
     local_validity_threshold = 0.0;
     vertex_degree_limit = 24;
     will_join_only = false;

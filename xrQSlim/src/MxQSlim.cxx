@@ -41,40 +41,40 @@ void MxQSlim::collect_quadrics()
     for(j=0; j<(unsigned int)quadrics.length(); j++)
 	quadrics(j).clear();
 
-    for(MxFaceID i=0; i<m->face_count(); i++)
-    {
-	MxFace& f = m->face(i);
-
-	Vec3 v1(m->vertex(f(0)));
-	Vec3 v2(m->vertex(f(1)));
-	Vec3 v3(m->vertex(f(2)));
-
-	Vec4 p = (weighting_policy==MX_WEIGHT_RAWNORMALS) ?
-		    triangle_raw_plane<Vec3,Vec4>(v1, v2, v3):
-		    triangle_plane<Vec3,Vec4>(v1, v2, v3);
-	Quadric Q(p[0], p[1], p[2], p[3], m->compute_face_area(i));
-
-	switch( weighting_policy )
+	for(MxFaceID i=0; i<m->face_count(); i++)
 	{
-	case MX_WEIGHT_ANGLE:
-	    for(j=0; j<3; j++)
-	    {
-		Quadric Q_j = Q;
-		Q_j *= m->compute_corner_angle(i, j);
-		quadrics(f[j]) += Q_j;
-	    }
-	    break;
-	case MX_WEIGHT_AREA:
-	case MX_WEIGHT_AREA_AVG:
-	    Q *= Q.area();
-	    // no break: fallthrough
-	default:
-	    quadrics(f[0]) += Q;
-	    quadrics(f[1]) += Q;
-	    quadrics(f[2]) += Q;
-	    break;
+		MxFace& f = m->face(i);
+
+		Vec3 v1(m->vertex(f(0)));
+		Vec3 v2(m->vertex(f(1)));
+		Vec3 v3(m->vertex(f(2)));
+
+		Vec4 p = (weighting_policy==MX_WEIGHT_RAWNORMALS) ?
+			triangle_raw_plane<Vec3,Vec4>(v1, v2, v3):
+		triangle_plane<Vec3,Vec4>(v1, v2, v3);
+		Quadric Q(p[0], p[1], p[2], p[3], m->compute_face_area(i));
+
+		switch( weighting_policy )
+		{
+		case MX_WEIGHT_ANGLE:
+			for(j=0; j<3; j++)
+			{
+				Quadric Q_j = Q;
+				Q_j *= m->compute_corner_angle(i, j);
+				quadrics(f[j]) += Q_j;
+			}
+			break;
+		case MX_WEIGHT_AREA:
+		case MX_WEIGHT_AREA_AVG:
+			Q *= Q.area();
+			// no break: fallthrough
+		default:
+			quadrics(f[0]) += Q;
+			quadrics(f[1]) += Q;
+			quadrics(f[2]) += Q;
+			break;
+		}
 	}
-    }
 }
 
 void MxQSlim::transform_quadrics(const Mat4& P)
@@ -84,15 +84,13 @@ void MxQSlim::transform_quadrics(const Mat4& P)
 }
 
 void MxQSlim::discontinuity_constraint(MxVertexID i, MxVertexID j,
-				       const MxFaceList& faces)
+									   MxFaceID f)
 {
-    for(unsigned int f=0; f<(unsigned int)faces.length(); f++)
-    {
 	Vec3 org(m->vertex(i)), dest(m->vertex(j));
 	Vec3 e = dest - org;
 
 	Vec3 n;
-	m->compute_face_normal(faces[f], n);
+	m->compute_face_normal(f, n);
 
 	Vec3 n2 = e ^ n;
 	unitize(n2);
@@ -101,40 +99,50 @@ void MxQSlim::discontinuity_constraint(MxVertexID i, MxVertexID j,
 	Q *= boundary_weight;
 
 	if( weighting_policy == MX_WEIGHT_AREA ||
-	    weighting_policy == MX_WEIGHT_AREA_AVG )
+		weighting_policy == MX_WEIGHT_AREA_AVG )
 	{
-	    Q.set_area(norm2(e));
-	    Q *= Q.area();
+		Q.set_area(norm2(e));
+		Q *= Q.area();
 	}
 
 	quadrics(i) += Q;
 	quadrics(j) += Q;
-    }
+}
+
+void MxQSlim::discontinuity_constraint(MxVertexID i, MxVertexID j, const MxFaceList& faces)
+{
+	for(unsigned int f=0; f<(unsigned int)faces.length(); f++)
+		discontinuity_constraint(i,j,faces[f]);
 }
 
 void MxQSlim::constrain_boundaries()
 {
-    MxVertexList star;
-    MxFaceList faces;
+	MxVertexList star;
+	MxFaceList faces;
 
-    for(MxVertexID i=0; i<m->vert_count(); i++)
-    {
-	star.reset();
-	m->collect_vertex_star(i, star);
+	for(MxVertexID i=0; i<m->vert_count(); i++)
+	{
+		star.reset();
+		m->collect_vertex_star(i, star);
 
-	for(unsigned int j=0; j<(unsigned int)star.length(); j++)
-	    if( i < star(j) )
-	    {
-		faces.reset();
-		m->collect_edge_neighbors(i, star(j), faces);
-		if( faces.length() == 1 )
-		    discontinuity_constraint(i, star(j), faces);
-	    }
-    }
+		for(unsigned int j=0; j<(unsigned int)star.length(); j++){
+			if( i < star(j) )
+			{
+				faces.reset();
+				m->collect_edge_neighbors(i, star(j), faces);
+				if( faces.length() == 1 )
+					discontinuity_constraint(i, star(j), faces);
+			}
+		}
+	}
 }
 
-
-
+void MxQSlim::constraint_manual(MxVertexID v0, MxVertexID v1, MxFaceID f)
+{
+	MxFaceList faces;
+	faces.add				(f);
+	discontinuity_constraint(v0, v1, faces);
+}
 
 MxEdgeQSlim::MxEdgeQSlim(MxStdModel* _m)
   : MxQSlim(_m),
