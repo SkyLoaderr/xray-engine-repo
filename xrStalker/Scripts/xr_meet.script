@@ -95,14 +95,6 @@ end
 function evaluator_wait:evaluate()
 	return self.a.Buyer ~= nil
 end
---' в диалоге ли мы или нет
-class "evaluator_talk" (property_evaluator)
-function evaluator_talk:__init(storage) super()
-	self.a = storage
-end
-function evaluator_talk:evaluate()
-	return self.object:is_talking()
-end
 
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
@@ -152,11 +144,16 @@ function action_wait_for_buyer:initialize()
 				   maxidle = 7, 
 				   sumidle = 5,
 				   themes = { "weather", "state", "wait" } }
-
+	
+	xr_state.change_state(self.object, xr_state.stand)
 end
 function action_wait_for_buyer:execute ()
 	action_base.execute (self)
 
+	if xr_state.finish_state(self.object) ~= nil then
+		return
+	end
+	
 	-- ѕроверка, видим ли мы актора или нет
 	if self.object:see(self.a.Buyer) == true then
 		-- смотрим на клиента
@@ -242,17 +239,20 @@ function action_meet_wait:initialize()
    	self.a.Buyer = nil
 
 	--' —мена стартового диалога
-	if self.char_ini:section_exist("dialog") and self.char_ini:line_exist("dialog", "id") then
-		printf("CC: new dialog set")
-		self.object:set_start_dialog(self.char_ini:r_string("dialog", "id"))
+	local overrides = xr_logic.generic_scheme_overrides(self.object)
+	if overrides ~= nil and
+		overrides.meet_dialog ~= nil
+	then
+		self.object:set_start_dialog(overrides.meet_dialog)
 	else
-		printf("CC: dialog restored from npc_profile")
-		self.object:restore_default_start_dialog()
-	end	   	
+		self.object:restore_default_start_dialog()	
+	end	
 end
 function action_meet_wait:execute ()
 	if xr_state.finish_state(self.object) == true then
 		self.object:enable_talk()
+	else
+		return
 	end
 	
 	-- нужно остановитьс€ и посмотреть в сторону актора
@@ -271,55 +271,6 @@ function action_meet_wait:execute ()
 end
 function action_meet_wait:finalize ()
 	self.object:disable_talk()
-	xr_state.anim_update(nil, self.object)
-	action_base.finalize (self)
-end
-
---' Ѕолтовн€
-class "action_talk" (action_base)
-function action_talk:__init (npc_name,action_name, storage) super (nil, action_name)
-	self.a = storage
-	
-	self.sound_trstart = { rnd = 100,
-				   maxidle = 1, 
-				   sumidle = 0,
-				   themes = { "trade_yes" } }
-
-	self.sound_trend = { rnd = 100,
-				   maxidle = 1, 
-				   sumidle = 0,
-				   themes = { "talk_bye" } }
-end
-function action_talk:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()    
-
-	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.stand)
-	self.object:set_mental_state(anim.free)
-
-	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, self.sound_trstart)		
-	end
-   	self.object:set_item(object.deactivate, self.object:best_weapon())   		
-end
-function action_talk:execute ()
-	-- нужно остановитьс€ и посмотреть в сторону актора
-	local dir = self.a.actor:position():sub(self.object:position())
-
-	self.object:set_sight(look.direction, dir, 0)
-
-	-- јнимации
-	xr_state.anim_update("idle", self.object)
-	action_base.execute (self)
-end
-function action_talk:finalize ()
-	if self.object:active_sound_count() == 0 then
-		xr_sound.sound_update(self.object, self.sound_trend)		
-	end
 	xr_state.anim_update(nil, self.object)
 	action_base.finalize (self)
 end
@@ -454,7 +405,6 @@ function add_to_binder(object, char_ini)
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["weapon"]		= xr_evaluators_id.stohe_meet_base + 2
 	properties["threat"]		= xr_evaluators_id.stohe_meet_base + 3
-	properties["talk"]			= xr_evaluators_id.stohe_meet_base + 6
 	properties["need_punch"]	= xr_evaluators_id.zmey_punch_base + 1
 
 	operators["wait_buyer"] 		= xr_actions_id.stohe_tradeseller_base + 2
@@ -468,7 +418,6 @@ function add_to_binder(object, char_ini)
 	manager:add_evaluator (properties["contact"], 		evaluator_contact	(xr_motivator.storage[object:id()].meet))
 	manager:add_evaluator (properties["weapon"], 		evaluator_weapon	(xr_motivator.storage[object:id()].meet))
 	manager:add_evaluator (properties["threat"], 		evaluator_threat	(xr_motivator.storage[object:id()].meet))
-	manager:add_evaluator (properties["talk"], 			evaluator_talk		(xr_motivator.storage[object:id()].meet))
 
 	-- Actions
 	local action = action_meet_wait (object:name(),"action_meet_wait", xr_motivator.storage[object:id()].meet, char_ini)
@@ -477,17 +426,8 @@ function add_to_binder(object, char_ini)
 	action:add_precondition		(world_property(properties["contact"], 		true))
 	action:add_precondition		(world_property(properties["weapon"], 		false))
 	action:add_precondition		(world_property(properties["threat"], 		false))
-	action:add_precondition		(world_property(properties["talk"], 		false))
 	action:add_effect 			(world_property(properties["contact"], 		false))
 	manager:add_action (operators["wait_trade"], action)
-
-	action = action_talk (object:name(),"action_talk", xr_motivator.storage[object:id()].meet)
-	action:add_precondition		(world_property(stalker_ids.property_alive, true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["need_punch"],	false))	
-	action:add_precondition		(world_property(properties["talk"], 		true))
-	action:add_effect 		(world_property(properties["talk"], 			false))
-	manager:add_action (operators["talk"], action)
 
 	action = action_weapon (object:name(),"action_weapon", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, true))

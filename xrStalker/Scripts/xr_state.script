@@ -49,9 +49,13 @@ function body_state:finish_state()
 	return self.target_state == self.current_state
 end
 function body_state:set_state(id)
-	self.npc:clear_animations()
-	self.target_state = id
-	self:transanim(self.npc, id)
+	if id ~= self.current_state and
+	   id ~= self.target_state
+	then
+		self.npc:clear_animations()
+		self.target_state = id
+		self:transanim(self.npc, id)
+	end
 end
 function body_state:transanim(object, target_state)
 	if self.tanim[self.current_state][target_state] ~= nil then
