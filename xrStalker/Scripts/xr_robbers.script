@@ -216,7 +216,9 @@ function action_robber_activity:execute()
 		if device():time_global() >= self.expiration_time then
 			this.plr_is_near = true
 			this.plr_stop_pos = self.actor:position()
-			this.plr_num_bullets = active_item:get_ammo_in_magazine()
+			if active_item then
+				this.plr_num_bullets = active_item:get_ammo_in_magazine()
+			end
 			self.expiration_time = device():time_global() + 2000
 			self.state = self.state_leader_shouting_stop
 		end
