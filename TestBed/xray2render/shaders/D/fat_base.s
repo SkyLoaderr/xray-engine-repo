@@ -1,5 +1,3 @@
-#define LAST c256
-
 struct 	a2v
 {
   float4 Position: 	POSITION;	// Object-space position
@@ -46,8 +44,8 @@ v2p_out v_main	( a2v  	IN )
   // Write output registers.
   v2p_out 	OUT;
   OUT.HPos 	= mul	(m_model2view2projection,IN.Position	);
-  OUT.Pe 	= float4(Pe.x,Pe.y,Pe.z,2*m_a[IN.TexCoords.x].x);
-  OUT.Ne 	= float4(Ne.x,Ne.y,Ne.z,3*m_a[IN.TexCoords.y].y);
+  OUT.Pe 	= float4(Pe.x,Pe.y,Pe.z,0);
+  OUT.Ne 	= float4(Ne.x,Ne.y,Ne.z,0);
   OUT.Tex0 	= IN.TexCoords;
 
   return OUT;
