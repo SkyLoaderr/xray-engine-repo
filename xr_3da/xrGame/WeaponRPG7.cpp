@@ -60,22 +60,8 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
-	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g1);
-		l_pUD1 = dGeomGetUserData(geom);
-	}
-	else 
-		l_pUD1 = dGeomGetUserData(c.geom.g1);
-
-	if(dGeomGetClass(c.geom.g2)==dGeomTransformClass) 
-	{
-		const dGeomID geom=dGeomTransformGetGeom(c.geom.g2);
-		l_pUD2 = dGeomGetUserData(geom);
-	} 
-	else 
-		l_pUD2 = dGeomGetUserData(c.geom.g2);
-
+	l_pUD1 = retriveGeomUserData(c.geom.g1);
+	l_pUD2 = retriveGeomUserData(c.geom.g2);
 	CWeaponRPG7Grenade *l_this = l_pUD1 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD1->ph_ref_object) : NULL;
 	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CWeaponRPG7Grenade*>(l_pUD2->ph_ref_object) : NULL;
 	
@@ -724,6 +710,7 @@ void CWeaponRPG7::ReloadMagazine()
 		CSE_Temporary		*l_tpTemporary = dynamic_cast<CSE_Temporary*>(D);
 		R_ASSERT							(l_tpTemporary);
 		l_tpTemporary->m_tNodeID	= level_vertex_id();
+		l_tpTemporary->o_Position	= Position();
 		// Fill
 		strcpy				(D->s_name,"wpn_rpg7_missile");
 		strcpy				(D->s_name_replace,"");
