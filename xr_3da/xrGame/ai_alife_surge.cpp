@@ -726,6 +726,26 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 	}
 }
 
+float CSE_ALifeSimulator::distance(const DWORD_VECTOR &path) const
+{
+	float							distance = 0.f;
+	xr_vector<u32>::const_iterator	I = path.begin();
+	xr_vector<u32>::const_iterator	E = path.end() - 1;
+	for ( ; I != E; ++I) {
+		CGameGraph::const_iterator	i, e;
+		bool						ok = false;
+		ai().game_graph().begin		(*I,i,e);
+		for ( ; i != e; ++i)
+			if ((*i).vertex_id() == *(I + 1)) {
+				distance			+= (*i).distance();
+				ok					= true;
+				break;
+			}
+		VERIFY						(ok);
+	}
+	return							(distance);
+}
+
 void CSE_ALifeSimulator::vfUpdateTasks()
 {
 	m_tTaskRegistry.clear		();
@@ -751,7 +771,10 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 				TRADER_SET_IT	ii = (*I).second.begin();
 				TRADER_SET_IT	ee = (*I).second.end(), jj = ee;
 				for ( ; ii != ee; ++ii) {
-					float		l_fDistance = ai().graph_engine().search(ai().game_graph(),(*ii)->m_tGraphID,(*II)->m_tGraphID,0,CGraphEngine::CBaseParameters());
+					bool		successful = ai().graph_engine().search(ai().game_graph(),(*ii)->m_tGraphID,(*II)->m_tGraphID,&m_tpTempPath,CGraphEngine::CBaseParameters());
+					if (!successful)
+						continue;
+					float		l_fDistance = distance(m_tpTempPath);
 					if (l_fDistance < l_fMinDistance) {
 						l_fMinDistance = l_fDistance;
 						jj = ii;

@@ -69,6 +69,8 @@ class CSE_ALifeSimulator :
 	ALife::SSumStackCell			m_tpStack1[MAX_STACK_DEPTH];
 	ALife::SSumStackCell			m_tpStack2[MAX_STACK_DEPTH];
 
+	DWORD_VECTOR					m_tpTempPath;
+
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -175,6 +177,7 @@ public:
 			CSE_Abstract			*tpfCreateGroupMember		(CSE_ALifeGroupAbstract		*tpALifeGroupAbstract,		CSE_ALifeDynamicObject	*j);
 	// trading routines
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTrader			*tpALifeTrader);
+			float					distance					(const DWORD_VECTOR &path) const;
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

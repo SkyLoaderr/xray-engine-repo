@@ -328,7 +328,7 @@ void CSE_ALifeSimulator::vfAssignDeathPosition(CSE_ALifeCreatureAbstract *tpALif
 
 	CGameGraph::const_spawn_iterator		i, e;
 	ai().game_graph().begin_spawn			(tGraphID,i,e);
-	i										+= randI(s32(e - i));
+	i										+= (e != i) ? randI(s32(e - i)) : 0;
 	tpALifeCreatureAbstract->m_tGraphID		= tGraphID;
 	tpALifeCreatureAbstract->o_Position		= (*i).level_point();
 	tpALifeCreatureAbstract->m_tNodeID		= (*i).level_vertex_id();

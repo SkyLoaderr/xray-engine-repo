@@ -78,9 +78,10 @@ public:
 
 	IC		void		create_path		()
 	{
-		VERIFY					(data_storage && path);
+		VERIFY					(data_storage);
 //		Msg						("Path [IC=xxx][VNC=%d][BV=%f]",data_storage->get_visited_node_count(),data_storage->get_best().f());
-		data_storage->get_path	(*path);
+		if (path)
+			data_storage->get_path	(*path);
 	}
 
 	IC		_index_type	start_node		() const
