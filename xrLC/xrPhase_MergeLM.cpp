@@ -79,7 +79,7 @@ void CBuild::xrPhase_MergeLM()
 		Layer.push_back		(D);
 	}
 
-	// Merge this layer (which left unmarged)
+	// Merge this layer (which left unmerged)
 	while (Layer.size()) 
 	{
 		string512	phase_name;
@@ -98,7 +98,7 @@ void CBuild::xrPhase_MergeLM()
 
 		// Select first deflectors which can fit
 		Status		("Selection...");
-		u32 maxarea		= c_LMAP_size*c_LMAP_size*4;	// Max up to 4 lm selected
+		u32 maxarea		= c_LMAP_size*c_LMAP_size*8;	// Max up to 8 lm selected
 		u32 curarea		= 0;
 		u32 merge_count	= 0;
 		for (u32 it=0; it<(int)Layer.size(); it++)	{
