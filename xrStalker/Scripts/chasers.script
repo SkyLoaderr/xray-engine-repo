@@ -46,6 +46,8 @@ function main ()
              wait (10000)
           end
           
+          if scr_monster ~= nil and scr_monster:alive () == false then scr_monster = nil end
+          
           if scr_monster == nil then
              local distance = 1000000
              for a = 1, table.getn (monsters), 1 do
