@@ -22,8 +22,8 @@ struct 	p2f
 
 //////////////////////////////////////////////////////////////////////////////////////////
 uniform sampler2D 	s_bloom;
-uniform float4 		weight[2];
-uniform float2		offset[7];
+uniform float4 		weight[2];	// half of one dimensional gauss curve weights
+uniform float2		offset[7];	// half-size of one dimensional filter kernel (full kernel - 15x15 or 30x30 if bilinear filtered)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
