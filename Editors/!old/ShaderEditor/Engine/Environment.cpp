@@ -103,6 +103,10 @@ static	u16			hbox_faces[20*3]	=
 
 //////////////////////////////////////////////////////////////////////////
 // environment desc
+CEnvDescriptor::CEnvDescriptor()
+{
+}
+
 void CEnvDescriptor::load	(LPCSTR exec_tm, LPCSTR S, CEnvironment* parent)
 {
 	Ivector3 tm				={0,0,0};
@@ -135,7 +139,7 @@ void CEnvDescriptor::unload	()
 	sky_r_textures.push_back(0);
 	sky_r_textures.push_back(0);
 }
-void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
+void CEnvDescriptor::lerp	(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
 	float	_power			=	1.f/(m_power+1);	// the environment itself
 	float	fi				=	1-f;
@@ -153,8 +157,10 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvMo
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
 	bolt_period				= fi*A.bolt_period + f*B.bolt_period;
 	bolt_duration			= fi*A.bolt_duration + f*B.bolt_duration;
+	// wind
     wind_velocity			= fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction			= fi*A.wind_direction + f*B.wind_direction;
+	// colors
 	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
@@ -227,6 +233,8 @@ CEnvironment::CEnvironment	()
 #endif
 	fGameTime				= 0.f;
     fTimeFactor				= 12.f;
+
+	wind_strength			= 0.f;
 }
 CEnvironment::~CEnvironment	()
 {
@@ -402,7 +410,7 @@ void CEnvironment::OnFrame()
 		mpower += EM.sum(*mit,view);
 
 	// final lerp
-	CurrentEnv.lerp						(*CurrentA,*CurrentB,t_fact,EM,mpower);
+	CurrentEnv.lerp						(this,*CurrentA,*CurrentB,t_fact,EM,mpower);
 	CurrentEnv.sky_r_textures.push_back	(tonemap);		//. hack
     int id								= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
 	eff_LensFlare->OnFrame				(id);

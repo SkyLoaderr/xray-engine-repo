@@ -7,10 +7,12 @@ class ENGINE_API	CInifile;
 class ENGINE_API 	CEnvironment;
 
 // refs - effects
+class ENGINE_API	CEnvironment;
 class ENGINE_API	CLensFlare;	
 class ENGINE_API	CEffect_Rain;
 class ENGINE_API	CEffect_Thunderbolt;
 
+class ENGINE_API	CPerlinNoise1D;
 // t-defs
 class ENGINE_API	CEnvModifier
 {
@@ -65,10 +67,12 @@ public:
     int					lens_flare_id;
     BOOL				thunderbolt;
     
-	void				load		(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
-    void				unload		();
+						CEnvDescriptor	();
+
+	void				load			(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
+    void				unload			();
     
-	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power);
+	void				lerp			(CEnvironment* parent, CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power);
 };
 
 class ENGINE_API	CEnvironment
@@ -91,6 +95,8 @@ public:
     ref_str					CurrentWeatherName;
 	WeatherMap				Weathers;
 	xr_vector<CEnvModifier>	Modifiers;
+
+	float					wind_strength;	
 
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;
