@@ -39,7 +39,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	// set bone id
 	light_bone_idx			= lamp->spot_bone[0]?PKinematics(pVisual)->LL_BoneID(lamp->spot_bone):-1;
-	clr.set					(0xffffffff);//lamp->color);
+	clr.set					(lamp->color); clr.a = 1.f;
 	clr.mul_rgb				(lamp->spot_brightness);
 	fBrightness				= lamp->spot_brightness;
 	light_render->set_range	(lamp->spot_range);
@@ -166,5 +166,5 @@ void CHangingLamp::CreateBody(float mass)
 	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
 	m_pPhysicsShell->mXFORM.set(svTransform);
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
-//	m_pPhysicsShell->setMass(mass);
+//	m_pPhysicsShell->setMass1(mass);
 }
