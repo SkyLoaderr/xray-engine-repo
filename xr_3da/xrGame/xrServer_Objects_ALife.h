@@ -188,9 +188,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeDynamicObject,CSE_ALifeObject)
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual)
-									CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual(), CSE_Abstract(caSection)
-	{
-	}
+									CSE_ALifeDynamicObjectVisual(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Shape)

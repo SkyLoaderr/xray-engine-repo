@@ -493,6 +493,12 @@ void CSE_ALifeDynamicObject::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeDynamicObjectVisual
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeDynamicObjectVisual::CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual(), CSE_Abstract(caSection)
+{
+	if (pSettings->line_exist(caSection,"visual"))
+		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
 void CSE_ALifeDynamicObjectVisual::STATE_Write(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
