@@ -22,8 +22,8 @@ void CDetailManager::soft_Render	()
 	// float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
 	// Get index-stream
-	CIndexStream&	_IS		= Device.Streams.Index;
-	CVertexStream&	_VS		= Device.Streams.Vertex;
+	_IndexStream&	_IS		= Device.Streams.Index;
+	_VertexStream&	_VS		= Device.Streams.Vertex;
 
 	for (DWORD O=0; O<objects.size(); O++)
 	{
@@ -115,8 +115,8 @@ void CDetailManager::soft_Render	()
 			_IS.Unlock		(iCount_Lock);
 			
 			// Render
-			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.getBuffer());
-			Device.Primitive.setIndices		(vBase, _IS.getBuffer());
+			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.Buffer());
+			Device.Primitive.setIndices		(vBase, _IS.Buffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);

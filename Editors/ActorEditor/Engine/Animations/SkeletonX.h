@@ -60,7 +60,6 @@ public:
 	CSkeletonX()
 	{
 		Parent		= 0;
-		Stream		= 0;
 		Vertices	= 0;
 	}
 };

@@ -33,9 +33,9 @@ CLensFlare::CLensFlare()
 {
 	// Device
 #ifndef _EDITOR
-	Device.seqDevDestroy.Add	(this);
-	Device.seqDevCreate.Add		(this);
-	if (Device.bReady) OnDeviceCreate();
+	Device.seqDevDestroy.Add			(this);
+	Device.seqDevCreate.Add				(this);
+	if (Device.bReady) OnDeviceCreate	();
 #endif
 
 	bInit				= false;
@@ -53,7 +53,7 @@ CLensFlare::CLensFlare()
 
 CLensFlare::~CLensFlare()
 {
-	if (Device.bReady) OnDeviceDestroy();
+	if (Device.bReady)			OnDeviceDestroy();
 #ifndef _EDITOR
 	Device.seqDevDestroy.Remove	(this);
 	Device.seqDevCreate.Remove	(this);
@@ -62,12 +62,12 @@ CLensFlare::~CLensFlare()
 
 void CLensFlare::OnDeviceCreate()
 {
-	// pre-build indices
-	VS				= Device.Streams.Create		(FVF::F_LIT, 2*MAX_Flares*4);
+	// VS
+	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
 
 	// shaders
-	m_Gradient.hShader	= CreateFlareShader(m_Gradient.texture);
-	m_Source.hShader	= CreateSourceShader(m_Source.texture);
+	m_Gradient.hShader	= CreateFlareShader		(m_Gradient.texture);
+	m_Source.hShader	= CreateSourceShader	(m_Source.texture);
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader = CreateFlareShader(it->texture);
 }
 
@@ -77,6 +77,9 @@ void CLensFlare::OnDeviceDestroy()
 	if (m_Gradient.hShader) Device.Shader.Delete(m_Gradient.hShader);
 	if (m_Source.hShader)	Device.Shader.Delete(m_Source.hShader);
     for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader) Device.Shader.Delete(it->hShader);
+
+	// VS
+	Device.Shader._DeleteVS						(VS);
 }
 
 Shader* CLensFlare::CreateSourceShader(const char* tex_name)
@@ -253,7 +256,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 	svector<Shader*,MAX_Flares>			_2render;
 	
 	DWORD								VS_Offset;
-	FVF::LIT *pv						= (FVF::LIT*) VS->Lock(2*MAX_Flares*4,VS_Offset);
+	FVF::LIT *pv						= (FVF::LIT*) Device.Streams.Vertex.Lock(2*MAX_Flares*4,VS->dwStride,VS_Offset);
 	
 	float 	fDistance					= FAR_DIST*0.75f;
 	
@@ -314,10 +317,10 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 		}
 	}
 	
-	VS->Unlock					(_2render.size()*4);
+	Device.Streams.Vertex.Unlock	(_2render.size()*4,VS->dwStride);
 
 	Device.set_xform_world		(Fidentity);
-	Device.Primitive.setVertices(VS->getFVF(),VS->Stride(),VS->getBuffer());
+	Device.Primitive.setVertices(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 	for (DWORD i=0; i<_2render.size(); i++)
 	{
     	if (_2render[i])
