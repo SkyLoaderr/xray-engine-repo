@@ -152,6 +152,7 @@ class CAI_Soldier : public CCustomMonster
 	#define MAX_DYNAMIC_OBJECTS 32
 	#define MAX_DYNAMIC_SOUNDS  32
 	#define MAX_HURT_COUNT		32
+	#define MAX_SEARCH_COUNT	32
 
 	#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
 	typedef struct tagSSoldierStates {
@@ -164,6 +165,11 @@ class CAI_Soldier : public CCustomMonster
 		DWORD	dwTime;
 	}SHurt;
 
+	typedef struct tagSSearch {
+		DWORD	dwTime;
+		DWORD	dwNodeID;
+	}SSearch;
+
 	DWORD m_tActionType;
 	DWORD m_tFightType;
 
@@ -172,8 +178,9 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>	tpaDynamicObjects;
-		svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>	tpaDynamicSounds;
-		svector<SHurt,			MAX_HURT_COUNT>		tpaHurts;
+		svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>		tpaDynamicSounds;
+		svector<SHurt,			MAX_HURT_COUNT>			tpaHurts;
+		svector<SSearch,		MAX_SEARCH_COUNT>		tpaSearchPositions;
 		DWORD					m_dwMaxDynamicObjectsCount;
 		DWORD					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
@@ -673,6 +680,15 @@ class CAI_Soldier : public CCustomMonster
 					if (m_dwCurrentUpdate - tStateList[i].dwTime > dwTimeInterval)
 						return(false);
 			return(false);
+		}
+	IC	void vfAddToSearchList()
+		{
+			if (tpaSearchPositions.size() >= MAX_SEARCH_COUNT)
+				tpaSearchPositions.erase(DWORD(0));
+			SSearch tSearch;
+			tSearch.dwTime = m_dwCurrentUpdate;
+			tSearch.dwNodeID = AI_Path.DestNode;
+			tpaSearchPositions.push_back(tSearch);
 		}
 
 	public:
