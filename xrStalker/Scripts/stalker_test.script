@@ -24,8 +24,8 @@ function main ()
 		wait			()
 	end
 	
-	zone0:script	(stalker_test::script_name(),false)
-	zone1:script	(stalker_test::script_name(),false)
+	zone0:script	(stalker_test:script_name(),false)
+	zone1:script	(stalker_test:script_name(),false)
 	
 --[
     stalker			= get_level_object ("m_stalker_e0000")
