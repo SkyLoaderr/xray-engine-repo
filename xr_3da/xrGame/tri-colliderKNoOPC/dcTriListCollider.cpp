@@ -248,10 +248,11 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 				}
 				
 				
-				
+				dNormalize3(ContactNormal);
+			
 				
 				if (contains||isPC||isLC){ 
-
+/*
 					for (Index = 0; Index < OutTriCount; Index++){
 
 						dContactGeom* RefContact = CONTACT(Contacts, Index * Stride);
@@ -270,27 +271,31 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 					}
 
+*/
 
-
-					if (Index == OutTriCount||isPC||isLC){
+					//if (Index == OutTriCount||isPC||isLC){
 
 						dContactGeom* Contact = CONTACT(Contacts, OutTriCount * Stride);
 
-						((dcVector3&)Contact->normal) = TriPlane.Normal;
+						((dcVector3&)Contact->normal) =-ContactNormal;// TriPlane.Normal;
 
 						Contact->depth = ContactDepth;
-
+						////////////////////
+						((dcVector3&)(Contact->pos))=ContactPos;
+						Contact->g1 = Geometry;
+						Contact->g2 = Sphere;
+						//////////////////////////////////
 						OutTriCount++;
 
-					}
+					//}
 
 				}
-				if(isPC) break;
+				//if(isPC) break;
 
 			}
 
 		}
-
+		return OutTriCount;
 		if (OutTriCount != 0){
 
 			dcVector3 OutNormal(0, 0, 0);

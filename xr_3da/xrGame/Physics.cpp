@@ -205,7 +205,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dMass m;
 	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
 	dMassAdjust(&m, 800.f); // mass
-
+	//dMassTranslate(&m,0.f,-1.f,0.f);
 	Bodies[0] = dBodyCreate(world);
 	dBodySetMass(Bodies[0], &m);
 	dBodySetPosition(Bodies[0], startPosition[0], startPosition[1], startPosition[2]); // x,y,z
