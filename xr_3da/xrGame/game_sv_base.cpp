@@ -33,6 +33,7 @@ LPCSTR				game_sv_GameState::get_name_it				(u32 it)
 	if (0==C)			return 0;
 	else				return &C->Name[0];
 }
+
 LPCSTR				game_sv_GameState::get_name_id				(u32 id)								// DPNID
 {
 	xrServer*		S	= Level().Server;
@@ -69,6 +70,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	}
 	return alive;
 }
+
 vector<u16>*		game_sv_GameState::get_children				(u32 id)
 {
 	xrServer*		S	= Level().Server;
@@ -78,6 +80,7 @@ vector<u16>*		game_sv_GameState::get_children				(u32 id)
 	if (0==E)			return 0;
 	return	&(E->children);
 }
+
 s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 {
 	string64		op;
@@ -85,6 +88,7 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
 	else				return def;
 }
+
 string64&			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR def)
 {
 	static string64	ret;
@@ -136,12 +140,25 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, u32 to)
 	}
 
 	// Players
-	u32	p_count		= get_count();
-	P.w_u16			(u16(p_count));
+	xrServer*		S	= Level().Server;
+	u32	p_count			= get_count();
+	P.w_u16				(u16(p_count));
 	game_PlayerState*	Base	= get_id(to);
 	for (u32 p_it=0; p_it<p_count; p_it++)
 	{
-		LPCSTR		p_name		=	get_name_it		(p_it);
+		string64	p_name;
+		xrClientData*	C		=	(xrClientData*)	S->client_Get	(p_it);
+		if (0==C)	strcpy(p_name,"Unknown");
+		else 
+		{
+			xrServerEntity* C_e		= C->owner;
+			if (0==C_e)		strcpy(p_name,"Unknown");
+			else 
+			{
+				strcpy	(p_name,C_e->s_name_replace);
+			}
+		}
+
 		game_PlayerState* A		=	get_it			(p_it);
 		game_PlayerState copy	=	*A;
 		if (Base==A)	

@@ -272,7 +272,7 @@ HRESULT	IPureServer::net_Handler(u32 dwMessageType, PVOID pMessage)
 				NET_Packet P;
 				pDecompress		(P,m_data,m_size);
 				csMessage.Enter	();
-				u32	result	= OnMessage(P,m_sender);
+				u32	result		= OnMessage(P,m_sender);
 				csMessage.Leave	();
 				if (result)		SendBroadcast(m_sender,P,result);
 			}
