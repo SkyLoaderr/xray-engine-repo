@@ -613,8 +613,7 @@ bool ESceneAIMapTools::GenerateMap()
 
         UI->SetStatus		("Building collision model...");
         // create CFModel
-		m_CFModel 			= xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
-	    m_CFModel->build	(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
+		m_CFModel 			= ETOOLS::create_model(CL->getV(), CL->getVS(), CL->getT(), CL->getTS());
 		xr_delete			(CL);        
         
         // building
@@ -628,8 +627,8 @@ tm.Stop();
 		Log("-building time: ",tm.GetElapsed_sec());
 //.        Msg("-Rate: %3.2f Count: %d",(g_tm.GetElapsed_sec()/tm.GetElapsed_sec())*100.f,g_tm.count);
 
-        // unload CFModel        
-		xr_delete(m_CFModel);
+        // unload CFModel  
+		ETOOLS::destroy_model(m_CFModel);
 	
         Scene->UndoSave		();
         bRes = true;

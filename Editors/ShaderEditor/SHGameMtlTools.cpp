@@ -132,7 +132,7 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 	    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,TOnChooseFillItems().bind(this,&CSHGameMtlTools::FillChooseMtlType))||!M) return 0;
     }
     AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+M;
-    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHGameMtlTools::ItemExist),false);
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHGameMtlTools::ItemExist),false,true);
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
     S->m_Name			= m_LastSelection.c_str();
     if (!parent)		S->Flags.set (SGameMtl::flDynamic,0==strcmp(M,"Dynamic"));

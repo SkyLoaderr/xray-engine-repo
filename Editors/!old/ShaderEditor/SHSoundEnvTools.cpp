@@ -187,7 +187,7 @@ LPCSTR CSHSoundEnvTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	CSoundRender_Environment* parent= FindItem(parent_name);
     AnsiString pref		= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"env";
-    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHSoundEnvTools::ItemExist),false);
+    m_LastSelection		= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHSoundEnvTools::ItemExist),false,true);
     CSoundRender_Environment* S 	= m_Library.Append(parent);
     if (!parent)		S->set_default();
     S->name				= m_LastSelection.c_str();

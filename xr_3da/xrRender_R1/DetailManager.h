@@ -84,7 +84,9 @@ public:
 	DetailVec						objects;
 	vis_list						visible	[3];	// 0=still, 1=Wave1, 2=Wave2
 
+#ifndef _EDITOR    
 	xrXRC							xrc;
+#endif    
 	Slot*							cache		[dm_cache_line][dm_cache_line];	// grid-cache itself
 	svector<Slot*,dm_cache_size>	cache_task;									// non-unpacked slots
 	Slot							cache_pool	[dm_cache_size];				// just memory for slots

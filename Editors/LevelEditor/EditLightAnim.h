@@ -66,6 +66,7 @@ __published:	// IDE-managed Components
 	TD3DWindow *wnShape;
 	TPaintBox *pbG;
 	TMxLabel *lbAlpha;
+	TExtBtn *ebClone;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -102,6 +103,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall wnShapeKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
+	void __fastcall ebCloneClick(TObject *Sender);
 private:	// User declarations
     void 	InitItems();
     bool 	bFinalClose;
@@ -120,6 +122,7 @@ private:	// User declarations
     TProperties*			m_Props;
     void __stdcall 			OnModified				(void);
     void					UpdateProperties		();
+	void __stdcall 			FindItemByName			(LPCSTR name, bool& res);
 public:		// User declarations
     __fastcall 				TfrmEditLightAnim		(TComponent* Owner);
     static bool 			FinalClose				();

@@ -12,7 +12,7 @@
 #	pragma comment(lib,	"oggB.lib"			)
 #	pragma comment(lib,	"vorbisfileB.lib"	)
 #	pragma comment(lib,	"xrCoreB.lib"		)
-#	pragma comment(lib,	"xrCDBB.lib"		)
+#	pragma comment(lib,	"EToolsB.lib"		)
 #	pragma comment(lib,	"wrap_oalB.lib"		)
 #	pragma comment(lib,	"dsoundb.lib" 		)
 #else

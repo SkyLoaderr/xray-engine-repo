@@ -219,13 +219,31 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
 void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
 {
     // folder name
-    AnsiString folder;
-    TElTreeItem* item 			= m_Items->GetSelected(); 
-    if (item) 					FHelper.MakeName(item,0,folder,true);
-    CLAItem* I 					= LALib.AppendItem(folder.c_str(),0);
+    AnsiString name				= FHelper.GenerateName	("la",2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
+    CLAItem* I 					= LALib.AppendItem(name.c_str(),0);
     InitItems					();
     m_Items->SelectItem			(*I->cName,true,false,true);
     OnModified					();
+}
+//---------------------------------------------------------------------------
+
+void TfrmEditLightAnim::FindItemByName(LPCSTR name, bool& res)
+{	
+	res = !!LALib.FindItem(name);
+}
+
+void __fastcall TfrmEditLightAnim::ebCloneClick(TObject *Sender)
+{
+	if (m_CurrentItem){
+        // folder name
+	    AnsiString name			= FHelper.GenerateName	(m_CurrentItem->cName.c_str(),2,TFindObjectByName().bind(this,&TfrmEditLightAnim::FindItemByName),false,true);
+        CLAItem* I 				= LALib.AppendItem(name.c_str(),m_CurrentItem);
+        InitItems				();
+        m_Items->SelectItem		(*I->cName,true,false,true);
+        OnModified				();
+    }else{
+    	ELog.DlgMsg(mtError, "Select item at first.");
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -537,4 +555,5 @@ void __fastcall TfrmEditLightAnim::wnShapeKeyDown(TObject *Sender,
     }
 }
 //---------------------------------------------------------------------------
+
 

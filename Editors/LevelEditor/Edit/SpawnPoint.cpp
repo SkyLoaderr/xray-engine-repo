@@ -226,7 +226,7 @@ void CSpawnPoint::SSpawnData::OnFrame()
 	    if (m_Data->m_editor_flags.is(ISE_Abstract::flVisualAnimationChange))
         	m_Visual->PlayAnimation();
     	if (m_Visual->visual&&PKinematics(m_Visual->visual))
-	    	PKinematics			(m_Visual->visual)->CalculateBones();
+	    	PKinematics			(m_Visual->visual)->CalculateBones(TRUE);
     }
     // motion part
     if (m_Motion){

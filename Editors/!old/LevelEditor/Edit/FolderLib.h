@@ -60,7 +60,7 @@ public:
 	bool 				DrawThumbnail		(HDC hdc, const Irect &R, u32* data, u32 w, u32 h);
 	void 				FillRect			(HDC hdc, const Irect& r, u32 color);
 
-    AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name);
+    AnsiString			GenerateName		(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name, bool allow_);
 //------------------------------------------------------------------------------
 };
 

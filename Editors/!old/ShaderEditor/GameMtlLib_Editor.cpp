@@ -28,6 +28,7 @@ void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
     PHelper().CreateFlag32			(items,	"Flags\\Skidmark",			        &Flags,	flSkidmark);
     PHelper().CreateFlag32			(items,	"Flags\\Bloodmark",			        &Flags,	flBloodmark);
     PHelper().CreateFlag32			(items,	"Flags\\Climable",			        &Flags,	flClimable);
+    PHelper().CreateFlag32			(items,	"Flags\\Liquid",			        &Flags,	flLiquid);
     // physics part
     PHelper().CreateFloat			(items,	"Physics\\Friction",		        &fPHFriction,			0.f, 	100.f, 	0.001f, 3); 
     PHelper().CreateFloat			(items,	"Physics\\Damping",			        &fPHDamping,			0.001f,	100.f, 	0.001f, 3); 
@@ -35,11 +36,12 @@ void SGameMtl::FillProp		(PropItemVec& items, ListItem* owner)
     PHelper().CreateFloat			(items,	"Physics\\Bounce start vel",        &fPHBounceStartVelocity,0.f,	100.f, 	0.01f, 	2); 
     PHelper().CreateFloat			(items,	"Physics\\Bouncing",		        &fPHBouncing,			0.f,	1.f, 	0.001f, 3); 
     // factors
-    PHelper().CreateFloat			(items,	"Factors\\Damage",			   		     	&fBounceDamageFactor,   0.f,100.f,0.1f,1);
-    PHelper().CreateFloat			(items,	"Factors\\Shooting (1-full pass)",	        &fShootFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Bounce Damage",			   		&fBounceDamageFactor,   0.f,100.f,0.1f,1);
+    PHelper().CreateFloat			(items,	"Factors\\Injurious",		   				&fInjuriousSpeed,   	0.f,10000.f);
+    PHelper().CreateFloat			(items,	"Factors\\Shooting (1-went through)",	    &fShootFactor);
     PHelper().CreateFloat			(items,	"Factors\\Transparency (1-full transp)",	&fVisTransparencyFactor);
     PHelper().CreateFloat			(items,	"Factors\\Sound occlusion (1-full hear)",	&fSndOcclusionFactor);
-    PHelper().CreateFloat			(items,	"Factors\\Flotation (1-full passability)",	&fFlotationFactor);
+    PHelper().CreateFloat			(items,	"Factors\\Flotation (1-full passable)",		&fFlotationFactor);
 }
 
 BOOL CGameMtlLibrary::UpdateMtlPairs(SGameMtl* src)
@@ -420,6 +422,7 @@ void SGameMtl::Save(IWriter& fs)
 	Flags.set				(flSlowDown,	!fis_zero(1.f-fFlotationFactor,EPS_L));
 	Flags.set				(flShootable,	fis_zero(fShootFactor,EPS_L));
 	Flags.set				(flTransparent,	fis_zero(fVisTransparencyFactor,EPS_L));
+    Flags.set 				(flInjurious,	!fis_zero(fInjuriousSpeed,EPS_L));
 
 	fs.open_chunk			(GAMEMTL_CHUNK_MAIN);
 	fs.w_u32				(ID);
@@ -451,6 +454,10 @@ void SGameMtl::Save(IWriter& fs)
 
 	fs.open_chunk			(GAMEMTL_CHUNK_FLOTATION);
     fs.w_float				(fFlotationFactor);
+    fs.close_chunk			();
+
+	fs.open_chunk			(GAMEMTL_CHUNK_INJURIOUS);
+    fs.w_float				(fInjuriousSpeed);
     fs.close_chunk			();
 }
 

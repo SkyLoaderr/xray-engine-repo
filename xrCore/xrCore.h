@@ -115,6 +115,7 @@
 	#define _PC_64 PC_64
 	#define _RC_CHOP RC_CHOP
 	#define _RC_NEAR RC_NEAR
+    #define _MCW_EM MCW_EM
 #else
 	#define ALIGN(a)		__declspec(align(a))
 	#include <sys\utime.h>

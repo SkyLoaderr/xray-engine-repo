@@ -11,7 +11,7 @@ BRCC = $(ROOT)\bin\brcc32.exe $**
 #------------------------------------------------------------------------------
 PROJECTS = xrCoreB.dll xrSoundB.dll xrParticlesB.dll xrEPropsB.dll xrECoreB.dll \
   ActorEditor.exe LevelEditor.exe ParticleEditor.exe ShaderEditor.exe \
-  xrLC_options.dll xrCDBB.dll
+  xrLC_options.dll
 #------------------------------------------------------------------------------
 default: $(PROJECTS)
 #------------------------------------------------------------------------------
@@ -34,10 +34,6 @@ ShaderEditor.exe: ShaderEditor\ShaderEditor.bpr
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 
 xrCoreB.dll: ..\xrCore\xrCoreB.bpr
-  $(ROOT)\bin\bpr2mak $**
-  $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
-
-xrCDBB.dll: ..\xrCDB\xrCDBB.bpr
   $(ROOT)\bin\bpr2mak $**
   $(ROOT)\bin\make -$(MAKEFLAGS) -f$*.mak
 

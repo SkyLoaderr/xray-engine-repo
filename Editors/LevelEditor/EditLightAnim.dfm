@@ -26,9 +26,9 @@ object frmEditLightAnim: TfrmEditLightAnim
   PixelsPerInch = 96
   TextHeight = 13
   object paItemProps: TPanel
-    Left = 183
+    Left = 191
     Top = 0
-    Width = 459
+    Width = 451
     Height = 231
     Align = alClient
     BevelOuter = bvNone
@@ -42,7 +42,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     TabOrder = 0
     Visible = False
     object paColorAndControls: TPanel
-      Left = 257
+      Left = 249
       Top = 0
       Width = 202
       Height = 231
@@ -384,7 +384,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     object paPropsGroup: TPanel
       Left = 0
       Top = 0
-      Width = 257
+      Width = 249
       Height = 231
       Align = alClient
       BevelOuter = bvNone
@@ -393,7 +393,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       object paProps: TPanel
         Left = 0
         Top = 0
-        Width = 257
+        Width = 249
         Height = 196
         Align = alClient
         BevelOuter = bvLowered
@@ -403,7 +403,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       object wnShape: TD3DWindow
         Left = 0
         Top = 196
-        Width = 257
+        Width = 249
         Height = 35
         FocusedColor = 15000804
         Align = alBottom
@@ -414,7 +414,7 @@ object frmEditLightAnim: TfrmEditLightAnim
         object pbG: TPaintBox
           Left = 1
           Top = 1
-          Width = 255
+          Width = 247
           Height = 33
           Align = alClient
           Color = clBlack
@@ -430,7 +430,7 @@ object frmEditLightAnim: TfrmEditLightAnim
   object paListAndButtons: TPanel
     Left = 0
     Top = 0
-    Width = 183
+    Width = 191
     Height = 231
     Align = alLeft
     BevelOuter = bvNone
@@ -439,7 +439,7 @@ object frmEditLightAnim: TfrmEditLightAnim
     object Panel2: TPanel
       Left = 0
       Top = 212
-      Width = 183
+      Width = 191
       Height = 19
       Align = alBottom
       BevelOuter = bvNone
@@ -448,7 +448,7 @@ object frmEditLightAnim: TfrmEditLightAnim
       object ebAddAnim: TExtBtn
         Left = 1
         Top = 1
-        Width = 45
+        Width = 38
         Height = 17
         Align = alNone
         BevelShow = False
@@ -460,9 +460,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebAddAnimClick
       end
       object ebDeleteAnim: TExtBtn
-        Left = 46
+        Left = 77
         Top = 1
-        Width = 45
+        Width = 38
         Height = 17
         Align = alNone
         BevelShow = False
@@ -474,9 +474,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebDeleteAnimClick
       end
       object ebSave: TExtBtn
-        Left = 92
+        Left = 115
         Top = 1
-        Width = 45
+        Width = 38
         Height = 17
         Align = alNone
         BevelShow = False
@@ -488,9 +488,9 @@ object frmEditLightAnim: TfrmEditLightAnim
         OnClick = ebSaveClick
       end
       object ebReload: TExtBtn
-        Left = 137
+        Left = 153
         Top = 1
-        Width = 45
+        Width = 38
         Height = 17
         Align = alNone
         BevelShow = False
@@ -501,11 +501,25 @@ object frmEditLightAnim: TfrmEditLightAnim
         FlatAlwaysEdge = True
         OnClick = ebReloadClick
       end
+      object ebClone: TExtBtn
+        Left = 39
+        Top = 1
+        Width = 38
+        Height = 17
+        Align = alNone
+        BevelShow = False
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Clone'
+        Transparent = False
+        FlatAlwaysEdge = True
+        OnClick = ebCloneClick
+      end
     end
     object paItems: TPanel
       Left = 0
       Top = 0
-      Width = 183
+      Width = 191
       Height = 212
       Align = alClient
       BevelOuter = bvLowered

@@ -258,15 +258,16 @@ Item1=XRLC_Intermediate
 Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
-Count=8
+Count=9
 Item0=x:\
-Item1=z:\
-Item2=S:\build_zmey\
-Item3=S:\build_zmey
-Item4=x:\xrCoreB.dll\
-Item5=x:\xrCoreB.dll
-Item6=!run\
-Item7=!run
+Item1=s:\bin\
+Item2=z:\
+Item3=S:\build_zmey\
+Item4=S:\build_zmey
+Item5=x:\xrCoreB.dll\
+Item6=x:\xrCoreB.dll
+Item7=!run\
+Item8=!run
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
@@ -276,7 +277,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=x:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

@@ -103,7 +103,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG"/>
+    <USERDEFINES value="_EDITOR;_ECOREB;_DEBUG;XRCDB_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrECoreB.bpf"/>
     <INCLUDEPATH value="WildMagic;&quot;R:\SDK\Microsoft DirectX 9.0 SDK (February 2005)\Include&quot;;Editor;Engine;Engine\Visuals;Engine\Blenders;$(BCB)\include;$(BCB)\include\vcl;R:\SDK\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\Borland\CBuilder6\Include\Mfc;P:\xrCore;P:\Editors\xrEProps;R:\SDK\ogg\vorbis\include;R:\SDK\ogg\ogg\include"/>
@@ -118,7 +118,8 @@
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
       -IP:\xrCore -IP:\Editors\xrEProps -IR:\SDK\ogg\vorbis\include 
-      -IR:\SDK\ogg\ogg\include -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
+      -IR:\SDK\ogg\ogg\include -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG 
+      -DXRCDB_EXPORTS -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -379,8 +380,9 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=1
-Item0=_EDITOR;_ECOREB;_DEBUG
+Count=2
+Item0=_EDITOR;_ECOREB;_DEBUG;XRCDB_EXPORTS
+Item1=_EDITOR;_ECOREB;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=3

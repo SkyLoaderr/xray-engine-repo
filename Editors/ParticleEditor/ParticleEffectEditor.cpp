@@ -87,7 +87,7 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
                 if (0==strcmp(actions_token[i].name,nm)){
                     EParticleAction* A = pCreateEAction(actions_token[i].id);
                     AnsiString pref	= AnsiString(*A->actionName).LowerCase();
-                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&PS::CPEDef::FindActionByName),true).LowerCase().c_str();
+                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&PS::CPEDef::FindActionByName),true,true).LowerCase().c_str();
                     m_EActionList.push_back(A);
                     ExecCommand		(COMMAND_UPDATE_PROPERTIES);
                     bDataModified	= true;

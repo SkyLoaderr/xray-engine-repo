@@ -334,7 +334,7 @@ CWayPoint* CWayObject::AppendWayPoint()
 {
 	for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
     	(*it)->Select(0);
-    m_WayPoints.push_back(xr_new<CWayPoint>(FHelper.GenerateName("wp",2,TFindObjectByName().bind(this,&CWayObject::FindWPByName),false).c_str()));
+    m_WayPoints.push_back(xr_new<CWayPoint>(FHelper.GenerateName("wp",2,TFindObjectByName().bind(this,&CWayObject::FindWPByName),false,false).c_str()));
     m_WayPoints.back()->m_bSelected=true;
     return m_WayPoints.back();
 }
@@ -403,8 +403,13 @@ void CWayObject::MoveTo(const Fvector& pos, const Fvector& up)
         	}
         if (sel_point) sel_point->m_vPosition.set(pos);
     }else{
-        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
-            (*it)->m_vPosition.set(pos);
+    	if (!m_WayPoints.empty()){
+            Fvector 	diff;
+            diff.sub	(pos,PPosition);
+            for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
+                (*it)->m_vPosition.add(diff);
+        	PPosition 	= pos;
+        }
     }
 }
 
@@ -416,6 +421,7 @@ void CWayObject::Move(Fvector& amount)
     }else{
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
             (*it)->m_vPosition.add(amount);
+        PPosition.add	(amount);
     }
 }
 

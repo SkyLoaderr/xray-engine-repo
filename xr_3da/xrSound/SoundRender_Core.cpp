@@ -37,12 +37,23 @@ CSoundRender_Core::CSoundRender_Core	()
     e_target.set_identity		();
     bListenerMoved				= FALSE;
     bReady						= FALSE;
+#ifdef _EDITOR
+    geom_DB						= ETOOLS::get_collider();
+#else
+    geom_DB						= xr_new<CDB::COLLIDER>();
+#endif
 }
 
 CSoundRender_Core::~CSoundRender_Core()
 {
+#ifdef _EDITOR
+	ETOOLS::destroy_model		(geom_ENV);
+	ETOOLS::destroy_model		(geom_SOM);
+#else
 	xr_delete					(geom_ENV);
 	xr_delete					(geom_SOM);
+    xr_delete					(geom_DB);
+#endif
 }
 
 void CSoundRender_Core::_initialize	(u64 window)
@@ -122,7 +133,11 @@ void CSoundRender_Core::set_geometry_occ(CDB::MODEL* M)
 
 void CSoundRender_Core::set_geometry_som(IReader* I)
 {
-	xr_delete		(geom_SOM);
+#ifdef _EDITOR
+	ETOOLS::destroy_model	(geom_SOM);
+#else
+	xr_delete				(geom_SOM);
+#endif
 	if (0==I)		return;
 
 	// check version
@@ -149,13 +164,21 @@ void CSoundRender_Core::set_geometry_som(IReader* I)
 			CL.add_face_packed_D(P.v3,P.v2,P.v1,*(u32*)&P.occ,0.01f);
 	}
 	// Create AABB-tree
+#ifdef _EDITOR    
+	geom_SOM			= ETOOLS::create_model(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
+#else
 	geom_SOM			= xr_new<CDB::MODEL> ();
 	geom_SOM->build		(CL.getV(),int(CL.getVS()),CL.getT(),int(CL.getTS()));
+#endif
 }
 
 void CSoundRender_Core::set_geometry_env(IReader* I)
 {
+#ifdef _EDITOR
+	ETOOLS::destroy_model	(geom_ENV);
+#else
 	xr_delete				(geom_ENV);
+#endif
 	if (0==I)				return;
 	if (0==s_environment)	return;
 
@@ -187,13 +210,14 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 		R_ASSERT		(id_back<(u16)ids.size());
 		T->dummy		= u32(ids[id_back]<<16) | u32(ids[id_front]);
 	}
-	geom_ENV			= xr_new<CDB::MODEL> ();
-	geom_ENV->build		(verts, H.vertcount, tris, H.facecount );
-	geom->close			();
-
-#ifdef _EDITOR
+#ifdef _EDITOR    
+	geom_ENV			= ETOOLS::create_model(verts, H.vertcount, tris, H.facecount);
 	env_apply			();
+#else
+	geom_ENV			= xr_new<CDB::MODEL> ();
+	geom_ENV->build		(verts, H.vertcount, tris, H.facecount);
 #endif
+	geom->close			();
 }
 
 void	CSoundRender_Core::verify_refsound		( ref_sound& S)
@@ -287,11 +311,16 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& 
 		return &s_user_environment;
 	}else{
 		if (geom_ENV){
-			geom_DB.ray_options		(CDB::OPT_ONLYNEAREST);
 			Fvector	dir				= {0,-1,0};
-			geom_DB.ray_query		(geom_ENV,P,dir,1000.f);
-			if (geom_DB.r_count()){
-				CDB::RESULT*		r	= geom_DB.r_begin();
+#ifdef _EDITOR
+			ETOOLS::ray_options		(CDB::OPT_ONLYNEAREST);
+			ETOOLS::ray_query		(geom_ENV,P,dir,1000.f);
+#else
+			geom_DB->ray_options	(CDB::OPT_ONLYNEAREST);
+			geom_DB->ray_query		(geom_ENV,P,dir,1000.f);
+#endif            
+			if (geom_DB->r_count()){
+				CDB::RESULT*		r	= geom_DB->r_begin();
 				CDB::TRI*			T	= geom_ENV->get_tris()+r->id;
 				Fvector*			V	= geom_ENV->get_verts();
 				Fvector tri_norm;

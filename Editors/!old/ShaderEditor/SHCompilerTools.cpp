@@ -102,7 +102,7 @@ LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	Shader_xrLC* parent 	= FindItem(parent_name);
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHCompilerTools::ItemExist),false);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHCompilerTools::ItemExist),false,true);
     Shader_xrLC* S 			= m_Library.Append(parent);
     strcpy					(S->Name,m_LastSelection.c_str());
     ExecCommand				(COMMAND_UPDATE_LIST);

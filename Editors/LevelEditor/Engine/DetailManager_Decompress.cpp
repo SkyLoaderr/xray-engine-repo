@@ -48,14 +48,15 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	// Select polygons
 	Fvector		bC,bD;
 	D.vis.box.get_CD	(bC,bD);
-	xrc.box_options		(CDB::OPT_FULL_TEST); 
 
 #ifdef _EDITOR
+	ETOOLS::box_options	(CDB::OPT_FULL_TEST); 
 	// Select polygons
 	SBoxPickInfoVec		pinf;
     Scene->BoxPickObjects(D.vis.box,pinf,GetSnapList());
 	u32	triCount		= pinf.size();
 #else
+	xrc.box_options		(CDB::OPT_FULL_TEST); 
 	xrc.box_query		(g_pGameLevel->ObjectSpace.GetStaticModel(),bC,bD);
 	u32	triCount		= xrc.r_count	();
 	CDB::TRI*	tris	= g_pGameLevel->ObjectSpace.GetStaticTris();

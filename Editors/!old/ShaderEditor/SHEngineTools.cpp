@@ -546,7 +546,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     B->Load(data,B->getDescription().version);
 	// set name
     AnsiString pref			= parent_name?AnsiString(parent_name):AnsiString(folder_name)+"shader";
-    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHEngineTools::ItemExist),false);
+    m_LastSelection			= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&CSHEngineTools::ItemExist),false,true);
     B->getDescription().Setup(m_LastSelection.c_str());
     // insert blender
 	std::pair<BlenderPairIt, bool> I = m_Blenders.insert(mk_pair(xr_strdup(m_LastSelection.c_str()),B));

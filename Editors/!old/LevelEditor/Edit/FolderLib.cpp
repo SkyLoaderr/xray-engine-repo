@@ -630,7 +630,7 @@ bool CFolderHelper::DrawThumbnail(HDC hdc, const Irect &r, u32* data, u32 w, u32
 }
 //---------------------------------------------------------------------------
 
-AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name)
+AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name, bool allow_)
 {
 	VERIFY		(!cb.empty());
 	AnsiString result;
@@ -647,7 +647,7 @@ AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByN
     // generate new name
     string256 	prefix	= {"name"};
     string32	mask;
-    sprintf		(mask,"%%s_%%0%dd",dgt_cnt);
+    sprintf		(mask,"%%s%s%%0%dd",allow_?"_":"",dgt_cnt);
     if (pref.size()){
     	strcpy			(prefix, pref.c_str());
         int i			= strlen(prefix)-1;
