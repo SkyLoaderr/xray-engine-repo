@@ -24,6 +24,8 @@ public:
 	DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CTexture*,TextureMap,TexturePairIt,str_pred);
 	DEFINE_MAP_PRED(LPSTR,CRT*,RTMap,RTPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,DWORD,VSMap,VSPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,DWORD,PSMap,PSPairIt,str_pred);
 private:
 	// data
 	BlenderMap						blenders;
@@ -31,7 +33,9 @@ private:
 	MatrixMap						matrices;
 	ConstantMap						constants;
 	RTMap							rtargets;
-
+	VSMap							vs;
+	PSMap							ps;
+	
 	// shader code array
 	struct sh_Code {
 		DWORD				SB;
@@ -93,6 +97,8 @@ public:
 	void							_DeleteConstant		(CConstant* &C);
 	CRT*							_CreateRT			(LPCSTR Name, DWORD w, DWORD h);
 	void							_DeleteRT			(CRT* &RT);
+	DWORD							_CreateVS			(LPCSTR Name, LPDWORD decl);
+	void							_DeleteVS			(DWORD &VS);
 
 	// Shader compiling / optimizing
 	DWORD							_CreateCode			(SimulatorStates& Code);

@@ -904,6 +904,14 @@ SOURCE=.\SH_Texture.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\SH_VS.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SH_VS.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Shader.cpp
 # End Source File
 # Begin Source File
