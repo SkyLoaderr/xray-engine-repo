@@ -273,8 +273,15 @@ states = {
 			},
 
 
+	barman_talk_free = {	weapon = "none",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	
-	barman_walk = {	weapon = "none",
+	barman_walk_free = {	weapon = "none",
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -282,22 +289,29 @@ states = {
 				animation = nil
 			},
 
-	barman_talk = {	weapon = "none",
+	barman_wait_free = {	weapon = "none",
 				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "barman_wait"
+			},
+
+	barman_walk_danger = {	weapon = "none",
+				movement = move.walk,
 				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = nil
 			},
 
-	barman_wait = {	weapon = "none",
+	barman_wait_danger = {	weapon = "none",
 				movement = move.stand,
-				mental = anim.free,
+				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
-				animation = nil
+				animation = "barman_talk"
 			}
-
 
 			
 }

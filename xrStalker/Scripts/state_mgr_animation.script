@@ -354,6 +354,24 @@ function animation:__init(npc, mgr)
 						into	= {	[0]	= "bar_4_idle_in" },
 						out		= {	[0]	= "bar_4_idle_out" },
 						idle	= {	[0]	= "bar_4_idle_0" },
+						rnd		= nil },
+
+		barman_wait	= {	prop	= { maxidle = 5,
+									sumidle = 5,
+									rnd = 70 },
+						into	= {	[0]	= "idle_0_to_idle_1" },
+						out		= nil,
+						idle	= nil,
+						rnd		= { [0]	= {	"idle_0_idle_0",
+											"idle_0_idle_1",
+											"idle_0_idle_2",
+											"idle_0_idle_3" } } },
+		barman_talk	= {	prop	= { maxidle = 5,
+									sumidle = 5,
+									rnd = 70 },
+						into	= {	[0]	= "idle_1_to_idle_0" },
+						out		= nil,
+						idle	= nil,
 						rnd		= nil }
 
 	}
