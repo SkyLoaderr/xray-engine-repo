@@ -76,6 +76,7 @@ void CAbstractGraphManager::update	(u32 time_delta)
 	if (m_actuality)
 		return;
 	m_actuality				= true;
+	m_path.clear			();
 	bool					successfull = ai().graph_engine().search(m_graph,current_vertex_id(),dest_vertex_id(),&m_path,CGraphEngine::CBaseParameters());
 	VERIFY					(successfull);
 }

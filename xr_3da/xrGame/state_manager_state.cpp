@@ -58,11 +58,13 @@ void CStateManagerState::update			(u32 time_delta)
 void CStateManagerState::initialize		()
 {
 	CStateBase::initialize			();
+	current_state().initialize		();
 }
 
 void CStateManagerState::finalize		()
 {
 	CStateBase::finalize			();
+	current_state().finalize		();
 }
 
 bool CStateManagerState::completed		()
@@ -73,7 +75,7 @@ bool CStateManagerState::completed		()
 void CStateManagerState::execute		()
 {
 	if (current_vertex_id() == dest_vertex_id()) {
-		current_state().execute();
+		current_state().execute		();
 		return;
 	}
 
