@@ -37,9 +37,6 @@ CLevel::CLevel()
 	eEnvironment				= Engine.Event.Handler_Attach	("LEVEL:Environment",this);
 
 	eEntitySpawn				= Engine.Event.Handler_Attach	("LEVEL:spawn",this);
-
-	ph_world	= new CPHWorld;
-	ph_world->Create	();
 }
 
 CLevel::~CLevel()
@@ -64,8 +61,8 @@ CLevel::~CLevel()
 	}
 	//tpaPatrolPaths.clear();
 	/**/
-	ph_world->Destroy		();
-	_DELETE		(ph_world);
+	if (ph_world)	ph_world->Destroy		();
+	_DELETE			(ph_world);
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -182,6 +179,8 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		string64	s_name			= "actor";
 		if (strstr(s_cmd,"-actor "))	{
 			sscanf(strstr(s_cmd,"-actor ")+strlen("-actor "),"%s",s_name);
+			ph_world			= new CPHWorld;
+			ph_world->Create	();
 		}
         g_cl_Spawn	(s_name, -1, 0, 0, 0);
 
@@ -457,7 +456,7 @@ void CLevel::OnFrame	()
 
 	// Physics
 	Device.Statistic.Physics.Begin		();
-	// ph_world->Step					(Device.fTimeDelta);
+	if (ph_world) ph_world->Step		(Device.fTimeDelta);
 	Device.Statistic.Physics.End		();
 
 	// Merge visibility data from all units in the team
@@ -537,11 +536,13 @@ void CLevel::OnRender()
 	inherited::OnRender	();
 	Tracers.Render		();
 	eff_Rain.Render		();
+/*
 	ph_world->Render	();
 	if (bDebug)			{
 		ObjectSpace.dbgRender	();
 		AI.Render				();
 	}
+*/
 }
 
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
