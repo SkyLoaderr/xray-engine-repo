@@ -22,14 +22,24 @@ namespace FPU
 	XRCORE_API u16		_64	=0;
 	XRCORE_API u16		_64r=0;
 
-#ifdef M_BORLAND
-	void BCALL	m24		(u16 p)	{	__asm fldcw p;	}
-	void BCALL	m24r	(u16 p)	{  	__asm fldcw p;  }
-	void BCALL	m53		(u16 p)	{ 	__asm fldcw p;	}
-	void BCALL	m53r	(u16 p)	{ 	__asm fldcw p;	}
-	void BCALL	m64		(u16 p)	{ 	__asm fldcw p;	}
-	void BCALL	m64r	(u16 p)	{  	__asm fldcw p;  }
-#endif
+	XRCORE_API void __stdcall	m24		(u16 p)	{
+		__asm fldcw p;	
+	}
+	XRCORE_API void __stdcall	m24r	(u16 p)	{
+		__asm fldcw p;  
+	}
+	XRCORE_API void __stdcall	m53		(u16 p)	{
+		__asm fldcw p;	
+	}
+	XRCORE_API void __stdcall	m53r	(u16 p)	{
+		__asm fldcw p;	
+	}
+	XRCORE_API void __stdcall	m64		(u16 p)	{ 
+		__asm fldcw p;	
+	}
+	XRCORE_API void __stdcall	m64r	(u16 p)	{
+		__asm fldcw p;  
+	}
 };
 
 namespace CPU 
@@ -44,7 +54,7 @@ namespace CPU
 	XRCORE_API _processor_info	ID;
 
 #ifdef M_BORLAND
-	u64	BCALL GetCycleCount(void)
+	u64	__fastcall GetCycleCount(void)
 	{
 		_asm    db 0x0F;
 		_asm    db 0x31;

@@ -3,11 +3,6 @@
 
 #include "cpuid.h"
 
-#ifdef M_BORLAND
-#define NAKED	__declspec(naked)
-#define BCALL	__fastcall
-#endif
-
 namespace FPU {
 	XRCORE_API extern	u16		_24;
 	XRCORE_API extern	u16		_24r;
@@ -16,22 +11,12 @@ namespace FPU {
 	XRCORE_API extern 	u16		_64;
 	XRCORE_API extern 	u16		_64r;
 	
-#ifdef M_VISUAL
-	IC void m24	(void)	{	__asm fldcw _24  };
-	IC void m24r(void)	{	__asm fldcw _24r };
-	IC void m53	(void)	{ 	__asm fldcw _53  };
-	IC void m53r(void)	{ 	__asm fldcw _53r };
-	IC void m64	(void)	{ 	__asm fldcw _64  };
-	IC void m64r(void)	{ 	__asm fldcw _64r };
-#endif
-#ifdef M_BORLAND
-	void	BCALL	m24		(u16 p=_24);
-	void	BCALL	m24r	(u16 p=_24r);	
-	void	BCALL	m53		(u16 p=_53);	
-	void	BCALL	m53r	(u16 p=_53r);	
-	void	BCALL	m64		(u16 p=_64);	
-	void	BCALL	m64r	(u16 p=_64r);	
-#endif
+	XRCORE_API void	__stdcall	m24		(u16 p=_24);
+	XRCORE_API void	__stdcall	m24r	(u16 p=_24r);	
+	XRCORE_API void	__stdcall	m53		(u16 p=_53);	
+	XRCORE_API void	__stdcall	m53r	(u16 p=_53r);	
+	XRCORE_API void	__stdcall	m64		(u16 p=_64);	
+	XRCORE_API void	__stdcall	m64r	(u16 p=_64r);	
 };
 namespace CPU {
 	XRCORE_API extern u64				cycles_per_second;
@@ -52,8 +37,9 @@ namespace CPU {
 	}
 	#pragma warning(default:4035)
 #endif
+
 #ifdef M_BORLAND
-	u64	BCALL	GetCycleCount(void);
+	u64	__fastcall	GetCycleCount		(void);
 #endif
 };
 
