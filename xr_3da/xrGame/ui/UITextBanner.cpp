@@ -10,7 +10,8 @@ CUITextBanner::CUITextBanner()
 		m_Cl				(0xffffffff),
 		m_pFont				(NULL),
 		m_bNewRenderMethod	(false),
-		fontSize			(-1.0f)
+		fontSize			(-1.0f),
+		aligment			(CGameFont::alLeft)
 {
 }
 
@@ -83,7 +84,7 @@ void CUITextBanner::Out(float x, float y, const char *fmt, ...)
 
 	R_ASSERT(m_pFont);
 	m_pFont->SetColor(m_Cl);
-	m_pFont->SetAligment(CGameFont::EAligment::alLeft);
+	m_pFont->SetAligment(aligment);
 	if(fontSize>0.0f)
 		m_pFont->SetSize(fontSize);
 

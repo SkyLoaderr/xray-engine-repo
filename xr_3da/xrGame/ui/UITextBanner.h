@@ -64,6 +64,7 @@ public:
 	// Font
 	void	SetFont				(CGameFont *pFont)	{ m_pFont = pFont; }
 	void	SetFontSize			(float sz)	{ fontSize = sz; }
+	void	SetFontAlignment	(CGameFont::EAligment al) {aligment = al;}
 
 	// Color
 	void	SetTextColor		(u32 cl);
@@ -92,8 +93,9 @@ protected:
 	bool		m_bAnimate;
 
 	// Font
-	CGameFont	*m_pFont;
-	float		fontSize;
+	CGameFont				*m_pFont;
+	float					fontSize;
+	CGameFont::EAligment	aligment;
 
 	// Letters color
 	u32			m_Cl;
