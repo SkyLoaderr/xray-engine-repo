@@ -93,36 +93,39 @@ public:
 	CList<pair<Fsphere,DWORD> >		dbg_S;
 	CList<Fvector2>					dbg_Slot;
 public:
-							CObjectSpace		( );
-							~CObjectSpace		( );
+									CObjectSpace		( );
+									~CObjectSpace		( );
 
-	void					Load				( CStream  * );
+	void							Load				( CStream  * );
 
-	void					Object_Register		( CObject *O );
-	void					Object_Move			( CObject *O );
-	void					Object_Unregister	( CObject *O );
+	void							Object_Register		( CObject *O );
+	void							Object_Move			( CObject *O );
+	void							Object_Unregister	( CObject *O );
 
 	// Occluded/No
-	BOOL					RayTest				( const Fvector &start, const Fvector &dir, float range=MAX_TEST_RANGE, BOOL bDynamic=TRUE, Collide::ray_cache* cache=NULL);
+	BOOL							RayTest				( const Fvector &start, const Fvector &dir, float range=MAX_TEST_RANGE, BOOL bDynamic=TRUE, Collide::ray_cache* cache=NULL);
 
 	// Game raypick (nearest) - returns object and addititional params
-	BOOL					RayPick				( const Fvector &start, const Fvector &dir, float range, Collide::ray_query& R);
-	BOOL					RayPickW			( const Fvector &start, const Fvector &dir, float range, float width, Collide::ray_query& R);
+	BOOL							RayPick				( const Fvector &start, const Fvector &dir, float range, Collide::ray_query& R);
+	BOOL							RayPickW			( const Fvector &start, const Fvector &dir, float range, float width, Collide::ray_query& R);
 
 	// General collision query
-	void					BoxQuery			( const Fbox& B, const Fmatrix& M, DWORD flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
+	void							BoxQuery			( const Fbox& B, const Fmatrix& M, DWORD flags=clGET_TRIS|clGET_BOXES|clQUERY_STATIC|clQUERY_DYNAMIC);
 
-	void					cl_Move				( const CCFModel *object, const Fmatrix& T, const Fvector& velocity, const Fbox& bb, const Fbox& bb_foots, Fvector& final_pos, Fvector& final_vel, float sq_vel, BOOL bDynamic=false );
-	BOOL					EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
+	void							cl_Move				( const CCFModel *object, const Fmatrix& T, const Fvector& velocity, const Fbox& bb, const Fbox& bb_foots, Fvector& final_pos, Fvector& final_vel, float sq_vel, BOOL bDynamic=false );
+	BOOL							EllipsoidCollide	( CCFModel *object, const Fmatrix& T, const Fvector& center_pos, const Fbox& bb);
 
-	int						GetNearest			( CCFModel *obj, float range );
-	int						GetNearest			( const Fvector &point, float range );
-	BOOL					TestNearestObject	( CCFModel *object, const Fvector& center, float radius);
+	int								GetNearest			( CCFModel *obj, float range );
+	int								GetNearest			( const Fvector &point, float range );
+	BOOL							TestNearestObject	( CCFModel *object, const Fvector& center, float radius);
 
-	RAPID::tri*				GetStaticTris		() { return Static.GetTris();  }
-	RAPID::Model*			GetStaticModel		() { return &Static; }
+	RAPID::tri*						GetStaticTris		() { return Static.GetTris();  }
+	RAPID::Model*					GetStaticModel		() { return &Static; }
 
-	void					dbgRender			();
+	// Device dependance and debugging
+	virtual void					OnDeviceCreate		();
+	virtual void					OnDeviceDestroy		();
+	void							dbgRender			();
 };
 
 

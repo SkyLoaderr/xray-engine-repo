@@ -201,15 +201,12 @@ void CEnvironment::OnDeviceCreate()
 		pSkydome = Render.Models.Create(S);
 	} else pSkydome = NULL;
 	
-//	pWeather = Render.Models.CreatePS("snow",&m_WEmitter);
-	
 	c_Invalidate	();
 }
 
 void CEnvironment::OnDeviceDestroy()
 {
 	Render.Models.Delete	(pSkydome);
-//	Render.Models.Delete	(pWeather);
 }
 
 extern float psHUD_FOV;
@@ -254,10 +251,4 @@ void CEnvironment::RenderFirst()
 void CEnvironment::RenderLast()
 {
 	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
-//	if (pWeather) {
-//		m_WEmitter.m_Position.set(Device.vCameraPosition);
-//		m_WEmitter.m_Position.y += 10.f;
-//
-//		pWeather->Render		(1.f);
-//	}
 }
