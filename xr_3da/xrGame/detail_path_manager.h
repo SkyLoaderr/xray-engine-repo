@@ -98,7 +98,7 @@ private:
 	xr_vector<STravelPathPoint>					m_travel_line;
 	xr_vector<STravelPathPoint>					m_temp_path;
 	xr_vector<STravelPoint>						m_key_points;
-	u32											m_desirable_velocity;
+	u32											m_desirable_mask;
 	u32											m_velocity_mask;
 	bool										m_try_min_time;
 	bool										m_try_desirable_speed;
@@ -130,17 +130,34 @@ private:
 
 protected:
 			void	build_path				(const xr_vector<u32> &level_path, u32 intermediate_index);
+	IC		void	set_start_position		(const Fvector &start_position);
+	IC		void	set_start_direction		(const Fvector &start_direction);
+	IC		void	set_dest_position		(const Fvector &dest_position);
+	IC		void	set_dest_direction		(const Fvector &dest_direction);
+	IC		void	set_path_type			(const EDetailPathType path_type);
+	IC		void	set_velocity_mask		(const u32 mask);
+	IC		void	set_desirable_mask		(const u32 mask);
+	IC		void	set_try_min_time		(const bool try_min_time);
+	IC		void	set_try_desirable_speed	(const bool try_desirable_speed);
+	IC		void	set_use_dest_orientation(const bool use_dest_orientation);
+
+	friend class CScriptMonster;
+	friend class CMovementManager;
+#ifdef DEBUG
+	friend class CLevelGraph;
+#endif
+
+public:
+					CDetailPathManager		();
+	virtual			~CDetailPathManager		();
+	virtual void	Init					();
+			bool	valid					() const;
 			const	Fvector direction		();
 			bool	actual					() const;
 	IC		bool	failed					() const;
 	IC		bool	completed				(const Fvector &position) const;
 			bool	valid					(const Fvector &position) const;
 	IC		u32		curr_travel_point_index	() const;
-	IC		void	set_start_position		(const Fvector &start_position);
-	IC		void	set_start_direction		(const Fvector &start_direction);
-	IC		void	set_dest_position		(const Fvector &dest_position);
-	IC		void	set_dest_direction		(const Fvector &dest_direction);
-	IC		void	set_path_type			(const EDetailPathType path_type);
 
 	IC		const xr_vector<STravelPathPoint>	&path					() const;
 	IC		const STravelPathPoint				&curr_travel_point		() const;
@@ -148,35 +165,11 @@ protected:
 	IC		const Fvector						&start_direction		() const;
 	IC		const Fvector						&dest_position			() const;
 	IC		const Fvector						&dest_direction			() const;
-	
-	IC		void								set_desirable_speed		(const u32 desirable_speed);
-	IC		const u32							desirable_speed			() const;
-	IC		const float							desirable_linear_speed	() const;
-	IC		const float							desirable_angular_speed	() const;
-	
-	IC		void								set_velocity_mask		(const u32 mask);
 	IC		const u32							velocity_mask			() const;
-
-	IC		void								set_try_min_time		(const bool try_min_time);
+	IC		const u32							desirable_mask			() const;
 	IC		const bool							try_min_time			() const;
-
-	IC		void								set_try_desirable_speed	(const bool try_desirable_speed);
 	IC		const bool							try_desirable_speed		() const;
-	
-	IC		void								set_use_dest_orientation(const bool use_dest_orientation);
 	IC		const bool							use_dest_orientation	() const;
-
-	friend class CScriptMonster;
-	friend class CMovementManager;
-#ifdef DEBUG
-	friend class CLevelGraph;
-#endif
-public:
-					CDetailPathManager		();
-	virtual			~CDetailPathManager		();
-	virtual void	Init					();
-			bool	valid					() const;
-			
 };
 
 #include "detail_path_manager_inline.h"

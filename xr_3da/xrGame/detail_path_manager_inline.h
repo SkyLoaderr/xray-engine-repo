@@ -138,31 +138,6 @@ IC	void CDetailPathManager::compute_circles(
 	circles[1].center.y =  point.direction.x*point.radius + point.position.y;
 }
 
-IC	const u32 CDetailPathManager::desirable_speed		() const
-{
-	return					(m_desirable_velocity);
-}
-
-IC	void CDetailPathManager::set_desirable_speed	(const u32 desirable_speed)
-{
-	m_actuality				= m_actuality && (!try_desirable_speed() || (desirable_speed == m_desirable_velocity));
-	m_desirable_velocity	= desirable_speed;
-}
-
-IC	const float CDetailPathManager::desirable_linear_speed	() const
-{
-	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(desirable_speed());
-	VERIFY					(m_movement_params.end() != I);
-	return					((*I).second.linear_velocity);
-}
-
-IC	const float	CDetailPathManager::desirable_angular_speed	() const
-{
-	xr_map<u32,STravelParams>::const_iterator	I = m_movement_params.find(desirable_speed());
-	VERIFY					(m_movement_params.end() != I);
-	return					((*I).second.angular_velocity);
-}
-
 IC	void CDetailPathManager::set_velocity_mask			(const u32 velocity_mask)
 {
 	m_actuality				= m_actuality && (velocity_mask == m_velocity_mask);
@@ -172,6 +147,17 @@ IC	void CDetailPathManager::set_velocity_mask			(const u32 velocity_mask)
 IC	const u32 CDetailPathManager::velocity_mask			() const
 {
 	return					(m_velocity_mask);
+}
+
+IC	void CDetailPathManager::set_desirable_mask			(const u32 desirable_mask)
+{
+	m_actuality				= m_actuality && (desirable_mask == m_desirable_mask);
+	m_desirable_mask		= desirable_mask;
+}
+
+IC	const u32 CDetailPathManager::desirable_mask		() const
+{
+	return					(m_desirable_mask);
 }
 
 IC	void CDetailPathManager::set_try_min_time			(const bool try_min_time)
