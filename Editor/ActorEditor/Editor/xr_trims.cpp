@@ -111,11 +111,6 @@ char* _GetItem ( const char* src, int index, char* dst, char separator, char* de
 	return		dst;
 }
 
-const char*	_GetItem ( const char*, int, char separator=',')
-{
-	
-}
-
 char* _GetItems ( LPCSTR src, int idx_start, int idx_end, LPSTR dst, char separator ){
 	char* n = dst;
     int level = 0;
