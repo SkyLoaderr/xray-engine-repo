@@ -43,7 +43,6 @@
 		*	save material-translate table in xrLC and use in xr3DA (level_load.cpp) - u16(trans)-u32(global)-u16(index)
 		*	O(1) AI node search
 		* 	SW - VIPM (прогр. меши)
-		* 	LUA threads - example
 		
 		*	smooth lerping of tree-lods
 		
