@@ -40,6 +40,9 @@ public:
 	u32 m_engineTime, m_expoldeTime;
 	char m_effectsSTR[255];
 	vector<LPCSTR> m_effects;
+	char m_trailEffectsSTR[255];
+	vector<LPCSTR> m_trailEffects;
+	list<CPGObject*> m_trailEffectsPSs;
 	IRender_Light* m_pLight;
 	Fcolor m_lightColor;
 	f32 m_lightRange;
@@ -67,6 +70,7 @@ public:
 	virtual void			Fire2End			();
 	virtual bool Action(s32 cmd, u32 flags);
 	virtual void	FireStart	();
+	virtual void			SwitchState			(u32 S);
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 

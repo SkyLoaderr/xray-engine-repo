@@ -93,6 +93,18 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 		l_effectsSTR++;
 	}
 
+	strcpy(m_trailEffectsSTR, pSettings->r_string(section,"trail"));
+	char* l_trailEffectsSTR = m_trailEffectsSTR; R_ASSERT(l_trailEffectsSTR);
+	m_trailEffects.clear(); m_trailEffects.push_back(l_trailEffectsSTR);
+	while(*l_trailEffectsSTR) {
+		if(*l_trailEffectsSTR == ',') {
+			*l_trailEffectsSTR = 0; l_trailEffectsSTR++;
+			while(*l_trailEffectsSTR == ' ' || *l_trailEffectsSTR == '\t') l_trailEffectsSTR++;
+			m_trailEffects.push_back(l_trailEffectsSTR);
+		}
+		l_trailEffectsSTR++;
+	}
+
 	sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_lightColor.r, &m_lightColor.g, &m_lightColor.b);
 	m_lightRange = pSettings->r_float(section,"light_range");
 	m_lightTime = pSettings->r_u32(section,"light_time");
@@ -301,6 +313,7 @@ void CWeaponRPG7Grenade::feel_touch_new(CObject* O) {
 void CWeaponRPG7Grenade::net_Destroy() {
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
+	while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
 	inherited::net_Destroy();
 }
 
@@ -324,6 +337,14 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		m_pPhysicsShell->set_PhysicsRefObject(this);
 		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 		m_engineTime = 3000;
+		CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
+		Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);
+		for(s32 i = 0; i < l_c; i++) {
+			pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);
+			pStaticPG->UpdateParent(l_m);
+			pStaticPG->Play();
+			m_trailEffectsPSs.push_back(pStaticPG);
+		}
 	}
 }
 
@@ -341,15 +362,22 @@ void CWeaponRPG7Grenade::UpdateCL() {
 		m_pPhysicsShell->Update	();
 		svTransform.set(m_pPhysicsShell->mXFORM);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		if(m_engineTime <= Device.dwTimeDelta) m_engineTime = 0xffffffff;
+		if(m_engineTime <= Device.dwTimeDelta) {
+			m_engineTime = 0xffffffff;
+			while(m_trailEffectsPSs.size()) { xr_delete(*(m_trailEffectsPSs.begin())); m_trailEffectsPSs.pop_front(); }
+		}
 		if(m_engineTime < 0xffffffff) {
 			m_engineTime -= Device.dwTimeDelta;
 			Fvector l_pos, l_dir;; l_pos.set(0, 0, 3.f); l_dir.set(svTransform.k); l_dir.normalize();
 			float l_force = 5300.f * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, l_force);
 			l_dir.set(0, 1.f, 0);
-			l_force = 1200.f/*1360.f*/ * Device.dwTimeDelta / 1000.f;
+			l_force = 1100.f/*1360.f*/ * Device.dwTimeDelta / 1000.f;
 			m_pPhysicsShell->applyImpulse(l_dir, l_force);
+			list<CPGObject*>::iterator l_it;
+			for(l_it = m_trailEffectsPSs.begin(); l_it != m_trailEffectsPSs.end(); l_it++) {
+				(*l_it)->UpdateParent(svTransform);
+			}
 		}
 	}
 }
@@ -393,6 +421,7 @@ void CWeaponRPG7::Load	(LPCSTR section)
 }
 
 BOOL CWeaponRPG7::net_Spawn(LPVOID DC) {
+	m_pGrenadePoint = &vLastFP;
 	BOOL l_res = inherited::net_Spawn(DC);
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
 	V->LL_GetInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
@@ -455,10 +484,9 @@ void CWeaponRPG7::ReloadMagazine() {
 		F_entity_Destroy	(D);
 	}
 }
-
-void CWeaponRPG7::FireStart()
-{
-	if(m_pGrenade) {
+void CWeaponRPG7::SwitchState(u32 S) {
+	inherited::SwitchState(S);
+	if(STATE == eIdle && S==eFire && m_pGrenade) {
 		Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
 		CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(p1,d);
@@ -469,8 +497,24 @@ void CWeaponRPG7::FireStart()
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16(u16(m_pGrenade->ID()));
 		u_EventSend(P);
-		inherited::FireStart();
 	}
+}
+
+void CWeaponRPG7::FireStart()
+{
+	inherited::FireStart();
+	//if(m_pGrenade && STATE==eIdle) {
+	//	Fvector						p1, d; p1.set(vLastFP); d.set(vLastFD);
+	//	CEntity*					E = dynamic_cast<CEntity*>(H_Parent());
+	//	if (E) E->g_fireParams		(p1,d);
+	//	m_pGrenade->m_pos.set(p1);
+	//	m_pGrenade->m_vel.set(d); m_pGrenade->m_vel.y += .0f; m_pGrenade->m_vel.mul(50.f);
+	//	m_pGrenade->m_pOwner = dynamic_cast<CGameObject*>(H_Parent());
+	//	NET_Packet P;
+	//	u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
+	//	P.w_u16(u16(m_pGrenade->ID()));
+	//	u_EventSend(P);
+	//}
 }
 
 void CWeaponRPG7::switch2_Fire	()
