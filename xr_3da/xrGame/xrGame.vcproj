@@ -1787,9 +1787,6 @@
 				RelativePath="NET_Queue.h">
 			</File>
 			<File
-				RelativePath="NET_utils.h">
-			</File>
-			<File
 				RelativePath="PropertiesListTypes.h">
 			</File>
 			<File
