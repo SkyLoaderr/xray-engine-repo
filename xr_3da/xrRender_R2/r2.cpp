@@ -217,9 +217,7 @@ void	CRender::Statistics	(CGameFont* _F)
 	CGameFont&	F	= *_F;
 	F.OutNext	(" **** LT:%2d,LV:%2d **** ",stats.l_total,stats.l_visible		);	stats.l_visible = 0;
 	F.OutNext	("    S(%2d)   | (%2d)NS   ",stats.l_shadowed,stats.l_unshadowed);
-	F.OutNext	(" omni(%2d)   | (%2d)omni ",stats.l_point_s,stats.l_point		);
-	F.OutNext	(" spot(%2d)   | (%2d)spot ",stats.l_spot_s,stats.l_spot		);
-	F.OutNext	(" smap use[%2d], merge[%2d]",stats.s_used,stats.s_merged-stats.s_used);
+	F.OutNext	("smap use[%2d], merge[%2d]",stats.s_used,stats.s_merged-stats.s_used);
 	stats.s_used = 0; stats.s_merged = 0;
 	F.OutSkip	();
 	F.OutNext	(" **** Occ-Q(%03.1f) **** ",100.f*f32(stats.o_culled)/f32(stats.o_queries?stats.o_queries:1));
