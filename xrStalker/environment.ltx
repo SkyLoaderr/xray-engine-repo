@@ -97,21 +97,28 @@ source                   = on
 source_radius            = 0.150
 source_texture           = fx\fx_sun.tga
 source_shader            = effects\sun
-source_ignore_color		= false
+source_ignore_color		 = false
+blend_time				= 1 ;(сек)
 
 [flares_gradient]
 flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
 flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
 flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
 flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
+flare_shader          	= effects\flare
 flares                   = off
 gradient                 = on
 gradient_opacity         = 0.85
 gradient_radius          = 1.000
 gradient_texture         = fx\fx_gradient.tga
+gradient_shader          = effects\flare
 source                   = off
 source_radius            = 0.150
 source_texture           = fx\fx_sun.tga
+source_shader            = effects\sun
+source_ignore_color		 = false
+blend_time				= 1 ;(сек)
+
 
 [flares_moon]
 flares                  = off
@@ -121,7 +128,7 @@ source_radius           = 0.05
 source_texture          = fx\fx_moon.tga
 source_shader			= effects\moon
 source_ignore_color		= true
-blend_time				= 1.f
+blend_time				= 1
 
 
 
