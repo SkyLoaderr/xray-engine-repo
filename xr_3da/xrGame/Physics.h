@@ -189,9 +189,15 @@ dBodyID m_body;
 //dVector3 mean_v;
 dVector3 previous_p;
 dMatrix3 previous_r;
+dVector3 previous_f;
+dVector3 previous_t;
+dReal previous_dev;
+dReal previous_v;
+UINT dis_count_f;
 
 public:
-	CPHShell				()							{bActive=false;};
+	CPHShell				()							{bActive=false;
+														dis_count_f=0;};
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);

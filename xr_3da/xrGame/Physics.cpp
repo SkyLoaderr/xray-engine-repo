@@ -558,7 +558,7 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 static dReal rest=0.f;
-const int dis_frames=10;
+const int dis_frames=6;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
@@ -996,6 +996,8 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	*/
 	previous_p[0]=dInfinity;
 	previous_r[0]=0.f;
+	dis_count_f=0;
+	previous_f[0]=dInfinity;
 }
 
 void CPHShell::Deactivate(){
@@ -1045,10 +1047,32 @@ if( !dBodyIsEnabled(m_body)) {
 				//////////////////////////////////////////////////////////////////////////////////////////
 				////////disabling main body///////////////////////////////////////////////////////////////
 				//////////////////////////////////////////////////////////////////////////////////////////
-	
+				/*
+					 dReal* force=const_cast<dReal*>(dBodyGetForce(m_body));
+					 dReal* torq=const_cast<dReal*>(dBodyGetTorque (m_body));
+					force[1]+=(-2.f*9.81f);
+				if(previous_f[0]!=dInfinity){
+					if(dDOT(previous_f,force)<=0.f && dDOT(previous_t,torq)<=0.f)
+						dis_count_f++;
+					else dis_count_f=0;
+				}
 
+				if(dis_count_f==3){
+					dBodyDisable(m_body);
+					dis_count_f=0;
+					previous_f[0]=dInfinity;
+				}
 
-
+				
+					previous_f[0]=force[0];
+					previous_f[1]=force[1];
+					previous_f[2]=force[2];
+					
+					previous_t[0]=torq[0];
+					previous_t[1]=torq[1];
+					previous_t[2]=torq[2];
+				
+*/
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
 					previous_p[0]=position[0];
@@ -1064,31 +1088,13 @@ if( !dBodyIsEnabled(m_body)) {
 					previous_r[8]=rotation[8];
 					previous_r[9]=rotation[9];
 					previous_r[10]=rotation[10];
+					previous_dev=0;
+					previous_v=0;
+					dis_count_f=1;
 				}
-				/*
-				mean_v[0]+=pos[0];
-				mean_v[1]+=pos[1];
-				mean_v[2]+=pos[2];
 
-				mean_w[0]+=rot[0];
-				mean_w[1]+=rot[1];
-				mean_w[2]+=rot[2];
-				*/
 			
 				if(ph_world->disable_count==dis_frames){	
-	
-				//	dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/dis_frames;
-				//	dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/dis_frames;
-				//	if(mag_v<0.002 && mag_w<M_PI/180.f/10)
-			//			dBodyDisable(m_body);
-
-				//	mean_w[0]=0.f;
-				//	mean_w[1]=0.f;
-				//	mean_w[2]=0.f;
-				//	mean_v[0]=0.f;
-				//	mean_v[1]=0.f;
-				//	mean_v[2]=0.f;
-
 					if(previous_p[0]!=dInfinity){
 					const dReal* current_p=dBodyGetPosition(m_body);
 					dVector3 velocity={current_p[0]-previous_p[0],
@@ -1098,8 +1104,8 @@ if( !dBodyIsEnabled(m_body)) {
 						  velocity[0]*velocity[0]+
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
-					mag_v/=dis_frames;
-
+					mag_v/=dis_count_f;
+					//mag_v/=dis_count_f;
 					const dReal* current_r=dBodyGetRotation(m_body);
 					dMatrix3 rotation_m;
 					
@@ -1114,10 +1120,23 @@ if( !dBodyIsEnabled(m_body)) {
 										   deviation_v[1]*deviation_v[1]+
 										   deviation_v[2]*deviation_v[2]);
 
-					deviation/=dis_frames;
-					if(mag_v<0.002 && deviation<0.001)
+					deviation/=dis_count_f;
+					//deviation/=dis_count_f;
+					if(mag_v<0.004* dis_frames && deviation<0.0001*dis_frames)
 						dBodyDisable(m_body);
-
+					if((previous_dev>deviation&&previous_v>mag_v)
+						//||
+					   //(mag_v<0.4* dis_frames && deviation<0.1*dis_frames)
+					  ) 
+					{
+					dis_count_f*=4;
+					previous_dev=deviation;
+					previous_v=mag_v;
+					return;
+					}
+					previous_dev=0;
+					previous_v=0;
+					dis_count_f=1;
 					const dReal* position=dBodyGetPosition(m_body);
 					previous_p[0]=position[0];
 					previous_p[1]=position[1];
