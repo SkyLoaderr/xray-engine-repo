@@ -9,6 +9,7 @@ module("game_last_header_wnd")
 module("ui_save_dialog")
 module("ui_load_dialog")
 module("ui_main_menu")
+module("ui_new_game_dialog")
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
@@ -103,6 +104,9 @@ function game_cl_LastStanding:createGameUI ()
     -- MAIN MENU
    self.m_main_menu = ui_main_manu.main_menu()
    self.m_main_manu:SetClGame(self)   
+    -- NEW GAME
+   self.m_new_game_dlg = ui_new_game_dialog.new_game_dlg()
+   self.m_new_game_dlg:SetClGame(self)
    
    return self.m_game_ui
 end
