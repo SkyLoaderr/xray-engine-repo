@@ -15,6 +15,7 @@
 #include "hudmanager.h"
 #include "Actor_Flags.h"
 #include "UI.h"
+#include "..\render.h"
 
 // breakpoints
 #include "..\xr_input.h"
@@ -368,12 +369,12 @@ void CActor::Update	(DWORD DT)
 	if (!bEnabled)	return;
 
 	// zone test
-	Fvector z_P			= {1.803, -0.012, -22.089};
+	Fvector z_P			= {1.803f, -0.012f, -22.089f};
 	float	z_R			= 10.f;
 
 	float	z_amount	= Position().distance_to(z_P)/z_R;
 	clamp	(z_amount,0.f,1.f);
-	Render->getTarget()->set_gray	(z_amount);
+	::Render->getTarget()->set_gray	(z_amount);
 
 	// 
 	clamp			(DT,0ul,100ul);
