@@ -23,7 +23,9 @@ protected:
 	u32						m_hit_time;
 	u32						m_current_update;
 	SEnemySelected			m_selected_enemy;
-	u32						m_previous_query_time;
+	u32						m_locate_query_time;
+	u32						m_location_query_interval;
+	bool					m_selector_failed;
 
 public:
 					CLocationSelector		();

@@ -240,3 +240,22 @@ void CMovementManager::build_path(PathManagers::CAbstractNodeEvaluator *node_evl
 //	}
 //	m_tPathType = tPathType;
 }
+
+template <u64 flags>
+void CMovementManager::find_location(PathManagers::CNodeEvaluator<flags> *node_evaluator)
+{
+	if (!m_locate_query_time ||
+		(m_locate_query_time < m_location_query_interval + m_current_update) ||
+		m_detail_path.empty() ||
+		(int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) ||
+		(speed() < EPS_L)
+		) 
+	{
+	   select_location	(node_evaluator);
+	   if ((m_level_dest_node != node_evaluator->m_dwBestNode) && !m_selector_failed){
+		   m_level_dest_node	= node_evaluator->m_dwBestNode;
+		   m_level_path.clear	();
+//		   m_tPathState			= ePathStateBuildNodePath;
+	   }
+	}
+}

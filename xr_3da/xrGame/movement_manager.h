@@ -35,7 +35,8 @@ private:
 	EPathState								m_path_state;
 	EPathState								m_path_state_previous;
 
-	void			find_location			(PathManagers::CAbstractNodeEvaluator &node_evaluator);
+	template <u64 flags>
+	void			find_location			(PathManagers::CNodeEvaluator<flags> *node_evaluator);
 
 protected:
 	float									m_speed;

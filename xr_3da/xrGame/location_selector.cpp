@@ -65,30 +65,22 @@ void CLocationSelector::select_location(PathManagers::CNodeEvaluator<flags> *nod
 
 	m_dwLastLocationSelectionTime = node_evaluator->m_dwCurTime;
 	
-	float fOldCost = dInfinity;
+	float l_old_cost			= dInfinity;
 	
 	if (m_level_dest_node != u32(-1)) {
 		node_evaluator->m_tpCurrentNode	= ai().level_graph().vertex(m_level_dest_node);
 		node_evaluator->m_fDistance		= Position().distance_to(ai().level_graph().vertex_position(m_level_dest_node));
-		fOldCost						= node_evaluator->ffEvaluateNode();
+		l_old_cost						= node_evaluator->ffEvaluateNode();
 	}
 
 	Squad.Groups[l_tpEntity->g_Group()].GetAliveMemberInfo(node_evaluator->m_taMemberPositions, node_evaluator->m_taMemberNodes, node_evaluator->m_taDestMemberPositions, node_evaluator->m_taDestMemberNodes, l_tpEntity);
 	
 	ai().graph_search_engine().build_path(ai().level_graph(),m_dwLevelVertexID,m_dwLevelVertexID,0,*node_evaluator);
 
-//	if ((!m_dwLastLocationSelectionTime) || (m_detail_path.empty()) || (int(m_detail_cur_point_index) > int(m_detail_path.size()) - 4) || (speed() < EPS_L) || ((node_evaluator->m_dwCurTime - m_previous_query_time > MIN_RANGE_SEARCH_TIME_INTERVAL))) 
-//		if ((m_level_dest_node != node_evaluator->m_dwBestNode) && (node_evaluator->m_fBestCost < fOldCost - 0.f)){
-//			m_level_dest_node		= node_evaluator->m_dwBestNode;
-//			if (ai().level_graph().valid_vertex_id(m_level_dest_node)) {
-//				Msg("! Invalid vertex Evaluator vertex");
-//			}
-//			m_level_path.clear		();
-//			m_tPathState			= ePathStateBuildNodePath;
-//			m_bIfSearchFailed		= false;
-//		} 
-//		else
-//			m_bIfSearchFailed		= true;
+	if (node_evaluator->m_fBestCost < l_old_cost)
+		m_selector_failed		= false;
+	else
+		m_selector_failed		= true;
 
 	Device.Statistic.AI_Range.End();
 }
