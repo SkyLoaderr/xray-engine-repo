@@ -133,6 +133,13 @@ function main()
 			wait(2000)			
 			prof_kgm4:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_nashel_taynik_a:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(3000)			
 			break
@@ -144,6 +151,13 @@ function main()
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_kgm3:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_nashel_taynik_b:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(4000)			
 			break
@@ -153,10 +167,16 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			rainbow_ya_bi_pomalkival:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			rainbow_v_vagone_mojet_bit_stalker:play_at_pos	(stalker2,stalker2:position(),0);
 			wait(5000)			
 			break
@@ -166,12 +186,24 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_proveru_ya_vagonchik:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
@@ -181,8 +213,6 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			rainbow_poshutil_ya:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
 			break
@@ -192,10 +222,15 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			prof_teper_ne_uspokous:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_prikroy:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
@@ -205,8 +240,6 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			rainbow_nda:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(2000)			
 			break
@@ -216,12 +249,24 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			prof_vrode_nikogo:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_vzdoh:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 			break
@@ -231,8 +276,6 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			rainbow_za_namy_sledyat:play_at_pos				(stalker2,stalker2:position(),0);
 			wait(3000)			
 			break
@@ -242,13 +285,17 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
-			printf("entered")
-			flush()
 			prof_u_menya_toje:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
-			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
 			break
 		end
 		wait()			
@@ -256,9 +303,25 @@ function main()
 
 	while true do
 		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
+			prof_kgm2:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
 			prof_blin:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(2000)			
+			break
+		end
+		wait()			
+	end
+
+
+	while true do
+		if stalker1:see(actor) == false or stalker2:see(actor) == false then		
 			prof_do_basi_bi_dobratsya:play_at_pos				(stalker1,stalker1:position(),0);
 			wait(3000)			
 			break
