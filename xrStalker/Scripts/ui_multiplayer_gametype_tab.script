@@ -58,7 +58,7 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn:SetTextY(10)
 	self:Register(rbtn)	
 	rgroup:AttachChild(rbtn)	
-	
+--[[
 	rbtn = CUIRadioButton()
 	rbtn:SetWindowName("rbtn_tdm")
 	rbtn:SetAutoDelete(true)
@@ -78,6 +78,7 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn:SetTextY(10)
 	self:Register(rbtn)
 	rgroup:AttachChild(rbtn)	
+	]]
 end
 
 function gametype_tab:InitCallbacks()
