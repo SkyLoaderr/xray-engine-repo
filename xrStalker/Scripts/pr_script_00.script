@@ -385,7 +385,7 @@ function main()
 
 			rainbow_mochi_ego:play_at_pos		(stalker2,stalker2:position(),0);
 			stalker2:script	(false, this.script_name())
-		break
+			break
 		end
 		wait()			
 	end
@@ -400,9 +400,9 @@ function main()
 		wait(4000)			
 			prof_tupie_novichki:play_at_pos		(stalker1,stalker1:position(),0);
 		wait(3000)			
-		wait()			
 		break
 		end
+		wait()			
 	end
 
 
