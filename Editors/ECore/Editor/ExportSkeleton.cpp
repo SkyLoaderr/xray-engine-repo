@@ -128,10 +128,10 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
 			// write vertex
             F.w_u16		(pV.B0);
             F.w_u16		(pV.B1);
-            F.w			(&(pV.O),sizeof(Fvector));		// position (offset)
-            F.w			(&(pV.N),sizeof(Fvector));		// normal
-            F.w			(&(pV.O),sizeof(Fvector));		// T        //.
-            F.w			(&(pV.N),sizeof(Fvector));		// B        //.
+            F.w			(&pV.O,sizeof(Fvector));		// position (offset)
+            F.w			(&pV.N,sizeof(Fvector));		// normal
+            F.w			(&pV.T,sizeof(Fvector));		// T        
+            F.w			(&pV.B,sizeof(Fvector));		// B        
             F.w_float	(pV.w);
             F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
         }
@@ -140,8 +140,8 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
             SSkelVert& pV 	= *v_it;
             F.w			(&pV.O,sizeof(Fvector));		// position (offset)
             F.w			(&pV.N,sizeof(Fvector));		// normal
-            F.w			(&(pV.O),sizeof(Fvector));		// T        //.
-            F.w			(&(pV.N),sizeof(Fvector));		// B        //.
+            F.w			(&pV.T,sizeof(Fvector));		// T        
+            F.w			(&pV.B,sizeof(Fvector));		// B        
             F.w			(&pV.UV,sizeof(Fvector2));		// tu,tv
             F.w_u32		(pV.B0);
         }
@@ -176,6 +176,37 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
         }
         F.close_chunk();
     }
+// SMF
+//*
+	if (0){
+    	static u32 chunk_id = 0; chunk_id++;
+		AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
+        IWriter* W 	= FS.w_open(r.c_str());
+        for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+            SSkelVert& pV 	= *v_it;
+			// vertices
+            AnsiString 		tmp;
+            tmp.sprintf		("v %f %f %f",pV.O.x,pV.O.y,-pV.O.z);
+            W->w_string		(tmp.c_str());
+        }
+        // face
+        for (SkelFaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+            SSkelFace& pF 	= *f_it;
+            AnsiString 		tmp;
+            tmp.sprintf		("f %d %d %d",pF.v[0]+1,pF.v[2]+1,pF.v[1]+1);
+            W->w_string		(tmp.c_str());
+        }
+        // normals
+        W->w_string			("bind n vertex");
+        for (v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
+            SSkelVert& pV 	= *v_it;
+            AnsiString 		tmp;
+            tmp.sprintf		("n %f %f %f",pV.N.x,pV.N.y,-pV.N.z);
+            W->w_string		(tmp.c_str());
+        }
+        FS.w_close	(W);
+	}
+    
 }
 
 void CExportSkeleton::SSplit::CalculateTB()
@@ -420,7 +451,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-	    if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) 	MESH->GeneratePNormals();
 	    UI->ProgressInc();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
@@ -440,13 +470,13 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                 {
                     SSkelVert v[3];
                     for (int k=0; k<3; k++){
-                        st_FaceVert& 	fv = face.pv[k];
-                        st_SVert& 		sv = MESH->m_SVertices[f_idx*3+k];
-                        if (sv.bone1!=-1){
-                        	b2Link = TRUE;
-	                        v[k].set	(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],sv.uv,sv.w,sv.bone0,sv.bone1);
-                        }else{
-	                        v[k].set	(MESH->m_Points[fv.pindex],MESH->m_PNormals[fv.pindex],sv.uv,sv.w,sv.bone0,sv.bone0);
+                        st_FaceVert& 	fv 	= face.pv[k];
+                        st_SVert& 		sv 	= MESH->m_SVertices[f_idx*3+k];
+                        if (sv.bone1==BI_NONE){
+	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone0);
+                        }else{                                   
+                        	b2Link = TRUE;     
+	                        v[k].set	(sv.offs,sv.norm,sv.uv,sv.w,sv.bone0,sv.bone1);
                         }
                     }
                     split.add_face(v[0], v[1], v[2]);

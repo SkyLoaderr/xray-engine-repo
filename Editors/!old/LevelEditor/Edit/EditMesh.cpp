@@ -201,29 +201,23 @@ void CEditableMesh::GenerateSVertices()
             }
             wb.normalize_weights(2);
             int cnt = wb.size();
-            CBone* B=0;
             switch (cnt){
                 case 0:
                 	Debug.fatal("Vertex has't any weights attached.");
                 break;
                 case 1:{
                     SV.bone0 	= wb[0].bone;
-                    SV.bone1 	= -1;
+                    SV.bone1 	= BI_NONE;
                     SV.w	   	= 0.f;
-                    CBone* B 	= m_Parent->m_Bones[SV.bone0];
-                    B->_LITransform().transform_tiny(SV.offs0,P);
-                    B->_LITransform().transform_dir(SV.norm0,N);
+                    SV.offs		= P;
+                    SV.norm		= N;
                 }break;
                 case 2:{
                     SV.bone0 	= wb[0].bone;
                     SV.bone1 	= wb[1].bone;
                     SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
-                    B		 	= m_Parent->m_Bones[SV.bone0];
-                    B->_LITransform().transform_tiny(SV.offs0,P);
-                    B->_LITransform().transform_dir(SV.norm0,N);
-                    B		 	= m_Parent->m_Bones[SV.bone1];
-                    B->_LITransform().transform_tiny(SV.offs1,P);
-                    B->_LITransform().transform_dir(SV.norm1,N);
+                    SV.offs		= P;
+                    SV.norm		= N;
                 }break;
                 default:
                     Debug.fatal("More than 2 weight per vertex found!");

@@ -163,7 +163,8 @@ class ECORE_API CBone
     Fmatrix			    rest_i_transform;
 
     Fmatrix			    last_transform;
-    Fmatrix			    last_i_transform;
+
+    Fmatrix				render_transform;
 public:
 	int				    index;
     CBone*			    parent;
@@ -204,7 +205,7 @@ public:
     IC Fmatrix&		    _RITransform	(){return rest_i_transform;}
     IC Fmatrix&		    _MTransform		(){return mot_transform;}
     IC Fmatrix&		    _LTransform		(){return last_transform;}
-    IC Fmatrix&		    _LITransform	(){return last_i_transform;} 
+    IC Fmatrix&		    _RenderTransform(){return render_transform;}
 	IC Fvector&			_RestOffset		(){return rest_offset;}
 	IC Fvector&		    _RestRotate		(){return rest_rotate;}
     

@@ -108,12 +108,10 @@ DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
 DEFINE_VECTOR		(VMapPtSVec,VMRefsVec,VMRefsIt);
 
 struct ECORE_API st_SVert{
-	Fvector			offs0;
-	Fvector			offs1;
-    Fvector			norm0;
-    Fvector			norm1;
-    int				bone0;
-    int				bone1;
+	Fvector			offs;
+    Fvector			norm;
+    u16				bone0;
+    u16				bone1;
     float			w;
     Fvector2		uv;
 };

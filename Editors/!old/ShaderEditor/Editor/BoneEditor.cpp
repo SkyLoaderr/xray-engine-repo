@@ -117,7 +117,7 @@ void CBone::BindMove(const Fvector& _amount)
 bool CBone::Pick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent)
 {
 	Fvector start, dir;
-    Fmatrix M; M.mul(parent,_LTransform());
+    Fmatrix M; M.mul_43(parent,_LTransform());
     M.invert();
     M.transform_tiny(start,S);
     M.transform_dir(dir,D);

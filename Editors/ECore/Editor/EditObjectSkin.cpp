@@ -391,9 +391,15 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
                 st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
                 FvectorVec& P 	= bone_points[sv.bone0];
                 bool bFound		= false;
-                for (FvectorIt p_it=P.begin(); p_it!=P.end(); p_it++)  if (p_it->similar(sv.offs0)){ bFound=true; break; }
-                if (!bFound)	P.push_back(sv.offs0);       
-//		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);
+                Fvector p;
+				m_Bones[sv.bone0]->_RITransform().transform_tiny(p,sv.offs);
+                for (FvectorIt p_it=P.begin(); p_it!=P.end(); p_it++)
+                	if (p_it->similar(p)){ 
+                    	bFound=true; 
+                        break; 
+                }
+                if (!bFound)	P.push_back(p);       
+//		        if (sv.bone1!=BI_NONE) bone_points[sv.bone1].push_back(sv.offs1);
             }
         }
     }

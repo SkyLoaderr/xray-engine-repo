@@ -292,20 +292,20 @@ void CEditableMesh::RenderSkeleton(const Fmatrix& parent, CSurface* S)
     for (IntIt i_it=face_lst.begin(); i_it!=face_lst.end(); i_it++){
         for (int k=0; k<3; k++,pv++){
         	st_SVert& SV = m_SVertices[*i_it*3+k];
-            if (SV.bone1!=-1){
-                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_LTransform();
-                Fmatrix& M1		= m_Parent->m_Bones[SV.bone1]->_LTransform();
-                M0.transform_tiny(P0,SV.offs0);
-                M0.transform_dir (N0,SV.norm0);
-                M1.transform_tiny(P1,SV.offs1);
-                M1.transform_dir (N1,SV.norm1);
+            if (SV.bone1!=BI_NONE){
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_RenderTransform();
+                Fmatrix& M1		= m_Parent->m_Bones[SV.bone1]->_RenderTransform();
+                M0.transform_tiny(P0,SV.offs);
+                M0.transform_dir (N0,SV.norm);
+                M1.transform_tiny(P1,SV.offs);
+                M1.transform_dir (N1,SV.norm);
                 pv->P.lerp		(P0,P1,SV.w);
                 pv->N.lerp		(N0,N1,SV.w);
                 pv->uv.set		(SV.uv);
             }else{                 
-                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_LTransform();
-                M0.transform_tiny(pv->P,SV.offs0);
-                M0.transform_dir (pv->N,SV.norm0);
+                Fmatrix& M0		= m_Parent->m_Bones[SV.bone0]->_RenderTransform();
+                M0.transform_tiny(pv->P,SV.offs);
+                M0.transform_dir (pv->N,SV.norm);
                 pv->uv.set		(SV.uv);
             }
         }

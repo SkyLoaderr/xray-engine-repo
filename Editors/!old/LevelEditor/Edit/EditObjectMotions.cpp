@@ -99,14 +99,16 @@ static void CalculateAnim(CBone* bone, CSMotion* motion)
         L.i.set		(M.i);
         L.j.set		(M.j);
         L.k.set		(M.k);
-		if (parent_bone) 
-        	M.mulA	(parent_bone->_LITransform());
+		if (parent_bone){ 
+            Fmatrix LI; LI.invert(parent_bone->_LTransform());
+        	M.mulA	(LI);
+        }
     }else{
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
         L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
     }
-	bone->_LITransform().invert(bone->_LTransform());
+	bone->_RenderTransform().mul_43(bone->_LTransform(),bone->_RITransform());
 
     bone->flags.set(CBone::flCalculate,TRUE);
 }
@@ -120,7 +122,7 @@ static void CalculateRest(CBone* bone)
     Fmatrix& R	= bone->_RTransform();
     R.setXYZi	(bone->_RestRotate());
     R.c.set		(bone->_RestOffset());
-    if (parent_bone) R.mulA(parent_bone->_RTransform());
+    if (parent_bone) R.mulA_43(parent_bone->_RTransform());
     bone->_RITransform().invert(bone->_RTransform());
 
     bone->flags.set(CBone::flCalculate,TRUE);
