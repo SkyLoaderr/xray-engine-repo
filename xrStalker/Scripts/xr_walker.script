@@ -143,7 +143,7 @@ end
 -- team [опционально] - команда для синхронизации
 --
 function set_walker(object, enabled, path_walk, path_look, team)
-	printf("_bp: set_walker (path_walk=%s)", path_walk)
+	--printf("_bp: set_walker (path_walk=%s)", path_walk)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].walker
 
