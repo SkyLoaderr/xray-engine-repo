@@ -37,7 +37,7 @@ void CGreetingManager::reload		(LPCSTR section)
 
 bool CGreetingManager::useful		(const CAI_Stalker *object) const
 {
-	return						(!old_greeting(object));
+	return						(object->g_Alive() && !old_greeting(object));
 }
 
 float CGreetingManager::evaluate	(const CAI_Stalker *object) const
