@@ -93,10 +93,6 @@ void				game_sv_GameState::signal_Syncronize		()
 {
 	sv_force_sync	= TRUE;
 }
-void				game_sv_GameState::signal_Create			()
-{
-
-}
 
 void				game_sv_GameState::switch_Phase				(u32 new_phase)
 {
