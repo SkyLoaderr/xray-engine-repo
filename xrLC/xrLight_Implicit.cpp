@@ -35,16 +35,16 @@ public:
 	void			Allocate()
 	{
 		DWORD size	= Width()*Height();
-		lmap		= (ImplicitLumel*)HeapAlloc	(GetProcessHeap(),0,size);	R_ASSERT(lmap);
-		temp		= (ImplicitLumel*)HeapAlloc	(GetProcessHeap(),0,size);	R_ASSERT(temp);
+		lmap		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(lmap);
+		temp		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(temp);
 		size		*= sizeof(ImplicitLumel);
 		ZeroMemory	(lmap,size);
 		ZeroMemory	(temp,size);
 	}
 	void			Deallocate()
 	{
-		HeapFree	(GetProcessHeap(),0,temp);
-		HeapFree	(GetProcessHeap(),0,lmap);
+		_FREE		(temp);
+		_FREE		(lmap);
 	}
 	
 	DWORD	Width()	{ return texture->dwWidth; }
