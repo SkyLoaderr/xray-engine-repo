@@ -184,7 +184,7 @@ void CGameObject::renderable_Render	()
 	::Render->add_Visual		(Visual());
 }
 
-float CGameObject::Ambient	()
+float CGameObject::renderable_Ambient	()
 {
 	return AI_Node?float(AI_Node->light):255;
 }

@@ -62,7 +62,7 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	float	dt			= Device.fTimeDelta;
 	float	l_f			= dt*lt_smooth;
 	float	l_i			= 1.f-l_f;
-	dest.ambient		= l_i*dest.ambient + l_f*O->Ambient();
+	dest.ambient		= l_i*dest.ambient + l_f*O->renderable_Ambient();
 	clamp				(dest.ambient,0.f,255.f);
 	
 	// Process selected lights
@@ -81,7 +81,7 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	// Trace visibility
 	dest.lights.clear	();
 	xr_vector<CLightTrack::Item>& track		= dest.track;
-	xr_vector<CLightTrack::Item>::iterator I	= track.begin(), E=track.end();
+	xr_vector<CLightTrack::Item>::iterator I = track.begin(), E=track.end();
 	float R									= fRadius*.5f;
 	for (; I!=E; I++)
 	{

@@ -94,9 +94,9 @@ public:
 	
 	IC IRender_Sector*					Sector				()					{ return H_Root()->spatial.sector;	}
 	IC IRender_ObjectSpecific*			ROS					()					{ return renderable.ROS;			}
-	virtual float						Ambient				()					{ return 0.f;		 				}
-	virtual BOOL						renderable_ShadowGenerate		()					{ return TRUE;						}
-	virtual BOOL						renderable_ShadowReceive		()					{ return TRUE;						}
+	virtual float						renderable_Ambient			()			{ return 0.f;		 				}
+	virtual BOOL						renderable_ShadowGenerate	()			{ return TRUE;						}
+	virtual BOOL						renderable_ShadowReceive	()			{ return TRUE;						}
 
 	// SLS
 	virtual void						SLS_Save			(IWriter& fs)		{};

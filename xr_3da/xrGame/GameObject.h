@@ -28,7 +28,7 @@ public:
 	virtual BOOL			net_Relevant		()	{ return getLocal();	}	// send messages only if active and local
 	virtual void			spatial_move		();
 	virtual BOOL			Ready				()	{ return getReady();	}	// update only if active and fully initialized by/for network
-	virtual float			Ambient				();
+	virtual float			renderable_Ambient	();
 
 	virtual void			renderable_Render			();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
