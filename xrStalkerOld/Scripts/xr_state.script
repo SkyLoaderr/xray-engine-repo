@@ -12,155 +12,70 @@ sleep = 4
 class "body_state"
 function body_state:__init(npc)
 	self.npc = npc
-	self.target_state = 0
-	self.current_state = 0
+	self.target_state = xr_state.stand
+	self.current_state = xr_state.stand
+
+	self.tanim = {
+		[xr_state.stand]	= {	[xr_state.sit]		= {"stalker_2_down"},
+								[xr_state.sit_wait]	= {"stalker_3_down"},
+								[xr_state.sleep]	= {"stalker_2_down", "spit_0"} },
+		[xr_state.sit]		= { [xr_state.stand]	= {"stalker_2_up"},
+								[xr_state.sit_wait]	= {"stalker_2v3"},
+								[xr_state.sleep]	= {"spit_0"} },
+		[xr_state.sit_wait]	= {	[xr_state.stand]	= {"stalker_3_up"},
+								[xr_state.sit]		= {"stalker_3v2"} },
+		[xr_state.sleep]	= {	[xr_state.stand]	= {"spit_3", "stalker_2_up"},
+								[xr_state.sit]		= {"spit_3"}}}								
+	self.ianim = {
+		[xr_state.sit] = "stalker_2_1",
+		[xr_state.sit_wait] = "stalker_3_2",
+		[xr_state.sleep] = "spit_2"
+	}
 end
 --' Проверяет закончили ли мы изменение положения тела
 function body_state:finish_state()
-	if self.target_state == self.current_state then
-	
-	
-		return true
-	else
-	
-	
-		return false
+	if self.target_state == xr_state.stand and 
+	   self.npc:animation_count() == 0
+	then
+		self.current_state = self.target_state
 	end
+
+	if self.target_state ~= xr_state.stand and 
+	   self.npc:animation_count() <= 1
+	then
+		self.current_state = self.target_state
+	end
+	
+	return self.target_state == self.current_state
 end
 function body_state:set_state(id)
 	self.target_state = id
+	self:transanim(self.npc, id)
 end
-
-----------------------------------------------------------------------------------------------------------------------
---Actions
-----------------------------------------------------------------------------------------------------------------------
--- Изменяет положение тела
-class "action_change_state" (action_base)
-function action_change_state:__init (npc_name,action_name,storage) super (nil,action_name)
-	self.a = storage
-end
-function action_change_state:initialize()
-	action_base.initialize(self)
-	self.object:set_node_evaluator()
-	self.object:set_path_evaluator()
-	self.object:set_desired_position()
-	self.object:set_desired_direction()  
-	self.object:set_movement_type(move.stand)
-	self.object:clear_animations()
-
-	xr_state.transanim(self.object, self.a)
-
-	a = xr_state.getIdle(self.a.target_state)
-	if a ~= nil then
-		self.object:add_animation(a, true)
-	end	
-end
-function action_change_state:execute ()
-	if self.a.target_state == 0 then
-		if self.object:animation_count() == 0 then
-			self.a.body_state = self.a.target_state
-		end
-	else
-		if self.object:animation_count() <= 1 then
-			self.a.body_state = self.a.target_state
+function body_state:transanim(object, target_state)
+	if self.tanim[self.current_state][target_state] ~= nil then
+		for k,v in self.tanim[self.current_state][target_state] do
+			object:add_animation(v, true)
 		end
 	end
-
-	action_base.execute (self)
+	if self.ianim[target_state] ~= nil then
+		object:add_animation(self.ianim[target_state], true)
+	end
 end
-function action_change_state:finalize ()
-	action_base.finalize (self)
-end
-
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Functions
 ----------------------------------------------------------------------------------------------------------------------
 -- Проверка, изменилось ли уже положение тела или нет
 function finish_state(npc)
-	return true
+	return xr_motivator.storage[npc:id()].state:finish_state()
 end
-function change_state(npc)
+function change_state(npc, id)
+	xr_motivator.storage[npc:id()].state:set_state(id)
+	return 0
 end
 
 
-function getIdle(id)
-	if id == 0 then
-	elseif id == 1 then
-		return "stalker_1_2"
-	elseif id == 2 then
-		return "stalker_2_1"
-	elseif id == 3 then
-		return "stalker_3_2"
-	elseif id == 4 then
-		return "spit_2"
-	end
-end
-function transanim(object, a)
-	if a.body_state == 0 then
-		if a.target_state == 0 then
-			--
-		elseif a.target_state == 1 then
-			object:add_animation("stalker_1_down", true)
-		elseif a.target_state == 2 then
-			object:add_animation("stalker_2_down", true)
-		elseif a.target_state == 3 then
-			object:add_animation("stalker_3_down", true)
-		elseif a.target_state == 4 then
-			object:add_animation("stalker_2_down", true)
-			object:add_animation("spit_0", true)			
-		end
-	elseif a.body_state == 1 then
-		if a.target_state == 0 then
-			object:add_animation("stalker_1_up", true)
-		elseif a.target_state == 1 then
-			--
-		elseif a.target_state == 2 then
-			--!!!!
-		elseif a.target_state == 3 then
-			--!!!!
-		elseif a.target_state == 4 then
-			--!!!!
-		end
-	elseif a.body_state == 2 then
-		if a.target_state == 0 then
-			object:add_animation("stalker_2_up", true)
-		elseif a.target_state == 1 then
-			--!!!!
-		elseif a.target_state == 2 then
-			--
-		elseif a.target_state == 3 then
-			object:add_animation("stalker_2v3", true)
-		elseif a.target_state == 4 then
-			object:add_animation("spit_0", true)
-		end
-	elseif a.body_state == 3 then
-		if a.target_state == 0 then
-			object:add_animation("stalker_3_up", true)
-		elseif a.target_state == 1 then
-			--!!!!
-		elseif a.target_state == 2 then
-			object:add_animation("stalker_3v2", true)
-		elseif a.target_state == 3 then
-			--
-		elseif a.target_state == 4 then
-			--!!!!
-		end
-	elseif a.body_state == 4 then
-		if a.target_state == 0 then
-			object:add_animation("spit_3", true)
-			object:add_animation("stalker_2_up", true)
-		elseif a.target_state == 1 then
-			--!!!!
-		elseif a.target_state == 2 then
-			object:add_animation("spit_3", true)
-		elseif a.target_state == 3 then
-			--!!!!
-		elseif a.target_state == 4 then
-			--
-		end
-	end
-end
 
 
 

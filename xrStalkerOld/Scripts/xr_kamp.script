@@ -22,18 +22,19 @@ class "evaluator_on_position" (property_evaluator)
 function evaluator_on_position:__init(storage) super()
 	self.a = storage
 	--' таблица векторов, содержащих направления на точки рассадки
-	self.vectors = {{1, 	0,	0},
-			{1,	0, 	1},
-			{0, 	0,	1},
-			{-1, 	0,	1},
-			{-1, 	0, 	0},
-			{-1, 	0,	-1},
-			{0, 	0,	-1},
-			{1, 	0,	-1} }
+	self.vectors = {{1,		0,		0},
+					{1,		0, 		1},
+					{0, 	0,		1},
+					{-1, 	0,		1},
+					{-1, 	0, 		0},
+					{-1, 	0,		-1},
+					{0, 	0,		-1},
+					{1, 	0,		-1} }
 end
 function evaluator_on_position:evaluate()
 	local tt
-        --' если позиция еще не выбрана
+	
+    --' если позиция еще не выбрана
 	if self.a.pos_id == -1 then
 		tt = false
 	else
@@ -69,14 +70,14 @@ class "action_go_position" (action_base)
 function action_go_position:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
 	--' таблица векторов, содержащих направления на точки рассадки
-	self.vectors = {{1, 	0,	0},
-			{1,	0, 	1},
-			{0, 	0,	1},
-			{-1, 	0,	1},
-			{-1, 	0, 	0},
-			{-1, 	0,	-1},
-			{0, 	0,	-1},
-			{1, 	0,	-1} }
+	self.vectors = {{1,		0,		0},
+					{1,		0, 		1},
+					{0, 	0,		1},
+					{-1, 	0,		1},
+					{-1, 	0, 		0},
+					{-1, 	0,		-1},
+					{0, 	0,		-1},
+					{1, 	0,		-1} }
 end
 function action_go_position:initialize()
 	action_base.initialize(self)
@@ -87,14 +88,21 @@ function action_go_position:initialize()
 
 	self.object:set_body_state(move.standing)
 	self.object:set_mental_state(anim.free)
-	xr_state.change_state(self.object, 0)
+
+	xr_state.change_state(self.object, xr_state.stand)
 	
-	self.started = false
+	self.begin = false
 end
 function action_go_position:execute ()
-	if self.started == false then
-		self.started = true
-	 
+	action_base.execute (self)
+	
+	if xr_state.finish_state(self.object) ~= true then
+		return
+	end
+	
+	if self.begin == false then
+		self.begin = true
+		
 		--' для начала надо составить список занятых позиций
 		local used = {}
 		local i = 1
@@ -145,7 +153,6 @@ function action_go_position:execute ()
 		end
 		--' если доступных не осталось - никуда его не отправлять
 	end
-	action_base.execute (self)
 end
 function action_go_position:finalize ()
 	self.object:set_movement_type(move.stand)
@@ -165,8 +172,8 @@ function action_go_patrol:initialize()
 	self.object:set_desired_position()
 	self.object:set_desired_direction()    
 
-	xr_state.change_state(self.object, 0)
-	self:reset_scheme()
+	xr_state.change_state(self.object, xr_state.stand)
+	self.begin = false
 end
 function action_go_patrol:reset_scheme()
 	self.move_mgr:initialize()
@@ -179,6 +186,16 @@ function action_go_patrol:reset_scheme()
 end
 function action_go_patrol:execute()
 	action_base.execute (self)
+	
+	if xr_state.finish_state(self.object) ~= true then
+		return
+	end
+
+	if self.begin == false then
+		self.begin = true
+		self:reset_scheme()
+	end
+			
 	self.move_mgr:update()
 end
 function action_go_patrol:end_path(mode, number)
@@ -204,7 +221,7 @@ function action_wait:__init (npc_name,action_name,storage) super (nil,action_nam
 				   maxidle = 10, 
 				   sumidle = 10,
 				   themes = { "weather", "state" } }
-	self.anim = {	idle = 0,
+	self.anim = { idle = 0,
 			begin = nil,
 			maxidle = 5,
 			sumidle = 5,
@@ -223,8 +240,8 @@ function action_wait:initialize()
 end
 function action_wait:execute()
 	action_base.execute (self)
-	if self.a.action == 0 or self.a.action == nil then
-		xr_logic.try_switch_to_another_section(self.object, self.a)	
+	xr_logic.try_switch_to_another_section(self.object, self.a)	
+	if self.a.action == 0 or self.a.action == nil then		
 		local actions = {}
 		local i = 1
 		--' Тут выбор действий
@@ -263,6 +280,9 @@ function action_wait:execute()
 	if self.a.action == 5 then
 		--'!!! ПРОСТО СИДИМ И ВТЫКАЕМ
 		xr_state.change_state(self.object, xr_state.sit_wait)
+		if xr_state.finish_state(self.object) ~= true then
+			return
+		end
 		--' повернуть его лицом к центру
 		local pp = patrol(self.a.center_point):point(0)
 		pp.y = pp.y + 0.7
@@ -378,7 +398,6 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
     st.patrol_path = {}
     st.path_look = {}
     st.pos_id = -1
-    st.body_state = 0
     st.timer = { act1 = {begin = nil, time = 120},
 				act4 = {begin = nil, time = 60}}
 					
