@@ -2,6 +2,7 @@
 #include "ispatial.h"
 #include "render.h"
 #include "xr_object.h"
+#include "PS_Instance.h"
 
 ISpatial_DB					g_SpatialSpace;
 
@@ -214,8 +215,12 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	if (!bValid)	
 	{
 		CObject*	O	= dynamic_cast<CObject*>(S);
-		if	(O)			Debug.fatal("Invalid object position or radius (%s)",O->cName());
-		else			Debug.fatal("Invalid spatial position or radius (%x)",O);
+		if	(O)			Debug.fatal("Invalid OBJECT position or radius (%s)",O->cName());
+		else{
+			CPS_Instance* P = dynamic_cast<CPS_Instance*>(S);
+			if (P)		Debug.fatal("Invalid PS spatial position or radius");
+			else		Debug.fatal("Invalid OTHER spatial position{%3.2f,%3.2f,%3.2f} or radius{%3.2f}",VPUSH(S->spatial.center),S->spatial.radius);
+		}
 	}
 #endif
 
