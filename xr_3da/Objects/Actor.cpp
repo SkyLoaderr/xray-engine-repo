@@ -729,6 +729,7 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 
 void CActor::g_wpn_Set(DWORD id)
 {
+	Msg("CActor::g_wpn_Set(%d), %s",id,Local()?"LOCAL":"REMOTE");
 	switch (id)
 	{
 	case 0: Weapons->ActivateWeapon(CLSID_OBJECT_W_M134);		break; 
