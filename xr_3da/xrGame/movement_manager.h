@@ -18,6 +18,7 @@
 #include "patrol_path_manager.h"
 #include "ai_monster_space.h"
 #include "physicsshellholder.h"
+
 class CPHMovementControl;
 
 namespace MovementManager {
