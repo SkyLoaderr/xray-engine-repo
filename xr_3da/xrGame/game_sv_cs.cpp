@@ -63,7 +63,7 @@ void	game_sv_CS::OnRoundStart	()
 		xrServerEntity*		E	=	spawn_begin	("actor");													// create SE
 		xrSE_Actor*	A			=	(xrSE_Actor*) E;					
 		strcpy					(A->s_name_replace,get_option_s(options,"name","Player"));					// name
-		A->s_team				=	u8(ps->team);																// team
+		A->s_team				=	u8(ps->team);															// team
 		A->s_flags				=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 		assign_RP				(A);
 		spawn_end				(A,get_it_2_id(it));
