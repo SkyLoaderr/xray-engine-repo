@@ -20,6 +20,7 @@ class CAI_PseudoDog : public CAI_Biting, public CJumping {
 	TTime			time_growling;			// время нахождения в состоянии пугания
 
 	ref_sound		psy_effect_sound;		// звук, который играется в голове у актера
+	float			psy_effect_turn_angle;
 
 public:
 					CAI_PseudoDog		();

@@ -6,6 +6,8 @@
 #include "../../ActorEffector.h"
 #include "../stalker/ai_stalker.h"
 #include "pseudodog_state_growling.h"
+#include "../../../CameraBase.h"
+#include "../../../xr_level_controller.h"
 
 
 CAI_PseudoDog::CAI_PseudoDog()
@@ -92,6 +94,8 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	m_anger_loud_threshold		= pSettings->r_float(section, "anger_loud_threshold");
 
 	::Sound->create(psy_effect_sound,TRUE, pSettings->r_string(section,"sound_psy_effect"), SOUND_TYPE_WORLD);
+
+	psy_effect_turn_angle		= angle_normalize(pSettings->r_float(section,"psy_effect_turn_angle"));
 
 	if (MotionMan.start_load_shared(SUB_CLS_ID)) {
 
@@ -309,5 +313,10 @@ void CAI_PseudoDog::play_effect_sound()
 	Fvector pos = pA->Position();
 	pos.y += 1.5f;
 	::Sound->play_at_pos(psy_effect_sound,pA,pos);
+
+	if (pA->cam_Active()) {
+		pA->cam_Active()->Move(Random.randI(2) ? kRIGHT : kLEFT, Random.randF(psy_effect_turn_angle)); 
+		pA->cam_Active()->Move(Random.randI(2) ? kUP	: kDOWN, Random.randF(psy_effect_turn_angle)); 
+	}
 }
 
