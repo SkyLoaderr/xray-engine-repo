@@ -48,24 +48,44 @@ function main()
 	action(                                                                                                       
 	    stalker1,
 	  	move	(move.standing, move.walk,move.line,patrol("way0002")),
-		cond	(cond.time_end, 1000000)
+		cond	(cond.time_end, 5000)
 	)
 	action(                                                                                                       
 	    stalker2,
 	  	move	(move.standing, move.walk,move.line,patrol("way0001")),
-		cond	(cond.time_end, 1000000)
+		cond	(cond.time_end, 5000)
 	)
-	sound_cough:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(4500)
-	sound_holodno:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
-	sound_chto_s_toboy:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
-	sound_dai_vipit:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
-	sound_ti_pyuaniy:play_at_pos		(stalker1,stalker1:position(),0);
-	wait		(2000)
-	sound_skuchno:play_at_pos		(stalker1,stalker1:position(),0);
+	action(                                                                                                       
+	    stalker1,
+		sound	(sound_cough,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	action(                                                                                                       
+	    stalker2,
+		sound	(sound_holodno,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	action(                                                                                                       
+	    stalker1,
+		sound	(sound_chto_s_toboy,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	action(                                                                                                       
+	    stalker2,
+		sound	(sound_dai_vipit,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	action(                                                                                                       
+	    stalker1,
+		sound	(sound_ti_pyuaniy,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	action(                                                                                                       
+	    stalker2,
+		sound	(sound_skuchno,"bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+		cond	(cond.sound_end, 1000)
+	)
+	wait()
 
 	event:clear_callback(true)
 	event:clear_callback(false)
