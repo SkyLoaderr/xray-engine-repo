@@ -3,7 +3,7 @@
 void	CRenderTarget::phase_decompress		()
 {
 	// Common
-	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,D3DCULL_NONE)); 	
+	RCache.set_CullMode			(CULL_NONE);
 	RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
 
 	Fvector2					p0,p1;

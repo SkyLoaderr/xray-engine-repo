@@ -33,12 +33,12 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	RCache.set_ColorWriteEnable		(FALSE);
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+	RCache.set_CullMode				(CULL_CW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	RCache.set_CullMode				(CULL_CCW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 	RCache.set_ColorWriteEnable		();
@@ -56,12 +56,12 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->position) - L->range;
 	if (p_dist<0)					{
-		RCache.set_Element(s_accum_point_s->E[2]);	// back
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
+		RCache.set_Element			(s_accum_point_s->E[2]);	// back
+		RCache.set_CullMode			(CULL_CW);
 	}
 	else							{
-		RCache.set_Element(s_accum_point_s->E[1]);	// front
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
+		RCache.set_Element			(s_accum_point_s->E[1]);	// front
+		RCache.set_CullMode			(CULL_CCW);
 	}
 
 	// 2D texgen (texture adjustment matrix)
@@ -132,12 +132,12 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	RCache.set_ColorWriteEnable		(FALSE);
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+	RCache.set_CullMode				(CULL_CW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 
 	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
-	CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+	RCache.set_CullMode				(CULL_CCW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
 	RCache.set_ColorWriteEnable		();
@@ -155,12 +155,12 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	Fplane	P;	P.n.set(plane.x,plane.y,plane.z); P.d = plane.w;
 	float	p_dist					= P.classify	(L->position) - L->range;
 	if (p_dist<0)					{
-		RCache.set_Element(s_accum_point_uns->E[2]);	// back
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW		)); 	
+		RCache.set_Element			(s_accum_point_uns->E[2]);	// back
+		RCache.set_CullMode			(CULL_CW);
 	}
 	else							{
-		RCache.set_Element(s_accum_point_uns->E[1]);	// front
-		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
+		RCache.set_Element			(s_accum_point_uns->E[1]);	// front
+		RCache.set_CullMode			(CULL_CCW);
 	}
 
 	// 2D texgen (texture adjustment matrix)

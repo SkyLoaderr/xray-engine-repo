@@ -12,7 +12,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	if (1)
 	{
 		// scale to account range and angle
-		float		s			= 2.f*L->range*tanf(L->cone/2.f);	
+		float		s			= 2.f*L->range*_tan(L->cone/2.f);	
 		Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
 		
 		// build final rotation / translation
@@ -44,12 +44,12 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_Geometry				(g_accum_spot);
 
 		// backfaces: if (stencil>=1 && zfail)	stencil = light_id
-		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+		RCache.set_CullMode				(CULL_CW);
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 
 		// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
-		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+		RCache.set_CullMode				(CULL_CCW);
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
 		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
 		RCache.set_ColorWriteEnable		();
@@ -71,8 +71,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 				break;
 			}
 		}
-		if (bIntersect)	{CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CW	));} 	// back
-		else			{CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW	));} 	// front
+		if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
+		else			RCache.set_CullMode			(CULL_CCW);		// front
 	}
 
 	// 2D texgen (texture adjustment matrix)
