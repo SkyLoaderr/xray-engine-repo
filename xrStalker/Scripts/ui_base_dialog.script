@@ -10,7 +10,8 @@
 function main()
 	local dlg = ui_base_dialog.base_dialog()
 	level.start_stop_menu(dlg,true)
-		while true do
+	dlg:InitControls("Base Dialog TEST")
+	while true do
 		wait(3000)
 	end
 end
