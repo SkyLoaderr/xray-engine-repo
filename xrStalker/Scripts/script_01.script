@@ -92,7 +92,7 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\em1_detect_guard6","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\ne_dvigatsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
@@ -101,7 +101,7 @@ function main()
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
-				sound	("scripts\\em1_detect_guard5","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\kto_ti","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 2000)
