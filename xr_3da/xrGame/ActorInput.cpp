@@ -18,20 +18,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	if (IsTalking())	return;
 	if (IsControlled())	return;
 
-	if ( (GAME_PHASE_PENDING == Game().phase) || !g_Alive() )
-	{
-		if (kWPN_FIRE == cmd)	
-		{
-			// Switch our "ready" status
-			NET_Packet			P;
-//			u_EventGen			(P,GEG_PLAYER_READY,ID());
-			u_EventGen		(P,GE_GAME_EVENT,ID()	);
-			P.w_u16(GAME_EVENT_PLAYER_READY);
-
-			u_EventSend			(P);
-		}
-		return;
-	}
 
 	if (!g_Alive()) return;
 
@@ -150,7 +136,6 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		case kJUMP:		mstate_wishful &=~mcJump;		break;
 		case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
 
-		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().phase) g_PerformDrop();				break;
 		case kHyperKick:
 			{
 				u32 FullKickTime = Level().timeServer() - m_dwStartKickTime;
@@ -176,6 +161,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 				Level().Send(P);
 
 			}break;
+		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
 		}
 	}
 }

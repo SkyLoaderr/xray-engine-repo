@@ -33,7 +33,8 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 	CSE_Abstract					*l_tpAbstract = dynamic_cast<CSE_Abstract*>(object);
 	server().entity_Destroy			(l_tpAbstract);
 	object->s_flags.or				(M_SPAWN_UPDATE);
-	server().Process_spawn			(tNetPacket,0,FALSE,l_tpAbstract);
+	ClientID clientID;clientID.set(0);
+	server().Process_spawn			(tNetPacket,clientID,FALSE,l_tpAbstract);
 	object->s_flags.and				(u16(-1) ^ M_SPAWN_UPDATE);
 	R_ASSERT3						(ai().level_graph().valid_vertex_id(object->m_tNodeID),"Invalid vertex for object ",object->s_name_replace);
 
@@ -64,7 +65,8 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 //			R_ASSERT3								(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
 			l_tpALifeDynamicObject->o_Position		= object->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= object->m_tNodeID;
-			server().Process_spawn					(tNetPacket,0,FALSE,l_tpALifeInventoryItem->base());
+			ClientID clientID;clientID.set(0);
+			server().Process_spawn					(tNetPacket,clientID,FALSE,l_tpALifeInventoryItem->base());
 			l_tpALifeDynamicObject->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			l_tpALifeDynamicObject->m_bOnline		= true;
 		}
