@@ -34,7 +34,7 @@ end
 -- запускает на выполнение функцию проверки и перехода
 -- в  новое состояние 
 function FSM:check_condition(to_state_num, cond_func)
-	if cond_func() == true then
+	if cond_func(self.npc) == true then
 		self.current_state = to_state_num
 	end
 end
@@ -45,31 +45,42 @@ function FSM:run()
 		local transition_vector = self.transition_matrix[self.current_state]
 		transition_vector.foreach(transition_vector, 
 								  self.check_condition)
+		wait()
 	end
 end
 
 
 -----------------------------------------------------------------
 -----------------------------------------------------------------
-class 'lua_testclass'
+function if_see_actor(npc)
+	if npc:see(actor) == true then
+		log("saw a fucking actor")
+	end
 
-function lua_testclass:__init(name)
-	self.name = name
+	return false
 end
 
-function lua_testclass:print()
-	print(self.name)
-	log	("fuck")
+function if_see_actor1(npc)
+	if npc:see(actor) == true then
+		log("saw a fucking stalker")
+	end
+
+	return false
 end
 
 
 
 function main()
 	log	("script don't want to work!")
-	local stalker1	= get_level_object("m_stalker_e0000")
 
-	local fsm1 = fsm.FSM(stalker1)
-	log	("and?!")
+
+	stalker00	= get_level_object("m_stalker_e0000")
+	actor = get_actor()
+
+	local fsm_stalker = fsm.FSM(stalker00)
+	fsm_stalker.add_transition(0,1, if_see_actor)
+	fsm_stalker.add_transition(0,2, if_see_actor1)
+	fsm_stalker.run()
 
 	wait()
 end
