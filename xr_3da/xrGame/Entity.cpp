@@ -90,7 +90,7 @@ BOOL CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	HitImpulse				(perc,dir,vLocalDir);
 	
 	// Calc HitAmount
-	float fHitAmount, fOldHealth=fHealth;
+	float fHitAmount=0, fOldHealth=fHealth;
 	if (Local()) 
 	{
 		if (fArmor)

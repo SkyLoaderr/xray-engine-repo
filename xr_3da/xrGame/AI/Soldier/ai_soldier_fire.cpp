@@ -94,7 +94,7 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 	if (E->g_Team()  == g_Team())	
 		return flt_max;		// don't attack our team
 	
-	int	g_strench = E->g_Armor()+E->g_Health();
+	float	g_strench = E->g_Armor()+E->g_Health();
 	
 	if (g_strench <= 0)					
 		return flt_max;		// don't attack dead enemiyes

@@ -336,7 +336,7 @@ void CActor::g_Physics				(Fvector& accel, float jump, float dt)
 		pSounds->PlayAtPos					(sndLanding,this,Position());
 		pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 		Fvector D; D.set					(0,1,0);
-		if (Movement.gcontact_HealthLost)	Hit(int(Movement.gcontact_HealthLost),D,this);
+		if (Movement.gcontact_HealthLost)	Hit(Movement.gcontact_HealthLost,D,this);
 	}
 }
 
