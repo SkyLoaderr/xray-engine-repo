@@ -221,9 +221,8 @@ GE_HIT									// попадание (пулей)
 }
 GE_DIE
 {
-	u16			id_entity;				// кому обязаны этим счастьем
+	u16			id_entity;				// кто умер, dest=кому обязаны этим счастьем
 }
 */
 
 #endif /*_INCDEF_XRMESSAGES_H_*/
-
