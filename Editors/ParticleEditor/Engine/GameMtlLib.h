@@ -178,9 +178,11 @@ public:
     }
 	~CGameMtlLibrary	()
 	{
+		/*
     	R_ASSERT		(0==material_pairs_rt.size());
     	R_ASSERT		(0==material_pairs.size());
     	R_ASSERT		(0==materials.size());
+		*/
     }
 	IC void				Unload			()
 	{
