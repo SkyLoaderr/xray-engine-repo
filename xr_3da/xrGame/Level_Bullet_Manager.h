@@ -9,9 +9,6 @@
 #include "tracer.h"
 
 
-#define STEP_TIME 33
-#define SPEED_LOWER_BOUND 3.f
-
 
 
 //структура, описывающая пулю и ее свойства в полете
@@ -125,14 +122,23 @@ protected:
 
 	//остаток времени, который не был учтен на предыдущем кадре
 	u32	m_dwTimeRemainder;
-	//фиксированное время шага просчета пули
-	u32	m_dwStepTime;
 
 	//материал для пули и осколков (инициализируется в CLevel::Load)
 	u16 bullet_material_idx;
 
 	//отрисовка трассеров от пуль
 	CTracer tracers;
+
+	//фиксированное время шага просчета пули
+	u32	m_dwStepTime;	
+	//минимальная скорость, на которой пуля еще считается
+	static float m_fMinBulletSpeed;
+
+	//константа G
+	float m_fGravityConst;
+	//сопротивление воздуха, процент, который отнимается от скорости
+	//полета пули
+	float m_fAirResistanceK;
 
 	//параметры отрисовки трассеров
 	float m_fTracerWidth;

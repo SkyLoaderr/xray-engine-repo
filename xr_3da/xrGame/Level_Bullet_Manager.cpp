@@ -10,6 +10,7 @@
 #define HIT_POWER_EPSILON 0.05f
 #define WALLMARK_SIZE 0.04f
 
+float CBulletManager::m_fMinBulletSpeed = 3.f;
 
 
 SBullet::SBullet()
@@ -66,13 +67,10 @@ void SBullet::Init(const Fvector& position,
 
 CBulletManager::CBulletManager()
 {
-	m_dwStepTime = STEP_TIME;
-//	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);
 }
 
 CBulletManager::~CBulletManager()
 {
-//	Device.seqRender.Remove		(this);
 }
 
 #define BULLET_MANAGER_SECTION "bullet_manager"
@@ -86,6 +84,15 @@ void CBulletManager::Load		()
 
 	m_fMinViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "min_view_dist");
 	m_fMaxViewDist = pSettings->r_float(BULLET_MANAGER_SECTION, "max_view_dist");
+
+	m_fGravityConst = pSettings->r_float(BULLET_MANAGER_SECTION, "gravity_const");
+	m_fAirResistanceK = pSettings->r_float(BULLET_MANAGER_SECTION, "air_resistance_k");
+
+	//размер шага времени, по которому проигрываются 
+	m_dwStepTime = pSettings->r_u32(BULLET_MANAGER_SECTION,	   "time_step");
+	//минимальная скорость, на которой пуля еще считается
+	m_fMinBulletSpeed = pSettings->r_float(BULLET_MANAGER_SECTION, "min_bullet_speed");
+
 }
 
 void CBulletManager::Clear		()
@@ -146,10 +153,6 @@ void CBulletManager::Update()
 	}
 }
 
-#define GRAVITY_CONST 9.81f
-//сопротивление воздуха, процент, который отнимается от скорости
-//полета пули
-#define AIR_RESISTANCE_K 0.3f
 
 bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 {
@@ -191,10 +194,10 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 		bullet->dir.mul(bullet->speed);
 
 		Fvector air_resistance = bullet->dir;
-		air_resistance.mul(-AIR_RESISTANCE_K*delta_time_sec);
+		air_resistance.mul(-m_fAirResistanceK*delta_time_sec);
 
 		bullet->dir.add(air_resistance);
-		bullet->dir.y -= GRAVITY_CONST*delta_time_sec;
+		bullet->dir.y -= m_fGravityConst*delta_time_sec;
 
 		bullet->speed = bullet->dir.magnitude();
 		//вместо normalize(),	 чтоб не считать 2 раза magnitude()
@@ -204,7 +207,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 		bullet->dir.z /= bullet->speed;
 	}
 
-	if(bullet->speed<SPEED_LOWER_BOUND)
+	if(bullet->speed<m_fMinBulletSpeed)
 		return false;
 
 	return true;

@@ -51,7 +51,7 @@ BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LP
 	}
 
 	//проверить достаточно ли силы хита, чтобы двигаться дальше
-	if(bullet->speed<SPEED_LOWER_BOUND || bullet->flags.test(SBullet::RICOCHET_FLAG))
+	if(bullet->speed<m_fMinBulletSpeed || bullet->flags.test(SBullet::RICOCHET_FLAG))
 		return FALSE;
 	else
 		return TRUE;
