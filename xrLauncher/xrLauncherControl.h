@@ -7,10 +7,6 @@ using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
 
-
-namespace xrLauncher
-{
-
 struct SmodInfo{
 	string128	m_mod_name;
 	string128	m_descr_short;
@@ -18,9 +14,15 @@ struct SmodInfo{
 	string64	m_version;
 	string512	m_www;
 	string512	m_cmd_line;
+	xr_vector<ref_str>* m_credits;
+	SmodInfo() {m_credits = new xr_vector<ref_str>();}
+//	string4096	m_credits;
 };
 typedef xr_vector<SmodInfo> MOD_INFO;
 
+
+namespace xrLauncher
+{
 	/// <summary> 
 	/// Summary for xrLauncherControl
 	///
@@ -42,7 +44,6 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 	void InitModPage();
 	void InitSoundPage();
 	void ApplySoundPage();
-    MOD_INFO*	m_mod_info;
 	protected: 
 		void Dispose(Boolean disposing)
 		{
@@ -52,6 +53,7 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			}
 			__super::Dispose(disposing);
 		}
+	private : MOD_INFO*	m_mod_info;
 	private: System::Windows::Forms::TabControl *  tabControl1;
 	private: System::Windows::Forms::TabPage *  settingsPage;
 	private: System::Windows::Forms::TabPage *  modPage;
@@ -73,11 +75,16 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 	private: System::Windows::Forms::Label *  label1;
 	private: System::Windows::Forms::Label *  label2;
 	private: System::Windows::Forms::Label *  label3;
-
 	private: System::Windows::Forms::Label *  modShortDescrLbl;
 	private: System::Windows::Forms::Label *  modLongDescrLbl;
 	private: System::Windows::Forms::LinkLabel *  modLinkLbl;
 	private: System::Windows::Forms::Label *  modVersionLbl;
+	private: System::Windows::Forms::Button *  runBenchmarkBtn;
+	private: System::Windows::Forms::ListBox *  modCreditsList;
+
+
+
+
 
 
 
@@ -98,6 +105,8 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			this->runStalkerBtn = new System::Windows::Forms::Button();
 			this->settingsPage = new System::Windows::Forms::TabPage();
 			this->modPage = new System::Windows::Forms::TabPage();
+			this->modCreditsList = new System::Windows::Forms::ListBox();
+			this->modVersionLbl = new System::Windows::Forms::Label();
 			this->modRunBtn = new System::Windows::Forms::Button();
 			this->modLinkLbl = new System::Windows::Forms::LinkLabel();
 			this->modLongDescrLbl = new System::Windows::Forms::Label();
@@ -114,10 +123,10 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			this->sndVolMusicTrack = new System::Windows::Forms::TrackBar();
 			this->sndVolEffectTrack = new System::Windows::Forms::TrackBar();
 			this->benchmarkPage = new System::Windows::Forms::TabPage();
+			this->runBenchmarkBtn = new System::Windows::Forms::Button();
 			this->ApplyButton = new System::Windows::Forms::Button();
 			this->OkButton = new System::Windows::Forms::Button();
 			this->CancelButton = new System::Windows::Forms::Button();
-			this->modVersionLbl = new System::Windows::Forms::Label();
 			this->tabControl1->SuspendLayout();
 			this->stalkerPage->SuspendLayout();
 			this->modPage->SuspendLayout();
@@ -125,6 +134,7 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndTargetsUpDown))->BeginInit();
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolMusicTrack))->BeginInit();
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolEffectTrack))->BeginInit();
+			this->benchmarkPage->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// tabControl1
@@ -170,6 +180,7 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			// 
 			// modPage
 			// 
+			this->modPage->Controls->Add(this->modCreditsList);
 			this->modPage->Controls->Add(this->modVersionLbl);
 			this->modPage->Controls->Add(this->modRunBtn);
 			this->modPage->Controls->Add(this->modLinkLbl);
@@ -181,6 +192,25 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			this->modPage->Size = System::Drawing::Size(368, 246);
 			this->modPage->TabIndex = 1;
 			this->modPage->Text = S"MOD";
+			// 
+			// modCreditsList
+			// 
+			this->modCreditsList->BackColor = System::Drawing::SystemColors::Control;
+			this->modCreditsList->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->modCreditsList->Font = new System::Drawing::Font(S"Microsoft Sans Serif", 8.24F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, (System::Byte)204);
+			this->modCreditsList->Location = System::Drawing::Point(8, 168);
+			this->modCreditsList->Name = S"modCreditsList";
+			this->modCreditsList->SelectionMode = System::Windows::Forms::SelectionMode::None;
+			this->modCreditsList->Size = System::Drawing::Size(264, 67);
+			this->modCreditsList->TabIndex = 8;
+			// 
+			// modVersionLbl
+			// 
+			this->modVersionLbl->Location = System::Drawing::Point(8, 136);
+			this->modVersionLbl->Name = S"modVersionLbl";
+			this->modVersionLbl->Size = System::Drawing::Size(352, 16);
+			this->modVersionLbl->TabIndex = 7;
+			this->modVersionLbl->Text = S"version";
 			// 
 			// modRunBtn
 			// 
@@ -194,24 +224,25 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			// 
 			// modLinkLbl
 			// 
-			this->modLinkLbl->Location = System::Drawing::Point(8, 176);
+			this->modLinkLbl->Location = System::Drawing::Point(8, 152);
 			this->modLinkLbl->Name = S"modLinkLbl";
 			this->modLinkLbl->Size = System::Drawing::Size(352, 16);
 			this->modLinkLbl->TabIndex = 4;
 			this->modLinkLbl->TabStop = true;
 			this->modLinkLbl->Text = S"linkLabel1";
+			this->modLinkLbl->LinkClicked += new System::Windows::Forms::LinkLabelLinkClickedEventHandler(this, modLinkLbl_LinkClicked);
 			// 
 			// modLongDescrLbl
 			// 
-			this->modLongDescrLbl->Location = System::Drawing::Point(8, 96);
+			this->modLongDescrLbl->Location = System::Drawing::Point(8, 80);
 			this->modLongDescrLbl->Name = S"modLongDescrLbl";
-			this->modLongDescrLbl->Size = System::Drawing::Size(352, 32);
+			this->modLongDescrLbl->Size = System::Drawing::Size(352, 56);
 			this->modLongDescrLbl->TabIndex = 3;
 			this->modLongDescrLbl->Text = S"long";
 			// 
 			// modShortDescrLbl
 			// 
-			this->modShortDescrLbl->Location = System::Drawing::Point(8, 72);
+			this->modShortDescrLbl->Location = System::Drawing::Point(8, 64);
 			this->modShortDescrLbl->Name = S"modShortDescrLbl";
 			this->modShortDescrLbl->Size = System::Drawing::Size(352, 16);
 			this->modShortDescrLbl->TabIndex = 2;
@@ -219,6 +250,7 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			// 
 			// modList
 			// 
+			this->modList->BackColor = System::Drawing::SystemColors::Control;
 			this->modList->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 			this->modList->Font = new System::Drawing::Font(S"Microsoft Sans Serif", 10.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, (System::Byte)204);
 			this->modList->ItemHeight = 17;
@@ -324,11 +356,21 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			// 
 			// benchmarkPage
 			// 
+			this->benchmarkPage->Controls->Add(this->runBenchmarkBtn);
 			this->benchmarkPage->Location = System::Drawing::Point(4, 22);
 			this->benchmarkPage->Name = S"benchmarkPage";
 			this->benchmarkPage->Size = System::Drawing::Size(368, 246);
 			this->benchmarkPage->TabIndex = 4;
 			this->benchmarkPage->Text = S"Benchmark";
+			// 
+			// runBenchmarkBtn
+			// 
+			this->runBenchmarkBtn->FlatStyle = System::Windows::Forms::FlatStyle::Flat;
+			this->runBenchmarkBtn->Location = System::Drawing::Point(280, 216);
+			this->runBenchmarkBtn->Name = S"runBenchmarkBtn";
+			this->runBenchmarkBtn->Size = System::Drawing::Size(80, 24);
+			this->runBenchmarkBtn->TabIndex = 3;
+			this->runBenchmarkBtn->Text = S"Run Benchmark";
 			// 
 			// ApplyButton
 			// 
@@ -357,14 +399,6 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			this->CancelButton->TabIndex = 3;
 			this->CancelButton->Text = S"Cancel";
 			// 
-			// modVersionLbl
-			// 
-			this->modVersionLbl->Location = System::Drawing::Point(8, 136);
-			this->modVersionLbl->Name = S"modVersionLbl";
-			this->modVersionLbl->Size = System::Drawing::Size(352, 16);
-			this->modVersionLbl->TabIndex = 7;
-			this->modVersionLbl->Text = S"short";
-			// 
 			// xrLauncherControl
 			// 
 			this->AutoScaleBaseSize = System::Drawing::Size(5, 13);
@@ -386,6 +420,7 @@ typedef xr_vector<SmodInfo> MOD_INFO;
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndTargetsUpDown))->EndInit();
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolMusicTrack))->EndInit();
 			(__try_cast<System::ComponentModel::ISupportInitialize *  >(this->sndVolEffectTrack))->EndInit();
+			this->benchmarkPage->ResumeLayout(false);
 			this->ResumeLayout(false);
 
 		}		
@@ -399,6 +434,10 @@ private: System::Void runStalker_Click(System::Object *  sender, System::EventAr
 
 private: System::Void modRunBtn_Click(System::Object *  sender, System::EventArgs *  e);
 		 
+
+private: System::Void modLinkLbl_LinkClicked(System::Object *  sender, System::Windows::Forms::LinkLabelLinkClickedEventArgs *  e)
+		 {
+		 }
 
 };
 }
