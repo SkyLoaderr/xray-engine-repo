@@ -25,12 +25,15 @@ private:
 	};
 	struct	light
 	{
-		
+		xrLIGHT*			L;
+		float				D;
 	};
 private:
 	CObject*				current;
 	vector<caster>			casters;
 	vector<int>				id;
+	vector<light>			lights;
+	vector<xrLIGHT*>		lights_sel;
 public:
 	void					set_object	(CObject*	O);
 	void					add_element	(NODE*		N);

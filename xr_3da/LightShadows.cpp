@@ -61,7 +61,7 @@ public:
 void CLightShadows::calculate	()
 {
 	// sort by distance
-	std::sort(id.begin(),id.end(),pred_casters(this));
+	std::sort	(id.begin(),id.end(),pred_casters(this));
 
 	// iterate on objects
 	int	slot_id		= 0;
@@ -69,5 +69,10 @@ void CLightShadows::calculate	()
 	for (int o_it=0; o_it<id.size(); o_it++)
 	{
 		caster&	C	= casters[id[o_it]];
+		
+		// Select lights
+		lights.clear			();
+		lights_sel.clear		();
+		::Render.Lights.Select	(C.C,C.O->Radius(),lights);
 	}
 }
