@@ -414,3 +414,16 @@ void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMoveme
 		default : NODEFAULT;
 	}
 }
+
+void CAI_Stalker::vfCheckForItems()
+{
+	m_tpWeaponToTake = 0;
+	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+	for (u32 i=0; i<Known.size(); i++) {
+		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(Known[i].key);
+		if (tpWeapon && Weapons->isSlotEmpty(tpWeapon->GetSlot())) {
+			m_tpWeaponToTake = tpWeapon;
+			break;
+		}
+	}
+}

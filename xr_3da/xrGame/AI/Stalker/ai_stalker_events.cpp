@@ -114,10 +114,10 @@ void CAI_Stalker::feel_touch_new				(CObject* O)
 	if (Remote())		return;
 
 	// Now, test for game specific logical objects to minimize traffic
-	Msg("Taking weapon!");
 	CWeapon*		W	= dynamic_cast<CWeapon*>		(O);
 
 	if (W) {
+		Msg("Taking weapon!");
 		NET_Packet		P;
 		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
 		P.w_u16			(u16(O->ID()));

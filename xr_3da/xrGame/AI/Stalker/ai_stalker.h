@@ -215,6 +215,7 @@ private:
 			bool			bfCheckIfCanKillMember			();
 			void			vfSetFire						(bool bFire, CGroup &Group);
 			void			vfStopFire						();
+			void			vfCheckForItems					();
 			
 			// miscellanious
 			void			DropItemSendMessage				();
