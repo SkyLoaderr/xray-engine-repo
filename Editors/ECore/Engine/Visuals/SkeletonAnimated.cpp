@@ -666,9 +666,8 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
         CBoneInstance& BONE_INST	= K->LL_GetBoneInstance(SelfID);
         CBlendInstance& BLEND_INST	= K->LL_GetBlendInstance(SelfID);
 
-        if (BONE_INST.Callback_overwrite && BONE_INST.Callback)
-        {
-            BONE_INST.Callback	(&BONE_INST);
+        if (BONE_INST.Callback_overwrite){
+            if (BONE_INST.Callback)	BONE_INST.Callback(&BONE_INST);
         } else {
             CKey				R[MAX_BLENDED];
             ConsistantKey		S[MAX_BLENDED];

@@ -69,10 +69,9 @@ void CSkeletonRigid::Calculate(BOOL bLight)
 void CBoneDataRigid::Calculate(CKinematics* K, Fmatrix *parent)
 {
     if (K->LL_GetBoneVisible(SelfID)){
-		CBoneInstance& INST	= (CBoneInstance&)K->LL_GetBoneInstance(SelfID);
-        if (INST.Callback_overwrite && INST.Callback)
-        {
-            INST.Callback		(&INST);
+		CBoneInstance& INST			= (CBoneInstance&)K->LL_GetBoneInstance(SelfID);
+        if (INST.Callback_overwrite){
+			if (INST.Callback)		INST.Callback(&INST);
         } else {
             // Build matrix
             INST.mTransform.mul_43	(*parent,bind_transform);
