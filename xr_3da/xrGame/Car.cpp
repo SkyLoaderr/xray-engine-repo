@@ -748,7 +748,7 @@ void CCar::Transmision(size_t num)
 	{
 		m_current_transmission_num=num;
 		m_current_gear_ratio=m_gear_ratious[num];
-		m_current_rpm=m_torque_rpm;
+	//	m_current_rpm=m_torque_rpm;
 	}
 }
 void CCar::CircleSwitchTransmission()
