@@ -686,7 +686,7 @@
             </phrase>
             <phrase id="11">
                 <text>escape_lager_volk_job_11</text>
-                <give_info>esc_dynamite_start</give_info>
+                <give_info>escape_dynamite_start</give_info>
                 <next>111</next>
             </phrase>
             <phrase id="121">
