@@ -143,7 +143,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// SPOT
 	{
-		s_accum_spot_s				= Device.Shader.Create_B	(b_accum_spot_s,			"r2\\accum_spot_s");
+		s_accum_spot_s				= Device.Shader.Create_B	(b_accum_spot_s,			"r2\\accum_spot_s",	"lights\\spot01");
 
 		accum_spot_geom_create		();
 		g_accum_spot				= Device.Shader.CreateGeom	(D3DFVF_XYZ,				g_accum_spot_vb, g_accum_spot_ib);

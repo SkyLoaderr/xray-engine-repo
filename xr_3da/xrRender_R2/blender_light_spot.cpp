@@ -26,7 +26,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 			C.r2_Sampler_rtf		("s_position",		r2_RT_P);
 			C.r2_Sampler_rtf		("s_normal",		r2_RT_N_H);
 			C.r2_Sampler			("s_material",		r2_material,					D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
-			C.r2_Sampler			("s_lightmap",		"lights\\lights_blamplight",	D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+			C.r2_Sampler			("s_lightmap",		C.L_textures[0],				D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 			C.r2_Sampler			("s_smap",			r2_RT_smap_d_depth,				D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
 			C.r2_End				();
 			break;
