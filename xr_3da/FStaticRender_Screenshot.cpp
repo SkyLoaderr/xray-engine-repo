@@ -76,8 +76,8 @@ void CRender::Screenshot		(BOOL bSquare)
 	}
 
 	string64		buf,buf1;
-	strconcat		(buf,Path.SShot,"ss_",Core.UserName,"_",itoa(timeGetTime(),buf1,10));
-	IWriter*		fs  = FS.w_open(buf);
+	strconcat		(buf,"ss_",Core.UserName,"_",itoa(timeGetTime(),buf1,10));
+	IWriter*		fs  = FS.w_open("$screenshots$",buf);
 
 	TGAdesc			p;
 	p.format		= IMG_24B;

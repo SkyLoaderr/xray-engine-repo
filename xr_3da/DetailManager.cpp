@@ -87,13 +87,15 @@ void dump	(CDetailManager::vis_list& lst)
 void CDetailManager::Load		()
 {
 	// Open file stream
-	string256	fn;
-	if (!FS.exist(fn,Path.Current,"level.details"))
+	if (!FS.exist("$level$","level.details"))
 	{
 		dtFS	= NULL;
 		return;
 	}
-	dtFS		= FS.r_open(fn);
+
+	string256			fn;
+	FS.update_path		(fn,"$level$","level.details");
+	dtFS				= FS.r_open(fn);
 
 	// Header
 	dtFS->r_chunk_safe	(0,&dtH,sizeof(dtH));

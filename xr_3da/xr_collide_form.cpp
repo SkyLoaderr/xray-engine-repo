@@ -50,11 +50,9 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	// Locate file
 	string256			full_path;
 	LPCSTR				N = ini->r_string(section,"cform");
-	if (!FS.exist(full_path, Path.Current, N))
-		if (!FS.exist(full_path, Path.CForms, N)){
-			Msg("Can't find cform file '%s'.",N);
-			THROW;
-		}
+	if (!FS.exist(full_path, "$level$", N)) {
+		Debug.fatal("Can't find cform file '%s'.",N);
+	}
 
 	// Actual load
 	IReader*			f	= FS.r_open(full_path);
@@ -68,8 +66,8 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	Fvector*	verts	= (Fvector*)f->pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	model.build			( verts, H.vertcount, tris, H.facecount );
-	Msg("* CFORM memory usage: %dK",model.memory()/1024);
-	FS.r_close		(f);
+	Msg					("* CFORM memory usage: %dK",model.memory()/1024);
+	FS.r_close			(f);
 
 	return				TRUE;
 }

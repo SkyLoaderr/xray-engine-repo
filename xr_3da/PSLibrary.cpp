@@ -11,7 +11,8 @@
 void CPSLibrary::xrStartUp()
 {
 	vector<PS::SDef>	library;
-	string256 fname; strconcat	(fname,Path.GameData,"particles.xr");
+	string256			fname; 
+	FS.update_path		(fname,"$gamedata$","particles.xr");
 	if (!psLibrary_Load(fname,library))	Msg("* PS Library: Unsuported version.");
 	else											
 	{

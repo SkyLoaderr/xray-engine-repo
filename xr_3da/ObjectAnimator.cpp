@@ -49,12 +49,12 @@ void CObjectAnimator::SetActiveMotion(COMotion* mot, bool bLoop)
 void CObjectAnimator::LoadMotions(const char* fname)
 {
 	string256			full_path;
-	if (!FS.exist( full_path, Path.Current, fname ))
-		if (!FS.exist( full_path, Path.Meshes, fname ))
+	if (!FS.exist( full_path, "$level$", fname ))
+		if (!FS.exist( full_path, "$game_meshes$", fname ))
 			Debug.fatal("Can't find motion file '%s'.",fname);
 
 	IReader* F			= FS.r_open(full_path);
-	u32 dwMCnt		= F->r_u32(); VERIFY(dwMCnt);
+	u32 dwMCnt			= F->r_u32(); VERIFY(dwMCnt);
 	for (u32 i=0; i<dwMCnt; i++){
 		COMotion* M		= xr_new<COMotion> ();
 		bool bRes		= M->Load(*F);
