@@ -170,7 +170,7 @@ COLLIDER::COLLIDER()
 
 COLLIDER::~COLLIDER()
 {
-	r_free			();
+//	r_free			();
 }
 
 RESULT& COLLIDER::r_add	()
@@ -179,14 +179,14 @@ RESULT& COLLIDER::r_add	()
 	{
 		if (rd_size)	rd_size	*=	2;
 		else			rd_size	=	32;
-		rd_ptr			= (RESULT*) realloc(rd_ptr,rd_size*sizeof(RESULT));
+		rd_ptr			= (RESULT*) xr_realloc(rd_ptr,rd_size*sizeof(RESULT));
 	}
 	return rd_ptr[rd_count++];
 }
 
 void COLLIDER::r_free	()
 {
-	if (rd_ptr)		{ free(rd_ptr); rd_ptr = 0; }
+	xr_free			(rd_ptr);
 	rd_count		= 0;
 	rd_size			= 0;
 }
