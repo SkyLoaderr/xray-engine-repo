@@ -12,10 +12,11 @@ function init    (obj)
 
     local name, command, group, member = str_split (obj:name ())
     if name == "patrol" then
-       --printf ("Bind command %s, group %d, member %d", command, group, member)
---       xr_patrol2.AddToPatrol (obj, command, group, member)
        xr_motivator.AddToMotivator(obj)
        return
+    elseif name == "report" then
+       xr_report.add_to_binder (obj)
+       return    
     elseif name == "tradeseller" or name == "kamp" or name == "commander" or name == "scout" then
        xr_motivator.AddToMotivator(obj)
        return
