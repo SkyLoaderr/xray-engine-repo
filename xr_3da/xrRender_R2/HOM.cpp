@@ -297,7 +297,7 @@ void CHOM::OnRender	()
 			DEFINE_VECTOR		(FVF::L,LVec,LVecIt);
 			static LVec	poly;	poly.resize(m_pModel->get_tris_count()*3);
 			static LVec	line;	line.resize(m_pModel->get_tris_count()*6);
-			for (u32 it=0; it<m_pModel->get_tris_count(); it++){
+			for (int it=0; it<m_pModel->get_tris_count(); it++){
 				CDB::TRI* T		= m_pModel->get_tris()+it;
 				Fvector* verts	= m_pModel->get_verts();
 				poly[it*3+0].set(*(verts+T->verts[0]),0x80FFFFFF);
