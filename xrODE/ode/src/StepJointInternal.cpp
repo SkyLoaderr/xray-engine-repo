@@ -219,21 +219,21 @@ dInternalStepJointContact (dxWorld * world, dxBody * body[2], dReal * GI[2], dRe
 	dTimerNow ("solving LCP problem");
 #	endif
 	dReal lambda[3];
-///	dReal lambda1[3];
+	//dReal lambda1[3];
 	dReal residual[3];
-	dReal lo[3], hi[3],lo1[6],hi1[6];
+	dReal lo[3], hi[3];//,lo1[6],hi1[6];
 	memcpy (lo, Jinfo.lo, 3 * sizeof (dReal));
 	memcpy (hi, Jinfo.hi, 3 * sizeof (dReal));
 	//memcpy (lo1, Jinfo.lo, 3 * sizeof (dReal));
 	//memcpy (hi1, Jinfo.hi, 3 * sizeof (dReal));
 
-		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo1, hi1, Jinfo.findex);
-	//	dSolveLCP (m, A, lambda1, rhs, residual, nub, lo, hi, Jinfo.findex);
-//	dReal dif[3];
-//	dif[0]=lambda1[0]-lambda[0];lambda1[1]=lambda1[1]-lambda[1];lambda1[2]=lambda1[2]-lambda[2];
-//	dReal lengh=dDOT(lambda,lambda);
-//	dReal ldif=dDOT(dif,dif);
-//	if(lengh>0.001&&ldif/lengh>0.1)
+		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
+	//	dSolveLCP (m, A, lambda1, rhs, residual, nub, lo1, hi1, Jinfo.findex);
+	//dReal dif[3];
+	//dif[0]=lambda1[0]-lambda[0];lambda1[1]=lambda1[1]-lambda[1];lambda1[2]=lambda1[2]-lambda[2];
+	//dReal lengh=dDOT(lambda,lambda);
+	//dReal ldif=dDOT(dif,dif);
+	//if(lengh>0.001&&ldif/lengh>0.1)
 	//	i++;
 	// compute the constraint force `cforce'
 #	ifdef TIMING
