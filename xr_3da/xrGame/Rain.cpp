@@ -272,6 +272,7 @@ void	CEffect_Rain::Render	()
 	// Particles
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
+	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
 	while (P)	{
 		Particle*	next	= P->next;
 
