@@ -14,7 +14,7 @@ public:
 	
 	CFrustum*		F;
 	
-	IC void			_init		(COLLIDER* CL, TRI* T, CFrustum* _F)
+	IC void			_init		(COLLIDER* CL, TRI* T, const CFrustum* _F)
 	{
 		dest		= CL;
 		tris		= T;
@@ -45,11 +45,11 @@ public:
 			R.id		= prim;
 		}
 	}
-
+	
 	void			_stab		(const AABBNoLeafNode* node, BYTE mask)
 	{
 		Fvector	P;
-
+		
 		// Actual frustum/aabb test
 		EFC_Visible	result		= _box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents,mask);
 		if (fcvNone == result)	return;
@@ -66,3 +66,37 @@ public:
 		else					_stab	(node->GetNeg(),mask);
 	}
 };
+
+void COLLIDER::frustum_query(const MODEL *m_def, const CFrustum& F)
+{
+	// Get nodes
+	const AABBNoLeafTree*	T	= (const AABBNoLeafTree*)m_def->tree->GetTree();
+	const AABBNoLeafNode*	N	= T->GetNodes();
+	const BYTE				mask= F.getMask();
+	
+	// Binary dispatcher
+	if (frustum_mode&OPT_FULL_TEST) 
+	{
+		if (frustum_mode&OPT_ONLYFIRST)
+		{
+			frustum_collider<true,true> BC;
+			BC._init	(this,m_def->tris,&F);
+			BC._stab	(N,mask);
+		} else {
+			frustum_collider<true,false> BC;
+			BC._init	(this,m_def->tris,&F);
+			BC._stab	(N,mask);
+		}
+	} else {
+		if (frustum_mode&OPT_ONLYFIRST)
+		{
+			frustum_collider<false,true> BC;
+			BC._init	(this,m_def->tris,&F);
+			BC._stab	(N,mask);
+		} else {
+			frustum_collider<false,false> BC;
+			BC._init	(this,m_def->tris,&F);
+			BC._stab	(N,mask);
+		}
+	}
+}

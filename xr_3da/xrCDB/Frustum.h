@@ -77,11 +77,9 @@ public:
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest);
 
-	BYTE			getMask				() {
-		return (1<<p_count)-1;
-	}
+	BYTE			getMask				() const { return (1<<p_count)-1; }
 
-	IC EFC_Visible	testSphere			(Fvector& c, float r, BYTE& test_mask)
+	IC EFC_Visible	testSphere			(Fvector& c, float r, BYTE& test_mask) const
 	{
 		BYTE	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
@@ -94,7 +92,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC BOOL			testSphere_dirty		(Fvector& c, float r)
+	IC BOOL			testSphere_dirty		(Fvector& c, float r) const
 	{
 		switch (p_count) {
 		case 8:	if (planes[7].classify(c)>r)	return FALSE;
@@ -110,7 +108,7 @@ public:
 		}
 		return TRUE;
 	}
-	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, BYTE& test_mask)
+	IC EFC_Visible	testAABB			(Fvector &m, Fvector &M, BYTE& test_mask) const
 	{
 		// go for trivial rejection or acceptance using "faster overlap test"
 		BYTE		bit = 1;
@@ -127,7 +125,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, BYTE& test_mask)
+	IC EFC_Visible	testSAABB			(Fvector& c, float r, Fvector &m, Fvector &M, BYTE& test_mask) const
 	{
 		BYTE	bit = 1;
 		for (int i=0; i<p_count; i++, bit<<=1)
@@ -147,7 +145,7 @@ public:
 		}
 		return test_mask ? fcvPartial:fcvFully;
 	}
-	IC BOOL			testPolyInside		(Fvector* p, int count)
+	IC BOOL			testPolyInside		(Fvector* p, int count) const
 	{
 		Fvector* e = p+count;
 		for (int i=0; i<p_count; i++)
