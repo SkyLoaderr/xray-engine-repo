@@ -68,7 +68,11 @@ void CPHCommander::update()
 			continue;
 		}
 
-		if((*i)->obsolete())remove_call(i);
+		if((*i)->obsolete())
+		{
+			remove_call(i);
+			continue;
+		}
 		++i;
 	}
 }
