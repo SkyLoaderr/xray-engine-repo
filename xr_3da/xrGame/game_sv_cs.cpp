@@ -189,8 +189,8 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				l_pMBall = NULL;									// Отбираем у игрока мяч
 				vector<u16>&	C			=	A->children;
 				for (u32 it=0; it<C.size(); it++) {
-					xrServerEntity* Et = S->ID_to_entity(C[it]);
-					if(l_pMBall = dynamic_cast<xrSE_Target_CS*>(Et)) break;
+					l_pMBall = dynamic_cast<xrSE_Target_CS*>(S->ID_to_entity(C[it]));
+					if (l_pMBall) break;
 				}
 				R_ASSERT(l_pMBall);
 				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Кладем мяч в бочку
@@ -213,14 +213,15 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 				l_pMBall = NULL;									// Достаем мяч из бочки
 				vector<u16>&	C			=	l_pCSCask->children;
 				for (u32 it=0; it<C.size(); it++) {
-					xrServerEntity* Et = S->ID_to_entity(C[it]);
-					if(l_pMBall = dynamic_cast<xrSE_Target_CS*>(Et)) break;
+					l_pMBall = dynamic_cast<xrSE_Target_CS*>(S->ID_to_entity(C[it]));
+					if(l_pMBall) break;
 				}
-				R_ASSERT(l_pMBall);
-				S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Отдаем игроку
-				ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
-				teams[(ps_who->team+1)%2].num_targets--;
-				signal_Syncronize();
+				if (l_pMBall){
+					S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Отдаем игроку
+					ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
+					teams[(ps_who->team+1)%2].num_targets--;
+					signal_Syncronize();
+				}
 				return false;
 			}
 		}
