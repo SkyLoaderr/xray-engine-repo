@@ -91,7 +91,7 @@ IC T	rad2deg			( T val )	{ return (val*T(180)/T(M_PI)); };
 
 // clamping/snapping
 template <class T>
-IC void clamp( T& val, const T _low, const T _high ){
+IC void clamp( T& val, const T& _low, const T& _high ){
 	if( val<_low ) val = _low; else if( val>_high ) val = _high;
 };
 IC float snapto( float value, float snap ){
