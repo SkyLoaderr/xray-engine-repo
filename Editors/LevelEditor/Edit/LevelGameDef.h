@@ -158,7 +158,7 @@ public:
 		R_ASSERT(NPC_POINT_VERSION != dwVersion);
 
 		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_DATA));
-		fs.r_stringZ				(caModel);
+		fs.r_stringZ				(caModel,sizeof(caModel));
 		ucTeam						= fs.r_u8();
 		ucSquad						= fs.r_u8();
 		ucGroup						= fs.r_u8();
@@ -169,7 +169,7 @@ public:
 		fIncreaseCoefficient		= fs.r_float();
 		fAnomalyDeathProbability	= fs.r_float();
 		string512					tmp_caRouteGraphPoints;
-		fs.r_stringZ				(tmp_caRouteGraphPoints);
+		fs.r_stringZ				(tmp_caRouteGraphPoints,sizeof(tmp_caRouteGraphPoints));
 		caRouteGraphPoints			= tmp_caRouteGraphPoints;
 	}
 #ifdef _EDITOR

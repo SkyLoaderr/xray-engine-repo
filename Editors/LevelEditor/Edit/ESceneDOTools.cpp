@@ -249,7 +249,7 @@ bool EDetailManager::LoadColorIndices(IReader& F)
 		index			= F.r_u32();
         ref_cnt			= F.r_u8();
 		for (int j=0; j<ref_cnt; j++){
-        	F.r_stringZ	(buf);
+        	F.r_stringZ	(buf,sizeof(buf));
             EDetail* DO	= FindDOByName(buf);
             if (DO) 	m_ColorIndices[index].push_back(DO);    
             else		bRes=false;
@@ -298,7 +298,7 @@ bool EDetailManager::Load(IReader& F)
 		int snap_cnt 		= F.r_u32();
         if (snap_cnt){
 	        for (int i=0; i<snap_cnt; i++){
-    	    	F.r_stringZ	(buf);
+    	    	F.r_stringZ	(buf,sizeof(buf));
         	    CCustomObject* O = Scene->FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
             	if (!O)		ELog.Msg(mtError,"EDetailManager: Can't find snap object '%s'.",buf);
 	            else		m_SnapObjects.push_back(O);
@@ -311,7 +311,7 @@ bool EDetailManager::Load(IReader& F)
 
 	// base texture
 	if(F.find_chunk(DETMGR_CHUNK_BASE_TEXTURE)){
-	    F.r_stringZ		(buf);
+	    F.r_stringZ		(buf,sizeof(buf));
     	if (m_Base.LoadImage(buf)){
 		    m_Base.CreateShader();
 		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);

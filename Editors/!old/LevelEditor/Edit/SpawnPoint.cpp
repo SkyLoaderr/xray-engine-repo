@@ -145,7 +145,7 @@ void CSpawnPoint::SSpawnData::Save(IWriter& F)
 bool CSpawnPoint::SSpawnData::Load(IReader& F)
 {
     string64 			temp;
-    F.r_stringZ			(temp);
+    F.r_stringZ			(temp,sizeof(temp));
 
     NET_Packet 			Packet;
     R_ASSERT(F.find_chunk(SPAWNPOINT_CHUNK_SPAWNDATA));

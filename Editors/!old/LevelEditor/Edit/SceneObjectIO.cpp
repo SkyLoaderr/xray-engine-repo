@@ -23,7 +23,7 @@ bool CSceneObject::Load(IReader& F)
     bool bRes = true;
 	do{
         u32 version = 0;
-        char buf[1024];
+        string1024 buf;
         R_ASSERT(F.r_chunk(SCENEOBJ_CHUNK_VERSION,&version));
         if ((version!=0x0010)&&(version!=SCENEOBJ_CURRENT_VERSION)){
             ELog.DlgMsg( mtError, "CSceneObject: unsupported file version. Object can't load.");
@@ -43,7 +43,7 @@ bool CSceneObject::Load(IReader& F)
         R_ASSERT(F.find_chunk(SCENEOBJ_CHUNK_REFERENCE));
         m_Version	= F.r_s32();
         F.r_s32		(); // advance (old read vers)
-        F.r_stringZ	(buf);
+        F.r_stringZ	(buf,sizeof(buf));
         if (!SetReference(buf)){
             ELog.Msg( mtError, "CSceneObject: '%s' not found in library", buf );
             bRes = false;

@@ -78,7 +78,7 @@ bool CEditableObject::ExportLWO(LPCSTR fname)
 			// vmap&vmad
 			for (VMapIt vm_it=MESH->m_VMaps.begin(); vm_it!=MESH->m_VMaps.end(); vm_it++){
 				st_VMap* vmap = *vm_it;
-				F->begin_vmap(vmap->polymap, (vmap->type==vmtUV)?ID_TXUV:ID_WGHT, vmap->dim, vmap->name);
+				F->begin_vmap(vmap->polymap, (vmap->type==vmtUV)?ID_TXUV:ID_WGHT, vmap->dim, vmap->name.c_str());
 					if (vmap->polymap)	for (int k=0; k<vmap->size(); k++) F->w_vmad(vmap->vindices[k],vmap->pindices[k],vmap->dim,vmap->getVMdata(k));
 					else				for (int k=0; k<vmap->size(); k++) F->w_vmap(vmap->vindices[k],vmap->dim,vmap->getVMdata(k));
 				F->end_vmap();

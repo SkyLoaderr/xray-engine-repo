@@ -420,11 +420,11 @@ bool CPortal::Load(IReader& F){
 	CCustomObject::Load(F);
 
 	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_FRONT)){
-        F.r_stringZ	(buf);
+        F.r_stringZ	(buf,sizeof(buf));
         m_SectorFront=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 	if (F.find_chunk	(PORTAL_CHUNK_SECTOR_BACK)){
-        F.r_stringZ	(buf);
+        F.r_stringZ	(buf,sizeof(buf));
 		m_SectorBack=(CSector*)Scene->FindObjectByName(buf,OBJCLASS_SECTOR);
     }
 

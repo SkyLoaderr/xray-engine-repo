@@ -125,9 +125,9 @@ bool CGlow::RayPick(float& distance, const Fvector& start, const Fvector& direct
 	return false;
 }
 
-bool CGlow::Load(IReader& F){
+bool CGlow::Load(IReader& F)
+{
 	u32 version = 0;
-    string256 buf;
 
     R_ASSERT(F.r_chunk(GLOW_CHUNK_VERSION,&version));
     if((version!=0x0011)&&(version!=GLOW_VERSION)){
@@ -138,11 +138,11 @@ bool CGlow::Load(IReader& F){
 	CCustomObject::Load(F);
 
     if (F.find_chunk(GLOW_CHUNK_SHADER)){
-    	F.r_stringZ (buf); m_ShaderName = buf;
+    	F.r_stringZ (m_ShaderName);
     }
 
     R_ASSERT(F.find_chunk(GLOW_CHUNK_TEXTURE));
-	F.r_stringZ	(buf); m_TexName = buf;
+	F.r_stringZ	(m_TexName);
 
     R_ASSERT(F.find_chunk(GLOW_CHUNK_PARAMS));
 	m_fRadius  		= F.r_float();

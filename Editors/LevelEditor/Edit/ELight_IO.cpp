@@ -83,13 +83,13 @@ bool CLight::Load(IReader& F)
     } 
 
     if (F.find_chunk(LIGHT_CHUNK_ANIMREF)){
-    	F.r_stringZ(buf);
+    	F.r_stringZ(buf,sizeof(buf));
         m_pAnimRef	= LALib.FindItem(buf);
         if (!m_pAnimRef) ELog.Msg(mtError, "Can't find light animation: %s",buf);
     }
 
     if (F.find_chunk(LIGHT_CHUNK_FALLOFF_TEXTURE)){
-    	F.r_stringZ(buf);	m_FalloffTex = buf;
+    	F.r_stringZ(m_FalloffTex);
     }
 
     if (F.find_chunk(LIGHT_CHUNK_FUZZY_DATA)){

@@ -343,7 +343,8 @@ void CSector::GetCounts(int* objects, int* meshes, int* faces)
 }
 //----------------------------------------------------
 
-void CSector::LoadSectorDef( IReader* F ){
+void CSector::LoadSectorDef( IReader* F )
+{
 	string256 o_name="";
 	string256 m_name="";
 
@@ -351,7 +352,7 @@ void CSector::LoadSectorDef( IReader* F ){
 
 	// sector item
     R_ASSERT(F->find_chunk(SECTOR_CHUNK_ONE_ITEM));
-	F->r_stringZ(o_name);
+	F->r_stringZ(o_name,sizeof(o_name));
 	sitem.object=(CSceneObject*)Scene->FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
     if (sitem.object==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
@@ -368,7 +369,7 @@ void CSector::LoadSectorDef( IReader* F ){
 //        m_bHasLoadError = true;
 //     	return;
 //    }
-	F->r_stringZ(m_name);
+	F->r_stringZ(m_name,sizeof(m_name));
 	sitem.mesh=sitem.object->GetReference()->FindMeshByName(m_name);
     if (sitem.mesh==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
@@ -379,7 +380,8 @@ void CSector::LoadSectorDef( IReader* F ){
     sector_items.push_back(sitem);
 }
 
-bool CSector::Load(IReader& F){
+bool CSector::Load(IReader& F)
+{
 	u32 version = 0;
 
     char buf[1024];
@@ -414,7 +416,8 @@ bool CSector::Load(IReader& F){
     return true;
 }
 
-void CSector::Save(IWriter& F){
+void CSector::Save(IWriter& F)
+{
 	CCustomObject::Save(F);
 
 	F.open_chunk	(SECTOR_CHUNK_VERSION);
