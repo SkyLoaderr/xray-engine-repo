@@ -2638,16 +2638,6 @@
 				Name="ANavigation"
 				Filter="">
 				<Filter
-					Name="AI_ObjectLocation"
-					Filter="">
-					<File
-						RelativePath=".\ai_object_location.h">
-					</File>
-					<File
-						RelativePath=".\ai_object_location_inline.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="GameGraph"
 					Filter="">
 					<File
@@ -2720,6 +2710,16 @@
 					</File>
 					<File
 						RelativePath=".\level_graph_vertex_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="ObjectLocation"
+					Filter="">
+					<File
+						RelativePath=".\ai_object_location.h">
+					</File>
+					<File
+						RelativePath=".\ai_object_location_inline.h">
 					</File>
 				</Filter>
 				<Filter
