@@ -232,7 +232,6 @@ void CTrade::ShowItems()
 	u32			l_dwCost = 0;
 	CurName[0]	= 0;
 
-	GetTradeInv(pThisType)
 	PSPIItem	B = GetTradeInv(pThis)->m_all.begin(), I = B;
 	PSPIItem	E = GetTradeInv(pThis)->m_all.end();
 
@@ -368,5 +367,5 @@ CInventory *CTrade::GetTradeInv(SInventoryOwner owner)
 {
 	R_ASSERT(owner.type != TT_NONE);
 
-	return ((owner.type == TT_TRADER) ? (&owner.inv_owner->m_ammunition_depot) : (&owner.inv_owner->m_inventory));
+	return ((owner.type == TT_TRADER) ? (&owner.inv_owner->m_trade_storage) : (&owner.inv_owner->m_inventory));
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 class CInventoryOwner;
-
+class CInventory;
 
 struct TradeFactors {
 	float	TraderBuyPriceFactor;

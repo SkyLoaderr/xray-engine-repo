@@ -26,8 +26,6 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 
 	u16 id;
-	CObject* O;
-
 	switch (type)
 	{
 	case GE_BUY:
