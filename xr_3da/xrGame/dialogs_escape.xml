@@ -582,5 +582,79 @@
                 <next>6</next>
             </phrase>
         </phrase_list>
-    </dialog>
+    </dialog>    
+    <dialog id="escape_factory_attackers">
+        <phrase_list>
+            <phrase id="1">
+                <text></text>
+                <next>11</next>
+                <next>12</next>
+            </phrase>
+            <phrase id="113">
+                <text>escape_factory_attackers_113</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>go_to_vodka</give_info>
+            </phrase>
+            <phrase id="111">
+                <text>escape_factory_attackers_111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="112">
+                <text>escape_factory_attackers_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="1121">
+                <text>escape_factory_attackers_1121</text>
+                <next>11211</next>
+                <next>11212</next>
+            </phrase>
+            <phrase id="11211">
+                <text>escape_factory_attackers_11211</text>
+                <precondition>dialogs.dont_have_a_vodka</precondition>
+                <next>112111</next>
+            </phrase>
+            <phrase id="11212">
+                <text>escape_factory_attackers_11212</text>
+                <precondition>dialogs.have_a_vodka</precondition>
+                <next>112121</next>
+            </phrase>
+            <phrase id="1121211">
+                <text>escape_factory_attackers_1121211</text>
+                <give_info>sniper_dead</give_info>
+            </phrase>
+            <phrase id="1121111">
+                <text>escape_factory_attackers_1121111</text>
+                <action>dialogs.break_dialog</action>
+                <give_info>go_to_vodka</give_info>
+            </phrase>
+            <phrase id="12">
+                <text>escape_factory_attackers_12</text>
+                <has_info>go_to_vodka</has_info>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="112121">
+                <text>escape_factory_attackers_112121</text>
+                <action>dialogs.transfer_vodka</action>
+                <next>1121211</next>
+            </phrase>
+            <phrase id="11">
+                <text>escape_factory_attackers_11</text>
+                <dont_has_info>go_to_vodka</dont_has_info>
+                <next>111</next>
+                <next>112</next>
+                <next>113</next>
+            </phrase>
+            <phrase id="112111">
+                <text>escape_factory_attackers_112111</text>
+                <give_info>go_to_vodka</give_info>
+                <next>1121111</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>    
 </game_dialogs>

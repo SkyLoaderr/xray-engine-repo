@@ -222,9 +222,6 @@
 					RelativePath=".\Config\gameplay\dialogs_escape.xml">
 				</File>
 				<File
-					RelativePath=".\Config\gameplay\dialogs_escape_1.xml">
-				</File>
-				<File
 					RelativePath=".\Config\gameplay\dialogs_garbage.xml">
 				</File>
 				<File
@@ -371,9 +368,6 @@
 				<Filter
 					Name="rus"
 					Filter="">
-					<File
-						RelativePath=".\Config\text\rus\dialogs_escape_1_string.xml">
-					</File>
 					<File
 						RelativePath=".\Config\text\rus\stable_dialogs_agroprom.xml">
 					</File>
