@@ -39,29 +39,40 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		ConfigName.0 = Debug
-		ConfigName.1 = Release
+		ConfigName.1 = Mixed
+		ConfigName.2 = Release
 	EndGlobalSection
 	GlobalSection(ProjectDependencies) = postSolution
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Debug.ActiveCfg = Debug|Win32
 		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Debug.Build.0 = Debug|Win32
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Mixed.ActiveCfg = Mixed|Win32
+		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Mixed.Build.0 = Mixed|Win32
 		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Release.ActiveCfg = Release|Win32
 		{4E9E2169-B88E-44A8-978E-C6DBF32DE074}.Release.Build.0 = Release|Win32
 		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Debug.ActiveCfg = Debug|Win32
 		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Debug.Build.0 = Debug|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Mixed.ActiveCfg = Mixed|Win32
+		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Mixed.Build.0 = Mixed|Win32
 		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Release.ActiveCfg = Release|Win32
 		{3927A6DA-ECFE-4298-B2A8-B21ECD4E6373}.Release.Build.0 = Release|Win32
 		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Debug.ActiveCfg = Debug|Win32
 		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Debug.Build.0 = Debug|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Mixed.ActiveCfg = Mixed|Win32
+		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Mixed.Build.0 = Mixed|Win32
 		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Release.ActiveCfg = Release|Win32
 		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}.Release.Build.0 = Release|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Debug.ActiveCfg = Debug|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Debug.Build.0 = Debug|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Mixed.ActiveCfg = Mixed|Win32
+		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Mixed.Build.0 = Mixed|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.ActiveCfg = Release|Win32
 		{25B60978-8467-4263-A6EB-CB3BB108F8BF}.Release.Build.0 = Release|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Debug.ActiveCfg = Debug|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Debug.Build.0 = Debug|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Mixed.ActiveCfg = Mixed|Win32
+		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Mixed.Build.0 = Mixed|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.ActiveCfg = Release|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.Build.0 = Release|Win32
 	EndGlobalSection
