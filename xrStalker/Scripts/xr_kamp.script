@@ -127,7 +127,7 @@ function action_go_position:execute ()
 		self.started = true
 	 
 		-- для начала надо составить список занятых позиций
-		self.object:set_item(object.idle, self.object:best_weapon())
+--		self.object:set_item(object.idle, self.object:best_weapon())
 		local used = {}
 		local i = 1
 		for key,value in xr_motivator.storage do 
