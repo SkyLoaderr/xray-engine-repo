@@ -141,8 +141,13 @@ void			CUIGameAHunt::OnFrame()
 				game_TeamState team0 = Game().teams[0];
 				game_TeamState team1 = Game().teams[1];
 
-				StaticMsg.Out					(0.0f, -0.9f, "Your Team has : %3d Artefacts from %3d",
-					Game().teams[pCurActor->g_Team()-1].score, Game().m_ArtefactsNum);
+				StaticMsg.Out	(0.0f, -0.9f, "Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
+					Game().teams[pCurActor->g_Team()-1].score, 
+					Game().teams[1 - (pCurActor->g_Team()-1)].score, 
+					Game().m_ArtefactsNum);
+
+//				StaticMsg.Out					(0.0f, -0.9f, "Your Team has : %3d Artefacts from %3d",
+//					Game().teams[pCurActor->g_Team()-1].score, Game().m_ArtefactsNum);
 				StaticMsg.Update				();
 
 				if (Game().m_ArtefactBearerID == 0)
