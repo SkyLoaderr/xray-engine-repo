@@ -28,7 +28,7 @@ public:
 	void			set_default		            ();
 	void			clamp			            ();
 	void			lerp			            (CSoundRender_Environment& A, CSoundRender_Environment& B, float f);
-	void			load			            (IReader* fs);
+	bool			load			            (IReader* fs);
 	void			save			            (IWriter* fs);
 };
 

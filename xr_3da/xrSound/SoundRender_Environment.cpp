@@ -73,7 +73,7 @@ void CSoundRender_Environment::clamp		()
     ::clamp(AirAbsorptionHF,     	EAXLISTENER_MINAIRABSORPTIONHF, 	EAXLISTENER_MAXAIRABSORPTIONHF		);
 }
 
-void CSoundRender_Environment::load			(IReader* fs)
+bool CSoundRender_Environment::load			(IReader* fs)
 {
 	version							= fs->r_u32();
 
@@ -92,7 +92,10 @@ void CSoundRender_Environment::load			(IReader* fs)
         EnvironmentSize     		= fs->r_float();
         EnvironmentDiffusion		= fs->r_float();
         AirAbsorptionHF     		= fs->r_float();
+
+        return true;
     }
+    return false;
 }
 
 void CSoundRender_Environment::save	(IWriter* fs)
@@ -124,8 +127,7 @@ void	SoundEnvironment_LIB::Load	(LPCSTR name)
 	for (u32 chunk=0; 0!=(C=F->open_chunk(chunk)); chunk++)
 	{
 		CSoundRender_Environment*	E	= xr_new<CSoundRender_Environment>	();
-		E->load							(C);
-		library.push_back				(E);
+		if (E->load(C))	library.push_back(E);
         C->close		();
 	}
 	FS.r_close			(F);
