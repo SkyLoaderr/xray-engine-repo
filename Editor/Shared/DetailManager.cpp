@@ -502,9 +502,9 @@ void CDetailManager::UpdateCache	(int limit)
 		CRandom				r_scale		(0x12071980);
 		
 		// Decompressing itself
-		for (DWORD z=0; z<d_size; z++)
+		for (DWORD z=0; z<=d_size; z++)
 		{
-			for (DWORD x=0; x<d_size; x++)
+			for (DWORD x=0; x<=d_size; x++)
 			{
 				// shift mask
                 int shift_x = r_jitter.randI(16);
