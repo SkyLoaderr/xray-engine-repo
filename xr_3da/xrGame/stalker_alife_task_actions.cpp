@@ -49,16 +49,16 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state		(eBodyStateStand);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateFree);
-	object().sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
+	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
 }
 
 void CStalkerActionSolveZonePuzzle::finalize	()
@@ -95,17 +95,17 @@ CStalkerActionReachTaskLocation::CStalkerActionReachTaskLocation	(CAI_Stalker *o
 void CStalkerActionReachTaskLocation::initialize	()
 {
 	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
+	object().movement().set_node_evaluator			(0);
+	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
 	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_body_state				(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateFree);
-	object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
+	object().sight().setup							(CSightAction(SightManager::eSightTypePathDirection));
 	if (!object().best_weapon())
 		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -215,18 +215,18 @@ CStalkerActionReachCustomerLocation::CStalkerActionReachCustomerLocation	(CAI_St
 
 void CStalkerActionReachCustomerLocation::initialize	()
 {
-	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
+	inherited::initialize							();
+	object().movement().set_node_evaluator			(0);
+	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_position		(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().game_selector().set_selection_type		(eSelectionTypeMask);
 	object().movement().set_path_type				(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_body_state				(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateFree);
-	object().sight().setup				(CSightAction(SightManager::eSightTypePathDirection));
+	object().sight().setup							(CSightAction(SightManager::eSightTypePathDirection));
 	if (!object().best_weapon())
 		object().CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -270,21 +270,21 @@ CStalkerActionCommunicateWithCustomer::CStalkerActionCommunicateWithCustomer	(CA
 
 void CStalkerActionCommunicateWithCustomer::initialize	()
 {
-	inherited::initialize				();
-	object().movement().set_node_evaluator		(0);
-	object().movement().set_path_evaluator		(0);
+	inherited::initialize							();
+	object().movement().set_node_evaluator			(0);
+	object().movement().set_path_evaluator			(0);
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position();
-	object().movement().set_body_state			(eBodyStateStand);
+	object().movement().set_body_state				(eBodyStateStand);
 	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateFree);
-	object().sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
-	object().CObjectHandler::set_goal	(eObjectActionIdle);
-	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
-	m_trader							= smart_cast<CAI_Trader*>(Level().Objects.net_Find(object().current_alife_task().m_tCustomerID));
-	VERIFY								(m_trader);
+	object().sight().setup							(CSightAction(SightManager::eSightTypeCover,false,true));
+	object().CObjectHandler::set_goal				(eObjectActionIdle);
+	object().sound().remove_active_sounds			(u32(eStalkerSoundMaskNoHumming));
+	m_trader										= smart_cast<CAI_Trader*>(Level().Objects.net_Find(object().current_alife_task().m_tCustomerID));
+	VERIFY											(m_trader);
 }
 
 void CStalkerActionCommunicateWithCustomer::finalize	()

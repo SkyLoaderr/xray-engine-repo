@@ -93,22 +93,23 @@ CStalkerActionNoALife::CStalkerActionNoALife	(CAI_Stalker *object, LPCSTR action
 
 void CStalkerActionNoALife::initialize	()
 {
-	inherited::initialize			();
+	inherited::initialize						();
 #ifndef STALKER_DEBUG_MODE
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_position	(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeGamePath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state		(eBodyStateStand);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateFree);
-	object().sight().setup			(CSightAction(SightManager::eSightTypeCover,false,true));
+	object().sight().setup						(CSightAction(SightManager::eSightTypeCover,false,true));
 	
 	m_stop_weapon_handling_time		= Device.dwTimeGlobal;
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
+
 #else
 	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
 	object().movement().set_node_evaluator		(0);
