@@ -82,20 +82,22 @@ void light::set_active		(bool a)
 }
 
 void	light::set_position		(const Fvector& P)
-{ 
-	if (position.similar(P))	return;
+{
+	float	eps					=	EPS_L;	//_max	(range*0.001f,EPS_L);
+	if (position.similar(P,eps))return	;
 	position.set				(P);
 	spatial_move				();
 }
 
 void	light::set_range		(float R)			{
-	if (fsimilar(range,R))		return;
-	range						= R;
+	float	eps					=	_max	(range*0.1f,EPS_L);
+	if (fsimilar(range,R,eps))	return	;
+	range						= R		;
 	spatial_move				();
 };
 
 void	light::set_cone			(float angle)		{
-	if (fsimilar(cone,angle))	return;
+	if (fsimilar(cone,angle))	return	;
 	VERIFY						(cone < deg2rad(121.f));	// 120 is hard limit for lights
 	cone						= angle;
 	spatial_move				();
