@@ -3083,7 +3083,9 @@
             </phrase>
         </phrase_list>
     </dialog>
+
     <dialog id="bar_bar_barman_veterans_finish">
+        <precondition>bar_dialogs.have_lucky_pda</precondition>
         <phrase_list>
             <phrase id="1">
                 <text>bar_bar_barman_veterans_finish_1</text>
