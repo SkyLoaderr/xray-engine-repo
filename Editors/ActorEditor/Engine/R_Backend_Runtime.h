@@ -13,14 +13,18 @@ IC void	CBackend::set_xform				(u32 ID, const Fmatrix& M)
 	CHK_DX				(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));
 }
 
-IC void CBackend::set_RT				(IDirect3DSurface9* RT, IDirect3DSurface9* ZB)
+IC void CBackend::set_RT				(u32 ID, IDirect3DSurface9* RT)
 {
-	if (RT!=pRT)
+	if (RT!=pRT[ID])
 	{
 		stat.target_rt	++;
-		pRT				= RT;
-		CHK_DX			(HW.pDevice->SetRenderTarget(0,RT));
+		pRT[ID]			= RT;
+		CHK_DX			(HW.pDevice->SetRenderTarget(ID,RT));
 	}
+}
+
+IC void	CBackend::set_ZB				(IDirect3DSurface9* ZB)
+{
 	if (ZB!=pZB)
 	{
 		stat.target_zb	++;

@@ -21,3 +21,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteRT		(rt_Normal		);
 	Device.Shader._DeleteRT		(rt_Position	);
 }
+
+void	CRenderTarget::Begin			()
+{
+	RCache.set_RT()
+}

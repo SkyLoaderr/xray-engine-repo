@@ -15,7 +15,7 @@ public:
 	IDirect3DIndexBuffer9*			QuadIB;
 private:
 	// Render-targets
-	IDirect3DSurface9*				pRT;
+	IDirect3DSurface9*				pRT[4];
 	IDirect3DSurface9*				pZB;
 
 	// Vertices/Indices/etc
@@ -43,7 +43,10 @@ private:
 
 	void							Invalidate	()
 	{
-		pRT							= NULL;
+		pRT[0]						= NULL;
+		pRT[1]						= NULL;
+		pRT[2]						= NULL;
+		pRT[3]						= NULL;
 		pZB							= NULL;
 
 		decl						= NULL;
@@ -94,7 +97,8 @@ public:
 	IC	void						set_xform_view		(const Fmatrix& M)					{ set_xform(D3DTS_VIEW,M);			}
 	IC	void						set_xform_project	(const Fmatrix& M)					{ set_xform(D3DTS_PROJECTION,M);	}
 
-	IC	void						set_RT				(IDirect3DSurface9* RT, IDirect3DSurface9* ZB);
+	IC	void						set_RT				(u32 ID, IDirect3DSurface9* RT);
+	IC	void						set_ZB				(IDirect3DSurface9* ZB);
 	IC	void						set_Textures		(STextureList* T);
 	IC	void						set_Matrices		(SMatrixList* M);
 	IC	void						set_Constants		(SConstantList* C, BOOL	bPS);
