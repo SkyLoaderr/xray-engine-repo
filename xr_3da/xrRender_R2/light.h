@@ -21,13 +21,15 @@ public:
 	Shader*			s_point_s;
 	Shader*			s_point_uns;
 
+	CSector*		sector;
+
 	u32				dwFrame;
 public:
 	virtual void	set_type		(LT type)						{ flags.type = type;		}
 	virtual void	set_active		(bool b);
 	virtual bool	get_active		()								{ return flags.bActive;		}
 	virtual void	set_shadow		(bool b)						{ flags.bShadow=b;			}
-	virtual void	set_position	(const Fvector& P)				{ position.set(P);			}
+	virtual void	set_position	(const Fvector& P);
 	virtual void	set_direction	(const Fvector& D)				{ direction.normalize(D);	}
 	virtual void	set_cone		(float angle)					{ cone	= angle;			}
 	virtual void	set_range		(float R)						{ range = R;				}

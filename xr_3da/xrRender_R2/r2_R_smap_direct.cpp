@@ -20,14 +20,12 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 	View							= 0;
 }
 
-void	CRender::render_smap_sector(Fmatrix& mCombined, Fvector& C)
+void	CRender::render_smap_sector(CSector* S, Fmatrix& mCombined, Fvector& C)
 {
 	// Save and build new frustum, disable HOM
 	CFrustum	ViewSave			= ViewBase;
 	ViewBase.CreateFromMatrix		(mCombined,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View							= &ViewBase;
-	CSector*	S					= (CSector*)detectSector	(C);
-	R_ASSERT						(S);
 	S->Render_objects_s				(ViewBase,C,mCombined);
 
 	// Restore

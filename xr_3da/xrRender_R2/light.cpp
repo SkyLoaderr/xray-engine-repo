@@ -17,6 +17,8 @@ light::light(void)
 	s_spot_uns		= NULL;
 	s_point_s		= NULL;
 	s_point_uns		= NULL;
+
+	sector			= NULL;
 }
 
 light::~light(void)
@@ -61,3 +63,12 @@ void light::set_active(bool a)
 	}
 }
 
+void	light::set_position	(const Fvector& P)
+{ 
+	if (position.similar(P))	return;
+
+	position.set(P);			
+	CSector* S	= (CSector*)	RImplementation.detectSector(position);
+	if (0==S && sector)			return;
+	sector		= S;
+}

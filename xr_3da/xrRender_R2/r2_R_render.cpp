@@ -114,9 +114,9 @@ void CRender::Render	()
 					phase									= PHASE_SMAP_P;
 
 					// calculate
-					LR.compute_xfp_1					(pls_phase, L);
-					render_smap_direct						(LR.L_combine);
-					LR.compute_xfp_2					(pls_phase, L);
+					LR.compute_xfp_1						(pls_phase, L);
+					render_smap_sector						(L->sector, LR.L_combine, L->position);
+					LR.compute_xfp_2						(pls_phase, L);
 
 					// rendering
 					if (mapNormal.size())
@@ -140,7 +140,7 @@ void CRender::Render	()
 
 				// calculate
 				LR.compute_xfs_1						(0, L);
-				render_smap_direct						(LR.L_combine);
+				render_smap_sector						(L->sector, LR.L_combine, L->position);
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
