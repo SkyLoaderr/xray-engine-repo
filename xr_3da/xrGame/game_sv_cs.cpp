@@ -108,6 +108,7 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 	xrServerEntity*		e_entity	= S->ID_to_entity	((u16)eid_target);
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
+		Lock();
 		
 		if(ps_who->team == -1) ps_who->team = l_pCSBase->g_team(); // @@@ WT : Пока не сделан респавн
 
@@ -117,14 +118,26 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 				teams[ps_who->team].num_targets++;
 				// @@@ WT : нужно выбросить артефакт
 				ps_who->flags &= ~GAME_PLAYER_FLAG_HASARTFCT;
+				if(teams[ps_who->team].num_targets == 3) {		// если у команды 3 артефакта - Победа!!!
+					OnTeamScore(ps_who->team);
+					u32	cnt = get_count();						// Доп. бонус за выполнение задания
+					for(u32 it=0; it<cnt; it++)	{
+						game_PlayerState* ps = get_it(it);
+						if(ps->team == ps_who->team) ps->money_for_round += 1000;
+					}											//
+					OnRoundEnd("MISSION_complete");
+				}
 			}
 		}
+		Unlock();
 		return false;
 	}
 	xrSE_MercuryBall *l_pMBall =  dynamic_cast<xrSE_MercuryBall*>(e_entity);
 	if(l_pMBall) {
 		if(ps_who->flags&GAME_PLAYER_FLAG_ONCSBASE) return false;
+		Lock();
 		ps_who->flags |= GAME_PLAYER_FLAG_HASARTFCT;
+		Unlock();
 	}
 	return TRUE;
 }
@@ -136,7 +149,9 @@ BOOL	game_sv_CS::OnTargetDetouched	(u32 id_who, u32 eid_target)
 	xrServerEntity*		e_entity	= S->ID_to_entity	((u16)eid_target);
 	xrSE_Target_CSBase *l_pCSBase =  dynamic_cast<xrSE_Target_CSBase*>(e_entity);
 	if(l_pCSBase) {
+		Lock();
 		if(l_pCSBase->g_team() == ps_who->team) ps_who->flags &= ~GAME_PLAYER_FLAG_ONCSBASE;
+		Unlock();
 		return false;
 	}
 	return TRUE;
