@@ -57,7 +57,7 @@ MaxSpeed		     = 5.0						; option for ALife Simulator
 going_speed          = 4.5                      ; option for ALife Simulator
 search_speed         = 1.5                       ; option for ALife Simulator
 visual				 = monsters\zombi\zombi_1
-MaxHealthValue		 = 200			; range [0..200]
+MaxHealthValue		 = 100			; range [0..200]
 DynamicObjectsCount	 = 32
 
 cform                = skeleton					; collision class
@@ -80,18 +80,18 @@ ph_mass 		     = 120.
 
 destroyed_vis_name	 = physics\Dead_Body\trupik_crash
 
-ph_skeleton_airr_lin_factor			= 1.0
-ph_skeleton_airr_ang_factor			= 1.0
-ph_skeleton_hinger_factor1			=1
-ph_skeleton_ddelay	     			=20
-ph_skel_fatal_impulse_factor		=7.0
-ph_after_death_velocity_factor		=1.35
-ph_skel_shot_up_factor				=.8f
+ph_skeleton_airr_lin_factor			= 1.5
+ph_skeleton_airr_ang_factor			= 1.5
+ph_skeleton_hinger_factor1			= 1
+ph_skeleton_ddelay	     			= 300
+ph_skel_fatal_impulse_factor		= 12.0
+ph_after_death_velocity_factor		= 1.25
+ph_skel_shot_up_factor				= 2.4
 
 SoundThreshold		 = 0.06             ; range [0..1]
 
-EyeFov				 = 80;
-eye_range			 = 50	;30
+EyeFov				 = 80
+eye_range			 = 50
 max_hear_dist		 = 50
 
 
@@ -144,7 +144,7 @@ hit_type = wound
 ;entity condition
 
 ; entity condition
-satiety_v 				=  0.001	;0.01			;скорость уменьшения сытости со временем
+satiety_v 				= 0.001	;0.01			;скорость уменьшения сытости со временем
 radiation_v 			= 0.00001	;0.004			;скорость уменьшения радиации
 satiety_power_v 		= 0.01		;0.01			;увеличение силы при уменьшении сытости 
 satiety_health_v 		= 0.00000001	;0.03			;увеличение здоровья при уменьшении сытости 
@@ -157,7 +157,7 @@ power_hit_part 			= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 burn_immunity			= 0.3	;0.8				;коэффициенты иммунитета 
 strike_immunity			= 0.8
 shock_immunity			= 0.3	;0.8
-wound_immunity			= 0.9	;0.75	;1.0		
+wound_immunity			= 1.0
 radiation_immunity		= 0.01	;0.5
 telepatic_immunity		= 1.0
 chemical_burn_immunity	= 0.8
@@ -231,12 +231,12 @@ species					= zombie
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	0.01
+default				= 0.2, -1, 0.01
 
-bip01_pelvis 		= 1, -1, 0.01
-bip01_spine 		= 1, -1, 0.01
-bip01_spine1 		= 1, -1, 0.01
-bip01_neck 			= 1.0, -1, 0.01
-bip01_head 			= 5.0, -1, 0.01
+bip01_pelvis 		= 0.3, -1, 0.01
+bip01_spine 		= 0.3, -1, 0.01
+bip01_spine1 		= 0.3, -1, 0.01
+bip01_neck 			= 0.3, -1, 0.01
+bip01_head 			= 2.0, -1, 0.01
 
 
