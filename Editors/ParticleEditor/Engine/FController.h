@@ -7,7 +7,7 @@
 
 #pragma once
 
-class ENGINE_API CController
+class ENGINE_API	CController
 {
 public:
 	void			iGetLastMouseDelta			(Ivector2& p);

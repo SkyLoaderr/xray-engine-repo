@@ -1,6 +1,6 @@
 #pragma once
 
-class CGamePersistent: public pureAppCycleStart, public pureAppCycleEnd
+class CGamePersistent				: public IGame_Persistant
 {
 public:
 					CGamePersistent	();
@@ -9,5 +9,3 @@ public:
 	virtual void	OnAppCycleStart	();
 	virtual void	OnAppCycleEnd	();
 };
-
-extern CGamePersistent* GamePersistent;

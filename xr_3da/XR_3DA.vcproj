@@ -638,181 +638,187 @@
 					RelativePath=".\xr_input.h">
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="Engine"
-			Filter="">
-			<File
-				RelativePath=".\FTimer.h">
-			</File>
-			<File
-				RelativePath=".\Properties.h">
-			</File>
-			<File
-				RelativePath=".\pure.cpp">
-			</File>
-			<File
-				RelativePath=".\pure.h">
-			</File>
-			<File
-				RelativePath=".\ReferenceCount.cpp">
-			</File>
-			<File
-				RelativePath=".\ReferenceCount.h">
-			</File>
-			<File
-				RelativePath=".\std_classes.h">
-			</File>
 			<Filter
-				Name="Collision Core"
+				Name="Engine"
 				Filter="">
 				<File
-					RelativePath=".\cl_intersect.h">
+					RelativePath=".\FTimer.h">
 				</File>
 				<File
-					RelativePath=".\xrCDB.h">
+					RelativePath=".\Properties.h">
 				</File>
 				<File
-					RelativePath=".\xrXRC.cpp">
+					RelativePath=".\pure.cpp">
 				</File>
 				<File
-					RelativePath=".\xrXRC.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="Console"
-				Filter="">
-				<File
-					RelativePath=".\xr_ioc_cmd.cpp">
+					RelativePath=".\pure.h">
 				</File>
 				<File
-					RelativePath=".\xr_ioc_cmd.h">
+					RelativePath=".\ReferenceCount.cpp">
 				</File>
 				<File
-					RelativePath=".\XR_IOConsole.cpp">
+					RelativePath=".\ReferenceCount.h">
 				</File>
 				<File
-					RelativePath=".\XR_IOConsole.h">
+					RelativePath=".\std_classes.h">
 				</File>
-			</Filter>
-			<Filter
-				Name="Core"
-				Filter="">
-				<File
-					RelativePath=".\Engine.cpp">
-				</File>
-				<File
-					RelativePath=".\Engine.h">
-				</File>
-				<File
-					RelativePath=".\EngineAPI.cpp">
-				</File>
-				<File
-					RelativePath=".\EngineAPI.h">
-				</File>
-				<File
-					RelativePath=".\EventAPI.cpp">
-				</File>
-				<File
-					RelativePath=".\EventAPI.h">
-				</File>
-				<File
-					RelativePath="mailSlot.cpp">
-				</File>
-				<File
-					RelativePath=".\xrCPU_Pipe.h">
-				</File>
-				<File
-					RelativePath=".\xrSheduler.cpp">
-				</File>
-				<File
-					RelativePath=".\xrSheduler.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="Client - Server"
-				Filter="">
-				<File
-					RelativePath=".\NET_Client.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Client.h">
-				</File>
-				<File
-					RelativePath=".\NET_Compressor.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Compressor.h">
-				</File>
-				<File
-					RelativePath=".\net_messages.h">
-				</File>
-				<File
-					RelativePath=".\NET_Server.cpp">
-				</File>
-				<File
-					RelativePath=".\NET_Server.h">
-				</File>
-				<File
-					RelativePath=".\NET_Shared.h">
-				</File>
-				<File
-					RelativePath=".\NET_utils.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="Imaging"
-				Filter="">
-				<File
-					RelativePath=".\tga.cpp">
-				</File>
-				<File
-					RelativePath=".\tga.h">
-				</File>
-			</Filter>
-			<Filter
-				Name="SPATIAL"
-				Filter="">
-				<File
-					RelativePath="ISpatial.cpp">
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							AssemblerOutput="4"/>
-					</FileConfiguration>
-				</File>
-				<File
-					RelativePath="ISpatial.h">
-				</File>
-				<File
-					RelativePath="ISpatial_q_box.cpp">
-				</File>
-				<File
-					RelativePath="ISpatial_q_frustum.cpp">
-				</File>
-				<File
-					RelativePath="ISpatial_q_ray.cpp">
-					<FileConfiguration
-						Name="Mixed|Win32">
-						<Tool
-							Name="VCCLCompilerTool"
-							AssemblerOutput="4"/>
-					</FileConfiguration>
-				</File>
+				<Filter
+					Name="Collision Core"
+					Filter="">
+					<File
+						RelativePath=".\cl_intersect.h">
+					</File>
+					<File
+						RelativePath=".\xrCDB.h">
+					</File>
+					<File
+						RelativePath=".\xrXRC.cpp">
+					</File>
+					<File
+						RelativePath=".\xrXRC.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Console"
+					Filter="">
+					<File
+						RelativePath=".\xr_ioc_cmd.cpp">
+					</File>
+					<File
+						RelativePath=".\xr_ioc_cmd.h">
+					</File>
+					<File
+						RelativePath=".\XR_IOConsole.cpp">
+					</File>
+					<File
+						RelativePath=".\XR_IOConsole.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Core"
+					Filter="">
+					<File
+						RelativePath=".\Engine.cpp">
+					</File>
+					<File
+						RelativePath=".\Engine.h">
+					</File>
+					<File
+						RelativePath=".\EngineAPI.cpp">
+					</File>
+					<File
+						RelativePath=".\EngineAPI.h">
+					</File>
+					<File
+						RelativePath=".\EventAPI.cpp">
+					</File>
+					<File
+						RelativePath=".\EventAPI.h">
+					</File>
+					<File
+						RelativePath="mailSlot.cpp">
+					</File>
+					<File
+						RelativePath=".\xrCPU_Pipe.h">
+					</File>
+					<File
+						RelativePath=".\xrSheduler.cpp">
+					</File>
+					<File
+						RelativePath=".\xrSheduler.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Client - Server"
+					Filter="">
+					<File
+						RelativePath=".\NET_Client.cpp">
+					</File>
+					<File
+						RelativePath=".\NET_Client.h">
+					</File>
+					<File
+						RelativePath=".\NET_Compressor.cpp">
+					</File>
+					<File
+						RelativePath=".\NET_Compressor.h">
+					</File>
+					<File
+						RelativePath=".\net_messages.h">
+					</File>
+					<File
+						RelativePath=".\NET_Server.cpp">
+					</File>
+					<File
+						RelativePath=".\NET_Server.h">
+					</File>
+					<File
+						RelativePath=".\NET_Shared.h">
+					</File>
+					<File
+						RelativePath=".\NET_utils.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="Imaging"
+					Filter="">
+					<File
+						RelativePath=".\tga.cpp">
+					</File>
+					<File
+						RelativePath=".\tga.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SPATIAL"
+					Filter="">
+					<File
+						RelativePath="ISpatial.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath="ISpatial.h">
+					</File>
+					<File
+						RelativePath="ISpatial_q_box.cpp">
+					</File>
+					<File
+						RelativePath="ISpatial_q_frustum.cpp">
+					</File>
+					<File
+						RelativePath="ISpatial_q_ray.cpp">
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								AssemblerOutput="4"/>
+						</FileConfiguration>
+					</File>
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
 			Name="Game API"
 			Filter="">
 			<File
-				RelativePath=".\xr_creator.cpp">
+				RelativePath=".\IGame_Level.cpp">
 			</File>
 			<File
-				RelativePath=".\xr_creator.h">
+				RelativePath=".\IGame_Level.h">
 			</File>
 			<File
-				RelativePath="xr_creator_check_textures.cpp">
+				RelativePath=".\IGame_Level_check_textures.cpp">
+			</File>
+			<File
+				RelativePath=".\IGame_Persistant.cpp">
+			</File>
+			<File
+				RelativePath=".\IGame_Persistant.h">
 			</File>
 			<File
 				RelativePath=".\xrLevel.h">
