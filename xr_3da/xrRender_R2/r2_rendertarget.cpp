@@ -107,28 +107,6 @@ void	CRenderTarget::OnDeviceCreate	()
 	b_combine						= xr_new<CBlender_combine>				();
 	b_decompress					= xr_new<CBlender_decompress>			();
 
-	// DIRECT (spot)
-	if (RImplementation.b_HW_smap)
-	{
-		u32	w=SMAP_size, h=SMAP_size;
-
-		rt_smap_depth.create		(r2_RT_smap_depth,			w,h,D3DFMT_D24X8	);
-		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R5G6B5	);
-		rt_smap_ZB					= NULL;
-		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
-		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
-	}
-	else
-	{
-		u32	w=SMAP_size, h=SMAP_size;
-
-		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R32F);
-		rt_smap_depth				= NULL;
-		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
-		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
-		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
-	}
-
 	//	NORMAL
 	if (RImplementation.b_fp16)
 	{
@@ -162,6 +140,28 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
 		s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
 		g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
+	}
+
+	// DIRECT (spot)
+	if (RImplementation.b_HW_smap)
+	{
+		u32	w=SMAP_size, h=SMAP_size;
+
+		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R5G6B5	);
+		rt_smap_depth.create		(r2_RT_smap_depth,			w,h,D3DFMT_D24X8	);
+		rt_smap_ZB					= NULL;
+		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
+		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
+	}
+	else
+	{
+		u32	w=SMAP_size, h=SMAP_size;
+
+		rt_smap_surf.create			(r2_RT_smap_surf,			w,h,D3DFMT_R32F);
+		rt_smap_depth				= NULL;
+		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,D3DFMT_D24X8,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_ZB,NULL));
+		s_accum_mask.create			(b_accum_mask,				"r2\\accum_mask");
+		s_accum_direct.create		(b_accum_direct,			"r2\\accum_direct");
 	}
 
 	// POINT
