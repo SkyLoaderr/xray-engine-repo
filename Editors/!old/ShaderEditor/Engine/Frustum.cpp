@@ -122,7 +122,7 @@ EFC_Visible	CFrustum::testAABB			(const float* mM, u32& test_mask) const
 	return test_mask ? fcvPartial:fcvFully;
 }
 
-EFC_Visible	CFrustum::testSAABB			(Fvector& c, const float r, float* mM, u32& test_mask) const
+EFC_Visible	CFrustum::testSAABB			(Fvector& c, float r, const float* mM, u32& test_mask) const
 {
 	u32	bit = 1;
 	for (int i=0; i<p_count; i++, bit<<=1)
