@@ -46,6 +46,9 @@ protected:
 	bool							m_infinite_ammo;
 	CObjectHandlerPlanner			*m_planner;
 
+protected:
+	IC		void					switch_torch		(CInventoryItem *inventory_item, bool value);
+
 public:
 									CObjectHandler		();
 	virtual							~CObjectHandler		();
@@ -57,6 +60,8 @@ public:
 	virtual void					OnItemTake			(CInventoryItem *inventory_item);
 	virtual void					OnItemDrop			(CInventoryItem *inventory_item);
 	virtual void					OnItemDropUpdate	();
+	virtual	void					attach				(CInventoryItem *inventory_item);
+	virtual	void					detach				(CInventoryItem *inventory_item);
 			CInventoryItem			*best_weapon		() const;
 			void					set_goal			(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0, u32 queue_size = 0, u32 queue_interval = 300);
 			bool					goal_reached		();

@@ -27,8 +27,8 @@ public:
 	virtual	void			reload				(LPCSTR section);
 	virtual void			net_Destroy			();
 	virtual void			renderable_Render	();
-			void			attach				(CInventoryItem *inventory_item);
-			void			detach				(CInventoryItem *inventory_item);
+	virtual	void			attach				(CInventoryItem *inventory_item);
+	virtual	void			detach				(CInventoryItem *inventory_item);
 	virtual	bool			can_attach			(const CInventoryItem *inventory_item) const;
 			bool			attached			(const CInventoryItem *inventory_item) const;
 	virtual void			reattach_items		();
