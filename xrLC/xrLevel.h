@@ -158,7 +158,7 @@ struct SNodePositionOld {
 #pragma pack	(pop)
 
 #ifdef _EDITOR
-typedef	NodePosition SNodePositionOld;
+typedef	SNodePositionOld NodePosition;
 #endif
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
