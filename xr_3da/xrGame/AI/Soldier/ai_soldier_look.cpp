@@ -504,3 +504,108 @@ int	 CAI_Soldier::ifFindDynamicObject(CEntity *tpEntity)
 			return(i);
 	return(-1);
 }
+
+bool CAI_Soldier::bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier)
+{
+	for (int i=0; i<tpSoldier->tpaDynamicObjects.size(); i++) {
+		if (tpSoldier->tpaDynamicObjects[i].tpEntity == tSavedEnemy) {
+			DWORD dwTime = m_dwCurrentUpdate;
+			CEntity *tpEntity = tSavedEnemy;
+			for (int j=0; j<tpaDynamicObjects.size(); j++)
+				if (tSavedEnemy == tpaDynamicObjects[j].tpEntity) {
+					tpaDynamicObjects[j].dwTime = tpSoldier->tpaDynamicObjects[i].dwTime;
+					tpaDynamicObjects[j].dwUpdateCount++;
+					tpaDynamicObjects[j].dwNodeID = tpSoldier->tpaDynamicObjects[i].dwNodeID;
+					tpaDynamicObjects[j].tSavedPosition = tpSoldier->tpaDynamicObjects[i].tSavedPosition;
+					tpaDynamicObjects[j].tOrientation = tpSoldier->tpaDynamicObjects[i].tOrientation;
+					tpaDynamicObjects[j].dwMyNodeID = tpSoldier->tpaDynamicObjects[i].dwMyNodeID;
+					tpaDynamicObjects[j].tMySavedPosition = tpSoldier->tpaDynamicObjects[i].tMySavedPosition;
+					tpaDynamicObjects[j].tMyOrientation = tpSoldier->tpaDynamicObjects[i].tMyOrientation;
+					tpaDynamicObjects[j].tpEntity = tpEntity;
+					return(true);
+				}
+			
+			if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
+				DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
+				for (int j=0; j<tpaDynamicObjects.size(); j++)
+					if (tpaDynamicObjects[j].dwTime < dwBest) {
+						dwIndex = i;
+						dwBest = tpaDynamicObjects[j].dwTime;
+					}
+				if (dwIndex < tpaDynamicObjects.size()) {
+					tpaDynamicObjects[dwIndex].dwTime = dwTime;
+					tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
+					tpaDynamicObjects[dwIndex].dwNodeID = tpSoldier->tpaDynamicObjects[i].dwNodeID;
+					tpaDynamicObjects[dwIndex].tSavedPosition = tpSoldier->tpaDynamicObjects[i].tSavedPosition;
+					tpaDynamicObjects[dwIndex].tOrientation = tpSoldier->tpaDynamicObjects[i].tOrientation;
+					tpaDynamicObjects[dwIndex].dwMyNodeID = tpSoldier->tpaDynamicObjects[i].dwMyNodeID;
+					tpaDynamicObjects[dwIndex].tMySavedPosition = tpSoldier->tpaDynamicObjects[i].tMySavedPosition;
+					tpaDynamicObjects[dwIndex].tMyOrientation = tpSoldier->tpaDynamicObjects[i].tMyOrientation;
+					tpaDynamicObjects[dwIndex].tpEntity = tpEntity;
+					return(true);
+				}
+			}
+			else {
+				SDynamicObject tDynamicObject;
+				tDynamicObject.dwTime = dwTime;
+				tDynamicObject.dwUpdateCount = 1;
+				tDynamicObject.dwNodeID = tpSoldier->tpaDynamicObjects[i].dwNodeID;
+				tDynamicObject.tSavedPosition = tpSoldier->tpaDynamicObjects[i].tSavedPosition;
+				tDynamicObject.tOrientation = tpSoldier->tpaDynamicObjects[i].tOrientation;
+				tDynamicObject.dwMyNodeID = tpSoldier->tpaDynamicObjects[i].dwMyNodeID;
+				tDynamicObject.tMySavedPosition = tpSoldier->tpaDynamicObjects[i].tMySavedPosition;
+				tDynamicObject.tMyOrientation = tpSoldier->tpaDynamicObjects[i].tMyOrientation;
+				tDynamicObject.tpEntity = tpEntity;
+				tpaDynamicObjects.push_back(tDynamicObject);
+				return(true);
+			}
+		}
+	}
+	return(false);
+}
+
+bool CAI_Soldier::bfCheckForVisibility(int iTestNode)
+{
+//	Fvector tDirection, tNodePosition, tMyDirection, tP0, tP1;
+//	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
+//
+//	tMyDirection.setHP(r_torso_current.yaw,r_torso_current.pitch);
+//
+//	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
+//	Level().AI.UnpackPosition(tP0,tpNode->p0);
+//	Level().AI.UnpackPosition(tP1,tpNode->p1);
+//	tNodePosition.add(tP0,tP1);
+//	tNodePosition.mul(.5f);
+//
+//	tDirection.sub(tNodePosition,vPosition);
+//	float fDistance = tDirection.magnitude();
+//	if (fDistance > fEyeRange + EPS_L)
+//		return(false);
+//		//return(true);
+//	tDirection.normalize_safe();
+//	float fAlpha = tDirection.dotproduct(tMyDirection);
+//	clamp(fAlpha,-.99999f,+.99999f);
+//	fAlpha = acosf(fAlpha);
+//	bool bVisible = fAlpha <= fEyeFov/2.f + EPS_L;
+//	return(bVisible);
+
+	Fvector tDirection, tNodePosition, tP0, tP1;
+	float fEyeFov = ffGetFov()*PI/180.f, fEyeRange = ffGetRange();
+
+	NodeCompressed *tpNode = Level().AI.Node(iTestNode);
+	Level().AI.UnpackPosition(tP0,tpNode->p0);
+	Level().AI.UnpackPosition(tP1,tpNode->p1);
+	tNodePosition.add(tP0,tP1);
+	tNodePosition.mul(.5f);
+
+	tDirection.sub(tNodePosition,vPosition);
+	float fDistance = tDirection.magnitude();
+	if (fDistance > fEyeRange + EPS_L)
+		return(false);
+		//return(true);
+	tDirection.normalize_safe();
+	SRotation tRotation;
+	mk_rotation(tDirection,tRotation);
+	float fResult = ffGetCoverInDirection(tRotation.yaw,FNN(0,AI_Node),FNN(1,AI_Node),FNN(2,AI_Node),FNN(3,AI_Node));
+	return(fResult > .6f);
+}

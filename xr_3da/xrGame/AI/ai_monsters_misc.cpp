@@ -804,6 +804,90 @@ IC	float ffGetSquare(float a1, float b1, float fAlpha = PI_DIV_2)
 	return(fAlpha*fAlpha*fAlpha*a*a/6 + fAlpha*fAlpha*a*b/2 + fAlpha*b*b/2);
 }
 
+SRotation tfGetOrientation(CEntity *tpEntity)
+{
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (tpCustomMonster)
+		return(tpCustomMonster->r_torso_current);
+	else {
+		SRotation tTemp;
+		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
+		if (tpActor)
+			return(tpActor->Orientation());
+		else
+			return(tTemp);
+	}
+}
+
+void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
+{
+	NodeCompressed *tpNode;
+	PContour tCurContour,tNextContour;
+	NodeLink *taLinks;
+	int iCount, iSavedIndex, iNodeIndex, i;
+	Fvector tTempPoint;
+	CTravelNode tTravelNode;
+ 	CAI_Space &AI = Level().AI;
+	PSegment tSegment;
+	float fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f;
+
+	tpaPath.clear();
+	UnpackContour(tCurContour,dwCurNode);
+	tpNode = AI.Node(dwCurNode);
+	taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+	iCount = tpNode->links;
+	iSavedIndex = -1;
+	tTempPoint = tStartPoint;
+	for ( i=0; i < iCount; i++) {
+		iNodeIndex = AI.UnpackLink(taLinks[i]);
+		UnpackContour(tNextContour,iNodeIndex);
+		vfIntersectContours(tSegment,tCurContour,tNextContour);
+		DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
+		if (dwIntersect == LI_INTERSECT) {
+			if (
+				(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS)
+				) {
+				tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+				tTempPoint = tTravelNode.P;
+				iSavedIndex = iNodeIndex;
+			}
+		}
+		else
+			if (dwIntersect == LI_EQUAL) {
+				if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint))
+					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
+						tTempPoint = tSegment.v1;
+						iSavedIndex = iNodeIndex;
+					}
+					else {
+						tTempPoint = tSegment.v2;
+						iSavedIndex = iNodeIndex;
+					}
+				else
+					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
+						tTempPoint = tSegment.v2;
+						iSavedIndex = iNodeIndex;
+					}
+
+			}
+	}
+
+	if (iSavedIndex > -1) {
+		tTravelNode.P = tTempPoint;
+		tpaPath.push_back(tTravelNode);
+		dwCurNode = iSavedIndex;
+	}
+	else
+		if (bfInsideNode(AI,tpNode,tFinishPoint, fHalfSubNodeSize)) {
+			tTravelNode.P = tFinishPoint;
+			tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+		}
+		else {
+			tpaPath.clear();
+			return;
+		}
+}
+
 float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b2, float b3)
 {
 	fAngle -= PI_DIV_2;
@@ -928,86 +1012,169 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float b0, float b1, float b
 	return(fSquare);
 }
 
-SRotation tfGetOrientation(CEntity *tpEntity)
+float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3)
 {
-	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
-	if (tpCustomMonster)
-		return(tpCustomMonster->r_torso_current);
-	else {
-		SRotation tTemp;
-		CActor *tpActor = dynamic_cast<CActor *>(tpEntity);
-		if (tpActor)
-			return(tpActor->Orientation());
-		else
-			return(tTemp);
-	}
-}
+	fAngle -= PI_DIV_2;
 
-void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint)
-{
-	NodeCompressed *tpNode;
-	PContour tCurContour,tNextContour;
-	NodeLink *taLinks;
-	int iCount, iSavedIndex, iNodeIndex, i;
-	Fvector tTempPoint;
-	CTravelNode tTravelNode;
- 	CAI_Space &AI = Level().AI;
-	PSegment tSegment;
-	float fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f;
-
-	tpaPath.clear();
-	UnpackContour(tCurContour,dwCurNode);
-	tpNode = AI.Node(dwCurNode);
-	taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-	iCount = tpNode->links;
-	iSavedIndex = -1;
-	tTempPoint = tStartPoint;
-	for ( i=0; i < iCount; i++) {
-		iNodeIndex = AI.UnpackLink(taLinks[i]);
-		UnpackContour(tNextContour,iNodeIndex);
-		vfIntersectContours(tSegment,tCurContour,tNextContour);
-		DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z);
-		if (dwIntersect == LI_INTERSECT) {
-			if (
-				(COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) < COMPUTE_DISTANCE_2D(tFinishPoint,tTempPoint) + EPS)
-				) {
-				tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-				tTempPoint = tTravelNode.P;
-				iSavedIndex = iNodeIndex;
-			}
+	while (fAngle >= PI_MUL_2)
+		fAngle -= PI_MUL_2;
+	
+	while (fAngle < 0)
+		fAngle += PI_MUL_2;
+	
+	float fResult, bx, by;
+	
+	if (fAngle < PI_DIV_2)
+		;
+	else
+		if (fAngle < PI) {
+			fAngle -= PI_DIV_2;
+			bx = b2;
+			b2 = b3;
+			b1 = bx;
+			b0 = b1;
+			b3 = b0;
 		}
 		else
-			if (dwIntersect == LI_EQUAL) {
-				if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint))
-					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v1) > COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2)) {
-						tTempPoint = tSegment.v1;
-						iSavedIndex = iNodeIndex;
-					}
-					else {
-						tTempPoint = tSegment.v2;
-						iSavedIndex = iNodeIndex;
-					}
-				else
-					if (COMPUTE_DISTANCE_2D(tStartPoint,tSegment.v2) > COMPUTE_DISTANCE_2D(tStartPoint,tTempPoint)) {
-						tTempPoint = tSegment.v2;
-						iSavedIndex = iNodeIndex;
-					}
-
+			if (fAngle < 3*PI_DIV_2) {
+				fAngle -= PI;
+				bx = b2;
+				by = b1;
+				b2 = b0;
+				b1 = b3;
+				b0 = bx;
+				b3 = by;
 			}
+			else {
+				fAngle -= 3*PI_DIV_2;
+				bx = b2;
+				b2 = b1;
+				b1 = b0;
+				b0 = b3;
+				b3 = bx;
+			}
+	fResult = (b1 - b2)*fAngle/PI_DIV_2 + b2;
+	return(fResult);
+}
+
+IC bool bfIntersectContours(PSegment &tSegment, PContour &tContour0, PContour &tContour1)
+{
+	bool bFound = false;
+	
+	if (bfInsideContour(tContour0.v1,tContour1)) {
+		tSegment.v1 = tContour0.v1;
+		bFound = true;
 	}
 
-	if (iSavedIndex > -1) {
-		tTravelNode.P = tTempPoint;
-		tpaPath.push_back(tTravelNode);
-		dwCurNode = iSavedIndex;
-	}
-	else
-		if (bfInsideNode(AI,tpNode,tFinishPoint, fHalfSubNodeSize)) {
-			tTravelNode.P = tFinishPoint;
-			tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
+	if (bfInsideContour(tContour0.v2,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v2;
+			bFound = true;
 		}
 		else {
-			tpaPath.clear();
-			return;
+			tSegment.v2 = tContour0.v2;
+			return(true);
 		}
+	}
+	if (bfInsideContour(tContour0.v3,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v3;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v3;
+			return(true);
+		}
+	}
+	if (bfInsideContour(tContour0.v4,tContour1)) {
+		if (!bFound) {
+			tSegment.v1 = tContour0.v4;
+			bFound = true;
+		}
+		else {
+			tSegment.v2 = tContour0.v4;
+			return(true);
+		}
+	}
+	if (bFound) {
+		if (bfInsideContour(tContour1.v1,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v1)))) {
+			tSegment.v2 = tContour1.v1;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v2,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v2)))) {
+			tSegment.v2 = tContour1.v2;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v3,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v3)))) {
+			tSegment.v2 = tContour1.v3;
+			return(true);
+		}
+		if (bfInsideContour(tContour1.v4,tContour0) && (!(bfSimilar(tSegment.v1,tContour1.v4)))) {
+			tSegment.v2 = tContour1.v4;
+			return(true);
+		}
+	}
+	else {
+		if (bfInsideContour(tContour1.v1,tContour0)) {
+			tSegment.v1 = tContour1.v1;
+			bFound = true;
+		}
+		if (bfInsideContour(tContour1.v2,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v2;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v2;
+				return(true);
+			}
+		}
+		if (bfInsideContour(tContour1.v3,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v3;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v3;
+				return(true);
+			}
+		}
+		if (bfInsideContour(tContour1.v4,tContour0)) {
+			if (!bFound) {
+				tSegment.v1 = tContour1.v4;
+				bFound = true;
+			}
+			else {
+				tSegment.v2 = tContour1.v4;
+				return(true);
+			}
+		}
+	}
+
+	if (bFound) {
+		tSegment.v2 = tSegment.v1;
+		//Log("! AI_PathNodes: segment has null length");
+		return(false);
+	}
+	else {
+		//Log("! AI_PathNodes: Can't find intersection segment");
+		return(false);
+	}
 }
+
+void vfTestNode(int iTestNode)
+{
+	PContour tCurContour, tNextContour;
+	PSegment tSegment;
+	NodeCompressed *tpNode0 = Level().AI.Node(iTestNode);
+	NodeLink *taLinks = (NodeLink *)((BYTE *)tpNode0 + sizeof(NodeCompressed));
+	UnpackContour(tCurContour,iTestNode);
+	for (int i=0; i<tpNode0->links; i++) {
+		int iNodeIndex = Level().AI.UnpackLink(taLinks[i]);
+		NodeCompressed *tpNode = Level().AI.Node(iNodeIndex);
+		UnpackContour(tNextContour,iNodeIndex);
+		if (!bfIntersectContours(tSegment,tCurContour,tNextContour))
+			Msg("AI map error : %d %d",iTestNode,iNodeIndex);
+	}
+}
+

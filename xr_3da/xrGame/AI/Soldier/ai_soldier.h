@@ -524,6 +524,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		bool bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier);
 		float ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tpNode, float fEyeFov);
 		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group, bool bMinimum = true);
 		int	 ifFindDynamicObject(CEntity *tpEntity);
@@ -540,6 +541,7 @@ class CAI_Soldier : public CCustomMonster
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
+		bool bfCheckForVisibility(int iTestNode);
 		void vfLoadSounds();
 		void vfLoadSelectors(LPCSTR section);
 		void vfAssignBones(CInifile *ini, const char *section);

@@ -999,6 +999,8 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	fEyeFov *=PI/180.f;
 	for (DWORD it=0; it<AI.q_stack.size(); it++) {
 		DWORD ID = AI.q_stack[it];
+		if (bfCheckForVisibility(ID) && (ID != StartNode))
+			continue;
 		NodeCompressed*	N = AI.Node(ID);
 		DWORD L_count	= DWORD(N->links);
 		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
@@ -1075,6 +1077,9 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 		for ( ; it!=end; it++)	
 			AI.q_mark[*it] -= 1;
 	}
+	
+	for (int k=0; k<Group.m_tpaSuspiciousNodes.size(); k++)
+		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
 
 	Device.Statistic.AI_Range.End();
 }
