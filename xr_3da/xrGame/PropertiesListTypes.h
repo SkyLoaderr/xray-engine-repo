@@ -769,6 +769,12 @@ public:
         V->type			= PROP_A_CSHADER;
         return V;
     }
+    ATextValue*			CreateAGameMtl	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
+        V->type			= PROP_A_GAMEMTL;
+        return V;
+    }
 	ATextValue* 		CreateATexture	(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         ATextValue* V	= new ATextValue(flags,after,before,draw,change);
@@ -833,12 +839,6 @@ public:
     {
         TextValue* V	= new TextValue(lim,flags,after,before,draw,change);
 		V->type			= PROP_GAMEMTL;
-        return V;
-    }
-    ATextValue*			CreateAGameMtl(u32 flags=0, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
-    {
-        ATextValue* V	= new ATextValue(flags,after,before,draw,change);
-		V->type			= PROP_A_GAMEMTL;
         return V;
     }
 //------------------------------------------------------------------------------

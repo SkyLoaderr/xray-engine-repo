@@ -197,9 +197,9 @@ void CCustomObject::Scale( Fvector& amount )
 
 void CCustomObject::FillProp(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values, pref, "Name",	FName,	PHelper.CreateText	(sizeof(FName),Scene.OnObjectNameAfterEdit));
+	FILL_PROP_EX(values, pref, "Name",	FName,	PHelper.CreateText	(sizeof(FName),0,Scene.OnObjectNameAfterEdit));
     PropValue* V = PHelper.FindProp(values,pref, "Name"); R_ASSERT(V);
-    if (V->IsDiffValues()) V->bEnabled = false;
+    if (V->IsDiffValues()) V->flags.set(PropValue::flDisabled,TRUE);
 }
 //----------------------------------------------------
 

@@ -188,8 +188,8 @@ void __fastcall TfrmPropertiesSceneObject::FormClose(TObject *Sender,
 void __fastcall TfrmPropertiesSceneObject::ebReferenceClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Change object reference?")==mrYes){
-		LPCSTR N = TfrmChoseItem::SelectObject(false,0,0);
-        if (N){
+		LPCSTR N;
+    	if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1)){
         	m_NewReference=N;
             ebReference->Caption=N;
             OnModified(Sender);
@@ -469,6 +469,8 @@ BOOL __fastcall TfrmPropertiesSceneObject::OnRemoveSoundItem(LPCSTR name)
 void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(
       TObject *Sender)
 {
+	THROW2("DUMMY!!!");
+/*
     LPCSTR N=TfrmChoseItem::SelectSound(false,0,true);
     if (N){
     	if (m_EditObject->AppendSound(N)){
@@ -486,6 +488,7 @@ void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(
         }else
         	ELog.DlgMsg(mtError,"Append failed.");
     }
+*/
 }                                                
 //---------------------------------------------------------------------------
 

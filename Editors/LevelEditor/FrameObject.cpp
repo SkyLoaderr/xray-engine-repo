@@ -95,14 +95,12 @@ void TfraObject::SelByRefObject( bool flag )
     LPCSTR sel_name=0;
     if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
         sel_name = ((CSceneObject*)objlist.front())->GetRefName();
-	LPCSTR N = TfrmChoseItem::SelectObject(false,0,sel_name);
-    if (!N) return;
+	LPCSTR N;
+    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,sel_name)) return;
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
-    for(;_F!=_E;_F++)
-    {
-        if((*_F)->Visible() )
-        {
+    for(;_F!=_E;_F++){
+        if((*_F)->Visible() ){
             CSceneObject *_O = (CSceneObject *)(*_F);
             if(_O->RefCompare(N)) _O->Select( flag );
         }
@@ -115,8 +113,8 @@ void TfraObject::SelByRefObject( bool flag )
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 {
-	LPCSTR N = TfrmChoseItem::SelectObject(false,0,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0);
-    if (!N) return;
+	LPCSTR N;
+    if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,1,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)) return;
     Lib.SetCurrentObject(N);
     // set current object
     OutCurrentName();
@@ -131,8 +129,8 @@ void __fastcall TfraObject::OutCurrentName()
 
 void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
 {
-	LPCSTR N = TfrmChoseItem::SelectObject(true,0,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0);
-    if (N){
+	LPCSTR N;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,N,32,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)){
     	Fvector pos={0.f,0.f,0.f};
     	Fvector up={0.f,1.f,0.f};
         Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);

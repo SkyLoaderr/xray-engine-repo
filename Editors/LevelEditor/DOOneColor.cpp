@@ -86,17 +86,17 @@ void __fastcall TfrmOneColor::tvDOListStartDrag(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmOneColor::RemoveObject(AnsiString& text){
+void __fastcall TfrmOneColor::RemoveObject(LPCSTR text){
     for ( TElTreeItem* node = tvDOList->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Text == text){
+        if (node->Text == (WideString)text){
 			node->Delete();
         	return;
         }
 }
 
-void __fastcall TfrmOneColor::AppendObject(AnsiString& text){
+void __fastcall TfrmOneColor::AppendObject(LPCSTR text){
     for ( TElTreeItem* node = tvDOList->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Text == text) return;
+        if (node->Text == (WideString)text) return;
     tvDOList->Items->Add(0,text);
 }
 

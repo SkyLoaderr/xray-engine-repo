@@ -67,9 +67,9 @@ void TfrmPropertiesEObject::FillBasicProps()
 	    FILL_PROP(values, "Flags\\HOM",	   			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoHOM));
 	    FILL_PROP(values, "Flags\\Use LOD",			&O->m_dwFlags, 			PHelper.CreateFlag(CEditableObject::eoUsingLOD));
 
-	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,	OnChangeTransform));
-    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PHelper.CreateVector(-10000,	10000,0.1,1,		PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,PHelper.FvectorRDOnDraw,OnChangeTransform));
-	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PHelper.CreateVector(0.01,		10000,0.01,2,0,0,0,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,	0,OnChangeTransform));
+    	FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PHelper.CreateVector(-10000,	10000,0.1,1,		0,PHelper.FvectorRDOnAfterEdit,PHelper.FvectorRDOnBeforeEdit,PHelper.FvectorRDOnDraw,OnChangeTransform));
+	    FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PHelper.CreateVector(0.01,		10000,0.01,2,0,0,0,	0,OnChangeTransform));
 //	    FILL_PROP(values, "Transform\\Position",	&O->t_vPosition, 		PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
 //    	FILL_PROP(values, "Transform\\Rotation",	&O->t_vRotate, 			PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw,OnChangeTransform));
 //		FILL_PROP(values, "Transform\\Scale",		&O->t_vScale, 			PHelper.CreateVector(0.01,	10000,0.01,2,0,0,0,OnChangeTransform));

@@ -49,8 +49,8 @@ public:		// User declarations
     __fastcall TfrmOneColor(TComponent* Owner);
     void __fastcall ShowIndex(TfrmDOShuffle* parent);
     void __fastcall HideIndex();
-    void __fastcall RemoveObject(AnsiString& text);
-    void __fastcall AppendObject(AnsiString& text);
+    void __fastcall RemoveObject(LPCSTR text);
+    void __fastcall AppendObject(LPCSTR text);
 };
 //---------------------------------------------------------------------------
 #endif

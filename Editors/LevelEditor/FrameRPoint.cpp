@@ -36,8 +36,8 @@ AnsiString TfraSpawnPoint::GetCurrentEntity(BOOL bForceSelect)
 }
 void __fastcall TfraSpawnPoint::ebCurObjClick(TObject *Sender)
 {
-	LPCSTR N = TfrmChoseItem::SelectEntity((ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0);
-    if (N) ebCurObj->Caption = N;
+	LPCSTR N;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smEntity,N,1,(ebCurObj->Caption!=NONE_CAPTION)?ebCurObj->Caption.c_str():0)) ebCurObj->Caption = N;
 }
 //---------------------------------------------------------------------------
 

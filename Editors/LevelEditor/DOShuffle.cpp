@@ -257,8 +257,8 @@ void __fastcall TfrmDOShuffle::tvMultiStartDrag(TObject *Sender,
 
 void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
 {
-	LPCSTR S = TfrmChoseItem::SelectObject(true,0,0);
-    if (S){
+	LPCSTR S;
+    if (TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,S,8)){
 	    AStringVec lst;
 		SequenceToList(lst, S);
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
@@ -284,7 +284,7 @@ void __fastcall TfrmDOShuffle::ebDelObjectClick(TObject *Sender)
 	if (tvItems->Selected){
 		ModifColorInd();
 		for (DWORD k=0; k<color_indices.size(); k++)
-    		color_indices[k]->RemoveObject(tvItems->Selected->Text);
+    		color_indices[k]->RemoveObject(AnsiString(tvItems->Selected->Text).c_str());
         tvItems->Selected->Delete();
     }
 }
