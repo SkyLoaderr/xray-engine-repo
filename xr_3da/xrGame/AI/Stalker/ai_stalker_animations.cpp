@@ -516,7 +516,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 			forward_direction = true;
 
 	if (forward_direction) {
-		Msg							("Moving FORWARD");
+//		Msg							("Moving FORWARD");
 		// moving forward
 		if (eMovementDirectionForward == m_tMovementDirection)
 			m_dwDirectionStartTime	= Level().timeServer();
@@ -544,7 +544,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		if (!back)
 			// moving left|right
 			if (left) {
-				Msg							("Moving LEFT");
+//				Msg							("Moving LEFT");
 				// moving right, looking left
 				if (eMovementDirectionRight == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -560,7 +560,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 						}
 			}
 			else {
-				Msg							("Moving RIGHT");
+//				Msg							("Moving RIGHT");
 				// moving left, looking right
 				if (eMovementDirectionLeft == m_tMovementDirection)
 					m_dwDirectionStartTime	= Level().timeServer();
@@ -576,7 +576,7 @@ void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 						}
 			}
 		else {
-			Msg							("Moving BACK");
+//			Msg							("Moving BACK");
 			// moving back
 			if (eMovementDirectionBack == m_tMovementDirection)
 				m_dwDirectionStartTime	= Level().timeServer();
