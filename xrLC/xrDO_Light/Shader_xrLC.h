@@ -56,11 +56,12 @@ class Shader_xrLC_LIB
 public:
 	void					Load	(LPCSTR name)
 	{
-		CFileReader			fs(name);
-		int count			= fs.length()/sizeof(Shader_xrLC);
-		R_ASSERT			(int(fs.length()) == int(count*sizeof(Shader_xrLC)));
+		IReader* fs			= FS.r_open(name);
+		int count			= fs->length()/sizeof(Shader_xrLC);
+		R_ASSERT			(int(fs->length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
-		fs.r				(library.begin(),fs.length());
+		fs->r				(library.begin(),fs->length());
+        FS.r_close			(fs);
 	}
 	void					Save	(LPCSTR name)
 	{
