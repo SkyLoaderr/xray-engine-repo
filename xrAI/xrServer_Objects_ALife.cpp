@@ -413,7 +413,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
-		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOnline);
+		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
 	}
 }
 #endif
