@@ -58,7 +58,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			movement_control->GetPosition(dest_position);
 		}
 
-		if (movement_control->gcontact_HealthLost) {
+		if (!fsimilar(0.f,movement_control->gcontact_HealthLost)) {
 			Fvector		d;
 			d.set		(0,1,0);
 			Hit			(movement_control->gcontact_HealthLost,d,this,movement_control->ContactBone(),dest_position,0);
@@ -120,18 +120,20 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	if ((tpNearestList.empty())) {
 		if(!movement_control->TryPosition(dest_position)) {
-			movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
+//			movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
+			movement_control->Calculate(CDetailPathManager::m_path,speed,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(dest_position);
-			if (movement_control->gcontact_HealthLost)
+			if (!fsimilar(0.f,movement_control->gcontact_HealthLost))
 				Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
 		}
 		else
 			movement_control->b_exect_position=true;
 	}
 	else {
-		movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
+//		movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
+		movement_control->Calculate(CDetailPathManager::m_path,speed,CDetailPathManager::m_current_travel_point,precision);
 		movement_control->GetPosition(dest_position);
-		if (movement_control->gcontact_HealthLost)
+		if (!fsimilar(0.f,movement_control->gcontact_HealthLost))
 			Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),dest_position,0);
 	}
 #endif
