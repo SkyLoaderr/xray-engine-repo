@@ -39,9 +39,9 @@ XRSOUND_API extern int				psSoundRelaxTime		;
 
 // Flags
 enum {
-	ssWaveTrace			= (1ul<<0ul),
-	ssEAX				= (1ul<<1ul),
-	ssSoftware			= (1ul<<2ul),
+	ssWaveTrace			= (1ul<<0ul),	//!< Flag to control wave-tracing
+	ssEAX				= (1ul<<1ul),	//!< Use EAX or not
+	ssSoftware			= (1ul<<2ul),	//!< Use software mixing only
 	ss_forcedword		= u32(-1)
 };
 enum {
@@ -58,22 +58,60 @@ enum {
 	sq_forcedword = u32(-1)
 };
 
-// definition (Sound Structure + control)
-struct	/*XRSOUND_API*/	sound
+/*! \class sound
+	\brief Sound source + control
+	
+	The main class respresenting source/emitter interface
+	This class infact just hides internals and redirect calls to 
+	specific sub-systems
+*/
+struct	sound
 {
-	CSound_source*					handle;
-	CSound_interface*				feedback;
-	int								g_type;
-	CObject*						g_object;
+	CSound_source*					handle;			//!< Pointer to wave-source interface
+	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
+	int								g_type;			//!< Sound type, usually for AI
+	CObject*						g_object;		//!< Game object that emitts sound
+
+    //! A constructor
+    /*!
+		\sa ~sound()
+	*/
 	sound()							{ handle = 0; feedback=0; g_type=0; g_object=0; }
 
+	//! Loader/initializer
+	/*!
+		\sa clone()
+		\sa destroy()
+		\param _3D Controls whenewer the source is 3D or 2D.
+		\param name Name of wave-file
+		\param type Sound type, usually for AI
+	*/
 	IC void					create					( BOOL _3D,	LPCSTR name,	int		type=0);
+
+	//! Clones sound from another
+	/*!
+		\sa create()
+		\sa destroy()
+		\param from Source to clone.
+		\param leave_type Controls whenewer to leave game/AI type as is
+	*/
 	IC void					clone					( const sound& from, bool leave_type=true);
+
+	//! Destroys and unload wave
+	/*!
+		\sa create()
+		\sa clone()
+	*/
 	IC void					destroy					( );
-	IC void					play					( CObject* O,						BOOL bLoop=false);
-	IC void					play_unlimited			( CObject* O,						BOOL bLoop=false);
-	IC void					play_at_pos				( CObject* O,	const Fvector &pos,	BOOL bLoop=false);
-	IC void					play_at_pos_unlimited	( CObject* O,	const Fvector &pos,	BOOL bLoop=false);
+
+	//! Starts playing this source
+	/*!
+		\sa stop()
+	*/
+	IC void					play					( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */);
+	IC void					play_unlimited			( CObject* O /*!< Object */,											BOOL bLoop=false  /*!< Looping */);
+	IC void					play_at_pos				( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
+	IC void					play_at_pos_unlimited	( CObject* O /*!< Object */,	const Fvector &pos /*!< 3D position */,	BOOL bLoop=false  /*!< Looping */);
 	IC void					stop 					( );
 
 	IC void					set_position			( const Fvector &pos);
