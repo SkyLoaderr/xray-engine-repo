@@ -13,11 +13,11 @@
 #define RANK_KILL_TABLE_SECT	"rank_kill_points"
 
 //////////////////////////////////////////////////////////////////////////
-RANK_DATA::RANK_DATA (int idx, shared_str idn, LPCSTR team_str)
+RANK_DATA::RANK_DATA (int idx, shared_str idn, LPCSTR threshold_str)
 {
 	index = idx;
 	id = idn;
-	threshold = (u8)atoi(team_str);
+	threshold = (CHARACTER_RANK_VALUE)atoi(threshold_str);
 }
 //////////////////////////////////////////////////////////////////////////
 CHARACTER_RANK::GOODWILL_TABLE		CHARACTER_RANK::m_relation_table;

@@ -12,11 +12,11 @@
 #define REPUTATION_TABLE		"reputation_relations"
 
 //////////////////////////////////////////////////////////////////////////
-REPUTATION_DATA::REPUTATION_DATA (int idx, shared_str idn, LPCSTR team_str)
+REPUTATION_DATA::REPUTATION_DATA (int idx, shared_str idn, LPCSTR threshold_str)
 {
 	index = idx;
 	id = idn;
-	threshold = (u8)atoi(team_str);
+	threshold = (CHARACTER_REPUTATION_VALUE)atoi(threshold_str);
 }
 //////////////////////////////////////////////////////////////////////////
 CHARACTER_REPUTATION::GOODWILL_TABLE CHARACTER_REPUTATION::m_relation_table;
