@@ -411,7 +411,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(u32 id_who)
 			game_PlayerState*	pstate	=	get_it	(it);
 			if (pstate->Skip || pstate == ps || pstate->team != ps->team) continue;		
 			
-			ps->money_for_round = ps->money_for_round + pTeam->m_iM_TargetSucceedAll;			
+			pstate->money_for_round = pstate->money_for_round + pTeam->m_iM_TargetSucceedAll;			
 		}
 	}
 
