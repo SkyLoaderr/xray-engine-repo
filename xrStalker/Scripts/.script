@@ -35,7 +35,9 @@ function action(obj,...)
 		end
 		i = i + 1
 	end
-	obj:command(act)
+	if (obj ~= nil)
+		obj:command(act)
+	return	entity_action(act)
 end
 
 class "pp_effector" (effector)
