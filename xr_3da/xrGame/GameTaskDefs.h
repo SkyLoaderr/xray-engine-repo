@@ -6,7 +6,7 @@
 #pragma once
 
 #include "alife_space.h"
-
+#include "object_interfaces.h"
 
 typedef int			TASK_INDEX;
 typedef ref_str		TASK_ID;
@@ -25,10 +25,13 @@ enum ETaskState {
 DEFINE_VECTOR		(ETaskState, TASK_STATE_VECTOR, TASK_STATE_IT);
 
 
-struct TASK_DATA
+struct TASK_DATA : IPureSerializeObject
 {
 	TASK_DATA();
 	TASK_DATA(TASK_INDEX idx, ALife::_TIME_ID time);
+
+	virtual void load (IReader&);
+	virtual void save (IWriter&);
 
 	TASK_INDEX			index;
 	//время получения задания
