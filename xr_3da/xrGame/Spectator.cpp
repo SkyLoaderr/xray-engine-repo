@@ -148,7 +148,7 @@ void CSpectator::OnMouseMove(int dx, int dy)
 		cameras[cam_active]->Move((d<0)?kLEFT:kRIGHT, _abs(d));
 	}
 	if (dy){
-		float d = ((psMouseInvert)?-1:1)*float(dy)*scale*3.f/4.f;
+		float d = ((psMouseInvert.test(1))?-1:1)*float(dy)*scale*3.f/4.f;
 		cameras[cam_active]->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }

@@ -23,7 +23,7 @@ void CRenderDevice::Clear	()
 {
 	CHK_DX(HW.pDevice->Clear(0,0,
 		D3DCLEAR_ZBUFFER|
-		((psDeviceFlags&rsClearBB)?D3DCLEAR_TARGET:0)|
+		(psDeviceFlags.test(rsClearBB)?D3DCLEAR_TARGET:0)|
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
 		D3DCOLOR_XRGB(0,255,0),1,0
 		));

@@ -150,7 +150,7 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 
 void CHOM::Render_DB	(CFrustum& base)
 {
-//	bHOM_ModeS			= psDeviceFlags&rsOcclusion;
+//	bHOM_ModeS			= psDeviceFlags.test(rsOcclusion);
 //	if (bHOM_ModeS)	
 //	{
 //		Fmatrix	mInv;	mInv.invert	(Device.mView);

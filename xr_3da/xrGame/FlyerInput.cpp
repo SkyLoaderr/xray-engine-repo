@@ -67,7 +67,7 @@ void CFlyer::OnMouseMove(int dx, int dy)
 //			fMouseYawMoving = 1.f;
 		}
 	if (dy){
-		float d = ((psMouseInvert)?-1:1)*float(dy)*scale*MouseHWScale;
+		float d = ((psMouseInvert.test(1))?-1:1)*float(dy)*scale*MouseHWScale;
 		cameras[cam_active]->Move((d>0)?kUP:kDOWN, _abs(d));
 	}
 }

@@ -26,7 +26,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 ENGINE_API float	psGravity = 30.f;
-ENGINE_API u32	psEnvFlags= effSunGlare;
+ENGINE_API Flags32	psEnvFlags= {effSunGlare};
 
 CEnvironment::CEnvironment()
 {
@@ -246,12 +246,12 @@ void CEnvironment::RenderFirst()
 	}
 
 	// Sun sources
-	if (psEnvFlags&effSunGlare)
+	if (psEnvFlags.test(effSunGlare))
 		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
 }
 
 void CEnvironment::RenderLast()
 {
-	if (psEnvFlags&effSunGlare)
+	if (psEnvFlags.test(effSunGlare))
 		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
 }

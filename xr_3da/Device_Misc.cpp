@@ -48,7 +48,7 @@ void CRenderDevice::DumpFlags()
 	Log("- Dumping device flags");
 	_DF *p = DF;
 	while (p->name) {
-		Msg("* %20s %s",p->name,(psDeviceFlags&p->mask)?"on":"off");
+		Msg("* %20s %s",p->name,psDeviceFlags.test(p->mask)?"on":"off");
 		p++;
 	}
 }

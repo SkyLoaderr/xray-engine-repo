@@ -264,7 +264,7 @@ extern float		psDetail_w_speed;
 extern float		psDetail_l_ambient;
 extern float		psDetail_l_aniso;
 extern int			psSupersample;
-extern u32			psEnvFlags;
+extern Flags32		psEnvFlags;
 
 void CCC_Register()
 {

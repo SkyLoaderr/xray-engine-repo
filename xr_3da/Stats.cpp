@@ -85,7 +85,7 @@ void CStats::Show()
 	}
 
 	// Show them
-	if (psDeviceFlags & rsStatistic) 
+	if (psDeviceFlags.test(rsStatistic))
 	{
 		static float	r_ps		= 0;
 		static float	b_ps		= 0;

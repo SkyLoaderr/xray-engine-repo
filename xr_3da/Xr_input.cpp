@@ -9,7 +9,7 @@ CController dummyController;
 
 ENGINE_API float	psMouseSens			= 1.f;
 ENGINE_API float	psMouseSensScale	= 1.f;
-ENGINE_API u32	psMouseInvert		= TRUE;
+ENGINE_API Flags32	psMouseInvert		= {TRUE};
 
 #define MOUSEBUFFERSIZE			64
 #define KEYBOARDBUFFERSIZE		64

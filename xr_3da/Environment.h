@@ -51,7 +51,7 @@ public:
 	}
 
 	// Skydome
-	CVisual*				pSkydome;
+	CVisual*		pSkydome;
 public:
 					CEnvironment		();
 					~CEnvironment		();
@@ -71,7 +71,7 @@ public:
 	virtual void	OnDeviceDestroy		();
 };
 
-ENGINE_API extern u32		psEnvFlags;
+ENGINE_API extern Flags32	psEnvFlags;
 ENGINE_API extern float		psGravity;
 
 #endif // !defined(AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_)

@@ -152,7 +152,7 @@ void CLevel::OnFrame	()
 		Device.Statistic.netServer.Begin();
 		Server->Update					();
 		Device.Statistic.netServer.End	();
-		if (psDeviceFlags&rsStatistic)
+		if (psDeviceFlags.test(rsStatistic))
 		{
 			const IServerStatistic* S = Server->GetStatistic();
 			F->SetSize	(0.015f);
@@ -176,7 +176,7 @@ void CLevel::OnFrame	()
 			}
 		}
 	} else {
-		if (psDeviceFlags&rsStatistic)
+		if (psDeviceFlags.test(rsStatistic))
 		{
 			F->SetSize	(0.015f);
 			F->OutSet	(0.0f,0.5f);
