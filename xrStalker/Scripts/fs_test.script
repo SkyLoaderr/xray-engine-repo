@@ -1,7 +1,7 @@
 
 function main()
 	local f = getFS()
-	local flist = f:file_list_open("$screenshots$",FS.FS_ListFiles)
+	local flist = f.file_list_open("$screenshots$",FS.FS_ListFiles)
 	local f_cnt = flist:Size()
 	
 	for	it=0, f_cnt-1 	do
