@@ -142,8 +142,8 @@ public:
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
 
-	void				ActivateBox		(DWORD id)	{ 
-														if (m_dwCurBox == id) return;
+	void				ActivateBox		(DWORD id, BOOL Check = false)	{ 
+														if (Check && (m_dwCurBox == id)) return;
 														m_dwCurBox = id;
 														aabb.set(boxes[id]);
 														if(!m_character) return;

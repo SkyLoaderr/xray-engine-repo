@@ -693,15 +693,17 @@ void CActor::shedule_Update	(u32 DT)
 //			NET_Last = NET.back();
 
 			g_sv_Orientate				(NET_Last.mstate,dt			);
+			mstate_real = NET_Last.mstate;
 			g_Orientate					(NET_Last.mstate,dt			);
 			g_Physics					(NET_Last.p_accel,Jump,dt	);
 			g_cl_ValidateMState			(dt,mstate_wishful);
 			g_SetAnimation				(NET_Last.mstate);
 
-			if (mstate_real & mcCrouch)
-				m_PhysicMovementControl->ActivateBox(1);
+
+			if (NET_Last.mstate & mcCrouch)
+				m_PhysicMovementControl->ActivateBox(1, true);
 			else 
-				m_PhysicMovementControl->ActivateBox(0);
+				m_PhysicMovementControl->ActivateBox(0, true);
 		};
 	}
 	make_Interpolation();
