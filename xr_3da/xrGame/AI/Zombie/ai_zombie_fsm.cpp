@@ -114,6 +114,8 @@ void CAI_Zombie::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	AI_Path.TravelPath.clear();
 
+	UpdateTransform();
+
 	if (m_fFood <= 0) {
 		if (m_dwLastRangeSearch <= m_dwDeathTime)
 			m_dwLastRangeSearch = Level().timeServer();
@@ -577,7 +579,7 @@ void CAI_Zombie::Resurrect()
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 	
-	if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
-		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
-	}
+	//if (((m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1]) || (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2])) && (!m_tpCurrentGlobalBlend->playing)) {
+	//	GO_TO_NEW_STATE_THIS_UPDATE(aiZombieFreeHuntingActive);
+	//}
 }

@@ -102,15 +102,13 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (fHealth <= 0) {
-		bool bOk = false;
-		for (int i=0; i<3; i++)
+		for (int i=0 ;i<3; i++)
 			if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
-				bOk = true;
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 				break;
 			}
-
-		if (!bOk) {
+		
+		if (!tpGlobalAnimation) {
 			for (int i=0 ;i<3; i++)
 				if (m_tZombieAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -119,32 +117,35 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					break;
 				}
 			if (!tpGlobalAnimation)
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,SND_DEATH_COUNT)];
+				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,3)];
 		}
-		else
-			tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 	}
 	else
-		if (m_bFiring) {
-			for (int i=0 ;i<3; i++)
-				if (m_tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+		if (eCurrentState == aiZombieResurrect) {
+			for (int i=0; i<3; i++)
+				if (m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i] == m_tpCurrentGlobalAnimation) {
 					tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 					break;
 				}
-			
-			if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
-			tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[2];
+			if (!tpGlobalAnimation) {
+				for ( i=0; i<3; i++)
+					if (m_tZombieAnimations.tNormal.tGlobal.tpaDeathIdle[i] == m_tpCurrentGlobalAnimation) {
+						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[i];
+						break;
+					}
+			}
 		}
 		else
-			if (eCurrentState == aiZombieResurrect) {
-				if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[0])
-					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[0];
-				else
-					if (m_tpCurrentGlobalAnimation == m_tZombieAnimations.tNormal.tGlobal.tpaDeath[1])
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[1];
-					else
-						tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaStandUp[2];
+			if (m_bFiring) {
+				for (int i=0 ;i<3; i++)
+					if (m_tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+						break;
+					}
+				
+				if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+					tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,3)];
+				tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tpaAttack[2];
 			}
 			else
 				if (_abs(r_torso_target.yaw - r_torso_current.yaw) <= PI)
