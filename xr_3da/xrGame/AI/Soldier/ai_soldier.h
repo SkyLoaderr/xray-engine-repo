@@ -570,6 +570,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfAimAtEnemy(bool bInaccuracy = false);
 		void vfSaveEnemy();
 		
+		void vfMarkVisibleNodes(CEntity *tpEntity);
 		float ffGetDistanceToNearestMember();
 		bool bfCheckIfIHaveToChangePosition();
 		bool bfCheckIfCanKillMember();

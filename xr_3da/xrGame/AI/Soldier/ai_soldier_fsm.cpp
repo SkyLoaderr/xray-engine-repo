@@ -231,7 +231,7 @@ void CAI_Soldier::OnDefendAloneFire()
 	
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneFireSteal)
+	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(!bfCheckForEntityVisibility(Enemy.Enemy),aiSoldierDefendAloneFireSteal)
 
 	SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierDefendAloneFireFire)
 
@@ -364,7 +364,7 @@ void CAI_Soldier::OnFindAloneFire()
 					}
 				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched == 2))
 					AI_Path.TravelPath.clear();
-				if (!iCount && (Level().timeServer() - tpaDynamicObjects[iIndex].dwTime > TIME_TO_SEARCH)) {
+				if (!iCount && (m_dwCurrentUpdate - tpaDynamicObjects[iIndex].dwTime > TIME_TO_SEARCH)) {
 					tSavedEnemy = 0;
 					GO_TO_PREV_STATE;
 				}

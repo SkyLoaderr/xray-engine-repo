@@ -582,7 +582,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		}
 	}
 
-	return(FIGHT_TYPE_RETREAT);
+	return(FIGHT_TYPE_DEFEND);
 //	if (fFightCoefficient > 400)
 //		return(FIGHT_TYPE_RETREAT);
 //	else
@@ -954,6 +954,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 		fEyeFov = ffGetFov();
 	fEyeFov *=PI/180.f;
 
+	/**
 	Fvector tMyDirection;
 	SRotation tMyRotation,tEnemyRotation;
 	tMyDirection.sub(tSavedEnemyPosition,vPosition);
@@ -969,13 +970,18 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			if (tMyRotation.yaw - tEnemyRotation.yaw > PI)
 				tEnemyRotation.yaw += PI_MUL_2;
     bool bRotation = tMyRotation.yaw < tEnemyRotation.yaw;
+	/**/
+	INIT_SQUAD_AND_LEADER;
+	vfMarkVisibleNodes(Leader);
+	for (int i=0; i<getGroup()->Members.size(); i++)
+		vfMarkVisibleNodes(getGroup()->Members[i]);
 
 	Msg("Nodes being checked for suspicious :");
 	for (DWORD it=0; it<AI.q_stack.size(); it++) {
 		DWORD ID = AI.q_stack[it];
 
- 		if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
-			continue;
+ 		//if (bfCheckForVisibility(ID,tMyRotation,bRotation) && (ID != StartNode))
+		//	continue;
 
 		NodeCompressed*	N = AI.Node(ID);
 		DWORD L_count	= DWORD(N->links);
@@ -1061,12 +1067,13 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			break;
 	}
 
-	{
-		vector<DWORD>::iterator it	= AI.q_stack.begin();
-		vector<DWORD>::iterator end	= AI.q_stack.end();
-		for ( ; it!=end; it++)	
-			AI.q_mark_bit[*it] = false;
-	}
+//	{
+//		vector<DWORD>::iterator it	= AI.q_stack.begin();
+//		vector<DWORD>::iterator end	= AI.q_stack.end();
+//		for ( ; it!=end; it++)	
+//			AI.q_mark_bit[*it] = false;
+//	}
+	AI.q_mark_bit.assign(AI.GetHeader().count,false);
 	
 	Msg("Suspicious nodes :");
 	for (int k=0; k<Group.m_tpaSuspiciousNodes.size(); k++)
@@ -1209,4 +1216,20 @@ float CAI_Soldier::ffGetDistanceToNearestMember()
 				fDistance = min(fDistance,vPosition.distance_to(Group.Members[i]->Position()));
 		}
 	return(fDistance);
+}
+
+void CAI_Soldier::vfMarkVisibleNodes(CEntity *tpEntity)
+{
+	CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(tpEntity);
+	if (!tpCustomMonster)
+		return;
+
+	CAI_Space &AI = Level().AI;
+	Fvector tDirection;
+	float fFov = tpCustomMonster->ffGetFov()*PI/180.f, fRange = tpCustomMonster->ffGetRange();
+	
+	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
+		tDirection.setHP(fIncrement,0.f);
+		AI.ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,AI.q_mark_bit,fRange);
+	}
 }
