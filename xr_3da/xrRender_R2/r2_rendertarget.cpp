@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "blender_light_direct.h"
+#include "blender_combine.h"
 
 void	CRenderTarget::OnDeviceCreate	()
 {
@@ -7,6 +8,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 	// blenders
 	b_accum_direct					= xr_new<CBlender_accum_direct>		();
+	b_combine						= xr_new<CBlender_combine>			();
 
 	//	NORMAL
 	{
@@ -24,14 +26,15 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=DSM_size, h=DSM_size;
 
 		R_CHK						(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_smap_d_ZB,NULL));
-		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,			w,h,D3DFMT_R32F);
-		s_smap_d_debug				= Device.Shader.Create		("effects\\screen_set",	r2_RT_smap_d);
-		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,		"r2\\accum_direct");
-		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,				RCache.Vertex.Buffer(), RCache.QuadIB);
+		rt_smap_d					= Device.Shader._CreateRT	(r2_RT_smap_d,				w,h,D3DFMT_R32F);
+		s_smap_d_debug				= Device.Shader.Create		("effects\\screen_set",		r2_RT_smap_d);
+		s_accum_direct				= Device.Shader.Create_B	(b_accum_direct,			"r2\\accum_direct");
+		g_smap_d_debug				= Device.Shader.CreateGeom	(FVF::F_TL,					RCache.Vertex.Buffer(), RCache.QuadIB);
 	}
 
 	// COMBINE
 	{
+		s_combine					= Device.Shader.Create_B	(b_combine,					"r2\\combine");
 		s_combine_dbg_Position		= Device.Shader.Create		("effects\\screen_set",		r2_RT_P);
 		s_combine_dbg_Normal		= Device.Shader.Create		("effects\\screen_set",		r2_RT_N);
 		s_combine_dbg_Color			= Device.Shader.Create		("effects\\screen_set",		r2_RT_D_G);
@@ -52,6 +55,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(s_combine_dbg_Normal);
 	Device.Shader.Delete		(s_combine_dbg_Color);
 	Device.Shader.Delete		(s_combine_dbg_Accumulator);
+	Device.Shader.Delete		(s_combine);
 
 	// DIRECT
 	Device.Shader.DeleteGeom	(g_smap_d_debug	);
@@ -69,6 +73,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteRT		(rt_Position	);
 
 	// Blenders
+	xr_delete					(b_combine		);
 	xr_delete					(b_accum_direct	);
 }
 

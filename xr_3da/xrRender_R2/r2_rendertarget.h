@@ -10,6 +10,7 @@ private:
 private:
 	// 
 	CBlender*			b_accum_direct;
+	CBlender*			b_combine;
 
 	//
 	CRT*				rt_Position;	// 64bit, fat	(x,y,z,?)				(eye-space)
@@ -36,6 +37,7 @@ private:
 	Shader*				s_combine_dbg_Normal;
 	Shader*				s_combine_dbg_Color;
 	Shader*				s_combine_dbg_Accumulator;
+	Shader*				s_combine;
 private:
 	float				param_blur;
 	float				param_gray;
