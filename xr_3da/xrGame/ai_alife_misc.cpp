@@ -129,10 +129,12 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 	}
 }
 
-void CSE_ALifeSimulator::vfPerformCommunication(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
+ERelationType CSE_ALifeSimulator::tfGetRelationType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2)
 {
-#pragma todo("Dima to Dima: Append communication")
-
+	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team())
+		return(eRelationTypeEnemy);
+	else
+		return(eRelationTypeFriend);
 }
 
 void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract)
@@ -158,10 +160,8 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 #pragma todo("Dima to Dima: Update events")
 }
 
-ERelationType CSE_ALifeSimulator::tfGetRelationType(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract1, CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract2)
+void CSE_ALifeSimulator::vfPerformCommunication(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2)
 {
-	if (tpALifeMonsterAbstract1->g_team() != tpALifeMonsterAbstract2->g_team())
-		return(eRelationTypeEnemy);
-	else
-		return(eRelationTypeFriend);
+#pragma todo("Dima to Dima: Append communication")
+
 }

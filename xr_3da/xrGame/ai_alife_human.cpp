@@ -529,7 +529,7 @@ void CSE_ALifeHumanAbstract::vfAttachItems(ETakeType tTakeType)
 		
 		sort(m_tpALife->m_tpItemVector.begin(),m_tpALife->m_tpItemVector.end(),CSortItemPredicate());
 		
-#pragma todo("Add food and medikit items need count computations")
+#pragma todo("Dima to Dima : Add food and medikit items need count computations")
 		// choosing food
 		{
 			u32							l_dwCount = 0;
