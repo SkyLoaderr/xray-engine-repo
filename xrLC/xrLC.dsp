@@ -742,5 +742,9 @@ SOURCE=.\xrSoftenLights.cpp
 SOURCE=.\xrT_Junction.cpp
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\xrGameMaterials.h
+# End Source File
 # End Target
 # End Project
