@@ -177,8 +177,15 @@ function move_mgr:look_at_waypoint(pt)
 		self.sl = level.object(sl_name)
 		if self.sl then
 			reset_action(self.sl, "move_mgr")
-			utils.action2(self.sl, look(self.patrol_look:point(pt), sl_speed_h, sl_speed_v),
-					cond(cond.time_end, time_infinite))
+			--utils.action2(self.sl, look(self.patrol_look:point(pt), sl_speed_h, sl_speed_v),
+			--		cond(cond.time_end, time_infinite))
+			if ddd then
+				utils.action2(self.sl, object(self.sl, object.deactivate), cond(cond.time_end, 100))
+			else
+				utils.action2(self.sl, object(self.sl, object.activate), cond(cond.time_end, 100))
+				utils.action2(self.sl, look(self.patrol_look:point(pt), sl_speed_h, sl_speed_v),
+						cond(cond.look_end))
+			end
 		end
 	end
 end
@@ -298,11 +305,18 @@ function move_mgr:reset_path_info()
 	self.object:set_detail_path_type (move.line)
 end
 
+ddd = false -- ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZzzzzzzzzzZZZZZZZZZZzzzzzzzz FIXME
 function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
 	if not no_dialog_mgr_update then
 		self.dialog_mgr:update()
+	end
+
+	if not ddd and self.sl and self.sl:action() == nil then
+		-- Прожектор в своей финальной точке - поднять тревогу, если туда попал кто-то из персонажей
+		printf("ALARM?!")
+		self:reset_sl() -- отпустить прожектор
 	end
 
 	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
