@@ -86,7 +86,12 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	save_data					(m_tpEvents,tNetPacket);
 	tNetPacket.w_u32			(m_dwMoney);
+
+#ifdef XRGAME_EXPORTS
 	tNetPacket.w_s32			(m_iSpecificCharacter);
+#else
+	tNetPacket.w_s32			(NO_SPECIFIC_CHARACTER);
+#endif
 	tNetPacket.w_u32			(m_trader_flags.get());
 	tNetPacket.w_s32			(m_iCharacterProfile);
 }
@@ -140,11 +145,11 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 	CCharacterInfo char_info;
 	char_info.Load(character_profile());
 
-#ifdef XRGAME_EXPORTS
+
 	//профиль задан индексом
-	if(NO_SPECIFIC_CHARACTER != char_info.m_iSpecificCharacterIndex)
+	if(NO_SPECIFIC_CHARACTER != char_info.data()->m_iCharacterIndex)
 	{
-		set_specific_character(char_info.m_iSpecificCharacterIndex);
+		set_specific_character(char_info.data()->m_iCharacterIndex);
 		return m_iSpecificCharacter;
 	}
 	//профиль задан шаблоном
@@ -152,8 +157,6 @@ SPECIFIC_CHARACTER_INDEX CSE_ALifeTraderAbstract::specific_character()
 	//проверяем все информации о персонаже, запоминаем подходящие,
 	//а потом делаем случайный выбор
 	else
-#endif
-
 	{	
 		m_CheckedCharacters.clear();
 		m_DefaultCharacters.clear();
