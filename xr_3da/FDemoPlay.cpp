@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time)
+CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time,FALSE)
 {
 	Msg("! Playing demo: %s",name);
 	Console.Execute("hud_weapon 0");

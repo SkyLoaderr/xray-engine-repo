@@ -16,7 +16,7 @@ class CEffectorBobbing : public CEffector
 public:
 			CEffectorBobbing	();
 	virtual ~CEffectorBobbing	();
-	virtual	void	Process		(Fvector &p, Fvector &d, Fvector &n);
+	virtual	void	Process		(Fvector &delta_p, Fvector &delta_d, Fvector &delta_n);
 	void	SetState			(DWORD st);
 };
 

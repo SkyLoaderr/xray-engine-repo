@@ -6,7 +6,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorBobbing::CEffectorBobbing() : CEffector(cefBobbing,10000.f)
+CEffectorBobbing::CEffectorBobbing() : CEffector(cefBobbing,10000.f,FALSE)
 {
 	fTime			= 0;
 	fReminderFactor	= 0;

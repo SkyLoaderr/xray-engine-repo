@@ -19,7 +19,7 @@ CDemoRecord * xrDemoRecord = 0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,life_time)
+CDemoRecord::CDemoRecord(const char *name,float life_time):CEffector(cefDemo,life_time,FALSE)
 {
 	_unlink(name);
 	hFile	= _open(name,O_WRONLY|O_CREAT|O_BINARY, S_IREAD|S_IWRITE);

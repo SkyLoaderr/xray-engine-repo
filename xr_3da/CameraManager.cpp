@@ -75,6 +75,12 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	vRight.crossproduct		(vNormal,vDirection);
 	vNormal.crossproduct	(vDirection,vRight);
 
+	// Save affected matrix and vectors
+	affected_vPosition.set				(vPosition);
+	affected_vDirection.set				(vDirection);
+	affected_vNormal.set				(vNormal);
+	affected_vRight.crossproduct		(vNormal,vDirection);
+
 	// Save un-affected matrix and vectors
 	unaffected_mView.build_camera_dir	(vPosition,vDirection,vNormal);
 	unaffected_vPosition.set			(vPosition);
@@ -83,11 +89,19 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	unaffected_vRight.crossproduct		(vNormal,vDirection);
 
 	// Effector
-	if (m_Effectors.size()) 
-	{
+	if (m_Effectors.size()){
 		for (int i=m_Effectors.size()-1; i>=0; i--){
 			CEffector* eff = m_Effectors[i];
+			Fvector sp=vPosition;
+			Fvector sd=vDirection;
+			Fvector sn=vNormal;
 			eff->Process(vPosition,vDirection,vNormal);
+			if (eff->Affected()){
+				sp.sub(vPosition,sp);	sd.sub(vDirection,sd);	sn.sub(vNormal,sn);
+				affected_vPosition.add	(sp);
+				affected_vDirection.add	(sd);
+				affected_vNormal.add	(sn);
+			}
 			if (eff->fLifeTime<=0){ 
 				m_Effectors.erase(m_Effectors.begin()+i);
 				_DELETE(eff);
@@ -99,6 +113,10 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 		vNormal.normalize		();
 		vRight.crossproduct		(vNormal,vDirection);
 		vNormal.crossproduct	(vDirection,vRight);
+		affected_vDirection.normalize	();
+		affected_vNormal.normalize		();
+		affected_vRight.crossproduct	(vNormal,vDirection);
+		affected_vNormal.crossproduct	(vDirection,vRight);
 	}
 	
 	// Device params

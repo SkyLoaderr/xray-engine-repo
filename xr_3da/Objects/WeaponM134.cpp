@@ -339,7 +339,6 @@ void CWeaponM134::Update	(float dt, BOOL bHUDView)
 	}
 	fRotateAngle	+= fRotateSpeed*dt;
 
-	pApp->pFont->Out(0,0,"%d",st_current);
 #ifdef DEBUG
 	pApp->pFont->Out(0,0,"%d",iAmmoElapsed);
 	pApp->pFont->Out(0,0.05f,"%.2f",fRotateSpeed);

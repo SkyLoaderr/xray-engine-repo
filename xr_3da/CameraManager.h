@@ -28,6 +28,11 @@ class ENGINE_API CCameraManager
 	Fvector					unaffected_vDirection;
 	Fvector					unaffected_vNormal;
 	Fvector					unaffected_vRight;
+	
+	Fvector					affected_vPosition;
+	Fvector					affected_vDirection;
+	Fvector					affected_vNormal;
+	Fvector					affected_vRight;
 public:
 	void					Dump				(void);
 	CEffector*				AddEffector			(CEffector* ef);
@@ -42,12 +47,19 @@ public:
 	IC void					unaffected_Matrix	(Fmatrix& M)	
 	{	M.set(unaffected_vRight,unaffected_vNormal,unaffected_vDirection,unaffected_vPosition);	}
 
-	IC Fmatrix&				affected_View		()	{ return Device.mView; }
-	IC Fvector&				affected_Pos		()	{ return vPosition;	}
-	IC Fvector&				affected_Dir		()	{ return vDirection;}
-	IC Fvector&				affected_Up			()	{ return vNormal;	}
-	IC Fvector&				affected_Right		()	{ return vRight;	}
+	IC Fvector&				affected_Pos		()	{ return affected_vPosition;	}
+	IC Fvector&				affected_Dir		()	{ return affected_vDirection;	}
+	IC Fvector&				affected_Up			()	{ return affected_vNormal;		}
+	IC Fvector&				affected_Right		()	{ return affected_vRight;		}
 	IC void					affected_Matrix		(Fmatrix& M)	
+	{	M.set(affected_vRight,affected_vNormal,affected_vDirection,affected_vPosition);	}
+
+	IC Fmatrix&				render_View			()	{ return Device.mView; }
+	IC Fvector&				render_Pos			()	{ return vPosition;	}
+	IC Fvector&				render_Dir			()	{ return vDirection;}
+	IC Fvector&				render_Up			()	{ return vNormal;	}
+	IC Fvector&				render_Right		()	{ return vRight;	}
+	IC void					render_Matrix		(Fmatrix& M)	
 	{	M.set(vRight,vNormal,vDirection,vPosition);	}
 
 	void					Update				(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest);

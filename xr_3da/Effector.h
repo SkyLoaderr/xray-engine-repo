@@ -21,6 +21,7 @@ public:
 						CEffector	(EEffectorType type, float tm, BOOL affected) {eType = type; fLifeTime=tm; bAffected=affected;};
 	virtual				~CEffector	() {};
 	IC EEffectorType	GetType		() {return eType;}
+	IC BOOL				Affected	() {return bAffected;}
 
 	virtual	void		Process		(Fvector &p, Fvector &d, Fvector &n)= 0;
 };

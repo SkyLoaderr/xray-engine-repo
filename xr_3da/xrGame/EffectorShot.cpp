@@ -9,7 +9,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorShot::CEffectorShot	(float max_angle, float relax_speed) : CEffector(cefShot,100000.f)
+CEffectorShot::CEffectorShot	(float max_angle, float relax_speed) : CEffector(cefShot,100000.f,TRUE)
 {
 	fRelaxSpeed		= relax_speed;
 	fAngleCurrent	= -EPS_S;

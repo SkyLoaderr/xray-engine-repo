@@ -83,14 +83,11 @@ void CWeaponMagazined::OnDeviceDestroy()
 
 void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 {
-	if (Device.dwFrame!=dwXF_Frame)
-	{
+	if (Device.dwFrame!=dwXF_Frame){
 		dwXF_Frame = Device.dwFrame;
 
-		if (bHUDView) 
-		{
-			if (m_pHUD)	
-			{
+		if (bHUDView){
+			if (m_pHUD){
 				Fmatrix			trans;
 				Level().Cameras.affected_Matrix(trans);
 				m_pHUD->UpdatePosition(trans);
