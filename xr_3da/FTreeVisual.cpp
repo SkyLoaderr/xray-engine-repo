@@ -149,7 +149,7 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
 	// render
-#if 1
+#if 0
 	RCache.set_xform_world	(xform);
 #endif
 	RCache.set_Geometry		(hGeom);
