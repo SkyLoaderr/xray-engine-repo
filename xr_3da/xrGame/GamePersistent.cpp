@@ -51,9 +51,7 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 void CGamePersistent::OnAppCycleStart()
 {
 	// load game materials
-	string256					fn_mtl;
-	if (FS.exist(fn_mtl, "$game_data$","gamemtl.xr"))
-		GMLib.Load				(fn_mtl);
+	GMLib.Load					();
 
 	__super::OnAppCycleStart	();
 }

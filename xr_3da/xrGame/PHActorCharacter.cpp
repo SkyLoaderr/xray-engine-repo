@@ -159,8 +159,8 @@ void CPHActorCharacter::InitContact(dContact* c){
 	b_climb=b_climb || bClimable;
 	b_pure_climb=b_pure_climb && bClimable;
  
-	if(material->Flags.is(SGameMtl::flWalkOn))
-		b_clamb_jump=true;
+//.	if(material->Flags.is(SGameMtl::flWalkOn))
+//.		b_clamb_jump=true;
 
 
 	//bool bo1=(c->geom.g1==m_wheel_transform);

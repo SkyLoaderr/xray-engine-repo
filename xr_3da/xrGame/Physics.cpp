@@ -529,7 +529,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 			//	R_ASSERT3(mtl_pair,strconcat(buf,"Undefined material pair:  # ", GMLib.GetMaterial(T->material)->name),GMLib.GetMaterial(data->material)->name);
 			if(mtl_pair)
 			{
-				if(vel_cret>30.f && !mtl_pair->HitMarks.empty())
+				if(vel_cret>30.f && !mtl_pair->CollideMarks.empty())
 				{
 				
 #pragma TODO("Oles to Slipch: NO WALLMARKS FROM PHYSICAL HITS. Need vertices here")
@@ -542,10 +542,10 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					T);
 					*/
 				}
-				if(vel_cret>15.f && !mtl_pair->HitSounds.empty())
+				if(vel_cret>15.f && !mtl_pair->CollideSounds.empty())
 				{
 					::Sound->play_at_pos(
-						SELECT_RANDOM(mtl_pair->HitSounds) ,0,*((Fvector*)c->pos)
+						SELECT_RANDOM(mtl_pair->CollideSounds) ,0,*((Fvector*)c->pos)
 						);
 				}
 			}

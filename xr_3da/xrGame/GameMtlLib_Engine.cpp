@@ -57,9 +57,8 @@ SGameMtlPair::~SGameMtlPair()
 	DestroySounds	(BreakingSounds);
 	DestroySounds	(StepSounds);
 	DestroySounds	(CollideSounds);
-	DestroySounds	(HitSounds);
-	DestroyPSs		(HitParticles);
-	DestroyMarks	(HitMarks);
+	DestroyPSs		(CollideParticles);
+	DestroyMarks	(CollideMarks);
 }
 
 void SGameMtlPair::Load(IReader& fs)
@@ -73,20 +72,14 @@ void SGameMtlPair::Load(IReader& fs)
     ID_parent			= fs.r_u32();
     OwnProps.set		(fs.r_u32());
  
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
-    fFlotation			= fs.r_float();
-
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
     fs.r_stringZ			(buf); 		CreateSounds		(BreakingSounds,buf);
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
     fs.r_stringZ			(buf);		CreateSounds		(StepSounds,buf);
     
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
     fs.r_stringZ			(buf);		CreateSounds		(CollideSounds,buf);
-    
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
-    fs.r_stringZ			(buf);		CreateSounds		(HitSounds,buf);
-    fs.r_stringZ			(buf);		CreatePSs			(HitParticles,buf);
-    fs.r_stringZ			(buf);		CreateMarks			(HitMarks,buf);
+    fs.r_stringZ			(buf);		CreatePSs			(CollideParticles,buf);
+    fs.r_stringZ			(buf);		CreateMarks			(CollideMarks,buf);
 }

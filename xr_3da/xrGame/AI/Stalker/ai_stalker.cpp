@@ -518,7 +518,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (g_Alive()) {
 		R_ASSERT					(GAMEMTL_NONE != m_dwLastMaterialID);
 		SGameMtlPair				*mtl_pair = GMLib.GetMaterialPair(m_dwMyMaterialID,m_dwLastMaterialID);
-		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", GMLib.GetMaterial(m_dwLastMaterialID)->name);
+		R_ASSERT3					(mtl_pair,"Undefined material pair: Actor # ", *GMLib.GetMaterial(m_dwLastMaterialID)->m_Name);
 		// ref_sound step
 		if (eMovementTypeStand != m_tMovementType) {
 			if(m_fTimeToStep < 0) {
