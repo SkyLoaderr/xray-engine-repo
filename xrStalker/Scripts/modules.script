@@ -54,6 +54,7 @@ load_scheme("ph_on_hit",      "ph_on_hit",   stype_item)
 load_scheme("ph_impulse",     "ph_impulse",  stype_item)
 load_scheme("ph_camera",      "ph_camera",   stype_item)
 load_scheme("ph_car",         "ph_car",      stype_item)
+load_scheme("ph_button",      "ph_button",   stype_item)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей вертолёта:

@@ -1436,6 +1436,9 @@
 						Name="Physics"
 						Filter="">
 						<File
+							RelativePath=".\Scripts\ph_button.script">
+						</File>
+						<File
 							RelativePath=".\Scripts\ph_camera.script">
 						</File>
 						<File
@@ -1536,6 +1539,9 @@
 					<Filter
 						Name="Physics"
 						Filter="">
+						<File
+							RelativePath=".\Scripts\ph_on_hit.script">
+						</File>
 					</Filter>
 					<Filter
 						Name="StateManager"

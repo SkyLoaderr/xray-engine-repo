@@ -49,9 +49,13 @@ function action_process_enemy:hit_callback(obj, amount, local_direction, who, bo
 		return
 	end
 
+	
 	if who:id() == db.actor:id() then
-		printf("_bp: action_process_enemy: hit_callback(): obj='%s': SCHEME DISABLED", obj:name())
-		self.st.enabled = false
+		local overrides = xr_logic.generic_scheme_overrides( obj )
+		if not overrides or not overrides.combat_ignore_keep_when_attacked then
+			printf("_bp: action_process_enemy: hit_callback(): obj='%s': SCHEME DISABLED", obj:name())
+			self.st.enabled = false
+		end
 	end
 end
 

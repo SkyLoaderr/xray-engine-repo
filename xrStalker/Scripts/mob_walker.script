@@ -77,6 +77,14 @@ function mob_walker:update(delta)
 
 	local actor = db.actor
 
+	if clsid == burer then
+		if interval then
+			mob_release
+			return
+		end
+		mob_capture()
+	end
+
 	if mob_alife_mgr.alife_control(self.object, actor, self.st.alife_mode) then
 		return
 	end

@@ -42,7 +42,19 @@ function action_door:initialize()
 		self.tip_close = nil
 	end
 
-	self:close_door(true)
+	local disable_snd
+	-- Звук нужно отключить, только если скрипт двери для этого объекта используется
+	-- впервые (т.е. после загрузки уровня или после загрузки сохраненной игры),
+	-- иначе игрок услышит хлопок...
+	if not self.st.script_used_more_than_once then
+		disable_snd = true
+		self.st.script_used_more_than_once = true
+	end
+	if self.st.closed then
+		self:close_door(disable_snd)
+	else
+		self:open_door(disable_snd)
+	end
 
 	self.object:set_nonscript_usable(false)
 	self.object:set_callback(callback.use_object, self.door_callback, self)
@@ -149,16 +161,18 @@ function action_door:close_action()
 	end
 end
 
-function action_door:open_door()
+function action_door:open_door(disable_snd)
 	printf("_bp: action_door:open_door()")
-	if self.st.snd_open_start then
-		self:door_play_snd_from_set(self.st.snd_open_start)
+	if not disable_snd then
+		if self.st.snd_open_start then
+			self:door_play_snd_from_set(self.st.snd_open_start)
+		end
 	end
 	
 	self.joint:set_max_force_and_velocity(300, -3, 0)
 	self.block = false
 
-	if self.tip_open then
+	if self.tip_close then
 		self.object:set_tip_text(self.tip_close)
 	end
 end
@@ -198,7 +212,7 @@ function action_door:door_callback(door, actor)
 	local angle = self.joint:get_axis_angle(90)
 
 	if angle - self.low_limits > self.hi_limits - angle then
-		self:open_door()
+		self:open_door(false)
 	else
 		self:close_door(false)
 	end
@@ -219,6 +233,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
+	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false)
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	if not st.locked then
 		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")

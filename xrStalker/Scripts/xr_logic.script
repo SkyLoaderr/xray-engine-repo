@@ -271,7 +271,7 @@ function enable_generic_schemes(ini, npc, stype, section)
 	elseif stype == modules.stype_item then
 		local hit_section = utils.cfg_get_string(ini, section, "on_hit", npc, false, "")
 		if hit_section then
-			ph_on_hit.set_hit_checker(npc, ini, "hit", hit_section)
+			ph_on_hit.set_scheme(npc, ini, "hit", hit_section)
 		end
 	end
 end
@@ -857,6 +857,7 @@ function cfg_get_overrides(ini, section, npc)
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
 	l.wounded_enabled = utils.cfg_get_bool(ini, section, "wounded_enabled", npc, false)
 	l.combat_ignore   = cfg_get_condlist(ini, section, "combat_ignore_cond", npc)
+	l.combat_ignore_keep_when_attacked   = utils.cfg_get_bool(ini, section, "combat_ignore_keep_when_attacked", npc, false)
 	l.combat_type     = cfg_get_condlist(ini, section, "combat_type", npc)	
 
 	return l
