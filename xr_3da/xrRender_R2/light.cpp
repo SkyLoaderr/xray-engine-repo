@@ -84,7 +84,7 @@ void	light::set_position	(const Fvector& P)
 	if (sector==S)				return;	// Sector doesn't changed? - keep old sector
 
 	// Sector changed
-	sector->lightRemove	(this);
+	if (sector)			sector->lightRemove	(this);
 	sector	= S;
-	sector->lightAdd	(this);
+	if (sector)			sector->lightAdd	(this);
 }

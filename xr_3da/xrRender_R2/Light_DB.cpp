@@ -186,6 +186,7 @@ void			CLight_DB::Update()
 	v_selected_unshadowed.clear	();
 
 	// move point/spot lights
+	if (0)
 	{
 		static float t		=	0;
 		t					+=	.01f;
