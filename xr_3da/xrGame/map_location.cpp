@@ -44,7 +44,8 @@ shared_str SMapLocation::LevelName()
 		{
 			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(object_id); //VERIFY(E);
 			if(!E){
-				Msg("! SMapLocation binded to non-existent object id=%d",object_id);			
+				Msg("! Critical: SMapLocation binded to non-existent object id=%d",object_id);
+				type_flags.zero				();
 				return level_name;
 			}
 			
