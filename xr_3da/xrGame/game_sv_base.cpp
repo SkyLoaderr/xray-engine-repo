@@ -147,3 +147,7 @@ void game_sv_GameState::OnRoundEnd				(LPCSTR reason)
 {
 	phase		= GAME_PHASE_INPROGRESS;
 }
+
+void game_sv_GameState::OnPlayerConnect			(LPCSTR options)
+{
+}
