@@ -112,7 +112,7 @@ public:
 		VERIFY				(RC_sampler			== C->type);
 		CTexture*		T	= RCache.get_ActiveTexture	(u32(C->samp.index));
 		VERIFY				(T);
-		RCache.set_c		(c_lmaterial,0,0,0,T->m_material/3.f);
+		RCache.set_c		(c_lmaterial,0,0,0,(T->m_material+.5f)/4.f);
 	}
 
 public:

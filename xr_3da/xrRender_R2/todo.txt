@@ -18,9 +18,11 @@ smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
 same,60.50 :all + optimized sphere				( 42.83 )
 same,			+ optimized order				( 57.20	)
 ----------------------------
++BUG:	mt_physics
 BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection
 BUG:	light - spanning multiple sectors -> connect to portals
+
 OPT:	clipping light volume by visibility frustum (or primary)
 		should minimize geometry/fill req
 OPT:	if scissor is inside light volume we can construct more precise/smaller volume
@@ -28,7 +30,8 @@ OPT:	occlusion culling of light volumes
 		1. if camera inside - assume visible
 		2. employ temporal coherence
 OPT:	precompute invisible list (visuals) for static lights at load time
-FEATURE:	stats:
++FEATURE:	stats:
++FEATURE:	materials:
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	
