@@ -335,13 +335,16 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zone\gravi zone"
 $prefetch 		= 16
 class			= Z_GALANT
-hit_impulse_scale	= .03
+
+
 sound			= zone_mosquito_bald
 postprocess		= postprocess_gravi
 hit_effect		= explosions\expl_02_sparks
 
 artefacts		= af_magnet,0.7
 BirthProbability = 0.9
+
+
 
 idle_particles		= anomaly2\gravity_idle
 blowout_particles	= anomaly2\gravity_blast_final00 ;gravity_blast_03
@@ -362,6 +365,7 @@ hit_sound			= anomaly\anomaly_gravy_hit								;на персонаже, когда тот получает
 entrance_sound		= anomaly\gravi_idle01								;при попадании объекта в аномалию
 
 hit_type		= wound
+hit_impulse_scale	= 0.01			;соотношение физического импульса и силы хита
 
 disable_time		= 50	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= 1000	;время отключения idle партиклов
