@@ -618,6 +618,15 @@
 				<File
 					RelativePath="Portal_traversal.cpp">
 				</File>
+				<File
+					RelativePath=".\r__portal_traversal.cpp">
+				</File>
+				<File
+					RelativePath=".\r__sector.cpp">
+				</File>
+				<File
+					RelativePath=".\r__sector.h">
+				</File>
 			</Filter>
 			<Filter
 				Name="HOM Occlusion"
