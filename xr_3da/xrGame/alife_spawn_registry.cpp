@@ -48,7 +48,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	
 	R_ASSERT					(FS.exist(game_name));
 	int							game_age = FS.get_file_age(game_name);
-	VERIFY3						(game_age >= spawn_age,"Delete saved game ",file_name);
+	R_ASSERT3					(game_age >= spawn_age,"Delete saved game ",game_name);
 	
 	string256					graph_file_name;
 	FS.update_path				(graph_file_name,"$game_data$",GRAPH_NAME);
