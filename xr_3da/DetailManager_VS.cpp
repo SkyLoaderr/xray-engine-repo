@@ -54,8 +54,8 @@ void CDetailManager::VS_Load()
 	// Create VB/IB
 	CHK_DX			(HW.pDevice->ResourceManagerDiscardBytes(0));
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&VS_VB));
-	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&VS_IB));
-	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",VS_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
+	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*4,dwUsage,D3DFMT_INDEX32,dwPool,&VS_IB));
+	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",VS_BatchSize,(dwVerts*vSize)/1024, (dwIndices*4)/1024);
 	
 	// Fill VB
 	{
@@ -82,17 +82,17 @@ void CDetailManager::VS_Load()
 
 	// Fill IB
 	{
-		u16*			pI;
+		u32*			pI;
 		R_CHK			(VS_IB->Lock(0,0,(BYTE**)(&pI),0));
 		for (o=0; o<objects.size(); o++)
 		{
 			CDetail& D		=	objects[o];
-			u16		offset	=	0;
+			u32		offset	=	0;
 			for (u32 batch=0; batch<VS_BatchSize; batch++)
 			{
 				for (u32 i=0; i<D.number_indices; i++)
 					*pI++	=	D.indices[i] + offset;
-				offset		+=	u16(D.number_vertices);
+				offset		+=	u32(D.number_vertices);
 			}
 		}
 		R_CHK			(VS_IB->Unlock());
@@ -116,7 +116,7 @@ void CDetailManager::VS_Render()
 
 	// Render-prepare
 	CVS_Constants& VSC	=	Device.Shader.VSC;
-	VSC.set					(0,255.01f,255.01f,255.01f,255.01f);
+	VSC.set					(0,255.01f,255.01f,255.01f,1.f);
 	VSC.set					(1,Device.mFullTransform);
 	VSC.flush				(0,5);
 	
