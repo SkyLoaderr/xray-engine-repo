@@ -11,7 +11,7 @@
 #include "../../CustomMonster.h"
 #include "../../eatable_item.h"
 
-class CAI_Rat : public CCustomMonster, CEatableItem
+class CAI_Rat : public CCustomMonster, public CEatableItem
 {
 	typedef	CCustomMonster inherited;
 	protected:

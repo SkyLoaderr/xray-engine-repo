@@ -822,6 +822,7 @@ CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_A
 	glow_radius					= 0.1f;
 	color						= 0xffffffff;
     spot_brightness				= 1.f;
+	m_health					= 1.f;
 }
 
 CSE_ALifeObjectHangingLamp::~CSE_ALifeObjectHangingLamp()
@@ -860,9 +861,13 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_float		(glow_radius);
 	}
 
-    if (m_wVersion > 43){
-	    tNetPacket.r_string		(fixed_bones);
-    }
+	if (m_wVersion > 43){
+		tNetPacket.r_string		(fixed_bones);
+	}
+
+	if (m_wVersion > 44){
+		tNetPacket.r_float		(m_health);
+	}
 }
 
 void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
@@ -882,6 +887,7 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(glow_texture);
 	tNetPacket.w_float			(glow_radius);
     tNetPacket.w_string			(fixed_bones);
+	tNetPacket.w_float			(m_health);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -931,6 +937,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	&glow_texture,		smTexture);
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 1.f);
 
     // motions
     if (visual && PSkeletonAnimated(visual))

@@ -63,11 +63,20 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic))		CreateBody(lamp);
 	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated(Visual())->PlayCycle("idle");
+	
 	//PKinematics(Visual())->Calculate();
-	setVisible(true);
-	setEnabled(true);
+	
+	setVisible				(true);
+	setEnabled				(true);
+	
+	fHealth					= lamp->m_health;
 
-	return TRUE;
+	if (!Alive()) {
+		light_render->set_active(false);
+		glow_render->set_active(false);
+	}
+
+	return					(TRUE);
 }
 
 void CHangingLamp::shedule_Update	(u32 dt)

@@ -262,6 +262,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 		ref_str							glow_texture;
 		float							glow_radius;
 		ref_str							fixed_bones;
+		float							m_health;
 
 										CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
 		virtual							~CSE_ALifeObjectHangingLamp	();
