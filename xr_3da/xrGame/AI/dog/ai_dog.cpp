@@ -35,6 +35,8 @@ void CAI_Dog::Init()
 
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
+
+	Bones.Reset();
 }
 
 
@@ -67,6 +69,13 @@ void CAI_Dog::StateSelector()
 	else						SetState(stateRest); 
 }
 
+
+void __stdcall CAI_Dog::BoneCallback(CBoneInstance *B)
+{
+	CAI_Dog*	this_class = dynamic_cast<CAI_Dog*> (static_cast<CObject*>(B->Callback_Param));
+	this_class->Bones.Update(B, Level().timeServer());
+}
+
 BOOL CAI_Dog::net_Spawn (LPVOID DC) 
 {
 	if (!inherited::net_Spawn(DC))
@@ -78,25 +87,33 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimSleep,			"lie_idle_",			-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_fsWalkFwdNormal,		m_fsWalkAngular,			PS_STAND);
 	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_fsRunFwdNormal,		m_fsRunAngular,				PS_STAND);
-	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
+	//...
+	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_idle_",			-1,	0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
-	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,						0,							PS_SIT);
+	//...
+	//MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
+	//MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,						0,							PS_SIT);
 	MotionMan.AddAnim(eAnimLieSitUp,		"lie_sit_up_",			-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,						0,							PS_STAND);	
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		 1, 0,						m_fsRunAngular,				PS_STAND);
 	MotionMan.AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, m_fsDrag,				m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
+	//...
+	MotionMan.AddAnim(eAnimSteal,			"stand_drag_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
+
+	MotionMan.AddAnim(eAnimJumpStart,		"jump1_",				 0, 0,						m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJumpFly,			"jump1_",				 1, 0,						m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimJumpFinish,		"jump1_",				 2, 0,						m_fsWalkAngular,			PS_STAND);
+
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	MotionMan.AddTransition_S2S(PS_STAND,	PS_LIE,		eAnimStandLieDown,		false);
 	MotionMan.AddTransition_S2S(PS_LIE,		PS_STAND,	eAnimLieStandUp,		false);
-	MotionMan.AddTransition_S2S(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
-	MotionMan.AddTransition_S2S(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
+	//MotionMan.AddTransition_S2S(PS_SIT,		PS_STAND,	eAnimSitStandUp,		false);
+	//MotionMan.AddTransition_S2S(PS_SIT,		PS_LIE,		eAnimSitLieDown,		false);
 	MotionMan.AddTransition_S2S(PS_LIE,		PS_SIT,		eAnimLieSitUp,			false);
 	MotionMan.AddTransition_S2S(PS_STAND,	PS_SIT,		eAnimStandSitDown,		false);
 
@@ -122,6 +139,15 @@ BOOL CAI_Dog::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
+	int bone1		= PKinematics(Visual())->LL_BoneID("bone01");
+	PKinematics(Visual())->LL_GetInstance(u16(bone1)).set_callback(BoneCallback,this);
+
+	// Bones settings
+	Bones.Reset();
+	Bones.AddBone(GetBone(bone1), AXIS_Y); 
+
+	MotionMan.AddJump(eAnimJumpStart, eAnimJumpFly, eAnimJumpFinish, 10.f);
+
 	return TRUE;
 }
 
@@ -131,4 +157,9 @@ void CAI_Dog::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(eAnimCheckCorpse);
 		MotionMan.Seq_Switch();
 	}
+}
+
+void CAI_Dog::OnSoundPlay()
+{
+	if (!Bones.IsActive()) Bones.SetMotion(GetBone("bone01"),AXIS_Y, PI_DIV_6, PI_MUL_2, 1);
 }

@@ -170,6 +170,6 @@ void CBitingAttack::Run()
 			break;
 	}
 
-	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay, false);
+	pMonster->SetSound(pMonster->SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
 }
 

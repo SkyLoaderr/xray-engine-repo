@@ -29,7 +29,8 @@
 #define FLAG_ENEMY_GO_OFFLINE			( 1 << 10 )
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
 
-#define SET_SOUND_ONCE(pmt) {SetSound(pmt, 0, true); ControlSound();}
+#define SET_SOUND_ONCE(pmt) {SetSound(pmt, 0); ControlSound();}
+#define SOUND_ATTACK_HIT_MIN_DELAY 1000
 
 // logging
 #define SILENCE
@@ -278,14 +279,22 @@ public:
 
 	ESoundType				sndCurType, sndPrevType;
 	TTime					sndDelay, sndTimeNextPlay;
-	bool					sndForcePlay;
 
 	void					LoadSounds	(LPCTSTR section);
 	void					PlaySound	(ESoundType sound_type);
-	void					SetSound	(ESoundType sound_type, TTime delay, bool force_play);
+	void					SetSound	(ESoundType sound_type, TTime delay);
 	void					ControlSound();
+	virtual	void			OnSoundPlay() {};
 
 	TTime					m_dwIdleSndDelay;
 	TTime					m_dwEatSndDelay;
 	TTime					m_dwAttackSndDelay;
+
+	// -------------------------------------------------------
+	
+	// jumps
+	float					m_fJumpSpeed;		// скорость прыжка (м/с)
+	float					m_fJumpMinDist;		// мин. дистанция, возможная для прыжка
+	float					m_fJumpMaxDist;		// макс. дистанция возможная для прыжка
+	float					m_fJumpMaxAngle;		// макс. угол возможный для прыжка между монстром и целью
 };

@@ -215,7 +215,7 @@ void CBitingEat::Run()
 			break;
 	}
 
-	pMonster->SetSound(pMonster->SND_TYPE_EAT, pMonster->m_dwEatSndDelay, false);
+	pMonster->SetSound(pMonster->SND_TYPE_EAT, pMonster->m_dwEatSndDelay);
 }
 
 void CBitingEat::Done()

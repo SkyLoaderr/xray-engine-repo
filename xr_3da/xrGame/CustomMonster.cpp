@@ -341,6 +341,8 @@ void CCustomMonster::UpdateCL	()
 	inherited::UpdateCL();
 	
 	if	(NET.empty())	return;
+	
+	m_dwCurrentTime	= Level().timeServer();
 
 	// distinguish interpolation/extrapolation
 	u32	dwTime			= Level().timeServer()-NET_Latency;

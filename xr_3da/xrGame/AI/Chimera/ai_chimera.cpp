@@ -145,7 +145,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 3, 800,	900,	left_side,	1.0f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 5, 1500, 1600,	right_side, 2.0f, m_fHitPower, 0.f, 0.f);
 	
-	MotionMan.AddJump(eAnimJump, 5.f, 300, 10, 2.0f, 10.f, PI_DIV_2);
+	//MotionMan.AddJump(eAnimJump, 15.f, 300, 10, 2.0f, 7.f, PI_DIV_6);
 	
 	return TRUE;
 }

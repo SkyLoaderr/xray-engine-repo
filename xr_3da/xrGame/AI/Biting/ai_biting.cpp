@@ -52,6 +52,13 @@ void CAI_Biting::Init()
 	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
+
+	sndCurrent						= 0;
+	
+
+	sndCurType						= sndPrevType = SND_TYPE_IDLE;
+	sndDelay						= 0;
+	sndTimeNextPlay					= 0;
 }
 
 void CAI_Biting::Die()
@@ -149,6 +156,11 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
 	LoadSounds						(section);
+
+	m_fJumpSpeed					= pSettings->r_float(section,"jump_speed");		
+	m_fJumpMinDist					= pSettings->r_float(section,"jump_min_dist");		
+	m_fJumpMaxDist					= pSettings->r_float(section,"jump_max_dist");		
+	m_fJumpMaxAngle					= pSettings->r_float(section,"jump_max_angle");
 
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");

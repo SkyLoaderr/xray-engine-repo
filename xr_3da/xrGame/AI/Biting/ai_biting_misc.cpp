@@ -215,30 +215,30 @@ void CAI_Biting::PlaySound(ESoundType sound_type)
 	}
 
 	sndCurrent = &sv->at(::Random.randI((int)sv->size()));
-	sndCurrent->play_at_pos(this,eye_matrix.c);
+	if (!sndCurrent->feedback) sndCurrent->play_at_pos(this,eye_matrix.c);
+	
 	sndCurrent->feedback->set_volume(1.f);
 
 	sndDelay		= 0;
-	sndForcePlay	= false;
 	sndTimeNextPlay	= 0;
+	sndPrevType		= sndCurType;
+
+	OnSoundPlay();
 }
 
-void CAI_Biting::SetSound(ESoundType sound_type, TTime delay, bool force_play)
+void CAI_Biting::SetSound(ESoundType sound_type, TTime delay)
 {
-	sndPrevType		= sndCurType;
 	sndCurType		= sound_type;
-
 	sndDelay		= delay;
-	sndForcePlay	= force_play;
 }
 
 void CAI_Biting::ControlSound()
 {
-	if (sndForcePlay || (sndPrevType != sndCurType)) {
+	if (sndPrevType != sndCurType)  {
 		PlaySound(sndCurType);
 		return;
 	}
-	
+
 	// если звук сейчас играет
 	if (sndCurrent && sndCurrent->feedback) return;
 

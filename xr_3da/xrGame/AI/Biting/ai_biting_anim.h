@@ -58,6 +58,10 @@ enum EMotionAnim {
 
 	eAnimJump,
 	eAnimSteal,
+
+	eAnimJumpStart,
+	eAnimJumpFly,		
+	eAnimJumpFinish,
 };
 
 
@@ -83,6 +87,18 @@ enum EPState {
 	PS_SIT, 
 	PS_LIE,
 };
+
+enum EJumpState {
+	JS_PREPARE,
+	JS_JUMP,
+	JS_FINISH
+};
+
+enum ECriticalState {
+	CS_NORMAL,
+	CS_JUMP
+};
+
 
 // специальные параметры анимаций (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
@@ -138,6 +154,7 @@ struct SMotionItem {
 #define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
 #define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
+// Вызов PrepareAnimation() и установка анимации
 #define FORCE_ANIMATION_SELECT() {				\
 	m_tpCurAnim = 0;							\
 	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0); \
@@ -145,7 +162,7 @@ struct SMotionItem {
 
 #define CRITICAL_STAND_TIME 1400
 #define TIME_STAND_RECHECK  2000
-#define JUMP_MIN_TIME_DELAY 3000
+#define JUMP_MIN_TIME_DELAY 5000
 
 // Определение времени аттаки по анимации
 typedef struct {
@@ -166,18 +183,14 @@ typedef struct {
 } SAttackAnimation;
 
 // Определение параметров прыжка
-struct SJump {
-	EMotionAnim anim;				// анимация прыжка
+struct SJump{
+	EMotionAnim	prepare;
+	EMotionAnim	jump;
+	EMotionAnim	finish;
 
-	TTime		jump_time;			// время прыжка
-	TTime		time_start_jump;	// время после активации прыжка, через которое выполнять физ. прыжок
-	
-	float		velocity;			// скорость прыжка (м/с)
-
-	float		min_dist;			// мин. дистанция, возможная для прыжка
-	float		max_dist;			// макс. дистанция возможная для прыжка
-	float		max_angle;			// макс. угол возможный для прыжка между монстром и целью
+	float		trace_dist;
 };
+
 
 // Motion and animation management
 class CMotionManager {
@@ -219,15 +232,19 @@ class CMotionManager {
 
 	u32						spec_params;			// дополнительные параметры
 
-	// прыжки
-	JUMP_VECTOR				m_tJumps;				// массив параметров прыжков
-	JUMP_VECTOR_IT			cur_jump_it;			// итератор на текущий прыжок
-	bool					bJumpState;				// true - в состоянии прыжка
-	bool					bPhysicalJump;			// true - если вызван физ. прыжок
-	Fvector					jump_to_pos;			// целевая позиция
-	TTime					jump_started;			// время начала прыжка
-	TTime					jump_next_time;			// время разрешенного следующего прыжка
-	
+	// ----------------------------------------------
+
+	// Прыжки
+	struct {
+		bool				active;					// состояние прыжка активно?
+		EJumpState			state;					// состояние прыжка
+		Fvector				target_pos;				// целевая позиция
+		TTime				started;				// время начала прыжка
+		JUMP_VECTOR			bank;					// массив параметров прыжков
+		SJump				*ptr_cur;				// указатель на текущий прыжок
+		TTime				next_time_allowed;		// время следующего разрешенного прыжка
+	} jump;
+
 	// ----------------------------------------------
 
 public:
@@ -259,15 +276,15 @@ public:
 	// -------------------------------------
 	//	Прыжки
 	// -------------------------------------
-
 	// Добавить в вектор параметры прыжка
-	void		AddJump					(EMotionAnim ma, float vel, TTime time, TTime time_start, float min_d, float max_d, float angle);
-	// Проверка на возможность прыжка. Возвращает 'true' если прыжок активирован
+	void		AddJump					(EMotionAnim ja_start, EMotionAnim jump, EMotionAnim ja_finish, float td);
+	// Проверка на возможность прыжка
 	void		CheckJump				(Fvector from_pos, Fvector to_pos);
 	// Обновляет состояние прыжка в каждом фрейме (вызывается из UpdateCL)
 	void		ProcessJump				();
-	// Возвращает 'true', если монстр в состоянии прыжка 
-IC	bool		IsJumping				() {return bJumpState;}	
+	void		NextJumpState			(bool bFinishJump);
+	void		SetJumpAnim				();
+
 
 	// -------------------------------------
 

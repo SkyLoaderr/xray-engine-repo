@@ -728,6 +728,7 @@ void	CPHMovementControl::DeleteCharacterObject()
 void CPHMovementControl::JumpV(const Fvector &jump_velocity)
 {
 	m_character->Enable();
+	Msg("jump calling...");
 	m_character->Jump(jump_velocity);
 }
 
