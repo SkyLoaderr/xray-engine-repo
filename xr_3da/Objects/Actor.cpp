@@ -442,6 +442,9 @@ void CActor::Update	(u32 DT)
 		vPosition.set		(patch_position);
 		patch_frame			+= 1;
 	}
+	cam_shift				= 0.f;
+	cam_gray				= 0.f;
+
 
 	// 
 	clamp					(DT,0u,100u);
