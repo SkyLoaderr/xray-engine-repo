@@ -84,7 +84,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 		
 		I->test			+= amount * dt;
 		clamp			(I->test,-.5f,1.f);
-		I->energy		= .5f*I->energy + .5f*I->test;
+		I->energy		= .9f*I->energy + .1f*I->test;
 
 		float	E		= I->energy * xrL.diffuse.magnitude_rgb();
 		if (E > EPS)	
