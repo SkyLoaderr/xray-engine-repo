@@ -138,16 +138,17 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		P.set(m_Camera.c);
 		fAspect = 1.f;
 	}else{
-		if ((Device.dwTimeGlobal/500)%2==0) {
-			pApp->pFontSystem->SetSize	(0.02f);
-			pApp->pFontSystem->SetAligment(CGameFont::alCenter);
-			pApp->pFontSystem->SetColor	(D3DCOLOR_RGBA(255,0,0,255));
-			pApp->pFontSystem->OutSet	(0,+.05f);
-			pApp->pFontSystem->OutNext	("%s","RECORDING");
-			pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
-			pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, F12=ScreenShot, ESC=Quit)");
+		if (psHUD_Flags.test(HUD_DRAW)){
+			if ((Device.dwTimeGlobal/500)%2==0) {
+				pApp->pFontSystem->SetSize	(0.02f);
+				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
+				pApp->pFontSystem->SetColor	(D3DCOLOR_RGBA(255,0,0,255));
+				pApp->pFontSystem->OutSet	(0,+.05f);
+				pApp->pFontSystem->OutNext	("%s","RECORDING");
+				pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
+				pApp->pFontSystem->OutNext	("(SPACE=key-frame, BACK=CubeMap, ENTER=Place&Quit, F12=ScreenShot, ESC=Quit)");
+			}
 		}
-
 
 		m_vVelocity.lerp		(m_vVelocity,m_vT,0.3f);
 		m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
