@@ -72,6 +72,9 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DVERTEXBUFFER9			m_pFloorVB;
 	LPDIRECT3DVERTEXBUFFER9			m_pQuadVB;
 
+	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert;
+	LPDIRECT3DVERTEXDECLARATION9	m_pDeclVert2D;
+
 	// xr2
 	R_constants						cc;
 
@@ -129,7 +132,6 @@ class CMyD3DApplication : public CD3DApplication
 	// Shaders
 	LPDIRECT3DVERTEXSHADER9			m_pSceneVS;
 	LPDIRECT3DPIXELSHADER9			m_pScenePS;
-	LPDIRECT3DVERTEXDECLARATION9	m_pVertDecl;
 	LPDIRECT3DVERTEXSHADER9			m_pShadowMapVS;
 	LPDIRECT3DPIXELSHADER9			m_pShadowMapPS;
 	LPDIRECT3DPIXELSHADER9			m_pShowMapPS;
@@ -355,8 +357,29 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 	pDstT[3].tv = 0.0f;
 	m_pOverlayVB->Unlock();
 
-	// Create shader declaration
-	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(vertDecl, &m_pVertDecl)))
+	// Create overlay VB
+	{
+		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
+		m_pOverlayVB->Lock					(0, 0, (void**)&pDstT, 0);
+		pDstT[0].p	= D3DXVECTOR4(-1, +1, 0.0f, 1.0f);
+		pDstT[0].tu = 0.0f;
+		pDstT[0].tv = 1.0f;
+		pDstT[1].p	= D3DXVECTOR4(+1, +1, 0.0f, 1.0f);
+		pDstT[1].tu = 1.0f;
+		pDstT[1].tv = 1.0f;
+		pDstT[2].p	= D3DXVECTOR4(-1, -1, 0.0f, 1.0f);
+		pDstT[2].tu = 0.0f;
+		pDstT[2].tv = 0.0f;
+		pDstT[3].p	= D3DXVECTOR4(+1, -1, 4.5f, 0.0f, 1.0f);
+		pDstT[3].tu = 1.0f;
+		pDstT[3].tv = 0.0f;
+		m_pOverlayVB->Unlock();
+	}
+
+	// Create shader declaration(s)
+	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert, &m_pDeclVert)))
+		return E_FAIL;
+	if (FAILED(m_pd3dDevice->CreateVertexDeclaration(decl_vert2D, &m_pDeclVert2D)))
 		return E_FAIL;
 
     return S_OK;
