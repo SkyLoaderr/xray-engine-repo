@@ -418,6 +418,7 @@ void CStalkerActionGetItemToKill::finalize	()
 {
 	inherited::finalize		();
 	m_object->set_sound_mask(0);
+	m_object->CSightManager::clear();
 }
 
 void CStalkerActionGetItemToKill::execute	()
@@ -438,8 +439,11 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 //	m_object->setup					(SightManager::eSightTypePosition,&m_object->m_best_found_item_to_kill->Position());
+//	m_object->setup					(SightManager::eSightTypePosition,&m_object->enemy()->Position(),"bip01_head");
 //	m_object->setup					(SightManager::eSightTypeSearch);
 
+	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
+	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->enemy()->Position());
 #ifdef OLD_OBJECT_HANDLER
 	m_object->set_dest_state		(eObjectActionNoItems);
 #else
@@ -504,34 +508,45 @@ void CStalkerActionMakeItemKilling::initialize	()
 {
 	inherited::initialize	();
 	m_object->set_sound_mask(u32(eStalkerSoundMaskHumming));
+	m_object->CSightManager::clear();
+	m_object->CSightManager::add_action(eSightActionTypeWatchItem,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->m_best_found_ammo->Position(),false)));
+	m_object->CSightManager::add_action(eSightActionTypeWatchEnemy,xr_new<CSightControlAction>(1.f,2000,CSightAction(SightManager::eSightTypePosition,m_object->enemy()->Position(),false)));
 }
 
 void CStalkerActionMakeItemKilling::finalize	()
 {
 	inherited::finalize		();
 	m_object->set_sound_mask(0);
+	m_object->CSightManager::clear();
 }
 
 void CStalkerActionMakeItemKilling::execute	()
 {
 	inherited::execute		();
 
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
+	if (!m_object->m_best_found_ammo)
+		return;
+
+	m_object->set_level_dest_vertex	(m_object->m_best_found_ammo->level_vertex_id());
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
+	m_object->set_desired_position	(&m_object->m_best_found_ammo->Position());
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(CMovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
+//	m_object->setup					(SightManager::eSightTypePosition,&m_object->m_best_found_ammo->Position());
+//	m_object->setup					(SightManager::eSightTypePosition,&m_object->enemy()->Position(),"bip01_head");
+//	m_object->setup					(SightManager::eSightTypeSearch);
 
-	m_object->CSightManager::update				(SightManager::eSightTypeCurrentDirection);
+	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_ammo->Position());
+	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->enemy()->Position());
 #ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
+	m_object->set_dest_state		(eObjectActionNoItems);
 #else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
+	m_object->set_goal				(eObjectActionIdle);
 #endif
 }
 

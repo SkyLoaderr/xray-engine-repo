@@ -55,5 +55,5 @@ protected:
 	////////////// network //////////////////	
 
 public:
-	virtual const CInventoryItem *can_make_killing	(const CInventory *inventory) const;
+	virtual CInventoryItem *can_make_killing	(const CInventory *inventory) const;
 };

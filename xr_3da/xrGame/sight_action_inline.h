@@ -43,6 +43,15 @@ IC	CSightAction::CSightAction		(const CGameObject *object_to_look, bool torso_lo
 {
 }
 
+IC	CSightAction::CSightAction		(const CGameObject *object_to_look, bool torso_look, LPCSTR bone_name) :
+	m_sight_type		(SightManager::eSightTypeObject),
+	m_torso_look		(torso_look),
+	m_object_to_look	(object_to_look),
+	m_bone_name			(bone_name),
+	m_memory_object		(0)
+{
+}
+
 IC	CSightAction::CSightAction		(const CMemoryInfo *memory_object, bool torso_look) :
 	m_sight_type		(SightManager::eSightTypeObject),
 	m_torso_look		(torso_look),
@@ -91,3 +100,19 @@ IC	bool CSightAction::operator==		(const CSightAction &sight_action) const
 	return				(true);
 #endif
 }
+
+IC	void CSightAction::set_vector3d			(const Fvector &vector3d)
+{
+	m_vector3d			= vector3d;
+}
+
+IC	void CSightAction::set_object_to_look	(const CGameObject *object_to_look)
+{
+	m_object_to_look	= object_to_look;
+}
+
+IC	void CSightAction::set_memory_object	(const CMemoryInfo *memory_object)
+{
+	m_memory_object		= memory_object;
+}
+

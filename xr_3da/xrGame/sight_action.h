@@ -27,6 +27,7 @@ protected:
 	Fvector				m_vector3d;
 	const CGameObject	*m_object_to_look;
 	const CMemoryInfo	*m_memory_object;
+	LPCSTR				m_bone_name;
 
 public:
 	IC					CSightAction		();
@@ -34,8 +35,12 @@ public:
 	IC					CSightAction		(const ESightType &sight_type, const Fvector &vector3d, bool torso_look = false);
 	IC					CSightAction		(const ESightType &sight_type, const Fvector *vector3d);
 	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look = false);
+	IC					CSightAction		(const CGameObject *object_to_look, bool torso_look = false, LPCSTR bone_name = "");
 	IC					CSightAction		(const CMemoryInfo *memory_object, bool	torso_look = false);
 			void		execute				();
+	IC		void		set_vector3d		(const Fvector &position);
+	IC		void		set_object_to_look	(const CGameObject *object_to_look);
+	IC		void		set_memory_object	(const CMemoryInfo *object_to_look);
 	IC		bool		operator==			(const CSightAction &sight_action) const;
 };
 

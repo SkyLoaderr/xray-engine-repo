@@ -608,9 +608,14 @@ void CInventoryItem::reinit		()
 	inherited::reinit	();
 }
 
-bool CInventoryItem::can_kill			(const CInventory *inventory) const
+bool CInventoryItem::can_kill			() const
 {
 	return				(false);
+}
+
+CInventoryItem *CInventoryItem::can_kill	(CInventory *inventory) const
+{
+	return				(0);
 }
 
 const CInventoryItem *CInventoryItem::can_kill			(const xr_set<const CGameObject*> &items) const
@@ -618,7 +623,7 @@ const CInventoryItem *CInventoryItem::can_kill			(const xr_set<const CGameObject
 	return				(0);
 }
 
-const CInventoryItem *CInventoryItem::can_make_killing	(const CInventory *inventory) const
+CInventoryItem *CInventoryItem::can_make_killing	(const CInventory *inventory) const
 {
 	return				(0);
 }

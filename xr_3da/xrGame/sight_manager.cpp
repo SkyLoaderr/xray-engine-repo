@@ -142,34 +142,32 @@ void CSightManager::vfValidateAngleDependency(float x1, float &x2, float x3)
 		x2  = x3;
 }
 
-void CSightManager::Exec_Look(float dt)
+void CSightManager::Exec_Look		(float dt)
 {
 	// normalizing torso angles
-	m_object->m_body.current.yaw		= angle_normalize_signed	(m_object->m_body.current.yaw);
+	m_object->m_body.current.yaw	= angle_normalize_signed	(m_object->m_body.current.yaw);
 	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
 	m_object->m_body.target.yaw		= angle_normalize_signed	(m_object->m_body.target.yaw);
 	m_object->m_body.target.pitch	= angle_normalize_signed	(m_object->m_body.target.pitch);
 
 	// normalizing head angles
-	m_object->m_head.current.yaw		= angle_normalize_signed	(m_object->m_head.current.yaw);
+	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
 	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
 	m_object->m_head.target.yaw		= angle_normalize_signed	(m_object->m_head.target.yaw);
 	m_object->m_head.target.pitch	= angle_normalize_signed	(m_object->m_head.target.pitch);
 
 	// validating angles
-	//#ifdef DEBUG
-	//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),*cName(),m_object->m_head.target.yaw,m_object->m_head.current.yaw,m_object->m_body.target.yaw,m_object->m_body.current.yaw);
-	VERIFY					(_valid(m_object->m_head.current.yaw));
-	VERIFY					(_valid(m_object->m_head.current.pitch));
-	VERIFY					(_valid(m_object->m_head.target.yaw));
-	VERIFY					(_valid(m_object->m_head.target.pitch));
-	VERIFY					(_valid(m_object->m_body.current.yaw));
-	VERIFY					(_valid(m_object->m_body.current.pitch));
-	VERIFY					(_valid(m_object->m_body.target.yaw));
-	VERIFY					(_valid(m_object->m_body.target.pitch));
-	//#endif
-	vfValidateAngleDependency(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
-	vfValidateAngleDependency(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
+	VERIFY							(_valid(m_object->m_head.current.yaw));
+	VERIFY							(_valid(m_object->m_head.current.pitch));
+	VERIFY							(_valid(m_object->m_head.target.yaw));
+	VERIFY							(_valid(m_object->m_head.target.pitch));
+	VERIFY							(_valid(m_object->m_body.current.yaw));
+	VERIFY							(_valid(m_object->m_body.current.pitch));
+	VERIFY							(_valid(m_object->m_body.target.yaw));
+	VERIFY							(_valid(m_object->m_body.target.pitch));
+
+	vfValidateAngleDependency		(m_object->m_head.current.yaw,m_object->m_head.target.yaw,m_object->m_body.target.yaw);
+	vfValidateAngleDependency		(m_object->m_body.current.yaw,m_object->m_body.target.yaw,m_object->m_head.current.yaw);
 
 	// updating torso angles
 	float							fSpeedFactor = 1.f;
@@ -181,29 +179,29 @@ void CSightManager::Exec_Look(float dt)
 	m_object->angle_lerp_bounds		(m_object->m_head.current.pitch,m_object->m_head.target.pitch,m_object->m_head.speed,dt);
 
 	// normalizing torso angles
-	m_object->m_body.current.yaw		= angle_normalize_signed	(m_object->m_body.current.yaw);
+	m_object->m_body.current.yaw	= angle_normalize_signed	(m_object->m_body.current.yaw);
 	m_object->m_body.current.pitch	= angle_normalize_signed	(m_object->m_body.current.pitch);
 
 	// normalizing head angles
-	m_object->m_head.current.yaw		= angle_normalize_signed	(m_object->m_head.current.yaw);
+	m_object->m_head.current.yaw	= angle_normalize_signed	(m_object->m_head.current.yaw);
 	m_object->m_head.current.pitch	= angle_normalize_signed	(m_object->m_head.current.pitch);
 
-	VERIFY					(_valid(m_object->m_head.current.yaw));
-	VERIFY					(_valid(m_object->m_head.current.pitch));
-	VERIFY					(_valid(m_object->m_head.target.yaw));
-	VERIFY					(_valid(m_object->m_head.target.pitch));
-	VERIFY					(_valid(m_object->m_body.current.yaw));
-	VERIFY					(_valid(m_object->m_body.current.pitch));
-	VERIFY					(_valid(m_object->m_body.target.yaw));
-	VERIFY					(_valid(m_object->m_body.target.pitch));
+	VERIFY							(_valid(m_object->m_head.current.yaw));
+	VERIFY							(_valid(m_object->m_head.current.pitch));
+	VERIFY							(_valid(m_object->m_head.target.yaw));
+	VERIFY							(_valid(m_object->m_head.target.pitch));
+	VERIFY							(_valid(m_object->m_body.current.yaw));
+	VERIFY							(_valid(m_object->m_body.current.pitch));
+	VERIFY							(_valid(m_object->m_body.target.yaw));
+	VERIFY							(_valid(m_object->m_body.target.pitch));
 }
 
-void CSightManager::setup		(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
+void CSightManager::setup			(const SightManager::ESightType &sight_type, const Fvector *vector3d, u32 interval)
 {
-	setup					(CSightAction(sight_type,vector3d));
+	setup							(CSightAction(sight_type,vector3d));
 }
 
-void CSightManager::setup	(const CSightAction &sight_action)
+void CSightManager::setup			(const CSightAction &sight_action)
 {
 	if (m_actions.size() > 1)
 		clear			();
@@ -213,7 +211,10 @@ void CSightManager::setup	(const CSightAction &sight_action)
 	add_action			(0,xr_new<CSightControlAction>(1.f,u32(-1),sight_action));
 }
 
-void CSightManager::update	(u32 time_delta)
+void CSightManager::update			(u32 time_delta)
 {
 	inherited::update	(time_delta);
+	
+	if ((m_object->speed() < EPS_L) && (angle_difference(m_object->m_body.target.yaw,m_object->m_head.target.yaw) > PI_DIV_2))
+		m_object->m_body.target.yaw = m_object->m_head.target.yaw;
 }

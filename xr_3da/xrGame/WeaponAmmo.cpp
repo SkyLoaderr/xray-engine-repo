@@ -186,14 +186,14 @@ void CWeaponAmmo::net_Import(NET_Packet& P)
 	P.r_u16(m_boxCurr);
 }
 
-const CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) const
+CInventoryItem *CWeaponAmmo::can_make_killing	(const CInventory *inventory) const
 {
 	VERIFY					(inventory);
 
 	xr_set<PIItem>::const_iterator	I = inventory->m_all.begin();
 	xr_set<PIItem>::const_iterator	E = inventory->m_all.end();
 	for ( ; I != E; ++I) {
-		const CWeapon		*weapon = dynamic_cast<const CWeapon*>(*I);
+		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
 		if (!weapon)
 			continue;
 		xr_vector<ref_str>::const_iterator	i = std::find(weapon->m_ammoTypes.begin(),weapon->m_ammoTypes.end(),cNameSect());

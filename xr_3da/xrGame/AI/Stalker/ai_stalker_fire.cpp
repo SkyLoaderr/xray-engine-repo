@@ -97,7 +97,7 @@ void CAI_Stalker::update_best_item_info	()
 		PSPIItem					I = inventory().m_all.begin();
 		PSPIItem					E = inventory().m_all.end();
 		for ( ; I != E; ++I) {
-			if ((*I)->can_kill(&inventory())) {
+			if ((*I)->can_kill()) {
 				ai().ef_storage().m_tpGameObject	= *I;
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
@@ -124,17 +124,19 @@ void CAI_Stalker::update_best_item_info	()
 			const CInventoryItem	*inventory_item = dynamic_cast<const CInventoryItem*>(*I);
 			if (!inventory_item)
 				continue;
-			if (inventory_item->can_kill(&inventory())) {
+			CInventoryItem			*item			= inventory_item->can_kill(&inventory());
+			if (item) {
 				ai().ef_storage().m_tpGameObject	= inventory_item;
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
 					m_best_found_item_to_kill		= inventory_item;
 					m_best_found_ammo				= 0;
+					m_best_ammo						= item;
 				}
 			}
 			else {
-				const CInventoryItem				*item = inventory_item->can_make_killing(&inventory());
+				item								= inventory_item->can_make_killing(&inventory());
 				if (!item)
 					continue;
 
@@ -142,6 +144,7 @@ void CAI_Stalker::update_best_item_info	()
 				float value							= ai().ef_storage().m_pfWeaponEffectiveness->ffGetValue();
 				if (value > best_value) {
 					best_value						= value;
+					m_best_item_to_kill				= item;
 					m_best_found_item_to_kill		= 0;
 					m_best_found_ammo				= inventory_item;
 				}

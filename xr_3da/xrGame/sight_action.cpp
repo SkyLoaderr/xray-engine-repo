@@ -35,6 +35,10 @@ void CSightAction::execute		()
 			break;
 		}
 		case SightManager::eSightTypeObject : {
+//			if (m_torso_look)
+//				m_object->SetFirePointLookAngles	(m_vector3d,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
+//			else
+//				m_object->SetPointLookAngles		(m_vector3d,m_object->m_head.target.yaw,m_object->m_head.target.pitch);
 			break;
 		}
 		case SightManager::eSightTypeCover : {
