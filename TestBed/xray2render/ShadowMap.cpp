@@ -1410,28 +1410,30 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Combine_VB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
+	m_pd3dDevice->SetTexture				(1, NULL);
+
 	// ***** Begin filtering *****
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 
-	// Switch to BLOOM-2
-	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
-
-	// samplers and texture
-	m_pd3dDevice->SetTexture				(0, d_Bloom_1		);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MIPFILTER,	D3DTEXF_POINT);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
-	// Shader and params
-	m_pd3dDevice->SetPixelShader			(s_Combine_Bloom.ps);
-	m_pd3dDevice->SetVertexShader			(s_Combine_Bloom.vs);
+	m_pd3dDevice->SetPixelShader			(s_Filter_Bloom.ps);
+	m_pd3dDevice->SetVertexShader			(s_Filter_Bloom.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+
+	// Switch to BLOOM-2
+	m_pd3dDevice->SetRenderTarget			(0, d_Bloom_2_S		);
+	m_pd3dDevice->SetTexture				(0, d_Bloom_1		);
+
+	// Shader-params
 	cc.flush								(m_pd3dDevice);
 
-	// Transfer over-bright information to BLOOM-1
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
-	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Combine_VB, 0, sizeof(TVERTEX));
+	// Filter over-bright information to BLOOM-2
+	m_pd3dDevice->SetStreamSource			(0, m_pBloom_Filter_VB, 0, sizeof(TVERTEX));
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
