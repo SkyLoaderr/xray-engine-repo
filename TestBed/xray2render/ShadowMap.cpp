@@ -383,7 +383,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 		// Mender!!!!
 		NVMeshMender mender;
-		if (!mender.MungeD3DX(
+		if (!mender.Munge(
 			inputAtts,									// input attributes
 			outputAtts,									// outputs attributes
 			3.141592654f / 3.0f,						// tangent space smooth angle
