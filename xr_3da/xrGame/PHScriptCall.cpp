@@ -2,10 +2,17 @@
 #include "PHCommander.h"
 #include "script_space_forward.h"
 #include "script_callback_ex.h"
+#include "../xr_object.h"
 #include "PHScriptCall.h"
 #include "script_space.h"
 #include <luabind/operator.hpp>
 
+/*
+IC bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
+{
+	return (o1.type()==LUA_TNIL && o2.type()==LUA_TNIL) || o1==o2;
+}
+/**/
 
 CPHScriptCondition::CPHScriptCondition(const luabind::functor<bool> &func)
 {
@@ -62,6 +69,10 @@ CPHScriptObjectAction::~CPHScriptObjectAction()
 	xr_delete(m_lua_object);
 }
 
+bool CPHScriptObjectAction::compare(const	CPHScriptObjectAction* v)		const		
+{
+	return m_method_name==v->m_method_name&&compare_safe(*m_lua_object,*(v->m_lua_object));
+}
 void CPHScriptObjectAction::run()
 {
 	luabind::call_member<void>(*m_lua_object,*m_method_name);
@@ -82,6 +93,10 @@ CPHScriptObjectCondition::CPHScriptObjectCondition(const luabind::object &lua_ob
 CPHScriptObjectCondition::~CPHScriptObjectCondition()
 {
 	xr_delete(m_lua_object);
+}
+bool	CPHScriptObjectCondition::compare(const	CPHScriptObjectCondition* v)	const	
+{
+	return m_method_name==v->m_method_name&&compare_safe(*m_lua_object,*(v->m_lua_object));
 }
 
 bool CPHScriptObjectCondition::is_true()

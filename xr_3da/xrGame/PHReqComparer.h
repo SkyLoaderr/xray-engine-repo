@@ -6,7 +6,8 @@ class CPHScriptObjectCondition;
 class CPHScriptObjectAction;
 class CPHScriptObjectConditionN;
 class CPHScriptObjectActionN;
-
+class CPHScriptGameObjectCondition;
+class CPHScriptGameObjectAction;
 class CPHReqComparerV
 {
 	public: 
@@ -16,4 +17,6 @@ class CPHReqComparerV
 		virtual		bool compare(const	CPHScriptObjectAction* v)		const		{return false;}
 		virtual		bool compare(const	CPHScriptObjectConditionN* v)	const		{return false;}
 		virtual		bool compare(const	CPHScriptObjectActionN* v)		const		{return false;}
+		virtual		bool compare(const	CPHScriptGameObjectAction* v)	const		{return false;}
+		virtual		bool compare(const	CPHScriptGameObjectCondition* v)const		{return false;}
 };

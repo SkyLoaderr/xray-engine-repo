@@ -27,6 +27,23 @@ public:
 	virtual void 			run								()						=0					;
 };
 
+class CPHOnesCondition:
+	public CPHCondition
+{
+	bool b_called;
+public:
+	CPHOnesCondition				(){b_called=false;}
+	virtual bool 			is_true							(){b_called =true;return true;}
+	virtual bool 			obsolete						()const{return b_called;}
+};
+
+class CPHDummiAction:
+	public CPHAction
+{
+public:
+	virtual void 			run								(){;}
+	virtual bool 			obsolete						()const	{return false;}
+};
 
 class CPHCall
 {

@@ -102,6 +102,25 @@ struct SFEqualPred
 		return	call->equal(cmp_condition,cmp_action);
 	}
 };
+struct SFRemovePred2
+{
+	CPHReqComparerV* cmp_condition,*cmp_action;
+	SFRemovePred2(CPHReqComparerV* cmp_c,CPHReqComparerV* cmp_a)
+	{
+		cmp_condition=cmp_c;cmp_action=cmp_a;
+	}
+	bool operator()(CPHCall* call)
+	{
+		if(call->equal(cmp_condition,cmp_action))
+		{
+			delete_call(call);
+			return true;
+		}
+		return false;
+		
+	}
+};
+
 PHCALL_I CPHCommander::find_call(CPHReqComparerV* cmp_condition,CPHReqComparerV* cmp_action)
 {
 	return std::find_if( m_calls.begin(),m_calls.end(),SFEqualPred(cmp_condition,cmp_action));
@@ -109,8 +128,9 @@ PHCALL_I CPHCommander::find_call(CPHReqComparerV* cmp_condition,CPHReqComparerV*
 
 void CPHCommander::remove_call(CPHReqComparerV* cmp_condition,CPHReqComparerV* cmp_action)
 {
-	PHCALL_I i=find_call(cmp_condition,cmp_action);
-	if(i!=m_calls.end())remove_call(i);
+	//PHCALL_I i=find_call(cmp_condition,cmp_action);
+	//if(i!=m_calls.end())remove_call(i);
+	remove_if(m_calls.begin(),m_calls.end(),SFRemovePred2(cmp_condition,cmp_action));
 }
 
 void CPHCommander::add_call_unique(CPHCondition* condition,CPHReqComparerV* cmp_condition,CPHAction* action,CPHReqComparerV* cmp_action)

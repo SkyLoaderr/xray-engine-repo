@@ -273,13 +273,14 @@ public:
 			void				set_enemy_callback	(const luabind::functor<bool> &functor);
 			void				set_enemy_callback	(const luabind::functor<bool> &functor, const luabind::object &object);
 			void				set_enemy_callback	();
-
+	
 	//////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////use calback///////////////////////////////////////////////
 			void				SetTipText			(LPCSTR tip_text);
 			void				SetTipTextDefault	();
 			void				SetNonscriptUsable	(bool nonscript_usable);
-
+///////////////////////////////////////////////////////////////////////////////////////////
+			void				set_fastcall		(const luabind::functor<bool> &functor, const luabind::object &object);
 //////////////////////////////////////////////////////////////////////////
 
 			LPCSTR				GetPatrolPathName	();

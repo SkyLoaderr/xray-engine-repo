@@ -4,7 +4,10 @@
 #include "xrMessages.h"
 #include "ph_shell_interface.h"
 #include "../skeletoncustom.h"
-
+#include "script_callback_ex.h"
+#include "Level.h"
+#include "PHCommander.h"
+#include "PHScriptCall.h"
 CPhysicsShellHolder::CPhysicsShellHolder()
 {
 	init();
@@ -12,9 +15,11 @@ CPhysicsShellHolder::CPhysicsShellHolder()
 
 void CPhysicsShellHolder::net_Destroy()
 {
+	//remove calls
+	CPHSriptReqGObjComparer cmpr(this);
+	Level().ph_commander().remove_calls(&cmpr);
 	//удалить партиклы из ParticlePlayer
 	CParticlesPlayer::net_DestroyParticles	();
-
 	inherited::net_Destroy						();
 	xr_delete									(m_pPhysicsShell);
 }

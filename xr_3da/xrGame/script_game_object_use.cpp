@@ -18,7 +18,8 @@
 #include "enemy_manager.h"
 #include "movement_manager.h"
 #include "patrol_path_manager.h"
-
+#include "PHCommander.h"
+#include "PHScriptCall.h"
 void CScriptGameObject::SetTipText (LPCSTR tip_text)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());
@@ -266,4 +267,13 @@ void CScriptGameObject::SetCallback(GameObject::ECallbackType type, const luabin
 void CScriptGameObject::SetCallback(GameObject::ECallbackType type)
 {
 	object().callback(type).clear();
+}
+
+void CScriptGameObject::set_fastcall(const luabind::functor<bool> &functor, const luabind::object &object)
+{
+	CPHScriptGameObjectCondition* c=xr_new<CPHScriptGameObjectCondition>(object,functor,m_game_object);
+	CPHDummiAction*				  a=xr_new<CPHDummiAction>();
+	CPHSriptReqGObjComparer cmpr(m_game_object);
+	Level().ph_commander().remove_calls(&cmpr);
+	Level().ph_commander().add_call(c,a);
 }

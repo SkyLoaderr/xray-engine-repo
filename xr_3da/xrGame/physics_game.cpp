@@ -66,15 +66,7 @@ public:
 	virtual bool 			obsolete						()const{return false;}
 };
 
-class CPHOnesCondition:
-		public CPHCondition
-{
-	bool b_called;
-public:
-							CPHOnesCondition				(){b_called=false;}
-	virtual bool 			is_true							(){b_called =true;return true;}
-	virtual bool 			obsolete						()const{return b_called;}
-};
+
 
 
 template<class Pars>

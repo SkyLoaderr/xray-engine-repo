@@ -10,6 +10,14 @@
 
 #include "script_space.h"
 
+IC	bool compare_safe(const luabind::object &o1 , const luabind::object &o2)
+{
+	if ((o1.type() == LUA_TNIL) && (o2.type() == LUA_TNIL))
+		return	(true);
+
+	return		(o1 == o2);
+}
+
 #define comma						,
 #define concatenizer(a,b)			a##b
 #define left_comment				concatenizer(/,*)
@@ -60,8 +68,8 @@ public:
 	IC							CScriptCallbackEx_	(const CScriptCallbackEx_ &callback);
 	IC	virtual					~CScriptCallbackEx_	();
 	IC	CScriptCallbackEx_		&operator=			(const CScriptCallbackEx_ &callback);
-	IC			bool			operator==			(const CScriptCallbackEx_ &callback)const{return *m_object==*(callback.m_object)&&*m_functor==*(callback.m_functor);}
-	IC			bool			operator==			(const object_type	&object)		const{return *m_object==object;}
+	IC			bool			operator==			(const CScriptCallbackEx_ &callback)const{return compare_safe(*m_object,*(callback.m_object))&&*m_functor==*(callback.m_functor);}
+	IC			bool			operator==			(const object_type	&object)		const{return compare_safe(*m_object,object);}
 	IC			void			set					(const functor_type &functor);
 	IC			void			set					(const functor_type &functor, const object_type &object);
 	IC			void			clear				();

@@ -28,7 +28,7 @@
 #include "map_manager.h"
 #include "map_location.h"
 
-//#include <luabind/adopt_policy.hpp>
+#include <luabind/adopt_policy.hpp>
 
 using namespace luabind;
 
@@ -232,9 +232,11 @@ bool is_level_present()
 
 void add_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
-	CPHScriptCondition	* c=xr_new<CPHScriptCondition>(condition);
-	CPHScriptAction		* a=xr_new<CPHScriptAction>(action);
-	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
+	luabind::functor<bool>		_condition = condition;
+	luabind::functor<void>		_action = action;
+	CPHScriptCondition	* c=xr_new<CPHScriptCondition>(_condition);
+	CPHScriptAction		* a=xr_new<CPHScriptAction>(_action);
+	Level().ph_commander_scripts().add_call(c,a);
 }
 
 void remove_call(const luabind::functor<bool> &condition,const luabind::functor<void> &action)
@@ -253,7 +255,7 @@ void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 		luabind::functor<void>		_action = object_cast<luabind::functor<void> >(lua_object[action]);
 		CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,_condition);
 		CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,_action);
-		Level().ph_commander_scripts().add_call_unique(c,c,a,a);
+		Level().ph_commander_scripts().add_call(c,a);
 //	}
 //	catch(...)
 //	{
@@ -270,9 +272,10 @@ void remove_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR acti
 
 void add_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)
 {
+
 	CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,condition);
 	CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,action);
-	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
+	Level().ph_commander_scripts().add_call(c,a);
 }
 
 void remove_call(const luabind::object &lua_object, const luabind::functor<bool> &condition,const luabind::functor<void> &action)

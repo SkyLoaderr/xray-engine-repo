@@ -1,6 +1,12 @@
 #pragma once
 #include "PHReqComparer.h"
 
+//template<>
+//IC bool compare_safe(const functor<>& f1,const functor<>& f2)
+//{
+//	f1.typ
+//}
+
 class CPHScriptCondition:
 	public CPHCondition,
 	public CPHReqComparerV
@@ -50,7 +56,7 @@ public:
 	virtual bool 			obsolete						()										const		;
 	virtual bool			compare							(const	luabind::object* v)				const		{return *m_lua_object==*v;}
 	virtual bool			compare							(const	CPHReqComparerV* v)				const		{return v->compare(this);}
-	virtual bool			compare							(const	CPHScriptObjectCondition* v)	const		{return m_method_name==v->m_method_name&&*m_lua_object==*(v->m_lua_object);}
+	virtual bool			compare							(const	CPHScriptObjectCondition* v)	const		;
 };
 
 class CPHScriptObjectAction :
@@ -67,7 +73,7 @@ public:
 	virtual bool 			obsolete						()										const		;
 	virtual bool			compare							(const	luabind::object* v)				const		{return *m_lua_object==*v;}
 	virtual bool			compare							(const	CPHReqComparerV* v)				const		{return v->compare(this);}
-	virtual bool			compare							(const	CPHScriptObjectAction* v)		const		{return m_method_name==v->m_method_name&&*m_lua_object==*(v->m_lua_object);}
+	virtual bool			compare							(const	CPHScriptObjectAction* v)		const		;
 };
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -102,6 +108,36 @@ public:
 	virtual bool			compare							(const	CPHScriptObjectActionN* v)	const			{return m_callback==v->m_callback;}
 };
 
+class CPHScriptGameObjectCondition :
+	public CPHScriptObjectConditionN
+{
+	CObject* m_obj;
+	bool	 b_obsolete;
+public:
+	CPHScriptGameObjectCondition( const luabind::object &object,const luabind::functor<bool> &functor,CObject* gobj):
+	CPHScriptObjectConditionN(object,functor)
+	{
+		m_obj=gobj;
+		b_obsolete=false;
+	}
+	virtual bool 			is_true							()											{b_obsolete=CPHScriptObjectConditionN::is_true();return b_obsolete;}
+	virtual bool			compare							(const	CObject* v)			const			{return m_obj->ID()==v->ID();}
+	virtual bool			obsolete						()											{return b_obsolete;}
+};
+
+class CPHScriptGameObjectAction :
+	public CPHScriptObjectActionN
+{
+	CObject* m_obj;
+public:
+	CPHScriptGameObjectAction( const luabind::object &object,const luabind::functor<void> &functor,CObject* gobj):
+	CPHScriptObjectActionN(object,functor)
+	{
+		m_obj=gobj;
+	}
+	virtual bool			compare							(const	CObject* v)			const			{return m_obj->ID()==v->ID();}
+};
+
 class CPHSriptReqObjComparer :
 	public CPHReqComparerV
 {
@@ -113,4 +149,16 @@ public:
 		virtual		bool		compare					(const	CPHScriptObjectAction* v)		const	{return v->compare(m_lua_object);}
 		virtual		bool		compare					(const	CPHScriptObjectConditionN* v)	const	{return v->compare(m_lua_object);}
 		virtual		bool		compare					(const	CPHScriptObjectActionN* v)		const	{return v->compare(m_lua_object);}
+};
+
+
+class CPHSriptReqGObjComparer :
+	public CPHReqComparerV
+{
+	CObject				*m_object;
+
+public:
+	CPHSriptReqGObjComparer	(CObject* object)			{m_object= object;}
+	virtual		bool		compare					(const	CPHScriptGameObjectAction* v)	const	{return v->compare(m_object);}
+	virtual		bool		compare					(const	CPHScriptGameObjectCondition* v)const	{return v->compare(m_object);}
 };
