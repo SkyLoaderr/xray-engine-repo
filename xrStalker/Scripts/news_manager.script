@@ -4,14 +4,6 @@ news = {
 }
 
 
-
-
-random_sounds = {	[[script_replics\radio\message\radio_voice_1]],
-					[[script_replics\radio\message\radio_voice_2]],
-					[[script_replics\radio\message\radio_voice_3]]
-				}
-
-
 function send_news(actor, news_id)
 	if actor == nil or news_id == nil then return false end
 	
@@ -21,12 +13,11 @@ function send_news(actor, news_id)
 		if snd_obj ~= nil then
 			snd_obj:play(actor, 0, sound_object.s2d)
 		end		
-	else
-		--' Играем один из рандомных звуков
-		local snd_obj = sound_object(random_sounds[math.random(table.getn(random_sounds)-1)])
-		if snd_obj ~= nil then
-			snd_obj:play(actor, 0, sound_object.s2d)
-		end
+	end
+	--' Играем дефолтный звук
+	local snd_obj = sound_object([[device\pda\pda_news]])
+	if snd_obj ~= nil then
+		snd_obj:play(actor, 0, sound_object.s2d)
 	end
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
 end
@@ -38,21 +29,30 @@ function send_tip(actor, news_id)
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
 			snd_obj:play(actor, 0, sound_object.s2d)
-		end		
-	else
-		--' Играем один из рандомных звуков
-		local snd_obj = sound_object(random_sounds[math.random(table.getn(random_sounds)-1)])
-		if snd_obj ~= nil then
-			snd_obj:play(actor, 0, sound_object.s2d)
 		end
-	end	
+	end
+	--' Играем дефолтный звук
+	local snd_obj = sound_object([[device\pda\pda_tip]])
+	if snd_obj ~= nil then
+		snd_obj:play(actor, 0, sound_object.s2d)
+	end
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50)
 end
 function send_help(actor)
 	if actor == nil then return false end
+	--' Играем дефолтный звук
+	local snd_obj = sound_object([[device\pda\pda_sos]])
+	if snd_obj ~= nil then
+		snd_obj:play(actor, 0, sound_object.s2d)
+	end
 	actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500)
 end
 function send_task(actor, news_id)
 	if actor == nil or news_id == nil then return false end
+	--' Играем дефолтный звук
+	local snd_obj = sound_object([[device\pda\pda_objective]])
+	if snd_obj ~= nil then
+		snd_obj:play(actor, 0, sound_object.s2d)
+	end	
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 150,100,50,500)
 end
