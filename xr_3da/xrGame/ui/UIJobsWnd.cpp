@@ -81,7 +81,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	CUIJobItem			*pJobItem = NULL;
 	u32					color = 0xffffffff;
 
-	// Устанавливаем цвет иконок
+/*	// Устанавливаем цвет иконок
 	switch (task->ObjectiveState(0))
 	{
 	case eTaskStateCompleted:
@@ -95,7 +95,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		break;
 	default:
 		NODEFAULT;
-	}
+	}*/
 
 	// Пробегаемся по таскам и заносим их как задания
 	int tmp = 0;
@@ -110,11 +110,29 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		obj = &task->data()->m_Objectives[i];
 		UIList.AddItem<CUIListItem>(pJobItem);
 		r.set(obj->icon_x, obj->icon_y, obj->icon_width, obj->icon_height);
-//		r.set(500, 800, 50, 50);
+
+
+		// Устанавливаем цвет иконок
+		switch (task->ObjectiveState(i))
+		{
+		case eTaskStateCompleted:
+			color = 0xff00ff00;
+			break;
+		case eTaskStateFail:
+			color = 0xffff0000;
+			break;
+		case eTaskStateInProgress:
+			color = 0xffffffff;
+			break;
+		default:
+			NODEFAULT;
+		}
+
+
 		if (0 != obj->icon_texture_name.size())
 			pJobItem->SetPicture			(*obj->icon_texture_name, r, color);
-//		pJobItem->SetPicture				("ui\\ui_icon_equipment", r);
-		
+
+
 		if(i == 0)
 			pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
 		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
