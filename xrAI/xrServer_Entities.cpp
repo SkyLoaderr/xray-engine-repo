@@ -260,10 +260,10 @@ void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropItemVec& items)
 
 
 //***** Car
-void xrSE_Car::STATE_Read			(NET_Packet& P, u16 size)	{inherited::STATE_Read(P,size); };
-void xrSE_Car::STATE_Write			(NET_Packet& P)				{inherited::STATE_Write(P);		};
-void xrSE_Car::UPDATE_Read			(NET_Packet& P)				{inherited::UPDATE_Read(P);};
-void xrSE_Car::UPDATE_Write			(NET_Packet& P)				{inherited::UPDATE_Write(P);};
+void xrSE_Car::STATE_Read			(NET_Packet& P, u16 size)	{};
+void xrSE_Car::STATE_Write			(NET_Packet& P)				{};
+void xrSE_Car::UPDATE_Read			(NET_Packet& P)				{};
+void xrSE_Car::UPDATE_Write			(NET_Packet& P)				{};
 #ifdef _EDITOR
 void xrSE_Car::FillProp				(LPCSTR pref, PropItemVec& values)
 {
