@@ -98,82 +98,82 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			}
 	}
 
-	// creating realistic path
-	tpaDeviations.resize(N);
-	tpaPoints.resize(N);
-	for (int i=0; i<(int)N; i++)
-		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
-
-	getAI().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
-
-	// creating variations
-	if (!tpPatrolPath.tpaVectors[0].size())
-		Debug.fatal("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
-	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
-	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
-			
-	float fHalfSubnodeSize = getAI().Header().size*.5f;
-
-	xr_vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
-	u32 M = (u32)tpaVector0.size();
-
-	for (int I=1; I<3; I++) {
-		xr_vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
-		for (int i=0, j=0, k=0; i<(int)M; i++, j++) {
-			
-			tpaVector1[j] = tpaVector0[i];
-
-			Fvector tTemp;
-			
-			if (tpPatrolPath.dwType & PATH_LOOPED) {
-				tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
-				tTemp.y = 0.f;
-				if (tTemp.magnitude() < EPS_L) {
-					tTemp.sub(tpaVector0[i < (int)M - 2 ? i + 2 : 1], tpaVector0[i]);
-					tTemp.y = 0.f;
-				}
-			}
-			else {
-				if (i < (int)M - 1)
-					tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
-				else
-					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
-				tTemp.y = 0.f;
-			}
-			tTemp.normalize();
-
-			if (I == 1)
-				tTemp.set(tTemp.z,0,-tTemp.x);
-			else
-				tTemp.set(-tTemp.z,0,tTemp.x);
-			
-			tpaVector1[j].add(tTemp);
-
-			for (int m=k; (k < (int)tpaNodes.size()) && (!getAI().bfInsideNode(getAI().Node(tpaNodes[k]),tpaVector0[i])); k++) ;
-
-			if (k >= (int)tpaNodes.size()) {
-				k = m;
-				tpaVector1.erase(tpaVector1.begin() + j);
-				j--;
-				continue;
-			}
-
-			CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
-			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
-			tSearch.m_dwStartNode = tpaNodes[k];
-			tSearch.m_tStartPosition = tpaVector0[i];
-			tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
-//			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
-			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
-		}
-		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
-			tpaVector1.push_back(tpaVector1[0]);
-			j++;
-		}
-		tpaVector1.resize(j);
-	}
-	if ((tpPatrolPath.dwType & PATH_LOOPED) && (tpaVector0[0].distance_to(tpaVector0[tpaVector0.size() - 1]) > EPS_L))
-		tpaVector0.push_back(tpaVector0[0]);
+//	// creating realistic path
+//	tpaDeviations.resize(N);
+//	tpaPoints.resize(N);
+//	for (int i=0; i<(int)N; i++)
+//		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
+//
+//	getAI().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
+//
+//	// creating variations
+//	if (!tpPatrolPath.tpaVectors[0].size())
+//		Debug.fatal("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
+//	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
+//	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
+//			
+//	float fHalfSubnodeSize = getAI().Header().size*.5f;
+//
+//	xr_vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
+//	u32 M = (u32)tpaVector0.size();
+//
+//	for (int I=1; I<3; I++) {
+//		xr_vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
+//		for (int i=0, j=0, k=0; i<(int)M; i++, j++) {
+//			
+//			tpaVector1[j] = tpaVector0[i];
+//
+//			Fvector tTemp;
+//			
+//			if (tpPatrolPath.dwType & PATH_LOOPED) {
+//				tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
+//				tTemp.y = 0.f;
+//				if (tTemp.magnitude() < EPS_L) {
+//					tTemp.sub(tpaVector0[i < (int)M - 2 ? i + 2 : 1], tpaVector0[i]);
+//					tTemp.y = 0.f;
+//				}
+//			}
+//			else {
+//				if (i < (int)M - 1)
+//					tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
+//				else
+//					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
+//				tTemp.y = 0.f;
+//			}
+//			tTemp.normalize();
+//
+//			if (I == 1)
+//				tTemp.set(tTemp.z,0,-tTemp.x);
+//			else
+//				tTemp.set(-tTemp.z,0,tTemp.x);
+//			
+//			tpaVector1[j].add(tTemp);
+//
+//			for (int m=k; (k < (int)tpaNodes.size()) && (!getAI().bfInsideNode(getAI().Node(tpaNodes[k]),tpaVector0[i])); k++) ;
+//
+//			if (k >= (int)tpaNodes.size()) {
+//				k = m;
+//				tpaVector1.erase(tpaVector1.begin() + j);
+//				j--;
+//				continue;
+//			}
+//
+//			CAI_NodeEvaluatorTemplate<aiSearchRange | aiInsideNode> tSearch;
+//			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
+//			tSearch.m_dwStartNode = tpaNodes[k];
+//			tSearch.m_tStartPosition = tpaVector0[i];
+//			tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
+////			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
+//			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
+//		}
+//		if (tpaVector1[0].distance_to(tpaVector1[j - 1]) > EPS_L) {
+//			tpaVector1.push_back(tpaVector1[0]);
+//			j++;
+//		}
+//		tpaVector1.resize(j);
+//	}
+//	if ((tpPatrolPath.dwType & PATH_LOOPED) && (tpaVector0[0].distance_to(tpaVector0[tpaVector0.size() - 1]) > EPS_L))
+//		tpaVector0.push_back(tpaVector0[0]);
 }
 
 BOOL CLevel::Load_GameSpecific_Before()
