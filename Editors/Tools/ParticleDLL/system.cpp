@@ -816,18 +816,20 @@ PARTICLEDLL_API BOOL pLoadActionList(int action_list_num, CStream& F)
 	u16 version		= F.Rword();
 
 	if (version!=ACTION_LIST_VERSION) return FALSE;
-	// 
+	
+	// load actions
 	R_ASSERT(F.FindChunk(AL_CHUNK_ACTIONS));
 	u32 a_count			=	F.Length()/sizeof(PAHeader);
 
+	// start append actions
 	pNewActionList(action_list_num);
 
+	PAHeader S;
 	for (u32 k=0; k<a_count; k++){
-		PAHeader S;
 		F.Read				(&S,sizeof(PAHeader));
 		_pAddActionToList	(&S,sizeof(PAHeader));
 	}
-
+	// end append action
 	pEndActionList();
 
 	return TRUE;
