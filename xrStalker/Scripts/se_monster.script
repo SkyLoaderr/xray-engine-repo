@@ -1,24 +1,54 @@
----------------------------------------------------------------------
+--[[
+Изменения script_version:
+	2 - сохранение поля under_smart_terrain
+]]
+
 class "se_monster" (cse_alife_monster_base)
 --------------------
 function se_monster:__init (section) super (section)
-    self.ini = nil
-    self.spawner_present = false
+	self.ini = nil
+	self.spawner_present = false
 end
 --------------------
 function se_monster:can_switch_offline ()
-    return cse_alife_monster_base.can_switch_offline (self)
+	if self.under_smart_terrain then
+		return false
+	else
+		return cse_alife_monster_base.can_switch_offline (self)
+	end
 end
 --------------------
 function se_monster:can_switch_online ()
-    if self.ini == nil then
-       self.ini = self:spawn_ini () 
-       self.spawner_present = self.ini:section_exist ("spawner")
-    end
-    if self.ini == nil or self.spawner_present == false or 
-      (db.actor ~= nil and db.actor:alive () == false) then 
-       return cse_alife_monster_base.can_switch_online (self)
-    end    
-    return xr_spawner.check_spawn (self)
+	if self.under_smart_terrain then
+		return true
+	end
+
+	if self.ini == nil then
+		self.ini = self:spawn_ini () 
+		self.spawner_present = self.ini:section_exist ("spawner")
+	end
+
+	if self.ini == nil or self.spawner_present == false or 
+	   (db.actor ~= nil and db.actor:alive () == false)
+	then 
+		return cse_alife_monster_base.can_switch_online (self)
+	end    
+
+	return xr_spawner.check_spawn (self)
 end    
----------------------------------------------------------------------
+--------------------
+function se_monster:STATE_Write (packet)
+--	log ("se_monster::STATE_Write called!")
+	cse_alife_monster_base.STATE_Write (self, packet)
+
+	packet:w_bool (self.under_smart_terrain == true)
+end
+--------------------
+function se_monster:STATE_Read (packet, size)
+--	log ("se_monster::STATE_Read called!")
+	cse_alife_monster_base.STATE_Read (self, packet, size)
+
+	if self.script_version >= 2 then
+		self.under_smart_terrain = packet:r_bool()
+	end
+end

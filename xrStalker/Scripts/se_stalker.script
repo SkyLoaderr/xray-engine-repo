@@ -1,3 +1,8 @@
+--[[
+Изменения script_version:
+	2 - сохранение поля under_smart_terrain
+]]
+
 class "se_stalker"	(cse_alife_human_stalker)
 --------------------
 function se_stalker:__init (section) super (section)
@@ -33,14 +38,14 @@ function se_stalker:can_switch_online ()
 end
 --------------------
 function se_stalker:STATE_Write (packet)
-	log ("se_stalker::STATE_Write called!")
+--	log ("se_stalker::STATE_Write called!")
 	cse_alife_human_stalker.STATE_Write (self, packet)
 
 	packet:w_bool (self.under_smart_terrain == true)
 end
 --------------------
 function se_stalker:STATE_Read (packet, size)
-	log ("se_stalker::STATE_Read called!")
+--	log ("se_stalker::STATE_Read called!")
 	cse_alife_human_stalker.STATE_Read (self, packet, size)
 
 	if self.script_version >= 2 then
