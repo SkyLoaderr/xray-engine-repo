@@ -168,6 +168,7 @@ void CRenderDevice::_Create(LPCSTR shName){
 
 	// Shaders part
 	Shader.OnDeviceCreate(shName);
+
     m_WireShader 		= Shader.Create("editor\\wire");
     m_SelectionShader 	= Shader.Create("editor\\selection");
 

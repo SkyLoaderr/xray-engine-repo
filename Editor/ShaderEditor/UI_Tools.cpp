@@ -20,7 +20,6 @@ CShaderTools::CShaderTools()
 {
 	m_EditObject 		= 0;
     m_bCustomEditObject	= false;
-    m_bNeedUpdateDeviceShaders = false;
 }
 //---------------------------------------------------------------------------
 
@@ -91,10 +90,6 @@ void CShaderTools::Render(){
 void CShaderTools::Update(){
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
-    if (m_bNeedUpdateDeviceShaders){
-    	if (ActiveEditor()==aeEngine) Engine.UpdateDeviceShaders();
-        m_bNeedUpdateDeviceShaders = false;
-    }
 }
 
 void CShaderTools::ZoomObject(){
@@ -136,8 +131,6 @@ void CShaderTools::OnDeviceCreate(){
     L.direction.set(0,1,0); L.direction.normalize();
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
-
-    m_bNeedUpdateDeviceShaders = true;
 }
 
 void CShaderTools::OnDeviceDestroy(){
@@ -185,7 +178,7 @@ void CShaderTools::OnShowHint(AStringVec& ss){
     }
 }
 
-void CShaderTools::UpdateObjectShader(){
+void CShaderTools::UpdateObjectShader(bool bClearOnly){
     // apply this shader to non custom object
 	if (Engine.m_CurrentBlender&&m_EditObject&&!m_bCustomEditObject){
     	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
@@ -193,7 +186,7 @@ void CShaderTools::UpdateObjectShader(){
     	    Device.Shader.Delete(surf->_Shader());
             string512 tex; strcpy(tex,surf->_Texture());
             for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
-	        surf->SetShader(Engine.m_CurrentBlender->getName(),Device.Shader.Create(Engine.m_CurrentBlender->getName(),tex));
+	        surf->SetShader(Engine.m_CurrentBlender->getName(),bClearOnly?0:Device.Shader.Create(Engine.m_CurrentBlender->getName(),tex));
             UI.RedrawScene();
     	}
     }

@@ -56,12 +56,12 @@ object frmShaderProperties: TfrmShaderProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF020000003000990600000000FFFFFFFF0000010001004E447D000000
+      F4FFFFFF02000000AC43C01500000000FFFFFFFF0000010001004E447D000000
       32000000102700000000006114B2950400000000000072350000000000000174
       0000000000000000000100000000000067696E653B656469746F723B73686172
       65643B2428424342295C6C69623B2428424342295C6C69625C6F626A3B242842
       4342295C50726F6A656374735C4C696290000000040000004B65790001000000
-      0000000000000000003000990600000000FFFFFFFF0000010101004E44590000
+      000000000000000000AC43C01500000000FFFFFFFF0000010101004E44590000
       00320000001027000000000061ECB69504010000000000723500000000000001
       740000000000000000000100000000000067696E653B656469746F723B736861
       7265643B2428424342295C6C69623B2428424342295C6C69625C6F626A3B2428
@@ -146,47 +146,7 @@ object frmShaderProperties: TfrmShaderProperties
     Align = alBottom
     Color = 10528425
     TabOrder = 1
-    object ebPropertiesApply: TExtBtn
-      Left = 1
-      Top = 1
-      Width = 184
-      Height = 17
-      Align = alClient
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      Caption = 'Apply Changes'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-      OnClick = ebPropertiesApplyClick
-    end
-    object ebPropertiesAutoApply: TExtBtn
-      Left = 185
-      Top = 1
-      Width = 48
-      Height = 17
-      Align = alRight
-      AllowAllUp = True
-      BevelShow = False
-      HotTrack = True
-      HotColor = 15790320
-      CloseButton = False
-      GroupIndex = 1
-      Caption = 'Auto'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      Margin = 13
-      ParentFont = False
-    end
+    Visible = False
   end
   object InplaceFloat: TElTreeInplaceFloatSpinEdit
     Tree = tvProperties
@@ -222,8 +182,6 @@ object frmShaderProperties: TfrmShaderProperties
     Top = 152
   end
   object fsStorage: TFormStorage
-    StoredProps.Strings = (
-      'ebPropertiesAutoApply.Down')
     StoredValues = <>
     Left = 8
     Top = 32

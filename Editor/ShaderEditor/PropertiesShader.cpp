@@ -454,8 +454,8 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,MCString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
-		            Modified();
                 }
+				Modified();
             }
         }break;
         case BPID_MATRIX:{
@@ -471,13 +471,12 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
             	if (*nm!='$'){
                 	Tools.Engine.RemoveMatrix(nm);
                     RemoveMatrix(item);
-		            Modified();
                 }
             	if (strcmp(nm,MCString[mi->MenuIndex])!=0){
 					strcpy(nm,MCString[mi->MenuIndex]);
 		            item->ColumnText->Strings[0]= MCString[mi->MenuIndex];
-		            Modified();
                 }
+				Modified();
             }
         }break;
         }
@@ -592,7 +591,6 @@ void TfrmShaderProperties::Modified()
 {
 	m_bModified = true;
     Tools.Modified();
-	if (ebPropertiesAutoApply->Down)
-    	Tools.ApplyChanges();
+	UI.Command(COMMAND_APPLY_CHANGES);
 }
 

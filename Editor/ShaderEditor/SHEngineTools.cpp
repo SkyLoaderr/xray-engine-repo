@@ -123,19 +123,33 @@ bool CSHEngineTools::IfModified(){
 
 void CSHEngineTools::UpdateDeviceShaders()
 {
-    Save(TRUE);
-    Device.Reset(SHADER_FILENAME_TEMP,TRUE);
+	// disable props vis update
+	TfrmShaderProperties::FreezeUpdate(true);
+	// mem current blender
+    LPCSTR name			= m_CurrentBlender?m_CurrentBlender->getName():0;
+	Tools.UpdateObjectShader(true);
+	ResetCurrentBlender	();
+    // save to temp file
+    Save				(TRUE);
+    // reset device shaders from temp file
+    Device.Reset		(SHADER_FILENAME_TEMP,TRUE);
+	// restore current shader
+	SetCurrentBlender	(name,false);
+	// enable props vis update
+	TfrmShaderProperties::FreezeUpdate(false);
 }
 
 
-void CSHEngineTools::ApplyChanges(){
-    if (m_CurrentBlender&&TfrmShaderProperties::IsModified()){
+void CSHEngineTools::ApplyChanges(bool bForced){
+    if (m_CurrentBlender&&(TfrmShaderProperties::IsModified()||bForced)){
     	UpdateObjectFromStream();
         // update visual
-        Tools.UpdateDeviceShaders();
+        UpdateDeviceShaders();
         // set modified flag
-		Modified();
-    }
+		if (TfrmShaderProperties::IsModified()) Modified();
+        // reset flag
+		TfrmShaderProperties::SetModified(false);
+    }else if (bForced) UpdateDeviceShaders();
 }
 
 void CSHEngineTools::Reload(){
@@ -200,7 +214,10 @@ void CSHEngineTools::Load(){
                 }
                 chunk->Seek		(0);
                 B->Load			(*chunk);
-                m_Blenders.insert	(make_pair(strdup(desc.cName),B));
+
+                LPSTR blender_name = strdup(desc.cName);
+                pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
+                R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
                 fraLeftBar->AddBlender(desc.cName,true);
                 chunk->Close	();
                 chunk_id++;
@@ -218,10 +235,6 @@ void CSHEngineTools::Load(){
 }
 
 void CSHEngineTools::Save(BOOL bForVisUpdate){
-	TfrmShaderProperties::FreezeUpdate(true);
-
-    LPCSTR name					= m_CurrentBlender?m_CurrentBlender->getName():0;
-	ResetCurrentBlender			();
 	m_bUpdateCurrent			= false;
 
 	CollapseReferences();
@@ -279,14 +292,11 @@ void CSHEngineTools::Save(BOOL bForVisUpdate){
     if (!bForVisUpdate) FS.LockFile(0,fn.c_str(),false);
 
 	m_bUpdateCurrent		= true;
-	SetCurrentBlender		(name);
 
 	if (!bForVisUpdate){
     	m_bModified	= FALSE;
-		TfrmShaderProperties::ResetModified();
+		TfrmShaderProperties::SetModified(false);
     }
-
-	TfrmShaderProperties::FreezeUpdate(false);
 }
 
 CBlender* CSHEngineTools::FindBlender(LPCSTR name){
@@ -354,13 +364,10 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
 	// append blender
     char old_name[128]; if (parent) strcpy(old_name,parent->getName());
     CBlender* B = CBlender::Create(cls_id);
-    if (parent) *B = *parent;
-    char name[128]; name[0]=0;
-    if (folder_name) strcpy(name,folder_name);
-    B->getDescription().Setup(GenerateBlenderName(name,parent?old_name:0));
     // append matrix& constant
     CFS_Memory M;
-    B->Save(M);
+    if (parent) parent->Save(M); else B->Save(M);
+	// parse data
     CStream data(M.pointer(), M.size());
     data.Advance(sizeof(CBlender_DESC));
     DWORD type;
@@ -386,8 +393,8 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
     	        else AddConstantRef((LPSTR)data.Pointer());
             }
         break;
-        case xrPID_TEXTURE: 	sz=sizeof(string64); 	break;
-        case xrPID_INTEGER: 	sz=sizeof(xrP_Integer);	break;
+        case xrPID_TEXTURE:	sz=sizeof(string64); 	break;
+        case xrPID_INTEGER:	sz=sizeof(xrP_Integer);	break;
         case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
         case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
         case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);	break;
@@ -397,9 +404,16 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
     }
     data.Seek(0);
     B->Load(data);
+	// set name
+    char name[128]; name[0]=0;
+    if (folder_name) strcpy(name,folder_name);
+    B->getDescription().Setup(GenerateBlenderName(name,parent?old_name:0));
     // insert blender
-	m_Blenders.insert(make_pair(strdup(name),B));
+	pair<BlenderPairIt, bool> I = m_Blenders.insert(make_pair(strdup(name),B));
+	R_ASSERT2 (I.second,"shader.xr - found duplicate name!!!");
+    // insert to TreeView
 	fraLeftBar->AddBlender(name,false);
+
     return B;
 }
 
@@ -418,8 +432,12 @@ void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR new_full_name){
 	m_Blenders.erase(I);
 	// rename
     B->getDescription().Setup(new_full_name);
-	m_Blenders.insert(make_pair(strdup(new_full_name),B));
+	pair<BlenderPairIt, bool> RES = m_Blenders.insert(make_pair(strdup(new_full_name),B));
+	R_ASSERT2 (RES.second,"shader.xr - found duplicate name!!!");
+
 	if (B==m_CurrentBlender) UpdateStreamFromObject();
+	// apply chages (forced)
+    ApplyChanges(true);
 }
 
 void CSHEngineTools::RenameBlender(LPCSTR old_full_name, LPCSTR ren_part, int level){
@@ -516,11 +534,10 @@ void CSHEngineTools::UpdateObjectFromStream(){
     }
 }
 
-void CSHEngineTools::SetCurrentBlender(CBlender* B){
+void CSHEngineTools::SetCurrentBlender(CBlender* B, bool bApply){
     if (!m_bUpdateCurrent) return;
 
-    if (TfrmShaderProperties::IsAutoApply()) ApplyChanges();
-	else UpdateObjectFromStream();
+    if (bApply) ApplyChanges(true);
 	if (m_CurrentBlender!=B){
         m_CurrentBlender = B;
         UpdateStreamFromObject();
@@ -529,13 +546,13 @@ void CSHEngineTools::SetCurrentBlender(CBlender* B){
     }
 }
 
+void CSHEngineTools::SetCurrentBlender(LPCSTR name, bool bApply){
+	SetCurrentBlender(FindBlender(name),bApply);
+}
+
 void CSHEngineTools::ResetCurrentBlender(){
 	m_CurrentBlender=0;
     UpdateStreamFromObject();
-}
-
-void CSHEngineTools::SetCurrentBlender(LPCSTR name){
-	SetCurrentBlender(FindBlender(name));
 }
 
 void CSHEngineTools::CollapseMatrix(LPSTR name){

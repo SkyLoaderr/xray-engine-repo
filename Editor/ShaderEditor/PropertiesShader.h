@@ -45,8 +45,6 @@ __published:	// IDE-managed Components
 	TMxPopupMenu *pmEnum;
 	TFormStorage *fsStorage;
 	TPanel *Panel1;
-	TExtBtn *ebPropertiesApply;
-	TExtBtn *ebPropertiesAutoApply;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall InplaceNumberBeforeOperation(TObject *Sender,
@@ -79,9 +77,9 @@ public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();
     static void __fastcall HideProperties();
-    static bool __fastcall IsAutoApply(){ if (form) return form->ebPropertiesAutoApply->Down; else return true; }
+//    static bool __fastcall IsAutoApply(){ if (form) return form->ebPropertiesAutoApply->Down; else return true; }
     static bool __fastcall IsModified(){ return m_bModified; }
-    static void __fastcall ResetModified(){ m_bModified=false; }
+    static void __fastcall SetModified(bool bFlag){ m_bModified=bFlag; }
 
     static void __fastcall InitProperties();
     static void __fastcall FreezeUpdate(bool val){m_bFreeze=val;}

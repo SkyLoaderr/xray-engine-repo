@@ -311,8 +311,7 @@ void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
     if (pNode&&FOLDER::IsObject(pNode)){
 		AnsiString full_name;
 		FOLDER::MakeName(pNode,0,full_name,false);
-        CBlender* B = Tools.Engine.CloneBlender(full_name.c_str());
-		Tools.Engine.SetCurrentBlender(B);
+        Tools.Engine.CloneBlender(full_name.c_str());
 		UI.Command(COMMAND_SHADER_PROPERTIES);
 		Tools.Engine.Modified();
     }else{

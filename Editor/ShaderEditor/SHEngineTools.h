@@ -89,9 +89,9 @@ public:
     void				UpdateDeviceShaders	();
 
     // misc
-    void				SetCurrentBlender	(CBlender* B);
-    void				SetCurrentBlender	(LPCSTR name);
-    void				ApplyChanges		();
+    void				SetCurrentBlender	(CBlender* B, bool bApply=true);
+    void				SetCurrentBlender	(LPCSTR name, bool bApply=true);
+    void				ApplyChanges		(bool bForced=false);
 };
 //---------------------------------------------------------------------------
 #endif

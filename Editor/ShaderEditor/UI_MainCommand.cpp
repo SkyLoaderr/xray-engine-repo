@@ -61,10 +61,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         break;
 	case COMMAND_SAVE:
     	// engine shaders
-//	    Tools.Engine.ApplyChanges();
     	Tools.Engine.Save();
     	// compiler
-//	    Tools.Compiler.ApplyChanges();
     	Tools.Compiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;

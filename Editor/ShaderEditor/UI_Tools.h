@@ -36,7 +36,6 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 	CEditableObject*	m_EditObject;
     bool				m_bCustomEditObject;
     EAction 			m_Action;
-    bool				m_bNeedUpdateDeviceShaders;
 public:
     CSHEngineTools		Engine;
     CSHCompilerTools	Compiler;
@@ -65,8 +64,7 @@ public:
     EActiveEditor		ActiveEditor		();
     void				OnChangeEditor		();
 
-    void				UpdateObjectShader	();
-    void                UpdateDeviceShaders	(){m_bNeedUpdateDeviceShaders=true;}
+    void				UpdateObjectShader	(bool bClearOnly=false);
 
     void				OnShowHint			(AStringVec& ss);
 

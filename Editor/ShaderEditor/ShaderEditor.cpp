@@ -113,6 +113,9 @@ USEUNIT("Editor\EditMeshPick.cpp");
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEUNIT("Editor\EditObjectEditor.cpp");
 USELIB("Lib\memmgr.lib");
+USEUNIT("Engine\BLENDERS\Blender_LaEmB.cpp");
+USEUNIT("Engine\BLENDERS\Blender_LmBmmD.cpp");
+USEUNIT("Engine\BLENDERS\Blender_Lm(EbB).cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -151,7 +151,7 @@ void CEditableObject::OnDeviceCreate(){
     //	UpdateRenderBuffers();
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->SetShader((*s_it)->_ShaderName(), Device.Shader.Create((*s_it)->_ShaderName(),(*s_it)->_Texture()));
+       (*s_it)->CreateShader();
 }
 
 void CEditableObject::OnDeviceDestroy(){
@@ -159,7 +159,7 @@ void CEditableObject::OnDeviceDestroy(){
     //	ClearRenderBuffers();
 		// удалить shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-        if ((*s_it)->_Shader()) Device.Shader.Delete((*s_it)->_Shader());
+        (*s_it)->DeleteShader();
 }
 
 void CEditableObject::LightenObject(){

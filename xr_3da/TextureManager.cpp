@@ -92,7 +92,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 
 	LPSTR N = LPSTR(Name);
 	map<LPSTR,CMatrix*,str_pred>::iterator I = matrices.find	(N);
-	if (I!=matrices.end())	
+	if (I!=matrices.end())
 	{
 		CMatrix* M		=	I->second;
 		M->dwReference	+=	1;
@@ -108,7 +108,7 @@ CMatrix*	CShaderManager::_CreateMatrix	(LPCSTR Name)
 }
 void	CShaderManager::_DeleteMatrix		(CMatrix* &M)
 {
-	R_ASSERT(M);
+	if (0==M)	return;
 	M->dwReference	--;
 	M=0;
 }
@@ -150,7 +150,7 @@ CConstant*	CShaderManager::_CreateConstant	(LPCSTR Name)
 }
 void	CShaderManager::_DeleteConstant		(CConstant* &C)
 {
-	R_ASSERT(C);
+	if (0==C)	return;
 	C->dwReference	--;
 	C=0;
 }

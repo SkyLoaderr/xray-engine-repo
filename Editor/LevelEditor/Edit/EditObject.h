@@ -30,7 +30,7 @@ class CSurface
 public:
     				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
 #ifdef _EDITOR
-					~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
+					~CSurface		(){DeleteShader();}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
     IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
     IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
@@ -44,13 +44,15 @@ public:
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-    IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]&&sh); m_ShaderName=name; m_Shader=sh;}
+    IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]); m_ShaderName=name; m_Shader=sh;}
     IC void			ED_SetShader	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderXRLCName=name;}
     IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
+    IC void			CreateShader	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
+    IC void			DeleteShader	(){ if (m_Shader) Device.Shader.Delete(m_Shader); m_Shader=0; }
 #ifdef _MAX_EXPORT
 	DWORD			mat_id;
 	Mtl*			pMtlMain;
