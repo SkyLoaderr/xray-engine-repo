@@ -83,7 +83,7 @@ function Defender:find_enemy ()
 	end
 
 	if enemy ~= nil then
-       printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
+       --printf ("Defender %s find enemy %s", self.npc:name (), enemy.npc:name ())	
 	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
 	end
 
@@ -155,7 +155,7 @@ function Defender:process ()
 	if self.weapon == nil then
   	   self.weapon = self.npc:active_item ()
 	   if self.weapon ~= nil then
-	      printf ("Object %s have weapon %s", self.npc:name (), self.weapon:name ())	
+	      --printf ("Object %s have weapon %s", self.npc:name (), self.weapon:name ())	
 	   end
 	end
 
@@ -262,6 +262,7 @@ function boar_callback (monster)
 	reset_action (monster.npc, monster.script)
   	action (monster.mpc, move (move.act_stand_idle, move.force_type, monster.npc:position ()), anim ("stand_attack_1"),
       		sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),  cond (cond.anim_end))
+	printf ("Callback called")      		
 end      		
 
 
