@@ -6,6 +6,7 @@
 #include "UIGameAHunt.h"
 #include "clsid_game.h"
 #include "map_manager.h"
+#include "LevelGameDef.h"
 
 #define TEAM0_MENU		"artefacthunt_team0"
 #define	TEAM1_MENU		"artefacthunt_team1"
@@ -39,6 +40,62 @@ void game_cl_ArtefactHunt::Init ()
 	old_artefactBearerID = 0;
 	old_artefactID = 0;
 	old_teamInPossession = 0;
+	//---------------------------------------------------
+	//---------------------------------------------------------
+	string256	fn_game;
+	if (FS.exist(fn_game, "$level$", "level.game")) 
+	{
+		IReader *F = FS.r_open	(fn_game);
+		IReader *O = 0;
+
+		// Load RPoints
+		if (0!=(O = F->open_chunk	(RPOINT_CHUNK)))
+		{ 
+			for (int id=0; O->find_chunk(id); ++id)
+			{
+				RPoint					R;
+				u8						RP_team;
+				u8						RP_type;
+				u8						RP_GameType;
+
+				O->r_fvector3			(R.P);
+				O->r_fvector3			(R.A);
+				RP_team					= O->r_u8	();	VERIFY(RP_team>=0 && RP_team<4);
+				RP_type					= O->r_u8	();
+				RP_GameType				= O->r_u8	();
+				//u16 res					= 
+				O->r_u8	();
+
+				if (RP_GameType != rpgtGameAny && RP_GameType != rpgtGameArtefactHunt)
+				{
+					continue;					
+				};
+				switch (RP_type)
+				{
+				case rptTeamBaseParticle:
+					{
+						string256 ParticleStr;
+						sprintf(ParticleStr, "teambase_particle_%d", RP_team);
+						if (pSettings->line_exist("artefacthunt_gamedata", ParticleStr))
+						{
+							Fmatrix			transform;
+							transform.identity();
+							transform.setXYZ(R.A);
+							transform.translate_over(R.P);
+							IRender_Sector* S							= ::Render->detectSector	(transform.c);
+							CParticlesObject* pStaticParticles			= xr_new<CParticlesObject>	(pSettings->r_string("artefacthunt_gamedata", ParticleStr),S,false);
+							pStaticParticles->UpdateParent	(transform,zero_vel);
+							pStaticParticles->Play			();
+							Level().m_StaticParticles.push_back		(pStaticParticles);
+						};
+					}break;
+				};
+			};
+			O->close();
+		}
+
+		FS.r_close	(F);
+	}
 };
 game_cl_ArtefactHunt::~game_cl_ArtefactHunt()
 {
