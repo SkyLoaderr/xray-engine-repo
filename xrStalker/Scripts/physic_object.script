@@ -9,15 +9,15 @@ end
 
 
 function door_callback(door, actor)
-  local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
-  local angel  = joint:get_axis_angle(0)
-  local low_limits, hi_limits  = 0.0, 0.0
-  low_limits, hi_limits = joint:get_limits(low_limits, hi_limits, 0)
+	local joint  = door:get_physics_shell():get_joint_by_bone_name("door")
+	local angel  = joint:get_axis_angle(0)
+	local low_limits, hi_limits  = 0.0, 0.0
+	low_limits, hi_limits = joint:get_limits(low_limits, hi_limits, 0)
 
-  if(angel - low_limits > hi_limits - angel) then
-    joint:set_max_force_and_velocity(200, -1, 0)
-  else
-        joint:set_max_force_and_velocity(200, 1, 0)
-  end
+	if(angel - low_limits > hi_limits - angel) then
+		joint:set_max_force_and_velocity(200, -1, 1)
+	else
+        joint:set_max_force_and_velocity(200, 1, 1)
+	end
 end
 
