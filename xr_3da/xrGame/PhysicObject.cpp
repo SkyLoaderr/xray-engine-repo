@@ -24,6 +24,14 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 	P.w_u8 (m_flags.get());
 	P.w_u64(K->LL_GetBonesVisible());
 	P.w_u16(K->LL_GetBoneRoot());
+	u16 bones_number=PHGetSyncItemsNumber();
+	P.w_u16(bones_number);
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		PHGetSyncItem(i)->get_State(state);
+		state.net_Save(P);
+	}
 }
 
 void CPhysicObject::LoadNetState(NET_Packet& P)
@@ -33,6 +41,13 @@ void CPhysicObject::LoadNetState(NET_Packet& P)
 	P.r_u8 (m_flags.flags);
 	K->LL_SetBonesVisible(P.r_u64());
 	K->LL_SetBoneRoot(P.r_u16());
+	u16 bones_number=P.r_u16();
+	for(u16 i=0;i<bones_number;i++)
+	{
+		SPHNetState state;
+		state.net_Load(P);
+		PHGetSyncItem(i)->set_State(state);
+	}
 }
 
 void CPhysicObject::RespawnInit()
@@ -243,6 +258,19 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 		m_pPhysicsShell->set_DisableParams(disable_params);
 	}
 	//m_pPhysicsShell->SetAirResistance(0.002f, 0.3f);
+	
+	if(m_flags.test(CSE_ALifeObjectPhysic::flSavedData))
+	{
+		PHNETSTATE_VECTOR& saved_bones=po->saved_bones;
+		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
+		for(u16 bone=0;e!=i;i++,bone++)
+		{
+			PHGetSyncItem(bone)->set_State(*i);
+		}
+		saved_bones.clear();
+		m_flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
+		po->flags.set(CSE_ALifeObjectPhysic::flSavedData,FALSE);
+	}
 }
 
 
@@ -459,7 +487,7 @@ void CPhysicObject::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-	m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
+	//m_flags.set(CSE_ALifeObjectPhysic::flNotSave);
 }
 //////////////////////////////////////////////////////////////////////////
 /*
