@@ -23,20 +23,22 @@ const float particles_time	= .3f;
 
 CEffect_Rain::CEffect_Rain()
 {
-	state					= stIdle;
-	control_start			= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
-	control_stop			= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
+	state							= stIdle;
+	control_start					= Engine.Event.Handler_Attach	("level.weather.rain.start",this);
+	control_stop					= Engine.Event.Handler_Attach	("level.weather.rain.stop",this);
 	
-	Sound->create			(snd_Ambient,TRUE,"amb_rain");
-	snd_Ambient_volume		= 0;
+	Sound->create					(snd_Ambient,TRUE,"amb_rain");
+	snd_Ambient_volume				= 0;
 
-	IReader*	 fs			= FS.r_open("$game_meshes$","dm\\rain.dm");
-	DM_Drop					= ::Render->model_CreateDM		(fs);
-	FS.r_close				(fs);
+	IReader*	 fs					= FS.r_open("$game_meshes$","dm\\rain.dm");
+	DM_Drop							= ::Render->model_CreateDM		(fs);
+	FS.r_close						(fs);
 
-	Device.seqDevCreate.Add	(this);
-	Device.seqDevDestroy.Add(this);
-	OnDeviceCreate			();
+	//
+	SH_Rain.create					("effects\\rain","fx\\rain");
+	hGeom_Rain.create				(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeom_Drops.create				(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
+	p_create						();
 }
 
 CEffect_Rain::~CEffect_Rain()
@@ -46,33 +48,9 @@ CEffect_Rain::~CEffect_Rain()
 
 	Sound->destroy					(snd_Ambient);
 
-	Device.seqDevCreate.Remove		(this);
-	Device.seqDevDestroy.Remove		(this);
-
 	// Cleanup
-	OnDeviceDestroy					();
-	Device.Shader.Delete			(SH_Rain);
 	p_destroy						();
 	::Render->model_Delete			(DM_Drop);
-}
-
-void	CEffect_Rain::OnDeviceCreate	()
-{
-	REQ_CREATE			();
-
-	SH_Rain				= Device.Shader.Create		("effects\\rain","fx\\rain");
-	hGeom_Rain			= Device.Shader.CreateGeom	(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);
-	hGeom_Drops			= Device.Shader.CreateGeom	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
-	p_create			();
-}
-
-void	CEffect_Rain::OnDeviceDestroy	()
-{
-	REQ_DESTROY				();
-	Device.Shader.DeleteGeom	(hGeom_Drops);
-	Device.Shader.DeleteGeom	(hGeom_Rain);
-	Device.Shader.Delete	(SH_Rain);
-	p_destroy				();
 }
 
 void	CEffect_Rain::OnEvent	(EVENT E, u64 P1, u64 P2)
@@ -261,7 +239,7 @@ void	CEffect_Rain::Render	()
 	
 	// Perform update
 	u32		vOffset;
-	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain->vb_stride,vOffset);
+	FVF::LIT	*verts		= (FVF::LIT	*) RCache.Vertex.Lock(desired_items*4,hGeom_Rain()->vb_stride,vOffset);
 	FVF::LIT	*start		= verts;
 	float		dt			= Device.fTimeDelta;
 	Fvector		vCenter		= Device.vCameraPosition;
@@ -310,7 +288,7 @@ void	CEffect_Rain::Render	()
 		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
 	}
 	u32 vCount					= (u32)(verts-start);
-	RCache.Vertex.Unlock	(vCount,hGeom_Rain->vb_stride);
+	RCache.Vertex.Unlock		(vCount,hGeom_Rain()->vb_stride);
 	
 	// Render if needed
 	if (vCount)	{
@@ -338,7 +316,7 @@ void	CEffect_Rain::Render	()
 		u32						v_offset,i_offset;
 		u32						vCount_Lock		= particles_cache*DM_Drop->number_vertices;
 		u32						iCount_Lock		= particles_cache*DM_Drop->number_indices;
-		IRender_DetailModel::fvfVertexOut* v_ptr= (IRender_DetailModel::fvfVertexOut*) RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops->vb_stride, v_offset);
+		IRender_DetailModel::fvfVertexOut* v_ptr= (IRender_DetailModel::fvfVertexOut*) RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops()->vb_stride, v_offset);
 		WORD*					i_ptr			= _IS.Lock													(iCount_Lock, i_offset);
 		while (P)	{
 			Particle*	next	=	P->next;
@@ -368,12 +346,12 @@ void	CEffect_Rain::Render	()
 				if (pcount >= particles_cache) {
 					// flush
 					u32	dwNumPrimitives		= iCount_Lock/3;
-					RCache.Vertex.Unlock	(vCount_Lock,hGeom_Drops->vb_stride);
+					RCache.Vertex.Unlock	(vCount_Lock,hGeom_Drops()->vb_stride);
 					_IS.Unlock				(iCount_Lock);
 					RCache.set_Geometry		(hGeom_Drops);
 					RCache.Render			(D3DPT_TRIANGLELIST,v_offset, 0,vCount_Lock,i_offset,dwNumPrimitives);
 					
-					v_ptr					= (IRender_DetailModel::fvfVertexOut*)			RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops->vb_stride, v_offset);
+					v_ptr					= (IRender_DetailModel::fvfVertexOut*)			RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops()->vb_stride, v_offset);
 					i_ptr					= _IS.Lock										(iCount_Lock, i_offset);
 					
 					pcount	= 0;
@@ -387,7 +365,7 @@ void	CEffect_Rain::Render	()
 		vCount_Lock						= pcount*DM_Drop->number_vertices;
 		iCount_Lock						= pcount*DM_Drop->number_indices;
 		u32	dwNumPrimitives				= iCount_Lock/3;
-		RCache.Vertex.Unlock			(vCount_Lock,hGeom_Drops->vb_stride);
+		RCache.Vertex.Unlock			(vCount_Lock,hGeom_Drops()->vb_stride);
 		_IS.Unlock						(iCount_Lock);
 		if (pcount)	{
 			RCache.set_Geometry		(hGeom_Drops);
