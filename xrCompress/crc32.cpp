@@ -4,9 +4,6 @@
 static BOOL crc32_ready		= FALSE;
 static u32	crc32_table		[256];					// Lookup table array 
 
-void	crc32_init			();						// Builds lookup table array 
-u32		crc32_calc			(void* P, u32 size);	// Calculate 
-
 inline u32		Reflect		(u32 ref, char ch)		// Reflects CRC bits in the lookup table 
 {
 	// Used only by Init_CRC32_Table(). 
