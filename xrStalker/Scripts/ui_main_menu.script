@@ -106,7 +106,7 @@ function main_menu:InitControls()
 	local txt_caption = CUIStatic()
 	txt_caption:SetAutoDelete(true)
 	txt_caption:SetWindowName("txt_caption")	
-	txt_caption:SetFont(GetFontLetterica25()
+	txt_caption:SetFont(GetFontLetterica25())
 	txt_caption:SetTextAlign(CGameFont.alLeft)
 	txt_caption:SetText("Main menu")
 
