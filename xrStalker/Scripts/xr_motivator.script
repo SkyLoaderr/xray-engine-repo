@@ -198,6 +198,73 @@ xr_motivator.storage[self.object:id()].guard = {
                 xr_motivator.storage[self.object:id()].guard.projector_name = char_ini:r_string("guard", "search_light")
         end
     end
+xr_motivator.storage[self.object:id()].camper = {
+        enabled = false,
+            path_main = nil
+    }
+    printf("_bp: npc = %s", self.object:name())
+        if char_ini:section_exist ("camper") == true then
+        printf("_bp: npc is camper = %s", self.object:name())
+        if char_ini:line_exist("camper", "enabled") == true then
+                xr_motivator.storage[self.object:id()].camper.enabled = char_ini:r_bool("camper", "enabled")
+            printf("_bp: enabled = true")
+        end
+        if char_ini:line_exist("camper", "path_main") == true then
+                xr_motivator.storage[self.object:id()].camper.path_main = char_ini:r_string("camper", "path_main")
+        else
+            xr_motivator.storage[self.object:id()].camper.enabled = false
+        end
+    end
+xr_motivator.storage[self.object:id()].sleeper = {
+        enabled = false,
+            path_main = nil
+    }
+    printf("_bp: npc = %s", self.object:name())
+        if char_ini:section_exist ("sleeper") == true then
+        printf("_bp: npc is sleeper = %s", self.object:name())
+        if char_ini:line_exist("sleeper", "enabled") == true then
+                xr_motivator.storage[self.object:id()].sleeper.enabled = char_ini:r_bool("sleeper", "enabled")
+            printf("_bp: enabled = true")
+        end
+        if char_ini:line_exist("sleeper", "path_main") == true then
+                xr_motivator.storage[self.object:id()].sleeper.path_main = char_ini:r_string("sleeper", "path_main")
+        else
+            xr_motivator.storage[self.object:id()].sleeper.enabled = false
+        end
+    end
+xr_motivator.storage[self.object:id()].robber = {
+        enabled = false,
+	leader = false,
+	helper = false,
+            teammate1 = nil,
+            teammate2 = nil,
+	    path_rob = nil
+    }
+    printf("_bp: npc = %s", self.object:name())
+        if char_ini:section_exist ("robber") == true then
+        printf("_bp: npc is robber = %s", self.object:name())
+        if char_ini:line_exist("robber", "enabled") == true then
+                xr_motivator.storage[self.object:id()].robber.enabled = char_ini:r_bool("robber", "enabled")
+            printf("_bp: enabled = true")
+        end
+        if char_ini:line_exist("robber", "leader") == true then
+                xr_motivator.storage[self.object:id()].robber.leader = char_ini:r_bool("robber", "leader")
+            printf("_bp: leader = true")
+        end
+        if char_ini:line_exist("robber", "helper") == true then
+                xr_motivator.storage[self.object:id()].robber.leader = char_ini:r_bool("robber", "helper")
+            printf("_bp: helper = true")
+        end
+        if char_ini:line_exist("robber", "teammate1") == true then
+                xr_motivator.storage[self.object:id()].robber.teammate1 = char_ini:r_string("robber", "teammate1")
+        end
+        if char_ini:line_exist("robber", "teammate2") == true then
+                xr_motivator.storage[self.object:id()].robber.teammate2 = char_ini:r_string("robber", "teammate2")
+        end
+        if char_ini:line_exist("robber", "path_rob") == true then
+                xr_motivator.storage[self.object:id()].robber.path_rob = char_ini:r_string("robber", "path_rob")
+        end
+    end
 -- Настройка встречи
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
@@ -365,6 +432,9 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_kamp.add_to_binder(self.object)
     xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)
+    xr_camper2.add_to_binder(self.object)
+    xr_sleeper.add_to_binder(self.object)
+    xr_robbers.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
     xr_follower.add_to_binder (self.object)
     xr_trivial.add_novice     (self.object)
