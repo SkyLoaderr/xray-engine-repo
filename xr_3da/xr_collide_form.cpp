@@ -388,4 +388,5 @@ BOOL CCF_Shape::Contact		( CObject* O )
 			break;
 		}
 	}
+	return FALSE;
 }
