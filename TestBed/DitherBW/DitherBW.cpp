@@ -99,11 +99,29 @@ void dithermap( int levels, double gamma, int rgbmap[][3], int divN[256], int mo
  *	On a 1-bit display, use
  *	    divN[val] > magic[col][row] ? 1 : 0
  */
-void bwdithermap	(int levels, int divN[256], int modN[256], int magic[16][16] )
+void bwdithermap	(int levels, int magic[16][16] )
 {
-    float N = 255.0f / (levels - 1);    /* Get size of each step */
-
-    make_square( N, divN, modN, magic );
+	/* Get size of each step */
+    float N = 255.0f / (levels - 1);    
+	
+	/*
+	* Expand 4x4 dither pattern to 16x16.  4x4 leaves obvious patterning,
+	* and doesn't give us full intensity range (only 17 sublevels).
+	* 
+	* magicfact is (N - 1)/16 so that we get numbers in the matrix from 0 to
+	* N - 1: mod N gives numbers in 0 to N - 1, don't ever want all
+	* pixels incremented to the next level (this is reserved for the
+	* pixel value with mod N == 0 at the next level).
+	*/
+	
+    float	magicfact = (N - 1) / 16.;
+    for ( i = 0; i < 4; i++ )
+		for ( j = 0; j < 4; j++ )
+			for ( k = 0; k < 4; k++ )
+				for ( l = 0; l < 4; l++ )
+					magic[4*k+i][4*l+j] =
+					(int)(0.5 + magic4x4[i][j] * magicfact +
+					(magic4x4[k][l] / 16.) * magicfact);
 }
 
 
@@ -129,35 +147,10 @@ void bwdithermap	(int levels, int divN[256], int modN[256], int magic[16][16] )
  *	multiplied by an appropriate factor to get the correct dithering
  *	range.
  */
-void make_square( double N, int divN[256], int modN[256], int magic[16][16])
+void make_square( double N, int magic[16][16])
 {
     register int i, j, k, l;
-    double magicfact;
 
-    for ( i = 0; i < 256; i++ )
-    {
-		divN[i] = (int)(i / N);
-		modN[i] = i - (int)(N * divN[i]);
-    }
-    modN[255] = 0;		/* always */
-
-    /*
-     * Expand 4x4 dither pattern to 16x16.  4x4 leaves obvious patterning,
-     * and doesn't give us full intensity range (only 17 sublevels).
-     * 
-     * magicfact is (N - 1)/16 so that we get numbers in the matrix from 0 to
-     * N - 1: mod N gives numbers in 0 to N - 1, don't ever want all
-     * pixels incremented to the next level (this is reserved for the
-     * pixel value with mod N == 0 at the next level).
-     */
-    magicfact = (N - 1) / 16.;
-    for ( i = 0; i < 4; i++ )
-	for ( j = 0; j < 4; j++ )
-	    for ( k = 0; k < 4; k++ )
-		for ( l = 0; l < 4; l++ )
-		    magic[4*k+i][4*l+j] =
-			(int)(0.5 + magic4x4[i][j] * magicfact +
-			      (magic4x4[k][l] / 16.) * magicfact);
 }
 
 void main(int argc, char* argv[])
