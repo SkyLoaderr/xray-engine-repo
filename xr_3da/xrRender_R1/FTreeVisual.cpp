@@ -108,8 +108,8 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_consts,	tvs.scale,tvs.scale,0,0);									// consts/scale
 	RCache.set_c			(c_wave,	tvs.wave);													// wave
 	RCache.set_c			(c_wind,	tvs.wind);													// wind
-	RCache.set_c			(c_c_bias,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi);	// scale
-	RCache.set_c			(c_c_scale,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi);		// bias
+	RCache.set_c			(c_c_scale,	c_scale.rgb.x,c_scale.rgb.y,c_scale.rgb.z,c_scale.hemi);	// scale
+	RCache.set_c			(c_c_bias,	c_bias.rgb.x,c_bias.rgb.y,c_bias.rgb.z,c_bias.hemi);		// bias
 	RCache.set_c			(c_c_sun,	c_scale.sun,c_bias.sun,0,0);								// sun
 
 	// render

@@ -395,8 +395,8 @@ BOOL CCF_Rigid::_RayTest( RayQuery& Q)
 	{
 		if (RAYvsOBB(*I,Q.start,Q.dir,Q.range)) 
 		{
-			bHIT = TRUE;
-			Q.element = I-model.begin();
+			bHIT		= TRUE;
+			Q.element	= int(I-model.begin());
 		}
 	}
 	return bHIT;

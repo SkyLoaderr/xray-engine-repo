@@ -42,14 +42,14 @@ public:
 					CCameraBase		( CObject* p, u32 flags );
 	virtual			~CCameraBase	( );
 
-	void			SetParent		( CObject* p ){parent=p;}
-	virtual	void	OnActivate		( CCameraBase* old_cam ){;}
-	virtual	void	OnDeactivate	( ){;}
-	virtual void	Move			( int cmd, float val=0 ) {;}
-	virtual void	Update			( Fvector& point, Fvector& noise_angle ){;}
-	virtual void	Get				( Fvector& P, Fvector& D, Fvector& N ){P.set(vPosition);D.set(vDirection);N.set(vNormal);}
+	void			SetParent		( CObject* p )								{parent=p;}
+	virtual	void	OnActivate		( CCameraBase* old_cam )					{;}
+	virtual	void	OnDeactivate	( )											{;}
+	virtual void	Move			( int cmd, float val=0 )					{;}
+	virtual void	Update			( Fvector& point, Fvector& noise_angle )	{;}
+	virtual void	Get				( Fvector& P, Fvector& D, Fvector& N )		{P.set(vPosition);D.set(vDirection);N.set(vNormal);}
 	virtual void	Set				( const Fvector& P, const Fvector& D, const Fvector& N ){vPosition.set(P);vDirection.set(D);vNormal.set(N);}
-	virtual void	Set				( float Y, float P, float R ){yaw=Y;pitch=P;roll=R;}
+	virtual void	Set				( float Y, float P, float R )				{yaw=Y;pitch=P;roll=R;}
 	
 	virtual float	GetWorldYaw		( )	{ return 0; };
 	virtual float	GetWorldPitch	( )	{ return 0; };

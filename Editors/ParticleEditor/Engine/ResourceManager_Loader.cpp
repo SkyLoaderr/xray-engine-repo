@@ -99,6 +99,7 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 		{
 			CBlender_DESC	desc;
 			chunk->r		(&desc,sizeof(desc));
+			Msg				("- '%s'",desc.cName);
 			IBlender*		B = IBlender::Create(desc.CLS);
 			if	(0==B)
 			{
