@@ -209,9 +209,10 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 
 				// Build color
 				Fvector C;
-				C.mad					(c_ambient,c_lmap,Instance.c_rgb);
-				C.mad					(c_sun,Instance.c_sun);
+				C.set					(c_ambient);
+				C.mad					(c_lmap,Instance.c_rgb);
 				C.mad					(c_hemi,Instance.c_hemi);
+				C.mad					(c_sun,Instance.c_sun);
 				RCache.set_ca			(x_array,		base+3,		C.x,			C.y,			C.z,			1.f		);
 
 				dwBatch	++;
