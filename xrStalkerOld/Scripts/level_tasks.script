@@ -151,8 +151,6 @@ function proceed(actor)
 		actor:give_info_portion("bar_kill_veteran_kill")
 	end 
 
-
-
 	if	actor:has_info("bar_resque_research_start") and 
  		actor:dont_has_info("bar_resque_research_gain") and
 		actor:object("bar_ecolog_flash") ~= nil 
@@ -455,7 +453,16 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_dolg_community_leader" then
 		remove_location(505, "bar_dolg_captain_ivancov_location")
 
+	
+	elseif info_id == "bar_kill_veteran_start" then
+		add_location(511, "bar_crazy_veterans_location")
+	
+	elseif info_id == "bar_kill_veteran_killed" then
+		remove_location(511, "bar_crazy_veterans_location")
+		add_location(500, "bar_barman_location")
 
+	elseif info_id == "bar_kill_veteran_done" then
+		remove_location(500, "bar_barman_location")
 
 
 
