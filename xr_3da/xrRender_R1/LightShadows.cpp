@@ -12,7 +12,7 @@
 const	float		S_distance	= 48;
 const	float		S_distance2	= S_distance*S_distance;
 
-const	float		S_fade		= 3.5;
+const	float		S_fade		= 5.5;
 const	float		S_fade2		= S_fade*S_fade;
 
 const	float		S_level		= .1f;

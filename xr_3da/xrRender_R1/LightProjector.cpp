@@ -109,13 +109,6 @@ void CLightProjector::calculate	()
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	RCache.set_xform_world		(Fidentity);
 
-	Fmatrix	mInvView,mXform2UV,mTemp;
-	float	t_s					= float(P_o_size)/float(P_rt_size);
-	mInvView.invert				(Device.mView);
-	mXform2UV.translate			(+1,		-1,			0);
-	mTemp.scale					(.5f*t_s,	-.5f*t_s,	0);
-	mXform2UV.mulA_43			(mTemp);
-	
 	// iterate on objects
 	for (u32 o_it=0; o_it<receivers.size(); o_it++)
 	{
@@ -140,9 +133,6 @@ void CLightProjector::calculate	()
 		mView.build_camera		(v_C,C.C,v_N);
 		RCache.set_xform_view	(mView);
 
-		// combine and build frustum
-		Fmatrix		mCombine;	mCombine.mul	(mProject,mView);
-		
 		// Select slot, set viewport
 		int		s_x			=	o_it%P_o_line;
 		int		s_y			=	o_it/P_o_line;
@@ -150,12 +140,24 @@ void CLightProjector::calculate	()
 		CHK_DX					(HW.pDevice->SetViewport(&VP));
 
 		// calculate uv-gen matrix
-		C.UVgen.set				(mView);
-		mTemp.scale				(1/p_R,1/p_R,0);
-		C.UVgen.mulA_43			(mTemp);
-		C.UVgen.mulA_43			(mXform2UV);
-		mTemp.translate			(float(s_x*P_o_size)/float(P_rt_size), float(s_y*P_o_size)/float(P_rt_size), 0);
-		C.UVgen.mulA_43			(mTemp);
+		Fmatrix			mCombine;		mCombine.mul	(mProject,mView);
+		Fmatrix			mTemp;
+		float			fSlotSize		= float(P_o_size)/float(P_rt_size);
+		float			fSlotX			= float(s_x*P_o_size)/float(P_rt_size);
+		float			fSlotY			= float(s_y*P_o_size)/float(P_rt_size);
+		float			fTexelOffs		= (.5f / P_rt_size);
+		Fmatrix			m_TexelAdjust	= 
+		{
+			0.5f/*x-scale*/,	0.0f,							0.0f,				0.0f,
+			0.0f,				-0.5f/*y-scale*/,				0.0f,				0.0f,
+			0.0f,				0.0f,							1.0f/*z-range*/,	0.0f,
+			0.5f/*x-bias*/,		0.5f + fTexelOffs/*y-bias*/,	0.0f/*z-bias*/,		1.0f
+		};
+		C.UVgen.mul			(m_TexelAdjust,mCombine);
+		mTemp.scale			(fSlotSize,fSlotSize,1);
+		C.UVgen.mulA		(mTemp);
+		mTemp.translate		(fSlotX+fTexelOffs,fSlotY+fTexelOffs,0);
+		C.UVgen.mulA		(mTemp);
 
 		// Clear color to ambience
 		float	c_a				=	((CLightTrack*)C.O->renderable.ROS)->ambient;
@@ -168,7 +170,7 @@ void CLightProjector::calculate	()
 		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
 		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set					(min,max);
-		ISpatial*	spatial		= dynamic_cast<ISpatial*>(C.O);
+		ISpatial*	spatial		= dynamic_cast<ISpatial*>	(C.O);
 		if (spatial)			RImplementation.RenderBox	(spatial->spatial.sector,BB,2);
 	}
 
