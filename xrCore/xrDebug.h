@@ -1,3 +1,5 @@
+#ifndef xrDebugH
+#define xrDebugH
 #pragma once
 
 class XRCORE_API	xrDebug
@@ -20,3 +22,5 @@ public:
 extern XRCORE_API	xrDebug		Debug;
 
 #include "xrDebug_macros.h"
+
+#endif

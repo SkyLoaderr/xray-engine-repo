@@ -6,4 +6,5 @@
 #pragma once
 
 #include "xrCore.h"
+#pragma hdrstop
 

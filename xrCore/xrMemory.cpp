@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+
 #include <malloc.h>
 
 #include "xrMemory.h"

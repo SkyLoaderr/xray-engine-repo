@@ -274,13 +274,36 @@ LONG UnhandledFilter	( struct _EXCEPTION_POINTERS *pExceptionInfo )
 }
 
 //////////////////////////////////////////////////////////////////////
-typedef int		(__cdecl * _PNH)( size_t );
-_CRTIMP int		__cdecl _set_new_mode( int );
-_CRTIMP _PNH	__cdecl _set_new_handler( _PNH );
+#ifdef M_BORLAND
+//	typedef void ( _RTLENTRY *___new_handler) ();
+	extern new_handler _RTLENTRY _EXPFUNC set_new_handler( new_handler new_p );
 
-void	xrDebug::_initialize		()
-{
-	_set_new_mode					(1);					// gen exception if can't allocate memory
-	_set_new_handler				(_out_of_memory	);		// exception-handler for 'out of memory' condition
-	::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
-}
+//    typedef int	(__stdcall * _PNH)( size_t );
+//    _CRTIMP int	__cdecl _set_new_mode( int );
+//    _PNH	__cdecl set_new_handler( _PNH );
+//	typedef void (new * new_handler)();
+//	new_handler set_new_handler(new_handler my_handler);
+	static void __cdecl def_new_handler() 
+    {
+		Debug.fatal	("Out of memory.");
+    }
+
+    void	xrDebug::_initialize		()
+    {
+//        _set_new_mode					(1);					// gen exception if can't allocate memory
+        std::set_new_handler			(def_new_handler  );	// exception-handler for 'out of memory' condition
+        ::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
+    }
+#else
+    typedef int		(__cdecl * _PNH)( size_t );
+    _CRTIMP int		__cdecl _set_new_mode( int );
+    _CRTIMP _PNH	__cdecl _set_new_handler( _PNH );
+
+    void	xrDebug::_initialize		()
+    {
+        _set_new_mode					(1);					// gen exception if can't allocate memory
+        _set_new_handler				(_out_of_memory	);		// exception-handler for 'out of memory' condition
+        ::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
+    }
+#endif
+

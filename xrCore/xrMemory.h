@@ -1,3 +1,5 @@
+#ifndef xrMemoryH
+#define xrMemoryH
 #pragma once
 
 #include "xrMemory_pso.h"
@@ -101,3 +103,5 @@ IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
 IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
 
 XRCORE_API char*		xr_strdup	(const char* string);
+
+#endif
