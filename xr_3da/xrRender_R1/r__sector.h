@@ -74,6 +74,7 @@ public:
 public:
 	CPortalTraverser();
 	void							traverse		(IRender_Sector* start, CFrustum& F, Fvector& vBase, Fmatrix& mXFORM, u32 options);
+	void							dbg_draw		();
 };
 
 extern	CPortalTraverser			PortalTraverser;

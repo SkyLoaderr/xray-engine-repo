@@ -21,7 +21,7 @@ void CRender::Render		()
 		phase									= PHASE_NORMAL;
 
 		// Frustum & HOM rendering
-		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_ALL);
+		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_LRTB + FRUSTUM_P_FAR);
 		View									= 0;
 		HOM.Enable								();
 		HOM.Render								(ViewBase);
@@ -284,6 +284,8 @@ void CRender::Render		()
 	// Target.phase_bloom					();
 	Target.phase_combine					();
 	
+	PortalTraverser.dbg_draw				();
+
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct		();

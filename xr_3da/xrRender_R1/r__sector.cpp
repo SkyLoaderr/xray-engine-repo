@@ -110,33 +110,47 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 
 		// Scissor and optimized HOM-testing
 		Fbox2				scissor;
-		if (PortalTraverser.i_options&CPortalTraverser::VQ_SCISSOR)
+		if (PortalTraverser.i_options&CPortalTraverser::VQ_SCISSOR && (!PORTAL->bDualRender))
 		{
 			// Build scissor rectangle in projection-space
 			Fbox2	bb;	bb.invalidate(); float depth = flt_max;
 			sPoly&	p	= *P;
 			for		(u32 v=0; v<p.size(); v++)	{
 				Fvector	t;	PortalTraverser.i_mXFORM_01.transform	(t,p[v]);
-				if (t.x < bb.min.x)	bb.min.x = t.x; else if (t.x > bb.max.x) bb.max.x = t.x;
-				if (t.y < bb.min.y)	bb.min.y = t.y; else if (t.y > bb.max.y) bb.max.y = t.y;
+				VERIFY		(_valid(t));
+				if (t.x < bb.min.x)	bb.min.x = t.x; 
+				if (t.x > bb.max.x) bb.max.x = t.x;
+				if (t.y < bb.min.y)	bb.min.y = t.y; 
+				if (t.y > bb.max.y) bb.max.y = t.y;
 				if (t.z < depth)	depth	 = t.z;
 			}
+			// Msg	("bb(%s): (%f,%f)-(%f,%f), d=%f", PORTAL->bDualRender?"true":"false",bb.min.x, bb.min.y, bb.max.x, bb.max.y,depth);
+			if (depth<EPS)	{
+				scissor	= R_scissor;
 
-			// perform intersection (this is just to be shure, it is probably clipped in 3D already)
-			if (bb.min.x > R_scissor.min.x)	scissor.min.x = bb.min.x; else scissor.min.x = R_scissor.min.x;
-			if (bb.min.y > R_scissor.min.y)	scissor.min.y = bb.min.y; else scissor.min.y = R_scissor.min.y;
-			if (bb.max.x < R_scissor.max.x) scissor.max.x = bb.max.x; else scissor.max.x = R_scissor.max.x;
-			if (bb.max.y < R_scissor.max.y) scissor.max.y = bb.max.y; else scissor.max.y = R_scissor.max.y;
+				// Cull by HOM (slower algo)
+				if  (
+					(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
+					(!RImplementation.HOM.visible(*P))
+					)	continue;
+			} else {
+				// perform intersection (this is just to be sure, it is probably clipped in 3D already)
+				if (bb.min.x > R_scissor.min.x)	scissor.min.x = bb.min.x; else scissor.min.x = R_scissor.min.x;
+				if (bb.min.y > R_scissor.min.y)	scissor.min.y = bb.min.y; else scissor.min.y = R_scissor.min.y;
+				if (bb.max.x < R_scissor.max.x) scissor.max.x = bb.max.x; else scissor.max.x = R_scissor.max.x;
+				if (bb.max.y < R_scissor.max.y) scissor.max.y = bb.max.y; else scissor.max.y = R_scissor.max.y;
 
-			// Check if box is non-empty
-			if (scissor.min.x >= scissor.max.x)	continue;
-			if (scissor.min.y >= scissor.max.y)	continue;
+				// Msg	("scissor: (%f,%f)-(%f,%f)", scissor.min.x, scissor.min.y, scissor.max.x, scissor.max.y);
+				// Check if box is non-empty
+				if (scissor.min.x >= scissor.max.x)	continue;
+				if (scissor.min.y >= scissor.max.y)	continue;
 
-			// Cull by HOM (faster algo)
-			if  (
-				(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
-				(!RImplementation.HOM.visible(scissor,depth))
-				)	continue;
+				// Cull by HOM (faster algo)
+				if  (
+					(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
+					(!RImplementation.HOM.visible(scissor,depth))
+					)	continue;
+			}
 		} else {
 			scissor	= R_scissor;
 
