@@ -358,18 +358,16 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID, bool bUpdateSwitchObjects)
 {
-	if (!tpALifeDynamicObject->used_ai_locations() || !tpALifeDynamicObject->interactive())
-		return;
-
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] removing object [%s][%d] from graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tGraphID);
-	}
-#endif
-	D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeDynamicObject->ID), J;
-	R_ASSERT3					(m_tpGraphObjects[tGraphID].tpObjects.end() != I,"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
-	m_tpGraphObjects[tGraphID].tpObjects.erase(I);
-	
+	if (tpALifeDynamicObject->used_ai_locations() && tpALifeDynamicObject->interactive()) {
+	#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] removing object [%s][%d] from graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tGraphID);
+		}
+	#endif
+		D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tGraphID].tpObjects.find(tpALifeDynamicObject->ID), J;
+		R_ASSERT3					(m_tpGraphObjects[tGraphID].tpObjects.end() != I,"Specified object not found on the given graph point!",tpALifeDynamicObject->s_name_replace);
+		m_tpGraphObjects[tGraphID].tpObjects.erase(I);
+	}	
 	if (bUpdateSwitchObjects && m_tpCurrentLevel && (m_tCurrentLevelID == ai().game_graph().vertex(tGraphID)->level_id()))
 		vfRemoveObjectFromCurrentLevel(tpALifeDynamicObject);
 }
@@ -533,9 +531,9 @@ void CSE_ALifeScheduleRegistry::update					()
 		update_next				();
 		(*I).second->m_schedule_counter = m_cycle_count;
 		//. hack for ALife
-		CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>((*I).second);
-		VERIFY					(dynamic_object);
-		if (!dynamic_object->m_bOnline && dynamic_object->used_ai_locations() && dynamic_object->interactive())
+//		CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>((*I).second);
+//		VERIFY					(dynamic_object);
+//		if (!dynamic_object->m_bOnline && dynamic_object->used_ai_locations() && dynamic_object->interactive())
 			(*I).second->Update	();
 		I						= next();
 		if (time_over())
