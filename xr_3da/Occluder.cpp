@@ -79,7 +79,7 @@ void COccluderSystem::Select(CFrustum& F)
 		for (DWORD I=0; I<occluders.size(); I++)
 		{
 			SOccluderDef&		occ_def = occluders[I];
-			if (!F.testSphereDirty(occ_def.sphere.P,occ_def.sphere.R))	continue;
+			if (!F.testSphere_dirty(occ_def.sphere.P,occ_def.sphere.R))	continue;
 			
 			svector<Fvector,8>	&verts	= occ_def.verts;
 			

@@ -125,7 +125,7 @@ void CLightPPA_Manager::Render()
 
 		// Culling
 		if (alpha>=1)		continue;
-		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
+		if (!::Render.ViewBase.testSphere_dirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Calculations and rendering
 		Device.Statistic.RenderDUMP_Lights.Begin();
