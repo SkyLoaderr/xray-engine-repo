@@ -25,7 +25,6 @@ public:
 
 	void		Init		(int x, int y, int width, int height, const char* xml_name);
 	void		InitItem	(CInventoryItem* pInvItem);
-	void		InitItem	(CUIDragDropItemMP *pDDItemMP);
 
 	virtual void Draw();
 	void		AlignRight(CUIStatic &Item, int offset);
