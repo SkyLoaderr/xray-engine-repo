@@ -36,7 +36,7 @@ function multiplayer_create_dialog:InitControls()
 								height = self.btn_rect.height}
 	btn_start_rect.x = btn_back_rect.x - btn_start_rect.width - self.indent
 	local tab_rect			 = {x = self.left_align_x,
-								y = self.top_align_y,
+								y = btn_gametype_rect.x + btn_gametype_rect.height + self.indent,
 								width = self.main_rect.width - self.indent*2,
 								height = 0}
 	tab_rect.height = self.main_rect.height - tab_rect.x - (self.main_rect.height - btn_back_rect.y)
