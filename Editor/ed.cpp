@@ -132,7 +132,6 @@ USEUNIT("edit\ColorPicker.cpp");
 USEUNIT("edit\Occluder.cpp");
 USEFORM("FrameOccluder.cpp", fraOccluder); /* TFrame: File Type */
 USEFORM("PropertiesOccluder.cpp", frmPropertiesOccluder);
-USEUNIT("edit\BuilderDO.cpp");
 USEUNIT("shared\LzHuf.cpp");
 USEUNIT("edit\UI_AITPointTools.cpp");
 USEUNIT("edit\UI_Camera.cpp");
@@ -181,6 +180,7 @@ USEUNIT("lib\DX\c_dinput.cpp");
 USEUNIT("shared\pure.cpp");
 USEUNIT("edit\CustomObject.cpp");
 USEUNIT("edit\SceneObject.cpp");
+USEUNIT("edit\SceneObjectIO.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

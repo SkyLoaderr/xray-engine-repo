@@ -12,7 +12,7 @@
 #include "EditorPref.h"
 #include "bottombar.h"
 
-void CEditMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
+void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
 	DWORD i=0;
 	Fvector p;
     vector<bool> inside(m_Points.size(),true);
@@ -30,7 +30,7 @@ static INTVec		sml_processed;
 static Fvector		sml_normal;
 static float		m_fSoftAngle;
 
-void CEditMesh::RecurseTri(int id)
+void CEditableMesh::RecurseTri(int id)
 {
 	// Check if triangle already processed
 	if (find(sml_processed.begin(),sml_processed.end(),id)!=sml_processed.end())
@@ -51,7 +51,7 @@ void CEditMesh::RecurseTri(int id)
 }
 //----------------------------------------------------
 
-void CEditMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive){
+void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive){
     R_ASSERT(start_id<int(m_Faces.size()));
     m_fSoftAngle=cosf(deg2rad(fSoftAngle));
     if (!(m_LoadState&EMESH_LS_FNORMALS)) GenerateFNormals();
@@ -70,7 +70,7 @@ void CEditMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool 
 }
 //----------------------------------------------------
 
-bool CEditMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
+bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fmatrix& parent, SRayPickInfo* pinf){
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
@@ -82,8 +82,8 @@ bool CEditMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fma
     	if (new_dist<distance){
 	        if (pinf){
 	            pinf->rp_inf= *XRC.GetMinRayPickInfo();
-    	        pinf->obj 	= m_Parent;
-        	    pinf->mesh 	= this;
+    	        pinf->e_obj 	= m_Parent;
+        	    pinf->e_mesh	= this;
 	            pinf->pt.mul(direction,pinf->rp_inf.range);
     	        pinf->pt.add(start);
             }
@@ -95,7 +95,7 @@ bool CEditMesh::RayPick(float& distance, Fvector& start, Fvector& direction, Fma
 }
 //----------------------------------------------------
 
-void CEditMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+void CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
     if (!m_CFModel) GenerateCFModel();
 
     XRC.BBoxCollide(parent, m_CFModel, precalc_identity, box);
@@ -103,14 +103,14 @@ void CEditMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf)
     if (cc){
     	for (int i=0; i<cc; i++){
         	pinf.push_back(SBoxPickInfo());
-            pinf.back().bp_inf 	= XRC.BBoxContact[i];
-            pinf.back().mesh    = this;
+            pinf.back().bp_inf	= XRC.BBoxContact[i];
+            pinf.back().e_mesh	= this;
         }
     }
 }
 //----------------------------------------------------
 
-bool CEditMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	if (!m_Visible) return false;
 
 	Fvector p[3];
@@ -124,7 +124,7 @@ bool CEditMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //---------------------------------------------------------------------------
 
-void CEditMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl){
+void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, Fmatrix& parent, DWORDVec& fl){
 	if (!m_Visible) return;
 
 	DWORD i=0;

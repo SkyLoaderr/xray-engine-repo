@@ -11,6 +11,7 @@
 #include "Sector.h"
 #include "EditMesh.h"
 #include "EditObject.h"
+#include "SceneObject.h"
 #include "UI_Main.h"
 
 CPortalUtils PortalUtils;
@@ -195,7 +196,7 @@ bool CPortalUtils::CreateDefaultSector(){
 	UI->BeginEState(esSceneLocked);
 
     Fbox box;
-	if (Scene->GetBox(box,OBJCLASS_EDITOBJECT)){
+	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
@@ -263,23 +264,7 @@ int CPortalUtils::CalculateAllPortals2(){
     return bResult;
 }
 //---------------------------------------------------------------------------
-/*
-bool CPortalUtils::IsFaceUsed(CEditObject* o, CEditMesh* m, DWORD f_id){
-	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++) if (((CSector*)(*_F))->IsFaceUsed(o,m,f_id)) return true;
-    return false;
-}
-
-// remove used from list
-void CPortalUtils::TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl){
-	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
-	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
-    for(;_F!=_E;_F++)
-    	((CSector*)(*_F))->TestUsedFaces(o,m,fl);
-}
-*/
-CSector* CPortalUtils::FindSector(CEditObject* o, CEditMesh* m){
+CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
 	ObjectIt _F = Scene->FirstObj(OBJCLASS_SECTOR);
 	ObjectIt _E = Scene->LastObj(OBJCLASS_SECTOR);
     for(;_F!=_E;_F++) if (((CSector*)(*_F))->Contains(o,m)) return (CSector*)(*_E);
@@ -291,7 +276,7 @@ bool CPortalUtils::Validate(bool bMsg){
 
     Fbox box;
     bool bResult = false;
-	if (Scene->GetBox(box,OBJCLASS_EDITOBJECT)){
+	if (Scene->GetBox(box,OBJCLASS_SCENEOBJECT)){
 		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedFaces();
         int f_cnt=sector_def->GetSectorFacesCount();
@@ -329,7 +314,8 @@ bool CPortalUtils::Validate(bool bMsg){
 }
 
 void CPortalUtils::CreateDebugCollection(){
-	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
+	ELog.DlgMsg(mtError,"TODO: CPortalUtils::CreateDebugCollection");
+/*	VERIFY((Scene->ObjCount(OBJCLASS_SECTOR)==0)&&(Scene->ObjCount(OBJCLASS_PORTAL)==0));
 
     UI->ProgressStart(6,"Create debug sectors and portal...");
 	UI->ProgressInc();
@@ -341,7 +327,7 @@ void CPortalUtils::CreateDebugCollection(){
 	UI->ProgressInc();
 
 	// create debug object
-    CEditObject* O = new CEditObject("$debug_object_0x247d05e9");
+    CEditableObject* O = new CEditableObject("$debug_object_0x247d05e9");
     AnsiString fn;
     fn = "$debug_sector.object";
     FS.m_Objects.Update(fn);
@@ -355,7 +341,7 @@ void CPortalUtils::CreateDebugCollection(){
 
     Fbox lev_box, obj_box;
     Fvector offs; offs.set(0,0,0);
-	if (Scene->GetBox(lev_box,OBJCLASS_EDITOBJECT)){
+	if (Scene->GetBox(lev_box,OBJCLASS_SCENEOBJECT)){
     	offs.set(lev_box.min);
         O->GetBox(obj_box);
         offs.sub(obj_box.getradius());
@@ -382,6 +368,7 @@ void CPortalUtils::CreateDebugCollection(){
 	UI->ProgressInc();
 
 	UI->ProgressEnd();
+*/
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -687,7 +674,7 @@ public:
 int CPortalUtils::CalculateSelectedPortals(vector<CSector*>& sectors){
     // calculate portals
     Fbox bb;
-    Scene->GetBox(bb,OBJCLASS_EDITOBJECT);
+    Scene->GetBox(bb,OBJCLASS_SCENEOBJECT);
     sCollector* CL = new sCollector(bb);
     Fmatrix T;
 

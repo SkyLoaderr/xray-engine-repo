@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: CEditObjectImport.cpp
+// file: CEditableObjectImport.cpp
 //----------------------------------------------------
 
 #include "stdafx.h"
@@ -22,7 +22,7 @@ bool CompareFunc(st_VMapPt& vm0, st_VMapPt& vm1){
 	return vm0.vmap_index<vm1.vmap_index;
 };
 
-bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
+bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	lwObject *I=0;
     UI->SetStatus("Importing...");
 	UI->ProgressStart(100,"Read file:");
@@ -33,7 +33,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	UI->ProgressUpdate(100);
 	if (I){
         bool bResult=true;
-        ELog.Msg( mtInformation, "CEditObject: import lwo %s...", fname );
+        ELog.Msg( mtInformation, "CEditableObject: import lwo %s...", fname );
 
         // parse lwo object
         {
@@ -59,7 +59,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
                         shader_name = (char*)Isf->shader->data;
                     }
                     if (!SHLib->FindShader(shader_name)){
-						ELog.Msg(mtError,"CEditObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
+						ELog.Msg(mtError,"CEditableObject: Shader '%s' - can't find in library. Using 'default' shader.", shader_name.c_str());
 	                    shader_name = "default";
                     }
                     // fill texture layers
@@ -114,7 +114,7 @@ bool CEditObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	            int k=0;
  	           	for (Ilr=I->layer; Ilr; Ilr=Ilr->next){
                     // create new mesh
-                    CEditMesh* MESH=new CEditMesh(this);
+                    CEditableMesh* MESH=new CEditableMesh(this);
                     m_Meshes.push_back(MESH);
 
                     if (Ilr->name)	strcpy(MESH->m_Name,Ilr->name); else strcpy(MESH->m_Name,"");

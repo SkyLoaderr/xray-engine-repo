@@ -153,7 +153,7 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
 	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary:		bPickObject = !!frmEditLibrary->RayPick(start,direction,&pinf); break;
-        case esEditScene:		bPickObject = !!Scene->RayPick(start,direction,OBJCLASS_EDITOBJECT,&pinf,false,true); break;
+        case esEditScene:		bPickObject = !!Scene->RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,true); break;
         default: THROW;
         }
         if (bPickObject){
@@ -256,7 +256,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
 			pinf.rp_inf.range = Device.m_Camera.m_Zfar; // max pick range
-            if (Scene->RayPick(st, d, OBJCLASS_EDITOBJECT, &pinf, false, false))
+            if (Scene->RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, false))
 	            if (pinf.rp_inf.range > depth) depth = pinf.rp_inf.range;
         }
     }

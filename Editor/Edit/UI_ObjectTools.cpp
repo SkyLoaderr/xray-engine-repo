@@ -5,14 +5,15 @@
 #include "ui_tools.h"
 #include "library.h"
 #include "scene.h"
-#include "EditObject.h"
+#include "SceneObject.h"
+//#include "EditObject.h"
 #include "FrameObject.h"
 #include "ui_main.h"
 #include "leftbar.h"
 #include "EditorPref.h"
 
 //----------------------------------------------------------------------
-TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_EDITOBJECT){
+TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){
     AddControlCB(new TUI_CustomControl		(estSelf,eaSelect,	this));
     AddControlCB(new TUI_ControlObjectAdd   (estSelf,eaAdd,		this));
     AddControlCB(new TUI_CustomControl		(estSelf,eaMove,	this));
@@ -41,7 +42,7 @@ __fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, TUI_Custo
 }
 
 bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_EDITOBJECT); return false;}
+    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p;
 	if(!UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)) return false;
@@ -53,10 +54,9 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
 	if(LO!=0){
         if (UI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm)){
             char namebuffer[MAX_OBJ_NAME];
-            Scene->GenObjectName( OBJCLASS_EDITOBJECT, namebuffer, LO->GetRefName() );
-            CEditObject *obj = new CEditObject( namebuffer );
-            obj->LibReference( LO->GetReference() );
-            //obj->CloneFromLib( LO->GetReference() );
+            Scene->GenObjectName( OBJCLASS_SCENEOBJECT, namebuffer, LO->GetName() );
+            CSceneObject *obj = new CSceneObject( namebuffer );
+            obj->SetRef( LO->GetReference() );
             if (fraLeftBar->ebRandomAdd->Down){
                 Fvector S;
                 if (frmEditorPreferences->cbRandomRotation->Checked){
@@ -74,7 +74,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
                 }
             }
             obj->Move(p);
-            Scene->SelectObjects(false,OBJCLASS_EDITOBJECT);
+            Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
             Scene->AddObject( obj );
             if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOWPROPERTIES);
             if (!Shift.Contains(ssAlt)) ResetActionToSelect();

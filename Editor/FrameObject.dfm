@@ -1,7 +1,7 @@
 object fraObject: TfraObject
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -17,7 +17,7 @@ object fraObject: TfraObject
   object paSelectObject: TPanel
     Left = 0
     Top = 34
-    Width = 123
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -68,7 +68,7 @@ object fraObject: TfraObject
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -105,7 +105,7 @@ object fraObject: TfraObject
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 34
     Align = alTop
     ParentColor = True
@@ -128,7 +128,6 @@ object fraObject: TfraObject
       Font.Style = []
       ParentFont = False
       Transparent = False
-      OnClick = ebResolveClick
     end
     object APHeadLabel1: TLabel
       Left = 1
@@ -170,7 +169,7 @@ object fraObject: TfraObject
   object paAddObject: TPanel
     Left = 0
     Top = 66
-    Width = 123
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -197,7 +196,7 @@ object fraObject: TfraObject
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter

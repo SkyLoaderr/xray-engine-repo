@@ -9,7 +9,7 @@
 //----------------------------------------------------
 
 class CSceneObject : public CCustomObject {
-	CEditObject*	m_pRefs;
+	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
 protected:
     // orientation
@@ -33,10 +33,12 @@ public:
 
     IC bool			CheckVersion			()  {return (m_ObjVer==m_pRefs->m_ObjVer);}
     // get object properties methods
-	IC bool 		RefCompare				(CEditObject *to){return (m_pRefs==to); }
-	IC CEditObject*	GetRef					()	{return m_pRefs; }
+	IC bool 		RefCompare				(CEditableObject *to){return !!(m_pRefs==to); }
+	IC CEditableObject*	GetRef				()	{return m_pRefs; }
+	IC void			SetRef					(CEditableObject* ref)	{m_pRefs = ref;}
 
     // statistics methods
+	IC bool 		IsDynamic     			()	{return (m_pRefs->IsDynamic()); }
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
     int 			GetSurfFaceCount		(const char* surf_name);
@@ -45,7 +47,7 @@ public:
 	virtual bool 	IsRender				(Fmatrix& parent);
 	virtual void 	Render					(Fmatrix& parent, ERenderPriority flag);
 	void 			RenderSelection			(Fmatrix& parent);
-	void 			RenderEdge				(Fmatrix& parent, CEditMesh* m=0);
+	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(Fmatrix& parent);
@@ -67,7 +69,6 @@ public:
 	virtual void 	Scale					(Fvector& center, Fvector& amount);
 	virtual void 	LocalRotate				(Fvector& axis, float angle);
 	virtual void 	LocalScale				(Fvector& amount);
-	virtual void 	TranslateToWorld		();
 
     // get orintation/bounding volume methods
 	virtual bool 	GetBox					(Fbox& box);

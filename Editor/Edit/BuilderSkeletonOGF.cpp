@@ -215,7 +215,7 @@ void ComputeOBB	(Fobb &B, FvectorVec& V){
 	B.m_translate.set	(T.x,T.y,T.z);
 	B.m_halfsize.set	(S[0],S[1],S[2]);
 }
-bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditObject* obj){
+bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditableObject* obj){
 	FS.DeleteFileByName(name);
 	CInifile ini(name,false);
     ini.WriteString("general",0,0,"general params");
@@ -246,15 +246,14 @@ bool SceneBuilder::SaveObjectSkeletonLTX(const char* name, CEditObject* obj){
 }
 
 const float KEY_Quant	= 32767.f;
-bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditObject* O){
+bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditableObject* obj){
     UI->ProgressStart(10,"Export skeleton...");
     UI->ProgressInc();
 
 	vector<FvectorVec>	bone_points;
 
-	O->ResetAnimation();
+	obj->ResetAnimation();
 
-	CEditObject* obj = (O->IsReference())?O->GetRef():O;
 	if( obj->MeshCount() == 0 ) return false;
 
     ResetStructures();
@@ -478,7 +477,7 @@ bool SceneBuilder::SaveObjectSkeletonOGF(const char* fn, CEditObject* O){
 }
 //----------------------------------------------------
 
-void SceneBuilder::AssembleSkeletonObject(CEditObject* obj){
+void SceneBuilder::AssembleSkeletonObject(CEditableObject* obj){
 	VERIFY(obj->IsDynamic());
 // compute vertex/face count
 	l_faces_cnt		+= obj->GetFaceCount();
@@ -492,21 +491,18 @@ void SceneBuilder::AssembleSkeletonObject(CEditObject* obj){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-void SceneBuilder::AssembleSkeletonMesh(CEditMesh* mesh){
+void SceneBuilder::AssembleSkeletonMesh(CEditableMesh* mesh){
     int point_offs=l_vertices_it;  // save offset
 
     // fill vertices
-    const Fmatrix& T = mesh->m_Parent->GetTransform();
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
-    	T.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
+    	l_vertices[l_vertices_it++].set(*pt_it);
 
     // if object skeleton - fill skeleton data
     if (mesh->m_Parent->IsSkeleton()){
         if (!(mesh->m_LoadState&EMESH_LS_SVERTICES)) mesh->GenerateSVertices();
         l_svertices.insert(l_svertices.begin(),mesh->m_SVertices.begin(),mesh->m_SVertices.end());
         mesh->UnloadSVertices();
-        for (SVertIt sv_it=l_svertices.begin(); sv_it!=l_svertices.end(); sv_it++)
-        	T.transform_tiny(sv_it->offs);
     }
 
     // generate normals
@@ -519,7 +515,6 @@ void SceneBuilder::AssembleSkeletonMesh(CEditMesh* mesh){
         for (INTIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
             N.add(mesh->m_FNormals[*i_it]);
         N.normalize_safe();
-        T.transform_dir(N);
         l_vnormals.push_back(N);
     }
     // unload mesh normals

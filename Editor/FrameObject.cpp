@@ -7,6 +7,7 @@
 #include "CustomObject.h"
 #include "sceneclasslist.h"
 #include "EditObject.h"
+#include "SceneObject.h"
 #include "propertiesobject.h"
 #include "ui_main.h"
 #include "library.h"
@@ -59,57 +60,25 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 void TfraObject::SelByRefObject( bool flag ){
     ObjectList objlist;
     LPCSTR sel_name=0;
-    if (Scene->GetQueryObjects(objlist,OBJCLASS_EDITOBJECT,1,1,-1))
-        sel_name = ((CEditObject*)objlist.front())->GetRefName();
+    if (Scene->GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1))
+        sel_name = ((CSceneObject*)objlist.front())->GetName();
 	LPCSTR N = TfrmChoseItem::SelectObject(false,true,0,sel_name);
     if (!N) return;
-    CLibObject *o = Lib->SearchObject(N);
-	if( o && o->IsLoaded() ){
-    	CEditObject* _C = o->GetReference();
-		ObjectIt _F = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-    	ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
+    CLibObject *LO = Lib->SearchObject(N);
+	if( LO && LO->IsLoaded() ){
+    	CEditableObject* _C = LO->GetReference();
+		ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    	ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
         for(;_F!=_E;_F++){
 			if( (*_F)->Visible() ){
-				CEditObject *_O = (CEditObject *)(*_F);
+				CSceneObject *_O = (CSceneObject *)(*_F);
 				if( _O->RefCompare( _C ) )
 					_O->Select( flag );
 			}
 		}
 	}
 }
-
 //---------------------------------------------------------------------------
-void __fastcall TfraObject::ebResolveClick(TObject *Sender)
-{
-	if (Scene->SelectionCount(true,OBJCLASS_EDITOBJECT)){
-    	if(ELog.DlgMsg(mtConfirmation,"This irreversible operation.\nAre you sure to resolve reference?")==mrYes){
-    		ResolveObjects(true);
-	    	Scene->UndoSave();
-        }
-    }else{
-        ELog.DlgMsg(mtInformation,"Select reference objects and try again.");
-    }
-}
-//---------------------------------------------------------------------------
-
-void TfraObject::ResolveObjects(bool bMsg){
-	ObjectList objset;
-	int cnt=Scene->GetQueryObjects(objset, OBJCLASS_EDITOBJECT, 1, 1, 0);
-	if (cnt){
-		for (ObjectIt _F=objset.begin(); _F!=objset.end(); _F++){
-			CEditObject *sobj = (CEditObject *)(*_F);
-            if (sobj->IsReference()){
-            	sobj->ResolveReference();
-            }
-        }
-    }
-    if (bMsg){
-	    if (cnt) ELog.DlgMsg(mtInformation,"Resolve %d object(s)",cnt);
-        else 	 ELog.DlgMsg(mtInformation,"Select reference objects and try again.");
-    }
-}
-
-//----------------------------------------------------
 
 //---------------------------------------------------------------------------
 // Add new
@@ -125,7 +94,7 @@ void __fastcall TfraObject::ebCurObjClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfraObject::OutCurrentName(){
     if (Lib->GetCurrentObject()){
-        ebCurObj->Caption = AnsiString(Lib->GetCurrentObject()->GetRefName());
+        ebCurObj->Caption = AnsiString(Lib->GetCurrentObject()->GetName());
     }else{
 		ebCurObj->Caption = "<none>";
     }

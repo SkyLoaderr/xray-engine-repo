@@ -1,8 +1,8 @@
 //----------------------------------------------------
 // file: StaticMesh.h
 //----------------------------------------------------
-#ifndef _INCDEF_StaticCEditMesh_H_
-#define _INCDEF_StaticCEditMesh_H_
+#ifndef _INCDEF_EditableMesh_H_
+#define _INCDEF_EditableMesh_H_
 
 //----------------------------------------------------
 #include "cl_rapid.h"
@@ -100,8 +100,8 @@ DEFINE_MAP(st_Surface*,RBVector,RBMap,RBMapPairIt);
 #define EMESH_LS_PNORMALS 	0x0004
 #define EMESH_LS_SVERTICES 	0x0008
 
-class CEditMesh {
-	friend class CEditObject;
+class CEditableMesh {
+	friend class CEditableObject;
     friend class CSectorItem;
     friend class CSector;
     friend class CPortalUtils;
@@ -110,7 +110,7 @@ class CEditMesh {
 
 	char m_Name[MAX_OBJ_NAME];
 
-    CEditObject*	m_Parent;
+    CEditableObject*	m_Parent;
 
     RAPID::Model*	m_CFModel;
 
@@ -157,9 +157,9 @@ protected:
 	void 			Optimize				();
 	bool 			UpdateAdjacency			();
 public:
-	                CEditMesh				(CEditObject* parent){m_Parent=parent;Construct();}
-	                CEditMesh				(CEditMesh* source,CEditObject* parent){m_Parent=parent;Construct();CloneFrom(source);}
-	virtual         ~CEditMesh				();
+	                CEditableMesh				(CEditableObject* parent){m_Parent=parent;Construct();}
+	                CEditableMesh				(CEditableMesh* source,CEditableObject* parent){m_Parent=parent;Construct();CloneFrom(source);}
+	virtual         ~CEditableMesh				();
 	void			Construct				();
     void			Clear					();
 
@@ -172,7 +172,7 @@ public:
 	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
 
     // mesh modify routine
-	void            CloneFrom				(CEditMesh *source);
+	void            CloneFrom				(CEditableMesh *source);
 	void            Transform				(const Fmatrix& parent);
 
     // pick routine
@@ -202,5 +202,5 @@ public:
     void			DumpAdjacency			();
 };
 //----------------------------------------------------
-#endif /*_INCDEF_StaticMesh_H_*/
+#endif /*_INCDEF_EditableMesh_H_*/
 

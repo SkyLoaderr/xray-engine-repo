@@ -12,7 +12,7 @@
 #include "bottombar.h"
 #include "D3DUtils.h"
 //----------------------------------------------------
-void CEditMesh::ClearRenderBuffers(){
+void CEditableMesh::ClearRenderBuffers(){
 	if (!m_RenderBuffers.empty()){
         for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++)
     		for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++)
@@ -24,7 +24,7 @@ void CEditMesh::ClearRenderBuffers(){
 
 #define F_LIM (10000)
 #define V_LIM (F_LIM*3)
-void CEditMesh::UpdateRenderBuffers(){
+void CEditableMesh::UpdateRenderBuffers(){
 	ClearRenderBuffers();
 
 	UI->ProgressStart(m_SurfFaces.size(),"Update RB:");
@@ -61,7 +61,7 @@ void CEditMesh::UpdateRenderBuffers(){
 	UI->ProgressEnd();
 }
 //----------------------------------------------------
-void CEditMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPBYTE& src_data){
+void CEditableMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPBYTE& src_data){
 	LPBYTE data = src_data;
     DWORD dwFVF = surf->dwFVF;
 	DWORD dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
@@ -140,7 +140,7 @@ void CEditMesh::FillRenderBuffer(INTVec& face_lst, int start_face, int num_face,
     }
 }
 //----------------------------------------------------
-void CEditMesh::Render(const Fmatrix& parent, st_Surface* S){
+void CEditableMesh::Render(const Fmatrix& parent, st_Surface* S){
 	// visibility test
     if (!m_Visible) return;
 	// frustum test
@@ -164,7 +164,7 @@ void CEditMesh::Render(const Fmatrix& parent, st_Surface* S){
 static Fvector RB[MAX_VERT_COUNT];
 static RB_cnt=0;
 
-void CEditMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl)
+void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl)
 {
 	if (!m_Visible) return;
 
@@ -192,7 +192,7 @@ void CEditMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORD
 }
 //----------------------------------------------------
 
-void CEditMesh::RenderEdge(Fmatrix& parent, DWORD color){
+void CEditableMesh::RenderEdge(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
 /*
 	Device.SetTransform(D3DTS_WORLD,parent);
@@ -237,7 +237,7 @@ void CEditMesh::RenderEdge(Fmatrix& parent, DWORD color){
 }
 //----------------------------------------------------
 
-void CEditMesh::RenderSelection(Fmatrix& parent, DWORD color){
+void CEditableMesh::RenderSelection(Fmatrix& parent, DWORD color){
 	if (!m_Visible) return;
 	Fvector C; float r;
     Fbox bb; bb.set(m_Box);

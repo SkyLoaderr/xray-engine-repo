@@ -117,7 +117,7 @@ bool __fastcall TUI_ControlDPatchAdd::Start(TShiftState Shift)
         ELog.DlgMsg(mtError, "Set shader before add DPatch!");
         return false;
     }
-    bPickObject = !!Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, true);
+    bPickObject = !!Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, true);
     if (!bPickObject) bPickGround = UI->PickGround(pinf.pt,UI->m_CurrentRStart,UI->m_CurrentRNorm);
     if (bPickObject||bPickGround){
         Scene->m_DetailPatches->Select(false);

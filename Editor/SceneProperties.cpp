@@ -314,12 +314,12 @@ void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
         ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return ;
     }
-	CEditObject* O = LO->GetReference();
+	CEditableObject* O = LO->GetReference();
     if (!O->IsDynamic()){
     	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         return ;
     }
-	edSkydomeObjectName->Text = LO->GetRefName();
+	edSkydomeObjectName->Text = LO->GetName();
 #endif
 }
 //---------------------------------------------------------------------------

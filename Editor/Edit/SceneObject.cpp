@@ -8,11 +8,9 @@
 #include "SceneObject.h"
 #include "UI_Main.h"
 #include "bottombar.h"
+#include "scene.h"
 
 //----------------------------------------------------
-// mimimal bounding box size
-float g_MinBoxSize = 0.05f;
-
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
 	Construct();
 	strcpy( m_Name, name );
@@ -23,7 +21,7 @@ CSceneObject::CSceneObject( ):CCustomObject(){
 }
 
 void CSceneObject::Construct(){
-	m_ClassID = OBJCLASS_EDITOBJECT;
+	m_ClassID = OBJCLASS_SCENEOBJECT;
 
 	mTransform.identity();
     vScale.set(1,1,1);
@@ -74,7 +72,7 @@ void CSceneObject::UpdateTransform( ){
 }
 
 bool CSceneObject::GetBox( Fbox& box ){
-//    box.transform(m_pRefs->GetBox(),mTransform);
+    box.transform(m_pRefs->GetBox(),mTransform);
 	return true;
 }
 
@@ -85,6 +83,7 @@ bool __inline CSceneObject::IsRender(Fmatrix& parent){
 }
 
 void CSceneObject::Render(Fmatrix& parent, ERenderPriority flag){
+    Scene->TurnLightsForObject(this);
 	m_pRefs->Render(parent, flag);
 }
 
@@ -100,7 +99,7 @@ void CSceneObject::RenderBones(const Fmatrix& parent){
 	m_pRefs->RenderBones(parent);
 }
 
-void CSceneObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
+void CSceneObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
 		m_pRefs->RenderEdge(parent, mesh);
 }
@@ -216,5 +215,8 @@ void CSceneObject::GetFullTransformToWorld( Fmatrix& m ){
 
 void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
     m.invert(mTransform);
+}
+
+void CSceneObject::RTL_Update(float dT){
 }
 

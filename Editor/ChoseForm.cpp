@@ -36,8 +36,8 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     // fill object list
     for (LibObjIt it=Lib->FirstObj(); it!=Lib->LastObj(); it++){
 		if (!start_folder||(start_folder&&(stricmp(start_folder,(*it)->GetFolderName())==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetRefName()[0]!='$')))
-    	    	form->AddItemToFolder((*it)->GetFolderName(),(*it)->GetRefName(),(*it));
+			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$')))
+    	    	form->AddItemToFolder((*it)->GetFolderName(),(*it)->GetName(),(*it));
     }
     // redraw
 	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
@@ -258,7 +258,10 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         TElTreeItem* itm_node = FindItem(last_item.c_str());
         TElTreeItem* fld_node = FindFolder(last_item.c_str());
         if (itm_node){
-        	if (bMultiSel) itm_node->Checked = true;
+        	if (bMultiSel){
+				tvMulti->Items->Add(0,itm_node->Text);
+//            	itm_node->Checked = true;
+            }
             tvItems->Selected = itm_node;
             tvItems->EnsureVisible(itm_node);
             fld_node=itm_node->Parent;
@@ -305,8 +308,8 @@ void __fastcall TfrmChoseItem::tvItemsItemSelectedChange(TObject *Sender, TElTre
             if (!sel_thm->Load()) 	pbImage->Repaint();
             else				 	pbImagePaint(Sender);
             CLibObject* LO			= (CLibObject*)Item->Data;
-			lbItemName->Caption 	= "\""+AnsiString(LO->GetRefName())+"\"";
-			lbFileName->Caption		= "\""+AnsiString(LO->GetFileName())+"\"";
+			lbItemName->Caption 	= "\""+AnsiString(LO->GetName())+"\"";
+			lbFileName->Caption		= "\""+AnsiString(LO->GetSrcName())+"\"";
 //			AnsiString temp; 		temp.sprintf("Vertices: %d\nFaces: %d",LO->GetReference()->GetVertexCount(),LO->GetReference()->GetFaceCount());
             lbInfo->Caption			= "";//temp;
         }else{

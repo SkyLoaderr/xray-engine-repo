@@ -25,7 +25,7 @@
 // refs
 struct SH_ShaderDef;
 struct st_Surface;
-class CEditObject;
+class CEditableObject;
 class CLibObject;
 //---------------------------------------------------------------------------
 

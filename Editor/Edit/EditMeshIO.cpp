@@ -24,7 +24,7 @@
 #define EMESH_CHUNK_BOP					0x1010
 #define EMESH_CHUNK_VMAPS_1		       	0x1011
 
-void CEditMesh::SaveMesh(CFS_Base& F){
+void CEditableMesh::SaveMesh(CFS_Base& F){
 	F.open_chunk	(EMESH_CHUNK_VERSION);
 	F.Wword       	(EMESH_CURRENT_VERSION);
 	F.close_chunk  	();
@@ -84,12 +84,12 @@ void CEditMesh::SaveMesh(CFS_Base& F){
 	F.close_chunk  	();
 }
 
-bool CEditMesh::LoadMesh(CStream& F){
+bool CEditableMesh::LoadMesh(CStream& F){
     DWORD version=0;
 
     R_ASSERT(F.ReadChunk(EMESH_CHUNK_VERSION,&version));
     if (version!=EMESH_CURRENT_VERSION){
-        ELog.DlgMsg( mtError, "CEditMesh: unsuported file version. Mesh can't load.");
+        ELog.DlgMsg( mtError, "CEditableMesh: unsuported file version. Mesh can't load.");
         return false;
     }
 

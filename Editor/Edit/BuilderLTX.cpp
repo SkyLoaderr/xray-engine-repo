@@ -10,6 +10,7 @@
 #include "Scene.h"
 #include "SceneClassList.h"
 #include "EditObject.h"
+#include "SceneObject.h"
 #include "Sound.h"
 #include "ELight.h"
 #include "RPoint.h"
@@ -69,28 +70,19 @@ bool SceneBuilder::BuildLTX(){
     pIni->WriteString("mobileobjects",		"; mobile objects","");
 
 	// -- mobile objects --
-    ObjectIt i = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
+    ObjectIt i = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;i!=_E;i++){
-        CEditObject *obj = (CEditObject*)(*i);
+        CSceneObject *obj = (CSceneObject*)(*i);
         if( obj->IsDynamic() ){
     		pIni->WriteString("mobileobjects", obj->GetName(), obj->GetName() );
-            if( !obj->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->GetName()), obj->GetClassScript().c_str());
+            if( !obj->GetRef()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->GetName()), obj->GetRef()->GetClassScript().c_str());
             pIni->WriteVector(obj->GetName(),"position",obj->GetPosition());
 			Fmatrix mRotate; mRotate.setHPB(obj->GetRotate().y, obj->GetRotate().x, obj->GetRotate().z);
             pIni->WriteVector(obj->GetName(),"direction",mRotate.k);
             pIni->WriteVector(obj->GetName(),"normal",mRotate.j);
 //            temp.sprintf("%.3f,%.3f,%.3f", obj->GetScale().x, obj->GetScale().y, obj->GetScale().z);
 //            pIni->WriteString(obj->GetName(),"scale",temp);
-            if(!obj->IsReference()){
-            	AnsiString temp;
-                temp.sprintf("%s.ogf",obj->GetName());
-                pIni->WriteString(obj->GetName(),"visual",temp.c_str());
-//??                if(obj->IsVCFCreated()){
-//                    temp.sprintf("%s.vcf",obj->GetName());
-//                    pIni->WriteString(obj->GetName(),"cform",temp.c_str());
-//                }
-            }
         }
 	}
 

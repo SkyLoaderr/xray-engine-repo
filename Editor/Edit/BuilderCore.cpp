@@ -10,6 +10,7 @@
 
 #include "Scene.h"
 #include "SceneClassList.h"
+#include "SceneObject.h"
 #include "EditObject.h"
 #include "DPATCH.h"
 #include "Sector.h"
@@ -57,16 +58,15 @@ bool SceneBuilder::PrepareFolders(){
 }
 
 bool SceneBuilder::LightenObjects(){
-	int objcount = Scene->ObjCount(OBJCLASS_EDITOBJECT);
+	int objcount = Scene->ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;
 
 	UI->ProgressStart(objcount, "Lighten objects...");
     // unload cform, point normals, render buffers
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
+    ObjectIt _F = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
-    	CEditObject* O = (CEditObject*)(*_F);
-        if (O->IsReference()) O = O->GetRef();
+    	CEditableObject* O = ((CSceneObject*)(*_F))->GetRef();
         if (NeedAbort()) break; // break building
         O->LightenObject();
 		UI->ProgressInc();
@@ -101,31 +101,8 @@ bool SceneBuilder::UngroupAndUnlockObjects(){
     return true;
 }
 
-bool SceneBuilder::ResolveReferences(){
-	int objcount = Scene->ObjCount(OBJCLASS_EDITOBJECT);
-	if( objcount <= 0 )
-		return true;
-
-	UI->ProgressStart(objcount, "Resolve reference...");
-
-    ObjectIt _F = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
-    for(;_F!=_E;_F++){
-        if (NeedAbort()) break; // break building
-        CEditObject *obj = (CEditObject*)(*_F);
-    	ELog.Msg(mtInformation,obj->GetName());
-        if( !obj->IsDynamic() )  obj->ResolveReference();
-        if( !obj->IsReference() )  obj->TranslateToWorld();
-		UI->ProgressInc();
-	}
-
-	UI->ProgressEnd();
-
-	return true;
-}
-
 bool SceneBuilder::GetShift(){
-	if (!Scene->GetBox(m_LevelBox,OBJCLASS_EDITOBJECT)) return true;
+	if (!Scene->GetBox(m_LevelBox,OBJCLASS_SCENEOBJECT)) return true;
     m_LevelBox.getcenter(m_LevelShift); m_LevelShift.mul(-1.f);
 	m_LevelBox.offset(m_LevelShift);
 	return true;

@@ -11,11 +11,12 @@
 #include "SceneClassList.h"
 #include "EditObject.h"
 #include "EditMesh.h"
+#include "SceneObject.h"
 #include "fmesh.h"
 #include "std_classes.h"
 //----------------------------------------------------
 // some types
-bool SceneBuilder::SaveObjectOGF(const char* name, CEditObject* obj){
+bool SceneBuilder::SaveObjectOGF(const char* name, CEditableObject* obj){
 	CFS_Memory F;
     m_iDefaultSectorNum = 0;
     UI->ProgressStart(3,"Building OGF...");
@@ -27,41 +28,18 @@ bool SceneBuilder::SaveObjectOGF(const char* name, CEditObject* obj){
     return bRes;
 }
 
-bool SceneBuilder::BuildOGFModels(){
+bool SceneBuilder::BuildSkyModel(){
 	// build sky ogf
     if (Scene->m_SkyDome){
 	    AnsiString ogf_name;
         ogf_name.sprintf("%s.ogf",Scene->m_SkyDome->GetName());
         m_LevelPath.Update(ogf_name);
         CFS_Memory F;
-        BuildObjectOGF(F, Scene->m_SkyDome, Scene->m_SkyDome->GetName(),m_LevelPath);
+        BuildObjectOGF(F, Scene->m_SkyDome->GetRef(), Scene->m_SkyDome->GetName(),m_LevelPath);
         F.SaveTo(ogf_name.c_str(),0);
         // add textures
         AddUniqueTexName(Scene->m_SkyDome);
     }
-
-	// build other scene ogf
-/*	int objcount = Scene->ObjCount(OBJCLASS_EDITOBJECT);
-	if( objcount <= 0 )
-		return true;
-
-	float object_cost = 100.f / (float)objcount;
-
-    AnsiString temp;
-	// -- mobile objects --
-	ObjectIt i = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-	for(;i!=Scene->LastObj(OBJCLASS_EDITOBJECT);i++){
-        CEditObject *obj = (CEditObject*)(*i);
-        if(obj->IsDynamic() && !obj->IsReference()){
-            temp.sprintf("%s.ogf",obj->GetName());
-            m_LevelPath.Update(temp);
-			CFS_Memory F;
-    		BuildObjectOGF(F, obj, obj->GetName());
-		    F.SaveTo(temp.c_str(),0);
-        }
-        frmBuildProgress->AddProgress( object_cost );
-	}
-*/
 	return true;
 }
 
@@ -69,9 +47,7 @@ bool fmat_predicate_less(b_face& F1, b_face& F2){
     return F1.dwMaterial<F2.dwMaterial;
 }
 
-bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditObject *O, const char* name, FSPath& path ){
-	CEditObject* obj = (O->IsReference())?O->GetRef():O;
-
+bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditableObject *obj, const char* name, FSPath& path ){
 	if( obj->MeshCount() == 0 ) return false;
 
     AnsiString base_name; base_name=ExtractFileName(name); base_name=ChangeFileExt(base_name,"");
@@ -117,8 +93,7 @@ bool SceneBuilder::BuildObjectOGF( CFS_Base& F, CEditObject *O, const char* name
             F.WstringZ	(children[k].filename);
         F.close_chunk	();
 
-        Fbox box;
-        obj->GetBox		(box);
+        Fbox& box		= obj->GetBox();
         F.write_chunk	(OGF_BBOX,&box,sizeof(box));
 
         Fvector C;

@@ -168,18 +168,6 @@ DWORD SceneBuilder::Thread(){
 			error_flag = true;
 			break;
 		}
-/*
-        if (NeedAbort()) break;
-		frmBuildProgress->SetStage( AnsiString("Resolving references...") );
-		frmBuildProgress->SetProgress( 0 );
-		if( !ResolveReferences() ){
-			error_text="*ERROR: Failed to resolve references...";
-			error_flag = true;
-			break;
-		}
-        // unload object library
-//	    UI->Command(COMMAND_UNLOAD_LIBMESHES);
-*/
 
         if (NeedAbort()) break;
 		if( !RenumerateSectors() ){
@@ -203,14 +191,7 @@ DWORD SceneBuilder::Thread(){
 		}
 
         if (NeedAbort()) break;
-		if( !BuildVCFModels() ){
-			error_text="*ERROR: Failed to build collision form....";
-			error_flag = true;
-			break;
-		}
-
-        if (NeedAbort()) break;
-		if( !BuildOGFModels() ){
+		if( !BuildSkyModel() ){
 			error_text="*ERROR: Failed to build OGF model....";
 			error_flag = true;
 			break;

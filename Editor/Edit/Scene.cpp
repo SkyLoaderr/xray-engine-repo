@@ -11,7 +11,7 @@
 #include "FS.h"
 #include "ui_main.h"
 #include "Frustum.h"
-#include "EditObject.h"
+#include "SceneObject.h"
 #include "DPatch.h"
 #include "DetailObjects.h"
 #include "Sector.h"
@@ -152,7 +152,7 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID());
     // remove object from Snap List if exists
-    if ((object->ClassID()==OBJCLASS_EDITOBJECT)&&!m_SnapObjects.empty())
+    if ((object->ClassID()==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty())
     	m_SnapObjects.remove(object);
     // remove from scene list
     lst.remove( object );
@@ -356,7 +356,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
 		ObjectList* lst=0;
-    	if (it->first==OBJCLASS_EDITOBJECT)
+    	if (it->first==OBJCLASS_SCENEOBJECT)
         	 lst=(bUseSnapList&&fraLeftBar->ebEnableSnapList->Down&&!m_SnapObjects.empty())?&m_SnapObjects:&(it->second);
         else lst=&(it->second);
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
@@ -368,7 +368,7 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
     	        }else{
         	        for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
             	        if((*_F)->Visible()){
-                	        if((classfilter==OBJCLASS_EDITOBJECT)&&!bDynamicTest&&((CEditObject*)(*_F))->IsDynamic()) continue;
+                	        if((classfilter==OBJCLASS_SCENEOBJECT)&&!bDynamicTest&&((CSceneObject*)(*_F))->IsDynamic()) continue;
                     	    if((*_F)->RayPick(nearest_dist,start,direction,precalc_identity,pinf))
                         	    nearest_object = (*_F);
 	                    }
@@ -381,9 +381,9 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
 }
 
 int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list){
-	ObjectList& lst = (snap_list)?*snap_list:ListObj(OBJCLASS_EDITOBJECT);
+	ObjectList& lst = (snap_list)?*snap_list:ListObj(OBJCLASS_SCENEOBJECT);
 	for(ObjectIt _F=lst.begin();_F!=lst.end();_F++)
-        ((CEditObject*)*_F)->BoxPick(box,precalc_identity,pinf);
+        ((CSceneObject*)*_F)->BoxPick(box,precalc_identity,pinf);
     return pinf.size();
 }
 
@@ -408,17 +408,17 @@ int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 //----------------------------------------------------
 void __fastcall object_Normal(EScene::mapObject_Node *N)
 {
-    ((CEditObject*)N->val)->Render( precalc_identity, rpNormal );
+    ((CSceneObject*)N->val)->Render( precalc_identity, rpNormal );
 }
 //----------------------------------------------------
 void __fastcall object_AlphaNormal(EScene::mapObject_Node *N)
 {
-    ((CEditObject*)N->val)->Render( precalc_identity, rpAlphaNormal );
+    ((CSceneObject*)N->val)->Render( precalc_identity, rpAlphaNormal );
 }
 //----------------------------------------------------
 void __fastcall object_AlphaLast(EScene::mapObject_Node *N)
 {
-    ((CEditObject*)N->val)->Render( precalc_identity, rpAlphaLast );
+    ((CSceneObject*)N->val)->Render( precalc_identity, rpAlphaLast );
 }
 //----------------------------------------------------
 
@@ -464,11 +464,11 @@ void EScene::Render( Fmatrix *_Camera ){
 // draw objects
 	{
     	const Fvector& cam_pos=Device.m_Camera.GetPosition();
-        ObjectList& lst = ListObj(OBJCLASS_EDITOBJECT);
+        ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
         ObjectIt _E=lst.end(); _F=lst.begin();
         for(;_F!=_E;_F++){
             if( (*_F)->Visible()&& (*_F)->IsRender( precalc_identity ) ){
-                CEditObject* _pT = (CEditObject*)(*_F);
+                CSceneObject* _pT = (CSceneObject*)(*_F);
                 Fmatrix m; _pT->GetFullTransformToWorld(m);
                 float distSQ = cam_pos.distance_to_sqr(m.c);
                 mapRenderObjects.insertInAnyWay(distSQ,_pT);
@@ -488,7 +488,7 @@ void EScene::Render( Fmatrix *_Camera ){
 
     // render snap
     if (fraLeftBar->ebEnableSnapList->Down)
-		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CEditObject*)(*_F))->RenderSelection(precalc_identity);
+		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(precalc_identity);
 
     // draw detail objects (alpha)
     m_DetailObjects->Render(rpAlphaNormal);
@@ -524,13 +524,13 @@ void EScene::UpdateSkydome(){
         	ELog.DlgMsg(mtError,"Skydome %s can't find in library.",m_LevelOp.m_SkydomeObjName.c_str());
         	return ;
         }
-        CEditObject* O = LO->GetReference();
+        CEditableObject* O = LO->GetReference();
         if (!O->IsDynamic()){
         	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
         	return ;
         }
         if (O){
-            m_SkyDome = new CEditObject("$Sky");
+            m_SkyDome = new CSceneObject("$Sky");
             m_SkyDome->SetRef(O);
         }
     }
@@ -953,7 +953,7 @@ void EScene::ResetAnimation(){
 
 int EScene::AddToSnapList(){
     ObjectList lst;
-    int count = GetQueryObjects(lst, OBJCLASS_EDITOBJECT, 1, 1, 0);
+    int count = GetQueryObjects(lst, OBJCLASS_SCENEOBJECT, 1, 1, 0);
     if (count){
     	count = 0;
 	    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
@@ -972,7 +972,7 @@ int EScene::AddToSnapList(){
 int EScene::SetSnapList(){
 	ClearSnapList();
 	int count = 0;
-    ObjectList& lst = ListObj(OBJCLASS_EDITOBJECT);
+    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         if((*_F)->Visible()&&(*_F)->Selected()){
 	        m_SnapObjects.push_back(*_F);

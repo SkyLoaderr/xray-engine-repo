@@ -25,7 +25,7 @@
 #include "multi_edit.hpp"
 #include "Placemnt.hpp"
 
-class CEditObject;
+class CEditableObject;
 class ETextureCore;
 class CEditMesh;
 struct st_Surface;
@@ -62,7 +62,6 @@ __published:	// IDE-managed Components
     TRxLabel *RxLabel10;
     TRxLabel *RxLabel11;
     TPanel *paBottom;
-    TRxLabel *lbLibRef;
     TElTree *tvMeshes;
 	TRxPopupMenu *pmNumericSet;
 	TMenuItem *Position1;
@@ -186,6 +185,7 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seSMotionPower;
 	TMultiObjCheck *cbSMotionStopAtEnd;
 	TExtBtn *ebSReloadMotion;
+	TExtBtn *ebApply;
     void __fastcall ebEditMeshClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
@@ -249,37 +249,41 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelectShaderClick(TObject *Sender);
 	void __fastcall ebSelectTextureClick(TObject *Sender);
 	void __fastcall ebSReloadMotionClick(TObject *Sender);
+	void __fastcall ebApplyClick(TObject *Sender);
 private:	// User declarations
-	bool bMultiSelection;
-    ETextureCore* tx_selected;
-    st_Surface* surf_selected;
-	CEditObject *m_EditObject;
+    ETextureCore* 			tx_selected;
+    st_Surface* 			surf_selected;
     DEFINE_VECTOR(AnsiString,SH_NamesList,SH_NamesIt);
-    SH_NamesList SH_Names;
+    SH_NamesList 			SH_Names;
 
-    list<CCustomObject*> m_Objects;
+    CSMotion* 				selected_smotion;
+    COMotion* 				selected_omotion;
+    AnsiString   			last_name;
+    TElTreeItem* 			FEditNode;
 
-    void GetObjectsInfo     ();
-    bool ApplyObjectsInfo   ();
-
-    CSMotion* selected_smotion;
-    COMotion* selected_omotion;
-    AnsiString   last_name;
-    TElTreeItem* FEditNode;
 	// object motion
-	void __fastcall ebOResetActiveMotion(TElTreeItem* ignore_item);
-    TElTreeItem* FindOMotionItem(const char* name);
+	void __fastcall 		ebOResetActiveMotion(TElTreeItem* ignore_item);
+    TElTreeItem* 			FindOMotionItem(const char* name);
 	// skeleton motion
-	void __fastcall ebSResetActiveMotion(TElTreeItem* ignore_item);
-    TElTreeItem* FindSMotionItem(const char* name);
-public:		// User declarations
-    __fastcall TfrmPropertiesObject(TComponent* Owner);
-    int __fastcall Run(ObjectList* pObjects, bool& bChange);
+	void __fastcall 		ebSResetActiveMotion(TElTreeItem* ignore_item);
+    TElTreeItem* 			FindSMotionItem(const char* name);
 
-    void OnIdle();
+    // static part
+	static CEditableObject* m_CurrentObject;
+	static 	TfrmPropertiesObject* form;
+
+    // object init&save
+    void 					GetObjectsInfo     ();
+    void 					ApplyObjectsInfo   ();
+public:		// User declarations
+    __fastcall 				TfrmPropertiesObject(TComponent* Owner);
+    static void __fastcall 	ShowProperties();
+    static void __fastcall 	HideProperties();
+    static bool __fastcall 	Visible(){return !!form;}
+    static void	SetCurrent	(CEditableObject* object);
+    static void	Reset		(){m_CurrentObject=0;}
+    static bool	IsModified	(){return form?form->ebApply->Enabled:false;}
+    static void	OnIdle		();
 };
-//---------------------------------------------------------------------------
-extern PACKAGE TfrmPropertiesObject* frmPropertiesObject;
-int frmPropertiesObjectRun(ObjectList* pObjects, bool& bChange);
 //---------------------------------------------------------------------------
 #endif

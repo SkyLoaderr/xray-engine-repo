@@ -11,7 +11,7 @@
 #include "Frustum.h"
 #include "EditMesh.h"
 #include "D3DUtils.h"
-#include "EditObject.h"
+#include "SceneObject.h"
 #include "Scene.h"
 #include "Texture.h"
 #include "cl_intersect.h"
@@ -34,7 +34,7 @@ CSectorItem::CSectorItem(){
 	object=NULL;
     mesh=NULL;
 }
-CSectorItem::CSectorItem(CEditObject* o, CEditMesh* m){
+CSectorItem::CSectorItem(CSceneObject* o, CEditableMesh* m){
 	object=o;
     mesh=m;
 }
@@ -74,19 +74,19 @@ bool CSector::FindSectorItem(const char* O, const char* M, SItemIt& it){
     return false;
 }
 
-bool CSector::FindSectorItem(CEditObject* o, CEditMesh* m, SItemIt& it){
+bool CSector::FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it){
 	for (it=sector_items.begin();it!=sector_items.end();it++)
     	if ((*it).IsItem(o,m)) return true;
     return false;
 }
 
-void CSector::AddMesh	(CEditObject* O, CEditMesh* M){
+void CSector::AddMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
     if (!FindSectorItem(O, M, it))
      	sector_items.push_back(CSectorItem(O, M));
 }
 
-void CSector::DelMesh	(CEditObject* O, CEditMesh* M){
+void CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
     if (FindSectorItem(O, M, it)) sector_items.erase(it);
 }
@@ -418,7 +418,7 @@ void CSector::OnDestroy( ){
 void CSector::OnSceneUpdate(){
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
-    	if (!(Scene->ContainsObject(it->object,OBJCLASS_EDITOBJECT)&&it->object->ContainsMesh(it->mesh))){
+    	if (!(Scene->ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetRef()->ContainsMesh(it->mesh))){
             sector_items.erase(it); it--;
             bUpdate=true;
         }
@@ -525,7 +525,7 @@ void CSector::LoadSectorDef( CStream* F ){
 	// sector item
     R_ASSERT(F->FindChunk(SECTOR_CHUNK_ONE_ITEM));
 	F->RstringZ(o_name);
-	sitem.object=(CEditObject*)Scene->FindObjectByName(o_name,OBJCLASS_EDITOBJECT);
+	sitem.object=(CSceneObject*)Scene->FindObjectByName(o_name,OBJCLASS_SCENEOBJECT);
     if (sitem.object==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' - can't load.\nObject not found.",o_name);
         m_bHasLoadError = true;
@@ -537,7 +537,7 @@ void CSector::LoadSectorDef( CStream* F ){
      	return;
     }
 	F->RstringZ(m_name);
-	sitem.mesh=sitem.object->FindMeshByName(m_name);
+	sitem.mesh=sitem.object->GetRef()->FindMeshByName(m_name);
     if (sitem.mesh==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
         m_bHasLoadError = true;

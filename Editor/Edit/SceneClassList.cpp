@@ -7,7 +7,7 @@
 #include "SceneClassList.h"
 #include "Scene.h"
 #include "ui_tools.h"
-#include "EditObject.h"
+#include "SceneObject.h"
 #include "ELight.h"
 #include "Sound.h"
 #include "Occluder.h"
@@ -24,7 +24,7 @@
 
 CCustomObject *NewObjectFromClassID( int _ClassID ){
 	switch( _ClassID ){
-		case OBJCLASS_EDITOBJECT: return new CEditObject();
+		case OBJCLASS_SCENEOBJECT: return new CSceneObject();
 		case OBJCLASS_LIGHT:    return new CLight();
 		case OBJCLASS_SOUND:    return new CSound();
 		case OBJCLASS_OCCLUDER: return new COccluder();
@@ -41,7 +41,7 @@ CCustomObject *NewObjectFromClassID( int _ClassID ){
 //----------------------------------------------------
 LPSTR GetNameByClassID(EObjClass cls_id){
     switch(cls_id){
-    case OBJCLASS_EDITOBJECT: return "Object";
+    case OBJCLASS_SCENEOBJECT: return "Object";
     case OBJCLASS_LIGHT:    return "Light";
     case OBJCLASS_SOUND:    return "Sound";
     case OBJCLASS_OCCLUDER: return "Occluder";
@@ -58,7 +58,7 @@ LPSTR GetNameByClassID(EObjClass cls_id){
 }
 bool IsClassID(EObjClass cls_id){
     switch(cls_id){
-    case OBJCLASS_EDITOBJECT: return true;
+    case OBJCLASS_SCENEOBJECT: return true;
     case OBJCLASS_LIGHT:    return true;
     case OBJCLASS_SOUND:    return true;
     case OBJCLASS_OCCLUDER: return true;
@@ -75,7 +75,7 @@ bool IsClassID(EObjClass cls_id){
 }
 EObjClass ClassIDFromTargetID( int cls_id ){
 	switch( cls_id ){
-	case etObject:  return OBJCLASS_EDITOBJECT;
+	case etObject:  return OBJCLASS_SCENEOBJECT;
 	case etSound:   return OBJCLASS_SOUND;
 	case etLight:   return OBJCLASS_LIGHT;
     case etOccluder:return OBJCLASS_OCCLUDER;
@@ -93,7 +93,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
 }
 bool IsObjectListClassID(EObjClass cls_id){
     switch(cls_id){
-    case OBJCLASS_EDITOBJECT: return true;
+    case OBJCLASS_SCENEOBJECT: return true;
     case OBJCLASS_LIGHT:    return true;
     case OBJCLASS_SOUND:    return true;
     case OBJCLASS_OCCLUDER: return true;

@@ -272,7 +272,7 @@ bool EScene::Load(char *_FileName){
 		    char buf[4096];
 		   	for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++){
     	    	F->RstringZ(buf);
-                *_F 	= FindObjectByName(buf,OBJCLASS_EDITOBJECT);
+                *_F 	= FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
                 VERIFY	(*_F);
             }
             UpdateSnapList();

@@ -4,6 +4,7 @@
 #include "Builder.h"
 #include "SceneClassList.h"
 #include "ELight.h"
+#include "SceneObject.h"
 #include "EditObject.h"
 #include "occluder.h"
 #include "Communicate.h"
@@ -141,17 +142,15 @@ void SceneBuilder::ResetStructures (){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
+void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num){
     int point_offs;
     point_offs = l_vertices_it;  // save offset
 
-    const Fmatrix& T = parent->GetTransform();
-
     // fill vertices
 	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
-    	T.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
+    	parent.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
 
-    if (parent->IsDynamic()){
+    if (object->IsDynamic()){
 	    // update mesh
 	    if (!(mesh->m_LoadState&EMESH_LS_FNORMALS)) mesh->GenerateFNormals();
 		Fvector N;
@@ -162,16 +161,12 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
             for (INTIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
                 N.add(mesh->m_FNormals[*i_it]);
             N.normalize_safe();
-            T.transform_dir(N);
+            parent.transform_dir(N);
             l_vnormals.push_back(N);
         }
 	    // unload mesh normals
 	    mesh->UnloadFNormals();
     }
-    // массив фейсов с указанием к какому сектору он принадлежит
-	CSector* S = PortalUtils.FindSector(parent,mesh);
-    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
-
     // fill faces
     for (SurfFacesPairIt sp_it=mesh->m_SurfFaces.begin(); sp_it!=mesh->m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
@@ -230,20 +225,27 @@ void SceneBuilder::BuildMesh(CEditObject* parent, CEditMesh* mesh){
     }
 }
 
-void SceneBuilder::BuildObject(CEditObject* obj){
-	CEditObject *O = obj->IsReference()?obj->GetRef():obj;
+void SceneBuilder::BuildObject(CSceneObject* obj){
+	CEditableObject *O = obj->GetRef();
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
     UI->SetStatus(temp.c_str());
-    for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++) BuildMesh(obj,*M);
+
+    Fmatrix& T = obj->GetTransform();
+    for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
+		CSector* S = PortalUtils.FindSector(obj,*M);
+	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
+    	BuildMesh(T,O,*M,sect_num);
+    }
 }
 
-void SceneBuilder::BuildObjectDynamic(CEditObject* obj){
+void SceneBuilder::BuildObjectDynamic(CEditableObject* O){
 // compute vertex/face count
-	l_faces_cnt		+= obj->GetFaceCount();
-    l_vertices_cnt  += obj->GetVertexCount();
+	l_faces_cnt		+= O->GetFaceCount();
+    l_vertices_cnt  += O->GetVertexCount();
 	l_faces			= new b_face[l_faces_cnt];
 	l_vertices		= new b_vertex[l_vertices_cnt];
-    for(EditMeshIt M=obj->FirstMesh();M!=obj->LastMesh();M++) BuildMesh(obj,*M);
+    for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++)
+    	BuildMesh(precalc_identity,O,*M,m_iDefaultSectorNum);
 }
 
 //------------------------------------------------------------------------------
@@ -439,7 +441,7 @@ int SceneBuilder::FindInMaterials(b_material* m){
 }
 //------------------------------------------------------------------------------
 
-int SceneBuilder::BuildMaterial(CEditMesh* m, st_Surface* surf, int sector_num ){
+int SceneBuilder::BuildMaterial(CEditableMesh* m, st_Surface* surf, int sector_num ){
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     VERIFY(sector_num>=0);
     int mtl_idx;
@@ -502,16 +504,16 @@ bool SceneBuilder::RemoteStaticBuild()
     	TSData.lights   = new b_light[TSData.light_count];
     }
 
-    UI->ProgressStart(Scene->ObjCount(OBJCLASS_EDITOBJECT),"Allocating memory for static faces and vertices...");
+    UI->ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Allocating memory for static faces and vertices...");
 // compute vertex/face count
     l_vertices_cnt	= 0;
     l_faces_cnt 	= 0;
 	l_vertices_it 	= 0;
 	l_faces_it		= 0;
-    ObjectIt _O = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-    ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
+    ObjectIt _O = Scene->FirstObj(OBJCLASS_SCENEOBJECT);
+    ObjectIt _E = Scene->LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
-    	CEditObject* obj = (CEditObject*)(*_O);
+    	CSceneObject* obj = (CSceneObject*)(*_O);
 	    UI->ProgressInc();
 		if (!obj->IsDynamic()){
 			l_faces_cnt		+= obj->GetFaceCount();
@@ -521,7 +523,7 @@ bool SceneBuilder::RemoteStaticBuild()
 	l_faces		= new b_face[l_faces_cnt];
 	l_vertices	= new b_vertex[l_vertices_cnt];
 
-    UI->ProgressStart(Scene->ObjCount(OBJCLASS_EDITOBJECT),"Filling static mesh data...");
+    UI->ProgressStart(Scene->ObjCount(OBJCLASS_SCENEOBJECT),"Filling static mesh data...");
 // parse scene
 	int i=0;
     for(ObjectPairIt it=Scene->FirstClass(); it!=Scene->LastClass(); it++){
@@ -546,8 +548,8 @@ bool SceneBuilder::RemoteStaticBuild()
                 l_portals.push_back(b_portal());
                 BuildPortal(&l_portals.back(),(CPortal*)(*_F));
                 break;
-            case OBJCLASS_EDITOBJECT:{
-                CEditObject *obj = (CEditObject*)(*_F);
+            case OBJCLASS_SCENEOBJECT:{
+                CSceneObject *obj = (CSceneObject*)(*_F);
                 if (!obj->IsDynamic()){
                     BuildObject(obj);
                 }else{

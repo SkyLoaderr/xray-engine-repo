@@ -16,7 +16,7 @@
 #define LOBJ_CHUNK_NAMES		0x1201
 #define LOBJ_CHUNK_VERSION	  	0x1202
 #define LOBJ_CHUNK_FOLDER		0x1203
-#define LOBJ_CHUNK_FILENAME		0x1204
+#define LOBJ_CHUNK_SRCNAME		0x1204
 //----------------------------------------------------
 #define CURRENT_LIBRARY_VERSION 0x0011
 #define CHUNK_VERSION       	0x9d01
@@ -29,10 +29,10 @@ CLibObject::~CLibObject(){
 
 bool CLibObject::ImportFrom(const char* name){
     _DELETE(m_EditObject);
-    m_EditObject = new CEditObject();
+    m_EditObject = new CEditableObject(this);
     if (FS.Exist(name, true))
         if (m_EditObject->Load(name)){
-        	m_FileName = ExtractFileName(AnsiString(name));
+        	m_SrcName = ExtractFileName(AnsiString(name));
             m_EditObject->m_ObjVer.f_age = FS.GetFileAge(AnsiString(name));
             return true;
         }
@@ -43,8 +43,8 @@ bool CLibObject::ImportFrom(const char* name){
 void CLibObject::LoadObject(){
 	if (!m_EditObject){
 		m_bLoadingError = true;
-    	m_EditObject = new CEditObject();
-        AnsiString fn=m_RefName;
+    	m_EditObject = new CEditableObject(this);
+        AnsiString fn=m_Name;
         fn += ".object";
 		FS.m_Objects.Update(fn);
 	    if (FS.Exist(fn.c_str(), true))
@@ -58,17 +58,26 @@ void CLibObject::LoadObject(){
 }
 
 void CLibObject::SaveObject(){
-    CEditObject* obj = GetReference();
+    CEditableObject* obj = GetReference();
     // check need to transform to world
-    const Fvector& P = obj->Position();
-    const Fvector& S = obj->GetScale();
-    const Fvector& R = obj->GetRotate();
-    if ((P.x!=0)||(P.y!=0)||(P.z!=0)|| (S.x!=1)||(S.y!=1)||(S.z!=1)|| (R.x!=0)||(R.y!=0)||(R.z!=0))
-        obj->TranslateToWorld();
+    const Fvector& P = obj->TPosition();
+    const Fvector& S = obj->TScale();
+    const Fvector& R = obj->TRotate();
+    if ((P.x!=0)||(P.y!=0)||(P.z!=0)|| (S.x!=1)||(S.y!=1)||(S.z!=1)|| (R.x!=0)||(R.y!=0)||(R.z!=0)){
+    	Fmatrix mRotate, mScale, mTranslate, mTransform;
+        // update transform matrix
+        mRotate.setHPB			(R.y, R.x, R.z);
+
+        mScale.scale			(S);
+        mTranslate.translate	(P);
+        mTransform.mul			(mTranslate,mRotate);
+        mTransform.mul			(mScale);
+        obj->TranslateToWorld	(mTransform);
+    }
 
     // save object
     AnsiString fn;
-    fn=m_RefName+AnsiString(".object");
+    fn=m_Name+AnsiString(".object");
     FS.m_Objects.Update(fn);
 
     obj->m_ObjVer.f_age = DateTimeToFileDate(Now());
@@ -81,13 +90,13 @@ void CLibObject::Load(CStream& F){
     char buf[MAX_OBJ_NAME];
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_NAMES));
-    F.RstringZ	(buf); m_RefName=buf;
+    F.RstringZ	(buf); m_Name=buf;
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_FOLDER));
     F.RstringZ	(buf); m_FolderName=buf;
 
-    if(F.FindChunk(LOBJ_CHUNK_FILENAME)){
-	    F.RstringZ(buf); m_FileName=buf;
+    if(F.FindChunk(LOBJ_CHUNK_SRCNAME)){
+	    F.RstringZ(buf); m_SrcName=buf;
     }
 }
 
@@ -95,15 +104,15 @@ void CLibObject::Save(CFS_Base& F){
 	if (m_bNeedSave) SaveObject();
 
     F.open_chunk(LOBJ_CHUNK_NAMES);
-    F.WstringZ	(m_RefName.c_str());
+    F.WstringZ	(m_Name.c_str());
     F.close_chunk();
 
     F.open_chunk(LOBJ_CHUNK_FOLDER);
     F.WstringZ	(m_FolderName.c_str());
     F.close_chunk();
 
-    F.open_chunk(LOBJ_CHUNK_FILENAME);
-    F.WstringZ	(m_FileName.c_str());
+    F.open_chunk(LOBJ_CHUNK_SRCNAME);
+    F.WstringZ	(m_SrcName.c_str());
     F.close_chunk();
 }
 
@@ -127,8 +136,7 @@ void ELibrary::RemoveObject(CLibObject* obj){
 	VERIFY( m_Valid );
     LibObjIt l_obj = find(m_Objects.begin(),m_Objects.end(),obj);
     if (l_obj!=m_Objects.end()){
-        AnsiString fn;
-        fn = (*l_obj)->GetFileName();
+        AnsiString fn = (*l_obj)->m_Name+AnsiString(".object");
         FS.m_Meshes.Update(fn);
         FS.MarkFile(fn);
      	m_Objects.erase(l_obj);
@@ -249,23 +257,23 @@ ELibrary::~ELibrary(){
 CLibObject *ELibrary::SearchObject(const char *name){
 	if (!name) return 0;
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-        if((0==strcmp((*it)->m_RefName.c_str(),name))) return *it;
+        if((0==strcmp((*it)->m_Name.c_str(),name))) return *it;
 	return 0;
 }
 
 CLibObject* ELibrary::FindObjectByName(const char *name, const CLibObject* pass_item){
 	if (!name) return 0;
     for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-		if((0==stricmp((*it)->m_RefName.c_str(),name))&&(pass_item!=(*it))) return *it;
+		if((0==stricmp((*it)->m_Name.c_str(),name))&&(pass_item!=(*it))) return *it;
 	return 0;
 }
 
 bool ELibrary::Validate(){
 // find duplicate name
 	for(LibObjIt it=FirstObj(); it!=LastObj(); it++)
-        if (FindObjectByName((*it)->m_RefName.c_str(), *it)){
+        if (FindObjectByName((*it)->m_Name.c_str(), *it)){
             AnsiString s;
-            s.sprintf("Duplicated Item name '%s'!",(*it)->m_RefName.c_str());
+            s.sprintf("Duplicated Item name '%s'!",(*it)->m_Name.c_str());
             MessageDlg(s, mtError, TMsgDlgButtons() << mbOK, 0);
             return false;
         }

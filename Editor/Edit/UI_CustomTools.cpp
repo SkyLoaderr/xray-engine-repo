@@ -85,7 +85,7 @@ void TUI_CustomTools::ShowProperties(){
     bool bChange=false;
     if(!objset.empty()){
 	    switch(objclass){
-    	case OBJCLASS_EDITOBJECT:	frmPropertiesObjectRun(&objset,bChange); 	break;
+///    	case OBJCLASS_SCENEOBJECT:	frmPropertiesObjectRun(&objset,bChange); 	break;
 	    case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&objset,bChange);		break;
 	    case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&objset,bChange); 	break;
 	    case OBJCLASS_OCCLUDER: 	frmPropertiesOccluderRun(&objset,bChange); 	break;

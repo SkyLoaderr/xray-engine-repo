@@ -19,58 +19,21 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
 {
 // Set up meshes
     AnsiString name;
-    if (!bMultiSelection){
-        tvMeshes->Items->Clear();
-    	CEditObject *_O = m_EditObject;
-        if (m_EditObject->m_LibRef){
-    	    _O = m_EditObject->m_LibRef;
-        }
-        EditMeshIt m_it = _O->m_Meshes.begin();
 
-        // root (object name)
-        if (m_EditObject->IsSceneItem() || m_EditObject->IsLibItem())
-            name.sprintf("%s",m_EditObject->m_Name);
-        else
-            name.sprintf("%s (Ref: '%s')",m_EditObject->m_Name,_O->m_Name);
-        TElTreeItem* root = tvMeshes->Items->AddObject(0,name,(TObject*)m_EditObject);
-        root->ParentStyle = false;
-        root->Bold = true;
+	tvMeshes->Items->Clear();
 
-        for(;m_it!=_O->m_Meshes.end();m_it++){
-            name = (*m_it)->GetName();
-            tvMeshes->Items->AddChildObject(root,name,(TObject*)(*m_it));
-        }
-    }else{
-    	VERIFY(!m_Objects.empty());
+    EditMeshIt m_it = m_CurrentObject->m_Meshes.begin();
 
-//        ebAddMesh->Enabled      = false;
-//        ebDeleteMesh->Enabled   = false;
-//        ebEditMesh->Enabled     = false;
-//        ebMergeMesh->Enabled    = false;
+    // root (object name)
+	name.sprintf("%s",m_CurrentObject->GetName());
 
-        tvMeshes->Items->Clear();
+    TElTreeItem* root = tvMeshes->Items->AddObject(0,name,(TObject*)m_CurrentObject);
+    root->ParentStyle = false;
+    root->Bold = true;
 
-	    ObjectIt _F = m_Objects.begin();
-    	CEditObject *_O = 0;
-    	CEditObject *_OO = 0;
-    	for(;_F!=m_Objects.end();_F++){
-	    	VERIFY( (*_F)->ClassID()==OBJCLASS_EDITOBJECT );
-        	_O = (CEditObject *)(*_F);
-            if (_O->m_LibRef) _OO = _O->m_LibRef; else _OO = _O;
-
-            // root (object name)
-            name.sprintf("%s (%s)",_O->GetName(),_OO->GetName());
-            TElTreeItem* root = tvMeshes->Items->AddObject(0,name,(TObject*)_OO);
-            root->ParentStyle = false;
-            root->Bold = true;
-
-            EditMeshIt m_it = _OO->m_Meshes.begin();
-            for(;m_it!=_OO->m_Meshes.end();m_it++){
-                AnsiString name;
-                name.sprintf("%s (%s)", (*m_it)->GetName(), _O->GetName());
-                tvMeshes->Items->AddChildObject(root,name,(TObject*)(*m_it));
-            }
-    	}
+    for(;m_it!=m_CurrentObject->m_Meshes.end();m_it++){
+        name = (*m_it)->GetName();
+        tvMeshes->Items->AddChildObject(root,name,(TObject*)(*m_it));
     }
     tvMeshes->FullExpand();
     tvMeshes->Sort(true);
@@ -80,11 +43,11 @@ void __fastcall TfrmPropertiesObject::tvMeshesItemSelectedChange(
       TObject *Sender, TElTreeItem *Item)
 {
     if (Item->Level==0){
-        CEditObject* O 			= (CEditObject*)Item->Data;
+        CEditableObject* O 		= (CEditableObject*)Item->Data;
 		lbVertices->Caption 	= O->GetVertexCount();
 		lbFaces->Caption 		= O->GetFaceCount();
     }else{
-        CEditMesh* M 			= (CEditMesh*)Item->Data;
+        CEditableMesh* M		= (CEditableMesh*)Item->Data;
 		lbVertices->Caption 	= M->GetVertexCount();
 		lbFaces->Caption 		= M->GetFaceCount();
     }

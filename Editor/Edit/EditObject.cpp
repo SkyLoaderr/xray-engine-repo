@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: CEditObject.cpp
+// file: CEditableObject.cpp
 //----------------------------------------------------
 
 #include "stdafx.h"
@@ -15,6 +15,7 @@
 #include "bottombar.h"
 #include "motion.h"
 #include "bone.h"
+#include "library.h"
 
 //----------------------------------------------------
 ERenderPriority	st_Surface::RenderPriority(){
@@ -27,36 +28,42 @@ st_Surface::~st_Surface(){
 }
 
 // mimimal bounding box size
-float g_MinBoxSize = 0.05f;
+float g_MinBoxSize 	= 0.05f;
 
-CEditObject::CEditObject(){
-	Construct();
-}
+CEditableObject::CEditableObject(CLibObject* parent){
+    m_LibParent 	= parent;
 
-CEditObject::CEditObject(CEditObject* source){
-    CloneFrom(source,true);
-}
-
-void CEditObject::Construct(){
 	m_DynamicObject = false;
+    m_ObjVer.reset	();
 
-    m_ObjVer.reset();
+	m_Box.set		( 0,0,0, 0,0,0 );
 
-	m_Box.set( 0,0,0, 0,0,0 );
-
-    m_LoadState = 0;
+    m_LoadState 	= 0;
 
     m_ActiveOMotion = 0;
     m_ActiveSMotion = 0;
+
+	t_vPosition.set	(0.f,0.f,0.f);
+    t_vScale.set   	(1.f,1.f,1.f);
+    t_vRotate.set  	(0.f,0.f,0.f);
 }
 
-CEditObject::~CEditObject(){
+CEditableObject::~CEditableObject(){
     ClearGeometry();
 }
-
 //----------------------------------------------------
 
-void CEditObject::VerifyMeshNames(){
+LPCSTR CEditableObject::GetName(){
+	return m_LibParent->GetName();
+}
+//----------------------------------------------------
+
+void CEditableObject::SetName(LPCSTR name){
+	m_LibParent->SetName(name);
+}
+//----------------------------------------------------
+
+void CEditableObject::VerifyMeshNames(){
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
     	AnsiString nm = (*m_def)->m_Name;
@@ -66,25 +73,25 @@ void CEditObject::VerifyMeshNames(){
     }
 }
 
-void CEditObject::GenerateMeshNames(){
+void CEditableObject::GenerateMeshNames(){
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)
     	sprintf((*m_def)->m_Name,"Mesh#%d",idx);
 }
-bool CEditObject::ContainsMesh(const CEditMesh* m){
+bool CEditableObject::ContainsMesh(const CEditableMesh* m){
     VERIFY(m);
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++)
         if (m==(*m_def)) return true;
     return false;
 }
 
-CEditMesh* CEditObject::FindMeshByName	(const char* name, CEditMesh* Ignore){
+CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh* Ignore){
     for(EditMeshIt m=m_Meshes.begin();m!=m_Meshes.end();m++)
         if ((Ignore!=(*m))&&(strcmp((*m)->GetName(),name)==0)) return (*m);
     return 0;
 }
 
-void CEditObject::ClearGeometry (){
+void CEditableObject::ClearGeometry (){
     ClearRenderBuffers();
     if (!m_Meshes.empty())
         for(EditMeshIt 	m=m_Meshes.begin(); m!=m_Meshes.end();m++)_DELETE(*m);
@@ -107,39 +114,14 @@ void CEditObject::ClearGeometry (){
     m_ActiveSMotion = 0;
 }
 
-void CEditObject::CopyGeometry (CEditObject* source){
-    for(SurfaceIt sf_it=source->m_Surfaces.begin(); sf_it!=source->m_Surfaces.end(); sf_it++){
-    	m_Surfaces.push_back(new st_Surface(**sf_it));
-        if ((*sf_it)->shader){
-	        m_Surfaces.back()->shader 	= Device.Shader.Create((*sf_it)->shader->shader->cName,(*sf_it)->textures);
-            SH_ShaderDef* sh_base 		= SHLib->FindShader(AnsiString((*sf_it)->shader->shader->cName));
-            if (sh_base) m_Surfaces.back()->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
-        }
-    }
-    // meshes
-    for(EditMeshIt m = source->m_Meshes.begin();m!=source->m_Meshes.end();m++)
-        m_Meshes.push_back(new CEditMesh(*m,this));
-    // bones
-    for(BoneIt b_it=source->m_Bones.begin(); b_it!=source->m_Bones.end();b_it++)
-        m_Bones.push_back(new CBone(**b_it));
-    // skeleton motions
-    for(SMotionIt s_it=source->m_SMotions.begin(); s_it!=source->m_SMotions.end();s_it++)
-        m_SMotions.push_back(new CSMotion(*s_it));
-    // object motions
-    for(OMotionIt o_it=source->m_OMotions.begin(); o_it!=source->m_OMotions.end();o_it++)
-        m_OMotions.push_back(new COMotion(*o_it));
-
-    ClearRenderBuffers();
-}
-
-int CEditObject::GetFaceCount(){
+int CEditableObject::GetFaceCount(){
 	int cnt=0;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetFaceCount();
 	return cnt;
 }
 
-int CEditObject::GetSurfFaceCount(const char* surf_name){
+int CEditableObject::GetSurfFaceCount(const char* surf_name){
 	int cnt=0;
     st_Surface* surf = FindSurfaceByName(surf_name);
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
@@ -147,14 +129,14 @@ int CEditObject::GetSurfFaceCount(const char* surf_name){
 	return cnt;
 }
 
-int CEditObject::GetVertexCount(){
+int CEditableObject::GetVertexCount(){
 	int cnt=0;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         cnt+=(*m)->GetVertexCount();
 	return cnt;
 }
 
-void CEditObject::UpdateBox(){
+void CEditableObject::UpdateBox(){
 	VERIFY(!m_Meshes.empty());
     Fvector pt;
     bool boxdefined = false;
@@ -180,9 +162,7 @@ void CEditObject::UpdateBox(){
     }
 }
 //----------------------------------------------------
-void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
-    Scene->TurnLightsForObject(this);
-
+void CEditableObject::Render(Fmatrix& parent, ERenderPriority flag){
     if(flag==rpNormal){
 		if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
 		if (fraBottomBar->miDrawObjectAnimPath->Checked) RenderAnimation(parent);
@@ -212,13 +192,13 @@ void CEditObject::Render(Fmatrix& parent, ERenderPriority flag){
     }
 }
 
-void CEditObject::RenderSingle(Fmatrix& parent){
+void CEditableObject::RenderSingle(Fmatrix& parent){
 	Render(parent, rpNormal);
 	Render(parent, rpAlphaNormal);
 	Render(parent, rpAlphaLast);
 }
 
-void CEditObject::RenderAnimation(const Fmatrix& parent){
+void CEditableObject::RenderAnimation(const Fmatrix& parent){
 	if (IsOMotionActive()){
     	float fps = m_ActiveOMotion->FPS();
 	    float min_t=(float)m_ActiveOMotion->FrameStart()/fps;
@@ -246,7 +226,7 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
     }
 }
 
-void CEditObject::RenderBones(const Fmatrix& parent){
+void CEditableObject::RenderBones(const Fmatrix& parent){
 	if (IsSkeleton()){
 		BoneVec& lst = m_Bones;
     	if (IsSMotionActive()){
@@ -280,7 +260,7 @@ void CEditObject::RenderBones(const Fmatrix& parent){
     }
 }
 
-void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
+void CEditableObject::RenderEdge(Fmatrix& parent, CEditableMesh* mesh){
     Device.Shader.Set(Device.m_WireShader);
     DWORD c=D3DCOLOR_RGBA(192,192,192,255);
     if(mesh) mesh->RenderEdge(parent, c);
@@ -288,7 +268,7 @@ void CEditObject::RenderEdge(Fmatrix& parent, CEditMesh* mesh){
             (*_M)->RenderEdge(parent, c);
 }
 
-void CEditObject::RenderSelection(Fmatrix& parent){
+void CEditableObject::RenderSelection(Fmatrix& parent){
     DWORD c=D3DCOLOR_RGBA(230,70,70,64);
     Device.SetTransform(D3DTS_WORLD,parent);
     Device.Shader.Set(Device.m_SelectionShader);
@@ -298,13 +278,13 @@ void CEditObject::RenderSelection(Fmatrix& parent){
     Device.ResetNearer();
 }
 
-bool CEditObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
+bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
 		if((*m)->FrustumPick(frustum, parent))	return true;
 	return false;
 }
 
-bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
+bool CEditableObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf){
 	bool picked = false;
 
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
@@ -314,18 +294,18 @@ bool CEditObject::RayPick(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, 
 	return picked;
 }
 
-void CEditObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
+void CEditableObject::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf){
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         (*m)->BoxPick(box, parent, pinf);
 }
 
-void CEditObject::ClearRenderBuffers(){
+void CEditableObject::ClearRenderBuffers(){
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	if (*_M) (*_M)->ClearRenderBuffers();
     m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
 }
 
-void CEditObject::UpdateRenderBuffers(){
+void CEditableObject::UpdateRenderBuffers(){
 	ClearRenderBuffers();
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
@@ -334,28 +314,28 @@ void CEditObject::UpdateRenderBuffers(){
 }
 //------------------------------------------------------------------------------
 
-void CEditObject::RemoveMesh(CEditMesh* mesh){
+void CEditableObject::RemoveMesh(CEditableMesh* mesh){
 	EditMeshIt m_it = find(m_Meshes.begin(),m_Meshes.end(),mesh);
     VERIFY(m_it!=m_Meshes.end());
 	m_Meshes.erase(m_it);
     _DELETE(mesh);
 }
 
-void CEditObject::TranslateToWorld(const Fmatrix& parent) {
+void CEditableObject::TranslateToWorld(const Fmatrix& parent) {
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++) (*m)->Transform( parent );
     ClearRenderBuffers();
 	UpdateBox();
 }
 
-st_Surface*	CEditObject::FindSurfaceByName(const char* surf_name, int* s_id){
+st_Surface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
 	for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
     	if (strcmp((*s_it)->name,surf_name)==0){ if (s_id) *s_id=s_it-m_Surfaces.begin(); return *s_it;}
     return 0;
 }
 
 
-void CEditObject::OnDeviceCreate(){
+void CEditableObject::OnDeviceCreate(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	UpdateRenderBuffers();
 	// создать заново shaders
@@ -363,7 +343,7 @@ void CEditObject::OnDeviceCreate(){
         (*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
 }
 
-void CEditObject::OnDeviceDestroy(){
+void CEditableObject::OnDeviceDestroy(){
 	// пока буфера не аппаратные не нужно пересоздавать их
     //	ClearRenderBuffers();
 		// удалить shaders
@@ -371,7 +351,7 @@ void CEditObject::OnDeviceDestroy(){
         if ((*s_it)->shader){ Device.Shader.Delete((*s_it)->shader); (*s_it)->shader=0; }
 }
 
-void CEditObject::LightenObject(){
+void CEditableObject::LightenObject(){
 	EditMeshIt m = m_Meshes.begin();
 	for(;m!=m_Meshes.end();m++){
     	(*m)->UnloadCForm();

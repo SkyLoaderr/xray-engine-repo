@@ -9,23 +9,26 @@
 #include "cl_defs.h";
 #include "cl_rapid.h";
 
-class CEditObject;
-class CEditMesh;
+class CEditableObject;
+class CEditableMesh;
+class CSceneObject;
 
 struct SRayPickInfo{
-    CEditObject*	obj;
-    CEditMesh*		mesh;
-    Fvector     	pt;
+    CSceneObject*		s_obj;
+    CEditableObject*	e_obj;
+    CEditableMesh*		e_mesh;
+    Fvector     		pt;
     RAPID::raypick_info rp_inf;
-    SRayPickInfo	(){Reset();}
-    IC void Reset	(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
+    SRayPickInfo		(){Reset();}
+    IC void Reset		(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
 };
 struct SBoxPickInfo{
-    CEditObject*	obj;
-    CEditMesh*		mesh;
+    CSceneObject*		s_obj;
+    CEditableObject*	e_obj;
+    CEditableMesh*		e_mesh;
     RAPID::bboxpick_info bp_inf;
-    SBoxPickInfo	(){Reset();}
-    IC void Reset	(){ZeroMemory(this,sizeof(SBoxPickInfo));}
+    SBoxPickInfo		(){Reset();}
+    IC void Reset		(){ZeroMemory(this,sizeof(SBoxPickInfo));}
 };
 DEFINE_VECTOR(SBoxPickInfo,SBoxPickInfoVec,SBoxPickInfoIt);
 
@@ -36,7 +39,7 @@ enum EObjClass{
     OBJCLASS_DUMMY     	= -1,
     OBJCLASS_DPATCH    	= 0,
     OBJCLASS_GLOW	   	= 1,
-    OBJCLASS_EDITOBJECT	= 2,
+    OBJCLASS_SCENEOBJECT= 2,
     OBJCLASS_LIGHT	   	= 3,
     OBJCLASS_OCCLUDER  	= 4,
     OBJCLASS_SOUND	   	= 5,

@@ -11,8 +11,8 @@
 //----------------------------------------------------
 
 // refs
-class CEditObject;
-class CEditMesh;
+class CSceneObject;
+class CEditableMesh;
 class EScene;
 class CLight;
 class ETextureCore;
@@ -60,9 +60,9 @@ class SceneBuilder{
     void    BuildLight      (b_light* b, CLight* e);
     void    BuildOccluder   (b_occluder* b, COccluder* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
-    void    BuildMesh       (CEditObject* parent, CEditMesh* mesh);
-    void    BuildObject     (CEditObject* obj);
-    void    BuildObjectDynamic(CEditObject* obj);
+    void    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num);
+    void    BuildObject     (CSceneObject* obj);
+    void    BuildObjectDynamic(CEditableObject* obj);
 
     void    ResetStructures ();
 
@@ -73,7 +73,7 @@ class SceneBuilder{
     int     BuildTexture    (ETextureCore* e_tex, const char* name);
 
     int     FindInMaterials (b_material* m);
-	int 	BuildMaterial	(CEditMesh* m, st_Surface* surf, int sector_num );
+	int 	BuildMaterial	(CEditableMesh* m, st_Surface* surf, int sector_num );
 protected:
 	friend void SaveBuild(b_transfer *info);
     friend class TfrmBuildProgress;
@@ -92,7 +92,6 @@ protected:
 	bool LightenObjects				();
 	bool PrepareFolders             ();
     bool PreparePath				();
-	bool ResolveReferences          ();
     bool UngroupAndUnlockObjects	();
 
 	bool GetShift                   ();
@@ -102,20 +101,17 @@ protected:
 
 	bool WriteTextures              ();
 	void AddUniqueTexName           (const char *name);
-    void AddUniqueTexName			(CEditObject* O);
+    void AddUniqueTexName			(CSceneObject* O);
 
-    // detail objects
-	bool BuildObjectDO				(CFS_Base& F, CEditObject *O, const char* name, FSPath& path);
     // OGF
-	bool BuildObjectOGF             (CFS_Base& F, CEditObject *obj, const char* base_name, FSPath& path);
+	bool BuildObjectOGF             (CFS_Base& F, CEditableObject *obj, const char* base_name, FSPath& path);
 	bool BuildSingleOGF             (CFS_Base& F, DWORD fid_start, DWORD cnt, int mid);
-    bool BuildOGFModels             ();
+    bool BuildSkyModel				();
 
-    void AssembleSkeletonObject		(CEditObject* obj);
-    void AssembleSkeletonMesh		(CEditMesh* mesh);
+    void AssembleSkeletonObject		(CEditableObject* obj);
+    void AssembleSkeletonMesh		(CEditableMesh* mesh);
 
-    bool BuildObjectVCF             (CFS_Base& F, CEditObject* obj);
-    bool BuildVCFModels             ();
+    bool BuildObjectVCF             (CFS_Base& F, CEditableObject* obj);
 
     bool RemoteStaticBuild          ();
 
@@ -138,11 +134,10 @@ public:
 
 	__inline bool InProgress        (){	return m_InProgress; }
 
-    bool SaveObjectVCF              (const char* name, CEditObject* obj);
-    bool SaveObjectOGF              (const char* name, CEditObject* obj);
-    bool SaveObjectSkeletonOGF      (const char* name, CEditObject* obj);
-    bool SaveObjectSkeletonLTX      (const char* name, CEditObject* obj);
-    bool SaveObjectDO               (const char* name, CEditObject* obj);
+    bool SaveObjectVCF              (const char* name, CEditableObject* obj);
+    bool SaveObjectOGF              (const char* name, CEditableObject* obj);
+    bool SaveObjectSkeletonOGF      (const char* name, CEditableObject* obj);
+    bool SaveObjectSkeletonLTX      (const char* name, CEditableObject* obj);
 };
 
 extern SceneBuilder* Builder;

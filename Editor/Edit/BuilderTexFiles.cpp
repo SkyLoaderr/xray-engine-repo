@@ -12,10 +12,11 @@
 #include "SceneClassList.h"
 #include "Texture.h"
 #include "EditObject.h"
+#include "SceneObject.h"
 //----------------------------------------------------
 
-void SceneBuilder::AddUniqueTexName(CEditObject* obj){
-	CEditObject *O = obj->IsReference()?obj->GetRef():obj;
+void SceneBuilder::AddUniqueTexName(CSceneObject* obj){
+	CEditableObject *O = obj->GetRef();
     for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++)
         for (AStringIt t_it=(*s_it)->textures.begin(); t_it!=(*s_it)->textures.end(); t_it++)
             AddUniqueTexName(t_it->c_str());

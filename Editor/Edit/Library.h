@@ -10,7 +10,7 @@
 //----------------------------------------------------
 class ETexture;
 class CCustomObject;
-class CEditObject;
+class CEditableObject;
 struct FSChunkDef;
 
 class CLibObject{
@@ -21,12 +21,12 @@ class CLibObject{
 	bool			m_bNeedSave;
     bool			m_bLoadingError;
 protected:
-    CEditObject*	m_EditObject;
+    CEditableObject*m_EditObject;
 	void			LoadObject				();
 protected:
+    AnsiString		m_Name;
 	AnsiString		m_FolderName;
-    AnsiString		m_RefName;
-	AnsiString		m_FileName;
+	AnsiString		m_SrcName;
 public:
 					CLibObject				(){
                     	m_bLoadingError	= false;
@@ -35,19 +35,20 @@ public:
                     }
 	virtual 		~CLibObject				();
 
-    const char*		GetRefName				()	{return m_RefName.c_str();}
-    const char*		GetFolderName			()	{return m_FolderName.c_str();}
-    void			SetRefName				(AnsiString& s)	{m_RefName=s;}
-	void			SetFolderName			(AnsiString& s)	{m_FolderName=s;}
-	void			SetFileName				(AnsiString& s)	{m_FileName=s;}
-	const char*		GetFileName				() {return m_FileName.c_str();}
+    LPCSTR			GetName					()	{return m_Name.c_str();}
+    LPCSTR			GetFolderName			()	{return m_FolderName.c_str();}
+	LPCSTR			GetSrcName				()	{return m_SrcName.c_str();}
+    void			SetName					(const AnsiString& s)	{m_Name=s;}
+	void			SetFolderName			(const AnsiString& s)	{m_FolderName=s;}
 
 	IC bool			IsLoaded				()	{return !!m_EditObject;}
 	IC bool			IsValid					()	{return m_EditObject;}
     IC void			Refresh					()	{m_bLoadingError=false;}
-    IC CEditObject*	GetReference			()	{if (!m_bLoadingError&&!IsLoaded()) LoadObject(); return m_EditObject;}
+    IC CEditableObject*	GetReference		()	{if (!m_bLoadingError&&!IsLoaded()) LoadObject(); return m_EditObject;}
 
-    bool			ImportFrom				(const char* name);
+    void			Modified				()	{m_bNeedSave=true;}
+
+    bool			ImportFrom				(LPCSTR name);
     void			SaveObject				();
 
   	void			Load					(CStream&);

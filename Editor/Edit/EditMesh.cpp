@@ -12,11 +12,11 @@
 #include "Bone.h"
 #include "Sector.h"
 
-CEditMesh::~CEditMesh(){
+CEditableMesh::~CEditableMesh(){
 	Clear();
 }
 
-void CEditMesh::Construct(){
+void CEditableMesh::Construct(){
 	m_Box.set	(0,0,0,0,0,0);
     m_Visible	= 1;
     m_Locked	= 0;
@@ -25,7 +25,7 @@ void CEditMesh::Construct(){
     m_LoadState	= 0;
 }
 
-void CEditMesh::Clear(){
+void CEditableMesh::Clear(){
 	ClearRenderBuffers	();
 	m_Points.clear 		();
     m_Adjs.clear		();
@@ -38,27 +38,27 @@ void CEditMesh::Clear(){
     UnloadPNormals		();
 }
 
-void CEditMesh::UnloadCForm     (){
+void CEditableMesh::UnloadCForm     (){
     _DELETE(m_CFModel);
     m_LoadState &=~ EMESH_LS_CF_MODEL;
 }
 
-void CEditMesh::UnloadFNormals   (){
+void CEditableMesh::UnloadFNormals   (){
 	m_FNormals.clear	();
     m_LoadState &=~ EMESH_LS_FNORMALS;
 }
 
-void CEditMesh::UnloadPNormals   (){
+void CEditableMesh::UnloadPNormals   (){
 	m_PNormals.clear	();
     m_LoadState &=~ EMESH_LS_PNORMALS;
 }
 
-void CEditMesh::UnloadSVertices	 (){
+void CEditableMesh::UnloadSVertices	 (){
 	m_SVertices.clear	();
     m_LoadState &=~ EMESH_LS_SVERTICES;
 }
 
-void CEditMesh::RecomputeBBox(){
+void CEditableMesh::RecomputeBBox(){
 	if( m_Points.empty() ){
 		m_Box.set(0,0,0, 0,0,0);
 		return;
@@ -70,7 +70,7 @@ void CEditMesh::RecomputeBBox(){
 //----------------------------------------------------
 // номер face должен соответствовать списку
 //----------------------------------------------------
-void CEditMesh::GenerateCFModel(){
+void CEditableMesh::GenerateCFModel(){
 	UnloadCForm();
 
     m_CFModel = new RAPID::Model();    VERIFY(m_CFModel);
@@ -102,7 +102,7 @@ void CEditMesh::GenerateCFModel(){
     m_LoadState |= EMESH_LS_CF_MODEL;
 }
 
-void CEditMesh::GenerateFNormals(){
+void CEditableMesh::GenerateFNormals(){
     m_FNormals.resize	(m_Faces.size());
     // face normals
 	FaceIt 		f_it	= m_Faces.begin();
@@ -124,7 +124,7 @@ void CEditMesh::GenerateFNormals(){
     m_LoadState |= EMESH_LS_FNORMALS;
 }
 
-void CEditMesh::GeneratePNormals(){
+void CEditableMesh::GeneratePNormals(){
 	if (!(m_LoadState&EMESH_LS_FNORMALS)) GenerateFNormals();
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
@@ -148,7 +148,7 @@ void CEditMesh::GeneratePNormals(){
     m_LoadState |= EMESH_LS_PNORMALS;
 }
 
-void CEditMesh::GenerateSVertices(){
+void CEditableMesh::GenerateSVertices(){
 	if (!m_Parent->IsSkeleton()) return;
 
     m_Parent->ResetAnimation();
@@ -197,7 +197,7 @@ void CEditMesh::GenerateSVertices(){
     m_LoadState |= EMESH_LS_SVERTICES;
 }
 
-st_Surface*	CEditMesh::GetSurfaceByFaceID(int fid){
+st_Surface*	CEditableMesh::GetSurfaceByFaceID(int fid){
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
         if (find(face_lst.begin(),face_lst.end(),fid)!=face_lst.end()) return sp_it->first;
@@ -205,7 +205,7 @@ st_Surface*	CEditMesh::GetSurfaceByFaceID(int fid){
     return 0;
 }
 
-st_Surface* CEditMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
+st_Surface* CEditableMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
     st_Surface* surf = GetSurfaceByFaceID(fid);
     VERIFY(surf);
 
@@ -217,7 +217,7 @@ st_Surface* CEditMesh::GetFaceTC(int fid, const Fvector2* tc[3]){
     return surf;
 }
 
-st_Surface* CEditMesh::GetFacePT(int fid, const Fvector* pt[3]){
+st_Surface* CEditableMesh::GetFacePT(int fid, const Fvector* pt[3]){
     st_Surface* surf = GetSurfaceByFaceID(fid);
     VERIFY(surf);
 
@@ -227,7 +227,7 @@ st_Surface* CEditMesh::GetFacePT(int fid, const Fvector* pt[3]){
     return surf;
 }
 
-int CEditMesh::GetFaceCount(bool bMatch2Sided){
+int CEditableMesh::GetFaceCount(bool bMatch2Sided){
 	int f_cnt = 0;
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
     	if (bMatch2Sided){
@@ -240,7 +240,7 @@ int CEditMesh::GetFaceCount(bool bMatch2Sided){
     return f_cnt;
 }
 
-int CEditMesh::GetSurfFaceCount(st_Surface* surf, bool bMatch2Sided){
+int CEditableMesh::GetSurfFaceCount(st_Surface* surf, bool bMatch2Sided){
 	SurfFacesPairIt sp_it = m_SurfFaces.find(surf);
     if (sp_it==m_SurfFaces.end()) return 0;
 	int f_cnt = sp_it->second.size();
@@ -248,7 +248,7 @@ int CEditMesh::GetSurfFaceCount(st_Surface* surf, bool bMatch2Sided){
     return f_cnt;
 }
 
-void CEditMesh::DumpAdjacency(){
+void CEditableMesh::DumpAdjacency(){
 	ELog.Msg(mtInformation,"Adjacency dump.");
 	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
     for (DWORD i=0; i<m_Adjs.size(); i++){

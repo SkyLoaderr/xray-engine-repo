@@ -9,26 +9,7 @@
 #include "EditObject.h"
 #include "ui_main.h"
 //----------------------------------------------------
-void CEditMesh::CloneFrom(CEditMesh *source){
-	VERIFY(source);
-    CEditObject* save_parent = m_Parent;
-    // full copy from source object
-    *this = *source;
-    // restore pointers
-    m_LoadState = 0;
-    m_Parent 	= save_parent;
-    m_CFModel 	= NULL;
-	// copy surface links
-	m_SurfFaces.clear();
-	for (SurfFacesPairIt sp_it=source->m_SurfFaces.begin(); sp_it!=source->m_SurfFaces.end(); sp_it++){
-        st_Surface* 	surf= m_Parent->FindSurfaceByName(sp_it->first->name); VERIFY(surf);
-        INTVec&			face_lst = m_SurfFaces[surf];
-        face_lst		= sp_it->second;
-    }
-}
-
-//----------------------------------------------------
-void CEditMesh::Transform(const Fmatrix& parent){
+void CEditableMesh::Transform(const Fmatrix& parent){
 	// transform position
 	for(FvectorIt pt=m_Points.begin(); pt!=m_Points.end(); pt++)
 		parent.transform_tiny(*pt);
@@ -55,7 +36,7 @@ void CEditMesh::Transform(const Fmatrix& parent){
 }
 //----------------------------------------------------
 
-bool CEditMesh::UpdateAdjacency(){
+bool CEditableMesh::UpdateAdjacency(){
 	if (m_Faces.empty()) return false;
     UI->SetStatus("Update Adjacency:");
     m_Adjs.clear();
@@ -73,7 +54,7 @@ static DWORDVec		VM[MX+1][MY+1][MZ+1];
 static Fvector		VMeps;
 
 static FvectorVec m_NewPoints;
-bool CEditMesh::OptimizeFace(st_Face& face){
+bool CEditableMesh::OptimizeFace(st_Face& face){
 	Fvector points[3];
 	int mface[3];
 	int k;
@@ -138,7 +119,7 @@ bool CEditMesh::OptimizeFace(st_Face& face){
 	}
 }
 
-void CEditMesh::Optimize(){
+void CEditableMesh::Optimize(){
 	// clear static data
     for (int x=0; x<MX+1; x++)
 	    for (int y=0; y<MY+1; y++)

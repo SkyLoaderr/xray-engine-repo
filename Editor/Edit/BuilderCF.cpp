@@ -9,14 +9,15 @@
 
 #include "Scene.h"
 #include "SceneClassList.h"
+#include "SceneObject.h"
 #include "EditObject.h"
 #include "EditMesh.h"
 #include "xrLevel.h"
 #include "cl_collector.h"
 
-bool SceneBuilder::SaveObjectVCF(const char* name, CEditObject* obj){
+bool SceneBuilder::SaveObjectVCF(LPCSTR name, CEditableObject* obj){
 	CFS_Memory F;
-    bool bRes = BuildObjectVCF(F, (obj->IsReference())?obj->GetRef():obj);
+    bool bRes = BuildObjectVCF(F, obj);
     if (bRes) F.SaveTo(name,0);
     return bRes;
 }
@@ -27,26 +28,17 @@ struct st_VCFFace{
 };
 DEFINE_VECTOR(st_VCFFace,VCFFaceVec,VCFFaceIt);
 
-bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditObject* obj){
+bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditableObject* obj){
     FvectorVec		V;
     VCFFaceVec		F;
 
-    Fbox          	BB;
     DWORD           offs;
 	Fvector         C;
     float           R;
-    bool			bFirstInit=true;
 
-    obj->GetBox		(BB);
-
+    Fbox& BB		= obj->GetBox();
 
     for(EditMeshIt m=obj->FirstMesh();m!=obj->LastMesh();m++){
-        if (bFirstInit){
-            bFirstInit = false;
-            BB.set((*m)->m_Box);
-        }else{
-            BB.merge((*m)->m_Box);
-        }
         offs = V.size();
 
         for(FvectorIt V_it=(*m)->m_Points.begin(); V_it!=(*m)->m_Points.end(); V_it++) V.push_back(*V_it);
@@ -88,26 +80,4 @@ bool SceneBuilder::BuildObjectVCF(CFS_Base& FM, CEditObject* obj){
     return true;
 }
 //----------------------------------------------------
-
-bool SceneBuilder::BuildVCFModels( ){
-	int objcount = Scene->ObjCount(OBJCLASS_EDITOBJECT);
-	if( objcount <= 0 ) return true;
-
-    char temp[MAX_OBJ_NAME];
-  	int handle;
-	// -- mobile objects --
-	ObjectIt i = Scene->FirstObj(OBJCLASS_EDITOBJECT);
-	ObjectIt _E = Scene->LastObj(OBJCLASS_EDITOBJECT);
-	for(;i!=_E;i++){
-        CEditObject *obj = (CEditObject*)(*i);
-        if(obj->IsDynamic() && !obj->IsReference()){
-            sprintf(temp,"%s.vcf",obj->GetName());
-            m_LevelPath.Update(temp);
-            CFS_Memory F;
-            BuildObjectVCF(F, obj);
-            F.SaveTo(temp,0);
-        }
-	}
-	return true;
-}
 

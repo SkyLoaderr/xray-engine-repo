@@ -53,8 +53,8 @@ void __fastcall TfrmEditLibrary::EditLibrary()
     Show();
 }
 //---------------------------------------------------------------------------
-CCustomObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
-    CEditObject* O = m_SelectedObject->GetReference();
+CEditableObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf){
+    CEditableObject* O = m_SelectedObject->GetReference();
     if (O){
     	float dist=flt_max;
     	O->RayPick(dist,start,direction,precalc_identity,pinf);
@@ -65,28 +65,25 @@ CCustomObject* __fastcall TfrmEditLibrary::RayPick(const Fvector& start, const F
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::OnRender(){
 	if (m_SelectedObject&&cbPreview->Checked){
-    	CEditObject* O = m_SelectedObject->GetReference();
+    	CEditableObject* O = m_SelectedObject->GetReference();
 	    if (O){
         	O->RTL_Update(Device.fTimeDelta);
 			O->RenderSingle(precalc_identity);
-            if (fraBottomBar->miDrawObjectBones->Checked) O->RenderBones(O->GetTransform());
+            if (fraBottomBar->miDrawObjectBones->Checked) O->RenderBones(precalc_identity);
 	    }
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::OnIdle(){
-	if (m_SelectedObject&&cbPreview->Checked){
-    	CEditObject* O = m_SelectedObject->GetReference();
-	    if (O&&frmPropertiesObject) frmPropertiesObject->OnIdle();
-    }
+	if (m_SelectedObject&&cbPreview->Checked)
+	    if (TfrmPropertiesObject::Visible()) TfrmPropertiesObject::OnIdle();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ZoomObject(){
 	if (m_SelectedObject&&cbPreview->Checked){
-        CEditObject* O = m_SelectedObject->GetReference();
+        CEditableObject* O = m_SelectedObject->GetReference();
         if (O){
-            Fbox bb;
-            O->GetBox(bb);
+            Fbox& bb = O->GetBox();
             Device.m_Camera.ZoomExtents(bb);
         }
     }
@@ -228,7 +225,7 @@ void TfrmEditLibrary::InitObjectFolder()
         CLibObject* _O = *it;
         TElTreeItem* node = FindFolder(_O->GetFolderName());
         if (!node) node = AddFolder(_O->GetFolderName());
-        AddObject(node,(*it)->GetRefName(),(void*)(*it));
+        AddObject(node,(*it)->GetName(),(void*)(*it));
     }
 	SendMessage(tvObjects->Handle,WM_SETREDRAW,1,0);
 	tvObjects->Repaint();
@@ -277,24 +274,12 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
         _pT = (CLibObject*) pNode->Data;
         if (_pT){
 	        _pT->Refresh();
-            ObjectList objset;
-            CEditObject* O = _pT->GetReference();
+            CEditableObject* O = _pT->GetReference();
             if (!O){
-            	ELog.DlgMsg(mtError, "Object '%s.object' can't found in \\Meshes directory.", _pT->GetRefName());
+            	ELog.DlgMsg(mtError, "Object '%s.object' can't found in \\Meshes directory.", _pT->GetName());
                 return;
             }
-			objset.push_back(O);
-            bool bChange;
-            if (frmPropertiesObjectRun(&objset,bChange)==mrOk){
-            	_pT->m_bNeedSave = true;
-                OnModified();
-				_pT->m_RefName = O->GetName();
-                TElTreeItem* pObjectNode = FindObject(_pT);
-                if (pObjectNode) pObjectNode->Text = _pT->GetRefName();
-            }else{
-            	// если были изменения и нажата отмена - перегрузить объект
-            	if (bChange) _pT->UnloadObject();
-            }
+            TfrmPropertiesObject::ShowProperties();
         }else{
             ELog.DlgMsg(mtInformation,"Select object to edit.");
         }
@@ -334,38 +319,37 @@ void __fastcall TfrmEditLibrary::ebLoadObjectClick(TObject *Sender)
         char name[1024];
         char ext[32];
         _splitpath( _FileName, 0, 0, name, ext );
-        CLibObject* obj = new CLibObject();
-		obj->m_RefName = name;
-        if (obj->ImportFrom(_FileName)){
-            obj->m_bNeedSave = true;
+        CLibObject* LO = new CLibObject();
+		LO->SetName(name);
+        if (LO->ImportFrom(_FileName)){
+            LO->m_bNeedSave = true;
             // append to library
-            Lib->AddObject(obj);
+            Lib->AddObject(LO);
 			// generate object name
-        	CEditObject* O = obj->GetReference();
+        	CEditableObject* O = LO->GetReference();
             char obj_name[MAX_OBJ_NAME];
-            Lib->GenerateObjectName(obj_name,O->GetName(),obj);
-        	obj->SetRefName(AnsiString(obj_name));
-            strcpy(O->GetName(),obj_name);
+            Lib->GenerateObjectName(obj_name,O->GetName(),LO);
+        	LO->SetName(obj_name);
             // find last folder
             TElTreeItem* node = tvObjects->Selected;
             TElTreeItem* pParentNode = 0;
             if (node){
                 pParentNode = (node->Parent)?node->Parent:node;
                 if (!pParentNode->Data){
-                    obj->SetFolderName(pParentNode->Text);
+                    LO->SetFolderName(pParentNode->Text);
                 }else{
                     pParentNode=0;
                 }
             }
-		    tvObjects->Selected = AddObject(pParentNode, obj->GetRefName(), (void*)obj);
+		    tvObjects->Selected = AddObject(pParentNode, LO->GetName(), (void*)LO);
             ebPropertiesClick(Sender);
             // init folders
             OnModified();
-            obj->SaveObject();
+            LO->SaveObject();
 
 			FS.MarkFile(_FileName);
     	}else{
-        	_DELETE(obj);
+        	_DELETE(LO);
         }
 	}
 }
@@ -401,7 +385,7 @@ void __fastcall TfrmEditLibrary::ebReloadObjectClick(TObject *Sender)
     	if (pNode->Data){
             CLibObject* obj = (CLibObject*)pNode->Data;
             if (obj){
-				AnsiString fn = obj->GetFileName();
+				AnsiString fn = obj->GetSrcName();
 			    if( FS.GetOpenName( &FS.m_Import, fn ) ){
                 	// save old params
                     bool bDynamic  = obj->GetReference()->IsDynamic();
@@ -506,7 +490,7 @@ void __fastcall TfrmEditLibrary::tvObjectsStartDrag(TObject *Sender,
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ebSaveObjectOGFClick(TObject *Sender)
 {
-    CEditObject* _pT = 0;
+    CEditableObject* _pT = 0;
     TElTreeItem* pNode = tvObjects->Selected;
     if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
     if (_pT){
@@ -529,33 +513,8 @@ void __fastcall TfrmEditLibrary::ebSaveObjectOGFClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebSaveObjectDOClick(TObject *Sender)
-{
-    CEditObject* _pT = 0;
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
-    if (_pT){
-    	if (!_pT->IsDynamic()){
-        	ELog.DlgMsg(mtInformation, "Export only dynamic object!");
-            return;
-        }
-        char buf[MAX_PATH];
-        strcpy(buf,_pT->GetName());
-        if (FS.GetSaveName(&FS.m_GameDO,buf)){
-            if (!Builder->SaveObjectDO(buf,_pT)){
-                ELog.DlgMsg(mtInformation, "Can't save object '%s'.", _pT->GetName());
-            }else{
-                ELog.DlgMsg(mtInformation, "Object '%s' export successfully.", _pT->GetName());
-            }
-        }
-    }else{
-        ELog.DlgMsg(mtInformation, "Select object before save.");
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmEditLibrary::ebSaveObjectSkeletonOGFClick(TObject *Sender){
-    CEditObject* _pT = 0;
+    CEditableObject* _pT = 0;
     TElTreeItem* pNode = tvObjects->Selected;
     if (pNode && pNode->Data) _pT = ((CLibObject*)pNode->Data)->GetReference();
     if (_pT){
@@ -581,7 +540,7 @@ void __fastcall TfrmEditLibrary::ebSaveObjectSkeletonOGFClick(TObject *Sender){
 
 void __fastcall TfrmEditLibrary::ebSaveObjectVCFClick(TObject *Sender)
 {
-    CEditObject* _pT = 0;
+    CEditableObject* _pT = 0;
     TElTreeItem* pNode = tvObjects->Selected;
     if (pNode && pNode->Data) _pT = ((CLibObject*) pNode->Data)->GetReference();
     if (_pT){
@@ -613,8 +572,8 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
         CLibObject* LO = (CLibObject*)tvObjects->Selected->Data;
     	if (LO->IsLoaded()&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
-            obj_name = AnsiString(LO->GetRefName())+AnsiString(".object");
-            tex_name = "$O_"+AnsiString(LO->GetRefName());
+            obj_name = AnsiString(LO->GetName())+AnsiString(".object");
+            tex_name = "$O_"+AnsiString(LO->GetName());
             FS.m_Objects.Update(obj_name);
             src_age = FS.GetFileAge(obj_name);
             if (Device.MakeScreenshot(pixels,w,h)){

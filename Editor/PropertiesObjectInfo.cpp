@@ -19,44 +19,33 @@
 void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 {
 // Set up info
-    stNumericSet->Enabled 	= !bMultiSelection;
-    if (!bMultiSelection){
-        paMatrix->Visible = true;
-        paBB->Visible = true;
-        if (m_EditObject->IsReference())
-            stNumericSet->Enabled = false;
+    stNumericSet->Enabled 	= true;
 
-		AnsiString n;
-        int i;
-        const Fvector& P=m_EditObject->GetPosition();
-        for (i=0; i<3; i++) sgTransform->Cells[i+1][0]=n.sprintf("%.3f", P[i]);
-        const Fvector& R=m_EditObject->GetRotate();
-        for (i=0; i<3; i++) sgTransform->Cells[i+1][1]=n.sprintf("%.1f", rad2deg(R[i]));
-        const Fvector& S=m_EditObject->GetScale();
-        for (i=0; i<3; i++) sgTransform->Cells[i+1][2]=n.sprintf("%.3f", S[i]);
+    paMatrix->Visible = true;
+    paBB->Visible = true;
 
-        Fbox BB;
-        m_EditObject->GetBox(BB);
-        for (int col=1; col<5; col++){
-            Fvector p;
-            switch(col){
-            case 1: p.set(BB.min);break;
-            case 2: p.set(BB.max);break;
-            case 3: BB.getsize(p);break;
-            case 4: p.set(m_EditObject->GetCenter());break;
-            }
-            for (int row=0; row<3; row++){
-                AnsiString n; n.sprintf("%.3f", p[row]);
-                sgBB->Cells[col][row] = n;
-            }
+    AnsiString n;
+    int i;
+    const Fvector& P=m_CurrentObject->TPosition();
+    for (i=0; i<3; i++) sgTransform->Cells[i+1][0]=n.sprintf("%.3f", P[i]);
+    const Fvector& R=m_CurrentObject->TRotate();
+    for (i=0; i<3; i++) sgTransform->Cells[i+1][1]=n.sprintf("%.1f", rad2deg(R[i]));
+    const Fvector& S=m_CurrentObject->TScale();
+    for (i=0; i<3; i++) sgTransform->Cells[i+1][2]=n.sprintf("%.3f", S[i]);
+
+    Fbox& BB = m_CurrentObject->GetBox();
+    for (int col=1; col<5; col++){
+        Fvector p;
+        switch(col){
+        case 1: p.set(BB.min);break;
+        case 2: p.set(BB.max);break;
+        case 3: BB.getsize(p);break;
+        case 4: BB.getcenter(p);break;
         }
-    }else{
-    	VERIFY(!m_Objects.empty());
-        paMatrix->Enabled = false;
-        paBB->Enabled = false;
-        for (int col=1; col<4; col++) for (int row=0; row<3; row++) sgTransform->Cells[col][row] = "-";
-        for (col=1; col<5; col++) for (row=0; row<3; row++) sgBB->Cells[col][row] = "-";
-	    ObjectIt _F = m_Objects.begin();
+        for (int row=0; row<3; row++){
+            AnsiString n; n.sprintf("%.3f", p[row]);
+            sgBB->Cells[col][row] = n;
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -72,19 +61,19 @@ void __fastcall TfrmPropertiesObject::ebNumericSetMouseDown(TObject *Sender,
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::Position1Click(TObject *Sender){
-    UI->Command(COMMAND_SET_NUMERIC_POSITION,(int)m_EditObject);
+//	UI->Command(COMMAND_SET_NUMERIC_POSITION,(int)m_EditObject);
     tsInfoShow(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::Rotation1Click(TObject *Sender){
-	UI->Command(COMMAND_SET_NUMERIC_ROTATION,(int)m_EditObject);
+//	UI->Command(COMMAND_SET_NUMERIC_ROTATION,(int)m_EditObject);
     tsInfoShow(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::Scale1Click(TObject *Sender){
-	UI->Command(COMMAND_SET_NUMERIC_SCALE,(int)m_EditObject);
+//	UI->Command(COMMAND_SET_NUMERIC_SCALE,(int)m_EditObject);
     tsInfoShow(Sender);
 }
 //---------------------------------------------------------------------------

@@ -7,6 +7,7 @@
 #include "Sector.h"
 #include "editmesh.h"
 #include "EditObject.h"
+#include "SceneObject.h"
 #include "frameSector.h"
 #include "topbar.h"
 #include "ui_main.h"
@@ -54,16 +55,16 @@ void TUI_ControlSectorAdd::AddMesh(){
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     VERIFY(sector);
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false))
-		sector->AddMesh(pinf.obj,pinf.mesh);
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
 }
 
 void TUI_ControlSectorAdd::DelMesh(){
     m_Action = saDelMesh;
     CSector* sector=(CSector*)fraSector->cbItems->Items->Objects[fraSector->cbItems->ItemIndex];
     SRayPickInfo pinf;
-    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_EDITOBJECT, &pinf, false, false))
-		sector->DelMesh(pinf.obj,pinf.mesh);
+    if (Scene->RayPick( UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, false, false))
+		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
 }
 
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
@@ -104,14 +105,16 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
             UI->EnableSelectionRect( false );
             DWORDVec fl;
             Fmatrix matrix;
-            CEditObject *O_ref=NULL, *O_lib=NULL;;
+            CSceneObject* O_ref=NULL;
+            CEditableObject* O_lib=NULL;
 
             CFrustum frustum;
             ObjectList lst;
             if (UI->SelectionFrustum(frustum)){;
-                Scene->FrustumPick(frustum, OBJCLASS_EDITOBJECT, lst);
+                Scene->FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                    O_ref = (CEditObject*)(*_F); O_lib=(O_ref->IsReference())?O_ref->GetRef():O_ref;
+                    O_ref = (CSceneObject*)(*_F);
+                    O_lib = O_ref->GetRef();
                     for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
                         fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);

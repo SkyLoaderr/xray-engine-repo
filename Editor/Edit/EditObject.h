@@ -7,7 +7,7 @@
 #include "CustomObject.h"
 //----------------------------------------------------
 struct 	SRayPickInfo;
-class 	CEditMesh;
+class 	CEditableMesh;
 class 	CFrustum;
 class 	Shader;
 class 	ETextureCore;
@@ -30,7 +30,7 @@ struct st_Surface{
     ERenderPriority	RenderPriority	();
 };
 DEFINE_VECTOR	(st_Surface*,SurfaceVec,SurfaceIt);
-DEFINE_VECTOR	(CEditMesh*,EditMeshVec,EditMeshIt);
+DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(CBone*,BoneVec,BoneIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
@@ -46,9 +46,9 @@ struct st_AnimParam{
     void			Update	(float dt);
 };
 
-class CEditObject{
+class CEditableObject{
 	friend class CSceneObject;
-	friend class CEditMesh;
+	friend class CEditableMesh;
     friend class TfrmPropertiesObject;
     friend class CSector;
     friend class TUI_ControlSectorAdd;
@@ -74,10 +74,14 @@ protected:
 
 	// bounding volume
 	Fbox 			m_Box;
+
+    // temp variables for transformation
+	Fvector 		t_vPosition;
+    Fvector			t_vScale;
+    Fvector			t_vRotate;
 protected:
     st_Version		m_ObjVer;
 
-    void 			CopyGeometry			(CEditObject* source);
     void 			ClearGeometry			();
 
     void			ClearRenderBuffers		();
@@ -88,14 +92,15 @@ protected:
 	void 			UpdateBoneParenting		();
 public:
     DWORD			m_LoadState;
+
+	CLibObject*		m_LibParent;
 public:
     // constructor/destructor methods
-					CEditObject				();
-    				CEditObject				(CEditObject* source);
-	virtual 		~CEditObject			();
+					CEditableObject			(CLibObject* parent);
+	virtual 		~CEditableObject		();
 
-	void 			Construct				();
-    void 			CloneFrom				(CEditObject* source, bool bSetPlacement);
+    LPCSTR			GetName					();
+    void			SetName					(LPCSTR name);
 
     IC EditMeshIt	FirstMesh				()	{return m_Meshes.begin();}
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
@@ -143,7 +148,7 @@ public:
 //	virtual bool 	IsRender				(Fmatrix& parent);
 	virtual void 	Render					(Fmatrix& parent, ERenderPriority flag);
 	void 			RenderSelection			(Fmatrix& parent);
-	void 			RenderEdge				(Fmatrix& parent, CEditMesh* m=0);
+	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(Fmatrix& parent);
@@ -151,7 +156,6 @@ public:
     // update methods
 	virtual void 	RTL_Update				(float dT);
 	void 			UpdateBox				();
-    virtual void	UpdateTransform			();
 	void		    LightenObject			();
 
     // pick methods
@@ -164,7 +168,7 @@ public:
 	void 			TranslateToWorld		(const Fmatrix& parent);
 
     // clone/copy methods
-    void			RemoveMesh				(CEditMesh* mesh);
+    void			RemoveMesh				(CEditableMesh* mesh);
     void			RemoveOMotion			(const char* name);
     bool			RenameOMotion			(const char* old_name, const char* new_name);
     COMotion*		AppendOMotion			(const char* fname);
@@ -191,10 +195,10 @@ public:
 	void 			Save					(CFS_Base&);
 
     // contains methods
-    CEditMesh* 		FindMeshByName			(const char* name, CEditMesh* Ignore=0);
+    CEditableMesh* 	FindMeshByName			(const char* name, CEditableMesh* Ignore=0);
     void			GenerateMeshNames		();
     void			VerifyMeshNames			();
-    bool 			ContainsMesh			(const CEditMesh* m);
+    bool 			ContainsMesh			(const CEditableMesh* m);
 	st_Surface*		FindSurfaceByName		(const char* surf_name, int* s_id=0);
     CBone*			FindBoneByName			(const char* name);
     int				GetBoneIndexByWMap		(const char* wm_name);
@@ -202,6 +206,19 @@ public:
     CSMotion* 		FindSMotionByName		(const char* name, const CSMotion* Ignore=0);
     void			GenerateOMotionName		(char* buffer, const char* start_name, const COMotion* M);
     void			GenerateSMotionName		(char* buffer, const char* start_name, const CSMotion* M);
+
+    // transformation
+    IC Fvector& 	TPosition				(){return t_vPosition;}
+    IC Fvector& 	TRotate					(){return t_vRotate;}
+    IC Fvector& 	TScale					(){return t_vScale;}
+
+    bool 			GetTPosition			(Fvector& pos){pos.set(t_vPosition); return true; }
+    bool 			GetTRotate				(Fvector& rot){rot.set(t_vRotate); return true; }
+    bool 			GetTScale				(Fvector& scale){scale.set(t_vScale); return true; }
+
+    void 			SetTPosition			(Fvector& pos){t_vPosition.set(pos);}
+    void 			SetTRotate				(Fvector& rot){t_vRotate.set(rot);}
+    void 			SetTScale				(Fvector& scale){t_vScale.set(scale);}
 
     // device dependent routine
 	void 			OnDeviceCreate 			();

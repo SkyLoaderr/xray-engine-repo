@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: CEditObject.cpp
+// file: CEditableObject.cpp
 //----------------------------------------------------
 
 #include "stdafx.h"
@@ -31,7 +31,7 @@
 #define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
 //----------------------------------------------------
 
-bool CEditObject::Load(const char* fname){
+bool CEditableObject::Load(const char* fname){
 	AnsiString ext=ExtractFileExt(fname);
     ext=ext.LowerCase();
     if 	(ext==".lwo")    		return Import_LWO(fname,false);//(ELog.DlgMsg(mtConfirmation,"Optimize object?")==mrYes)?true:false);
@@ -39,7 +39,7 @@ bool CEditObject::Load(const char* fname){
 	return false;
 }
 
-bool CEditObject::LoadObject(const char* fname){
+bool CEditableObject::LoadObject(const char* fname){
     CStream* F;
     F = new CFileStream(fname);
     char MARK[8];
@@ -56,7 +56,7 @@ bool CEditObject::LoadObject(const char* fname){
     return bRes;
 }
 
-void CEditObject::SaveObject(const char* fname){
+void CEditableObject::SaveObject(const char* fname){
     CFS_Memory F;
     F.open_chunk(CHUNK_OBJECT_BODY);
     Save(F);
@@ -70,14 +70,14 @@ void CEditObject::SaveObject(const char* fname){
 }
 
 
-bool CEditObject::Load(CStream& F){
+bool CEditableObject::Load(CStream& F){
     bool bRes = true;
 	do{
         DWORD version = 0;
         char buf[1024];
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_VERSION,&version));
         if (version!=EOBJ_CURRENT_VERSION){
-            ELog.DlgMsg( mtError, "CEditObject: unsupported file version. Object can't load.");
+            ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
             bRes = false;
             break;
         }
@@ -88,7 +88,6 @@ bool CEditObject::Load(CStream& F){
             F.RstringZ	(buf); m_ClassScript=buf;
         }
 
-        R_ASSERT(F.FindChunk(EOBJ_CHUNK_REFERENCE));
         // file version
         R_ASSERT(F.ReadChunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
         // surfaces
@@ -121,12 +120,12 @@ bool CEditObject::Load(CStream& F){
         if(OBJ){
             CStream* M   = OBJ->OpenChunk(0);
             for (int count=1; M; count++) {
-                CEditMesh* mesh=new CEditMesh(this);
+                CEditableMesh* mesh=new CEditableMesh(this);
                 if (mesh->LoadMesh(*M))
                     m_Meshes.push_back(mesh);
                 else{
                     _DELETE(mesh);
-                    ELog.DlgMsg( mtError, "CEditObject: Can't load mesh!", buf );
+                    ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", buf );
                     bRes = false;
                 }
                 M->Close();
@@ -185,13 +184,12 @@ bool CEditObject::Load(CStream& F){
 
         if (!bRes) break;
         UpdateBox();
-        UpdateTransform();
     }while(0);
 
     return bRes;
 }
 
-void CEditObject::Save(CFS_Base& F){
+void CEditableObject::Save(CFS_Base& F){
 	F.open_chunk	(EOBJ_CHUNK_VERSION);
 	F.Wword			(EOBJ_CURRENT_VERSION);
 	F.close_chunk	();
@@ -259,7 +257,7 @@ void CEditObject::Save(CFS_Base& F){
     }
 }
 //------------------------------------------------------------------------------
-CSMotion* CEditObject::LoadSMotion(const char* fname){
+CSMotion* CEditableObject::LoadSMotion(const char* fname){
 	if (FS.Exist(fname)){
     	CSMotion* M = new CSMotion();
         if (!M->LoadMotion(fname)){
@@ -270,7 +268,7 @@ CSMotion* CEditObject::LoadSMotion(const char* fname){
 	return 0;
 }
 //------------------------------------------------------------------------------
-COMotion* CEditObject::LoadOMotion(const char* fname){
+COMotion* CEditableObject::LoadOMotion(const char* fname){
 	if (FS.Exist(fname)){
     	COMotion* M = new COMotion();
         if (!M->LoadMotion(fname)){

@@ -2,8 +2,9 @@
 #define _INCDEF_PortalUtils_H_
 
 //refs
-class CEditMesh;
-class CEditObject;
+class CEditableMesh;
+class CEditableObject;
+class CSceneObject;
 class CSector;
 
 struct SVertex: public Fvector{
@@ -38,9 +39,7 @@ public:
 	bool CreateDefaultSector();
 	bool RemoveDefaultSector();
 
-//	bool IsFaceUsed(CEditObject* o, CEditMesh* m, DWORD f_id);
-//	void TestUsedFaces(CEditObject* o, CEditMesh* m, DWORDVec& fl); // remove used from list
-	CSector* FindSector(CEditObject* o, CEditMesh* m);
+	CSector* FindSector(CSceneObject* o, CEditableMesh* m);
 
 	void CreateDebugCollection();
     bool Validate(bool bMsg);

@@ -21,8 +21,7 @@ struct UndoItem {
 #pragma pack( pop )
 
 class CLight;
-class CEditObject;
-class CEditMesh;
+class CSceneObject;
 class CDPatchSystem;
 class CDetailManager;
 class CInifile;
@@ -85,11 +84,11 @@ public:
 	// addition objects
     CDPatchSystem* 	m_DetailPatches;
     CDetailManager*	m_DetailObjects;
-    CEditObject*	m_SkyDome;
+    CSceneObject*	m_SkyDome;
 
     ObjectList		m_SnapObjects;
 
-	typedef	FixedMAP<float,CEditObject*>   mapObject_D;
+	typedef	FixedMAP<float,CSceneObject*>   mapObject_D;
 	typedef mapObject_D::TNode	 	    mapObject_Node;
 	mapObject_D						    mapRenderObjects;
 public:
@@ -200,7 +199,7 @@ public:
 
 	void SetLights					();
 	void ClearLights				();
-    void TurnLightsForObject		(CEditObject* obj);
+    void TurnLightsForObject		(CSceneObject* obj);
 
 	void GenObjectName				(EObjClass cls_id, char *buffer, const char* prefix=NULL);
 	bool SearchName					(char *name);

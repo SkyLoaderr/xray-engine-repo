@@ -23,56 +23,23 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
     bool bEq;
     AnsiString name;
     tvSurfaces->Items->Clear();
-    if (!bMultiSelection){
-    	CEditObject *_O = m_EditObject;
-        if (m_EditObject->GetRef()) _O = m_EditObject->GetRef();
 
-        // create root tree node (object name)
-        name.sprintf("%s (%s)",m_EditObject->GetName(),_O->GetName());
-        TElTreeItem* root = tvSurfaces->Items->AddObject(0,name,(TObject*)_O);
-        root->ParentStyle = false;
-        root->Bold = true;
-		root->Underlined = true;
+    // create root tree node (object name)
+    name.sprintf("%s (%s)",m_CurrentObject->GetName(),m_CurrentObject->GetName());
+    TElTreeItem* root = tvSurfaces->Items->AddObject(0,name,(TObject*)m_CurrentObject);
+    root->ParentStyle = false;
+    root->Bold = true;
+    root->Underlined = true;
 
-        for (SurfaceIt s_it=_O->m_Surfaces.begin(); s_it!=_O->m_Surfaces.end(); s_it++){
-	        TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->name,(TObject*)(*s_it));
-	        pNode->ParentStyle = false;
-	        pNode->Bold = true;
-        	for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++)
-				tvSurfaces->Items->AddChild(pNode,*n_it);
-        }
-		root->Expand(false);
-    }else{
-    	VERIFY(!m_Objects.empty());
-
-	    ObjectIt _F = m_Objects.begin();
-    	CEditObject *_O = 0;
-    	CEditObject *_OO = 0;
-    	for(;_F!=m_Objects.end();_F++){
-	    	VERIFY( (*_F)->ClassID()==OBJCLASS_EDITOBJECT );
-        	_O = (CEditObject *)(*_F);
-
-            // if item is LibRef get info from LibRef
-            if (_O->m_LibRef) _OO = _O->m_LibRef; else _OO = _O;
-
-	        // create root tree node (object name)
-            name.sprintf("%s (%s)",_O->GetName(),_OO->GetName());
-            TElTreeItem* root = tvSurfaces->Items->AddObject(0,name,(TObject*)_OO);
-            root->ParentStyle = false;
-            root->Bold = true;
-            root->Underlined = true;
-
-            for (SurfaceIt s_it=_OO->m_Surfaces.begin(); s_it!=_OO->m_Surfaces.end(); s_it++){
-		        TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->name,(TObject*)(*s_it));
-                pNode->ParentStyle = false;
-                pNode->Bold = true;
-                for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++)
-                    tvSurfaces->Items->AddChild(pNode,*n_it);
-            }
-            root->Expand(false);
-    	}
+    for (SurfaceIt s_it=m_CurrentObject->m_Surfaces.begin(); s_it!=m_CurrentObject->m_Surfaces.end(); s_it++){
+        TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(root,(*s_it)->name,(TObject*)(*s_it));
+        pNode->ParentStyle = false;
+        pNode->Bold = true;
+        for (AStringIt n_it=(*s_it)->textures.begin(); n_it!=(*s_it)->textures.end(); n_it++)
+            tvSurfaces->Items->AddChild(pNode,*n_it);
     }
-//    tvTextures->FullExpand();
+    tvSurfaces->FullExpand();
+    
     tvSurfaces->Sort(true);
 }
 //---------------------------------------------------------------------------
@@ -128,7 +95,7 @@ void __fastcall TfrmPropertiesObject::tvSurfacesItemSelectedChange(
         paImage->Repaint();
     break;
     case 1:{
-    	CEditObject* O				= (CEditObject*)Item->Parent->Data;
+    	CEditableObject* O			= (CEditableObject*)Item->Parent->Data;
     	st_Surface* surf			= (st_Surface*)(Item->Data);
         lbSurfFaces->Caption 		= O->GetSurfFaceCount(surf->name);
         lbSurfSideFlag->Caption 	= (surf->sideflag)?"yes":"no";

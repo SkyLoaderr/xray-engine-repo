@@ -16,21 +16,20 @@ enum EVisible{
 
 #define DEFAULT_SECTOR_NAME "Sector_DEFAULT"
 // refs
-class CEditObject;
-class CEditMesh;
+class CEditableMesh;
 
 class CSectorItem{
 	friend class CSector;
 	friend class SceneBuilder;
     friend class CPortalUtils;
-	CEditObject* object;
-	CEditMesh* mesh;
+	CSceneObject* object;
+	CEditableMesh* mesh;
 public:
     CSectorItem		();
-    CSectorItem		(CEditObject* o, CEditMesh* m);
+    CSectorItem		(CSceneObject* o, CEditableMesh* m);
     void GetTransform(Fmatrix& parent);
     bool IsItem		(const char* O, const char* M);
-    IC bool IsItem	(CEditObject* o, CEditMesh* m){ return (o==object)&&(m==mesh); }
+    IC bool IsItem	(CSceneObject* o, CEditableMesh* m){ return (o==object)&&(m==mesh); }
 };
 
 #pragma pack(push,1)
@@ -67,7 +66,7 @@ class CSector : public CCustomObject {
 
 	Fcolor			sector_color;
 	SItemVec 		sector_items;
-	bool 			FindSectorItem(CEditObject* o, CEditMesh* m, SItemIt& it);
+	bool 			FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it);
 	bool 			FindSectorItem(const char* O, const char* M, SItemIt& it);
 	void 			LoadSectorDef( CStream* F );
 
@@ -95,11 +94,11 @@ public:
     void			Update		(bool bNeedCreateCHull);
     void			SectorChanged(bool bNeedCreateCHull);
 
-	void			AddMesh		(CEditObject* O, CEditMesh* M);
-	void			DelMesh		(CEditObject* O, CEditMesh* M);
+	void			AddMesh		(CSceneObject* O, CEditableMesh* M);
+	void			DelMesh		(CSceneObject* O, CEditableMesh* M);
 
     bool			IsDefault	(){return m_bDefault;}
-    bool			Contains	(CEditObject* O, CEditMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
+    bool			Contains	(CSceneObject* O, CEditableMesh* M){SItemIt it; return FindSectorItem(O,M,it);}
 
     void			CaptureInsideVolume();
     void			CaptureAllUnusedFaces();

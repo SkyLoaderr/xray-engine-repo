@@ -15,6 +15,7 @@
 #include "EditorPref.h"
 #include "leftbar.h"
 #include "cl_intersect.h"
+#include "Library.h"
 
 #include "Library.h"
 #include "DetailFormat.h"
@@ -69,6 +70,11 @@ CDetail::~CDetail(){
 	m_Vertices.clear	();
 }
 
+LPCSTR CDetail::GetName	(){
+	R_ASSERT(m_pRefs);
+    return m_pRefs->GetName();
+}
+
 void CDetail::OnDeviceCreate(){
     st_Surface* surf	= *m_pRefs->FirstSurface();
     VERIFY				(surf);
@@ -82,12 +88,13 @@ void CDetail::OnDeviceDestroy(){
 
 bool CDetail::Update	(LPCSTR name){
     // update link
-    CLibObject* LO 		= Lib->SearchObject(name);
-    if (!LO){
+    CLibObject* m_pLO	= Lib->SearchObject(name);
+    if (!m_pLO){
         ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
         return false;
     }
-    if (0==(m_pRefs=LO->GetReference())){
+    m_pRefs				= m_pLO->GetReference();
+    if (0==m_pRefs){
         ELog.DlgMsg		(mtError, "CDetail: '%s' can't load", name);
         return false;
     }
@@ -110,7 +117,7 @@ bool CDetail::Update	(LPCSTR name){
     R_ASSERT			(m_pShader);
 
     // fill geometry
-    CEditMesh* M 		= *m_pRefs->FirstMesh();
+    CEditableMesh* M	= *m_pRefs->FirstMesh();
 
 	m_Vertices.resize	(M->GetVertexCount());
     m_Indices.resize	(M->GetFaceCount(false)*3);
@@ -783,8 +790,8 @@ bool CDetailManager::Load_V1(CStream& F){
 		cnt 			= F.Rdword(); VERIFY(cnt);
         for (int i=0; i<cnt; i++){
         	F.RstringZ	(buf);
-            CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
-            if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
+            CCustomObject* O = Scene->FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
+            if (!O)		ELog.Msg(mtError,"DetailManager: Can't find snap object '%s'.",buf);
             else		m_SnapObjects.push_back(O);
         }
     }else{
@@ -866,7 +873,7 @@ bool CDetailManager::Load(CStream& F){
         if (cnt){
 	        for (int i=0; i<cnt; i++){
     	    	F.RstringZ	(buf);
-        	    CEditObject* O = (CEditObject*)Scene->FindObjectByName(buf,OBJCLASS_EDITOBJECT);
+        	    CCustomObject* O = Scene->FindObjectByName(buf,OBJCLASS_SCENEOBJECT);
             	if (!O)		ELog.Msg(mtError,"DetailManager: Can't find object '%s' in scene.",buf);
 	            else		m_SnapObjects.push_back(O);
     	    }

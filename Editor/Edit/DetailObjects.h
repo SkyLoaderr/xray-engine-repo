@@ -7,10 +7,10 @@
 
 #include "CustomObject.h"
 #include "DetailFormat.h"
-#include "EditObject.h"
+#include "Library.h"
 
 class CFrustum;
-class CEditObject;
+class CEditableObject;
 class Shader;
 
 struct SIndexDist{
@@ -51,7 +51,7 @@ class CDetail{
     bool				m_bSideFlag;
 
     // references
-	CEditObject*		m_pRefs;
+	CEditableObject*	m_pRefs;
 public:
     bool				m_bMarkDel;
 public:
@@ -64,7 +64,7 @@ public:
 
 	bool				Update			(LPCSTR name);
 
-    IC LPCSTR			GetName			(){R_ASSERT(m_pRefs); return m_pRefs->GetName();}
+    LPCSTR				GetName			();
 	void				OnDeviceCreate	();
 	void				OnDeviceDestroy	();
 };

@@ -26,8 +26,6 @@
 //---------------------------------------------------------------------------
 // refs
 class TObjectPreview;
-class CEditObject;
-class CEditMesh;
 //---------------------------------------------------------------------------
 
 class TfrmEditLibrary : public TForm
@@ -96,7 +94,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSaveObjectSkeletonOGFClick(TObject *Sender);
 	void __fastcall ebReloadObjectClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
-	void __fastcall ebSaveObjectDOClick(TObject *Sender);
 private:	// User declarations
     void InitObjectFolder();
     TElTreeItem* FindFolder(const char* s);
@@ -120,7 +117,7 @@ public:		// User declarations
     void __fastcall OnRender();
     void __fastcall OnIdle();
     void __fastcall ZoomObject();
-	CCustomObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
+	CEditableObject *RayPick(const Fvector& start, const Fvector& direction, SRayPickInfo* pinf);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmEditLibrary *frmEditLibrary;

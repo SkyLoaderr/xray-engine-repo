@@ -202,7 +202,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemSelectedChange(TObject *Sender, TElTre
         if (!sel_thm->Load()) 	pbImage->Repaint();
         else				 	pbImagePaint(Sender);
         SDOData* dd				= (SDOData*)Item->Data;
-		lbItemName->Caption 	= "\""+AnsiString(dd->LO->GetRefName())+"\"";
+		lbItemName->Caption 	= "\""+AnsiString(dd->LO->GetName())+"\"";
 		AnsiString temp; 		temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
         lbInfo->Caption			= temp;
     }else{

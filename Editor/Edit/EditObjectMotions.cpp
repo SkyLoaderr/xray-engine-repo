@@ -1,5 +1,5 @@
 //----------------------------------------------------
-// file: CEditObject.cpp
+// file: CEditableObject.cpp
 //----------------------------------------------------
 #include "stdafx.h"
 #pragma hdrstop
@@ -35,42 +35,46 @@ void st_AnimParam::Update(float dt){
     if (t>max_t){ if (fraBottomBar->miObjectLoopedAnimation->Checked) t=min_t; else t=max_t; }
 }
 
-void CEditObject::RTL_Update( float dT ){
+void CEditableObject::RTL_Update( float dT ){
     if (IsOMotionActive()){
-        Fvector R,T,r;
+    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
+/*        Fvector R,T,r;
         m_ActiveOMotion->Evaluate(m_OMParam.Frame(),T,r);
         R.set(r.y,r.x,r.z);
         T.add(vPosition);
         R.add(vRotate);
         UpdateTransform(T, R, vScale);
         m_OMParam.Update(dT);
+*/
     }
 }
 
-void CEditObject::ResetAnimation(bool upd_t){
+void CEditableObject::ResetAnimation(bool upd_t){
 	SetActiveOMotion(0,false);
 	SetActiveSMotion(0);
-    if (upd_t) UpdateTransform();
+	ELog.DlgMsg(mtError,"TODO: CEditableObject::ResetAnimation");
+///    if (upd_t) UpdateTransform();
 }
 
 //----------------------------------------------------
 // Object motion
 //----------------------------------------------------
-void CEditObject::SetActiveOMotion(COMotion* mot, bool upd_t){
+void CEditableObject::SetActiveOMotion(COMotion* mot, bool upd_t){
 	m_ActiveOMotion=mot;
     if (m_ActiveOMotion) m_OMParam.Set(m_ActiveOMotion);
-    if (upd_t) UpdateTransform();
+	ELog.DlgMsg(mtError,"TODO: CEditableObject::SetActiveOMotion");
+///    if (upd_t) UpdateTransform();
     UI->RedrawScene();
 }
 
-COMotion* CEditObject::FindOMotionByName	(const char* name, const COMotion* Ignore){
+COMotion* CEditableObject::FindOMotionByName	(const char* name, const COMotion* Ignore){
     OMotionVec& lst = m_OMotions;
     for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
     return 0;
 }
 
-void CEditObject::RemoveOMotion(const char* name){
+void CEditableObject::RemoveOMotion(const char* name){
     OMotionVec& lst = m_OMotions;
     for(OMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
@@ -81,7 +85,7 @@ void CEditObject::RemoveOMotion(const char* name){
         }
 }
 
-bool CEditObject::RenameOMotion(const char* old_name, const char* new_name){
+bool CEditableObject::RenameOMotion(const char* old_name, const char* new_name){
 	if (stricmp(old_name,new_name)==0) return true;
     if (FindOMotionByName(new_name)) return false;
 	COMotion* M = FindOMotionByName(old_name); VERIFY(M);
@@ -89,7 +93,7 @@ bool CEditObject::RenameOMotion(const char* old_name, const char* new_name){
     return true;
 }
 
-void CEditObject::GenerateOMotionName(char* buffer, const char* start_name, const COMotion* M){
+void CEditableObject::GenerateOMotionName(char* buffer, const char* start_name, const COMotion* M){
 	strcpy(buffer,start_name);
     int idx = 0;
 	while(FindOMotionByName(buffer,M)){
@@ -99,19 +103,19 @@ void CEditObject::GenerateOMotionName(char* buffer, const char* start_name, cons
     strlwr(buffer);
 }
 
-COMotion* CEditObject::AppendOMotion(const char* fname){
+COMotion* CEditableObject::AppendOMotion(const char* fname){
 	COMotion* M = LoadOMotion(fname);
     if (M) m_OMotions.push_back(M);
     return M;
 }
 
-void CEditObject::ClearOMotions(){
+void CEditableObject::ClearOMotions(){
 	SetActiveOMotion(0);
     for(OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end();m_it++)_DELETE(*m_it);
     m_OMotions.clear();
 }
 
-void CEditObject::LoadOMotions(const char* fname){
+void CEditableObject::LoadOMotions(const char* fname){
 	CFileStream F(fname);
     // object motions
     m_OMotions.resize(F.Rdword());
@@ -122,7 +126,7 @@ void CEditObject::LoadOMotions(const char* fname){
     }
 }
 
-void CEditObject::SaveOMotions(const char* fname){
+void CEditableObject::SaveOMotions(const char* fname){
 	CFS_Memory F;
     F.Wdword		(m_OMotions.size());
     for (OMotionIt m_it=m_OMotions.begin(); m_it!=m_OMotions.end(); m_it++) (*m_it)->Save(F);
@@ -132,7 +136,7 @@ void CEditObject::SaveOMotions(const char* fname){
 //----------------------------------------------------
 // Skeletal motion
 //----------------------------------------------------
-void CEditObject::CalculateAnimation(bool bGenInvMat){
+void CEditableObject::CalculateAnimation(bool bGenInvMat){
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         DWORD flag=0;
         if (m_ActiveSMotion) flag = m_ActiveSMotion->GetMotionFlag(b_it-m_Bones.begin());
@@ -177,7 +181,7 @@ void CEditObject::CalculateAnimation(bool bGenInvMat){
     }
 }
 
-void CEditObject::SetActiveSMotion(CSMotion* mot){
+void CEditableObject::SetActiveSMotion(CSMotion* mot){
 	m_ActiveSMotion=mot;
     if (m_ActiveSMotion) m_SMParam.Set(m_ActiveSMotion);
     BoneVec& lst = m_Bones;
@@ -186,7 +190,7 @@ void CEditObject::SetActiveSMotion(CSMotion* mot){
     UI->RedrawScene();
 }
 
-void CEditObject::RemoveSMotion(const char* name){
+void CEditableObject::RemoveSMotion(const char* name){
     SMotionVec& lst = m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((stricmp((*m)->Name(),name)==0)){
@@ -197,7 +201,7 @@ void CEditObject::RemoveSMotion(const char* name){
         }
 }
 
-CSMotion* CEditObject::AppendSMotion(const char* fname){
+CSMotion* CEditableObject::AppendSMotion(const char* fname){
 	VERIFY(IsSkeleton());
 	CSMotion* M = LoadSMotion(fname);
     if (M){
@@ -213,7 +217,7 @@ CSMotion* CEditObject::AppendSMotion(const char* fname){
     return M;
 }
 
-bool CEditObject::ReloadSMotion(CSMotion* src, const char* fname){
+bool CEditableObject::ReloadSMotion(CSMotion* src, const char* fname){
 	VERIFY(IsSkeleton());
 	CSMotion* M = LoadSMotion(fname);
     if (M){
@@ -228,13 +232,13 @@ bool CEditObject::ReloadSMotion(CSMotion* src, const char* fname){
     return false;
 }
 
-void CEditObject::ClearSMotions(){
+void CEditableObject::ClearSMotions(){
 	SetActiveSMotion(0);
     for(SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end();m_it++)_DELETE(*m_it);
     m_SMotions.clear();
 }
 
-void CEditObject::LoadSMotions(const char* fname){
+void CEditableObject::LoadSMotions(const char* fname){
 	CFileStream F(fname);
     // object motions
     m_SMotions.resize(F.Rdword());
@@ -256,14 +260,14 @@ void CEditObject::LoadSMotions(const char* fname){
     }
 }
 
-void CEditObject::SaveSMotions(const char* fname){
+void CEditableObject::SaveSMotions(const char* fname){
 	CFS_Memory F;
     F.Wdword		(m_SMotions.size());
     for (SMotionIt m_it=m_SMotions.begin(); m_it!=m_SMotions.end(); m_it++) (*m_it)->Save(F);
     F.SaveTo		(fname,0);
 }
 
-bool CEditObject::RenameSMotion(const char* old_name, const char* new_name){
+bool CEditableObject::RenameSMotion(const char* old_name, const char* new_name){
 	if (stricmp(old_name,new_name)==0) return true;
     if (FindSMotionByName(new_name)) return false;
 	CSMotion* M = FindSMotionByName(old_name); VERIFY(M);
@@ -271,14 +275,14 @@ bool CEditObject::RenameSMotion(const char* old_name, const char* new_name){
     return true;
 }
 
-CSMotion* CEditObject::FindSMotionByName	(const char* name, const CSMotion* Ignore){
+CSMotion* CEditableObject::FindSMotionByName	(const char* name, const CSMotion* Ignore){
     SMotionVec& lst = m_SMotions;
     for(SMotionIt m=lst.begin(); m!=lst.end(); m++)
         if ((Ignore!=(*m))&&(stricmp((*m)->Name(),name)==0)) return (*m);
     return 0;
 }
 
-void CEditObject::GenerateSMotionName(char* buffer, const char* start_name, const CSMotion* M){
+void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, const CSMotion* M){
 	strcpy(buffer,start_name);
     int idx = 0;
 	while(FindSMotionByName(buffer,M)){
@@ -288,7 +292,7 @@ void CEditObject::GenerateSMotionName(char* buffer, const char* start_name, cons
     strlwr(buffer);
 }
 
-void CEditObject::UpdateBoneParenting(){
+void CEditableObject::UpdateBoneParenting(){
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         BoneIt parent=find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->Parent()));
@@ -296,17 +300,17 @@ void CEditObject::UpdateBoneParenting(){
     }
 }
 
-CBone* CEditObject::FindBoneByName(const char* name){
+CBone* CEditableObject::FindBoneByName(const char* name){
 	BoneIt parent = find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ(name));
     return (parent==m_Bones.end())?0:*parent;
 }
 
-int	CEditObject::GetBoneIndexByWMap(const char* wm_name){
+int	CEditableObject::GetBoneIndexByWMap(const char* wm_name){
 	BoneIt bone = find_if(m_Bones.begin(),m_Bones.end(),fBoneWMNameEQ(wm_name));
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
 }
 
-void CEditObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
+void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
 	VERIFY(bone_idx<m_Bones.size());
     int idx	= bone_idx;
     matrix.identity();
@@ -335,7 +339,7 @@ void CEditObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* motio
     }
 }
 
-bool CEditObject::CheckBoneCompliance(CSMotion* M){
+bool CEditableObject::CheckBoneCompliance(CSMotion* M){
 	VERIFY(M);
     BoneMotionVec& lst = M->BoneMotions();
 	if (m_Bones.size()!=lst.size()) return false;

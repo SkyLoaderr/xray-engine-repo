@@ -9,7 +9,7 @@
 #include "Scene.h"
 #include "SceneClassList.h"
 #include "ELight.h"
-#include "EditObject.h"
+#include "SceneObject.h"
 #include "ui_main.h"
 #include "Frustum.h"
 #include "ui_tools.h"
@@ -83,7 +83,7 @@ void EScene::SetLights(){
     }
 }
 
-void EScene::TurnLightsForObject(CEditObject* obj){
+void EScene::TurnLightsForObject(CSceneObject* obj){
     for (DWORD i=0; i<frame_light.size(); i++){
         CLight* l = frame_light[i];
 

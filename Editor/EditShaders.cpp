@@ -56,10 +56,9 @@ void __fastcall TfrmEditShaders::EditShaders()
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditShaders::ZoomObject(){
-    CEditObject* O = m_TestObject->GetReference();
+    CEditableObject* O = m_TestObject->GetReference();
     if (O){
-    	Fbox bb;
-        O->GetBox(bb);
+    	Fbox& bb =  O->GetBox();
         Device.m_Camera.ZoomExtents(bb);
     }
 }
@@ -67,12 +66,12 @@ void __fastcall TfrmEditShaders::ZoomObject(){
 void __fastcall TfrmEditShaders::OnRender(){
 	if (rgTestObject->ItemIndex==4){
     	if (m_TestObject&&cbPreview->Checked){
-            CEditObject* O = m_TestObject->GetReference();
+            CEditableObject* O = m_TestObject->GetReference();
             if (O) O->RenderSingle(precalc_identity);
         }
     }else{
     	if (m_SelectedShader&&m_TestObject&&cbPreview->Checked){
-            CEditObject* O = m_TestObject->GetReference();
+            CEditableObject* O = m_TestObject->GetReference();
             if (O){
                 st_Surface* surf = *O->FirstSurface();
                 if (surf){
@@ -95,7 +94,7 @@ void __fastcall TfrmEditShaders::OnIdle(){
 	if (frmPropertiesShader) frmPropertiesShader->OnIdle();
 	if (rgTestObject->ItemIndex==4){
     	if (m_TestObject&&cbPreview->Checked){
-            CEditObject* O = m_TestObject->GetReference();
+            CEditableObject* O = m_TestObject->GetReference();
             if (O&&ebDropper->Down){
                 POINT pt,wpt;
                 GetCursorPos( &pt );
@@ -115,7 +114,7 @@ void __fastcall TfrmEditShaders::OnIdle(){
                     float dist=flt_max;
                     SRayPickInfo pinf;
                     if (O->RayPick(dist,S,D,precalc_identity,&pinf)){
-						m_TestExternSurface=pinf.mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+						m_TestExternSurface=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
 						if (!ls&0x0001) ebDropper->Down = false;
                         ebAssignShader->Enabled = true;
                         lbExternSelMat->Caption = m_TestExternSurface->name;
@@ -568,7 +567,7 @@ void __fastcall TfrmEditShaders::ebExternSelectClick(TObject *Sender)
     if (!N) return;
 
     m_TestObject 		= Lib->SearchObject(N);
-    if (m_TestObject) 	g_ExternalObject = m_TestObject->GetRefName();
+    if (m_TestObject) 	g_ExternalObject = m_TestObject->GetName();
     else				g_ExternalObject = "";
     lbSelectObject->Caption = g_ExternalObject.IsEmpty()?AnsiString("..."):g_ExternalObject;
 
