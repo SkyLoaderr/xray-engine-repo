@@ -8,7 +8,7 @@ function test_avi_dlg:__init() super()
 end
 
 function test_avi_dlg:__finalize()
-
+local f = 0
 end
 
 function test_avi_dlg:InitControls()
@@ -64,16 +64,18 @@ function main()
 	snd_pos.y = snd_pos.y + 1.5
 
 	--wait for first frame
-	while device().precache_frame < 5 do
+	while device().precache_frame > 1 do
 		wait()
 	end
 	
 	level.add_dialog_to_render(dlg)
+	level.hide_indicators()
 	snd:play_at_pos(actor,snd_pos)
 
 	wait(16000)
 	level.remove_dialog_to_render(dlg)
+	level.show_indicators()
 	
-	wait(10000)
+--	wait(10000)
 end
 
