@@ -12,6 +12,9 @@
 #include "WeaponAK74.h"
 #include "WeaponLR300.h"
 #include "WeaponHPSA.h"
+#include "WeaponPM.h"
+#include "WeaponFORT.h"
+#include "WeaponBinocular.h"
 
 class fClassEQ {
 	CLASS_ID cls;
@@ -174,6 +177,18 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 		pWeapon = new CWeaponHPSA	(); 
 		strcpy(sect_name,"wpn_HPSA");
 		break;
+	case CLSID_OBJECT_W_PM:
+		pWeapon = new CWeaponPM	(); 
+		strcpy(sect_name,"wpn_PM");
+		break;
+	case CLSID_OBJECT_W_FORT:
+		pWeapon = new CWeaponFORT	(); 
+		strcpy(sect_name,"wpn_FORT");
+		break;
+//	case CLSID_OBJECT_W_BINOCULAR:
+//		pWeapon = new CWeaponBinocular	(); 
+//		strcpy(sect_name,"wpn_BINOC");
+//		break;
 	}
 
 	// load weapon
@@ -196,13 +211,18 @@ BOOL CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount)
 	case CLSID_OBJECT_A_AK74:		idx = FindWeapon(CLSID_OBJECT_W_AK74);		break;
 	case CLSID_OBJECT_A_LR300:		idx = FindWeapon(CLSID_OBJECT_W_LR300);		break;
 	case CLSID_OBJECT_A_HPSA:		idx = FindWeapon(CLSID_OBJECT_W_HPSA);		break;
+	case CLSID_OBJECT_A_PM:			idx = FindWeapon(CLSID_OBJECT_W_PM);		break;
+	case CLSID_OBJECT_A_FORT:		idx = FindWeapon(CLSID_OBJECT_W_FORT);		break;
 
 	case CLSID_OBJECT_W_M134:	
 	case CLSID_OBJECT_W_FN2000:	
 	case CLSID_OBJECT_W_AK74:
 	case CLSID_OBJECT_W_LR300:	
 	case CLSID_OBJECT_W_M134_en:	
-	case CLSID_OBJECT_W_HPSA:		idx = FindWeapon(cls); bTakeWeapon = true; break;
+	case CLSID_OBJECT_W_HPSA:		
+	case CLSID_OBJECT_W_PM:		
+	case CLSID_OBJECT_W_FORT:		
+	case CLSID_OBJECT_W_BINOCULAR:	idx = FindWeapon(cls); bTakeWeapon = true; break;
 	}
 	if (idx>=0)
 	{
