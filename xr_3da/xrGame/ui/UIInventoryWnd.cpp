@@ -858,6 +858,10 @@ void CUIInventoryWnd::DropItem()
 	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
 										DetachChild(m_pCurrentDragDropItem);
 	
+	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
+	VERIFY(it != m_vDragDropItems.end());
+	m_vDragDropItems.erase(it);
+
 	//-----------------------------------------------------------------------
 	SendEvent_ItemDrop(m_pCurrentItem);
 	//-----------------------------------------------------------------------
@@ -875,7 +879,15 @@ void CUIInventoryWnd::EatItem()
 	if(!m_pCurrentItem->Useful())
 	{
 		(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
-												DetachChild(m_pCurrentDragDropItem);
+			DetachChild(m_pCurrentDragDropItem);
+
+		DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
+		VERIFY(it != m_vDragDropItems.end());
+		m_vDragDropItems.erase(it);
+
+		//-----------------------------------------------------------------------
+		SendEvent_ItemDrop(m_pCurrentItem);
+		//-----------------------------------------------------------------------
 		SetCurrentItem(NULL);
 		m_pCurrentDragDropItem = NULL;
 	}
