@@ -20,7 +20,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 	<specific_character id="stalker_bar_white_novice_2" team_default = "1">
 		<name>Неизвестный сталкер</name>
@@ -41,7 +41,7 @@
 			ammo_9x19_pbp \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_bar_brown_novice_1" team_default = "1">
@@ -63,7 +63,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 	<specific_character id="stalker_bar_brown_novice_2" team_default = "1">
 		<name>Неизвестный сталкер</name>
@@ -84,7 +84,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_bar_general_1" team_default = "1">
@@ -106,7 +106,7 @@
 			ammo_5.45x39_fmj \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 	<specific_character id="stalker_bar_general_2" team_default = "1">
 		<name>Неизвестный сталкер</name>
@@ -127,7 +127,7 @@
 			ammo_9x39_pab9 \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_bar_dolg_1" team_default = "1">
@@ -149,7 +149,7 @@
 			ammo_12x70_buck \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_bar_bandit_1" team_default = "1">
@@ -171,7 +171,7 @@
 			ammo_9x39_pab9 \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_bar_killer_1" team_default = "1">
@@ -191,9 +191,7 @@
 			[spawn] \n
 			wpn_lr300 \n
 			ammo_5.56x45_ss190 \n
-		</supplies>
-					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		</supplies>bar_bar_visitors_1_start</start_dialog>
 	</specific_character>	
 </xml>
 
