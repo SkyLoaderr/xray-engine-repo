@@ -241,7 +241,7 @@ function proceed(actor)
 	end  
 	
 	if actor:has_info ("mil_khutor_visited") and actor:has_info ("mil_courier_start") then
-	   db.actor:set_task_state (task.completed, "mil_courier_job", 1)  
+	   level_tasks.set_task_state (task.completed, "mil_courier_job", 1)  
 	end   
 	   
 		
@@ -588,14 +588,14 @@ function process_map_spot(info_id)
       
     elseif info_id == "mil_leader_quest2_failed" then   
            if db.actor:has_info ("mil_leader_quest2_start") then
-              db.actor:set_task_state (task.fail, "mil_courier_job", 0)
+              level_tasks.set_task_state (task.fail, "mil_courier_job", 0)
            end   
            remove_location (710, "mil_courier_location")
            
     elseif info_id == "mil_leader_quest2_complete" then
            remove_location (710, "mil_courier_location")
            add_location (707, "mil_lukash_location")
-           db.actor:set_task_state (task.completed, "mil_courier_job", 2)
+           level_tasks.set_task_state (task.completed, "mil_courier_job", 2)
 	--elseif info_id == "mil_lukash_job_complete" then
 	       --remove_location (1008, "mil_dolg_location")
 	       

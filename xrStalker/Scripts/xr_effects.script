@@ -246,7 +246,7 @@ function military_sniper_dead (actor, npc)
     
     db.actor:give_info_portion ("mil_sniper_dead")
     if db.actor:has_info ("mil_sniper_get_job") then
-       db.actor:set_task_state (task.completed, "mil_kill_sniper", 1)
+       level_tasks.set_task_state (task.completed, "mil_kill_sniper", 1)
     end   
        
 end
@@ -280,9 +280,9 @@ function military_dolg_dead (actor, npc)
     -- ставим задачу, как не выполненую
     if db.storage[db.actor:id ()].mil_dolg["killed"] == 1 then
        if db.actor:has_info ("mil_sniper_get_job") then 
-          db.actor:set_task_state (task.fail, "mil_kill_sniper", 0)
-          db.actor:set_task_state (task.fail, "mil_kill_sniper", 2)
-          db.actor:disable_info_portion ("mil_sniper_get_job")
+          level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
+          level_tasks.set_task_state (task.fail, "mil_kill_sniper", 2)
+          level_tasks.disable_info_portion ("mil_sniper_get_job")
        end
        --printf ("!!! DOLG IS DEAD !!!")
        db.actor:give_info_portion ("mil_dolg_dead")
@@ -290,7 +290,7 @@ function military_dolg_dead (actor, npc)
           db.actor:set_task_state (task.completed, "mil_lukash_job", 2)
           db.actor:give_info_portion ("mil_leader_quest1_complete")
           if db.actor:dont_has_info ("mil_freedom_attack") then
-             db.actor:set_task_state (task.fail, "mil_lukash_job", 1)
+             level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
              level_tasks.remove_location (702, "mil_max_location")
           end   
        else
@@ -320,16 +320,16 @@ end
 
 function military_max_dead (actor, npc)
     if db.actor:has_info ("mil_max_job") then
-       db.actor:set_task_state (task.fail, "mil_mad_job", 0)
-       db.actor:set_task_state (task.fail, "mil_mad_job", 2)
+       level_tasks.set_task_state (task.fail, "mil_mad_job", 0)
+       level_tasks.set_task_state (task.fail, "mil_mad_job", 2)
        level_tasks.remove_location (707, "mil_lukash_location")
     end   
     
     if db.actor:has_info ("mil_lukash_get_job") then
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 0)
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 1)
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 2)
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 3)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 0)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 1)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 2)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 3)
        level_tasks.remove_location (708, "mil_dolg_location")
     end
     
@@ -342,8 +342,8 @@ end
 
 function military_lukash_dead (actor, npc)
     if db.actor:has_info ("mil_lukash_get_job") then
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 0)
-       db.actor:set_task_state (task.fail, "mil_lukash_job", 3)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 0)
+       level_tasks.set_task_state (task.fail, "mil_lukash_job", 3)
        level_tasks.remove_location (707, "mil_lukash_location")
        level_tasks.remove_location (702, "mil_max_location")
     end
@@ -351,7 +351,7 @@ end
 
 function mil_courier_dead (actor, npc)
     if db.actor:dont_has_info ("mil_khutor_visited") then
-       db.actor:set_task_state (task.fail, "mil_courier_job", 1)
+       level_tasks.set_task_state (task.fail, "mil_courier_job", 1)
     end    
 end
 
