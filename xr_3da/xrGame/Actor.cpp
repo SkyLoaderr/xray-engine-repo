@@ -501,10 +501,15 @@ void CActor::Update	(u32 DT)
 		g_cl_Orientate			(mstate_real,dt);
 		g_Orientate				(mstate_real,dt);
 		g_Physics				(NET_SavedAccel,Jump,dt);
-		Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
-		feel_touch_update		(C,R);
 		g_cl_ValidateMState		(dt,mstate_wishful);
 		g_SetAnimation			(mstate_real);
+
+		// Check for game-contacts
+		if (Local())
+		{
+			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+			feel_touch_update		(C,R);
+		}
 		
 		// Dropping
 		if (b_DropActivated)	{
@@ -515,7 +520,7 @@ void CActor::Update	(u32 DT)
 		}
 	} else {
 		// distinguish interpolation/extrapolation
-		u32	dwTime		= Level().timeServer()-NET_Latency;
+		u32	dwTime			= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{

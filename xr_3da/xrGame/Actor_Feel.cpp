@@ -12,99 +12,35 @@ void CActor::feel_touch_new				(CObject* O)
 	if (!g_Alive())		return;
 	if (Remote())		return;
 
-	NET_Packet	P;
+	// Now, test for game specific logical objects to minimize traffic
+	CWeapon*		W	= dynamic_cast<CWeapon*>		(O);
+	CTargetAssault*	At	= dynamic_cast<CTargetAssault*>	(O);
+	CTargetCSBase*	CSb	= dynamic_cast<CTargetCSBase*>	(O);
+	CTargetCS*		CSt	= dynamic_cast<CTargetCS*>		(O);
 
-	// Test for Artifact
-	CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
-	if (A)
+	if (W || At || CSb || CSt)
 	{
-		u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-		P.w_u16		(u16(A->ID()));
-		u_EventSend	(P);
-		return;
-	}
-
-	// Test for weapon
-	CWeapon* W	= dynamic_cast<CWeapon*>	(O);
-	if (W)
-	{
-		// Search if we have similar type of weapon
-		if (Weapons->isSlotEmpty(W->GetSlot()))
-		{
-			// We doesn't have similar weapon - pick up it
-			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		}
-		/*
-		CWeapon* T = Weapons->getWeaponByWeapon	(W);
-		if (T)	
-		{
-			// We have similar weapon - just get ammo out of it
-			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		} else {
-			// We doesn't have similar weapon - pick up it
-			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-			P.w_u16		(u16(W->ID()));
-			u_EventSend	(P);
-			return;
-		}
-		return;
-		*/
-	}
-
-	// Test for GAME-specific events
-	switch (GameID())
-	{
-	case GAME_ASSAULT:
-		{
-			CTargetAssault*		T	= dynamic_cast<CTargetAssault*>	(O);
-			if (g_Team() && T)
-			{
-				// Assault acomplished?
-				u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-				P.w_u16		(u16(T->ID()));
-				u_EventSend	(P);
-				return;
-			}
-		}
-	case GAME_CS:
-		{
-			// Test for CS Base
-			CTargetCSBase* B	= dynamic_cast<CTargetCSBase*>	(O);
-			if (B)
-			{
-				u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
-				P.w_u16		(u16(B->ID()));
-				u_EventSend	(P);
-				return;
-			}
-		}
+		// Generate event
+		NET_Packet		P;
+		u_EventGen		(P,GE_OWNERSHIP_TAKE,ID());
+		P.w_u16			(u16(O->ID()));
+		u_EventSend		(P);
 	}
 }
 
 void CActor::feel_touch_delete	(CObject* O)
 {
+	if (!g_Alive())		return;
 	if (Remote())		return;
 
-	NET_Packet	P;
-
-	switch (GameID())
+	CTargetCSBase*	CSt	= dynamic_cast<CTargetCSBase*>	(O);
+	if (T)
 	{
-	case GAME_CS:
-		{
-			CTargetCSBase*		T	= dynamic_cast<CTargetCSBase*>	(O);
-			if (T)
-			{
-				u_EventGen	(P,GE_OWNERSHIP_REJECT,ID());
-				P.w_u16		(u16(T->ID()));
-				u_EventSend	(P);
-				return;
-			}
-		}
+		// Generate event
+		NET_Packet		P;
+		u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16			(u16(T->ID()));
+		u_EventSend		(P);
+		return;
 	}
 }
