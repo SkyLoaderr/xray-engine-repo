@@ -13,47 +13,37 @@ public:
 		flLIGHT_CastShadow	= 1<<4,
 		flLIGHT_Sharp		= 1<<5,
 	};
+	struct Flags {
+		u32 bCollision				: 1;
+		u32 bRendering				: 1;
+		u32 bOptimizeUV				: 1;
+		u32 bLIGHT_Vertex			: 1;
+		u32 bLIGHT_CastShadow		: 1;
+		u32 bLIGHT_Sharp			: 1;
+	};
 public:
-	ref_str		Name;
-    Flags32		m_Flags;
+	char		Name		[128];
+	union{
+		Flags32	m_Flags;
+        Flags	flags;
+    };
 	float		vert_translucency;
 	float		vert_ambient;
 	float		lm_density;
 
-	Shader_xrLC()	
-    {
-		Name					= "unknown";
-        m_Flags.assign			(flCollision|flRendering|flOptimizeUV|flLIGHT_CastShadow|flLIGHT_Sharp);
+	Shader_xrLC()	{
+		ZeroMemory	(this,sizeof(*this));
+		strcpy		(Name,"unknown");
+		flags.bCollision		= TRUE;
+		flags.bRendering		= TRUE;
+		flags.bOptimizeUV		= TRUE;
+		flags.bLIGHT_Vertex		= FALSE;
+		flags.bLIGHT_CastShadow = TRUE;
+		flags.bLIGHT_Sharp		= TRUE;
 		vert_translucency		= .5f;
 		vert_ambient			= .0f;
 		lm_density				= 1.f;
 	}
-    void		Load	(IReader& F)
-    {
-    	string128 tmp;
-        F.r						(tmp,sizeof(tmp)); Name = tmp;
-        m_Flags.assign			(F.r_u32());
-		vert_translucency		= F.r_float();
-		vert_ambient			= F.r_float();
-		lm_density				= F.r_float();
-    }
-    void		Save	(IWriter& F)
-    {
-        F.w_stringZ				(Name);
-        F.w_u32					(m_Flags.flags);
-		F.w_float				(vert_translucency);
-		F.w_float				(vert_ambient);
-		F.w_float				(lm_density);
-    }
-};
-
-struct Shader_xrLC_OLD
-{
-	string128	Name;
-    Flags32		m_Flags;
-	float		vert_translucency;
-	float		vert_ambient;
-	float		lm_density;
 };
 
 DEFINE_VECTOR(Shader_xrLC,Shader_xrLCVec,Shader_xrLCIt);
@@ -64,36 +54,32 @@ public:
 	void					Load	(LPCSTR name)
 	{
 		IReader* fs			= FS.r_open(name);
-		int count			= fs->length()/sizeof(Shader_xrLC_OLD);
-//		int count			= fs->r_u32();
-		R_ASSERT			(int(fs->length()) == int(count*sizeof(Shader_xrLC_OLD)));
+		int count			= fs->length()/sizeof(Shader_xrLC);
+		R_ASSERT			(int(fs->length()) == int(count*sizeof(Shader_xrLC)));
 		library.resize		(count);
-        for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++) 
-        	it->Load		(*fs);
+		fs->r				(&*library.begin(),fs->length());
         FS.r_close			(fs);
 	}
 	void					Save	(LPCSTR name)
 	{
 		IWriter* F			= FS.w_open(name);
-        F->w_u32			(library.size());
-        for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++) 
-        	it->Save		(*F);
+		F->w				(&*library.begin(),(u32)library.size()*sizeof(Shader_xrLC));
         FS.w_close			(F);
 	}
 	void					Unload	()
 	{
 		library.clear		();
 	}
-	u32						GetID	(ref_str name)
+	u32						GetID	(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (name==it->Name) return u32(it-library.begin());
+			if (0==stricmp(name,it->Name)) return u32(it-library.begin());
 		return u32(-1);
 	}
-	Shader_xrLC*			Get		(ref_str name)
+	Shader_xrLC*			Get		(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (name==it->Name) return &(*it);
+			if (0==stricmp(name,it->Name)) return &(*it);
 		return NULL;
 	}
 	Shader_xrLC*			Get		(int id)
@@ -102,14 +88,13 @@ public:
 	}
 	Shader_xrLC*			Append	(Shader_xrLC* parent=0)
 	{
-		if (parent)			library.push_back(Shader_xrLC(*parent));
-        else				library.push_back(Shader_xrLC());
+		library.push_back(parent?Shader_xrLC(*parent):Shader_xrLC());
 		return &library.back();
 	}
-	void					Remove	(ref_str name)
+	void					Remove	(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (name==it->Name){
+			if (0==stricmp(name,it->Name)){
             	library.erase(it);
                 break;
             }
