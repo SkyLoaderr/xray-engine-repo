@@ -66,12 +66,18 @@ void CAI_Rat::Think()
 //	if (m_fSpeed > EPS_L) {
 //		AI_Path.TravelPath.resize(2);
 //		AI_Path.TravelPath[0].floating = AI_Path.TravelPath[1].floating = FALSE;
-//		AI_Path.TravelPath[0].P = vPosition;
-//		Fvector tTemp;
-//		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-//		tTemp.normalize_safe();
-//		tTemp.mul(10.f);
-//		AI_Path.TravelPath[1].P.add(vPosition,tTemp);
+//		AI_Path.TravelPath[0].P = m_tOldPosition;
+////		Fvector tTemp;
+////		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
+////		tTemp.normalize_safe();
+////		tTemp.mul(10.f);
+////		AI_Path.TravelPath[1].P.add(vPosition,tTemp);
+//		AI_Path.TravelPath[1].P = vPosition;
+//		AI_Path.TravelStart = 0;
+//		vPosition = m_tOldPosition;
+//	}
+//	else {
+//		AI_Path.TravelPath.clear();
 //		AI_Path.TravelStart = 0;
 //	}
 }
@@ -82,11 +88,11 @@ void CAI_Rat::Death()
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
-	AI_Path.TravelPath.clear();
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	AI_Path.TravelPath.clear();
 
 	//setEnabled	(false);
 	
@@ -218,8 +224,6 @@ void CAI_Rat::FreeHuntingActive()
 	else
 		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
-		
-	AI_Path.TravelPath.clear();
 }
 
 void CAI_Rat::FreeHuntingPassive()
@@ -291,8 +295,8 @@ void CAI_Rat::UnderFire()
 			tTemp.mul(UNDER_FIRE_DISTANCE);
 			m_tSpawnPosition.add(vPosition,tTemp);
 		}
-		if (Level().timeServer() - m_dwLastRangeSearch > UNDER_FIRE_TIME) {
-			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
+		if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
+			//m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
 			GO_TO_PREV_STATE;
 		}
 	}
@@ -306,14 +310,12 @@ void CAI_Rat::UnderFire()
 	else 
 		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
-	//if (m_fSpeed > EPS_L)
+	if (m_fSpeed > EPS_L)
 		vfComputeNewPosition();
-	//else
-	//	UpdateTransform();
+	else
+		UpdateTransform();
 
 	SetDirectionLook();
-
-	AI_Path.TravelPath.clear();
 }
 
 void CAI_Rat::AttackFire()
@@ -493,8 +495,6 @@ void CAI_Rat::Retreat()
 		vfComputeNewPosition();
 		SetDirectionLook();
 	}
-
-	AI_Path.TravelPath.clear();
 }
 
 void CAI_Rat::Pursuit()

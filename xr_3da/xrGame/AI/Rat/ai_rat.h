@@ -19,7 +19,6 @@ namespace NAI_Rat_Constants
 	const float ATTACK_ANGLE					= PI_DIV_6;
 	const DWORD LOST_MEMORY_TIME				= 20000;
 	const DWORD LOST_RECOIL_TIME				=  2000;
-	const DWORD UNDER_FIRE_TIME					= 20000;
 	const float UNDER_FIRE_DISTANCE				= 100.f;
 	const DWORD RETREAT_TIME					= 10000;
 	const float RETREAT_DISTANCE				= 100.f;
@@ -38,6 +37,7 @@ class CAI_Rat : public CCustomMonster
 		enum ESoundCcount {
 			SND_HIT_COUNT=1,
 			SND_DIE_COUNT=1,
+			SND_ATTACK_COUNT=1,
 			SND_VOICE_COUNT=2,
 		};
 
@@ -91,6 +91,7 @@ class CAI_Rat : public CCustomMonster
 		// SOUNDS
 		sound				m_tpaSoundHit[SND_HIT_COUNT];
 		sound				m_tpaSoundDie[SND_DIE_COUNT];
+		sound				m_tpaSoundAttack[SND_ATTACK_COUNT];
 		sound				m_tpaSoundVoice[SND_VOICE_COUNT];
 		sound*				m_tpSoundBeingPlayed;
 		DWORD				m_dwLastSoundRefresh;
@@ -150,19 +151,16 @@ class CAI_Rat : public CCustomMonster
 		bool				m_bNoWay;
 
 		// Morale
-		float				m_fMoraleDecreaseQuant;
-		float				m_fMoraleIncreaseQuant;
+		float				m_fMoraleSuccessAttackQuant;
+		float				m_fMoraleDeathQuant;
+		float				m_fMoraleFearQuant;
 		float				m_fMoraleRestoreQuant;
-		float				m_fMoraleMinValue;
-		float				m_fMoraleMaxValue;
-		float				m_fMoraleDecreaseRadius;
-		float				m_fMoraleIncreaseRadius;
-		float				m_fMoraleUESDecreaseQuant;
-		float				m_fMoraleMaxUESDistance;
-		float				m_fMoraleNormalValue;
 		DWORD				m_dwMoraleRestoreTimeInterval;
 		DWORD				m_dwMoraleLastUpdateTime;
-
+		float				m_fMoraleMinValue;
+		float				m_fMoraleMaxValue;
+		float				m_fMoraleNormalValue;
+		float				m_fMoraleNullRadius;
 		// FSM
 		stack<ERatStates>	tStateStack;
 		ERatStates			eCurrentState;
@@ -281,7 +279,6 @@ class CAI_Rat : public CCustomMonster
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
 		void	vfComputeNextDirectionPosition();
-		void	vfAddMorale(float fValue, float fRadius);
 		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
 		void	vfLoadSounds();

@@ -18,7 +18,7 @@ void CAI_Rat::Exec_Action(float dt)
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;
 	switch (L->Command) {
 		case AI::AIC_Action::AttackBegin: {
-			vfAddMorale(m_fMoraleIncreaseQuant, m_fMoraleIncreaseRadius);
+			pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_ATTACK_COUNT)],this,vPosition);
 			if (m_tSavedEnemy->g_Health() > 0) {
 				DWORD dwTime = Level().timeServer();
 				m_bActionStarted = true;
@@ -132,24 +132,19 @@ void CAI_Rat::vfUpdateMorale()
 	DWORD dwCurTime = Level().timeServer();
 	if (m_fMorale < m_fMoraleMinValue)
 		m_fMorale = m_fMoraleMinValue;
+	if (m_fMorale > m_fMoraleMaxValue)
+		m_fMorale = m_fMoraleMaxValue;
 	if (dwCurTime - m_dwMoraleLastUpdateTime > m_dwMoraleRestoreTimeInterval) {
 		m_dwMoraleLastUpdateTime = dwCurTime;
-		m_fMorale += m_fMoraleRestoreQuant;
+		float fDistance = vPosition.distance_to(m_tSafeSpawnPosition);
+		fDistance = fDistance < 1.f ? 1.f : fDistance;
+		if (m_fMorale < m_fMoraleNormalValue)
+			m_fMorale += m_fMoraleRestoreQuant*(1.f - fDistance/m_fMoraleNullRadius);
+		else
+			m_fMorale -= m_fMoraleRestoreQuant*(fDistance/m_fMoraleNullRadius);
+		if (m_fMorale < m_fMoraleMinValue)
+			m_fMorale = m_fMoraleMinValue;
 		if (m_fMorale > m_fMoraleMaxValue)
 			m_fMorale = m_fMoraleMaxValue;
-		else
-			if ((m_fMorale >= m_fMoraleNormalValue) && (m_fMorale - m_fMoraleRestoreQuant <= m_fMoraleNormalValue))
-				m_fMorale = m_fMoraleNormalValue;
 	}
-}
-
-void CAI_Rat::vfAddMorale(float fValue, float fRadius)
-{
-	CEntity *tpLeader = Level().Teams[g_Team()].Squads[g_Squad()].Leader;
-	if (tpLeader->g_Alive())
-		tpLeader->m_fMorale += fValue;
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (int i=0; i<(int)Group.Members.size(); i++)
-		if (Group.Members[i]->g_Alive())
-			Group.Members[i]->m_fMorale += fValue;
 }

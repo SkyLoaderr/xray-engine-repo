@@ -68,11 +68,15 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 			m_tLastSound.fPower			= power;
 			m_tLastSound.tSavedPosition = Position;
 			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
+			float fDistance = (Position.distance_to(vPosition) < 1.f ? 1.f : Position.distance_to(vPosition));
 			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
-				m_fMorale += m_fMoraleDecreaseQuant;
+				m_fMorale += m_fMoraleDeathQuant/fDistance;
 			else
 				if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-					m_fMorale += m_fMoraleUESDecreaseQuant;
+					m_fMorale += m_fMoraleFearQuant/fDistance;
+				else
+					if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)
+						m_fMorale += m_fMoraleSuccessAttackQuant/fDistance;
 		}
 	}
 }

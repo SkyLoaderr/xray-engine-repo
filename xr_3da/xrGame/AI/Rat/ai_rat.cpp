@@ -109,17 +109,15 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fAttackSpeed		= pSettings->ReadFLOAT(section,"attack_speed");
 
 	// morale
-	m_fMoraleNormalValue			= m_fMorale;
-	m_fMoraleDecreaseQuant			= (float)pSettings->ReadINT(section,"MoraleDecreaseQuant");
-	m_fMoraleIncreaseQuant			= (float)pSettings->ReadINT(section,"MoraleIncreaseQuant");
-	m_fMoraleRestoreQuant			= (float)pSettings->ReadINT(section,"MoraleRestoreQuant");
-	m_fMoraleMinValue				= (float)pSettings->ReadINT(section,"MoraleMinValue");
-	m_fMoraleMaxValue				= (float)pSettings->ReadINT(section,"MoraleMaxValue");
-	m_fMoraleDecreaseRadius			= (float)pSettings->ReadINT(section,"MoraleDecreaseRadius");
-	m_fMoraleIncreaseRadius			= (float)pSettings->ReadINT(section,"MoraleIncreaseRadius");
-	m_fMoraleUESDecreaseQuant		= (float)pSettings->ReadINT(section,"MoraleUESDecreaseQuant");
-	m_fMoraleMaxUESDistance			= (float)pSettings->ReadINT(section,"MoraleMaxUESDistance");
-	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT(section,"MoraleRestoreTimeInterval");
+	m_fMoraleSuccessAttackQuant		= pSettings->ReadFLOAT	(section, "MoraleSuccessAttackQuant	");
+	m_fMoraleDeathQuant				= pSettings->ReadFLOAT	(section, "MoraleDeathQuant			");
+	m_fMoraleFearQuant				= pSettings->ReadFLOAT	(section, "MoraleFearQuant			");
+	m_fMoraleRestoreQuant			= pSettings->ReadFLOAT	(section, "MoraleRestoreQuant		");
+	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT	(section, "MoraleRestoreTimeInterval");
+	m_fMoraleMinValue				= pSettings->ReadFLOAT	(section, "MoraleMinValue			");
+	m_fMoraleMaxValue				= pSettings->ReadFLOAT	(section, "MoraleMaxValue			");
+	m_fMoraleNormalValue			= pSettings->ReadFLOAT	(section, "MoraleNormalValue		");
+	m_fMoraleNullRadius				= pSettings->ReadFLOAT	(section, "MoraleNullRadius			");
 
 	m_fChangeActiveStateProbability = pSettings->ReadFLOAT(section,"ChangeActiveStateProbability");
 	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
