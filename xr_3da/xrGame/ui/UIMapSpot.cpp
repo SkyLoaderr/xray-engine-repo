@@ -186,22 +186,19 @@ void CUIMapSpot::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 
 	if (b && b == pWnd && b->m_pActiveMapSpot == this)
 	{
-		if (MAPSPOT_FOCUS_RECEIVED == msg)
+		switch (msg)
 		{
-			m_MapSpotAnimation.Reverese(false);
-			if (m_MapSpotAnimation.Done())
-			{
-				m_MapSpotAnimation.Reset();
-			}
-		}
-		else if (MAPSPOT_FOCUS_LOST == msg)
-		{
+		case MAPSPOT_FOCUS_RECEIVED:
+			m_MapSpotAnimation.Reverese(false);            
+			break;
+		case MAPSPOT_FOCUS_LOST:
 			m_MapSpotAnimation.Reverese(true);
-			if (m_MapSpotAnimation.Done())
-			{
-				m_MapSpotAnimation.Reset();
-			}
+			break;
+		default:
+			return;
 		}
+		if (m_MapSpotAnimation.Done())
+                 m_MapSpotAnimation.Reset();
 	}
 }
 
@@ -212,8 +209,10 @@ void CUIMapSpot::DynamicManifestation(bool value)
 	if (value)
 	{
 		m_MapSpotAnimation.SetColorAnimation(MAP_AREA_ANIMATION);
+		m_MapSpotAnimation.Reverese(true);
+		m_MapSpotAnimation.GoToEnd();
 		m_MapSpotAnimation.Update();
-		SetColor(m_MapSpotAnimation.GetColor());
+		//SetColor(m_MapSpotAnimation.GetColor());
 	}
 	else
 	{
