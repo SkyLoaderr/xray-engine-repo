@@ -25,30 +25,24 @@ public:
 	IC	SelfRef	build	(const _vector3<T> &v1, const _vector3<T> &v2, const _vector3<T> &v3) 
 	{
 		_vector3<T> t1,t2;
-		t1.sub(v1,v2);
-		t2.sub(v1,v3);
-		n.crossproduct(t1,t2);
-		n.normalize   ();
+		n.crossproduct(t1.sub(v1,v2), t2.sub(v1,v3)).normalize();
 		d = -n.dotproduct(v1);
 		return *this;
 	}
 	IC	SelfRef	build(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
-		n.normalize	(_n);
-		d			= - n.dotproduct(_p);
+		d			= - n.normalize(_n).dotproduct(_p);
 		return *this;
 	}
 	IC	SelfRef	build_unit_normal(const _vector3<T> &_p, const _vector3<T> &_n)
 	{
 		VERIFY		(fsimilar(_n.magnitude(),1,EPS));
-		n.set		(_n);
-		d			= - n.dotproduct(_p);
+		d			= - n.set(_n).dotproduct(_p);
 		return *this;
 	}
 	IC	SelfRef	project(_vector3<T> &pdest, _vector3<T> &psrc)
 	{
-		T dist		= classify(psrc);
-		pdest.mad	(psrc,n,-dist);
+		pdest.mad	(psrc,n,-classify(psrc));
 		return *this;
 	}
 	IC	T		classify(const _vector3<T> &v) const	
@@ -62,11 +56,7 @@ public:
 		d*=denom;
 		return *this;
 	}
-	IC	T	classify_inv(const _vector3<T> &v) 
-	{
-		return -classify(v);
-	}
-	IC	T	distance(const _vector3<T> &v)	
+	IC	T	distance	(const _vector3<T> &v)	
 	{
 		return _abs(classify(v));
 	}
@@ -130,9 +120,9 @@ public:
 	IC	SelfRef	transform(_matrix<T>& M)
 	{
 		// rotate the normal
-		M.transform_dir(n);
+		M.transform_dir		(n);
 		// slide the offset
-		d -= M.c.dotproduct(n);
+		d -= M.c.dotproduct	(n);
 		return *this;
 	}
 };
