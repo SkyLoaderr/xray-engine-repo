@@ -208,6 +208,12 @@ IC	bool compare(LPCSTR p0, LPSTR p1, const P &p)
 	return			(p(p0,p1));
 }
 
+template <typename P>
+IC	bool compare(LPSTR p0, LPCSTR p1, const P &p)
+{
+	return			(p(p0,p1));
+}
+
 template <typename T, typename P>
 IC	bool compare(const T &p0, const T &p1, const P &p)
 {
@@ -224,6 +230,7 @@ namespace object_comparer {
 			IC	bool operator() (LPCSTR _1, LPCSTR _2)		const	{return(P<int>()	(xr_strcmp(_1,_2),0));}
 			IC	bool operator() (LPSTR _1, LPSTR _2)		const	{return(P<int>()	(xr_strcmp(_1,_2),0));}
 			IC	bool operator() (LPCSTR _1, LPSTR _2)		const	{return(P<int>()	(xr_strcmp(_1,_2),0));}
+			IC	bool operator() (LPSTR _1, LPCSTR _2)		const	{return(P<int>()	(xr_strcmp(_1,_2),0));}
 		};
 	};
 };
