@@ -116,7 +116,7 @@ BOOL CCustomEvent::Spawn		( BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 			P.r_u64				(E.CLS	);
 			P.r_string			(str	);
 			Parse				(E,str	);
-			Actions.push_back	(A);
+			Actions.push_back	(E);
 			count--;
 		}
 	}
@@ -146,23 +146,23 @@ void CCustomEvent::Update (DWORD dt)
 
 void CCustomEvent::OnNear( CObject* O )
 {
-	// check if target
-	if (O->SUB_CLS_ID != clsid_Target) return;
-	
 	// check if not contacted before
 	if (find(Contacted.begin(),Contacted.end(),O)!=Contacted.end()) return;
 	
 	// check if it is actually contacted
-	CCF_EventBox* M = (CCF_EventBox*)CFORM(); R_ASSERT	(M);
+	CCF_Shape* M = (CCF_Shape*)CFORM(); R_ASSERT(M);
 	if (M->Contact(O)) {
-		OnEnter.Signal((DWORD)O);
-		Contacted.push_back(O);
+		Contacted.push_back	(O);
 
-		if (ExecuteOnce)	bEnabled=FALSE;
-		return;
+		// search if we have some action for this type of object
+		CLASS_ID cls = O->SUB_CLS_ID;
+		for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
+			if ((it->type==0) && (it->CLS == cls) && (it->count))	{
+				if (it->count != 0xffff)	it->count -= 1;
+				Engine.Event.Signal(it->E,DWORD(it->P1),DWORD(O));
+			}
+		}
 	}
-	
-	return;
 }
 
 void CCustomEvent::OnRender()

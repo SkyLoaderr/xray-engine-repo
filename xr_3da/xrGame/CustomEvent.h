@@ -20,6 +20,7 @@ protected:
 		LPSTR		P1;
 	};
 	typedef vector<DEF_EVENT>	tActions;
+	typedef tActions::iterator	tActions_it;
 
 	tActions				Actions;
 	vector<CObject*>		Contacted;
