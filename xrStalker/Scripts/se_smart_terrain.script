@@ -14,6 +14,11 @@ function se_smart_terrain:smart_touch	(monster)
 	cse_alife_smart_zone.smart_touch	(self)
 end
 
+function se_smart_terrain:detect_probability	()
+	log							("se_smart_terrain::detect_probability called!")
+	return 						1.0
+end
+
 function se_smart_terrain:__init		(section) super(section)
 	log							("se_smart_terrain::se_smart_terrain called!")
 end
