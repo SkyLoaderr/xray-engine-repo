@@ -9,6 +9,7 @@
 #include "skeletonX.h"
 #include "fhierrarhyvisual.h"
 
+#define MAX_BONE_PARAMS		4
 #define MAX_BLENDED			16
 #define MAX_PARTS			4
 #define MAX_BLENDED_POOL	(MAX_BLENDED*MAX_PARTS)
@@ -107,7 +108,7 @@ public:
 	BlendList		Blend;
 	BoneCallback	Callback;
 	void*			Callback_Param;
-	DWORD			tag;						
+	float			param[MAX_BONE_PARAMS];						
 
 	// methods
 	IC	void		construct	()
@@ -129,9 +130,10 @@ public:
 		Callback		= C; 
 		Callback_Param	= Param; 
 	}
-	IC	void		set_tag		(DWORD data)
+	IC	void		set_param		(DWORD idx, float data)
 	{
-		tag			= data;
+		VERIFY		(idx<MAX_BONE_PARAMS);
+		param[idx]	= data;
 	}
 };
 #pragma pack(pop)
