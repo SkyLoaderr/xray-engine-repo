@@ -76,7 +76,10 @@ public:
 																	}
 	void				Load					(LPCSTR section);
 #ifdef DEBUG
-	void				dbg_Draw(){m_character->OnRender();};
+	void				dbg_Draw(){
+										if(m_character)
+										m_character->OnRender();
+	};
 #endif
 
 	void				SetFriction(float air, float wall, float ground)

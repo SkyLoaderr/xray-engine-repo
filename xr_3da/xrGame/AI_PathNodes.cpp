@@ -400,20 +400,21 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	if ((TravelPath.empty()) || (TravelPath.size() - 1 <= TravelStart))	{
 		fSpeed = 0;
 #ifndef NO_PHYSICS_IN_AI_MOVE
-		//if(Me->Movement.IsCharacterEnabled())
+	if(Me->Movement.IsCharacterEnabled())
 		{
 		motion.set(0,0,0);
 		Me->Movement.GetDesiredPos(p_dest);
 		Me->Movement.Calculate(p_dest,dt);
 		Me->Movement.GetPosition(p_dest);
 		Me->UpdateTransform	();
+		}
 		if (Me->Movement.gcontact_HealthLost)	
 		{
 			Fvector d;
 			d.set(0,1,0);
 			Me->Hit	(Me->Movement.gcontact_HealthLost,d,Me,0,p_dest,0);
 		}
-		}
+		
 #endif
 		return;
 	}

@@ -15,6 +15,7 @@ using namespace AI_Biting;
 CAI_Biting::CAI_Biting()
 {
 	Init();
+	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 }
 
 CAI_Biting::~CAI_Biting()
@@ -138,7 +139,14 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	
 	// loading animations
 	CBitingAnimations::Load			(PKinematics(pVisual));
-	
+
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.CreateCharacter();
+	Movement.SetPhysicsRefObject(this);
+#endif
+	Movement.SetPosition	(vPosition);
+	Movement.SetVelocity	(0,0,0);
+
 	return(TRUE);
 }
 

@@ -1047,8 +1047,8 @@ void CPHSimpleCharacter::OnRender(){
 
 	RCache.dbg_DrawEllipse(M, 0xffffffff);
 
-	M.c.set(0.f,1.f,0.f);
-	RCache.dbg_DrawEllipse(M, 0xffffffff);
+	///M.c.set(0.f,1.f,0.f);
+	//RCache.dbg_DrawEllipse(M, 0xffffffff);
 }
 #endif
 
@@ -1433,3 +1433,26 @@ void CPHStalkerCharacter::BringToDesired(float time,float force)
 		SetAcceleration(move);
 	}
 }
+#ifdef DEBUG
+void	CPHStalkerCharacter::OnRender()	
+{
+	inherited::OnRender();
+
+	if(!b_exist) return;
+
+	Fvector pos;
+	GetDesiredPosition(pos);
+	pos.y+=m_radius;
+
+
+	Fvector scale;
+	scale.set(0.35f,0.35f,0.35f);
+	Fmatrix M;
+	M.identity();
+	M.scale(scale);
+	M.c.set(pos);
+
+
+	RCache.dbg_DrawEllipse(M, 0xffffffff);
+}
+#endif

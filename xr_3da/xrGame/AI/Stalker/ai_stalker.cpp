@@ -188,7 +188,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_dwMaxDynamicObjectsCount		= _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
 	m_dwMaxDynamicSoundsCount		= _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
-	// physics
+	// skeleton physics
 	skel_density_factor				= pSettings->r_float(section,"ph_skeleton_mass_factor");
 	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
@@ -257,12 +257,10 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 	#ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.CreateCharacter();
 	Movement.SetPhysicsRefObject(this);
-	Movement.SetPosition	(vPosition);
-	Movement.SetVelocity	(0,0,0);
 	#endif
-	
 	Movement.SetPosition	(vPosition);
 	Movement.SetVelocity	(0,0,0);
+
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
 	

@@ -231,6 +231,8 @@ virtual		void		GetDesiredPosition					(Fvector& dpos)
 }
 virtual		void		BringToDesired						(float time,float force=1.f);
 //virtual void Calculate();
-
+#ifdef DEBUG
+virtual		void		OnRender							()					;
+#endif
 
 };
