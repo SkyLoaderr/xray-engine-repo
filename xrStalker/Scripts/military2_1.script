@@ -12,12 +12,6 @@ function on_enter (zone, object)
     if object:id () == get_actor ():id () then actor_entered = true end
 end
 
-function check (stalker)
-    reset_action (stalker, military2_1.script_name ())
-    action (stalker, anim ("prisluh"), cond (cond.time_end, 10000))
-    while stalker:action () do wait () end
-end
-
 function main ()
 
     local stalker1 = get_level_object ("stalker1")
@@ -31,7 +25,7 @@ function main ()
     --local artefact = get_level_object ("artefact")
     --if artefact ~= nil then printf ("Getting artefact") end
 
-    local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")
+    local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")	
     local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
     local sound1_3 = sound_object ("scripts\\Rolik\\Stalker1_3")
     local sound2_1 = sound_object ("scripts\\Rolik\\Stalker2_1")
