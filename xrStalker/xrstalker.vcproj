@@ -898,16 +898,7 @@
 				Name="Base"
 				Filter="">
 				<File
-					RelativePath=".\scripts\_.script">
-				</File>
-				<File
-					RelativePath=".\scripts\______.script">
-				</File>
-				<File
 					RelativePath=".\scripts\_test.script">
-				</File>
-				<File
-					RelativePath=".\scripts\a.b.c.d.script">
 				</File>
 				<File
 					RelativePath=".\scripts\a1.script">
