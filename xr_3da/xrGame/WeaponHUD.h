@@ -4,8 +4,8 @@
 // refs
 class ENGINE_API FBasicVisual;
 class ENGINE_API CInifile;
-class CEntity;
 class ENGINE_API CMotionDef;
+class CEntity;
 
 class CWeaponHUD : 
 	public pureDeviceCreate, 
@@ -19,6 +19,7 @@ class CWeaponHUD :
 
 	enum EHUDState{
 		hsIdle = 0,
+		hsReload,
 		hsFireCycle,
 		hsFireSpinup,
 		hsShoot
@@ -45,10 +46,11 @@ public:
 
 	// logic & effects
 	void			Shoot			();
-	void			FireSpinup		()	{ new_mstate = hsFireSpinup;}
-	void			FireCycleStart	()	{ new_mstate = hsFireCycle;	}
-	void			FireEnd			()	{ new_mstate = hsIdle;	}
-
+	void			stateSpinup		()	{ new_mstate = hsFireSpinup;}
+	void			stateCycleStart	()	{ new_mstate = hsFireCycle;	}
+	void			stateIdle		()	{ new_mstate = hsIdle;		}
+	void			stateReload		()	{ new_mstate = hsReload;	}
+	
 	void			UpdatePosition	(const Fmatrix& transform);
 	void			UpdateAnimation	();
 
