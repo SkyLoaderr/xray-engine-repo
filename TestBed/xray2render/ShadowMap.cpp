@@ -675,7 +675,7 @@ void	CalcGauss	(
 					 vector<D3DXVECTOR4>&	V,	// vertical offsets
 					 int	n=7,				// kernel size
 					 float	r=3.3f,				// gaussian radius
-					 float	bs=1.2f				// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
+					 float	bs=1.2f,			// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
 					 float	s_out=1.f,			// resulting magnitude
 					 float	tw=1.f,				// grid/texture width
 					 float	th=1.f				// grid/texture height
