@@ -21,7 +21,7 @@ enum COMBINE_MODE
 #define SHADOW_MAP_SIZE		1024
 #define OUT_WIDTH			800
 #define OUT_HEIGHT			600
-#define OVERLAY_SIZE		128
+#define OVERLAY_SIZE		256
 #define DEPTH_RANGE			4.0f
 
 // 2D
@@ -306,7 +306,7 @@ HRESULT CMyD3DApplication::Render		()
 		RenderShadowMap				();
 		RenderLight_Direct_smap		();
 		RenderCombine				(CM_NORMAL);
-		// RenderCombine_Bloom		();
+		RenderCombine_Bloom			();
 		RenderOverlay				();
 
 		// Output statistics
@@ -1331,7 +1331,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 	if (1)
 	{
-		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.8f,		.8f,		1.,			.7);
+		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		1.8f,		1.8f,		2.,			1.7);
 
 		Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/11.f;
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
@@ -1589,7 +1589,6 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
-	/*
 	m_pd3dDevice->SetTexture				(1, NULL);
 
 	// ***** Begin filtering *****
@@ -1634,7 +1633,6 @@ HRESULT CMyD3DApplication::RenderCombine_Bloom	()
 	// Filter over-bright information to BLOOM-2
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
-	*/
 
 	// Cleanup
 	// m_pd3dDevice->SetRenderState			(D3DRS_ZENABLE,	TRUE);
