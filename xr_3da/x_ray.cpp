@@ -16,6 +16,7 @@
 #include "GameFont.h"
 #include "resource.h"
 #include "LightAnimLibrary.h"
+#include "ispatial.h"
 
 //////////////////////////////////////////////////////////////////////////
 struct _SoundProcessor	: public pureFrame
@@ -353,6 +354,7 @@ void CApplication::OnFrame	( )
 	while	(T.GetElapsed_ms()<10);
 	*/
 	Engine.Event.OnFrame();
+	g_SpatialSpace.update();
 }
 
 void CApplication::Level_Scan()

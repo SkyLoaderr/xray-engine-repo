@@ -12,7 +12,7 @@ CWeaponLR300::CWeaponLR300		() : CWeaponMagazined("LR300",SOUND_TYPE_WEAPON_SUBM
 CWeaponLR300::~CWeaponLR300		()
 {
 }
-
+/*
 void	CWeaponLR300::UpdateCL	()
 {
 	inherited::UpdateCL	();
@@ -53,3 +53,4 @@ void	CWeaponLR300::spatial_unregister	()
 	Msg		("! CWeaponLR300::s_unregister");
 	inherited::spatial_unregister();
 }
+*/

@@ -68,7 +68,8 @@ public:
 
 void	ISpatial_DB::q_ray	(u32 _o, u32 _mask, const Fvector&	_start,  const Fvector&	_dir, float _range)
 {
-	VERIFY			(verify());
+	VERIFY		(!lock);
+	lock		= TRUE;
 
 	q_result.clear	();
 	if (_o & O_ONLYFIRST)
@@ -80,5 +81,5 @@ void	ISpatial_DB::q_ray	(u32 _o, u32 _mask, const Fvector&	_start,  const Fvecto
 		else						{ walker<false,false>	W(_mask,_start,_dir,_range);	W.walk(m_root,m_center,m_bounds); } 
 	}
 
-	VERIFY			(verify());
+	lock		= FALSE;
 }
