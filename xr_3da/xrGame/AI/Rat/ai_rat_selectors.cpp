@@ -10,18 +10,10 @@
 #include "..\\..\\entity.h"
 #include "..\\..\\CustomMonster.h"
 #include "ai_rat_selectors.h"
+#include "..\\ai_monsters.h"
 
 //#define OLD_COVER_COST
 #define DEST_POSITIONS
-
-#define MAGNITUDE_EPSILON 0.01
-#define SQR(x) ((x)*(x))
-#define CHECK_RESULT \
-	if (m_fResult > BestCost)\
-		return(m_fResult);
-
-const Fvector tLeft = {-1,0,0};
-const Fvector tRight = {1,0,0};
 
 void CRatSelectorBase::Load(CInifile* ini, const char* section)
 {
@@ -73,21 +65,6 @@ void CRatSelectorBase::Init()
 	for ( m_iCurrentMember = 0, m_iAliveMemberCount=0; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
 		if (taMembers[m_iCurrentMember]->g_Health() > 0)
 			m_iAliveMemberCount++;
-}
-
-IC void vfNormalizeSafe(Fvector& Vector)
-{
-	float fMagnitude = (float)sqrt(SQR(Vector.x) + SQR(Vector.y) + SQR(Vector.z));
-	if (fMagnitude > MAGNITUDE_EPSILON) {
-		Vector.x /= fMagnitude;
-		Vector.y /= fMagnitude;
-		Vector.z /= fMagnitude;
-	}
-	else {
-		Vector.x = 1.f;
-		Vector.y = 0.f;
-		Vector.z = 0.f;
-	}
 }
 
 IC void CRatSelectorBase::vfAddTravelCost()

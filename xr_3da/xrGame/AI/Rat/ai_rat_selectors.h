@@ -150,6 +150,4 @@ class CRatSelectorUnderFire : public CRatSelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-extern IC void vfNormalizeSafe(Fvector& Vector);
-
 #endif

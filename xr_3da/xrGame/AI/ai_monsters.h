@@ -9,10 +9,18 @@
 #ifndef __XRAY_AI_MONSTERS__
 #define __XRAY_AI_MONSTERS__
 
-const DWORD _FB_hit_RelevantTime	= 10;
-const DWORD _FB_sense_RelevantTime	= 10;
-const float _FB_look_speed			= PI;
-const float _FB_invisible_hscale	= 2.f;
+#define MAGNITUDE_EPSILON 0.01
+#define SQR(x) ((x)*(x))
+#define CHECK_RESULT \
+	if (m_fResult > BestCost)\
+		return(m_fResult);
+
+const DWORD		_FB_hit_RelevantTime	= 10;
+const DWORD		_FB_sense_RelevantTime	= 10;
+const float		_FB_look_speed			= PI;
+const float		_FB_invisible_hscale	= 2.f;
+const Fvector	tLeft					= {-1,0,0};
+const Fvector	tRight					= {1,0,0};
 
 struct SEnemySelected
 {
@@ -20,5 +28,7 @@ struct SEnemySelected
 	bool		bVisible;
 	float		fCost;
 };
+
+extern IC void vfNormalizeSafe(Fvector& Vector);
 
 #endif
