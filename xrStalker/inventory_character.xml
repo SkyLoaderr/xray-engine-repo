@@ -25,6 +25,17 @@
 	<community_caption x="20" y="81" width="125" height="18">
 		<text x="0" y="0" font="letterica18" r="216" g="186" b="140">community</text>
 	</community_caption>
+	
+	<!-- REPUTATION -->
+	<reputation_static x="20" y="97" width="125" height="18">
+		<text x="0" y="0" font="letterica18" r="150" g="150" b="180" a="255"></text>
+	</reputation_static>
+
+	<!-- REPUTATION CAPTION -->
+	<reputation_caption x="20" y="97" width="125" height="18">
+		<text x="0" y="0" font="letterica18" r="128" g="128" b="128" a="255">reputation</text>
+	</reputation_caption>
+
 
 </window>
 
