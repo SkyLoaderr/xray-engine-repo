@@ -62,7 +62,13 @@ void CScriptProcess::run_strings()
 {
 	for ( ; !m_strings_to_run.empty(); ) {
 		LPSTR		I = m_strings_to_run.back();
-		int			err_code = lua_dostring(ai().script_engine().lua(),I);
+		int			err_code;
+		try {
+			err_code = lua_dostring(ai().script_engine().lua(),I);
+		}
+		catch(...) {
+			err_code = LUA_ERRRUN;
+		}
 
 		if (err_code) {
 			if (!ai().script_engine().print_output(ai().script_engine().lua(),"console_string",err_code))
@@ -107,7 +113,11 @@ void CScriptProcess::update()
 	}
 
 #ifdef _DEBUG
-	lua_setgcthreshold	(ai().script_engine().lua(),0);
+	try {
+		lua_setgcthreshold	(ai().script_engine().lua(),0);
+	}
+	catch(...) {
+	}
 #endif
 }
 

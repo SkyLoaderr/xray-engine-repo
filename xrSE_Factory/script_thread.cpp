@@ -51,6 +51,9 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 
 CScriptThread::~CScriptThread()
 {
+#ifdef DEBUG
+	Msg						("* Destroying script thread %s",m_script_name);
+#endif
 	luaL_unref				(ai().script_engine().lua(),LUA_REGISTRYINDEX,m_thread_reference);
 	xr_delete				(m_script_name);
 }

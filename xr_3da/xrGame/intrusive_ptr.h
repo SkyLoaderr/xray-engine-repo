@@ -22,7 +22,11 @@ struct intrusive_base {
 	template <typename T>
 	IC	void	_release		(T*object)
 	{
-		xr_delete	(object);
+		try {
+			xr_delete	(object);
+		}
+		catch(...) {
+		}
 	}
 };
 
