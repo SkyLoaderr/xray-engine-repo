@@ -50,16 +50,8 @@ void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 	B->mTransform.mul_43(spin);
 }
 
-void CAI_Soldier::Load(CInifile* ini, const char* section)
-{ 
-	// load parameters from ".ini" file
-	inherited::Load	(ini,section);
-	
-	Fvector			P = vPosition;
-	P.x				+= ::Random.randF();
-	P.z				+= ::Random.randF();
-
-	// sounds
+void CAI_Soldier::vfLoadSounds()
+{
 	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
 	pSounds->Create3D(sndHit[1],"actor\\bhit_flesh-2");
 	pSounds->Create3D(sndHit[2],"actor\\bhit_flesh-3");
@@ -72,7 +64,10 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	pSounds->Create3D(sndDie[1],"actor\\die1");
 	pSounds->Create3D(sndDie[2],"actor\\die2");
 	pSounds->Create3D(sndDie[3],"actor\\die3");
+}
 
+void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
+{
 	SelectorAttack.Load(ini,section);
 	SelectorDefend.Load(ini,section);
 	SelectorFindEnemy.Load(ini,section);
@@ -86,25 +81,16 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	SelectorRetreat.Load(ini,section);
 	SelectorSenseSomething.Load(ini,section);
 	SelectorUnderFire.Load(ini,section);
+}
 
-	m_tpaDeathAnimations[0] = m_death;
-	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");
-	
-	m_crouch_walk.Create(PKinematics(pVisual),"cr_walk");
-	m_crouch_run.Create(PKinematics(pVisual),"cr_run");
-	m_crouch_idle = PKinematics(pVisual)->ID_Cycle_Safe("cr_idle");
-	m_crouch_death = PKinematics(pVisual)->ID_Cycle_Safe("cr_death");
-	m_crouch_turn = PKinematics(pVisual)->ID_Cycle_Safe("cr_turn");
-	
-	m_turn = PKinematics(pVisual)->ID_Cycle_Safe("norm_turn");
-
+void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
+{
 	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
 	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+}
 
-	//m_walk.fwd = PKinematics(pVisual)->ID_Cycle_Safe("norm_turn");
-
-	// patrol path
-	//if ((Level().Teams[g_Team()].Squads[g_Squad()].Leader == this) && (Level().pLevel->LineExists("patrol_path","path_00"))) {
+void CAI_Soldier::vfCheckForPatrol(CInifile *ini)
+{
 	if (Level().pLevel->LineExists("patrol_path","path_00")) {
 		
 		LPCSTR buf = Level().pLevel->ReadSTRING("patrol_path","path_00"), buf2 = buf;
@@ -129,83 +115,21 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	}
 }
 
-void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
-{
-	//R_ASSERT(fsimilar(_view.magnitude(),1));
-	//R_ASSERT(fsimilar(_move.magnitude(),1));
+void CAI_Soldier::Load(CInifile* ini, const char* section)
+{ 
+	// load parameters from ".ini" file
+	inherited::Load	(ini,section);
+	
+	// initialize start position
+	Fvector			P = vPosition;
+	P.x				+= ::Random.randF();
+	P.z				+= ::Random.randF();
 
-	// choose motion animation
-	CMotionDef*	S=0;
-	if (iHealth<=0) {
-		if (m_bCrouched)
-			S = m_crouch_death;
-		else {
-			for (int i=0 ;i<2; i++)
-				if (m_tpaDeathAnimations[i] == m_current) {
-					S = m_current;
-					break;
-				}
-			if (!S)
-				S = m_tpaDeathAnimations[::Random.randI(0,2)];
-		}
-	} 
-	else {
-		if (speed<0.2f) 
-			if ((!(AI_Path.TravelPath.size()) || (eCurrentState != aiSoldierPatrolDetour))) {
-				//Msg("standing...");
-				if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
-					if (m_bCrouched)	
-						S = m_crouch_turn;
-					else
-						S = m_turn;
-				else
-					if (m_bCrouched)	
-						S = m_crouch_idle;
-					else
-						S = m_idle;
-			}
-			else
-				S = m_current;
-		else {
-			//Msg("moving...");
-			Fvector view = _view; view.y=0; view.normalize_safe();
-			Fvector move = _move; move.y=0; move.normalize_safe();
-			float	dot  = view.dotproduct(move);
-			
-			SAnimState* AState = 0;
-			if (m_bCrouched)	
-				AState = &m_crouch_walk;
-			else 
-				AState = &m_walk;
-			
-			if (m_bCrouched) {
-				if (speed >= m_fMaxSpeed*m_fCrouchCoefficient)
-					AState = &m_crouch_run;
-			}
-			else		
-				if (speed >= m_fMaxSpeed)
-					AState = &m_run;
-			
-			if (dot>0.5f)
-				S = AState->fwd;
-			else 
-				if ((dot<=0.5f)&&(dot>=-0.5f)) {
-					Fvector cross; 
-					cross.crossproduct(view,move);
-					if (cross.y > 0)
-						S = AState->rs;
-					else
-						S = AState->ls;
-				}
-				else
-					S = AState->back;
-		}
-	}
-	if (S!=m_current) { 
-		//Msg("restarting animation...");
-		m_current = S;
-		if (S) PKinematics(pVisual)->PlayCycle(S);
-	}
+	vfLoadSounds();
+	vfLoadAnimations();
+	vfLoadSelectors(ini,section);
+	vfAssignBones(ini,section);
+	vfCheckForPatrol(ini);
 }
 
 void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)

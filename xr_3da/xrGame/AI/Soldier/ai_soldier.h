@@ -73,8 +73,145 @@ class CAI_Soldier : public CCustomMonster
 		// media
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
-		CMotionDef* 	m_tpaDeathAnimations[2];
-		
+
+////////////////////////////////////////////////////////////////////////////
+// normal animations
+////////////////////////////////////////////////////////////////////////////
+
+// global animations
+typedef struct tagSNormalGlobalAnimations{
+	CMotionDef* tpaDeath[2];
+	CMotionDef* tpJumpBegin;
+	CMotionDef* tpJumpIdle;
+}SNormalGlobalAnimations;
+
+// torso animations
+typedef struct tagSNormalTorsoAnimations{
+	CMotionDef* tpaIdle[2];
+	CMotionDef* tpaAim[2];
+	CMotionDef* tpaAttack[2];
+	CMotionDef* tpDamageLeft;
+	CMotionDef* tpDamageRight;
+	CMotionDef* tpReload;
+}SNormalTorsoAnimations;
+
+// legs animations
+typedef struct tagSNormalLegsAnimations{
+	SAnimState  tRun;
+	SAnimState  tWalk;
+	CMotionDef* tpTurn;
+	CMotionDef* tpIdle;
+}SNormalLegsAnimations;
+
+// hands animations
+typedef struct tagSNormalHandsAnimations{
+	CMotionDef* tpPointGesture;
+	CMotionDef* tpSmokeGesture;
+}SNormalHandsAnimations;
+
+// normal animations
+typedef struct tagSNormalAnimations{
+	SNormalGlobalAnimations tGlobal;
+	SNormalTorsoAnimations  tTorso;
+	SNormalLegsAnimations	tLegs;
+	SNormalHandsAnimations	tHands;
+}SNormalAnimations;
+
+////////////////////////////////////////////////////////////////////////////
+// crouch animations
+////////////////////////////////////////////////////////////////////////////
+
+// global animations
+typedef struct tagSCrouchGlobalAnimations{
+	CMotionDef* tpDeath;
+	CMotionDef* tpJumpBegin;
+	CMotionDef* tpJumpIdle;
+}SCrouchGlobalAnimations;
+
+// torso animations
+typedef struct tagSCrouchTorsoAnimations{
+	CMotionDef* tpAim;
+}SCrouchTorsoAnimations;
+
+// legs animations
+typedef struct tagSCrouchLegsAnimations{
+	SAnimState  tRun;
+	SAnimState  tWalk;
+	CMotionDef* tpTurn;
+	CMotionDef* tpIdle;
+}SCrouchLegsAnimations;
+
+// hands animations
+typedef struct tagSCrouchHandsAnimations{
+	CMotionDef* tpPointGesture;
+}SCrouchHandsAnimations;
+
+// crouch animations
+typedef struct tagSCrouchAnimations{
+	SCrouchGlobalAnimations	tGlobal;
+	SCrouchTorsoAnimations  tTorso;
+	SCrouchLegsAnimations	tLegs;
+	SCrouchHandsAnimations	tHands;
+}SCrouchAnimations;
+
+////////////////////////////////////////////////////////////////////////////
+// lie animations
+////////////////////////////////////////////////////////////////////////////
+
+// global animations
+typedef struct tagSLieGlobalAnimations{
+	CMotionDef* tpaDeath[2];
+	CMotionDef* tpJumpBegin;
+	CMotionDef* tpJumpIdle;
+}SLieGlobalAnimations;
+
+// torso animations
+typedef struct tagSLieTorsoAnimations{
+	CMotionDef* tpaIdle[2];
+	CMotionDef* tpaAim[2];
+	CMotionDef* tpaAttack[2];
+	CMotionDef* tpDamageLeft;
+	CMotionDef* tpDamageRight;
+	CMotionDef* tpReload;
+}SLieTorsoAnimations;
+
+// legs animations
+typedef struct tagSLieLegsAnimations{
+	SAnimState  tRun;
+	SAnimState  tWalk;
+	CMotionDef* tpTurn;
+	CMotionDef*	tpIdle;
+}SLieLegsAnimations;
+
+// hands animations
+typedef struct tagSLieHandsAnimations{
+	CMotionDef* tpPointGesture;
+}SLieHandsAnimations;
+
+// lie animations
+typedef struct tagSLieAnimations{
+	SLieGlobalAnimations	tGlobal;
+	SLieTorsoAnimations		tTorso;
+	SLieLegsAnimations		tLegs;
+	SLieHandsAnimations		tHands;
+}SLieAnimations;
+
+////////////////////////////////////////////////////////////////////////////
+// soldier animations
+////////////////////////////////////////////////////////////////////////////
+
+typedef struct tagSSoldierAnimations{
+	SNormalAnimations	tNormal;
+	SCrouchAnimations	tCrouch;
+	SLieAnimations		tLie;
+}SSoldierAnimations;
+
+		SSoldierAnimations	tSoldierAnimations;
+		CMotionDef*			m_tpCurrentGlobalAnimation;
+		CMotionDef*			m_tpCurrentTorsoAnimation;
+		CMotionDef*			m_tpCurrentHandsAnimation;
+		CMotionDef*			m_tpCurrentLegsAnimation;
+
 		// ai
 		ESoldierStates	eCurrentState;
 		bool			bStopThinking;
@@ -114,6 +251,9 @@ class CAI_Soldier : public CCustomMonster
 		vector<Fvector>			m_tpaPatrolPoints;
 		vector<Fvector>			m_tpaPointDeviations;
 		DWORD					m_dwStartPatrolNode;
+		float					m_fMinPatrolDistance;
+		float					m_fMaxPatrolDistance;
+		
 		
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;
@@ -153,6 +293,12 @@ class CAI_Soldier : public CCustomMonster
 		void UnderFire();
 
 		// miscellanious funtions	
+
+		void vfLoadSounds();
+		void vfLoadSelectors(CInifile *ini, const char *section);
+		void vfAssignBones(CInifile *ini, const char *section);
+		void vfCheckForPatrol(CInifile *ini);
+		void vfLoadAnimations();
 	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);

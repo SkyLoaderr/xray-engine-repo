@@ -13,6 +13,9 @@
 #define NEXT_POINT(m_iCurrentPoint) (m_iCurrentPoint) == tpaPatrolPoints.size() - 1 ? 0 : (m_iCurrentPoint) + 1
 #define PREV_POINT(m_iCurrentPoint) (m_iCurrentPoint) == 0 ? tpaPatrolPoints.size() - 1 : (m_iCurrentPoint) - 1
 
+#define MAX_PATROL_DISTANCE		6.f
+#define MIN_PATROL_DISTANCE		1.f
+
 extern void	UnpackContour(PContour& C, DWORD ID);
 extern void	IntersectContours(PSegment& Dest, PContour& C1, PContour& C2);
 
@@ -262,7 +265,7 @@ IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPos
 	);
 }
 
-void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = 0.5f, float fRadiusMax = 1.5f, float fSuitableAngle = PI_DIV_8*.5f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f)
+void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, bool bUseDeviations = true, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = 0.5f, float fRadiusMax = 1.5f, float fSuitableAngle = PI_DIV_8*.25f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f)
 {
 	CTravelNode tTravelNode;
 	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
@@ -281,7 +284,10 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	for ( i=1; i<tpaDeviations.size(); i++) {
 		fRadius = ::Random.randF(fRadiusMin,fRadiusMax), fAlpha = ::Random.randF(0.f,PI_MUL_2);
 		_sincos(fAlpha,fAlpha0,fTemp);
-		tpaDeviations[i].set(fTemp*fRadius,0,fAlpha0*fRadius);
+		if (bUseDeviations)
+			tpaDeviations[i].set(fTemp*fRadius,0,fAlpha0*fRadius);
+		else
+			tpaDeviations[i].set(0,0,0);
 		tTempPoint.add(tpaPoints[i],tpaDeviations[i]);
 	}
 		
@@ -723,18 +729,88 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	vfInitSelector(SelectorPatrol,Squad,Leader);
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
-	else {
-		SelectorPatrol.m_tEnemyPosition = Leader->Position();
-		SelectorPatrol.m_tCurrentPosition = Position();
-		m_dwLastRangeSearch = 0;
-		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
+	if (AI_Path.bNeedRebuild) {
+		AI_Path.DestNode = m_dwStartPatrolNode;
+		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,0,0);
+		if (AI_Path.Nodes.size() > 1) {
+			AI_Path.BuildTravelLine(Position());
+			CTravelNode tTemp;
+			tTemp.floating = FALSE;
+			tTemp.P = AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P;
+		}
+		else {
+			AI_Path.TravelPath.clear();
+			AI_Path.bNeedRebuild = FALSE;
+		}
+	}
+	else
+		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
+			CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
+			if  (Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 3000) {
+				/**
+				for (int i=0; i<SoldierLeader->m_tpaPatrolPoints.size(); i++) {
+					m_tpaPatrolPoints[i].add(SoldierLeader->m_tpaPatrolPoints[i],SoldierLeader->m_tpaPointDeviations[i]);
+					Fvector tTemp;
+					tTemp.sub(SoldierLeader->m_tpaPatrolPoints[i < SoldierLeader->m_tpaPatrolPoints.size() - 1 ? i + 1 : 0], SoldierLeader->m_tpaPatrolPoints[i]);
+					tTemp.normalize();
+					if (Group.Members[0] == this)
+						tTemp.set(tTemp.z,tTemp.y,-tTemp.x);
+					else
+						tTemp.set(-tTemp.z,tTemp.y,tTemp.x);
+					
+					m_tpaPatrolPoints[i].add(tTemp);
+				}
+				vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, false);
+
+				/**/
+				AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
+				for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
+					AI_Path.TravelPath[j] = SoldierLeader->AI_Path.TravelPath[i];
+					AI_Path.TravelPath[j].floating = FALSE;
+					Fvector tTemp;
+					tTemp.sub(SoldierLeader->AI_Path.TravelPath[i < SoldierLeader->AI_Path.TravelPath.size() - 1 ? i + 1 : 0].P, SoldierLeader->AI_Path.TravelPath[i].P);
+					if (tTemp.magnitude() < .1f) {
+						j--;
+						continue;
+					}
+					tTemp.normalize();
+					if (Group.Members[0] == this)
+						tTemp.set(tTemp.z,0,-tTemp.x);
+					else
+						tTemp.set(-tTemp.z,0,tTemp.x);
+					
+					AI_Path.TravelPath[j].P.add(tTemp);
+				}
+				AI_Path.TravelPath.resize(j);
+				/**/
+			}
+			AI_Path.TravelStart = 0;
+		}
+
+	if ((!m_dwLastRangeSearch) || (Level().timeServer() - m_dwLastRangeSearch >= 5000)) {
+		m_dwLastRangeSearch = Level().timeServer();
+		m_fMinPatrolDistance = MIN_PATROL_DISTANCE;
+		m_fMaxPatrolDistance = MAX_PATROL_DISTANCE - ::Random.randF(0,4);
 	}
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMinSpeed);
+	Fvector tTemp0;
+	tTemp0.sub(Leader->Position(),vPosition);
+	tTemp0.normalize();
+	tWatchDirection.normalize();
+	if (acosf(tWatchDirection.dotproduct(tTemp0)) < PI_DIV_2) {
+		float fDistance = Leader->Position().distance_to(vPosition);
+		if (fDistance >= m_fMaxPatrolDistance)
+			vfSetMovementType(false,1.1f*m_fMinSpeed);
+		else
+			if (fDistance <= m_fMinPatrolDistance)
+				vfSetMovementType(false,.9f*m_fMinSpeed);
+			else 
+				vfSetMovementType(false,((fDistance - (m_fMaxPatrolDistance + m_fMinPatrolDistance)*.5f)/((m_fMaxPatrolDistance - m_fMinPatrolDistance)*.5f)*.1f + m_fMinPatrolDistance)*m_fMinSpeed);
+	}
+	else
+		vfSetMovementType(false,.9f*m_fMinSpeed);
 	// stop processing more rules
 	bStopThinking = true;
 }
@@ -806,6 +882,7 @@ void CAI_Soldier::Patrol()
 		if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
 			vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath);
 			AI_Path.TravelStart = 0;
+			m_dwLastRangeSearch = Level().timeServer();
 		}
 
 	SetLessCoverLook(AI_Node);

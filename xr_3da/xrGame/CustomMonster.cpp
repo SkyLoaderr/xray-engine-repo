@@ -53,7 +53,7 @@ CCustomMonster::CCustomMonster()
 	Weapons				= 0;
 	tWatchDirection = Direction();
 	m_bCrouched = false;
-	r_torso_speed = PI_DIV_4;
+	r_torso_speed = PI;
 }
 
 CCustomMonster::~CCustomMonster()
@@ -96,11 +96,13 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	// Motions
 	CKinematics* V			= PKinematics(pVisual);
 	m_current				= 0;
+	/**
 	m_idle					= V->ID_Cycle("norm_idle");
 	m_death					= V->ID_Cycle("norm_death");
 	m_walk.Create			(V,"norm_walk");
 	m_run.Create			(V,"norm_run");
 	PKinematics(pVisual)->PlayCycle(m_idle);
+	/**/
 
 	// weapons
 	if (ini->ReadINT(section,"weapon_usage")) {
