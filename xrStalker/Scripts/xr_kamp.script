@@ -244,9 +244,8 @@ function action_wait:initialize()
 end
 function action_wait:execute()
 	action_base.execute (self)
-	local actor = level.actor()
-	if actor then
-		if xr_logic.try_switch_to_another_section(self.object, self.a, actor) then
+	if db.actor then
+		if xr_logic.try_switch_to_another_section(self.object, self.a, db.actor) then
 			return
 		end
 	end
