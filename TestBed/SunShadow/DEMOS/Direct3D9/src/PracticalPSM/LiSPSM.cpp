@@ -359,7 +359,6 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 		//and save the two extreme points min and max
 		vector3			min,max,minz,maxz;
 		calc_xaabb		(min,max,&*points_receivers.begin(),lightview,points_receivers.size());
-		calc_xaabb		(minz,maxz,&*points_casters.begin(),lightview,points_casters.size());
 		{
 			float	_z_near			=	ZNEAR_MIN;	//m_bUnitCubeClip?min.y:ZNEAR_MIN;
 			float	_z_far			=	ZFAR_MAX;	//m_bUnitCubeClip?max.y:ZFAR_MAX;
@@ -375,6 +374,9 @@ void CPracticalPSM::BuildLIPSMProjectionMatrix	()
 			//new observer point n-1 behind eye position
 			vector3		pos			= pos_view - up * (n-_z_near);	// minz.z?
 			D3DXMatrixLookAtLH		(&lightview,&pos,&(pos+dir_light),&up);
+
+			// find z-extents and shift points, so that we avoid clipping of occluders
+			calc_xaabb				(minz,maxz,&*points_casters.begin(),lightview,points_casters.size());
 
 			//one possibility for a simple perspective transformation matrix
 			//with the two parameters n(near) and f(far) in y direction
