@@ -1597,6 +1597,11 @@ int __cdecl main(int argc, char* argv[])
 			]
 	];
 
+	module(L,"test_module")
+	[
+		def("setup_table",&setup_table)
+	];
+
 //	vfPrintTable	(L,"_G",true);
 //	function		(L,"this",lua_this);
 //	for (int i=1; i<argc; i++) 
@@ -1697,6 +1702,16 @@ void strreplaceall(std::string &str, LPCSTR S, LPCSTR N)
 		str.replace(A - str.c_str(),S_len,N);
 }
 
+std::string &process_signature(std::string &str)
+{
+	strreplaceall	(str,"custom [","");
+	strreplaceall	(str,"]","");
+	strreplaceall	(str,"float","number");
+	strreplaceall	(str,"lua_State*, ","");
+	strreplaceall	(str," ,lua_State*","");
+	return			(str);
+}
+
 std::string member_to_string(luabind::object const& e, LPCSTR function_signature)
 {
 #if !defined(LUABIND_NO_ERROR_CHECKING)
@@ -1735,12 +1750,7 @@ std::string member_to_string(luabind::object const& e, LPCSTR function_signature
 			{
 				std::string str, temp;
 				i->get_signature(L, str);
-				strreplaceall	(str,"custom [","");
-				strreplaceall	(str,"]","");
-				strreplaceall	(str,"float","number");
-				strreplaceall	(str,"lua_State*, ","");
-				strreplaceall	(str," ,lua_State*","");
-				s << function_signature << str << ";\n";
+				s << function_signature << process_signature(str) << ";\n";
 			}
 		}
 #ifdef BOOST_NO_STRINGSTREAM
@@ -1829,11 +1839,72 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 			printf			("%s",member_to_string(object,S.c_str()).c_str());
 		}
 	}
+	// print 
 	printf			("\n");
+}
+
+void print_free_functions	(lua_State *L, const luabind::object &object, LPCSTR header, const std::string &indent)
+{
+	u32							count = 0;
+	luabind::object::iterator	I = object.begin();
+	luabind::object::iterator	E = object.end();
+	for ( ; I != E; ++I) {
+		if ((*I).type() != LUA_TFUNCTION)
+			continue;
+		(*I).pushvalue();
+		detail::free_functions::function_rep* rep = 0;
+		if (lua_iscfunction(L, -1))
+		{
+			if (lua_getupvalue(L, -1, 2) != 0)
+			{
+				// check the magic number that identifies luabind's functions
+				if (lua_touserdata(L, -1) == (void*)0x1337)
+				{
+					if (lua_getupvalue(L, -2, 1) != 0)
+					{
+						if (!count)
+							printf("%snamespace %s {\n",indent.c_str(),header);
+						++count;
+						rep = static_cast<luabind::detail::free_functions::function_rep*>(lua_touserdata(L, -1));
+						std::vector<luabind::detail::free_functions::overload_rep>::const_iterator	i = rep->overloads().begin();
+						std::vector<luabind::detail::free_functions::overload_rep>::const_iterator	e = rep->overloads().end();
+						for ( ; i != e; ++i) {
+							std::string	S;
+							(*i).get_signature(L,S);
+							printf("    %sfunction %s%s;\n",indent.c_str(),rep->name(),process_signature(S).c_str());
+						}
+						lua_pop(L, 1);
+					}
+				}
+				lua_pop(L, 1);
+			}
+		}
+		lua_pop(L, 1);
+	}
+	{
+		std::string				_indent = indent;
+		_indent.append			("    ");
+		object.pushvalue();
+		lua_pushnil		(L);
+		while (lua_next(L, -2) != 0) {
+			if (lua_type(L, -1) == LUA_TTABLE) {
+				if (xr_strcmp("_G",lua_tostring(L, -2))) {
+					LPCSTR				S = lua_tostring(L, -2);
+					luabind::object		object(L);
+					object.set			();
+					print_free_functions(L,object,S,_indent);
+				}
+			}
+			lua_pop	(L, 1);
+		}
+	}
+	if (count)
+		printf("%s};\n",indent.c_str());
 }
 
 void print_help(lua_State *L)
 {
 	printf					("\n\nList of the classes exported to LUA\n\n");
-	detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
+	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
+	print_free_functions	(L,luabind::get_globals(L),"","");
 }
