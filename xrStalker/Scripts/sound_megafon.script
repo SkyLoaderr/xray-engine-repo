@@ -9,7 +9,7 @@ function play_sound_object(obj_name,snd_name,looped)
 end
 
 function main()
-	sound_megafon.play_sound_object("physic_object0001","Blokpost\\nemedlenno",0)
+	sound_megafon.play_sound_object("actor","Blokpost\\nemedlenno",0)
 	while true do
 		wait()
 	end
