@@ -3,8 +3,6 @@
 „угай —аша
 
 —делать:
-    - базис
-    - спросить у ƒимы по поводу best_enemy
 -----------------------------------------------------------------------------------------------------------------]]
 
 local prop_base   = xr_evaluators_id.chugai_ambush_base
@@ -16,6 +14,8 @@ local act_sit     = act_base
 local act_await   = act_base + 1
 
 local ambushes    = {}
+
+local snd_idle	  = 1
 
 -------------------------------------------------------------------------------------------------------------------
 -- Ёвалуатор свойства "—хема засады активна"
@@ -41,19 +41,6 @@ function evaluator_attack:__init( name, npc, a ) super()
 end
 
 function evaluator_attack:evaluate()
---[[    local enemy = self.npc:best_enemy()
-    local b
-
-    -- ≈сли есть враг и он на рассто€нии атаки от нас или он нас видит или он актЄр, то можно!
-    if enemy then
-        local he_sees = ( enemy:id() == actor_id ) or enemy:see( self.npc )
-        b = self.npc:position():distance_to_sqr( enemy:position() ) < self.distance_sqr or he_sees
-        --printf( "best enemy = %s", enemy:name() )
-    else
-        b = false
-    end
-
-    return b]]
 --    printf( "1" )
     local enemy = self.npc:best_enemy()
 --    printf( "1.1" )
@@ -103,6 +90,8 @@ end
 
 function action_sit:execute()
     action_base.execute( self )
+
+    xr_sounds.set_sound( self.object, self.a.sounds_idle )
 end
 
 function action_sit:finalize()
@@ -149,6 +138,8 @@ function add_to_binder( npc, char_ini )
 
     local a = xr_motivator.storage[npc:id()].ambush
 
+    a.sounds_idle = xr_sounds.create_sound_constructor( "ambush", snds_idle )
+
     local manager = npc:motivation_action_manager()
 
     manager:add_evaluator( prop_ambush, this.evaluator_ambush( "property_ambush", a ) )
@@ -157,6 +148,7 @@ function add_to_binder( npc, char_ini )
     local action = this.action_sit( "action_sit", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
     action:add_precondition( world_property( xr_evaluators_id.position,     true ) )
+    action:add_precondition( world_property( xr_evaluators_id.reaction,     false ) )
     action:add_effect( world_property( prop_ambush, false ) )
     manager:add_action( act_sit, action )
 
@@ -178,43 +170,45 @@ function add_to_binder( npc, char_ini )
 end
 
 function set_ambush( npc, enable, path, dist )
-    	printf( "SET AMBUSH" )
+	printf( "SET AMBUSH" )
 
-    	local char_ini = npc:spawn_ini()
-    	local st = xr_motivator.storage[npc:id()].ambush
+    local char_ini = npc:spawn_ini()
+    local st = xr_motivator.storage[npc:id()].ambush
 
-	if enable == nil then
-       		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "enabled") == true then
-               		st.enabled = char_ini:r_bool("ambush", "enabled")
-		else
-			st.enabled = false
-	        end
-	else
-		st.enabled = enable		
-	end	
-	if st.enabled == true then
-		if path == nil then
-        		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "path") == true then
-	        	        st.path = patrol(char_ini:r_string("ambush", "path"))
-        		else
-	        	    	st.enabled = false
-		        end
-		else
-			st.path = patrol(path)
+    if enable == nil then
+    	if char_ini:section_exist( "ambush" ) == true and char_ini:line_exist( "ambush", "enabled" ) == true then
+    		st.enabled = char_ini:r_bool( "ambush", "enabled" )
+        else
+            st.enabled = false
 		end
-	end
-	if st.enabled == true then
-		if dist == nil then
-        		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "dist") == true then
-	        	        local dist = char_ini:r_float("ambush", "dist")
-				st.dist_sqr = dist*dist
-        		else
-	        	    	st.dist_sqr = 20*20
-		        end
-		else
-			st.dist_sqr = 20*20
-		end
-	end
+    else
+        st.enabled = enable     
+    end
 
-    	xr_motivator.checkStorage( npc )
+    if st.enabled == true then
+        if path == nil then
+        	if char_ini:section_exist( "ambush" ) == true and char_ini:line_exist( "ambush", "path" ) == true then
+            	st.path = patrol( char_ini:r_string( "ambush", "path" ) )
+			else
+            	st.enabled = false
+			end
+        else
+            st.path = patrol( path )
+        end
+    end
+
+    if st.enabled == true then
+        if dist == nil then
+			if char_ini:section_exist( "ambush" ) == true and char_ini:line_exist( "ambush", "dist" ) == true then
+            	local dist = char_ini:r_float( "ambush", "dist" )
+                st.dist_sqr = dist * dist
+			else
+            	st.dist_sqr = 20 * 20
+			end
+        else
+            st.dist_sqr = 20 * 20
+        end
+    end
+
+	xr_motivator.checkStorage( npc )
 end
