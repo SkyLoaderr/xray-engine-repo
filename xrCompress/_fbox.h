@@ -21,6 +21,7 @@ public:
 	IC	void	set(const _fbox &b)					{ min.set(b.min);	max.set(b.max);	};
     IC 	void	setb(const Fvector& center, const Fvector& dim){min.sub(center,dim);max.add(center,dim);}
 	IC	void	null( )								{ min.set(0,0,0);	max.set(0,0,0);	};
+	IC	void	identity( )							{ min.set(-0.5f,-0.5f,-0.5f);	max.set(0.5f,0.5f,0.5f);};
 	
 	IC	void	shrink(float s)						{ min.add(s); max.sub(s); };
 	IC	void	shrink(const Fvector& s)			{ min.add(s); max.sub(s); };
