@@ -985,6 +985,21 @@
 					RelativePath=".\Config\scripts\val_prisoner_door.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\scripts\val_rob_guard1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_rob_guard2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_rob_helper1.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_rob_helper2.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\scripts\val_rob_leader.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\scripts\val_sacrifice_guard1.ltx">
 				</File>
 				<File
@@ -1758,6 +1773,9 @@
 						</File>
 						<File
 							RelativePath=".\scripts\dialogs.script">
+						</File>
+						<File
+							RelativePath=".\Scripts\dialogs_darkvalley.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\dialogs_military.script">

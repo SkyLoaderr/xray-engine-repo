@@ -173,7 +173,7 @@ function val_suicide_kill_self(actor, npc)
 	action(
 		npc,
 		particle("nature\\fog_stormy","bip01_head",particle_params(vector():set(0,0,0.3),vector():set(0,0,0),vector():set(1,0,0)),false),
-		cond	(cond.time_end, 10000)
+		cond	(cond.time_end, time_infinite)
 	)
 
 	printf("_bp: val_suicide_kill_self: npc='%s'", npc:name())

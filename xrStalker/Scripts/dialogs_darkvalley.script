@@ -11,5 +11,5 @@
 -------------------------------------------------------------------------
 
 function val_rob_actor_has_money(first_speaker, second_speaker)
-	return first_speaker:money() >= 2000
+	return first_speaker:money() >= 100
 end
