@@ -26,6 +26,7 @@
 #include "targetcs.h"
 
 #include "ai_sounds.h"
+#include "ai_space.h"
 
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
@@ -376,6 +377,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	// load damage params
 	if (pSettings->line_exist(cNameSect(),"damage"))
 	{
+		string32 buf;
 		CInifile::Sect& dam_sect	= pSettings->r_section(pSettings->r_string(cNameSect(),"damage"));
 		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
 		{
@@ -384,7 +386,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 			}else{
 				int bone	= V->LL_BoneID(it->first); 
 				R_ASSERT2(bone!=BONE_NONE,it->first);
-				V->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
+				CBoneInstance& B = V->LL_GetInstance(bone);
+				B.set_param(0,(float)atof(_GetItem(it->second,0,buf)));
+				B.set_param(1,atoi(_GetItem(it->second,1,buf)));
 			}
 		}
 	}
@@ -500,6 +504,16 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		if (hit_slowmo>1.f)		hit_slowmo = 1.f;
 
 		// check damage bone
+		Fvector D;
+		svTransform.transform_dir(D,vLocalDir);
+
+		float	yaw, pitch;
+		D.getHP(yaw,pitch);
+		CKinematics *tpKinematics = PKinematics(pVisual);
+#pragma todo("forward-back bone impulse direction has been determined incorrectly!")
+		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_model_yaw + r_model_yaw_delta,yaw,PI_DIV_2) ? 0 : 1))];
+		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
+		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
 }
 

@@ -44,6 +44,7 @@ protected:
 		eacFreeLook,
 		eacMaxCam
 	};
+	enum EDamages {DAMAGE_FX_COUNT = 12};
 public:
 	enum EMoveCommand
 	{
@@ -121,8 +122,9 @@ protected:
 			SAnimState		m_run;
 			STorsoWpn		m_torso[2];
 			CMotionDef*		m_torso_idle;
+			CMotionDef*		m_dead_stop;
 
-			CMotionDef*		m_damage[10];
+			CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 
 			void			Create(CKinematics* K, LPCSTR base);
 		};

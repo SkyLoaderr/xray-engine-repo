@@ -426,7 +426,4 @@ void CAI_Stalker::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						m_tpCurrentTorsoBlend->timeCurrent = m_tpCurrentLegsBlend->timeCurrent;
 			}
 		}
-		else {
-//			tVisualObject.PlayCycle(m_tAnims.A[2]);
-		}
 }
