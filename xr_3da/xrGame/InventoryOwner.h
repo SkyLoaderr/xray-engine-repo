@@ -8,11 +8,8 @@
 #include "pda_space.h"
 #include "attachment_owner.h"
 #include "script_space_forward.h"
-#include "alife_registry_container.h"
-#include "alife_registry_wrapper.h"
 
 class CScriptCallback;
-
 class CInventory;
 class CInventoryItem;
 class CTrade;
@@ -21,6 +18,7 @@ class CCharacterInfo;
 class CGameObject;
 class CEntityAlive;
 class CCustomZone;
+class CInfoPortionWrapper;
 
 class CInventoryOwner : public CAttachmentOwner {							
 public:
@@ -115,8 +113,7 @@ public:
 	virtual bool HasInfo		(INFO_INDEX info_index) const;
 
 
-	typedef CALifeRegistryWrapper<CInfoPortionRegistry> KNOWN_INFO_REGISTRY;
-	KNOWN_INFO_REGISTRY known_info_registry;
+	CInfoPortionWrapper			*m_known_info_registry;
 
 	//////////////////////////////////////////////////////////////////////////
 	// инвентарь 

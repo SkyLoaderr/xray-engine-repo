@@ -8,10 +8,8 @@
 
 #include "../feel_touch.h"
 #include "../iinputreceiver.h"
-
 #include "actor_flags.h"
 #include "actor_defs.h"
-
 #include "entity_alive.h"
 #include "PHMovementControl.h"
 #include "PhysicsShell.h"
@@ -21,12 +19,16 @@
 #include "material_manager.h"
 #include "StatGraph.h"
 #include "PhraseDialogManager.h"
- 
 
 using namespace ACTOR_DEFS;
 
 class CInfoPortion;
+struct GAME_NEWS_DATA;
 
+class CKnownContactsRegistryWrapper;
+class CEncyclopediaRegistryWrapper;
+class CGameTaskRegistryWrapper;
+class CGameNewsRegistryWrapper;
 
 // refs
 class ENGINE_API CCameraBase;
@@ -113,23 +115,12 @@ public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 	virtual	void UpdateContact		(u16 contact_id);
 	virtual	void RunTalkDialog		(CInventoryOwner* talk_partner);
-	//реестр контактов общения с другими персонажами
-	typedef CALifeRegistryWrapper<CKnownContactsRegistry> KNOWN_CONTACTS_REGISTRY;
-	KNOWN_CONTACTS_REGISTRY		contacts_registry;
-
-	//реестр статей энциклопедии, о которых знает актер
-	typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
-	ENCYCLOPEDIA_REGISTRY		encyclopedia_registry;
-
-	//реестр заданий, полученных актером
-	typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
-	GAME_TASK_REGISTRY		game_task_registry;
-
-	//реестр новостей, полученных актером
-	typedef CALifeRegistryWrapper<CGameNewsRegistry> GAME_NEWS_REGISTRY;
-	GAME_NEWS_REGISTRY		game_news_registry;
 	
-
+	CKnownContactsRegistryWrapper	*contacts_registry;
+	CEncyclopediaRegistryWrapper	*encyclopedia_registry;
+	CGameTaskRegistryWrapper		*game_task_registry;
+	CGameNewsRegistryWrapper		*game_news_registry;
+	
 	//игровое имя 
 	virtual LPCSTR	Name        () const {return CInventoryOwner::Name();}
 

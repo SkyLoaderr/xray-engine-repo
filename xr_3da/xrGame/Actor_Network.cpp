@@ -19,6 +19,7 @@
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "infoportion.h"
+#include "alife_registry_wrappers.h"
 
 //static u32	g_dwStartTime		= 0;
 //static u32	g_dwLastUpdateTime	;
@@ -592,10 +593,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//-------------------------------------
 	// инициализация реестров, используемых актером
-	contacts_registry.init(ID());
-	encyclopedia_registry.init(ID());
-	game_task_registry.init(ID());
-	game_news_registry.init(ID());
+	contacts_registry->registry().init(ID());
+	encyclopedia_registry->registry().init(ID());
+	game_task_registry->registry().init(ID());
+	game_news_registry->registry().init(ID());
 
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	if (!inherited::net_Spawn(DC))	return FALSE;
@@ -696,10 +697,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//--------------------------------------------------------------
 	//добавить отметки на карте, которые актер помнит в info_portions
-	if(known_info_registry.objects_ptr())
+	if(m_known_info_registry->registry().objects_ptr())
 	{
 		Level().RemoveMapLocations();
-		const KNOWN_INFO_VECTOR& know_info = *known_info_registry.objects_ptr();
+		const KNOWN_INFO_VECTOR& know_info = *m_known_info_registry->registry().objects_ptr();
 		for(KNOWN_INFO_VECTOR::const_iterator it = know_info.begin();
 					know_info.end() != it; it++)
 		{

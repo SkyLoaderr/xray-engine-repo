@@ -16,6 +16,7 @@
 #include "../Level.h"
 #include "../HUDManager.h"
 #include "../string_table.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -118,10 +119,10 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		pJobItem->SetAdditionalMaterialID	(task->ObjectiveArticle(i));
 		if (i > 0) pJobItem->ScalePicture	(secondaryObjectiveScaleFactor);
 
-		if(pActor && pActor->encyclopedia_registry.objects_ptr())
+		if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 		{
-			for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry.objects().begin();
-				it != pActor->encyclopedia_registry.objects().end(); it++)
+			for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
+				it != pActor->encyclopedia_registry->registry().objects().end(); it++)
 			{
 				if (task->ObjectiveArticle(i) == it->index)
 				{
@@ -144,10 +145,10 @@ void CUIJobsWnd::ReloadJobs()
 
 	CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-	if (!pActor || !pActor->game_task_registry.objects_ptr()) return;
+	if (!pActor || !pActor->game_task_registry->registry().objects_ptr()) return;
 
-	for(GAME_TASK_VECTOR::const_iterator it = pActor->game_task_registry.objects().begin();
-		pActor->game_task_registry.objects().end() != it; ++it)
+	for(GAME_TASK_VECTOR::const_iterator it = pActor->game_task_registry->registry().objects().begin();
+		pActor->game_task_registry->registry().objects().end() != it; ++it)
 	{
 		CGameTask task;
 		task.Init(*it);

@@ -23,6 +23,7 @@
 
 #include "xrServer.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "alife_registry_wrappers.h"
 
 
 static LPCSTR	m_sMapSpotAnimEnemy = NULL;
@@ -59,7 +60,7 @@ private:
 void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 {
 	VERIFY(info_portion);
-	ARTICLE_VECTOR& article_vector = encyclopedia_registry.objects();
+	ARTICLE_VECTOR& article_vector = encyclopedia_registry->registry().objects();
 
 	ARTICLE_VECTOR::iterator last_end = article_vector.end();
 	ARTICLE_VECTOR::iterator B = article_vector.begin();
@@ -89,7 +90,7 @@ void CActor::AddGameTask			 (const CInfoPortion* info_portion)
 
 	if(info_portion->GameTasks().empty()) return;
 
-	GAME_TASK_VECTOR& task_vector = game_task_registry.objects();
+	GAME_TASK_VECTOR& task_vector = game_task_registry->registry().objects();
 
 	std::size_t old_size = task_vector.size();
 
@@ -130,7 +131,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	}
 		
 
-	GAME_NEWS_VECTOR& news_vector = game_news_registry.objects();
+	GAME_NEWS_VECTOR& news_vector = game_news_registry->registry().objects();
 	news_data.receive_time = Level().GetGameTime();
 	news_vector.push_back(news_data);
 	
@@ -221,10 +222,10 @@ void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 	m_AvailableDialogs.clear();
 	m_CheckedDialogs.clear();
 
-	if(CInventoryOwner::known_info_registry.objects_ptr())
+	if(CInventoryOwner::m_known_info_registry->registry().objects_ptr())
 	{
-		for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::known_info_registry.objects_ptr()->begin();
-			CInventoryOwner::known_info_registry.objects_ptr()->end() != it; ++it)
+		for(KNOWN_INFO_VECTOR::const_iterator it = CInventoryOwner::m_known_info_registry->registry().objects_ptr()->begin();
+			CInventoryOwner::m_known_info_registry->registry().objects_ptr()->end() != it; ++it)
 		{
 			//подгрузить кусочек информации с которым мы работаем
 			CInfoPortion info_portion;
@@ -284,7 +285,7 @@ void CActor::UpdateContact		(u16 contact_id)
 {
 	if(ID() == contact_id) return;
 
-	TALK_CONTACT_VECTOR& contacts = contacts_registry.objects();
+	TALK_CONTACT_VECTOR& contacts = contacts_registry->registry().objects();
 	for(TALK_CONTACT_VECTOR_IT it = contacts.begin(); contacts.end() != it; ++it)
 		if((*it).id == contact_id) break;
 

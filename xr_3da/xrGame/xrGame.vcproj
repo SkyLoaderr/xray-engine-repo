@@ -29,7 +29,7 @@
 				FavorSizeOrSpeed="0"
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;PURE_DYNAMIC_CAST"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC"
 				StringPooling="FALSE"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
@@ -1817,6 +1817,9 @@
 						</File>
 						<File
 							RelativePath=".\alife_registry_container_space.h">
+						</File>
+						<File
+							RelativePath=".\alife_registry_wrappers.h">
 						</File>
 					</Filter>
 				</Filter>

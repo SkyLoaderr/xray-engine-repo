@@ -11,5 +11,5 @@
 IC	CALifeSurgeManager::CALifeSurgeManager				(xrServer *server, LPCSTR section) :
 	inherited		(server,section)
 {
-	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
+	seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 }

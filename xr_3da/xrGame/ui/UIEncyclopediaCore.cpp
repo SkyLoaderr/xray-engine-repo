@@ -14,7 +14,7 @@
 #include "../string_table.h"
 #include "../level.h"
 #include "../HUDManager.h"
-//#include "UIXmlInit.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -109,10 +109,10 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		{
 			CActor* pActor = smart_cast<CActor*>(Level().CurrentEntity());
 
-			if(pActor && pActor->encyclopedia_registry.objects_ptr())
+			if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 			{
-				for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry.objects().begin();
-					it != pActor->encyclopedia_registry.objects().end(); it++)
+				for(ARTICLE_VECTOR::iterator it = pActor->encyclopedia_registry->registry().objects().begin();
+					it != pActor->encyclopedia_registry->registry().objects().end(); it++)
 				{
 					if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type &&
 						m_pCurrArticle->Index() == it->index)

@@ -37,6 +37,7 @@ void print_time(LPCSTR S, _TIME_ID tTimeID)
 CALifeCombatManager::CALifeCombatManager	(xrServer *server, LPCSTR section) :
 	inherited		(server,section)
 {
+	seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	m_dwMaxCombatIterationCount	= pSettings->r_u32	(section,"max_combat_iteration_count");
 	for (int i=0; i<2; ++i) {
 		m_tpaCombatGroups[i].clear();

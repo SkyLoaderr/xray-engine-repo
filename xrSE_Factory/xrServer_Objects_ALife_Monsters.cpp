@@ -22,6 +22,8 @@
 #ifdef XRGAME_EXPORTS
 #	include "ef_storage.h"
 #	include "game_graph.h"
+#	include "alife_simulator.h"
+#	include "alife_registry_container.h"
 #endif
 
 

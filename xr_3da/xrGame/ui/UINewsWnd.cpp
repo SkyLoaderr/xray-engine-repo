@@ -16,6 +16,7 @@
 #include "../level.h"
 #include "../game_news.h"
 #include "../actor.h"
+#include "../alife_registry_wrappers.h"
 
 const char * const	NEWS_XML			= "news.xml";
 
@@ -64,7 +65,7 @@ void CUINewsWnd::AddNews()
 
 	if (pActor)
 	{
-		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry.objects();
+		GAME_NEWS_VECTOR& news_vector = pActor->game_news_registry->registry().objects();
 		if (lastNewsCount < news_vector.size())
 		{
 			lastNewsCount = news_vector.size();

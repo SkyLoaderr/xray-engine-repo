@@ -95,6 +95,7 @@ public:
 
 CALifeOrganizationRegistry::CALifeOrganizationRegistry	(LPCSTR section)
 {
+	seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	R_ASSERT2					(pSettings->section_exist("organizations"),"There is no section 'organizations' in the 'system.ltx'!");
 	LPCSTR						N,V;
 	for (u32 k = 0; pSettings->r_line("organizations",k,&N,&V); ++k)

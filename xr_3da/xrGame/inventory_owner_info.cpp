@@ -15,6 +15,7 @@
 #include "level.h"
 #include "script_space.h"
 #include "infoportion.h"
+#include "alife_registry_wrappers.h"
 
 void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 {
@@ -53,7 +54,7 @@ private:
 bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 {
 	//добавить запись в реестр
-	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
+	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_index));
 	if( known_info.end() == it)
 		known_info.push_back(INFO_DATA(info_index, Level().GetGameTime()));
@@ -83,7 +84,7 @@ bool CInventoryOwner::OnReceiveInfo(INFO_INDEX info_index)
 void CInventoryOwner::OnDisableInfo(INFO_INDEX info_id)
 {
 	//удалить запись из реестра
-	KNOWN_INFO_VECTOR& known_info = known_info_registry.objects();
+	KNOWN_INFO_VECTOR& known_info = m_known_info_registry->registry().objects();
 
 	KNOWN_INFO_VECTOR_IT it = std::find_if(known_info.begin(), known_info.end(), CFindByIDPred(info_id));
 	if( known_info.end() == it)	return;
@@ -105,7 +106,7 @@ void CInventoryOwner::TransferInfo(INFO_INDEX info_index, bool add_info) const
 
 bool CInventoryOwner::HasInfo(INFO_INDEX info_index) const
 {
-	const KNOWN_INFO_VECTOR* known_info = known_info_registry.objects_ptr ();
+	const KNOWN_INFO_VECTOR* known_info = m_known_info_registry->registry().objects_ptr ();
 	
 	if(!known_info) return false;
 

@@ -60,6 +60,8 @@
 #include "usablescriptobject.h"
 #include "../cl_intersect.h"
 #include "ExtendedGeom.h"
+#include "alife_registry_wrappers.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -91,6 +93,10 @@ Flags32			psActorFlags={0};
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
+	contacts_registry		= xr_new<CKnownContactsRegistryWrapper	>();
+	encyclopedia_registry	= xr_new<CEncyclopediaRegistryWrapper	>();
+	game_task_registry		= xr_new<CGameTaskRegistryWrapper		>();
+	game_news_registry		= xr_new<CGameNewsRegistryWrapper		>();
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", 0);
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		0);
@@ -166,6 +172,10 @@ CActor::CActor() : CEntityAlive()
 
 CActor::~CActor()
 {
+	xr_delete				(contacts_registry);
+	xr_delete				(encyclopedia_registry);
+	xr_delete				(game_task_registry);
+	xr_delete				(game_news_registry);
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
 #endif

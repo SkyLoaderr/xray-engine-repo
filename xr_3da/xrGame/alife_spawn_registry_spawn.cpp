@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "alife_spawn_registry.h"
+#include "random32.h"
 
 IC	bool CALifeSpawnRegistry::active_spawn		(CSE_Abstract &abstract) const
 {
@@ -93,15 +94,15 @@ void CALifeSpawnRegistry::fill_new_spawns_single		(SPAWN_GRAPH::CVertex *vertex,
 		accumulator				+= (*I).weight();
 
 	float						probability = randF(accumulator);
-	accumulator					*= vertex->data()->object().m_spawn_probability;
+	float						group_probability = vertex->data()->object().m_spawn_probability;
 
-	if (probability >= accumulator)
+	if (probability >= accumulator*group_probability)
 		return;
 
 	accumulator					= 0.f;
 	I							= B;
 	for ( ; I != E; ++I) {
-		accumulator				+= (*I).weight();
+		accumulator				+= (*I).weight()*group_probability;
 		if (accumulator > probability) {
 			vertex->data()->object().m_spawn_count++;
 			fill_new_spawns		(m_spawns.vertex((*I).vertex_id()),spawns,game_time,objects);

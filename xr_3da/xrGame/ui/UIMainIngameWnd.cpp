@@ -27,6 +27,7 @@
 #include "UIMainIngameWnd.h"
 #include "UIXmlInit.h"
 #include "UIPdaMsgListItem.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 

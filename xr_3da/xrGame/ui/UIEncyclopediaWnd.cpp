@@ -15,6 +15,7 @@
 #include "../HUDManager.h"
 #include "../level.h"
 #include "../string_table.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -171,11 +172,11 @@ void CUIEncyclopediaWnd::Show(bool status)
 
 		static u32 prevArticlesCount = 0;
 		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(pActor && pActor->encyclopedia_registry.objects_ptr() && pActor->encyclopedia_registry.objects_ptr()->size() > prevArticlesCount)
+		if(pActor && pActor->encyclopedia_registry->registry().objects_ptr() && pActor->encyclopedia_registry->registry().objects_ptr()->size() > prevArticlesCount)
 		{
-			ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
+			ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
 			std::advance(it, prevArticlesCount);
-			for(; it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+			for(; it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 			{
 				if (ARTICLE_DATA::eEncyclopediaArticle == it->article_type)
 				{
@@ -183,7 +184,7 @@ void CUIEncyclopediaWnd::Show(bool status)
 				}
 			}
 
-			prevArticlesCount = pActor->encyclopedia_registry.objects_ptr()->size();
+			prevArticlesCount = pActor->encyclopedia_registry->registry().objects_ptr()->size();
 		}
 	}
 	else

@@ -1,10 +1,11 @@
 //////////////////////////////////////////////////////////////////////////
-// relation_registry.cpp:	реестр для хранения данных об отношении персонажа к 
+// relation_registry->registry().cpp:	реестр для хранения данных об отношении персонажа к 
 //							другим персонажам
 //////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "relation_registry.h"
+#include "alife_registry_wrappers.h"
 
 #define GAME_RELATIONS_SECT "game_relations"
 
@@ -15,6 +16,7 @@
 SRelation::SRelation()
 {
 }
+
 SRelation::~SRelation()
 {
 }
@@ -32,14 +34,17 @@ void SRelation::SetGoodwill(CHARACTER_GOODWILL new_goodwill)
 
 RELATION_REGISTRY::RELATION_REGISTRY  ()
 {
+	relation_registry	= xr_new<CRelationRegistryWrapper>();
 }
+
 RELATION_REGISTRY::~RELATION_REGISTRY ()
 {
+	xr_delete			(relation_registry);
 }
 
 void RELATION_REGISTRY::Init			(u16 id)
 {
-	relation_registry.init(id);
+	relation_registry->registry().init(id);
 }
 
 
@@ -90,7 +95,7 @@ ALife::ERelationType RELATION_REGISTRY::GetRelationType		(u16 person_id) const
 
 CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 person_id) const 
 {
-	const RELATION_MAP* relation_map = relation_registry.objects_ptr();
+	const RELATION_MAP* relation_map = relation_registry->registry().objects_ptr();
 
 	if(relation_map)
 	{
@@ -106,22 +111,22 @@ CHARACTER_GOODWILL	 RELATION_REGISTRY::GetGoodwill			(u16 person_id) const
 
 void RELATION_REGISTRY::SetGoodwill 	(u16 person_id, CHARACTER_GOODWILL goodwill)
 {
-	RELATION_MAP& relation_map = relation_registry.objects();
+	RELATION_MAP& relation_map = relation_registry->registry().objects();
 	relation_map[person_id].SetGoodwill(goodwill);
 }
 
 void RELATION_REGISTRY::ChangeGoodwill 	(u16 person_id, CHARACTER_GOODWILL delta_goodwill)
 {
-	RELATION_MAP& relation_map = relation_registry.objects();
+	RELATION_MAP& relation_map = relation_registry->registry().objects();
 	relation_map[person_id].SetGoodwill(relation_map[person_id].Goodwill() + delta_goodwill);
 }
 
 
 void RELATION_REGISTRY::ClearRelations	()
 {
-	const RELATION_MAP* relation_map = relation_registry.objects_ptr();
+	const RELATION_MAP* relation_map = relation_registry->registry().objects_ptr();
 	if(relation_map)
 	{
-		relation_registry.objects().clear();
+		relation_registry->registry().objects().clear();
 	}
 }

@@ -188,6 +188,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 #endif
     fp_data.inc					();
 	m_flags.set					(flOfflineNoMove,FALSE);
+	seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 }
 
 #ifdef XRGAME_EXPORTS

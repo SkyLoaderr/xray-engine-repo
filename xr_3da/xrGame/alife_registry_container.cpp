@@ -10,7 +10,7 @@
 #include "alife_registry_container.h"
 #include "object_interfaces.h"
 #include "alife_space.h"
-#include <boost/type_traits/is_base_and_derived.hpp>
+#include "object_type_traits.h"
 
 template <typename T1, typename T2, typename Head>
 struct CRegistryHelperLoad {
@@ -27,7 +27,7 @@ struct CRegistryHelperLoad {
 
 	IC	static void process(T1 *self, T2 p1)
 	{
-		do_load<boost::is_base_and_derived<IPureLîadableObject,Head>::value>(self,p1);
+		do_load<object_type_traits::is_base_and_derived<IPureLîadableObject,Head>::value>(self,p1);
 	}
 };
 
@@ -46,7 +46,7 @@ struct CRegistryHelperSave {
 
 	IC	static void process(T1 *self, T2 p1)
 	{
-		do_save<boost::is_base_and_derived<IPureSavableObject,Head>::value>(self,p1);
+		do_save<object_type_traits::is_base_and_derived<IPureSavableObject,Head>::value>(self,p1);
 	}
 };
 

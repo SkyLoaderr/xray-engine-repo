@@ -27,6 +27,7 @@
 #include "attachable_item.h"
 #include "ai/script/ai_script_monster.h"
 #include "string_table.h"
+#include "alife_registry_wrappers.h"
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
@@ -300,7 +301,7 @@ ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_nu
 	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
 	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
 	
-	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry.objects_ptr();
+	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry->registry().objects_ptr();
 	if(!tasks) 
 		return eTaskStateDummy;
 
@@ -326,7 +327,7 @@ void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int 
 	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
 	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
 	
-	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry.objects();
+	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry->registry().objects();
 
 	for(GAME_TASK_VECTOR::iterator it = tasks.begin();
 			tasks.end() != it; it++)

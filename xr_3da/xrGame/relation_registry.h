@@ -7,10 +7,7 @@
 
 #include "character_info_defs.h"
 
-#include "alife_registry_container.h"
-#include "alife_registry_wrapper.h"
-
-
+class CRelationRegistryWrapper;
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -34,6 +31,6 @@ public:
 	void				 ClearRelations			();
 
 private:
-	CALifeRegistryWrapper<CRelationRegistry>	relation_registry;
+	CRelationRegistryWrapper					*relation_registry;
 };
 

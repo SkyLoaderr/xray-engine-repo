@@ -27,6 +27,7 @@
 #include "../string_table.h"
 #include "../hudmanager.h"
 #include "../string_table.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -394,9 +395,9 @@ void CUIDiaryWnd::InitDiary()
 	m_pContractsTreeItem->Close();
 	m_pContractsTreeItem->DeleteAllSubItems();
 
-	if(pActor->contacts_registry.objects_ptr())
+	if(pActor->contacts_registry->registry().objects_ptr())
 	{
-		const TALK_CONTACT_VECTOR& contacts = *pActor->contacts_registry.objects_ptr();
+		const TALK_CONTACT_VECTOR& contacts = *pActor->contacts_registry->registry().objects_ptr();
 		for(TALK_CONTACT_VECTOR::const_iterator it = contacts.begin();
 			contacts.end() != it; it++)
 		{
@@ -424,10 +425,10 @@ void CUIDiaryWnd::InitDiary()
 	// “ут добавл€ютс€ записи в дневник игрока
 	UIActorDiaryWnd.DeleteArticles(m_pActorDiaryRoot);
 
-	if(pActor && pActor->encyclopedia_registry.objects_ptr())
+	if(pActor && pActor->encyclopedia_registry->registry().objects_ptr())
 	{
-		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry.objects_ptr()->begin();
-			it != pActor->encyclopedia_registry.objects_ptr()->end(); it++)
+		for(ARTICLE_VECTOR::const_iterator it = pActor->encyclopedia_registry->registry().objects_ptr()->begin();
+			it != pActor->encyclopedia_registry->registry().objects_ptr()->end(); it++)
 		{
 			if (ARTICLE_DATA::eDiaryArticle == it->article_type)
 			{

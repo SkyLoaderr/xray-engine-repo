@@ -22,8 +22,7 @@
 #include "script_space.h"
 #include "PhraseDialog.h"
 #include "xrServer_Objects_ALife_Monsters.h"
-
-
+#include "alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -33,6 +32,7 @@ CInventoryOwner::CInventoryOwner			()
 	Init						();
 	m_pPdaCallback				= xr_new<CScriptCallback>();
 	m_pInfoCallback				= xr_new<CScriptCallback>();
+	m_known_info_registry		= xr_new<CInfoPortionWrapper>();
 }
 
 CInventoryOwner::~CInventoryOwner			() 
@@ -42,6 +42,7 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_pCharacterInfo);
 	xr_delete					(m_pPdaCallback);
 	xr_delete					(m_pInfoCallback);
+	xr_delete					(m_known_info_registry);
 }
 
 void CInventoryOwner::Init					()
@@ -92,7 +93,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	if (GameID() == GAME_SINGLE)
 	{
 		//-------------------------------------
-		known_info_registry.init(pThis->ID());
+		m_known_info_registry->registry().init(pThis->ID());
 		CharacterInfo().Relations().Init(pThis->ID());
 		//-------------------------------------
 

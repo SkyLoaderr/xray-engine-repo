@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "alife_abstract_registry.h"
+//#include "alife_abstract_registry.h"
 #include "InfoPortionDefs.h"
 #include "PdaMsg.h"
 #include "encyclopedia_article_defs.h"
@@ -16,10 +16,11 @@
 #include "gametaskdefs.h"
 #include "game_news.h"
 
-
 #pragma warning(push)
 #pragma warning(disable:4005)
 
+template <typename _index_type, typename _data_type>
+class CALifeAbstractRegistry;
 
 //для всех персонажей, те порции информации, которые они помнят
 typedef CALifeAbstractRegistry<u16, KNOWN_INFO_VECTOR > CInfoPortionRegistry;

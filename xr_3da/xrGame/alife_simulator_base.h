@@ -52,7 +52,7 @@ protected:
 	CALifeRegistryContainer						*m_registry_container;
 	CRandom32									m_random;
 	bool										m_initialized;
-	shared_str										*m_server_command_line;
+	shared_str									*m_server_command_line;
 	// temp
 	ALife::SCHEDULE_P_VECTOR					m_tpaCombatGroups[2];
 
@@ -91,7 +91,6 @@ public:
 	IC		const CALifeOrganizationRegistry	&organizations				() const;
 	IC		const CALifeNewsRegistry			&news						() const;
 	IC		const CALifeStoryRegistry			&story_objects				() const;
-//	IC		const CALifeRegistryContainer		&registry					() const;
 	IC		CRandom32							&random						();
 	IC		xrServer							&server						() const;
 	IC		const CALifeTimeManager				&time_manager				() const;
@@ -120,7 +119,6 @@ public:
 			void								append_item_vector			(ALife::OBJECT_VECTOR	&tObjectVector,	ALife::ITEM_P_VECTOR &tItemList);
 
 public:
-	// temp
 	ALife::ITEM_P_VECTOR						m_temp_item_vector;
 };
 

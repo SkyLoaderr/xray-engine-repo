@@ -10,6 +10,7 @@
 
 #include "alife_registry_container_space.h"
 #include "alife_registry_container_composition.h"
+#include "alife_abstract_registry.h"
 
 template <typename _type, typename _base>
 struct CLinearRegistryType : public _base, public _type {};

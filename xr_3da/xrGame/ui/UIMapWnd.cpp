@@ -14,6 +14,7 @@
 #include "UIPdaWnd.h"
 #include "UIXmlInit.h"
 #include "UIMapWnd.h"
+#include "../alife_registry_wrappers.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -346,9 +347,9 @@ void CUIMapWnd::InitGlobalMapObjectives()
 	}
 
 	// Добавить отметки на карте, которые актер помнит в info_portions
-	if(pActor->known_info_registry.objects_ptr())
+	if(pActor->m_known_info_registry->registry().objects_ptr())
 	{
-		const KNOWN_INFO_VECTOR& know_info = *pActor->known_info_registry.objects_ptr();
+		const KNOWN_INFO_VECTOR& know_info = *pActor->m_known_info_registry->registry().objects_ptr();
 		for(KNOWN_INFO_VECTOR::const_iterator it = know_info.begin();
 			know_info.end() != it; it++)
 		{
