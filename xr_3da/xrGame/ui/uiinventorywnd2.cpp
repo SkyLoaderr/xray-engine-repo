@@ -38,7 +38,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	
 	CEatableItem* pEatableItem = smart_cast<CEatableItem*>(m_pCurrentItem);
 	CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(m_pCurrentItem);
-	CArtefactMerger* pArtefactMerger = smart_cast<CArtefactMerger*>(m_pCurrentItem);
+//	CArtefactMerger* pArtefactMerger = smart_cast<CArtefactMerger*>(m_pCurrentItem);
 	
 	CWeapon* pWeapon = smart_cast<CWeapon*>(m_pCurrentItem);
 	CScope* pScope = smart_cast<CScope*>(m_pCurrentItem);
