@@ -136,6 +136,8 @@ function main_menu:InitCallBacks()
 	self:AddCallback("btn_options",     ui_events.BUTTON_CLICKED,				self,"OnButton_options_clicked")
 	-- load
 	self:AddCallback("btn_load",        ui_events.BUTTON_CLICKED,				self,"OnButton_load_clicked")
+	-- save
+	self:AddCallback("btn_save",		ui_events.BUTTON_CLICKED,				self,"OnButton_save_clicked")
 	-- multiplayer
 	self:AddCallback("btn_findsrv",		ui_events.BUTTON_CLICKED,				self,"OnButton_findsrv")
 	self:AddCallback("btn_createsrv",	ui_events.BUTTON_CLICKED,				self,"OnButton_createsrv")	
@@ -155,6 +157,10 @@ function main_menu:OnButton_new_hard_game()
 	self:GetHolder():start_stop_menu(dlg, true)
 end
 
+function main_menu:OnButton_save_clicked()
+	local dlg = ui_save_dialog.save_dialog()
+	self:GetHolder():start_stop_menu(dlg, true)
+end
 
 function main_menu:OnButton_findsrv()
 	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
@@ -227,6 +233,12 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
 	local bind = dik_to_bind(dik)
+	
+	if bind == key_bindings.kQUIT then
+--		if level.present() then
+--			self:GetHolder():start_stop_menu(dlg, true)
+--		end
+	end
 	
   	if bind == key_bindings.kCONSOLE then
 		local console = get_console()

@@ -30,8 +30,13 @@ function main_main_tab:InitControls(x, y, handler)
 							 width = self.btn.width,
 							 height = self.btn.height}
 							 
-	local btn_multi_rect  = {x = self.btn.x,
+	local btn_save_rect   = {x = self.btn.x,
 							 y = btn_load_rect.y + btn_load_rect.height ,
+							 width = self.btn.width,
+							 height = self.btn.height}
+							 
+	local btn_multi_rect  = {x = self.btn.x,
+							 y = btn_save_rect.y + btn_save_rect.height ,
 							 width = self.btn.width,
 							 height = self.btn.height}
 	
@@ -75,6 +80,21 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)	
+	
+	--------->> SAVE Game	
+	btn = CUI3tButton()
+	btn:SetAutoDelete(true)
+	btn:SetWindowName("btn_save")
+	btn:Init(self.btn.texture, btn_save_rect.x, btn_save_rect.y, btn_save_rect.width, btn_save_rect.height)
+	btn:SetText("Save Game")
+	btn:SetFont(self.btn.font)
+	btn:SetTextAlign(CGameFont.alCenter)
+	btn:SetTextY(self.btn.indent)
+	handler:Register(btn)
+	self:AttachChild(btn)	
+	
+	btn:Enable(level.present())
+	
 		
 	--------->> MULTIPLAYER
 	btn = CUI3tButton()
@@ -87,6 +107,8 @@ function main_main_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
+	
+	btn:Enable(false)
 	
 	--------->> OPTIONS
 	btn = CUI3tButton()
