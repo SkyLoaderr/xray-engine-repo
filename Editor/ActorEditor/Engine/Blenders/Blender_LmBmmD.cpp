@@ -40,6 +40,7 @@ void	CBlender_LmBmmD::Load(	CStream& FS, WORD version )
 
 void	CBlender_LmBmmD::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
+	CBlender::Compile		(RS,L_textures,L_constants,L_matrices,param,bEditor);
 	if (bEditor)	{
 		RS.PassBegin		();
 		{

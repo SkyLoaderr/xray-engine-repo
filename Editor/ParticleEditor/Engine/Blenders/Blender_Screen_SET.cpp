@@ -80,6 +80,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 
 void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
+	CBlender::Compile		(RS,L_textures,L_constants,L_matrices,param,bEditor);
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(oZTest.value,oZWrite.value);

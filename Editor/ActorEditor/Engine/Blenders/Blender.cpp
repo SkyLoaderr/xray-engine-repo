@@ -72,6 +72,13 @@ void	CBlender::Load(	CStream& FS, WORD version )
 	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT_Name);
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT_xform);
 }
+
+void	CBlender::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+{
+	if (bEditor)	RS.SetParams	(oPriority.value,oStrictSorting.value,false,false);
+	else			RS.SetParams	(oPriority.value,oStrictSorting.value,true,	false);
+}
+
 //////////////////////////////////////////////////////////////////////
 #include "blender_clsid.h"
 #include "blenderdefault.h"
