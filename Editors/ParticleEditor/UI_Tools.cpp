@@ -198,6 +198,9 @@ void CParticleTools::Save()
 	VERIFY(m_bReady);
     ApplyChanges();
 	m_bModified = false;
+	// backup
+    Engine.FS.BackupFile(&Engine.FS.m_GameRoot,"particles.xr");
+	// save   
     Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
 	PSLib.Save();
     Engine.FS.LockFile(&Engine.FS.m_GameRoot,"particles.xr",false);
