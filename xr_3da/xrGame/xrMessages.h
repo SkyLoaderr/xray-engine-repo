@@ -34,6 +34,8 @@ enum {
 	GE_BUY,
 	GE_ADD_AMMO,
 
+	GE_WPN_STATECHANGE,
+
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
 
@@ -198,7 +200,7 @@ M_UPDATE
 
 	enemy
 	{
-		u32		timestamp;
+		u32			timestamp;
 		u8			flags;
 		vec3		pos;
 		u8			state_data_size;
@@ -209,9 +211,8 @@ M_UPDATE
 
 	weapon
 	{
-		u32		timestamp;
+		u32			timestamp;
 		u8			flags;				// wf_working, wf_visible=selected or independent,  
-		u8			state;
 
 		u16			a_current;
 		u16			a_elapsed;
@@ -258,7 +259,10 @@ GE_DIE
 GE_DESTROY
 {
 }
-
+GE_WPN_STATE
+{
+	u8			state;
+}
 */
 
 #endif /*_INCDEF_XRMESSAGES_H_*/
