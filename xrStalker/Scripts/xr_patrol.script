@@ -140,10 +140,10 @@ function action_single_patrol:initialize ()
        self.mental_state = anim.danger
        self.move_type = move.run
        self.a.patrol_end = false
-       printf ("START PATROL")
+       self.stage = 0
+       printf ("PATROL PATH IS %s", self.a.patrol_path)
     else  
        self.path_type = patrol.nearest 
-       printf ("CONTINUE PATROL")
     end 
     self.object:set_patrol_path           (self.a.patrol_path, self.path_type, patrol.continue, true)
     self.object:set_movement_type         (self.move_type)
