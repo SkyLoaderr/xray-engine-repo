@@ -15,7 +15,6 @@ struct					SActorMotions
 			CMotionDef*	legs_ls;
 			CMotionDef*	legs_rs;
 			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
-			void		CreateSprint(CSkeletonAnimated* K);
 		};
 		struct			STorsoWpn{
 			CMotionDef*	aim;
@@ -33,10 +32,8 @@ struct					SActorMotions
 			CMotionDef*	all_attack_0;
 			CMotionDef*	all_attack_1;
 			CMotionDef*	all_attack_2;
-
 			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);
 		};
-
 		CMotionDef*		legs_idle;
 		CMotionDef*		jump_begin;
 		CMotionDef*		jump_idle;
@@ -45,7 +42,6 @@ struct					SActorMotions
 		CMotionDef*		death;
 		SAnimState		m_walk;
 		SAnimState		m_run;
-		SAnimState		m_sprint;
 		STorsoWpn		m_torso[8];
 		CMotionDef*		m_torso_idle;
 		CMotionDef*		m_head_idle;
@@ -53,20 +49,25 @@ struct					SActorMotions
 		CMotionDef*		m_damage[DAMAGE_FX_COUNT];
 		void			Create(CSkeletonAnimated* K, LPCSTR base);
 		void			CreateClimb(CSkeletonAnimated* K);
-
 	};
-	//CMotionDef*			m_steering_torso_left;
-	//CMotionDef*			m_steering_torso_right;
-	//CMotionDef*			m_steering_torso_idle;
-	//CMotionDef*			m_steering_legs_idle;
 
+	struct SActorSprintState 
+	{
+		//toroso anims
+		CMotionDef*		m_toroso[8];
+		//leg anims
+		CMotionDef*		legs_fwd;
+		CMotionDef*		legs_ls;
+		CMotionDef*		legs_rs;
+		void Create		(CSkeletonAnimated* K);
+	};
 
 	CMotionDef*			m_dead_stop;
 
 	SActorState			m_normal;
 	SActorState			m_crouch;
 	SActorState			m_climb;
-	SActorState			m_sprint;
+	SActorSprintState	m_sprint;
 	void				Create(CSkeletonAnimated* K);
 };
 

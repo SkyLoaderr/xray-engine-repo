@@ -150,11 +150,16 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 		{
 			if (mstate_real&mcSprint)
 			{
-				HideCurrentWeapon(GEG_PLAYER_SPRINT_START);//, false);
+				//HideCurrentWeapon(GEG_PLAYER_SPRINT_START);//, false);
+				psHUD_Flags.set(HUD_WEAPON_RT,FALSE);
+				psHUD_Flags.set(HUD_CROSSHAIR_RT,FALSE);
+
 			}
 			else
 			{
-				RestoreHidedWeapon(GEG_PLAYER_SPRINT_END);
+				//RestoreHidedWeapon(GEG_PLAYER_SPRINT_END);
+				psHUD_Flags.set(HUD_WEAPON_RT,TRUE);
+				psHUD_Flags.set(HUD_CROSSHAIR_RT,TRUE);
 			}
 		};
 	};

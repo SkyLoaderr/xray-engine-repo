@@ -105,7 +105,6 @@ void SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR 
 	attack_zoom		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_0"));
 	fire_idle		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
 	fire_end		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_2"));
-
 	all_attack_0	= K->ID_Cycle_Safe(strconcat(buf,base0,"_all",base1,"_attack_0"));
 	all_attack_1	= K->ID_Cycle_Safe(strconcat(buf,base0,"_all",base1,"_attack_1"));
 	all_attack_2	= K->ID_Cycle_Safe(strconcat(buf,base0,"_all",base1,"_attack_2"));
@@ -119,13 +118,6 @@ void SActorMotions::SActorState::SAnimState::Create(CSkeletonAnimated* K, LPCSTR
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs_0"));
 }
 
-void SActorMotions::SActorState::SAnimState::CreateSprint(CSkeletonAnimated* K)
-{
-	legs_fwd		= K->ID_Cycle("norm_escape_0");
-	legs_back		= K->ID_Cycle("norm_escape_0");
-	legs_ls			= K->ID_Cycle("norm_escape_ls_0");
-	legs_rs			= K->ID_Cycle("norm_escape_rs_0");
-}
 
 void SActorMotions::SActorState::CreateClimb(CSkeletonAnimated* K)
 {
@@ -173,7 +165,7 @@ void SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 	
 	m_walk.Create	(K,base,"_walk");
 	m_run.Create	(K,base,"_run");
-	m_sprint.CreateSprint(K);
+
 	m_torso[0].Create(K,base,"_1");
 	m_torso[1].Create(K,base,"_2");
 	m_torso[2].Create(K,base,"_3");
@@ -194,6 +186,19 @@ void SActorMotions::SActorState::Create(CSkeletonAnimated* K, LPCSTR base)
 		m_damage[k]	= K->ID_FX(strconcat(buf,base,"_damage_",itoa(k,buf1,10)));
 }
 
+void SActorMotions::SActorSprintState::Create(CSkeletonAnimated* K)
+{
+	
+	//toroso anims
+	string128 buf,buf1;
+	//strcpy(buf,"norm_toroso_");
+	for (int k=0; k<8; ++k)
+		m_toroso[k]	= K->ID_Cycle(strconcat(buf,"norm_torso_",itoa(k,buf1,10),"_escape_0"));
+	//leg anims
+	legs_fwd=K->ID_Cycle("norm_escape_00");
+	legs_ls=K->ID_Cycle("norm_escape_ls_00");
+	legs_rs=K->ID_Cycle("norm_escape_rs_00");
+}
 void SActorMotions::Create(CSkeletonAnimated* V)
 {
 	//m_steering_torso_left	= V->ID_Cycle_Safe("steering_torso_ls");
@@ -206,6 +211,7 @@ void SActorMotions::Create(CSkeletonAnimated* V)
 	m_crouch.Create	(V,"cr");
 	//m_climb.Create	(V,"cr");
 	m_climb.CreateClimb(V);
+	m_sprint.Create(V);
 }
 
 SActorVehicleAnims::SActorVehicleAnims()
@@ -258,6 +264,20 @@ void legs_play_callback		(CBlend *blend)
 	object->m_current_legs	= 0;
 }
 
+void CActor::g_SetSprintAnimation( u32 mstate_rl,CMotionDef* &head,CMotionDef* &toroso,CMotionDef* &legs)
+{
+			SActorMotions::SActorSprintState& sprint=m_anims->m_sprint;
+			CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
+			if(H)
+				head=toroso=sprint.m_toroso[H->animation_slot() - 1];
+			else
+				head=toroso=sprint.m_toroso[0];
+				 if(mstate_rl&mcFwd)		legs	=sprint.legs_fwd;
+			else if (mstate_rl&mcLStrafe)	legs	=sprint.legs_ls;
+			else if (mstate_rl&mcRStrafe)	legs	=sprint.legs_rs;
+}
+
+ 
 BOOL	g_ShowAnimationInfo = TRUE;
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
@@ -271,13 +291,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else							ST = &m_anims->m_normal;
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
-		else							AS = &ST->m_walk;
-		if	(mstate_rl&mcSprint)		
-			AS  = &ST->m_sprint;
 		// анимации
 		CMotionDef* M_legs	= 0;
 		CMotionDef* M_torso	= 0;
 		CMotionDef* M_head	= 0;
+
 
 		//если мы просто стоим на месте
 		bool is_standing = false;
@@ -295,11 +313,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		else if (mstate_rl&mcRStrafe)	M_legs	= AS->legs_rs;
 		else is_standing = true;
 	
-		if	(mstate_rl&mcSprint)
-		{
-			M_torso	= M_legs;
-			M_head	= M_legs;
-		}
+		if(mstate_rl&mcSprint)g_SetSprintAnimation(mstate_rl,M_head,M_torso,M_legs);
 		// Torso
 		if(mstate_rl&mcClimb)
 		{
@@ -491,7 +505,3 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 #endif
 }
 
-void CActor::g_SetSprintAnimation( u32 mstate_rl )
-{
-
-}
