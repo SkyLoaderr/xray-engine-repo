@@ -115,7 +115,7 @@ public:
 	IC		u32						node_count		() const;
 	IC		float					edge_weight		(const_iterator i) const;
 	IC		const CVertex			&vertex			(u32 vertex_id) const;
-	IC		void					set_invalid_vertex(u32 &vertex_id) const;
+	IC		void					set_invalid_vertex(ALife::_GRAPH_ID &vertex_id) const;
 };
 
 #include "game_graph_inline.h"

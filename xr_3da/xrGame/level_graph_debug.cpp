@@ -481,13 +481,13 @@ void CLevelGraph::compute_travel_line(xr_vector<u32> &/**vertex_path/**/, u32 /*
 void CLevelGraph::compute_path() const
 {
 	return;
-	u32						l_dwStartNodeID		= vertex(m_start_point);
-	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
-	u32						l_dwFinishNodeID	= vertex(m_finish_point);
-	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
-	xr_vector<u32>			l_tpNodePath;
-	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphSearchEngine::CObstacleParams());
-	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
+//	u32						l_dwStartNodeID		= vertex(m_start_point);
+//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
+//	u32						l_dwFinishNodeID	= vertex(m_finish_point);
+//	VERIFY					(inside(vertex(l_dwFinishNodeID),m_finish_point));
+//	xr_vector<u32>			l_tpNodePath;
+//	ai().graph_search_engine().build_path(ai().level_graph(),l_dwStartNodeID,l_dwFinishNodeID,&l_tpNodePath,CGraphSearchEngine::CObstacleParams());
+//	compute_travel_line		(l_tpNodePath,l_dwStartNodeID,l_dwFinishNodeID);
 }
 
 void CLevelGraph::draw_dynamic_obstacles() const
