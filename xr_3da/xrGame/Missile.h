@@ -56,4 +56,10 @@ public:
 	u32 m_destroyTime, m_stateTime;
 
 	bool m_bPending;
+	virtual void UpdateXForm();
+			void UpdatePosition(const Fmatrix& trans);
+
+private:
+	u32						dwXF_Frame;
+
 };

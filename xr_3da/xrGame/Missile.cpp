@@ -58,6 +58,7 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	R_ASSERT(V);
 
 
+	dwXF_Frame					= 0xffffffff;
 
 	setVisible					(true);
 	setEnabled					(true);
@@ -308,8 +309,52 @@ u32 CMissile::State(u32 state)
 	return State();
 }
 
+void CMissile::UpdatePosition(const Fmatrix& trans)
+{
+	Position().set	(trans.c);
+//	XFORM().mul	(trans,m_Offset);
+}
+
+void CMissile::UpdateXForm()
+{
+	if (Device.dwFrame!=dwXF_Frame){
+		dwXF_Frame = Device.dwFrame;
+
+		if (0==H_Parent())	return;
+
+		// Get access to entity and its visual
+		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+
+		if(!E) return;
+		R_ASSERT		(E);
+		CKinematics*	V		= PKinematics	(E->Visual());
+		VERIFY			(V);
+
+		// Get matrices
+		int				boneL,boneR,boneR2;
+		E->g_WeaponBones(boneL,boneR,boneR2);
+//		if ((STATE == eReload) || (!E->g_Alive()))
+			boneL = boneR2;
+		V->Calculate	();
+		Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
+		Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+		// Calculate
+		Fmatrix			mRes;
+		Fvector			R,D,N;
+		D.sub			(mL.c,mR.c);	D.normalize_safe();
+		R.crossproduct	(mR.j,D);		R.normalize_safe();
+		N.crossproduct	(D,R);			N.normalize_safe();
+		mRes.set		(R,N,D,mR.c);
+		mRes.mulA_43	(E->XFORM());
+		UpdatePosition	(mRes);
+	}
+}
+
 void CMissile::renderable_Render() 
 {
+	inherited::renderable_Render();
+	UpdateXForm();
+
 	if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) 
 	{
 		Fmatrix trans;
@@ -325,7 +370,14 @@ void CMissile::renderable_Render()
 				::Render->add_Visual		(m_pHUD->Visual());
 			}
 		} 
-		else {}
+		else {
+			::Render->set_Transform		(&XFORM());
+			::Render->add_Visual		(Visual());
+		}
+	}
+	else {
+		::Render->set_Transform		(&XFORM());
+		::Render->add_Visual		(Visual());
 	}
 	
 	if(getVisible() && !H_Parent()) 
