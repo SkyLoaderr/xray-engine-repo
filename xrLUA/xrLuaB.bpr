@@ -14,13 +14,13 @@
       Intermediate\ltablib.obj Intermediate\lauxlib.obj 
       Intermediate\lbaselib.obj Intermediate\ldblib.obj Intermediate\liolib.obj 
       Intermediate\lmathlib.obj Intermediate\loadlib.obj 
-      Intermediate\lstrlib.obj Intermediate\xr_print.obj"/>
+      Intermediate\lstrlib.obj Intermediate\xr_print.obj Intermediate\StdAfx.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES)"/>
-    <LIBFILES value="X:\xrCoreB.lib"/>
+    <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi vclx.bpi bcbsmp.bpi"/>
@@ -46,8 +46,8 @@
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\VS7.NET\Vc7\atlmfc\include 
       -IP:\xrCore -IP:\luabind -src_suffix cpp -D_EDITOR -D_XRLUAB 
       -DXRLUA_EXPORTS -D_DEBUG -boa"/>
-    <CFLAG1 value="-WD -Od -Q -P -Vx -Ve -xf -xp -x- -VF -ff -X- -r- -ps -a4 -6 -b- -k -y -v 
-      -vi- -tWD -tWM -c"/>
+    <CFLAG1 value="-WD -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -P -Vx -Ve -xf -xp -x- -VF -ff -X- 
+      -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
@@ -90,8 +90,8 @@
       <FILE FILENAME="src\lib\lmathlib.c" FORMNAME="" UNITNAME="lmathlib.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\lib\loadlib.c" FORMNAME="" UNITNAME="loadlib.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\lib\lstrlib.c" FORMNAME="" UNITNAME="lstrlib.c" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="X:\xrCoreB.lib" FORMNAME="" UNITNAME="xrCoreB.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="src\xr_print.c" FORMNAME="" UNITNAME="xr_print" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="StdAfx.cpp" FORMNAME="" UNITNAME="StdAfx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -143,12 +143,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -161,12 +163,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -179,12 +183,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -197,12 +203,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -215,12 +223,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -230,12 +240,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -248,12 +260,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -266,12 +280,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -287,12 +303,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -305,12 +323,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -323,12 +343,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -341,12 +363,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -359,12 +383,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -377,12 +403,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -395,12 +423,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -413,12 +443,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -428,12 +460,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -446,12 +480,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -464,12 +500,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -482,12 +520,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -505,12 +545,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -520,12 +562,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -535,12 +579,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -550,12 +596,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -565,12 +613,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -580,12 +630,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -595,12 +647,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -610,12 +664,14 @@
 					Name="Debug|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
 			</File>
@@ -648,6 +704,28 @@
 			</File>
 			<File
 				RelativePath=".\src\xr_print.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Kernel"
+			Filter="">
+			<File
+				RelativePath=".\StdAfx.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\StdAfx.h">
 			</File>
 		</Filter>
 	</Files>
