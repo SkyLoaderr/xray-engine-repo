@@ -366,7 +366,7 @@ public:
 	virtual float			getMass					(){return m_mass.mass;}
 	virtual void			setDensity				(float M);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
-	const dMass*			GetMass					()
+	dMass*					GetMass					()
 	{
 		return &m_mass;
 	}

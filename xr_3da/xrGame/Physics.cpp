@@ -13,6 +13,7 @@ struct Fcylinder;
 #include "..\ode\src\collision_kernel.h"
 #include <..\ode\src\joint.h>
 #include <..\ode\src\objects.h>
+
 #pragma warning(default:4995)
 ///////////////////////////////////////////////////////////////////
 //#include "dRay/include/dRay.h"
@@ -2793,9 +2794,9 @@ if(!(body1&&body2))
 	dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
 	dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
 
-	dJointSetHingeParam(m_joint,dParamCFM,world_cfm/10.f);
-	dJointSetHingeParam(m_joint,dParamStopERP,world_erp/10.f);
-	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm/10.f);
+	dJointSetHingeParam(m_joint,dParamCFM,world_cfm);
+	dJointSetHingeParam(m_joint,dParamStopERP,world_erp);
+	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm);
 	return;
 }
 
@@ -3770,7 +3771,32 @@ void CPHElement::unset_Pushout()
 
 void CPHShell::SmoothElementsEnertia(float k)
 {
+dMass m_avrg;
+dReal krc=1.f-k;
+dMassSetZero(&m_avrg);
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		
+		dMassAdd(&m_avrg,(*i)->GetMass());
 
+	}
+	int n=elements.size();
+	m_avrg.mass/=n*k;
+	for(int j=0;j<4*3;i++) m_avrg.I[j]/=n*k;
+	
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		dVector3 tmp;
+		dMass* m=(*i)->GetMass();
+		Memory.mem_copy(tmp,m->c,sizeof(dVector3));
+
+		m->mass*=krc;
+		for(int j=0;j<4*3;j++) m->I[j]*=krc;
+		dMassAdd(m,&m_avrg);
+
+		Memory.mem_copy(m->c,tmp,sizeof(dVector3));
+	}
 }
 
 
