@@ -115,6 +115,6 @@ void CRenderTarget::End		(float blur)
 	pStream->Unlock			(4);
 
 	// Actual rendering
-	Device.Shader.set_Shader(pShader);
+	Device.Shader.set_Shader(pShaderSet);
 	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
