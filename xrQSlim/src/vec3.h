@@ -27,18 +27,11 @@ public:
 
     // Copy constructors & assignment operators
     template<class U> TVec3(const TVec3<U>& v) { *this = v; }
-#ifndef STDMIX_INCLUDED
-    // This is now a standard constructor, except when compiling legacy MixKit
-    // code.
-    template<class U> TVec3(const U v[3])
-    	{ elt[0]=v[0]; elt[1]=v[1]; elt[2]=v[2]; }
-#else
-    // For MixKit code, we need these constructors instead.
-    // They SHOULD NOT be used in new code.
-    TVec3(const float *v) { elt[0]=v[0]; elt[1]=v[1]; elt[2]=v[2]; }
+
+	TVec3(const float *v) { elt[0]=v[0]; elt[1]=v[1]; elt[2]=v[2]; }
     TVec3(const double *v) { elt[0]=v[0]; elt[1]=v[1]; elt[2]=v[2]; }
-#endif
-    template<class U> TVec3& operator=(const TVec3<U>& v)
+
+	template<class U> TVec3& operator=(const TVec3<U>& v)
 	{ elt[0]=v[0];  elt[1]=v[1];  elt[2]=v[2];  return *this; }
     TVec3& operator=(T s) { elt[0]=elt[1]=elt[2]=s; return *this; }
 

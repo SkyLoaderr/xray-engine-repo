@@ -26,7 +26,5 @@ $Id: stdmix.h,v 1.21.2.1 2002/01/31 18:38:37 garland Exp $
 
 inline bool streq(const char *a, const char *b) { return !xr_strcmp(a,b); }
 
-#pragma comment( lib, "x:\\xrCore.lib"	)
-
 // STDMIX_INCLUDED
 #endif
