@@ -114,7 +114,7 @@ void Startup(LPSTR     lpCmdLine)
 					}
 					else
 						if (strstr(cmd,"-c")) {
-							xrConvertMaps	();
+//							xrConvertMaps	();
 						}
 		}
 	// Show statistic
