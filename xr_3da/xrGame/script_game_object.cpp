@@ -304,6 +304,10 @@ u32 CScriptGameObject::GetAmmoCurrent() const
 void CScriptGameObject::SetQueueSize(u32 queue_size)
 {
 	CWeaponMagazined		*weapon = smart_cast<CWeaponMagazined*>(&object());
+	if (!weapon) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"CWeaponMagazined : cannot access class member SetQueueSize!");
+		return;
+	}
 	weapon->SetQueueSize	(queue_size);
 }
 
