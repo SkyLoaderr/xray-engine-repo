@@ -140,11 +140,17 @@ void CDetailManager::hw_Unload()
 void CDetailManager::hw_Render()
 {
 	// Render-prepare
-	Fvector4 dir1,dir2;
+	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
+	Fvector4	dir1,dir2;
+	Fvector3	wnd;
 	float	tm_rot1			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot1;
 	float	tm_rot2			= PI_MUL_2*Device.fTimeGlobal/ps_r__Detail_w_rot2;
-	dir1.set				(_sin(tm_rot1),0,_cos(tm_rot1),0);	dir1.normalize	();	dir1.mul(.1f);	// dir1*amplitude
-	dir2.set				(_sin(tm_rot2),0,_cos(tm_rot2),0);	dir2.normalize	(); dir2.mul(.05f);	// dir2*amplitude
+	wnd.set		(0,0,0);
+	//wnd.setHP	(desc.wind_direction,0);
+	//wnd.mul	(desc.wind_velocity /5);
+	//Log		("wd:",desc.wind_direction);
+	dir1.set	(_sin(tm_rot1)+wnd.x,0+wnd.y,_cos(tm_rot1)+wnd.z,0);	dir1.normalize	();	dir1.mul(.1f);	// dir1*amplitude
+	dir2.set	(_sin(tm_rot2)+wnd.x,0+wnd.y,_cos(tm_rot2)+wnd.z,0);	dir2.normalize	(); dir2.mul(.05f);	// dir2*amplitude
 
 	// Setup geometry and DMA
 	RCache.set_Geometry		(hw_Geom);
@@ -178,7 +184,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 
 	CEnvDescriptor&	desc	= g_pGamePersistent->Environment.Current;
 	Fvector					c_sun,c_ambient,c_lmap,c_hemi;
-	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);
+	c_sun.set				(desc.sun_color.x,	desc.sun_color.y, desc.sun_color.z);	c_sun.mul(.5f);
 	c_lmap.set				(desc.lmap_color.x,	desc.lmap_color.y,	desc.lmap_color.z);
 	c_ambient.set			(desc.ambient.x, desc.ambient.y, desc.ambient.z);
 	c_hemi.set				(desc.hemi_color.x, desc.hemi_color.y, desc.hemi_color.z);
