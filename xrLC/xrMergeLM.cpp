@@ -13,14 +13,12 @@ const int USED_P2	= (1<<1);
 struct _rect {
 	_point	a,b;		// min,max
 	int		iArea;
-	int		mask;		// which control points we already used
 	
 	IC void	set	(_rect &R)
 	{
 		a.set	(R.a);
 		b.set	(R.b);
 		iArea	= R.iArea;
-		mask	= R.mask;
 	};
 	IC void init(int ax, int ay, int bx, int by)
 	{
@@ -118,7 +116,6 @@ void InitSurface()
 // Rendering of rect
 void _rect_register(_rect &R, CDeflector* D, BOOL bRotate)
 {
-	R.mask				= 0;
 	collected.push_back(R);
 	
 	LPDWORD lm	= D->lm.pSurface;
@@ -165,21 +162,24 @@ bool Place_Perpixel(_rect& R, CDeflector* D, BOOL bRotate)
 		for (DWORD y=0; y<s_y; y++)
 		{
 			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
-			BYTE*	E = P	+ s_x;
-			DWORD*	S = lm	+ y*s_x;
-			for (; P!=E; P++,S++) {
-				if ((*P)&&(RGBA_GETALPHA(*S)>=alpha_ref))	return false;	// overlap detected
+			DWORD*	S = lm + y*s_x;
+			for (DWORD x=0; x<s_x; x++,P++) 
+			{
+				DWORD C = *S++;
+				DWORD A = RGBA_GETALPHA(C);
+				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}
 	} else {
 		// Rotated :(
 		for (DWORD y=0; y<s_x; y++)
 		{
-			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;
+			BYTE*	P = surface+(y+R.a.y)*512+R.a.x;	// destination scan-line
 			for (DWORD x=0; x<s_y; x++,P++)
 			{
 				DWORD C = lm[x*s_x+y];
-				if ((*P)&&(RGBA_GETALPHA(C)>=alpha_ref))	return false;	// overlap detected
+				DWORD A = RGBA_GETALPHA(C);
+				if ((*P)&&(A>=alpha_ref))	return false;
 			}
 		}
 	}
