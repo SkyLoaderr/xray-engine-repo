@@ -134,7 +134,7 @@ void CAI_Zombie::Death()
 		}
 	}
 
-	//SelectAnimation(clTransform.k,mRotate.k,0);
+	SelectAnimation(clTransform.k,mRotate.k,0);
 }
 
 void CAI_Zombie::Turn()
@@ -583,6 +583,9 @@ void CAI_Zombie::Resurrect()
 	WRITE_TO_LOG("Resurrecting");
 
 	bStopThinking = true;
+
+	if (!g_Alive())
+		return;
 	
 	m_fSpeed = 0.f;
 
