@@ -24,79 +24,15 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 	xrServerEntity*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
 	xrServerEntity*		e_what	= get_entity_from_eid(eid_what);	VERIFY(e_what	);
 
-	if (!m_bALife) {
-		xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
-		if (A)
-		{
-			// Actor touches something
-			xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
-			if (W) 
-			{
-				// Weapon
-				//vector<u16>&	C			=	A->children;
-				//u8 slot						=	W->get_slot	();
-				//for (u32 it=0; it<C.size(); it++)
-				//{
-				//	xrServerEntity*		Et	= get_entity_from_eid			(C[it]);
-				//	if (0==Et)				continue;
-				//	xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
-				//	if (0==T)				continue;
-				//	if (slot == T->get_slot())	
-				//	{
-				//		// We've found same slot occupied - disallow ownership
-				//		return FALSE;
-				//	}
-				//}
-
-				// Weapon slot empty - ownership OK
-				return TRUE;
-			}
-		}
-		else {
-			xrSE_Human*			A		= dynamic_cast<xrSE_Human*> (e_who);
-			if (A) {
-				// Actor touches something
-				xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
-				if (W) 
-				{
-	//				// Weapon
-	//				vector<u16>&	C			=	A->children;
-	//				u8 slot						=	W->get_slot	();
-	//				for (u32 it=0; it<C.size(); it++)
-	//				{
-	//					xrServerEntity*		Et	= get_entity_from_eid			(C[it]);
-	//					if (0==Et)				continue;
-	//					xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
-	//					if (0==T)				continue;
-	//					if (slot == T->get_slot())	
-	//					{
-	//						// We've found same slot occupied - disallow ownership
-	//						return FALSE;
-	//					}
-	//				}
-	//
-					// Weapon slot empty - ownership OK
-					return TRUE;
-				}
-			}
-		}
-	}
-	else {
-		CALifeTraderParams *tpTraderParams = dynamic_cast<CALifeTraderParams*>(e_who);
-		if (!tpTraderParams)
-			return FALSE;
-
-		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem*>(e_what);
-		if (!tpALifeItem)
-			return FALSE;
-
-		CALifeDynamicObject *tpDynamicObject = dynamic_cast<CALifeDynamicObject*>(e_who);
-		if (!tpDynamicObject)
-			return FALSE;
+	if (m_bALife) {
 		
-		m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
+		CALifeTraderParams	*tpTraderParams		= dynamic_cast<CALifeTraderParams*>	(e_who);
+		CALifeItem			*tpALifeItem		= dynamic_cast<CALifeItem*>			(e_what);
+		CALifeDynamicObject *tpDynamicObject	= dynamic_cast<CALifeDynamicObject*>(e_who);
+		
+		if (tpTraderParams && tpALifeItem && tpDynamicObject)
+			m_tpALife->vfAttachItem(*e_who,tpALifeItem,tpALifeItem->m_tGraphID,false);
 	}
-
 	return TRUE;
 }
 
