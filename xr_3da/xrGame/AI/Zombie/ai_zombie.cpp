@@ -42,6 +42,9 @@ CAI_Zombie::CAI_Zombie()
 	m_dwCreatePathAttempts = 0;
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
+	AI_Path.fSpeed = 0.f;
+	m_fDistanceWent = 0.f;
+	m_cStep = 0;
 }
 
 CAI_Zombie::~CAI_Zombie()

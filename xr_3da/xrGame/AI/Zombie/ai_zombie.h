@@ -18,7 +18,8 @@ class CAI_Zombie : public CCustomMonster
 {
 	enum ESoundCcount {
 		SND_HIT_COUNT=8,
-		SND_DIE_COUNT=4
+		SND_DIE_COUNT=4,
+		SND_STEP_COUNT=2,
 	};
 
 	enum EZombieStates 	{
@@ -83,6 +84,9 @@ class CAI_Zombie : public CCustomMonster
 		// media
 		sound			sndHit[SND_HIT_COUNT];
 		sound			sndDie[SND_DIE_COUNT];
+		sound			sndSteps[SND_STEP_COUNT];
+		float			m_fDistanceWent;
+		char			m_cStep;
 		
 		// events
 		EVENT			m_tpEventSay;

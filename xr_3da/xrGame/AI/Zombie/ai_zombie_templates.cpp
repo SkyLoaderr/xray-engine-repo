@@ -23,6 +23,7 @@
 #define MIN_PATROL_DISTANCE				1.f
 #define MIN_COVER_MOVE					120
 #define MAX_NEIGHBOUR_COUNT				9
+#define DISTANCE_TO_STEP				.85f
 
 bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
@@ -203,6 +204,13 @@ void CAI_Zombie::vfSetFire(bool bFire, CGroup &Group)
 
 void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 {
+	/**/
+	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
+	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
+		pSounds->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
+		m_fDistanceWent = 0.f;		
+	}
+	/**/
 	switch (cBodyState) {
 		case BODY_STATE_STAND : {
 			StandUp();
