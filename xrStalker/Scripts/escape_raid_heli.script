@@ -3,6 +3,10 @@
 
 local active = false
 local enemy
+local v
+
+local pass_dist    = 100  -- расстояние, на которое вертолёт отлетит перед следующим заходом для атаки
+local patrol_speed, attack_speed = 30, 40
 
 --------------------------------------------------------------------------------------------------------------------
 -- функции для рейда
@@ -62,7 +66,11 @@ function HeliManager:HeliOnHit( p )
 		self.m_heliObject:SetEnemy( enemy )
 		self.m_heliObject:SetDestPosition( enemy:position() )
 		self.m_heliObject:SetState( CHelicopter.eMovingByAttackTraj )
-		self.m_heliObject:SetCurrVelocity( 40.0 ) -- m/sec (max)
+--		self.m_heliObject:SetCurrVelocity( attack_speed ) -- m/sec (max)
+
+		self.attack_pass_state = 0
+		
+--		self.m_heliObject.m_on_point_range_dist = 30
 	end
 end
 
@@ -76,23 +84,47 @@ function HeliManager:HeliOnPoint(p)
 		--select next point
 	end
 
+--	printf( "m_on_point_range_dist = %d", self.m_heliObject.m_on_point_range_dist )
+
 	-- если пролетел над позицией врага
 	if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
 		if self.attack_passes > 0 then
-			if not self.attack_dest_away then
+			if self.attack_pass_state == 0 then
 				-- отлетаем чуть-чуть
-				self.m_heliObject:SetDestPosition( self.m_heli:position():add( self.m_heli:direction():mul( 100 ) ) )
-				self.attack_dest_away = true
-				self.attack_passes = self.attack_passes - 1
+				v        = self.m_heli:direction()
+				self.p1  = self.m_heli:position():add( vector():set( v ):mul( pass_dist ) )
+
+				self.m_heliObject:SetDestPosition( self.p1 )
+
+				v.x, v.z = v.z, -v.x
+				self.p2  = self.p1:add( v:mul( pass_dist * 1.5 ) )
+
+				self.attack_pass_state = 1
+				printf( "0" )
+--[[			elseif self.attack_pass_state == 1 then
+				-- заходим вправо
+				self.m_heliObject:SetDestPosition( self.p2 )
+				--self.m_heliObject:SetCurrVelocity( patrol_speed )
+
+				self.attack_pass_state = 2
+
+				printf( "1" ) ]]
 			else
-				-- опять летим на врага
+				-- опять заходим на врага
 				self.m_heliObject:SetDestPosition( enemy:position() )
-				self.attack_dest_away = false
+				--self.m_heliObject:SetCurrVelocity( attack_speed )
+				self.m_heliObject.m_on_point_range_dist = 10
+
+				self.attack_pass_state = 0
+				self.attack_passes     = self.attack_passes - 1
+
+				printf( "2" )
 			end
 		else
 			-- закончить атаку
 			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 )  --0==from_idx
-			self.attack_dest_away = false
+			self.attack_pass_state = 0
+			self.m_heliObject.m_on_point_range_dist = 10
 			printf( "[heli] attack finished" )
 		end
 --		self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
@@ -112,7 +144,7 @@ function HeliManager:Run()
 
 		if state == CHelicopter.eIdleState then
 			self.m_heliObject:GoPatrolByPatrolPath( "way_raid_heli", 0 ) --0==from_idx
-			self.m_heliObject:SetCurrVelocity( 30.0 ) -- m/sec (max)
+			self.m_heliObject:SetCurrVelocity( patrol_speed ) -- m/sec (max)
 		end
 
 		health = self.m_heliObject:GetfHealth()
@@ -178,7 +210,19 @@ function HeliManager:Run()
 	end
 end
 
+--[[function parse_names( s )
+    local t = {}
+
+    for name in string.gfind( s, "([%w_\\%=%-%,]+)|*" ) do
+        table.insert( t, name )
+    end
+
+    return t
+end]]
+
 function main()
+--	printf( table.concat( parse_names( "wp00|ret=0|rel=a1,b1,c1" ), "         " ) )
+
 	local heli_mngr = HeliManager()
 	heli_mngr:Init()
 	heli_mngr:Run()
