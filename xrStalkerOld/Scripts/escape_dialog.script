@@ -54,6 +54,7 @@ end
 
 --' Escape trader need meet fox
 function have_fox_info(first_speaker, second_speaker)
+	printf("[HAVE FOX INFO CALLED %s -> %s]", first_speaker:name(), second_speaker:name())
   	return first_speaker:object("fox_info") ~= nil
 end
 function trader_need_fox_info(first_speaker, second_speaker)

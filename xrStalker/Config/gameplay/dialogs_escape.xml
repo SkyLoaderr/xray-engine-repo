@@ -642,7 +642,7 @@
     </dialog>
     <dialog id="escape_trader_done_artefact" priority="9">
         <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
-        <dont_has_info>escape_artefact_done</dont_has_info>
+        <has_info>escape_artefact_gain</has_info>
         <phrase_list>
             <phrase id="2">
                 <text>escape_trader_done_artefact_2</text>
@@ -657,8 +657,8 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_done_gift">
-        <has_info>escape_stalker_give</has_info>
         <precondition>escape_dialog.have_fox_info</precondition>
+        <has_info>escape_stalker_give</has_info>
         <phrase_list>
             <phrase id="11">
                 <text>escape_trader_done_gift_11</text>
