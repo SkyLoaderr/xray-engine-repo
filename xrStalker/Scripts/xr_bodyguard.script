@@ -257,6 +257,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 	-- enable - будет ли работать схема в принципе
 	-- path_main - где телохранитель обычно стоит
 	-- path_side - куда телохранитель отходит
+	printf("_bp: set_bodyguard called")
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].bodyguard
 	if enable == nil then
@@ -264,6 +265,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
         		if char_ini:line_exist("bodyguard", "enabled") == true then
                 		st.enabled = char_ini:r_bool("bodyguard", "enabled")
 			else
+				printf("ERROR: set_bodyguard: enabled not specified")
 				st.enabled = false
 		        end
 		else
@@ -278,6 +280,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 	        		if char_ini:line_exist("bodyguard", "path_main") == true then
 		        	        st.path_main = char_ini:r_string("bodyguard", "path_main")
 	        		else
+					printf("ERROR: set_bodyguard: path_main not specified")
 		        	    	st.enabled = false
 			        end
 			else
@@ -293,6 +296,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 	        		if char_ini:line_exist("bodyguard", "path_side") == true then
 		        	        st.path_side = char_ini:r_string("bodyguard", "path_side")
 	        		else
+					printf("ERROR: set_bodyguard: path_side not specified")
 		        	    	st.path_side = st.path_main
 			        end
 			else
@@ -308,6 +312,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 	        		if char_ini:line_exist("bodyguard", "path_guard") == true then
 		        	        st.path_guard = char_ini:r_string("bodyguard", "path_guard")
 	        		else
+					printf("ERROR: set_bodyguard: path_guard not specified")
 		        	    	st.path_guard = st.path_main
 			        end
 			else
@@ -323,6 +328,7 @@ function set_bodyguard(object, enable, path_main, path_side, path_guard, path_gu
 	        		if char_ini:line_exist("bodyguard", "path_guard_radius") == true then
 		        	        st.path_guard_radius = char_ini:r_u32("bodyguard", "path_guard_radius")
 	        		else
+					printf("ERROR: set_bodyguard: path_guard_radius not specified")
 		        	    	st.path_guard_radius = st.path_main
 			        end
 			else
