@@ -76,6 +76,7 @@ void SimplifyCFORM		(CDB::CollectorPacked& CL)
 	mesh.request_vertex_normals	();
 	mesh.update_vertex_normals	();
 	vhandles.clear_and_free		();
+	fhandles.clear_and_free		();
 	CL.clear					();
 
 	// Decimate
