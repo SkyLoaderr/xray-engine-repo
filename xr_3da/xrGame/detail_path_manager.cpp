@@ -21,16 +21,16 @@ CDetailPathManager::~CDetailPathManager	()
 
 void CDetailPathManager::Init			()
 {
-	m_detail_path_actual		= false;
-	m_detail_start_position		= Fvector();
-	m_detail_dest_position		= Fvector().set(0,0,0);
-	m_detail_cur_point_index	= u32(-1);
-	m_detail_path_type			= eDetailPathTypeSmooth;
+	m_actual				= false;
+	m_start_position		= Fvector().set(0,0,0);
+	m_dest_position			= Fvector().set(0,0,0);
+	m_current_travel_point	= u32(-1);
+	m_path_type				= eDetailPathTypeSmooth;
 }
 
 bool CDetailPathManager::valid			() const
 {
-	return				(!m_detail_path.empty() && m_detail_path[0].m_position.similar(m_detail_start_position) && m_detail_path[m_detail_path.size() - 1].m_position.similar(m_detail_dest_position));
+	return				(!m_path.empty() && m_path[0].m_position.similar(m_start_position) && m_path[m_path.size() - 1].m_position.similar(m_dest_position));
 }
 
 bool CDetailPathManager::valid			(const Fvector &position) const
@@ -40,11 +40,11 @@ bool CDetailPathManager::valid			(const Fvector &position) const
 
 const Fvector &CDetailPathManager::direction()
 {
-	if ((m_detail_path.size() < 2) || (m_detail_path.size() <= m_detail_cur_point_index + 1))
+	if ((m_path.size() < 2) || (m_path.size() <= m_current_travel_point + 1))
 		return		(Fvector().set(0,0,1));
 	
 	Fvector			direction;
-	direction.sub	(m_detail_path[m_detail_cur_point_index + 1].m_position, m_detail_path[m_detail_cur_point_index].m_position);
+	direction.sub	(m_path[m_current_travel_point + 1].m_position, m_path[m_current_travel_point].m_position);
 
 	if (direction.magnitude() < EPS_L)
 		return		(direction.set(0,0,1));
@@ -54,8 +54,8 @@ const Fvector &CDetailPathManager::direction()
 
 void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position)
 {
-	if (!m_detail_path_actual && valid(m_detail_start_position) && valid(m_detail_dest_position)) {
-		switch (m_detail_path_type) {
+	if (!actual() && valid(m_start_position) && valid(m_dest_position)) {
+		switch (m_path_type) {
 			case eDetailPathTypeSmooth : {
 				build_smooth_path(level_path,intermediate_index,dest_position);
 				break;
@@ -70,8 +70,8 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 			}
 		}
 		if (valid()) {
-			m_detail_path_actual		= true;
-			m_detail_cur_point_index	= 0;
+			m_actual				= true;
+			m_current_travel_point	= 0;
 		}
 	}
 }
@@ -92,11 +92,11 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 	STravelPoint			current,next;
 
 	// start point
-	m_detail_path.clear		();
+	m_path.clear		();
 	current.m_linear_speed	= (*m_movement_params.begin()).second.m_linear_speed;
 	current.m_angular_speed	= (*m_movement_params.begin()).second.m_angular_speed;
-	current.m_position		= m_detail_start_position;
-	m_detail_path.push_back	(current);
+	current.m_position		= m_start_position;
+	m_path.push_back	(current);
 
 	// end point
 	Fvector					Last = ai().level_graph().vertex_position(level_path.back());
@@ -140,14 +140,14 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 		}
 
 		// record _new point
-		if (!next.m_position.similar(m_detail_path.back().m_position))	m_detail_path.push_back(next);
+		if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
 		current				= next;
 	}
 	next.m_position.set			(Last);
-	if (!next.m_position.similar(m_detail_path.back().m_position))	m_detail_path.push_back(next);
+	if (!next.m_position.similar(m_path.back().m_position))	m_path.push_back(next);
 
 	// setup variables
-	m_detail_cur_point_index	= 0;
+	m_current_travel_point	= 0;
 }
 
 float CDetailPathManager::speed	()
@@ -162,5 +162,5 @@ bool CDetailPathManager::actual() const
 
 bool CDetailPathManager::completed() const
 {
-	return				(m_detail_path.empty() || m_detail_dest_position.similar(m_detail_path.back().m_position));
+	return				(m_path.empty() || m_dest_position.similar(m_path.back().m_position));
 }

@@ -17,8 +17,8 @@ class CDetailPathManager {
 			void	build_dodge_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 			void	build_criteria_path		(const xr_vector<u32> &level_path, u32 intermediate_index, const Fvector &dest_position);
 protected:
-	u32										m_detail_cur_point_index;
-	bool									m_detail_path_actual;
+	u32										m_current_travel_point;
+	bool									m_actual;
 public:
 	enum EMovementType {
 		eMovementTypeStand	= u32(1) << 1,
@@ -46,11 +46,11 @@ public:
 
 	bool									m_collision;
 
-	xr_vector<STravelPoint>					m_detail_path;
+	xr_vector<STravelPoint>					m_path;
 	xr_vector<CLevelGraph::SSegment>		m_segments;
-	Fvector									m_detail_start_position;
-	Fvector									m_detail_dest_position;
-	EDetailPathType							m_detail_path_type;
+	Fvector									m_start_position;
+	Fvector									m_dest_position;
+	EDetailPathType							m_path_type;
 	xr_map<EMovementType,SMovementParams>	m_movement_params;
 
 	friend class CScriptMonster;

@@ -67,6 +67,7 @@ private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
 	bool									m_path_actuality;
+	bool									m_enabled;
 	u64										m_start_time;
 	u64										m_time_work;
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
@@ -95,7 +96,10 @@ public:
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_node		(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_node		(const u32 level_vertex_id);
-			
+	IC		void	set_enabled				(bool enabled);
+	
+	IC		bool	get_enabled				() const;
+
 			void	build_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
 };

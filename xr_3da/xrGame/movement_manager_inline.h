@@ -33,3 +33,12 @@ IC	bool CMovementManager::time_over() const
 	return					(false);//CPU::GetCycleCount() - m_start_time >= m_time_work);
 }
 
+IC	void CMovementManager::set_enabled(bool enabled)
+{
+	m_enabled				= enabled;
+}
+	
+IC	bool CMovementManager::get_enabled() const
+{
+	return					(m_enabled);
+}

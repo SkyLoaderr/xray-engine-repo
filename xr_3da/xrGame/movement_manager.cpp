@@ -28,6 +28,7 @@ void CMovementManager::Init			()
 {
 	m_time_work						= 300*CPU::cycles_per_microsec;
 	
+	set_enabled						(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
 	CGamePathManager::Init			(&ai().game_graph());
 	CLevelLocationSelector::Init	(&ai().level_graph());
@@ -47,12 +48,12 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	float				precision = 1.f;
 #endif
 
-	if (m_detail_path.empty() || (m_detail_path.size() - 1 <= m_detail_cur_point_index))	{
+	if (CDetailPathManager::m_path.empty() || (CDetailPathManager::m_path.size() - 1 <= CDetailPathManager::m_current_travel_point))	{
 		m_speed			= 0;
 #ifndef NO_PHYSICS_IN_AI_MOVE
 		if(movement_control->IsCharacterEnabled()) {
 			motion.set	(0,0,0);
-			movement_control->Calculate(m_detail_path,0.f,m_detail_cur_point_index,precision);
+			movement_control->Calculate(CDetailPathManager::m_path,0.f,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(Position());
 		}
 
@@ -68,35 +69,35 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 	if (time_delta < EPS)			
 		return;
 #pragma todo("Dima to Kostia : Please change this piece of code to support paths with multiple desired velocities")
-	float				dist		=	m_detail_path[m_detail_cur_point_index].m_linear_speed*time_delta;
+	float				dist		=	CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed*time_delta;
 	float				dist_save	=	dist;
 
 //	Position()			=	p_src;
 
 	// move full steps
 	Fvector				mdir,target;
-	target.set			(m_detail_path[m_detail_cur_point_index + 1].m_position);
+	target.set			(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].m_position);
 	mdir.sub			(target, Position());
 	float				mdist =	mdir.magnitude();
 	
 	while (dist>mdist) {
 		Position().set	(target);
 
-		if (m_detail_cur_point_index + 1 >= m_detail_path.size())
+		if (CDetailPathManager::m_current_travel_point + 1 >= CDetailPathManager::m_path.size())
 			break;
 		else {
 			dist			-= mdist;
-			++m_detail_cur_point_index;
-			if ((m_detail_cur_point_index+1) >= m_detail_path.size())
+			++CDetailPathManager::m_current_travel_point;
+			if ((CDetailPathManager::m_current_travel_point+1) >= CDetailPathManager::m_path.size())
 				break;
-			target.set	(m_detail_path[m_detail_cur_point_index+1].m_position);
+			target.set	(CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point + 1].m_position);
 			mdir.sub	(target, Position());
 			mdist		= mdir.magnitude();
 		}
 	}
 
 	if (mdist < EPS_L) {
-		m_detail_cur_point_index = m_detail_path.size() - 1;
+		CDetailPathManager::m_current_travel_point = CDetailPathManager::m_path.size() - 1;
 		m_speed			= 0;
 		return;
 	}
@@ -117,7 +118,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	if ((tpNearestList.empty())) {
 		if(!movement_control->TryPosition(Position())) {
-			movement_control->Calculate(m_detail_path,m_detail_path[m_detail_cur_point_index].m_linear_speed,m_detail_cur_point_index,precision);
+			movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
 			movement_control->GetPosition(Position());
 			if (movement_control->gcontact_HealthLost)
 				Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),Position(),0);
@@ -126,7 +127,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, fl
 			movement_control->b_exect_position=true;
 	}
 	else {
-		movement_control->Calculate(m_detail_path,m_detail_path[m_detail_cur_point_index].m_linear_speed,m_detail_cur_point_index,precision);
+		movement_control->Calculate(CDetailPathManager::m_path,CDetailPathManager::m_path[CDetailPathManager::m_current_travel_point].m_linear_speed,CDetailPathManager::m_current_travel_point,precision);
 		movement_control->GetPosition(Position());
 		if (movement_control->gcontact_HealthLost)
 			Hit	(movement_control->gcontact_HealthLost,mdir,this,movement_control->ContactBone(),Position(),0);
@@ -220,7 +221,7 @@ void CMovementManager::process_game_path()
 				break;
 		}
 		case ePathStateBuildDetailPath : {
-			m_detail_start_position = Position();
+			CDetailPathManager::m_start_position = Position();
 			m_detail_dest_position  = 
 				ai().level_graph().vertex_position(
 					CLevelPathManager::get_intermediate_vertex_id()
