@@ -42,4 +42,5 @@ void CHOM::Load			(CStream* S)
 	}
 	
 	// Determine adjacency
+	CL.calc_adjacency	();
 }

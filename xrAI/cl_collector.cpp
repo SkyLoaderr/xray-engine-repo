@@ -36,7 +36,7 @@ namespace CDB
 						if (f1==t1 && f2==t2) 
 						{
 							// f.edge[f_e] linked to t.edge[t_e]
-							faces[f].IDadj(f_e)	= t;
+							faces[f].IDadj()[f_e]	= t;
 							break;
 						}
 					}
