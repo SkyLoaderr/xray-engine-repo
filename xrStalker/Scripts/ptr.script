@@ -42,17 +42,16 @@ function SPatrol:process ()
        if self.snd_len > 0 and ctime >= self.snd_len then 
           self.snd_len = 0
           self.snd_time = ctime
+       else
+          if ctime - self.snd_time >= snd_interval then
+             local sname = self.sounds[math.random (1, table.getn (self.sounds))]
+             local s = sound_object (sname)
+             self.snd_len = s:length () + ctime
+             update_action (self.npc, self.script, sound (sname, "bip01_head", 
+                            vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+          end
        end   
-       if ctime - self.snd_time >= snd_interval then
-          local sname = self.sounds[math.random (1, table.getn (self.sounds))]
-          local s = sound_object (sname)
-          self.snd_len = s:length () + ctime
-          update_action (self.npc, self.script, sound (sname, "bip01_head", 
-                         vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
-          self.snd_time = ctime               
-                         
-       end
-    end         
+    end   
 end
 
 
