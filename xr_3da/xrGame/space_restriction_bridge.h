@@ -23,13 +23,13 @@ public:
 	IC								CSpaceRestrictionBridge		(CSpaceRestrictionBase *object);
 	virtual							~CSpaceRestrictionBridge	();
 			void					change_implementation		(CSpaceRestrictionBase *object);
-			const xr_vector<u32>	&border						() const;
+			const xr_vector<u32>	&border						(bool out_restriction) const;
 			bool					initialized					() const;
 			void					initialize					();
 	template <typename T>
 	IC		bool					inside						(T position_or_vertex_id, float radius = EPS_L);
 			ref_str					name						() const;
-			u32						accessible_nearest			(const Fvector &position, Fvector &result);
+			u32						accessible_nearest			(const Fvector &position, Fvector &result, bool out_restriction);
 			bool					shape						() const;
 			bool					default_restrictor			() const;
 };

@@ -82,7 +82,7 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 		if (affect((*I).m_restriction,p1,p2)) {
 			VERIFY							(!(*I).m_enabled);
 			(*I).m_enabled					= true;
-			ai().level_graph().set_mask		((*I).m_restriction->border());
+			ai().level_graph().set_mask		((*I).m_restriction->border(false));
 		}
 }
 

@@ -53,7 +53,7 @@ protected:
 
 private:
 	IC		bool					intersects					(CBaseRestrictionPtr bridge);
-	IC		bool					intersects					(CBaseRestrictionPtr bridge0, CBaseRestrictionPtr bridge1);
+	IC		bool					intersects					(SpaceRestrictionHolder::CBaseRestrictionPtr bridge0, bool out_restriction0, SpaceRestrictionHolder::CBaseRestrictionPtr bridge1, bool out_restriction1);
 			CBaseRestrictionPtr		merge						(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const;
 			void					merge_in_out_restrictions	();
 			void					merge_free_in_retrictions	();

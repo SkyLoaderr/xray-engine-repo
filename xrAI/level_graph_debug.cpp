@@ -31,6 +31,7 @@
 #include "space_restriction_manager.h"
 #include "space_restriction.h"
 #include "space_restrictor.h"
+#include "space_restriction_base.h"
 
 u32	vertex_in_direction(u32 level_vertex_id, Fvector direction, float max_distance);
 
@@ -214,8 +215,8 @@ void CLevelGraph::render()
 		CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	I = Level().space_restriction_manager().restrictions().begin();
 		CSpaceRestrictionManager::SPACE_RESTRICTIONS::const_iterator	E = Level().space_restriction_manager().restrictions().end();
 		for ( ; I != E; ++I) {
-//			if (_GetItemCount(*(*I).second->space_restrictors()) < 2)
-//				continue;
+			if (!(*I).second->m_ref_count)
+				continue;
 			xr_vector<u32>::const_iterator	i = (*I).second->border().begin();
 			xr_vector<u32>::const_iterator	e = (*I).second->border().end();
 			for ( ; i != e; ++i) {
@@ -227,12 +228,21 @@ void CLevelGraph::render()
 			CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator II = (*I).second->m_free_in_restrictions.begin();
 			CSpaceRestriction::FREE_IN_RESTRICTIONS::const_iterator EE = (*I).second->m_free_in_restrictions.end();
 			for ( ; II != EE; ++II) {
-				xr_vector<u32>::const_iterator	i = (*II).m_restriction->border().begin();
-				xr_vector<u32>::const_iterator	e = (*II).m_restriction->border().end();
+				xr_vector<u32>::const_iterator	i = (*II).m_restriction->border(false).begin();
+				xr_vector<u32>::const_iterator	e = (*II).m_restriction->border(false).end();
 				for ( ; i != e; ++i) {
 					Fvector temp = ai().level_graph().vertex_position(*i);
 					temp.y += .1f;
 					RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+				}
+				{
+					xr_vector<u32>::const_iterator	i = (*II).m_restriction->border(true).begin();
+					xr_vector<u32>::const_iterator	e = (*II).m_restriction->border(true).end();
+					for ( ; i != e; ++i) {
+						Fvector temp = ai().level_graph().vertex_position(*i);
+						temp.y += .1f;
+						RCache.dbg_DrawAABB(temp,.05f,.05f,.05f,D3DCOLOR_XRGB(0,255,0));
+					}
 				}
 			}
 		}

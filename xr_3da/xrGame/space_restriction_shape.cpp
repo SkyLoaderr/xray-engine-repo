@@ -13,6 +13,7 @@
 #include "graph_engine.h"
 #include "space_restrictor.h"
 
+template <bool out>
 struct CBorderMergePredicate {
 	CSpaceRestrictionShape		*m_restriction;
 	CLevelGraph::CVertex		*vertex;
@@ -26,7 +27,7 @@ struct CBorderMergePredicate {
 
 	IC	bool	operator()				(u32 vertex_id)
 	{
-		if (m_restriction->inside(vertex_id))
+		if (m_restriction->inside(vertex_id) == out)
 			return				(true);
 
 		vertex					= ai().level_graph().vertex(vertex_id);
@@ -37,7 +38,7 @@ struct CBorderMergePredicate {
 			if (!ai().level_graph().valid_vertex_id(neighbour))
 				continue;
 
-			if (m_restriction->inside(neighbour))
+			if (m_restriction->inside(neighbour) == out)
 				return			(false);
 		}
 
@@ -47,7 +48,8 @@ struct CBorderMergePredicate {
 
 void CSpaceRestrictionShape::build_border	()
 {
-	m_border.clear					();
+	m_out_border.clear				();
+	m_in_border.clear				();
 	CCF_Shape						*shape = smart_cast<CCF_Shape*>(m_restrictor->collidable.model);
 	VERIFY							(shape);
 	xr_vector<CCF_Shape::shape_def>::const_iterator	I = shape->Shapes().begin();
@@ -59,18 +61,25 @@ void CSpaceRestrictionShape::build_border	()
 			ai().level_graph(),
 			vertex_id,
 			vertex_id,
-			&m_border,
+			&m_out_border,
 			CGraphEngine::CFlooder(
 				radius(*I) + 2*ai().level_graph().header().cell_size()
 			)
 		);
 	}
 	
+	m_in_border						= m_out_border;
+
 	{
-		xr_vector<u32>::iterator	I = remove_if(m_border.begin(),m_border.end(),CBorderMergePredicate(this));
-		m_border.erase				(I,m_border.end());
+		xr_vector<u32>::iterator	I = remove_if(m_out_border.begin(),m_out_border.end(),CBorderMergePredicate<true>(this));
+		m_out_border.erase			(I,m_out_border.end());
 	}
 	
+	{
+		xr_vector<u32>::iterator	I = remove_if(m_in_border.begin(),m_in_border.end(),CBorderMergePredicate<false>(this));
+		m_in_border.erase			(I,m_in_border.end());
+	}
+
 	process_borders					();
 }
 

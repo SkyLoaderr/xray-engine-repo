@@ -11,11 +11,49 @@
 #include "space_restriction_holder.h"
 #include "space_restriction_bridge.h"
 #include "restriction_space.h"
+#include "ai_space.h"
+#include "level_graph.h"
+
+struct CMergeOutPredicate {
+	CSpaceRestrictionComposition *m_restriction;
+
+	IC	CMergeOutPredicate(CSpaceRestrictionComposition *restriction)
+	{
+		m_restriction	= restriction;
+	}
+
+	IC	bool operator()	(u32 level_vertex_id) const
+	{
+		return			(m_restriction->CSpaceRestrictionBase::inside(level_vertex_id));
+	}
+};
+
+struct CMergeInPredicate {
+	CSpaceRestrictionComposition *m_restriction;
+
+	IC	CMergeInPredicate(CSpaceRestrictionComposition *restriction)
+	{
+		m_restriction	= restriction;
+	}
+
+	IC	bool operator()	(u32 level_vertex_id) const
+	{
+		CLevelGraph::const_iterator	i,e;
+		ai().level_graph().begin(level_vertex_id,i,e);
+		for ( ; i != e; ++i) {
+			u32					neighbour_vertex_id = ai().level_graph().value(level_vertex_id,i);
+			if (ai().level_graph().valid_vertex_id(neighbour_vertex_id) && !m_restriction->CSpaceRestrictionBase::inside(neighbour_vertex_id))
+				return			(false);
+		}
+		return					(true);
+	}
+};
 
 IC	void CSpaceRestrictionComposition::merge	(CBaseRestrictionPtr restriction)
 {
 	m_restrictions.push_back	(restriction);
-	m_border.insert				(m_border.begin(),restriction->border().begin(),restriction->border().end());
+	m_out_border.insert			(m_out_border.begin(),restriction->border(true).begin(),restriction->border(true).end());
+	m_in_border.insert			(m_in_border.begin(),restriction->border(false).begin(),restriction->border(false).end());
 }
 
 bool CSpaceRestrictionComposition::inside					(const Fvector &position, float radius)
@@ -58,6 +96,13 @@ void CSpaceRestrictionComposition::initialize	()
 			)
 		);
 	
-	process_borders				();
 	m_initialized				= true;
+
+	xr_vector<u32>::iterator	I = remove_if(m_out_border.begin(),m_out_border.end(),CMergeOutPredicate(this));
+	m_out_border.erase			(I,m_out_border.end());
+
+	I							= remove_if(m_in_border.begin(),m_in_border.end(),CMergeInPredicate(this));
+	m_in_border.erase			(I,m_in_border.end());
+
+	process_borders				();
 }

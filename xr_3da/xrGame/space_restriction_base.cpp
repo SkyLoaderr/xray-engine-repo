@@ -24,14 +24,14 @@ bool CSpaceRestrictionBase::inside			(u32 level_vertex_id, float radius)
 	);
 }
 
-u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector &result)
+u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector &result, bool out_restriction)
 {
 #pragma todo("Dima to Dima : _Warning : this place can be optimized in case of a slowdown")
 	VERIFY							(initialized());
 	float	min_dist_sqr = flt_max;
 	u32		selected = u32(-1);
-	xr_vector<u32>::const_iterator	I = border().begin();
-	xr_vector<u32>::const_iterator	E = border().end();
+	xr_vector<u32>::const_iterator	I = border(out_restriction).begin();
+	xr_vector<u32>::const_iterator	E = border(out_restriction).end();
 	for ( ; I != E; ++I) {
 		float	distance_sqr = ai().level_graph().vertex_position(*I).distance_to_sqr(position);
 		if (distance_sqr < min_dist_sqr) {
@@ -95,4 +95,3 @@ u32	CSpaceRestrictionBase::accessible_nearest	(const Fvector &position, Fvector 
 	VERIFY	(ai().level_graph().valid_vertex_id(selected));
 	return	(selected);
 }
-

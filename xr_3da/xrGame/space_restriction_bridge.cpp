@@ -21,9 +21,9 @@ void CSpaceRestrictionBridge::change_implementation		(CSpaceRestrictionBase *obj
 	m_object			= object;
 }
 
-const xr_vector<u32> &CSpaceRestrictionBridge::border	() const
+const xr_vector<u32> &CSpaceRestrictionBridge::border	(bool out_restriction) const
 {
-	return				(object().border());
+	return				(object().border(out_restriction));
 }
 
 bool CSpaceRestrictionBridge::initialized				() const
@@ -41,9 +41,9 @@ ref_str CSpaceRestrictionBridge::name					() const
 	return				(object().name());
 }
 
-u32	CSpaceRestrictionBridge::accessible_nearest			(const Fvector &position, Fvector &result)
+u32	CSpaceRestrictionBridge::accessible_nearest			(const Fvector &position, Fvector &result, bool out_restriction)
 {
-	return				(object().accessible_nearest(position,result));
+	return				(object().accessible_nearest(position,result,out_restriction));
 }
 
 bool CSpaceRestrictionBridge::shape						() const
