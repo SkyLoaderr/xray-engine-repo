@@ -22,7 +22,7 @@ void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 		C.r_End				();
 		break;
 	case 2:	// stencil mask for directional light
-		C.r_Pass			("null",			"accum_direct_mask",FALSE,FALSE,FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,1);
+		C.r_Pass			("null",			"accum_direct_mask",FALSE,FALSE,FALSE,TRUE,D3DBLEND_ZERO,D3DBLEND_ONE,TRUE,1);
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N_H);
 		C.r_End				();
 		break;
