@@ -977,7 +977,7 @@ function print_table(table, subs)
 	for k,v in table do
 		if type(v) == "table" then
 			printf(sub.."%s:", k)
-			this.print_sound(v, sub.."    ")
+			this.print_table(v, sub.."    ")
 		else
 			printf(sub.."%s:%s", k,v)
 		end
