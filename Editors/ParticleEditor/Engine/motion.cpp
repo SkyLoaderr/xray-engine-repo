@@ -58,7 +58,7 @@ COMotion::COMotion():CCustomMotion(){
 COMotion::COMotion(COMotion* source):CCustomMotion(source){
 	// bone motions
 	for (int ch=0; ch<ctMaxChannel; ch++)
-		envs[ch]	= new CEnvelope(envs[ch]);
+		envs[ch]	= new CEnvelope(source->envs[ch]);
 }
 
 COMotion::~COMotion(){
