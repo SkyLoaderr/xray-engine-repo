@@ -115,9 +115,6 @@ void CGrenade::OnAnimationEnd()
 				m_pPhysicsShell->Deactivate();
 			xr_delete(m_pPhysicsShell);
 			
-			//выкинуть гранату из инвентаря
-			if (m_pInventory)
-				m_pInventory->Ruck(this); 
 			m_dwDestroyTime = 0;
 			
 			if (Local())
@@ -127,6 +124,9 @@ void CGrenade::OnAnimationEnd()
 				u_EventSend			(P);
 			};
 
+			//выкинуть гранату из инвентаря
+			if (m_pInventory)
+				m_pInventory->Ruck(this); 
 			
 			if(dynamic_cast<CActor*>(H_Parent()))
 			{
@@ -135,10 +135,13 @@ void CGrenade::OnAnimationEnd()
 				//или найти любую другую гранату на поясе
 				if(!pNext) pNext = dynamic_cast<CGrenade*>(m_pInventory->SameSlot(m_slot,false));
 
+				R_ASSERT(pNext != this);
+
 				if(pNext) 
 				{ 
-					m_pInventory->Slot(pNext, false); 
-					//m_pInventory->Activate(pNext->m_slot); 
+					m_pInventory->Slot(pNext, false);
+					m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
+					m_pInventory->Activate(pNext->m_slot); 
 				}
 			}
 		}
