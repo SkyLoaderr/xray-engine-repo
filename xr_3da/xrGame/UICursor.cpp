@@ -11,7 +11,8 @@
 //////////////////////////////////////////////////////////////////////
 CUICursor::CUICursor()
 {    
-	vPos.set		(0.f,0.f);
+	bVisible	= false;
+	vPos.set	(0.f,0.f);
 
 	hVS			= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 	hShader		= Device.Shader.Create		("hud\\cursor","ui\\ui_cursor",FALSE);

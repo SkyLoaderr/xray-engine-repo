@@ -131,6 +131,16 @@ bool CUI::OnKeyboardRelease(int dik)
 }
 //--------------------------------------------------------------------
 
+bool CUI::OnMouseMove(int dx,int dy)
+{
+	if (UICursor.bVisible)
+	{ 
+		UICursor.vPos.add(dx,dy);
+		return true;
+	}
+	return false;
+}
+
 void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 {
 	if (messages.size()==MAX_UIMESSAGES){ 

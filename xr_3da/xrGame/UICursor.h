@@ -7,6 +7,7 @@ class CUICursor
 	Shader*			hShader;
 	SGeometry*		hVS;	
 public:
+	bool			bVisible;
 	Fvector2		vPos;
 public:
 					CUICursor	();

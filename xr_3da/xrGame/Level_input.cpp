@@ -98,9 +98,9 @@ void CLevel::OnMouseRelease(int btn)
 {	OnKeyboardRelease(mouse_button_2_key[btn]);}
 void CLevel::OnMouseHold(int btn)
 {	OnKeyboardHold(mouse_button_2_key[btn]);}
-
 void CLevel::OnMouseMove( int dx, int dy )
 {
+	if (pHUD->GetUI()->OnMouseMove(dx,dy)) return;
 	if (CurrentEntity())	CurrentEntity()->OnMouseMove(dx,dy);
 }
 

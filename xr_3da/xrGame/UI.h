@@ -68,6 +68,7 @@ public:
 
 	bool				OnKeyboardPress		(int dik);
 	bool				OnKeyboardRelease	(int dik);
+	bool				OnMouseMove			(int,int);
 
 	CUIGameCustom*		UIGame				(){return pUIGame;}
 	// --- depends on game type
