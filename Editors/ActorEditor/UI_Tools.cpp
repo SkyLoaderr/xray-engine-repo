@@ -125,6 +125,7 @@ CActorTools::CActorTools()
     m_MotionProps 		= 0;
     m_bReady			= false;
     m_KeyBar			= 0;
+    m_bNeedRefreshShaders= false;
 }
 //---------------------------------------------------------------------------
 
@@ -254,6 +255,10 @@ void CActorTools::Update(){
     	if (m_RenderObject.IsRenderable()&&m_pEditObject->IsSkeleton())
         	PKinematics(m_RenderObject.m_pVisual)->Calculate(1.f);
     	m_pEditObject->OnFrame();
+    }
+    if (m_bNeedRefreshShaders){
+        m_pEditObject->RefreshShaders();
+        m_bNeedRefreshShaders= false;
     }
 }
 
@@ -536,25 +541,16 @@ void __fastcall CActorTools::OnAfterTransformation(TElTreeItem* item, PropValue*
 {
 	UI.RedrawScene();
 }
+
 void __fastcall CActorTools::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	AnsiString new_name = *(AnsiString*)edit_val;
-	TElTreeItem* parent	= item->Parent; VERIFY(parent);
-	CSurface* surf 		= (CSurface*)parent->Data;	VERIFY(surf);
-    surf->DeleteShader	();
-    surf->ED_SetShader	(new_name.c_str());
-    surf->CreateShader	();
+	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall CActorTools::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	AnsiString new_name = *(AnsiString*)edit_val;
-	TElTreeItem* parent	= item->Parent; VERIFY(parent);
-	CSurface* surf 		= (CSurface*)parent->Data; 	VERIFY(surf);
-    surf->DeleteShader	();
-    surf->SetTexture	(new_name.c_str());
-    surf->CreateShader	();
+	RefreshShaders();
 }
 //---------------------------------------------------------------------------
 void CActorTools::FillObjectProperties()

@@ -126,6 +126,9 @@ public:
     TProperties*		m_MotionProps;
 
     TfrmKeyBar* 		m_KeyBar;
+
+    bool				m_bNeedRefreshShaders;
+    void				RefreshShaders		(){m_bNeedRefreshShaders=true;}
 public:
 						CActorTools			();
     virtual 			~CActorTools		();
