@@ -12,6 +12,7 @@ static VIPM_Result*				g_pResult						= 0;
 
 ETOOLS_API void			VIPM_Init			()
 {
+//.	OutputDebugString("VIPM_INIT-------------------\n");
 	R_ASSERT2	(0==g_pObject,"VIPM already in use!");
 	g_pObject							= xr_new<Object>();
 	g_pResult							= xr_new<VIPM_Result>();
@@ -128,11 +129,12 @@ ETOOLS_API VIPM_Result*	VIPM_Convert		(u32 max_sliding_window, float error_toler
 	if (!g_pObject->Valid())return NULL;
 	CalculateAllCollapses	(g_pObject,max_sliding_window,error_tolerance);
 	if (CalculateSW(g_pObject,g_pResult,optimize_vertex_order)) return g_pResult;
-	else return NULL;
+	else					return NULL;
 }
 
 ETOOLS_API void			VIPM_Destroy		()
 {
+//.	OutputDebugString	("VIPM_DESTROY-------------------\n");
 	xr_delete			(g_pResult);
 	xr_delete			(g_pObject);
 	g_ppTempPts.resize	(0);

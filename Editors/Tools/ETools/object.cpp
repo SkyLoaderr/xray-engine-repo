@@ -39,6 +39,11 @@ Object::~Object()
 
 bool Object::Valid( void )
 {
+	for ( MeshTri* pTriTgt = CurTriRoot.ListNext(); pTriTgt != NULL; pTriTgt = pTriTgt->ListNext() )
+		for ( MeshTri* pTriLst = CurTriRoot.ListNext(); pTriLst != NULL; pTriLst = pTriLst->ListNext() )
+			if (pTriTgt!=pTriLst)
+				if (pTriTgt->Equal(pTriLst)) return false; 
+
 	return true;
 }
 

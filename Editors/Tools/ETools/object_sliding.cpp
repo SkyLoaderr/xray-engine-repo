@@ -39,7 +39,7 @@ void OptimiseVertexCoherencyTriList (WORD* pwList, int iHowManyTris, u32 optimiz
 	}
 }
 
-bool CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
+BOOL CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 {
 	result->swr_records.resize(0);
 
@@ -342,7 +342,7 @@ bool CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 	}
 */
 
-	bool bRes = true;
+	BOOL bRes = TRUE;
 	// And now check everything is OK.
 	R_ASSERT ( result->swr_records.size() == u32(iNumCollapses + 1) );
 	for ( int i = 0; i <= iNumCollapses; i++ ){
@@ -351,8 +351,10 @@ bool CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 			R_ASSERT ( (j+swr->offset) < result->indices.size() );
 			swr->num_verts = _max(swr->num_verts,*(result->indices.item(j+swr->offset))); // fignya index ne doljen bit bolshe!!!
 //.			R_ASSERT ( *(result->indices.item(j+swr->offset)) < swr->num_verts ); 
-			if (*(result->indices.item(j+swr->offset)) >= swr->num_verts)
-				bRes = false;
+			if (*(result->indices.item(j+swr->offset)) >= swr->num_verts){
+				bRes = FALSE;
+//.				OutputDebugString("--ERROR-------------------\n");
+			}
 		}
 	}
 	return bRes;

@@ -86,14 +86,26 @@ public:
 
 protected:
 	// Add the edge to this tri.
-	void AddEdge ( MeshEdge *pEdge );
+	void			AddEdge ( MeshEdge *pEdge );
 	// Remove the edge from this tri.
-	void RemoveEdge ( MeshEdge *pEdge );
+	void			RemoveEdge ( MeshEdge *pEdge );
 
 protected:
 	// Remove the point from this tri.
 	// NOTE! This is probably not a good thing to do.
-	void RemovePt ( MeshPt *pPt );
+	void			RemovePt ( MeshPt *pPt );
+public:
+	IC bool			Equal	(MeshTri* F)
+	{
+		// Test for 6 variations
+		if ((pPt1==F->pPt1) && (pPt2==F->pPt2) && (pPt3==F->pPt3)) return true;
+		if ((pPt1==F->pPt1) && (pPt3==F->pPt2) && (pPt2==F->pPt3)) return true;
+		if ((pPt3==F->pPt1) && (pPt1==F->pPt2) && (pPt2==F->pPt3)) return true;
+		if ((pPt3==F->pPt1) && (pPt2==F->pPt2) && (pPt1==F->pPt3)) return true;
+		if ((pPt2==F->pPt1) && (pPt1==F->pPt2) && (pPt3==F->pPt3)) return true;
+		if ((pPt2==F->pPt1) && (pPt3==F->pPt2) && (pPt1==F->pPt3)) return true;
+		return false;
+	}
 
 };
 
