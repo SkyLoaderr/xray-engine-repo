@@ -25,6 +25,22 @@ void CFrustum::CreateFromPoints(Fvector& COP, Fvector* p, int count)
 	_add(COP,p[count-1],p[0]);
 }
 
+void CFrustum::CreateFromPlanes(Fplane* p, int count){
+	for (int k=0; k<count; k++)
+		planes[k].set(p[k]);
+
+	for (int i=0;i<count;i++)
+	{
+		float denom = 1.0f / planes[i].n.magnitude();// Get magnitude of Vector
+		planes[i].n.x	*= denom;
+		planes[i].n.y	*= denom;
+		planes[i].n.z	*= denom;
+		planes[i].d		*= denom;
+	}
+
+	p_count = count;
+}
+
 void CFrustum::CreateFromPortal(sPoly* poly)
 {
 	Fplane	P;

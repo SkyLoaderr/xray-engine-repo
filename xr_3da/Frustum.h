@@ -70,6 +70,7 @@ public:
 	void			CreateFromViewMatrix(Fmatrix &M);
 	void			CreateFromMatrix	(Fmatrix &M);
 	void			CreateFromPortal	(sPoly* P);
+	void			CreateFromPlanes	(Fplane* p, int count);
 	bool			CreateFromClipPoly	(Fvector* p, int count, CFrustum& clip);	// returns 'false' if creation failed
 
 	sPoly*			ClipPoly			(sPoly& src, sPoly& dest);
