@@ -23,7 +23,7 @@ void CBuild::xrPhase_R2_Lights	()
 	xrHemisphereBuild			(2,FALSE,1.f,1.f,hemi_callback,&RL);
 }
 
-#define NUM_THREADS	1
+#define NUM_THREADS	6
 class CR2Light : public CThread
 {
 public:
