@@ -77,9 +77,8 @@ void clean_game_globals()
 	// Очищение таблицы идентификаторов рангов и отношений сталкеров
 	InventoryUtilities::ClearCharacterInfoStrings	();
 
-	xr_delete										(g_profiler);
-
 #ifdef DEBUG
+	xr_delete										(g_profiler);
 	release_smart_cast_stats						();
 #endif
 }

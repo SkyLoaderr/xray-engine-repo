@@ -44,7 +44,9 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			// xml parser options
 			XML_DisableStringCaching	();
 			// script registration
+#ifdef DEBUG
 			g_profiler			= xr_new<CProfiler>();
+#endif
 			break;
 		}
 
