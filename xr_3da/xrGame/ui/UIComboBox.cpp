@@ -110,7 +110,7 @@ void CUIComboBox::OnBtnClicked(){
 		else
 			iCurHeight = m_list.GetChildNum();
 
-		this->m_frameWnd.SetHeight(iCurHeight);
+		//this->m_frameWnd.SetHeight(iCurHeight);
 		this->m_list.SetHeight(iCurHeight);
 	}
 }

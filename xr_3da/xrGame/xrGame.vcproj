@@ -9268,6 +9268,19 @@
 						RelativePath=".\ui\UIRadioGroup.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="ComboBox"
+					Filter="">
+					<File
+						RelativePath=".\ui\UIComboBox.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIComboBox.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIComboBox_script.cpp">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="HUD"
