@@ -205,11 +205,10 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_ang
 	return				TRUE;
 }
 
-float CEntity::OnVisible()
+void CEntity::OnVisible()
 {
-	float ret = inherited::OnVisible();
+	inherited::OnVisible		();
 	::Render.Wallmarks.AddShadow(this);
-	return ret;
 }
 
 void CEntity::Update	(DWORD dt)

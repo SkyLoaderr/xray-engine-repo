@@ -207,9 +207,6 @@ CObject::SavedPosition CObject::ps_Element(DWORD ID)
 
 void CObject::OnVisible	()
 {
-	::Render.set_Transform		(&clTransform);
-	::Render.set_LightLevel		(255);
-	::Render.add_leafs_Dynamic	(Visual());
 }
 
 void CObject::Sector_Detect	()
