@@ -309,14 +309,6 @@ SOURCE=.\FTimer.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\Image.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Image.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\std_classes.h
 # End Source File
 # End Group

@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "xrlevel.h"
 #include "communicate.h"
-#include "cl_rapid.h"
-#include "cl_intersect.h"
 #include "xrThread.h"
 #include "detailformat.h"
 #include "xrhemisphere.h"
