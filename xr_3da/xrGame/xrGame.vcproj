@@ -4475,6 +4475,9 @@
 								RelativePath=".\CarDoors.cpp">
 							</File>
 							<File
+								RelativePath=".\CarExhaust.cpp">
+							</File>
+							<File
 								RelativePath=".\CarInput.cpp">
 							</File>
 							<File
