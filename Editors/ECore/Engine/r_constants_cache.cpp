@@ -10,7 +10,7 @@ void R_constants::flush_cache()
 		// fp
 		R_constant_array::t_f&	F	= a_pixel.c_f;
 		{
-			if (F.r_lo() <= 32) //.
+			if (F.r_lo() <= 32) //. hack
 			{		
 				u32		count		= F.r_hi()-F.r_lo();
 				if (count)			{

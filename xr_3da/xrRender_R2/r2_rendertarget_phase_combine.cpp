@@ -118,7 +118,7 @@ void	CRenderTarget::phase_combine	()
 		}
 #endif
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (1) //.
+		if (1) 
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);

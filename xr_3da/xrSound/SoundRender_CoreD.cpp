@@ -85,8 +85,6 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	R_CHK						(pDevice->GetCaps (&dsCaps));
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
-//.    
-	psSoundFreq = sf_22K;
 	switch	( psSoundFreq )
 	{
 	default:

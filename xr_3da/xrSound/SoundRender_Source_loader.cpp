@@ -55,7 +55,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 	wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 
-	s64 pcm_total			= ov_pcm_total(ovf,-1);//.-1; 
+	s64 pcm_total			= ov_pcm_total(ovf,-1);
 	if (psSoundFreq==sf_22K) pcm_total/=2;
 	dwBytesTotal			= u32(pcm_total*wfxdest.nBlockAlign); 
 	dwBytesPerMS			= wfxdest.nAvgBytesPerSec/1000;

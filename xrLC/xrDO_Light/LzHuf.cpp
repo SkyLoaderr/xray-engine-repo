@@ -72,7 +72,7 @@ public:
 			out_iterator= out_start+out_size;
 			out_end		= out_iterator+1024;
 		}
-		*out_iterator++ = u8(c&0xFF); //.
+		*out_iterator++ = u8(c&0xFF);
 	}
 	
 	LZfs() {

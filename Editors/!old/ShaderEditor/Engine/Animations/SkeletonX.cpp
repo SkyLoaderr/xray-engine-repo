@@ -19,7 +19,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 static	ref_str	sbones_array;
-#define _EDITOR	//.
 
 //////////////////////////////////////////////////////////////////////
 // Body Part
@@ -161,8 +160,6 @@ void CSkeletonX_ST::Release()
 void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount) 
 {	
 	sbones_array	= "sbones_array";
-
-	//. temp
 	xr_vector<u32>	bids;
 
 	// Load vertices
@@ -179,7 +176,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	dwVertCount	= data->r_u32();
 
 	RenderMode						= RM_SKINNING_SOFT;
-	Render->shader_option_skinning	(0);
+	Render->shader_option_skinning	(-1);
 	switch		(dwVertType)
 	{
 	case OGF_VERTEXFORMAT_FVF_1L: // 1-Link
@@ -211,6 +208,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 				// software
 				crc					= crc32	(data->pointer(),size);
 				Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
+				Render->shader_option_skinning	(-1);
 			}
 #endif        
 		}
@@ -232,6 +230,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 				// software
 				crc			= crc32	(data->pointer(),size);
 				Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
+				Render->shader_option_skinning	(-1);
 			}
 		}
 		break;

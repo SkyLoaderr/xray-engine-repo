@@ -97,8 +97,6 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     }
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
-//.            
-//	psSoundFreq = sf_22K;
 	switch	( psSoundFreq ){            
 	default:
 	case sf_22K:	wfm.nSamplesPerSec = 22050; break;

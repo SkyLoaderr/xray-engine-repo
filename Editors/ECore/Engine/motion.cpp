@@ -460,15 +460,11 @@ void SAnimParams::Update(float dt, float speed, bool loop)
 	t			+=speed*dt;
     if (t>max_t){
 		bWrapped= true;
-//.#ifdef _EDITOR
 		if (loop){ 
         	float len = max_t-min_t;
         	float k = float(iFloor((t-min_t)/len));
         	t	= t-k*len; 
         }
-//.		else
-//.#endif
-//.		t		= max_t;
 	}
 }
 
