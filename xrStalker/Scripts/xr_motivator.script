@@ -151,27 +151,9 @@ xr_motivator.storage[self.object:id()].kamp =
 -- Хранение часовых
 xr_motivator.storage[self.object:id()].guard = {
         enabled = false,
-            path_main = nil,
-            path_hideout = nil
+        path_main = nil,
+        path_hideout = nil
     }
-        if char_ini:section_exist ("guard") == true then
-        printf("_bp: npc is guard = %s", self.object:name())
-        if char_ini:line_exist("guard", "enabled") == true then
-                xr_motivator.storage[self.object:id()].guard.enabled = char_ini:r_bool("guard", "enabled")
-            printf("_bp: enabled = true")
-        end
-        if char_ini:line_exist("guard", "path_main") == true then
-                xr_motivator.storage[self.object:id()].guard.path_main = char_ini:r_string("guard", "path_main")
-        else
-            xr_motivator.storage[self.object:id()].guard.enabled = false
-        end
-        if char_ini:line_exist("guard", "path_hideout") == true then
-                xr_motivator.storage[self.object:id()].guard.path_hideout = char_ini:r_string("guard", "path_hideout")
-        end
-        if char_ini:line_exist("guard", "search_light") == true then
-                xr_motivator.storage[self.object:id()].guard.projector_name = char_ini:r_string("guard", "search_light")
-        end
-    end
 xr_motivator.storage[self.object:id()].camper = {
         enabled = false,
             path_main = nil
@@ -416,12 +398,6 @@ xr_motivator.storage[self.object:id()].reactions = {
             i = i + 1
         end
     end
-	--Привязка к организации
-	if char_ini:section_exist ("fraction") == true then
-		if char_ini:line_exist("fraction", "name") == true then
-			xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
-		end
-	end
 
     --Evaluators
     manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
@@ -494,10 +470,18 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_trivial.add_novice3    (self.object)
 
 
-	-- включение схем
-	xr_kamp.set_kamp(self.object)
-	xr_patrol.set_patrol (self.object)
-	xr_follower.set_follower (self.object)
+	--Привязка к организации
+	if char_ini:section_exist ("fraction") == true then
+		if char_ini:line_exist("fraction", "name") == true then
+			xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
+		end
+	else
+		-- включение схем
+		xr_kamp.set_kamp(self.object)
+		xr_guard.set_guard(self.object)
+		xr_patrol.set_patrol (self.object)
+		xr_follower.set_follower (self.object)
+	end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
@@ -514,7 +498,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
 	local count = 0
-
+--[[
 	for k,v in xr_motivator.storage[npc:id()] do
 		if k == "sleeper" or
 		   k == "camper" or
@@ -546,6 +530,7 @@ function checkStorage(npc)
 			end
 		end		
 	end
+]]
 end
 ----------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------

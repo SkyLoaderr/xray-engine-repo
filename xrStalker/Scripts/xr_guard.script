@@ -29,14 +29,14 @@ end
 -- Константа
 class "evaluator_need_guard" (property_evaluator)
 function evaluator_need_guard:__init(storage) super ()
-  self.a = storage
+  	self.a = storage
 end
 function evaluator_need_guard:evaluate ()
-  local tt
+  	local tt
 
-  tt = self.a.enabled == true
-
-      return tt
+  	tt = self.a.enabled == true
+	
+     	return tt
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -305,17 +305,18 @@ function add_to_binder(npc)
 
   operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
 
-   -- // evaluators
-    manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
+   	-- // evaluators
+    	manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
 
-   local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
-    new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
-    new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
-      new_action:add_precondition    (world_property(properties["need_guard"],   true))
-   new_action:add_effect(world_property(properties["need_guard"], false))
-    manager:add_action(operators["action_guard"], new_action)
+	local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
+    	new_action:add_precondition    (world_property(stalker_ids.property_alive,   	true))
+    	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   	false))
+      	new_action:add_precondition    (world_property(properties["need_guard"],   	true))
+   	new_action:add_effect(world_property(properties["need_guard"], false))
+    	manager:add_action(operators["action_guard"], new_action)
 
-  new_action = manager:action(stalker_ids.action_puzzle_solver)
+  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+      	new_action:add_precondition    (world_property(properties["need_guard"],   	false))
 end
 
 -- функции
@@ -335,7 +336,6 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 	-- search_light - прожектор
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].guard
-
 	if enable == nil then
 	    	if char_ini:section_exist ("guard") == true then
         		if char_ini:line_exist("guard", "enabled") == true then
@@ -349,7 +349,6 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 	else
 		st.enabled = enable		
 	end	
-
 	if st.enabled == true then
 		if path_main == nil then
 		    	if char_ini:section_exist ("guard") == true then
@@ -365,7 +364,6 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 			st.path_main = path_main
 		end
 	end
-
 	if st.enabled == true then
 		if path_hideout == nil then
 		    	if char_ini:section_exist ("guard") == true then
@@ -381,20 +379,16 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 			st.path_hideout = path_hideout
 		end
 	end
-
 	if st.enabled == true then
 		if search_light == nil then
 		    	if char_ini:section_exist ("guard") == true then
 	        		if char_ini:line_exist("guard", "search_light") == true then
 		        	        st.projector_name = char_ini:r_string("guard", "search_light")
 			        end
-			else
-				st.enabled = false
 			end
 		else
 			st.projector_name = search_light
 		end
 	end
-
 	xr_motivator.checkStorage(object)
 end
