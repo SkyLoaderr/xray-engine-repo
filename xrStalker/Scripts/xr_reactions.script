@@ -97,7 +97,9 @@ function action_wait:execute()
 		self.object:set_sight(look.point, level.vertex_position(self.a.obj.position), 0)
 		self:set_prisluh(true)
 		--' озвучка на поиск
-		if self.a.evn:ruleExist("silence") ~= true then xr_sound.sound_update(self.object, self.sound_watch) end
+		if self.a.evn:ruleExist("silence") ~= true then 
+			xr_sound.sound_update(self.object, self.sound_watch) 
+		end
 	end
 
 	if self.a.obj.type == "explore" then
