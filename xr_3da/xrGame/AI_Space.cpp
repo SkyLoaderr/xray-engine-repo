@@ -27,6 +27,7 @@ CAI_Space::CAI_Space	()
 	m_tpHeap					= 0;
 	m_tpIndexes					= 0;
 	m_dwAStarStaticCounter		= 0;
+	m_tpaNodes.					clear();
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	OnDeviceCreate				();
@@ -110,7 +111,20 @@ void CAI_Space::Load(LPCSTR name)
 	m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 	ZeroMemory				(m_tpIndexes,S2);
 	Msg						("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-	m_tpaNodes.clear();
+	
+//	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	Sleep				(1);
+//	u64 t1x = CPU::GetCycleCount();
+//	for (int i=0; i<(int)m_tGraphHeader.dwVertexCount; i++)
+//		for (int j=0; j<(int)m_tGraphHeader.dwVertexCount; j++)
+//			if (j != i)
+//				ffFindMinimalPath(i,j,m_tpaNodes);
+//	u64 t2x = CPU::GetCycleCount();
+//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+//	SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+//	t2x -= t1x;
+//	Msg("A star time %11I64u",t2x);
 }
 
 void CAI_Space::Render()
