@@ -145,9 +145,9 @@
       -D_LEVEL_EDITOR -D_DEBUG -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -xf -xp -VF -ff -X- -r- -a4 -6 -b- 
       -k -y -v -vi- -He -c -tW -tWM"/>
-    <PFLAGS value="-N2intermediate -N0intermediate -$YD -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
+    <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zd"/>
+    <AFLAGS value="/mx /w2 /zi"/>
     <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
@@ -385,7 +385,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=416
+Build=418
 Debug=1
 PreRelease=0
 Special=0
@@ -397,7 +397,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.416
+FileVersion=1.0.1.418
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -481,15 +481,16 @@ Item3=c:\rad\borland\cbuilder5\source\vcl;P:\Editor\QHull\
 Item4=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=8
+Count=9
 Item0=_EDITOR;_LEVEL_EDITOR;_DEBUG
-Item1=_EDITOR;_DEBUG
-Item2=_EDITOR
-Item3=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
-Item4=_EDITOR;_DEBUG;_BORLAND
-Item5=_DEBUG;_EDITOR
-Item6=_DEBUG;_ED
-Item7=_DEBUG
+Item1=_EDITOR;_LEVEL_EDITOR
+Item2=_EDITOR;_DEBUG
+Item3=_EDITOR
+Item4=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
+Item5=_EDITOR;_DEBUG;_BORLAND
+Item6=_DEBUG;_EDITOR
+Item7=_DEBUG;_ED
+Item8=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
 Count=2

@@ -80,14 +80,18 @@ int CDetailManager::FrustumSelect(bool flag){
 }
 
 int CDetailManager::SelectObjects(bool flag){
-	for (BOOLIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+//	for (int i=0; i<m_Selected.size(); i++)
+//    	m_Selected[i] = flag;
+	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = flag;
     return m_Selected.size();
 }
 
 int CDetailManager::InvertSelection(){
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
-	for (BOOLIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+//	for (int i=0; i<m_Selected.size(); i++)
+//    	m_Selected[i] = m_Selected[i];
+	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	*it = !*it;
     return m_Selected.size();
 }
@@ -95,7 +99,9 @@ int CDetailManager::InvertSelection(){
 int CDetailManager::SelectionCount(bool testflag){
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
 	int count = 0;
-	for (BOOLIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
+//	for (int i=0; i<m_Selected.size(); i++)
+//    	if (m_Selected[i]==testflag) count++;
+	for (BYTEIt it=m_Selected.begin(); it!=m_Selected.end(); it++)
     	if (*it==testflag) count++;
     return count;
 }

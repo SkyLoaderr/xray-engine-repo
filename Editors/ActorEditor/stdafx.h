@@ -177,7 +177,7 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
     {	return x<y;	}
 };
 
-DEFINE_VECTOR(bool,BOOLVec,BOOLIt);
+DEFINE_VECTOR(bool,boolVec,boolIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
 DEFINE_VECTOR(WORD,WORDVec,WORDIt);
 DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
