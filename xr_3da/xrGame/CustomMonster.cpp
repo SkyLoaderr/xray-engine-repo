@@ -348,12 +348,14 @@ void CCustomMonster::UpdateCL	()
 
 	CScriptEntity::process_sound_callbacks();
 
+	/*	//. hack just to skip 'CalculateBones'
 	if (sound().need_bone_data()) {
 		// we do this because we know here would be virtual function call
 		CKinematics					*kinematics = smart_cast<CKinematics*>(Visual());
 		VERIFY						(kinematics);
 		kinematics->CalculateBones	();
 	}
+	*/
 
 	if (g_mt_config.test(mtSoundPlayer))
 		Device.seqParallel.push_back	(fastdelegate::FastDelegate0(this,&CCustomMonster::update_sound_player));

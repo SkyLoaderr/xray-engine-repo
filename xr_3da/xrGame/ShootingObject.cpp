@@ -164,11 +164,11 @@ void CShootingObject::StopParticles (CParticlesObject*&	pParticles)
 {
 	if(pParticles == NULL) return;
 
-	pParticles->Stop();
-	pParticles->PSI_destroy();
-	pParticles = NULL;
-
+	pParticles->Stop		();
+	pParticles->PSI_destroy	();
+	pParticles				= NULL;
 }
+
 void CShootingObject::UpdateParticles (CParticlesObject*& pParticles, 
 							   const Fvector& pos, const Fvector& vel)
 {

@@ -285,6 +285,7 @@ void	CRender::Statistics	(CGameFont* _F)
 	F.OutNext	(" **** iCULL(%03.1f) **** ",100.f*f32(stats.ic_culled)/f32(ict?ict:1));
 	F.OutNext	(" visible: %2d",	stats.ic_total	);	stats.ic_total	= 0;
 	F.OutNext	(" culled : %2d",	stats.ic_culled	);	stats.ic_culled	= 0;
+	HOM.stats	();
 }
 
 /////////

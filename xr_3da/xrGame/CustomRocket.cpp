@@ -474,16 +474,10 @@ void CCustomRocket::UpdateParticles()
 	Fvector::generate_orthonormal_basis(particles_xform.k, 
 										particles_xform.j, 
 										particles_xform.i);
-    particles_xform.c.set(XFORM().c);
+    particles_xform.c.set	(XFORM().c);
 
-
-	if(m_pEngineParticles)
-		m_pEngineParticles->UpdateParent(particles_xform, vel);
-	
-	if(m_pFlyParticles)
-		m_pFlyParticles->UpdateParent(particles_xform, vel);
-
-
+	if(m_pEngineParticles)	m_pEngineParticles->UpdateParent(particles_xform, vel);
+	if(m_pFlyParticles)		m_pFlyParticles->UpdateParent(particles_xform, vel);
 }
 
 void CCustomRocket::StartEngineParticles()

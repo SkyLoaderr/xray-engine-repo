@@ -503,6 +503,7 @@ void	CRender::Statistics	(CGameFont* _F)
 	F.OutNext	(" total  : %2d",	stats.o_queries	);	stats.o_queries = 0;
 	F.OutNext	(" culled : %2d",	stats.o_culled	);	stats.o_culled	= 0;
 	F.OutSkip	();
+	HOM.stats	();
 }
 
 #pragma comment(lib,"d3dx9.lib")

@@ -98,5 +98,5 @@ void CWeapon::StopFlameParticles2	()
 }
 void CWeapon::UpdateFlameParticles2	()
 {
-	CShootingObject::UpdateParticles (m_pFlameParticles2, get_LastFP2());
+	if (m_pFlameParticles2)			CShootingObject::UpdateParticles (m_pFlameParticles2, get_LastFP2());
 }
