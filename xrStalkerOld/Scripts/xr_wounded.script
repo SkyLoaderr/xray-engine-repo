@@ -3,7 +3,7 @@
 -- misc functions
 ------------------------------------------------------------------------------------------
 function send_sos (npc)
-    local act = level.actor ()
+    local act = db.actor
     if act == nil or  act:alive () == false or npc:relation (act) == game_object.enemy then
        return 
     end
@@ -12,7 +12,9 @@ function send_sos (npc)
        return 
     end
     
-    news_manager.send_help (act)    
+    if act ~= nil then
+		news_manager.send_help (act)    
+	end
 end
 ------------------------------------------------------------------------------------------
 -- Property's
@@ -173,112 +175,27 @@ function action_cover:initialize ()
        self.pos = vtemp
     end    
 
-    if self.object:active_item () ~= nil then
-       self.object:set_item (object.deactivate, self.object:active_item ())
-    end   
-    
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      (self.pos)
     self.object:set_desired_direction     ()
     self.object:set_detail_path_type      (move.line)
-    self.object:set_body_state            (move.standing)
     self.object:set_path_type             (game_object.level_path)
     self.object:set_dest_level_vertex_id  (self.vid)
-    self.object:set_movement_type         (move.walk)
-    self.object:set_mental_state          (anim.free)
-    self.object:set_sight                 (look.path_dir, nil, 0)
     
-    self.stage = 0
+    state_mgr.set_state(self.object, "walk")
 end
 ------------
 function action_cover:execute ()
     action_base.execute (self)
-    if self.stage == 0 then
-       if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
-          if self.object.health < self.a.hp_min then 
-             self.object:set_sight (look.direction, self.object:direction (), 0)
-             self.a.cover = true
-             return
-          end   
-          self.stage = 1
-          self.dir = vector_rotate_y (self.object:direction (), 170.0)
-          self.object:set_sight (look.direction, self.dir, 0)
-          return
-       end    
-    end
-    
-    if self.stage == 1 then
-       if yaw_degree (self.dir, self.object:direction ()) < 5 then
-          self.a.cover = true
-       end
-    end      
+    if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
+		self.a.cover = true
+    end    
 end    
 ------------
 function action_cover:finalize ()
     action_base.finalize (self)
-    self.stage = 0
-end    
-------------------------------------------------------------------------------------------
-
-class "action_clear" (action_base)
-------------
-function action_clear:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function action_clear:initialize ()
-    action_base.initialize (self)
-end
-------------
-function action_clear:execute ()
-    action_base.execute (self)
-    self.a.ignore_time = device ():time_global ()
-    self.a.final = true
-end    
-------------
-function action_clear:finalize ()
-    action_base.finalize (self)
-end    
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
-class "action_sit" (action_base)
-------------
-function action_sit:__init (name, storage) super (nil, name)
-    self.a = storage
-end
-------------
-function action_sit:initialize ()
-    action_base.initialize (self)
-    self.object:set_movement_type         (move.stand)
-    if self.object:active_item () ~= nil then
-       self.object:set_item (object.deactivate, self.object:active_item ())
-    end   
-    self.object:add_animation ("idle_to_wounded_0", true)
-    --self.object:add_animation ("waunded_perehod_0", true)
-    self.object:add_animation ("wounded_idle_0", true)
-end
-------------
-function action_sit:execute ()
-    action_base.execute (self)
-    if self.object:animation_count () == 1 then 
-       self.a.sit = true
-       local act = db.actor
-       if act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-			this.show_yourself(self.object)
-       end   
-       if self.a.on_sit_info ~= nil then
-          xr_logic.pick_section_from_condlist (act, self.object, self.a.on_sit_info.condlist)
-       end 
-    end    
-end    
-------------
-function action_sit:finalize ()
-    action_base.finalize (self)
-    this.hide_yourself(self.object)
-    self.object:add_animation ("wounded_idle_0", true)
+    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -300,24 +217,15 @@ end
 ------------
 function action_idle:initialize ()
     action_base.initialize (self)
-    self.object:set_movement_type         (move.stand)
-    self.object:add_animation ("wounded_idle_0", true)
+
+    state_mgr.set_state(self.object, "wounded")
     xr_meet.override_meet (self.object, true)
-    self.send_time = device ():time_global ()
-    
+    self.send_time = device ():time_global ()    
 end
 ------------
 function action_idle:execute ()
     action_base.execute (self)
-
-    if self.object:active_item () ~= nil then
-       self.object:set_item (object.deactivate, self.object:active_item ())
-    end   
-
-    if self.object:animation_count () < 2 then 
-       self.object:add_animation ("wounded_idle_0", true)
-    end    
-    
+   
     if self.object:is_talking () == false then
        xr_sound.sound_update(self.object, self.sounds)		
     end   
@@ -333,6 +241,7 @@ end
 function action_idle:finalize ()
     action_base.finalize (self) 
     xr_meet.override_meet (self.object, false)
+    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -356,7 +265,6 @@ end
 ------------
 function action_help:initialize ()
     action_base.initialize (self)
-    self.object:set_movement_type         (move.stand)
     self.first = false
     
     self.object:enable_talk ()
@@ -381,29 +289,23 @@ function action_help:initialize ()
           printf ("Additional theme %s added", self.a.theme)
        end   
     end
+    
+    state_mgr.set_state(self.object, "wounded")
     self.first_sound = true
 end
 ------------
 function action_help:execute ()
     action_base.execute (self)
-    
-    if self.object:active_item () ~= nil then
-       self.object:set_item (object.deactivate, self.object:active_item ())
-    end   
-    
+       
     if distance_between (self.object, self.a.npc) < 40 and self.first == false then
        if self.object:active_sound_count () ~= 0 then
           return 
        end     
-       self.first = true
-       self.object:clear_animations ()
-       self.object:add_animation ("wounded_ruka_0", true)
+       -- ÂÑÒÀÂÈÒÜ ÌÀÕÀÍÈÅ ÐÓÊÎÉ ÑÈÄÎÐÎÂÈ×À
+       state_mgr.set_state(self.object, "help_me")
+       self.first = true    
     end
         
-    if self.object:animation_count () < 2 then 
-       self.object:add_animation ("wounded_idle_0", true)
-    end    
-
     if self.object:is_talking () == false then
        if self.object:active_sound_count() == 0 and self.first_sound == true then 
 	      xr_sound.sound_update(self.object, self.sounds, true)
@@ -425,6 +327,7 @@ end
 function action_help:finalize ()
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
+    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -447,9 +350,8 @@ function action_stand:initialize ()
     action_base.initialize (self)
     self.stage = 0
     xr_meet.override_meet (self.object, true)
-    local actor = level.actor ()
     if self.a.on_medikit ~= nil and actor then
-       xr_logic.pick_section_from_condlist (actor, self.object, self.a.on_medikit.condlist) 
+       xr_logic.pick_section_from_condlist (db.actor, self.object, self.a.on_medikit.condlist) 
     end   
     
     if self.object:object ("medkit") ~= nil then
@@ -457,7 +359,7 @@ function action_stand:initialize ()
     elseif self.object:object ("bandage") ~= nil then
        self.object:eat (self.object:object ("bandage"))
     end   
-    
+    state_mgr.set_state(self.object, "idle")
 end
 ------------
 function action_stand:execute ()
@@ -465,39 +367,25 @@ function action_stand:execute ()
     
     if self.stage == 0 then
        printf ("STAGE 0")
-       self.stage = 1
-       self.object:clear_animations ()
-       self.object:add_animation ("wounded_to_idle_0", true)
        xr_sound.sound_update (self.object, self.sounds, true)
        return
     end
     
     if self.stage == 1 then
        printf ("STAGE 2")
-       if self.object:animation_count () == 0 then
-          self.stage = 2
-          local act = level.actor ()
-          if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
-             this.hide_yourself(self.object)
-          end 
-       else
-          return
-       end      
+       self.stage = 2
+       local act = db.actor
+       if act ~= nil and  act:alive () == true and self.object:relation (act) ~= game_object.enemy then
+          this.hide_yourself(self.object)
+       end 
     end    
     
     if self.object:is_talking () == true then
        printf ("STAGE 3")
-       xr_state.anim_update ("idle", self.object) 
---    else 
     end   
 end    
 ------------
-function action_stand:finalize ()
-    local actor = level.actor ()
-    if self.a.on_medikit ~= nil and actor then
-       xr_logic.pick_section_from_condlist (actor, self.object, self.a.on_medikit.condlist)
-    end 
-    
+function action_stand:finalize ()   
     xr_meet.override_meet (self.object, false)
     --self.object:restore_default_start_dialog ()
     action_base.finalize (self)
@@ -523,24 +411,17 @@ end
 ------------
 function action_enemy:initialize ()
     action_base.initialize (self)
-    self.object:set_movement_type         (move.stand)
-    self.object:clear_animations ()
-    self.object:set_mental_state          (anim.danger)
-    self.object:set_body_state            (move.crouch)
-    if self.object:active_item () == nil then
-       self.object:set_item (object.activate, self.object:best_weapon ())
-    end   
-    xr_meet.override_meet (self.object, true)
     
-    self.send_time = device ():time_global ()
+    xr_meet.override_meet (self.object, true)    
+    self.send_time = device ():time_global ()    
 end
 ------------
 function action_enemy:execute ()
     action_base.execute (self)
     
     local enemy = self.object:best_enemy ()
+    state_mgr.set_state(self.object, "hide", nil,nil, {look_object = enemy})
     if distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
-       self.object:set_sight (look.fire_point, enemy:position (), 0)
        if enemy:alive () == true then 
           self.object:set_item (object.fire1, self.object:best_weapon ()) 
        else   
@@ -561,9 +442,7 @@ end
 ------------
 function action_enemy:finalize ()
     action_base.finalize (self)
-    self.object:set_item (object.deactivate, self.object:best_weapon ()) 
-    self.object:clear_animations ()
-    self.object:add_animation ("wounded_idle_0", true)
+    state_mgr.set_state(self.object, "idle")
     xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
@@ -641,21 +520,11 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           false))
-    action:add_precondition (world_property (properties["sit"],             false))
+    --action:add_precondition (world_property (properties["sit"],             false))
 	action:add_precondition (world_property(properties["contact"],	        false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
-
-    action = this.action_sit ("action_sit", st)
-    action:add_precondition (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition (world_property (properties["enable"],          true))
-    action:add_precondition (world_property (properties["wound"],           true))
-    action:add_precondition (world_property (properties["medikit"],         false))
-    action:add_precondition (world_property (properties["cover"],           true))
-    action:add_precondition (world_property (properties["sit"],             false))
-    action:add_effect       (world_property (properties["sit"],             true))
-   	manager:add_action      (operators["sit"], action)
-    
+   
     action = this.action_idle ("action_idle", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
     action:add_precondition (world_property (stalker_ids.property_enemy,    false))
@@ -664,7 +533,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          false))
-    action:add_precondition (world_property (properties["sit"],             true))
+    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["idle"], action)
 
@@ -676,7 +545,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["friend"],          true))
-    action:add_precondition (world_property (properties["sit"],             true))
+    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["medikit"],         true))
    	manager:add_action      (operators["help"], action)
 
@@ -687,7 +556,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
     action:add_precondition (world_property (properties["cover"],           true))
-    action:add_precondition (world_property (properties["sit"],             true))
+    --action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["stand"], action)
 
@@ -697,8 +566,8 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           true))
-    action:add_precondition (world_property (properties["sit"],             true))
-    action:add_effect       (world_property (properties["sit"],             false))
+    --action:add_precondition (world_property (properties["sit"],             true))
+    action:add_effect       (world_property (stalker_ids.property_enemy,    false))
    	manager:add_action      (operators["enemy"], action)
    	
    	action = this.action_medkit ("action_medkit", st)
@@ -707,7 +576,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
-    action:add_precondition (world_property (properties["sit"],             false))
+    --action:add_precondition (world_property (properties["sit"],             false))
     action:add_effect       (world_property (properties["wound"],           false))
    	manager:add_action      (operators["medkit"], action)
     
@@ -715,7 +584,7 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["wound"],  false))
     
     action = manager:action (stalker_ids.action_combat_planner)
-    action:add_precondition (world_property (properties["sit"],  false))
+    action:add_precondition (world_property (properties["cover"],           false))
 
 end
 ------------
