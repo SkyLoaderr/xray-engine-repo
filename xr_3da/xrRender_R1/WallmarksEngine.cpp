@@ -27,7 +27,7 @@ CWallmarksEngine::CWallmarksEngine	()
 	pool.reserve	(256);
 	marks.reserve	(256);
 
-	hGeom	= Device.Shader.CreateGeom	(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
+	hGeom.create	(FVF::F_LIT, RCache.Vertex.Buffer(), NULL);
 }
 
 CWallmarksEngine::~CWallmarksEngine	()
@@ -43,7 +43,7 @@ CWallmarksEngine::~CWallmarksEngine	()
 		pool.clear	();
 	}
 
-	Device.Shader.DeleteGeom			(hGeom);
+	hGeom.destroy	();
 }
 
 // allocate

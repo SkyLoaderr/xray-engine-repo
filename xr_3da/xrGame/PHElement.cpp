@@ -18,10 +18,6 @@
 #include "PHShell.h"
 #include "PHElement.h"
 
-
-
-ref_shader CPHElement::hWallmark=NULL;
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////Implementation for CPhysicsElement
 void CPHElement::			add_Box		(const Fobb&		V){

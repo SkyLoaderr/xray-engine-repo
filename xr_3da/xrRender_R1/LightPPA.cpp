@@ -28,13 +28,13 @@ void CLightPPA::set_active(bool a)
 	{
 		if (bActive)		return;
 		bActive				= true;
-		RImplementation.L_Dynamic.Activate		(this);	
+		RImplementation.L_Dynamic->Activate		(this);	
 	}
 	else
 	{
 		if (!bActive)		return;
 		bActive				= false;
-		RImplementation.L_Dynamic.Deactivate	(this);
+		RImplementation.L_Dynamic->Deactivate	(this);
 	}
 }
 

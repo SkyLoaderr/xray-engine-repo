@@ -35,11 +35,11 @@ void CreateMarks(ShaderSVec4& lst, LPCSTR buf)
 {
 	string128	tmp;
 	int cnt		=_GetItemCount(buf);	R_ASSERT(cnt<=GAMEMTL_SUBITEM_COUNT);
-	ref_shader	tmp;
+	ref_shader	s;
 	for (int k=0; k<cnt; k++)
 	{
-		tmp.create		("effects\\wallmark",_GetItem(buf,k,tmp));
-		lst.push_back	(tmp);
+		s.create		("effects\\wallmark",_GetItem(buf,k,tmp));
+		lst.push_back	(s);
 	}
 }
 

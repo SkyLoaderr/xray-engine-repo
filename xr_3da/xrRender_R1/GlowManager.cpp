@@ -53,7 +53,7 @@ void CGlowManager::Load		(IReader* fs)
 	Selected_Count	= 0;
 	dwTestID		= 0;
 
-	hGeom	= Device.Shader.CreateGeom	(FVF::F_TL,RCache.Vertex.Buffer(),RCache.QuadIB);
+	hGeom.create	(FVF::F_TL,RCache.Vertex.Buffer(),RCache.QuadIB);
 }
 
 void CGlowManager::Unload	()
