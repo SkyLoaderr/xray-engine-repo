@@ -5,10 +5,7 @@ void	CRenderTarget::phase_combine	()
 	// Targets
 	dwWidth								= Device.dwWidth;
 	dwHeight							= Device.dwHeight;
-	RCache.set_RT						(HW.pBaseRT,			0);
-	RCache.set_RT						(NULL,					1);
-	RCache.set_RT						(NULL,					2);
-	RCache.set_ZB						(HW.pBaseZB);
+	u_setrt								(HW.pBaseRT,NULL,NULL,HW.pBaseZB);
 	RImplementation.rmNormal			();
 	u32			Offset					= 0;
 	Fvector2	p0,p1;

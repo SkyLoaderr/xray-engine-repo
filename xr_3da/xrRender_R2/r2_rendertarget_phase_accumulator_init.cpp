@@ -45,10 +45,7 @@ void CRenderTarget::phase_accumulator_init()
 	// ***** Downsample into bloom2.rgba *****
 	if (1)
 	{
-		RCache.set_RT						(rt_Bloom_2->pRT,		0);
-		RCache.set_RT						(NULL,					1);
-		RCache.set_RT						(NULL,					2);
-		RCache.set_ZB						(NULL);					// No need for ZBuffer at all
+		u_setrt								(rt_Bloom_2,NULL,NULL,NULL); // No need for ZBuffer at all
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
 
@@ -80,10 +77,7 @@ void CRenderTarget::phase_accumulator_init()
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
 		// Restore targets
-		RCache.set_RT						(rt_Accumulator->pRT,	0);
-		RCache.set_RT						(NULL,					1);
-		RCache.set_RT						(NULL,					2);
-		RCache.set_ZB						(HW.pBaseZB);
+		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
 
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));

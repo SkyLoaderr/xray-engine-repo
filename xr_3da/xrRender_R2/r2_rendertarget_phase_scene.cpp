@@ -5,10 +5,14 @@ void	CRenderTarget::phase_scene		()
 	// Targets
 	dwWidth								= Device.dwWidth;
 	dwHeight							= Device.dwHeight;
-	RCache.set_RT						(rt_Position->pRT,		0);
-	RCache.set_RT						(rt_Normal->pRT,		1);
-	RCache.set_RT						(rt_Color->pRT,			2);
-	RCache.set_ZB						(HW.pBaseZB);
+	if (RImplementation.b_nv3x)
+	{
+		u_setrt		(rt_Deffer,NULL,NULL,HW.pBaseZB);
+	}
+	else 
+	{
+		u_setrt		(rt_Position,rt_Normal,rt_Color,HW.pBaseZB);
+	}
 	RImplementation.rmNormal			();
 
 	// Clear

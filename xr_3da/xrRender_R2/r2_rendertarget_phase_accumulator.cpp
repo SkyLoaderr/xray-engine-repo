@@ -5,10 +5,7 @@ void	CRenderTarget::phase_accumulator()
 	// Targets
 	dwWidth								= Device.dwWidth;
 	dwHeight							= Device.dwHeight;
-	RCache.set_RT						(rt_Accumulator->pRT,	0);
-	RCache.set_RT						(NULL,					1);
-	RCache.set_RT						(NULL,					2);
-	RCache.set_ZB						(HW.pBaseZB);
+	u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
 	RImplementation.rmNormal			();
 
 	// Stencil	- draw only where stencil >= 0x1
@@ -31,10 +28,7 @@ void	CRenderTarget::phase_accumulator()
 	phase_accumulator_init				();
 
 	// Restore targets
-	RCache.set_RT						(rt_Accumulator->pRT,	0);
-	RCache.set_RT						(NULL,					1);
-	RCache.set_RT						(NULL,					2);
-	RCache.set_ZB						(HW.pBaseZB);
+	u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
 
 	// Stencil	- draw only where stencil >= 0x1
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));

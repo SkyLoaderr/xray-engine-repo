@@ -5,10 +5,7 @@ void	CRenderTarget::phase_smap_spot	()
 	// Targets
 	dwWidth								= SSM_size;
 	dwHeight							= SSM_size;
-	RCache.set_RT						(rt_smap_s->pRT,		0);
-	RCache.set_RT						(NULL,					1);
-	RCache.set_RT						(NULL,					2);
-	RCache.set_ZB						(rt_smap_s_ZB);
+	u_setrt								(rt_smap_s, NULL, NULL, rt_smap_s_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear

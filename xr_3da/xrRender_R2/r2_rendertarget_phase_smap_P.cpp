@@ -5,10 +5,7 @@ void	CRenderTarget::phase_smap_point(u32 pls_phase)
 	// Targets
 	dwWidth								= PSM_size;
 	dwHeight							= PSM_size;
-	RCache.set_RT						(rt_smap_p->pRT[pls_phase],	0);
-	RCache.set_RT						(NULL,						1);
-	RCache.set_RT						(NULL,						2);
-	RCache.set_ZB						(rt_smap_p_ZB);
+	u_setrt								(rt_smap_p->pRT[pls_phase], NULL, NULL, rt_smap_p_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear

@@ -5,10 +5,7 @@ void	CRenderTarget::phase_smap_direct()
 	// Targets
 	dwWidth								= DSM_size;
 	dwHeight							= DSM_size;
-	RCache.set_RT						(rt_smap_d->pRT,		0);
-	RCache.set_RT						(NULL,					1);
-	RCache.set_RT						(NULL,					2);
-	RCache.set_ZB						(rt_smap_d_ZB);
+	u_setrt								(rt_smap_d, NULL, NULL, rt_smap_d_ZB);
 	RImplementation.rmNormal			();
 
 	// Clear
