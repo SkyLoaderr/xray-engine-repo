@@ -17,26 +17,31 @@ protected:
 	typedef TOKEN_LIST::const_iterator	const_iterator;
 
 protected:
-	struct CTokenPredicate {
-		bool			id;
+	struct CTokenPredicateName {
 		LPCSTR			m_name;
-		int				m_id;
 
-		IC				CTokenPredicate	(LPCSTR name)
+		IC				CTokenPredicateName	(LPCSTR name)
 		{
 			m_name		= name;
-			id			= false;
-		}
-
-		IC				CTokenPredicate	(int id)
-		{
-			m_id		= id;
-			id			= true;
 		}
 
 		IC		bool	operator()		(const xr_token &token) const
 		{
-			return		(token.name && (id ? (token.id == m_id) : (!xr_strcmp(token.name,m_name))));
+			return		(token.name && !xr_strcmp(token.name,m_name));
+		}
+	};
+	
+	struct CTokenPredicateID {
+		int				m_id;
+
+		IC				CTokenPredicateID	(int id)
+		{
+			m_id		= id;
+		}
+
+		IC		bool	operator()		(const xr_token &token) const
+		{
+			return		(token.name && (token.id == m_id));
 		}
 	};
 

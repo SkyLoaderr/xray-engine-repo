@@ -57,12 +57,12 @@ IC	LPCSTR CScriptTokenList::name	(int id)
 
 IC	CScriptTokenList::iterator CScriptTokenList::token	(LPCSTR name)
 {
-	return					(std::find_if(m_token_list.begin(),m_token_list.end(),CTokenPredicate(name)));
+	return					(std::find_if(m_token_list.begin(),m_token_list.end(),CTokenPredicateName(name)));
 }
 
 IC	CScriptTokenList::iterator CScriptTokenList::token	(int id)
 {
-	return					(std::find_if(m_token_list.begin(),m_token_list.end(),CTokenPredicate(id)));
+	return					(std::find_if(m_token_list.begin(),m_token_list.end(),CTokenPredicateID(id)));
 }
 
 IC	const CScriptTokenList::TOKEN_LIST &CScriptTokenList::tokens() const
