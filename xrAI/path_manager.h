@@ -730,6 +730,10 @@ public:
 		VERIFY					(graph);
 		return					(_dist_type(0));
 	}
+
+	IC		void		create_path		()
+	{
+	}
 };
 
 template <
@@ -831,6 +835,10 @@ public:
 			return						(true);
 		}
 	}
+	
+	IC		void		create_path		()
+	{
+	}
 };
 
 #ifndef AI_COMPILER
@@ -924,6 +932,10 @@ public:
 
 		return					(false);
 	}
+
+	IC		void		create_path		()
+	{
+	}
 };
 
 template <
@@ -1016,9 +1028,12 @@ public:
 		}
 		return					(false);
 	}
+	
+	IC		void		create_path		()
+	{
+	}
 };
-#endif
-
+#else
 template <
 	typename _DataStorage,
 	typename _dist_type,
@@ -1135,3 +1150,4 @@ public:
 			m_parameters->m_distance		= fCumulativeDistance + fDirectDistance;
 	}
 };
+#endif
