@@ -81,15 +81,15 @@ void vfLoadGraphPoints(LPCSTR name)
 		}
 		xr_delete							(E);
 		if (i % 100 == 0)
-			Status							("Vertexes being read : %d",i);
+			Status							("Vertices read : %d",i);
 	}
 	O->close								();
 	R_ASSERT2								(!tpaGraph.empty(),"There are no graph points!");
 	//xr_delete								(pSettings);
-	Status									("Vertexes being read : %d",i);
+	Status									("Vertices read : %d",i);
 }
 
-void vfRemoveDuplicateGraphPoints()
+void vfRemoveDuplicateGraphPoints(u32 &dwVertexCount)
 {
 	Progress(0.0f);
 	for (int i=0, k=0, N = (int)tpaGraph.size(); i<N; i++)
@@ -102,7 +102,9 @@ void vfRemoveDuplicateGraphPoints()
 			}
 
 	Progress(1.0f);
-	Msg("%d vertexes has been removed",k);
+	dwVertexCount	-= k;
+	Msg("%d vertices has been removed",k);
+	Msg("%d vertices are valid",dwVertexCount);
 }
 
 bool bfCheckForGraphConnectivity(CAI_Map *tpAI_Map)
@@ -324,14 +326,15 @@ void vfRemoveIncoherentGraphPoints(CAI_Map *tpAI_Map, u32 &dwVertexCount)
 				break;
 			}
 	}
-	for (int i=0; i<n; i++)
-		if (!tDisconnected[i]) {
+	for (int i=0, k=0; i<n; i++, k++)
+		if (!tDisconnected[k]) {
 			tpaGraph.erase(tpaGraph.begin() + i);
 			i--;
 			n--;
 			dwVertexCount--;
 		}
 	Msg					("%d graph points are incoherent (they are removed)",j);
+	Msg					("%d graph points are valid",dwVertexCount);
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -354,10 +357,10 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Loading graph points");
 	vfLoadGraphPoints(name);
 	u32 dwGraphPoints;
-	Msg("%d vertexes loaded",int(dwGraphPoints = tpaGraph.size()));
+	Msg("%d vertices are loaded",int(dwGraphPoints = tpaGraph.size()));
 
 	Phase("Removing duplicate graph points");
-	vfRemoveDuplicateGraphPoints();
+	vfRemoveDuplicateGraphPoints(dwGraphPoints);
 
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
@@ -365,6 +368,7 @@ void xrBuildGraph(LPCSTR name)
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
 
+	dwGraphPoints = tpaGraph.size();
 	Phase("Removing incoherent graph points");
 	vfRemoveIncoherentGraphPoints(tpAI_Map,dwGraphPoints);
 
