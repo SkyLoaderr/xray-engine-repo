@@ -230,6 +230,7 @@ object fraBottomBar: TfraBottomBar
     IniSection = 'Bottom Bar'
     Options = [fpState]
     RegistryRoot = prLocalMachine
+    OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'miDrawGrid.Checked'
@@ -240,7 +241,7 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawObjectBones.Checked'
+      'miDrawObjectJoints.Checked'
       'ebStat.Down'
       'miLightScene.Checked'
       'miRealTime.Checked'
@@ -398,8 +399,8 @@ object fraBottomBar: TfraBottomBar
     object Objects1: TMenuItem
       Caption = 'Objects'
       GroupIndex = 4
-      object miDrawObjectBones: TMenuItem
-        Caption = 'Draw Bones'
+      object miDrawObjectJoints: TMenuItem
+        Caption = 'Draw Joints'
         OnClick = ClickOptionsMenuItem
       end
       object miDrawBoneAxis: TMenuItem

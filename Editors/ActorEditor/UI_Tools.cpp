@@ -474,7 +474,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 //.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
-	        OnBoneModified();
+//	        OnBoneModified();
         break;
         }
     }break;
@@ -484,7 +484,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 //.            m_ObjectItems->RefreshForm();
         break;
         case emBone:
-	        OnBoneModified();
+//	        OnBoneModified();
         break;
         }
     }break;
@@ -533,13 +533,15 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 //            m_ObjectProps->RefreshForm();
 //            OnObjectModified();
         break;
-        case emBone:{
-        	BoneVec lst;
-	        if (m_pEditObject->GetSelectedBones(lst))
-            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                	(*b_it)->ShapeMove(amount);
-//	        OnBoneModified();
-        }break;
+        case emBone:
+        	if (Shift.Contains(ssCtrl)){
+                BoneVec lst;
+                if (m_pEditObject->GetSelectedBones(lst))
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->ShapeMove(amount);
+            }
+	        OnBoneModified();
+        break;
         }
     }break;
     case eaRotate:{
@@ -553,11 +555,11 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 //            OnObjectModified();
         break;
         case emBone:{
-        	BoneVec lst;
+            BoneVec lst;
             Fvector rot;
             rot.mul(m_RotateVector,amount);
-	        if (m_pEditObject->GetSelectedBones(lst)){
-            	if (Shift.Contains(ssCtrl)){
+            if (m_pEditObject->GetSelectedBones(lst)){
+                if (Shift.Contains(ssCtrl)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeRotate(rot);
                 }else{
@@ -565,7 +567,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                         (*b_it)->BoneRotate(rot);
                 }
             }
-//	        OnBoneModified();
+	        OnBoneModified();
         }break;
         }
     }break;
@@ -582,13 +584,15 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
             if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
         }
     	switch (m_EditMode){
-        case emBone:{
-        	BoneVec lst;
-	        if (m_pEditObject->GetSelectedBones(lst))
-            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
-                	(*b_it)->ShapeScale(amount);
-//	        OnBoneModified();
-        }break;
+        case emBone:
+        	if (Shift.Contains(ssCtrl)){
+                BoneVec lst;
+                if (m_pEditObject->GetSelectedBones(lst))
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->ShapeScale(amount);
+    	        OnBoneModified();
+			}
+        break;
         }
 //        m_EditObject->t_vScale.add(amount);
     }break;

@@ -265,7 +265,6 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-        if (!MESH->m_LoadState.is(CEditableMesh::LS_PNORMALS)) MESH->GeneratePNormals();
 	    UI.ProgressInc();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
@@ -286,21 +285,18 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     SSkelVert v[3];
                     for (int k=0; k<3; k++){
                         st_FaceVert& 	fv = face.pv[k];
-                        st_SVert& 		sv = MESH->m_SVertices[fv.pindex];
+                        st_SVert& 		sv = MESH->m_SVertices[f_idx*3+k];
                         v[k].set(MESH->m_Points[fv.pindex],sv.uv,sv.w);
 
-                        Fvector N0,N1;
 		                CBone* B;
                         B = m_Source->GetBone(sv.bone0);
-        		        B->LITransform().transform_dir(N0,MESH->m_PNormals[f_idx*3+k]);
-                        v[k].set0(sv.offs0,N0,sv.bone0);
+                        v[k].set0(sv.offs0,sv.norm0,sv.bone0);
                         if (sv.bone1!=-1){
                         	b2Link = TRUE;
 			                B = m_Source->GetBone(sv.bone1);
-    	    		        B->LITransform().transform_dir(N1,MESH->m_PNormals[f_idx*3+k]);
-        	                v[k].set1(sv.offs1,N1,sv.bone1);
+        	                v[k].set1(sv.offs1,sv.norm1,sv.bone1);
                         }else{
-        	                v[k].set1(sv.offs0,N0,sv.bone0);
+        	                v[k].set1(sv.offs0,sv.norm0,sv.bone0);
                         }
                     }
                     split.add_face(v[0], v[1], v[2]);

@@ -13,10 +13,10 @@
 
 static const u32 color_bone_sel_color	=0xFFFFFFFF;
 static const u32 color_bone_norm_color	=0xFFFFFF00;
-static const u32 color_bone_link_color	=0xFF909000;
+static const u32 color_bone_link_color	=0xFFA0A000;
 static const u32 color_bone_sel_cm		=0xFFFF0000;
 static const u32 color_bone_norm_cm		=0xFF700000;
-static const float joint_size=0.035f;
+static const float joint_size=0.025f;
 
 /*
 bool testRayBox(float& dist, const Fvector& start, const Fvector& dir, const Fbox& pos, float radius)
@@ -37,10 +37,52 @@ bool testRayBox(float& dist, const Fvector& start, const Fvector& dir, const Fbo
     return false;
 }
 */
+void CEditableObject::ResetBones()
+{
+    BoneVec& lst = m_Bones;
+    for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+    	(*b_it)->ResetData();
+}
+
+bool CEditableObject::LoadBoneData(IReader& F)
+{
+	BoneVec	load_bones;
+    int count=0;
+	IReader* R;
+    while(0!=(R=F.open_chunk(count++))){
+    	load_bones.push_back(xr_new<CBone>());
+        load_bones.back()->LoadData(*R);
+    }
+	bool bRes = true;
+    if (load_bones.size()==m_Bones.size()){
+        BoneIt s_it=load_bones.begin();
+        for (; s_it!=load_bones.end(); s_it++)
+        	if (!FindBoneByName((*s_it)->Name())){ bRes=false; break; }
+        if (bRes){
+            s_it=load_bones.begin();
+            for (; s_it!=load_bones.end(); s_it++){
+	        	CBone* B = FindBoneByName((*s_it)->Name()); R_ASSERT(B);
+                B->CopyData(*s_it);
+                xr_delete(*s_it);
+            }
+        }
+    }
+    return bRes;
+}
+
+void CEditableObject::SaveBoneData(IWriter& F)
+{
+    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+        F.open_chunk		(b_it-m_Bones.begin());
+        (*b_it)->SaveData	(F);
+        F.close_chunk		();
+    }
+}
+
 void CEditableObject::RenderSkeletonSingle(const Fmatrix& parent)
 {
 	RenderSingle(parent);
-    if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
+    RenderBones(parent);
 }
 
 void CEditableObject::RenderBones(const Fmatrix& parent)
@@ -55,16 +97,17 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             Fvector p1		= M.c;
             u32 c_joint		= (*b_it)->flags.is(CBone::flSelected)?color_bone_sel_color:color_bone_norm_color;
             Fvector p2,d; 	d.set	(0,0,1);
-            DU.DrawJoint	(p1,joint_size,c_joint);
+            if (fraBottomBar->miDrawObjectJoints->Checked)
+	            DU.DrawJoint	(p1,joint_size,c_joint);
             // center of mass
             Fvector cm;
             M.transform_tiny(cm,(*b_it)->center_of_mass);
             if ((*b_it)->flags.is(CBone::flSelected)){
             	float sz 	= joint_size*2.f;
             	DU.DrawCross	(cm, sz,sz,sz, sz,sz,sz, 0xFFFFFFFF, false);
-	            DU.DrawRomboid	(cm,joint_size*0.5f,color_bone_sel_cm);
+	            DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_sel_cm);
             }else{
-	            DU.DrawRomboid	(cm,joint_size*0.5f,color_bone_norm_cm);
+	            DU.DrawRomboid	(cm,joint_size*0.7f,color_bone_norm_cm);
             }
             if (0){
 	            M.transform_dir	(d);
@@ -90,7 +133,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
 		        Device.SetShader(Device.m_SelectionShader);
                 Fmatrix M 	= (*b_it)->LTransform();
                 M.mulA		(parent);
-                u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x500000ff;
+                u32 c 		= (*b_it)->flags.is(CBone::flSelected)?0x80ffffff:0x300000ff;
                 switch ((*b_it)->shape.type){
                 case SBoneShape::stBox: 	DU.DrawOBB		(M,(*b_it)->shape.box,c);	break;
                 case SBoneShape::stSphere:	DU.DrawSphere   (M,(*b_it)->shape.sphere,c);break;
@@ -322,8 +365,9 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
             st_Face& face 	= *f_it;
             for (int k=0; k<3; k++){
                 st_FaceVert& 	fv = face.pv[k];
-                st_SVert& 		sv = MESH->m_SVertices[fv.pindex];
+                st_SVert& 		sv = MESH->m_SVertices[(f_it-_faces.begin())*3+k];
 		        bone_points[sv.bone0].push_back(sv.offs0);
+		        if (sv.bone1!=-1) bone_points[sv.bone1].push_back(sv.offs1);
             }
         }
     }
@@ -331,9 +375,10 @@ bool CEditableObject::GenerateBoneShape(bool bSelOnly)
     BoneVec& lst 	= m_Bones;    
     for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
     	if (bSelOnly&&!(*b_it)->flags.is(CBone::flSelected)) continue;
-        ComputeOBB		((*b_it)->shape.box,bone_points[b_it-lst.begin()]);
-        ComputeSphere	((*b_it)->shape.sphere,bone_points[b_it-lst.begin()]);
-        ComputeCylinder	((*b_it)->shape.cylinder,(*b_it)->shape.box,bone_points[b_it-lst.begin()]);
+        FvectorVec& positions	= bone_points[b_it-lst.begin()];
+        ComputeOBB		((*b_it)->shape.box,positions);
+        ComputeSphere	((*b_it)->shape.sphere,positions);
+        ComputeCylinder	((*b_it)->shape.cylinder,(*b_it)->shape.box,positions);
         (*b_it)->center_of_mass.set((*b_it)->shape.sphere.P);
     }
     return true;

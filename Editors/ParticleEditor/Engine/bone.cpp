@@ -16,18 +16,26 @@
 
 CBone::CBone()
 {
-	strcpy		(game_mtl,"default");
 	flags.zero	();
     name[0]		= 0;
     parent[0]	= 0;
     wmap[0]		= 0;
     rest_length	= 0;
-    mass		= 10.f;
-    center_of_mass.set(0.f,0.f,0.f);
+    ResetData	();
 }
 
 CBone::~CBone()
 {
+}
+
+void CBone::ResetData()
+{
+    IK_data.Reset	();
+    strcpy			(game_mtl,"default");
+    shape.Reset		();
+
+    mass			= 10.f;;
+    center_of_mass.set(0.f,0.f,0.f);
 }
 
 void CBone::Save(IWriter& F)
@@ -53,25 +61,7 @@ void CBone::Save(IWriter& F)
 	F.w_float		(rest_length);
     F.close_chunk	();
 
-	F.open_chunk	(BONE_CHUNK_MATERIAL);
-    F.w_stringZ		(game_mtl);
-    F.close_chunk	();
-
-	F.open_chunk	(BONE_CHUNK_SHAPE);
-    F.w				(&shape,sizeof(SBoneShape));
-    F.close_chunk	();
-    
-	F.open_chunk	(BONE_CHUNK_IK_JOINT);
-	F.w_u32			(IK_data.type);
-    F.w				(IK_data.limits,sizeof(SJointLimit)*3);
-    F.w_float		(IK_data.spring_factor);
-    F.w_float		(IK_data.damping_factor);
-    F.close_chunk	();
-
-    F.open_chunk	(BONE_CHUNK_MASS);
-    F.w_float		(mass);
-	F.w_fvector3	(center_of_mass);
-    F.close_chunk	();
+    SaveData		(F);
 }
 
 void CBone::Load_0(IReader& F)
@@ -103,6 +93,41 @@ void CBone::Load_1(IReader& F)
 	F.r_fvector3	(rest_rotate);
 	rest_length		= F.r_float();
 
+    LoadData		(F);
+}
+
+void CBone::SaveData(IWriter& F)
+{
+	F.open_chunk	(BONE_CHUNK_DEF);
+	F.w_stringZ		(name);
+    F.close_chunk	();
+
+	F.open_chunk	(BONE_CHUNK_MATERIAL);
+    F.w_stringZ		(game_mtl);
+    F.close_chunk	();
+
+	F.open_chunk	(BONE_CHUNK_SHAPE);
+    F.w				(&shape,sizeof(SBoneShape));
+    F.close_chunk	();
+    
+	F.open_chunk	(BONE_CHUNK_IK_JOINT);
+	F.w_u32			(IK_data.type);
+    F.w				(IK_data.limits,sizeof(SJointLimit)*3);
+    F.w_float		(IK_data.spring_factor);
+    F.w_float		(IK_data.damping_factor);
+    F.close_chunk	();
+
+    F.open_chunk	(BONE_CHUNK_MASS);
+    F.w_float		(mass);
+	F.w_fvector3	(center_of_mass);
+    F.close_chunk	();
+}
+
+void CBone::LoadData(IReader& F)
+{
+	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
+	F.r_stringZ		(name);
+
 	R_ASSERT(F.find_chunk(BONE_CHUNK_MATERIAL));
     F.r_stringZ		(game_mtl);
 
@@ -120,3 +145,13 @@ void CBone::Load_1(IReader& F)
 		F.r_fvector3(center_of_mass);
     }
 }
+
+void CBone::CopyData(CBone* bone)
+{
+    strcpy			(game_mtl,bone->game_mtl);
+    shape			= bone->shape;
+	IK_data			= bone->IK_data;
+    mass			= bone->mass;
+    center_of_mass	= bone->center_of_mass;
+}
+

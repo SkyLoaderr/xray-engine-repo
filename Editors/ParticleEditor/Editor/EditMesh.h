@@ -205,12 +205,12 @@ protected:
 	Fbox			m_Box;
 
     FvectorVec	    m_Points;	// |
-    SVertVec	    m_SVertices;// |
     AdjVec		    m_Adjs;     // + some array size!!!
     SurfFaces	    m_SurfFaces;
 	U32Vec			m_SGs;		// |
     FvectorVec	    m_FNormals;	// |
     FvectorVec	    m_PNormals;	// |
+    SVertVec	    m_SVertices;// |
     FaceVec		    m_Faces;    // + some array size!!!
     VMapVec		    m_VMaps;
     VMRefsVec	    m_VMRefs;

@@ -101,8 +101,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                     if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
                         for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                            if (IsSkeleton()) 	(*_M)->RenderSkeleton(parent,*s_it);
-                            else				(*_M)->Render(parent,*s_it);
+                            (*_M)->Render(parent,*s_it);
                     }
                 }
             }
@@ -115,7 +114,8 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                     Device.SetShader((*s_it)->_Shader());
                     for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                         if (IsSkeleton()) 	(*_M)->RenderSkeleton(parent,*s_it);
-                        else				(*_M)->Render(parent,*s_it);
+                        else				
+                        (*_M)->Render(parent,*s_it);
                 }
             }
         }
@@ -250,6 +250,10 @@ void CEditableObject::OnDeviceDestroy()
 void CEditableObject::DefferedLoadRP()
 {
 	if (m_LoadState.is(LS_RBUFFERS)) return;
+
+    // skeleton
+	if (IsSkeleton())
+		vs_SkeletonGeom = Device.Shader.CreateGeom(FVF_SV,RCache.Vertex.Buffer(),RCache.Index.Buffer());
 /*    
     CMemoryWriter 	F;
     PrepareOGF		(F);
@@ -270,6 +274,8 @@ void CEditableObject::DefferedLoadRP()
 void CEditableObject::DefferedUnloadRP()
 {
 	if (!(m_LoadState.is(LS_RBUFFERS))) return;
+    // skeleton
+	Device.Shader.DeleteGeom(vs_SkeletonGeom);
     // удалить буфера
 	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
     	if (*_M) (*_M)->ClearRenderBuffers();

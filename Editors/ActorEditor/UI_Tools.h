@@ -138,8 +138,9 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 
     void __fastcall 	OnObjectItemFocused		(ListItemsVec& items);
 
+    void __fastcall		OnBoneShapeClick  		(PropValue* sender);
     void __fastcall		OnBoneEditClick			(PropValue* sender);
-    void __fastcall		OnBoneGotoClick			(PropValue* sender);
+    void __fastcall		OnBoneFileClick			(PropValue* sender);
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
 	void __fastcall 	OnShapeTypeChange		(PropValue* sender);

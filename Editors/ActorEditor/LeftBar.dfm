@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 703
+  Height = 552
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 703
+    Height = 552
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 701
+      Height = 550
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 460
+        Top = 309
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -53,7 +53,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 82
         Width = 298
-        Height = 79
+        Height = 49
         Hint = 'Scene commands'
         Align = alTop
         Color = 10528425
@@ -249,9 +249,9 @@ object fraLeftBar: TfraLeftBar
       end
       object paObjectProperties: TPanel
         Left = 0
-        Top = 161
+        Top = 131
         Width = 298
-        Height = 299
+        Height = 178
         Align = alClient
         Color = 10528425
         ParentShowHint = False
@@ -281,7 +281,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 296
-          Height = 283
+          Height = 162
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 462
+        Top = 311
         Width = 298
         Height = 239
         Align = alBottom
@@ -527,7 +527,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 12
+    Version = 10
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (

@@ -19,7 +19,7 @@ void CFolderHelper::ShowPPMenu(TMxPopupMenu* M, TExtBtn* B){
 }
 //---------------------------------------------------------------------------
 
-LPCSTR CFolderHelper::GetFolderName(const AnsiString& full_name, AnsiString& dest)
+AnsiString CFolderHelper::GetFolderName(const AnsiString& full_name, AnsiString& dest)
 {
     for (int i=full_name.Length(); i>=1; i--)
     	if (full_name[i]=='\\'){
@@ -29,7 +29,7 @@ LPCSTR CFolderHelper::GetFolderName(const AnsiString& full_name, AnsiString& des
     return dest.c_str();
 }
 
-LPCSTR CFolderHelper::GetObjectName(const AnsiString& full_name, AnsiString& dest)
+AnsiString CFolderHelper::GetObjectName(const AnsiString& full_name, AnsiString& dest)
 {
     for (int i=full_name.Length(); i>=1; i--)
     	if (full_name[i]=='\\'){
@@ -137,19 +137,19 @@ TElTreeItem* CFolderHelper::FindItemInFolder(TElTree* tv, TElTreeItem* start_fol
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* CFolderHelper::FindItem(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
-	if (full_name&&full_name[0]){
-        int cnt = _GetItemCount(full_name,'\\');
+	if (!full_name.IsEmpty()){
+        int cnt = _GetItemCount(full_name.c_str(),'\\');
         if (cnt<=0) return 0;
 
         // find folder item
         int itm = 0;
-        char fld[64];
+        AnsiString fld;
         TElTreeItem* node = 0;
         TElTreeItem* last_node = 0;
         do{
-            _GetItem(full_name,itm++,fld,'\\');
+            _GetItem(full_name.c_str(),itm++,fld,'\\');
             last_node = node;
             node = FindItemInFolder(tv,node,fld);
         }while (node&&(itm<cnt));
@@ -167,18 +167,18 @@ TElTreeItem* CFolderHelper::FindItem(TElTree* tv, LPCSTR full_name, TElTreeItem*
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
+TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx)
 {
-	int cnt = _GetItemCount(full_name,'\\');
+	int cnt = _GetItemCount(full_name.c_str(),'\\');
     if (cnt<=0) return 0;
 
     // find folder item
     int itm = 0;
-	char fld[64];
+	AnsiString fld;
 	TElTreeItem* node = 0;
     TElTreeItem* last_node = 0;
     do{
-    	_GetItem(full_name,itm++,fld,'\\');
+    	_GetItem(full_name.c_str(),itm++,fld,'\\');
         last_node = node;
         node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
     }while (node&&(itm<cnt));
@@ -191,19 +191,19 @@ TElTreeItem* CFolderHelper::FindFolder(TElTree* tv, LPCSTR full_name, TElTreeIte
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node, int* last_valid_idx, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node, int* last_valid_idx, bool bIgnoreExt)
 {
-	int cnt = _GetItemCount(full_name,'\\'); cnt--;
+	int cnt = _GetItemCount(full_name.c_str(),'\\'); cnt--;
     if (cnt<0) return 0;
 
     // find folder item
     int itm = 0;
-    char fld[64];
+    AnsiString fld;
     TElTreeItem* node = 0;
     TElTreeItem* last_node = 0;
     if (cnt){
         do{
-            _GetItem(full_name,itm++,fld,'\\');
+            _GetItem(full_name.c_str(),itm++,fld,'\\');
             last_node = node;
             node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
         }while (node&&(itm<cnt));
@@ -214,8 +214,8 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, LPCSTR full_name, TElTreeIte
         if (last_valid_idx) *last_valid_idx=--itm;
     }else{
     	// find object item if needed
-        char obj[64];
-        _GetItem(full_name,cnt,obj,'\\');
+        AnsiString obj;
+        _GetItem(full_name.c_str(),cnt,obj,'\\');
         last_node = node;
         node = FindItemInFolder(TYPE_OBJECT,tv,node,obj,bIgnoreExt);
         if (!node){
@@ -228,7 +228,7 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, LPCSTR full_name, TElTreeIte
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -236,42 +236,42 @@ TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, LPCSTR full_name)
 
     if (node) return node;
 
-	char fld[64];
-	int cnt = _GetItemCount(full_name,'\\');
+	AnsiString fld;
+	int cnt = _GetItemCount(full_name.c_str(),'\\');
 	node = last_node;
     for (int itm=idx; itm<cnt; itm++){
-    	_GetItem(full_name,itm,fld,'\\');
+    	_GetItem(full_name.c_str(),itm,fld,'\\');
 		node=tv->Items->AddChildObject(node,fld,(void*)TYPE_FOLDER);
     }
 	return node;
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
-	char fld[128];
-	int fld_cnt = _GetItemCount(full_name,'\\')-1;
-    _GetItems(full_name,0,fld_cnt,fld,'\\');
+	AnsiString fld;
+	int fld_cnt = _GetItemCount(full_name.c_str(),'\\')-1;
+    _GetItems(full_name.c_str(),0,fld_cnt,fld,'\\');
 //.
-    TElTreeItem* fld_node = fld[0]?FindItem/*FindFolder*/(tv,fld,&last_node,&idx):0;
+    TElTreeItem* fld_node = !fld.IsEmpty()?FindItem/*FindFolder*/(tv,fld,&last_node,&idx):0;
 //.
     if (!fld_node){
 	    fld_node = last_node;
     	for (int itm=idx; itm<fld_cnt; itm++){
-    		_GetItem(full_name,itm,fld,'\\');
+    		_GetItem(full_name.c_str(),itm,fld,'\\');
 			fld_node=tv->Items->AddChildObject(fld_node,fld,(void*)TYPE_FOLDER);
     	}
     }
-	char obj[64];
-	_GetItem(full_name,fld_cnt,obj,'\\');
+	AnsiString obj;
+	_GetItem(full_name.c_str(),fld_cnt,obj,'\\');
     if (FindItemInFolder(TYPE_OBJECT,tv,fld_node,obj)) return 0;
 	return tv->Items->AddChildObject(fld_node,obj,(void*)TYPE_OBJECT);
 }
 //---------------------------------------------------------------------------
 
-void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
+void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref)
 {
 	name = pref;
     int cnt = 0;
@@ -280,7 +280,7 @@ void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiStrin
 }
 //---------------------------------------------------------------------------
 
-void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,LPCSTR pref)
+void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref)
 {
 	name = pref;
     int cnt = 0;
@@ -289,10 +289,10 @@ void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiStrin
 }
 //---------------------------------------------------------------------------
 
-LPCSTR CFolderHelper::ReplacePart(LPCSTR old_name, LPCSTR ren_part, int level, LPSTR dest)
+AnsiString CFolderHelper::ReplacePart(AnsiString old_name, AnsiString ren_part, int level, LPSTR dest)
 {
-    VERIFY(level<_GetItemCount(old_name,'\\'));
-    _ReplaceItem(old_name,level,ren_part,dest,'\\');
+    VERIFY(level<_GetItemCount(old_name.c_str(),'\\'));
+    _ReplaceItem(old_name.c_str(),level,ren_part.c_str(),dest,'\\');
     return dest;
 }
 //---------------------------------------------------------------------------
@@ -394,7 +394,7 @@ void CFolderHelper::StartDrag(TObject *Sender, TDragObject *&DragObject)
 }
 //---------------------------------------------------------------------------
 
-bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N)
+bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiString& N)
 {
 	VERIFY(node);
 	N=N.LowerCase();
@@ -411,9 +411,9 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, LPCSTR value, AnsiString& N
     }
     // all right
     node->Text=N;
-	cnt=_GetItemCount(value,'\\');
-    string256 new_name;
-	_ReplaceItem(value,cnt-1,N.c_str(),new_name,'\\');
+	cnt=_GetItemCount(value.c_str(),'\\');
+    AnsiString new_name;
+	_ReplaceItem(value.c_str(),cnt-1,N.c_str(),new_name,'\\');
     N=new_name;
     return true;
 }
@@ -434,18 +434,18 @@ bool CFolderHelper::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_t
             if (IsObject(item)){
                 MakeName(item,0,full_name,false);
                 VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
-                string256 new_full_name;
+                AnsiString new_full_name;
                 _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-                OnRename(full_name.c_str(),new_full_name);
+                OnRename(full_name.c_str(),new_full_name.c_str());
             }
         }
     }else if (IsObject(node)){
     	// is object - rename only this item
         MakeName(node,0,full_name,false);
         VERIFY(node->Level<_GetItemCount(full_name.c_str(),'\\'));
-        string256 new_full_name;
+        AnsiString new_full_name;
         _ReplaceItem(full_name.c_str(),node->Level,new_text.c_str(),new_full_name,'\\');
-		OnRename(full_name.c_str(),new_full_name);
+		OnRename(full_name.c_str(),new_full_name.c_str());
     }
     tv->Selected=node;
     return true;
@@ -521,7 +521,7 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
     }
     return node;
 }
-TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, LPCSTR full_name)
+TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, AnsiString full_name)
 {
 	TElTreeItem* last_valid=0;
     FindItem(tv,full_name,&last_valid);
@@ -545,7 +545,7 @@ TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node, boo
     }
     return node;
 }
-TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, LPCSTR full_name, bool bLeaveSel)
+TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, AnsiString full_name, bool bLeaveSel)
 {
 	TElTreeItem* last_valid=0;
     FindItem(tv,full_name,&last_valid);

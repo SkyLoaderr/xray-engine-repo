@@ -160,6 +160,8 @@ struct SBonePart{
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
+const u32 FVF_SV	= D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL;
+
 class CEditableObject{
 	friend class CSceneObject;
 	friend class CEditableMesh;
@@ -170,8 +172,9 @@ class CEditableObject{
 	friend class TfrmEditLibrary;
 	friend class MeshExpUtility;
 
-#ifdef _LEVEL_EDITOR
+#ifdef _EDITOR
     IVisual* 		m_Visual;
+	SGeometry* 		vs_SkeletonGeom;
 #endif
 // general
 	AnsiString		m_ClassScript;
@@ -297,7 +300,10 @@ public:
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
 
+	bool 			LoadBoneData			(IReader& F);
+	void 			SaveBoneData			(IWriter& F);
 	void 			ResetAnimation			();
+    void			ResetBones				();
 	CSMotion*		ResetSAnimation			();
     void			CalculateAnimation		(bool bGenInvMat=false);
 

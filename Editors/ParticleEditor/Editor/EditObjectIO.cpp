@@ -14,7 +14,8 @@
  #include "exportskeleton.h"
  #include "Shader.h"
 
-bool CEditableObject::Load(const char* fname){
+bool CEditableObject::Load(const char* fname)
+{
 	AnsiString ext=ExtractFileExt(fname);
     ext=ext.LowerCase();
     if 	(ext==".lwo")    		return Import_LWO(fname,false);

@@ -22,8 +22,9 @@ CEditableObject::CEditableObject(LPCSTR name)
 	m_Flags.zero	();
     m_Version		= 0;
 
-#ifdef _LEVEL_EDITOR
+#ifdef _EDITOR
     m_Visual		= 0;
+    vs_SkeletonGeom	= 0;
 #endif
 	m_Box.invalidate();
 
@@ -45,12 +46,14 @@ CEditableObject::CEditableObject(LPCSTR name)
     m_LODShader		= 0;
 }
 
-CEditableObject::~CEditableObject(){
+CEditableObject::~CEditableObject()
+{
     ClearGeometry();
 }
 //----------------------------------------------------
 
-void CEditableObject::VerifyMeshNames(){
+void CEditableObject::VerifyMeshNames()
+{
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++){
     	AnsiString nm = (*m_def)->m_Name;
@@ -62,19 +65,22 @@ void CEditableObject::VerifyMeshNames(){
     }
 }
 
-void CEditableObject::GenerateMeshNames(){
+void CEditableObject::GenerateMeshNames()
+{
 	int idx=0;
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++,idx++)
     	sprintf((*m_def)->m_Name,"Mesh#%d",idx);
 }
-bool CEditableObject::ContainsMesh(const CEditableMesh* m){
+bool CEditableObject::ContainsMesh(const CEditableMesh* m)
+{
     VERIFY(m);
     for(EditMeshIt m_def=m_Meshes.begin();m_def!=m_Meshes.end();m_def++)
         if (m==(*m_def)) return true;
     return false;
 }
 
-CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh* Ignore){
+CEditableMesh* CEditableObject::FindMeshByName	(const char* name, CEditableMesh* Ignore)
+{
     for(EditMeshIt m=m_Meshes.begin();m!=m_Meshes.end();m++)
         if ((Ignore!=(*m))&&(stricmp((*m)->GetName(),name)==0)) return (*m);
     return 0;

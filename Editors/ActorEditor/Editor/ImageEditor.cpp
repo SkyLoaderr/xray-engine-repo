@@ -145,7 +145,7 @@ void TfrmImageLib::InitItemsList(const char* nm)
 	FS_QueryPairIt _E = texture_map.end();
     if (compl_map.size()){
         for (; it!=_E; it++){
-            TElTreeItem* node 	= FHelper.AppendObject(tvItems,it->first.c_str());
+            TElTreeItem* node 	= FHelper.AppendObject(tvItems,it->first);
             FS_QueryPairIt c_it	= compl_map.find(it->first);
             if (c_it!=compl_map.end()){
                 int A,M;
@@ -158,7 +158,7 @@ void TfrmImageLib::InitItemsList(const char* nm)
         }
     }else{
         for (; it!=_E; it++)
-            FHelper.AppendObject(tvItems,it->first.c_str());
+            FHelper.AppendObject(tvItems,it->first);
     }
 
     // redraw

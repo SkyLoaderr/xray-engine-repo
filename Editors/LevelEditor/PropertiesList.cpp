@@ -81,7 +81,7 @@ void __fastcall TProperties::EndFillMode(bool bFullExpand)
     // end fill mode
 	if (bFullExpand) tvProperties->FullExpand();
 	UnlockUpdating		();
-    FHelper.RestoreSelection	(tvProperties,last_selected_item.c_str(),false);
+    FHelper.RestoreSelection	(tvProperties,last_selected_item,false);
 };
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
@@ -128,7 +128,7 @@ void __fastcall TProperties::ClearProperties()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::SelectItem(const AnsiString& full_name)
 {
-	m_FirstClickItem	= FHelper.RestoreSelection	(tvProperties,FHelper.ExpandItem(tvProperties,full_name.c_str()),false);
+	m_FirstClickItem	= FHelper.RestoreSelection	(tvProperties,FHelper.ExpandItem(tvProperties,full_name),false);
 }
 //---------------------------------------------------------------------------
 

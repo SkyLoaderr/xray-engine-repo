@@ -41,7 +41,7 @@ __published:	// IDE-managed Components
 	TMenuItem *Objects1;
 	TPanel *paButtons;
 	TExtBtn *ebLog;
-	TMenuItem *miDrawObjectBones;
+	TMenuItem *miDrawObjectJoints;
 	TMenuItem *Render1;
 	TMenuItem *FillMode1;
 	TMenuItem *miRenderFillSolid;
@@ -79,6 +79,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebOptionsMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 	void __fastcall pmOptionsPopup(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
 public:
 	float fStatusProgress;

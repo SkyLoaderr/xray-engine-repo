@@ -22,9 +22,10 @@ struct SJointLimit
 	Fvector2		limit;
     float 			spring_factor;
     float 			damping_factor;
-    SJointLimit		()
+    SJointLimit		(){Reset();}
+    void 			Reset()
     {
-    	limit.set		(-M_PI,M_PI);
+    	limit.set		(0.f,0.f);
         spring_factor 	= 1.f;
         damping_factor  = 1.f;
     }
@@ -45,10 +46,13 @@ struct SBoneShape
   	Fobb			box;      	// 15*4
     Fsphere			sphere;		// 4*4
     Fcylinder		cylinder;	// 8*4
-    SBoneShape		()
+    SBoneShape		(){Reset();}
+    void			Reset()
     {
-    	type		= stBox;
+    	type		= stNone;
         box.invalidate();
+        sphere.identity();
+        cylinder.invalidate();
     }
 };
 
@@ -59,8 +63,12 @@ struct SJointIKData
     SJointLimit		limits	[3];// by [axis XYZ on joint] and[Z-wheel,X-steer on wheel]
     float			spring_factor;
     float			damping_factor;
-    SJointIKData	()
+    SJointIKData	(){ Reset();}
+    void			Reset	()
     {
+    	limits[0].Reset	();
+    	limits[1].Reset	();
+    	limits[2].Reset	();
         type			= jtRigid;
         spring_factor	= 1.f;
         damping_factor	= 1.f;
@@ -129,6 +137,11 @@ public:
 	void			ParseBone		(LWItemID bone);
 #endif
 
+	void			SaveData		(IWriter& F);
+	void			LoadData		(IReader& F);
+    void			ResetData		();
+    void			CopyData		(CBone* bone);
+    
 #ifdef _EDITOR
 	Fvector&		get_rest_offset	(){return rest_offset;}
 	Fvector&		get_rest_rotate	(){return rest_rotate;}

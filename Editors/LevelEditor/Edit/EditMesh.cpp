@@ -147,92 +147,67 @@ void CEditableMesh::GenerateSVertices()
 
     m_Parent->ResetAnimation();
     m_Parent->CalculateAnimation(true);
-	m_SVertices.resize(m_Points.size());
+	m_SVertices.resize(m_Faces.size()*3);
 
-    FvectorVec vnormals;
     // generate normals
     if (!m_LoadState.is(CEditableMesh::LS_FNORMALS)) GenerateFNormals();
-    vnormals.resize(m_Points.size());
-    for(FvectorIt pt=m_Points.begin();pt!=m_Points.end();pt++)
-    {
-        Fvector& N = vnormals[pt-m_Points.begin()];
-        N.set(0,0,0);
-        IntVec& a_lst = m_Adjs[pt-m_Points.begin()];
-        VERIFY(a_lst.size());
-        for (IntIt i_it=a_lst.begin(); i_it!=a_lst.end(); i_it++)
-            N.add(m_FNormals[*i_it]);
-        N.normalize_safe();
-    }
+    if (!m_LoadState.is(CEditableMesh::LS_PNORMALS)) GeneratePNormals();
 
-    for (u32 i=0; i<m_Points.size(); i++){
-    	Fvector&  P =m_Points[i];
-    	Fvector&  N =vnormals[i];
-    	st_SVert& SV=m_SVertices[i];
-    	IntVec& a_lst = m_Adjs[i];
-        VERIFY2(a_lst.size(),"Karma pidaras!!! Uberi degenerats.");
-		bool bRes = false;
-        for (u32 a=0; a<m_Adjs[i].size(); a++){
-            st_Face& F = m_Faces[m_Adjs[i][a]];
-            for (int k=0; k<3; k++){
-                st_FaceVert& fv = F.pv[k];
-                if (fv.pindex==int(i)){
-                    VMapPtSVec& vmpt_lst = m_VMRefs[fv.vmref];
-                    st_VertexWB		wb;
-                    for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
-                        st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
-                        if (VM.type==vmtWeight){
-                        	wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name),VM.getW(vmpt_it->index)));
-							if (wb.back().bone<=-1){
-	                            ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
-								m_SVertices.clear();
-                                THROW2("Editor crashed.");
-                                return;
-                            }
-                        }else if(VM.type==vmtUV){	
-//                        	R_ASSERT2(!uv,"More than 1 uv per vertex found.");
-                        	SV.uv.set(VM.getUV(vmpt_it->index));
-                        }
+    for (FaceIt f_it = m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+        st_Face& F = *f_it;
+        for (int k=0; k<3; k++){
+	    	st_SVert& SV			= m_SVertices[(f_it-m_Faces.begin())*3+k];
+	    	Fvector&  N				= m_PNormals[(f_it-m_Faces.begin())*3+k];
+            st_FaceVert& fv 		= F.pv[k];
+	    	Fvector&  P 			= m_Points[fv.pindex];
+            VMapPtSVec& vmpt_lst 	= m_VMRefs[fv.vmref];
+            st_VertexWB		wb;
+            for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
+                st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
+                if (VM.type==vmtWeight){
+                    wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name),VM.getW(vmpt_it->index)));
+                    if (wb.back().bone<=-1){
+                        ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
+                        m_SVertices.clear();
+                        THROW2("Editor crashed.");
+                        return;
                     }
-                    wb.normalize_weights(2);
-                    int cnt = wb.size();
-					CBone* B=0;
-                    switch (cnt){
-                    	case 0:
-                        	bRes = false;
-                        break;
-                        case 1:{
-		                    bRes 		= true;
-                            SV.bone0 	= wb[0].bone;
-                            SV.bone1 	= -1;
-                            SV.w	   	= 0.f;
-	                        CBone* B 	= m_Parent->m_Bones[SV.bone0];
-    	                    B->LITransform().transform_tiny(SV.offs0,P);
-    	                    B->LITransform().transform_dir(SV.norm0,N);
-                        }break;
-                        case 2:{
-		                    bRes 		= true;
-                            SV.bone0 	= wb[0].bone;
-                            SV.bone1 	= wb[1].bone;
-                            SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
-	                        B		 	= m_Parent->m_Bones[SV.bone0];
-    	                    B->LITransform().transform_tiny(SV.offs0,P);
-    	                    B->LITransform().transform_dir(SV.norm0,N);
-	                        B		 	= m_Parent->m_Bones[SV.bone1];
-    	                    B->LITransform().transform_tiny(SV.offs1,P);
-    	                    B->LITransform().transform_dir(SV.norm1,N);
-                        }break;
-                        default:
-                        	THROW2("More than 2 weight per vertex found!");
-                    }
-                    // uv mapping
-                    
-                    break;
+                }else if(VM.type==vmtUV){	
+//                 	R_ASSERT2(!uv,"More than 1 uv per vertex found.");
+                    SV.uv.set(VM.getUV(vmpt_it->index));
                 }
             }
-            if (bRes) break;
-    	}
-		if (!bRes) THROW2("Can't find weight for skel vertex.");
-    }
+            wb.normalize_weights(2);
+            int cnt = wb.size();
+            CBone* B=0;
+            switch (cnt){
+                case 0:
+                 	R_ASSERT2(0,"Vertex has't any weights attached.");
+                break;
+                case 1:{
+                    SV.bone0 	= wb[0].bone;
+                    SV.bone1 	= -1;
+                    SV.w	   	= 0.f;
+                    CBone* B 	= m_Parent->m_Bones[SV.bone0];
+                    B->LITransform().transform_tiny(SV.offs0,P);
+                    B->LITransform().transform_dir(SV.norm0,N);
+                }break;
+                case 2:{
+                    SV.bone0 	= wb[0].bone;
+                    SV.bone1 	= wb[1].bone;
+                    SV.w	   	= wb[1].weight/(wb[0].weight+wb[1].weight);
+                    B		 	= m_Parent->m_Bones[SV.bone0];
+                    B->LITransform().transform_tiny(SV.offs0,P);
+                    B->LITransform().transform_dir(SV.norm0,N);
+                    B		 	= m_Parent->m_Bones[SV.bone1];
+                    B->LITransform().transform_tiny(SV.offs1,P);
+                    B->LITransform().transform_dir(SV.norm1,N);
+                }break;
+                default:
+                    THROW2("More than 2 weight per vertex found!");
+            }
+        }
+	}
 
     m_LoadState.set(LS_SVERTICES,TRUE);
 }

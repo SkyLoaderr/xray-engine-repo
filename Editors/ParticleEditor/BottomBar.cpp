@@ -54,13 +54,16 @@ void __fastcall TfraBottomBar::QualityClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
 {
+	Device.dwFillMode 	= fsStorage->ReadInteger("dwFillMode",Device.dwFillMode);
+	Device.dwShadeMode 	= fsStorage->ReadInteger("dwShadeMode",Device.dwShadeMode);
     // fill mode
-    if (miRenderFillPoint->Checked) 		Device.dwFillMode=D3DFILL_POINT;
-    else if (miRenderFillWireframe->Checked)Device.dwFillMode=D3DFILL_WIREFRAME;
-	else if (miRenderFillSolid->Checked)	Device.dwFillMode=D3DFILL_SOLID;
+    if (Device.dwFillMode==D3DFILL_POINT)			miRenderFillPoint->Checked 		= true;
+    else if (Device.dwFillMode==D3DFILL_WIREFRAME)	miRenderFillWireframe->Checked  = true;
+    else if (Device.dwFillMode==D3DFILL_SOLID) 		miRenderFillSolid->Checked		= true;
     // shade mode
-	if (miRenderShadeFlat->Checked)			Device.dwShadeMode=D3DSHADE_FLAT;
-    else if (miRenderShadeGouraud->Checked)	Device.dwShadeMode=D3DSHADE_GOURAUD;
+    if (Device.dwShadeMode==D3DSHADE_FLAT)			miRenderShadeFlat->Checked		= true;
+	else if (Device.dwShadeMode==D3DSHADE_GOURAUD)	miRenderShadeGouraud->Checked	= true;
+
     // hw transform
     HW.Caps.bForceGPU_SW 		= !miRenderHWTransform->Checked;
 
@@ -74,6 +77,13 @@ void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
     else if (N25->Checked)	QualityClick(N25);
     // statistic
     ebStatClick(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraBottomBar::fsStorageSavePlacement(TObject *Sender)
+{
+	fsStorage->WriteInteger("dwFillMode",Device.dwFillMode);
+	fsStorage->WriteInteger("dwShadeMode",Device.dwShadeMode);
 }
 //---------------------------------------------------------------------------
 
@@ -115,4 +125,5 @@ void __fastcall TfraBottomBar::pmOptionsPopup(TObject *Sender)
 //    miDODrawObjects->Checked		= psDeviceFlags.is(rsDetails);
 }
 //---------------------------------------------------------------------------
+
 
