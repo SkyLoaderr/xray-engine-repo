@@ -333,10 +333,12 @@ void CWeapon::Load		(LPCSTR section)
 	// load ammo classes
 	m_ammoTypes.clear	(); 
 	LPCSTR				S = pSettings->r_string(section,"ammo_class");
-	if (S && S[0]) {
+	if (S && S[0]) 
+	{
 		string128		_ammoItem;
 		int				count		= _GetItemCount	(S);
-		for (int it=0; it<count; it++)	{
+		for (int it=0; it<count; it++)	
+		{
 			_GetItem				(S,it,_ammoItem);
 			m_ammoTypes.push_back	(_ammoItem);
 		}
@@ -379,7 +381,8 @@ void CWeapon::Load		(LPCSTR section)
 	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
 
 	// light
-	if(m_shotLight) {
+	if(m_shotLight) 
+	{
 		Fvector clr			= pSettings->r_fvector3		(section,"light_color"		);
 		light_base_color.set(clr.x,clr.y,clr.z,1);
 		light_base_range	= pSettings->r_float		(section,"light_range"		);
@@ -419,9 +422,12 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
-	if(iAmmoElapsed) {
-		CCartridge l_cartridge; l_cartridge.Load(*m_ammoTypes[m_ammoType]);
-		for(int i = 0; i < iAmmoElapsed; i++) m_magazine.push(l_cartridge);
+	if(iAmmoElapsed) 
+	{
+		CCartridge l_cartridge; 
+		l_cartridge.Load(*m_ammoTypes[m_ammoType]);
+		for(int i = 0; i < iAmmoElapsed; i++) 
+			m_magazine.push(l_cartridge);
 	}
 	
 	//if(Local()) OnStateSwitch					(E->state);
@@ -538,7 +544,8 @@ void CWeapon::OnH_B_Independent	()
 	hud_mode					= FALSE;
 	UpdateXForm					();
 //	if (m_pPhysicsShell)		m_pPhysicsShell->Activate	(XFORM(),0,XFORM());
-	if(m_pPhysicsShell) {
+	if(m_pPhysicsShell) 
+	{
 		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
 		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
@@ -978,31 +985,24 @@ bool CWeapon::Action(s32 cmd, u32 flags)
 
 bool CWeapon::Attach(PIItem pIItem, bool force) 
 {
-	// A?aoiaio force anaaaa ?aaai false
-	// ianeaaiee aie?ai eciaieou aai ia true
-	// anee aaiiue IItem *II?AO* auou e iaio i?eniaaeiai,
-	// e aucaaou return CInventoryItem::Attach(pIItem, force);
-	//if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && /*oae iaai*/(force = CheckAmmoType((CWeaponAmmo*)pIItem))/*oae iaai*/) m_pAmmo = (CWeaponAmmo*)pIItem;
-	/*if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && !strcmp(m_ammoSect, pIItem->cName())) { force = true; m_pAmmo = (CWeaponAmmo*)pIItem; }
-	*/return inherited::Attach(pIItem, force);
+	return inherited::Attach(pIItem, force);
 }
 
 bool CWeapon::Detach(PIItem pIItem, bool force) 
 {
-	// A?aoiaio force anaaaa ?aaai true
-	// ianeaaiee aie?ai eciaieou aai ia false
-	// anee aaiiue IItem *IA II?AO* auou ioniaaeiai,
-	// e aucaaou return CInventoryItem::Detach(pIItem, force);
-	return CInventoryItem::Detach(pIItem, false);
+	return inherited::Detach(pIItem, false);
 }
 
 void CWeapon::SpawnAmmo(u32 boxCurr, LPCSTR ammoSect) 
 {
 	if(!m_ammoTypes.size()) return;
 	
-	static l_type = 0; l_type %= m_ammoTypes.size();
+	static l_type = 0; 
+	l_type %= m_ammoTypes.size();
+
 	if(!ammoSect) 
-		ammoSect = *m_ammoTypes[l_type/*m_ammoType*/]; //m_ammoType++; m_ammoType %= m_ammoTypes.size();
+		ammoSect = *m_ammoTypes[l_type/*m_ammoType*/]; 
+	//m_ammoType++; m_ammoType %= m_ammoTypes.size();
 	
 	l_type++; 
 	l_type %= m_ammoTypes.size();
