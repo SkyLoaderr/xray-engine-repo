@@ -41,7 +41,7 @@ struct vertRender			// T&B are not skinned, because in R2 skinning occurs always
 };
 #pragma pack(pop)
 
-class ENGINE_API CSkeletonX
+class ENGINE_API	CSkeletonX
 {
 protected:
 	enum					{ vertRenderFVF = D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1		};
