@@ -39,6 +39,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
 	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
+	level_tasks.process_map_spot(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
@@ -75,10 +76,6 @@ end
 
 		if self.object:dont_has_info("global_dialogs") then
 			self.object:give_info_portion("global_dialogs")
-		end
-
-		if self.object:dont_has_info("esc_map_locations") then
-			self.object:give_info_portion("esc_map_locations")
 		end
 
 		if self.object:dont_has_info("level_changer_icons") then

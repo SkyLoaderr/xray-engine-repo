@@ -542,33 +542,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_factory_assault_hello">
-        <phrase_list>
-            <phrase id="11">
-                <text />
-                <has_info>escape_factory_assault_say_hello</has_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
-                <give_info>escape_factory_assault_say_hello</give_info>
-                <give_info>escape_dynamite_gain</give_info>
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_hello_2</text>
-            </phrase>
-            <phrase id="3">
-                <text>escape_factory_assault_hello_3</text>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>11</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_lager_novice_start_dialog">
         <phrase_list>
             <phrase id="1">
@@ -767,30 +740,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="esc_stalker_talk_level" priority="2">
-        <precondition>dialogs.level_escape</precondition>
-        <phrase_list>
-            <phrase id="2">
-                <text>esc_stalker_talk_level_2</text>
-                <next>21</next>
-            </phrase>
-            <phrase id="21">
-                <text>esc_stalker_talk_level_21</text>
-            </phrase>
-            <phrase id="10">
-                <text>esc_stalker_talk_level_10</text>
-            </phrase>
-            <phrase id="1">
-                <text>esc_stalker_talk_level_1</text>
-                <next>2</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="0">
-                <text>esc_stalker_talk_level_0</text>
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="tutorial_wounded_give_medkit">
         <precondition>dialogs.is_opp_wounded</precondition>
         <precondition>dialogs.dialog_allowed</precondition>
@@ -924,7 +873,7 @@
                 <next>11</next>
             </phrase>
             <phrase id="111">
-                <text></text>
+                <text />
                 <next>3</next>
                 <next>4</next>
                 <next>5</next>
@@ -951,7 +900,7 @@
                 <text>escape_trader_talk_info_10</text>
             </phrase>
             <phrase id="11">
-                <text></text>
+                <text />
                 <next>111</next>
             </phrase>
             <phrase id="41">
@@ -1153,6 +1102,58 @@
             <phrase id="3">
                 <text>escape_trader_done_tutorial_artefact_3</text>
                 <action>escape_dialog.give_medkit</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="esc_stalker_talk_level" priority="2">
+        <precondition>dialogs.level_escape</precondition>
+        <phrase_list>
+            <phrase id="2">
+                <text>esc_stalker_talk_level_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="21">
+                <text>esc_stalker_talk_level_21</text>
+            </phrase>
+            <phrase id="10">
+                <text>esc_stalker_talk_level_10</text>
+            </phrase>
+            <phrase id="1">
+                <text>esc_stalker_talk_level_1</text>
+                <next>2</next>
+                <next>10</next>
+            </phrase>
+            <phrase id="0">
+                <text>esc_stalker_talk_level_0</text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="escape_factory_assault_hello">
+        <phrase_list>
+            <phrase id="11">
+                <text></text>
+                <has_info>escape_factory_assault_say_hello</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_factory_assault_hello_3</text>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+                <give_info>escape_factory_assault_say_hello</give_info>
+                <give_info>escape_dynamite_gain</give_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_hello_2</text>
+                <action>escape_dialog.wolf_notify_meet</action>
             </phrase>
         </phrase_list>
     </dialog>

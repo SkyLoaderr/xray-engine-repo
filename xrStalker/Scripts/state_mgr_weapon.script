@@ -19,14 +19,18 @@ function eva_state_mgr_weapon:evaluate()
 	end
 
 	if (state_lib.states[self.st.target_state].weapon == nil) or
+	
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and
-		self.object:weapon_strapped()) or
+	   ((strappable_weapon(self.object:best_weapon()) and self.object:weapon_strapped()) or
+		(not strappable_weapon(self.object:best_weapon()) and self.object:active_item() == nil))) or
+		
 	   ((state_lib.states[self.st.target_state].weapon == "unstrapped" or
 	     state_lib.states[self.st.target_state].weapon == "fire") and
 		self.object:weapon_unstrapped() and	
 		self.object:active_item() ~= nil and		
 		self.object:best_weapon() ~= nil and
 		self.object:active_item():id() == self.object:best_weapon():id()) or
+		
 	   (state_lib.states[self.st.target_state].weapon == "none" and
 	    self.object:active_item() == nil)
 	then
@@ -50,7 +54,7 @@ function eva_state_mgr_weapon_strapped:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_strapped:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "strapped"
+	return state_lib.states[self.st.target_state].weapon == "strapped" and strappable_weapon(self.object:best_weapon())
 end
 --' Висит ли уже оружие на спине
 class "eva_state_mgr_weapon_strapped_now" (property_evaluator)
@@ -61,7 +65,8 @@ function eva_state_mgr_weapon_strapped_now:evaluate()
 		return true
 	end
 
-	return self.object:weapon_strapped()
+	return self.object:weapon_strapped() or 
+		   (not strappable_weapon(self.object:best_weapon()) and self.object:active_item() == nil)
 end
 
 --' Необходимо ли держать оружие в руках
@@ -91,14 +96,16 @@ function eva_state_mgr_weapon_none:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_weapon_none:evaluate()
-	return state_lib.states[self.st.target_state].weapon == "none"
+	return state_lib.states[self.st.target_state].weapon == "none" or
+	       (state_lib.states[self.st.target_state].weapon == "strapped" and not strappable_weapon(self.object:best_weapon()))
+			
 end
 --' Спрятано ли оружие вообще.
 class "eva_state_mgr_weapon_none_now" (property_evaluator)
 function eva_state_mgr_weapon_none_now:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_none_now:evaluate()
-	return 	self.object:active_item() == nil	
+	return self.object:active_item() == nil
 end
 
 
@@ -127,7 +134,7 @@ function act_state_mgr_weapon_strapp:initialize()
 	self.object:set_item(object.strap, self.object:best_weapon())
 end
 function act_state_mgr_weapon_strapp:execute()
---	printf("*STATE MGR* Weapon Strap action")
+	printf("*STATE MGR* Weapon Strap action")
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_strapp:finalize()
@@ -148,4 +155,24 @@ function act_state_mgr_weapon_none:execute()
 end
 function act_state_mgr_weapon_none:finalize()
 	action_base.finalize(self)
+end
+
+
+
+
+function strappable_weapon(obj)
+    local id = get_clsid(obj)
+    if id == nil then return false end
+
+    if id == clsid.wpn_vintorez then return true
+    elseif id == clsid.wpn_fn2000 then return true
+    elseif id == clsid.wpn_ak74 then return true
+    elseif id == clsid.wpn_lr300 then return true
+    elseif id == clsid.wpn_shotgun then return true
+    elseif id == clsid.wpn_svd then return true
+    elseif id == clsid.wpn_svu then return true
+    elseif id == clsid.wpn_rpg7 then return true
+    elseif id == clsid.wpn_val then return true
+    elseif id == clsid.wpn_groza then return true
+    else return false end
 end

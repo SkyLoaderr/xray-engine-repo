@@ -10,28 +10,28 @@ news = {
 
 
 function send_news(actor, news_id, timeout)
-	if actor == nil or news_id == nil then return false end
-
+	if db.actor or news_id == nil then return false end
+	
 	if timeout == nil then timeout = 0 end
 		
 	if news[news_id] ~= nil then
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(actor, timeout, sound_object.s2d)
+			snd_obj:play(db.actor, timeout, sound_object.s2d)
 		end		
 	end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_news]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, timeout, sound_object.s2d)
+		snd_obj:play(db.actor, timeout, sound_object.s2d)
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
-	actor:set_news_show_time(news_id, 5000)
+	db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
+	db.actor:set_news_show_time(news_id, 5000)
 end
 
 function send_tip(actor, news_id, timeout, sender)
-	if actor == nil or news_id == nil then return false end
+	if db.actor == nil or news_id == nil then return false end
 	
 	if timeout == nil then timeout = 0 end
 			
@@ -39,13 +39,13 @@ function send_tip(actor, news_id, timeout, sender)
 		--' Играем звук забитый
 		local snd_obj = sound_object(news[news_id])
 		if snd_obj ~= nil then
-			snd_obj:play(actor, timeout, sound_object.s2d)
+			snd_obj:play(db.actor, timeout, sound_object.s2d)
 		end
 	end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_tip]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, timeout, sound_object.s2d)
+		snd_obj:play(db.actor, timeout, sound_object.s2d)
 	end
 	local x = 50
 	local y = 100
@@ -55,35 +55,35 @@ function send_tip(actor, news_id, timeout, sender)
 			y = 0
 		end	
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)	
-	actor:set_news_show_time(news_id, 5000)	
+	db.actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)	
+	db.actor:set_news_show_time(news_id, 5000)	
 end
 
 function send_help(actor)
-	if actor == nil then return false end
+	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_sos]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, 0, sound_object.s2d)
+		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
-	actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500, 0)
+	db.actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500, 0)
 end
 
-function send_task(actor, type, news_id)
-	if actor == nil or news_id == nil then return false end
+function send_task(actor, type)
+	if db.actor == nil then return false end
 	--' Играем дефолтный звук
 	local snd_obj = sound_object([[device\pda\pda_objective]])
 	if snd_obj ~= nil then
-		snd_obj:play(actor, 0, sound_object.s2d)
+		snd_obj:play(db.actor, 0, sound_object.s2d)
 	end
 	if type == "new" then
-		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
+		db.actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
 	elseif type == "update" then
-		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 250,100,50,500, 0)
+		db.actor:give_game_news("general_update_task", "ui\\ui_icons_task", 250,100,50,500, 0)
 	elseif type == "complete" then
-		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_complete_task", "ui\\ui_icons_task", 300,100,50,500, 0)
 	elseif type == "fail" then
-		actor:give_game_news("general_new_task", "ui\\ui_icons_task", 300,100,50,500, 0)
+		db.actor:give_game_news("general_fail_task", "ui\\ui_icons_task", 300,100,50,500, 0)
 	end
 	
 end

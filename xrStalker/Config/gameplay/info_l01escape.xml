@@ -1,42 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
-	<!-- LEVEL LOCATIONS  -->
-	<info_portion id="esc_map_locations">
-		<location>
-			<level>stohe_selo</level>
-			<x>105</x>
-			<y>-15</y>
-			<icon name="Заброшенная фабрика" x="0" y="0" width="2" height="2" r="238" g="155" b="23" marker="0" dyn="1">ui\ui_round_map_area</icon>
-			<text>Не ходите дети на фабрику гулять!</text>
-		</location>
-	</info_portion>
 
-
-	
 	<info_portion id="tutorial_artefact_start">
-		<location>
-			<level>l01_escape</level>
-			<object>002</object>			
-			<icon name="" big_icon="1" x="2" y="4" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Артефакт.</text>
-		</location>
 		<task>tutorial_find_artefact</task>
+		<action>level_tasks.notify_new_task</action>
 		<article>zone_anomalies_meat</article>
 		<article>zone_artifact_af-blood</article>
 	</info_portion>
 	<info_portion id="tutorial_artefact_gain">
-		<location>
-			<level>l01_escape</level>
-			<object>003</object>
-			<text>Торговец.</text>
-			<icon name="Торговец" big_icon="1" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-		</location>	
-		<disable>tutorial_artefact_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_artefact_done">
-		<disable>tutorial_artefact_gain</disable>	
-		<disable>tutorial_artefact_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_flesh_start">
 	</info_portion>
@@ -55,11 +29,6 @@
 	
 	
 	<info_portion id="tutorial_wounded_start">
-		<location>
-			<level>l01_escape</level>
-			<object>004</object>
-			<icon name="Раненый" big_icon="1" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-		</location>	
 		<task>tutorial_help_wounded</task>
 	</info_portion>
 	<info_portion id="tutorial_wounded_must_spawn">
@@ -67,91 +36,21 @@
 	<info_portion id="tutorial_wounded_give_info">
 	</info_portion>
 	<info_portion id="tutorial_wounded_help">
-		<task>tutorial_help_wounded</task>
-		<disable>tutorial_wounded_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_wounded_die">
-		<task>tutorial_help_wounded</task>
-		<disable>tutorial_wounded_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_end">
-		<disable>tutorial_wounded_start</disable>
 	</info_portion>
 	<info_portion id="tutorial_wounded_volk_greet">
 	</info_portion>
 
 	<info_portion id="escape_artefact_start">
-		<location>
-			<level>l01_escape</level>
-			<x>199</x>
-			<y>74</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>223</x>
-			<y>82</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>227</x>
-			<y>100</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>188</x>
-			<y>64</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>208</x>
-			<y>106</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>193</x>
-			<y>124</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>185</x>
-			<y>110</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>183</x>
-			<y>96</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
-		<location>
-			<level>l01_escape</level>
-			<x>181</x>
-			<y>78</y>
-			<icon name="Аномалия" big_icon="1" x="1" y="5" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-			<text>Скопление аномалий</text>
-		</location>	
 		<task>esc_trader_need_electra_artefact</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="escape_artefact_gain">
-		<disable>escape_artefact_start</disable>
 	</info_portion>
 	<info_portion id="escape_artefact_done">
-		<disable>escape_artefact_start</disable>
-		<disable>escape_artefact_gain</disable>
 	</info_portion>
 
 	
@@ -162,82 +61,38 @@
 	<info_portion id="escape_stalker_dog_spawn">
 	</info_portion>	
 	<info_portion id="escape_stalker_meet">
-		<location>
-			<level>l01_escape</level>
-			<object>005</object>
-			<icon name="Сталкер" big_icon="1" x="7" y="2" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Вернувшийся из рейда сталкер.</text>
-		</location>
-		<task>esc_help_wounded_from_raid</task>		
+		<task>esc_help_wounded_from_raid</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="escape_stalker_give">	
-		<disable>escape_stalker_meet</disable>
 		<article>storyline_fox_flash_info</article>
 	</info_portion>	
 	<info_portion id="escape_stalker_done">
-		<disable>escape_stalker_meet</disable>
-		<disable>escape_stalker_give</disable>
 	</info_portion>
 	
 	<info_portion id="escape_blockpost_case">
-		<location>
-			<level>l01_escape</level>
-			<object>000</object>
-			<icon name="Ящик" big_icon="1" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Украсть ящик с блокпоста</text>
-		</location>
 		<task>esc_blockpost_case_to_trader</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="escape_blockpost_case_have">
-		<location>
-			<level>l01_escape</level>
-			<object>003</object>
-			<icon name="Торговец" big_icon="1" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Принеси ящик торговцу.</text>
-		</location>
-		<disable>escape_blockpost_case</disable>
 	</info_portion>
 	<info_portion id="escape_blockpost_case_done">
-		<disable>escape_blockpost_case</disable>
-		<disable>escape_blockpost_case_have</disable>
 	</info_portion>
 
 
 	<info_portion id="escape_dynamite_start">
 		<task>esc_dinamit_to_volk</task>
+		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="escape_dynamite_meet">
-		<location>
-			<level>l01_escape</level>
-			<x>4</x>
-			<y>-13</y>
-			<icon name="" big_icon="1" x="0" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Встретиться с ребятами Волка.</text>
-		</location>
+	</info_portion>
+	<info_portion id="escape_factory_assault_say_hello">
 	</info_portion>
 	<info_portion id="escape_dynamite_gain">
-		<location>
-			<level>l01_escape</level>
-			<object>007</object>
-			<icon name="Динамит" big_icon="1" x="3" y="6" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Достать динамит для Волка.</text>
-		</location>
-		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_have">
-		<location>
-			<level>l01_escape</level>
-			<object>006</object>
-			<icon name="Волк" big_icon="1" x="1" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-			<text>Принести динамит Волку.</text>
-		</location>
-		<disable>escape_dynamite_gain</disable>
-		<disable>escape_dynamite_meet</disable>
 	</info_portion>
 	<info_portion id="escape_dynamite_done">
-		<disable>escape_dynamite_have</disable>
-		<disable>escape_dynamite_gain</disable>
-		<disable>escape_dynamite_meet</disable>	
 	</info_portion>
 
 	<!-- Порядок фраз торговца -->
@@ -285,8 +140,6 @@
 
 	<!-- infoportions for factory on escape -->
 	<info_portion id="escape_factory_quest">
-	</info_portion>
-	<info_portion id="escape_factory_assault_say_hello">
 	</info_portion>
 	<info_portion id="sniper_dead">
 	</info_portion>

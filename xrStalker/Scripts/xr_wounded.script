@@ -60,7 +60,6 @@ function evaluator_wound:evaluate ()
 	if overrides ~= nil and overrides.wounded_enabled == false then
   	   return false
 	end
-
     -- self.a.enabled added by Zmey
     return self.a.enabled and this.is_wounded(self.object, self.a.hp_max)   
 end
@@ -287,19 +286,19 @@ function action_help:initialize ()
        end   
     end
     
-    state_mgr.set_state(self.object, "wounded")
+    state_mgr.set_state(self.object, "help_me")
     self.first_sound = true
 end
 ------------
 function action_help:execute ()
     action_base.execute (self)
        
-    if distance_between (self.object, self.a.npc) < 5 then
+--    if distance_between (self.object, self.a.npc) < 5 then
        -- ÂÑÒÀÂÈÒÜ ÌÀÕÀÍÈÅ ÐÓÊÎÉ ÑÈÄÎÐÎÂÈ×À
-       state_mgr.set_state(self.object, "help_me")
-    else
-       state_mgr.set_state(self.object, "wounded")
-    end
+--       state_mgr.set_state(self.object, "help_me")
+--    else
+--       state_mgr.set_state(self.object, "wounded")
+--    end
         
     if self.object:is_talking () == false then
        if self.object:active_sound_count() == 0 and self.first_sound == true then 

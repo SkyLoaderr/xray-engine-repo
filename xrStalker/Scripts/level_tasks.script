@@ -6,17 +6,15 @@ function proceed(actor)
 		actor:object("af_blood_tutorial") ~= nil 
 	then		
 		actor:give_info_portion("tutorial_artefact_gain")
-		actor:set_task_state(task.completed, "tutorial_find_artefact", 1)
+		set_task_state(task.completed, "tutorial_find_artefact", 1)
 	end 
-
-
 
 
 	if actor:has_info("tutorial_wounded_help") and
 	   actor:dont_has_info("tutorial_end")
 	then
 		actor:give_info_portion("tutorial_end")
-		actor:set_task_state(task.completed, "tutorial_help_wounded", 0)
+		set_task_state(task.completed, "tutorial_help_wounded", 0)
 		news_manager.send_news(actor, "escape_stalker_helped", 5)
 	end
 
@@ -24,22 +22,18 @@ function proceed(actor)
 	   actor:dont_has_info("tutorial_end")
 	then
 		actor:give_info_portion("tutorial_end")
-		actor:set_task_state(task.fail, "tutorial_help_wounded", 0)
+		set_task_state(task.fail, "tutorial_help_wounded", 0)
 		news_manager.send_news(actor, "escape_stalker_killed", 5)
 	end
 
 
 	if actor:has_info("escape_stalker_meet") and
+	   actor:dont_has_info("escape_stalker_give") and
 	   actor:object("fox_flash") ~= nil
 	then
 		actor:give_info_portion("escape_stalker_give")
-		actor:set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
+		set_task_state(task.completed, "esc_help_wounded_from_raid", 1)
 	end       	
-
-	if actor:has_info("escape_stalker_done") then
-		actor:set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
-	end
-
 
 	if	actor:has_info("escape_artefact_start") and
 		actor:dont_has_info("escape_artefact_gain") and 
@@ -48,25 +42,24 @@ function proceed(actor)
 		 actor:object("af_gold_fish") ~= nil)
 	then		
 		actor:give_info_portion("escape_artefact_gain")
-		actor:set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
+		set_task_state(task.completed, "esc_trader_need_electra_artefact", 1)
 	end 
 
 	if actor:has_info("escape_blockpost_case") and
+	   actor:dont_has_info("escape_blockpost_case_have") and 
 	   actor:object("quest_case_01") ~= nil
 	then
 		actor:give_info_portion("escape_blockpost_case_have")
-		actor:set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
+		set_task_state(task.completed, "esc_blockpost_case_to_trader", 1)
 	end       	
 
 
 	if actor:has_info("escape_dynamite_start") and
+	   actor:dont_has_info("escape_dynamite_have") and 
 	   actor:object("dynamite") ~= nil
 	then
 		actor:give_info_portion("escape_dynamite_have")
-		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 2)
-	end
-	if actor:has_info("escape_factory_assault_say_hello") then
-		actor:set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+		set_task_state(task.completed, "esc_dinamit_to_volk", 2)
 	end
 
 	--' Выдача сообщения "на ее месте можешь быть ты"
@@ -86,16 +79,22 @@ function proceed(actor)
 		actor:give_info_portion("tutorial_wounded_give_info")
 	end
 
+
+
+
+
+
+
 	--' GARBAGE
 	if actor:has_info("garbage_meetstalker_start") and
 		actor:has_info("garbage_meetstalker_die") 
 	then
-		actor:set_task_state(task.fail, "garbage_meet_stalker", 0)
+		set_task_state(task.fail, "garbage_meet_stalker", 0)
 	end       	
 	if actor:has_info("garbage_meetstalker_start") and
 		actor:has_info("garbage_meetstalker_done") 
 	then
-		actor:set_task_state(task.completed, "garbage_meet_stalker", 0)
+		set_task_state(task.completed, "garbage_meet_stalker", 0)
 	end       	
 	
 	if actor:dont_has_info("agr_krot_band") and
@@ -111,14 +110,14 @@ function proceed(actor)
 	then
 		actor:give_info_portion("agr_krot_band_done")
 		actor:give_info_portion("agr_find_gunslinger_cache")
-		actor:set_task_state(task.completed, "agr_meet_krot_band", 0)
+		set_task_state(task.completed, "agr_meet_krot_band", 0)
 	end
 
 	if actor:has_info("agroprom_military_case") and
 	   actor:object("quest_case_02") ~= nil
 	then
 		actor:give_info_portion("agroprom_military_case_have")
-		actor:set_task_state(task.completed, "agroprom_get_military_documents", 1)
+		set_task_state(task.completed, "agroprom_get_military_documents", 1)
 	end
 
 	
@@ -126,7 +125,7 @@ function proceed(actor)
 	   actor:object("gunslinger_flash") ~= nil
 	then
 		actor:give_info_portion("agr_find_gunslinger_cache_done")
-		actor:set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
+		set_task_state(task.completed, "agroprom_find_gunslinger_cache", 0)
 	end
 
 	if actor:dont_has_info("agroprom_find_stalker_phantom") and
@@ -140,7 +139,7 @@ function proceed(actor)
 	   actor:object("crazy_flash") then
 		db.actor:give_info_portion("mil_max_flash_get") 
 		if actor:has_info("mil_max_job") then
-			db.actor:set_task_state(task.completed, "mil_mad_job", 1)
+			set_task_state(task.completed, "mil_mad_job", 1)
 		end
 	end   
 	
@@ -160,6 +159,115 @@ function proceed(actor)
 	-- Dark valley
 	if actor:dont_has_info("val_player_knows_password") and
 	   actor:object("borov_flash") then
-		db.actor:give_info_portion("val_player_knows_password") 
+		actor:give_info_portion("val_player_knows_password") 
+	end
+end
+
+function set_task_state(id_state, id_task, id_subtask)
+	if db.actor then
+		if id_subtask == 0 then
+			if id_state == task.fail then
+				news_manager.send_task(db.actor, "fail")
+			else
+				news_manager.send_task(db.actor, "complete")
+			end
+		else
+			if id_state == task.fail then
+				news_manager.send_task(db.actor, "fail")
+			else
+				news_manager.send_task(db.actor, "update")
+			end
+		end
+		db.actor:set_task_state(id_state, id_task, id_subtask)
+	end
+end
+function notify_new_task()
+	news_manager.send_task(db.actor, "new")
+end
+
+
+
+
+function process_map_spot(info_id)
+	if info_id == "tutorial_artefact_start" then
+		add_location(002, "tutorial_artefact_location")
+		
+	elseif info_id == "tutorial_artefact_gain" then
+		remove_location(002, "tutorial_artefact_location")
+		add_location(003, "escape_trader_location")
+		
+	elseif info_id == "tutorial_artefact_done" then
+		remove_location(003, "escape_trader_location")
+		
+	elseif info_id == "tutorial_wounded_start" then
+		add_location(004, "tutorial_wounded_location")
+
+	elseif info_id == "tutorial_wounded_help" then
+		remove_location(004, "tutorial_wounded_location")
+
+	elseif info_id == "tutorial_wounded_die" then
+		remove_location(004, "tutorial_wounded_location")
+
+	elseif info_id == "escape_artefact_start" then
+		add_location(008, "esc_anomaly_field_location")
+
+	elseif info_id == "escape_artefact_gain" then
+		remove_location(008, "esc_anomaly_field_location")
+		add_location(003, "escape_trader_location")
+
+	elseif info_id == "escape_artefact_done" then
+		remove_location(003, "escape_trader_location")
+
+	elseif info_id == "escape_stalker_meet" then
+		add_location(005, "esc_stalker_fox_location")
+
+	elseif info_id == "escape_stalker_give" then
+		remove_location(005, "esc_stalker_fox_location")
+		add_location(003, "escape_trader_location")
+	
+	elseif info_id == "escape_stalker_done" then
+		remove_location(003, "escape_trader_location")
+
+	elseif info_id == "escape_blockpost_case" then
+		add_location(000, "esc_blockpost_box_location")
+	
+	elseif info_id == "escape_blockpost_case_have" then
+		remove_location(000, "esc_blockpost_box_location")
+		add_location(003, "escape_trader_location")
+	
+	elseif info_id == "escape_blockpost_case_done" then
+		remove_location(003, "escape_trader_location")
+
+	elseif info_id == "escape_dynamite_meet" then
+		add_location(009, "esc_bridge_stalkers_location")
+		
+	elseif info_id == "escape_factory_assault_say_hello" then
+		remove_location(009, "esc_bridge_stalkers_location")
+	
+	elseif info_id == "escape_dynamite_gain" then
+		add_location(007, "esc_dynamite_location")
+		remove_location(009, "esc_bridge_stalkers_location")
+	
+	elseif info_id == "escape_dynamite_have" then
+		add_location(006, "esc_wolf_location")
+		remove_location(007, "esc_dynamite_location")
+	
+	elseif info_id == "escape_dynamite_done" then
+		remove_location(006, "esc_wolf_location")
+		
+	end
+end
+
+
+function add_location(sid, location)
+	obj = alife():story_object(sid)
+	if obj then
+		level.map_add_object_spot(obj.id, location, "")
+	end
+end
+function remove_location(sid, location)
+	obj = alife():story_object(sid)
+	if obj then
+		level.map_remove_object_spot(obj.id, location)
 	end
 end

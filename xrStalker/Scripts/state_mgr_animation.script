@@ -565,6 +565,9 @@ function animation:set_state(id)
 			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
 			self.mgr.animstate:add_idle_animation()
 		end
+	else
+		-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+		self.mgr.animstate:add_idle_animation()
 	end
 	if nn > 0 then
 		self.states.current_state = "wait"

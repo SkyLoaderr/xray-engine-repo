@@ -6,17 +6,16 @@
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(trader, actor)
-	if actor:has_info("escape_artefact_start") or actor:has_info("escape_artefact_gain") or
-	   actor:has_info("escape_stalker_meet") or actor:has_info("escape_stalker_give") or
-	   actor:has_info("escape_blockpost_case") or actor:has_info("escape_blockpost_case_have")
+	if (actor:has_info("escape_artefact_start") and actor:dont_has_info("escape_artefact_done")) or
+	   (actor:has_info("escape_stalker_meet") or actor:dont_has_info("escape_stalker_done")) or
+	   (actor:has_info("escape_blockpost_case") or actor:dont_has_info("escape_blockpost_case_done"))
 	then
 		return true
 	end
 	return false 
 end
 function is_tutorial(trader, actor)
-	return actor:has_info("tutorial_artefact_start") or
-		   actor:has_info("tutorial_wounded_start")	
+	return not actor:has_info("tutorial_end")
 end
 function is_not_tutorial(trader, actor)
  return not this.is_tutorial(trader, actor)
@@ -51,8 +50,7 @@ end
 function give_tutorial_artefact(first_speaker, second_speaker)
 	local artefact = first_speaker:object("af_blood_tutorial")
 	first_speaker:transfer_item(artefact, second_speaker)
-	first_speaker:set_task_state(task.completed, "tutorial_find_artefact", 2)
-	first_speaker:set_task_state(task.completed, "tutorial_find_artefact", 0)
+	level_tasks.set_task_state(task.completed, "tutorial_find_artefact", 0)
 end
 
 
@@ -64,9 +62,7 @@ function trader_need_fox_info(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_artefact_done") and
-	   actor:dont_has_info("escape_stalker_meet") and
-	   actor:dont_has_info("escape_stalker_give") and
-	   actor:dont_has_info("escape_stalker_done")
+	   actor:dont_has_info("escape_stalker_meet")
 	then
 		return true
 	end
@@ -81,8 +77,7 @@ end
 function give_fox_info(first_speaker, second_speaker)
 	local item = first_speaker:object("fox_flash")
 	first_speaker:transfer_item(item, second_speaker)
-	first_speaker:set_task_state(task.completed, "esc_help_wounded_from_raid", 2)
-	first_speaker:set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
+	level_tasks.set_task_state(task.completed, "esc_help_wounded_from_raid", 0)
 end
 
 
@@ -94,9 +89,7 @@ function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_stalker_done") and
-	   actor:dont_has_info("escape_blockpost_case") and
-	   actor:dont_has_info("escape_blockpost_case_have") and
-	   actor:dont_has_info("escape_blockpost_case_done")
+	   actor:dont_has_info("escape_blockpost_case")
 	then
 		return true
 	end
@@ -106,8 +99,7 @@ function give_blockpost_case(first_speaker, second_speaker)
 	local case = first_speaker:object("quest_case_01")
 	first_speaker:transfer_item (case, second_speaker)
 	second_speaker:transfer_money (500, first_speaker)
-	first_speaker:set_task_state(task.completed, "esc_blockpost_case_to_trader", 2)		
-	first_speaker:set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
+	level_tasks.set_task_state(task.completed, "esc_blockpost_case_to_trader", 0)
 end
 
 --' Escape trader artefact
@@ -132,16 +124,13 @@ function give_artefact_from_fleshes(first_speaker, second_speaker)
 	end
 	first_speaker:transfer_item (artefact, second_speaker)
 	second_speaker:transfer_money (1500, first_speaker)
-	first_speaker:set_task_state(task.completed, "esc_trader_need_electra_artefact", 2)		
-	first_speaker:set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
+	level_tasks.set_task_state(task.completed, "esc_trader_need_electra_artefact", 0)
 end
 function trader_need_artefact(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("tutorial_end") and
-	   actor:dont_has_info("escape_artefact_start") and
-	   actor:dont_has_info("escape_artefact_gain") and
-	   actor:dont_has_info("escape_artefact_done")
+	   actor:dont_has_info("escape_artefact_start")
 	then
 		return true
 	end
@@ -159,14 +148,15 @@ function trader_need_military_document(first_speaker, second_speaker)
 	local actor = db.actor
     if actor ~= nil and
 	   actor:has_info("escape_blockpost_case_done") and
-	   actor:dont_has_info("agroprom_military_case") and
-	   actor:dont_has_info("agroprom_military_case_have") and
-	   actor:dont_has_info("agroprom_military_case_done")
+	   actor:dont_has_info("agroprom_military_case")
 	then
 		return true
 	end
 	return false
 end
+
+
+
 
 --' Wolf has a job
 function wolf_dont_has_job(first_speaker, second_speaker)
@@ -187,6 +177,9 @@ function wolf_need_dynamite(first_speaker, second_speaker)
 	end
 	return false
 end
+function wolf_notify_meet(first_speaker, second_speaker)
+	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 1)
+end
 
 
 --' Escape dynamite for Wolf
@@ -204,8 +197,7 @@ function give_dynamite(first_speaker, second_speaker)
 	local case = first_speaker:object("dynamite")
 	first_speaker:transfer_item(case, second_speaker)
 	second_speaker:transfer_money(1000, first_speaker)
-	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 3)
-	first_speaker:set_task_state(task.completed, "esc_dinamit_to_volk", 0)
+	level_tasks.set_task_state(task.completed, "esc_dinamit_to_volk", 0)
 end
 
 function assault_ready(first_speaker, second_speaker)
