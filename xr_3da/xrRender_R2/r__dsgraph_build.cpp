@@ -37,7 +37,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 #if RENDER==R_R1
 	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
-	vis.accept_frame		=	Device.dwFrame		;
+	pVisual->vis.accept_frame	=	Device.dwFrame	;
 #endif
 
 	float distSQ			;
@@ -144,12 +144,14 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 {
-	if (pVisual->vis.marker		==	RImplementation.marker)	return	;
-	pVisual->vis.marker			=	RImplementation.marker			;
+	CRender&	RI				=	RImplementation;
+
+	if (pVisual->vis.marker		==	RI.marker)	return	;
+	pVisual->vis.marker			=	RI.marker			;
 
 #if RENDER==R_R1
 	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
-	vis.accept_frame			=	Device.dwFrame					;
+	pVisual->vis.accept_frame	=	Device.dwFrame		;
 #endif
 
 	float distSQ;

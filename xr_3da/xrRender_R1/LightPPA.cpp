@@ -179,6 +179,7 @@ void CLightR_Manager::render_point	()
 		RImplementation.r1_dlight_tcgen		= L_texgen;
 
 		//		3. Calculate visibility for light + build soring tree
+		VERIFY										(L->spatial.sector);
 		RImplementation.r_pmask						(true,false);
 		RImplementation.r_dsgraph_render_subspace	(
 			L->spatial.sector,
@@ -238,6 +239,7 @@ void CLightR_Manager::render_spot	()
 		RImplementation.r1_dlight_tcgen		= L_texgen;
 
 		//		3. Calculate visibility for light + build soring tree
+		VERIFY										(L->spatial.sector);
 		RImplementation.r_pmask						(true,false);
 		RImplementation.r_dsgraph_render_subspace	(
 			L->spatial.sector,
