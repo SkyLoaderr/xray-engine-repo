@@ -72,7 +72,7 @@ void CUIGameCS::OnFrame()
 		if(!CanBuy()) BuyMenu.Hide	();
 		if (BuyMenu.Visible())		BuyMenu.OnFrame	();
 		if (CTMenu.Visible())		CTMenu.OnFrame	();
-		if (InventoryMenu.Visible()) InventoryMenu.OnFrame();
+//		if (InventoryMenu.Visible()) InventoryMenu.OnFrame();
 		if (uFlags&flShowFragList) FragList.OnFrame	();
 		string16 buf;
 		game_cl_GameState::Player* P = Game().local_player;
@@ -148,12 +148,12 @@ bool CUIGameCS::IR_OnKeyboardPress(int dik)
 	case GAME_PHASE_INPROGRESS:
 		if (BuyMenu.Visible()&&BuyMenu.IR_OnKeyboardPress(dik))	return true;
 		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardPress(dik))		return true;
-		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardPress(dik))		return true;
+//		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardPress(dik))		return true;
 		// switch pressed keys
 		switch (dik){
-		case DIK_M:		CTMenu.Show(); BuyMenu.Hide(); InventoryMenu.Hide(); return true;
-		case DIK_B:		CTMenu.Hide(); BuyMenu.Show(); InventoryMenu.Hide(); return true;
-		case DIK_I:		CTMenu.Hide(); BuyMenu.Hide(); InventoryMenu.Show(); return true;
+//		case DIK_M:		CTMenu.Show(); BuyMenu.Hide(); InventoryMenu.Hide(); return true;
+//		case DIK_B:		CTMenu.Hide(); BuyMenu.Show(); InventoryMenu.Hide(); return true;
+//		case DIK_I:		CTMenu.Hide(); BuyMenu.Hide(); InventoryMenu.Show(); return true;
 		case DIK_TAB:	SetFlag(flShowFragList,TRUE);	return true;
 		}
 	}
@@ -166,7 +166,7 @@ bool CUIGameCS::IR_OnKeyboardRelease(int dik)
 	if (Game().phase==GAME_PHASE_INPROGRESS){
 		if (BuyMenu.Visible()&&BuyMenu.IR_OnKeyboardRelease(dik))	return true;
 		if (CTMenu.Visible()&&CTMenu.IR_OnKeyboardRelease(dik))	return true;
-		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardRelease(dik))		return true;
+//		if (InventoryMenu.Visible()&&InventoryMenu.IR_OnKeyboardRelease(dik))		return true;
 		// switch pressed keys
 		switch (dik){
 		case DIK_TAB:	SetFlag		(flShowFragList,FALSE);	return true;
