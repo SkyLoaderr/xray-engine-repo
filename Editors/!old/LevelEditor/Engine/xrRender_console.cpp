@@ -68,6 +68,8 @@ float		ps_r2_sun_depth_far_bias	= 0.00000f;			// -0.0000f
 float		ps_r2_sun_depth_near_scale	= 1.00000f;			// 1.00001f
 float		ps_r2_sun_depth_near_bias	= -0.0005f;			// -0.0005f
 
+float		ps_r2_gmaterial				= 0.f;				// 
+
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
 #include	"..\xr_ioc_cmd.h"
@@ -84,6 +86,20 @@ public:
 			CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MAXANISOTROPY, *value	));
 	}
 };
+class CCC_R2GM		: public CCC_Float
+{
+public:
+	CCC_R2GM(LPCSTR N, float*	v) : CCC_Float(N, v, 0.f, 4.f) { *v = 0; };
+	virtual void	Execute	(LPCSTR args)
+	{
+		if (0==xr_strcmp(args,"on"))	{
+			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,TRUE);
+		} else if (0==xr_strcmp(args,"off"))	{
+			ps_r2_ls_flags.set	(R2FLAG_GLOBALMATERIAL,FALSE);
+		} else CCC_Float::Execute(args);
+	}
+};
+
 //-----------------------------------------------------------------------
 void		xrRender_initconsole	()
 {

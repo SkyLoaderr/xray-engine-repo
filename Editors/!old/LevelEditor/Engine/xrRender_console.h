@@ -38,6 +38,7 @@ extern ECORE_API float			ps_r2_ssaHZBvsTEX;
 // R2-specific
 extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only
 extern ECORE_API float			ps_r2_df_parallaxh;			// r2-only
+extern ECORE_API float			ps_r2_gmaterial;			// r2-only
 extern ECORE_API float			ps_r2_tonemap_middlegray;	// r2-only
 extern ECORE_API float			ps_r2_tonemap_adaptation;	// r2-only
 extern ECORE_API float			ps_r2_tonemap_low_lum;		// r2-only
@@ -69,13 +70,14 @@ extern ECORE_API float			ps_r2_sun_depth_near_bias;	// -0.0001f
 
 enum
 {
-	R2FLAG_SUN			= (1<<0),
-	R2FLAG_SUN_FOCUS	= (1<<1),
-	R2FLAG_SUN_TSM		= (1<<2),
-	R2FLAG_TONEMAP		= (1<<3),
-	R2FLAG_AA			= (1<<4),
-	R2FLAG_GI			= (1<<5),
-	R2FLAG_FASTBLOOM	= (1<<6),
+	R2FLAG_SUN				= (1<<0),
+	R2FLAG_SUN_FOCUS		= (1<<1),
+	R2FLAG_SUN_TSM			= (1<<2),
+	R2FLAG_TONEMAP			= (1<<3),
+	R2FLAG_AA				= (1<<4),
+	R2FLAG_GI				= (1<<5),
+	R2FLAG_FASTBLOOM		= (1<<6),
+	R2FLAG_GLOBALMATERIAL	= (1<<7),
 };
 
 extern void						xrRender_initconsole	();
