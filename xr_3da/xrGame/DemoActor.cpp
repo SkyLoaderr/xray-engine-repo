@@ -81,7 +81,7 @@ void CDemoActor::PlayDemo(const char* name){
 		CObject* O		= pCreator->Objects.FindObjectByName(attached);
 		R_ASSERT		(O);
 		R_ASSERT		(O->SUB_CLS_ID==CLSID_OBJECT_DUMMY);
-		((CDummyObject*)O)->PlayDemo(name);
+		dynamic_cast<CDummyObject*>(O)->PlayDemo(name);
 	}
 }
 
