@@ -1,1 +1,5 @@
-fi
+
+
+
+function add_to_binder (obj)
+end
