@@ -48,6 +48,7 @@ function main()
 	return
 	
 	-- define actions
+	--[
 	action0					= custom_action(1,nil,"action0")
 	action1					= custom_action(1,nil,"action1")
 	action2					= custom_action(1,nil,"action2")
@@ -98,4 +99,5 @@ function main()
 	end
 	
 	-- the end
+	]--
 end
