@@ -18,12 +18,12 @@ CSpaceRestrictor::~CSpaceRestrictor	()
 
 void CSpaceRestrictor::Center		(Fvector& C) const
 {
-	XFORM().transform_tiny		(C,CFORM()->getSphere().P);
+	XFORM().transform_tiny			(C,CFORM()->getSphere().P);
 }
 
 float CSpaceRestrictor::Radius		() const
 {
-	return CFORM()->getRadius	();
+	return							(CFORM()->getRadius());
 }
 
 BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
