@@ -18,10 +18,12 @@ public:
 
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
-	virtual void			UpdateCL			();								// Called each frame, so no need for dt
+	virtual void			UpdateCL			();					// Called each frame, so no need for dt
+	virtual BOOL			ShadowGenerate		()					{ return FALSE;	}
+	virtual BOOL			ShadowReceive		()					{ return FALSE;	}
 
-	void SetPos(const Fmatrix& pos);
+	void SetPos									(const Fmatrix& pos);
 
-	CPhysicsShell*						m_pPhysicsShell;
-	Fmatrix m_pos;
+	CPhysicsShell*			m_pPhysicsShell;
+	Fmatrix					m_pos;
 };
