@@ -12,6 +12,7 @@ class SoundEnvironment_LIB;
 
 const	u32		sdef_target_block		= 150;					// ms
 const	u32		sdef_target_size		= 3*sdef_target_block;	// ms
+const	u32		sdef_source_footer		= 50;					// ms of silence after buffer data, just for rendering
 const	u32		sdef_env_version		= 1;					// current version of env-def
 const	u32		sdef_level_version		= 1;					// current version of level-def
 const	u32		sdef_event_pulse		= 500;					// ms

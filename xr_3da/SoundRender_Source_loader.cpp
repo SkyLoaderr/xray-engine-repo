@@ -130,7 +130,7 @@ void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
 	}
 	if (!converted)				{ xr_free(pFormat); return; }
 
-	dwTimeTotal					= 1000 * dwLen / wfxdest.nAvgBytesPerSec;
+	dwTimeTotal					= sdef_source_footer + 1000 * dwLen / wfxdest.nAvgBytesPerSec;
 	dwBytesPerMS				= wfxdest.nAvgBytesPerSec / 1000;
 	dwBytesTotal				= dwLen;
 	wave						= converted;
@@ -185,7 +185,7 @@ void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 	}
 	if (!converted)				{ xr_free(pFormat); }
 
-	dwTimeTotal					= 1000 * dwLen / wfxdest.nAvgBytesPerSec;
+	dwTimeTotal					= sdef_source_footer + 1000 * dwLen / wfxdest.nAvgBytesPerSec;
 	dwBytesPerMS				= wfxdest.nAvgBytesPerSec / 1000;
 	dwBytesTotal				= dwLen;
 	wave						= converted;
