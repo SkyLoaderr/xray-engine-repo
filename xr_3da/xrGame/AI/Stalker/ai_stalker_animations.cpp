@@ -56,6 +56,8 @@ LPCSTR caWeaponActionNames	[] = {
 	"aim_",
 	"walk_",
 	"run_",
+	"idle_",
+	"escape_",
 	0
 };
 
@@ -202,25 +204,33 @@ void CAI_Stalker::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 {
 	if (!g_Alive())
 		return;
-	if ((m_tStateType == eStateTypeNormal) && (m_tBodyState == eBodyStateStand) && (m_tMovementType != eMovementTypeStand)) {
-		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-		if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle)) {
-			switch (m_inventory.m_activeSlot) {
-				case 0 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7 + m_tMovementType].A[m_tStateType];
-					break;
-				}
-				case 1 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7 + m_tMovementType].A[m_tStateType];
-					break;
-				}
-				case 2 : {
-					tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[7 + m_tMovementType].A[m_tStateType];
-					break;
+	if (m_tStateType == eStateTypeNormal) {
+		tpTorsoAnimation = 0;
+		VERIFY(m_tBodyState == eBodyStateStand);
+		if (m_tMovementType == eMovementTypeStand)
+			tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[9].A[0];
+		else {
+			CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle)) {
+				switch (m_inventory.m_activeSlot) {
+					case 0 : {
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[3].A[7 + m_tMovementType].A[m_tStateType];
+						break;
+					}
+					case 1 : {
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[1].A[7 + m_tMovementType].A[m_tStateType];
+						break;
+					}
+					case 2 : {
+						tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[2].A[7 + m_tMovementType].A[m_tStateType];
+						break;
+					}
 				}
 			}
-			return;
+			else
+				tpTorsoAnimation = m_tAnims.A[m_tBodyState].m_tTorso.A[0].A[7 + m_tMovementType].A[0];
 		}
+		return;
 	}
 	if (m_inventory.ActiveItem()) {
 		CWeapon *tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());

@@ -336,7 +336,7 @@ void CAI_Stalker::Think()
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	int						iIndex;
-	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
+	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && (Level().timeServer() - m_dwLostEnemyTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
 		K = true;
 		C = _C;
 		E = _E;
@@ -483,7 +483,7 @@ void CAI_Stalker::Think()
 		// hearing something
 		Fvector					tPoint = m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
+		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	if (M) {

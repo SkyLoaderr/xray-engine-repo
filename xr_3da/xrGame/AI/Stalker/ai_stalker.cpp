@@ -44,6 +44,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_dwLastRangeSearch				= 0;
 	m_dwRandomFactor				= 100;
 	m_dwInertion					= 20000;
+	m_tMovementType					= eMovementTypeStand;
 
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;

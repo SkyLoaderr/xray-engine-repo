@@ -387,5 +387,5 @@ public:
 	virtual void			Hit								(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse);
 	virtual float			EnemyHeuristics					(CEntity* E);
 	virtual void			SelectEnemy						(SEnemySelected& S);
-	virtual void			feel_sound_new					(CObject* who, int eType, Fvector& Position, float power);
+	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 };
