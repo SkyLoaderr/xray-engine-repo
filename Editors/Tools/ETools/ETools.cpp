@@ -125,6 +125,7 @@ namespace ETOOLS{
 		return true;
 	}
 
+	ETOOLS_API CDB::COLLIDER*get_collider	(){return &XRC;}
 	ETOOLS_API CDB::MODEL*	create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
 	{
 		CDB::MODEL* M		= xr_new<CDB::MODEL> ();

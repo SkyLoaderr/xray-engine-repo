@@ -19,7 +19,7 @@ extern "C" {
 		typedef  void __stdcall		pb_callback		(void* user_data, float& val);
 		ETOOLS_API void				SimplifyCubeMap	(u32* src_data, u32 src_width, u32 src_height, u32* dst_data, u32 dst_width, u32 dst_height, float sample_factor=1.f, pb_callback cb=0, void* pb_data=0);
 
-		ETOOLS_API CDB::COLLIDER*	get_collider	(){return &XRC;}
+		ETOOLS_API CDB::COLLIDER*	get_collider	();
 		ETOOLS_API CDB::MODEL*		create_model	(Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 		ETOOLS_API void				destroy_model	(CDB::MODEL*&);
 		ETOOLS_API CDB::RESULT*		r_begin			();
