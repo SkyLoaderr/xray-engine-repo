@@ -149,15 +149,12 @@ LPCSTR CInventoryItem::NameComplex()
 
 
 	if(m_bUsingCondition){
-		/*if(GetCondition()<0.33)
-			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " bad");
-		else if(GetCondition()<0.66)
-			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " good");
-		else
-			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " excelent");
-		*/
+		string32		cond;
+		if(GetCondition()<0.33)		strcpy		(cond, "[poor]");
+		else if(GetCondition()<0.66)strcpy		(cond, "[bad]");
+		else						strcpy		(cond, "[good]");
 		string256		temp;
-		sprintf			(temp,"%s %.1f\%",*m_nameComplex,GetCondition())*100.f;
+		sprintf			(temp,"%s %s",*m_nameComplex,cond);
 		m_nameComplex	= temp;
 	}
 
