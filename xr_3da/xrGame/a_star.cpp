@@ -98,6 +98,7 @@ float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& R
 float CAStar::ffFindOptimalPath(u32 dwStartNode, u32 dwGoalNode, AI::NodePath& Result, Fvector tEnemyPosition, float fOptimalEnemyDistance, float fLightWeight, float fCoverWeight, float fDistanceWeight, float fEnemyViewWeight, bool bUseMarks)
 {
 	float									fDistance;
+	m_tAIMapDataF.dwFinishNode				= dwGoalNode;
 	m_tAIMapDataF.fLight					= fLightWeight;
 	m_tAIMapDataF.fCover					= fCoverWeight;
 	m_tAIMapDataF.fDistance					= fDistanceWeight;

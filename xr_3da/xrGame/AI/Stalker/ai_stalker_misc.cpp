@@ -59,6 +59,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 						break;
 					}
 				}
+				r_torso_speed	= PI_MUL_2;
+				r_head_speed	= 3*PI_DIV_2;
 				break;
 			}
 			case eMovementTypeRun : {
@@ -76,6 +78,8 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 						break;
 					}
 				}
+				r_torso_speed	= PI;
+				r_head_speed	= 3*PI_DIV_4;
 				break;
 			}
 			default : m_fCurSpeed = 0.f;
@@ -83,7 +87,9 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 	}
 	else {
 		m_tMovementType = eMovementTypeStand;
-		m_fCurSpeed = 0.f;
+		r_torso_speed	= PI_MUL_2;
+		r_head_speed	= 3*PI_DIV_2;
+		m_fCurSpeed		= 0.f;
 	}
 	
 	switch (m_tLookType) {
@@ -212,8 +218,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 
 		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(VisibleEnemies[i].key);
 		if (tpCustomMonster) {
-			yaw1		= tpCustomMonster->r_current.yaw;
-			pitch1		= tpCustomMonster->r_current.pitch;
+			yaw1		= -tpCustomMonster->r_current.yaw;
+			pitch1		= -tpCustomMonster->r_current.pitch;
 			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
 			fRange		= tpCustomMonster->ffGetRange();
 		}
@@ -264,4 +270,9 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	vfCheckForItems();
 	
 	M = !!m_tpItemToTake;
+
+	if (K) {
+		C = D = F = G = false;
+		E = true;
+	}
 }

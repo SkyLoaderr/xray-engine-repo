@@ -60,6 +60,9 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 			fOldCost						= tNodeEvaluator.ffEvaluateNode();
 //			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
 		}
+		else {
+//			Msg("Invalid dest path node");
+		}
 
 		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
@@ -67,6 +70,7 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 		
 //		Msg									("Best : [%d][%f]",tNodeEvaluator.m_dwBestNode,tNodeEvaluator.m_fBestCost);
 //		Msg									("Params : %f - [%f][%f][%f][%f][%f][%f]",m_tEnemy.Enemy->Position().distance_to(vPosition),tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance,tNodeEvaluator.m_fMaxEnemyDistanceWeight,tNodeEvaluator.m_fOptEnemyDistanceWeight,tNodeEvaluator.m_fMinEnemyDistanceWeight);
+//		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
 		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
 			m_tPathState			= ePathStateBuildNodePath;
@@ -277,7 +281,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 	if (m_tPrevPathType != m_tPathType) {
 		m_tPrevPathType		= m_tPathType;
 		m_tPathState		= ePathStateSearchNode;
-		AI_Path.DestNode	= u32(-1);
+		//AI_Path.DestNode	= u32(-1);
 	}
 	if (tpNodeEvaluator)
 	vfInitSelector			(*tpNodeEvaluator,Squad,Leader);
