@@ -122,7 +122,7 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case 0: 	// deffer
-		uber_deffer		(C,"base","impl",false);
+		uber_deffer		(C,"base","impl",false,oT2_Name[0]?oT2_Name:0);
 		break;
 	case CRender::PHASE_SMAP_D:	// smap-direct
 	case CRender::PHASE_SMAP_P:	// smap-point
