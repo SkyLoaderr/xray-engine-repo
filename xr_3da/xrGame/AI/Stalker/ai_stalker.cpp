@@ -127,6 +127,9 @@ void CAI_Stalker::Die				()
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
 	m_dwDeathTime					= Level().timeServer();
 #ifndef NO_PHYSICS_IN_AI_MOVE
+//	Movement.GetDeathPosition(vPosition);
+//	vPosition.y+=3.;
+//	UpdateTransform();
 	Movement.DestroyCharacter();
 #endif
 	::Sound->play_at_pos			(m_tpSoundDie[Random.randI(STALKER_SND_DIE_COUNT)],this,vPosition);
@@ -346,6 +349,11 @@ void CAI_Stalker::Exec_Movement		(float dt)
 
 void CAI_Stalker::CreateSkeleton()
 {
+#ifndef NO_PHYSICS_IN_AI_MOVE
+	Movement.GetDeathPosition(vPosition);
+	vPosition.y+=.1f;
+	UpdateTransform();
+#endif
 	if (!pVisual)
 		return;
 	Fmatrix ident;
@@ -353,7 +361,8 @@ void CAI_Stalker::CreateSkeleton()
 	float hinge_force=5.f*hinge_force_factor;
 	float hinge_force1=5.f*hinge_force_factor2;
 	//u32 material=0;
-	LPCSTR material="actor";
+	//LPCSTR material="actor";
+	LPCSTR material="materials\\skel1";
 	ident.identity();
 
 	Fmatrix m1;
@@ -766,13 +775,15 @@ void CAI_Stalker::CreateSkeleton()
 	//set shell start position
 	Fmatrix m;
 	m.set(mRotate);
+	
 	m.c.set(vPosition);
-	//ph_Movement.GetDeathPosition(m.c);
+	//Movement.GetDeathPosition(m.c);
 	//m.c.y-=0.4f;
 	m_pPhysicsShell->mXFORM.set(m);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);
 	
+
 }
 
 void CAI_Stalker::UpdateCL(){
@@ -948,7 +959,7 @@ void CAI_Stalker::Update	( u32 DT )
 
 	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
 		{
-			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.5f,m_saved_element);
+			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
 			m_saved_impulse=0.f;
 		}
 		mRotate.set(m_pPhysicsShell->mXFORM);

@@ -256,13 +256,17 @@ dReal						k_w;
 dReal						k_l;//1.8f;
 bool						attached;
 bool						b_contacts_saved;
-dJointGroupID				m_saved_contacts;			
+dJointGroupID				m_saved_contacts;
+ContactCallbackFun*			contact_callback;
+ObjectContactCallbackFun*	object_contact_callback;
+ObjectContactCallbackFun*	temp_for_push_out;
+u32							push_untill;
+
 public:
 
 /////////////////////////////////////////////////////////////////////////////
 static Shader*			hWallmark;
-ContactCallbackFun*			contact_callback;
-ObjectContactCallbackFun*	object_contact_callback;
+
 ////////////////////////////
 private:
 	void			create_Sphere				(const Fsphere&		V);
@@ -271,7 +275,8 @@ private:
 
 	void			calculate_it_data			(const Fvector& mc,float mass);
 	void			calculate_it_data_use_density(const Fvector& mc,float density);
-	void			Disabling						();
+	void			Disabling					();
+	void			unset_Pushout				();
 public:
 	void					Disable					();
 	void					ReEnable				();
@@ -298,6 +303,7 @@ public:
 
 	virtual void			set_ObjectContactCallback(ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject	 (CPhysicsRefObject* ref_object);
+	virtual void			set_PushOut				 (u32 time);
 	virtual void			get_LinearVel			 (Fvector& velocity);
 
 	void			SetShell						(CPHShell* p){m_shell=p;}
@@ -341,8 +347,10 @@ public:
 	virtual void			Update					();
 	CPHElement(dSpaceID a_space){ 
 	///	if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
+		push_untill=0;
 		contact_callback=ContactShotMark;
 		object_contact_callback=NULL;
+		temp_for_push_out=NULL;
 		m_space=a_space;
 		m_body=NULL;
 		bActive=false;
@@ -537,6 +545,7 @@ public:
 	virtual void			set_ContactCallback		  (ContactCallbackFun* callback)				;
 	virtual void			set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
+	virtual void			set_PushOut				  (u32 time);
 	virtual void			get_LinearVel			  (Fvector& velocity);
 	virtual void			SetMaterial				  (u32 m);
 	virtual void			SetMaterial				  (LPCSTR m);

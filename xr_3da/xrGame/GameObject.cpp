@@ -246,16 +246,22 @@ m_pPhysicsShell->get_LinearVel(velocity);
 
 }
 
-void __stdcall PushOutCallback(bool& do_colide,dContact& c);
-
-void CGameObject::OnH_B_Independent()
+void CGameObject::OnH_B_Chield()
 {
+	inherited::OnH_B_Chield();
 	if(m_pPhysicsShell)
-		m_pPhysicsShell->set_ObjectContactCallback(PushOutCallback);
+		m_pPhysicsShell->set_PushOut(5000);
+}
+
+///void CGameObject::OnH_A_Independent()
+//{
+//	if(m_pPhysicsShell)
+//		m_pPhysicsShell->set_PushOut(50000);
 		//m_pPhysicsShell->SetMaterial("objects\\soft_object");
 
-	inherited::OnH_B_Independent();
-}
+//	inherited::OnH_A_Independent();
+//}
+
 #ifdef DEBUG
 void CGameObject::OnRender()
 {

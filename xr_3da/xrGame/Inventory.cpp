@@ -95,6 +95,7 @@ void CInventoryItem::Deactivate() {
 
 void CInventoryItem::Drop() {
 	if(m_pInventory) m_drop = true;
+
 }
 
 s32 CInventoryItem::Sort(PIItem pIItem) {

@@ -737,6 +737,7 @@ void CPHWorld::Step(dReal step)
 
 		Device.Statistic.ph_core.Begin		();
 		dWorldStep			(phWorld, fixed_step);
+		//dWorldStepFast (phWorld,fixed_step,10);
 		Device.Statistic.ph_core.End		();
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
@@ -1223,6 +1224,9 @@ dBodySetPosition(m_body,mc.x,mc.y,mc.z);
 
 void CPHElement::RunSimulation()
 {
+if(push_untill)
+	push_untill+=Device.dwTimeGlobal;
+
 	if(m_phys_ref_object)
 	{
 		vector<dGeomID>::iterator i;
@@ -1458,6 +1462,12 @@ void		CPHElement::Start(){
 
 void		CPHElement::Deactivate(){
 	if(!bActive) return;
+	if(push_untill)
+	{
+			push_untill-=Device.dwTimeGlobal;
+			if(push_untill<=0)
+				unset_Pushout();
+	}
 	destroy();
 	bActive=false;
 	bActivating=false;
@@ -1999,6 +2009,9 @@ if( !dBodyIsEnabled(m_body)) return;
 
 
 				mXFORM.mulB(m_inverse_local_transform);
+
+				if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+							if(push_untill<Device.dwTimeGlobal) unset_Pushout();
 
 }
 
@@ -3310,4 +3323,31 @@ void CPHShell::get_LinearVel(Fvector& velocity)
 {
 
 (*elements.begin())->get_LinearVel(velocity);
+}
+
+void CPHShell::set_PushOut(u32 time)
+{
+	vector<CPHElement*>::iterator i;
+	for(i=elements.begin();i!=elements.end();i++)
+	{
+		(*i)->set_PushOut(time);
+	}
+}
+
+void CPHElement::set_PushOut(u32 time)
+{
+	temp_for_push_out=object_contact_callback;
+
+	set_ObjectContactCallback(PushOutCallback);
+	if(bActive) push_untill=Device.dwTimeGlobal+time;
+	else		push_untill=time;
+
+}
+
+void CPHElement::unset_Pushout()
+{
+	object_contact_callback=temp_for_push_out;
+	temp_for_push_out=NULL;
+	set_ObjectContactCallback(object_contact_callback);
+	push_untill=0;
 }
