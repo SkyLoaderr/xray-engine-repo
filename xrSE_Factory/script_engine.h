@@ -55,7 +55,6 @@ protected:
 			void				export_monster_info			();
 			void				export_alife				();
 #endif
-			void				export_server_entities		();
 
 public:
 								CScriptEngine				();

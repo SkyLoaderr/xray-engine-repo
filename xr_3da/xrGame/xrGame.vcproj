@@ -4031,9 +4031,6 @@
 					<File
 						RelativePath=".\script_lua_export_ini.cpp">
 					</File>
-					<File
-						RelativePath=".\script_lua_export_server_entities.cpp">
-					</File>
 				</Filter>
 				<Filter
 					Name="ScriptProcessor"
@@ -6087,35 +6084,63 @@
 						RelativePath="xrServer_Factory.cpp">
 					</File>
 					<File
-						RelativePath="xrServer_Objects.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Objects.h">
-					</File>
-					<File
 						RelativePath=".\xrServer_Objects_Abstract.h">
-					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife.h">
 					</File>
 					<File
 						RelativePath="xrServer_Objects_ALife_All.h">
 					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife_Items.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife_Items.h">
-					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife_Monsters.cpp">
-					</File>
-					<File
-						RelativePath="xrServer_Objects_ALife_Monsters.h">
-					</File>
+					<Filter
+						Name="objects"
+						Filter="">
+						<File
+							RelativePath="xrServer_Objects.cpp">
+						</File>
+						<File
+							RelativePath="xrServer_Objects.h">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="objects_alife"
+						Filter="">
+						<File
+							RelativePath="xrServer_Objects_ALife.cpp">
+						</File>
+						<File
+							RelativePath="xrServer_Objects_ALife.h">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="objects_alife_items"
+						Filter="">
+						<File
+							RelativePath="xrServer_Objects_ALife_Items.cpp">
+						</File>
+						<File
+							RelativePath="xrServer_Objects_ALife_Items.h">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_Items_script.cpp">
+						</File>
+					</Filter>
+					<Filter
+						Name="objects_alife_monsters"
+						Filter="">
+						<File
+							RelativePath="xrServer_Objects_ALife_Monsters.cpp">
+						</File>
+						<File
+							RelativePath="xrServer_Objects_ALife_Monsters.h">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_Monsters_script.cpp">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ServerPerform"

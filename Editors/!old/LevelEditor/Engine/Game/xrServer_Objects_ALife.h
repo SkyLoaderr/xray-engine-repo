@@ -53,13 +53,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeSchedulable,IPureSchedulableObject)
 add_to_type_list(CSE_ALifeSchedulable)
 #define script_type_list save_type_list(CSE_ALifeSchedulable)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_LevelPoint,CSE_Abstract)
-									CSE_LevelPoint(LPCSTR caSection);
-	virtual							~CSE_LevelPoint();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_LevelPoint)
-#define script_type_list save_type_list(CSE_LevelPoint)
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
 	string32						m_caConnectionLevelName;

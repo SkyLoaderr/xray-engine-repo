@@ -14,7 +14,7 @@
 #	define SERVER_ENTITY_SCRIPT_METHODS
 #else
 #	define SERVER_ENTITY_EDITOR_METHODS 
-#	define SERVER_ENTITY_SCRIPT_METHODS static void script_register(lua_State *L){};
+#	define SERVER_ENTITY_SCRIPT_METHODS static void script_register(lua_State *L);//{};
 #endif
 
 #define SERVER_ENTITY_DECLARE_BEGIN0(__A)	class __A	{ public: SERVER_ENTITY_SCRIPT_METHODS
