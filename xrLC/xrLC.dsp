@@ -710,6 +710,7 @@ SOURCE=.\xrPVS.cpp
 # Begin Source File
 
 SOURCE=.\xrResolveMaterials.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
@@ -739,6 +740,7 @@ SOURCE=.\xrTesselate.cpp
 # Begin Source File
 
 SOURCE=.\xrUVmapping.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 
