@@ -75,6 +75,7 @@ int	CLevel::get_RPID(LPCSTR name)
 
 void CLevel::OnFrame	()
 {
+	Sleep	(100);
 	// Client receive
 	if (net_isDisconnected())	
 	{

@@ -27,6 +27,10 @@ void CWeaponCustomPistol::switch2_Fire	()
 		OnShot						();
 		FireTrace					(p1,vLastFP,d);
 		fTime						+= fTimeToFire;
+
+		// Patch for "previous frame position" :)))
+		dwFP_Frame					= 0xffffffff;
+		dwXF_Frame					= 0xffffffff;
 	}
 }
 
