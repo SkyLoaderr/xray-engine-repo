@@ -559,10 +559,21 @@ int dxJointLimitMotor::addLimot (dxJoint *joint,
 	}
       }
     }
-
+	const dReal min_stop_err=M_PI*0.1f;
     if (limit) {
+	  dReal l_limit_error;
+	  if(limit==1) 
+	  {
+		  l_limit_error=limit_err+min_stop_err;
+		  if(l_limit_error>0.f) l_limit_error=0.f;
+	  }
+	  else
+	  {
+		  l_limit_error=limit_err-min_stop_err;
+		  if(l_limit_error<0.f) l_limit_error=0.f;
+	  }
       dReal k = info->fps * stop_erp;
-      info->c[row] = -k * limit_err;
+      info->c[row] = -k * l_limit_error;
       info->cfm[row] = stop_cfm;
 
       if (lostop == histop) {
