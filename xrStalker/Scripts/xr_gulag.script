@@ -18,6 +18,7 @@ function fract:__init(name, char_ini)
 	self.Guest = {}		-- список гостей, находящихся на территории группировки
 
 	self:loadJob(name)
+	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
 	self:loadStates(name)
 
 	if self.name == "blockpost" then
@@ -46,11 +47,10 @@ end
 function fract:addObject(npc)
 	if self.Object[npc:id()] == nil then
 		table.insert(self.Object, npc:id(), npc)
+		self:updateJob()
 	end
 end
 function fract:calculate() -- просчет лагеря
---	printf("game time, %s", game.time())
-
 	-- проверка не закончилось ли время особого состояния
 	if self.stateBegin ~= nil and self.state ~= 0 then
 		local timeout = 0
@@ -83,43 +83,59 @@ function fract:calculate() -- просчет лагеря
 
 	-- обнуление несуществующих акторов у заданий
 	for k,v in self.Job do
-		if v.object ~= nil then
-			-- проверить что этот актор есть в обжектах
-			if is_object_online(v.object) then
-				if self.Object[v.object] == nil then
-					v.object = nil				
-				end
-			end			
-		end	
-		-- обнуление заданий, не подходящих под текущее состояние
-		local avail = false
-		for key,stat in v.state do
-			if stat == self.state then
-				avail = true
-			end
-		end
-		if avail == false then
+		-- проверить что этот актор есть в обжектах
+		if v.object ~= nil and self.Object[v.object:id()] == nil then
 			v.object = nil				
 		end
 	end
 
-
-	-- проверка незанятых точек, переведение сталкеров на более приоритетные задания
-	-- такую проверку нужно делать раз в какое то время
-	local order = false
 	if self.checkBegin == nil or
 	   game.time() - self.checkBegin > self.checkTime then
-		order = true
-	end
+		self:updateJob()
+	end		
+end
+function fract:updateJob()
+	self.checkBegin = game.time()
 
-	-- и затем итерировать на этой таблице при выдаче работы
-	if order then
-		self.checkBegin = game.time()
-		for k,v in self.Object do
-			self:setJob(v)
+	for k,v in self.Job do
+		local npc = nil
+
+		-- проверяем что данная работа доступна при текущем состоянии лагеря
+		local avail = false
+		for key,stat in v.state do
+			if stat == self.state then
+				avail = true
+				break
+			end
 		end
---		self:print()
+		if avail == false then
+			v.object = nil
+		else
+			-- Если данная должность занята - продолжаем
+			if v.object == nil then
+				-- Находим одного из свободных 
+				for k,v in self.Object do
+					if self:getJob(v) == nil then
+						npc = v
+						break
+					end
+				end
+				-- Находим одного из занятых, кого заставим выполнять эту работу
+				if npc == nil then
+					for i = table.getn(self.Job), k, -1 do
+						if self.Job[i].object ~= nil then 
+							npc = self.Job[i].object
+							break
+						end			
+					end
+				end
+			end
+        		if npc ~= nil then 
+				self:setJob(npc, v) 
+			end
+        	end
 	end
+	self:print()
 end
 function fract:print()
 	printf("---------------------- %s ---------------------- State: %d", self.name, self.state)
@@ -131,8 +147,8 @@ function fract:print()
 	for k,v in self.Job do
 		printf("name: %s, prior %d", v.name, v.prior)
 		if v.object ~= nil then
-			printf("    ObjID: %d", v.object)
-			printf("    Actor: %s", self.Object[v.object]:name())
+			printf("    ObjID: %d", v.object:id())
+			printf("    Actor: %s", self.Object[v.object:id()]:name())
 		end
 	end
 end
@@ -332,77 +348,32 @@ function fract:loadJob(name) -- загружает список заданий
 		table.insert(self.Job, t)			
 	end
 end
-function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное задание
-	-- оно должно иметь приоритет выше, чем текущее
-	local t
+function fract:setJob(npc, job) 
+	-- удаляем у этого npc все работы (в сторадже)
+	self:clearAllJob(npc)
 
-	for k,v in self.Job do
-		local ena = false
-		-- проверка что это задание доступно при данном состоянии
-		for kk,vv in v.state do
-			if vv == self.state then
-				ena = true
-				break
-			end
-		end
-		-- проверка что данное задание не занято
-		if v.object ~= nil then ena = false end
-
-		if v.begin ~= nil and game.time() - v.begin < v.idle then
-			ena = false
-		end
-		
-		if ena == true then
-			if t == nil then
-				t = v
-			else
-				-- проверка по приоритету
-				if v.prior > t.prior then
-					t = v
-				end
-			end
-		end
-
+	--устанавливаем данные для текущей работы	
+	if job.name == "guard" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
 	end
-	-- если приоритет выше, чем приоритет текущего задания - тогда пропускаем.
-	if t ~= nil then
-		for k,v in self.Job do
-			if v.object == npc:id() then
-				if v.prior >= t.prior then
-					t = nil
-					break
-				end
-			end
-		end
+	if job.name == "sleeper" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_sleeper.set_sleeper(npc, true, job.path_main)			
 	end
-
-	if t ~= nil then
-		-- удаляем у этого npc все работы (в сторадже)
-		self:clearAllJob(npc)
-
-		--устанавливаем данные для текущей работы	
-		if t.name == "guard" then
-			t.object = npc:id()
-			t.begin = game.time()
-		        xr_guard.set_guard(npc, true, t.path_main, t.path_hideout, t.running, t.search_light)
-		end
-		if t.name == "sleeper" then
-			t.object = npc:id()
-			t.begin = game.time()
-		        xr_sleeper.set_sleeper(npc, true, t.path_main)			
-		end
-		if t.name == "patrol" then
-			t.object = npc:id()
-			t.begin = game.time()
-		        xr_patrol.set_patrol(npc, true, t.patrol_path, t.escape_path)			
-		end
-		if t.name == "follower" then
-			local nn = self:nameStalkerOnJob("patrol")
-			if nn ~= nil then
-				t.object = npc:id()
-				t.begin = game.time()
-			        xr_follower.set_follower(npc, true, nn, t.escape_path)			
-			end
+	if job.name == "patrol" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_patrol.set_patrol(npc, true, job.patrol_path, job.escape_path)			
+	end
+	if job.name == "follower" then
+		local nn = self:nameStalkerOnJob("patrol")
+		if nn ~= nil then
+			job.object = npc
+			job.begin = game.time()
+		        xr_follower.set_follower(npc, true, nn, job.escape_path)			
 		end
 	end
 end
@@ -422,8 +393,9 @@ function fract:getJobLabel()
 	return jj
 end
 function fract:getJob(npc)
+	if npc == nil then return nil end
 	for k,v in self.Job do
-		if v.object == npc:id() then	
+		if v.object ~= nil and v.object:id() == npc:id() then	
 			return v.name
 		end
 	end
@@ -432,7 +404,7 @@ end
 function fract:clearAllJob(npc)
 	-- изменения в списке заданий
 	for k,v in self.Job do
-		if v.object == npc:id() then	
+		if v.object ~= nil and v.object:id() == npc:id() then	
 			v.object = nil
 		end
 	end
@@ -454,7 +426,7 @@ function fract:nameStalkerOnJob(job_name)
 	for k,v in self.Job do
 		if v.name == job_name then
 			if v.object ~= nil then
-				return self.Object[v.object]:name()
+				return self.Object[v.object:id()]:name()
 			end
 		end
 	end
@@ -621,6 +593,10 @@ end
 function getFractionState(name)
 	return xr_gulag.fraction[name]:getState()
 end
+function resetJob(fraction, npc)
+	xr_gulag.fraction[fraction]:clearAllJob(npc)
+	xr_gulag.fraction[fraction]:updateJob()
+end         
 function isUnderFraction(npc)
 	for k,v in xr_gulag.fraction do
 		if v:stalkerExsist(npc) == true then
@@ -629,10 +605,6 @@ function isUnderFraction(npc)
 	end
 	return nil
 end             
-function resetJob(fraction, npc)
-	xr_gulag.fraction[fraction]:clearAllJob(npc)
-	xr_gulag.fraction[fraction]:calculate()
-end         
 function getJob(fraction, npc)
 	if fraction ~= nil and npc ~= nil then
 		return xr_gulag.fraction[fraction]:getJob(npc)
