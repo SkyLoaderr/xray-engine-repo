@@ -93,7 +93,7 @@ function fract:calculate()
 	end
 
 	self:updateJob()
-	self:print()
+	--self:print()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
@@ -229,7 +229,7 @@ function fract:stalkerExist(npc)
 end
 function fract:nameStalkerOnJob(job_name)
 	for k,v in self.Job do
-		if v.name == job_name then
+		if v.section == job_name then
 			if v.object ~= nil then
 				return self.Object[v.object:id()]:name()
 			end
