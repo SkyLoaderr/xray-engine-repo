@@ -66,7 +66,7 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 		xrLIGHT& xrL	= Lights[I->id];
 		Fvector& LP		= xrL.position;
 
-		for (int it=0; it<30; it++)
+		for (int it=0; it<1; it++)
 		{
 			// Random point inside range
 			Fvector			P;
@@ -82,9 +82,9 @@ void	CLightDB_Static::Track(Fvector &pos, float fRadius, CLightTrack& dest)
 			else														amount +=	lt_inc;
 		}
 		
-		I->test			= amount/30; // * dt;
+		I->test			+= amount * dt;
 		clamp			(I->test,-.5f,1.f);
-		I->energy		= I->test; // .9f*I->energy + .1f*I->test;
+		I->energy		= .5f*I->energy + .5f*I->test;
 
 		float	E		= I->energy * xrL.diffuse.magnitude_rgb();
 		if (E > EPS)	
