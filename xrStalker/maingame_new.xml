@@ -115,7 +115,7 @@
     
 	<!-- MONEY INDICATORS. MP ONLY -->
 	<money_mt_static		x="860" y="40" width="200" height="200">
-		<text x="85" y="5" font="small" r="255" g="255" b="255" a="130">money</text>
+		<text x="85" y="4" font="small" r="255" g="255" b="255" a="130">money</text>
 		<texture>ui\ui_mn_weapons</texture>
 		
 		<phrase x="20" y="15" font="graffiti50" r="238" g="155" b="23" a="255"></phrase>
