@@ -1299,18 +1299,21 @@ void copy_globals(lua_State *L)
 
 bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 {
-	LPSTR				SS = (LPSTR)malloc(4096);
+	LPSTR				SS = (LPSTR)xr_malloc(4096), SS1 = (LPSTR)xr_malloc(4096);
 	string256			S1;
 	sprintf				(SS,"local this = %s\n",N);
 	strcpy				(S1,"@");
 	strcat				(S1,S);
+	luaL_loadbuffer		(L,SS,xr_strlen(SS),S1);
+	lua_call			(L,0,0);
+
 	FILE				*f = fopen(S,"rt");
-	int					ii = strlen(SS);
-	fread				(SS + strlen(SS),1,90,f);
+	fread				(SS1,1,90,f);
 	fclose				(f);
 
-	if (luaL_loadbuffer		(L,SS,ii + 90,S1)) {
-		free			(SS);
+	if (luaL_loadbuffer(L,SS1,90,S1)) {
+		xr_free			(SS);
+		xr_free			(SS1);
 		printf			("\n");
 		for (int i=0; ; i++)
 			if (lua_isstring(L,i))
@@ -1320,7 +1323,9 @@ bool do_file(lua_State *L, LPCSTR N, LPCSTR S, bool bCall)
 		lua_pop			(L,i + 4);
 		return			(false);
 	}
-
+	xr_free				(SS);
+	xr_free				(SS1);
+	
 	if (bCall)
 		lua_call		(L,0,0);
 	else
@@ -1386,7 +1391,7 @@ luabind::object return_this(LPCSTR namespace_name)
 	LPSTR				S = S1;
 	luabind::object		lua_namespace = luabind::get_globals(L);
 	for (;;) {
-		if (!strlen(S))
+		if (!xr_strlen(S))
 			return		(lua_namespace);
 		LPSTR			I = strchr(S,'.');
 		if (!I)
@@ -1400,8 +1405,6 @@ luabind::object return_this(LPCSTR namespace_name)
 luabind::object lua_this()
 {
 	lua_Debug	l_tDebugInfo;
-	int			i;
-	const char	*name;
 
 	lua_getstack(L,1,&l_tDebugInfo);
 	lua_getinfo	(L,"nSlu",&l_tDebugInfo);
@@ -1446,7 +1449,7 @@ int __cdecl main(int argc, char* argv[])
 
 	open			(L);
 
-	function		(L,"this",lua_this);
+//	function		(L,"this",lua_this);
 
 	for (int i=1; i<argc; i++) {
 		string256	l_caScriptName;
