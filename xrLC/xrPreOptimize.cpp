@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "build.h"
 
-const int	 HDIM_X = 64;
-const int	 HDIM_Y = 32;
-const int	 HDIM_Z = 64;
+const int	 HDIM_X = 56;
+const int	 HDIM_Y = 24;
+const int	 HDIM_Z = 56;
 
 extern bool			g_bUnregister;
 
