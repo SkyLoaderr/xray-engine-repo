@@ -1015,13 +1015,13 @@ void fill_params(
 //	start.linear_velocity	= 0.f;//0.0001f;
 //	start_set.push_back		(start);
 
-	start.angular_velocity	= PI;
-	start.linear_velocity	= 2.15f;
-	start_set.push_back		(start);
-
-//	start.angular_velocity	= PI_DIV_2;
-//	start.linear_velocity	= 4.5f;
+//	start.angular_velocity	= PI;
+//	start.linear_velocity	= 2.15f;
 //	start_set.push_back		(start);
+
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 4.5f;
+	start_set.push_back		(start);
 
 //	start.angular_velocity	= PI_DIV_4;
 //	start.linear_velocity	= 6.f;
@@ -1031,13 +1031,13 @@ void fill_params(
 //	dest.linear_velocity	= 0.f;
 //	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI;
-	dest.linear_velocity	= 2.15f;
-	dest_set.push_back		(dest);
-
-//	dest.angular_velocity	= PI_DIV_2;
-//	dest.linear_velocity	= 4.5f;
+//	dest.angular_velocity	= PI;
+//	dest.linear_velocity	= 2.15f;
 //	dest_set.push_back		(dest);
+
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 4.5f;
+	dest_set.push_back		(dest);
 
 //	dest.angular_velocity	= PI_DIV_4;
 //	dest.linear_velocity	= 6.f;
