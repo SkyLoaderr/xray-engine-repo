@@ -964,6 +964,7 @@ CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCre
 	m_u16NumItems				= 0;
 	fArmor						= 0.f;
 	accel.set					(0.f,0.f,0.f);
+	velocity.set				(0.f,0.f,0.f);
 }
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
