@@ -5,15 +5,22 @@
 
 struct CCellVertex {
 	u32		m_vertex_id;
-	u32		m_mark;
+	union {
+		struct {
+			u32	m_mark : 24;
+			u32	m_use  : 8;
+		};
+		u32		m_data;
+	};
 
 			CCellVertex		()
 	{
 	}
 
-			CCellVertex		(u32 vertex_id, u32 mark) :
+			CCellVertex		(u32 vertex_id, u32 mark, u32 use) :
 				m_vertex_id(vertex_id),
-				m_mark(mark)
+				m_mark(mark),
+				m_use(use)
 	{
 	}
 };
@@ -50,24 +57,13 @@ struct CSector : public IPureSerializeObject<IReader,IWriter> {
 	}
 };
 
-struct CCellInfo {
-	CCellVertex	*m_cell;
-	u8			m_use;
-
-	IC			CCellInfo	(CCellVertex *cell, u8 use)
-	{
-		m_cell	= cell;
-		m_use	= use;
-	}
-};
-
 typedef CGraphAbstract<CSector,float,u32,u32>	CSectorGraph;
 typedef xr_vector<CCellVertex>					VERTEX_VECTOR;
 typedef xr_vector<VERTEX_VECTOR>				VERTEX_VECTOR1;
 typedef xr_vector<VERTEX_VECTOR1>				VERTEX_VECTOR2;
-typedef xr_vector<CCellInfo>					CROSS_VECTOR;
+typedef xr_vector<CCellVertex*>					CROSS_VECTOR;
 
-IC	const CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
+IC	CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 {
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
@@ -77,7 +73,7 @@ IC	const CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_
 
 	NODEFAULT;
 #ifdef DEBUG
-	static CCellVertex		last_result(u32(-1),0);
+	static CCellVertex		last_result(u32(-1),0,0);
 	return					(last_result);
 #endif
 }
@@ -90,9 +86,8 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECT
 	for ( ; I != E; ++I)
 		if (!(*I).m_mark && (_link == (*I).m_vertex_id)) {
 			(*I).m_mark		= group_id;
-			CCellInfo		&i = cross[_link];
-			i.m_cell		= &*I;
-			i.m_use			|= use;
+			(*I).m_use		|= use;
+			cross[_link]	= &*I;
 			vertex			= *I;
 			return			(true);
 		}
@@ -110,9 +105,8 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex1, CCellVerte
 			if (link2 != (*I).m_vertex_id)
 				return		(false);
 			(*I).m_mark		= group_id;
-			CCellInfo		&i = cross[link2];
-			i.m_cell		= &*I;
-			i.m_use			|= use;
+			(*I).m_use		|= use;
+			cross[link2]	= &*I;
 			return			(true);
 		}
 	return					(false);
@@ -124,10 +118,8 @@ IC	void remove_mark(VERTEX_VECTOR &vertices, u32 group_id, CROSS_VECTOR &cross)
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
 		if ((*I).m_mark == group_id) {
-			(*I).m_mark		= 0;
-			CCellInfo		&i = cross[(*I).m_vertex_id];
-			i.m_cell		= 0;
-			i.m_use			= 0;
+			(*I).m_data				= 0;
+			cross[(*I).m_vertex_id]	= 0;
 			return;
 		}
 	NODEFAULT;
@@ -152,9 +144,8 @@ IC	void fill_mark(
 {
 	++group_id;
 	cell_vertex.m_mark			= group_id;
-	CCellInfo					&ci = cross[cell_vertex.m_vertex_id];
-	ci.m_cell					= &cell_vertex;
-	ci.m_use					= left | up;
+	cross[cell_vertex.m_vertex_id]	= &cell_vertex;
+	cell_vertex.m_use			= left | up;
 	CCellVertex					v = cell_vertex, v1;
 
 	VERTEX_VECTOR1				&vi = table[i];
@@ -162,8 +153,9 @@ IC	void fill_mark(
 		if (vi[j2].empty() || !connect(level_graph,v,vi[j2],group_id,2,cross,up))
 			break;
 
-	v							= get_vertex_by_group_id(vi[j2-1],group_id);
-	cross[v.m_vertex_id].m_use	|= right;
+	CCellVertex					&_v = get_vertex_by_group_id(vi[j2-1],group_id);
+	_v.m_use					|= right;
+	v							= _v;
 	bool						ok = true;
 
 	VERTEX_VECTOR1::iterator	_j2, j1, j1_1, i1_1_j1;
@@ -197,8 +189,9 @@ IC	void fill_mark(
 		}
 
 		if (ok) {
-			v							= get_vertex_by_group_id(*j1_1,group_id);
-			cross[v.m_vertex_id].m_use	|= right;
+			CCellVertex					&_v = get_vertex_by_group_id(*j1_1,group_id);
+			_v.m_use					|= right;
+			v							= _v;
 			continue;
 		}
 
@@ -207,7 +200,7 @@ enough:
 			VERTEX_VECTOR1::iterator		j1 = (*i1_1).begin() + j;
 			VERTEX_VECTOR1::iterator		_j2 = (*i1_1).begin() + j2;
 			for ( ; j1 != _j2; ++j1)
-				cross[get_vertex_by_group_id(*j1,group_id).m_vertex_id].m_use	|= down;
+				get_vertex_by_group_id(*j1,group_id).m_use	|= down;
 			break;
 		}
 	}
@@ -257,7 +250,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 	// allocating memory
 	VERTEX_VECTOR2				table;
 	CROSS_VECTOR				cross;
-	cross.assign				(n,CCellInfo(0,false));
+	cross.assign				(n,0);
 	{
 		table.resize				(max_z - min_z + 1);
 		u32							size_x = max_x - min_x + 1;
@@ -271,13 +264,13 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 
 	{
 		u32									cur_x, cur_z;
-		CCellVertex							v(0,0);
+		CCellVertex							v(0,0,0);
 		CLevelGraph::const_vertex_iterator	I = level_graph.begin();
 		CLevelGraph::const_vertex_iterator	E = level_graph.end();
 		for ( ; I != E; ++I, ++v.m_vertex_id) {
 			const CLevelGraph::CPosition	&position = (*I).position();
-			cur_x							= position.x(r);
 			cur_z							= position.z(r);
+			cur_x							= position.x(r);
 			table[cur_z][cur_x].push_back	(v);
 		}
 	}
@@ -330,14 +323,13 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 		CLevelGraph::const_vertex_iterator	e = level_graph.end();
 		for ( ; i != e; ++i) {
 			u32							current_vertex_id = u32(i - b);
-			CCellInfo					&c = cross[current_vertex_id];
-			if (!c.m_use)
-				continue;
-			CCellVertex					*current_cell = c.m_cell;
+			CCellVertex					*current_cell = cross[current_vertex_id];
 			VERIFY						(current_cell);
+			if (!current_cell->m_use)
+				continue;
 			u32							current_mark = current_cell->m_mark - 1;
 			CSectorGraph::CVertex		*sector_vertex = sector_graph.vertex(current_mark);
-			u32 usage					= c.m_use, I;
+			u32 usage					= current_cell->m_use, I;
 			do {
 				I						= usage;
 				usage					&= usage - 1;
@@ -349,7 +341,7 @@ IC	void build_convex_hierarchy(const CLevelGraph &level_graph, CSectorGraph &sec
 				if (!level_graph.valid_vertex_id(vertex_id))
 					continue;
 
-				CCellVertex				*cell = cross[vertex_id].m_cell; VERIFY(cell);
+				CCellVertex				*cell = cross[vertex_id]; VERIFY(cell);
 				u32						mark = cell->m_mark - 1;
 				VERIFY					(mark != current_mark);
 
