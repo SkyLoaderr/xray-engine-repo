@@ -105,8 +105,9 @@ void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 
 void			ISpatial_NODE::_insert			(ISpatial* S)			
 {	
-	S->spatial.node_ptr	= this;
-	items.push_back		(S);										
+	S->spatial.node_ptr			= this;
+	items.push_back				(S);
+	g_SpatialSpace.stat_objects	++;
 }
 
 void			ISpatial_NODE::_remove			(ISpatial* S)			
@@ -115,6 +116,7 @@ void			ISpatial_NODE::_remove			(ISpatial* S)
 	xr_vector<ISpatial*>::iterator	it = std::find(items.begin(),items.end(),S);
 	VERIFY				(it!=items.end());
 	items.erase			(it);
+	g_SpatialSpace.stat_objects	--;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -111,6 +111,7 @@ public:
 	float							m_bounds;
 	xr_vector<ISpatial*>			q_result;
 	u32								stat_nodes;
+	u32								stat_objects;
 	CStatTimer						stat_insert;
 	CStatTimer						stat_remove;
 private:
