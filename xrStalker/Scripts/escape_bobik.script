@@ -7,14 +7,14 @@ local bobik_home = nil
 function main()
 	bobik_home = patrol("point_bobik"):point(0)
 
-	local dog = m_monster_ai.m_MonsterBobik("dog_bobik", script_name(), "point_bobik", 8 )
+//	local dog = m_monster_ai.m_MonsterBobik("dog_bobik", script_name(), "point_bobik", 8 )
 
-	while(dog:execute()) do
-		wait()
-	end
+//	while(dog:execute()) do
+//		wait()
+//	end
 	
 	bobik_die()
-	dog:finalize()
+//	dog:finalize()
 end
 
 local alarm   = false
