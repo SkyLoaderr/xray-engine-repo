@@ -8,17 +8,7 @@
 
 #pragma once
 
-#define MAX_DYNAMIC_SOUNDS  			32
-#define MAX_HURT_COUNT					32
-#define MAX_SEARCH_COUNT				32
-
-#define MAX_TIME_RANGE_SEARCH			5000.f
-#define	MAX_HEAD_TURN_ANGLE				(2.f*PI_DIV_6)
-
-#define	STALKER_SND_STEP_COUNT			2
-
-#define SOUND_UPDATE_DELAY				3000
-
+#define	MAX_HEAD_TURN_ANGLE				(1.f*PI_DIV_4)
 #define R2D(x)							(angle_normalize(x)*180.f/PI)
 
 DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);

@@ -147,6 +147,7 @@ public:
 	virtual	void									reinit					();
 	virtual	void									reload					(LPCSTR section);
 	virtual	void									update					(u32 time_delta);
+			float									path_direction_angle	();
 	IC		void									set_head_orientation	(const MonsterSpace::SBoneRotation &orientation);
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;
 	IC		const MonsterSpace::EMovementType		movement_type			() const;
