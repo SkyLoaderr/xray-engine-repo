@@ -172,6 +172,7 @@ Device.Statistic.TEST0.End		();
 
 			// Color
 #pragma todo("Color decompression broken")
+#pragma todo("Prof want .75% from hemi")
 			/*
 			DetailPalette*	c_pal			= (DetailPalette*)&DS.color;
 			float gray255	[4];
@@ -187,7 +188,7 @@ Device.Statistic.TEST0.End		();
 			Item.c_rgb.x					=	DS.r_qclr		(DS.c_r,15);
 			Item.c_rgb.y					=	DS.r_qclr		(DS.c_g,15);
 			Item.c_rgb.z					=	DS.r_qclr		(DS.c_b,15);
-			Item.c_hemi						=	DS.r_qclr		(DS.c_hemi,15);
+			Item.c_hemi						=	.75f*DS.r_qclr		(DS.c_hemi,15);
 			Item.c_sun						=	DS.r_qclr		(DS.c_dir,15);
 
 			// Vis-sorting
