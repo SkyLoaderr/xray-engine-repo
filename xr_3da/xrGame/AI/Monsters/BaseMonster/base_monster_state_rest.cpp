@@ -59,7 +59,7 @@ void CBaseMonsterRest::Replanning()
 void CBaseMonsterRest::Run()
 {
 	if (m_bFollowPath) 
-		if (pMonster->CDetailPathManager::completed(pMonster->Position())) m_bFollowPath = false;
+		if (pMonster->CMonsterMovement::path_completed()) m_bFollowPath = false;
 
 	if (m_bFollowPath) {
 		m_tAction = ACTION_WALK_PATH_END;
