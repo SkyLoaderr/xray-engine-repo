@@ -113,6 +113,7 @@ end
 function action_follow:initialize ()
     action_base.initialize (self)
     state_mgr.set_state(self.object, "idle")
+    self.st.signals = {}
 end
 --------
 function action_follow:execute ()
@@ -120,6 +121,7 @@ function action_follow:execute ()
     -- проверим, а жив ли еще старшќй.
     if db.obj_by_id[self.st.leader_id] == nil or db.obj_by_id[self.st.leader_id]:alive () == false then
        self:free ()
+       self.st.signals["leader_dead"] = true
        return 
     end 
     -- проверим нахождение нас в списке
@@ -275,6 +277,8 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     action:add_effect           (world_property (properties["attendant_follow"], false))
     manager:add_action (operators["attendant_follow"], action)
     military_radio.add (npc, action)
+    
+    --xr_logic.subscribe_action_for_events (npc, storage, action)
     
     action = manager:action     (xr_actions_id.alife)
     action:add_precondition     (world_property (properties["attendant_follow"], false))
