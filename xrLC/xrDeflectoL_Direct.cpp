@@ -50,6 +50,9 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, U
 
 void CDeflector::L_Direct	(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 {
+	R_ASSERT	(DB);
+	R_ASSERT	(LightsSelected);
+
 	b_texture&	lm = layers.back().lm;
 
 	// Setup variables

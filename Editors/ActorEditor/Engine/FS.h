@@ -75,7 +75,7 @@ public:
 		if (type&CFS_AlignMark)	align_correction = align();
 		else					align_correction = 0;
 	}
-	IC void	close_chunk	()
+	IC void		close_chunk	()
 	{
 		VERIFY(!chunk_pos.empty());
 
@@ -85,7 +85,12 @@ public:
 		seek			(pos);
 		chunk_pos.pop	();
 	}
-	IC void write_compressed(void* ptr, DWORD count)
+	IC DWORD	chunk_size	()					// returns size of currently opened chunk, 0 otherwise
+	{
+		if (chunk_pos.empty())	return 0;
+		return tell() - chunk_pos.top()-4-align_correction;
+	}
+	IC void		write_compressed(void* ptr, DWORD count)
 	{
 		BYTE*		dest	= 0;
 		unsigned	dest_sz	= 0;
@@ -94,7 +99,7 @@ public:
 			write(dest,dest_sz);
 		xr_free		(dest);
 	}
-	IC void write_chunk(DWORD type, void* data, DWORD size)
+	IC void		write_chunk(DWORD type, void* data, DWORD size)
 	{
 		open_chunk	(type);
 		if (type & CFS_CompressMark)	write_compressed(data,size);
