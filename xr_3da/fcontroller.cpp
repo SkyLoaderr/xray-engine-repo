@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "x_ray.h"
 #include "xr_input.h"
 #include "fcontroller.h"
