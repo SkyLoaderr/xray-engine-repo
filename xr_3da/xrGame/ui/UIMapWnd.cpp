@@ -417,7 +417,7 @@ void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 					UICharacterInfo.ResetAllStrings();
 
 					UICharacterInfo.UIName.SetText(m_pCurrentMap->m_pActiveMapSpot->m_sNameText);
-					UICharacterInfo.UIText.SetText(m_pCurrentMap->m_pActiveMapSpot->m_sDescText);
+					UICharacterInfo.UIRank.SetText(m_pCurrentMap->m_pActiveMapSpot->m_sDescText);
 					
 				}
 				else
