@@ -9,7 +9,6 @@
 #include "LuaDoc.h"
 #include "LuaView.h"
 
-#include "../xrGame/script_debugger_messages.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -128,7 +127,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	InitDockingWindows();
 
-	LoadBarState(_T("Build"));
+	LoadBarState(_T("Workspace"));
 
 
  	m_pMailSlotThread = AfxBeginThread(StartListener, this,0,0,CREATE_SUSPENDED);
@@ -210,6 +209,7 @@ BOOL CMainFrame::InitDockingWindows()
 		TRACE0("Failed to create dialog bar m_wndWatches\n");
 		return -1;		// fail to create
 	}
+	
 
 	if (!m_wndThreads.Create(this, ID_VIEW_THREADS,
 		_T("Script Threads"), CSize(200,100), CBRS_BOTTOM))
@@ -272,6 +272,7 @@ void CMainFrame::OnClose()
 		m_needAnswer = FALSE;
 	};
 
+	SaveBarState(_T("Workspace"));
 	if ( m_nAppMode!=modeNoProject )
 		GetProject()->SaveModified();
 	
@@ -309,67 +310,79 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	switch( nMsg )
 	{
 	case DMSG_NEW_CONNECTION:
-		m_wndCallStack.Clear();
-		m_wndLocals.RemoveAll();
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Script debugger connected...\n");
-		OnUpdateFrameTitle(TRUE);
+			m_wndCallStack.Clear();
+			m_wndLocals.RemoveAll();
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Script debugger connected...\n");
+			OnUpdateFrameTitle(TRUE);
 		break;
 
 	case DMSG_ACTIVATE_IDE:
-		SendMessage(SW_SHOW,0,0);
-		m_needAnswer = TRUE;
-		OnUpdateFrameTitle(TRUE);
-		SetMode(modeDebugBreak);
+			SendMessage(SW_SHOW,0,0);
+			m_needAnswer = TRUE;
+			OnUpdateFrameTitle(TRUE);
+			SetMode(modeDebugBreak);
 		break;
 
 	case DMSG_WRITE_DEBUG:
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
-		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("\n");
-		break;
-	case DMSG_HAS_BREAKPOINT:
-		return GetProject()->HasBreakPoint((const char*)wParam, (int)lParam);
-	case DMSG_GOTO_FILELINE:
-		GotoFileLine((const char*)wParam, (int)lParam);
-		break;
-	case DMSG_DEBUG_START:
-		SetMode(modeDebug);
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write((const char*)wParam);
+			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("\n");
 		break;
 
-/*	case DMSG_DEBUG_BREAK:
-	case DMSG_SHOW_IDE:
-		SetMode(modeDebugBreak);
-		break;*/
+	case DMSG_GOTO_FILELINE:
+			GotoFileLine((const char*)wParam, (int)lParam);
+		break;
+
+	case DMSG_DEBUG_START:
+			SetMode(modeDebug);
+		break;
 
 	case DMSG_DEBUG_END:
-		SetMode(modeIdle);
+			SetMode(modeIdle);
 		break;
+
 	case DMSG_CLEAR_STACKTRACE:
-		m_wndCallStack.Clear();
+			m_wndCallStack.Clear();
 		break;
+
 	case DMSG_ADD_STACKTRACE:
-		m_wndCallStack.Add(((StackTrace*)wParam)->szDesc, 
-			((StackTrace*)wParam)->szFile, 
-			((StackTrace*)wParam)->nLine);
+			m_wndCallStack.Add(((StackTrace*)wParam)->szDesc, 
+				((StackTrace*)wParam)->szFile, 
+				((StackTrace*)wParam)->nLine);
 		break;
+
 	case DMSG_GOTO_STACKTRACE_LEVEL:
-		m_wndCallStack.GotoStackTraceLevel(wParam);
+			m_wndCallStack.GotoStackTraceLevel(wParam);
 		break;
+
 	case DMSG_GET_STACKTRACE_LEVEL:
-		return m_wndCallStack.GetLevel();
-	case DMSG_CLEAR_LOCALVARIABLES:
-		m_wndLocals.RemoveAll();
+			return m_wndCallStack.GetLevel();
 		break;
+
+	case DMSG_CLEAR_LOCALVARIABLES:
+			m_wndLocals.RemoveAll();
+		break;
+
 	case DMSG_ADD_LOCALVARIABLE:
 		m_wndLocals.AddVariable(((Variable*)wParam)->szName, 
 			((Variable*)wParam)->szType, 
 			((Variable*)wParam)->szValue);
 		break;
-	case DMSG_REDRAW_WATCHES:
-		m_wndWatches.Redraw();
+
+	case DMSG_CLEAR_THREADS:
+			m_wndThreads.RemoveAll();
 		break;
+
+	case DMSG_ADD_THREAD:
+			m_wndThreads.AddThread((SScriptThread*)wParam);
+		break;
+
+	case DMSG_REDRAW_WATCHES:
+			m_wndWatches.Redraw();
+		break;
+
 	case DMSG_GET_BREAKPOINTS:
-		SendBreakPoints();
+			SendBreakPoints();
 		break;
 	}
 
@@ -417,6 +430,10 @@ void CMainFrame::OnUpdateDebugMenu(CCmdUI* pCmdUI)
 	pCmdUI->Enable(m_needAnswer);
 	if(pCmdUI->m_nID==ID_DEBUG_DEBUGBREAK)
 		pCmdUI->Enable(!m_needAnswer);
+
+	if(pCmdUI->m_nID==ID_DEBUG_RUNTOCURSOR)
+		pCmdUI->Enable(TRUE);//fake
+
 }	
 
 void CMainFrame::OnDebugGo() 
@@ -471,6 +488,12 @@ void CMainFrame::OnDebugStepout()
 
 void CMainFrame::OnDebugRuntocursor() 
 {
+	SScriptThread st;
+	st.active = true;
+	st.scriptID = 558;
+	m_wndThreads.AddThread(&st);
+
+	return;
 	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Not implemented yet...\n");
 	SendBreakPoints();
 	return;
@@ -681,78 +704,47 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 	case DMSG_WRITE_DEBUG:{
 			char str[2048];str[0]=0;
 			msg.r_string(str);
-//			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write(str);
 			SendMessage(DMSG_WRITE_DEBUG,(WPARAM)(&str),0);
 		}break;
-/*
-	case DMSG_HAS_BREAKPOINT:{
-	//		msg.w_string((char*)wParam);
-	//		msg.r_int((int)lParam);
-			char str[2048];str[0]=0;
-			int i;
-			msg.r_string(str);
-			msg.r_int(i);
-			
-//			int res = GetProject()->HasBreakPoint(str, i);
-			int res = SendMessage(DMSG_HAS_BREAKPOINT,(WPARAM)str,(LPARAM)i);
-			msg.Reset();
-			msg.w_int(DMSG_HAS_BREAKPOINT);
-			msg.w_int(res);
-			SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
-			if(res)
-			{	
-				char outstr[2048];outstr[0]=0;
-				sprintf(outstr,"breakPoint at %s line %d\n",str,i);
-				SendMessage(DMSG_WRITE_DEBUG,(WPARAM)outstr,0);
-			};
-		}break;*/
 
 	case DMSG_GOTO_FILELINE:{
-	//		msg.w_string((char*)wParam);
-	//		msg.w_int((int)lParam);
 			char str[2048];str[0]=0;
 			int i;
 			msg.r_string(str);
 			msg.r_int(i);
-//			GotoFileLine(str, i);
 			SendMessage (DMSG_GOTO_FILELINE,(WPARAM)str,(LPARAM)i);
-//			GotoFileLine((const char*)wParam, (int)lParam);
 		}break;
 
 	case DMSG_CLEAR_STACKTRACE:{
-//			m_wndCallStack.Clear();
 			SendMessage(DMSG_CLEAR_STACKTRACE,0,0);
 		}break;
 
 	case DMSG_ADD_STACKTRACE:{
-//			msg.w_buff((StackTrace*)wParam, sizeof(StackTrace) );
 			StackTrace st;
 			msg.r_buff((void*)(&st),sizeof(StackTrace));
-//			m_wndCallStack.Add(st.szDesc, st.szFile, st.nLine);
 			SendMessage(DMSG_ADD_STACKTRACE,(WPARAM)(&st),0);
 		}break;
 
 	case DMSG_CLEAR_LOCALVARIABLES:{
-//			m_wndLocals.RemoveAll();
 			SendMessage(DMSG_CLEAR_LOCALVARIABLES,0,0);
 		}break;
 
 	case DMSG_ADD_LOCALVARIABLE:{
-//		msg.w_buff(wParam,sizeof(Variable));
 			Variable v;
 			msg.r_buff(&v,sizeof(Variable));
-//			m_wndLocals.AddVariable(v.szName, v.szType, v.szValue);
 			SendMessage(DMSG_ADD_LOCALVARIABLE,(WPARAM)(&v),0);
 		}break;
 
-/*	case DMSG_GET_STACKTRACE_LEVEL:{
-			msg.Reset();
-			msg.w_int(DMSG_GET_STACKTRACE_LEVEL);
-			
-			int level = SendMessage(DMSG_GET_STACKTRACE_LEVEL,0,0);
-			msg.w_int(level);
-			SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
-		}break;*/
+	case DMSG_CLEAR_THREADS:{
+			SendMessage(DMSG_CLEAR_THREADS,0,0);
+		}break;
+
+	case DMSG_ADD_THREAD:{
+			SScriptThread st;
+			msg.r_buff(&st,sizeof(SScriptThread));
+			SendMessage(DMSG_ADD_THREAD,(WPARAM)(&st),0);
+		}break;
+
 	default:
 		break;
 	}
@@ -801,4 +793,12 @@ BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, i
 	strPathName = strFileLine.Left(nPos1);
 
 	return TRUE;
+}
+void CMainFrame::ThreadChanged(int nThreadID)
+{
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_THREAD_CHANGED);
+	msg.w_int(nThreadID);
+	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 }

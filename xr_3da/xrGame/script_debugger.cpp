@@ -87,6 +87,22 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			SendMessageToIde(msg);
 		}break;
 
+	case DMSG_CLEAR_THREADS:{
+			msg.w_int(DMSG_CLEAR_THREADS);
+			SendMessageToIde(msg);
+		}break;
+
+	case DMSG_ADD_THREAD:{
+			msg.w_int(DMSG_ADD_THREAD);
+			msg.w_buff((void*)wParam,sizeof(SScriptThread));
+			SendMessageToIde(msg);
+		}break;
+
+	case DMSG_THREAD_CHANGED:{
+			int nThreadID = (int)wParam;
+			DrawThreadInfo(nThreadID);
+		}break;
+
 	case DMSG_REDRAW_WATCHES:{
 //			m_wndWatches.Redraw();
 		}break;
@@ -190,13 +206,32 @@ void CScriptDebugger::FunctionHook(const char *szFile, int nLine, BOOL bCall)
 	m_nLevel += (bCall?1:-1);
 }
 
-void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
+void CScriptDebugger::DrawThreadInfo(int nThreadID)
 {
-	m_nMode = DMOD_NONE;
+	//find corresponding lua_state
+	lua_State* ls = m_threads.FindScript(nThreadID);
+	if(!ls)
+		return;
+	m_lua.set_lua(ls);
+	DrawCurrentState();
+}
+
+void CScriptDebugger::DrawCurrentState()
+{
 	m_lua.DrawStackTrace();
 	m_callStack.SetStackTraceLevel(0);
 	m_lua.DrawGlobalVariables();
 	_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, GetStackTraceLevel(), 0);
+}
+
+void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
+{
+	m_nMode = DMOD_NONE;
+
+	m_threads.Fill();
+	m_threads.DrawThreads();
+
+	DrawCurrentState();
 
 	_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
 }
@@ -364,6 +399,13 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 			return false;
 		}break;
 
+	case DMSG_THREAD_CHANGED:{
+			int nThreadID;
+			msg->r_int(nThreadID);
+			_SendMessage(DMSG_THREAD_CHANGED, nThreadID, 0);
+			return false;
+		}break;
+
 	default:
 		return false;
 	}
@@ -408,4 +450,14 @@ void CScriptDebugger::FillBreakPointsIn(CMailSlotMsg* msg)
 			m_breakPoints.push_back(bp);
 		}
 	}
+}
+
+void CScriptDebugger::ClearThreads()
+{
+	_SendMessage(DMSG_CLEAR_THREADS, 0, 0);
+}
+
+void CScriptDebugger::AddThread(SScriptThread& th)
+{
+	_SendMessage(DMSG_ADD_THREAD, (WPARAM)(&th), 0);
 }

@@ -165,6 +165,10 @@ int CDbgLuaHelper::errormessageLua(lua_State* l)
 	return 0;
 }
 
+void CDbgLuaHelper::set_lua(lua_State * l)
+{
+	m_pThis->L = l;
+}
 
 void CDbgLuaHelper::line_hook (lua_State *l, lua_Debug *ar)
 {

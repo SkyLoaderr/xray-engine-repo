@@ -71,10 +71,11 @@ int CWatchBar::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 void CWatchBar::OnEndlabeledit(NMHDR* pNMHDR, LRESULT* pResult) 
 {
-	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
+	return; //fake
+/*	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
 	// TODO: Add your control notification handler code here
 	if ( pDispInfo->item.pszText )
 		m_watches.AddEditItem(pDispInfo->item);
-
+*/
 	*pResult = 0;
 }

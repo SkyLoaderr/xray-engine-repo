@@ -42,7 +42,7 @@ public:
 	static void errormessageLuaBind			(lua_State* );
 	static void line_hook					(lua_State *, lua_Debug *);
 	static void func_hook					(lua_State *, lua_Debug *);
-	int			CheckResult					(lua_State* l);
+	static void set_lua						(lua_State *);
 protected:
 	static		CDbgLuaHelper*				m_pThis;
 

@@ -58,7 +58,7 @@
 #define ID_DEBUG_STEPOUT                32789
 #define ID_DEBUG_STEPINTO               32792
 #define ID_DEBUG_GO                     32793
-#define ID_DEBUG_RUNTOCURSOR            -32742
+#define ID_DEBUG_RUNTOCURSOR            32742
 #define ID_TOGGLE_BREAKPOINT            32798
 #define ID_FILE_NEWPROJECT              32799
 #define ID_FILE_CLOSEPROJECT            32800

@@ -15,6 +15,31 @@ struct Variable
 	Variable(){szName[0]=0;szType[0]=0;szValue[0]=0;};
 };
 
+struct SScriptThread{
+	void*			pScript;
+	int				scriptID;
+	bool			active;
+	char			name[255];
+	char			processor[255];
+	SScriptThread():pScript(0),scriptID(-1),active(false){name[0]=0;processor[0]=0;};
+	SScriptThread(const SScriptThread& other)
+	{
+		operator = (other);
+	};
+	SScriptThread& operator = (const SScriptThread& other){
+		pScript			= other.pScript;
+		scriptID		= other.scriptID;
+		active			= other.active;
+		name[0]			=0;
+		processor[0]	=0;
+		strcat(name,other.name);
+		strcat(processor,other.processor);
+
+		return *this;
+	}
+};
+
+
 #define DEBUGGER_MAIL_SLOT		"\\\\.\\mailslot\\script_debugger_mailslot"
 #define IDE_MAIL_SLOT			"\\\\.\\mailslot\\script_ide_mailslot"
 
@@ -50,5 +75,8 @@ struct Variable
 #define DMSG_NEW_CONNECTION			WM_USER+26
 #define DMSG_DEBUG_GO				WM_USER+27
 #define DMSG_GET_BREAKPOINTS		WM_USER+28
+#define DMSG_CLEAR_THREADS			WM_USER+29
+#define DMSG_ADD_THREAD				WM_USER+30
+#define DMSG_THREAD_CHANGED			WM_USER+31
 
-#define _DMSG_LAST_MSG			DMSG_GET_BREAKPOINTS
+#define _DMSG_LAST_MSG			DMSG_THREAD_CHANGED

@@ -20,6 +20,8 @@ DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 {
 	Msg				("* Initializing %s script processor",caCaption);
+	m_name[0]		= 0;
+	strcat(m_name,caCaption);
 	u32				N = _GetItemCount(caScriptString);
 	string256		I;
 	for (u32 i=0; i<N; ++i)

@@ -2,6 +2,7 @@
 
 
 #include "script_lua_helper.h"
+#include "script_debugger_threads.h"
 #include "script_CallStack.h"
 #include "script_debugger_messages.h"
 #include "script_debugger_utils.h"
@@ -66,6 +67,9 @@ public:
 	void			StepOut				();
 	void			RunToCursor			();
 
+	void			ClearThreads		();
+	void			AddThread			(SScriptThread&);
+
 	void			ClearStackTrace		();
 	void			AddStackTrace		(const char* strDesc, const char* strFile, int nLine);
 	int				GetStackTraceLevel	();
@@ -75,6 +79,8 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
+	void			DrawCurrentState	();
+	void			DrawThreadInfo		(int nThreadID);
 	void			GetBreakPointsFromIde();
 	void			FillBreakPointsIn	(CMailSlotMsg* msg);
 	bool			HasBreakPoint		(const char* fileName, s32 lineNum);
@@ -84,8 +90,8 @@ protected:
 	bool			TranslateIdeMessage (CMailSlotMsg*);
 	void			SendMessageToIde	(CMailSlotMsg&);
 
-	UINT			StartDebugger		();	
 
+	CDbgScriptThreads					m_threads;
 	CDbgLuaHelper						m_lua;
 	CScriptCallStack					m_callStack;
 	static CScriptDebugger*				m_pDebugger;

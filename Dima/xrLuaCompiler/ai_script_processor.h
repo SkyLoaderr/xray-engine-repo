@@ -20,7 +20,7 @@ protected:
 	string4096				m_caOutput;
 	xr_vector<LPSTR>		m_scripts_to_run;
 	xr_vector<LPSTR>		m_strings_to_run;
-
+	string256				m_name;
 protected:
 			void		run_scripts					();
 			void		run_strings					();
@@ -31,4 +31,6 @@ public:
 			void		update						();
 			void		add_script					(LPCSTR					script_name);
 			void		add_string					(LPCSTR					string_to_run);
+			const SCRIPT_VECTOR&	scripts			() const {return m_tpScripts;};
+			LPCSTR		name						() const {return m_name;};
 };
