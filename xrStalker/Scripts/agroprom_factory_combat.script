@@ -114,6 +114,8 @@ function main()
     local zone = get_level_object( "zone_factory_combat" )
     zone:set_callback( on_enter, true )
 
+    printf( "[%s] zone callback set", script_name() )
+
     way  = patrol( "way_factory_combat" )
 
     for i = 1, table.getn( shoot_points ) do
