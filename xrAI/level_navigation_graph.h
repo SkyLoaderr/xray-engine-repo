@@ -86,7 +86,7 @@ protected:
 	IC		void				fill_cell				(CCellVertex &v, u32 link);
 	IC		void				fill_cells				();
 	IC		void				update_cells			(u32 &vertex_id, u32 &right, u32 &down);
-	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down);
+	IC		void				select_sector			(CCellVertex *v, u32 &right, u32 &down, u32 max_square);
 	IC		bool				select_sector			(u32 &vertex_id, u32 &right, u32 &down);
 	IC		void				build_sector			(u32 vertex_id, u32 right, u32 down, u32 &group_id);
 	IC		void				generate_sectors		();

@@ -474,18 +474,15 @@ IC	void CLevelNavigationGraph::update_cells	(u32 &vertex_id, u32 &right, u32 &do
 #endif
 }
 
-IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down)
+IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &down, u32 max_square)
 {
-	u32						max_square;
 	VERIFY					(!v->m_mark);
 
 	if (v->m_right >= v->m_down) {
-		max_square			= v->m_right;
 		right				= v->m_right;
 		down				= 1;
 	}
 	else {
-		max_square			= v->m_down;
 		right				= 1;
 		down				= v->m_down;
 	}
@@ -533,50 +530,6 @@ IC	void CLevelNavigationGraph::select_sector	(CCellVertex *v, u32 &right, u32 &d
 		if (right_id == v->m_right_id)
 			break;
 	}
-
-	for	(u32 down_id = vertex(v->m_vertex_id)->link(2), i=2, min_side = v->m_right; ; down_id = vertex(down_id)->link(2), ++i) {
-		if (!valid_vertex_id(down_id))
-			break;
-
-		if (m_cross[down_id]->m_mark)
-			break;
-
-		u32					current_right = m_cross[down_id]->m_right;
-
-		if (m_cross[down_id]->m_right < min_side)
-			min_side		= m_cross[down_id]->m_right;
-		else
-			current_right	= min_side;
-
-		if (current_right*v->m_down <= max_square)
-			break;
-
-		for	(u32 right_id = vertex(down_id)->link(1), j=2; j <= current_right; right_id = vertex(right_id)->link(1), ++j) {
-			if (m_cross[right_id]->m_mark)
-				break;
-
-			u32				up_link = vertex(right_id)->link(0);
-			
-			if (!valid_vertex_id(up_link))
-				break;
-
-			if (vertex(up_link)->link(2) != right_id)
-				break;
-		}
-		--j;
-
-		if (j<min_side)
-			min_side		= j;
-
-		if (i*j > max_square) {
-			max_square		= i*j;
-			right			= j;
-			down			= i;
-		}
-
-		if (vertex_id == v->m_down_id)
-			break;
-	}
 }
 
 IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &down)
@@ -590,7 +543,7 @@ IC	bool CLevelNavigationGraph::select_sector	(u32 &vertex_id, u32 &right, u32 &d
 			return			(true);
 		}
 
-		select_sector		(*I,current_right,current_down);
+		select_sector		(*I,current_right,current_down,max_square);
 
 		if (current_right*current_down <= max_square)
 			continue;
@@ -639,14 +592,16 @@ IC	void CLevelNavigationGraph::generate_sectors()
 	u32						group_id = 0;
 	u32						id,right,down;
 	
+	Msg						("Filling cross");
 	fill_cross				();
+	Msg						("Filling cells");
 	fill_cells				();
+	Msg						("Building sectors");
 	while (select_sector(id,right,down)) {
 		build_sector		(id,right,down,group_id);
 		update_cells		(id,right,down);
 	}
 	Msg						("nodes %d, vertices %d",m_global_count,sectors().vertex_count());
-	m_global_count			= header().vertex_count();
 }
 
 #endif
