@@ -538,6 +538,7 @@ function add_stalker( self, obj )
 			t:add( game.get_game_time() )
 
 			o:move_offline( false )
+			sim:set_switch_online(  o_id, true )
 			sim:set_switch_offline( o_id, false )
 
 			self.gulag:addObject( obj )
