@@ -10,6 +10,7 @@
 #include "group.h"
 #include "tracer.h"
 #include "dynamicheightmap.h"
+#include "rain.h"
 #include "ai_space.h"
 #include "..\fixedset.h"
 
@@ -63,6 +64,7 @@ public:
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
 	CHeightMap					HeightMap;
+	CEffect_Rain				eff_Rain;
 
 	// Starting/Loading
 	virtual BOOL				net_Server				( LPCSTR name_of_level	);
