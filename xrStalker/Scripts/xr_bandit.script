@@ -20,7 +20,7 @@ function bandit:addObject(npc, leader)
 		self.leader = npc
 	else
 		if self.bandits[npc:id()] == nil then
-			table.insert(self.bandits, npc:id(), npc)
+			self.bandits[npc:id()] = npc
 		end             	
 	end
 end
@@ -150,7 +150,7 @@ function bandit:updateJob()
 			end
         	end
 	end
---	self:print()
+	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
