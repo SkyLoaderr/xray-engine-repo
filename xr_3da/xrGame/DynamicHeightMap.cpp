@@ -126,6 +126,7 @@ float CHM_Static::Query	(Fvector2& pos)
 	int			v_z		= iFloor(pos.z/dhm_size);
 	int			dx		= v_x - c_x;
 	int			dz		= v_z - c_z;
-	int			gx		= dx  - dhm_line;
-	int			gz		= dz  - dhm_line;
+	int			gx		= dx  - dhm_line;	clamp(gx,0,dhm_matrix-1);
+	int			gz		= dz  - dhm_line;	clamp(gz,0,dhm_matrix-1);
+	
 }
