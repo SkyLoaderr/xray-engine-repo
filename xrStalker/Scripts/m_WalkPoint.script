@@ -227,9 +227,9 @@ end
 function sSitIdle:execute()
     if( self.memory.npc:action() == nil ) then
         if( math.random() > 0.5 ) then
-        	action( self.memory.npc, anim( anim.sit_idle, 0 ), cond( cond.time_end, 20000 ) )
+        	action( self.memory.npc, anim( anim.sit_idle, 0 ), sound(sound.idle), cond( cond.time_end, 20000 ) )
         else
-		    action( self.memory.npc, anim( anim.lie_idle, 0 ), cond( cond.time_end, 20000 ) )
+		    action( self.memory.npc, anim( anim.lie_idle, 0 ), sound(sound.idle), cond( cond.time_end, 20000 ) )
         end
     end
 end
