@@ -1104,7 +1104,7 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="EditorProperties"
+					Name="editor_properties"
 					Filter="">
 					<File
 						RelativePath=".\ChooseTypes.h">

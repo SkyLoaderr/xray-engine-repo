@@ -48,6 +48,15 @@ bool equal(T *self, const T &f, const typename T::TYPE mask)
 	return	(!!self->equal(f,mask));
 }
 
+extern CScriptPropertiesListHelper *g_property_list_helper;
+
+CScriptPropertiesListHelper *properties_helper()
+{
+	if (!g_property_list_helper)
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Editor is not started, therefore prop_helper cannot be accessed!");
+	return								(g_property_list_helper);
+}
+
 void CScriptPropertiesListHelper::script_register(lua_State *L)
 {
 	module(L) [
@@ -243,6 +252,6 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Fvector*, float, float, float))(&CScriptPropertiesListHelper::CreateAngle3))
 			.def("create_vangle",(VectorValue *(CScriptPropertiesListHelper::*)(PropItemVec&, LPCSTR, Fvector*, float, float, float,int))(&CScriptPropertiesListHelper::CreateAngle3))
 
-		,def("properties_helper",	&PHelper)
+		,def("properties_helper",	&properties_helper)
 	];
 }
