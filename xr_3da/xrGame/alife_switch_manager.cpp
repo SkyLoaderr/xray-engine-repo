@@ -153,7 +153,7 @@ void CALifeSwitchManager::switch_online(CSE_ALifeDynamicObject *object)
 	if (l_tpAnomalousZone && (l_tpAnomalousZone->m_maxPower < EPS_L))
 		return;
 
-	object->m_bOnline	= true;
+	object->m_bOnline				= true;
 
 	CSE_ALifeGroupAbstract			*tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(object);
 	if (tpALifeGroupAbstract) {
@@ -169,14 +169,14 @@ void CALifeSwitchManager::switch_online(CSE_ALifeDynamicObject *object)
 				if (l_tpALifeMonsterAbstract)
 					l_tpALifeMonsterAbstract->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
-			add_online	(J, false);
+			add_online				(J, false);
 		}
 		tpALifeGroupAbstract->m_bCreateSpawnPositions = false;
-		scheduled().remove		(object);
-		graph().remove			(object,object->m_tGraphID,false);
+		scheduled().remove			(object);
+		graph().remove				(object,object->m_tGraphID,false);
 	}
 	else
-		add_online		(object);
+		add_online					(object);
 }
 
 void CALifeSwitchManager::switch_offline(CSE_ALifeDynamicObject *object)
@@ -349,6 +349,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 					if (tpGroupMember)
 						// check if monster is not dead
 						if (tpGroupMember->fHealth <= 0) {
+							graph().level().remove			(tpGroupMember);
 							// detach object from the group
 							tpGroupMember->fHealth			= 0.f;
 							tpGroupMember->m_bDirectControl	= true;

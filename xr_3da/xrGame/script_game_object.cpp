@@ -1367,7 +1367,11 @@ bool CScriptGameObject::is_body_turning		() const
 		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member is_turning!");
 		return			(false);
 	}
-	return				(!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+	CStalkerMovementManager	*stalker_movement_manager = dynamic_cast<CStalkerMovementManager*>(m_tpGameObject);
+	if (!stalker_movement_manager)
+		return			(!fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
+	else
+		return			(!fsimilar(stalker_movement_manager->head_orientation().target.yaw,stalker_movement_manager->head_orientation().current.yaw) || !fsimilar(movement_manager->body_orientation().target.yaw,movement_manager->body_orientation().current.yaw));
 }
 
 
