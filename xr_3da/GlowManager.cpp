@@ -55,7 +55,7 @@ void CGlowManager::Load(CStream* fs)
 
 		DWORD T		= fs->Rdword();
 		DWORD S		= fs->Rdword();
-		G.hShader	= pCreator->LL_CreateShader(S,T);
+		G.hShader	= pCreator->LL_CreateShader(S,T,-1,-1);
 
 		G.fade		= 255.f;
 		G.dwFrame	= 0x0;
@@ -66,6 +66,7 @@ void CGlowManager::Load(CStream* fs)
 	Selected_Count	= 0;
 	dwTestID		= 0;
 }
+
 void CGlowManager::Unload()
 {
 	// shaders

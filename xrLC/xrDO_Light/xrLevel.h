@@ -72,6 +72,6 @@ struct NodeCompressed
 #pragma pack(pop)
 
 #define XRCL_CURRENT_VERSION	11
-#define XRCL_PRODUCTION_VERSION	6
+#define XRCL_PRODUCTION_VERSION	7
 #define CFORM_CURRENT_VERSION	2
 #define XRAI_CURRENT_VERSION	2
