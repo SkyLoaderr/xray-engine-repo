@@ -1,0 +1,24 @@
+-- Помощник, мать его... 
+-- Создано Сидоровичем at 25.08.2004
+
+
+
+-----------------------------------------------------------------------
+function add_to_binder (obj, char_ini)
+    
+end
+-----------------------------------------------------------------------
+function set_sos (npc, enabled)
+	local char_ini = npc:spawn_ini()
+	local st = xr_motivator.storage[npc:id()].patrol
+    if enabled == nil then
+       if char_ini:section_exist ("sos") == true and char_ini:line_exist("sos", "enabled") == true then
+          st.enabled = char_ini:r_bool("sos", "enabled")
+       else 
+          st.enabled = false   
+       end
+    else
+       st.enabled = enabled     
+    end
+end
+-----------------------------------------------------------------------
