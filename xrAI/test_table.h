@@ -66,7 +66,7 @@ public:
 			case 3 : return		(node_index + 1);
 			default: NODEFAULT;
 		}
-		return					(-1);
+		return					(u32(-1));
 	}
 
 	IC		bool		is_accessible	(const u32 node_index) const

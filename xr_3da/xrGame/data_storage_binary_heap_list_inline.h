@@ -64,7 +64,7 @@ IC	void CBinaryHeapList::push_front				(CGraphVertex &vertex)
 			i->next()			= &vertex;
 			return;
 		}
-		VERIFY					(false);
+	VERIFY						(false);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -78,7 +78,7 @@ IC	void CBinaryHeapList::push_back					(CGraphVertex &vertex)
 			i->prev()			= &vertex;
 			return;
 		}
-		VERIFY					(false);
+	VERIFY						(false);
 }
 
 TEMPLATE_SPECIALIZATION

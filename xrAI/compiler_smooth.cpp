@@ -45,7 +45,7 @@ BOOL	ValidNode(vertex& N)
 	{
 		tri&		D = tris.last();
 		CDB::RESULT&rp = XRC.r_begin()[i];
-		CDB::TRI&	T = *(Level.get_tris()+XRC.r_begin()[i].id);
+		*(Level.get_tris()+XRC.r_begin()[i].id);
 
 		D.v[0].set	(rp.verts[0]);
 		D.v[1].set	(rp.verts[1]);
@@ -79,7 +79,7 @@ BOOL	ValidNode(vertex& N)
 
 			float	tri_min_range	= flt_max;
 			int		tri_selected	= -1;
-			float	range,u,v;
+			float	range = 0.f,u,v;
 			for (i=0; i<u32(tris.size()); i++) 
 			{
 				if (CDB::TestRayTri(P,D,tris[i].v,u,v,range,false)) 

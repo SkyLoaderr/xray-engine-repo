@@ -494,7 +494,8 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
 			CDB::RESULT&		rp = XRC.r_begin()[i_t];
-			CDB::TRI&	O		= *(Level.get_tris()+rp.id);
+//			CDB::TRI&	O		= 
+				*(Level.get_tris()+rp.id);
 
 			T.p[0].mul			(rp.verts[0],xf);
 			T.p[1].mul			(rp.verts[1],xf);
