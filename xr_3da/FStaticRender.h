@@ -19,6 +19,7 @@
 #include "fstaticrender_rendertarget.h"
 #include "hom.h"
 #include "lightShadows.h"
+#include "lightProjector.h"
 #include "lightPPA.h"
 
 // defs
@@ -59,6 +60,7 @@ public:
 	CLightDB_Static									L_DB;
 	CLightPPA_Manager								L_Dynamic;
 	CLightShadows									L_Shadows;
+	CLightProjector									L_Projector;
 	CGlowManager									Glows;
 	CWallmarksEngine								Wallmarks;
 	CDetailManager									Details;

@@ -7,7 +7,7 @@ class svector
 {
 private:
 	T		array[dim];
-	DWORD	count;
+	u32	count;
 public:
 	typedef T*	iterator;
 
@@ -18,7 +18,7 @@ public:
 
 	IC T*		begin()				{ return array;							}
 	IC T*		end	 ()				{ return array+count;					}
-	IC DWORD	size()				{ return count;							}
+	IC u32	size()				{ return count;							}
 	IC void		clear()				{ count=0;								}
 	IC void		resize(int c)		{ VERIFY(c<=dim); count=c;				}
 	IC void		reserve(int c)		{ }
@@ -26,7 +26,7 @@ public:
 	IC void		push_back(T e)		{ VERIFY(count<dim); array[count++]=e;	}
 	IC void		pop_back()			{ VERIFY(count); count--;				}
 
-	IC T&		operator[] (DWORD id){ VERIFY(id<count); return array[id];	}
+	IC T&		operator[] (u32 id){ VERIFY(id<count); return array[id];	}
 
 	IC T&		front()				{ return array[0];						}
 	IC T&		back()				{ return array[count-1];				}
@@ -34,20 +34,18 @@ public:
 	IC void		inc	()				{ count++; }
 	IC bool		empty()				{ return 0==count;	}
 
-	IC void		erase(DWORD id)		{
+	IC void		erase(u32 id)		{
 		VERIFY(id<count);
 		count--;
-		for (DWORD i=id; i<count; i++)
+		for (u32 i=id; i<count; i++)
 			array[i] = array[i+1];
 	}
 	IC void		erase(T* it)		{ erase(it-begin());	}
 
-	IC void		insert(int id, T& V)
+	IC void		insert(u32 id, T& V)
 	{
-		VERIFY(id>=0);
 		VERIFY(id<count);
-		for (int i=count; i>id; i--)
-			array[i] = array[i-1];
+		for (int i=count; i>int(id); i--)	array[i] = array[i-1];
 		count++;
 		array[id] = V;
 	}
@@ -55,7 +53,7 @@ public:
 	IC BOOL		equal (svector<T,dim>& base)
 	{
 		if (size()!=base.size())	return FALSE;
-		for (DWORD cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
+		for (u32 cmp=0; cmp<size(); cmp++)	if ((*this)[cmp]!=base[cmp])	return FALSE;
 		return TRUE;
 	}
 };
