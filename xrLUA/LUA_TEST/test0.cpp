@@ -1074,9 +1074,24 @@ struct MI1 {
 
 struct MI2 : public MI1 {//, public MI0 {
 //	virtual ~MI2(){};
+	virtual void vf(float a)
+	{
+		a = a + 1.5f;
+	}
 };
 
-struct MI2W : public MI2, public wrap_base {};
+struct MI2W : public MI2, public wrap_base
+{
+	virtual void vf(float a)
+	{
+		call_member<void>("vf",a);
+	}
+	
+	static void vf_static(MI2 *self, float a)
+	{
+		self->MI2::vf(a);
+	}
+};
 
 template <typename T>
 struct AW : public T, public wrap_base {};
@@ -1084,7 +1099,7 @@ struct AW : public T, public wrap_base {};
 void test1()
 {
 //	registry_test();
-	broker_test();
+//	broker_test();
 //	abstract_registry_test();
 //	delegate_test();
 //	script_test();
@@ -1158,7 +1173,8 @@ void test1()
 			.def("add",&MI1::add,adopt(_2)),
 
 		class_<MI2,MI2W,MI1>("mi2")
-			.def(constructor<>()),
+			.def(constructor<>())
+			.def("vf",&MI2::vf,&MI2W::vf_static),
 
 		def("get_internals",	&get_internals)
 	];
@@ -1168,7 +1184,7 @@ void test1()
 //	registrator().script_register(L);
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
-//	lua_dofile		(L,"x:\\heritage_test2.script");
+	lua_dofile		(L,"x:\\heritage_test2.script");
 //	lua_dofile		(L,"x:\\virtual_test.script");
 //	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {
