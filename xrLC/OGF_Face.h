@@ -200,4 +200,24 @@ struct OGF_Node : public OGF_Base
 	}
 };
 
+struct	OGF_LOD		: public OGF_Node
+{
+	struct _vertex
+	{
+		Fvector		v;
+		Fvector2	t;
+		DWORD		c;
+	};
+	struct _face
+	{
+		_vertex		v[4];
+		Fvector		N;
+	};
+
+	_face			lod_faces	[8];
+	DWORD			lod_Material;
+
+	virtual void		Save		(CFS_Base &fs);
+};
+
 void set_status(char* N, int id, int f, int v);
