@@ -96,8 +96,6 @@ void xrSE_Weapon::UPDATE_Read		(NET_Packet& P)
 	P.r_angle8			(o_Angle.x	);
 	P.r_angle8			(o_Angle.y	);
 	P.r_angle8			(o_Angle.z	);
-	P.r_vec3			(f_pos		);
-	P.r_dir				(f_dir		);
 }
 void	xrSE_Weapon::UPDATE_Write	(NET_Packet& P)
 {
@@ -112,8 +110,6 @@ void	xrSE_Weapon::UPDATE_Write	(NET_Packet& P)
 	P.w_angle8			(o_Angle.x	);
 	P.w_angle8			(o_Angle.y	);
 	P.w_angle8			(o_Angle.z	);
-	P.w_vec3			(f_pos		);
-	P.w_dir				(f_dir		);
 }
 void	xrSE_Weapon::STATE_Read		(NET_Packet& P, u16 size)
 {

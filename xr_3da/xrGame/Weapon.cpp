@@ -382,10 +382,6 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
-
-	UpdateFP				();
-	P.w_vec3				(vLastFP);
-	P.w_dir					(vLastFD);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -403,9 +399,6 @@ void CWeapon::net_Import	(NET_Packet& P)
 	P.r_angle8				(N.angles.x);
 	P.r_angle8				(N.angles.y);
 	P.r_angle8				(N.angles.z);
-
-	P.r_vec3				(N.fpos);
-	P.r_dir					(N.fdir);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	
 	{
@@ -462,6 +455,19 @@ void CWeapon::OnH_B_Chield		()
 	}
 }
 
+int CWeapon::Ammo_eject		()
+{
+	int		save = iAmmoCurrent+iAmmoElapsed; 
+	iAmmoCurrent = iAmmoElapsed = 0; 
+	if (Local() && (0xffff!=respawnPhantom)) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
+		u_EventSend		(P);
+	}
+	return	save;  
+}
+
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)
 {
 	float invf		= 1.f-f;
@@ -473,8 +479,6 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 	angles.x		= CEntity::u_lerp_angle	(A.angles.x,B.angles.x,	f);
 	angles.y		= CEntity::u_lerp_angle	(A.angles.y,B.angles.y,	f);
 	angles.z		= CEntity::u_lerp_angle	(A.angles.z,B.angles.z,	f);
-	fpos.lerp		(A.fpos,B.fpos,f);
-	fdir.lerp		(A.fdir,B.fdir,f);	fdir.normalize	();
 }
 
 void CWeapon::UpdateCL		()

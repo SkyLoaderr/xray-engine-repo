@@ -105,7 +105,6 @@ protected:
 		u16					ammo_current;
 		u16					ammo_elapsed;
 		Fvector				pos,angles;
-		Fvector				fpos,fdir;
 		void	lerp		(net_update& A,net_update& B, float f);
 	};
 	deque<net_update>		NET;
@@ -159,7 +158,7 @@ public:
 	// logic & effects
 	virtual void			SetDefaults			();
 	virtual void			Ammo_add			(int iValue)	{ iAmmoCurrent+=iValue;	}
-	virtual int				Ammo_eject			()				{ int save = iAmmoCurrent+iAmmoElapsed; iAmmoCurrent = iAmmoElapsed = 0; return save;  }
+	virtual int				Ammo_eject			();
 	virtual void			FireStart			()				{ bWorking=true;	}
 	virtual void			FireEnd				()				{ bWorking=false;	}
 	virtual void			Reload				()				{};

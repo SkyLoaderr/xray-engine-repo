@@ -124,9 +124,7 @@ xrSE_DECLARE_BEGIN(xrSE_Weapon,xrServerEntity)
 	u16						a_current;
 	u16						a_elapsed;
 
-	Fvector					f_pos;
-	Fvector					f_dir;
-    xrSE_Weapon				();
+	xrSE_Weapon				();
 xrSE_DECLARE_END
 
 //***** Teamed
