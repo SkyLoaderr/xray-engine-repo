@@ -27,18 +27,18 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn_group_rect.y = (self.main_rect.height - rbtn_group_rect.height)/2
 	rbtn_group_rect.x = (self.main_rect.width - rbtn_rect.width)/2
 	
-	rbtn_dm_rect	= { x		= rbtn_group_rect.x,
-						y		= rbtn_group_rect.y,
-						width	= rbtn_rect.widht,
-						height	= rbtn_rect.height}
-	rbtn_tdm_rect	= { x		= rbtn_group_rect.x,
-						y		= rbtn_group_rect.y + rbtn_rect.height + self.indent,
-						width	= rbtn_rect.widht,
-						height	= rbtn_rect.height}
-	rbtn_ah_rect	= { x		= rbtn_group_rect.x,
-						y		= rbtn_group_rect.y + rbtn_rect.height + self.indent*2,
-						width	= rbtn_rect.widht,
-						height	= rbtn_rect.height}
+	local rbtn_dm_rect	= { x		= rbtn_group_rect.x,
+							y		= rbtn_group_rect.y,
+							width	= rbtn_rect.widht,
+							height	= rbtn_rect.height}
+	local rbtn_tdm_rect	= { x		= rbtn_group_rect.x,
+							y		= rbtn_group_rect.y + rbtn_rect.height + self.indent,
+							width	= rbtn_rect.widht,
+							height	= rbtn_rect.height}
+	local rbtn_ah_rect	= { x		= rbtn_group_rect.x,
+							y		= rbtn_group_rect.y + rbtn_rect.height + self.indent*2,
+							width	= rbtn_rect.widht,
+							height	= rbtn_rect.height}
 	
 	-- Radio group
 	local rgroup = CUIRadioGroup()	
@@ -47,23 +47,36 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rgroup:Init(self.main_rect.x, self.main_rect.y, self.main_rect.width, self.main_rect.height)
 	self.main_frame:AttachChild(rgroup)
 	
+
 	-- Radio buttons
 	local rbtn = CUIRadioButton()
-	rbtn:SetWindowName("rbtn_dm")
 	rbtn:SetAutoDelete(true)
+	rbtn:SetWindowName("rbtn_dm")	
 	rbtn:Init(rbtn_dm_rect.x, rbtn_dm_rect.y, rbtn_dm_rect.width, rbtn_dm_rect.height)
+	rbtn:SetText("Death Match")
+	rbtn:SetTextAlign(CGameFont.alLeft)
+	rbtn:SetTextY(-1)
+	self:Register(rbtn)	
 	rgroup:AttachChild(rbtn)	
 	
 	rbtn = CUIRadioButton()
 	rbtn:SetWindowName("rbtn_tdm")
 	rbtn:SetAutoDelete(true)
 	rbtn:Init(rbtn_dm_rect.x, rbtn_tdm_rect.y, rbtn_tdm_rect.width, rbtn_tdm_rect.height)
+	rbtn:SetText("Team Death Match")
+	rbtn:SetTextAlign(CGameFont.alLeft)
+	rbtn:SetTextY(-1)
+	self:Register(rbtn)
 	rgroup:AttachChild(rbtn)	
 	
 	rbtn = CUIRadioButton()
 	rbtn:SetWindowName("rbtn_ah")
 	rbtn:SetAutoDelete(true)
 	rbtn:Init(rbtn_dm_rect.x, rbtn_ah_rect.y, rbtn_ah_rect.width, rbtn_ah_rect.height)
+	rbtn:SetText("Artefact Hunt")
+	rbtn:SetTextAlign(CGameFont.alLeft)
+	rbtn:SetTextY(-1)
+	self:Register(rbtn)
 	rgroup:AttachChild(rbtn)	
 end
 
