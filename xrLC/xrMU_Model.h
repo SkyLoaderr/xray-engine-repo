@@ -15,7 +15,6 @@ public:
 	//** 
 	struct	_vertex	: public ::base_Vertex
 	{
-		Fvector		P;
 		Fvector		N;
 		v_faces		adjacent;
 
@@ -34,17 +33,6 @@ public:
 		_vertex*	v	[3];
 		Fvector2	tc	[3];
 		Fvector		N;
-
-		WORD		dwMaterial;		// index of material
-		WORD		dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
-
-		union			
-		{
-			bool			bSplitted;		//
-			bool			bOpaque;		// For ray-tracing speedup
-			bool			bProcessed;
-		};
-
 	public:
 		Shader_xrLC&	Shader				( );
 		void			CacheOpacity		( );

@@ -2,8 +2,26 @@
 
 #include "shader_xrlc.h"
 
-class base_Vertex	{ public: virtual ~base_Vertex() = 0; };	
-class base_Face		{ public: virtual ~base_Face() = 0; };		
+class base_Vertex	
+{
+public: 
+	Fvector					P;
+public:
+	virtual ~base_Vertex() = 0; 
+};	
+class base_Face		
+{ 
+public: 
+	WORD					dwMaterial;		// index of material
+	WORD					dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
+	union			{
+		bool				bSplitted;		//
+		bool				bOpaque;		// For ray-tracing speedup
+		bool				bProcessed;
+	};
+
+	virtual ~base_Face() = 0; 
+};		
 
 class Vertex;
 class Face;
@@ -28,7 +46,6 @@ extern const int edge2idx[3][2];
 class Vertex	: public base_Vertex
 {
 public:
-	Fvector		P;
 	Fvector		N;
 	Fcolor		Color;		// only used for Per-Vertex lighting
 
@@ -102,20 +119,10 @@ public:
 	Fvector					N;				// face normal
 	svector<_TCF,4>			tc;				// TC
 
-	WORD					dwMaterial;		// index of material
-
-	union
-	{
-		void*				pDeflector;		// does the face has LM-UV map?
-		DWORD				dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
-	};
+	void*					pDeflector;		// does the face has LM-UV map?
 	svector<CLightmap*,4>	lmap_layers;
 
-	union			{
-		bool				bSplitted;		//
-		bool				bOpaque;		// For ray-tracing speedup
-		bool				bProcessed;
-	};
+
 
 	Shader_xrLC&	Shader			();
 	void			CacheOpacity	();
@@ -195,7 +202,8 @@ public:
 	void		Unwarp(int connect_edge, float u1, float v1, float u2, float v2);
 	void		OA_Unwarp();
 
-	IC void	AddChannel(UVpoint &p1, UVpoint &p2, UVpoint &p3) {
+	IC void		AddChannel(UVpoint &p1, UVpoint &p2, UVpoint &p3) 
+	{
 		_TCF TC;
 		TC.uv[0] = p1;	TC.uv[1] = p2;	TC.uv[2] = p3;
 		tc.push_back(TC);
