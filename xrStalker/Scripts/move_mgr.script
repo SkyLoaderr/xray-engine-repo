@@ -32,7 +32,7 @@ end
 -- нужно вызвать метод set_movement_state, который включит перемещение по вейпоинтам с нужной
 -- скоростью.
 function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, team,
-		run_to_starting_pt, move_cb)
+		walk_to_starting_pt, move_cb)
 	--xr_reactions.add_rule(self.object, "ignore") -- DELME
 
 	printf("move_mgr:reset(path_walk=%s, path_look=%s, team=%s)",
@@ -74,7 +74,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.running = if_then_else(run_to_starting_pt, true, false)
+	self.running = if_then_else(walk_to_starting_pt, false, true)
 	self.danger = false
 
 	self.retval_after_rotation = nil
