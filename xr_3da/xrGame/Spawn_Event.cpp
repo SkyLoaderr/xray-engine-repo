@@ -91,6 +91,7 @@ void CSpawn_Event::ExportAction(NET_Packet& P, Action& A)
 	char	buffer[256];
 	switch (A.type.IDselected)
 	{
+	default:
 	case typeNone:		P.w_string("");												break;
 	case typeActivate:	P.w_string(strconcat(buffer,"level.activate,",A.target));	break;
 	case typeDeactivate:P.w_string(strconcat(buffer,"level.deactivate,",A.target));	break;
@@ -113,7 +114,7 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	P.w_vec3	(description.o_Orientation);
 	
 	//*** addititional data
-	u32 size	= P.w_tell();
+	u32 size_pos= P.w_tell();
 	P.w_u16		(0);
 	
 	// CForm
@@ -126,11 +127,18 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	P.w_u8		(Commands.size());
 	for (int cmd=0; cmd<Commands.size(); cmd++)
 	{
-		Pair&	A	= Commands[cmd];
-		P.w_u8	(A.bOnce.value);
-		P.w_u64	(A.Target.Selected);
-
+		Pair&			A = Commands[cmd];
+		P.w_u8			(A.bOnce.value);
+		P.w_u64			(A.Target.Selected);
+		ExportAction	(P,A.OnEnter);
+		ExportAction	(P,A.OnExit);
 	}
+
+	// Save size
+	u32 end		= P.w_tell();
+	P.w_seek	(size_pos);
+	P.w_u16		(end-size_pos);
+	P.w_seek	(end);
 }
 
 #else
