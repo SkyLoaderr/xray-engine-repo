@@ -213,7 +213,6 @@ void CBuild::Run()
 	Phase	("Optimizing...");
 	PreOptimize		();
 
-//	Sleep	(550);
 	FPU::m24r();
 	Phase	("Building normals...");
 	CalcNormals		();
