@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
+    
     <info_portion id="info_zone_danger">
-        <text>tips_zone_danger</text>
     </info_portion>
+    
     <info_portion id="tips_esc_trader_about_pda">
-        <text>tips_esc_trader_about_pda</text>
     </info_portion>
 
 	<info_portion id="tutorial_trader_search_corpses">
