@@ -576,50 +576,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	}
 	VERIFY				(_valid(Position()));
 
-	// inventory update
-	if (GetLevelDeathTime() && (inventory().TotalWeight() > 0)) {
-		CWeapon *tpWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !hammer_is_clutched() || (Device.dwTimeGlobal - GetLevelDeathTime() > 500)) {
-			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
-			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
-			for ( ; I != E; ++I)
-				if ((I - B) == (int)inventory().GetActiveSlot()) {
-					if ((*I).m_pIItem && (*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT)
-						(*I).m_pIItem->Drop();
-				}
-				else
-					if((*I).m_pIItem)
-						if ((*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT)
-							inventory().Ruck((*I).m_pIItem);
-
-//			///!!!
-//			TIItemContainer &l_list = inventory().m_ruck;
-//			for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-//			{
-//				CArtefact* pArtefact = smart_cast<CArtefact*>(*l_it);
-//				if(pArtefact)
-//					pArtefact->Drop();
-//
-//				//if ((*l_it)->Useful())
-//					//(*l_it)->Drop();
-//			}
-		}
-		else {
-			inventory().Action(kWPN_FIRE,	CMD_START);
-			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
-			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
-			for ( ; I != E; ++I)
-				if ((I - B) != (int)inventory().GetActiveSlot())
-					if ((*I).m_pIItem && ((*I).m_pIItem->object().CLS_ID != CLSID_IITEM_BOLT))//(*I).m_pIItem &&  added!!??
-						inventory().Ruck((*I).m_pIItem);
-			//		(*I).m_pIItem->Drop();
-			
-			/*TIItemContainer &l_list = inventory().m_ruck;
-			for(TIItemContainer::iterator l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-				if ((*l_it)->Useful())
-					(**l_it).Drop();*/
-		}
-	}
 	UpdateInventoryOwner(DT);
 	
 	VERIFY				(_valid(Position()));

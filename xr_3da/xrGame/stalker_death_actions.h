@@ -20,6 +20,7 @@ protected:
 
 public:
 						CStalkerActionDead			(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
 	virtual void		execute						();
 };
 
