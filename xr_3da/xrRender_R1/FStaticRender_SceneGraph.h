@@ -28,11 +28,7 @@ namespace SceneGraph
 	};
 
 	// Higher level	- NORMAL
-	struct mapNormalDirect
-	{
-		FixedMAP<float,IRender_Visual*>		sorted;
-		xr_vector<IRender_Visual*>			unsorted;
-	};
+	typedef xr_vector<IRender_Visual*>		mapNormalDirect;
 	struct mapNormalItems		: public	mapNormalDirect											{	float	ssa;	};
 	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalItems>					{	float	ssa;	};
 	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalMatrices>		{	float	ssa;	};
