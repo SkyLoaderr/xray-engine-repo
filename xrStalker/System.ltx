@@ -2860,11 +2860,18 @@ speed_min			= 0.00001
 zoom_aim_disp_k		= 1.0		;коэффициенты соотношения полной дисперсии стрельбы
 zoom_aim_speed_k	= 0.0025	;и покачивания прицела
 delta_time			= 1000		;время через которое эффектор меняет направление движения (в милисекундах)
+
 [breakable_object]
 class						= O_BRKBL
 remove_time					= 10	;after the time object will be removed
 hit_break_threthhold		= 0.
 collision_break_threthhold	=10.f
+
+[mounted_weapon]
+class						= O_MWPN
+$spawn						= "weapons\mounted weapon"
+cform   	                = skeleton
+;visual  	                = equipment\fmradio.ogf
 
 [deathmatch_team0]
 slot1 = wpn_knife
