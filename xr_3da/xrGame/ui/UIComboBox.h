@@ -8,19 +8,11 @@
 //
 
 #pragma once
-#include "UIFrameLineWnd.h"
-#include "UIFrameWindow.h"
 #include "UIEditBox.h"
 #include "UI3tButton.h"
 #include "UIListWnd.h"
+#include "UIInteractiveBackground.h"
 
-#define cs const static
-
-struct data {
-	struct btn {
-		cs int width = 60;
-	};
-};
 
 class CUIComboBox : public CUIWindow{
 	typedef enum{
@@ -33,30 +25,32 @@ public:
 	virtual ~CUIComboBox();
 
 	// methods
-	virtual CUIListWnd* GetListWnd();
-	virtual bool          SetListLength(int length);
-	virtual void          SetVertScroll(bool bVScroll = true);
-	virtual void          Init(int x, int y, int width);
-	virtual void          AddItem(LPCSTR str, bool bSelected);
-	virtual void          AddItem(LPCSTR str);
-	virtual void          SendMessage(CUIWindow *pWnd, s16 msg, void* pData = 0);
-	virtual void          Draw();
+	virtual CUIListWnd*	GetListWnd();
+	virtual bool		SetListLength(int length);
+	virtual void		SetVertScroll(bool bVScroll = true);
+	virtual void		Init(int x, int y, int width);
+	virtual void		Init(int x, int y, int width, int height);
+	virtual void		AddItem(LPCSTR str, bool bSelected);
+	virtual void		AddItem(LPCSTR str);
+	virtual void		SendMessage(CUIWindow *pWnd, s16 msg, void* pData = 0);
+	virtual void		Draw();
 protected:
-	virtual void          OnMouse(int x, int y, EUIMessages mouse_action);
-	virtual void          OnBtnClicked();
-	virtual void          ShowList(bool bShow);
-	virtual void          OnListItemSelect();
-	virtual void          Update();
+	virtual void		SetState(UIState state);	
+	virtual void		OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void		OnBtnClicked();
+	virtual void		ShowList(bool bShow);
+	virtual void		OnListItemSelect();
+	virtual void		Update();
 
 protected:
 	bool            m_bInited;
 	int             m_iListHeight;
 	E_COMBO_STATE   m_eState;
 
-	CUIFrameLineWnd m_frameLine;
-	CUIEditBox      m_editBox;
-	CUI3tButton     m_btn;
-	CUIFrameWindow  m_frameWnd;
+	CUI_IB_FrameLineWnd	m_frameLine;
+	CUIEditBox			m_editBox;
+	CUI3tButton			m_btn;
+	CUI_IB_FrameWindow	m_frameWnd;
 public:
 	CUIListWnd    m_list;
 

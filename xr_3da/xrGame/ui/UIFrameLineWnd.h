@@ -20,7 +20,9 @@ class CUIFrameLineWnd: public CUIWindow
 	typedef CUIWindow inherited;
 public:
 	CUIFrameLineWnd();
-	virtual void Init(LPCSTR base_name, int x, int y, int width, int height, bool horizontal);
+	virtual void Init(int x, int y, int width, int height);
+	virtual void Init(LPCSTR base_name, int x, int y, int width, int height, bool horizontal = true);
+	virtual void InitTexture(LPCSTR tex_name, bool horizontal = true);
 	virtual void Draw();
 	virtual void SetWidth(int width);
 	virtual void SetHeight(int height);

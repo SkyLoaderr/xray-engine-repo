@@ -16,18 +16,18 @@
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 
+enum UIState{
+	S_Enabled,
+	S_Disabled,
+	S_Highlighted,
+	S_Touched
+};
+
 
 template <class T>
 class CUIInteractiveBackground : public CUIWindow
 {
 public:
-	enum State{
-		S_Enabled,
-		S_Disabled,
-		S_Highlighted,
-		S_Touched
-	};
-
 	CUIInteractiveBackground();
 	virtual ~CUIInteractiveBackground();
 
@@ -37,7 +37,7 @@ public:
 	virtual void InitDisabledState(LPCSTR texture_d);
 	virtual void InitHighlightedState(LPCSTR texture_h);
 	virtual void InitTouchedState(LPCSTR texture_t);
-	virtual void SetState(State state);
+	virtual void SetState(UIState state);
 	virtual void Draw();
 
 protected:
@@ -87,7 +87,9 @@ void CUIInteractiveBackground<T>::InitEnabledState(LPCSTR texture_e){
 		AttachChild(m_stateEnabled);
 	}
 
-	this->m_stateEnabled->Init(texture_e, 0, 0, r.right - r.left, r.bottom - r.top); 
+	this->m_stateEnabled->Init(texture_e, 0, 0, r.right - r.left, r.bottom - r.top);
+
+	SetState(S_Enabled);
 }
 
 template <class T>
@@ -133,7 +135,7 @@ void CUIInteractiveBackground<T>::InitTouchedState(LPCSTR texture_d){
 }
 
 template <class T>
-void CUIInteractiveBackground<T>::SetState(State state){
+void CUIInteractiveBackground<T>::SetState(UIState state){
 	switch (state)
 	{
 	case S_Enabled:

@@ -49,6 +49,7 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 	char tex_enabled[256];
 	char tex_disabled[256];
 	char tex_touched[256];
+	char tex_highlighted[256];
 
 	// enabled state texture
 	strcpy(tex_enabled,    tex_name);
@@ -62,13 +63,18 @@ void CUI3tButton::InitTexture(LPCSTR tex_name){
 	strcpy(tex_touched, tex_name);
 	strcat(tex_touched, "_t");
 
-	this->InitTexture(tex_enabled, tex_disabled, tex_touched);		
+	// touched state texture
+	strcpy(tex_highlighted, tex_name);
+	strcat(tex_highlighted, "_h");
+
+	this->InitTexture(tex_enabled, tex_disabled, tex_touched, tex_highlighted);		
 }
 
-void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched){
+void CUI3tButton::InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched, LPCSTR tex_highlighted){
 	m_background.InitEnabledState(tex_enabled);
 	m_background.InitDisabledState(tex_disabled);
 	m_background.InitTouchedState(tex_touched);	
+	m_background.InitHighlightedState(tex_highlighted);
 	this->m_bTextureEnable = true;
 }
 
@@ -89,19 +95,7 @@ void CUI3tButton::SetDisabledTextColor(u32 color){
 void CUI3tButton::Draw(){
 	RECT rect = GetAbsoluteRect();
 
-	if(m_bTextureEnable)
-	{
-		if (!m_bIsEnabled)
-			m_background.SetState(CUI_IB_Static::S_Disabled);
-		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
-			m_background.SetState(CUI_IB_Static::S_Touched);
-		else if (this->IsHighlightText())
-			m_background.SetState(CUI_IB_Static::S_Highlighted);		
-		else
-			m_background.SetState(CUI_IB_Static::S_Enabled);
-
-		m_background.Draw();
-	}	
+	m_background.Draw();
 
 	if (GetFont())
 	{
@@ -164,17 +158,27 @@ void CUI3tButton::Draw(){
 			GetFont()->OnRender();
 		}
 		else
-			CUIStatic::DrawString(rect);
-		
+			CUIStatic::DrawString(rect);		
 	}
 }
 
 void CUI3tButton::Update(){
 	CUIButton::Update();
+
+	if(m_bTextureEnable)
+	{
+		if (!m_bIsEnabled)
+			m_background.SetState(S_Disabled);
+		else if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+			m_background.SetState(S_Touched);
+		else if (this->IsHighlightText())
+			m_background.SetState(S_Highlighted);		
+		else
+			m_background.SetState(S_Enabled);		
+	}	
 }
 
 void CUI3tButton::SendMessage(CUIWindow *pWnd, s16 msg, void *pData){
 	CUIButton::SendMessage(pWnd, msg, pData);
 }
-
 

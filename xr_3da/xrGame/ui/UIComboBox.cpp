@@ -10,6 +10,9 @@
 #include "StdAfx.h"
 #include "UIComboBox.h"
 
+#define CB_HEIGHT 19
+#define BTN_SIZE  23
+
 CUIComboBox::CUIComboBox(){
 	// edit box
 	AttachChild(&this->m_frameLine);
@@ -50,23 +53,38 @@ void CUIComboBox::Init(int x, int y, int width){
 	if (0 == m_iListHeight)
 		m_iListHeight = 4;
 
-	CUIWindow::Init(x, y, width, 32);
+	CUIWindow::Init(x, y, width, CB_HEIGHT);
 	// Frame Line
-	m_frameLine.Init("ui\\ui_cb_test", 0, 0, width, 32, true /*horizontal*/);	
+	m_frameLine.Init(0, 0, width - BTN_SIZE, CB_HEIGHT);
+	m_frameLine.InitEnabledState("ui\\ui_cb_string"); // horizontal by default
+	m_frameLine.InitDisabledState("ui\\ui_cb_string_d");
+	m_frameLine.InitHighlightedState("ui\\ui_cb_string_h");
+
+
 	// Edit Box on left side of frame line
-	m_editBox.Init(0, 0, width - 32, 32); 
+	m_editBox.Init(0, 0, width - BTN_SIZE, CB_HEIGHT); 
 	m_editBox.SetTextColor(0xff00ff00);
+	m_editBox.Enable(false);
 	// Button on right side of frame line
-	m_btn.Init("ui\\ui_cb_btn_test", width - 32, 0, 32, 32);
+	m_btn.Init("ui\\ui_cb_button", width - BTN_SIZE, 0, BTN_SIZE, BTN_SIZE);
 	// frame(texture) for list
-	m_frameWnd.Init("ui\\ui_frame_very_small", 0,  32, width, 32*m_iListHeight);
+	m_frameWnd.Init(0,  CB_HEIGHT, width - BTN_SIZE, CB_HEIGHT*m_iListHeight);
+	m_frameWnd.InitEnabledState("ui\\ui_cb_frm_lst02");
+	//m_frameWnd.InitDisabledState("ui\\ui_cb_frm_lst02_d");
+	//m_frameWnd.InitHighlightedState("ui\\ui_cb_frm_lst02_h");
+
 	// height of list equal to height of ONE element
-	m_list.Init(0, 32, width, 32*m_iListHeight);
-	m_list.SetItemHeight(32);
+	m_list.Init(0, CB_HEIGHT, width - BTN_SIZE, CB_HEIGHT*m_iListHeight);
+	m_list.EnableScrollBar(true);
+	m_list.SetItemHeight(CB_HEIGHT);
 	m_list.SetTextColor(0xff00ff00);
 
 	m_list.Show(false);
 	m_frameWnd.Show(false);
+}
+
+void CUIComboBox::Init(int x, int y, int width, int height){
+	this->Init(x, y, width);
 }
 
 void CUIComboBox::AddItem(LPCSTR str, bool bSelected){
@@ -95,6 +113,8 @@ void CUIComboBox::Draw(){
 
 void CUIComboBox::Update(){
 	CUIWindow::Update();
+	if (!m_bIsEnabled)
+		SetState(S_Disabled);
 }
 
 void CUIComboBox::OnMouse(int x, int y, EUIMessages mouse_action){
@@ -102,6 +122,8 @@ void CUIComboBox::OnMouse(int x, int y, EUIMessages mouse_action){
 
 	m_bCursorOverWindow = (0 <= x) && (GetWidth() >= x) && (0 <= y) && (GetHeight() >= y);
 
+	SetState(m_bCursorOverWindow ? S_Highlighted : S_Enabled);
+	
 	if(mouse_action == WINDOW_MOUSE_MOVE && m_eState == LIST_FONDED)
 		GetParent()->SetCapture(this, m_bCursorOverWindow);
 
@@ -116,11 +138,16 @@ void CUIComboBox::OnMouse(int x, int y, EUIMessages mouse_action){
 			else
 				GetParent()->SetCapture(this, true);
 			break;
-		case LIST_FONDED:			
+		case LIST_FONDED:
 			break;
 		default:
 			break;
 	}	
+}
+
+void CUIComboBox::SetState(UIState state){
+	this->m_frameLine.SetState(state);
+	this->m_frameWnd.SetState(state);	
 }
 
 void CUIComboBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
@@ -134,7 +161,7 @@ void CUIComboBox::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 		case LIST_ITEM_CLICKED:
 			if (pWnd == &this->m_list)
 				this->OnListItemSelect();	
-			break;		
+			break;
 		default:
 			break;
 	}
@@ -150,9 +177,9 @@ void CUIComboBox::ShowList(bool bShow){
 		int iCurHeight;
 
 		if (m_list.GetChildNum() <= this->m_iListHeight)
-			iCurHeight = m_iListHeight*32;
+			iCurHeight = m_iListHeight*CB_HEIGHT;
 		else
-			iCurHeight = m_list.GetChildNum()*32;
+			iCurHeight = m_list.GetChildNum()*CB_HEIGHT;
 
 		SetHeight(m_editBox.GetHeight() + iCurHeight);
 

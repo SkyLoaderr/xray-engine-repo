@@ -14,6 +14,15 @@
 CUIFrameLineWnd::CUIFrameLineWnd()
 	:	bHorizontal(true)
 {
+	AttachChild(&UITitleText);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIFrameLineWnd::Init(int x, int y, int width, int height){
+	inherited::Init(x,y, width, height);
+
+	UITitleText.Init(0,0, width, 50);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -29,11 +38,27 @@ void CUIFrameLineWnd::Init(LPCSTR base_name, int x, int y, int width, int height
 	{
 		UIFrameLine.Init(base_name, x, y, height, horizontal, alNone);
 		UITitleText.Init(0,0, 50, height);
-	}
-	
-	AttachChild(&UITitleText);
+	}	
 
 	inherited::Init(x,y, width, height);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIFrameLineWnd::InitTexture(LPCSTR tex_name, bool horizontal){
+
+	RECT rect = GetAbsoluteRect();	
+
+	if (horizontal)
+	{
+		UIFrameLine.Init(tex_name, rect.left, rect.top, rect.right - rect.left, horizontal, alNone);
+		UITitleText.Init(0,0, rect.right - rect.left, 50);
+	}
+	else
+	{
+		UIFrameLine.Init(tex_name, rect.left, rect.top, rect.bottom - rect.top, horizontal, alNone);
+		UITitleText.Init(0,0, 50, rect.bottom - rect.top);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////

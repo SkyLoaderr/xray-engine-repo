@@ -19,11 +19,11 @@ public:
 	virtual void Init(int x, int y, int width, int height);
     virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void InitTexture(LPCSTR tex_name);
-	virtual void InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched);	
+	virtual void InitTexture(LPCSTR tex_enabled, LPCSTR tex_disabled, LPCSTR tex_touched, LPCSTR tex_highlighted);	
 	virtual void SetColor(u32 color_enabled, u32 color_disabled, u32 color_touched);	
 	virtual void SetTextColor(u32 color);
 	virtual void SetDisabledTextColor(u32 color);
-
+	
 	// behavior
 	virtual void Draw();
 	virtual void Update();
@@ -32,7 +32,7 @@ public:
 	virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
 
 private:	
-	CUI_IB_Static  m_background;
+	CUI_IB_Static	m_background;
 
     // text color
 	bool m_bUseDisabledTextColor;
