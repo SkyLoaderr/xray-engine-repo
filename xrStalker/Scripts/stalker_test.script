@@ -8,7 +8,6 @@ end
 
 
 function main ()
---[
 	zone0				= get_level_object ("script_zone0000")
 	zone1				= get_level_object ("script_zone0001")
 	
@@ -21,7 +20,7 @@ function main ()
 	while true do
 		wait			()
 	end
---]
+--[
     stalker				= get_level_object ("m_stalker_e0000")
     actor				= get_actor()
 
@@ -50,4 +49,5 @@ function main ()
 	end
 	
     stalker:script		(false,stalker_test:script_name());
+--]
 end
