@@ -1,16 +1,16 @@
 [wpn_svd]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = "weapons\svd"					; option for Level Editor
-$npc			 = on				; option for Level Editor
-$prefetch 		 = 8
-scheduled                = off              ; option for ALife Simulator
-cform                    = skeleton
-class                    = W_SVD
-min_radius               = 0
-max_radius               = 50
+$spawn                  = "weapons\svd"		; option for Level Editor
+$npc			 		= on				; option for Level Editor
+$prefetch 		 		= 8
+scheduled               = off              	; option for ALife Simulator
+cform                   = skeleton
+class                   = W_SVD
+min_radius              = 0
+max_radius              = 50
 
-cost					 = 3500
+cost					= 3500
 
 ammo_limit				= 60
 ammo_current			= 10
@@ -21,11 +21,11 @@ ammo_class				= ammo_7.62x54_7h1, ammo_7.62x54_ap, ammo_7.62x54_7h14
 
 resource				= 6000
 
-cam_relax_speed         = 3
-cam_dispersion          = 2
-cam_max_angle			= 8
-cam_horz_prob				= 0.25	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
-cam_horz_factor				= 1		;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
+cam_relax_speed         = 4
+cam_dispersion          = 4
+cam_max_angle			= 10
+cam_horz_prob			= 0.25	;вероятность отклонения по горизонтали эффектора во время стрельбы (1 - всегда отклоняется)
+cam_horz_factor			= 1		;импирический коэффициент отклонения по горизонтали (чем больше, тем сильнее разброс)
 
 fire_dispersion_base         = 0.025
 
@@ -94,7 +94,7 @@ grenade_launcher_status		= 0
 zoom_enabled				= true
 
 zoom_enabled			= true
-scope_zoom_factor	    = 12
+scope_zoom_factor	    = 7
 
 scope_texture		= wpn\wpn_crosshair
 
