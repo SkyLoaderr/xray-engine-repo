@@ -72,7 +72,7 @@ void CAI_Zombie::AttackRun()
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieLyingDown)
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiZombieLyingDown)
 	
 	if (!(Enemy.Enemy)) {
 		CHECK_IF_GO_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
@@ -87,16 +87,19 @@ void CAI_Zombie::AttackRun()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 	
-	CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() < 2.f),aiZombieAttackFire);
+	CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() <= 2.f),aiZombieAttackFire);
 
 	INIT_SQUAD_AND_LEADER;
 	
 	vfInitSelector(SelectorAttack,Squad,Leader);
 	
+	/**
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint(&SelectorAttack);
 	else
 		vfSearchForBetterPosition(SelectorAttack,Squad,Leader);
+	/**/
+	GoToPointViaSubnodes(Enemy.Enemy->Position());
 	
 	vfAimAtEnemy();
 	

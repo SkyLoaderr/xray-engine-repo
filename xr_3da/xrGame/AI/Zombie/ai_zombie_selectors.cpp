@@ -54,34 +54,6 @@ float CZombieSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BO
 	return(m_fResult);
 }
 
-CZombieSelectorDefend::CZombieSelectorDefend()
-{ 
-	Name = "selector_defend"; 
-}
-
-float CZombieSelectorDefend::Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop)
-{
-	// initialization
-	m_tpCurrentNode = tNode;
-	m_fDistance = fDistance;
-	vfInit();
-	// computations
-	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
-	vfAddCoverFromEnemyCost();
-	CHECK_RESULT;
-	// checking for epsilon
-	vfCheckForEpsilon(bStop);
-	// returning a value
-	return(m_fResult);
-}
-
 CZombieSelectorFindEnemy::CZombieSelectorFindEnemy()
 { 
 	Name = "selector_find_enemy"; 
@@ -162,28 +134,9 @@ float CZombieSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistanc
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
-	vfAddLightCost();
+	vfAddDeviationFromPreviousDirectionCost();
 	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
-			}
-		}
-	}
-	// checking for epsilon
-	vfCheckForEpsilon(bStop);
+	//vfCheckForEpsilon(bStop);
 	// returning a value
 	return(m_fResult);
 }
@@ -402,16 +355,10 @@ float CZombieSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance,
 	// computations
 	vfAddTravelCost();
 	CHECK_RESULT;
-	vfAddLightCost();
+	vfAddDeviationFromPreviousDirectionCost();
 	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	//vfAddDeviationFromPreviousDirectionCost();
-	//CHECK_RESULT;
-	vfAddDistanceToEnemyCost();
-	CHECK_RESULT;
-	vfAddCoverFromEnemyCost();
-	
-	CHECK_RESULT;
+	// checking for epsilon
+	vfCheckForEpsilon(bStop);
+	// returning a value
 	return(m_fResult);
 }

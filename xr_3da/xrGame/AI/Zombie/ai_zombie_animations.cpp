@@ -64,8 +64,8 @@ void CAI_Zombie::vfLoadAnimations()
 	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle_Safe("norm_death_2");
 	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle_Safe("norm_death_3");
 	
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("norm_attack");
-	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("norm_attack_2");
+	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle_Safe("attack");
+	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle_Safe("attack_1");
 	
 	tZombieAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
 	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle_Safe("norm_idle");
@@ -135,7 +135,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 											break;
 										}
 									
-									if (!tpGlobalAnimation)
+									if ((!tpGlobalAnimation) || (!(m_tpCurrentGlobalBlend->playing)))
 										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
@@ -209,7 +209,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 											break;
 										}
 									
-									if (!tpGlobalAnimation)
+									if ((!tpGlobalAnimation) || (!(m_tpCurrentGlobalBlend->playing)))
 										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 									break;
 								}
@@ -241,13 +241,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			}
 		}
 	
-	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
-		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
-		if (tpGlobalAnimation) {
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
-		}
-	}
-
 	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
 		//Msg("restarting animation..."); 
 		m_tpCurrentLegsAnimation = tpLegsAnimation;
@@ -256,6 +249,13 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 			if (tpLegsAnimation == m_walk.fwd) {
 				m_tpCurrentLegsBlend->timeCurrent = ::Random.randF(m_tpCurrentLegsBlend->timeTotal);
 			}
+		}
+	}
+	
+	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
+		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
+		if (tpGlobalAnimation) {
+			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
 		}
 	}
 }

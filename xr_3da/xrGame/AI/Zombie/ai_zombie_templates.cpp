@@ -209,3 +209,426 @@ void CAI_Zombie::vfSetMovementType(char cBodyState, float fSpeed)
 		}
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
+// Insert from old zombie
+//////////////////////////////////////////////////////////////////////////
+
+IC bool CAI_Zombie::bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode)
+{
+	return(((tCenter.x >= tpSubNode.tLeftDown.x) && (tCenter.z >= tpSubNode.tLeftDown.z)) && ((tCenter.x <= tpSubNode.tRightUp.x) && (tCenter.z <= tpSubNode.tRightUp.z)));
+}
+
+IC bool CAI_Zombie::bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode)
+{
+	float fDist0 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tLeftDown.z);
+	float fDist1 = _sqr(tCenter.x - tpSubNode.tLeftDown.x) + _sqr(tCenter.z - tpSubNode.tRightUp.z);
+	float fDist2 = _sqr(tCenter.x - tpSubNode.tRightUp.x) + _sqr(tCenter.z - tpSubNode.tLeftDown.z);
+	float fDist3 = _sqr(tCenter.x - tpSubNode.tRightUp.x) + _sqr(tCenter.z - tpSubNode.tRightUp.z);
+	return(_min(fDist0,_min(fDist1,_min(fDist2,fDist3))) <= (fRadius - 0.5f)*(fRadius - 0.5f) + EPS_L);
+}
+
+IC bool CAI_Zombie::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)
+{
+	/**/
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	Level().AI.UnpackPosition(tLeftDown,tpNode->p0);
+	Level().AI.UnpackPosition(tRightUp,tpNode->p1);
+	float fSubNodeSize = Level().AI.GetHeader().size;
+	return(((tCenter.x >= tLeftDown.x - fSubNodeSize/2.f) && (tCenter.z >= tLeftDown.z - fSubNodeSize/2.f)) && ((tCenter.x <= tRightUp.x + fSubNodeSize/2.f) && (tCenter.z <= tRightUp.z + fSubNodeSize/2.f)));
+	/**
+	NodePosition tCenterPosition;
+	Level().AI.PackPosition(tCenterPosition,tCenter);
+	return(((tCenterPosition.x >= tpNode->p0.x) && (tCenterPosition.z >= tpNode->p0.z)) && ((tCenterPosition.x <= tpNode->p1.x) && (tCenterPosition.z <= tpNode->p1.z)));
+	/**/
+}
+
+IC float CAI_Zombie::ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour)
+{
+	Fvector tCurrentSubNode;
+	tCurrentSubNode.x = (tCurrentNeighbour.tLeftDown.x + tCurrentNeighbour.tRightUp.x)/2.f;
+	tCurrentSubNode.y = (tCurrentNeighbour.tLeftDown.y + tCurrentNeighbour.tRightUp.y)/2.f;
+	tCurrentSubNode.z = (tCurrentNeighbour.tLeftDown.z + tCurrentNeighbour.tRightUp.z)/2.f;
+	return(_sqr(tLeaderPosition.x - tCurrentSubNode.x) + 0*_sqr(tLeaderPosition.y - tCurrentSubNode.y) + _sqr(tLeaderPosition.z - tCurrentSubNode.z));
+}
+
+IC float CAI_Zombie::ffGetY(NodeCompressed &tNode, float X, float Z)
+{
+	// unpack plane
+	Fvector	DUP, vNorm, v, v1, P0;
+	DUP.set(0,1,0);
+	pvDecompress(vNorm,tNode.plane);
+	Fplane PL; 
+	Level().AI.UnpackPosition(P0,tNode.p0);
+	PL.build(P0,vNorm);
+	v.set(X,P0.y,Z);	
+	PL.intersectRayPoint(v,DUP,v1);	
+	//v1.mad(v1,PL.n,.01f);
+	//return(v1.y + .01f);
+	return(v1.y);
+}
+
+/**/
+IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
+{
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPS_L))
+		return(true);
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPS_L))
+		return(true);
+	// otherwise
+	return(false);
+}
+
+/**
+IC bool CAI_Zombie::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
+{
+	// check if it is left node
+	if ((fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tRightUp.z) < EPS_L) &&
+		(fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L))
+		return(true);
+	// check if it is front node
+	if ((fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z)  < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPS_L))
+		return(true);
+	// check if it is right node
+	if ((fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L) &&
+		(fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPS_L))
+		return(true);
+	// check if it is back node
+	if ((fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPS_L) &&
+		(fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tRightUp.x) < EPS_L))
+		return(true);
+	// otherwise
+	return(false);
+}
+/**/
+
+#define MAX_NEIGHBOUR_COUNT 9
+//#define MAX_NEIGHBOUR_COUNT 5
+
+int CAI_Zombie::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+{
+	CAI_Space &AI = Level().AI;
+	float fSubNodeSize = AI.GetHeader().size;
+	SSubNode tNode;
+	tpSubNodes.clear();
+	int iCount = 0, iResult = -1;
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	AI.UnpackPosition(tLeftDown,tpStartNode->p0);
+	AI.UnpackPosition(tRightUp,tpStartNode->p1);
+	
+	float x = tCurrentPosition.x - (tLeftDown.x - fSubNodeSize/2.f);
+	float z = tCurrentPosition.z - (tLeftDown.z - fSubNodeSize/2.f);
+	//iResult = floor(x/fSubNodeSize)*(floor((tRightUp.z - tLeftDown.z)/fSubNodeSize) + 1) + floor(z/fSubNodeSize);
+	SSubNode tMySubNode;
+	tMySubNode.tLeftDown.x = tLeftDown.x - fSubNodeSize/2.f + fSubNodeSize*floor(x/fSubNodeSize);
+	tMySubNode.tLeftDown.z = tLeftDown.z - fSubNodeSize/2.f + fSubNodeSize*floor(z/fSubNodeSize);
+	tMySubNode.tRightUp.x = tMySubNode.tLeftDown.x + fSubNodeSize;
+	tMySubNode.tRightUp.z = tMySubNode.tLeftDown.z + fSubNodeSize;
+	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+		tNode.tLeftDown.x = i;
+		tNode.tRightUp.x = i + fSubNodeSize;
+		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+			tNode.tLeftDown.z = j;
+			tNode.tRightUp.z = j + fSubNodeSize;
+			if (
+				(iResult < 0) &&
+				(fabs(tNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPS_L) &&
+				(fabs(tNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L) &&
+				(fabs(tNode.tRightUp.x - tMySubNode.tRightUp.x) < EPS_L) &&
+				(fabs(tNode.tRightUp.z - tMySubNode.tRightUp.z) < EPS_L)
+				) {
+				tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+				tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+				tNode.bEmpty = true;
+				tpSubNodes.push_back(tNode);
+				iResult = iCount;
+				iCount++;
+			}
+			else
+				if (bfNeighbourNode(tNode,tMySubNode)) {
+					tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+					tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+					tNode.bEmpty = true;
+					tpSubNodes.push_back(tNode);
+					iCount++;
+					if (iCount >= MAX_NEIGHBOUR_COUNT)
+						break;
+				}
+		}
+		if (iCount >= MAX_NEIGHBOUR_COUNT)
+			break;
+	}
+	if (iCount < MAX_NEIGHBOUR_COUNT) {
+		NodeLink *taLinks = (NodeLink *)((u8 *)tpStartNode + sizeof(NodeCompressed));
+		int iLinkCount = tpStartNode->link_count;
+		for (int k=0; k<iLinkCount; k++) {
+			NodeCompressed *tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
+			AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);
+			AI.UnpackPosition(tRightUp,tpCurrentNode->p1);
+			for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+				tNode.tLeftDown.x = i;
+				tNode.tRightUp.x = i + fSubNodeSize;
+				for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+					tNode.tLeftDown.z = j;
+					tNode.tRightUp.z = j + fSubNodeSize;
+					if (bfNeighbourNode(tNode,tMySubNode)) {
+						tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
+						tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
+						tNode.bEmpty = true;
+						tpSubNodes.push_back(tNode);
+						iCount++;
+						if (iCount >= MAX_NEIGHBOUR_COUNT)
+							break;
+					}
+				}
+				if (iCount >= MAX_NEIGHBOUR_COUNT)
+					break;
+			}
+			if (iCount >= MAX_NEIGHBOUR_COUNT)
+				break;
+		}
+	}
+	VERIFY(iResult >= 0);
+	return(iResult);
+}
+
+int CAI_Zombie::ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
+{
+	CAI_Space &AI = Level().AI;
+	float fSubNodeSize = AI.GetHeader().size;
+	SSubNode tNode;
+	tpSubNodes.clear();
+	int iCount = 0, iMySubNode = -1;
+	float fBestCost = 100000000.f;
+	Fvector tLeftDown;
+	Fvector tRightUp;
+	AI.UnpackPosition(tLeftDown,tpStartNode->p0);
+	AI.UnpackPosition(tRightUp,tpStartNode->p1);
+	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
+		tNode.tLeftDown.x = i;
+		tNode.tRightUp.x = i + fSubNodeSize;
+		for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
+			tNode.tLeftDown.z = j;
+			tNode.tRightUp.z = j + fSubNodeSize;
+			float fCurrentCost = ffComputeCost(tCurrentPosition,tNode);
+			if (fCurrentCost < fBestCost) {
+				tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
+				tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
+				tNode.bEmpty = true;
+				tpSubNodes.push_back(tNode);
+				fBestCost = fCurrentCost;
+				iMySubNode = iCount;
+				iCount++;
+			}
+		}
+	}
+	VERIFY(iMySubNode >= 0);
+	return(iMySubNode);
+}
+
+void CAI_Zombie::GoToPointViaSubnodes(Fvector &tLeaderPosition) 
+{
+	Fvector tCurrentPosition = Position();
+	NodeCompressed* tpCurrentNode = AI_Node;
+	if (bfInsideNode(tCurrentPosition,tpCurrentNode)) {
+		// divide the nearest nodes into the subnodes 0.7x0.7 m^2
+		int iMySubNode = ifDivideNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		VERIFY(iMySubNode >= 0);
+		// filling the subnodes with the moving objects
+		Level().ObjectSpace.GetNearest(tCurrentPosition,3.f);//20*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		Fvector tCenter;
+
+		int i;
+		/**
+		SSubNode *tpFrontSubNode=0;
+		SSubNode *tpBackSubNode=0;
+		SSubNode *tpLeftSubNode=0;
+		SSubNode *tpRightSubNode=0;
+		SSubNode &tMySubNode = tpSubNodes[iMySubNode];
+
+		
+		for ( i=0; i<tpSubNodes.size(); i++) {
+			if (i == iMySubNode)
+				continue;
+			// check if it is left node
+			if ((fabs(tpSubNodes[i].tRightUp.z - tMySubNode.tRightUp.z) < EPS_L) &&
+				(fabs(tpSubNodes[i].tRightUp.x - tMySubNode.tLeftDown.x) < EPS_L))
+				tpLeftSubNode = &(tpSubNodes[i]);
+			// check if it is front node
+			if ((fabs(tpSubNodes[i].tLeftDown.z - tMySubNode.tRightUp.z)  < EPS_L) &&
+				(fabs(tpSubNodes[i].tLeftDown.x - tMySubNode.tLeftDown.x) < EPS_L))
+				tpFrontSubNode = &(tpSubNodes[i]);
+			// check if it is right node
+			if ((fabs(tpSubNodes[i].tLeftDown.z - tMySubNode.tLeftDown.z) < EPS_L) &&
+				(fabs(tpSubNodes[i].tLeftDown.x - tMySubNode.tRightUp.x) < EPS_L))
+				tpRightSubNode = &(tpSubNodes[i]);
+			// check if it is back node
+			if ((fabs(tpSubNodes[i].tRightUp.z - tMySubNode.tLeftDown.z) < EPS_L) &&
+				(fabs(tpSubNodes[i].tRightUp.x - tMySubNode.tRightUp.x) < EPS_L))
+				tpBackSubNode = &(tpSubNodes[i]);
+		}
+		/**/
+
+		/**/
+		if (!(tpNearestList.empty())) {
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
+					continue;
+				float fRadius = tpCurrentObject->Radius();
+				tpCurrentObject->clCenter(tCenter);
+				
+				//bool bFront=0,bBack=0,bLeft=0,bRight=0;
+				for (int j=0; j<tpSubNodes.size(); j++)
+					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
+						tpSubNodes[j].bEmpty = false;
+						//if (&(tpSubNodes[j]) == tpFrontSubNode)
+						//	bFront = true;
+						//if (&(tpSubNodes[j]) == tpLeftSubNode)
+						//	bLeft = true;
+						//if (&(tpSubNodes[j]) == tpRightSubNode)
+						//	bRight = true;
+						//if (&(tpSubNodes[j]) == tpBackSubNode)
+						//	bBack = true;
+					}
+
+				CAI_Zombie *tMember = dynamic_cast<CAI_Zombie*>(tpCurrentObject);
+				if (tMember)
+					if (tMember->AI_Path.TravelPath.size() > tMember->AI_Path.TravelStart + 2) {
+						CAI_Space &AI = Level().AI;
+						tCenter = tMember->AI_Path.TravelPath[tMember->AI_Path.TravelStart + 1].P;
+						for (int j=0; j<tpSubNodes.size(); j++)
+							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
+								tpSubNodes[j].bEmpty = false;
+								//if (&(tpSubNodes[j]) == tpFrontSubNode)
+								//	bFront = true;
+								//if (&(tpSubNodes[j]) == tpLeftSubNode)
+								//	bLeft = true;
+								//if (&(tpSubNodes[j]) == tpRightSubNode)
+								//	bRight = true;
+								//if (&(tpSubNodes[j]) == tpBackSubNode)
+								//	bBack = true;
+							}
+						//if ((bFront && bLeft) || (bFront && bRight) || (bBack && bLeft) || (bBack && bRight)) {						
+						//	for (int j=0; j<tpSubNodes.size(); j++)
+						//		tpSubNodes[j].bEmpty = false;
+						//	break;
+						//}
+					}
+			}
+		}
+		/**/
+		// checking the nearest nodes
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
+
+		//Fvector tLeaderPosition = Leader->Position();
+		DWORD dwTime = Level().timeServer();
+		int iBestI = -1;
+		float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
+		bool bMobility = false;
+		for ( i=0; i<tpSubNodes.size(); i++)
+			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
+				bMobility = true;
+				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);
+				if (fCurCost < fBestCost) {
+					iBestI = i;
+					fBestCost = fCurCost;
+				}
+			}
+
+		if (bMobility) {
+			m_bMobility = true;
+			/**
+			if (iBestI < 0)
+				if (dwTime - m_dwLastUpdate > 3000) {
+					m_dwLastUpdate = dwTime;
+					iBestI = ::Random.randI(0,tpSubNodes.size());
+				}
+				//else
+				//	m_bMobility
+			/**/
+			if (iBestI >= 0) {
+				m_dwLastRangeSearch = dwTime;
+				Fvector tFinishPosition;
+				tFinishPosition.x = (tpSubNodes[iBestI].tLeftDown.x + tpSubNodes[iBestI].tRightUp.x)/2.f;
+				tFinishPosition.y = (tpSubNodes[iBestI].tLeftDown.y + tpSubNodes[iBestI].tRightUp.y)/2.f;
+				tFinishPosition.z = (tpSubNodes[iBestI].tLeftDown.z + tpSubNodes[iBestI].tRightUp.z)/2.f;
+				VERIFY(tFinishPosition.x < 1000000.f);
+				CTravelNode	tCurrentPoint,tFinishPoint;
+				tCurrentPoint.P.set(tCurrentPosition);
+				tCurrentPoint.floating = FALSE;
+				AI_Path.TravelPath.push_back(tCurrentPoint);
+				tFinishPoint.P.set(tFinishPosition);
+				tFinishPoint.floating = FALSE;
+				AI_Path.TravelPath.push_back(tFinishPoint);
+			}
+		}
+		else {
+			m_bMobility = false;
+		}
+	}
+	else {
+		int iMySubNode = ifDivideNearestNode(tpCurrentNode,tCurrentPosition,tpSubNodes);
+		VERIFY(iMySubNode >= 0);
+		Level().ObjectSpace.GetNearest(tpSubNodes[iMySubNode].tLeftDown,2*(Level().AI.GetHeader().size));
+		CObjectSpace::NL_TYPE &tpNearestList = Level().ObjectSpace.nearest_list;
+		if (!tpNearestList.empty()) {
+			for (CObjectSpace::NL_IT tppObjectIterator=tpNearestList.begin(); tppObjectIterator!=tpNearestList.end(); tppObjectIterator++) {
+				CObject* tpCurrentObject = (*tppObjectIterator)->Owner();
+				if ((tpCurrentObject->CLS_ID != CLSID_ENTITY) || (tpCurrentObject == this) || (tpCurrentObject == tSavedEnemy))
+					continue;
+				float fRadius = tpCurrentObject->Radius();
+				Fvector tCenter;
+				tpCurrentObject->clCenter(tCenter);
+				if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[iMySubNode])) {
+					tpSubNodes[iMySubNode].bEmpty = false;
+					break;
+				}
+			}
+		}
+		AI_Path.TravelPath.clear();
+		AI_Path.TravelStart = 0;
+		if (tpSubNodes[iMySubNode].bEmpty) {
+			Fvector tFinishPosition;
+			tFinishPosition.x = (tpSubNodes[iMySubNode].tLeftDown.x + tpSubNodes[iMySubNode].tRightUp.x)/2.f;
+			tFinishPosition.y = (tpSubNodes[iMySubNode].tLeftDown.y + tpSubNodes[iMySubNode].tRightUp.y)/2.f;
+			tFinishPosition.z = (tpSubNodes[iMySubNode].tLeftDown.z + tpSubNodes[iMySubNode].tRightUp.z)/2.f;
+			VERIFY(tFinishPosition.x < 1000000.f);
+			CTravelNode	tCurrentPoint,tFinishPoint;
+			tCurrentPoint.P.set(tCurrentPosition);
+			tCurrentPoint.floating = FALSE;
+			AI_Path.TravelPath.push_back(tCurrentPoint);
+			tFinishPoint.P.set(tFinishPosition);
+			tFinishPoint.floating = FALSE;
+			AI_Path.TravelPath.push_back(tFinishPoint);
+			m_bMobility = true;
+		}
+		else
+			m_bMobility = false;
+	}
+}

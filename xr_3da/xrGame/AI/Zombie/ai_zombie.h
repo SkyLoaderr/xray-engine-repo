@@ -125,6 +125,14 @@ class CAI_Zombie : public CCustomMonster
 		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 		#define COMPUTE_DISTANCE_2D(t,p)		(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 		#define MIN_COVER_MOVE					120
+		#define MAX_NEIGHBOUR_COUNT				9
+		//#define MAX_NEIGHBOUR_COUNT			5
+
+		typedef struct tagSSubNode {
+			Fvector tLeftDown;
+			Fvector tRightUp;
+			bool	bEmpty;
+		} SSubNode;
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
@@ -189,7 +197,7 @@ class CAI_Zombie : public CCustomMonster
 		EZombieStates	m_ePreviousState;
 		bool			bStopThinking;
 		
-		// action data
+				// action data
 		bool			m_bActionStarted;
 		bool			m_bJumping;
 		
@@ -204,6 +212,9 @@ class CAI_Zombie : public CCustomMonster
 
 		// visual data
 		objSET			tpaVisibleObjects;
+		
+		// movement data
+		vector<SSubNode> tpSubNodes;
 		
 		// saved enemy
 		SEnemySelected	Enemy;
@@ -378,7 +389,15 @@ class CAI_Zombie : public CCustomMonster
 		void vfSetFire(bool bFire, CGroup &Group);
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();
-
+	IC  bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
+	IC  bool bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode);
+	IC  bool bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode);
+	IC  float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour);
+	IC  float ffGetY(NodeCompressed &tNode, float X, float Z);
+	IC  bool bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode);
+		int  ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
+		int  ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
+		void GoToPointViaSubnodes(Fvector &tLeaderPosition);
 	public:
 					   CAI_Zombie();
 		virtual		  ~CAI_Zombie();
