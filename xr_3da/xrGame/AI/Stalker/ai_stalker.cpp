@@ -290,9 +290,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 void CAI_Stalker::net_Destroy()
 {
 	inherited::net_Destroy	();
+	m_pPhysics_support->in_NetDestroy();
 	Init					();
 	m_inventory.Clear		();
-	m_pPhysics_support->in_NetDestroy();
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)
