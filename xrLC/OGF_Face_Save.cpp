@@ -59,7 +59,7 @@ void OGF::Save			(IWriter &fs)
 
 	// Header
 	fs.open_chunk		(OGF_HEADER);
-	fs.write			(&H,sizeof(H));
+	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 }
 
