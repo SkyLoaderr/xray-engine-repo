@@ -425,10 +425,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	// Compile shader
 	CBlender*	B		= _GetBlender	(s_shader);
 #ifdef M_BORLAND
-    if (!B){
-    	ELog.Msg(mtError,"Can't find shader '%s'",s_shader);
-    	return 0;
-    }
+    if (!B)				{ ELog.Msg(mtError,"Can't find shader '%s'",s_shader); return 0; }
 	C.bEditor			= TRUE;
 #endif
 	B->Compile			(C);

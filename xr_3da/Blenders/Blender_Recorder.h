@@ -18,6 +18,7 @@ public:
 	BOOL				bEditor;
 	BOOL				bLighting;
 	int					iLayers;
+	int					iLOD;
 private:
 	CSimulator			RS;
 	Shader*				SH;

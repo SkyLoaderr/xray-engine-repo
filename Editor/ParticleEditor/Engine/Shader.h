@@ -48,7 +48,7 @@ struct	ENGINE_API		CPass
 	}
 };
 
-struct ENGINE_API		Shader
+struct ENGINE_API		ShaderElement
 {
 public:
 	struct SFlags
@@ -81,6 +81,14 @@ public:
 			if (!Passes[p].equal(S.Passes[p]))		return FALSE;
 		return TRUE;
 	}
+};
+
+struct ENGINE_API		Shader 
+{
+public:
+	ShaderElement*		lod0;
+	ShaderElement*		lod1;
+	ShaderElement*		lighting;
 };
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)
