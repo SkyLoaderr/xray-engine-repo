@@ -49,10 +49,10 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->Show				();
         frmSplash->Repaint			();
 
+        frmSplash->SetStatus		("Initializing");
+
     	Core._initialize			(_EDITOR_FILE_NAME_,ELogCallback);
         TfrmLog::CreateLog			();
-
-        frmSplash->SetStatus		("Initializing");
 
         Application->Initialize		();
 

@@ -40,10 +40,10 @@ void CPSLibrary::OnDeviceCreate	()
 }
 void CPSLibrary::OnDeviceDestroy()
 {
-	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
-		Device.Shader.Delete(it->m_CachedShader);
-	for (PS::PSIt it = m_PSs.begin(); it!=m_PSs.end(); it++)
-		Device.Shader.Delete(it->m_CachedShader);
+	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
+		Device.Shader.Delete(s_it->m_CachedShader);
+	for (PS::PGIt g_it = m_PGs.begin(); g_it!=m_PGs.end(); g_it++)
+		Device.Shader.Delete((*g_it)->m_CachedShader);
 }
 
 PS::SDef* CPSLibrary::FindPS(LPCSTR Name)
