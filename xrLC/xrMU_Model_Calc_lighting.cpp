@@ -257,9 +257,9 @@ void xrMU_Reference::calc_lighting	()
 		c_bias.w			= 1;
 		/*
 		clMsg				("scale[%2.2f, %2.2f, %2.2f], bias[%2.2f, %2.2f, %2.2f]",
-			c_scale.x,c_scale.y,c_scale.z,
-			c_bias.x,c_bias.y,c_bias.z
-			);
+		c_scale.x,c_scale.y,c_scale.z,
+		c_bias.x,c_bias.y,c_bias.z
+		);
 		*/
 	}
- }
+}
