@@ -596,9 +596,9 @@ end
 function CStateAmbush:execute()
     if(self.npc:action() == nil) then
     if(self.npc:level_vertex_id() ~= self.ambush_way:level_vertex_id(0)) then
-          action(self.npc, move(move.walk_fwd, self.ambush_way:point(0)), sound(sound.idle), cond(cond.move_end))
+			action(self.npc, move(move.walk_fwd, self.ambush_way:point(0), move.force), sound(sound.idle), cond(cond.move_end))
         else
-          action(self.npc, look(look.point, self.ambush_way:point(1)), anim(anim.turn, 0), sound(sound.attack), cond(cond.look_end))
+			action(self.npc, look(look.point, self.ambush_way:point(1)), anim(anim.turn, 0), sound(sound.attack), cond(cond.look_end))
             action(self.npc, anim(anim.stand_idle, 0), sound(sound.attack), cond(cond.time_end, 50000))
         end
     end
@@ -742,7 +742,7 @@ function CBloodsuckerAmbush:select_state()
             //Когда мы не на позиции: в зависимости от то, вощел ли враг в зону и на каком он расстоянии выбераем состояние
             if(self.enter) then
               if(self.ambush_attack or distance_between(self.npc, self.memory.enemy) < 5 or self.memory.hit.time ~= 0) then
-                  self:set_state(s_attack)
+					self:set_state(s_attack)
                     return
                 else
                     self:set_state(s_ambush)
@@ -792,7 +792,7 @@ function CBloodsuckerAmbush:set_state(new_state)
     //Set new state
     if(new_state == s_attack) then
         self.curState      = self.stateAttack
-    if(level.actor() and self.memory.enemy:id() == level.actor():id()) then
+		if(level.actor() and self.memory.enemy:id() == level.actor():id()) then
             //Если уже атакуем врага, то в засаде участия не принимаем
             self.ambush_attack = true
         end
