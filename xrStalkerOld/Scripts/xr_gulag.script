@@ -316,6 +316,10 @@ function checkNpc(npc_community, gulag_type)
 	if gulag_type == "gar_maniac" then
 		return true
 	end
+
+	if gulag_type == "agr_nii" then
+		return true
+	end
 	
 	return false
 end
