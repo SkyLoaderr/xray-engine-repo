@@ -57,6 +57,7 @@ CAI_Biting::CAI_Biting()
 	m_enemy_cover_evaluator			= xr_new<CCoverEvaluatorFarFromEnemy>(this);
 	m_cover_evaluator_close_point	= xr_new<CCoverEvaluatorCloseToEnemy>(this);
 
+	CurrentState					= 0;
 }
 
 CAI_Biting::~CAI_Biting()
