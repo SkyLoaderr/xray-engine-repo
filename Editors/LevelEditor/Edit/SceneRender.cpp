@@ -167,6 +167,13 @@ void EScene::RenderCompilerErrors()
         temp.sprintf		("IF: %d",cnt++);
         DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
     }
+    cnt=0;
+    for (ERR::OBBVecIt oit=m_CompilerErrors.m_OBB.begin(); oit!=m_CompilerErrors.m_OBB.end(); oit++)
+    {
+        temp.sprintf		("OBB: %d",cnt++);
+        DU.DrawOBB			(Fidentity,*oit,0x2F00FF00,0xFF00FF00);
+        DU.DrawTextA		(oit->m_translate,temp.c_str(),0xffff0000,0x0000000);
+    }
     Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
     Device.ResetNearer		();
 }

@@ -172,7 +172,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
         F.close_chunk();
     }
 // SMF
-//*
+/*
 	if (0){
     	static u32 chunk_id = 0; chunk_id++;
 		AnsiString r=AnsiString("x:\\import\\test")+chunk_id+".smf";
@@ -201,7 +201,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
         }
         FS.w_close	(W);
 	}
-    
+*/    
 }
 
 void CExportSkeleton::SSplit::CalculateTB()
@@ -414,57 +414,89 @@ CExportSkeleton::CExportSkeleton(CEditableObject* object)
 	m_Source=object;
 }
 //----------------------------------------------------
-#include "WmlContMinBox3.h"
+//#include "WmlContMinBox3.h"
+//#include "WmlContBox3.h"
+
+extern BOOL RAPIDMinBox(Fobb& B, Fvector* vertices, u32 v_count);
 
 void ComputeOBB	(Fobb &B, FvectorVec& V)
 {
     if (V.size()<3) { B.invalidate(); return; }
 
+    float 	HV				= flt_max;
+//    if (1)
+    {
+    	Fobb 				BOX;
+    	RAPIDMinBox			(BOX,V.begin(),V.size());
+        float hv			= BOX.m_halfsize.x*BOX.m_halfsize.y*BOX.m_halfsize.z;
+        if (hv<HV){
+        	HV 				= hv;
+        	B				= BOX;
+        }
+    }
+/*    
     // вариант 1
     {
         Wml::Box3<float> 	BOX;
         Wml::MinBox3<float> mb(V.size(), (const Wml::Vector3<float>*) V.begin(), BOX);
-        B.m_rotate.i.set	(BOX.Axis(0));
-        B.m_rotate.j.set	(BOX.Axis(1));
-        B.m_rotate.k.set	(BOX.Axis(2));
+        float hv			= BOX.Extents()[0]*BOX.Extents()[1]*BOX.Extents()[2];
+        if (hv<HV){
+        	HV 				= hv;
+            B.m_rotate.i.set(BOX.Axis(0));
+            B.m_rotate.j.set(BOX.Axis(1));
+            B.m_rotate.k.set(BOX.Axis(2));
 
-        // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
-        B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
-        B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
-    
-        B.m_translate.set	(BOX.Center());
-        B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+            B.m_translate.set(BOX.Center());
+            B.m_halfsize.set(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+        }
     }
     // вариант 2
-    if (!_valid(B.m_rotate)||!_valid(B.m_translate)||!_valid(B.m_halfsize))
     {
-        Mgc::Box3	BOX		= Mgc::ContOrientedBox(V.size(), (const Mgc::Vector3*) V.begin());
-        B.m_rotate.i.set	(BOX.Axis(0));
-        B.m_rotate.j.set	(BOX.Axis(1));
-        B.m_rotate.k.set	(BOX.Axis(2));
+        Wml::Box3<float> BOX= Wml::ContOrientedBox(V.size(), (const Wml::Vector3<float>*) V.begin());
+        float hv			= BOX.Extents()[0]*BOX.Extents()[1]*BOX.Extents()[2];
+        if (hv<HV){
+        	HV 				= hv;
+            B.m_rotate.i.set(BOX.Axis(0));
+            B.m_rotate.j.set(BOX.Axis(1));
+            B.m_rotate.k.set(BOX.Axis(2));
 
-        // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
-        B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
-        B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
-    
-        B.m_translate.set	(BOX.Center());
-        B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+            B.m_translate.set(BOX.Center());
+            B.m_halfsize.set(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+        }
     }
     // вариант 3
-    if (!_valid(B.m_rotate)||!_valid(B.m_translate)||!_valid(B.m_halfsize))
+    {
+        Mgc::Box3	BOX		= Mgc::ContOrientedBox(V.size(), (const Mgc::Vector3*) V.begin());
+        float hv			= BOX.Extents()[0]*BOX.Extents()[1]*BOX.Extents()[2];
+        if (hv<HV){
+        	HV 				= hv;
+            B.m_rotate.i.set(BOX.Axis(0));
+            B.m_rotate.j.set(BOX.Axis(1));
+            B.m_rotate.k.set(BOX.Axis(2));
+    
+            B.m_translate.set(BOX.Center());
+            B.m_halfsize.set(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+        }
+    }
+    // вариант 4
     {
         Mgc::Box3	BOX		= Mgc::MinBox(V.size(), (const Mgc::Vector3*) V.begin());
-        B.m_rotate.i.set	(BOX.Axis(0));
-        B.m_rotate.j.set	(BOX.Axis(1));
-        B.m_rotate.k.set	(BOX.Axis(2));
+        float hv			= BOX.Extents()[0]*BOX.Extents()[1]*BOX.Extents()[2];
+        if (hv<HV){
+        	HV 				= hv;
+            B.m_rotate.i.set(BOX.Axis(0));
+            B.m_rotate.j.set(BOX.Axis(1));
+            B.m_rotate.k.set(BOX.Axis(2));
 
-        // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
-        B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
-        B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
-    
-        B.m_translate.set	(BOX.Center());
-        B.m_halfsize.set	(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+            B.m_translate.set(BOX.Center());
+            B.m_halfsize.set(BOX.Extents()[0],BOX.Extents()[1],BOX.Extents()[2]);
+        }
     }
+*/
+    // Normalize rotation matrix (были проблемы ContOrientedBox - выдает левую матрицу)
+    B.m_rotate.i.crossproduct(B.m_rotate.j,B.m_rotate.k);
+    B.m_rotate.j.crossproduct(B.m_rotate.k,B.m_rotate.i);
+    
     VERIFY (_valid(B.m_rotate)&&_valid(B.m_translate)&&_valid(B.m_halfsize));
 }
 //----------------------------------------------------

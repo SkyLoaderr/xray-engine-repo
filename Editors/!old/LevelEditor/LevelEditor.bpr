@@ -212,7 +212,7 @@
       <FILE FILENAME="Edit\GroupObject.cpp" FORMNAME="" UNITNAME="GroupObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\portal.cpp" FORMNAME="" UNITNAME="portal.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\portalutils.cpp" FORMNAME="" UNITNAME="portalutils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\Scene.cpp" FORMNAME="" UNITNAME="Scene.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Edit\scene.cpp" FORMNAME="" UNITNAME="Scene.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\Scene_Tools.cpp" FORMNAME="" UNITNAME="Scene_Tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\SceneObject.cpp" FORMNAME="" UNITNAME="SceneObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

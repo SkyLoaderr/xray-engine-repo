@@ -151,11 +151,12 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 IC BOOL OrientToNorm(const Fvector& normal, Fmatrix33& form, Fvector& hs)
 {
     Fvector * ax_pointer= (Fvector*)&form;
-    float max_dot=_abs(ax_pointer[0].dotproduct(normal));
-    float min_size=hs.x;
+    float dot 		= ax_pointer[0].dotproduct(normal);
+    float max_dot	= _abs(dot);
+    float min_size	= hs.x;
     int max_ax_i=0,min_size_i=0;
     for(int i=1;3>i;++i){
-    	float dot	= ax_pointer[i].dotproduct(normal);
+    	dot			= ax_pointer[i].dotproduct(normal);
         float dot_pr= _abs(dot);
         if(max_dot<dot_pr){
             max_ax_i=i;max_dot=dot_pr;
@@ -244,9 +245,12 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     // set visual (empty)
 //.					m_Visual->set_visual		(sn.c_str(),false);
 					// orientate object
-                    if (!OrientToNorm(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize)){
-                    	ELog.DlgMsg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
-                    }else{
+	          		OrientToNorm				(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize);
+                    Scene->m_CompilerErrors.AppendOBB	(P->m_OBB);
+//	          		if (!OrientToNorm(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize)){
+//                    	ELog.DlgMsg(mtError,"Invalid climable object found. [%3.2f, %3.2f, %3.2f]",VPUSH(P->m_RefOffset));
+//					}else
+                    {
                         Fmatrix M; M.set			(P->m_OBB.m_rotate.i,P->m_OBB.m_rotate.j,P->m_OBB.m_rotate.k,P->m_OBB.m_translate);
                         M.getXYZ					(P->m_RefRotate); // не i потому что в движке так
                         m_Data->position().set		(P->m_RefOffset); 

@@ -84,14 +84,13 @@ const Real* Box3<Real>::Extents () const
     return m_afExtent;
 }
 //----------------------------------------------------------------------------
-/*
 template <class Real>
 void Box3<Real>::ComputeVertices (Vector3<Real> akVertex[8]) const
 {
     Vector3<Real> akEAxis[3];
-    akEAxis[0] = m_afExtent[0]*m_akAxis[0],
-    akEAxis[1] = m_afExtent[1]*m_akAxis[1],
-    akEAxis[2] = m_afExtent[2]*m_akAxis[2]
+    akEAxis[0] = m_akAxis[0]*m_afExtent[0];
+    akEAxis[1] = m_akAxis[1]*m_afExtent[1];
+    akEAxis[2] = m_akAxis[2]*m_afExtent[2];
 
     akVertex[0] = m_kCenter - akEAxis[0] - akEAxis[1] - akEAxis[2];
     akVertex[1] = m_kCenter + akEAxis[0] - akEAxis[1] - akEAxis[2];
@@ -102,7 +101,6 @@ void Box3<Real>::ComputeVertices (Vector3<Real> akVertex[8]) const
     akVertex[6] = m_kCenter + akEAxis[0] + akEAxis[1] + akEAxis[2];
     akVertex[7] = m_kCenter - akEAxis[0] + akEAxis[1] + akEAxis[2];
 }
-*/
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------

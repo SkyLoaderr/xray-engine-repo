@@ -8,8 +8,8 @@
 // and may not be copied or disclosed except in accordance with the terms of
 // that agreement.
 
-#ifndef WMLCONTBOX3_H
-#define WMLCONTBOX3_H
+#ifndef WMLCONTBOX3H
+#define WMLCONTBOX3H
 
 #include "WmlBox3.h"
 

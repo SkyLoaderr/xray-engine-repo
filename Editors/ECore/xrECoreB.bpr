@@ -81,7 +81,9 @@
       Intermediate\WmlMinimizeN.obj Intermediate\WmlMinimize1.obj 
       Intermediate\WmlMath.obj Intermediate\WmlVector3.obj 
       Intermediate\WmlMatrix3.obj Intermediate\WmlSystem.obj 
-      Intermediate\WmlWinSystem.obj"/>
+      Intermediate\WmlWinSystem.obj Intermediate\WmlContBox3.obj 
+      Intermediate\WmlQuaternion.obj Intermediate\WmlApprGaussPointsFit3.obj 
+      Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -299,6 +301,11 @@
       <FILE FILENAME="WildMagic\WmlMatrix3.cpp" FORMNAME="" UNITNAME="WmlMatrix3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="WildMagic\WmlSystem.cpp" FORMNAME="" UNITNAME="WmlSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="WildMagic\WmlWinSystem.cpp" FORMNAME="" UNITNAME="WmlWinSystem" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlContBox3.cpp" FORMNAME="" UNITNAME="WmlContBox3" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlQuaternion.cpp" FORMNAME="" UNITNAME="WmlQuaternion.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlApprGaussPointsFit3.cpp" FORMNAME="" UNITNAME="WmlApprGaussPointsFit3.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\WmlEigen.cpp" FORMNAME="" UNITNAME="WmlEigen" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="WildMagic\RAPIDMinBox.cpp" FORMNAME="" UNITNAME="RAPIDMinBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

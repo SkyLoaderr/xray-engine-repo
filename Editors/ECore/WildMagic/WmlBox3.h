@@ -35,7 +35,7 @@ public:
     Real* Extents ();
     const Real* Extents () const;
 
-//.    void ComputeVertices (Vector3<Real> akVertex[8]) const;
+    void ComputeVertices (Vector3<Real> akVertex[8]) const;
 
 protected:
     Vector3<Real> m_kCenter;

@@ -84,14 +84,17 @@ public:
 	    DEFINE_VECTOR(Face,FaceVec,FaceIt);
 	    DEFINE_VECTOR(Edge,EdgeVec,EdgeIt);
 	    DEFINE_VECTOR(Vert,VertVec,VertIt);
+		DEFINE_VECTOR(Fobb,OBBVec,OBBVecIt);
     	FaceVec			m_InvalidFaces;
 	    EdgeVec			m_MultiEdges;
 	    VertVec			m_TJVerts;
+		OBBVec 			m_OBB;
         void			Clear()
         {
         	m_InvalidFaces.clear();
 	    	m_MultiEdges.clear	();
 	    	m_TJVerts.clear		();
+            m_OBB.clear			();
         }
         void AppendPoint(const Fvector& p0)
         {
@@ -110,6 +113,10 @@ public:
         	m_InvalidFaces.back().p[0].set(p0);
         	m_InvalidFaces.back().p[1].set(p1);
         	m_InvalidFaces.back().p[2].set(p2);
+        }
+        void AppendOBB	(const Fobb& obb)
+        {
+        	m_OBB.push_back(obb);
         }
     };
     ERR				m_CompilerErrors;
