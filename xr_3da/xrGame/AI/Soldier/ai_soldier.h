@@ -516,8 +516,8 @@ class CAI_Soldier : public CCustomMonster
 		void OnDefendGroupFireDialog();
 
 		// miscellanious funtions	
+		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
-		void vfLookAtDirection(int iIndex);
 		bool bfCheckForDangerPlace();
 		DWORD tfGetAloneFightType();
 		DWORD tfGetGroupFightType();

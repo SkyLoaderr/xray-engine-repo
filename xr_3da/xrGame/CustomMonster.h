@@ -42,8 +42,10 @@ protected:
 	typedef struct tagSDynamicObject {
 		DWORD			dwTime;
 		DWORD			dwUpdateCount;
+		DWORD			dwNodeID;
 		Fvector			tSavedPosition;
 		SRotation		tOrientation;
+		DWORD			dwMyNodeID;
 		Fvector			tMySavedPosition;
 		SRotation		tMyOrientation;
 		CEntity			*tpEntity;

@@ -14,7 +14,7 @@
 #define	FIRE_SAFETY_ANGLE				PI/10
 #define SPECIAL_SQUAD					6
 #define LIGHT_FITTING			
-#define FNN(x,tpNode)					float(tpNode->cover[x])
+#define FNN(x,tpNode)					float(tpNode->cover[x]/255.f)
 
 bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint) 
 {
@@ -899,17 +899,9 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	}
 	if (!bOk)
 		return(false);
-	//Level().AI.Node(AI_Path.Nodes[AI_Path.TravelStart + 1]);
- 	int iMax = 0, iIndexMax = -1;
-	/**
-	for (int i=0; i<4; i++)
-		if (int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]) >= iMax ) {
-			iMax = int(tpNextNode->cover[i]) - int(tpCurrentNode->cover[i]);
-			iIndexMax = i;
-		}
-	/**/
+ 	
 	float fAngleOfView = eye_fov*PI/180.f;
-	float fMaxSquare = 3.f, fBestAngle = -1.f;
+	float fMaxSquare = .25f, fBestAngle = -1.f;
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/20.f) {
 		float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,FNN(1,tpCurrentNode),FNN(2,tpCurrentNode),FNN(3,tpCurrentNode),FNN(0,tpCurrentNode));
 		float fSquare1 = ffCalcSquare(fIncrement,fAngleOfView,FNN(1,tpNextNode),FNN(2,tpNextNode),FNN(3,tpNextNode),FNN(0,tpNextNode));

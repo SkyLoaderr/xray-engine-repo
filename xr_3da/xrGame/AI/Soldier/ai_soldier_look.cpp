@@ -189,8 +189,10 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 			if (tpEntity == tpaDynamicObjects[j].tpEntity) {
 				tpaDynamicObjects[j].dwTime = dwTime;
 				tpaDynamicObjects[j].dwUpdateCount++;
+				tpaDynamicObjects[j].dwNodeID = tpEntity->AI_NodeID;
 				tpaDynamicObjects[j].tSavedPosition = tpEntity->Position();
 				tpaDynamicObjects[j].tOrientation = tfGetOrientation(tpEntity);
+				tpaDynamicObjects[j].dwMyNodeID = AI_NodeID;
 				tpaDynamicObjects[j].tMySavedPosition = Position();
 				tpaDynamicObjects[j].tMyOrientation = r_torso_current;
 				break;
@@ -207,8 +209,10 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				if (dwIndex < tpaDynamicObjects.size()) {
 					tpaDynamicObjects[dwIndex].dwTime = dwTime;
 					tpaDynamicObjects[dwIndex].dwUpdateCount = 1;
+					tpaDynamicObjects[dwIndex].dwNodeID = tpEntity->AI_NodeID;
 					tpaDynamicObjects[dwIndex].tSavedPosition = tpEntity->Position();
 					tpaDynamicObjects[dwIndex].tOrientation = tfGetOrientation(tpEntity);
+					tpaDynamicObjects[dwIndex].dwMyNodeID = AI_NodeID;
 					tpaDynamicObjects[dwIndex].tMySavedPosition = Position();
 					tpaDynamicObjects[dwIndex].tMyOrientation = r_torso_current;
 					tpaDynamicObjects[dwIndex].tpEntity = tpEntity;
@@ -218,8 +222,10 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				SDynamicObject tDynamicObject;
 				tDynamicObject.dwTime = dwTime;
 				tDynamicObject.dwUpdateCount = 1;
+				tDynamicObject.dwNodeID = tpEntity->AI_NodeID;
 				tDynamicObject.tSavedPosition = tpEntity->Position();
 				tDynamicObject.tOrientation = tfGetOrientation(tpEntity);
+				tDynamicObject.dwMyNodeID = AI_NodeID;
 				tDynamicObject.tMySavedPosition = Position();
 				tDynamicObject.tMyOrientation = r_torso_current;
 				tDynamicObject.tpEntity = tpEntity;
@@ -343,6 +349,9 @@ void CAI_Soldier::SelectSound(int &iIndex)
 /**/
 bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 {
+	if (!tpEntity)
+		return(false);
+
 	Fvector tMonsterDirection, tDirection;
 	float fEyeFov, fEyeRange;
 	
@@ -444,30 +453,10 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	//ASSIGN_SPINE_BONE;
 }
 
-void CAI_Soldier::vfLookAtDirection(int iIndex)
+int	 CAI_Soldier::ifFindDynamicObject(CEntity *tpEntity)
 {
-	Fvector tDirection;
-	switch (iIndex) {
-		case 0 : {
-			tDirection.set(-1,0,0);
-			mk_rotation(tDirection,r_torso_target);
-			break;
-		}
-		case 1 : {
-			tDirection.set(0,0,1);
-			mk_rotation(tDirection,r_torso_target);
-			break;
-		}
-		case 2 : {
-			tDirection.set(1,0,0);
-			mk_rotation(tDirection,r_torso_target);
-			break;
-		}
-		case 3 : {
-			tDirection.set(0,0,-1);
-			mk_rotation(tDirection,r_torso_target);
-			break;
-		}
-	}
-	r_target.yaw = r_torso_target.yaw;
+	for (int i=0; i<tpaDynamicObjects.size(); i++)
+		if (tpaDynamicObjects[i].tpEntity == tpEntity)
+			return(i);
+	return(-1);
 }

@@ -42,8 +42,8 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	else {
 		// if path is too short then clear it (patch for ExecMove)
 		AI_Path.TravelPath.clear();
-		AI_Path.bNeedRebuild = FALSE;
 	}
+	AI_Path.bNeedRebuild = FALSE;
 }
 
 void CAI_Soldier::vfCheckForSavedEnemy()

@@ -258,7 +258,7 @@ void CAI_Soldier::OnFindAloneFire()
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
 	if (m_bStateChanged)
-		m_dwLastRangeSearch = 0;
+		m_bActionStarted = false;
 
 	vfStopFire();
 	
@@ -268,22 +268,56 @@ void CAI_Soldier::OnFindAloneFire()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 
-	vfInitSelector(SelectorPatrol,Squad,Leader);
+ 	if (!m_bActionStarted) {
+		vfInitSelector(SelectorPatrol,Squad,Leader);
 
-	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint(0);
-	else
-		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 
-//	if (!bfTooBigDistance(tSavedEnemyPosition,1.f)) {
-//		
+		if (!bfTooBigDistance(tSavedEnemyPosition,5.f) || AI_Node == tpSavedEnemyNode)
+		//if (AI_Node == tpSavedEnemyNode)
+			m_bActionStarted = true;
+	}
+	if (m_bActionStarted) {
+		int iIndex = ifFindDynamicObject(tSavedEnemy);
+		if (iIndex != -1) {
+			
+			vfInitSelector(SelectorRetreat,Squad,Leader);
+			
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else {
+				SelectorRetreat.m_tEnemyPosition = tpaDynamicObjects[iIndex].tMySavedPosition;
+				SelectorRetreat.m_tpEnemyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwMyNodeID);
+				//SelectorRetreat.m_tMyPosition = tpaDynamicObjects[iIndex].tSavedPosition;
+				//SelectorRetreat.m_tpMyNode = Level().AI.Node(tpaDynamicObjects[iIndex].dwNodeID);
+				SelectorRetreat.m_tMyPosition = vPosition;
+				SelectorRetreat.m_tpMyNode = AI_Node;
+				vfSearchForBetterPosition(SelectorRetreat,Squad,Leader);
+			}
+		}
+		else
+			GO_TO_PREV_STATE_THIS_UPDATE;
+	}
+	
+
+//	if  ((AI_Path.fSpeed < EPS_L) && ((AI_Path.TravelPath.empty()) || (AI_Path.TravelPath.size() - 2 <= AI_Path.TravelStart))) {
+//		int iIndex = ifFindDynamicObject(tSavedEnemy);
+//		if (iIndex != -1)
+//			SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(aiSoldierFindAloneFireRetreat);
 //	}
+
 	if (bfCheckForDangerPlace()) {
 		Squat();
 		vfSetMovementType(WALK_FORWARD_1);
 	}
 	else {
-		SetDirectionLook();
+		if (AI_Path.fSpeed < EPS_L)
+			SetLessCoverLook(AI_Node);
+		else
+			SetDirectionLook();
 		StandUp();
 		vfSetMovementType(RUN_FORWARD_3);
 	}
