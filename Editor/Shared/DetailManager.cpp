@@ -268,13 +268,13 @@ void CDetailManager::Render		(Fvector& EYE)
 		}
 	}
 
-	HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d());
-
 	// Render itself
-	DWORD	vOffset;
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
 	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
+
+	// Get index-stream
+	CIndexStream*	IS	= Device.Streams.Get_IB();
 
 	for (DWORD O=0; O<dm_max_objects; O++)
 	{
@@ -283,6 +283,7 @@ void CDetailManager::Render		(Fvector& EYE)
 
 		CDetail&	Object		= objects[O];
 		DWORD	vCount_Object	= Object.number_vertices;
+		DWORD	iCount_Object	= Object.number_indices;
 		DWORD	vCount_Total	= vis.size()*vCount_Object;
 
 		// calculate lock count needed
@@ -296,19 +297,27 @@ void CDetailManager::Render		(Fvector& EYE)
 
 		// Fill VB (and flush it as nesessary)
 		Device.Shader.Set		(Object.shader);
+		Device.Shader.SetupPass	(0);
 		Fmatrix		mXform,mScale,mRot,mRotXZ;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
 		{
-			// Calculate params
+			// Calculate params 
 			DWORD	item_start	= L_ID*o_per_lock;
 			DWORD	item_end	= item_start+o_per_lock;
 			if (item_end>o_total)	item_end = o_total;
 			if (item_end<=item_start)	break;
 			DWORD	item_range	= item_end-item_start;
+
+			// Calc Lock params
 			DWORD	vCount_Lock	= item_range*vCount_Object;
+			DWORD	iCount_Lock = item_range*iCount_Object;
 	
-			// Fill VB
-			CDetail::fvfVertexOut* vDest = (CDetail::fvfVertexOut*)VS->Lock(vCount_Lock,vOffset);
+			// Lock buffers
+			DWORD	vBase,iBase,iOffset=0;
+			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	VS->Lock(vCount_Lock,vBase);
+			WORD*	iDest					= (WORD*)					IS->Lock(iCount_Lock,iBase);
+
+			// Rendering
 			for (DWORD item=item_start; item<item_end; item++)
 			{
 				SlotItem&	Instance	= *(vis[item]);
@@ -327,11 +336,19 @@ void CDetailManager::Render		(Fvector& EYE)
 				}
 				Object.Transfer			(mXform, vDest, Instance.C);
 				vDest					+=	vCount_Object;
+				iDest					+=	iCount_Object;
+				iOffset					+=	vCount_Object;
 			}
 			VS->Unlock	(vCount_Lock);
+			IS->Unlock	(iCount_Lock);
 
 			// Render
-			Device.Primitive.Draw	(VS,vCount_Lock/3,vOffset);
+			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
+			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
+			DWORD	dwNumPrimitives			= iCount_Lock/3;
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
+			UPDATEC							(vCount_Lock,dwNumPrimitives,dwPassesRequired);
+//			Device.Primitive.Draw			(VS,vCount_Lock/3,vOffset);
 		}
 
 		// Clean up
