@@ -358,7 +358,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			R_ASSERT2			((*J).second->m_bOnline,"Parent offline, item online...");
 		}
 	}
-	else
+	else {
 		// so, the object is offline
 		// checking if the object is not attached
 		if (I->ID_Parent == 0xffff) {
@@ -396,4 +396,5 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			// checking if parent is offline too
 			R_ASSERT2			(!(*J).second->m_bOnline,"Parent online, item offline...");
 		}
+	}
 }
