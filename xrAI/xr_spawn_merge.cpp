@@ -295,10 +295,10 @@ void xrMergeSpawns()
 	tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_VERSION);
 	tMemoryStream.write			(&tSpawnHeader,sizeof(tSpawnHeader));
 	tMemoryStream.close_chunk	();
-	tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
+	//tMemoryStream.open_chunk	(SPAWN_POINT_CHUNK_DATA);
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tpLevels[i]->Save		(tMemoryStream);
-	tMemoryStream.close_chunk	();
+	//tMemoryStream.close_chunk	();
 	tMemoryStream.SaveTo		("game.spawn",0);
 
 	Phase						("Freeing resources being allocated");
