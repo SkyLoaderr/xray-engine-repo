@@ -1,0 +1,123 @@
+----------------------------------------------------------------------------------------------------
+-- Physic door control
+----------------------------------------------------------------------------------------------------
+-- Исходный скрипт: Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+-- Перевод на xr_logic: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+class "door_binder" (object_binder)
+
+function door_binder:__init(obj, storage) super(obj)
+	self.st = storage
+end
+
+function door_binder:reload(section)
+	object_binder.reload(self, section)
+
+	printf("_bp: door_binder:reload")
+end
+
+function door_binder:reset_scheme(delta)
+	printf("_bp: door_binder:reset_scheme")
+
+	self.initialized = false
+
+	self.joint = nil
+	self.low_limits = 0
+	self.hi_limits = 0
+	self.run = 0
+	self.block = false
+end
+
+function door_binder:initialize()
+	printf("_bp: door_binder: initialize()")
+	self.joint = self.object:get_physics_shell():get_joint_by_bone_name("door")
+	if not self.joint then
+		return false
+	end
+	self.low_limits, self.hi_limits	= self.joint:get_limits(self.low_limits, self.hi_limits, 0)
+	self.object:set_nonscript_usable(false)
+	self.object:set_use_callback(self, "door_callback")
+	local door_sign = string_table():get_by_id("door_sign")
+	if door_sign then
+		self.object:set_tip_text(door_sign)
+	end
+
+	self:close_door()
+
+	self.initialized = true
+
+	return true
+end
+
+function door_binder:update(delta)
+	object_binder.update(self, delta)
+
+	if not xr_logic.is_active(self.object, self.st) then
+		return
+	end
+
+	if not self.initialized and not self:initialize() then
+		return
+	end
+
+	--printf("_bp: door_binder:update [%s]", self.object:name())
+
+	xr_logic.try_switch_to_another_section(self.object, self.st)
+
+	if self.block then
+		local angle = self.joint:get_axis_angle(90)
+		printf("angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
+		if angle >= self.hi_limits then
+			-- Закрыли до предела, будем блокировать
+			self.joint:set_max_force_and_velocity(10000, 1, 1)
+			self.block = false
+		end
+	end
+end
+
+function door_binder:open_door()
+	self.joint:set_max_force_and_velocity(300, -3, 0)
+	self.block = false
+end
+
+function door_binder:close_door()
+	self.joint:set_max_force_and_velocity(300, 3, 1)
+	self.block = true -- Закрываем и блокируем	
+end
+
+function door_binder:door_callback(door, actor)
+	if self.st.locked then
+		return
+	end
+
+	local angle  = self.joint:get_axis_angle(90)
+
+	if angle - self.low_limits > self.hi_limits - angle then
+		self:open_door()
+	else
+		self:close_door()
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+
+	local new_binder = door_binder(npc, storage)
+	npc:bind_object(new_binder)
+
+	-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+	xr_logic.subscribe_action_for_events(storage, new_binder)
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
+	st.sign      = utils.cfg_get_string(ini, section, "sign", npc, false, gulag_name, "door_sign")
+
+	xr_logic.reset_actions(st)
+end

@@ -1,0 +1,70 @@
+----------------------------------------------------------------------------------------------------
+-- Озвучка монстров
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+-- Исходный скрипт (trader): Evgeniy Negrobov (Jon) jon@gsc-game.kiev.ua
+----------------------------------------------------------------------------------------------------
+
+local snd = {
+	hello = {
+			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
+			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
+			[[characters_voice\human_01\scenario\trader\trader_script1a_3]],
+			[[characters_voice\human_01\scenario\trader\trader_script1a_4]],
+			[[characters_voice\human_01\scenario\trader\trader_script1a_5]]
+	},
+
+	go_out = {
+			[[characters_voice\human_01\scenario\trader\trader_script1b_1]],
+			[[characters_voice\human_01\scenario\trader\trader_script1b_2]],
+			[[characters_voice\human_01\scenario\trader\trader_script1b_3]],
+			[[characters_voice\human_01\scenario\trader\trader_script1b_4]],
+			[[characters_voice\human_01\scenario\trader\trader_script1b_5]]
+	},
+
+	good_trade = {
+			[[characters_voice\human_01\scenario\trader\trader_script1c_1]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_2]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_3]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_4]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_5]]
+	},
+
+	bad_trade = {
+			[[characters_voice\human_01\scenario\trader\trader_script1c_6]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_7]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_8]],
+			[[characters_voice\human_01\scenario\trader\trader_script1c_9]]
+	},
+
+	monolog1 = {
+			[[characters_voice\human_01\scenario\trader\trader_monolog1]]
+	},
+
+	monolog2 = {
+			[[characters_voice\human_01\scenario\trader\trader_monolog2]]
+	},
+
+	monolog3 = {
+			[[characters_voice\human_01\scenario\trader\trader_script1b_1]]
+	}
+
+}
+
+function pick_sound_from_set(npc, set, last_sound_info)
+	local sndset = snd[set]
+	if not sndset then
+		return nil
+	end
+	-- 1) Выбираем случайный звук из набора:
+	local chance = 1
+	local picked_snd = nil
+	for n, s in pairs(snd[set]) do
+		if math.random(chance) == 1 then
+			picked_snd = s
+		end
+		chance = chance + 1
+	end
+	return picked_snd
+end
+
