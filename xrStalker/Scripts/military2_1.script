@@ -120,7 +120,7 @@ function main ()
     action (stalker3, anim ("prisluh"), cond (cond.anim_end))
     
     while true do
-          if stalker3.health < 0.8 then break end
+          if stalker3:alive () == false then break end
           wait ()
     end            
     
