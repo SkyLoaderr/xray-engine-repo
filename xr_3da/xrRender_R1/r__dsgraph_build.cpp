@@ -87,7 +87,7 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 		N->val.pObject			= RI.val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *RI.val_pTransform;
-		N->val.se				= sh;
+		N->val.se				= pVisual->hShader->E[4];		// 4=L_special
 	}
 #endif
 
