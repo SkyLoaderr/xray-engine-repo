@@ -334,6 +334,12 @@ end
 class "action_wait" (action_base)
 function action_wait:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
+
+	self.timer = { begin = nil,
+		       idle = nil,
+		       maxidle = 20,
+		       sumidle = 10 }
+
 end
 function action_wait:initialize()
 --	printf("[ACT] Start: Wait")
@@ -344,11 +350,6 @@ function action_wait:initialize()
 	self.object:set_desired_direction()    
 
 	self.object:set_item(object.deactivate, self.object:best_weapon())
-
-	self.timer = { begin = nil,
-		       idle = nil,
-		       maxidle = 20,
-		       sumidle = 10 }
 
 	self.sound = {idle = 0,
 		     begin = nil,
@@ -391,7 +392,7 @@ function action_wait:initialize()
 end
 function action_wait:execute()
 	action_base.execute (self)
-	if self.a.action == 0 then
+	if self.a.action == 0 or self.a.action == nil then
 		--!!! нопедекемхе дюкэмеиьецн деиярбхъ
 		local actions = {}
 		local i = 1
