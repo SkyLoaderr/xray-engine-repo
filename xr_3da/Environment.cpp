@@ -27,6 +27,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 ENGINE_API float	psGravity = 30.f;
+ENGINE_API DWORD	psEnvFlags= effSunGlare;
 
 CEnvironment::CEnvironment()
 {
@@ -247,10 +248,12 @@ void CEnvironment::RenderFirst()
 	}
 
 	// Sun sources
-	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
+	if (psEnvFlags&effSunGlare)
+		for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
 }
 
 void CEnvironment::RenderLast()
 {
-	for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
+	if (psEnvFlags&effSunGlare)
+		for(DWORD i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
 }

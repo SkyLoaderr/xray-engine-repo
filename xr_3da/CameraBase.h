@@ -15,9 +15,9 @@ class ENGINE_API	CCameraBase
 {
 protected:
 	CObject*		parent;
-	BOOL			bClampYaw, bClampPitch, bClampRoll;
 
 public:
+	BOOL			bClampYaw, bClampPitch, bClampRoll;
 	float			yaw,pitch,roll;
 
 	BOOL			bRelativeLink;
@@ -31,6 +31,8 @@ public:
 	Fvector			vNormal;
 	float			f_fov;
 	float			f_aspect;
+
+	int				tag;
 public:
 					CCameraBase		( CObject* p, BOOL rlink );
 	virtual			~CCameraBase	( );

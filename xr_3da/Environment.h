@@ -10,6 +10,10 @@ class ENGINE_API CVisual;
 class ENGINE_API CInifile;
 class ENGINE_API CSoundStream;
 
+enum {
+	effSunGlare		= (1ul<<0ul)
+};
+
 struct ENGINE_API	SEnvDef 
 {
 	Fcolor			Sky;

@@ -1018,6 +1018,12 @@
 					RelativePath=".\UIHealth.h">
 				</File>
 				<File
+					RelativePath="UILogo.cpp">
+				</File>
+				<File
+					RelativePath="UILogo.h">
+				</File>
+				<File
 					RelativePath=".\UIWeapon.cpp">
 				</File>
 				<File

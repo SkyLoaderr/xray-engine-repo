@@ -292,6 +292,7 @@ extern float		psDetail_w_speed;
 extern float		psDetail_l_ambient;
 extern float		psDetail_l_aniso;
 extern int			psSupersample;
+extern DWORD		psEnvFlags;
 
 void CCC_Register()
 {
@@ -407,5 +408,7 @@ void CCC_Register()
 
 	// Physic
 	CMD4(CCC_Float,		"ph_gravity",			&psGravity,					1,	100);
+
+	CMD3(CCC_Mask,		"eff_sun_glare",		&psEnvFlags,	effSunGlare);
 };
 

@@ -28,6 +28,7 @@ CCameraBase::CCameraBase(CObject* p, BOOL rlink)
 	parent			= p;	VERIFY(parent);
 	f_fov			= 90;
 	f_aspect		= 1.f;
+	tag				= 0;
 }
 
 CCameraBase::~CCameraBase()
