@@ -1,8 +1,9 @@
 
 --[[
+ОПИСАНИЕ ФУНКЦИЙ
 
 -- Крешнуть игру (после вывода сообщения об ошибке в лог)
-function abort()
+function abort(fmt, ...)
 
 -- Выводит отладочное сообщение в лог, если скрипт активен (активный скрипт выбирается с помощью
 -- переменной debug_info.trace_script). 
@@ -11,17 +12,26 @@ function trace(script_name, fmt, ...)
 -- Переводит переменную любого типа (включая nil) в строку. Используется для отладочного вывода информации.
 function to_str(what)
 
+-- Создает и возвращает копию вектора
+function vector_copy_by_val(vec)
+
 -- Настройка параметров игровых объектов:
 bool param_get_bool(char_ini, section, field, override, object)
 string conf_get_string(char_ini, section, field, override, object)
 
+-- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
+function stalker_at_waypoint(stalker, patrol_path, path_point)
+
+-- Послать stalker в заданную точку patrol_path(path_point)
+function stalker_go_to_waypoint(stalker, patrol_path, path_point)
 
 --]]
 
 ----------------------------------------------------------------------------------------------------
 
 -- Крешнуть игру (после вывода сообщения об ошибке в лог)
-function abort(reason)
+function abort(fmt, ...)
+	local reason = string.format(fmt, unpack(arg))
 	printf("ERROR: %s", reason)
 	patrol(".." .. reason .. "..")
 end
@@ -43,6 +53,18 @@ function to_str(what)
 	end
 end
 
+-- Создает и возвращает копию вектора
+function vector_copy_by_val(vec)
+--[[
+	local newvec = vector()
+	newvec.x = vec.x
+	newvec.y = vec.y
+	newvec.z = vec.z
+	return newvec
+--]]
+	return vector():set(vec)
+end
+
 -- Настройка параметра типа bool у игрового объекта.
 -- 
 -- char_ini - указатель на customdata (обычно object:spawn_ini())
@@ -59,14 +81,15 @@ function conf_get_bool(char_ini, section, field, override, object, mandatory)
 		return override ~= nil
 	end
 	if char_ini:section_exist(section) and char_ini:line_exist(section, field) then
-		return char_ini:r_bool(section, field)
+		local ret = char_ini:r_bool(section, field)
+		return ret
 	end
 	if not mandatory then
 		return false
 	end
-	local err = "ERROR: object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
+	local err = "object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
 		field .. "' in section '" .. section .. "'";
-	utils.abort(err)
+	utils.abort("%s", err)
 end
 
 function conf_get_string(char_ini, section, field, override, object, mandatory)
@@ -79,8 +102,93 @@ function conf_get_string(char_ini, section, field, override, object, mandatory)
 	if not mandatory then
 		return nil
 	end
-	local err = "ERROR: object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
+	local err = "object name '" .. object:name() .. "': attempt to read a non-existant boolean field '" ..
 		field .. "' in section '" .. section .. "'";
-	utils.abort(err)
+	utils.abort("%s", err)
 end
+
+-- Проверяет, находится ли stalker рядом с точкой path_point пути patrol_path
+function stalker_at_waypoint(stalker, patrol_path, path_point)
+	return stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point)
+--[[
+	local stalker_pos = stalker:position()
+	local distance = stalker_pos:distance_to(patrol_path:point(path_point))
+	if distance <= 0.5 then
+		return true
+	end
+	return false
+--]]
+end
+
+-- Послать stalker в заданную точку patrol_path(path_point)
+function stalker_go_to_waypoint(stalker, patrol_path, path_point)
+	if stalker:animation_count() > 0 then
+		stalker:clear_animations()
+	end
+	if stalker:level_vertex_id() == patrol_path:level_vertex_id(path_point) then
+		return
+	end
+	stalker:set_dest_level_vertex_id(patrol_path:level_vertex_id(path_point))
+	stalker:set_movement_type(move.run)
+	stalker:set_body_state(move.standing)
+	stalker:set_sight(look.path_dir, nil, 0)
+	stalker:set_path_type(game_object.level_path)
+	stalker:set_mental_state(anim.danger)
+	stalker:set_detail_path_type(move.line)
+end
+
+function stalker_stop(stalker)
+	stalker:set_movement_type(move.stand)
+end
+
+function stalker_look_at_waypoint(stalker, patrol_path, path_point)
+	local look_pt = this.vector_copy_by_val(patrol_path:point(path_point)):sub(stalker:position())
+	stalker:set_sight(look.direction, look_pt, 0)
+end
+
+function stalker_look_at_stalker(stalker, whom)
+	--local pos = whom:position()
+	--pos.y = pos.y + 0.8
+	--stalker:set_sight(look.fire_point, whom, 0)
+
+	local look_pt = this.vector_copy_by_val(whom:position()):sub(stalker:position())
+	stalker:set_sight(look.direction, look_pt, 0)
+end
+
+local function door_default_callback(door, actor)
+	local ph_shell = door:get_physics_shell()
+	local joint = ph_shell:get_joint_by_bone_name("door")
+
+	local low_limit = 0
+	local hi_limit = 0
+	low_limit, hi_limit = joint:get_limits(low_limit, hi_limit, 0)
+
+	local angle = joint:get_axis_angle(0)
+	if angle-low_limit > hi_limit - angle 
+	then
+		joint:set_max_force_and_velocity(100, -1.5, 0)
+	else
+		joint:set_max_force_and_velocity(100, 1.5, 0)
+	end
+end
+
+function door_init(door)
+	door:set_use_callback(door_default_callback)
+end
+
+-- Дверь door импульсом захлопнется и залочится, при юзе будет вызываться callback_fn
+function close_then_lock(door, callback_fn)
+	local angle = joint:get_axis_angle(0)
+	if angle-low_limit > hi_limit - angle 
+	then
+		joint:set_max_force_and_velocity(1000, -1.5, 0)
+	else
+		joint:set_max_force_and_velocity(1000, 1.5, 0)
+	end
+end
+	
+--unlock_then_open(door) -- дверь разлочится и импульсом откроется
+--locked(door) -- true, если дверь закрыта и залочена
+
+--При попытке поюзать незапертую дверь она просто силой открывается до максимально допустимого состояния.
 

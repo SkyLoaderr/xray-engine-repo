@@ -251,7 +251,6 @@ function action_guard_activity:execute()
 	local actor = level.actor()
 	if actor and self.object:see(actor) then
 		self.last_seen_actor = device():time_global()
-		printf("_bp")
 	end
 	
 	self.object:set_item(object.idle, self.object:best_weapon())
@@ -285,7 +284,7 @@ function action_guard_activity:execute()
 
 			if self.loudspeaker_enabled then
 				if not self.a.loudspeaker_name then
-					abort("object '" .. self.object:name() ..
+					abort("%s", "object '" .. self.object:name() ..
 						"': waypoint flag 27 set, but loudspeaker is not specified in customdata")
 				end
 				local lsp = level.object(self.a.loudspeaker_name)

@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------------------------------------------
---  Общая схема принятия решений
---  автор: Диденко Руслан (Stohe)
+--  ╬с∙р  ёїхьр яЁшэ Єш  Ёх°хэшщ
+--  ртЄюЁ: ─шфхэъю ╨єёырэ (Stohe)
 --  TODO:
 ----------------------------------------------------------------------------------------------------------------------
 storage = {}
@@ -71,14 +71,14 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:update(delta)
     object_binder.update(self, delta)
-    -- вызов апдейта у управления группировками
+    -- т√чют ряфхщЄр є єяЁртыхэш  уЁєяяшЁютърьш
     local nn = xr_gulag.isUnderFraction(self.object)
 
     if nn ~= nil then
         xr_gulag.fraction[nn]:calculate()
     end
 
-    -- вызов апдейта у управления бандюками
+    -- т√чют ряфхщЄр є єяЁртыхэш  срэф■ърьш
     local nn = xr_bandit.isBandit(self.object)
 
     if nn ~= nil then
@@ -111,16 +111,16 @@ function motivator_binder:reload (section)
     -- Bind other scripts
     self.object:disable_talk()
 
-    --загрузка озвучки
+    --чруЁєчър ючтєўъш
     xr_sounds.load_sounds (self.object)
 
 ----------------------------------------------------------------------------------------------------------------------
--- Общие скрипты
+-- ╬с∙шх ёъЁшяЄ√
 ----------------------------------------------------------------------------------------------------------------------
 	xr_sound.load_sound(self.object)
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
     xr_motivator.storage[self.object:id()] = {  followers = {} }
-    -- Положения тела 
+    -- ╧юыюцхэш  Єхыр 
     xr_motivator.storage[self.object:id()].state = {
             body_state = 0,
             target_state = 0,
@@ -129,37 +129,37 @@ function motivator_binder:reload (section)
             anim = xr_state.anims(self.object)
         }
     xr_state.add_to_binder(self.object)
-    -- Настройка схемы реакции
+    -- ═рёЄЁющър ёїхь√ ЁхръЎшш
         xr_motivator.storage[self.object:id()].reactions = {
             enabled = true,
             time_wait = 5*60*1000,
             evn = xr_reactions.events(self.object),
-        -- объект раздражения
-        obj = { -- позицию раздражителя
+        -- юс·хъЄ ЁрчфЁрцхэш 
+        obj = { -- яючшЎш■ ЁрчфЁрцшЄхы 
                 position = nil,
-                -- id раздражителя
+                -- id ЁрчфЁрцшЄхы 
                 id = nil,
-                -- как реагировать
+                -- ъръ ЁхрушЁютрЄ№
                 type = nil,
-                -- время раздражителя
+                -- тЁхь  ЁрчфЁрцшЄхы 
                 time = nil,
-            -- видимость
+            -- тшфшьюёЄ№
             visibility = nil
         },
-        -- правила для обнаружений (какие типы объектов мы игнорим)
+        -- яЁртшыр фы  юсэрЁєцхэшщ (ъръшх Єшя√ юс·хъЄют ь√ шуэюЁшь)
             rules = {}
         }
     xr_reactions.add_to_binder(self.object, char_ini)    
-    -- схема привязки к позиции
+    -- ёїхьр яЁшт чъш ъ яючшЎшш
     xr_position.add_to_binder(self.object)
-    -- Ответ на PDA сообщение
+    -- ╬ЄтхЄ эр PDA ёююс∙хэшх
     xr_motivator.storage[self.object:id()].tradeseller = {   
         Buyer = nil,
             Seller = self.object,
-            -- Задается время ожидания в секундах
+            -- ╟рфрхЄё  тЁхь  юцшфрэш  т ёхъєэфрї
             begin_wait_to_see = { time = 300,
                                 begin = nil },
-            -- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
+            -- ┴єфхЄ ыш ЁрсюЄрЄ№ ёїхьр? хёыш эхЄ, Єю юэ тёхуфр сєфхЄ юЄърч√трЄ№ё  юЄ ЄюЁуютыш.
             enabled = false
         }
     xr_meet.add_to_binder_pda(self.object, char_ini)
@@ -184,51 +184,56 @@ function motivator_binder:reload (section)
     manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_init"])
 
 ----------------------------------------------------------------------------------------------------------------------
--- Модели поведения
+-- ╠юфхыш яютхфхэш 
 ----------------------------------------------------------------------------------------------------------------------
-    -- удар в морду
+    -- єфрЁ т ьюЁфє
     xr_punch.add_to_binder (self.object)
-    -- Настройка встречи
+
+    -- ├ЁрсшЄхыш
+    xr_motivator.storage[self.object:id()].robber = { }
+    xr_robbers.add_to_binder(self.object, char_ini)
+
+    -- ═рёЄЁющър тёЄЁхўш
     xr_motivator.storage[self.object:id()].meet = {
             enabled = false,
             actor = nil,
-            noweap = false, -- игнорируем наличие оружия у актора
-            distance = 15, -- расстояние, в пределах которого мы реагируем
-            shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
+            noweap = false, -- шуэюЁшЁєхь эрышўшх юЁєцш  є ръЄюЁр
+            distance = 15, -- ЁрёёЄю эшх, т яЁхфхырї ъюЄюЁюую ь√ ЁхрушЁєхь
+            shoot_distance = 5 -- ЁрёёЄю эшх, т яЁхфхырї ъюЄюЁюую ь√ ёЄЁхы хь
         }
 xr_meet.add_to_binder(self.object, char_ini)
-    -- лагерь у костра
+    -- ырухЁ№ є ъюёЄЁр
     xr_motivator.storage[self.object:id()].kamp = {
-            -- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
+            -- ┴єфхЄ ыш ЁрсюЄрЄ№ ёїхьр? хёыш эхЄ, Єю юэ эх сєфхЄ я√ЄрЄ№ё  шэшЎшрышчшЁютрЄ№ ърья
             enabled = false,
-            -- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
+            -- ╧рЄЁєы№э√щ яєЄ№ шч 1 т¤щяюшэЄр, ъюЄюЁ√щ єърч√трхЄ эр ЎхэЄЁ ырухЁ .
             center_point = nil,
-            -- максимальный радиус, в котором рассаживаются люди вокруг центра лагеря
+            -- ьръёшьры№э√щ Ёрфшєё, т ъюЄюЁюь Ёрёёрцштр■Єё  ы■фш тюъЁєу ЎхэЄЁр ырухЁ 
             max_rad = 2,
-            -- Идентификатор следующего действия.
-            -- 0 - нет действия
-            -- 1 - пойти обойти территорию
+            -- ╚фхэЄшЇшърЄюЁ ёыхфє■∙хую фхщёЄтш .
+            -- 0 - эхЄ фхщёЄтш 
+            -- 1 - яющЄш юсющЄш ЄхЁЁшЄюЁш■
             action = 0,
-            -- Последний выполненный нами экшн, чтобы не повторяться
+            -- ╧юёыхфэшщ т√яюыэхээ√щ эрьш ¤ъ°э, ўЄюс√ эх яютЄюЁ Є№ё 
             last_action = 0,
-            -- Патрульные пути, по которым будут сталкеры обходить лагерь
+            -- ╧рЄЁєы№э√х яєЄш, яю ъюЄюЁ√ь сєфєЄ ёЄрыъхЁ√ юсїюфшЄ№ ырухЁ№
             patrol_path = {},
-            -- ID позиции, в которую он сядет
+            -- ID яючшЎшш, т ъюЄюЁє■ юэ ё фхЄ
             pos_id = -1,
-            -- Положение тела. 0 - стоит, остальное - разные варианты сидения
+            -- ╧юыюцхэшх Єхыр. 0 - ёЄюшЄ, юёЄры№эюх - Ёрчэ√х трЁшрэЄ√ ёшфхэш 
             body_state = 0,
-            -- Время между повторением действий
+            -- ┬Ёхь  ьхцфє яютЄюЁхэшхь фхщёЄтшщ
             timer = { act1 = {begin = nil, time = 120},
                           act4 = {begin = nil, time = 60}}
         }
 xr_kamp.add_to_binder(self.object, char_ini)
-    -- спящий
+    -- ёя ∙шщ
     xr_motivator.storage[self.object:id()].sleeper = {
             enabled = false,
                 path_main = nil
         }
 xr_sleeper.add_to_binder(self.object, char_ini)
-    -- часовые
+    -- ўрёют√х
     xr_motivator.storage[self.object:id()].guard = {
             enabled = false,
             action = nil,
@@ -246,13 +251,13 @@ xr_guard.add_to_binder(self.object, char_ini)
 	    path_center = nil
         }
 xr_bodyguard.add_to_binder(self.object, char_ini)
-    -- схема командира
+    -- ёїхьр ъюьрэфшЁр
     xr_motivator.storage[self.object:id()].commander = {
             enabled = false,
             soldiers = {}
     }
 xr_commander.add_to_binder(self.object, char_ini)
-    -- Настройка патруля
+    -- ═рёЄЁющър ярЄЁєы 
     xr_motivator.storage[self.object:id()].patrol = {
         enabled = false,
             patrol_path = nil,
@@ -265,7 +270,7 @@ xr_commander.add_to_binder(self.object, char_ini)
             patrol_end = false
     }
 xr_patrol.add_to_binder(self.object, char_ini)
-    -- Настройка follower
+    -- ═рёЄЁющър follower
     xr_motivator.storage[self.object:id()].follower = {
             enabled = false,
             leader_name = nil,
@@ -290,24 +295,24 @@ xr_follower.add_to_binder(self.object, char_ini)
                 ret_vertex = -1         --level vertex id for return
         }
 xr_chaser.add_to_binder (self.object, char_ini)            
-	-- бандиты в засаде
+	-- срэфшЄ√ т чрёрфх
 	xr_motivator.storage[self.object:id()].ambush = {
 		enabled = false,
 		path = nil,
 		dist_sqr = 0
 	}
 xr_ambush.add_to_binder(self.object, char_ini)
-	-- построение солдат на плацу
+	-- яюёЄЁюхэшх ёюыфрЄ эр яырЎє
 	xr_motivator.storage[self.object:id()].formation = {}
 xr_formation.add_to_binder( self.object )
 
-    --Привязка к организации
+    --╧Ёшт чър ъ юЁурэшчрЎшш
     if char_ini:section_exist ("fraction") == true then
         if char_ini:line_exist("fraction", "name") == true then
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object, char_ini)
         end
     end
-    --Привязка к бандюкам
+    --╧Ёшт чър ъ срэф■ърь
     if char_ini:section_exist ("bandit") == true then
         if char_ini:line_exist("bandit", "name") == true then
             xr_bandit.addMember(char_ini:r_string("bandit", "name"), self.object, char_ini)
@@ -372,27 +377,27 @@ class "pda_storage"
 function pda_storage:__init()
     self.arhive = {}
 end
---сохраняет запрос на торговлю в таблицу. Передается тип, который послал запрос
---сохраняются только последние запросы от каждого игрока
+--ёюїЁрэ хЄ чряЁюё эр ЄюЁуюты■ т ЄрсышЎє. ╧хЁхфрхЄё  Єшя, ъюЄюЁ√щ яюёыры чряЁюё
+--ёюїЁрэ ■Єё  Єюы№ъю яюёыхфэшх чряЁюё√ юЄ ърцфюую шуЁюър
 function pda_storage:save(npc)
     local tt = { who = npc,
              time = device():time_global()/1000 }
 
-    --удаляем все старые запросы от этого актора
+    --єфры хь тёх ёЄрЁ√х чряЁюё√ юЄ ¤Єюую ръЄюЁр
     for a = 1, table.getn(self.arhive), 1 do
         if self.arhive[a].who:id() == npc:id() then
             table.remove(self.arhive, a)
         end
     end
 
-    --добавляем новый
+    --фюсрты хь эют√щ
     table.insert(self.arhive, tt)
 
     self:remove_old()
 end
---проверяет на наличие устаревших запросов и удаляет их.
+--яЁютхЁ хЄ эр эрышўшх єёЄрЁхт°шї чряЁюёют ш єфры хЄ шї.
 function pda_storage:remove_old()
-    local old = 3000 --удаляются все старше 3000 секунд
+    local old = 3000 --єфры ■Єё  тёх ёЄрЁ°х 3000 ёхъєэф
 
     for a = 1, table.getn(self.arhive), 1 do
         if device():time_global()/1000 - self.arhive[a].time > old then
@@ -400,7 +405,7 @@ function pda_storage:remove_old()
         end
     end
 end
---Удаляет запрос выбранного чудика
+--╙фры хЄ чряЁюё т√сЁрээюую ўєфшър
 function pda_storage:remove(npc)
     for a = 1, table.getn(self.arhive), 1 do
         if self.arhive[a].who:id() == npc:id() then
@@ -408,7 +413,7 @@ function pda_storage:remove(npc)
         end
     end
 end
---возвращает лучшего торговца. Возвращает торговца, запрос которого пришел последним.
+--тючтЁр∙рхЄ ыєў°хую ЄюЁуютЎр. ┬ючтЁр∙рхЄ ЄюЁуютЎр, чряЁюё ъюЄюЁюую яЁш°хы яюёыхфэшь.
 function pda_storage:best_trader()
     self:remove_old()
     local tt = nil
