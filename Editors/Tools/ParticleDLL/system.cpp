@@ -45,9 +45,9 @@ struct AutoCall
 AutoCall::AutoCall()
 {
 	// The list of groups, etc.		
-	_ParticleState::group_list = new ParticleGroup *[16];
+	_ParticleState::group_list = xr_alloc<ParticleGroup*>(16);
 	_ParticleState::group_count = 16;
-	_ParticleState::alist_list = new PAHeader *[16];
+	_ParticleState::alist_list = xr_alloc<PAHeader*>(16);
 	_ParticleState::alist_count = 16;
 	for(int i=0; i<16; i++)
 	{
@@ -98,7 +98,7 @@ _ParticleState &_GetPStateWithTID()
       return *_CtxHash[i];
 
   // It didn't exist. It's a new context, so create it.
-  _ParticleState *psp = new _ParticleState();
+  _ParticleState *psp = xr_new<_ParticleState>();
   psp->tid = tid;
 
   // Find a place to put it.
@@ -248,11 +248,11 @@ int _ParticleState::GenerateGroups(int p_group_count)
 	
 	// Couldn't find a big enough gap. Reallocate.
 	int new_count = 16 + group_count + p_group_count;
-	ParticleGroup **glist = new ParticleGroup *[new_count];
+	ParticleGroup **glist = xr_alloc<ParticleGroup*>(new_count);
 	Memory.mem_copy(glist, group_list, group_count * sizeof(void*));
 	for(i=group_count; i<new_count; i++)
 		glist[i] = NULL;
-	delete [] group_list;
+	xr_free(group_list);
 	group_list = glist;
 	group_count = new_count;
 	
@@ -285,11 +285,11 @@ int _ParticleState::GenerateLists(int list_count)
 	
 	// Couldn't find a big enough gap. Reallocate.
 	int new_count = 16 + alist_count + list_count;
-	PAHeader **new_list = new PAHeader *[new_count];
+	PAHeader **new_list = xr_alloc<PAHeader*>(new_count);
 	Memory.mem_copy(new_list, alist_list, alist_count * sizeof(void*));
 	for(i=list_count; i<new_count; i++)
 		new_list[i] = NULL;
-	delete [] alist_list;
+	xr_free(alist_list);
 	alist_list = new_list;
 	alist_count = new_count;
 	
@@ -426,10 +426,10 @@ void _pAddActionToList(ParticleAction *S, int size)
 	{
 		// Must reallocate.
 		int new_alloc = 16 + alist->actions_allocated;
-		PAHeader *new_alist = new PAHeader[new_alloc];
+		PAHeader *new_alist = xr_alloc<PAHeader>(new_alloc);
 		Memory.mem_copy(new_alist, alist, alist->count * sizeof(PAHeader));
 		
-		delete [] alist;
+		xr_free(alist);
 		_ps.alist_list[_ps.list_id] = _ps.pact = alist = new_alist;
 		
 		alist->actions_allocated = new_alloc;
@@ -576,7 +576,7 @@ PARTICLEDLL_API int pGenActionLists(int action_list_count)
 	
 	for(int i=ind; i<ind+action_list_count; i++)
 	{
-		_ps.alist_list[i] = new PAHeader[8];
+		_ps.alist_list[i] = xr_alloc<PAHeader>(8);
 		_ps.alist_list[i]->actions_allocated = 8;
 		_ps.alist_list[i]->type = PAHeaderID;
 		_ps.alist_list[i]->count = 1;
@@ -638,7 +638,7 @@ PARTICLEDLL_API void pDeleteActionLists(int action_list_num, int action_list_cou
 	{
 		if(_ps.alist_list[i])
 		{
-			delete [] _ps.alist_list[i];
+			xr_free(_ps.alist_list[i]);
 			_ps.alist_list[i] = NULL;
 		}
 		else
@@ -790,8 +790,7 @@ PARTICLEDLL_API int pGenParticleGroups(int p_group_count, int max_particles)
 	
 	for(int i=ind; i<ind+p_group_count; i++)
 	{
-		_ps.group_list[i] = (ParticleGroup *)new
-			Particle[max_particles + 2];
+		_ps.group_list[i] = (ParticleGroup *)xr_alloc<Particle>(max_particles + 2);
 		_ps.group_list[i]->max_particles = max_particles;
 		_ps.group_list[i]->particles_allocated = max_particles;
 		_ps.group_list[i]->p_count = 0;
@@ -818,7 +817,7 @@ PARTICLEDLL_API void pDeleteParticleGroups(int p_group_num, int p_group_count)
 	{
 		if(_ps.group_list[i])
 		{
-			delete [] _ps.group_list[i];
+			xr_free(_ps.group_list[i]);
 			_ps.group_list[i] = NULL;
 		}
 		else
@@ -876,7 +875,7 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 	_PLock();
 	
 	// Allocate particles.
-	ParticleGroup *pg2 =(ParticleGroup *)new Particle[max_count + 2];
+	ParticleGroup *pg2 =(ParticleGroup *)xr_alloc<Particle>(max_count + 2);
 	if(pg2 == NULL)
 	{
 		// Not enough memory. Just give all we've got.
@@ -890,7 +889,7 @@ PARTICLEDLL_API int pSetMaxParticlesG(int group_num, int max_count)
 	
 	Memory.mem_copy(pg2, pg, (pg->p_count + 2) * sizeof(Particle));
 	
-	delete [] pg;
+	xr_free(pg);
 	
 	_ps.group_list[_ps.group_id] = _ps.pgrp = pg2;
 	pg2->max_particles = max_count;
