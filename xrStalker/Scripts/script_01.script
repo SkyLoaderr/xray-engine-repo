@@ -94,8 +94,7 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 5000)
 			)
-                	break		
-			action(
+    		action(
 				stalker1,
 				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				cond	(cond.time_end, 3000)
