@@ -22,7 +22,7 @@ public:
     void				Save			(LPCSTR nm);
 public:
 						CPSLibrary		(){;}
-    		 			~CPSLibrary		(){m_PSs.clear();}
+    		 			~CPSLibrary		(){;}
 
     void				OnCreate		();
     void				OnDestroy		();
