@@ -23,6 +23,8 @@
 
 	bugs/features:
 		*	models/model_trans 			- черный
+		*	vert_aref					- черный
+		*	засветка кончиков моделей 
 
 ***[OLES]*** In progress:
 -------------------------
