@@ -15,7 +15,7 @@ function main()
 	local helicopter = get_level_object( "helicopter" )
 	local actor = get_actor()
 --	wait(10000)	
-	while(true)do
+--	while(true)do
 
 		if(helicopter:air_attack_active()==false) then
 --			helicopter:air_attack_wait(actor,100,15)    --þ¸ªðýþòøª¹¸  ÷ð 100 üõª¨þò ôþ ¡õûø, òø¸õª¹ 15 ¸õú
@@ -25,9 +25,9 @@ function main()
 			local vecVia = vector():set(0,0,0)
 			
 			helicopter:heli_go_to_point(vecDst,vecVia,20)
-		end
+--		end
 
-		wait()
-	end
+--		wait()
+--	end
 		
 end
