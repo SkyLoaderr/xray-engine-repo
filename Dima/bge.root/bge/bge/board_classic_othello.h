@@ -3,7 +3,7 @@
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Calssic othello board implementation
+//	Description : Classic othello board implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once

@@ -1527,6 +1527,14 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="std_extensions"
+				>
+				<File
+					RelativePath=".\stack_reserve.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ui"

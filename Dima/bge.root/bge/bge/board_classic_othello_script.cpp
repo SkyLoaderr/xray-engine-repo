@@ -3,7 +3,7 @@
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Calssic othello board script export
+//	Description : Classic othello board script export
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

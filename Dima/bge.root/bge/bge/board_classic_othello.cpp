@@ -3,11 +3,12 @@
 //	Created 	: 07.12.2004
 //  Modified 	: 07.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Calssic othello board implementation
+//	Description : Classic othello board implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "board_classic_othello.h"
+#include "stack_reserve.h"
 
 const u8 CBoardClassicOthello::flipping_directions[BOARD_SIZE] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -40,6 +41,11 @@ void CBoardClassicOthello::start_position	()
 	m_difference	= 0;
 	m_passed		= false;
 	m_current_flip	= m_flip_stack;
+
+	stack_reserve<u32>	s;
+	s.reserve			(4096);
+	s.push				(12);
+	s.push				(6);
 }
 
 void CBoardClassicOthello::show_cell		(const cell_type &value) const

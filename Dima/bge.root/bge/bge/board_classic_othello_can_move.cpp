@@ -3,7 +3,7 @@
 //	Created 	: 08.12.2004
 //  Modified 	: 08.12.2004
 //	Author		: Dmitriy Iassenev
-//	Description : Calssic othello board can move implementation
+//	Description : Classic othello board can move implementation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
