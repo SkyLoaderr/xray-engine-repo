@@ -13,9 +13,9 @@ class	ENGINE_API 				CObjectList
 private:
 	// data
 	xr_map<u32,CObject*>		map_NETID;
-	xr_vector<CObject*>			objects;
 	xr_vector<CObject*>			destroy_queue;
-
+public:
+	xr_vector<CObject*>			objects;
 public:
 	// methods
 								CObjectList			( );
