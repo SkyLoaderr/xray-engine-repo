@@ -47,10 +47,10 @@ void CPSVisual::Update(DWORD dt)
 	for (int i=0; i<int(m_Particles.size()); i++)
 		if (fTime>m_Particles[i].m_Time.end)	iCount_Destroy++;
 		
-		// calculate how many particles we should create from ParticlesPerSec and time elapsed
+	// calculate how many particles we should create from ParticlesPerSec and time elapsed
 	int iCount_Create	= m_Emitter->CalculateBirth(m_Particles.size() - iCount_Destroy, fTime, dT);
 		
-		// create/destroy/simulate particles that we own
+	// create/destroy/simulate particles that we own
 	float TM	 		= fTime-dT;
 	float dT_delta 		= dT/iCount_Create;
 	float p_size		= 0;
@@ -77,6 +77,16 @@ void CPSVisual::Update(DWORD dt)
 		float T 		= fTime-P.m_Time.start;
 		float k 		= T/(P.m_Time.end-P.m_Time.start);
 
+		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
+		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
+	}
+
+	// if we need to create somewhat more particles...
+	while (iCount_Create) {
+		m_Particles.push_back		(SParticle());
+		m_Emitter->GenerateParticle	(m_Particles.back(), m_Definition, TM);
+		TM				+= dT_delta;
+		iCount_Create	-= 1;
 		PS::SimulatePosition(Pos, &P,T,k);		bv_BBox.modify		(Pos);
 		PS::SimulateSize	(size,&P,k,1-k);	if (size>p_size)	p_size = size;
 	}
