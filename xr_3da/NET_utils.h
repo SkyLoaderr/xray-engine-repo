@@ -67,10 +67,10 @@ public:
 		w_u8( u8(iFloor((q+EPS_L)*255.f)));
 	}
 	IC void w_angle16	( float a		)	{
-		w_float_q16	(normalize_angle(a),0,PI_MUL_2);
+		w_float_q16	(angle_normalize(a),0,PI_MUL_2);
 	}
 	IC void w_angle8	( float a		)	{
-		w_float_q8	(normalize_angle(a),0,PI_MUL_2);
+		w_float_q8	(angle_normalize(a),0,PI_MUL_2);
 	}
 	IC void w_dir		( const Fvector& D) {
 		w_u16(pvCompress(D));
