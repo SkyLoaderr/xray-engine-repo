@@ -40,7 +40,13 @@ private:
 		if ((p1.x<psize)&&(p1.y<psize))	cpoint.push_back(p1);	// 2nd
 	}
 public:
-	BOOL			push	(SMAP_Rect& R, u32	_size)
+	void			initialize	(u32 _size)
+	{
+		psize		=	_size;
+		stack.clear	();
+		cpoint.clear();
+	}
+	BOOL			push		(SMAP_Rect& R, u32	_size)
 	{
 		VERIFY	(_size<psize && size>4);
 
