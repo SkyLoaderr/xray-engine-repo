@@ -466,7 +466,6 @@ void CWeaponMagazined::Show		()
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R, target_material);
-//	OnShotmark					(vDir, vEnd, R);
 }
 
 void CWeaponMagazined::MediaLOAD		()
@@ -614,8 +613,7 @@ void CWeaponMagazined::switch2_Reload()
 {
 	Sound->play_at_pos		(sndReload,H_Root(),vLastFP);
 	
-	if (sndReload.feedback)
-		sndReload.feedback->set_volume(.2f);
+	if (sndReload.feedback)	sndReload.feedback->set_volume(.2f);
 	
 	PlayAnimReload();
 	bPending = true;
@@ -636,14 +634,11 @@ void CWeaponMagazined::switch2_Hiding()
 void CWeaponMagazined::switch2_Hidden()
 {
 	signal_HideComplete		();
-	//if(H_Parent()) setVisible(false);
 }
 void CWeaponMagazined::switch2_Showing()
 {
-	
 	Sound->play_at_pos		(sndShow,H_Root(),vLastFP);
-	if (sndShow.feedback)
-		sndShow.feedback->set_volume(.3f);
+	if (sndShow.feedback)	sndShow.feedback->set_volume(.3f);
 
 	bPending = true;
 	PlayAnimShow();

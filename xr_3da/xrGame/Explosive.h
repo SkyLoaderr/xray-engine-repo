@@ -10,11 +10,15 @@
 
 #include "../feel_touch.h"
 #include "inventory.h"
+#include "ShootingObject.h"
 
 class CExplosive:
 	virtual public CInventoryItem,
+	public CShootingObject,
     public Feel::Touch
 {
+private:
+	typedef CInventoryItem inherited;
 public:
 	CExplosive(void);
 	virtual ~CExplosive(void);
@@ -38,16 +42,25 @@ public:
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);
 
+	virtual void OnH_B_Chield		() {inherited::OnH_B_Chield();}
+	virtual void OnH_B_Independent	() {inherited::OnH_B_Independent();}
+	virtual void OnEvent (NET_Packet& P, u16 type) {inherited::OnEvent( P, type);}
+	virtual	void Hit	(float P, Fvector &dir,	CObject* who, s16 element,
+						 Fvector position_in_object_space, float impulse, 
+						 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
+	virtual void renderable_Render() {inherited::renderable_Render();}
+
+
 
 protected:
 	//параметры взрыва
-	float m_blast;
-	float m_blastR;
+	float m_fBlastHit;
+	float m_fBlastRadius;
 	
 	//параметры и количество осколков
-	float m_fragsR; 
-	float m_fragHit;
-	int	  m_frags;
+	float m_fFragsRadius; 
+	float m_fFragHit;
+	int	  m_iFragsNum;
 
 	//фактор подпроса предмета вверх взрывной волной 
 	float m_fUpThrowFactor;
@@ -69,6 +82,13 @@ protected:
 	Fcolor m_lightColor;
 	f32 m_lightRange;
 	u32 m_lightTime;
+
+	//////////////////////////////////////////////
+	//для разлета осколков
+	float					tracerHeadSpeed;
+	float					tracerTrailCoeff;
+	float					tracerStartLength;
+	float					tracerWidth;
 
 	//звуки
 	ref_sound	sndRicochet[SND_RIC_COUNT], sndExplode, sndCheckout;

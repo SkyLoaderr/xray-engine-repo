@@ -183,9 +183,9 @@ void CWeaponShotgun::OnShotBoth()
 
 	//дым из 2х стволов
 	CParticlesObject* pSmokeParticles = NULL;
-	StartParticles(pSmokeParticles, m_sSmokeParitcles, vLastFP,  zero_vel, true);
+	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP,  zero_vel, true);
 	pSmokeParticles = NULL;
-	StartParticles(pSmokeParticles, m_sSmokeParitcles, vLastFP2, zero_vel, true);
+	StartParticles(pSmokeParticles, m_sSmokeParticles, vLastFP2, zero_vel, true);
 
 }
 
@@ -268,7 +268,7 @@ bool CWeaponShotgun::Action(s32 cmd, u32 flags)
 
 void CWeaponShotgun::StartFlameParticles2	()
 {
-	StartParticles (m_pFlameParticles2, m_sFlameParitcles, vLastFP2);
+	StartParticles (m_pFlameParticles2, m_sFlameParticles, vLastFP2);
 }
 void CWeaponShotgun::StopFlameParticles2	()
 {

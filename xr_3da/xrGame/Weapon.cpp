@@ -13,9 +13,6 @@
 #include "entity_alive.h"
 #include "actor.h"
 
-u16 CWeapon::bullet_material_id = GAMEMTL_NONE;
-
-#define WEAPON_MATERIAL_NAME "objects\\bullet"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -88,7 +85,7 @@ CWeapon::CWeapon(LPCSTR name)
 	m_shotLight = true;
 
 
-	m_sFlameParitcles = m_sSmokeParitcles = NULL;
+	m_sFlameParticles = m_sSmokeParticles = NULL;
 }
 
 CWeapon::~CWeapon		()
@@ -322,7 +319,7 @@ void CWeapon::Load		(LPCSTR section)
 	m_fK_FireWound		= pSettings->r_float("weapon","fire_wound_immunity");
 
 	//получить материал пули
-	bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
+	CShootingObject::bullet_material_id  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	
 	inherited::Load		(section);
 
@@ -427,10 +424,10 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameSize			= pSettings->r_float		(section,"flame_size"		);
 
 	if(pSettings->line_exist(section,"flame_particles"))
-		m_sFlameParitcles	= pSettings->r_string		(section,"flame_particles" );
+		m_sFlameParticles	= pSettings->r_string		(section,"flame_particles" );
 
 	if(pSettings->line_exist(section,"smoke_particles"))
-			m_sSmokeParitcles = pSettings->r_string (section,"smoke_particles" );
+			m_sSmokeParticles = pSettings->r_string (section,"smoke_particles" );
 
 	// hands
 	eHandDependence		= EHandDependence(pSettings->r_s32(section,"hand_dependence"));

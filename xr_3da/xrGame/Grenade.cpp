@@ -102,6 +102,9 @@ void CGrenade::Throw()
 	{
 		pGrenade->m_destroyTime = 3500;
 		pGrenade->m_force = m_force; 
+		//установить ID того кто кинул гранату
+		pGrenade->m_iCurrentParentID = H_Parent()->ID();
+
 		m_force = 0;
 		if (Local())
 		{

@@ -127,24 +127,14 @@ BOOL CWeaponMagazinedWGrenade::net_Spawn(LPVOID DC)
 }
 void CWeaponMagazinedWGrenade::switch2_Idle() 
 {
-/*	if(m_bGrenadeMode)
-	{
-		m_pHUD->animPlay(mhud_idle_g[Random.randI(mhud_idle_g.size())],FALSE);
-		bPending = false;
-	}
-	else */
 	inherited::switch2_Idle();
-
 }
 void CWeaponMagazinedWGrenade::switch2_Reload()
 {
-	Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP);
-	
-	if (sndReload.feedback)
-		sndReload.feedback->set_volume(.2f);
-	
 	if(m_bGrenadeMode) 
 	{
+		if (sndReloadG.feedback) sndReloadG.feedback->set_volume(.2f);
+		Sound->play_at_pos		(sndReloadG,H_Root(),vLastFP2);
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		bPending = true;
 	}
@@ -172,7 +162,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		pStaticPG = xr_new<CParticlesObject>(m_sGrenadeFlameParticles,Sector());
 		Fmatrix pos; 
 		pos.set(XFORM()); 
-		pos.c.set(vLastFP);
+		pos.c.set(vLastFP2);
 		Fvector vel; 
 		vel.sub(Position(),ps_Element(0).vPosition); 
 		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);

@@ -12,6 +12,8 @@
 #include "ParticlesObject.h"
 #include "PHShellCreator.h"
 
+#include "ShootingObject.h"
+
 // refs
 class CEntity;
 class CWeaponHUD;
@@ -22,13 +24,9 @@ class ENGINE_API CMotionDef;
 #include "xrServer_Objects_ALife_Items.h"
 
 
-//функция обработки хитов объектов
-extern BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params);
-
-
 class CWeapon : public CInventoryItem,
-				public CPHShellSimpleCreator
-				//CGameObject
+				public CPHShellSimpleCreator,
+				public CShootingObject
 {
 private:
 	typedef CInventoryItem		inherited;
@@ -93,15 +91,6 @@ protected:
 	Fvector					vLastFP, vLastFP2;
 	Fvector					vLastFD, vLastSP;
 
-	//текущие значения хита и импульса для выстрела 
-	//используются для пробиваемости стен при RayPick
-	float		m_fCurrentHitPower;
-	float		m_fCurrentHitImpulse;
-	CCartridge*	m_pCurrentCartridge;
-	Fvector		m_vCurrentShootDir;
-	Fvector		m_vCurrentShootPos;
-	Fvector		m_vEndPoint;
-		
 	//рассеивание во время стрельбы
 	float					fireDistance;
 	float					fireDispersionBase;
@@ -189,12 +178,10 @@ protected:
 	void					Light_Start			();
 	void					Light_Render		(Fvector& P);
 
-	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
-	virtual void			FireShotmark		(const Fvector& vDir,	const Fvector &vEnd, Collide::rq_result& R, u16 target_material);
 	virtual void			UpdatePosition		(const Fmatrix& transform);
-	//попадание по динамическому объекту
-	virtual void			DynamicObjectHit	(Collide::rq_result& R, u16 target_material);
-	virtual void			StaticObjectHit		(Collide::rq_result& R, u16 target_material);
+
+	//трассирование полета пули
+	virtual BOOL			FireTrace			(const Fvector& P, const Fvector& Peff,	Fvector& D);
 
 	virtual void			UpdateFP			();
 	virtual void			UpdateXForm			();
@@ -364,18 +351,16 @@ public:
 	string64			m_tmpName;
 
 	//имя пратиклов для огня
-	LPCSTR				m_sFlameParitcles;
+	LPCSTR				m_sFlameParticles;
 	//объект партиклов огня
 	CParticlesObject*	m_pFlameParticles;
 
 	//имя пратиклов для дыма
-	LPCSTR				m_sSmokeParitcles;
+	LPCSTR				m_sSmokeParticles;
 
 
 	// Multitype ammo support
 	xr_stack<CCartridge> m_magazine;
-
-	static u16 bullet_material_id;
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)

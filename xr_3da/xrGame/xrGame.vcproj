@@ -2042,6 +2042,12 @@
 									Name="Weapon Generic"
 									Filter="">
 									<File
+										RelativePath=".\ShootingObject.cpp">
+									</File>
+									<File
+										RelativePath=".\ShootingObject.h">
+									</File>
+									<File
 										RelativePath=".\Weapon.cpp">
 									</File>
 									<File

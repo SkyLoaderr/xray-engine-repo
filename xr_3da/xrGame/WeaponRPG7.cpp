@@ -99,11 +99,11 @@ void __stdcall CWeaponRPG7Grenade::ObjectContactCallback(bool& do_colide,dContac
 void CWeaponRPG7Grenade::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_blast = pSettings->r_float(section,"blast");
-	m_blastR = pSettings->r_float(section,"blast_r");
-	m_frags = pSettings->r_s32(section,"frags");
-	m_fragsR = pSettings->r_float(section,"frags_r");
-	m_fragHit = pSettings->r_float(section,"frag_hit");
+	m_fBlastHit = pSettings->r_float(section,"blast");
+	m_fBlastRadius = pSettings->r_float(section,"blast_r");
+	m_iFragsNum = pSettings->r_s32(section,"frags");
+	m_fFragsRadius = pSettings->r_float(section,"frags_r");
+	m_fFragHit = pSettings->r_float(section,"frag_hit");
 
 	LPCSTR	name = pSettings->r_string(section,"wm_name");
 	pstrWallmark = name;
@@ -173,7 +173,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 	f32 l_dst;
 	m_blasted.clear();
 	feel_touch.clear();
-	feel_touch_update(Position(), m_blastR);
+	feel_touch_update(Position(), m_fBlastRadius);
 	xr_list<s16>		l_elsemnts;
 	xr_list<Fvector>	l_bs_positions;
 	
@@ -225,13 +225,13 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 		//поражение взрывной волной
 
 		//вычислить импульс взрыва для объекта
-		f32 l_impuls = m_blast * (1.f - (l_dst/m_blastR)*(l_dst/m_blastR)) * l_S;
+		f32 l_impuls = m_fBlastHit * (1.f - (l_dst/m_fBlastRadius)*(l_dst/m_fBlastRadius)) * l_S;
 
 		if(l_impuls > .001f)
 		{
 			setEnabled(false);
 			//проверить попадение по объекту
-			l_impuls *= l_pGO->ExplosionEffect(Position(), m_blastR,
+			l_impuls *= l_pGO->ExplosionEffect(Position(), m_fBlastRadius,
 											  l_elsemnts, l_bs_positions);
 			setEnabled(true);
 		}
@@ -264,14 +264,14 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 
 	Collide::rq_result RQ;
 	setEnabled(false);
-	for(s32 i = 0; i < m_frags; ++i) 
+	for(s32 i = 0; i < m_iFragsNum; ++i) 
 	{
 		l_dir.set(::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.5f), 
 				  ::Random.randF(-.5f,.5f)); 
 		l_dir.normalize();
 		
-		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fragsR, Collide::rqtBoth, RQ)) 
+		if(Level().ObjectSpace.RayPick(Position(), l_dir, m_fFragsRadius, Collide::rqtBoth, RQ)) 
 		{
 			Fvector l_end, l_bs_pos; 
 			l_end.mad(Position(),l_dir,RQ.range); 
@@ -279,7 +279,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			
 			if(RQ.O) 
 			{
-				f32 l_hit = m_fragHit * (1.f - (RQ.range/m_fragsR)*(RQ.range/m_fragsR));
+				f32 l_hit = m_fFragHit * (1.f - (RQ.range/m_fFragsRadius)*(RQ.range/m_fFragsRadius));
 				CEntity* E = dynamic_cast<CEntity*>(RQ.O);
 				if(E) l_hit *= E->HitScale(RQ.element);
 				NET_Packet		P;

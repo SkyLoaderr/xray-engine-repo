@@ -41,8 +41,8 @@ public:
 	Fvector				m_pos, m_vel;
 	CGameObject*		m_pOwner;
 
-	f32					m_blast, m_blastR, m_fragsR, m_fragHit;
-	s32					m_frags;
+	f32					m_fBlastHit, m_fBlastRadius, m_fFragsRadius, m_fFragHit;
+	s32					m_iFragsNum;
 	xr_list<CGameObject*> m_blasted;
 
 	enum EState{

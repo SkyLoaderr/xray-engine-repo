@@ -43,8 +43,12 @@ public:
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 	virtual bool IsHidden() {return inherited::IsHidden();}
 	virtual bool IsPending() {return inherited::IsPending();}
+
+	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,
+					 Fvector position_in_object_space, float impulse, 
+					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 protected:
-	//объект факовой гранаты
+	//объект фейковой гранаты
 	CGrenade *m_pFake;
 
 	struct	net_update 		
