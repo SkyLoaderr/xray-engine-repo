@@ -152,10 +152,10 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 
 	m_pInv = &m_pInvOwner->inventory();
 	m_pOthersInv = pOur->GetTrade()->GetPartnerInventory();
-	
+		
 	m_pTrade = pOur->GetTrade();
 	m_pOthersTrade = pOur->GetTrade()->GetPartnerTrade();
-	
+    	
 	m_pMouseCapturer = NULL;
 	UIPropertiesBox.Hide();
 
@@ -487,7 +487,7 @@ void CUITradeWnd::UpdateLists()
 	ClearDragDrop(m_vDragDropItems);
 
 	ruck_list.clear();
-	m_pInv->AddAvailableItems(ruck_list);
+   	m_pInv->AddAvailableItems(ruck_list);
 	ruck_list.sort(GreaterRoomInRuck);
 
 	//Наш рюкзак

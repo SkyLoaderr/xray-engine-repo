@@ -35,7 +35,6 @@ CInventoryOwner::CInventoryOwner			()
 CInventoryOwner::~CInventoryOwner			() 
 {
 	xr_delete					(m_inventory);
-	xr_delete					(m_trade_storage);
 	xr_delete					(m_pTrade);
 	xr_delete					(m_pCharacterInfo);
 }
@@ -46,7 +45,6 @@ void CInventoryOwner::Init					()
 	m_pTrade = NULL;
 	
 	m_inventory					= xr_new<CInventory>();
-	m_trade_storage				= xr_new<CInventory>();
 	m_pCharacterInfo			= xr_new<CCharacterInfo>();
 	
 	EnableTalk();
@@ -68,9 +66,6 @@ void CInventoryOwner::reinit				()
 	inventory().Clear			();
 	inventory().m_pOwner		= this;
 	inventory().SetSlotsUseful (true);
-
-
-	m_trade_storage->m_pOwner	= this;
 
 	m_dwMoney					= 0;
 	m_tRank						= ALife::eStalkerRankNone;

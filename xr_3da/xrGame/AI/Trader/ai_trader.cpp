@@ -35,12 +35,9 @@ void CAI_Trader::Load(LPCSTR section)
 	fEntityHealth = pSettings->r_float	(section,"Health");
 
 	float max_weight = pSettings->r_float	(section,"max_item_mass");
-	inventory().SetMaxWeight(max_weight);
-	inventory().SetMaxRuck(10000);
-	
-	m_trade_storage->CalcTotalWeight();
-	m_trade_storage->SetMaxWeight(max_weight*1000);
-	m_trade_storage->SetMaxRuck(inventory().GetMaxRuck()*1000);
+	inventory().SetMaxWeight(max_weight*1000);
+	inventory().SetMaxRuck(1000000);
+	inventory().CalcTotalWeight();
 }
 
 void CAI_Trader::Init()
@@ -271,6 +268,7 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 	CObject* Obj;
 
 	switch (type) {
+		case GE_TRADE_BUY:
 		case GE_OWNERSHIP_TAKE:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
@@ -284,26 +282,12 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 				u_EventSend				(P);
 			}
 			break;
+		case GE_TRADE_SELL:
 		case GE_OWNERSHIP_REJECT:
 			P.r_u16		(id);
 			Obj = Level().Objects.net_Find	(id);
 			if(inventory().Drop(dynamic_cast<CGameObject*>(Obj))) 
 				Obj->H_SetParent(0);
-			break;
-		// Trade is accomplishing through 'm_trade_storage'
-		case GE_TRADE_BUY:		// equal to GE_OWNERSHIP_TAKE
-			P.r_u16		(id);
-			Obj			= Level().Objects.net_Find	(id);
-			
-			if(g_Alive() && m_trade_storage->Take(dynamic_cast<CGameObject*>(Obj), true)) 
-				Obj->H_SetParent(this);
-
-			break;
-		case GE_TRADE_SELL:
-			P.r_u16		(id);
-			Obj			= Level().Objects.net_Find	(id);
-			if	(m_trade_storage->Drop(dynamic_cast<CGameObject*>(Obj)) || inventory().Drop((dynamic_cast<CGameObject*>(Obj)))) 
-				Obj->H_SetParent(NULL);
 			break;
 		case GE_TRANSFER_AMMO:
 			break;

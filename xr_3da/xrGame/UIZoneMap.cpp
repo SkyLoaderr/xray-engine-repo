@@ -270,19 +270,21 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 			CEntityAlive* pEntityAlive = NULL;
 			if(pObject)
+			{
 				pEntityAlive = dynamic_cast<CEntityAlive*>(pObject);
 
-			if(pEntityAlive)
-			{
-				if(ALife::eRelationTypeEnemy == pActor->tfGetRelationType(pEntityAlive))
-					entity_color = COLOR_FRIEND;
-				else
-					entity_color = COLOR_ENEMY;
-			}
+				if(pEntityAlive)
+				{
+					if(ALife::eRelationTypeEnemy == pActor->tfGetRelationType(pEntityAlive))
+						entity_color = COLOR_FRIEND;
+					else
+						entity_color = COLOR_ENEMY;
+				}
 
-			src.x = pObject->Position().x;
-			src.y = 0;
-			src.z = pObject->Position().z;
+				src.x = pObject->Position().x;
+				src.y = 0;
+				src.z = pObject->Position().z;
+			}
 		}
 		else
 		{

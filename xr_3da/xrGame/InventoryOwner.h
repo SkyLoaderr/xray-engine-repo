@@ -50,10 +50,8 @@ public:
 	//отправка сообщения другому владельцу PDA
 	virtual void SendPdaMessage(u16 who, EPdaMsg msg, INFO_ID info_index);
 
-
-	CInventory	*m_inventory;			// инвентарь
-	CInventory	*m_trade_storage;		// склад для торговли
-
+	// инвентарь
+	CInventory	*m_inventory;			
 	
 	////////////////////////////////////
 	//торговля и общение с персонажем
