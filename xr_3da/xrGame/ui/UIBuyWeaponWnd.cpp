@@ -58,7 +58,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	SetFont(HUD().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
-	SetMoneyAmount(160);
+	SetMoneyAmount(50160);
 
 	// Инициализируем вещи
 	Init(strSectionName);
