@@ -8,7 +8,6 @@
 #include "ai_script_lua_space.h"
 using namespace InventoryUtilities;
 
-#define NO_ACTIVE_SLOT 0xffffffff
 
 // CInventoryItem class ///////////////////////////////////////////////////////////////////////////////
 
