@@ -42,9 +42,31 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 
 	D3DVERTEXELEMENT9	dcl		[MAX_FVF_DECL_SIZE];
 	D3DVERTEXELEMENT9*	vFormat	= 0;
+	dwPrimitives				= 0;
+	BOOL				loaded_v=false,loaded_f=false;
+
+	if (data->find_chunk(OGF_GCONTAINER)) {
+		// verts
+		u32 ID				= data->r_u32				();
+		vBase				= data->r_u32				();
+		vCount				= data->r_u32				();
+		pVertices			= ::Render->getVB			(ID);
+		pVertices->AddRef	();
+		vFormat				= ::Render->getVB_Format	(ID);
+		loaded_v			= true;
+
+		// indices
+		u32 ID			= data->r_u32			();
+		iBase				= data->r_u32			();
+		iCount				= data->r_u32			();
+		dwPrimitives		= iCount/3;
+		pIndices			= ::Render->getIB		(ID);
+		pIndices->AddRef	();
+		loaded_f			= true;
+	}
 
 	// read vertices
-	if ((dwFlags&VLOAD_NOVERTICES)==0) {
+	if (!loaded_v && (dwFlags&VLOAD_NOVERTICES)==0) {
 		if (data->find_chunk(OGF_VCONTAINER)) {
 #ifndef _EDITOR
 			u32 ID				= data->r_u32				();
@@ -74,11 +96,11 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	}
 
 	// indices
-	dwPrimitives = 0;
-	if ((dwFlags&VLOAD_NOINDICES)==0) {
+	if (!loaded_v && (dwFlags&VLOAD_NOINDICES)==0) {
+		dwPrimitives = 0;
 		if (data->find_chunk(OGF_ICONTAINER)) {
 #ifndef _EDITOR
-			u32 ID			= data->r_u32			();
+			u32 ID				= data->r_u32			();
 			iBase				= data->r_u32			();
 			iCount				= data->r_u32			();
 			dwPrimitives		= iCount/3;

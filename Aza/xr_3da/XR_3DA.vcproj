@@ -905,28 +905,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="Cached"
-					Filter="">
-					<File
-						RelativePath=".\FCached.cpp">
-						<FileConfiguration
-							Name="Mixed|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-						<FileConfiguration
-							Name="Release|Win32">
-							<Tool
-								Name="VCCLCompilerTool"
-								AssemblerOutput="4"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\FCached.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="Particles"
 					Filter="">
 					<File
