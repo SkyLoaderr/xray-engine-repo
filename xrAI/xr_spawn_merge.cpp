@@ -7,6 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xr_ini.h"
+
 #include "xrAI.h"
 #include "xrLevel.h"
 #include "xrGraph.h"

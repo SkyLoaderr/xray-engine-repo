@@ -524,6 +524,9 @@
 						RelativePath="NET_utils.h">
 					</File>
 					<File
+						RelativePath="game_base.h">
+					</File>
+					<File
 						RelativePath="xrMessages.h">
 					</File>
 					<File
