@@ -23,6 +23,9 @@ class	ECORE_API CRender{
     IRender_Target			Target;
     Fmatrix					current_matrix;
 public:
+	// options
+	u32						m_skinning;
+
 	// Data
 	CFrustum				ViewBase;
 	CPSLibrary				PSLibrary;
@@ -37,6 +40,8 @@ public:
 	// Constructor/destructor
 							CRender			();
 	virtual 				~CRender		();
+
+    void					shader_option_skinning	(u32 mode)									{ m_skinning=mode;	}
 
 	void 					Initialize		();
 	void 					ShutDown		();
@@ -94,6 +99,17 @@ public:
 		void*				ppConstantTable);
 
 	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname);
+	virtual HRESULT					shader_compile			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							pDefines,
+		void*							pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							ppShader,
+		void*							ppErrorMsgs,
+		void*							ppConstantTable);
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

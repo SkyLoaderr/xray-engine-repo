@@ -16,6 +16,7 @@ CRender* 	Render = &RImplementation;
 
 CRender::CRender	()
 {
+	m_skinning					= 0;
 }
 
 CRender::~CRender	()
@@ -152,5 +153,54 @@ HRESULT	CRender::CompileShader			(
         LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
         LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
 		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+}
+HRESULT	CRender::shader_compile			(
+		LPCSTR                          pSrcData,
+		UINT                            SrcDataLen,
+		void*							_pDefines,
+		void*							_pInclude,
+		LPCSTR                          pFunctionName,
+		LPCSTR                          pTarget,
+		DWORD                           Flags,
+		void*							_ppShader,
+		void*							_ppErrorMsgs,
+		void*							_ppConstantTable)
+{
+	D3DXMACRO						defines			[128];
+	int								def_it			= 0;
+	CONST D3DXMACRO*                pDefines		= (CONST D3DXMACRO*)	_pDefines;
+	if (pDefines)	{
+		// transfer existing defines
+		for (;;def_it++)	{
+			if (0==pDefines[def_it].Name)	break;
+			defines[def_it]			= pDefines[def_it];
+		}
+	}
+	// options
+	if (0==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_0";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (1==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_1";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	if (2==m_skinning)		{
+		defines[def_it].Name		=	"SKIN_2";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
+	// finish
+	defines[def_it].Name			=	0;
+	defines[def_it].Definition		=	0;
+	def_it							++;
+
+	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
+	LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
+	LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
+	LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
+	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 }
 

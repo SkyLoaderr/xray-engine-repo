@@ -32,6 +32,8 @@ public:
 	CStatTimer	RenderDUMP_DT_Render;// ...details rendering
 	CStatTimer	RenderDUMP_DT_Cache;// ...details slot cache access
 
+    u32		RenderDUMP_DT_Count;
+
 	CStatTimer	Input;				// total time taken by input subsystem (accurate only in single-threaded mode)
 	CStatTimer	clRAY;				// total: ray-testing
 	CStatTimer	clBOX;				// total: box query

@@ -340,7 +340,7 @@ IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
 #ifdef _EDITOR
 IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
 {
-	if ((priority==(visual->hShader?visual->hShader->E[0]->Flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->Flags.bStrictB2F:false))){
+	if ((priority==(visual->hShader?visual->hShader->E[0]->flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->flags.bStrictB2F:false))){
         Fbox bb; bb.xform(visual->vis.box,transform);
         return ::Render->occ_visible(bb);
     }
