@@ -80,7 +80,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process ()
 
-    if self.process_trade == false then return end
+    if self.process_trade == true then return end
 
     if self.entered == false then
        if self.exit_time ~= 0 and device ():time_global () - self.exit_time > wait_for_clear then
