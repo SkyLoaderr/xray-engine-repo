@@ -15,12 +15,12 @@ public:
 	{	return fResult; }
 	IC float GetAsync(void)
 	{	return float(GetElapsed())*CPU::cycles2seconds; }
-	IC __int64	GetElapsed	()
+	IC u64	GetElapsed	()
 	{	return CPU::GetCycleCount()-qwStartTime-CPU::cycles_overhead; }
 
 	void	Dump	(void)
 	{
-		Log("* Elapsed time (sec):",GetAsync());
+		Msg("* Elapsed time (sec): %f",GetAsync());
 	}
 };
 

@@ -284,5 +284,9 @@ SOURCE=.\StdAfx.cpp
 SOURCE=.\StdAfx.h
 # End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\FTimer.h
+# End Source File
 # End Target
 # End Project

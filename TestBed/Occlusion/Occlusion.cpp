@@ -3,6 +3,7 @@
 
 #include	"stdafx.h"
 #include	"occRasterizer.h"
+#include	"ftimer.h"
 
 #define IMG_24B 0
 #define IMG_32B 1
@@ -87,6 +88,9 @@ extern	void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2)
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
+	CTimer			TM;
+	u64				total=0;
+	int				count=0;
 
 	InitMath		();
 	printf			("\n");
@@ -124,8 +128,11 @@ int __cdecl main	(int argc, char* argv[])
 		T2.raster[2].z	= 0.99f;
 		
 		// draw tri
+		TM.Start		();
 		occ.rasterize	(&T1);
 		occ.rasterize	(&T2);
+		total += TM.GetElapsed();
+		count += 2;
 	}
 
 	// Propagade
