@@ -71,7 +71,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 //	slim->constraint_manual	(4,5,2);
 	slim->collect_edges		();
 
-	slim->decimate			(0,1.f);
+	slim->decimate			(8,1.f);
 	m->compact_vertices		();
 
 	IWriter* W		= FS.w_open("x:/import/test.smf");

@@ -276,14 +276,21 @@ void MxPropSlim::collect_quadrics()
 	{
 		MxFace& f = m->face(i);
 
-		MxQuadric Q(dim());
+		MxQuadric Q			(dim());
 		compute_face_quadric(i, Q);
 
-		// 	if( weight_by_area )
-		// 	    Q *= Q.area();
-ou		quadric(f[0]) += Q;
-		quadric(f[1]) += Q;
-		quadric(f[2]) += Q;
+		switch( weighting_policy )
+		{
+		case MX_WEIGHT_AREA:
+		case MX_WEIGHT_AREA_AVG:
+			Q *= Q.area();
+			// no break: fallthrough
+		default:
+			quadric(f[0]) += Q;
+			quadric(f[1]) += Q;
+			quadric(f[2]) += Q;
+			break;
+		}
 	}
 }
 
@@ -297,6 +304,105 @@ void MxPropSlim::initialize()
 	is_initialized = true;
 }
 
+unsigned int MxPropSlim::check_local_validity(unsigned int v, const float* vnew)
+{
+	const MxFaceList& N = m->neighbors(v);
+	unsigned int nfailed = 0;
+	unsigned int i;
+
+	for(i=0; i<(unsigned int)N.length(); i++){
+		if( m->face_mark(N[i]) == 1 ){
+			MxFace&		 f = m->face(N[i]);
+			unsigned int k = f.find_vertex(v);
+			unsigned int x = f[(k+1)%3];
+			unsigned int y = f[(k+2)%3];
+
+			float d_yx[3], d_vx[3], d_vnew[3], f_n[3], n[3];
+			mxv_sub(d_yx, m->vertex(y), m->vertex(x), 3);   // d_yx = y-x
+			mxv_sub(d_vx, m->vertex(v), m->vertex(x), 3);   // d_vx = v-x
+			mxv_sub(d_vnew, vnew, m->vertex(x), 3);         // d_vnew = vnew-x
+
+			mxv_cross3(f_n, d_yx, d_vx);
+			mxv_cross3(n, f_n, d_yx);     // n = ((y-x)^(v-x))^(y-x)
+			mxv_unitize(n, 3);
+
+			// assert( mxv_dot(d_vx, n, 3) > -FEQ_EPS );
+			if(mxv_dot(d_vnew,n,3)<local_validity_threshold*mxv_dot(d_vx,n,3))
+				nfailed++;
+		}
+	}
+
+	return nfailed;
+}
+
+double MxPropSlim::check_local_compactness(unsigned int v, const float *vnew)
+{
+	const MxFaceList& N = m->neighbors(v);
+	double c_min		= 1.0;
+
+	for(unsigned int i=0; i<(unsigned int)N.length(); i++)
+		if( m->face_mark(N[i]) == 1 ){
+			const MxFace& f = m->face(N[i]);
+			Vec3 f_after[3];
+			for(unsigned int j=0; j<3; j++)
+				f_after[j] = (f[j]==v)?Vec3(vnew):Vec3(m->vertex(f[j]));
+
+			double c=triangle_compactness(f_after[0], f_after[1], f_after[2]);
+
+			if( c < c_min ) c_min = c;
+		}
+
+		return c_min;
+}
+
+void MxPropSlim::apply_mesh_penalties(edge_info *info)
+{
+	unsigned int i;
+
+	const MxFaceList& N1 = m->neighbors(info->v1);
+	const MxFaceList& N2 = m->neighbors(info->v2);
+
+	// Set up the face marks as the check_xxx() functions expect.
+	//
+	for(i=0; i<(unsigned int)N2.length(); i++) m->face_mark(N2[i], 0);
+	for(i=0; i<(unsigned int)N1.length(); i++) m->face_mark(N1[i], 1);
+	for(i=0; i<(unsigned int)N2.length(); i++) m->face_mark(N2[i], m->face_mark(N2[i])+1);
+
+	double base_error	= info->heap_key();
+	double bias			= 0.0;
+
+	// Check for excess over degree bounds.
+	//
+	unsigned int max_degree = _max(N1.length(), N2.length());
+	if( max_degree > vertex_degree_limit )
+		bias += (max_degree-vertex_degree_limit) * meshing_penalty * 0.001f;
+
+	// Local validity checks
+	//
+	float vnew[3];
+	vnew[0] = (float)info->target[0];
+	vnew[1] = (float)info->target[1];
+	vnew[2] = (float)info->target[2];
+
+	unsigned int nfailed = 0;
+	nfailed += check_local_validity(info->v1, vnew);
+	nfailed += check_local_validity(info->v2, vnew);
+	if( nfailed )
+		bias += nfailed*meshing_penalty;
+
+	float _scale = 1.f;
+	if( compactness_ratio > 0.0 ){
+		double c1_min=check_local_compactness(info->v1, vnew);
+		double c2_min=check_local_compactness(info->v2, vnew);
+		double c_min = _min(c1_min, c2_min);
+
+		if( c_min < compactness_ratio ) 
+			_scale += float((compactness_ratio-c_min)/compactness_ratio);
+	}
+
+	info->heap_key(float((base_error-EDGE_BASE_ERROR)*_scale - bias));
+}
+
 void MxPropSlim::compute_target_placement(edge_info *info)
 {
 	MxVertexID i=info->v1, j=info->v2;
@@ -304,33 +410,39 @@ void MxPropSlim::compute_target_placement(edge_info *info)
 	const MxQuadric &Qi=quadric(i), &Qj=quadric(j);
 	MxQuadric Q=Qi;  Q+=Qj;
 
-	double err;
-ou	if( Q.optimize(info->target) )
+	double e_min;
 
-		c		err = Q(info->target);
-erte	else
+	if( placement_policy==MX_PLACE_OPTIMAL && Q.optimize(info->target)){
+		e_min = Q(info->target);
+	}else{
+		// Fall back only on endpoints
+		MxVector vi(dim());
+		MxVector vj(dim());
+		MxVector best(dim());
 
-		c		// Fall back only on endpoints
-ou		MxVector v_i(dim()), v_j(dim());
-ou		pack_to_vector(i, v_i);
-		pack_to_vector(j, v_j);
-ou		double e_i = Q(v_i);
-		double e_j = Q(v_j);
-ou		if( e_i<=e_j )
- ){
-			info->target = v_i;
-			err = e_i;
-r(MxV		else
- ){
-			info->target = v_j;
-			err = e_j;
+		pack_to_vector(i, vi);
+		pack_to_vector(j, vj);
+
+		double ei=Q(vi), e		if( ei<ej )	{ e_min = ei; best = vi; }
+		else		{ e_min = ej; best = vj; }
+;}
+
+		if( placement_policy>=MX_PLACE_ENDORMID ){
+			MxVector mid(dim());
+			mid			= vi;
+			mid			+=vj;
+			mid			/=2.f;
+			double e_mid= Q(mid);
+
+			if( e_mid < e_min ) { e_min = e_mid; best = mid; }
 		}
+		info->target	= best;
 	}
 
-	//     if( weight_by_area )
-	// 	err / Q.area();
-	info->heap_key(float(-err));
-);
+	if( weighting_policy == MX_WEIGHT_AREA_AVG )
+		e_min /= Q.area();
+
+	info->heap_key(float(-e_min));
 }bool MxPropSlim::decimate(unsigned int target, float max_error)
 s)
 {
@@ -391,7 +503,13 @@ void MxPropSlim::mark_face(MxFaceID id, float err)
 
 
 
-/////////////////////////////////////////////////////////////////// xr_new<edge_info>(dim());
+////////////////////////////////////////////////////////////////////////
+//
+// This is *very* close to the code in MxEdgeQSlim
+
+void MxPropSlim::create_edge(MxVertexID i, MxVertexID j)
+{
+	edge_info *info = xr_new<edge_info>(dim());
 
 	edge_links(i).add(info);
 	edge_links(j).add(info);
@@ -405,7 +523,11 @@ void MxPropSlim::mark_face(MxFaceID id, float err)
 void MxPropSlim::discontinuity_constraint(MxVertexID i, MxVertexID j, MxFaceID f)
 {
 	Vec3 org(m->vertex(i)), dest(m->vertex(j));
-	Vec3 e ;
+	Vec3 e = dest - org;
+
+	Vec3 v1(m->vertex(m->face(f)(0)));
+	Vec3 v2(m->vertex(m->face(f)(1)));
+	Vec3 v3(m->vertex(m->face(f)(2)));
 	Vec3 n = triangle_normal(v1,v2,v3);
 
 	Vec3 n2 = e ^ n;
@@ -460,11 +582,7 @@ void MxPropSlim::apply_contraction(const MxPairContraction& conx,
 
 
 
-//
-
-	m->apply_contraction(conx);
-
-	unpack_from_vector(conx.v////////
+////////////////////////////////////////////////////////////////////////
 //
 // These were copied *unmodified* from MxEdgeQSlim
 // (with some unsupported features commented out).
@@ -474,7 +592,7 @@ void MxPropSlim::collect_edges()
 {
 	MxVertexList star;
 
-	foertexID i=0; i<m->vert_count(); i++)
+	for(MxVertexID i=0; i<m->vert_count(); i++)
 	{
 		star.reset();
 		m->collect_vertex_star(i, star);
@@ -493,9 +611,9 @@ void MxPropSlim::constrain_boundaries()
 	for(MxVertexID i=0; i<m->vert_count(); i++)
 	{
 		star.reset();
-		m->collect_vertex_star(i	//     if( meshing_penalty > 1.0 )
-	//         apply_mesh_penalties(info);
-th(); j++){
+		m->collect_vertex_star(i, star);
+
+		for(unsigned int j=0; j<(unsigned int)star.length(); j++){
 			if( i < star(j) )
 			{
 				faces.reset();

@@ -59,7 +59,10 @@ protected:
 	void 				discontinuity_constraint(MxVertexID, MxVertexID, MxFaceID);
 	void 				discontinuity_constraint(MxVertexID, MxVertexID, const MxFaceList&);
 	void 				compute_edge_info		(edge_info *);
-	void 				finalize_edge_update	(edgat *vnew);
+	void 				finalize_edge_update	(edge_info *);
+	void				apply_mesh_penalties	(edge_info *);
+	double				check_local_compactness	(unsigned int v1, const float *vnew);
+	unsigned int		check_local_validity	(unsigned int, const float *vnew);
 	void 				compute_target_placement(edge_info *);
 
 	void 				apply_contraction		(const MxPairContraction&, edge_info *);

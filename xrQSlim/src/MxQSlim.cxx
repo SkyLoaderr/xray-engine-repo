@@ -83,8 +83,7 @@ void MxQSlim::transform_quadrics(const Mat4& P)
 		quadrics(j).transform(P);
 }
 
-void MxQSlim::discontinuity_constraint(MxVertexID i, MxVertexID j,
-									   MxFaceID f)
+void MxQSlim::discontinuity_constraint(MxVertexID i, MxVertexID j, MxFaceID f)
 {
 	Vec3 org(m->vertex(i)), dest(m->vertex(j));
 	Vec3 e = dest - org;
@@ -219,7 +218,7 @@ unsigned int MxEdgeQSlim::check_local_validity(unsigned int v1, unsigned int /*v
 	unsigned int nfailed = 0;
 	unsigned int i;
 
-	for(i=0; i<(unsigned int)N1.length(); i++)
+	for(i=0; i<(unsigned int)N1.length(); i++){
 		if( m->face_mark(N1[i]) == 1 )
 		{
 			MxFace& f = m->face(N1[i]);
@@ -240,8 +239,9 @@ unsigned int MxEdgeQSlim::check_local_validity(unsigned int v1, unsigned int /*v
 			if(mxv_dot(d_vnew,n,3)<local_validity_threshold*mxv_dot(d_vx,n,3))
 				nfailed++;
 		}
+	}
 
-		return nfailed;
+	return nfailed;
 }
 
 unsigned int MxEdgeQSlim::check_local_degree(unsigned int v1, unsigned int v2, const float *)
@@ -349,13 +349,9 @@ void MxEdgeQSlim::compute_target_placement(MxQSlimEdge *info)
 	Quadric Q = Qi;  Q += Qj;
 	double e_min;
 
-	if( placement_policy==MX_PLACE_OPTIMAL &&
-		Q.optimize(&info->vnew[0], &info->vnew[1], &info->vnew[2]) )
-	{
+	if( placement_policy==MX_PLACE_OPTIMAL && Q.optimize(&info->vnew[0], &info->vnew[1], &info->vnew[2]) ){
 		e_min = Q(info->vnew);
-	}
-	else
-	{
+	}else{
 		Vec3 vi(m->vertex(i)), vj(m->vertex(j));	
 		Vec3 best;
 
