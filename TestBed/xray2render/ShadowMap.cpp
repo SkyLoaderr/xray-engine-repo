@@ -765,11 +765,10 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVECTOR3 vLightDir					= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
 	D3DXMATRIX	mInvView;
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
-	D3DXMatrixInverse						(mInvView,0,dm_2view);
-	D3DXVec3TransformNormal					(vLightDir,vLightDir);
-	Fvector									light_color;
-	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
-	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
+	D3DXVec3TransformNormal					(&vLightDir,&vLightDir,&mInvView);
+	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.8f,		.7f,		.9,			1	);
 	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
@@ -782,7 +781,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 
 	return S_OK;
 }
-
 
 //-----------------------------------------------------------------------------
 // Name: RenderCombineDBG_Normals			()
