@@ -2485,18 +2485,6 @@ SOURCE=.\GlowManager.cpp
 SOURCE=.\GlowManager.h
 # End Source File
 # End Group
-# Begin Group "Occluders"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\Occluder.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\Occluder.h
-# End Source File
-# End Group
 # Begin Group "Wallmarks"
 
 # PROP Default_Filter ""

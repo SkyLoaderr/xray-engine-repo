@@ -70,7 +70,7 @@ public:
 
 	CRenderTarget					Target;			// Render-target
 	CFrustum						ViewBase;
-	COccluderSystem*				View;
+	CFrustum*						View;
 	CHOM							HOM;
 
 	// Loading / Unloading
