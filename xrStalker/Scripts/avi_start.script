@@ -60,6 +60,12 @@ function main()
 	local actor = level.actor()
 	local snd_pos = actor:position()
 	snd_pos.y = snd_pos.y + 1.5
+
+	--wait for first frame
+	while device().precache_frame ~= 0 do
+		wait(1000)
+	end
+	
 	snd:play_at_pos(actor,snd_pos)
 	
 	wait(16000)
