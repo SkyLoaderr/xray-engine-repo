@@ -100,6 +100,8 @@ public:
 	void SetWndRect(int x, int y, int width, int height) 
 						{SetRect(&m_WndRect,x,y,x+width,y+height);}
 
+	void SetWndRect(RECT r){m_WndRect = r;}
+
 	void MoveWindow(int x, int y)
 					{int w = GetWidth();
 					 int h = GetHeight();
