@@ -155,6 +155,9 @@
 					RelativePath=".\Config\creatures\m_person.ltx">
 				</File>
 				<File
+					RelativePath=".\config\creatures\M_Phantom.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\creatures\M_Poltergeist.ltx">
 				</File>
 				<File
