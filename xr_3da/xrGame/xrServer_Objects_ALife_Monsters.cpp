@@ -444,7 +444,7 @@ void CSE_ALifeCreatureAbstract::UPDATE_Write(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
 	
-	tNetPacket.w_float_q16		(fHealth,	-1000,1000);
+	tNetPacket.w_float_q16		(fHealth,	-500,1000);
 	
 	tNetPacket.w_u32			(timestamp		);
 	tNetPacket.w_u8				(flags			);
@@ -458,7 +458,7 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
 	inherited::UPDATE_Read		(tNetPacket);
 	
-	tNetPacket.r_float_q16		(fHealth,	-1000,1000);
+	tNetPacket.r_float_q16		(fHealth,	-500,1000);
 	
 	tNetPacket.r_u32			(timestamp		);
 	tNetPacket.r_u8				(flags			);
@@ -657,7 +657,7 @@ void CSE_ALifeCreatureActor::UPDATE_Read	(NET_Packet	&tNetPacket)
 	tNetPacket.r_u16			(mstate		);
 	tNetPacket.r_sdir			(accel		);
 	tNetPacket.r_sdir			(velocity	);
-	tNetPacket.r_float_q16		(fArmor,	-1000,1000);
+	tNetPacket.r_float_q16		(fArmor,	-500,1000);
 	tNetPacket.r_u8				(weapon		);
 	////////////////////////////////////////////////////
 	tNetPacket.r_u16			(m_u16NumItems);
@@ -690,7 +690,7 @@ void CSE_ALifeCreatureActor::UPDATE_Write	(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(mstate		);
 	tNetPacket.w_sdir			(accel		);
 	tNetPacket.w_sdir			(velocity	);
-	tNetPacket.w_float_q16		(fArmor,	-1000,1000);
+	tNetPacket.w_float_q16		(fArmor,	-500,1000);
 	tNetPacket.w_u8				(weapon		);
 	////////////////////////////////////////////////////
 	tNetPacket.w_u16			(m_u16NumItems);

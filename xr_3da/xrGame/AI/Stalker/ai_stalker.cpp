@@ -237,7 +237,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_u32							(0);
 	P.w_u32							(0);
 
-	P.w_float_q16					(fEntityHealth,-1000,1000);
+	P.w_float_q16					(fEntityHealth,-500,1000);
 
 	P.w_u32							(N.dwTimeStamp);
 	P.w_u8							(0);
@@ -278,7 +278,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	u8 flags;
 
 	float health;
-	P.r_float_q16		(health,-1000,1000);
+	P.r_float_q16		(health,-500,1000);
 	fEntityHealth = health;
 
 	P.r_u32							(N.dwTimeStamp);

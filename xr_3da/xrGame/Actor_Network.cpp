@@ -30,7 +30,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	//	Msg			("[%6d] %s",P.r_pos,cName());
 
 	u8					flags = 0;
-	P.w_float_q16		(g_Health(),-1000,1000);
+	P.w_float_q16		(g_Health(),-500,1000);
 
 	P.w_u32				(Level().timeServer());
 	P.w_u8				(flags);
@@ -50,7 +50,7 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_sdir			(NET_SavedAccel);
 	Fvector				v = m_PhysicMovementControl->GetVelocity();
 	P.w_sdir			(v);//m_PhysicMovementControl.GetVelocity());
-	P.w_float_q16		(fArmor,-1000,1000);
+	P.w_float_q16		(fArmor,-500,1000);
 
 	P.w_u8				(u8(inventory().GetActiveSlot()));
 
@@ -108,7 +108,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	u16					tmp;
 
 	float health;
-	P.r_float_q16 (health,-1000,1000);
+	P.r_float_q16 (health,-500,1000);
 	//----------- for E3 -----------------------------
 	if (OnClient())fEntityHealth = health;
 	//------------------------------------------------
@@ -138,7 +138,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
 	float				fRArmor;
-	P.r_float_q16		(fRArmor,-1000,1000);
+	P.r_float_q16		(fRArmor,-500,1000);
 	//----------- for E3 -----------------------------
 	if (OnClient())		fArmor = fRArmor;
 	//------------------------------------------------
