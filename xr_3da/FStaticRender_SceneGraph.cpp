@@ -24,7 +24,7 @@ void CRender::InsertSG_Dynamic(FBasicVisual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=ssaLIMIT)	return;
 
 	// Select List and add to it
-	if (pVisual->hShader->shader->Flags.bStrictB2F) {
+	if (pVisual->hShader->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *pTransform;
@@ -61,27 +61,34 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 		} else {
 			for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
-				mapNormal_Code&				code	= mapNormal	[sh->Flags.iPriority][pass_id];
 				CPass&						pass	= sh->Passes[pass_id];
-				mapNormal_Code::TNode*		Ncode	= code.insert		(pass.dwStateBlock);
-				mapNormal_Textures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-				mapNormal_Matrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
-				mapNormal_Constants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-				mapNormalItem&	item				= Nconst->val;
+				mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+				mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+				mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+				mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+				mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+				mapNormalItems&	item				= Nconst->val;
 				if (pass)	{
 					// No need to sort - ZB already setted up
 					item.direct.unsorted.push_back	(pVisual);
 				} else {
 					// Need to sort for HZB efficient use
-					if (!item.ssa_valid)		{
-						item.ssa_valid	= TRUE;
-						item.ssa		= SSA;
-					} else if (SSA>item.ssa)	item.ssa=SSA;
+					if (SSA>Nconst->val.ssa) {
+						Nconst->val.ssa = SSA;
+						if (SSA>Nmat->val.ssa) {
+							Nmat->val.ssa = SSA;
+							if (SSA>Ntex->val.ssa)	{
+								Ntex->val.ssa = SSA; 
+								if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+							}
+						}
+					}
 					
 					if (SSA<ssaDONTSORT)		item.direct.unsorted.push_back		(pVisual);
 					else						item.direct.sorted.insertInAnyWay	(distSQ,pVisual);
 				}
 			}
+		}
 		}
 	}
 }
@@ -100,22 +107,28 @@ void CRender::InsertSG_Cached(FCached *pVisual)
 		Shader*		sh	= pVisual->hShader;
 		for (DWORD pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 		{
-			mapNormal_Code&				code	= mapNormal	[sh->Flags.iPriority][pass_id];
 			CPass&						pass	= sh->Passes[pass_id];
-			mapNormal_Code::TNode*		Ncode	= code.insert		(pass.dwStateBlock);
-			mapNormal_Textures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
-			mapNormal_Matrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
-			mapNormal_Constants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
-			mapNormalItem&	item				= Nconst->val;
+			mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+			mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.dwStateBlock);
+			mapNormalTextures::TNode*	Ntex	= Ncode->val.insert	(pass.T);
+			mapNormalMatrices::TNode*	Nmat	= Ntex->val.insert	(pass.M);
+			mapNormalConstants::TNode*	Nconst	= Nmat->val.insert	(pass.C);
+			mapNormalItems&	item				= Nconst->val;
 			if (pass)	{
 				// No need to sort - ZB already setted up
 				item.cached.unsorted.push_back	(pVisual);
 			} else {
 				// Need to sort for HZB efficient use
-				if (!item.ssa_valid)		{
-					item.ssa_valid	= TRUE;
-					item.ssa		= SSA;
-				} else if (SSA>item.ssa)	item.ssa=SSA;
+				if (SSA>Nconst->val.ssa) {
+					Nconst->val.ssa = SSA;
+					if (SSA>Nmat->val.ssa) {
+						Nmat->val.ssa = SSA;
+						if (SSA>Ntex->val.ssa)	{
+							Ntex->val.ssa = SSA; 
+							if (SSA>Ncode->val.ssa) Ncode->val.ssa = SSA;
+						}
+					}
+				}
 				
 				if (SSA<ssaDONTSORT)		item.cached.unsorted.push_back		(pVisual);
 				else						item.cached.sorted.insertInAnyWay	(distSQ,pVisual);

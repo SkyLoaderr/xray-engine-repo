@@ -35,28 +35,21 @@ namespace SceneGraph
 	};
 	struct mapNormalItems 
 	{
-		BOOL								ssa_valid;
 		float								ssa;
 		mapNormalDirect						direct;
 		mapNormalCached						cached;
 	};
-	struct mapNormalConstants
+	struct mapNormalConstants	: public	FixedMAP<SConstantList*,mapNormalItems>
 	{
-		BOOL								ssa_valid;
 		float								ssa;
-		FixedMAP<SConstantList*,mapNormalItems>		items;
 	};
-	struct mapNormalMatrices
+	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalConstants>
 	{
-		BOOL								ssa_valid;
 		float								ssa;
-		FixedMAP<SMatrixList*,mapNormalConstants>	items;
 	};
-	struct mapNormalTextures
+	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalMatrices>
 	{
-		BOOL								ssa_valid;
 		float								ssa;
-		FixedMAP<STextureList*,mapNormalMatrices>	items;
 	};
 	typedef FixedMAP<DWORD,mapNormalTextures>		mapNormalCodes;
 
