@@ -46,7 +46,7 @@ namespace SceneGraph
 	typedef FixedMAP<float,_MatrixItem>				mapMatrixItem;
 
 	// Top level
-	typedef mapNormalCodes							mapNormal_T		[8];
+	typedef mapNormalCodes							mapNormal_T		[SHADER_PASSES_MAX];
 
 	typedef FixedMAP<ShaderElement*,mapMatrixItem>	mapMatrix_T;
 	typedef mapMatrix_T::TNode						mapMatrix_Node;

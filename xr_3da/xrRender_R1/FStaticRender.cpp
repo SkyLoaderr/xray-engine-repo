@@ -703,7 +703,7 @@ void	CRender::Render		()
 
 		for (u32 pass_id=0; pass_id<8; pass_id++)	
 		{
-			mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
+			mapNormalCodes&		codes		= mapNormal	[pr][pass_id];
 			if (0==codes.size())			break;
 			BOOL sort						= (pass_id==0);
 
