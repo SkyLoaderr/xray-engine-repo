@@ -4,7 +4,7 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, bottom, top ) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0 =	  	0.5,		  20,	     200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  2.5
+stand_attack_0 =	  	0.5,		  20,	     200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,				  2.5
 
 
 [m_burer_step_params]
@@ -206,7 +206,7 @@ Particle_Tele_Object	= static\fire_distort
 Particle_Shield			= anomaly2\burer_shield_01
 
 ; Gravi Strike
-Gravi_Speed					= 62	; meter/sec	
+Gravi_Speed					= 20 ;62	; meter/sec	
 Gravi_Step					= 2		; meter
 Gravi_Time_To_Hold			= 1300	; milisec
 Gravi_Radius				= 3.0
@@ -216,7 +216,7 @@ Gravi_Hit_Power				= 50.0
 
 ; Tele Strike
 Tele_Max_Handled_Objects = 3	
-Tele_Time_To_Hold		 = 1200
+Tele_Time_To_Hold		 = 800 ;1200
 Tele_Object_Min_Mass	 = 40.0
 Tele_Object_Max_Mass	 = 5000.0
 Tele_Find_Radius		 = 10.0
