@@ -9,10 +9,13 @@
 #include "stdafx.h"
 #include "script_storage.h"
 #include <stdarg.h>
+
 #ifndef ENGINE_BUILD
-#include "script_engine.h"
-#include "ai_debug.h"
-#include "ai_space.h"
+#	include "script_engine.h"
+#	include "ai_debug.h"
+#	include "ai_space.h"
+
+#	include "script_debugger.h"
 #endif
 
 CScriptStorage::CScriptStorage		()
@@ -228,8 +231,12 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	FS.r_close		(l_tpFileReader);
 
 	if (bCall) {
-		int			l_iErrorCode = lua_pcall(lua(),0,0,0);
+//		int			l_iErrorCode = lua_pcall(lua(),0,0,0); //backup___Dima
+		int errFuncId = CScriptDebugger::GetDebugger()->PrepareLua(lua());
+		int	l_iErrorCode = lua_pcall(lua(),0,0,errFuncId); //new_Andy
+		CScriptDebugger::GetDebugger()->UnPrepareLua(lua(),errFuncId);
 		if (l_iErrorCode) {
+
 #ifdef DEBUG
 			print_output(lua(),caScriptName,l_iErrorCode);
 			print_error	(lua(),l_iErrorCode);
@@ -241,7 +248,7 @@ bool CScriptStorage::do_file	(LPCSTR caScriptName, LPCSTR caNameSpaceName, bool 
 	else
 		lua_insert	(lua(),-4);
 
-	VERIFY			(lua_gettop(lua()) == start);
+//	VERIFY			(lua_gettop(lua()) == start);
 	return			(true);
 }
 
@@ -295,7 +302,7 @@ bool CScriptStorage::load_file_into_namespace(LPCSTR caScriptName, LPCSTR caName
 	}
 	copy_globals	();
 	if (!do_file(caScriptName,caNamespaceName,bCall)) {
-		VERIFY		(lua_gettop(lua()) == start);
+		lua_settop	(lua(),start);
 		return		(false);
 	}
 	set_namespace	();
