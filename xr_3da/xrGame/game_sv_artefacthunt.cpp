@@ -143,6 +143,7 @@ void	game_sv_ArtefactHunt::LoadTeams			()
 	LoadTeamData("artefacthunt_team2");
 };
 
+/*
 bool	game_sv_ArtefactHunt::IsBuyableItem				(CSE_Abstract* pItem)
 {
 	if (!pItem) return false;
@@ -186,7 +187,7 @@ void	game_sv_ArtefactHunt::RemoveItemFromActor		(CSE_Abstract* pItem)
 	u_EventGen			(P,GE_DESTROY,pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 };
-*/
+
 BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 {
 	CSE_ALifeItemWeapon* pWeapon = dynamic_cast<CSE_ALifeItemWeapon*> (pItem);
@@ -304,6 +305,15 @@ BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 			};
 			return TRUE;
 		};
+
+		// Actor touches something
+		CSE_ALifeItemWeapon*	W			=	dynamic_cast<CSE_ALifeItemWeapon*> (e_what);
+		if (W) 
+		{
+			//---------------------------------------------------------------
+			if (IsBuyableItem(e_what->s_name)) return TRUE;
+			//---------------------------------------------------------------
+		}
 	}
 	return inherited::OnTouch(eid_who, eid_what);
 };

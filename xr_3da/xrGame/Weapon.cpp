@@ -455,12 +455,9 @@ void CWeapon::net_Import	(NET_Packet& P)
 	u8 NewAddonState;
 //	P.r_u8					(m_flagsAddOnState);
 	P.r_u8					(NewAddonState);
-///	if (m_flagsAddOnState != NewAddonState)
-	{
-		m_flagsAddOnState = NewAddonState;
-		UpdateAddonsVisibility();
-//		InitAddons();
-	};
+
+	m_flagsAddOnState = NewAddonState;
+	UpdateAddonsVisibility();
 
 	u8 ammoType, wstate;
 	P.r_u8					(ammoType);
@@ -513,6 +510,21 @@ void CWeapon::net_Import	(NET_Packet& P)
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 	
 }
+
+void CWeapon::OnEvent				(NET_Packet& P, u16 type) 
+{
+	inherited::OnEvent(P,type);
+
+	switch (type)
+	{
+	case GE_ADDON_CHANGE:
+		{
+			P.r_u8					(m_flagsAddOnState);
+			InitAddons();
+			UpdateAddonsVisibility();
+		}break;
+	}
+};
 
 void CWeapon::shedule_Update	(u32 dT)
 {

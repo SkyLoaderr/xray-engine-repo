@@ -908,7 +908,7 @@ void CUIInventoryWnd::Show()
 	InitInventory();
 	inherited::Show();
 
-	if (OnClient())
+	if (Game().type != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
@@ -931,7 +931,7 @@ void CUIInventoryWnd::Hide()
 	}
 	inherited::Hide();
 
-	if (OnClient())
+	if (Game().type != GAME_SINGLE)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game_sv_base.h"
+#include "inventory_space.h"
 
 class	game_sv_Deathmatch			: public game_sv_GameState
 {
@@ -105,6 +106,8 @@ protected:
 	void							KillPlayer				(u32 id_who);
 
 	game_sv_Deathmatch::TeamStruct*	GetTeamData				(u8 Team);
+
+	virtual	void					CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete);
 public:
 
 	virtual		void				Create					(LPSTR &options);

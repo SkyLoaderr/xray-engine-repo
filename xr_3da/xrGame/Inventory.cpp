@@ -231,6 +231,10 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 {
 	VERIFY(pIItem);
 	//Msg("put item %s in inventory slot %d", *pIItem->cName(), pIItem->GetSlot());
+	if (Game().type != GAME_SINGLE)
+	{
+		bNotActivate = true;
+	}
 
 	if(!m_bSlotsUseful)
 	{

@@ -24,6 +24,7 @@
 using namespace InventoryUtilities;
 
 #include "../InfoPortion.h"
+#include "../game_cl_base.h"
 
 //const int	BELT_SLOT		= 5;
 //const int	MP_SLOTS_NUM	= 8;
@@ -890,11 +891,31 @@ void CUIBuyWeaponWnd::Show()
 { 
 	InitInventory();
 	inherited::Show();
+
+	if (Game().type != GAME_SINGLE)
+	{
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor) return;
+
+		NET_Packet	P;
+		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_OPEN, pActor->ID());
+		pActor->u_EventSend(P);
+	}
 }
 
 void CUIBuyWeaponWnd::Hide()
 {
 	inherited::Hide();
+
+	if (Game().type != GAME_SINGLE)
+	{
+		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+		if(!pActor) return;
+
+		NET_Packet	P;
+		pActor->u_EventGen(P, GEG_PLAYER_INVENTORYMENU_CLOSE, pActor->ID());
+		pActor->u_EventSend(P);
+	}
 }
 
 

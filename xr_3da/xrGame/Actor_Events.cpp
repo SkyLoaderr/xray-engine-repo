@@ -127,6 +127,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 	case GEG_PLAYER_ITEM2SLOT:
 	case GEG_PLAYER_ITEM2BELT:
 	case GEG_PLAYER_ITEM2RUCK:
+	case GEG_PLAYER_ITEMDROP:
 		{
 			P.r_u16		(id);
 			CObject* O	= Level().Objects.net_Find	(id);
@@ -144,12 +145,21 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				}break;
 			}
 		}break;
+	case GEG_PLAYER_BUYMENU_OPEN:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
 		{
 			if (OnServer())
 			{
+				u32 InventorySlot = inventory().GetActiveSlot();
+				if( InventorySlot != NO_ACTIVE_SLOT && InventorySlot <= PDA_SLOT &&
+					inventory().m_slots[InventorySlot].m_pIItem)
+				{
+					inventory().SetPrevActiveSlot(InventorySlot);
+					inventory().Activate(NO_ACTIVE_SLOT);
+				}
 			};
 		}break;
+	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_CLOSE:
 		{
 			if (OnServer())

@@ -5,6 +5,7 @@
 #include "ui\UIBuyWeaponWnd.h"
 #include "level.h"
 #include "xrserver.h"
+#include "Inventory.h"
 
 int		SkinID = -1;
 u32		g_dwMaxCorpses = 10;
@@ -199,6 +200,9 @@ BOOL	game_sv_Deathmatch::OnTouch			(u16 eid_who, u16 eid_what)
 			return TRUE;
 		};
 
+		//---------------------------------------------------------------
+		if (IsBuyableItem(e_what->s_name)) return TRUE;
+		//---------------------------------------------------------------
 	};
 	// We don't know what the hell is it, so disallow ownership just for safety 
 	return FALSE;
@@ -563,6 +567,56 @@ bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
 	return false;
 };
 
+void	game_sv_Deathmatch::CheckItem		(game_PlayerState*	ps, PIItem pItem, xr_vector<s16> *pItemsDesired, xr_vector<u16> *pItemsToDelete)
+{
+	if (!pItem || !pItemsDesired || !pItemsToDelete) return;
+
+//	CSE_Abstract* pItem = Level().Server->game->get_entity_from_eid(*I);
+//	R_ASSERT(pItem);
+	WeaponDataStruct* pWpnS = NULL;
+
+	TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
+	TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), *(pItem->cNameSect()));
+	if (pWpnI == WpnList.end() || !((*pWpnI) == *(pItem->cNameSect()))) return;
+	pWpnS = &(*pWpnI);
+	//-------------------------------------------
+	bool	found = false;
+	for (u32 it = 0; it < pItemsDesired->size(); it++)
+	{
+		s16 ItemID = (*pItemsDesired)[it];
+		if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
+
+		found = true;
+		pItemsDesired->erase(pItemsDesired->begin()+it);
+		//----- Check for Addon Changes ---------------------
+		CWeapon		*pWeapon	=	dynamic_cast<CWeapon*>(pItem);
+		if (pWeapon)
+		{
+			u8 OldAddons  = pWeapon->GetAddonsState();
+			u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
+			if (OldAddons != NewAddons)
+			{
+				CSE_ALifeItemWeapon* pSWeapon = dynamic_cast<CSE_ALifeItemWeapon*>(Level().Server->game->get_entity_from_eid(pWeapon->ID()));
+				if (pSWeapon)
+				{
+					pSWeapon->m_addon_flags.zero();
+					pSWeapon->m_addon_flags.set(NewAddons, TRUE);
+				}
+
+				NET_Packet	P;
+				u_EventGen(P, GE_ADDON_CHANGE, pWeapon->ID());
+				P.w_u8(NewAddons);
+				u_EventSend(P);
+			}
+		};
+		//---------------------------------------------------
+		break;
+	};
+	if (found) return;
+	pItemsToDelete->push_back(pItem->ID());
+};
+
+
 void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
@@ -582,63 +636,67 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	};
 
 	CSE_ALifeCreatureActor*		e_Actor	= dynamic_cast<CSE_ALifeCreatureActor*>(Level().Server->game->get_entity_from_eid	(ps->GameID));
+/*	
 	if (e_Actor)
 	{
 		//-------------------------------------------------------------------------
-		xr_vector<CSE_Abstract*>				ItemsToDelete;
+		xr_vector<u16>				ItemsToDelete;
 
 		xr_vector<u16>::const_iterator	I = e_Actor->children.begin	();
 		xr_vector<u16>::const_iterator	E = e_Actor->children.end		();
 		for ( ; I != E; ++I) 
 		{
-			CSE_Abstract* pItem = Level().Server->game->get_entity_from_eid(*I);
-			R_ASSERT(pItem);
-			WeaponDataStruct* pWpnS = NULL;
-
-			TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
-			TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), pItem->s_name);
-			if (pWpnI == WpnList.end() || !((*pWpnI) == pItem->s_name)) continue;
-			pWpnS = &(*pWpnI);
-			//-------------------------------------------
-			bool	found = false;
-			for (u32 it = 0; it < ItemsDesired.size(); it++)
-			{
-				s16 ItemID = ItemsDesired[it];
-				if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
-
-				found = true;
-				ItemsDesired.erase(ItemsDesired.begin()+it);
-				//----- Check for Addon Changes ---------------------
-				CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(pItem);
-				if (pWeapon)
-				{
-					u8 OldAddons  = pWeapon->m_addon_flags.get();
-					u8 NewAddons  = u8(ItemID&0x00ff)>>0x05;
-					if (OldAddons != NewAddons)
-					{
-//						NET_Packet	P;
-//						u_EventGen(P, GE_ADDON_CHANGE, pWeapon->ID);
-//						u_EventSend(P);
-					}
-				};
-				//---------------------------------------------------
-				break;
-			};
-			if (found) continue;
-			ItemsToDelete.push_back(pItem);
+			PIItem pItem = dynamic_cast<PIItem> (Level().Objects.net_Find(*I));
+			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
 		};
 		//-------------------------------------------------------------
-		xr_vector<CSE_Abstract*>::iterator	IDI = ItemsToDelete.begin();
-		xr_vector<CSE_Abstract*>::iterator	EDI = ItemsToDelete.end();
+		xr_vector<u16>::iterator	IDI = ItemsToDelete.begin();
+		xr_vector<u16>::iterator	EDI = ItemsToDelete.end();
 		for ( ; IDI != EDI; ++IDI) 
 		{
-			CSE_Abstract* pItem = *IDI;
-
-			RemoveItemFromActor	(pItem);
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,*IDI);
+			Level().Send(P,net_flags(TRUE,TRUE));
 		};
 		//-------------------------------------------------------------
 	}
+*/
+	CActor* pActor = dynamic_cast<CActor*>(Level().Objects.net_Find	(ps->GameID));
+	if (pActor)
+	{
+		PIItem pItem = NULL;
+		xr_vector<u16>				ItemsToDelete;
 
+		//проверяем пояс
+		TIItemList::const_iterator	IBelt = pActor->inventory().m_belt.begin();
+		TIItemList::const_iterator	EBelt = pActor->inventory().m_belt.end();
+
+		for ( ; IBelt != EBelt; ++IBelt) 
+		{
+			pItem = (*IBelt);
+			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
+		};
+
+		//проверяем слоты
+		TISlotArr::const_iterator	ISlot = pActor->inventory().m_slots.begin();
+		TISlotArr::const_iterator	ESlot = pActor->inventory().m_slots.end();
+
+		for ( ; ISlot != ESlot; ++ISlot) 
+		{
+			pItem = (*ISlot).m_pIItem;
+			CheckItem(ps, pItem, &ItemsDesired, &ItemsToDelete);
+		};
+		//-------------------------------------------------------------
+		xr_vector<u16>::iterator	IDI = ItemsToDelete.begin();
+		xr_vector<u16>::iterator	EDI = ItemsToDelete.end();
+		for ( ; IDI != EDI; ++IDI) 
+		{
+			NET_Packet			P;
+			u_EventGen			(P,GE_DESTROY,*IDI);
+			Level().Send(P,net_flags(TRUE,TRUE));
+		};
+		//-------------------------------------------------------------
+	};
 	//-------------------------------------------------------------
 	ps->pItemList.clear();
 	for (u32 it = 0; it<ItemsDesired.size(); it++)
@@ -1118,21 +1176,7 @@ void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
 	{
 	};
 	//-------------------------------------------------------------
-	
 	NET_Packet			P;
-	/*
-	u_EventGen			(P,GE_OWNERSHIP_REJECT,pItem->ID_Parent);
-	P.w_u16				(pItem->ID);
-	Level().Send(P,net_flags(TRUE,TRUE));
-	
-	xr_vector<u16>::const_iterator	I = pItem->children.begin	();
-	xr_vector<u16>::const_iterator	E = pItem->children.end		();
-	for ( ; I != E; ++I) 
-	{
-		u_EventGen			(P,GE_DESTROY,*I);
-		Level().Send(P,net_flags(TRUE,TRUE));
-	}
-	*/
 	u_EventGen			(P,GE_DESTROY,pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 };

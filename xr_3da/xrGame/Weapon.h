@@ -55,7 +55,7 @@ public:
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_B_Independent	();
 	virtual void			OnH_A_Independent	();
-	virtual void			OnEvent				(NET_Packet& P, u16 type) {inherited::OnEvent(P,type);}
+	virtual void			OnEvent				(NET_Packet& P, u16 type);// {inherited::OnEvent(P,type);}
 
 	virtual	void			Hit					(float P, Fvector &dir,	
 												CObject* who, s16 element,
@@ -184,6 +184,7 @@ public:
 	virtual const ref_str& GetScopeName				()		{return  m_sScopeName;}
 	virtual const ref_str& GetSilencerName			()		{return m_sSilencerName;}
 
+	virtual	u8		GetAddonsState					()		const		{return m_flagsAddOnState;};
 protected:
 	//состояние подключенных аддонов
 	u8 m_flagsAddOnState;

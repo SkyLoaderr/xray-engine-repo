@@ -58,6 +58,8 @@ protected:
 	//-----------------------------------------------------------------------------
 	s16					m_iCurrentPlayersMoney;
 
+	virtual	void		CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems);
+
 public:
 						CUIGameDM			(CUI* parent);
 	virtual 			~CUIGameDM			();

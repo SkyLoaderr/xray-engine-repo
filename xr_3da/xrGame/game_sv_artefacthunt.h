@@ -59,8 +59,8 @@ public:
 	virtual		void				OnObjectEnterTeamBase	(u16 id, u16 id_zone);
 	virtual		void				OnObjectLeaveTeamBase	(u16 id, u16 id_zone);
 	
-	bool							IsBuyableItem			(CSE_Abstract* pItem);
-	BOOL							CheckUpgrades			(CSE_Abstract* pItem, u8 IItem);	
+///	bool							IsBuyableItem			(CSE_Abstract* pItem);
+//	BOOL							CheckUpgrades			(CSE_Abstract* pItem, u8 IItem);	
 //	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	void							OnArtefactOnBase		(u32 id_who);
 
