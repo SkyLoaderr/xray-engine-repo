@@ -139,13 +139,13 @@ void game_cl_Deathmatch::OnSkinMenu_Ok			()
 	l_pPlayer->u_EventGen		(P, GE_GAME_EVENT, l_pPlayer->ID()	);
 	P.w_u16(GAME_EVENT_PLAYER_CHANGE_SKIN);
 
-	P.w_u8			(pCurSkinMenu->GetActiveIndex());
+	P.w_u8			((u8)pCurSkinMenu->GetActiveIndex());
 	l_pPlayer->u_EventSend		(P);
 	//-----------------------------------------------------------------
 	m_bSkinSelected = TRUE;
 
 	if (pCurBuyMenu) 
-		pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());
+		pCurBuyMenu->SetSkin((u8)pCurSkinMenu->GetActiveIndex());
 };
 
 BOOL game_cl_Deathmatch::CanCallBuyMenu			()
