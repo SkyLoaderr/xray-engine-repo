@@ -82,7 +82,8 @@ BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 			fatal		("Pclass D3DXPC_STRUCT unsupported");
 			break;
 		case D3DXPC_OBJECT:
-			Log			("***object***");
+			Log			("***object***:",name);
+			bSkip		= TRUE;
 			break;
 		default:
 			bSkip		= TRUE;
