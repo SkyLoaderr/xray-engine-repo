@@ -7,6 +7,8 @@
 #include "blender_deffer_model.h"
 #include "blender_deffer_aref.h"
 #include "blender_screen_set.h"
+#include "blender_editor_wire.h"
+#include "blender_editor_selection.h"
 #include "blender_tree.h"
 #include "blender_detail_still.h"
 #include "blender_particle.h"
@@ -22,8 +24,8 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_VERT_AREF:		return xr_new<CBlender_deffer_aref>		();
 	case B_SCREEN_SET:		return xr_new<CBlender_Screen_SET>		();	
 	case B_SCREEN_GRAY:		return 0;
-	case B_EDITOR_WIRE:		return 0;
-	case B_EDITOR_SEL:		return 0;
+	case B_EDITOR_WIRE:		return xr_new<CBlender_Editor_Wire>		();	
+	case B_EDITOR_SEL:		return xr_new<CBlender_Editor_Selection>();
 	case B_LIGHT:			return 0;
 	case B_LmBmmD:			return xr_new<CBlender_BmmD>			();	
 	case B_LaEmB:			return 0;

@@ -487,6 +487,18 @@
 				RelativePath="blender_deffer_model.h">
 			</File>
 			<File
+				RelativePath=".\Blender_Editor_Selection.cpp">
+			</File>
+			<File
+				RelativePath=".\Blender_Editor_Selection.h">
+			</File>
+			<File
+				RelativePath=".\Blender_Editor_Wire.cpp">
+			</File>
+			<File
+				RelativePath=".\Blender_Editor_Wire.h">
+			</File>
+			<File
 				RelativePath="blender_light_direct.cpp">
 			</File>
 			<File
