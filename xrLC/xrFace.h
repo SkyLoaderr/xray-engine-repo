@@ -105,7 +105,11 @@ public:
 
 	WORD					dwMaterial;		// index of material
 
-	void*					pDeflector;		// does the face has LM-UV map?
+	union
+	{
+		void*				pDeflector;		// does the face has LM-UV map?
+		DWORD				dwMaterialGame;	// unique-id of game material (must persist up to game-CForm saving)
+	};
 	svector<CLightmap*,4>	lmap_layers;
 
 	union			{
