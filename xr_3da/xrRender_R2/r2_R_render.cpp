@@ -235,6 +235,7 @@ void CRender::Render		()
 		render_main								();
 		r_dsgraph_render_graph					(1);			// normal level, secondary priority
 		r_dsgraph_render_sorted					();				// strict-sorted geoms
+		g_pGamePersistent->Environment.RenderLast();			// rain/thunder-bolts
 	}
 
 	// PortalTraverser.dbg_draw				();
