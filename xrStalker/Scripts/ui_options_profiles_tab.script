@@ -32,7 +32,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 					   y = self.top_align_y,
 					   width = 50,
 					   height = self.btn_rect.height}
-	edit_rect.x = self.main_frame.width - edit_rect.width - self.indent
+	edit_rect.x = self.main_rect.width - edit_rect.width - self.indent
 	local lst_rect  = {x = info_rect.x,
 					   y = info_rect.y + info_rect.height + self.indent,
 					   width = 350,
