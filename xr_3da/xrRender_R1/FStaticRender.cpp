@@ -72,9 +72,9 @@ void					CRender::create					()
 }
 void					CRender::destroy				()
 {
+	PSLibrary.OnDestroy			();
 	xr_delete					(L_Dynamic);
 	xr_delete					(Models);
-	PSLibrary.OnDestroy			();
 }
 void					CRender::reset_begin			()
 {
