@@ -340,8 +340,11 @@ public:
 		bool	active;
 		Fvector pos;
 
-		s_dbg() {active = false;}
+		s_dbg() {active = true;}
 		void set(const Fvector &f) {pos = f; active = true;}
+
+		DEFINE_MAP(u32,TTime,TNODES_MAP,TNODES_MAP_IT);
+		TNODES_MAP nodes;
 	} dbg_info;
 
 	

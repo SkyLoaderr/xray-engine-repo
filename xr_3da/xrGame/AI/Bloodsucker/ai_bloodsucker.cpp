@@ -5,6 +5,9 @@
 
 #include "..\\..\\hudmanager.h"
 
+//#define AI_SQUAD_ENABLE
+
+
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
@@ -273,8 +276,11 @@ void CAI_Bloodsucker::StateSelector()
 
 	EMotionAnim anim = MotionMan.Seq_CurAnim();
 	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
-	
+
+#ifdef AI_SQUAD_ENABLE
 	ProcessSquad();
+#endif
+
 	SetState(pState);
 }
 

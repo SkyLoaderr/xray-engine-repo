@@ -13,7 +13,8 @@ void CAI_Biting::Think()
 {
 	if (!g_Alive()) return;
 
-//	if (CDetailPathManager::completed(Position())) {
+
+	//	if (CDetailPathManager::completed(Position())) {
 //		set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation*>(Level().CurrentEntity())->level_vertex_id());
 //		set_dest_position(Level().CurrentEntity()->Position());
 //		set_desirable_speed(1.f);
