@@ -236,9 +236,9 @@ void TraderScriptCallBack(CBlend* B)
 
 bool CAI_Trader::bfScriptAnimation()
 {
-	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
+	if (GetScriptControl() && GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bCompleted && strlen(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 		CKinematics			&tVisualObject = *(PKinematics(Visual()));
-		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
+		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
 			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,TraderScriptCallBack,this);
 		return		(true);
