@@ -327,6 +327,8 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"rs_compress_lmaps",	&psDeviceFlags,rsCompressLMAPs);
 	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,rsOcclusion);
 	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,rsStatistic);
+	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,rsPostprocess);
+	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,rsRefresh60hz);
 	
 	CMD4(CCC_Float,		"rs_geometry_lod",		&QualityControl.fGeometryLOD, 0,2);
 	CMD4(CCC_Float,		"rs_min_fps",			&QualityControl.fMinFPS, 0, 512	);

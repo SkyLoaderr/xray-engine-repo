@@ -240,18 +240,20 @@ u32 CHW::selectGPU ()
 
 u32 CHW::selectRefresh(u32 dwWidth, u32 dwHeight)
 {
-	// return D3DPRESENT_RATE_DEFAULT;
-
-	u32 selected	= D3DPRESENT_RATE_DEFAULT;
-	u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
-	for (u32 I=0; I<count; I++)
+	if (psDeviceFlags&rsRefresh60hz)	return D3DPRESENT_RATE_DEFAULT;
+	else 
 	{
-		D3DDISPLAYMODE	Mode;
-		pD3D->EnumAdapterModes(D3DADAPTER_DEFAULT,I,&Mode);
-		if (Mode.Width==dwWidth && Mode.Height==dwHeight)
+		u32 selected	= D3DPRESENT_RATE_DEFAULT;
+		u32 count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
+		for (u32 I=0; I<count; I++)
 		{
-			if (Mode.RefreshRate>selected) selected = Mode.RefreshRate;
+			D3DDISPLAYMODE	Mode;
+			pD3D->EnumAdapterModes(D3DADAPTER_DEFAULT,I,&Mode);
+			if (Mode.Width==dwWidth && Mode.Height==dwHeight)
+			{
+				if (Mode.RefreshRate>selected) selected = Mode.RefreshRate;
+			}
 		}
+		return selected;
 	}
-	return selected;
 }

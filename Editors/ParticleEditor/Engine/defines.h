@@ -54,7 +54,7 @@ ENGINE_API extern float psSoundRolloff			;
 ENGINE_API extern float psSoundDoppler			;
 ENGINE_API extern float psSoundOcclusionScale	;
 ENGINE_API extern float psSoundCull				;
-ENGINE_API extern u32 psSoundFlags			;
+ENGINE_API extern u32	psSoundFlags			;
 ENGINE_API extern int	psSoundRelaxTime		;
 
 // textures
@@ -63,7 +63,7 @@ enum {
 	TF_forcedword		= u32(-1)
 };
 ENGINE_API extern	int		psTextureLOD		;
-ENGINE_API extern	u32	psTextureFlags		;
+ENGINE_API extern	u32		psTextureFlags		;
 
 // video
 enum {
@@ -80,13 +80,15 @@ enum {
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
 	rsDetails			= (1ul<<12ul),
-	mtSound				= (1ul<<16ul),
-	mtInput				= (1ul<<17ul),
+	rsPostprocess		= (1ul<<13ul),
+	rsRefresh60hz		= (1ul<<14ul),
+	mtSound				= (1ul<<15ul),
+	mtInput				= (1ul<<16ul)
 // 20-32 bit - defined in Editor
 };
-ENGINE_API extern	u32	psCurrentMode		;
-ENGINE_API extern	u32	psCurrentBPP		;
-ENGINE_API extern	u32	psDeviceFlags		;
-ENGINE_API extern	string64 psSystemUserName;
+ENGINE_API extern	u32			psCurrentMode		;
+ENGINE_API extern	u32			psCurrentBPP		;
+ENGINE_API extern	u32			psDeviceFlags		;
+ENGINE_API extern	string64	psSystemUserName	;
 
 #endif

@@ -210,7 +210,7 @@ void CRenderTarget::End		()
 		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
 		*/
 	} else {
-		if (param_gray>0.001f) 
+		if ((psDeviceFlags&rsPostprocess) && (param_gray>0.001f)) 
 		{
 			// Draw GRAY
 			Device.Shader.set_Shader		(pShaderGray);
@@ -234,5 +234,5 @@ void CRenderTarget::End		()
 		}
 	}
 
-	if (param_noise>0.01f)	e_render_noise	();
+	if ((psDeviceFlags&rsPostprocess) && (param_noise>0.01f))	e_render_noise	();
 }
