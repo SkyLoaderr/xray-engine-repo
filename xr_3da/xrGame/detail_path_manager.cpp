@@ -78,10 +78,12 @@ void CDetailPathManager::build_detail_path(const xr_vector<u32> &level_path)
 
 void CDetailPathManager::build_smooth_path		(const xr_vector<u32> &level_path)
 {
+	build_criteria_path		(level_path);
 }
 
 void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path)
 {
+	build_criteria_path		(level_path);
 }
 
 void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path)

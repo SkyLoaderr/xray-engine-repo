@@ -103,7 +103,7 @@ void CMovementManager::build_path	()
 //	m_tPathType = tPathType;
 }
 
-//#define NO_PHYSICS_IN_AI_MOVE
+#define NO_PHYSICS_IN_AI_MOVE
 
 void CMovementManager::move_along_path	(CPHMovementControl *movement_control, float time_delta)
 {
