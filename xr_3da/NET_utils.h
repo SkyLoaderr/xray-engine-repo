@@ -89,23 +89,23 @@ public:
 		w_dir	(C);
 		w_float (mag);
 	}
-	IC void w_string	( LPCSTR S )
+	IC void w_string			( LPCSTR S )
 	{
 		w	(S,strlen(S)+1);
 	}
-	IC void w_matrix	(Fmatrix& M)
+	IC void w_matrix			(Fmatrix& M)
 	{
 		w_vec3	(M.i);
 		w_vec3	(M.j);
 		w_vec3	(M.k);
 		w_vec3	(M.c);
 	}
-	IC void	w_chunk_open8	(u32& position)
+	IC void	w_chunk_open8		(u32& position)
 	{
 		position			= w_tell	();
 		w_u8				(0);
 	}
-	IC void w_chunk_close8	(u32 position)
+	IC void w_chunk_close8		(u32 position)
 	{
 		u32 size			= u32		(w_tell()-position)-sizeof(u8);
 		R_ASSERT			(size<256	);
@@ -113,7 +113,7 @@ public:
 	}
 	
 	// reading
-	IC u32	r_begin			( u16& type	)	// returns time of receiving
+	IC u32		r_begin			( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
 		r_u16		(type);
@@ -130,7 +130,7 @@ public:
 	{
 		return r_pos>=B.count;
 	}
-	IC u32	r_elapsed		()
+	IC u32	r_elapsed			()
 	{
 		return B.count-r_pos;
 	}

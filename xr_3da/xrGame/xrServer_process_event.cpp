@@ -8,12 +8,17 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	u16			destination;
 	u32			MODE			= net_flags(TRUE,TRUE);
 
-	P.r_u32		(timestamp);
-	P.r_u16		(type);
+	// replace timestamp with server-unique-time (note: direct message correction)
+	timestamp	= Device.TimerAsync	();
+	CopyMemory	(&P.B.data[P.r_pos], &timestamp, 4);
+
+	// read generic info
+	P.r_u32		(timestamp	);
+	P.r_u16		(type		);
 	P.r_u16		(destination);
 
 	xrServerEntity*	receiver	= ID_to_entity	(destination);
-	if (receiver)	receiver->OnEvent(P,type,timestamp,sender);
+	if (receiver)	receiver->OnEvent			(P,type,timestamp,sender);
 
 	switch		(type)
 	{
