@@ -248,6 +248,7 @@ ShaderElement*		CBlender_Compile::_lua_Compile	(LPCSTR namesp, LPCSTR name)
 	// Compile
 	LPCSTR				t_0		= L_textures[0];
 	LPCSTR				t_1		= (L_textures.size() > 1) ? L_textures[1] : "null";
+	LPCSTR				t_d		= detail_texture;
 	lua_State*			LSVM	= Device.Resources->LSVM; 
 	object				shader	= get_globals(LSVM)[namesp];
 	functor<void>		element	= object_cast<functor<void> >(shader[name]);
