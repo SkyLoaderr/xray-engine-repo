@@ -491,10 +491,12 @@ void CRender::OnDeviceCreate()
 	level_Load				();
 	gm_Nearer				= FALSE;
 	rmNormal				();
+	L_Dynamic.Initialize	();
 }
 void CRender::OnDeviceDestroy()
 {
 //	REQ_DESTROY				();
 	level_Unload			();
 	Target.OnDeviceDestroy	();
+	L_Dynamic.Destroy		();
 }
