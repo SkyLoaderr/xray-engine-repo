@@ -43,7 +43,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		for (DWORD i=0; i<vecJunctions.size(); i++)
 		{
 			record&	rec = vecJunctions[i];
-			if ((rec.E1==vE1) && (rec.E2==vE2) && (rec.T==vTEST)) return;
+			if (rec.T==vTEST) return;
 		}
 
 		// register
