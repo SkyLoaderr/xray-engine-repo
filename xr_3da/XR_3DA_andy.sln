@@ -20,7 +20,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrGame", "xrGame\xrGame.vcp
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97} = {94A1C366-3D19-48E6-8170-4ADC2E70DF97}
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF98} = {94A1C366-3D19-48E6-8170-4ADC2E70DF98}
 		{435BAC9A-B225-457D-AB40-C9BD0CC8838C} = {435BAC9A-B225-457D-AB40-C9BD0CC8838C}
-		{2578C6D8-660D-48AE-9322-7422F8664F06} = {2578C6D8-660D-48AE-9322-7422F8664F06}
 		{CA0649DD-D089-423A-981C-46B57A884EB9} = {CA0649DD-D089-423A-981C-46B57A884EB9}
 		{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450} = {F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}
 		{A19B1DF2-82EC-4364-8BDF-85D13A1C89B5} = {A19B1DF2-82EC-4364-8BDF-85D13A1C89B5}
@@ -116,9 +115,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLauncher", "..\xrLauncher
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrStalker", "X:\GAMEDATA\xrstalker.vcproj", "{90F938A1-176A-4379-A3D1-DD516E8A6DC1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 21
+		SccNumberOfProjects = 22
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -202,6 +205,10 @@ Global
 		SccProjectUniqueName20 = ..\\xrUpdate\\xrUpdate.vcproj
 		SccProjectName20 = \u0022$/xrUpdate\u0022,\u0020QUYAAAAA
 		SccLocalPath20 = ..\\xrUpdate
+		CanCheckoutShared = true
+		SccProjectUniqueName21 = X:\\GAMEDATA\\xrstalker.vcproj
+		SccProjectName21 = \u0022$/xrStalker\u0022,\u0020JSYAAAAA
+		SccLocalPath21 = X:\\GAMEDATA
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -330,6 +337,12 @@ Global
 		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Mixed.Build.0 = Release|Win32
 		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Release.ActiveCfg = Release|Win32
 		{1C86CAB0-0F44-4D47-B8E1-333492359CCC}.Release.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.ActiveCfg = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Debug.Build.0 = Debug|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Mixed.Build.0 = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.ActiveCfg = Release|Win32
+		{90F938A1-176A-4379-A3D1-DD516E8A6DC1}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		..\..\XR_3DA.vsd = ..\..\XR_3DA.vsd
