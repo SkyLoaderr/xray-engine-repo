@@ -14,31 +14,29 @@
 
 // add rapick info to list
 namespace RAPID {
-	void XRCollide::add_bboxcollide(int id)
+	void XRCollide::add_bboxcollide(const bboxpick_info& bb_inf)
 	{
-		bbox_collide bb_inf;
-		bb_inf.id = id;
 		BBoxContact.push_back(bb_inf);
 	}
-	
+
 	void XRCollide::bbox_contact(const box *b, const bbox *bb)
 	{
 		// the vertices of the tris in b2 are in model1 C.S.  The vertices of
 		// the other triangles are in model2 CS.  Use XR_mR, XR_mT, and XR_ms
 		// to transform into model2 CS.
-		Fvector p[3];
+        bboxpick_info bb_inf;
 		for(int i=0; i<b->num_tris; i++){
-			int id = b->tri_index[i];
+			bb_inf.id = b->tri_index[i];
 			if(bbox_flags&BBOX_TRITEST) {
-				XR_mR.sMxVpV(p[0], XR_ms, *(model1->tris[id].verts[0]), XR_mT);
-				XR_mR.sMxVpV(p[1], XR_ms, *(model1->tris[id].verts[1]), XR_mT);
-				XR_mR.sMxVpV(p[2], XR_ms, *(model1->tris[id].verts[2]), XR_mT);
-				
-				Fvector*	PTR[3] = { p+0, p+1, p+2 };
+				XR_mR.sMxVpV(bb_inf.p[0], XR_ms, *(model1->tris[bb_inf.id].verts[0]), XR_mT);
+				XR_mR.sMxVpV(bb_inf.p[1], XR_ms, *(model1->tris[bb_inf.id].verts[1]), XR_mT);
+				XR_mR.sMxVpV(bb_inf.p[2], XR_ms, *(model1->tris[bb_inf.id].verts[2]), XR_mT);
+
+				Fvector*	PTR[3] = { bb_inf.p+0, bb_inf.p+1, bb_inf.p+2 };
 				if (Intersect_BBoxTri(*bb,PTR))
-					add_bboxcollide(id);
+					add_bboxcollide(bb_inf);
 			}else
-				add_bboxcollide(id);
+				add_bboxcollide(bb_inf);
 		}
 	}
 	

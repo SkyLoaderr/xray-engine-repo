@@ -73,9 +73,10 @@ namespace RAPID {
 		int id2;
 	};
 	
-	struct bbox_collide
+	struct bboxpick_info
 	{
 		int id;
+		Fvector p[3];
 	};
 	
 	struct raypick_info
@@ -119,10 +120,10 @@ namespace RAPID {
 		Fvector		rmodel_C,rmodel_D;
 		float		rmodel_range,rmodel_range_sq;
 		Fmatrix*	rmodel_L2W;
-		
+
 		const Model *model1;
 		const Model *model2;
-		
+
 		int			tri_contact		(Fvector* P, Fvector** Q);
 		int         obb_disjoint	(const Fmatrix33& B, const Fvector& T, const Fvector& a, const Fvector& b);
 		// raypick
@@ -134,7 +135,7 @@ namespace RAPID {
 		void		tri_contact     (const box *b1, const box *b2);
 		void        collide_recursive(const box *b1, const box *b2, const Fmatrix33& R, const Fvector& T, float s);
 		// collide bbox
-		void		add_bboxcollide	(int id);
+		void		add_bboxcollide	(const bboxpick_info& bb_inf);
 		void        bbox_contact	(const box *b, const bbox *bb);
 		void		bbox_recursive	(const box *b, const bbox *bb, const Fmatrix33& R, const Fvector& T, float s);
 	protected:
@@ -147,7 +148,7 @@ namespace RAPID {
 		// last collide info
 		CList<collision_pair>   ModelContact;
 		CList<raypick_info>     RayContact;
-		CList<bbox_collide>		BBoxContact;
+		CList<bboxpick_info>	BBoxContact;
 	public:
 		XRCollide();
 		~XRCollide();
