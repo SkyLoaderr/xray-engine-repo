@@ -372,14 +372,15 @@ void vfGenerateAllValidConfigurations(uint uiCurrentPattern, uint uiPatternCount
 		if (uiCurrentPattern < uiPatternCount - 1)
 			vfGenerateAllValidConfigurations(uiCurrentPattern + 1,uiPatternCount,uipPatternValues, uipPatternRanges, uipConfigCount);
 		else {
-			vfDualPrintF("%5d : ",*uipConfigCount);
 			++*uipConfigCount;
 			for (int j=0; j<(int)uiPatternCount; j++)
 				vfDualPrintF("%6d",uipPatternValues[j] + 1);
 			double dEval = dfEvaluation(uipPatternValues);
-			vfDualPrintF("%10.2f\n",dEval);
+			vfDualPrintF("%8.f\n",dEval);
 		}
 	}
+	if (!uiCurrentPattern)
+		vfDualPrintF("Total %d valid examples\n",*uipConfigCount);
 }
 
 void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool bShowSimpleStats, bool bShowSortedStats, bool bShowPatternStats, bool bShowValidSimpleStats)
@@ -407,22 +408,20 @@ void vfShowTestData(char *caTestDataFileName, char *caPatternDataFileName, bool 
 			vfDualPrintF("Value %d: %6.2f\n",j - uiaPatternIndexes[i] + 1,daParameters[j]);
 	}
 
-	if (bShowSimpleStats)
-		if (!bShowValidSimpleStats) {
-			vfDualPrintF("\nTest examples evaluation:\n");
-			for (int i=0; i<(int)uiTestCount; i++) {
-				vfDualPrintF("%5d : ",i + 1);
-				for (int j=0; j<(int)uiVariableCount; j++)
-					vfDualPrintF("%6d",uiaTestParameters[i][j] + 1);
-				double dEval = dfEvaluation(uiaTestParameters[i]);
-				vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
-			}
+	if (bShowSimpleStats) {
+		vfDualPrintF("\nTest examples evaluation:\n");
+		for (int i=0; i<(int)uiTestCount; i++) {
+			vfDualPrintF("%5d : ",i + 1);
+			for (int j=0; j<(int)uiVariableCount; j++)
+				vfDualPrintF("%6d",uiaTestParameters[i][j] + 1);
+			double dEval = dfEvaluation(uiaTestParameters[i]);
+			vfDualPrintF("%8.2f  -> %6.2f (%6.2f)\n",daTestResults[i],dEval,dEval - daTestResults[i]);
 		}
-		else
-			if (uiTestCount) {
-				vfDualPrintF("\nAll the valid examples evaluation:\n");
-				vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
-			}
+		if (bShowValidSimpleStats && uiTestCount) {
+			vfDualPrintF("\nAll the valid examples evaluation:\n");
+			vfGenerateAllValidConfigurations(0,uiVariableCount,uiaTestParameters[0],uiaAtomicFeatureRange);
+		}
+	}
 	
 	if (bShowSortedStats) {
 		double *daDiffs = (double *)malloc(uiTestCount*sizeof(double));

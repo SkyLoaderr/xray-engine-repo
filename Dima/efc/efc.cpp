@@ -52,7 +52,7 @@ void vfPrintHeader(bool bShowHeader)
 	memset(s,'*',sizeof(s)-1);
 	if (bShowHeader) {
 		vfDualPrintF("%s\n",s);
-		vfDualPrintF("*                    Evaluation function constructor v0.570                   *\n");
+		vfDualPrintF("*                    Evaluation function constructor v0.571                   *\n");
 		vfDualPrintF("*                       for Windows 95,98,ME,NT,2000,XP                       *\n");
 		vfDualPrintF("*                             by Dmitriy Iassenev                             *\n");
 		vfDualPrintF("*                      Copyright(C) GSC Game World 2002                       *\n");
@@ -61,7 +61,7 @@ void vfPrintHeader(bool bShowHeader)
 	}
 	else {
 		fprintf(fOutput,"%s\n",s);
-		fprintf(fOutput,"*                    Evaluation function constructor v0.570                   *\n");
+		fprintf(fOutput,"*                    Evaluation function constructor v0.571                   *\n");
 		fprintf(fOutput,"*                       for Windows 95,98,ME,NT,2000,XP                       *\n");
 		fprintf(fOutput,"*                             by Dmitriy Iassenev                             *\n");
 		fprintf(fOutput,"*                      Copyright(C) GSC Game World 2002                       *\n");
