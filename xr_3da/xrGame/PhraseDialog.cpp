@@ -54,6 +54,7 @@
 #include "script_engine.h"
 #include "ai_space.h"
 #include "gameobject.h"
+#include "ai_script_classes.h"
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -11,6 +11,7 @@
 #include "ai_space.h"
 #include "script_engine.h"
 #include "gameobject.h"
+#include "ai_script_classes.h"
 
 CPhraseDialogManager::CPhraseDialogManager	(void)
 {
