@@ -14,7 +14,7 @@ void OptimizeCFORM(CDB::CollectorPacked& CL)
 	vector<SectorFaces>	sector_faces;
 
 	// Convert to per-sector subdivisions
-	for (int it = 0; it<CL.getTS(); it++)
+	for (int it = 0; it<int(CL.getTS()); it++)
 	{
 		TRI* T = CL.getT()+it;
 		WORD S = T->sector;
@@ -23,8 +23,7 @@ void OptimizeCFORM(CDB::CollectorPacked& CL)
 	}
 
 	// Perform optimize
-	for (it=0; it<sector_faces.size(); it++)
+	for (it=0; it<int(sector_faces.size()); it++)
 	{
-
 	}
 }
