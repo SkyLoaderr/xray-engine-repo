@@ -91,7 +91,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	mmgrInitialize	(0);
 
 	BOOL bCaptureExceptions	= !(strstr(lpCmdLine,"-E") || strstr(lpCmdLine,"-e"));
-#ifndef DEBUG
+#ifdef DEBUG
 	bCaptureExceptions		= FALSE;
 #endif
 	
