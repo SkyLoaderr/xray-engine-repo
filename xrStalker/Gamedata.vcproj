@@ -609,7 +609,28 @@
 			Name="npc_profile"
 			Filter="">
 			<File
+				RelativePath=".\character_desc_dolg.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_ecolog.xml">
+			</File>
+			<File
 				RelativePath=".\character_desc_general.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_killer.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_monolit.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_soldier.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_stalker.xml">
+			</File>
+			<File
+				RelativePath=".\character_desc_svoboda.xml">
 			</File>
 			<File
 				RelativePath=".\npc_profile.xml">
@@ -636,6 +657,9 @@
 		</File>
 		<File
 			RelativePath=".\game.ltx">
+		</File>
+		<File
+			RelativePath=".\immunities.ltx">
 		</File>
 		<File
 			RelativePath=".\items.ltx">
