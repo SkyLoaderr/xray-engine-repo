@@ -1,3 +1,7 @@
 function break_dialog(first_speaker, second_speaker)
         first_speaker:stop_talk()
 end
+
+function kickass(first_speaker, second_speaker)
+	printf("BOOM")
+end

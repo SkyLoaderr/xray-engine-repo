@@ -36,7 +36,7 @@
 		<visual>string_name2</visual>
 		<rank>veteran</rank>
 		<team>clan Dolg</team>
-		<start_dialog>stalker_talk_about</start_dialog>
+		<start_dialog>dolg_talk_about</start_dialog>
 	</character>
 	<character name_id="freedom">
 		<name>Freedom</name>

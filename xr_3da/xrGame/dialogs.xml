@@ -129,6 +129,23 @@
         </phrase_list>
     </dialog>
 
+    <dialog id="dolg_talk_about">
+        <phrase_list>
+            <phrase id="0">
+                <text>Чего ты хочешь?</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>Дай мне в морду!</text>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>Палучи!</text>
+                <action>dialogs.kickass</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+
     <dialog id="barman_bar">
         <phrase_list>
             <phrase id="0">
