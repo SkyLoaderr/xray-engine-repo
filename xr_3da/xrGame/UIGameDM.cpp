@@ -25,6 +25,14 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	m_bBuyEnabled	= TRUE;
 
 	m_bSkinSelected	= FALSE;
+
+	m_bSkinSelected	= FALSE;
+
+	TimeMsgStatic.SetFont			(HUD().pFontDI);
+
+	TimeMsgDyn.SetFont				(HUD().pFontDI);
+	TimeMsgDyn.SetStyleParams		(CUITextBanner::tbsFade, 0.5);
+	TimeMsgDyn.SetTextColor			(0xffff0000);
 }
 //--------------------------------------------------------------------
 void	CUIGameDM::Init				()
@@ -124,13 +132,12 @@ void CUIGameDM::OnFrame()
 					Rest %= 60000;
 					u32 RSecs = Rest / 1000;
 					
-					HUD().pFontDI->SetColor		(0xffffffff);
-					HUD().pFontDI->Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+					TimeMsgStatic.Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 				}
 				else
 				{
-					HUD().pFontDI->SetColor		(0xffff0000);
-					HUD().pFontDI->Out			(0.f,-0.95f,"00:00:00");
+					TimeMsgDyn.Out				(0.f,-0.95f,"00:00:00");
+					TimeMsgDyn.Update			();
 				}
 			};
 		}break;

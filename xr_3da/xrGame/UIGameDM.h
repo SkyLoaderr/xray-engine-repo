@@ -10,7 +10,8 @@
 #include "ui/UIMapWnd.h"
 
 #include "ui/UIBuyWeaponWnd.h"
-#include "ui\UISkinSelector.h"
+#include "ui/UISkinSelector.h"
+#include "ui/UITextBanner.h"
 
 
 // refs 
@@ -77,6 +78,7 @@ public:
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
+	CUITextBanner		TimeMsgStatic, TimeMsgDyn;
 //	CUIBuyWeaponWnd		UIBuyWeaponWnd;
 //	CUIStatsWnd*		pUIStatsWnd;
 };

@@ -6380,6 +6380,12 @@
 					<File
 						RelativePath=".\ui\UIStatic.h">
 					</File>
+					<File
+						RelativePath=".\ui\UITextBanner.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITextBanner.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="EditBox"
