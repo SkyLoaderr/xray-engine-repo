@@ -75,6 +75,7 @@ void CBuild::Tesselate	()
 		Msg ("%d splits performed.",cnt_splits);
 	}
 
+	// Remove ZERO faces
 
 
 	g_bUnregister		= TRUE;
