@@ -207,21 +207,21 @@
     <!-------------------------------- Bald ----------------------------->
 
     <article id="zone_anomalies_bald" name="Bald" group="Zone/Anomalies">
-        <texture x="550" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="0" y="550" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_bald</text>
     </article>
 
     <!-------------------------------- Gravi ----------------------------->
 
     <article id="zone_anomalies_gravi" name="Gravi" group="Zone/Anomalies">
-        <texture x="400" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="0" y="400" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_gravi</text>
     </article>
 
     <!-------------------------------- Meat ----------------------------->
 
     <article id="zone_anomalies_meat" name="Meat" group="Zone/Anomalies">
-        <texture x="850" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="0" y="850" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_meat</text>
     </article>
 
@@ -235,7 +235,7 @@
     <!-------------------------------- Electra ----------------------------->
 
     <article id="zone_anomalies_electra" name="Electra" group="Zone/Anomalies">
-        <texture x="700" y="0" width="200" height="150">ui\ui_icon_photo</texture>
+        <texture x="0" y="700" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_electra</text>
     </article>
 
