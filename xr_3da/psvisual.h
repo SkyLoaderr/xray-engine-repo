@@ -5,7 +5,8 @@
 
 #define MAX_PARTICLES	1024
 
-class ENGINE_API CPSVisual: public FBasicVisual{
+class ENGINE_API CPSVisual: public FBasicVisual
+{
 protected:
 	CVertexStream*		m_Stream;
 	PS::Particles	  	m_Particles;

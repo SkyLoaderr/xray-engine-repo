@@ -31,7 +31,7 @@ public:
 	FBasicVisual*		Create				(const char* name);
 	void				Delete				(FBasicVisual* &V);
 
-	FBasicVisual*		CreatePS			(const char* name,PS::SEmitter* E);
+	FBasicVisual*		CreatePS			(const char* name, PS::SEmitter* E);
 
 	CModelPool			();
 	~CModelPool			();

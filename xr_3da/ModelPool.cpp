@@ -161,7 +161,7 @@ void	CModelPool::Delete(FBasicVisual* &V)
 	}
 }
 
-FBasicVisual* CModelPool::CreatePS(const char* name,PS::SEmitter* E)
+FBasicVisual* CModelPool::CreatePS(const char* name, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
 	V->Compile		(name,E);

@@ -18,7 +18,8 @@ private:
 	};
 	struct	Particle
 	{
-		F
+		CPSVisual*		visual;
+		PS::SEmitter	emitter;
 	};
 	enum	States
 	{
