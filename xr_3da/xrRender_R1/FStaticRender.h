@@ -99,6 +99,7 @@ public:
 	
 	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname);
 	virtual HRESULT					shader_compile			(
+		LPCSTR							name,
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
 		void*							pDefines,
