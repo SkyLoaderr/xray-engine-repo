@@ -421,6 +421,7 @@ function add_to_binder (object, char_ini)
     properties["friend"]        =   xr_evaluators_id.sidor_wounded_base + 3
     properties["cover"]         =   xr_evaluators_id.sidor_wounded_base + 4
     properties["final"]         =   xr_evaluators_id.sidor_wounded_base + 5
+	properties["contact"]		=   xr_evaluators_id.stohe_meet_base + 1         
     
     operators["cover"]          =   xr_actions_id.sidor_act_wounded_base + 0
     operators["sit"]            =   xr_actions_id.sidor_act_wounded_base + 1
@@ -448,6 +449,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["final"],           false))
     action:add_precondition (world_property (properties["cover"],           false))
+	action:add_precondition (world_property(properties["contact"],	        false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
 
