@@ -144,5 +144,5 @@ void CBuild::BuildCForm(IWriter &fs)
 
 void CBuild::BuildPortals(IWriter& fs)
 {
-	fs.w_chunk		(fsL_PORTALS,portals.begin(),portals.size()*sizeof(b_portal));
+	fs.w_chunk		(fsL_PORTALS,&*portals.begin(),portals.size()*sizeof(b_portal));
 }

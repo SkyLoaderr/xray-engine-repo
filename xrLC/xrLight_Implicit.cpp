@@ -210,7 +210,7 @@ public:
 								wP.from_bary(V1->P,V2->P,V3->P,B);
 								wN.from_bary(V1->N,V2->N,V3->N,B);
 								wN.normalize();
-								LightPoint	(&DB, RCAST_Model, C[J], wP, wN, Lights.begin(), Lights.end(), F);
+								LightPoint	(&DB, RCAST_Model, C[J], wP, wN, &*Lights.begin(), &*Lights.end(), F);
 								Fcount		++;
 							}
 						}

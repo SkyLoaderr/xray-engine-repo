@@ -186,7 +186,7 @@ public:
 				
 				Fcolor			C;
 				C.set			(0,0,0,0);
-				LightPoint		(&DB, RCAST_Model, C, V->P, V->N, Lights.begin(), Lights.end(), F);
+				LightPoint		(&DB, RCAST_Model, C, V->P, V->N, &*Lights.begin(), &*Lights.end(), F);
 				
 				V->Color.r		= C.r*v_inv+v_amb;
 				V->Color.g		= C.g*v_inv+v_amb;

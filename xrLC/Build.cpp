@@ -56,8 +56,8 @@ public:
 void CBuild::Run	(std::string& P)
 {
 	//****************************************** Open Level
-	path						= P+"\\";
-	IWriter* fs					= FS.w_open((path+"level.").c_str());
+	path						= P+std::string("\\");
+	IWriter* fs					= FS.w_open((path+std::string("level.")).c_str());
 	fs->open_chunk				(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory	(&H,sizeof(H));
 	H.XRLC_version				= XRCL_PRODUCTION_VERSION;

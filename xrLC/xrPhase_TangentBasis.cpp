@@ -85,7 +85,7 @@ void CBuild::xrPhase_TangentBasis()
 			for (u32 it=0; it<m.size(); it++)
 			{
 				u32		m_id		= m[it];
-				float*	tc			= v_tc.begin()+m_id*3;
+				float*	tc			= &*v_tc.begin()+m_id*3;
 				if (!fsimilar(tc[0],Ftc.x))	continue;
 				if (!fsimilar(tc[1],Ftc.y))	continue;
 

@@ -85,9 +85,9 @@ void CBuild::BuildRapid()
 	// Saving for AI/DO usage
 	Status					("Saving...");
 
-	IWriter*		MFS		= FS.w_open	((pBuild->path+"build.cform").c_str());
+	IWriter*		MFS		= FS.w_open	((pBuild->path+std::string("build.cform")).c_str());
 
-	xr_vector<b_rc_face>		rc_faces;
+	xr_vector<b_rc_face>	rc_faces;
 	rc_faces.resize			(CL.getTS());
 	// Prepare faces
 	for (u32 k=0; k<CL.getTS(); k++){
@@ -118,6 +118,6 @@ void CBuild::BuildRapid()
 	MFS->close_chunk		();
 
 	MFS->open_chunk			(1);
-	MFS->w					(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
+	MFS->w					(&*rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
 	MFS->close_chunk		();
 }

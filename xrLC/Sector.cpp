@@ -136,11 +136,11 @@ void CSector::Save(IWriter &fs)
 	fs.w_chunk(fsP_Root,&ID,sizeof(DWORD));
 
 	// Portals
-	fs.w_chunk(fsP_Portals,Portals.begin(),Portals.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Portals,&*Portals.begin(),Portals.size()*sizeof(WORD));
 
 	// Glows
-	fs.w_chunk(fsP_Glows,Glows.begin(),Glows.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Glows,&*Glows.begin(),Glows.size()*sizeof(WORD));
 
 	// Lights
-	fs.w_chunk(fsP_Lights,Lights.begin(),Lights.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Lights,&*Lights.begin(),Lights.size()*sizeof(WORD));
 }
