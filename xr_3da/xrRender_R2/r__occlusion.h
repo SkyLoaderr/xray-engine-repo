@@ -18,9 +18,10 @@ private:
 		IDirect3DQuery9*	Q;
 	};
 
-	xr_vector<_Q>			pool;	// sorted (max ... min), insertions are usually at the end
-	xr_vector<_Q>			used;	// id's are generated from this and it is cleared from back only
-	xr_vector<u32>			fids;	// free id's
+	BOOL					enabled;	// 
+	xr_vector<_Q>			pool;		// sorted (max ... min), insertions are usually at the end
+	xr_vector<_Q>			used;		// id's are generated from this and it is cleared from back only
+	xr_vector<u32>			fids;		// free id's
 public:
 	R_occlusion		();
 	~R_occlusion	();
