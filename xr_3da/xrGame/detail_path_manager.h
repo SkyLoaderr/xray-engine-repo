@@ -24,9 +24,11 @@ public:
 	struct STravelParams {
 		float			linear_velocity;
 		float			angular_velocity; 
+		float			real_angular_velocity; 
 
 		STravelParams(){}
-		STravelParams(float l, float a) : linear_velocity(l), angular_velocity(a) {}
+		STravelParams(float l, float a) : linear_velocity(l), angular_velocity(a), real_angular_velocity(a) {}
+		STravelParams(float l, float a, float ra) : linear_velocity(l), angular_velocity(a), real_angular_velocity(ra) {}
 	};
 
 	struct STravelParamsIndex : public STravelParams {
