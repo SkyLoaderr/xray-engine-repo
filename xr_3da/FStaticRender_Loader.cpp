@@ -2,7 +2,7 @@
 #include "fstaticrender.h"
 #include "fmesh.h"
 #include "xrLevel.h"
-#include "collide\cl_collector.h"
+#include "cl_collector.h"
 #include "xr_creator.h"
 
 

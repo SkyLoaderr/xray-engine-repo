@@ -72,8 +72,8 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 
 	Fvector*	verts	= (Fvector*)f->Pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-	model.BuildModel	( verts, H.vertcount, tris, H.facecount );
-	Msg("* CFORM memory usage: %dK",model.MemoryUsage()/1024);
+	model.build			( verts, H.vertcount, tris, H.facecount );
+	Msg("* CFORM memory usage: %dK",model.memory()/1024);
 	Engine.FS.Close		(f);
 
 	return				TRUE;
@@ -82,9 +82,18 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
 {
 	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
-	XRC.RayPick(&owner->clTransform,&model,Q.start,Q.dir,Q.range);
-	const RAPID::raypick_info* R = XRC.GetMinRayPickInfo();
-	if (R) {
+	
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->clTransform);
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+	
+	// Query
+	XRC.ray_query		(&model,dS,dD,Q.range);
+	if (XRC.r_count()) 	{
+		CDB::RESULT* R	= XRC.r_begin();
 		if (R->range < Q.range) {
 			Q.range		= R->range;
 			Q.element	= R->id;
@@ -93,12 +102,22 @@ BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
 	}
 	return FALSE;
 }
+
 BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 {
 	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
-	XRC.RayPick(&owner->svTransform,&model,Q.start,Q.dir,Q.range);
-	const RAPID::raypick_info* R = XRC.GetMinRayPickInfo();
-	if (R) {
+	
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->svTransform);
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+	
+	// Query
+	XRC.ray_query		(&model,dS,dD,Q.range);
+	if (XRC.r_count()) 	{
+		CDB::RESULT* R	= XRC.r_begin();
 		if (R->range < Q.range) {
 			Q.range		= R->range;
 			Q.element	= R->id;
@@ -114,21 +133,33 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 	{
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
-		Q.AddBox	(owner->svTransform,s_box);
+		Q.AddBox			(owner->svTransform,s_box);
 	} else {
+		// XForm box
+		Fmatrix&	T = owner->svTransform;
+		Fmatrix		w2m,b2m;
+		w2m.invert	(T);
+		b2m.mul_43	(w2m,M);
+		
+		Fvector		bc,bd;
+		Fbox		xf; 
+		xf.xform	(B,b2m);
+		xf.get_CD	(bc,bd);
+		
 		// Return actual tris
-		Fmatrix& T = owner->svTransform;
-		XRC.BBoxCollide	(T, &model, M, B );
-		if (XRC.GetBBoxContactCount())
+		XRC.box_query (&model, bc, bd );
+		if (XRC.r_count())
 		{
 			clQueryCollision& Q = pCreator->ObjectSpace.q_result;
 			if (flags&clQUERY_ONLYFIRST) 
 			{
-				Q.AddTri(T,&model.tris[XRC.BBoxContact[0].id]);
+				Q.AddTri(T,&model.get_tris()[XRC.r_begin()->id]);
 				return;
 			} else {
-				for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
-					Q.AddTri(T,&model.tris[XRC.BBoxContact[i].id]);
+				CDB::RESULT* it	=XRC.r_begin();
+				CDB::RESULT* end=XRC.r_end	();
+				for (; it!=end; it++)
+					Q.AddTri(T,&model.get_tris() [it->id]);
 			}
 		}
 	}

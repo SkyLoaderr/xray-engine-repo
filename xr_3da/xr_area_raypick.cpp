@@ -152,13 +152,13 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	if (cache) {
 		// 1. Check cached polygon
 		float _u,_v,_range;
-		if (RAPID::TestRayTri(start,dir,cache->verts,_u,_v,_range,false)) 
+		if (CDB::TestRayTri(start,dir,cache->verts,_u,_v,_range,false)) 
 		{
 			if (_range>0 && _range<range) return TRUE;
 		}
 		
 		// 2. Polygon doesn't pick - real database query
-		XRC.ray_query(&Static,start,dir,Q.range);
+		XRC.ray_query	(&Static,start,dir,Q.range);
 		if (0==XRC.r_count()) {
 			return FALSE;
 		} else {
@@ -171,7 +171,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			return TRUE;
 		}
 	} else {
-		XRC.RayPick(0,&Static,start,dir,Q.range);
+		XRC.ray_query	(&Static,start,dir,Q.range);
 		return XRC.r_count();
 	}
 }
@@ -185,10 +185,10 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 	R.O		= 0; R.range = range; R.element = -1;
 
 	// Test static model
-	XRC.RayMode			(RAY_ONLYNEAREST|RAY_CULL);
-	XRC.RayPick			(0,&Static,Q.start,Q.dir,Q.range);
-	const RAPID::raypick_info* I = XRC.GetMinRayPickInfo();
-	if (I) {
+	XRC.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
+	XRC.ray_query		(&Static,Q.start,Q.dir,Q.range);
+	if (XRC.r_count()) {
+		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<range) {
 			R.O			= NULL;
 			R.range		= I->range;
@@ -253,7 +253,7 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 		CCFModel&	M = *(*nl_idx);
 		
 		Fvector C; float _R; M.GetSphere	(C,_R);
-		if (!RAPID::IntersectRaySphere(start,dir,C,_R+width)) continue;
+		if (!CDB::IntersectRaySphere(start,dir,C,_R+width)) continue;
 		
 		if (M._RayTest(Q)) {
 			if (Q.range<R.range) {
@@ -296,11 +296,11 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 													Fvector N; N.mknormal(t.p[0],t.p[1],t.p[2]);
 													float dist, fDist = max_range;
 													float u,v;
-													RAPID::TestRayTri(M_bbox.c, M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-													RAPID::TestRayTri(start1,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-													RAPID::TestRayTri(start2,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-													RAPID::TestRayTri(start3,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-													RAPID::TestRayTri(start4,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+													CDB::TestRayTri(M_bbox.c, M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+													CDB::TestRayTri(start1,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+													CDB::TestRayTri(start2,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+													CDB::TestRayTri(start3,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+													CDB::TestRayTri(start4,	M_bbox.k,t.p,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
 													if (fDist>0){
 														if (!range || bFirstContact){
 															if (range) *range = fDist;
@@ -333,16 +333,16 @@ BOOL  CObjectSpace::RayPickW( const Fvector &start, const Fvector &dir, float ra
 	// fill tris list
 	for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
 	{
-		RAPID::tri &T = Static.tris[XRC.BBoxContact[i].id];
+		CDB::tri &T = Static.tris[XRC.BBoxContact[i].id];
 		if (range){
 			Fvector N; N.mknormal(*T.verts[0],*T.verts[1],*T.verts[2]);
 			float dist, fDist = max_range;
 			float u,v;
-			RAPID::TestRayTri(M_bbox.c, M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-			RAPID::TestRayTri(start1,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-			RAPID::TestRayTri(start2,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-			RAPID::TestRayTri(start3,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
-			RAPID::TestRayTri(start4,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+			CDB::TestRayTri(M_bbox.c, M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+			CDB::TestRayTri(start1,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+			CDB::TestRayTri(start2,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+			CDB::TestRayTri(start3,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
+			CDB::TestRayTri(start4,	M_bbox.k,T.verts,u,v,dist,bCulling); if ((dist>0)&&(dist<fDist)) fDist=dist;
 			if (fDist>0)
 			{
 				if (bFirstContact)

@@ -11,7 +11,7 @@ CSector* CRender::detectSector(Fvector& P)
 	int id1 = -1;
 	float	range1 = 100.f;
 	XRC.RayPick(0,rmPortals,P,dir,range1);
-	const RAPID::raypick_info *RP1 = XRC.GetMinRayPickInfo();
+	const CDB::raypick_info *RP1 = XRC.GetMinRayPickInfo();
 	if (RP1) { id1 = RP1->id; range1 = RP1->range; }
 
 	// Geometry model
@@ -19,7 +19,7 @@ CSector* CRender::detectSector(Fvector& P)
 	float	range2 = range1;
 
 	XRC.RayPick(0,pCreator->ObjectSpace.GetStaticModel(),P,dir,range2);
-	const RAPID::raypick_info *RP2 = XRC.GetMinRayPickInfo();
+	const CDB::raypick_info *RP2 = XRC.GetMinRayPickInfo();
 	if (RP2) { id2 = RP2->id; range2 = RP2->range; }
 
 	// Select ID
@@ -32,12 +32,12 @@ CSector* CRender::detectSector(Fvector& P)
 
 	if (ID==id1) {
 		// Take sector, facing to our point from portal
-		RAPID::tri*	pTri	= rmPortals->tris + ID;
+		CDB::tri*	pTri	= rmPortals->tris + ID;
 		CPortal*	pPortal	= (CPortal*) pTri->dummy;
 		return pPortal->getSectorFacing(P);
 	} else {
 		// Take triangle at ID and use it's Sector
-		RAPID::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+ID;
+		CDB::tri* pTri	= pCreator->ObjectSpace.GetStaticTris()+ID;
 		return getSector(pTri->sector);
 	}
 }
