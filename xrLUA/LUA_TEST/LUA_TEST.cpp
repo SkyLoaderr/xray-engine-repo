@@ -590,6 +590,60 @@ bool load_file_into_namespace(lua_State *L, LPCSTR S, LPCSTR N, bool bCall = tru
 	return			(true);
 }
 
+typedef BOOL test_type;
+
+class CInterfaceClass {
+public:
+	virtual test_type vf(LPCSTR S) = 0;
+};
+
+class CManager {
+public:
+	xr_vector<CInterfaceClass*>	m_tpInterfaces;
+
+	CManager(){}
+
+	void Update()
+	{
+		string256 S;
+		for (int i=0; i<10; ++i) {
+			sprintf(S,"%d",i);
+			xr_vector<CInterfaceClass*>::iterator I = m_tpInterfaces.begin();
+			xr_vector<CInterfaceClass*>::iterator E = m_tpInterfaces.end();
+			for ( ; I != E; ++I)
+				(*I)->vf(S);
+		}
+	}
+
+	void Add(CInterfaceClass *tpInterfaceClass)
+	{
+		m_tpInterfaces.push_back(tpInterfaceClass);
+	}
+};
+
+CManager	tManager;
+
+CManager&	get_manager()
+{
+	return (tManager);
+}
+
+
+class CPrintClass : public CInterfaceClass {
+public:
+	CPrintClass(){}
+	virtual test_type vf(LPCSTR S) {printf("Base class function call : %s\n",S); return 1;}
+	void add() {get_manager().Add(this);}
+};
+
+class CPrintClassWrapper : public CPrintClass {
+public:
+	luabind::object		m_tLuaBindObject;
+	CPrintClassWrapper(luabind::object tLuaBindObject) : CPrintClass(), m_tLuaBindObject(tLuaBindObject){}
+	virtual test_type vf(LPCSTR S) {return call_member<bool>(m_tLuaBindObject,"vf",S);}
+	static bool vf_static(CPrintClass *ptr, LPCSTR S) {return ptr->CPrintClass::vf(S);}
+};
+
 // main
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
@@ -602,15 +656,32 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	luaopen_math	(L);
 	luaopen_table	(L);
 
-//	open			(L);
-
 	lua_pop			(L,4);
-	load_file_into_namespace(L,"x:\\extension.lua","core");
-	load_file_into_namespace(L,"x:\\extension1.lua","core");
-	lua_State		*T = lua_newthread(L);
-	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
 
-	lua_resume		(T,0);
+	open			(L);
+
+	module(L)
+	[
+		class_<CPrintClass,CPrintClassWrapper>("pp_class")
+			.def(constructor<>())
+			.def("vf",		&CPrintClassWrapper::vf_static)
+			.def("add",		&CPrintClass::add)
+	];
+
+
+//	load_file_into_namespace(L,"x:\\extension.lua","core");
+//	load_file_into_namespace(L,"x:\\extension1.lua","core");
+//	lua_State		*T = lua_newthread(L);
+//	load_file_into_namespace(T,"x:\\test1.lua","test1",false);
+
+	//	lua_resume		(T,0);
+	lua_dofile(L,"x:\\extension.lua");
+	lua_dofile(L,"x:\\extension1.lua");
+	lua_State	*T = lua_newthread(L);
+	luaL_loadfile(T,"x:\\test1.lua");
+	lua_resume(T,0);
+	tManager.Update();
+	lua_resume(T,0);
 
 	lua_close		(L);
 }
