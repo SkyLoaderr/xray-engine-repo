@@ -7,63 +7,9 @@ module("script_zone")
 module("smart_terrain")
 module("zone_spawner")
 module("escape_raid")
+module("xr_zones_sound")
 
-local h2ms = 60 * 60 * 1000
-local check_period = 300000
-
-local zones        = {} -- объекты управления для каждой зоны
-local zones_inside = {} -- списки объектов, находящихся в каждой зоне
-
-local the_actor
-
-local ini, sect, r, obj_type
-
--------------- помощники для чтения spawn_ini -------------------
-function r_str( spawn_ini, section, line, default )
-	if spawn_ini:line_exist( section, line ) then
-		return spawn_ini:r_string( section, line )
-	else
-		return default
-	end
-end
-
-function r_num( spawn_ini, section, line, default )
-	if spawn_ini:line_exist( section, line ) then
-		return spawn_ini:r_float( section, line )
-	else
-		return default
-	end
-end
-
-local tt, nn
-function r_nums( spawn_ini, section, line, ... )
-	if spawn_ini:line_exist( section, line ) then
-		-- если default-ов больше, чем значений в ini, то забить недостающие последним значением из ini
-		tt = parse_names( spawn_ini:r_string( section, line ) )
-		nn = table.getn( tt )
-
-		if nn == 0 then
-			return unpack( arg )
-		end
-
-		while table.getn( tt ) < arg.n do
-			table.insert( tt, t[nn] )
-		end
-
-		return unpack( tt )
-	else
-		return unpack( arg )
-	end
-end
-
--- включить в dest все элементы из src. Таблицы индексированы
-function table_include( dest, src )
-	if dest and src then
-		for i, v in src do
-			table.insert( dest, v )
-		end
-	end
-end
+local ini, r
 
 ----------------------------------------------------------------------------------------------------------------------
 -- класс zone_binder. Он контролирует скриптовую зону, подключает различные классы управления зоной.
@@ -103,7 +49,7 @@ function zone_binder:net_spawn( server_object )
 	end
 
 	if ini:section_exist( "sound" ) then
-		self.managers.zone_sound = zone_sound( self.object, ini )
+		self.managers.zone_sound = xr_zones_sound.zone_sound( self.object, ini )
 		if not self.managers.zone_sound.ini_ok then
 			utils.abort( "'sound' manager NOT initialized" )
 		end
@@ -212,68 +158,6 @@ function zone_binder:on_leave( zone, obj )
 
 	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( self.managers, function( k, v ) if v.on_leave then v:on_leave( obj ) end end )
-end
-
-
-----------------------------------------------------------------------------------------------------------------------
--- Класс zone_sound. Проигровка звуков при входе в зону.
-----------------------------------------------------------------------------------------------------------------------
-class "zone_sound"
-
--- типы звуков для зон
-local sound_types = {
-	floor_wooden = {
-		"ambient\\floor_creak1",
-		"ambient\\floor_creak2",
-		"ambient\\floor_creak3"
-	}
-}
-
-function zone_sound:__init( zone, ini )
-	self.zone        = zone
-	self.sound_names = {}
-
-	sect = "sound"
-
-	if ini:line_exist( sect, "snd" ) then
-		table_include( self.sound_names, parse_names( ini:r_string( sect, "snd" ) ) )
-	end
-
-	if ini:line_exist( sect, "type" ) then
-		local t = parse_names( ini:r_string( sect, "type" ) )
-
-		for i, v in t do
-			table_include( self.sound_names, sound_types[v] )
-		end
-	end
-
-	if table.getn( self.sound_names ) == 0 then
-		return
-	end
-
---	printf( table.concat( self.sound_names, "  " ) )
-
-	self.delay = r_num( ini, sect, "delay", 0 )
-	self.idle  = r_num( ini, sect, "idle",  0 ) * 1000 -- секунды->мс
-	self.rnd   = r_num( ini, sect, "rnd", 100 )
-
-	self.idle_end = 0
-
-	self.ini_ok = true
-end
-
-function zone_sound:on_enter( obj )
-	if self.idle_end < game.time() then
-		self.idle_end = game.time() + self.idle
-
-		if math.random( 100 ) <= self.rnd then
-			obj_type = object_type( obj )
-
-			if obj_type == "stalker" or obj_type == "monstr" then
-				sound_object( self.sound_names[math.random( 1, table.getn( self.sound_names ) )] ):play_at_pos( obj, obj:position(), self.delay )
-			end
-		end
-	end
 end
 
 
