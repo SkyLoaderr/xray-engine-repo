@@ -220,6 +220,9 @@ void CSector::Render			(CFrustum &F)
 			for (; I!=E; I++) {
 				light* O = *I;
 				if (!O->get_active())	continue;
+				if (F.testSphere_dirty(O->position,O->range))
+					RImplementation.Lights.add_sector_dlight(O);
+				/*
 				switch	(O->flags.type)
 				{
 				case IRender_Light::POINT:
@@ -235,6 +238,7 @@ void CSector::Render			(CFrustum &F)
 					}
 					break;
 				}
+				*/
 			}
 		}
 #endif
