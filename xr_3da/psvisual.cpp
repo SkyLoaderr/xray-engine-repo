@@ -174,7 +174,7 @@ void CPSVisual::Render		(float LOD)
 	if (dwCount)
 		Device.Primitive.Draw	(m_Stream,dwCount,dwCount/2,vOffset,Device.Streams_QuadIB);
 }
-
+ 
 DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 {
 	float fTime			= Device.fTimeGlobal;
