@@ -1,6 +1,8 @@
 #ifndef PH_SYNCHRONIZE_H
 #define PH_SYNCHRONIZE_H
 
+#include "net_utils.h"
+
 struct SPHNetState
 {
 	Fvector		linear_vel;
