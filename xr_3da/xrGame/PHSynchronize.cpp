@@ -33,4 +33,5 @@ void SPHNetState::net_Save(NET_Packet &P)
 void SPHNetState::net_Load(NET_Packet &P)
 {
 	net_Import(P);
+	previous_position.set(position);
 }
