@@ -57,7 +57,7 @@ void	CRenderTarget::phase_combine	()
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
 		{
-			u32							IX=0,IY=0;
+			u32							IX=0,IY=1;
 			Fvector2					p0,p1;
 			p0.set						(.5f/_w, .5f/_h);
 			p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
@@ -77,7 +77,7 @@ void	CRenderTarget::phase_combine	()
 		}
 		// Draw quater-screen quad textured with our accumulator
 		{
-			u32							IX=1,IY=0;
+			u32							IX=1,IY=1;
 			Fvector2					p0,p1;
 			p0.set						(.5f/_w, .5f/_h);
 			p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
