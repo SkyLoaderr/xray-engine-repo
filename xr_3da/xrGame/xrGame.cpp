@@ -110,6 +110,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "customlift.h"
 #include "demoactor.h"
 #include "hudmanager.h"
+#include "targetassault.h"
 
 #include "weaponM134.h"
 #include "weaponAK74.h"
@@ -139,6 +140,9 @@ extern "C" {
 
 		// Artifacts
 		case CLSID_AF_MERCURY_BALL:		P = new CMercuryBall();			break;
+
+		// Targets
+		case CLSID_TARGET_ASSAULT:		P = new CTargetAssault();		break;
 
 		case CLSID_OBJECT_DUMMY:		P = new CDummyObject();			break;
 
