@@ -1299,52 +1299,6 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	}
 	HUD().pFontSmall->OutNext	(buf);
 #endif
-/**
-	CUI* pUI=HUD().GetUI	();
-	pUI->OutHealth		(iFloor(fHealth),iFloor(fArmor));
-	pUI->OutWeapon		(Weapons->ActiveWeapon());
-	pUI->SetHeading		(-r_torso.yaw);
-	
-
-	char buf[128];
-	sprintf(buf,"Position : %3.2f,%3.2f,%3.2f",VPUSH(vPosition));
-
-	HUD().pHUDFont->Color(0xffffffff);
-	HUD().pHUDFont->Out	(400,320,buf);
-/*
-	char buf[128];
-	buf[0] = 0;
-	CWeapon* W=Weapons->ActiveWeapon();
-	if (W){
-		float prec = W->GetPrecision();
-		sprintf(buf,"Prec: %3.2f",prec);
-		HUD().pHUDFont->Color(0xffffffff);
-		HUD().pHUDFont->Out	(400,320,buf);
-	}
-	char buf[128];
-	buf[0] = 0;
-	switch (ph_Movement.Environment())
-	{
-	case CMovementControl::peOnGround:	strcat(buf,"ground:");			break;
-	case CMovementControl::peInAir:		strcat(buf,"air:");				break;
-	case CMovementControl::peAtWall:	strcat(buf,"wall:");			break;
-	}
-
-	if (mstate_real&mcAccel)	strcat(buf,"Accel ");
-	if (mstate_real&mcCrouch)	strcat(buf,"Crouch ");
-	if (mstate_real&mcFwd)		strcat(buf,"Fwd ");
-	if (mstate_real&mcBack)		strcat(buf,"Back ");
-	if (mstate_real&mcLStrafe)	strcat(buf,"LStrafe ");
-	if (mstate_real&mcRStrafe)	strcat(buf,"RStrafe ");
-	if (mstate_real&mcJump)		strcat(buf,"Jump ");
-	if (mstate_real&mcTurn)		strcat(buf,"Turn ");
-	if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-	HUD().pHUDFont->Color(0xffffffff);
-	HUD().pHUDFont->Out	(400,320,buf);
-	HUD().pHUDFont->Out	(400,330,"Vel Actual:    %3.2f",ph_Movement.GetVelocityActual());
-	HUD().pHUDFont->Out	(400,340,"Vel:           %3.2f",ph_Movement.GetVelocity());
-	HUD().pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",ph_Movement.GetVelocityMagnitude());
-*/
 }
 
 float CActor::HitScale	(int element)

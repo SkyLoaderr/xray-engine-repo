@@ -7,7 +7,6 @@
 #define __XRAY_AI_CROW__
 
 #include "..\..\entity.h"
-#include "..\..\movementcontrol.h"
 class CAI_Crow : public CEntityAlive
 {
 	typedef	CEntityAlive inherited;
