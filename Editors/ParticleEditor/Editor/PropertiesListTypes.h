@@ -446,11 +446,11 @@ public:
 //------------------------------------------------------------------------------
 
 class FlagValue: public PropValue{
-	DWORDVec			init_values;
-	LPDWORDVec			values;
-    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
+	U32Vec				init_values;
+	LPU32Vec			values;
+    void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
-	u32				mask;
+	u32					mask;
 						FlagValue		(u32 _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):mask(_mask),PropValue(after,before,draw,change){};
     virtual LPCSTR		GetText			(){return 0;}
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((u32*)value);}
@@ -458,7 +458,7 @@ public:
     virtual bool		ApplyValue		(bool value)
     {
     	bool bChanged	= false;
-    	for (LPDWORDIt it=values.begin();it!=values.end();it++){
+    	for (LPU32It it=values.begin();it!=values.end();it++){
         	if (value!=(!!(**it&mask))){
 	        	if (value) **it|=mask; else **it&=~mask; 
                 bChanged= true;
@@ -468,15 +468,15 @@ public:
         return bChanged;
     }
     bool	 			GetValue		(){return (*values.front())&mask;}
-    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
+    virtual void		ResetValue		(){U32It src=init_values.begin(); for (LPU32It it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
 };
 //------------------------------------------------------------------------------
 
 class TokenValue: public PropValue{
-	DWORDVec			init_values;
-	LPDWORDVec			values;
+	U32Vec				init_values;
+	LPU32Vec			values;
     int 				p_size;
-    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
+    void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	xr_token* 			token;
 						TokenValue		(xr_token* _token, int p_sz, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):token(_token),p_size(p_sz),PropValue(after,before,draw,change){R_ASSERT((p_size>0)&&(p_size<=4));};
@@ -491,7 +491,7 @@ public:
     bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        for (LPU32It it=values.begin();it!=values.end();it++){
         	if (0!=memcmp(*it,&value,p_size)){
                 CopyMemory(*it,&value,p_size);
                 bChanged= true;
@@ -503,17 +503,17 @@ public:
     u32 				GetValue		(){return *values.front();}
     virtual void		ResetValue		()
     {
-    	DWORDIt src=init_values.begin(); 
-        for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) 
+    	U32It src=init_values.begin(); 
+        for (LPU32It it=values.begin();it!=values.end();it++,src++) 
         	CopyMemory(*it,src,p_size);
     }
 };
 //------------------------------------------------------------------------------
 
 class TokenValue2: public PropValue{
-	DWORDVec			init_values;
-	LPDWORDVec			values;
-    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
+	U32Vec				init_values;
+	LPU32Vec			values;
+    void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	AStringVec 			items;
 						TokenValue2		(AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):items(*_items),PropValue(after,before,draw,change){};
@@ -523,7 +523,7 @@ public:
     bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        for (LPU32It it=values.begin();it!=values.end();it++){
         	if (**it!=value){
 	        	**it 	= value;
                 bChanged= true;
@@ -533,14 +533,14 @@ public:
         return bChanged;
     }
     u32 				GetValue		(){return *values.front();}
-    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){U32It src=init_values.begin(); for (LPU32It it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class TokenValue3: public PropValue{
-	DWORDVec			init_values;
-	LPDWORDVec			values;
-    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
+	U32Vec				init_values;
+	LPU32Vec			values;
+    void				AppendValue		(u32* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	struct Item {
 		u32		ID;
@@ -555,7 +555,7 @@ public:
     bool				ApplyValue		(u32 value)
     {
     	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        for (LPU32It it=values.begin();it!=values.end();it++){
         	if (**it!=value){
 	        	**it 	= value;
                 bChanged= true;
@@ -565,7 +565,7 @@ public:
         return bChanged;
     }
     u32 				GetValue		(){return *values.front();}
-    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){U32It src=init_values.begin(); for (LPU32It it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 

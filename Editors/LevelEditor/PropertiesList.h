@@ -129,7 +129,7 @@ public:		// User declarations
     // auxiliary routines
 	static IC LPVOID		GetItemData		(TElTreeItem* item){return (void*)item->Tag;}
 	static IC bool 			IsItemType		(TElTreeItem* item, EPropType type){return item->Tag&&(((PropValue*)item->Tag)->type==type);}
-	static IC EPropType 	GetItemType		(TElTreeItem* item){return item->Tag?((PropValue*)item->Tag)->type:0;}
+	static IC EPropType 	GetItemType		(TElTreeItem* item){return item->Tag?((PropValue*)item->Tag)->type:(EPropType)0;}
 	static IC LPCSTR	 	GetItemColumn	(TElTreeItem* item, int col){
     	static AnsiString t;
         if (col<item->ColumnText->Count) t=item->ColumnText->Strings[col];
