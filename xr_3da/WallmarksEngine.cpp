@@ -175,7 +175,7 @@ void CWallmarksEngine::Render()
 
 	// Projection and xform
 	float _43 = Device.mProject._43;
-	Device.mProject._43 -= 0.001f; 
+	Device.mProject._43		-= 0.001f; 
 	Device.set_xform_world	(Fidentity);
 	Device.set_xform_project(Device.mProject);
 
@@ -195,7 +195,7 @@ void CWallmarksEngine::Render()
 			float ssa = g_fSCREEN * W.S.R * W.S.R / dst;
 			if (ssa>=1)	{
 				DWORD w_count	= w_verts-w_start;
-				if (((w_count+W.verts.size())>=MAX_TRIS*3)||(w_S!=W.hShader))
+				if (((w_count+W.verts.size())>=(MAX_TRIS*3))||(w_S!=W.hShader))
 				{
 					// Flush stream
 					VS->Unlock				(w_count);

@@ -407,7 +407,23 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 
 		skip--;
 	}
+	if (w<1)	w=1;
+	if (h<1)	h=1;
 }
+IC DWORD _MemUsage	(IDirect3DTexture8* T)
+{
+	DWORD dwMemory	= 0;
+	if (T) {
+		for (DWORD L=0; L<T->GetLevelCount(); L++)
+		{
+			D3DSURFACE_DESC	desc;
+			R_CHK			(T->GetLevelDesc(L,&desc));
+			dwMemory		+= desc.Size;
+		}
+	}
+	return	dwMemory;
+}
+
 
 ENGINE_API IDirect3DTexture8*	TWLoader2D(
 		const char *		fRName,
@@ -453,8 +469,6 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 
 _DDS:
 	{
-		Log						("* FS: Texture: ",fn);
-
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		CStream* S				= Engine.FS.Open	(fn);
@@ -479,42 +493,56 @@ _DDS:
 
 		// Calculate levels & dimensions
 		D3DSURFACE_DESC			T_sysmem_desc0;
-		R_CHK					(T_sysmem->GetLevelDesc	(0,&desc));
+		R_CHK					(T_sysmem->GetLevelDesc	(0,&T_sysmem_desc0));
 		int levels_2_skip		= psTextureLOD;
-		int levels_exist		= T_sysmem_desc0.MipLevels;
+		int levels_exist		= T_sysmem->GetLevelCount();
 		int top_width			= T_sysmem_desc0.Width;
 		int top_height			= T_sysmem_desc0.Height;
 		D3DFORMAT F				= T_sysmem_desc0.Format;
 		Reduce					(top_width,top_height,levels_exist,levels_2_skip);
 
 		// Create HW-surface
-		R_CHK(D3DXCreateTexture(
+		R_CHK					(D3DXCreateTexture(
 			HW.pDevice,
 			top_width,top_height,
 			levels_exist,0,F,
 			D3DPOOL_MANAGED,&pTexture
 			));
+//		R_CHK					(HW.pDevice->CreateTexture(top_width,top_height,levels_exist,0,F,D3DPOOL_MANAGED,&pTexture));
 
-		// Skip 
-		int		start			= -1;
-		for (int level=0; level<T_sysmem->GetLevelCount(); level++)
+		// Copy surfaces & destroy temporary
+		IDirect3DTexture8* T_src= T_sysmem;
+		IDirect3DTexture8* T_dst= pTexture;
+		int		L_src			= T_src->GetLevelCount	()-1;
+		int		L_dst			= T_dst->GetLevelCount	()-1;
+		for (; L_dst>=0; L_src--,L_dst--)
 		{
-			D3DSURFACE_DESC	desc;
-			R_CHK			(T_sysmem->GetLevelDesc	(level,&desc));
-			if				((desc.Width==top_width) && (desc.Height==top_height))
-				start		= level;
+			D3DSURFACE_DESC			D_src, D_dst;
+			T_src->GetLevelDesc		(L_src,&D_src);
+			T_dst->GetLevelDesc		(L_dst,&D_dst);
+			// R_ASSERT				(D_src.Width	==	D_dst.Width);
+			// R_ASSERT				(D_src.Height	==	D_dst.Height);
+			R_ASSERT				(D_src.Size		==	D_dst.Size);
+
+			D3DLOCKED_RECT			R_src, R_dst;
+			T_src->LockRect			(L_src,&R_src,0,0);
+			T_dst->LockRect			(L_dst,&R_dst,0,0);
+
+			PSGP.memCopy			(R_dst.pBits,R_src.pBits,D_dst.Size);
+
+			T_dst->UnlockRect		(L_dst);
+			T_src->UnlockRect		(L_src);
 		}
-		R_ASSERT				(start>=0);
+		_RELEASE				(T_sysmem);
 
-		// Copy surfaces
+		// Log
+		Msg						("* T[%d-%d](%dK): ",top_width,top_height,_MemUsage(pTexture)/1024,fn);
 
-		// Destroy temporary
-		dwWidth		= IMG.Width;
-		dwHeight	= IMG.Height;
-		fmt			= IMG.Format;
-
-
-		return		pTexture;
+		// OK
+		dwWidth					= top_width;
+		dwHeight				= top_height;
+		fmt						= F;
+		return					pTexture;
 	}
 
 _TGA:
