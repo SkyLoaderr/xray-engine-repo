@@ -154,10 +154,11 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 	ambient		= l_i*ambient + l_f*O->renderable_Ambient();
 	clamp		(ambient,0.f,255.f);
-	Fvector		accum	= { ambient,ambient,ambient	};
+	Fvector		accum	= { ambient,			ambient,			ambient				};
+	Fvector		hemi	= { desc.hemi_color.x,	desc.hemi_color.y,	desc.hemi_color.z	};
 	accum.div(255.f).add(desc.ambient			);
 	accum.mad			(desc.lmap_color,	.1f	);
-	accum.mad			(desc.hemi_color,	.2f	);
+	accum.mad			(hemi,	.2f	);
 	for (u32 lit=0; lit<lights.size(); lit++)	{
 		accum.x += lights[lit].color.r*.5f;
 		accum.y += lights[lit].color.g*.5f;
