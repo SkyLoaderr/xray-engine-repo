@@ -103,7 +103,7 @@ void CPhysicObject::CreateBody() {
 		case epotFixedChain : {
 			m_pPhysicsShell->set_Kinematics(PKinematics(pVisual));
 			AddElement(0,PKinematics(pVisual)->LL_BoneRoot());
-	//		m_pPhysicsShell->setMass(m_mass);
+			m_pPhysicsShell->setMass1(m_mass);
 		} break;
 		default : {
 		} break;

@@ -562,6 +562,8 @@ public:
 	virtual void			Deactivate				()		;
 
 	virtual void			setMass					(float M)									;
+
+	virtual void			setMass1				(float M)								;
 	virtual float			getMass					()											;
 	virtual void			setDensity				(float M)									;
 

@@ -1597,6 +1597,15 @@ void CPHShell::setMass(float M){
 					);
 }
 
+void CPHShell::setMass1(float M){
+	vector<CPHElement*>::iterator i;
+	
+	
+	for(i=elements.begin();i!=elements.end();i++)
+		(*i)->setMass(
+		M/elements.size()
+		);
+}
 float CPHShell::getMass()
 {
 float m=0.f;
