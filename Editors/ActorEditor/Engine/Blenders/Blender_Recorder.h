@@ -50,8 +50,10 @@ public:
 	// R1-compiler
 	void				PassBegin			();
 	u32					Pass				()  { return SH->Passes.size(); }
-	void				PassSET_ZB			(BOOL bZTest, BOOL bZWrite);
-	void				PassSET_Blend		(BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef);
+	void				PassSET_ZB			(BOOL bZTest,	BOOL bZWrite);
+	void				PassSET_ablend_mode	(BOOL bABlend,	u32 abSRC, u32 abDST);
+	void				PassSET_ablend_aref	(BOOL aTest,	u32 aRef);
+	void				PassSET_Blend		(BOOL bABlend,	u32 abSRC, u32 abDST, BOOL aTest, u32 aRef);
 	void				PassSET_Blend_BLEND	(BOOL bAref=FALSE, u32 ref=0)	{ PassSET_Blend	(TRUE,D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,bAref,ref);	}
 	void				PassSET_Blend_SET	(BOOL bAref=FALSE, u32 ref=0)	{ PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,bAref,ref);				}
 	void				PassSET_Blend_ADD	(BOOL bAref=FALSE, u32 ref=0)	{ PassSET_Blend	(TRUE, D3DBLEND_ONE,D3DBLEND_ONE, bAref,ref);				}
@@ -77,9 +79,19 @@ public:
 	void				StageEnd			();
 
 	// R1/R2-compiler	[programmable]
+	u32					i_Sampler			(LPCSTR name);
+	void				i_Texture			(u32 s, LPCSTR	name);
+	void				i_Projective		(u32 s, bool	b);
+	void				i_Address			(u32 s, u32		address);
+	void				i_Filter_Min		(u32 s, u32		f);
+	void				i_Filter_Mip		(u32 s, u32		f);
+	void				i_Filter_Mag		(u32 s, u32		f);
+	void				i_Filter			(u32 s, u32 _min, u32 _mip, u32 _mag);
+
+	// R1/R2-compiler	[programmable]		- templates
 	void				r_Pass				(LPCSTR vs,		LPCSTR ps,				BOOL	bFog,	BOOL	bZtest=TRUE,				BOOL	bZwrite=TRUE,			BOOL	bABlend=FALSE,			u32	abSRC=D3DBLEND_ONE,		u32 abDST=D3DBLEND_ZERO,	BOOL aTest=FALSE,	u32 aRef=0);
 	void				r_Constant			(LPCSTR name,	R_constant_setup* s);
-	void				r_Sampler			(LPCSTR name,	LPCSTR texture, bool b_ps1x_ProjectiveDivide=false, u32	address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
+	u32					r_Sampler			(LPCSTR name,	LPCSTR texture, bool b_ps1x_ProjectiveDivide=false, u32	address=D3DTADDRESS_WRAP,	u32		fmin=D3DTEXF_LINEAR,	u32		fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0);
 	void				r_Sampler_rtf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
 	void				r_Sampler_clf		(LPCSTR name,	LPCSTR texture,	bool b_ps1x_ProjectiveDivide=false, u32	element=0);
 	void				r_End				();

@@ -36,33 +36,68 @@ void	CBlender_Compile::r_Constant	(LPCSTR name, R_constant_setup* s)
 	if (C)					C->handler	= s;
 }
 
-void	CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
+u32		CBlender_Compile::i_Sampler		(LPCSTR _name)
 {
 	//
-	string256				name;
+	string128				name;
 	strcpy					(name,_name);
 	if (strext(name)) *strext(name)=0;
 
 	// Find index
 	R_constant*	C			= ctable.get(name);
-	if (0==C)				return;
+	if (0==C)				return	u32(-1);
 	R_ASSERT				(C->type == RC_sampler);
 	u32 stage				= C->samp.index;
 	R_ASSERT				(stage<16);
 
 	// Create texture
 	while (stage>=passTextures.size())	passTextures.push_back		(NULL);
-	passTextures[stage]		= Device.Resources->_CreateTexture		(texture);
+	return					stage;
+}
+void	CBlender_Compile::i_Texture		(u32 s, LPCSTR name)
+{
+	if (name)	passTextures[s]			= Device.Resources->_CreateTexture		(name);
+}
+void	CBlender_Compile::i_Projective	(u32 s, bool b)
+{
+	if	(b)	RS.SetTSS	(s,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT3 | D3DTTFF_PROJECTED);
+	else	RS.SetTSS	(s,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE );
+}
+void	CBlender_Compile::i_Address		(u32 s, u32	address)
+{
+	RS.SetSAMP			(s,D3DSAMP_ADDRESSU,	address);
+	RS.SetSAMP			(s,D3DSAMP_ADDRESSV,	address);
+	RS.SetSAMP			(s,D3DSAMP_ADDRESSW,	address);
+}
+void	CBlender_Compile::i_Filter_Min		(u32 s, u32	f)
+{
+	RS.SetSAMP			(s,D3DSAMP_MINFILTER,	f);
+}
+void	CBlender_Compile::i_Filter_Mip		(u32 s, u32	f)
+{
+	RS.SetSAMP			(s,D3DSAMP_MIPFILTER,	f);
+}
+void	CBlender_Compile::i_Filter_Mag		(u32 s, u32	f)
+{
+	RS.SetSAMP			(s,D3DSAMP_MAGFILTER,	f);
+}
+void	CBlender_Compile::i_Filter			(u32 s, u32 _min, u32 _mip, u32 _mag)
+{
+	i_Filter_Min	(s,_min);
+	i_Filter_Mip	(s,_mip);
+	i_Filter_Mag	(s,_mag);
+}
+u32		CBlender_Compile::r_Sampler		(LPCSTR _name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
+{
+	stage					= i_Sampler	(_name);
+	i_Texture				(Stage,texture);
 
 	// Sampler states
-	RS.SetSAMP				(stage,D3DSAMP_ADDRESSU,	address);
-	RS.SetSAMP				(stage,D3DSAMP_ADDRESSV,	address);
-	RS.SetSAMP				(stage,D3DSAMP_MINFILTER,	fmin);
-	RS.SetSAMP				(stage,D3DSAMP_MIPFILTER,	fmip);
-	RS.SetSAMP				(stage,D3DSAMP_MAGFILTER,	fmag);
+	i_Address				(stage,address);
+	i_Filter				(stage,fmin,fmip,fmag);
+	i_Projective			(b_ps1x_ProjectiveDivide);
 	RS.SetSAMP				(stage,D3DSAMP_ELEMENTINDEX,element);
-	if	(b_ps1x_ProjectiveDivide)	RS.SetTSS	(stage,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT3 | D3DTTFF_PROJECTED);
-	else							RS.SetTSS	(stage,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE );
+	return	stage;
 }
 
 void	CBlender_Compile::r_Sampler_rtf	(LPCSTR name, LPCSTR texture, bool b_ps1x_ProjectiveDivide, u32 element/* =0 */)

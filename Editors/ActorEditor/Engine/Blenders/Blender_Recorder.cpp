@@ -120,15 +120,26 @@ void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
 	RS.SetRS	(D3DRS_ZWRITEENABLE,	BC(bZWrite));
 }
 
-void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, u32 abSRC, u32 abDST, BOOL bATest, u32 aRef)
+void	CBlender_Compile::PassSET_ablend_mode	(BOOL bABlend,	u32 abSRC, u32 abDST)
 {
+	if (bABlend && D3DBLEND_ONE==abSRC && D3DBLEND_ZERO==abDST)		bABlend = FALSE;
 	RS.SetRS(D3DRS_ALPHABLENDENABLE,	BC(bABlend));
 	RS.SetRS(D3DRS_SRCBLEND,			bABlend?abSRC:D3DBLEND_ONE	);
 	RS.SetRS(D3DRS_DESTBLEND,			bABlend?abDST:D3DBLEND_ZERO	);
-	RS.SetRS(D3DRS_ALPHATESTENABLE,		BC(bATest));
-	if (bATest)
-		RS.SetRS(D3DRS_ALPHAREF,		u32(aRef));
 }
+void	CBlender_Compile::PassSET_ablend_aref	(BOOL bATest,	u32 aRef)
+{
+	clamp		(aRef,0u,255u);
+	RS.SetRS	(D3DRS_ALPHATESTENABLE,		BC(bATest));
+	if (bATest)	RS.SetRS(D3DRS_ALPHAREF,	u32(aRef));
+}
+
+void	CBlender_Compile::PassSET_Blend	(BOOL bABlend, u32 abSRC, u32 abDST, BOOL bATest, u32 aRef)
+{
+	PassSET_ablend_mode					(bABlend,abSRC,abDST);
+	PassSET_ablend_aref					(bATest,aRef);
+}
+
 void	CBlender_Compile::PassSET_LightFog	(BOOL bLight, BOOL bFog)
 {
 	RS.SetRS(D3DRS_LIGHTING,			BC(bLight));
