@@ -212,7 +212,7 @@ void TfrmPropertiesObject::GetSurfacesFromObject()
 	if (!m_LibObject) return;
     m_EditSurfaces.resize(m_LibObject->m_Surfaces.size());
     SurfInstIt e_it = m_EditSurfaces.begin();
-	for (SurfaceIt l_it=m_LibObject->m_Surfaces.begin(); l_it!=m_LibObject->m_Surfaces.end(); l_it++)
+	for (SurfaceIt l_it=m_LibObject->m_Surfaces.begin(); l_it!=m_LibObject->m_Surfaces.end(); l_it++,e_it++)
 		e_it->CopyFrom(*l_it);
 }
 //---------------------------------------------------------------------------
