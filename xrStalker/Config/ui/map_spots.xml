@@ -275,7 +275,7 @@
 
 
 <!-- location definitions -->
-	<actor_location hint="actor" store="1">
+	<actor_location hint="actor">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 	</actor_location>
 
@@ -292,7 +292,7 @@
 	</friend_location>
 	
 <!-- test -->
-	<heli_location hint="helicopter">
+	<heli_location hint="helicopter" store="1">
 		<level_map spot="actor_level_spot" pointer="actor_pointer"></level_map>
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
