@@ -78,6 +78,8 @@ public:
 		inherited::Init				(tSpawnID,tpSpawnPoints);
 		m_fCumulativeItemMass		= 0.0f;
 		m_dwMoney					= 0;
+		if (pSettings->LineExists(tpSpawnPoints[tSpawnID].caModel, "money"))
+			m_dwMoney = pSettings->ReadINT(tpSpawnPoints[tSpawnID].caModel, "money");
 		m_tRank						= EStalkerRank(pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "rank"));
 		m_tpItemIDs.clear			();
 	};
@@ -327,7 +329,7 @@ public:
 	TASK_VECTOR						m_tpTaskIDs;
 	float							m_fMaxItemMass;
 	ETaskState						m_tTaskState;
-	u32								m_dwCurTask;
+	STask							m_tCurTask;
 	DWORD_VECTOR					m_tpaVertices;
 	u32								m_dwCurNode;
 
@@ -369,7 +371,7 @@ public:
 		}
 		tMemoryStream.Wfloat		(m_fMaxItemMass);
 		tMemoryStream.Wdword		(m_tTaskState);
-		tMemoryStream.Wdword		(m_dwCurTask);
+		tMemoryStream.write			(&m_tCurTask,	sizeof(m_tCurTask));
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
@@ -410,7 +412,7 @@ public:
 		}
 		m_fMaxItemMass				= tFileStream.Rfloat();
 		m_tTaskState				= ETaskState(tFileStream.Rdword());
-		m_dwCurTask					= tFileStream.Rdword();
+		tFileStream.Read			(&m_tCurTask,	sizeof(m_tCurTask));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -420,7 +422,7 @@ public:
 		m_tpTaskIDs.clear			();
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
 		m_tTaskState				= eTaskStateNone;
-		m_dwCurTask					= u32(-1);
+		m_tCurTask.tTaskID			= u32(-1);
 		m_dwCurNode					= u32(-1);
 		m_tpaVertices.clear			();
 	};

@@ -87,20 +87,17 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 				}
 			}
 			else {
-				tpALifeHuman->m_dwCurTask = 0;
+				tpALifeHuman->m_tCurTask = m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[0]];
 				tpALifeHuman->m_tTaskState = eTaskStateGoing;
-				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[tpALifeHuman->m_dwCurTask]].tGraphID,tpALifeHuman->m_tpaVertices);
+				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpALifeHuman->m_tCurTask.tGraphID,tpALifeHuman->m_tpaVertices);
 				tpALifeHuman->m_dwCurNode = 0;
 			}
 			break;
 		}
 		case eTaskStateGoing : {
 			if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-				TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tpTaskIDs[tpALifeHuman->m_dwCurTask]);
-				if (T != m_tTaskRegistry.m_tpMap.end()) {
-					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[tpALifeHuman->m_dwCurTask]].tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
-					tpALifeHuman->m_dwCurNode = 0;
-				}
+				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
+				tpALifeHuman->m_dwCurNode = 0;
 				tpALifeHuman->m_tTaskState = eTaskStateReturningSuccess;
 			}
 			break;

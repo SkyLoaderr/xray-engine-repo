@@ -210,23 +210,39 @@ void CAI_ALife::vfCommunicateWithTrader(CALifeHuman *tpALifeHuman, CALifeHuman *
 {
 	// update items
 	if (tpALifeHuman->m_tTaskState == eTaskStateReturningSuccess) {
-		TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tpTaskIDs[tpALifeHuman->m_dwCurTask]);
+		TASK_PAIR_IT T = m_tTaskRegistry.m_tpMap.find(tpALifeHuman->m_tCurTask.tTaskID);
 		if (T != m_tTaskRegistry.m_tpMap.end()) {
 			STask &tCurTask = (*T).second;
 			OBJECT_IT	I = tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
 			OBJECT_IT	E = tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
-			for ( ; I != E; I++)
-				if (m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tCurTask.tClassID) {
-					tpALifeHuman->m_tTaskState = eTaskStateNone;
-
-					tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
-					tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
+			for ( ; I != E; I++) {
+				bool bOk = false;
+				switch (tCurTask.tTaskType) {
+					case eTaskTypeSearchForItemCL :
+					case eTaskTypeSearchForItemCG : {
+						bOk = m_tObjectRegistry.m_tppMap[*I]->m_tClassID == tCurTask.tClassID;
+						break;
+					}
+					case eTaskTypeSearchForItemOL :
+					case eTaskTypeSearchForItemOG : {
+						bOk = m_tObjectRegistry.m_tppMap[*I]->m_tObjectID == tCurTask.tObjectID;
+						break;
+					}
+				};
+				if (bOk) {
 					CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(m_tObjectRegistry.m_tppMap[*I]);
-					tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
-					tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-					tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
-					tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
+					if (tpTrader->m_tHumanParams.m_dwMoney >= tpALifeItem->m_dwCost) {
+						tpALifeHuman->m_tTaskState = eTaskStateNone;
+						tpTrader->m_tHumanParams.m_tpItemIDs.push_back(*I);
+						tpALifeHuman->m_tHumanParams.m_tpItemIDs.erase(I);
+						tpTrader->m_tHumanParams.m_fCumulativeItemMass += tpALifeItem->m_fMass;
+						tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
+						tpTrader->m_tHumanParams.m_dwMoney -= tpALifeItem->m_dwCost;
+						tpALifeHuman->m_tHumanParams.m_dwMoney += tpALifeItem->m_dwCost;
+						break;
+					}
 				}
+			}
 			m_tTaskRegistry.m_tpMap.erase(T);
 			tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
 			tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));

@@ -123,9 +123,10 @@ namespace ALife {
 	typedef struct tagSTask {
 		_TASK_ID					tTaskID;
 		_TIME_ID					tTimeID;
+		_OBJECT_ID					tCustomerID;
 		union {
 			_CLASS_ID				tClassID;
-			_OBJECT_ID				tCustomerID;
+			_OBJECT_ID				tObjectID;
 		};
 		union {
 			_LOCATION_ID			tLocationID;
