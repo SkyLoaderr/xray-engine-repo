@@ -102,14 +102,14 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo, bool withPrefix
 	static const ref_str withPrefixesPatterns[3] =
 	{
 		"name: %s",
-			"rank: %s",
+			"rank: %d",
 			"community: %s"
 	};
 
 	static const ref_str withoutPrefixesPatterns[3] =
 	{
 		"%s",
-			"%s",
+			"%d",
 			"%s"
 	};
 
