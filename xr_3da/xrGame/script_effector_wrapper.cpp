@@ -15,9 +15,9 @@ CScriptEffectorWrapper::~CScriptEffectorWrapper	()
 
 BOOL CScriptEffectorWrapper::Process		(SPPInfo &pp)
 {
-	BOOL	l_bResult = !!call_member<bool>("process",pp);
-	pp		= m_tInfo;
-	return	(l_bResult);
+	BOOL		l_bResult = !!luabind::call_member<bool>(this,"process",pp);
+	pp			= m_tInfo;
+	return		(l_bResult);
 }
 
 bool CScriptEffectorWrapper::Process_static	(CScriptEffector *tpLuaEffector, SPPInfo &pp)

@@ -16,7 +16,7 @@ CScriptMotivationWrapper::~CScriptMotivationWrapper	()
 
 void CScriptMotivationWrapper::reinit			(_object_type *object)
 {
-	call_member<void>				("reinit",object);
+	luabind::call_member<void>				(this,"reinit",object);
 }
 
 void CScriptMotivationWrapper::reinit_static	(inherited *motivation, _object_type *object)
@@ -26,7 +26,7 @@ void CScriptMotivationWrapper::reinit_static	(inherited *motivation, _object_typ
 
 void CScriptMotivationWrapper::Load				(LPCSTR section)
 {
-	call_member<void>				("load",section);
+	luabind::call_member<void>				(this,"load",section);
 }
 
 void CScriptMotivationWrapper::Load_static		(inherited *motivation, LPCSTR section)
@@ -36,7 +36,7 @@ void CScriptMotivationWrapper::Load_static		(inherited *motivation, LPCSTR secti
 
 void CScriptMotivationWrapper::reload			(LPCSTR section)
 {
-	call_member<void>				("reload",section);
+	luabind::call_member<void>				(this,"reload",section);
 }
 
 void CScriptMotivationWrapper::reload_static	(inherited *motivation, LPCSTR section)
@@ -46,10 +46,10 @@ void CScriptMotivationWrapper::reload_static	(inherited *motivation, LPCSTR sect
 
 float CScriptMotivationWrapper::evaluate		(u32 sub_motivation_id)
 {
-	return									(call_member<float>("evaluate",sub_motivation_id));
+	return							(luabind::call_member<float>(this,"evaluate",sub_motivation_id));
 }
 
 float CScriptMotivationWrapper::evaluate_static	(inherited *motivation, u32 sub_motivation_id)
 {
-	return									(motivation->inherited::evaluate(sub_motivation_id));
+	return							(motivation->inherited::evaluate(sub_motivation_id));
 }

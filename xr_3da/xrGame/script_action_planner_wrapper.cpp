@@ -12,7 +12,7 @@
 
 void CScriptActionPlannerWrapper::reinit		(CScriptGameObject *object, bool clear_all)
 {
-	call_member<void>				("reinit",object,clear_all);
+	luabind::call_member<void>				(this,"reinit",object,clear_all);
 }
 
 void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, CScriptGameObject *object, bool clear_all)
@@ -22,7 +22,7 @@ void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, 
 
 void CScriptActionPlannerWrapper::update		()
 {
-	call_member<void>				("update");
+	luabind::call_member<void>				(this,"update");
 }
 
 void CScriptActionPlannerWrapper::update_static	(CScriptActionPlanner *planner)

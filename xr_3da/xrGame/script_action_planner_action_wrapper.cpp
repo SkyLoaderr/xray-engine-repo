@@ -12,7 +12,7 @@
 
 void CScriptActionPlannerActionWrapper::reinit		(CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	call_member<void>				("reinit",object,storage,clear_all);
+	luabind::call_member<void>			(this,"reinit",object,storage,clear_all);
 }
 
 void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerAction *planner, CScriptGameObject *object, CPropertyStorage *storage, bool clear_all)
@@ -22,7 +22,7 @@ void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerActio
 
 void CScriptActionPlannerActionWrapper::initialize			()
 {
-	call_member<void>			("initialize");
+	luabind::call_member<void>			(this,"initialize");
 }
 
 void CScriptActionPlannerActionWrapper::initialize_static	(CScriptActionPlannerAction *action)
@@ -32,7 +32,7 @@ void CScriptActionPlannerActionWrapper::initialize_static	(CScriptActionPlannerA
 
 void CScriptActionPlannerActionWrapper::execute				()
 {
-	call_member<void>			("execute");
+	luabind::call_member<void>			(this,"execute");
 }
 
 void CScriptActionPlannerActionWrapper::execute_static		(CScriptActionPlannerAction *action)
@@ -42,7 +42,7 @@ void CScriptActionPlannerActionWrapper::execute_static		(CScriptActionPlannerAct
 
 void CScriptActionPlannerActionWrapper::finalize				()
 {
-	call_member<void>			("finalize");
+	luabind::call_member<void>			(this,"finalize");
 }
 
 void CScriptActionPlannerActionWrapper::finalize_static		(CScriptActionPlannerAction *action)
@@ -52,7 +52,7 @@ void CScriptActionPlannerActionWrapper::finalize_static		(CScriptActionPlannerAc
 
 CScriptActionPlannerActionWrapper::_edge_value_type CScriptActionPlannerActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return								(const_cast<CScriptActionPlannerActionWrapper*>(this)->call_member<_edge_value_type>("weight",condition0,condition1));
+	return								(luabind::call_member<_edge_value_type>(const_cast<CScriptActionPlannerActionWrapper*>(this),"weight",condition0,condition1));
 }
 
 CScriptActionPlannerActionWrapper::_edge_value_type CScriptActionPlannerActionWrapper::weight_static	(CScriptActionPlannerAction *action, const CSConditionState &condition0, const CSConditionState &condition1)

@@ -12,7 +12,7 @@
 
 void CScriptPropertyEvaluatorWrapper::reinit			(CScriptGameObject *object, CPropertyStorage *storage)
 {
-	call_member<void>("reinit",object,storage);
+	luabind::call_member<void>	(this,"reinit",object,storage);
 }
 
 void CScriptPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *evaluator, CScriptGameObject *object, CPropertyStorage *storage)
@@ -22,7 +22,7 @@ void CScriptPropertyEvaluatorWrapper::reinit_static	(CScriptPropertyEvaluator *e
 
 bool CScriptPropertyEvaluatorWrapper::evaluate		()
 {
-	return		(call_member<bool>("evaluate"));
+	return		(luabind::call_member<bool>(this,"evaluate"));
 }
 
 bool CScriptPropertyEvaluatorWrapper::evaluate_static	(CScriptPropertyEvaluator *evaluator)

@@ -47,7 +47,7 @@
 #define DEFINE_LUA_WRAPPER_CONST_METHOD_0(v_func_name,ret_type)							\
 		virtual ret_type v_func_name() const											\
 		{																				\
-			return const_cast<self_type*>(this)->call_member<ret_type>(#v_func_name);	\
+			return call_member<ret_type>(const_cast<self_type*>(this),#v_func_name);	\
 		}																				\
 		static ret_type v_func_name##_static(inherited* ptr)							\
 		{                                                                               \
@@ -57,7 +57,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_V0(v_func_name)										\
 		virtual void v_func_name()														\
 		{																				\
-			call_member<void>(#v_func_name);											\
+			call_member<void>(this,#v_func_name);											\
 		}																				\
 		static void v_func_name##_static(inherited* ptr)								\
 		{                                                                               \
@@ -67,7 +67,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_V1(v_func_name,t1)									\
 		virtual void v_func_name(t1 p1)													\
 		{																				\
-			call_member<void>(#v_func_name,p1);											\
+			call_member<void>(this,#v_func_name,p1);											\
 		}																				\
 		static void v_func_name##_static(inherited* ptr, t1 p1)							\
 		{                                                                               \
@@ -77,7 +77,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_V2(v_func_name,t1,t2)									\
 		virtual void v_func_name(t1 p1, t2 p2)											\
 		{																				\
-			call_member<void>(#v_func_name,p1,p2);										\
+			call_member<void>(this,#v_func_name,p1,p2);										\
 		}																				\
 		static void v_func_name##_static(inherited* ptr, t1 p1, t2 p2)					\
 		{                                                                               \
@@ -87,7 +87,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_V3(v_func_name,t1,t2,t3)								\
 		virtual void v_func_name(t1 p1, t2 p2, t3 p3)									\
 		{																				\
-			call_member<void>(#v_func_name,p1,p2,p3);									\
+			call_member<void>(this,#v_func_name,p1,p2,p3);									\
 		}																				\
 		static void v_func_name##_static(inherited* ptr, t1 p1, t2 p2, t3 p3)			\
 		{                                                                               \
@@ -97,7 +97,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_V4(v_func_name,t1,t2,t3,t4)							\
 		virtual void v_func_name(t1 p1, t2 p2, t3 p3, t4 p4)							\
 		{																				\
-			call_member<void>(#v_func_name,p1,p2,p3,p4);								\
+			call_member<void>(this,#v_func_name,p1,p2,p3,p4);								\
 		}																				\
 		static void v_func_name##_static(inherited* ptr, t1 p1, t2 p2, t3 p3, t4 p4)	\
 		{                                                                               \
@@ -107,7 +107,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_0(v_func_name,ret_type)								\
 		virtual ret_type v_func_name()													\
 		{																				\
-			return call_member<ret_type>(#v_func_name);									\
+			return call_member<ret_type>(this,#v_func_name);									\
 		}																				\
 		static ret_type v_func_name##_static(inherited* ptr)							\
 		{                                                                               \
@@ -117,7 +117,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_1(v_func_name,ret_type,t1)							\
 		virtual ret_type v_func_name(t1 p1)                                    			\
 		{																				\
-			return call_member<ret_type>(#v_func_name,p1);								\
+			return call_member<ret_type>(this,#v_func_name,p1);								\
 		}                                   											\
 		static  ret_type v_func_name##_static(inherited* ptr, t1 p1)            		\
 		{																				\
@@ -127,7 +127,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_2(v_func_name,ret_type,t1,t2)							\
 		virtual ret_type v_func_name(t1 p1, t2 p2)                                    	\
 		{																				\
-			return call_member<ret_type>(#v_func_name,p1,p2);							\
+			return call_member<ret_type>(this,#v_func_name,p1,p2);							\
 		}                                   											\
 		static  ret_type v_func_name##_static(inherited* ptr, t1 p1, t2 p2)            	\
 		{																				\
@@ -137,7 +137,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_3(v_func_name,ret_type,t1,t2,t3)						\
 		virtual ret_type v_func_name(t1 p1, t2 p2, t3 p3)                               \
 		{																				\
-			return call_member<ret_type>(#v_func_name,p1,p2,p3);						\
+			return call_member<ret_type>(this,#v_func_name,p1,p2,p3);						\
 		}                                   											\
 		static  ret_type v_func_name##_static(inherited* ptr, t1 p1, t2 p2, t3 p3)      \
 		{																				\
@@ -147,7 +147,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_4(v_func_name,ret_type,t1,t2,t3,t4)					\
 		virtual ret_type v_func_name(t1 p1, t2 p2, t3 p3, t4 p4)						\
 		{																				\
-			return call_member<ret_type>(#v_func_name,p1,p2,p3,p4);						\
+			return call_member<ret_type>(this,#v_func_name,p1,p2,p3,p4);						\
 		}                                   											\
 		static  ret_type v_func_name##_static(inherited* ptr, t1 p1, t2 p2, t3 p3, t4 p4)\
 		{																				\
@@ -162,7 +162,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_R2P1_V1(v_func_name,t1)								\
 		virtual void v_func_name(t1& p1)												\
 		{																				\
-			call_member<void>(#v_func_name,&p1);										\
+			call<void>(#v_func_name,&p1);										\
 		}                                   											\
 		static  void v_func_name##_static(inherited* ptr, t1* p1)						\
 		{																				\
@@ -172,7 +172,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_R2P1_V2(v_func_name,t1,t2)							\
 		virtual void v_func_name(t1& p1, t2 p2)											\
 		{																				\
-			call_member<void>(#v_func_name,&p1,p2);										\
+			call<void>(#v_func_name,&p1,p2);										\
 		}                                   											\
 		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2)				\
 		{																				\
@@ -182,7 +182,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_R2P2_V2(v_func_name,t1,t2)							\
 		virtual void v_func_name(t1 p1, t2& p2)											\
 		{																				\
-			call_member<void>(#v_func_name,p1,&p2);										\
+			call<void>(#v_func_name,p1,&p2);										\
 		}                                   											\
 		static  void v_func_name##_static(inherited* ptr, t1 p1, t2* p2)				\
 		{																				\
@@ -192,7 +192,7 @@
 #define DEFINE_LUA_WRAPPER_METHOD_R2P1_V4(v_func_name,t1,t2,t3,t4)						\
 		virtual void v_func_name(t1& p1, t2 p2, t3 p3, t4 p4)							\
 		{																				\
-			call_member<void>(#v_func_name,&p1,p2,p3,p4);								\
+			call<void>(#v_func_name,&p1,p2,p3,p4);								\
 		}                                   											\
 		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2, t3 p3, t4 p4)	\
 		{																				\

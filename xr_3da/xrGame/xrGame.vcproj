@@ -4728,6 +4728,19 @@
 					RelativePath="ai_sounds.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="ASpace"
+				Filter="">
+				<File
+					RelativePath=".\ai_space.cpp">
+				</File>
+				<File
+					RelativePath=".\ai_space.h">
+				</File>
+				<File
+					RelativePath=".\ai_space_inline.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Core"
@@ -7171,19 +7184,6 @@
 						RelativePath="xrServer_process_update.cpp">
 					</File>
 				</Filter>
-			</Filter>
-			<Filter
-				Name="ASpace"
-				Filter="">
-				<File
-					RelativePath=".\ai_space.cpp">
-				</File>
-				<File
-					RelativePath=".\ai_space.h">
-				</File>
-				<File
-					RelativePath=".\ai_space_inline.h">
-				</File>
 			</Filter>
 		</Filter>
 		<Filter

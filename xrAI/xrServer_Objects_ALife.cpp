@@ -769,7 +769,7 @@ void CSE_ALifeObjectPhysic::FillProps		(LPCSTR pref, PropItemVec& values)
     PHelper().CreateFlag8		(values, PrepareKey(pref,s_name,"Active"), &_flags, flActive);
 
     // motions & bones
-	ChooseValue* V				= PHelper().CreateChoose	(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
+	PHelper().CreateChoose		(values, 	PrepareKey(pref,s_name,"Model\\Fixed bones"),	&fixed_bones,		smSkeletonBones,0,(void*)visual()->get_visual(),8);
 }
 
 bool CSE_ALifeObjectPhysic::used_ai_locations	() const
