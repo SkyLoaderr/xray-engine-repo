@@ -168,6 +168,8 @@ void CAI_Zombie::FreeHuntingActive()
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
+		m_tpSoundBeingPlayed = &(m_tpaSoundNotice[::Random.randI(SND_NOTICE_COUNT)]);
+		pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 		m_fGoalChangeTime = 0;
 		if ((m_Enemy.Enemy->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (vPosition.distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))
 			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun)
