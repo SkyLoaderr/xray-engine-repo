@@ -10,6 +10,8 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
+using	namespace SceneGraph;
+
 CRender													RImplementation;
 
 //////////////////////////////////////////////////////////////////////////
@@ -94,17 +96,17 @@ IRender_Light*			CRender::light_create			()					{ return L_Dynamic->Create();			
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic->Destroy((CLightPPA*)L); L=0; }		}
 
 void					CRender::flush					()					{ flush_Models();									}
-			
+
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
-			
+
 void					CRender::add_Visual				(IRender_Visual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IRender_Visual*		V )	{ add_Static(V,View->getMask());					}
 void					CRender::add_Patch				(ref_shader& S, const Fvector& P1, float s, float a, BOOL bNearer)
 {
-	vecPatches.push_back(SceneGraph::_PatchItem());
-	SceneGraph::_PatchItem& P = vecPatches.back();
+	vecPatches.push_back(_PatchItem());
+	_PatchItem& P = vecPatches.back();
 	P.S		= S->E[0]._get();
 	P.P		= P1;
 	P.size	= s;
@@ -180,7 +182,7 @@ IC		void		gm_SetLighting		(IRenderable* O)
 		if (0==gm_Object)	return;
 		VERIFY				(O->renderable.ROS);
 		CLightTrack& LT		= *((CLightTrack*)O->renderable.ROS);
-		
+
 		// shadowing
 		if ((LT.Shadowed_dwFrame==Device.dwFrame) && O->renderable_ShadowReceive())	
 		{
@@ -259,7 +261,7 @@ void CRender::Calculate()
 	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)/g_fSCREEN;
 	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B)/g_fSCREEN;
 	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX)/g_fSCREEN;
-	
+
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
 	View							= 0;
@@ -278,7 +280,7 @@ void CRender::Calculate()
 	gm_SetAmbient					(0);
 	gm_SetNearer					(FALSE);
 	gm_SetLighting					(0);
-	
+
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
@@ -308,11 +310,11 @@ void CRender::Calculate()
 		// Traverse sector/portal structure
 		PortalTraverser.traverse	
 			(
-				pLastSector,
-				ViewBase,
-				Device.vCameraPosition,
-				Device.mFullTransform,
-				CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
+			pLastSector,
+			ViewBase,
+			Device.vCameraPosition,
+			Device.mFullTransform,
+			CPortalTraverser::VQ_HOM + CPortalTraverser::VQ_SSA
 			);
 
 		// Determine visibility for static geometry hierrarhy
@@ -330,9 +332,9 @@ void CRender::Calculate()
 		// Traverse object database
 		g_SpatialSpace.q_frustum
 			(
-				ISpatial_DB::O_ORDERED,
-				STYPE_RENDERABLE,
-				ViewBase
+			ISpatial_DB::O_ORDERED,
+			STYPE_RENDERABLE,
+			ViewBase
 			);
 
 		// Exact sorting order (front-to-back)
@@ -414,14 +416,14 @@ void __fastcall normal_L2(FixedMAP<float,IRender_Visual*>::TNode *N)
 }
 
 extern void __fastcall render_Cached(xr_vector<FCached*>& cache);
-void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
+void __fastcall mapNormal_Render	(mapNormalItems& N)
 {
 	// *** DIRECT ***
 	{
 		// DIRECT:SORTED
 		N.sorted.traverseLR		(normal_L2);
 		N.sorted.clear			();
-		
+
 		// DIRECT:UNSORTED
 		xr_vector<IRender_Visual*>&	L			= N.unsorted;
 		IRender_Visual **I=&*L.begin(), **E = &*L.end();
@@ -435,7 +437,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 }
 
 // MATRIX
-void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
+void __fastcall matrix_L2	(mapMatrixItem::TNode *N)
 {
 	IRender_Visual *V		= N->val.pVisual;
 	RCache.set_xform_world	(N->val.Matrix);
@@ -443,7 +445,7 @@ void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
 }
 
-void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
+void __fastcall matrix_L1	(mapMatrix_Node *N)
 {
 	RCache.set_Element		(N->key);
 	N->val.traverseLR		(matrix_L2);
@@ -451,7 +453,7 @@ void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 }
 
 // ALPHA
-void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
+void __fastcall sorted_L1	(mapSorted_Node *N)
 {
 	if (N->val.pObject)		VERIFY	(N->val.pObject->renderable.ROS);
 	IRender_Visual *V	=	N->val.pVisual;
@@ -481,20 +483,20 @@ void CRender::flush_Patches	()
 	for (u32 i=0; i<vecPatches.size(); i++)
 	{
 		// sort out redundancy
-		SceneGraph::_PatchItem	&P = vecPatches[i];
+		_PatchItem	&P = vecPatches[i];
 		if (P.S==cur_S)	cur_count++;
 		else {
 			groups.push_back(cur_count);
 			cur_S			= P.S;
 			cur_count		= 1;
 		}
-		
+
 		// xform
 		FVF::TL			TL;
 		TL.transform	(P.P,Device.mFullTransform);
 		if (P.nearer)	TL.p.z*=0.04f;
 		float size		= scale * P.size / TL.p.w;
-		
+
 		// Convert to screen coords
 		float cx        = (TL.p.x+1)*w_2;
 		float cy        = (TL.p.y+1)*h_2;
@@ -507,21 +509,21 @@ void CRender::flush_Patches	()
 		_sin2			= _sin(da); _cos2 = _cos(da);
 
 		V->set			(	cx + size * _sin1,	// sx
-							cy + size * _cos1,	// sy
-							TL.p.z, TL.p.w, 0xffffffff, 0,1 );		V++;
+			cy + size * _cos1,	// sy
+			TL.p.z, TL.p.w, 0xffffffff, 0,1 );		V++;
 		V->set			(	cx - size * _sin2,	// sx
-							cy - size * _cos2,	// sy
-							TL.p.z, TL.p.w, 0xffffffff, 0,0 );		V++;
+			cy - size * _cos2,	// sy
+			TL.p.z, TL.p.w, 0xffffffff, 0,0 );		V++;
 		V->set			(	cx + size * _sin2,	// sx
-							cy + size * _cos2,	// sy
-							TL.p.z, TL.p.w, 0xffffffff, 1,1 );		V++;
+			cy + size * _cos2,	// sy
+			TL.p.z, TL.p.w, 0xffffffff, 1,1 );		V++;
 		V->set			(	cx - size * _sin1,	// sx
-							cy - size * _cos1,	// sy
-							TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
+			cy - size * _cos1,	// sy
+			TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
 	}
 	groups.push_back				(cur_count);
 	RCache.Vertex.Unlock			(vecPatches.size()*4,hGeomPatches->vb_stride);
-	
+
 	// *** Render
 	int current=0;
 	for (u32 g=0; g<groups.size(); g++)
@@ -557,25 +559,26 @@ void	CRender::rmNormal	()
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 
-IC	bool	cmp_codes			(SceneGraph::mapNormalCodes::TNode* N1, SceneGraph::mapNormalCodes::TNode* N2)
+IC	bool	cmp_codes			(mapNormalCodes::TNode* N1, mapNormalCodes::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::mapNormalMatrices::TNode* N2)
+IC	bool	cmp_matrices		(mapNormalMatrices::TNode* N1, mapNormalMatrices::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_constants		(SceneGraph::mapNormalCS::TNode* N1, SceneGraph::mapNormalCS::TNode* N2)
+IC	bool	cmp_constants		(mapNormalCS::TNode* N1, mapNormalCS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_vs				(SceneGraph::mapNormalVS::TNode* N1, SceneGraph::mapNormalVS::TNode* N2)
+IC	bool	cmp_vs				(mapNormalVS::TNode* N1, mapNormalVS::TNode* N2)	{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_ps_nrm			(mapNormalPS::TNode* N1, mapNormalPS::TNode* N2)			{	return (N1->val.ssa > N2->val.ssa);		}
+
+IC	bool	cmp_cs				(mapNormalCS::TNode* N1, mapNormalCS::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_cs				(SceneGraph::mapNormalCS::TNode* N1, SceneGraph::mapNormalCS::TNode* N2)
+IC	bool	cmp_vb				(mapNormalVB::TNode* N1, mapNormalVB::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_vb				(SceneGraph::mapNormalVB::TNode* N1, SceneGraph::mapNormalVB::TNode* N2)
-{	return (N1->val.ssa > N2->val.ssa);		}
-
-IC	bool	cmp_textures_lex2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_lex2	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
 {	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
@@ -584,7 +587,7 @@ IC	bool	cmp_textures_lex2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph:
 	if ((*t1)[1] < (*t2)[1])	return true;
 	else						return false;
 }
-IC	bool	cmp_textures_lex3	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_lex3	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
 {	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
@@ -595,24 +598,24 @@ IC	bool	cmp_textures_lex3	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph:
 	if ((*t1)[2] < (*t2)[2])	return true;
 	else						return false;
 }
-IC	bool	cmp_textures_lexN	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_lexN	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
 {	
 	STextureList*	t1			= N1->key;
 	STextureList*	t2			= N2->key;
 	return std::lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
 }
-IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_ssa	(mapNormalTextures::TNode* N1, mapNormalTextures::TNode* N2)
 {	
 	return (N1->val.ssa > N2->val.ssa);		
 }
 
 void		sort_tlist			
-	(
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
-	xr_vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
-	SceneGraph::mapNormalTextures& textures, 
-	BOOL	bSSA
-	)
+(
+ xr_vector<mapNormalTextures::TNode*>& lst, 
+ xr_vector<mapNormalTextures::TNode*>& temp, 
+ mapNormalTextures& textures, 
+ BOOL	bSSA
+ )
 {
 	int amount			= textures.begin()->key->size();
 	if (bSSA)	
@@ -626,8 +629,8 @@ void		sort_tlist
 		else 
 		{
 			// Split into 2 parts
-			SceneGraph::mapNormalTextures::TNode* _it	= textures.begin	();
-			SceneGraph::mapNormalTextures::TNode* _end	= textures.end		();
+			mapNormalTextures::TNode* _it	= textures.begin	();
+			mapNormalTextures::TNode* _end	= textures.end		();
 			for (; _it!=_end; _it++)	{
 				if (_it->val.ssa > r_ssaHZBvsTEX)	lst.push_back	(_it);
 				else								temp.push_back	(_it);
@@ -664,7 +667,7 @@ void	CRender::Render		()
 	// HUD render
 	{
 		ENGINE_API extern float		psHUD_FOV;
-		
+
 		// Change projection
 		Fmatrix Pold				= Device.mProject;
 		Fmatrix FTold				= Device.mFullTransform;
@@ -688,7 +691,7 @@ void	CRender::Render		()
 	}
 
 	// Environment render
-	
+
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
 	RCache.set_xform_world			(Fidentity);
@@ -700,68 +703,80 @@ void	CRender::Render		()
 
 		for (u32 pass_id=0; pass_id<8; pass_id++)	
 		{
-			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
+			mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
 			if (0==codes.size())			break;
 			BOOL sort						= (pass_id==0);
-				
+
 			codes.getANY_P		(lstCodes);
 			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
 			for (u32 code_id=0; code_id<lstCodes.size(); code_id++)
 			{
-				SceneGraph::mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
+				mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
 				RCache.set_States					(Ncode->key);	
 
-				SceneGraph::mapNormalVS&	vs				= Ncode->val;	vs.ssa	= 0;
+				mapNormalVS&	vs				= Ncode->val;	vs.ssa	= 0;
 				vs.getANY_P		(lstVS);	if (sort)		std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
 				for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
 				{
-					SceneGraph::mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
+					mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
 					RCache.set_VS						(Nvs->key);	
-				
-					SceneGraph::mapNormalCS&	cs			= Nvs->val;		cs.ssa	= 0;
-					cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
-					for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
+
+					mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
+					ps.getANY_P						(lstPS);
+					std::sort						(lstPS.begin(), lstPS.end(), cmp_ps_nrm);
+
+					for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
 					{
-						SceneGraph::mapNormalCS::TNode*	Ncs	= lstCS[cs_id];
-						RCache.set_xform_world					(Fidentity);
-						RCache.set_Constants					(Ncs->key);
-						
-						SceneGraph::mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
-						sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
-						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
+						mapNormalPS::TNode*	Nps			= lstPS[ps_id];
+						RCache.set_PS					(Nps->key);	
+
+						mapNormalCS&	cs			= Nps->val;		cs.ssa	= 0;
+						cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
+						for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
 						{
-							SceneGraph::mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
-							RCache.set_Textures						(Ntex->key);	
+							mapNormalCS::TNode*	Ncs	= lstCS[cs_id];
+							RCache.set_xform_world					(Fidentity);
+							RCache.set_Constants					(Ncs->key);
 
-							SceneGraph::mapNormalVB&		vb		= Ntex->val;		vb.ssa	= 0;
-							vb.getANY_P		(lstVB);	if (sort)	std::sort	(lstVB.begin(),lstVB.end(),cmp_vb);
-							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
+							sort_tlist		(lstTextures,lstTexturesTemp,tex,sort);
+							for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
 							{
-								SceneGraph::mapNormalVB::TNode*		Nvb = lstVB[vb_id];
-								// RCache.set_Vertices					(Nvb->key);	
+								mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
+								RCache.set_Textures						(Ntex->key);	
 
-								SceneGraph::mapNormalMatrices&	mat		= Nvb->val;			mat.ssa	= 0;
-								mat.getANY_P	(lstMatrices);	if (sort)	std::sort	(lstMatrices.begin(),lstMatrices.end(),cmp_matrices);
-								for (u32 mat_id=0; mat_id<lstMatrices.size(); mat_id++)
+								mapNormalVB&		vb		= Ntex->val;		vb.ssa	= 0;
+								vb.getANY_P		(lstVB);	if (sort)	std::sort	(lstVB.begin(),lstVB.end(),cmp_vb);
+								for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
 								{
-									SceneGraph::mapNormalMatrices::TNode*	Nmat	= lstMatrices[mat_id];
-									RCache.set_Matrices						(Nmat->key);	
+									mapNormalVB::TNode*		Nvb = lstVB[vb_id];
+									// RCache.set_Vertices					(Nvb->key);	
 
-									SceneGraph::mapNormalItems&				items	= Nmat->val;		items.ssa	= 0;
-									mapNormal_Render						(items);
+									mapNormalMatrices&	mat		= Nvb->val;			mat.ssa	= 0;
+									mat.getANY_P	(lstMatrices);	if (sort)	std::sort	(lstMatrices.begin(),lstMatrices.end(),cmp_matrices);
+									for (u32 mat_id=0; mat_id<lstMatrices.size(); mat_id++)
+									{
+										mapNormalMatrices::TNode*	Nmat	= lstMatrices[mat_id];
+										RCache.set_Matrices						(Nmat->key);	
+
+										mapNormalItems&				items	= Nmat->val;		items.ssa	= 0;
+										mapNormal_Render						(items);
+									}
+									lstMatrices.clear		();
+									mat.clear				();
 								}
-								lstMatrices.clear		();
-								mat.clear				();
+								lstVB.clear				();
+								vb.clear				();
 							}
-							lstVB.clear				();
-							vb.clear				();
+							lstTextures.clear		();
+							lstTexturesTemp.clear	();
+							tex.clear				();
 						}
-						lstTextures.clear		();
-						lstTexturesTemp.clear	();
-						tex.clear				();
+						lstCS.clear				();
+						cs.clear				();
 					}
-					lstCS.clear				();
-					cs.clear				();
+					lstPS.clear				();
+					ps.clear				();
 				}
 				lstVS.clear				();
 				vs.clear				();
@@ -793,7 +808,7 @@ void	CRender::Render		()
 
 	// LODs
 	flush_LODs				();
-	
+
 	// Sorted (back to front)
 	mapSorted.traverseRL	(sorted_L1);
 	mapSorted.clear			();
@@ -808,11 +823,11 @@ void	CRender::Render		()
 
 	g_pGameLevel->Environment->RenderLast	();
 	// L_Projector.render					();
-	
+
 	// Postprocess
 	Target->End				();
 	L_Projector->finalize	();
-	
+
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	g_pGameLevel->pHUD->Render_Direct			();
