@@ -690,8 +690,10 @@ public:
 			const xr_vector<CNotYetVisibleObject>	&not_yet_visible_objects() const;
 			float				visibility_threshold	() const;
 			
+			// HELICOPTER
+			void				air_attack				(CLuaGameObject*);
+			void				air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
+			bool				air_attack_active		();
 
-			void air_attack					(CLuaGameObject*);
-			void air_attack_wait			(CLuaGameObject*, float dist = 20.0f, float time = 5.0f);
-			bool air_attack_active			();
+			Fvector				bone_position			(LPCSTR bone_name) const;
 };

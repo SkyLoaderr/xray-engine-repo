@@ -209,6 +209,8 @@ void CScriptEngine::export_object()
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction ))(CLuaGameObject::set_item))
 			.def("set_item",					(void (CLuaGameObject::*)(MonsterSpace::EObjectAction, CLuaGameObject *))(CLuaGameObject::set_item))
 
+			.def("bone_position",				&CLuaGameObject::bone_position)
+
 			//////////////////////////////////////////////////////////////////////////
 			//inventory owner
 			//////////////////////////////////////////////////////////////////////////

@@ -104,6 +104,11 @@ CLuaGameObject *not_yet_visible_object(const MemorySpace::CNotYetVisibleObject &
 	return			(object.m_object->lua_game_object());
 }
 
+Fvector vertex_position(u32 level_vertex_id)
+{
+	return			(ai().level_graph().vertex_position(level_vertex_id));
+}
+
 void map_add_object_icon(CLuaGameObject* lua_object, u16 text_id)
 {
 	Level().AddObjectMapLocation(lua_object->object());
@@ -197,7 +202,8 @@ void CScriptEngine::export_level()
 		def("vertex_in_direction",				vertex_in_direction),
 		def("rain_factor",						rain_factor),
 		def("patrol_path_exists",				patrol_path_exists),
-		
+		def("vertex_position",					vertex_position),
+
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon)
 	];

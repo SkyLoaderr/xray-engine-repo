@@ -904,3 +904,11 @@ bool CLuaGameObject::air_attack_active ()
 	}
 	return !!helicopter->isOnAttack();
 }
+
+Fvector	CLuaGameObject::bone_position	(LPCSTR bone_name) const
+{
+	u16					bone_id = PKinematics(m_tpGameObject->Visual())->LL_BoneID(bone_name);
+	Fmatrix				matrix;
+	matrix.mul_43		(m_tpGameObject->XFORM(),PKinematics(m_tpGameObject->Visual())->LL_GetBoneInstance(bone_id).mTransform);
+	return				(matrix.c);
+}
