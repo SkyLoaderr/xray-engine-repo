@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xrServer.h"
+#include "LevelGameDef.h"
 
 // Main
 void				game_sv_GameState::Lock						()
@@ -195,4 +196,33 @@ void game_sv_GameState::OnPlayerConnect			(u32 id_who)
 void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
 {
 	signal_Syncronize	();
+}
+
+void game_sv_GameState::Create					(LPCSTR options)
+{
+	FILE_NAME	fn_game;
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) 
+	{
+		CStream *F = Engine.FS.Open	(fn_game);
+		CStream *O = 0;
+
+		// Load RPoints
+		if (0!=(O = F->OpenChunk	(RPOINT_CHUNK)))
+		{
+			for (int id=0; O->FindChunk(id); id++)
+			{
+				RPoint					R;
+				int						team;
+
+				O->Rvector				(R.P);
+				O->Rvector				(R.A);
+				team					= O->Rdword	();
+				VERIFY					(team>=0 && team<4);
+				rpoints[team].push_back	(R);
+			}
+			O->Close();
+		}
+
+		Engine.FS.Close	(F);
+	}
 }

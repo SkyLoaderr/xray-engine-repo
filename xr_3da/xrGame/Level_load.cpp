@@ -223,25 +223,6 @@ BOOL CLevel::Load_GameSpecific_Before()
 		CStream *F = Engine.FS.Open	(fn_game);
 		CStream *O = 0;
 
-		// Load RPoints
-		if (0!=(O = F->OpenChunk	(RPOINT_CHUNK)))
-		{
-			for (int id=0; O->FindChunk(id); id++)
-			{
-				Fvector4	dest;
-				Fvector		pos,angles;
-				int			team;
-
-				O->Rvector	(pos);
-				O->Rvector	(angles);
-				team		= O->Rdword	();
-
-				dest.set		(pos.x,pos.y,pos.z,angles.y);
-				Level().get_team(team).RespawnPoints.push_back(dest);
-			}
-			O->Close();
-		}
-
 		// Load WayPoints
 		if (0!=(O = F->OpenChunk	(WAY_PATROLPATH_CHUNK)))
 		{

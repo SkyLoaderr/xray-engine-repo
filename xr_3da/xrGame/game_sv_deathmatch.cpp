@@ -3,6 +3,7 @@
 
 void	game_sv_Deathmatch::Create					(LPCSTR options)
 {
+	__super::Create					(options);
 	fraglimit	= get_option_i		(options,"fraglimit",0);
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 	switch_Phase(GAME_PHASE_PENDING);

@@ -40,7 +40,6 @@ class CTeam
 {
 public:
 	svector<CSquad,maxTeams>	Squads;
-	svector<Fvector4,maxRP>		RespawnPoints;
 };
 
 class CLevel : public CCreator, public IPureClient
@@ -174,7 +173,7 @@ public:
 
 IC CLevel&				Level()		{ return *((CLevel*) pCreator); }
 IC game_cl_GameState&	Game()		{ return Level().game;			}
-IC u32				GameID()	{ return Game().type;			}
+IC u32					GameID()	{ return Game().type;			}
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;

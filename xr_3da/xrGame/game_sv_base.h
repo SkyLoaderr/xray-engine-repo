@@ -9,8 +9,15 @@
 
 class	game_sv_GameState	: public game_GameState
 {
+protected:
+	struct		RPoint
+	{
+		Fvector	P;
+		Fvector A;
+	};
 public:
 	BOOL							sv_force_sync;
+	vector<RPoint>					rpoints	[4];
 public:
 	// Main accessors
 	virtual		void				Lock					();
@@ -49,6 +56,7 @@ public:
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 
 	// Main
+	virtual		void				Create					(LPCSTR options);
 	virtual		void				Update					()								= 0;
 	virtual		void				net_Export_State		(NET_Packet& P, u32 id_to);				// full state
 	virtual		void				net_Export_Update		(NET_Packet& P, u32 id_to, u32 id);		// just incremental update for specific client
