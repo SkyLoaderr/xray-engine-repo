@@ -1061,12 +1061,12 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
     }
     if (Ini)	xr_delete(Ini);
 	
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),			(u32*)&m_tLocations[0],			&locations[0],	1);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),			(u32*)&m_tLocations[1],			&locations[1],	1);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),			(u32*)&m_tLocations[2],			&locations[2],	1);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),			(u32*)&m_tLocations[3],			&locations[3],	1);
-	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),(u32*)&m_tLevelID,				&level_ids,		1);
-	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,sizeof(m_caConnectionPointName));
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+	PHelper.CreateToken4	(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+	PHelper.CreateText		(items,	PHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
 
