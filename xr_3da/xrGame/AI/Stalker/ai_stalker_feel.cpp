@@ -10,6 +10,7 @@
 #include "ai_stalker.h"
 #include "..\\ai_monsters_misc.h"
 
+#define LOG_PARAMETERS
 #define MIN_SOUND_VOLUME				.05f
 #define SOUND_UPDATE_DELAY				3000
 
@@ -38,67 +39,52 @@ void CAI_Stalker::OnVisible	()
 
 bool CAI_Stalker::bfCheckForVisibility(CEntity* tpEntity)
 {
-	return(true);
+//	return(true);
 //	if (Level().iGetKeyState(DIK_RCONTROL))
 //		return(false);
-//
-//	float fResult = 0.f;
-//	
-//	// computing maximum viewable distance in the specified direction
-//	Fvector tCurrentWatchDirection, tTemp;
-//	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
-//	tCurrentWatchDirection.normalize();
-//	tTemp.sub(tpEntity->Position(),vPosition);
-//	if (tTemp.magnitude() > EPS_L)
-//		tTemp.normalize();
-//	else
-//		return(true);
-//	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-//	//float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-//	clamp(fAlpha,-.99999f,+.99999f);
-//	fAlpha = acosf(fAlpha);
-//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
-//	
-//	// computing distance weight
-//	tTemp.sub(vPosition,tpEntity->Position());
-//	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
-//	
-//	// computing movement speed weight
-//	if (tpEntity->ps_Size() > 1) {
-//		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-//		if (dwTime < m_dwMovementIdleTime) {
-//			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
-//			float fSpeed = tTemp.magnitude()/dwTime;
-//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
-//		}
-//	}
-//	
-//	// computing my ability to view the enemy
-//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-//	
-//	// computing enemy state
-//	switch (m_cBodyState) {
-//		case BODY_STATE_STAND : {
-//			break;
-//		}
-//		case BODY_STATE_CROUCH : {
-//			fResult *= m_fCrouchVisibilityMultiplier;
-//			break;
-//		}
-//		case BODY_STATE_LIE : {
-//			fResult *= m_fLieVisibilityMultiplier;
-//			break;
-//		}
-//	}
+#ifdef LOG_PARAMETERS
+	int			iLogParameters = Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0;
+	string4096	S = "";
+#endif
+	float fResult = 0.f;
+	
+	// computing maximum viewable distance in the specified direction
+	float fDistance = vPosition.distance_to(tpEntity->Position()), yaw, pitch;
+	Fvector tDirection;
+	tDirection.sub(tpEntity->Position(),vPosition);
+	tDirection.getHP(yaw,pitch);
+
+	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - r_current.yaw),angle_normalize_signed(pitch - r_current.pitch)));
+	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
+	
+	// computing distance weight
+	fResult += fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection);
+	
+	// computing movement speed weight
+	float fSpeed = 0;
+	if (tpEntity->ps_Size() > 1) {
+		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+		if (dwTime < m_dwMovementIdleTime) {
+			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition.distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition)/dwTime;
+			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+		}
+	}
+	
+	// computing my ability to view the enemy
+	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
 	
 	// computing lightness weight
-//	float fTemp = float(tpEntity->AI_Node->light)/255.f;
-//	if (fTemp < .05f)
-//		fResult = 0.f;
-//	else
-//		fResult += m_fShadowWeight*fTemp;
-//	
-//	return(fResult >= m_fVisibilityThreshold);
+	float fTemp = float(tpEntity->AI_Node->light)/255.f;
+	if (fTemp < .05f)
+		fResult = 0.f;
+	else
+		fResult += m_fShadowWeight*fTemp;
+	
+#ifdef LOG_PARAMETERS
+	if (iLogParameters)
+		Msg("%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f",fDistance,fAlpha,fSpeed,AI_Path.fSpeed,float(tpEntity->AI_Node->light)/255.f,float(AI_Node->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+#endif
+	return(fResult >= m_fVisibilityThreshold);
 }
 
 void CAI_Stalker::SetDirectionLook()
@@ -378,7 +364,7 @@ void CAI_Stalker::SelectSound(int &iIndex)
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	#ifdef WRITE_LOG
-		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+//		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 	if (!g_Alive()) {
