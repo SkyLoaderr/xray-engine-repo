@@ -84,8 +84,9 @@ void CScriptZone::net_Relcase			(CObject *O)
 	if (!l_tpGameObject)
 		return;
 
-	if (std::find(feel_touch.begin(),feel_touch.end(),O) != feel_touch.end())
-		feel_touch_delete		(O);
+	if (std::find(feel_touch.begin(),feel_touch.end(),O) != feel_touch.end()) {
+		SCRIPT_CALLBACK_EXECUTE_2(*m_tpOnExit, lua_game_object(),l_tpGameObject->lua_game_object());
+	}
 }
 
 BOOL CScriptZone::feel_touch_contact	(CObject* O)
