@@ -31,7 +31,7 @@ CWeaponLR300::CWeaponLR300() : CWeaponMagazined("LR300")
 	fFlameSize		= 0;
 }
 
-CWeaponLR300::~CWeaponLR300()
+CWeaponLR300::~CWeaponLR300		()
 {
 	// sounds
 	pSounds->Delete3D	(sndFireLoop	);
@@ -48,7 +48,7 @@ void CWeaponLR300::Load	(CInifile* ini, const char* section){
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
 }
 
-void CWeaponLR300::MediaLOAD		()
+void CWeaponLR300::MediaLOAD	()
 {
 	// flame textures
 	LPCSTR S		= pSettings->ReadSTRING	(cName(),"flame");
