@@ -3,16 +3,6 @@
 class ENGINE_API	R_xforms
 {
 public:
-	enum	
-	{
-		dirty_W		= (1<<0),	// world
-		dirty_V		= (1<<1),	// view
-		dirty_P		= (1<<2),	// projection
-		dirty_M		= (1<<3)	// mapping
-	};
-
-	u32				flags;
-
 	Fmatrix			m_w;		// Basic	- world
 	Fmatrix			m_v;		// Basic	- view
 	Fmatrix			m_p;		// Basic	- projection
@@ -20,35 +10,22 @@ public:
 	Fmatrix			m_vp;		// Derived	- view2projection
 	Fmatrix			m_wvp;		// Derived	- world2view2projection
 
-	R_mapping*		mapping;
-private:
-	void			flush_cache	();
+	R_constant*		c_w;
+	R_constant*		c_v;
+	R_constant*		c_p;
+	R_constant*		c_wv;
+	R_constant*		c_vp;
+	R_constant*		c_wvp;
 public:
-	R_xforms()
-	{
-		set_W		(Fidentity);
-		set_V		(Fidentity);
-		set_P		(Fidentity);
-		set_mapping	(NULL);
-	}
-	IC void			set_W		(const Fmatrix& m)		{	flags |= dirty_W; m_w.set(m);	}
-	IC void			set_V		(const Fmatrix& m)		{	flags |= dirty_V; m_v.set(m);	}
-	IC void			set_P		(const Fmatrix& m)		{	flags |= dirty_P; m_p.set(m);	}
-	IC void			set_mapping	(R_mapping* C)
-	{
-		if (C && !C->empty)
-		{
-			if (C!=mapping)
-			{
-				mapping	=	C;
-				flags	|=	dirty_M;
-			}
-		} 
-		else 
-		{
-			mapping	=	NULL;
-			flags	&=	~dirty_M;
-		}
-	}
-	IC void			flush		()					{	if (flags && mapping)	flush_cache();	};
+	R_xforms		();
+	void			unmap		();
+	void			set_W		(const Fmatrix& m);
+	void			set_V		(const Fmatrix& m);
+	void			set_P		(const Fmatrix& m);
+	IC void			set_c_w		(R_constant* C)		{	c_w		= C;	RCache.set_c(C,m_w);	};
+	IC void			set_c_v		(R_constant* C)		{	c_v		= C;	RCache.set_c(C,m_v);	};
+	IC void			set_c_p		(R_constant* C)		{	c_p		= C;	RCache.set_c(C,m_p);	};
+	IC void			set_c_wv	(R_constant* C)		{	c_wv	= C;	RCache.set_c(C,m_wv);	};
+	IC void			set_c_vp	(R_constant* C)		{	c_vp	= C;	RCache.set_c(C,m_vp);	};
+	IC void			set_c_wvp	(R_constant* C)		{	c_wvp	= C;	RCache.set_c(C,m_wvp);	};
 };

@@ -4,6 +4,15 @@
 #include "blenders\Blender_Recorder.h"
 #include "blenders\Blender.h"
 
+class	cl_xform_w			: public R_constant_setup
+{
+	virtual void			setup	(R_constant* C)
+	{
+		RCache.set_c		(C,RCache.xforms.m_w);
+		RCache.xforms.s
+	}
+};
+
 void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwrite,	BOOL bABlend, u32 abSRC, u32 abDST, BOOL aTest, u32 aRef)
 {
 	RS.Invalidate			();
@@ -19,19 +28,31 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	SVS* vs					= Device.Shader._CreateVS			(_vs);
 	dest.ps					= ps->ps;
 	dest.vs					= vs->vs;
-	dest.constants			= Device.Shader._CreateConstantTable(&ps->constants,&vs->constants);
+	ctable.merge			(ps->constants);
+	ctable.merge			(vs->constants);
+
+	// Standart constant-binding
+}
+
+void	CBlender_Compile::r2_Constant	(LPCSTR name, R_constant_setup* s)
+{
+	R_ASSERT				(s);
+	R_constant*	C			= ctable.get(name);
+	R_ASSERT				(C);
+	C->handler				= s;
 }
 
 void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
 	// Find index
-	R_constant*	C			= dest.constants->get(name);
+	R_constant*	C			= ctable.get(name);
 	R_ASSERT				(C);
 	R_ASSERT				(C->type == RC_sampler);
 	u32 stage				= C->samp.index;
+	R_ASSERT				(stage<16);
 
 	// Create texture
-	while (stage>=passTextures.size())	passTextures.push_back(NULL);
+	while (stage>=passTextures.size())	passTextures.push_back	(NULL);
 	if (passTextures[stage])	Device.Shader._DeleteTexture	(passTextures[stage]);
 	passTextures[stage]			= Device.Shader._CreateTexture	(texture);
 
@@ -46,6 +67,7 @@ void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32
 
 void	CBlender_Compile::r2_End		()
 {
+	dest.constants			= Device.Shader._CreateConstantTable(ctable);
 	dest.state				= Device.Shader._CreateState		(RS.GetContainer());
 	dest.T					= Device.Shader._CreateTextureList	(passTextures);
 	dest.M					= 0;

@@ -15,19 +15,15 @@ IC void	CBackend::set_xform				(u32 ID, const Fmatrix& M)
 IC	void	CBackend::set_xform_world	(const Fmatrix& M)
 { 
 	xforms.set_W(M);	
-	set_xform	(D3DTS_WORLD,M);			
 }
 IC	void	CBackend::set_xform_view	(const Fmatrix& M)					
 { 
 	xforms.set_V(M);	
-	set_xform	(D3DTS_VIEW,M);			
 }
 IC	void	CBackend::set_xform_project	(const Fmatrix& M)
 { 
 	xforms.set_P(M);	
-	set_xform	(D3DTS_PROJECTION,M);		
 }
-
 IC void CBackend::set_RT				(IDirect3DSurface9* RT, u32 ID)
 {
 	if (RT!=pRT[ID])
