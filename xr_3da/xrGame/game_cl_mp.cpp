@@ -36,6 +36,7 @@ game_cl_mp::~game_cl_mp()
 {
 	xr_delete(pChatWnd);
 	xr_delete(pChatLog);
+	xr_delete(pGameLog);
 
 	CL_TEAM_DATA_LIST_it it = TeamList.begin();
 	for(;it!=TeamList.end();++it)
