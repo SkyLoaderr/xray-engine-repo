@@ -546,6 +546,9 @@
 					RelativePath=".\m_fraction.ltx">
 				</File>
 				<File
+					RelativePath=".\m_person.ltx">
+				</File>
+				<File
 					RelativePath=".\m_stalker.ltx">
 				</File>
 				<File
