@@ -177,16 +177,6 @@ void OGF::MakeProgressive()
 
 void OGF_Base::Save	(IWriter &fs)
 {
-	// BBox (already computed)
-	fs.open_chunk		(OGF_BBOX);
-	fs.w			(&bbox,sizeof(Fvector)*2);
-	fs.close_chunk		();
-
-	// Sphere (already computed)
-	fs.open_chunk		(OGF_BSPHERE);
-	fs.w			(&C,sizeof(Fvector));
-	fs.w			(&R,sizeof(float));
-	fs.close_chunk		();
 }
 
 // Represent a node as HierrarhyVisual
@@ -200,11 +190,15 @@ void OGF_Node::Save	(IWriter &fs)
 	H.format_version	= xrOGF_FormatVersion;
 	H.type				= MT_HIERRARHY;
 	H.shader_id			= 0;
+	H.bb.min			= bbox.min;
+	H.bb.max			= bbox.max;
+	H.bs.c				= C;
+	H.bs.r				= R;
 	fs.w				(&H,sizeof(H));
 	fs.close_chunk		();
 
-	// Chields
-	fs.open_chunk		(OGF_CHIELDS_L);
+	// Children
+	fs.open_chunk		(OGF_CHILDREN_L);
 	fs.w_u32			((u32)chields.size());
 	fs.w				(&*chields.begin(),(u32)chields.size()*sizeof(u32));
 	fs.close_chunk		();
@@ -232,7 +226,7 @@ void OGF_LOD::Save		(IWriter &fs)
 	fs.close_chunk		();
 
 	// Chields
-	fs.open_chunk		(OGF_CHIELDS_L);
+	fs.open_chunk		(OGF_CHILDREN_L);
 	fs.w_u32			((u32)chields.size());
 	fs.w				(&*chields.begin(),(u32)chields.size()*sizeof(u32));
 	fs.close_chunk		();

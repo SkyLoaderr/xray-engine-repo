@@ -150,9 +150,6 @@ void OGF::Save			(IWriter &fs)
 	
 	switch (H.type) 
 	{
-	case MT_CACHED:			
-		Save_Cached		(fs,H,bVertexColors);		
-		break;
 	case MT_NORMAL:
 	case MT_PROGRESSIVE:
 		Save_Normal_PM	(fs,H,bVertexColors);		
@@ -227,7 +224,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	R_ASSERT		(0);
 
 	fs.open_chunk	(OGF_VERTICES);
-	fs.w_u32		(OGF_STATIC);
+	fs.w_u32		(0);
 	fs.w_u32		((u32)vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{

@@ -812,14 +812,14 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             // Build matrix
             Fmatrix					RES;
             RES.mk_xform			(Result.Q,Result.T);
-            BONE_INST.mATransform.mul_43(*parent,RES);
+            BONE_INST.mTransform.mul_43(*parent,RES);
             if (BONE_INST.Callback)		BONE_INST.Callback(&BONE_INST);
-	        BONE_INST.mBTransform.mul_43(BONE_INST.mATransform,m2b_transform);
+	        BONE_INST.mRenderTransform.mul_43(BONE_INST.mTransform,m2b_transform);
         }
 
         // Calculate children
         for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
-            ((CBoneDataAnimated*)(*C))->Calculate(K,&BONE_INST.mATransform);
+            ((CBoneDataAnimated*)(*C))->Calculate(K,&BONE_INST.mTransform);
     }
 }
 
@@ -856,7 +856,7 @@ void CSkeletonAnimated::CalculateBones		(BOOL bForceExact)
 		{
 			if			(!LL_GetBoneVisible(u16(b)))		continue;
 			Fobb&		obb		= (*bones)[b]->obb;
-			Fmatrix&	Mbone	= bone_instances[b].mATransform;
+			Fmatrix&	Mbone	= bone_instances[b].mTransform;
 			Fmatrix		Mbox;	obb.xform_get(Mbox);
 			Fmatrix		X;		X.mul_43(Mbone,Mbox);
 			Fvector&	S		= obb.m_halfsize;

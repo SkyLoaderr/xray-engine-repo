@@ -12,10 +12,10 @@ extern int	psSkeletonUpdate;
 // BoneInstance methods
 void		CBoneInstanceRigid::construct	()
 {
-	ZeroMemory			(this,sizeof(*this));
-	mATransform.identity	();
-	mBTransform.identity	();
-	Callback_overwrite	= FALSE;
+	ZeroMemory					(this,sizeof(*this));
+	mTransform.identity			();
+	mRenderTransform.identity	();
+	Callback_overwrite			= FALSE;
 }
 
 void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
@@ -50,7 +50,7 @@ void CSkeletonRigid::CalculateBones			(BOOL bForceExact)
 		{
 			if			(!LL_GetBoneVisible(u16(b)))		continue;
 			Fobb&		obb		= (*bones)[b]->obb;
-			Fmatrix&	Mbone	= bone_instances[b].mATransform;
+			Fmatrix&	Mbone	= bone_instances[b].mTransform;
 			Fmatrix		Mbox;	obb.xform_get(Mbox);
 			Fmatrix		X;		X.mul_43(Mbone,Mbox);
 			Fvector&	S		= obb.m_halfsize;
@@ -84,13 +84,13 @@ void CBoneDataRigid::Calculate	(CKinematics* K, Fmatrix *parent)
 			if (INST.Callback)		INST.Callback(&INST);
         } else {
             // Build matrix
-            INST.mATransform.mul_43	(*parent,bind_transform);
-            if (INST.Callback)		INST.Callback(&INST);
-	        INST.mBTransform.mul_43(INST.mATransform,m2b_transform);
+            INST.mTransform.mul_43		(*parent,bind_transform);
+            if (INST.Callback)			INST.Callback(&INST);
+	        INST.mRenderTransform.mul_43(INST.mTransform,m2b_transform);
         }
 
         // Calculate children
         for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)
-            ((CBoneDataRigid*)(*C))->Calculate(K,&INST.mATransform);
+            ((CBoneDataRigid*)(*C))->Calculate(K,&INST.mTransform);
 	}
 }

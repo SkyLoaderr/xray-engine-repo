@@ -12,10 +12,10 @@ int			psSkeletonUpdate	= 32;
 // BoneInstance methods
 void		CBoneInstance::construct	()
 {
-	ZeroMemory			(this,sizeof(*this));
-	mATransform.identity	();
-	mBTransform.identity	();
-	Callback_overwrite	= FALSE;
+	ZeroMemory					(this,sizeof(*this));
+	mTransform.identity			();
+	mRenderTransform.identity	();
+	Callback_overwrite			= FALSE;
 }
 void		CBoneInstance::set_callback	(BoneCallback C, void* Param, BOOL overwrite)
 {	
@@ -88,8 +88,8 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 	Fvector H1; H1.set(0.01f,0.01f,0.01f);
 	Fvector H2; H2.mul(H1,2);
 	for (u32 i=0; i<dbgLines.size(); i+=2)	{
-		Fmatrix& M1 = bone_instances[dbgLines[i]].mATransform;
-		Fmatrix& M2 = bone_instances[dbgLines[i+1]].mATransform;
+		Fmatrix& M1 = bone_instances[dbgLines[i]].mTransform;
+		Fmatrix& M2 = bone_instances[dbgLines[i+1]].mTransform;
 
 		Fvector P1,P2;
 		M1.transform_tiny(P1,Z);
@@ -105,7 +105,7 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 	for (u32 b=0; b<bones->size(); b++)
 	{
 		Fobb&		obb		= (*bones)[b]->obb;
-		Fmatrix&	Mbone	= bone_instances[b].mATransform;
+		Fmatrix&	Mbone	= bone_instances[b].mTransform;
 		Fmatrix		Mbox;	obb.xform_get(Mbox);
 		Fmatrix		X;		X.mul(Mbone,Mbox);
 		Fmatrix		W;		W.mul(XFORM,X);
@@ -335,8 +335,8 @@ void CKinematics::LL_SetBoneVisible(u16 bone_id, BOOL val, BOOL bRecursive)
     u64 mask 			= u64(1)<<bone_id;
     visimask.set		(mask,val);
 	if (!visimask.is(mask))
-        bone_instances[bone_id].mATransform.scale(0.f,0.f,0.f);
-        bone_instances[bone_id].mBTransform.mul_43(bone_instances[bone_id].mATransform,(*bones)[bone_id]->m2b_transform);
+        bone_instances[bone_id].mTransform.scale(0.f,0.f,0.f);
+        bone_instances[bone_id].mRenderTransform.mul_43(bone_instances[bone_id].mTransform,(*bones)[bone_id]->m2b_transform);
     if (bRecursive){
         for (xr_vector<CBoneData*>::iterator C=(*bones)[bone_id]->children.begin(); C!=(*bones)[bone_id]->children.end(); C++)
             LL_SetBoneVisible((*C)->SelfID,val,bRecursive);
@@ -351,8 +351,8 @@ void CKinematics::LL_SetBonesVisible(u64 mask)
     	if (mask&bm){
         	visimask.set	(bm,TRUE);
         }else{
-	    	Fmatrix& A		= bone_instances[b].mATransform;
-	    	Fmatrix& B		= bone_instances[b].mBTransform;
+	    	Fmatrix& A		= bone_instances[b].mTransform;
+	    	Fmatrix& B		= bone_instances[b].mRenderTransform;
         	A.scale			(0.f,0.f,0.f);
 	        B.mul_43		(A,(*bones)[b]->m2b_transform);
         }
