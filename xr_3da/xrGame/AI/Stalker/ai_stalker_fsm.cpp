@@ -266,7 +266,7 @@ void CAI_Stalker::RetreatKnown()
 	//CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(m_tpWeaponToTake,eStalkerStateTakeItem);
 
 //	Msg("[%f][%f][%f]",VPUSH(m_tSavedEnemyPosition));
-	vfChoosePointAndBuildPath	(m_tSelectorRetreat,false,true);
+	vfChoosePointAndBuildPath	(m_tSelectorRetreat,true,true);
 
 	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePoint,m_tSavedEnemyPosition);
 	

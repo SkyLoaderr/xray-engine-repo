@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_soldier.h"
-#include "ai_soldier_selectors.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\a_star.h"
 
@@ -26,11 +25,11 @@ bool CAI_Soldier::bfCheckPath(AI::NodePath &Path) {
 		return(true);
 }
 
-void CAI_Soldier::vfBuildPathToDestinationPoint(CAISelectorBase *S)
+void CAI_Soldier::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S)
 {
 	// building a path from and to
 	if (S)
-		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->fOptEnemyDistance);
+		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path,S->m_dwEnemyNode,S->m_fOptEnemyDistance);
 	else
 		getAI().m_tpAStar->ffFindOptimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
@@ -62,13 +61,13 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 	}
 }
 
-void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Soldier::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
 	// setting watch mode to false
 //	bool bWatch = false;
 	// if i am not a leader then assign leader
-	S.m_tHitDir			= tHitDir;
-	S.m_dwHitTime		= dwHitTime;
+	S.m_tHitDir			= m_tHitDir;
+	S.m_dwHitTime		= m_dwHitTime;
 	
 	S.m_dwCurTime		= m_dwCurrentUpdate;
 	//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
@@ -94,10 +93,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 		S.m_tpEnemyNode		= tpSavedEnemyNode;
 	}
 	
-	S.taMembers = &(Squad.Groups[g_Group()].Members);
-	
-	//if (S.m_tLeader)
-	//	S.taMembers.push_back(S.m_tLeader);
+	S.m_taMembers = &(Squad.Groups[g_Group()].Members);
 }
 
 void CAI_Soldier::vfSaveEnemy()
@@ -108,7 +104,7 @@ void CAI_Soldier::vfSaveEnemy()
 	dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 }
 
-void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Soldier::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
 	if ((!m_dwLastRangeSearch) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
@@ -116,18 +112,19 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 //		u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		Device.Statistic.AI_Node.Begin();
-		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+		Squad.Groups[g_Group()].GetAliveMemberInfo(S.m_taMemberPositions, S.m_taMemberNodes, S.m_taDestMemberPositions, S.m_taDestMemberNodes, this);
 		Device.Statistic.AI_Node.End();
 		// search for the best node according to the 
 		// selector evaluation function in the radius N meteres
-		float fOldCost;
+		float fOldCost = MAX_NODE_ESTIMATION_COST;
 //		if (bLastSearch)
 //			getAI().q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
 //		else
-			getAI().q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+//			getAI().q_Range_Bit(AI_NodeID,Position(),S.m_fSearchRange,S,fOldCost);
+		S.vfShallowGraphSearch(getAI().q_mark_bit);
 		// if search has found _new_ best node then 
-		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-			AI_Path.DestNode		= S.BestNode;
+		if (((AI_Path.DestNode != S.m_dwBestNode) || (!bfCheckPath(AI_Path))) && (S.m_fBestCost < (fOldCost - S.m_fLaziness))){
+			AI_Path.DestNode		= S.m_dwBestNode;
 			AI_Path.bNeedRebuild	= TRUE;
 			vfAddToSearchList();
 		} 
@@ -143,21 +140,23 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 	}
 }
 
-void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Soldier::vfSearchForBetterPositionWTime(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
 //	u32 dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
 	Device.Statistic.AI_Node.Begin();
-	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+	Squad.Groups[g_Group()].GetAliveMemberInfo(S.m_taMemberPositions, S.m_taMemberNodes, S.m_taDestMemberPositions, S.m_taDestMemberNodes, this);
 	Device.Statistic.AI_Node.End();
 	// search for the best node according to the 
 	// selector evaluation function in the radius N meteres
-	float fOldCost;
-	getAI().q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+	float fOldCost = MAX_NODE_ESTIMATION_COST;
+//	getAI().q_Range(AI_NodeID,Position(),S.m_fSearchRange,S,fOldCost);
+	S.vfShallowGraphSearch();
+
 	// if search has found _new_ best node then 
-	//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-	if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
-		AI_Path.DestNode		= S.BestNode;
+	//if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.m_fLaziness))){
+	if ((AI_Path.DestNode != S.m_dwBestNode) && (S.m_fBestCost < (fOldCost - S.m_fLaziness))){
+		AI_Path.DestNode		= S.m_dwBestNode;
 		AI_Path.bNeedRebuild	= TRUE;
 		vfAddToSearchList();
 	} 
@@ -248,7 +247,7 @@ void CAI_Soldier::vfSetMovementType(EMovementTypes cMovementType,float fMultplie
 	/**/
 	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;
 	if (m_fDistanceWent >= DISTANCE_TO_STEP) {
-		::Sound->play_at_pos(sndSteps[m_cStep ^= char(1)],this,vPosition);
+		::Sound->PlayAtPos(sndSteps[m_cStep ^= char(1)],this,vPosition);
 		m_fDistanceWent = 0.f;		
 	}
 	/**/

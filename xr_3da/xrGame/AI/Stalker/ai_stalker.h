@@ -9,9 +9,8 @@
 #pragma once
 
 #include "..\\..\\CustomMonster.h"
-#include "..\\ai_monsters.h"
+#include "..\\ai_selector_template.h"
 #include "ai_stalker_animations.h"
-#include "ai_stalker_selectors.h"
 
 #define MAX_STATE_LIST_SIZE				256
 #define MAX_DYNAMIC_OBJECTS 			32
@@ -172,10 +171,10 @@ private:
 	EStalkerStates			m_eCurrentState;
 	EStalkerStates			m_ePreviousState;
 	bool					m_bStateChanged;
-	CStalkerSelectorFreeHunting	m_tSelectorFreeHunting;
-	CStalkerSelectorReload	m_tSelectorReload;
-	CStalkerSelectorRetreat	m_tSelectorRetreat;
-	CStalkerSelectorAttack	m_tSelectorAttack;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>		m_tSelectorFreeHunting;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight>	m_tSelectorReload;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
+	CAI_NodeEvaluatorFull												m_tSelectorAttack;
 	u32						m_dwActionRefreshRate;
 	float					m_fAttackSuccessProbability;
 	Fvector					m_tMySavedPosition;
@@ -224,10 +223,10 @@ private:
 			void			DropItem						();
 
 			// selectors
-			void			vfBuildPathToDestinationPoint	(CAISelectorBase *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);
-			void			vfSearchForBetterPosition		(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-			void			vfInitSelector					(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-			void			vfChoosePointAndBuildPath		(CAISelectorBase &tSelector, bool bCanStraighten = false, bool bWalkAround = false);
+			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *S, bool bCanStraighten = false, Fvector *tpDestinationPosition = 0);
+			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
+			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator &tSelector, bool bCanStraighten = false, bool bWalkAround = false);
 			// animations
 			void			vfAssignGlobalAnimation			(CMotionDef *&tpGlobalAnimation);
 			void			vfAssignTorsoAnimation			(CMotionDef *&tpGlobalAnimation);
@@ -262,7 +261,7 @@ private:
 			void			vfMarkVisibleNodes				(CEntity *tpEntity);
 			void			vfFindAllSuspiciousNodes		(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
 			void			vfClasterizeSuspiciousNodes		(CGroup &Group);
-			void			vfChooseSuspiciousNode			(CAISelectorBase &tSelector);
+			void			vfChooseSuspiciousNode			(IBaseAI_NodeEvaluator &tSelector);
 			int				ifGetSuspiciousAvailableNode	(int iLastIndex, CGroup &Group);
 			bool			bfCheckForNodeVisibility		(u32 dwNodeID, bool bIfRyPick = false);
 			void			SelectSound						(int &iIndex);

@@ -274,13 +274,13 @@ void xrMergeSpawns()
 	vector<CSpawn *>			tpLevels;
 	CALifeGraph::SLevel			tLevel;
     LPCSTR						N,V;
-	R_ASSERT					(Ini->SectionExists("levels"));
-    for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
-		R_ASSERT				(Ini->SectionExists(N));
-		V						= Ini->ReadSTRING(N,"name");
+	R_ASSERT					(Ini->section_exist("levels"));
+    for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+		R_ASSERT				(Ini->section_exist(N));
+		V						= Ini->r_string(N,"name");
 		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
-		u32						id = Ini->ReadINT(N,"id");
+		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>(tLevel,id,&dwGroupOffset));
     }
 	R_ASSERT					(tpLevels.size());

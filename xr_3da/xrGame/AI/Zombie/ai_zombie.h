@@ -9,7 +9,7 @@
 #ifndef __XRAY_AI_ZOMBIE__
 #define __XRAY_AI_ZOMBIE__
 
-#include "..\\ai_monsters.h"
+#include "..\\ai_selector_template.h"
 #include "..\\..\\CustomMonster.h"
 
 class CAI_Zombie : public CCustomMonster  

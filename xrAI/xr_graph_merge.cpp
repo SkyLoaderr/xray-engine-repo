@@ -220,23 +220,23 @@ void xrMergeGraphs()
 	// load all the graphs
 	Phase("Reading level graphs");
 	CInifile *Ini = xr_new<CInifile>(INI_FILE);
-	if (!Ini->SectionExists("levels"))
+	if (!Ini->section_exist("levels"))
 		THROW;
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
 	CALifeGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
-	R_ASSERT						(Ini->SectionExists("levels"));
+	R_ASSERT						(Ini->section_exist("levels"));
     LPCSTR N,V;
-    for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
-		R_ASSERT					(Ini->SectionExists(N));
-		tLevel.tOffset				= Ini->ReadVECTOR(N,"offset");
-		V							= Ini->ReadSTRING(N,"name");
+    for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+		R_ASSERT					(Ini->section_exist(N));
+		tLevel.tOffset				= Ini->r_fvector3(N,"offset");
+		V							= Ini->r_string(N,"name");
 		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
 		Memory.mem_copy				(S1,V,strlen(V) + 1);
 		strconcat					(S2,"gamedata\\levels\\",S1);
 		strconcat					(S1,S2,"\\");//level.graph");
-		u32							id = Ini->ReadINT(N,"id");
+		u32							id = Ini->r_s32(N,"id");
 		tpGraphs.insert				(make_pair(id,xr_new<CLevelGraph>(tLevel,S1,dwOffset,id)));
 		dwOffset					+= tpGraphs[tpGraphs.size() - 1]->m_tGraphHeader.dwVertexCount;
 		tGraphHeader.tpLevels.push_back(tLevel);

@@ -13,7 +13,7 @@
 
 #define TIME_TO_SEARCH 60000
 
-void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStraighten, Fvector *tpDestinationPosition)
+void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *S, bool bCanStraighten, Fvector *tpDestinationPosition)
 {
 	// building a path from and to
 	if ((AI_Path.DestNode == AI_NodeID) && !tpDestinationPosition) {
@@ -139,34 +139,34 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(CAISelectorBase *S, bool bCanStr
 	AI_Path.bNeedRebuild = FALSE;
 }
 
-void CAI_Stalker::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
 //	if ((!m_dwLastRangeSearch) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) 
 	{
 		
 //		m_dwLastRangeSearch = S.m_dwCurTime;
 		vfInitSelector(S,Squad,Leader);
-		float fOldCost;
+		
+		float fOldCost = MAX_NODE_ESTIMATION_COST;
 		if (AI_Path.DestNode != u32(-1)) {
-			NodeCompressed*	T = getAI().Node(AI_Path.DestNode);
-			BOOL			bStop;
-			fOldCost		= S.Estimate(T,getAI().u_SqrDistance2Node(vPosition,T),bStop);
-			Msg				("PrevNode : %d, cost : %f",AI_Path.DestNode,fOldCost);
+			S.m_tpCurrentNode		= getAI().Node(AI_Path.DestNode);
+			S.m_fDistance			= getAI().u_SqrDistance2Node(vPosition,S.m_tpCurrentNode);
+			fOldCost				= S.ffEvaluateNode();
+			Msg						("PrevNode : %d, cost : %f",AI_Path.DestNode,fOldCost);
 		}
 		Device.Statistic.AI_Node.Begin();
-		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+		Squad.Groups[g_Group()].GetAliveMemberInfo(S.m_taMemberPositions, S.m_taMemberNodes, S.m_taDestMemberPositions, S.m_taDestMemberNodes, this);
 		Device.Statistic.AI_Node.End();
 		// search for the best node according to the 
 		// selector evaluation function in the radius N meteres
-		//Msg("[%f][%f][%f]",VPUSH(S.m_tEnemyPosition));
-		getAI().q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-		
+		//getAI().q_Range_Bit(AI_NodeID,Position(),S.m_fSearchRange,S,fOldCost);
+		S.vfShallowGraphSearch(getAI().q_mark_bit);
 		// if search has found _new_ best node then 
-//		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-		Msg("CurrNode : %d, cost %f",S.BestNode,S.BestCost);
-		if ((AI_Path.DestNode != S.BestNode) && (S.BestCost < (fOldCost - S.fLaziness))){
-			Msg("ChooNode : %d, cost %f",S.BestNode,S.BestCost);
-			AI_Path.DestNode		= S.BestNode;
+//		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.m_fLaziness))){
+		Msg("CurrNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
+		if ((AI_Path.DestNode != S.m_dwBestNode) && (S.m_fBestCost < (fOldCost - S.m_fLaziness))){
+			Msg("ChooNode : %d, cost %f",S.m_dwBestNode,S.m_fBestCost);
+			AI_Path.DestNode		= S.m_dwBestNode;
 			AI_Path.bNeedRebuild	= TRUE;
 			//vfAddToSearchList();
 		} 
@@ -181,22 +181,19 @@ void CAI_Stalker::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 	}
 }
 
-void CAI_Stalker::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
+void CAI_Stalker::vfInitSelector(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader)
 {
-//	S.m_tHitDir			= tHitDir;
-//	S.m_dwHitTime		= dwHitTime;
+	S.m_tHitDir			= m_tHitDir;
+	S.m_dwHitTime		= m_dwHitTime;
 	
 	S.m_dwCurTime		= m_dwCurrentUpdate;
-	//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
 	
 	S.m_tMe				= this;
 	S.m_tpMyNode		= AI_Node;
 	S.m_tMyPosition		= Position();
 	
 	if (m_tEnemy.Enemy) {
-		// saving an enemy
 		vfSaveEnemy();
-		
 		S.m_tEnemy			= m_tEnemy.Enemy;
 		S.m_tEnemyPosition	= m_tEnemy.Enemy->Position();
 		S.m_dwEnemyNode		= m_tEnemy.Enemy->AI_NodeID;
@@ -209,22 +206,21 @@ void CAI_Stalker::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 		S.m_tpEnemyNode		= m_tpSavedEnemyNode;
 	}
 	
-	S.taMembers = &(Squad.Groups[g_Group()].Members);
-	
-	//if (S.m_tLeader)
-	//	S.taMembers.push_back(S.m_tLeader);
+	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
+
+		
+	S.m_dwStartNode		= AI_NodeID;
+	S.m_tStartPosition	= vPosition;
 }
 
-void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCanStraighten)
+void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCanStraighten, bool bWalkAround)
 {
 	INIT_SQUAD_AND_LEADER;
-	
 	if (AI_Path.bNeedRebuild)
-		vfBuildPathToDestinationPoint	(0,bCanStraighten);
+		vfBuildPathToDestinationPoint	(bWalkAround ? &tSelector : 0,bCanStraighten);
 	else {
 		//vfInitSelector					(tSelector,Squad,Leader);
 		vfSearchForBetterPosition		(tSelector,Squad,Leader);
-	}
 }
 
 void CAI_Stalker::vfSetMovementType(EBodyState tBodyState, EMovementType tMovementType, ELookType tLookType)
@@ -663,7 +659,7 @@ void CAI_Stalker::vfClasterizeSuspiciousNodes(CGroup &Group)
 		Group.m_tpaSuspiciousGroups[i] = 0;
 }
 
-void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
+void CAI_Stalker::vfChooseSuspiciousNode(IBaseAI_NodeEvaluator &tSelector)
 {
 	CGroup &Group = *getGroup();
 	INIT_SQUAD_AND_LEADER;

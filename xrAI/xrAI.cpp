@@ -36,6 +36,8 @@ static const char* h_str =
 	"\n"
 	"NOTE: The last key is required for any functionality\n";
 
+CInifile *pSettings = 0;
+
 void Help()
 {	MessageBox(0,h_str,"Command line options",MB_OK|MB_ICONINFORMATION); }
 
@@ -70,6 +72,8 @@ void Startup(LPSTR     lpCmdLine)
 
 	DWORD				dwStartupTime	= timeGetTime();
 	
+	pSettings = xr_new<CInifile>(SYSTEM_LTX);
+
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName.c_str());
 	else
