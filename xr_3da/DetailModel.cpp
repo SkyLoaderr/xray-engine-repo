@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "detailmodel.h"
 #include "xrstripify.h"
-  
+   
 void CDetail::Load		(CStream* S)
 {
 	// Shader
