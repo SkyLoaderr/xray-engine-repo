@@ -81,32 +81,34 @@ void CAI_Flesh::Think()
 		//- FSM 1-level 
 
 		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
-		if (C && H && I)		SetState(statePanic);
-		else if (C && H && !I)		SetState(statePanic);
-		else if (C && !H && I)		SetState(statePanic);
-		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(stateAttack);
-		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (D && !H && I)		SetState(statePanic);
-		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (E && !H && I) 		SetState(stateDetour); 
-		else if (E && !H && !I)		SetState(stateDetour); 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateHide);
-		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
-			//SetState(stateEat);
-			SetState(stateCapture);
-		else						SetState(stateRest); 
+//		if (C && H && I)		SetState(statePanic);
+//		else if (C && H && !I)		SetState(statePanic);
+//		else if (C && !H && I)		SetState(statePanic);
+//		else if (C && !H && !I) 	SetState(statePanic);
+//		else if (D && H && I)		SetState(stateAttack);
+//		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+//		else if (D && !H && I)		SetState(statePanic);
+//		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+//		else if (E && H && I)		SetState(stateAttack); 
+//		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+//		else if (E && !H && I) 		SetState(stateDetour); 
+//		else if (E && !H && !I)		SetState(stateDetour); 
+//		else if (F && H && I) 		SetState(stateAttack); 		
+//		else if (F && H && !I)  	SetState(stateAttack); 
+//		else if (F && !H && I)  	SetState(stateDetour); 
+//		else if (F && !H && !I) 	SetState(stateHide);
+//		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+//		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+//		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+//		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+//		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
+//			SetState(stateEat);
+//			
+//		else						SetState(stateRest); 
 		//-
-		
+		if (GetCorpse(ve) && ve.obj->m_fFood > 1)SetState(stateCapture);
+		else SetState(stateRest);
+
 		CurrentState->Execute(m_dwCurrentUpdate);
 
 		// проверяем на завершённость
@@ -460,11 +462,6 @@ void CFleshCapture::Init()
 
 void CFleshCapture::Run()
 {
-	// Если новый труп, снова инициализировать состояние 
-	VisionElem ve;
-	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
-	if (pCorpse != ve.obj) Init();
-
 	// Выполнение состояния
 	switch (m_tAction) {
 		case ACTION_RUN:	// бежать к трупу
@@ -472,19 +469,24 @@ void CFleshCapture::Run()
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
 
-			pMonster->Motion.m_tParams.SetParams(eMotionRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,pMonster->m_ftrWalkSpeed,pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);
 
 			if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_CAPTURE;
 			break;
+	
 		case ACTION_CAPTURE:
 			DO_ONCE_BEGIN(flag_once_1); // если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
 				pMonster->Motion.m_tSeq.Add(eMotionCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
 				pMonster->Motion.m_tSeq.Switch();
 
 				pMonster->Movement.PHCaptureObject(pCorpse);
-				m_tAction = ACTION_CARRY_BACK;
 			DO_ONCE_END();
+
+			pMonster->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Clear();
+			
+			if (m_dwStateStartedTime + 2000 < m_dwCurrentTime) m_tAction = ACTION_CARRY_BACK;
 			break;
 		case ACTION_CARRY_BACK:
 			pMonster->AI_Path.DestNode = SavedNodeID;
