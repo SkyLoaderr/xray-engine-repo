@@ -239,9 +239,8 @@ ClientID game_cl_GameState::GetClientIDByOrderID	(u32 idx)
 
 void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
-	if (!HUD().GetUI()) 
-		return;
-	HUD().GetUI()->UIMainIngameWnd.AddGameMessage(msg);
+	if (!HUD().GetUI()) return;
+	HUD().GetUI()->UIMainIngameWnd.AddGameMessage(msg, -1, 60000);
 }
 
 float game_cl_GameState::shedule_Scale		()

@@ -7,6 +7,7 @@
 #include "game_cl_base.h"
 #include "ai_space.h"
 #include "alife_object_registry.h"
+#include "xrServer_Objects_ALife_Items.h"
 
 void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 {
@@ -286,7 +287,21 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 	case GEG_PLAYER_ITEM2SLOT:
 	case GEG_PLAYER_ITEM2BELT:
 	case GEG_PLAYER_ITEM2RUCK:
-
+		{
+			u16 id = P.r_u16();
+			CSE_Abstract*		E	= game->get_entity_from_eid	(id);
+			if (E)
+			{
+				CSE_ALifeItemCustomOutfit* pOutfit = smart_cast<CSE_ALifeItemCustomOutfit*>(E);
+				if (pOutfit)
+				{
+//					ClientID clientID;clientID.setBroadcast();
+					SendBroadcast		(sender,P,MODE);
+				};
+			};
+			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
+	case GEG_PLAYER_ITEMDROP:
 	case GEG_PLAYER_BUYMENU_OPEN:
 	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
@@ -301,11 +316,6 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 //			VERIFY					(verify_entities());
 		}break;
-	case GEG_PLAYER_ITEMDROP:
-		{
-			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
-//			VERIFY					(verify_entities());
-		}break;		
 	case GE_TELEPORT_OBJECT:
 		{
 			game->teleport_object	(P,destination);
