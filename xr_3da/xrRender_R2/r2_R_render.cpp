@@ -130,7 +130,7 @@ void CRender::Render		()
 	}
 
 	//******* Decompression on some HW :)
-	if (RImplementation.b_nv3x)					Target.phase_decompress();
+	Target.phase_decompress						();
 
 	//******* Directional light
 	/*

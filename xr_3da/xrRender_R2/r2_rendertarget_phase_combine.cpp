@@ -214,7 +214,7 @@ void	CRenderTarget::phase_combine	()
 		float	_h					= float(Device.dwHeight)/2;
 
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (0)
+		if (1)
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -229,7 +229,7 @@ void	CRenderTarget::phase_combine	()
 			RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 			// Draw COLOR
-			RCache.set_Shader			(s_bloom_dbg_1);
+			RCache.set_Shader			(s_combine_dbg_Normal);
 			RCache.set_Geometry			(g_combine);
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
