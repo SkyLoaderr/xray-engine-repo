@@ -218,7 +218,7 @@ function se_smart_terrain:STATE_Write( packet )
 			packet:w_bool ( v.move_offline )
 			packet:w_bool ( v.switch_offline )
 --			packet:w_u32  ( v.stay_end )
-			w_CTime( packet, stay_end )
+			w_CTime( packet, v.stay_end )
 		end
 	else
 		packet:w_u8( n )
