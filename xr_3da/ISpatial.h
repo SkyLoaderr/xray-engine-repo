@@ -133,6 +133,8 @@ private:
 	void							_insert			(ISpatial_NODE* N, Fvector& n_center, float n_radius);
 	void							_remove			(ISpatial_NODE* N, ISpatial_NODE* N_sub);
 public:
+	ISpatial_DB();
+
 	// managing
 	void							initialize		(Fbox& BB);
 	void							destroy			();

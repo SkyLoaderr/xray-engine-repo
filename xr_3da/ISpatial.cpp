@@ -122,6 +122,14 @@ void			ISpatial_NODE::_remove			(ISpatial* S)
 }
 
 //////////////////////////////////////////////////////////////////////////
+
+ISpatial_DB::ISpatial_DB()
+{
+	m_root					= NULL;
+	stat_nodes				= 0;
+	stat_objects			= 0;
+}
+
 void			ISpatial_DB::initialize(Fbox& BB)
 {
 	Fvector bbc,bbd;
@@ -131,7 +139,7 @@ void			ISpatial_DB::initialize(Fbox& BB)
 	m_center.set			(bbc);
 	m_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
 	rt_insert_object		= NULL;
-	m_root					= _node_create();
+	if (0==m_root)	m_root	= _node_create();
 	m_root->_init			(NULL);
 	lock					= FALSE;
 }
