@@ -62,6 +62,8 @@ class CAI_Soldier : public CCustomMonster
 		bool			bBuildPathToLostEnemy;
 		
 		CMotionDef* 	m_tpaDeathAnimations[2];
+		
+		DWORD			m_dwLastRangeSearch;
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;

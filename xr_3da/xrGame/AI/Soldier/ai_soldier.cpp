@@ -14,6 +14,7 @@
 #include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
+#define MIN_RANGE_SWITCH 500
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -27,6 +28,7 @@ CAI_Soldier::CAI_Soldier()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	eCurrentState = aiSoldierFollowMe;
+	m_dwLastRangeSearch = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -252,12 +254,14 @@ void CAI_Soldier::Attack()
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
 				q_action.setup(AI::AIC_Action::FireEnd);
+				m_dwLastRangeSearch = Level().timeServer();
 			}
 			//  no, we lost him
 			else {
 				dwLostEnemyTime = Level().timeServer();
 				eCurrentState = aiSoldierPursuit;
 				q_action.setup(AI::AIC_Action::FireEnd);
+				m_dwLastRangeSearch = Level().timeServer();
 			}
 			return;
 		}
@@ -331,23 +335,27 @@ void CAI_Soldier::Attack()
 						AI_Path.bNeedRebuild = FALSE;
 					}
 				} 
-				else {
-					Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
-					// search for the best node according to the 
-					// SelectFollow evaluation function in the radius N meteres
-					float fOldCost;
-					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-					// if search has found new best node then 
-					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-						AI_Path.DestNode		= S.BestNode;
-						AI_Path.bNeedRebuild	= TRUE;
-					} 
-					else
-						// search hasn't found a better node we have to look around
-						bWatch = true;
-					if (AI_Path.Nodes.size() <= 2)
-						AI_Path.bNeedRebuild = TRUE;
-				}
+				else 
+					if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+						m_dwLastRangeSearch = S.m_dwCurTime;
+						Device.Statistic.AI_Node.Begin();
+						Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
+						Device.Statistic.AI_Node.End();
+						// search for the best node according to the 
+						// SelectFollow evaluation function in the radius N meteres
+						float fOldCost;
+						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+						// if search has found new best node then 
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							AI_Path.DestNode		= S.BestNode;
+							AI_Path.bNeedRebuild	= TRUE;
+						} 
+						else
+							// search hasn't found a better node we have to look around
+							bWatch = true;
+						if (AI_Path.Nodes.size() <= 2)
+							AI_Path.bNeedRebuild = TRUE;
+					}
 				// setting up a look
 				q_look.setup(
 					AI::AIC_Look::Look, 
@@ -393,7 +401,6 @@ void CAI_Soldier::Attack()
 				tpSavedEnemyNode = Enemy.Enemy->AI_Node;
 				dwSavedEnemyNodeID = Enemy.Enemy->AI_NodeID;
 				if ((dwSavedEnemyNodeID != AI_Path.DestNode) || (!bBuildPathToLostEnemy)) {
-					bBuildPathToLostEnemy = true;
 					// determining the team
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
@@ -404,40 +411,6 @@ void CAI_Soldier::Attack()
 					if (Leader->g_Health() <= 0)
 						Leader = this;
 					// setting watch mode to false
-					bool bWatch = false;
-					// get pointer to the class of node estimator 
-					// for finding the best node in the area
-					CSoldierSelectorAttack S = SelectorAttack;
-					// if i am not a leader then assign leader
-					/**/
-					if (Leader != this) {
-						S.m_tLeader = Leader;
-						S.m_tLeaderPosition = Leader->Position();
-						S.m_tpLeaderNode = Leader->AI_Node;
-						S.m_tLeaderNode = Leader->AI_NodeID;
-					}
-					// otherwise assign leader to null
-					else {
-						S.m_tLeader = 0;
-						S.m_tLeaderPosition.set(0,0,0);
-						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
-					}
-					/**/
-					S.m_tHitDir			= tHitDir;
-					S.m_dwHitTime		= dwHitTime;
-					
-					S.m_dwCurTime		= Level().timeServer();
-					
-					S.m_tMe				= this;
-					S.m_tpMyNode        = AI_Node;
-					S.m_tMyPosition		= Position();
-					
-					S.m_tEnemy			= Enemy.Enemy;
-					S.m_tEnemyPosition	= Enemy.Enemy->Position();
-					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
-					
-					//S.taMembers = Squad.Groups[g_Group()].Members;
 					// building a path from and to
 					AI_Path.DestNode = dwSavedEnemyNodeID;
 					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
@@ -509,6 +482,7 @@ void CAI_Soldier::FollowMe()
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiSoldierAttack;
+			m_dwLastRangeSearch = Level().timeServer();
 			return;
 		}
 		else {
@@ -517,12 +491,14 @@ void CAI_Soldier::FollowMe()
 			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiSoldierUnderFire;
+				m_dwLastRangeSearch = dwCurTime;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierSenseSomething;
+					m_dwLastRangeSearch = dwCurTime;
 					return;
 				}
 				else {
@@ -586,28 +562,32 @@ void CAI_Soldier::FollowMe()
 								AI_Path.bNeedRebuild = FALSE;
 							}
 						} 
-						else {
-							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							// search for the best node according to the 
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
-								// if old cost minus new cost is a little then soldier is too lazy
-								// to move there
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
+						else 
+							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+								m_dwLastRangeSearch = S.m_dwCurTime;
+								// fill arrays of members and exclude myself
+								Device.Statistic.AI_Node.Begin();
+								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+								Device.Statistic.AI_Node.End();
+								// search for the best node according to the 
+								// SelectFollow evaluation function in the radius 35 meteres
+								float fOldCost;
+								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
+								// if search has found new best node then 
+								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
+									// if old cost minus new cost is a little then soldier is too lazy
+									// to move there
+									AI_Path.DestNode		= S.BestNode;
+									AI_Path.bNeedRebuild	= TRUE;
+								}
+								else { 
+									// search hasn't found a better node we have to look around
+									bWatch = true;
+								}
+								
+								if (AI_Path.TravelPath.size() < 2)
+									AI_Path.bNeedRebuild	= TRUE;
 							}
-							else { 
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							}
-							
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
@@ -644,6 +624,7 @@ void CAI_Soldier::FreeHunting()
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiSoldierAttack;
+			m_dwLastRangeSearch = Level().timeServer();
 			return;
 		}
 		else {
@@ -651,12 +632,14 @@ void CAI_Soldier::FreeHunting()
 			if (Level().timeServer() - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiSoldierUnderFire;
+				m_dwLastRangeSearch = Level().timeServer();
 				return;
 			}
 			else {
 				if (Level().timeServer() - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierSenseSomething;
+					m_dwLastRangeSearch = Level().timeServer();
 					return;
 				}
 				else {
@@ -714,23 +697,27 @@ void CAI_Soldier::FreeHunting()
 						// if path is too short then clear it (patch for ExecMove)
 							AI_Path.TravelPath.clear();
 					} 
-					else {
-						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-						// SelectFollow evaluation function in the radius 35 meteres
-						float fOldCost;
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
-						} 
-						else 
-							// search hasn't found a better node we have to look around
-							bWatch = true;
-						if (AI_Path.TravelPath.size() < 2)
-							AI_Path.bNeedRebuild	= TRUE;
-					}
+					else 
+						if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+							m_dwLastRangeSearch = S.m_dwCurTime;
+							// fill arrays of members and exclude myself
+							Device.Statistic.AI_Node.Begin();
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							Device.Statistic.AI_Node.End();
+							// SelectFollow evaluation function in the radius 35 meteres
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+							// if search has found new best node then 
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
+							} 
+							else 
+								// search hasn't found a better node we have to look around
+								bWatch = true;
+							if (AI_Path.TravelPath.size() < 2)
+								AI_Path.bNeedRebuild	= TRUE;
+						}
 					// setting up a look
 					// getting my current node
 					NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
@@ -783,6 +770,7 @@ void CAI_Soldier::Pursuit()
 		// do the enemies exist?
 		if (Enemy.Enemy) {
 			eCurrentState = aiSoldierAttack;
+			m_dwLastRangeSearch = Level().timeServer();
 			return;
 		}
 		else {
@@ -792,12 +780,14 @@ void CAI_Soldier::Pursuit()
 				if (dwCurrentTime - dwHitTime < HIT_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierUnderFire;
+					m_dwLastRangeSearch = Level().timeServer();
 					return;
 				}
 				else {
 					if (dwCurrentTime - dwSenseTime < SENSE_JUMP_TIME) {
 						tStateStack.push(eCurrentState);
 						eCurrentState = aiSoldierSenseSomething;
+						m_dwLastRangeSearch = Level().timeServer();
 						return;
 					}
 					else {
@@ -856,24 +846,28 @@ void CAI_Soldier::Pursuit()
 								AI_Path.bNeedRebuild = FALSE;
 							}
 						} 
-						else {
-							// fill arrays of members and exclude myself
-							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							// search for the best node according to the 
-							// SelectFollow evaluation function in the radius 35 meteres
-							float fOldCost;
-							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-								AI_Path.DestNode		= S.BestNode;
-								AI_Path.bNeedRebuild	= TRUE;
-							} 
-							else
-								// search hasn't found a better node we have to look around
-								bWatch = true;
-							if (AI_Path.TravelPath.size() < 2)
-								AI_Path.bNeedRebuild	= TRUE;
-						}
+						else 
+							if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+								m_dwLastRangeSearch = S.m_dwCurTime;
+								// fill arrays of members and exclude myself
+								Device.Statistic.AI_Node.Begin();
+								Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+								Device.Statistic.AI_Node.End();
+								// search for the best node according to the 
+								// SelectFollow evaluation function in the radius 35 meteres
+								float fOldCost;
+								Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+								// if search has found new best node then 
+								if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+									AI_Path.DestNode		= S.BestNode;
+									AI_Path.bNeedRebuild	= TRUE;
+								} 
+								else
+									// search hasn't found a better node we have to look around
+									bWatch = true;
+								if (AI_Path.TravelPath.size() < 2)
+									AI_Path.bNeedRebuild	= TRUE;
+							}
 						// setting up a look
 						// getting my current node
 						NodeCompressed* tNode		= Level().AI.Node(AI_NodeID);
@@ -946,6 +940,7 @@ void CAI_Soldier::UnderFire()
 		if (Enemy.Enemy)		{
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiSoldierAttack;
+			m_dwLastRangeSearch = Level().timeServer();
 			return;
 		}
 		else {
@@ -954,12 +949,14 @@ void CAI_Soldier::UnderFire()
 			if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
+				m_dwLastRangeSearch = Level().timeServer();
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiSoldierSenseSomething;
+					m_dwLastRangeSearch = Level().timeServer();
 					return;
 				}
 				else {
@@ -1019,24 +1016,28 @@ void CAI_Soldier::UnderFire()
 							AI_Path.bNeedRebuild = FALSE;
 						}
 					} 
-					else {
-						// fill arrays of members and exclude myself
-						Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-						// search for the best node according to the 
-						// SelectFollow evaluation function in the radius 35 meteres
-						float fOldCost;
-						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
-						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
-							AI_Path.DestNode		= S.BestNode;
-							AI_Path.bNeedRebuild	= TRUE;
+					else 
+						if (S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SWITCH){
+							m_dwLastRangeSearch = S.m_dwCurTime;
+							// fill arrays of members and exclude myself
+							Device.Statistic.AI_Node.Begin();
+							Squad.Groups[g_Group()].GetAliveMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
+							Device.Statistic.AI_Node.End();
+							// search for the best node according to the 
+							// SelectFollow evaluation function in the radius 35 meteres
+							float fOldCost;
+							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+							// if search has found new best node then 
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
+								AI_Path.DestNode		= S.BestNode;
+								AI_Path.bNeedRebuild	= TRUE;
+							}
+							else
+								// search hasn't found a better node we have to look around
+								bWatch = true;
+							if (AI_Path.TravelPath.size() < 2)
+								AI_Path.bNeedRebuild	= TRUE;
 						}
-						else
-							// search hasn't found a better node we have to look around
-							bWatch = true;
-						if (AI_Path.TravelPath.size() < 2)
-							AI_Path.bNeedRebuild	= TRUE;
-					}
 					// setting up a look
 					// getting my current node
 					NodeCompressed* tNode = Level().AI.Node(AI_NodeID);
@@ -1059,7 +1060,7 @@ void CAI_Soldier::UnderFire()
 							q_action.setup(AI::AIC_Action::FireBegin);
 						else
 							q_action.setup(AI::AIC_Action::FireEnd);
-						m_fCurSpeed = m_fMinSpeed;
+						m_fCurSpeed = m_fMaxSpeed;
 					}
 					else {
 						SetLessCoverLook(tNode);
