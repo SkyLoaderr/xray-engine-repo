@@ -68,17 +68,17 @@ void CSpawn_Event::Load	(CStream& FS)
 		xrP_Template	tmpl;
 		
 		// 
-		xrPREAD_PROP	(FS,xrPID_MARKER_TEMPLATE,	tmpl		);
-		xrPREAD_PROP	(FS,xrPID_BOOL,				P.bOnce		);
-		xrPREAD_PROP	(FS,xrPID_CLSID,			P.Target	);
+		xrPREAD_PROP	(FS,xrPID_MARKER_TEMPLATE,	tmpl			);
+		xrPREAD_PROP	(FS,xrPID_BOOL,				P.bOnce			);
+		xrPREAD_PROP	(FS,xrPID_CLSID,			P.Target		);
 		
 		//
-		xrPREAD_PROP	(FS,xrPID_TOKEN,			P.OnEnter.type);
+		xrPREAD_PROP	(FS,xrPID_TOKEN,			P.OnEnter.type	);
 		xrPREAD_PROP	(FS,xrPID_OBJECT,			P.OnEnter.target);
 		xrPREAD_PROP	(FS,xrPID_STRING,			P.OnEnter.custom);
 		
 		//
-		xrPREAD_PROP	(FS,xrPID_TOKEN,			P.OnLeave.type);
+		xrPREAD_PROP	(FS,xrPID_TOKEN,			P.OnLeave.type	);
 		xrPREAD_PROP	(FS,xrPID_OBJECT,			P.OnLeave.target);
 		xrPREAD_PROP	(FS,xrPID_STRING,			P.OnLeave.custom);
 	}
@@ -86,10 +86,22 @@ void CSpawn_Event::Load	(CStream& FS)
 }
 
 #ifndef _EDITOR
+void CSpawn_Event::ExportAction(NET_Packet& P, Action& A)
+{
+	char	buffer[256];
+	switch (A.type.IDselected)
+	{
+	case typeNone:		P.w_string("");												break;
+	case typeActivate:	P.w_string(strconcat(buffer,"level.activate,",A.target));	break;
+	case typeDeactivate:P.w_string(strconcat(buffer,"level.deactivate,",A.target));	break;
+	case typeCustom:	P.w_string(A.custom);										break;
+	}
+}
+
 void CSpawn_Event::Execute(CStream& FS_CFORM)
 {
 	NET_Packet	P;
-
+	
 	//*** generic
 	P.w_begin	(M_CL_SPAWN);
 	P.w_string	("m_event");
@@ -99,7 +111,7 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	P.w_u8		(0xFE);
 	P.w_vec3	(description.o_Position);
 	P.w_vec3	(description.o_Orientation);
-
+	
 	//*** addititional data
 	u32 size	= P.w_tell();
 	P.w_u16		(0);
@@ -109,11 +121,18 @@ void CSpawn_Event::Execute(CStream& FS_CFORM)
 	R_ASSERT	(cform);
 	P.w			(cform->Pointer(),cform->Length());
 	cform->Close();
-
-	// Commands
 	
+	// Commands
+	P.w_u8		(Commands.size());
+	for (int cmd=0; cmd<Commands.size(); cmd++)
+	{
+		Pair&	A	= Commands[cmd];
+		P.w_u8	(A.bOnce.value);
+		P.w_u64	(A.Target.Selected);
 
+	}
 }
+
 #else
 void CSpawn_Event::Execute(CStream& FS)
 {

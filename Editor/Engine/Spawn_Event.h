@@ -24,7 +24,7 @@ public:
 	{
 		xrP_TOKEN	type;
 		string64	target;	// object name
-		string64	custom;	// custom event
+		string128	custom;	// custom event
 		Action() {
 			type.IDselected	= typeNone;
 			type.Count		= 4;
@@ -44,8 +44,10 @@ public:
 			Target.Count	= 0;
 		}
 	};
-public:
+protected:
 	vector<Pair>	Commands;
+
+	void					ExportAction	(NET_Packet& P, Action& A);
 public:
 	virtual		LPCSTR		getComment		()				{ return "Event generator"; };
 	

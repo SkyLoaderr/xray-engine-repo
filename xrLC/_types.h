@@ -34,7 +34,10 @@ typedef double				f64;
 #define dbl_min			type_min(double)
 #define dbl_zero		type_zero(double)
 
-typedef	char	string64	[64];
+typedef	char	string16	[16];
 typedef	char	string32	[32];
+typedef	char	string64	[64];
+typedef	char	string128	[128];
+typedef	char	string256	[256];
 
 #endif
