@@ -284,7 +284,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 		o.switch_offline = packet:r_bool()
 		o.stay_end       = r_CTime( packet )
 
-		if self.script_version == 1 then
+		if self.script_version >= 1 then
 			if self.gulagN then
 				o.jobN = packet:r_u8()
 				if o.jobN == 0 then
@@ -294,7 +294,7 @@ function se_smart_terrain:STATE_Read( packet, size )
 		end
 	end
 
-	if self.script_version == 1 then
+	if self.script_version >= 1 then
 		if self.gulagN then
 			-- параметры гулага
 			self.state       = packet:r_u8()
@@ -642,8 +642,9 @@ function add_npc( self, obj )
 			t:add( game.get_game_time() )
 
 			o:move_offline( false )
-			sim:set_switch_online(  o_id, true )
-			sim:set_switch_offline( o_id, false )
+--			sim:set_switch_online(  o_id, true )
+--			sim:set_switch_offline( o_id, false )
+			o.under_smart_terrain = true
 
 			self.gulag:addObject( obj )
 
@@ -660,9 +661,10 @@ function free_npc( self, obj_id )
 
 		n = self.npcs[obj_id]
 		o:move_offline( n.move_offline )
-		sim:set_switch_offline( obj_id, n.switch_offline )
+--		sim:set_switch_offline( obj_id, n.switch_offline )
 		o.squad = n.squad
 		o.group = n.group
+		o.under_smart_terrain = false
 
 		self.npcs[obj_id] = nil
 
