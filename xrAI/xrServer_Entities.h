@@ -279,6 +279,14 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 							xrSE_Dog();				// constructor for variable initialization
 xrSE_DECLARE_END
 
+xrSE_DECLARE_BEGIN(xrSE_Human,xrSE_Enemy)
+	// model
+	string64				caModel;
+	
+	// Personal characteristics:
+	float					fHealth;
+							xrSE_Human();
+xrSE_DECLARE_END
 //***** Zone
 //xrSE_DECLARE_BEGIN(xrSE_Zone,CALifeDynamicObject)
 class xrSE_Zone : public CALifeDynamicObject, public xrSE_CFormed { typedef CALifeDynamicObject inherited; public:

@@ -1100,6 +1100,60 @@ void xrGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+xrSE_Human::xrSE_Human()
+{
+	caModel[0]						= 0;
+	strcat(caModel,"actors\\Different_stalkers\\stalker_no_hood_singleplayer");
+	// personal charactersitics
+	fHealth							= 100;
+}
+
+void xrSE_Human::STATE_Read(NET_Packet& P, u16 size)
+{
+	// inherited properties
+	inherited::STATE_Read(P,size);
+	// model
+	P.r_string(caModel);
+	// personal characteristics
+	P.r_float (fHealth);
+}
+
+void xrSE_Human::STATE_Write(NET_Packet& P)
+{
+	// inherited properties
+	inherited::STATE_Write(P);
+	// model
+	P.w_string(caModel);
+	// personal characteristics
+	P.w_float (fHealth);
+}
+
+void xrSE_Human::UPDATE_Read(NET_Packet& P)
+{
+	inherited::UPDATE_Read(P);
+	if (m_wVersion >= 2)
+		P.r_float (fHealth);
+}
+
+void xrSE_Human::UPDATE_Write(NET_Packet& P)
+{
+	inherited::UPDATE_Write(P);
+	P.w_float (fHealth);
+}
+
+#ifdef _EDITOR
+void xrSE_Human::FillProp(LPCSTR pref, PropItemVec& items)
+{
+   	inherited::FillProp(pref, items);
+	// model
+    PHelper.CreateGameObject(	items, PHelper.PrepareKey(pref,s_name,"Model"								),caModel,							sizeof(caModel));
+	// personal characteristics
+   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
+}	
+#endif
+
+
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
@@ -1116,7 +1170,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_AI_ZOMBIE:			return xr_new<xrSE_Zombie>			();
 	case CLSID_AI_DOG:				return xr_new<xrSE_Dog>				();
 	case CLSID_AI_SOLDIER:			return xr_new<xrSE_Enemy>			();
-	case CLSID_AI_STALKER:			return xr_new<xrSE_Enemy>			();
+	case CLSID_AI_STALKER:			return xr_new<xrSE_Human>			();
 	case CLSID_EVENT:				return xr_new<xrSE_Event>			();
 	case CLSID_CAR_NIVA:			return xr_new<xrSE_Car>				();
 	case CLSID_SPECTATOR:			return xr_new<xrSE_Spectator>		();
