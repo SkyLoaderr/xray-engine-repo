@@ -54,7 +54,6 @@ void CLightDB_Static::Load			(IReader *fs)
 		u32 count		= size/element;
 		R_ASSERT		(count*element == size);
 		Lights.resize	(count);
-		Distance.resize	(count);
 		Enabled.resize	(count);
 
 		for (u32 i=0; i<count; i++) 
@@ -82,11 +81,8 @@ void CLightDB_Static::Load			(IReader *fs)
 void CLightDB_Static::Unload		(void)
 {
 	for (u32 i=0; i<Lights.size(); i++) Disable(i);
-	for (u32 L=0; L<Layers.size(); L++) Device.Shader._DeleteConstant(Layers[L].dest);
 
-	Layers.clear			();
 	Lights.clear			();
-	Distance.clear			();
 	Enabled.clear			();
 }
 

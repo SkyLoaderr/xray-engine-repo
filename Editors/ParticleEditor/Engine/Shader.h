@@ -52,14 +52,14 @@ struct	ENGINE_API	SState
 	IDirect3DStateBlock9*			state;
 	SimulatorStates					state_code;
 };
-struct	ENGINE_API	SDeclaration
+struct	ENGINE_API		SDeclaration
 {
 	u32								dwReference;
 
 	IDirect3DVertexDeclaration9*	dcl;		// in fact, may be a topper-level thing, but duplicated here for usability
 	xr_vector<D3DVERTEXELEMENT9>	dcl_code;
 };
-struct	ENGINE_API	SGeometry
+struct	ENGINE_API		SGeometry
 {
 	u32								dwReference;
 
@@ -110,6 +110,31 @@ public:
 
 	BOOL					equal	(Shader& S);
 	BOOL					equal	(Shader* S);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// auto references
+//////////////////////////////////////////////////////////////////////////
+struct ENGINE_API		ref_shader
+{
+	Shader*				_object;
+
+	ref_shader()	: _object(NULL)	{}
+	~ref_shader();
+
+	IC void			operator	=	(Shader* _o)	{ _object=_o;		}
+	IC Shader*		operator	()	()				{ return _object;	}
+};
+
+struct ENGINE_API		ref_geom
+{
+	SGeometry*			_object;
+
+	ref_geom()		: _object(NULL)		{}
+	~ref_geom();
+
+	IC void			operator	=	(SGeometry* _o)	{ _object=_o;		}
+	IC SGeometry*	operator	()	()				{ return _object;	}
 };
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)

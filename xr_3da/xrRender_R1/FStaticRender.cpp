@@ -7,8 +7,8 @@
 #include "..\environment.h"
 #include "..\fbasicvisual.h"
 #include "..\fcached.h"
-#include "..\xr_object.h"
 #include "..\CustomHUD.h"
+#include "..\xr_object.h"
 #include "lighttrack.h"
 
 CRender										RImplementation;
@@ -378,7 +378,7 @@ void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 // MATRIX
 void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
-	IRender_Visual *V				= N->val.pVisual;
+	IRender_Visual *V		= N->val.pVisual;
 	RCache.set_xform_world	(N->val.Matrix);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->vis.sphere.R));
@@ -386,9 +386,9 @@ void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 
 void __fastcall matrix_L1	(SceneGraph::mapMatrix_Node *N)
 {
-	RCache.set_Element	(N->key);
-	N->val.traverseLR			(matrix_L2);
-	N->val.clear				();
+	RCache.set_Element		(N->key);
+	N->val.traverseLR		(matrix_L2);
+	N->val.clear			();
 }
 
 // ALPHA

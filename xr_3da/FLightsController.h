@@ -12,7 +12,6 @@ class CLightDB_Static
 {
 	DEF_VECTOR(vecI,int);
 
-	xr_vector<xrLIGHT_control>	Layers;
 	xr_vector<xrLIGHT>			Lights;			// -- Lights itself
 	xr_vector<BYTE>				Enabled;		// -- is Enabled
 	vecI						Distance;		// -- Only selected are valid!!!
