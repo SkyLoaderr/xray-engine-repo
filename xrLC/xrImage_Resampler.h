@@ -1,3 +1,6 @@
+#ifndef _XRIMAGE_RESAMPLER_H_
+#define _XRIMAGE_RESAMPLER_H_
+
 #pragma once
 
 enum	EIMF_Type
@@ -14,3 +17,4 @@ enum	EIMF_Type
 };
 
 ENGINE_API	extern	void imf_Process(LPDWORD dst, DWORD dstW, DWORD dstH, LPDWORD src, DWORD srcW, DWORD srcH, EIMF_Type FILTER);
+#endif
