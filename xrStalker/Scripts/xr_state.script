@@ -310,26 +310,26 @@ function anims:__init(npc)
 				{name = "prisluh_4_idle_3", flag = true },
 				{name = "prisluh_4_idle_4", flag = true }}
 	self.poisk = {}
-	self.poisk[0] = { 	{name = "prisluh_0_idle_0", flag = true },
-				{name = "prisluh_0_idle_2", flag = true },
-				{name = "prisluh_0_idle_3", flag = true },
-				{name = "prisluh_0_idle_4", flag = true }}
-	self.poisk[1] = { 	{name = "prisluh_1_idle_0", flag = true },
-				{name = "prisluh_1_idle_2", flag = true },
-				{name = "prisluh_1_idle_3", flag = true },
-				{name = "prisluh_1_idle_4", flag = true }}
-	self.poisk[2] = { 	{name = "prisluh_2_idle_0", flag = true },
-				{name = "prisluh_2_idle_2", flag = true },
-				{name = "prisluh_2_idle_3", flag = true },
-				{name = "prisluh_2_idle_4", flag = true }}
-	self.poisk[3] = { 	{name = "prisluh_3_idle_0", flag = true },
-				{name = "prisluh_3_idle_2", flag = true },
-				{name = "prisluh_3_idle_3", flag = true },
-				{name = "prisluh_3_idle_4", flag = true }}
-	self.poisk[4] = { 	{name = "prisluh_4_idle_0", flag = true },
-				{name = "prisluh_4_idle_2", flag = true },
-				{name = "prisluh_4_idle_3", flag = true },
-				{name = "prisluh_4_idle_4", flag = true }}
+	self.poisk[0] = { 	{name = "poisk_0_idle_0", flag = true },
+				{name = "poisk_0_idle_2", flag = true },
+				{name = "poisk_0_idle_3", flag = true },
+				{name = "poisk_0_idle_4", flag = true }}
+	self.poisk[1] = { 	{name = "poisk_1_idle_0", flag = true },
+				{name = "poisk_1_idle_2", flag = true },
+				{name = "poisk_1_idle_3", flag = true },
+				{name = "poisk_1_idle_4", flag = true }}
+	self.poisk[2] = { 	{name = "poisk_2_idle_0", flag = true },
+				{name = "poisk_2_idle_2", flag = true },
+				{name = "poisk_2_idle_3", flag = true },
+				{name = "poisk_2_idle_4", flag = true }}
+	self.poisk[3] = { 	{name = "poisk_3_idle_0", flag = true },
+				{name = "poisk_3_idle_2", flag = true },
+				{name = "poisk_3_idle_3", flag = true },
+				{name = "poisk_3_idle_4", flag = true }}
+	self.poisk[4] = { 	{name = "poisk_4_idle_0", flag = true },
+				{name = "poisk_4_idle_2", flag = true },
+				{name = "poisk_4_idle_3", flag = true },
+				{name = "poisk_4_idle_4", flag = true }}
 	self.hide = {}
 	self.hide[0] = { 	{name = "d_0_idle_0", flag = true },
 				{name = "d_0_idle_2", flag = true }}
