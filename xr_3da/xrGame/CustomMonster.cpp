@@ -402,16 +402,14 @@ BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 void CCustomMonster::GetVisible			(objVisible& R)
 {
 	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
-	for (; I!=E; I++)	if (positive(I->fuzzy)) {
-		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
+	for (; I!=E; I++)
+		if (positive(I->fuzzy))
 #ifdef IGNORE_ACTOR
-		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
-		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && !tpActor)
+			if (dynamic_cast<CEntityAlive *>(I->O) && !dynamic_cast<CActor *>(I->O))
 #else
-		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend))// && !tpActor)
+			if (dynamic_cast<CEntityAlive *>(I->O))
 #endif
-			R.insert(I->O);
-	}
+				R.insert(I->O);
 }
 
 void CCustomMonster::eye_pp_s0			( )

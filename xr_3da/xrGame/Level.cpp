@@ -133,7 +133,7 @@ void CLevel::vfMergeKnownEnemies()
 				for (u32 M=0; M<GD.Members.size(); M++)
 				{
 					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
-					if (E && E->g_Alive()&& !E->getDestroy())	E->GetVisible(VIS);
+					if (E && E->g_Alive() && !E->getDestroy())	E->GetVisible(VIS);
 				}
 			}
 		}
