@@ -11,7 +11,7 @@
 
 IC	bool CALifeSpawnRegistry::redundant			(CSE_Abstract &abstract)
 {
-	return									(true);
+	return									(false);
 }
 
 void CALifeSpawnRegistry::fill_redundant_spawns	(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns, bool parent_redundant)

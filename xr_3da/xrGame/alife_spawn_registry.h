@@ -37,6 +37,7 @@ protected:
 			void							build_spawn_anomalies		();
 			void							build_root_spawns			();
 			void							fill_redundant_spawns		(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns, bool parent_redundant = false);
+			void							fill_new_spawns_single		(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns, ALife::_TIME_ID game_time, xr_vector<ALife::_SPAWN_ID> &objects);
 			void							fill_new_spawns				(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &spawns, ALife::_TIME_ID game_time, xr_vector<ALife::_SPAWN_ID> &objects);
 	IC		void							process_spawns				(xr_vector<ALife::_SPAWN_ID> &spawns);
 	IC		bool							redundant					(CSE_Abstract &abstract);
@@ -45,6 +46,7 @@ protected:
 	IC		bool							count_limit					(CSE_Abstract &abstract) const;
 	IC		bool							time_limit					(CSE_Abstract &abstract, ALife::_TIME_ID game_time) const;
 	IC		bool							spawned_item				(CSE_Abstract &abstract, xr_vector<ALife::_SPAWN_ID> &objects) const;
+	IC		bool							spawned_item				(SPAWN_GRAPH::CVertex *vertex, xr_vector<ALife::_SPAWN_ID> &objects);
 	IC		bool							object_existance_limit		(CSE_Abstract &abstract, xr_vector<ALife::_SPAWN_ID> &objects) const;
 	IC		bool							can_spawn					(CSE_Abstract &abstract, ALife::_TIME_ID game_time, xr_vector<ALife::_SPAWN_ID> &objects) const;
 
