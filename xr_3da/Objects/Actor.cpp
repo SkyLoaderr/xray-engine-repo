@@ -291,14 +291,14 @@ void CActor::feel_touch_new				(CObject* O)
 		if (T)	
 		{
 			// We have similar weapon - just get ammo out of it
-			u_EventGen	(P,GE_TRANSFER_AMMO);
+			u_EventGen	(P,GE_TRANSFER_AMMO,ID());
 			P.w_u16		(W->ID());
 			P.w_u16		(T->ID());
 			u_EventSend	(P);
 			return;
 		} else {
 			// We doesn't have similar weapon - pick up it
-			u_EventGen	(P,GE_OWNERSHIP_TAKE);
+			u_EventGen	(P,GE_OWNERSHIP_TAKE,ID());
 			P.w_u16		(u16(W->ID()));
 			u_EventSend	(P);
 			return;
@@ -736,7 +736,7 @@ void CActor::g_PerformDrop	( )
 
 	// We doesn't have similar weapon - pick up it
 	NET_Packet		P;
-	u_EventGen		(P,GE_OWNERSHIP_REJECT);
+	u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
 	P.w_u16			(u16(O->ID()));
 	u_EventSend		(P);
 }

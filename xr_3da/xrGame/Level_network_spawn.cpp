@@ -60,10 +60,13 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
 		if (0xffff != s_server_parent_id)	
 		{
-			CObject* Parent				= Objects.net_Find	(s_server_parent_id);
-			R_ASSERT					(Parent);
-			Parent->net_OwnershipTake	(O);
+			NET_Packet	GEN;
+			GEN.w_begin	(M_EVENT);
+			GEN.w_u32	(Level().timeServer());
+			GEN.w_u16	(GE_OWNERSHIP_TAKE);
+			GEN.w_u16	(s_server_parent_id);
+			GEN.w_u16	(O->ID());
+			Send		(GEN,net_flags(TRUE,TRUE));
 		}
 	}
 }
-

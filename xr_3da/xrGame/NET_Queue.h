@@ -44,7 +44,7 @@ class	NET_Queue_Event
 {
 	multiset<NET_Event>	queue;	
 public:
-	IC BOOL				insert		(NET_Packet& P)
+	IC void				insert		(NET_Packet& P)
 	{
 		NET_Event		E;
 		E.import		(P);

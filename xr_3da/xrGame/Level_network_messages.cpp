@@ -40,9 +40,9 @@ void CLevel::ClientReceive()
 				P->r_u16		(ID);
 				CObject*	 O	= Objects.net_Find	(ID);
 				if (0==O)		break;
-				CGameObject* GO = dynamic_cast<CGameObject*> O;
+				CGameObject* GO = dynamic_cast<CGameObject*>(O);
 				if (0==GO)		break;
-				GO->net_Event	(P);
+				GO->net_Event	(*P);
 			}
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate
@@ -59,22 +59,6 @@ void CLevel::ClientReceive()
 				CObject*	O	= Objects.net_Find		(ID);
 				if (O)			O->net_MigrateActive	(*P);
 				Log("! MIGRATE_ACTIVATE",O->cName());
-			}
-			break;
-		case M_HIT:
-			{
-				P->r_u16		(ID);
-				CObject*	O	= Objects.net_Find	(ID);
-				if (O)	{
-					u16			ID2;
-					P->r_u16	(ID2);
-					CEntity*	WHO = dynamic_cast<CEntity*>	(Objects.net_Find(ID2));
-					u8			perc;	P->r_u8		(perc);
-					Fvector		dir;	P->r_dir	(dir);
-
-					CEntity*	E	= dynamic_cast<CEntity*>	(O);
-					if (E)		E->Hit(u32(perc),dir,WHO);
-				}
 			}
 			break;
 		case M_CHAT:

@@ -73,7 +73,6 @@ protected:
 	CObject*							Parent;
 public:
 	DWORD								dwFrame_UpdateCL;
-	virtual void						___instantiate		()					= 0;
 
 	// Network
 	IC BOOL								Local				()					{ return net_Local;		}
