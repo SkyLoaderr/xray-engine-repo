@@ -6,8 +6,6 @@
 #define SkeletonXH
 #pragma once
 
-#include "FVisual.h"
-#include "FProgressive.h"
 #include "SkeletonCustom.h"
 
 // refs
