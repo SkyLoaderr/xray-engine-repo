@@ -407,8 +407,8 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
-		//	if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
-		UpdateInterpolation				();
+			if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;//disable
+	//	UpdateInterpolation				();
 		return;
 	}
 
@@ -676,6 +676,7 @@ void CPHElement::Disable(){
 
 	*/
 	if(!dBodyIsEnabled(m_body)) return;
+	FillInterpolation();
 	if(m_group)
 		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
 	else 
@@ -929,12 +930,12 @@ void CPHElement::CallBack1(CBoneInstance* B)
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
-	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
+
 	if(!m_parent_element)
 	{
 			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
 	}
-	
+	if( !dBodyIsEnabled(m_body) && !bUpdate) return;
 	//if(m_parent_element)
 	{
 		InterpolateGlobalTransform(&mXFORM);

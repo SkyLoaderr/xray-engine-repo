@@ -80,6 +80,12 @@ private:
 	dMass					recursive_mass_summ				(u16 start_geom,FRACTURE_I cur_fracture);
 	void					Disabling						();
 	void					unset_Pushout					();
+	void					FillInterpolation				()
+	{
+		m_body_interpolation.ResetPositions();
+		m_body_interpolation.ResetRotations();
+		bUpdate=true;
+	}
 IC	void					UpdateInterpolation				()
 	{
 		m_body_interpolation.UpdatePositions();
