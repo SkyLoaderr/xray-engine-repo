@@ -195,7 +195,7 @@ void xrLoad(LPCSTR name)
 						h_data.dest				= dest;
 						h_data.T				= RL;
 						h_data.T.amount			= 0;
-						xrHemisphereBuild		(Header.params.area_quality,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
+						xrHemisphereBuild		(1/*Header.params.area_quality*/,FALSE,0.5f,Header.params.area_energy_summary,hemi_callback,&h_data);
 					}
 				} else {
 					RL.type			= LT_POINT;
@@ -389,7 +389,7 @@ public:
 				// calculation of luminocity
 				DetailPalette* dc = (DetailPalette*)&DS.color;	int LL; float	res;
 				float amb		= Header.params.m_lm_amb_color.magnitude_rgb();
-				float f			= 1.f - Header.params.m_lm_amb_fogness;
+				float f			= Header.params.m_lm_amb_fogness;
 				float f_inv		= 1.f - f; 
 				res				= (amount[0]/float(count[0]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a0	= LL;
 				res				= (amount[1]/float(count[1]))*f_inv + amb*f; LL = iFloor(15.f * res); clamp(LL,0,15); dc->a1	= LL;
