@@ -171,10 +171,10 @@ void	CEffect_Rain::Render	()
 		P.mad(pos_head, lineTop,-w);	verts->set(P,0,1,1);	verts++;
 		P.mad(pos_head, lineTop,w);		verts->set(P,0,1,0);	verts++;
 	}
-	
 	DWORD vCount			= verts-start;
 	VS->Unlock				(vCount);
-	
+
+	// Render if needed
 	if (vCount)	{
 		HW.pDevice->SetTransform	(D3DTS_WORLD, precalc_identity.d3d());
 		HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
