@@ -128,8 +128,9 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
                     if (RQ.O){
                     	n.set(0.f,1.f,0.f);
                     }else{
-                    	CDB::TRI* T =  	g_pGameLevel->ObjectSpace.GetStaticTris()+RQ.element;
-						n.mknormal(*T->verts[0],*T->verts[1],*T->verts[2]);
+                    	CDB::TRI*	T		=  	g_pGameLevel->ObjectSpace.GetStaticTris()+RQ.element;
+						Fvector*	verts	=	g_pGameLevel->ObjectSpace.GetStaticVerts();
+						n.mknormal(verts[T->verts[0]],verts[T->verts[1]],verts[T->verts[2]]);
                     }
 #endif
 		            pick_cnt++;
