@@ -1138,15 +1138,16 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	i=elements.begin();
 	m_body=(*i)->get_body();
 	m_inverse_local_transform.set((*i)->m_inverse_local_transform);
-	Fmatrix33 m33;
-	Fmatrix m,m1;
-	m1.set(m0);
-	m1.invert();
-	m.mul(m1,m2);
+	//Fmatrix33 m33;
+	//Fmatrix m,m1;
+	//m1.set(m0);
+	//m1.identity();
+	//m1.invert();
+	//m.mul(m1,m2);
 	//m.mul(1.f/dt01);
-	m33.set(m);
-	dMatrix3 R;
-	PHDynamicData::FMX33toDMX(m33,R);
+	//m33.set(m);
+	//dMatrix3 R;
+	//PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
 

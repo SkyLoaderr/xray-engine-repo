@@ -354,8 +354,8 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
 	//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};
 	//if( dDOT(diff,diff)>0.001f)
-		if((m_wall_contact_position[0]-m_ground_contact_position[0])*m_control_force[0]+
-		   (m_wall_contact_position[2]-m_ground_contact_position[2])*m_control_force[2]>0.1f &&
+		if(((m_wall_contact_position[0]-m_ground_contact_position[0])*m_control_force[0]+
+		   (m_wall_contact_position[2]-m_ground_contact_position[2])*m_control_force[2])>0.1f &&
 		    m_wall_contact_position[1]-m_ground_contact_position[1]>0.f)
 																		b_clamb_jump=true;
 	
@@ -363,9 +363,9 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	}
 if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 			if(
-			(m_wall_contact_position[0]-m_ground_contact_position[0])*m_control_force[0]+
-		   (m_wall_contact_position[2]-m_ground_contact_position[2])*m_control_force[2]>0.01f &&
-		    m_wall_contact_position[1]-m_ground_contact_position[1]>0.01f)
+			dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
+		   (m_wall_contact_position[2]-m_ground_contact_position[2]))>0.0f &&//0.01f//*m_control_force[2]
+		    m_wall_contact_position[1]-m_ground_contact_position[1]>0.0f)
 									memcpy(m_clamb_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 //jump
 	
@@ -553,7 +553,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 
 	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
 
-	if(is_control&&!b_lose_control){
+	if(is_control&&!b_lose_control||b_jumping){
 					c->surface.mode =dContactApprox1|dContactSoftCFM|dContactSoftERP;// dContactBounce;|dContactFDir1
 					c->surface.mu = 0.00f;
 					//c->surface.mu2 = dInfinity;
