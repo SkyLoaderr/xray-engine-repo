@@ -8,6 +8,8 @@ function on_enter(zone,object)
 	if event_zone_id == zone:id() and actor_id == object:id() then 
 		printf("actor entering in our zone")
 		is_actor_entered = true
+	else
+		is_actor_entered = false
 	end
 end
 
@@ -49,12 +51,7 @@ function main()
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				cond	(cond.time_end, 500000)
 			)
-	
-		printf("ccc!")
-		flush()
-
-
-		action(                                                                                                       
+			action(                                                                                                       
 			    stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
 				cond	(cond.time_end, 500000)
@@ -67,7 +64,7 @@ function main()
 	event:set_callback(script_01.on_exit,false)
 
 	while stalker1:action() and stalker2:action() do
-		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == nil then 
+		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == false then 
 
 			stalker1:script	(false, script_01.script_name())
 			stalker1:script	(true,  script_01.script_name())
