@@ -91,7 +91,8 @@ void CUI::OnFrame()
 		CWeaponList* wpns = m_Actor->GetItemList();
 		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		// out GAME-style depend information
-		switch (GAME){
+		switch (Game())
+		{
 			case GAME_SINGLE:		
 				break;
 			case GAME_DEATHMATCH:
@@ -143,7 +144,8 @@ bool CUI::Render()
 	UIHealth.Render();
 
 	// out GAME-style depend information
-	switch (GAME){
+	switch (Game())
+	{
 	case GAME_SINGLE:		
 		break;
 	case GAME_DEATHMATCH:
@@ -168,7 +170,8 @@ bool CUI::Render()
 bool CUI::OnKeyboardPress(int dik)
 {
 	// global
-	switch (GAME){
+	switch (Game())
+	{
 	case GAME_ASSAULT:
 	case GAME_CS:		
 		if (bShowBuyMenu){
