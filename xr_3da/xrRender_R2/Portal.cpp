@@ -9,20 +9,6 @@
 #include "..\tempobject.h"
 #include "..\fbasicvisual.h"
 
-//#include "std_classes.h"
-
-static u32 COLORS[8] = 
-{
-	D3DCOLOR_XRGB(0x7f,0x7f,0x7f),
-	D3DCOLOR_XRGB(0xff,0x00,0x00),
-	D3DCOLOR_XRGB(0x00,0xff,0x00),
-	D3DCOLOR_XRGB(0x00,0x00,0xff),
-	D3DCOLOR_XRGB(0xff,0xff,0x00),
-	D3DCOLOR_XRGB(0x7f,0x7f,0xff),
-	D3DCOLOR_XRGB(0xff,0x7f,0x00),
-	D3DCOLOR_XRGB(0xff,0xff,0xff)
-};
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -59,9 +45,8 @@ void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 	P.build	(poly[0],N);
 	FPU::m24r();
 
-	VERIFY(_abs(1-P.n.magnitude())<EPS_S);
+	R_ASSERT(_abs(1-P.n.magnitude())<EPS_S);
 }
-
 
 //
 CSector::~CSector()

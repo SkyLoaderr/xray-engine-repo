@@ -109,4 +109,17 @@ public:
 	virtual					~CSector		();
 };
 
+class ENGINE_API			CPortalTraverser
+{
+public:
+	xr_vector<IRender_Sector*>		r_sectors;
+
+	enum
+	{
+		VQ_HOM,
+		VQ_SSA,
+		VQ_SORTOBJECTS,
+	};
+};
+
 #endif // !defined(AFX_PORTAL_H__1FC2D371_4A19_49EA_BD1E_2D0F8DEBBF15__INCLUDED_)
