@@ -10,7 +10,7 @@ using namespace CDB;
 using namespace Opcode;
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
-					  DWORD  ul_reason_for_call, 
+					  u32  ul_reason_for_call, 
 					  LPVOID lpReserved
 					  )
 {
@@ -26,16 +26,16 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 }
 
 // Triangle utilities
-void	TRI::convert_I2P	(Fvector* pBaseV, TRI* pBaseTri)	
+void	TRI::convert_I2P	(Fvector* pBaseV)	
 {
-	DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
+	u32*	pVertsID= (u32*)	verts;	// as indexed form
 	verts[0] = pBaseV+pVertsID[0];
 	verts[1] = pBaseV+pVertsID[1];
 	verts[2] = pBaseV+pVertsID[2];
 }
-void	TRI::convert_P2I	(Fvector* pBaseV, TRI* pBaseTri)	
+void	TRI::convert_P2I	(Fvector* pBaseV)	
 {
-	DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
+	u32*	pVertsID= (u32*)	verts;	// as indexed form
 	pVertsID[0] = verts[0]-pBaseV;
 	pVertsID[1] = verts[1]-pBaseV;
 	pVertsID[2] = verts[2]-pBaseV;
@@ -79,7 +79,7 @@ void	MODEL::build_thread		(void *params)
 	P.M->build_internal			(P.V,P.Vcnt,P.T,P.Tcnt,P.BC,P.BCP);
 	P.M->status					= S_READY;
 	P.M->cs.Leave				();
-	Msg							("* xrCDB: cform build completed, memory usage: %d K",memory()/1024);
+	Msg							("* xrCDB: cform build completed, memory usage: %d K",P.M->memory()/1024);
 }
 
 void	MODEL::build			(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callback* bc, void* bcp)
@@ -115,19 +115,19 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	status		= S_BUILD;
 	
 	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
-	DWORD*		temp_tris	= xr_alloc<DWORD>	(tris_count*3);
+	u32*		temp_tris	= xr_alloc<u32>	(tris_count*3);
 	if (0==temp_tris)	{
 		xr_free		(verts);
 		xr_free		(tris);
 		return;
 	}
-	DWORD*		temp_ptr	= temp_tris;
+	u32*		temp_ptr	= temp_tris;
 	for (int i=0; i<tris_count; i++)
 	{
 		*temp_ptr++	= tris[i].IDverts()[0];
 		*temp_ptr++	= tris[i].IDverts()[1];
 		*temp_ptr++	= tris[i].IDverts()[2];
-		tris[i].convert_I2P(verts,tris);
+		tris[i].convert_I2P(verts);
 	}
 	
 	// Build a non quantized no-leaf tree
@@ -157,8 +157,8 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 u32 MODEL::memory	()
 {
 	if (S_BUILD==status)	{ Msg	("! xrCDB: model still isn't ready"); return 0; }
-	DWORD V					= verts_count*sizeof(Fvector);
-	DWORD T					= tris_count *sizeof(TRI);
+	u32 V					= verts_count*sizeof(Fvector);
+	u32 T					= tris_count *sizeof(TRI);
 	return tree->GetUsedBytes()+V+T+sizeof(*this)+sizeof(*tree);
 }
 

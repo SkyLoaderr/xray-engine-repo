@@ -16,7 +16,7 @@ namespace CDB
 
 	void	Collector::add_face_D	(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u16 material, u16 sector, u32 dummy	// misc
+		u32 dummy								// misc
 		)
 	{
 		TRI T;
@@ -74,9 +74,9 @@ namespace CDB
 		faces.push_back(T);
 	}
 
-
-	void	Collector::calc_adjacency()
+	void	Collector::calc_adjacency	(xr_vector<u32>& dest)
 	{
+		dest.resize						(faces.size()*3);
 		// Dumb algorithm O(N^2) :)
 		for (u32 f=0; f<faces.size(); f++)
 		{
@@ -99,7 +99,7 @@ namespace CDB
 						if (f1==t1 && f2==t2)
 						{
 							// f.edge[f_e] linked to t.edge[t_e]
-							faces[f].IDadj()[f_e]	= t;
+							dest[f*3+f_e]	= t;
 							break;
 						}
 					}
@@ -107,7 +107,6 @@ namespace CDB
 			}
 		}
 	}
-
 
 	CollectorPacked::CollectorPacked(const Fbox &bb, int apx_vertices, int apx_faces)
 	{

@@ -155,7 +155,7 @@ namespace CDB
 		void			add_face_D			( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy );
 		void			add_face_packed		( Fvector& v0, Fvector& v1, Fvector& v2, WORD material, WORD sector, float eps = EPS );
 		void			add_face_packed_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy, float eps = EPS );
-		void			calc_adjacency		();
+		void			calc_adjacency		( xr_vector<u32>& dest		);
 
 		Fvector*		getV			()	{ return &*verts.begin();	}
 		size_t			getVS			() 	{ return verts.size();		}
