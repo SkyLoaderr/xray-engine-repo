@@ -7,16 +7,16 @@ class					= C_HLCPTR
 visual                  = physics\vehicles\mi24\veh_mi24_u_01.ogf
 
 //пфраметры построения пути
-path_linear_acc_fw				= 3.0 ;m/s  макс линейное ускорение при разгоне
-path_linear_acc_bk				= 8.0 ;m/s макс линейное ускорение торможения
+path_linear_acc_fw				= 5;3.0 ;m/s  макс линейное ускорение при разгоне
+path_linear_acc_bk				= 3;8.0 ;m/s макс линейное ускорение торможения
 
-path_angular_sp_pitch			= 0.45 ; скорость изменения высоты
-path_angular_sp_heading			= 0.4 ; макс угловая скорость
+path_angular_sp_pitch			= 0.85; 0.45 ; скорость изменения высоты
+path_angular_sp_heading			= 0.2;0.4 ; макс угловая скорость
 
 //пфраметры наклона модели 
-model_angular_sp_bank			= 0.35 ; коэф наклона модели по оси Х в зависимости от текущей угловой скорости
+model_angular_sp_bank			= 0.4;0.35 ; коэф наклона модели по оси Х в зависимости от текущей угловой скорости
 model_angular_sp_pitch			= 0.3 ;
-model_pitch_koef				= 0.007 ;коэф наклона модели по оси Z в зависимости от текущей линейной скорости
+model_pitch_koef				= 0.011;0.007 ;коэф наклона модели по оси Z в зависимости от текущей линейной скорости
 model_bank_koef					= 0.02 ;
 on_point_range_dist				= 10.0
 smoke_particle						= damage_fx\heli_burn
@@ -35,7 +35,7 @@ time_delay_before_start		= 60	;sec
 time_patrol_period			= 12000	;sec
 time_delay_between_patrol	= 60	;sec
 velocity					= 25.0	;m/sec
-attack_velocity				= 10.0
+attack_velocity				= 15.0;10
 altitude					= 50	;20.0	;m
 attack_altitude				= 15; 20	;20.0
 max_key_dist				= 15.0
@@ -48,7 +48,7 @@ use_rocket					= true;
 use_mgun					= true;
 min_mgun_attack_dist		= 50;15.0  ;m
 max_mgun_attack_dist		= 250;300.0 ;m
-min_rocket_attack_dist		= 100;15.0	;m
+min_rocket_attack_dist		= 100; 100 15.0	;m
 max_rocket_attack_dist		= 300;150.0 ;m
 time_between_rocket_attack	= 500 ; 1500 ; msec
 syncronize_rocket			= false; true
@@ -56,10 +56,10 @@ syncronize_rocket			= false; true
 death_angular_vel			= 3.0,3.0,0.0
 death_lin_vel_koeff			= 1.2
 
-fire_dispersion_base	= 2
-tracer_head_speed		= 200
+fire_dispersion_base	= 4;2
+tracer_head_speed		= 150;200
 tracer_trail_scale		= 1.25;0.75
-tracer_start_length		= 1
+tracer_start_length		= 5;1
 tracer_width			= 0.25;0.1
 rpm                     = 400
 hit_power               = 25;5
@@ -79,7 +79,7 @@ shell_particles			= weapons\generic_shells
 snd_shoot				= weapons\pkm_shot
 
 rocket_class			= helicopter_missile ;wpn_rpg7_missile 
-launch_speed			= 60;50;76 500
+launch_speed			= 50;60;76 500
 
 burn_immunity			= 0.8	;коэффициенты иммунитета 
 strike_immunity			= 0.0 ;0.7
@@ -113,7 +113,7 @@ inv_grid_y				= 0
 cost					= 200
 ;---------------------------------------------------------------
 blast				= 520;120
-blast_r				= 10;15
+blast_r				= 15;10
 blast_impulse		= 550;320
 ;delete
 blast_impulse_factor = 1
@@ -126,7 +126,7 @@ frag_hit_impulse	= 300
 hit_type_blast		= explosion
 hit_type_frag		= fire_wound
 
-up_throw_factor		= 1.3
+up_throw_factor		= 1.5;1.3
 ;---------------------------------------------------------------
 
 wm_size             = 0.3
