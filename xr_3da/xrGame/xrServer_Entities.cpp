@@ -234,7 +234,7 @@ void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
 {
-	FILL_PROP_EX(values,	pref, "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
+	FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name), "Model",		s_Model, 		PHelper.CreateLibObject(sizeof(s_Model)));
 }
 #endif
 //
@@ -297,7 +297,7 @@ void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{};
 void xrSE_Health::FillProp			(LPCSTR pref, PropValueVec& values)
 {
 	inherited::FillProp(pref,values);
-	FILL_PROP_EX(values,	pref, "Health amount",	&amount,	PHelper.CreateU8(0,255));
+	FILL_PROP_EX(values,	PHelper.PrepareKey(pref,s_name), "Health amount",	&amount,	PHelper.CreateU8(0,255));
 }
 #endif
 
@@ -487,19 +487,19 @@ public:
 
 xrSE_Rat::xrSE_Rat()
 {
-	u32ActionRefreshRate = 1000;
+	u16ActionRefreshRate = 1000;
 }
 
 void xrSE_Rat::STATE_Read(NET_Packet& P, u16 size)
 {
 	inherited::STATE_Read(P,size);
-	P.r_u32(u32ActionRefreshRate);
+	P.r_u16(u16ActionRefreshRate);
 }
 
 void xrSE_Rat::STATE_Write(NET_Packet& P)
 {
 	inherited::STATE_Write(P);
-	P.w_u32(u32ActionRefreshRate);
+	P.w_u16(u16ActionRefreshRate);
 }
 
 void xrSE_Rat::UPDATE_Read(NET_Packet& P)
@@ -516,7 +516,7 @@ void xrSE_Rat::UPDATE_Write(NET_Packet& P)
 void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 {
    	inherited::FillProp(pref, values);
-   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name), "Attack refresh rate",	&u32AttackRefreshRate, PHelper.CreateU32(0,10000,100));
+   	FILL_PROP_EX(values,PHelper.PrepareKey(pref,s_name),"Attack refresh rate",	&u16ActionRefreshRate, PHelper.CreateU16(0,10000,100));
 }
 #endif
 
