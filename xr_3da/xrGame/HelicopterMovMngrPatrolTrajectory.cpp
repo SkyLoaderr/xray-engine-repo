@@ -24,14 +24,12 @@ void CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount,
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
 	Fbox level_box = Level().ObjectSpace.GetBoundingVolume();
-	if(helicopter()->m_x_level_bound*2 < level_box.max.x - level_box.min.x )
-	{
+	if(helicopter()->m_x_level_bound*2 < level_box.max.x - level_box.min.x ) {
 		level_box.min.x += helicopter()->m_x_level_bound;
 		level_box.max.x -= helicopter()->m_x_level_bound;
 	};
 
-	if(helicopter()->m_z_level_bound*2 < level_box.max.z - level_box.min.z )
-	{
+	if(helicopter()->m_z_level_bound*2 < level_box.max.z - level_box.min.z ) {
 		level_box.min.z += helicopter()->m_z_level_bound;
 		level_box.max.z -= helicopter()->m_z_level_bound;
 	};
@@ -40,10 +38,10 @@ void CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount,
 		useXBound	= dice();
 		min_max		= dice();
 
-		if(useXBound){
+		if(useXBound) {
 			(min_max)?keyPoint.x = level_box.min.x:keyPoint.x = level_box.max.x;
 			keyPoint.z = ::Random.randF(level_box.min.z, level_box.max.z);
-		}else{
+		}else {
 			(min_max)?keyPoint.z = level_box.min.z:keyPoint.z = level_box.max.z;
 			keyPoint.x = ::Random.randF(level_box.min.x, level_box.max.x);
 		}
@@ -58,13 +56,11 @@ void CHelicopterMovementManager::createLevelPatrolTrajectory(u32 keyCount,
 		keyPoint.y = keyPoint.y-R.range+desireH;
 */
 		//промежуточные точки
-		if( keyPoints.size() )
-		{
+		if( keyPoints.size() ) {
 			Fvector prevPoint = keyPoints.back();
 			float dist = prevPoint.distance_to(keyPoint);
 			float k = (dist / KEY_MAX_DIST) - 1.0f;
-			for( float i=1; i<k; ++i )
-			{
+			for( float i=1; i<k; ++i ) {
 				Fvector p = makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) );
 				keyPoints.push_back(p);
 			}
@@ -114,16 +110,17 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 	Fvector					dir;
 
 
-	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+//	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+	Fbox levelBox = m_boundingVolume;
 	keyPoint = fromPos;
 	VERIFY(Fbox(levelBox).scale(0.05f).contains(keyPoint));
 	keys.push_back(keyPoint);
 	lastPoint = keyPoint;
 	
-	if(CHelicopterMotion::KeyCount()>1){
+	if(CHelicopterMotion::KeyCount()>1) {
 		CHelicopterMotion::GetKeyT(CHelicopterMotion::KeyCount()-2, prevPoint);
 		makeNewPoint(prevPoint, lastPoint, levelBox, keyPoint);
-	}else{
+	}else {
 		selectSafeDir(lastPoint, levelBox, dir);
 		makeNewPoint(levelBox, lastPoint, dir, keyPoint);
 	};
@@ -144,8 +141,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 			Fvector& prevPoint = keys.back();
 			float dist = prevPoint.distance_to(keyPoint);
 			float k = (dist / m_maxKeyDist) - 1.0f;
-			for( float i=1; i<k; ++i )
-			{
+			for( float i=1; i<k; ++i ) {
 				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
 				VERIFY(Fbox(levelBox).scale(0.05f).contains(keys.back()));
 			}
@@ -250,13 +246,12 @@ void CHelicopterMovManager::getReflectDir(const Fvector& dir,
 										  const u16 planeID,
 										  Fvector& newDir)
 {
-	switch (planeID){
+	switch (planeID) {
 		case 1:
 		case 3:
 			{
 				newDir.set(-dir.x, dir.y, dir.z);
-				if(_abs(newDir.z)<0.3f)
-				{
+				if(_abs(newDir.z)<0.3f) {
 					float sign;
 					(newDir.z>0.0f)?sign=1.0f:sign=-1.0f;
 					newDir.z += sign*0.3f;
@@ -267,17 +262,17 @@ void CHelicopterMovManager::getReflectDir(const Fvector& dir,
 		case 4:
 			{
 				newDir.set(dir.x, dir.y, -dir.z);
-				if(_abs(newDir.x)<0.3f)
-				{
+				if(_abs(newDir.x)<0.3f) {
 					float sign;
 					(newDir.x>0.0f)?sign=1.0f:sign=-1.0f;
 					newDir.x += sign*0.3f;
 				}
 				break;
 			}
-		case 5:{
-			newDir.set(dir.x, 0.0f, dir.z);
-		}
+		case 5:
+			{
+				newDir.set(dir.x, 0.0f, dir.z);
+			}
 	};
 
 }
@@ -291,8 +286,7 @@ void CHelicopterMovManager::selectSafeDir(const Fvector& prevPoint,
 	newDir.normalize_safe();
 	VERIFY(fsimilar(newDir.y, 0.0f));
 
-	while( !fbox.contains(pt.add(newDir))	)
-	{
+	while( !fbox.contains(pt.add(newDir)) ) {
 		pt = prevPoint;
 		
 		float h ;
@@ -311,7 +305,8 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point)
 	Fvector down_dir;
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
-	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+//	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
+	Fbox levelBox = m_boundingVolume;
 	point.y = levelBox.max.y+EPS_L;
 
 	Level().ObjectSpace.RayPick(point, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);

@@ -158,8 +158,7 @@ void CHelicopterMotion::drawPath()
 	}
 
 	float path_box_size = .05f;
-	for(u32 i = 0; i<path_points.size (); ++i)
-	{
+	for(u32 i = 0; i<path_points.size (); ++i) {
 		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
 		
 /*		r.setHP(path_rot[i].y, path_rot[i].x );
@@ -170,8 +169,7 @@ void CHelicopterMotion::drawPath()
 	}
 
 /*	u32 cnt = KeyCount();
-	for(u32 ii=0;ii<cnt;++ii)
-	{
+	for(u32 ii=0;ii<cnt;++ii) {
 		Fvector _t, TT;
 		Fvector _r;
 		GetKey (ii,_t,_r);
@@ -195,8 +193,7 @@ void CHelicopterMotion::DropTailKeys(u32 cnt)
 	VERIFY(KeyCount()>(int)cnt+2);
 
 	CEnvelope*	env = Envelope();
-	for(u32 i=0; i<cnt; ++i)
-	{
+	for(u32 i=0; i<cnt; ++i) {
 		DeleteKey(env->keys.front()->time);
 	};
 	GetKeyTime(0, m_startTime);
@@ -207,8 +204,7 @@ void CHelicopterMotion::DropHeadKeys(u32 cnt)
 	VERIFY(KeyCount()>(int)cnt+2);
 
 	CEnvelope*	env = Envelope();
-	for(u32 i=0; i<cnt; ++i)
-	{
+	for(u32 i=0; i<cnt; ++i) {
 		DeleteKey(env->keys.back()->time);
 	};
 

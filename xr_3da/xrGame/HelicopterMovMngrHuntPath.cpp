@@ -35,10 +35,3 @@ void CHelicopterMovementManager::buildHuntPath(const Fvector& enemyPos)
 }
 #endif
 
-void CHelicopterMovManager::createHuntPathTrajectory(const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys)
-{
-	Fvector destPos = enemyPos;
-	destPos.y += m_attackAltitude;
-	keys.push_back(fromPos);
-	keys.push_back(destPos);
-}

@@ -44,14 +44,12 @@ void CHelicopter::MGunUpdateFire()
 	CShootingObject::UpdateFlameParticles();
 	CShootingObject::UpdateLight();
 
-	if(!IsWorking()) 
-	{
+	if(!IsWorking()) {
 		if(fTime<0) fTime = 0.f;
 		return;
 	}
 
-	if(fTime<=0)
-	{
+	if(fTime<=0) {
 		OnShot();
 		fTime += fTimeToFire;
 	}
@@ -115,8 +113,7 @@ void CHelicopter::updateMGunDir()
 
 void CHelicopter::startRocket(u16 idx)
 {
-	if((getRocketCount()>=1)&&m_use_rocket_on_attack)
-	{
+	if((getRocketCount()>=1)&&m_use_rocket_on_attack) {
 		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
 		VERIFY(pGrenade);
 		pGrenade->SetCurrentParentID(this->ID());

@@ -2,8 +2,8 @@
 
 class CHelicopter;
 
-#define MOV_MANAGER_OLD
-//#define MOV_MANAGER_NEW
+//#define MOV_MANAGER_OLD
+#define MOV_MANAGER_NEW
 
 #ifdef MOV_MANAGER_OLD
 
@@ -169,9 +169,11 @@ class CHelicopterMovManager :public CHelicopterMotion
 	float							m_baseAltitude;
 	float							m_attackAltitude;
 	float							m_basePatrolSpeed;
+	Fbox							m_boundingVolume;
 	float							m_maxKeyDist;
 	float							m_endAttackTime;
 	Fvector							m_startDir;
+	Fvector							m_stayPoint;
 	float							m_time_last_patrol_end;
 	float							m_time_last_patrol_start;
 	float							m_time_delay_between_patrol;
@@ -184,19 +186,20 @@ class CHelicopterMovManager :public CHelicopterMotion
 
 	void	createLevelPatrolTrajectory(u32 keyCount, const Fvector& fromPos, xr_vector<Fvector>& keys );
 	void	createHuntPathTrajectory(const Fvector& fromPos, const Fvector& enemyPos, xr_vector<Fvector>& keys );
-
+	void	createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys );
 	Fvector	makeIntermediateKey		(Fvector& start, Fvector& dest, float k);
 	void	buildHuntPath			(const Fvector& enemyPos);
 	void	onFrame					();
 	void	onTime					(float t);
 	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys);
 	void	updatePathHPB			(float from_time);
-	void	 buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
+	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res);
 	void	addPartolPath			(float from_time);
-	void	updatePatrolPath		(float t);
+	void	updatePatrolPath		(float from_time);
 	void	addHuntPath				(float from_time, const Fvector& enemyPos);
-	
+	void	addPathToStayPoint		(float from_time);
 	void	getPathAltitude			(Fvector& point);
+	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);
 
 	//patrol path
 	void	makeNewPoint			(const Fvector& prevPoint, const Fvector& point, const Fbox& box, Fvector& newPoint);
