@@ -6,6 +6,7 @@
 
 class ENGINE_API	IRender_Visual;
 class ENGINE_API	CInifile;
+class ENGINE_API 	CEnvironment;
 
 class ENGINE_API	CEnvDescriptor
 {
@@ -26,13 +27,18 @@ public:
 	float				rain_density;
 	Fvector3			rain_color;
 
+    float				wind_velocity;
+    float				wind_direction;      
+    
 	Fvector3			ambient;
 	Fvector3			lmap_color;
 	Fvector3			hemi_color;
 	Fvector3			sun_color;
 	Fvector3			sun_dir;
 
-	void				load		(LPCSTR sect);
+    int					lens_flare_id;
+    
+	void				load		(LPCSTR sect, CEnvironment* parent);
     void				unload		();
     
 	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f);

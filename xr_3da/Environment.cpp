@@ -96,15 +96,16 @@ static	u16			hbox_faces[18*3]	=
 CEnvironment::CEnvironment	()
 {
 	eff_Rain				= 0;
-    eff_LensFlare			= 0;
+    eff_LensFlare 			= xr_new<CLensFlare>();
 	OnDeviceCreate			();
 }
 CEnvironment::~CEnvironment	()
 {
 	OnDeviceDestroy			();
+    xr_delete				(eff_LensFlare);
 }
 
-void CEnvDescriptor::load	(LPCSTR S)
+void CEnvDescriptor::load	(LPCSTR S, CEnvironment* parent)
 {
 	sky_texture				= Device.Resources->_CreateTexture(pSettings->r_string(S,"sky_texture"));
 	sky_color				= pSettings->r_fvector3	(S,"sky_color");		sky_color.mul(.5f);
@@ -112,12 +113,15 @@ void CEnvDescriptor::load	(LPCSTR S)
 	fog_color				= pSettings->r_fvector3	(S,"fog_color");
 	fog_density				= pSettings->r_float	(S,"fog_density");
 	rain_density			= pSettings->r_float	(S,"rain_density");
-	rain_color				= pSettings->r_fvector3	(S,"rain_color");
-	ambient					= pSettings->r_fvector3	(S,"ambient");			ambient.mul		(.5f);
-	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");		
-	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");		hemi_color.mul	(.5f);
-	sun_color				= pSettings->r_fvector3	(S,"sun_color");		sun_color.mul	(.5f);
-	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");			sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
+	rain_color				= pSettings->r_fvector3	(S,"rain_color");            
+    wind_velocity			= pSettings->r_float	(S,"wind_velocity");
+    wind_direction			= deg2rad(pSettings->r_float(S,"wind_direction"));
+	ambient					= pSettings->r_fvector3	(S,"ambient");
+	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");
+	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");
+	sun_color				= pSettings->r_fvector3	(S,"sun_color");
+	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
+    lens_flare_id			= parent->eff_LensFlare->AppendDef(pSettings,pSettings->r_string(S,"flares"));
 }
 void CEnvDescriptor::unload	()
 {
@@ -140,6 +144,8 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	fog_far					= 0.95f * far_plane;
 	rain_density			= fi*A.rain_density + f*B.rain_density;
 	rain_color.lerp			(A.rain_color,B.rain_color,f);
+    wind_velocity			= fi*A.wind_velocity + f*B.wind_velocity;
+    wind_direction			= fi*A.wind_direction + f*B.wind_direction;
 	ambient.lerp			(A.ambient,B.ambient,f);
 	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
@@ -149,6 +155,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 
 void CEnvironment::load		()
 {
+    if (!eff_Rain)			eff_Rain 		= xr_new<CEffect_Rain>();
 	if (Palette.empty()){
         for(int env=0; env<24; env++) 
         {
@@ -157,12 +164,10 @@ void CEnvironment::load		()
             sprintf				(name,"%d",env);
             if (!pSettings->line_exist	(sect,name))	continue;
             CEnvDescriptor		D;
-            D.load				(pSettings->r_string(sect,name));
+            D.load				(pSettings->r_string(sect,name),this);
             Palette.push_back	(D);
         }
     }
-    // rain
-    if (!eff_Rain)			eff_Rain = xr_new<CEffect_Rain>();
 }
 
 void CEnvironment::unload	()
@@ -183,6 +188,7 @@ void CEnvironment::OnFrame()
 	CEnvDescriptor&	_A	= Palette	[f_1];
 	CEnvDescriptor&	_B	= Palette	[f_2];
 	Current.lerp		(_A,_B,t_fact);
+    eff_LensFlare->lerp	(_A.lens_flare_id,_B.lens_flare_id,t_fact);
 
 	// ******************** Environment params (setting)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(Current.fog_color.x,Current.fog_color.y,Current.fog_color.z,0) )); 
@@ -224,18 +230,12 @@ void CEnvironment::RenderFirst	()
 		::Render->rmNormal			();
 	}
 
-	// Sun sources
-	/* *********************** interfere with R2
-	if (psEnvFlags.test(effSunGlare))
-		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderSource();
-	*/
+    eff_LensFlare->Render			(TRUE,FALSE,FALSE);
 }
 
 void CEnvironment::RenderLast		()
 {
-//	if (psEnvFlags.test(effSunGlare))
-//		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
-
+    eff_LensFlare->Render			(FALSE,TRUE,TRUE);
 	eff_Rain->Render				();
 }
 
@@ -244,10 +244,12 @@ void CEnvironment::OnDeviceCreate()
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
+    eff_LensFlare->OnDeviceCreate();
 }
 
 void CEnvironment::OnDeviceDestroy()
 {
+    eff_LensFlare->OnDeviceDestroy();
 	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();

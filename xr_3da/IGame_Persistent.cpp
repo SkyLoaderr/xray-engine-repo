@@ -11,10 +11,14 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppCycleStart.Add		(this);
 	Device.seqAppCycleEnd.Add		(this);
 	Device.seqFrame.Add				(this);
+	Device.seqDevCreate.Add			(this);
+	Device.seqDevDestroy.Add		(this);
 }
 
 IGame_Persistent::~IGame_Persistent	()
 {
+	Device.seqDevCreate.Remove		(this);
+	Device.seqDevDestroy.Remove		(this);
 	Device.seqFrame.Remove			(this);
 	Device.seqAppCycleStart.Remove	(this);
 	Device.seqAppCycleEnd.Remove	(this);

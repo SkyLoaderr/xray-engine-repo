@@ -18,6 +18,8 @@ const int	max_desired_items	= 2500;
 const float	drop_length			= 1.5f;
 const float drop_width			= 0.04f;
 const float drop_angle			= 3.01f;
+const float drop_max_angle		= PI_DIV_6*.5f;
+const float drop_max_wind_vel	= 20.0f;
 const float drop_speed_min		= 40.f;
 const float drop_speed_max		= 80.f;
 
@@ -58,7 +60,13 @@ CEffect_Rain::~CEffect_Rain()
 // Born
 void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 {
-	Fvector		axis;	axis.set			(0,-1,0);
+	Fvector		axis;	
+    //axis.set			(0,-1,0);
+	float	factor		= drop_max_angle*(g_pGamePersistent->Environment.Current.wind_velocity/drop_max_wind_vel);
+    clamp				(factor,0.f,1.f);
+    factor				+= -PI_DIV_2;
+    axis.setHP			(g_pGamePersistent->Environment.Current.wind_direction,factor);
+    
 	Fvector&	view	= Device.vCameraPosition;
 	float		angle	= ::Random.randF	(0,PI_MUL_2);
 	float		dist	= ::Random.randF	(0,radius);

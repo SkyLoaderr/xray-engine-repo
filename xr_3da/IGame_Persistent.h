@@ -14,7 +14,9 @@ class ENGINE_API IGame_Persistent	:
 #endif
 	public pureAppCycleStart, 
 	public pureAppCycleEnd,
-	public pureFrame
+	public pureFrame,
+    public pureDeviceCreate,
+    public pureDeviceDestroy
 {
 public:
 #ifndef _EDITOR
