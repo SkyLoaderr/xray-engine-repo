@@ -45,9 +45,9 @@
 				ObjectFile="Debug\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				BrowseInformation="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
 				CallingConvention="2"/>
 			<Tool
@@ -123,9 +123,9 @@
 				ObjectFile="Mixed\"
 				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
 				BrowseInformation="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"
 				CallingConvention="2"/>
 			<Tool
@@ -202,7 +202,7 @@
 				BrowseInformation="0"
 				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="FALSE"
+				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="0"
 				CallingConvention="2"/>
 			<Tool
