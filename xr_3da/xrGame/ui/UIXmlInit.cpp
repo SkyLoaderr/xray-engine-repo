@@ -9,6 +9,7 @@
 #include "../UI.h"
 #include "../level.h"
 #include "../UICustomItem.h"
+#include "../string_table.h"
 
 #define HEADER_FONT_NAME		"header"
 #define ARIAL_FONT_NAME			"arial"
@@ -162,7 +163,9 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	pWnd->SetTextX(text_x);
 	pWnd->SetTextY(text_y);
-	pWnd->SetText(*text);
+
+	CStringTable st;
+	pWnd->SetText(*st(*text));
 
 	return true;
 }
@@ -535,7 +538,9 @@ bool CUIXmlInit::InitMultiTextStatic(CUIXml &xml_doc, const char *path, int inde
         p->effect.SetFont(pFont);
 		p->effect.SetTextColor(argb);
 
-		p->str = xml_doc.Read(ph, i);
+		CStringTable st;
+
+		p->str =  st(xml_doc.Read(ph, i));
 	}
 
 	xml_doc.SetLocalRoot(xml_doc.GetRoot());
