@@ -139,7 +139,7 @@ public:
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
 	void				GetDeathPosition(Fvector pos){pos.set( m_character.DeathPosition());}
 	void SetEnvironment( int enviroment,int old_enviroment);
-
+	void		ApplyImpulse(const Fvector& dir,const dReal P){m_character.ApplyImpulse(dir,P);};
 	CPHMovementControl(void);
 	~CPHMovementControl(void);
 };

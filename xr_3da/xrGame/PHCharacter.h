@@ -91,6 +91,7 @@ Fvector			DeathPosition								(){
 																pos.z=m_death_position[2];
 																return pos;
 																}
+void		ApplyImpulse(const Fvector& dir,const dReal P);
 virtual		EEnvironment CheckInvironment					()				=0	;
 virtual		bool		ContactWas							()				=0	;
 virtual		void		Create							(dVector3 sizes)	=0	;

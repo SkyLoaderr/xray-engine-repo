@@ -593,12 +593,13 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
-	///dCreatePlane(Space,0,1,0,5);
-	dReal k_p=1000000.f;
-	dReal k_d=2000.f;
-	dReal h=0.02222f;
-	dWorldSetERP(phWorld,  h*k_p / (h*k_p + k_d));
-	dWorldSetCFM(phWorld,  1.f / (h*k_p + k_d));
+	//dCreatePlane(Space,0,1,0,102);
+	const  dReal k_p=2400000.f;//550000.f;///1000000.f;
+	const dReal k_d=200000.f;
+	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
+	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
+	//dWorldSetERP(phWorld,  0.2f);
+	//dWorldSetCFM(phWorld,  0.000001f);
 	disable_count=0;
 	//Jeep.DynamicData.CalculateData();
 }
@@ -631,8 +632,8 @@ void CPHWorld::Step(dReal step)
 	list<CPHObject*>::iterator iter;
 	//step+=astep;
 	
-	const  dReal k_p=24000000.f;//550000.f;///1000000.f;
-	const dReal k_d=400000.f;
+	//const  dReal k_p=24000000.f;//550000.f;///1000000.f;
+	//const dReal k_d=400000.f;
 	UINT it_number;
 	frame_time+=step;
 	//m_frame_sum+=step;
@@ -668,8 +669,8 @@ void CPHWorld::Step(dReal step)
 			if(fabs(dif)>fixed_step) 
 				m_start_time+=dif;
 
-			dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
-			dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
+		//	dWorldSetERP(phWorld,  fixed_step*k_p / (fixed_step*k_p + k_d));
+		//	dWorldSetCFM(phWorld,  1.f / (fixed_step*k_p + k_d));
 
 			//dWorldSetERP(phWorld,  0.8);
 			//dWorldSetCFM(phWorld,  0.00000001);
@@ -684,10 +685,10 @@ void CPHWorld::Step(dReal step)
 
 
 			dWorldStep(phWorld, fixed_step);
-		
+			dJointGroupEmpty(ContactGroup);
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhDataUpdate(fixed_step);
-			dJointGroupEmpty(ContactGroup);
+	
 
 
 
@@ -710,41 +711,6 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 	
 		n = dCollide(o1, o2, N, &contacts[0].geom, sizeof(dContact));	
 		
-
-		if(
-			dGeomGetClass(o1)==dRayClass||dGeomGetClass(o2)==dRayClass
-			){
-	
-			if(isShooting){
-				dVector3 norm={RayD[0],RayD[1],RayD[2]};
-				dNormalize3(norm);
-			//	ulong n = dCollide(o1, o2, N, &bulletContact.geom, sizeof(dContact));
-				for(UINT i = 0; i < n; ++i)
-				{
-			
-					if(dDOT(contacts[i].geom.pos,norm)<dDOT(bulletContact.geom.pos,norm))
-
-					{
-					memcpy(&bulletContact,&contacts[i],sizeof(dContact));
-					bulletContact.geom.normal[0]=norm[0];
-					bulletContact.geom.normal[1]=norm[1];
-					bulletContact.geom.normal[2]=norm[2];
-				
-					bulletContact.geom.depth=0.5;
-				
-					bulletContact.surface.mode = dContactBounce;
-					bulletContact.surface.mu = 0.0f;
-					bulletContact.surface.bounce = 0.3f;
-					bulletContact.surface.bounce_vel = 0.01f;
-					}
-				}
-	
-			}
-		return;
-	}
-		
-
-
 	if(n>N)
 		n=N;
 	ULONG i;
@@ -800,7 +766,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		if(pushing_neg) contacts[i].surface.mu=dInfinity;
 
 		contacts[i].surface.bounce = 0.01f;//0.1f;
-		contacts[i].surface.bounce_vel =0.5f;//0.005f;
+		contacts[i].surface.bounce_vel =1.5f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
@@ -849,6 +815,15 @@ void CPHElement::			add_Box		(const Fobb&		V){
 
 void CPHElement::			create_Box		(Fobb&		V){
 														dGeomID geom,trans;
+
+														dVector3 local_position={
+															V.m_translate.x-m_mass_center.x,
+															V.m_translate.y-m_mass_center.y,
+															V.m_translate.z-m_mass_center.z};
+
+														if(dDOT(local_position,local_position)>0.0001||
+															m_spheras_data.size()+m_boxes_data.size()>1
+															){
 														geom=dCreateBox(0,
 																		V.m_halfsize.x*2.f,
 																		V.m_halfsize.y*2.f,
@@ -856,13 +831,14 @@ void CPHElement::			create_Box		(Fobb&		V){
 														
 														m_geoms.push_back(geom);
 														dGeomSetPosition(geom,
-															V.m_translate.x-m_mass_center.x,
-															V.m_translate.y-m_mass_center.y,
-															V.m_translate.z-m_mass_center.z);
+															local_position[0],
+															local_position[1],
+															local_position[2]);
 														dMatrix3 R;
 														PHDynamicData::FMX33toDMX(V.m_rotate,R);
 														dGeomSetRotation(geom,R);
 														trans=dCreateGeomTransform(0);
+
 														dGeomTransformSetGeom(trans,geom);
 														dGeomSetBody(trans,m_body);
 														m_trans.push_back(trans);
@@ -871,6 +847,24 @@ void CPHElement::			create_Box		(Fobb&		V){
 														dGeomCreateUserData(trans);
 														dGeomCreateUserData(geom);
 														dGeomGetUserData(trans)->friction=friction_table[1];
+															}
+														else{
+													  geom=dCreateBox(ph_world->GetSpace(),
+																		V.m_halfsize.x*2.f,
+																		V.m_halfsize.y*2.f,
+																		V.m_halfsize.z*2.f);
+														
+														m_geoms.push_back(geom);
+														dGeomSetBody(geom,m_body);														
+														dGeomSetPosition(geom,
+															m_mass_center.x,
+															m_mass_center.y,
+															m_mass_center.z);
+														dMatrix3 R;
+														PHDynamicData::FMX33toDMX(V.m_rotate,R);
+														dGeomSetRotation(geom,R);
+														dGeomCreateUserData(geom);
+														}
 														//dGeomGetUserData(trans)->friction=dInfinity;
 														
 														}
@@ -894,8 +888,15 @@ void CPHElement::			create_Sphere	(Fsphere&	V){
 void CPHElement::			build	(dSpaceID space){
 
 m_body=dBodyCreate(phWorld);
+
+//dBodySetFiniteRotationMode(m_body,1);
+//dBodySetFiniteRotationAxis(m_body,0,0,0);
+
 dBodySetMass(m_body,&m_mass);
+
+if(m_spheras_data.size()+m_boxes_data.size()>1)
 m_group=dCreateGeomGroup(space);
+
 Fvector mc=get_mc_data();
 //m_start=mc;
 
@@ -924,6 +925,7 @@ void CPHElement::			destroy	(){
 	dGeomDestroy(*i);
 	
 	}
+	if(m_spheras_data.size()+m_boxes_data.size()>1)
 	dGeomDestroy(m_group);
 	dBodyDestroy(m_body);
 	m_geoms.clear();
@@ -991,10 +993,21 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas){
 
 
 void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
-	
+	//density*=40.f;
+	vector<Fobb>::iterator i_box=m_boxes_data.begin();
+	if(m_boxes_data.size()==1,m_spheras_data.size()==0){
+	Fvector& hside=(*i_box).m_halfsize;
+	//dReal hs=min(max(hside.x,hside.y),hside.z);
+	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
+	dMassAdjust(&m_mass,hside.x*hside.y*hside.z*8.f*density);
+	//dMassSetBox(&m_mass,1.f,hs*2.f,hs*2.f,hs*2.f);
+	//dMassAdjust(&m_mass,hs*hs*hs*8.f*density);
+	return;
+	}
+
 	dMass m;
 	dMassSetZero(&m_mass);
-	vector<Fobb>::iterator i_box;
+	
 	for(i_box=m_boxes_data.begin();i_box!=m_boxes_data.end();i_box++){
 	Fvector& hside=(*i_box).m_halfsize;
 	Fvector& pos=(*i_box).m_translate;
@@ -1002,6 +1015,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 	l.sub(pos,mc);
 	dMassSetBox(&m,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
 	dMassAdjust(&m,hside.x*hside.y*hside.z*8.f*density);
+	
 	dMassTranslate(&m,l.x,l.y,l.z);
 	dMassAdd(&m_mass,&m);
 	
@@ -1146,14 +1160,16 @@ void CPHShell::PhDataUpdate(dReal step){
 //////////////////////////////////////////////////////////////////////
 ////limit velocity of the main body/////////////////////////////////
 /////////////////////////////////////////////////////////////////////
-
+//m_body_interpolation.UpdatePositions();
+//m_body_interpolation.UpdateRotations();
+//return;
 
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
 /////////////////////////////////////////////////////////////////
-				const dReal scale=1.001f;
+				const dReal scale=1.01f;
 				const dReal scalew=1.01f;
 				const dReal* vel1= dBodyGetLinearVel(m_body);
 				dBodySetLinearVel(m_body,vel1[0]/scale,vel1[1]/scale,vel1[2]/scale);
@@ -1161,7 +1177,7 @@ void CPHShell::PhDataUpdate(dReal step){
 				dBodySetAngularVel(m_body,wvel1[0]/scalew,wvel1[1]/scalew,wvel1[2]/scalew);
 /////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
-				static const dReal w_limit = M_PI/4.f/fixed_step;
+				static const dReal w_limit = M_PI/16.f/fixed_step;
 				static const dReal l_limit = 3.f/fixed_step;
 				
 
@@ -1261,7 +1277,7 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					if(mag_v<0.001* dis_frames && deviation<0.00001*dis_frames)
+					if(mag_v<0.001f* dis_frames && deviation<0.00001f*dis_frames)
 						dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
 					  ) 
@@ -1317,11 +1333,11 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 /////////////////////////////////////////////////////////////////
 	
-				const dReal k_w=0.05f;
-				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+			//	const dReal k_w=0.05f;
+			//	dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 	
-				const dReal k_l=1.8f;
-				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+			//	const dReal k_l=1.8f;
+			//	dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
 				
 				m_body_interpolation.UpdatePositions();
 				m_body_interpolation.UpdateRotations();

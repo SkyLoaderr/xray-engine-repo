@@ -56,7 +56,12 @@ CPHCharacter::~CPHCharacter(void)
 {
 }
 
-
+void		CPHCharacter::ApplyImpulse(const Fvector& dir,const dReal P){
+if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
+dBodyAddForce(m_body,dir.x*P/fixed_step,dir.x*P/fixed_step,dir.x*P/fixed_step);
+}
+////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////class//CPHSimpleCharacter////////////////////
 
 void CPHSimpleCharacter::Create(dVector3 sizes){
 
@@ -717,6 +722,10 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 
 }
 
+
+
+
+
 //////////////////////////////////////////////////////////////////////////
 /////////////////////CPHWheeledCharacter//////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -879,3 +888,4 @@ EEnvironment	 CPHWheeledCharacter::CheckInvironment(){
 	return peOnGround;
 
 }
+

@@ -294,6 +294,27 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element)
 	}
 }
 
+
+void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space)
+{
+	if (g_Alive()<=0) return;
+
+	ph_Movement.ApplyImpulse(dir,iLost);
+
+	switch (GameID())
+	{
+	case GAME_SINGLE:		
+		{
+			if (psActorFlags&AF_GODMODE)	return;
+			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space);
+		}
+		break;
+	default:
+		inherited::Hit	(iLost,dir,who,element,position_in_bone_space);
+		break;
+	}
+}
+
 void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element)
 {
 	if (g_Alive()) 
