@@ -197,7 +197,11 @@ IC	void CProblemSolverAbstract::evaluate_condition			(typename xr_vector<COperat
 TEMPLATE_SPECIALIZATION
 IC	typename CProblemSolverAbstract::_edge_value_type CProblemSolverAbstract::get_edge_weight	(const _index_type &vertex_index0, const _index_type &vertex_index1, const const_iterator &i) const
 {
-	return					((*i).m_operator->weight(vertex_index1,vertex_index0));
+	_edge_value_type		current, min;
+	current					= (*i).m_operator->weight(vertex_index1,vertex_index0);
+	min						= (*i).m_operator->min_weight();
+	VERIFY					(current >= min);
+	return					(current);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -242,25 +246,17 @@ IC	bool CProblemSolverAbstract::is_goal_reached(const _index_type &vertex_index)
 	xr_vector<COperatorCondition>::const_iterator	i = vertex_index.conditions().begin();
 	xr_vector<COperatorCondition>::const_iterator	e = vertex_index.conditions().end();
 	for ( ; i != e; ) {
-		if (I == E)
+		if ((I == E) || ((*I).condition() > (*i).condition()))
 			evaluate_condition	(I,E,(*i).condition());
+
 		if ((*I).condition() < (*i).condition())
 			++I;
-		else
-			if ((*I).condition() > (*i).condition()) {
-				evaluate_condition	(I,E,(*i).condition());
-				if ((*I).value() != (*i).value())
-					return		(false);
-				++I;
-				++i;
-			}
-			else
-				if ((*I).value() != (*i).value())
-					return		(false);
-				else {
-					++I;
-					++i;
-				}
+		else {
+			if ((*I).value() != (*i).value())
+				return		(false);
+			++I;
+			++i;
+		}
 	}
 	return						(true);
 #else
@@ -362,6 +358,53 @@ IC	void CProblemSolverAbstract::solve			()
 	bool						successful = ai().graph_engine().search(*this,target_state(),current_state(),&m_solution,CGraphEngine::CSolverBaseParameters(CGraphEngine::_solver_dist_type(-1),CGraphEngine::_solver_condition_type(-1),8000));
 #endif
 	m_failed					= !successful;
+#endif
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CProblemSolverAbstract::_edge_value_type CProblemSolverAbstract::estimate_edge_weight	(const _index_type &condition) const
+{
+	_edge_value_type			result = 0;
+#ifdef STRAIGHT_SEARCH
+	xr_vector<COperatorCondition>::const_iterator	I = target_state().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = target_state().conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = condition.conditions().end();
+	for ( ; (I != E) && (i != e); )
+		if ((*I).condition() < (*i).condition()) {
+			++result;
+			++I;
+		}
+		else
+			if ((*I).condition() > (*i).condition())
+				++i;
+			else {
+				if ((*I).value() != (*i).value())
+					++result;
+				++I;
+				++i;
+			}
+	return					(result + _edge_value_type(E - I));
+#else
+	xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = current_state().conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = condition.conditions().end();
+	for ( ; (i != e); ) {
+		if ((I == E) || ((*I).condition() > (*i).condition()))
+			evaluate_condition	(I,E,(*i).condition());
+
+		if ((*I).condition() < (*i).condition())
+			++I;
+		else {
+			VERIFY	((*I).condition() == (*i).condition());
+			if ((*I).value() != (*i).value())
+				++result;
+			++I;
+			++i;
+		}
+	}
+	return					(result);
 #endif
 }
 

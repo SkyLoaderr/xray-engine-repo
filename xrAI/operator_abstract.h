@@ -26,6 +26,8 @@ protected:
 protected:
 	CSConditionState				m_conditions;
 	CSConditionState				m_effects;
+	mutable bool					m_actual;
+	mutable _edge_value_type		m_min_weight;
 
 public:
 	IC								COperatorAbstract	();
@@ -40,6 +42,7 @@ public:
 	IC		void					add_effect			(const COperatorCondition &effect);
 	IC		void					remove_condition	(const typename COperatorCondition::_condition_type &condition);
 	IC		void					remove_effect		(const typename COperatorCondition::_condition_type &effect);
+	IC		_edge_value_type		min_weight			() const;
 	
 	template <typename T>
 			bool					applicable			(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition, T &problem_solver) const;
@@ -48,6 +51,7 @@ public:
 	
 	template <typename T>
 			const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result, CSConditionState &current, T &problem_solver) const;
+	virtual const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result) const;
 	
 	virtual bool					apply_reverse		(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result, const CSConditionState &self_condition) const;
 	virtual _edge_value_type		weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;

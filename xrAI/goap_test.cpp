@@ -12,7 +12,11 @@
 #include "condition_evaluator.h"
 #include "random32.h"
 
-const u32 world_state_dimension = 8;
+//#define SEED_TEST
+//#define COMPLEXITY_TEST
+#define DUMP_TEST
+
+u32 world_state_dimension = 8;
 const u32 min_operator_count	= 4;
 const u32 max_operator_count	= 8;
 typedef u32																				_condition_type;
@@ -47,39 +51,42 @@ COperator *random_operator()
 	return		(xr_new<COperator>(random_condition(),random_condition()));
 }
 
-LPSTR show_condition(const xr_vector<CCondition> &condition, LPSTR s)
+LPSTR show_condition(const xr_vector<CCondition> &condition, CSProblemSolver &problem_solver, LPSTR s)
 {
 	char					*s1 = s;
 	xr_vector<CCondition>::const_iterator	i = condition.begin();
 	xr_vector<CCondition>::const_iterator	e = condition.end();
-	for (u32 I=0; (I < world_state_dimension) && (i != e); ++I)
-		if (I == u32((*i).condition())) {
+	CSProblemSolver::EVALUATOR_MAP::const_iterator	I = problem_solver.evaluators().begin();
+	CSProblemSolver::EVALUATOR_MAP::const_iterator	E = problem_solver.evaluators().end();
+	for ( ; I != E; )
+		if ((i == e) || ((*I).first < (*i).condition())) {
+			s1				+= sprintf(s1,". ");
+			++I;
+		}
+		else {
+			VERIFY	((*I).first == (*i).condition());
 			s1				+= sprintf(s1,"%d ",(*i).value());
+			++I;
 			++i;
 		}
-		else
-			s1				+= sprintf(s1,"? ");
-
-	for ( ; I < world_state_dimension; ++I)
-		s1					+= sprintf(s1,"? ");
 	return					(s);
 }
 
-void show_condition(const CState &condition, u32 i = 0)
+void show_condition(const CState &condition, CSProblemSolver &problem_solver, u32 i = 0)
 {
-	string256				s;
-	Msg						("condition %2d : %s",i,show_condition(condition.conditions(),s));
+	string4096				s;
+	Msg						("condition %5d : %s",i,show_condition(condition.conditions(),problem_solver,s));
 }
 
-void show_operator(const COperator &_operator, u32 i)
+void show_operator(const COperator &_operator, CSProblemSolver &problem_solver, u32 i)
 {
-	string256				s;
+	string4096				s;
 	char					*s1;
-	show_condition			(_operator.conditions().conditions(),s);
+	show_condition			(_operator.conditions().conditions(),problem_solver,s);
 	strcat					(s," -> ");
 	s1						= s + xr_strlen(s);
-	show_condition			(_operator.effects().conditions(),s1);
-	Msg						("operator  %2d : %s",i,s);
+	show_condition			(_operator.effects().conditions(),problem_solver,s1);
+	Msg						("operator  %5d : %s",i,s);
 }
 
 struct CConstConditionEvaluator : public IConditionEvaluator<bool> {
@@ -113,10 +120,11 @@ void test_goap	()
 {
 	CGraphEngine						*graph_engine	= xr_new<CGraphEngine>(0);
 	xr_vector<_edge_type>				path;
+	u32 vertex_count					= 0;
+#ifdef SEED_TEST
 	u32	max_length						= 0;
 	u32 best_test						= 0;
 	u32 jj								= 0;
-	u32 vertex_count					= 0;
 	u32 total_solved					= 0;
 	random.seed							(0);
 	u64 total							= 0;
@@ -125,9 +133,6 @@ void test_goap	()
 		CSProblemSolver					problem_solver;
 		
 		CSProblemSolver::CState			condition = random_condition(100,100,4,1);
-		
-//		show_condition					(condition);
-		
 		{
 			xr_vector<CSProblemSolver::COperatorCondition>::const_iterator	I = condition.conditions().begin();
 			xr_vector<CSProblemSolver::COperatorCondition>::const_iterator	E = condition.conditions().end();
@@ -136,14 +141,9 @@ void test_goap	()
 		}
 
 		problem_solver.set_target_state	(random_condition(100,100,4,3));
-		
-//		show_condition					(problem_solver.target_state(),1);
-		
 		u32						operator_count = random.random(max_operator_count - min_operator_count + 1) + min_operator_count;
-		for (u32 i=0; i<operator_count; ++i) {
+		for (u32 i=0; i<operator_count; ++i)
 			problem_solver.add_operator	(i,random_operator());
-//			show_operator				(*problem_solver.get_operator(i),i);
-		}
 
 		path.clear						();
 
@@ -173,114 +173,182 @@ void test_goap	()
 		
 		Msg								("Problem %5d (try %I64d, %f sec)",jj,ii,CPU::cycles2seconds*total);
 		++jj;
-		show_condition					(problem_solver.current_state());
-		show_condition					(problem_solver.target_state(),1);
+		show_condition					(problem_solver.current_state(),problem_solver);
+		show_condition					(problem_solver.target_state(),problem_solver,1);
 
 		{
 			CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
 			CSProblemSolver::const_iterator	E = problem_solver.operators().end();
 			for ( ; I != E; ++I)
-				show_operator			(*(*I).m_operator,(*I).m_operator_id);
+				show_operator			(*(*I).m_operator,problem_solver,(*I).m_operator_id);
 		}
 
 		Msg								("Solution : ");
 
 		CState							world_state = problem_solver.current_state(), temp;
-		show_condition					(world_state);
-//		for ( ; I != E; ++I) {
-//			CSProblemSolver::const_iterator	i = std::lower_bound(problem_solver.operators().begin(),problem_solver.operators().end(),*I);
-//			VERIFY						(i != problem_solver.operators().end());
-//			VERIFY						((*i).m_operator_id == *I);
-//			show_operator				(*(*i).m_operator,(*i).m_operator_id);
-//			VERIFY						((*i).m_operator->applicable(world_state,problem_solver.current_state(),(*i).m_operator->conditions()));
-//			world_state					= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
-//			show_condition				(world_state);
-//		}
-//
-//		VERIFY							(world_state.includes(problem_solver.target_state()));
+		show_condition					(world_state,problem_solver);
+		for ( ; I != E; ++I) {
+			CSProblemSolver::const_iterator	i = std::lower_bound(problem_solver.operators().begin(),problem_solver.operators().end(),*I);
+			VERIFY						(i != problem_solver.operators().end());
+			VERIFY						((*i).m_operator_id == *I);
+			show_operator				(*(*i).m_operator,problem_solver,(*i).m_operator_id);
+			VERIFY						((*i).m_operator->applicable_reverse(world_state,problem_solver.current_state(),(*i).m_operator->conditions()));
+			world_state					= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
+			show_condition				(world_state,problem_solver);
+		}
+
+		VERIFY							(world_state.includes(problem_solver.target_state()));
 		Msg								("Max solution length : %d (test %d, vertices %d, solved : %d)",max_length,best_test,vertex_count,total_solved);
 		Msg								("");
 		FlushLog						();
 	}
-//	const u32							world_complexity = 16;
-//
-//	CSProblemSolver						problem_solver;
-//	CSProblemSolver::CState				condition;
-//	for (u32 i=0; i<world_complexity; ++i) {
-//		condition.add_condition			(CCondition(i,false));
-//		problem_solver.add_evaluator	(i,xr_new<CConstConditionEvaluator>(true));
-//		COperator						*op = xr_new<COperator>();
-//		op->add_effect					(CCondition(i,false));
-//		problem_solver.add_operator		(i,op);
-//	}
-//
-//	problem_solver.set_target_state		(condition);
-//
-//	CSProblemSolver						problem_solver;
-//	CSProblemSolver::CState				start_condition;
-//	FILE								*f = fopen("x:\\dump.txt","rt");
-//	{
-//		u32								count;
-//		fscanf							(f,"%d",&count);
-//		for (u32 i=0; i<count; ++i) {
-//			u32							id, value;
-//			fscanf						(f,"%d,%d",&id,&value);
-//			start_condition.add_condition(CCondition(id,!!value));
-//			problem_solver.add_evaluator(id,xr_new<CConstConditionEvaluator>(!!value));
-//		}
-//	}
-//	{
-//		CSProblemSolver::CState			condition;
-//		u32								count;
-//		fscanf							(f,"%d",&count);
-//		for (u32 i=0; i<count; ++i) {
-//			u32							id, value;
-//			fscanf						(f,"%d,%d",&id,&value);
-//			condition.add_condition		(CCondition(id,!!value));
-//		}
-//		problem_solver.set_target_state	(condition);
-//	}
-//	{
-//		u32								count;
-//		fscanf							(f,"%d",&count);
-//		for (u32 i=0; i<count; ++i) {
-//			COperator					*op = xr_new<COperator>();
-//			u32							count1,weight,id;
-//			fscanf						(f,"%d,%d",&id,&weight);
-//			VERIFY						(weight == 1);
-////			op->set_weight				(weight);
-//			{
-//				fscanf						(f,"%d",&count1);
-//				for (u32 j=0; j<count1; ++j) {
-//					u32						id, value;
-//					fscanf					(f,"%d,%d",&id,&value);
-//					op->add_condition		(CCondition(id,!!value));
-//				}
-//			}
-//			{
-//				fscanf						(f,"%d",&count1);
-//				for (u32 j=0; j<count1; ++j) {
-//					u32						id, value;
-//					fscanf					(f,"%d,%d",&id,&value);
-//					op->add_effect			(CCondition(id,!!value));
-//				}
-//			}
-//			problem_solver.add_operator	(id,op);
-//		}
-//	}
-//	fclose								(f);
-//
-//	path.clear							();
-//
-//	u64 start							= CPU::GetCycleCount();
-//#ifndef STRAIGHT_SEARCH
-//	graph_engine->search				(problem_solver,problem_solver.target_state(),problem_solver.current_state(),&path,CBaseParameters());
-//#else
-//	graph_engine->search				(problem_solver,problem_solver.current_state(),problem_solver.target_state(),&path,CBaseParameters());
-//#endif
-//	u64 finish							= CPU::GetCycleCount();
-//	total								+= finish - start;
-//	vertex_count						+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
-//
+#endif
+#ifdef COMPLEXITY_TEST
+	{
+		const u32							world_complexity = 128;
+
+		CSProblemSolver						problem_solver;
+		CSProblemSolver::CState				condition;
+		for (u32 i=0; i<world_complexity; ++i) {
+			condition.add_condition			(CCondition(i,true));
+			problem_solver.add_evaluator	(i,xr_new<CConstConditionEvaluator>(false));
+			COperator						*op = xr_new<COperator>();
+			op->add_effect					(CCondition(i,true));
+			problem_solver.add_operator		(i,op);
+		}
+
+		problem_solver.set_target_state		(condition);
+
+		path.clear							();
+
+#ifndef STRAIGHT_SEARCH
+		graph_engine->search				(problem_solver,problem_solver.target_state(),CState(),&path,CBaseParameters());
+#else
+		graph_engine->search				(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
+#endif
+		vertex_count						+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
+
+		{
+			CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+			CSProblemSolver::const_iterator	E = problem_solver.operators().end();
+			for ( ; I != E; ++I)
+				show_operator				(*(*I).m_operator,problem_solver,(*I).m_operator_id);
+		}
+		Msg									(" ");
+		show_condition						(problem_solver.current_state(),problem_solver);
+		show_condition						(problem_solver.target_state(),problem_solver,1);
+		Msg									("\nSolution (%d vertices visited) : ",vertex_count);
+		CState								world_state = problem_solver.current_state(), temp;
+		show_condition						(world_state,problem_solver);
+		xr_vector<_edge_type>::iterator		I = path.begin();
+		xr_vector<_edge_type>::iterator		E = path.end();
+		for ( ; I != E; ++I) {
+			CSProblemSolver::const_iterator	i = std::lower_bound(problem_solver.operators().begin(),problem_solver.operators().end(),*I);
+			VERIFY							(i != problem_solver.operators().end());
+			VERIFY							((*i).m_operator_id == *I);
+			show_operator					(*(*i).m_operator,problem_solver,(*i).m_operator_id);
+			VERIFY							((*i).m_operator->applicable_reverse(world_state,problem_solver.current_state(),(*i).m_operator->conditions()));
+			world_state						= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
+			show_condition					(world_state,problem_solver);
+		}
+
+		VERIFY								(world_state.includes(problem_solver.target_state()));
+		FlushLog							();
+	}
+#endif
+#ifdef DUMP_TEST
+	{
+		CSProblemSolver						problem_solver;
+		CSProblemSolver::CState				start_condition;
+		FILE								*f = fopen("x:\\dump.txt","rt");
+		{
+			u32								count;
+			fscanf							(f,"%d",&count);
+			world_state_dimension			= count;
+			for (u32 i=0; i<count; ++i) {
+				u32							id, value;
+				fscanf						(f,"%d,%d",&id,&value);
+				start_condition.add_condition(CCondition(id,!!value));
+				problem_solver.add_evaluator(id,xr_new<CConstConditionEvaluator>(!!value));
+			}
+		}
+		{
+			CSProblemSolver::CState			condition;
+			u32								count;
+			fscanf							(f,"%d",&count);
+			for (u32 i=0; i<count; ++i) {
+				u32							id, value;
+				fscanf						(f,"%d,%d",&id,&value);
+				condition.add_condition		(CCondition(id,!!value));
+			}
+			problem_solver.set_target_state	(condition);
+		}
+		{
+			u32								count;
+			fscanf							(f,"%d",&count);
+			for (u32 i=0; i<count; ++i) {
+				COperator					*op = xr_new<COperator>();
+				u32							count1,weight,id;
+				fscanf						(f,"%d,%d",&id,&weight);
+				VERIFY						(weight == 1);
+	//			op->set_weight				(weight);
+				{
+					fscanf						(f,"%d",&count1);
+					for (u32 j=0; j<count1; ++j) {
+						u32						id, value;
+						fscanf					(f,"%d,%d",&id,&value);
+						op->add_condition		(CCondition(id,!!value));
+					}
+				}
+				{
+					fscanf						(f,"%d",&count1);
+					for (u32 j=0; j<count1; ++j) {
+						u32						id, value;
+						fscanf					(f,"%d,%d",&id,&value);
+						op->add_effect			(CCondition(id,!!value));
+					}
+				}
+				problem_solver.add_operator	(id,op);
+			}
+		}
+		fclose								(f);
+
+		path.clear							();
+
+	#ifndef STRAIGHT_SEARCH
+		graph_engine->search				(problem_solver,problem_solver.target_state(),CState(),&path,CBaseParameters());
+	#else
+		graph_engine->search				(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
+	#endif
+		vertex_count						+= graph_engine->solver_algorithm().data_storage().get_visited_node_count();
+		
+		{
+			CSProblemSolver::const_iterator	I = problem_solver.operators().begin();
+			CSProblemSolver::const_iterator	E = problem_solver.operators().end();
+			for ( ; I != E; ++I)
+				show_operator				(*(*I).m_operator,problem_solver,(*I).m_operator_id);
+		}
+		Msg									(" ");
+		show_condition						(problem_solver.current_state(),problem_solver);
+		show_condition						(problem_solver.target_state(),problem_solver,1);
+		Msg									("\nSolution (%d vertices visited) : ",vertex_count);
+		CState								world_state = problem_solver.current_state(), temp;
+		show_condition						(world_state,problem_solver);
+		xr_vector<_edge_type>::iterator		I = path.begin();
+		xr_vector<_edge_type>::iterator		E = path.end();
+		for ( ; I != E; ++I) {
+			CSProblemSolver::const_iterator	i = std::lower_bound(problem_solver.operators().begin(),problem_solver.operators().end(),*I);
+			VERIFY							(i != problem_solver.operators().end());
+			VERIFY							((*i).m_operator_id == *I);
+			show_operator					(*(*i).m_operator,problem_solver,(*i).m_operator_id);
+			VERIFY							((*i).m_operator->applicable_reverse(world_state,problem_solver.current_state(),(*i).m_operator->conditions()));
+			world_state						= (*i).m_operator->apply(world_state,(*i).m_operator->effects(),temp);
+			show_condition					(world_state,problem_solver);
+		}
+
+		VERIFY								(world_state.includes(problem_solver.target_state()));
+		FlushLog							();
+	}
+#endif
 	xr_delete							(graph_engine);
 }

@@ -90,6 +90,7 @@ public:
 	IC		const _index_type			&value					(const _index_type	&vertex_index,	const_iterator		&i,				bool					reverse_search) const;
 	IC		void						begin					(const _index_type	&vertex_index,	const_iterator		&b,				const_iterator			&e) const;
 	IC		bool						is_goal_reached			(const _index_type	&vertex_index) const;
+	IC		_edge_value_type			estimate_edge_weight	(const _index_type	&vertex_index) const;
 
 	// operator interface
 	IC		void						add_operator			(const _edge_type	&operator_id,	COperator			*_operator);

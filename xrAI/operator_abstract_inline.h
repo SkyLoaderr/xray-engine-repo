@@ -18,6 +18,8 @@
 TEMPLATE_SPECIALIZATION
 IC	CAbstractOperator::COperatorAbstract	()
 {
+	m_actual			= true;
+	m_min_weight		= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -25,6 +27,8 @@ IC	CAbstractOperator::COperatorAbstract	(const CSConditionState &conditions, con
 {
 	m_conditions		= conditions;
 	m_effects			= effects;
+	m_actual			= false;
+	m_min_weight		= 0;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -62,24 +66,28 @@ IC	const typename CAbstractOperator::CSConditionState	&CAbstractOperator::effect
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_condition	(const COperatorCondition &condition)
 {
+	m_actual			= false;
 	m_conditions.add_condition	(condition);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::remove_condition(const typename COperatorCondition::_condition_type &condition)
 {
+	m_actual			= false;
 	m_conditions.remove_condition(condition);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 {
+	m_actual			= false;
 	m_effects.add_condition		(effect);
 }
 
 TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::remove_effect	(const typename COperatorCondition::_condition_type &effect)
 {
+	m_actual			= false;
 	m_effects.remove_condition	(effect);
 }
 
@@ -321,9 +329,79 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 }
 
 TEMPLATE_SPECIALIZATION
-IC	_edge_value_type CAbstractOperator::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result) const
 {
-	return					(_edge_value_type(1));
+	result.clear			();
+	xr_vector<COperatorCondition>::const_iterator	i = self_condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = self_condition.conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	I = condition.conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
+	for ( ; (I != E) && (i != e); )
+		if ((*I).condition() < (*i).condition()) {
+			result.add_condition_back(*I);
+			++I;
+		}
+		else
+			if ((*I).condition() > (*i).condition()) {
+				result.add_condition_back(*i);
+				++i;
+			}
+			else {
+				VERIFY			((*I).condition() == (*i).condition());
+				result.add_condition_back(*i);
+				++I;
+				++i;
+			}
+
+	if (i == e) {
+		for ( ; I != E; ++I)
+			result.add_condition_back(*I);
+	}
+	else {
+		for ( ; i != e; ++i)
+			result.add_condition_back(*i);
+	}
+
+	return					(result);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	return					(min_weight());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CAbstractOperator::_edge_value_type CAbstractOperator::min_weight	() const
+{
+	if (m_actual)
+		return				(m_min_weight);
+
+	m_min_weight			= 0;
+	xr_vector<COperatorCondition>::const_iterator	I = conditions().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	E = conditions().conditions().end();
+	xr_vector<COperatorCondition>::const_iterator	i = effects().conditions().begin();
+	xr_vector<COperatorCondition>::const_iterator	e = effects().conditions().end();
+	for ( ; (i != e) && (I != E); ) {
+		if ((*I).condition() < (*i).condition())
+			++I;
+		else
+			if ((*I).condition() > (*i).condition()) {
+				++m_min_weight;
+				++i;
+			}
+			else {
+				if ((*I).value() != (*i).value())
+					++m_min_weight;
+				++I;
+				++i;
+			}
+	}
+	if (i != e)
+		m_min_weight		= m_min_weight + _edge_value_type(e - i);
+
+	m_actual				= true;
+	return					(m_min_weight);
 }
 
 #undef TEMPLATE_SPECIALIZATION

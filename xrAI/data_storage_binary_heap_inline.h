@@ -54,7 +54,13 @@ IC	void CBinaryHeap::add_opened			(CGraphVertex &vertex)
 {
 	VERIFY					(m_heap_head <= m_heap_tail);
 	inherited::add_opened	(vertex);
-	*m_heap_tail			= &vertex;
+	if (!*m_heap_head || ((*m_heap_head)->f() < vertex.f())) {
+		*m_heap_tail		= &vertex;
+	}
+	else {
+		*m_heap_tail		= *m_heap_head;
+		*m_heap_head		= &vertex;
+	}
 	std::push_heap			(m_heap_head,++m_heap_tail,CGraphNodePredicate());
 }
 
