@@ -640,9 +640,12 @@ HRESULT CMyD3DApplication::RenderScene	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderFAT	()
 {
+	// targets and clear
 	m_pd3dDevice->Clear						(0L, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, 0x00, 1.0f, 0L);
+	
 
-	m_pd3dDevice->SetTexture				(0, m_pShadowMap);
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(0, 0);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_WRAP);
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
