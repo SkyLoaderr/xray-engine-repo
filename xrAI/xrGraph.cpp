@@ -19,7 +19,6 @@
 #include "xrSort.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "xrSE_Factory_import_export.h"
-#include "game_base.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 using namespace ALife;

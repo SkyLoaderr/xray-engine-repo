@@ -14,7 +14,7 @@
 #include "ai_nodes.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "xrSE_Factory_import_export.h"
-#include "game_base.h"
+#include "game_base_space.h"
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 #include "net_utils.h"
