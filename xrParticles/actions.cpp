@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "general.h"
 using namespace PAPI;
 
 #define SQRT2PI 2.506628274631000502415765284811045253006f

@@ -8,6 +8,12 @@
 #define PARTICLEDLL_API __declspec(dllimport)
 #endif
 
+#ifdef _EDITOR
+	#define PARTICLEDLL_EDITOR_API PARTICLEDLL_API
+#else
+	#define PARTICLEDLL_EDITOR_API
+#endif
+
 // Actually this must be < sqrt(MAXFLOAT) since we store this value squared.
 #define P_MAXFLOAT 1.0e16f
 
