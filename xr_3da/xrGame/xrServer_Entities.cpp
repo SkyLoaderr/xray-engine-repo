@@ -488,6 +488,7 @@ public:
 xrSE_Rat::xrSE_Rat()
 {
 	caModel[0]						= 0;
+	strcat(caModel,"monsters\\rat\\rat1.ogf");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;

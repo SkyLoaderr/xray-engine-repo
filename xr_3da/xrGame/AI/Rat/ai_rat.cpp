@@ -118,9 +118,10 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
+	//////////////////////////////////////////////////////////////////////////
 	xrSE_Rat *tpSE_Rat = (xrSE_Rat *)DC;
 	// model
-	//P.w_string(caModel);
+	cNameVisual_set					(tpSE_Rat->caModel);
 	// personal characteristics
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
@@ -145,6 +146,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackDistance				= tpSE_Rat->fAttackDistance;
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
+	//////////////////////////////////////////////////////////////////////////
 
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
