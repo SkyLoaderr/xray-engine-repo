@@ -108,10 +108,10 @@ void CWeapon::Load		(CInifile* ini, const char* section)
 	// light
 	Fvector clr			= ini->ReadVECTOR	(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
-	light_base.SetRange	(ini->ReadFLOAT	(section,"light_range"		));
+	light_base.SetRange	(ini->ReadFLOAT		(section,"light_range"		));
 	light_var_color		= ini->ReadFLOAT	(section,"light_var_color"	);
 	light_var_range		= ini->ReadFLOAT	(section,"light_var_range"	);
-	light_lifetime		= 1.f;
+	light_lifetime		= ini->ReadFLOAT	(section,"light_time"		);
 	light_time			= -1.f;
 	iHitPower			= ini->ReadINT		(section,"hit_power"		);
 
