@@ -72,8 +72,7 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 	DWORD	dwCount					= 0;
 	if (Items[Priority].empty())	return;
 
-	DWORD	cycles_per_mcs			= iFloor	(1.f/CPU::cycles2microsec);
-	u64		cycles_limit			= u64(cycles_per_mcs) * u64(mcs);
+	u64		cycles_limit			= CPU::cycles_per_microsec * u64(mcs);
 	u64		cycles_start			= CPU::GetCycleCount();
 	u64		cycles_elapsed			= 0; 
 

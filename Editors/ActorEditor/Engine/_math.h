@@ -35,6 +35,8 @@ namespace FPU {
 };
 namespace CPU {
 	ENGINE_API extern u64				cycles_per_second;
+	ENGINE_API extern u64				cycles_per_milisec;
+	ENGINE_API extern u64				cycles_per_microsec;
 	ENGINE_API extern u64				cycles_overhead;
 	ENGINE_API extern float				cycles2seconds;
 	ENGINE_API extern float				cycles2milisec;

@@ -35,6 +35,8 @@ namespace FPU
 namespace CPU 
 {
 	ENGINE_API u64				cycles_per_second;
+	ENGINE_API u64				cycles_per_milisec;
+	ENGINE_API u64				cycles_per_microsec;
 	ENGINE_API u64				cycles_overhead;
 	ENGINE_API float			cycles2seconds;
 	ENGINE_API float			cycles2milisec;
@@ -81,9 +83,11 @@ namespace CPU
 			cycles_overhead	+=	GetCycleCount()-start-dummy;
 		}
 		cycles_overhead		/=	64;
+		SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 		cycles_per_second	-=	cycles_overhead;
-		SetPriorityClass	(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+		cycles_per_milisec	=	cycles_per_second/1000;
+		cycles_per_microsec	=	cycles_per_milisec/1000;
 
 		_control87	( _PC_64,   MCW_PC );
 		_control87	( _RC_CHOP, MCW_RC );
