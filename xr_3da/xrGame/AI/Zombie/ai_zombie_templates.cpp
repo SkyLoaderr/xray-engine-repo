@@ -222,22 +222,28 @@ bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForwar
 	UpdateTransform();
 
 	// Update position
-//	if (feel_touch.size() || true) {
-//		Fvector tTemp1;
-//		tTemp1.set(vPosition);
-//		tTemp1.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-//		vPosition.set(tfGetNextCollisionPosition(this,tTemp1));
-//	}
-//	else
-		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	pCreator->ObjectSpace.TestNearestObject(cfModel, vPosition, 1.f);
+	Level().ObjectSpace.GetNearest(vPosition,1.f);
+	if (Level().ObjectSpace.q_nearest.size()) {
+		Fvector tAcceleration;
+		tAcceleration.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		tAcceleration.normalize_safe();
+		tAcceleration.mul(m_fSpeed*12.f);
+		Movement.SetPosition(vPosition);
+		Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+		Movement.GetPosition(vPosition);
+	}
+	else {
+//		if (feel_touch.size() || true) {
+//			Fvector tTemp1;
+//			tTemp1.set(vPosition);
+//			tTemp1.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+//			vPosition.set(tfGetNextCollisionPosition(this,tTemp1));
+//		}
+//		else
+			vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+	}
 
-//	Fvector tAcceleration;
-//	tAcceleration.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
-//	tAcceleration.normalize_safe();
-//	tAcceleration.mul(m_fSpeed*12.f);
-//	Movement.SetPosition(vPosition);
-//	Movement.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
-//	Movement.GetPosition(vPosition);
 
 	u32 dwNewNode = AI_NodeID;
 	NodeCompressed *tpNewNode = AI_Node;
