@@ -263,7 +263,7 @@ end
 
 function save_dialog:AddItemToList(item)
 	local list_box = self:GetListWnd("list_window")
-	local shift = 50
+	local shift = 5
 	local color = GetARGB(255,0,255,255)
 	local parse = false
 	
