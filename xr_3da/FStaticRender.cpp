@@ -79,6 +79,7 @@ Shader*				shDEBUG = 0;
 _FpsController		QualityControl;
 static	float		g_fGLOD, g_fFarSq, g_fPOWER;
 float				g_fSCREEN;
+float				g_fLOD,g_fLOD_scale=1.f;
 static	Fmaterial	gm_Data;
 static	int			gm_Level	= 0;
 static	DWORD		gm_Ambient	= 0;
@@ -172,6 +173,7 @@ void CRender::Calculate()
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(Device.dwWidth*Device.dwHeight);
+	g_fLOD							=	QualityControl.fGeometryLOD;
 	
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
@@ -225,7 +227,7 @@ void CRender::Calculate()
 IC float calcLOD	(float fDistSq, float R)
 {
 	float dist	= g_fFarSq - fDistSq + R*R;
-	float lod	= QualityControl.fGeometryLOD*dist/g_fFarSq;
+	float lod	= g_fLOD*dist/g_fFarSq;
 	clamp		(lod,0.001f,0.999f);
 	return		lod;
 }
