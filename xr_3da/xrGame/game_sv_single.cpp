@@ -114,7 +114,7 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 			)
 			alife().graph().detach(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
 		else {
-			if (!ai().alife().objects().object(e_what->ID)) {
+			if (!ai().alife().objects().object(e_what->ID,true)) {
 				u16				id = l_tpALifeInventoryItem->ID_Parent;
 				l_tpALifeInventoryItem->ID_Parent	= 0xffff;
 				
