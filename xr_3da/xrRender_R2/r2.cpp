@@ -198,18 +198,21 @@ void					CRender::rmNormal			()
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
-	b_mrt				= TRUE;
-	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
-	b_Tshadows			= (strstr(Core.Params,"-notsh"))?FALSE:TRUE;
-	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
-	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
-	b_nvstecil			= FALSE;
-	b_disasm			= (strstr(Core.Params,"-disasm"))?TRUE:FALSE;
+	// hardware
+	o.mrt				= (HW.Caps.raster.dwMRT_count >= 3);
+	o.mrtmixdepth		= (HW.Caps.raster.b_MRT_mixdepth);
+	o.HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
+	o.fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
+	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
+	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum level");
 
-	b_HW_smap			= HW.support	(D3DFMT_D24X8,			D3DRTYPE_TEXTURE,D3DUSAGE_DEPTHSTENCIL);
-	b_fp16_filter		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_FILTER);
-	b_fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_SURFACE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
-	VERIFY2				(b_mrt&&b_HW_smap&&b_fp16_filter&&b_fp16_blend,"Hardware doesn't meet minimum level");
+	// options
+	o.noshadows			= (strstr(Core.Params,"-noshadows"))?	TRUE:FALSE;
+	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE:TRUE;
+	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE:TRUE;
+	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE:FALSE;
+	o.nvstecil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE:TRUE;
+	o.nvstecil			= FALSE;
 }
 
 CRender::~CRender()

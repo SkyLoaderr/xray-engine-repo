@@ -33,18 +33,21 @@ public:
 		PHASE_EMAP		= 4,	// E[4]
 	};
 
-	BOOL						b_mrt;
-	BOOL                        b_fp16_filter;
-	BOOL                        b_fp16_blend;
-	BOOL						b_HW_smap;
-	BOOL						b_noshadows;
-	BOOL						b_Tshadows;						// transluent shadows
-	BOOL						b_distortion;
-	BOOL						b_nvstecil;
-	BOOL						b_disasm;
 public:
-	struct		_stats
-	{
+	struct		_flags	{
+		u32		mrt			: 1;
+		u32		mrtmixdepth	: 1;
+		u32		fp16_filter	: 1;
+		u32		fp16_blend	: 1;
+		u32		HW_smap		: 1;
+		u32		nvstecil	: 1;
+
+		u32		noshadows	: 1;
+		u32		Tshadows	: 1;						// transluent shadows
+		u32		distortion	: 1;
+		u32		disasm		: 1;
+	}			o;
+	struct		_stats	{
 		u32		l_total,	l_visible;
 		u32		l_shadowed,	l_unshadowed;
 		s32		s_used,		s_merged;
