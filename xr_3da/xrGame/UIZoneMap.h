@@ -10,10 +10,13 @@ class CUIZoneMap
 	CUIStaticItem	back;
 	CUIStaticItem	compass;
 	CUIDynamicItem	entity;
+	CUIDynamicItem	entity_up;
+	CUIDynamicItem	entity_down;
 	float			heading;
 	Ivector2		map_center;
 	int				map_radius;
 
+	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
 public:
 					CUIZoneMap		();

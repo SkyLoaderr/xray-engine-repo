@@ -21,6 +21,7 @@
 #define MAP_TOP			80
 #define MAP_RADIUS		65
 
+#define LEVEL_DIFF		3.f
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -41,8 +42,14 @@ void CUIZoneMap::Init()
 	back.SetRect(0,0,153,148);
 	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
 	entity.Init	("ui\\hud_map_point",	"hud\\default");
+	entity_up.Init	("ui\\ui_hud_map_point_up",		"hud\\default");
+	entity_down.Init("ui\\ui_hud_map_point_down",	"hud\\default");
 	entity.SetRect(0,0,3,3);
 	entity.SetAlign(alLeft|alTop);
+	entity_up.SetRect	(0,0,3,4);
+	entity_up.SetAlign	(alLeft|alTop);
+	entity_down.SetRect	(0,0,3,4);
+	entity_down.SetAlign(alLeft|alTop);
 
 	Level().HUD()->ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = iFloor(MAP_RADIUS*Level().HUD()->GetScale());
@@ -63,10 +70,18 @@ void CUIZoneMap::ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2
 	dest.y = iFloor(map_center.y-Pt.y);
 }
 //--------------------------------------------------------------------
+void CUIZoneMap::EntityOut(float diff, u32 color, const Ivector2& pt)
+{
+	if (diff>LEVEL_DIFF)		entity_up.Out(pt.x,pt.y,color);
+	else if (diff<-LEVEL_DIFF)	entity_down.Out(pt.x,pt.y,color);
+	else entity.Out	(pt.x,pt.y,color);
+}
 
 void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 {
-	entity.Clear();
+	entity.Clear		();
+	entity_up.Clear		();
+	entity_down.Clear	();
 	Ivector2 P;
 
 	Fmatrix LM,T;
@@ -104,7 +119,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 				for (u32 k=0; k<G.Members.size(); k++){
 					if (G.Members[k]->IsVisibleForHUD()){
 						ConvertToLocal(LM,G.Members[k]->Position(),P);
-						entity.Out	(P.x,P.y,COLOR_FRIEND);
+						EntityOut(G.Members[k]->Position().y-Actor->Position().y,COLOR_FRIEND,P);
 					}
 				}
 			}
@@ -119,14 +134,14 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 					else continue;
 				}
 				ConvertToLocal(LM,T->Position(),P);
-				entity.Out	(P.x,P.y,COLOR_TARGET);
+				EntityOut(T->Position().y-Actor->Position().y,COLOR_TARGET,P);
 			}else{
 				// draw artifacts
 				CTargetCSBase* TB = dynamic_cast<CTargetCSBase*>(Game().targets[i]);
 				if (TB){
 					if (TB->g_Team()==Actor->g_Team()){
 						ConvertToLocal(LM,TB->Position(),P);
-						entity.Out	(P.x,P.y,COLOR_BASE);
+						EntityOut(TB->Position().y-Actor->Position().y,COLOR_BASE,P);
 					}
 				}
 			}
@@ -141,9 +156,11 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 
 void CUIZoneMap::Render()
 {
-	back.Render		();
-	compass.Render	(heading);
-	entity.Render	();
+	back.Render			();
+	compass.Render		(heading);
+	entity.Render		();
+	entity_up.Render	();
+	entity_down.Render	();
 }
 //--------------------------------------------------------------------
 
