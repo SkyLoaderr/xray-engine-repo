@@ -5,7 +5,6 @@
 #define _INCDEF_CustomObject_H_
 
 #include "SceneClassList.h"
-#include "PropertiesListTypes.h"
 
 #define CHUNK_OBJECT_BODY   0x7777
 //----------------------------------------------------

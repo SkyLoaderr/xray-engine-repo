@@ -6,7 +6,6 @@
 #define _INCDEF_Light_H_                                                      
 
 #include "xr_efflensflare.h"
-#include "CustomObject.h"
 
 // refs
 class CLAItem;

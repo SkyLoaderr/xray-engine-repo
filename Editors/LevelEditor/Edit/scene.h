@@ -7,7 +7,6 @@
 #include "SceneGraph.h"
 #include "Communicate.h"
 #include "pure.h"
-#include "CustomObject.h"
 #include "ElTree.hpp"
 //refs
 struct FSChunkDef;

@@ -178,10 +178,10 @@ bool EDetailManager::UpdateBaseTexture(LPCSTR tex_name){
     	return false;
     }
     AnsiString fn = tex_name?tex_name:m_Base.GetName();
-//s    m_Base.Clear();
+    m_Base.Clear();
     m_Base.LoadImage(fn.c_str());
     if (!m_Base.Valid()){
-//s	    m_Base.Clear();
+	    m_Base.Clear();
     	ELog.DlgMsg(mtError,"Can't load base image '%s'!",fn.c_str());
     	return false;
     }
@@ -461,22 +461,6 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
 
     return true;
 }
-
-void EDetailManager::Clear(bool bOnlySlots){
-	if (!bOnlySlots){
-		RemoveObjects		();
-		m_ColorIndices.clear();
-//s	    m_Base.Clear		();
-   		m_SnapObjects.clear	();
-    }
-    ZeroMemory			(&dtH,sizeof(DetailHeader));
-	m_Selected.clear	();
-    _DELETEARRAY		(dtSlots);
-    InvalidateCache		();
-    m_Base.DestroyShader();
-    _DELETEARRAY(dtSlots);
-}
-
 
 CDetail* EDetailManager::FindObjectByName(LPCSTR name){
 	for (DOIt it=objects.begin(); it!=objects.end(); it++)

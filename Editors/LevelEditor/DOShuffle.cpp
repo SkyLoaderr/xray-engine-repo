@@ -76,6 +76,7 @@ void TfrmDOShuffle::GetInfo(){
     // redraw
     tvItems->IsUpdating = false;
 }
+//---------------------------------------------------------------------------
 
 void TfrmDOShuffle::ApplyInfo(){
     EDetailManager* DM=Scene.m_DetailObjects;
@@ -111,6 +112,19 @@ void TfrmDOShuffle::ApplyInfo(){
         DM->InvalidateSlots();
     }
 }
+//---------------------------------------------------------------------------
+
+void TfrmDOShuffle::ClearInfo()
+{
+	for (DDIt it=DOData.begin(); it!=DOData.end(); it++)
+		_DELETE(*it);
+    DOData.clear();
+	for (DWORD k=0; k<color_indices.size(); k++)
+    	_DELETE(color_indices[k]);
+    color_indices.clear();
+    _DELETE(m_Thm);
+}
+//---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
 // implementation
@@ -159,17 +173,11 @@ void __fastcall TfrmDOShuffle::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	for (DDIt it=DOData.begin(); it!=DOData.end(); it++)
-		_DELETE(*it);
-    DOData.clear();
-	for (DWORD k=0; k<color_indices.size(); k++)
-    	_DELETE(color_indices[k]);
-    color_indices.clear();
-    _DELETE(m_Thm);
+	ClearInfo();
 
     if (ModalResult==mrOk)
 		Scene.m_DetailObjects->InvalidateCache();
-
+ 
 	Action = caFree;
     form = 0;
 }
@@ -353,5 +361,23 @@ void __fastcall TfrmDOShuffle::tvItemsDblClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
+{
+	AnsiString fname;
+	if (Engine.FS.GetSaveName(Engine.FS.m_DetailObjects,fname)){
+		Scene.m_DetailObjects->ExportColorIndices(fname.c_str());
+    }
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
+{
+	AnsiString fname;
+	if (Engine.FS.GetOpenName(Engine.FS.m_DetailObjects,fname)){
+		Scene.m_DetailObjects->ImportColorIndices(fname.c_str());
+		ClearInfo();
+        GetInfo();
+    }
+}
+//---------------------------------------------------------------------------
 

@@ -129,8 +129,8 @@ public:
     virtual void			FillProp		(PropValueVec& values)
     {
     	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateInt(0,1000,1));
-        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateInt(0,30,1));
+      	FILL_PROP_EX(values,s_name, "Ammo: total",		&a_current, PROP::CreateU16(0,1000,1));
+        FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateU16(0,30,1));
     }
 #endif
 };
@@ -169,9 +169,9 @@ public:
     virtual void			FillProp		(PropValueVec& values)
     {
     	inherited::FillProp(values);
-      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateInt(0,64,1));
-        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateInt(0,64,1));
-        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateInt(0,64,1));
+      	FILL_PROP_EX(values,s_name, "Team",		&s_team, 	PROP::CreateU8(0,64,1));
+        FILL_PROP_EX(values,s_name, "Squad",	&s_squad, 	PROP::CreateU8(0,64,1));
+        FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateU8(0,64,1));
     }
 #endif
 };

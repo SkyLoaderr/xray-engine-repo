@@ -353,7 +353,7 @@ void CDetailManager::UpdateCache	(int limit)
 #ifdef _EDITOR
 		// Select polygons
 		SBoxPickInfoVec		pinf;
-		Scene.BoxPick		(D.BB,pinf);//d,&m_SnapObjects);
+		Scene.BoxPick		(D.BB,pinf,GetSnapObjects());
 		DWORD	triCount	= pinf.size();
 #else
 		XRC.box_query		(pCreator->ObjectSpace.GetStaticModel(),bC,bD);

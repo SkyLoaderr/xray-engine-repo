@@ -7,7 +7,6 @@
 
 #include "communicate.h"
 #include "EditMesh.h"
-#include "CustomObject.h"
 //----------------------------------------------------
 
 // refs

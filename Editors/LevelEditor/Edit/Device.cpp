@@ -399,17 +399,21 @@ void CRenderDevice::UnloadTextures(){
     Shader.DeferredUnload();
 }
 
-bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height){
+bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height)
+{
 	if (!bReady) return false;
 
+    // free managed resource
+    Shader.Evict();
+    
     IDirect3DSurface8* pZB=0;
     IDirect3DSurface8* pRT=0;
     IDirect3DSurface8* poldRT=0;
     SetRS(D3DRS_COLORWRITEENABLE,D3DCOLORWRITEENABLE_ALPHA|D3DCOLORWRITEENABLE_BLUE|D3DCOLORWRITEENABLE_GREEN|D3DCOLORWRITEENABLE_RED);
-    HW.pDevice->GetRenderTarget(&poldRT);
-	HW.pDevice->GetDepthStencilSurface(&pZB);
-	HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,TRUE,&pRT);
-    HW.pDevice->SetRenderTarget(pRT,pZB);
+    CHK_DX(HW.pDevice->GetRenderTarget(&poldRT));
+	CHK_DX(HW.pDevice->GetDepthStencilSurface(&pZB));
+	CHK_DX(HW.pDevice->CreateRenderTarget(width,height,D3DFMT_A8R8G8B8,D3DMULTISAMPLE_NONE,TRUE,&pRT));
+    CHK_DX(HW.pDevice->SetRenderTarget(pRT,pZB));
 
 	UI.Redraw();
 
@@ -429,7 +433,7 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
     UI.ProgressEnd();
 
     R_CHK(pRT->UnlockRect());
-    HW.pDevice->SetRenderTarget(poldRT,pZB);
+    CHK_DX(HW.pDevice->SetRenderTarget(poldRT,pZB));
 
     _RELEASE(pZB);
     _RELEASE(pRT);

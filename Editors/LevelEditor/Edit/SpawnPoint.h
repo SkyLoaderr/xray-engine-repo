@@ -7,7 +7,6 @@
 
 #include "xrServer_Entities.h"
 #include "LevelGameDef.h"
-#include "CustomObject.h"
 
 #define RPOINT_SIZE 0.5f
 

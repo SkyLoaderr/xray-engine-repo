@@ -73,7 +73,7 @@ void __fastcall TfraDetailObject::ebInvalidateCacheClick(TObject *Sender)
 void __fastcall TfraDetailObject::ebResetSlotsClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to reset slots?")==mrYes){
-		Scene.m_DetailObjects->Clear(true);
+    	Scene.m_DetailObjects->ClearSlots();
 		Scene.UndoSave();
     }
 }

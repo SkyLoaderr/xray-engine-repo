@@ -9,7 +9,6 @@
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
 #include <StdCtrls.hpp>
-#include "CustomObject.h"
 
 
 //---------------------------------------------------------------------------

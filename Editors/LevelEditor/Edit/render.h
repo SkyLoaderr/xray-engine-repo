@@ -19,6 +19,11 @@ public:
 	virtual 			~CRender		();
 };                                                    
 
+IC  float   CalcSSA(Fvector& C, float R)
+{
+    float distSQ  = Device.m_Camera.GetPosition().distance_to_sqr(C);
+    return  R*R/distSQ;
+}
 extern CRender*	Render;
 	
 #endif

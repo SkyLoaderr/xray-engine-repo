@@ -6,8 +6,12 @@
 //---------------------------------------------------------------------------
 enum EPropType{
 	PROP_MARKER	= 0x1000,
-	PROP_INTEGER,
-	PROP_DWORD,
+	PROP_S8,
+	PROP_S16,
+	PROP_S32,
+	PROP_U8,
+	PROP_U16,
+	PROP_U32,
 	PROP_FLOAT,
 	PROP_BOOLEAN,
 	PROP_FLAG,
@@ -110,7 +114,7 @@ public:
         return bChanged;
     }
     LPCSTR				GetValue		(){return values.front();}
-    void				ResetValue		(){
+    virtual void		ResetValue		(){
     	AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());
     }
 };
@@ -137,8 +141,8 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    const AnsiString&	 GetValue		(){return *values.front();}
-    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPAStringIt it=values.begin();it!=values.end();it++,src++) **it=*src;}
+    const AnsiString&	GetValue		(){return *values.front();}
+    virtual void		ResetValue		(){AStringIt src=init_values.begin(); for (LPAStringIt it=values.begin();it!=values.end();it++,src++) **it=*src;}
 };
 //------------------------------------------------------------------------------
 
@@ -164,7 +168,7 @@ public:
         return bChanged;
     }
     BOOL 				GetValue		(){return *values.front();}
-    void				ResetValue		(){BOOLIt src=init_values.begin(); for (LPBOOLIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){BOOLIt src=init_values.begin(); for (LPBOOLIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -193,70 +197,50 @@ public:
         return bChanged;
     }
     const WaveForm& 	GetValue		(){return *values.front();}
-    void				ResetValue		(){WaveFormIt src=init_values.begin(); for (LPWaveFormIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){WaveFormIt src=init_values.begin(); for (LPWaveFormIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
-class DWORDValue: public PropValue{
-	DWORDVec			init_values;
-	LPDWORDVec			values;
-    void				AppendValue		(LPDWORD value){clamp(*(DWORD*)value,0ul,lim_mx); values.push_back(value);init_values.push_back(*value);}
+template <class T>
+class IntegerValue
+{
+    void				AppendValue		(T* value)
+    {
+    	clamp(*value,lim_mn,lim_mx); 
+        values.push_back(value);
+        init_values.push_back(*value);
+    }
 public:
-    DWORD				lim_mx;
-    DWORD 				inc;
-public:
-						DWORDValue		(DWORD mx, DWORD increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mx(mx),inc(increm),PropValue(after,before,draw,change){};
-    virtual LPCSTR		GetText			(){
-    	DWORD draw_val 	= GetValue();
-        if (OnDrawValue)OnDrawValue(this, &draw_val);
+	vector<T>			init_values;
+	vector<T*>			values;
+    T					lim_mn;
+    T					lim_mx;
+    T 					inc;
+public:    
+						IntegerValue	(T mn, T mx, T increm):lim_mn(mn),lim_mx(mx),inc(increm){};
+    LPCSTR				_GetText		(PropValue* prop,TOnDrawValue OnDraw)
+    {
+    	T draw_val 		= 	_GetValue();
+        if (OnDraw)		OnDraw(prop, &draw_val);
 		static AnsiString draw_text;
         draw_text		= draw_val;
         return draw_text.c_str();
     }
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((DWORD*)value);}
-    virtual void		InitNext		(LPVOID value){if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
-    virtual bool		ApplyValue		(DWORD value)
+    void				_InitFirst		(T* value)
     {
-    	clamp(value,0ul,lim_mx); 
-    	bool bChanged	= false;
-        for (LPDWORDIt it=values.begin();it!=values.end();it++){
-        	if (**it!=value){
-	        	**it 	= value;
-                bChanged= true;
-            }
-        }
-        if (bChanged) 	bDiff = false;
-        return bChanged;
+    	R_ASSERT(values.empty()); 
+        AppendValue((T*)value);
     }
-    DWORD 				GetValue		(){return *values.front();}
-    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
-};
-//------------------------------------------------------------------------------
-
-class IntValue: public PropValue{
-	IntVec				init_values;
-	LPIntVec			values;
-    void				AppendValue		(int* value){clamp(*(int*)value,lim_mn,lim_mx); values.push_back(value);init_values.push_back(*value);}
-public:
-	int					lim_mn;
-    int					lim_mx;
-    int 				inc;
-    					IntValue		(int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw,change){};
-    virtual LPCSTR		GetText			()
+    void				_InitNext		(T* value, bool& bDiff)
     {
-    	int draw_val 	= GetValue();
-        if (OnDrawValue)OnDrawValue(this, &draw_val);
-		static AnsiString draw_text;
-        draw_text		= draw_val;
-        return draw_text.c_str();
+    	if (*value!=*values.front()) bDiff=true; 
+        AppendValue(value);
     }
-    virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((int*)value);}
-    virtual void		InitNext		(LPVOID value){if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
-    virtual bool		ApplyValue		(int value)
+    bool				_ApplyValue		(T value, bool& bDiff)
     {
     	clamp(value,lim_mn,lim_mx); 
     	bool bChanged	= false;
-        for (LPIntIt it=values.begin();it!=values.end();it++){
+        for (vector<T*>::iterator it=values.begin();it!=values.end();it++){
         	if (**it!=value){
 	        	**it 	= value;
                 bChanged= true;
@@ -265,8 +249,82 @@ public:
         if (bChanged) 	bDiff = false;
         return bChanged;
     }
-    int 				GetValue		(){return *values.front();}
-    void				ResetValue		(){IntIt src=init_values.begin(); for (LPIntIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    T 					_GetValue		()
+    {
+    	return *values.front();
+    }
+    void				_ResetValue		()
+    {
+    	vector<T>::iterator src=init_values.begin(); 
+        for (vector<T*>::iterator it=values.begin();it!=values.end();it++,src++) 
+        	**it = *src;
+    }
+};
+
+class U8Value: public PropValue, public IntegerValue<u8> {
+public:
+						U8Value			(u8 mn, u8 mx, u8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u8>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u8*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((u8*)value,bDiff); }
+    virtual bool		ApplyValue		(u8 value)		{ return _ApplyValue(value,bDiff);}
+    u8 					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
+};
+//------------------------------------------------------------------------------
+class U16Value: public PropValue, public IntegerValue<u16> {
+public:
+						U16Value	 	(u16 mn, u16 mx, u16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u16>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u16*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((u16*)value,bDiff); }
+    virtual bool		ApplyValue		(u16 value)		{ return _ApplyValue(value,bDiff);}
+    u16					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
+};
+//------------------------------------------------------------------------------
+class U32Value: public PropValue, public IntegerValue<u32> {
+public:
+						U32Value  		(u32 mn, u32 mx, u32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<u32>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((u32*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((u32*)value,bDiff); }
+    virtual bool		ApplyValue		(u32 value)		{ return _ApplyValue(value,bDiff);}
+    u32					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
+};
+//------------------------------------------------------------------------------
+class S8Value: public PropValue, public IntegerValue<s8> {
+public:
+						S8Value			(s8 mn, s8 mx, s8 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s8>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s8*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((s8*)value,bDiff); }
+    virtual bool		ApplyValue		(s8 value)		{ return _ApplyValue(value,bDiff);}
+    s8 					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
+};
+//------------------------------------------------------------------------------
+class S16Value: public PropValue, public IntegerValue<s16> {
+public:
+						S16Value	 	(s16 mn, s16 mx, s16 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s16>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s16*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((s16*)value,bDiff); }
+    virtual bool		ApplyValue		(s16 value)		{ return _ApplyValue(value,bDiff);}
+    s16					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
+};
+//------------------------------------------------------------------------------
+class S32Value: public PropValue, public IntegerValue<s32> {
+public:
+						S32Value  		(s32 mn, s32 mx, s32 increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw, TOnChange change):IntegerValue<s32>(mn,mx,increm),PropValue(after,before,draw,change){};
+    virtual LPCSTR		GetText			()				{ return _GetText(this,OnDrawValue); }
+    virtual void		InitFirst		(LPVOID value)	{ _InitFirst((s32*)value); }
+    virtual void		InitNext		(LPVOID value)	{ _InitNext((s32*)value,bDiff); }
+    virtual bool		ApplyValue		(s32 value)		{ return _ApplyValue(value,bDiff);}
+    s32					GetValue		()				{ return _GetValue(); }
+    virtual void		ResetValue		()    			{ _ResetValue(); }
 };
 //------------------------------------------------------------------------------
 
@@ -305,7 +363,7 @@ public:
         return bChanged;
     }
     float 				GetValue		(){return *values.front();}
-    void				ResetValue		(){FloatIt src=init_values.begin(); for (LPFloatIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){FloatIt src=init_values.begin(); for (LPFloatIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -331,7 +389,7 @@ public:
         return bChanged;
     }
     const Fcolor&		GetValue		(){return *values.front();}
-    void				ResetValue		(){FcolorIt src=init_values.begin(); for (LPFcolorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){FcolorIt src=init_values.begin(); for (LPFcolorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -381,7 +439,7 @@ public:
         return bChanged;
     }
     const Fvector&		GetValue		(){return *values.front();}
-    void				ResetValue		(){FvectorIt src=init_values.begin(); for (LPFvectorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){FvectorIt src=init_values.begin(); for (LPFvectorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -408,7 +466,7 @@ public:
         return bChanged;
     }
     bool	 			GetValue		(){return (*values.front())&mask;}
-    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
+    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
 };
 //------------------------------------------------------------------------------
 
@@ -435,7 +493,7 @@ public:
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
-    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -462,7 +520,7 @@ public:
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
-    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -494,7 +552,7 @@ public:
         return bChanged;
     }
     DWORD 				GetValue		(){return *values.front();}
-    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+    virtual void		ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
@@ -522,7 +580,7 @@ public:
         return bChanged;
     }
     LPCSTR				GetValue		(){return values.front();}
-    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
+    virtual void		ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
 };
 //------------------------------------------------------------------------------
 DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
@@ -535,19 +593,43 @@ namespace PROP{
         V->type			= PROP_MARKER;
         return V;
     }
-    IntValue* 			CreateInt		(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S8Value* 			CreateS8		(s8 mn=0, s8 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        IntValue* V		= new IntValue(mn,mx,inc,after,before,draw,change);
-        V->type			= PROP_INTEGER;
+        S8Value* V		= new S8Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_S8;
         return V;
     }
-    DWORDValue* 		CreateDWORD	(int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S16Value* 			CreateS16		(s16 mn=0, s16 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        DWORDValue* V	= new DWORDValue(mx,inc,after,before,draw,change);
-        V->type			= PROP_DWORD;
+        S16Value* V		= new S16Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_S16;
         return V;
     }
-    FloatValue* 		CreateFloat	(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    S32Value* 			CreateS32		(s32 mn=0, s32 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        S32Value* V		= new S32Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_S32;
+        return V;
+    }
+    U8Value* 			CreateU8		(u8 mn=0, u8 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        U8Value* V		= new U8Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_U8;
+        return V;
+    }
+    U16Value* 			CreateU16		(u16 mn=0, u16 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        U16Value* V		= new U16Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_U16;
+        return V;
+    }
+    U32Value* 			CreateU32		(u32 mn=0, u32 mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    {
+        U32Value* V		= new U32Value(mn,mx,inc,after,before,draw,change);
+        V->type			= PROP_U32;
+        return V;
+    }
+    FloatValue* 		CreateFloat		(float mn=0.f, float mx=1.f, float inc=0.01f, int decim=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
         FloatValue* V	= new FloatValue(mn,mx,inc,decim,after,before,draw,change);
         V->type			= PROP_FLOAT;
@@ -601,9 +683,9 @@ namespace PROP{
         V->type			= PROP_LIST;
         return V;
     }
-    DWORDValue* 		CreateColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
+    U32Value* 			CreateColor	(TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0, TOnChange change=0)
     {
-        DWORDValue* V	= new DWORDValue(0xffffffff,0,after,before,draw,change);
+        U32Value* V		= new U32Value(0x00000000,0xffffffff,0,after,before,draw,change);
         V->type			= PROP_COLOR;
         return V;
     }

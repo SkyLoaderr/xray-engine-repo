@@ -55,7 +55,6 @@ EDetailManager::EDetailManager()
     ZeroMemory			(&dtH,sizeof(dtH));
     m_Selected.clear	();
     InitRender			();
-//s	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_LOW);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
 }
@@ -65,6 +64,31 @@ EDetailManager::~EDetailManager(){
 	Device.seqDevDestroy.Remove(this);
 	Clear	();
     Unload	();
+}
+//------------------------------------------------------------------------------
+
+void EDetailManager::ClearColorIndices()
+{
+    RemoveObjects		();
+    m_ColorIndices.clear();
+}
+void EDetailManager::ClearSlots()
+{
+    ZeroMemory			(&dtH,sizeof(DetailHeader));
+    _DELETEARRAY		(dtSlots);
+	m_Selected.clear	();
+    InvalidateCache		();
+}
+void EDetailManager::ClearBase()
+{
+    m_Base.Clear		();
+    m_SnapObjects.clear	();
+}
+void EDetailManager::Clear()
+{
+	ClearBase			();
+	ClearColorIndices	();
+    ClearSlots			();
 }
 //------------------------------------------------------------------------------
 
@@ -161,10 +185,10 @@ void EDetailManager::ExportColorIndices(LPCSTR fname)
 
 void EDetailManager::ImportColorIndices(LPCSTR fname)
 {
-	Clear				(false);
+	ClearColorIndices	();
 	CStream* F=Engine.FS.Open(fname); R_ASSERT(F);
-	LoadColorIndices(*F);
-	Engine.FS.Close(F);
+	LoadColorIndices	(*F);
+	Engine.FS.Close		(F);
 }
 
 void EDetailManager::SaveColorIndices(CFS_Base& F)
@@ -281,7 +305,8 @@ bool EDetailManager::Load(CStream& F){
 		    m_Base.CreateRMFromObjects(m_BBox,m_SnapObjects);
         }else{
         	ELog.Msg(mtError,"DetailManager: Can't find base texture '%s'.",buf);
-            Clear(true);
+            ClearSlots();
+            ClearBase();
         }
     }
 
@@ -409,7 +434,7 @@ void EDetailManager::SBase::CreateRMFromObjects(const Fbox& box, ObjectList& lst
             }
         }
     }
-//s	stream = Device.Streams.Create(FVF::F_V,MAX_BUF_SIZE);
+	stream	= Device.Shader._CreateVS(FVF::F_V);
 }
 
 void EDetailManager::SBase::Render()
@@ -421,16 +446,16 @@ void EDetailManager::SBase::Render()
     div_t cnt = div(mesh.size(),MAX_BUF_SIZE);
     DWORD vBase;
     for (int k=0; k<cnt.quot; k++){
-//s		LPBYTE pv = (LPBYTE)stream->Lock(MAX_BUF_SIZE,vBase);
-//s		CopyMemory(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
-//s		stream->Unlock(MAX_BUF_SIZE);
-//s		Device.DP(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
+		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(MAX_BUF_SIZE,stream->dwStride,vBase);
+		CopyMemory		(pv,mesh.begin()+k*MAX_BUF_SIZE,sizeof(FVF::V)*MAX_BUF_SIZE);
+		Device.Streams.Vertex.Unlock(MAX_BUF_SIZE,stream->dwStride);
+		Device.DP		(D3DPT_TRIANGLELIST,stream,vBase,MAX_BUF_SIZE/3);
     }
     if (cnt.rem){
-//s	    LPBYTE pv = (LPBYTE)stream->Lock(cnt.rem,vBase);
-//s		CopyMemory(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
-//s	    stream->Unlock(cnt.rem);
-//s    	Device.DP(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
+		FVF::V*	pv	 	= (FVF::V*)Device.Streams.Vertex.Lock(cnt.rem,stream->dwStride,vBase);
+		CopyMemory		(pv,mesh.begin()+cnt.quot*MAX_BUF_SIZE,sizeof(FVF::V)*cnt.rem);
+		Device.Streams.Vertex.Unlock(cnt.rem,stream->dwStride);
+		Device.DP		(D3DPT_TRIANGLELIST,stream,vBase,cnt.rem/3);
     }
     Device.ResetNearer();
 }
@@ -438,13 +463,15 @@ void EDetailManager::SBase::Render()
 void EDetailManager::SBase::CreateShader()
 {
 	if (Valid()){
-		shader_blended = Device.Shader.Create("editor\\do_base",name);
-		shader_overlap = Device.Shader.Create("default",name);
+		shader_blended 	= Device.Shader.Create("editor\\do_base",name);
+		shader_overlap 	= Device.Shader.Create("default",name);
+		stream			= Device.Shader._CreateVS(FVF::F_V);
 	}
 }
 
 void EDetailManager::SBase::DestroyShader()
 {
-	Device.Shader.Delete(shader_blended);
-	Device.Shader.Delete(shader_overlap);
+	Device.Shader._DeleteVS	(stream);
+	Device.Shader.Delete	(shader_blended);
+	Device.Shader.Delete	(shader_overlap);
 }

@@ -12,6 +12,7 @@
 #include "d3dutils.h"
 #include "LightAnimLibrary.h"
 #include "scene.h"
+#include "PropertiesListTypes.h"
 
 #define LIGHT_VERSION   				0x0011
 //----------------------------------------------------

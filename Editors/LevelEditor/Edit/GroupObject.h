@@ -4,7 +4,6 @@
 #ifndef _INCDEF_GroupObject_H_
 #define _INCDEF_GroupObject_H_
 
-#include "CustomObject.h"
 //----------------------------------------------------
 class CGroupObject: public CCustomObject{
 	ObjectList      m_Objects;

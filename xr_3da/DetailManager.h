@@ -63,6 +63,9 @@ public:
 	svector<Slot,dm_cache_size>					cache;
 	svector<vector<SlotItem*>,dm_max_objects> 	visible;
 public:
+#ifdef _EDITOR
+	virtual ObjectList*		GetSnapObjects	()=0;
+#endif
 	IC bool					UseVS			()	{ 
 #ifdef _EDITOR
     	return false; 

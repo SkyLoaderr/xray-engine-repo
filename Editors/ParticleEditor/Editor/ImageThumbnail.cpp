@@ -199,7 +199,7 @@ bool EImageThumbnail::FillProp(PropValueVec& values)
 
     FILL_PROP(values,	"Fade\\Enabled Color",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToColor));
     FILL_PROP(values,	"Fade\\Enabled Alpha",	&F.flag,				PROP::CreateFlag	(STextureParams::flFadeToAlpha));
-    FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateDWORD	(1000,0));
+    FILL_PROP(values,	"Fade\\Amount",			&F.fade_amount,			PROP::CreateU32		(0,1000,0));
     FILL_PROP(values,	"Fade\\Color",			&F.fade_color,			PROP::CreateColor	());
             
     FILL_PROP(values,	"Border\\Enabled Color",&F.flag,				PROP::CreateFlag	(STextureParams::flColorBorder));

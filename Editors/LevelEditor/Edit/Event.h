@@ -6,7 +6,6 @@
 #define _INCDEF_CEvent_H_
 
 class CFrustum;
-#include "CustomObject.h"
 
 class CEvent: public CCustomObject {
     void			RenderBox	(bool bAlpha);

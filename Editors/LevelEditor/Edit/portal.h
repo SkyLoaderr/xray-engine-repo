@@ -3,7 +3,6 @@
 
 // refs
 class CSector;
-#include "CustomObject.h"
 
 class CPortal: public CCustomObject {
 	friend class TfrmPropertiesPortal;

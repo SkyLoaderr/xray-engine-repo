@@ -36,7 +36,6 @@ class EDetailManager:
 {
 	friend class TfrmDOShuffle;
 
-//    DOVec				m_Objects;
     ObjectList			m_SnapObjects;
 
     Fbox				m_BBox;
@@ -73,11 +72,11 @@ public:
 		DWORDVec		data;
 	    DEFINE_VECTOR	(FVF::V,TVertVec,TVertIt);
 		TVertVec		mesh;
-//s	    CVertexStream*	stream;
+	    CVS*			stream;
     public:
         				SBase				();
         IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
-//s    	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
+    	IC void			Clear				(){name[0]=0; w=0; h=0; stream=0; data.clear(); mesh.clear(); DestroyShader();}
         void			CreateRMFromObjects	(const Fbox& box, ObjectList& lst);
         void			Render				();
         void			CreateShader		();
@@ -147,7 +146,10 @@ public:
     void				ImportColorIndices		(LPCSTR fname);
 
     void				Render					(int priority, bool strictB2F);
-    void				Clear					(bool bOnlySlots=false);
+    void				ClearColorIndices		();
+    void				ClearSlots				();
+    void				ClearBase				();
+    void				Clear					();
 
 	int					RaySelect				(bool flag, float& distance, Fvector& start, Fvector& direction);
 	int					FrustumSelect			(bool flag);
@@ -158,6 +160,7 @@ public:
     bool				Valid					(){return dtSlots||objects.size();}
 
     void				RemoveFromSnapList		(CCustomObject* O);
+	virtual ObjectList*	GetSnapObjects			(){return &m_SnapObjects;}
 
 	virtual void		OnDeviceCreate			();
 	virtual void		OnDeviceDestroy			();

@@ -10,6 +10,8 @@
 #include "ExportObjectOGF.h"
 #include "xr_trims.h"
 #include "d3dutils.h"
+#include "ui_main.h"
+#include "render.h"
 
 static Fvector LOD_pos[4]={
 	-1.0f, 1.0f, 0.0f,
@@ -63,18 +65,32 @@ void CEditableObject::ClearRenderBuffers(){
     m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
 }
 
-void CEditableObject::UpdateRenderBuffers(){
+void CEditableObject::UpdateRenderBuffers()
+{
 	if (m_LoadState&EOBJECT_LS_RENDERBUFFER) ClearRenderBuffers();
     EditMeshIt _M=m_Meshes.begin();
     EditMeshIt _E=m_Meshes.end();
-	for (; _M!=_E; _M++) (*_M)->OnDeviceCreate();
+    AnsiString tmp;
+    tmp.sprintf("Update RB: '%s'",GetName());
+    UI.ProgressStart((float)m_Meshes.size(),tmp.c_str());
+	for (; _M!=_E; _M++){
+	    UI.ProgressInc();
+    	(*_M)->OnDeviceCreate();
+    }
+    UI.ProgressEnd();
     m_LoadState |= EOBJECT_LS_RENDERBUFFER;
 }
 
+extern float 	ssaLIMIT;
+extern float	g_fSCREEN;
+static const float ssaLim = 64.f*64.f/(640*480);
 void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if (IsFlag(eoUsingLOD)){
+	Fvector v; float r; 
+    Fbox bb; bb.xform(m_Box,parent); bb.getsphere(v,r);
+    
+    if (IsFlag(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
 		Device.SetTransform(D3DTS_WORLD,parent);

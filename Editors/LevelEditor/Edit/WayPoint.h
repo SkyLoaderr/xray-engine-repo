@@ -6,7 +6,6 @@
 #define _INCDEF_WayPoint_H_                                
 
 #include "LevelGameDef.h"
-#include "CustomObject.h"
 
 class CFrustum;
 class CWayPoint;

@@ -8,8 +8,6 @@
 
 class CFrustum;
 
-#include "CustomObject.h"
-
 class CSound : public CCustomObject
 {
 	friend class TfrmPropertiesSound;

@@ -269,7 +269,7 @@ bool CSpawnPoint::FillProp(PropValueVec& values)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateDWORD(64,1));
+            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateU32(64,1));
         }break;
         case ptAIPoint: 
             FILL_PROP_EX(values, "AI Point", "Reserved", "-", PROP::CreateMarker());

@@ -50,6 +50,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ebAddObject;
 	TExtBtn *ebDelObject;
 	TExtBtn *ebDOProperties;
+	TExtBtn *ebLoadList;
+	TExtBtn *ebSaveList;
     void __fastcall ebOkClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
@@ -77,6 +79,8 @@ __published:	// IDE-managed Components
 	void __fastcall ebDOPropertiesClick(TObject *Sender);
 	void __fastcall tvItemsDblClick(TObject *Sender);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
+	void __fastcall ebSaveListClick(TObject *Sender);
+	void __fastcall ebLoadListClick(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
@@ -90,6 +94,7 @@ private:	// User declarations
     TElTreeItem* AddItem(TElTreeItem* node, const char* name, void* obj=(void*)1);
 
     void GetInfo();
+    void ClearInfo();
     void ApplyInfo();
 
     bool bColorIndModif;

@@ -28,3 +28,4 @@ BOOL CRender::occ_visible(sPoly& P)
 	return ViewBase.testPolyInside(P);
 }	
 
+ 

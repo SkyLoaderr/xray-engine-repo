@@ -11,7 +11,6 @@
 #include <ExtCtrls.hpp>
 #include <ComCtrls.hpp>
 #include "CSPIN.h"
-#include "CustomObject.h"
 
 #include "ExtBtn.hpp"
 #include "multi_edit.hpp"

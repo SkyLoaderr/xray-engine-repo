@@ -302,6 +302,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	Surface->Brush->Style = bsClear;
   	if (SectionIndex == 1){
     	PropValue* prop 			= (PropValue*)Item->Tag;
+        DWORD type 					= prop->type;
         if (prop->bEnabled){
             Surface->Font->Color 	= clBlack;
             Surface->Font->Style 	= TFontStyles();
@@ -326,7 +327,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             R.Left += 1;
             DrawText	(Surface->Handle, "(mixed)", -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
         }else{
-            DWORD type = prop->type;
             switch(type){
             case PROP_MARKER:
                 Surface->Font->Color = clSilver;
@@ -354,7 +354,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Left 	+= 	1;
                 R.Top	+=	1;
                 R.Bottom-= 	1;
-                DWORDValue* V=(DWORDValue*)prop;
+                U32Value* V=(U32Value*)prop;
                 Surface->Brush->Color = (TColor)rgb2bgr(V->GetValue());
                 Surface->FillRect(R);
             }break;
@@ -405,8 +405,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                     R.Right-= 1;
                     R.Left += 1;
                     DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                }else{
-                    if (!edText->Visible) ShowLWText(R);
                 }
             break;
             case PROP_VECTOR:
@@ -414,19 +412,36 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 R.Left += 1;
                 DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
             break;
-            case PROP_DWORD:
-            case PROP_INTEGER:
+            case PROP_U8:
+            case PROP_U16:
+            case PROP_U32:
+            case PROP_S8:
+            case PROP_S16:
+            case PROP_S32:
             case PROP_FLOAT:
                 if (seNumber->Tag!=(int)Item){
                     R.Right-= 1;
                     R.Left += 1;
                     DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-                }else{
-                    if (!seNumber->Visible) ShowLWNumber(R);
                 }
             break;
-            };
+	        };
         }
+        // show LW Number
+        switch(type){
+        case PROP_TEXT:
+			if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
+        break;
+        case PROP_U8:
+        case PROP_U16:
+        case PROP_U32:
+        case PROP_S8:
+        case PROP_S16:
+        case PROP_S32:
+        case PROP_FLOAT:
+            if (seNumber->Tag==(int)Item) if (!seNumber->Visible) ShowLWNumber(R);
+        break;
+        };
   	}
 }
 //---------------------------------------------------------------------------
@@ -536,8 +551,12 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_A_TEXTURE:
         case PROP_A_ESHADER:
         case PROP_A_CSHADER:	CustomAnsiTextClick(item);	break;
-        case PROP_DWORD:
-        case PROP_INTEGER:
+        case PROP_U8:
+        case PROP_U16:
+        case PROP_U32:
+        case PROP_S8:
+        case PROP_S16:
+        case PROP_S32:
         case PROP_FLOAT:
         	PrepareLWNumber(item);
         break;
@@ -688,7 +707,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         }
     }break;
     case PROP_COLOR:{
-        DWORDValue* V		= (DWORDValue*)prop;
+        U32Value* V			= (U32Value*)prop;
         DWORD edit_val		= V->GetValue();
         if (V->OnBeforeEdit)V->OnBeforeEdit(V,&edit_val);
 
@@ -793,11 +812,11 @@ void TProperties::PrepareLWNumber(TElTreeItem* item)
 {
 	PropValue* prop = (PropValue*)item->Tag;
     switch (prop->type){
-	case PROP_DWORD:{
-        DWORDValue* V 		= (DWORDValue*)prop; VERIFY(V);
-        int edit_val        = V->GetValue();
+    case PROP_U8:{
+        U8Value* V 			= (U8Value*)prop; VERIFY(V);
+        u8 edit_val        	= V->GetValue();
         if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
-		seNumber->MinValue 	= 0;
+		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
         seNumber->LWSensitivity=0.01f;
@@ -805,9 +824,57 @@ void TProperties::PrepareLWNumber(TElTreeItem* item)
     	seNumber->ValueType	= vtInt;
 	    seNumber->Value 	= edit_val;
     }break;
-    case PROP_INTEGER:{
-        IntValue* V 		= (IntValue*)prop; VERIFY(V);
-        int edit_val        = V->GetValue();
+    case PROP_U16:{
+        U16Value* V 		= (U16Value*)prop; VERIFY(V);
+        u16 edit_val        = V->GetValue();
+        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= edit_val;
+    }break;
+    case PROP_U32:{
+        U32Value* V 		= (U32Value*)prop; VERIFY(V);
+        u32 edit_val        = V->GetValue();
+        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= edit_val;
+    }break;
+    case PROP_S8:{
+        S8Value* V 			= (S8Value*)prop; VERIFY(V);
+        s8 edit_val        	= V->GetValue();
+        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= edit_val;
+    }break;
+    case PROP_S16:{
+        S16Value* V 		= (S16Value*)prop; VERIFY(V);
+        s16 edit_val        = V->GetValue();
+        if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
+		seNumber->MinValue 	= V->lim_mn;
+        seNumber->MaxValue 	= V->lim_mx;
+	    seNumber->Increment	= V->inc;
+        seNumber->LWSensitivity=0.01f;
+	    seNumber->Decimal  	= 0;
+    	seNumber->ValueType	= vtInt;
+	    seNumber->Value 	= edit_val;
+    }break;
+    case PROP_S32:{
+        S32Value* V 		= (S32Value*)prop; VERIFY(V);
+        s32 edit_val        = V->GetValue();
         if (V->OnBeforeEdit) V->OnBeforeEdit(V,&edit_val);
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
@@ -850,25 +917,59 @@ void TProperties::ApplyLWNumber()
 		PropValue* prop = (PropValue*)item->Tag;
         seNumber->Update();
 	    switch (prop->type){
-    	case PROP_DWORD:{
-	        DWORDValue* V 	= (DWORDValue*)prop; VERIFY(V);
-            DWORD new_val	= seNumber->Value;
+    	case PROP_U8:{
+	        U8Value* V 	= (U8Value*)prop; VERIFY(V);
+            u8 new_val	= seNumber->Value;
 			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
             if (V->ApplyValue(new_val)){ 
 				if (V->OnChange) V->OnChange(V);
             	Modified();
             }
-            item->ColumnText->Strings[0] = V->GetText();
         }break;
-    	case PROP_INTEGER:{
-	        IntValue* V 	= (IntValue*)prop; VERIFY(V);
-            int new_val		= seNumber->Value;
+    	case PROP_U16:{
+	        U16Value* V = (U16Value*)prop; VERIFY(V);
+            u16 new_val	= seNumber->Value;
 			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
             if (V->ApplyValue(new_val)){ 
 				if (V->OnChange) V->OnChange(V);
             	Modified();
             }
-            item->ColumnText->Strings[0] = V->GetText();
+        }break;
+    	case PROP_U32:{
+	        U32Value* V = (U32Value*)prop; VERIFY(V);
+            u32 new_val	= seNumber->Value;
+			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
+        }break;
+    	case PROP_S8:{
+	        S8Value* V 	= (S8Value*)prop; VERIFY(V);
+            s8 new_val	= seNumber->Value;
+			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
+        }break;
+    	case PROP_S16:{
+	        S16Value* V = (S16Value*)prop; VERIFY(V);
+            s16 new_val	= seNumber->Value;
+			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
+        }break;
+    	case PROP_S32:{
+	        S32Value* V = (S32Value*)prop; VERIFY(V);
+            s32 new_val	= seNumber->Value;
+			if (V->OnAfterEdit) V->OnAfterEdit(V,&new_val);
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
         }break;
 	    case PROP_FLOAT:{
 	        FloatValue* V 	= (FloatValue*)prop; VERIFY(V);
@@ -878,9 +979,10 @@ void TProperties::ApplyLWNumber()
 				if (V->OnChange) V->OnChange(V);
             	Modified();
             }
-            item->ColumnText->Strings[0] = V->GetText();
         }break;
+        default: THROW2("Wrong switch.");
     	}
+		item->ColumnText->Strings[0] = prop->GetText();
     }
 }
 
