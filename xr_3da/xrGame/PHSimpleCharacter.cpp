@@ -1166,8 +1166,8 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	b_any_contacts=true;
 	is_contact=true;
 
-	if(!((g1==m_wheel) || (g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
-		return;
+	//if(!((g1==m_wheel) || (g2==m_wheel)||(m_elevator_state.ClimbingState())  ))//
+	//	return;
 
 	float friction=1.f;
 	if(!object && !b_side_contact)
