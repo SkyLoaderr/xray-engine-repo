@@ -14,9 +14,9 @@
 	#ifdef TIMER_START
 		#undef TIMER_START
 		#undef TIMER_STOP
-		#define TIMER_START(a)
-		#define TIMER_STOP(a)
 	#endif
+	#define TIMER_START(a)
+	#define TIMER_STOP(a)
 #endif
 
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
