@@ -46,12 +46,14 @@ void	xrSE_Weapon::UPDATE_Write	(NET_Packet& P)
 }
 void	xrSE_Weapon::STATE_Read		(NET_Packet& P, u16 size)
 {
+	inherited::STATE_Read(P, size);
 	P.r_u16				(a_current);
 	P.r_u16				(a_elapsed);
 	P.r_u8				(state);
 }
 void	xrSE_Weapon::STATE_Write	(NET_Packet& P)
 {
+	inherited::STATE_Write(P);
 	P.w_u16				(a_current);
 	P.w_u16				(a_elapsed);
 	P.w_u8				(state);
@@ -106,12 +108,14 @@ xrSE_Teamed::xrSE_Teamed()
 
 void	xrSE_Teamed::STATE_Read			(NET_Packet& P, u16 size)
 {
+	inherited::STATE_Read(P, size);
 	P.r_u8				(s_team	);
 	P.r_u8				(s_squad);
 	P.r_u8				(s_group);
 }
 void	xrSE_Teamed::STATE_Write		(NET_Packet& P)
 {
+	inherited::STATE_Write(P);
 	P.w_u8				(s_team	);
 	P.w_u8				(s_squad);
 	P.w_u8				(s_group);
@@ -196,8 +200,8 @@ xrSE_MercuryBall::xrSE_MercuryBall()
 }
 void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{inherited::UPDATE_Read(P);}
 void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);}
-void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
-void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
+void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{inherited::STATE_Read(P, size);P.r_string(s_Model); }
+void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{inherited::STATE_Write(P);P.w_string(s_Model); }
 
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropItemVec& items)
@@ -223,8 +227,8 @@ void xrSE_Car::FillProp				(LPCSTR pref, PropItemVec& values)
 //***** Crow
 void xrSE_Crow::STATE_Read			(NET_Packet& P, u16 size)	{};
 void xrSE_Crow::STATE_Write			(NET_Packet& P)				{};
-void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{inherited::UPDATE_Read(P);};
-void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{inherited::UPDATE_Write(P);};
+void xrSE_Crow::UPDATE_Read			(NET_Packet& P)				{};
+void xrSE_Crow::UPDATE_Write		(NET_Packet& P)				{};
 #ifdef _EDITOR
 void xrSE_Crow::FillProp			(LPCSTR pref, PropItemVec& values)
 {
@@ -313,8 +317,8 @@ void	xrSE_Target_CS::FillProp	(LPCSTR pref, PropItemVec& items)
 //
 
 //***** Health
-void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{	P.r_u8(amount); };
-void xrSE_Health::STATE_Write		(NET_Packet& P)				{	P.w_u8(amount);	};
+void xrSE_Health::STATE_Read		(NET_Packet& P, u16 size)	{inherited::STATE_Read(P, size);P.r_u8(amount); };
+void xrSE_Health::STATE_Write		(NET_Packet& P)				{inherited::STATE_Write(P);	P.w_u8(amount);	};
 void xrSE_Health::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);};
 void xrSE_Health::UPDATE_Write		(NET_Packet& P)				{inherited::UPDATE_Write(P);};
 #ifdef _EDITOR

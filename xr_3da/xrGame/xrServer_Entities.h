@@ -129,7 +129,7 @@ xrSE_DECLARE_BEGIN(xrSE_Car,xrSE_Teamed)
 xrSE_DECLARE_END
 
 //***** Crow
-xrSE_DECLARE_BEGIN(xrSE_Crow,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Crow,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** Health
