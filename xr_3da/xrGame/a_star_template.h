@@ -112,7 +112,7 @@ public:
 				tpaNodes[--i] = tpBestNode->iIndex;
 				tpTemp = tpTemp1->tpBack;
 				
-				vector<u32>::reverse_iterator	I = tpaNodes.rbegin();
+				vector<u32>::reverse_iterator	I = tpaNodes.rbegin() + 1;
 				vector<u32>::reverse_iterator	E = tpaNodes.rend();
 				for ( ; tpTemp; tpTemp = tpTemp->tpBack, I++)
 					*I = tpTemp->iIndex;

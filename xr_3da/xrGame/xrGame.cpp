@@ -373,7 +373,7 @@ public:
 	virtual void Execute(LPCSTR args) {
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame && tpGame->m_tALife.m_bLoaded) {
+//			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				u32 id1 = u32(-1);
 				sscanf(args ,"%d",&id1);
 				if (id1 >= Level().AI.GraphHeader().dwVertexCount)
@@ -382,9 +382,9 @@ public:
 					ALife::_GRAPH_ID id = ALife::_GRAPH_ID(id1);
 					tpGame->m_tALife.vfGraphVertexInfo(id);
 				}
-			}
-			else
-				Log("!ALife parameters are not loaded!");
+//			}
+//			else
+//				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
