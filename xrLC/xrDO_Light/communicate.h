@@ -2,11 +2,10 @@
 #define _XR_COMM_
 
 #include "Light.h"
-#include "xrShaderTypes.h"
 
 #pragma pack(push,8)
 
-const DWORD XR_MAX_UVMAPS		= 8;
+const DWORD XR_MAX_UVMAPS		= 1;
 const DWORD XR_MAX_TEXTURES		= 32;
 const DWORD XR_MAX_PORTAL_VERTS	= 6;
 
@@ -21,7 +20,7 @@ struct b_uvmap
 struct b_face
 {
 	DWORD	v[3];							// vertices
-	b_uvmap t[XR_MAX_UVMAPS][3];			// TC
+	b_uvmap t[3];							// TC
 	WORD	dwMaterial;						// index of material
 };
 struct b_material
@@ -34,11 +33,11 @@ struct b_material
 };
 struct b_shader
 {
-	sh_name name;
+	string64 name;
 };
 struct b_texture
 {
-	sh_name	name;
+	string64	name;
 	DWORD	dwWidth;
 	DWORD	dwHeight;
 	BOOL	bHasAlpha;
