@@ -787,7 +787,7 @@ bool compute_trajectory(
 
 void CLevelGraph::compute_path()
 {
-	STrajectoryPoint		start, dest;
+//	STrajectoryPoint		start, dest;
 
 //	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
 //	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
@@ -806,20 +806,20 @@ void CLevelGraph::compute_path()
 //	dest.direction.setHP	(actor->r_model_yaw,0);
 //	dest.vertex_id			= actor->level_vertex_id();
 	
-	start.angular_velocity	= 1.f;
-	start.linear_velocity	= 2.f;
-	start.position			= Fvector().set(-50,0,-40);
-	start.direction.set		(0,0,1);
-	start.vertex_id			= vertex(start.position);
-	
-	dest.angular_velocity	= 1.f;
-	dest.linear_velocity	= 2.f;
-	dest.position			= Fvector().set(-54,0,-40);
-	dest.direction.set		(0,0,-1);
-	dest.vertex_id			= vertex(dest.position);
-
-	m_tpTravelLine.clear	();
-	compute_trajectory		(start,dest,m_tpTravelLine);
+//	start.angular_velocity	= 1.f;
+//	start.linear_velocity	= 2.f;
+//	start.position			= Fvector().set(-50,0,-40);
+//	start.direction.set		(0,0,1);
+//	start.vertex_id			= vertex(start.position);
+//	
+//	dest.angular_velocity	= 1.f;
+//	dest.linear_velocity	= 2.f;
+//	dest.position			= Fvector().set(-54,0,-40);
+//	dest.direction.set		(0,0,-1);
+//	dest.vertex_id			= vertex(dest.position);
+//
+//	m_tpTravelLine.clear	();
+//	compute_trajectory		(start,dest,m_tpTravelLine);
 	return;
 	//	u32						l_dwStartNodeID		= vertex(m_start_point);
 	//	VERIFY					(inside(vertex(l_dwStartNodeID),m_start_point));
