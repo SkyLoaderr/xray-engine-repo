@@ -1353,7 +1353,7 @@ void PASinkVelocity::Transform(const Fmatrix& m)
 // Randomly add particles to the system
 void PASource::Execute(ParticleGroup *group)
 {
-	if (flags.is(flStopPlaying)) return;
+	if (flags.is(flSilent)) return;
 
 	int rate = int(floor(particle_rate * dt));
 	
@@ -1367,10 +1367,8 @@ void PASource::Execute(ParticleGroup *group)
 	
 	pVector pos, posB, vel, col, siz, rt;
 	
-	if(flags.is(flVertexB_tracks))
-	{
-		for(int i = 0; i < rate; i++)
-		{
+	if(flags.is(flVertexB_tracks)){
+		for(int i = 0; i < rate; i++){
 			position.Generate(pos);
 			size.Generate(siz);
 			rot.Generate(rt);

@@ -686,7 +686,7 @@ PARTICLEDLL_API void pStopPlaying(int action_list_num)
 	for(int act = 0; act < num_act; act++, pa++){
 		switch(pa->type){
 		case PASourceID:
-			((PASource *)pa)->flags.set(PASource::flStopPlaying,TRUE);
+			((PASource *)pa)->flags.set(PASource::flSilent,TRUE);
 			break;
 		}
 	}
@@ -704,7 +704,7 @@ PARTICLEDLL_API void pStartPlaying(int action_list_num)
 	for(int act = 0; act < num_act; act++, pa++){
 		switch(pa->type){
 		case PASourceID:
-			((PASource *)pa)->flags.set(PASource::flStopPlaying,FALSE);
+			((PASource *)pa)->flags.set(PASource::flSilent,FALSE);
 			break;
 		}
 	}

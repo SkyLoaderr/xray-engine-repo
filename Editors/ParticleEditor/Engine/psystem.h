@@ -528,7 +528,7 @@ namespace PAPI{
 	{
 		enum{
 			flVertexB_tracks	= (1<<0),// True to get positionB from position.
-			flStopPlaying		= (1<<1),
+			flSilent			= (1<<1),
 		};
 		pDomain positionL;	// Choose a position in this domain. (local_space)
 		pDomain velocityL;	// Choose a velocity in this domain. (local_space)
