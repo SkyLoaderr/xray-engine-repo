@@ -6,9 +6,71 @@
 #include <lwrender.h>
 #include <lwhost.h>
 #endif
-// refs
-class IWriter;
-class IReader;
+
+enum EJointType{
+    jtRigid,
+	jtCloth,
+	jtJoint,
+    jtWheel,			// SJointLimit[0] = axis Z(0,0,1) = wheel; SJointLimit[1] = axis X(1,0,0) = steer; 
+    jtForceU32 = u32(-1)
+};
+
+struct SJointLimit{
+	Fvector2		limit;
+    float 			spring_factor;
+    float 			damping_factor;
+    SJointLimit		()
+    {
+    	limit.set		(-M_PI,M_PI);
+        spring_factor 	= 1.f;
+        damping_factor  = 1.f;
+    }
+};
+
+struct Fcylinder{
+    Fvector m_center;
+    Fvector m_direction;
+    float m_height;
+    float m_radius;
+    void invalidate(){ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
+};
+
+struct SBoneShape{
+    enum EShapeType{
+    	stNone,
+        stBox,
+        stSphere,
+        stCylinder,
+        stForceU32 = u8(-1)
+    };
+
+	EShapeType		type;
+//    union
+//    {
+    	Fobb		box;      	// 15*4
+        Fsphere		sphere;		// 4*4
+        Fcylinder   cylinder;	// 8*4
+//    };
+    SBoneShape		()
+    {
+    	type		= stBox;
+        box.invalidate();
+    }
+};
+
+struct SJointIKData{
+    // IK
+    EJointType		type;
+    SJointLimit		limits[3];
+    float			spring_factor;
+    float			damping_factor;
+    SJointIKData	()
+    {
+        type			= jtRigid;
+        spring_factor	= 1.f;
+        damping_factor	= 1.f;
+    }
+};
 
 class CBone{
 	string64		name;
@@ -32,11 +94,11 @@ public:
 	enum{
     	flSelected	= (1<<0),
     };
-    // limit
-//    Fvector			axis;
-//    Fvector2		lim;
+    SJointIKData	IK_data;
+    string64		game_mtl;
+    SBoneShape		shape;
 public:
-					CBone			(){flags.zero();name[0]=0;parent[0]=0;wmap[0]=0;rest_length=0;}
+					CBone			();
 	virtual			~CBone			();
 
 	void			SetName			(const char* p){if(p) strcpy(name,p); strlwr(name); }
@@ -59,7 +121,8 @@ public:
     void			Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
 
 	void			Save			(IWriter& F);
-	void			Load			(IReader& F);
+	void			Load_0			(IReader& F);
+	void			Load_1			(IReader& F);
 
 #ifdef _LW_EXPORT
 	void			ParseBone		(LWItemID bone);
@@ -69,6 +132,9 @@ public:
 	Fvector&		get_rest_rotate	(){return rest_rotate;}
 	float&			get_rest_length	(){return rest_length;}
 #endif
+	void			ShapeScale		(const Fvector& amount);
+	void			ShapeRotate		(const Fvector& amount);
+	void			ShapeMove		(const Fvector& amount);
 };
 DEFINE_VECTOR(CBone*,BoneVec,BoneIt);
 #endif

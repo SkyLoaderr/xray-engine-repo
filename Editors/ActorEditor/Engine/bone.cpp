@@ -4,9 +4,49 @@
 #include "bone.h"
 #include "envelope.h"
 
+#define BONE_VERSION			0x0001
+//------------------------------------------------------------------------------
+#define BONE_CHUNK_VERSION		0x0001
+#define BONE_CHUNK_DEF			0x0002
+#define BONE_CHUNK_BIND_POSE	0x0003
+#define BONE_CHUNK_MATERIAL		0x0004
+#define BONE_CHUNK_SHAPE		0x0005
+#define BONE_CHUNK_IK_JOINT		0x0006
+
+CBone::CBone()
+{
+	strcpy		(game_mtl,"default");
+	flags.zero	();
+    name[0]		= 0;
+    parent[0]	= 0;
+    wmap[0]		= 0;
+    rest_length	= 0;
+}
+
 CBone::~CBone()
 {
 }
+
+void CBone::ShapeScale(const Fvector& amount)
+{
+	switch (shape.type){
+    case SBoneShape::stBox:
+    break;
+    case SBoneShape::stSphere:
+    break;
+    case SBoneShape::stCylinder:
+    break;
+    }
+}
+
+void CBone::ShapeRotate(const Fvector& amount)
+{
+}
+
+void CBone::ShapeMove(const Fvector& amount)
+{
+}
+
 
 void CBone::Save(IWriter& F)
 {
@@ -15,15 +55,39 @@ void CBone::Save(IWriter& F)
 	ReplaceSpace(name);		strlwr(name);
 	ReplaceSpace(parent);	strlwr(parent);
 #endif
-	F.w_stringZ	(name);
-	F.w_stringZ	(parent);
-	F.w_stringZ	(wmap);
-	F.w_fvector3(rest_offset);
-	F.w_fvector3(rest_rotate);
-	F.w_float	(rest_length);
+	F.open_chunk	(BONE_CHUNK_VERSION);
+    F.w_u16			(BONE_VERSION);
+    F.close_chunk	();
+    
+	F.open_chunk	(BONE_CHUNK_DEF);
+	F.w_stringZ		(name);
+	F.w_stringZ		(parent);
+	F.w_stringZ		(wmap);
+    F.close_chunk	();
+
+	F.open_chunk	(BONE_CHUNK_BIND_POSE);
+	F.w_fvector3	(rest_offset);
+	F.w_fvector3	(rest_rotate);
+	F.w_float		(rest_length);
+    F.close_chunk	();
+
+	F.open_chunk	(BONE_CHUNK_MATERIAL);
+    F.w_stringZ		(game_mtl);
+    F.close_chunk	();
+
+	F.open_chunk	(BONE_CHUNK_SHAPE);
+    F.w				(&shape,sizeof(SBoneShape));
+    F.close_chunk	();
+    
+	F.open_chunk	(BONE_CHUNK_IK_JOINT);
+	F.w_u32			(IK_data.type);
+    F.w				(IK_data.limits,sizeof(SJointLimit)*3);
+    F.w_float		(IK_data.spring_factor);
+    F.w_float		(IK_data.damping_factor);
+    F.close_chunk	();
 }
 
-void CBone::Load(IReader& F)
+void CBone::Load_0(IReader& F)
 {
 	F.r_stringZ	(name);
 	F.r_stringZ	(parent);
@@ -32,4 +96,35 @@ void CBone::Load(IReader& F)
 	F.r_fvector3(rest_rotate);
 	rest_length	= F.r_float();
     Reset		();
+}
+
+void CBone::Load_1(IReader& F)
+{
+	R_ASSERT(F.find_chunk(BONE_CHUNK_VERSION));
+	u16	ver			= F.r_u16();
+
+    if (ver!=BONE_VERSION)
+    	return;
+    
+	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
+	F.r_stringZ		(name);
+	F.r_stringZ		(parent);
+	F.r_stringZ		(wmap);
+
+	R_ASSERT(F.find_chunk(BONE_CHUNK_BIND_POSE));
+	F.r_fvector3	(rest_offset);
+	F.r_fvector3	(rest_rotate);
+	rest_length		= F.r_float();
+
+	R_ASSERT(F.find_chunk(BONE_CHUNK_MATERIAL));
+    F.r_stringZ		(game_mtl);
+
+	R_ASSERT(F.find_chunk(BONE_CHUNK_SHAPE));
+    F.r				(&shape,sizeof(SBoneShape));
+    
+	R_ASSERT(F.find_chunk(BONE_CHUNK_IK_JOINT));
+	IK_data.type			= (EJointType)F.r_u32();
+    F.r						(IK_data.limits,sizeof(SJointLimit)*3);
+    IK_data.spring_factor	= F.r_float();
+    IK_data.damping_factor	= F.r_float();
 }

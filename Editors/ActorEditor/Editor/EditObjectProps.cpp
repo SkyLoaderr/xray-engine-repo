@@ -26,12 +26,12 @@ void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec&
 }
 //---------------------------------------------------------------------------
 
-void CEditableObject::FillSurfacesProps(LPCSTR pref, PropItemVec& items)
+void CEditableObject::FillSurfacesProps(LPCSTR pref, PropItemVec& items, int modeID)
 {
     for (SurfaceIt s_it=FirstSurface(); s_it!=LastSurface(); s_it++){
 	    AnsiString f_cnt	= AnsiString("Faces: ")+GetSurfFaceCount((*s_it)->_Name());
         PropValue* V 		= PHelper.CreateCaption	(items, PHelper.PrepareKey(pref,(*s_it)->_Name()),  f_cnt.c_str());
-        V->Owner()->tag		= fptSurface;
+        V->Owner()->tag		= modeID;
     }
 }
 //---------------------------------------------------------------------------
@@ -76,21 +76,27 @@ AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone)
     }
 }
 
-void CEditableObject::FillSkinProps(LPCSTR pref, PropItemVec& items)
+void CEditableObject::FillBonesProps(LPCSTR pref, PropItemVec& items, int modeID)
 {
-    SMotionVec&	m_lst	= SMotions();
-    for (SMotionIt it=m_lst.begin(); it!=m_lst.end(); it++){
-        AnsiString nm	= PHelper.PrepareKey(pref,"Motions",(*it)->Name());
-        PropValue* V	= PHelper.CreateCaption	(items, nm.c_str(), "");
-        V->Owner()->tag	= fptMotion;
-    }
     BoneVec& b_lst 		= Bones();
     for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++){
-        AnsiString nm 	= PHelper.PrepareKey(pref,"Bones",MakeFullBoneName(b_lst,*b_it).c_str());
+        AnsiString nm 	= PHelper.PrepareKey(pref,MakeFullBoneName(b_lst,*b_it).c_str());
         PropValue* V	= PHelper.CreateCaption	(items, nm.c_str(), "");
-        V->Owner()->tag	= fptBone;
+        V->Owner()->tag	= modeID;
     }
 }
+
+void CEditableObject::FillMotionsProps(LPCSTR pref, PropItemVec& items, int modeID)
+{
+    SMotionVec&	m_lst	= SMotions();
+	AnsiString tp;
+    for (SMotionIt it=m_lst.begin(); it!=m_lst.end(); it++){
+        AnsiString nm	= PHelper.PrepareKey(pref,(*it)->Name());
+        PropValue* V	= PHelper.CreateCaption	(items, nm.c_str(), tp.sprintf("Length: %3.2f(s)",float((*it)->Length())/(*it)->FPS()));
+        V->Owner()->tag	= modeID;
+    }
+}
+
 
 
  

@@ -70,7 +70,8 @@
       Intermediate\du_box.obj Intermediate\du_sphere.obj 
       Intermediate\Blender_Recorder_R2.obj Intermediate\R_Backend_xform.obj 
       Intermediate\du_cone.obj Intermediate\EditObjectSkin.obj 
-      Intermediate\EditObjectProps.obj Intermediate\UI_ToolsProps.obj"/>
+      Intermediate\EditObjectProps.obj Intermediate\UI_ToolsProps.obj 
+      Intermediate\du_cylinder.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -261,6 +262,7 @@
       <FILE FILENAME="Editor\EditObjectSkin.cpp" FORMNAME="" UNITNAME="EditObjectSkin" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EditObjectProps.cpp" FORMNAME="" UNITNAME="EditObjectProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_ToolsProps.cpp" FORMNAME="" UNITNAME="UI_ToolsProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

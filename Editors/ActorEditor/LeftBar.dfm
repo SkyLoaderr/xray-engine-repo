@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 481
+  Height = 593
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 481
+    Height = 593
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 479
+      Height = 591
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 238
+        Top = 350
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -251,7 +251,7 @@ object fraLeftBar: TfraLeftBar
         Left = 0
         Top = 161
         Width = 298
-        Height = 77
+        Height = 189
         Align = alClient
         Color = 10528425
         ParentShowHint = False
@@ -281,7 +281,7 @@ object fraLeftBar: TfraLeftBar
           Left = 1
           Top = 15
           Width = 296
-          Height = 61
+          Height = 173
           Align = alClient
           BevelOuter = bvNone
           Color = 10528425
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 240
+        Top = 352
         Width = 298
         Height = 239
         Align = alBottom
@@ -531,11 +531,12 @@ object fraLeftBar: TfraLeftBar
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
-      'paObjectProperties.Height'
       'paScene.Height'
       'paScene.Tag'
       'paModel.Height'
-      'paModel.Tag')
+      'paModel.Tag'
+      'paCurrentMotion.Height'
+      'paCurrentMotion.Tag')
     StoredValues = <>
     Left = 65529
     Top = 65526

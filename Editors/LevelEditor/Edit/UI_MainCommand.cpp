@@ -113,7 +113,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         Tools.ShowProperties();
         break;
 	case COMMAND_UPDATE_PROPERTIES:
-        Tools.UpdateProperties();
+        Tools.UpdateProperties((bool)p1);
         break;
 	case COMMAND_REFRESH_PROPERTIES:
         Tools.RefreshProperties();

@@ -35,9 +35,10 @@ void st_AnimParam::Set(CCustomMotion* M, bool loop)
     bPlay=false;
 	bLooped=loop;
 }
-void st_AnimParam::Update(float dt){
+void st_AnimParam::Update(float dt, float speed)
+{
 	if (!bPlay) return;
-	t+=dt;
+	t+=speed*dt;
     if (t>max_t){
 #ifdef _EDITOR
 		if (bLooped) t=min_t;
@@ -59,7 +60,7 @@ void CEditableObject::OnFrame()
 	            m_ActiveSMotion->Evaluate(i,m_SMParam.Frame(),T,R);
                 (*b_it)->Update(T,R);
             }
-            m_SMParam.Update(Device.fTimeDelta);
+            m_SMParam.Update(Device.fTimeDelta,m_ActiveSMotion->fSpeed);
         }else{
 		    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++) (*b_it)->Reset();
         }
@@ -255,7 +256,7 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
 	strcpy(buffer,start_name);
     int idx = 0;
 	while(FindSMotionByName(buffer,M)){
-		sprintf( buffer, "%s_%d", start_name, idx );
+		sprintf( buffer, "%s_%2d", start_name, idx );
     	idx++;
     }
     strlwr(buffer);

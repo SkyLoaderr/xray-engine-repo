@@ -123,6 +123,7 @@ CActorTools::CActorTools()
     m_bReady			= false;
     m_KeyBar			= 0;
     m_Flags.zero		();
+    m_EditMode			= emObject;
 }
 //---------------------------------------------------------------------------
 
@@ -270,10 +271,8 @@ void CActorTools::OnFrame()
     	m_Flags.set(flRefreshSubProps,FALSE);
 		OnObjectItemFocused(m_ObjectProps->tvProperties->Selected);
     }
-	if (m_Flags.is(flUpdateProperties)){
-		m_Flags.set(flUpdateProperties,FALSE);
+	if (m_Flags.is(flUpdateProperties))
         RealUpdateProperties();
-    }
 }
 
 void CActorTools::ZoomObject(bool bSelOnly)
@@ -341,6 +340,7 @@ void CActorTools::Clear()
 
 	m_bObjectModified 	= false;
 	m_Flags.set			(flUpdateGeometry|flUpdateMotionDefs|flUpdateMotionKeys,FALSE);
+    m_EditMode			= emObject;
     
     UI.RedrawScene();
 }
@@ -488,7 +488,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         OnObjectModified();
     }break;
     case eaScale:{
-/*        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
+        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
         if (dy>1.f) dy=1.f; else if (dy<-1.f) dy=-1.f;
 
         Fvector amount;
@@ -499,8 +499,16 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
             if (!fraTopBar->ebAxisZ->Down && !fraTopBar->ebAxisZX->Down) amount.z = 0.f;
             if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
         }
-        m_EditObject->t_vScale.add(amount);
-*/    }break;
+    	switch (m_EditMode){
+        case emBone:{
+        	BoneVec lst;
+	        if (m_pEditObject->GetSelectedBones(lst))
+            	for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                	(*b_it)->ShapeScale(amount);
+        }break;
+        }
+//        m_EditObject->t_vScale.add(amount);
+    }break;
     }
 //    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }
@@ -544,11 +552,12 @@ extern AnsiString MakeFullBoneName(BoneVec& lst, CBone* bone);
 bool CActorTools::Pick(TShiftState Shift)
 {
 	if (m_pEditObject){
-//		if (!Shift.Contains(ssCtrl)) 
-        m_pEditObject->SkinSelect(false);
-		CBone* B 	= m_pEditObject->SkinRayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity);
-        SelectBoneProperies(B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
-        return !!B;
-    }else return false;
+		if (Shift.Contains(ssCtrl)){
+	        CBone* B 	= m_pEditObject->PickBone(UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity);
+        	SelectItemProperties("Skin\\Bones",B?MakeFullBoneName(m_pEditObject->Bones(),B).c_str():0);
+	        return !!B;
+        }
+    } 
+    return false;
 }
 

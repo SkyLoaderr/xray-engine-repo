@@ -558,7 +558,9 @@ TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, TElTreeItem* node)
 }
 TElTreeItem* CFolderHelper::RestoreSelection(TElTree* tv, LPCSTR full_name)
 {
-	return RestoreSelection(tv,FindItem(tv,full_name));
+	TElTreeItem* last_valid=0;
+    FindItem(tv,full_name,&last_valid);
+	return RestoreSelection(tv,last_valid);
 }
 //------------------------------------------------------------------------------
 

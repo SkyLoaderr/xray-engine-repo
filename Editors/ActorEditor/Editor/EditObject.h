@@ -148,7 +148,7 @@ struct st_AnimParam{
     bool 			bLooped;
     void			Set		(CCustomMotion* M, bool loop);
     float			Frame	()			{ return t;}
-    void			Update	(float dt);
+    void			Update	(float dt, float speed=1.f);
     void			Play	(){bPlay=true; t=min_t;}
     void			Stop	(){bPlay=false; t=min_t;}
     void			Pause	(){bPlay=!bPlay;}
@@ -331,10 +331,9 @@ public:
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 
-    // bone part
-    void			SkinSelect				(bool flag);
-	CBone* 			SkinRayPick				(const Fvector& S, const Fvector& D, const Fmatrix& inv_parent);
-    CBone*			SkinBoxPick				(const Fbox& box, const Fmatrix& inv_parent);
+    // bone
+	CBone* 			PickBone				(const Fvector& S, const Fvector& D, const Fmatrix& inv_parent);
+	void 			SelectBone				(CBone* b);
 #endif
     // change position/orientation methods
 	void 			TranslateToWorld		(const Fmatrix& parent);
@@ -360,15 +359,10 @@ public:
   	bool 			Load					(IReader&);
 	void 			Save					(IWriter&);
 #ifdef _EDITOR
-    enum{
-        fptMotion,
-        fptBone,
-        fptSurface,
-        fptMesh
-    };
-    void			FillSurfacesProps		(LPCSTR pref, PropItemVec& items);
+	void 			FillMotionsProps		(LPCSTR pref, PropItemVec& items, int modeID);
+	void 			FillBonesProps			(LPCSTR pref, PropItemVec& items, int modeID);
+    void			FillSurfacesProps		(LPCSTR pref, PropItemVec& items, int modeID);
     void			FillSurfaceProps		(CSurface* surf, LPCSTR pref, PropItemVec& items);
-	void 			FillSkinProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillBasicProps			(LPCSTR pref, PropItemVec& items);
 	void 			FillSummaryProps		(LPCSTR pref, PropItemVec& items);
 	bool			CheckShaderCompatible	();
@@ -382,9 +376,11 @@ public:
     bool 			ContainsMesh			(const CEditableMesh* m);
 	CSurface*		FindSurfaceByName		(LPCSTR surf_name, int* s_id=0);
     CBone*			FindBoneByName			(LPCSTR name);
+    int				GetSelectedBones		(BoneVec& sel_bones);
     int				GetBoneIndexByWMap		(LPCSTR wm_name);
     CSMotion* 		FindSMotionByName		(LPCSTR name, const CSMotion* Ignore=0);
     void			GenerateSMotionName		(char* buffer, LPCSTR start_name, const CSMotion* M);
+    bool			GenerateBoneShapes		(bool bSelOnly);
 
     // device dependent routine
 	void 			OnDeviceCreate 			();
@@ -447,6 +443,7 @@ public:
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 #define EOBJ_CHUNK_BONEPARTS		0x0919
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
+#define EOBJ_CHUNK_BONES2			0x0921
 //----------------------------------------------------
 
 

@@ -60,6 +60,7 @@ public:
 class CDrawUtilities{
 	SPrimitiveBuffer		m_Cone;
     SPrimitiveBuffer		m_Sphere;
+    SPrimitiveBuffer		m_Cylinder;
     SPrimitiveBuffer		m_SolidBox;
     SPrimitiveBuffer		m_WireBox;
 public:
@@ -119,8 +120,12 @@ public:
         box.getcenter(C);
         DrawSelectionBox(C,S,c);
     }
+	void DrawIdentCylinder(u32 clr);
     void DrawIdentBox(bool bSolid, bool bWire, u32 clr);
     void DrawBox	(const Fvector& offs, const Fvector& Size, bool bWire, u32 c);
+    void DrawOBB	(const Fmatrix& parent, const Fobb& box, u32 c);
+	void DrawSphere	(const Fmatrix& parent, const Fsphere& S, u32 c);
+	void DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 c);
     void DrawPlane	(const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, bool bBorder, u32 cb);
 
     void DrawSafeRect();

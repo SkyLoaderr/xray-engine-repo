@@ -8,6 +8,7 @@
 #include "du_box.h"
 #include "du_sphere.h"
 #include "du_cone.h"
+#include "du_cylinder.h"
 
 CDrawUtilities DU;
 
@@ -111,6 +112,7 @@ void CDrawUtilities::OnDeviceCreate()
 {
 	m_Cone.CreateFromData		(D3DPT_TRIANGLELIST,DU_CONE_NUMFACES,D3DFVF_XYZ,du_cone_vertices,DU_CONE_NUMVERTEX,du_cone_faces,DU_CONE_NUMFACES*3);
 	m_Sphere.CreateFromData		(D3DPT_TRIANGLELIST,DU_SPHERE_NUMFACES,D3DFVF_XYZ,du_sphere_vertices,DU_SPHERE_NUMVERTEX,du_sphere_faces,DU_SPHERE_NUMFACES*3);
+    m_Cylinder.CreateFromData	(D3DPT_TRIANGLELIST,DU_CYLINDER_NUMFACES,D3DFVF_XYZ,du_cylinder_vertices,DU_CYLINDER_NUMVERTEX,du_cylinder_faces,DU_CYLINDER_NUMFACES*3);
     m_SolidBox.CreateFromData	(D3DPT_TRIANGLELIST,DU_BOX_NUMFACES,D3DFVF_XYZ,du_box_vertices,DU_BOX_NUMVERTEX,du_box_faces,DU_BOX_NUMFACES*3);
     m_WireBox.CreateFromData	(D3DPT_LINELIST,DU_BOX_NUMLINES,D3DFVF_XYZ,du_box_vertices,DU_BOX_NUMVERTEX,du_box_lines,DU_BOX_NUMLINES*2);
 
@@ -153,6 +155,7 @@ void CDrawUtilities::OnDeviceDestroy()
 {
 	m_Cone.Destroy		();
 	m_Sphere.Destroy	();
+    m_Cylinder.Destroy	();
     m_SolidBox.Destroy	();
     m_WireBox.Destroy	();
 
@@ -370,6 +373,13 @@ void CDrawUtilities::DrawIdentSphere(u32 clr)
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }
 
+void CDrawUtilities::DrawIdentCylinder(u32 clr)
+{
+	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);
+	m_Cylinder.Render();
+	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
+}
+
 void CDrawUtilities::DrawLineSphere(const Fvector& p, float radius, u32 c, bool bCross)
 {
 	// fill VB
@@ -525,6 +535,59 @@ void CDrawUtilities::DrawBox(const Fvector& offs, const Fvector& Size, bool bWir
 
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_BOX_NUMFACES);
     }
+}
+//----------------------------------------------------
+
+void CDrawUtilities::DrawOBB(const Fmatrix& parent, const Fobb& box, u32 c)
+{
+    Fmatrix			R,S,X;
+    box.xform_get	(R);
+    S.scale			(box.m_halfsize.x*2.f,box.m_halfsize.y*2.f,box.m_halfsize.z*2.f);
+    X.mul_43		(R,S);
+    R.mul_43		(parent,X); 
+	RCache.set_xform_world(R);
+	DrawIdentBox	(true,true,c);
+}
+//----------------------------------------------------
+
+void CDrawUtilities::DrawSphere(const Fmatrix& parent, const Fsphere& S, u32 c)
+{
+    Fmatrix B;
+    B.scale				(S.R,S.R,S.R);
+    B.translate_over	(S.P);
+    B.mulA				(parent);
+    RCache.set_xform_world(B);
+    DrawIdentSphere		(c);
+}
+//----------------------------------------------------
+
+void CDrawUtilities::DrawCylinder(const Fmatrix& parent, const Fvector& center, const Fvector& dir, float height, float radius, u32 c)
+{
+    Fmatrix mScale;
+    mScale.scale		(2.f*radius,2.f*radius,height);
+    // build final rotation / translation
+    Fvector             L_dir,L_up,L_right;
+    L_dir.set           (dir);       		    L_dir.normalize         ();
+    L_up.set            (0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)  L_up.set(0,0,1);
+    L_right.crossproduct(L_up,L_dir);           L_right.normalize       ();
+    L_up.crossproduct   (L_dir,L_right);        L_up.normalize          ();
+
+    Fmatrix         	mR;
+    mR.i                = L_right;              mR._14          = 0;
+    mR.j                = L_up;                 mR._24          = 0;
+    mR.k                = L_dir;                mR._34          = 0;
+    mR.c                = center;		  		mR._44          = 1;
+//    Fmatrix         	mR;
+//    mR.k.set			(dir); mR.k.normalize();
+//    mR.j.set			(0,1,0); if (_abs(mR.j.dotproduct(mR.k))>.99f)	mR.j.set	   	(0,0,1);mR._14	= 0;
+//    mR.i.crossproduct	(mR.j,mR.k);                  					mR.i.normalize	();		mR._24	= 0;
+//    mR.j.crossproduct	(mR.k,mR.i);                					mR.j.normalize 	();		mR._34	= 0;
+//    mR.c				= center;  																mR._44  = 1;
+    // final xform
+    Fmatrix xf;			xf.mul (mR,mScale);
+    xf.mulA				(parent);
+    RCache.set_xform_world(xf);
+	DrawIdentCylinder	(c);
 }
 //----------------------------------------------------
 

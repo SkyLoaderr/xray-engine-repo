@@ -632,6 +632,17 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	for (u32 aaa=0; aaa<L_parents.size(); aaa++)
 		xr_free(L_parents[aaa]);
 
+	IReader* IKD = data->open_chunk(OGF_IKDATA);
+    if (IKD){
+        for (u32 i=0; i<bones->size(); i++) {
+            CBoneData*	B = (*bones)[i];
+            IKD->r_stringZ(B->game_mtl);
+            IKD->r(&B->shape,sizeof(SBoneShape));
+            IKD->r(&B->IK_data,sizeof(SJointIKData));
+        }
+    	IKD->close();
+    }
+        
 	// Load animation
 	IReader* MS = data->open_chunk(OGF_MOTIONS);
 	u32 dwCNT = 0;

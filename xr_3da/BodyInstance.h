@@ -8,6 +8,7 @@
 
 #include "skeletonX.h"
 #include "fhierrarhyvisual.h"
+#include "bone.h"
 
 #define MAX_BONE_PARAMS		4
 #define MAX_BLENDED			16
@@ -154,6 +155,10 @@ public:
 	xr_vector<CMotion>	Motions;	// all known motions
 	Fobb			obb;
 
+    SBoneShape		shape;
+    string64		game_mtl;
+    SJointIKData	IK_data;
+    
 	// Motion control
 	void			Motion_Start	(CKinematics* K, CBlend* handle);	// with recursion
 	void			Motion_Start_IM	(CKinematics* K, CBlend* handle);

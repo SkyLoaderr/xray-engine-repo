@@ -21,6 +21,14 @@ enum EAction{
     eaMaxActions
 };
 
+enum EEditMode{
+    emObject,
+    emMotion,
+    emBone,
+    emSurface,
+    emMesh
+};
+
 enum EAxis{
     eAxisX=0,
 	eAxisY,
@@ -100,6 +108,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bObjectModified;
     bool				m_bReady;
 
+    EEditMode			m_EditMode;
     EAction				m_Action;
     bool				m_bHiddenMode;
 	// move
@@ -126,6 +135,10 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     void __fastcall 	OnObjectItemFocused		(TElTreeItem* item);
 
 	void __fastcall 	OnMotionsFileClick		(PropValue* sender);
+    void __fastcall		OnBonesFileClick		(PropValue* sender);
+    
+	void __fastcall 	OnJointTypeChange		(PropValue* sender);
+	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
 protected:
 	// flags
     enum{
@@ -225,10 +238,10 @@ public:
     void 				SelectPreviewObject	(bool bClear);
     void				SetPreviewObjectPrefs();
 
-    void				SelectBoneProperies	(LPCSTR name);
+    void				SelectItemProperties(LPCSTR pref, LPCSTR name);
 
     void				ShowProperties		(){;}
-    void				UpdateProperties	(){m_Flags.set(flUpdateProperties,TRUE);}
+    void				UpdateProperties	(bool bForced=false){m_Flags.set(flUpdateProperties,TRUE); if (bForced) RealUpdateProperties();}
     void				RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);

@@ -128,7 +128,7 @@ void __fastcall TProperties::ClearProperties()
 //---------------------------------------------------------------------------
 void __fastcall TProperties::SelectItem(const AnsiString& full_name)
 {
-    FHelper.RestoreSelection	(tvProperties,full_name.c_str());
+	m_FirstClickItem	= FHelper.RestoreSelection	(tvProperties,FHelper.ExpandItem(tvProperties,full_name.c_str()));
 }
 //---------------------------------------------------------------------------
 
@@ -273,13 +273,11 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
     bModified=false;
 	if (full_expand) tvProperties->FullExpand();
 
-    TElTreeItem* sel_node	= FHelper.ExpandItem(tvProperties,last_selected_item.c_str());
+    SelectItem		(last_selected_item);
 
     tvProperties->IsUpdating= false;
 
-    FHelper.RestoreSelection(tvProperties,sel_node);
-
-    Caption = title;
+    Caption 		= title;
 }
 //---------------------------------------------------------------------------
 

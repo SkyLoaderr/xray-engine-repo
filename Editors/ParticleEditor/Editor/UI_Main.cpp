@@ -522,7 +522,7 @@ void TUI::Idle()
     // tools on frame
     if (m_Flags.is(flUpdateScene)){
         Tools.UpdateProperties	();
-        RealUpdateScene	();
+        RealUpdateScene			();
     }
     if (m_Flags.is(flRedraw)){
 	    if (!psDeviceFlags.is(rsRenderRealTime)) m_Flags.set(flRedraw,FALSE);

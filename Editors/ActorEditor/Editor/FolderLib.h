@@ -52,8 +52,8 @@ public:
     // last selection
     TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node);
     TElTreeItem*		RestoreSelection	(TElTree* tv, LPCSTR full_name);
-    TElTreeItem*		ExpandItem			(TElTree* tv, LPCSTR full_name);
     TElTreeItem*		ExpandItem			(TElTree* tv, TElTreeItem* node);
+    TElTreeItem*		ExpandItem			(TElTree* tv, LPCSTR full_name);
 //------------------------------------------------------------------------------
 };
 extern CFolderHelper FHelper;

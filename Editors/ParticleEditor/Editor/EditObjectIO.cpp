@@ -171,11 +171,22 @@ bool CEditableObject::Load(IReader& F){
         }
 
         // bones
-        if (F.find_chunk(EOBJ_CHUNK_BONES)){
+        IReader* B_CHUNK = F.open_chunk(EOBJ_CHUNK_BONES2);
+		if (B_CHUNK){
+            int chunk = 0;
+        	IReader* O;
+            while (0!=(O=B_CHUNK->open_chunk(chunk++))){
+            	m_Bones.push_back(xr_new<CBone>());
+                m_Bones.back()->Load_1(*O);
+                O->close();
+            }
+            B_CHUNK->close();
+            UpdateBoneParenting();
+        }else if (F.find_chunk(EOBJ_CHUNK_BONES)){
             m_Bones.resize(F.r_u32());
             for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
                 *b_it = xr_new<CBone>();
-                (*b_it)->Load(F);
+                (*b_it)->Load_0(F);
             }
             UpdateBoneParenting();
         }
@@ -266,9 +277,12 @@ void CEditableObject::Save(IWriter& F)
 
     // bones
     if (!m_Bones.empty()){
-	    F.open_chunk	(EOBJ_CHUNK_BONES);
-    	F.w_u32		(m_Bones.size());
-	    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++) (*b_it)->Save(F);
+	    F.open_chunk	(EOBJ_CHUNK_BONES2);
+	    for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+        	F.open_chunk	(b_it-m_Bones.begin());
+        	(*b_it)->Save	(F);
+	    	F.close_chunk	();
+        }
     	F.close_chunk	();
     }
 //    Log("4: ",F.tell());

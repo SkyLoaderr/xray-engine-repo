@@ -391,9 +391,18 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.w_stringZ	(((*bone_it)->ParentIndex()==-1)?"":(*bone_it)->Parent());
         Fobb	obb;
         ComputeOBB	(obb,bone_points[bone_idx]);
-        F.w	(&obb,sizeof(Fobb));
+        F.w			(&obb,sizeof(Fobb));
     }
     F.close_chunk();
+
+    F.open_chunk(OGF_IKDATA);
+    for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
+        F.w_stringZ((*bone_it)->game_mtl);
+        F.w(&(*bone_it)->shape,sizeof(SBoneShape));
+        F.w(&(*bone_it)->IK_data,sizeof(SJointIKData));
+    }
+    F.close_chunk();
+    
 	UI.ProgressInc();
     UI.ProgressEnd();
 
