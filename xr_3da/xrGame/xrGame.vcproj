@@ -1721,8 +1721,7 @@
 												Name="VCCLCompilerTool"/>
 										</FileConfiguration>
 										<FileConfiguration
-											Name="Mixed|Win32"
-											ExcludedFromBuild="TRUE">
+											Name="Mixed|Win32">
 											<Tool
 												Name="VCCLCompilerTool"/>
 										</FileConfiguration>
@@ -1741,8 +1740,7 @@
 												Name="VCCustomBuildTool"/>
 										</FileConfiguration>
 										<FileConfiguration
-											Name="Mixed|Win32"
-											ExcludedFromBuild="TRUE">
+											Name="Mixed|Win32">
 											<Tool
 												Name="VCCustomBuildTool"/>
 										</FileConfiguration>
