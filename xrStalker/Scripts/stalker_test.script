@@ -7,7 +7,17 @@ function main ()
 	action (
 		stalker, 
 		anim		("stalker_2_1"),
-		cond		(cond.time_end,1000000)
+		cond		(cond.time_end,500000000)
+	)
+	
+	wait			(5000)
+	
+	reset_action	(stalker,stalker_test:script_name())
+	
+	action (
+		stalker, 
+		anim		(anim.danger),
+		cond		(cond.time_end,500000000)
 	)
 	
 	while stalker:action() do
