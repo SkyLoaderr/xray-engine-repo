@@ -78,7 +78,6 @@
 		<rank>veteran</rank>
 		<team>trader</team>
 		<start_dialog>escape_trader_start_dialog</start_dialog>
-		
 		<specific_character>default</specific_character>
 	</character>
 	<character id="actor">
