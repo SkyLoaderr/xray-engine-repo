@@ -402,27 +402,39 @@ void xrPalettizeCovers()
 				(*I).cover[i]	= network[I - B][i];
 	}
 
+	float		l_sum_sqr = 0.f;
+	float		l_sum = 0.f;
 	for (int i=0; i<(int)N; ++i) {
+		l_sum	+= 
+			_abs(g_nodes[i].cover[0] - float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f) + 
+			_abs(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
+			_abs(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
+			_abs(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f);
+		l_sum_sqr += 
+			_sqr(g_nodes[i].cover[0] - float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f) + 
+			_sqr(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
+			_sqr(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
+			_sqr(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f);
 		Msg		(
-			"[%3d][%3d][%3d][%3d] -> [%3d][%3d][%3d][%3d] : %7.3f",
+			"[%.3f][%.3f][%.3f][%.3f] -> [%.3f][%.3f][%.3f][%.3f] : %7.3f",
 			g_nodes[i].cover[0],
 			g_nodes[i].cover[1],
 			g_nodes[i].cover[2],
 			g_nodes[i].cover[3],
-			g_covers_palette[g_nodes[i].cover_index].cover[0],
-			g_covers_palette[g_nodes[i].cover_index].cover[1],
-			g_covers_palette[g_nodes[i].cover_index].cover[2],
-			g_covers_palette[g_nodes[i].cover_index].cover[3],
+			float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f,
+			float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f,
+			float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f,
+			float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f,
 			_sqrt(
-				float(
-					_sqr(int(g_nodes[i].cover[0]) - int(g_covers_palette[g_nodes[i].cover_index].cover[0])) + 
-					_sqr(int(g_nodes[i].cover[1]) - int(g_covers_palette[g_nodes[i].cover_index].cover[1])) + 
-					_sqr(int(g_nodes[i].cover[2]) - int(g_covers_palette[g_nodes[i].cover_index].cover[2])) + 
-					_sqr(int(g_nodes[i].cover[3]) - int(g_covers_palette[g_nodes[i].cover_index].cover[3]))
-				)
+				_sqr(g_nodes[i].cover[0] - float(g_covers_palette[g_nodes[i].cover_index].cover[0])/255.f) + 
+				_sqr(g_nodes[i].cover[1] - float(g_covers_palette[g_nodes[i].cover_index].cover[1])/255.f) + 
+				_sqr(g_nodes[i].cover[2] - float(g_covers_palette[g_nodes[i].cover_index].cover[2])/255.f) + 
+				_sqr(g_nodes[i].cover[3] - float(g_covers_palette[g_nodes[i].cover_index].cover[3])/255.f)
 			)
 		);
 	}
+	Msg				("Total absoulte error : %f",l_sum);
+	Msg				("Total squared  error : %f",l_sum_sqr);
 
 	xr_free			(data);
 }
