@@ -81,8 +81,8 @@ void Face::CacheOpacity()
 {
 	bOpaque	= false;
 	
-	b_material& M	= pBuild->materials			[dwMaterial];
-	b_texture&	T	= pBuild->textures			[M.surfidx[0]];
+	b_material& M		= pBuild->materials		[dwMaterial];
+	b_texture&	T		= pBuild->textures		[M.surfidx];
 	if (T.bHasAlpha)	bOpaque = FALSE;
 	else				bOpaque = TRUE;
 
