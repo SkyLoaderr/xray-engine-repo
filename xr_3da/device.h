@@ -6,10 +6,11 @@
 // ZNear - always 0.0f
 // ZFar  - always 1.0f
 
+class	ENGINE_API	CResourceManager;
+
 #include "pure.h"
 #include "hwcaps.h"
 #include "hw.h"
-#include "texturemanager.h"
 #include "ftimer.h"
 #include "stats.h"
 #include "xr_effgamma.h"
@@ -58,7 +59,7 @@ public:
 	CRegistrator	<pureAppCycleEnd	 >	seqAppCycleEnd;
 
 	// Dependent classes
-	CShaderManager							Shader;
+	CResourceManager*							Shader;
 	CStats									Statistic;
 	CGammaControl							Gamma;
 

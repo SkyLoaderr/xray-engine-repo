@@ -1,4 +1,4 @@
-// TextureManager.cpp: implementation of the CShaderManager class.
+// TextureManager.cpp: implementation of the CResourceManager class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -26,7 +26,7 @@ BOOL	reclaim		(xr_vector<T*>& vec, const T* ptr)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-IBlender* CShaderManager::_GetBlender		(LPCSTR Name)
+IBlender* CResourceManager::_GetBlender		(LPCSTR Name)
 {
 	R_ASSERT(Name && Name[0]);
 
@@ -40,7 +40,7 @@ IBlender* CShaderManager::_GetBlender		(LPCSTR Name)
 	else					return I->second;
 }
 
-IBlender* CShaderManager::_FindBlender		(LPCSTR Name)
+IBlender* CResourceManager::_FindBlender		(LPCSTR Name)
 {
 	if (!(Name && Name[0])) return 0;
 
@@ -50,7 +50,7 @@ IBlender* CShaderManager::_FindBlender		(LPCSTR Name)
 	else						return I->second;
 }
 
-void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
+void	CResourceManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
 {
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,IBlender*,str_pred>::iterator I = m_blenders.find	(N);
@@ -66,7 +66,7 @@ void	CShaderManager::ED_UpdateBlender	(LPCSTR Name, IBlender* data)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
+void	CResourceManager::_ParseList(sh_list& dest, LPCSTR names)
 {
     if (0==names) 		names 	= "$null";
 
@@ -100,7 +100,7 @@ void	CShaderManager::_ParseList(sh_list& dest, LPCSTR names)
 	}
 }
 
-ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
+ShaderElement* CResourceManager::_CreateElement(	CBlender_Compile& C)
 {
 	// Options + Shader def
 	ShaderElement		S;
@@ -117,14 +117,14 @@ ShaderElement* CShaderManager::_CreateElement(	CBlender_Compile& C)
 	return N;
 }
 
-void CShaderManager::_DeleteElement(const ShaderElement* S)
+void CResourceManager::_DeleteElement(const ShaderElement* S)
 {
 	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
 	if (reclaim(v_elements,S))						return;
 	Msg	("! ERROR: Failed to find compiled 'shader-element'");
 }
 
-Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CResourceManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	CBlender_Compile	C;
 	Shader				S;
@@ -174,7 +174,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	return N;
 }
 
-Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
+Shader*	CResourceManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_constants, LPCSTR s_matrices)
 {
 	CBlender_Compile	C;
 	Shader				S;
@@ -224,28 +224,28 @@ Shader*	CShaderManager::Create_B	(IBlender* B, LPCSTR s_shader, LPCSTR s_texture
 	return N;
 }
 
-void CShaderManager::Delete(const Shader* S)
+void CResourceManager::Delete(const Shader* S)
 {
 	if (0==(S->dwFlags&xr_resource::RF_REGISTERED))	return;
 	if (reclaim(v_shaders,S))						return;
 	Msg	("! ERROR: Failed to find complete shader");
 }
 
-void	CShaderManager::DeferredUpload	()
+void	CResourceManager::DeferredUpload	()
 {
 	if (!Device.bReady)				return;
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Load();
 }
 
-void	CShaderManager::DeferredUnload	()
+void	CResourceManager::DeferredUnload	()
 {
 	if (!Device.bReady)				return;
 	for (map_TextureIt t=m_textures.begin(); t!=m_textures.end(); t++)
 		t->second->Unload();
 }
 #ifdef _EDITOR
-void	CShaderManager::ED_UpdateTextures(AStringVec* names)
+void	CResourceManager::ED_UpdateTextures(AStringVec* names)
 {
 	// 1. Unload
     if (names){
@@ -263,7 +263,7 @@ void	CShaderManager::ED_UpdateTextures(AStringVec* names)
 	DeferredUpload	();
 }
 #endif
-void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
+void	CResourceManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32& c_lmaps)
 {
 	m_base=c_base=m_lmaps=c_lmaps=0;
 
@@ -283,12 +283,12 @@ void	CShaderManager::_GetMemoryUsage(u32& m_base, u32& c_base, u32& m_lmaps, u32
 	}
 }
 
-void	CShaderManager::Evict()
+void	CResourceManager::Evict()
 {
 	CHK_DX	(HW.pDevice->EvictManagedResources());
 }
 
-BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
+BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
 {
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);

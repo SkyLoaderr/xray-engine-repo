@@ -4,7 +4,7 @@
 #include "blenders\blender.h"
 
 
-void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
+void	CResourceManager::OnDeviceDestroy(BOOL bKeepTextures)
 {
 	if (Device.bReady) return;
 
@@ -164,7 +164,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	m_td.clear			();
 }
 
-void	CShaderManager::OnDeviceCreate	(IReader* F)
+void	CResourceManager::OnDeviceCreate	(IReader* F)
 {
 	if (!Device.bReady) return;
 
@@ -274,7 +274,7 @@ void	CShaderManager::OnDeviceCreate	(IReader* F)
 	}
 }
 
-void	CShaderManager::OnDeviceCreate	(LPCSTR shName)
+void	CResourceManager::OnDeviceCreate	(LPCSTR shName)
 {
 #ifdef _EDITOR
 	if (!FS.exist(shName)) return;
