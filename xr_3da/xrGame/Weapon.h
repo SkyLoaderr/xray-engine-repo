@@ -46,8 +46,8 @@ public:
 	virtual void			shedule_Update		(u32 dt);
 
 
-	virtual const Fmatrix&	ParticlesXFORM() const	{return inherited::XFORM();}
-	virtual IRender_Sector*	Sector()				{return inherited::Sector();}
+	virtual const Fmatrix&	ParticlesXFORM() const;
+	virtual IRender_Sector*	Sector();
 
 	virtual void			renderable_Render	();
 
@@ -252,8 +252,11 @@ public:
 
     virtual EHandDependence		HandDependence		()	const		{	return eHandDependence;}
 protected:
-	EHandDependence			eHandDependence;		// 0-используется без участия рук, 1-одна рука, 2-две руки
+	// 0-используется без участия рук, 1-одна рука, 2-две руки
+	EHandDependence			eHandDependence;
 	Fmatrix					m_Offset;
+	//направление для партиклов огня и дыма
+	Fmatrix					m_FireParticlesXForm;
 
 	//текущее положение и напрвление для партиклов
 	Fvector					vLastFP, vLastFP2; //огня

@@ -180,6 +180,11 @@ void CWeapon::UpdateFP		()
 			
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
+
+			m_FireParticlesXForm.identity();
+			m_FireParticlesXForm.k.set(vLastFD);
+			Fvector::generate_orthonormal_basis(m_FireParticlesXForm.k,
+									m_FireParticlesXForm.i, m_FireParticlesXForm.j);
 		} else {
 			// 3rd person or no parent
 			Fmatrix& parent			= XFORM();
@@ -197,6 +202,8 @@ void CWeapon::UpdateFP		()
 			//vLastSD = sd;
 			vLastSD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastSD);
+
+			m_FireParticlesXForm.set(parent);
 		}
 	}
 }
@@ -1102,4 +1109,15 @@ void CWeapon::UpdateHudPosition	()
 			m_pHUD->UpdatePosition						(trans);
 		}
 	}
+}
+
+
+const Fmatrix&	CWeapon::ParticlesXFORM() const	
+{
+	return m_FireParticlesXForm;
+//	return inherited::XFORM();
+}
+IRender_Sector*	CWeapon::Sector()				
+{
+	return inherited::Sector();
 }
