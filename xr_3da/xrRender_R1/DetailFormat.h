@@ -76,7 +76,7 @@ struct DetailPalette
 struct DetailSlot					// was(4+4+3*4+2 = 22b), now(8+2*4=16b)
 {
 	u32				y_base	:	12;	// 11	// 1 unit = 20 cm, low = -200m, high = 4096*20cm - 200 = 619.2m
-	u32				y_height:	8;	// 20	// 1 unit = 5  cm, low = 0,     high = 256*5 = 12.8m
+	u32				y_height:	8;	// 20	// 1 unit = 10 cm, low = 0,     high = 256*10 ~= 25.6m
 	u32				id0		:   6;	// 26	// 0x3F(63) = empty
 	u32				id1		:	6;	// 32	// 0x3F(63) = empty
 	u32				id2		:	6;	// 38	// 0x3F(63) = empty
@@ -94,11 +94,11 @@ public:
 	{	
 		s32	_base	= iFloor((base + 200)/.2f);			clamp(_base,	0,4095);	y_base		= _base;
 		f32 _error	= base - r_ybase();
-		s32	_height = iCeil ((height+_error) / .05f);	clamp(_height,	0,255);		y_height	= _height;
+		s32	_height = iCeil ((height+_error) / .1f);	clamp(_height,	0,255);		y_height	= _height;
 	}
 
 	float			r_ybase		()						{	return float(y_base)*.2f - 200.f;								}
-	float			r_yheight	()						{	return float(y_height)*.05f;									}
+	float			r_yheight	()						{	return float(y_height)*.1f;									}
 	u32				w_qclr		(float v, u32 range)	{	s32 _v = iFloor(v * float(range)); clamp(_v,0,s32(range)); return _v; };
 	float			r_qclr		(u32 v,   u32 range)	{	return float(v)/float(range); }
 
