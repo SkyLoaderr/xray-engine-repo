@@ -106,6 +106,7 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
 	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	
+	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
 	//fire
 	m_fHitPower       = pSettings->ReadINT(section,"HitPower");
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");

@@ -123,10 +123,10 @@ void CAI_Zombie::FreeHunting()
 				}
 			}
 
-	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
-
 	if (!m_bStateChanged)
 		SetDirectionLook();
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiZombieTurnOver);
 
 	vfSetFire(false,Group);
 
@@ -247,7 +247,7 @@ void CAI_Zombie::TurnOver()
 	else
 		AI_Path.TravelStart = 0;
 	
-	vfSetMovementType(m_cBodyState,0);
+	vfSetMovementType(m_cBodyState,m_fCurSpeed);
 
 	r_torso_speed = PI_DIV_2/1;
 	r_spine_speed = PI_DIV_2/1;
