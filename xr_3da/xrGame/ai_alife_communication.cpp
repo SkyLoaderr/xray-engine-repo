@@ -22,7 +22,7 @@
 #ifdef ALIFE_LOG
 void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
-	Msg					("%s",tpALifeHumanAbstract->s_name_replace);
+	Msg					("%s[%d]",tpALifeHumanAbstract->s_name_replace,tpALifeHumanAbstract->m_dwMoney);
 	ITEM_P_IT			I = tpItemVector.begin();
 	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; I++)
@@ -31,7 +31,7 @@ void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstra
 
 void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
 {
-	Msg					("%s",tpALifeHumanAbstract->s_name_replace);
+	Msg					("%s[%d]",tpALifeHumanAbstract->s_name_replace,tpALifeHumanAbstract->m_dwMoney);
 	OBJECT_IT			I = tpALifeHumanAbstract->children.begin();
 	OBJECT_IT			E = tpALifeHumanAbstract->children.end();
 	for ( ; I != E; I++)
