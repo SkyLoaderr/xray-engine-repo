@@ -98,6 +98,14 @@ namespace CDB
 	class XRCDB_API RESULT
 	{
 	public:
+		Fvector			verts	[3];
+		union	{
+			u32			dummy;			
+			struct {
+				u16		material;		
+				u16		sector;			
+			};
+		};
 		int				id;
 		float			range;
 		float			u,v;
