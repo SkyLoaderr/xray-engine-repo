@@ -25,6 +25,8 @@
 #include "script_entity_action.h"
 #include "motivation_action_manager.h"
 #include "script_task.h"
+#include "PhysicsShell.h"
+
 
 using namespace luabind;
 
@@ -297,8 +299,8 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("heli_goto_stay_point",        (void (CScriptGameObject::*)(Fvector&,float))(CScriptGameObject::heli_goto_stay_point))
 			.def("heli_go_patrol",				&CScriptGameObject::heli_go_patrol)
 			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
-			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time),
-			//.def("get_physics_shell",			&CScriptGameObject::get_physics_shell),
+			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time)
+			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell),
 //		class_<CObject>("base_client_class")
 //			.def(								constructor<>()),
 //
