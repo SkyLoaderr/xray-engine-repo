@@ -534,16 +534,27 @@ void CSE_ALifeSimulator::vfKillCreatures()
 			CSE_ALifeAbstractGroup *l_tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>((*I).second);
 			getAI().m_tpCurrentALifeObject = (*I).second;
 			if (l_tpALifeAbstractGroup) {
+				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;
 				for (u32 i=0, N = (u32)l_tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
+					OBJECT_PAIR_IT				J = m_tObjectRegistry.find(l_tpALifeAbstractGroup->m_tpMembers[i]);
+					R_ASSERT2					(J != m_tObjectRegistry.end(),"There is no object being attached as a group member!");
+					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*J).second);
+					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
+					getAI().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
 					if (randF(100) > getAI().pfSurgeDeathProbability->ffGetValue()) {
-						OBJECT_PAIR_IT				J = m_tObjectRegistry.find(l_tpALifeAbstractGroup->m_tpMembers[i]);
-						R_ASSERT2					(J != m_tObjectRegistry.end(),"There is no object being attached as a group member!");
-						CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*J).second);
-						R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
+						
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
-						l_tpALifeCreatureAbstract->fHealth = 0.f;
-						l_tpALifeAbstractGroup->m_tpMembers.erase(l_tpALifeAbstractGroup->m_tpMembers.begin() + i);
-						vfUpdateDynamicData			(l_tpALifeCreatureAbstract);
+						l_tpALifeCreatureAbstract->fHealth			= 0.f;
+						l_tpALifeAbstractGroup->m_tpMembers.erase	(l_tpALifeAbstractGroup->m_tpMembers.begin() + i);
+
+						SLevelPoint*								l_tpaLevelPoints = (SLevelPoint*)(((u8*)getAI().m_tpaGraph) + getAI().m_tpaGraph[l_tGraphID].dwPointOffset);
+						u32											l_dwDeathpointIndex = randI(getAI().m_tpaGraph[l_tGraphID].tDeathPointCount);
+						l_tpALifeCreatureAbstract->m_tGraphID		= l_tGraphID;
+						l_tpALifeCreatureAbstract->o_Position		= l_tpaLevelPoints[l_dwDeathpointIndex].tPoint;
+						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
+						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
+
+						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						i--;
 						N--;
 					}
