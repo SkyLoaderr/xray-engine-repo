@@ -150,7 +150,7 @@ public:
 	bool				TryPosition				(Fvector& pos)															{return m_character->TryPosition(pos);}
 	bool				IsCharacterEnabled		()																		{return m_character->IsEnabled();}
 	void				Calculate				(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
-	void				Calculate				(const Fvector& desired,float dt);
+	void				Calculate				(const Fvector& desired_pos,float velocity,float dt);
 //	void				Move					(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity			(BOOL flag)																{ bIsAffectedByGravity=flag; }
 	void				GetDeathPosition		(Fvector& pos)															{ m_character->DeathPosition(pos);}

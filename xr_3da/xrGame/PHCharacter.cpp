@@ -1361,7 +1361,7 @@ void CPHAICharacter::		SetPosition							(Fvector pos)
 
 }
 
-void CPHAICharacter::BringToDesired(float time,float force)
+void CPHAICharacter::BringToDesired(float time,float velocity,float force)
 {
 	Fvector pos,move;
 	GetPosition(pos);
@@ -1370,25 +1370,35 @@ void CPHAICharacter::BringToDesired(float time,float force)
 	move.y=0.f;
 	float dist=move.magnitude();
 
-
+	float vel;
 	if(dist>EPS_L*100.f)
 	{
-		SetMaximumVelocity(dist/time);
+		vel=dist/time;
 		move.mul(1.f/dist);
-		SetAcceleration(move);
 	}
 	else if(dist>EPS_L*10.f)
 	{
-		SetMaximumVelocity(dist*dist*dist);
+		vel=dist*dist*dist;
 		move.mul(1.f/dist);
-		SetAcceleration(move);
 	}
 	else
 	{
+		vel=0.f;
 		move.set(0,0,0);
-		SetMaximumVelocity(0);
-		SetAcceleration(move);
 	}
+
+	if(vel>velocity)//&&velocity>EPS_L
+		vel=velocity;
+
+	if(velocity<EPS_L/fixed_step) 
+	{
+		vel=0.f;
+		move.set(0,0,0);
+	}
+
+	SetMaximumVelocity(vel);
+
+	SetAcceleration(move);
 }
 #ifdef DEBUG
 void	CPHAICharacter::OnRender()	

@@ -404,10 +404,11 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		{
 		motion.set(0,0,0);
 		Me->Movement.GetDesiredPos(p_dest);
-		Me->Movement.Calculate(p_dest,dt);
+		Me->Movement.Calculate(p_dest,0.f,dt);
 		Me->Movement.GetPosition(p_dest);
-		Me->UpdateTransform	();
 		}
+
+
 		if (Me->Movement.gcontact_HealthLost)	
 		{
 			Fvector d;
@@ -477,7 +478,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		{
 			//motion.mul			(mdir,speed*10.f/mdir.magnitude());
 			//Me->Movement.Calculate(motion,0,0,0,0);
-			Me->Movement.Calculate(p_dest,dt);
+			Me->Movement.Calculate(p_dest,speed*10.f/mdir.magnitude(),dt);
 			Me->Movement.GetPosition(p_dest);
 			if (Me->Movement.gcontact_HealthLost)	
 			{
@@ -491,7 +492,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 		//motion.mul			(mdir,speed*10.f/mdir.magnitude());
 		//Me->Movement.Calculate(motion,0,0,0,0);
 
-		Me->Movement.Calculate(p_dest,dt);
+		Me->Movement.Calculate(p_dest,speed*10.f/mdir.magnitude(),dt);
 		Me->Movement.GetPosition(p_dest);
 		if (Me->Movement.gcontact_HealthLost)	
 		{

@@ -87,13 +87,13 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 	
 }
 
-void CPHMovementControl::Calculate(const Fvector& desired,float dt){
+void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,float dt){
 
 	m_character->IPosition(vPosition);
 	CPHAICharacter* pStalkerCharacter=dynamic_cast<CPHAICharacter*>(m_character);
 	
-	pStalkerCharacter->SetDesiredPosition(desired);
-	pStalkerCharacter->BringToDesired(dt);
+	pStalkerCharacter->SetDesiredPosition(desired_pos);
+	pStalkerCharacter->BringToDesired(dt,velocity);
 
 
 	m_character->GetVelocity(vVelocity); 
