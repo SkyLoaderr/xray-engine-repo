@@ -75,6 +75,8 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
+	inherited::net_Spawn			(DC);
+
 	xrServerEntity*		E			= (xrServerEntity*)DC;
 	R_ASSERT						(E);
 
