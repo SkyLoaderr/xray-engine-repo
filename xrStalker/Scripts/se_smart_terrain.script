@@ -26,7 +26,7 @@ end
 
 function se_smart_terrain:detect_probability	()
 	log							("se_smart_terrain::detect_probability called!")
-	if self.m_monster ~= nil then
+	if self.m_monster == nil then
 		return 					0.5
 	else
 		return 					0.0
