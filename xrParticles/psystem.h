@@ -597,7 +597,7 @@ namespace PAPI
 	PARTICLEDLL_API void __cdecl pVelocityD(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
 		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
-		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
 	PARTICLEDLL_API void pVertexB(float x, float y, float z);
 
