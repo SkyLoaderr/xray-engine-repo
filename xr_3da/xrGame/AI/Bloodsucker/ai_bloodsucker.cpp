@@ -31,6 +31,8 @@ void CAI_Bloodsucker::Init()
 {
 	inherited::Init();
 
+	m_fEffectDist					= 0.f;
+
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
 
@@ -46,7 +48,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_fInvisibilityDist = pSettings->r_float(section,"InvisibilityDist");
 	m_ftrPowerDown		= pSettings->r_float(section,"PowerDownFactor");	
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
-
+	m_fEffectDist		= pSettings->r_float(section,"EffectDistance");	
 }
 
 

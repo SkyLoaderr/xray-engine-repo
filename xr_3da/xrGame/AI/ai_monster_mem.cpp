@@ -100,6 +100,8 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 	// удалить объекты, которые ушли в оффлайн
 	CheckValidObjects();
+
+	// удалить звуки, от муртвых объектов
 }
 
 void CSoundMemory::CheckValidObjects()
@@ -111,6 +113,12 @@ void CSoundMemory::CheckValidObjects()
 void CSoundMemory::RemoveSoundOwner(CObject *pO)
 {
 	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_owner_pred(pO));
+	Sounds.erase   (Result,Sounds.end());
+}
+
+void CSoundMemory::RemoveDeadObjects()
+{
+	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_dead_objects_pred());
 	Sounds.erase   (Result,Sounds.end());
 }
 

@@ -37,6 +37,7 @@ public:
 	float					m_fInvisibilityDist;			// дистанция до врага, на которой монстр может становиться нивидимым
 	float					m_ftrPowerDown;					// коэффициент, на который падает сила монстра при активации невидимости 
 	float					m_fPowerThreshold;				// порог силы, после которого нельзя стать невидимым
+	float					m_fEffectDist;
 
 };
 

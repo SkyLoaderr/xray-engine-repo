@@ -54,10 +54,7 @@ void CAI_Biting::CheckAttackHit()
 		this->setEnabled(true);			
 		
 		// если жертва убита - добавить в список трупов	
-		if (!ve.obj->g_Alive()) {
-			AddCorpse(ve);
-			RemoveSoundOwner(ve.obj);  // удалить все звуки принадлежащие объекту
-		}
+		if (!ve.obj->g_Alive()) AddCorpse(ve);
 	}
 }
 
@@ -399,7 +396,7 @@ void CMotionManager::PlayHitFX(float amount)
 	float power_factor = amount/100.f; 
 	clamp(power_factor,0.f,1.f);
 
-	tpKinematics->PlayFX(m_tHitFXs[::Random.randI(m_tHitFXs.size())],power_factor);
+	//tpKinematics->PlayFX(m_tHitFXs[::Random.randI(m_tHitFXs.size())],power_factor);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

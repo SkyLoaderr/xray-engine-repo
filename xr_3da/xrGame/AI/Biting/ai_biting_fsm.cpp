@@ -28,7 +28,7 @@ void CAI_Biting::Think()
 		CurrentState->Reset();
 		SetState(stateRest);
 	}
-	
+
 	StateSelector			();
 	CurrentState->Execute	(m_dwCurrentUpdate);
 

@@ -84,6 +84,16 @@ struct remove_sound_owner_pred {
 	bool operator() (const SoundElem &x){ return (x.who == pO); }
 };
 
+struct remove_dead_objects_pred {
+	bool operator() (const SoundElem &x){ 
+		if (x.who) {
+			CEntityAlive *pE = dynamic_cast<CEntityAlive*> (x.who);
+			if (pE && pE->g_Alive()) return false;
+			else return true;
+		}
+	}
+};
+
 class CSoundMemory
 {
 	TTime					timeMemory;				// время хранения звуков
@@ -106,6 +116,7 @@ protected:
 		void    RemoveSoundOwner		(CObject *pO);	//удалить все звуки принадлежащие данному объекту
 private:
 		void	CheckValidObjects		(); 			// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
+		void	RemoveDeadObjects		();				// удалить звуки, от мёртвых объектов
 };
 
 
