@@ -14,7 +14,7 @@ struct _rect {
 	_point	a,b;		// min,max
 	int		iArea;
 	int		mask;		// which control points we already used
-
+	
 	IC void	set	(_rect &R)
 	{
 		a.set	(R.a);
@@ -120,7 +120,7 @@ void _rect_register(_rect &R)
 {
 	R.mask				= 0;
 	collected.push_back(R);
-
+	
 	for (int y=R.a.y; y<R.b.y; y++)
 	{
 		BYTE*	P = surface+y*512+R.a.x;
@@ -133,12 +133,12 @@ bool Place(_rect &R, vecRIT CIT)
 {
 	if (R.b.x >= 512) return false;
 	if (R.b.y >= 512) return false;
-
+	
 	// Test next - major speedup
 	if (CIT!=collected.end()) {
 		if (R.Intersect(*(CIT+1))) return false;
 	}
-
+	
 	// Test surface
 	for (int y=R.a.y; y<R.b.y; y++)
 	{
@@ -146,7 +146,7 @@ bool Place(_rect &R, vecRIT CIT)
 		BYTE*	E = P + R.SizeX();
 		for (; P!=E; P++) if (*P) return false;
 	}
-
+	
 	// It's OK to place it
 	return true;
 };
@@ -155,7 +155,8 @@ BOOL _rect_place(_rect &r)
 {
 	_rect	R;
 	_point	S,T;
-
+	
+/*
 	for (vecRIT CR=collected.begin(); CR!=collected.end(); CR++) 
 	{
 		if (CR->mask == (USED_P1|USED_P2) ) continue;
@@ -199,6 +200,11 @@ BOOL _rect_place(_rect &r)
 			}
 		}
 	}
+	*/
+
+	// Normal
+	for (DWORD _Y=0; _Y<)
+
 	return FALSE;
 };
 
