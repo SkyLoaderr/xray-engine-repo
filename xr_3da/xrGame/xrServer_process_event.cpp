@@ -295,13 +295,12 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 				CSE_ALifeItemCustomOutfit* pOutfit = smart_cast<CSE_ALifeItemCustomOutfit*>(E);
 				if (pOutfit)
 				{
-//					ClientID clientID;clientID.setBroadcast();
 					SendBroadcast		(sender,P,MODE);
+					break;
 				};
 			};
 			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 		}break;
-	case GEG_PLAYER_ITEMDROP:
 	case GEG_PLAYER_BUYMENU_OPEN:
 	case GEG_PLAYER_BUYMENU_CLOSE:
 	case GEG_PLAYER_INVENTORYMENU_OPEN:
@@ -316,6 +315,11 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 
 //			VERIFY					(verify_entities());
 		}break;
+	case GEG_PLAYER_ITEMDROP:
+		{
+			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+//			VERIFY					(verify_entities());
+		}break;		
 	case GE_TELEPORT_OBJECT:
 		{
 			game->teleport_object	(P,destination);
