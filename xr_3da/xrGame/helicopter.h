@@ -170,6 +170,6 @@ protected:
 
 public:
 	void					doHunt				(CObject* dest);
-	void					doHunt2				(CObject* dest);
-	BOOL			 		isOnAttack			(){return (m_curState==eInitiateHunt || m_curState==eMovingByAttackTraj) ;}					
+	void					doHunt2				(CObject* dest, float dist=20.0f, float time=5.0f);
+	BOOL			 		isOnAttack			(){return (m_curState==eInitiateHunt || m_curState==eInitiateHunt2 || m_curState==eMovingByAttackTraj) ;}					
 };

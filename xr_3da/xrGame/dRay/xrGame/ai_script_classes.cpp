@@ -844,6 +844,16 @@ void CLuaGameObject::air_attack (CLuaGameObject * object)
 	}
 	helicopter->doHunt(object->m_tpGameObject);
 }
+void CLuaGameObject::air_attack_wait (CLuaGameObject* object, float dist, float t)
+{
+	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);
+	if (!helicopter) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot access class member air_attack_wait!");
+		NODEFAULT;
+	}
+	helicopter->doHunt2(object->m_tpGameObject,dist, t);
+}
+
 bool CLuaGameObject::air_attack_active ()
 {
 	CHelicopter		*helicopter = dynamic_cast<CHelicopter*>(m_tpGameObject);

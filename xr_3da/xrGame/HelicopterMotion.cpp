@@ -188,7 +188,7 @@ void CHelicopterMotion::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float d
 }
 void CHelicopterMotion::OnRender()
 {
-	DrawPath (true, true);
+//	DrawPath (true, true);
 }
 #endif
 

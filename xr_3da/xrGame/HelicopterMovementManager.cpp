@@ -54,6 +54,10 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 		};
 
 	m_pitch_k *= -1.0f;
+
+	m_hunt_dist = 20.0f;
+	m_hunt_time = 5.0f;
+	
 /*	m_korridor					= pSettings->r_float(section,"alt_korridor");
 */
 
@@ -150,12 +154,12 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		m_endAttackTime = m_endTime;
 	};
 
-/*
+
 	if (heli->state() == CHelicopter::eInitiateHunt2) {
-		addHuntPath2(lt, heli->lastEnemyPos() );
+		addHuntPath2(lt, heli->lastEnemyPos(), m_hunt_dist, m_hunt_time);
 		heli->setState(CHelicopter::eMovingByAttackTraj);
 		m_endAttackTime = m_endTime;
-	};*/
+	};
 
 	if (heli->state() == CHelicopter::eMovingByAttackTraj) {
 		if(lt>m_endAttackTime)
@@ -262,13 +266,17 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	float safe_time;
 
 	truncatePathSafe(from_time, safe_time, fromPos);
+/*
+m_hunt_dist = 20.0f;
+m_hunt_time = 5.0f;
 
+*/
 	xr_vector<Fvector> vAddedKeys;
 	Fvector dir;
 	dir.sub(dstPos, fromPos).normalize_safe();
 	float dist = fromPos.distance_to(dstPos);
-	if(dist>20.0f){
-		dstPos.mad(fromPos,dir,dist-20.0f);
+	if(dist>m_hunt_dist){
+		dstPos.mad(fromPos,dir,dist-m_hunt_dist);
 	}
 
 	createHuntPathTrajectory(from_time, fromPos, dstPos, vAddedKeys);
@@ -279,13 +287,13 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	
 	Fvector dstPos2,T,R;
 	CHelicopterMotion::_Evaluate(m_endTime-0.1f,T,R);
-	dir.sub(T, dstPos).normalize_safe();
+	dir.sub(dstPos,T).normalize_safe();
 	dstPos2.mad(dstPos,dir,1.0f);
 	vAddedKeys.clear();
 	vAddedKeys.push_back(dstPos);
 	vAddedKeys.push_back(dstPos2);
 
-	insertKeyPoints(m_endTime, vAddedKeys, 0.2f, false);
+	insertKeyPoints(m_endTime, vAddedKeys, 1.0f/m_hunt_time, false);
 	updatePathHPB(safe_time);
 
 }
@@ -585,3 +593,8 @@ void CHelicopterMovManager::insertRounding(const Fvector& fromPos,
 }
 
 
+void CHelicopterMovManager::setHuntPathParam (float dist, float time)
+{
+	m_hunt_dist = dist;
+	m_hunt_time = time;
+}

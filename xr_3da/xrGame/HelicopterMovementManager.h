@@ -36,7 +36,9 @@ class CHelicopterMovManager :public CHelicopterMotion
 	float							m_time_delay_between_patrol;
 	float							m_time_patrol_period;
 	float							m_time_delay_before_start;
-
+	
+	float							m_hunt_dist;
+	float							m_hunt_time;
 	
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
 	bool	dice					()		{return (::Random.randF(-1.0f, 1.0f) > 0.0f); };
@@ -71,6 +73,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();
+	void	setHuntPathParam		(float dist, float time);
 
 	void	init					(const Fmatrix& heli_xform);
 	void	load					(LPCSTR		section);

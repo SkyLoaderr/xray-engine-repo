@@ -491,7 +491,7 @@ void CHelicopter::doHunt(CObject* dest)
 	}
 }
 
-void CHelicopter::doHunt2(CObject* dest)
+void CHelicopter::doHunt2(CObject* dest, float dist, float time)
 {
 	if( m_curState==CHelicopter::eMovingByPatrolZonePath ){
 

@@ -683,5 +683,6 @@ public:
 			const xr_vector<CSoundObject>	&memory_sound_objects	() const;
 			const xr_vector<CHitObject>		&memory_hit_objects		() const;
 			void air_attack					(CLuaGameObject*);
+			void air_attack_wait			(CLuaGameObject*, float, float);
 			bool air_attack_active			();
 };
