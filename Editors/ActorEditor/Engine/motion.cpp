@@ -432,8 +432,9 @@ void SAnimParams::Update(float dt, float speed, bool loop)
     if (t>max_t){
 #ifdef _EDITOR
 		if (loop){ 
-        	float k = iFloor(t/(max_t-min_t));
-        	t=t-k*max_t+min_t; 
+        	float len = max_t-min_t;
+        	float k = iFloor((t-min_t)/len);
+        	t=t-k*len; 
         }else
 #endif
 		t=max_t;
