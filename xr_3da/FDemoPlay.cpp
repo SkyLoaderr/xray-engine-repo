@@ -18,7 +18,6 @@ CDemoPlay::CDemoPlay(const char *name, float ms, u32 cycles, float life_time) : 
 	Console->Execute	("hud_weapon 0");
 	if(g_bBenchmark)	Console->Execute	("hud_draw 0");
 
-	fStartTime			= 0;
 	fSpeed				= ms;
 	dwCyclesLeft		= cycles;
 
@@ -75,6 +74,7 @@ void CDemoPlay::stat_Start	()
 	stat_Timer_total.Start	()					;
 	stat_table.clear		()					;
 	stat_table.reserve		(1024)				;
+	fStartTime				= 0;
 }
 
 void CDemoPlay::stat_Stop	()
@@ -180,7 +180,7 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 	{
 		if (seq.empty()) {
 			g_pGameLevel->Cameras.RemoveEffector(cefDemo);
-			return TRUE;
+			return		TRUE;
 		}
 
 		fStartTime		+=	Device.fTimeDelta;
@@ -194,7 +194,8 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 		if (frame>=m_count)
 		{
 			if (0==dwCyclesLeft)	return FALSE;
-			dwCyclesLeft			--;
+			dwCyclesLeft			--	;
+			fStartTime				= 0	;
 			// just continue
 			// stat_Stop			();
 			// stat_Start			();
