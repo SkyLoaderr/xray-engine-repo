@@ -325,8 +325,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_UNDO:
 		if( !Scene.locked() ){
 			if( !Scene.Undo() ) ELog.DlgMsg( mtInformation, "Undo buffer empty" );
-            Tools.Reset();
-		    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            else{
+	            Tools.Reset();
+			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            }
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;
@@ -336,8 +338,10 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_REDO:
 		if( !Scene.locked() ){
 			if( !Scene.Redo() ) ELog.DlgMsg( mtInformation, "Redo buffer empty" );
-            Tools.Reset();
-		    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            else{
+	            Tools.Reset();
+			    Command(COMMAND_CHANGE_ACTION, eaSelect);
+            }
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

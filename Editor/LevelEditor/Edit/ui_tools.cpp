@@ -80,9 +80,7 @@ void TUI_Tools::OnDestroy(){
 }
 //---------------------------------------------------------------------------
 void TUI_Tools::Reset(){
-	SendMessage(fraLeftBar->Handle,WM_SETREDRAW,0,0);
 	SetTarget(GetTarget(),true);
-	SendMessage(fraLeftBar->Handle,WM_SETREDRAW,1,0);
 }
 //---------------------------------------------------------------------------
 

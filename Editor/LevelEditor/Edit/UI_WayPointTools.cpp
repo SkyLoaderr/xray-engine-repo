@@ -29,7 +29,12 @@ __fastcall TUI_ControlWayPointAdd::TUI_ControlWayPointAdd(int st, int act, TUI_C
 
 bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
 	ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
-	if ((1==lst.size())&&Shift.Contains(ssAlt)){
+	TfraWayPoint* frame=(TfraWayPoint*)parent_tool->pFrame;
+	if (frame->ebPointMode->Down){
+    	if (1!=lst.size()){
+        	ELog.DlgMsg(mtInformation,"Select one WayObject.");
+            return false;
+        }
 		ObjectList lst; Scene.GetQueryObjects(lst,OBJCLASS_WAY,1,1,-1);
         Fvector p;
 	    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1)){
@@ -40,9 +45,11 @@ bool __fastcall TUI_ControlWayPointAdd::Start(TShiftState Shift){
 			if (((TfraWayPoint*)parent_tool->pFrame)->ebAutoLink->Down){
 	        	if (last_wp) last_wp->AddSingleLink(wp);
             }
+            Scene.UndoSave();
         }
+        if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }else{
-		DefaultAddObject(Shift);
+		CWayObject* O = (CWayObject*)DefaultAddObject(Shift); R_ASSERT(O);
     }
     return false;
 }

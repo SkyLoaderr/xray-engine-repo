@@ -31,125 +31,71 @@ void __fastcall TfraWayPoint::ExpandClick(TObject *Sender)
 
 void __fastcall TfraWayPoint::ebAdd1LinksClick(TObject *Sender)
 {
+	if (!ebPointMode->Down){
+    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
+    	return;
+    }
 	ObjectList lst;
     int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-	if (cnt==1){
-		ebRemoveLinksClick(Sender);
-    	CWayObject* O=(CWayObject*)lst.back();
-        WPVec objects;
-        if (O->GetSelectedPoints(objects)){
-            WPIt _A0=objects.begin();
-            WPIt _A1=objects.end(); _A1--;
-            WPIt _B1=objects.end();
-            for (WPIt _A=_A0; _A!=_A1; _A++){
-                CWayPoint* A = (CWayPoint*)(*_A);
-                WPIt _B=_A; _B++;
-                for (; _B!=_B1; _B++){
-                    CWayPoint* B = (CWayPoint*)(*_B);
-                    if (A->AddSingleLink(B)) cnt++;
-                }
-            }
-            Scene.UndoSave();
-        }
-    }else{
-    	ELog.DlgMsg(mtInformation,"Select one way.");
-    }
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->Add1Link();
+	if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraWayPoint::ebAdd2LinkClick(TObject *Sender)
 {
+	if (!ebPointMode->Down){
+    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
+    	return;
+    }
 	ObjectList lst;
     int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-	if (cnt==1){
-		ebRemoveLinksClick(Sender);
-    	CWayObject* O=(CWayObject*)lst.back();
-        WPVec objects;
-        if (O->GetSelectedPoints(objects)){
-            WPIt _A0=objects.begin();
-            WPIt _A1=objects.end(); _A1--;
-            WPIt _B1=objects.end();
-            for (WPIt _A=_A0; _A!=_A1; _A++){
-                CWayPoint* A = (CWayPoint*)(*_A);
-                WPIt _B=_A; _B++;
-                for (; _B!=_B1; _B++){
-                    CWayPoint* B = (CWayPoint*)(*_B);
-                    if (A->AddDoubleLink(B)) cnt++;
-                }
-            }
-            Scene.UndoSave();
-        }
-    }else{
-    	ELog.DlgMsg(mtInformation,"Select one way.");
-    }
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->Add2Link();
+	if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraWayPoint::ebRemoveLinksClick(TObject *Sender)
 {
+	if (!ebPointMode->Down){
+    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
+    	return;
+    }
 	ObjectList lst;
     int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-	if (cnt==1){
-    	CWayObject* O=(CWayObject*)lst.back();
-        WPVec objects;
-        if (O->GetSelectedPoints(objects)){
-            WPIt _A0=objects.begin();
-            WPIt _A1=objects.end(); _A1--;
-            WPIt _B1=objects.end();
-            for (WPIt _A=_A0; _A!=_A1; _A++){
-                CWayPoint* A = (CWayPoint*)(*_A);
-                WPIt _B=_A; _B++;
-                for (; _B!=_B1; _B++){
-                    CWayPoint* B = (CWayPoint*)(*_B);
-                    if (A->RemoveLink(B)) cnt++;
-                }
-            }
-            Scene.UndoSave();
-        }
-    }else{
-    	ELog.DlgMsg(mtInformation,"Select one way.");
-    }
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->RemoveLink();
+	if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraWayPoint::ebInvertLinkClick(TObject *Sender)
 {
+	if (!ebPointMode->Down){
+    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
+    	return;
+    }
 	ObjectList lst;
     int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-	if (cnt==1){
-    	CWayObject* O=(CWayObject*)lst.back();
-        WPVec objects;
-        if (O->GetSelectedPoints(objects)){
-            WPIt _A0=objects.begin();
-            WPIt _A1=objects.end(); _A1--;
-            WPIt _B1=objects.end();
-            for (WPIt _A=_A0; _A!=_A1; _A++){
-                CWayPoint* A = (CWayPoint*)(*_A);
-                WPIt _B=_A; _B++;
-                for (; _B!=_B1; _B++){
-                    CWayPoint* B = (CWayPoint*)(*_B);
-                    A->InvertLink(B);
-                }
-            }
-            Scene.UndoSave();
-        }
-    }else{
-    	ELog.DlgMsg(mtInformation,"Select one way.");
-    }
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->InvertLink();
+	if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraWayPoint::ebRemoveSelectedClick(TObject *Sender)
 {
+	if (!ebPointMode->Down){
+    	ELog.DlgMsg(mtInformation,"Before editing enter Point Mode.");
+    	return;
+    }
 	ObjectList lst;
     int cnt = Scene.GetQueryObjects(lst, OBJCLASS_WAY, 1, 1, 0);
-	if (cnt==1){
-    	CWayObject* O=(CWayObject*)lst.back();
-        O->RemoveSelectedPoints();
-		Scene.UndoSave();
-    }else{
-    	ELog.DlgMsg(mtInformation,"Select one way.");
-    }
+    for (ObjectIt it=lst.begin(); it!=lst.end(); it++)
+    	((CWayObject*)(*it))->RemoveSelectedPoints();
+	if (cnt) Scene.UndoSave();
 }
 //---------------------------------------------------------------------------
 
