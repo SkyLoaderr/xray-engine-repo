@@ -103,7 +103,7 @@ function main()
 			action(
 				stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
-				sound	("scripts\\alarm\\say_gde_on","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				sound	("scripts\\fight\\say_gde_on","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				anim	(anim.danger),
 				cond	(cond.time_end, 9000)
 				)
