@@ -27,7 +27,6 @@ public:
 	virtual void Show();
 	// Добавить 1 таск
 	void AddTask(CGameTask * const task);
-//	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	// Нет смысла скрывать листбокс, так как все равно пока это практически все, что есть, и
 	// придется писать обертки над всеми управляющими функциями листбокса
 	CUIListWnd		UIList;

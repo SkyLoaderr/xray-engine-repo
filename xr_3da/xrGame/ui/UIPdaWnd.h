@@ -44,7 +44,7 @@ public:
 	// Смена точки центрирования карты
 	typedef enum { PDA_MAP_SET_ACTIVE_POINT = 8010 } E_MESSAGE;
 	// Список закладок
-	typedef enum { TAB_PDACOMM, TAB_TASK, TAB_MAP, TAB_NEWS } E_PDA_TABS;
+	typedef enum { TAB_EVENTS, TAB_COMM, TAB_MAP, TAB_NEWS } E_PDA_TABS;
 	// Принудительно сменить активную закладку
 	void ChangeActiveTab(E_PDA_TABS tabNewTab);
 	// Переключиться на карту и сфокусироваться на заданной точке

@@ -185,6 +185,8 @@ void CUIDiaryWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 			}
 		}
 	}
+
+	inherited::SendMessage(pWnd, msg, pData);
 }
 //////////////////////////////////////////////////////////////////////////
 void CUIDiaryWnd::SetContractTrader()
@@ -293,6 +295,7 @@ void CUIDiaryWnd::Show()
 {
 	inherited::Show();
 	InitDiary();
+	if (m_pActiveSubdialog) m_pActiveSubdialog->Show();
 }
 
 void CUIDiaryWnd::InitDiary()

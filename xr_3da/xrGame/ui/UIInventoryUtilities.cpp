@@ -13,6 +13,9 @@
 #include "../eatable_item.h"
 #include "../Level.h"
 #include "../HUDManager.h"
+#include "../date_time.h"
+
+//////////////////////////////////////////////////////////////////////////
 
 #define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
 #define CHAR_ICONS		"ui\\ui_icons_npc"
@@ -26,6 +29,7 @@ static ref_shader g_MapIconsShader			= NULL;
 static ref_shader g_MPCharIconsShader		= NULL;
 static CUIStatic*	GetUIStatic();
 
+//////////////////////////////////////////////////////////////////////////
 
 void InventoryUtilities::DestroyShaders()
 {
@@ -226,34 +230,17 @@ void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 
 const ref_str InventoryUtilities::GetGameDateAsString(EDatePrecision datePrec, char dateSeparator)
 {
-	string32 bufDate;
-
-	ZeroMemory(bufDate, 32);
-
-	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
-
-	Level().GetGameDateTime(year, month, day, hours, mins, secs, milisecs);
-
-	// Date
-	switch (datePrec)
-	{
-	case edpDateToYear:
-		sprintf(bufDate, "%04i", year);
-		break;
-	case edpDateToMonth:
-		sprintf(bufDate, "%02i%c%04i", month, dateSeparator, year);
-		break;
-	case edpDateToDay:
-		sprintf(bufDate, "%02i%c%02i%c%04i", day, dateSeparator, month, dateSeparator, year);
-		break;
-	default:
-		R_ASSERT(!"Unknown type of date precision");
-	}
-
-	return bufDate;
+	return GetDateAsString(Level().GetGameTime(), datePrec, dateSeparator);
 }
 
 const ref_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, char timeSeparator)
+{
+	return GetTimeAsString(Level().GetGameTime(), timePrec, timeSeparator);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+const ref_str InventoryUtilities::GetTimeAsString(ALife::_TIME_ID time, ETimePrecision timePrec, char timeSeparator)
 {
 	string32 bufTime;
 
@@ -261,7 +248,7 @@ const ref_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, c
 
 	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
 
-	Level().GetGameDateTime(year, month, day, hours, mins, secs, milisecs);
+	split_time(time, year, month, day, hours, mins, secs, milisecs);
 
 	// Time
 	switch (timePrec)
@@ -283,4 +270,35 @@ const ref_str InventoryUtilities::GetGameTimeAsString(ETimePrecision timePrec, c
 	}
 
 	return bufTime;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+const ref_str InventoryUtilities::GetDateAsString(ALife::_TIME_ID date, EDatePrecision datePrec, char dateSeparator)
+{
+	string32 bufDate;
+
+	ZeroMemory(bufDate, 32);
+
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+
+	split_time(date, year, month, day, hours, mins, secs, milisecs);
+
+	// Date
+	switch (datePrec)
+	{
+	case edpDateToYear:
+		sprintf(bufDate, "%04i", year);
+		break;
+	case edpDateToMonth:
+		sprintf(bufDate, "%02i%c%04i", month, dateSeparator, year);
+		break;
+	case edpDateToDay:
+		sprintf(bufDate, "%02i%c%02i%c%04i", day, dateSeparator, month, dateSeparator, year);
+		break;
+	default:
+		R_ASSERT(!"Unknown type of date precision");
+	}
+
+	return bufDate;
 }
