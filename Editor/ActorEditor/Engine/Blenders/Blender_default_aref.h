@@ -13,7 +13,7 @@ class CBlender_default_aref : public CBlender
 public:
 	xrP_Integer	oAREF;
 public:
-	virtual		LPCSTR		getComment()	{ return "base blender with tranparency";	}
+	virtual		LPCSTR		getComment()	{ return "lmap*base.aref";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

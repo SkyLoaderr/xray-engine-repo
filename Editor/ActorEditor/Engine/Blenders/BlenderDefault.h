@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_default : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "base blender";	}
+	virtual		LPCSTR		getComment()	{ return "lmap*base (default)";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
