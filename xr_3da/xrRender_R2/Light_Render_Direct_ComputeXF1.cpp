@@ -1,4 +1,6 @@
 #include "StdAfx.h"
+#include "..\igame_persistent.h"
+#include "..\environment.h"
 #include "light_render_direct.h"
 
 void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvector& camD, Fvector& camN, Fvector& camR, Fvector& camP)
@@ -33,7 +35,7 @@ void ComputeFrustum				(Fvector* _F, float p_FOV, float p_A, float p_FAR, Fvecto
 void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 {
 	float p_FOV				= Device.fFOV;
-	float p_DIST			= m_phase?DSM_distance_2:DSM_distance_1;
+	float p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 
 	// Shadow-test
 	Fmatrix		mCam;		mCam.invert			(Device.mView);
@@ -70,8 +72,8 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 	inv.transform_tiny		(L_pos,bbc);
 
 	// L-view matrix
-	L_pos.mad				(L_dir, -DSM_d_range);
-	L->X.D.view.build_camera_dir	(L_pos,L_dir,L_up);
+	L_pos.mad						(L_dir, -100.f		);
+	L->X.D.view.build_camera_dir	(L_pos,L_dir,L_up	);
 
 	// L-view corner points and box
 	bb.invalidate();		for (int i=0; i<5; i++)	{ L->X.D.view.transform_tiny	(T,_F[i]); bb.modify (T); }
@@ -81,7 +83,7 @@ void	CLight_Render_Direct::compute_xfd_1	(u32 m_phase, light* L)
 	//float				d	= 2*p_DIST/_cos(p_FOV/2);	
 	float				dx	= 2*bbd.x;
 	float				dy	= 2*bbd.y;
-	L->X.D.project.build_projection_ortho(dx,dy,1.f,2*DSM_d_range);
+	L->X.D.project.build_projection_ortho(dx,dy,1.f,2*200);
 
 	// 
 	L->X.D.combine.mul		(L->X.D.project,L->X.D.view);

@@ -719,9 +719,6 @@
 				RelativePath="r2_rendertarget_phase_smap_D.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_smap_P.cpp">
-			</File>
-			<File
 				RelativePath="r2_rendertarget_phase_smap_S.cpp">
 			</File>
 			<File
