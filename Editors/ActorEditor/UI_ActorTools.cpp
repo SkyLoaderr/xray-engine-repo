@@ -83,7 +83,7 @@ void CActorTools::PreviewModel::SetPreferences()
     PHelper.CreateFloat			(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
     PHelper.CreateFloat			(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
     PHelper.CreateToken<u32>	(items,		"Scroll axis",	(u32*)&m_ScrollAxis,	sa_token);
-	m_Props->AssignItems		(items,true);
+	m_Props->AssignItems		(items);
     m_Props->ShowProperties		();
 }
 void CActorTools::PreviewModel::Render()

@@ -62,7 +62,7 @@ void __fastcall TfrmBonePart::FillBoneParts()
 	for (BPIt it=m_BoneParts->begin(); it!=m_BoneParts->end(); it++){
         E[it-m_BoneParts->begin()]->Text = it->alias;
         for (AStringIt w_it=it->bones.begin(); w_it!=it->bones.end(); w_it++)
-        	FHelper.AppendObject(T[it-m_BoneParts->begin()],w_it->c_str());
+        	FHelper.AppendObject(T[it-m_BoneParts->begin()],w_it->c_str(),false,true);
     }
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
     lbTotalBones->Caption = m_EditObject->BoneCount();
@@ -95,7 +95,7 @@ void __fastcall TfrmBonePart::tvPartDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
 	for (int k=0; k<(int)FDragItems.size(); k++){
-		FHelper.AppendObject(((TElTree*)Sender),FDragItems[k]->Text);
+		FHelper.AppendObject(((TElTree*)Sender),FDragItems[k]->Text,false,true);
         FDragItems[k]->Delete();
     }
     FDragItems.clear();
@@ -172,7 +172,7 @@ void __fastcall TfrmBonePart::ExtBtn1Click(TObject *Sender)
     for (k=0; k<4; k++){T[k]->Items->Clear();E[k]->Text="";}
     E[0]->Text = "default";
     for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
-        FHelper.AppendObject(T[0],(*it)->Name());
+        FHelper.AppendObject(T[0],(*it)->Name(),false,true);
     for (k=0; k<4; k++) T[k]->IsUpdating = false;
     UpdateCount();
 }
@@ -186,7 +186,7 @@ void __fastcall TfrmBonePart::ebAllClick(TObject *Sender)
     T[idx]->IsUpdating = true;
     T[idx]->Items->Clear();
     for (BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
-        FHelper.AppendObject(T[idx],(*it)->Name());
+        FHelper.AppendObject(T[idx],(*it)->Name(),false,true);
     T[idx]->IsUpdating = false;
     UpdateCount();
 }

@@ -497,7 +497,7 @@ void TClipMaker::RealUpdateProperties()
 		}            
         if (*sel_clip->fx)		PHelper.CreateFloat		(p_items,FHelper.PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
     }
-	m_ClipProps->AssignItems(p_items,true);
+	m_ClipProps->AssignItems(p_items);
 }
 //---------------------------------------------------------------------------
 

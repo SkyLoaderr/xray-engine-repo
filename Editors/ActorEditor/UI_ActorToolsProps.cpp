@@ -52,7 +52,7 @@ void __fastcall CActorTools::OnObjectItemFocused(ListItemsVec& items)
             }
         }
     }
-	m_Props->AssignItems(props,true);
+	m_Props->AssignItems(props);
     UI->RedrawScene();
 }
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ void __fastcall CActorTools::OnChangeTransform(PropValue* sender)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif)
+void __fastcall CActorTools::OnMotionEditClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -169,7 +169,7 @@ void __fastcall CActorTools::OnMotionNameChange(PropValue* V)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif)
+void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -269,7 +269,7 @@ void __fastcall CActorTools::OnBindTransformChange(PropValue* V)
 	UI->RedrawScene();
 }
 
-void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif)
+void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -279,7 +279,7 @@ void __fastcall CActorTools::OnBoneShapeClick(PropValue* sender, bool& bModif)
 	}
 }
 
-void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif)
+void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
@@ -302,7 +302,7 @@ void __fastcall CActorTools::OnBoneEditClick(PropValue* sender, bool& bModif)
 	}
 }
 
-void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif)
+void __fastcall CActorTools::OnBoneFileClick(PropValue* sender, bool& bModif, bool& bSafe)
 {              
 	R_ASSERT(m_pEditObject);
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
