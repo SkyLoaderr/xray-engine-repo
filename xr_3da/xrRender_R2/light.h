@@ -27,12 +27,14 @@ public:
 	virtual bool	get_active		()								{ return flags.bActive;		}
 	virtual void	set_shadow		(bool b)						{ flags.bShadow=b;			}
 	virtual void	set_position	(const Fvector& P);
-	virtual void	set_direction	(const Fvector& D)				{ direction.normalize(D);	}
-	virtual void	set_cone		(float angle)					{ cone	= angle;			}
+	virtual void	set_direction	(const Fvector& D);
+	virtual void	set_cone		(float angle);
 	virtual void	set_range		(float R);
 	virtual void	set_color		(const Fcolor& C)				{ color.set(C);				}
 	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1);		}
 	virtual void	set_texture		(LPCSTR name);
+
+	virtual	void	spatial_move	();
 
 	light();
 	virtual ~light();
