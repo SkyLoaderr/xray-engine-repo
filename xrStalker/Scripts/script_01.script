@@ -97,7 +97,11 @@ function main()
     		action(
 				stalker1,
 				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+			printf("1!")
+			flush()
 				cond	(cond.time_end, 3000)
+			printf("2!")
+			flush()
 			)
                 	break		
 		end
