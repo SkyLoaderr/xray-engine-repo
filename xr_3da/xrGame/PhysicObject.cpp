@@ -179,7 +179,7 @@ void CPhysicObject::RecursiveBonesCheck(u16 id)
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	
 	if(m_pPhysicsShell) return;
-
+	CKinematics* pKinematics=PKinematics(Visual());
 	switch(m_type) {
 		case epotBox : {
 			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->flags.test(CSE_ALifeObjectPhysic::flActive));
@@ -188,17 +188,22 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 		case epotFreeChain  :
 			{	
 			m_pPhysicsShell		= P_create_Shell();
-			m_pPhysicsShell->set_Kinematics(PKinematics(Visual()));
-			AddElement(0,PKinematics(Visual())->LL_GetBoneRoot());
+			m_pPhysicsShell->set_Kinematics(pKinematics);
+			AddElement(0,pKinematics->LL_GetBoneRoot());
 			m_pPhysicsShell->setMass1(m_mass);
 		} break;
-		case   epotSkeleton: CreateSkeleton(po); break;
+
+		case   epotSkeleton: 
+			{
+			pKinematics->LL_SetBoneRoot(0);
+			CreateSkeleton(po);
+		}break;
 
 		default : {
 		} break;
 	
 	}
-	CKinematics* pKinematics=PKinematics(Visual());
+
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	if(pKinematics)
