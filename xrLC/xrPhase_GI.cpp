@@ -4,17 +4,17 @@
 #include "xrSyncronize.h"
 
 #define	GI_THREADS		4
-const	u32				gi_num_photons		= 1024;
+const	u32				gi_num_photons		= 128;
 const	float			gi_optimal_range	= 10.f;
-const	float			gi_reflect			= .9f;
-const	float			gi_clip				= 0.01f;
+const	float			gi_reflect			= .75f;
+const	float			gi_clip				= 0.1f;
 //////////////////////////////////////////////////////////////////////////
 xr_vector<R_Light>*		task;
 xrCriticalSection		task_cs;
 u32						task_it;
 
 //////////////////////////////////////////////////////////////////////////
-Fvector		GetPixel_3x3		(CDB::RESULT& rpinf)
+Fvector		GetPixel_5x5		(CDB::RESULT& rpinf)
 {
 	Fvector B,P,R={0,0,0};
 
@@ -40,9 +40,9 @@ Fvector		GetPixel_3x3		(CDB::RESULT& rpinf)
 	uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
 	uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
 
-	for (int _y=-1; _y<=1; _y++)	
+	for (int _y=-2; _y<=2; _y++)	
 	{
-		for (int _x=-1; _x<=1; _x++)	
+		for (int _x=-2; _x<=2; _x++)	
 		{
 			int U = iFloor(uv.x*float(T.dwWidth) + .5f) + _x;
 			int V = iFloor(uv.y*float(T.dwHeight)+ .5f) + _y;
@@ -53,7 +53,7 @@ Fvector		GetPixel_3x3		(CDB::RESULT& rpinf)
 			R.mad(P,1/255.f);
 		}
 	}
-	R.div	(9.f);
+	R.div	(25.f);
 	return	R;
 }
 
@@ -81,8 +81,9 @@ public:
 				task_cs.Leave	();
 				return;
 			} else {
-				src				= task->at(task_it);
+				src				= (*task)[task_it];
 				dst				= src;
+				if (LT_POINT==src.type)	(*task)[task_it].energy		= 0.f;
 				dst.type		= LT_SECONDARY;
 				dst.level		++;
 				task_it			++;
@@ -95,7 +96,7 @@ public:
 			random.seed			(0x12071980);
 			float	factor		= (src.range / gi_optimal_range);	// smaller lights get smaller amount of photons
 			if (LT_SECONDARY == src.type)	factor *= .5f;			// secondary lights get half the photons
-					factor		*= (src.energy / 2.f);				// 2.f is optimal energy = baseline
+					factor		*= (src.energy / 3.f);				// 3.f is optimal energy = baseline
 			int		count		= iCeil( factor * float(gi_num_photons) );
 			for (int it=0; it<count; it++)	{
 				Fvector	dir,idir;		float	s=1.f;
@@ -121,7 +122,7 @@ public:
 				if (dst.energy < gi_clip)	continue;
 
 				// color bleeding
-				dst.diffuse.mul			(src.diffuse,GetPixel_3x3(*R));
+				dst.diffuse.mul			(src.diffuse,GetPixel_5x5(*R));
 				dst.diffuse.mul			(dst.energy);
 				{
 					float			_e		=	(dst.diffuse.x+dst.diffuse.y+dst.diffuse.z)/3.f;
@@ -133,8 +134,8 @@ public:
 				}
 				if (dst.energy < gi_clip)	continue;
 
-				dst.range				=	src.range * _sqrt(dst.energy / src.energy); // scale range in proportion with energy
-				dst.energy				/=  float	(count);
+				dst.range			=	src.range * _sqrt(dst.energy / src.energy); // scale range in proportion with energy
+				// clMsg			("submit: level[%d],type[%d], energy[%f]",dst.level,dst.type,dst.energy);
 
 				// submit answer
 				task_cs.Enter		();
@@ -152,12 +153,37 @@ void	CBuild::xrPhase_Radiosity	()
 	Status					("Working...");
 	task					= &(pBuild->L_static.rgb);
 	task_it					= 0;
+
+	// calculate energy
+	float	_energy_before	= 0;
+	for (int l=0; l<task->size(); l++)
+		if (task->at(l).type == LT_POINT)	_energy_before	+= task->at(l).energy;
+
+	// perform all the work
 	u32	setup_old			= task->size	();
 	for (int t=0; t<GI_THREADS; t++)	{
 		Sleep	(111);
 		gi.start(xr_new<CGI>(t));
 	}
 	gi.wait					();
+
+	// renormalize
+	float	_energy_after	= 0;
+	for (int l=0; l<task->size(); l++)
+	{
+		R_Light&	L = (*task)[l];
+		//clMsg		("type[%d], energy[%f]",L.type,L.energy);
+		if (LT_SECONDARY == L.type)	_energy_after	+= L.energy;
+	}
+	float	_scale			= _energy_before / _energy_after;
+	for (int l=0; l<task->size(); l++)
+	{
+		R_Light&	L = (*task)[l];
+		if (LT_SECONDARY == L.type)	L.energy		*= _scale;
+	}
+
+	// info
 	u32 setup_new			= task->size	();
 	clMsg					("old setup [%d], new setup[%d]",setup_old,setup_new);
+	clMsg					("old energy [%f], new energy[%f]",_energy_before,_energy_after);
 }
