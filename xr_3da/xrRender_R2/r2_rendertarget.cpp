@@ -338,7 +338,7 @@ void	CRenderTarget::OnDeviceCreate	()
 
 		// Build NCM
 		{
-			R_CHK						(D3DXCreateCubeTexture(HW.pDevice,TEX_NCM,1,0,D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, &t_ncm_surf));
+			R_CHK						(D3DXCreateCubeTexture(HW.pDevice,TEX_NCM,1,0,D3DFMT_A8R8G8B8, D3DPOOL_MANAGED, (LPDIRECT3DCUBETEXTURE9*)&t_ncm_surf));
 			t_ncm						= Device.Resources->_CreateTexture(r2_ncm);
 			t_ncm->surface_set			(t_ncm_surf);
 			for (int i = 0; i < 6; i++)	{
