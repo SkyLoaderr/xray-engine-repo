@@ -1,19 +1,7 @@
 function main()
     actor				= get_actor()
     stalker				= get_level_object("m_stalker_e")
-    
-    stalker:script		(true,stalker_test.script_name());
-    
-    action(
-		stalker,
-		look			(look.fire_point,actor),
-		object			(object.fire)
-		cond			(cond.time_end,10000000)
-    )
-        
-	while stalker:action() do
-		wait			()
-    end
-    
-    stalker:script		(false,stalker_test.script_name());
+    snd					= sound_object("scripts\\rolik\\alarm")
+    wait				(2000)
+    snd:play_at_pos		(actor,actor:position())
 end
