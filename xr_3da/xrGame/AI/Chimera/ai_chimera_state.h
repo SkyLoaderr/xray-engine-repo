@@ -27,9 +27,6 @@ class CChimeraAttack : public IState {
 	TTime			m_dwFaceEnemyLastTime;
 	TTime			m_dwFaceEnemyLastTimeInterval;
 
-	// регулировка приближением во время атаки
-	u32				nStartStop;						//!< количество	старт-стопов
-
 	TTime			m_dwSuperMeleeStarted;
 public:
 	CChimeraAttack(CAI_Chimera *p);

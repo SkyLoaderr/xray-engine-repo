@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "ai_bloodsucker_bones.h"
 
-//  temp
-#include "..\\..\\hudmanager.h"
 
 //****************************************************************************************************
 // class bonesBone

@@ -44,6 +44,7 @@ void CAI_Chimera::Init()
 	fFinishYaw				= 1.f;
 	fPrevMty				= 0.f;
 
+	Bones.Reset();
 }
 
 
@@ -55,7 +56,21 @@ void CAI_Chimera::Think()
 		CurrentState->Reset();
 		SetState(stateRest);
 	}
+
 	
+	if (!Bones.IsActive()) {
+
+		if (!getAI().bfTooSmallAngle(r_torso_current.yaw,r_torso_target.yaw, PI_DIV_6)) {
+			float k;	
+			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) k = -1.0;
+			else k = 1.0f;
+
+			int spin_bone	= PKinematics(Visual())->LL_BoneID("bip01_spine1");
+			Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
+		}
+			
+	}
+
 	// A - я слышу опасный звук
 	// B - я слышу неопасный звук
 	// С - я вижу очень опасного врага
@@ -108,6 +123,10 @@ void CAI_Chimera::Think()
 	}
 
 	Motion.SetFrameParams(this);
+	if (IsAnimLocked(m_dwCurrentUpdate)) { 
+		m_fCurSpeed		= 0.f;
+		r_torso_speed	= 0.f;
+	}
 
 	ControlAnimation();
 }
@@ -127,4 +146,13 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	vfAssignBones(pSettings,cNameSect());
 
 	return TRUE;
+}
+
+void CAI_Chimera::Load (LPCSTR section)
+{
+	inherited::Load (section);
+
+	LockAnim		(eAnimAttack, 0, 1, 1300);
+	LockAnim		(eAnimAttack, 1, 1, 800);
+	LockAnim		(eAnimAttack, 2, 1, 1000);
 }

@@ -54,7 +54,7 @@ enum EMotionAnim {
 	eAnimRun,
 	eAnimRunTurnLeft,
 	eAnimRunTurnRight,
-	eAnimFastTurn,					//eAnimFastTurnLeft,
+	eAnimFastTurn,					
 
 	eAnimAttack,
 	eAnimAttackRat,

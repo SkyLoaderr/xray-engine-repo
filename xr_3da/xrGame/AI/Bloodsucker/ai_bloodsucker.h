@@ -5,7 +5,6 @@
 #include "ai_bloodsucker_bones.h"
 #include "ai_bloodsucker_misc.h"
 
-
 class CAI_Bloodsucker : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
@@ -33,6 +32,7 @@ public:
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
 			void			LookPosition			(Fvector to_point, float bone_turn_speed);
 
+			void			Postprocess				();
 	// Flesh-specific FSM
 	CBloodsuckerRest		*stateRest;
 	CBloodsuckerEat			*stateEat;

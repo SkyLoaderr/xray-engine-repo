@@ -64,7 +64,7 @@ static void __stdcall vfPlayCallBack(CBlend* B)
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
 	// преобразование названия анимации в индексы глобальной анимации
-	int i1, i2, i3;
+	int i1,i2,i3;
 
 	if (bShowDeath)	{
 		MotionToAnim(eAnimDie,i1,i2,i3);
@@ -74,12 +74,18 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 		return;
 	}
 	
+	TTime cur_time = Level().timeServer();
+
 	if (g_Alive())
-		if (!m_tpCurAnim) {
+		if (!m_tpCurAnim && !IsAnimLocked(cur_time)) {
 			MotionToAnim(m_tAnim,i1,i2,i3);
 			m_tpCurAnim = m_tAnimations.A[i1].A[i2].A[i3];
 			PKinematics(Visual())->PlayCycle(m_tpCurAnim,TRUE,vfPlayCallBack,this);
-			m_tAttackAnim.SwitchAnimation(m_dwCurrentUpdate,i1,i2,i3);
+			m_tAttackAnim.SwitchAnimation(cur_time,i1,i2,i3);
+
+			m_tAnimPlaying	= m_tAnim;
+			m_dwAnimStarted = cur_time;
+			anim_i3			= i3;
 		}
 }
 
@@ -94,7 +100,7 @@ void CAI_Biting::ControlAnimation()
 	if (!Motion.m_tSeq.Playing) {
 
 		// __START: Bug protection 
-		// Если нет пути и есть анимация движения, то играть анимацию отдыха
+		// Если нет пути и есть анимация движения, то играть анимацию стоять на месте
 		if (AI_Path.TravelPath.empty() || ((AI_Path.TravelPath.size() - 1) <= AI_Path.TravelStart)) {
 			if ((m_tAnim == eAnimWalkFwd) || (m_tAnim == eAnimRun)) {
 				m_tAnim = eAnimStandIdle;
@@ -167,6 +173,28 @@ void CAI_Biting::CheckAttackHit()
 	}
 }
 
+void CAI_Biting::LockAnim(EMotionAnim anim, int i3, TTime from, TTime to)
+{
+	SLockAnim S;  
+	
+	S.anim	= anim;
+	S.i3	= i3;
+	S.from	= from; 
+	S.to	= to;
+	
+	m_tLockedAnims.push_back(S); 
+}
+
+
+bool CAI_Biting::IsAnimLocked(TTime cur_time)
+{
+	for (LOCK_ANIM_IT I = m_tLockedAnims.begin(); I != m_tLockedAnims.end(); I++) 
+		if (I->anim == m_tAnimPlaying && I->i3 == anim_i3) {
+			if ((I->from + m_dwAnimStarted < cur_time) && (cur_time < I->to + m_dwAnimStarted)) return true;
+			else return false;
+		}
+	return false;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Attack Animation

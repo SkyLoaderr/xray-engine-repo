@@ -3,6 +3,8 @@
 #include "..\\biting\\ai_biting.h"
 #include "ai_chimera_state.h"
 
+#include "..\\bloodsucker\\ai_bloodsucker_bones.h"
+
 class CAI_Chimera : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
@@ -15,6 +17,7 @@ public:
 	virtual void			Think				();
 	virtual void			UpdateCL			();
 	virtual BOOL			net_Spawn			(LPVOID DC);
+	virtual	void			Load				(LPCSTR section);
 
 	virtual	void			MotionToAnim		(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual	void			LoadAttackAnim		();
@@ -25,11 +28,15 @@ public:
 			void			SpinBoneInMotion	(CBoneInstance *B);
 			void			SpinBoneInAttack	(CBoneInstance *B);
 
+			
 	// реализация плавного поворота	
 	float	fSpinYaw;				// угол поворота для боны
 	TTime	timeLastSpin;			// последнее время изменения SpinYaw
 	float	fStartYaw, fFinishYaw;	// начальный и конечный углы поворота монстра
 	float	fPrevMty;				// предыдущее значение target.yaw
+
+	bonesManipulation		Bones;
+
 
 	// Flesh-specific FSM
 	CChimeraAttack		*stateAttack;

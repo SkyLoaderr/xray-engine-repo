@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "ai_bloodsucker.h"
+#include "ai_bloodsucker_effector.h"
 
-// temp
-#include "..\\..\\hudmanager.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -65,21 +64,19 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 
 	vfAssignBones	();
 
+	Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(1.5f));
 	return(TRUE);
 }
 
 void CAI_Bloodsucker::UpdateCL()
 {
+	
 	inherited::UpdateCL();
-
-	HUD().pFontSmall->OutSet	(300,400);
-	HUD().pFontSmall->OutNext("Satiety = [%f]",GetSatiety());
 
 	// Blink processing
 	bool PrevVis	=	m_tVisibility.IsCurrentVisible();
 	bool NewVis		=	m_tVisibility.Update();
 	if (NewVis != PrevVis) setVisible(NewVis);
-
 }
 
 void CAI_Bloodsucker::Think()
@@ -229,5 +226,6 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float bone_turn_speed)
 	dir.sub(Position());
 	LookDirection(dir,bone_turn_speed);
 }
+
 
 

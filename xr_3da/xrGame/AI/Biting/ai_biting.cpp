@@ -60,6 +60,11 @@ void CAI_Biting::Init()
 
 	m_tAttackAnim.Clear				();
 
+	m_dwAnimStarted					= 0;
+	anim_i3							= 0;
+
+	m_tLockedAnims.clear			();
+	m_tAnimPlaying					= DEFAULT_ANIM;
 }
 
 void CAI_Biting::Die()
@@ -150,6 +155,7 @@ void CAI_Biting::Load(LPCSTR section)
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 
 	LoadAttackAnim					();
+
 }
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 

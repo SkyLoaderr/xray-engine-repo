@@ -16,6 +16,9 @@ class CAI_Biting;
 #define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
 #define DO_ONCE_END()		}
 
+#define DO_IN_TIME_INTERVAL_BEGIN(varLastTime, varTimeInterval)	if (varLastTime + varTimeInterval < m_dwCurrentTime) { varLastTime = m_dwCurrentTime;
+#define DO_IN_TIME_INTERVAL_END()								}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,7 +101,6 @@ public:
 					CBitingAttack	(CAI_Biting *p);
 
 	virtual	void	Reset			();
-	virtual bool	CheckCompletion	();
 
 private:
 	virtual	void	Init			();
@@ -149,7 +151,6 @@ class CBitingHide : public IState {
 public:
 					CBitingHide			(CAI_Biting *p);
 
-	virtual	bool	CheckCompletion	();
 	virtual void	Reset			();	
 	
 private:

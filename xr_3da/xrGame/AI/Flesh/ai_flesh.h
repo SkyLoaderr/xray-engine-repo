@@ -2,8 +2,6 @@
 
 #include "..\\biting\\ai_biting.h"
 
-class CFleshCapture;
-
 class CAI_Flesh : public CAI_Biting {
 
 	typedef		CAI_Biting	inherited;
@@ -33,7 +31,6 @@ public:
 	CBitingExploreDNE	*stateExploreDNE;
 	CBitingExploreDE	*stateExploreDE;
 	CBitingExploreNDE	*stateExploreNDE;
-	CFleshCapture		*stateCapture;
 
 	friend	class		CBitingRest;
 	friend  class 		CBitingAttack;
@@ -44,7 +41,6 @@ public:
 	friend	class 		CBitingExploreDNE;
 	friend	class 		CBitingExploreDE;
 	friend	class 		CBitingExploreNDE;
-	friend	class		CFleshCapture;
 
 // TEMP
 	FvectorVec			PTurn;

@@ -29,7 +29,6 @@ void CChimeraAttack::Reset()
 	m_dwFaceEnemyLastTime	= 0;
 	m_dwFaceEnemyLastTimeInterval = 1200;
 	
-	nStartStop = 0;
 }
 
 void CChimeraAttack::Init()
@@ -53,29 +52,22 @@ void CChimeraAttack::Run()
 {
 	// Если враг изменился, инициализировать состояние
 	if (!pMonster->m_tEnemy.obj) R_ASSERT("Enemy undefined!!!");
-	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) {
-		Reset();
-		Init();
-	} else m_tEnemy = pMonster->m_tEnemy;
+	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
+	else m_tEnemy = pMonster->m_tEnemy;
 
 	// Выбор состояния
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
-	if (bAttackMelee && (m_tEnemy.obj->Position().distance_to(pMonster->Position()) < m_fDistMax)) 
-		m_tAction = ACTION_ATTACK_MELEE;
-	else 
-		m_tAction = ((m_tEnemy.obj->Position().distance_to(pMonster->Position()) > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+	float dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
 
-	// вычисление частоты старт-стопов 
-	if (bAttackMelee && m_tAction == ACTION_RUN) {
-		nStartStop++;
-	}
-	
-	// если враг не виден - бежать к нему
-	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time != m_dwCurrentTime)) {
+	if (bAttackMelee && (dist < m_fDistMax))m_tAction = ACTION_ATTACK_MELEE;
+	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
+
+	// если враг не виден на протяжении 1 сек - бежать к нему
+	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.time + 1000 < m_dwCurrentTime)) {
 		m_tAction = ACTION_RUN;
 	}
-
+	
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
@@ -90,24 +82,20 @@ void CChimeraAttack::Run()
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
 			// Смотреть на врага 
 			float yaw, pitch;
-			if (m_dwFaceEnemyLastTime + m_dwFaceEnemyLastTimeInterval < m_dwCurrentTime) {
+			yaw = pMonster->r_torso_target.yaw;
+
+			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
 				
-				m_dwFaceEnemyLastTime = m_dwCurrentTime;
 				pMonster->AI_Path.TravelPath.clear();
 				
-				Fvector EnemyCenter;
-				Fvector MyCenter;
-
-				m_tEnemy.obj->Center(EnemyCenter);
-				pMonster->Center(MyCenter);
-
-				EnemyCenter.sub(MyCenter);
-				EnemyCenter.getHP(yaw,pitch);
+				Fvector dir;
+				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+				dir.getHP(yaw,pitch);
 				yaw *= -1;
 				yaw = angle_normalize(yaw);
-			} else yaw = pMonster->r_torso_target.yaw;
+		
+			DO_IN_TIME_INTERVAL_END();
 
-			// set motion params
 			pMonster->Motion.m_tParams.SetParams(eAnimAttack,0,pMonster->m_ftrRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);
 			pMonster->Motion.m_tTurn.Set(eAnimFastTurn, eAnimFastTurn, 0, pMonster->m_ftrAttackFastRSpeed,pMonster->m_ftrRunAttackMinAngle);
 			break;
