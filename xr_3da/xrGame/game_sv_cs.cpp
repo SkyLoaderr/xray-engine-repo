@@ -253,6 +253,8 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 
 		game_PlayerState*	ps_who	=	get_id			(e_who->owner->ID);
 
+		if(ps_who->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) return false;
+
 		// Actor touches something
 		xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
 		if (W) 
