@@ -197,6 +197,9 @@ USEUNIT("Engine\xr_efflensflare.cpp");
 USELIB("lib\ETools.lib");
 USEFORM("PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 USEUNIT("edit\EditObjectEditor.cpp");
+USEUNIT("Engine\Blenders\Blender_LaEmB.cpp");
+USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
+USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -10,6 +10,7 @@
 #include "ImageManager.h"
 #include "PropertiesList.h"
 #include "FolderLib.h"
+#include "xr_tokens.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

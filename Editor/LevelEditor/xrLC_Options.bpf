@@ -5,7 +5,6 @@ USEUNIT("stdafx.cpp");
 USEUNIT("edit\log.cpp");
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("edit\ColorPicker.cpp");
-USELIB("lib\CreateDX.lib");
 //---------------------------------------------------------------------------
 This file is used by the project manager only and should be treated like the project file
 

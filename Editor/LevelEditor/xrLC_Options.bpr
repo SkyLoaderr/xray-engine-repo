@@ -4,15 +4,16 @@
   <MACROS>
     <VERSION value="BCB.05.03"/>
     <PROJECT value="!run\xrLC_Options.dll"/>
-    <OBJFILES value="xrLC_Options\xrLC_OptionsEntry.obj xrLC_Options\SceneProperties.obj 
-      xrLC_Options\FileSystem.obj xrLC_Options\stdafx.obj xrLC_Options\log.obj 
-      xrLC_Options\LogForm.obj xrLC_Options\ColorPicker.obj"/>
+    <OBJFILES value="XRLC_Intermediate\xrLC_OptionsEntry.obj 
+      XRLC_Intermediate\SceneProperties.obj XRLC_Intermediate\FileSystem.obj 
+      XRLC_Intermediate\stdafx.obj XRLC_Intermediate\log.obj 
+      XRLC_Intermediate\LogForm.obj XRLC_Intermediate\ColorPicker.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) SceneProperties.dfm LogForm.dfm"/>
-    <LIBFILES value="lib\CreateDX.lib"/>
+    <LIBFILES value=""/>
     <LIBRARIES value="dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi dclusr50.bpi dclocx50.bpi"/>
@@ -26,22 +27,25 @@
     <USERDEFINES value=""/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
     <MAINSOURCE value="xrLC_Options.bpf"/>
-    <INCLUDEPATH value="$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
+    <INCLUDEPATH value="Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
     <LIBPATH value="shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
     <WARNINGS value="-w-par"/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I$(BCB)\include -Ishared -I$(BCB)\include\vcl -Iedit -Iedit\Shader 
-      -IImport\LWO -ICollide -IP:\MagicFM_Borland\Sdk\Include\. 
+    <IDLCFLAGS value="-IEngine\Blenders -IR:\Borland\Components\Eldos\Code\Source\. 
+      -Ir:\borland\components\alexmx\. -Ilib\DX -IR:\DirectX8.1\include\. 
+      -Ic:\rad\Borland\CBuilder5\Bin\. -Ic:\rad\borland\CBuilder5\Projects\. 
+      -I$(BCB)\include -I$(BCB)\include\vcl -Iengine -Iedit -IImport\LWO 
+      -ICollide -IP:\MagicFM_Borland\Sdk\Include\. 
       -Ic:\rad\borland\components\extbtn\. -Ic:\rad\borland\components\multi\. 
       -Ic:\rad\borland\components\renderwindow\. 
       -IC:\RAD\borland\Components\RX\Units\. 
       -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -src_suffix cpp -boa"/>
     <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl50.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -tWD -tWM -c"/>
-    <PFLAGS value="-N2xrLC_Options -N0xrLC_Options -$Y- -$L- -$D- -v -JPHNE -M"/>
+    <PFLAGS value="-N2XRLC_Intermediate -N0XRLC_Intermediate -$Y- -$L- -$D- -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-IxrLC_Options -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
+    <LFLAGS value="-IXRLC_Intermediate -D&quot;&quot; -aa -Tpd -x -Gn -Gi"/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0d32.obj Memmgr.Lib sysinit.obj $(OBJFILES)"/>
@@ -80,10 +84,11 @@ Comments=
 $(BCB)\Bin\dclite50.bpl=Borland Integrated Translation Environment
 
 [HistoryLists\hlIncludePath]
-Count=3
-Item0=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item1=$(BCB)\include;$(BCB)\include\vcl;edit
-Item2=$(BCB)\include;$(BCB)\include\vcl
+Count=4
+Item0=Engine\Blenders;R:\Borland\Components\Eldos\Code\Source\;r:\borland\components\alexmx\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item1=$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Item2=$(BCB)\include;$(BCB)\include\vcl;edit
+Item3=$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
 Count=3
@@ -100,8 +105,9 @@ Count=1
 Item0=_DEBUG
 
 [HistoryLists\hlIntOutputDir]
-Count=1
-Item0=xrLC_Options
+Count=2
+Item0=XRLC_Intermediate
+Item1=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
 Count=2
