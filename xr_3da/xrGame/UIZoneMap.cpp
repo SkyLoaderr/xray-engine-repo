@@ -138,8 +138,18 @@ void CUIZoneMap::Init()
 	}
 	else
 	{
-		map_texture = "ui\\ui_nomap";
-		level_box.x1 = level_box.z1 = level_box.x2 = level_box.z2 = 0.f;
+		if(Level().pLevel->line_exist("level_map", "texture"))
+			map_texture = Level().pLevel->r_string("level_map","texture");
+		else
+			map_texture = "ui\\ui_nomap";
+
+		if (Level().pLevel->section_exist("level_map"))	
+		{
+			level_box.x1 = Level().pLevel->r_float("level_map","x1");
+			level_box.z1 = Level().pLevel->r_float("level_map","z1");
+			level_box.x2 = Level().pLevel->r_float("level_map","x2");
+			level_box.z2 = Level().pLevel->r_float("level_map","z2");
+		}
 	}
 
 	landscape.Init(*map_texture,	"hud\\default",
