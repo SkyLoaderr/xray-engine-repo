@@ -1,9 +1,9 @@
--- File:        UI_LOAD_DIALOG.SCRIPT
--- Description: Load Dialog for STALKER
--- Created:     28.10.2004
+-- File:        UI_SPAWN_DIALOG.SCRIPT
+-- Description: temp file to load spawn files
+-- Created:     25.12.2004
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
--- Version:     0.5
+-- Version:     0.9
 
 function main()
 	local dlg = ui_load_dialog.load_dialog()
@@ -13,9 +13,9 @@ function main()
 	end
 end
 
-class "load_dialog" (ui_base_dialog.base_dialog)
+class "spawn_dialog" (ui_base_dialog.base_dialog)
 
-function load_dialog:__init() super()
+function spawn_dialog:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
    
    self:InitControls()
@@ -23,25 +23,25 @@ function load_dialog:__init() super()
    self:FillList()
 end
 
-function load_dialog:__finalize()
+function spawn_dialog:__finalize()
 
 end
 
-function load_dialog:SetClGame  (game_cl)
+function spawn_dialog:SetClGame  (game_cl)
    self.m_game_cl = game_cl
 end
 
-function load_dialog:FillList()
+function spawn_dialog:FillList()
 
 	local f = getFS();
-	local flist = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.sav")
+	local flist = f:file_list_open_ex("$game_spawn$",FS.FS_ListFiles,"*.spawn")
 	local f_cnt = flist:Size()
 	
 	flist:Sort(FS.FS_sort_by_modif_down)
 	
 	for	it=0, f_cnt-1 	do
 		local file		=	flist:GetAt(it)			
-		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 6))
 		local date_time = "[" .. file:Modif() .. "]"
 		--menu_item =  .. 
 		self:AddItemToList(file_name, date_time)
@@ -49,8 +49,8 @@ function load_dialog:FillList()
 	
 end
 
-function load_dialog:InitControls()
-	ui_base_dialog.base_dialog.InitControls(self, "Load Game")
+function spawn_dialog:InitControls()
+	ui_base_dialog.base_dialog.InitControls(self, "Load Spawn File")
 	
 	----- DATA ----	
 	local info_rect       = {x = self.left_align_x, 
@@ -135,7 +135,7 @@ function load_dialog:InitControls()
 	self.main_frame:AttachChild(btn)
 end
 
-function load_dialog:InitCallBacks()
+function spawn_dialog:InitCallBacks()
 	self:AddCallback("button_load",		ui_events.BUTTON_CLICKED,             self,"OnButton_load_clicked")
 	self:AddCallback("button_back",		ui_events.BUTTON_CLICKED,             self,"OnButton_back_clicked")
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
@@ -144,27 +144,27 @@ function load_dialog:InitCallBacks()
 	self:AddCallback("message_box",		ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
 end
 
-function load_dialog:OnMsgOk()
+function spawn_dialog:OnMsgOk()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function load_dialog:OnMsgCancel()
+function spawn_dialog:OnMsgCancel()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function load_dialog:OnMsgYes()
+function spawn_dialog:OnMsgYes()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function load_dialog:OnMsgNo()
+function spawn_dialog:OnMsgNo()
 	local msg_box = self:GetMessageBox("message_box")
 	msg_box:Hide()
 end
 
-function load_dialog:OnButton_load_clicked()	
+function spawn_dialog:OnButton_load_clicked()	
 	local console = get_console()
 	local list = self:GetListWnd("list_window")	
 	local index = list:GetSelectedItem()
@@ -177,11 +177,11 @@ function load_dialog:OnButton_load_clicked()
 	console:execute("start server(" .. fname .. "/single/alife) client(localhost)")	
 end
 
-function load_dialog:OnButton_back_clicked()
+function spawn_dialog:OnButton_back_clicked()
 	self:GetHolder():start_stop_menu(self,true)
 end
 
-function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+function spawn_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    ui_base_dialog.base_dialog.OnKeyboard(self,dik,keyboard_action)
 	
 	DIK_RETURN = 28
@@ -194,7 +194,7 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 	return true
 end
 
-function load_dialog:AddItemToList(file_name, date_time)
+function spawn_dialog:AddItemToList(file_name, date_time)
 	local new_item = CUIListItemPair()
 	
 	new_item:SetTextFileName(file_name)

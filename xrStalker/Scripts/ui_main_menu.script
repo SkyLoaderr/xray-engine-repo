@@ -3,8 +3,9 @@
 -- Created:     28.10.2004
 -- Copyright:   2004 GSC Game World
 -- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
--- Version:     0.1
+-- Version:     0.7
 module("ui_base_dialog")
+module("ui_spawn_dialog")
 module("ui_load_dialog")
 module("ui_save_dialog")
 module("ui_new_game_dialog")
@@ -74,43 +75,10 @@ function main_menu:InitControls()
 	-- profile button
 	local btn_prof_rect   = {x = 640, y = 68, width = 200, height = 30}
 	
---[[
-	-- menu buttons	
-	local btn_new_rect    = {x = self.btn_rect.x,
-							 y = self.btn_rect.y,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-
-	local btn_load_rect   = {x = self.btn_rect.x,
-							 y = btn_new_rect.y + btn_new_rect.height ,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-							 
-	local btn_multi_rect  = {x = self.btn_rect.x,
-							 y = btn_load_rect.y + btn_load_rect.height ,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-	
-	local btn_opt_rect    = {x = self.btn_rect.x,
-							 y = btn_multi_rect.y + btn_multi_rect.height ,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-
-	local btn_quit_rect   = {x = self.btn_rect.x,
-							 y = btn_opt_rect.y + btn_opt_rect.height ,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-							 
-	local btn_bonus_rect  = {x = self.btn_rect.x,
-							 y = btn_quit_rect.y + btn_quit_rect.height ,
-							 width = self.btn_rect.width,
-							 height = self.btn_rect.height}
-]]
-
 	-- INIT DATA >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
-	
+
 	-- init self position and size
 	self:Init(self.screen.x, 
 			  self.screen.y, 
@@ -145,22 +113,6 @@ function main_menu:InitControls()
 	btn:Init(btn_prof_rect.x, btn_prof_rect.y, btn_prof_rect.width, btn_prof_rect.height)
 	self.main_frame:AttachChild(btn)
 
-	-- TEST ---
-	
---	local tab = CUITabControl()
---	tab:Init(0,0,self.main_rect.width, self.main_rect.height);
---	self.main_frame:AttachChild(tab)
-	
---	local tabBtn = CUITabButton()
---	tabBtn:SetAutoDelete(true)
---	tab:AddItem(tabBtn)
---	tabBtn:SetText("tab1")
---	tabBtn:Init(0, 0, self.btn_rect.width, self.btn_rect.height)
---	tabBtn:InitTexture("ui\\ui_button_01", "ui\\ui_button_02", "ui\\ui_button_03")
---	self.main_frame:AttachChild(tabBtn)
-	
-    ----- CODE -------
-	
 	self.main_tab = ui_main_main_tab.main_main_tab()
 	self.main_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_tab:Show(true)
@@ -173,109 +125,12 @@ function main_menu:InitControls()
 	self.multi_tab = ui_main_multi_tab.main_multi_tab()
 	self.multi_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
 	self.main_frame:AttachChild(self.multi_tab)
-	
---[[
-	----- CODE -------
--------- BUTTONS ------------------------------- 
-	--------->> NEW GAME
-	btn = CUI3tButton()	
---	btn = CUITabButton()	
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_new_game")
-	btn:Init("ui\\ui_btn_main_menu", btn_new_rect.x, btn_new_rect.y, btn_new_rect.width, btn_new_rect.height)
-	btn:SetText("New game")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
---	tab:AddItem(btn)
-
-	--------->> LOAD Game	
-	btn = CUI3tButton()
---	btn = CUITabButton()	
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_load")
-	btn:Init("ui\\ui_btn_main_menu", btn_load_rect.x, btn_load_rect.y, btn_load_rect.width, btn_load_rect.height)
-	btn:SetText("Load Game")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)	
---	tab:AddItem(btn)
-	
-		
-	--------->> MULTIPLAYER
-	btn = CUI3tButton()
---	btn = CUITabButton()	
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_multiplayer")
-	btn:Init("ui\\ui_btn_main_menu", btn_multi_rect.x, btn_multi_rect.y, btn_multi_rect.width, btn_multi_rect.height)
-	btn:SetText("Multiplayer")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
---	tab:AddItem(btn)
-	
-	
-	--------->> OPTIONS
-	btn = CUI3tButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_options")
-	btn:Init("ui\\ui_btn_main_menu", btn_opt_rect.x, btn_opt_rect.y, btn_opt_rect.width, btn_opt_rect.height)
-	btn:SetText("Options")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
-	
-	--------->> QUIT TO WINDOWS
-	btn = CUI3tButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_quit")
-	btn:Init("ui\\ui_btn_main_menu", btn_quit_rect.x, btn_quit_rect.y, btn_quit_rect.width, btn_quit_rect.height)
-	btn:SetText("Quit to Windows")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
-	
-		--------->> BONUS
-	btn = CUI3tButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_bonus")
-	btn:Init("ui\\ui_btn_main_menu", btn_bonus_rect.x, btn_bonus_rect.y, btn_bonus_rect.width, btn_bonus_rect.height)
-	btn:SetText("Bonus")
-	btn:SetFont(self.button_font)
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(self.button_indent)
-	self:Register(btn)
-	self.main_frame:AttachChild(btn)
-]]	
-	
---[[	
-	local combo = CUIComboBox()
-	combo:SetAutoDelete(true)
-	combo:SetWindowName("combo_box")
-	combo:SetVertScroll(true);
-	combo:SetListLength(3)	
-	combo:Init(btn_bonus_rect.x, btn_bonus_rect.y + btn_bonus_rect.height, btn_bonus_rect.width)
-	combo:AddItem("super")	
-	combo:AddItem("xxx")
-	combo:AddItem("hello")
-	combo:AddItem("bla-bla-bla", true)
-	self.main_frame:AttachChild(combo)
-]]
 end
 
 function main_menu:InitCallBacks()
 	-- new game
 	self:AddCallback("btn_new_game",    ui_events.BUTTON_CLICKED,				self,"OnButton_new_game_clicked")
+	self:AddCallback("btn_hard",		ui_events.BUTTON_CLICKED,				self,"OnButton_new_hard_game")
 	self:AddCallback("btn_new_back",	ui_events.BUTTON_CLICKED,				self,"OnButton_back")
 	-- options
 	self:AddCallback("btn_options",     ui_events.BUTTON_CLICKED,				self,"OnButton_options_clicked")
@@ -295,16 +150,20 @@ function main_menu:InitCallBacks()
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self,"OnMsgNo")
 end
 
+function main_menu:OnButton_new_hard_game()
+	local dlg = ui_spawn_dialog.spawn_dialog()
+	self:GetHolder():start_stop_menu(dlg, true)
+end
+
+
 function main_menu:OnButton_findsrv()
 	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
-		self:GetHolder():start_stop_menu(dlg, true)
---andy	level.start_stop_menu(dlg, true)
+	self:GetHolder():start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_createsrv()
 	local dlg = ui_multiplayer_create.multiplayer_create_dialog()
-		self:GetHolder():start_stop_menu(dlg, true)
---andy	level.start_stop_menu(dlg, true)	
+	self:GetHolder():start_stop_menu(dlg, true)
 end
 
 function main_menu:HideAllTabs()
@@ -325,14 +184,12 @@ end
 
 function main_menu:OnButton_options_clicked()
 	local dlg = ui_options_dialog.options_dialog()
-		self:GetHolder():start_stop_menu(dlg, true)
---andy	level.start_stop_menu(dlg, true)	
+	self:GetHolder():start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_load_clicked()
 	local dlg = ui_load_dialog.load_dialog()
-		self:GetHolder():start_stop_menu(dlg, true)
---andy	level.start_stop_menu(dlg, true)	
+	self:GetHolder():start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_multiplayer_clicked()
@@ -342,8 +199,7 @@ end
 
 function main_menu:OnButton_quit_clicked()	
 	local console = get_console()
-	console:show()
---	console:execute("quit")	
+	console:execute("quit")
 end
 
 function main_menu:OnMsgOk()
@@ -371,18 +227,11 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
 	
 	local bind = dik_to_bind(dik)
-	if bind == key_bindings.kQUIT then
-		self:GetHolder():start_stop_menu(dlg, true)
-		--andy	level.start_stop_menu(dlg, true)	
-	end  
 	
-	DIK_RETURN = 28
-	WINDOW_KEY_PRESSED = 6
-	
-	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		self:GetHolder():start_stop_menu(self, true)
-		--andy	level.start_stop_menu(self, true)	
-	end
+  	if bind == key_bindings.kCONSOLE then
+		local console = get_console()
+		console:show()
+	end  	
    
 	return true
 end

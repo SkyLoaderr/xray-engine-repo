@@ -49,6 +49,8 @@ function main_new_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
+	
+	btn:Enable(false)
 		
 	--------->> NORMAL
 	btn = CUI3tButton()
@@ -61,6 +63,8 @@ function main_new_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)	
+	
+	btn:Enable(false)
 		
 	--------->> HARDCORE
 	btn = CUI3tButton()

@@ -174,16 +174,11 @@ function load_dialog:OnButton_load_clicked()
 	local item  = list:GetItem(index)
 	local fname = item:GetText()
 	
-	console:execute("load " .. fname)	
+	console:execute("start server(" .. fname .. "/single/alife) client(localhost)")	
 end
 
 function load_dialog:OnButton_back_clicked()
-<<<<<<< SourceSafe version
---	level.start_stop_menu(self,true)
 	self:GetHolder():start_stop_menu(self,true)
-======= 
-	self:GetHolder():start_stop_menu(self,true)
->>>>>>> Local version
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
