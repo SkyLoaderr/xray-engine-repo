@@ -185,6 +185,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 
 function main ()
-    local stalker = get_level_object ("patrol_1_1")
-    stalker:bind_object (this.patrol_binder (stalker))
+    local obj = get_level_object ("patrol_1_1")
+    obj:bind_object (this.patrol_binder (obj))
 end    
