@@ -242,7 +242,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 		}
 
 		// Load WayPoints
-		if (0!=(O = F->OpenChunk	(WAY_PATH_CHUNK)))
+		if (0!=(O = F->OpenChunk	(WAY_PATROLPATH_CHUNK)))
 		{
 			int chunk = 0;
 			for (CStream *OBJ = O->OpenChunk(chunk++); OBJ; OBJ = O->OpenChunk(chunk++)) {
