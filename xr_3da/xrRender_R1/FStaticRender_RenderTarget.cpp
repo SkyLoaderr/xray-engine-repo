@@ -7,6 +7,7 @@ CRenderTarget::CRenderTarget()
 {
 	bAvailable			= FALSE;
 	RT					= 0;
+	pTempZB				= 0;
 
 	pShaderSet			= 0;
 	pShaderGray			= 0;
@@ -54,7 +55,10 @@ BOOL CRenderTarget::Create	()
 		ZB			= HW.pBaseZB;
 		ZB->AddRef	();
 	}
-	
+
+	// Temp ZB, used by some of the shadowing code
+	R_CHK	(pDevice->CreateDepthStencilSurface	(512,512,fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&pTempZB,NULL));
+
 	// Shaders and stream
 	string64	_rt_2_name;
 	strconcat					(_rt_2_name,RTname,",",RTname);
@@ -76,6 +80,7 @@ void CRenderTarget::OnDeviceCreate	()
 
 void CRenderTarget::OnDeviceDestroy	()
 {
+	_RELEASE					(pTempZB);
 	_RELEASE					(ZB);
 	Device.Shader.Delete		(pShaderNoise);
 	Device.Shader.Delete		(pShaderDuality);

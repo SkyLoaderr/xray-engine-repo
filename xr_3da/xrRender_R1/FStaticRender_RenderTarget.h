@@ -41,6 +41,8 @@ private:
 	u32					param_noise_color;
 	float				param_noise_fps;
 public:
+	IDirect3DSurface9*	pTempZB;
+public:
 	CRenderTarget		();
 
 	void				OnDeviceCreate		();
