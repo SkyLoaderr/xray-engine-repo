@@ -10,6 +10,7 @@ extern float		r_ssaDONTSORT;
 extern float		r_ssaLOD_A;
 extern float		r_ssaLOD_B;
 extern float		r_ssaHZBvsTEX;
+extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 
 void CRender::Calculate		()
 {
@@ -19,11 +20,13 @@ void CRender::Calculate		()
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height());
 	g_fLOD							=	g_fLOD_scale;
-	r_ssaDISCARD					=	_sqr(ps_r2_ssaDISCARD)/g_fSCREEN;
-	r_ssaDONTSORT					=	_sqr(ps_r2_ssaDONTSORT)/g_fSCREEN;
-	r_ssaLOD_A						=	_sqr(ps_r2_ssaLOD_A)/g_fSCREEN;
-	r_ssaLOD_B						=	_sqr(ps_r2_ssaLOD_B)/g_fSCREEN;
-	r_ssaHZBvsTEX					=	_sqr(ps_r2_ssaHZBvsTEX)/g_fSCREEN;
+	r_ssaDISCARD					=	_sqr(ps_r2_ssaDISCARD)		/g_fSCREEN;
+	r_ssaDONTSORT					=	_sqr(ps_r2_ssaDONTSORT)		/g_fSCREEN;
+	r_ssaLOD_A						=	_sqr(ps_r2_ssaLOD_A)		/g_fSCREEN;
+	r_ssaLOD_B						=	_sqr(ps_r2_ssaLOD_B)		/g_fSCREEN;
+	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start)	/g_fSCREEN;
+	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end)	/g_fSCREEN;
+	r_ssaHZBvsTEX					=	_sqr(ps_r2_ssaHZBvsTEX)		/g_fSCREEN;
 	
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 

@@ -17,8 +17,8 @@ using	namespace R_dsgraph;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 float		r_ssaDISCARD;
 float		r_ssaDONTSORT;
-float		r_ssaLOD_A;
-float		r_ssaLOD_B;
+float		r_ssaLOD_A,			r_ssaLOD_B;
+float		r_ssaGLOD_start,	r_ssaGLOD_end;
 float		r_ssaHZBvsTEX;
 
 IC	float	CalcSSA				(float& distSQ, Fvector& C, IRender_Visual* V)

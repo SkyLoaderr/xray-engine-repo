@@ -21,6 +21,9 @@ Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 
 float		ps_r__WallmarkTTL			= 90.f;
 
+float		ps_r__GLOD_ssa_start		= 256.f;
+float		ps_r__GLOD_ssa_end			=  64.f;
+
 // R1
 float		ps_r1_ssaDISCARD			= 4.f;
 float		ps_r1_ssaDONTSORT			= 32.f;
@@ -161,6 +164,8 @@ void		xrRender_initconsole	()
 
 	Fvector	tw_min,tw_max;
 	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	5.f*60.f);
+	CMD4(CCC_Float,		"r__ssa_glod_start",	&ps_r__GLOD_ssa_start,		128,	512		);
+	CMD4(CCC_Float,		"r__ssa_glod_end",		&ps_r__GLOD_ssa_end,		16,		96		);
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);

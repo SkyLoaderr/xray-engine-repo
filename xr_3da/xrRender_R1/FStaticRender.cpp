@@ -222,8 +222,8 @@ CRender::~CRender	()
 
 extern float		r_ssaDISCARD;
 extern float		r_ssaDONTSORT;
-extern float		r_ssaLOD_A;
-extern float		r_ssaLOD_B;
+extern float		r_ssaLOD_A,			r_ssaLOD_B;
+extern float		r_ssaGLOD_start,	r_ssaGLOD_end;
 extern float		r_ssaHZBvsTEX;
 
 IC bool				pred_sp_sort	(ISpatial* _1, ISpatial* _2)
@@ -244,11 +244,13 @@ void CRender::Calculate				()
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
 	g_fLOD							=	g_fLOD_scale;
-	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)/g_fSCREEN;
-	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)/g_fSCREEN;
-	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)/g_fSCREEN;
-	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B)/g_fSCREEN;
-	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX)/g_fSCREEN;
+	r_ssaDISCARD					=	_sqr(ps_r1_ssaDISCARD)		/g_fSCREEN;
+	r_ssaDONTSORT					=	_sqr(ps_r1_ssaDONTSORT)		/g_fSCREEN;
+	r_ssaLOD_A						=	_sqr(ps_r1_ssaLOD_A)		/g_fSCREEN;
+	r_ssaLOD_B						=	_sqr(ps_r1_ssaLOD_B)		/g_fSCREEN;
+	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start)	/g_fSCREEN;
+	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end)	/g_fSCREEN;
+	r_ssaHZBvsTEX					=	_sqr(ps_r1_ssaHZBvsTEX)		/g_fSCREEN;
 
 	// Frustum & HOM rendering
 	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);

@@ -199,9 +199,7 @@ void FTreeVisual_PM::Render		(float LOD)
 {
 	inherited::Render			(LOD);
 	int lod_id					= last_lod;
-	if (LOD>=0.f){
-//		LOD						*= lod_factor;
-		LOD						= clampr(_sqrt(LOD),0.f,1.f);
+	if (LOD>=0.f) {
 		lod_id					= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
 		last_lod				= lod_id;
 	}
