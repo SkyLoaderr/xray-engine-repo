@@ -212,9 +212,6 @@ CLevel::~CLevel()
 #endif
 	//-----------------------------------------------------------
 	xr_delete					(m_map_manager);
-
-	//. hack
-	Device.seqParallel.clear	();
 }
 
 // Game interface ////////////////////////////////////////////////////
