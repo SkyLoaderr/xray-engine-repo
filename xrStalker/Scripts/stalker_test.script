@@ -47,7 +47,7 @@ function main ()
 --	stalker:set_hit_callback(stalker_test.hit_callback);
 --	stalker:set_hear_callback(stalker_test.hear_callback);
     
-    wait				(3000)
+    wait				(10000)
     
 --    action				(
 --		stalker,
