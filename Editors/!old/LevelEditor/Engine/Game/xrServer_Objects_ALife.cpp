@@ -856,6 +856,9 @@ void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
 void CSE_ALifeObjectPhysic::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_u32(unsplit_time);
+	tNetPacket.w_u64(bones_mask);
+	tNetPacket.w_u16(root_bone);
 //	tNetPacket.w_u8				(flags.get());
 }
 
