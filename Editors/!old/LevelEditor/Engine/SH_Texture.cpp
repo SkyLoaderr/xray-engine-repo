@@ -96,6 +96,7 @@ void CTexture::Preload	()
 			// bump-map specified
 			m_bumpmap		=	bparam;
 		}
+		Msg	("mid[%f] : %s",m_material,*cName);
 	}
 }
 
