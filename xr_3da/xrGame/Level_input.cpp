@@ -23,7 +23,8 @@ void CLevel::IR_OnKeyboardPress(int key)
 	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
-		bDebug	= !bDebug;
+		if (Game().type == GAME_SINGLE)
+			bDebug	= !bDebug;
 		return;
 #endif
 	case DIK_F12:
