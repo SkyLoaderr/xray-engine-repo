@@ -40,6 +40,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	}
 }
 
+/**
 void CAI_Soldier::vfCheckForPatrol()
 {
 	m_tpaPatrolPoints.clear();
@@ -102,6 +103,7 @@ void CAI_Soldier::vfCheckForPatrol()
 		}
 	}
 }
+/**/
 
 void CAI_Soldier::vfCheckForSavedEnemy()
 {

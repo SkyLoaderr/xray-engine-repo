@@ -54,8 +54,8 @@ protected:
 	EVENT						eDA_PlayMotion;
 	EVENT						eDA_StopMotion;
 	EVENT						eEnvironment;
-
 	EVENT						eEntitySpawn;
+
 public:
 	xrServer*					Server;
 
@@ -63,6 +63,27 @@ public:
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
+
+	// waypoints
+	typedef struct tagSWayPoint{
+		Fvector	tWayPoint;
+		DWORD	dwFlags;
+	} SWayPoint;
+	
+	typedef struct tagSWayLink{
+		WORD	wFrom;
+		WORD	wTo;
+	} SWayLink;
+	
+	typedef struct tagSPatrolPath{
+		string64			sName;
+		DWORD				dwType;
+		DWORD				dwStartNode;
+		vector<SWayPoint>	tpaWayPoints;
+		vector<SWayLink>	tpaWayLinks;
+	} SPatrolPath;
+	
+	vector<SPatrolPath>			tpaPatrolPaths;
 
 	// Starting/Loading
 	virtual BOOL				net_Server				( LPCSTR name_of_level	);

@@ -270,7 +270,9 @@ class CAI_Soldier : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		
+		// events
 		EVENT			m_tpEventSay;
+		EVENT			m_tpEventAssignPath;
 		
 		// ai
 		ESoldierStates	eCurrentState;
@@ -449,7 +451,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfLoadSounds();
 		void vfLoadSelectors(CInifile *ini, const char *section);
 		void vfAssignBones(CInifile *ini, const char *section);
-		void vfCheckForPatrol();
+		//void vfCheckForPatrol();
 		void vfLoadAnimations();
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);

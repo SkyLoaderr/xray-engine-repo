@@ -50,6 +50,14 @@ CLevel::~CLevel()
 	Engine.Event.Handler_Detach(eChangeTrack,	this);
 	Engine.Event.Handler_Detach(eDemoPlay,		this);
 	Engine.Event.Handler_Detach(eChangeRP,		this);
+
+	/**/
+	for (int i=0; i<tpaPatrolPaths.size(); i++) {
+		tpaPatrolPaths[i].tpaWayPoints.clear();
+		tpaPatrolPaths[i].tpaWayLinks.clear();
+	}
+	//tpaPatrolPaths.clear();
+	/**/
 }
 
 // Game interface ////////////////////////////////////////////////////
@@ -291,9 +299,9 @@ BOOL CLevel::Load_GameSpecific_Before()
 - chunk WAY_CUSTOM_CHUNK
 	-//-
 */
+	tpaPatrolPaths.clear();
 	FILE_NAME	fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game"))
-	{
+	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
 		CStream *F = Engine.FS.Open(fn_game);
 		CStream *O = F->OpenChunk(WAY_PATH_CHUNK);
 		if (O) {
@@ -302,35 +310,58 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_VERSION));
 				DWORD dw = OBJ->Rword();
 				R_ASSERT(dw == WAYOBJECT_VERSION);
+
+				tpaPatrolPaths.resize(tpaPatrolPaths.size() + 1);
+				SPatrolPath &tPatrolPath = tpaPatrolPaths[tpaPatrolPaths.size() - 1];
 				
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_NAME));
-				string64 s64;
-				OBJ->RstringZ(s64);
+				OBJ->RstringZ(tPatrolPath.sName);
 				
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_TYPE));
-				DWORD type = OBJ->Rdword();
+				tPatrolPath.dwType = OBJ->Rdword();
 				
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
 				DWORD dwCount = OBJ->Rword();
+				tPatrolPath.tpaWayPoints.resize(dwCount);
 				for (int i=0; i<dwCount; i++){
-					Fvector pos;
-					OBJ->Rvector(pos);
-					DWORD flags = OBJ->Rdword();
+					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
+					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
+					#define START_WAYPOINT 1
+					if (tPatrolPath.tpaWayPoints[i].dwFlags & START_WAYPOINT)
+						tPatrolPath.dwStartNode = Level().AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
 				}
 				
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
 				DWORD dwCountL = OBJ->Rword();
+				tPatrolPath.tpaWayLinks.resize(dwCountL);
 				for ( i=0; i<dwCountL; i++){
-					DWORD from = OBJ->Rword();
-					DWORD to   = OBJ->Rword();
+					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->Rword();
+					tPatrolPath.tpaWayLinks[i].wTo = OBJ->Rword();
 				}
+
 				OBJ->Close();
+				
+				// sorting links
+				bool bOk;
+				do {
+					bOk = true;
+					for ( i=1; i<dwCountL; i++)
+						if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
+							WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
+							tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
+							tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
+							wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;
+							tPatrolPath.tpaWayLinks[i - 1].wTo = tPatrolPath.tpaWayLinks[i].wTo;
+							tPatrolPath.tpaWayLinks[i].wTo = wTemp;
+							bOk = false;
+						}
+				}
+				while (!bOk);
 			}
 			O->Close();
 		}
 		Engine.FS.Close(F);
 	}
-
 
 	return TRUE;
 }

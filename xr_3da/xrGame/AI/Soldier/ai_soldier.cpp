@@ -48,6 +48,7 @@ CAI_Soldier::CAI_Soldier()
 	m_bJumping = false;
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
+	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -135,7 +136,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	vfCheckForPatrol();
+	//vfCheckForPatrol();
 	return TRUE;
 }
 
@@ -143,17 +144,6 @@ BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 void CAI_Soldier::Update(DWORD DT)
 {
 	inherited::Update(DT);
-}
-
-void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
-{
-	if (E == m_tpEventSay) {
-		if (0==P2 || DWORD(this)==P2) {
-			char* Test;
-			Test = (char *)P1;
-			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
-		}
-	}
 }
 
 void CAI_Soldier::Exec_Movement	( float dt )
@@ -183,3 +173,54 @@ void CAI_Soldier::Exec_Movement	( float dt )
 		UpdateTransform	();
 	}
 }
+
+void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
+{
+
+	if (E == m_tpEventSay) {
+		if (0==P2 || DWORD(this)==P2) {
+			char* caTextToShow;
+			caTextToShow = (char *)P1;
+			Level().HUD()->outMessage(0xffffffff,cName(),"%s",caTextToShow);
+		}
+	}
+	else
+		if (E == m_tpEventAssignPath) {
+			if (0==P2 || DWORD(this)==P2) {
+				char *buf2, *buf, monster_name[100];
+				buf2 = buf = (char *)P1;
+				int iArgCount = _GetItemCount(buf2);
+				if (iArgCount >= 4) {
+					DWORD team,squad,group;
+					for ( ; ; buf2++)
+						if (*buf2 == ',') {
+							memcpy(monster_name,buf,(buf2 - buf)*sizeof(char));
+							monster_name[buf2++ - buf] = 0;
+							break;
+						}
+						
+					if ((strlen(monster_name)) && (strcmp(monster_name,cName())))
+						return;
+					
+					sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
+					
+					if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+						return;
+					
+					for (int komas=0; komas<3; buf2++)
+						if (*buf2 == ',')
+							komas++;
+				}
+				
+				vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
+				for (int i=0; i<tpaPatrolPaths.size(); i++)
+					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
+						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
+						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints);
+						return;
+					}
+				m_tpaPatrolPoints.clear();
+			}
+		}
+}
+

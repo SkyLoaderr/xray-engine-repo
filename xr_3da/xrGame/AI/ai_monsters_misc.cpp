@@ -666,3 +666,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	// close the path
 	tpaPath.push_back(tpaPath[0]);
 }
+
+void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints)
+{
+	
+}
