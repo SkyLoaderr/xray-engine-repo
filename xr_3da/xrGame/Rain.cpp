@@ -222,7 +222,7 @@ void	CEffect_Rain::Hit		(Fvector& pos)
 void	CEffect_Rain::Render	()
 {
 	// Parse states
-	BOOL	bBornNewItems;
+	BOOL	bBornNewItems	= FALSE;
 	switch (state)
 	{
 	case stIdle:		return;

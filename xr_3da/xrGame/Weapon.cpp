@@ -323,9 +323,6 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	P.r_u16					(current);	iAmmoCurrent	= current;
 	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
 
-	Engine.Sheduler.Unregister	(this);
-	Engine.Sheduler.RegisterRT	(this);
-
 	return bResult;
 }
 

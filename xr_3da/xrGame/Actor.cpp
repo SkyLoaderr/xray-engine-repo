@@ -158,9 +158,6 @@ CActor::~CActor()
 	// sounds 3D
 	for (i=0; i<SND_HIT_COUNT; i++) pSounds->Delete(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
-
-	// Sheduler
-	Engine.Sheduler.UnregisterRT	(this);
 }
 
 void CActor::Load		(LPCSTR section )
@@ -258,7 +255,7 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	patch_position.set	(vPosition);
 
 	Engine.Sheduler.Unregister	(this);
-	Engine.Sheduler.RegisterRT	(this);
+	Engine.Sheduler.Register	(this,TRUE);
 
 	return				TRUE;
 }
@@ -361,7 +358,7 @@ void CActor::g_near_new				(CObject* O)
 			P.w_begin	(M_OWNERSHIP_TAKE);
 			P.w_u16		(u16(ID()));
 			P.w_u16		(u16(W->ID()));
-			Level().Send(P,net_flags(TRUE,TRUE,TRUE));
+			Level().Send(P,net_flags(TRUE,TRUE));
 		}
 	}
 
