@@ -8,7 +8,7 @@ extern void LightPoint		(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
 #define	NUM_THREADS	6
-void CDeflector::L_Direct(float progress, HASH& H)
+void CDeflector::L_Direct	(HASH& H)
 {
 	RAPID::XRCollide		DB;
 	

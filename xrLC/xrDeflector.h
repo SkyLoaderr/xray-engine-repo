@@ -62,9 +62,9 @@ public:
 	DWORD	GetFaceCount() { return tris.size();	};
 
 	VOID	Prepare		();
-	VOID	Light		(float P_Base);
-	VOID	L_Direct	(float P_Base, HASH& H);
-	VOID	L_Radiosity	(float P_Base, HASH& H);
+	VOID	Light		();
+	VOID	L_Direct	(HASH& H);
+	VOID	L_Radiosity	(HASH& H);
 	VOID	Save		();
 
 	WORD	GetBaseMaterial() { return tris.front().owner->dwMaterial;	}
