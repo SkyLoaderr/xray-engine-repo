@@ -89,6 +89,7 @@ public:
 			P.w_s16			((s16)0);
 			P.w_vec3		(position_in_bone_space);
 			P.w_float		(.0f);
+			P.w_u16			(WOUND_HIT);	//hit type
 			l_pActor->u_EventSend		(P);
 			//NET_Packet		P;
 			//l_pActor->u_EventGen		(P,GE_DIE,l_pActor->ID()	);
@@ -895,6 +896,12 @@ extern "C" {
 		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
 		case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
 		case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
+		case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_GALANT:			P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_RADIO:				P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;
+		case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;
 		case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
 
 		// Detectors
