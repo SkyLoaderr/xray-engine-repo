@@ -74,11 +74,11 @@ bool CParticleTools::OnCreate()
     m_PList->OnItemRemove	= OnParticleItemRemove;
     m_PList->SetImages		(fraLeftBar->ilModeIcons);
 
-	stat_graph				= xr_new<CStatGraph>();
-    stat_graph->SetRect		(100,0,300,200, 0xFFFF0000, 0xFFFF0000);
-    stat_graph->SetMinMax	(0,1,100);
-    stat_graph->SetStyle	(CStatGraph::stBar);  
-    stat_graph->SetGrid		(20,1,0xFF00a000);
+//	stat_graph				= xr_new<CStatGraph>();
+//	stat_graph->SetRect		(100,0,300,200, 0xFFFF0000, 0xFFFF0000);
+//	stat_graph->SetMinMax	(0,1,100);
+//	stat_graph->SetStyle	(CStatGraph::stBar);  
+//	stat_graph->SetGrid		(20,1,0xFF00a000);
     
 
     return true;
@@ -99,7 +99,7 @@ void CParticleTools::OnDestroy()
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 
-	xr_delete			(stat_graph);
+//	xr_delete			(stat_graph);
 }
 //---------------------------------------------------------------------------
 
@@ -195,7 +195,7 @@ void CParticleTools::OnFrame()
         else 
         	UI->SetStatus(" Stopped.",false); 
     break;
-    case emGroup:	
+    case emGroup:	                 
     	if (m_EditPG->IsPlaying())
         	UI->SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPG->ParticlesCount()).c_str(),false); 
         else 
@@ -204,8 +204,7 @@ void CParticleTools::OnFrame()
     default: THROW;
     }
 
-//    Sleep(200);
-    stat_graph->AppendItem(Random.randF(),0xFFFFFFFF);
+//	stat_graph->AppendItem(Random.randF(),0xFFFFFFFF);
 }
 
 void CParticleTools::ZoomObject(bool bSelOnly)
