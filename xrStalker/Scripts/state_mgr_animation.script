@@ -41,6 +41,22 @@ end
 function eva_state_mgr_animation_none_now:evaluate()
 	return self.st.animation:state() ~= "wait" and self.st.animation:state() == nil
 end
+--' нужен ли схеме экстренный ресет
+class "eva_state_mgr_animation_reset" (property_evaluator)
+function eva_state_mgr_animation_reset:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_animation_reset:evaluate()
+	printf("reset state [%s]", utils.to_str(self.st.reset_state))
+	printf("state [%s]", utils.to_str(state_lib.states[target_state]))
+	if state_lib.states[target_state] ~= nil then
+		printf("state reset [%s]", utils.to_str(state_lib.states[target_state].reset))
+	end
+	
+	return self.st.reset_state == true and
+		   state_lib.states[self.st.target_state] ~= nil and
+		   state_lib.states[self.st.target_state].reset == true	
+end
 --' залочена ли схема
 class "eva_state_mgr_animation_locked" (property_evaluator)
 function eva_state_mgr_animation_locked:__init(name, st) super (nil, name)
@@ -59,12 +75,30 @@ function act_state_mgr_animation_start:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_start:initialize()
 	action_base.initialize(self)
+	printf("111")
 	self.st.animation:set_state(state_lib.states[self.st.target_state].animation)
 end
 function act_state_mgr_animation_start:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_animation_start:finalize()
+	action_base.finalize(self)
+end
+--' ресетим анимацию
+class "act_state_mgr_animation_reset" (action_base)
+function act_state_mgr_animation_reset:__init(name, st) super (nil, name)
+	self.st = st
+end
+function act_state_mgr_animation_reset:initialize()
+	action_base.initialize(self)
+	printf("444")
+	self.st.animation:set_state(state_lib.states[self.st.target_state].animation, true)
+	self.st.reset_state = false
+end
+function act_state_mgr_animation_reset:execute()
+	action_base.execute(self)
+end
+function act_state_mgr_animation_reset:finalize()
 	action_base.finalize(self)
 end
 --' Играем выходную анимацию
@@ -74,6 +108,7 @@ function act_state_mgr_animation_stop:__init(name, st) super (nil, name)
 end
 function act_state_mgr_animation_stop:initialize()
 	action_base.initialize(self)
+	printf("222")
 	self.st.animation:set_state(nil)
 end
 function act_state_mgr_animation_stop:execute()
@@ -210,62 +245,62 @@ function animation:__init(npc, mgr)
 											"d_3_idle_2" },
 									[4] = { "d_4_idle_0",
 											"d_4_idle_2" }}},
-		hello		= {	prop	= { maxidle = 3,
-									sumidle = 1,
+		hello		= {	prop	= { maxidle = 5,
+									sumidle = 5,
 									rnd = 100 },
-						into	= {	[0]	= {	"hello_0_idle_0" },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"hello_0_idle_0" },
 									[1]	= {	"hello_1_idle_0" },
 									[2]	= {	"hello_2_idle_0" },
 									[3]	= { "hello_3_idle_0" },
-									[4]	= {	"hello_4_idle_0" }},
-						out		= nil,
-						idle	= nil,
-						rnd		= nil},
+									[4]	= {	"hello_4_idle_0" }}},
 		refuse		= {	prop	= { maxidle = 3,
 									sumidle = 3,
 									rnd = 100 },
-						into	= {	[0]	= {	"net_0_0",
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"net_0_0",
 											"net_0_1" },
 									[1]	= {	"net_1_0" },
 									[2]	= {	"net_2_0" },
 									[3]	= {	"net_3_0" },
-									[4]	= {	"net_4_0" }},
-						out		= nil,
-						idle	= nil,
-						rnd		= nil},
+									[4]	= {	"net_4_0" }}},
 		claim		= {	prop	= { maxidle = 5,
 									sumidle = 2,
 									rnd = 100 },
-						into	= {	[0]	= {	"gop_stop_1_0" },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"gop_stop_1_0" },
 									[1]	= {	"gop_stop_1_0" },
 									[2]	= {	"gop_stop_2_0" },
 									[3]	= {	"gop_stop_3_0" },
-									[4]	= {	"gop_stop_4_0" }},
-						out		= nil,
-						idle	= nil,
-						rnd		= nil},
+									[4]	= {	"gop_stop_4_0" }}},
 		backoff		= {	prop	= { maxidle = 5,
 									sumidle = 2,
 									rnd = 100 },
-						into	= {	[0]	= {	"uhodi_1_0" },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"uhodi_1_0" },
 									[1]	= {	"uhodi_1_0" },
 									[2]	= {	"uhodi_2_0" },
 									[3]	= {	"uhodi_3_0" },
-									[4]	= {	"uhodi_4_0" }},
-						out		= nil,
-						idle	= nil,
-						rnd		= nil},
+									[4]	= {	"uhodi_4_0" }}},
 		backoff2	= {	prop	= { maxidle = 5,
 									sumidle = 2,
 									rnd = 100 },
-						into	= {	[0]	= {	"uhodi_1_1" },
+						into	= nil,
+						out		= nil,
+						idle	= nil,
+						rnd		= {	[0]	= {	"uhodi_1_1" },
 									[1]	= {	"uhodi_1_1" },
 									[2]	= {	"uhodi_2_1" },
 									[3]	= {	"uhodi_3_1" },
-									[4]	= {	"uhodi_4_1" }},
-						out		= nil,
-						idle	= nil,
-						rnd		= nil},
+									[4]	= {	"uhodi_4_1" }}},
 		suicide		= {	prop	= { maxidle = 5,
 									sumidle = 2,
 									rnd = 100 },
@@ -400,7 +435,7 @@ function animation:__init(npc, mgr)
 	}		
 end
 --' установка нового состояния
-function animation:set_state(id)
+function animation:set_state(id, reset)
 	printf("set new animation %s", utils.to_str(id))
 	--self.npc:set_callback(callback.action_animation , self.anim_callback, self)
 	local nn = 0	
@@ -431,12 +466,12 @@ function animation:set_state(id)
 				nn = nn +1
 			end
 		end
-		if self.mgr.reset_state == true then
+		if reset == true then
 			if self.mgr.callback ~= nil then
 				self.mgr.callback.begin = nil
 			end
+			self:play_rnd(id, 100)			
 		end
-		self.mgr.reset_state = false
 		if self.animations[id].idle ~= nil then
 			self.npc:add_animation(self.animations[id].idle[self:weapon_slot()], true)
 			nn = nn + 1
@@ -469,10 +504,13 @@ function animation:update()
 	   self.mgr.emerg.animation == true then
 		
 		--если мы уже
-		self.npc:clear_animations()				   
-		self:set_state(nil)
-		self.states.current_state = nil
-			
+		if self.states.target_state ~= state_lib.states[self.mgr.target_state].animation then
+			self.npc:clear_animations()
+			printf("333")		   
+			self:set_state(nil)
+			self.states.current_state = nil
+		end	
+		
 		self.mgr.emerg.animation = nil
 		return
 	end
@@ -511,17 +549,8 @@ function animation:update()
 	
 	-- Отыгрыш рандомных анимашек, если они есть
 	if 	self.states.current_state == self.states.target_state then		
-		--' проверка на экстренный ресет схемы
-		if self.mgr.reset_state == true and
-		   state_lib.states[self.states.current_state] ~= nil and
-		   state_lib.states[self.states.current_state].reset == true
-		then
---			printf("call emerg reset")
-			self:set_state(self.states.current_state)
-		end
-		
+		--' проверка на экстренный ресет схемы	
 		if self:callback_process() == true then
---			printf("call back process")
 			return
 		end
 	
@@ -531,45 +560,57 @@ function animation:update()
 			(self.states.begin == nil or
 			device():time_global() - self.states.begin > self.states.idle)
 		then
---			printf("try to add rnd animation")
-			--' Определение промежутков времени между анимациями		
-			self.states.begin = device():time_global()
-			self.states.idle = (math.random(self.animations[self.states.current_state].prop.maxidle) + 
-											self.animations[self.states.current_state].prop.sumidle) * 1000
-			if math.random(100) < self.animations[self.states.current_state].prop.rnd then
-				local r
-				if table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]) > 1 then			
-					if self.states.last_id == nil then
-						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]))
-					else
-						r = math.random(table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()])-1)
-						if r >= self.states.last_id then
-							r = r + 1
-						end
-					end
-					self.states.last_id = r
-				else
-					r = 1
-				end		
-				self.npc:clear_animations()
---				printf("rnd animations added")
-				if self.animations[self.states.current_state].rnd[self:weapon_slot()][r] ~= nil then
-				   self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
-				else
-					printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
-								table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
-								self.states.current_state, self:weapon_slot() )
-				end
-				if self.animations[self.states.current_state].idle ~= nil then
-					self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
-				else
-					-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
-					self.mgr.animstate:add_idle_animation()
-				end				
-				self.states.current_state = "wait"				
-			end
+			self:play_rnd(self.states.current_state, self.animations[self.states.current_state].prop.rnd)		
+
 		end		
 	
+	end
+end
+-- Отыгрыш рандомной анимации
+function animation:play_rnd(state, rnd)
+	printf("try to add rnd animation")
+	-- нельзя добавлять рандом во время лока схемы.
+	if not (self.mgr.planner:evaluator(self.mgr.properties["animation"]):evaluate() and
+	        self.mgr.planner:evaluator(self.mgr.properties["weapon"]):evaluate())
+	then
+		return
+	end
+	
+	--' Определение промежутков времени между анимациями	
+	self.states.begin = device():time_global()
+	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
+									self.animations[state].prop.sumidle) * 1000
+	if math.random(100) < rnd then	
+		local r
+		if table.getn(self.animations[state].rnd[self:weapon_slot()]) > 1 then			
+			if self.states.last_id == nil then
+				r = math.random(table.getn(self.animations[state].rnd[self:weapon_slot()]))
+			else
+				r = math.random(table.getn(self.animations[state].rnd[self:weapon_slot()])-1)
+				if r >= self.states.last_id then
+					r = r + 1
+				end
+			end
+			self.states.last_id = r
+		else
+			r = 1
+		end		
+		self.npc:clear_animations()
+		printf("rnd animations added for [%s]", utils.to_str(state))
+		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
+		   self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
+		else
+			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
+						table.getn(self.animations[state].rnd[self:weapon_slot()]),
+						state, self:weapon_slot() )
+		end
+		if self.animations[state].idle ~= nil then
+			self.npc:add_animation (self.animations[state].idle[self:weapon_slot()], true)
+		else
+			-- Для политкорректности просим анимстейт отыграть свою айдловую анимацию
+			self.mgr.animstate:add_idle_animation()
+		end				
+		self.states.current_state = "wait"				
 	end
 end
 -- Инициализация коллбека

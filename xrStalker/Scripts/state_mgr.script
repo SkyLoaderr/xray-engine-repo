@@ -230,7 +230,8 @@ function state_manager:__init(npc)
 	self.properties["animation_play"]		= 73
 	self.properties["animation_play_now"]	= 74	
 	self.properties["animation_none"]		= 75	
-	self.properties["animation_none_now"]	= 76	
+	self.properties["animation_none_now"]	= 76
+	self.properties["animation_reset"]		= 77
 	
 	self.planner:add_evaluator(self.properties["end"],						this.eva_state_mgr_end("state_mgr_end", self))
 	self.planner:add_evaluator(self.properties["locked"],					this.eva_state_mgr_locked("state_mgr_locked", self))
@@ -287,6 +288,7 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["animation_play_now"],		state_mgr_animation.eva_state_mgr_animation_play_now("state_mgr_animation_play_now", self))
 	self.planner:add_evaluator(self.properties["animation_none"],			state_mgr_animation.eva_state_mgr_animation_none("state_mgr_animation_none", self))
 	self.planner:add_evaluator(self.properties["animation_none_now"],		state_mgr_animation.eva_state_mgr_animation_none_now("state_mgr_animation_none_now", self))
+	self.planner:add_evaluator(self.properties["animation_reset"],			state_mgr_animation.eva_state_mgr_animation_reset("state_mgr_animation_reset", self))
 
 
 	self.operators["end"]					= 1
@@ -321,7 +323,8 @@ function state_manager:__init(npc)
 	
 	self.operators["animation_start"]		= 71
 	self.operators["animation_stop"]		= 72
-	self.operators["animation_wait_state"]	= 73
+	self.operators["animation_reset"]		= 73
+	self.operators["animation_wait_state"]	= 74
 	
 	--' Actions
 	local action = state_mgr_weapon.act_state_mgr_weapon_unstrapp("state_mgr_weapon_unstrapp")
@@ -517,18 +520,35 @@ function state_manager:__init(npc)
 
 	action = state_mgr_animation.act_state_mgr_animation_start("state_mgr_animation_start", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
 	action:add_precondition		(world_property(self.properties["animstate"],			true))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_precondition		(world_property(self.properties["direction"],			true))
 	action:add_precondition		(world_property(self.properties["weapon"],				true))
+	action:add_precondition		(world_property(self.properties["animation_reset"],		false))
 	action:add_precondition		(world_property(self.properties["animation"],			false))
 	action:add_precondition		(world_property(self.properties["animation_play"],		true))
 	action:add_effect 			(world_property(self.properties["animation"],			true))
 	action:add_effect 			(world_property(self.properties["animation_play_now"],	true))
 	self.planner:add_action(self.operators["animation_start"], action)
 
+	action = state_mgr_animation.act_state_mgr_animation_reset("state_mgr_animation_reset", self)
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
+	action:add_precondition		(world_property(self.properties["animstate"],			true))
+	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
+	action:add_precondition		(world_property(self.properties["direction"],			true))
+	action:add_precondition		(world_property(self.properties["weapon"],				true))
+	action:add_precondition		(world_property(self.properties["animation_reset"],		true))
+	action:add_precondition		(world_property(self.properties["animation"],			false))
+	action:add_precondition		(world_property(self.properties["animation_play"],		true))
+	action:add_effect 			(world_property(self.properties["animation"],			true))
+	action:add_effect 			(world_property(self.properties["animation_play_now"],	true))
+	self.planner:add_action(self.operators["animation_reset"], action)
+
 	action = state_mgr_animation.act_state_mgr_animation_stop("state_mgr_animation_stop", self)
 	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["mental"],				true))
 	action:add_precondition		(world_property(self.properties["movement_stand_now"],	true))
 	action:add_precondition		(world_property(self.properties["animation"],			false))
 	action:add_precondition		(world_property(self.properties["animation_none"],		true))

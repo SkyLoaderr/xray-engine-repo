@@ -94,7 +94,7 @@ function action_meet_wait:initialize()
 	--state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
 end
 function action_meet_wait:time_callback()
-	--state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor}, {animations = true})
+	state_mgr.set_state(self.object, "hello", { obj = self, func = self.time_callback }, 5000, {look_object = db.actor})
 end
 function action_meet_wait:execute ()
 	-- Звуки
@@ -126,7 +126,7 @@ function action_weapon:initialize()
 	self.object:set_desired_direction()
 
 	stop_play_sound(self.object)
-	state_mgr.set_state(self.object, "threat", nil, nil, {look_object = db.actor}, {animation = true})
+	state_mgr.set_state(self.object, "backoff", nil, nil, {look_object = db.actor}, {animation = true})
 end
 function action_weapon:execute ()
 	if self.object:active_sound_count() == 0 then
