@@ -74,9 +74,9 @@ void	xrMemory::mem_free		(void* P)
 
 void*	xrMemory::mem_realloc	(void* P, size_t size)
 {
+	stat_calls++;
 	if (0==P)					return mem_alloc(size);
 
-	stat_calls++;
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
 	void*	_ptr				= NULL;
