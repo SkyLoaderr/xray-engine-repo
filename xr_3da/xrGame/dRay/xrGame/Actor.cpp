@@ -466,10 +466,7 @@ void CActor::Die	( )
 
 	///!!! чистка пояса
 	TIItemList &l_blist = inventory().m_belt;
-	for(PPIItem l_bit = l_blist.begin(); l_blist.end() != l_blist.begin(); ++l_bit)
-	{
-		if(*l_bit) inventory().Ruck(*l_bit);
-	}
+	while (!l_blist.empty())	inventory().Ruck(l_blist.front());
 
 	if (OnServer() && Game().type != GAME_SINGLE)
 	{
