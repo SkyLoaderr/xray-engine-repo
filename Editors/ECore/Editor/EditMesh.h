@@ -21,7 +21,7 @@ enum EVMType{
     vmt_force_byte = 0xff
 };
 
-struct st_WB{
+struct ECORE_API st_WB{
 	int 	bone;
 	float 	weight;
 			st_WB	():bone(-1),weight(0){;}
@@ -29,7 +29,7 @@ struct st_WB{
 	void	set		(int b, float w){bone=b;weight=w;}
 };
 DEFINE_VECTOR(st_WB,WBVec,WBIt);
-struct st_VertexWB:public WBVec{
+struct ECORE_API st_VertexWB:public WBVec{
 protected:
 	static bool compare_by_weight(const st_WB& a, const st_WB& b)
 	{
@@ -63,13 +63,13 @@ public:
 };
 DEFINE_VECTOR(st_VertexWB,VWBVec,VWBIt);
 
-struct st_VMapPt{
+struct ECORE_API st_VMapPt{
 	int				vmap_index;	// ссылка на мапу
 	int				index;		// индекс в мапе на uv
 	st_VMapPt(){vmap_index=-1;index=-1;}
 };
 // uv's
-class st_VMap{
+class ECORE_API st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
 	string128		name;		// vertex uv map name
@@ -107,7 +107,7 @@ public:
 DEFINE_SVECTOR		(st_VMapPt,8,VMapPtSVec,VMapPtIt);
 DEFINE_VECTOR		(VMapPtSVec,VMRefsVec,VMRefsIt);
 
-struct st_SVert{
+struct ECORE_API st_SVert{
 	Fvector			offs0;
 	Fvector			offs1;
     Fvector			norm0;
@@ -118,16 +118,16 @@ struct st_SVert{
     Fvector2		uv;
 };
 // faces
-struct st_FaceVert{
+struct ECORE_API st_FaceVert{
 	int 			pindex;		// point index in PointList
     int				vmref;		// vm index
 };
-struct st_Face{
+struct ECORE_API st_Face{
     st_FaceVert		pv[3];		// face vertices (P->P...)
 };
 
 // mesh options
-struct st_MeshOptions{
+struct ECORE_API st_MeshOptions{
 	int 			m_Reserved0;
 	int 			m_Reserved1;
     st_MeshOptions	(){m_Reserved0=0;m_Reserved1=0;}
@@ -146,7 +146,7 @@ class CSurface;
 class CSector;
 
 #ifdef _EDITOR
-	struct st_RenderBuffer{
+	struct ECORE_API st_RenderBuffer{
 		u32			dwStartVertex;
 	    u32			dwNumVertex;
         ref_geom 	pGeom;
@@ -156,7 +156,7 @@ class CSector;
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
 #endif
 
-class CEditableMesh {
+class ECORE_API CEditableMesh {
 	friend class MeshExpUtility;
 	friend class CEditableObject;
     friend class CSectorItem;

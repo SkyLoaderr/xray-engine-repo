@@ -7,8 +7,6 @@
 
 #include "EditMesh.h"
 #include "EditObject.h"
-#include "EditorPreferences.h"
-#include "bottombar.h"
 #include "cl_collector.h"
 #include "ui_main.h"
 
@@ -38,7 +36,7 @@ static float		m_fSoftAngle;
 //----------------------------------------------------
 void CEditableMesh::GenerateCFModel()
 {
-    UI.ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
+    UI->ProgressStart((float)m_SurfFaces.size()*2,"Generating CFModel...");
 	UnloadCForm();
 
 	m_CFModel = xr_new<CDB::MODEL>();    VERIFY(m_CFModel);
@@ -47,7 +45,7 @@ void CEditableMesh::GenerateCFModel()
 	CDB::Collector CL;
 	// double sided
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
-    	UI.ProgressInc();
+    	UI->ProgressInc();
 		IntVec& face_lst = sp_it->second;
 		for (IntIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
@@ -68,7 +66,7 @@ void CEditableMesh::GenerateCFModel()
 */
     m_CFModel->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState.set(LS_CF_MODEL,TRUE);
-    UI.ProgressEnd();
+    UI->ProgressEnd();
 }
 
 void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
@@ -94,7 +92,7 @@ bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector
 	if (!m_Flags.is(flVisible)) return false;
 
     if (!m_CFModel) GenerateCFModel();
-//.	float m_r 		= pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
+//.	float m_r 		= pinf?pinf->inf.range+EPS_L:UI->ZFar();// (bugs: не всегда выбирает) //S ????
 
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
 	XRC.ray_query	(inv_parent, m_CFModel, start, direction, _sqrt_flt_max);

@@ -41,7 +41,7 @@ struct  ogf_desc;
 // refs
 class XRayMtl;
 
-class CSurface
+class ECORE_API CSurface
 {
     u32				m_GameMtlID;
     ref_shader		m_Shader;
@@ -137,7 +137,7 @@ DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 
-struct SBonePart{
+struct ECORE_API SBonePart{
 	AnsiString 		alias;
     IntVec 			bones;
 };
@@ -145,7 +145,7 @@ DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
 const u32 FVF_SV	= D3DFVF_XYZ | D3DFVF_TEX1 | D3DFVF_NORMAL;
 
-class CEditableObject{
+class ECORE_API CEditableObject{
 	friend class CSceneObject;
 	friend class CEditableMesh;
     friend class TfrmPropertiesEObject;

@@ -12,7 +12,7 @@
 void __fastcall	CEditableObject::OnChangeShader(PropValue* prop)
 {
     OnDeviceDestroy	();
-    UI.RedrawScene	();
+    UI->RedrawScene	();
 }
 //---------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ void CEditableObject::FillSummaryProps(LPCSTR pref, PropItemVec& items)
 }
 //---------------------------------------------------------------------------
 
-AnsiString MakeFullBoneName(CBone* bone)
+ECORE_API AnsiString MakeFullBoneName(CBone* bone)
 {
 	if (bone->Parent()){
     	return MakeFullBoneName(bone->Parent())+"\\"+bone->Name();

@@ -5,7 +5,7 @@
 #ifndef ELogH
 #define ELogH
 
-class CLog{
+class ECORE_API CLog{
 public:
 	bool 		in_use;
 public:
@@ -15,9 +15,9 @@ public:
 	int 		DlgMsg 	(TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...);
 };
 
-void __stdcall ELogCallback(LPCSTR txt);
+void ECORE_API __stdcall ELogCallback(LPCSTR txt);
 
-extern CLog ELog;
+extern ECORE_API CLog ELog;
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/
 

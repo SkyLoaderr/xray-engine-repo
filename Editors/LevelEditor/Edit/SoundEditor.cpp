@@ -60,7 +60,7 @@ void __fastcall TfrmSoundLib::EditLib(AnsiString& title, bool bImport)
     }
 
     form->ShowModal			();
-    UI.RedrawScene			();
+    UI->RedrawScene			();
 }
 //---------------------------------------------------------------------------
 
@@ -122,7 +122,7 @@ void __fastcall TfrmSoundLib::FormShow(TObject *Sender)
 {
     InitItemsList		();
 	// check window position
-	UI.CheckWindowPos	(this);
+	UI->CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmSoundLib::FormClose(TObject *Sender, TCloseAction &Action)
@@ -156,10 +156,10 @@ void __fastcall TfrmSoundLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    	if (Key==VK_CANCEL)		UI->Command(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Key==VK_ESCAPE){
-            if (bFormLocked)	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+            if (bFormLocked)	UI->Command(COMMAND_BREAK_LAST_OPERATION);
             Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
         }
     }
@@ -180,7 +180,7 @@ void __fastcall TfrmSoundLib::ebOkClick(TObject *Sender)
 void __fastcall TfrmSoundLib::ebCancelClick(TObject *Sender)
 {
 	if (bFormLocked){
-		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+		UI->Command(COMMAND_BREAK_LAST_OPERATION);
     	return;
     }
 

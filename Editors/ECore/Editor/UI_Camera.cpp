@@ -41,7 +41,7 @@ void CUI_Camera::SetStyle(ECameraStyle new_style)
         BuildCamera		();
     }
 	m_Style				= new_style;
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 
 void CUI_Camera::Reset()
@@ -82,7 +82,7 @@ void CUI_Camera::BuildCamera()
 
 	m_CamMat.setHPB(m_HPB.x,m_HPB.y,m_HPB.z);
     m_CamMat.translate_over(m_Position);
-    UI.OutCameraPos();
+    UI->OutCameraPos();
     
 	Device.vCameraPosition.set	(m_CamMat.c);
 	Device.vCameraDirection.set	(m_CamMat.k);
@@ -92,14 +92,14 @@ void CUI_Camera::BuildCamera()
 
 void CUI_Camera::SetDepth(float _far, bool bForcedUpdate)
 {
-    if (m_Zfar!=_far)	{m_Zfar=_far; UI.Resize(bForcedUpdate);}
+    if (m_Zfar!=_far)	{m_Zfar=_far; UI->Resize(bForcedUpdate);}
 }
 
 void CUI_Camera::SetViewport(float _near, float _far, float _fov)
 {
-    if (m_Znear!=_near)		{m_Znear=_near; UI.Resize();}
-    if (m_Zfar!=_far)		{m_Zfar=_far; UI.Resize();}
-    if (Device.fFOV!=_fov)	{Device.fFOV=_fov; UI.Resize();}
+    if (m_Znear!=_near)		{m_Znear=_near; UI->Resize();}
+    if (m_Zfar!=_far)		{m_Zfar=_far; UI->Resize();}
+    if (Device.fFOV!=_fov)	{Device.fFOV=_fov; UI->Resize();}
 }
 
 void CUI_Camera::SetSensitivity(float sm, float sr)
@@ -125,12 +125,12 @@ void CUI_Camera::Update(float dt)
 #ifdef _LEVEL_EDITOR
             if (m_Shift.Contains(ssCtrl)){
             	Fvector pos;
-            	if (UI.PickGround(pos,m_Position,dir,-1))
+            	if (UI->PickGround(pos,m_Position,dir,-1))
                 	m_Position.y = pos.y+m_FlyAltitude;
             }
 #endif
 
-        	UI.RedrawScene();
+        	UI->RedrawScene();
 	    }
         BuildCamera();
     }
@@ -175,7 +175,7 @@ bool CUI_Camera::MoveStart(TShiftState Shift)
 	if (Shift.Contains(ssShift)){
     	if (!m_bMoving){
 		    ShowCursor	(FALSE);
-    	    UI.IR_GetMousePosScreen(m_StartPos);
+    	    UI->IR_GetMousePosScreen(m_StartPos);
 			m_bMoving	= true;
         }
 		m_Shift 	= Shift;
@@ -219,7 +219,7 @@ bool CUI_Camera::Process(TShiftState Shift, int dx, int dy)
             	ArcBall(m_Shift,dx,dy);
             break;
             }
-		    UI.RedrawScene();
+		    UI->RedrawScene();
         }
         return true;
 	}
@@ -253,8 +253,8 @@ bool CUI_Camera::KeyUp(WORD Key, TShiftState Shift)
 
 void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ivector2& point )
 {
-	int halfwidth  = UI.GetRealWidth()*0.5f;
-	int halfheight = UI.GetRealHeight()*0.5f;
+	int halfwidth  = UI->GetRealWidth()*0.5f;
+	int halfheight = UI->GetRealHeight()*0.5f;
 
     if (!halfwidth||!halfheight) return;
 

@@ -21,7 +21,7 @@
 #include "FolderLib.h"
 
 
-class TItemList: public TForm
+class ECORE_API TItemList: public TForm
 {
 __published:	// IDE-managed Components
 	TElTree *tvItems;

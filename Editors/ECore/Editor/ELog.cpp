@@ -8,7 +8,6 @@
 #include "ELog.h"
 #ifdef _EDITOR
 	#include "LogForm.h"
-	#include "splash.h"
 	#include "ui_main.h"
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
@@ -69,7 +68,7 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...)
 
 	int res=0;
 #ifdef _EDITOR
-    UI.Command(COMMAND_RENDER_FOCUS);
+    UI->Command(COMMAND_RENDER_FOCUS);
 
     res=MessageDlg(buf, mt, btn, 0);
     if (mtConfirmation==mt){
@@ -114,7 +113,7 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...)
 
     int res=0;
 #ifdef _EDITOR
-    UI.Command(COMMAND_RENDER_FOCUS);
+    UI->Command(COMMAND_RENDER_FOCUS);
 
     if (mtConfirmation==mt)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
     else                   	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbOK, 0);
@@ -158,7 +157,6 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...)
 	vsprintf( buf, _Format, l );
 
 #ifdef _EDITOR
-    if (frmSplash) frmSplash->SetStatus(buf);
     TfrmLog::AddMessage(mt,AnsiString(buf));
 #endif
 #ifdef _MAX_EXPORT

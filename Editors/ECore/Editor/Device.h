@@ -17,7 +17,7 @@ class CInifile;
 class CResourceManager;
 
 //------------------------------------------------------------------------------
-class ENGINE_API CRenderDevice{
+class ECORE_API CRenderDevice{
     friend class 			CUI_Camera;
     friend class 			TUI;
 
@@ -152,7 +152,7 @@ public:
     Shader_xrLC_LIB			ShaderXRLC;
 };
 
-extern ENGINE_API CRenderDevice Device;
+extern ECORE_API CRenderDevice Device;
 
 // video
 enum {

@@ -13,7 +13,6 @@
 #include <ElVCLUtils.hpp>
 #include <ElTools.hpp>
 
-#include "main.h"
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
 #include "ChoseForm.h"
@@ -1600,7 +1599,7 @@ void __fastcall TProperties::FormDeactivate(TObject *Sender)
 void __fastcall TProperties::FormShow(TObject *Sender)
 {
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

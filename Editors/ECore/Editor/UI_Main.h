@@ -24,11 +24,13 @@ enum EEditorState{
 typedef xr_vector<EEditorState> EStateList;
 typedef EStateList::iterator EStateIt;
 
-class TUI: public IInputReceiver{
+class ECORE_API TUI: public IInputReceiver{
+protected:
     friend class CEditorPreferences;
     friend class CRenderDevice;
 	AnsiString 	m_LastFileName;
     TD3DWindow* m_D3DWindow;
+    TPanel*		m_D3DPanel;
 
     TShiftState m_ShiftState;
 
@@ -40,8 +42,6 @@ public:
 	bool m_bReady;
     TD3DWindow* GetD3DWindow(){return m_D3DWindow;}
 protected:
-	float m_AngleSnap;
-	float m_MoveSnap;
 	Fvector m_Pivot;
 protected:
 	bool m_SelectionRect;
@@ -59,10 +59,12 @@ protected:
 	long m_StartTime;
 
     void Redraw();
-    void RealUpdateScene();
 protected:
-    void OutUICursorPos();
-	void OutGridSize();
+    virtual void RealUpdateScene()=0;
+
+    virtual void OutUICursorPos	()=0;
+	virtual void OutGridSize	()=0;
+	virtual void OutInfo		()=0;
 
     void D3D_CreateStateBlocks();
     void D3D_DestroyStateBlocks();
@@ -102,9 +104,11 @@ public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
 protected:
-    bool 			CommandExt				(int _Command, int p = 0, int p2 = 0);
-    bool 			ApplyShortCutExt		(WORD Key, TShiftState Shift);
-    bool 			ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift);
+    virtual bool	CommandExt				(int _Command, int p = 0, int p2 = 0)=0;
+    virtual bool 	ApplyShortCutExt		(WORD Key, TShiftState Shift)=0;
+    virtual bool 	ApplyGlobalShortCutExt	(WORD Key, TShiftState Shift)=0;
+
+    virtual void	RealQuit				()=0;
 public:
     				TUI				();
     virtual 		~TUI			();
@@ -116,18 +120,15 @@ public:
     int 			GetRenderHeight	()	{   return Device.dwHeight; }
     int 			GetRealWidth	()	{   return Device.m_RealWidth; }
     int 			GetRealHeight	()  {   return Device.m_RealHeight; }
-	IC float 		anglesnap		()  {	return m_AngleSnap; }
-	IC float 		movesnap		()  {	return m_MoveSnap; }
 
     IC float 		ZFar			()	{	return Device.m_Camera.m_Zfar; }
     IC TShiftState	GetShiftState 	()	{	return m_ShiftState; }
 
-    bool 			OnCreate		();
-    void 			OnDestroy		();
+    virtual bool 	OnCreate		(TD3DWindow* w, TPanel* p);
+    virtual void 	OnDestroy		();
 
     const AnsiString&	GetEditFileName	()	{ return m_LastFileName; }
-    char* 				GetCaption		();
-    char* 				GetTitle		();
+    virtual char* 		GetCaption		()=0;
 
     bool 			IsModified		();
 
@@ -172,16 +173,16 @@ public:
     EEditorState 	GetEState			(){ return m_EditorState.back(); }
     bool 			ContainEState		(EEditorState st){ return std::find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
 
-	void 			ProgressInfo		(const char* text, bool bWarn=false);
-	void 			ProgressStart		(float max_val, const char* text);
-	void 			ProgressEnd			();
-	void 			ProgressUpdate		(float val);
-    void 			ProgressInc			(const char* info=0, bool bWarn=false);
+	virtual void 	ProgressInfo		(const char* text, bool bWarn=false)=0;
+	virtual void 	ProgressStart		(float max_val, const char* text)=0;
+	virtual void 	ProgressEnd			()=0;
+	virtual void 	ProgressUpdate		(float val)=0;
+    virtual void 	ProgressInc			(const char* info=0, bool bWarn=false)=0;
 
-    void 			OutCameraPos		();
-    void 			SetStatus			(LPSTR s, bool bOutLog=true);
-    void 			ResetStatus			();
-
+    virtual void 	OutCameraPos		()=0;
+    virtual void 	SetStatus			(LPSTR s, bool bOutLog=true)=0;
+    virtual void 	ResetStatus			()=0;
+    
 	// direct input
 	virtual void 	IR_OnMouseMove		(int x, int y);
 
@@ -194,8 +195,6 @@ public:
 
     bool 			ApplyShortCut		(WORD Key, TShiftState Shift);
     bool 			ApplyGlobalShortCut	(WORD Key, TShiftState Shift);
-
-	void 			ShowContextMenu		(int cls);
 
     void			SetGradient			(u32 color){;}
 
@@ -210,24 +209,20 @@ public:
 
     void			CheckWindowPos		(TForm* form);
 
-    // recent items
-private:    
-	void __fastcall miRecentFilesClick	(TObject *Sender);
-public:
-	void 			AppendRecentFile	(LPCSTR name);
-    LPCSTR 			FirstRecentFile		();
+    virtual LPCSTR 	EditorName			()=0;
+    virtual LPCSTR	EditorDesc			()=0;
 };
 //---------------------------------------------------------------------------
-extern TUI UI;
+extern ECORE_API TUI* UI;  
 //---------------------------------------------------------------------------
 void ResetActionToSelect();
 #define COMMAND0(cmd)		{Command(cmd);bExec=true;}
 #define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
-extern void __fastcall PanelMinMax	(TPanel *pa);
-extern void __fastcall PanelMinimize(TPanel *pa);
-extern void __fastcall PanelMaximize(TPanel *pa);
-extern void __fastcall PanelMinMaxClick		(TObject *sender);
-extern void __fastcall PanelMinimizeClick	(TObject *sender);
-extern void __fastcall PanelMaximizeClick	(TObject *sender);
+extern ECORE_API void __fastcall PanelMinMax		(TPanel *pa);
+extern ECORE_API void __fastcall PanelMinimize		(TPanel *pa);
+extern ECORE_API void __fastcall PanelMaximize		(TPanel *pa);
+extern ECORE_API void __fastcall PanelMinMaxClick	(TObject *sender);
+extern ECORE_API void __fastcall PanelMinimizeClick	(TObject *sender);
+extern ECORE_API void __fastcall PanelMaximizeClick	(TObject *sender);
 //---------------------------------------------------------------------------
 #endif

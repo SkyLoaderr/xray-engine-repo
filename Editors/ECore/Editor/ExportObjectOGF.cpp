@@ -290,8 +290,8 @@ bool CExportObjectOGF::Export(IWriter& F)
     if( m_Source->MeshCount() == 0 ) return false;
 
     AnsiString capt = AnsiString("Build OGF: '")+m_Source->GetName()+"'";
-    UI.ProgressStart(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
-    UI.ProgressInc();
+    UI->ProgressStart(m_Source->MeshCount()+m_Source->SurfaceCount(),capt.c_str());
+    UI->ProgressInc();
 
     CTimer tm;
     tm.Start();
@@ -362,16 +362,16 @@ bool CExportObjectOGF::Export(IWriter& F)
                     }
                 }
             }while(elapsed_faces>0);
-		    UI.ProgressInc();
+		    UI->ProgressInc();
         }
         // mesh fin
         MESH->UnloadPNormals();
         MESH->UnloadFNormals();
-	    UI.ProgressInc();
+	    UI->ProgressInc();
     }
 
     if (!bResult){	
-	    UI.ProgressEnd	();
+	    UI->ProgressEnd	();
     	return 			false;
     }
     
@@ -401,14 +401,14 @@ bool CExportObjectOGF::Export(IWriter& F)
 		BBox.merge	((*split_it)->m_Box);
     }
     F.close_chunk	();
-    UI.ProgressInc	();
+    UI->ProgressInc	();
 
     // BBox (already computed)
     F.open_chunk	(OGF_BBOX);
     F.w				(&BBox,sizeof(Fbox));
     F.close_chunk	();
 
-    UI.ProgressEnd	();
+    UI->ProgressEnd	();
 
     tm.Stop			();
     ELog.Msg		(mtInformation,"Build time: %3.2f sec",float(tm.GetElapsed_ms())/1000.f);

@@ -6,7 +6,7 @@
 #include "FolderLib.h"
 
 //---------------------------------------------------------------------------
-class CListHelper{
+class ECORE_API CListHelper{
 //------------------------------------------------------------------------------
 public:
     IC ListItem* 		FindItem		(ListItemsVec& items,	LPCSTR key, int type)
@@ -28,6 +28,6 @@ public:
     }
 };
 //---------------------------------------------------------------------------
-extern CListHelper LHelper;
+extern ECORE_API CListHelper LHelper;
 //---------------------------------------------------------------------------
 #endif

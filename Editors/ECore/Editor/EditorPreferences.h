@@ -7,7 +7,17 @@
 class TProperties;
 
 //---------------------------------------------------------------------------
-class CEditorPreferences
+enum{
+    epoDrawPivot		= (1<<0),
+    epoDrawAnimPath		= (1<<1),
+    epoDrawJoints		= (1<<2),
+    epoDrawBoneAxis		= (1<<3),
+    epoDrawBoneNames	= (1<<4),
+    epoDrawBoneShapes	= (1<<5),
+    epoShowHint			= (1<<6),
+    epoDrawLOD			= (1<<7),
+};
+class ECORE_API CEditorPreferences
 {
 private:	// User declarations
     TProperties*	m_ItemProps;
@@ -44,8 +54,11 @@ public:
     u32		scene_recent_count;
     BOOL	scene_leave_eo_copy;
     u32		scene_clear_color;
+    AStringVec scene_recent_list;
     // sound
 	float	sound_rolloff;
+    // objects
+    Flags32	object_flags;
 private:
 	void 	__fastcall OnClose	(void);
     void	ApplyValues			();
@@ -55,9 +68,12 @@ public:		// User declarations
     
     void	OnCreate			();
     void	OnDestroy			();
+
+    void 	AppendRecentFile	(LPCSTR name);
+    LPCSTR 	FirstRecentFile		(){return scene_recent_list.empty()?"":scene_recent_list.front().c_str();}
 };
 //---------------------------------------------------------------------------
-extern CEditorPreferences EPrefs;
+extern ECORE_API CEditorPreferences EPrefs;
 //---------------------------------------------------------------------------
 
 #endif

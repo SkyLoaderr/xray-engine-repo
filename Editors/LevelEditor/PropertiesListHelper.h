@@ -6,7 +6,7 @@
 #include "FolderLib.h"                 
 
 //---------------------------------------------------------------------------
-class CPropHelper{
+class ECORE_API CPropHelper{
 	IC PropItem*		CreateItem		(PropItemVec& items, const AnsiString& key, EPropType type, u32 item_flags=0)
     {
     	PropItem* item	= FindItem(items,key,type);
@@ -215,6 +215,6 @@ public:
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------
-extern CPropHelper PHelper;
+extern ECORE_API CPropHelper PHelper;
 //---------------------------------------------------------------------------
 #endif

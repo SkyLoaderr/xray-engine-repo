@@ -29,7 +29,7 @@ void __fastcall TfrmText::FormKeyDown(TObject *Sender, WORD &Key, TShiftState Sh
     if (Key==VK_ESCAPE) ebCancel->Click();
     else if (Shift.Contains(ssCtrl)&&(Key==VK_RETURN)) ebOk->Click();
     else{
-    	UI.ApplyGlobalShortCut(Key, Shift);
+    	UI->ApplyGlobalShortCut(Key, Shift);
     }
 }
 
@@ -39,7 +39,7 @@ void __fastcall TfrmText::FormShow(TObject *Sender)
 	ebApply->Visible 	= !!OnApplyClick;
     ebOk->Enabled       = false;
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

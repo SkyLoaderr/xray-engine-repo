@@ -8,7 +8,6 @@
 #include "render.h"
 #include "GameMtlLib.h"
 #include "ResourceManager.h"
-#include "EditorPreferences.h"
 
 #pragma package(smart_init)
 
@@ -197,7 +196,7 @@ void CRenderDevice::_Create(IReader* F)
     m_SelectionShader.create	("editor\\selection");
 
 	// signal another objects
-    UI.OnDeviceCreate			();           
+    UI->OnDeviceCreate			();           
 	seqDevCreate.Process		(rp_DeviceCreate);
 
 	pSystemFont					= xr_new<CGameFont>("hud_font_small");
@@ -210,7 +209,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 	bReady 						= FALSE;
     m_CurrentShader				= 0;
 
-    UI.OnDeviceDestroy			();
+    UI->OnDeviceDestroy			();
 
 	m_WireShader.destroy		();
 	m_SelectionShader.destroy	();
@@ -247,7 +246,7 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
     RCache.set_xform_project(mProjection);
     RCache.set_xform_world	(Fidentity);
 
-    UI.RedrawScene	();
+    UI->RedrawScene	();
 }
 
 void CRenderDevice::Begin()
@@ -344,9 +343,9 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, ref_geom geom, u32 baseV, u32 start
 
 void CRenderDevice::ReloadTextures()
 {
-	UI.SetStatus("Reload textures...");
+	UI->SetStatus("Reload textures...");
 	Resources->ED_UpdateTextures(0);
-	UI.SetStatus("");
+	UI->SetStatus("");
 }
 
 void CRenderDevice::UnloadTextures()
@@ -376,7 +375,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	CHK_DX(HW.pDevice->SetRenderTarget(0,pRT));
 	CHK_DX(HW.pDevice->SetDepthStencilSurface(pZB));
 
-	UI.Redraw();
+	UI->Redraw();
 
 	// Create temp-surface
 	IDirect3DSurface9*	pFB;
@@ -390,14 +389,14 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	// Image processing
 	u32* pPixel	= (u32*)D.pBits;
 
-//.    UI.ProgressStart(height,"Screenshot making");
+//.    UI->ProgressStart(height,"Screenshot making");
     U32It it 		= pixels.begin();
     for (int h=height-1; h>=0; h--,it+=width){
         LPDWORD dt 	= LPDWORD(u32(pPixel)+u32(D.Pitch*h));
         CopyMemory	(it,dt,sizeof(u32)*width);
-//.	    UI.ProgressInc();
+//.	    UI->ProgressInc();
     }
-//.    UI.ProgressEnd();
+//.    UI->ProgressEnd();
 
     R_CHK(pFB->UnlockRect());
 

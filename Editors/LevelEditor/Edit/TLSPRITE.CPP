@@ -29,7 +29,7 @@ void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize, u32 clr)
     cx				= Device._x2real(P.p.x);
     cy				= Device._y2real(P.p.y);
     if (bFixedSize) sz = Device._x2real(radius)-Device._x2real(0);
-    else			sz = UI.GetRenderWidth()*radius/P.p.w;
+    else			sz = UI->GetRenderWidth()*radius/P.p.w;
     mesh.m[0].p.x = cx-sz;	mesh.m[0].p.y = cy+sz;
     mesh.m[1].p.x = cx-sz;	mesh.m[1].p.y = cy-sz;
     mesh.m[3].p.x = cx+sz;	mesh.m[3].p.y = cy-sz;
@@ -50,7 +50,7 @@ void CTLSprite::Render(Fvector &pos, u32 color, float radius, float angle)
 	float cx		= Device._x2real(P.p.x);
 	float cy		= Device._y2real(P.p.y);
 
-	float sz		= (UI.GetRenderWidth()*radius)/P.p.w;
+	float sz		= (UI->GetRenderWidth()*radius)/P.p.w;
 	if (sz<1.5f) 	return;
 
 	// Rotation
@@ -137,7 +137,7 @@ void CTLSprite::Render( Fvector &pos, u32 color, float radius, const Fvector& D 
 
 	FVF::TL			P;
 	P.transform		(pos,Device.m_FullTransform);
-	float sz		= UI.GetRenderWidth()*radius/P.p.w;
+	float sz		= UI->GetRenderWidth()*radius/P.p.w;
 	float sz0		= radius/P.p.w;//(radius/p0.w)/2;
 	float sz1		= radius/P.p.w;//radius/p1.w;
 	Fvector2		D,R;
@@ -186,12 +186,12 @@ void CTLSprite::Render( Fvector &pos, float alpha, float size, float scale )
 	float			s_da, s_da2, c_da, c_da2;
 	uchar			cc;
 
-	P.s_transform	( pos, UI.m_FullTransform );
+	P.s_transform	( pos, UI->m_FullTransform );
 	float cx		= X_TO_REAL(P.sx);
 	float cy		= Y_TO_REAL(P.sy);
 
-	float dx		= size/P.rhw * scale * UI.GetRenderWidth() / 2;
-	float dy		= size/P.rhw / scale * UI.GetRenderWidth() / 2;
+	float dx		= size/P.rhw * scale * UI->GetRenderWidth() / 2;
+	float dy		= size/P.rhw / scale * UI->GetRenderWidth() / 2;
 
 	cc				= uchar(255.f*alpha);
 	cur.set			(cc,cc,cc,255);
@@ -207,6 +207,6 @@ void CTLSprite::Render( Fvector &pos, float alpha, float size, float scale )
 	mesh.setdepth	( P.sz, P.rhw );
 	mesh.setcolor	( cur );
 
-    CDX( UI.d3d()->DrawPrimitive( D3DPT_TRIANGLESTRIP, FTLVERTEX, &mesh, 4, 0 ));
-    UI.stat->lRenderPolyCount += 2;
+    CDX( UI->d3d()->DrawPrimitive( D3DPT_TRIANGLESTRIP, FTLVERTEX, &mesh, 4, 0 ));
+    UI->stat->lRenderPolyCount += 2;
 }*/

@@ -5,7 +5,6 @@
 #include <ElVCLUtils.hpp>
 #include <ElTools.hpp>
 
-#include "main.h"
 #include "ShaderFunction.h"
 #include "ColorPicker.h"
 #include "ChoseForm.h"
@@ -373,7 +372,7 @@ void __fastcall TItemList::FormShow(TObject *Sender)
     InplaceEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceEdit->Editor->AutoSelect	= true;
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

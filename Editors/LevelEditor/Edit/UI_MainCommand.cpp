@@ -4,14 +4,8 @@
 #pragma hdrstop
 
 #include "ui_main.h"
-#include "UI_Tools.h"
+#include "UI_ToolsCustom.h"
 
-#include "topbar.h"
-#include "leftbar.h"
-#include "bottombar.h"
-
-#include "EditorPreferences.h"
-#include "main.h"
 #include "ImageEditor.h"
 #include "SoundEditor.h"
 #include "d3dutils.h"
@@ -24,7 +18,6 @@
 #include "SoundManager.h"
 #include "ResourceManager.h"
 #include "igame_persistent.h"
-#include "EditorPreferences.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -38,34 +31,37 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         // make interface
 		//----------------
         EPrefs.OnCreate		();
-        if (UI.OnCreate()){
+        if (UI->OnCreate((TD3DWindow*)p1,(TPanel*)p2)){
 			g_pGamePersistent= xr_new<IGame_Persistent>();
             Lib.OnCreate	();
             LALib.OnCreate	();
             SndLib.OnCreate	();
-			if (!Tools.OnCreate()){
+			if (!Tools->OnCreate()){
                 bRes=false;
             	break;
             }
 			Device.seqAppCycleStart.Process(rp_AppCycleStart);
 
+            Command			(COMMAND_RESTORE_UI_BAR);
+            Command			(COMMAND_REFRESH_UI_BAR);
 		    Command			(COMMAND_CLEAR);
 			Command			(COMMAND_RENDER_FOCUS);
-			Command			(COMMAND_CHANGE_ACTION, eaSelect);
+			Command			(COMMAND_CHANGE_ACTION, etaSelect);
         }else{
         	bRes = false;
         }
     	}break;
 	case COMMAND_DESTROY:
+        Command				(COMMAND_SAVE_UI_BAR);
         EPrefs.OnDestroy	();
 		Command				(COMMAND_CLEAR);
 		Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
         xr_delete			(g_pGamePersistent);
         LALib.OnDestroy		();
-		Tools.OnDestroy		();
+		Tools->OnDestroy		();
 		SndLib.OnDestroy	();
 		Lib.OnDestroy		();
-        UI.OnDestroy		();
+        UI->OnDestroy		();
 		Engine.Destroy		();
 		//----------------
     	break;
@@ -76,7 +72,13 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	EPrefs.Edit			();
         break;
 	case COMMAND_CHANGE_ACTION:
-		Tools.ChangeAction((EAction)p1);
+		Tools->SetAction	(ETAction(p1));
+        break;
+	case COMMAND_CHANGE_AXIS:
+    	Tools->SetAxis	(ETAxis(p1));
+        break;
+	case COMMAND_CHANGE_SETTINGS:
+    	Tools->SetSettings(p1,p2);
         break;
 	case COMMAND_SOUND_EDITOR:
     	TfrmSoundLib::EditLib(AnsiString("Sound Editor"));
@@ -98,9 +100,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_RELOAD_TEXTURES:
     	Device.ReloadTextures();
     	break;
-	case COMMAND_CHANGE_AXIS:
-    	fraTopBar->ChangeAxis(p1);
-        break;
 	case COMMAND_CHANGE_SNAP:
         ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
         break;
@@ -114,38 +113,32 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Device.Resources->Evict();
     	break;
     case COMMAND_CHECK_MODIFIED:
-    	bRes = Tools.IsModified();
+    	bRes = Tools->IsModified();
 		break;
 	case COMMAND_EXIT:
-    	bRes = Tools.IfModified();
+    	bRes = Tools->IfModified();
 		break;
 	case COMMAND_SHOW_PROPERTIES:
-        Tools.ShowProperties();
+        Tools->ShowProperties();
         break;
 	case COMMAND_UPDATE_PROPERTIES:
-        Tools.UpdateProperties((bool)p1);
+        Tools->UpdateProperties((bool)p1);
         break;
 	case COMMAND_REFRESH_PROPERTIES:
-        Tools.RefreshProperties();
-        break;
-	case COMMAND_SHOWCONTEXTMENU:
-    	ShowContextMenu(EObjClass(p1));
+        Tools->RefreshProperties();
         break;
 	case COMMAND_ZOOM_EXTENTS:
-		Tools.ZoomObject(p1);
+		Tools->ZoomObject(p1);
     	break;
     case COMMAND_RENDER_WIRE:
     	if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
         else 	Device.dwFillMode 	= D3DFILL_SOLID;
 	    break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible&&m_bReady){
+		if (((TForm*)m_D3DWindow->Owner)->Visible&&m_bReady)
+        {
         	m_D3DWindow->SetFocus();
-            
         }
-    	break;
-    case COMMAND_UPDATE_CAPTION:
-    	frmMain->UpdateCaption();
     	break;
 	case COMMAND_BREAK_LAST_OPERATION:
         if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to break current action?")){
@@ -153,12 +146,26 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             ELog.Msg	(mtInformation,"Execution canceled.");
         }
     	break;
-	case COMMAND_UPDATE_TOOLBAR:
-    	fraLeftBar->UpdateBar();
-    	break;
     case COMMAND_TOGGLE_SAFE_RECT:
-    	psDeviceFlags.set(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
-        frmMain->paWindowResize(0);
+    	psDeviceFlags.set	(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
+        Command				(COMMAND_RENDER_RESIZE);
+    	break;
+	case COMMAND_RENDER_RESIZE:
+        if (psDeviceFlags.is(rsDrawSafeRect)){
+            int w=m_D3DPanel->Width,h=m_D3DPanel->Height,w_2=w/2,h_2=h/2;
+            Irect rect;
+            if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h);
+            else                   			rect.set(0,h_2-0.75f*float(w_2),w,0.75f*w);
+            m_D3DWindow->Left  	= rect.x1;
+            m_D3DWindow->Top  	= rect.y1;
+            m_D3DWindow->Width 	= rect.x2;
+            m_D3DWindow->Height	= rect.y2;
+        }else{
+            m_D3DWindow->Left  	= 0;
+            m_D3DWindow->Top  	= 0;
+            m_D3DWindow->Width 	= m_D3DPanel->Width;
+            m_D3DWindow->Height	= m_D3DPanel->Height;
+        }
     	break;
     case COMMAND_TOGGLE_GRID:
     	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
@@ -191,11 +198,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     RedrawScene();
     return bRes;
 }
-//---------------------------------------------------------------------------
-char* TUI::GetTitle()
-{
-	return _EDITOR_NAME_;
-}
 
 //---------------------------------------------------------------------------
 bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
@@ -207,24 +209,22 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
 	bool bExec = false;
 
-    if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, eaSelect)
+    if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
     if (Shift.Contains(ssCtrl)){
     	if (Key==VK_CANCEL)			COMMAND0(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
             // simple press
-        	if (Key=='S')			COMMAND1(COMMAND_CHANGE_ACTION, eaSelect)
-        	else if (Key=='A')		COMMAND1(COMMAND_CHANGE_ACTION, eaAdd)
-        	else if (Key=='T')		COMMAND1(COMMAND_CHANGE_ACTION, eaMove)
-        	else if (Key=='Y')		COMMAND1(COMMAND_CHANGE_ACTION, eaRotate)
-        	else if (Key=='H')		COMMAND1(COMMAND_CHANGE_ACTION, eaScale)
-        	else if (Key=='Z')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisX)
-        	else if (Key=='X')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisY)
-        	else if (Key=='C')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisZ)
-        	else if (Key=='V')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisZX)
-        	else if (Key=='O')		COMMAND1(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap)
-        	else if (Key=='G')		COMMAND1(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap)
+        	if (Key=='S')			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)
+        	else if (Key=='A')		COMMAND1(COMMAND_CHANGE_ACTION, etaAdd)
+        	else if (Key=='T')		COMMAND1(COMMAND_CHANGE_ACTION, etaMove)
+        	else if (Key=='Y')		COMMAND1(COMMAND_CHANGE_ACTION, etaRotate)
+        	else if (Key=='H')		COMMAND1(COMMAND_CHANGE_ACTION, etaScale)
+        	else if (Key=='Z')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisX)
+        	else if (Key=='X')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisY)
+        	else if (Key=='C')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisZ)
+        	else if (Key=='V')		COMMAND1(COMMAND_CHANGE_AXIS,   etAxisZX)
         	else if (Key=='P')		COMMAND0(COMMAND_EDITOR_PREF)
             else if (Key==VK_OEM_4)	COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
             else if (Key==VK_OEM_6)	COMMAND1(COMMAND_GRID_SLOT_SIZE,true)

@@ -6,7 +6,7 @@
 #include "igame_persistent.h"
 
 #ifdef _EDITOR
-    #include "ui_tools.h"
+    #include "ui_toolscustom.h"
 #else
 	#include "igame_level.h"
 	#include "xr_area.h"
@@ -94,7 +94,7 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
 {
 	BOOL bRes 	= TRUE;
 #ifdef _EDITOR
-    bRes 				= Tools.RayPick	(s,d,dist,0,0);
+    bRes 				= Tools->RayPick	(s,d,dist,0,0);
 #else
 	Collide::rq_result	RQ;
 	CObject* E 			= g_pGameLevel->CurrentViewEntity();

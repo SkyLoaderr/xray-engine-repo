@@ -6,6 +6,7 @@
 #pragma hdrstop
 
 #include "Engine.h"
+#include "ui_main.h"
 
 xrDispatchTable	PSGP;                
 CEngine	Engine;
@@ -46,7 +47,7 @@ void CEngine::Initialize(void)
 	EFS.OnCreate		   	();
 
 	string256               fn;
-    strconcat               (fn,_EDITOR_FILE_NAME_,".log");
+    strconcat               (fn,UI->EditorName(),".log");
     FS.update_path			(fn,_local_root_,fn);
 
 #ifdef _EDITOR

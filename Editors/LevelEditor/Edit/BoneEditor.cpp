@@ -3,8 +3,8 @@
 
 #include "bone.h"
 #include "envelope.h"
-#include "topbar.h"
 #include "GameMtlLib.h"
+#include "ui_toolscustom.h"
 
 void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
 {
@@ -50,7 +50,7 @@ void CBone::ShapeScale(const Fvector& _amount)
         Fvector amount=_amount;
         Fmatrix _IT;_IT.invert(_LTransform());
         _IT.transform_dir(amount,_amount);
-        if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
+        if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
     	shape.box.m_halfsize.add(amount);		
         if (shape.box.m_halfsize.x<EPS) shape.box.m_halfsize.x=EPS;
         if (shape.box.m_halfsize.y<EPS) shape.box.m_halfsize.y=EPS;
@@ -70,7 +70,7 @@ void CBone::ShapeRotate(const Fvector& _amount)
 {
     Fvector amount=_amount;
 	Fmatrix _IT;_IT.invert(_LTransform());
-    if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
+    if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
 	switch (shape.type){
     case SBoneShape::stBox:{
     	Fmatrix R;
@@ -90,7 +90,7 @@ void CBone::ShapeMove(const Fvector& _amount)
 {
     Fvector amount=_amount;
 	Fmatrix _IT;_IT.invert(_LTransform());
-    if (fraTopBar->ebCSParent->Down) _IT.transform_dir(amount);
+    if (Tools->GetSettings(etfCSParent)) _IT.transform_dir(amount);
 	switch (shape.type){
     case SBoneShape::stBox:
     	shape.box.m_translate.add(amount);		
@@ -136,7 +136,7 @@ bool CBone::Pick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix&
 void CBone::BoneRotate(const Fvector& _axis, float angle)
 {
     if (!fis_zero(angle)){
-		if (fraTopBar->ebCSParent->Down){	
+		if (Tools->GetSettings(etfCSParent)){	
         // bind pose CS
             mot_rotate.x += _axis.x*angle; 
             mot_rotate.y += _axis.y*angle;

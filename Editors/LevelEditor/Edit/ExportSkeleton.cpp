@@ -12,7 +12,7 @@
 #include "bone.h"
 #include "motion.h"
 #include "MgcCont3DMinBox.h"
-#include "ui_main.h"          
+#include "ui_main.h"
 #include "SkeletonAnimated.h"
 
 u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
@@ -254,19 +254,19 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
     BOOL b2Link = FALSE;
 
-    UI.ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
-    UI.ProgressInc();
+    UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Export skeleton geometry...");
+    UI->ProgressInc();
 
     xr_vector<FvectorVec>	bone_points;
 	bone_points.resize	(m_Source->BoneCount());
 
     u32 mtl_cnt=0;
-	UI.SetStatus("Split meshes...");
+	UI->SetStatus("Split meshes...");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
         if (!MESH->m_LoadState.is(CEditableMesh::LS_SVERTICES)) MESH->GenerateSVertices();
-	    UI.ProgressInc();
+	    UI->ProgressInc();
         // fill faces
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst = sp_it->second;
@@ -308,9 +308,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         // mesh fin
         MESH->UnloadSVertices();
         MESH->UnloadFNormals();
-	    UI.ProgressInc();
+	    UI->ProgressInc();
     }
-    UI.SetStatus("Make progressive...");
+    UI->SetStatus("Make progressive...");
     // fill per bone vertices
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
 		SkelVertVec& lst = split_it->getV_Verts();
@@ -318,9 +318,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 		    bone_points[sv_it->B0].push_back(sv_it->O0);
         }
         if (m_Source->m_Flags.is(CEditableObject::eoProgressive)) split_it->MakeProgressive();
-		UI.ProgressInc();
+		UI->ProgressInc();
     }
-	UI.ProgressInc();
+	UI->ProgressInc();
 
 	// create OGF
 
@@ -351,15 +351,15 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 		rootBB.merge(split_it->m_Box);
     }
     F.close_chunk();
-    UI.ProgressInc();
+    UI->ProgressInc();
 
 
-    UI.SetStatus("Compute bounding volume...");
+    UI->SetStatus("Compute bounding volume...");
     // BBox (already computed)
     F.open_chunk(OGF_BBOX);
     F.w(&rootBB,sizeof(Fbox));
     F.close_chunk();
-	UI.ProgressInc();
+	UI->ProgressInc();
 
     // BoneNames
     F.open_chunk(OGF_BONE_NAMES);
@@ -387,8 +387,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         F.close_chunk();
     }
 
-	UI.ProgressInc();
-    UI.ProgressEnd();
+	UI->ProgressInc();
+    UI->ProgressEnd();
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -405,8 +405,8 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
      	return false;
     }
 
-    UI.ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
-    UI.ProgressInc();
+    UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
+    UI->ProgressInc();
 
     // mem active motion
     CSMotion* active_motion=m_Source->ResetSAnimation();
@@ -534,10 +534,10 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
         xr_free(_keysT);
 
         F.close_chunk();
-	    UI.ProgressInc();
+	    UI->ProgressInc();
     }
     F.close_chunk();
-    UI.ProgressEnd();
+    UI->ProgressEnd();
 
     // restore active motion
     m_Source->SetActiveSMotion(active_motion);
@@ -553,8 +553,8 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 
     bool bRes=true;
 
-    UI.ProgressStart	(3,"Export skeleton motions defs...");
-    UI.ProgressInc		();
+    UI->ProgressStart	(3,"Export skeleton motions defs...");
+    UI->ProgressInc		();
     // save smparams
     F.open_chunk		(OGF_SMPARAMS2);
     F.w_u16				(xrOGF_SMParamsVersion);
@@ -579,7 +579,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 		F.w_u16(m_Source->BoneCount());
         for (int i=0; i<m_Source->BoneCount(); i++) F.w_u32(i);
     }
-    UI.ProgressInc		();
+    UI->ProgressInc		();
     // motion defs
     SMotionVec& sm_lst 		= m_Source->SMotions();
 	F.w_u16(sm_lst.size());
@@ -605,9 +605,9 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             F.w_float	(motion->fFalloff);
         }
     }
-    UI.ProgressInc		();
+    UI->ProgressInc		();
     F.close_chunk();
-    UI.ProgressEnd();
+    UI->ProgressEnd();
     return bRes;
 }
 

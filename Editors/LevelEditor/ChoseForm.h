@@ -27,7 +27,7 @@
 class EImageThumbnail;
 class TProperties;
 
-class TfrmChoseItem : public TForm
+class ECORE_API TfrmChoseItem : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;

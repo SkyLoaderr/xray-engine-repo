@@ -39,7 +39,7 @@ void __fastcall TfrmLog::ebClearClick(TObject *Sender)
 
 void __fastcall TfrmLog::AddDlgMessage(TMsgDlgType mt, const AnsiString& msg)
 {
-    UI.Command(COMMAND_RENDER_FOCUS);
+    UI->Command(COMMAND_RENDER_FOCUS);
     MessageDlg(msg, mt, TMsgDlgButtons() << mbOK, 0);
 	AddMessage(mt,msg);
 }
@@ -90,7 +90,7 @@ void __fastcall TfrmLog::FormKeyDown(TObject *Sender, WORD &Key,
 {
 	if (Key==VK_ESCAPE)	Close();
     else{
-    	UI.ApplyGlobalShortCut(Key, Shift);
+    	UI->ApplyGlobalShortCut(Key, Shift);
     }
 }
 //---------------------------------------------------------------------------
@@ -117,7 +117,7 @@ void __fastcall TfrmLog::ebCloseClick(TObject *Sender)
 void __fastcall TfrmLog::FormShow(TObject *Sender)
 {
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

@@ -7,7 +7,7 @@
 
 bool TUI::CreateMailslot()
 {
-	AnsiString slot_name = AnsiString("\\\\.\\mailslot\\")+AnsiString(_EDITOR_FILE_NAME_);
+	AnsiString slot_name = AnsiString("\\\\.\\mailslot\\")+AnsiString(UI->EditorName());
     hMailSlot = ::CreateMailslot(slot_name.c_str(),
         0,                             // no maximum message size
         MAILSLOT_WAIT_FOREVER,         // no time-out for operations
@@ -61,7 +61,7 @@ void TUI::OnReceiveMail(LPCSTR msg)
 		_GetItem(msg,0,p[0],' ');
         if (cnt>1) _GetItems(msg,1,cnt,p[1],' ');
         if (p[0]=="exit"){
-        	ELog.DlgMsg(mtInformation,"'%s EDITOR': Critical update!",AnsiString(_EDITOR_FILE_NAME_).UpperCase());
+        	ELog.DlgMsg(mtInformation,"'%s EDITOR': Critical update!",AnsiString(UI->EditorName()).UpperCase());
             while (1){
             	if (Command(COMMAND_EXIT)){
 	                Command(COMMAND_QUIT);
@@ -69,13 +69,13 @@ void TUI::OnReceiveMail(LPCSTR msg)
                 }
             }
         }else if (p[0]=="quit"){
-        	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(_EDITOR_FILE_NAME_).UpperCase());
+        	ELog.Msg(mtInformation,"'%s EDITOR': Super critical update!",AnsiString(UI->EditorName()).UpperCase());
         	Command(COMMAND_SAVE_BACKUP);
         	Command(COMMAND_QUIT);
         }else if (p[0]=="info"){
-        	if (cnt>1) ELog.DlgMsg(mtInformation,"'%s EDITOR': %s",AnsiString(_EDITOR_FILE_NAME_).UpperCase(),p[1].c_str());
+        	if (cnt>1) ELog.DlgMsg(mtInformation,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase(),p[1].c_str());
         }else if (p[0]=="error"){
-        	if (cnt>1) ELog.DlgMsg(mtError,"'%s EDITOR': %s",AnsiString(_EDITOR_FILE_NAME_).UpperCase(),p[1].c_str());
+        	if (cnt>1) ELog.DlgMsg(mtError,"'%s EDITOR': %s",AnsiString(UI->EditorName()).UpperCase(),p[1].c_str());
         }
     }
 }

@@ -19,7 +19,7 @@ public:
 	virtual u32			get_height			()				{ return Device.dwHeight;	}
 };
 
-class	CRender{
+class	ECORE_API CRender{
     IRender_Target			Target;
     Fmatrix					current_matrix;
 public:
@@ -99,7 +99,7 @@ IC  float   CalcSSA(Fvector& C, float R)
     float distSQ  = Device.m_Camera.GetPosition().distance_to_sqr(C);
     return  R*R/distSQ;
 }
-extern CRender  RImplementation;
-extern CRender*	Render;
+extern ECORE_API CRender  	RImplementation;
+extern ECORE_API CRender*	Render;
 
 #endif

@@ -7,7 +7,7 @@
 // refs
 class CEditableObject;
 
-class EDetail: public CDetail{
+class ECORE_API EDetail: public CDetail{
 	friend class EDetailManager;
 	friend class CDetailManager;
     friend class TfrmDOShuffle;

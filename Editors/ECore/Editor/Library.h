@@ -12,7 +12,7 @@ class CEditableObject;
 
 DEFINE_MAP_PRED(AnsiString,CEditableObject*,EditObjMap,EditObjPairIt,astr_pred);
 //----------------------------------------------------
-class ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
+class ECORE_API ELibrary:	public pureDeviceCreate, public pureDeviceDestroy
 {
 	bool				m_bReady;
 	friend class TfrmChoseObject;
@@ -46,7 +46,7 @@ public:
 	virtual		void	OnDeviceDestroy		();
 };
 
-extern ELibrary Lib;
+extern ECORE_API ELibrary Lib;
 //----------------------------------------------------
 #endif /*_INCDEF_Library_H_*/
 

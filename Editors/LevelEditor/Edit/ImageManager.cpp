@@ -8,7 +8,6 @@
 #include "ui_main.h"
 #include "EditObject.h"
 #include "ResourceManager.h"
-#include "EditorPreferences.h"
 CImageManager ImageLib;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -255,7 +254,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS.update_path(ltx_nm,_game_textures_,"textures.ltx");
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
-    if (bProgress) UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
+    if (bProgress) UI->ProgressStart(M_BASE.size(),"Synchronize textures...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -311,13 +310,13 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
             }
 		}
 		if (THM) xr_delete(THM);
-		if (UI.NeedAbort()) break;
-        if (bProgress) UI.ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
+		if (UI->NeedAbort()) break;
+        if (bProgress) UI->ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
     }
 
     xr_delete(ltx_ini);
     
-    if (bProgress) UI.ProgressEnd();
+    if (bProgress) UI->ProgressEnd();
     // lock rescanning
     FS.unlock_rescan	();
 }
@@ -441,7 +440,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
 }
 void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
 {
-	UI.ProgressStart(files.size(),"Check texture compliance: ");
+	UI->ProgressStart(files.size(),"Check texture compliance: ");
     FS_QueryPairIt it	= files.begin();
 	FS_QueryPairIt _E 	= files.end();
 	for (; it!=_E; it++){
@@ -451,10 +450,10 @@ void CImageManager::CheckCompliance(FS_QueryMap& files, FS_QueryMap& compl)
     	if (!CheckCompliance(fname.c_str(),val))
         	ELog.Msg(mtError,"Bad texture: '%s'",it->first.c_str());
         compl.insert			(mk_pair(it->first,FS_QueryItem(it->second.size,iFloor(val))));
-    	UI.ProgressInc	(it->first.c_str());
-		if (UI.NeedAbort()) break;
+    	UI->ProgressInc	(it->first.c_str());
+		if (UI->NeedAbort()) break;
     }
-	UI.ProgressEnd();
+	UI->ProgressEnd();
 }
 
 IC void SetCamera(float angle, const Fvector& C, float height, float radius, float dist)
@@ -693,11 +692,11 @@ void CImageManager::RefreshTextures(AStringVec* modif)
 {
     if (modif) Device.Resources->ED_UpdateTextures(modif);
 	else{
-		UI.SetStatus("Refresh textures...");
+		UI->SetStatus("Refresh textures...");
     	AStringVec modif_files;
     	ImageLib.SynchronizeTextures(true,true,false,0,&modif_files);
         Device.Resources->ED_UpdateTextures(&modif_files);
-		UI.SetStatus("");
+		UI->SetStatus("");
     }
 }
 

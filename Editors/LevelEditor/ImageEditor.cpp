@@ -59,7 +59,7 @@ void __fastcall TfrmImageLib::EditLib(AnsiString& title, bool bImport)
     }
 
     form->ShowModal();
-    UI.RedrawScene();
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 
@@ -123,7 +123,7 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
     InitItemsList		();
 	// check window position
-	UI.CheckWindowPos	(this);
+	UI->CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
@@ -167,10 +167,10 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    	if (Key==VK_CANCEL)		UI->Command(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Key==VK_ESCAPE){
-            if (bFormLocked)	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+            if (bFormLocked)	UI->Command(COMMAND_BREAK_LAST_OPERATION);
             Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
         }
     }
@@ -190,7 +190,7 @@ void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
 void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
 {
 	if (bFormLocked){
-		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+		UI->Command(COMMAND_BREAK_LAST_OPERATION);
     	return;
     }
 
@@ -273,11 +273,11 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
     string256 fn;
     FS_QueryPairIt it		= texture_map.begin();
     FS_QueryPairIt _E		= texture_map.end();
-    UI.ProgressStart		(texture_map.size(),"Export association");
+    UI->ProgressStart		(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
         ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
-	    UI.ProgressInc(it->first.c_str());
+	    UI->ProgressInc(it->first.c_str());
         if (m_Thm->Valid()&&(m_Thm->_Format().flags.is(STextureParams::flHasDetailTexture))){
         	AnsiString det;
             string128 src;
@@ -287,9 +287,9 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 	    	ini->w_string("association", src, det.c_str());
         }
         xr_delete(m_Thm);
-		if (UI.NeedAbort()){ bRes=false; break; }
+		if (UI->NeedAbort()){ bRes=false; break; }
     }
-    UI.ProgressEnd();
+    UI->ProgressEnd();
 
 	UnlockForm();
 

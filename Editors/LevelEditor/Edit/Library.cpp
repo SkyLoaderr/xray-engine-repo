@@ -9,7 +9,6 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "ui_main.h"
-#include "EditorPreferences.h"
 
 //----------------------------------------------------
 ELibrary Lib;
@@ -134,7 +133,7 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm)
 {
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
-//.    UI.ProgressInfo		(nm);
+//.    UI->ProgressInfo		(nm);
     AnsiString name		= AnsiString(nm).LowerCase();
     // file exist - find in already loaded
     CEditableObject* m_EditObject = 0;

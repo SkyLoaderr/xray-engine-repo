@@ -5,8 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "bottombar.h"
-#include "topbar.h"
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"
@@ -79,8 +77,8 @@ void CCustomObject::Select( int flag )
 {
     if (m_CO_Flags.is(flVisible)&&(!!m_CO_Flags.is(flSelected)!=flag)){ 
         m_CO_Flags.set		(flSelected,(flag==-1)?(m_CO_Flags.is(flSelected)?FALSE:TRUE):flag);
-        UI.RedrawScene		();
-        UI.Command			(COMMAND_UPDATE_PROPERTIES);
+        UI->RedrawScene		();
+        UI->Command			(COMMAND_UPDATE_PROPERTIES);
     }
 }
 
@@ -88,7 +86,7 @@ void CCustomObject::Show( BOOL flag )
 {
 	m_CO_Flags.set	   	(flVisible,flag);
     if (!m_CO_Flags.is(flVisible)) m_CO_Flags.set(flSelected, FALSE);
-    UI.RedrawScene();
+    UI->RedrawScene();
 };
 
 void CCustomObject::Lock( BOOL flag )
@@ -183,7 +181,7 @@ void CCustomObject::OnFrame()
 void CCustomObject::Render(int priority, bool strictB2F)
 {
 	if ((1==priority)&&(false==strictB2F)){
-        if (fraBottomBar->miDrawObjectsPivot->Checked&&Selected()){
+        if (EPrefs.object_flags.is(epoDrawPivot)&&Selected()){
             Device.SetShader(Device.m_WireShader);
             DU.DrawObjectAxis(FTransformRP,0.1f,Selected());
         }
@@ -193,7 +191,7 @@ void CCustomObject::Render(int priority, bool strictB2F)
 }
 
 bool CCustomObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest){
-	float dist = UI.ZFar();
+	float dist = UI->ZFar();
 	if ((bRayTest&&RayPick(dist,start,dir))||!bRayTest){
 		Select(flag);
         return true;

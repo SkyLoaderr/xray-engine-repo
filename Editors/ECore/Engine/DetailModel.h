@@ -2,7 +2,7 @@
 #define DetailModelH
 #pragma once
 
-class CDetail		: public IRender_DetailModel
+class ECORE_API CDetail		: public IRender_DetailModel
 {
 public:
 	void			Load		(IReader* S);

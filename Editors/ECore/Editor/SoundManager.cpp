@@ -225,7 +225,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     
     BOOL bUpdated = FALSE;
     
-    if (bProgress) UI.ProgressStart(M_BASE.size(),"Synchronize sounds...");
+    if (bProgress) UI->ProgressStart(M_BASE.size(),"Synchronize sounds...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -262,11 +262,11 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
             bUpdated = TRUE;
 		}
 		if (THM) xr_delete(THM);
-		if (UI.NeedAbort()) break;
-        if (bProgress) UI.ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
+		if (UI->NeedAbort()) break;
+        if (bProgress) UI->ProgressInc(bUpdated?AnsiString(base_name+" - UPDATED.").c_str():base_name.c_str(),bUpdated);
     }
 
-    if (bProgress) UI.ProgressEnd();
+    if (bProgress) UI->ProgressEnd();
     // lock rescanning
     FS.unlock_rescan	();
 }
@@ -277,9 +277,9 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 //------------------------------------------------------------------------------
 void CSoundManager::RefreshSounds(bool bSync)
 {
-	UI.SetStatus("Refresh sounds...");
+	UI->SetStatus("Refresh sounds...");
     if (bSync) SynchronizeSounds(true,true,false,0,0);
     Sound->refresh_sources();
-	UI.SetStatus("");
+	UI->SetStatus("");
 }
 

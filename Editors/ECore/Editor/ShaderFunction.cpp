@@ -226,7 +226,7 @@ void __fastcall TfrmShaderFunction::FormClose(TObject *Sender,
 void __fastcall TfrmShaderFunction::FormShow(TObject *Sender)
 {
 	// check window position
-	UI.CheckWindowPos(this);
+	UI->CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 

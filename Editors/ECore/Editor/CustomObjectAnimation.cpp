@@ -8,14 +8,13 @@
 #include "ui_main.h"
 #include "PropertiesList.h"
 #include "PropertiesListHelper.h"
-#include "bottombar.h"
 
 void __fastcall CCustomObject::OnMotionableChange(PropValue* sender)
 {
 	if (m_CO_Flags.is(flMotion)){
     	m_Motion		= xr_new<COMotion>();
         m_MotionParams	= xr_new<SAnimParams>();
-        UI.Command	(COMMAND_UPDATE_PROPERTIES);
+        UI->Command	(COMMAND_UPDATE_PROPERTIES);
     }else{
     	xr_delete		(m_Motion);
     	xr_delete		(m_MotionParams);
@@ -70,7 +69,7 @@ void CCustomObject::AnimationDrawPath()
     // motion path
 	VERIFY (m_Motion);
 #ifdef _LEVEL_EDITOR
-	if (fraBottomBar->miDrawObjectAnimPath->Checked){
+	if (EPrefs.object_flags.is(epoDrawAnimPath)){
         float fps 				= m_Motion->FPS();
         float min_t				= (float)m_Motion->FrameStart()/fps;
         float max_t				= (float)m_Motion->FrameEnd()/fps;
@@ -141,7 +140,7 @@ void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bMod
     }break;
     }
     AnimationUpdate			(m_MotionParams->Frame());
-    UI.Command				(COMMAND_UPDATE_PROPERTIES);
+    UI->Command				(COMMAND_UPDATE_PROPERTIES);
     bModif = false;
 }
 
@@ -208,7 +207,7 @@ void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif
             m_MotionParams->Set	(m_Motion);
             AnimationUpdate		(m_MotionParams->Frame());
 			bModif 				= true;
-		    UI.Command			(COMMAND_UPDATE_PROPERTIES);
+		    UI->Command			(COMMAND_UPDATE_PROPERTIES);
         }
     break;
     case 1:
@@ -221,7 +220,7 @@ void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif
 void __fastcall	CCustomObject::OnMotionFrameChange(PropValue* value)
 {
 	m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
-    UI.Command			(COMMAND_UPDATE_PROPERTIES);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void __fastcall	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
@@ -231,7 +230,7 @@ void __fastcall	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
 	m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
     m_MotionParams->bPlay= FALSE;
     AnimationUpdate		(m_MotionParams->Frame());
-    UI.Command			(COMMAND_UPDATE_PROPERTIES);
+    UI->Command			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void __fastcall	CCustomObject::OnMotionCameraViewChange(PropValue* value)

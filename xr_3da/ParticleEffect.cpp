@@ -6,7 +6,7 @@
 #include "ParticleEffect.h"
 
 #ifdef _EDITOR
-	#include "UI_Tools.h"
+	#include "UI_ToolsCustom.h"
 #endif
 #ifdef _PARTICLE_EDITOR
 	#include "ParticleEffectActions.h"
@@ -134,7 +134,7 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
             if (dist>=EPS){
             	dir.div	(dist);
 #ifdef _EDITOR                
-                if (Tools.RayPick(m.posB,dir,dist,&pt,&n)){
+                if (Tools->RayPick(m.posB,dir,dist,&pt,&n)){
 #else
                 Collide::rq_result	RQ;
                 if (g_pGameLevel->ObjectSpace.RayPick(m.posB,dir,dist,Collide::rqtBoth,RQ)){	

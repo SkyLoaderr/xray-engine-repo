@@ -11,7 +11,6 @@
 #include "ui_main.h"
 #include "render.h"
 #include "PropertiesListHelper.h"
-#include "bottombar.h"
 #include "ResourceManager.h"
 #include "ImageManager.h"
 
@@ -120,7 +119,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     }else
 #endif
     {
-/*		//.
+/*		//?
 
 		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
 /*/
@@ -362,7 +361,7 @@ bool CEditableObject::PrepareSkeletonOGF(IWriter& F)
 
 void __fastcall CEditableObject::OnChangeTransform(PropValue* sender)
 {
-	UI.RedrawScene();
+	UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

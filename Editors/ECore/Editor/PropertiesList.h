@@ -24,7 +24,7 @@
 
 #define TElFString ::TElFString
 
-class TProperties : public TForm
+class ECORE_API TProperties : public TForm
 {
 __published:	// IDE-managed Components
 	TElTree 			*tvProperties;

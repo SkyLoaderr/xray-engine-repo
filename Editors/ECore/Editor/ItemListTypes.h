@@ -5,7 +5,7 @@
 #include "ElTree.hpp"
 //---------------------------------------------------------------------------
 
-class ListItem{
+class ECORE_API ListItem{
 	friend class		CListHelper;
     friend class		TItemList;
     AnsiString			key;

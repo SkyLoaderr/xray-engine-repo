@@ -2,13 +2,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "EditorPreferences.h"
 #include "PropertiesList.h"
 #include "ui_main.h"
-#include "ui_tools.h"
+#include "ui_toolscustom.h"
 //---------------------------------------------------------------------------
-
 CEditorPreferences EPrefs;
+//---------------------------------------------------------------------------
 
 CEditorPreferences::CEditorPreferences()
 {
@@ -25,8 +24,8 @@ CEditorPreferences::CEditorPreferences()
     cam_sens_rot		= 0.6f;
     cam_sens_move		= 0.6f;
 	// tools mouse
-    tools_sens_rot		= 0.3f;
     tools_sens_move		= 0.3f;
+    tools_sens_rot		= 0.3f;
     tools_sens_scale	= 0.3f;
     // box pick
     bp_lim_depth		= TRUE;
@@ -46,32 +45,38 @@ CEditorPreferences::CEditorPreferences()
     scene_clear_color	= DEFAULT_CLEARCOLOR;
     // sounds
     sound_rolloff		= 1.f;
+    // objects
+    object_flags.zero	();
 }
+//---------------------------------------------------------------------------
 
 void CEditorPreferences::ApplyValues()
 {
-    UI.m_AngleSnap 	= snap_angle;
-    UI.m_MoveSnap  	= snap_move;
+	Tools->m_MoveSnap		= snap_move;
+	Tools->m_MoveSnapTo		= snap_moveto;
+	Tools->m_RotateSnapAngle= snap_angle;
 
     Device.m_Camera.SetViewport(view_np, view_fp, rad2deg(view_fov));
-    Tools.SetFog	(fog_color,fog_fogness);
+    Tools->SetFog	(fog_color,fog_fogness);
 
-    UI.m_MouseSM	= 0.2f*tools_sens_move*tools_sens_move;
-    UI.m_MouseSR	= 0.02f*tools_sens_rot*tools_sens_rot;
-    UI.m_MouseSS	= 0.02f*tools_sens_scale*tools_sens_scale;
+    UI->m_MouseSM	= 0.2f*tools_sens_move*tools_sens_move;
+    UI->m_MouseSR	= 0.02f*tools_sens_rot*tools_sens_rot;
+    UI->m_MouseSS	= 0.02f*tools_sens_scale*tools_sens_scale;
 
     Device.m_Camera.SetSensitivity	(cam_sens_move, cam_sens_rot);
     Device.m_Camera.SetFlyParams	(cam_fly_speed, cam_fly_alt);
 
-    UI.Command		(COMMAND_UPDATE_GRID);
+    UI->Command		(COMMAND_UPDATE_GRID);
 
 	psSoundRolloff	= sound_rolloff;
 }
+//---------------------------------------------------------------------------
 
 void __fastcall CEditorPreferences::OnClose	()
 {
 	ApplyValues	();	
 }
+//---------------------------------------------------------------------------
 
 void CEditorPreferences::Edit()
 {
@@ -85,13 +90,13 @@ void CEditorPreferences::Edit()
     PHelper.CreateColor	(props,"Fog\\Color",					&fog_color	);
     PHelper.CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 	100.f);
 
-    PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
     PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Move",		&cam_sens_move);
+    PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
     PHelper.CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 	100.f);
     PHelper.CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 	1000.f);
 
-    PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
     PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Move",		&tools_sens_move);
+    PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
     PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Scale",		&tools_sens_scale);
 
     PHelper.CreateBOOL	(props,"Box Pick\\Limited Depth",		&bp_lim_depth);
@@ -112,13 +117,24 @@ void CEditorPreferences::Edit()
 
     PHelper.CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
 
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Show Hint",					&object_flags, 	epoShowHint);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw Pivot",				&object_flags, 	epoDrawPivot);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw Animation Path",		&object_flags, 	epoDrawAnimPath);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Draw LOD",					&object_flags, 	epoDrawLOD);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Joints",		&object_flags, 	epoDrawJoints);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Axis",	&object_flags, 	epoDrawBoneAxis);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
+    PHelper.CreateFlag<Flags32>(props,"Objects\\Skeleton\\Draw Bone Shapes",&object_flags, 	epoDrawBoneShapes);
+    
 	m_ItemProps->AssignItems		(props,true);
     m_ItemProps->ShowPropertiesModal();
 }
+//---------------------------------------------------------------------------
 
 #define R_FLOAT_SAFE(S,L,D)	I->line_exist(S,L)?I->r_float(S,L):D;
 #define R_U32_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_u32(S,L):D;
 #define R_BOOL_SAFE(S,L,D) 	I->line_exist(S,L)?I->r_bool(S,L):D;
+#define R_STRING_SAFE(S,L,D)I->line_exist(S,L)?I->r_string(S,L):D;
 
 void CEditorPreferences::OnCreate()
 {
@@ -126,6 +142,10 @@ void CEditorPreferences::OnCreate()
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
 
+    psDeviceFlags.flags		= R_U32_SAFE	("editor_prefs","device_flags"		,psDeviceFlags.flags);
+
+    Tools->m_Settings.flags	= R_U32_SAFE	("editor_prefs","tools_settings",	Tools->m_Settings.flags);
+    
     view_np				= R_FLOAT_SAFE	("editor_prefs","view_np"			,view_np		 	);
     view_fp				= R_FLOAT_SAFE	("editor_prefs","view_fp"			,view_fp		 	);
     view_fov			= R_FLOAT_SAFE	("editor_prefs","view_fov"			,view_fov			);
@@ -138,8 +158,8 @@ void CEditorPreferences::OnCreate()
     cam_sens_rot		= R_FLOAT_SAFE	("editor_prefs","cam_sens_rot"		,cam_sens_rot		);
     cam_sens_move		= R_FLOAT_SAFE	("editor_prefs","cam_sens_move"		,cam_sens_move		);
 
-    tools_sens_rot		= R_FLOAT_SAFE	("editor_prefs","tools_sens_rot"	,tools_sens_rot		);
     tools_sens_move		= R_FLOAT_SAFE	("editor_prefs","tools_sens_move"	,tools_sens_move  	);
+    tools_sens_rot		= R_FLOAT_SAFE	("editor_prefs","tools_sens_rot"	,tools_sens_rot		);
     tools_sens_scale	= R_FLOAT_SAFE	("editor_prefs","tools_sens_scale"	,tools_sens_scale	);
     
     bp_lim_depth		= R_BOOL_SAFE	("editor_prefs","bp_lim_depth"		,bp_lim_depth		);
@@ -160,12 +180,21 @@ void CEditorPreferences::OnCreate()
 
     sound_rolloff		= R_FLOAT_SAFE	("editor_prefs","sound_rolloff"		,sound_rolloff   	);
 
+    object_flags.flags	= R_U32_SAFE	("editor_prefs","object_flags"		,object_flags.flags );
+
+	// read recent list    
+    for (u32 i=0; i<scene_recent_count; i++){
+	    LPCSTR fn		= R_STRING_SAFE	("editor_prefs",AnsiString().sprintf("recent_files_%d",i).c_str(),"" );
+        if (fn&&fn[0]) 	scene_recent_list.push_back(fn);
+    }
+
     xr_delete	(I);
 
     ApplyValues			();
 
 	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,OnClose);
 }
+//---------------------------------------------------------------------------
 
 void CEditorPreferences::OnDestroy()
 {
@@ -174,6 +203,10 @@ void CEditorPreferences::OnDestroy()
 	AnsiString 	fn;
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
+
+    I->w_u32	("editor_prefs","device_flags",		psDeviceFlags.flags	);
+
+    I->w_u32	("editor_prefs","tools_settings",	Tools->m_Settings.flags	);
 
     I->w_float	("editor_prefs","view_np",			view_np			);
     I->w_float	("editor_prefs","view_fp",			view_fp			);
@@ -193,7 +226,7 @@ void CEditorPreferences::OnDestroy()
 
     I->w_bool	("editor_prefs","bp_lim_depth",		bp_lim_depth	);
     I->w_bool	("editor_prefs","bp_lim_depth",		bp_cull			);
-    I->w_float	("editor_prefs","tools_sens_rot",	bp_depth_tolerance	);
+    I->w_float	("editor_prefs","bp_depth_tolerance",bp_depth_tolerance	);
 
     I->w_float	("editor_prefs","snap_angle",		snap_angle		);
     I->w_float	("editor_prefs","snap_move",		snap_move		);
@@ -209,5 +242,28 @@ void CEditorPreferences::OnDestroy()
 
     I->w_float	("editor_prefs","sound_rolloff",	sound_rolloff 	);
 
+    I->w_u32	("editor_prefs","object_flags",		object_flags.flags);
+
+    for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++)
+		I->w_string("editor_prefs",AnsiString().sprintf("recent_files_%d",it-scene_recent_list.begin()).c_str(),it->c_str());
+
 	xr_delete	(I);
 }
+//---------------------------------------------------------------------------
+
+void CEditorPreferences::AppendRecentFile(LPCSTR name)
+{
+    for (AStringIt it=scene_recent_list.begin(); it!=scene_recent_list.end(); it++){
+    	if (*it==name){
+        	scene_recent_list.erase	(it);
+            break;
+        }
+    }
+	scene_recent_list.insert(scene_recent_list.begin(),name);
+	while (scene_recent_list.size()>=EPrefs.scene_recent_count) 
+    	scene_recent_list.pop_back();
+
+    UI->Command				(COMMAND_REFRESH_UI_BAR);
+}
+//---------------------------------------------------------------------------
+

@@ -10,7 +10,7 @@
 #include "ExtBtn.hpp"
 #include "mxPlacemnt.hpp"
 
-class TfrmLog : public TForm
+class ECORE_API TfrmLog : public TForm
 {
 __published:	// IDE-managed Components
     TPanel *Panel1;
