@@ -1,5 +1,7 @@
 function object_init    (obj)
 	local obj_ini = obj:spawn_ini()
+	if obj_ini == nil then return end
+	
 	if obj_ini:section_exist("tip") == true then
 		if obj_ini:line_exist("tip", "label") == true then
 			local ll = obj_ini:r_string("tip", "label")
@@ -20,7 +22,8 @@ end
 function object_info_callback(obj)
 	local obj_ini = obj:spawn_ini()	
 	local actor = level.actor()
-	if actor ~= nil and obj_ini:section_exist("info") == true then
+	if obj_ini == nil or actor == nil then return end
+	if obj_ini:section_exist("info") == true then
 		if obj_ini:line_exist("info", "id") == true then
 			local label = obj_ini:r_string("info", "id")
 			actor:give_info_portion(label)			
