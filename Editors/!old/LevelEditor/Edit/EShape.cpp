@@ -333,7 +333,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                 }break;
                 case cfBox:
                     Fmatrix B			= it->data.box;
-                    B.mulA				(_Transform());
+                    B.mulA				(_Transform()); 
                     RCache.set_xform_world(B);
                     DU.DrawIdentBox		(true,true,clr,m_DrawEdgeColor);
                 break;

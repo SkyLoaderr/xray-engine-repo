@@ -187,6 +187,7 @@ bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
     if (cform){
 	    CEditShape* shape		= dynamic_cast<CEditShape*>(owner->m_AttachedObject); R_ASSERT(shape);
 		shape->ApplyScale		();
+        owner->PScale 			= shape->PScale;
     	cform->assign_shapes	(&*shape->GetShapes().begin(),shape->GetShapes().size());
     }
     // end
@@ -321,7 +322,7 @@ bool CSpawnPoint::AttachObject(CCustomObject* obj)
     // реальный атач
 	if (bAllowed){
         DetachObject();
-        m_AttachedObject = obj;
+        m_AttachedObject = obj;           
         m_AttachedObject->OnAttach(this);
         PPosition 	= m_AttachedObject->PPosition;
         PRotation 	= m_AttachedObject->PRotation;
@@ -609,6 +610,10 @@ bool CSpawnPoint::Load(IReader& F){
 
 	UpdateTransform	();
 
+	// BUG fix
+    CEditShape* shape	= dynamic_cast<CEditShape*>(m_AttachedObject);
+    if (shape) 	PScale 	= shape->PScale;
+    
     return true;
 }
 
