@@ -668,3 +668,48 @@ bool CInventoryItem::ready_to_kill		() const
 {
 	return				(false);
 }
+
+void CInventoryItem::activate_physic_shell()
+{
+	CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+	if (!E)
+	{
+		inherited::activate_physic_shell();
+		return;
+	};
+	UpdateXForm();
+
+	CGameObject::activate_physic_shell();
+}
+
+void CInventoryItem::UpdateXForm	()
+{
+	if (0==H_Parent())	return;
+
+	// Get access to entity and its visual
+	CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+
+	if(!E) return;
+	R_ASSERT		(E);
+	CKinematics*	V		= PKinematics	(E->Visual());
+	VERIFY			(V);
+
+	// Get matrices
+	int				boneL,boneR,boneR2;
+	E->g_WeaponBones(boneL,boneR,boneR2);
+	//	if ((HandDependence() == 1) || (STATE == eReload) || (!E->g_Alive()))
+	//		boneL = boneR2;
+	V->Calculate	();
+	Fmatrix& mL		= V->LL_GetTransform(u16(boneL));
+	Fmatrix& mR		= V->LL_GetTransform(u16(boneR));
+	// Calculate
+	Fmatrix			mRes;
+	Fvector			R,D,N;
+	D.sub			(mL.c,mR.c);	D.normalize_safe();
+	R.crossproduct	(mR.j,D);		R.normalize_safe();
+	N.crossproduct	(D,R);			N.normalize_safe();
+	mRes.set		(R,N,D,mR.c);
+	mRes.mulA_43	(E->XFORM());
+	//	UpdatePosition	(mRes);
+	Position().set(mRes.c);
+}

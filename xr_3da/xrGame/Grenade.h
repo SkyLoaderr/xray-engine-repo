@@ -65,6 +65,8 @@ protected:
 	HUD_SOUND		sndCheckout;
 	ESoundTypes		m_eSoundCheckout;
 
+protected:
+	virtual	void			UpdateXForm			()		{ CMissile::UpdateXForm(); };
 public:
 	virtual void			make_Interpolation	();
 	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
