@@ -13,6 +13,11 @@ class CAI_PseudoDog : public CAI_Biting, public CJumping {
 	float			m_anger_hunger_threshold;
 	float			m_anger_loud_threshold;
 
+	TTime			m_time_became_angry;
+
+
+	IState			*stateGrowling;
+
 public:
 					CAI_PseudoDog		();
 	virtual			~CAI_PseudoDog		();	

@@ -136,7 +136,7 @@ void CAI_Flesh::StateSelector()
 			case eWeak:			SetState(stateAttack); break;
 		}
 	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			SetState(statePanic);		
+		if (hear_dangerous_sound)			SetState(stateExploreNDE);		
 		if (hear_interesting_sound)			SetState(stateExploreNDE);	
 	} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
 											SetState(stateEat);	

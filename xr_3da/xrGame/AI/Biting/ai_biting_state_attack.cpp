@@ -345,7 +345,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.SetSpecParams(ASP_PSI_ATTACK);
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundPsyAttack);
 
-			time_next_psi_attack			= m_dwCurrentTime + Random.randI(3000,6000);
+			time_next_psi_attack			= m_dwCurrentTime + Random.randI(2000,4000);
 			break;
 	}
 

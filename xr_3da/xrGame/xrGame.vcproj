@@ -1991,6 +1991,12 @@
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
 					</File>
+					<File
+						RelativePath=".\ai\pseudodog\pseudodog_state_growling.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\pseudodog\pseudodog_state_growling.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="ai_script"
