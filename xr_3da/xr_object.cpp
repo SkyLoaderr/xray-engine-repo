@@ -110,9 +110,6 @@ void CObject::Load				(LPCSTR section )
 	mRotate.identity			();
 	UpdateTransform				();
 
-	// Actual loading
-	R_ASSERT					( g_pGameLevel );
-
 	// Visual and light-track
 	if (pSettings->line_exist(section,"visual")) 
 		cNameVisual_set	(pSettings->r_string(section,"visual"));
