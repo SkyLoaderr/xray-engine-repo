@@ -754,6 +754,14 @@ SOURCE=.\Blenders\blender_light.h
 # End Source File
 # Begin Source File
 
+SOURCE=".\Blenders\Blender_Lm(EbB).cpp"
+# End Source File
+# Begin Source File
+
+SOURCE=".\Blenders\Blender_Lm(EbB).h"
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blenders\Blender_LmBmmD.cpp
 # End Source File
 # Begin Source File

@@ -1,45 +1,43 @@
-// BlenderDefault.cpp: implementation of the CBlender_LaEmB class.
+// BlenderDefault.cpp: implementation of the CBlender_LmEbB class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "blender_LaEmB.h"
+#include "blender_LmEbB.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_LaEmB::CBlender_LaEmB	()
+CBlender_LmEbB::CBlender_LmEbB	()
 {
-	description.CLS		= B_LaEmB;
+	description.CLS		= B_LmEbB;
 }
 
-CBlender_LaEmB::~CBlender_LaEmB	()
+CBlender_LmEbB::~CBlender_LmEbB	()
 {
 	
 }
 
-void	CBlender_LaEmB::Save(	CFS_Base& FS )
+void	CBlender_LmEbB::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
 	xrPWRITE_MARKER	(FS,"Environment map");
 	xrPWRITE_PROP	(FS,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT2_xform);
-	xrPWRITE_PROP	(FS,"Constant",			xrPID_CONSTANT,	oT2_const);
 }
 
-void	CBlender_LaEmB::Load(	CStream& FS )
+void	CBlender_LmEbB::Load(	CStream& FS )
 {
 	CBlender::Load	(FS);
 	xrPREAD_MARKER	(FS);
 	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT2_xform);
-	xrPREAD_PROP	(FS,xrPID_CONSTANT,	oT2_const);
 }
 
-void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
+void	CBlender_LmEbB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {
 	if (bEditor)	{
 		if (0==stricmp(oT2_const,"$null"))
@@ -154,7 +152,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 }
 
 //
-void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LmEbB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
 {
 	RS.PassBegin		();
 	{
@@ -212,7 +210,7 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LmEbB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
 {
 	RS.PassBegin		();
 	{
@@ -270,7 +268,7 @@ void CBlender_LaEmB::compile_2c	(CBlender_Recorder& RS, sh_list& L_textures, sh_
 	RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LmEbB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
 {
 	RS.PassBegin		();
 	{
@@ -318,7 +316,7 @@ void CBlender_LaEmB::compile_3	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	RS.PassEnd			();
 }
 //
-void CBlender_LaEmB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
+void CBlender_LmEbB::compile_3c	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param)
 {
 	RS.PassBegin		();
 	{
