@@ -258,7 +258,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 		g_VB.Begin		(D);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 		{
-			r1v_vert	v	(V->P,V->N,V->T,V->B,V->Color,V->UV[0]);
+			r2v			v	(V->P,V->N,V->T,V->B,V->Color,V->UV[0]);
 			g_VB.Add		(&v,sizeof(v));
 		}
 		g_VB.End		(&ID,&Start);
