@@ -81,13 +81,16 @@ public:
 			S->close			();
 			u16					ID;
 			P.r_begin			(ID);
-			R_ASSERT			(M_SPAWN==ID);
-			//Process_spawn	(P,0);
+			R_ASSERT2			(M_SPAWN==ID,"ID doesn't match to the spawn-point ID!");
 			string64			s_name;
 			P.r_string			(s_name);
 			// create server entity
 			xrServerEntity*	E	= F_entity_Create	(s_name);
-			R_ASSERT2(E,"Can't create entity.");
+			if (!E) {
+				string4096		S;
+				sprintf			(S,"Can't create entity '%s' !\n",s_name);
+				R_ASSERT2		(E,S);
+			}
 			E->Spawn_Read		(P);
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
@@ -111,7 +114,7 @@ public:
 				xr_delete(E);
 			S_id++;
 		}
-		R_ASSERT(m_tpSpawnPoints.size());
+		R_ASSERT2(m_tpSpawnPoints.size(),"There are no spawn-points!");
 		ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
@@ -167,7 +170,6 @@ public:
 		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
 				m_tpGraphNodes[i] = tpGraph->m_tpaGraph[i].tNodeID;
-				//R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpGraph->m_tpaGraph[i].tLocalPoint))!=-1);
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
@@ -179,13 +181,26 @@ public:
 					break;
 				}
 			}
-//		thProgress				= .75f;
 		DWORD_IT				BB = m_tpGraphNodes.begin();
 		DWORD_IT				B = BB + dwStart;
 		DWORD_IT				E = m_tpGraphNodes.begin() + dwFinish;
-		R_ASSERT				(B != E);
+		if (B >= E) {
+			string4096			S;
+			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
+			R_ASSERT2			(B != E,S);
+
+		}
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation)) {
-			R_ASSERT((m_tpSpawnNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) != -1);
+			if ((m_tpSpawnNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
+				string4096 S1;
+				char *S = S1;
+				S += sprintf(S,"Can't find a corresponding NODE for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name);
+				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
+				S += sprintf(S,"Spawn index : %d\n",i);
+				S += sprintf(S,"Spawn node  : %d\n",m_tpSpawnNodes[i]);
+				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
+				R_ASSERT2(false,S1);
+			}
 			m_tpSpawnPoints[i]->m_tNodeID = m_tpSpawnNodes[i];
 			sort(B,E,CSpawnComparePredicate(m_tpSpawnNodes[i],*m_tpAI_Map));
 			DWORD_IT			I = B;
@@ -220,14 +235,16 @@ public:
 					dwBest = I - BB;
 				}
 			}
-			R_ASSERT(dwBest != -1);
-//			if (dwBest == u32(-1)) {
-//				Msg("Level ID    : %d",m_dwLevelID);
-//				Msg("Spawn index : %d",i);
-//				Msg("Spawn node  : %d",m_tpSpawnNodes[i]);
-//				Msg("Spawn point : [%7.2f][%7.2f][%7.2f]",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
-//				R_ASSERT(false);
-//			}
+			if (dwBest == u32(-1)) {
+				string4096 S1;
+				char *S = S1;
+				S += sprintf(S,"Can't find a corresponding GRAPH VERTEX for the spawn-point %s\n",m_tpSpawnPoints[i]->s_name);
+				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
+				S += sprintf(S,"Spawn index : %d\n",i);
+				S += sprintf(S,"Spawn node  : %d\n",m_tpSpawnNodes[i]);
+				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",m_tpSpawnPoints[i]->o_Position.x,m_tpSpawnPoints[i]->o_Position.y,m_tpSpawnPoints[i]->o_Position.z);
+				R_ASSERT2(dwBest != -1,S1);
+			}
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 			thProgress						= 1.0f;
@@ -276,16 +293,20 @@ void xrMergeSpawns(LPCSTR name)
 	vector<CSpawn *>			tpLevels;
 	CALifeGraph::SLevel			tLevel;
     LPCSTR						N,V;
-	R_ASSERT					(Ini->section_exist("levels"));
+	R_ASSERT2					(Ini->section_exist("levels"),"Can't find section 'levels' in the 'game.ltx'!");
     for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-		R_ASSERT				(Ini->section_exist(N));
+		if (!Ini->section_exist(N)) {
+			string4096			S;
+			sprintf				(S,"There is no level section '%s' being included in the section levels in the 'game.ltx'\n",N);
+			R_ASSERT2			(Ini->section_exist(N),S);
+		}
 		V						= Ini->r_string(N,"name");
 		Memory.mem_copy			(tLevel.caLevelName,V,strlen(V) + 1);
 		Msg						("Reading level %s...",tLevel.caLevelName);
 		u32						id = Ini->r_s32(N,"id");
 		tpLevels.push_back		(xr_new<CSpawn>(name,tLevel,id,&dwGroupOffset));
     }
-	R_ASSERT					(tpLevels.size());
+	R_ASSERT2					(tpLevels.size(),"There are no levels in the section 'levels' in the 'game.ltx' to build 'game.spawn' from!");
 	
 	CThreadManager				tThreadManager;		// multithreading
 
