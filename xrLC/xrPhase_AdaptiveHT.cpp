@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "build.h"
 
-const	float	aht_max_edge	= 1.0f;			// 2 m
-const	float	aht_min_edge	= 0.2f;			// 20 cm
-const	float	aht_min_err		= 32.f/255.f;	// ~10% error
+const	float	aht_max_edge	= 4.0f;			// 2 m
+const	float	aht_min_edge	= 1.0f;			// 20 cm
+const	float	aht_min_err		= 8.f/255.f;	// ~10% error
 
 bool	is_CCW	(int _1, int _2)
 {
@@ -40,36 +40,27 @@ int		callback_edge_error		(Face* F)
 	int		max_id				= -1;
 	for (u32 e=0; e<3; e++)
 	{
-		// length
 		Vertex					*V1,*V2;
 		F->EdgeVerts			(e,&V1,&V2);
 		float len				= V1->P.distance_to	(V2->P);	// len
 		if (len<aht_min_edge)	continue;
-
-		// corner-error
-		base_color_c			v1c; V1->C._get(v1c);			// C1
-		base_color_c			v2c; V2->C._get(v2c);			// C2
-		float err				= _abs(v1c.hemi - v2c.hemi);	// error in hemi-space
-		if (err<aht_min_err)	continue;
-		if (err<max_err)		continue;
-
-		// center-point error
-		CDB::COLLIDER			DB;
-		DB.ray_options			(0);
-		base_color_c			cCenter;	cCenter.lerp(v1c,v2c,.5f);
-		base_color_c			cVertex;
-		Fvector					vP,vN;
-		vP.lerp					(V1->P,V2->P,.5f);
-		vN.lerp					(V1->N,V2->N,.5f).normalize_safe	();
-		LightPoint				(&DB, RCAST_Model, cVertex, vP, vN, pBuild->L_static, LP_dont_rgb+LP_dont_sun,0);
-		err						= _abs(cCenter.hemi - cVertex.hemi);	// error in hemi-space
-		if (err<aht_min_err)	continue;
-		if (err<max_err)		continue;
-
-		max_err					= err;
-		max_id					= e;
+		if (len>max_err)
+		{
+			max_err = len;
+			max_id	= e;
+		}
 	}
-	return	max_id;
+	if (max_id<0)				return max_id;
+
+	// There should be an edge larger than "min_edge"
+	base_color_c			c1; F->v[0]->C._get(c1);
+	base_color_c			c2; F->v[1]->C._get(c2);
+	base_color_c			c3; F->v[2]->C._get(c3);
+	bool	b1	= fsimilar(c1.hemi,c2.hemi,aht_min_err);
+	bool	b2	= fsimilar(c2.hemi,c3.hemi,aht_min_err);
+	bool	b3	= fsimilar(c3.hemi,c1.hemi,aht_min_err);
+	if (b1 && b2 && b3)		return	-1;		// don't touch flat-shaded triangle
+	else					return	max_id;	// tesselate longest edge
 }
 
 void	callback_vertex_hemi	(Vertex* V)
@@ -125,7 +116,6 @@ void CBuild::xrPhase_AdaptiveHT	()
 
 	//////////////////////////////////////////////////////////////////////////
 	Status			("Adaptive tesselation...");
-	if (0)
 	{
 		for (u32 fit=0; fit<g_faces.size(); fit++)	{					// clear split flag from all faces + calculate normals
 			g_faces[fit]->flags.bSplitted		= false;

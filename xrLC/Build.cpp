@@ -112,10 +112,12 @@ void CBuild::Run	(LPCSTR P)
 	}
 
 	//****************************************** Tesselating
+	/*
 	FPU::m64r					();
 	Phase						("Tesselating...");
 	mem_Compact					();
 	Tesselate					();
+	*/
 	
 	//****************************************** Optimizing + checking for T-junctions
 	FPU::m64r					();
