@@ -52,6 +52,7 @@ IC	CObjectActionMember<_item_type>::CObjectActionMember	(_item_type *item, CAI_S
 template <typename _item_type>
 void CObjectActionMember<_item_type>::execute			()
 {
+	inherited::execute		();
 	if (completed())
 		set_property		(m_condition_id,m_value);
 }

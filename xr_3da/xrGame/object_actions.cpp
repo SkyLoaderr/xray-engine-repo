@@ -132,7 +132,7 @@ void CObjectActionFire::initialize		()
 
 void CObjectActionFire::execute			()
 {
-	inherited::execute			();
+	inherited::execute					();
 	if (!m_object->can_kill_member())
 		m_object->inventory().Action(kWPN_FIRE,	CMD_START);
 	else
@@ -141,7 +141,7 @@ void CObjectActionFire::execute			()
 
 void CObjectActionFire::finalize		()
 {
-	inherited::finalize();
+	inherited::finalize					();
 	m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
 }
 
@@ -156,7 +156,7 @@ CObjectActionStrapping::CObjectActionStrapping	(CInventoryItem *item, CAI_Stalke
 
 void CObjectActionStrapping::initialize		()
 {
-	inherited::initialize();
+	inherited::initialize				();
 }
 
 void CObjectActionStrapping::execute			()
