@@ -36,6 +36,7 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
 	if (_sqrt(SqrDistance2Segment(vTEST->P,vE1->P,vE2->P))<0.005f)	
 	{
+		BOOL bWeld = FALSE;
 		// sort verts
 		if (vE1>vE2)	swap(vE1,vE2);
 
@@ -43,8 +44,8 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		for (DWORD i=0; i<vecJunctions.size(); i++)
 		{
 			record&	rec = vecJunctions[i];
-			if (rec.T==vTEST)				return;
-			if (rec.T->P.similar(vTEST->P))	return;
+			if (rec.T==vTEST)						return;
+			if (rec.T->P.similar(vTEST->P,.001f))	bWeld = TRUE;
 		}
 
 		// register
@@ -55,9 +56,8 @@ void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 		vecJunctions.push_back	(rec);
 
 		// display
-		Msg	("ERROR. edge [%3.1f,%3.1f,%3.1f]-[%3.1f,%3.1f,%3.1f], vertex [%3.1f,%3.1f,%3.1f]",
-			VPUSH(vE1->P),VPUSH(vE2->P),VPUSH(vTEST->P)
-			);
+		if (bWeld)	Msg	("ERROR. non-welded vertex    [%3.1f,%3.1f,%3.1f]",	VPUSH(vTEST->P));
+		else		Msg	("ERROR. t-junction at vertex [%3.1f,%3.1f,%3.1f]",			VPUSH(vTEST->P));
 	}
 }
 
