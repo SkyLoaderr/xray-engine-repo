@@ -6,6 +6,7 @@
 local nstl = 10
 
 theme = {}
+
 snd_files = {
 	weather_bad_soldier            = "script_sound\\weather\\bad\\soldier\\soldier_bad_weather_",
 	weather_good_soldier           = "script_sound\\weather\\good\\soldier\\soldier_good_weather_",
@@ -36,7 +37,19 @@ snd_files = {
 	talk_reject_soldier            = "script_sound\\talk\\rejection\\soldier\\soldier_rejection_",
 	talk_abuse_soldier             = "script_sound\\talk\\abuse\\soldier\\soldier_abuse_",
 	trade_yes_soldier              = "script_sound\\talk\\trade\\yes\\soldier\\soldier_trade_",
-	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_"
+	trade_no_soldier               = "script_sound\\talk\\trade\\no\\soldier\\soldier_tradeno_",
+------------------ сюжетные --------------------
+------ ESCAPE --------
+	-- бандиты на заводе
+	esc_f_band_novice              = "l_escape\\factory_bandits\\bandit_about_novice_",
+	esc_f_band_zone                = "l_escape\\factory_bandits\\bandit_about_zone_",
+	esc_f_band_place               = "l_escape\\factory_bandits\\bandit_hiding_place_",
+	esc_f_band_novice_again        = "l_escape\\factory_bandits\\bandit_novice_again_",
+	esc_f_band_on_actor            = "l_escape\\factory_bandits\\bandit_on_actor_",
+------ GARBAGE  -------
+
+------ AGROPROM -------
+
 }
 -----------------------------------------------------------------------------------------------------------------------------------
 function load_sound(obj)
@@ -137,7 +150,19 @@ function load_sound(obj)
 	theme["trade_yes"].types["soldier"] = load_theme("trade_yes_soldier")
 	theme["trade_no"] = { exec = npc_class, types = {}}
 	theme["trade_no"].types["soldier"] = load_theme("trade_no_soldier")
-	         
+
+----- сюжетные/одноразовые темы
+------ ESCAPE --------
+	-- бандиты на заводе
+	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
+	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
+	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")
+	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_place")
+	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")
+------ GARBAGE  -------
+
+------ AGROPROM -------
+
 --	print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
