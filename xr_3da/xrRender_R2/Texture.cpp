@@ -303,7 +303,7 @@ _BUMP:
 		fmt								= D3DFMT_DXT5;
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 		
-		/*
+#if RENDER==R_R2		
 		// Decompress (back)
 		fmt								= D3DFMT_A8R8G8B8;
 		IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
@@ -319,15 +319,18 @@ _BUMP:
 		// Compress
 		fmt								= D3DFMT_DXT5;
 		IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
-		*/
+		_RELEASE						(T_normal_1U	);
+		_RELEASE						(T_normal_1D	);
+
+		// 
+		ref_texture			t_temp		= Device->Resources->_CreateTexture	();
+#endif
 
 		// release and return
 		// T_normal_1C	- normal.gloss,		reversed
 		// T_normal_2C	- 2*error.height,	non-reversed
 		_RELEASE						(T_height_gloss	);
 		_RELEASE						(T_normal_1		);
-		//_RELEASE						(T_normal_1U	);
-		//_RELEASE						(T_normal_1D	);
 		return		T_normal_1C;
 	}
 _BUMP_from_base:

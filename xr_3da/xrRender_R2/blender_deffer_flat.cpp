@@ -36,9 +36,9 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 				C.r_Sampler		("s_encodeRG",	r2_float2RG,false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
 				C.r_Sampler		("s_encodeB",	r2_float2B,	false,D3DTADDRESS_WRAP,D3DTEXF_POINT,D3DTEXF_NONE,D3DTEXF_POINT);
 				C.r_Sampler		("s_ncm",		r2_ncm,		false,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpX",		fnameB);	// should be before base bump
 				if (ps_r2_ls_flags.test(R2FLAG_BUMP_AF))	C.r_Sampler		("s_bump",fnameA,false,D3DTADDRESS_WRAP,D3DTEXF_ANISOTROPIC);
 				else										C.r_Sampler		("s_bump",fnameA);
-				C.r_Sampler		("s_bumpX",		fnameB);
 				C.r_End			();
 /*			} else {
 				// flat
