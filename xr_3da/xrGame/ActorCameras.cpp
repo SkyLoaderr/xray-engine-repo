@@ -43,9 +43,7 @@ void CActor::camUpdateLeader(float dt)
 {
 	if(cameras[eacFirstEye]->bClampYaw) return;
 	float yaw				= (-XFORM().k.getH());
-	float lo,hi;
-	lo=(yaw-0.05f);
-	hi=(yaw+0.05f);
+
 	float & cam_yaw=cameras[eacFirstEye]->yaw;
 	cam_yaw=(cam_yaw);
 	float delta=angle_normalize_signed(yaw-cam_yaw);

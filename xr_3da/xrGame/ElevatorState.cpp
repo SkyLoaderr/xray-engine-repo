@@ -90,10 +90,10 @@ void CElevatorState::SwitchState(Estate new_state)
 }
 void CElevatorState::UpdateStNone()
 {
-
-	if(m_ladder->BeforeLadder(m_character)&&m_ladder->InTouch(m_character))
+	Fvector d;m_ladder->DToPlain(m_character,d);
+	if(m_ladder->BeforeLadder(m_character)&&m_ladder->InTouch(m_character)&&dXZDotNormalized(d,m_character->CamDir())>look_angle_cosine)
 	{
-		Fvector d;m_ladder->DToPlain(m_character,d);
+
 		if(ClimbDirection()>0.f)
 		{
 			SwitchState(clbClimbingUp);
