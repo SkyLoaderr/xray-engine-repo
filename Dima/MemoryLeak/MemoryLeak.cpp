@@ -255,7 +255,7 @@ void xrPalettizeCovers(u32 *data, u32 N)
 		temp.reserve		(best_pair.size());
 		if (clusters.size() - best_pair.size() < 256) {
 			u32				N = clusters.size() - 256;
-			sort			(best_pair.begin(),best_pair.end(),item_count_predicate(clusters));
+//			sort			(best_pair.begin(),best_pair.end(),item_count_predicate(clusters));
 			if (!best_distance) {
 				xr_vector<SPair>::iterator	I = best_pair.begin(), B = I;
 				xr_vector<SPair>::iterator	E = best_pair.end();
@@ -344,8 +344,40 @@ void xrPalettizeCovers(u32 *data, u32 N)
 
 int __cdecl _tmain(int argc, _TCHAR* argv[])
 {
-	if (argc < 2)
-		return			(-1);
+	if (argc < 2) {
+		CImage			image;
+		image.Load		("d:\\0.bmp");
+		CImage			image0;
+		image0.Load		("d:\\0_.tga");
+		CImage			image1;
+		image1.Load		("s:\\0.tga");
+
+		u64				diff0,diff1;
+		diff0			= diff1 = 0;
+		xr_set<u32>		a0;
+		xr_set<u32>		a1;
+		for (int i=0; i<(int)(image.dwWidth*image.dwHeight); ++i) {
+			union Temp {
+				u8  a[4];
+				u32 data;
+			} ;
+			Temp		data, data0, data1;
+			data.data	= image.pData[i];
+			data0.data	= image0.pData[i];
+			data1.data	= image1.pData[i];
+			if (a0.find(data0.data) == a0.end())
+				a0.insert(data0.data);
+			if (a1.find(data1.data) == a1.end())
+				a1.insert(data1.data);
+			for (int j=0; j<4; ++j) {
+				diff0	+= _sqr((int)data.a[j] - (int)data0.a[j]);
+				diff1	+= _sqr((int)data.a[j] - (int)data1.a[j]);
+			}
+		}
+
+		printf			("%11I64u[%f][%d] : %11I64u[%f][%d]\n",diff0,double(diff0)/double(image.dwWidth*image.dwHeight),a0.size(),diff1,double(diff1)/double(image.dwWidth*image.dwHeight),a1.size());
+		return			0;
+	}
 
 	printf				("Initializing...");
 	Core._initialize	("memory_leak");
