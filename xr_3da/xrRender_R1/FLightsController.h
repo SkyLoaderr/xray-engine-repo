@@ -11,6 +11,7 @@ class CLightTrack;
 class CLightDB_Static 
 {
 	xr_vector<R1_light*>		Lights;			// -- Lights itself
+	R1_light*					LDirect;
 public:
 	void	Track				(IRenderable*	O);
 

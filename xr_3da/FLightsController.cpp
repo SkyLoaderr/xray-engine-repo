@@ -7,6 +7,7 @@ void CLightDB_Static::Load			(IReader *fs)
 	IReader* F	= 0;
 
 	// Lights itself
+	LDirect		= NULL;
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
 
@@ -33,16 +34,18 @@ void CLightDB_Static::Load			(IReader *fs)
 				Ldata.position.invert	(Ldata.direction);
 				Ldata.position.mul		(1000.f);
 				Ldata.range				= 1000.f;
+				LDirect					= L;
 			}
 
 			L->spatial.type				= STYPE_LIGHTSOURCE;
 			L->spatial.center			= Ldata.position;
 			L->spatial.radius			= Ldata.range;
-			L->spatial_register			();
+			if (Ldata.type!=D3DLIGHT_DIRECTIONAL)	L->spatial_register	();
 		}
 
 		F->close		();
 	}
+	R_ASSERT2			(LDirect,"Where is directional light???");
 }
 
 void CLightDB_Static::Unload		(void)
