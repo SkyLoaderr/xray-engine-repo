@@ -42,7 +42,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 {
 	
 	if (!m_tpCurrentGlobalAnimation) {
-		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[0 * ::Random.randI(m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
+		m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI(m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
 		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 	}
 

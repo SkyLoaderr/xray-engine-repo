@@ -63,9 +63,15 @@ private:
 
 	// ALife Simulation
 	TERRAIN_VECTOR			m_tpaTerrain;
-	u32						m_dwTimeToChange;
+	u32						m_dwTimeToChange;	// время смены точки графа
 	_GRAPH_ID				m_tCurGP;
 	_GRAPH_ID				m_tNextGP;
+	Fvector					m_tNextGraphPoint;
+	// работа с графом
+	void					vfUpdateDetourPoint();
+
+
+
 	float					m_fGoingSpeed;			
 
 	// Fields
@@ -92,7 +98,7 @@ private:
 	float					m_fWalkFactor;
 	float					m_fWalkFreeFactor;
 
-	// common parameters
+	// время вызовов функции Think()
 	u32						m_dwLastUpdateTime;  
 	u32						m_dwCurrentUpdate;  // Level().timeServer()
 
@@ -117,6 +123,7 @@ private:
 	xr_vector<Fvector>			m_tpaTempPath;
 	u32						m_dwPathTypeRandomFactor;
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance>			m_tSelectorFreeHunting;
+	CAI_NodeEvaluatorTemplate<aiSearchRange | aiCoverFromEnemyWeight | aiEnemyDistance | aiEnemyViewDeviationWeight >	m_tSelectorRetreat;
 
 	
 	// построение пути и установка параметров скорости
@@ -134,4 +141,5 @@ private:
 	void vfSetAnimation();
 
 	void SetDirectionLook();
+
 };

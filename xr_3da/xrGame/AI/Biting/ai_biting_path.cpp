@@ -292,6 +292,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
+// Выбор следующей точки графа
 void CAI_Biting::vfChooseNextGraphPoint()
 {
 	_GRAPH_ID						tGraphID		= m_tNextGP;
@@ -332,5 +333,30 @@ void CAI_Biting::vfChooseNextGraphPoint()
 				}
 		}
 	}
+}
+
+// Выбор точки графа, в соответствии с выбором лидера
+void CAI_Biting::vfUpdateDetourPoint()
+{
+	if (!g_Alive())
+		return;
+
+	INIT_SQUAD_AND_LEADER;
+
+	if (this != Leader)	{
+		CAI_Biting *tpLeader			= dynamic_cast<CAI_Biting*>(Leader);
+		if (tpLeader) {
+			m_tNextGraphPoint			= tpLeader->m_tNextGraphPoint;
+			m_tNextGP					= tpLeader->m_tNextGP;
+		}
+	}
+	else
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			vfChooseNextGraphPoint		();
+			m_tNextGraphPoint.set		(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			m_dwTimeToChange			= Level().timeServer() + 2000;
+		}
+		
 }
 

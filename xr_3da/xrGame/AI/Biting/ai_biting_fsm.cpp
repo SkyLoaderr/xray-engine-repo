@@ -12,8 +12,8 @@
 using namespace AI_Biting;
 
 const float tempCrouchFactor = 0.5f;
-const float tempWalkFactor = 3.0f;
-const float tempWalkFreeFactor = 3.0f;
+const float tempWalkFactor = 1.7f;
+const float tempWalkFreeFactor = 1.7f;
 const float tempRunFactor = 5.0f;
 const float tempRunFreeFactor = 5.0f;
 const float tempPanicFactor = 3.2f;
@@ -25,42 +25,63 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;
 	m_dwCurrentUpdate		= Level().timeServer();
 
-	m_tSavedEnemyPosition	= vPosition;
-	m_tpSavedEnemyNode		= AI_Node;
-	m_dwSavedEnemyNodeID	= AI_NodeID;
+	// сохранить позиции врага
+//	m_tSavedEnemyPosition	= vPosition;
+//	m_tpSavedEnemyNode		= AI_Node;
+//	m_dwSavedEnemyNodeID	= AI_NodeID;
+
+//	m_dwPathTypeRandomFactor = 50;		// веро€тностный выбор в построении пути (Straight | Criteria)
+
+//	if (m_tMovementType != eMovementTypeStand && m_tActionType != eActionTypeTurn) 
+//			m_fCurSpeed				= 1.0f;
+//
+//	if (Level().iGetKeyState(DIK_R)) { // Run
+//		
+//		vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+//			eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
+//
+//		vfSetParameters(&m_tSelectorFreeHunting, 0, false, m_tPathType,m_tBodyState, 
+//			m_tMovementType, m_tStateType, 0);
+//
+//	} 
+//
+//	if (Level().iGetKeyState(DIK_T)) { // Walk
+//		
+//		vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+//			eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+//		
+//		vfSetParameters(&m_tSelectorFreeHunting, 0, false, m_tPathType,m_tBodyState, 
+//			m_tMovementType, m_tStateType, 0);
+//
+//	} 
+//
+//	
+//	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1)) {
+//		vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+//			eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+//			m_fCurSpeed				= 1.0f;
+//	  
+//		vfSetParameters(&m_tSelectorFreeHunting, 0, true, m_tPathType,m_tBodyState, 
+//				m_tMovementType, m_tStateType, 0);
+//	}
+//		
+//	vfSetAnimation();
 
 	
-	m_dwPathTypeRandomFactor = 50;		// веро€тностный выбор в построении пути (Straight | Criteria)
+	m_fCurSpeed				= 1.0f;	
 
-	if (m_tMovementType != eMovementTypeStand && m_tActionType != eActionTypeTurn) 
-			m_fCurSpeed				= 1.0f;
-
-	if (Level().iGetKeyState(DIK_R)) { // Run
-		
-		vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
-			eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
-
-		vfSetParameters(&m_tSelectorFreeHunting, 0, false, m_tPathType,m_tBodyState, 
-			m_tMovementType, m_tStateType, 0);
-
-	} 
-
-	if (Level().iGetKeyState(DIK_T)) { // Walk
-		
-		vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
-			eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
-		
-		vfSetParameters(&m_tSelectorFreeHunting, 0, false, m_tPathType,m_tBodyState, 
-			m_tMovementType, m_tStateType, 0);
-
-	} 
-
+	vfUpdateDetourPoint();	
+	vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+					eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
 	
-	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1)) 
-	   vfSetParameters(&m_tSelectorFreeHunting, 0, true, m_tPathType,m_tBodyState, 
-				m_tMovementType, m_tStateType, 0);
-		
+	
+	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+	vfSetParameters(0, 0, false, m_tPathType,m_tBodyState, 
+			m_tMovementType, m_tStateType, 0);
+
+
 	vfSetAnimation();
+
 }
 
 // –азвернуть объект в направление движени€
@@ -157,19 +178,28 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 		m_fCurSpeed		= 0.f;
 	}
 
-	if (tpPoint) {
-		Fvector tTemp;
-		tTemp.sub	(*tpPoint,eye_matrix.c);
-		tTemp.getHP	(r_torso_target.yaw,r_torso_target.pitch);
-		r_torso_target.yaw *= -1;
-	} else  { 
-		SetDirectionLook();
-	}
+	// сто€ть, если путь не выбран
+	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= (AI_Path.TravelPath.size() - 1))) {
+		r_torso_speed	= PI_MUL_2;
+		m_fCurSpeed		= 0.f;
+		
+		vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+			eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
 
+	}  else {
+		if (tpPoint) {
+			Fvector tTemp;
+			tTemp.sub	(*tpPoint,eye_matrix.c);
+			tTemp.getHP	(r_torso_target.yaw,r_torso_target.pitch);
+			r_torso_target.yaw *= -1;
+		} else  { 
+			SetDirectionLook();
+		}
+	}
+	
 	if (!getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw, PI_DIV_6)) {
 		m_fCurSpeed		= 0.f;
 		r_torso_speed	= PI;
-
 		if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + PI_DIV_6), r_torso_target.yaw, 5*PI_DIV_6))
 			// right
 			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
@@ -177,6 +207,10 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 			// left
 			vfSetMotionActionParams(m_tBodyState, eMovementTypeStand, eMovementDirectionLeft, m_tStateType, eActionTypeTurn);		
 	}  
+
+
+
+
 }
 
 // выбор анимации в соответствии с текущим состо€нием объекта
@@ -202,6 +236,7 @@ void CAI_Biting::vfSetAnimation()
 
 	if ( m_tMovementType == eMovementTypeStand &&  
 		 m_tStateType == eStateTypeNormal &&  
+		 m_tMovementDir == eMovementDirectionNone &&
 		 m_tActionType == eActionTypeStand)
 		
 		 m_tActionAnim = eActionIdle;		// на месте / отдыхаем
