@@ -13,7 +13,7 @@
 
 bool CPHAICharacter::TryPosition(Fvector pos){
 	if(!b_exist) return false;
-	if(b_on_object||b_jumping) return false;
+	if(b_on_object||JumpState()) return false;
 	SetPosition(pos);
 	m_body_interpolation.UpdatePositions();
 	m_body_interpolation.UpdatePositions();

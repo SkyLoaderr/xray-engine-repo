@@ -904,7 +904,7 @@ void	CPHSimpleCharacter::Disabling(){
 				velocity[1]*velocity[1]+
 				velocity[2]*velocity[2]);
 			mag_v/=dis_count_f;
-			if(mag_v<0.001f* dis_frames )
+			if(mag_v<0.001f* dis_frames && !JumpState())
 				dBodyDisable(m_body);
 			if(previous_v>mag_v)
 
