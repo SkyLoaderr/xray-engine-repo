@@ -11,7 +11,7 @@ void xrMU_Reference::Load(CStream& F)
 	sector				= R.sector;
 }
 
-void xrMU_Model::Load(CStream& F)
+void xrMU_Model::Load	(CStream& F)
 {
 	F.RstringZ			(m_name);
 	clMsg				("* Loading model: '%s'...",m_name);
@@ -27,6 +27,9 @@ void xrMU_Model::Load(CStream& F)
 	b_faces.resize		(F.Rdword());
 	m_faces.reserve		(b_faces.size());
 	F.Read				(b_faces.begin(),b_faces.size()*sizeof(b_face));
+
+	// READ: lod-ID
+	F.Read				(&m_lod_ID,2);
 
 	// CONVERT and OPTIMIZE
 	for (u32 it=0; it<b_faces.size(); it++)

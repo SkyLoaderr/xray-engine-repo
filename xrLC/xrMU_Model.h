@@ -70,6 +70,7 @@ public:
 	};
 public:
 	string128			m_name;
+	u16					m_lod_ID;
 	v_vertices			m_vertices;
 	v_faces				m_faces;
 	v_subdivs			m_subdivs;
