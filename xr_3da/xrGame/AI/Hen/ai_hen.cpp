@@ -173,22 +173,11 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 	//return(false);
 }
 
-bool CAI_Hen::bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
-	for (int i=0; i<Path.Nodes.size(); i++) 
-		for (int j=0; j<taMembers.size(); j++)
-			if (Path.Nodes[i] == taMembers[j])
-				return(false);
-	return(true);
-}
-
-bool CAI_Hen::bfCheckPath(AI::Path &Path,MemberNodes &taMembers, DWORD dwLeader) {
-	for (int i=0; i<Path.Nodes.size(); i++) {
-		for (int j=0; j<taMembers.size(); j++)
-			if (Path.Nodes[i] == taMembers[j])
-				return(false);
-		if (Path.Nodes[i] == dwLeader)
+bool CAI_Hen::bfCheckPath(AI::Path &Path) {
+	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
+	for (int i=1; i<Path.Nodes.size(); i++) 
+		if (q_mark[Path.Nodes[i]])
 			return(false);
-	}
 	return(true);
 }
 
@@ -339,7 +328,7 @@ void CAI_Hen::Attack()
 					float fOldCost;
 					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 					// if search has found new best node then 
-					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes))) && (S.BestCost < (fOldCost - S.fLaziness))){
+					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 						AI_Path.DestNode		= S.BestNode;
 						AI_Path.bNeedRebuild	= TRUE;
 					} 
@@ -578,11 +567,13 @@ void CAI_Hen::FollowMe()
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								AI_Path.BuildTravelLine(Position());
+								Msg("Path found %6d nodes\n",AI_Path.Nodes.size());
 							}
 							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
 								//AI_Path.bNeedRebuild = FALSE;
+								Msg("Path too short!\n");
 							}
 						} 
 						else {
@@ -593,16 +584,18 @@ void CAI_Hen::FollowMe()
 							float fOldCost;
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
 							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
 								// if old cost minus new cost is a little then hen is too lazy
 								// to move there
-								Msg("%6d %6d\n",S.BestNode,AI_Path.DestNode);
+								Msg("Better node found %6d %6d\n",S.BestNode,AI_Path.DestNode);
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							}
-							else 
+							else { 
 								// search hasn't found a better node we have to look around
+								Msg("No better node found %6d %6d\n",S.BestNode,AI_Path.DestNode);
 								bWatch = true;
+							}
 							
 							if (AI_Path.TravelPath.size() < 2)
 								AI_Path.bNeedRebuild	= TRUE;
@@ -720,7 +713,7 @@ void CAI_Hen::FreeHunting()
 						float fOldCost;
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 							AI_Path.DestNode		= S.BestNode;
 							AI_Path.bNeedRebuild	= TRUE;
 						} 
@@ -863,7 +856,7 @@ void CAI_Hen::Pursuit()
 							float fOldCost;
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							} 
@@ -1026,7 +1019,7 @@ void CAI_Hen::UnderFire()
 						float fOldCost;
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 							AI_Path.DestNode		= S.BestNode;
 							AI_Path.bNeedRebuild	= TRUE;
 						}

@@ -78,8 +78,7 @@ class CAI_Hen : public CCustomMonster
 		void Retreat();
 		void Cover();
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
-		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers);
-		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers, DWORD dwLeader);
+		bool bfCheckPath(AI::Path &Path);
 	
 		CHenSelectorAttack		SelectorAttack;
 		CHenSelectorFreeHunting SelectorFreeHunting;

@@ -205,11 +205,13 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];
 			for (int i=0; i<iCount; i++) {
-				// checking if that node the members' node
+				// checking if that node is in the path of the BESTNODE ones
+				iNodeIndex = this->UnpackLink(taLinks[i]);
+				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpTemp = tpaIndexes[iNodeIndex = this->UnpackLink(taLinks[i])]) {
+				if (tpTemp = tpaIndexes[iNodeIndex]) {
 					bool bOk = true;
 					if (!(tpTemp->ucOpenCloseMask)) {
 						int iBestIndex = tpBestNode->iIndex;
@@ -374,11 +376,12 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];
 			for (int i=0; i<iCount; i++) {
-				// checking if that node the members' node
+				iNodeIndex = this->UnpackLink(taLinks[i]);
+				// checking if that node the node of the moving object 
 				if (q_mark[iNodeIndex])
 					continue;
 				// checking if that node is in the path of the BESTNODE ones
-				if (tpTemp = tpaIndexes[iNodeIndex = this->UnpackLink(taLinks[i])]) {
+				if (tpTemp = tpaIndexes[iNodeIndex]) {
 					bool bOk = true;
 					if (!(tpTemp->ucOpenCloseMask)) {
 						int iBestIndex = tpBestNode->iIndex;

@@ -86,7 +86,7 @@ void CAISelectorBase::vfInit()
 	Level().AI.UnpackPosition(tTemp0,m_tpCurrentNode->p0);
 	Level().AI.UnpackPosition(tTemp1,m_tpCurrentNode->p1);
 	m_tCurrentPosition.lerp(tTemp1,tTemp1,.5f);
-	m_iAliveMemberCount = taMembers.size();
+	m_iAliveMemberCount = taMemberPositions.size();
 	m_fFireDispersionAngle = PI/20;
 }
 
