@@ -242,11 +242,17 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 void CHelicopterMovManager::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float dTime)
 {
 
+
+
+	RCache.dbg_DrawLINE(Fidentity,m_heli->m_right_rocket_bone_xform.c, m_heli->m_data.m_destEnemyPos,D3DCOLOR_XRGB(0,255,0));
+
+	RCache.dbg_DrawLINE(Fidentity,m_heli->XFORM().c,m_heli->m_data.m_destEnemyPos,D3DCOLOR_XRGB(255,0,0));
+	return;
+
 	float t = Level().timeServer()/1000.0f;
 	Fvector P,R;
 	_Evaluate(t,P,R);
 	RCache.dbg_DrawAABB  (P,0.1f,0.1f,0.1f,D3DCOLOR_XRGB(255,0,0));
-
 /*	Fvector P_,R_;
 	_Evaluate(t+1.0f,P_,R_);
 	float s = P_.distance_to(P);

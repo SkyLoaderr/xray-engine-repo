@@ -234,6 +234,10 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 	if( m_heli->state()==CHelicopter::eMovingByPatrolPath) {
 		UpdatePatrolPath();
 	}
+	if( m_heli->state()==CHelicopter::eInitiateRoundMoving) {
+		GoByRoundPatrolPath();
+		m_heli->setState(CHelicopter::eMovingByPatrolPath);
+	}
 	
 }
 
@@ -748,7 +752,9 @@ void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 
 void CHelicopterMovManager::UpdatePatrolPath()
 {
-	if(m_heli->GetDistanceToDestPosition() < m_heli->m_on_point_range_dist){
+	float dist = m_heli->GetDistanceToDestPosition();
+//	if( dist < m_heli->m_on_point_range_dist){
+	if( m_heli->m_last_point_range_dist < m_heli->m_on_point_range_dist){
 		CPatrolPath::const_iterator b,e;
 		m_currPatrolPath->begin(m_currPatrolVertex->vertex_id(),b,e);
 		if(b!=e){
@@ -757,10 +763,70 @@ void CHelicopterMovManager::UpdatePatrolPath()
 //			getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
 			Fvector p = m_currPatrolVertex->data().position();
 			m_heli->SetDestPosition(&p);
-		}else
+			m_heli->m_last_point_range_dist = 1000000;
+		}else{
 			m_heli->setState(CHelicopter::eIdleState);
-	}
+			m_heli->m_last_point_range_dist = 1000000;
+		}
+	}else
+		m_heli->m_last_point_range_dist = dist;
+
 }
+
+
+void CHelicopterMovManager::GoByRoundPatrolPath()
+{
+	CPatrolPath* pp = xr_new<CPatrolPath>();
+
+	xr_vector<Fvector> pts;
+	//fill new path points
+	Fvector p,center,dir,dir_norm;
+	Fvector cur_pos = m_heli->XFORM().c;
+	center = m_heli->m_data.m_round_center;
+	float radius = m_heli->m_data.m_round_radius;
+
+	dir.sub(cur_pos,center).normalize_safe();
+	dir_norm.set(-dir.z, 0.0f, dir.x);
+	p.mad(center,dir,radius);
+	getPathAltitude(p, m_heli->m_data.m_wrk_altitude);
+	pts.push_back(p);
+
+
+	p.mad(center,dir_norm,radius);
+	getPathAltitude(p, m_heli->m_data.m_wrk_altitude);
+	pts.push_back(p);
+
+	p.mad(center,dir,-radius);
+	getPathAltitude(p, m_heli->m_data.m_wrk_altitude);
+	pts.push_back(p);
+
+	p.mad(center,dir_norm,-radius);
+	getPathAltitude(p, m_heli->m_data.m_wrk_altitude);
+	pts.push_back(p);
+
+	if(!m_heli->m_data.m_round_reverse){//clockwise
+		xr_vector<Fvector>::iterator i = pts.begin();
+		++i;
+		std::reverse(i ,pts.end() );
+	}
+
+
+	xr_vector<Fvector>::iterator it = pts.begin();
+	for(u32 idx=0;it!=pts.end();++it,++idx){//create patrol path
+		CPatrolPoint pt = CPatrolPoint(*it,0,0,"");
+		pp->add_vertex(pt,idx);
+		if (idx)
+			pp->add_edge(idx-1,idx,1.f);
+	}
+	pp->add_edge(idx-1,0,1.f);
+
+	m_currPatrolPath = pp;
+	m_currPatrolVertex =  m_currPatrolPath->vertex(0);
+
+	m_heli->m_data.m_desiredP = m_currPatrolVertex->data().position();
+	getPathAltitude(m_heli->m_data.m_desiredP, m_heli->m_data.m_wrk_altitude);
+}
+
 
 
 void CHelicopterMovManager::addGoBySpecifiedPatrolPath	(float from_time)

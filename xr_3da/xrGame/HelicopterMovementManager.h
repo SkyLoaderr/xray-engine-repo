@@ -52,7 +52,7 @@ private:
 
 	void	GoBySpecifiedPatrolPath		();
 	void	UpdatePatrolPath			();
-
+	void	GoByRoundPatrolPath			();
 	//patrol path
 	void	makeNewPoint			(const Fvector& prevPoint, const Fvector& point, const Fbox& box, Fvector& newPoint);
 	void	makeNewPoint			(const Fbox& fbox, const Fvector& point, const Fvector& direction, Fvector& newPoint);

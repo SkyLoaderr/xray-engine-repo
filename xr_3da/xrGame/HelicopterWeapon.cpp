@@ -131,8 +131,17 @@ void CHelicopter::startRocket(u16 idx)
 		(idx==1)?rocketXFORM=m_left_rocket_bone_xform:rocketXFORM=m_right_rocket_bone_xform;
 
 		Fvector vel;
-		vel.mul(m_fire_dir,CRocketLauncher::m_fLaunchSpeed);
-		LaunchRocket(rocketXFORM,  vel, zero_vel);
+		Fvector dir;
+		dir.sub(m_data.m_destEnemyPos, rocketXFORM.c ).normalize_safe();
+		vel.mul(dir,CRocketLauncher::m_fLaunchSpeed);
+
+		Fmatrix xform;
+		xform.identity();
+		xform.k.set(dir);
+		Fvector::generate_orthonormal_basis(xform.k,xform.j,xform.i);
+		xform.c = rocketXFORM.c;
+
+		LaunchRocket(xform,  vel, zero_vel);
 
 		NET_Packet P;
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());

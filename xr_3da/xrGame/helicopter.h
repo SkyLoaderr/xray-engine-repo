@@ -7,6 +7,7 @@
 #include "phskeleton.h"
 #include "hit_immunity.h"
 #include "script_export_space.h"
+#include "memory_manager.h"
 
 class CScriptGameObject;
 class CLAItem;
@@ -48,6 +49,14 @@ struct SHeliShared{
 
 	int								m_patrol_begin_idx;
 	shared_str						m_patrol_path_name;
+
+
+	bool							m_b_looking_at_point;
+	Fvector							m_looking_point;
+
+	Fvector							m_round_center;
+	float							m_round_radius;
+	bool							m_round_reverse;
 };
 
 class CHelicopter : 
@@ -74,6 +83,7 @@ public:
 		eMovingToPoint,
 		eInitiatePatrolByPath,
 		eMovingByPatrolPath,
+		eInitiateRoundMoving,
 		eDead,
 		eForce = u32(-1)
 	}; 
@@ -93,6 +103,10 @@ public:
 	u32								m_time_between_rocket_attack;
 	bool							m_syncronize_rocket;
 	float							m_on_point_range_dist;
+	float							m_last_point_range_dist;
+
+
+	Fvector							m_fire_dir;
 
 protected:
 	float							m_maxLinearSpeed;
@@ -143,7 +157,7 @@ protected:
 	u16								m_rotate_y_bone;
 
 	Fvector							m_fire_pos;
-	Fvector							m_fire_dir;
+//	Fvector							m_fire_dir;
 	Fmatrix							m_fire_bone_xform;
 	Fmatrix							m_i_bind_x_xform, m_i_bind_y_xform;
 	Fvector2						m_lim_x_rot, m_lim_y_rot;
@@ -224,6 +238,7 @@ public:
 			void			UpdateHeliParticles	();
 			void			Explode				();
 
+
 protected:
 	//CShootingObject
 	virtual const Fmatrix&	ParticlesXFORM		()const;
@@ -239,6 +254,8 @@ protected:
 
 public:
 	//for scripting
+	bool					isVisible			(CScriptGameObject* O);
+	bool					isObjectVisible		(CObject* O);
 	void					doHunt				(CObject* dest);
 	void					doHunt2				(CObject* dest, float dist=20.0f, float time=5.0f);
 	bool			 		isOnAttack			()					{return (m_curState==eInitiateHunt || m_curState==eInitiateHunt2 || m_curState==eMovingByAttackTraj) ;}
@@ -261,6 +278,10 @@ public:
 	void					SetCurrVelocity(float v);
 	void					SetEnemy(CScriptGameObject* e);
 	float					GetRealAltitude();
+
+
+	void					goByRoundPath(Fvector center, float radius, bool clockwise);
+	void					LookAtPoint(Fvector point, bool do_it);
 
 	virtual float GetfHealth() const;
 	virtual float SetfHealth(float value);

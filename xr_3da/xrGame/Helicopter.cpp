@@ -91,6 +91,10 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 		str = "eMovingByPatrolPath";
 		break;
 
+	case CHelicopter::eInitiateRoundMoving:
+		str = "eInitiateRoundMoving";
+		break;
+
 	default:
 		str = "unknown";
 		break;
@@ -103,7 +107,7 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 //CAI_ObjectLocation
 void CHelicopter::init()
 {
-	m_data.m_destEnemy					= NULL;
+	m_data.m_destEnemy			= NULL;
 	m_cur_x_rot					= 0.0f;
 	m_cur_y_rot					= 0.0f;
 	m_tgt_x_rot					= 0.0f;
@@ -117,11 +121,14 @@ void CHelicopter::init()
 	m_min_rocket_dist			= 20.0f;
 	m_max_rocket_dist			= 200.0f;
 	m_time_between_rocket_attack = 0;
+	m_last_point_range_dist		= 1000000.f;
 	m_last_rocket_attack		= Device.dwTimeGlobal;
 
-	SetfHealth(100.0f);
+	SetfHealth					(100.0f);
 
-	m_data.m_stayPoint.set(0.0f, 0.0f, 0.0f);
+	m_data.m_stayPoint.set		(0.0f, 0.0f, 0.0f);
+
+	m_data.m_b_looking_at_point		=	false;
 }
 
 void CHelicopter::reinit()
@@ -133,17 +140,19 @@ void CHelicopter::reinit()
 //CGameObject
 void CHelicopter::Load(LPCSTR section)
 {
-	inherited::Load			(section);
-	CShootingObject::Load	(section);
-	CRocketLauncher::Load	(section);
+	inherited::Load						(section);
+	CShootingObject::Load				(section);
+	CRocketLauncher::Load				(section);
+//	CMemoryManager::Load				(section);
 
 ////////////////////////////////////
-	m_on_point_range_dist		= 10.0f;
+	m_last_point_range_dist				= 1000000.f;
+	m_on_point_range_dist				= 10.0f;
 	m_data.m_time_last_patrol_end		= 0.0f;
-	m_data.m_time_last_patrol_start	= 0.0f;
+	m_data.m_time_last_patrol_start		= 0.0f;
 
-	m_data.m_hunt_dist				= 20.0f;
-	m_data.m_hunt_time				= 5.0f;
+	m_data.m_hunt_dist					= 20.0f;
+	m_data.m_hunt_time					= 5.0f;
 	
 	m_data.m_startDir.set				(1.0f,0.0f,2.0f);
 	m_smoke_particle					= pSettings->r_string(section,"smoke_particle");
@@ -153,37 +162,41 @@ void CHelicopter::Load(LPCSTR section)
 	m_LinearAcc_fw						= pSettings->r_float(section,"path_linear_acc_fw");
 	m_LinearAcc_bk						= pSettings->r_float(section,"path_linear_acc_bk");
 
-	m_model_angSpeedBank					= pSettings->r_float(section,"model_angular_sp_bank");
-	m_model_angSpeedPitch					= pSettings->r_float(section,"model_angular_sp_pitch");
+	m_model_angSpeedBank				= pSettings->r_float(section,"model_angular_sp_bank");
+	m_model_angSpeedPitch				= pSettings->r_float(section,"model_angular_sp_pitch");
 	m_data.m_pitch_k					= pSettings->r_float(section,"model_pitch_koef");
-	m_data.m_bank_k					= pSettings->r_float(section,"model_bank_koef");
+	m_data.m_bank_k						= pSettings->r_float(section,"model_bank_koef");
 
+	m_on_point_range_dist				= pSettings->r_float(section,"on_point_range_dist");
 	m_data.m_baseAltitude				= pSettings->r_float(section,"altitude");
-	m_data.m_attackAltitude			= pSettings->r_float(section,"attack_altitude");
+	m_data.m_attackAltitude				= pSettings->r_float(section,"attack_altitude");
 	m_data.m_basePatrolSpeed			= pSettings->r_float(section,"velocity");
 	m_data.m_baseAttackSpeed			= pSettings->r_float(section,"attack_velocity");
 	m_data.m_alt_korridor				= pSettings->r_float(section,"altitude_korridor");
-	m_data.m_maxKeyDist				= pSettings->r_float(section,"max_key_dist");
+	m_data.m_maxKeyDist					= pSettings->r_float(section,"max_key_dist");
 
 	m_data.m_time_delay_between_patrol	= pSettings->r_float(section,"time_delay_between_patrol");
-	m_data.m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");
+	m_data.m_time_patrol_period			= pSettings->r_float(section,"time_patrol_period");
 	m_data.m_time_delay_before_start	= pSettings->r_float(section,"time_delay_before_start");
 
 	m_death_ang_vel						= pSettings->r_fvector3(section,"death_angular_vel");
 	m_death_lin_vel_k					= pSettings->r_float(section,"death_lin_vel_koeff");
 
 
-	m_data.m_wrk_altitude = m_data.m_baseAltitude;
-	m_maxLinearSpeed = m_data.m_basePatrolSpeed;
+	m_data.m_wrk_altitude				= m_data.m_baseAltitude;
+	m_maxLinearSpeed					= m_data.m_basePatrolSpeed;
+
+	m_data.m_b_looking_at_point				= false;
+
 ////////////////////////////////////
-	m_movMngr->load (section);
+	m_movMngr->load						(section);
 
-	m_sAmmoType = pSettings->r_string(section, "ammo_class");
-	m_CurrentAmmo.Load(*m_sAmmoType);
+	m_sAmmoType							= pSettings->r_string(section, "ammo_class");
+	m_CurrentAmmo.Load					(*m_sAmmoType);
 
-	m_sRocketSection						= pSettings->r_string	(section,"rocket_class");
+	m_sRocketSection					= pSettings->r_string	(section,"rocket_class");
 
-	CHitImmunity::LoadImmunities(section);
+	CHitImmunity::LoadImmunities		(section);
 
 	m_use_rocket_on_attack				= !!pSettings->r_bool(section,"use_rocket");
 	m_use_mgun_on_attack				= !!pSettings->r_bool(section,"use_mgun");
@@ -195,17 +208,17 @@ void CHelicopter::Load(LPCSTR section)
 	m_syncronize_rocket					= !!pSettings->r_bool(section,"syncronize_rocket");
 	
 	shared_str expl_snd					= pSettings->r_string	(section,"explode_sound");
-	m_explodeSound.create(TRUE,*expl_snd);
+	m_explodeSound.create				(TRUE,*expl_snd);
 
 //lighting
-	m_light_range=pSettings->r_float(section,"light_range");
-	m_light_brightness = pSettings->r_float(section,"light_brightness");
+	m_light_range						= pSettings->r_float(section,"light_range");
+	m_light_brightness					= pSettings->r_float(section,"light_brightness");
 
-	m_light_color			= pSettings->r_fcolor(section,"light_color");
-	m_light_color.a			= 1.f;
-	m_light_color.mul_rgb	(m_light_brightness);
-	m_l_anim				= pSettings->r_string	(section,"light_color_animmator");
-	m_lanim					= LALib.FindItem(*m_l_anim);
+	m_light_color						= pSettings->r_fcolor(section,"light_color");
+	m_light_color.a						= 1.f;
+	m_light_color.mul_rgb				(m_light_brightness);
+	m_l_anim							= pSettings->r_string	(section,"light_color_animmator");
+	m_lanim								= LALib.FindItem(*m_l_anim);
 
 
 }
@@ -322,6 +335,9 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	
 	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
 
+	m_data.m_b_looking_at_point		=	false;
+	m_last_point_range_dist				= 1000000.f;
+
     m_movMngr->init			(this);
 
 //lighting
@@ -401,14 +417,8 @@ void CHelicopter::UpdateCL()
 	{
 		PPhysicsShell()->SetTransform(XFORM());
 	}
-//	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
-
-///////////////////////////////////////////////////////////////////////////
 	float td = Device.fTimeDelta;
-//	float lt = Level().timeServer()/1000.0f;
 
-//	Fvector stub;
-//	m_movMngr.getPathPosition (lt ,m_data.m_desiredP, stub);
 	m_data.m_desiredP = m_data.m_to_point;
 
 	float dist = m_currP.distance_to(m_data.m_desiredP);
@@ -458,7 +468,19 @@ void CHelicopter::UpdateCL()
 	
 	clamp(m_curLinearSpeed,0.0f,m_maxLinearSpeed);
 
-	m_currBodyH = m_currPathH;
+
+//	m_currBodyH = m_currPathH;
+	if(	m_data.m_b_looking_at_point){
+		Fvector desired_dir;
+		desired_dir.sub(m_data.m_looking_point, m_currP ).normalize_safe();
+
+		float center_desired_H,tmp_P;
+		desired_dir.getHP(center_desired_H, tmp_P);
+		angle_lerp			(m_currBodyH, center_desired_H, m_angularSpeedHeading, td);
+	}else{
+		m_currBodyH = m_currPathH;
+	}
+
 
 	float needBodyP = -m_data.m_pitch_k*m_curLinearSpeed;
 	if(incFlag==-1) needBodyP*=-1;
@@ -478,14 +500,7 @@ void CHelicopter::UpdateCL()
 	XFORM().setHPB(m_currBodyH,m_currBodyP,m_currBodyB);
 
 	XFORM().translate_over(m_currP);
-//PPhysicsShell()->setXForn()	
-/*
-	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
-	HUD().pFontSmall->OutSet	(120,630);
-	HUD().pFontSmall->OutNext("Linear Velocity:         [%3.5f]",m_curLinearSpeed);
-	HUD().pFontSmall->OutNext("Linear Acceleration:     [%3.2f]",m_curLinearAcc);
-	HUD().pFontSmall->OutNext("Lag:                     [%3.2f]",deltaDist);
-*/
+
 ///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
 
@@ -557,6 +572,7 @@ void CHelicopter::UpdateCL()
 					else
 						startRocket(1);
 				}
+
 				m_last_rocket_attack = Device.dwTimeGlobal;
 			}
 
@@ -588,6 +604,7 @@ void CHelicopter::shedule_Update(u32 time_delta)
 */
 	if(state() != CHelicopter::eDead){
 		float dist = GetDistanceToDestPosition();
+
 		if(dist < m_on_point_range_dist  ){
 			NET_Packet P;
 			P.write_start();
@@ -601,7 +618,10 @@ void CHelicopter::shedule_Update(u32 time_delta)
 			lua_game_object()->OnEventRaised(CHelicopter::EV_ON_POINT,P);
 		}
 
+
 		m_movMngr->shedule_Update (time_delta);
+//		float dt			= float(time_delta)/1000.f;
+//		CMemoryManager::update(dt);
 
 
 	if(getRocketCount()<4)
@@ -939,4 +959,40 @@ void CHelicopter::TurnLighting(bool bOn)
 {
 	m_light_render->set_active						(bOn);
 
+}
+
+bool CHelicopter::isObjectVisible			(CObject* O)
+{
+	Fvector dir_to_object;
+	Fvector to_point;
+	O->Center(to_point);
+	Fvector from_point = XFORM().c;
+	dir_to_object.sub(to_point,from_point).normalize_safe();
+	float ray_length = from_point.distance_to(to_point);
+
+
+	BOOL res = Level().ObjectSpace.RayTest(from_point, dir_to_object, ray_length, collide::rqtStatic);
+	collide::rq_result rq;
+	Level().ObjectSpace.RayPick(from_point, dir_to_object, ray_length, collide::rqtStatic,rq);
+		
+	return !res;
+}
+
+bool CHelicopter::isVisible			(CScriptGameObject* O)
+{
+	return isObjectVisible(O->object());
+}
+
+void CHelicopter::goByRoundPath(Fvector center, float radius, bool clockwise)
+{
+	m_data.m_round_center	= center;
+	m_data.m_round_radius	= radius;
+	m_data.m_round_reverse	= !clockwise;
+	setState(eInitiateRoundMoving);
+}
+
+void CHelicopter::LookAtPoint(Fvector point, bool do_it)
+{
+	m_data.m_b_looking_at_point		= do_it;
+	m_data.m_looking_point			= point;
 }
