@@ -22,6 +22,22 @@ void CBuild::BuildRapid()
 			);
 		Progress(p_total+=p_cost);
 	}
-	Status("Building OBB tree..");
+	Status			("Building OBB tree..");
 	RCAST_Model.BuildModel(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	
+	// Saving for AI/DO usage
+	Status			("Saving...");
+	CFS_File		MFS((string(g_params.L_path)+"build.light").c_str());
+
+	// Header
+	hdrCFORM hdr;
+	hdr.version		= CFORM_CURRENT_VERSION;
+	hdr.vertcount	= CL.getVS();
+	hdr.facecount	= CL.getTS();
+	hdr.aabb		= scene_bb;
+	MFS.write		(&hdr,sizeof(hdr));
+
+	// Data
+	MFS.write		(CL.getV(),CL.getVS()*sizeof(Fvector));
+	MFS.write		(CL.getT(),CL.getTS()*sizeof(RAPID::tri));
 }
