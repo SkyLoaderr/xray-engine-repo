@@ -630,8 +630,10 @@ function animation:play_rnd(state, rnd)
 		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
 		   self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
 			-- добавить рандомный звук
-			xr_sound.set_sound_play(self.npc, self.mgr.synsound)
-			self.sound_played = true		   
+			if self.mgr.synsound then
+				xr_sound.set_sound_play(self.npc, self.mgr.synsound)
+				self.sound_played = true		   
+			end
 		else
 			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
 						table.getn(self.animations[state].rnd[self:weapon_slot()]),
