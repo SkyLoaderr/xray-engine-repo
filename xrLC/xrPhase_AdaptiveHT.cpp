@@ -90,6 +90,7 @@ void GSaveAsSMF					(LPCSTR fname)
 		sprintf			(tmp,"v %f %f %f",v.x,v.y,-v.z);
 		W->w_string		(tmp);
 	}
+
 	// transfer faces
 	for (u32 f_idx=0; f_idx<g_faces.size(); f_idx++){
 		Face*	t		= g_faces	[f_idx];
@@ -98,12 +99,13 @@ void GSaveAsSMF					(LPCSTR fname)
 			);
 		W->w_string		(tmp);
 	}
-	W->w_string			("bind c vertex");
 
 	// colors
+	W->w_string			("bind c vertex");
 	for (u32 v_idx=0; v_idx<g_vertices.size(); v_idx++){
-		base_color_c c; g_vertices[v_idx]->C._get(c);
-		sprintf			(tmp,"v %f %f %f",c.hemi,c.hemi,c.hemi);
+		base_color_c	c;	g_vertices[v_idx]->C._get(c);
+		float			h	= c.hemi/2.f;
+		sprintf			(tmp,"c %f %f %f",h,h,h);
 		W->w_string		(tmp);
 	}
 	
