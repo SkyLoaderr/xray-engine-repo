@@ -25,12 +25,12 @@ struct SLocationKey : public IPureSerializeObject<IReader,IWriter> {
 	{
 		stream.r		(&object_id,sizeof(object_id));
 		u16 c =			stream.r_u16();
-		string512 hint;
+		xr_string		hint;
 		stream.r_stringZ(hint);
 		stream.r_stringZ(spot_type);
 
 		location  = xr_new<CMapLocation>(*spot_type, object_id);
-		location->SetHint(hint);
+		location->SetHint(hint.c_str());
 		location->SetRefCount(c);
 	}
 };
