@@ -157,6 +157,13 @@ void CElevatorState::UpdateStClimbingDown()
 	if(m_ladder->AxDistToLowerP(m_character)-m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearDown);
 	UpdateClimbingCommon(d,to_ax,ca,control_a);
+
+	Fvector vel;
+	m_character->GetVelocity(vel);
+	if(vel.y>EPS_S)
+	{
+		m_character->ApplyForce(0.f,-m_character->Mass()*world_gravity,0.f);
+	}
 	//if(to_ax-m_character->FootRadius()>out_dist)
 	//														SwitchState((clbNone));
 	//if(fis_zero(control_a)) 
@@ -176,6 +183,8 @@ void CElevatorState::UpdateStClimbingUp()
 	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(ca.dotproduct(d))<M_SQRT1_2)SwitchState(clbDepart);
 	if(m_ladder->AxDistToUpperP(m_character)+m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearUp);
+	
+	
 
 	UpdateClimbingCommon(d,to_ax,ca,control_a);
 	//if(to_ax-m_character->FootRadius()>out_dist)
