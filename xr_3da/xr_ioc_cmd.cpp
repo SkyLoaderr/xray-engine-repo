@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 
-#include "xr_gamma.h"
+#include "xr_effgamma.h"
 #include "x_ray.h"
 #include "xr_ioconsole.h"
 #include "xr_ioc_cmd.h"
@@ -257,8 +257,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute		(args);
-		Device.Gamma.Brightness	(value);
-		Device.Gamma.Update		();
+		Device.Gamma->Brightness	(value);
+		Device.Gamma->Update		();
 	}
 };
 //-----------------------------------------------------------------------
@@ -270,8 +270,8 @@ public:
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute		(args);
-		Device.Gamma.Contrast	(value);
-		Device.Gamma.Update		();
+		Device.Gamma->Contrast	(value);
+		Device.Gamma->Update		();
 	}
 };
 //-----------------------------------------------------------------------
