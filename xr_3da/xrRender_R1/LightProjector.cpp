@@ -133,6 +133,9 @@ void CLightProjector::calculate	()
 		recv&			R		= cache		[c_it];
 		IRenderable*	O		= receivers	[tid];
 		CLightTrack*	LT		= (CLightTrack*)O->renderable.ROS;
+		VERIFY2			(_valid(O->renderable.xform),"Invalid object transformation");
+		VERIFY2			(_valid(O->renderable.visual->vis.sphere.P),"Invalid object's visual sphere");
+
 		Fvector			C;		O->renderable.xform.transform_tiny		(C,O->renderable.visual->vis.sphere.P);
 		R.O						= O;
 		R.C						= C;
