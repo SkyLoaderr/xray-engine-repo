@@ -157,7 +157,7 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    end
    
    if dik == DIK_RETURN then
-	self:OnButton_cancel_clicked()
+	self:OnButton_ok_clicked()
    end
    
    return true
