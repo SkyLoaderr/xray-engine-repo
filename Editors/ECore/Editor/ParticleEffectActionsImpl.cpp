@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ParticleEffectActions.h"
+#include "ParticleEffectActionsImpl.h"
 #include "folderlib.h"
 #include "PropertiesListHelper.h"
 #include "particle_actions_collection.h"
