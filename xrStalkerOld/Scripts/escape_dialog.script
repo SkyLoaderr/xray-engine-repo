@@ -191,7 +191,7 @@ end
 
 --' Escape dynamite for Wolf
 function transfer_wolf_ammo_to_actor(first_speaker, second_speaker)
-	local obj = first_speaker:object("ammo_9x19_fmj")
+	local obj = first_speaker:object("af_medusa")
 	if obj ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
 	end

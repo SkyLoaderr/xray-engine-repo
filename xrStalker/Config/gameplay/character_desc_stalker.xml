@@ -18,7 +18,7 @@
 			[spawn] \n
 			wpn_pb \n
 			ammo_9x18_pbp \n
-			ammo_9x19_fmj = 2 \n
+			af_medusa \n
 			wpn_ak74 \n
 			ammo_5.45x39_fmj \n
 			device_torch \n
