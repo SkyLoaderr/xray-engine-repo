@@ -142,7 +142,7 @@ void CAI_Space::Render()
 		if (Device.vCameraPosition.distance_to(PC)>30) continue;
 
 		float			sr	= P0.distance_to(P1)/2+m_header.size;
-		if (::Render.ViewBase.testSphereDirty(PC,sr)) {
+		if (::Render.ViewBase.testSphere_dirty(PC,sr)) {
 			DWORD	LL		= DWORD(N.light);
 			DWORD	CC		= D3DCOLOR_XRGB(0,0,255);
 			DWORD	CT		= D3DCOLOR_XRGB(LL,LL,LL);
