@@ -23,11 +23,7 @@ function main ()
     local z = get_level_object ("pes_zone")
     z:set_callback (pes.on_enter, true)
     
-    action (stalker, anim (anim.free), cond (cond.time_end, 2000))
-    while stalker:action () do wait () end
-    
-    reset_action (stalker, pes.script_name ())
-    action (stalker, object (stalker:best_weapon (), object.deactivate), cond (cond.time_end, time_infinite))
+    action (stalker, anim (anim.free), cond (cond.time_end, time_infinite))
     
     while entered == false do wait () end
     
