@@ -105,7 +105,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				uv2.set				(B.t[1].x,B.t[1].y);
 				uv3.set				(B.t[2].x,B.t[2].y);
 				_F->AddChannel		( uv1, uv2, uv3 );
-				_F->Verify			( );
 			} catch (...)
 			{
 				Fatal		("* ERROR: Can't process face #%d",i);
@@ -249,7 +248,6 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
 			M.reserved	= WORD(-1);
-			R_ASSERT	(0);
 		} else {
 			int id = shaders.GetID(shader_compile[M.shader_xrlc].name);
 			if (id<0) {

@@ -121,7 +121,7 @@ void CBuild::PreOptimize()
 			Fremoved			++;
 		} else {
 			// Check for duplicate
-			
+			F->Verify			( );
 		}
 		Progress(float(it)/float(g_faces.size()));
 	}
