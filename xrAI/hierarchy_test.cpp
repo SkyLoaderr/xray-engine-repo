@@ -393,10 +393,12 @@ void test_hierarchy		(LPCSTR name)
 
 	Msg							("Total time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
 
-#if 0
+#if 1
 	CMemoryWriter				stream;
 	save_data					(sector_graph,stream);
 	stream.save_to				("x:\\sector_graph.dat");
+	f							= CPU::GetCycleCount();
+	Msg							("Save time %f",CPU::cycles2seconds*float(f - s));
 
 	CSectorGraph				*test0, *test1;
 	
@@ -405,19 +407,36 @@ void test_hierarchy		(LPCSTR name)
 		load_data				(test0,*reader);
 		FS.r_close				(reader);
 	}
+	f							= CPU::GetCycleCount();
+	Msg							("Load1 time %f",CPU::cycles2seconds*float(f - s));
 
 	{
 		IReader					*reader = FS.r_open("x:\\sector_graph.dat.save");
 		load_data				(test1,*reader);
 		FS.r_close				(reader);
 	}
+	f							= CPU::GetCycleCount();
+	Msg							("Load2 time %f",CPU::cycles2seconds*float(f - s));
 
 	Msg							("sector_graph and loaded graph are %s",equal(sector_graph,test0) ? "EQUAL" : "NOT EQUAL");
+	f							= CPU::GetCycleCount();
+	Msg							("Compare1 time %f",CPU::cycles2seconds*float(f - s));
+
 	Msg							("sector_graph and old loaded graph are %s",equal(sector_graph,test1) ? "EQUAL" : "NOT EQUAL");
+	f							= CPU::GetCycleCount();
+	Msg							("Compare2 time %f",CPU::cycles2seconds*float(f - s));
+	
 	Msg							("new loaded graph and old loaded graph are %s",equal(test0,test1) ? "EQUAL" : "NOT EQUAL");
+	f							= CPU::GetCycleCount();
+	Msg							("Compare3 time %f",CPU::cycles2seconds*float(f - s));
 	
 	xr_delete					(test0);
+	f							= CPU::GetCycleCount();
+	Msg							("Destroy1 time %f",CPU::cycles2seconds*float(f - s));
+	
 	xr_delete					(test1);
+	f							= CPU::GetCycleCount();
+	Msg							("Destroy2 time %f",CPU::cycles2seconds*float(f - s));
 #endif
 	
 	xr_delete					(level_graph);
