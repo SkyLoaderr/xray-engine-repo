@@ -31,9 +31,40 @@
 
 using namespace luabind;
 
+
 CScriptMotivationActionManager *script_motivation_action_manager(CScriptGameObject *obj)
 {
 	return		(obj->motivation_action_manager<CScriptMotivationActionManager>());
+}
+
+
+void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
+{
+	ScriptCallbackInfo* c = NULL;
+	c = xr_new<ScriptCallbackInfo>();
+	m_callbacks.insert( mk_pair(event,c) );
+
+	c->m_callback.set	(lua_function);
+	c->m_event			= event;
+}
+
+void CScriptGameObject::AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method)
+{
+	ScriptCallbackInfo* c = NULL;
+	c = xr_new<ScriptCallbackInfo>();
+	m_callbacks.insert( mk_pair(event,c) );
+
+	c->m_callback.set	(lua_object,method);
+	c->m_event			= event;
+}
+
+void CScriptGameObject::OnEventRaised(s16 event, NET_Packet& P)
+{
+	P.read_start();
+	CALLBACK_IT it = m_callbacks.find(event);
+	if(it==m_callbacks.end())
+		return;
+	SCRIPT_CALLBACK_EXECUTE_1((*it).second->m_callback, &P );
 }
 
 void CScriptGameObject::script_register(lua_State *L)
@@ -83,6 +114,9 @@ void CScriptGameObject::script_register(lua_State *L)
 			.property("radiation",				&CScriptGameObject::GetRadiation,		&CScriptGameObject::SetRadiation)
 			.property("circumspection",			&CScriptGameObject::GetCircumspection,	&CScriptGameObject::SetCircumspection)
 			.property("morale",					&CScriptGameObject::GetMorale,			&CScriptGameObject::SetMorale)
+
+			.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&))CScriptGameObject::AddEventCallback)
+			.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::object&, LPCSTR))CScriptGameObject::AddEventCallback)
 
 			.def("position",					&CScriptGameObject::Position)
 			.def("direction",					&CScriptGameObject::Direction)

@@ -11,6 +11,7 @@
 #include "script_space_forward.h"
 #include "script_bind_macroses.h"
 #include "script_export_space.h"
+#include "script_callback.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -64,6 +65,13 @@ class CAbstractVertexEvaluator;
 class CCoverPoint;
 class CScriptIniFile;
 class CPhysicsShell;
+
+struct ScriptCallbackInfo{
+	CScriptCallback		m_callback;
+	s16					m_event;
+	ScriptCallbackInfo():m_event(-1){}
+};
+
 class CScriptGameObject {
 	CGameObject				*m_tpGameObject;
 public:
@@ -76,6 +84,13 @@ public:
 	{
 		return				(m_tpGameObject);
 	}
+
+	typedef xr_map<s16,ScriptCallbackInfo*>	CALLBACKS;
+	typedef CALLBACKS::iterator				CALLBACK_IT;
+	CALLBACKS							m_callbacks;
+	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function);
+	void								AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method);
+	void								OnEventRaised(s16 event, NET_Packet& P);
 
 			CScriptGameObject	*Parent				() const;
 			void				Hit					(CScriptHit &tLuaHit);
