@@ -303,7 +303,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	if(!b.contains( XFORM().c ) ){
 		Debug.fatal("helicopter spawned out of level bounding box");
 	};
-	b.getcenter(XFORM().c);
+//	b.getcenter(XFORM().c);
 
 	m_data.m_stayPoint			= XFORM().c;
 /////////////////////////////	
