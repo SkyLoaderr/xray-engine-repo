@@ -108,7 +108,7 @@ function action_commander:finalize()
     if enemy and is_object_online( enemy:id() ) then
         xr_gulag.setFractionState( "blockpost", 1 )
 
-        if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
+        if get_clsid(enemy) == clsid.stalker or get_clsid(enemy) == clsid.actor then
             self.object:play_sound( snd_enemy_stalker, 1, 0 )
         else
             self.object:play_sound( snd_enemy_monster, 1, 0 )
