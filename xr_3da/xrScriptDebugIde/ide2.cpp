@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CMainFrame* g_mainFrame = NULL;
-
+void checkRegVal();
 /////////////////////////////////////////////////////////////////////////////
 // CIdeApp
 
@@ -73,6 +73,7 @@ BOOL CIdeApp::InitInstance()
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization.
 	SetRegistryKey(_T("xrScriptDebugIde"));
+	checkRegVal();
 
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
 
@@ -112,7 +113,7 @@ BOOL CIdeApp::InitInstance()
 	
 	LoadIcon(IDR_MAINFRAME);
 
-	CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "\\\\X-RAY\\VSS$\\srcsafe.ini" );
+CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
 	if(ss_ini.GetLength()>0)
 		m_ssConnection.b_Connect("","",ss_ini);
 	return TRUE;
@@ -211,4 +212,35 @@ BOOL CIdeApp::fileExist(CString path_name)
 	}
 
 	return TRUE;
+}
+
+void checkRegVal()
+{
+const char *g_rOptionsKey               = "SOFTWARE\\xrScriptDebugIde\\xRayScriptDebugger\\options";
+const char *g_rSSafeIniName             = "sSafeIniFile";
+const char *g_rSSafeFolder				= "sSafeFolder";
+
+const char *g_rSSafeIniDefValue			    = "\\\\X-RAY\\VSS$\\srcsafe.ini";
+const char *g_rSSafeFolderDefValue          = "$/xrStalker/Scripts/";
+
+HKEY hk;
+DWORD keytype = REG_SZ;
+DWORD keysize = MAX_PATH;
+LONG res;
+
+    if( ERROR_SUCCESS==RegOpenKey( HKEY_CURRENT_USER,g_rOptionsKey,&hk ) ){
+            char keyvalue[32]="";
+            
+            keytype = REG_SZ;
+            keysize = 32;
+            res = RegQueryValueEx(hk,g_rSSafeIniName,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rSSafeIniName,0,REG_SZ,(LPBYTE)g_rSSafeIniDefValue,strlen(g_rSSafeIniDefValue)+1);
+
+			res = RegQueryValueEx(hk,g_rSSafeFolder,0,&keytype,(LPBYTE)keyvalue, &keysize );
+			if(res == ERROR_FILE_NOT_FOUND)
+				RegSetValueEx(hk,g_rSSafeFolder,0,REG_SZ,(LPBYTE)g_rSSafeFolderDefValue,strlen(g_rSSafeFolderDefValue)+1);
+
+            RegCloseKey( hk );
+    }
 }

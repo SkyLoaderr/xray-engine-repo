@@ -15,6 +15,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+void ActivateXRAY();
 /////////////////////////////////////////////////////////////////////////////
 // CMainFrame
 
@@ -366,7 +367,9 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_ACTIVATE_IDE:
 			
 //			SendMessage(SW_SHOW,0,0);
-			ShowWindow(SW_SHOWNORMAL);
+//			ShowWindow(SW_SHOWNORMAL);
+			if(!IsWindowEnabled())
+				PostMessage(WM_ACTIVATE,WA_ACTIVE,NULL);
 //			BringWindowToTop();
 			m_needAnswer = TRUE;
 			OnUpdateFrameTitle(TRUE);
@@ -502,6 +505,8 @@ void CMainFrame::OnDebugGo()
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
+
+	ActivateXRAY();
 }
 
 
@@ -516,6 +521,8 @@ void CMainFrame::OnDebugStepinto()
 	
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
+
+	ActivateXRAY();
 }
 
 void CMainFrame::OnDebugStepover() 
@@ -529,6 +536,8 @@ void CMainFrame::OnDebugStepover()
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
+
+	ActivateXRAY();
 }
 
 void CMainFrame::OnDebugStepout() 
@@ -542,6 +551,7 @@ void CMainFrame::OnDebugStepout()
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
+	ActivateXRAY();
 }
 
 void CMainFrame::OnDebugRuntocursor() 
@@ -564,6 +574,8 @@ void CMainFrame::OnDebugRuntocursor()
 
 	m_needAnswer = FALSE;
 	OnUpdateFrameTitle(TRUE);
+
+	ActivateXRAY();
 }
 
 void CMainFrame::OnDebugBreak()
@@ -577,6 +589,7 @@ void CMainFrame::OnDebugBreak()
 	}else
 		GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Debugger not present...\n");
 
+	ActivateXRAY();
 }
 
 
@@ -916,4 +929,11 @@ void CMainFrame::OnUpdateSaveAllModified(CCmdUI* pCmdUI)
 void CMainFrame::OnSaveAllModified()
 {
 	AfxGetApp()->SaveAllModified();
+}
+
+void ActivateXRAY()
+{
+	HWND h = FindWindow("_XRAY_","XRAY Engine");
+	if(h)
+		PostMessage(h,WM_ACTIVATE,WA_ACTIVE,NULL);
 }

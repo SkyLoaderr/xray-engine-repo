@@ -16,7 +16,7 @@ CHUDManager::CHUDManager()
 #pragma todo("Yura, what is this and why? Oles.")
 	// Level().pHUD	= this;
 	pFontSmall				= xr_new<CGameFont> ("hud_font_small");
-	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");
+	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");//,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontDI					= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontBigDigit			= xr_new<CGameFont> ("hud_font_big_digit");
 

@@ -18,7 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CTreeViewFiles
-//#define working_folder "$/xrStalker/Scripts/"
 CString str_WhoCheckedOut(IVSSItemPtr vss_item);
 
 
@@ -26,7 +25,7 @@ IMPLEMENT_DYNCREATE(CTreeViewFiles, CTreeView)
 
 CTreeViewFiles::CTreeViewFiles()
 {
-	working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "$/xrStalker/Scripts/" );
+	working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "" );
 }
 
 CTreeViewFiles::~CTreeViewFiles()
