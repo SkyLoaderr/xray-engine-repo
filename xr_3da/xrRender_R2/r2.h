@@ -141,10 +141,6 @@ public:
 	virtual void					rmFar						();
 	virtual void					rmNormal					();
 
-	// Device dependance
-	virtual void					OnDeviceDestroy				();
-	virtual void					OnDeviceCreate				();
-
 	// Constructor/destructor/loader
 	CRender							();
 	virtual ~CRender				();
