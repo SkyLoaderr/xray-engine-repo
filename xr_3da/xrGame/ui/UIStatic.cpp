@@ -176,7 +176,7 @@ void CUIStatic::WordOut(const RECT &rect)
 			outY = curretY;
 		}
 		
-		HUD().OutText(pFont, GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
+		UI()->OutText(pFont, GetClipRect(), static_cast<float>(rect.left+outX + m_iTextOffsetX), 
 					  static_cast<float>(rect.top + outY + m_iTextOffsetY),  &buf_str.front());
 		word_length = 0;
 		new_word = false;

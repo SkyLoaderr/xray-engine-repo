@@ -278,7 +278,7 @@ void CLevel::OnFrame	()
 	inherited::OnFrame					();
 
 	// Draw client/server stats
-	CGameFont* F = HUD().pFontDI;
+	CGameFont* F = HUD().Font().pFontDI;
 	if ( IsServer() )
 	{
 		if (psDeviceFlags.test(rsStatistic))
@@ -394,13 +394,13 @@ void CLevel::OnRender()
 		ObjectSpace.dbgRender	();
 
 		//---------------------------------------------------------------------
-		HUD().pFontSmall->OutSet	(170,630);
-		HUD().pFontSmall->SetSize	(16.0f);
-		HUD().pFontSmall->SetColor	(0xffff0000);
-		HUD().pFontSmall->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
-		HUD().pFontSmall->OutNext	("Server Objects:      [%d]",Objects.objects.size());
-		HUD().pFontSmall->OutNext	("Interpolation Steps: [%d]", Level().GetInterpolationSteps());
-		HUD().pFontSmall->SetSize	(8.0f);
+		HUD().Font().pFontSmall->OutSet	(170,630);
+		HUD().Font().pFontSmall->SetSize	(16.0f);
+		HUD().Font().pFontSmall->SetColor	(0xffff0000);
+		HUD().Font().pFontSmall->OutNext	("Client Objects:      [%d]",Server->GetEntitiesNum());
+		HUD().Font().pFontSmall->OutNext	("Server Objects:      [%d]",Objects.objects.size());
+		HUD().Font().pFontSmall->OutNext	("Interpolation Steps: [%d]", Level().GetInterpolationSteps());
+		HUD().Font().pFontSmall->SetSize	(8.0f);
 		//---------------------------------------------------------------------
 	}
 #endif

@@ -57,10 +57,10 @@ void  CUI3dStatic::Draw()
 	{
 		RECT rect = GetAbsoluteRect();
 		// Apply scale
-		rect.top	= static_cast<int>(rect.top * HUD().GetScale());
-		rect.left	= static_cast<int>(rect.left * HUD().GetScale());
-		rect.bottom	= static_cast<int>(rect.bottom * HUD().GetScale());
-		rect.right	= static_cast<int>(rect.right * HUD().GetScale());
+		rect.top	= static_cast<int>(rect.top * UI()->GetScale());
+		rect.left	= static_cast<int>(rect.left * UI()->GetScale());
+		rect.bottom	= static_cast<int>(rect.bottom * UI()->GetScale());
+		rect.right	= static_cast<int>(rect.right * UI()->GetScale());
 
 		Fmatrix translate_matrix;
 		Fmatrix scale_matrix;
@@ -120,8 +120,8 @@ void  CUI3dStatic::Draw()
 		
 		///////////////////////////////	
 		
-		FromScreenToItem(rect.left + iFloor(GetWidth()/2 * HUD().GetScale()),
-						 rect.top + iFloor(GetHeight()/2 * HUD().GetScale()), 
+		FromScreenToItem(rect.left + iFloor(GetWidth()/2 * UI()->GetScale()),
+						 rect.top + iFloor(GetHeight()/2 * UI()->GetScale()), 
 						 right_item_offset, up_item_offset);
 
 		translate_matrix.identity();

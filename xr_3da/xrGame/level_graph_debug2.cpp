@@ -53,7 +53,7 @@ void CLevelGraph::on_render1()
 
 	u32 ID				= O->ai_location().level_vertex_id();
 
-	CGameFont* F		= HUD().pFontDI;
+	CGameFont* F		= HUD().Font().pFontDI;
 	F->SetSize			(.02f);
 	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 //	float				x,z;

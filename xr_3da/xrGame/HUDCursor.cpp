@@ -96,7 +96,7 @@ void CHUDCursor::Render()
 	PT.transform	(p2,Device.mFullTransform);
 	float			di_size = C_SIZE/powf(PT.p.w,.2f);
 
-	CGameFont* F = HUD().pFontDI;
+	CGameFont* F = HUD().Font().pFontDI;
 	F->SetAligment	(CGameFont::alCenter);
 	F->SetSize		(0.02f);
 	F->OutSet		(0.f,0.f+di_size*2);

@@ -73,7 +73,7 @@ void CLevelGraph::on_render4	()
 		return;
 
 	Fvector tCameraPosition = Level().CurrentEntity()->Position();
-	CGameFont* F		= HUD().pFontDI;
+	CGameFont* F		= HUD().Font().pFontDI;
 	for (int i=0; i<(int)ai().game_graph().header().vertex_count(); ++i) {
 		Fvector t1 = ai().game_graph().vertex(i)->game_point();
 		t1.y += .6f;

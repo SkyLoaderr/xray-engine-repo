@@ -61,7 +61,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 	Fvector2 LTt,RBt;
 	
 	//координаты на экране в пикселях
-	float sc		= HUD().GetScale();
+	float sc		= UI()->GetScale();
 	LTp.set			(pos.x+x1*sc,pos.y+y1*sc);
 	RBp.set			(pos.x+x2*sc,pos.y+y2*sc);
 
@@ -139,7 +139,7 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	Fvector2 C;
 	Ivector2 RS;
 	iVisRect.getsize(RS);
-	float sc		= HUD().GetScale();
+	float sc		= UI()->GetScale();
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
 
 	Fvector2 LTt,RBt;
@@ -188,7 +188,7 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt, LBt, RTt;
-	float sc		= HUD().GetScale();
+	float sc		= UI()->GetScale();
 	LTp.set			(pos.x+iVisRect.x1*sc,pos.y+iVisRect.y1*sc);
 	RBp.set			(pos.x+iVisRect.x2*sc,pos.y+iVisRect.y2*sc);
 

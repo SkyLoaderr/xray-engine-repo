@@ -121,7 +121,7 @@ void CUIZoneMap::Init()
 	entity_down.SetAlign(alLeft|alTop);
 	entity_up.SetOffset (map_point_down_texture_size/2, map_point_down_texture_size/2);
 
-	HUD().ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
+	UI()->ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);
 	map_radius = MAP_RADIUS; //iFloor(MAP_RADIUS*HUD().GetScale());
 
 
@@ -457,7 +457,7 @@ void CUIZoneMap::UpdateRadar(CActor* pActor)
 	landscape_y4 = RTt.y/height;
 
 	//draw scale sign
-	CGameFont* l_pF = HUD().pFontMedium;
+	CGameFont* l_pF = HUD().Font().pFontMedium;
 	l_pF->SetColor(0xffffffff);
 	string256 buf;
 	sprintf(buf, "%dx", int(m_fScale));

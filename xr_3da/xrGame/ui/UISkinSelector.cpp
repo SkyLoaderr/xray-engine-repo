@@ -140,7 +140,7 @@ void CUISkinSelectorWnd::Init(const char *strSectionName)
 	UICancelBtn.MoveWindow(UI_BASE_WIDTH / 2 + static_cast<int>((rect.right - rect.left) * 0.5),
 		r.bottom + r.top / 2 - UICancelBtn.GetHeight());
 
-	SetFont(HUD().pFontHeaderRussian);
+	SetFont(HUD().Font().pFontHeaderRussian);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,6 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		// Нажали ОК.
 		Game().StartStopMenu(this,true);
-//		HUD().GetUI()->UIGame()->OnSkinMenu_Ok();
 		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnSkinMenu_Ok();
 
@@ -160,7 +159,6 @@ void CUISkinSelectorWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	{
 		// Нажали Cancel.
 		Game().StartStopMenu(this,true);
-//		HUD().GetUI()->UIGame()->OnSkinMenu_Cancel();
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -336,9 +334,9 @@ void CUISkinSelectorWnd::DrawKBAccelerators()
 		Irect r;
 		r.set(0, 0, UI_BASE_WIDTH, UI_BASE_WIDTH);
 
-		HUD().OutText(GetFont(), r,
+		UI()->OutText(GetFont(), r,
 			(rect.right - rect.left) / 2.0f + rect.left, 
-			float(rect.bottom - HUD().pFontHeaderRussian->CurrentHeight()- 40),
+			float(rect.bottom - HUD().Font().pFontHeaderRussian->CurrentHeight()- 40),
 			"%d", i + 1);
 		GetFont()->OnRender();
 	}

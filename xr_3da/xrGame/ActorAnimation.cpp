@@ -444,9 +444,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) 
 	{
 
-		HUD().pFontSmall->SetColor	(0xffffffff);
-		HUD().pFontSmall->OutSet	(170,450);
-		HUD().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
+		HUD().Font().pFontSmall->SetColor	(0xffffffff);
+		HUD().Font().pFontSmall->OutSet	(170,450);
+		HUD().Font().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
 	};
 #endif
 
@@ -467,7 +467,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		if (mstate_rl&mcLLookout)	strcat(buf,"LLookout ");
 		if (mstate_rl&mcRLookout)	strcat(buf,"RLookout ");
 		if (m_bJumpKeyPressed)		strcat(buf,"+Jumping ");
-		HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
+		HUD().Font().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
 		//	if (buf[0]) 
 		//		Msg("%s",buf);
 		switch (m_PhysicMovementControl->Environment())
@@ -476,17 +476,17 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
 		case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
 		}
-		HUD().pFontSmall->OutNext	(buf);
-		HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-		HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
-		HUD().pFontSmall->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
+		HUD().Font().pFontSmall->OutNext	(buf);
+		HUD().Font().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
+		HUD().Font().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
+		HUD().Font().pFontSmall->OutNext	("vertex ID   %d",ai_location().level_vertex_id());
 		
 		strcpy(buf,"");
 		if (m_iCurWeaponHideState & (1<<0)) strcat(buf, "INVENTORY_MENU_OPEN ");
 		if (m_iCurWeaponHideState & (1<<1)) strcat(buf, "BUY_MENU_OPEN ");
 		if (m_iCurWeaponHideState & (1<<2)) strcat(buf, "DEACTIVATE_CURRENT_SLOT ");
 		if (m_iCurWeaponHideState & (1<<3)) strcat(buf, "SPRINT ");
-		HUD().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
+		HUD().Font().pFontSmall->OutNext	("WeaponHideState:     [%s]",buf);
 	};
 #endif
 }

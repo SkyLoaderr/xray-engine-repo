@@ -1465,6 +1465,28 @@ struct CCC_JumpToLevel : public IConsole_Command {
 		Msg							("! There is no level \"%s\" in the game graph!",level);
 	}
 };
+#include "GamePersistent.h"
+#include "MainUI.h"
+
+class CCC_MainMenu : public IConsole_Command {
+public:
+	CCC_MainMenu(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+
+		bool bWhatToDo = TRUE;
+		if( 0==xr_strlen(args) ){
+			bWhatToDo = !UI()->IsActive();
+		};
+
+		if( EQ(args,"on")||EQ(args,"1") )
+			bWhatToDo = TRUE;
+
+		if( EQ(args,"off")||EQ(args,"0") )
+			bWhatToDo = FALSE;
+
+		UI()->Activate( bWhatToDo );
+	}
+};
 
 void CCC_RegisterCommands()
 {
@@ -1641,5 +1663,7 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_SvControlHit,		"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
 	CMD4(CCC_SvControlHit,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
+	CMD1(CCC_MainMenu,			"main_menu"				);
+	
 }
 

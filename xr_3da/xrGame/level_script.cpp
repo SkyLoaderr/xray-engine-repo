@@ -164,6 +164,10 @@ void start_stop_menu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
 	Game().StartStopMenu(pDialog,bDoHideIndicators);
 }
+bool is_level_present()
+{
+	return (!!g_pGameLevel);
+}
 void CLevel::script_register(lua_State *L)
 {
 	module(L,"level")
@@ -194,6 +198,7 @@ void CLevel::script_register(lua_State *L)
 
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon),
-		def("start_stop_menu",					start_stop_menu)
+		def("start_stop_menu",					start_stop_menu),
+		def("present",							is_level_present)
 	];
 }

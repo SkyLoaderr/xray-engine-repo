@@ -284,7 +284,18 @@ public:
 
 	virtual void	Execute	(LPCSTR args)
 	{
-		Device.Pause(!Device.Pause());
+		BOOL bWhatToDo = TRUE;
+		if( 0==xr_strlen(args) ){
+			bWhatToDo = !Device.Pause();
+		};
+
+		if( EQ(args,"on")||EQ(args,"1") )
+			bWhatToDo = TRUE;
+
+		if( EQ(args,"off")||EQ(args,"0") )
+			bWhatToDo = FALSE;
+
+		Device.Pause(bWhatToDo);
 		TStatus S;
 		strconcat(S,cName," is ", Device.Pause()?"on":"off");
 		Log(S);

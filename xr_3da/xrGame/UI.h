@@ -3,7 +3,7 @@
 #include "UICursor.h"
 
 #include "ui\UIMainIngameWnd.h"
-
+#include "UIDialogHolder.h"
 
 #define UI_BASE_WIDTH	1024
 #define UI_BASE_HEIGHT	768
@@ -12,7 +12,7 @@
 class CHUDManager;
 class CWeapon;
 class CUIGameCustom;
-class CUIDialogWnd;
+//class CUIDialogWnd;
 
 #define MAX_GROUPS		10
 #define MAX_UIMESSAGES	7
@@ -41,11 +41,11 @@ struct SUIMessage
 
 DEFINE_SVECTOR(SUIMessage*,MAX_UIMESSAGES,UIMsgSVec,UIMsgIt);
 
-class CUI			: public ISheduled
+class CUI			: public CDialogHolder //ISheduled
 {
 	typedef ISheduled inherited;
 
-	CUICursor				UICursor;
+//	CUICursor				UICursor;
 
 
 	//whether to show main ingame indicators (health, weapon etc)
@@ -59,14 +59,14 @@ class CUI			: public ISheduled
 	float					menu_offs;
 	UIMsgSVec				messages;
 
-	xr_stack<CUIDialogWnd*> m_input_receivers;
-	xr_vector<CUIWindow*>	m_dialogsToRender;
-	xr_vector<CUIWindow*>	m_dialogsToErase;
+//	xr_stack<CUIDialogWnd*> m_input_receivers;
+//	xr_vector<CUIWindow*>	m_dialogsToRender;
+//	xr_vector<CUIWindow*>	m_dialogsToErase;
 	bool					m_bCrosshair;			//был ли показан прицел-курсор HUD перед вызовом меню
 
-	void					StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-	void					StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-	void					SetMainInputReceiver	(CUIDialogWnd* ir);
+//	void					StartMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+//	void					StopMenu				(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+//	void					SetMainInputReceiver	(CUIDialogWnd* ir);
 
 public:
 	CHUDManager*			m_Parent;
@@ -92,21 +92,21 @@ public:
 	// frag-list.....
 	
 
-	void					ShowCursor				()					{UICursor.Show();}
-	void					HideCursor				()					{UICursor.Hide();}
-	CUICursor*				GetCursor				()					{return &UICursor;}
+//	void					ShowCursor				()					{UICursor.Show();}
+//	void					HideCursor				()					{UICursor.Hide();}
+//	CUICursor*				GetCursor				()					{return &UICursor;}
 
 	void					ShowIndicators			()					{m_bShowIndicators = true;}
 	void					HideIndicators			()					{m_bShowIndicators = false;}
 
 	void					AddMessage				(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
 
-	CUIDialogWnd*			MainInputReceiver		();
-	void					StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
-	void					AddDialogToRender		(CUIWindow* pDialog);
-	void					RemoveDialogToRender	(CUIWindow* pDialog);
-	virtual	float			shedule_Scale			();
-	virtual	void			shedule_Update			(u32 dt);
+//	CUIDialogWnd*			MainInputReceiver		();
+	virtual void			StartStopMenu			(CUIDialogWnd* pDialog, bool bDoHideIndicators);
+//	void					AddDialogToRender		(CUIWindow* pDialog);
+//	void					RemoveDialogToRender	(CUIWindow* pDialog);
+//	virtual	float			shedule_Scale			();
+//	virtual	void			shedule_Update			(u32 dt);
 
 };
 

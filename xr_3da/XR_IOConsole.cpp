@@ -12,6 +12,7 @@
 #include "xr_ioc_cmd.h"
 #include "GameFont.h"
 #include "xr_trims.h"
+#include "CustomHUD.h"
 
 #define  LDIST .05f
 
@@ -81,7 +82,11 @@ void CConsole::OnRender	()
 	if (0==pFont)
 		pFont		= xr_new<CGameFont>	("console_font",CGameFont::fsDeviceIndependent);
 
-	bGame	=false;	if (g_pGameLevel && g_pGameLevel->bReady)	bGame = true;
+	bGame	=false;	
+	if ( (g_pGameLevel && g_pGameLevel->bReady)||
+		 ( g_pGamePersistent && g_pGamePersistent->m_pMainUI && g_pGamePersistent->m_pMainUI->IsActive() ) )	
+		 bGame = true;
+
 	if		(g_pGamePersistent->bDedicatedServer)				bGame = false;
 
 	VERIFY	(HW.pDevice);
@@ -142,7 +147,9 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	switch (dik) {
 	case DIK_ESCAPE:
 		if (!bHold) {
-			if  (g_pGameLevel) Hide();
+			if  ( g_pGameLevel || 
+				( g_pGamePersistent && g_pGamePersistent->m_pMainUI && g_pGamePersistent->m_pMainUI->IsActive() ))
+				Hide();
 		}
 		break;
 	case DIK_GRAVE:

@@ -64,7 +64,7 @@ CUIMapWnd::CUIMapWnd()
 		m_GlobalMapShader	(NULL)
 {
 	Show					(false);
-	SetFont					(HUD().pFontSmall);
+	SetFont					(HUD().Font().pFontSmall);
 	m_rDefault.left			= 0;
 	m_rDefault.top			= 0;
 	m_rDefault.bottom		= 100;

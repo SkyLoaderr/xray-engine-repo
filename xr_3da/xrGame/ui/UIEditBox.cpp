@@ -302,7 +302,7 @@ void  CUIEditBox::Draw()
 
 		GetFont()->SetColor(0xAAFFFF00);
 //		Irect r = GetClipRect();
-		HUD().OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
+		UI()->OutText(GetFont(), GetClipRect(), (float)rect.left+outX, 
 					   (float)rect.top+outY,  "|");
 
 	}

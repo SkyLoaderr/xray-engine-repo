@@ -42,7 +42,7 @@ void CUIFrameRect::UpdateSize()
 	Ivector2  ts;
 	int rem_x, rem_y, tile_x, tile_y;
 
-	float fScale	= HUD().GetScale();
+	float fScale	= UI()->GetScale();
 	// center align
 	if (GetAlign()&alCenter)
 		iPos.set	(iFloor((Device.dwWidth-fScale*iSize.x)*.5f),iFloor((Device.dwHeight-fScale*iSize.y)*.5f));

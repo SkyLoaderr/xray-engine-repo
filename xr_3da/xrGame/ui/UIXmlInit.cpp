@@ -404,51 +404,51 @@ bool CUIXmlInit::InitFont(CUIXml &xml_doc, LPCSTR path, int index, u32 &color, C
 	{
 		if(!xr_strcmp(*font_name, HEADER_FONT_NAME))
 		{
-			pFnt = HUD().pFontHeaderRussian;
+			pFnt = HUD().Font().pFontHeaderRussian;
 		}
 		else if(!xr_strcmp(*font_name, NORMAL_FONT_NAME) || !xr_strcmp(*font_name, GRAFFITI19_FONT_NAME))
 		{
-			pFnt = HUD().pFontGraffiti19Russian;
+			pFnt = HUD().Font().pFontGraffiti19Russian;
 		}
 		else if(!xr_strcmp(*font_name, GRAFFITI22_FONT_NAME))
 		{
-			pFnt = HUD().pFontGraffiti22Russian;
+			pFnt = HUD().Font().pFontGraffiti22Russian;
 		}
 		else if(!xr_strcmp(*font_name, GRAFFITI32_FONT_NAME))
 		{
-			pFnt = HUD().pFontGraffiti32Russian;
+			pFnt = HUD().Font().pFontGraffiti32Russian;
 		}
 		else if(!xr_strcmp(*font_name, GRAFFITI50_FONT_NAME))
 		{
-			pFnt = HUD().pFontGraffiti50Russian;
+			pFnt = HUD().Font().pFontGraffiti50Russian;
 		}
 		else if(!xr_strcmp(*font_name, ARIAL_FONT_NAME))
 		{
-			pFnt = HUD().pArialN21Russian;
+			pFnt = HUD().Font().pArialN21Russian;
 		}
 		else if(!xr_strcmp(*font_name, BIG_FONT_NAME))
 		{
-			pFnt = HUD().pFontBigDigit;
+			pFnt = HUD().Font().pFontBigDigit;
 		}
 		else if(!xr_strcmp(*font_name, MEDIUM_FONT_NAME))
 		{
-			pFnt = HUD().pFontMedium;
+			pFnt = HUD().Font().pFontMedium;
 		}
 		else if(!xr_strcmp(*font_name, SMALL_FONT_NAME))
 		{
-			pFnt = HUD().pFontSmall;
+			pFnt = HUD().Font().pFontSmall;
 		}
 		else if(!xr_strcmp(*font_name, LETTERICA16_FONT_NAME))
 		{
-			pFnt = HUD().pFontLetterica16Russian;
+			pFnt = HUD().Font().pFontLetterica16Russian;
 		}
 		else if(!xr_strcmp(*font_name, LETTERICA18_FONT_NAME))
 		{
-			pFnt = HUD().pFontLetterica18Russian;
+			pFnt = HUD().Font().pFontLetterica18Russian;
 		}
 		else if(!xr_strcmp(*font_name, LETTERICA25_FONT_NAME))
 		{
-			pFnt = HUD().pFontLetterica25;
+			pFnt = HUD().Font().pFontLetterica25;
 		}
 	}
 	return true;

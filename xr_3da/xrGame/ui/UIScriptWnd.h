@@ -8,7 +8,7 @@
 struct SCallbackInfo;
 
 
-class UIScriptWnd :public CUIDialogWnd
+class UIScriptWnd :public CUIDialogWnd, public DLL_Pure
 {
 typedef CUIDialogWnd				inherited;
 typedef xr_vector<SCallbackInfo*>	CALLBACKS;

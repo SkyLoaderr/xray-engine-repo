@@ -57,7 +57,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
-	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	UI()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32				vOffset;
@@ -65,8 +65,8 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4*(iTileX+1)*(iTileY+1),hGeom.stride(),vOffset);
 
 	Ivector2		pos;
-	float fw			= iVisRect.width()*HUD().GetScale();
-	float fh			= iVisRect.height()*HUD().GetScale();
+	float fw			= iVisRect.width()  * UI()->GetScale();
+	float fh			= iVisRect.height() * UI()->GetScale();
 
 	int				x,y;
 	for (x=0; x<iTileX; ++x){
@@ -82,7 +82,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+y*fh));
 			if (bReverseRemX)
 			{
-				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
+				pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -96,7 +96,7 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //			pos.set					(static_cast<int>(bp.x+x*fw),static_cast<int>(bp.y+iTileY*fh));
 			if (bReverseRemY)
 			{
-				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
+				pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
 				inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY,iVisRect.x2,iVisRect.y2);	
 			}
 			else
@@ -109,18 +109,18 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 //		pos.set						(static_cast<int>(bp.x+iTileX*fw),static_cast<int>(bp.y+iTileY*fh));
 		if (bReverseRemY && bReverseRemX)
 		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX, iVisRect.y2 - iRemY, iVisRect.x2, iVisRect.y2);	
 		}
 		else if (bReverseRemY)
 		{
-			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * HUD().GetScale() + 0.5f);
+			pos.y -= static_cast<int>((iVisRect.y2 - iRemY) * UI()->GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y2 - iRemY, iRemX, iVisRect.y2);
 		}
 		else if (bReverseRemX)
 		{
-			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * HUD().GetScale() + 0.5f);
+			pos.x -= static_cast<int>((iVisRect.x2 - iRemX) * UI()->GetScale() + 0.5f);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x2 - iRemX,iVisRect.y1,iVisRect.x2,iRemY);	
 		}
 		else
@@ -140,7 +140,7 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	RCache.set_Shader			(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
-	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	UI()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32			vOffset;
@@ -165,7 +165,7 @@ void CUIStaticItem::Render(float x1, float y1, float x2, float y2,
 	RCache.set_Shader		(sh?sh:hShader);
 	// convert&set pos
 	Ivector2		bp;
-	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+	UI()->ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
 
 	// actual rendering
 	u32			vOffset;

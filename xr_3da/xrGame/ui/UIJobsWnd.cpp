@@ -32,8 +32,8 @@ const int			subitemsOffset					= 30;
 CUIJobsWnd::CUIJobsWnd()
 	:	filter	(eTaskStateDummy)
 {
-	pHeaderFnt		= HUD().pFontLetterica18Russian;
-	pSubTasksFnt	= HUD().pFontLetterica16Russian;
+	pHeaderFnt		= HUD().Font().pFontLetterica18Russian;
+	pSubTasksFnt	= HUD().Font().pFontLetterica16Russian;
 	pHeaderFnt->SetColor(clTaskHeaderColor);
 }
 

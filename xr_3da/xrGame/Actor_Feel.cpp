@@ -125,8 +125,8 @@ void CActor::PickupInfoDraw(CObject* object)
 	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
 
-	HUD().pFontMedium->SetAligment(CGameFont::alCenter);
-	HUD().pFontMedium->SetColor(PICKUP_INFO_COLOR);
-	HUD().pFontMedium->OutSet(x,y);
-	HUD().pFontMedium->OutNext(draw_str);
+	HUD().Font().pFontMedium->SetAligment(CGameFont::alCenter);
+	HUD().Font().pFontMedium->SetColor(PICKUP_INFO_COLOR);
+	HUD().Font().pFontMedium->OutSet(x,y);
+	HUD().Font().pFontMedium->OutNext(draw_str);
 }

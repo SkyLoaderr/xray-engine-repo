@@ -30,7 +30,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	bool bAlreadyDressed = false; 
 
 	RECT rect = GetAbsoluteRect();
-	HUD().GetUI()->GetCursor()->GetPos(x,y);
+	GetUICursor()->GetPos(x,y);
 		
 	UIPropertiesBox.RemoveAll();
 	
@@ -425,7 +425,7 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->GetGridHeight());
 			UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->GetGridWidth());
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									pInv->m_slots[i].m_pIItem->GetXPos()*INV_GRID_WIDTH,
@@ -457,7 +457,7 @@ void CUIInventoryWnd::InitInventory()
 		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight());
 		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth());
 
-		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+		UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetXPos()*INV_GRID_WIDTH,
@@ -490,7 +490,7 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,
@@ -543,7 +543,7 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 								(*it)->GetXPos()*INV_GRID_WIDTH,

@@ -12,11 +12,9 @@
 #include "../igame_level.h"
 #include "clsid_game.h"
 
-//--------------------------------------------------------------------
-CHUDManager::CHUDManager()
-{ 
-#pragma todo("Yura, what is this and why? Oles.")
-	// Level().pHUD	= this;
+
+CFontManager::CFontManager()
+{
 	pFontSmall				= xr_new<CGameFont> ("hud_font_small");
 	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");//,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pFontDI					= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
@@ -33,22 +31,14 @@ CHUDManager::CHUDManager()
 	pFontGraffiti32Russian	= xr_new<CGameFont> ("ui_font_graff_32");
 	pFontGraffiti50Russian	= xr_new<CGameFont> ("ui_font_graff_50");
 	pFontLetterica25		= xr_new<CGameFont> ("ui_font_letter_25");
-	
-	pUI						= 0;
-	if (Device.bReady) OnDeviceCreate();
-
-	m_pHUDCursor			= xr_new<CHUDCursor>();
 }
-//--------------------------------------------------------------------
-CHUDManager::~CHUDManager()
+CFontManager::~CFontManager()
 {
-	xr_delete			(pUI);
 	xr_delete			(pFontBigDigit);
 	xr_delete			(pFontSmall);
 	xr_delete			(pFontMedium);
 	xr_delete			(pFontDI);
 
-	xr_delete			(m_pHUDCursor);
 	xr_delete			(pFontHeaderEurope);
 	xr_delete			(pFontHeaderRussian);
 
@@ -61,8 +51,45 @@ CHUDManager::~CHUDManager()
 	xr_delete			(pFontGraffiti50Russian);
 	xr_delete			(pFontLetterica25);
 }
+void CFontManager::Render()
+{
+	pFontDI->OnRender			();
+	pFontSmall->OnRender		();
+	pFontMedium->OnRender		();
+	pFontBigDigit->OnRender		();
+
+	pFontHeaderEurope->OnRender	();
+	pFontHeaderRussian->OnRender();
+
+	pArialN21Russian->OnRender();
+	pFontGraffiti19Russian->OnRender();
+	pFontGraffiti22Russian->OnRender(); 
+	pFontGraffiti32Russian->OnRender(); 
+	pFontGraffiti50Russian->OnRender(); 
+	pFontLetterica16Russian->OnRender();
+	pFontLetterica18Russian->OnRender();
+	pFontLetterica25->OnRender();
+}
+//--------------------------------------------------------------------
+CHUDManager::CHUDManager()
+{ 
+#pragma todo("Yura, what is this and why? Oles.")
+	// Level().pHUD	= this;
+	
+	pUI						= 0;
+//	if (Device.bReady) OnDeviceCreate();
+
+	m_pHUDCursor			= xr_new<CHUDCursor>();
+}
+//--------------------------------------------------------------------
+CHUDManager::~CHUDManager()
+{
+	xr_delete			(pUI);
+	xr_delete			(m_pHUDCursor);
+}
 
 //--------------------------------------------------------------------
+/*
 void CHUDManager::ClientToScreenScaled(Irect& r, u32 align)
 {
 	r.x1 = ClientToScreenScaledX(r.x1,align); 
@@ -112,6 +139,7 @@ int CHUDManager::ClientToScreenY(int top, u32 align)
 	if (align&alBottom)	return iFloor(Device.dwHeight-UI_BASE_HEIGHT*fScale + top);
 	else				return top;
 }
+*/
 
 void CHUDManager::Load()
 {
@@ -181,32 +209,18 @@ void  CHUDManager::RenderUI()
 
 		// UI
 		bAlready					= ! (pUI && !pUI->Render());
-		pFontDI->OnRender			();
-		pFontSmall->OnRender		();
-		pFontMedium->OnRender		();
-		pFontBigDigit->OnRender		();
-
-		pFontHeaderEurope->OnRender	();
-		pFontHeaderRussian->OnRender();
-
-		pArialN21Russian->OnRender();
-		pFontGraffiti19Russian->OnRender();
-		pFontGraffiti22Russian->OnRender(); 
-		pFontGraffiti32Russian->OnRender(); 
-		pFontGraffiti50Russian->OnRender(); 
-		pFontLetterica16Russian->OnRender();
-		pFontLetterica18Russian->OnRender();
-		pFontLetterica25->OnRender();
+		//Font
+		Font().Render();
 
 		//render UI cursor
-		if(pUI && pUI->GetCursor() && pUI->GetCursor()->IsVisible())
-			pUI->GetCursor()->Render();
+		if(pUI && GetUICursor() && GetUICursor()->IsVisible())
+			GetUICursor()->Render();
 	}
 	if (psHUD_Flags.test(HUD_CROSSHAIR) && !bAlready)	
 		m_pHUDCursor->Render();
 
 	// Recalc new scale factor if resolution was changed
-	OnDeviceCreate();
+//	OnDeviceCreate();
 }
 
 //--------------------------------------------------------------------
@@ -214,6 +228,7 @@ void CHUDManager::OnEvent(EVENT E, u64 P1, u64 P2)
 {
 }
 //--------------------------------------------------------------------
+/*
 void CHUDManager::SetScale(float s){
 	fScale			= s;
 }
@@ -222,6 +237,7 @@ void CHUDManager::OnDeviceCreate()
 	if (Device.dwWidth<UI_BASE_WIDTH)	SetScale(float(Device.dwWidth)/float(UI_BASE_WIDTH));
 	else								SetScale(1.f);
 }
+*/
 //--------------------------------------------------------------------
 void __cdecl CHUDManager::outMessage(u32 C, LPCSTR from, LPCSTR msg, ...)
 {
@@ -266,28 +282,3 @@ void  CHUDManager::ShowCrosshair	(bool show)
 
 //////////////////////////////////////////////////////////////////////////
 
-void CHUDManager::OutText(CGameFont *pFont, Irect r, float x, float y, LPCSTR fmt, ...)
-{
-	if (r.in(static_cast<int>(x), static_cast<int>(y)))
-	{
-		R_ASSERT(pFont);
-		va_list	lst;
-		static string512 buf;
-		::ZeroMemory(buf, 512);
-		std::string str;
-
-		va_start(lst, fmt);
-			vsprintf(buf, fmt, lst);
-			str += buf;
-		va_end(lst);
-
-		// Rescale position in lower resolution
-		if (x >= 1.0f && y >= 1.0f)
-		{
-			x *= GetScale();
-			y *= GetScale();
-		}
-
-		pFont->Out(x, y, str.c_str());
-	}
-}

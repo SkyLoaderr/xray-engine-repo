@@ -3,11 +3,14 @@
 #pragma once
 
 #include "../IGame_Persistent.h"
+class CMainUI;
+class CUICursor;
 
-class CGamePersistent				: 
+class CGamePersistent: 
 	public IGame_Persistent, 
 	public IEventReceiver
 {
+
 public:
 	IReader*			pDemoFile;
 	u32					uTime2Change;

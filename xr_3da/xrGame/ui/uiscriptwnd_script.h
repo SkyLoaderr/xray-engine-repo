@@ -25,4 +25,4 @@ IC T*	UIScriptWnd::GetControl(LPCSTR name){
 	return smart_cast<T*>(pWnd);
 }
 
-typedef luabind::class_<UIScriptWnd, WrapType, CUIDialogWnd> export_class;
+typedef luabind::class_<UIScriptWnd, WrapType, luabind::bases<CUIDialogWnd,DLL_Pure> > export_class;

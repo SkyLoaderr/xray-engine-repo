@@ -5,43 +5,49 @@
 #include "UIDialogWnd.h"
 #include "../level.h"
 #include "../HUDManager.h"
-
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
+#include "../GamePersistent.h"
+#include "../MainUI.h"
+
+CFontManager& mngr(){
+	return *(UI()->Font());
+}
 
 // hud font
 CGameFont* GetFontSmall()
-{return HUD().pFontSmall;}
+{return mngr().pFontSmall;}
+
 CGameFont* GetFontMedium()
-{return HUD().pFontMedium;}
+{return mngr().pFontMedium;}
 CGameFont* GetFontDI()
-{return HUD().pFontDI;}
+{return mngr().pFontDI;}
 CGameFont* GetFontBigDigit()
-{return HUD().pFontBigDigit;}
+{return mngr().pFontBigDigit;}
 
 	//חאדמכמגמקםûי רנטפע
 CGameFont* GetFontHeaderRussian()
-{return HUD().pFontHeaderRussian;}
+{return mngr().pFontHeaderRussian;}
 CGameFont* GetFontHeaderEurope()
-{return HUD().pFontHeaderEurope;}
+{return mngr().pFontHeaderEurope;}
 
 //רנטפעû הכÿ טםעונפויסא
 CGameFont* GetFontArialN21Russian()
-{return HUD().pArialN21Russian;}
+{return mngr().pArialN21Russian;}
 CGameFont* GetFontGraffiti19Russian()
-{return HUD().pFontGraffiti19Russian;}
+{return mngr().pFontGraffiti19Russian;}
 CGameFont* GetFontGraffiti22Russian()
-{return HUD().pFontGraffiti22Russian;}
+{return mngr().pFontGraffiti22Russian;}
 CGameFont* GetFontLetterica16Russian()
-{return HUD().pFontLetterica16Russian;}
+{return mngr().pFontLetterica16Russian;}
 CGameFont* GetFontLetterica18Russian()
-{return HUD().pFontLetterica18Russian;}
+{return mngr().pFontLetterica18Russian;}
 CGameFont* GetFontGraffiti32Russian()
-{return HUD().pFontGraffiti32Russian;}
+{return mngr().pFontGraffiti32Russian;}
 CGameFont* GetFontGraffiti50Russian()
-{return HUD().pFontGraffiti50Russian;}
+{return mngr().pFontGraffiti50Russian;}
 CGameFont* GetFontLetterica25()
-{return HUD().pFontLetterica25;}
+{return mngr().pFontLetterica25;}
 
 
 int GetARGB(u16 a, u16 r, u16 g, u16 b)
@@ -103,8 +109,15 @@ void CUIWindow::script_register(lua_State *L)
 		.def("SetWindowName",			&CUIWindow::SetWindowName),
 //		.def("",						&CUIWindow::)
 		
-		
-		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd"),
+		class_<CDialogHolder>("CDialogHolder")
+		.def("MainInputReceiver",		&CDialogHolder::MainInputReceiver)
+		.def("start_stop_menu",			&CDialogHolder::StartStopMenu)
+		.def("AddDialogToRender",		&CDialogHolder::AddDialogToRender)
+		.def("RemoveDialogToRender",	&CDialogHolder::RemoveDialogToRender),
+
+		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd")
+		.def("GetHolder",				&CUIDialogWnd::GetHolder)
+		.def("SetHolder",				&CUIDialogWnd::SetHolder),
 
 		class_<CUIFrameWindow, CUIWindow>("CUIFrameWindow")
 		.def(					constructor<>())

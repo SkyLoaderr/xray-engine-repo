@@ -28,7 +28,7 @@ CUIPdaWnd::CUIPdaWnd()
 
 	Hide();
 	
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 }
 
 //////////////////////////////////////////////////////////////////////////

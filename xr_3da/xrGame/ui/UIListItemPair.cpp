@@ -14,6 +14,7 @@
 #include "UIListItemPair.h"
 #include "../HUDManager.h"
 #include "../level.h"
+#include "../UI.h"
 
 //-----------------------
 // Construction
@@ -32,14 +33,14 @@ CUIListItemPair::CUIListItemPair(){
     m_iBorder = 60;
 
 	// file name field
-	m_staticFileName.SetFont(HUD().pFontMedium);
+	m_staticFileName.SetFont(UI()->Font()->pFontMedium);
 	m_staticFileName.SetTextColor(color_argb(255, 255, 255, 255));
 	m_staticFileName.SetTextAlign(CGameFont::alLeft);
 	m_staticFileName.Init(0,0,0,0);
 	m_staticFileName.SetElipsis(CUIStatic::eepNone, 1);
 
 	// date/time field
-	m_staticDateTime.SetFont(HUD().pFontMedium);
+	m_staticDateTime.SetFont(UI()->Font()->pFontMedium);
 	m_staticDateTime.SetTextColor(color_argb(255, 255, 255, 255));
 	m_staticDateTime.SetTextAlign(CGameFont::alLeft);
 	m_staticDateTime.Init(0,0,0,0);
@@ -51,22 +52,6 @@ CUIListItemPair::CUIListItemPair(){
 CUIListItemPair::~CUIListItemPair(){
 
 }
-
-//-------------------------------------------------
-
-//void CUIListItemPair::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){		
-//	switch (msg)
-//	{
-//	case LIST_ITEM_SELECT:
-//		this->SetColor(color_argb(255, 0, 0, 255));	
-//		this->Draw();
-//		break;
-//	case LIST_ITEM_UNSELECT:
-//		this->SetColor(color_argb(0, 0, 0, 0));
-//		this->Draw();
-//		break;
-//	}
-//}
 
 //-------------------------------------------------
 

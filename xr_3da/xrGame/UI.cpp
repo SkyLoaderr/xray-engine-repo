@@ -23,13 +23,10 @@ CUI::CUI(CHUDManager* p)
 	m_Parent		= p;
 	pUIGame			= 0;
 
-	msgs_offs		= (float)m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
+	msgs_offs		= (float)(UI()->ClientToScreenY(MSGS_OFFS,alLeft|alBottom));
 
 	m_bShowIndicators = true;
 
-	shedule.t_min			= 5;
-	shedule.t_max			= 20;
-	shedule_register();
 }
 //--------------------------------------------------------------------
 
@@ -39,19 +36,13 @@ CUI::~CUI()
 		xr_delete(*it);
 	xr_delete(pUIGame);
 
-	shedule_unregister();
 }
 
-float CUI::shedule_Scale		() 
-{
-	return 0.5f;
-};
 //--------------------------------------------------------------------
 
 void CUI::Load()
 {
 	pUIGame = Game().createGameUI();
-	//pUIGame->IR_OnKeyboardPress(8);
 	R_ASSERT(pUIGame);
 }
 //--------------------------------------------------------------------
@@ -76,7 +67,7 @@ void CUI::OnFrame()
 		//update windows
 		if(m_bShowIndicators)
 		{
-			UIMainIngameWnd.SetFont(m_Parent->pFontMedium);
+			UIMainIngameWnd.SetFont(m_Parent->Font().pFontMedium);
 			UIMainIngameWnd.Update();
 		}
 			
@@ -87,7 +78,7 @@ void CUI::OnFrame()
 
 #ifdef DEBUG
 	if (!messages.empty()){
-		m_Parent->pFontSmall->OutSet(0,msgs_offs);
+		m_Parent->Font().pFontSmall->OutSet(0,msgs_offs);
 		for (int i=messages.size()-1; i>=0; --i){
 			SUIMessage* M = messages[i];
 			M->life_time-=Device.dwTimeDelta;
@@ -100,8 +91,8 @@ void CUI::OnFrame()
 			u32 color = messages[i]->color;
 			if (M->life_time<=(HIDE_TIME*1000))
 				color = ScaleAlpha(color, float(M->life_time)/float(HIDE_TIME*1000));
-			m_Parent->pFontSmall->SetColor(color);
-			m_Parent->pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
+			m_Parent->Font().pFontSmall->SetColor(color);
+			m_Parent->Font().pFontSmall->OutPrev("%s: %s",messages[i]->sender,messages[i]->msg);
 		}
 	}
 #endif
@@ -110,12 +101,13 @@ void CUI::OnFrame()
 
 bool CUI::Render()
 {
+	DoRenderDialogs();
 	// out GAME-style depend information
-	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+/*	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
 		if((*it)->IsShown())
 			(*it)->Draw();
-
+*/
 	if (pUIGame) pUIGame->Render	();
 
 	//----------
@@ -128,8 +120,8 @@ bool CUI::Render()
 		else
 			UIMainIngameWnd.DrawPdaMessages();
 		//render cursor only when it visible
-		if(UICursor.IsVisible())
-            UICursor.Render();
+		if(GetUICursor()->IsVisible())
+            GetUICursor()->Render();
 	}	
 
 	return false;
@@ -182,7 +174,7 @@ void CUI::AddMessage(LPCSTR S, LPCSTR M, u32 C, float life_time)
 	messages.push_back(xr_new<SUIMessage> (S,M,C,life_time));
 }
 
-
+/*
 CUIDialogWnd* CUI::MainInputReceiver()
 { 
 	if ( !m_input_receivers.empty() ) 
@@ -200,19 +192,28 @@ void CUI::SetMainInputReceiver	(CUIDialogWnd* ir)
 		m_input_receivers.push(ir);
 	}
 };
-
+*/
 void CUI::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
-	if( pDialog->IsShown() )
-		StopMenu(pDialog, bDoHideIndicators);
-	else
-		StartMenu(pDialog, bDoHideIndicators);
 
-	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToErase.begin(), m_dialogsToErase.end(), pDialog);
-	if (m_dialogsToErase.end() != it)
-		m_dialogsToErase.erase(it);
+	if( pDialog->IsShown() ){
+		if( bDoHideIndicators && pDialog==MainInputReceiver() ){
+			ShowIndicators();
+			if(m_bCrosshair) 
+				psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+		};
+	}else{
+		if(bDoHideIndicators){
+			HideIndicators();
+			m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
+			if(m_bCrosshair) 
+				psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+		}
+	}
+
+	CDialogHolder::StartStopMenu(pDialog,bDoHideIndicators);
 }
-
+/*
 void CUI::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 {
 //	if (m_game_ui_custom->MainInputReceiver() != NULL) return;
@@ -226,7 +227,7 @@ void CUI::StartMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 
 	if(bDoHideIndicators){
 		HideIndicators();
-		ShowCursor();
+		GetUICursor()->Show();
 		m_bCrosshair = !!psHUD_Flags.test(HUD_CROSSHAIR);
 		if(m_bCrosshair) 
 			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
@@ -245,7 +246,7 @@ void CUI::StopMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 
 	if( bDoHideIndicators && !MainInputReceiver() ){
 		ShowIndicators();
-		HideCursor();
+		GetUICursor()->Hide();
 		if(m_bCrosshair) 
 			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 	};
@@ -293,3 +294,4 @@ void CUI::shedule_Update		(u32 dt)
 	m_dialogsToErase.clear();
 
 }
+*/

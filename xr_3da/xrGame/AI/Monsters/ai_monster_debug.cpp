@@ -50,9 +50,9 @@ void CMonsterDebug::M_Update()
 	float y = (1.f - v_res.y)/2.f * (Device.dwHeight);
 
 	for (u32 i=0; i<_data.size(); i++) {
-		HUD().pFontMedium->SetColor(_data[i].col);
-		HUD().pFontMedium->OutSet(x,y-=floor_height);
-		HUD().pFontMedium->OutNext(_data[i].text);
+		HUD().Font().pFontMedium->SetColor(_data[i].col);
+		HUD().Font().pFontMedium->OutSet(x,y-=floor_height);
+		HUD().Font().pFontMedium->OutNext(_data[i].text);
 	}
 #endif
 }
@@ -146,8 +146,8 @@ void CMonsterDebug::HT_Update()
 	if (!active) return;
 
 	for (u32 i=0; i<_text.size(); i++) {
-		HUD().pFontMedium->OutSet(_text[i].x,_text[i].y);
-		HUD().pFontMedium->OutNext(_text[i].text);
+		HUD().Font().pFontMedium->OutSet(_text[i].x,_text[i].y);
+		HUD().Font().pFontMedium->OutNext(_text[i].text);
 	}
 #endif
 }

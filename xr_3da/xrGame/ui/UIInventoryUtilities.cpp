@@ -72,7 +72,7 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 		int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
 
 		pItem->GetFont()->SetColor(0xffffffff);
-		HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
+		UI()->OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
 			float(bottom - pItem->GetFont()->CurrentHeight()),
 			"%d",	pAmmoItem->m_boxCurr);
 		pItem->GetFont()->OnRender();
@@ -95,7 +95,7 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 
 		pItem->GetFont()->SetColor(0xffffffff);
 		if(pEatableItem->m_iPortionsNum>0)
-			HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
+			UI()->OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
 			float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
 			"%d",	pEatableItem->m_iPortionsNum);
 		pItem->GetFont()->OnRender();

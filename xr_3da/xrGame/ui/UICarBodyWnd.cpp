@@ -36,7 +36,7 @@ CUICarBodyWnd::CUICarBodyWnd()
 	Init();
 	Hide();
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -192,7 +192,7 @@ void CUICarBodyWnd::UpdateLists()
 
 			UIDragDropItem.SetData((*it));
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);
@@ -238,7 +238,7 @@ void CUICarBodyWnd::UpdateLists()
 
 			UIDragDropItem.SetData((*it));
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			CWeaponAmmo* pWeaponAmmo  = smart_cast<CWeaponAmmo*>((*it));
 			if(pWeaponAmmo)	UIDragDropItem.SetCustomUpdate(AmmoUpdateProc);

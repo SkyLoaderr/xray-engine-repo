@@ -133,35 +133,35 @@ void CUIInteractiveListItem::Draw()
 		GetFont()->SetAligment(GetTextAlign());
 
 		GetFont()->SetColor(m_HighlightColor);
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top + 0 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 1 +m_iTextOffsetX, 
 			(float)rect.top - 0 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 0 +m_iTextOffsetX, 
 			(float)rect.top + 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());
-		HUD().OutText(GetFont(), GetClipRect(),
+		UI()->OutText(GetFont(), GetClipRect(),
 			(float)rect.left + 0 +m_iTextOffsetX,  
 			(float)rect.top - 1 +m_iTextOffsetY,
 			(*itCurrIItem).subStr.c_str());

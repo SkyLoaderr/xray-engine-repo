@@ -256,35 +256,35 @@ void  CUIButton::Draw()
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
 			GetFont()->SetColor(m_HighlightColor);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
 				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
@@ -299,7 +299,7 @@ void  CUIButton::Draw()
 		if (!m_bNewRenderMethod)
 		{
 			if(m_str && xr_strlen(m_str)>0)
-				HUD().OutText(GetFont(), GetClipRect(), 
+				UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left + right_offset  +  m_iTextOffsetX, 
 				(float)rect.top + down_offset  + m_iTextOffsetY,
 				m_str);

@@ -9,6 +9,8 @@
 #include "profiler.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "MainUI.h"
+#include "UICursor.h"
 
 #ifndef _EDITOR
 #	include "ai_debug.h"
@@ -43,10 +45,12 @@ CGamePersistent::CGamePersistent(void)
 		pDemoFile			=	NULL;
 		eDemoStart			=	NULL;
 	}
+
 }
 
 CGamePersistent::~CGamePersistent(void)
 {
+
 	FS.r_close					(pDemoFile);
 	Device.seqFrame.Remove		(this);
 	Engine.Event.Handler_Detach	(eDemoStart,this);
@@ -78,15 +82,21 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 void CGamePersistent::OnAppStart()
 {
 	// load game materials
-	GMLib.Load							();
-	ai().script_engine().setup_callbacks();
-	__super::OnAppStart			();
+	GMLib.Load								();
+//	ai().script_engine().setup_callbacks	();
+	__super::OnAppStart						();
+	m_pMainUI = xr_new<CMainUI>				();
 }
 
 extern void clean_game_globals	();
 
 void CGamePersistent::OnAppEnd	()
 {
+	if(m_pMainUI->IsActive())
+		m_pMainUI->Activate(false);
+
+	xr_delete					(m_pMainUI);
+
 	__super::OnAppEnd			();
 
 	clean_game_globals			();

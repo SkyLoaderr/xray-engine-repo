@@ -77,17 +77,17 @@ void CUIGameAHunt::Init	()
 	m_pPlayerLists->AttachChild(pPlayerListT2);
 	//-----------------------------------------------------------
 	m_reinforcement_caption			=	"ah_reinforcement";		
-	m_gameCaptions.addCustomMessage(m_reinforcement_caption, 0.0f, -0.9f, 0.02f, HUD().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_reinforcement_caption, 0.0f, -0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, REINFORCEMENT_MSG_COLOR, "");
 
 	m_score_caption					=	"ah_score";		
-	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.85f, 0.02f, HUD().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.85f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, SCORE_MSG_COLOR, "");
 
 	m_todo_caption					=	"ah_todo";
-	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().pFontDI, CGameFont::alCenter, TODO_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.8f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, TODO_MSG_COLOR, "");
 	m_gameCaptions.customizeMessage(m_todo_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 
 	m_buy_msg_caption				=	"ah_buy";
-	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, 0.02f, HUD().pFontDI, CGameFont::alCenter, BUY_MSG_COLOR, "");
+	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, 0.02f, HUD().Font().pFontDI, CGameFont::alCenter, BUY_MSG_COLOR, "");
 
 };
 //--------------------------------------------------------------------

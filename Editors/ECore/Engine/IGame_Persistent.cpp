@@ -2,7 +2,9 @@
 #pragma hdrstop
 
 #include "IGame_Persistent.h"
+#include "IGame_Level.h"
 #include "environment.h"
+#include "XR_IOConsole.h"
 
 ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
 
@@ -11,6 +13,7 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppStart.Add			(this);
 	Device.seqAppEnd.Add			(this);
 	Device.seqFrame.Add				(this,REG_PRIORITY_HIGH+1);
+	m_pMainUI						= NULL;
 }
 
 IGame_Persistent::~IGame_Persistent	()
@@ -41,4 +44,8 @@ void IGame_Persistent::OnAppEnd		()
 void IGame_Persistent::OnFrame		()
 {
 	Environment.OnFrame				();
+	if(Device.dwFrame ==50){
+		if(!g_pGameLevel)
+			Console->Execute("main_menu on");
+	}
 }

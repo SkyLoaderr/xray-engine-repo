@@ -28,7 +28,7 @@ CUIPdaCommunication::CUIPdaCommunication()
 	m_pInvOwner = NULL;
 	m_pPda = NULL;
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 
 	m_pOurDialogManager = m_pOthersDialogManager = NULL;
 

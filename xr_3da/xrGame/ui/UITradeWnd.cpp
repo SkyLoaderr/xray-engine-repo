@@ -43,7 +43,7 @@ CUITradeWnd::CUITradeWnd()
 	Init();
 	Hide();
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -566,7 +566,7 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,
@@ -610,7 +610,7 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
-			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+			UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,

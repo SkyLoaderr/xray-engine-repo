@@ -717,9 +717,9 @@ BOOL CCustomMonster::net_Spawn	(CSE_Abstract* DC)
 #ifdef DEBUG
 void CCustomMonster::OnHUDDraw(CCustomHUD* /**hud/**/)
 {
-	HUD().pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
-	HUD().pFontSmall->OutSet	(0,200);
-	HUD().pFontSmall->OutNext	("NET_Q_size: %d",NET.size());
+	HUD().Font().pFontSmall->SetColor	(D3DCOLOR_XRGB(255,0,0));
+	HUD().Font().pFontSmall->OutSet	(0,200);
+	HUD().Font().pFontSmall->OutNext	("NET_Q_size: %d",NET.size());
 	
 	/*
 	const float			fy = -1;

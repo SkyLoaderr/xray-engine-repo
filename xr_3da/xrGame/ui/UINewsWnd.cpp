@@ -51,7 +51,7 @@ void CUINewsWnd::Init()
 	xml_init.InitListWnd(uiXml, "list", 0, &UIListWnd);
 	UIListWnd.ActivateList(false);
 	UIListWnd.EnableScrollBar(true);
-	UIListWnd.SetRightIndention(static_cast<int>(20 * HUD().GetScale()));
+	UIListWnd.SetRightIndention(static_cast<int>(20 * UI()->GetScale()));
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -26,21 +26,21 @@ CUIListItemMP::CUIListItemMP(){
 	AttachChild(&m_sPing);
 
 	// Server
-	m_sServer.SetFont(HUD().pFontMedium);
+	m_sServer.SetFont(HUD().Font().pFontMedium);
 	m_sServer.SetTextColor(color_argb(255, 255, 255, 255));
 	m_sServer.SetTextAlign(CGameFont::alLeft);
 	m_sServer.Init(0,0,0,0);
 	m_sServer.SetElipsis(CUIStatic::eepNone, 1);
 
 	// Server
-	m_sMap.SetFont(HUD().pFontMedium);
+	m_sMap.SetFont(HUD().Font().pFontMedium);
 	m_sMap.SetTextColor(color_argb(255, 255, 255, 255));
 	m_sMap.SetTextAlign(CGameFont::alLeft);
 	m_sMap.Init(0,0,0,0);
 	m_sMap.SetElipsis(CUIStatic::eepNone, 1);
 
 	// Server
-	m_sMode.SetFont(HUD().pFontMedium);
+	m_sMode.SetFont(HUD().Font().pFontMedium);
 	m_sMode.SetTextColor(color_argb(255, 255, 255, 255));
 	m_sMode.SetTextAlign(CGameFont::alLeft);
 	m_sMode.Init(0,0,0,0);

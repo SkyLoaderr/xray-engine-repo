@@ -7,6 +7,7 @@
 	#include "IGame_ObjectPool.h"
 #endif
 
+class IMainUI;
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API IGame_Persistent	: 
 #ifndef _EDITOR
@@ -20,6 +21,8 @@ public:
 #ifndef _EDITOR
 	IGame_ObjectPool				ObjectPool;
 #endif
+	IMainUI*						m_pMainUI;	
+
 	CEnvironment					Environment;
 	BOOL							bDedicatedServer	;
 
@@ -49,6 +52,14 @@ public:
 #else
 	{}
 #endif
+};
+
+class IMainUI
+{
+public:
+	virtual			~IMainUI						()							{};
+	virtual void	Activate						(bool bActive)				=0; 
+	virtual	bool	IsActive						()							=0; 
 };
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;

@@ -64,7 +64,7 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	m_iIconTextureY	= 0;
 	m_iIconTextureX	= 0;
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 
 	m_mlCurrLevel	= mlRoot;
 	m_bIgnoreMoney	= false;
@@ -313,7 +313,7 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 		UIDragDropItem.SetSectionGroupID(WEAPON_BOXES_SLOT);
 		UIDragDropItem.SetPosInSectionsGroup(i);
 
-		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+		UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 		UIDragDropItem.SetGridHeight(boxesDefs[i].gridHeight);
 		UIDragDropItem.SetGridWidth(boxesDefs[i].gridWidth);
@@ -342,8 +342,8 @@ void CUIBuyWeaponWnd::InitWeaponBoxes()
 void CUIBuyWeaponWnd::InitBackgroundStatics()
 {
 	static const shared_str	captionsArr[]	= { "small weapons", "main weapons", "grenades", "suits", "equipment" };
-	CGameFont				*pNumberF		= HUD().pFontBigDigit, 
-							*pCaptionF		= HUD().pFontSmall;
+	CGameFont				*pNumberF		= HUD().Font().pFontBigDigit, 
+							*pCaptionF		= HUD().Font().pFontSmall;
 	const float				numberShiftX	= 30.f;
 	const float				numberShiftY	= 10.f;
 	const float				captionShiftX	= 60.f;
@@ -849,16 +849,12 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	// Кнопки ОК и Отмена
 	else if (&UIBtnOK == pWnd && BUTTON_CLICKED == msg && CanBuyAllItems())
 	{
-//		HUD().GetUI()->UIGame()->StartStopMenu(this);
-//		HUD().GetUI()->UIGame()->OnBuyMenu_Ok();
 		Game().StartStopMenu(this,true);
 		game_cl_Deathmatch * dm = smart_cast<game_cl_Deathmatch *>(&(Game()));
 		dm->OnBuyMenu_Ok();
 	}
 	else if (&UIBtnCancel == pWnd && BUTTON_CLICKED == msg)
 	{
-//		HUD().GetUI()->UIGame()->StartStopMenu(this);
-//		HUD().GetUI()->UIGame()->OnBuyMenu_Cancel();
 		Game().StartStopMenu(this,true);
 	}
 	// Так как у нас при наведении меняется текстура, то обрабатываем эту ситуацию
@@ -1079,7 +1075,7 @@ void CUIBuyWeaponWnd::ActivatePropertiesBox()
 {
 	int x,y;
 	RECT rect = GetAbsoluteRect();
-	HUD().GetUI()->GetCursor()->GetPos(x,y);
+	GetUICursor()->GetPos(x,y);
 
 	UIPropertiesBox.RemoveAll();
 
@@ -1321,7 +1317,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		UIDragDropItem.SetSectionGroupID(slotNum);
 		UIDragDropItem.SetPosInSectionsGroup(static_cast<u32>(j));
 
-		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+		UIDragDropItem.SetFont(HUD().Font().pFontLetterica16Russian);
 
 		// Читаем стоимость оружия
 		if (pSettings->line_exist(m_StrSectionName, static_cast<std::string>(wpnSectStorage[slotNum][j] + "_cost").c_str()))
@@ -1865,7 +1861,7 @@ void WpnDrawIndex(CUIDragDropItem *pDDItem)
 	int bottom	= pDDItemMP->GetUIStaticItem().GetPosY() + pDDItemMP->GetUIStaticItem().GetRect().height();
 
 	pDDItemMP->GetFont()->SetColor(0xffffffff);
-	HUD().OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
+	UI()->OutText(pDDItem->GetFont(), pDDItemMP->GetClipRect(), float(left), 
 		float(bottom - pDDItemMP->GetFont()->CurrentHeight()),
 		"%d", pDDItemMP->GetPosInSectionsGroup() + 1);
 

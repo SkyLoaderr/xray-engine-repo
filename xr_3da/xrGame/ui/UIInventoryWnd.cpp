@@ -60,7 +60,7 @@ CUIInventoryWnd::CUIInventoryWnd()
 
 	Init();
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 }
 
 void CUIInventoryWnd::Init()

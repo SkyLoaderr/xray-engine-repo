@@ -41,7 +41,7 @@ CUITalkWnd::CUITalkWnd()
 
 	Init();
 	Hide();
-	SetFont(HUD().pFontHeaderRussian);
+	SetFont(HUD().Font().pFontHeaderRussian);
 
 	m_bNeedToUpdateQuestions = false;
 }

@@ -133,35 +133,35 @@ void CUI3tButton::Draw(){
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
 			GetFont()->SetColor(m_HighlightColor);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1  +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(), 
+			UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left  + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left  - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  - 0 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left  - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
 				(float)rect.top  + 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
-			HUD().OutText(GetFont(), GetClipRect(),
+			UI()->OutText(GetFont(), GetClipRect(),
 				(float)rect.left  + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
 				(float)rect.top  - 1 +m_iTextOffsetY + m_iShadowOffsetY,
 				m_str);
@@ -179,7 +179,7 @@ void CUI3tButton::Draw(){
 		if (!m_bNewRenderMethod)
 		{
 			if(m_str && xr_strlen(m_str)>0)
-				HUD().OutText(GetFont(), GetClipRect(), 
+				UI()->OutText(GetFont(), GetClipRect(), 
 				(float)rect.left   +  m_iTextOffsetX, 
 				(float)rect.top   + m_iTextOffsetY,
 				m_str);

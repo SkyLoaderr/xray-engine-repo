@@ -111,7 +111,7 @@ void CStats::Show()
 		pFont->OnRender	();
 	}
 
-	if( Device.Pause()  ){
+	if( Device.Pause() && !g_pGamePersistent->m_pMainUI->IsActive() ){
 		float sz		= pFont->GetSize();
 		pFont->SetSize	(32);
 		pFont->SetColor	(0x80FF0000	);

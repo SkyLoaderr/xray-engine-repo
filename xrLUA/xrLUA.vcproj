@@ -205,6 +205,66 @@
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="DebugNoExceptions|Win32"
+			OutputDirectory="x:\"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="include\"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;XRLUA_EXPORTS;LUABIND_BUILDING;FORCE_NO_EXCEPTIONS;LUABIND_NO_EXCEPTIONS"
+				MinimalRebuild="TRUE"
+				ExceptionHandling="FALSE"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="TRUE"
+				RuntimeLibrary="3"
+				StructMemberAlignment="0"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="0"
+				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerListingLocation="DebugNoExceptions\"
+				ObjectFile="DebugNoExceptions\"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				CallingConvention="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				OutputFile="x:\xrLUA.dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile=""
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				SubSystem="2"
+				ImportLibrary="x:\xrLua.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -231,6 +291,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -263,6 +330,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lcode.h">
@@ -285,6 +359,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -317,6 +398,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\ldo.h">
@@ -344,6 +432,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lfunc.c">
@@ -363,6 +458,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -395,6 +497,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lgc.h">
@@ -417,6 +526,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -452,6 +568,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lmem.h">
@@ -474,6 +597,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -506,6 +636,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lopcodes.h">
@@ -528,6 +665,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -560,6 +704,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lstate.h">
@@ -582,6 +733,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -614,6 +772,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\ltable.h">
@@ -641,6 +806,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\ltm.c">
@@ -660,6 +832,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -692,6 +871,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lundump.h">
@@ -719,6 +905,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lvm.h">
@@ -741,6 +934,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -778,6 +978,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\lbaselib.c">
@@ -797,6 +1004,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -826,6 +1040,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\liolib.c">
@@ -845,6 +1066,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -874,6 +1102,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\loadlib.c">
@@ -893,6 +1128,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -922,6 +1164,13 @@
 						UsePrecompiledHeader="3"
 						CompileAs="2"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\lib\ltablib.c">
@@ -941,6 +1190,13 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="3"
@@ -979,6 +1235,12 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="0"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="0"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\src\xr_LuaAllocator.h">
@@ -999,6 +1261,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Mixed|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						CompileAs="2"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						CompileAs="2"/>
@@ -1031,6 +1299,12 @@
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\StdAfx.h">
@@ -1047,11 +1321,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\class_info.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1065,11 +1351,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\class_rep.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1083,11 +1381,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\error.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1101,11 +1411,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\function.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1119,11 +1441,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\link_compatibility.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1137,11 +1471,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\object_rep.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1155,11 +1501,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\pcall.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1173,11 +1531,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\scope.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
@@ -1191,6 +1561,12 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\weak_ref.cpp">
@@ -1200,11 +1576,23 @@
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>
 				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\luabind\wrapper_base.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						WarningLevel="3"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						WarningLevel="3"/>

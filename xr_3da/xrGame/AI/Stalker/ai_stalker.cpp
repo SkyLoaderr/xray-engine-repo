@@ -646,9 +646,9 @@ void CAI_Stalker::OnRender			()
 	string64					out_text;
 	sprintf						(out_text,"%.2f",object ? object->m_value : 0.f);
 
-	HUD().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,0,0));
-	HUD().pFontMedium->OutSet	(x,y);
-	HUD().pFontMedium->OutNext	(out_text);
+	HUD().Font().pFontMedium->SetColor	(D3DCOLOR_XRGB(255,0,0));
+	HUD().Font().pFontMedium->OutSet	(x,y);
+	HUD().Font().pFontMedium->OutNext	(out_text);
 }
 #endif
 

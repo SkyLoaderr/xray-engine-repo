@@ -33,7 +33,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color, float angle)
 	}else{
 		D = &data[item_cnt];
 	}
-	HUD().ClientToScreenScaled(D->pos,left - offset_x,top - offset_y,uAlign);
+	UI()->ClientToScreenScaled(D->pos,left - offset_x,top - offset_y,uAlign);
 	D->color = color;
 	D->angle = angle;
 	++item_cnt;

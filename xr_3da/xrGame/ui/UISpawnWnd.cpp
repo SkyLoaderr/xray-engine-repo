@@ -22,7 +22,7 @@ CUISpawnWnd::CUISpawnWnd()
 {
 	Init("-= Green Team =-", 0xff40ff40, "-= Blue Team =-", 0xff4040ff, true);
 
-	SetFont(HUD().pFontMedium);
+	SetFont(HUD().Font().pFontMedium);
 }
 
 CUISpawnWnd::~CUISpawnWnd()

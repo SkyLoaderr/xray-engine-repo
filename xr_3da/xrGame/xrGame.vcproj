@@ -271,6 +271,90 @@
 			<Tool
 				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
+		<Configuration
+			Name="DebugNoExceptions|Win32"
+			OutputDirectory="x:\"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				EnableIntrinsicFunctions="FALSE"
+				FavorSizeOrSpeed="0"
+				EnableFiberSafeOptimizations="TRUE"
+				OptimizeForProcessor="2"
+				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;FORCE_NO_EXCEPTIONS"
+				StringPooling="FALSE"
+				MinimalRebuild="TRUE"
+				ExceptionHandling="FALSE"
+				BasicRuntimeChecks="3"
+				SmallerTypeCheck="TRUE"
+				RuntimeLibrary="3"
+				BufferSecurityCheck="TRUE"
+				EnableFunctionLevelLinking="FALSE"
+				RuntimeTypeInfo="TRUE"
+				UsePrecompiledHeader="3"
+				PrecompiledHeaderThrough="stdafx.h"
+				PrecompiledHeaderFile="$(IntDir)/$(TargetName).pch"
+				AssemblerListingLocation="DebugNoExceptions\"
+				ObjectFile="DebugNoExceptions\"
+				ProgramDataBaseFileName="$(OutDir)/$(TargetName).pdb"
+				BrowseInformation="0"
+				WarningLevel="4"
+				SuppressStartupBanner="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				CallingConvention="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				IgnoreImportLibrary="TRUE"
+				AdditionalOptions="/MACHINE:I386 
+"
+				AdditionalDependencies="x:\xr_3da.lib"
+				ShowProgress="0"
+				OutputFile="x:\xrGame.dll"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				AdditionalLibraryDirectories=""
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
+				GenerateMapFile="TRUE"
+				MapFileName="x:\xrGame.map"
+				MapExports="FALSE"
+				ImportLibrary="x:\xrGame.lib"/>
+			<Tool
+				Name="VCMIDLTool"
+				PreprocessorDefinitions="_DEBUG"
+				MkTypLibCompatible="TRUE"
+				SuppressStartupBanner="TRUE"
+				TargetEnvironment="1"
+				TypeLibraryName="x:\xrGame.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1049"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -3351,6 +3435,12 @@
 									Name="VCCLCompilerTool"
 									ShowIncludes="FALSE"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ShowIncludes="FALSE"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\Ai\Stalker\ai_stalker.h">
@@ -3800,11 +3890,21 @@
 							<Tool
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\graph_abstract_inline.h">
 						<FileConfiguration
 							Name="Debug|Win32">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
@@ -4961,6 +5061,12 @@
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="3"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="3"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\script_engine_export.h">
@@ -5071,6 +5177,12 @@
 				</FileConfiguration>
 				<FileConfiguration
 					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DebugNoExceptions|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
 						UsePrecompiledHeader="1"/>
@@ -6308,6 +6420,11 @@
 									<Tool
 										Name="VCCustomBuildTool"/>
 								</FileConfiguration>
+								<FileConfiguration
+									Name="DebugNoExceptions|Win32">
+									<Tool
+										Name="VCCustomBuildTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\ExplosiveItem.cpp">
@@ -6365,6 +6482,12 @@
 									<Tool
 										Name="VCCLCompilerTool"/>
 								</FileConfiguration>
+								<FileConfiguration
+									Name="DebugNoExceptions|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\Flyer.h">
@@ -6389,6 +6512,12 @@
 									<Tool
 										Name="VCCLCompilerTool"/>
 								</FileConfiguration>
+								<FileConfiguration
+									Name="DebugNoExceptions|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
 							</File>
 							<File
 								RelativePath=".\FlyerInput.cpp">
@@ -6406,6 +6535,12 @@
 								</FileConfiguration>
 								<FileConfiguration
 									Name="Release|Win32"
+									ExcludedFromBuild="TRUE">
+									<Tool
+										Name="VCCLCompilerTool"/>
+								</FileConfiguration>
+								<FileConfiguration
+									Name="DebugNoExceptions|Win32"
 									ExcludedFromBuild="TRUE">
 									<Tool
 										Name="VCCLCompilerTool"/>
@@ -6671,6 +6806,12 @@
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\DemoActor.h">
@@ -6692,6 +6833,12 @@
 								<Tool
 									Name="VCCustomBuildTool"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\DemoActorCameras.cpp">
@@ -6709,6 +6856,12 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32"
 								ExcludedFromBuild="TRUE">
 								<Tool
 									Name="VCCLCompilerTool"/>
@@ -6989,6 +7142,12 @@
 								<Tool
 									Name="VCCLCompilerTool"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\DynamicHeightMap.h">
@@ -7083,6 +7242,12 @@
 									Name="VCCLCompilerTool"
 									ObjectFile="$(IntDir)/$(InputName)1.obj"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\ai\Monsters\ai_monster_effector.h">
@@ -7150,6 +7315,12 @@
 					</File>
 					<File
 						RelativePath="GamePersistent.h">
+					</File>
+					<File
+						RelativePath=".\MainUI.cpp">
+					</File>
+					<File
+						RelativePath=".\MainUI.h">
 					</File>
 				</Filter>
 				<Filter
@@ -7401,6 +7572,12 @@
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="3"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="3"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\smart_cast.h">
@@ -7444,6 +7621,13 @@
 								UsePrecompiledHeader="0"
 								WarningLevel="2"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								WarningLevel="2"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameSpy\available.h">
@@ -7466,6 +7650,13 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								WarningLevel="2"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -7501,6 +7692,13 @@
 								UsePrecompiledHeader="0"
 								WarningLevel="2"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								WarningLevel="2"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\GameSpy\nonport.c">
@@ -7520,6 +7718,13 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								WarningLevel="2"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -7547,6 +7752,13 @@
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								WarningLevel="2"/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
@@ -7582,6 +7794,13 @@
 									UsePrecompiledHeader="0"
 									WarningLevel="2"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									WarningLevel="2"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\Qr2\qr2.h">
@@ -7604,6 +7823,13 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									WarningLevel="2"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
@@ -7640,6 +7866,13 @@
 									UsePrecompiledHeader="0"
 									WarningLevel="2"/>
 							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									WarningLevel="2"/>
+							</FileConfiguration>
 						</File>
 						<File
 							RelativePath=".\GameSpy\CDKey\gcdkeyc.h">
@@ -7662,6 +7895,13 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32">
+								<Tool
+									Name="VCCLCompilerTool"
+									UsePrecompiledHeader="0"
+									WarningLevel="2"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32">
 								<Tool
 									Name="VCCLCompilerTool"
 									UsePrecompiledHeader="0"
@@ -7928,6 +8168,12 @@
 							</FileConfiguration>
 							<FileConfiguration
 								Name="Release|Win32"
+								ExcludedFromBuild="TRUE">
+								<Tool
+									Name="VCCLCompilerTool"/>
+							</FileConfiguration>
+							<FileConfiguration
+								Name="DebugNoExceptions|Win32"
 								ExcludedFromBuild="TRUE">
 								<Tool
 									Name="VCCLCompilerTool"/>
@@ -8538,6 +8784,12 @@
 							<Tool
 								Name="VCCLCompilerTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath="tri-colliderKNoOPC\dcTriListCollider.h">
@@ -8624,6 +8876,11 @@
 							<Tool
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
+						<FileConfiguration
+							Name="DebugNoExceptions|Win32">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
 					</File>
 				</Filter>
 			</Filter>
@@ -8659,6 +8916,12 @@
 			<File
 				RelativePath=".\UICursor.h">
 			</File>
+			<File
+				RelativePath=".\UIDialogHolder.cpp">
+			</File>
+			<File
+				RelativePath=".\UIDialogHolder.h">
+			</File>
 			<Filter
 				Name="Custom"
 				Filter="">
@@ -8666,6 +8929,12 @@
 					RelativePath=".\UICustomItem.cpp">
 					<FileConfiguration
 						Name="Debug|Win32">
+						<Tool
+							Name="VCCLCompilerTool"
+							ShowIncludes="FALSE"/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="DebugNoExceptions|Win32">
 						<Tool
 							Name="VCCLCompilerTool"
 							ShowIncludes="FALSE"/>

@@ -44,7 +44,7 @@ void CUIEncyclopediaCore::Init(CUIListWnd *infoList, CUIListWnd *idxList)
 
 	pIdxList	= idxList;
 	pInfoList	= infoList;
-	pInfoList->SetRightIndention(static_cast<int>(10 * HUD().GetScale()));
+	pInfoList->SetRightIndention(static_cast<int>(10 * UI()->GetScale()));
 
 	CUIXml		uiXml;
 	bool xml_result = uiXml.Init(CONFIG_PATH, UI_PATH, ENCYCLOPEDIA_CORE_XML);
