@@ -114,7 +114,8 @@ void CRenderDevice::Create	()
 	// Hide the cursor if necessary
 	ShowCursor		(FALSE);
 
-	string256 fname; strconcat	(fname,Path.GameData,"shaders.xr");
+	string256 fname; 
+	FS.update_path	(fname,"$game_data$","shaders.xr");
 	_Create			(fname);
 
 	PreCache		(0);

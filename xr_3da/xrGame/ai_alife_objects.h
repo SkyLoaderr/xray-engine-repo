@@ -78,10 +78,9 @@ public:
 	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
-		tFileStream.r			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
-		if (m_tALifeVersion != ALIFE_VERSION)
-			THROW;
-		tFileStream.r			(&m_tZoneState,		sizeof(m_tZoneState));
+		tFileStream.r				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
+		R_ASSERT					(m_tALifeVersion != ALIFE_VERSION);
+		tFileStream.r				(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
 

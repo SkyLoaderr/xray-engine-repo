@@ -59,7 +59,7 @@ public:
 			switch(col){
 			case 0:						F->OutNext	("%d. %s",num,caption);	break;
 			case 1: if (!HasChildren())	F->OutNext	("%s",value0);			break;
-			default: THROW;
+			default:	Debug.fatal		("CUICustomMenuItem::DrawItem - invalid usage");
 			}
 		}
 	}

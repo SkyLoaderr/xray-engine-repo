@@ -22,20 +22,20 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 
 	m_pMotion	= 0;
 	char		nm[255],fn[255];
-	strcpy	(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
-	if (FS.exist(fn,Path.Current,nm))
+	strcpy		(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
+	if (FS.exist(fn,"$level$",nm))
 	{
-		m_pMotion	= xr_new<COMotion> ();
-		m_pMotion->LoadMotion(fn);
-		m_MParam.Set(m_pMotion, true);
+		m_pMotion				= xr_new<COMotion> ();
+		m_pMotion->LoadMotion	(fn);
+		m_MParam.Set			(m_pMotion, true);
 	}else{
 		if (!FS.exist(name)) {
 			pCreator->Cameras.RemoveEffector(cefDemo);
 			return;
 		}
-		u32 sz	= 0;
+		u32 sz		= 0;
 		void *data	= FileDownload(name,&sz);
-		VERIFY(sz%sizeof(Fmatrix) == 0);
+		VERIFY		(sz%sizeof(Fmatrix) == 0);
 		
 		seq.resize	(sz/sizeof(Fmatrix));
 		m_count		= seq.size();

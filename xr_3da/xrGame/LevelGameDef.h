@@ -139,8 +139,7 @@ public:
 	{
 		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_VERSION));
 		u32 dwVersion = fs.r_u32();
-		if (dwVersion != NPC_POINT_VERSION)
-			THROW;
+		R_ASSERT(dwVersion != NPC_POINT_VERSION);
 
 		R_ASSERT(fs.find_chunk(NPC_POINT_CHUNK_DATA));
 		fs.r_string					(caModel);

@@ -58,21 +58,18 @@ BOOL CCreator::Load(u32 dwNum)
 	// Initialize level data
 	pApp->Level_Set				( dwNum );
 	string256					temp;
-	if (!FS.exist(temp, Path.Current, "level.ltx"))
-		Debug.fatal("Can't find level configuration file '%s'.",temp);
+	if (!FS.exist(temp, "$level$", "level.ltx"))
+		Debug.fatal	("Can't find level configuration file '%s'.",temp);
 
 	pLevel						= xr_new<CInifile>	( temp );
 
 	// Read Environment
-	string256					LDesc;
-	strconcat					(LDesc,Path.Current,"level");
-	
-	pApp->LoadTitle				("Opening virtual stream: ",LDesc);
-	LL_Stream					= FS.r_open	(LDesc);
+	pApp->LoadTitle				("Opening virtual stream...");
+	LL_Stream					= FS.r_open	("$level$","level");
 	IReader	&fs					= *LL_Stream;
 	
-	IReader *chunk = 0;
-	u32	count,i;
+	IReader *chunk				= 0;
+	u32	count, i;
 
 	Environment.Load			(pLevel, "environment");
 	

@@ -274,8 +274,7 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 						if (iCount == 1) {
 							m_tpPath = &(Level().m_PatrolPaths[buf2]);
 							if (!m_tpPath) {
-								Msg("Cannot find specified path (%s)",buf2);
-								THROW;
+								Debug.fatal("Cannot find specified path (%s)",buf2);
 							}
 						}
 						else {
