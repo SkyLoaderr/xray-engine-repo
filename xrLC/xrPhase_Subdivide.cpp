@@ -121,7 +121,7 @@ void CBuild::xrPhase_Subdivide()
 			Progress(1.f - float(it)/float(g_vertices.size()));
 			
 			Vertex* V = g_vertices[it];
-			if (V->adjacent.empty())	{
+			if (V && V->adjacent.empty())	{
 				_DELETE			(V);
 				it --;
 			}

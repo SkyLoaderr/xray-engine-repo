@@ -126,7 +126,7 @@ void CBuild::PreOptimize()
 	for (it = 0; it<int(g_vertices.size()); it++)
 	{
 		R_ASSERT(it>=0 && it<(int)g_vertices.size());
-		if (g_vertices[it]->adjacent.empty()) {
+		if (g_vertices[it] && g_vertices[it]->adjacent.empty()) {
 			// isolated
 			_DELETE(g_vertices[it]);
 			it--;
