@@ -78,7 +78,7 @@ bool EFS_Utils::GetOpenName( LPCSTR initial, char *buffer, int sz_buf, bool bMul
 	ofn.lpstrFile 		= buffer;
 	ofn.nMaxFile 		= sz_buf;
 	ofn.lpstrFilter 	= flt;
-	ofn.nFilterIndex 	= start_flt_ext;
+	ofn.nFilterIndex 	= start_flt_ext+2;
     ofn.lpstrTitle      = "Open a File";
 
     string512 path; strcpy(path,(offset&&offset[0])?offset:P.m_Path);
