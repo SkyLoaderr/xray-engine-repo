@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "path_manager_selector.h"
+
 class CLevelPathManager {
 protected:
 	bool									m_level_path_actual;

@@ -36,7 +36,7 @@ void CLevelLocationSelector::init_evaluator		(PathManagers::CAbstractNodeEvaluat
 
 	node_evaluator->m_hit_direction		= m_hit_direction;
 	node_evaluator->m_hit_time			= m_hit_time;
-	node_evaluator->m_dwCurTime			= m_current_update;
+	node_evaluator->m_dwCurTime			= Device.dwTimeGlobal;
 	node_evaluator->m_tMe				= l_tpEntity;
 	node_evaluator->m_tpMyNode			= m_tpLevelVertex;
 	node_evaluator->m_tMyPosition		= Position();
