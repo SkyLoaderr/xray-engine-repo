@@ -40,7 +40,7 @@ function save_dialog:FillList()
 		
 		printf("file[%d]=%s",it,file)
 		
-		file = string.sub(file, -(string.len(file) -3))
+		file = string.sub(file,0 , (string.len(file) - 3))
 		
 		table.insert(self.FileTable,file)
 		self:AddItemToList(file)
