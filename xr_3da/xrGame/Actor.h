@@ -140,7 +140,7 @@ private:
 	u32						mstate_wishful;	
 	u32						mstate_real;	
 
-	BOOL					m_bJumpKeyPressed;//, m_bJumpInProgress;
+	BOOL					m_bJumpKeyPressed;
 
 	float					m_fWalkAccel;
 	float					m_fJumpSpeed;
