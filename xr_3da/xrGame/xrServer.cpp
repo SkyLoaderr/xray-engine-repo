@@ -162,8 +162,17 @@ void xrServer::OnCL_Connected		(IClient* CL)
 	for (; I!=E; I++)
 	{
 		xrServerEntity*	Test = I->second;
-
-		Test->Spawn_Write	(P,FALSE);
+		if (0==Test->owner)	
+		{
+			// Associate
+			Test->owner			= (xrClientData*)CL;
+			Test->Spawn_Write	(P,TRUE	);
+		}
+		else				
+		{
+			// Just inform
+			Test->Spawn_Write	(P,FALSE);
+		}
 		SendTo				(CL->ID,P,net_flags(TRUE));
 	}
 

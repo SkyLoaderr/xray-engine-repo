@@ -62,6 +62,7 @@ public:
 
 	IC xrClientData*		ID_to_client		(DPNID ID)
 	{
+		if (0==ID)			return 0;
 		csPlayers.Enter		();
 		for (DWORD client=0; client<net_Players.size(); client++)
 		{
@@ -84,6 +85,7 @@ public:
 
 	// main
 	void					Update				();
+	void					SLS_Default			();
 	void					SLS_Save			(CFS_Base& FS);
 	void					SLS_Load			(CStream&  FS);
 };

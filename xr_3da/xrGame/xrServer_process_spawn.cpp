@@ -38,7 +38,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 
 	// PROCESS NAME; Name this entity
 	LPCSTR				NameReplace = 0;
-	if (0 == CL->owner)	{
+	if (CL && (0 == CL->owner))	{
 		CL->owner		= E;
 		strcpy			(E->s_name_replace,CL->Name);
 	}
@@ -51,13 +51,16 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	ids_used[ID]		= true;	
 
 	// log
-	Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL->Name);
+	Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
 
 	// create packet and broadcast packet to everybody
 	NET_Packet			Packet;
 
-	E->Spawn_Write		(Packet,TRUE	);
-	SendTo				(sender,Packet,net_flags(TRUE));
+	if (CL) 
+	{
+		E->Spawn_Write		(Packet,TRUE	);
+		SendTo				(sender,Packet,net_flags(TRUE));
+	}
 
 	E->Spawn_Write		(Packet,FALSE	);
 	SendBroadcast		(sender,Packet,net_flags(TRUE));

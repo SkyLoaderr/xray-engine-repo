@@ -1036,13 +1036,16 @@
 				RelativePath="xrServer_balance.cpp">
 			</File>
 			<File
-				RelativePath="xrServer_perform_load.cpp">
-			</File>
-			<File
 				RelativePath="xrServer_perform_migration.cpp">
 			</File>
 			<File
-				RelativePath="xrServer_perform_save.cpp">
+				RelativePath="xrServer_perform_sls_default.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_perform_sls_load.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_perform_sls_save.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_process_ownership.cpp">

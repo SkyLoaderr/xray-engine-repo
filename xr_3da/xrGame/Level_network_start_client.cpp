@@ -34,35 +34,8 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		pApp->LoadTitle				("CLIENT: Spawning...");
 		while (!net_isCompleted_Connect()) Sleep(5);
 
-		// Signal main actor spawn
-		LPCSTR		s_cmd			= Engine.Params;
-		string64	s_name			= "actor";
-		if (strstr(s_cmd,"-actor "))	{
-			sscanf(strstr(s_cmd,"-actor ")+strlen("-actor "),"%s",s_name);
-			ph_world			= new CPHWorld;
-			ph_world->Create	();
-		}
-		g_cl_Spawn	(s_name, -1, 0, 0, 0);
-
-		// Spawn all other objects
-		FILE_NAME	fn_spawn;
-		if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
-		{
-			CStream*		SP	= Engine.FS.Open(fn_spawn);
-			NET_Packet		P;
-			CStream*		S		= 0;
-			int				S_id	= 0;
-			while (0!=(S = SP->OpenChunk(S_id)))
-			{
-				P.B.count	=	S->Length();
-				S->Read		(P.B.data,P.B.count);
-				S->Close	();
-				Send		(P,net_flags(TRUE));
-				S_id		+=	1;
-			}
-			Engine.FS.Close	(SP);
-		}
-
+		//
+		//
 		// And receiving spawn information (game-state)
 		BOOL bFinished		= FALSE;
 		while (!bFinished) 
