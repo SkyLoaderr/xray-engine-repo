@@ -44,6 +44,8 @@ CEditorPreferences::CEditorPreferences()
     scene_recent_count	= 10;
     scene_leave_eo_copy = TRUE;
     scene_clear_color	= DEFAULT_CLEARCOLOR;
+    // sounds
+    sound_rolloff		= 1.f;
 }
 
 void CEditorPreferences::ApplyValues()
@@ -62,6 +64,8 @@ void CEditorPreferences::ApplyValues()
     Device.m_Camera.SetFlyParams	(cam_fly_speed, cam_fly_alt);
 
     UI.Command		(COMMAND_UPDATE_GRID);
+
+	psSoundRolloff	= sound_rolloff;
 }
 
 void __fastcall CEditorPreferences::OnClose	()
@@ -79,12 +83,12 @@ void CEditorPreferences::Edit()
     PHelper.CreateAngle	(props,"View\\FOV",		  				&view_fov,			deg2rad(0.1f), deg2rad(170.f));
 
     PHelper.CreateColor	(props,"Fog\\Color",					&fog_color	);
-    PHelper.CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 100.f);
+    PHelper.CreateFloat	(props,"Fog\\Fogness",					&fog_fogness, 		0.f, 	100.f);
 
     PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Rotate",	&cam_sens_rot);
     PHelper.CreateFloat	(props,"Camera\\Sensetivity\\Move",		&cam_sens_move);
-    PHelper.CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 100.f);
-    PHelper.CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 1000.f);
+    PHelper.CreateFloat	(props,"Camera\\Fly\\Speed",			&cam_fly_speed, 	0.01f, 	100.f);
+    PHelper.CreateFloat	(props,"Camera\\Fly\\Altitude",			&cam_fly_alt, 		0.f, 	1000.f);
 
     PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Rotate",	&tools_sens_rot);
     PHelper.CreateFloat	(props,"Tools\\Sensetivity\\Move",		&tools_sens_move);
@@ -92,19 +96,21 @@ void CEditorPreferences::Edit()
 
     PHelper.CreateBOOL	(props,"Box Pick\\Limited Depth",		&bp_lim_depth);
     PHelper.CreateBOOL	(props,"Box Pick\\Back Face Culling",	&bp_cull);
-    PHelper.CreateFloat	(props,"Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 10000.f);
+    PHelper.CreateFloat	(props,"Box Pick\\Depth Tolerance",		&bp_depth_tolerance,0.f, 	10000.f);
 
-    PHelper.CreateAngle	(props,"Snap\\Angle",					&snap_angle,		0, PI_MUL_2);
+    PHelper.CreateAngle	(props,"Snap\\Angle",					&snap_angle,		0, 		PI_MUL_2);
     PHelper.CreateFloat	(props,"Snap\\Move",					&snap_move, 		0.01f,	1000.f);
     PHelper.CreateFloat	(props,"Snap\\Move To", 				&snap_moveto,		0.01f,	1000.f);
 
     PHelper.CreateFloat	(props,"Grid\\Cell Size", 				&grid_cell_size,	0.1f,	10.f);
-    PHelper.CreateU32	(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 1000);
+    PHelper.CreateU32	(props,"Grid\\Cell Count", 				&grid_cell_count,	10, 	1000);
 
     PHelper.CreateColor	(props,"Scene\\Clear Color",			&scene_clear_color	);
-    PHelper.CreateU32	(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 125);
-    PHelper.CreateU32	(props,"Scene\\Recent Count", 			&scene_recent_count,0, 25);
+    PHelper.CreateU32	(props,"Scene\\Undo Level", 			&scene_undo_level,	0, 		125);
+    PHelper.CreateU32	(props,"Scene\\Recent Count", 			&scene_recent_count,0, 		25);
     PHelper.CreateBOOL	(props,"Scene\\Always Keep Object Copy",&scene_leave_eo_copy);
+
+    PHelper.CreateFloat	(props,"Sounds\\Rolloff Factor",		&sound_rolloff, 	0.f,	10.f);
 
 	m_ItemProps->AssignItems		(props,true);
     m_ItemProps->ShowPropertiesModal();
@@ -152,6 +158,8 @@ void CEditorPreferences::OnCreate()
     scene_leave_eo_copy = R_BOOL_SAFE	("editor_prefs","scene_leave_eo_copy",scene_leave_eo_copy);
     scene_clear_color	= R_U32_SAFE	("editor_prefs","scene_clear_color"	,scene_clear_color	);
 
+    sound_rolloff		= R_FLOAT_SAFE	("editor_prefs","sound_rolloff"		,sound_rolloff   	);
+
     xr_delete	(I);
 
     ApplyValues			();
@@ -198,6 +206,8 @@ void CEditorPreferences::OnDestroy()
     I->w_u32	("editor_prefs","scene_recent_count",	scene_recent_count	);
     I->w_bool	("editor_prefs","scene_leave_eo_copy",	scene_leave_eo_copy	);
     I->w_u32	("editor_prefs","scene_clear_color",	scene_clear_color 	);
+
+    I->w_float	("editor_prefs","sound_rolloff",	sound_rolloff 	);
 
 	xr_delete	(I);
 }

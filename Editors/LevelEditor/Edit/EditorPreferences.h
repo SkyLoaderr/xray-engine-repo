@@ -44,6 +44,8 @@ public:
     u32		scene_recent_count;
     BOOL	scene_leave_eo_copy;
     u32		scene_clear_color;
+    // sound
+	float	sound_rolloff;
 private:
 	void 	__fastcall OnClose	(void);
     void	ApplyValues			();
