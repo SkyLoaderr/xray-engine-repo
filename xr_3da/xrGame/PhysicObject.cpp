@@ -12,6 +12,7 @@ CPhysicObject::CPhysicObject(void) {
 	b_recalculate=false;
 	m_unsplit_time = u32(-1);
 	b_removing=false;
+	m_startup_anim=NULL;
 	//m_source=NULL;
 }
 
@@ -34,7 +35,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
-	LPCSTR start_anim=*po->startup_animation;
+	m_startup_anim=po->startup_animation;
 	xr_delete(collidable.model);
 	switch(m_type) {
 		case epotBox:			collidable.model = xr_new<CCF_Rigid>(this);		break;
@@ -64,7 +65,8 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 			pSkeletonAnimated=PSkeletonAnimated(Visual());
 			if(pSkeletonAnimated)
 			{
-				pSkeletonAnimated->PlayCycle(start_anim);
+				R_ASSERT2(*m_startup_anim,"no startup animation");
+				pSkeletonAnimated->PlayCycle(*m_startup_anim);
 				pSkeletonAnimated->Calculate();
 			}
 			break;
@@ -288,7 +290,7 @@ void CPhysicObject::SpawnCopy()
 		//mask&= (1>>1);
 		l_tpALifePhysicObject->flags.set(CSE_ALifeObjectPhysic::flSpawnCopy,1);
 		l_tpALifePhysicObject->source_id		=	u16(ID());
-
+		l_tpALifePhysicObject->startup_animation=m_startup_anim;
 		//l_tpALifePhysicObject->flags.set(mask);
 		// Fill
 
