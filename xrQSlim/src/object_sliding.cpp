@@ -20,21 +20,23 @@
 //void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris, u32 mode);
 void OptimiseVertexCoherencyTriList (WORD* pwList, int iHowManyTris, u32 optimize_mode)
 {
-	DWORD* remap	= xr_alloc<DWORD>		(iHowManyTris);
-	WORD max_idx	= 0;
-	for (u32 k=0; k<iHowManyTris*3; k++)
-		max_idx		= _max(max_idx,pwList[k]);
-	HRESULT	rhr		= D3DXOptimizeFaces		(pwList,iHowManyTris,max_idx+1,FALSE,remap);
-	R_CHK			(rhr);
-	WORD* tmp		= xr_alloc<WORD>		(iHowManyTris*3);
-	memcpy			(tmp,pwList,sizeof(WORD) * 3 * iHowManyTris);
-	for (u32 it=0; it<iHowManyTris; it++){	
-		pwList[it*3+0]= tmp[remap[it]*3+0];
-		pwList[it*3+1]= tmp[remap[it]*3+1];
-		pwList[it*3+2]= tmp[remap[it]*3+2];
+	if (iHowManyTris){
+		DWORD* remap	= xr_alloc<DWORD>		(iHowManyTris);
+		WORD max_idx	= 0;
+		for (u32 k=0; k<iHowManyTris*3; k++)
+			max_idx		= _max(max_idx,pwList[k]);
+		HRESULT	rhr		= D3DXOptimizeFaces		(pwList,iHowManyTris,max_idx+1,FALSE,remap);
+		R_CHK			(rhr);
+		WORD* tmp		= xr_alloc<WORD>		(iHowManyTris*3);
+		memcpy			(tmp,pwList,sizeof(WORD) * 3 * iHowManyTris);
+		for (u32 it=0; it<iHowManyTris; it++){	
+			pwList[it*3+0]= tmp[remap[it]*3+0];
+			pwList[it*3+1]= tmp[remap[it]*3+1];
+			pwList[it*3+2]= tmp[remap[it]*3+2];
+		}
+		xr_free			(remap);
+		xr_free			(tmp);
 	}
-	xr_free			(remap);
-	xr_free			(tmp);
 }
 
 void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
@@ -175,7 +177,6 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 		{
 			GeneralCollapseInfo *pCollapse = object->pNextCollapse->ListNext();
 
-
 			// If we've just started a new level, EXCEPT on the last level,
 			// we don't need to store the post-collapse version of the tris,
 			// since we'll just switch down to the next level instead.
@@ -264,8 +265,9 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 
 			// Add the collapse record.
 			iCurCollapse--;
+
 			VIPM_SWR *swr	= result->swr_records.item ( iCurCollapse );
-			swr->offset		= iCurTriBinned * 3;
+			swr->offset		= iCurTriBinned * 3; 
 			swr->num_tris	= (u16)iCurNumTris;
 			swr->num_verts	= wCurIndex;
 		}
@@ -273,8 +275,9 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 		// OK, finished this level. Any tris that are left with an index of -1
 		// were not added during this level, and therefore need to be
 		// added into the middle of the list.
-		iJustCheckingNumTris = 0;
-		int iTempTriNum = 0;
+		iJustCheckingNumTris= 0;
+		int iTempTriNum		= 0;
+//.		wTempIndices.resize	(0);
 		for ( tri = object->CurTriRoot.ListNext(); tri != NULL; tri = tri->ListNext() ){
 			iJustCheckingNumTris++;
 			if ( tri->mytri.dwNewIndex == INVALID_INDEX ){
@@ -294,7 +297,6 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 
 		// And write them to the index list.
 		result->indices.insert ( iCurTriBinned * 3, wTempIndices, 0, 3 * iTempTriNum );
-		//memcpy ( result->indices.item ( iCurTriBinned * 3 ), wTempIndices.ptr(), sizeof(WORD) * 3 * iTempTriNum );
 
 		if ( object->pNextCollapse->ListNext() == NULL ){
 			// No more collapses.
@@ -311,12 +313,43 @@ void CalculateSW(Object* object, VIPM_Result* result, u32 optimize_vertex_order)
 	    iCurSlidingWindowLevel = object->pNextCollapse->ListNext()->iSlidingWindowLevel;
 	}
 
+
+/*
+	int error_found = -1;
 	// And now check everything is OK.
 	R_ASSERT ( result->swr_records.size() == u32(iNumCollapses + 1) );
 	for ( int i = 0; i <= iNumCollapses; i++ ){
 		VIPM_SWR *swr = result->swr_records.item ( i );
 		for ( int j = 0; j < swr->num_tris * 3; j++ ){
-			R_ASSERT ( *(result->indices.item(j+swr->offset)) < swr->num_verts );
+			R_ASSERT ( (j+swr->offset) < result->indices.size() );
+			//			R_ASSERT ( *(result->indices.item(j+swr->offset)) < swr->num_verts );
+			if (!(*(result->indices.item(j+swr->offset)) < swr->num_verts )){
+				error_found = i;
+			}
+		}
+	}
+	if (error_found>-1){
+		string256 tmp;
+		for ( int i = 0; i <= iNumCollapses; i++ ){
+			VIPM_SWR *swr = result->swr_records.item ( i );
+			sprintf(tmp,"SWR %d [T:%d, V:%d, O:%d]\n",i,swr->num_tris,swr->num_verts,swr->offset); 
+			OutputDebugString(tmp);
+			for ( int j = 0; j < swr->num_tris; j++ ){
+				sprintf(tmp,"%d - [%d,%d,%d]\n",j,*result->indices.item(j*3+0+swr->offset),*result->indices.item(j*3+1+swr->offset),*result->indices.item(j*3+2+swr->offset));
+				OutputDebugString(tmp);
+			}
+		}
+	}
+*/
+
+	// And now check everything is OK.
+	R_ASSERT ( result->swr_records.size() == u32(iNumCollapses + 1) );
+	for ( int i = 0; i <= iNumCollapses; i++ ){
+		VIPM_SWR *swr = result->swr_records.item ( i );
+		for ( int j = 0; j < swr->num_tris * 3; j++ ){
+			R_ASSERT ( (j+swr->offset) < result->indices.size() );
+			swr->num_verts = _max(swr->num_verts,*(result->indices.item(j+swr->offset))); // fignya index ne doljen bit bolshe!!!
+//.			R_ASSERT ( *(result->indices.item(j+swr->offset)) < swr->num_verts ); 
 		}
 	}
 }
