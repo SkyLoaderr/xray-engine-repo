@@ -38,13 +38,13 @@ CObjectSpace::~CObjectSpace( )
 }
 
 //----------------------------------------------------------------------
-void CAI_Space::OnDeviceCreate()
+void CObjectSpace::OnDeviceCreate()
 {
 	REQ_CREATE	();
 	sh_debug	= Device.Shader.Create	("debug\\wireframe","$null");
 }
 //----------------------------------------------------------------------
-void CAI_Space::OnDeviceDestroy()
+void CObjectSpace::OnDeviceDestroy()
 {
 	REQ_DESTROY	();
 	Device.Shader.Delete	(sh_debug);
