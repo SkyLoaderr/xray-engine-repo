@@ -451,6 +451,7 @@ CTexture* CResourceManager::_CreateTexture	(LPCSTR Name)
 		CTexture *	T		=	xr_new<CTexture>();
 		T->dwFlags			|=	xr_resource::RF_REGISTERED;
 		m_textures.insert	(mk_pair(T->set_name(Name),T));
+		T->Preload			();
 		if (Device.bReady && !bDeferredLoad) T->Load();
 		return		T;
 	}

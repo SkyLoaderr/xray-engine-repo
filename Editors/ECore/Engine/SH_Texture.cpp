@@ -83,20 +83,8 @@ void CTexture::Apply	(u32 dwStage)
 	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
 }
 
-void CTexture::Load()
+void CTexture::Preload	()
 {
-	flags.bLoaded					= true;
-	desc_cache						= 0;
-	if (pSurface)					return;
-
-	flags.bUser						= false;
-	flags.MemoryUsage				= 0;
-	if (0==stricmp(*cName,"$null"))	return;
-	if (0!=strstr(*cName,"$user$"))	{
-		flags.bUser	= true;
-		return;
-	}
-
 	// Material
 	if (Device.Resources->m_description->line_exist("specification",*cName))	{
 		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
@@ -108,6 +96,21 @@ void CTexture::Load()
 			// bump-map specified
 			m_bumpmap		=	&(bmode[4]);
 		}
+	}
+}
+
+void CTexture::Load		()
+{
+	flags.bLoaded					= true;
+	desc_cache						= 0;
+	if (pSurface)					return;
+
+	flags.bUser						= false;
+	flags.MemoryUsage				= 0;
+	if (0==stricmp(*cName,"$null"))	return;
+	if (0!=strstr(*cName,"$user$"))	{
+		flags.bUser	= true;
+		return;
 	}
 
 	// Check for AVI

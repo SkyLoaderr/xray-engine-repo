@@ -32,6 +32,7 @@ public:
 	IC void								desc_enshure()		{ if (!desc_valid()) desc_update(); }
 	void								desc_update	();
 public:
+	void								Preload		();
 	void								Load		();
 	void								Unload		(void);
 	void								Apply		(u32 dwStage);
