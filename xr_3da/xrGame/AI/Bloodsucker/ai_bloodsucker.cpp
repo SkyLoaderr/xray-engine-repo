@@ -58,3 +58,20 @@ void CAI_Bloodsucker::MotionToAnim(EMotionAnim motion, int &index1, int &index2,
 	index1 = 0; index2 = 0;	 index3 = -1;
 }
 
+
+
+void CBones::Update()
+{
+	if (bones.empty()) return;
+
+	bool bAllReached = true;
+	for (int i=0; i<bones.size(); i++) { 
+		if ((getAI().bfTooSmallAngle(bones[i].cur_yaw,bones[i].target_yaw,EPS_L)) && 
+			fsimilar(bones[i].cur_yaw, 0, EPS_L)) {
+			bones[i] = bones.back();
+			bones.push_back();
+		}
+	}
+	
+	if (bAllReached) bones.clear();
+}

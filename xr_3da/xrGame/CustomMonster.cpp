@@ -418,7 +418,6 @@ void CCustomMonster::eye_pp_s0			( )
 	eye_pp_stage						++;
 
 	// Eye matrix
-	Device.Statistic.TEST0.Begin			();
 	CKinematics* V							= PKinematics(Visual());
 	V->Calculate							();
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
@@ -427,7 +426,6 @@ void CCustomMonster::eye_pp_s0			( )
 	eye_matrix.setHPB						(-r_current.yaw + m_fEyeShiftYaw,-r_current.pitch,0);
 //	eye_matrix.c.set						(X.c);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
-	Device.Statistic.TEST0.End				();
 }
 
 void CCustomMonster::eye_pp_s1			( )

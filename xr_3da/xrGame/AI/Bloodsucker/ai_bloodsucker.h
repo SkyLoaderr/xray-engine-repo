@@ -2,6 +2,8 @@
 
 #include "..\\biting\\ai_biting.h"
 #include "ai_bloodsucker_state.h"
+#include "ai_bloodsucker_bones.h"
+
 
 class CAI_Bloodsucker : public CAI_Biting {
 
@@ -22,4 +24,5 @@ public:
 	friend	class		CBloodsuckerRest;
 
 };
+
 
