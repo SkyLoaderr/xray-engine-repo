@@ -649,7 +649,7 @@
 						Name="data_storages"
 						Filter="">
 						<Filter
-							Name="data_storage_algorithms"
+							Name="algorithms"
 							Filter="">
 							<Filter
 								Name="priority_queues"
@@ -741,22 +741,26 @@
 							</Filter>
 						</Filter>
 						<Filter
-							Name="data_storage_allocators"
+							Name="vertex_allocators"
 							Filter="">
-							<File
-								RelativePath=".\data_storage_allocator.h">
-							</File>
-							<File
-								RelativePath=".\data_storage_allocator_inline.h">
-							</File>
 							<Filter
-								Name="data_storage_fixed_allocator"
+								Name="fixed"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_fixed_allocator.h">
+									RelativePath=".\vertex_allocator_fixed.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_fixed_allocator_inline.h">
+									RelativePath=".\vertex_allocator_fixed_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="generic"
+								Filter="">
+								<File
+									RelativePath=".\vertex_allocator_generic.h">
+								</File>
+								<File
+									RelativePath=".\vertex_allocator_generic_inline.h">
 								</File>
 							</Filter>
 						</Filter>
@@ -767,67 +771,71 @@
 								RelativePath=".\data_storage_constructor.h">
 							</File>
 							<Filter
-								Name="data_storage_base_allocator_constructor"
+								Name="builder_allocator"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_base_allocator_constructor.h">
+									RelativePath=".\builder_allocator_constructor.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_base_allocator_constructor_inline.h">
+									RelativePath=".\builder_allocator_constructor_inline.h">
 								</File>
 							</Filter>
 							<Filter
-								Name="data_storage_index_base_allocator_constructor"
+								Name="manager_builder_allocator"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_index_base_allocator_constructor.h">
+									RelativePath=".\manager_builder_allocator_constructor.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_index_base_allocator_constructor_inline.h">
-								</File>
-							</Filter>
-						</Filter>
-						<Filter
-							Name="data_storage_paths"
-							Filter="">
-							<Filter
-								Name="data_storage_path"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_path.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_path_inline.h">
-								</File>
-							</Filter>
-							<Filter
-								Name="data_storage_edge_path"
-								Filter="">
-								<File
-									RelativePath=".\data_storage_edge_path.h">
-								</File>
-								<File
-									RelativePath=".\data_storage_edge_path_inline.h">
+									RelativePath=".\manager_builder_allocator_constructor_inline.h">
 								</File>
 							</Filter>
 						</Filter>
 						<Filter
-							Name="data_storage_vertex_managers"
+							Name="path_builders"
 							Filter="">
-							<File
-								RelativePath=".\data_storage_vertex_manager.h">
-							</File>
-							<File
-								RelativePath=".\data_storage_vertex_manager_inline.h">
-							</File>
 							<Filter
-								Name="data_storage_fixed_vertex_manager"
+								Name="edge_path"
 								Filter="">
 								<File
-									RelativePath=".\data_storage_fixed_vertex_manager.h">
+									RelativePath=".\edge_path.h">
 								</File>
 								<File
-									RelativePath=".\data_storage_fixed_vertex_manager_inline.h">
+									RelativePath=".\edge_path_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="vertex_path"
+								Filter="">
+								<File
+									RelativePath=".\vertex_path.h">
+								</File>
+								<File
+									RelativePath=".\vertex_path_inline.h">
+								</File>
+							</Filter>
+						</Filter>
+						<Filter
+							Name="vertex_managers"
+							Filter="">
+							<Filter
+								Name="fixed"
+								Filter="">
+								<File
+									RelativePath=".\vertex_manager_fixed.h">
+								</File>
+								<File
+									RelativePath=".\vertex_manager_fixed_inline.h">
+								</File>
+							</Filter>
+							<Filter
+								Name="generic"
+								Filter="">
+								<File
+									RelativePath=".\vertex_manager_generic.h">
+								</File>
+								<File
+									RelativePath=".\vertex_manager_generic_inline.h">
 								</File>
 							</Filter>
 						</Filter>
