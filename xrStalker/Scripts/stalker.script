@@ -173,5 +173,5 @@ function stalker_script:net_import	(packet)
 end
 
 function init		(obj)
-	obj:set_object	(stalker.stalker_script(obj))
+	obj:bind_object	(stalker.stalker_script(obj))
 end
