@@ -184,17 +184,17 @@ public:
 	virtual void			shedule_Update					(u32 dt);
 
 	virtual void			Think							();
-	virtual	void			Init							();
+			void			Init							();
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
 	// path routines
 			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
-			void			Path_GetAwayFromPoint			(CEntity *pE, Fvector position, float dist);
-			void			Path_CoverFromPoint				(CEntity *pE, Fvector position);
-			void			Path_ApproachPoint				(CEntity *pE, Fvector position);
-			void			Path_WalkAroundObj				(CEntity *pE, Fvector position);
+			void			Path_GetAwayFromPoint			(const CEntity *pE, Fvector position, float dist);
+			void			Path_CoverFromPoint				(const CEntity *pE, Fvector position);
+			void			Path_ApproachPoint				(const CEntity *pE, Fvector position);
+			void			Path_WalkAroundObj				(const CEntity *pE, Fvector position);
 			
 			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
 			
@@ -208,7 +208,7 @@ public:
 	// Other
 			void			vfUpdateParameters				();
 		
-			void			HitEntity						(CEntity *pEntity, float fDamage, Fvector &dir);
+			void			HitEntity						(const CEntity *pEntity, float fDamage, Fvector &dir);
 			
 			void			SetState						(IState *pS, bool bSkipInertiaCheck = false);
 
@@ -251,7 +251,7 @@ public:
 			
 			bool			IsRightSide						(float ty, float cy) {return ((angle_normalize_signed(ty - cy) > 0));}
 
-			Fvector			GetValidPosition				(CEntity *entity, const Fvector &actual_position);
+			Fvector			GetValidPosition				(const CEntity *entity, const Fvector &actual_position);
 
 // members
 public:
@@ -300,7 +300,7 @@ public:
 	// Combat flags 
 	u32						flagsEnemy; 
 
-	// m_enemy
+	// m_object
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
 	
@@ -359,17 +359,17 @@ public:
 	} _as;
 
 	// PathManagement Bridge
-	void MoveToTarget			(CEntity *entity); 
+	void MoveToTarget			(const CEntity *entity); 
 	void MoveToTarget			(const Fvector &pos, u32 node_id);
-	void FaceTarget				(CEntity *entity);
+	void FaceTarget				(const CEntity *entity);
 	void FaceTarget				(const Fvector &position);
-	bool IsObjectPositionValid	(CEntity *entity);
+	bool IsObjectPositionValid	(const CEntity *entity);
 	bool IsMoveAlongPathFinished();
 	bool IsMovingOnPath			();
-	bool ObjectNotReachable		(CEntity *entity);
+	bool ObjectNotReachable		(const CEntity *entity);
 
 	void InitSelectorCommon		(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max);
-	void Path_CommonSelector	(CEntity *pE, Fvector position);
+	void Path_CommonSelector	(const CEntity *pE, Fvector position);
 
 	Fvector	RandomPosInR(const Fvector &p, float r);
 
@@ -384,7 +384,7 @@ public:
 	bool	NeedRebuildPath		(u32 n_points, float dist_to_end);
 
 
-	bool RayPickEnemy(CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
+	bool RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
 	//////////////////////////////////////////////////////////////////////////
 	// DEBUG

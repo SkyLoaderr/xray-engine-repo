@@ -40,7 +40,7 @@ void CBitingEat::Init()
 	// Получить инфо о трупе
 	VisionElem ve;
 	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
-	pCorpse = ve.obj;
+	pCorpse = const_cast<CEntity*>(ve.obj);
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
 	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->_sd->m_fDistToCorpse); 
@@ -77,7 +77,7 @@ void CBitingEat::Run()
 	if (pCorpse != ve.obj) Init();
 
 	// Определить позицию ближайшей боны у трупа
-	Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemPos(pCorpse);
+	Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemPos(const_cast<CEntity*>(pCorpse));
 	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
 	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;

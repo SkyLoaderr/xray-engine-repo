@@ -46,8 +46,6 @@ void CAI_Biting::Think()
 	
 	// process sound
 	ControlSound							(m_current_update);
-	
-	m_head = m_body;
 }
 
 

@@ -36,7 +36,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
  	}
 }
 
-void CAI_Biting::HitEntity(CEntity *pEntity, float fDamage, Fvector &dir)
+void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, Fvector &dir)
 {
 	if (!g_Alive()) return;
 	if (!pEntity) return;
@@ -58,8 +58,10 @@ void CAI_Biting::HitEntity(CEntity *pEntity, float fDamage, Fvector &dir)
 //			dir.setHP(y,p);
 //		}
 
-		float impulse = ::Random.randF(_sd->m_fImpulseMin,_sd->m_fImpulseMax);
-		pEntity->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
+		float		impulse = ::Random.randF(_sd->m_fImpulseMin,_sd->m_fImpulseMax);
+		CEntity		*pEntityNC	= const_cast<CEntity*>(pEntity);
+		VERIFY		(pEntityNC);
+		pEntityNC->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
 	}
 }
 
@@ -95,7 +97,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	AddDangerousEnemy(who,50000);
 }
 
-bool CAI_Biting::RayPickEnemy(CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks)
+bool CAI_Biting::RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks)
 {
 	bool ret_val = false;
 	

@@ -47,29 +47,25 @@ void CAI_Biting::vfUpdateParameters()
 
 	//------------------------------------
 	// Зрение
-	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-
 	// определить, видит ли меня враг
 	I = false;
 
 	SEnemy ve;
 
 	if (GetEnemy(ve)) {
-		VisibleEnemies.insert(ve.obj);
-
 		// определить, видит ли меня враг
 		float			yaw1 = 0.f, pitch1 =0.f, yaw2, pitch2, fYawFov = 0.f, fPitchFov = 0.f, fRange = 0.f;
 		
 
-		CCustomMonster	*tpCustomMonster = dynamic_cast<CCustomMonster *>(ve.obj);
+		const CCustomMonster *tpCustomMonster = dynamic_cast<const CCustomMonster *>(ve.obj);
 		if (tpCustomMonster) {
-			yaw1		= -tpCustomMonster->m_head.current.yaw;
-			pitch1		= -tpCustomMonster->m_head.current.pitch;
+			yaw1		= -tpCustomMonster->m_body.current.yaw;
+			pitch1		= -tpCustomMonster->m_body.current.pitch;
 			fYawFov		= angle_normalize_signed(tpCustomMonster->ffGetFov()*PI/180.f);
 			fRange		= tpCustomMonster->ffGetRange();
 		}
 		else {
-			CActor		*tpActor = dynamic_cast<CActor *>(ve.obj);
+			const CActor *tpActor = dynamic_cast<const CActor *>(ve.obj);
 			if (tpActor) {
 				yaw1	= tpActor->Orientation().yaw;
 				pitch1	= tpActor->Orientation().pitch;
@@ -98,7 +94,7 @@ void CAI_Biting::vfUpdateParameters()
 	// вероятность победы
 	C = D = E = F = G	= false;
 	
-	if (bfIsAnyAlive(VisibleEnemies) && ve.obj) {
+	if (ve.obj) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability[0],m_fAttackSuccessProbability[1],m_fAttackSuccessProbability[2],m_fAttackSuccessProbability[3],g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
 				C = true;
@@ -249,7 +245,7 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 #pragma todo("Dima to Jim : This method will be automatically removed after 22.12.2003 00:00")
 	set_desirable_speed		(m_fCurSpeed);
 
-	m_head = m_body;
+	m_body = m_body;
 
 	return			(true);		
 }

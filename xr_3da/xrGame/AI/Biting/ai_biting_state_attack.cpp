@@ -49,7 +49,7 @@ void CBitingAttack::Init()
 	m_tEnemy = pMonster->m_tEnemy;
 
 	// Определение класса врага
-	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(m_tEnemy.obj);
+	const CAI_Rat	*tpRat = dynamic_cast<const CAI_Rat *>(m_tEnemy.obj);
 	if (tpRat) m_bAttackRat = true;
 	else m_bAttackRat = false;
 
@@ -312,7 +312,7 @@ void CBitingAttack::Run()
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
-		bool			bActorIsEnemy = (dynamic_cast<CActor*>(m_tEnemy.obj) != 0);	// set !=0 to work
+		bool			bActorIsEnemy = (dynamic_cast<const CActor*>(m_tEnemy.obj) != 0);	// set !=0 to work
 
 		if (pBS && pA && bActorIsEnemy && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
 			if ((dist < pBS->m_fInvisibilityDist) && (pBS->GetPower() > pBS->m_fPowerThreshold)) {

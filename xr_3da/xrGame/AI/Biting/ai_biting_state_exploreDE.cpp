@@ -31,7 +31,7 @@ void CBitingExploreDE::Init()
 	SoundElem se;
 	bool bDangerous;
 	pMonster->GetSound(se,bDangerous);	// возвращает самый опасный звук
-	m_tEnemy.obj = dynamic_cast<CEntity *>(se.who);
+	m_tEnemy.obj = dynamic_cast<const CEntity *>(se.who);
 	m_tEnemy.position = se.position;
 	m_dwSoundTime	  = se.time;
 

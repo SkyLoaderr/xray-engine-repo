@@ -45,7 +45,7 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 }
 
 // high level 
-void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist)
+void CAI_Biting::Path_GetAwayFromPoint(const CEntity *pE, Fvector position, float dist)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0);									// forse enemy selection
@@ -64,7 +64,7 @@ void CAI_Biting::Path_GetAwayFromPoint(CEntity *pE, Fvector position, float dist
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
 }
 
-void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position)
+void CAI_Biting::Path_CoverFromPoint(const CEntity *pE, Fvector position)
 {
 //	if (pE) {
 //		m_tEnemy.Set(pE,0); 									// forse enemy selection
@@ -83,7 +83,7 @@ void CAI_Biting::Path_CoverFromPoint(CEntity *pE, Fvector position)
 //	vfChoosePointAndBuildPath(m_tSelectorCover, 0, true, 0, rebuild_time);
 }
 
-void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position)
+void CAI_Biting::Path_ApproachPoint(const CEntity *pE, Fvector position)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0); 									// forse enemy selection
@@ -96,7 +96,7 @@ void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position)
 	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 }
 
-void CAI_Biting::Path_WalkAroundObj(CEntity *pE, Fvector position)
+void CAI_Biting::Path_WalkAroundObj(const CEntity *pE, Fvector position)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0); 									// forse enemy selection
@@ -125,8 +125,6 @@ void CAI_Biting::SetDirectionLook(bool bReversed)
 
 	if (bReversed) m_body.target.yaw = angle_normalize(m_body.target.yaw + PI);
 	else m_body.target.yaw = angle_normalize(m_body.target.yaw);
-
-	m_head.target = m_body.target;
 }
 
 // каждый монстр может по-разному реализвать эту функ (e.g. кровосос с поворотом головы и т.п.)
@@ -147,13 +145,13 @@ void CAI_Biting::LookPosition(Fvector to_point, float angular_speed)
 
 // проверить, находится ли объект entity на ноде
 // возвращает позицию объекта, если он находится на ноде, или центр его ноды
-Fvector CAI_Biting::GetValidPosition(CEntity *entity, const Fvector &actual_position)
+Fvector CAI_Biting::GetValidPosition(const CEntity *entity, const Fvector &actual_position)
 {
 	if (ai().level_graph().inside(entity->level_vertex(), actual_position)) return actual_position;
 	else return ai().level_graph().vertex_position(entity->level_vertex());
 }
 
-void CAI_Biting::MoveToTarget(CEntity *entity) 
+void CAI_Biting::MoveToTarget(const CEntity *entity) 
 {
 	SetPathParams(entity->level_vertex_id(), GetValidPosition(entity, entity->Position()));
 
@@ -164,7 +162,7 @@ void CAI_Biting::MoveToTarget(const Fvector &pos, u32 node_id)
 	SetPathParams(node_id,pos);
 }
 
-void CAI_Biting::FaceTarget(CEntity *entity) 
+void CAI_Biting::FaceTarget(const CEntity *entity) 
 {
 	float yaw, pitch;
 	Fvector dir;
@@ -191,7 +189,7 @@ void CAI_Biting::FaceTarget(const Fvector &position)
 
 
 // возвращает true, если объект entity находится на ноде
-bool CAI_Biting::IsObjectPositionValid(CEntity *entity)
+bool CAI_Biting::IsObjectPositionValid(const CEntity *entity)
 {
 	return ai().level_graph().inside(entity->level_vertex_id(), entity->Position());
 }
@@ -244,7 +242,7 @@ bool CAI_Biting::NeedRebuildPath(u32 n_points, float dist_to_end)
 //-------------------------------------------------------------------------------------------
 
 
-bool CAI_Biting::ObjectNotReachable(CEntity *entity) 
+bool CAI_Biting::ObjectNotReachable(const CEntity *entity) 
 {
 	if (!IsObjectPositionValid(entity)) return true;
 	if (MotionMan.BadMotionFixed()) return true;
@@ -263,7 +261,7 @@ void CAI_Biting::InitSelectorCommon(float dist_opt, float weight_opt, float dist
 	m_tSelectorCommon->m_fOptEnemyDistanceWeight	= weight_opt;
 }
 
-void CAI_Biting::Path_CommonSelector(CEntity *pE, Fvector position)
+void CAI_Biting::Path_CommonSelector(const CEntity *pE, Fvector position)
 {
 	if (pE) {
 		m_tEnemy.Set(pE,0); 									// forse enemy selection
