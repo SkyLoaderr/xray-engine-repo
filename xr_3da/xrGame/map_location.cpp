@@ -92,11 +92,12 @@ Fvector2 CMapLocation::Position()
 
 Fvector2 CMapLocation::Direction()
 {
-	Fvector2 dir;
+	if(Level().CurrentViewEntity()&&Level().CurrentViewEntity()->ID()==m_objectID )
+		return Fvector2().set(Device.vCameraDirection.x,Device.vCameraDirection.z);
+
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
 	const Fvector& op = pObject->Direction();
-	dir.set(op.x, op.z);
-	return dir;
+	return Fvector2().set(op.x, op.z);
 }
 
 shared_str CMapLocation::LevelName()
