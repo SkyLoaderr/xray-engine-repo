@@ -39,8 +39,9 @@ using namespace std;
 #define NO_XR_LIGHT
 #define NO_XR_MATERIAL
 #define NO_XR_3DBUFFER
-#define VERIFY(a)	assert(a)
-#define R_ASSERT(a)	assert(a)
+#define VERIFY(a)		assert(a)
+#define R_ASSERT(a)		assert(a)
+#define R_ASSERT2(a,b)	assert(a)
 #define Msg printf
 #define NODEFAULT
 #define xr_malloc	malloc

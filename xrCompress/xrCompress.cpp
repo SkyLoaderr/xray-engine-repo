@@ -193,9 +193,10 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("\nCompressing files...");
 	if (0==chdir(argv[1]))
 	{
-		u32			dwTimeStart	= timeGetTime();
+		u32				dwTimeStart	= timeGetTime();
 		string256		fname;
 		strconcat		(fname,"..\\",argv[1],".xrp");
+		unlink			(fname);
 		fs				= new CFS_File(fname);
 		fs->open_chunk	(0);
 		Recurse			("");
