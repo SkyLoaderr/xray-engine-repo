@@ -1,4 +1,12 @@
 
+local leader_no_command					= 0
+local leader_move                       = 1
+local leader_stop                       = 2
+local leader_speak						= 3
+local leader_speak_enable				= 4
+local leader_return                     = 5  
+local leader_free                       = 6
+
 
 -------------------------------------------------------------------------
 class "evaluator_chaser" (property_evaluator)
@@ -13,6 +21,18 @@ function evaluator_chaser:evaluate ()
 end
 -------------------------------------------------------------------------
 
+
+-------------------------------------------------------------------------
+class "evaluator_chaser_enable" (property_evaluator)
+------------------
+function evaluator_chaser_enable:__init (storage, name) super ()
+    self.a = storage
+end
+------------------
+function evaluator_chaser_enable:evaluate ()
+    return self.a.enabled == true
+end
+-------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------
@@ -59,13 +79,41 @@ function action_chase:execute ()
     action_base.execute (self)
     self.object:set_path_type             (game_object.level_path)
     self.object:set_dest_level_vertex_id  (self.a.npc:level_vertex_id ())
+    self:set_soldier_positions ()
+    self:set_command ()
 end
 ------------------
 function action_chase:finalize ()
     action_base.finalize (self)
 end            
 -------------------------------------------------------------------------
-
+function action_chase:set_soldier_positions ()
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    local dir = self.object:direction ()
+    dir.y = 0.0
+    dir:normalize ()
+    local step = 180.0 / size
+    local angle = 90.0
+    for a = 1, size, 1 do
+        local vec
+        if a == 1 then 
+           vec = xr_patrol.vector_rotate_y (dir, 90.0)
+        else 
+           vec = xr_patrol.vector_rotate_y (dir, -90.0) 
+        end   
+        xr_motivator.storage[self.object:id()].followers[a].direction = vec
+        xr_motivator.storage[self.object:id()].followers[a].distance = 3.0
+    end
+end
+-------------------------------------------------------------------------
+function action_chase:set_command (command)
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+    end
+end
 
 -------------------------------------------------------------------------
 class "action_return" (action_base)
@@ -111,8 +159,9 @@ function add_to_binder (npc, ini)
     local operators = {}
     local properties = {}
     
-    properties["chase"]             = xr_evaluators_id.sidor_chaser
-    properties["return"]            = xr_evaluators_id.sidor_chaser + 1
+    properties["enabled"]           = xr_evaluators_id.sidor_chaser
+    properties["chase"]             = xr_evaluators_id.sidor_chaser + 1
+    properties["return"]            = xr_evaluators_id.sidor_chaser + 2
 	properties["state_end"]		    = xr_evaluators_id.state_change
     
     operators["chase"]              = xr_actions_id.sidor_act_chaser
@@ -120,12 +169,14 @@ function add_to_binder (npc, ini)
     
     
     local manager = npc:motivation_action_manager ()
+    manager:add_evaluator (properties["enabled"], this.evaluator_chaser_enable (xr_motivator.storage[npc:id ()].chaser, "evaluator_chaser_enabled"))
     manager:add_evaluator (properties["chase"], this.evaluator_chaser (xr_motivator.storage[npc:id ()].chaser, "evaluator_chaser"))
     manager:add_evaluator (properties["return"], this.evaluator_return (xr_motivator.storage[npc:id ()].chaser, "evaluator_return"))
     
     local action = this.action_chase (xr_motivator.storage[npc:id ()].chaser, "action_chase")
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["enabled"],         true))
    	action:add_precondition     	(world_property (properties["chase"],           true))
 	action:add_precondition		    (world_property (properties["state_end"], 	    true))
    	action:add_effect           	(world_property (properties["chase"],           false))
@@ -135,15 +186,15 @@ function add_to_binder (npc, ini)
     action = this.action_return (xr_motivator.storage[npc:id ()].chaser, "action_return")
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
+   	action:add_precondition     	(world_property (properties["enabled"],         true))
    	action:add_precondition     	(world_property (properties["chase"],           false))
    	action:add_precondition     	(world_property (properties["return"],          false))
 	action:add_precondition		    (world_property (properties["state_end"], 	    true))
-   	action:add_effect           	(world_property (properties["return"],          true))
+   	action:add_effect           	(world_property (properties["enabled"],         false))
    	manager:add_action              (operators["return"], action)
     
     action = manager:action (stalker_ids.action_puzzle_solver)
-    action:add_precondition (world_property (properties["chase"], false))
-    action:add_precondition (world_property (properties["return"], true))
+    action:add_precondition (world_property (properties["enabled"], false))
     
 end
 -------------------------------------------------------------------------
@@ -168,4 +219,8 @@ function set_chase (npc, enabled, sacrifice)
        st.ret_vertex = npc:level_vertex_id ()
     end        
 	
+end
+-------------------------------------------------------------------------
+function clear_chase (npc)
+    xr_motivator.storage[npc:id()].chaser.enabled = false
 end
