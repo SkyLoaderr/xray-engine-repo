@@ -27,7 +27,7 @@
 #define r2_float2B			"$user$float2b"			// --- compression/encoding table
 #define r2_ds2_fade			"$user$ds2_fade"		// ---
 
-const	u32					SMAP_size			= 1024	;
+const	u32					SMAP_size			= 1536	;
 const	float				SMAP_near_plane		= .1f	;
 
 const	u32					SMAP_adapt_min		= 32	;
