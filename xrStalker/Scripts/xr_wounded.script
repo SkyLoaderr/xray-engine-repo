@@ -10,7 +10,7 @@ function evaluator_enable:__init (name, storage) super (nil, name)
 end
 ------------
 function evaluator_enable:evaluate ()
-    return true --self.a.enabled
+    return true 
 end    
 ------------------------------------------------------------------------------------------
 
@@ -30,10 +30,12 @@ function evaluator_wound:evaluate ()
            return false
        end
     end       
+    
     if self.object.health < 0.20 then
        self.a.final = false
        return true
     end
+    
     self.a.final = true
     return false    
 end
@@ -166,19 +168,14 @@ function action_cover:execute ()
              return
           end   
           self.stage = 1
-          local dir = self.object:direction ()
-          self.dir = dir
-          dir.x = -dir.x
-          dir.y = -dir.y
-          dir.z = -dir.z
-          self.object:set_sight (look.direction, dir, 0)
+          self.dir = vector_rotate_y (self.object:direction (), 170.0)
+          self.object:set_sight (look.direction, self.dir, 0)
           return
        end    
     end
     
     if self.stage == 1 then
        if yaw_degree (self.dir, self.object:direction ()) < 5 then
-       --if self.object:is_body_turning () == false then
           self.a.cover = true
        end
     end      
@@ -226,7 +223,7 @@ function action_sit:initialize ()
        self.object:set_item (object.deactivate, self.object:active_item ())
     end   
     self.object:add_animation ("waunded_sitdawn_0", true)
-    self.object:add_animation ("waunded_perehod_0", true)
+    --self.object:add_animation ("waunded_perehod_0", true)
     self.object:add_animation ("waunded_idle_0", true)
 end
 ------------
@@ -383,26 +380,27 @@ end
 function action_enemy:initialize ()
     action_base.initialize (self)
     self.object:set_movement_type         (move.stand)
-    self.first = false
+    self.object:clear_animations ()
+    self.object:set_mental_state          (anim.danger)
+    self.object:set_body_state            (move.crouch)
+    if self.object:active_item () == nil then
+       self.object:set_item (object.activate, self.object:best_weapon ())
+    end   
     xr_meet.override_meet (self.object, true)
 end
 ------------
 function action_enemy:execute ()
     action_base.execute (self)
     
-    if distance_between (self.object, self.object:best_enemy ()) < 20 and self.object:see (self.object:best_enemy ()) and self.first == false then
+    local enemy = self.object:best_enemy ()
+    if distance_between (self.object, enemy) < 20 and self.object:see (self.object:best_enemy ()) and self.object:see (enemy) == true then
+       self.object:set_sight (look.fire_point, enemy:position (), 0)
+       self.object:set_item (object.fire1, self.object:best_weapon ()) 
        if self.object:active_sound_count () ~= 0 then
           return 
        end     
-       self.first = true
-       self.object:clear_animations ()
-       self.object:add_animation ("waunded_monser_0", true)
-       xr_sounds.play_sound (self.object, 0, "wounded", 1)
+       --xr_sounds.play_sound (self.object, 0, "wounded", 1)
     end
-        
-    if self.object:animation_count () < 2 then 
-       self.object:add_animation ("waunded_monser_1", true)
-    end    
     
     xr_sound.sound_update(self.object, self.sounds)		
 end    
@@ -516,7 +514,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           false))
     action:add_precondition (world_property (properties["cover"],           true))
-    --action:add_precondition (world_property (properties["friend"],          true))
+    --action:add_precondition (world_property (properties["friend"],        true))
     action:add_precondition (world_property (properties["sit"],             true))
     action:add_precondition (world_property (properties["final"],           false))
     action:add_effect       (world_property (properties["final"],           true))
