@@ -9,7 +9,7 @@
 #include "GlowManager.h"
 
 #define FADE_SCALE			1024.f
-#define MAX_GlowsDist1		float(g_pGameLevel->Environment->Current.far_plane)
+#define MAX_GlowsDist1		float(g_pGamePersistant->Environment.Current.far_plane)
 #define MAX_GlowsDist2		float(MAX_GlowsDist1*MAX_GlowsDist1)
 
 //////////////////////////////////////////////////////////////////////

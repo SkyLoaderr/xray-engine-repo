@@ -6,7 +6,6 @@
 #include "render.h"
 #include "gamefont.h"
 #include "xrLevel.h"
-#include "environment.h"
 #include "ps_instance.h"
 
 ENGINE_API	IGame_Level*	g_pGameLevel	= NULL;
@@ -28,7 +27,6 @@ IGame_Level::~IGame_Level	()
 		xr_delete				( *ps_active.begin() );
 
 	// 
-	xr_delete					( Environment	);
 	DEL_INSTANCE				( pHUD			);
 	xr_delete					( pLevel		);
 	FS.r_close					( LL_Stream		);
@@ -81,8 +79,6 @@ BOOL IGame_Level::Load				(u32 dwNum)
 
 	// HUD + Environment
 	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
-	Environment					= xr_new<CEnvironment>		();
-	Environment->Load			(pLevel, "environment");
 
 	// Header
 	hdrLEVEL					H;

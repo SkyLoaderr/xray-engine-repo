@@ -675,7 +675,7 @@ void	CRender::Render		()
 		Device.mProject.build_projection(
 			deg2rad(psHUD_FOV*Device.fFOV*Device.fASPECT), 
 			Device.fASPECT, VIEWPORT_NEAR, 
-			g_pGameLevel->Environment->Current.far_plane);
+			g_pGamePersistant->Environment.Current.far_plane);
 		Device.mFullTransform.mul	(Device.mProject, Device.mView);
 		RCache.set_xform_project	(Device.mProject);
 
@@ -790,7 +790,7 @@ void	CRender::Render		()
 			RCache.set_xform_world	(Fidentity);
 			Details->Render			(Device.vCameraPosition);
 
-			g_pGameLevel->Environment->RenderFirst	();
+			g_pGamePersistant->Environment.RenderFirst	();
 
 			// NORMAL-matrix		*** actors and dyn. objects
 			mapMatrix.traverseANY	(matrix_L1);
@@ -822,7 +822,7 @@ void	CRender::Render		()
 		flush_Patches	();
 	}
 
-	g_pGameLevel->Environment->RenderLast	();
+	g_pGamePersistant->Environment.RenderLast	();
 	// L_Projector.render					();
 
 	// Postprocess

@@ -8,7 +8,6 @@
 // refs
 class ENGINE_API CCursor;
 class ENGINE_API CCustomHUD;
-class ENGINE_API CEnvironment;
 class ENGINE_API CPS_Instance;
 
 //-----------------------------------------------------------------------------------------------------------
@@ -36,7 +35,6 @@ protected:
 	u32							Sounds_dwNextTime;
 public:
 	CObjectList					Objects;
-	CEnvironment*				Environment;
 	CCameraManager				Cameras;
 	CObjectSpace				ObjectSpace;
 
