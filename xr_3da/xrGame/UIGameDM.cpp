@@ -316,15 +316,13 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
 	if(!l_pPlayer) return;
 
+	game_cl_GameState::Player* Pl = Game().local_player;
+	if (!Pl) return;
+
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 	//-------------------------------------------------------------------------------
 	pCurPresetItems->clear();
-//	u8 NumItems = pCurBuyMenu->GetBeltSize();
-//	for (u8 s =0; s<6; s++)
-//	{
-//		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
-//	};
 
 	for (u8 s =0; s<6; s++)
 	{
@@ -334,7 +332,6 @@ void CUIGameDM::OnBuyMenu_Ok	()
 		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
 		s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
 		pCurPresetItems->push_back(ID);
-//		P.w_s16(ID);
 	}
 
 	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
@@ -343,35 +340,14 @@ void CUIGameDM::OnBuyMenu_Ok	()
 		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
 		s16	ID = (s16(SectID) << 0x08) | s16(ItemID);
 		pCurPresetItems->push_back(ID);
-//		P.w_s16(ID);
 	};	
 	//-------------------------------------------------------------------------------
+	P.w_s16		(s16(pCurBuyMenu->GetMoneyAmount()) - Pl->money_for_round);
 	P.w_u8		(u8(pCurPresetItems->size()));
 	for (s=0; s<pCurPresetItems->size(); s++)
 	{
 		P.w_s16((*pCurPresetItems)[s]);
 	}
-//	P.w_u8		(NumItems);
-	//-------------------------------------------------------------------------------
-	/*
-	for (s =0; s<6; s++)
-	{
-		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
-		if (ItemID == 0xff) continue;
-		u16 SlotID = SlotsToCheck[s];
-		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
-		u16	ID = SlotID << 8 | s16(ItemID);
-		P.w_s16(ID);
-	}
-
-	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
-	{
-		u8 SectID, ItemID;
-		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-		u16	ID = (s16(SectID) << 0x08) | s16(ItemID);
-		P.w_s16(ID);
-	};
-	*/
 	//-------------------------------------------------------------------------------
 	l_pPlayer->u_EventSend		(P);
 };

@@ -568,6 +568,10 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->Skip) return;
 
+	s16 MoneyDelta;
+	P.r_s16(MoneyDelta);
+	ps->money_for_round = ps->money_for_round + MoneyDelta;
+
 	xr_vector<s16>		ItemsDesired;
 
 	u8 NumItems;
@@ -632,7 +636,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	{
 		game_PlayerState::PlayersItem	NewItem;
 		NewItem.ItemID		= ItemsDesired[it];
-		NewItem.ItemCost	= GetItemCost(id_who, NewItem.ItemID);
+		NewItem.ItemCost	= 0;//GetItemCost(id_who, NewItem.ItemID);
 
 		ps->pItemList.push_back(NewItem);
 	};
