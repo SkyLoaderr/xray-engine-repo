@@ -151,7 +151,7 @@ void CDetailManager::Unload		()
 extern float r_ssaDISCARD;
 
 
-void CDetailManager::Render		(Fvector& vecEYE)
+void CDetailManager::Render		()
 {
 #ifndef _EDITOR
 	if (0==dtFS)						return;
@@ -160,7 +160,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 
-	Fvector		EYE				= vecEYE;
+	Fvector		EYE				= Device.vCameraPosition;
 	CFrustum	View			= RImplementation.ViewBase;
 
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
@@ -225,8 +225,9 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 	Device.Statistic.RenderDUMP_DT_Render.Begin	();
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
-	if (UseVS())	hw_Render	();
-	else			soft_Render	();
+	RCache.set_xform_world	(Fidentity);
+	if (UseVS())			hw_Render	();
+	else					soft_Render	();
 	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
 	Device.Statistic.RenderDUMP_DT_Render.End	();
 }

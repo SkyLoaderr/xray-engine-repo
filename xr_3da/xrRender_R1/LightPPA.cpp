@@ -20,12 +20,13 @@ IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, fl
 
 void CLightR_Manager::render_point	()
 {
-	// Projection
+	// Worl/View/Projection
 	float _43					 = Device.mProject._43;
 	Device.mProject._43			-= 0.001f; 
+	RCache.set_xform_world		(Fidentity);
 	RCache.set_xform_project	(Device.mProject);
 
-	RCache.set_Shader	(hShader);
+	RCache.set_Shader			(hShader);
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		light&	PPL		= *(*it);

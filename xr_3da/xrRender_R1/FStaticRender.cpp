@@ -354,39 +354,21 @@ void	CRender::Render		()
 {
 	Device.Statistic.RenderDUMP.Begin();
 
-	// Target.set_gray				(.5f+_sin(Device.fTimeGlobal)/2.f);
+	// Begin
 	Target->Begin					();
 
-
-	///////////////////////////???????????????????????????????????????????????????????????????
-	r_dsgraph_render_hud			();
-
-	// NORMAL			*** mostly the main level
-	// Perform sorting based on ScreenSpaceArea
-
-	// Sorting by SSA and changes minimizations
-	RCache.set_xform_world	(Fidentity);
-	Details->Render			(Device.vCameraPosition);
-
-	g_pGamePersistent->Environment.RenderFirst	();
-
-	RCache.set_xform_world	(Fidentity);
-	Wallmarks->Render		();		// Wallmarks has priority as normal geometry
-
-	RCache.set_xform_world	(Fidentity);
-	L_Dynamic->render		();		// L_DB has priority the same as normal geom
-
-	RCache.set_xform_world	(Fidentity);
-	L_Shadows->render		();
-
-	// LODs
-	r_dsgraph_render_lods	();
-	r_dsgraph_render_sorted	();
-
-	// Glows
-	L_Glows->Render			();
-
-	g_pGamePersistent->Environment.RenderLast	();
+	r_dsgraph_render_hud						();			// hud
+	r_dsgraph_render_graph						(0);		// normal level
+	Details->Render								();			// grass / details
+	g_pGamePersistent->Environment.RenderFirst	();			// sky / sun
+	Wallmarks->Render							();			// wallmarks has priority as normal geometry
+	L_Dynamic->render							();			// addititional light sources
+	L_Shadows->render							();			// ... and shadows
+	r_dsgraph_render_graph						(1);		// normal level, secondary priority
+	r_dsgraph_render_lods						();			// lods
+	r_dsgraph_render_sorted						();			// strict-sorted geoms
+	L_Glows->Render								();			// glows
+	g_pGamePersistent->Environment.RenderLast	();			// rain/lens-flares/thunder-bolts
 
 	// Postprocess, if necessary
 	Target->End				();

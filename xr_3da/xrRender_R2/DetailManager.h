@@ -129,7 +129,7 @@ public:
 
 	void							Load			();
 	void							Unload			();
-	void							Render			(Fvector& EYE);
+	void							Render			();
 
 	CDetailManager					();
 	virtual ~CDetailManager			();
