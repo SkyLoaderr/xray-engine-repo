@@ -352,7 +352,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 	string512		fname;
 	strcpy			(fname,_fname);
 	strlwr			(fname);
-	if (path&&path[0]) update_path(path,fname);
+	if (path&&path[0]) update_path(fname,path,fname);
 
 	// Search entry
 	file			desc_f;
@@ -395,7 +395,7 @@ IWriter* CLocatorAPI::w_open	(LPCSTR path, LPCSTR _fname)
 	string512	fname;
 	strconcat	(fname,_fname,".$");
 	strlwr		(fname);
-	if (path&&path[0]) update_path(path,fname);
+	if (path&&path[0]) update_path(fname,path,fname);
 	return xr_new<CFileWriter>(fname);
 }
 
@@ -488,11 +488,6 @@ FS_Path* CLocatorAPI::get_path(LPCSTR path)
     PathPairIt P 			= pathes.find(path); 
     R_ASSERT2(P!=pathes.end(),path);
     return P->second;
-}
-
-LPCSTR CLocatorAPI::update_path(LPCSTR initial, LPSTR path)
-{
-    return get_path(initial)->_update(path);
 }
 
 LPCSTR CLocatorAPI::update_path(LPSTR dest, LPCSTR initial, LPCSTR src)

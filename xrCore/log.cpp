@@ -121,7 +121,7 @@ void CreateLog(LogCallback cb)
 {
 	LogCB				= cb;
 	strconcat			(logFName,Core.ApplicationName,"_",Core.UserName,".log");
-    FS.update_path		("$logs$",logFName);
+    FS.update_path		(logFName,"$logs$",logFName);
 
 	FILE *f;
 	f		= fopen		(logFName, "wt");
