@@ -90,18 +90,18 @@ void	CSoundManager::Delete				( sound& S )
 	pSoundRender->DeleteSound(S.handle);
 }
 //-----------------------------------------------------------------------------
-CSoundStream* CSoundManager::CreateStream	( LPCSTR fName )
+CSound_stream_interface* CSoundManager::CreateStream	( LPCSTR fName )
 {
 	if (!bPresent) return NULL;
 	return pMusicStreams->CreateSound(fName);
 }
-void	CSoundManager::DeleteStream			( CSoundStream* pSnd )
+void	CSoundManager::DeleteStream			( CSound_stream_interface* pSnd )
 {
 	if (!bPresent)	return;
-	pMusicStreams->DeleteSound(pSnd);
+	pMusicStreams->DeleteSound	((CSoundStream*)pSnd);
 }
 //-----------------------------------------------------------------------------
-BOOL CSoundManager::IsOccluded(	Fvector& P, float R, Fvector* occ )
+BOOL CSoundManager::IsOccluded	(	Fvector& P, float R, Fvector* occ )
 {
 	if (0==pGeometry)	return FALSE;
 
