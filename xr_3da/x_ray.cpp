@@ -596,11 +596,13 @@ return 0;*/
 		FreeLauncher();
 
 		Core._destroy			();
-		return 1;
+		return					(1);
 
 	};
-	if(res==8)//Quit
-		return 1;
+	if(res==8){//Quit
+		Core._destroy			();
+		return					(1);
+	}
 	return 0;
 
 }
