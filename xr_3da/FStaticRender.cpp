@@ -14,6 +14,8 @@
 #include "xr_mac.h"
 
 ENGINE_API CRender	Render;
+
+Shader*				shDEBUG = 0;
  
 _FpsController		QualityControl;
 static	float		g_fGLOD, g_fFarSq, g_fPOWER;
@@ -318,7 +320,7 @@ void	CRender::Render		()
 	Target.Begin	();
 
 	// Environment render
-	pCreator->Environment.RenderFirst		();
+	// pCreator->Environment.RenderFirst		();
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea

@@ -5,12 +5,15 @@
 #include "cl_collector.h"
 #include "xr_creator.h"
 
-
 #include "x_ray.h"
+
+extern Shader*	shDEBUG;
 
 void CRender::level_Load()
 {
 	if (0==pCreator)	return;
+
+	shDEBUG				= Device.Shader.Create("debug\\wireframe");
 
 	// Begin
 	pApp->LoadBegin	();
