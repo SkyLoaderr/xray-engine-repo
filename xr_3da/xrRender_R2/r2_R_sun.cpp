@@ -1053,3 +1053,10 @@ void CRender::render_sun_near	()
 	RCache.set_xform_view		(Device.mView		);
 	RCache.set_xform_project	(Device.mProject	);
 }
+
+void CRender::render_sun_filtered	()
+{
+	if (!RImplementation.o.sunfilter)	return;
+	Target->phase_accumulator			();
+	Target->accum_direct				(SE_SUN_LUMINANCE);
+}

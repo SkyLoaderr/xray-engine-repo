@@ -199,8 +199,10 @@ void CRender::Render		()
 	// Directional light - fucking sun
 	if (ps_r2_ls_flags.test(R2FLAG_SUN))	{
 //		Lights_LastFrame.push_back			(Lights.sun_adapted);
+		RImplementation.stats.l_visible		++;
 		render_sun_near						();
 		render_sun							();
+		render_sun_filtered					();
 		Target->dwLightMarkerID				+= 2;
 	}
 

@@ -13,6 +13,8 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 	BOOL	b_HW_smap		= RImplementation.o.HW_smap;
 	BOOL		blend		= RImplementation.o.fp16_blend;
 	D3DBLEND	dest		= blend?D3DBLEND_ONE:D3DBLEND_ZERO;
+	if (RImplementation.o.sunfilter)	{ blend = FALSE; dest = D3DBLEND_ZERO; }
+
 	switch (C.iElement)
 	{
 	case SE_SUN_NEAR:		// near pass - enable Z-test to perform depth-clipping
@@ -35,6 +37,15 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_accumulator",	r2_RT_accum		);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+		jitter				(C);
+		C.r_End				();
+		break;
+	case SE_SUN_LUMINANCE:	// luminance pass
+		C.r_Pass			("null",			"accum_sun",		false,	FALSE,	FALSE);
+		C.r_Sampler_rtf		("s_position",		r2_RT_P			);
+		C.r_Sampler_rtf		("s_normal",		r2_RT_N			);
+		C.r_Sampler_clw		("s_material",		r2_material		);
+		C.r_Sampler_clf		("s_smap",			r2_RT_generic0	);
 		jitter				(C);
 		C.r_End				();
 		break;

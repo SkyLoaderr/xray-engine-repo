@@ -124,6 +124,7 @@ private:
 	void							render_lights				(light_Package& LP	);
 	void							render_sun					();
 	void							render_sun_near				();
+	void							render_sun_filtered			();
 public:
 	ShaderElement*					rimp_select_sh_static		(IRender_Visual	*pVisual, float cdist_sq);
 	ShaderElement*					rimp_select_sh_dynamic		(IRender_Visual	*pVisual, float cdist_sq);
