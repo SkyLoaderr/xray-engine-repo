@@ -62,17 +62,23 @@ void CAI_ALife::vfNewGame()
 				break;
 			}
 		}
-		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
-		R_ASSERT2				(tpServerEntity,"Can't create entity.");
-		CALifeDynamicObject			*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
-		R_ASSERT				(i);
+//		xrServerEntity			*tpServerEntity = F_entity_Create	((*I)->s_name);
+//		R_ASSERT2				(tpServerEntity,"Can't create entity.");
+//		CALifeDynamicObject		*i = dynamic_cast<CALifeDynamicObject*>(tpServerEntity);
+//		R_ASSERT				(i);
+//		NET_Packet				tNetPacket;
+//		(*I)->Spawn_Write		(tNetPacket,TRUE);
+//		i->Spawn_Read			(tNetPacket);
+//		tNetPacket.w_begin		(M_UPDATE);
+//		(*I)->UPDATE_Write		(tNetPacket);
+//		u16						id;
+//		tNetPacket.r_begin		(id);
+//		i->UPDATE_Read			(tNetPacket);
+		(*I)->ID				= 0xffff;
+		vfCreateObject			(*I);
 		(*I)->m_tObjectID		= (*I)->ID;
-		*i						= **I;
+		m_tObjectRegistry.insert(make_pair((*I)->m_tObjectID,*I));
 		I						= m;	
-		i->ID					= 0xffff;
-		vfCreateObject			(i);
-		i->m_tObjectID			= i->ID;
-		m_tObjectRegistry.insert(make_pair(i->m_tObjectID,i));
 	}
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tGameTime					= u64(Device.dwTimeGlobal);
@@ -153,16 +159,15 @@ void CAI_ALife::vfUpdateDynamicData()
 	CALifeScheduleRegistry::Init();
 	// update objects
 	{
-		OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
-		for ( ; I != E; I++) {
-			vfUpdateDynamicData((*I).second);
-		}
+		OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
+		OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
+		for ( ; I != E; I++)
+			vfUpdateDynamicData	((*I).second);
 	}
 	// update events
 	{
-		EVENT_PAIR_IT	I = m_tEventRegistry.begin();
-		EVENT_PAIR_IT	E = m_tEventRegistry.end();
+		EVENT_PAIR_IT			I = m_tEventRegistry.begin();
+		EVENT_PAIR_IT			E = m_tEventRegistry.end();
 		for ( ; I != E; I++)
 			vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
 	}

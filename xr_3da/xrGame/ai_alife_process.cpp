@@ -40,9 +40,10 @@ void CAI_ALife::Update(u32 dt)
 			u64								qwStartTime	= CPU::GetCycleCount();
 
 			// processing online/offline switches
-			ALIFE_ENTITY_P_IT			B = m_tpCurrentLevel->begin();
-			ALIFE_ENTITY_P_IT			M = B + m_dwObjectsBeingSwitched, I;
-			ALIFE_ENTITY_P_IT			E = m_tpCurrentLevel->end();
+			VERIFY							(m_tpCurrentLevel);
+			ALIFE_ENTITY_P_IT				B = m_tpCurrentLevel->begin();
+			ALIFE_ENTITY_P_IT				M = B + m_dwObjectsBeingSwitched, I;
+			ALIFE_ENTITY_P_IT				E = m_tpCurrentLevel->end();
 			int i=1;
 			for (I = M ; I != E; I++, i++) {
 				ProcessOnlineOfflineSwitches(*I);

@@ -154,7 +154,7 @@ void CAI_Space::Render()
 		}
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
-			if (tpGame->m_tpALife->m_bLoaded) {
+			if (tpGame->m_bALife) {
 				OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
 				OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 				for ( ; I != E; I++) {
