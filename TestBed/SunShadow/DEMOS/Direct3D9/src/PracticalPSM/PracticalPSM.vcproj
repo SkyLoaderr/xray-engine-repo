@@ -143,6 +143,9 @@
 				RelativePath=".\PracticalPSM.cpp">
 			</File>
 			<File
+				RelativePath=".\TSM.cpp">
+			</File>
+			<File
 				RelativePath=".\Util.cpp">
 			</File>
 		</Filter>
