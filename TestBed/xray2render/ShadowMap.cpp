@@ -699,7 +699,19 @@ void	CalcGauss	(
 	for (i=0; i<w.size(); i++)	mag		+= w[i];
 	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
 
-	// exploit symmetry : offsets
+	// exploit symmetry and pack weights
+	D3DXVECTOR4	buf;
+	int			buf_p	= 0;
+	for (i=0; i<w.size(); i++)
+	{
+		buf[buf_p++]	= w[i];
+		if (4==buf_p)	{ W.push_back	(buf); buf_p=0; }
+	}
+	if (buf_p)
+	{
+		while (4!=buf_p)	buf[buf_p++]=0.f;
+		W.push_back			(buf);
+	}
 }
 
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
