@@ -13,7 +13,9 @@ class ENGINE_API CEnvironment;
 
 //-----------------------------------------------------------------------------------------------------------
 class ENGINE_API IGame_Persistent	: 
-//	public DLL_Pure,
+#ifndef _EDITOR
+	public DLL_Pure,
+#endif
 	public pureAppCycleStart, 
 	public pureAppCycleEnd
 {
