@@ -115,17 +115,17 @@ void CStateManagerPoltergeist::execute()
 	prev_substate = current_substate;
 }
 
-#define FLAME_DELAY_MIN			2000
-#define FLAME_DELAY_NORMAL		6000
-#define FLAME_DELAY_AGGRESSIVE  3000
+#define FLAME_DELAY_MIN			6000
+#define FLAME_DELAY_NORMAL		10000
+#define FLAME_DELAY_AGGRESSIVE  8000
 
-#define TELE_DELAY_MIN			3000
-#define TELE_DELAY_NORMAL		6000
-#define TELE_DELAY_AGGRESSIVE	4000
+#define TELE_DELAY_MIN			500
+#define TELE_DELAY_NORMAL		2000
+#define TELE_DELAY_AGGRESSIVE	1000
 
-#define SCARE_DELAY_MIN			500
-#define SCARE_DELAY_NORMAL		2000
-#define SCARE_DELAY_AGGRESSIVE	1000
+#define SCARE_DELAY_MIN			100
+#define SCARE_DELAY_NORMAL		1000
+#define SCARE_DELAY_AGGRESSIVE	500
 
 void CStateManagerPoltergeist::polter_attack()
 {
