@@ -170,7 +170,7 @@ void CBreakableObject::CreateBroken()
 	//	0.3f*skel_airr_ang_factor);
 	m_Shell->set_PhysicsRefObject(this);
 	m_Shell->Build();
-	m_Shell->setDensity(1000.f);
+	m_Shell->setMass(m_Shell->getMass()*0.1f*100.f);
 	dMass m;
 	dMassSetBox(&m,m_Shell->getMass()/100.f,1.f,1.f,1.f);
 	m_Shell->addEquelInertiaToEls(m);
