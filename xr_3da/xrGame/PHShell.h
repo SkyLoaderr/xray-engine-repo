@@ -123,7 +123,7 @@ virtual ~CPHShell				()
 	virtual void				InitContact					(dContact* c){};
 	virtual void				StepFrameUpdate				(dReal step){};
 	virtual void				build_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map=NULL);
-	
+	virtual void                ZeroCallbacks				();
 
 	virtual void			SmoothElementsInertia(float k);
 
@@ -140,6 +140,7 @@ virtual ~CPHShell				()
 	void SetTransform(Fmatrix m);
 private:
 	void AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneData& parent_data);
+	void ZeroCallbacksRecursive(int id);
 
 };
 #endif

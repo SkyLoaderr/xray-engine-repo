@@ -173,6 +173,7 @@ void CAI_Chimera::net_Destroy()
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
+		m_pPhysicsShell->ZeroCallbacks();
 	}
 	xr_delete(m_pPhysicsShell);
 }

@@ -294,7 +294,11 @@ void CAI_Stalker::net_Destroy()
 	xr_delete				(m_pPhysicsShell);
 	Init					();
 	Movement.DestroyCharacter();
-	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
+	if(m_pPhysicsShell)	
+	{
+		m_pPhysicsShell->Deactivate();
+		m_pPhysicsShell->ZeroCallbacks();
+	}
 	xr_delete				(m_pPhysicsShell);
 	m_inventory.Clear		();
 }

@@ -367,6 +367,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 
 	CBoneInstance& B	= m_pKinematics->LL_GetInstance(id);
 	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
+	
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint* J	= 0;
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//для BD.shape==stNone нет ни елемента ни колижена
@@ -608,7 +609,21 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 		AddElementRecursive		(E,(*it)->SelfID,bone_data);
 
 }
+  
+void CPHShell::ZeroCallbacks()
+{
+ZeroCallbacksRecursive(m_pKinematics->LL_BoneRoot());
+}
+void CPHShell::ZeroCallbacksRecursive(int id)
+{
 
+	CBoneInstance& B	= m_pKinematics->LL_GetInstance(id);
+	CBoneData& bone_data= m_pKinematics->LL_GetData(id);
+		B.set_callback(0,0);
+	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
+		ZeroCallbacksRecursive		((*it)->SelfID);
+
+}
 void CPHShell::set_DynamicLimits(float l_limit,float w_limit)
 {
 	xr_vector<CPHElement*>::iterator i,e;

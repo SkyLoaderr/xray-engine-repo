@@ -187,6 +187,7 @@ public:
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
+	virtual void                ZeroCallbacks			()													= 0;
 	virtual						~CPhysicsShell		     (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};
