@@ -39,6 +39,7 @@ public:
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTextures;
 	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
+	vector<CVisual*>								lstVisuals;
 
 	CVertexStream*									vsPatches;
 
