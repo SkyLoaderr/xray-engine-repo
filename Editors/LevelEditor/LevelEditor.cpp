@@ -20,7 +20,6 @@ USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("FramePortal.cpp", fraPortal); /* TFrame: File Type */
 USEFORM("FramePS.cpp", fraPS); /* TFrame: File Type */
-USEFORM("edit\FrameSpawn.cpp", fraSpawn); /* TFrame: File Type */
 USEFORM("FrameSector.cpp", fraSector); /* TFrame: File Type */
 USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
 USEFORM("FrameWayPoint.cpp", fraWayPoint); /* TFrame: File Type */
@@ -38,6 +37,7 @@ USEFORM("ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("TextForm.cpp", frmText);
 USEFORM("FrameObject.cpp", fraObject); /* TFrame: File Type */
+USEFORM("FrameSpawn.cpp", fraSpawn);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

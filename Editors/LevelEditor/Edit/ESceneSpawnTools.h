@@ -13,6 +13,7 @@ protected:
     virtual void 		CreateControls			();
 	virtual void 		RemoveControls			();
 	enum{
+    	flPickSpawnType	= (1<<30),
     	flShowSpawnType	= (1<<31),
     };
 public:

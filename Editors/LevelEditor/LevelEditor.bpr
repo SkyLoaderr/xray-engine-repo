@@ -104,10 +104,9 @@
       intermediate\FrameAIMap.obj intermediate\FrameDetObj.obj 
       intermediate\FrameGroup.obj intermediate\FrameLight.obj 
       intermediate\FramePortal.obj intermediate\FramePS.obj 
-      intermediate\FrameSpawn.obj intermediate\FrameSector.obj 
-      intermediate\FrameShape.obj intermediate\FrameWayPoint.obj 
-      intermediate\ImageEditor.obj intermediate\LeftBar.obj 
-      intermediate\LogForm.obj intermediate\main.obj 
+      intermediate\FrameSector.obj intermediate\FrameShape.obj 
+      intermediate\FrameWayPoint.obj intermediate\ImageEditor.obj 
+      intermediate\LeftBar.obj intermediate\LogForm.obj intermediate\main.obj 
       intermediate\NumericVector.obj intermediate\ObjectList.obj 
       intermediate\previewimage.obj intermediate\PropertiesEObject.obj 
       intermediate\PropertiesList.obj intermediate\PropertiesListHelper.obj 
@@ -135,7 +134,8 @@
       intermediate\ESceneSectorTools.obj intermediate\ESceneShapeTools.obj 
       intermediate\ESceneWayTools.obj intermediate\ESceneSoundEnvTools.obj 
       intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
-      intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj"/>
+      intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj 
+      intermediate\FrameSpawn.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -143,12 +143,11 @@
     <RESDEPEN value="$(RESFILES) edit\ItemList.dfm TopBar.dfm BottomBar.dfm ChoseForm.dfm 
       DOOneColor.dfm DOShuffle.dfm EditLibrary.dfm EditLightAnim.dfm 
       EditorPref.dfm FrameAIMap.dfm FrameDetObj.dfm FrameGroup.dfm 
-      FrameLight.dfm FramePortal.dfm FramePS.dfm edit\FrameSpawn.dfm 
-      FrameSector.dfm FrameShape.dfm FrameWayPoint.dfm ImageEditor.dfm 
-      LeftBar.dfm LogForm.dfm main.dfm NumericVector.dfm ObjectList.dfm 
-      previewimage.dfm PropertiesEObject.dfm PropertiesList.dfm 
-      SceneProperties.dfm ShaderFunction.dfm Splash.dfm TextForm.dfm 
-      FrameObject.dfm"/>
+      FrameLight.dfm FramePortal.dfm FramePS.dfm FrameSector.dfm FrameShape.dfm 
+      FrameWayPoint.dfm ImageEditor.dfm LeftBar.dfm LogForm.dfm main.dfm 
+      NumericVector.dfm ObjectList.dfm previewimage.dfm PropertiesEObject.dfm 
+      PropertiesList.dfm SceneProperties.dfm ShaderFunction.dfm Splash.dfm 
+      TextForm.dfm FrameObject.dfm FrameSpawn.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -389,7 +388,6 @@
       <FILE FILENAME="FrameLight.cpp" FORMNAME="fraLight" UNITNAME="FrameLight" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePortal.cpp" FORMNAME="fraPortal" UNITNAME="FramePortal" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FramePS.cpp" FORMNAME="fraPS" UNITNAME="FramePS" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameSector.cpp" FORMNAME="fraSector" UNITNAME="FrameSector" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameShape.cpp" FORMNAME="fraShape" UNITNAME="FrameShape" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameWayPoint.cpp" FORMNAME="fraWayPoint" UNITNAME="FrameWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
@@ -449,6 +447,7 @@
       <FILE FILENAME="edit\Scene_Tools.cpp" FORMNAME="" UNITNAME="Scene_Tools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="FrameSpawn.cpp" FORMNAME="fraSpawn" UNITNAME="FrameSpawn" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

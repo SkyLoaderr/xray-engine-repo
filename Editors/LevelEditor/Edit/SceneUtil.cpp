@@ -64,7 +64,7 @@ bool EScene::FindDuplicateName()
 
 void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref )
 {
-	ESceneCustomOTools* ot = GetOTools(cls_id); VERIFY(cls_id);
+	ESceneCustomOTools* ot = GetOTools(cls_id); VERIFY(ot);
     m_LastAvailObject = 0;
     string128 prefix; prefix[0]=0;
     if (pref&&pref[0]){

@@ -311,8 +311,9 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 if (st->m_Flags.is(ESceneSpawnTools::flShowSpawnType)){ 
                     Fvector D;	D.sub(Device.vCameraPosition,PPosition);
                     float dist 	= D.normalize_magn();
-                    if (!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
-                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
+                    if (!st->m_Flags.is(ESceneSpawnTools::flPickSpawnType)||
+                    	!Scene.RayPickObject(dist,PPosition,D,OBJCLASS_SCENEOBJECT,0,0))
+	                        DU.DrawText	(PPosition,s_name.c_str(),0xffffffff,0xff000000);
                 }
             }
             if(Selected()){
