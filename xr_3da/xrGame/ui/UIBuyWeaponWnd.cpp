@@ -57,7 +57,9 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd()
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
 
-	Init();
+	Init("deathmatch");
+
+	pCallbackFunc = NULL;
 
 	SetFont(HUD().pFontMedium);
 }
@@ -66,7 +68,7 @@ CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
 {
 }
 
-void CUIBuyWeaponWnd::Init()
+void CUIBuyWeaponWnd::Init(char *strSectionName)
 {
 	CUIXml uiXml;
 	bool xml_result = uiXml.Init("$game_data$","inventoryMP.xml");
@@ -163,6 +165,12 @@ void CUIBuyWeaponWnd::Init()
 	AttachChild(&UIButton6);
 	xml_init.InitButton(uiXml, "button", 5, &UIButton6);*/
 
+	// Кнопки OK и Cancel для выходи из диалога покупки оружия
+	AttachChild(&UIBtnOK);
+	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
+
+	AttachChild(&UIBtnCancel);
+	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -226,6 +234,7 @@ void CUIBuyWeaponWnd::Init()
 	}
 
 	// Заполняем массив со списком оружия
+	std::strcpy(m_SectionName, strSectionName);
 	InitWpnSectStorage();
 }
 
@@ -483,51 +492,36 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //одеть костюм
 bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
-	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-
-	PIItem pInvItem = (PIItem)pItem->GetData();
-
-	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
-
-	if(pInvItem->GetSlot() == OUTFIT_SLOT)
-		return this_inventory->GetInventory()->Slot(pInvItem);
-	else
-		return false;
-
+//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
+//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
+//
+//	PIItem pInvItem = (PIItem)pItem->GetData();
+//
+//	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
+//
+//	if(pInvItem->GetSlot() == OUTFIT_SLOT)
+//		return this_inventory->GetInventory()->Slot(pInvItem);
+//	else
+	return false;
 }
 
 //в рюкзак
 bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-//	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent()->GetParent());
-//	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-//
-//
-//	//если это артефакт из устройства то положить без всяких проверок
-//	if(pItem->GetParent() == &this_inventory->UIArtifactMergerWnd.UIArtifactList)
-//		return true;
-//
-//
-//	PIItem pInvItem = (PIItem)pItem->GetData();
-//
-//	if(!this_inventory->GetInventory()->CanPutInRuck(pInvItem)) return false;
-//	return this_inventory->GetInventory()->Ruck(pInvItem);
 	return true;
 }
 
 //на пояс
 bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
-	return false;
 //	CUIBuyWeaponWnd* this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(pList->GetParent());
 //	R_ASSERT2(this_inventory, "wrong parent addressed as inventory wnd");
-//
 //
 //	PIItem pInvItem = (PIItem)pItem->GetData();
 //
 //	if(!this_inventory->GetInventory()->CanPutInBelt(pInvItem)) return false;
 //	return this_inventory->GetInventory()->Belt(pInvItem);
+	return false;
 }
 
 //------------------------------------------------
@@ -574,50 +568,50 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		ActivatePropertiesBox();
 	}
 	//сообщение от меню вызываемого правой кнопкой
-	else if(pWnd == &UIPropertiesBox &&
-		msg == CUIPropertiesBox::PROPERTY_CLICKED)
-	{
-
-		if(UIPropertiesBox.GetClickedItem())
-		{
-			switch(UIPropertiesBox.GetClickedItem()->GetValue())
-			{
-			case TO_SLOT_ACTION:	
-				ToSlot();
-				break;
-			case TO_BELT_ACTION:	
-///				ToBelt();
-				break;
-			case TO_BAG_ACTION:	
-				ToBag();
-				break;
-			case DROP_ACTION:	//выкинуть объект
-				DropItem();
-				break;
-			case EAT_ACTION:	//съесть объект
-				EatItem();
-				break;
-			case ARTIFACT_MERGER_ACTIVATE:
-				StartArtifactMerger();
-				break;
-			case ARTIFACT_MERGER_DEACTIVATE:
-				StopArtifactMerger();
-				break;
-			case ATTACH_ADDON:
-				AttachAddon();
-				break;
-			case DETACH_SCOPE_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
-				break;
-			case DETACH_SILENCER_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
-				break;
-			case DETACH_GRENADE_LAUNCHER_ADDON:
-				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
-				break;
-			}
-		}
-	}
+//	else if(pWnd == &UIPropertiesBox &&
+//		msg == CUIPropertiesBox::PROPERTY_CLICKED)
+//	{
+//
+//		if(UIPropertiesBox.GetClickedItem())
+//		{
+//			switch(UIPropertiesBox.GetClickedItem()->GetValue())
+//			{
+//			case TO_SLOT_ACTION:	
+//				ToSlot();
+//				break;
+//			case TO_BELT_ACTION:	
+/////				ToBelt();
+//				break;
+//			case TO_BAG_ACTION:	
+//				ToBag();
+//				break;
+//			case DROP_ACTION:	//выкинуть объект
+//				DropItem();
+//				break;
+//			case EAT_ACTION:	//съесть объект
+//				EatItem();
+//				break;
+//			case ARTIFACT_MERGER_ACTIVATE:
+//				StartArtifactMerger();
+//				break;
+//			case ARTIFACT_MERGER_DEACTIVATE:
+//				StopArtifactMerger();
+//				break;
+//			case ATTACH_ADDON:
+//				AttachAddon();
+//				break;
+//			case DETACH_SCOPE_ADDON:
+//				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
+//				break;
+//			case DETACH_SILENCER_ADDON:
+//				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
+//				break;
+//			case DETACH_GRENADE_LAUNCHER_ADDON:
+//				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
+//				break;
+//			}
+//		}
+//	}
 	//сообщения от ArtifactMerger
 	else if(pWnd == &UIArtifactMergerWnd && msg == CUIArtifactMerger::PERFORM_BUTTON_CLICKED)
 	{
@@ -730,6 +724,20 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->Show(true);
 		UIBagWnd.DetachChild(m_WeaponSubBags[*static_cast<int*>(pData)]);
 		UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
+	}
+	// Кнопки ОК и Отмена
+	else if (&UIBtnOK == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	{
+		if (pCallbackFunc) 
+		{
+			// Если надо вызвать с каким-то осознанным значением, то определи сам :)	
+			pCallbackFunc(1);
+		}
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
+	}
+	else if (&UIBtnCancel == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	{
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
@@ -1171,10 +1179,12 @@ void  CUIBuyWeaponWnd::StopSleepWnd()
 //-----------------------------------------------------------------------------/
 void CUIBuyWeaponWnd::InitWpnSectStorage()
 {
-	const char * const	strSectionName = "deathmatch";
 	WPN_SECT_NAMES		wpnOneType;
 	string16			wpnSection;	
 	string256			wpnNames, wpnSingleName;
+
+	// Поле strSectionName должно содержать имя секции
+	R_ASSERT(xr_strcmp(m_SectionName,""));
 
 	for (int i = 1; i < 20; ++i)
 	{
@@ -1183,10 +1193,10 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 
 		// Имя поля
 		sprintf(wpnSection, "slot%i", i);
-		if (!pSettings->line_exist(strSectionName, wpnSection)) break;
-		// Читаем данные этого поля
+		if (!pSettings->line_exist(m_SectionName, wpnSection)) break;
 
-		std::strcpy(wpnNames, pSettings->r_string(strSectionName, wpnSection));
+		// Читаем данные этого поля
+		std::strcpy(wpnNames, pSettings->r_string(m_SectionName, wpnSection));
 		u32 count	= _GetItemCount(wpnNames);
 		// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
 		for (u32 i = 0; i < count; ++i)

@@ -35,7 +35,7 @@ public:
 	CUIBuyWeaponWnd();
 	virtual ~CUIBuyWeaponWnd();
 
-	virtual void Init();
+	virtual void Init(char *strSectionName);
 
 	void InitInventory();
 
@@ -234,7 +234,16 @@ protected:
 	bool SlotToSection(const u32 SlotNum);
 	// Проверка возможности помещения вещи в слот
 	bool CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum);
+	// Запомнить имя секции из которой читать списки оружия
+	string64	m_SectionName;
+	// Кнопки OK и Cancel
+	CUIButton	UIBtnOK, UIBtnCancel;
+	// calllback function for OK button
+	typedef void (*ButtonClickCallback) (int);
+	ButtonClickCallback pCallbackFunc;
+public:
+	// Установить функцию callback'а
+	void SetCallbackFunc(ButtonClickCallback pFunc) { pCallbackFunc = pFunc; }
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте
 	const char *GetWeaponName(u32 slotNum);
-
 };
