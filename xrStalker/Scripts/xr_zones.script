@@ -94,7 +94,7 @@ function zone_binder:net_spawn( server_object )
 		if self.object:clsid() == clsid.smart_terrain then
 			self.managers.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
 		else
-			utils.abort( "gulag is configured in script_zone %s", self.object:name() )
+			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", self.object:name() )
 		end
 	end
 
