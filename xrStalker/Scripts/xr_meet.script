@@ -32,11 +32,11 @@ function evaluator_contact:evaluate()
 	else
 		self.a.actor = nil
 	end	
-	if self.a.over == false then
-		printf("self.a.over == false TRUE")
-	else
-		printf("self.a.over == false FALSE")
-	end
+	--if self.a.over == false then
+		--printf("self.a.over == false FALSE")
+	--else
+		--printf("self.a.over == true TRUE")
+	--end
 	
 	return self.a.actor ~= nil and self.a.over == false
 end
