@@ -13,7 +13,9 @@
 #include "xrServer_Objects_ALife_All.h"
 
 // client entities includes
-#ifndef NO_XR_GAME
+#ifdef NO_XR_GAME
+#	include "clsid_game.h"
+#else
 #	include "level.h"
 #	include "gamepersistent.h"
 #	include "hudmanager.h"
@@ -125,8 +127,6 @@
 #	include "physicobject.h"
 #	include "ai/script/ai_script_monster.h"
 #	include "BreakableObject.h"
-#else
-#	include "clsid_game.h"
 #endif
 
 #ifndef NO_XR_GAME
