@@ -18,6 +18,7 @@ protected:
 protected:
 	virtual void				internal_Activate	()				= 0;
 	virtual void				internal_Apply		(DWORD dwPass)	= 0;
+	virtual void				internal_Release	()				= 0;
 public:
 	DWORD						dwFrame;
 	RFlags						Flags;		// important flags
@@ -30,9 +31,9 @@ public:
 		}
 	}
 	IC void						Apply		(DWORD dwPass)
-	{
-		internal_Apply	(dwPass);
-	}
+	{	internal_Apply	(dwPass);	}
+	IC void						Release		()
+	{	internal_Release();			}
 
 	CShader	();
 	virtual ~CShader();
