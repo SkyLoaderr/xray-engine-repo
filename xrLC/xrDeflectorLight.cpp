@@ -6,7 +6,7 @@
 #include "xrImage_Resampler.h"
 
 #define rms_zero	((4+g_params.m_lm_rms_zero)/2)
-#define rms_shrink	((8+g_params.m_lm_rms_zero)/2)
+#define rms_shrink	((8+g_params.m_lm_rms)/2)
 const	DWORD	rms_discard		= 8;
 
 void Jitter_Select(UVpoint* &Jitter, DWORD& Jcount)
