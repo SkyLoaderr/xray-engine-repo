@@ -71,8 +71,6 @@ void FTreeVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	c_wind				= T.get	("wind");
 	c_c_bias			= T.get	("c_bias");
 	c_c_scale			= T.get	("c_scale");
-	c_m_m2w				= T.get	("m_m2w");
-	c_m_w2v2p			= T.get	("m_w2v2p");
 	c_eye				= T.get	("v_eye");
 	c_fog				= T.get	("fog");
 	c_l_dir				= T.get	("l_dir");
@@ -145,14 +143,13 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_wind,	tvs.wind);					// wind
 	RCache.set_c			(c_c_scale,	c_scale);					// scale
 	RCache.set_c			(c_c_bias,	c_bias);					// bias
-	RCache.set_c			(c_m_m2w,	xform);						// xform
-	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);		// view-projection
 	RCache.set_c			(c_eye,		tvs.fog_plane);				// view-pos
 	RCache.set_c			(c_fog,		tvs.fog_params);			// fog-params
 	RCache.set_c			(c_l_dir,	tvs.l_dir);					// L-dir
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
 	// render
+	RCache.set_xform_world	(xform);
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
