@@ -90,7 +90,7 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 
 void CEntity::Load(CInifile* ini, const char* section)
 {
-	CObject::Load(ini,section);
+	CGameObject::Load(ini,section);
 	bVisible	= FALSE;
 
 	CLS_ID	= CLSID_ENTITY;
@@ -143,7 +143,7 @@ void CEntity::Load(CInifile* ini, const char* section)
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)
 {
-	CObject::Spawn		(bLocal,server_id,o_pos);
+	CGameObject::Spawn		(bLocal,server_id,o_pos);
 
 	// Initialize variables
 	id_Team				= team;
