@@ -399,7 +399,7 @@ void	CShaderManager::OnDeviceCreate(void)
 
 void	CShaderManager::OnFrameEnd	()
 {
-	for (DWORD stage=0; stage<HW.Caps.dwNumBlendStages; stage++)
+	for (DWORD stage=0; stage<HW.Caps.pixel.dwStages; stage++)
 		CHK_DX(HW.pDevice->SetTexture(0,0));
 	cache.Invalidate	();
 }

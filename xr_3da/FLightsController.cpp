@@ -127,12 +127,6 @@ void CLightsController::Load(CStream *fs)
 		Enabled[i]=FALSE;
 	}
 	Log("* Total number of light sources on level: ",count);
-
-	DE_Data[0].random_dir();
-	DE_Data[1].random_dir();
-	DE_Data[2].random_dir();
-	DE_Data[3].random_dir();
-	DE_Time	= 1.f;
 }
 
 void CLightsController::Unload(void)
