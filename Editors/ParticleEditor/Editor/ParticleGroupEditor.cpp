@@ -103,7 +103,7 @@ void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
         AnsiString nm 			= AnsiString("Effect #")+(it-m_Effects.begin()+1);
         B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,nm.c_str()),"Remove",ButtonValue::flFirstOnly); B->Owner()->tag = it-m_Effects.begin();
         B->OnBtnClickEvent		= OnEffectEditClick;
-        V=PHelper.CreateLibPE	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),it->m_EffectName,sizeof(it->m_EffectName));
+        V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,nm.c_str(),"Name"),it->m_EffectName,sizeof(it->m_EffectName),smPE);
         V->OnChangeEvent		= OnParamsChange;
 	    switch (it->m_Type){
         case SEffect::etStopEnd: 
