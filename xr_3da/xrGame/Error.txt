@@ -35,7 +35,8 @@ To WT:
 				
 -O				(-WT)	ни хера не работает (level - cs_test)
 -O				(-WT)	ни хера по прежнему не работает (level - cs_test)
-
+-K				(-WT)	детектор никак не реагирует на зону 
+-K				(-WT)	после взрыва гранаты исчезает тело убитого сталкера
 
 To AlexMX:
 -O				ocasional invalid radius and/or center after update of particle system
@@ -44,3 +45,6 @@ To AlexMX:
 -O				ocasional memory corruption inside particle system (on destructor, probably?)
 				(game00/single/alife)
 -D				зоны глючат постоянно из-за партикловой-хрени! (game00/single/alife)
+
+To Dima:
+-K				сталкеры перемещаются быстрее отыгрываемой анимации 
