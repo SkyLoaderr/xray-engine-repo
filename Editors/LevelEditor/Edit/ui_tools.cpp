@@ -54,7 +54,7 @@ bool TUI_Tools::OnCreate()
 	Scene.OnCreate	();
     // change target to Object
 	UI.Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
-	m_Props 		= TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
+	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,OnPropsModified,0,OnPropsClose);
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
 }
@@ -260,7 +260,7 @@ void TUI_Tools::RealUpdateProperties()
             if (mt) mt->FillProp	(mt->ClassDesc(),items);
         }
 
-		m_Props->AssignItems		(items,true,"Object Inspector");
+		m_Props->AssignItems		(items,true);
     }
 	m_Flags.set(flUpdateProperties,FALSE);
 }
@@ -405,7 +405,6 @@ bool TUI_Tools::IsModified()
 #include "EditMesh.h"
 bool TUI_Tools::RayPick(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt, Fvector* n)
 {
-	BOOL bRes = false;
     if (Scene.ObjCount()&&(UI.GetEState()==esEditScene)){
         SRayPickInfo pinf;
         pinf.inf.range	= dist;

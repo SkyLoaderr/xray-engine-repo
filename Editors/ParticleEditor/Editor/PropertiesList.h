@@ -118,8 +118,8 @@ private:	// User declarations
 	void 				OutText					(LPCSTR text, TCanvas* Surface, TRect R, bool bEnable, TGraphic* g=0, bool bArrow=false);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
-	static TProperties* CreateForm				(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
-	static TProperties* CreateModalForm			(bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
+	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
+	static TProperties* CreateModalForm			(const AnsiString& title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
 	static void 		DestroyForm				(TProperties*& props);
     int __fastcall 		ShowPropertiesModal		();
     void __fastcall 	ShowProperties			();
@@ -130,7 +130,7 @@ public:		// User declarations
     void __fastcall 	RefreshForm				();
 
     void __fastcall		SelectItem				(const AnsiString& full_name);
-    void __fastcall 	AssignItems				(PropItemVec& values, bool full_expand, const AnsiString& title="Properties");
+    void __fastcall 	AssignItems				(PropItemVec& values, bool full_expand);
     void __fastcall 	ResetItems				();
     bool __fastcall 	IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall 	SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}

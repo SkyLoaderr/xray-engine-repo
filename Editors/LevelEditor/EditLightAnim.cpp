@@ -601,7 +601,7 @@ void __fastcall TfrmEditLightAnim::ebFirstFrameClick(TObject *Sender)
 
 void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 {
-    m_Props = TProperties::CreateForm(paProps,alClient,OnModified);
+    m_Props = TProperties::CreateForm("",paProps,alClient,OnModified);
 }
 //---------------------------------------------------------------------------
 

@@ -3,10 +3,10 @@
 
 #ifdef _EDITOR
 	#include "skeletonX.h"
- 	#include "bodyinstance.h"
+ 	#include "skeletoncustom.h"
 #else
 #include "..\skeletonX.h"
- 	#include "..\bodyinstance.h"
+ 	#include "..\skeletoncustom.h"
 #endif
 
 void __stdcall xrSkin1W_x86(	vertRender*		D,

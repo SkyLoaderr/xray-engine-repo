@@ -48,7 +48,7 @@ void __fastcall TfrmDOShuffle::OnObjectPropsModified()
 
 void __fastcall TfrmDOShuffle::FormCreate(TObject *Sender)
 {
-	m_ObjectProps = TProperties::CreateForm(paObjectProps,alClient,OnObjectPropsModified);
+	m_ObjectProps = TProperties::CreateForm("Objects",paObjectProps,alClient,OnObjectPropsModified);
 }
 //---------------------------------------------------------------------------
 

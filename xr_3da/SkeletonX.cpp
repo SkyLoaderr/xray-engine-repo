@@ -6,7 +6,7 @@
 #pragma hdrstop
 
 #include "SkeletonX.h"
-#include "BodyInstance.h"
+#include "SkeletonCustom.h"
 #include "fmesh.h"
 #include "xrCPU_Pipe.h"
 

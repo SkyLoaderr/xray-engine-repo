@@ -109,8 +109,8 @@ protected:
     void __fastcall		RenameItem				(LPCSTR fn0, LPCSTR fn1, EItemType type);
 public:		// User declarations
 	__fastcall 			TItemList	       		(TComponent* Owner);
-	static TItemList* 	CreateForm				(TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect);
-	static TItemList* 	CreateModalForm			(const AnsiString& title, ListItemsVec& items, u32 flags=ilMultiSelect);
+	static TItemList* 	CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, u32 flags=ilMultiSelect);
+	static TItemList* 	CreateModalForm			(const AnsiString& title, u32 flags=ilMultiSelect);
 	static void 		DestroyForm				(TItemList*& props);
 	static void 		OnFrame					();
 
@@ -122,7 +122,7 @@ public:		// User declarations
 
     void __fastcall		DeselectAll				();
     void __fastcall		SelectItem				(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand);
-    void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, const AnsiString& title="Item List", bool full_sort=false);
+    void __fastcall 	AssignItems				(ListItemsVec& values, bool full_expand, bool full_sort=false);
     bool __fastcall 	IsFocused				(){return tvItems->Focused();}
 
     int __fastcall		GetSelected				(ElItemsVec& items);

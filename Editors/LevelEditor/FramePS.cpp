@@ -110,13 +110,13 @@ void __fastcall TfraPS::FormShow(TObject *Sender)
     	ListItem* I=LHelper.CreateItem(items,(*G)->m_Name,0,0,*G);
         I->SetIcon(2);
     }
-    m_Items->AssignItems	(items,false,"Particles",true);
+    m_Items->AssignItems	(items,false,true);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraPS::FormCreate(TObject *Sender)
 {
-    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
+    m_Items 				= TItemList::CreateForm("Particles",paItems, alClient, 0);
     m_Items->SetImages		(ilModeIcons);
     m_Items->OnItemsFocused	= OnItemFocused;
 }

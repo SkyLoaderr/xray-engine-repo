@@ -33,7 +33,7 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 
 void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
-	ImageProps = TProperties::CreateForm(paProperties,alClient);
+	ImageProps = TProperties::CreateForm("",paProperties,alClient);
 }
 //---------------------------------------------------------------------------
 

@@ -3,10 +3,10 @@
 
 #ifdef _EDITOR
 #include "skeletonX.h"
-#include "bodyinstance.h"
+#include "skeletoncustom.h"
 #else
 #include "..\skeletonX.h"
-#include "..\bodyinstance.h"
+#include "..\skeletoncustom.h"
 #endif
 
 /*

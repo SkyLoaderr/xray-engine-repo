@@ -156,13 +156,13 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
     	AnimationDeleteKey	(m_MotionParams->t);
     break;
     case 2:{
-    	TProperties* P 		= TProperties::CreateModalForm();
+    	TProperties* P 		= TProperties::CreateModalForm("Scale keys");
         PropItemVec items;
         float from_time=m_MotionParams->min_t,to_time=m_MotionParams->max_t,scale_factor=1.f;
 		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"Scale",			&scale_factor, 	-1000.f, 1000.f);
-        P->AssignItems		(items,true,"Scale keys");
+        P->AssignItems		(items,true);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->ScaleKeys(from_time,to_time,scale_factor);
         }
@@ -174,13 +174,13 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
         }
     }break;
     case 3:{
-    	TProperties* P 		= TProperties::CreateModalForm();
+    	TProperties* P 		= TProperties::CreateModalForm("Normalize keys");
         PropItemVec items;
         float from_time=m_MotionParams->min_t,to_time=m_MotionParams->max_t,speed=5.f;
 //		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
 //		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"Speed (m/sec)", &speed, 		0.f, 100.f);
-        P->AssignItems		(items,true,"Normalize keys");
+        P->AssignItems		(items,true);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->NormalizeKeys(from_time,to_time,speed);
         }

@@ -372,7 +372,7 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M)
     	return false;
     }
     for(BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++)
-    	if (!FindBoneByName(bm_it->name)){
+    	if (!FindBoneByName(*bm_it->name)){
         	ELog.Msg(mtError,"Can't find bone '%s' in object.",bm_it->name);
         	return false;
         }

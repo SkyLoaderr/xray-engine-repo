@@ -154,7 +154,7 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 }
 //---------------------------------------------------------------------------
 
-TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
 {
 	TProperties* props 			= xr_new<TProperties>(parent);
     props->OnModifiedEvent 		= modif;
@@ -167,16 +167,20 @@ TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModif
         props->ShowProperties	();
         props->fsStorage->Active= false;
     }
+	props->Caption				= title;	
+    props->fsStorage->IniSection= title;
 	return props;
 }
 
-TProperties* TProperties::CreateModalForm(bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
+TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
 {
 	TProperties* props 			= xr_new<TProperties>((TComponent*)0);
     props->OnModifiedEvent 		= modif;
     props->OnItemFocused    	= focused;
     props->OnCloseEvent			= on_close;
     props->paButtons->Visible	= bShowButtonsBar;
+	props->Caption				= title;	
+    props->fsStorage->IniSection= title;
 	return props;
 }
 
@@ -192,12 +196,12 @@ void TProperties::DestroyForm(TProperties*& props)
 }
 void __fastcall TProperties::ShowProperties()
 {
-	Show();
+	Show					();
 }
 
 int __fastcall TProperties::ShowPropertiesModal()
 {
-	return ShowModal();
+	return ShowModal		();
 }
 
 void __fastcall TProperties::HideProperties()
@@ -243,7 +247,7 @@ TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, LP
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, const AnsiString& title)
+void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand)
 {
 	// begin fill mode
 	LockUpdating		();
@@ -289,8 +293,6 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, c
 	UnlockUpdating	();
 
     SelectItem		(last_selected_item);
-
-    Caption 		= title;
 }
 //---------------------------------------------------------------------------
 
@@ -375,22 +377,6 @@ void DrawButtons(TRect R, TCanvas* Surface, AStringVec& lst, int down_btn, bool 
             DrawButton		(r,Surface,it->c_str(),(down_btn==k),bSelected);
         }
     }
-}
-
-IC AnsiString FloatTimeToStrTime(float v)
-{
-    int h,m,s;
-    h=iFloor(v/3600);
-    m=iFloor((v-h*3600)/60);
-    s=iFloor(v-h*3600-m*60);
-    return AnsiString().sprintf("%02d:%02d:%02d",h,m,s);
-}
-
-IC float StrTimeToFloatTime(LPCSTR buf)
-{
-    int h,m,s;
-	sscanf(buf,"%2d:%2d:%2d",&h,&m,&s);
-    return h*3600+m*60+s;
 }
 
 void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,

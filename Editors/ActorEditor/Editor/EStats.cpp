@@ -23,6 +23,7 @@ CStats::~CStats()
 
 }
 
+#include "igame_persistent.h"
 void CStats::Show(CGameFont* font)
 {
 	// Stop timers
@@ -90,10 +91,12 @@ void CStats::Show(CGameFont* font)
 		F.OutNext	(" DT_Render:   %2.2fms",		RenderDUMP_DT_Render.result);
 		F.OutNext	(" DT_Cache:    %2.2fms",		RenderDUMP_DT_Cache.result);
 		F.OutSkip	();
-		F.OutNext	("TEST 0:       %2.2fms, %d",TEST0.result,TEST0.count);
-		F.OutNext	("TEST 1:       %2.2fms, %d",TEST1.result,TEST1.count);
-		F.OutNext	("TEST 2:       %2.2fms, %d",TEST2.result,TEST2.count);
-		F.OutNext	("TEST 3:       %2.2fms, %d",TEST3.result,TEST3.count);
+		F.OutNext	("TEST 0:       %2.2fms, %d",	TEST0.result,TEST0.count);
+		F.OutNext	("TEST 1:       %2.2fms, %d",	TEST1.result,TEST1.count);
+		F.OutNext	("TEST 2:       %2.2fms, %d",	TEST2.result,TEST2.count);
+		F.OutNext	("TEST 3:       %2.2fms, %d",	TEST3.result,TEST3.count);
+		F.OutSkip	();
+		F.OutNext	("GAME TIME:    %s",			FloatTimeToStrTime(g_pGamePersistent->Environment.fGameTime));
 //		F.OutSkip	(2.f);
 //        F.OutNext	("Level summary:");
 //        F.OutNext	(" Sel Faces:   %d",			dwLevelSelFaceCount);

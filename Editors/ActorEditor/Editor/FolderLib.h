@@ -87,5 +87,6 @@ public:
 	bool 				DrawThumbnail		(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type);
 //------------------------------------------------------------------------------
 };
+
 extern CFolderHelper FHelper;
 #endif

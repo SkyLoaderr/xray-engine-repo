@@ -78,7 +78,7 @@ void EScene::OnCreate()
 	m_Valid 				= true;
     m_RTFlags.zero			();
 	UI.Command				(COMMAND_UPDATE_CAPTION);
-	m_SummaryInfo 			= TProperties::CreateForm();
+	m_SummaryInfo 			= TProperties::CreateForm("Level Summary Info");
 }
 
 void EScene::OnDestroy()

@@ -38,8 +38,8 @@ TfrmPropertiesEObject* TfrmPropertiesEObject::CreateProperties(TWinControl* pare
 	    props->BorderStyle = bsNone;
         props->ShowProperties();
     }
-    props->m_BasicProp	= TProperties::CreateForm(props->paBasic,alClient,props->OnModifiedEvent);
-    props->m_SurfProp 	= TProperties::CreateForm(props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
+    props->m_BasicProp	= TProperties::CreateForm("",props->paBasic,alClient,props->OnModifiedEvent);
+    props->m_SurfProp 	= TProperties::CreateForm("",props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
 	return props;
 }
 //---------------------------------------------------------------------------

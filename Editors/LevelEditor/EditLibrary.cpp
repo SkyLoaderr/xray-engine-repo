@@ -49,7 +49,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     DEFINE_INI(fsStorage);
 	m_pEditObject 	= xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);
     m_Props 		= TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
-    m_Items			= TItemList::CreateForm(paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
+    m_Items			= TItemList::CreateForm("",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
     m_Items->OnItemFocused 	= OnItemFocused;
     m_Items->OnItemRemove 	= Lib.RemoveObject;
     m_Items->OnItemRename 	= Lib.RenameObject;
@@ -270,7 +270,7 @@ void TfrmEditLibrary::InitObjects()
     FS_QueryPairIt _E=lst.end();
     for(; it!=_E; it++)
     	LHelper.CreateItem(items,it->first.c_str(),0,0,0);
-    m_Items->AssignItems(items,false,"Objects",true);
+    m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------
 

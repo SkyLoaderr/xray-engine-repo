@@ -7,7 +7,7 @@
 
 #include "Engine.h"
 
-xrDispatchTable	PSGP;
+xrDispatchTable	PSGP;                
 CEngine	Engine;
 
 //////////////////////////////////////////////////////////////////////

@@ -116,7 +116,7 @@ void ESceneObjectTools::Save(IWriter& F)
 
 void ESceneObjectTools::FillAppendRandomProperties()
 {
-    TProperties* m_Props = TProperties::CreateModalForm(true);
+    TProperties* m_Props = TProperties::CreateModalForm("Random Append Properties",true);
 
     AnsiString temp;
    	temp					= _ListToSequence(m_AppendRandomObjects);
@@ -132,7 +132,7 @@ void ESceneObjectTools::FillAppendRandomProperties()
     PHelper.CreateAngle3	(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
     V=PHelper.CreateALibObject(items,"Objects",&temp); V->Owner()->subitem = 32;
 
-    m_Props->AssignItems	(items,true,"Random Append Properties");
+    m_Props->AssignItems	(items,true);
     
     if (mrOk==m_Props->ShowPropertiesModal())
     	_SequenceToList		(m_AppendRandomObjects,temp.c_str());

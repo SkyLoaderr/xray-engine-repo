@@ -154,7 +154,7 @@ void EScene::ShowSummaryInfo()
     }else{
     	ELog.DlgMsg(mtInformation,"Summary info empty.");
     }
-	m_SummaryInfo->AssignItems(items,false,"Level Summary Info");
+	m_SummaryInfo->AssignItems(items,false);
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -25,15 +25,15 @@
       intermediate\xr_avi.obj intermediate\xr_efflensflare.obj 
       intermediate\Xr_input.obj intermediate\xrImage_Resampler.obj 
       intermediate\xrLoadSurface.obj intermediate\xrRender_console.obj 
-      intermediate\xrSkin2W.obj intermediate\BodyInstance.obj 
-      intermediate\FBasicVisual.obj intermediate\FHierrarhyVisual.obj 
-      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
-      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
-      intermediate\xrSkin1W.obj intermediate\BlenderDefault.obj 
-      intermediate\Blender.obj intermediate\Blender_B.obj 
-      intermediate\Blender_Blur.obj intermediate\Blender_BmmD.obj 
-      intermediate\Blender_default_aref.obj 
-      intermediate\Blender_detail_still.obj intermediate\Blender_Editor_Selection.obj 
+      intermediate\xrSkin2W.obj intermediate\FBasicVisual.obj 
+      intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
+      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
+      intermediate\SkeletonX.obj intermediate\xrSkin1W.obj 
+      intermediate\BlenderDefault.obj intermediate\Blender.obj 
+      intermediate\Blender_B.obj intermediate\Blender_Blur.obj 
+      intermediate\Blender_BmmD.obj intermediate\Blender_default_aref.obj 
+      intermediate\Blender_detail_still.obj 
+      intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_LaEmB.obj 
       intermediate\blender_light.obj intermediate\Blender_Lm(EbB).obj 
       intermediate\Blender_LmBmmD.obj intermediate\Blender_Model.obj 
@@ -135,7 +135,9 @@
       intermediate\ESceneSoundSrcTools.obj intermediate\Scene_Tools.obj 
       intermediate\ESceneGlowTools.obj intermediate\ESceneDummyTools.obj 
       intermediate\FrameSpawn.obj intermediate\UI_SectorTools.obj 
-      intermediate\thunderbolt.obj intermediate\ModelPool.obj"/>
+      intermediate\thunderbolt.obj intermediate\ModelPool.obj 
+      intermediate\SkeletonCustom.obj intermediate\SkeletonAnimated.obj 
+      intermediate\SkeletonRigid.obj"/>
     <RESFILES value="resource.res LevelEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -237,7 +239,6 @@
       <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -450,6 +451,9 @@
       <FILE FILENAME="edit\UI_SectorTools.cpp" FORMNAME="" UNITNAME="UI_SectorTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

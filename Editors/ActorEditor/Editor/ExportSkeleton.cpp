@@ -329,7 +329,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     // Header
     ogf_header 		H;
     H.format_version= xrOGF_FormatVersion;
-    H.type			= MT_SKELETON;
+    H.type			= MT_SKELETON_ANIM;
     H.shader_id		= 0;
     F.w_chunk		(OGF_HEADER,&H,sizeof(H));
 

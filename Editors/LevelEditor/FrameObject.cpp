@@ -210,7 +210,7 @@ void __fastcall TfraObject::FormShow(TObject *Sender)
             if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail= OnDrawObjectThumbnail;
         }
     }
-    m_Items->AssignItems	(items,false,"Objects",true);
+    m_Items->AssignItems	(items,false,true);
 
     ebRandomAppendMode->Down= ParentTools->IsAppendRandomActive();
 }
@@ -225,7 +225,7 @@ void __fastcall TfraObject::FormHide(TObject *Sender)
 
 void __fastcall TfraObject::FormCreate(TObject *Sender)
 {
-    m_Items 				= TItemList::CreateForm(paItems, alClient, 0);
+    m_Items 				= TItemList::CreateForm("Objects", paItems, alClient, 0);
     m_Items->OnItemsFocused	= OnItemFocused;
 }
 //---------------------------------------------------------------------------

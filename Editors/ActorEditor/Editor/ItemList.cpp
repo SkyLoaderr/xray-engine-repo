@@ -110,7 +110,7 @@ __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
 }
 //---------------------------------------------------------------------------
 
-TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, u32 flags)
+TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, TAlign align, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>(parent);
     props->m_Flags.set			(flags);
@@ -119,7 +119,7 @@ TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, u32 flags)
 		props->Parent 			= parent;
     	props->Align 			= align;
 	    props->BorderStyle 		= bsNone;
-        props->ShowList	();
+        props->ShowList			();
         props->fsStorage->Active= false;
     }
     if (props->m_Flags.is(ilDragAllowed)){
@@ -131,17 +131,18 @@ TItemList* TItemList::CreateForm(TWinControl* parent, TAlign align, u32 flags)
 	    props->tvItems->OnDragOver 	= 0;
         props->tvItems->DragAllowed	= false;
     }
+    if (props->Parent)	props->tvItems->HeaderSections->Item[0]->Text = title;
+    else				props->Caption 	= title;
+    props->fsStorage->IniSection   		= title;
 	ILForms.push_back(props);
 	return props;
 }
 
-TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& items, u32 flags)
+TItemList* TItemList::CreateModalForm(const AnsiString& title, u32 flags)
 {
 	TItemList* props 			= xr_new<TItemList>((TComponent*)0);
     props->m_Flags.set			(flags);
     props->tvItems->MultiSelect	= props->m_Flags.is(ilMultiSelect);
-    props->AssignItems			(items,props->m_Flags.is(ilRT_FullExpand),title);
-	props->ShowListModal		();
     if (props->m_Flags.is(ilDragAllowed)){
 	    props->tvItems->OnStartDrag = FHelper.StartDrag;
 	    props->tvItems->OnDragOver 	= FHelper.DragOver;
@@ -151,6 +152,9 @@ TItemList* TItemList::CreateModalForm(const AnsiString& title, ListItemsVec& ite
 	    props->tvItems->OnDragOver 	= 0;
         props->tvItems->DragAllowed	= false;
     }
+    if (props->Parent)	props->tvItems->HeaderSections->Item[0]->Text = title;
+    else				props->Caption 	= title;
+    props->fsStorage->IniSection   		= title;
 	ILForms.push_back(props);
 	return props;
 }
@@ -189,7 +193,7 @@ void __fastcall TItemList::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, const AnsiString& title, bool full_sort)
+void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bool full_sort)
 {
 	// begin fill mode
 	LockUpdating			();
@@ -247,8 +251,6 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, co
 	for (ElItemsIt el_it=el_list.begin(); el_it!=el_list.end(); el_it++)
 	    FHelper.RestoreSelection(tvItems,*el_it,true);
 
-    if (Parent)	tvItems->HeaderSections->Item[0]->Text = title;
-    else		Caption = title;
     // check size
 	tvItemsResize			(0);
 }

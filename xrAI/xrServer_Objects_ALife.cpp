@@ -19,7 +19,7 @@
 #include "ai_alife_templates.h"
 
 #ifdef _EDITOR
-	#include "BodyInstance.h"
+	#include "SkeletonAnimated.h"
 	static TokenValue4::ItemVec locations[4];
 	static AStringVec	level_ids;
 #endif
@@ -762,10 +762,10 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
 	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"), &mass, 0.1f, 10000.f);
 	PHelper.CreateText			(values, FHelper.PrepareKey(pref,s_name,"Fixed bone"),	fixed_bone,	sizeof(fixed_bone));
     PHelper.CreateFlag8			(values, FHelper.PrepareKey(pref,s_name,"Active"), &flags, flActive);
-	if (visual && PKinematics(visual))
+	if (visual && PSkeletonAnimated(visual))
 	{
-		CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
-		CKinematics::accel::iterator _I, _E;
+		CSkeletonAnimated::accel	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+		CSkeletonAnimated::accel::iterator _I, _E;
 		AStringVec				vec;
 		bool					bFound;
 		// bones
@@ -883,11 +883,11 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 
-    if (visual && PKinematics(visual))
+    if (visual && PSkeletonAnimated(visual))
     {
-    	CKinematics::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
-    	CKinematics::accel		*ll_motions	= PKinematics(visual)->LL_Motions();
-        CKinematics::accel::iterator _I, _E;
+    	CSkeletonAnimated::accel		*ll_bones	= PSkeletonAnimated(visual)->LL_Bones();
+    	CSkeletonAnimated::accel		*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
+        CSkeletonAnimated::accel::iterator _I, _E;
         AStringVec				vec;
         bool					bFound;
         // bones
