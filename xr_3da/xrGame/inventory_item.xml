@@ -27,10 +27,7 @@
 		<font font="letterica16" r="240" g="217" b="182"/>
 	</descr_list>
 
-	<!-- 3D STATIC OLD!!!OLD!!!OLD!! REMOVE ME!!! -->
-	<static_3d x="50" y="-185" width="250" height="190"></static_3d>
-
 	<!-- IMAGE STATIC -->
-	<image_static x="20" y="20" width="320" height="160"/>
+	<image_static x="-10" y="35" width="320" height="160"/>
 </window>
 
