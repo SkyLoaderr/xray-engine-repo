@@ -1,0 +1,25 @@
+local entered = false
+
+function on_enter (zone, object)
+    entered = true
+end
+
+function main ()
+    local zone = get_level_object ("bzone")
+    local bar = get_level_object ("barricade")
+
+    zone:clear_callback (true)
+    zone:set_callback (bar.on_enter, true)
+
+    while entered == false then  wait () end
+
+    local h = hit ()
+    h.power = 1
+    h.direction = vector ():set (0, 0.5, -1)
+    h:bone ("root")
+    h.draftsman = get_actor ()
+    h.impulse = 1000
+    h.type  = hit.strike
+    bar:hit (h)
+
+end
