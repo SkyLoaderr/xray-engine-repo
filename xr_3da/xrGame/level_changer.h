@@ -10,8 +10,13 @@
 
 #include "CustomZone.h"
 
-class CLevelChanger : public CCustomZone {
+class CLevelChanger : public CGameObject, public Feel::Touch {
 public:
-	typedef CCustomZone inherited;
-	virtual void Affect		(CObject	*tpObject);
+	typedef	CGameObject	inherited;
+
+	virtual			~CLevelChanger		();
+	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual void	spatial_register	();
+	virtual void	spatial_move		();
+	virtual void	feel_touch_new		(CObject* O);
 };

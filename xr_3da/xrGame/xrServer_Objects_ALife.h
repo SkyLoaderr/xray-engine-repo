@@ -70,8 +70,8 @@ SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeGraphPoint,CSE_Abstract)
 public:
+	string32						m_caConnectionLevelName;
 	string32						m_caConnectionPointName;
-	u32								m_tLevelID;
 	u8								m_tLocations[LOCATION_TYPE_COUNT];
 	CSE_ALifeGraphPoint(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
@@ -196,6 +196,16 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject
 									CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual(), CSE_Abstract(caSection)
 	{
 	}
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Shape)
+	u32								m_tLevelToChangeID;
+	u32								m_tGraphPointToChangeID;
+	string32						m_caLevelToChange;
+	string32						m_caGraphPointToChange;
+
+									CSE_ALifeLevelChanger	(LPCSTR caSection);
+	virtual							~CSE_ALifeLevelChanger	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_Shape)

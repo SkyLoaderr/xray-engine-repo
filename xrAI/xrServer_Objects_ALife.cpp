@@ -21,7 +21,7 @@
 #ifdef _EDITOR
 	#include "BodyInstance.h"
 	static TokenValue4::ItemVec locations[4];
-	static TokenValue4::ItemVec	level_ids;
+	static AStringVec	level_ids;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
@@ -222,7 +222,7 @@ CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSec
 {
 	s_gameid					= GAME_DUMMY;
 	m_caConnectionPointName[0]	= 0;
-	m_tLevelID					= 0;
+	m_caConnectionLevelName[0]	= 0;
 	m_tLocations[0]				= 0;
 	m_tLocations[1]				= 0;
 	m_tLocations[2]				= 0;
@@ -232,7 +232,10 @@ CSE_ALifeGraphPoint::CSE_ALifeGraphPoint	(LPCSTR caSection) : CSE_Abstract(caSec
 void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	tNetPacket.r_string			(m_caConnectionPointName);
-	tNetPacket.r_u32			(m_tLevelID);
+	if (m_wVersion < 33)
+		tNetPacket.r_u32		();
+	else
+		tNetPacket.r_string		(m_caConnectionLevelName);
 	tNetPacket.r_u8				(m_tLocations[0]);
 	tNetPacket.r_u8				(m_tLocations[1]);
 	tNetPacket.r_u8				(m_tLocations[2]);
@@ -250,7 +253,7 @@ void CSE_ALifeGraphPoint::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeGraphPoint::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	tNetPacket.w_string			(m_caConnectionPointName);
-	tNetPacket.w_u32			(m_tLevelID);
+	tNetPacket.w_string			(m_caConnectionLevelName);
 	tNetPacket.w_u8				(m_tLocations[0]);
 	tNetPacket.w_u8				(m_tLocations[1]);
 	tNetPacket.w_u8				(m_tLocations[2]);
@@ -295,11 +298,7 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 		LPCSTR					N,V;
 		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
 			R_ASSERT			(Ini->section_exist(N));
-			level_ids.push_back	(TokenValue4::Item());
-			TokenValue4::Item	&val = level_ids.back();
-			LPCSTR				S = Ini->r_string(N,"caption");
-			val.str				= S;
-			val.ID				= Ini->r_u32(N,"id");
+			level_ids.push_back	(Ini->r_string(N,"caption"));
 		}
 	}
 	if (Ini)
@@ -309,7 +308,8 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
 	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
 	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	(u32*)&m_tLevelID,				&level_ids,						1);
+
+	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		level_ids);
 	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
@@ -520,6 +520,77 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 }
 #endif
 
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeLevelChanger
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
+{
+}
+
+void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket,size);
+	cform_read					(tNetPacket);
+	tNetPacket.r_u32			(m_tLevelToChangeID);
+	tNetPacket.r_u32			(m_tGraphPointToChangeID);
+	tNetPacket.r_string			(m_caLevelToChange);
+	tNetPacket.r_string			(m_caGraphPointToChange);
+}
+
+void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	cform_write					(tNetPacket);
+	tNetPacket.w_u32			(m_tLevelToChangeID);
+	tNetPacket.w_u32			(m_tGraphPointToChangeID);
+	tNetPacket.w_string			(m_caLevelToChange);
+	tNetPacket.w_string			(m_caGraphPointToChange);
+}
+
+void CSE_ALifeLevelChanger::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeLevelChanger::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProp		(pref,items);
+	
+	CInifile					*Ini = 0;
+
+	if (level_ids.empty()) {
+		string256				gm_name;
+		FS.update_path			(gm_name,_game_data_,"game.ltx");
+		R_ASSERT2				(FS.exist(gm_name),"Couldn't find file 'game.ltx'");
+		Ini						= xr_new<CInifile>(gm_name);
+	}
+
+	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+		if(level_ids.empty()) {
+			R_ASSERT				(Ini->section_exist("levels"));
+			LPCSTR					N,V;
+			for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
+				R_ASSERT			(Ini->section_exist(N));
+				level_ids.push_back	(Ini->r_string(N,"caption"));
+			}
+		}
+	if (Ini)
+		xr_delete				(Ini);
+	
+	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,	sizeof(m_caLevelToChange),	level_ids);
+	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Graph point to change"),	m_caGraphPointToChange,		sizeof(m_caGraphPointToChange));
+}
+#endif
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeAnomalousZone
 ////////////////////////////////////////////////////////////////////////////
