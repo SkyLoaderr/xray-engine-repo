@@ -6,9 +6,6 @@ void FLOD::Load			(LPCSTR N, IReader *data, u32 dwFlags)
 {
 	inherited::Load		(N,data,dwFlags);
 
-	// 
-	Msg		("* %d",children.size());
-
 	// LOD-def
 	R_ASSERT			(data->find_chunk(OGF_LODDEF));
 	for (int f=0; f<8; f++)

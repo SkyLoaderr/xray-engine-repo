@@ -30,6 +30,8 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 
 void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 {
+	CTimer		T;
+
 	// Begin analysis
 	NET_Packet&	P		= *Packet;
 	u16					dummy;
@@ -44,19 +46,30 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	if (E->s_flags.is(M_SPAWN_UPDATE))
 		E->UPDATE_Read	(P);
 
+#ifdef DEBUG
 	Msg					("CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
+#endif
 
 	// Client spawn
+	T.Start		();
 	CObject*	O		= Objects.LoadOne	(s_name);
+	Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
+
+	T.Start		();
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );
 		Objects.DestroyObject	(O);
 		Msg						("! Failed to spawn entity '%s'",s_name);
 	} else {
+		Msg			("--spawn--SPAWN: %f ms",1000.f*T.GetAsync());
+
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
 		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
+
+		T.Start		();
 		O->OnDeviceCreate		( );
+		Msg			("--spawn--DEV: %f ms",1000.f*T.GetAsync());
 
 		if (0xffff != E->ID_Parent)	
 		{

@@ -83,22 +83,20 @@ void CCustomMonster::OnDeviceCreate()
 
 void CCustomMonster::Load		(LPCSTR section)
 {
-	Msg("Loading AI entity: %s",section);
-	
-	inherited::Load(section);
+	inherited::Load		(section);
 
-	vPosition.y += EPS_L;
+	vPosition.y			+= EPS_L;
 	
 	Movement.SetPosition(vPosition);
 	
-	m_current = 0;
+	m_current			= 0;
 
 	// Health & Armor
-	fArmor = 0;
+	fArmor				= 0;
 	
 	// Sheduler
-	shedule_Min	= 50;
-	shedule_Max	= 500; // 30 * NET_Latency / 4;
+	shedule_Min			= 50;
+	shedule_Max			= 500; // 30 * NET_Latency / 4;
 }
 
 void CCustomMonster::g_WeaponBones	(int& L, int& R)

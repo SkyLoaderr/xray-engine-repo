@@ -11,7 +11,13 @@ void CLevel::ClientReceive()
 		switch (m_type)
 		{
 		case M_SPAWN:
-			g_sv_Spawn(P);
+			{
+				CTimer		T;
+				T.Start		();
+				g_sv_Spawn	(P);
+				T.Stop		();
+				Msg			("--spawn--: %f ms",1000.f*T.Get());
+			}
 			break;
 		case M_UPDATE:
 			game.net_import_update	(*P);
