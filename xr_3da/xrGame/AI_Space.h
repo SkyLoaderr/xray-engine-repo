@@ -167,6 +167,7 @@ public:
 	void  vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 1.5f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
 	float ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPosition, Fvector tDirection, vector<bool> &tpaMarks, float fDistance, vector<DWORD> &tpaStack);
 	bool  bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition, DWORD dwFinishNode);
+	void  vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2);
 
 	// Device dependance
 	virtual void	OnDeviceCreate	();

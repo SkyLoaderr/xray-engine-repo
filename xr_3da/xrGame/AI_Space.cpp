@@ -393,6 +393,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 {
 	if (0==vfs)	return	0;
 
+	//vfCreate2DMap("level2_dima.map0", "level2_dima.map1", "level2_dima.map2");
 	Log			("***AAA***");
 
 	NodePosition	P;
@@ -434,4 +435,140 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		}
 	}
 	return selected;
+}
+
+#define MAP_AVAILABLE_CELL		'.'
+#define MAP_UNAVAILABLE_CELL	'x'
+#define ABC_SIZE				62
+
+void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
+{
+	// finding min and max values
+	s16 sMinX = 30000, sMaxX = -30000, sMinZ = 30000, sMaxZ = -30000;
+	for (int i=1; i<(int)m_header.count; i++) {
+		NodeCompressed *tpNode = m_nodes_ptr[i];
+		if (tpNode->p0.x < sMinX)
+			sMinX = tpNode->p0.x;
+		if (tpNode->p0.x > sMaxX)
+			sMaxX = tpNode->p0.x;
+		if (tpNode->p0.z < sMinZ)
+			sMinZ = tpNode->p0.z;
+		if (tpNode->p0.z > sMaxZ)
+			sMaxZ = tpNode->p0.z;
+		if (tpNode->p1.x < sMinX)
+			sMinX = tpNode->p1.x;
+		if (tpNode->p1.x > sMaxX)
+			sMaxX = tpNode->p1.x;
+		if (tpNode->p1.z < sMinZ)
+			sMinZ = tpNode->p1.z;
+		if (tpNode->p1.z > sMaxZ)
+			sMaxZ = tpNode->p1.z;
+	}
+	
+	// allocating memory
+	int M = sMaxX - sMinX + 1;
+	int N = sMaxZ - sMinZ + 1;
+	unsigned char **tppMap;
+	tppMap = (unsigned char **)xr_malloc(sizeof(char *)*N);
+	memset(tppMap,0,sizeof(unsigned char *)*N);
+	for (int i=0; i<N; i++) {
+		tppMap[i] = (unsigned char *)xr_malloc(sizeof(unsigned char)*M);
+		memset(tppMap[i],MAP_UNAVAILABLE_CELL,sizeof(unsigned char)*M);
+	}
+
+	for (int i=1; i<(int)m_header.count; i++) {
+		NodeCompressed *tpNode = m_nodes_ptr[i];
+		Fvector tVector;
+		UnpackPosition(tVector,tpNode->p0);
+		if ((tVector.y < 1.5f) || (min(tpNode->cover[0],min(tpNode->cover[1],min(tpNode->cover[2],tpNode->cover[3]))) > 200))
+			for (s16 j = tpNode->p0.z - sMinZ; j<tpNode->p1.z - sMinZ + 1; j++)
+				memset(tppMap[j] + sMaxX - tpNode->p1.x, MAP_AVAILABLE_CELL, tpNode->p1.x - tpNode->p0.x + 1);
+	}
+	
+	FILE *fOutput = fopen(caFile0,"wb");
+	for (int i=0; i<N; i++) {
+		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
+		fprintf(fOutput,"\n");
+	}
+	fclose(fOutput);
+	
+	char caABC[ABC_SIZE] = {'0','1','2','3','4','5','6','7','8','9',
+					'a','b','c','d','e','f','g','h','i','j',
+					'k','l','m','n','o','p','q','r','s','t',
+					'u','v','w','x','y','z','A','B','C','D',
+					'E','F','G','H','I','J','K','L','M','N',
+					'O','P','Q','R','S','T','U','V','W','X',
+					'Y','Z'};
+	
+	for (int i=0; i<N; i++)
+		for (int j=0; j<M; j++)
+			if (tppMap[i][j] == MAP_AVAILABLE_CELL)
+				tppMap[i][j] = 0;
+			else
+				tppMap[i][j] = 255;
+	
+	for (unsigned char ucStart = 0; ucStart < ABC_SIZE; ucStart++) {
+		bool bOk = true;
+		unsigned char ucValue = ucStart ? ucStart : (unsigned char)255;
+		for (int i=0; i<N; i++)
+			for (int j=0; j<M; j++)
+				if (tppMap[i][j] == 0) {
+					if ((i > 0) && (tppMap[i - 1][j] == ucValue)) {
+						tppMap[i][j] = ucStart + 1;
+						bOk = false;
+						continue;
+					}
+					
+					if ((i < N) && (tppMap[i + 1][j] == ucValue)) {
+						tppMap[i][j] = ucStart + 1;
+						bOk = false;
+						continue;
+					}
+					
+					if ((j > 0) && (tppMap[i][j - 1] == ucValue)) {
+						tppMap[i][j] = ucStart + 1;
+						bOk = false;
+						continue;
+					}
+					
+					if ((j < M) && (tppMap[i][j + 1] == ucValue)) {
+						tppMap[i][j] = ucStart + 1;
+						bOk = false;
+						continue;
+					}
+				}
+		if (bOk)
+			break;
+	}
+	
+	for (int i=0; i<N; i++)
+		for (int j=0; j<M; j++)
+			if (tppMap[i][j] < ABC_SIZE)
+				tppMap[i][j] = caABC[tppMap[i][j]];
+			else
+				if (tppMap[i][j] == 255)
+					tppMap[i][j] = '.';
+				else
+					tppMap[i][j] = '0';
+
+	fOutput = fopen(caFile1,"wb");
+	for (int i=0; i<N; i++) {
+		fwrite(tppMap[i],sizeof(unsigned char),M,fOutput);
+		fprintf(fOutput,"\n");
+	}
+	fclose(fOutput);
+	// freeing resources
+	for (int i=0; i<N; i++)
+		_FREE(tppMap[i]);
+	_FREE(tppMap);
+//	char *caRow = (char *)xr_malloc(sizeof(char)*(sMaxX - sMinX + 3));
+//	memset(caRow,'x',sizeof(char)*(sMaxX - sMinX + 1));
+//	caRow[sMaxX - sMinX + 1] = 13;
+//	caRow[sMaxX - sMinX + 2] = 10;
+//	
+//	FILE *fOutput = fopen(caString,"wb");
+//	for (int i=0; i<sMaxZ - sMinZ; i++) {
+//		fwrite(caRow,sizeof(char),sMaxX - sMinX + 3,fOutput);
+//	}
+//	fclose(fOutput);
 }
