@@ -823,8 +823,13 @@ void CScriptGameObject::set_sound_mask	(u32 sound_mask)
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
-	else
+	else {
+		CEntityAlive			*entity_alive = dynamic_cast<CEntityAlive*>(sound_player);
+		if (entity_alive) {
+			VERIFY2				(entity_alive->g_Alive(),"Stalkers talk after death??? Say why??");
+		}
 		sound_player->set_sound_mask(sound_mask);
+	}
 }
 
 void CScriptGameObject::set_sight		(SightManager::ESightType sight_type, const Fvector *vector3d, u32 dwLookOverDelay)
