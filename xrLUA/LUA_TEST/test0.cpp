@@ -958,6 +958,24 @@ struct CInternal {
 	{
 		printf	("Internal destructor is called!\n");
 	}
+
+	virtual void update()
+	{
+		printf	("Internal update is called!\n");
+	}
+};
+
+struct CInternalWrapper : wrap_base {
+	virtual void update()
+	{
+		printf	("InternalWrapper update is called!\n");
+		call_member<void>("update");
+	}
+
+	static void update(CInternal *self)
+	{
+		self->update();
+	}
 };
 
 struct CExternal : public CInternal {
@@ -1023,6 +1041,9 @@ void test1()
 	[
 //		class_<A1>("A1"),
 //		class_<A2,bases<A1> >("A2")
+//		class_<CInternal,CInternalWrapper>("internal")
+//			.def("update", &CInternal::update, &CInternalWrapper::update),
+
 		class_<CInternal>("internal"),
 
 		class_<CExternal,CInternal>("external")
@@ -1041,7 +1062,7 @@ void test1()
 
 	lua_sethook		(L,hook,LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKCOUNT, 1);
 //	lua_dofile		(L,"x:\\split_test.script");
-	lua_dofile		(L,"x:\\heritage_test.script");
+	lua_dofile		(L,"x:\\comment_test.script");
 	if (xr_strlen(SSS)) {
 		printf		("\n%s\n",SSS);
 		strcpy		(SSS,"");
@@ -1049,5 +1070,9 @@ void test1()
 		return;
 	}
 
+//	luabind::functor<CClientBaseClass>	_functor;
+//	CScriptEngine::functor("a.b.a.create_lua_class",_functor);
+//	_functor()
+//
 	lua_close		(L);
 }
