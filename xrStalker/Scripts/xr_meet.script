@@ -38,7 +38,7 @@ function evaluator_contact:evaluate()
 --		printf("OVER FALSE")
 --	end
 	
-	return self.a.actor ~= nil --'and self.a.over == false
+	return self.a.actor ~= nil and self.a.over == false
 end
 -- имеет ли клиент оружие
 class "evaluator_weapon" (property_evaluator)
