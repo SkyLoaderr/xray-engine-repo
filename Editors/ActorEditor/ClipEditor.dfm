@@ -7,7 +7,6 @@ object ClipMaker: TClipMaker
   HorzScrollBar.ThumbSize = 12
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
-  BorderStyle = bsSizeToolWin
   Caption = 'Clip Maker'
   Color = 6908265
   Constraints.MinHeight = 256
@@ -24,6 +23,7 @@ object ClipMaker: TClipMaker
   Scaled = False
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object paB: TPanel
@@ -55,8 +55,8 @@ object ClipMaker: TClipMaker
         Align = alClient
         BorderStyle = bsNone
         TabOrder = 0
-        object paFrame: TPanel
-          Left = 97
+        object paFrame: TMxPanel
+          Left = 0
           Top = 0
           Width = 241
           Height = 121
@@ -66,7 +66,25 @@ object ClipMaker: TClipMaker
           TabOrder = 0
           object Bevel6: TBevel
             Left = 0
+            Top = 82
+            Width = 241
+            Height = 1
+            Align = alTop
+            Shape = bsBottomLine
+            Style = bsRaised
+          end
+          object Bevel7: TBevel
+            Left = 0
             Top = 50
+            Width = 241
+            Height = 1
+            Align = alTop
+            Shape = bsBottomLine
+            Style = bsRaised
+          end
+          object Bevel8: TBevel
+            Left = 0
+            Top = 66
             Width = 241
             Height = 1
             Align = alTop
@@ -91,24 +109,6 @@ object ClipMaker: TClipMaker
             Shape = bsBottomLine
             Style = bsRaised
           end
-          object Bevel7: TBevel
-            Left = 0
-            Top = 82
-            Width = 241
-            Height = 1
-            Align = alTop
-            Shape = bsBottomLine
-            Style = bsRaised
-          end
-          object Bevel8: TBevel
-            Left = 0
-            Top = 66
-            Width = 241
-            Height = 1
-            Align = alTop
-            Shape = bsBottomLine
-            Style = bsRaised
-          end
           object paClips: TPanel
             Tag = -1
             Left = 0
@@ -117,7 +117,7 @@ object ClipMaker: TClipMaker
             Height = 18
             Align = alTop
             BevelOuter = bvNone
-            Color = 5460819
+            Color = 6316128
             TabOrder = 0
             OnDragDrop = ClipDragDrop
             OnDragOver = ClipDragOver
@@ -154,77 +154,57 @@ object ClipMaker: TClipMaker
             BorderColor = clGray
             Color = 5460819
             Align = alTop
+            ParentShowHint = False
+            ShowHint = False
             OnPaint = gtClipPaint
           end
-          object paBP3: TControlBar
+          object paBP3: TMxPanel
             Tag = 3
             Left = 0
             Top = 67
             Width = 241
             Height = 15
             Align = alTop
-            BevelInner = bvNone
             BevelOuter = bvNone
-            BevelKind = bkNone
             Color = 6316128
-            ParentColor = False
             TabOrder = 2
+            OnPaint = BPOnPaint
           end
-          object paBP2: TControlBar
+          object paBP2: TMxPanel
             Tag = 2
             Left = 0
             Top = 51
             Width = 241
             Height = 15
             Align = alTop
-            BevelInner = bvNone
             BevelOuter = bvNone
-            BevelKind = bkNone
             Color = 6316128
-            ParentColor = False
             TabOrder = 3
+            OnPaint = BPOnPaint
           end
-          object paBP1: TControlBar
+          object paBP1: TMxPanel
             Tag = 1
             Left = 0
             Top = 35
             Width = 241
             Height = 15
             Align = alTop
-            BevelInner = bvNone
             BevelOuter = bvNone
-            BevelKind = bkNone
             Color = 6316128
-            ParentColor = False
             TabOrder = 4
+            OnPaint = BPOnPaint
           end
-          object paBP0: TControlBar
+          object paBP0: TMxPanel
             Left = 0
             Top = 19
             Width = 241
             Height = 15
             Align = alTop
-            BevelInner = bvNone
             BevelOuter = bvNone
-            BevelKind = bkNone
             Color = 6316128
-            ParentColor = False
             TabOrder = 5
+            OnPaint = BPOnPaint
           end
-        end
-        object ControlBar1: TControlBar
-          Tag = 3
-          Left = 0
-          Top = 0
-          Width = 97
-          Height = 121
-          Align = alLeft
-          BevelInner = bvNone
-          BevelOuter = bvNone
-          BevelKind = bkNone
-          Color = 6316128
-          ParentColor = False
-          TabOrder = 1
         end
       end
     end

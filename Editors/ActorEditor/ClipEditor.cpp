@@ -11,6 +11,7 @@
 #include "skeletoncustom.h"
 #include "editobject.h"
 #include "UI_Tools.h"
+#include "UI_Main.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -51,7 +52,8 @@ TClipMaker::SClip::SClip(const AnsiString& n, TClipMaker* own, float r_t)
     panel->Height		= owner->paClips->Height;
 //    panel->Constraints->MinWidth = min_size;
     panel->ShowHint		= true;
-    panel->Hint			= panel->Caption;
+    panel->Hint			= "Clip '"+name+"'";
+//    panel->Hint			= panel->Caption;
     panel->Color		= CLIP_INACTIVE_COLOR;
     panel->BevelInner	= bvLowered;//bvNone;
     panel->BevelOuter	= bvRaised;//bvNone;
@@ -90,7 +92,7 @@ void TClipMaker::ShowEditor(CEditableObject* O)
 {
 	m_CurrentObject = O; VERIFY(O);
 	Show			();
-    RepaintClips	();
+    UpdateClips		();
     UpdateProperties();
 }
 
@@ -134,6 +136,12 @@ void __fastcall TClipMaker::FormDestroy(TObject *Sender)
 	Device.seqFrame.Remove(this);
 	Clear			();
 	TProperties::DestroyForm(m_ClipProps);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::FormShow(TObject *Sender)
+{
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
@@ -214,6 +222,7 @@ void __fastcall TClipMaker::OnNameChange(PropValue* V)
 {
 	VERIFY(sel_clip);
     sel_clip->panel->Caption	= " "+sel_clip->name;
+    sel_clip->panel->Hint		= "Clip '"+sel_clip->name+"'";
 }
 //------------------------------------------------------------------------------
 
@@ -289,11 +298,11 @@ void TClipMaker::AppendClip()
 
 void TClipMaker::RemoveAllClips()
 {
-	SelectClip(0);
+	SelectClip		(0);
 	for (ClipIt it=clips.begin(); it!=clips.end(); it++)
     	xr_delete(*it);
     clips.clear		();
-    RepaintClips	();
+    UpdateClips		();
 }
 //---------------------------------------------------------------------------
 
@@ -303,7 +312,7 @@ void TClipMaker::RemoveCurrent()
         clips.erase	(std::find(clips.begin(),clips.end(),sel_clip));
         xr_delete	(sel_clip);
         SelectClip	(0);
-	    RepaintClips();
+	    UpdateClips	();
     }
 }
 //---------------------------------------------------------------------------
@@ -324,9 +333,10 @@ void TClipMaker::ClearAll()
     RepaintClips();
 }
 //---------------------------------------------------------------------------
-
+       
 static BOOL g_resizing	= FALSE;
 static int 	g_X_prev	= 0;
+static int 	g_X_cur	= 0;
 void __fastcall TClipMaker::ClipMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -363,11 +373,14 @@ void __fastcall TClipMaker::ClipMouseMove(TObject *Sender,
 	    	P->Cursor 	= crDefault;
     }
     if (g_resizing){
-        float dx	= float(X-g_X_prev)/m_Zoom;
+    	g_X_cur			= P->Left+X;
+        gtClip->Repaint();
+        float dx		= float(X-g_X_prev)/m_Zoom;
         if (!fis_zero(dx)){
     	    sel_clip->length += dx;
             if (sel_clip->length<EPS_L) sel_clip->length=EPS_L;
     		g_X_prev 	= X;
+            UI.ShowHint	(AnsiString().sprintf("Length: %s",FloatTimeToStrTime(sel_clip->Length(),false,false,true,true)));
         }
     }
 }
@@ -377,6 +390,7 @@ void __fastcall TClipMaker::ClipMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Button==mbLeft){
+		UI.HideHint	();
         g_resizing	= FALSE;
         UpdateClips	();
     }
@@ -409,7 +423,7 @@ void __fastcall TClipMaker::ClearAll1Click(TObject *Sender)
 
 void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
 {
-	TCanvas* canvas 	= gtClip->GetCanvas();
+	TCanvas* canvas 	= gtClip->Canvas;
     canvas->Font->Name 	= "MS Sans Serif";
     canvas->Font->Style	= TFontStyles();
 	canvas->Pen->Color 	= clBlack;
@@ -418,24 +432,36 @@ void __fastcall TClipMaker::gtClipPaint(TObject *Sender)
 	for (ClipIt it=clips.begin(); it!=clips.end(); it++){
         canvas->MoveTo	((*it)->PLeft(), 0);
         canvas->LineTo	((*it)->PLeft(), 6);
-        TRect R 		= TRect((*it)->PLeft()+1, 1, (*it)->PRight(), 15);
 		AnsiString s	= AnsiString().sprintf("%2.1f",(*it)->RunTime());
         float dx		= 2.f;
         float dy		= canvas->TextHeight(s);
-        R.Left -= dx; 	R.Right -= dx;
-        R.Top  = 21-dy; R.Bottom = R.Top+dy;
+        TRect R 		= TRect((*it)->PLeft()+1-dx, 21-dy, (*it)->PRight()-dx, 21);
         canvas->TextRect(R,R.Left,R.Top,s);
 	}
     if (!clips.empty()){
-        canvas->MoveTo	(clips.back()->PRight()-1, 0);
-        canvas->LineTo	(clips.back()->PRight()-1, 6);
+    	SClip* C		= clips.back();
+        canvas->MoveTo	(C->PRight()-1, 0);
+        canvas->LineTo	(C->PRight()-1, 6);
+		AnsiString s	= AnsiString().sprintf("%2.1f",m_TotalLength);
+        float dx		= canvas->TextWidth(s);
+        float dy		= canvas->TextHeight(s);
+        TRect R 		= TRect(C->PRight()-dx, 21-dy, C->PRight(), 21);
+        canvas->TextRect(R,R.Left,R.Top,s);
     }
+    if (g_resizing){
+//    	canvas->Pen->Color = clRed;
+        canvas->MoveTo	(g_X_cur, 0);
+        canvas->LineTo	(g_X_cur, gtClip->Width);
+    }
+   	canvas->Pen->Color 	= clRed;
+    canvas->MoveTo		(m_CurrentPlayTime*m_Zoom, 0);
+    canvas->LineTo		(m_CurrentPlayTime*m_Zoom, gtClip->Width);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TClipMaker::BPPaint(TObject *Sender)
+void __fastcall TClipMaker::BPOnPaint(TObject *Sender)
 {
-	TControlBar* bp 		= dynamic_cast<TControlBar*>(Sender); VERIFY(bp);
+	TMxPanel* bp 		= dynamic_cast<TMxPanel*>(Sender); VERIFY(bp);
     CEditableObject* O	= 	m_CurrentObject;
     if (O&&(bp->Tag<(int)O->BoneParts().size())){
         TCanvas* canvas 	= bp->Canvas;
@@ -452,12 +478,12 @@ void __fastcall TClipMaker::BPPaint(TObject *Sender)
             TRect R 		= TRect((*it)->PLeft(), 1, (*it)->PRight()-1, 15);
             if (SM){
 		        canvas->Pen->Width	= 1;
+                canvas->Brush->Color= (*it==sel_clip)?BP_ACTIVE_COLOR:BP_INACTIVE_COLOR;
                 canvas->Rectangle	(R);
                 R.Top				+= 1;
                 R.Bottom			-= 1;
                 R.Left				+= 1;
                 R.Right				-= 1;
-                canvas->Brush->Color= (*it==sel_clip)?BP_ACTIVE_COLOR:BP_INACTIVE_COLOR;
                 canvas->TextRect	(R,R.Left,R.Top,SM->Name());
 	            SM_prev				= SM;
             }else if (SM_prev){
@@ -481,18 +507,13 @@ void TClipMaker::RealRepaintClips()
 	PostMessage			(paFrame->Handle,WM_SETREDRAW,FALSE,0);
 */    
     m_RTFlags.set		(flRT_RepaintClips,FALSE);
-	// update panel size
-    m_TotalLength		= 0.f;
-	for (ClipIt it=clips.begin(); it!=clips.end(); it++){
-    	(*it)->panel->Left 	= (*it)->run_time*m_Zoom;
-    	(*it)->panel->Width = (*it)->length*m_Zoom;
-        m_TotalLength	+= (*it)->length;
-    }
-	paFrame->Width		= m_TotalLength*m_Zoom;
     // repaint
     gtClip->Repaint		();
-    // paint BP
-    BPPaint				(paBP0);
+    paBP0->Repaint		();
+    paBP1->Repaint		();
+    paBP2->Repaint		();
+    paBP3->Repaint		();          
+
 	// set BP name                   
     CEditableObject* O	= m_CurrentObject;
     u32 k				= 0;
@@ -503,6 +524,7 @@ void TClipMaker::RealRepaintClips()
     }
 	for (; k<4; k++)	m_LB[k]->Caption	= "-";
     UpdateProperties	();
+
 /*                  
 	PostMessage			(paFrame->Handle,WM_SETREDRAW,TRUE,0);
 //    paFrame->Repaint	();
@@ -523,7 +545,7 @@ void TClipMaker::RealUpdateClips()
     	(*it)->panel->Width = (*it)->length*m_Zoom;
         m_TotalLength	+= (*it)->length;
     }
-    RepaintClips	();
+	paFrame->Width	= m_TotalLength*m_Zoom;
 }
 //---------------------------------------------------------------------------
 
@@ -550,6 +572,7 @@ void TClipMaker::OnFrame()
     if (m_RTFlags.is(flRT_Playing)){
 	    m_CurrentPlayTime+=Device.fTimeDelta;
     	if (m_CurrentPlayTime>m_TotalLength) m_CurrentPlayTime-=m_TotalLength;
+        gtClip->Repaint();
 //. playing
     }
 }
@@ -622,4 +645,6 @@ void __fastcall TClipMaker::ebStopClick(TObject *Sender)
     Stop		();
 }
 //---------------------------------------------------------------------------
+
+
 

@@ -56,8 +56,12 @@ __published:	// IDE-managed Components
 	TBevel *Bevel15;
 	TBevel *Bevel16;
 	TScrollBox *sbBase;
-	TPanel *paFrame;
+	TMxPanel *paFrame;
 	TBevel *Bevel6;
+	TBevel *Bevel7;
+	TBevel *Bevel8;
+	TBevel *Bevel1;
+	TBevel *Bevel3;
 	TPanel *paClips;
 	TBevel *Bevel9;
 	TGradient *gtClip;
@@ -72,21 +76,16 @@ __published:	// IDE-managed Components
 	TMenuItem *N1;
 	TMenuItem *ClearMotions1;
 	TMenuItem *ClearAll1;
-	TControlBar *paBP3;
-	TBevel *Bevel1;
-	TBevel *Bevel3;
-	TControlBar *paBP2;
-	TControlBar *paBP1;
-	TControlBar *paBP0;
-	TBevel *Bevel7;
-	TBevel *Bevel8;
-	TControlBar *ControlBar1;
+	TMxPanel *paBP3;
+	TMxPanel *paBP2;
+	TMxPanel *paBP1;
+	TMxPanel *paBP0;
 	void __fastcall ebInsertClipClick(TObject *Sender);
 	void __fastcall MenuItem2Click(TObject *Sender);
 	void __fastcall RemoveAll1Click(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
-	void __fastcall BPPaint(TObject *Sender);
+	void __fastcall BPOnPaint(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
@@ -110,6 +109,7 @@ __published:	// IDE-managed Components
           int X, int Y);
 	void __fastcall ClipMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+	void __fastcall FormShow(TObject *Sender);
 public:
 	struct SClip{
     	TPanel*			panel;
@@ -143,6 +143,7 @@ protected:
 	DEFINE_VECTOR		(SClip*,ClipVec,ClipIt);
     ClipVec				clips;
     SClip*				sel_clip;
+    SClip*				play_clip;
     TProperties*		m_ClipProps;
 	void 				InsertClip		();
 	void 				AppendClip		();
@@ -157,7 +158,7 @@ protected:
 	void 				RealUpdateProperties();
     void				UpdateProperties(bool bForced=false){m_RTFlags.set(flRT_UpdateProperties,TRUE); if(bForced) RealUpdateProperties(); }
 	void 				RealUpdateClips	();
-    void				UpdateClips		(bool bForced=false){m_RTFlags.set(flRT_UpdateClips,TRUE); if(bForced) RealUpdateClips(); }
+    void				UpdateClips		(bool bRepaint=true, bool bForced=false){m_RTFlags.set(flRT_UpdateClips,TRUE); m_RTFlags.set(flRT_RepaintClips,bRepaint); if(bForced) RealUpdateClips(); }
 
     void				Clear			();
 
