@@ -19,7 +19,7 @@ CBuild::~CBuild()
 {
 }
  
-extern int RegisterString(std::string &T);
+extern int RegisterString(LPCSTR T);
 
 
 class CMUThread : public CThread
@@ -214,10 +214,8 @@ void CBuild::Run	(std::string& P)
 	{
 		b_glow&	G	= glows[i];
 		fs->w		(&G,4*sizeof(float));
-		std::string T	= textures		[materials[G.dwMaterial].surfidx].name;
-		std::string S	= shader_render	[materials[G.dwMaterial].shader].name;
-		fs->w_u32	(RegisterString(T));
-		fs->w_u32	(RegisterString(S));
+		fs->w_u32	(RegisterString(textures		[materials[G.dwMaterial].surfidx].name));
+		fs->w_u32	(RegisterString(shader_render	[materials[G.dwMaterial].shader].name));
 	}
 	fs->close_chunk	();
 

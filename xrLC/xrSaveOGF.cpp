@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "build.h"
 #include "OGF_Face.h"
- 
+
 VBContainer				g_VB;
 IBContainer				g_IB;
-xr_vector<std::string>	g_Strings;
+xr_vector<char*>		g_Strings;
 
 u32						g_batch_count;
 u32						g_batch_verts;
@@ -16,9 +16,9 @@ u32						g_batch_500;
 u32						g_batch_1000;
 u32						g_batch_5000;
 
-int		RegisterString		(std::string &T) 
+int		RegisterString		(LPCSTR T) 
 {
-	xr_vector<std::string>::iterator W = std::find(g_Strings.begin(), g_Strings.end(), T);
+	xr_vector<char*>::iterator W = std::find(g_Strings.begin(), g_Strings.end(), T);
 	if (W!=g_Strings.end()) return W-g_Strings.begin();
 	g_Strings.push_back(T);
 	return g_Strings.size()-1;

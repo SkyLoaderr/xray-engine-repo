@@ -5,7 +5,7 @@
 #include "fs.h"
 #include "fmesh.h"
 
-extern int	RegisterString		(std::string &T);
+extern int	RegisterString		(LPCSTR T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
 D3DVERTEXELEMENT9		r2_decl[] =	// 36
@@ -52,8 +52,8 @@ void OGF::Save			(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	fs.w_u32			(RegisterString(Tname));
-	fs.w_u32			(RegisterString(std::string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(Tname.c_str()));
+	fs.w_u32			(RegisterString(pBuild->shader_render[pBuild->materials[material].shader].name));
 	fs.close_chunk		();
 
 	// Vertices
@@ -107,8 +107,8 @@ void OGF_Reference::Save	(IWriter &fs)
 		if (strchr(fname,'.')) *strchr(fname,'.')=0;
 		Tname += fname;
 	}
-	fs.w_u32			(RegisterString(Tname));
-	fs.w_u32			(RegisterString(std::string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.w_u32			(RegisterString(Tname.c_str()));
+	fs.w_u32			(RegisterString(pBuild->shader_render[pBuild->materials[material].shader].name));
 	fs.close_chunk		();
 
 	// Vertices
