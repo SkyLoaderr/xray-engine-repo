@@ -196,12 +196,12 @@ CParticleEffect::~CParticleEffect()
 
 void CParticleEffect::OnDeviceCreate()
 {
-	hGeom				= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hGeom.create			(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 }
 
 void CParticleEffect::OnDeviceDestroy()
 {
-	Device.Shader.DeleteGeom(hGeom);
+	hGeom.destroy			();
 }
 
 void CParticleEffect::Play()
@@ -319,7 +319,7 @@ BOOL CParticleEffect::Compile(CPEDef* def)
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_ElapsedLimit 		= m_Def->m_TimeLimit;
     }
-	if (def)	hShader			= def->m_CachedShader();
+	if (def)	hShader			= def->m_CachedShader;
 	return TRUE;
 }
 

@@ -28,13 +28,11 @@ IRender_Visual::~IRender_Visual		()
 {
 }
 
-void IRender_Visual::Release	()
+void IRender_Visual::Release		()
 {
-	Device.Shader.Delete		(hShader);
-	Device.Shader.DeleteGeom	(hGeom	);
 }
 
-CStatTimer				tscreate;
+CStatTimer						tscreate;
 
 void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 {
