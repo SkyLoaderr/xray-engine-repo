@@ -568,6 +568,9 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 					// We've found same slot occupied - don't buy anything
 					F_entity_Destroy	(E);
 					return;
+
+					// Выбрасываем старое
+					//S->Perform_reject				(T,S->ID_to_entity(eid_who));
 				}
 			}
 			W->a_current = 0;
