@@ -33,14 +33,14 @@ xr_string to_string					(luabind::object const& o)
 	if (o.type() == LUA_TNUMBER)
 	{
 		s << object_cast<float>(o);
-		return s.str();
+		return xr_string(s.str().c_str());
 	}
 
 	s << "<" << lua_typename(L, o.type()) << ">";
 #ifdef BOOST_NO_STRINGSTREAM
 	s << std::ends;
 #endif
-	return s.str();
+	return s.str().c_str();
 }
 
 void strreplaceall						(xr_string &str, LPCSTR S, LPCSTR N)
@@ -107,7 +107,7 @@ xr_string member_to_string			(luabind::object const& e, LPCSTR function_signatur
 #ifdef BOOST_NO_STRINGSTREAM
 		s << std::ends;
 #endif
-		return s.str();
+		return s.str().c_str();
 	}
 
     return to_string(e);
