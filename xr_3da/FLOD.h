@@ -17,6 +17,15 @@ public:
 		_vertex		v[4];
 		Fvector		N;
 	};
+	struct _hw 
+	{
+		Fvector		p;
+		Fvector		n;
+		u32			color;
+		Fvector2	t;
+		IC void		set(const Fvector& _p, const Fvector& _n, u32 C, float u, float v) { p.set(_p); n.set(_n); color=C; t.set(u,v);}
+	};
+	const u32 F_HW	= D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 
 	_face			facets		[8];
 	float			lod_factor;

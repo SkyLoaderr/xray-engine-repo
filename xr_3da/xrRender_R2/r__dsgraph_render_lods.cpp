@@ -46,7 +46,7 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 	ref_shader					cur_S		= &*firstV->hShader;
 	int							cur_count	= 0;
 	u32							vOffset;
-	FVF::LIT*					V			= (FVF::LIT*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
+	FLOD::_hw*					V			= (FLOD::_hw*)RCache.Vertex.Lock	(lstLODs.size()*4,firstV->hGeom->vb_stride, vOffset);
 	float	ssaRange						= r_ssaLOD_A - r_ssaLOD_B;
 	for (u32 i=0; i<lstLODs.size(); i++)
 	{
@@ -97,10 +97,10 @@ void R_dsgraph_structure::r_dsgraph_render_lods	()
 
 		// Fill VB
 		FLOD::_face&	F				= facets[id_best];
-		_P.add(F.v[3].v,shift);	V->set	(_P,color(N,F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
-		_P.add(F.v[0].v,shift);	V->set	(_P,color(N,F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
-		_P.add(F.v[2].v,shift);	V->set	(_P,color(N,F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
-		_P.add(F.v[1].v,shift);	V->set	(_P,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
+		_P.add(F.v[3].v,shift);	V->set	(_P,N,color(N,F.v[3].c_rgb_hemi,F.v[3].c_sun,uA),F.v[3].t.x,F.v[3].t.y); V++;	// 3
+		_P.add(F.v[0].v,shift);	V->set	(_P,N,color(N,F.v[0].c_rgb_hemi,F.v[0].c_sun,uA),F.v[0].t.x,F.v[0].t.y); V++;	// 0
+		_P.add(F.v[2].v,shift);	V->set	(_P,N,color(N,F.v[2].c_rgb_hemi,F.v[2].c_sun,uA),F.v[2].t.x,F.v[2].t.y); V++;	// 2
+		_P.add(F.v[1].v,shift);	V->set	(_P,N,color(N,F.v[1].c_rgb_hemi,F.v[1].c_sun,uA),F.v[1].t.x,F.v[1].t.y); V++;	// 1
 	}
 	lstLODgroups.push_back				(cur_count);
 	RCache.Vertex.Unlock				(lstLODs.size()*4,firstV->hGeom->vb_stride);
