@@ -170,6 +170,10 @@ function zone_binder:reload( section )
 			z.spawner = xr_spawner.spawner [zone_ini:r_string("spawner", "id")]
 		end
 	end
+
+	if zone_ini:section_exist("no_weapon") then
+		//z.no_weapon = CZoneNotWeapon(self.object)
+	end
 end
 
 -- callback на вход в зону
@@ -177,7 +181,7 @@ function zone_binder:on_enter( zone, obj )
 	printf( "[zone %s] on_enter obj=%s", zone:name(), obj:name() )
 
 	zones_inside[zone:id()][obj:id()] = true
-
+	local t = zones[zone:id()]
 	-- вызвать callback-и всех подключённых классов управления
 	table.foreach( zones[zone:id()], function( k, v ) if v.on_enter then v:on_enter( obj ) end end )
 end
@@ -187,6 +191,9 @@ function zone_binder:on_leave( zone, obj )
 	printf( "[zone %s] on_leave obj=%s", zone:name(), obj:name() )
 
 	zones_inside[zone:id()][obj:id()] = nil
+
+	-- вызвать callback-и всех подключённых классов управления
+	table.foreach( zones[zone:id()], function( k, v ) if v.on_leave then v:on_leave( obj ) end end )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -456,5 +463,34 @@ function zone_sound:on_enter( obj )
 				sound_object( self.sound_names[math.random( 1, table.getn( self.sound_names ) )] ):play_at_pos( obj, obj:position(), self.delay )
 			end
 		end
+	end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Класс CZoneNotWeapon. При входе игрока в зону, у него убирается оружие. При выходы - достается
+----------------------------------------------------------------------------------------------------------------------
+class "CZoneNotWeapon"
+function CZoneNotWeapon:__init(zone_object)
+	// Если уже есть актер и он в зоне, то убераем оружие
+	if( level.actor() and 
+	    zone_object:active_zone_contact(level.actor():id())
+	   ) then
+//		level.actor():hide_weapon()
+		local i = 10
+	end
+end
+
+function CZoneNotWeapon:on_enter(obj)
+	if(obj:id() == get_actor_id()) then
+//		obj:hide_weapon()
+		local i = 10
+	end
+end
+
+function CZoneNotWeapon:on_leave(obj)
+	if(obj:id() == get_actor_id()) then
+//		obj:restore_weapon()
+		local i = 10
 	end
 end
