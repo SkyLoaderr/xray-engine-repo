@@ -484,6 +484,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		b_jump=false;
 		b_jumping=true;
 		m_elevator_state.Depart();
+		Enable();
 	}
 
 	b_lose_ground=!(b_good_graund||m_elevator_state.ClimbingState())||b_lose_control;
