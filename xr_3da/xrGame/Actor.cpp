@@ -20,8 +20,8 @@
 
 #include "../effectorfall.h"
 #include "EffectorBobbing.h"
-#include "EffectorPPHit.h"
-#include "EffectorHit.h"
+//#include "EffectorPPHit.h"
+//#include "EffectorHit.h"
 #include "ShootingHitEffector.h"
 #include "ActorEffector.h"
 #include "EffectorZoomInertion.h"
