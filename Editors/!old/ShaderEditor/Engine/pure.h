@@ -62,7 +62,7 @@ public:
 	{
 		if (R[0].Prio==REG_PRIORITY_CAPTURE)	f(R[0].Object);
 		else {
-			for (int i=0; i<Count; i++)	{
+			for (int i=0; i<R.size(); i++)	{
 				f(R[i].Object);
 			}
 		}
