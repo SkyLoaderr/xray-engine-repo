@@ -248,6 +248,7 @@ void	OGF::PreSave		(u32 tree_id)
 	bool bVertexColored	=	(SH->flags.bLIGHT_Vertex);
 
 	// X-vertices/faces
+	if (x_vertices.size() && x_faces.size())
 	{
 		clMsg			("%4d: v(%3d)/f(%3d)",tree_id,x_vertices.size(),x_faces.size());
 		VDeclarator		x_D;
@@ -319,31 +320,33 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	}
 
 	// if has x-vertices/x-faces
-	fs.open_chunk			(OGF_FASTPATH		);
-	{
-		// Vertices
-		fs.open_chunk	(OGF_GCONTAINER);
-		fs.w_u32		(xvb_id);
-		fs.w_u32		(xvb_start);
-		fs.w_u32		((u32)x_vertices.size());
+	if (x_vertices.size() && x_faces.size())	{
+		fs.open_chunk			(OGF_FASTPATH		);
+		{
+			// Vertices
+			fs.open_chunk	(OGF_GCONTAINER);
+			fs.w_u32		(xvb_id);
+			fs.w_u32		(xvb_start);
+			fs.w_u32		((u32)x_vertices.size());
 
-		fs.w_u32		(xib_id);
-		fs.w_u32		(xib_start);
-		fs.w_u32		((u32)x_faces.size()*3);
-		fs.close_chunk	();
+			fs.w_u32		(xib_id);
+			fs.w_u32		(xib_start);
+			fs.w_u32		((u32)x_faces.size()*3);
+			fs.close_chunk	();
 
-		// progressive-data, if need it
-		if (H.type == MT_PROGRESSIVE){
-			// SW
-			fs.open_chunk		(OGF_SWIDATA		);
-			fs.w_u32			(x_SWI.reserved[0]	);
-			fs.w_u32			(x_SWI.reserved[1]	);
-			fs.w_u32			(x_SWI.reserved[2]	);
-			fs.w_u32			(x_SWI.reserved[3]	);
-			fs.w_u32			(x_SWI.count		);
-			fs.w				(x_SWI.sw,x_SWI.count*sizeof(FSlideWindow));
-			fs.close_chunk		();
+			// progressive-data, if need it
+			if (H.type == MT_PROGRESSIVE){
+				// SW
+				fs.open_chunk		(OGF_SWIDATA		);
+				fs.w_u32			(x_SWI.reserved[0]	);
+				fs.w_u32			(x_SWI.reserved[1]	);
+				fs.w_u32			(x_SWI.reserved[2]	);
+				fs.w_u32			(x_SWI.reserved[3]	);
+				fs.w_u32			(x_SWI.count		);
+				fs.w				(x_SWI.sw,x_SWI.count*sizeof(FSlideWindow));
+				fs.close_chunk		();
+			}
 		}
+		fs.close_chunk			();
 	}
-	fs.close_chunk			();
 }

@@ -71,6 +71,7 @@ u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 }
 void OGF::x_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3, bool _tc_)
 {
+	if (_tc_)	return	;	// make empty-list for stuff that has relevant TCs
 	x_face	F;
 	u32		VertCount	= (u32)x_vertices.size();
 	F.v[0]	= x_BuildVertex(x_vertex(V1,_tc_));
@@ -108,13 +109,14 @@ BOOL OGF::dbg_SphereContainsVertex(Fvector& c, float R)
 }
 void OGF::Optimize	()
 {
-	VERIFY	(x_vertices.size()	<= vertices.size()	);
-	VERIFY	(x_faces.size()		== faces.size()		);
-
 	// Real optimization
 	//////////////////////////////////////////////////////////////////////////
 	// x-vertices
+	if (x_vertices.size() && x_faces.size())
 	{
+		VERIFY	(x_vertices.size()	<= vertices.size()	);
+		VERIFY	(x_faces.size()		== faces.size()		);
+
 		// Optimize texture coordinates
 		// 1. Calc bounds
 		Fvector2 Tdelta;
@@ -357,7 +359,7 @@ void OGF::MakeProgressive	(float metric_limit)
 
 	//////////////////////////////////////////////////////////////////////////
 	// FAST-PATH
-	if (progressive_test())
+	if (progressive_test() && x_vertices.size() && x_faces.size())
 	{
 		// prepare progressive geom
 		VIPM_Init				();
