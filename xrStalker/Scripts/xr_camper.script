@@ -169,11 +169,12 @@ function action_retreat:initialize()
     if path_walk then
 		local point = utils.get_nearest_waypoint(self.object, self.a.path_walk, path_walk, path_walk:count())
 
-		if self.object:accessible(point) then
+		if self.object:accessible(point) and self.object:best_enemy()
+		then
 			printf("RETREAT")
 			self.object:set_dest_level_vertex_id(path_walk:level_vertex_id(point))
 			self.object:set_path_type(game_object.level_path)
-			self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)	
+			self.object:set_sight(look.direction, self.object:best_enemy():position():sub(self.object:position()), true)
 			self.object:set_body_state(move.crouch)
 			self.object:set_mental_state(anim.danger)
 			self.object:set_movement_type(move.walk)
