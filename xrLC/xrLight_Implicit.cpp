@@ -136,10 +136,7 @@ public:
 };
 
 
-extern void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
-
 DEF_MAP(Implicit,DWORD,ImplicitDeflector);
-
 
 static hash2D <Face*,384,384>	ImplicitHash;
 

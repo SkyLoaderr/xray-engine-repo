@@ -3,7 +3,6 @@
 #include "std_classes.h"
 #include "xrThread.h"
 
-extern void LightPoint		(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
 extern void Jitter_Select	(UVpoint* &Jitter, DWORD& Jcount);
 
 void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size)

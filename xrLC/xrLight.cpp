@@ -2,8 +2,6 @@
 #include "build.h"
 #include "xrThread.h"
 
-extern void LightPoint(CDB::COLLIDER* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light* begin, R_Light* end);
-
 class CLMThread : public CThread
 {
 public:
