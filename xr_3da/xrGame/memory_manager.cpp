@@ -57,7 +57,7 @@ void CMemoryManager::update			()
 	
 	// update enemies and items
 	CEnemyManager::reset			();
-	CItemManager::reset			();
+	CItemManager::reset				();
 
 	update							(memory_visible_objects());
 	update							(sound_objects());
