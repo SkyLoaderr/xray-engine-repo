@@ -211,6 +211,9 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
+	m_BloodWounds.clear();
+	m_ParticleWounds.clear();
+
 	//добавить кровь и огонь на партиклы, если нужно
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
