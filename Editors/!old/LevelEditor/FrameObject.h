@@ -80,7 +80,7 @@ private:	// User declarations
     IItemList* m_Items;
     void __stdcall  OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
-	bool __stdcall  OnDrawObjectThumbnail(ListItem* sender, TCanvas *Surface, TRect &R);
+	void __stdcall  OnDrawObjectThumbnail(ListItem* sender, void *Surface, Irect &R);
 public:		// User declarations
 	ESceneObjectTools* ParentTools;
     void			RefreshList();

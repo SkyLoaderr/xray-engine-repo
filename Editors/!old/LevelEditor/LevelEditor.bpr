@@ -313,6 +313,9 @@
       <FILE FILENAME="Engine\Game\object_loader.h" FORMNAME="" UNITNAME="object_loader.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_loader_inline.h" FORMNAME="" UNITNAME="object_loader_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Game\object_saver.h" FORMNAME="" UNITNAME="object_saver.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_type_traits.h" FORMNAME="" UNITNAME="object_type_traits.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_cloner.h" FORMNAME="" UNITNAME="object_cloner.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_comparer.h" FORMNAME="" UNITNAME="object_comparer.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

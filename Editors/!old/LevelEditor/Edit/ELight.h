@@ -101,8 +101,8 @@ public:
     void __stdcall 	OnNeedUpdate	(PropValue* value);
 
     void __stdcall 	OnPointDataChange(PropValue* value);
-    void __stdcall  OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect);
-    void __stdcall 	OnPointDataTestEqual(PropValue* a, PropValue* b, bool& res);
+    void __stdcall  OnAttenuationDraw(CanvasValue* sender, void* canvas, const Irect& rect);
+    void __stdcall 	OnPointDataTestEqual(CanvasValue* a, CanvasValue* b, bool& res);
 protected:
 //    virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
 //    virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

@@ -166,7 +166,7 @@ xr_token					domain_token	[ ]={
 	{ 0,					0		   	}
 };
 
-void __fastcall PDomain::OnTypeChange(PropValue* sender)
+void PDomain::OnTypeChange(PropValue* sender)
 {
 	UI->Command				(COMMAND_UPDATE_PROPERTIES);
 }
@@ -174,191 +174,191 @@ void __fastcall PDomain::OnTypeChange(PropValue* sender)
 void 	PDomain::FillProp	(PropItemVec& items, LPCSTR pref, u32 clr)
 {
     PropValue* V;
-    V=PHelper.CreateToken<u32>(items,pref,(u32*)&type,domain_token);
-    V->OnChangeEvent		= OnTypeChange;
+    V=PHelper().CreateToken32(items,pref,(u32*)&type,domain_token);
+    V->OnChangeEvent.bind	(this,&PDomain::OnTypeChange);
 	V->Owner()->prop_color	= TColor(clr);
     
     switch(e_type){
     case vNum:
         switch(type){
             case PDPoint:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Center"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDLine:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 1"), 	&v[0],flt_min,flt_max,0.001f,3); 	V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 2"), 	&v[1],flt_min,flt_max,0.001f,3);	V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Point 1"), 	&v[0],flt_min,flt_max,0.001f,3); 	V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Point 2"), 	&v[1],flt_min,flt_max,0.001f,3);	V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDTriangle:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Vertex 2"), 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Vertex 3"), 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Vertex 2"), 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Vertex 3"), 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDPlane:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Normal"), 	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Normal"), 	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBox:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDSphere:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[4],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCylinder:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCone:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBlob:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDDisc:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDRectangle:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Basis U"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Basis V"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Basis U"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Basis V"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             default:
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Translate"),	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Rotate"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVector	(items,FHelper.PrepareKey(pref,"Scale"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Translate"),	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Rotate"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVector	(items,PHelper().PrepareKey(pref,"Scale"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
         }
     break;
     case vAngle:
         switch(type){
             case PDPoint:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Center"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDLine:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 1"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 2"), 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Point 1"), 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Point 2"), 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDTriangle:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Vertex 2"), 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Vertex 3"), 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Vertex 1"), 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Vertex 2"), 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Vertex 3"), 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDPlane:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Normal"), 	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Normal"), 	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBox:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Min"),		 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Max"), 	 		&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDSphere:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[4],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCylinder:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Point 1"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Point 2"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCone:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Apex"),	 		&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"End Point"),	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBlob:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[3],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDDisc:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Normal"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDRectangle:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Basis U"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Basis V"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Basis U"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Basis V"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
             default:
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Translate"),	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Rotate"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateAngle3	(items,FHelper.PrepareKey(pref,"Scale"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Translate"),	&v[0],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Rotate"),	 	&v[1],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateAngle3	(items,PHelper().PrepareKey(pref,"Scale"),	 	&v[2],flt_min,flt_max,0.001f,3);V->Owner()->prop_color	= TColor(clr);
                 break;
         }
     break;
     case vColor:
         switch(type){
             case PDPoint:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"), 		&v[0]);	V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Center"), 		&v[0]);	V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDLine:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 1"), 		&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 2"), 		&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Point 1"), 		&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Point 2"), 		&v[1]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDTriangle:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Vertex 1"), 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Vertex 2"), 	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Vertex 3"), 	&v[2]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Vertex 1"), 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Vertex 2"), 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Vertex 3"), 	&v[2]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDPlane:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Normal"), 	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Normal"), 	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBox:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Min"),		 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Max"), 	 		&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Min"),		 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Max"), 	 		&v[1]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDSphere:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat 	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[3]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[4]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat 	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[3]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[4]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCylinder:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 1"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Point 2"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Point 1"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Point 2"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDCone:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Apex"),	 		&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"End Point"),	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat  	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Apex"),	 		&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"End Point"),	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat  	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDBlob:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[3]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[3]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDDisc:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Normal"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Center"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Normal"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Inner"),	&f[6]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateFloat	(items,PHelper().PrepareKey(pref,"Radius Outer"),	&f[7]); V->Owner()->prop_color	= TColor(clr);
                 break;
             case PDRectangle:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Origin"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Basis U"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Basis V"),	 	&v[2]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Origin"),	 	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Basis U"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Basis V"),	 	&v[2]); V->Owner()->prop_color	= TColor(clr);
                 break;
             default:
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Translate"),	&v[0]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Rotate"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
-                V=PHelper.CreateVColor	(items,FHelper.PrepareKey(pref,"Scale"),	 	&v[2]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Translate"),	&v[0]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Rotate"),	 	&v[1]); V->Owner()->prop_color	= TColor(clr);
+                V=PHelper().CreateVColor	(items,PHelper().PrepareKey(pref,"Scale"),	 	&v[2]); V->Owner()->prop_color	= TColor(clr);
                 break;
         }
     break;

@@ -91,10 +91,10 @@ void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref, values);
 	PropValue* P;
-    P=PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,"Environment Inner"),	&m_EnvInner, smSoundEnv);
-    P->OnChangeEvent			= OnChangeEnvs;
-    P=PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,"Environment Outer"),	&m_EnvOuter, smSoundEnv);
-    P->OnChangeEvent			= OnChangeEnvs;
+    P=PHelper().CreateChoose	(values, PHelper().PrepareKey(pref,"Environment Inner"),	&m_EnvInner, smSoundEnv);
+    P->OnChangeEvent.bind		(this,&ESoundEnvironment::OnChangeEnvs);
+    P=PHelper().CreateChoose	(values, PHelper().PrepareKey(pref,"Environment Outer"),	&m_EnvOuter, smSoundEnv);
+    P->OnChangeEvent.bind		(this,&ESoundEnvironment::OnChangeEnvs);
 }
 //----------------------------------------------------
 

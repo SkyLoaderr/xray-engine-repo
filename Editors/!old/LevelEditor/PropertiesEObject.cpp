@@ -39,7 +39,7 @@ TfrmPropertiesEObject* TfrmPropertiesEObject::CreateProperties(TWinControl* pare
         props->ShowProperties();
     }
     props->m_BasicProp	= TProperties::CreateForm("",props->paBasic,alClient,props->OnModifiedEvent);
-    props->m_SurfProp 	= TProperties::CreateForm("",props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
+    props->m_SurfProp 	= TProperties::CreateForm("",props->paSurfaces,alClient,props->OnModifiedEvent,TOnILItemFocused(props,&TfrmPropertiesEObject::OnSurfaceFocused));
 	return props;
 }
 //---------------------------------------------------------------------------

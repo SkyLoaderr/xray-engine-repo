@@ -35,12 +35,12 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 {
-    m_Props = TProperties::CreateForm("LAProps",paProps,alClient,OnModified);
+    m_Props = TProperties::CreateForm("LAProps",paProps,alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
     m_Items	= IItemList::CreateForm("LA Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed|IItemList::ilFolderStore);
-    m_Items->SetOnModifiedEvent		(OnModified);
-    m_Items->SetOnItemFocusedEvent	(OnItemFocused);
-    m_Items->SetOnItemRemoveEvent	(LALib.RemoveObject);
-    m_Items->SetOnItemRenameEvent	(LALib.RenameObject);
+    m_Items->SetOnModifiedEvent		(TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
+    m_Items->SetOnItemFocusedEvent	(TOnILItemFocused().bind(this,&TfrmEditLightAnim::OnItemFocused));
+    m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(&LALib,&ELightAnimLibrary::RemoveObject));
+    m_Items->SetOnItemRenameEvent	(TOnItemRename().bind(&LALib,&ELightAnimLibrary::RenameObject));
 }
 //---------------------------------------------------------------------------
 
@@ -190,7 +190,7 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
         PHelper().CreateFloat	(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
         S32Value* V;
         V=PHelper().CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-        V->OnAfterEditEvent 	= OnFrameCountAfterEdit;
+        V->OnAfterEditEvent.bind(this,&TfrmEditLightAnim::OnFrameCountAfterEdit);
     }
     m_Props->AssignItems		(items);
     UpdateView					();

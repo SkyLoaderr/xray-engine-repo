@@ -10,7 +10,6 @@
 #include "leftbar.h"
 #include "PSLibrary.h"
 #include "ParticleSystem.h"
-#include "ItemList.h"
 #include "xr_trims.h"
 #include "library.h"
 #include "Render.h"
@@ -68,13 +67,13 @@ bool CParticleTools::OnCreate()
 
     m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
-    m_ItemProps 	= TProperties::CreateForm("Item Props",fraLeftBar->paItemProps,alClient,OnItemModified,0,0,TProperties::plFolderStore|TProperties::plFullExpand|TProperties::plItemFolders|TProperties::plIFTop);
+    m_ItemProps 	= TProperties::CreateForm("Item Props",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CParticleTools::OnItemModified),0,0,TProperties::plFolderStore|TProperties::plFullExpand|TProperties::plItemFolders|TProperties::plIFTop);
     // item list
-    m_PList			= TItemList::CreateForm("Items",fraLeftBar->paItemList,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
-    m_PList->OnItemsFocused	= OnParticleItemFocused;
-	m_PList->OnItemRename	= OnParticleItemRename;
-    m_PList->OnItemRemove	= OnParticleItemRemove;
-    m_PList->SetImages		(fraLeftBar->ilModeIcons);
+    m_PList			= IItemList::CreateForm("Items",fraLeftBar->paItemList,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed);
+    m_PList->SetOnItemsFocusedEvent	(TOnILItemsFocused().bind(this,&CParticleTools::OnParticleItemFocused));
+	m_PList->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CParticleTools::OnParticleItemRename));
+    m_PList->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CParticleTools::OnParticleItemRemove));
+    m_PList->SetImages				(fraLeftBar->ilModeIcons);
 
 //	stat_graph				= xr_new<CStatGraph>();
 //	stat_graph->SetRect		(100,0,300,200, 0xFFFF0000, 0xFFFF0000);
@@ -96,7 +95,7 @@ void CParticleTools::OnDestroy()
     EFS.UnlockFile		(_game_data_,PSLIB_FILENAME);
 
 	Lib.RemoveEditObject(m_EditObject);
-    TItemList::DestroyForm(m_PList);
+    IItemList::DestroyForm(m_PList);
 	TProperties::DestroyForm(m_ItemProps);
     xr_delete			(m_EditPG);
     xr_delete			(m_EditPE);
@@ -482,9 +481,7 @@ void CParticleTools::Remove(LPCSTR name)
 
 void CParticleTools::RemoveCurrent()
 {
-    TElTreeItem* pNode = m_PList->GetSelected();
-    if (pNode)
-		FHelper.RemoveItem(m_PList->tvItems,pNode,OnParticleItemRemove);
+	m_PList->RemoveSelItems		();
 }
 
 void CParticleTools::CloneCurrent()
@@ -591,7 +588,7 @@ void CParticleTools::OnShowHint(AStringVec& SS)
 {
 }
 
-bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
+bool CParticleTools::MouseStart(TShiftState Shift)
 {
 	inherited::MouseStart(Shift);
 	switch(m_Action){
@@ -629,13 +626,13 @@ bool __fastcall CParticleTools::MouseStart(TShiftState Shift)
 	return m_bHiddenMode;
 }
 
-bool __fastcall CParticleTools::MouseEnd(TShiftState Shift)
+bool CParticleTools::MouseEnd(TShiftState Shift)
 {
 	inherited::MouseEnd(Shift);
 	return true;
 }
 
-void __fastcall CParticleTools::MouseMove(TShiftState Shift)
+void CParticleTools::MouseMove(TShiftState Shift)
 {
 	inherited::MouseMove(Shift);
 	switch(m_Action){
@@ -687,8 +684,8 @@ LPCSTR CParticleTools::GetInfo()
 
 void CParticleTools::SelectListItem(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand)
 {
-	AnsiString nm = (name&&name[0])?FHelper.PrepareKey(pref,name).c_str():pref;
-	m_PList->SelectItem(nm,bVal,bLeaveSel,bExpand);
+	AnsiString nm = (name&&name[0])?PHelper().PrepareKey(pref,name).c_str():pref;
+	m_PList->SelectItem(nm.c_str(),bVal,bLeaveSel,bExpand);
 	if (pref){
     	m_PList->SelectItem(pref,true,true,bExpand);
     }
@@ -703,7 +700,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
     string64 pref		={0};
     if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pe");
-    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName,false);
+    AnsiString new_name	= FHelper.GenerateName(pref,2,TFindObjectByName().bind(&(::Render->PSLibrary),&CPSLibrary::FindByName),false);
     PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
     S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
@@ -724,7 +721,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     string64 pref		={0};
     if (src){ 			strcpy(pref,*src->m_Name);folder_name="";}
     else strconcat		(pref,folder_name.c_str(),"pg");
-    AnsiString new_name	= FHelper.GenerateName(pref,2,::Render->PSLibrary.FindByName,false);
+    AnsiString new_name	= FHelper.GenerateName(pref,2,TFindObjectByName().bind(&(::Render->PSLibrary),&CPSLibrary::FindByName),false);
     PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
     S->m_Name			= new_name.c_str();
     S->m_OwnerName		= AnsiString().sprintf("\\\\%s\\%s",Core.CompName,Core.UserName).c_str();
@@ -762,12 +759,12 @@ bool CParticleTools::RayPick(const Fvector& start, const Fvector& dir, float& di
     }
 }
 
-void __fastcall	CParticleTools::OnChangeMotion	(PropValue* sender)
+void CParticleTools::OnChangeMotion	(PropValue* sender)
 {
-	AChooseValue* V 			= dynamic_cast<AChooseValue*>(sender);
+	ChooseValue* V 			= dynamic_cast<ChooseValue*>(sender);
     if (V){
         m_ParentAnimator->Clear		();
-        if (!V->value->IsEmpty())
+        if (V->value->size())
             m_ParentAnimator->Load	(V->value->c_str());
     }
     if (m_Flags.is(flAnimatedParent))
@@ -777,14 +774,14 @@ void __fastcall	CParticleTools::OnChangeMotion	(PropValue* sender)
 void CParticleTools::EditPreviewPrefs()
 {
 	PropItemVec		items;
-    AnsiString		motion_name	= m_ParentAnimator->Name();
+    ref_str	motion_name			= m_ParentAnimator->Name();
 	PropValue *V;
-    V=PHelper.CreateFlag<Flags32>(items, "Parent\\Allow Animated",	&m_Flags, 		flAnimatedParent);
-	V->OnChangeEvent			= OnChangeMotion;
-    PHelper.CreateFlag<Flags32>	(items, "Parent\\Draw Path",		&m_Flags, 		flAnimatedPath);
-    V=PHelper.CreateChoose		(items, "Parent\\Motion",			&motion_name, 	smGameAnim);
-	V->OnChangeEvent			= OnChangeMotion;
-    PHelper.CreateFloat			(items, "Parent\\Motion Speed",		&m_ParentAnimator->Speed(), 0.f, 10000.f);
+    V=PHelper().CreateFlag32	(items, "Parent\\Allow Animated",	&m_Flags, 		flAnimatedParent);
+	V->OnChangeEvent.bind		(this,&CParticleTools::OnChangeMotion);
+    PHelper().CreateFlag32		(items, "Parent\\Draw Path",		&m_Flags, 		flAnimatedPath);
+    V=PHelper().CreateChoose	(items, "Parent\\Motion",			&motion_name, 	smGameAnim);
+	V->OnChangeEvent.bind		(this,&CParticleTools::OnChangeMotion);
+    PHelper().CreateFloat		(items, "Parent\\Motion Speed",		&m_ParentAnimator->Speed(), 0.f, 10000.f);
     TProperties* P				= TProperties::CreateModalForm("Preview properties");
     P->AssignItems				(items);
     P->ShowPropertiesModal		();

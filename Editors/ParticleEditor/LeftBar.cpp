@@ -153,7 +153,7 @@ void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
+void __fastcall TfraLeftBar::ebEngineRemoveClick(TObject *Sender)
 {
 	PTools->RemoveCurrent();
 }

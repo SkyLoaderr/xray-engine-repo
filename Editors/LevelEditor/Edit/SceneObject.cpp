@@ -265,7 +265,7 @@ void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
     PropValue* V		= PHelper().CreateChoose	(items,PHelper().PrepareKey(pref,"Reference"),		&m_ReferenceName, smObject); 
-    V->OnChangeEvent 	= ReferenceChange;
+    V->OnChangeEvent.bind(this,&CSceneObject::ReferenceChange);
     if (IsDynamic())
 	    inherited::AnimationFillProp(pref,items);
 }

@@ -49,7 +49,7 @@ void TfrmDOShuffle::OnObjectPropsModified()
 
 void __fastcall TfrmDOShuffle::FormCreate(TObject *Sender)
 {
-	m_ObjectProps 		= TProperties::CreateForm("Objects",paObjectProps,alClient,OnObjectPropsModified);
+	m_ObjectProps 		= TProperties::CreateForm("Objects",paObjectProps,alClient,fastdelegate::FastDelegate0(this,&TfrmDOShuffle::OnObjectPropsModified));
     bTHMLockRepaint		= false;
 }
 //---------------------------------------------------------------------------

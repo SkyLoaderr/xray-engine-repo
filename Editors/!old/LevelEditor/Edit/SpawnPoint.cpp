@@ -388,6 +388,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 }break;
                 case ptEnvMod:{
                 	Fvector pos={0,0,0};
+	                Device.SetShader(Device.m_WireShader);
                     DU.DrawCross(pos,0.25f,0x20FFAE00,true);
                     if (Selected()) DU.DrawSphere(Fidentity,PPosition,m_EM_Radius,0x30FFAE00,0x00FFAE00,true,true);
                 }break;

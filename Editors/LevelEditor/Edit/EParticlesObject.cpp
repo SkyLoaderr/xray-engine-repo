@@ -245,10 +245,10 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp(pref, items);
     PropValue* V;
     V=PHelper().CreateChoose	(items,PHelper().PrepareKey(pref, "Reference"),&m_RefName, smParticles);
-    V->OnChangeEvent		= OnRefChange;
+    V->OnChangeEvent.bind		(this,&EParticlesObject::OnRefChange);
 	ButtonValue* B;
     B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Controls"), 	"Play,Stop",0);
-    B->OnBtnClickEvent		= OnControlClick;
+    B->OnBtnClickEvent.bind		(this,&EParticlesObject::OnControlClick);
 }
 //----------------------------------------------------
 

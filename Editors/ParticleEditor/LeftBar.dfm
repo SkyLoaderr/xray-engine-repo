@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 459
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 277
+    Height = 459
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 73
+      Top = 255
       Width = 298
       Height = 3
       Cursor = crVSplit
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 84
       Width = 298
-      Height = 403
+      Height = 171
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -225,7 +225,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 388
+        Height = 156
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -248,7 +248,7 @@ object fraLeftBar: TfraLeftBar
           BevelOuter = bvNone
           Color = 10528425
           TabOrder = 0
-          object ebEngineShaderRemove: TExtBtn
+          object ebEngineRemove: TExtBtn
             Left = 139
             Top = 18
             Width = 60
@@ -267,9 +267,9 @@ object fraLeftBar: TfraLeftBar
             Margin = 13
             ParentFont = False
             Spacing = -1
-            OnClick = ebEngineShaderRemoveClick
+            OnClick = ebEngineRemoveClick
           end
-          object ebEngineShaderClone: TExtBtn
+          object ebEngineClone: TExtBtn
             Left = 70
             Top = 18
             Width = 60
@@ -359,7 +359,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 352
+          Height = 120
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -369,7 +369,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 76
+      Top = 258
       Width = 298
       Height = 200
       Align = alBottom

@@ -44,8 +44,8 @@ __published:	// IDE-managed Components
 	TMenuItem *Export1;
 	TPanel *paPSList;
 	TPanel *Panel1;
-	TExtBtn *ebEngineShaderRemove;
-	TExtBtn *ebEngineShaderClone;
+	TExtBtn *ebEngineRemove;
+	TExtBtn *ebEngineClone;
 	TExtBtn *ebFile;
 	TBevel *Bevel1;
 	TPanel *paProperties;
@@ -100,7 +100,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebPGCreateClick(TObject *Sender);
-	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
+	void __fastcall ebEngineRemoveClick(TObject *Sender);
 	void __fastcall Merge1Click(TObject *Sender);
 	void __fastcall ebSoundCommandsMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);

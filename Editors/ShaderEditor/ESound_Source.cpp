@@ -185,19 +185,19 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	ButtonValue* B;
-    B=PHelper().CreateButton		(values, PHelper().PrepareKey(pref,"Controls"), 	"Play,Stop",0);
-    B->OnBtnClickEvent			= OnControlClick;
+    B=PHelper().CreateButton	(values, PHelper().PrepareKey(pref,"Controls"), 	"Play,Stop",0);
+    B->OnBtnClickEvent.bind		(this,&ESoundSource::OnControlClick);
     PropValue* V;
-    V=PHelper().CreateChoose		(values,PHelper().PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
-    V->OnChangeEvent			= OnChangeWAV;
+    V=PHelper().CreateChoose	(values,PHelper().PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
+    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeWAV);
 	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
-    V->OnChangeEvent			= OnChangeSource;
+    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
 	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
-    V->OnChangeEvent			= OnChangeSource;
+    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
 	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
-    V->OnChangeEvent			= OnChangeSource;
+    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
 	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
-    V->OnChangeEvent			= OnChangeSource;
+    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
 //	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
 //    V->OnChangeEvent			= OnChangeSource;
 }

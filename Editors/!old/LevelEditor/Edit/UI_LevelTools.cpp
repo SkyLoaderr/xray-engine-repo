@@ -53,7 +53,7 @@ bool CLevelTools::OnCreate()
     Scene->OnCreate	();
     // change target to Object
 	UI->Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
-	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,OnPropsModified,0,OnPropsClose);
+	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,TOnModifiedEvent(this,&CLevelTools::OnPropsModified),0,TOnCloseEvent(this,&CLevelTools::OnPropsClose));
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
 }

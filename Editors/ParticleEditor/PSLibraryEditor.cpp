@@ -5,9 +5,9 @@
 #include "ParticleEffect.h"
 //------------------------------------------------------------------------------
 
-bool __fastcall CPSLibrary::FindByName(LPCSTR new_name)
+void __fastcall CPSLibrary::FindByName(LPCSTR new_name, bool& res)
 {
-	return FindPS(new_name)||FindPED(new_name)||FindPGD(new_name);
+	res = (FindPS(new_name)||FindPED(new_name)||FindPGD(new_name));
 }
 
 PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)

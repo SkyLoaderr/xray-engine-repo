@@ -201,7 +201,7 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 		    PHelper().CreateCaption(items,	PHelper().PrepareKey(pref,"Common\\Controls\\System",*_I->name),"");
         }else{
 		    B=PHelper().CreateButton(items,	PHelper().PrepareKey(pref,"Common\\Controls\\User",*_I->name),"Rename,Remove",ButtonValue::flFirstOnly);
-            B->OnBtnClickEvent	= OnControlRenameRemoveClick;
+            B->OnBtnClickEvent.bind		(this,&ESceneLightTools::OnControlRenameRemoveClick);
         }
     }                              
 	inherited::FillProp(pref, items);

@@ -55,7 +55,7 @@ protected:
     WPVec			m_WayPoints;
     typedef CCustomObject inherited;
     CWayPoint*		FindWayPoint	(const ref_str& nm);
-	bool __stdcall  FindWPByName	(LPCSTR new_name){return !!FindWayPoint(new_name);}
+	void __stdcall  FindWPByName	(LPCSTR new_name,bool& res){res=!!FindWayPoint(new_name);}
 	void __stdcall 	OnWayPointNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted);
 public:
 					CWayObject		(LPVOID data, LPCSTR name);

@@ -125,7 +125,7 @@ protected:
 	void			CreateSceneTools			();
 	void			DestroySceneTools			();
 
-    bool 			FindObjectByNameCB			(LPCSTR new_name){return !!FindObjectByName(new_name,0);}
+    void 			FindObjectByNameCB			(LPCSTR new_name, bool& res){res=!!FindObjectByName(new_name,0);}
 public:
 	enum{
     	flRT_Unsaved 	= (1<<0),

@@ -63,11 +63,11 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
     bDataModified		= false;
 }
 
-bool __fastcall PS::CPEDef::FindActionByName(LPCSTR new_name)
+void __fastcall PS::CPEDef::FindActionByName(LPCSTR new_name, bool& res)
 {
+	res 				= false;
 	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++)
-    	if (0==stricmp(new_name,*(*s_it)->actionName))return true;
-    return false;
+    	if (0==stricmp(new_name,*(*s_it)->actionName)){res=true; break;};
 }
 
 IC __fastcall void PS::CPEDef::FillActionList(ChooseItemVec& items)
@@ -82,12 +82,12 @@ void __fastcall PS::CPEDef::OnActionsClick(PropValue* sender, bool& bDataModifie
     switch (B->btn_num){
     case 0:{
     	LPCSTR 		nm;
-	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,FillActionList)&&nm){
+	    if (TfrmChoseItem::SelectItem(smCustom,nm,1,0,TOnChooseFillProp().bind(this,&PS::CPEDef::FillActionList))&&nm){
             for(int i=0; actions_token[i].name; i++){
                 if (0==strcmp(actions_token[i].name,nm)){
                     EParticleAction* A = pCreateEAction(actions_token[i].id);
                     AnsiString pref	= AnsiString(*A->actionName).LowerCase();
-                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,FindActionByName,true).LowerCase().c_str();
+                    A->actionName	= FHelper.GenerateName(pref.c_str(),2,TFindObjectByName().bind(this,&PS::CPEDef::FindActionByName),true).LowerCase().c_str();
                     m_EActionList.push_back(A);
                     UI->Command		(COMMAND_UPDATE_PROPERTIES);
                     bDataModified	= true;
@@ -118,24 +118,30 @@ void __fastcall PS::CPEDef::OnFrameResize(PropValue* sender)
 	m_Frame.m_iFrameDimX	= iFloor(1.f/m_Frame.m_fTexSize.x);
 }
 
-void __fastcall PS::CPEDef::CollisionFrictionOnBeforeEdit(PropItem* sender, LPVOID edit_val)
-{    *(float*)edit_val = 1.f-(*(float*)edit_val);}
-void __fastcall PS::CPEDef::CollisionFrictionOnAfterEdit(PropItem* sender, LPVOID edit_val)
-{    *(float*)edit_val = 1.f-(*(float*)edit_val);}
-void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, LPVOID draw_val)
-{    *(float*)draw_val = 1.f-(*(float*)draw_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnBeforeEdit(PropItem* sender, LPVOID edit_val)
-{    *(float*)edit_val = _sqrt(*(float*)edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnAfterEdit(PropItem* sender, LPVOID edit_val)
-{    *(float*)edit_val = (*(float*)edit_val)*(*(float*)edit_val);}
-void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, LPVOID draw_val)
-{    *(float*)draw_val = _sqrt(*(float*)draw_val);}
+void __fastcall PS::CPEDef::CollisionFrictionOnBeforeEdit(PropValue* sender, float& edit_val)
+{    edit_val = 1.f-edit_val;}
+void __fastcall PS::CPEDef::CollisionFrictionOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
+{    edit_val = 1.f-edit_val;}
+void __fastcall PS::CPEDef::CollisionFrictionOnDraw(PropValue* sender, ref_str& draw_val)
+{    
+	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
+	rstring_sprintf(draw_val,1.f-V->GetValue(),V->dec);
+}
+void __fastcall PS::CPEDef::CollisionCutoffOnBeforeEdit(PropValue* sender, float& edit_val)
+{    edit_val = _sqrt(edit_val);}
+void __fastcall PS::CPEDef::CollisionCutoffOnAfterEdit(PropValue* sender, float& edit_val, bool& accepted)
+{    edit_val = (edit_val)*(edit_val);}
+void __fastcall PS::CPEDef::CollisionCutoffOnDraw(PropValue* sender, ref_str& draw_val)
+{    
+	FloatValue* V	= dynamic_cast<FloatValue*>(sender); VERIFY(V);
+	rstring_sprintf(draw_val,_sqrt(V->GetValue()),V->dec);
+}
 
 void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
     bDataModified	= false;
 	ButtonValue* B 	= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
-    int idx			= B->Owner()->tag;
+    int idx			= B->tag;
     switch (B->btn_num){
     case 0:		    // up
     	if (idx>0){
@@ -166,96 +172,97 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
     }
 }
 
-void PS::CPEDef::OnAfterActionNameEdit(PropItem* sender, LPVOID edit_val)
+void PS::CPEDef::OnAfterActionNameEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
 {
-	AnsiString& new_name	= *(AnsiString*)edit_val; new_name=new_name.LowerCase();
-    AnsiString old_name		= *((RTextValue*)sender->GetFrontValue())->GetValue();
-    if (FindActionByName(new_name.c_str())) new_name = old_name;
+	edit_val				= AnsiString(edit_val.c_str()).LowerCase().c_str();
+    FindActionByName		(edit_val.c_str(),accepted); accepted = !accepted;
 }
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
-	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),	*m_OwnerName);
-	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modif Name"),	*m_ModifName);
-	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));
-	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))));
+	PHelper().CreateCaption	(items,PHelper().PrepareKey(pref,"Version\\Owner Name"),	*m_OwnerName);
+	PHelper().CreateCaption	(items,PHelper().PrepareKey(pref,"Version\\Modif Name"),	*m_ModifName);
+	PHelper().CreateCaption	(items,PHelper().PrepareKey(pref,"Version\\Creation Time"),	Trim(AnsiString(ctime(&m_CreateTime))).c_str());
+	PHelper().CreateCaption	(items,PHelper().PrepareKey(pref,"Version\\Modified Time"),	Trim(AnsiString(ctime(&m_ModifTime))).c_str());
 	ButtonValue* B;
-	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play(F5),Stop(F6),Stop...(F7)",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnControlClick;
-	::PHelper.CreateRName	(items,FHelper.PrepareKey(pref,"Name"),&m_Name,owner);
+	B=PHelper().CreateButton(items,PHelper().PrepareKey(pref,"Control"),"Play(F5),Stop(F6),Stop...(F7)",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent.bind	(this,&PS::CPEDef::OnControlClick);
+	PHelper().CreateName	(items,PHelper().PrepareKey(pref,"Name"),&m_Name,owner);
 
     PropValue* P = 0;
     // max particles
-    PHelper.CreateS32		(items,FHelper.PrepareKey				(pref,"Max Particles"),					&m_MaxParticles,  0, 100000);
+    PHelper().CreateS32		(items,PHelper().PrepareKey				(pref,"Max Particles"),					&m_MaxParticles,  0, 100000);
 //    P->OnChangeEvent		= OnFlagChange;
 	// time limit
-    P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey			(pref,"Time Limit"),		  			&m_Flags, dfTimeLimit);
-    P->OnChangeEvent		= OnFlagChange;
+    P=PHelper().CreateFlag32(items,PHelper().PrepareKey				(pref,"Time Limit"),		  			&m_Flags, dfTimeLimit);
+    P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfTimeLimit))
-	    PHelper.CreateFloat	(items,FHelper.PrepareKey				(pref,"Time Limit\\Value (sec)"),		&m_fTimeLimit,  0, 10000.f);
+	    PHelper().CreateFloat	(items,PHelper().PrepareKey			(pref,"Time Limit\\Value (sec)"),		&m_fTimeLimit,  0, 10000.f);
 	// sprite
-    P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey			(pref,"Sprite"),		 	   			&m_Flags, dfSprite);
-    P->OnChangeEvent		= OnFlagChange;
+    P=PHelper().CreateFlag32(items,PHelper().PrepareKey				(pref,"Sprite"),		 	   			&m_Flags, dfSprite);
+    P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfSprite)){
-	    P=PHelper.CreateChoose(items,FHelper.PrepareKey				(pref,"Sprite\\Texture"), 	   			&m_TextureName, smTexture);
-        P->OnChangeEvent		= OnShaderChange;
+	    P=PHelper().CreateChoose(items,PHelper().PrepareKey			(pref,"Sprite\\Texture"), 	   			&m_TextureName, smTexture);
+        P->OnChangeEvent.bind	(this,&PS::CPEDef::OnShaderChange);
         P->Owner()->subitem		= 2;
-	    P=PHelper.CreateChoose(items,FHelper.PrepareKey				(pref,"Sprite\\Shader"), 	   			&m_ShaderName,	smEShader);
-        P->OnChangeEvent		= OnShaderChange;
+	    P=PHelper().CreateChoose(items,PHelper().PrepareKey			(pref,"Sprite\\Shader"), 	   			&m_ShaderName,	smEShader);
+        P->OnChangeEvent.bind	(this,&PS::CPEDef::OnShaderChange);
     	// frame
-        P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey		(pref,"Sprite\\Frame"),		 		 	&m_Flags, dfFramed);
-        P->OnChangeEvent		= OnFlagChange;
+        P=PHelper().CreateFlag32(items,PHelper().PrepareKey			(pref,"Sprite\\Frame"),		 		 	&m_Flags, dfFramed);
+        P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
         if (m_Flags.is(dfFramed)){
-            PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey	(pref,"Sprite\\Frame\\Random Init"), 	&m_Flags, dfRandomFrame);
-            PHelper.CreateS32	(items,FHelper.PrepareKey			(pref,"Sprite\\Frame\\Count"),			&m_Frame.m_iFrameCount, 1,256);
-            P=PHelper.CreateFloat(items,FHelper.PrepareKey			(pref,"Sprite\\Frame\\Size U (0..1)"),	&m_Frame.m_fTexSize.x, EPS_S,1.f,0.001f,8);
-            P->OnChangeEvent	= OnFrameResize;
-            PHelper.CreateFloat	(items,FHelper.PrepareKey			(pref,"Sprite\\Frame\\Size V (0..1)"),	&m_Frame.m_fTexSize.y, EPS_S,1.f,0.001f,8);
+            PHelper().CreateFlag32(items,PHelper().PrepareKey		(pref,"Sprite\\Frame\\Random Init"), 	&m_Flags, dfRandomFrame);
+            PHelper().CreateS32	(items,PHelper().PrepareKey			(pref,"Sprite\\Frame\\Count"),			&m_Frame.m_iFrameCount, 1,256);
+            P=PHelper().CreateFloat(items,PHelper().PrepareKey		(pref,"Sprite\\Frame\\Size U (0..1)"),	&m_Frame.m_fTexSize.x, EPS_S,1.f,0.001f,8);
+            P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFrameResize);
+            PHelper().CreateFloat	(items,PHelper().PrepareKey	   	(pref,"Sprite\\Frame\\Size V (0..1)"),	&m_Frame.m_fTexSize.y, EPS_S,1.f,0.001f,8);
 	        // animate
-            P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey	(pref,"Sprite\\Animated"),				&m_Flags, dfAnimated);
-            P->OnChangeEvent	= OnFlagChange;
+            P=PHelper().CreateFlag32(items,PHelper().PrepareKey		(pref,"Sprite\\Animated"),				&m_Flags, dfAnimated);
+            P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
             if (m_Flags.is(dfAnimated)){
-                PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Sprite\\Animated\\Random Playback"),	&m_Flags, dfRandomPlayback);
-		    	PHelper.CreateFloat(items,FHelper.PrepareKey		(pref,"Sprite\\Animated\\Speed"),		&m_Frame.m_fSpeed, 0.f,1000.f);
+                PHelper().CreateFlag32(items,PHelper().PrepareKey	(pref,"Sprite\\Animated\\Random Playback"),	&m_Flags, dfRandomPlayback);
+		    	PHelper().CreateFloat(items,PHelper().PrepareKey		(pref,"Sprite\\Animated\\Speed"),		&m_Frame.m_fSpeed, 0.f,1000.f);
             }
         }
     }
 	// align to path
-    P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey	(pref,"Movement\\Align To Path"), 				&m_Flags, dfAlignToPath);
-    P->OnChangeEvent		= OnFlagChange;
+    P=PHelper().CreateFlag32(items,PHelper().PrepareKey	(pref,"Movement\\Align To Path"), 				&m_Flags, dfAlignToPath);
+    P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfAlignToPath))
-    	PHelper.CreateAngle3(items,FHelper.PrepareKey		(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
+    	PHelper().CreateAngle3(items,PHelper().PrepareKey		(pref,"Movement\\Align To Path\\Default Rotate"),	&m_APDefaultRotation);
 	// velocity scale
-    P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey	(pref,"Movement\\Velocity Scale"),				&m_Flags, dfVelocityScale);
-    P->OnChangeEvent		= OnFlagChange;
+    P=PHelper().CreateFlag32(items,PHelper().PrepareKey	(pref,"Movement\\Velocity Scale"),				&m_Flags, dfVelocityScale);
+    P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
     if (m_Flags.is(dfVelocityScale))
-    	PHelper.CreateVector(items,FHelper.PrepareKey		(pref,"Movement\\Velocity Scale\\Value"),		&m_VelocityScale, -1000.f, 1000.f);
+    	PHelper().CreateVector(items,PHelper().PrepareKey		(pref,"Movement\\Velocity Scale\\Value"),		&m_VelocityScale, -1000.f, 1000.f);
 	// collision
-    P=PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey	(pref,"Movement\\Collision"),					&m_Flags, dfCollision);
-    P->OnChangeEvent		= OnFlagChange;
+    P=PHelper().CreateFlag32(items,PHelper().PrepareKey	(pref,"Movement\\Collision"),					&m_Flags, dfCollision);
+    P->OnChangeEvent.bind	(this,&PS::CPEDef::OnFlagChange);
+    FloatValue*	V 			= 0;
     if (m_Flags.is(dfCollision)){
-    	PHelper.CreateFlag<Flags32>(items,FHelper.PrepareKey(pref,"Movement\\Collision\\Destroy On Contact"),&m_Flags, dfCollisionDel);
-	    P=PHelper.CreateFloat	(items,FHelper.PrepareKey	(pref,"Movement\\Collision\\Friction"),			&m_fCollideOneMinusFriction,0.f, 1.f);
-        P->Owner()->OnBeforeEditEvent 	= CollisionFrictionOnBeforeEdit;
-        P->Owner()->OnAfterEditEvent 	= CollisionFrictionOnAfterEdit;
-        P->Owner()->OnDrawTextEvent 	= CollisionFrictionOnDraw;
-	    PHelper.CreateFloat		(items,FHelper.PrepareKey	(pref,"Movement\\Collision\\Resilence"),		&m_fCollideResilience, 		0.f, 1.f);
-	    P=PHelper.CreateFloat	(items,FHelper.PrepareKey	(pref,"Movement\\Collision\\Cutoff"),			&m_fCollideSqrCutoff, 		0.f, P_MAXFLOAT);
-        P->Owner()->OnBeforeEditEvent 	= CollisionCutoffOnBeforeEdit;
-        P->Owner()->OnAfterEditEvent 	= CollisionCutoffOnAfterEdit;
-        P->Owner()->OnDrawTextEvent 	= CollisionCutoffOnDraw;
+    	PHelper().CreateFlag32(items,PHelper().PrepareKey(pref,"Movement\\Collision\\Destroy On Contact"),&m_Flags, dfCollisionDel);
+	    V=PHelper().CreateFloat	(items,PHelper().PrepareKey	(pref,"Movement\\Collision\\Friction"),			&m_fCollideOneMinusFriction,0.f, 1.f);
+        V->OnBeforeEditEvent.bind	(this,&PS::CPEDef::CollisionFrictionOnBeforeEdit);
+        V->OnAfterEditEvent.bind	(this,&PS::CPEDef::CollisionFrictionOnAfterEdit);
+        V->Owner()->OnDrawTextEvent.bind(this,&PS::CPEDef::CollisionFrictionOnDraw);
+	    PHelper().CreateFloat		(items,PHelper().PrepareKey	(pref,"Movement\\Collision\\Resilence"),		&m_fCollideResilience, 		0.f, 1.f);
+	    V=PHelper().CreateFloat		(items,PHelper().PrepareKey	(pref,"Movement\\Collision\\Cutoff"),			&m_fCollideSqrCutoff, 		0.f, P_MAXFLOAT);
+        V->OnBeforeEditEvent.bind	(this,&PS::CPEDef::CollisionCutoffOnBeforeEdit);
+        V->OnAfterEditEvent.bind	(this,&PS::CPEDef::CollisionCutoffOnAfterEdit);
+        V->Owner()->OnDrawTextEvent.bind(this,&PS::CPEDef::CollisionCutoffOnDraw);
     }
     // actions
-	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Actions\\Edit"),"Append",ButtonValue::flFirstOnly);
-    B->OnBtnClickEvent		= OnActionsClick;
+	B=::PHelper().CreateButton(items,PHelper().PrepareKey(pref,"Actions\\Edit"),"Append",ButtonValue::flFirstOnly);
+    B->OnBtnClickEvent.bind	(this,&PS::CPEDef::OnActionsClick);
 	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++){
     	u32 clr				= (*s_it)->flags.is(EParticleAction::flEnabled)?clBlack:clSilver;
-    	AnsiString a_pref	= FHelper.PrepareKey(pref,"Actions",AnsiString().sprintf("%s (%s)",*(*s_it)->actionType,*(*s_it)->actionName).c_str());
-        ButtonValue* B		= PHelper.CreateButton(items,a_pref,"Up,Down,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = (s_it-m_EActionList.begin());
+    	ref_str a_pref		= PHelper().PrepareKey(pref,"Actions",AnsiString().sprintf("%s (%s)",*(*s_it)->actionType,*(*s_it)->actionName).c_str());
+        ButtonValue* B		= PHelper().CreateButton(items,a_pref,"Up,Down,Remove",ButtonValue::flFirstOnly); B->tag = (s_it-m_EActionList.begin());
         B->Owner()->prop_color	= clr;
-        B->OnBtnClickEvent	= OnActionEditClick;
-		P=PHelper.CreateRText	(items,FHelper.PrepareKey(a_pref.c_str(),"Name"),&(*s_it)->actionName);
-        P->Owner()->OnAfterEditEvent = OnAfterActionNameEdit;
-        P->Owner()->prop_color	= clr;
+        B->OnBtnClickEvent.bind	(this,&PS::CPEDef::OnActionEditClick);
+        RTextValue* R;
+		R=PHelper().CreateRText	(items,PHelper().PrepareKey(a_pref.c_str(),"Name"),&(*s_it)->actionName);
+        R->OnAfterEditEvent.bind(this,&PS::CPEDef::OnAfterActionNameEdit);
+        R->Owner()->prop_color	= clr;
     	(*s_it)->FillProp	(items,a_pref.c_str(),clr);
     }
 }

@@ -7,7 +7,6 @@
 #include "ParticleGroup.h"
 #include "pure.h"
 #include "PropertiesList.h"
-#include "ItemList.h"
 #include "ui_toolscustom.h"
 
 // refs
@@ -39,11 +38,11 @@ class CParticleTools: public CToolsCustom
     Fmatrix 			m_Transform;
     Fvector				m_Vel;
 
-    void __fastcall		OnItemModified		(void); 
+    void __stdcall		OnItemModified		(void); 
 
-    void __fastcall 	OnParticleItemFocused	(ListItemsVec& items);
-	void __fastcall 	OnParticleItemRename	(LPCSTR old_name, LPCSTR new_name, EItemType type);
-    BOOL __fastcall 	OnParticleItemRemove	(LPCSTR name, EItemType type);
+    void __stdcall 		OnParticleItemFocused	(ListItemsVec& items);
+	void __stdcall 		OnParticleItemRename	(LPCSTR old_name, LPCSTR new_name, EItemType type);
+    void __stdcall	 	OnParticleItemRemove	(LPCSTR name, EItemType type, bool& res);
 
     void				RealUpdateProperties();
 	void 				SelectListItem		(LPCSTR pref, LPCSTR name, bool bVal, bool bLeaveSel, bool bExpand);
@@ -60,7 +59,7 @@ public:
 	EEditMode			m_EditMode;
     
     TProperties*		m_ItemProps;
-    TItemList*			m_PList;
+    IItemList*			m_PList;
 public:
 	// flags
     enum{
@@ -73,7 +72,7 @@ public:
     };
     Flags32				m_Flags;
 protected:
-	void __fastcall		OnChangeMotion		(PropValue* sender);
+	void __stdcall		OnChangeMotion		(PropValue* sender);
 	CObjectAnimator*	m_ParentAnimator;
 public:
 						CParticleTools		();
