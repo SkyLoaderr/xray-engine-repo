@@ -217,9 +217,12 @@ void CPHShell::PresetActive()
 
 
 void CPHShell::Deactivate(){
-	if(!bActive)
-		return;
+	if(!bActive)return;
 	vis_update_activate();
+	DisableObject();
+	spatial_unregister();
+	ZeroCallbacks();
+
 	ELEMENT_I i;
 	for(i=elements.begin();elements.end() != i;++i)
 		(*i)->Deactivate();
@@ -228,7 +231,7 @@ void CPHShell::Deactivate(){
 	for(j=joints.begin();joints.end() != j;++j)
 		(*j)->Deactivate();
 
-		DisableObject();
+	
 
 	if(m_space) {
 		dSpaceDestroy(m_space);
@@ -236,8 +239,7 @@ void CPHShell::Deactivate(){
 	}
 	bActive=false;
 	bActivating=false;
-	spatial_unregister();
-	ZeroCallbacks();
+
 	m_traced_geoms.clear();
 	CPHObject::UnsetRayMotions();
 }

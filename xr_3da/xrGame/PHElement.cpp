@@ -438,9 +438,8 @@ void CPHElement::PhDataUpdate(dReal step){
 			linear_velocity[1]/f,
 			linear_velocity[2]/f
 			);
-		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	}
-
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
 	if(!dV_valid(position)) 

@@ -1329,6 +1329,7 @@ CODEGeom* CPHShell::get_GeomByID(u16 bone_id)
 void	CPHShell::PureStep(float step)
 {
 	CPHObject::Island().Step(step);
+	PhDataUpdate(step);
 }
 void	CPHShell::StaticCollideStep(float step)
 {
