@@ -39,7 +39,7 @@ void	CBlender_Screen_GRAY::Compile	(CBlender_Compile& C)
 		C.PassSET_Blend		(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
 		C.PassSET_LightFog	(FALSE,FALSE);
 		
-		if (HW.Caps.pixel.op_DP3 && !strstr(Engine.Params,"-no_dp3"))	
+		if (HW.Caps.pixel.op_DP3 && !strstr(Core.Params,"-no_dp3"))	
 		{
 			C.R().SetRS		(D3DRS_TEXTUREFACTOR,D3DCOLOR_RGBA(76+105,150+105,29+105,0));
 
