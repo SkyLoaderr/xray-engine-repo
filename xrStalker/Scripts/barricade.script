@@ -41,7 +41,7 @@ function main ()
         h.direction = vector ():set (0, 1.0, -0.5)
         h:bone (bones[a])
         h.draftsman = get_actor ()
-        h.impulse = 100
+        h.impulse = 200
         h.type  = hit.strike
         bar:hit (h)
 	end
