@@ -359,7 +359,9 @@ bool CActor::g_LadderOrient()
 	Fvector position;
 	position.set(Position());
 	//XFORM().rotation(q3);
+	VERIFY2(_valid(M),"Invalide matrix in g_LadderOrient");
 	XFORM().set(M);
+	VERIFY2(_valid(position),"Invalide position in g_LadderOrient");
 	Position().set(position);
 	return true;
 }
