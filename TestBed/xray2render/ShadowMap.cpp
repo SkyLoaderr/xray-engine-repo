@@ -372,7 +372,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		binormalAtt.Name_ = "binormal";
 		// Normals
 		NVMeshMender::VertexAttribute normalAtt;
-		normalAtt.Name_ = "normal";
+		normalAtt.Name_		= "normal";
 		// Fill in output list
 		std::vector<NVMeshMender::VertexAttribute> outputAtts;
 		unsigned int n = 0;
