@@ -87,7 +87,7 @@ CSE_Abstract *CLevelSpawnConstructor::create_object						(IReader *chunk)
 	CSE_Abstract			*abstract = F_entity_Create(section_name);
 	if (!abstract) {
 		string256			temp;
-		sprintf				(temp,"Can't create entity '%s' !\n",abstract->name_replace());
+		sprintf				(temp,"Can't create entity '%s' !\n",section_name);
 		R_ASSERT2			(abstract,temp);
 	}
 	abstract->Spawn_Read	(net_packet);
