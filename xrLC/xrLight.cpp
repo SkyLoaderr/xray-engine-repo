@@ -225,7 +225,7 @@ void CBuild::LightVertex()
 		for (v=0; v<VL.size(); v++)
 		{
 			// trans-level
-			float	level		= 1.f; // VL[v]->Color.a;
+			float	level		= VL[v]->Color.a;
 
 			// 
 			Fcolor				R;
