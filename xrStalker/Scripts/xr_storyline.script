@@ -186,7 +186,7 @@ function set_storyline(object, char_ini)
         if char_ini:line_exist ("bar_stalker", "passive") == true then
            xr_motivator.storage[object:id()].bar_stalker.passive = char_ini:r_bool ("bar_stalker", "passive")
         end
-        bar_stalker.add_to_binder (object)
+        Bar_stalker.add_to_binder (object)
      end
 
     -- Бармен
@@ -198,9 +198,11 @@ function set_storyline(object, char_ini)
      if( char_ini:section_exist ("sniper") == true ) then
         xr_motivator.storage[object:id()].sniper =
         								  {
-        									enabled = true,
-         								   }
-        xr_sniper.add_to_binder (object)
+        									enabled  	= true,
+                                            rest_path 	= nil,
+         								    look_path	= nil
+                                          }
+        xr_sniper.add_to_binder (object, char_ini)
      end
 
 end

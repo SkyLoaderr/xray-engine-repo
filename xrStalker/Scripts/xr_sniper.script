@@ -1,5 +1,9 @@
 local distance_to_enemy			= 10
 
+local time_to_rest				= 10000
+local time_to_look				= 5000
+local time_from_last_clean_wpn  = 20000
+
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluators
 ---------------------------------------------------------------------------------------------------------------------
@@ -39,19 +43,116 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 -- Action sniper_idle
 ---------------------------------------------------------------------------------------------------------------------
+local sit_idle		= 1
+local clean_weapon  = 2
+local walk			= 3
+
 class "action_sniper_idle" (action_base)
 function action_sniper_idle:__init (name, storage) super (nil, name)
-    self.a = storage
+    self.a 			= storage
+    self.state 		= sit_idle
+    self.animation  = nil
+    self.time		= sit_idle
+
+	local path 		= patrol(self.a.rest_path)
+    self.last_point = path:level_vertex_id(path:count() - 1)  		--ѕоследн€€ точка пути
+    self.rest_point = path:level_vertex_id(0)                       --ѕерва€ точка пути, в ней сидим
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:initialize ()
     action_base.initialize (self)
 
+    self.animation      = xr_state.anims(self.object)
+
+    --≈сли до этого не сидели, то будем сидет, в противном случае будем ходить
+	if(self.state == sit_idle) then
+    	self:init_state_sit_down()
+    else
+    	self:init_state_walk()
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------
-function action_sniper_idle:execute ()
-    action_base.execute (self)
+function action_sniper_idle:init_state_sit_down	()
+	if( self.object:level_vertex_id() ~= self.rest_point ) then
+		self.object:set_dest_level_vertex_id(self.rest_point)
+        self.object:set_movement_type		(move.walk)
+        self.object:set_path_type			(game_object.level_path)
+		self.object:set_detail_path_type	(move.line)
+	    self.object:set_sight               (look.danger, nil, 0)
+        self.object:set_item            	(object.activate, self.object:best_weapon())
+        self.object:set_desired_direction	( self.a.look_path:point(0):sub(self.object:position()) )
+    end
+
+    self.object:set_mental_state            (anim.free)
+
+    self.time		= 0
+    self.state      = sit_idle
 end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:init_state_walk()
+    self.state      = walk
+    self.time       = 0
+
+    if(xr_state.change_state(self.object, 0)) then  return true  end		--≈сли будем мен€ть положение тела, то больше ничего не делаем
+
+    self.object:set_movement_type		(move.walk)
+    self.object:set_path_type			(game_object.patrol_path)
+    self.object:set_detail_path_type	(move.line)
+    self.object:set_patrol_path			(self.a.rest_path, patrol.start, patrol.continue, true)
+	self.object:set_sight				(look.path_dir, nil, 0)
+    self.object:set_item				(object.activate, self.object:best_weapon())
+	self.object:set_mental_state		(anim.free)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:state_sit_down		()
+	--ѕодходит с точки сидени€, садитс€, а потом проигруетс€ idle анимаци€
+    if(self.object:level_vertex_id() == self.rest_point) then
+
+        self.object:set_movement_type	(move.stand)
+
+        if(xr_state.change_state(self.object, 1) == false) then
+        	--self.animation:update		("idle")
+
+            if(self.time == 0) then
+            	--«апоминаем врем€, когда присели
+            	self.time = device():time_global()
+            end
+
+	        if( self.time ~= 0 and device():time_global() > (self.time + time_to_rest) and self.object:animation_count() <= 1 )then
+	            -- огда насиделись, встаем и идем
+	            self.animation:update	(nil)
+	            self:init_state_walk	()
+	        end
+		else
+			-- огда садимс€, убераем оружие
+	    	self.object:set_item            (object.deactivate, self.object:best_weapon())
+        end
+
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:state_walk			()
+	if(self.object:level_vertex_id() == self.last_point) then
+    	self:init_state_sit_down	()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_sniper_idle:execute 			()
+    action_base.execute             (self)
+
+	if(self.state == sit_idle) then
+    	self:state_sit_down			()
+    else
+    	self:state_walk				()
+    end
+end
+---------------------------------------------------------------------------------------------------------------------
+--function action_sniper_idle:execute 			()
+--end
+---------------------------------------------------------------------------------------------------------------------
+--function action_sniper_idle:execute 			()
+--end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:finalize ()
     action_base.finalize (self)
@@ -123,7 +224,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --scientist binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(obj)
+function add_to_binder(obj, char_ini)
 
     local operators     = {}
     local properties    = {}
@@ -133,11 +234,21 @@ function add_to_binder(obj)
     properties["see_monster"]        = xr_evaluators_id.jon_sniper_see_monster
     properties["see_enemy"]          = xr_evaluators_id.jon_sniper_see_enemy
     properties["enemy_near"]         = xr_evaluators_id.jon_sniper_enemy_near
+    properties["state_end"]         = xr_evaluators_id.state_change
 
     operators["idle"]                = xr_actions_id.jon_sniper_enabled
     operators["kill_monster"]        = xr_actions_id.jon_sniper_see_monster
     operators["kill_enemy"]          = xr_actions_id.jon_sniper_see_enemy
     operators["camper"]              = xr_actions_id.jon_sniper_camper
+
+    --Loading information from custom data
+    if char_ini:line_exist ("sniper", "rest_path") == true then
+		xr_motivator.storage[obj:id()].sniper.rest_path = char_ini:r_string("sniper", "rest_path")
+    end
+    if char_ini:line_exist ("sniper", "look_path") == true then
+    	xr_motivator.storage[obj:id()].sniper.look_path = patrol( char_ini:r_string("sniper", "look_path") )
+	end
+
 
     local manager  = obj:motivation_action_manager ()
 
@@ -149,9 +260,10 @@ function add_to_binder(obj)
     local action = this.action_sniper_idle ("sniper_idle", xr_motivator.storage[obj:id()].sniper)
 
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition         (world_property(stalker_ids.property_enemy,     false))
+    action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition         (world_property (properties["see_monster"],     false))
     action:add_precondition         (world_property (properties["see_enemy"],       false))
+    action:add_precondition         (world_property (properties["state_end"],       true))
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_effect               (world_property (properties["enabled"],         false))
     manager:add_action              (operators["idle"], action)
@@ -181,7 +293,7 @@ function add_to_binder(obj)
     action:add_precondition         (world_property (properties["enabled"],         true))
     action:add_precondition         (world_property (properties["enemy_near"],      false))
     action:add_precondition         (world_property (properties["see_enemy"],       false))
-    action:add_precondition         (world_property (properties["see_monster"],     false))
+//    action:add_precondition         (world_property (properties["see_monster"],     false))
     action:add_precondition         (world_property(stalker_ids.property_enemy,     true))
     action:add_effect               (world_property (stalker_ids.property_enemy,    false))
     manager:add_action              (operators["camper"], action)
