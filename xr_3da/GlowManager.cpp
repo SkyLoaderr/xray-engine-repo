@@ -27,6 +27,7 @@ int psGlowsPerFrame		= 7;
 
 CGlowManager::CGlowManager()
 {
+	VS		= 0;
 }
 
 CGlowManager::~CGlowManager()
@@ -34,10 +35,19 @@ CGlowManager::~CGlowManager()
 	Unload	();
 }
 
+void CGlowManager::OnDeviceCreate()
+{
+	VS	= Device.Shader._CreateVS	(FVF::F_TL);
+}
+
+void CGlowManager::OnDeviceDestroy()
+{
+	Device.Shader._DeleteVS			(VS);
+}
+
 void CGlowManager::Load(CStream* fs)
 {
-	// stream
-	Stream = Device.Streams.Create(FVF::F_TL,MAX_GlowsPerFrame*4);
+	OnDeviceCreate		();
 
 	// glows itself
 	DWORD size  = fs->Length();
@@ -69,6 +79,8 @@ void CGlowManager::Load(CStream* fs)
 
 void CGlowManager::Unload()
 {
+	OnDeviceDestroy		();
+
 	// shaders
 	for(DWORD i=0; i<Glows.size(); i++) 
 		Device.Shader.Delete(Glows[i].hShader);
@@ -165,7 +177,7 @@ void CGlowManager::Render()
 			
 			DWORD		vOffset;
 			DWORD		end		= pos+count;
-			FVF::TL	*	pvs		= pv = (FVF::TL*) Stream->Lock(count*4,vOffset);
+			FVF::TL	*	pvs		= pv = (FVF::TL*) Stream->Lock(count*4,VS->dwStride,vOffset);
 			for (; pos<end; pos++)
 			{
 				CGlow&	G			= *Selected[pos];
@@ -186,11 +198,14 @@ void CGlowManager::Render()
 				pv->set(cx + size, cy + size, TL.p.z, TL.p.w, clr, 1, 1); pv++;
 				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
 			}
-			int verts				= pv-pvs;
-			Stream->Unlock			(verts);
+			int vCount				= pv-pvs;
+			Stream->Unlock			(vCount,VS->dwStride);
 			if (verts) {
-				Device.Shader.set_Shader(T);
-				Device.Primitive.Draw	(Stream,verts,verts/2,vOffset,Device.Streams_QuadIB);
+				Device.Shader.set_Shader		(T);
+				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+				Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);
+				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
+				UPDATEC							(vCount,vCount/2,1);
 			}
 		}
 	}

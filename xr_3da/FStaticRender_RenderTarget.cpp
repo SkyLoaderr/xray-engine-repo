@@ -13,7 +13,7 @@ CRenderTarget::CRenderTarget()
 
 	pShaderSet	= 0;
 	pShaderGray	= 0;
-	pStream		= 0;
+	pVS			= 0;
 
 	param_blur	= 0;
 	param_gray	= 0;
@@ -95,7 +95,7 @@ void CRenderTarget::End		()
 	p1.add			(shift);
 	
 	// Fill vertex buffer
-	FVF::TL* pv = (FVF::TL*) pStream->Lock(12,Offset);
+	FVF::TL* pv			= (FVF::TL*) Device.Streams.Lock(12,pVS->dwStride,Offset);
 	pv->set(0,			float(_h),	.0001f,.9999f, Cgray, p0.x, p1.y);	pv++;
 	pv->set(0,			0,			.0001f,.9999f, Cgray, p0.x, p0.y);	pv++;
 	pv->set(float(_w),	float(_h),	.0001f,.9999f, Cgray, p1.x, p1.y);	pv++;
@@ -110,7 +110,7 @@ void CRenderTarget::End		()
 	pv->set(float(xW),	float(xH),	.0001f,.9999f, Calpha,p1.x, p1.y);	pv++;
 	pv->set(float(xW),	0,			.0001f,.9999f, Calpha,p1.x, p0.y);	pv++;
 
-	pStream->Unlock			(12);
+	pStream->Unlock		(12,pVS->dwStride);
 
 	// Actual rendering
 	if (FALSE)	

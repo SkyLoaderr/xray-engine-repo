@@ -53,21 +53,26 @@ void CLightShadows::OnDeviceCreate	()
 	RT_temp		= Device.Shader._CreateRT	(RTtemp,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",	RTname);
-	vs_World	= Device.Streams.Create		(FVF::F_LIT, 4*batch_size*3);
+	vs_World	= Device.Streams.Create		(FVF::F_LIT);
 	sh_BlurTR	= Device.Shader.Create		("effects\\blur",			RTtemp2);
 	sh_BlurRT	= Device.Shader.Create		("effects\\blur",			RTname2);
-	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv, 8);
+	vs_Blur		= Device.Streams.Create		(FVF::F_TL2uv);
 
 	// Debug
 	sh_Screen	= Device.Shader.Create		("effects\\screen_set",RTname);
-	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
+	vs_Screen	= Device.Streams.Create		(FVF::F_TL);
 }
 
 void CLightShadows::OnDeviceDestroy	()
 {
 	// Debug
 	Device.Shader.Delete					(sh_Screen	);
+	Device.Shader._DeleteVS					(vs_Screen	);
 	
+	// 
+	Device.Shader._DeleteVS					(vs_Blur);
+	Device.Shader._DeleteVS					(vs_World);
+
 	// 
 	Device.Shader.Delete					(sh_BlurRT	);
 	Device.Shader.Delete					(sh_BlurTR	);

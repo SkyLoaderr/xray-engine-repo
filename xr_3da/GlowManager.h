@@ -24,23 +24,27 @@ public:
 
 #define MAX_GlowsPerFrame	512
 
-class ENGINE_API CGlowManager {
+class ENGINE_API CGlowManager 
+{
 	vector<CGlow>		Glows;
 	CGlow*				Selected[MAX_GlowsPerFrame];
 	DWORD				Selected_Count;
-	CVertexStream*		Stream;
+	CVS*				VS;
 
 	DWORD				dwTestID;
 public:
-	void	add			(vector<WORD> &V);
+	void	add				(vector<WORD> &V);
 
-	void	Load		(CStream *fs);
-	void	Unload		();
+	void	Load			(CStream *fs);
+	void	Unload			();
 
-	void	Render		();
+	void	OnDeviceCreate	();
+	void	OnDeviceDestroy	();
 
-	CGlowManager		();
-	~CGlowManager		();
+	void	Render			();
+
+	CGlowManager			();
+	~CGlowManager			();
 };
 
 #endif // !defined(AFX_GLOWMANAGER_H__EC35911F_479B_469A_845C_1A64D81D0326__INCLUDED_)

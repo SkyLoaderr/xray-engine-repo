@@ -68,7 +68,7 @@ void CFontBase::OnRender()
 
 		// lock AGP memory
 		DWORD	vOffset;
-		FVF::TL* v		= (FVF::TL*)Stream->Lock(length*4,vOffset);
+		FVF::TL* v		= (FVF::TL*)Device.Streams.Vertex.Lock	(length*4,VS->dwStride,vOffset);
 		FVF::TL* start	= v;
 		
 		// fill vertices
@@ -113,8 +113,14 @@ void CFontBase::OnRender()
 
 		// Unlock and draw
 		DWORD vCount = v-start;
-		Stream->Unlock			(vCount);
-		Device.Primitive.Draw	(Stream,vCount,vCount/2,vOffset,Device.Streams_QuadIB);
+		Device.Streams.Vertex.Unlock	(vCount,VS->dwStride);
+		if (vCount) 
+		{
+			Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
+			Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
+			UPDATEC							(vCount,vCount/2,1);
+		}
 	}
 	strings.clear();
 }
