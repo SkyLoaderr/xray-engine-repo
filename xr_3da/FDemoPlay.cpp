@@ -67,7 +67,8 @@ CDemoPlay::~CDemoPlay		()
 void CDemoPlay::stat_Start	()
 {
 	if (stat_started)		return;
-	stat_started			= TRUE;
+	stat_started			= TRUE				;
+	Sleep					(500)				;
 	stat_StartFrame			= Device.dwFrame	;
 	stat_Timer_frame.Start	()					;
 	stat_Timer_total.Start	()					;
