@@ -29,7 +29,7 @@ public:
 		free_map					(m_tObjectRegistry);
 	};
 	
-	virtual	void					Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
 		tMemoryStream.Wdword		(m_tObjectRegistry.size());
@@ -141,7 +141,7 @@ public:
 		free_map					(m_tEventRegistry);
 	};
 	
-	virtual	void					Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(EVENT_CHUNK_DATA);
 		tMemoryStream.write			(&m_tEventID,sizeof(m_tEventID));
@@ -178,7 +178,7 @@ public:
 		free_map					(m_tTaskRegistry);
 	};
 	
-	virtual	void					Save(CFS_Memory &tMemoryStream)
+	virtual	void					Save(CMemoryWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(TASK_CHUNK_DATA);
 		tMemoryStream.write			(&m_tTaskID,sizeof(m_tTaskID));

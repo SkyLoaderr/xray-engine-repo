@@ -22,7 +22,7 @@ CCreator::CCreator( )
 CCreator::~CCreator	( ) 
 {
 	DEL_INSTANCE				( pHUD		);
-	xr_delete						( pLevel	);
+	xr_delete					( pLevel	);
 	Engine.FS.Close				( LL_Stream	);
 
 	Sound->Delete				(Sounds_Ambience);
@@ -89,16 +89,16 @@ BOOL CCreator::Load(u32 dwNum)
 	count = chunk->r_u32		();
 	LL_strings.resize			(count);
 	for(i=0; i<count; i++) {
-		LL_strings[i] = LPSTR(chunk->Pointer());
-		chunk->SkipStringZ();
+		LL_strings[i] = LPSTR(chunk->pointer());
+		chunk->skip_stringZ();
 	}
-	chunk->Close();
+	chunk->close();
 	
 	// CForms
 	pApp->LoadTitle				("Loading CFORM...");
 	chunk = fs.open_chunk		(fsL_CFORM);
 	ObjectSpace.Load			(chunk);
-	chunk->Close				();
+	chunk->close				();
 	pApp->LoadSwitch			();
 
 	// Render-level Load

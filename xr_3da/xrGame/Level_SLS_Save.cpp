@@ -10,7 +10,7 @@ void	CLevel::net_Save				(LPCSTR name)		// Game Save
 	}
 
 	// 1. Create stream
-	CFS_Memory			fs;
+	CMemoryWriter			fs;
 
 	// 2. Description
 	fs.open_chunk		(fsSLS_Description);

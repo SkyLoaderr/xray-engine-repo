@@ -80,7 +80,7 @@ public:
 
 	IC void Load							(LPCSTR fName)
 	{ 
-		m_tpGraphVFS					= xr_new<CVirtualFileStream>(fName);
+		m_tpGraphVFS					= xr_new<CVirtualFileReader>(fName);
 		m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->r_u32();
 		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();
@@ -89,7 +89,7 @@ public:
 			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
 			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
 			for ( ; I != E; I++) {
-				m_tpGraphVFS->RstringZ	((*I).caLevelName);
+				m_tpGraphVFS->r_stringZ	((*I).caLevelName);
 				m_tpGraphVFS->Rvector	((*I).tOffset);
 			}
 		}

@@ -24,11 +24,11 @@ void FDetailPatch::Load(const char* N, IReader* fs, u32 dwFlags)
 {
 	CVisual::Load(N,fs,dwFlags);
 
-	u32 size		= fs->FindChunk(OGF_DPATCH);	
+	u32 size		= fs->find_chunk(OGF_DPATCH);	
 	R_ASSERT		(size && (size%sizeof(DPatch) == 0));
 	u32 count		= size/sizeof(DPatch);
 	patches.resize	(count);
-	Memory.mem_copy	(&*patches.begin(),fs->Pointer(),size);
+	Memory.mem_copy	(&*patches.begin(),fs->pointer(),size);
 
 	Stream			= RCache.Create(FVF::F_TL,count*4);
 }

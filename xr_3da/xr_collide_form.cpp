@@ -60,13 +60,13 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	// Actual load
 	IReader*			f	= Engine.FS.Open(full_path);
 	hdrCFORM			H;
-	f->Read				(&H,sizeof(hdrCFORM));
+	f->r				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 
 	bv_box.set			(H.aabb);
 	bv_box.getsphere	(bv_sphere.P,bv_sphere.R);
 
-	Fvector*	verts	= (Fvector*)f->Pointer();
+	Fvector*	verts	= (Fvector*)f->pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	model.build			( verts, H.vertcount, tris, H.facecount );
 	Msg("* CFORM memory usage: %dK",model.memory()/1024);

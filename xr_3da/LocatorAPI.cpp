@@ -61,7 +61,7 @@ void CLocatorAPI::ProcessArchive(const char* path)
 {
 	// Open archive
 	archive				A;
-	A.vfs				= xr_new<CVirtualFileStream> (path);
+	A.vfs				= xr_new<CVirtualFileReader> (path);
 	archives.push_back	(A);
 
 	// Create base path
@@ -72,10 +72,10 @@ void CLocatorAPI::ProcessArchive(const char* path)
 
 	// Read headers
 	IReader*	hdr		= A.vfs->open_chunk(1);
-	while (!hdr->Eof())
+	while (!hdr->eof())
 	{
 		string512		name,full;
-		hdr->RstringZ	(name);
+		hdr->r_stringZ	(name);
 		strconcat		(full,base,name);
 
 		u32 vfs			= archives.size()-1;
@@ -84,10 +84,10 @@ void CLocatorAPI::ProcessArchive(const char* path)
 		u32 size		= hdr->r_u32();
 		Register		(full,vfs,ptr,size,bPacked);
 	}
-	hdr->Close			();
+	hdr->close			();
 
 	// Seek to zero for safety
-	A.vfs->Seek			(0);
+	A.vfs->seek			(0);
 }
 
 void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
@@ -238,11 +238,11 @@ IReader* CLocatorAPI::Open	(const char* F)
 	if (0xffffffff == desc.vfs)
 	{
 		// Normal file
-		if (desc.size<256*1024)	return xr_new<CFileStream>			(F);
-		else					return xr_new<CVirtualFileStream>	(F);
+		if (desc.size<256*1024)	return xr_new<CFileReader>			(F);
+		else					return xr_new<CVirtualFileReader>	(F);
 	} else {
 		// Archived one
-		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->Pointer()) + desc.ptr);
+		LPVOID	ptr	= LPVOID(LPBYTE(archives[desc.vfs].vfs->pointer()) + desc.ptr);
 		if (desc.bCompressed)	
 		{
 			// Compressed
@@ -250,7 +250,7 @@ IReader* CLocatorAPI::Open	(const char* F)
 			unsigned	size;
 
 			_decompressLZ	(&dest,&size,ptr,desc.size);
-			return xr_new<CTempStream>	(dest,size);
+			return xr_new<CTempReader>	(dest,size);
 		} else {
 			// Plain (VFS)
 			return xr_new<IReader>		(ptr,desc.size);

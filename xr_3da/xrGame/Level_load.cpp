@@ -212,7 +212,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 				string64 sName;
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_NAME));
-				OBJ->RstringZ(sName);
+				OBJ->r_stringZ(sName);
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_POINTS));
 				u32 dwCount = OBJ->Rword();

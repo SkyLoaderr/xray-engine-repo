@@ -95,15 +95,11 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 {
     // Init COM so we can use CoCreateInstance
     CoInitializeEx			(NULL, COINIT_MULTITHREADED);
-	Core._initialize		("xray");
+	Core._initialize		("xray",NULL);
 	FPU::m24r				();
 
-	CreateLog		(!(strstr(lpCmdLine,"-Q") || strstr(lpCmdLine,"-q")));
-
-	Startup			();
+	Startup					();
 	
-	CloseLog		();
-
 	// check for need to execute something external
 	if (strstr(lpCmdLine,"-exec ")) 
 	{

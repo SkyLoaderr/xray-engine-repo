@@ -37,9 +37,9 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	D->sx					= sx;
 	D->sz					= sz;
 
-	D->BB.min.set			(sx*dm_slot_size,			DS.y_min,	sz*dm_slot_size);
-	D->BB.max.set			(D->BB.min.x+dm_slot_size,	DS.y_max,	D->BB.min.z+dm_slot_size);
-	D->BB.grow				(EPS_L);
+	D->vis.box.min.set		(sx*dm_slot_size,				DS.y_min,	sz*dm_slot_size);
+	D->vis.box.max.set		(D->vis.box.min.x+dm_slot_size,	DS.y_max,	D->vis.box.min.z+dm_slot_size);
+	D->vis.box.grow			(EPS_L);
 
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
@@ -150,7 +150,7 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 
 				// Estimate
 				Fvector		C;
-				S->BB.getcenter	(C);
+				S->vis.box.getcenter	(C);
 				float		D	= view.distance_to_sqr	(C);
 
 				// Select

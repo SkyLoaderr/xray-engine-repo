@@ -6,14 +6,14 @@ void CDetail::Load		(IReader* S)
 {
 	// Shader
 	string256		fnT,fnS;
-	S->RstringZ		(fnS);
-	S->RstringZ		(fnT);
+	S->r_stringZ		(fnS);
+	S->r_stringZ		(fnT);
 	shader			= Device.Shader.Create(fnS,	fnT);
 
 	// Params
 	flags			= S->r_u32	();
-	s_min			= S->Rfloat	();
-	s_max			= S->Rfloat	();
+	s_min			= S->r_float();
+	s_max			= S->r_float();
 	number_vertices	= S->r_u32	();
 	number_indices	= S->r_u32	();
 	R_ASSERT		(0==(number_indices%3));
@@ -21,12 +21,12 @@ void CDetail::Load		(IReader* S)
 	// Vertices
 	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
 	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices);
-	S->Read			(vertices,size_vertices);
+	S->r			(vertices,size_vertices);
 	
 	// Indices
 	u32				size_indices		= number_indices*sizeof(WORD);
 	indices			= (WORD*)					xr_malloc	(size_indices);
-	S->Read			(indices,size_indices);
+	S->r			(indices,size_indices);
 	
 	// Validate indices
 	for (u32 idx = 0; idx<number_indices; idx++)

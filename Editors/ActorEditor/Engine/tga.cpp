@@ -60,10 +60,10 @@ VOID TGAdesc::maketga( char *fname )
 	char FN[_MAX_PATH];
 	sprintf(FN,"%s%d.tga",fname,sshotnum++);
 
-	CFS_File fs	(FN);
-	maketga	(fs);
+	CFileWriter fs	(FN);
+	maketga			(fs);
 
-	Log("Screenshot saved.");
+	Msg				("Screenshot saved (%s).",FN);
 }
 #else
 #ifdef XRLC

@@ -204,7 +204,7 @@ void CRender::LoadVisuals(IReader *fs)
 		V->Load(0,chunk,0);
 		Visuals.push_back(V);
 
-		chunk->Close();
+		chunk->close();
 		index++;
 	}
 }
@@ -218,7 +218,7 @@ void CRender::LoadLights(IReader *fs)
 	IReader*	chunk = fs->open_chunk(fsL_GLOWS);
 	R_ASSERT	(chunk && "Can't find glows");
 	Glows.Load(chunk);
-	chunk->Close();
+	chunk->close();
 }
 
 struct b_portal
@@ -246,9 +246,9 @@ void CRender::LoadSectors(IReader* fs)
 		Sectors.push_back(xr_new<CSector> (i));
 		Sectors.back()->Load(*P);
 
-		P->Close();
+		P->close();
 	}
-	S->Close();
+	S->close();
 
 	// load portals
 	if (count) 
@@ -258,7 +258,7 @@ void CRender::LoadSectors(IReader* fs)
 		for (i=0; i<count; i++)
 		{
 			b_portal	P;
-			fs->Read(&P,sizeof(P));
+			fs->r		(&P,sizeof(P));
 			Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
 				getSector(P.sector_front),
 				getSector(P.sector_back));

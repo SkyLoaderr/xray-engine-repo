@@ -132,7 +132,7 @@ void CAI_ALife::vfNewGame()
 
 void CAI_ALife::Save()
 {
-	CFS_Memory					tStream;
+	CMemoryWriter					tStream;
 	CALifeHeader::Save			(tStream);
 	CALifeGameTime::Save		(tStream);
 	CALifeObjectRegistry::Save	(tStream);

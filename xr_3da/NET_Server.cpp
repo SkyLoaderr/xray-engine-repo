@@ -80,9 +80,9 @@ void IPureServer::config_Load()
 	// traffic in
 	IReader*		F	= Engine.FS.Open(nameTraffic);
 	if (F) {
-		F->Read	(&traffic_in,sizeof(traffic_in));
-		F->Read	(&traffic_out,sizeof(traffic_out));
-		F->Close();
+		F->r	(&traffic_in,sizeof(traffic_in));
+		F->r	(&traffic_out,sizeof(traffic_out));
+		F->close();
 		traffic_in.Normalize	();
 		traffic_out.Normalize	();
 	} else {
@@ -104,9 +104,9 @@ void IPureServer::config_Load()
 void IPureServer::config_Save	()
 {
 	// traffic in
-	CFS_File		fs	(nameTraffic);
-	fs.write			(&traffic_in,sizeof(traffic_in));
-	fs.write			(&traffic_out,sizeof(traffic_out));
+	CFileWriter		fs	(nameTraffic);
+	fs.w				(&traffic_in,sizeof(traffic_in));
+	fs.w				(&traffic_out,sizeof(traffic_out));
 }
 
 void IPureServer::Reparse	()

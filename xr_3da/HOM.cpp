@@ -59,10 +59,10 @@ void CHOM::Load			()
 
 	// Load tris and merge them
 	CDB::Collector		CL;
-	while (!S().Eof())
+	while (!S().eof())
 	{
 		HOM_poly			P;
-		S().Read			(&P,sizeof(P));
+		S().r				(&P,sizeof(P));
 		CL.add_face_packed	(P.v1,P.v2,P.v3,CDB::edge_open,CDB::edge_open,CDB::edge_open,0,0,P.flags,0.01f);
 	}
 	

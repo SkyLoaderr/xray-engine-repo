@@ -115,7 +115,7 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 		
 		u32	mem_size	= vCount*hGeom->vb_stride;
 		pVertices		= xr_malloc		(mem_size);
-		data->Read		(pVertices,mem_size);
+		data->r			(pVertices,mem_size);
 	}
 
 	// indices
@@ -127,7 +127,7 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 
 		u32	mem_size	= iCount*2;
 		pIndices		= (WORD*)xr_malloc(mem_size);
-		data->Read		(pIndices,mem_size);
+		data->r			(pIndices,mem_size);
 	}
 	
 	// checking indices range

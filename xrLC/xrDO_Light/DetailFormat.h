@@ -22,7 +22,7 @@
 	obj_count-1
 2 - slots
 
-	CFS_Memory F;
+	CMemoryWriter F;
     m_Header.object_count=m_Objects.size();
 	// header
 	F.write_chunk		(DETMGR_CHUNK_HEADER,&m_Header,sizeof(DetailHeader));

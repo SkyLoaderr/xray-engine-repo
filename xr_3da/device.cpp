@@ -108,7 +108,6 @@ void CRenderDevice::Run			()
     _beginthread				( mt_Thread, 0, (void *) 0  );
 
 	// Message cycle
-	CloseLogWindow				();
     PeekMessage					( &msg, NULL, 0U, 0U, PM_NOREMOVE );
 
 	seqAppCycleStart.Process	(rp_AppCycleStart);

@@ -154,8 +154,8 @@ void CObjectSpace::Load	(IReader *F)
 	int					x_count, z_count;
 
 	hdrCFORM			H;
-	F->Read				(&H,sizeof(hdrCFORM));
-	Fvector*	verts	= (Fvector*)F->Pointer();
+	F->r				(&H,sizeof(hdrCFORM));
+	Fvector*	verts	= (Fvector*)F->pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	if (2 == H.version)
 	{

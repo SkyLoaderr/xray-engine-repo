@@ -31,12 +31,12 @@ void	game_sv_CS::Create			(LPCSTR options)
 	m_delayedRoundEnd = false;
 }
 
-void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
+void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 	xrServer *l_pServer = Level().Server;
 	game_PlayerState *l_pPS = get_it(it);
 	u32 l_chunk = 0;
 	NET_Packet l_packet;
-	CFS_Memory &l_mem = store;
+	CMemoryWriter &l_mem = store;
 	xrSE_Actor *l_pActor = dynamic_cast<xrSE_Actor*>(l_pServer->ID_to_entity(get_id_2_eid(get_it_2_id(it))));
 	if(!l_pActor) return;
 	vector<u16>* l_pCilds = get_children(get_it_2_id(it));
@@ -53,7 +53,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
 	}
 }
 
-void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Ёто надо переделать, чтоб читать ltx только один раз.
+void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо переделать, чтоб читать ltx только один раз.
 	string256 fn;
 	if (Engine.FS.Exist(fn,Path.GameData,"game_cs.ltx")) {
 		CInifile* ini = CInifile::Create(fn);
@@ -89,7 +89,7 @@ void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Ёто надо пере
 		CInifile::Destroy	(ini);
 		u32 l_chunk = 0;
 		NET_Packet l_packet;
-		CFS_Memory &l_mem = store;
+		CMemoryWriter &l_mem = store;
 		if(W_prim) {
 			W_prim->Spawn_Write(l_packet, true);
 			l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
@@ -118,7 +118,7 @@ void game_sv_CS::SpawnArtifacts() {
 	}
 }
 
-void game_sv_CS::SpawnPlayer(u32 it, CFS_Memory &weapon) {
+void game_sv_CS::SpawnPlayer(u32 it, CMemoryWriter &weapon) {
 	game_PlayerState *l_pPS = get_it(it);
 
 	LPCSTR	options = get_name_it(it);
@@ -141,7 +141,7 @@ void game_sv_CS::SpawnPlayer(u32 it, CFS_Memory &weapon) {
 
 	if(!(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR)) {
 		NET_Packet l_packet;
-		CFS_Memory &l_mem = weapon;
+		CMemoryWriter &l_mem = weapon;
 		u32 l_chunk = 0;
 		u16 skip_header;
 		IReader l_stream(l_mem.pointer(), l_mem.size()), *l_pS;
@@ -160,7 +160,7 @@ void game_sv_CS::OnRoundStart() {
 
 	// —охран€ем оружие дл€ следующего раунда
 	// ƒл€ живых - то что у них есть, дл€ мертвых - дефолтное.
-	vector<CFS_Memory> l_memAr; l_memAr.resize(l_cnt);
+	vector<CMemoryWriter> l_memAr; l_memAr.resize(l_cnt);
 	for(u32 i = 0; i < l_cnt; i++) {
 		game_PlayerState *l_pPS = get_it(i);
 		if(l_pPS->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;		// Ќаблюдателей это не касаетс€
@@ -206,7 +206,7 @@ void game_sv_CS::OnRoundStart() {
 //{
 //	m_delayedRoundEnd = false;
 //	NET_Packet l_packet;
-//	vector<CFS_Memory> l_memAr;
+//	vector<CMemoryWriter> l_memAr;
 //	if(round!=-1) {							// ≈сли раунд не первый сохран€ем игроков и их оружие
 //		xrServer *l_pServer = Level().Server;
 //		u32 cnt = get_count();
@@ -214,7 +214,7 @@ void game_sv_CS::OnRoundStart() {
 //		for(u32 it = 0; it < cnt; it++) {
 //			if(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) continue;
 //			u32 l_chunk = 0;
-//			CFS_Memory &l_mem = l_memAr[it];
+//			CMemoryWriter &l_mem = l_memAr[it];
 //			vector<u16>* l_pCilds = get_children(get_it_2_id(it));
 //			for(u32 cit = 0; cit < l_pCilds->size(); cit++) {
 //				xrSE_Weapon *l_pWeapon = dynamic_cast<xrSE_Weapon*>(l_pServer->ID_to_entity((*l_pCilds)[cit]));
@@ -264,7 +264,7 @@ void game_sv_CS::OnRoundStart() {
 //			for(u32 it = 0; it < cnt; it++) {
 //				if(!(get_it(it)->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD) && (round!=-1)) continue;
 //				u32 l_chunk = 0;
-//				CFS_Memory &l_mem = l_memAr[it];
+//				CMemoryWriter &l_mem = l_memAr[it];
 //				if(W_prim) {
 //					W_prim->Spawn_Write(l_packet, true);
 //					l_mem.open_chunk(l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
@@ -341,7 +341,7 @@ void game_sv_CS::OnRoundStart() {
 //		spawn_end				(A,get_it_2_id(it));
 //
 //		if(l_memAr.size() > it) {
-//			CFS_Memory &l_mem = l_memAr[it];
+//			CMemoryWriter &l_mem = l_memAr[it];
 //			u32 l_chunk = 0;
 //			u16 skip_header;
 //			IReader l_stream(l_mem.pointer(), l_mem.size()), *l_pS;

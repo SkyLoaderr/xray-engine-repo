@@ -20,25 +20,24 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	string32	ID			= PS_LIB_SIGN;
 	string32	id;
 	IReader*	F			= Engine.FS.Open(Name);
-	F->Read		(&id,8);
+	F->r		(&id,8);
 	if (0==strncmp(id,ID,8))	
 	{
 		Engine.FS.Close			(F);
-		F						= xr_new<CCompressedStream> (Name,ID);
+		F						= xr_new<CCompressedReader> (Name,ID);
 	}else{
-    	F->Seek	(0);
+    	F->seek	(0);
     }
 	IReader&				FS	= *F;
-    
-	
+    	
 	// Load
 	LIB.clear			();
-    WORD version		= FS.Rword();
+    WORD version		= FS.r_u16();
     if (version!=PARTICLESYSTEM_VERSION) return false;
     u32 count = FS.r_u32();
     if (count){
         LIB.resize		(count);
-        FS.Read			(&*LIB.begin(), count*sizeof(PS::SDef));
+        FS.r			(&*LIB.begin(), count*sizeof(PS::SDef));
     }
     psLibrary_Sort		(LIB);
 
@@ -48,11 +47,11 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 
 void psLibrary_Save(const char *Name, PS::PSVec &LIB)
 {
-	CFS_Memory F;
-    F.Wword	(PARTICLESYSTEM_VERSION);
-    F.Wdword(LIB.size());
-	F.write	(&*LIB.begin(), LIB.size()*sizeof(PS::SDef));
-    F.SaveTo(Name,0);
+	CMemoryWriter F;
+    F.w_u16		(PARTICLESYSTEM_VERSION);
+    F.w_u32		(LIB.size());
+	F.w			(&*LIB.begin(), LIB.size()*sizeof(PS::SDef));
+    F.save_to	(Name,0);
 }
 
 PS::SDef* psLibrary_FindSorted(const char* Name, PS::PSVec &LIB)

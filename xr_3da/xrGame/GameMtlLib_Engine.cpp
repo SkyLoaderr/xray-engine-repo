@@ -75,16 +75,16 @@ void SGameMtlPair::Load(IReader& fs)
     fFlotation			= fs.Rfloat();
 
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
-    fs.RstringZ			(buf); 		CreateSounds		(BreakingSounds,buf);
+    fs.r_stringZ			(buf); 		CreateSounds		(BreakingSounds,buf);
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
-    fs.RstringZ			(buf);		CreateSounds		(StepSounds,buf);
+    fs.r_stringZ			(buf);		CreateSounds		(StepSounds,buf);
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-    fs.RstringZ			(buf);		CreateSounds		(CollideSounds,buf);
+    fs.r_stringZ			(buf);		CreateSounds		(CollideSounds,buf);
     
     R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
-    fs.RstringZ			(buf);		CreateSounds		(HitSounds,buf);
-    fs.RstringZ			(buf);		CreatePSs			(HitParticles,buf);
-    fs.RstringZ			(buf);		CreateMarks			(HitMarks,buf);
+    fs.r_stringZ			(buf);		CreateSounds		(HitSounds,buf);
+    fs.r_stringZ			(buf);		CreatePSs			(HitParticles,buf);
+    fs.r_stringZ			(buf);		CreateMarks			(HitMarks,buf);
 }

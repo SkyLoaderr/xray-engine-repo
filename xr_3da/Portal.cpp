@@ -286,7 +286,7 @@ void CSector::Load(IReader& fs)
 	u32 size	= fs.find_chunk(fsP_Portals); R_ASSERT(0==(size&1));
 	u32 count	= size/2;
 	while (count) {
-		WORD ID		= fs.Rword();
+		WORD ID		= fs.r_u16();
 		CPortal* P	= ::Render->getPortal	(ID);
 		Portals.push_back(P);
 		count--;
@@ -302,7 +302,7 @@ void CSector::Load(IReader& fs)
 		R_ASSERT	(0==(size&1));
 		count		= size/sizeof(WORD);
 		Glows.resize(count);
-		fs.Read		(&*Glows.begin(),size);
+		fs.r		(&*Glows.begin(),size);
 	}
 
 	// Load lights
@@ -311,6 +311,6 @@ void CSector::Load(IReader& fs)
 		R_ASSERT		(0==(size&1));
 		count			= size/sizeof(WORD);
 		Lights.resize	(count);
-		fs.Read			(&*Lights.begin(),size);
+		fs.r			(&*Lights.begin(),size);
 	}
 }

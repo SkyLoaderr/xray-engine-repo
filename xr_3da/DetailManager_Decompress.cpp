@@ -49,7 +49,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 
 	// Select polygons
 	Fvector		bC,bD;
-	D.BB.get_CD			(bC,bD);
+	D.vis.box.get_CD	(bC,bD);
 	XRC.box_options		(0); // BBOX_TRITEST
 
 #ifdef _EDITOR
@@ -117,12 +117,12 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			SlotItem&	Item	= *ItemP;
 
 			// Position (XZ)
-			float		rx = (float(x)/float(d_size))*dm_slot_size + D.BB.min.x;
-			float		rz = (float(z)/float(d_size))*dm_slot_size + D.BB.min.z;
-			Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
+			float		rx = (float(x)/float(d_size))*dm_slot_size + D.vis.box.min.x;
+			float		rz = (float(z)/float(d_size))*dm_slot_size + D.vis.box.min.z;
+			Item.P.set	(rx + r_jitter.randFs(jitter), D.vis.box.max.y, rz + r_jitter.randFs(jitter));
 
 			// Position (Y)
-			float y		= D.BB.min.y-5;
+			float y		= D.vis.box.min.y-5;
 			Fvector	dir; dir.set(0,-1,0);
 
 			float		r_u,r_v,r_range;
@@ -155,7 +155,7 @@ Device.Statistic.TEST0.End		();
 				}
 #endif
 			}
-			if (y<D.BB.min.y)	continue;
+			if (y<D.vis.box.min.y)			continue;
 			Item.P.y	= y;
 
 			// Angles and scale
@@ -204,5 +204,7 @@ Device.Statistic.TEST0.End		();
 	}
 
 	// Update bounds to more tight and real ones
-	D.BB.set	(Bounds);
+	D.vis.clear			();
+	D.vis.box.set		(Bounds);
+	D.vis.box.getsphere	(D.vis.sphere.P,D.vis.sphere.R);
 }

@@ -185,7 +185,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 			// Transfer visibile and partially visible slot contents
 			u32 mask		= 0xff;
-			u32 res		= View.testAABB(S.BB.min,S.BB.max,mask);
+			u32 res			= View.testSAABB(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.min,S.vis.box.max,mask);
 			if ((fcvPartial==res)&&UseVS())	res = fcvFully;
 			switch (res)
 			{
@@ -193,7 +193,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 				break;
 			case fcvPartial:	// addition with TEST
 				{
-					if (!::Render->occ_visible(S.BB))		continue;
+					if (!::Render->occ_visible(S.vis))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
@@ -228,7 +228,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 				break;
 			case fcvFully:		// addition
 				{
-					if (!::Render->occ_visible(S.BB))		continue;
+					if (!::Render->occ_visible(S.vis))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];

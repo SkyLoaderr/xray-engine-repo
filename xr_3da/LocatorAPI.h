@@ -13,9 +13,6 @@ enum FS_List
 	FS_forcedword	=u32(-1)
 };
 
-class ENGINE_API IReader;
-class ENGINE_API CVirtualFileStream;
-
 class ENGINE_API CLocatorAPI  
 {
 public:
@@ -34,7 +31,7 @@ public:
 	};
 	struct	archive
 	{
-		CVirtualFileStream*		vfs;
+		CVirtualFileReader*		vfs;
 	};
 private:
 	typedef set<file,file_pred>		set_files;

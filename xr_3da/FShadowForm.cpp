@@ -32,7 +32,7 @@ void FShadowForm::Load(IReader *data)
 	CVisual::Load(data);
 
 	// read vertices
-	if (data->FindChunk(OGF_VERTICES)) {
+	if (data->find_chunk(OGF_VERTICES)) {
 		u32 dwVertType;
 
 		dwVertType		= data->ReadDWORD();
@@ -50,7 +50,7 @@ void FShadowForm::Load(IReader *data)
 	}
 
 	// indices
-	if (data->FindChunk(OGF_INDICES)) {
+	if (data->find_chunk(OGF_INDICES)) {
 		u32 dwCount = data->ReadDWORD();
 		VERIFY(dwCount%3 == 0);
 		Indices.resize(dwCount);
