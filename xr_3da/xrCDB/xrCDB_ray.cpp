@@ -186,6 +186,7 @@ public:
 		verts			= V;
 		ray.pos.set		(C);
 		ray.inv_dir.set	(1.f,1.f,1.f).div(D);
+		ray.fwd_dir.set	(D);
 		rRange			= R;
 		rRange2			= R*R;
 		if (!bUseSSE)	{
