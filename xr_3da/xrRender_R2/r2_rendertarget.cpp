@@ -279,6 +279,7 @@ void	CRenderTarget::OnDeviceCreate	()
 					float	ls	=	float(y)	/ float	(TEX_material_LdotH-1);
 
 					/*
+					--------- 1/2
 							ls	*=	powf		(ld,1/32.f);						// minimize specular where diffuse near zero
 					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
 					s32		_s	=	clampr		(iFloor	(powf(ls,ps_r2_ls_spower)*255.5f),	0,255);
@@ -290,13 +291,19 @@ void	CRenderTarget::OnDeviceCreate	()
 					//float	sim1	=	_abs	(1-_abs	(ld*.5f-ls)+.5f);
 					//float	sim		=	_max	(sim0,sim1);
 
-					// 1
+					/*
+					//------- 3
 					float	sim0	=	_abs	(1-_abs	(0.05f*_sin(33.f*ld)+ld-ls));
 					float	sim1	=	_abs	(1-_abs	(0.05f*_cos(33.f*ld*ls)+ld-ls));
 					float	sim2	=	_abs	(1-_abs	(ld-ls));
 					float	sim		=	_max	(_max(sim0,sim1),sim2) * powf	(ld,1/32.f);
 					s32		_d	=	clampr		(iFloor	(ld*255.5f),						0,255);
 					s32		_s	=	clampr		(iFloor	(powf(sim,ps_r2_ls_spower)*255.5f),	0,255);
+					*/
+
+					//------- 0 (OrenNayar)
+					s32		_d	=	clampr		(iFloor	(sqrt(ld)*255.5f),					0,255);
+					s32		_s	=	0;
 
 					*p			=	u16			(_s*256 + _d);						// color_rgba	(_d,_d,_d,_s);
 				}
