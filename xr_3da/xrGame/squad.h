@@ -18,7 +18,7 @@ public:
 	CEntity						*Leader;
 	xr_vector<CGroup>			Groups;
 	xr_vector<MemorySpace::CVisibleObject>	m_visible_objects;
-	xr_vector<MemorySpace::CSoundObject>		m_sound_objects;
+	xr_vector<MemorySpace::CSoundObject>	m_sound_objects;
 	xr_vector<MemorySpace::CHitObject>		m_hit_objects;
 	u32							m_member_count;
 
