@@ -15,6 +15,18 @@ static const char * dlgExpr = NULL;
 static const char * dlgFile = NULL;
 static char			dlgLine[16];
 
+void __cdecl Fatal	(const char* F,...)
+{
+	char errmsg_buf[1024];
+
+	va_list		p;
+	va_start	(p,F);
+	vsprintf	(errmsg_buf,F,p);
+	va_end		(p);
+	_verify		(errmsg_buf,"<unknown>",0);
+}
+
+
 static BOOL CALLBACK verifyProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
 	switch( msg ){

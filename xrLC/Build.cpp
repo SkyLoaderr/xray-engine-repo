@@ -108,8 +108,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 				_F->Verify			( );
 			} catch (...)
 			{
-				Msg			("* ERROR: Can't process face #%d",i);
-				R_ASSERT	(0);
+				Fatal		("* ERROR: Can't process face #%d",i);
 			}
 		}
 		Progress			(p_total+=p_cost);
@@ -118,8 +117,7 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 		if (dwInvalidFaces)	
 		{
-			Msg				("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
-			R_ASSERT		(0);
+			Fatal			("* FATAL: %d invalid faces. Compilation aborted",dwInvalidFaces);
 		}
 	}
 
