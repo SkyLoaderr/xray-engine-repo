@@ -24,7 +24,7 @@ function helper_init(first_speaker, second_speaker)
 end
 -------------------
 --' Прекондишн на медикит
-function is_medikit_present (helper, player) 
+function is_medikit_present (player, helper) 
     printf ("is_medikit_present")
     return helper:object ("medkit") ~= nil
 end
@@ -38,18 +38,18 @@ end
 --' Передача медикита халявная
 function drop_medikit (helper, player)
     printf ("drop_medikit")
-    helper:transfer_item (helper:object ("medikit"), player)
+    helper:transfer_item (helper:object ("medkit"), player)
 end
 -------------------
 --' Продажа медикита
 function sell_medikit (helper, player)
     printf ("sell_medikit")
-    helper:transfer_item (helper:object ("medikit"), player)
+    helper:transfer_item (helper:object ("medkit"), player)
     player:transfer_money (300, helper)
 end
 -------------------
 --' Имеется ли лишнее оружие
-function have_extra_weapon (helper, player)
+function have_extra_weapon (player, helper)
     printf ("have_extra_weapon")
     local count = helper:object_count () 
     if count == 0 then return false end
@@ -62,7 +62,7 @@ function have_extra_weapon (helper, player)
     return false    
 end
 -------------------
-function no_have_extra_weapon (helper, player)
+function no_have_extra_weapon (player, helper)
     printf ("no_have_extra_weapon")
     return not this.have_extra_weapon (helper, player)
 end    
@@ -74,13 +74,11 @@ function is_health_good (helper, player)
 end    
 -------------------
 function is_good_relation (helper, player)
-    printf ("is_good_relation")
-    return true
+    return helper:goodwill (player) > 50 
 end
 -------------------
 function is_bad_relation (helper, player)
-    printf ("is_bad_relation")
-    return false
+    return helper:goodwill (player) <= 50 
 end
 -------------------
 function activate_helper_follow (helper, player)
@@ -91,7 +89,15 @@ end
 -------------------
 function disable_helper (helper, player)
     printf ("disable_helper")
-    xr_motivator.storage[helper:id ()].sos.npc = nil
+    helper:disable_talk ()
     xr_meet.override_meet (helper, false)
+    xr_motivator.storage[helper:id ()].sos.npc = nil
+end
+-------------------
+function disable_helper_2 (player, helper)
+    printf ("disable_helper")
+    helper:disable_talk ()
+    xr_meet.override_meet (helper, false)
+    xr_motivator.storage[helper:id ()].sos.npc = nil
 end
 ------------------------------------------------------------------------------------
