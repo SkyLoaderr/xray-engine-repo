@@ -478,7 +478,6 @@ CSE_ALifePHSkeletonObject::~CSE_ALifePHSkeletonObject()
 void CSE_ALifePHSkeletonObject::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read(tNetPacket,size);
-
 	if(m_wVersion<64)		return;
 	tNetPacket.r_u8			(flags.flags);
 	tNetPacket.r_u16		(source_id);
@@ -490,7 +489,6 @@ void CSE_ALifePHSkeletonObject::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifePHSkeletonObject::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	if(m_wVersion<64)			return;
 	tNetPacket.w_u8				(flags.flags);
 	tNetPacket.w_u16			(source_id);
 	////////////////////////saving///////////////////////////////////////
@@ -719,17 +717,6 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_string			(startup_animation);
-	if(m_wVersion<64)
-	{
-		tNetPacket.w_u8				(flags.flags);
-		tNetPacket.w_u16			(source_id);
-		////////////////////////saving///////////////////////////////////////
-		if(flags.test(flSavedData))
-		{
-			saved_bones.net_Save(tNetPacket);
-			flags.set(flSavedData,FALSE);
-		}
-	}
 }
 
 
