@@ -259,7 +259,6 @@ void	light::gi_generate	()
 	CDB::TRI*	tris	= g_pGameLevel->ObjectSpace.GetStaticTris	();
 	Fvector*	verts	= g_pGameLevel->ObjectSpace.GetStaticVerts	();
 	xrc.ray_options		(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
-	float		LE		= color.intensity	();
 
 	for (int it=0; it<indirect_photons; it++)	{
 		Fvector	dir,idir;
