@@ -259,7 +259,7 @@ void xrLoad(LPCSTR name)
 				// version
 				u32 version				= 0;
 				R_ASSERT				(THM->r_chunk(THM_CHUNK_VERSION,&version));
-				if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
+				// if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
 
 				// analyze thumbnail information
 				R_ASSERT(THM->find_chunk(THM_CHUNK_TEXTUREPARAM));
@@ -322,9 +322,9 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 		// cache polygon
 		CDB::RESULT&	rpinf	= *DB.r_begin();
 		CDB::TRI&		T		= RCAST_Model.get_tris()[rpinf.id];
-		L.tri[0].set	(*T.verts[0]);
-		L.tri[1].set	(*T.verts[1]);
-		L.tri[2].set	(*T.verts[2]);
+		L.tri[0].set	(rpinf.verts[0]);
+		L.tri[1].set	(rpinf.verts[1]);
+		L.tri[2].set	(rpinf.verts[2]);
 		return true;
 	}
 }
@@ -354,9 +354,9 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 			if (0==T.pSurface)	T.bHasAlpha = FALSE;
 			if (!T.bHasAlpha)	{
 				// Opaque poly - cache it
-				L.tri[0].set	(*clT.verts[0]);
-				L.tri[1].set	(*clT.verts[1]);
-				L.tri[2].set	(*clT.verts[2]);
+				L.tri[0].set	(rpinf.verts[0]);
+				L.tri[1].set	(rpinf.verts[1]);
+				L.tri[2].set	(rpinf.verts[2]);
 				return 0;
 			}
 
