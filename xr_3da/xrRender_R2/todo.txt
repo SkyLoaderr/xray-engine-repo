@@ -18,8 +18,9 @@ smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
 same,60.50 :all + optimized sphere				( 42.83 )
 same,			+ optimized order				( 57.20	)
 ----------------------------
-433/1.2/60.50:	23.92/23.22
-433/1.2/60.60:	~23.8
+433/1.2/60.50:		23.92/23.22
+433/1.2/60.60:		~23.8
+same,occq-delay:	~25.9
 ----------------------------
 +BUG:	mt_physics
 BUG:	optimized sphere around cone-shape
