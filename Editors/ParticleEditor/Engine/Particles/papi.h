@@ -58,7 +58,7 @@ extern "C"{
 
 	// State setting calls
 
-	PARTICLEDLL_API void __stdcall pRotate(float rot_x, float rot_y, float rot_z);
+	PARTICLEDLL_API void __stdcall pRotate(float rot_x, float rot_y=0.f, float rot_z=0.f);
 
 	PARTICLEDLL_API void __stdcall pRotateD(PDomainEnum dtype,
 		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
@@ -223,13 +223,25 @@ extern "C"{
 	PARTICLEDLL_API void __stdcall pTargetColor(float color_x, float color_y, float color_z,
 		float alpha, float scale);
 
+	PARTICLEDLL_API void __stdcall pTargetColorD(float color_x, float color_y, float color_z,
+		float alpha, float scale);
+
 	PARTICLEDLL_API void __stdcall pTargetSize(float size_x, float size_y, float size_z,
 		float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);
 
-	PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z,
-		float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);
+	PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z, float scale = 0.0f);
+
+	PARTICLEDLL_API void __stdcall pTargetRotateD(float scale, PDomainEnum dtype,
+		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
+		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
 	PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale);
+
+	PARTICLEDLL_API void __stdcall pTargetVelocityD(float scale, PDomainEnum dtype,
+		float a0 = 0.0f, float a1 = 0.0f, float a2 = 0.0f,
+		float a3 = 0.0f, float a4 = 0.0f, float a5 = 0.0f,
+		float a6 = 0.0f, float a7 = 0.0f, float a8 = 0.0f);
 
 	PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z);
 

@@ -336,15 +336,32 @@ PARTICLEDLL_API void __stdcall pTargetSize(float size_x, float size_y, float siz
 	_pSendAction(&S, PATargetSizeID, sizeof(PATargetSize));
 }
 
-PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z,
-										 float scale_x, float scale_y, float scale_z)
+PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z, float scale)
 {
 	PATargetRotate S;
 
 	S.rot = pVector(rot_x, rot_y, rot_z);
-	S.scale = pVector(scale_x, scale_y, scale_z);
+	S.scale = scale;
 
 	_pSendAction(&S, PATargetRotateID, sizeof(PATargetRotate));
+}
+
+PARTICLEDLL_API void __stdcall pTargetRotateD(float scale, PDomainEnum dtype,
+											  float a0, float a1, float a2,
+											  float a3, float a4, float a5,
+											  float a6, float a7, float a8)
+{
+	// generate random target value
+	pDomain Domain = pDomain(dtype,a0,a1,a2,a3,a4,a5,a6,a7,a8);
+	pVector r;
+	Domain.Generate(r);
+
+	PATargetRotate S;
+
+	S.rot = pVector(r.x, r.y, r.z);
+	S.scale = scale;
+
+	_pSendAction(&S, PATargetRotateDID, sizeof(PATargetRotate));
 }
 
 PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale)
@@ -357,6 +374,33 @@ PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float v
 	_pSendAction(&S, PATargetVelocityID, sizeof(PATargetVelocity));
 }
 
+PARTICLEDLL_API void __stdcall pTargetVelocityD(float scale, PDomainEnum dtype,
+												float a0, float a1, float a2,
+												float a3, float a4, float a5,
+												float a6, float a7, float a8)
+{
+	// generate random target velocity
+	pVector v;
+	pDomain Domain = pDomain(dtype,a0,a1,a2,a3,a4,a5,a6,a7,a8);
+	Domain.Generate(v);
+
+	PATargetVelocity S;
+
+	S.velocity = pVector(v.x, v.y, v.z);
+	S.scale = scale;
+
+	_pSendAction(&S, PATargetVelocityDID, sizeof(PATargetVelocity));
+}
+
+PARTICLEDLL_API void __stdcall pTargetVelocityD(float vel_x, float vel_y, float vel_z, float scale)
+{
+	PATargetVelocity S;
+
+	S.velocity = pVector(vel_x, vel_y, vel_z);
+	S.scale = scale;
+
+	_pSendAction(&S, PATargetVelocityID, sizeof(PATargetVelocity));
+}
 // If in immediate mode, quickly add a vertex.
 // If building an action list, call pSource.
 PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z)

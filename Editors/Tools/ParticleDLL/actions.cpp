@@ -1386,18 +1386,12 @@ void PATargetSize::Execute(ParticleGroup *group)
 // Change rotation of all particles toward the specified velocity
 void PATargetRotate::Execute(ParticleGroup *group)
 {
-	float scaleFac_x = scale.x * dt;
-	float scaleFac_y = scale.y * dt;
-	float scaleFac_z = scale.z * dt;
+	float scaleFac = scale * dt;
 
 	for(int i = 0; i < group->p_count; i++)
 	{
 		Particle &m = group->list[i];
-		pVector dif(rot - m.rot);
-		dif.x *= scaleFac_x;
-		dif.y *= scaleFac_y;
-		dif.z *= scaleFac_z;
-		m.rot += dif;
+		m.vel += (rot - m.rot) * scaleFac;
 	}
 }
 

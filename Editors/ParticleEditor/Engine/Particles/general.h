@@ -123,7 +123,9 @@ enum PActionEnum
 	PATargetColorID,	// 
 	PATargetSizeID,		// 
 	PATargetRotateID,	// 
+	PATargetRotateDID,	// 
 	PATargetVelocityID,	// 
+	PATargetVelocityDID,// 
 	PAVortexID,			// 
 	action_enum_force_dword = DWORD(-1)
 };
@@ -374,7 +376,7 @@ struct PATargetSize : public ParticleAction
 struct PATargetRotate : public ParticleAction
 {
 	pVector rot;		// Rotation to shift towards
-	pVector scale;		// Amount to shift by per frame (1 == all the way)
+	float scale;		// Amount to shift by per frame (1 == all the way)
 
 	ExecMethod
 };
