@@ -468,7 +468,7 @@ void CActor::Update	(DWORD DT)
 	{
 		if (die_hide>0)		
 		{
-			die_hide			-= .1f*dt;
+			die_hide			-= .01f*dt;
 			if (die_hide>0)		vScale.set			(1,die_hide,1);
 			else if (Local()) 
 			{
