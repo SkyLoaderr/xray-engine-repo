@@ -103,7 +103,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_wait ()
 
-    printf ("Process wait")
+    --printf ("Process wait")
     if self.npc:action () then return end 
     
     if self.waiter ~= nil and self.waiter:evaluate () == true then
@@ -132,7 +132,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_end ()
 
-    printf ("Process end")
+    --printf ("Process end")
     if self.npc:action () then return end
     
     if self.waiter ~= nil and self.waiter:evaluate () == true then
@@ -156,7 +156,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:process_idle ()
 
-    printf ("Process idle")
+    --printf ("Process idle")
     
     if self.npc:action () then return end    
     
@@ -179,7 +179,7 @@ function Trader:process_idle ()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:set_idle ()
-    printf ("Set idle")
+    --printf ("Set idle")
     reset_action (self.npc, self.script)
     local variant = math.random (1, 3)
     if variant == 1 then 
@@ -260,7 +260,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:play_queue ()
 
-    printf ("Play queue called")
+    --printf ("Play queue called")
     reset_action (self.npc, self.script)
     
     if self.current.repeats == 0 then 
