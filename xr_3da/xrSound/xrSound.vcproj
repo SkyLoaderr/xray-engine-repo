@@ -434,6 +434,16 @@
 				RelativePath="xr_streamsnd.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="Cache"
+			Filter="">
+			<File
+				RelativePath=".\SoundRender_Cache.cpp">
+			</File>
+			<File
+				RelativePath=".\SoundRender_Cache.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 		<Global
