@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 7.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NVMeshMender", "NVMeshMender.vcproj", "{2629EB99-C471-4F22-BCE1-BA9B77847CAA}"
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccLocalPath0 = .
+		CanCheckoutShared = true
+		SolutionUniqueID = {5AA835B9-F12A-409E-9ABC-B25E12907C0D}
+		SccProjectUniqueName1 = NVMeshMender.vcproj
+		SccLocalPath1 = .
+		CanCheckoutShared = true
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		ConfigName.0 = Debug
+		ConfigName.1 = Release
+	EndGlobalSection
+	GlobalSection(ProjectDependencies) = postSolution
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{2629EB99-C471-4F22-BCE1-BA9B77847CAA}.Debug.ActiveCfg = Debug|Win32
+		{2629EB99-C471-4F22-BCE1-BA9B77847CAA}.Debug.Build.0 = Debug|Win32
+		{2629EB99-C471-4F22-BCE1-BA9B77847CAA}.Release.ActiveCfg = Release|Win32
+		{2629EB99-C471-4F22-BCE1-BA9B77847CAA}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
