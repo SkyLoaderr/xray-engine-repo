@@ -108,22 +108,20 @@ protected:
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
 
-	//есть ли инерция у оружия
-	bool m_bInertionEnable;
 	//вкл/выкл инерции (временное, с плавным возвращением оружия в состояние без инерции)
-	void StartHudInertion();
-	void StopHudInertion();
+	void					StartHudInertion();
+	void					StopHudInertion();
 private:
-	bool m_bInertionOn;
-
+	bool					m_bInertionEnable;
+	bool					m_bInertionAllow;
 protected:
-	u32				m_animation_slot;
+	u32						m_animation_slot;
 public:
-	IC		u32		animation_slot			()	{	return m_animation_slot;}
+	IC		u32				animation_slot			()	{	return m_animation_slot;}
 
 private:
-	CPhysicItem		*m_object;
-	CInventoryItem	*m_item;
+	CPhysicItem				*m_object;
+	CInventoryItem			*m_item;
 
 public:
 	IC		CPhysicItem	&object	() const

@@ -103,7 +103,17 @@ void CGamePersistent::OnAppEnd	()
 	GMLib.Unload				();
 }
 
-void CGamePersistent::OnFrame		()
+void CGamePersistent::OnGameStart()
+{
+	__super::OnGameStart		();
+}
+
+void CGamePersistent::OnGameEnd	()
+{
+	__super::OnGameEnd			();
+}
+
+void CGamePersistent::OnFrame	()
 {
 	__super::OnFrame	();
 

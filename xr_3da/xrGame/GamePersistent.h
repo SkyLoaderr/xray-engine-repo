@@ -24,6 +24,8 @@ public:
 
 	virtual void		OnAppStart				();
 	virtual void		OnAppEnd				();
+	virtual	void		OnGameStart				();
+	virtual void		OnGameEnd				();
 	virtual void		OnFrame					();
 	virtual void		OnEvent					(EVENT E, u64 P1, u64 P2);
 

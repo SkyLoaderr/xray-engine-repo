@@ -12,13 +12,6 @@
 
 SHARED_HUD_INFO::SHARED_HUD_INFO(LPCSTR section, CHudItem* pHudItem)
 {	
-	m_Flags.zero				();
-
-	// flags
-	m_Flags.set					(flAllowInertion,TRUE); // default value
-	if(pSettings->line_exist(section, "allow_inertion")) 
-		m_Flags.set				(flAllowInertion,pSettings->r_bool(section, "allow_inertion"));
-
 	// Geometry and transform
 	Fvector						pos,ypr;
 	pos							= pSettings->r_fvector3(section,"position");

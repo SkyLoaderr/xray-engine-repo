@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "igame_level.h"
+#include "IGame_Persistent.h"
 #include "igame_objectpool.h"
 #include "xr_object.h"
 
@@ -15,7 +16,7 @@ IGame_ObjectPool::~IGame_ObjectPool(void)
 void IGame_ObjectPool::load	()
 {
 	R_ASSERT			(map_POOL.empty());
-	if (strstr(Core.Params,"-noprefetch"))	return;
+//	if (strstr(Core.Params,"-noprefetch"))	return;
 /*
 	[prefetch_single]
 	<class> = <count>
@@ -29,6 +30,23 @@ void IGame_ObjectPool::load	()
 	...
 	$prefetch_teamdeathmatch	= 32
 */
+
+	string256 section;
+	// prefetch objects
+	strconcat					(section,"prefetch_objects_",g_pGamePersistent->m_game_params.m_game_type);
+	CInifile::Sect& sect		= pSettings->r_section(section);
+	for (CInifile::SectIt I=sect.begin(); I!=sect.end(); I++)	{
+		CInifile::Item& item	= *I;
+		CLASS_ID CLS			= pSettings->r_clsid(item.first.c_str(),"class");
+		int count				= atoi(item.second.c_str()); VERIFY(count>=0);
+		for (int c=0; c<count; c++){
+			CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
+			pObject->Load		(item.first.c_str());
+			VERIFY2				(pObject->cNameSect().c_str(),item.first.c_str());
+			map_POOL.insert		(mk_pair(pObject->cNameSect(),pObject));
+		}
+	}
+/*
 	u32	mem_0			= Memory.mem_usage();
 	float	p_time		= 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 
@@ -70,6 +88,7 @@ void IGame_ObjectPool::load	()
 		Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
 		Msg					("* [Object-prefetch] average: %2.2f ms, %d bytes", a_time, p_mem/p_count);
 	}
+*/
 }
 
 void IGame_ObjectPool::unload	( )

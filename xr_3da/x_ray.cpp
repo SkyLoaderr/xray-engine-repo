@@ -143,14 +143,14 @@ void CheckPrivilegySlowdown		( )
 	BOOL	bDandy	=	(shared_str(Core.CompName)._get()->dwCRC == 0x09de56e5) && (shared_str(Core.UserName)._get()->dwCRC==0x430b37e7) ;
 	if	(bDima || bJim || bDandy)	{
 		Log			("! slowdown enabled for your pleasure :)");
-		thread_spawn(slowdownthread,"slowdown",0,0);
+//.		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown"))	{
-		thread_spawn(slowdownthread,"slowdown",0,0);
+//.		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 	if	(strstr(Core.Params,"-slowdown2x"))	{
-		thread_spawn(slowdownthread,"slowdown",0,0);
-		thread_spawn(slowdownthread,"slowdown",0,0);
+//.		thread_spawn(slowdownthread,"slowdown",0,0);
+//.		thread_spawn(slowdownthread,"slowdown",0,0);
 	}
 #endif
 }
@@ -405,6 +405,8 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 		LPSTR		op_server		= LPSTR	(P1);
 		LPSTR		op_client		= LPSTR	(P2);
 		R_ASSERT	(0==g_pGameLevel);
+		R_ASSERT	(0!=g_pGamePersistent);
+		g_pGamePersistent->Start	(op_server);
 		g_pGameLevel= (IGame_Level*)	NEW_INSTANCE(CLSID_GAME_LEVEL);
 		BOOL		result			= g_pGameLevel->net_Start(op_server,op_client);
 		xr_free		(op_server);
@@ -428,6 +430,8 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 			DEL_INSTANCE			(g_pGameLevel);
 			Console->Show			();
 		}
+		R_ASSERT			(0!=g_pGamePersistent);
+		g_pGamePersistent->Disconnect();
 	}
 }
 

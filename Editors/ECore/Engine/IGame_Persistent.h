@@ -20,6 +20,36 @@ class ENGINE_API IGame_Persistent	:
 	public pureFrame
 {
 public:
+	union params {
+		struct {
+			string256	m_game_or_spawn;
+			string256	m_game_type;
+			string256	m_alife;
+			string256	m_new_or_load;
+		};
+		string256		m_params[4];
+						params		()	{	reset();	}
+		void			reset		()
+		{
+			for (int i=0; i<4; ++i)
+				strcpy	(m_params[i],"");
+		}
+		void						parse_cmd_line		(LPCSTR cmd_line)
+		{
+			reset					();
+			int						n = _min(4,_GetItemCount(cmd_line,'/'));
+			for (int i=0; i<n; ++i) {
+				_GetItem			(cmd_line,i,m_params[i],'/');
+				strlwr				(m_params[i]);
+			}
+		}
+	};
+	params							m_game_params;
+public:
+	virtual void					Start				(LPCSTR op);
+	virtual void					Disconnect			();
+
+
 #ifndef _EDITOR
 	IGame_ObjectPool				ObjectPool;
 #endif
@@ -33,6 +63,10 @@ public:
 	virtual	void					OnAppActivate		();
 	virtual void					OnAppDeactivate		();
 	virtual void					OnFrame				();
+
+	// вызывается только когда изменяется тип игры
+	virtual	void					OnGameStart			(); 
+	virtual void					OnGameEnd			();
 
 	virtual void					RegisterModel		(IRender_Visual* V)
 #ifndef _EDITOR

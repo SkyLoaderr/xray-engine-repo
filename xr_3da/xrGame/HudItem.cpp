@@ -34,13 +34,13 @@ static float			m_fInertPitchRestoreSpeed;
 
 CHudItem::CHudItem(void)
 {
-	m_pHUD = NULL;
-	hud_mode = FALSE;
-	m_dwStateTime = 0;
-	m_bRenderHud = true;
+	m_pHUD				= NULL;
+	hud_mode			= FALSE;
+	m_dwStateTime		= 0;
+	m_bRenderHud		= true;
 
-	m_bInertionEnable  = true;
-	m_bInertionOn = true;
+	m_bInertionEnable	= true;
+	m_bInertionAllow	= true;
 }
 
 CHudItem::~CHudItem(void)
@@ -65,13 +65,12 @@ void CHudItem::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"hud"))
 		hud_sect = pSettings->r_string		(section,"hud");
 
-	if(*hud_sect)
-	{
-		m_pHUD				= xr_new<CWeaponHUD> (this);
-		m_pHUD->Load		(*hud_sect);
-	}
-	else
-	{
+	if(*hud_sect){
+		m_pHUD			= xr_new<CWeaponHUD> (this);
+		m_pHUD->Load	(*hud_sect);
+		if(pSettings->line_exist(*hud_sect, "allow_inertion")) 
+			m_bInertionAllow = !!pSettings->r_bool(*hud_sect, "allow_inertion");
+	}else{
 		m_pHUD = NULL;
 		//если hud не задан, но задан слот, то ошибка
 		R_ASSERT2(item().GetSlot() == NO_ACTIVE_SLOT, "active slot is set, but hud for food item is not available");
@@ -208,12 +207,10 @@ void CHudItem::UpdateHudAdditonal		(Fmatrix& hud_trans)
 void CHudItem::StartHudInertion()
 {
 	m_bInertionEnable = true;
-	m_bInertionOn = true;
 }
 void CHudItem::StopHudInertion()
 {
 	m_bInertionEnable = false;
-	m_bInertionOn = false;
 }
 
 static const float PITCH_OFFSET_R	= 0.017f;
@@ -224,7 +221,7 @@ static const float TENDTO_SPEED		= 5.f;
 
 void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float actor_pitch)
 {
-	if (m_pHUD  && m_bInertionEnable && m_pHUD->AllowInertion()){
+	if (m_pHUD && m_bInertionAllow && m_bInertionEnable){
 		Fmatrix			xform,xform_orig; 
 		Fvector& origin	= hud_trans.c; 
 		Level().Cameras.affected_Matrix		(xform);

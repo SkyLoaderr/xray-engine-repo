@@ -43,16 +43,42 @@ void IGame_Persistent::OnAppDeactivate		()
 
 void IGame_Persistent::OnAppStart	()
 {
-#ifndef _EDITOR
-	ObjectPool.load					();
-#endif
-	Environment.load				();
-
 	if (strstr(Core.Params,"-dedicated"))	bDedicatedServer	= TRUE;
 	else									bDedicatedServer	= FALSE;
+	Environment.load				();
 }
 
 void IGame_Persistent::OnAppEnd		()
+{
+	Environment.unload				();
+	OnGameEnd						();
+}
+
+void IGame_Persistent::Start		(LPCSTR op)
+{
+	string256						prev_type;
+	strcpy							(prev_type,m_game_params.m_game_type);
+	m_game_params.parse_cmd_line	(op);
+	if (0!=xr_strcmp(prev_type,m_game_params.m_game_type)){
+		OnGameEnd					();
+		OnGameStart					();
+	}
+}
+
+void IGame_Persistent::Disconnect	()
+{
+}
+
+
+void IGame_Persistent::OnGameStart	()
+{
+#ifndef _EDITOR
+	// prefetch game objects
+	ObjectPool.load					();
+#endif
+}
+
+void IGame_Persistent::OnGameEnd	()
 {
 #ifndef _EDITOR
 	ObjectPool.unload				();
