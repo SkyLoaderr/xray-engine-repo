@@ -31,14 +31,19 @@ public:
 	virtual void	Affect(CObject* O);
 
 	virtual void	shedule_Update		(u32 dt);
-	virtual bool	BlowoutState		();
+	virtual bool	BlowoutState();
+	virtual bool	IdleState();
 
 protected:
 	//врем€ вт€гивани€ объектов в зону
 	u32				m_dwThrowInTime;
 	//сила импульса вт€гивани€ в зону
 	float			m_fThrowInImpulse;
-	
-	//радиус
-	float			m_fBlowtRadius;
+	//радиус действи€ выброса (в процентах от всего)
+	float			m_fBlowoutRadiusPercent;
+
+	//параметры телекинеза	
+	float			m_fTeleHeight;
+	u32				m_dwTimeToTele;
+	u32				m_dwTeleTime;
 };

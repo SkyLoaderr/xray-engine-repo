@@ -4,6 +4,7 @@
 #include "zone_effector.h"
 
 class CActor;
+class CLAItem;
 
 
 
@@ -88,8 +89,6 @@ public:
 	//абсолютный размер
 	virtual float Power(float dist);
 
-	//воздействие зоной на объект
-	virtual void Affect(CObject* O);
 
 protected:
 	//список объетков, находящихся в зоне
@@ -122,6 +121,7 @@ protected:
 
 	//текущее время пребывания зоны в определенном состоянии 
 	int m_iStateTime;
+	int m_iPreviousStateTime;
 	
 	//массив с временами, сколько каждое состояние должно 
 	//длиться (если 0, то мгновенно -1 - бесконечность, 
@@ -137,8 +137,14 @@ protected:
 	virtual bool BlowoutState();
 	virtual bool AccumulateState();
 
+
+	//воздействие зоной на объект
+	virtual void Affect(CObject* O)  {}
+
 	//воздействовать на все объекты в зоне
 	virtual void AffectObjects();
+
+	u32	m_dwAffectFrameNum;	
 
 		
 	u32 m_dwDeltaTime;
@@ -146,7 +152,18 @@ protected:
 	bool m_bZoneReady;
 	//если в зоне есть не disabled объекты
 	bool m_bZoneActive;
-	
+
+
+	//параметры для выброса, с какой задержкой 
+	//включать эффекты и логику
+	u32 m_dwBlowoutParticlesTime;
+	u32 m_dwBlowoutLightTime;
+	u32 m_dwBlowoutSoundTime;
+	u32 m_dwBlowoutExplosionTime;
+	void UpdateBlowout();
+
+
+
 	//игнорирование воздействия зоны на виды объектов
 	bool m_bIgnoreNonAlive;
 	bool m_bIgnoreSmall;
@@ -186,11 +203,24 @@ protected:
 	//////////////////////////////
 	//подсветка аномалии
 
+	//подсветка idle состояния
+	bool				m_bIdleLight;
+	IRender_Light*		m_pIdleLight;
+	Fcolor				m_IdleLightColor;
+	float				m_fIdleLightRange;
+	float				m_fIdleLightRangeDelta;
+	CLAItem*			m_pIdleLAnim;
+
+	virtual	void		StartIdleLight	();
+	virtual	void		StopIdleLight	();
+	virtual	void		UpdateIdleLight	();
+
+
 	//подсветка выброса
 	bool				m_bBlowoutLight;
 	IRender_Light*		m_pLight;
-	Fcolor				m_LightColor;
 	float				m_fLightRange;
+	Fcolor				m_LightColor;
 	u32					m_dwLightTime;
 	u32					m_dwLightTimeLeft;
 

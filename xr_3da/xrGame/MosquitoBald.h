@@ -13,6 +13,9 @@ public:
 	virtual void Postprocess(f32 val);
 	virtual bool EnableEffector() {return true;}
 
+
+	virtual void Affect(CObject* O);
+
 protected:
 	ref_str m_pHitEffect;
 
