@@ -57,7 +57,7 @@ void IGame_ObjectPool::unload	( )
 	// Clear POOL
 	for (POOL_IT it=map_POOL.begin(); it!=map_POOL.end(); it++)	
 		xr_delete	(it->second);
-	map_POOL.clear();
+	map_POOL.clear(); 
 }
 
 CObject*	IGame_ObjectPool::create			( LPCSTR	name	)
