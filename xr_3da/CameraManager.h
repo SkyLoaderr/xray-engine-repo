@@ -10,17 +10,20 @@
 #include "CameraDefs.h"
 
 struct SPPInfo {
+	struct SColor {
+		f32 r, g, b, a;
+		IC operator u32() {
+			return color_rgba(u32(r*255), u32(g*255), u32(b*255), u32(a*255));
+		}
+	};
 	f32 blur, gray;
 	struct SDuality { f32 h, v; } duality;
 	struct SNoise	{
-		f32 intensity, grain;
-		struct SColor {
-			f32 r, g, b, a;
-			IC operator u32() {
-				return color_rgba(u32(r*255), u32(g*255), u32(b*255), u32(a*255));
-			}
-		} color;
+		f32		intensity, grain;
+		SColor	color;
+		f32		fps;
 	} noise;
+	SColor		blend_color;
 
 	IC SPPInfo& operator += (const SPPInfo &ppi) {
 		blur += ppi.blur;
@@ -29,6 +32,9 @@ struct SPPInfo {
 		noise.intensity += ppi.noise.intensity; noise.grain += ppi.noise.grain;
 		noise.color.r += ppi.noise.color.r; noise.color.g += ppi.noise.color.g;
 		noise.color.b += ppi.noise.color.b; noise.color.a += ppi.noise.color.a;
+		noise.fps += ppi.noise.fps;
+		blend_color.r += ppi.blend_color.r; blend_color.g += ppi.blend_color.g;
+		blend_color.b += ppi.blend_color.b; blend_color.a += ppi.blend_color.a;
 		return *this;
 	}
 	void normalize();

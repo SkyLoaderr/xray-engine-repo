@@ -27,6 +27,10 @@ void SPPInfo::normalize()
 	noise.color.g = _max(_min(noise.color.g, 1.f), 0.f);
 	noise.color.b = _max(_min(noise.color.b, 1.f), 0.f);
 	noise.color.a = _max(_min(noise.color.a, 1.f), 0.f);
+	blend_color.r = _max(_min(blend_color.r, 1.f), 0.f);
+	blend_color.g = _max(_min(blend_color.g, 1.f), 0.f);
+	blend_color.b = _max(_min(blend_color.b, 1.f), 0.f);
+	blend_color.a = _max(_min(blend_color.a, 1.f), 0.f);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -214,7 +218,8 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	T->set_noise			(affected_PP.noise.intensity);
 	T->set_noise_scale		(affected_PP.noise.grain);
 	T->set_noise_color		(affected_PP.noise.color);
-	T->set_noise_fps		(10.f);
+	T->set_noise_fps		(affected_PP.noise.fps);
+	T->set_blend_color		(affected_PP.blend_color);
 }
 
 void CCameraManager::Dump()
