@@ -16,6 +16,8 @@ class CScript {
 public:
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
 	LUA_VM_VECTOR		m_tpThreads;
+	string4096			m_caOutBuffer;
+	string4096			m_caErrorBuffer;
 
 						CScript						(LPCSTR				caFileName);
 	virtual				~CScript					();

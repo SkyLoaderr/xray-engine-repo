@@ -263,27 +263,27 @@ void game_sv_GameState::Create					(LPSTR &options)
 	switch (type) {
 		case GAME_ANY			: {
 			Debug.fatal			("Game type is not specified!");
-								  }
+		}
 		case GAME_SINGLE		: {
 			caSection			= "single";
 			break;
-								  }
+		}
 		case GAME_DEATHMATCH	: {
 			caSection			= "deathmatch";
 			break;
-								  }
+		}
 		case GAME_CTF			: {
 			caSection			= "ctf";
 			break;
-								  }
+		}
 		case GAME_ASSAULT		: {
 			caSection			= "assault";
 			break;
-								  }
+		}
 		case GAME_CS			: {
 			caSection			= "cs";
 			break;
-								  }
+		}
 		default					: NODEFAULT;
 	}
 	string256					S;
