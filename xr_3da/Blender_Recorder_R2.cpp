@@ -66,7 +66,7 @@ void	CBlender_Compile::i_Texture		(u32 s, LPCSTR name)
 }
 void	CBlender_Compile::i_Projective	(u32 s, bool b)
 {
-	if	(b)	RS.SetTSS	(s,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_COUNT3 | D3DTTFF_PROJECTED);
+	if	(b)	RS.SetTSS	(s,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE | D3DTTFF_PROJECTED);
 	else	RS.SetTSS	(s,D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE );
 }
 void	CBlender_Compile::i_Address		(u32 s, u32	address)
