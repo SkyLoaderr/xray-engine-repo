@@ -424,7 +424,7 @@ void CScriptEngine::export_object()
 			.def("get_enemy",					&CLuaGameObject::GetEnemy)
 			.def("get_corpse",					&CLuaGameObject::GetCorpse)
 			.def("get_enemy_strength",			&CLuaGameObject::GetEnemyStrength)
-			.def("bind_object",					&CLuaGameObject::bind_object)
+			.def("bind_object",					&CLuaGameObject::bind_object,adopt(_1))
 			.def("motivation_action_manager",	&CLuaGameObject::motivation_action_manager)
 
 			// movement manager
