@@ -558,7 +558,7 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			
-			l->Init(map_name, gameLtx, "hud\\default");
+			l->Init(map_name, gameLtx, "hud\\set");
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
 			
