@@ -50,15 +50,15 @@ extern "C" {
 		// SSE
 		if (dwFeatures & _CPU_FEATURE_SSE) {
 			T->memCopy	= xrMemCopy_MMXSSE3DNow;
-			T->skin2W	= xrSkin2W_SSE;
+			//T->skin2W	= xrSkin2W_SSE;
 		}
  
 		// 3dnow!
 		if (dwFeatures & _CPU_FEATURE_3DNOW) {
- 			T->skin1W	= xrSkin1W_3DNow;
+ 			//T->skin1W	= xrSkin1W_3DNow;
 			// T->blerp	= xrBoneLerp_3DNow;
 			T->memCopy	= xrMemCopy_MMXSSE3DNow;
-			T->skin2W	= xrSkin2W_3DNow;
+			//T->skin2W	= xrSkin2W_3DNow;
 		}
 	}
 };
