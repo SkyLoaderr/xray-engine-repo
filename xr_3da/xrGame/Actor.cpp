@@ -238,15 +238,13 @@ BOOL CActor::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	return				TRUE;
 }
 
-BOOL CActor::Hit(int iLost, Fvector &dir, CEntity* who)
+BOOL CActor::Hit(float iLost, Fvector &dir, CObject* who)
 {
-	if (!bAlive) return FALSE;
-
-	if (psActorFlags&AF_GODMODE) return FALSE;
+	if (psActorFlags&AF_GODMODE)	return FALSE;
 	else return inherited::Hit(iLost,dir,who);
 }
 
-void CActor::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
+void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 {
 	sound& S = sndHit[Random.randI(SND_HIT_COUNT)];
 	if (S.feedback) return;

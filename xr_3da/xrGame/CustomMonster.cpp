@@ -568,7 +568,7 @@ void CCustomMonster::OnRender()
 	if (bDebug) PKinematics(pVisual)->DebugRender(clTransform);
 }
 
-void CCustomMonster::HitSignal(int perc, Fvector& vLocalDir, CEntity* who)
+void CCustomMonster::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 {
 }
 

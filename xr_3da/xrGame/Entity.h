@@ -110,7 +110,7 @@ public:
 	// Health calculations
 	virtual	BOOL			Hit					(float P, Fvector &dir,			CObject* who);		// TRUE if died
 	virtual void			HitSignal			(float P, Fvector &local_dir,	CObject* who)		= 0;
-	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	vector& vLocalDir)	= 0;
+	virtual void			HitImpulse			(float P, Fvector &vWorldDir, 	Fvector& vLocalDir)	= 0;
 	virtual void			Die					()													= 0;
 
 	// Fire control
@@ -144,7 +144,7 @@ public:
 	// Core events
 	virtual void			Load					(LPCSTR section);
 	virtual BOOL			net_Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual void			HitImpulse				(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
+	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 
 	virtual void			g_WeaponBones			(int& L, int& R)										= 0;
 

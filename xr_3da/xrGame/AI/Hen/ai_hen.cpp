@@ -66,7 +66,7 @@ void CAI_Hen::Load	(LPCSTR section)
 }
 
 // when someone hit hen
-void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Hen::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;
@@ -83,7 +83,7 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 }
 
 // when someone hit hen
-void CAI_Hen::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Hen::SenseSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;

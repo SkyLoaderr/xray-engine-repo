@@ -75,7 +75,7 @@ float CAI_Rat::EnemyHeuristics(CEntity* E)
 }
 
 // when someone hit rat
-void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;
@@ -111,7 +111,7 @@ void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 }
 
 // when someone hit rat
-void CAI_Rat::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Rat::SenseSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;

@@ -68,7 +68,7 @@ float CAI_Zombie::EnemyHeuristics(CEntity* E)
 }
 
 // when someone hit zombie
-void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Zombie::HitSignal(float amount, Fvector& vLocalDir, CObject* who)
 {
 	// Save event
 	Fvector D;
@@ -102,7 +102,7 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 }
 
 // when someone hit zombie
-void CAI_Zombie::SenseSignal(int amount, Fvector& vLocalDir, CEntity* who)
+void CAI_Zombie::SenseSignal(float amount, Fvector& vLocalDir, CEntity* who)
 {
 	// Save event
 	Fvector D;
