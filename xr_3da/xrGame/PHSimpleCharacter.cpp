@@ -13,6 +13,7 @@
 #include "PhysicsGamePars.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
+const float CLIMB_GETUP_HEIGHT=0.01f;
 static u16 lastMaterial;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +89,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 
 	if(b_exist) return;
 	b_air_contact_state=false;
+	b_climb_getup=false;
 	////////////////////////////////////////////////////////
 	/*
 	m_control_force[0]=0.f;
@@ -788,10 +790,32 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	}
 
 	//M->m_Flags.is(GameMtl::flClimbable);
-	if(!b_at_wall&&b_climb){
-		//m_control_force[0]*=4.f;
-		m_control_force[1]+=m.mass*40.f;
-		//m_control_force[2]*=4.f;
+	if(!b_at_wall&&b_climb)
+	{
+		if(!b_climb_getup)
+		{
+			b_climb_getup=true;
+			m_start_climb_getup_height=dBodyGetPosition(m_body)[1];
+		}
+		else
+		{
+			if(dFabs(dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
+			{
+				//m_control_force[0]*=4.f;
+				m_control_force[1]+=m.mass*40.f;
+				//m_control_force[2]*=4.f;
+			}
+			else
+			{
+				b_climb_getup=false;
+				b_block_climb_getup=true;
+			}
+		}
+	
+	}
+	else 
+	{
+		b_block_climb_getup=false;
 	}
 
 	m_control_force[0]*=m_friction_factor;
@@ -1032,10 +1056,10 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide){
 
 	SGameMtl* tri_material=GMLib.GetMaterialByIdx((u16)c->surface.mode);
 	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimbable);
-	if(is_control&&bClimable)
+	if(is_control&&b_at_wall)
 	{
 		c->surface.mu=0.f;
-		c->surface.soft_cfm=world_cfm;
+		c->surface.soft_cfm=world_cfm*2.f;
 		c->surface.soft_erp=world_erp;
 	}
 	b_climb=b_climb || bClimable;

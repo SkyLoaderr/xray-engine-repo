@@ -78,6 +78,11 @@ protected:
 	bool b_was_on_object;
 	bool b_external_impulse;
 	bool b_death_pos;
+
+	bool b_climb_getup;
+	bool b_block_climb_getup;
+	dReal m_start_climb_getup_height;
+
 	u32  m_contact_count;
 
 	dReal m_friction_factor;
