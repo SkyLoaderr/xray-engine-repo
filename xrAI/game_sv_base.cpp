@@ -301,7 +301,7 @@ void game_sv_GameState::Create					(shared_str &options)
 	if (iFF != 0) m_fFriendlyFireModifier	= float(iFF) / 100.0f;
 	else m_fFriendlyFireModifier = 0.000001f;
 
-	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 1) * 1000;
+	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 0) * 1000;
 	
 	strcpy( MAPROT_LIST, get_option_s(*options, "maprot"));
 	if (MAPROT_LIST[0])
@@ -311,6 +311,8 @@ void game_sv_GameState::Create					(shared_str &options)
 
 	m_bVotingEnabled = get_option_i(*options,"vote",0) != 0;
 	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
+
+	m_u32ForceRespawn = get_option_i(*options, "frcrspwn", 0) * 1000;
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)

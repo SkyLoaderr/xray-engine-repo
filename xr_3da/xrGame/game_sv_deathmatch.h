@@ -135,6 +135,7 @@ public:
 	virtual		BOOL				CanHaveFriendlyFire		()	{return FALSE;}
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 	virtual		void				check_InvinciblePlayers	();
+	virtual		void				check_ForceRespawn		();
 				
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION

@@ -80,10 +80,9 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		// init
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
-//		if (!l_pC->net_Ready) continue;
 
 		ps->clear();
-//		ClearPlayerState		(ps);
+		ps->DeathTime = Device.dwTimeGlobal;
 		//---------------------------------------
 		SetPlayersDefItems		(ps);
 		//---------------------------------------
@@ -104,6 +103,7 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 	if(ps_killed){
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
+		ps_killed->DeathTime			= Device.dwTimeGlobal;
 	};
 
 	signal_Syncronize();
@@ -191,6 +191,8 @@ void	game_sv_Deathmatch::Update					()
 			checkForRoundEnd();
 			
 			check_InvinciblePlayers();
+
+			check_ForceRespawn();
 
 			if (m_bSpectatorMode)
 			{
@@ -1458,3 +1460,22 @@ void	game_sv_Deathmatch::OnDelayedRoundEnd		(LPCSTR /**reason/**/)
 	m_delayedRoundEnd = true;
 	m_roundEndDelay = Device.TimerAsync() + 10000;
 }
+
+void	game_sv_Deathmatch::check_ForceRespawn		()
+{
+	if (!m_u32ForceRespawn) return;
+	u32		cnt		= get_players_count	();
+	for		(u32 it=0; it<cnt; ++it)	
+	{
+		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
+		game_PlayerState* ps	= l_pC->ps;
+		if (!ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
+		u32 CurTime = Device.dwTimeGlobal;
+		if (ps->DeathTime + m_u32ForceRespawn < CurTime)
+		{
+			SetPlayersDefItems(ps);
+			RespawnPlayer(l_pC->ID, true);
+			SpawnWeaponsForActor(l_pC->owner, ps);
+		}
+	};
+};

@@ -26,6 +26,7 @@ game_PlayerState::game_PlayerState()
 	//---------------------------------
 	m_bCurrentVoteAgreed = 0;
 	m_s16LastSRoint = -1;
+	DeathTime = 0;
 }
 
 void game_PlayerState::clear()
@@ -40,6 +41,8 @@ void game_PlayerState::clear()
 	pSpawnPointsList.clear();
 	m_s16LastSRoint = -1;
 	LastBuyAcount = 0;
+
+	DeathTime = 0;
 }
 
 game_PlayerState::~game_PlayerState()

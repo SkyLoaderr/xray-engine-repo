@@ -43,6 +43,7 @@ struct	game_PlayerState
 	u8			skin;
 	//---------------------------
 	u32			RespawnTime;
+	u32			DeathTime;
 	//---------------------------
 	s16			money_delta;
 	//---------------------------

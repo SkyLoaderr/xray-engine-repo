@@ -96,6 +96,7 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 	if(ps_killed){
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
+		ps_killed->DeathTime			= Device.dwTimeGlobal;
 	};
 
 	signal_Syncronize();

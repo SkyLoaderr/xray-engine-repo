@@ -92,7 +92,13 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	
 	if (xrCData && xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
-	if (xrCData) xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	if (xrCData) 
+	{
+		xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+		xrCData->ps->deaths				+=	1;
+		xrCData->ps->DeathTime			= Device.dwTimeGlobal;
+
+	};
 	//-------------------------------------------------------
 	CActor* pActor = smart_cast <CActor*>(pObject);
 	if (pActor)

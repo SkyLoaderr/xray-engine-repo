@@ -23,6 +23,7 @@ protected:
 	GameEventQueue*					m_event_queue;
 	bool							m_bVotingEnabled;
 	bool							m_bFriendlyIndicators;
+	u32								m_u32ForceRespawn;
 	
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
