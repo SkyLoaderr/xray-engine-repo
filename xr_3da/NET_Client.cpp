@@ -2,6 +2,14 @@
 #include "net_client.h"
 #include "net_messages.h"
 
+void	dump_URL	(LPCSTR p, IDirectPlay8Address* A)
+{
+	string256	aaaa;
+	DWORD		aaaa_s			= sizeof(aaaa);
+	R_CHK		(A->GetURLA(aaaa,&aaaa_s));
+	Log			(p,aaaa);
+}
+
 // 
 INetQueue::INetQueue()		
 {
@@ -139,6 +147,10 @@ BOOL IPureClient::Connect(LPCSTR options)
     R_CHK(net_Address_server->SetSP		(&CLSID_DP8SP_TCPIP ));
 	R_CHK(net_Address_server->AddComponent	(DPNA_KEY_PORT,	&psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
     R_CHK(net_Address_server->AddComponent	(DPNA_KEY_HOSTNAME, ServerNameUNICODE, 2*(wcslen(ServerNameUNICODE) + 1), DPNA_DATATYPE_STRING ));
+
+	// Debug
+	dump_URL		("! cl ",	net_Address_device);
+	dump_URL		("! c2s",	net_Address_server);
 	
     // Now set up the Application Description
     DPN_APPLICATION_DESC        dpAppDesc;

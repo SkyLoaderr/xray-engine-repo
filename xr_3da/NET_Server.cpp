@@ -1,12 +1,13 @@
 #include "stdafx.h"
 #include "net_server.h"
 
+void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
+
 LPCSTR nameTraffic	= "traffic.net";
 
 ENGINE_API int		psNET_ServerUpdate	= 30;		// FPS
 ENGINE_API int		psNET_ServerPending	= 2;
 ENGINE_API int		psNET_Port			= 5445;
-
 
 void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 {
@@ -138,6 +139,8 @@ BOOL IPureServer::Connect(LPCSTR options)
     CHK_DX(net_Address_device->SetSP		(&CLSID_DP8SP_TCPIP ));
 	CHK_DX(net_Address_device->AddComponent	(DPNA_KEY_PORT, &psNET_Port, sizeof(psNET_Port), DPNA_DATATYPE_DWORD ));
 	
+	dump_URL		("! sv ",	net_Address_device);
+
 	// Set server-player info
     DPN_APPLICATION_DESC		dpAppDesc;
     DPN_PLAYER_INFO				dpPlayerInfo;
