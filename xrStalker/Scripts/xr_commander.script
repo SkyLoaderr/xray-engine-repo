@@ -29,12 +29,17 @@ local radio_talk   = 6
 local drink_vodka  = 7
 local sleep        = 8
 
-local snd_singing       = xr_sounds_id.commander_singing
-local snd_look_outside  = xr_sounds_id.commander_look_outside
-local snd_talk_outside  = xr_sounds_id.commander_talk_outside
-local snd_enemy_stalker = xr_sounds_id.commander_enemy_stalker
-local snd_enemy_monster = xr_sounds_id.commander_enemy_monster
-local snd_radio_talk    = xr_sounds_id.commander_radio_talk
+local snd_base          = xr_sounds_id.chugai_commander_base
+local snd_singing       = snd_base + 0
+local snd_look_outside  = snd_base + 1
+local snd_talk_outside  = snd_base + 2
+local snd_enemy_stalker = snd_base + 3
+local snd_enemy_monster = snd_base + 4
+local radio_noise       = snd_base + 5
+local radio_voice       = snd_base + 6
+local radio_on          = snd_base + 7
+local radio_off         = snd_base + 8
+local radio_commander   = snd_base + 9
 
 local h2ms = 60 * 60 * 1000
 
@@ -100,12 +105,17 @@ function action_commander:init( npc )
     end
 
     -- звуки
-    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",   13, snd_type.talk, 2, 1, snd_singing )
-    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",  13, snd_type.talk, 2, 1, snd_look_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_idle",          13, snd_type.talk, 2, 1, snd_talk_outside )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_enemy_stalker )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_enemy_monster )
-    npc:add_sound( "scripts\\ambush\\ambush1_enemy",         13, snd_type.talk, 2, 1, snd_radio_talk )
+    npc:add_sound( "scripts\\ambush\\ambush1_bad_weather",               13, snd_type.talk, 2, 1, snd_singing )
+    npc:add_sound( "scripts\\ambush\\ambush1_good_weather",              13, snd_type.talk, 2, 1, snd_look_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_idle",                      13, snd_type.talk, 2, 1, snd_talk_outside )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_stalker )
+    npc:add_sound( "scripts\\ambush\\ambush1_enemy",                     13, snd_type.talk, 2, 1, snd_enemy_monster )
+
+    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander )
+    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",        5, snd_type.talk, 2, 1, radio_noise )
+    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",        5, snd_type.talk, 2, 1, radio_voice )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",      5, snd_type.talk, 2, 1, radio_on )
+    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",     5, snd_type.talk, 2, 1, radio_off )
 
     return true
 end
@@ -444,8 +454,8 @@ function action_commander:exec_outside_talk()
 end
 
 function action_commander:exec_radio_talk()
-    if self.time_end then
-        if self.time_end <= device():time_global() then
+    if self.sub_act then
+        if self:process_radio() then
             self.time_end = nil
             self.decision = true
 
@@ -454,16 +464,89 @@ function action_commander:exec_radio_talk()
     else
         self:stop()
 
-        self.object:play_sound( snd_radio_talk, 1, 0 )
-
-        self.object:add_animation( "raciya", true )
         self.object:set_item( object.idle, nil )
 
-        self.time_end = device():time_global() + 5000
+        self:radio()
+
+        self.sub_act = true
 
         printf( "decision made: radio_talk" )
     end
 end
+
+function action_commander:radio ()
+    self.object:clear_animations ()
+    self.object:add_animation ("raciya_komandir_0", true)
+    self.object:add_animation ("raciya_komandir_1", true)
+    self.object:add_animation ("raciya_komandir_2", true)
+    self.sub_stage = 0
+    self.current_phrase = 1
+
+    self.phrases = {}
+
+    table.insert (self.phrases, {namespace = radio_on,        phrase = 0})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = random_choice (0, 13)})
+    table.insert (self.phrases, {namespace = radio_voice,     phrase = math.random (0, 2)})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = random_choice (12, 25)})
+    table.insert (self.phrases, {namespace = radio_voice,     phrase = math.random (0, 2)})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = 8})
+
+    if random_choice( true, false ) then
+        table.insert (self.phrases, {namespace = radio_noise,     phrase = 0})
+        table.insert (self.phrases, {namespace = radio_commander, phrase = 17})
+    end
+    
+    table.insert (self.phrases, {namespace = radio_voice,     phrase = math.random (0, 2)})
+    table.insert (self.phrases, {namespace = radio_commander, phrase = 25})
+    table.insert (self.phrases, {namespace = radio_off,       phrase = 0})
+
+    self.object:set_sound_mask (2147483647)
+    self.object:set_sound_mask (0)
+end
+
+function action_commander:process_radio()
+    local count = self.object:animation_count ()
+    local t_size = table.getn (self.phrases)
+    
+    if self.sub_stage == 0 and count == 1 then
+       self.sub_stage = 1 
+       return false
+    end    
+    
+    if self.sub_stage == 1 then
+       if count == 1 and self.current_phrase < t_size then 
+          self.object:add_animation ("raciya_komandir_2", true) 
+       end
+       if self.object:active_sound_count () == 0 then 
+          if self.current_phrase > t_size then
+             self.sub_stage = 2 
+             self.object:clear_animations ()
+             self.object:add_animation ("raciya_komandir_3", true)
+             self.object:add_animation ("raciya_komandir_4", true)
+             return false
+          else
+             self.object:play_sound (self.phrases[self.current_phrase].namespace, 1, 0, 1, 0, self.phrases[self.current_phrase].phrase)
+             self.current_phrase = self.current_phrase + 1
+          end
+          return false
+       end
+    end      
+
+    if count ~= 0 then 
+       return false 
+    end
+    
+    while table.getn (self.phrases) ~= 0 do
+          table.remove (self.phrases, 1)
+    end
+    
+    return true
+end
+--    self:set_animation ()
+--    self.stage = 1
+    
+--    return false
+--end
 
 function action_commander:exec_drink_vodka()
     if self.pos then
