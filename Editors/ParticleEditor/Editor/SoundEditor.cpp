@@ -245,8 +245,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
         
         TElTreeItem* item = sel_items.empty()?0:sel_items.back(); 
         if (item) FHelper.MakeName(item,0,folder,true);
-        //
-//		AnsiString path; // нужен при multi-open для сохранения последнего пути
+
 		AnsiString m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             AnsiString 			dest_name = AnsiString(folder+ExtractFileName(*it));
