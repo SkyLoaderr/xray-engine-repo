@@ -19,7 +19,7 @@ public:
 
 	xrSE_Actor() {};
 
-	virtual void			Read			(NET_Packet& P)
+	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(timestamp	);
 		P.r_u8				(flags		);
@@ -37,7 +37,7 @@ public:
 			P.r_dir			(f_dir);
 		};
 	};
-	virtual void			Write			(NET_Packet& P)
+	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
 		P.w_u32				(timestamp);
 		P.w_u8				(flags);
@@ -55,11 +55,11 @@ public:
 			P.w_dir			(f_dir);
 		}
 	};
-	virtual BOOL			RelevantTo		(xrServerEntity* E)
+	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
 	};
-	virtual void			GetPlacement	(Fvector4& dest)
+	virtual void			GetPlacement		(Fvector4& dest)
 	{
 		dest.set			(pos.x,pos.y,pos.z,model_yaw);
 	};
@@ -77,7 +77,7 @@ public:
 
 	xrSE_Enemy()	{};
 
-	virtual void			Read			(NET_Packet& P)
+	virtual void			UPDATE_Read			(NET_Packet& P)
 	{
 		P.r_u32				(dwTimeStamp	);
 		P.r_u8				(flags			);
@@ -86,7 +86,7 @@ public:
 		P.r_angle8			(o_torso.yaw	);
 		P.r_angle8			(o_torso.pitch	);
 	};
-	virtual void			Write			(NET_Packet& P)
+	virtual void			UPDATE_Write		(NET_Packet& P)
 	{
 		P.w_u32				(dwTimeStamp);
 		P.w_u8				(flags);
@@ -95,11 +95,11 @@ public:
 		P.w_angle8			(o_torso.yaw);
 		P.w_angle8			(o_torso.pitch);
 	}
-	virtual BOOL			RelevantTo		(xrServerEntity* E)
+	virtual BOOL			RelevantTo			(xrServerEntity* E)
 	{
 		return TRUE;
 	};
-	virtual void			GetPlacement	(Fvector4& dest)
+	virtual void			GetPlacement		(Fvector4& dest)
 	{
 		dest.set			(p_pos.x,p_pos.y,p_pos.z,o_model);
 	};
