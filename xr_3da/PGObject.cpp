@@ -74,12 +74,6 @@ void CPGObject::shedule_Update	(u32 dt)
 	PS::CParticleEffect* V	= dynamic_cast<PS::CParticleEffect*>(renderable.visual); R_ASSERT(V);
 	V->OnFrame			(dt);
 
-#pragma todo("Dima to AlexMX : Verify why I parameters in PS::CParticleEffect.vis.sphere are incorrect and remove this hack out")
-// start of hack
-	V->vis.sphere.P		= Position();
-	V->vis.sphere.R		= 1.f;
-// end of hack
-
 	// spatial
 	spatial.center		= V->vis.sphere.P;
 	spatial.radius		= V->vis.sphere.R;
