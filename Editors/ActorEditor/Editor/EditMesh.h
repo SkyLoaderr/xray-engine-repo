@@ -31,7 +31,7 @@ class st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
 	string128		name;		// vertex uv map name
-    u8			dim;
+    u8				dim;
     EVMType			type;
 	BOOL			polymap;
 	IntVec			vindices;
@@ -176,12 +176,13 @@ protected:
 
 	void 			RecurseTri				(int id);
 
-    void			RecomputeBBox			();
 
 	// mesh optimize routine
-	bool 			OptimizeFace			(st_Face& face);
-	void 			Optimize				(BOOL NoOpt);
 	bool 			UpdateAdjacency			();
+	bool 			OptimizeFace			(st_Face& face);
+public:
+	void			RecomputeBBox			();
+	void 			Optimize				(BOOL NoOpt);
 public:
 	                CEditableMesh				(CEditableObject* parent){m_Parent=parent;Construct();}
 	                CEditableMesh				(CEditableMesh* source,CEditableObject* parent){m_Parent=parent;Construct();CloneFrom(source);}
@@ -201,10 +202,14 @@ public:
 	void            CloneFrom				(CEditableMesh *source);
 	void            Transform				(const Fmatrix& parent);
 
+	IC CEditableObject*	Parent				(){ return m_Parent;}
     IC FaceVec&		GetFaces				(){ return m_Faces;}
     IC FvectorVec&	GetPoints				(){ return m_Points;}
+	IC VMapVec&		GetVMaps				(){ return m_VMaps;}
+	IC VMRefsVec&	GetVMRefs				(){ return m_VMRefs;}
     IC FvectorVec&	GetFNormals				(){ return m_FNormals;}
-
+	IC SurfFaces&	GetSurfFaces			(){ return m_SurfFaces;}
+	    
     // pick routine
 	bool            RayPick					(float& dist, const Fvector& start, const Fvector& dir, const Fmatrix& inv_parent, SRayPickInfo* pinf = NULL);
 #ifdef _LEVEL_EDITOR

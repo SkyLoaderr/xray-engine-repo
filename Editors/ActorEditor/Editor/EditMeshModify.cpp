@@ -107,7 +107,7 @@ static Fvector		VMmin, VMscale;
 static U32Vec		VM[MX+1][MY+1][MZ+1];
 static Fvector		VMeps;
 
-static FvectorVec m_NewPoints;
+static FvectorVec	m_NewPoints;
 bool CEditableMesh::OptimizeFace(st_Face& face){
 	Fvector points[3];
 	int mface[3];

@@ -243,6 +243,7 @@ public:
     IC EditMeshIt	LastMesh				()	{return m_Meshes.end();}
     IC EditMeshVec& Meshes					()	{return m_Meshes; }
     IC int			MeshCount				()	{return m_Meshes.size();}
+	IC void			AppendMesh				(CEditableMesh* M){m_Meshes.push_back(M);}
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
@@ -382,13 +383,14 @@ public:
     // HOM
     bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
     bool			ExportHOM				(LPCSTR fname);
+
+	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 #ifdef _MAX_EXPORT
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
 	BOOL			ParseStdMaterial		(StdMat* src, CSurface* dest);
 	BOOL			ParseMultiMaterial		(MultiMtl* src, u32 mid, CSurface* dest);
 	BOOL			ParseXRayMaterial		(XRayMtl* src, u32 mid, CSurface* dest);
 	CSurface*		CreateSurface			(Mtl* M, u32 mat_id);
-	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 	bool			ImportMAXSkeleton		(CExporter* exporter);
 #endif
 #ifdef _LW_EXPORT
@@ -396,6 +398,10 @@ public:
 #endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
+#endif
+#ifdef _MAYA_EXPORT
+	BOOL			ParseMAMaterial			(CSurface* dest, LPCSTR mname);
+	CSurface*		CreateSurface			(LPCSTR name);
 #endif
 	bool			ExportLWO				(LPCSTR fname);
 };

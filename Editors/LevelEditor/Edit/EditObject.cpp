@@ -163,3 +163,16 @@ CSurface*	CEditableObject::FindSurfaceByName(const char* surf_name, int* s_id){
     return 0;
 }
 
+LPCSTR CEditableObject::GenerateSurfaceName(const char* base_name)
+{
+	static char nm[128];
+	strcpy(nm, base_name);
+	if (FindSurfaceByName(nm)){
+		DWORD idx=0;
+		do{
+			sprintf(nm,"%s_%d",base_name,idx);
+			idx++;
+		}while(FindSurfaceByName(nm));
+	}
+	return nm;
+}
