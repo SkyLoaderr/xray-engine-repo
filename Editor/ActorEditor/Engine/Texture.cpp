@@ -441,6 +441,7 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
  	return 0;
 
 _DDS:
+	Log("* FS: Texture: ",fn);
 	D3DXIMAGE_INFO IMG;
 	
 	R_CHK(D3DXGetImageInfoFromFile(fn,&IMG));
