@@ -307,6 +307,7 @@ void CLevel::OnFrame	()
 	if (!ai().get_alife())
 		Device.Statistic.TEST2.End();
 
+	MapManager().Update();
 	// Inherited update
 	inherited::OnFrame					();
 

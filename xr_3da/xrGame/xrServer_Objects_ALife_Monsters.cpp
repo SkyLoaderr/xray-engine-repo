@@ -117,7 +117,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_tpEvents.clear			();
 
 //	m_iCharacterProfile			= DEFAULT_PROFILE;
-	m_sCharacterProfile			= "";
+	m_sCharacterProfile			= "default";
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
 
 #ifdef XRGAME_EXPORTS

@@ -10,7 +10,8 @@
 #include "xrServer_Objects_ALife.h"
 #include "ui/UIXmlInit.h"
 #include "ui/UIMapWnd.h"
-
+#include "alife_simulator.h"
+#include "alife_object_registry.h"
 
 //////////////////////////////////////////////////
 CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
@@ -122,12 +123,21 @@ shared_str CMapLocation::LevelName()
 
 bool CMapLocation::Update() //returns actual
 {
-	if (GameID() != GAME_SINGLE)
+	CObject* pObject =  Level().Objects.net_Find(m_objectID);
+	
+	//mp
+	if ( GameID()!=GAME_SINGLE && (pObject) ) return true;
+	
+	//single
+	if(pObject) return true; // online
+
+	if(ai().get_alife())		
 	{
-		CObject* pObject =  Level().Objects.net_Find(m_objectID);
-		if (!pObject) return false;
-	};
-	return true;
+		return ( NULL != ai().alife().objects().object(m_objectID,true) );
+	}
+
+
+	return false;
 }
 
 void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
@@ -204,87 +214,3 @@ CMapSpotPointer* CMapLocation::GetSpotPointer(CMapSpot* sp)
 
 	return NULL;
 }
-
-/*
-//////////////////////////////////////////////////////////////////////////
-
-SMapLocation::SMapLocation():animation(&icon_color)
-{
-	info_portion_id				= NO_INFO_INDEX;
-	level_name					= NULL;
-	x							= y = 0;
-	name						= NULL;
-	text						= NULL;
-	attached_to_object			= false;
-	object_id					= 0xffff;
-	marker_show					= false;
-	big_icon					= false;
-	global_map_text				= false;
-	icon_color					= 0xffffffff;
-	dynamic_manifestation		= false;
-	type_flags.zero				();
-	animation.Cyclic			(false);
-	m_iconsShader				= NULL;
-}
-
-SMapLocation::SMapLocation(const SMapLocation& map_location)
-{
-	*this  = map_location;
-	animation.SetColorToModify(&icon_color);
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-shared_str SMapLocation::LevelName()
-{
-	if(!attached_to_object)
-		return level_name;
-	else
-	{
-		if(ai().get_alife() && ai().get_game_graph())		
-		{
-			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(object_id); //VERIFY(E);
-			if(!E){
-				Msg("! Critical: SMapLocation binded to non-existent object id=%d",object_id);
-				type_flags.zero				();
-				return level_name;
-			}
-			
-			CSE_ALifeObject* AO = smart_cast<CSE_ALifeObject*>(E);
-			if(AO)	
-				return  ai().game_graph().header().level(ai().game_graph().vertex(AO->m_tGraphID)->level_id()).name();
-			else	
-				return Level().name();
-		}
-		else
-			return Level().name();
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void SMapLocation::UpdateAnimation()
-{
-	animation.Update();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-void SMapLocation::SetColorAnimation(const shared_str &animationName)
-{
-	animation.SetColorAnimation(animationName);
-	animation.Reset();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-ref_shader&	SMapLocation::GetShader(){
-	if (xr_strlen(shader_name) > 0)
-        if(!m_iconsShader)
-		{
-			m_iconsShader.create("hud\\default", *shader_name);
-		}
-
-	return m_iconsShader;
-}
-*/
