@@ -37,7 +37,7 @@ CBuild::CBuild(b_transfer * L)
 		Shader_xrLCVec&	S = shaders.Library();
 		for (Shader_xrLCIt I = S.begin(); I!=S.end(); I++)
 		{
-			Log(I->Name);
+			Msg("|%s|",I->Name);
 		}
 	}
 	

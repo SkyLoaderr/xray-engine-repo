@@ -70,7 +70,7 @@ public:
 	int						GetID	(LPCSTR name)
 	{
 		for (Shader_xrLCIt it=library.begin(); it!=library.end(); it++)
-			if (0==stricmp(name,it->Name)) return library.begin()-it;
+			if (0==stricmp(name,it->Name)) return it-library.begin();
 		return -1;
 	}
 	Shader_xrLC*			Get		(LPCSTR name)
