@@ -236,8 +236,7 @@ void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& 
 	CBoneInstance&		l_tBoneInstance = PKinematics(pObject->Visual())->LL_GetBoneInstance((u16)bone_id);
 
 	result.identity		();
-	result.j.normalize	(dir);
-//	Fvector::generate_orthonormal_basis(result.j, result.k, result.i);
+	result.k.normalize	(dir);
 	Fvector::generate_orthonormal_basis(result.k, result.i, result.j);
 
 
