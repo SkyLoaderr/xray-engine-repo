@@ -38,7 +38,7 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	Fmatrix				spin;
 	float				bone_yaw	= A->r_torso.yaw - A->r_model_yaw - A->r_model_yaw_delta;
 	float				bone_pitch	= A->r_torso.pitch;
-	clamp				(bone_pitch,-PI_DIV_8,PI_DIV_4);
+	// clamp			(bone_pitch,-PI_DIV_8,PI_DIV_4);
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
 }
@@ -81,7 +81,7 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	R_ASSERT		(!net_Local);
 	net_update		N;
 
-	u8	 flags, wpn, tmp;
+	u8				flags, wpn, tmp;
 	P->r_u32		(N.dwTimeStamp	);
 	P->r_u8			(flags			);
 	P->r_vec3		(N.p_pos		);
@@ -91,6 +91,7 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 	P->r_angle8		(N.o_torso.pitch);
 	P->r_sdir		(N.p_accel		);
 	P->r_sdir		(N.p_velocity	);
+	Log				("P:",rad2deg(N.o_torso.pitch));
 
 	P->r_u8			(wpn);
 	if (0xff==wpn)	N.weapon		= -1;
