@@ -206,7 +206,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 
 		_C.mul_rgb		(1/(_N+EPS));
 		_C.a			= 1.f;
-		dest[I].lerp	(_C,ptColor,.5f);
+		dest[I].lerp	(_C,ptColor,.9f);
 	}
 }
 
