@@ -45,7 +45,7 @@ void CSheduler::Destroy			()
 {
 	R_ASSERT			(Items.empty());
 	DeleteFiber			(fiber_thread);
-	DeleteFiber			(fiber_main);
+	// DeleteFiber			(fiber_main);
 }
 
 void CSheduler::Register		(CSheduled* O)
