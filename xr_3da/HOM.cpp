@@ -10,7 +10,6 @@
 #include "xr_creator.h"
 
 float	psOSSR		= .001f;
-BOOL	bHOM_ModeS	= FALSE;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -151,80 +150,59 @@ IC void MouseRayFromPoint	( Fvector& direction, int x, int y, Fmatrix& m_CamMat 
 
 void CHOM::Render_DB	(CFrustum& base)
 {
-//	bHOM_ModeS			= psDeviceFlags.test(rsOcclusion);
-//	if (bHOM_ModeS)	
-//	{
-//		Fmatrix	mInv;	mInv.invert	(Device.mView);
-//		float	fFAR	= pCreator->Environment.c_Far;
-//		XRC.ray_options	(CDB::OPT_CULL|CDB::OPT_ONLYNEAREST);
-//		for (u32 y=0; y<occ_dim; y++)
-//		{
-//			for (u32 x=0; x<occ_dim; x++)
-//			{
-//				Fvector				D;
-//				MouseRayFromPoint	(D,x,y,mInv);
-//				XRC.ray_query		(m_pModel, Device.vCameraPosition, D, fFAR);
-//				if (XRC.r_count())	{
-//					Raster.get_frame()[y*occ_dim+x]	= m_pTris + XRC.r_begin()->id;
-//					Raster.get_depth()[y*occ_dim+x]	= XRC.r_begin()->range/fFAR;
-//				}
-//			}
-//		}
-//	} else {
-		// Query DB
-		XRC.frustum_options	(0);
-		XRC.frustum_query	(m_pModel,base);
-		if (0==XRC.r_count())	return;
+	// Query DB
+	XRC.frustum_options		(0);
+	XRC.frustum_query		(m_pModel,base);
+	if (0==XRC.r_count())	return;
 
-		// Prepare
-		CDB::RESULT*	it	= XRC.r_begin();
-		CDB::RESULT*	end	= XRC.r_end();
-		Fvector			COP = Device.vCameraPosition;
-		Fmatrix			XF	= Device.mFullTransform;
-		float			dim = occ_dim_0/2;
+	// Prepare
+	CDB::RESULT*	it		= XRC.r_begin();
+	CDB::RESULT*	end		= XRC.r_end();
+	Fvector			COP		= Device.vCameraPosition;
+	Fmatrix			XF		= Device.mFullTransform;
+	float			dim		= occ_dim_0/2;
 
-		// Build frustum with near plane only
-		CFrustum	clip;
-		clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
-		sPoly		src,dst;
+	// Build frustum with near plane only
+	CFrustum	clip;
+	clip.CreateFromMatrix(XF,FRUSTUM_P_NEAR);
+	sPoly		src,dst;
 
-		// Perfrom selection, sorting, culling
-		for (; it!=end; it++)
+	// Perfrom selection, sorting, culling
+	for (; it!=end; it++)
+	{
+		// Control skipping
+		occTri& T		= m_pTris	[it->id];
+		m_ZB.push_back	(it->id);
+
+		if (T.skip)		{ T.skip--; continue; }
+		u32	next		= ::Random.randI(7,30);
+
+		// Test for good occluder - should be improved :)
+		if (!(T.flags || (T.plane.classify(COP)>0)))	
+		{ T.skip=next; continue; }
+
+		// Access to triangle vertices
+		CDB::TRI& t		= m_pModel->get_tris() [it->id];
+		src.clear		();	dst.clear	();
+		src.push_back	(*t.verts[0]);
+		src.push_back	(*t.verts[1]);
+		src.push_back	(*t.verts[2]);
+		sPoly* P =		clip.ClipPoly	(src,dst);
+		if (0==P)		{ T.skip=next; continue; }
+
+		// XForm and Rasterize
+		u32		pixels	= 0;
+		int		limit	= int(P->size())-1;
+		for (int v=1; v<limit; v++)
 		{
-			// Control skipping
-			occTri& T		= m_pTris	[it->id];
-			m_ZB.push_back	(it->id);
-
-			if (T.skip)		{ T.skip--; continue; }
-			u32	next	= ::Random.randI(7,30);
-
-			// Test for good occluder - should be improved :)
-			if (!(T.flags || (T.plane.classify(COP)>0)))	
-			{ T.skip=next; continue; }
-
-			// Access to triangle vertices
-			CDB::TRI& t		= m_pModel->get_tris() [it->id];
-			src.clear		();	dst.clear	();
-			src.push_back	(*t.verts[0]);
-			src.push_back	(*t.verts[1]);
-			src.push_back	(*t.verts[2]);
-			sPoly* P =		clip.ClipPoly	(src,dst);
-			if (0==P)		{ T.skip=next; continue; }
-
-			// XForm and Rasterize
-			u32	pixels	= 0;
-			int		limit	= int(P->size())-1;
-			for (int v=1; v<limit; v++)
-			{
-				xform			(XF,T.raster[0],(*P)[0],	dim);
-				xform			(XF,T.raster[1],(*P)[v+0],	dim);
-				xform			(XF,T.raster[2],(*P)[v+1],	dim);
-				pixels +=		Raster.rasterize(&T);
-			}
-			if (0==pixels)
-			{ T.skip=next; continue; }
+			xform			(XF,T.raster[0],(*P)[0],	dim);
+			xform			(XF,T.raster[1],(*P)[v+0],	dim);
+			xform			(XF,T.raster[2],(*P)[v+1],	dim);
+			pixels +=		Raster.rasterize(&T);
 		}
-//	}
+		if (0==pixels)
+		{ T.skip=next; continue; }
+	}
 }
 
 void CHOM::Render		(CFrustum& base)
@@ -330,7 +308,7 @@ IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _
 IC	BOOL	xform_b1	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
 	float t;
-	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS && !bHOM_ModeS) return TRUE;
+	float z		= _x*X._13 + _y*X._23 + _z*X._33 + X._43;			if (z<EPS)	return TRUE;
 	float w		= 1/(_x*X._14 + _y*X._24 + _z*X._34 + X._44);		
 	t 			= 1.f+(_x*X._11 + _y*X._21 + _z*X._31 + X._41)*w;	if (t<min.x) min.x=t; else if (t>max.x) max.x=t;
 	t			= 1.f-(_x*X._12 + _y*X._22 + _z*X._32 + X._42)*w;	if (t<min.y) min.y=t; else if (t>max.y) max.y=t;
