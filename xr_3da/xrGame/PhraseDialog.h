@@ -9,6 +9,7 @@
 #include "phrase.h"
 #include "graph_abstract.h"
 #include "PhraseDialogDefs.h"
+#include "xml_str_id_loader.h"
 
 typedef CGraphAbstract<CPhrase*, float, u32, u32> CPhraseGraph;
 
@@ -21,14 +22,12 @@ struct SPhraseDialogData : CSharedResource
 	SPhraseDialogData ();
 	virtual ~SPhraseDialogData ();
 
+	//заголовок диалога, если NULL, то принимается за стартовую фразу
+	ref_str		m_sCaption;
+
 	//однонаправленый граф фраз
 	//описывает все возможные варианты развития диалога
 	CPhraseGraph m_PhraseGraph;
-
-	//уникальная строка, идентифицирующая диалог
-	ref_str		m_sDialogID;
-	//заголовок диалога, если NULL, то принимается за стартовую фразу
-	ref_str		m_sCaption;
 
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//для начала диалога
@@ -37,14 +36,17 @@ struct SPhraseDialogData : CSharedResource
 
 DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
 
-
+class CPhraseDialog;
 class CPhraseDialogManager;
 
-
-class CPhraseDialog	: public CSharedClass<SPhraseDialogData, ref_str>
+class CPhraseDialog	: public CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX>,
+					  public CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>
 {
 private:
-	typedef CSharedClass<SPhraseDialogData, ref_str> inherited_shared;
+	typedef CSharedClass<SPhraseDialogData, PHRASE_DIALOG_INDEX>					inherited_shared;
+	typedef CXML_IdToIndex<PHRASE_DIALOG_ID, PHRASE_DIALOG_INDEX, CPhraseDialog>	id_to_index;
+
+	friend id_to_index;
 public:
 			 CPhraseDialog	(void);
 	virtual ~CPhraseDialog	(void);
@@ -58,7 +60,9 @@ public:
 	//инициализация диалога данными
 	//если диалог с таким id раньше не использовался
 	//он будет загружен из файла
-	virtual void Load	(ref_str dialog_id);
+	virtual void Load	(PHRASE_DIALOG_ID dialog_id);
+	virtual void Load	(PHRASE_DIALOG_INDEX dialog_index);
+
 	//связь диалога между двумя DialogManager
 	virtual void Init	(CPhraseDialogManager* speaker_first, 
 						 CPhraseDialogManager* speaker_second);
@@ -111,7 +115,7 @@ public:
 
 protected:
 	//идентификатор диалога
-	ref_str		m_sDialogID;
+	PHRASE_DIALOG_INDEX	m_DialogIndex;
 	//тип диалога
 	EDialogType m_eDialogType;
 
@@ -129,10 +133,10 @@ protected:
 	//если фразу говорит 1й игрок - true, если 2й - false
 	bool				  m_bFirstIsSpeaking;
 
-	SPhraseDialogData* dialog_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+	SPhraseDialogData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	//загрузка диалога из XML файла
-	virtual void load_shared	(LPCSTR xml_file);
+	virtual void load_shared	(LPCSTR);
 	
 	//рекурсивное добавление фраз в граф
 	virtual void AddPhrase	(XML_NODE* phrase_node, int node_id);
@@ -141,6 +145,5 @@ protected:
 	CUIXml					uiXml;
 	XML_NODE*				phrase_list_node;
 
-	//проверить, что все диалоги имеют уникальный ID
-	static bool	m_bCheckUniqueness;
+	static void				InitXmlIdToIndex();
 };

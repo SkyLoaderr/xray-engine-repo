@@ -48,7 +48,7 @@ public:
 	static const ITEM_DATA&		GetByIndex	(T_INDEX index);
 
 	static const T_INDEX&		IdToIndex	(const T_ID& str_id) {return GetById(str_id).index;}
-	static const T_ID&			IndexToIndex(T_INDEX index)		 {return GetByIndex(index).id;}
+	static const T_ID&			IndexToId	(T_INDEX index)		 {return GetByIndex(index).id;}
 
 
 	//удаление статичекого массива

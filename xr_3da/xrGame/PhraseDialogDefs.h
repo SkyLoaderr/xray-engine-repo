@@ -25,8 +25,11 @@ typedef enum {
 //тип id фразы
 typedef int PHRASE_ID;
 
+typedef ref_str	PHRASE_DIALOG_ID;
+typedef int		PHRASE_DIALOG_INDEX;
 
-#define  DIALOGS_XML			"dialogs.xml"
+#define  NO_DIALOG	PHRASE_DIALOG_INDEX(-1)
+
 #define  NO_PHRASE				-1
 #define  START_PHRASE			0
 #define  START_PHRASE_STR		"0"

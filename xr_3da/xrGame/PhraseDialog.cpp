@@ -54,7 +54,6 @@
 
 
 
-bool CPhraseDialog::m_bCheckUniqueness = false;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -62,13 +61,10 @@ bool CPhraseDialog::m_bCheckUniqueness = false;
 SPhraseDialogData::SPhraseDialogData ()
 {
 	m_PhraseGraph.clear();
-	m_sDialogID = NULL;
 }
 
 SPhraseDialogData::~SPhraseDialogData ()
 {
-	int a=0;
-	a++;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,23 +80,13 @@ CPhraseDialog::CPhraseDialog(void)
 	m_pSpeakerSecond	= NULL;
 
 	m_eDialogType = eDialogTypeMax;
+	m_DialogIndex = NO_DIALOG;
 }
 
 CPhraseDialog::~CPhraseDialog(void)
 {
 }
 
-
-//инициализация диалога
-//если диалог с таким id раньше не использовался
-//он будет загружен из файла
-void CPhraseDialog::Load(ref_str dialog_id)
-{
-	m_sDialogID = dialog_id;
-	m_eDialogType = eDialogTypeMax;
-
-	inherited_shared::load_shared(dialog_id, DIALOGS_XML);
-}
 
 void CPhraseDialog::Init(CPhraseDialogManager* speaker_first, 
 						 CPhraseDialogManager* speaker_second)
@@ -113,7 +99,7 @@ void CPhraseDialog::Init(CPhraseDialogManager* speaker_first,
 	m_iSaidPhraseID = NO_PHRASE;
 	m_PhraseVector.clear();
 
-	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(START_PHRASE);
+	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(START_PHRASE);
 	VERIFY(phrase_vertex);
 	m_PhraseVector.push_back(phrase_vertex->data());
 
@@ -164,7 +150,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
 	if(!first_is_speaking) std::swap(pSpeakerGO1, pSpeakerGO2);
 
-	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
+	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
 	VERIFY(phrase_vertex);
 
 	CPhrase* last_phrase = phrase_vertex->data();
@@ -183,14 +169,14 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			it++)
 		{
 			const CPhraseGraph::CEdge& edge = *it;
-			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(edge.vertex_id());
+			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->data()->m_PhraseGraph.vertex(edge.vertex_id());
 			VERIFY(next_phrase_vertex);
 
 			if(next_phrase_vertex->data()->m_PhraseScript.Precondition(pSpeakerGO2, pSpeakerGO1))
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
 
-		R_ASSERT3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *phrase_dialog->m_sDialogID);
+		R_ASSERT3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *ref_str(CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex)));
 
 		//упорядочить списко по убыванию благосклонности
 		std::sort(phrase_dialog->m_PhraseVector.begin(),
@@ -216,7 +202,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 {
 	
-	CPhraseGraph::CVertex* phrase_vertex = dialog_data()->m_PhraseGraph.vertex(phrase_id);
+	CPhraseGraph::CVertex* phrase_vertex = data()->m_PhraseGraph.vertex(phrase_id);
 	VERIFY(phrase_vertex);
 	
 	//если есть скриптовый текст, то он и будет задан
@@ -236,47 +222,62 @@ LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id, bool current_speaking)
 
 LPCSTR CPhraseDialog::DialogCaption()
 {
-	return *dialog_data()->m_sCaption?*dialog_data()->m_sCaption:GetPhraseText(START_PHRASE);
+	return *data()->m_sCaption?*data()->m_sCaption:GetPhraseText(START_PHRASE);
 }
 
-void CPhraseDialog::load_shared	(LPCSTR xml_file)
-{
-	bool xml_result = uiXml.Init("$game_data$", xml_file);
-	R_ASSERT2(xml_result, "xml file not found");
 
-	//проверить файл диалога на корректность
-	if(!m_bCheckUniqueness)	
-	{
-		LPCSTR wrong_id = uiXml.CheckUniqueAttrib(uiXml.GetRoot(), "dialog", "id");
-		R_ASSERT3(wrong_id == NULL, "dublicate dialog id", wrong_id);
-		m_bCheckUniqueness = true;
-	}
+
+//инициализация диалога
+//если диалог с таким id раньше не использовался
+//он будет загружен из файла
+void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
+{
+	Load(id_to_index::IdToIndex(dialog_id));
+}
+
+void CPhraseDialog::Load(PHRASE_DIALOG_INDEX dialog_index)
+{
+	m_DialogIndex = dialog_index;
+	m_eDialogType = eDialogTypeMax;
+
+	inherited_shared::load_shared(m_DialogIndex, NULL);
+}
+
+
+void CPhraseDialog::load_shared	(LPCSTR)
+{
+	const id_to_index::ITEM_DATA& item_data = id_to_index::GetByIndex(m_DialogIndex);
+
+	string128 xml_file_full;
+	strconcat(xml_file_full, *ref_str(item_data.file_name), ".xml");
+
+	bool xml_result = uiXml.Init("$game_data$", xml_file_full);
+	R_ASSERT3(xml_result, "xml file not found", xml_file_full);
 
 	//loading from XML
+	XML_NODE* dialog_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
+	R_ASSERT3(dialog_node, "dialog id=", *ref_str(item_data.id));
 
-	XML_NODE* dialog_node = uiXml.NavigateToNodeWithAttribute("dialog", "id", *m_sDialogID);
-	R_ASSERT3(dialog_node, "not found dialog id=", *m_sDialogID);
 	uiXml.SetLocalRoot(dialog_node);
 
 	//заголовок 
-	dialog_data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);
+	data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);
 
 	//предикаты начала диалога
-	dialog_data()->m_PhraseScript.Load(uiXml, dialog_node);
+	data()->m_PhraseScript.Load(uiXml, dialog_node);
 
 	//заполнить граф диалога фразами
-	dialog_data()->m_PhraseGraph.clear();
+	data()->m_PhraseGraph.clear();
 
 	phrase_list_node = uiXml.NavigateToNode(dialog_node, "phrase_list", 0);
 	int phrase_num = uiXml.GetNodesNum(phrase_list_node, "phrase");
-	R_ASSERT3(phrase_num, "dialog %s has no phrases at all", *m_sDialogID);
+	R_ASSERT3(phrase_num, "dialog %s has no phrases at all", *ref_str(item_data.id));
 
 	uiXml.SetLocalRoot(phrase_list_node);
 
 	LPCSTR wrong_phrase_id = uiXml.CheckUniqueAttrib(phrase_list_node, "phrase", "id");
-	R_ASSERT3(wrong_phrase_id == NULL, *m_sDialogID, wrong_phrase_id);
-	m_bCheckUniqueness = true;
-
+	R_ASSERT3(wrong_phrase_id == NULL, *ref_str(item_data.id), wrong_phrase_id);
+	
 
 	//ищем стартовую фразу
 	XML_NODE* phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", START_PHRASE_STR);
@@ -288,7 +289,7 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 {
 	//проверить не добавлена ли вершина
-	if(dialog_data()->m_PhraseGraph.vertex(phrase_id)) 
+	if(data()->m_PhraseGraph.vertex(phrase_id)) 
 		return;
 
 	CPhrase* phrase = xr_new<CPhrase>(); VERIFY(phrase);
@@ -302,7 +303,7 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	//прочитать действия и предикаты
 	phrase->m_PhraseScript.Load(uiXml, phrase_node);
 	
-	dialog_data()->m_PhraseGraph.add_vertex(phrase, phrase_id);
+	data()->m_PhraseGraph.add_vertex(phrase, phrase_id);
 
 	//фразы которые собеседник может говорить после этой
 	int next_num = uiXml.GetNodesNum(phrase_node, "next");
@@ -314,11 +315,19 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 		int next_phrase_id = atoi(next_phrase_id_str);
 
 		AddPhrase (next_phrase_node, next_phrase_id);
-		dialog_data()->m_PhraseGraph.add_edge(phrase_id, next_phrase_id, 0.f);
+		data()->m_PhraseGraph.add_edge(phrase_id, next_phrase_id, 0.f);
 	}
 }
 
 bool  CPhraseDialog::Precondition(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2)
 {
-	return dialog_data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2);
+	return data()->m_PhraseScript.Precondition(pSpeaker1, pSpeaker2);
+}
+
+void   CPhraseDialog::InitXmlIdToIndex()
+{
+	if(!id_to_index::tag_name)
+		id_to_index::tag_name = "dialog";
+	if(!id_to_index::file_str)
+		id_to_index::file_str = pSettings->r_string("dialogs", "files");
 }
