@@ -114,8 +114,8 @@ struct st_SPLIT
 	Fbox			bb;
 
 	// Progressive
-	DWORD			I_Current;
-	DWORD			V_Minimal;
+	int				I_Current;
+	int 			V_Minimal;
 	std::vector<Vsplit>	pmap_vsplit;
 	std::vector<WORD>	pmap_faces;
 
@@ -194,7 +194,7 @@ struct st_SPLIT
 			// Convert
 			PM_Result R;
 			I_Current = PM_Convert(Indices.begin(),Indices.size(), &R);
-			if (I_Current) {
+			if (I_Current>=0) {
 				// Permute vertices
 				vVERT temp_list = Vlist;
 				
@@ -222,7 +222,7 @@ struct st_SPLIT
 		fs.open_chunk		(OGF_HEADER);
 		ogf_header			H;
 		H.format_version	= xrOGF_FormatVersion;
-		H.type				= I_Current?MT_SKELETON_PART:MT_SKELETON_PART_STRIPPED;
+		H.type				= (I_Current>=0)?MT_SKELETON_PART:MT_SKELETON_PART_STRIPPED;
 		H.flags				= 0;
 		fs.write			(&H,sizeof(H));
 		fs.close_chunk		();
@@ -259,7 +259,7 @@ struct st_SPLIT
 		fs.close_chunk();
 		
 		// PMap
-		if (I_Current) {
+		if (I_Current>=0) {
 			fs.open_chunk(OGF_P_MAP);
 			{
 				fs.open_chunk(0x1);
