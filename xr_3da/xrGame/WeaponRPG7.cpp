@@ -100,12 +100,10 @@ void CWeaponRPG7::SwitchState(u32 S)
 		d.normalize();
 		d.mul(m_fLaunchSpeed);
 		
-		Fvector angular_vel;
-		angular_vel.set(d);
-		angular_vel.mul(1400.f);
-
-
-		CRocketLauncher::LaunchRocket(launch_matrix, d, angular_vel);
+//		Fvector angular_vel;
+//		angular_vel.set(d);
+//		angular_vel.mul(1400.f);
+		CRocketLauncher::LaunchRocket(launch_matrix, d, zero_vel);
 
 		CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(getCurrentRocket());
 		VERIFY(pGrenade);

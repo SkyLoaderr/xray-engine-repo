@@ -89,6 +89,7 @@ protected:
 	int			m_dwEngineWorkTime;
 	//сила работы двигателя (размер импульса в секунду)
 	float		m_fEngineImpulse;
+	float		m_fEngineImpulseUp;
 	//текущее время работы двигателя
 	int			m_dwEngineTime;
 

@@ -157,7 +157,8 @@ void  CCustomRocket::reload		(LPCSTR section)
 	if(m_bEnginePresent)
 	{
 		m_dwEngineWorkTime = pSettings->r_u32(section, "engine_work_time");
-		m_fEngineImpulse = pSettings->r_float(section, "engine_impulse");
+		m_fEngineImpulse		 = pSettings->r_float(section, "engine_impulse");
+		m_fEngineImpulseUp		 = pSettings->r_float(section, "engine_impulse_up");
 	}
 
 
@@ -268,7 +269,7 @@ void CCustomRocket::StopEngine				()
 
 void CCustomRocket::UpdateEnginePh			()
 {
-	float force = m_fEngineImpulse * Device.fTimeDelta *100.f;
+	float force = m_fEngineImpulse * Device.fTimeDelta;
 
 	Fvector l_pos, l_dir;; 
 	l_pos.set(0, 0, 5.f);
@@ -277,7 +278,7 @@ void CCustomRocket::UpdateEnginePh			()
 
 	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
 	l_dir.set(0, 1.f, 0);
-	force = m_fEngineImpulse * Device.fTimeDelta * 30.f;
+	force = m_fEngineImpulseUp * Device.fTimeDelta;
 	m_pPhysicsShell->applyImpulse(l_dir, force);
 
 	//m_pPhysicsShell->set_AngularVel()
