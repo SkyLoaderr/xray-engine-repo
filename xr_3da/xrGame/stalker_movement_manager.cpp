@@ -90,9 +90,9 @@ void CStalkerMovementManager::Load					(LPCSTR section)
 void CStalkerMovementManager::reinit				()
 {
 	inherited::reinit				();
-	m_tBodyState					= eBodyStateStand;
-	m_tMovementType					= eMovementTypeStand;
-	m_tMentalState					= eMentalStateFree;
+	m_body_state					= eBodyStateStand;
+	m_movement_type					= eMovementTypeStand;
+	m_mental_state					= eMentalStateFree;
 	CCustomMonster					*custom_monster = dynamic_cast<CCustomMonster*>(this);
 	VERIFY							(custom_monster);
 	custom_monster->m_body.speed	= PI_MUL_2;
@@ -118,9 +118,8 @@ void CStalkerMovementManager::update(u32 time_delta)
 	CDetailPathManager::set_path_type					(m_detail_path_type);
 	CLevelLocationSelector::set_evaluator				(m_node_evaluator);
 	CMovementManager::CLevelPathManager::set_evaluator	(m_path_evaluator ? m_path_evaluator : base_level_selector());
-	m_tBodyState										= m_body_state;
-	m_tMovementType										= m_movement_type;
-	m_tMentalState										= m_mental_state;
+	m_movement_type										= m_movement_type;
+	m_mental_state										= m_mental_state;
 	
 	if (m_desired_position)
 		CDetailPathManager::set_dest_position			(*m_desired_position);
@@ -151,7 +150,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 	VERIFY					(entity_condition);
 	u32						velocity_mask = eMovementParameterPositiveVelocity | (entity_condition->IsLimping() ? eMovementParameterDamaged : 0);
 
-	switch (m_tBodyState) {
+	switch (m_body_state) {
 		case eBodyStateCrouch : {
 			velocity_mask	|= eMovementParameterCrouch;
 			break;
@@ -167,7 +166,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 		default : NODEFAULT;
 	}
 
-	switch (m_tMentalState) {
+	switch (m_mental_state) {
 		case eMentalStateDanger : {
 			velocity_mask	|= eMovementParameterDanger;
 			break;
@@ -183,7 +182,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 	}
 
 //	if (!CDetailPathManager::path().empty() && ((CDetailPathManager::path().size() - 1) > CDetailPathManager::curr_travel_point_index())) {
-		switch (m_tMovementType) {
+		switch (m_movement_type) {
 			case eMovementTypeWalk : {
 				velocity_mask	|= eMovementParameterWalk;
 				break;
@@ -230,7 +229,7 @@ void CStalkerMovementManager::update(u32 time_delta)
 	custom_monster->m_body.speed	= (*I).second.real_angular_velocity;
 	m_head.speed					= 3*PI_DIV_2;
 
-	if (m_tMovementType != eMovementTypeStand)
+	if (m_movement_type != eMovementTypeStand)
 		if ((velocity_mask & eMovementParameterDanger) && (velocity_mask & eMovementParameterWalk))
 			set_velocity_mask		(velocity_mask | eMovementParameterStanding);
 		else

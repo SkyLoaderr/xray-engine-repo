@@ -316,8 +316,8 @@ void CAI_Stalker::UpdateCL(){
 #else
 		CObjectHandlerGOAP::update		(Level().timeServer() - m_dwLastUpdateTime);
 #endif
-		float							s_k		= ((eBodyStateCrouch == m_tBodyState) ? CROUCH_SOUND_FACTOR : 1.f);
-		float							s_vol	= s_k*((eMovementTypeRun == m_tMovementType) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		float							s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
+		float							s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
 		CMaterialManager::update		(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 	}

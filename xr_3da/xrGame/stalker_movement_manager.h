@@ -109,6 +109,7 @@ public:
 		eMovementParameterRunDangerCrouchDamagedNegative		= eMovementParameterRunDangerCrouchDamaged		| eMovementParameterNegativeVelocity,
 		eMovementParameterRunPanicDamagedStandNegative			= eMovementParameterRunPanicDamagedStand		| eMovementParameterNegativeVelocity,
 	};
+
 protected:
 	float								m_fCrouchFactor;
 	float								m_fWalkFactor;
@@ -121,9 +122,6 @@ protected:
 	float								m_fDamagedWalkFreeFactor;
 	float								m_fDamagedRunFreeFactor;
 	float								m_fDamagedPanicFactor;
-	EBodyState							m_tBodyState;
-	EMovementType						m_tMovementType;
-	EMentalState						m_tMentalState;
 
 protected:
 	const Fvector						*m_desired_position;
@@ -140,24 +138,12 @@ public:
 	MonsterSpace::SBoneRotation			m_head;
 
 public:
-					CStalkerMovementManager	();
-	virtual			~CStalkerMovementManager();
-			void	Init					();
-	virtual	void	Load					(LPCSTR section);
-	virtual	void	reinit					();
-	virtual	void	reload					(LPCSTR section);
-//
-//			void	update					(
-//						CAbstractVertexEvaluator	*tpNodeEvaluator,
-//						CAbstractVertexEvaluator	*tpPathEvaluator,
-//						const Fvector							*tpDesiredPosition,
-//						const Fvector							*tpDesiredDirection,
-//						EPathType								tGlobalPathType,
-//						EDetailPathType							tPathType,
-//						EBodyState								tBodyState,
-//						EMovementType							tMovementType,
-//						EMentalState							tMentalState
-//					);
+													CStalkerMovementManager	();
+	virtual											~CStalkerMovementManager();
+			void									Init					();
+	virtual	void									Load					(LPCSTR section);
+	virtual	void									reinit					();
+	virtual	void									reload					(LPCSTR section);
 	virtual	void									update					(u32 time_delta);
 	IC		void									set_head_orientation	(const MonsterSpace::SBoneRotation &orientation);
 	IC		const MonsterSpace::SBoneRotation		&head_orientation		() const;

@@ -15,12 +15,12 @@ IC const MonsterSpace::SBoneRotation &CStalkerMovementManager::head_orientation(
 
 IC const MonsterSpace::EMovementType CStalkerMovementManager::movement_type() const
 {
-	return				(m_tMovementType);
+	return				(m_movement_type);
 }
 
 IC const MonsterSpace::EMentalState CStalkerMovementManager::mental_state() const
 {
-	return				(m_tMentalState);
+	return				(m_mental_state);
 }
 
 IC void CStalkerMovementManager::set_head_orientation(const MonsterSpace::SBoneRotation &orientation)
@@ -30,7 +30,7 @@ IC void CStalkerMovementManager::set_head_orientation(const MonsterSpace::SBoneR
 
 IC	const MonsterSpace::EBodyState CStalkerMovementManager::body_state() const
 {
-	return				(m_tBodyState);
+	return				(m_body_state);
 }
 
 IC	void CStalkerMovementManager::set_desired_position(const Fvector *desired_position)

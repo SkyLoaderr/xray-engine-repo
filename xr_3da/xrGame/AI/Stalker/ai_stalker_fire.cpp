@@ -31,7 +31,7 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
 	R1				= m_r_hand;
 	R2				= m_r_finger2;
-	if ((IsLimping() && (m_tMentalState == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
+	if ((IsLimping() && (mental_state() == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
 		L			= R2;
 	else
 		L			= m_l_finger1;
@@ -47,7 +47,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 		D.getHP				(yaw,pitch);
 		CSkeletonAnimated	*tpKinematics = PSkeletonAnimated(Visual());
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
-		CMotionDef			*tpMotionDef = m_tAnims.A[m_tBodyState].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1))];
+		CMotionDef			*tpMotionDef = m_tAnims.A[body_state()].m_tGlobal.A[0].A[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(m_body.current.yaw,-yaw) <= PI_DIV_2 ? 0 : 1))];
 		float				power_factor = 3.f*amount/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
 	}
