@@ -20,13 +20,6 @@
 #	include "script_debugger.h"
 #endif
 
-#ifdef DEBUG
-void CScriptThread::lua_hook_call	(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
-{
-	ai().script_engine().current_thread()->script_hook(L,tpLuaDebug);
-}
-#endif
-
 const LPCSTR main_function = "console_command_run_string_main_thread_function";
 
 CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string)
@@ -68,7 +61,7 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName, bool do_string)
 			lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 		else
 #	endif
-			lua_sethook		(lua(), lua_hook_call,					LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
+			lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
 #endif
 
 		if (!do_string)

@@ -34,6 +34,9 @@ bool CScriptPropertyEvaluatorWrapper::evaluate		()
 		ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : evaluator returns value with not a %s type!",exception.info()->name());
 #endif
 	}
+	catch(...) {
+		ai().script_engine().script_log (ScriptStorage::eLuaMessageTypeError,"SCRIPT RUNTIME ERROR : evaluator returns value with not a bool type!");
+	}
 	return		(false);
 }
 

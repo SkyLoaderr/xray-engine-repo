@@ -37,6 +37,7 @@ void CScriptBinder::clear			()
 		xr_delete			(m_object);
 	}
 	catch(...) {
+		m_object			= 0;
 	}
 	init					();
 }
@@ -139,7 +140,7 @@ void CScriptBinder::save			(NET_Packet &output_packet)
 {
 	if (m_object) {
 		try {
-			m_object->save				(&output_packet);
+			m_object->save	(&output_packet);
 		}
 		catch(...) {
 			clear			();
@@ -151,7 +152,7 @@ void CScriptBinder::load			(IReader &input_packet)
 {
 	if (m_object) {
 		try {
-			m_object->load				(&input_packet);
+			m_object->load	(&input_packet);
 		}
 		catch(...) {
 			clear			();
@@ -163,7 +164,7 @@ BOOL CScriptBinder::net_SaveRelevant()
 {
 	if (m_object) {
 		try {
-			return						(m_object->net_SaveRelevant());
+			return			(m_object->net_SaveRelevant());
 		}
 		catch(...) {
 			clear			();

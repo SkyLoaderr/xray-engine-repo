@@ -107,9 +107,12 @@ void CScriptEngine::setup_callbacks		()
 
 #ifdef DEBUG
 #	include "script_thread.h"
-void lua_hook_call						(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
+void CScriptEngine::lua_hook_call		(CLuaVirtualMachine *L, lua_Debug *dbg)
 {
-	ai().script_engine().m_stack_is_ready	= true;
+	if (ai().script_engine().current_thread())
+		ai().script_engine().current_thread()->script_hook(L,dbg);
+	else
+		ai().script_engine().m_stack_is_ready	= true;
 }
 #endif
 
@@ -128,7 +131,7 @@ void CScriptEngine::script_export		()
 #	ifdef USE_DEBUGGER
 		if( !debugger() || !debugger()->Active()  )
 #	endif
-			lua_sethook					(lua(),lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET,	0);
+			lua_sethook					(lua(),lua_hook_call,	LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,	0);
 #endif
 
 #ifdef XRGAME_EXPORTS
