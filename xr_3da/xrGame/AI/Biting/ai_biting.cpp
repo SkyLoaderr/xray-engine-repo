@@ -13,6 +13,9 @@ using namespace AI_Biting;
 
 CAI_Biting::CAI_Biting()
 {
+	shedule.t_min	=	100;
+	shedule.t_max	=	150;
+	
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai_stalker);
 
 	stateRest			= xr_new<CBitingRest>		(this);
