@@ -38,6 +38,7 @@ float		ps_r2_ssaLOD_B			= 48.f;
 float		ps_r2_ssaHZBvsTEX		= 256.f;
 
 // R2-specific
+Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY };	// r2-only
 float		ps_r2_df_parallaxh		= 0.02f;
 float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
 float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
@@ -46,10 +47,12 @@ float		ps_r2_ls_psm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_ssm_kernel		= .7f;	// r2-only
 float		ps_r2_ls_bloom_threshold= .3f;	// r2-only
 float		ps_r2_ls_spower			= 64.f;
-Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_SPOT_UNMASK | R2FLAG_PARALLAX };	// r2-only
 Fvector		ps_r2_aa_barier			= { .8f, .1f, 0};	// r2-only
 Fvector		ps_r2_aa_weight			= { .25f,.25f,0};	// r2-only
 float		ps_r2_aa_kernel			= .9f;				// r2-only
+int			ps_r2_GI_depth			= 1;				// 1..5
+int			ps_r2_GI_photons		= 16;				// 8..64
+float		ps_r2_GI_clip			= EPS_L;			// EPS
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -103,9 +106,15 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sun",				&ps_r2_ls_flags,			R2FLAG_SUN);
 	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY);
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
-	CMD3(CCC_Mask,		"r2_spot_unmask",		&ps_r2_ls_flags,			R2FLAG_SPOT_UNMASK);
+
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
+
+	CMD3(CCC_Mask,		"r2_gi",				&ps_r2_ls_flags,			R2FLAG_GI);
+	CMD4(CCC_Float,		"r2_gi_clip",			&ps_r2_GI_clip,				EPS_L,	0.1f	);
+	CMD4(CCC_Integer,	"r2_gi_depth",			&ps_r2_GI_depth,			1,		5		);
+	CMD4(CCC_Integer,	"r2_gi_photons",		&ps_r2_GI_photons,			8,		256		);
+
 	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallaxh,		.0f,	.5f		);
 

@@ -50,7 +50,8 @@ extern Fvector		ps_r2_aa_barier;			// r2-only
 extern Fvector		ps_r2_aa_weight;			// r2-only
 extern float		ps_r2_aa_kernel;			// r2-only
 extern int			ps_r2_GI_depth;				// 1..5
-extern int			ps_r2_GI_quality;			// 8..64
+extern int			ps_r2_GI_photons;			// 8..256
+extern float		ps_r2_GI_clip;				// EPS
 
 enum
 {
@@ -59,7 +60,7 @@ enum
 	R2FLAG_BUMP_AF		= (1<<2),
 	R2FLAG_AA			= (1<<3),
 	R2FLAG_PARALLAX		= (1<<4),
-	R2FLAG_INDIRECT		= (1<<5),
+	R2FLAG_GI			= (1<<5),
 };
 
 extern void			xrRender_initconsole	();
