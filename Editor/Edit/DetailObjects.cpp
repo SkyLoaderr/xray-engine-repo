@@ -68,6 +68,7 @@ CDetail::CDetail(){
 
 CDetail::~CDetail(){
 	m_Vertices.clear	();
+    Lib.RemoveEditObject(m_pRefs);
 }
 
 LPCSTR CDetail::GetName	(){
@@ -88,7 +89,8 @@ void CDetail::OnDeviceDestroy(){
 
 bool CDetail::Update	(LPCSTR name){
     // update link
-    m_pRefs				= Lib.GetEditObject(name);
+    Lib.RemoveEditObject(m_pRefs);
+    m_pRefs				= Lib.CreateEditObject(name);
     if (!m_pRefs){
         ELog.DlgMsg		(mtError, "CDetail: '%s' not found in library", name);
         return false;

@@ -92,7 +92,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             }
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
-                            if (_GetItemCount(tex_name,'_')>0){
+                            if (_GetItemCount(tex_name,'_')>1){
                             	char fn[_MAX_FNAME];
                             	char fld[_MAX_FNAME];
                                 _GetItem(tex_name,0,fld,'_');

@@ -196,9 +196,7 @@ void CPortalUtils::CreateDebugCollection(){
 
 	// create debug object
     CSceneObject* O = new CSceneObject("$debug_object_0x247d05e9");
-    CEditableObject* EO = Lib.GetEditObject("editor\\debug_sector");
-    if (!EO){ _DELETE(O); UI.ProgressEnd(); return; }
-    O->SetRef(EO);
+    if (!O->SetReference("editor\\debug_sector")){ ELog.DlgMsg(mtError,"Creating failed."); _DELETE(O); UI.ProgressEnd(); return; }
 
 	UI.ProgressInc();
 

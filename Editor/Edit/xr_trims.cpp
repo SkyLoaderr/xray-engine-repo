@@ -32,7 +32,7 @@ void SequenceToList(AStringVec& lst, LPCSTR in){
     int t_cnt=_GetItemCount(in);
     char T[MAX_OBJ_NAME];
     for (int i=0; i<t_cnt; i++){
-        _GetItem(in,i,T,0);
+        _GetItem(in,i,T,',',0);
         lst.push_back(T);
     }
 }

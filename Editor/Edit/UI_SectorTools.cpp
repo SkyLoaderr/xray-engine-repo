@@ -114,7 +114,7 @@ bool __fastcall TUI_ControlSectorAdd::End(TShiftState _Shift)
                 Scene.FrustumPick(frustum, OBJCLASS_SCENEOBJECT, lst);
                 for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
                     O_ref = (CSceneObject*)(*_F);
-                    O_lib = O_ref->GetRef();
+                    O_lib = O_ref->GetReference();
                     for(EditMeshIt m_def = O_lib->m_Meshes.begin();m_def!=O_lib->m_Meshes.end();m_def++){
                         fl.clear();
                         O_ref->GetFullTransformToWorld(matrix);

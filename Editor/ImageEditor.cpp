@@ -16,6 +16,7 @@
 TfrmImageLib* TfrmImageLib::form = 0;
 FileMap TfrmImageLib::texture_map;
 FileMap TfrmImageLib::modif_map;
+AnsiString TfrmImageLib::m_LastSelection="";
 //---------------------------------------------------------------------------
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     : TForm(Owner)
@@ -72,7 +73,9 @@ void __fastcall TfrmImageLib::FormShow(TObject *Sender)
     InitItemsList();
     UI.BeginEState(esEditImages);
 
-    TElTreeItem* node = tvItems->Items->GetFirstNode();
+    TElTreeItem *node=0;
+    if (m_LastSelection.IsEmpty()) node = tvItems->Items->GetFirstNode();
+    else node = FOLDER::FindObject(tvItems,m_LastSelection.c_str());
     if (node){
         tvItems->Selected = node;
         tvItems->EnsureVisible(node);
@@ -195,6 +198,8 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	ImageProps->MakeIntValue(&fmt.fade_amount,0,100,1));
         ImageProps->AddItem(0,PROP_COLOR,"Fade Color",		&fmt.fade_color);
         ImageProps->EndFillMode();
+
+        m_LastSelection = m_SelectedName;
     }else{
 		ImageProps->ClearProperties();
 		_DELETE(m_Thm);

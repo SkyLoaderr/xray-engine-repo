@@ -42,7 +42,13 @@ void ELibrary::OnDestroy(){
     // remove all instance CEditableObject
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
-    for(; O!=E; O++) delete O->second;
+    for(; O!=E; O++){
+    	if (0!=O->second->m_RefCount){
+        	ELog.DlgMsg(mtError,"Object '%s' still referenced.",O->first);
+	    	R_ASSERT(0==O->second->m_RefCount);
+        }
+    	delete O->second;
+    }
 	m_EditObjects.clear();
 
     m_Objects.clear();
@@ -62,20 +68,22 @@ int ELibrary::ObjectCount(){
 }
 //----------------------------------------------------
 
-void ELibrary::UnloadMeshes(){
-	VERIFY(m_bReady);
-	EditObjPairIt O = m_EditObjects.begin();
-	EditObjPairIt E = m_EditObjects.end();
-    for(; O!=E; O++) delete O->second;
-	m_EditObjects.clear();
-}
-//----------------------------------------------------
 void ELibrary::RefreshLibrary(){
 	VERIFY(m_bReady);
     OnDestroy();
     OnCreate();
 }
 //----------------------------------------------------
+void ELibrary::ReloadObject(LPCSTR nm)
+{
+	VERIFY(m_bReady);
+	R_ASSERT(nm&&nm[0]);
+    sh_name name; strcpy(name,nm); strlwr(name);
+	EditObjPairIt it = m_EditObjects.find(name);
+    if (it!=m_EditObjects.end())
+    	it->second->Reload();
+}
+//---------------------------------------------------------------------------
 void ELibrary::ReloadObjects(){
 	VERIFY(m_bReady);
 	EditObjPairIt O = m_EditObjects.begin();
@@ -118,7 +126,7 @@ CEditableObject* ELibrary::LoadEditObject(LPCSTR name, int age){
 }
 //---------------------------------------------------------------------------
 
-CEditableObject* ELibrary::GetEditObject(LPCSTR nm,int* age)
+CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
 {
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
@@ -131,20 +139,18 @@ CEditableObject* ELibrary::GetEditObject(LPCSTR nm,int* age)
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
     else if (m_EditObject=LoadEditObject(name,p_it->second))
 		m_EditObjects[name] = m_EditObject;
+	m_EditObject->m_RefCount++;
 	return m_EditObject;
 }
 //---------------------------------------------------------------------------
 
-void ELibrary::UnloadObject(LPCSTR nm)
+void ELibrary::RemoveEditObject(CEditableObject*& object)
 {
-	VERIFY(m_bReady);
-	R_ASSERT(nm&&nm[0]);
-    sh_name name; strcpy(name,nm); strlwr(name);
-	EditObjPairIt it = m_EditObjects.find(name);
-    if (it!=m_EditObjects.end()){
-    	delete it->second;
-		m_EditObjects.erase(it);
-    }
+	if (object){
+	    object->m_RefCount--;
+    	R_ASSERT(object->m_RefCount>=0);
+//S если нужно то удалить физически
+	}
 }
 //---------------------------------------------------------------------------
 

@@ -10,6 +10,7 @@
 #include "bottombar.h"
 #include "scene.h"
 #include "d3dutils.h"
+#include "library.h"
 
 //----------------------------------------------------
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
@@ -37,6 +38,7 @@ void CSceneObject::Construct(){
 }
 
 CSceneObject::~CSceneObject(){
+	Lib.RemoveEditObject(m_pRefs);
 }
 
 //----------------------------------------------------
@@ -232,3 +234,8 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m ){
 void CSceneObject::RTL_Update(float dT){
 }
 
+CEditableObject* CSceneObject::SetReference(LPCSTR ref_name)
+{
+	if (m_pRefs) Lib.RemoveEditObject(m_pRefs);
+	return (m_pRefs=Lib.CreateEditObject(ref_name));
+}

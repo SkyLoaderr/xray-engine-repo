@@ -33,7 +33,6 @@ __published:	// IDE-managed Components
     TExtBtn *ebCancel;
     TElTree *tvObjects;
 	TExtBtn *ebMakeThm;
-	TExtBtn *ebUnload;
 	TFormStorage *fsStorage;
 	TExtBtn *ebProperties;
 	TCheckBox *cbPreview;
@@ -55,7 +54,6 @@ __published:	// IDE-managed Components
 //    void __fastcall ebCancelEditClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
-	void __fastcall ebUnloadClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvObjectsItemFocused(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);

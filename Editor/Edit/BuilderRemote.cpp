@@ -225,7 +225,7 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 }
 
 void SceneBuilder::BuildObject(CSceneObject* obj){
-	CEditableObject *O = obj->GetRef();
+	CEditableObject *O = obj->GetReference();
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
     UI.SetStatus(temp.c_str());
 

@@ -76,7 +76,7 @@ bool SceneBuilder::BuildLTX(){
         CSceneObject *obj = (CSceneObject*)(*i);
         if( obj->IsDynamic() ){
     		pIni->WriteString("mobileobjects", obj->GetName(), obj->GetName() );
-            if( !obj->GetRef()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->GetName()), obj->GetRef()->GetClassScript().c_str());
+            if( !obj->GetReference()->GetClassScript().IsEmpty() ) AppendDataToSection(pIni, AnsiString(obj->GetName()), obj->GetReference()->GetClassScript().c_str());
             pIni->WriteVector(obj->GetName(),"position",obj->GetPosition());
 			Fmatrix mRotate; mRotate.setHPB(obj->GetRotate().y, obj->GetRotate().x, obj->GetRotate().z);
             pIni->WriteVector(obj->GetName(),"direction",mRotate.k);

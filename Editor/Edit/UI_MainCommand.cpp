@@ -56,9 +56,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
-		Lib.OnDestroy	();
-    	PSLib.OnDestroy	();
 		Scene.OnDestroy	();
+    	PSLib.OnDestroy	();
+		Lib.OnDestroy	();
 		Tools.OnDestroy	();
         UI.OnDestroy	();
 		//----------------
@@ -233,10 +233,6 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
     case COMMAND_UNLOAD_TEXTURES:
 		Device.UnloadTextures();
-    	break;
-
-    case COMMAND_UNLOAD_LIBMESHES:
-    	Lib.UnloadMeshes();
     	break;
 
     case COMMAND_REFRESH_LIBRARY:

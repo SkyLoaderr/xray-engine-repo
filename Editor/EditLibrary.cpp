@@ -20,6 +20,7 @@
 #include "ImageManager.h"
 #include "ImageThumbnail.h"
 #include "DetailObjects.h"
+#include "xr_trims.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -119,7 +120,6 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
     TfrmPropertiesObject::HideProperties();
 	Scene.unlock();
 //    Lib.ResetAnimation();
-    Lib.SetCurrentObject("");
     UI.EndEState(esEditLibrary);
     UI.Command(COMMAND_CLEAR);
     // remove directional light
@@ -161,16 +161,27 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
     ebMakeThm->Enabled = false;
     if (node&&FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
         // change thm
-        AnsiString nm,fn;
+        AnsiString nm,obj_fn,thm_fn;
         FOLDER::MakeName		(node,0,nm,false);
-        fn						= ChangeFileExt(nm,".thm");
-        FS.m_Objects.Update(fn);
-        if (FS.Exist(fn.c_str())){
-            m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+
+        obj_fn					= ChangeFileExt(nm,".object");
+        thm_fn					= ChangeFileExt(nm,".thm");
+        FS.m_Objects.Update(obj_fn);
+        FS.m_Objects.Update(thm_fn);
+        if (FS.Exist(thm_fn.c_str())){
+        	// если версии совпадают
+            int obj_age 		= FS.GetFileAge(obj_fn);
+            int thm_age 		= FS.GetFileAge(thm_fn);
+            if (obj_age&&(obj_age==thm_age)){
+	            m_Thm 			= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
+            }else{
+            	ELog.Msg(mtError,"Update object thumbnail. Stale data.");
+            }
         }
 
         if (cbPreview->Checked||TfrmPropertiesObject::Visible()){
-            m_SelectedObject = Lib.GetEditObject(nm.c_str());
+        	Lib.RemoveEditObject(m_SelectedObject);
+            m_SelectedObject = Lib.CreateEditObject(nm.c_str());
             R_ASSERT(m_SelectedObject);
             ZoomObject();
 		    ebMakeThm->Enabled = true;
@@ -191,7 +202,8 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     if (cbPreview->Checked&&node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-	    m_SelectedObject = Lib.GetEditObject(name.c_str());
+		Lib.RemoveEditObject(m_SelectedObject);
+	    m_SelectedObject = Lib.CreateEditObject(name.c_str());
     	R_ASSERT(m_SelectedObject);
 	    ebMakeThm->Enabled = true;
         ZoomObject();
@@ -205,7 +217,7 @@ void TfrmEditLibrary::InitObjects()
     tvObjects->Items->Clear();
     FileMap& lst = Lib.Objects();
     FilePairIt it=lst.begin();
-    FilePairIt _E=lst.end();   // check without extension
+    FilePairIt _E=lst.end();   
     for(; it!=_E; it++)
         FOLDER::AppendObject(tvObjects,it->first.c_str());
 	tvObjects->IsUpdating		= false;
@@ -226,7 +238,8 @@ void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
     if (FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
-	    m_SelectedObject = Lib.GetEditObject(name.c_str());
+		Lib.RemoveEditObject(m_SelectedObject);
+	    m_SelectedObject = Lib.CreateEditObject(name.c_str());
     	R_ASSERT(m_SelectedObject);
         TfrmPropertiesObject::SetCurrent(m_SelectedObject);
         TfrmPropertiesObject::ShowProperties();
@@ -262,7 +275,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 	if (tvObjects->Selected&&FOLDER::IsObject(tvObjects->Selected)){
     	AnsiString name; FOLDER::MakeName(tvObjects->Selected,0,name,false);
         int age;
-   	    CEditableObject* obj = Lib.GetEditObject(name.c_str(),&age);
+   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
     	if (obj&&cbPreview->Checked){
             AnsiString obj_name, tex_name;
             obj_name = ChangeFileExt(obj->GetName(),".object");
@@ -281,15 +294,8 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 	    }else{
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
         }
+		Lib.RemoveEditObject(obj);
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLibrary::ebUnloadClick(TObject *Sender)
-{
-	if (ebSave->Enabled) ebSaveClick(Sender);
-	UI.Command(COMMAND_UNLOAD_LIBMESHES);
-    RefreshSelected();
 }
 //---------------------------------------------------------------------------
 
@@ -342,21 +348,32 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
-    AnsiString fn, nm;
-    if (FS.GetOpenName(&FS.m_Import,fn)){
-    	nm = fn;
-        nm = nm.Delete(1,strlen(FS.m_Import.m_Path));
-	    CEditableObject* O = new CEditableObject(nm.c_str());
-        if (O->Load(fn.c_str())){
-            O->m_ObjVer.f_age = FS.GetFileAge(AnsiString(fn));
-			fn = ChangeFileExt(nm,".object");
-		    if (FS.GetSaveName(&FS.m_Objects,fn)){
-            	O->SaveObject(fn.c_str());
-                Lib.RefreshLibrary();
-                InitObjects();
+    AnsiString open_nm, save_nm, nm;
+    if (FS.GetOpenName(&FS.m_Import,open_nm,true)){
+    	AStringVec lst;
+        SequenceToList(lst,open_nm.c_str());
+		bool bNeedUpdate=false;
+		bool bNeedBreak=false;
+        for (AStringIt it=lst.begin(); it!=lst.end(); it++){
+            nm = *it;
+            nm = nm.Delete(1,strlen(FS.m_Import.m_Path));
+            CEditableObject* O = new CEditableObject(nm.c_str());
+            if (O->Load(it->c_str())){
+                O->m_ObjVer.f_age = FS.GetFileAge(*it);
+                save_nm = ChangeFileExt(nm,".object");
+                if (FS.GetSaveName(&FS.m_Objects,save_nm)){
+                    O->SaveObject(save_nm.c_str());
+                    FS.MarkFile(*it);
+                    bNeedUpdate=true;
+                }else bNeedBreak=true;
             }
+            _DELETE(O);
+            if (bNeedBreak) break;
         }
-		_DELETE(O);
+        if (bNeedUpdate){
+			Lib.RefreshLibrary();
+			InitObjects();
+        }
     }
 }
 //---------------------------------------------------------------------------

@@ -104,7 +104,7 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 struct SDOData{
-    CEditableObject* O;
+    AnsiString	m_RefName;
     float		m_fMinScale;
     float		m_fMaxScale;
     float 		m_fDensityFactor;

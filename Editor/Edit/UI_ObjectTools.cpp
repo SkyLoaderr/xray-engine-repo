@@ -54,35 +54,37 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift){
     }
     if(!N) return false;
 
-    CEditableObject* ref = Lib.GetEditObject(Lib.GetCurrentObject());
-	if(ref){
-        if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
-            char namebuffer[MAX_OBJ_NAME];
-            Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
-            CSceneObject *obj = new CSceneObject(namebuffer);
-            obj->SetRef(ref);
-            if (fraLeftBar->ebRandomAdd->Down){
-                Fvector S;
-                if (frmEditorPreferences->cbRandomRotation->Checked){
-                    obj->Rotate().set(deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinX->Value,frmEditorPreferences->seRandomRotateMaxX->Value)),
-                                    deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinY->Value,frmEditorPreferences->seRandomRotateMaxY->Value)),
-                                    deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinZ->Value,frmEditorPreferences->seRandomRotateMaxZ->Value)));
-                }
-                if (frmEditorPreferences->cbRandomScale->Checked){
-                    obj->Scale().set(Random.randF(frmEditorPreferences->seRandomScaleMinX->Value,frmEditorPreferences->seRandomScaleMaxX->Value),
-                                    Random.randF(frmEditorPreferences->seRandomScaleMinY->Value,frmEditorPreferences->seRandomScaleMaxY->Value),
-                                    Random.randF(frmEditorPreferences->seRandomScaleMinZ->Value,frmEditorPreferences->seRandomScaleMaxZ->Value));
-                }
-                if (frmEditorPreferences->cbRandomSize->Checked){
-                    obj->Scale().x=obj->Scale().y=obj->Scale().z=Random.randF(frmEditorPreferences->seRandomSizeMin->Value,frmEditorPreferences->seRandomSizeMax->Value);
-                }
-            }
-            obj->Move(p);
-            Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
-            Scene.AddObject( obj );
-            if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
-            if (!Shift.Contains(ssAlt)) ResetActionToSelect();
+    if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
+        char namebuffer[MAX_OBJ_NAME];
+        Scene.GenObjectName(OBJCLASS_SCENEOBJECT, namebuffer, N);
+        CSceneObject *obj = new CSceneObject(namebuffer);
+        CEditableObject* ref = obj->SetReference(N);
+        if (!ref){
+        	ELog.DlgMsg(mtError,"TUI_ControlObjectAdd:: Can't load reference object.");
+        	_DELETE(obj);
+        	return false;
         }
+        if (fraLeftBar->ebRandomAdd->Down){
+            Fvector S;
+            if (frmEditorPreferences->cbRandomRotation->Checked){
+                obj->Rotate().set(deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinX->Value,frmEditorPreferences->seRandomRotateMaxX->Value)),
+                                deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinY->Value,frmEditorPreferences->seRandomRotateMaxY->Value)),
+                                deg2rad(Random.randF(frmEditorPreferences->seRandomRotateMinZ->Value,frmEditorPreferences->seRandomRotateMaxZ->Value)));
+            }
+            if (frmEditorPreferences->cbRandomScale->Checked){
+                obj->Scale().set(Random.randF(frmEditorPreferences->seRandomScaleMinX->Value,frmEditorPreferences->seRandomScaleMaxX->Value),
+                                Random.randF(frmEditorPreferences->seRandomScaleMinY->Value,frmEditorPreferences->seRandomScaleMaxY->Value),
+                                Random.randF(frmEditorPreferences->seRandomScaleMinZ->Value,frmEditorPreferences->seRandomScaleMaxZ->Value));
+            }
+            if (frmEditorPreferences->cbRandomSize->Checked){
+                obj->Scale().x=obj->Scale().y=obj->Scale().z=Random.randF(frmEditorPreferences->seRandomSizeMin->Value,frmEditorPreferences->seRandomSizeMax->Value);
+            }
+        }
+        obj->Move(p);
+        Scene.SelectObjects(false,OBJCLASS_SCENEOBJECT);
+        Scene.AddObject( obj );
+        if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOWPROPERTIES);
+        if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;
 }

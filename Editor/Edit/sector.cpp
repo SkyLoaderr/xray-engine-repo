@@ -419,7 +419,7 @@ void CSector::OnDestroy( ){
 void CSector::OnSceneUpdate(){
 	bool bUpdate=false;
     for(SItemIt it = sector_items.begin();it!=sector_items.end();it++){
-    	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetRef()->ContainsMesh(it->mesh))){
+    	if (!(Scene.ContainsObject(it->object,OBJCLASS_SCENEOBJECT)&&it->object->GetReference()->ContainsMesh(it->mesh))){
             sector_items.erase(it); it--;
             bUpdate=true;
         }
@@ -531,7 +531,7 @@ void CSector::LoadSectorDef( CStream* F ){
      	return;
     }
 	F->RstringZ(m_name);
-	sitem.mesh=sitem.object->GetRef()->FindMeshByName(m_name);
+	sitem.mesh=sitem.object->GetReference()->FindMeshByName(m_name);
     if (sitem.mesh==0){
     	ELog.Msg(mtError,"Sector Item contains object '%s' mesh '%s' - can't load.\nMesh not found.",o_name,m_name);
         m_bHasLoadError = true;

@@ -91,7 +91,7 @@ void CFileSystem::OnCreate(){
 
 //----------------------------------------------------
 
-bool CFileSystem::GetOpenName( FSPath *initial, char *buffer ){
+bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
 	VERIFY( initial && buffer );
 
     bool res;
@@ -104,8 +104,18 @@ bool CFileSystem::GetOpenName( FSPath *initial, char *buffer ){
     od->DefaultExt = initial->m_DefExt;
     od->FileName = buffer;
     od->Options << ofNoChangeDir << ofFileMustExist	<< ofPathMustExist;
+    if (bMulti) od->Options << ofAllowMultiSelect;
     res = od->Execute();
-    if (res) strcpy(buffer, od->FileName.c_str());
+    if (res){
+    	if (bMulti){
+	        strcpy(buffer, od->Files->Strings[0].c_str());
+    	    for (int i=1; i<od->Files->Count; i++){
+				strcat(buffer,",");
+                strcat(buffer,od->Files->Strings[i].c_str());
+            }
+        }else
+    		strcpy(buffer, od->FileName.c_str());
+    }
     _DELETE(od);
     return res;
 }
@@ -130,7 +140,7 @@ bool CFileSystem::GetSaveName( FSPath *initial, char *buffer ){
 }
 //----------------------------------------------------
 
-bool CFileSystem::GetOpenName( FSPath *initial, AnsiString& buffer ){
+bool CFileSystem::GetOpenName( FSPath *initial, AnsiString& buffer, bool bMulti ){
 	VERIFY( initial );
     bool res;
     AnsiString flt;
@@ -142,8 +152,16 @@ bool CFileSystem::GetOpenName( FSPath *initial, AnsiString& buffer ){
     od->DefaultExt = initial->m_DefExt;
     od->FileName = buffer;
     od->Options << ofNoChangeDir << ofFileMustExist	<< ofPathMustExist;
+    if (bMulti) od->Options << ofAllowMultiSelect;
     res = od->Execute();
-    if (res) buffer = od->FileName;
+    if (res){
+    	if (bMulti){
+	        buffer = od->Files->Strings[0];
+    	    for (int i=1; i<od->Files->Count; i++)
+				buffer += ","+od->Files->Strings[i];
+        }else
+    		buffer = od->FileName;
+    }
     _DELETE(od);
     return res;
 }

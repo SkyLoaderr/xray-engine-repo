@@ -31,15 +31,15 @@ public:
 
     void 				ReloadObjects		();
     void 				RefreshLibrary		();
-    void 				UnloadMeshes		();
+    void 				ReloadObject		(LPCSTR name);
 //    void				ResetAnimation		();
 
 //	void 				GenerateObjectName	(char* buffer, const char* start_name, const CLibObject* pass_object);
-    void 				UnloadObject		(LPCSTR N);
 
     void				SetCurrentObject	(LPCSTR T);
     LPCSTR				GetCurrentObject	(){return m_Current.IsEmpty()?0:m_Current.c_str();}
-    CEditableObject*	GetEditObject		(LPCSTR name,int* age=0);
+    CEditableObject*	CreateEditObject	(LPCSTR name,int* age=0);
+    void				RemoveEditObject	(CEditableObject*& object);
 
 	int 				ObjectCount        	();
 	FileMap&			Objects	        	(){return m_Objects;}
@@ -49,8 +49,6 @@ public:
 };
 
 extern ELibrary Lib;
-#define SKYDOME_FOLDER 		"$SkyDome"
-#define DETAILOBJECT_FOLDER	"$Detail Objects"
 //----------------------------------------------------
 #endif /*_INCDEF_Library_H_*/
 

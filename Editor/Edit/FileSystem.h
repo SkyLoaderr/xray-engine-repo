@@ -55,9 +55,9 @@ public:
 	virtual ~CFileSystem	();
     void 	OnCreate		();
 
-	bool 	GetOpenName		(FSPath *initial, char *buffer);
+	bool 	GetOpenName		(FSPath *initial, char *buffer, bool bMulti=false);
 	bool 	GetSaveName		(FSPath *initial, char *buffer);
-	bool 	GetOpenName		(FSPath *initial, AnsiString& buf);
+	bool 	GetOpenName		(FSPath *initial, AnsiString& buf, bool bMulti=false);
 	bool 	GetSaveName		(FSPath *initial, AnsiString& buf);
 
     bool 	Exist			(LPCSTR _FileName, bool bMessage = false);

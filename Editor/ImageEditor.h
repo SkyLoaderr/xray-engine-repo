@@ -69,6 +69,7 @@ private:	// User declarations
 	void __fastcall SaveTextureParams();
     bool bCheckMode;
     TfrmProperties* ImageProps;
+    static AnsiString m_LastSelection;
 public:		// User declarations
     __fastcall TfrmImageLib(TComponent* Owner);
 // static function

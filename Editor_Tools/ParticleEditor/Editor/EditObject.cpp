@@ -37,6 +37,8 @@ CEditableObject::CEditableObject(LPCSTR name)
     t_vRotate.set  	(0.f,0.f,0.f);
 
     t_bOnModified	= false;
+
+    m_RefCount		= 0;
 }
 
 CEditableObject::~CEditableObject(){

@@ -294,18 +294,20 @@ void __fastcall TfrmSceneProperties::mcLMAmbientMouseDown(TObject *Sender,
 void __fastcall TfrmSceneProperties::ebChooseSkydomeClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
-	LPCSTR N = TfrmChoseItem::SelectObject(false,SKYDOME_FOLDER,0);
+	LPCSTR N = TfrmChoseItem::SelectObject(false,0,0);
 	if (!N) return;
 
-	CEditableObject* O = Lib.GetEditObject(N);
+	CEditableObject* O = Lib.CreateEditObject(N);
 	if (!O){
     	ELog.DlgMsg(mtError,"Object %s can't find in library.",N);
         return;
 	}
     if (!O->IsDynamic()){
     	ELog.DlgMsg(mtError,"Non-dynamic models can't be used as Skydome.");
+        Lib.RemoveEditObject(O);
         return ;
 	}
+	Lib.RemoveEditObject(O);
 	edSkydomeObjectName->Text = N;
 #endif
 }

@@ -95,7 +95,6 @@ protected:
 
 	// bounding volume
 	Fbox 			m_Box;
-
 public:
     // temp variables for transformation
 	Fvector 		t_vPosition;
@@ -105,6 +104,8 @@ public:
     bool			t_bOnModified;
     IC bool			IsModified				(){return t_bOnModified;}
     IC void			Modified				(){t_bOnModified=true;}
+
+    int				m_RefCount;
 protected:
     st_Version		m_ObjVer;
 

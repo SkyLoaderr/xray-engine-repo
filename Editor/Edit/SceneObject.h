@@ -35,8 +35,8 @@ public:
     // get object properties methods
 	IC bool 		RefCompare				(CEditableObject *to){return !!(m_pRefs==to); }
 	IC bool 		RefCompare				(LPCSTR ref){return strcmp(ref,m_pRefs->GetName())==0; }
-	IC CEditableObject*	GetRef				()	{return m_pRefs; }
-	IC void			SetRef					(CEditableObject* ref)	{m_pRefs = ref;}
+	IC CEditableObject*	GetReference		()	{return m_pRefs; }
+	CEditableObject*SetReference			(LPCSTR ref_name);
 	IC EditMeshVec& Meshes					() {VERIFY(m_pRefs); return m_pRefs->Meshes();}
 
     // statistics methods

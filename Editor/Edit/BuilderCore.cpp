@@ -65,7 +65,7 @@ bool SceneBuilder::LightenObjects(){
     ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_F!=_E;_F++){
-    	CEditableObject* O = ((CSceneObject*)(*_F))->GetRef();
+    	CEditableObject* O = ((CSceneObject*)(*_F))->GetReference();
         if (UI.NeedAbort()) break; // break building
         O->LightenObject();
 		UI.ProgressInc();

@@ -51,9 +51,8 @@ void TfrmDOShuffle::GetInfo(){
     VERIFY(DM);
     // objects
     for (DOIt d_it=DM->m_Objects.begin(); d_it!=DM->m_Objects.end(); d_it++){
-    	SDOData* dd = new SDOData;
-        dd->O = Lib.GetEditObject((*d_it)->GetName());
-        VERIFY(dd->O);
+    	SDOData* dd 			= new SDOData;
+        dd->m_RefName			= (*d_it)->GetName();
         dd->m_fMinScale 		= (*d_it)->m_fMinScale;
         dd->m_fMaxScale 		= (*d_it)->m_fMaxScale;
         dd->m_fDensityFactor 	= (*d_it)->m_fDensityFactor;
@@ -86,10 +85,10 @@ void TfrmDOShuffle::ApplyInfo(){
     	if (DO)	DO->m_bMarkDel = false;
         else	DO = DM->AppendObject(AnsiString(node->Text).c_str());
         // update data
-        SDOData* DD = (SDOData*)node->Data;
-        DO->m_fMinScale 		= DD->m_fMinScale;
-        DO->m_fMaxScale 		= DD->m_fMaxScale;
-        DO->m_fDensityFactor 	= DD->m_fDensityFactor;
+        SDOData* DD 		= (SDOData*)node->Data;
+        DO->m_fMinScale 	= DD->m_fMinScale;
+        DO->m_fMaxScale 	= DD->m_fMaxScale;
+        DO->m_fDensityFactor= DD->m_fDensityFactor;
     }
     DM->RemoveObjects(true);
 	// update indices
@@ -173,7 +172,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 		AnsiString nm 		= Item->Text;
     	m_Thm 				= new EImageThumbnail(nm.c_str(),EImageThumbnail::EITObject);
         SDOData* dd			= (SDOData*)Item->Data;
-		lbItemName->Caption = "\""+AnsiString(dd->O->GetName())+"\"";
+		lbItemName->Caption = "\""+dd->m_RefName+"\"";
 		AnsiString temp; 	temp.sprintf("Density: %1.2f\nScale: [%3.1f, %3.1f)",dd->m_fDensityFactor,dd->m_fMinScale,dd->m_fMaxScale);
         lbInfo->Caption		= temp;
     }else{
@@ -245,12 +244,11 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
 		SequenceToList(lst, S);
         for (AStringIt s_it=lst.begin(); s_it!=lst.end(); s_it++)
         	if (!FindItem(s_it->c_str())){
-                SDOData* dd = new SDOData;
-                dd->O = Lib.GetEditObject(s_it->c_str());
-                VERIFY(dd->O);
-                dd->m_fMinScale 		= 0.5f;
-                dd->m_fMaxScale 		= 2.f;
-                dd->m_fDensityFactor 	= 1.f;
+                SDOData* dd 		= new SDOData;
+                dd->m_RefName 		= s_it->c_str();
+                dd->m_fMinScale 	= 0.5f;
+                dd->m_fMaxScale 	= 2.f;
+                dd->m_fDensityFactor= 1.f;
              	AddItem(0,s_it->c_str(),(void*)dd);
             }
     }

@@ -87,6 +87,8 @@ public:
     void __fastcall	SetNumRotation	(CCustomObject* O);
     void __fastcall	SetNumScale		(CCustomObject* O);
 
+    void			OnShowHint		(AStringVec& ss);
+
     bool __fastcall MouseStart  	(TShiftState Shift);
     bool __fastcall MouseEnd    	(TShiftState Shift);
     void __fastcall MouseMove   	(TShiftState Shift);
