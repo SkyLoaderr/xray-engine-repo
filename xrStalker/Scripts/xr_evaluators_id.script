@@ -9,15 +9,14 @@ final_trade_init            = stalker_ids.property_script + 1
 final_trade_processed       = stalker_ids.property_script + 2
 
 -- эвалуаторы Стохе
-stohe_evaluators = stalker_ids.property_script + 100
-
+stohe_evaluators = stalker_ids.property_script + 1000
 stohe_tradeseller_base      = stohe_evaluators
 stohe_kamp_base        = stohe_evaluators + 20
 stohe_meet_base        = stohe_evaluators + 30
 stohe_reactions_base    = stohe_evaluators + 40
 
 --эвалуаторы Сидоровича
-sidor_evaluator                     =   stohe_evaluators    + 1024
+sidor_evaluator                     =   stalker_ids.property_script + 2000
 sidor_pathend_commander_property    =   sidor_evaluator     + 0
 sidor_pathend_soldier_property      =   sidor_evaluator     + 5
 sidor_patrol_base_property          =   sidor_evaluator + 0
@@ -27,7 +26,7 @@ sidor_swat_base                     =   sidor_evaluator + 40
 sidor_follower_base                 =   sidor_evaluator + 50
 
 -- эвалуаторы Чугай
-chugai_evaluators    = sidor_evaluator   + 1024
+chugai_evaluators    = stalker_ids.property_script + 3000
 
 ambush_never_true    = chugai_evaluators + 0
 ambush_attack        = chugai_evaluators + 1
@@ -41,6 +40,6 @@ commander_commander  = chugai_evaluators + 20
 chugai_scout_base    = chugai_evaluators + 30
 
 -- эвалуаторы Змея
-zmey_evaluators = stalker_ids.property_script + 10000
-zmey_property_guard_activity_end    = zmey_evaluators + 1
+zmey_evaluators = stalker_ids.property_script + 4000
 zmey_guard_base      = zmey_evaluators + 0
+zmey_property_guard_activity_end    = zmey_evaluators + 1
