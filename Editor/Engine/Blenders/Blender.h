@@ -20,6 +20,7 @@ class ENGINE_API CBlender_DESC
 {
 public:
 	CLASS_ID	CLS;
+	WORD		version;
 	char		cName		[128];
 	char		cComputer	[32];
 	DWORD		cTime;
@@ -30,6 +31,7 @@ public:
 		cName[0]	= 0;
 		cComputer[0]= 0;
 		cTime		= 0;
+		version		= 0;
 	}
 
 	void					Setup	(LPCSTR N)
