@@ -10,6 +10,12 @@ IC bool		p_sort			(CBlender* A, CBlender* B)
 	return stricmp(A->getComment(),B->getComment())<0;
 }
 
+#ifdef __BORLANDC__
+	#define TYPES_EQUAL(A,B) (typeid(A) == typeid(B))
+#else
+	#define TYPES_EQUAL(A,B) (typeid(A).raw_name() == typeid(B).raw_name())
+#endif
+
 void		CBlender::CreatePalette(vector<CBlender*> &palette)
 {
 	// Create palette itself
@@ -43,7 +49,7 @@ void		CBlender::CreatePalette(vector<CBlender*> &palette)
 		for (u32 j=i+1; j<palette.size(); j++)
 		{
 			CBlender* B		= palette[j];
-			if (typeid(*A).raw_name() == typeid(*B).raw_name())
+			if (TYPES_EQUAL(*A,*B))
 			{
 				xr_delete(palette[j]);
 				j--;

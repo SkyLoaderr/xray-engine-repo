@@ -4,6 +4,8 @@
 
 #include "frustum.h"
 #include "vis_common.h"
+#include "blender.h"
+#include "blender_clsid.h"
 
 // definition (Renderer)
 class	CRender{

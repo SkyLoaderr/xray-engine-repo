@@ -71,7 +71,8 @@
       Intermediate\SHToolsInterface.obj Intermediate\SHGameMtlTools.obj 
       Intermediate\SHGameMtlPairTools.obj Intermediate\ESound.obj 
       Intermediate\CustomObject.obj Intermediate\CustomObjectMisc.obj 
-      Intermediate\du_box.obj Intermediate\du_sphere.obj"/>
+      Intermediate\du_box.obj Intermediate\du_sphere.obj 
+      Intermediate\Blender_Palette.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -261,6 +262,7 @@
       <FILE FILENAME="Editor\CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="editor\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
