@@ -3,9 +3,9 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Left hand Strike
-stand_attack_0	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_0	=	  	0.45,		15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
 ;Left hand Strike2
-stand_attack_1	=	  	0.45,		25,		    200,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
+stand_attack_1	=	  	0.45,		15,		    50,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,							  3.5
 
 
 [m_poltergeist_step_params]                left             right            right           left
@@ -64,8 +64,8 @@ ph_skel_shot_up_factor         =.8f
 SoundThreshold		 = 0.06						; range [0..1]a
 
 EyeFov				 = 90
-eye_range			 = 30	;60
-max_hear_dist		 = 30
+eye_range			 = 60	;60
+max_hear_dist		 = 60
 
 ; speed factors			linear angular min		max
 Velocity_Stand			= 0,	2.0,	1,		1
@@ -210,7 +210,7 @@ LegsCount				= 2
 flame_sound			= monsters\bloodsucker\idle_0		
 flame_particles		= monsters\polter_flame_fire 
 flame_fire_delay	= 2000
-flame_length		= 5.0
+flame_length		= 15.0 ;5.0
 flame_hit_value		= 250
 
 ;---------------------------
