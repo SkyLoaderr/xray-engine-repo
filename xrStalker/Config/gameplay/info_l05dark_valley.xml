@@ -2,7 +2,8 @@
 <game_information_portions>
 
 <!-- Сцена 2 - кровосос падает с обрыва -->
-<info_portion id="val_bs_killed"></info_portion>
+<info_portion id="val_bs_start"></info_portion>
+<info_portion id="val_bs_victim_killed"></info_portion>
 
 <!-- Сцена 3 - транспортировка пленного -->
 <info_portion id="val_escort_start"></info_portion>
@@ -10,7 +11,5 @@
 <!-- Стартует машина около бензоколонки -->
 <info_portion id="val_truck_start"></info_portion>
 <info_portion id="val_truck_arrived"></info_portion>
-<info_portion id="val_tunnel_start"></info_portion>
-
 
 </game_information_portions>
