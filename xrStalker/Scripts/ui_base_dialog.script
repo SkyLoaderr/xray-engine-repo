@@ -74,6 +74,7 @@ function base_dialog:InitControls(caption)
 	self.button_font  = GetFontLetterica25()
 	self.list_file_font = GetFontMedium()
 	self.list_date_font = GetFontMedium()
+	self.message_box_font = GetFontLetterica25()
 	
 	-- Message Box
 	self.message_rect = {x = 0, y = 0, width = 400, height = 300}
@@ -112,6 +113,21 @@ function base_dialog:InitControls(caption)
 						  self.caption_text_rect.width, 
 						  self.caption_text_rect.height)
 	self.main_frame:AttachChild(self.txt_caption)		
+	
+	-- Message Box --
+	self.message_box = CUIMessageBox()
+	self.message_box:SetAutoDelete(true)
+	self.message_box:SetWindowName("message_box")
+	self.message_box:SetFont(GetFontLetterica25())
+	self.message_box:Init("ui\\ui_frame",self.message_rect.x, 
+										 self.message_rect.y, 
+										 self.message_rect.width, 
+										 self.message_rect.height)
+	self.message_box:SetStyle(0)	
+	self.message_box:Hide()
+	self:Register(message_box)
+	self.main_frame:AttachChild(message_box)
+	self.message_box:AutoCenter()
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	
 end
