@@ -428,7 +428,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfAssignBones(CInifile *ini, const char *section);
 		void vfCheckForPatrol();
 		void vfLoadAnimations();
-	IC	bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
+		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
 		bool bfCheckPath(AI::Path &Path);
 		void SetLessCoverLook(NodeCompressed *tNode);
 		void SetDirectionLook();
@@ -440,7 +440,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfAimAtEnemy();
 		void vfSaveEnemy();
 		bool bfCheckIfCanKillMember();
-	IC	bool bfCheckIfCanKillEnemy();
+		bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CGroup &Group);
 		void vfSetMovementType(char cBodyState, float fSpeed);
 		void vfCheckForSavedEnemy();

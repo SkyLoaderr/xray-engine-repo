@@ -3,11 +3,21 @@
 //	Created 	: 21.06.2002
 //  Modified 	: 21.06.2002
 //	Author		: Dmitriy Iassenev
-//	Description : Animations for monster "Soldier"
+//	Description : Animations, Bone transformations and Sounds for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "ai_soldier.h"
+
+// bones
+void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
+{
+	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
+	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
+	
+	int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
+}
 
 void __stdcall CAI_Soldier::HeadSpinCallback(CBoneInstance* B)
 {
@@ -27,15 +37,7 @@ void __stdcall CAI_Soldier::SpineSpinCallback(CBoneInstance* B)
 	B->mTransform.mulB_43(spin);
 }
 
-void CAI_Soldier::vfAssignBones(CInifile *ini, const char *section)
-{
-	int head_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	PKinematics(pVisual)->LL_GetInstance(head_bone).set_callback(HeadSpinCallback,this);
-	
-	int torso_bone = PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
-	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(SpineSpinCallback,this);
-}
-
+// sounds
 void CAI_Soldier::vfLoadSounds()
 {
 	pSounds->Create3D(sndHit[0],"actor\\bhit_flesh-1");
@@ -52,6 +54,7 @@ void CAI_Soldier::vfLoadSounds()
 	pSounds->Create3D(sndDie[3],"actor\\die3");
 }
 
+// animations
 void CAI_Soldier::vfLoadAnimations()
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
@@ -110,8 +113,6 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	//R_ASSERT(fsimilar(_view.magnitude(),1));
 	//R_ASSERT(fsimilar(_move.magnitude(),1));
 
-	// choose motion animation
-	/**/
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
 	CMotionDef*	tpLegsAnimation=0;

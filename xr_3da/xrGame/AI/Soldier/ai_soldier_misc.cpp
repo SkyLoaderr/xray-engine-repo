@@ -8,114 +8,132 @@
 
 #include "stdafx.h"
 #include "ai_soldier.h"
+#include "..\\..\\hudmanager.h"
 
-bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
+CAI_Soldier::CAI_Soldier()
 {
-	float fResult = 0.f;
+	dwHitTime = 0;
+	tHitDir.set(0,0,1);
+	dwSenseTime = 0;
+	tSenseDir.set(0,0,1);
+	tSavedEnemy = 0;
+	tSavedEnemyPosition.set(0,0,0);
+	tpSavedEnemyNode = 0;
+	dwSavedEnemyNodeID = -1;
+	dwLostEnemyTime = 0;
+	bBuildPathToLostEnemy = false;
+	eCurrentState = aiSoldierFollowLeader;
+	m_dwLastRangeSearch = 0;
+	m_dwLastSuccessfullSearch = 0;
+	m_fAggressiveness = ::Random.randF(0,1);
+	m_fTimorousness = ::Random.randF(0,1);
+	m_bFiring = false;
+	m_tpEventSay = Engine.Event.Handler_Attach	("level.entity.say",this);
+	m_bLessCoverLook = false;
+}
+
+CAI_Soldier::~CAI_Soldier()
+{
+	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
+	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	Engine.Event.Handler_Detach (m_tpEventSay,this);
+}
+
+// when soldier is dead
+void CAI_Soldier::Death()
+{
+	// perform death operations
+	inherited::Death( );
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	vfSetFire(false,Group);
+	eCurrentState = aiSoldierDie;
 	
-	// computing maximum viewable distance in the specified direction
-	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_current.yaw,r_current.pitch);
-	tCurrentWatchDirection.normalize();
-	tTemp.sub(tpEntity->Position(),vPosition);
-	tTemp.normalize();
-	//float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
-	clamp(fAlpha,-.99999f,+.99999f);
-	fAlpha = acosf(fAlpha);
-	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/1.9f));
+	// removing from group
+	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
 	
-	// computing distance weight
-	tTemp.sub(vPosition,tpEntity->Position());
-	fResult += tTemp.magnitude() >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - tTemp.magnitude()/fMaxViewableDistanceInDirection);
+	Fvector	dir;
+	AI_Path.Direction(dir);
+	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	// computing movement speed weight
-	if (tpEntity->ps_Size() > 1) {
-		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
-		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
-			float fSpeed = tTemp.magnitude()/dwTime;
-			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+	// Play sound
+	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
+}
+
+void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
+{
+	SelectorAttack.Load(ini,section);
+	SelectorDefend.Load(ini,section);
+	SelectorFindEnemy.Load(ini,section);
+	SelectorFollowLeader.Load(ini,section);
+	SelectorFreeHunting.Load(ini,section);
+	SelectorMoreDeadThanAlive.Load(ini,section);
+	SelectorNoWeapon.Load(ini,section);
+	SelectorPatrol.Load(ini,section);
+	SelectorPursuit.Load(ini,section);
+	SelectorReload.Load(ini,section);
+	SelectorRetreat.Load(ini,section);
+	SelectorSenseSomething.Load(ini,section);
+	SelectorUnderFire.Load(ini,section);
+}
+
+void CAI_Soldier::Load(CInifile* ini, const char* section)
+{ 
+	// load parameters from ".ini" file
+	inherited::Load	(ini,section);
+	
+	// initialize start position
+	Fvector			P = vPosition;
+	P.x				+= ::Random.randF();
+	P.z				+= ::Random.randF();
+	
+	vfLoadSounds();
+	vfLoadAnimations();
+	vfLoadSelectors(ini,section);
+	vfAssignBones(ini,section);
+	
+	// visibility
+	m_dwMovementIdleTime = ini->ReadINT(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed = ini->ReadFLOAT(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed = ini->ReadFLOAT(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight = ini->ReadFLOAT(section,"MovementSpeedWeight");
+	m_fDistanceWeight = ini->ReadFLOAT(section,"DistanceWeight");
+	m_fSpeedWeight = ini->ReadFLOAT(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier = ini->ReadFLOAT(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier = ini->ReadFLOAT(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold = ini->ReadFLOAT(section,"VisibilityThreshold");
+	
+	//fire
+	m_dwFireRandomMin = ini->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax = ini->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin = ini->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax = ini->ReadINT(section,"NoFireTimeMax");
+	
+	// patrol under fire
+	m_dwPatrolShock = ini->ReadINT(section,"PatrolShock");
+	m_dwUnderFireShock = ini->ReadINT(section,"UnderFireShock");
+	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
+}
+
+BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
+{
+	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
+	vfCheckForPatrol();
+	return TRUE;
+}
+
+// soldier update
+void CAI_Soldier::Update(DWORD DT)
+{
+	inherited::Update(DT);
+}
+
+void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
+{
+	if (E == m_tpEventSay) {
+		if (0==P2 || DWORD(this)==P2) {
+			char* Test;
+			Test = (char *)P1;
+			Level().HUD()->outMessage(0xffffffff,cName(),"%s",Test);
 		}
 	}
-	
-	// computing lightness weight
-	fResult *= 2*float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
-	
-	// computing enemy state
-	switch (m_cBodyState) {
-	case BODY_STATE_STAND : {
-		break;
-							}
-	case BODY_STATE_CROUCH : {
-		fResult *= m_fCrouchVisibilityMultiplier;
-		break;
-							 }
-	case BODY_STATE_LIE : {
-		fResult *= m_fLieVisibilityMultiplier;
-		break;
-						  }
-	}
-	
-	// computing my ability to view the enemy
-	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
-	
-	return(fResult >= m_fVisibilityThreshold);
 }
-
-float CAI_Soldier::EnemyHeuristics(CEntity* E)
-{
-	if (E->g_Team()  == g_Team())	
-		return flt_max;		// don't attack our team
-	
-	int	g_strench = E->g_Armor()+E->g_Health();
-	
-	if (g_strench <= 0)					
-		return flt_max;		// don't attack dead enemiyes
-	
-	float	f1	= Position().distance_to_sqr(E->Position());
-	float	f2	= float(g_strench);
-	float   f3  = 1;
-	if (E==Level().CurrentEntity())  f3 = .5f;
-	return  f1*f2*f3;
-}
-
-void CAI_Soldier::SelectEnemy(SEnemySelected& S)
-{
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].KnownEnemys;
-	S.Enemy					= 0;
-	S.bVisible			= FALSE;
-	S.fCost				= flt_max-1;
-	if (Known.size()==0)	return;
-	
-	// Get visible list
-	ai_Track.o_get	(tpaVisibleObjects);
-	std::sort		(tpaVisibleObjects.begin(),tpaVisibleObjects.end());
-	
-	INIT_SQUAD_AND_LEADER;
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	// Iterate on known
-	for (DWORD i=0; i<Known.size(); i++)
-	{
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
-		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
-			if (!Group.m_bEnemyNoticed)
-				if (!bfCheckForVisibility(E))
-					continue;
-				// Calculate local visibility
-				CObject**	ins	 = lower_bound(tpaVisibleObjects.begin(),tpaVisibleObjects.end(),(CObject*)E);
-				bool	bVisible = ((ins==tpaVisibleObjects.end())?FALSE:((E==*ins)?TRUE:FALSE)) && (bfCheckForVisibility(E));
-				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-				if (cost<S.fCost)	{
-					S.Enemy		= E;
-					S.bVisible	= bVisible;
-					S.fCost		= cost;
-					Group.m_bEnemyNoticed = true;
-				}
-		}
-	}
-}
-

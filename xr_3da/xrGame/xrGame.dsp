@@ -614,11 +614,15 @@ SOURCE=.\AI\Soldier\ai_soldier_animations.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI\Soldier\ai_soldier_misc.cpp
+SOURCE=.\AI\Soldier\ai_soldier_fire.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\AI\Soldier\ai_soldier_patrol.cpp
+SOURCE=.\AI\Soldier\ai_soldier_look.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier_misc.cpp
 # End Source File
 # Begin Source File
 
@@ -627,6 +631,10 @@ SOURCE=.\AI\Soldier\ai_soldier_selectors.cpp
 # Begin Source File
 
 SOURCE=.\AI\Soldier\ai_soldier_selectors.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\Soldier\ai_soldier_templates.cpp
 # End Source File
 # End Group
 # Begin Group "ai_zomby"
@@ -668,6 +676,14 @@ SOURCE=.\AI\ai_monsters.cpp
 # Begin Source File
 
 SOURCE=.\AI\ai_monsters.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\ai_monsters_misc.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\AI\ai_monsters_misc.h
 # End Source File
 # End Group
 # Begin Group "Test"
