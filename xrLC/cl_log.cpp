@@ -23,7 +23,7 @@ static HWND hwPText		= 0;
 static HWND hwPhaseTime	= 0;
 
 //************************* Log-thread data
-static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
+static INT_PTR CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
 	switch( msg ){
 		case WM_DESTROY:
@@ -122,11 +122,7 @@ void __cdecl logThread(void *dummy)
 		MAKEINTRESOURCE(IDD_LOG),
 		0, logDlgProc );
 	if (!logWindow) {
-		u32 e=GetLastError();
-		char errmsg[1024];
-		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,e,0,errmsg,1024,0);
-		__asm int 3;
-		R_ASSERT(0);
+		R_CHK			(GetLastError());
 	};
 	SetWindowPos(logWindow,HWND_NOTOPMOST,0,0,0,0,SWP_NOMOVE|SWP_NOSIZE|SWP_SHOWWINDOW);
 	hwLog		= GetDlgItem(logWindow, IDC_LOG);

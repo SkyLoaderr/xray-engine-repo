@@ -10,10 +10,10 @@ template<typename T, typename T2> void vfComputeLinearRegression(xr_vector<T> &A
 {
 	u32				N = A.size();
 	T				sx = T(0), sy = T(0), sxy = T(0), sx2 = T(0), l_tDenominator;
-	sx				= accumulate(A.begin(),A.end(),sx);
-	sy				= accumulate(B.begin(),B.end(),sy);
-	sxy				= inner_product	(A.begin(),A.end(),B.begin(),sxy);
-	sx2				= inner_product	(A.begin(),A.end(),A.begin(),sx2);
+	sx				= std::accumulate		(A.begin(),A.end(),sx);
+	sy				= std::accumulate		(B.begin(),B.end(),sy);
+	sxy				= std::inner_product	(A.begin(),A.end(),B.begin(),sxy);
+	sx2				= std::inner_product	(A.begin(),A.end(),A.begin(),sx2);
 	l_tDenominator	= T(N)*sx2 - sx*sx;
 	if (_abs(l_tDenominator) > EPS_S) 
 		C			= T2( (T(N)*sxy - sx*sy)/l_tDenominator );
