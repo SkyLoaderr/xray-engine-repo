@@ -451,7 +451,7 @@ void CSE_SpawnGroup::FillProps				(LPCSTR pref, PropItemVec& values)
 	PHelper().CreateFloat					(values,PrepareKey(pref,*s_name,"ALife\\Spawn group probability"),	&m_spawn_probability,	0.f,	1.f);
 	PHelper().CreateTime					(values,PrepareKey(pref,*s_name,"ALife\\Min time spawn interval"),	&m_min_spawn_interval);
 	PHelper().CreateTime					(values,PrepareKey(pref,*s_name,"ALife\\Max time spawn interval"),	&m_max_spawn_interval);
-	PHelper().CreateFlag32					(values,PrepareKey(pref,*s_name,"ALife\\Active"),					&m_flags,	flSpawnGroupActive);
+	PHelper().CreateFlag32					(values,PrepareKey(pref,*s_name,"ALife\\Spawn group is active"),	&m_flags,	flSpawnGroupActive);
 	PHelper().CreateFlag32					(values,PrepareKey(pref,*s_name,"ALife\\Spawn on surge only"),		&m_flags,	flSpawnGroupOnSurgeOnly);
 	PHelper().CreateFlag32					(values,PrepareKey(pref,*s_name,"ALife\\Spawn single item only"),	&m_flags,	flSpawnGroupSingleItemOnly);
 	PHelper().CreateFlag32					(values,PrepareKey(pref,*s_name,"ALife\\Spawn if destroyed only"),	&m_flags,	flSpawnGroupIfDestroyedOnly);
