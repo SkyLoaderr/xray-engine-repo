@@ -6,7 +6,11 @@
 	#define PARTICLEDLL_API __declspec(dllexport)
 #else
 	#define PARTICLEDLL_API __declspec(dllimport)
-	#pragma comment(lib,"x:\\ParticleDLL.lib")
+	#ifdef _EDITOR
+		#pragma comment(lib,"x:\\ParticleDLL.lib")
+	#else
+		#pragma comment(lib,"x:\\ParticleDLLB.lib")
+	#endif
 #endif
 
 #ifdef _EDITOR
