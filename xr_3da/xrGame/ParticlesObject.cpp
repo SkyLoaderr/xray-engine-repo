@@ -97,22 +97,24 @@ void CParticlesObject::Play()
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->Play			();
-	UpdateSpatial	();
-}
-
-void CParticlesObject::Stop(BOOL bDefferedStop)
-{
-	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->Stop			(bDefferedStop);
+	dwLastTime		= Device.dwTimeGlobal-33ul;
+	shedule_Update	(0);
 }
 
 void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	Fmatrix m; m.identity(); m.c.set(pos); 
-	Fvector vel={0,0,0};
-	V->UpdateParent	(m,vel,xform);
+	V->UpdateParent	(m,zero_vel,xform);
 	V->Play			();
+	dwLastTime		= Device.dwTimeGlobal-33ul;
+	shedule_Update	(0);
+}
+
+void CParticlesObject::Stop(BOOL bDefferedStop)
+{
+	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
+	V->Stop			(bDefferedStop);
 }
 
 void CParticlesObject::shedule_Update	(u32 _dt)
@@ -143,6 +145,7 @@ void CParticlesObject::UpdateParent		(const Fmatrix& m, const Fvector& vel)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	V->UpdateParent		(m,vel,FALSE);
+	UpdateSpatial		();
 }
 
 Fvector& CParticlesObject::Position		()
