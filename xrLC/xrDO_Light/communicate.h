@@ -191,7 +191,7 @@ struct b_params
     void        Init()
 	{
         // Normals & optimization
-        m_sm_angle              = 89.f;
+        m_sm_angle              = 75.f;
         m_weld_distance         = 0.005f;
 
         // Vertex buffers
@@ -199,11 +199,11 @@ struct b_params
         m_VB_maxVertices        = 65535;
 
         // Subdivision & PVS
-        m_SS_maxsize            = 32;
+        m_SS_maxsize            = 48;
 		m_SS_merge_coeff		= 0.5f;
-		m_SS_Low				= 32;
-		m_SS_High				= 2048;
-		m_SS_DedicateCached		= 4;
+		m_SS_Low				= 96;
+		m_SS_High				= 4096;
+		m_SS_DedicateCached		= 32;
 
         // Light maps
         m_bLightMaps            = TRUE;
@@ -240,7 +240,7 @@ struct b_params
 
 		// Strippifier
 		m_bStripify				= TRUE;
-		m_vCacheSize			= 16;
+		m_vCacheSize			= 24;
 
         L_name[0]				= 0;
     }
