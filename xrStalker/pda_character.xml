@@ -5,6 +5,11 @@
 	<!-- ICON -->
 	<icon_static x="30" y="0" width="128" height="128"></icon_static>
 	
+	<!-- MASK FRAME -->
+	<mask_frame_window x="0" y="0" width="10" height="10">
+		<base_texture>ui\ui_pda_frame2</base_texture>
+	</mask_frame_window>
+	
 	<!-- NAME -->
 	<static x="170" y="90" width="240" height="60">
 		<text x="0" y="0" font="small" r="255" g="128" b="64"></text>
