@@ -652,31 +652,25 @@
 						Name="ai_zombie"
 						Filter="">
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie.cpp">
+							RelativePath="AI\Zombie\ai_zombie.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie.h">
+							RelativePath="AI\Zombie\ai_zombie.h">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie_animations.cpp">
+							RelativePath="AI\Zombie\ai_zombie_animations.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie_fire.cpp">
+							RelativePath="AI\Zombie\ai_zombie_feel.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie_fsm.cpp">
+							RelativePath="AI\Zombie\ai_zombie_fire.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie_look.cpp">
+							RelativePath="AI\Zombie\ai_zombie_fsm.cpp">
 						</File>
 						<File
-							RelativePath=".\AI\Zombie\ai_zombie_selectors.cpp">
-						</File>
-						<File
-							RelativePath=".\AI\Zombie\ai_zombie_selectors.h">
-						</File>
-						<File
-							RelativePath=".\AI\Zombie\ai_zombie_templates.cpp">
+							RelativePath="AI\Zombie\ai_zombie_templates.cpp">
 						</File>
 					</Filter>
 				</Filter>
