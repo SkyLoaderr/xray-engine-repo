@@ -56,6 +56,8 @@ void CMonsterMovement::reinit()
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular				= 0.f;
 
+	m_dest_dir.set					(0.f, 0.f, 0.f);
+	
 	initialize_movement				();
 }
 
@@ -95,6 +97,7 @@ bool CMonsterMovement::IsPathEnd(u32 n_points)
 bool CMonsterMovement::IsPathEnd(float dist_to_end)
 {
 	if (detail_path_manager().path().size() < 2) return true;
+	if (path_completed())						 return true;
 
 	float cur_dist_to_end = 0.f;
 	for (u32 i=detail_path_manager().curr_travel_point_index(); i<detail_path_manager().path().size()-1; i++) {
@@ -162,7 +165,7 @@ void CMonsterMovement::update_velocity()
 
 void CMonsterMovement::set_dest_direction(const Fvector &dir)
 {
-	detail_path_manager().set_dest_direction(dir);
+	m_dest_dir.set	(dir);
 }
 
 void CMonsterMovement::stop_now()

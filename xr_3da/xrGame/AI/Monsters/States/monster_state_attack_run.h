@@ -14,6 +14,7 @@ public:
 	virtual void		initialize				();
 	virtual	void		execute					();
 	virtual void		finalize				();
+	virtual void		critical_finalize		();
 
 	virtual bool 		check_completion		();
 	virtual bool 		check_start_conditions	();

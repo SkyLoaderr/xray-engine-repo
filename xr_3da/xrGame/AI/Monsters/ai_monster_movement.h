@@ -17,6 +17,7 @@ public:
 	bool				b_try_min_time;
 	bool				b_enable_movement;
 	bool				b_use_dest_orient;
+	Fvector				m_dest_dir;
 
 
 	TTime				time_last_approach;
@@ -97,12 +98,11 @@ private:
 				node			= vertex;
 			}
 
-		} m_target_desired, m_target_selected, m_target_required;
+		} m_target_set, m_target_selected, m_target_found;
 
 		u32			m_time;					// время перестроения пути
 		u32			m_last_time_target_set;
 		float		m_distance_to_path_end;
-		bool		m_path_end;
 		bool		m_failed;
 		bool		m_force_rebuild;
 		bool		m_wait_path_end;
@@ -132,8 +132,6 @@ public:
 	IC	void		set_rebuild_time		(u32 time);
 	IC	void		set_cover_params		(float min, float max, float dev, float radius);
 	IC	void		set_use_covers			(bool val = true);
-	IC	bool		failed					();
-	IC	bool		path_end				();
 	IC	void		set_distance_to_end		(float dist);
 
 		void		initialize_movement		();
@@ -146,14 +144,18 @@ private:
 		void		check_failure				();
 
 		bool		target_point_need_update	();
-		void		select_target				();
-		void		set_selected_target			();
+		void		find_target					();
+		void		set_found_target			();
 
-		void		select_target_desired		();
+		void		select_target				();		// выбрать 
 		
 		// utils
 		bool		valid_destination			(const Fvector &pos, u32 node);
 		void		fix_position				(const Fvector &pos, u32 node, Fvector &res_pos);
+
+		// results	
+	IC	bool		failed						();
+
 //////////////////////////////////////////////////////////////////////////
 
 public:

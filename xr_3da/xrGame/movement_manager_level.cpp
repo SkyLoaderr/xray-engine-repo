@@ -75,7 +75,7 @@ void CMovementManager::process_level_path()
 				else
 					if (!detail_path_manager().actual())
 						m_path_state	= ePathStateBuildLevelPath;
-					else
+					else {
 						if (detail_path_manager().completed(object().Position(),!extrapolate_path())) {
 							m_path_state	= ePathStateContinueLevelPath;
 							if (level_path_manager().completed()) {
@@ -85,6 +85,7 @@ void CMovementManager::process_level_path()
 									m_path_state	= ePathStatePathCompleted;
 							}
 						}
+					}
 			break;
 		}
 		case ePathStatePathCompleted : {
@@ -95,7 +96,10 @@ void CMovementManager::process_level_path()
 					m_path_state = ePathStateBuildLevelPath;
 				else
 					if (!detail_path_manager().actual())
-						m_path_state = ePathStateBuildDetailPath;
+						m_path_state = ePathStateBuildLevelPath;
+#pragma todo("Jim to Dima: Detail_Path_Manager cannot be the only one inactual!!!")
+						//m_path_state = ePathStateBuildDetailPath;
+						
 			break;
 		}
 		default : NODEFAULT;

@@ -30,10 +30,7 @@ void CMonsterMovement::Update_Execute()
 	if (m_object->CriticalActionInfo->is_path_locked()) return;
 
 	detail_path_manager().set_try_min_time			(b_try_min_time); 
-	detail_path_manager().set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
-	
-	//Msg("-- Update  :: Time [%u] --", m_object->m_current_update);
 	
 	// обновить / установить целевую позицию
 	update_target_point								();
@@ -65,15 +62,10 @@ void CMonsterMovement::update_target_point()
 	if (!target_point_need_update())						return; 
 
 	// выбрать ноду и позицию в соответствии с желаемыми нодой и позицией
-	select_target			();
+	find_target			();
 
 	// установить параметры
-	set_selected_target		();
-
-	//if (path_completed() && m_target_selected.position.similar(object().Position())) {
-	//	Msg("Postselector :: Path End");
-	//	m_path_end	= true;
-	//}
+	set_found_target	();
 
 	// сохранить текущее время 
 	m_last_time_target_set	= m_object->m_current_update;
@@ -84,16 +76,13 @@ void CMonsterMovement::check_failure()
 {
 	m_failed		= false;
 
-	// если новый построенный путь completed - failed!
 	//bool new_path = detail_path_manager().time_path_built() >= m_last_time_target_set;
-	if ((path_completed() || IsPathEnd(m_distance_to_path_end)) && actual()) {
-		//Msg("Failed :: New Path & PathEnd");
+	if (IsPathEnd(m_distance_to_path_end) && actual() && !m_wait_path_end && (m_target_selected.position.similar(m_target_set.position))) {
 		m_failed	= true;	
 	}
 
 	// если level_path_manager failed
 	if (level_path_manager().failed()) {
-		//Msg("Failed :: LevelPathManager");
 		m_failed	= true;
 	}
 }

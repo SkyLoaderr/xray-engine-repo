@@ -23,11 +23,6 @@ IC bool CMonsterMovement::failed()
 	return m_failed;
 }
 
-IC bool CMonsterMovement::path_end()
-{
-	return m_path_end;
-}
-
 IC void	CMonsterMovement::set_distance_to_end(float dist)
 {
 	m_distance_to_path_end = dist;
