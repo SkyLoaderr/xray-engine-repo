@@ -17,7 +17,7 @@ public:
 	virtual							~CTeleWhirlwindObject	(){};
 									CTeleWhirlwindObject	();
 	virtual		bool				init					(CTelekinesis* tele,CPhysicsShellHolder *obj, float s, float h, u32 ttk); 
-				void				set_throw_power			(float throw_power);
+				void				set_throw_power			(float throw_pow);
 	virtual		bool				can_activate			(CPhysicsShellHolder *obj);
 	virtual		void				raise					(float step);
 	virtual		void				raise_update			();
@@ -36,6 +36,7 @@ class CTeleWhirlwind : public CTelekinesis
 typedef	CTelekinesis inherited;
 		Fvector				m_center;
 		float				m_keep_radius;
+		float				m_throw_power;
 		CGameObject*		m_owner_object;
 		PH_IMPACT_STORAGE	m_saved_impacts;
 		shared_str			m_destroying_particles;
@@ -51,10 +52,12 @@ public:
 		void					clear_impacts			()										;
 		void					set_destroing_particles (const shared_str& destroying_particles){m_destroying_particles=destroying_particles;}
 		const shared_str&		destroing_particles		()										{return m_destroying_particles;}
+virtual	bool					activate				(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep);
 virtual void					clear					()										;
 virtual	void					clear_notrelevant		()										;
 virtual CTelekineticObject*		alloc_tele_object		()										{return static_cast<CTelekineticObject*>(xr_new<CTeleWhirlwindObject>());}
 		float					keep_radius				()										{return m_keep_radius;}
+		void					set_throw_power			(float throw_pow);
 };
 
 

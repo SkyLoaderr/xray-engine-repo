@@ -11,6 +11,20 @@ CTeleWhirlwind ::CTeleWhirlwind ()
 	m_owner_object=NULL;
 	m_center.set(0.f,0.f,0.f);
 	m_keep_radius=1.f;
+	m_throw_power=100.f;
+}
+
+bool CTeleWhirlwind::activate(CPhysicsShellHolder *obj, float strength, float height, u32 max_time_keep)
+{
+	if(inherited::activate(obj,strength,height,max_time_keep))
+	{
+		CTeleWhirlwindObject*o=smart_cast<CTeleWhirlwindObject*>(objects.back());
+		VERIFY(o);
+		o->set_throw_power(m_throw_power);
+		return true;
+	}
+	else
+		return false;
 }
 void CTeleWhirlwind::clear_impacts()
 {
@@ -21,6 +35,7 @@ void CTeleWhirlwind::clear()
 	inherited::clear();
 	
 }
+
 void CTeleWhirlwind::add_impact(const Fvector& dir,float val)
 {
 	Fvector force,point;
@@ -28,6 +43,10 @@ void CTeleWhirlwind::add_impact(const Fvector& dir,float val)
 	force.mul(val);
 	point.set(0.f,0.f,0.f);
 	m_saved_impacts.push_back(SPHImpact(force,point,0));
+}
+void CTeleWhirlwind::set_throw_power(float throw_pow)
+{
+	m_throw_power=throw_pow;
 }
 
 void CTeleWhirlwind::draw_out_impact(Fvector& dir,float& val)
@@ -299,6 +318,10 @@ void		CTeleWhirlwindObject::		fire					(const Fvector &target, float power)
 	//inherited:: fire(target,power);
 }
 
+void		CTeleWhirlwindObject::set_throw_power(float throw_pow)
+{
+	throw_power=throw_pow;
+}
 void		CTeleWhirlwindObject::switch_state(ETelekineticState new_state)
 {
 	inherited::switch_state(new_state);

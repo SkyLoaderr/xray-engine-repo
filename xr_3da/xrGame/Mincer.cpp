@@ -40,9 +40,11 @@ void CMincer::Load (LPCSTR section)
 	inherited::Load(section);
 	
 	m_telekinetics.set_destroing_particles(shared_str(pSettings->r_string(section,"tearing_particles")));
+	m_telekinetics.set_throw_power(pSettings->r_float(section,"throw_out_impulse"));
 	m_torn_particles=pSettings->r_string(section,"torn_particles");
 	m_tearing_sound.create(TRUE,pSettings->r_string(section,"body_tearing_sound"));
 	m_fActorBlowoutRadiusPercent=pSettings->r_float(section,"actor_blowout_radius_percent");
+
 	//pSettings->r_fvector3(section,whirlwind_center);
 }
 
@@ -133,7 +135,7 @@ void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 	CPhysicsShellHolder* obj=dn->PPhysicsShellHolder();
 	m_telekinetics.draw_out_impact(dir,impulse);
 	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
-	if(PP)
+	if(PP && *m_torn_particles)
 	{
 		PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
 	}
