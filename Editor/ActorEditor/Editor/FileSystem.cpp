@@ -477,7 +477,9 @@ void CFileSystem::RegisterAccess(LPSTR fn)
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
 	ini->WriteString("last_access",fn,computer);
     CInifile::Destroy(ini);
-    m_AccessLog->Msg(mtInformation,"Lock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,DateToStr(Now()),TimeToStr(Time()));
+
+	string128 dt_buf, tm_buf;
+	m_AccessLog->Msg(mtInformation,"Lock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
@@ -502,7 +504,7 @@ BOOL CFileSystem::LockFile(FSPath *initial, LPSTR fname, bool bLog)
 	if (m_LockFiles.find(fn)==m_LockFiles.end()){
 		HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     	if (INVALID_HANDLE_VALUE!=handle){
-	 	   	m_LockFiles.insert(make_pair(LPSTR(fname),handle));
+			m_LockFiles.insert(std::make_pair(LPSTR(fname),handle));
             if (bLog) RegisterAccess(fname);
             bRes=true;
         }
@@ -521,7 +523,8 @@ BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
         if (bLog){
 			string64 computer; string64 user;
 			GetCompAndUser(computer, user);
-    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,DateToStr(Now()),TimeToStr(Time()));
+			string128 dt_buf, tm_buf;
+    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
         }
     	return CloseHandle(it->second);
     }
