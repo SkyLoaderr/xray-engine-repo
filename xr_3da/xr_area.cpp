@@ -3,13 +3,42 @@
 #include "xr_object.h"
 #include "xrLevel.h"
 #include "xr_creator.h"
-
+#include "feel_sound.h"
 #include "x_ray.h"
 #include "GameFont.h"
 
 using namespace	Collide;
 
 IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
+
+void __stdcall _sound_event	(sound* S, float range)
+{
+	VERIFY					(S->feedback);
+	const CSound_params*	p	= S->feedback->get_params();
+	VERIFY					(p);
+
+	// Query objects
+	pCreator->ObjectSpace.GetNearest	(p->position,range);
+
+	// Iterate
+	CObjectSpace::NL_IT		it	= pCreator->ObjectSpace.q_nearest.begin	();
+	CObjectSpace::NL_IT		end	= pCreator->ObjectSpace.q_nearest.end	();
+	for (; it!=end; it++)
+	{
+		CObject*	O		= *it;
+		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(O);
+		if (0==L)			continue;
+
+		// Energy and signal
+		Fvector				Oc;
+		O->clCenter			(Oc);
+		float D				= p->position.distance_to(Oc);
+		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
+		clamp				(A,0.f,1.f);
+		float Power			= A*p->volume;
+		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
+	}
+}
 
 //----------------------------------------------------------------------
 // Class	: CObjectSpace
@@ -26,6 +55,7 @@ CObjectSpace::CObjectSpace( )
 CObjectSpace::~CObjectSpace( )
 {
 	Sound->set_geometry			(NULL);
+	Sound->set_handler			(NULL);
 
 	Device.Shader.Delete		(sh_debug);
 }
@@ -170,7 +200,6 @@ void CObjectSpace::Load	(IReader *F)
 	}
 	pCreator->Load_GameSpecific_CFORM	( tris, H.facecount );
 	Static.build						( verts, H.vertcount, tris, H.facecount );
-	Sound->set_geometry					( &Static );
     Msg						("* Level CFORM memory usage: %dK",Static.memory()/1024);
 
 	// CForm
@@ -178,6 +207,10 @@ void CObjectSpace::Load	(IReader *F)
 	z_count					= iCeil((H.aabb.max.z-H.aabb.min.z)/CL_SLOT_SIZE);
 	Static_Shift.invert		(H.aabb.min);
 	Dynamic.SetSize			( x_count, z_count );
+
+	// Sound
+	Sound->set_geometry			( &Static );
+	Sound->set_handler			( _sound_event );
 }
 //----------------------------------------------------------------------
 void CObjectSpace::dbgRender()
