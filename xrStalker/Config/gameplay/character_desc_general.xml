@@ -78,7 +78,8 @@
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 2 \n
-			torch \n
+			device_torch \n
+			wpn_knife \n
 		</supplies>
 		
 		<class>actor</class>
