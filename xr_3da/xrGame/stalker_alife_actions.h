@@ -11,6 +11,21 @@
 #include "stalker_base_action.h"
 
 //////////////////////////////////////////////////////////////////////////
+// CStalkerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+class CStalkerActionGatherItems : public CStalkerActionBase {
+protected:
+	typedef CStalkerActionBase inherited;
+
+public:
+						CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name = "");
+	virtual void		initialize					();
+	virtual void		execute						();
+	virtual void		finalize					();
+};
+
+//////////////////////////////////////////////////////////////////////////
 // CStalkerActionFreeNoALife
 //////////////////////////////////////////////////////////////////////////
 
@@ -29,15 +44,18 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionGatherItems
+// CStalkerActionFreeALife
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerActionGatherItems : public CStalkerActionBase {
+class CStalkerActionFreeALife : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
+protected:
+	u32					m_stop_weapon_handling_time;
+
 public:
-						CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name = "");
+						CStalkerActionFreeALife		(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();

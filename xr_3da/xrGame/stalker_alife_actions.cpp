@@ -18,6 +18,53 @@
 #endif
 
 //////////////////////////////////////////////////////////////////////////
+// CStalkerActionGatherItems
+//////////////////////////////////////////////////////////////////////////
+
+CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name) :
+	inherited				(object,action_name)
+{
+}
+
+void CStalkerActionGatherItems::initialize	()
+{
+	inherited::initialize	();
+	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+}
+
+void CStalkerActionGatherItems::finalize	()
+{
+	inherited::finalize		();
+
+	if (!m_object->g_Alive())
+		return;
+
+	m_object->set_sound_mask(0);
+}
+
+void CStalkerActionGatherItems::execute		()
+{
+	inherited::execute		();
+
+	if (!m_object->item())
+		return;
+
+	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(&m_object->item()->Position());
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateDanger);
+
+	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
+}
+
+//////////////////////////////////////////////////////////////////////////
 // CStalkerActionFreeNoALife
 //////////////////////////////////////////////////////////////////////////
 
@@ -124,49 +171,46 @@ void CStalkerActionFreeNoALife::execute		()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionGatherItems
+// CStalkerActionFreeALife
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionGatherItems::CStalkerActionGatherItems	(CAI_Stalker *object, LPCSTR action_name) :
+CStalkerActionFreeALife::CStalkerActionFreeALife	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
 }
 
-void CStalkerActionGatherItems::initialize	()
+void CStalkerActionFreeALife::initialize	()
 {
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	inherited::initialize			();
+	m_stop_weapon_handling_time		= Level().timeServer();
+
+	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
+		m_stop_weapon_handling_time	+= ::Random.randI(120000,180000);
+
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
 }
 
-void CStalkerActionGatherItems::finalize	()
+void CStalkerActionFreeALife::finalize	()
 {
-	inherited::finalize		();
+	inherited::finalize				();
 
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask(0);
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_object->set_sound_mask		(0);
 }
 
-void CStalkerActionGatherItems::execute		()
+void CStalkerActionFreeALife::execute		()
 {
-	inherited::execute		();
-
-	if (!m_object->item())
-		return;
-
-	m_object->set_level_dest_vertex	(m_object->item()->level_vertex_id());
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->item()->Position());
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateDanger);
-
-	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
-	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
+	inherited::execute				();
 }
-

@@ -57,7 +57,7 @@ void CStalkerALifePlanner::add_actions		()
 {
 	CStalkerActionBase		*action;
 
-	action					= xr_new<CStalkerActionFreeNoALife>	(m_object,"free_alife");
+	action					= xr_new<CStalkerActionFreeALife>	(m_object,"free_alife");
 	add_condition			(action,eWorldPropertyALife,		true);
 	add_condition			(action,eWorldPropertyItems,		false);
 	add_condition			(action,eWorldPropertyPuzzleSolved,	false);
