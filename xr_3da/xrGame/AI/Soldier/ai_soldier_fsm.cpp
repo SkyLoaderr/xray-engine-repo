@@ -601,7 +601,8 @@ void CAI_Soldier::FollowLeaderPatrol()
 			}
 		}
 		
-		if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 3000) && (SoldierLeader->AI_Path.fSpeed > EPS_L)) {
+		//if ((dwCurTime - SoldierLeader->m_dwLastRangeSearch < 10000) && (SoldierLeader->AI_Path.fSpeed > EPS_L)) {
+		if (SoldierLeader->AI_Path.fSpeed > EPS_L) {
 			m_dwLoopCount = SoldierLeader->m_dwLoopCount;
 			
 			AI_Path.TravelPath.clear();
@@ -696,7 +697,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 
 void CAI_Soldier::Patrol()
 {
-	WRITE_TO_LOG("Patrol detour...");
+	WRITE_TO_LOG("Patrol");
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 	
