@@ -79,7 +79,7 @@ BOOL xrGameSpyServer::Connect(shared_str &session_name)
 		QR2_Init();
 
 		//------ Init of CDKey SDK -----------
-		CDKey_Init();
+		if(m_bCheckCDKey) CDKey_Init();
 	};
 
 	return res;
