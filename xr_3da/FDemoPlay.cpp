@@ -16,6 +16,8 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 {
 	Msg					("! Playing demo: %s",name);
 	Console->Execute	("hud_weapon 0");
+	if(g_bBenchmark)	Console->Execute	("hud_draw 0");
+
 	fStartTime			= 0;
 	fSpeed				= ms;
 	bCycle				= bc;
@@ -59,6 +61,7 @@ CDemoPlay::~CDemoPlay		()
 	xr_delete				(m_MParam	);
 	stat_Stop				();
 	Console->Execute		("hud_weapon 1");
+	if(g_bBenchmark)		Console->Execute	("hud_draw 1");
 }
 
 void CDemoPlay::stat_Start	()
