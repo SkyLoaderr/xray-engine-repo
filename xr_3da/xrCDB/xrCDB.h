@@ -35,7 +35,7 @@ namespace CDB
 	{
 	public:
 		Fvector*	verts	[3];	// 3*4 = 12b
-		tri*		adj		[3];	// 3*4 = 12b	(24b)
+		TRI*		adj		[3];	// 3*4 = 12b	(24b)
 		WORD		material;		// 2b			(26b)
 		WORD		sector;			// 2b			(28b)
 		DWORD		dummy;			// 4b			(32b)
@@ -45,7 +45,7 @@ namespace CDB
 		
 		IC DWORD*	IDverts()	{ return (DWORD*)	verts;	}
 		IC DWORD*	IDadj()		{ return (DWORD*)	adj;	}
-		IC void		convert_I2P(Fvector* pBaseV, tri* pBaseTri)	
+		IC void		convert_I2P(Fvector* pBaseV, TRI* pBaseTri)	
 		{
 			DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
 			verts[0] = pBaseV+pVertsID[0];
@@ -56,7 +56,7 @@ namespace CDB
 			adj	 [1] = (0xffffffff==pAdjID[1])?0:pBaseTri+pAdjID[1];
 			adj	 [2] = (0xffffffff==pAdjID[2])?0:pBaseTri+pAdjID[2];
 		}
-		IC void		convert_P2I(Fvector* pBaseV, tri* pBaseTri)	
+		IC void		convert_P2I(Fvector* pBaseV, TRI* pBaseTri)	
 		{
 			DWORD*	pVertsID= (DWORD*)	verts;	// as indexed form
 			pVertsID[0] = verts[0]-pBaseV;
