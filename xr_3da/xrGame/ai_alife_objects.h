@@ -131,31 +131,6 @@ public:
 	};
 };
 
-class CALifeCorp : public CALifeDynamicObject {
-public:
-	typedef	CALifeDynamicObject inherited;
-
-	EInjureType						m_tInjureType;
-	
-	virtual	void					Save(CFS_Memory &tMemoryStream)
-	{
-		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_tInjureType,sizeof(m_tInjureType));
-	};
-	
-	virtual	void					Load(CStream	&tFileStream)
-	{
-		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_tInjureType,sizeof(m_tInjureType));
-	};
-
-	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
-	{
-		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tInjureType		= eInjureTypeDummy;
-	};
-};
-
 class CALifeMonster : public CALifeDynamicObject {
 public:
 	typedef	CALifeDynamicObject inherited;
