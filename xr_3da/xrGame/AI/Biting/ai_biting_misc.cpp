@@ -337,7 +337,7 @@ void CAI_Biting::vfUpdateParameters()
 	for ( i=0, n=VisibleEnemies.size(); i<n; i++) {
 		if (0 == (getAI().m_tpCurrentEnemy  = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key)))
 			continue;
-		if ((E || F || G) && (0 != (H = !!getAI().pfExpediency->dwfGetDiscreteValue(2))))
+		if ((E || F || G) && (0 != (H = !!getAI().m_pfExpediency->dwfGetDiscreteValue(2))))
 			break;
 		else
 			if (ifFindHurtIndex(getAI().m_tpCurrentEnemy) != -1)

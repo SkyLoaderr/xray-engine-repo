@@ -118,7 +118,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName, CAI_DDD *tpAI_DDD)
 	
 	xr_free(m_dwaAtomicIndexes);
     
-	tpAI_DDD->fpaBaseFunctions[m_dwFunctionType] = this;
+	tpAI_DDD->m_fpaBaseFunctions[m_dwFunctionType] = this;
 	
 	_splitpath(caPath,0,0,m_caName,0);
 
@@ -139,7 +139,7 @@ float CPatternFunction::ffGetValue()
 		return(m_fLastValue);
 
 	for (u32 i=0; i<m_dwVariableCount; i++)
-		m_dwaVariableValues[i] = getAI().fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
+		m_dwaVariableValues[i] = getAI().m_fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
 #ifndef WRITE_TO_LOG
 	return(m_fLastValue = ffEvaluate());
 #else
@@ -156,40 +156,41 @@ float CPatternFunction::ffGetValue()
 
 CAI_DDD::CAI_DDD()
 {	
-	Memory.mem_fill						(fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
+	Memory.mem_fill						(m_fpaBaseFunctions,0,sizeof(CBaseFunction*)*AI_MAX_EVALUATION_FUNCTION_COUNT);
 	
-	fpaBaseFunctions[0]					= pfDistance				= xr_new<CDistanceFunction>				();
+	m_fpaBaseFunctions[0]				= m_pfDistance				= xr_new<CDistanceFunction>				();
+	m_fpaBaseFunctions[1]				= m_pfGraphPointType0		= xr_new<CGraphPointType0>				();
 										  
-	fpaBaseFunctions[21]				= pfPersonalHealth			= xr_new<CPersonalHealthFunction>		();
-	fpaBaseFunctions[22]				= pfPersonalMorale			= xr_new<CPersonalMoraleFunction>		();			
-	fpaBaseFunctions[23]				= pfPersonalCreatureType	= xr_new<CPersonalCreatureTypeFunction>	();	
-	fpaBaseFunctions[24]				= pfPersonalWeaponType		= xr_new<CPersonalWeaponTypeFunction>	();		
-	fpaBaseFunctions[25]				= pfPersonalAccuracy		= xr_new<CPersonalAccuracyFunction>		();		
-	fpaBaseFunctions[26]				= pfPersonalIntelligence	= xr_new<CPersonalIntelligenceFunction>	();	
-	fpaBaseFunctions[27]				= pfPersonalRelation		= xr_new<CPersonalRelationFunction>		();		
-	fpaBaseFunctions[28]				= pfPersonalGreed			= xr_new<CPersonalGreedFunction>		();			
-	fpaBaseFunctions[29]				= pfPersonalAggressiveness	= xr_new<CPersonalAggressivenessFunction>();	
+	m_fpaBaseFunctions[21]				= m_pfPersonalHealth		= xr_new<CPersonalHealthFunction>		();
+	m_fpaBaseFunctions[22]				= m_pfPersonalMorale		= xr_new<CPersonalMoraleFunction>		();			
+	m_fpaBaseFunctions[23]				= m_pfPersonalCreatureType	= xr_new<CPersonalCreatureTypeFunction>	();	
+	m_fpaBaseFunctions[24]				= m_pfPersonalWeaponType	= xr_new<CPersonalWeaponTypeFunction>	();		
+	m_fpaBaseFunctions[25]				= m_pfPersonalAccuracy		= xr_new<CPersonalAccuracyFunction>		();		
+	m_fpaBaseFunctions[26]				= m_pfPersonalIntelligence	= xr_new<CPersonalIntelligenceFunction>	();	
+	m_fpaBaseFunctions[27]				= m_pfPersonalRelation		= xr_new<CPersonalRelationFunction>		();		
+	m_fpaBaseFunctions[28]				= m_pfPersonalGreed			= xr_new<CPersonalGreedFunction>		();			
+	m_fpaBaseFunctions[29]				= m_pfPersonalAggressiveness= xr_new<CPersonalAggressivenessFunction>();	
 										  
-	fpaBaseFunctions[41]				= pfEnemyHealth				= xr_new<CEnemyHealthFunction>			();			
-	fpaBaseFunctions[42]				= pfEnemyCreatureType		= xr_new<CEnemyCreatureTypeFunction>	();		
-	fpaBaseFunctions[43]				= pfEnemyWeaponType			= xr_new<CEnemyWeaponTypeFunction>		();		
-	fpaBaseFunctions[44]				= pfEnemyEquipmentCost		= xr_new<CEnemyEquipmentCostFunction>	();		
-	fpaBaseFunctions[45]				= pfEnemyRukzakWeight		= xr_new<CEnemyRukzakWeightFunction>	();		
-	fpaBaseFunctions[46]				= pfEnemyAnomality			= xr_new<CEnemyAnomalityFunction>		();			
+	m_fpaBaseFunctions[41]				= m_pfEnemyHealth			= xr_new<CEnemyHealthFunction>			();			
+	m_fpaBaseFunctions[42]				= m_pfEnemyCreatureType		= xr_new<CEnemyCreatureTypeFunction>	();		
+	m_fpaBaseFunctions[43]				= m_pfEnemyWeaponType		= xr_new<CEnemyWeaponTypeFunction>		();		
+	m_fpaBaseFunctions[44]				= m_pfEnemyEquipmentCost	= xr_new<CEnemyEquipmentCostFunction>	();		
+	m_fpaBaseFunctions[45]				= m_pfEnemyRukzakWeight		= xr_new<CEnemyRukzakWeightFunction>	();		
+	m_fpaBaseFunctions[46]				= m_pfEnemyAnomality		= xr_new<CEnemyAnomalityFunction>		();			
 
-	pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.dat",		this);
-	pfCreatureEffectiveness				= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.dat",	this);
-	pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.dat",this);
-	pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>	("common\\AccWeaponEffectiveness.dat",	this);
-	pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.dat",this);
-	pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.dat",		this);
-	pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.dat",				this);
-	pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.dat",				this);
-	pfSurgeDeathProbability				= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.dat",	this);
+	m_pfWeaponEffectiveness				= xr_new<CPatternFunction>	("common\\WeaponEffectiveness.dat",		this);
+	m_pfCreatureEffectiveness			= xr_new<CPatternFunction>	("common\\CreatureEffectiveness.dat",	this);
+	m_pfIntellectCreatureEffectiveness	= xr_new<CPatternFunction>	("common\\IntCreatureEffectiveness.dat",this);
+	m_pfAccuracyWeaponEffectiveness		= xr_new<CPatternFunction>	("common\\AccWeaponEffectiveness.dat",	this);
+	m_pfFinalCreatureEffectiveness		= xr_new<CPatternFunction>	("common\\FinCreatureEffectiveness.dat",this);
+	m_pfVictoryProbability				= xr_new<CPatternFunction>	("common\\VictoryProbability.dat",		this);
+	m_pfEntityCost						= xr_new<CPatternFunction>	("common\\EntityCost.dat",				this);
+	m_pfExpediency						= xr_new<CPatternFunction>	("common\\Expediency.dat",				this);
+	m_pfSurgeDeathProbability			= xr_new<CPatternFunction>	("common\\SurgeDeathProbability.dat",	this);
 }
 
 CAI_DDD::~CAI_DDD()
 {
 	for (int i=0; i<AI_MAX_EVALUATION_FUNCTION_COUNT; i++)
-		xr_delete						(fpaBaseFunctions[i]);
+		xr_delete						(m_fpaBaseFunctions[i]);
 }

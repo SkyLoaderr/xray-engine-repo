@@ -127,3 +127,45 @@ public:
 		m_fDistance					= tFileStream.r_float();
 	};
 };
+
+//class CSE_ALifeDiscovery : public IPureALifeLSObject {
+//public:
+//	EOrganizationType				m_tOrganizationType;
+//
+//
+//									CSE_ALifeDiscovery()
+//	{
+//	}
+//
+//	virtual void					Save(IWriter	&tMemoryStream)
+//	{
+//		tMemoryStream.w				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
+//	}
+//
+//	virtual void					Load(IReader	&tFileStream)
+//	{
+//		tFileStream.r				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
+//	};
+//};
+//
+//class CSE_ALifeOrganization : public IPureALifeLSObject {
+//public:
+//	EOrganizationType				m_tOrganizationType;
+//	LPCSTR							m_caOrganizationIdentifier;
+//	ARTEFACT_VECTOR					m_tpArtefacts;
+//
+//
+//									CSE_ALifeKnownAnomaly()
+//	{
+//	}
+//
+//	virtual void					Save(IWriter	&tMemoryStream)
+//	{
+//		tMemoryStream.w				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
+//	}
+//
+//	virtual void					Load(IReader	&tFileStream)
+//	{
+//		tFileStream.r				(&m_tOrganizationType,	sizeof(m_tOrganizationType));
+//	};
+//};

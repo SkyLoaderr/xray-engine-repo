@@ -542,7 +542,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*J).second);
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
 					getAI().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
-					if (randF(100) > getAI().pfSurgeDeathProbability->ffGetValue()) {
+					if (randF(100) > getAI().m_pfSurgeDeathProbability->ffGetValue()) {
 						
 						l_tpALifeCreatureAbstract->m_bDirectControl	= true;
 						l_tpALifeCreatureAbstract->fHealth			= 0.f;
@@ -562,7 +562,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 				}
 			}
 			else
-				if (randI(100) > getAI().pfSurgeDeathProbability->ffGetValue())
+				if (randI(100) > getAI().m_pfSurgeDeathProbability->ffGetValue())
 					l_tpALifeCreatureAbstract->fHealth = 0.f;
 		}
 	}

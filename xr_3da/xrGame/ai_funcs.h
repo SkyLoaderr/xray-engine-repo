@@ -13,6 +13,7 @@
 #include "ai_base_funcs.h"
 
 class CDistanceFunction;
+class CGraphPointType0;
 class CPersonalHealthFunction;
 class CPersonalMoraleFunction;
 class CPersonalCreatureTypeFunction;
@@ -85,37 +86,38 @@ public:
 	CEntityAlive							*m_tpCurrentEnemy;
 	CSE_ALifeObject							*m_tpCurrentALifeObject;
 	// primary functions
-	CBaseFunction							*fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
+	CBaseFunction							*m_fpaBaseFunctions		[AI_MAX_EVALUATION_FUNCTION_COUNT];
 
-	CDistanceFunction						*pfDistance;
+	CDistanceFunction						*m_pfDistance;
+	CGraphPointType0						*m_pfGraphPointType0;
 
-	CPersonalHealthFunction					*pfPersonalHealth;
-	CPersonalMoraleFunction					*pfPersonalMorale;
-	CPersonalCreatureTypeFunction			*pfPersonalCreatureType;
-	CPersonalWeaponTypeFunction				*pfPersonalWeaponType;
-	CPersonalAccuracyFunction				*pfPersonalAccuracy;
-	CPersonalIntelligenceFunction			*pfPersonalIntelligence;
-	CPersonalRelationFunction				*pfPersonalRelation;
-	CPersonalGreedFunction					*pfPersonalGreed;
-	CPersonalAggressivenessFunction			*pfPersonalAggressiveness;
+	CPersonalHealthFunction					*m_pfPersonalHealth;
+	CPersonalMoraleFunction					*m_pfPersonalMorale;
+	CPersonalCreatureTypeFunction			*m_pfPersonalCreatureType;
+	CPersonalWeaponTypeFunction				*m_pfPersonalWeaponType;
+	CPersonalAccuracyFunction				*m_pfPersonalAccuracy;
+	CPersonalIntelligenceFunction			*m_pfPersonalIntelligence;
+	CPersonalRelationFunction				*m_pfPersonalRelation;
+	CPersonalGreedFunction					*m_pfPersonalGreed;
+	CPersonalAggressivenessFunction			*m_pfPersonalAggressiveness;
 
-	CEnemyHealthFunction					*pfEnemyHealth;
-	CEnemyCreatureTypeFunction				*pfEnemyCreatureType;
-	CEnemyWeaponTypeFunction				*pfEnemyWeaponType;
-	CEnemyEquipmentCostFunction				*pfEnemyEquipmentCost;
-	CEnemyRukzakWeightFunction				*pfEnemyRukzakWeight;
-	CEnemyAnomalityFunction					*pfEnemyAnomality;
+	CEnemyHealthFunction					*m_pfEnemyHealth;
+	CEnemyCreatureTypeFunction				*m_pfEnemyCreatureType;
+	CEnemyWeaponTypeFunction				*m_pfEnemyWeaponType;
+	CEnemyEquipmentCostFunction				*m_pfEnemyEquipmentCost;
+	CEnemyRukzakWeightFunction				*m_pfEnemyRukzakWeight;
+	CEnemyAnomalityFunction					*m_pfEnemyAnomality;
 
 	// complex functions
-	CPatternFunction						*pfWeaponEffectiveness;
-	CPatternFunction						*pfCreatureEffectiveness;
-	CPatternFunction						*pfIntellectCreatureEffectiveness;
-	CPatternFunction						*pfAccuracyWeaponEffectiveness;
-	CPatternFunction						*pfFinalCreatureEffectiveness;
-	CPatternFunction						*pfVictoryProbability;
-	CPatternFunction						*pfEntityCost;
-	CPatternFunction						*pfExpediency;
-	CPatternFunction						*pfSurgeDeathProbability;
+	CPatternFunction						*m_pfWeaponEffectiveness;
+	CPatternFunction						*m_pfCreatureEffectiveness;
+	CPatternFunction						*m_pfIntellectCreatureEffectiveness;
+	CPatternFunction						*m_pfAccuracyWeaponEffectiveness;
+	CPatternFunction						*m_pfFinalCreatureEffectiveness;
+	CPatternFunction						*m_pfVictoryProbability;
+	CPatternFunction						*m_pfEntityCost;
+	CPatternFunction						*m_pfExpediency;
+	CPatternFunction						*m_pfSurgeDeathProbability;
 
 											CAI_DDD();
 	virtual									~CAI_DDD();

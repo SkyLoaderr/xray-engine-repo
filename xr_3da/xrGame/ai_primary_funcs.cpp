@@ -328,7 +328,7 @@ float CEnemyHealthFunction::ffGetValue()
 		return(m_fLastValue);
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalHealth->ffGetValue();
+	m_fLastValue = getAI().m_pfPersonalHealth->ffGetValue();
 	getAI().m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 }
@@ -339,7 +339,7 @@ float CEnemyCreatureTypeFunction::ffGetValue()
 		return(m_fLastValue);
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalCreatureType->ffGetValue();
+	m_fLastValue = getAI().m_pfPersonalCreatureType->ffGetValue();
 	getAI().m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 }
@@ -350,7 +350,7 @@ float CEnemyWeaponTypeFunction::ffGetValue()
 		return(m_fLastValue);
 	CEntityAlive *tpEntity = getAI().m_tpCurrentMember;
 	getAI().m_tpCurrentMember = getAI().m_tpCurrentEnemy;
-	m_fLastValue = getAI().pfPersonalWeaponType->ffGetValue();
+	m_fLastValue = getAI().m_pfPersonalWeaponType->ffGetValue();
 	getAI().m_tpCurrentMember = tpEntity;
 	return(m_fLastValue);
 }
