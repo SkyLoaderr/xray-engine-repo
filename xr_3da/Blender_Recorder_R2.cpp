@@ -123,6 +123,10 @@ void	CBlender_Compile::r_Sampler_clw	(LPCSTR name, LPCSTR texture, bool b_ps1x_P
 }
 void	CBlender_Compile::r_End			()
 {
+	// force ANISO-TF for "s_base"
+	u32		stage			= i_Sampler	("s_base");
+	if (u32(-1)!=stage)		i_Filter_Min(stage,D3DTEXF_ANISOTROPIC);
+
 	dest.constants			= Device.Resources->_CreateConstantTable(ctable);
 	dest.state				= Device.Resources->_CreateState		(RS.GetContainer());
 	dest.T					= Device.Resources->_CreateTextureList	(passTextures);
