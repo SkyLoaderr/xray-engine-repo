@@ -96,6 +96,12 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 	ALIGN		16				;
 	new_dot:					; _new cycle iteration
 // ------------------------------------------------------------------
+// checking whether the matrixes are equal
+// ------------------------------------------------------------------
+	mov			dx,WORD PTR [esi]S.matrix0		;
+	cmp			dx,WORD PTR [esi]S.matrix1		;
+	jz			private_case					;
+// ------------------------------------------------------------------
 // calculating transformation matrix 1 addresses
 // ------------------------------------------------------------------
 	mov			eax,TYPE CBoneInstance			;
@@ -233,11 +239,80 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // => xmm3			: lerp(p0,p1) result	: ?.? | lerp(z) | lerp(y) | lerp(x)
 // ------------------------------------------------------------------
 	movups		XMMWORD PTR [edi]D.N,xmm3		; !
+	jmp short	static_data						;
 // ------------------------------------------------------------------
-//	static data
+	ALIGN		16								;
+	private_case:								;
 // ------------------------------------------------------------------
-	movlps		xmm0,MMWORD PTR [esi]S.u		;	xmm0 = ?.? | ?.? | u | v
-	movlps		MMWORD PTR [edi]D.u,xmm0		;	
+// calculating transformation matrix 0 addresses
+// ------------------------------------------------------------------
+	mov			eax,TYPE CBoneInstance			;
+	mul			WORD PTR [esi]S.matrix0			;
+	add			eax,Bones						;
+// ------------------------------------------------------------------
+// transform tiny m 0
+// ------------------------------------------------------------------
+	movups		xmm0,XMMWORD PTR [esi]S.P0		; xmm0 = ?.? | v.z | v.y | v.x
+	
+	movaps		xmm1,xmm0						; xmm1 = ?.? | v.z | v.y | v.x
+	movaps		xmm2,xmm0						; xmm2 = ?.? | v.z | v.y | v.x
+
+	shufps		xmm1,xmm1,00000000b				; xmm1 = v.x | v.x | v.x | v.x
+	shufps		xmm2,xmm2,01010101b				; xmm2 = v.y | v.y | v.y | v.y
+	
+	mulps		xmm1,XMMWORD PTR [eax]			; xmm1 = v.x*_14 | v.x*_13 | v.x*_12 | v.x*_11
+	mulps		xmm2,LINE2(eax)					; xmm2 = v.y*_24 | v.y*_23 | v.y*_22 | v.y*_21
+	
+	addps		xmm1,xmm2						; xmm1 = v.x*_14+v.y*_24 | v.x*_13+v.y*_23 |
+												;		 v.x*_12+v.y*_22 | v.x*_11+v.y*_21
+	movaps		xmm2,xmm0						; xmm2 = ?.? | v.z | v.y | v.x
+	shufps		xmm2,xmm2,10101010b				; xmm2 = v.z | v.z | v.z | v.z
+	mulps		xmm2,LINE3(eax)					; xmm2 = v.z*_34 | v.z*_33 | v.z*_32 | v.z*_31
+
+	addps		xmm2,LINE4(eax)					; xmm2 = v.z*_34+_44 | v.z*_33+_43 | 
+												;		 v.z*_32+_42 | v.z*_31+_41
+	addps		xmm2,xmm1						; xmm2 = v.x*_14+v.y*_24+v.z*_34+_44 | v.x*_13+v.y*_23+v.z*_33+_43 |
+												;		 v.x*_12+v.y*_22+v.z*_32+_42 | v.x*_11+v.y*_21+v.z*_31+_41
+// ------------------------------------------------------------------
+// => xmm2			: transform tiny result	0	: ?.? | p0.z | p0.y | p0.x
+// ------------------------------------------------------------------
+	movups		XMMWORD PTR [edi]D.P,xmm2		; !
+// ------------------------------------------------------------------
+// transform dir m 0
+// ------------------------------------------------------------------	
+	movups		xmm0,XMMWORD PTR [esi]S.N0		; xmm0 = ?.? | v.z | v.y | v.x
+	
+	movaps		xmm1,xmm0						; xmm1 = ?.? | v.z | v.y | v.x
+	movaps		xmm3,xmm0						; xmm3 = ?.? | v.z | v.y | v.x
+
+	shufps		xmm1,xmm1,00000000b				; xmm1 = v.x | v.x | v.x | v.x
+	shufps		xmm3,xmm3,01010101b				; xmm3 = v.y | v.y | v.y | v.y
+
+	mulps		xmm1,LINE1(eax)					; xmm1 = v.x*_14 | v.x*_13 | v.x*_12 | v.x*_11
+	mulps		xmm3,LINE2(eax)					; xmm3 = v.y*_24 | v.y*_23 | v.y*_22 | v.y*_21
+	
+	addps		xmm1,xmm3						; xmm1 = v.x*_14+v.y*_24 | v.x*_13+v.y*_23 |
+												;		 v.x*_12+v.y*_22 | v.x*_11+v.y*_21
+	movaps		xmm3,xmm0						; xmm3 = ?.? | v.z | v.y | v.x
+	shufps		xmm3,xmm3,10101010b				; xmm3 = v.z | v.z | v.z | v.z
+	mulps		xmm3,LINE3(eax)					; xmm3 = v.z*_34 | v.z*_33 | v.z*_32 | v.z*_31
+
+	addps		xmm3,xmm1						; xmm3 = v.x*_14+v.y*_24+v.z*_34 | v.x*_13+v.y*_23+v.z*_33 |
+												;		 v.x*_12+v.y*_22+v.z*_32 | v.x*_11+v.y*_21+v.z*_31
+// ------------------------------------------------------------------
+// => xmm3			: transform dir result	0	: ?.? | n0.z | n0.y | n0.x
+// ------------------------------------------------------------------
+	movups		XMMWORD PTR [edi]D.N,xmm3		; !	
+// ------------------------------------------------------------------
+	ALIGN		16								;
+	static_data:								;
+// ------------------------------------------------------------------
+//	static data - check
+// ------------------------------------------------------------------
+	mov			eax,DWORD PTR [esi]S.u			;
+	mov			ebx,DWORD PTR [esi]S.v			;
+	mov			DWORD PTR [edi]D.u,eax			;
+	mov			DWORD PTR [edi]D.v,ebx			;
 // ------------------------------------------------------------------	
 // advancing	
 // ------------------------------------------------------------------	
