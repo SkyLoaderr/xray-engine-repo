@@ -312,7 +312,13 @@ function body_state:anim_update(type)
 			end
 			
 			self.npc:clear_animations()
-			self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
+			if self.animations[self.states.current_state].rnd[self:weapon_slot()][r] ~= nil then
+				self.npc:add_animation (self.animations[self.states.current_state].rnd[self:weapon_slot()][r], true)
+			else
+				printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
+							table.getn(self.animations[self.states.current_state].rnd[self:weapon_slot()]),
+							self.states.current_state, self:weapon_slot() )
+			end
 			self.npc:add_animation (self.animations[self.states.current_state].idle[self:weapon_slot()], true)
 		end
 	end
