@@ -11,6 +11,8 @@
 #include "GameObject.h"
 #include "Entity.h"
 #include "Inventory.h"
+#include "CustomMonster.h"
+#include "ai\\stalker\\ai_stalker.h"
 
 #define DECLARE_FUNCTION10(A,D)\
 	IC		D				A					() const\
@@ -240,6 +242,11 @@ public:
 		return			(dynamic_cast<CObject*>(m_tpGameObject));
 	}
 
+							operator CWeapon*	() const
+	{
+		return			(dynamic_cast<CWeapon*>(m_tpGameObject));
+	}
+
 	IC		CLuaGameObject	*Parent				() const
 	{
 		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(m_tpGameObject->H_Parent());
@@ -252,46 +259,47 @@ public:
 			void			Hit					(CLuaHit &tLuaHit);
 
 	// CGameObject
-	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	CLS_ID,				CLASS_ID,				CLASS_ID(-1));
-	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,				Fvector());
-	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				LPCSTR,					"");
-	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			LPCSTR,					"");
-	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,					float(-1));
-	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,					u32(-1));
-	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,					FALSE);
-	BIND_FUNCTION01	(m_tpGameObject,	setVisible,			CGameObject,	setVisible,			BOOL,					BOOL);
-	BIND_FUNCTION10	(m_tpGameObject,	getEnabled,			CGameObject,	getEnabled,			BOOL,					FALSE);
-	BIND_FUNCTION01	(m_tpGameObject,	setEnabled,			CGameObject,	setEnabled,			BOOL,					BOOL);
+	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	SUB_CLS_ID,			CLASS_ID,						CLASS_ID(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,						Fvector());
+	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				LPCSTR,							"");
+	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			LPCSTR,							"");
+	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,							float(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,							u32(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,							FALSE);
+	BIND_FUNCTION01	(m_tpGameObject,	setVisible,			CGameObject,	setVisible,			BOOL,							BOOL);
+	BIND_FUNCTION10	(m_tpGameObject,	getEnabled,			CGameObject,	getEnabled,			BOOL,							FALSE);
+	BIND_FUNCTION01	(m_tpGameObject,	setEnabled,			CGameObject,	setEnabled,			BOOL,							BOOL);
 
 	// CInventoryItem
-	BIND_FUNCTION10	(m_tpGameObject,	Cost,				CInventoryItem,	Cost,				u32,					u32(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Cost,				CInventoryItem,	Cost,				u32,							u32(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	GetCondition,		CInventoryItem,	GetCondition,		float,							0);
 
 	// CEntity
-	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,				_TIME_ID(-1));
-	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CEntity,		g_Accuracy,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	Alive,				CEntity,		g_Alive,			BOOL,					FALSE);
-	BIND_FUNCTION10	(m_tpGameObject,	Team,				CEntity,		g_Team,				int,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	Squad,				CEntity,		g_Squad,			int,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	Group,				CEntity,		g_Group,			int,					-1);
-	BIND_FUNCTION01	(m_tpGameObject,	Kill,				CEntity,		KillEntity,			CLuaGameObject *,		CObject *);
+	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,						_TIME_ID(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CEntity,		g_Accuracy,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Alive,				CEntity,		g_Alive,			BOOL,							FALSE);
+	BIND_FUNCTION10	(m_tpGameObject,	Team,				CEntity,		g_Team,				int,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Squad,				CEntity,		g_Squad,			int,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Group,				CEntity,		g_Group,			int,							-1);
+	BIND_FUNCTION01	(m_tpGameObject,	Kill,				CEntity,		KillEntity,			CLuaGameObject *,				CObject *);
 
 	// CEntityAlive
-	BIND_FUNCTION10	(m_tpGameObject,	GetFOV,				CEntityAlive,	ffGetFov,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetRange,			CEntityAlive,	ffGetRange,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetHealth,			CEntityAlive,	GetHealth,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetPower,			CEntityAlive,	GetPower,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetSatiety,			CEntityAlive,	GetSatiety,			float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetRadiation,		CEntityAlive,	GetRadiation,		float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetCircumspection,	CEntityAlive,	GetCircumspection,	float,					-1);
-	BIND_FUNCTION10	(m_tpGameObject,	GetMorale,			CEntityAlive,	GetEntityMorale,	float,					-1);
-	BIND_FUNCTION01	(m_tpGameObject,	SetHealth,			CEntityAlive,	ChangeHealth,		float,					float);
-	BIND_FUNCTION01	(m_tpGameObject,	SetPower,			CEntityAlive,	ChangePower,		float,					float);
-	BIND_FUNCTION01	(m_tpGameObject,	SetSatiety,			CEntityAlive,	ChangeSatiety,		float,					float);
-	BIND_FUNCTION01	(m_tpGameObject,	SetRadiation,		CEntityAlive,	ChangeRadiation,	float,					float);
-	BIND_FUNCTION01	(m_tpGameObject,	SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,					float);
-	BIND_FUNCTION01	(m_tpGameObject,	SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,					float);
+	BIND_FUNCTION10	(m_tpGameObject,	GetFOV,				CEntityAlive,	ffGetFov,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRange,			CEntityAlive,	ffGetRange,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetHealth,			CEntityAlive,	GetHealth,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetPower,			CEntityAlive,	GetPower,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetSatiety,			CEntityAlive,	GetSatiety,			float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRadiation,		CEntityAlive,	GetRadiation,		float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetCircumspection,	CEntityAlive,	GetCircumspection,	float,							-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetMorale,			CEntityAlive,	GetEntityMorale,	float,							-1);
+	BIND_FUNCTION01	(m_tpGameObject,	SetHealth,			CEntityAlive,	ChangeHealth,		float,							float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetPower,			CEntityAlive,	ChangePower,		float,							float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetSatiety,			CEntityAlive,	ChangeSatiety,		float,							float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetRadiation,		CEntityAlive,	ChangeRadiation,	float,							float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,							float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,							float);
 
 	IC		void			GetRelationType		(CLuaGameObject* who)
 	{
@@ -309,21 +317,71 @@ public:
 		
 		l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
 	}
-//class CItemObject {
-//public:
-//	Condition();
-//};
-//
-//class CAliveObject {
-//public:
-//	rank();
-//	health();
-//	activeweapon();
-//	equipment();
-//	asleep();
-//	zombied();
-//	checkifobjectvisible();
-//};
-//
+
+	// CCustomMonsster
+	
+	BIND_FUNCTION02	(m_tpGameObject,	SetScriptControl,	CCustomMonster,	SetScriptControl,	bool,								LPCSTR,					bool,					LPCSTR);
+	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CCustomMonster,	GetScriptControl,	bool,								false);
+	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CCustomMonster,GetScriptControlName,LPCSTR,							"");
+	BIND_FUNCTION11	(m_tpGameObject,	CheckObjectVisibility,CCustomMonster,CheckObjectVisibility,	bool,							false,					const CLuaGameObject*,	const CObject*);
+	BIND_FUNCTION01	(m_tpGameObject,	SetAnimation,		CCustomMonster,	SetAnimation,		LPCSTR,								LPCSTR);
+	BIND_FUNCTION01	(m_tpGameObject,	SetSound,			CCustomMonster,	SetSound,			LPCSTR,								LPCSTR);
+	BIND_FUNCTION10	(m_tpGameObject,	CheckIfCompleted,	CCustomMonster,	CheckIfCompleted,	bool,								false);
+
+	// CAI_Stalker
+	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRank,			CAI_Stalker,	GetRank,			u32,								eStalkerRankDummy);
+	BIND_FUNCTION10	(m_tpGameObject,	GetWeaponAmmo,		CAI_Stalker,	GetWeaponAmmo,		u32,								0);
+	BIND_FUNCTION01	(m_tpGameObject,	SetBodyState,		CAI_Stalker,	SetBodyState,		const StalkerSpace::EBodyState,		const StalkerSpace::EBodyState);
+	BIND_FUNCTION01	(m_tpGameObject,	SetMovementType,	CAI_Stalker,	SetMovementType,	const StalkerSpace::EMovementType,	const StalkerSpace::EMovementType);
+	BIND_FUNCTION01	(m_tpGameObject,	SetDestination,		CAI_Stalker,	SetDestination,		const CLuaGameObject*,				CObject*);
+	BIND_FUNCTION01	(m_tpGameObject,	SetPathType,		CAI_Stalker,	SetPathType,		const StalkerSpace::EPathType,		const StalkerSpace::EPathType);
+	BIND_FUNCTION01	(m_tpGameObject,	SetPath,			CAI_Stalker,	SetPath,			LPCSTR,								LPCSTR);
+	BIND_FUNCTION01	(m_tpGameObject,	SetWatchObject,		CAI_Stalker,	SetWatchObject,		const CLuaGameObject*,				CObject*);
+	BIND_FUNCTION01	(m_tpGameObject,	SetWatchDirection,	CAI_Stalker,	SetWatchDirection,	const Fvector &,					const Fvector &);
+	BIND_FUNCTION01	(m_tpGameObject,	SetWatchType,		CAI_Stalker,	SetWatchType,		const StalkerSpace::ELookType,		const StalkerSpace::ELookType);
+	BIND_FUNCTION01	(m_tpGameObject,	SetMentalState,		CAI_Stalker,	SetMentalState,		const StalkerSpace::EMentalState,	const StalkerSpace::EMentalState);
+	BIND_FUNCTION01	(m_tpGameObject,	SetWeaponState,		CAI_Stalker,	SetWeaponState,		const StalkerSpace::EWeaponState,	const StalkerSpace::EWeaponState);
+	BIND_FUNCTION01	(m_tpGameObject,	SetWeapon,			CAI_Stalker,	SetWeapon,			const CLuaGameObject*,				CWeapon*);
+	
+	IC		CLuaGameObject	*GetCurrentWeapon() const
+	{
+		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!l_tpStalker) {
+			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+			return		(0);
+		}
+		return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentWeapon()));
+	}
+
+	IC		CLuaGameObject	*GetCurrentEquipment() const
+	{
+		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!l_tpStalker) {
+			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+			return		(0);
+		}
+		return			(xr_new<CLuaGameObject>(l_tpStalker->GetCurrentEquipment()));
+	}
+
+	IC		CLuaGameObject	*GetFood() const
+	{
+		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!l_tpStalker) {
+			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+			return		(0);
+		}
+		return			(xr_new<CLuaGameObject>(l_tpStalker->GetFood()));
+	}
+
+	IC		CLuaGameObject	*GetMedikit() const
+	{
+		CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+		if (!l_tpStalker) {
+			Log		("* [LUA] CAI_Stalker : cannot access class member GetCurrentWeapon!");
+			return		(0);
+		}
+		return			(xr_new<CLuaGameObject>(l_tpStalker->GetMedikit()));
+	}
 };
 

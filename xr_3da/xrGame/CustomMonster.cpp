@@ -725,3 +725,46 @@ void CCustomMonster::SetDirectionLook(bool bReversed)
 
 	r_target = r_torso_target;
 }
+
+void CCustomMonster::SetScriptControl(const bool bScriptControl, LPCSTR caSciptName)
+{
+	m_bScriptControl	= bScriptControl;
+	strcpy				(m_caScriptName,caSciptName);
+}
+
+bool CCustomMonster::GetScriptControl() const
+{
+	return				(m_bScriptControl);
+}
+
+LPCSTR CCustomMonster::GetScriptControlName() const
+{
+	return				(m_caScriptName);
+}
+
+bool CCustomMonster::CheckObjectVisibility(const CObject *tpObject)
+{
+	feel_vision_get		(m_tpaVisibleObjects);
+	xr_vector<CObject*>::const_iterator	I = m_tpaVisibleObjects.begin();
+	xr_vector<CObject*>::const_iterator	E = m_tpaVisibleObjects.end();
+	for ( ; I != E; I++)
+		if (tpObject == dynamic_cast<CObject*>(*I))
+			return		(true);
+	return				(false);
+}
+
+void CCustomMonster::SetAnimation(LPCSTR caAnimationName)
+{
+	m_tpScriptAnimation = PKinematics(Visual())->ID_Cycle(caAnimationName);
+}
+
+void CCustomMonster::SetSound(LPCSTR caSoundName)
+{
+	string256			l_caFileName;
+	if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".wav"))
+		::Sound->create	(*(m_tpScriptSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
+	else {
+		Log				("* [LUA] File not found \"%s\"!",l_caFileName);
+		m_tpScriptSound	= 0;
+	}
+}

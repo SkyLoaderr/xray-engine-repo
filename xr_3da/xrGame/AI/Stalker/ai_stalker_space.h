@@ -33,81 +33,91 @@ DEFINE_VECTOR							(ref_sound,SOUND_VECTOR,SOUND_IT);
 //	#define OUT_TEXT(S)						if (g_Alive()) Msg(S);
 #endif
 
-enum EBodyState {
-	eBodyStateCrouch = 0,
-	eBodyStateStand,
-	eBodyStateStandDamaged,
-};
+namespace StalkerSpace {
+	enum EBodyState {
+		eBodyStateCrouch = 0,
+		eBodyStateStand,
+		eBodyStateStandDamaged,
+	};
 
-enum EMovementType {
-	eMovementTypeWalk = 0,
-	eMovementTypeRun,
-	eMovementTypeStand,
-};
+	enum EMovementType {
+		eMovementTypeWalk = 0,
+		eMovementTypeRun,
+		eMovementTypeStand,
+	};
 
-enum EStateType {
-	eStateTypeDanger = 0,
-	eStateTypeNormal,
-	eStateTypePanic,
-};
+	enum EStateType {
+		eStateTypeDanger = 0,
+		eStateTypeNormal,
+		eStateTypePanic,
+	};
 
-enum EMovementDirection {
-	eMovementDirectionForward = 0,
-	eMovementDirectionBack,
-	eMovementDirectionLeft,
-	eMovementDirectionRight,
-};
+	enum EMovementDirection {
+		eMovementDirectionForward = 0,
+		eMovementDirectionBack,
+		eMovementDirectionLeft,
+		eMovementDirectionRight,
+	};
 
-enum ELookType {
-	eLookTypeDirection = 0,
-	eLookTypeSearch,
-	eLookTypeDanger,
-	eLookTypePoint,
-	eLookTypeFirePoint,
-	eLookTypeLookOver,
-	eLookTypeLookFireOver,
-};
+	enum ELookType {
+		eLookTypeDirection = 0,
+		eLookTypeSearch,
+		eLookTypeDanger,
+		eLookTypePoint,
+		eLookTypeFirePoint,
+		eLookTypeLookOver,
+		eLookTypeLookFireOver,
+	};
 
-enum EDirectionType {
-	eDirectionTypeForward = 0,
-	eDirectionTypeForwardDodge,
-	eDirectionTypeForwardCover,
-	eDirectionTypeBack,
-	eDirectionTypeBackDodge,
-	eDirectionTypeBackCover,
-};
+	enum EDirectionType {
+		eDirectionTypeForward = 0,
+		eDirectionTypeForwardDodge,
+		eDirectionTypeForwardCover,
+		eDirectionTypeBack,
+		eDirectionTypeBackDodge,
+		eDirectionTypeBackCover,
+	};
 
-enum EPathState {
-	ePathStateSearchNode = 0,
-	ePathStateBuildNodePath,
-	ePathStateBuildTravelLine,
-	ePathStateDodgeTravelLine,
-};
+	enum EPathState {
+		ePathStateSearchNode = 0,
+		ePathStateBuildNodePath,
+		ePathStateBuildTravelLine,
+		ePathStateDodgeTravelLine,
+	};
 
-enum EPathType {
-	ePathTypeStraight = 0,
-	ePathTypeDodge,
-	ePathTypeCriteria,
-	ePathTypeStraightDodge,
-	ePathTypeDodgeCriteria,
-};
+	enum EPathType {
+		ePathTypeStraight = 0,
+		ePathTypeDodge,
+		ePathTypeCriteria,
+		ePathTypeStraightDodge,
+		ePathTypeDodgeCriteria,
+	};
 
-enum EWeaponState {
-	eWeaponStateIdle = 0,
-	eWeaponStatePrimaryFire,
-	eWeaponStateSecondaryFire,
-};
+	enum EWeaponState {
+		eWeaponStateIdle = 0,
+		eWeaponStatePrimaryFire,
+		eWeaponStateSecondaryFire,
+	};
 
-enum EActionState {
-	eActionStateRun = 0,
-	eActionStateStand,
-	eActionStateDontWatch,
-	eActionStateWatch,
-	eActionStateWatchGo,
-	eActionStateWatchLook,
-};
+	enum EActionState {
+		eActionStateRun = 0,
+		eActionStateStand,
+		eActionStateDontWatch,
+		eActionStateWatch,
+		eActionStateWatchGo,
+		eActionStateWatchLook,
+	};
 
-enum ESearchState {
-	eSearchStateMarkVisibleNodes = 0,
-	eSearchStateFindSuspiciousNodes,
+	enum ESearchState {
+		eSearchStateMarkVisibleNodes = 0,
+		eSearchStateFindSuspiciousNodes,
+	};
+
+	enum EMentalState {
+		eMentalStateFree = u32(0),
+		eMentalStateDanger,
+		eMentalStateAsleep,
+		eMentalStateZombied,
+		eMentalStateDummy = u32(-1),
+	};
 };

@@ -13,6 +13,9 @@
 #include "ai_stalker_animations.h"
 #include "ai_stalker_space.h"
 #include "..\\..\\inventory.h"
+#include "..\\..\\weapon.h"
+
+using namespace StalkerSpace;
 
 class CSE_ALifeSimulator;
 class CCharacterPhysicsSupport;
@@ -80,7 +83,6 @@ private:
 	svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>		m_tpaDynamicObjects;
 	svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>			m_tpaDynamicSounds;
 	svector<SHurt,			MAX_HURT_COUNT>				m_tpaHurts;
-	xr_vector<CObject*>		m_tpaVisibleObjects;
 	u32						m_dwMaxDynamicObjectsCount;
 	u32						m_dwMaxDynamicSoundsCount;
 	float					m_fSensetivity;
@@ -438,6 +440,47 @@ public:
 
 
 	/////////////////////////
-	//PDA functions
+	// PDA functions
+	/////////////////////////
 	void ReceivePdaMessage(u16 who, EPdaMsg msg, EPdaMsgAnger anger);
+
+	/////////////////////////
+	// Script 
+	/////////////////////////
+
+protected:
+	EBodyState					m_tScriptBodyState;
+	EMovementType				m_tScriptMovementType;
+	CObject						*m_tScriptDestinationObject;
+	EPathType					m_tScriptPathType;
+	string256					m_caScriptPatrolPath;
+	CObject						*m_tpScriptWatchObject;
+	Fvector						m_tScriptWatchDirection;
+	ELookType					m_tScriptWatchType;
+	EMentalState				m_tScriptMentalState;
+	EWeaponState				m_tScriptWeaponState;
+	CWeapon						*m_tpScriptWeapon;
+public:
+
+	virtual void				UseObject				(const CObject			*tpObject);
+	virtual ALife::EStalkerRank	GetRank					() const;
+	virtual CWeapon				*GetCurrentWeapon		() const;
+	virtual u32					GetWeaponAmmo			() const;
+	virtual CInventoryItem		*GetCurrentEquipment	() const;
+	virtual CInventoryItem		*GetMedikit				() const;
+	virtual CInventoryItem		*GetFood				() const;
+	virtual void				SetBodyState			(const EBodyState		tBodyState);
+	virtual void				SetMovementType			(const EMovementType	tMovementType);
+	virtual void				SetDestination			(CObject				*tpObject);
+	virtual void				SetPathType				(const EPathType		tPathType);
+	virtual void				SetPath					(LPCSTR					caPatrolPath);
+	virtual void				SetWatchObject			(CObject				*tpObject);
+	virtual void				SetWatchDirection		(const Fvector			&tDirection);
+	virtual void				SetWatchType			(const ELookType		tWatchType);
+	virtual void				SetMentalState			(const EMentalState		tMentalState);
+	virtual void				SetWeaponState			(const EWeaponState		tWeaponState);
+	virtual void				SetWeapon				(CWeapon				*tpWeapon);
+//	virtual const EObjectState	GetObjectState			() const;
+//	virtual void				SetObjectState			(const EObjectState	tObjectState);
+//	virtual void				SetTarget				(const CObject		*tpObject);
 };

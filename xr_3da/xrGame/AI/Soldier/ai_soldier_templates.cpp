@@ -257,7 +257,7 @@ void CAI_Soldier::vfSetMovementType(EMovementTypes cMovementType,float fMultplie
 	move.y = view.y = 0; 
 	view.normalize_safe();
 	move.normalize_safe();
-	float dot = view.dotproduct(move);
+//	float dot = view.dotproduct(move);
 	Fvector cross; 
 	cross.crossproduct(view,move);
 	if ((cMovementType != WALK_FORWARD_0) && 

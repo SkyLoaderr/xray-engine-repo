@@ -668,6 +668,9 @@
 							RelativePath="AI\Stalker\ai_stalker_path.cpp">
 						</File>
 						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_script.cpp">
+						</File>
+						<File
 							RelativePath="AI\Stalker\ai_stalker_space.h">
 						</File>
 					</Filter>

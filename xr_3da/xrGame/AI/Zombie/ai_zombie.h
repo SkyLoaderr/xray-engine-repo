@@ -131,9 +131,6 @@ class CAI_Zombie : public CCustomMonster
 		// SOUND BEING FELT
 		SSimpleSound		m_tLastSound;
 		
-		// VISIBILITY
-		xr_vector<CObject*>	m_tpaVisibleObjects;
-		
 		// ENEMY
 		SEnemySelected		m_Enemy;
 		CEntity*			m_tSavedEnemy;

@@ -324,6 +324,77 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("GetFOV",						&CLuaGameObject::GetFOV)
 			.def("GetRange",					&CLuaGameObject::GetRange)
 			.def("GetRelationType",				&CLuaGameObject::GetRelationType)
+			.def("SetScriptControl",			&CLuaGameObject::SetScriptControl)
+			.def("GetScriptControl",			&CLuaGameObject::GetScriptControl)
+			.def("GetScriptControlName",		&CLuaGameObject::GetScriptControlName)
+			.def("CheckObjectVisibility",		&CLuaGameObject::CheckObjectVisibility)
+			.def("SetAnimation",				&CLuaGameObject::SetAnimation)
+			.def("SetSound",					&CLuaGameObject::SetSound)
+			.def("CheckIfCompleted",			&CLuaGameObject::CheckIfCompleted)
+			.enum_("EStalkerRank")
+			[
+				value("eStalkerRankNovice",		int(ALife::eStalkerRankNovice)),
+				value("eStalkerRankExperienced",int(ALife::eStalkerRankExperienced)),
+				value("eStalkerRankVeteran",	int(ALife::eStalkerRankVeteran)),
+				value("eStalkerRankMaster",		int(ALife::eStalkerRankMaster))
+			]
+			.enum_("EBodyState")
+			[
+				value("eBodyStateCrouch",		int(StalkerSpace::eBodyStateCrouch)),
+				value("eBodyStateStand",		int(StalkerSpace::eBodyStateStand)),
+				value("eBodyStateStandDamaged",	int(StalkerSpace::eBodyStateStandDamaged))
+			]
+			.enum_("EMovementType")
+			[
+				value("eMovementTypeWalk",		int(StalkerSpace::eMovementTypeWalk)),
+				value("eMovementTypeRun",		int(StalkerSpace::eMovementTypeRun)),
+				value("eMovementTypeStand",		int(StalkerSpace::eMovementTypeStand))
+			]
+			.enum_("ELookType")
+			[
+				value("eLookTypeDirection",		int(StalkerSpace::eLookTypeDirection)),
+				value("eLookTypeSearch",		int(StalkerSpace::eLookTypeSearch)),
+				value("eLookTypeDanger",		int(StalkerSpace::eLookTypeDanger)),
+				value("eLookTypePoint",			int(StalkerSpace::eLookTypePoint)),
+				value("eLookTypeFirePoint",		int(StalkerSpace::eLookTypeFirePoint)),
+				value("eLookTypeLookOver",		int(StalkerSpace::eLookTypeLookOver)),
+				value("eLookTypeLookFireOver",	int(StalkerSpace::eLookTypeLookFireOver))
+			]
+			.enum_("EPathType")
+			[
+				value("ePathTypeStraight",		int(StalkerSpace::ePathTypeStraight)),
+				value("ePathTypeDodge",			int(StalkerSpace::ePathTypeDodge)),
+				value("ePathTypeCriteria",		int(StalkerSpace::ePathTypeCriteria)),
+				value("ePathTypeStraightDodge",	int(StalkerSpace::ePathTypeStraightDodge)),
+				value("ePathTypeDodgeCriteria",	int(StalkerSpace::ePathTypeDodgeCriteria))
+			]
+			.enum_("EWeaponState")
+				[
+				value("eWeaponStateIdle",		int(StalkerSpace::eWeaponStateIdle)),
+				value("eWeaponStatePrimaryFire",int(StalkerSpace::eWeaponStatePrimaryFire)),
+				value("eWeaponStateSecondaryFire",int(StalkerSpace::eWeaponStateSecondaryFire))
+			]
+			.enum_("EMentalState")
+			[
+				value("eMentalStateFree",		int(StalkerSpace::eMentalStateFree)),
+				value("eMentalStateDanger",		int(StalkerSpace::eMentalStateDanger)),
+				value("eMentalStateAsleep",		int(StalkerSpace::eMentalStateAsleep)),
+				value("eMentalStateZombied",	int(StalkerSpace::eMentalStateZombied))
+			]
+			.def("UseObject",					&CLuaGameObject::UseObject)
+			.def("GetRank",						&CLuaGameObject::GetRank)
+			.def("GetWeaponAmmo",				&CLuaGameObject::GetWeaponAmmo)
+			.def("SetBodyState",				&CLuaGameObject::SetBodyState)
+			.def("SetMovementType",				&CLuaGameObject::SetMovementType)
+			.def("SetDestination",				&CLuaGameObject::SetDestination)
+			.def("SetPathType",					&CLuaGameObject::SetPathType)
+			.def("SetPath",						&CLuaGameObject::SetPath)
+			.def("SetWatchObject",				&CLuaGameObject::SetWatchObject)
+			.def("SetWatchDirection",			&CLuaGameObject::SetWatchDirection)
+			.def("SetWatchType",				&CLuaGameObject::SetWatchType)
+			.def("SetMentalState",				&CLuaGameObject::SetMentalState)
+			.def("SetWeaponState",				&CLuaGameObject::SetWeaponState)
+			.def("SetWeapon",					&CLuaGameObject::SetWeapon)
 	];
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);

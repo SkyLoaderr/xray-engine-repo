@@ -1051,7 +1051,7 @@ int CWeapon::GetAmmoCurrent()
 	for(int i = 0; i < (int)m_ammoTypes.size(); i++) 
 	{
 		LPCSTR l_ammoType = m_ammoTypes[i];
-		if(dynamic_cast<CActor*>(H_Parent())) 
+//		if(dynamic_cast<CActor*>(H_Parent())) 
 		{
 			TIItemList &l_list = m_pInventory->m_belt;
 			for(PPIItem l_it = l_list.begin(); l_it != l_list.end(); l_it++) 
