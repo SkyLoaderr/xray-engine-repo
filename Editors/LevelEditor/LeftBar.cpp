@@ -68,7 +68,7 @@ void GetHeight(int& h, TForm* f)
 
 void TfraLeftBar::OnTimer()
 {
-	RefreshBar();
+	RedrawBar();
 }
 
 void TfraLeftBar::RedrawBar()

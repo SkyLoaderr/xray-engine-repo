@@ -11,7 +11,7 @@ class ESoundEnvironment: public CCustomObject
 {
 	typedef CCustomObject inherited;
 
-	friend class		CSoundManager;
+	friend class		CLevelSoundManager;
 	// Env
 	CEditShape*			m_Shape;
 	AnsiString			m_EnvInner;

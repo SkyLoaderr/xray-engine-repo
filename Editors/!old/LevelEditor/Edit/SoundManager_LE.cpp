@@ -1,14 +1,16 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "SoundManager.h"
+#include "SoundManager_LE.h"
 #include "Scene.h"
 #include "ESound_Source.h"
 #include "ESound_Environment.h"
 #include "du_box.h"
 #include "xrLevel.h"
 
-bool CSoundManager::Validate()
+CLevelSoundManager*& LSndLib=(CLevelSoundManager*)SndLib;
+
+bool CLevelSoundManager::Validate()
 {
 	ObjectList& snd_envs = Scene.ListObj(OBJCLASS_SOUND_ENV);
     for (ObjectIt it=snd_envs.begin(); it!=snd_envs.end(); it++){
@@ -29,7 +31,7 @@ bool CSoundManager::Validate()
     return true;
 }
 
-void CSoundManager::RealRefreshEnvGeometry()
+void CLevelSoundManager::RealRefreshEnvGeometry()
 {
 	CMemoryWriter F;
 	if (MakeEnvGeometry(F,true)){
@@ -38,7 +40,7 @@ void CSoundManager::RealRefreshEnvGeometry()
     }
 }
 
-bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
+bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
 {
 	ObjectList& snd_envs = Scene.ListObj(OBJCLASS_SOUND_ENV);
 
@@ -104,5 +106,20 @@ bool CSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
     F.close_chunk	();
 
     return true;
+}
+
+void CLevelSoundManager::OnFrame()
+{
+	inherited::OnFrame();
+	if (bNeedRefreshEnvGeom){
+    	bNeedRefreshEnvGeom 	= false;
+        RealRefreshEnvGeometry	();
+    }
+}
+
+void CLevelSoundManager::RefreshEnvLibrary()
+{
+	Sound->refresh_env_library();
+    RefreshEnvGeometry		();
 }
 

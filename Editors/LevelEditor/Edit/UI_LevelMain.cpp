@@ -26,6 +26,10 @@
 #include "NumericVector.h"
 #include "EditorPreferences.h"
 
+#ifdef _LEVEL_EDITOR
+//.    if (m_Cursor->GetVisible()) RedrawScene();
+#endif
+
 CLevelMain*&	LUI=(CLevelMain*)UI;
 
 CLevelMain::CLevelMain()
@@ -574,6 +578,9 @@ bool CLevelMain::CommandExt(int _Command, int p1, int p2)
     	frmMain->UpdateCaption();
     	break;
 //------
+    case COMMAND_CREATE_SOUND_LIB:
+    	SndLib		= xr_new<CLevelSoundManager>();
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;

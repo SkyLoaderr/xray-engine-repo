@@ -85,9 +85,12 @@ void CCustomObject::Move(Fvector& amount)
     Fvector r=PRotation;
     if (Tools->GetSettings(etfMTSnap)){
         BOOL bVis	= Visible();
+        BOOL bSel	= Selected();
         Show		(FALSE);
+        Select		(FALSE);
     	SnapMove	(v,r,FTransformRP,amount);
         Show		(bVis);
+        Select		(bSel);
     }else{
 	    v.add(amount);
     }
