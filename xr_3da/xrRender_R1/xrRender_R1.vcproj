@@ -301,6 +301,9 @@
 				RelativePath=".\r__dsgraph_build.cpp">
 			</File>
 			<File
+				RelativePath=".\r__dsgraph_render.cpp">
+			</File>
+			<File
 				RelativePath=".\r__dsgraph_structure.h">
 			</File>
 			<File
