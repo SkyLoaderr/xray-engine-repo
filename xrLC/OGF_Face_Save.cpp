@@ -288,9 +288,11 @@ void	OGF::PreSave			()
 	g_IB.Register		(LPWORD(&*faces.begin()),LPWORD(&*faces.end()),&ib_id,&ib_start);
 
 	// SWI, if need it
+	/*
 	if (progressive_test())		{
 		g_SWI.Register			(&sw_id,&m_SWI);
 	}
+	*/
 }
 
 void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
@@ -311,8 +313,13 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	// progressive-data, if need it
 	if (H.type == MT_PROGRESSIVE){
 		// SW
-		fs.open_chunk		(OGF_SWICONTAINER);
-		fs.w_u32			(sw_id);
+		fs.open_chunk		(OGF_SWIDATA		);
+		fs.w_u32			(m_SWI.reserved[0]	);
+		fs.w_u32			(m_SWI.reserved[1]	);
+		fs.w_u32			(m_SWI.reserved[2]	);
+		fs.w_u32			(m_SWI.reserved[3]	);
+		fs.w_u32			(m_SWI.count		);
+		fs.w				(m_SWI.sw,m_SWI.count*sizeof(FSlideWindow));
 		fs.close_chunk		();
 	}
 }
