@@ -40,8 +40,6 @@ public:
 };
 
 template<class CTemplateNode, class SData> class CAStarSearch {
-private:
-	u32					m_dwHeapSize;
 public:
 	void vfFindOptimalPath(
 			SNode		**m_tppHeap,
@@ -67,7 +65,9 @@ public:
 		SNode				*tpTemp = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
 							*tpTemp1,
 							*tpTemp2,
-							*tpBestNode;
+							*tpBestNode,
+							**tppHeapStart = m_tppHeap + 1,
+							**tppHeapEnd = m_tppHeap + 2;
 		
 		memset(tpTemp,0,sizeof(SNode));
 		
@@ -78,14 +78,12 @@ public:
 		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode);
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
-		m_tppHeap[m_dwHeapSize = 1] = tpTemp;
+		*tppHeapStart = tpTemp;
 		
-		//!!!
-		while (m_dwHeapSize) {
+		for (;;) {
 			
 			// finding the node being estimated as the cheapest among the opened ones
-			//!!!
-			tpBestNode = m_tppHeap[1];
+			tpBestNode = *tppHeapStart;
 			
 			// checking if the distance is not too large
 			if (tpBestNode->f >= fMaxValue) {
@@ -145,17 +143,14 @@ public:
 			
 			// remove that node from the opened list and put that node to the closed list
 			tpBestNode->ucOpenCloseMask = 0;
-			pop_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize-- + 1,CComparePredicate());
+			pop_heap(tppHeapStart,tppHeapEnd--,CComparePredicate());
 
 			// iterating on children/neighbours
 			CTemplateNode::iterator tIterator;
 			CTemplateNode::iterator tEnd;
 			tTemplateNode.begin(iBestIndex,tIterator,tEnd);
 			for (  ; tIterator != tEnd; tIterator++) {
-				// checking if that node is in the path of the BESTNODE ones
 				int iNodeIndex = tTemplateNode.get_value(tIterator);
-				// checking if that node the node of the moving object 
-				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					// check if this node is already in the opened list
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
@@ -168,7 +163,9 @@ public:
 							tpTemp->tpBack = tpBestNode;
 							for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpTemp; tpIndex++);
 							push_heap(m_tppHeap + 1,tpIndex + 1,CComparePredicate());
+							continue;
 						}
+						continue;
 					}
 					continue;
 				}
@@ -190,8 +187,8 @@ public:
 					// make it a BESTNODE successor
 					tpBestNode->tpForward = tpTemp2;
 					
-					m_tppHeap[++m_dwHeapSize] = tpTemp2;
-					push_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize + 1,CComparePredicate());
+					*tppHeapEnd = tpTemp2;
+					push_heap(tppHeapStart,++tppHeapEnd,CComparePredicate());
 				}
 			}
 			if (dwHeap > dwMaxCount)
