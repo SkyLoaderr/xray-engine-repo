@@ -37,7 +37,7 @@ CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElemen
 
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map)
 {
-	CKinematics* pKinematics=PKinematics(obj->Visual());
+	CKinematics* pKinematics=smart_cast<CKinematics*>(obj->Visual());
 
 	CPhysicsShell* pPhysicsShell		= P_create_Shell();
 
@@ -56,7 +56,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P
 CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* p_bone_map,LPCSTR	fixed_bones)
 {
 	CPhysicsShell* pPhysicsShell;
-	CKinematics* pKinematics=PKinematics(obj->Visual());
+	CKinematics* pKinematics=smart_cast<CKinematics*>(obj->Visual());
 	if(fixed_bones)
 	{
 
@@ -95,7 +95,7 @@ CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR
 {
 	U16Vec f_bones;
 	if(fixed_bones){
-		CKinematics* K		= PKinematics(obj->Visual());
+		CKinematics* K		= smart_cast<CKinematics*>(obj->Visual());
 		int count =			_GetItemCount(fixed_bones);
 		for (int i=0 ;i<count; ++i){
 			string64		fixed_bone;

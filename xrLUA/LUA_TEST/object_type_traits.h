@@ -21,18 +21,15 @@
 	#define declare_has(a) \
 		template <typename T>\
 		struct has_##a {\
-			template <typename P> static detail::yes	select(typename P::a*);\
+		template <typename P> static detail::yes	select(detail::other<typename P::a>*);\
 			template <typename P> static detail::no		select(...);\
 			enum { value = sizeof(detail::yes) == sizeof(select<T>(0)) };\
 		};
 
 	namespace object_type_traits {
 		namespace detail {
-
 			struct yes {char a[1];};
 			struct no  {char a[2];};
-
-			template <typename T> static T &invoke();
 			template <typename T> struct other{};
 		};
 
@@ -90,10 +87,10 @@
 
 		template <typename T>
 		struct is_pointer {
-			template <typename P> static detail::yes select(P*);
+			template <typename P> static detail::yes select(detail::other<P*>);
 			static detail::no select(...);
 
-			enum { value = sizeof(detail::yes) == sizeof(select(detail::invoke<T>()))};
+			enum { value = sizeof(detail::yes) == sizeof(select(detail::other<T>()))};
 		};
 
 		template <typename T>
@@ -106,7 +103,7 @@
 
 		template <typename T1, typename T2>
 		struct is_same {
-			template <typename T> static detail::yes select(T*,T*);
+			template <typename T> static detail::yes select(detail::other<T>,detail::other<T>);
 								  static detail::no	 select(...);
 
 			enum { 
@@ -114,10 +111,7 @@
 					is_class<T1>::result && 
 					is_class<T2>::result && 
 					sizeof(detail::yes) == sizeof(
-						select(
-							&detail::invoke<T1>(),
-							&detail::invoke<T2>()
-						)
+						select(detail::other<T1>(),detail::other<T2>())
 					)
 			};
 		};
@@ -131,15 +125,15 @@
 				value = 
 					is_class<T1>::result && 
 					is_class<T2>::result && 
-					sizeof(detail::yes) == sizeof(select(&detail::invoke<T2>())) &&
+					sizeof(detail::yes) == sizeof(select((T2*)(0))) &&
 					!is_same<T1,T2>::value
 			};
 		};
 
 		declare_has(iterator);
 		declare_has(const_iterator);
-//		declare_has(reference);
-//		declare_has(const_reference);
+		declare_has(reference);
+		declare_has(const_reference);
 		declare_has(value_type);
 		declare_has(size_type);
 
@@ -149,8 +143,8 @@
 				value = 
 					has_iterator<T>::value &&
 					has_const_iterator<T>::value &&
-//					has_reference<T>::value &&
-//					has_const_reference<T>::value &&
+					has_reference<T>::value &&
+					has_const_reference<T>::value &&
 					has_size_type<T>::value &&
 					has_value_type<T>::value
 			};

@@ -85,53 +85,6 @@ IC	void CALifeGraphRegistry::change	(CALifeEvent *event, ALife::_GRAPH_ID game_v
 	add							(event,next_game_vertex_id);
 }
 
-IC	void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, ALife::_GRAPH_ID game_vertex_id, bool alife_query)
-{
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Attaching item [%s][%d] to [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
-	}
-#endif
-	if (alife_query)
-		remove					(smart_cast<CSE_ALifeDynamicObject*>(item),game_vertex_id);
-	else
-		level().remove			(smart_cast<CSE_ALifeDynamicObject*>(item));
-
-	CSE_ALifeTraderAbstract		*trader = smart_cast<CSE_ALifeTraderAbstract*>(&object);
-	R_ASSERT2					(!alife_query || trader,"Cannot attach an item to a non-trader object");
-
-	VERIFY						(alife_query || !smart_cast<CSE_ALifeDynamicObject*>(&object) || (ai().game_graph().vertex(smart_cast<CSE_ALifeDynamicObject*>(&object)->m_tGraphID)->level_id() == level().level_id()));
-	if (trader)
-		trader->attach			(item,alife_query);
-}
-
-IC	void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryItem *item, ALife::_GRAPH_ID game_vertex_id, bool alife_query)
-{
-#ifdef DEBUG
-	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Detaching item [%s][%d] from [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
-	}
-#endif
-	if (alife_query)
-		add						(smart_cast<CSE_ALifeDynamicObject*>(item),game_vertex_id);
-	else {
-		CSE_ALifeDynamicObject	*object = smart_cast<CSE_ALifeDynamicObject*>(item);
-		VERIFY					(object);
-		object->m_tGraphID		= game_vertex_id;
-		level().add 			(object);
-	}
-
-	CSE_ALifeTraderAbstract		*trader = smart_cast<CSE_ALifeTraderAbstract*>(&object);
-	R_ASSERT2					(!alife_query || trader,"Cannot detach an item from non-trader object");
-	
-	VERIFY						(alife_query || !smart_cast<CSE_ALifeDynamicObject*>(&object) || (ai().game_graph().vertex(smart_cast<CSE_ALifeDynamicObject*>(&object)->m_tGraphID)->level_id() == level().level_id()));
-
-	if (trader)
-		trader->detach			(item,0,alife_query);
-	else
-		R_ASSERT2				(std::find(object.children.begin(),object.children.end(),item->base()->ID) != object.children.end(),"Can't detach an item which is not on my own");
-}
-
 IC	void CALifeGraphRegistry::assign	(CSE_ALifeMonsterAbstract *monster)
 {
 	monster->m_tNextGraphID		= monster->m_tPrevGraphID = monster->m_tGraphID;

@@ -192,9 +192,9 @@ void CActor::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CMaterialManager::reinit();
-//	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-//	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
-//	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+//	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
+//	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
+//	m_r_finger2				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
 }
 
 void CActor::reload	(LPCSTR section)
@@ -458,7 +458,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 
 		float	yaw, pitch;
 		D.getHP(yaw,pitch);
-		CSkeletonAnimated *tpKinematics = PSkeletonAnimated(Visual());
+		CSkeletonAnimated *tpKinematics = smart_cast<CSkeletonAnimated*>(Visual());
 		VERIFY(tpKinematics);
 #pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
 		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetBoneInstance(element).get_param(1) + (angle_difference(r_model_yaw + r_model_yaw_delta,yaw) <= PI_DIV_2 ? 0 : 1))];

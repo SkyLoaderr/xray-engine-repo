@@ -14,6 +14,7 @@
 #include "script_callback.h"
 #include "level.h"
 #include "script_space.h"
+#include "infoportion.h"
 
 void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 {

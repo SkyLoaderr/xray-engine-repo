@@ -293,7 +293,7 @@ void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element,
 		return;
 
 	//вычислить координаты попадания
-	CKinematics* V = PKinematics(Visual());
+	CKinematics* V = smart_cast<CKinematics*>(Visual());
 		
 	Fvector start_pos = position_in_object_space;
 	if(V)
@@ -370,7 +370,7 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 			m_ParticleWounds.push_back(pWound);
 		}
 
-		CKinematics* V = PKinematics(Visual());
+		CKinematics* V = smart_cast<CKinematics*>(Visual());
 
 		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
 		//VERIFY(BI_NONE != particle_bone);

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "movement_manager.h"
+#include "movement_manager_space.h"
 
 const float verify_distance = 15.f;
 

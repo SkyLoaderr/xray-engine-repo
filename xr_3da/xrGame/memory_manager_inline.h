@@ -8,16 +8,6 @@
 
 #pragma once
 
-IC	ALife::ERelationType CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
-{
-	const CEntityAlive		*self = smart_cast<const CEntityAlive*>(this);
-	VERIFY					(self);
-	if (tpEntityAlive->g_Team() != self->g_Team())
-		return				(ALife::eRelationTypeEnemy);
-	else
-		return				(ALife::eRelationTypeFriend);
-}
-
 IC	bool CMemoryManager::visible	(const CObject *object) const
 {
 	xr_vector<CVisibleObject>::const_iterator	I = std::find(memory_visible_objects().begin(),memory_visible_objects().end(),object_id(object));
@@ -44,6 +34,14 @@ IC	void CMemoryManager::enable		(const CObject *object, bool enable)
 	CHitMemoryManager::enable		(object,enable);
 }
 
+template <typename _predicate>
+IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
+{
+	fill_enemies					(memory_visible_objects(),predicate);
+	fill_enemies					(sound_objects(),predicate);
+	fill_enemies					(hit_objects(),predicate);
+}
+
 template <typename T, typename _predicate>
 IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predicate &predicate) const
 {
@@ -57,12 +55,4 @@ IC	void CMemoryManager::fill_enemies	(const xr_vector<T> &objects, const _predic
 		if (entity_alive && CEnemyManager::useful(entity_alive))
 			predicate				(entity_alive);
 	}
-}
-
-template <typename _predicate>
-IC	void CMemoryManager::fill_enemies	(const _predicate &predicate) const
-{
-	fill_enemies					(memory_visible_objects(),predicate);
-	fill_enemies					(sound_objects(),predicate);
-	fill_enemies					(hit_objects(),predicate);
 }

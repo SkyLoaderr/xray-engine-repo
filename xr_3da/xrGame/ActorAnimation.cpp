@@ -167,9 +167,9 @@ void ACTOR_DEFS::SActorMotions::Create(CSkeletonAnimated* V)
 void CActor::steer_Vehicle(float angle)	
 {
 	if(!m_holder)		return;
-	if(angle==0.f) 		PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
-	else if(angle>0.f)	PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
-	else				PSkeletonAnimated	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
+	if(angle==0.f) 		smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_idle);
+	else if(angle>0.f)	smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_right);
+	else				smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(m_anims.m_steering_torso_left);
 }
 
 void CActor::g_SetAnimation( u32 mstate_rl )
@@ -257,18 +257,18 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		
 		// есть анимация для всего - запустим / иначе запустим анимацию по частям
 		if (m_current_torso!=M_torso){
-			if (m_bAnimTorsoPlayed)		PSkeletonAnimated	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
-			else						PSkeletonAnimated	(Visual())->PlayCycle(M_torso);
+			if (m_bAnimTorsoPlayed)		smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(M_torso,TRUE,AnimTorsoPlayCallBack,this);
+			else						smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle(M_torso);
 			m_current_torso=M_torso;
 		}
 		if (m_current_legs!=M_legs){
-			m_current_legs_blend = PSkeletonAnimated(Visual())->PlayCycle(M_legs);
+			m_current_legs_blend = smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs);
 			m_current_legs=M_legs;
 		}
 
 		if(m_current_head!=M_head)
 		{
-			if(M_head)PSkeletonAnimated(Visual())->PlayCycle(M_head);
+			if(M_head)smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_head);
 			m_current_head=M_head;
 		}
 
@@ -280,21 +280,21 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 			mstate_real			= 0;
 			m_current_legs		= 0;
 			m_current_torso		= 0;
-			//PKinematics	(Visual())->PlayCycle(ST->death,false);
+			//smart_cast<CKinematics*>	(Visual())->PlayCycle(ST->death,false);
 			//ST=&m_crouch;
 		
-			//PKinematics	(Visual())->PlayCycle(ST->death,false);
-			//PKinematics	(Visual())->PlayCycle(ST->death);
+			//smart_cast<CKinematics*>	(Visual())->PlayCycle(ST->death,false);
+			//smart_cast<CKinematics*>	(Visual())->PlayCycle(ST->death);
 			///////////////////////////
 			//Render->model_Delete			(Visual());
 			//Visual() = Render->model_Create  ("box_bone");
 			//xr_delete                       (CFORM());
 			//CFORM() = xr_new<CCF_Skeleton> (this);
 			//CFORM()->OnMove();
-			//PKinematics	(Visual())->PlayCycle("x90",false);
+			//smart_cast<CKinematics*>	(Visual())->PlayCycle("x90",false);
 			////////////////////
 	
-			PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_dead_stop);
+			smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims.m_dead_stop);
 		}
 	}
 #ifndef NDEBUG

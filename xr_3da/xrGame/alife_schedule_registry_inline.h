@@ -18,24 +18,6 @@ IC	void CALifeScheduleRegistry::update		()
 #endif
 }
 
-IC	void CALifeScheduleRegistry::add		(CSE_ALifeDynamicObject *object)
-{
-	CSE_ALifeSchedulable		*schedulable = smart_cast<CSE_ALifeSchedulable*>(object);
-	if (!schedulable || !schedulable->need_update(object))
-		return;
-
-	inherited::add				(object->ID,schedulable);
-}
-
-IC	void CALifeScheduleRegistry::remove	(CSE_ALifeDynamicObject *object, bool no_assert)
-{
-	CSE_ALifeSchedulable		*schedulable = smart_cast<CSE_ALifeSchedulable*>(object);
-	if (!schedulable)
-		return;
-
-	inherited::remove			(object->ID,no_assert || !schedulable->need_update(object));
-}
-
 IC	CSE_ALifeSchedulable *CALifeScheduleRegistry::object	(const ALife::_OBJECT_ID &id, bool no_assert) const
 {
 	_const_iterator				I = objects().find(id);

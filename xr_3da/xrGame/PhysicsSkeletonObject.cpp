@@ -34,14 +34,14 @@ BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 void	CPhysicsSkeletonObject::SpawnInitPhysics	(CSE_Abstract	*D)
 {
 	CreatePhysicsShell(D);
-	PKinematics(Visual())->CalculateBones	();
+	smart_cast<CKinematics*>(Visual())->CalculateBones	();
 }
 
 void CPhysicsSkeletonObject::net_Destroy()
 {
 	CPHSkeleton::RespawnInit	();
 	inherited::net_Destroy		();
-	CKinematics* K=PKinematics	(Visual());
+	CKinematics* K=smart_cast<CKinematics*>	(Visual());
 	if(K)	K->CalculateBones	();
 }
 

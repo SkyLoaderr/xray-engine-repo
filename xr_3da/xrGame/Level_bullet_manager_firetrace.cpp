@@ -40,7 +40,7 @@ BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LP
 	{
 		//получить косточку и ее материал
 		CKinematics* V = 0;
-		if (0!=(V=PKinematics(result.O->Visual())))
+		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual())))
 		{
 			CBoneData& B = V->LL_GetData((u16)result.element);
 			hit_material_idx = B.game_mtl_idx;
@@ -207,7 +207,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	m_inv.transform_tiny(p_in_object_space, end_point);
 
 	// bone-space
-	CKinematics* V = PKinematics(R.O->Visual());
+	CKinematics* V = smart_cast<CKinematics*>(R.O->Visual());
 
 	if(V)
 	{

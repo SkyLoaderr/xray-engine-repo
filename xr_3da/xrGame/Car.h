@@ -444,82 +444,9 @@ public:
 public:
 	virtual CEntity*					cast_entity				()						{return this;}
 private:
-	template <class T> IC void fill_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels)
-	{
-		CKinematics* pKinematics	=PKinematics(Visual());
-		string64					S1;
-		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; ++i) 
-		{
-			_GetItem					(S,i,S1);
-
-			u16 bone_id	=				pKinematics->LL_BoneID(S1);
-
-			type_wheels.push_back		(T());
-			T& twheel				= type_wheels.back();
-
-
-			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
-			if (J == bone_map.end()) 
-			{
-				bone_map.insert(mk_pair(bone_id,physicsBone()));
-
-
-				SWheel& wheel			=	(m_wheels_map.insert(mk_pair(bone_id,SWheel(this)))).first->second;
-				wheel.bone_id			=	bone_id;
-				twheel.pwheel			=	&wheel;
-			}
-			else
-			{
-				twheel.pwheel			=	&(m_wheels_map.find(bone_id))->second;
-			}
-		}
-	}
-	IC void fill_exhaust_vector(LPCSTR S,xr_vector<SExhaust>& exhausts)
-	{
-		CKinematics* pKinematics	=PKinematics(Visual());
-		string64					S1;
-		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; ++i) 
-		{
-			_GetItem					(S,i,S1);
-
-			u16 bone_id	=				pKinematics->LL_BoneID(S1);
-
-			exhausts.push_back		(SExhaust(this));
-			SExhaust& exhaust				= exhausts.back();
-			exhaust.bone_id						= bone_id;
-
-			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
-			if (J == bone_map.end()) 
-			{
-				bone_map.insert(mk_pair(bone_id,physicsBone()));
-			}
-
-		}
-	}
-	IC void fill_doors_map(LPCSTR S,xr_map<u16,SDoor>& doors)
-	{
-		CKinematics* pKinematics	=PKinematics(Visual());
-		string64					S1;
-		int count =					_GetItemCount(S);
-		for (int i=0 ;i<count; ++i) 
-		{
-			_GetItem					(S,i,S1);
-
-			u16 bone_id	=				pKinematics->LL_BoneID(S1);
-			SDoor						door(this);
-			door.bone_id=				bone_id;
-			doors.insert				(mk_pair(bone_id,door));
-			BONE_P_PAIR_IT J		= bone_map.find(bone_id);
-			if (J == bone_map.end()) 
-			{
-				bone_map.insert(mk_pair(bone_id,physicsBone()));
-			}
-
-		}
-	}
-
+	template <class T> IC void fill_wheel_vector(LPCSTR S,xr_vector<T>& type_wheels);
+	IC void fill_exhaust_vector(LPCSTR S,xr_vector<SExhaust>& exhausts);
+	IC void fill_doors_map(LPCSTR S,xr_map<u16,SDoor>& doors);
 
 	//Inventory for the car
 	CInventory	*inventory;

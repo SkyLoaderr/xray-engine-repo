@@ -105,7 +105,7 @@ void  CEntity::HitScale			(const int element, float hit_scale, float wound_scale
 		return;
 	}
 	
-	CKinematics* V		= PKinematics(Visual());			VERIFY(V);
+	CKinematics* V		= smart_cast<CKinematics*>(Visual());			VERIFY(V);
 	float scale			= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(0))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(0);
 	hit_scale			= m_default_hit_factor*scale;
 	scale				= fis_zero(V->LL_GetBoneInstance(u16(element)).get_param(2))?1.f:V->LL_GetBoneInstance(u16(element)).get_param(2);
@@ -164,7 +164,7 @@ void CEntity::Load		(LPCSTR section)
 
 
 	//загрузить параметры иконки торговли
-	CKinematics* pKinematics=PKinematics(Visual());
+	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	CInifile* ini = NULL;
 
 /*			ref_str	first;
@@ -299,9 +299,11 @@ void CEntity::reload			(LPCSTR section)
 	CDamageManager::reload		(section);
 }
 
-
 void CEntity::set_death_time	()
 {
 	m_level_death_time	= Level().timeServer();
 	m_game_death_time	= Level().GetGameTime();
 }
+
+bool CEntity::IsFocused			()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
+bool CEntity::IsMyCamera		()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}

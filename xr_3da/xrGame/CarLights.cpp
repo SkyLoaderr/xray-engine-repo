@@ -36,7 +36,7 @@ void SCarLight::ParseDefinitions(LPCSTR section)
 	//	time2hide				= 0;
 
 	// set bone id
-	CKinematics*			pKinematics=PKinematics(m_holder->PCar()->Visual());
+	CKinematics*			pKinematics=smart_cast<CKinematics*>(m_holder->PCar()->Visual());
 	CInifile* ini		=	pKinematics->LL_UserData();
 	
 	Fcolor					clr;
@@ -66,7 +66,7 @@ void SCarLight::Switch()
 void SCarLight::TurnOn()
 {
 	if(isOn()) return;
-	PKinematics(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,TRUE,TRUE);
+	smart_cast<CKinematics*>(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,TRUE,TRUE);
 	glow_render ->set_active(true);
 	light_render->set_active(true);
 }
@@ -75,7 +75,7 @@ void SCarLight::TurnOff()
 	if(!isOn()) return;
  	glow_render ->set_active(false);
 	light_render->set_active(false);
-	PKinematics(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,FALSE,TRUE);
+	smart_cast<CKinematics*>(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,FALSE,TRUE);
 }
 
 bool SCarLight::isOn()
@@ -88,7 +88,7 @@ void SCarLight::Update()
 {
 	if(!isOn()) return;
 	CCar* pcar=m_holder->PCar();
-	CBoneInstance& BI = PKinematics(pcar->Visual())->LL_GetBoneInstance(bone_id);
+	CBoneInstance& BI = smart_cast<CKinematics*>(pcar->Visual())->LL_GetBoneInstance(bone_id);
 	Fmatrix M;
 	M.mul(pcar->XFORM(),BI.mTransform);
 	light_render->set_rotation	(M.k,M.i);
@@ -111,7 +111,7 @@ void CCarLights::Init(CCar* pcar)
 
 void CCarLights::ParseDefinitions()
 {
-	CInifile* ini= PKinematics(m_pcar->Visual())->LL_UserData();
+	CInifile* ini= smart_cast<CKinematics*>(m_pcar->Visual())->LL_UserData();
 	if(!ini->section_exist("lights")) return;
 	LPCSTR S=  ini->r_string("lights","headlights");
 	string64					S1;
@@ -136,7 +136,7 @@ void CCarLights::SwitchHeadLights()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
-	PKinematics(PCar()->Visual())->CalculateBones();	//. bForce = TRUE (???)
+	smart_cast<CKinematics*>(PCar()->Visual())->CalculateBones();	//. bForce = TRUE (???)
 }
 bool CCarLights::IsLight(u16 bone_id)
 {

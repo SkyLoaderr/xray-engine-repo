@@ -15,7 +15,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 
 	m_holder=vehicle;
 
-	CSkeletonAnimated* V		= PSkeletonAnimated(Visual()); R_ASSERT(V);
+	CSkeletonAnimated* V		= smart_cast<CSkeletonAnimated*>(Visual()); R_ASSERT(V);
 	
 	if(!m_holder->attach_Actor(this)){
 		m_holder=NULL;
@@ -48,7 +48,7 @@ void CActor::detach_Vehicle()
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;
 	m_holder=NULL;
-	CKinematics* V		= PKinematics(Visual());
+	CKinematics* V		= smart_cast<CKinematics*>(Visual());
 	R_ASSERT			(V);
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
@@ -56,8 +56,8 @@ void CActor::detach_Vehicle()
 	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
-	PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
-	PSkeletonAnimated(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
+	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims.m_normal.legs_idle);
+	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_anims.m_normal.m_torso_idle);
 	//mstate_wishful &=~mcAnyMove;
 }
 

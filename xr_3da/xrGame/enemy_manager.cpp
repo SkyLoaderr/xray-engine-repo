@@ -16,6 +16,7 @@
 #include "level.h"
 #include "actor.h"
 #include "ai/stalker/ai_stalker.h"
+#include "map_location.h"
 
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {

@@ -136,3 +136,13 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 
 	return		(result);
 }
+
+ALife::ERelationType CMemoryManager::get_relation(const CEntityAlive *tpEntityAlive) const
+{
+	const CEntityAlive		*self = smart_cast<const CEntityAlive*>(this);
+	VERIFY					(self);
+	if (tpEntityAlive->g_Team() != self->g_Team())
+		return				(ALife::eRelationTypeEnemy);
+	else
+		return				(ALife::eRelationTypeFriend);
+}

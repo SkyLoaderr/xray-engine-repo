@@ -75,7 +75,7 @@ void CFlyer::Load(LPCSTR section)
 	m_PhysicMovementControl->CalcMaximumVelocity(mMaxAirVelocity,FLY_ACCEL*RUN_COEF,FRICTION_AIR);
 	m_PhysicMovementControl->CalcMaximumVelocity(mMaxYawVelocity,YAW_ACCEL*RUN_COEF,FRICTION_AIR);
 //	R_ASSERT	(Visual()->Type==MT_SKELETON);
-//	PKinematics	(Visual())->PlayCycle("work");
+//	smart_cast<CKinematics*>	(Visual())->PlayCycle("work");
 }
 
 void CFlyer::UpdateState(){
@@ -248,7 +248,7 @@ void CFlyer::Update(u32 DT)
 
 
 	UpdateTransform		();
-//	PKinematics(Visual())->Update();
+//	smart_cast<CKinematics*>(Visual())->Update();
 
 	inherited::Update	(DT);
 

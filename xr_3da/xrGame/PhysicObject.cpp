@@ -49,12 +49,12 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 {
 	CreatePhysicsShell(D);
 
-	if(Visual()&&PKinematics(Visual()))
+	if(Visual()&&smart_cast<CKinematics*>(Visual()))
 	{
 //		CSE_PHSkeleton	*po	= smart_cast<CSE_PHSkeleton*>(D);
 		CSkeletonAnimated*	pSkeletonAnimated=NULL;
-		R_ASSERT			(Visual()&&PKinematics(Visual()));
-		pSkeletonAnimated	=PSkeletonAnimated(Visual());
+		R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
+		pSkeletonAnimated	=smart_cast<CSkeletonAnimated*>(Visual());
 		if(pSkeletonAnimated)
 		{
 			CSE_Visual					*visual = smart_cast<CSE_Visual*>(D);
@@ -62,7 +62,7 @@ void	CPhysicObject::SpawnInitPhysics	(CSE_Abstract* D)
 			R_ASSERT2					(*visual->startup_animation,"no startup animation");
 			pSkeletonAnimated->PlayCycle(*visual->startup_animation);
 		}
-		PKinematics(Visual())->CalculateBones	();
+		smart_cast<CKinematics*>(Visual())->CalculateBones	();
 	}
 }
 void CPhysicObject::net_Destroy()
@@ -128,7 +128,7 @@ void CPhysicObject::PHObjectPositionUpdate	()
 
 void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 {
-	CKinematics* K		= PKinematics(Visual());
+	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 
 	CPhysicsElement* E	= P_create_Element();
 	CBoneInstance& B	= K->LL_GetBoneInstance(u16(id));
@@ -168,7 +168,7 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 
 	if(m_pPhysicsShell) return;
-	CKinematics* pKinematics=PKinematics(Visual());
+	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	switch(m_type) {
 		case epotBox : {
 			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->_flags.test(CSE_ALifeObjectPhysic::flActive));

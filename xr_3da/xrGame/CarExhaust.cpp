@@ -10,7 +10,7 @@ CCar::SExhaust::~SExhaust()
 void CCar::SExhaust::Init()
 {
 	pelement=(bone_map.find(bone_id))->second.element;
-	CKinematics* K=PKinematics(pcar->Visual());
+	CKinematics* K=smart_cast<CKinematics*>(pcar->Visual());
 	CBoneData&	bone_data=K->LL_GetData(u16(bone_id));
 	transform.set(bone_data.bind_transform);
 	///transform.mulA(pcar->XFORM());

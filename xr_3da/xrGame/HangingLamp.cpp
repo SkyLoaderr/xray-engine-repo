@@ -34,7 +34,7 @@ void CHangingLamp::Init()
 void CHangingLamp::RespawnInit()
 {
 	Init();
-	PKinematics(Visual())->LL_SetBonesVisible(u64(-1));
+	smart_cast<CKinematics*>(Visual())->LL_SetBonesVisible(u64(-1));
 	
 }
 void CHangingLamp::Center	(Fvector& C) const 
@@ -79,8 +79,8 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 //	R_ASSERT3				(pUserData,"Empty HangingLamp user data!",lamp->get_visual());
 
 	if (Visual()){
-		CKinematics* K		= PKinematics(Visual());
-		R_ASSERT			(Visual()&&PKinematics(Visual()));
+		CKinematics* K		= smart_cast<CKinematics*>(Visual());
+		R_ASSERT			(Visual()&&smart_cast<CKinematics*>(Visual()));
 		guid_bone			= K->LL_BoneID	(*lamp->guid_bone);	VERIFY(guid_bone!=BI_NONE);
 		collidable.model	= xr_new<CCF_Skeleton>				(this);
 	}
@@ -119,11 +119,11 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 	lanim					= LALib.FindItem(*lamp->color_animator);
 
 	CPHSkeleton::Spawn(e);
-	if(PSkeletonAnimated(Visual()))	PSkeletonAnimated	(Visual())->PlayCycle("idle");
-	if(PKinematics(Visual()))	
+	if(smart_cast<CSkeletonAnimated*>(Visual()))	smart_cast<CSkeletonAnimated*>	(Visual())->PlayCycle("idle");
+	if(smart_cast<CKinematics*>(Visual()))	
 	{
-		PKinematics			(Visual())->CalculateBones_Invalidate	();
-		PKinematics			(Visual())->CalculateBones();
+		smart_cast<CKinematics*>			(Visual())->CalculateBones_Invalidate	();
+		smart_cast<CKinematics*>			(Visual())->CalculateBones();
 	}
 	if (lamp->flags.is(CSE_ALifeObjectHangingLamp::flPhysic)&&
 		!guid_physic_bone)	fHealth=0.f;
@@ -150,7 +150,7 @@ void	CHangingLamp::SpawnInitPhysics	(CSE_Abstract	*D)
 void	CHangingLamp::CopySpawnInit		()
 {
 	CPHSkeleton::CopySpawnInit();
-	CKinematics* K=PKinematics(Visual());
+	CKinematics* K=smart_cast<CKinematics*>(Visual());
 	if(
 		guid_physic_bone&&
 		(
@@ -189,7 +189,7 @@ void CHangingLamp::UpdateCL	()
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
-		if(guid_physic_bone)guid_physic_bone->BonesCallBack(&PKinematics(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
+		if(guid_physic_bone)guid_physic_bone->BonesCallBack(&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(u16(guid_physic_bone->m_SelfID)));
 
 	}
 
@@ -198,7 +198,7 @@ void CHangingLamp::UpdateCL	()
 		Fmatrix xf;
 		if (guid_bone!=BI_NONE)
 		{
-			Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(guid_bone));
+			Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(guid_bone));
 			xf.mul		(XFORM(),M);
 			VERIFY(!fis_zero(DET(xf)));
 		}
@@ -242,7 +242,7 @@ void CHangingLamp::TurnOn	()
 	light_render->set_active						(true);
 	if (glow_render)	glow_render->set_active		(true);
 	if (light_ambient)	light_ambient->set_active	(true);
-	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
+	if (Visual())		smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, TRUE, TRUE);
 	processing_activate		();
 }
 
@@ -251,7 +251,7 @@ void CHangingLamp::TurnOff	()
 	light_render->set_active						(false);
 	if (glow_render)	glow_render->set_active		(false);
 	if (light_ambient)	light_ambient->set_active	(false);
-	if (Visual())		PKinematics(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
+	if (Visual())		smart_cast<CKinematics*>(Visual())->LL_SetBoneVisible(guid_bone, FALSE, TRUE);
 	if(!PPhysicsShell())//if we have physiccs_shell it will call processing deactivate when disable
 			processing_deactivate	();
 		
@@ -277,7 +277,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	if (!Visual())			return;
 	if (m_pPhysicsShell)	return;
 	
-	CKinematics* pKinematics= PKinematics	(Visual());
+	CKinematics* pKinematics= smart_cast<CKinematics*>	(Visual());
 
 	m_pPhysicsShell			= P_create_Shell();
 
@@ -331,7 +331,7 @@ void CHangingLamp::CreateBody(CSE_ALifeObjectHangingLamp	*lamp)
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	SAllDDOParams disable_params;
-	disable_params.Load(PKinematics(Visual())->LL_UserData());
+	disable_params.Load(smart_cast<CKinematics*>(Visual())->LL_UserData());
 	m_pPhysicsShell->set_DisableParams(disable_params);
 }
 

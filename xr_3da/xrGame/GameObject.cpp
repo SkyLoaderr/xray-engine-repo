@@ -101,8 +101,8 @@ void CGameObject::net_Destroy	()
 	xr_delete				(m_ini_file);
 
 	m_script_clsid			= -1;
-	if (Visual() && PKinematics(Visual()))
-		PKinematics(Visual())->Callback	(0,0);
+	if (Visual() && smart_cast<CKinematics*>(Visual()))
+		smart_cast<CKinematics*>(Visual())->Callback	(0,0);
 
 	inherited::net_Destroy						();
 	setReady									(FALSE);
@@ -469,12 +469,12 @@ BOOL CGameObject::UsedAI_Locations()
 
 void CGameObject::add_visual_callback		(visual_callback *callback)
 {
-	VERIFY						(PKinematics(Visual()));
+	VERIFY						(smart_cast<CKinematics*>(Visual()));
 	CALLBACK_VECTOR_IT			I = std::find(visual_callbacks().begin(),visual_callbacks().end(),callback);
 	VERIFY						(I == visual_callbacks().end());
 
 	if (m_visual_callback.empty())	SetKinematicsCallback(true);
-//		PKinematics(Visual())->Callback(VisualCallback,this);
+//		smart_cast<CKinematics*>(Visual())->Callback(VisualCallback,this);
 	m_visual_callback.push_back	(callback);
 }
 
@@ -484,15 +484,15 @@ void CGameObject::remove_visual_callback	(visual_callback *callback)
 	VERIFY						(I != m_visual_callback.end());
 	m_visual_callback.erase		(I);
 	if (m_visual_callback.empty())	SetKinematicsCallback(false);
-//		PKinematics(Visual())->Callback(0,0);
+//		smart_cast<CKinematics*>(Visual())->Callback(0,0);
 }
 
 void CGameObject::SetKinematicsCallback		(bool set)
 {
 	if (set)
-		PKinematics(Visual())->Callback(VisualCallback,this);
+		smart_cast<CKinematics*>(Visual())->Callback(VisualCallback,this);
 	else
-		PKinematics(Visual())->Callback(0,0);
+		smart_cast<CKinematics*>(Visual())->Callback(0,0);
 };
 
 void __stdcall VisualCallback(CKinematics *tpKinematics)

@@ -19,18 +19,12 @@
 #include "ai_monster_space.h"
 #include "physicsshellholder.h"
 #include "restricted_object.h"
+#include "movement_manager_space.h"
 
 class CPHMovementControl;
 
 namespace MovementManager {
-	enum EPathType {
-		ePathTypeGamePath = u32(0),
-		ePathTypeLevelPath,
-		ePathTypeEnemySearch,
-		ePathTypePatrolPath,
-		ePathTypeNoPath,
-		ePathTypeDummy = u32(-1),
-	};
+	enum EPathType;
 };
 
 using namespace MovementManager;

@@ -365,7 +365,7 @@ void CMissile::UpdateXForm()
 		if(!E)				return	;
 
 		VERIFY				(E);
-		CKinematics*		V		= PKinematics	(E->Visual());
+		CKinematics*		V		= smart_cast<CKinematics*>	(E->Visual());
 		VERIFY				(V);
 
 		// Get matrices
@@ -531,7 +531,7 @@ void  CMissile::UpdateFP()
 		if (hud_mode && !IsHidden())
 		{
 			// 1st person view - skeletoned
-			CKinematics* V			= PKinematics(m_pHUD->Visual());
+			CKinematics* V			= smart_cast<CKinematics*>(m_pHUD->Visual());
 			V->CalculateBones		();
 
 			// fire point&direction
@@ -572,7 +572,7 @@ void CMissile::activate_physic_shell()
 	XFORM().set(m_throw_matrix);
 	m_pPhysicsShell->Activate	(m_throw_matrix, l_vel, a_vel);
 	m_pPhysicsShell->AddTracedGeom();
-	PKinematics(Visual())->CalculateBones();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
 }
 
 void CMissile::create_physic_shell	()

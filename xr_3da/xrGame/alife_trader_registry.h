@@ -30,7 +30,7 @@ protected:
 public:
 	virtual							~CALifeTraderRegistry	();
 			CSE_ALifeTrader			*trader_nearest			(CSE_ALifeHumanAbstract *human);
-	IC		void					add						(CSE_ALifeDynamicObject *object);
+			void					add						(CSE_ALifeDynamicObject *object);
 	IC		const TRADER_REGISTRY	&traders				() const;
 };
 

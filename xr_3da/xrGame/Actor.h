@@ -25,6 +25,8 @@
 
 using namespace ACTOR_DEFS;
 
+class CInfoPortion;
+
 
 // refs
 class ENGINE_API CCameraBase;

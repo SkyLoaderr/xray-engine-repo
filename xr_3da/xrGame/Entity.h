@@ -87,8 +87,8 @@ public:
 
 	virtual void			renderable_Render	();
 
-	bool					IsFocused			()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentEntity())==this);		}
-	bool					IsMyCamera			()const	{ return (smart_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}
+	bool					IsFocused			()const;
+	bool					IsMyCamera			()const;
 
 	float					g_Armor				()const	{ return fArmor;	}
 	virtual float			g_Health			()const	{ return fEntityHealth;}

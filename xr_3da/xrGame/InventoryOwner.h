@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////
 
 #pragma once
-#include "InfoPortion.h"
-#include "PdaMsg.h"
+#include "InfoPortionDefs.h"
+#include "pda_space.h"
 #include "attachment_owner.h"
 #include "script_space_forward.h"
 #include "alife_registry_container.h"

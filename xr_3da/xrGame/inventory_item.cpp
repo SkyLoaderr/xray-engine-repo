@@ -810,7 +810,7 @@ void CInventoryItem::UpdateXForm	()
 
 	if(!E) return;
 	R_ASSERT		(E);
-	CKinematics*	V		= PKinematics	(E->Visual());
+	CKinematics*	V		= smart_cast<CKinematics*>	(E->Visual());
 	VERIFY			(V);
 
 	// Get matrices

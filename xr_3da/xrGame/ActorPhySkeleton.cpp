@@ -15,14 +15,14 @@ void CActor::create_Skeleton(){
 	if (!Visual())
 		return;
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
+	m_pPhysicsShell->build_FromKinematics(smart_cast<CKinematics*>(Visual()));
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 		0.3f*skel_airr_ang_factor);
 	m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->set_JointResistance(0.f);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
-	//CInifile* ini = PKinematics(Visual())->LL_UserData();
+	//CInifile* ini = smart_cast<CKinematics*>(Visual())->LL_UserData();
 	//R_ASSERT2(ini,"NO INI FILE IN MODEL");
 
 	
@@ -35,5 +35,5 @@ void CActor::create_Skeleton(){
 	//disable_pars.rotational.velocity *=rotational_factor;
 	//m_pPhysicsShell->set_DisableParams(disable_pars);
 	m_pPhysicsShell->Activate(true);
-	PKinematics(Visual())->CalculateBones();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
 }

@@ -241,8 +241,8 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	CSE_ALifeHelicopter	*heli		= smart_cast<CSE_ALifeHelicopter*>(abstract);
 	VERIFY				(heli);
 
-	R_ASSERT						(Visual()&&PKinematics(Visual()));
-	CKinematics* K					= PKinematics(Visual());
+	R_ASSERT						(Visual()&&smart_cast<CKinematics*>(Visual()));
+	CKinematics* K					= smart_cast<CKinematics*>(Visual());
 	CInifile* pUserData				= K->LL_UserData();
 
 	m_rotate_x_bone		= K->LL_BoneID	(pUserData->r_string("helicopter_definition","wpn_rotate_x_bone"));
@@ -268,9 +268,9 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 		}
 	}
 	
-	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
+	CBoneInstance& biX		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_x_bone);	
 	biX.set_callback		(BoneMGunCallbackX,this);
-	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
+	CBoneInstance& biY		= smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(m_rotate_y_bone);	
 	biY.set_callback		(BoneMGunCallbackY,this);
 	CBoneData& bdX			= K->LL_GetData(m_rotate_x_bone); VERIFY(bdX.IK_data.type==jtJoint);
 	m_lim_x_rot.set			(bdX.IK_data.limits[0].limit.x,bdX.IK_data.limits[0].limit.y);
@@ -286,7 +286,7 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_bind_x.set			(matrices[m_rotate_x_bone].c);
 	m_bind_y.set			(matrices[m_rotate_y_bone].c);
 	
-	CSkeletonAnimated	*A	= PSkeletonAnimated(Visual());
+	CSkeletonAnimated	*A	= smart_cast<CSkeletonAnimated*>(Visual());
 	if (A) {
 		A->PlayCycle		(*heli->startup_animation);
 		A->CalculateBones	();
@@ -391,7 +391,7 @@ void CHelicopter::UpdateCL()
 	if(PPhysicsShell() && (state() == CHelicopter::eDead) ){
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
 
-		CKinematics* K		= PKinematics(Visual());
+		CKinematics* K		= smart_cast<CKinematics*>(Visual());
 		K->CalculateBones	();
 		//smoke
 		m_particleXFORM	= K->LL_GetTransform(m_smoke_bone);
@@ -490,7 +490,7 @@ void CHelicopter::UpdateCL()
 	//weapon
 	MGunUpdateFire();
 
-	CKinematics* K		= PKinematics(Visual());
+	CKinematics* K		= smart_cast<CKinematics*>(Visual());
 	K->CalculateBones	();
 
 	//smoke
@@ -715,7 +715,7 @@ void CHelicopter::Die()
 	if(!PPhysicsShell()){
 		string256						I;
 		LPCSTR bone;
-		CKinematics* K		= PKinematics(Visual());
+		CKinematics* K		= smart_cast<CKinematics*>(Visual());
 		u16 bone_id;
 		for (u32 i=0, n=_GetItemCount(*m_death_bones_to_hide); i<n; ++i){
 			bone = _GetItem(*m_death_bones_to_hide,i,I);
@@ -878,7 +878,7 @@ void CHelicopter::UpdateHeliParticles	()
 //lighting
 	if(m_light_render->get_active()){
 		Fmatrix xf;
-		Fmatrix& M = PKinematics(Visual())->LL_GetTransform(u16(m_light_bone));
+		Fmatrix& M = smart_cast<CKinematics*>(Visual())->LL_GetTransform(u16(m_light_bone));
 		xf.mul		(XFORM(),M);
 		VERIFY(!fis_zero(DET(xf)));
 

@@ -36,3 +36,12 @@ CSE_ALifeTrader *CALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *hu
 	R_ASSERT2					(trader,"There is no traders in the game");
 	return						(trader);
 }
+
+void CALifeTraderRegistry::add	(CSE_ALifeDynamicObject *object)
+{
+	CSE_ALifeTrader			*trader = smart_cast<CSE_ALifeTrader*>(object);
+	if (trader) {
+		m_traders.push_back	(trader);
+		std::sort			(m_traders.begin(),m_traders.end(),CCompareTraderRanksPredicate());
+	}
+}

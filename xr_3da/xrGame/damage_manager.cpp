@@ -40,9 +40,9 @@ void CDamageManager::reload				(LPCSTR section)
 	VERIFY					(object);
 
 	//инициализировать default параметрами
-	for(u16 i = 0; i<PKinematics(object->Visual())->LL_BoneCount(); i++)
+	for(u16 i = 0; i<smart_cast<CKinematics*>(object->Visual())->LL_BoneCount(); i++)
 	{
-		CBoneInstance			&bone_instance = PKinematics(object->Visual())->LL_GetBoneInstance(i);
+		CBoneInstance			&bone_instance = smart_cast<CKinematics*>(object->Visual())->LL_GetBoneInstance(i);
 		bone_instance.set_param	(0,1.f);
 		bone_instance.set_param	(1,1.f);
 		bone_instance.set_param	(2,1.f);
@@ -58,9 +58,9 @@ void CDamageManager::reload				(LPCSTR section)
 			}
 			else {
 				VERIFY					(object);
-				int						bone = PKinematics(object->Visual())->LL_BoneID(i->first);
+				int						bone = smart_cast<CKinematics*>(object->Visual())->LL_BoneID(i->first);
 				R_ASSERT2				(BI_NONE != bone, *(*i).first);
-				CBoneInstance			&bone_instance = PKinematics(object->Visual())->LL_GetBoneInstance(u16(bone));
+				CBoneInstance			&bone_instance = smart_cast<CKinematics*>(object->Visual())->LL_GetBoneInstance(u16(bone));
 				bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
 				bone_instance.set_param	(1,(float)atoi(_GetItem(*(*i).second,1,buffer)));
 				bone_instance.set_param	(2,(float)atof(_GetItem(*(*i).second,2,buffer)));

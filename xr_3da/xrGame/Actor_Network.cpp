@@ -18,6 +18,7 @@
 #include "level.h"
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
+#include "infoportion.h"
 
 //static u32	g_dwStartTime		= 0;
 //static u32	g_dwLastUpdateTime	;
@@ -687,7 +688,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	VERIFY(m_pActorEffector == NULL);
 	m_pActorEffector = xr_new<CActorEffector>();
-	PKinematics(Visual())->CalculateBones();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
 
 
 	//--------------------------------------------------------------
@@ -714,7 +715,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	{
 		mstate_wishful	&=		~mcAnyMove;
 		mstate_real		&=		~mcAnyMove;
-		CSkeletonAnimated* K= PSkeletonAnimated(Visual());
+		CSkeletonAnimated* K= smart_cast<CSkeletonAnimated*>(Visual());
 		K->PlayCycle("death_init");
 		create_Skeleton();
 		
@@ -773,7 +774,7 @@ BOOL	CActor::net_Relevant		()				// relevant for export to server
 void	CActor::OnChangeVisual()
 {
 	// take index spine bone
-	CSkeletonAnimated* V= PSkeletonAnimated(Visual());
+	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
 	VERIFY				(V);
 	int spine_bone		= V->LL_BoneID("bip01_spine1");
 	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
@@ -784,9 +785,9 @@ void	CActor::OnChangeVisual()
 
 	m_anims.Create			(V);
 	//-------------------------------------------------------------------------------
-	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-	m_l_finger1				= PKinematics(Visual())->LL_BoneID("bip01_l_finger1");
-	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+	m_r_hand				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_hand");
+	m_l_finger1				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_l_finger1");
+	m_r_finger2				= smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_r_finger2");
 	//-------------------------------------------------------------------------------
 	reattach_items();
 	//-------------------------------------------------------------------------------

@@ -6,17 +6,7 @@
 
 #pragma once
 #include "alife_space.h"
-
-//типы сообщений PDA
-enum EPdaMsg {
-	ePdaMsgDialog,				//диалог
-	ePdaMsgInfo,				//сообщение передает некоторую информацию
-	ePdaMsgMax
-};
-
-
-
-
+#include "pda_space.h"
 
 //структура для описания сообщения PDA,
 //используется для ведения логов

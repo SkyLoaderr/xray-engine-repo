@@ -398,7 +398,7 @@ void CCustomMonster::UpdateCL	()
 				SelectAnimation		(XFORM().k,direction(),speed());
 		}
 		else {
-			CAI_Rat				*l_tpRat = dcast_Rat();
+			CAI_Rat				*l_tpRat = smart_cast<CAI_Rat*>(this);
 			R_ASSERT			(l_tpRat);
 //			if (((dwTime > N.dwTimeStamp) || (NET.size() < 2))) {// && (_abs(l_tpRat->m_fSpeed) > EPS_L)) 
 			{
@@ -447,7 +447,7 @@ void CCustomMonster::eye_pp_s0			( )
 	++eye_pp_stage;
 
 	// Eye matrix
-	CKinematics* V							= PKinematics(Visual());
+	CKinematics* V							= smart_cast<CKinematics*>(Visual());
 	V->CalculateBones						();
 	Fmatrix&	mEye						= V->LL_GetTransform(u16(eye_bone));
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
@@ -658,7 +658,7 @@ void CCustomMonster::OnRender()
 	{
 		m_PhysicMovementControl->dbg_Draw();
 	}
-	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
+	if (bDebug) smart_cast<CKinematics*>(Visual())->DebugRender(XFORM());
 }
 #endif
 
@@ -698,7 +698,7 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		m_client_update_activated = true;
 	}
 
-	eye_bone					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
+	eye_bone					= smart_cast<CKinematics*>(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
 	if (Local()) {

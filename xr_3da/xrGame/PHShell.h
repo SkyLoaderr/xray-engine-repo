@@ -31,12 +31,7 @@ public:
 	static void __stdcall	StataticRootBonesCallBack	(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual BoneCallbackFun* GetStaticObjectBonesCallback()	{return StataticRootBonesCallBack;}
-	virtual	void			add_Element				(CPhysicsElement* E)		  {
-		CPHElement* ph_element=smart_cast<CPHElement*>(E);
-		ph_element->SetShell(this);
-		elements.push_back(ph_element);
-
-	};
+	virtual	void			add_Element				(CPhysicsElement* E);
 
 	void					SetPhObjectInElements	();
 	void					EnableObject			();
@@ -50,11 +45,7 @@ public:
 	{
 		(*elements.begin())->GetAirResistance(linear,angular);
 	}
-	virtual	void			add_Joint				(CPhysicsJoint* J)					{
-		if(!J)return;
-		joints.push_back((CPHJoint*)J);
-		smart_cast<CPHJoint*>(J)->SetShell(this);
-	};
+	virtual	void			add_Joint				(CPhysicsJoint* J);
 
 	virtual CPHIsland*		PIsland					(){return &Island();};
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	;

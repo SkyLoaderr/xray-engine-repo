@@ -39,8 +39,8 @@ BOOL CBreakableObject::net_Spawn(LPVOID DC)
 	inherited::net_Spawn	(DC);
 	collidable.model = xr_new<CCF_Skeleton>(this);
 	// set bone id
-	R_ASSERT				(Visual()&&PKinematics(Visual()));
-//	CKinematics* K			= PKinematics(Visual());
+	R_ASSERT				(Visual()&&smart_cast<CKinematics*>(Visual()));
+//	CKinematics* K			= smart_cast<CKinematics*>(Visual());
 	fHealth					= obj->m_health;
 	
 	setVisible				(TRUE);
@@ -113,7 +113,7 @@ void CBreakableObject::CreateUnbroken()
 {
 	m_pUnbrokenObject=xr_new<CPHStaticGeomShell>();
 	Fobb			b;
-	PKinematics(Visual())->CalculateBones	();		//. bForce - was TRUE
+	smart_cast<CKinematics*>(Visual())->CalculateBones	();		//. bForce - was TRUE
 	m_saved_box.set				(Visual()->vis.box);
 	Visual()->vis.box.getradius	(b.m_halfsize);
 	b.xform_set					(Fidentity);
@@ -122,7 +122,7 @@ void CBreakableObject::CreateUnbroken()
 	m_pUnbrokenObject->set_PhysicsRefObject(this);
 	//m_pUnbrokenObject->SetPhObjectInGeomData(m_pUnbrokenObject);
 	m_pUnbrokenObject->set_ObjectContactCallback(ObjectContactCallback);
-	CKinematics* K=PKinematics(Visual()); VERIFY(K);
+	CKinematics* K=smart_cast<CKinematics*>(Visual()); VERIFY(K);
 	K->CalculateBones();
 	for (u16 k=0; k<K->LL_BoneCount(); k++){
 		K->LL_GetBoneInstance(k).Callback_overwrite = TRUE;
@@ -139,7 +139,7 @@ void CBreakableObject::DestroyUnbroken()
 //void CBreakableObject::CreateBroken()
 //{
 	//CPhysicsShell* shell=P_create_splited_Shell();
-	//shell->preBuild_FromKinematics(PKinematics(Visual()));
+	//shell->preBuild_FromKinematics(smart_cast<CKinematics*>(Visual()));
 	//shell->mXFORM.set(XFORM());
 	//shell->set_PhysicsRefObject(this);
 	////m_Shell->Build();
@@ -164,7 +164,7 @@ void CBreakableObject::DestroyUnbroken()
 void CBreakableObject::CreateBroken()
 {
 	m_Shell=P_create_splited_Shell();
-	m_Shell->preBuild_FromKinematics(PKinematics(Visual()));
+	m_Shell->preBuild_FromKinematics(smart_cast<CKinematics*>(Visual()));
 	m_Shell->mXFORM.set(XFORM());
 	//m_Shell->SetAirResistance(0.002f*skel_airr_lin_factor,
 	//	0.3f*skel_airr_ang_factor);
@@ -185,7 +185,7 @@ void CBreakableObject::ActivateBroken()
 	m_pPhysicsShell=m_Shell;
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetStaticObjectBonesCallback());
-	PKinematics(Visual())->CalculateBones();
+	smart_cast<CKinematics*>(Visual())->CalculateBones();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
 

@@ -76,7 +76,7 @@ BOOL CArtefact::net_Spawn(LPVOID DC)
 	/////////////////////////////////////////
 	m_CarringBoneID = u16(-1);
 	/////////////////////////////////////////
-	CSkeletonAnimated	*K=PSkeletonAnimated(Visual());
+	CSkeletonAnimated	*K=smart_cast<CSkeletonAnimated*>(Visual());
 	if(K)K->PlayCycle("idle");
 	return result;	
 }
@@ -109,7 +109,7 @@ void CArtefact::OnH_A_Chield()
 	}
 	else
 	{
-		CKinematics* K	= PKinematics(H_Parent()->Visual());
+		CKinematics* K	= smart_cast<CKinematics*>(H_Parent()->Visual());
 		if (K)
 			m_CarringBoneID			= K->LL_BoneID("bip01_head");
 		else

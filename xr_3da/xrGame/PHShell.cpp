@@ -1234,3 +1234,16 @@ void CPHShell::SetPrefereExactIntegration()
 {
 	CPHObject::SetPrefereExactIntegration();
 }
+
+void CPHShell::add_Element					(CPhysicsElement* E)		  {
+	CPHElement* ph_element=smart_cast<CPHElement*>(E);
+	ph_element->SetShell(this);
+	elements.push_back(ph_element);
+
+}
+
+void CPHShell::add_Joint					(CPhysicsJoint* J)					{
+	if(!J)return;
+	joints.push_back((CPHJoint*)J);
+	smart_cast<CPHJoint*>(J)->SetShell(this);
+}

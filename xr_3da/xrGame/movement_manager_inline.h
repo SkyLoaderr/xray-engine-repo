@@ -5,7 +5,7 @@ IC	bool CMovementManager::actual() const
 	return				(m_path_actuality);
 }
 
-IC	bool CMovementManager::actual_all() const
+bool CMovementManager::actual_all() const
 {
 	if (!m_path_actuality)
 		return			(false);
