@@ -82,6 +82,7 @@ module ("xr_heli")
 module ("small_script")
 module ("monster")
 module ("news_manager")
+module ("dialogs")
 
 ----------------------------------------------------------------------
 -- Загрузка модулей сталкеров:
