@@ -45,7 +45,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			{
 				R_ASSERT							(BE(Local(),W->Local()));	// remote can't eject local
 				int id	= Weapons->weapon_remove	(W);
-				Weapons->ActivateWeaponHistory		();
+				if (id!=Weapons->ActiveWeaponID())	Weapons->ActivateWeaponHistory		();
 				W->H_SetParent						(0);
 				feel_touch.push_back				(W);
 				return;
