@@ -11,6 +11,7 @@
 #include "..\\..\\bolt.h"
 
 #include "..\\..\\trade.h"
+#include "..\\..\\ai_script_actions.h"
 
 CAI_Trader::CAI_Trader()
 {
@@ -225,7 +226,7 @@ void CAI_Trader::net_Destroy()
 }
 
 
-void ScriptCallBack(CBlend* B)
+void TraderScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
@@ -239,7 +240,7 @@ bool CAI_Trader::bfScriptAnimation()
 		CKinematics			&tVisualObject = *(PKinematics(Visual()));
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
-			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,ScriptCallBack,this);
+			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,TraderScriptCallBack,this);
 		return		(true);
 	}
 	else {
