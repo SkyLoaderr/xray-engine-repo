@@ -20,26 +20,9 @@ struct CTest : public CTimeIntrusiveBase {
 	}
 };
 
-template <typename T>
-struct fwd {
-	template <bool a>
-	IC	static void foo();
-	template <>
-	IC	static void foo<true>();
-};
-
-template <typename T>
-template <bool a>
-IC	void fwd<T>::foo<>()
+CTest *foo(CIntrusivePtr<CTest,CTimeIntrusiveBase> ptr)
 {
-	printf("false\n");
-}
-
-template <typename T>
-template <>
-IC	void fwd<T>::foo<true>()
-{
-	printf("true\n");
+	return &*ptr;
 }
 
 void time_smart_ptr_test()
@@ -47,9 +30,8 @@ void time_smart_ptr_test()
 	std::vector<CIntrusivePtr<CTest,CTimeIntrusiveBase> >	test;
 	CTest									*t = new CTest();
 	CIntrusivePtr<CTest,CTimeIntrusiveBase>	a = t, b = t;
+	foo(a);
 	delete_data								(a);
-	fwd<int>::foo<true>();
-	fwd<int>::foo<false>();
 //	a=b=0;
 //	CTimeSmartPtr<CTest>					a = t, b = t;
 //	for (u32 i=0; i<100; ++i)
