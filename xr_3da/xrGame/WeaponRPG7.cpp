@@ -182,7 +182,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &normal) {
 		}
 	}
 	CPGObject* pStaticPG; s32 l_c = m_effects.size();
-	Fmatrix l_m; l_m.set(svTransform); GetBasis(normal, l_m.k, l_m.i);
+	Fmatrix l_m; /**/l_m.set(svTransform);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
 		pStaticPG->UpdateParent(l_m);

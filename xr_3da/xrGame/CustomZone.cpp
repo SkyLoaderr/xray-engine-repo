@@ -81,6 +81,7 @@ void CCustomZone::UpdateCL() {
 	const Fsphere& s		= cfModel->getSphere();
 	Fvector					P;
 	clXFORM().transform_tiny(P,s.P);
+	//feel_touch.clear(); m_inZone.clear();
 	feel_touch_update		(P,s.R);
 
 	if(m_ready) {
@@ -106,7 +107,8 @@ void CCustomZone::feel_touch_delete(CObject* O) {
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) {
-	if(O == this || !O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
+	if(O == this) return false;
+	if(!O->Local() || !((CGameObject*)O)->IsVisibleForZones()) return false;
 	return ((CCF_Shape*)cfModel)->Contact(O);
 }
 
