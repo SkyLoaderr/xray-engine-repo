@@ -159,8 +159,8 @@ void CCustomMonster::reinit()
 
 void CCustomMonster::reload		(LPCSTR section)
 {
-	CScriptMonster::reload		(section);
 	CSoundPlayer::reload		(section);
+	CScriptMonster::reload		(section);
 	CEntityAlive::reload		(section);
 	CDamageManager::reload		(section);
 	CEventMemoryManager::reload	(section);

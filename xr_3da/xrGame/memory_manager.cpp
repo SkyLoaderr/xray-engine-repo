@@ -62,7 +62,9 @@ void CMemoryManager::update			(float time_delta)
 	CEnemyManager::reset			();
 	CItemManager::reset				();
 
-	update							(memory_visible_objects());
+	if (CVisualMemoryManager::enabled())
+		update						(memory_visible_objects());
+
 	update							(sound_objects());
 	update							(hit_objects());
 	
