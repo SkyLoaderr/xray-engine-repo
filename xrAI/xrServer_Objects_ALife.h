@@ -332,4 +332,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisua
 	virtual							~CSE_ALifeObjectBreakable	();
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)
+									CSE_ALifeMountedWeapon	(LPCSTR caSection);
+	virtual							~CSE_ALifeMountedWeapon	();
+SERVER_ENTITY_DECLARE_END
+
 #endif

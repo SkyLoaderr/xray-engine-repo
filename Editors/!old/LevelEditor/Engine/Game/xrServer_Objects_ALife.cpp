@@ -1335,3 +1335,42 @@ void CSE_ALifeObjectBreakable::FillProp		(LPCSTR pref, PropItemVec& values)
 }
 #endif
 
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeMountedWeapon
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeMountedWeapon::CSE_ALifeMountedWeapon	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeMountedWeapon::~CSE_ALifeMountedWeapon	()
+{
+}
+
+void CSE_ALifeMountedWeapon::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_float			(m_health);
+}
+
+void CSE_ALifeMountedWeapon::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_float			(m_health);
+}
+
+void CSE_ALifeMountedWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeMountedWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeMountedWeapon::FillProp			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+}
+#endif
