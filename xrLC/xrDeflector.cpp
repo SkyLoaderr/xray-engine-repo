@@ -204,12 +204,14 @@ void CDeflector::RemapUV(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD 
 		}
 	}
 }
+
 void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
 	vector<UVtri>	tris_new;
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
 	tris			= tris_new;
 }
+
 CDeflector::Layer* CDeflector::GetLayer(b_light* base)
 {
 	for (DWORD I=0; I<layers.size(); I++)
