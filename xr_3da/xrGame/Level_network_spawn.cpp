@@ -65,17 +65,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 			GEN.w_u16			(GE_OWNERSHIP_TAKE);
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
-
-			// Simulate event arrival
-			for (;;) 
-			{
-				CObject*	 uO	= Objects.net_Find	(E->ID_Parent);
-				R_ASSERT		(uO);
-				CGameObject* GO = dynamic_cast<CGameObject*>(uO);
-				if (0==GO)		break;
-				GO->net_Event	(GEN);
-				break;
-			}
+			game_events.insert	(GEN);
 		}
 	}
 
