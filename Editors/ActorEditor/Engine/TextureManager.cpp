@@ -110,7 +110,7 @@ CVS*	CShaderManager::_CreateVS		(LPCSTR cName, LPDWORD decl, u32 stride)
 		
 		// Load vertex shader
 		string256		fname;
-		strconcat		(fname,"gamedata\\shaders\\",Name,".vs");
+		strconcat		(fname,Path.GameData,"shaders\\",Name,".vs");
 		LPD3DXBUFFER	code	= 0;
 		LPD3DXBUFFER	errors	= 0;
 		CStream*		fs		= Engine.FS.Open(fname);
@@ -200,7 +200,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 		
 		// Load vertex shader
 		string256		fname;
-		strconcat		(fname,"data\\shaders\\",Name,".ps");
+		strconcat		(fname,Path.GameData,"shaders\\",Name,".ps");
 		LPD3DXBUFFER	code	= 0;
 		LPD3DXBUFFER	errors	= 0;
 		CStream*		fs		= Engine.FS.Open(fname);
@@ -214,6 +214,7 @@ CPS*	CShaderManager::_CreatePS		(LPCSTR cName)
 		return			PS;
 	}
 }
+
 void	CShaderManager::_DeletePS	(CPS* &PS)
 {
 	R_ASSERT		(PS);

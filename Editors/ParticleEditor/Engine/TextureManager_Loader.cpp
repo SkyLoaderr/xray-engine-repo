@@ -202,7 +202,8 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS)
 	}
 
 	// Load detail textures association
-	LPCSTR		Iname		= "gamedata\\textures\\textures.ltx";
+	string256 fname; strconcat	(fname,Path.Textures,"textures.ltx");
+	LPCSTR		Iname		= fname;
 	if (Engine.FS.Exist(Iname))	
 	{
 		CInifile	ini		(Iname);

@@ -34,7 +34,8 @@ void Startup()
 	Device.Initialize			( );
 
 	// Creation
-	pSettings					= new CInifile		("GameData\\system.ltx",TRUE);
+	string256 fname; strconcat	(fname,Path.GameData,"system.ltx");
+	pSettings					= new CInifile		(fname,TRUE);
 
 	Console.Initialize			( );
 	Engine.External.Initialize	( );

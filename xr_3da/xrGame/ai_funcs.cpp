@@ -53,9 +53,8 @@ CPatternFunction::~CPatternFunction()
 
 void CPatternFunction::vfLoadEF(const char *caFileName)
 {
-	char caPath[260];
-	memcpy(caPath,Path.GameData,(strlen(Path.GameData) + 1)*sizeof(char));
-	strcat(caPath,AI_PATH);
+	char		caPath[260];
+	strconcat	(caPath,Path.GameData,AI_PATH);
 
 	if (!Engine.FS.Exist(caPath, caPath, caFileName)) {
 		Msg("! Evaluation function : File not found \"%s\"",caPath);
