@@ -153,8 +153,8 @@ void CLightmap::Save()
 
 		STextureParams fmt;
 		fmt.fmt					=		STextureParams::tfRGBA;
-		fmt.flag				&=		~STextureParams::flDitherColor;
-		fmt.flag				&=		~STextureParams::flGenerateMipMaps;
+		fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
+		fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 

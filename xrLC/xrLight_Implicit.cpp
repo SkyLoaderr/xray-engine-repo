@@ -10,7 +10,7 @@ BOOL	hasImplicitLighting(Face* F)
 	if (!F->Shader().flags.bRendering)			return FALSE;
 	b_material& M = pBuild->materials			[F->dwMaterial];
 	b_BuildTexture&	T  = pBuild->textures		[M.surfidx];
-	return (T.THM.flag&STextureParams::flImplicitLighted);
+	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
 
 class ImplicitLumel
