@@ -64,9 +64,11 @@ neutral
 		SWheel* pwheel;
 		float	pos_fvd;
 		float gear_factor;
-		void Init();
-		void Drive();
-		void Neutral();
+		void  Init();
+		void  Drive();
+		void  Neutral();
+		float ASpeed();
+		void UpdatePower();
 	};
 	struct SWheelSteer 
 	{
@@ -153,7 +155,6 @@ void ClosingToClosed();
 void ClosedToOpening();
 void PlaceInUpdate();
 void RemoveFromUpdate();
-
 enum eState
 {
 opening,
@@ -198,6 +199,7 @@ xr_vector <float>		m_gear_ratious;
 xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 float					m_current_gear_ratio;
 float					m_power;
+float					m_current_engine_power;
 float					m_axle_friction;
 float					m_max_rpm;
 float					m_min_rpm;
@@ -211,8 +213,16 @@ size_t					m_current_transmission_num;
 	float GetSteerAngle();
 	void LimitWheels();
 	void Drive();
-
 	void NeutralDrive();
+	void UpdatePower();
+////////////////////////////////////////////////////////////////////////
+	float RefWheelMaxSpeed()
+	{
+		return m_max_rpm/m_current_gear_ratio;
+	}
+	float EnginePower();
+	float EngineDriveSpeed();
+/////////////////////////////////////////////////////////////////////////	
 	void SteerRight();
 	void SteerLeft();
 	void SteerIdle();

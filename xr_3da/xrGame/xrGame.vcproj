@@ -1377,10 +1377,12 @@
 						<File
 							RelativePath="Car.h">
 						</File>
-						<Filter
-							Name="Niva"
-							Filter="">
-						</Filter>
+						<File
+							RelativePath=".\CarDoors.cpp">
+						</File>
+						<File
+							RelativePath=".\CarWheels.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="_helicopter"
