@@ -14,13 +14,15 @@ public:
 
 	virtual void			Init					();
 
-	virtual void			Think					();
 	virtual void			UpdateCL				();
+	virtual void			StateSelector			();
+
+
 	virtual BOOL			net_Spawn				(LPVOID DC);
 	virtual	void			Load					(LPCSTR section);
 			void			vfAssignBones			();
 
-	static	void __stdcall	BoneCallback	(CBoneInstance *B);
+	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 
 	virtual	void			MotionToAnim			(EMotionAnim motion, int &index1, int &index2, int &index3);
 	virtual	void			LoadAttackAnim			();
@@ -32,7 +34,7 @@ public:
 			void			LookDirection			(Fvector to_dir, float bone_turn_speed);
 			void			LookPosition			(Fvector to_point, float bone_turn_speed);
 
-			void			Postprocess				();
+			void			ActivateEffector		(float life_time);
 	// Flesh-specific FSM
 	CBloodsuckerRest		*stateRest;
 	CBloodsuckerEat			*stateEat;

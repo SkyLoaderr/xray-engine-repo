@@ -100,13 +100,15 @@ class CMotionTurn {
 
 	float fMinAngle;
 	bool  bLeftSide;
+	bool  bMoveBkwd;
 public:
 	void Set(EMotionAnim a_left, EMotionAnim a_right, float s, float r_s, float min_angle);
-
+	
 	bool CheckTurning(CCustomMonster *pData);
 	void Clear() {
 		fMinAngle = 0;						//!< если fMinAngle == 0, то поворот не нужен
 	}
+	void SetMoveBkwd(bool dir_bkwd) {bMoveBkwd = dir_bkwd;}
 private:	
 	bool NeedToTurn(CCustomMonster *pData);		//!< возвращает true, если поворот необходим, переменная bLeftSide - определяет сторону поворота
 

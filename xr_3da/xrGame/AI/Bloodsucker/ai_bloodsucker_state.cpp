@@ -328,7 +328,10 @@ void CBloodsuckerAttack::Run()
 	
 	// нивидимость
 	if ((dist < pMonster->m_fInvisibilityDist) && (pMonster->GetPower() > pMonster->m_fPowerThreshold)) {
-		if (pMonster->m_tVisibility.Switch(false)) pMonster->ChangePower(pMonster->m_ftrPowerDown);
+		if (pMonster->m_tVisibility.Switch(false)) {
+			pMonster->ChangePower(pMonster->m_ftrPowerDown);
+			pMonster->ActivateEffector(pMonster->m_tVisibility.GetInvisibleInterval() / 1000.f);
+		}
 	}
 	
 	// Выполнение состояния

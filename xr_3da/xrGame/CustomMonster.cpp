@@ -711,7 +711,7 @@ void CCustomMonster::Exec_Action(float dt)
 }
 
 // Развернуть объект в направление движения
-void CCustomMonster::SetDirectionLook()
+void CCustomMonster::SetDirectionLook(bool bReversed)
 {
 	bool bYawSet = false;
 
@@ -743,8 +743,9 @@ void CCustomMonster::SetDirectionLook()
 			CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 			tWatchDirection.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
 			if (tWatchDirection.magnitude() > EPS_L) {
-				tWatchDirection.normalize();
+				vfNormalizeSafe(tWatchDirection);
 				mk_rotation(tWatchDirection,r_torso_target);
+				if (bReversed) r_torso_target.yaw = angle_normalize(r_torso_target.yaw + PI);
 				r_torso_target.pitch = 0;
 			}
 		}
@@ -752,4 +753,3 @@ void CCustomMonster::SetDirectionLook()
 
 	r_target = r_torso_target;
 }
-

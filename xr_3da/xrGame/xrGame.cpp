@@ -20,6 +20,7 @@
 #include "ai\\flesh\\ai_flesh.h"
 #include "ai\\chimera\\ai_chimera.h"
 #include "ai\\bloodsucker\\ai_bloodsucker.h"
+#include "ai\\dog\\ai_dog.h"
 #include "ai\\trader\\ai_trader.h"
 #include "car.h"
 #include "customtarget.h"
@@ -868,7 +869,7 @@ extern "C" {
 		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
 		case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
 		case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
-		case CLSID_AI_DOG_RED:			P = xr_new<CAI_Chimera>();			break;
+		case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
 		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
 		case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
 		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;

@@ -114,7 +114,9 @@ CActor::CActor() : CEntityAlive()
 
 	//разрешить использование пояса в inventory
 	m_inventory.m_bBeltUseful = true;
+
 }
+
 
 CActor::~CActor()
 {

@@ -64,7 +64,6 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 
 	vfAssignBones	();
 
-	Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(1.5f));
 	return(TRUE);
 }
 
@@ -79,69 +78,48 @@ void CAI_Bloodsucker::UpdateCL()
 	if (NewVis != PrevVis) setVisible(NewVis);
 }
 
-void CAI_Bloodsucker::Think()
+void CAI_Bloodsucker::StateSelector()
 {
-	inherited::Think();
+	//	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
+	//	int bone2		= PKinematics(Visual())->LL_BoneID("bip01_head");
+	//	
+	//	static bool look_left = true;
+	//
+	//	if (!Bones.IsActive()) {
+	//
+	//		float look_k;
+	//		look_k = ((look_left) ? (-1.f) : 1.f);
+	//
+	//		look_left = !look_left;
+	//
+	//		// Колбасит
+	//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Z, look_k * PI_DIV_4 , PI, 1);
+	//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Y, look_k * PI_DIV_3 , PI_DIV_2 , 1);
+	//	}
 	
-	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
-		CurrentState->Reset();
-		SetState(stateRest);
-	}
-
-//	int bone1		= PKinematics(Visual())->LL_BoneID("bip01_spine");
-//	int bone2		= PKinematics(Visual())->LL_BoneID("bip01_head");
-//	
-//	static bool look_left = true;
-//
-//	if (!Bones.IsActive()) {
-//
-//		float look_k;
-//		look_k = ((look_left) ? (-1.f) : 1.f);
-//
-//		look_left = !look_left;
-//
-//		// Колбасит
-//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Z, look_k * PI_DIV_4 , PI, 1);
-//		Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(bone1), AXIS_Y, look_k * PI_DIV_3 , PI_DIV_2 , 1);
-//	}
-
 	VisionElem ve;
 
-	if (Motion.m_tSeq.isActive())	{
-		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
-	}else {
-		
-		//- FSM 1-level 
-		if (C && H && I)			SetState(statePanic);
-		else if (C && H && !I)		SetState(statePanic);
-		else if (C && !H && I)		SetState(statePanic);
-		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(statePanic);
-		else if (D && !H && I)		SetState(statePanic);
-		else if (D && !H && !I) 	SetState(statePanic);			// :: Hide
-		else if (D && H && !I)		SetState(stateAttack); 
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  
-		else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
-		else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateAttack); 
-		else if (F && !H && !I) 	SetState(stateAttack);		
-		else if (A && !K)			SetState(stateHearDNE); 
-		else if (B && !K)			SetState(stateHearNDE); 
-		else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
-									SetState(stateEat);	
-		else						SetState(stateRest);
-
-		CurrentState->Execute(m_dwCurrentUpdate);
-
-		// проверяем на завершённость
-		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
-	}
-
-	Motion.SetFrameParams(this);
-	ControlAnimation();		
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(statePanic);
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(statePanic);			// :: Hide
+	else if (D && H && !I)		SetState(stateAttack); 
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);  
+	else if (E && !H && I) 		SetState(stateAttack);			// :: Detour
+	else if (E && !H && !I)		SetState(stateAttack);			// :: Detour 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateAttack); 
+	else if (F && !H && !I) 	SetState(stateAttack);		
+	else if (A && !K)			SetState(stateHearDNE); 
+	else if (B && !K)			SetState(stateHearNDE); 
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))
+		SetState(stateEat);	
+	else						SetState(stateRest);
 }
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
@@ -227,5 +205,8 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float bone_turn_speed)
 	LookDirection(dir,bone_turn_speed);
 }
 
-
+void CAI_Bloodsucker::ActivateEffector(float life_time)
+{
+	Level().Cameras.AddEffector(xr_new<CBloodsuckerEffector>(life_time));
+}
 

@@ -36,7 +36,8 @@ public:
 		
 	IC	bool	IsCurrentVisible		() {return bCurVisibility;}
 	IC	bool	IsInvisibilityReady		() {return (timeStartRestore + timeRestoreInterval < timeCurrent);}	
-	
+		TTime	GetInvisibleInterval	() {return timeInvisibleInterval;}
+			
 	// Temp 
 	IC	bool	IsActiveBlinking		() {if (timeStartBlinking + timeBlinking > timeCurrent) return true; else return false;}
 };

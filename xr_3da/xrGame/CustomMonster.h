@@ -155,7 +155,7 @@ public:
 	u32					m_dwCurrentUpdate;
 	EMotionAnim			m_tAnim;
 	EMotionAnim			m_tAnimPrevFrame;
-	void				SetDirectionLook		();
+	void				SetDirectionLook		(bool bReversed = false);
 	// сообщения на начало/завершение последовательности
 	virtual void		OnMotionSequenceStart	() {}
 	virtual	void		OnMotionSequenceEnd		() {}

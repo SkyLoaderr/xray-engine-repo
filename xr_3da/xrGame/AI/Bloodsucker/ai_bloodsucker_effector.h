@@ -8,7 +8,8 @@
 class CBloodsuckerEffector : public CEffectorPP {
 	typedef CEffectorPP inherited;	
 	float	fLifeTime;
-	
+	float	time;
+
 public:
 					CBloodsuckerEffector		(float time);
 	virtual			~CBloodsuckerEffector		();

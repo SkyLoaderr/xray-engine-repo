@@ -23,8 +23,27 @@ void CAI_Biting::Think()
 //	if (g_Alive())
 //		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][H=%d][I=%d][J=%d][K=%d]",cName(),A,B,C,D,E,F,H,I,J,K);
 //#endif
+	
+	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
+		CurrentState->Reset();
+		SetState(stateRest);
+	}
+	
+	if (Motion.m_tSeq.isActive())	{
+		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
+	}else {
+		StateSelector			();
 
+		CurrentState->Execute(m_dwCurrentUpdate);
+
+		// проверяем на завершённость
+		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
+	}
+	
+	Motion.SetFrameParams(this);
+	ControlAnimation();		
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CAI_Biting state-specific functions
@@ -76,6 +95,7 @@ void CBitingMotion::Init(CAI_Biting *pData)
 {
 	m_tSeq.Setup(pData);
 	m_tSeq.Init();
+	m_tTurn.SetMoveBkwd(false);
 }
 
 void CBitingMotion::SetFrameParams(CAI_Biting *pData) 

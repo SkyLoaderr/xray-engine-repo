@@ -47,7 +47,7 @@ public:
 
 struct SLockAnim {
 	EMotionAnim	anim;
-	u8			i3;
+	int			i3;
 	TTime		from;
 	TTime		to;
 };

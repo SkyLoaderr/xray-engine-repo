@@ -160,6 +160,7 @@ public:
 	CBlend*					m_current_jump_blend;
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
+
 protected:
 	// skeleton
 	static	float			skel_density_factor;
@@ -188,9 +189,9 @@ protected:
 	u32						patch_frame;
 	Fvector					patch_position;
 
-
+	
 	int						skel_ddelay;
-							
+	
 	///////////////////////////////////////////////////
 	static void	__stdcall	SpinCallback	(CBoneInstance*);
 	static void	__stdcall	ShoulderCallback(CBoneInstance*);

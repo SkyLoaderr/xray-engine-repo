@@ -766,6 +766,16 @@
 							RelativePath=".\Ai\Trader\ai_trader.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="ai_dog"
+						Filter="">
+						<File
+							RelativePath=".\ai\dog\ai_dog.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\dog\ai_dog.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_actor"

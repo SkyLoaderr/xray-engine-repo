@@ -47,95 +47,54 @@ void CAI_Chimera::Init()
 	Bones.Reset();
 }
 
-
-void CAI_Chimera::Think()
+void CAI_Chimera::StateSelector()
 {
-	inherited::Think();
 
-	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
-		CurrentState->Reset();
-		SetState(stateRest);
-	}
-
-	
-	if (!Bones.IsActive()) {
-
-		if (!getAI().bfTooSmallAngle(r_torso_current.yaw,r_torso_target.yaw, PI_DIV_6)) {
-			float k;	
-			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) k = -1.0;
-			else k = 1.0f;
-
-			int spin_bone	= PKinematics(Visual())->LL_BoneID("bip01_spine1");
-			Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
-		}
-			
-	}
-
-	// A - я слышу опасный звук
-	// B - я слышу неопасный звук
-	// С - я вижу очень опасного врага
-	// D - я вижу опасного врага
-	// E - я вижу равного врага
-	// F - я вижу слабого врага
-	// H - враг выгодный
-	// I - враг видит меня
-	// J - A | B
-	// K - C | D | E | F 
-
+//	if (!Bones.IsActive()) {
+//
+//		if (!getAI().bfTooSmallAngle(r_torso_current.yaw,r_torso_target.yaw, PI_DIV_6)) {
+//			float k;	
+//			if (angle_normalize_signed(r_torso_target.yaw - r_torso_current.yaw) > 0) k = -1.0;
+//			else k = 1.0f;
+//
+//			int spin_bone	= PKinematics(Visual())->LL_BoneID("bip01_spine1");
+//			Bones.SetMotion(&PKinematics(Visual())->LL_GetInstance(spin_bone), AXIS_Z, k * PI_DIV_6 , PI, 1);	
+//		}
+//
+//	}
 	VisionElem ve;
 
-	if (Motion.m_tSeq.isActive())	{
-		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
-	}else {
-		//- FSM 1-level 
+	if (C && H && I)		SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+	else if (E && !H && I) 		SetState(stateDetour); 
+	else if (E && !H && !I)		SetState(stateDetour); 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateDetour); 
+	else if (F && !H && !I) 	SetState(stateHide);
+	else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
+		SetState(stateEat);
+	else						SetState(stateRest); 
 
-		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
-		if (C && H && I)		SetState(statePanic);
-		else if (C && H && !I)		SetState(statePanic);
-		else if (C && !H && I)		SetState(statePanic);
-		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(stateAttack);
-		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (D && !H && I)		SetState(statePanic);
-		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (E && !H && I) 		SetState(stateDetour); 
-		else if (E && !H && !I)		SetState(stateDetour); 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateHide);
-		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
-			SetState(stateEat);
-		else						SetState(stateRest); 
-
-		//---
-
-		CurrentState->Execute(m_dwCurrentUpdate);
-
-		// проверяем на завершённость
-		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
-	}
-
-	Motion.SetFrameParams(this);
-	if (IsAnimLocked(m_dwCurrentUpdate)) { 
-		m_fCurSpeed		= 0.f;
-		r_torso_speed	= 0.f;
-	}
-
-	ControlAnimation();
-}
-
-void CAI_Chimera::UpdateCL()
-{
-	inherited::UpdateCL();
+//	if (IsAnimLocked(m_dwCurrentUpdate)) { 
+//		m_fCurSpeed		= 0.f;
+//		r_torso_speed	= 0.f;
+//	}
 
 }
+
 
 
 BOOL CAI_Chimera::net_Spawn (LPVOID DC) 

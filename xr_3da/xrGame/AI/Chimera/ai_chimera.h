@@ -13,9 +13,8 @@ public:
 	virtual					~CAI_Chimera		();	
 
 	virtual void			Init				();
- 
-	virtual void			Think				();
-	virtual void			UpdateCL			();
+	virtual void			StateSelector		();
+
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual	void			Load				(LPCSTR section);
 

@@ -11,8 +11,6 @@
 #include "ai_biting_state.h"
 #include "..\\rat\\ai_rat.h"
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -302,8 +300,6 @@ void CBitingEat::Reset()
 {
 	IState::Reset();
 
-	m_tAction			= ACTION_RUN;
-
 	pCorpse				= 0;
 
 	m_dwLastTimeEat		= 0;
@@ -320,7 +316,13 @@ void CBitingEat::Init()
 	pCorpse = ve.obj;
 
 	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
-	m_fDistToCorpse = ((tpRat)? 1.0f : 1.5f);
+	m_fDistToCorpse = ((tpRat)? 1.0f : 2.5f);
+	
+	SavedPos			= pCorpse->Position();		// сохранить позицию трупа
+	m_fDistToDrag		= 20.f;
+	bDragging			= false;
+
+	m_tAction			= ACTION_RUN;
 
 	// Test
 	WRITE_TO_LOG("_ Eat Init _");
@@ -330,21 +332,10 @@ void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
 	VisionElem ve;
-	if (!pMonster->GetEnemy(ve)) R_ASSERT(false);
+	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
 	if (pCorpse != ve.obj) Init();
 	
-	bool bStartEating = (m_tAction == ACTION_RUN);
-
-	// Выбор состояния
-	if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) m_tAction = ACTION_EAT;
-	else m_tAction = ACTION_RUN;
-
-	bStartEating = bStartEating && (m_tAction == ACTION_EAT);
-	if (bStartEating) {	// если монстр подбежал к трупу, необходимо отыграть проверку трупа и лечь
-		pMonster->Motion.m_tSeq.Add(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-		pMonster->Motion.m_tSeq.Add(eAnimStandLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
-		pMonster->Motion.m_tSeq.Switch();
-	}
+	float cur_dist = SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
 
 	// Выполнение состояния
 	switch (m_tAction) {
@@ -355,6 +346,44 @@ void CBitingEat::Run()
 
 			pMonster->Motion.m_tParams.SetParams(eAnimRun,pMonster->m_ftrRunAttackSpeed,pMonster->m_ftrRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eAnimRunTurnLeft,eAnimRunTurnRight, pMonster->m_ftrRunAttackTurnSpeed,pMonster->m_ftrRunAttackTurnRSpeed,pMonster->m_ftrRunAttackMinAngle);
+
+			if (pCorpse->Position().distance_to(pMonster->Position()) < m_fDistToCorpse) {
+				m_tAction = ACTION_DRAG;
+				
+				pMonster->Movement.PHCaptureObject(pCorpse);
+				bDragging = true;
+				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
+				pMonster->Motion.m_tSeq.Add(eAnimCheckCorpse,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+				pMonster->Motion.m_tSeq.Switch();
+			}
+			break;
+		
+		case ACTION_DRAG:
+					
+			pMonster->m_tEnemy.Set(pCorpse,0);				// forse enemy selection
+			pMonster->vfInitSelector(pMonster->m_tSelectorCover, false);
+			
+			pMonster->m_tSelectorCover.m_fMaxEnemyDistance = cur_dist + pMonster->m_tSelectorCover.m_fSearchRange;
+			pMonster->m_tSelectorCover.m_fOptEnemyDistance = pMonster->m_tSelectorCover.m_fMaxEnemyDistance;
+			pMonster->m_tSelectorCover.m_fMinEnemyDistance = cur_dist + 3.f;
+
+			pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0, 5000);
+
+			// Установить параметры движения
+			pMonster->Motion.m_tParams.SetParams(eAnimWalkBkwd,pMonster->m_ftrWalkSpeed / 2, pMonster->m_ftrWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set		(eAnimWalkBkwd, eAnimWalkBkwd,pMonster->m_ftrWalkTurningSpeed,pMonster->m_ftrWalkTurnRSpeed,pMonster->m_ftrWalkMinAngle);			
+			pMonster->Motion.m_tTurn.SetMoveBkwd(true);
+
+			if (cur_dist > m_fDistToDrag) {
+				// бросить труп
+				pMonster->Movement.PHReleaseObject();
+
+				bDragging = false; 
+				m_tAction = ACTION_EAT;
+				// лечь
+				pMonster->Motion.m_tSeq.Add(eAnimStandLieDownEat,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED, STOP_ANIM_END);
+				pMonster->Motion.m_tSeq.Switch();
+			}
 
 			break;
 		case ACTION_EAT:
@@ -375,6 +404,14 @@ bool CBitingEat::CheckCompletion()
 	return false;
 }
 
+void CBitingEat::Done()
+{
+	pMonster->Motion.m_tTurn.SetMoveBkwd(false);
+	// если тащит труп - бросить
+	if (bDragging) {
+		pMonster->Movement.PHReleaseObject();
+	}
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingHide class

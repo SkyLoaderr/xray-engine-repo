@@ -127,7 +127,13 @@ public:
 
 	virtual	void			LoadAttackAnim					() {}
 	virtual void			CheckAttackHit					();
+
+	// FSM
+	virtual void            StateSelector					() = 0;  // should be pure 
 	
+	
+	// Other
+			
 // members
 public:
 
@@ -151,18 +157,18 @@ public:
 	u32						m_dwPathBuiltLastTime;
 	
 	// Other fields
-	float					m_fGoingSpeed;			//!< speed over the path
+	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
 	float					m_fSoundThreshold;
 	float					m_fHitPower;
-	bool					bShowDeath;				//!< need to control animation
-	CAttackAnim				m_tAttackAnim;			//!< for hit calculation
+	bool					bShowDeath;				// need to control animation
+	CAttackAnim				m_tAttackAnim;			// for hit calculation
 	LOCK_ANIM_VECTOR		m_tLockedAnims;
 	int						anim_i3;				// 3ий индекс текущей анимации
 	TTime					m_dwAnimStarted;		// время начала текущей анимации
 	EMotionAnim				m_tAnimPlaying;
 
-	CBitingMotion			Motion;					//!< motion frame params
+	CBitingMotion			Motion;					// motion frame params
 	
 	// FSM 
 	IState					*CurrentState;
@@ -211,4 +217,26 @@ public:
 
 	float					m_fImpulseMin;
 	float					m_fImpulseMax;
+
+	// Biting-specific states
+	CBitingRest				*stateRest;
+	CBitingAttack			*stateAttack;
+	CBitingEat				*stateEat;
+	CBitingHide				*stateHide;
+	CBitingDetour			*stateDetour;
+	CBitingPanic			*statePanic;
+	CBitingExploreDNE		*stateExploreDNE;
+	CBitingExploreDE		*stateExploreDE;
+	CBitingExploreNDE		*stateExploreNDE;
+	
+	friend	class			CBitingRest;
+	friend  class 			CBitingAttack;
+	friend	class 			CBitingEat;
+	friend	class 			CBitingHide;
+	friend	class 			CBitingDetour;
+	friend	class 			CBitingPanic;
+	friend	class 			CBitingExploreDNE;
+	friend	class 			CBitingExploreDE;
+	friend	class 			CBitingExploreNDE;
+
 };

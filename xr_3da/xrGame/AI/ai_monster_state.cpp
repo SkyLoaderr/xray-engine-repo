@@ -72,7 +72,7 @@ bool CMotionTurn::NeedToTurn(CCustomMonster *pData)
 {
 	// Если путь построен выполнить SetDirectionLook 
 	if (!pData->AI_Path.TravelPath.empty()) {
-		pData->SetDirectionLook();
+		pData->SetDirectionLook(bMoveBkwd);
 	} 
 
 	if (!getAI().bfTooSmallAngle(pData->r_torso_target.yaw,pData->r_torso_current.yaw, fMinAngle)) { // если угол не маленький то...

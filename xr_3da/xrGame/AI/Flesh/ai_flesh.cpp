@@ -49,79 +49,34 @@ void CAI_Flesh::Init()
 }
 
 
-void CAI_Flesh::Think()
+void CAI_Flesh::StateSelector()
 {
-//	SetPoints();
-
-	inherited::Think();
-
-	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
-		CurrentState->Reset();
-		SetState(stateRest);
-	}
-
-	// A - я слышу опасный звук
-	// B - я слышу неопасный звук
-	// С - я вижу очень опасного врага
-	// D - я вижу опасного врага
-	// E - я вижу равного врага
-	// F - я вижу слабого врага
-	// H - враг выгодный
-	// I - враг видит меня
-	// J - A | B
-	// K - C | D | E | F 
-
 	VisionElem ve;
 
-	if (Motion.m_tSeq.isActive())	{
-		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
-	}else {
-		//- FSM 1-level 
-
-		//if (flagEnemyLostSight && H && (E || F) && !A) SetState(stateFindEnemy);	// поиск врага
-		if (C && H && I)		SetState(statePanic);
-		else if (C && H && !I)		SetState(statePanic);
-		else if (C && !H && I)		SetState(statePanic);
-		else if (C && !H && !I) 	SetState(statePanic);
-		else if (D && H && I)		SetState(stateAttack);
-		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (D && !H && I)		SetState(statePanic);
-		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (E && !H && I) 		SetState(stateDetour); 
-		else if (E && !H && !I)		SetState(stateDetour); 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateHide);
-		else if (A && !K && !H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
-		else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
-			SetState(stateEat);
-		else						SetState(stateRest); 
-
-		CurrentState->Execute(m_dwCurrentUpdate);
-
-		// проверяем на завершённость
-		if (CurrentState->CheckCompletion()) SetState(stateRest, true);
-	}
-
-	Motion.SetFrameParams(this);
-	ControlAnimation();		
+	if (C && H && I)			SetState(statePanic);
+	else if (C && H && !I)		SetState(statePanic);
+	else if (C && !H && I)		SetState(statePanic);
+	else if (C && !H && !I) 	SetState(statePanic);
+	else if (D && H && I)		SetState(stateAttack);
+	else if (D && H && !I)		SetState(stateAttack);		//тихо подобраться и начать аттаку
+	else if (D && !H && I)		SetState(statePanic);
+	else if (D && !H && !I) 	SetState(stateHide);		// отход перебежками через укрытия
+	else if (E && H && I)		SetState(stateAttack); 
+	else if (E && H && !I)  	SetState(stateAttack);		//тихо подобраться и начать аттаку
+	else if (E && !H && I) 		SetState(stateDetour); 
+	else if (E && !H && !I)		SetState(stateDetour); 
+	else if (F && H && I) 		SetState(stateAttack); 		
+	else if (F && H && !I)  	SetState(stateAttack); 
+	else if (F && !H && I)  	SetState(stateDetour); 
+	else if (F && !H && !I) 	SetState(stateHide);
+	else if (A && !K && !H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);  // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+	else if (A && !K && H)		SetState(stateExploreNDE);  // SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
+	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+	else if (GetCorpse(ve) && ve.obj->m_fFood > 1)	
+		SetState(stateEat);
+	else						SetState(stateRest); 
 }
-
-void CAI_Flesh::UpdateCL()
-{
-	inherited::UpdateCL();
-
-
-	// Проверка состояния анимации (атака)
-	CheckAttackHit();
-}
-
 
 void CAI_Flesh::MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3)
 {

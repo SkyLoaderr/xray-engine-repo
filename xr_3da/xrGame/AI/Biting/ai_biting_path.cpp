@@ -18,24 +18,6 @@ using namespace AI;
 #define DODGE_AMPLITUDE					.5f
 #define MAX_DODGE_DISTANCE				1.5f
 
-// Развернуть объект в направление движения
-void CAI_Biting::SetReversedDirectionLook()
-{
-	int i = ps_Size();		// position stack size
-	if (i > 1) {
-		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-		tWatchDirection.sub(tPreviousPosition.vPosition,tCurrentPosition.vPosition);
-		if (tWatchDirection.magnitude() > EPS_L) {
-			vfNormalizeSafe(tWatchDirection);
-			r_torso_target.yaw += PI;
-			mk_rotation(tWatchDirection,r_torso_target);
-		}
-	}
-	else
-		r_torso_target.pitch = 0;
-	r_target = r_torso_target;
-}
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 // Функция InitSelector
