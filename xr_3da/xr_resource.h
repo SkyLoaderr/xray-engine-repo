@@ -77,13 +77,15 @@ public:
 // ptr == const res_ptr
 // ptr != const res_ptr
 // res_ptr < res_ptr
-template<class T, class U, typename D> inline bool operator==(resptr_core<T,D> const & a, resptr_core<U,D> const & b)		{ return a._get() == b._get();					}
-template<class T, class U, typename D> inline bool operator!=(resptr_core<T,D> const & a, resptr_core<U,D> const & b)		{ return a._get() != b._get();					}
-template<class T, typename D> inline bool operator==(resptr_core<T,D> const & a, T * b)										{ return a._get() == b;							}
-template<class T, typename D> inline bool operator!=(resptr_core<T,D> const & a, T * b)										{ return a._get() != b;							}
-template<class T, typename D> inline bool operator==(T * a, resptr_core<T,D> const & b)										{ return a == b._get();							}
-template<class T, typename D> inline bool operator!=(T * a, resptr_core<T,D> const & b)										{ return a != b._get();							}
-template<class T, typename D> inline bool operator<(resptr_core<T,D> const & a, resptr_core<T,D> const & b)					{ return std::less<T *>()(a._get(), b._get());	}
+// res_ptr > res_ptr
+template<class T, class U, typename D>	inline bool operator	==	(resptr_core<T,D> const & a, resptr_core<U,D> const & b)		{ return a._get() == b._get();						}
+template<class T, class U, typename D>	inline bool operator	!=	(resptr_core<T,D> const & a, resptr_core<U,D> const & b)		{ return a._get() != b._get();						}
+template<class T, typename D>			inline bool operator	==	(resptr_core<T,D> const & a, T * b)								{ return a._get() == b;								}
+template<class T, typename D>			inline bool operator	!=	(resptr_core<T,D> const & a, T * b)								{ return a._get() != b;								}
+template<class T, typename D>			inline bool operator	==	(T * a, resptr_core<T,D> const & b)								{ return a == b._get();								}
+template<class T, typename D>			inline bool operator	!=	(T * a, resptr_core<T,D> const & b)								{ return a != b._get();								}
+template<class T, typename D>			inline bool operator	<	(resptr_core<T,D> const & a, resptr_core<T,D> const & b)		{ return std::less<T *>()(a._get(), b._get());		}
+template<class T, typename D>			inline bool operator	>	(resptr_core<T,D> const & a, resptr_core<T,D> const & b)		{ return std::greater<T *>()(a._get(), b._get());	}
 
 // externally visible swap
 template<class T, typename D> void swap	(resptr_core<T,D> & lhs, resptr_core<T,D> & rhs)									{ lhs.swap(rhs);	}
