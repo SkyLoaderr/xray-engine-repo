@@ -6,6 +6,7 @@
 #include	"blenders\blender.h"
 #include	"blenders\blender_recorder.h"
 #include	"ai_script_space.h"
+#include	"ai_script_lua_extension.h"
 
 using namespace				luabind;
 
@@ -104,6 +105,18 @@ void	CResourceManager::LS_Load			()
 		.def("aref",						&adopt_compiler::_aref			)
 		.def("sampler",						&adopt_compiler::_sampler		)
 		;
+
+	// load shaders
+	xr_vector<char*>*	folder	= FS.file_list_open	("$game_shaders$","",FS_ListFiles|FS_RootOnly);
+	for (u32 it=0; it<folder->size(); it++)
+	{
+		string256						namesp,fn;
+		strcpy							(namesp,(*folder)[it]);
+		if		(strext(namesp))		*strext(namesp)=0;
+		FS.update_path					(fn,"$game_shaders$",(*folder)[it]);
+		Script::bfLoadFileIntoNamespace	(LSVM,fn,namesp);
+	}
+	FS.file_list_close			(folder);
 }
 
 void	CResourceManager::LS_Unload			()
