@@ -493,11 +493,12 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			CDB::TRI&	O		= *(Level.get_tris()+XRC.r_begin()[i_t].id);
+			CDB::RESULT&		rp = XRC.r_begin()[i_t];
+			CDB::TRI&	O		= *(Level.get_tris()+rp.id);
 
-			T.p[0].mul			(*O.verts[0],xf);
-			T.p[1].mul			(*O.verts[1],xf);
-			T.p[2].mul			(*O.verts[2],xf);
+			T.p[0].mul			(rp.verts[0],xf);
+			T.p[1].mul			(rp.verts[1],xf);
+			T.p[2].mul			(rp.verts[2],xf);
 			T.N.mknormal		(T.p[0],T.p[1],T.p[2]);
 			
 			T.d = -T.N.dotproduct(T.p[0]);

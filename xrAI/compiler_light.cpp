@@ -27,9 +27,9 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 		// cache polygon
 		CDB::RESULT&	rpinf	= *DB.r_begin();
 		CDB::TRI&		T		= LevelLight.get_tris()[rpinf.id];
-		L.tri[0].set	(*T.verts[0]);
-		L.tri[1].set	(*T.verts[1]);
-		L.tri[2].set	(*T.verts[2]);
+		L.tri[0].set	(rpinf.verts[0]);
+		L.tri[1].set	(rpinf.verts[1]);
+		L.tri[2].set	(rpinf.verts[2]);
 		return true;
 	}
 }
