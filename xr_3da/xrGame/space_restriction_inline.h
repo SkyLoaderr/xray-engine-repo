@@ -68,7 +68,7 @@ IC	void CSpaceRestriction::add_border				(T1 p1, T2 p2)
 IC	bool CSpaceRestriction::applied					() const
 {
 	return							(m_applied);
-}n
+}
 
 IC	bool CSpaceRestriction::inside					(const Fvector &position)
 {
