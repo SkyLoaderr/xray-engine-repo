@@ -26,7 +26,7 @@ public:
 	void					Render		(CFrustum& base);
 	void					Debug		();
 
-	BOOL					Visible		(Fbox& B);
+	BOOL					visibleBox		(Fbox& B);
 	
 	CHOM();
 	~CHOM();

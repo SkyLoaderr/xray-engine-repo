@@ -252,7 +252,7 @@ IC	BOOL	_visible	(Fbox& B)
 	return Raster.test	(x1,y1,x2,y2,z);
 }
 
-BOOL CHOM::Visible		(Fbox& B)
+BOOL CHOM::visibleBox	(Fbox& B)
 {
 	if (0==m_pModel)	return TRUE;
 	Device.Statistic.TEST.Begin	();
