@@ -85,55 +85,55 @@ source_shader			= effects\moon
 source_ignore_color		= true
 blend_time				= 1.f
 
+[flares_default]
+flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
+flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
+flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
+flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
+flares                   = off
+gradient                 = on
+gradient_opacity         = 0.75
+gradient_radius          = 1.000
+gradient_texture         = fx\fx_gradient.tga
+source                   = on
+source_radius            = 0.150
+source_texture           = fx\fx_sun.tga
+
+[flares_gradient]
+flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
+flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
+flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
+flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
+flares                   = off
+gradient                 = on
+gradient_opacity         = 0.85
+gradient_radius          = 1.000
+gradient_texture         = fx\fx_gradient.tga
+source                   = off
+source_radius            = 0.150
+source_texture           = fx\fx_sun.tga
+
+[flares_moon]
+flares                  = off
+gradient                = off
+source                  = on
+source_radius           = 0.05
+source_texture          = fx\fx_moon.tga
+source_shader			= effects\moon
+source_ignore_color		= true
+blend_time				= 1.f
+
+
+
+
+
+
 [weathers]
-;groza           = sect_groza
+;groza          = sect_groza
 default			= sect_default
 ;normal			= sect_normal
+;all            = sect_all
 
-
-[sect_groza]
-00:00:00		=	default_01
-12:00:00		=	default_02
-
-[default_01]
-flares			=	
-sky_texture		=	sky\sky_5_cube
-sky_rotation	=	0
-sky_color		=	1.0,    1.0,  	1.0
-far_plane		=	300
-fog_color		=	0.271,	0.251,	0.22
-fog_density		=	0.9
-rain_density	=	1.0
-rain_color		=	1.0,	1.0,	1.0
-thunderbolt		= 	on
-bolt_period		=	3.f
-bolt_duration	=	0.25f
-wind_velocity	=	20.0 
-wind_direction	=	0.0
-ambient			=	0.0,    0.0,  	0.0
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	0.757, 0.855, 1.000
-sun_color		=	0.000, 0.000, 0.000
-sun_dir			=	-25.0, 292.0
-
-[default_02]
-flares			=		
-sky_texture		=	sky\sky_3_cube
-sky_rotation	=	0
-sky_color		=	0.8,    0.8,  	0.8
-far_plane		=	300
-fog_color		=	0.282, 0.286, 0.341
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-thunderbolt		= 	off	
-wind_velocity	=	20.0 
-wind_direction	=	0.0
-ambient			=	0.04,   0.04,  	0.04
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	1.136,  1.283,  1.5
-sun_color		=	0.000, 0.000, 0.000
-sun_dir			=	-25.0, 292.0
 
 
 
@@ -224,64 +224,9 @@ sun_dir			=	-3.0, 292
 
 
 
-[flares_default]
-flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flares                   = off
-gradient                 = on
-gradient_opacity         = 0.75
-gradient_radius          = 1.000
-gradient_texture         = fx\fx_gradient.tga
-source                   = on
-source_radius            = 0.150
-source_texture           = fx\fx_sun.tga
-
-[flares_gradient]
-flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flares                   = off
-gradient                 = on
-gradient_opacity         = 0.85
-gradient_radius          = 1.000
-gradient_texture         = fx\fx_gradient.tga
-source                   = off
-source_radius            = 0.150
-source_texture           = fx\fx_sun.tga
-
-[flares_moon]
-flare_opacity            = 1.000, 1.000,      
-flare_position           = 1.000, 1.000,      
-flare_radius             = 0.05, 0.05,        
-flare_textures           = fx\fx_moon.tga, fx\fx_moon.tga, 
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.65
-gradient_radius          = 1.000
-gradient_texture         = fx\fx_gradient.tga
-source                   = on
-source_radius            = 0.05
-source_texture           = fx\fx_moon.tga
-
-[flares_test]
-flare_opacity            = 0.060, 0.040, 0.100, 0.080, 0.040, 0.040
-flare_position           = 1.300, 1.000, 0.500, -0.300, -0.600, -1.000
-flare_radius             = 0.080, 0.120, 0.040, 0.080, 0.120, 0.300
-flare_textures           = fx\fx_flare1.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare2.tga, fx\fx_flare3.tga, fx\fx_flare1.tga
-flares                   = on
-gradient                 = on
-gradient_opacity         = 0.700
-gradient_radius          = 2.000
-gradient_texture         = fx\fx_gradient.tga
-source                   = on
-source_radius            = 0.250
-source_texture           = fx\fx_sun.tga
 
 [environment]
-;;4				=	e_04
+
 5				=	e_05
 6				=	e_06
 7				=	e_07
@@ -299,28 +244,32 @@ source_texture           = fx\fx_sun.tga
 19				=	e_19
 20  			=	e_20
 21	    		=	e_21
-;;22	    		=	e_22
-;;23	    		=	e_23
 
 
 
-[e_04]
-flares			=	flares_default
-sky_texture		=	sky\sky_5_cube
-sky_rotation	=	0
-sky_color		=	1.0,    1.0,  	1.0
-far_plane		=	100
-fog_color		=	0.271,	0.251,	0.22
-fog_density		=	0.9
-rain_density	=	0.0
-rain_color		=	1.0,	1.0,	1.0
-wind_velocity	=	20.0 
-wind_direction	=	0.0
-ambient			=	0.0,    0.0,  	0.0
-lmap_color		=	1.0,    1.0,  	1.0
-hemi_color		=	0.757, 0.855, 1.000
-sun_color		=	0.0,    0.0,  	0.0 1.000, 0.384, 0.196      1.000, 0.782, 0.470
-sun_dir			=	-31.0, 116.0
+[sect_all]
+
+
+05:00:00			=	e_05
+06:00:00			=	e_06
+07:00:00			=	e_07
+08:00:00			=	e_08
+09:00:00			=	e_09
+10:00:00			=	e_10
+11:00:00			=	e_11
+12:00:00			=	e_12
+13:00:00			=	e_13
+14:00:00			=	e_14
+15:00:00			=	e_15
+17:00:00			=	e_17
+18:00:00			=	e_18
+19:00:00			=	e_19
+20:00:00  			=	e_20
+21:00:00	   		=	e_21
+
+
+
+
 
 [e_05]
 flares			=	flares_gradient	
@@ -332,6 +281,9 @@ fog_color		=	0.282, 0.286, 0.341
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	0.0
 ambient			=	0.04,   0.04,  	0.04
@@ -350,6 +302,9 @@ fog_color		=	0.345,  0.333,  0.427
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	5.0 
 wind_direction	=	0.0
 ambient			=	0.05,   0.05,  	0.05
@@ -368,6 +323,9 @@ fog_color		=   0.322, 0.298, 0.345
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
@@ -386,6 +344,9 @@ fog_color		=	0.345,  0.357,  0.388
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	5.0 
 wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
@@ -405,6 +366,9 @@ fog_color		=	0.427, 0.439, 0.475
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	0.0
 ambient			=	0.06,   0.06,  	0.06
@@ -424,6 +388,9 @@ fog_color		=	0.333, 0.380, 0.451
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	10.0 
 wind_direction	=	45.0
 ambient			=	0.06,   0.06,  	0.06
@@ -442,6 +409,9 @@ fog_color		=	0.271,	0.278,	0.290
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	-30.0
 ambient			=	0.06,   0.06,  	0.06
@@ -460,6 +430,9 @@ fog_color		=	0.408, 0.400, 0.408
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	-90.0
 ambient			=	0.06,   0.06,  	0.06
@@ -479,6 +452,9 @@ fog_color		=	0.271, 0.251, 0.224
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	-90.0
 ambient			=	0.06,   0.06,  	0.06
@@ -499,6 +475,9 @@ fog_color		=	0.427, 0.412, 0.431
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	180.0
 ambient			=	0.06,   0.06,  	0.06
@@ -517,6 +496,9 @@ fog_color		=	0.333, 0.341, 0.431
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	180.0
 ambient			=	0.06,   0.06,  	0.06
@@ -535,6 +517,9 @@ fog_color		=	0.135,	0.125,	0.11
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
 ambient			=	0.02,   0.02,  	0.02
@@ -553,6 +538,9 @@ fog_color		=	0.135,	0.139,	0.145
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	0.0 
 wind_direction	=	0.0
 ambient			=	0.02,   0.02,  	0.02
@@ -571,6 +559,9 @@ fog_color		=	0.047, 0.051, 0.082
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	90.0
 ambient			=	0.02,   0.02,  	0.02
@@ -589,6 +580,9 @@ fog_color		=	0.043, 0.043, 0.055
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	90.0
 ambient			=	0.05,    0.05, 	0.05
@@ -608,6 +602,9 @@ fog_color		=	0.098, 0.102, 0.169
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	90.0
 ambient			=	0.02,   0.02,  	0.02
@@ -626,6 +623,9 @@ fog_color		=	0.133, 0.125, 0.110
 fog_density		=	0.9
 rain_density	=	0.0
 rain_color		=	1.0,	1.0,	1.0
+thunderbolt		= 	off
+bolt_period		=	3.f
+bolt_duration	=	0.25f
 wind_velocity	=	20.0 
 wind_direction	=	-90.0
 ambient			=	0.06,   0.06,  	0.06
