@@ -22,6 +22,10 @@
 #undef min
 #undef max
 #define ENGINE_API 
+#pragma intrinsic		(abs, fabs, fmod, sin, cos, tan, asin, acos, atan, sqrt, exp, log, log10, strcpy, strcat)
+#define inline			__forceinline
+#define _inline			__forceinline
+#define __inline		__forceinline
 #define IC __forceinline
 #define	NO_XR_COLOR
 #define NO_XR_LIGHT
