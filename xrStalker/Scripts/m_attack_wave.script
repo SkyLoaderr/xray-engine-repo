@@ -25,43 +25,43 @@ function main ()
                get_level_object ("m_boar_e0000"),
                get_level_object ("m_boar_e0001"),
                get_level_object ("m_boar_e0002"),
-               get_level_object ("m_boar_e0003"),
                get_level_object ("m_dog_e0000"),
                get_level_object ("m_dog_e0001"),
                get_level_object ("m_dog_e0002"),
                get_level_object ("m_dog_e0003"),
                get_level_object ("m_dog_e0004"),
-               get_level_object ("m_dog_e0005"),
                get_level_object ("m_pseudodog_e0000"),
                get_level_object ("m_pseudodog_e0001"),
-               get_level_object ("m_pseudodog_e0002"),
                get_level_object ("m_pseudodog_e0003"),
                get_level_object ("m_flesh_e0000"),
                get_level_object ("m_flesh_e0001"),
                get_level_object ("m_flesh_e0002"),
+               get_level_object ("m_boar_e0003"),
                get_level_object ("m_flesh_e0003"),
                get_level_object ("m_flesh_e0004"),
+               get_level_object ("m_dog_e0005"),
+               get_level_object ("m_pseudodog_e0002")
                }
     local tways = {
                   patrol ("way0000"),            --m_boar_e0000
                   patrol ("way0001"),            --m_boar_e0001
                   patrol ("way0002"),            --m_boar_e0002
-                  patrol ("way0003"),            --m_boar_e0003
                   patrol ("way0004"),            --m_dog_e0000
                   patrol ("way0005"),            --m_dog_e0001
                   patrol ("way0006"),            --m_dog_e0002
                   patrol ("way0007"),            --m_dog_e0003
                   patrol ("way0008"),            --m_dog_e0004
-                  patrol ("way0009"),            --m_dog_e0005
                   patrol ("way0001"),            --m_pseudodog_e0000
                   patrol ("way0005"),            --m_pseudodog_e0001
-                  patrol ("way0003"),            --m_pseudodog_e0002
                   patrol ("way0002"),            --m_pseudodog_e0003
                   patrol ("way0010"),            --m_flesh_e0000
                   patrol ("way0011"),            --m_flesh_e0001
                   patrol ("way0003"),            --m_flesh_e0002
+                  patrol ("way0003"),            --m_boar_e0003
                   patrol ("way0009"),            --m_flesh_e0003
                   patrol ("way0012"),            --m_flesh_e0004
+                  patrol ("way0009"),            --m_dog_e0005
+                  patrol ("way0003")             --m_pseudodog_e0002
                   }
 
     for a = 1, table.getn (t), 1 do
@@ -74,15 +74,27 @@ function main ()
     wait (20000)
 
 
-    for a = 1, table.getn (t), 1 do
+    for a = 1, 13, 1 do
         reset_action (t[a], m_attack_wave.script_name ())
         action (t[a], move (move.act_run, move.force_type, tways[a]), cond (cond.move_end))
         end
 
-    wait (120000)
+    wait (8000)
 
-    for a = 1, table.getn (t), 1 do
-        t[a]:script (false, m_attack_wave.script_name ())
-        end
+	local time = game.time ()
+	local called = false
+
+	while true do 
+  		  if called == false and game.time () - time > 8000 then
+		     called = true
+		     for b = 14, 19, 1 do
+                 reset_action (t[b], m_attack_wave.script_name ())
+                 action (t[b], move (move.act_run, move.force_type, tways[b]), cond (cond.move_end))
+   		     end
+		  end	
+     	  wait () 
+	end
+
+--    t[a]:script (false, m_attack_wave.script_name ())
 
 end
