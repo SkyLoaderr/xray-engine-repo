@@ -87,6 +87,17 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UIBagWnd);
 	xml_init.InitStatic(uiXml, "bag_static", 0, &UIBagWnd);
 
+	UIBagWnd.AttachChild(&UIMoneyWnd);
+	xml_init.InitStatic(uiXml, "money_static", 0, &UIMoneyWnd);
+	
+	// get money
+	CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(Level().CurrentEntity());
+	char sMoney[50];
+	int  iMoney(pOurInvOwner->m_dwMoney);
+	itoa(iMoney, sMoney, 10);
+	strcat(sMoney,"$");	
+	UIMoneyWnd.SetText(sMoney);
+
 	////////////////////////////////////////
 	//окно с описанием активной вещи
 	

@@ -77,6 +77,7 @@ protected:
 	friend class CUITradeWnd;
 
 	CUIStatic			UIBagWnd;
+	CUIStatic			UIMoneyWnd;
 	CUIStatic			UIDescrWnd;
 	CUIFrameWindow		UIPersonalWnd;
 

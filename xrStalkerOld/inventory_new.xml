@@ -6,6 +6,13 @@
 		<texture>ui\ui_dg_inventory</texture>
         <text x="30" y="8" font="graffiti22" r="238" g="153" b="26"></text>
     </bag_static>
+    
+    <!-- MONEY INDICATOR ... it will be attached to BAG window. 
+			So it's cordinates is relative to left up corner of BAG window-->
+    <money_static x="220" y="0" width="117" height="40">
+		<texture>ui\ui_button_05</texture>
+		<text x="20" y="8" font="graffiti22" r="238" g="153" b="26"></text>
+    </money_static>
 
     <!-- ARTIFACT MERGER WINDOW -->
     <frame_window x="440" y="260" width="267" height="500">
