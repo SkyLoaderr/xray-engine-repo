@@ -341,17 +341,19 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 #endif
 	
 	// Search equal in shaders array
-	for (DWORD it=0; it<shaders.size(); it++)
+	for (DWORD it=0; it<shaders.size(); it++) 
+	{
 		if (S.equal(*(shaders[it])))	{
 			shaders[it]->dwReference	++;
 			return shaders[it];
 		}
-		
-		// Create new entry
-		Shader*		N		= new Shader(S);
-		N->dwReference		= 1;
-		shaders.push_back	(N);
-		return N;
+	}
+	
+	// Create new entry
+	Shader*		N		= new Shader(S);
+	N->dwReference		= 1;
+	shaders.push_back	(N);
+	return N;
 }
 
 void CShaderManager::Delete(Shader* &S) 
