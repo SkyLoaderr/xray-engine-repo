@@ -1438,6 +1438,13 @@ void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 }
 #endif
 
+// temporary object for WT
+xrSE_TempObject::xrSE_TempObject(LPCSTR caSection) : xrServerEntity(caSection) {}
+void xrSE_TempObject::STATE_Read	(NET_Packet& P, u16 size) {};
+void xrSE_TempObject::STATE_Write	(NET_Packet& P) {};
+void xrSE_TempObject::UPDATE_Read	(NET_Packet& P)	{};
+void xrSE_TempObject::UPDATE_Write	(NET_Packet& P)	{};
+
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 {
@@ -1493,7 +1500,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 	case CLSID_TARGET_CS_CASK:		return xr_new<xrSE_Target_CSCask>	(caSection);
 	case CLSID_IITEM_BOLT:			return xr_new<CALifeDynamicObject>	(caSection);
 	case CLSID_GRENADE_F1:			return xr_new<CALifeItem>			(caSection);
-	case CLSID_OBJECT_G_RPG7:		return xr_new<CALifeItem>			(caSection);
+	case CLSID_OBJECT_G_RPG7:		return xr_new<xrSE_TempObject>		(caSection);
 	case CLSID_GRENADE_RGD5:		return xr_new<CALifeItem>			(caSection);
 	case CLSID_DEVICE_TORCH:		return xr_new<CALifeItem>			(caSection);
 	case CLSID_OBJECT_W_VAL:		return xr_new<xrSE_Weapon>			(caSection);

@@ -492,6 +492,10 @@ public:
 									xrGraphPoint(LPCSTR caSection);
 xrSE_DECLARE_END
 
+xrSE_DECLARE_BEGIN(xrSE_TempObject,xrServerEntity)
+public:
+									xrSE_TempObject(LPCSTR caSection);
+xrSE_DECLARE_END
 // 
 #undef xrSE_EDITOR_METHODS
 #undef xrSE_DECLARE_BEGIN
