@@ -89,7 +89,7 @@ void					CRender::create					()
 	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE	:TRUE	;
 	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE	:TRUE	;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
-	o.nvstencil			= (strstr(Core.Params,"-nonvstencil"))?	FALSE	:TRUE	;
+	o.nvstencil			= (strstr(Core.Params,"-nvstencil"))?	TRUE	:FALSE	;
 
 	// constants
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
