@@ -47,7 +47,7 @@ using namespace InventoryUtilities;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CUIBuyWeaponWnd::CUIBuyWeaponWnd()
+CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 {
 	m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
 	Hide();
@@ -57,7 +57,9 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd()
 	m_pCurrentDragDropItem = NULL;
 	m_pItemToUpgrade = NULL;
 
-	Init("deathmatch");
+	m_iUsedItems	= 0;
+
+	Init(strSectionName);
 
 	SetFont(HUD().pFontMedium);
 }

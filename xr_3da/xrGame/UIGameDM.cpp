@@ -28,7 +28,7 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 
 	pPlayerList->SetWndRect((ScreenW-FrameW)/2, (ScreenH - FrameH)/2, FrameW, FrameH);
 	//-----------------------------------------------------------
-	pBuyMenu	= xr_new<CUIBuyWeaponWnd>	();
+	pBuyMenu	= xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch");
 }
 //--------------------------------------------------------------------
 

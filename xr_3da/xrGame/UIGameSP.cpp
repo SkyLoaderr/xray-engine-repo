@@ -6,10 +6,13 @@
 CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent) 
 {
 	m_pUserMenu = NULL;
+
+	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch");
 }
 
 CUIGameSP::~CUIGameSP(void) 
 {
+	xr_delete(pUIBuyWeaponWnd);
 }
 
 
@@ -34,7 +37,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		break;
 	case DIK_B:
 ///		StartStopMenu(&UIStatsWnd);
-		StartStopMenu(&UIBuyWeaponWnd);
+		StartStopMenu(pUIBuyWeaponWnd);
 		return true;
 		break;
 	case DIK_ESCAPE:

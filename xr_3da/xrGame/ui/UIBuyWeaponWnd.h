@@ -32,7 +32,7 @@ class CUIBuyWeaponWnd: public CUIDialogWnd
 private:
 	typedef CUIDialogWnd inherited;
 public:
-	CUIBuyWeaponWnd();
+	CUIBuyWeaponWnd(char *strSectionName);
 	virtual ~CUIBuyWeaponWnd();
 
 	virtual void Init(char *strSectionName);
