@@ -56,22 +56,25 @@ function action_position:__init (name, storage) super (nil, name)
 	self.move_mgr = move_mgr.move_mgr (self.st.npc)
 	self.on_position = false
 	self.set = false
+	self.was_reset  = false
 end    
 ----------------------
 function action_position:initialize ()
     action_base.initialize (self)
-    
-	self.object:set_node_evaluator ()
-	self.object:set_path_evaluator ()
-	self.object:set_desired_position ()
-	self.object:set_desired_direction ()
-	self.move_mgr:initialize ()
-	self:reset_scheme ()
+    self:reset_scheme()    
 	self.set = false
+end
+----------------------
+function action_position:activate_scheme ()
+    self.was_reset = false
 end
 ----------------------
 function action_position:execute ()
     action_base.execute (self)
+
+        if not self.was_reset then
+                self:reset_scheme()
+        end
 	
 	if self.on_position == false then 
        self.move_mgr:update ()
@@ -104,6 +107,7 @@ function action_position:finalize ()
 end            
 ----------------------
 function action_position:reset_scheme ()
+    self.was_reset = true
 	self.object:clear_animations()
 	
 	if self.st.path_walk_info == nil then
@@ -128,12 +132,13 @@ function action_position:reset_scheme ()
 		end
 	end
 	
-//	if self.st.path_walk_info == nil then
-//		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_rest)
-//	end
-//	if self.st.path_look_info == nil then
-//		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_rest)
-//	end
+	self.move_mgr:initialize ()
+--	if self.st.path_walk_info == nil then
+--		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_rest)
+--	end
+--	if self.st.path_look_info == nil then
+--		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_rest)
+--	end
 	--self.move_mgr:reset (self.st.path_rest, self.st.path_walk_info, self.st.path_rest, self.st.path_look_info, nil, nil, {obj = self, func = self.callback})
 	self.move_mgr:reset (self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, nil, nil, { obj = self, func = self.callback }, true )
 end	
@@ -158,6 +163,11 @@ end
 class "action_rest" (action_base) 
 ----------------------
 function action_rest:__init (name, storage) super (nil, name)
+    self.st = storage
+    self.was_reset = false
+end
+----------------------
+function action_rest:reset_scheme ()
     self.eat_enable = false
     self.drink_enable = false
     self.eat_object = nil
@@ -165,12 +175,8 @@ function action_rest:__init (name, storage) super (nil, name)
     self.state = 0
     self.time_to_eat = 0
     self.stage = 0
-    self.st = storage
     self.st.signals = {}
-end
-----------------------
-function action_rest:initialize ()
-    action_base.initialize (self)
+    self.was_reset = true
     
     self.rest_end_signalled = false
     
@@ -193,10 +199,22 @@ function action_rest:initialize ()
     self.stage = 0
     
 end
+---------
+function action_rest:activate_scheme ()
+    self.was_reset = false
+end
+---------
+function action_rest:initialize ()
+    action_base.initialize (self)
+    self:reset_scheme ()    
+    
+end
 ----------------------
 function action_rest:execute ()
     action_base.execute (self)
-
+        if not self.was_reset then
+                self:reset_scheme()
+        end
     local hand_object = self.object:active_item ()
     
     if self.eat_enable == true then
@@ -275,15 +293,30 @@ class "action_no_food" (action_base)
 function action_no_food:__init (name, storage) super (nil, name)
     self.st = storage
     self.rest_end_signalled = false
+    self.was_reset = false
 end
 ----------------------
 function action_no_food:initialize ()
     action_base.initialize (self)
+    self:reset_scheme ()
+end
+----------------------
+function action_no_food:reset_scheme ()
+    self.was_reset = true
     self.rest_end_signalled = false
+end
+----------------------
+function action_no_food:activate_scheme ()
+    self.was_reset = false
 end
 ----------------------
 function action_no_food:execute ()
     action_base.execute (self)
+    
+    if not self.was_reset then
+       self:reset_scheme()
+    end
+    
     if self.rest_end_signalled == false then
        self.st.signals["rest_end"] = true
        self.rest_end_signalled = true
@@ -307,16 +340,29 @@ class "action_stand" (action_base)
 ----------------------
 function action_stand:__init (name, storage) super (nil, name)
     self.st = storage
-    self.set = false
+    self.was_reset = false
 end
 ----------------------
 function action_stand:initialize ()
     action_base.initialize (self)
     self.set = false
+    self:reset_scheme ()
+end
+----------------------
+function action_stand:reset_scheme ()
+    self.set = false
+    self.was_reset = true
+end
+----------------------
+function action_stand:activate_scheme ()
+    self.was_reset = false
 end
 ----------------------
 function action_stand:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme()
+    end
     
 	if self.object:active_item () ~= nil then
        self.object:set_item (object.deactivate, self.object:active_item ())
@@ -345,14 +391,27 @@ class "action_stand2" (action_base)
 ----------------------
 function action_stand2:__init (name, storage) super (nil, name)
     self.st = storage
+    self.was_reset = false
 end
 ----------------------
 function action_stand2:initialize ()
     action_base.initialize (self)
+    self.reset_scheme ()
+end
+----------------------
+function action_stand2:reset_scheme ()
+    self.was_reset = true
+end
+----------------------
+function action_stand2:activate_scheme ()
+    self.was_reset = false
 end
 ----------------------
 function action_stand2:execute ()
     action_base.execute (self)
+    if not self.was_reset then
+       self:reset_scheme()
+    end
 	self.st.on_position = false
 end
 ----------------------
@@ -402,6 +461,7 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["rest"],            false))
    	manager:add_action          (operators["action_rest"], action)
+	xr_logic.subscribe_action_for_events (npc, st, action)
 
     action = this.action_no_food ("action_no_food", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
@@ -411,6 +471,7 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["rest"],            false))
    	manager:add_action          (operators["action_no_food"], action)
+	xr_logic.subscribe_action_for_events (npc, st, action)
 
     action = this.action_stand ("action_stand", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
@@ -419,6 +480,7 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["on_position"],     false))
    	manager:add_action          (operators["action_stand"], action)
+	xr_logic.subscribe_action_for_events (npc, st, action)
 
     action = this.action_stand2 ("action_stand2", st)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
@@ -427,6 +489,7 @@ function add_to_binder (npc, ini, scheme, section, st)
    	action:add_precondition     (world_property (properties["on_position"],     true))
    	action:add_effect           (world_property (properties["on_position"],     false))
    	manager:add_action          (operators["action_stand2"], action)
+	xr_logic.subscribe_action_for_events (npc, st, action)
    	     	   
     manager:action (xr_actions_id.alife):add_precondition (world_property (properties["rest"],  false))
     manager:action (stalker_ids.action_combat_planner):add_precondition (world_property (properties["on_position"],  false))
