@@ -198,7 +198,7 @@ void CSkeletonX::_Load(const char* N, IReader *data, u32& dwVertCount)
 		}
 		//Msg	("         BPV: %d, %d verts, %d/%d bone-influences",bpv,dwVertCount,bids.size(),bids2.size());
 		if (bids.size()<hw_bones) {
-			RenderMode						= RM_SKINNING_1B;
+			RenderMode						= RM_SKINNING_2B;
 			Render->shader_option_skinning	(2);
 		}
 		break;
@@ -262,10 +262,10 @@ static	D3DVERTEXELEMENT9 dwDecl_2W	[] =
 	{ 0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		0 },	// pos0
 	{ 0, 12, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,		1 },	// pos0
 	{ 0, 24, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		0 },	// norm0
-	{ 0, 32, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// norm0
-	{ 0, 44, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
-	{ 0, 52, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
-	{ 0, 56, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },	// weight
+	{ 0, 36, D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,		1 },	// norm0
+	{ 0, 48, D3DDECLTYPE_FLOAT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,		0 },	// tc
+	{ 0, 56, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDINDICES,	0 },	// indices
+	{ 0, 60, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT,	D3DDECLUSAGE_BLENDWEIGHT,	0 },	// weight
 	D3DDECL_END()
 };
 struct	vertHW_2W
@@ -334,7 +334,8 @@ void CSkeletonX::_Load_hw	(Fvisual& V)
 		Msg					("skinning: hw, 2-weight");
 		{
 			u32		vStride		= D3DXGetDeclVertexSize		(dwDecl_2W,0);
-			VERIFY	(vStride==sizeof(vertHW_2W));
+			u32		vStruct		= sizeof(vertHW_2W);
+			VERIFY	(vStride==vStruct);
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(V.vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&V.pVertices,0));
 			R_CHK				(V.pVertices->Lock(0,0,(void**)&bytes,0));
