@@ -247,6 +247,7 @@ void CProjectFile::ReloadFile()
 	{
 		GetLuaView()->GetEditor()->Load(&fin);
 		GetLuaView()->GetEditor()->SetCurrentPos(pos);
+		SetBreakPointsIn(GetLuaView()->GetEditor());
 	}
 }
 
