@@ -8,9 +8,6 @@ function main()
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
 
-	wait(15000)
-	GiveInfoViaPda(actor, actor, "actor_start01")
-
 	while true do
 	wait()
 	end
