@@ -1012,7 +1012,7 @@ void CPHShell::Update(){
 	
 					dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/50.f;
 					dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/50.f;
-					if(mag_v<0.002 && mag_w<M_PI/180.f/10.f)
+					if(mag_v<0.01 && mag_w<M_PI/180.f)
 						dBodyDisable(m_body);
 
 					mean_w[0]=0.f;

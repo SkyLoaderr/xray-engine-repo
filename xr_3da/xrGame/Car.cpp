@@ -20,6 +20,7 @@ CCar::~CCar(void)
 {
 	_DELETE				(camera);
 	pSounds->Delete		(snd_engine);
+	m_jeep.Destroy();
 
 }
 
