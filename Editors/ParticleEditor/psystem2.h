@@ -1,5 +1,5 @@
-#ifndef PSystemH
-#define PSystemH
+#ifndef PSystem2H
+#define PSystem2H
 #pragma once
 
 #ifdef PARTICLEDLL_EXPORTS
@@ -804,4 +804,4 @@ namespace PAPI
 		float max_radius = P_MAXFLOAT, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);
 }
 
-#endif //PSystemH
+#endif //PSystem2H
