@@ -34,6 +34,8 @@ void CBaseAction::init			(_object_type *object, LPCSTR action_name)
 {
 	m_storage			= 0;
 	m_object			= object;
+	m_weight			= _edge_value_type(1);
+
 #ifdef LOG_ACTION
 	m_use_log			= false;
 	m_action_name		= action_name;
@@ -183,6 +185,18 @@ IC	const typename CBaseAction::_value_type	&CBaseAction::property	(const _condit
 {
 	VERIFY					(m_storage);
 	return					(m_storage->property(condition_id))
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CBaseAction::set_weight	(const _edge_value_type &weight)
+{
+	m_weight				= weight;
+}
+
+TEMPLATE_SPECIALIZATION
+typename CBaseAction::_edge_value_type CBaseAction::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
+{
+	return					(m_weight);
 }
 
 #undef TEMPLATE_SPECIALIZATION

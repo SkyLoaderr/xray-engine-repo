@@ -30,6 +30,7 @@
 #include "script_binder_object_wrapper.h"
 
 #include "stalker_decision_space.h"
+#include "property_evaluator_const.h"
 
 using namespace luabind;
 
@@ -68,6 +69,9 @@ void CScriptEngine::export_action_management()
 			.def("reinit",						&CPropertyEvaluatorWrapper::reinit_static)
 			.def("evaluate",					&CPropertyEvaluatorWrapper::evaluate_static),
 
+		class_<CPropertyEvaluatorConst<CLuaGameObject>, CScriptPropertyEvaluator>("property_evaluator_const")
+		.def(									constructor<CPropertyEvaluatorConst<CLuaGameObject>::_value_type>()),
+
 		class_<CScriptAction,CScriptActionWrapper>("action_base")
 			.def_readonly("object",				&CScriptAction::m_object)
 			.def_readonly("storage",			&CScriptAction::m_storage)
@@ -82,7 +86,8 @@ void CScriptEngine::export_action_management()
 			.def("initialize",					&CScriptActionWrapper::initialize_static)
 			.def("execute",						&CScriptActionWrapper::execute_static)
 			.def("finalize",					&CScriptActionWrapper::finalize_static)
-			.def("weight",						&CScriptActionWrapper::weight_static),
+			.def("weight",						&CScriptActionWrapper::weight_static)
+			.def("set_weight",					&CScriptAction::set_weight),
 
 		class_<CScriptActionPlanner,CScriptActionPlannerWrapper>("action_planner")
 			.def_readonly("object",				&CScriptActionPlanner::m_object)

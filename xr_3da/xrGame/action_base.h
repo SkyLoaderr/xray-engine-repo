@@ -40,6 +40,7 @@ protected:
 	ALife::_TIME_ID				m_start_game_time;
 	u32							m_inertia_time;
 	bool						m_log;
+	_edge_value_type			m_weight;
 
 #ifdef LOG_ACTION
 public:
@@ -61,6 +62,7 @@ public:
 	virtual void				initialize			();
 	virtual void				execute				();
 	virtual void				finalize			();
+	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 	IC		void				set_inertia_time	(u32 inertia_time);
 	IC		u32					start_level_time	() const;
 	IC		ALife::_TIME_ID		start_game_time		() const;
@@ -68,6 +70,7 @@ public:
 	IC		bool				completed			() const;
 	IC		void				set_property		(const _condition_type &condition_id, const _value_type &value);
 	IC		const _value_type	&property			(const _condition_type &condition_id) const;
+	IC		void 				set_weight			(const _edge_value_type &weight);
 };
 
 #include "action_base_inline.h"
