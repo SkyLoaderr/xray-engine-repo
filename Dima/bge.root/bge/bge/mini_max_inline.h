@@ -46,8 +46,6 @@ IC	typename _minimax::result_type _minimax::search	(int depth)
 
 	result_type					result = -evaluator_type::infinity, current;
 
-	if (m_counter == 27161)
-		__asm int 3;
 	board_type::move_iterator	I = board().moves().begin();
 	board_type::move_iterator	E = board().moves().end();
 	for ( ; I != E; ++I) {

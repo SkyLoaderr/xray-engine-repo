@@ -23,9 +23,9 @@ struct CPrimitiveEvaluator {
 
 	IC	s8		evaluate			(const board_type &board)
 	{
-//		if (board.color_to_move() == board_type::BLACK)
+		if (board.color_to_move() == board_type::BLACK)
 			return	(board.difference());
-//		return		(-board.difference());
+		return		(-board.difference());
 	}
 };
 
@@ -43,12 +43,12 @@ void __cdecl main(char argc, char *argv[])
 	
 	u64						start, finish;
 
-//	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass	(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep(1);
 	
 	start					= CPU::cycles();
-	search.search			(10);
+	search.search			(9);
 	finish					= CPU::cycles();
 
 	SetThreadPriority	(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
