@@ -389,6 +389,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_4:
 		case kWPN_5:
 		case kWPN_6:
+		case kTORCH:
 			{
 				SendActionEvent(cmd, flags);
 			}break;
