@@ -9,7 +9,6 @@
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
-#include "PropertiesShader.h"
 #include "PropertiesList.h"
 #include "Blender.h"
 
@@ -225,6 +224,5 @@ void CShaderTools::ApplyChanges()
 void CShaderTools::ShowProperties()
 {
 	m_Props->ShowProperties();
-	TfrmShaderProperties::ShowProperties();
 }
 

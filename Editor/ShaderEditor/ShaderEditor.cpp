@@ -61,7 +61,6 @@ USEUNIT("engine\xrImage_Resampler.cpp");
 USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEFORM("PropertiesShader.cpp", frmShaderProperties);
 USEFORM("LogForm.cpp", frmLog);
 USEUNIT("Editor\Library.cpp");
 USEFORM("Editor\ChoseForm.cpp", frmChoseItem);

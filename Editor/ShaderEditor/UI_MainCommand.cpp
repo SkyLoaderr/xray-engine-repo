@@ -9,7 +9,6 @@
 #include "EditorPref.h"
 #include "main.h"
 #include "UI_Tools.h"
-#include "PropertiesShader.h"
 #include "Library.h"
 #include "D3DUtils.h"
 

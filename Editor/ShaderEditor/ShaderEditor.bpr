@@ -25,8 +25,7 @@
       Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
       Intermediate\c_dinput.obj Intermediate\pure.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj Intermediate\LeftBar.obj 
-      Intermediate\PropertiesShader.obj Intermediate\LogForm.obj 
+      Intermediate\_math.obj Intermediate\LeftBar.obj Intermediate\LogForm.obj 
       Intermediate\Library.obj Intermediate\ChoseForm.obj 
       Intermediate\xr_avi.obj Intermediate\SH_Constant.obj 
       Intermediate\SH_Matrix.obj Intermediate\SH_Texture.obj 
@@ -63,8 +62,8 @@
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
-      PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
-      Editor\ShaderFunction.dfm Editor\TopBar.dfm Editor\PropertiesList.dfm"/>
+      LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
+      Editor\TopBar.dfm Editor\PropertiesList.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
       Lib\ETools.lib Lib\memmgr.lib Lib\xrCDB.lib"/>
