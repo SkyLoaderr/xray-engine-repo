@@ -125,7 +125,7 @@ function if_see_actor(npc, fsm)
 	return false
 end
 
-function dont_see_actor(npc)
+function dont_see_actor(npc, fsm)
 	if npc:see(actor) == false then
 		log("i lost a trace of this fucking actor")
 		fsm:stop()
