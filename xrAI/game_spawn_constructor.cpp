@@ -91,7 +91,7 @@ void CGameSpawnConstructor::load_spawns	(LPCSTR name)
 		level.m_offset					= (*I).m_offset;
 		level.m_name					= (*I).m_name;
 		level.m_id						= (*I).m_id;
-		Msg								("%9s %2d %s","level",level.id(),(*I).m_name);
+		Msg								("%9s %2d %s","level",level.id(),*(*I).m_name);
 		m_level_spawns.push_back		(xr_new<CLevelSpawnConstructor>(level,this));
 	}
 
