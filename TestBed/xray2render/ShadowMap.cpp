@@ -676,12 +676,10 @@ HRESULT CMyD3DApplication::RenderFAT	()
 
 	//
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
-
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS		);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0xffffffff			);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xffffffff			);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0xffffffff			);
-
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x1					);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xff				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0xff				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_REPLACE);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
@@ -755,7 +753,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_GREATER		);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x00				);
-	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xffffffff			);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xff				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0x00				);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	);
 	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
