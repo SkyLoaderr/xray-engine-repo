@@ -173,43 +173,7 @@ void CSkeletonX_PM::Render	(float LOD)
 }
 void CSkeletonX_ST::Render	(float LOD) 
 {
-	_Render		(hGeom,vCount,0,dwPrimitives);
-}
-void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
-{
-	u32 vOffset				= cache_vOffset;
-
-	_VertexStream&	_VS		= RCache.Vertex;
-	if (cache_DiscardID!=_VS.DiscardID() || vCount>=cache_vCount )
-	{
-		vertRender*	Dest	= (vertRender*)_VS.Lock(vCount,hGeom->vb_stride,vOffset);
-		cache_DiscardID		= _VS.DiscardID();
-		cache_vCount		= vCount;
-		cache_vOffset		= vOffset;
-
-		Device.Statistic.RenderDUMP_SKIN.Begin	();
-		if (*Vertices1W)
-		{
-			PSGP.skin1W(
-				Dest,										// dest
-				*Vertices1W,								// source
-				vCount,										// count
-				Parent->bone_instances						// bones
-				);
-		} else {
-			PSGP.skin2W(
-				Dest,										// dest
-				*Vertices2W,								// source
-				vCount,										// count
-				Parent->bone_instances						// bones
-				);
-		}
-		Device.Statistic.RenderDUMP_SKIN.End	();
-		_VS.Unlock			(vCount,hGeom->vb_stride);
-	}
-
-	RCache.set_Geometry		(hGeom);
-	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,iOffset,pCount);
+	_Render		(geom,vCount,0,dwPrimitives);
 }
 
 //////////////////////////////////////////////////////////////////////

@@ -1031,12 +1031,6 @@
 							RelativePath=".\tntQAVI.h">
 						</File>
 						<File
-							RelativePath=".\xr_avi.cpp">
-						</File>
-						<File
-							RelativePath=".\xr_avi.h">
-						</File>
-						<File
 							RelativePath="xrImage_Resampler.cpp">
 						</File>
 						<File
