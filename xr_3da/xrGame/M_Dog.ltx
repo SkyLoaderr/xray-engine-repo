@@ -153,7 +153,7 @@ satiety_critical 	= -1.0		;0.25			;критическое значения сытости (в процентах от 
 radiation_health_v 	= 0.01	;0.006			;уменьшение здоровья при воздействии радиации
 morale_v		= 0.01					;скорость восстановления морали
 health_hit_part 	= 1.0		;0.8			;процент хита, уходящий на отнимание здоровья
-power_hit_part 		= 0.5;1.0		;0.9			;процент хита, уходящий на отнимание силы
+power_hit_part 		= 1.0		;0.9			;процент хита, уходящий на отнимание силы
 
 burn_immunity = 1.0				;коэффициенты иммунитета 
 strike_immunity = 1.0
@@ -163,7 +163,7 @@ radiation_immunity = 0.01	;0.5
 telepatic_immunity = 1.0
 chemical_burn_immunity = 1.0
 explosion_immunity = 1.0
-fire_wound_immunity  = 1.0
+fire_wound_immunity  = 0.9
 
 ;открытые раны
 bleeding_v					= 0						;потеря крови при номинальной ране в секунду
@@ -233,7 +233,7 @@ damage					= m_dog_damage
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 1.00,	-1,	1.00
+default				= 1.00,	-1,	0.01
 
 bip01_pelvis 		= 1.0, -1, 0.1
 bip01_spine 		= 1.0, -1, 0.1
