@@ -77,12 +77,6 @@ void CAI_Rat::Die()
 	m_dwDeathTime = Level().timeServer();
 }
 
-void CAI_Rat::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-	vfLoadAnimations();
-}
-
 void CAI_Rat::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -209,7 +203,9 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tHPB.z						= 0;
 
 	INIT_SQUAD_AND_LEADER;
-	
+
+	vfLoadAnimations				();
+
 	return							(TRUE);
 }
 

@@ -349,6 +349,38 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	}
 // @@@: WT
 
+	// take index spine bone
+	CKinematics* V		= PKinematics(pVisual);
+	R_ASSERT			(V);
+	int spine_bone		= V->LL_BoneID("bip01_spine1");
+	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	int head_bone		= V->LL_BoneID("bip01_head");
+	V->LL_GetInstance(spine_bone).set_callback		(SpinCallback,this);
+	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
+	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
+
+	m_normal.Create		(V,"norm");
+	m_crouch.Create		(V,"cr");
+	m_climb.Create		(V,"cr");
+	//
+	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
+
+	// load damage params
+	if (pSettings->LineExists(cNameSect(),"damage"))
+	{
+		CInifile::Sect& dam_sect	= pSettings->ReadSection(pSettings->ReadSTRING(cNameSect(),"damage"));
+		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
+		{
+			if (0==strcmp(it->first,"default")){
+				hit_factor	= (float)atof(it->second);
+			}else{
+				int bone	= V->LL_BoneID(it->first); 
+				R_ASSERT2(bone!=BONE_NONE,it->first);
+				V->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
+			}
+		}
+	}
+
 	return					TRUE;
 }
 
@@ -1226,43 +1258,6 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	HUD().pHUDFont->Out	(400,340,"Vel:           %3.2f",ph_Movement.GetVelocity());
 	HUD().pHUDFont->Out	(400,350,"Vel Magnitude: %3.2f",ph_Movement.GetVelocityMagnitude());
 */
-}
-
-void CActor::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-
-	// take index spine bone
-	CKinematics* V		= PKinematics(pVisual);
-	R_ASSERT			(V);
-	int spine_bone		= V->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
-	int head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetInstance(spine_bone).set_callback		(SpinCallback,this);
-	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
-	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
-
-	m_normal.Create		(V,"norm");
-	m_crouch.Create		(V,"cr");
-	m_climb.Create		(V,"cr");
-	//
-	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
-
-	// load damage params
-	if (pSettings->LineExists(cNameSect(),"damage"))
-	{
-		CInifile::Sect& dam_sect	= pSettings->ReadSection(pSettings->ReadSTRING(cNameSect(),"damage"));
-		for (CInifile::SectIt it=dam_sect.begin(); it!=dam_sect.end(); it++)
-		{
-			if (0==strcmp(it->first,"default")){
-				hit_factor	= (float)atof(it->second);
-			}else{
-				int bone	= V->LL_BoneID(it->first); 
-				R_ASSERT2(bone!=BONE_NONE,it->first);
-				V->LL_GetInstance(bone).set_param(0,(float)atof(it->second));
-			}
-		}
-	}
 }
 
 float CActor::HitScale	(int element)

@@ -8,9 +8,7 @@ class ENGINE_API CMotionDef;
 class CEntity;
 class CWeapon;
 
-class CWeaponHUD : 
-	public pureDeviceCreate, 
-	public pureDeviceDestroy
+class CWeaponHUD
 {
 	Fmatrix				m_Offset;
 	Fmatrix				m_CamAssist;
@@ -37,10 +35,6 @@ public:
 	CMotionDef*			animGet			(LPCSTR name);
 	
 	void				UpdatePosition	(const Fmatrix& transform);
-
-	// device
-	virtual void		OnDeviceCreate	();
-	virtual void		OnDeviceDestroy	();
 };
  
 #endif // __XR_WEAPON_HUD_H__

@@ -86,9 +86,6 @@ public:
 
 	virtual	void	Update			(u32	dT		);
 	virtual	void	OnVisible		();
-	
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
 };
 
 #endif //__XR_WEAPON_M134_H__

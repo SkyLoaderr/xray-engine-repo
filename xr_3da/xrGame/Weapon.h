@@ -203,8 +203,6 @@ public:
 	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
 	IC int					GetSlot				()				{	return iSlotBinding;						}
 
-	virtual void			OnDeviceCreate		();
-	virtual void			OnDeviceDestroy		();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	//virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){
 	//																														m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P);

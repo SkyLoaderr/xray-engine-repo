@@ -75,12 +75,6 @@ void CAI_Zombie::Die()
 //	Msg("%s : Death signal %d",cName(),Level().timeServer());
 }
 
-void CAI_Zombie::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-	vfLoadAnimations();
-}
-
 void CAI_Zombie::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -167,6 +161,8 @@ BOOL CAI_Zombie::net_Spawn	(LPVOID DC)
 	m_tHPB.y = r_torso_current.pitch;
 	m_tHPB.z = 0;
 	
+	vfLoadAnimations	();
+
 	return TRUE;
 }
 

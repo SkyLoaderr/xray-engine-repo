@@ -161,19 +161,33 @@ void	CCar::Load					( LPCSTR section )
 BOOL	CCar::net_Spawn				(LPVOID DC)
 {
 	BOOL R = inherited::net_Spawn	(DC);
+
+
 	setVisible						(TRUE);
 	m_jeep.SetPosition				(vPosition);
-	dMatrix3 Rot;
-	Fmatrix ry,mr;
-	ry.rotateY		(deg2rad(90.f));
-	ry.invert();
+	dMatrix3						Rot;
+	Fmatrix							ry,mr;
+	ry.rotateY						(deg2rad(90.f));
+	ry.invert						();
 	Fmatrix33 m33;
-	mr.mul(ry,mRotate);
-	m33.set(mr);
+	mr.mul							(ry,mRotate);
+	m33.set							(mr);
 	
-	PHDynamicData::FMX33toDMX(m33,Rot);
-	m_jeep.SetRotation(Rot);
+	PHDynamicData::FMX33toDMX		(m33,Rot);
+	m_jeep.SetRotation				(Rot);
 	Sound->PlayAtPos				(snd_engine,this,vPosition,true);
+
+	//
+	CKinematics*	M				= PKinematics(pVisual);
+	R_ASSERT						(M);
+	M->PlayCycle					("init");
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
+	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
+	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
+
 	return R;
 }
 
@@ -360,22 +374,6 @@ void CCar::PhDataUpdate(dReal step){
 }
 void CCar:: PhTune(dReal step){
 	m_jeep.JointTune(step);
-}
-
-void CCar::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-
-	//
-	CKinematics*	M				= PKinematics(pVisual);
-	R_ASSERT						(M);
-	M->PlayCycle					("init");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	// M->LL_GetInstance				(M->LL_BoneID("steer")).set_callback	(cb_WheelBR,this);
-	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
 
 void CCar::Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse){

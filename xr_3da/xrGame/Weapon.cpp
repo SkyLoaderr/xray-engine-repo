@@ -348,6 +348,33 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	setVisible						(true);
 	setEnabled						(true);
 
+	ShaderCreate				(hUIIcon,"hud\\default","");
+
+	if (0==pstrWallmark)		hWallmark	= 0; 
+	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+
+	if (0==m_pPhysicsShell)
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
+
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
+
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(500.f);//400 - плотность т.е. - масса 1 м^3!
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
+
 	return bResult;
 }
 
@@ -356,6 +383,9 @@ void CWeapon::net_Destroy	()
 	inherited::net_Destroy	();
 
 	if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate	();
+
+	ShaderDestroy			(hUIIcon);
+	Device.Shader.Delete	(hWallmark);
 }
 
 void CWeapon::net_Export	(NET_Packet& P)
@@ -566,46 +596,6 @@ void CWeapon::OnVisible		()
 	}
 	if (m_pHUD && hud_mode)	
 		PKinematics(m_pHUD->Visual())->Update	();
-}
-
-void CWeapon::OnDeviceCreate	()
-{
-	inherited::OnDeviceCreate();
-
-	ShaderCreate				(hUIIcon,"hud\\default","");
-
-	if (0==pstrWallmark)		hWallmark	= 0; 
-	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
-
-	if (0==m_pPhysicsShell)
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
-
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(500.f);//400 - плотность т.е. - масса 1 м^3!
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-	}
-}
-
-void CWeapon::OnDeviceDestroy	()
-{
-	inherited::OnDeviceDestroy	();
-	
-	ShaderDestroy				(hUIIcon);
-	Device.Shader.Delete		(hWallmark);
 }
 
 void CWeapon::signal_HideComplete()

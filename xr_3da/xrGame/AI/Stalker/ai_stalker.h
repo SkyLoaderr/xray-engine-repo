@@ -259,7 +259,6 @@ public:
 	virtual objQualifier*	GetQualifier					();
 	virtual BOOL			net_Spawn						(LPVOID DC);
 	virtual void			Death							();
-	virtual void			OnDeviceCreate					();
 	virtual void			Load							(LPCSTR	section );				
 	virtual void			HitSignal						(float P,	Fvector& vLocalDir, CObject* who, s16 element);
 	virtual void			g_WeaponBones					(int& L,	int& R	);

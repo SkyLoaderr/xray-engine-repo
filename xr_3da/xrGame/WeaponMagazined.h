@@ -90,9 +90,6 @@ public:
 	virtual	void	OnVisible		();
 
 	virtual void	net_Destroy		();
-
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
 };
 
 #endif //__XR_WEAPON_MAG_H__

@@ -359,7 +359,6 @@ class CAI_Dog : public CCustomMonster
 		virtual void  Exec_Action(float dt);
 		virtual objQualifier* GetQualifier();
 		virtual	void  feel_sound_new(CObject* who, int type, Fvector& Position, float power);
-		virtual void  OnDeviceCreate();
 };
 		
 #endif

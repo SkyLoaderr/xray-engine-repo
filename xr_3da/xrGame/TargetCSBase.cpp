@@ -20,27 +20,24 @@ BOOL CTargetCSBase::net_Spawn		(LPVOID DC)
 		setVisible					(true);
 		setEnabled					(true);
 		Game().targets.push_back	(this);
+
+		CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
+		cfModel						= shape;
+		Fsphere S;	S.P.set			(0,0,0); S.R = radius;
+		shape->add_sphere			(S);
+
+		shape->ComputeBounds						();
+		pCreator->ObjectSpace.Object_Register		(this);
+		cfModel->OnMove								();
 	}
 
 	return res;
 }
 
-void CTargetCSBase::net_Destroy()
+void CTargetCSBase::net_Destroy	()
 {
-	inherited::net_Destroy();
+	inherited::net_Destroy		();
 	Game().targets.erase(find(Game().targets.begin(), Game().targets.end(), this));
-}
-
-void CTargetCSBase::OnDeviceCreate()
-{
-	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-	cfModel						= shape;
-	Fsphere S;	S.P.set			(0,0,0); S.R = radius;
-	shape->add_sphere			(S);
-
-	shape->ComputeBounds						();
-	pCreator->ObjectSpace.Object_Register		(this);
-	cfModel->OnMove								();
 }
 
 void CTargetCSBase::feel_touch_new			(CObject* O) {

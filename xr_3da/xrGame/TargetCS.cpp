@@ -18,12 +18,41 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 	setVisible					(true);
 	setEnabled					(true);
 	Game().targets.push_back	(this);
+
+	CKinematics* V = PKinematics(Visual());
+	if(V) V->PlayCycle("idle");
+
+	if (0==m_pPhysicsShell)
+	{
+		// Physics (Box)
+		Fobb								obb;
+		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
+		obb.m_rotate.identity				();
+
+		// Physics (Elements)
+		CPhysicsElement* E					= P_create_Element	();
+		R_ASSERT							(E);
+		E->add_Box							(obb);
+
+		// Physics (Shell)
+		m_pPhysicsShell						= P_create_Shell	();
+		R_ASSERT							(m_pPhysicsShell);
+		m_pPhysicsShell->add_Element		(E);
+		m_pPhysicsShell->setMass			(10.f);
+		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
+		m_pPhysicsShell->mDesired.identity	();
+		m_pPhysicsShell->fDesiredStrength	= 0.f;
+	}
+
 	return TRUE;
 }
 void CTargetCS::net_Destroy			()
 {
 	inherited::net_Destroy();
 	Game().targets.erase(find(Game().targets.begin(), Game().targets.end(), this));
+
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	xr_delete			(m_pPhysicsShell);
 }
 
 void CTargetCS::OnH_A_Chield() {
@@ -55,40 +84,6 @@ void CTargetCS::OnH_B_Independent() {
 		svTransform.set(l_p1);
 		vPosition.set(svTransform.c);
 	}
-}
-
-void CTargetCS::OnDeviceCreate() {
-	inherited::OnDeviceCreate();
-	CKinematics* V = PKinematics(Visual());
-	if(V) V->PlayCycle("idle");
-
-	if (0==m_pPhysicsShell)
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		E->add_Box							(obb);
-
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(10.f);
-		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-	}
-}
-
-void CTargetCS::OnDeviceDestroy() {
-	inherited::OnDeviceDestroy	();
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	xr_delete					(m_pPhysicsShell);
 }
 
 void CTargetCS::UpdateCL		()

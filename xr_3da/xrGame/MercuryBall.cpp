@@ -9,8 +9,12 @@ BOOL CMercuryBall::net_Spawn(LPVOID DC) {
 	inherited::net_Spawn(DC);
 	setVisible					(true);
 	setEnabled					(true);
-	xrSE_MercuryBall* E = (xrSE_MercuryBall*)DC;
-	cNameVisual_set(E->s_Model);
+	xrSE_MercuryBall* E			= (xrSE_MercuryBall*)DC;
+	cNameVisual_set				(E->s_Model);
+
+	CKinematics* V				= PKinematics(Visual());
+	if(V) V->PlayCycle			("idle");
+
 	return TRUE;
 }
 
@@ -28,14 +32,4 @@ void CMercuryBall::OnH_B_Independent() {
 	R_ASSERT		(E);
 	svTransform.set(E->clXFORM());
 	vPosition.set(svTransform.c);
-}
-
-void CMercuryBall::OnDeviceCreate() {
-	inherited::OnDeviceCreate();
-	CKinematics* V = PKinematics(Visual());
-	if(V) V->PlayCycle("idle");
-}
-
-void CMercuryBall::OnDeviceDestroy() {
-	inherited::OnDeviceDestroy	();
 }

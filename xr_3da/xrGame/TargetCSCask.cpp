@@ -55,14 +55,16 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 	}
 }
 
-void CTargetCSCask::OnDeviceCreate() {
-	inherited::OnDeviceCreate();
-	CKinematics* V = PKinematics(Visual());
-	if(V) V->PlayCycle("open");
-}
-
 void CTargetCSCask::OnVisible() {
 	inherited::OnVisible();
 	list<CTargetCS*>::iterator l_it = m_targets.begin();
 	while(l_it != m_targets.end()) { (*l_it)->OnVisible(); l_it++; }
+}
+
+void CTargetCSCask::Load	(LPCSTR section)
+{
+	Load(section);
+
+	CKinematics* V	= PKinematics	(Visual());
+	if(V)			V->PlayCycle	("open");
 }

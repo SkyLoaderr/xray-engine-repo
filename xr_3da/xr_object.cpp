@@ -34,6 +34,11 @@ void CObject::cNameSect_set		(LPCSTR N)
 }
 void CObject::cNameVisual_set	(LPCSTR N)
 { 
+	// check if equal
+	if (N && NameVisual)
+		if (0==stricmp(N,NameVisual))	return;
+
+	// replace model
 	xr_free					(NameVisual);
 	::Render->model_Delete	(pVisual);
 	if (N) 

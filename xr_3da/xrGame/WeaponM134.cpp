@@ -123,6 +123,8 @@ void CWeaponM134::Load	(LPCSTR section)
 	mhud_idle		= m_pHUD->animGet("idle");	
 	mhud_fire		= m_pHUD->animGet("fire");	
 	mhud_spinup		= m_pHUD->animGet("spinup");	
+
+	FlameLOAD		();
 }
 
 void CWeaponM134::FlameLOAD()
@@ -139,19 +141,6 @@ void CWeaponM134::FlameUNLOAD()
 	for (u32 i=0; i<hFlames.size(); i++)
 		Device.Shader.Delete(hFlames[i]);
 	hFlames.clear();
-}
-
-void CWeaponM134::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	inherited::OnDeviceCreate	();
-	FlameLOAD	();
-}
-
-void CWeaponM134::OnDeviceDestroy()
-{
-	inherited::OnDeviceDestroy	();
-	FlameUNLOAD	();
 }
 
 void CWeaponM134::FireStart()

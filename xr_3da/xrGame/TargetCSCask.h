@@ -7,9 +7,9 @@ class CTargetCSCask : public CCustomTarget {
 public:
 	CTargetCSCask(void);
 	virtual ~CTargetCSCask(void);
-	virtual void OnEvent(NET_Packet& P, u16 type);
-	virtual void OnDeviceCreate();
-	virtual void OnVisible();
+	virtual void OnEvent		(NET_Packet& P, u16 type);
+	virtual void Load			(LPCSTR section);
+	virtual void OnVisible		();
 
 	list<CTargetCS*> m_targets;
 };

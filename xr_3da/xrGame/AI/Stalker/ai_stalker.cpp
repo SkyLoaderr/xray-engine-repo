@@ -49,18 +49,6 @@ void CAI_Stalker::Die				()
 //	CreateSkeleton					();
 }
 
-void CAI_Stalker::OnDeviceCreate	()
-{ 
-	inherited::OnDeviceCreate		();
-
-	CTimer		T; T.Start		();
-	CStalkerAnimations::Load		(PKinematics(pVisual));
-	Msg		("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
-	T.Start		();
-	vfAssignBones					(pSettings,cNameSect());
-	// Msg		("--spawn--dc-anim-bones: %f ms",1000.f*T.GetAsync());
-}
-
 void CAI_Stalker::Load				(LPCSTR section)
 { 
 	setEnabled						(false);
@@ -138,6 +126,10 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	m_tStateStack.push				(m_eCurrentState = eStalkerStateLookingOver);
 	vfAddStateToList				(m_eCurrentState);
+
+	CStalkerAnimations::Load		(PKinematics(pVisual));
+	vfAssignBones					(pSettings,cNameSect());
+
 	setEnabled						(true);
 	return							(TRUE);
 }

@@ -69,19 +69,8 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	animGet				(mhud_show,		"draw");
 	animGet				(mhud_hide,		"holster");
 	animGet				(mhud_shots,	"shoot");
-}
 
-void CWeaponMagazined::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	inherited::OnDeviceCreate	();
 	MediaLOAD	();
-}
-
-void CWeaponMagazined::OnDeviceDestroy()
-{
-	inherited::OnDeviceDestroy	();
-	MediaUNLOAD	();
 }
 
 void CWeaponMagazined::FireStart		()

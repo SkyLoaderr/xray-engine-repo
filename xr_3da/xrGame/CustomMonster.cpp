@@ -59,32 +59,6 @@ CCustomMonster::~CCustomMonster	()
 	xr_delete		(Weapons);
 }
 
-void CCustomMonster::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate	();
-	R_ASSERT					(pVisual->Type==MT_SKELETON);
-	
-	CTimer		T;
-	T.Start		();
-
-	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
-	// weapons
-	if (pSettings->ReadINT(cNameSect(),"weapon_usage")) {
-		Weapons					= xr_new<CWeaponList>(this);
-		LPCSTR S1 = pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),S2 = pSettings->ReadSTRING(cNameSect(),"bone_head_weapon");
-		Weapons->Init			(S1,S2);
-	}
-	// Msg			("--spawn--dc-cmonster: %f ms",1000.f*T.GetAsync());
-
-	// Motions
-//	CKinematics* skeleton	= PKinematics(pVisual);
-	// take index spine bone
-	//"torso1"
-//	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_torso"));
-//	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
-}
-
 void CCustomMonster::Load		(LPCSTR section)
 {
 	inherited::Load		(section);
@@ -634,13 +608,24 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	Movement.SetVelocity	(0,0,0);
 	xrSE_Enemy* E			= (xrSE_Enemy*)DC;
 
-	//fHealth					= float(m_iHealth);
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity		();
 
 	r_torso_current.yaw		= r_torso_target.yaw	= E->o_Position.y;
 	r_torso_current.pitch	= r_torso_target.pitch	= 0;
+
+	R_ASSERT				(pVisual->Type==MT_SKELETON);
+
+	// Eyes
+	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(cNameSect(),"bone_head"));
+
+	// weapons
+	if (pSettings->ReadINT(cNameSect(),"weapon_usage")) {
+		Weapons					= xr_new<CWeaponList>(this);
+		LPCSTR S1 = pSettings->ReadSTRING(cNameSect(),"bone_torso_weapon"),S2 = pSettings->ReadSTRING(cNameSect(),"bone_head_weapon");
+		Weapons->Init			(S1,S2);
+	}
 
 	if (Local())	
 	{

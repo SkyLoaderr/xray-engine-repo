@@ -72,12 +72,6 @@ void CAI_Dog::Die()
 	m_dwDeathTime = Level().timeServer();
 }
 
-void CAI_Dog::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-	vfLoadAnimations();
-}
-
 void CAI_Dog::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
@@ -183,6 +177,8 @@ BOOL CAI_Dog::net_Spawn	(LPVOID DC)
 	m_tHPB.y = r_torso_current.pitch;
 	m_tHPB.z = 0;
 	
+	vfLoadAnimations();
+
 	return TRUE;
 }
 

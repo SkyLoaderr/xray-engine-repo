@@ -115,13 +115,6 @@ void CAI_Soldier::vfLoadSelectors(LPCSTR section)
 	SelectorUnderFireLine.Load(section);
 }
 
-void CAI_Soldier::OnDeviceCreate()
-{ 
-	inherited::OnDeviceCreate();
-	vfAssignBones(pSettings,cNameSect());
-	vfLoadAnimations();
-}
-
 void CAI_Soldier::Load	(LPCSTR section)
 { 
 	// load parameters from ".ini" file

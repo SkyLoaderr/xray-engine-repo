@@ -113,6 +113,15 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 	BOOL R		= inherited::net_Spawn	(DC);
 	setVisible	(TRUE);
 	AI_Node		= 0;
+
+	// animations
+	CKinematics*	M			= PKinematics(pVisual); R_ASSERT(M);
+	m_Anims.m_death.Load		(M,"norm_death");
+	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
+	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
+	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
+	m_Anims.m_idle.Load			(M,"norm_idle");
+
 	return		R;
 }
 
@@ -300,15 +309,3 @@ void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir
 */
 }
 //---------------------------------------------------------------------
-
-void CAI_Crow::OnDeviceCreate()
-{
-	inherited::OnDeviceCreate();
-	// animations
-	CKinematics*	M			= PKinematics(pVisual); R_ASSERT(M);
-	m_Anims.m_death.Load		(M,"norm_death");
-	m_Anims.m_death_dead.Load	(M,"norm_death_dead");
-	m_Anims.m_death_idle.Load	(M,"norm_death_idle");
-	m_Anims.m_fly.Load			(M,"norm_fly_fwd");
-	m_Anims.m_idle.Load			(M,"norm_idle");
-}

@@ -17,16 +17,10 @@ CWeaponHUD::CWeaponHUD()
 	pVisualName					= 0;
 	pVisual						= 0;
 	iFireBone					= -1;
-
-	Device.seqDevDestroy.Add	(this);
-	Device.seqDevCreate.Add		(this);
 }
 
 CWeaponHUD::~CWeaponHUD()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-
 	xr_free						(pVisualName);
 	::Render->model_Delete		(pVisual);
 }
@@ -57,6 +51,7 @@ void CWeaponHUD::Load			(LPCSTR section)
 	vShellPoint					= pSettings->ReadVECTOR					(section,"shell_point");
 
 	// play default animation
+	pVisual						= ::Render->model_Create(pVisualName);
 	// PKinematics				(pVisual)->PlayCycle("idle");
 }
 
@@ -65,14 +60,6 @@ void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 	mTransform.mul	(trans,m_Offset);
 }
 
-void CWeaponHUD::OnDeviceDestroy	()
-{
-	::Render->model_Delete		(pVisual);
-}
-void CWeaponHUD::OnDeviceCreate	()
-{
-	pVisual						= ::Render->model_Create(pVisualName);
-}
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
 {
 	return PKinematics(Visual())->ID_Cycle_Safe(name);

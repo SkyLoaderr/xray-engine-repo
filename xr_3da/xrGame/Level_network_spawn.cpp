@@ -38,7 +38,7 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 
 	// Client spawn
 	T.Start		();
-	CObject*	O		= Objects.LoadOne	(E->s_name);
+	CObject*	O		= Objects.Create	(E->s_name);
 	Msg			("--spawn--LOAD: %f ms",1000.f*T.GetAsync());
 
 	T.Start		();
@@ -51,10 +51,6 @@ void CLevel::g_sv_Spawn		(xrServerEntity* E)
 
 		if ((E->s_flags.is(M_SPAWN_OBJECT_LOCAL)) && (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)))	SetEntity		(O);
 		if (E->s_flags.is(M_SPAWN_OBJECT_ACTIVE))											O->OnActivate	( );
-
-		T.Start					( );
-		O->OnDeviceCreate		( );
-		Msg			("--spawn--DEV: %f ms",1000.f*T.GetAsync());
 
 		if (0xffff != E->ID_Parent)	
 		{
