@@ -346,35 +346,46 @@ _BUMP_from_base:
 		// Load   SYS-MEM-surface, bound to device restrictions
 		D3DXIMAGE_INFO			IMG;
 		IReader* S				= FS.r_open	(fn);
-		IDirect3DTexture9*		T_sysmem;
+		IDirect3DTexture9*		T_base;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
-			HW.pDevice,
-			S->pointer(),S->length(),
-			D3DX_DEFAULT,D3DX_DEFAULT,
-			D3DX_DEFAULT,0,
-			D3DFMT_A8R8G8B8,
-			D3DPOOL_SYSTEMMEM,
-			D3DX_DEFAULT,
-			D3DX_DEFAULT,
-			0,&IMG,0,
-			&T_sysmem
-			));
+			HW.pDevice,	S->pointer(),S->length(),
+			D3DX_DEFAULT,D3DX_DEFAULT,	D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,
+			D3DPOOL_SYSTEMMEM,			D3DX_DEFAULT,D3DX_DEFAULT,
+			0,&IMG,0,&T_base	));
 		FS.r_close				(S);
 
 		// Create HW-surface
-		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &pTexture2D));
-		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
+		IDirect3DTexture9*	T_normal_1	= 0;
+		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &T_normal_1));
+		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
 
 		// Transfer gloss-map
-		TW_Iterate_1OP				(pTexture2D,T_sysmem,it_gloss_rev_base);
-		_RELEASE					(T_sysmem);
+		TW_Iterate_1OP				(pTexture2D,T_base,it_gloss_rev_base);
 
 		// Compress
 		fmt								= D3DFMT_DXT5;
-		IDirect3DTexture9*		T_cmp	= TW_LoadTextureFromTexture(pTexture2D,fmt,psTextureLOD,dwWidth,dwHeight);
-		_RELEASE						(pTexture2D);
-		pTexture2D						= T_cmp;
+		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 
-		return		pTexture2D;
+		/*
+		// Decompress (back)
+		fmt								= D3DFMT_A8R8G8B8;
+		IDirect3DTexture9*	T_normal_1U	= TW_LoadTextureFromTexture(T_normal_1C,fmt,0,dwWidth,dwHeight);
+
+		// Calculate difference
+		IDirect3DTexture9*	T_normal_1D = 0;
+		R_CHK(D3DXCreateTexture(HW.pDevice,dwWidth,dwHeight,T_normal_1U->GetLevelCount(),0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM,&T_normal_1D));
+		TW_Iterate_2OP		(T_normal_1D,T_normal_1,T_normal_1U,it_difference);
+
+		// Reverse channels back + transfer heightmap
+		TW_Iterate_1OP		(T_normal_1D,T_height_gloss,it_height_rev);
+
+		// Compress
+		fmt								= D3DFMT_DXT5;
+		IDirect3DTexture9*	T_normal_2C	= TW_LoadTextureFromTexture(T_normal_1D,fmt,0,dwWidth,dwHeight);
+		*/
+
+		_RELEASE						(T_base);
+		_RELEASE						(T_normal_1);
+		return		T_normal_1C;
 	}
 }
