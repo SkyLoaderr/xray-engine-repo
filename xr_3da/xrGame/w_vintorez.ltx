@@ -1,194 +1,145 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_ak74]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+ 
+[wpn_vintorez]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = "weapons\ak-74"					; option for Level Editor
-$npc					= on				; option for Level Editor
-;$prefetch 				= 16
-scheduled				= off              ; option for ALife Simulator
-cform                   = skeleton
-class                   = W_AK74
-min_radius              = 30
-max_radius              = 100
+$spawn                   = "weapons\vintorez"					; option for Level Editor
+$npc                     = off
+$prefetch 		         = 8
+scheduled                = off                              ; option for ALife Simulator
+cform                    = skeleton
+class                    = W_VINT
+min_radius               = 50
+max_radius               = 150
 
-cost					 = 350	;1800
+cost					 = 2500	;4000
 
-ammo_limit				= 210
-ammo_current			= 180
-ammo_elapsed			= 30
+ammo_limit		         = 180
+ammo_current		     = 90
+ammo_elapsed		     = 20
 
-resource				= 6000
+ammo_mag_size		     = 20
 
-ammo_mag_size		 = 30
-ammo_class		 = ammo_5.45x39_fmj, ammo_5.45x39_ap
-grenade_class		 = ammo_vog-25, ammo_vog-25p
+hand_dependence		     = 2
+ammo_class		         = ammo_9x39_pab9, ammo_9x39_sp5, ammo_9x39_ap
 
-hand_dependence		 = 2
+resource		         = 6000
 
-slot 			 = 2		; // secondary
-inv_name	         = AK74
-inv_name_short		 = AK74
-inv_weight		 = 2.5
+slot 			         = 2		; // secondary
+inv_name		         = Vintorez
+inv_name_short		     = Vintorez
+inv_weight		         = 2
 
 inv_grid_width		= 5
-inv_grid_height		= 2
-inv_grid_x			= 5
-inv_grid_y			= 5
+inv_grid_height		= 1
+inv_grid_x			= 10
+inv_grid_y			= 4
 
+cam_relax_speed          = 5.0
+cam_dispersion           = 0.9
+cam_max_angle		     = 7
 
-;базовая дисперсия
-fire_dispersion_base	 = 0.017 ;угол (в градусах) базовой дисперсии оружия (оружия зажатого в тисках)
+fire_dispersion          = 0.3
+fire_dispersion_add      = 2.3
+fire_dispersion_relax    = 0.6
+fire_dispersion_base	 = 0.5
+disp_vel_factor		     = 0.9
+disp_crouch_factor	     = 0.75
+disp_jump_factor	     = 7
+fire_dispersion_condition_factor = 0.3
+misfire_probability = 0.0
+condition_shot_dec = 0.0003
 
-;отдача
-cam_relax_speed          = 8.0  ;скорость возврата в исходное положение
-cam_dispersion           = 2.1	;увеличения угла (в градусах) с каждым выстрелом
-cam_max_angle			 = 9	;максимальный угол отдачи
+direction                = 0, 0, 1
 
+fire_point               = 0.0, 0.15, 0.6
 
-fire_dispersion_condition_factor = 0.3		;увеличение дисперсии в процентах при максимальном износе 
-misfire_probability = 0.000					;вероятность осечки при максимальном износе 
-condition_shot_dec = 0.0003					;увеличение износа при каждом выстреле
+smoke_particles			= weapons\generic_shoot_00
 
-direction               = 0, 0, 1
-fire_point              =  0.0, 0.22, 0.65
-fire_point2             =  0.0, 0.2, 0.72
-
-flame_particles		    = weapons\generic_weapon05
-smoke_particles		    = weapons\generic_shoot_00
-grenade_flame_particles = weapons\generic_weapon01
-
-shell_point		 = 0.05, 0.22, 0.06
-shell_dir		 = 0.0, 0.0, 0.4
+shell_point		 = 0.05, 0.14, 0.07
+shell_dir		 = 0.0, 1.0, 0.0
 shell_particles	 = weapons\generic_shells
 
-rpm_empty_click 	 = 200
+rpm_empty_click 	     = 200
 
 ; ttc
-hit_power                = 40	;2;50
-hit_impulse		 		 = 66.6
-hit_type = fire_wound 	;wound
+hit_power                = 31.25 		;//WAS "60"!!!
+hit_impulse		         = 52.0
+hit_type = wound
 
-fire_distance            = 500
-bullet_speed			 = 900			;начальная скорость пули
+fire_distance            = 400
+bullet_speed			 = 250			;начальная скорость пули
 rpm                      = 600
 ; end ttc
 
-hud                      = wpn_ak74_hud
+hud                      = wpn_vintorez_hud
 normal                   = 0, 1, 0
-
-;----------------------------------------------------------
-position                 = -0.03, -0.13, 0.1
-orientation              = -5.0, -9, -5
-
-startup_ammo             = 90
-visual                   = weapon\ak74\wpn_ak74.ogf
-
+position                 = -0.03, -0.045, 0.1
+orientation              = -0.0, -6.7, -5
+startup_ammo             = 1000
+visual                   = weapon\vintorez\wpn_vintorez.ogf
 wm_name                  = wallmarks\wallmark_default
 wm_size                  = 0.05
-ui_icon			 = ui\hud_wpn_ak74
-tracer_head_speed	 = 300
-tracer_trail_scale	 = 0.75
-tracer_start_length	 = 1
-tracer_width		 = 0.01
-light_color		 = 0.6,0.5,0.3
-light_range		 = 5
-light_var_color		 = 0.05
-light_var_range		 = 0.5
-light_time 		 = 0.2
+ui_icon			         = ui\ui_hud_wpn_vintorez
+tracer_head_speed	     = 300
+tracer_trail_scale	     = 0.75
+tracer_start_length	     = 1
+tracer_width		     = 0.07
+light_color		         = 0.,0.,0.
+light_range		         = 1.0
+light_var_color		     = 0.05
+light_var_range		     = 0.1
+light_time 		         = 0.2
 
-ph_mass			 = 5
-;cost			 = 2100
+ph_mass			         = 4
+;cost			         = 5000
 
 ;addons
-scope_status				= 2
-silencer_status				= 2
-grenade_launcher_status		= 2
+scope_status				= 1
+silencer_status				= 0
+grenade_launcher_status		= 0
 zoom_enabled				= true
 
-scope_zoom_factor	    = 55	;30
-scope_name = wpn_addon_scope
-scope_x = 60
-scope_y = -2
-silencer_name  = wpn_addon_silencer
-silencer_x = 212
-silencer_y = 10
-grenade_launcher_name = wpn_addon_grenade_launcher
-grenade_launcher_x = 112
-grenade_launcher_y = 17
+scope_texture		= wpn\wpn_crosshair
+
+zoom_enabled			= true
+scope_zoom_factor	    = 15
 
 ;звуки
-snd_draw			= weapons\ak74_draw
+snd_draw			= weapons\generic_draw
 snd_holster			= weapons\generic_holster
-snd_shoot			= weapons\test_shoot ;was ak74_shoot
+snd_shoot			= weapons\silencer4a
 snd_empty			= weapons\gen_empty, 0.5
-snd_reload			= weapons\ak74_reload, 0.7, 0.35
+snd_reload			= weapons\val_reload, 0.7, 0.5
 snd_shoot_grenade	= weapons\gen_grenshoot
-snd_reload_grenade	= weapons\gen_grenload, 1.0, 0.8
-snd_switch			= weapons\groza_switch, 1.0, 0.5
+snd_reload_grenade	= weapons\gen_grenload
 
 
-;настройки для глушителя
-silencer_hit_power       = 45
-silencer_hit_impulse	 = 45
-silencer_fire_distance   = 150
 
-;silencer_flame_particles = weapons\generic_weapon01
-silencer_smoke_particles = weapons\generic_shoot_00
+[wpn_vintorez_hud]
 
-snd_silncer_shot	= weapons\w_ak74_shot1 
+shell_point          = -0.15, -0.02, 0.05
+shell_dir		 = 0.0, 1.0, 0.0
 
-silencer_light_color		 = 0.6,0.5,0.3
-silencer_light_range		 = 0.01
-silencer_light_var_color	 = 0.05
-silencer_light_var_range	 = 0.5
-silencer_light_time 		 = 0.2
 
- 
-[wpn_ak74_hud]
-
-shell_point          = 0.15, 0.0, -0.05
-shell_dir		     = 0.0, 1.0, 0.0
-
-fire_point               = 0.45, 0.00, -0.05
-fire_point2              = 0.30, 0.00, 0.05 ;0.45, -0.07, -0.05	;0.45, 0.0, 0.04
+fire_point               = 0.2, -0.07, 0.1
 fire_bone                = wpn_body
 orientation              = 0, 0, 0
 position                 = 0, 0, 0
-visual                   = weapon\ak74\wpn_ak74_hud.ogf
+visual                   = weapon\vintorez\wpn_vintorez_hud.ogf
 
-grenade_bone            = wpn_grenade
-
-anim_idle				= idle
-anim_idle_aim			= idle_aim
-anim_reload				= reload
-anim_draw				= draw_wo_gl
-anim_holster			= holster_wo_gl
-anim_shoot				= shoot
-			
-;анимации с подключенным подствольником
-;(режим обычной стрельбы)			  
-anim_idle_g				= idle_grenade
-anim_idle_g_aim			= idle_w_gl_aim
-anim_reload_g			= reload_grenade
-anim_shoot_g			= shoot_grenade
-anim_switch_grenade_on	= switch_grenade
-anim_switch_grenade_off	= switch_grenade_off
-anim_draw_g				= draw_grenade_mode
-anim_holster_g			= holster_grenade_mode
-;(режим стрельбы из подствольника)
-anim_idle_gl			= idle_w_gl
-anim_idle_gl_aim		= idle_w_gl_aim
-anim_reload_gl			= reload_w_gl
-anim_draw_gl			= draw_w_gl
-anim_holster_gl			= holster_w_gl
-anim_shoot_gl			= shoot_w_gl
+anim_idle		= idle
+anim_idle_aim	= idle
+anim_reload		= reload
+anim_draw		= draw
+anim_holster	= holster
+anim_shoot		= shoot
 
 ;смещения HUD для режима приближения
-zoom_offset				= -0.108,0.018,0
+zoom_offset				= 0,0,0
 zoom_rotate_x			= 0.0
-zoom_rotate_y			= 0.02
+zoom_rotate_y			= 0.0
 
-;тоже самое, но для подствольника
-grenade_zoom_offset		= -0.108,0.01,0
-grenade_zoom_rotate_x	= 0.0
-grenade_zoom_rotate_y	= 0.02
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
