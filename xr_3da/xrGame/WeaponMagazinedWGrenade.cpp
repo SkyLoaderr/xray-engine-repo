@@ -26,9 +26,12 @@ void CWeaponMagazinedWGrenade::Load	(LPCSTR section)
 {
 	inherited::Load		(section);
 	//// Sounds
-	sndShotG.create(TRUE, pSettings->r_string(section,"snd_shoot_grenade"), m_eSoundShot);
 	sndReloadG.create(TRUE, pSettings->r_string(section,"snd_reload_grenade"), m_eSoundReload);
+	LoadSound(section,"snd_shoot_grenade"	, sndShotG		, TRUE, m_eSoundShot	, &sndShotG_delay	);
+	LoadSound(section,"snd_reload_grenade"	, sndReloadG	, TRUE, m_eSoundReload	, &sndReloadG_delay	);
+	LoadSound(section,"snd_switch"			, sndSwitch		, TRUE, m_eSoundReload	, &sndSwitch_delay	);
 	
+
 	m_sFlameParticles2 = pSettings->r_string(section, "grenade_flame_particles");
 
 	
@@ -84,6 +87,7 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 	// sounds
 	sndShotG.destroy();
 	sndReloadG.destroy();
+	sndSwitch.destroy();
 }
 
 
@@ -108,7 +112,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 	if(m_bGrenadeMode) 
 	{
 		UpdateFP();
-		sndReloadG.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+		sndReloadG.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndReloadG_delay);
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		m_bPending = true;
 	}
@@ -121,7 +125,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 	if(m_bGrenadeMode)
 	{
 		UpdateFP();
-		sndShot.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+		sndShotG.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShotG_delay);
 
 		if(hud_mode) 
 		{
@@ -162,6 +166,9 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
 	iAmmoElapsed = (int)m_magazine.size();
 	
+	UpdateFP();
+	sndSwitch.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndSwitch_delay);
+
 	if(m_bGrenadeMode)
 		m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);
 	else 

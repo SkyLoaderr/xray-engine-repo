@@ -38,25 +38,35 @@ void CMissile::reinit		()
 void CMissile::Load(LPCSTR section) 
 {
 	inherited::Load		(section);
-	LPCSTR hud_sect		= pSettings->r_string(section,"hud");
-	m_pHUD->Load		(hud_sect);
+
 	m_fMinForce			= pSettings->r_float(section,"force_min");
 	m_fMaxForce			= pSettings->r_float(section,"force_max");
 	m_fForceGrowSpeed	= pSettings->r_float(section,"force_grow_speed");
 
 	m_dwDestroyTimeMax	= pSettings->r_u32(section,"destroy_time");
 	
-	Fvector				position_offset, angle_offset;
+	Fvector	position_offset, angle_offset;
 	position_offset		= pSettings->r_fvector3(section,"position_offset");
 	angle_offset		= pSettings->r_fvector3(section,"angle_offset");
 	
 	m_offset.setHPB			(VPUSH(angle_offset));
 	m_offset.translate_over	(position_offset);
 
-	m_vThrowPoint = pSettings->r_fvector3(section,"throw_point");
-	m_vThrowDir = pSettings->r_fvector3(section,"throw_dir");
-	m_vHudThrowPoint = pSettings->r_fvector3(hud_sect,"throw_point");
-	m_vHudThrowDir = pSettings->r_fvector3(hud_sect,"throw_dir");
+	m_vThrowPoint		= pSettings->r_fvector3(section,"throw_point");
+	m_vThrowDir			= pSettings->r_fvector3(section,"throw_dir");
+	m_vHudThrowPoint	= pSettings->r_fvector3(*hud_sect,"throw_point");
+	m_vHudThrowDir		= pSettings->r_fvector3(*hud_sect,"throw_dir");
+
+	//загрузить анимации HUD-а
+	m_sAnimShow			= pSettings->r_string(*hud_sect, "anim_show");
+	m_sAnimHide			= pSettings->r_string(*hud_sect, "anim_hide");
+	m_sAnimIdle			= pSettings->r_string(*hud_sect, "anim_idle");
+	m_sAnimPlaying		= pSettings->r_string(*hud_sect, "anim_playing");
+	m_sAnimThrowBegin	= pSettings->r_string(*hud_sect, "anim_throw_begin");
+	m_sAnimThrowIdle	= pSettings->r_string(*hud_sect, "anim_throw_idle");
+	m_sAnimThrowAct		= pSettings->r_string(*hud_sect, "anim_throw_act");
+	m_sAnimThrowEnd		= pSettings->r_string(*hud_sect, "anim_throw_end");
+
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -306,17 +316,17 @@ u32 CMissile::State(u32 state)
 	case MS_SHOWING:
         {
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet("draw"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimShow), true, this);
 		} break;
 	case MS_IDLE:
 		{
 			m_bPending = false;
-			m_pHUD->animPlay(m_pHUD->animGet("idle_0"));
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimIdle));
 		} break;
 	case MS_HIDING:
 		{
 			m_bPending = true;
-			m_pHUD->animPlay(m_pHUD->animGet("holster_0"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimHide), true, this);
 		} break;
 	case MS_HIDDEN:
 		{
@@ -327,25 +337,25 @@ u32 CMissile::State(u32 state)
 	case MS_THREATEN:
 		{
 			m_fThrowForce = m_fMinForce;
-			m_pHUD->animPlay(m_pHUD->animGet("attack_0_begin"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowBegin), true, this);
 		} break;
 	case MS_READY:
 		{
-			m_pHUD->animPlay(m_pHUD->animGet("attack_0_idle"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowIdle), true, this);
 		} break;
 	case MS_THROW:
 		{
 			m_bPending = true;
 			m_throw = false;
-			m_pHUD->animPlay(m_pHUD->animGet("attack_0_act"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowAct), true, this);
 		} break;
 	case MS_END:
 		{
-			m_pHUD->animPlay(m_pHUD->animGet("attack_0_end"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimThrowEnd), true, this);
 		} break;
 	case MS_PLAYING:
 		{
-			m_pHUD->animPlay(m_pHUD->animGet("idle_01"), true, this);
+			m_pHUD->animPlay(m_pHUD->animGet(*m_sAnimPlaying), true, this);
 		} break;
 	}
 	return State();
@@ -433,7 +443,6 @@ void CMissile::UpdateXForm()
 		mRes.set		(R,N,D,mR.c);
 		mRes.mulA_43	(E->XFORM());
 		UpdatePosition	(mRes);
-
 		UpdateHudPosition	();
 	}
 }

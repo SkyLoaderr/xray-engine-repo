@@ -52,11 +52,12 @@ void CWeaponMagazined::Load	(LPCSTR section)
 	inherited::Load		(section);
 	bFlame				= FALSE;
 	// Sounds
-	sndShow.create(TRUE, pSettings->r_string(section,		"snd_draw"), m_eSoundShow);
-	sndHide.create(TRUE, pSettings->r_string(section,		"snd_holster"), m_eSoundHide);
-	sndShot.create(TRUE, pSettings->r_string(section,		"snd_shoot"), m_eSoundShot);
-	sndEmptyClick.create(TRUE, pSettings->r_string(section, "snd_empty"), m_eSoundEmptyClick);
-	sndReload.create(TRUE, pSettings->r_string(section,		"snd_reload"), m_eSoundReload);
+	LoadSound(section,"snd_draw"	, sndShow		, TRUE, m_eSoundShow		, &sndShow_delay		);
+	LoadSound(section,"snd_holster"	, sndHide		, TRUE, m_eSoundHide		, &sndHide_delay		);
+	LoadSound(section,"snd_shoot"	, sndShot		, TRUE, m_eSoundShot		, &sndShot_delay		);
+	LoadSound(section,"snd_empty"	, sndEmptyClick	, TRUE, m_eSoundEmptyClick	, &sndEmptyClick_delay	);
+	LoadSound(section,"snd_reload"	, sndReload		, TRUE, m_eSoundReload		, &sndReload_delay		);
+	
 		
 	
 	// HUD :: Anims
@@ -433,7 +434,7 @@ void CWeaponMagazined::OnShot		()
 {
 	// Sound
 	UpdateFP();
-	sndShot.play_at_pos			(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndShot.play_at_pos			(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShot_delay);
 
 	// Camera
 	if (hud_mode)	
@@ -461,7 +462,7 @@ void CWeaponMagazined::OnShot		()
 void CWeaponMagazined::OnEmptyClick	()
 {
 	UpdateFP();
-	sndEmptyClick.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndEmptyClick.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndEmptyClick_delay);
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -487,7 +488,7 @@ void CWeaponMagazined::switch2_Empty()
 void CWeaponMagazined::switch2_Reload()
 {
 	UpdateFP();
-	sndReload.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndReload.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndReload_delay);
 	
 	PlayAnimReload();
 	m_bPending = true;
@@ -497,7 +498,7 @@ void CWeaponMagazined::switch2_Hiding()
 	CWeapon::FireEnd();
 	
 	UpdateFP();
-	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndHide.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndHide_delay);
 
 	PlayAnimHide();
 	m_bPending = true;
@@ -511,7 +512,7 @@ void CWeaponMagazined::switch2_Hidden()
 void CWeaponMagazined::switch2_Showing()
 {
 	UpdateFP();
-	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0);
+	sndShow.play_at_pos(H_Root(),vLastFP,hud_mode?sm_2D:0, sndShow_delay);
 
 	m_bPending = true;
 	PlayAnimShow();

@@ -80,4 +80,14 @@ protected:
 	//для HUD
 	Fvector m_vHudThrowPoint;
 	Fvector m_vHudThrowDir;
+
+	//имена анимаций
+	ref_str	m_sAnimShow;
+	ref_str	m_sAnimHide;
+	ref_str	m_sAnimIdle;
+	ref_str	m_sAnimPlaying;
+	ref_str	m_sAnimThrowBegin;
+	ref_str	m_sAnimThrowIdle;
+	ref_str	m_sAnimThrowAct;
+	ref_str	m_sAnimThrowEnd;
 };

@@ -55,6 +55,11 @@ public:
 
 	ref_sound			sndShotG;
 	ref_sound			sndReloadG;
+	ref_sound			sndSwitch;
+	float				sndShotG_delay;
+	float				sndReloadG_delay;
+	float				sndSwitch_delay;
+
 	MotionSVec			mhud_idle_g;
 	MotionSVec			mhud_reload_g;
 	MotionSVec			mhud_shots_g;

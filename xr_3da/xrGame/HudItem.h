@@ -18,7 +18,13 @@ protected: //чтоб нельзя было вызвать на прямую
 	CHudItem(void);
 	virtual ~CHudItem(void);
 public:
-	void		Load				(LPCSTR section);
+	virtual void	Load				(LPCSTR section);
+	virtual void	LoadSound			(LPCSTR section, LPCSTR line, 
+										 ref_sound& snd, BOOL _3D, 
+										 int type = st_SourceType,
+										 float* delay = NULL);
+										
+
 
 	IC void			SetHUDmode			(BOOL H)		{	hud_mode = H;								}
 	IC BOOL			GetHUDmode			()				{	return hud_mode;							}

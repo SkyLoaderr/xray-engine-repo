@@ -23,7 +23,7 @@ void CGrenade::Load(LPCSTR section)
 	inherited::Load(section);
 	CExplosive::Load(section);
 
-	sndCheckout.create(TRUE,pSettings->r_string(section,"snd_checkout"), m_eSoundCheckout);
+	LoadSound(section,"snd_checkout",sndCheckout,TRUE,m_eSoundCheckout,&sndCheckout_delay);
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 
@@ -46,7 +46,7 @@ u32 CGrenade::State(u32 state)
 	if(state == MS_THREATEN) 
 	{
 		UpdateFP();
-		sndCheckout.play_at_pos(H_Root(),Position(),hud_mode?sm_2D:0);
+		sndCheckout.play_at_pos(H_Root(),Position(),hud_mode?sm_2D:0, sndCheckout_delay);
 	}
 	return inherited::State(state);
 }

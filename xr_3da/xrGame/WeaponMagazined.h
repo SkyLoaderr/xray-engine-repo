@@ -6,8 +6,6 @@
 
 class ENGINE_API CMotionDef;
 
-#define SND_RIC_COUNT 5
-
 class CWeaponMagazined: public CWeapon
 {
 private:
@@ -19,6 +17,13 @@ protected:
 	ref_sound		sndShot;
 	ref_sound		sndEmptyClick;
 	ref_sound		sndReload;
+	//паузы перед проигрыванием звуков
+	float			sndShow_delay;
+	float			sndHide_delay;
+	float			sndShot_delay;
+	float			sndEmptyClick_delay;
+	float			sndReload_delay;
+
 
 	ESoundTypes		m_eSoundShow;
 	ESoundTypes		m_eSoundHide;

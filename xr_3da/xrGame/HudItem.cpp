@@ -20,6 +20,7 @@ CHudItem::~CHudItem(void)
 	xr_delete			(m_pHUD);
 }
 
+
 void CHudItem::Load(LPCSTR section)
 {
 	inherited::Load		(section);
@@ -39,6 +40,30 @@ void CHudItem::Load(LPCSTR section)
 		//если hud не задан, но задан слот, то ошибка
 		R_ASSERT2(m_slot == NO_ACTIVE_SLOT, "active slot is set, but hud for food item is not available");
 	}
+}
+
+void  CHudItem::LoadSound(LPCSTR section, LPCSTR line, 
+						  ref_sound& snd, BOOL _3D, 
+						  int type,
+						  float* delay)
+{
+	LPCSTR str = pSettings->r_string(section, line);
+	string256 buf_str;
+
+	int	count = _GetItemCount	(str);
+	R_ASSERT(count);
+	
+	_GetItem(str, 0, buf_str);
+	snd.create(_3D, buf_str, type);
+
+	if(count>1 && delay != NULL)
+	{
+		_GetItem (str, 1, buf_str);
+		*delay = atof(buf_str);
+	}
+	else
+		*delay = 0;
+
 }
 
 

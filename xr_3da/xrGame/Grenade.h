@@ -50,8 +50,9 @@ public:
 					 ALife::EHitType hit_type = eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 
 protected:
-	ref_sound sndCheckout;
-	ESoundTypes	m_eSoundCheckout;
+	ref_sound		sndCheckout;
+	float			sndCheckout_delay;
+	ESoundTypes		m_eSoundCheckout;
 
 public:
 	virtual void			make_Interpolation	();
