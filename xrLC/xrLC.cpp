@@ -75,7 +75,15 @@ void Startup(LPSTR     lpCmdLine)
 	string256				phaseName;
 	Phase					(strconcat(phaseName,"Reading project [",name,"]..."));
 
+	string256 inf;
+	extern  HWND logWindow;
 	IReader*	F			= FS.r_open(prjName);
+	if (NULL==F){
+		sprintf				("Build failed!\nCan't find level: '%s'",name);
+		clMsg				(inf);
+		MessageBox			(logWindow,inf,"Error!",MB_OK|MB_ICONERROR);
+		return;
+	}
 
 	// Version
 	u32 version;
@@ -113,14 +121,12 @@ void Startup(LPSTR     lpCmdLine)
 	xr_delete				(pBuild);
 
 	// Show statistic
-	char	stats[256];
 	extern	std::string make_time(u32 sec);
-	extern  HWND logWindow;
 
 	u32	dwEndTime		= timeGetTime();
-	sprintf					(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
-	clMsg					("Build succesful!\n%s",stats);
-	MessageBox				(logWindow,stats,"Congratulation!",MB_OK|MB_ICONINFORMATION);
+	sprintf					(inf,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
+	clMsg					("Build succesful!\n%s",inf);
+	MessageBox				(logWindow,inf,"Congratulation!",MB_OK|MB_ICONINFORMATION);
 
 	// Close log
 	bClose					= TRUE;
