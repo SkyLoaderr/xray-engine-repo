@@ -718,7 +718,7 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	// stage 0 
 	pitch				= w*4;
 	//tga_save			("x:\\0-height-gloss.tga",w,h,T_height_gloss,true);
-	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*100.f);
+	ConvertToNormalMap	(pSrc,KERNEL_5x5,fmt->bump_virtual_height*200.f);
 	u8* T_normal_1		= pSrc->GetImageDataPointer();
 	//tga_save			("x:\\1-normal_1.tga",w,h,T_normal_1,true);
 	TW_Iterate_1OP		(w,h,pitch,T_normal_1,T_height_gloss,it_gloss_rev);		// T_height_gloss.a (gloss) -> T_normal_1 + reverse of channels
