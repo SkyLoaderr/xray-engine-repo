@@ -307,6 +307,7 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 	ebSave->Enabled 	= false;
     ChangeReference		(0);
     Lib.Save			(&modif_map);
+    modif_map.clear 	();
     RefreshSelected		();
 }
 //---------------------------------------------------------------------------
