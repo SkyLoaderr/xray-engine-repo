@@ -76,7 +76,7 @@ void FTreeVisual::Load		(const char* N, CStream *data, u32 dwFlags)
 float	psTree_w_rot		= 10.0f;
 float	psTree_w_speed		= 1.00f;
 float	psTree_w_amp		= 0.01f;
-Fvector psTree_Wave			= {.1, .01, .11};
+Fvector psTree_Wave			= {.1f, .01f, .11f};
 
 void FTreeVisual::Render	(float LOD)
 {
