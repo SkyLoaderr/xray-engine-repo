@@ -154,7 +154,7 @@ float CPersonalHealthFunction::ffGetValue()
 	m_tpLastMonster = Level().m_tpAI_DDD->m_tpCurrentMember;
 	return(m_fLastValue = Level().m_tpAI_DDD->m_tpCurrentMember->g_Health());
 };
-	
+
 float CPersonalMoraleFunction::ffGetValue()
 {
 	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
@@ -311,7 +311,7 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 	}
 	return(float(dwBestWeapon));
 }
-	
+
 float CPersonalWeaponTypeFunction::ffGetValue()
 {
 	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentMember))
@@ -413,7 +413,8 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 	}
 	return(m_fLastValue -= 1.f);
 };
-	
+
+// enemy inversion functions	
 float CEnemyHealthFunction::ffGetValue()
 {
 	if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == Level().m_tpAI_DDD->m_tpCurrentEnemy))

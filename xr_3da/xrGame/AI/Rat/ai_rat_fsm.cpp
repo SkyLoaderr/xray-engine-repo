@@ -144,9 +144,16 @@ void CAI_Rat::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	CHECK_IF_GO_TO_NEW_STATE(Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE) && (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE),aiRatAttackFire);
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn)
+	if (Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
+		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE)) {
+			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
+		}
+		else {
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
+	else
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn);
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -154,12 +161,7 @@ void CAI_Rat::AttackRun()
 	m_fASpeed				= .3f;
 	m_tSpawnPosition.set	(Enemy.Enemy->Position());
 	m_tVarGoal.set			(0,0,0);
-	if (m_fSpeed > EPS_L) {
-		m_fGoalChangeDelta		= .5f;
-		m_fSpeed				= m_fCurSpeed = m_fMaxSpeed;
-	}
-	else
-		m_fGoalChangeDelta		= 3.f;
+	m_fGoalChangeDelta		= 3.f;
 
 	vfSaveEnemy();
 
@@ -178,28 +180,11 @@ void CAI_Rat::AttackRun()
 
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
 	
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-//		m_fSpeed = EPS_S;
-//	else 
-//		if (m_fSafeSpeed != m_fSpeed) {
-//			int iRandom = ::Random.randI(0,2);
-//			switch (iRandom) {
-//				case 0 : {
-//					m_fSpeed = m_fMaxSpeed;
-//					break;
-//				}
-//				case 1 : {
-//					m_fSpeed = m_fMinSpeed;
-//					break;
-//				}
-//				case 2 : {
-//					if (::Random.randI(0,4) == 0)
-//						m_fSpeed = EPS_S;
-//					break;
-//				}
-//			}
-//			m_fSafeSpeed = m_fSpeed;
-//		}
+	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
+		m_fSpeed = EPS_S;
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
 }
 
 void CAI_Rat::FreeHunting()
@@ -312,36 +297,17 @@ void CAI_Rat::UnderFire()
 	
 	bfCheckIfGoalChanged();
 	
-	m_fSpeed = m_fMaxSpeed;
-	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
 	vfComputeNewPosition();
 
 	SetDirectionLook();
 
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-//		m_fSpeed = EPS_S;
-//	else 
-//		if (m_fSafeSpeed != m_fSpeed) {
-//			int iRandom = ::Random.randI(0,2);
-//			switch (iRandom) {
-//				case 0 : {
-//					m_fSpeed = m_fMaxSpeed;
-//					break;
-//				}
-//				case 1 : {
-//					m_fSpeed = m_fMinSpeed;
-//					break;
-//				}
-//				case 2 : {
-//					if (::Random.randI(0,4) == 0)
-//						m_fSpeed = EPS_S;
-//					break;
-//				}
-//			}
-//			m_fSafeSpeed = m_fSpeed;
-//		}
+	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || (vPosition.distance_to(m_tOldPosition) < EPS_L))
+		m_fSpeed = EPS_S;
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
 	AI_Path.TravelPath.clear();
 }
 
@@ -356,6 +322,7 @@ void CAI_Rat::Retreat()
 	SelectEnemy(Enemy);
 	
 	if (Enemy.Enemy) {
+		vfSaveEnemy();
 		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
 		if (eState != eCurrentState)
 			GO_TO_NEW_STATE_THIS_UPDATE(eState);
@@ -389,36 +356,17 @@ void CAI_Rat::Retreat()
 	
 	bfCheckIfGoalChanged();
 	
-	m_fSpeed = m_fMaxSpeed;
-	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
 	vfComputeNewPosition();
 
 	SetDirectionLook();
 
-//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
-//		m_fSpeed = EPS_S;
-//	else 
-//		if (m_fSafeSpeed != m_fSpeed) {
-//			int iRandom = ::Random.randI(0,2);
-//			switch (iRandom) {
-//				case 0 : {
-//					m_fSpeed = m_fMaxSpeed;
-//					break;
-//				}
-//				case 1 : {
-//					m_fSpeed = m_fMinSpeed;
-//					break;
-//				}
-//				case 2 : {
-//					if (::Random.randI(0,4) == 0)
-//						m_fSpeed = EPS_S;
-//					break;
-//				}
-//			}
-//			m_fSafeSpeed = m_fSpeed;
-//		}
+	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
+		m_fSpeed = EPS_S;
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
 	AI_Path.TravelPath.clear();
 }
 

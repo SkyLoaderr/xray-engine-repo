@@ -54,6 +54,7 @@ CAI_Rat::CAI_Rat()
 	m_dwStandLookTime		= 5000;
 	m_tLastSound.tpEntity	= 0;
 	m_tLastSound.dwTime		= 0;
+	m_bNoWay				= false;
 }
 
 CAI_Rat::~CAI_Rat()

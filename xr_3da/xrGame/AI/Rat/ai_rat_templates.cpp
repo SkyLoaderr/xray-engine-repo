@@ -701,9 +701,11 @@ void CAI_Rat::vfComputeNewPosition()
 	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
 		vPosition.y = ffGetY(*tpNewNode,vPosition.x,vPosition.z);
 		m_tOldPosition.set(tTemp);
+		m_bNoWay = false;
 	}
 	else {
 		vPosition.set(m_tOldPosition);
 		m_fSafeSpeed = m_fSpeed = EPS_S;
+		m_bNoWay = true;
 	}
 }
