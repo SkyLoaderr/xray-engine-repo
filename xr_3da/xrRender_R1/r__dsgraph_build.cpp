@@ -38,6 +38,19 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	float SSA				=	CalcSSA		(distSQ,Center,pVisual);
 	if (SSA<=r_ssaDISCARD)		return;
 
+	// Distortive geometry should be marked and R2 special-cases it
+	// a) Allow to optimize RT order
+	// b) Should be rendered to special distort buffer in another pass
+	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
+	if (RImplementation.b_distortion && sh_d && sh_d->Flags.bDistort) {
+		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
+		N->val.ssa				= SSA;
+		N->val.pObject			= RI.val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *RI.val_pTransform;
+		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
+	}
+
 	// Select shader
 	ShaderElement*	sh		=	RImplementation.rimp_select_sh_dynamic	(pVisual,distSQ);
 	if (0==sh)								return;
@@ -91,18 +104,6 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	}
 #endif
 
-	// Distortive geometry should be marked and R2 special-cases it
-	// a) Allow to optimize RT order
-	// b) Should be rendered to special distort buffer in another pass
-	if (sh->Flags.bDistort && RImplementation.b_distortion) {
-		mapSorted_Node* N		= mapDistort.insertInAnyWay	(distSQ);
-		N->val.ssa				= SSA;
-		N->val.pObject			= RI.val_pObject;
-		N->val.pVisual			= pVisual;
-		N->val.Matrix			= *RI.val_pTransform;
-		N->val.se				= &*pVisual->hShader->E[4];		// 4=L_special
-	}
-
 	// the most common node
 	SPass&						pass	= *sh->Passes.front	();
 	mapMatrix_T&				map		= mapMatrix			[sh->Flags.iPriority/2];
@@ -137,7 +138,8 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
-	if (RImplementation.b_distortion && (&*pVisual->hShader->E[4]) && pVisual->hShader->E[4]->Flags.bDistort) {
+	ShaderElement*		sh_d	= &*pVisual->hShader->E[4];
+	if (RImplementation.b_distortion && sh_d && sh_d->Flags.bDistort) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);
 		N->val.ssa				= SSA;
 		N->val.pObject			= NULL;
