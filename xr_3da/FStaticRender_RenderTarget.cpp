@@ -21,7 +21,7 @@ BOOL CRenderTarget::Create	()
 	R_CHK		(HW.pDevice->GetDeviceCaps(&caps));
 	
 	// Check nonpow2 conditional
-	if (0==(caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL))		return FALSE;
+	if (!HW.Caps.pixel.bNonPow2)										return FALSE;
 	
 	// Check width-and-height of render target surface
 	if (Device.dwWidth>caps.MaxTextureWidth)							return FALSE;
