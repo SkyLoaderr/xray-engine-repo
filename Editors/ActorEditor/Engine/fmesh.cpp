@@ -1,6 +1,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#pragma warning(disable:4995)
+#include <d3dx9.h>
+#pragma warning(default:4995)
+
 BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices)
 {
 	if (vCount>65535)	return FALSE;

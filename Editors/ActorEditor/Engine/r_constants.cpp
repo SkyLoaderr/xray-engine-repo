@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#pragma warning(disable:4995)
 #include <d3dx9.h>
+#pragma warning(default:4995)
 
 #include "xrPool.h"
 #include "r_constants.h"
@@ -31,7 +33,7 @@ R_constant* R_constant_table::get	(LPCSTR S)
 	if (I==table.end() || (0!=strcmp((*I)->name,S)))	return 0;
 	else												return *I;
 }
-BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* _desc, u16 destination)
+BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 {
 	D3DXSHADER_CONSTANTTABLE* desc	= (D3DXSHADER_CONSTANTTABLE*) _desc;
 	D3DXSHADER_CONSTANTINFO* it		= (D3DXSHADER_CONSTANTINFO*) (LPBYTE(desc)+desc->ConstantInfo);

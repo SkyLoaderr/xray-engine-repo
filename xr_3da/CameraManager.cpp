@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "CameraManager.h"
 #include "CameraLook.h"
-#include "CameraDebug.h"
 #include "CameraFirstEye.h"
 #include "Effector.h"
 #include "EffectorPP.h"
