@@ -299,3 +299,23 @@ void CRender::LoadSectors(IReader* fs)
 
 	pLastSector = 0;
 }
+
+void CRender::LoadSWIs(IReader* base_fs)
+{
+	// allocate memory for portals
+	if (base_fs->find_chunk(fsL_SWIS)){
+		destructor<IReader>	fs	(base_fs->open_chunk(fsL_SWIS));
+		u32 item_count		= fs().r_u32();	
+		SWIs.resize			(item_count);
+		for (u32 c=0; c<item_count; c++){
+			FSlideWindowItem& swi = SWIs[c];
+			swi.reserved[0]	= fs().r_u32();	
+			swi.reserved[1]	= fs().r_u32();	
+			swi.reserved[2]	= fs().r_u32();	
+			swi.reserved[3]	= fs().r_u32();	
+			swi.count		= fs().r_u32();	
+			swi.sw			= xr_alloc<FSlideWindow> (swi.count);
+			fs().r			(swi.sw,sizeof(FSlideWindow)*swi.count);
+		}
+	}
+}
