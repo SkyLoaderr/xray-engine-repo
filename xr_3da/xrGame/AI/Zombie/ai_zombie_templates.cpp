@@ -23,7 +23,7 @@
 #define MIN_PATROL_DISTANCE				1.f
 #define MIN_COVER_MOVE					120
 #define MAX_NEIGHBOUR_COUNT				9
-#define DISTANCE_TO_STEP				.85f
+#define DISTANCE_TO_STEP				.65f
 
 bool CAI_Zombie::bfCheckPath(AI::Path &Path) {
 	const vector<BYTE> &q_mark = Level().AI.tpfGetNodeMarks();
