@@ -48,8 +48,6 @@ light_height		= 1.5			;подъем источника света на высоту
 
 idle_light			= off
 
-blowout_wind		= off
-
 visible_by_detector = on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -67,6 +65,14 @@ artefact_born_sound =  anomaly\pux_blast		;звук, который отыграются на месте рож
 throw_out_power = 50			;импульс с которым артефакт будет выброшен из зоны в произвольном направлении
 artefact_spawn_height = 3		;(м) высота на центром зоны где будет рожден артефакт
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ветер
+blowout_wind		= on
+
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 500
+blowout_wind_time_end		= 1500
+blowout_wind_power			= 0.5			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 [zone_radioactive]
 GroupControlSection	= spawn_group_zone
@@ -290,7 +296,14 @@ ignore_artefacts	= true
 
 visible_by_detector = on
 
-blowout_wind		= off
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; ветер
+blowout_wind		= on
+
+blowout_wind_time_start     = 0
+blowout_wind_time_peak      = 1500
+blowout_wind_time_end		= 3000
+blowout_wind_power			= 0.2			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
@@ -587,9 +600,9 @@ visible_by_detector = on
 blowout_wind		= on
 
 blowout_wind_time_start     = 0
-blowout_wind_time_peak      = 2100
-blowout_wind_time_end		= 2450
-blowout_wind_power			= 0.8			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
+blowout_wind_time_peak      = 2300
+blowout_wind_time_end		= 4000
+blowout_wind_power			= 1			;сила поднимаего ветра (от 0 до 1), в момент blowout_wind_time_peak 
 
 
 
