@@ -66,21 +66,28 @@ void CUIColorAnimatorWrapper::Update()
 	{
 		if (!isCyclic)
 		{
-			if (animationTime <= (colorAnimation->iFrameCount / colorAnimation->fFPS))
+			if (animationTime < (colorAnimation->iFrameCount / colorAnimation->fFPS))
 			{
-				int	dummy		= 0;
-				currColor		= colorAnimation->CalculateBGR(animationTime, dummy);
+				currColor		= colorAnimation->CalculateBGR(animationTime, currFrame);
 //				Msg("frame: %i", dummy);
 				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
 				// обновим время
 				animationTime	+= Device.fTimeGlobal - prevGlobalTime;
+				Msg("%i", currFrame);
+
 			}
+			// В любом случае (при любом ФПС) последним кадром должен быть последний кадр анимации
+			else if (currFrame != colorAnimation->iFrameCount - 1)
+			{
+				currColor		= colorAnimation->CalculateBGR(colorAnimation->iFrameCount / colorAnimation->fFPS, currFrame);
+				currColor		= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
+			}
+
 			prevGlobalTime		= Device.fTimeGlobal;
 		}
 		else
 		{
-			int dummy	= 0;
-			currColor	= colorAnimation->CalculateBGR(Device.fTimeGlobal, dummy);
+			currColor	= colorAnimation->CalculateBGR(Device.fTimeGlobal, currFrame);
 			currColor	= color_rgba(color_get_B(currColor), color_get_G(currColor), color_get_R(currColor), 255/*color_get_A(currColor)*/);
 		}
 

@@ -55,6 +55,8 @@ private:
 	u32					*color;
 	// Текущий цвет анимации
 	u32					currColor;
+	// Текущий кадр анимации
+	int					currFrame;
 };
 
 #endif
