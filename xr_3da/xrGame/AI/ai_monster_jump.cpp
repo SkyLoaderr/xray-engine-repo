@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_jump.h"
-#include "..\\..\\custommonster.h"
+#include "..\\custommonster.h"
 
 CJumping::CJumping()
 {
@@ -28,7 +28,7 @@ void CJumping::Load(LPCSTR section)
 // Проверка на возможность прыжка
 bool CJumping::CheckJump(Fvector from_pos, Fvector to_pos, CObject *pO)
 {
-	if (CanJump() || active || (next_time_allowed > pMonster->m_dwCurrentTime)) return false;
+	if (CanJump() || active || (time_next_allowed > pMonster->m_dwCurrentTime)) return false;
 
 	// растояние до цели	
 	float dist = from_pos.distance_to(to_pos);	
@@ -108,6 +108,6 @@ void CJumping::ExecuteJump()
 	ph_time = pMonster->Movement.JumpMinVelTime(target_pos);
 	pMonster->Movement.Jump(target_pos,ph_time/m_fJumpFactor);
 	time_started		= pMonster->m_dwCurrentTime;
-	next_time_allowed	= time_started + m_dwDelayAfterJump;
+	time_next_allowed	= time_started + m_dwDelayAfterJump;
 }
 
