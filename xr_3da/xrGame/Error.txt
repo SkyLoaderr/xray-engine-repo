@@ -26,4 +26,6 @@ To WT:
 To AlexMX:
 -O				ocasional invalid radius and/or center after update of particle system
 				(pure garbage: #INF, #QNAN, #DEN)
--O				ocasional memory corruption inside particle system (on destructor, probably)
+				(cs_test/single)
+-O				ocasional memory corruption inside particle system (on destructor, probably?)
+				(game00/single/alife)
