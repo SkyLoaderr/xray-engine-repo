@@ -182,19 +182,6 @@ public:
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					tpTemp = tpIndexes[iNodeIndex].tpNode;
-//					bool bOk = true;
-//					if (!(tpTemp->ucOpenCloseMask)) {
-//						tpTemp2 = tpTemp->tpForward;
-//						while (tpTemp2) {
-//							if (tpTemp2->iIndex == iBestIndex) {
-//								bOk = false;
-//								break;
-//							}
-//							tpTemp2 = tpTemp2->tpForward;
-//						}
-//						if (!bOk)
-//							continue;
-//					}
 					
 					// initialize node
 					float dG = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex);
