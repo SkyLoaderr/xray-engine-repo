@@ -10,9 +10,9 @@
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
 
-static const float y_spin_factor		= 0.5f;
-static const float y_shoulder_factor	= 0.5f;
-static const float y_head_factor		= 0.0f;
+static const float y_spin_factor		= 0.4f;
+static const float y_shoulder_factor	= 0.4f;
+static const float y_head_factor		= 0.2f;
 static const float p_spin_factor		= 0.2f;
 static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
