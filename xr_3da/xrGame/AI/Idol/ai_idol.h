@@ -17,7 +17,8 @@ public:
 	vector<CMotionDef*>	m_tpaAnims;
 	CBlend				*m_tpCurrentBlend;
 	bool				m_bPlaying;
-	int					m_iAnyPlayType;
+	u32					m_dwAnyPlayType;
+	u32					m_dwCurrentAnimationIndex;
 	
 						CAI_Idol		();
 	virtual				~CAI_Idol		();

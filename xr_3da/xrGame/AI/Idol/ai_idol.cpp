@@ -13,6 +13,7 @@ CAI_Idol::CAI_Idol					()
 {
 	m_tpCurrentBlend				= 0;
 	m_bPlaying						= false;
+	m_dwCurrentAnimationIndex		= 0;
 }
 
 CAI_Idol::~CAI_Idol					()
@@ -33,7 +34,7 @@ BOOL CAI_Idol::net_Spawn			(LPVOID DC)
 	
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
-	m_iAnyPlayType					= 0;//tpIdol->m_dwAniPlayType;
+	m_dwAnyPlayType					= tpIdol->m_dwAniPlayType;
 	m_tpaAnims.clear				();
 	u32								N = _GetItemCount(tpIdol->m_caAnimations);
 	string16						I;
@@ -47,25 +48,28 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 {
 	R_ASSERT						(!m_tpaAnims.empty());
 	if (g_Alive()) {
-		switch (m_iAnyPlayType) {
+		switch (m_dwAnyPlayType) {
 			case 0 : {
-				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
+				if (!m_bPlaying) {
 					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 				}
 				break;
 			}
 			case 1 : {
-				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+				if (!m_bPlaying) {
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
+					m_dwCurrentAnimationIndex = (m_dwCurrentAnimationIndex + 1) % m_tpaAnims.size();
 				}
 				break;
 			}
 			case 2 : {
-				if (!m_bPlaying) {// || (!m_tpCurrentBlend->noloop && !m_tpCurrentBlend->playing))
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+				if (!m_bPlaying) {
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[m_dwCurrentAnimationIndex],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
+					if (m_dwCurrentAnimationIndex < m_tpaAnims.size() - 1)
+						m_dwCurrentAnimationIndex++;
 				}
 				break;
 			}
