@@ -157,6 +157,8 @@ void CAI_Stalker::Attack()
 
 	vfChoosePointAndBuildPath	(m_tSelectorReload);
 
+	vfSetFire					(true,*getGroup());
+
 	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());
 	
 	if (m_fCurSpeed < EPS_L)

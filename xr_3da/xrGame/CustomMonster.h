@@ -272,6 +272,8 @@ public:
 		return(false);
 	};
 	
+	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
+
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);
 	virtual objQualifier*	GetQualifier		();
