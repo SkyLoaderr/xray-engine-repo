@@ -13,9 +13,9 @@ class							CSun
 	Fcolor						sun_color;
 	Fvector						sun_dir;
 	CLensFlare					LensFlare;
-	void						LoadSunData				( CInifile* pIni, LPSTR section );
+	void						LoadSunData				( CInifile* pIni, LPCSTR section );
 public:
-								CSun					( CInifile* pIni, LPSTR section );
+								CSun					( CInifile* pIni, LPCSTR section );
 								~CSun					( );
 
 	void __fastcall				RenderSource			( );

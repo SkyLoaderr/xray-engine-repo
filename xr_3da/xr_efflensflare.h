@@ -57,7 +57,7 @@ public:
 	virtual void	OnDeviceDestroy();
 	virtual void	OnDeviceCreate();
 
-	void			Load		( CInifile* pIni, LPSTR section );
+	void			Load		( CInifile* pIni, LPCSTR section );
     void __fastcall	Render		( BOOL bSun, BOOL bFlares, BOOL bGradient );
 	void			Update		( Fvector& sun_dir, Fcolor& color );
 };

@@ -114,7 +114,7 @@ void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const 
 	m_Flares.push_back	(F);
 }
 
-void CLensFlare::Load( CInifile* pIni, LPSTR section )
+void CLensFlare::Load( CInifile* pIni, LPCSTR section )
 {
 	LPCSTR		T,R,O,P;
 	FILE_NAME	name;

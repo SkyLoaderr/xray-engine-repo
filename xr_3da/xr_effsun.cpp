@@ -4,7 +4,7 @@
 #include "environment.h"
 #include "xr_ini.h"
 
-CSun::CSun( CInifile* pIni, LPSTR section ) {
+CSun::CSun( CInifile* pIni, LPCSTR section ) {
 	// общие установки
 	sun_color.set				(255, 255, 255, 255);
 	sun_dir.set					(-0.5774f,-0.5774f,-0.5774f);
@@ -16,7 +16,7 @@ CSun::CSun( CInifile* pIni, LPSTR section ) {
 CSun::~CSun	( ) {
 }
 
-void CSun::LoadSunData	( CInifile* pIni, LPSTR section ) {
+void CSun::LoadSunData	( CInifile* pIni, LPCSTR section ) {
 	VERIFY( section );
 	sun_color.set		( pIni->ReadCOLOR( section, "sun_color" ));
 	sun_dir				= pIni->ReadVECTOR( section, "sun_dir"  );
