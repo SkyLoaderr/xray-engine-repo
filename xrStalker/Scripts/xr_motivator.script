@@ -90,7 +90,7 @@ function motivator_binder:update(delta)
     end
 
 --' Проверка ТИМ СКВАД ГРУП 
-if true then	
+if false then	
 	if memtsg[self.object:id()] == nil then
 		printf("[TSG] Object: %s t:%d s:%d g:%d", self.object:name(),
 												  self.object:team(),
