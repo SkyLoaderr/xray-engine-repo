@@ -18,9 +18,9 @@ function main ()
 	stalker:script (true, s_test.script_name ())
 
 --	action (stalker, object (ak, object.take), cond (cond.object_end))
-	ak:set_queue_size (2)
+--	ak:set_queue_size (2)
 	action (stalker, move (move.standing, move.walk, move.line, patrol ("boar_way")),
-			anim (anim.danger), look (look.fire_point, get_actor ()), object (ak, object.fire1), cond (cond.move_end))
+			anim (anim.danger), look (look.fire_point, get_actor ()), object (ak, object.fire1,2), cond (cond.move_end))
 
 	while stalker:action () do wait () end
 
