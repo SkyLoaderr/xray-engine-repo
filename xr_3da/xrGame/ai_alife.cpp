@@ -55,6 +55,7 @@ void CAI_ALife::Load()
 	if (!Level().AI.m_tpaGraph)
 		return;
 
+	//m_tpServerEntitites
 	return;
 //
 //	vfInitTerrain();

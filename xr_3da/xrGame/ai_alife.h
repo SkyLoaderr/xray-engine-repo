@@ -38,6 +38,7 @@ private:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
+	SERVER_ENTITY_P_VECTOR			m_tpServerEntitites;
 	
 	// comnmon
 	void							vfUpdateDynamicData		(CALifeDynamicObject *tpALifeDynamicObject);
