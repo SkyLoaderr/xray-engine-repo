@@ -45,6 +45,7 @@ chugai_military_commander_base      = chugai_actions + 40
 chugai_escape_factory_bandits_base  = chugai_actions + 50
 chugai_barman_base                  = chugai_actions + 60
 chugai_ambush_base                  = chugai_actions + 70
+chugai_formation_base               = chugai_actions + 80
 
 -- «мей
 zmey_actions = stalker_ids.action_script + 10000

@@ -43,6 +43,7 @@ chugai_military_commander_base      = chugai_evaluators + 40
 chugai_escape_factory_bandits_base  = chugai_evaluators + 50
 chugai_barman_base                  = chugai_evaluators + 60
 chugai_ambush_base                  = chugai_evaluators + 70
+chugai_formation_base               = chugai_evaluators + 80
 
 -- эвалуаторы Змея
 zmey_evaluators = stalker_ids.property_script + 4000
