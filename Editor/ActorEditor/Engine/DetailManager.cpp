@@ -101,9 +101,13 @@ void CDetailManager::Load		()
 	
 	// Initialize 'vis' and 'cache'
 	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
-	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
-	for (DWORD s=0; s<cache.size(); s++)	cache[s].type	= stInvalid;
-	
+	Slot*	slt = s_pool;
+	for (DWORD i=0; i<dhm_matrix; i++)
+		for (DWORD j=0; j<dhm_matrix; j++, slt++)
+			s_data	[i][j]	= slt;
+	c_x=c_z=0;
+	s_task.clear();
+
 	// Make dither matrix
 	bwdithermap		(2,dither);
 
@@ -121,7 +125,6 @@ void CDetailManager::Unload		()
 	for (DWORD it=0; it<objects.size(); it++)
 		objects[it].Unload();
 	objects.clear	();
-	cache.clear		();
 	visible.clear	();
 	_DELETE			(dtFS);
 }
@@ -136,7 +139,7 @@ void CDetailManager::Render		(Fvector& EYE)
 	int s_x	= iFloor			(EYE.x/slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
-	UpdateCache					(4);
+	UpdateCache					(s_x,s_z,4);
 
 	float fade_limit			= 14.5f;fade_limit=fade_limit*fade_limit;
 	float fade_start			= 1.f;	fade_start=fade_start*fade_start;
@@ -150,8 +153,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		{
 			// Query for slot
 			Device.Statistic.RenderDUMP_DT_Cache.Begin	();
-			Slot&	S		= Query(_x,_z);
-			S.dwFrameUsed	= Device.dwFrame;
+			Slot&	S		= Query						(_x,_z);
 			Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 			// Transfer visibile and partially visible slot contents
@@ -236,29 +238,19 @@ void CDetailManager::Render		(Fvector& EYE)
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 {
-	// Search cache
-	DWORD oldest	= 0;
-	for (DWORD I=0; I<cache.size(); I++)
-	{
-		Slot&	S = cache[I];
-		if ((S.sx==sx)&&(S.sz==sz)&&(S.type!=stInvalid))	return S;
-		else {
-			if (S.dwFrameUsed < cache[oldest].dwFrameUsed)	oldest = I;
-		}
-	}
+	static Slot	empty;
 
-	// Cache MISS or cache not filled at all
-	if (cache.size()<dm_cache_size)	{
-		// Create new entry
-		cache.push_back(Slot());
-		Decompress(sx,sz,cache.back());
-		return cache.back();
-	} else {
-		// We should discard oldest cache entry on LRU basis
-		Slot& S = cache[oldest];
-		Decompress(sx,sz,S);
-		return S;
-	}
+	// Search cache
+	int rx	= sx-c_x + dhm_line;
+	if (rx<0 || rx>=dhm_matrix)		return empty;
+	int rz  = sz-c_z + dhm_line;
+	if (rx<0 || rz>=dhm_matrix)		return empty;
+
+	// Check for unpacked state
+	Slot& D	= *s_data[rz][rx];
+	if (!D.bReady)					return empty;
+
+	return	D;
 }
 
 //--------------------------------------------------- Decompression
@@ -290,53 +282,90 @@ IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD sx, DWORD
  	return	c	> dither[col][row];
 }
 
-void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
-{
-	DetailSlot&	DS			= QueryDB(sx,sz);
-
-	// Unpacking
-	D.type					= stPending;
-	D.sx					= sx;
-	D.sz					= sz;
-
-	D.BB.min.set			(sx*slot_size,			DS.y_min,	sz*slot_size);
-	D.BB.max.set			(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
-	D.BB.grow				(EPS_L);
-
-	for (int i=0; i<dm_obj_in_slot; i++)
-	{
-		D.G[i].id			= DS.items[i].id;
-		D.G[i].items.clear	();
-	}
-}
-
 const	float phase_range = PI/16;
-void CDetailManager::UpdateCache	(int limit)
+
+void CDetailManager::UpdateCache	(int v_x, int v_z, int limit)
 {
-	for (DWORD entry=0; limit && (entry<cache.size()); entry++)
+	// *****	SCROLL
+	if (v_x!=c_x)	{
+		if (v_x>c_x)	{
+			// scroll matrix to left
+			c_x ++;
+			for (int z=0; z<dhm_matrix; z++)
+			{
+				Slot*	S	= s_data[z][0];
+				if (S->bReady)	{	S->bReady = FALSE; s_task.push_back(S); }
+				for (int x=1; x<dhm_matrix; x++)	s_data[z][x-1] = s_data[z][x];
+				s_data[z][dhm_matrix-1] = S;
+				S->set	(c_x-dhm_line+dhm_matrix-1, c_z-dhm_line+z);
+			}
+		} else {
+			// scroll matrix to right
+			c_x --;
+			for (int z=0; z<dhm_matrix; z++)
+			{
+				Slot*	S	= s_data[z][dhm_matrix-1];
+				if (S->bReady)	{	S->bReady = FALSE; s_task.push_back(S); }
+				for (int x=dhm_matrix-1; x>0; x--)	s_data[z][x] = s_data[z][x-1]; 
+				s_data[z][0]	= S;
+				S->set	(c_x-dhm_line+0,c_z-dhm_line+z);
+			}
+		}
+	}
+	if (v_z!=c_z)	{
+		if (v_z>c_z)	{
+			// scroll matrix down a bit
+			c_z ++;
+			for (int x=0; x<dhm_matrix; x++)
+			{
+				Slot*	S	= s_data[dhm_matrix-1][x];
+				if (S->bReady)	{	S->bReady = FALSE; s_task.push_back(S); }
+				for (int z=dhm_matrix-1; z>0; z--)	s_data[z][x] = s_data[z-1][x];
+				s_data[0][x]	= S;
+				S->set	(c_x-dhm_line+x,c_z-dhm_line+0);
+			}
+		} else {
+			// scroll matrix up
+			c_z --;
+			for (int x=0; x<dhm_matrix; x++)
+			{
+				Slot*	S = s_data[0][x];
+				if (S->bReady)	{	S->bReady = FALSE; s_task.push_back(S); }
+				for (int z=0; z<dhm_matrix; z++)	s_data[z-1][x] = s_data[z][x];
+				s_data[dhm_matrix-1][x]	= S;
+				S->set	(c_x-dhm_line+x,c_z-dhm_line+dhm_matrix-1);
+			}
+		}
+	}
+	
+	// *****	perform TASKs
+	for (int taskid=0; (taskid<limit) && (!s_task.empty()); taskid++)
 	{
-		if (cache[entry].type != stPending)	continue;
-		
 		// Gain access to data
-		Slot&		D	= cache[entry];
-		DetailSlot&	DS	= QueryDB(D.sx,D.sz);
-		D.type			= stReady;
-		
+		Slot&	D		= *(s_task.back());	s_task.pop_back();
+		DetailSlot&	DS	= QueryDB(D.x,D.z);
+		D.BB.min.set	(D.x*slot_size,	DS.y_min, D.z*slot_size);
+		D.BB.max.set	(D.BB.min.x+slot_size,	DS.y_max,	D.BB.min.z+slot_size);
+		D.BB.grow		(EPS_L);
+		D.bReady		= TRUE;
+
 		// Select polygons
 		XRC.BBoxMode		(0); // BBOX_TRITEST
 		XRC.BBoxCollide		(precalc_identity,pCreator->ObjectSpace.GetStaticModel(),precalc_identity,D.BB);
 		DWORD	triCount	= XRC.GetBBoxContactCount();
 		if (0==triCount)	continue;
 		RAPID::tri* tris	= pCreator->ObjectSpace.GetStaticTris();
-
+		
 		// Build shading table
 		float		alpha255	[dm_obj_in_slot][4];
 		for (int i=0; i<dm_obj_in_slot; i++)
 		{
-			alpha255[i][0]	= 255.f*float(DS.items[i].palette.a0)/15.f;
-			alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
-			alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
-			alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
+			D.G[i].id			= DS.items[i].id;
+			D.G[i].items.clear	();
+			alpha255[i][0]		= 255.f*float(DS.items[i].palette.a0)/15.f;
+			alpha255[i][1]		= 255.f*float(DS.items[i].palette.a1)/15.f;
+			alpha255[i][2]		= 255.f*float(DS.items[i].palette.a2)/15.f;
+			alpha255[i][3]		= 255.f*float(DS.items[i].palette.a3)/15.f;
 		}
 		
 		// Prepare to selection
@@ -355,10 +384,10 @@ void CDetailManager::UpdateCache	(int limit)
 		{
 			for (DWORD x=0; x<=d_size; x++)
 			{
-            	// shift
+				// shift
                 DWORD shift_x =  r_jitter.randI(16);
                 DWORD shift_z =  r_jitter.randI(16);
-
+				
 				// Iterpolate and dither palette
 				selected.clear();
 				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(0);
@@ -379,11 +408,11 @@ void CDetailManager::UpdateCache	(int limit)
 				float		rx = (float(x)/float(d_size))*slot_size + D.BB.min.x;
 				float		rz = (float(z)/float(d_size))*slot_size + D.BB.min.z;
 				Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
-
+				
 				// Position (Y)
 				float y		= D.BB.min.y-5;
 				Fvector	dir; dir.set(0,-1,0);
-
+				
 				float		r_u,r_v,r_range;
 				for (DWORD tid=0; tid<triCount; tid++)
 				{
@@ -420,10 +449,7 @@ void CDetailManager::UpdateCache	(int limit)
 				D.G[index].items.push_back(Item);
 			}
 		}
-
-		// Check for number of decompressions
-		limit--;
-	}
+	}		
 }
 
 DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
@@ -434,7 +460,7 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 	int db_z = sz+dtH.offs_z;
 	if ((db_x>=0) && (db_x<int(dtH.size_x)) && (db_z>=0) && (db_z<int(dtH.size_z)))
 	{
-		DWORD linear_id = db_z*dtH.size_x + db_x;
+		DWORD linear_id			= db_z*dtH.size_x + db_x;
 		return dtSlots			[linear_id];
 	} else {
 		// Empty slot
