@@ -1,3 +1,14 @@
+
+------------------------------------------------------------------------------------------
+-- misc functions
+------------------------------------------------------------------------------------------
+function send_sos (npc)
+    local act = level.actor ()
+    if act == nil or act:alive () == false or distance_between (npc, act) > 70.0 then
+       return 
+    end
+    news_manager.send_help (act)    
+end
 ------------------------------------------------------------------------------------------
 -- Property's
 ------------------------------------------------------------------------------------------
@@ -298,12 +309,12 @@ function action_idle:execute ()
        --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
     --end   
     if device ():time_global () - self.send_time > 15000 then    
-    
-		if self.actor ~= nil then
-			news_manager.send_help(self.actor)
-		else
-			self.actor = level.actor()
-		end
+       this.send_sos (self.object)
+		--if self.actor ~= nil then
+			--news_manager.send_help(self.actor)
+		--else
+			--self.actor = level.actor()
+		--end
        
        self.send_time = device ():time_global ()
     end   
@@ -367,11 +378,12 @@ function action_help:execute ()
 	   xr_sound.sound_update(self.object, self.sounds)		
 	--end
     if device ():time_global () - self.send_time > 15000 then    
-   		if self.actor ~= nil then
-			news_manager.send_help(self.actor)
-		else
-			self.actor = level.actor()
-		end
+       this.send_sos (self.object) 
+   		--if self.actor ~= nil then
+			--news_manager.send_help(self.actor)
+		--else
+			--self.actor = level.actor()
+		--end
        self.send_time = device ():time_global ()
     end   
     
@@ -474,11 +486,12 @@ function action_enemy:execute ()
     xr_sound.sound_update(self.object, self.sounds)		
     
     if device ():time_global () - self.send_time > 15000 then    
-   		if self.actor ~= nil then
-			news_manager.send_help(self.actor)
-		else
-			self.actor = level.actor()
-		end   
+       this.send_sos (self.object) 
+   		--if self.actor ~= nil then
+			--news_manager.send_help(self.actor)
+		--else
+			--self.actor = level.actor()
+		--end   
 
        self.send_time = device ():time_global ()
     end   
