@@ -43,8 +43,6 @@ bool CCar::bfAssignMovement(CEntityAction *tpEntityAction)
 	if (_abs(tpEntityAction->m_tMovementAction.m_fSpeed) > EPS_L)
 		m_max_rpm = tpEntityAction->m_tMovementAction.m_fSpeed*m_current_gear_ratio;
 
-	Msg		("GEAR RATIO : [%f]",m_current_gear_ratio);
-
 	return	(false);
 }
 
