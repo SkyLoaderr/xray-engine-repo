@@ -166,7 +166,11 @@ public:
 				S += sprintf(S,"Level ID    : %d\n",m_dwLevelID);
 				S += sprintf(S,"Spawn index : %d\n",i);
 				S += sprintf(S,"Spawn point : [%7.2f][%7.2f][%7.2f]\n",VPUSH(m_tpSpawnPoints[i]->o_Position));
-				R_ASSERT2(false,S1);
+				S += sprintf(S,"SPAWN POINT IS REMOVED!\n");
+				Msg(S);
+				m_tpSpawnPoints.erase(m_tpSpawnPoints.begin() + i--);
+				continue;
+				//R_ASSERT2(false,S1);
 			}
 			u32 dwBest = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].tGraphIndex;
 			float fCurrentBestDistance = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].fDistance;
