@@ -318,7 +318,12 @@ void CWeapon::Load		(LPCSTR section)
 	fFlameLength		= pSettings->ReadFLOAT		(section,"flame_length"		);
 	fFlameSize			= pSettings->ReadFLOAT		(section,"flame_size"		);
 
+	// hands
 	eHandDependence		= EHandDependence(pSettings->ReadINT(section,"hand_dependence"));
+
+	// slot
+	iSlotBinding		= pSettings->ReadINT		(section,"slot");
+
 	setVisible			(FALSE);
 }
 

@@ -89,7 +89,7 @@ protected:
 	float					tracerTrailCoeff;
 	float					tracerStartLength;
 	float					tracerWidth;
-	u32					tracerFrame;
+	u32						tracerFrame;
 							
 	CLightPPA				light_base;
 	CLightPPA				light_build;
@@ -97,11 +97,11 @@ protected:
 	float					light_var_color;
 	float					light_var_range;
 	float					light_lifetime;
-	u32					light_frame;
+	u32						light_frame;
 	float					light_time;
 
-	u32					dwFP_Frame;
-	u32					dwXF_Frame;
+	u32						dwFP_Frame;
+	u32						dwXF_Frame;
 protected:
 	struct	net_update 		
 	{
