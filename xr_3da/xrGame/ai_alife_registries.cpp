@@ -45,6 +45,8 @@ void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 	D_OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
 	D_OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 	for ( ; I != E; ++I) {
+		if (!(*I).second->can_save())
+			continue;
 		NET_Packet				tNetPacket;
 		// Spawn
 		(*I).second->Spawn_Write(tNetPacket,TRUE);

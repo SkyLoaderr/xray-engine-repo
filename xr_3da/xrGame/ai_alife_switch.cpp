@@ -127,12 +127,16 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 				Msg					("[LSS] Destroying item [%s]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID);
 			}
 #endif
-
-			m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
-			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
-			l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
-			R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
-			l_tpALifeDynamicObject->m_bOnline = false;
+			CSE_ALifeItemBolt		*bolt = dynamic_cast<CSE_ALifeItemBolt*>(l_tpALifeDynamicObject);
+			if (!bolt) {
+				m_tpServer->Perform_destroy(l_tpALifeInventoryItem,net_flags(TRUE,TRUE));
+				_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
+				l_tpALifeInventoryItem->ID	= m_tpServer->PerformIDgen(l_tpALifeInventoryItem->ID);
+				R_ASSERT2				(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
+				l_tpALifeDynamicObject->m_bOnline = false;
+			}
+			else
+				vfReleaseObject		(bolt);
 		}
 	}
 	

@@ -132,6 +132,7 @@ public:
 	virtual bool					used_ai_locations	() const;
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
+	virtual bool					can_save			() const;
 SERVER_ENTITY_DECLARE_END
 
 class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {

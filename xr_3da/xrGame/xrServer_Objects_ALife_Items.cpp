@@ -712,7 +712,6 @@ void CSE_ALifeItemGrenade::UPDATE_Read		(NET_Packet	&tNetPacket)
 void CSE_ALifeItemGrenade::UPDATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::UPDATE_Write		(tNetPacket);
-
 }
 
 #ifdef _EDITOR
@@ -800,6 +799,11 @@ void CSE_ALifeItemBolt::UPDATE_Read			(NET_Packet &tNetPacket)
 bool CSE_ALifeItemBolt::can_switch_offline	() const
 {
 	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
+}
+
+bool CSE_ALifeItemBolt::can_save			() const
+{
+	return						(!bfAttached());
 }
 
 #ifdef _EDITOR

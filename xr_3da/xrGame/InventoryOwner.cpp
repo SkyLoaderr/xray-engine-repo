@@ -104,7 +104,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////
-	if (true) {
+	if (!ai().get_alife()) {
 		// Create
 		CSE_Abstract			*D = F_entity_Create("device_pda");
 		//CSE_Abstract			*D = F_entity_Create("detector_simple");
