@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
-enum			Sections	{BOTTOM, TOP};
+const int BOTTOM = 0, TOP = 1;
 
 void occRasterizer::i_order	(float* A, float* B, float* C)
 {
@@ -48,40 +48,16 @@ void occRasterizer::i_order	(float* A, float* B, float* C)
 	A[2]	= t1[2];	B[2]	= t2[2];	C[2]	= t3[2];
 }
 
-/* Find the closest min/max pixels of a point
-Use min biasing 
-*/
-/*
-inline float minPixel(const float pt_val)
-{
-	float center = float(int(pt_val)) + 1.0f;
-	// if pt is beyond center, pixel is the next , else current
-	// next pixel = right/above
-	return ( (pt_val > center) ? center + 1.0f: center );
-}
-
-inline float maxPixel(const float pt_val)
-{
-	float center = float(int(pt_val)) + 1.0f;
-	// if pt is before/at center, pixel is previous, else current
-	// prev pixel = left/below
-	return ( (pt_val <= center) ? center - 1.0f: center );
-}
-*/
-
+// Find the closest min/max pixels of a point
 float minPixel(float v)
-{
-	return ceilf(v); //+1;
-}
+{	return ceilf(v);	}
 float maxPixel(float v)
-{
-	return floorf(v); //-1;
-}
+{	return floorf(v);	}
 
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
-void i_scan(occRasterizer* OCC, int curY, float startX, float endX, float startZ, float endZ, occTri* T)
+void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startX, float endX, float startZ, float endZ)
 {
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
@@ -126,8 +102,21 @@ float maxp(float a, float b)
 float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-template <int Sect>
-void i_section		(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
+void i_iterate	(occRasterizer* OCC, occTri* T, int startY, int endY, float leftX, float left_dX, float rightX, float right_dX, float leftZ, float left_dZ, float rightZ, float right_dZ)
+{
+	// Now scan all lines in this section
+	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
+	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
+	for (; startY<=endY; startY++) 
+	{
+		i_scan	(OCC, T, int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ);
+		leftX	+= left_dX; rightX += right_dX;
+		leftZ	+= left_dZ; rightZ += right_dZ;
+	}
+}
+
+
+void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	float startY, endY, *startp1, *startp2;
@@ -142,7 +131,7 @@ void i_section		(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 	else { 
 		startY  = minPixel(B[1]); endY = maxPixel(C[1]); 
 		startp1 = A; startp2 = B;
-
+		
 		// check 'startY' for out-of-tiangle 
 		float test = minPixel(A[1]);
 		if (int(startY)<int(test)) startY ++;
@@ -165,10 +154,12 @@ void i_section		(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 	// Compute the inverse slopes of the lines, ie rate of change of X by Y
 	float mE1	= E1[0]/E1[1];
 	float mE2	= E2[0]/E2[1];
+	
 	// Initial Y offset for left and right (due to pixel rounding)
 	float e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
 	float t;
 	float leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
+	
 	// find initial values, step values
 	if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
 	{ 
@@ -193,15 +184,7 @@ void i_section		(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
 	}	
-	// Now scan all lines in this section
-	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
-	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
-	for (; startY<=endY; startY++) 
-	{
-		i_scan	(OCC,int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
-		leftX	+= left_dX; rightX += right_dX;
-		leftZ	+= left_dZ; rightZ += right_dZ;
-	}
+	i_iterate(OCC,T,startY,endY,leftX,left_dX,rightX,right_dX,leftZ,left_dZ,rightZ,right_dZ);
 }
 
 void occRasterizer::rasterize	(occTri* T)
@@ -213,7 +196,7 @@ void occRasterizer::rasterize	(occTri* T)
 	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
-	i_order				(a, b, c);			// Order the vertices by Y
-	i_section<BOTTOM>	(this,a, b, c, T);	// Rasterise First Section
-	i_section<TOP>		(this,a, b, c, T);	// Rasterise Second Section
+	i_order				(a, b, c);				// Order the vertices by Y
+	i_section			(this,a, b, c, T,0);	// Rasterise First Section
+	i_section			(this,a, b, c, T,1);	// Rasterise Second Section
 }
