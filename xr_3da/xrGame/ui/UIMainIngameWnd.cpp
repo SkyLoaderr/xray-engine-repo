@@ -146,17 +146,25 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitStatic(uiXml, "static", 4, &UIPdaOnline);
 	
 	// У нас отдельные конфигурации листа для SP, и MP modes
-	CUIXml uiXml2;
-	if (GameID() != GAME_SINGLE)
-		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_MULTIPLAYER_CFG);
-	else
-		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_SINGLEPLAYER_CFG);
+//	CUIXml uiXml2;
+//	if (GameID() != GAME_SINGLE)
+//		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_MULTIPLAYER_CFG);
+//	else
+//		uiXml2.Init(CONFIG_PATH, UI_PATH, PDA_INGAME_SINGLEPLAYER_CFG);
 
 	AttachChild(&UIPdaMsgListWnd);
-	xml_init.InitListWnd(uiXml2, "list", 0, &UIPdaMsgListWnd);
+
+	if (GameID() != GAME_SINGLE)
+        xml_init.InitListWnd(uiXml, "pda_msg_list_sp", 0, &UIPdaMsgListWnd);
+	else
+		xml_init.InitListWnd(uiXml, "pda_msg_list_mp", 0, &UIPdaMsgListWnd);
+
+	AttachChild(&UIPdaMsgListWnd2);
+	xml_init.InitListWnd(uiXml, "pda_msg_list_sp2", 0, &UIPdaMsgListWnd2);
 //	m_iPdaMessagesFade_mSec = uiXml2.ReadAttribInt("list", 0, "fade", 0);
 
 	UIPdaMsgListWnd.SetVertFlip(true);
+	UIPdaMsgListWnd2.SetVertFlip(true);
 
 	// Для информационных сообщений
 	AttachChild(&UIInfoMessages);
@@ -185,6 +193,8 @@ void CUIMainIngameWnd::Init()
 	//для отображения входящих сообщений PDA
 	UIPdaMsgListWnd.Show(true);
 	UIPdaMsgListWnd.Enable(false);
+	UIPdaMsgListWnd2.Show(true);
+	UIPdaMsgListWnd2.Enable(false);
 
 //	m_dwMaxShowTime		= pSettings->r_s32("maingame_ui", "pda_msgs_max_show_time");
 //	m_iInfosShowTime	= pSettings->r_s32("maingame_ui", "info_msgs_max_show_time");
@@ -361,13 +371,6 @@ void CUIMainIngameWnd::Draw()
 		}
 		RenderQuickInfos();
 	}
-	else
-	{
-		// there was
-//		UIPdaMsgListWnd.Draw();
-		// but we decided to draw it always and always on top!
-		// so you can find it on the bottom of function
-	}
 
 	// Render claws
 	if (!m_ClawsAnimation.Done() && m_ClawsTexture.GetShader())
@@ -384,8 +387,8 @@ void CUIMainIngameWnd::Draw()
 }
 
 void CUIMainIngameWnd::DrawPdaMessages(){
-	FadeUpdate(&UIPdaMsgListWnd);
-	UIPdaMsgListWnd.Draw();
+	FadeUpdate(&UIPdaMsgListWnd2);	
+	UIPdaMsgListWnd2.Draw();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -906,8 +909,8 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 
 	CUIPdaMsgListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaMsgListItem>();
-	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
-	UIPdaMsgListWnd.ScrollToBegin();
+	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0);	/*---*/ UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem, 0); 
+	UIPdaMsgListWnd.ScrollToBegin();				/*---*/ UIPdaMsgListWnd2.ScrollToBegin();
 
 	pItem->InitCharacter(smart_cast<CInventoryOwner*>(pSender));
 	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
@@ -917,7 +920,7 @@ void CUIMainIngameWnd::ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, 
 	pItem->SetData(p);
 
 
-	UIPdaMsgListWnd.Show(true);	
+	UIPdaMsgListWnd.Show(true);	/*---*/ UIPdaMsgListWnd2.Show(true);
 
 	if(msg == ePdaMsgInfo)
 	{
@@ -940,6 +943,15 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 	{
         CUIPdaMsgListItem* item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd.GetItem(index));
         item->SetDelay(iDelay);
+
+		index = UIPdaMsgListWnd2.FindItemWithValue(iValue);
+
+#ifdef DEBUG
+		R_ASSERT2(index >= 0, "Item exist only in first list");
+#endif
+		item = smart_cast<CUIPdaMsgListItem*>(UIPdaMsgListWnd2.GetItem(index));
+        item->SetDelay(iDelay);
+
 		return true;
 	}
 
@@ -951,18 +963,38 @@ bool CUIMainIngameWnd::SetDelayForPdaMessage(int iValue, int iDelay){
 CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, int iDelay)
 {
 	CUIPdaMsgListItem* pItem = NULL;
+	CUIPdaMsgListItem* pItem2 = NULL;
+
 	pItem = xr_new<CUIPdaMsgListItem>(iDelay);
+	pItem2 = xr_new<CUIPdaMsgListItem>(iDelay);
+
 	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
+	UIPdaMsgListWnd2.AddItem<CUIListItem>(pItem2, 0); 
+
 	UIPdaMsgListWnd.ScrollToBegin();
+	UIPdaMsgListWnd2.ScrollToBegin();
 
 	CUIColorAnimatorWrapper *p = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
+	CUIColorAnimatorWrapper *p2 = xr_new<CUIColorAnimatorWrapper>("ui_main_msgs");
+
 	R_ASSERT(p);
+	R_ASSERT(p2);
+
 	p->Cyclic(false);
+	p2->Cyclic(false);
+
 //	p->SetColorToModify(&pItem->UIMsgText.GetColorRef());
 	pItem->SetData(p);
+	pItem2->SetData(p2);
+
 	pItem->SetValue(iId);
+	pItem2->SetValue(iId);
+
 	pItem->UIMsgText.MoveWindow(0, 0);
+	pItem2->UIMsgText.MoveWindow(0, 0);
+
 	pItem->UIMsgText.SetText(message);
+	pItem2->UIMsgText.SetText(message);
 
 	return pItem;
 }

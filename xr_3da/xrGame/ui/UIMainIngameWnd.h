@@ -114,7 +114,8 @@ protected:
 	//иконка, показывающая количество активных PDA
 	CUIStatic			UIPdaOnline;
 	//список входящих сообщений PDA
-	CUIListWnd			UIPdaMsgListWnd;
+	CUIListWnd			UIPdaMsgListWnd;	
+	CUIListWnd			UIPdaMsgListWnd2; // We will draw this list if MainInGameWnd is hided
 	// Список входящих информационных сообщений
 	CUIListWnd			UIInfoMessages;
 	

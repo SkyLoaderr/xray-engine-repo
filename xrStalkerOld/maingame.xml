@@ -29,10 +29,10 @@
 	</static>
 
 	<!-- tips static -->
+	
 	<quick_info x="1" y="700" width="1022" height="50">
-		<!-- id numbers must be same with EActorAction enumeration members, -->
-		<!-- which located in actor_defs.h file -->
-		<tip id="0">A</tip> <!-- no action -->
+	<!-- id numbers must be same with EActorAction enumeration members, -->
+	<!-- which located in actor_defs.h file -->		
 		<tip id="1">Pickup item (default E)</tip>
 		<tip id="2">Talk with the person (default E)</tip>
 		<tip id="3">Open door (default E)</tip>
@@ -40,7 +40,11 @@
 	</quick_info>
 	
 	<!-- PDA Message List-->
-	<list x="15" y="325" width="525" height="420" item_height = "70"></list>
+	<pda_msg_list_sp x="15" y="465" width="525" height="220" item_height = "70"></pda_msg_list_sp>
+	<pda_msg_list_sp2 x="100" y="700" width="824" height="68" item_height = "70"></pda_msg_list_sp2>
+	<pda_msg_list_mp x="15" y="325" width="525" height="420" item_height="15" fade="3000"></pda_msg_list_mp>
+	
+	<!--list x="15" y="325" width="525" height="420" item_height = "70"></list -->
 
 	<!-- PDA Message List-->
 	<info_list x="512" y="615" width="525" height="120" item_height = "20" fade="2000">
