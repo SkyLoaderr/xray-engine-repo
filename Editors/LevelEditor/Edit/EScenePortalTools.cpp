@@ -25,8 +25,8 @@ void EScenePortalTools::RemoveControls()
 //----------------------------------------------------
 
 void EScenePortalTools::FillProp(LPCSTR pref, PropItemVec& items)
-{
-	PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Draw Simple Model"),&m_Flags,			flDrawSimpleModel);
-	inherited::FillProp(pref, items);
+{                      
+	PHelper().CreateFlag32(items, PHelper().PrepareKey(pref,"Common\\Draw Simple Model"),&m_Flags,			flDrawSimpleModel);
+	inherited::FillProp	(pref, items);
 }
 

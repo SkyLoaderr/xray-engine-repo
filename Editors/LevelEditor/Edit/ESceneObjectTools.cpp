@@ -62,24 +62,24 @@ void ESceneObjectTools::FillAppendRandomProperties()
 {
     TProperties* m_Props = TProperties::CreateModalForm("Random Append Properties",true);
 
-    AnsiString temp;
-   	temp					= _ListToSequence(m_AppendRandomObjects);
+    ref_str temp;
+   	temp						= _ListToSequence(m_AppendRandomObjects).c_str();
 
     PropValue* V;           
 
-    PropItemVec items;
-    PHelper.CreateFlag<Flags32>	(items,"Scale",	&m_Flags, flAppendRandomScale);
-    PHelper.CreateVector		(items,"Scale\\Minimum",&m_AppendRandomMinScale,0.001f,1000.f,0.001f,3);
-    PHelper.CreateVector		(items,"Scale\\Maximum",&m_AppendRandomMaxScale,0.001f,1000.f,0.001f,3);
-    PHelper.CreateFlag<Flags32>	(items,"Rotate",&m_Flags, flAppendRandomRotation);
-    PHelper.CreateAngle3		(items,"Rotate\\Minimum",&m_AppendRandomMinRotation);
-    PHelper.CreateAngle3		(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
-    V=PHelper.CreateChoose		(items,"Objects",&temp,smObject); V->Owner()->subitem = 32;
+    PropItemVec items; 
+    PHelper().CreateFlag32		(items,"Scale",	&m_Flags, flAppendRandomScale);
+    PHelper().CreateVector		(items,"Scale\\Minimum",&m_AppendRandomMinScale,0.001f,1000.f,0.001f,3);
+    PHelper().CreateVector		(items,"Scale\\Maximum",&m_AppendRandomMaxScale,0.001f,1000.f,0.001f,3);
+    PHelper().CreateFlag32		(items,"Rotate",&m_Flags, flAppendRandomRotation);
+    PHelper().CreateAngle3		(items,"Rotate\\Minimum",&m_AppendRandomMinRotation);
+    PHelper().CreateAngle3		(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
+    V=PHelper().CreateChoose		(items,"Objects",&temp,smObject); V->Owner()->subitem = 32;
 
     m_Props->AssignItems		(items);
     
     if (mrOk==m_Props->ShowPropertiesModal()){
-    	_SequenceToList			(m_AppendRandomObjects,temp.c_str());
+    	_SequenceToList			(m_AppendRandomObjects,*temp);
 		Scene->UndoSave			();
     }
         

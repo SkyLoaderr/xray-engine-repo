@@ -66,7 +66,7 @@ class EDetailManager:
 
     DetailSlot&			GetSlot			(u32 sx, u32 sz);
 
-    void __fastcall		OnDensityChange	(PropValue* prop);
+    void __stdcall 		OnDensityChange	(PropValue* prop);
 protected:
     // controls
     virtual void 		CreateControls			();
@@ -160,6 +160,5 @@ public:
     void				ClearBase				();
 
 };
-extern float psDetailDensity;
 #endif /*_INCDEF_DetailObjects_H_*/
 

@@ -153,8 +153,8 @@ bool EParticlesObject::Load(IReader& F)
 
     R_ASSERT(F.find_chunk(CPSOBJECT_CHUNK_REFERENCE));
     F.r_stringZ(m_RefName);
-    if (!Compile(m_RefName.c_str())){
-        ELog.DlgMsg( mtError, "EParticlesObject: '%s' not found in library", m_RefName.c_str() );
+    if (!Compile(*m_RefName)){
+        ELog.DlgMsg( mtError, "EParticlesObject: '%s' not found in library", *m_RefName );
         return false;
     }
 
@@ -176,7 +176,7 @@ void EParticlesObject::Save(IWriter& F)
 
 //.    VERIFY(m_PE.GetDefinition());
 	F.open_chunk	(CPSOBJECT_CHUNK_REFERENCE);
-    F.w_stringZ		(m_RefName.c_str());
+    F.w_stringZ		(m_RefName);
 	F.close_chunk	();
 /*
 	F.open_chunk	(CPSOBJECT_CHUNK_PARAMS);
@@ -198,7 +198,7 @@ bool EParticlesObject::ExportGame(SExportStreams& F)
 {
 	SExportStreamItem& I	= F.pe_static;
 	I.stream.open_chunk		(I.chunk++);
-    I.stream.w_stringZ		(m_RefName.c_str());
+    I.stream.w_stringZ		(m_RefName);
     I.stream.w				(&_Transform(),sizeof(Fmatrix));
     I.stream.close_chunk	();
     return true;
@@ -220,16 +220,16 @@ bool EParticlesObject::Compile(LPCSTR ref_name)
     return false;
 }
 
-void __fastcall EParticlesObject::OnRefChange(PropValue* V)
+void EParticlesObject::OnRefChange(PropValue* V)
 {
-	if (!Compile(m_RefName.c_str())){
-        ELog.Msg( mtError, "Can't compile particle system '%s'", m_RefName.c_str() );
+	if (!Compile(*m_RefName)){
+        ELog.Msg( mtError, "Can't compile particle system '%s'", *m_RefName );
     }else{
         UI->Command(COMMAND_REFRESH_PROPERTIES);
     }
 }
 
-void __fastcall EParticlesObject::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void EParticlesObject::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -244,10 +244,10 @@ void EParticlesObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V;
-    V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref, "Reference"),&m_RefName, smParticles);
+    V=PHelper().CreateChoose	(items,PHelper().PrepareKey(pref, "Reference"),&m_RefName, smParticles);
     V->OnChangeEvent		= OnRefChange;
 	ButtonValue* B;
-    B=PHelper.CreateButton	(items, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop",0);
+    B=PHelper().CreateButton	(items, PHelper().PrepareKey(pref,"Controls"), 	"Play,Stop",0);
     B->OnBtnClickEvent		= OnControlClick;
 }
 //----------------------------------------------------

@@ -233,7 +233,7 @@ void CSceneObject::GetFullTransformToLocal( Fmatrix& m )
 CEditableObject* CSceneObject::UpdateReference()
 {
 	Lib.RemoveEditObject(m_pReference);
-	m_pReference	= (m_ReferenceName.IsEmpty())?0:Lib.CreateEditObject(m_ReferenceName.c_str());
+	m_pReference	= (m_ReferenceName.size())?Lib.CreateEditObject(*m_ReferenceName):0;
     return m_pReference;
 }
 
@@ -256,7 +256,7 @@ void CSceneObject::OnFrame()
     }
 }
 
-void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
+void CSceneObject::ReferenceChange(PropValue* sender)
 {
 	UpdateReference	();
 }
@@ -264,7 +264,7 @@ void __fastcall CSceneObject::ReferenceChange(PropValue* sender)
 void CSceneObject::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp	(pref,items);
-    PropValue* V		= PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,"Reference"),		&m_ReferenceName, smObject); 
+    PropValue* V		= PHelper().CreateChoose	(items,PHelper().PrepareKey(pref,"Reference"),		&m_ReferenceName, smObject); 
     V->OnChangeEvent 	= ReferenceChange;
     if (IsDynamic())
 	    inherited::AnimationFillProp(pref,items);
@@ -280,7 +280,7 @@ bool CSceneObject::GetSummaryInfo(SSceneSummary* inf)
 void CSceneObject::OnShowHint(AStringVec& dest)
 {
 	inherited::OnShowHint(dest);
-    dest.push_back(AnsiString("Reference: ")+m_ReferenceName);
+    dest.push_back(AnsiString("Reference: ")+*m_ReferenceName);
     dest.push_back(AnsiString("-------"));
     float dist			= flt_max;
     SRayPickInfo pinf;

@@ -78,6 +78,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall tvItemsExit(TObject *Sender);
 private:	// User declarations
 	static TfrmDOShuffle* form;
     TElTreeItem* FDragItem;
@@ -86,7 +87,7 @@ private:	// User declarations
 	EDetailManager* DM;
 
     TProperties* m_ObjectProps;
-    void __fastcall OnObjectPropsModified();
+    void __stdcall  OnObjectPropsModified();
     
     xr_vector<TfrmOneColor*> color_indices;
 
@@ -101,6 +102,10 @@ private:	// User declarations
     bool bObjectModif;
 
     void ClearIndexForms(); 
+
+    bool bTHMLockRepaint;
+public:		
+	void OnItemFocused	(TElTree* tv);
 public:		// User declarations
     __fastcall TfrmDOShuffle(TComponent* Owner, EDetailManager* dm_tools);
 // static function

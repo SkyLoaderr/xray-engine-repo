@@ -46,7 +46,7 @@ void CGlow::OnDeviceCreate()
 {
 	if (m_bDefLoad) return;
 	// создать заново shaders
-	if (!m_TexName.IsEmpty()&&!m_ShaderName.IsEmpty()) m_GShader.create(m_ShaderName.c_str(),m_TexName.c_str());
+	if (m_TexName.size()&&m_ShaderName.size()) m_GShader.create(*m_ShaderName,*m_TexName);
 	m_bDefLoad = true;
 }
 
@@ -57,7 +57,7 @@ void CGlow::OnDeviceDestroy()
 	m_GShader.destroy();
 }
 
-void __fastcall	CGlow::ShaderChange(PropValue* value)
+void CGlow::ShaderChange(PropValue* value)
 {
 	OnDeviceDestroy();
 }
@@ -168,14 +168,12 @@ void CGlow::Save(IWriter& F){
 	F.w_float   		(m_fRadius);
 	F.close_chunk	();
 
-    if (!m_ShaderName.IsEmpty()){
-		F.open_chunk(GLOW_CHUNK_SHADER);
-	    F.w_stringZ 	(m_ShaderName.c_str());
-		F.close_chunk();
-    }
+    F.open_chunk	(GLOW_CHUNK_SHADER);
+    F.w_stringZ 	(m_ShaderName);
+    F.close_chunk	();
 
 	F.open_chunk	(GLOW_CHUNK_TEXTURE);
-	F.w_stringZ		(m_TexName.c_str());
+	F.w_stringZ		(m_TexName);
 	F.close_chunk	();
 
 	F.open_chunk	(GLOW_CHUNK_FLAGS);
@@ -188,16 +186,16 @@ void CGlow::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp(pref, items);
     PropValue* V=0;
-    V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,"Texture"), 		&m_TexName,		smTexture);	V->OnChangeEvent=ShaderChange;
-    V=PHelper.CreateChoose	(items,FHelper.PrepareKey(pref,"Shader"),		&m_ShaderName,	smEShader);	V->OnChangeEvent=ShaderChange;
-    PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
-//.	PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
+    V=PHelper().CreateChoose	(items,PHelper().PrepareKey(pref,"Texture"), 		&m_TexName,		smTexture);	V->OnChangeEvent=ShaderChange;
+    V=PHelper().CreateChoose	(items,PHelper().PrepareKey(pref,"Shader"),		&m_ShaderName,	smEShader);	V->OnChangeEvent=ShaderChange;
+    PHelper().CreateFloat		(items,PHelper().PrepareKey(pref,"Radius"),		&m_fRadius,		0.01f,10000.f);
+//.	PHelper().CreateFlag<Flags8>(items,PHelper().PrepareKey(pref,"Fixed size"),	&m_Flags, 		gfFixedSize);
 }
 //----------------------------------------------------
 
 bool CGlow::GetSummaryInfo(SSceneSummary* inf)
 {
-	if (!m_TexName.IsEmpty()) inf->textures.insert(ChangeFileExt(m_TexName,"").LowerCase());
+	if (m_TexName.size()) 	inf->textures.insert(ChangeFileExt(*m_TexName,"").LowerCase().c_str());
 	inf->glow_cnt++;
 	return true;
 }

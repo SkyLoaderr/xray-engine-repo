@@ -108,7 +108,7 @@ public:
 #ifdef _EDITOR
 	AnsiString						play_animation;
 	IRender_Visual*		   			visual;
-    void __fastcall					OnChangeVisual	(PropValue* sender);
+    void __stdcall					OnChangeVisual	(PropValue* sender);
     void 							PlayAnimation	(LPCSTR name);
 #endif
 public:
@@ -138,7 +138,7 @@ private:
 public:
 #ifdef _EDITOR
 	CObjectAnimator*	   			animator;
-    void __fastcall					OnChangeMotion	(PropValue* sender);
+    void __stdcall 					OnChangeMotion	(PropValue* sender);
     void 							PlayMotion		(LPCSTR name=0);
 #endif
 public:

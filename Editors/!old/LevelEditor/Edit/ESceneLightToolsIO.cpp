@@ -92,10 +92,10 @@ void ESceneLightTools::Save(IWriter& F)
     F.close_chunk	();
 
 	F.open_chunk	(CHUNK_LCONTROLS);
-	ATokenIt		_I 	= lcontrols.begin();
-    ATokenIt		_E 	= lcontrols.end();
+	RTokenVecIt		_I 	= lcontrols.begin();
+    RTokenVecIt		_E 	= lcontrols.end();
     for (;_I!=_E; _I++){
-        F.w_stringZ	(_I->name.c_str());
+        F.w_stringZ	(_I->name);
         F.w_u32		(_I->id);
     }
     F.close_chunk	();

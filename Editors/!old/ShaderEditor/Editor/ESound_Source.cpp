@@ -148,7 +148,7 @@ void ESoundSource::Save(IWriter& F)
     F.w_chunk		(SOUND_CHUNK_TYPE,&m_Type,sizeof(m_Type));
 
     F.open_chunk	(SOUND_CHUNK_SOURCE_NAME);
-    F.w_stringZ		(m_WAVName.c_str());
+    F.w_stringZ		(m_WAVName);
     F.close_chunk	();
 
     F.w_chunk		(SOUND_CHUNK_SOURCE_FLAGS,&m_Flags,sizeof(m_Flags));
@@ -158,19 +158,19 @@ void ESoundSource::Save(IWriter& F)
 
 //----------------------------------------------------
 
-void __fastcall	ESoundSource::OnChangeWAV	(PropValue* prop)
+void ESoundSource::OnChangeWAV	(PropValue* prop)
 {
 	BOOL bPlay 		= !!m_Source.feedback;
 	ResetSource		();
 	if (bPlay) 		Play();
 }
 
-void __fastcall	ESoundSource::OnChangeSource	(PropValue* prop)
+void ESoundSource::OnChangeSource	(PropValue* prop)
 {
 	m_Source.set_params			(&m_Params);
 }
 
-void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
+void ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -185,27 +185,27 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 	ButtonValue* B;
-    B=PHelper.CreateButton		(values, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop",0);
+    B=PHelper().CreateButton		(values, PHelper().PrepareKey(pref,"Controls"), 	"Play,Stop",0);
     B->OnBtnClickEvent			= OnControlClick;
     PropValue* V;
-    V=PHelper.CreateChoose		(values,FHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
+    V=PHelper().CreateChoose		(values,PHelper().PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
     V->OnChangeEvent			= OnChangeWAV;
-	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
+	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
+	V=PHelper().CreateFloat		(values,PHelper().PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
     V->OnChangeEvent			= OnChangeSource;
-//	V=PHelper.CreateFlag32		(values,FHelper.PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
+//	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
 //    V->OnChangeEvent			= OnChangeSource;
 }
 //----------------------------------------------------
 
 bool ESoundSource::GetSummaryInfo(SSceneSummary* inf)
 {
-	if (!m_WAVName.IsEmpty()) inf->waves.insert(m_WAVName);
+	if (m_WAVName.size()) inf->waves.insert(*m_WAVName);
     inf->sound_source_cnt++;
 	return true;
 }
@@ -232,7 +232,7 @@ void ESoundSource::OnFrame()
 void ESoundSource::ResetSource()
 {
 	m_Source.destroy();
-	if (!m_WAVName.IsEmpty()) m_Source.create	(1,m_WAVName.c_str());
+	if (m_WAVName.size()) m_Source.create	(1,*m_WAVName);
 	m_Source.set_params(&m_Params);
 }
 
@@ -246,7 +246,7 @@ bool ESoundSource::ExportGame(SExportStreams& F)
 {
 	SExportStreamItem& I	= F.sound_static;
 	I.stream.open_chunk		(I.chunk++);
-    I.stream.w_stringZ		(m_WAVName.c_str());
+    I.stream.w_stringZ		(m_WAVName);
     I.stream.w_fvector3		(m_Params.position);
     I.stream.w_float		(m_Params.volume);
     I.stream.w_float		(m_Params.freq);

@@ -438,11 +438,11 @@ int ESceneAIMapTools::SelectionCount(bool testflag)
 }
 
 void ESceneAIMapTools::FillProp(LPCSTR pref, PropItemVec& items)
-{
-    PHelper.CreateFlag<Flags32>	(items, FHelper.PrepareKey(pref,"Common\\Draw Nodes"),		&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
-    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Common\\Visible Radius"),	&m_VisRadius, 	10, 250);
-    PHelper.CreateU32			(items, FHelper.PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);
-    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Up"),			&m_Params.fCanUP, 	0.f, 10.f);
-    PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Params\\Can Down"),		&m_Params.fCanDOWN, 0.f, 10.f);
+{                               
+    PHelper().CreateFlag32		(items, PHelper().PrepareKey(pref,"Common\\Draw Nodes"),		&m_Flags, 		flHideNodes, 0,0, FlagValueCustom::flInvertedDraw);
+    PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,"Common\\Visible Radius"),	&m_VisRadius, 	10, 250);
+    PHelper().CreateU32			(items, PHelper().PrepareKey(pref,"Params\\Brush Size"),		&m_BrushSize, 	1, 100);
+    PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,"Params\\Can Up"),			&m_Params.fCanUP, 	0.f, 10.f);
+    PHelper().CreateFloat			(items, PHelper().PrepareKey(pref,"Params\\Can Down"),		&m_Params.fCanDOWN, 0.f, 10.f);
 }
 

@@ -38,7 +38,7 @@ bool __fastcall TfrmDOShuffle::Run()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmDOShuffle::OnObjectPropsModified()
+void TfrmDOShuffle::OnObjectPropsModified()
 {
 	bObjectModif = true;
 //	TElTreeItem* N 		= tvItems->Selected;
@@ -49,7 +49,8 @@ void __fastcall TfrmDOShuffle::OnObjectPropsModified()
 
 void __fastcall TfrmDOShuffle::FormCreate(TObject *Sender)
 {
-	m_ObjectProps = TProperties::CreateForm("Objects",paObjectProps,alClient,OnObjectPropsModified);
+	m_ObjectProps 		= TProperties::CreateForm("Objects",paObjectProps,alClient,OnObjectPropsModified);
+    bTHMLockRepaint		= false;
 }
 //---------------------------------------------------------------------------
 
@@ -88,8 +89,13 @@ void TfrmDOShuffle::FillData()
 		OneColor->Parent = form->sbDO;
 	    OneColor->ShowIndex(this);
         OneColor->mcColor->Brush->Color = (TColor)rgb2bgr(it->first);
-        for (DOIt do_it=it->second.begin(); do_it!=it->second.end(); do_it++)
-	        OneColor->AppendObject((*do_it)->GetName());
+        for (DOIt do_it=it->second.begin(); do_it!=it->second.end(); do_it++){
+        	EDetail* dd = 0;
+            for (CDetailManager::DetailIt d_it=DM->objects.begin(); d_it!=DM->objects.end(); d_it++)
+            	if (0==strcmp(((EDetail*)(*d_it))->GetName(),(*do_it)->GetName())){ dd = (EDetail*)*d_it; break; }
+            VERIFY(dd);
+	        OneColor->AppendObject(dd->GetName(),dd);
+        }
     }
     // redraw
     tvItems->IsUpdating = false;
@@ -173,24 +179,30 @@ void __fastcall TfrmDOShuffle::FormClose(TObject *Sender, TCloseAction &Action)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
+void TfrmDOShuffle::OnItemFocused(TElTree* tv)
 {
-	TElTreeItem* Item = tvItems->Selected;
+	TElTreeItem* Item 		= tv->Selected;
     xr_delete(m_Thm);
 
     PropItemVec items;
 	if (Item&&Item->Data){
 		AnsiString nm 		= Item->Text;
-        EImageThumbnail* T 	= ImageLib.CreateThumbnail(nm.c_str(),EImageThumbnail::ETObject);
+        m_Thm			 	= ImageLib.CreateThumbnail(nm.c_str(),EImageThumbnail::ETObject);
         EDetail* dd			= (EDetail*)Item->Data;
-		PHelper.CreateCaption		(items,"Ref Name",	dd->GetName());
-		PHelper.CreateFloat			(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
-		PHelper.CreateFloat			(items,"Min Scale",	&dd->m_fMinScale, 		0.1f, 100.0f);
-		PHelper.CreateFloat			(items,"Max Scale",	&dd->m_fMaxScale,		0.1f, 100.f);
-		PHelper.CreateFlag<Flags32>	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
+		PHelper().CreateCaption	(items,"Ref Name",	dd->GetName());
+		PHelper().CreateFloat	(items,"Density",	&dd->m_fDensityFactor, 	0.1f, 1.0f);
+		PHelper().CreateFloat	(items,"Min Scale",	&dd->m_fMinScale, 		0.1f, 100.0f);
+		PHelper().CreateFloat	(items,"Max Scale",	&dd->m_fMaxScale,		0.1f, 100.f);
+		PHelper().CreateFlag32	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
     }
     m_ObjectProps->AssignItems	(items);
-    paImage->Repaint			();
+    if (!bTHMLockRepaint) 	paImage->Repaint();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
+{
+	OnItemFocused		(tvItems);
 }
 //---------------------------------------------------------------------------
 
@@ -371,6 +383,14 @@ void __fastcall TfrmDOShuffle::fsStorageRestorePlacement(TObject *Sender)
 void __fastcall TfrmDOShuffle::fsStorageSavePlacement(TObject *Sender)
 {
 	m_ObjectProps->SaveParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmDOShuffle::tvItemsExit(TObject *Sender)
+{
+    bTHMLockRepaint		= true;
+	tvItems->Selected = 0;
+    bTHMLockRepaint		= false;
 }
 //---------------------------------------------------------------------------
 

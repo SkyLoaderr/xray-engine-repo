@@ -37,7 +37,7 @@ void TUI_ControlSectorAdd::AddMesh(){
     if (!sector) return;
     SRayPickInfo pinf;
     if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
-		sector->AddMesh(pinf.s_obj,pinf.e_mesh);
+		sector->AddMesh(dynamic_cast<CSceneObject*>(pinf.s_obj),pinf.e_mesh);
 }
 
 void TUI_ControlSectorAdd::DelMesh(){
@@ -46,7 +46,7 @@ void TUI_ControlSectorAdd::DelMesh(){
     if (!sector) return;
     SRayPickInfo pinf;
     if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0))
-		sector->DelMesh(pinf.s_obj,pinf.e_mesh);
+		sector->DelMesh(dynamic_cast<CSceneObject*>(pinf.s_obj),pinf.e_mesh);
 }
 
 bool TUI_ControlSectorAdd::AddSector(){
@@ -55,7 +55,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 	CSector* _O = xr_new<CSector>((LPVOID)0,namebuffer);
     SRayPickInfo pinf;
     if (Scene->RayPickObject( pinf.inf.range, UI->m_CurrentRStart,UI->m_CurrentRNorm, OBJCLASS_SCENEOBJECT, &pinf, 0)&&
-    	(_O->AddMesh(pinf.s_obj,pinf.e_mesh)))
+    	(_O->AddMesh(dynamic_cast<CSceneObject*>(pinf.s_obj),pinf.e_mesh)))
     {
         Scene->SelectObjects(false,OBJCLASS_SECTOR);
         Scene->AppendObject( _O );

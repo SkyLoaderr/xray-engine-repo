@@ -75,13 +75,13 @@ void ESoundEnvironment::Save(IWriter& F)
 	F.close_chunk	();
 
     F.open_chunk	(SOUND_CHUNK_ENV_REFS);
-    F.w_stringZ		(m_EnvInner.c_str());
-    F.w_stringZ		(m_EnvOuter.c_str());
+    F.w_stringZ		(m_EnvInner);
+    F.w_stringZ		(m_EnvOuter);
     F.close_chunk	();
 }
 //----------------------------------------------------
 
-void __fastcall ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
+void ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
 {
 	UI->Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
 }
@@ -91,9 +91,9 @@ void ESoundEnvironment::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref, values);
 	PropValue* P;
-    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Environment Inner"),	&m_EnvInner, smSoundEnv);
+    P=PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,"Environment Inner"),	&m_EnvInner, smSoundEnv);
     P->OnChangeEvent			= OnChangeEnvs;
-    P=PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,"Environment Outer"),	&m_EnvOuter, smSoundEnv);
+    P=PHelper().CreateChoose		(values, PHelper().PrepareKey(pref,"Environment Outer"),	&m_EnvOuter, smSoundEnv);
     P->OnChangeEvent			= OnChangeEnvs;
 }
 //----------------------------------------------------

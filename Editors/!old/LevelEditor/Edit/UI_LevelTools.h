@@ -42,8 +42,8 @@ class CLevelTools: public CToolsCustom{
     void __fastcall 	RealSetTarget   	(EObjClass tgt,bool bForced=false);
 
     TProperties* 		m_Props;
-    void __fastcall 	OnPropsModified		();
-    void __fastcall 	OnPropsClose		();
+    void __stdcall  	OnPropsModified		();
+    void __stdcall  	OnPropsClose		();
 
     void				RealUpdateProperties();
     void				RealUpdateObjectList();

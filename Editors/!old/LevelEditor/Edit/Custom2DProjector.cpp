@@ -20,10 +20,10 @@ CCustom2DProjector::CCustom2DProjector()
     shader_blended	= 0;
 }
 
-bool CCustom2DProjector::LoadImage(AnsiString nm)
+bool CCustom2DProjector::LoadImage(LPCSTR nm)
 {
 	name			= nm;
-    ImageLib.LoadTextureData(name.c_str(),data,w,h);
+    ImageLib.LoadTextureData(*name,data,w,h);
     return Valid();
 }
 
@@ -80,8 +80,8 @@ void CCustom2DProjector::CreateShader()
 {
 	DestroyShader		();
 	if (Valid()){
-		shader_blended.create	("editor\\do_base",name.c_str());
-		shader_overlap.create	("default",name.c_str());
+		shader_blended.create	("editor\\do_base",*name);
+		shader_overlap.create	("default",*name);
 		geom.create				(FVF::F_V,RCache.Vertex.Buffer(),0);
 	}
 }
@@ -93,9 +93,9 @@ void CCustom2DProjector::DestroyShader()
 	shader_overlap.destroy();
 }
 
-void __fastcall	CCustom2DProjector::OnTextureChange	(PropValue* prop)
+void CCustom2DProjector::OnTextureChange	(PropValue* prop)
 {
-	LoadImage				(name.c_str());
+	LoadImage				(*name);
 	DestroyShader			();
     CreateShader			();
 }
@@ -103,7 +103,7 @@ void __fastcall	CCustom2DProjector::OnTextureChange	(PropValue* prop)
 void CCustom2DProjector::FillProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* P;
-    P=PHelper.CreateChoose	(items, FHelper.PrepareKey(pref,"Base Texture"),	&name, smTexture);
+    P=PHelper().CreateChoose(items, PHelper().PrepareKey(pref,"Base Texture"),	&name, smTexture);
     P->OnChangeEvent		= OnTextureChange;
 }
 

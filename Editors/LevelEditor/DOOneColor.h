@@ -40,6 +40,8 @@ __published:	// IDE-managed Components
           int Y);
 	void __fastcall tvDOListStartDrag(TObject *Sender,
           TDragObject *&DragObject);
+	void __fastcall tvDOListExit(TObject *Sender);
+	void __fastcall tvDOListItemFocused(TObject *Sender);
 private:	// User declarations
 	TfrmDOShuffle* m_Parent;
 public:
@@ -50,7 +52,7 @@ public:		// User declarations
     void __fastcall ShowIndex(TfrmDOShuffle* parent);
     void __fastcall HideIndex();
     void __fastcall RemoveObject(LPCSTR text);
-    void __fastcall AppendObject(LPCSTR text);
+    void __fastcall AppendObject(LPCSTR text, LPVOID data);
 };
 //---------------------------------------------------------------------------
 #endif

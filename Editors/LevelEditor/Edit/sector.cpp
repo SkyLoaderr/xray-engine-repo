@@ -85,6 +85,7 @@ bool CSector::FindSectorItem(CSceneObject* o, CEditableMesh* m, SItemIt& it){
 
 bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M)
 {
+	VERIFY(O&&M);
 	SItemIt it;
 	if (!(O->IsStatic()||O->IsMUStatic())) return false;
 	if (!PortalUtils.FindSector(O,M))
@@ -98,6 +99,7 @@ bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M)
 
 int CSector::DelMesh	(CSceneObject* O, CEditableMesh* M)
 {
+	VERIFY(O&&M);
 	int res = 0;
 	SItemIt it;
     if (FindSectorItem(O, M, it)){
@@ -442,13 +444,13 @@ void CSector::Save(IWriter& F){
 
 void CSector::FillProp(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProp(pref,items);
-    PHelper.CreateFColor(items, FHelper.PrepareKey(pref,"Color"), &sector_color);
+	inherited::FillProp(pref,items);        
+    PHelper().CreateFColor(items, PHelper().PrepareKey(pref,"Color"), &sector_color);
     int faces, objects, meshes;
     GetCounts(&objects,&meshes,&faces);
-    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,Name,"Contents\\Objects"), AnsiString(objects).c_str());
-    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,Name,"Contents\\Meshes"), AnsiString(meshes).c_str());
-    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,Name,"Contents\\Faces"), AnsiString(faces).c_str());
+    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Objects"), AnsiString(objects).c_str());
+    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Meshes"), AnsiString(meshes).c_str());
+    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,Name,"Contents\\Faces"), AnsiString(faces).c_str());
 }
 //----------------------------------------------------
 

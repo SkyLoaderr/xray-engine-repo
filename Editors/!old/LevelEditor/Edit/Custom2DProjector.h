@@ -13,9 +13,9 @@ protected:
     TVertVec		mesh;
     ref_geom		geom;
 
-    void __fastcall	OnTextureChange		(PropValue* prop);
+    void __stdcall 	OnTextureChange		(PropValue* prop);
 public:
-    AnsiString		name;
+    ref_str			name;
 public:
                     CCustom2DProjector	();
     IC bool			Valid				(){return (w>0)&&(h>0)&&(!!data.size());}
@@ -24,8 +24,8 @@ public:
     void			Render				(bool blended);
     void			CreateShader		();
     void			DestroyShader		();
-    bool			LoadImage			(AnsiString nm);
-    IC LPCSTR 		GetName				(){ return name.c_str(); }
+    bool			LoadImage			(LPCSTR nm);
+    IC LPCSTR 		GetName				(){ return *name; }
     IC bool 		GetColor			(u32& color, int U, int V){
         if (Valid()&&(U<(int)w)&&(V<(int)h)){
             color 	= data[V*w+U];

@@ -22,7 +22,6 @@
 #include "PropertiesEObject.h"
 #include "MxMenus.hpp"
 #include "ElTreeAdvEdit.hpp"
-#include "ItemList.h"
 #include "MXCtrls.hpp"
 //---------------------------------------------------------------------------
 // refs
@@ -89,8 +88,8 @@ private:	// User declarations
 
 	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1, EItemType type);
 
-    TItemList*				m_Items;
-	void __fastcall 		OnItemFocused	(TElTreeItem* item);
+    IItemList*				m_Items;
+	void __stdcall  		OnItemFocused	(TElTreeItem* item);
 	bool 					GenerateLOD		(TElTreeItem* node);
     bool 					bFormLocked;
     void 					LockForm		()	{ bFormLocked = true;	paCommands->Enabled = false; 	paItems->Enabled = false; 	}
@@ -98,7 +97,7 @@ private:	// User declarations
     void __fastcall 		ResetSelected	();
     void __fastcall 		RefreshSelected	();
 public:		// User declarations
-    void __fastcall 		OnModified		();
+    void __stdcall  		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);
     static bool 			FinalClose		();
     static void __fastcall 	OnRender		();

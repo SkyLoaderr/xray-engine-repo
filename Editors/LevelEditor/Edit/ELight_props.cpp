@@ -11,7 +11,7 @@
 #include "ui_main.h"
 
 //----------------------------------------------------
-void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CLight::OnAutoClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -32,7 +32,7 @@ void __fastcall	CLight::OnAutoClick(PropValue* value, bool& bModif, bool& bSafe)
 	OnPointDataChange(value);
 }
 
-void __fastcall	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe)
+void 	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -43,7 +43,7 @@ void __fastcall	CLight::OnFuzzyGenerateClick(PropValue* value, bool& bModif, boo
     bModif = true;
 }
 
-void __fastcall	CLight::OnFuzzyFlagChange(PropValue* value)
+void 	CLight::OnFuzzyFlagChange(PropValue* value)
 {
 	if (m_Flags.is(ELight::flPointFuzzy)){ 
     	m_FuzzyData		= xr_new<SFuzzyData>();
@@ -54,13 +54,13 @@ void __fastcall	CLight::OnFuzzyFlagChange(PropValue* value)
     }
 }
 
-void __fastcall	CLight::OnFuzzyTypeChange(PropValue* value)
+void 	CLight::OnFuzzyTypeChange(PropValue* value)
 {
 	OnTypeChange		(value);
     OnFuzzyDataChange   (value);
 }
 
-void __fastcall	CLight::OnFuzzyDataChange(PropValue* value)
+void 	CLight::OnFuzzyDataChange(PropValue* value)
 {
     VERIFY(m_FuzzyData);
 	m_FuzzyData->m_Positions.resize	(m_FuzzyData->m_PointCount);
@@ -71,7 +71,7 @@ void __fastcall	CLight::OnFuzzyDataChange(PropValue* value)
 #define X_GRID 14
 #define Y_GRID 6
 
-void __fastcall CLight::OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect)
+void  CLight::OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect)
 {
 //	canvas
     int w = rect.Width();
@@ -113,16 +113,16 @@ void __fastcall CLight::OnAttenuationDraw(PropValue* sender, TCanvas* canvas, co
     }
 }
 
-void __fastcall	CLight::OnPointDataChange(PropValue* value)
+void 	CLight::OnPointDataChange(PropValue* value)
 {
 	UI->Command(COMMAND_UPDATE_PROPERTIES);
 }
 
-bool __fastcall	CLight::OnPointDataTestEqual(PropValue* a, PropValue* b)
+void 	CLight::OnPointDataTestEqual(PropValue* a, PropValue* b, bool& res)
 {
 	CLight* A = (CLight*)(a->tag); VERIFY(A);
 	CLight* B = (CLight*)(b->tag); VERIFY(B);
-	return (fsimilar(A->m_Range,B->m_Range)&&
+	res =	(fsimilar(A->m_Range,B->m_Range)&&
     		fsimilar(A->m_Attenuation0,B->m_Attenuation0)&&
     		fsimilar(A->m_Attenuation1,B->m_Attenuation1)&&
     		fsimilar(A->m_Attenuation2,B->m_Attenuation2)&&
@@ -132,20 +132,20 @@ bool __fastcall	CLight::OnPointDataTestEqual(PropValue* a, PropValue* b)
 void CLight::FillAttProp(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Range"),					&m_Range,		0.1f,1000.f);
+    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Range"),					&m_Range,		0.1f,1000.f);
     V->OnChangeEvent 		= OnPointDataChange;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Constant"),	&m_Attenuation0,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Constant"),	&m_Attenuation0,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Linear"),	&m_Attenuation1,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Linear"),		&m_Attenuation1,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref, "Attenuation\\Quadratic"),	&m_Attenuation2,0.f,1.f,0.0001f,6);
+    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref, "Attenuation\\Quadratic"),	&m_Attenuation2,0.f,1.f,0.0001f,6);
     V->OnChangeEvent 		= OnPointDataChange;
 	ButtonValue* B=0;
-    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Attenuation\\Auto"),"Linear,Quadratic",0);
+    B=PHelper().CreateButton(items,	PHelper().PrepareKey(pref, "Attenuation\\Auto"),"Linear,Quadratic",0);
     B->OnBtnClickEvent		= OnAutoClick;
 	CanvasValue* C=0;
-    C=PHelper.CreateCanvas	(items,	FHelper.PrepareKey(pref, "Attenuation\\Graphic"),	"", 64);
-    C->tag					= this;
+    C=PHelper().CreateCanvas	(items,	PHelper().PrepareKey(pref, "Attenuation\\Graphic"),	"", 64);
+    C->tag					= (int)this;
     C->OnDrawCanvasEvent 	= OnAttenuationDraw;
     C->OnTestEqual			= OnPointDataTestEqual;
 }
@@ -158,31 +158,31 @@ xr_token fuzzy_shape_types[]={
 void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
-//    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
+//    PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp			(pref,items);
     PropValue* 			P=0;
     ButtonValue* 		B=0;
-    P=PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref, "Fuzzy"),				&m_Flags,	ELight::flPointFuzzy);
+    P=PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref, "Fuzzy"),				&m_Flags,	ELight::flPointFuzzy);
     P->OnChangeEvent		= OnFuzzyFlagChange;
 	if (m_Flags.is(ELight::flPointFuzzy)){
         VERIFY				(m_FuzzyData);
-        P=PHelper.CreateS16		(items,	FHelper.PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
+        P=PHelper().CreateS16		(items,	PHelper().PrepareKey(pref, "Fuzzy\\Count"),			&m_FuzzyData->m_PointCount,0,100);
         P->OnChangeEvent		= OnFuzzyDataChange;
-	    B=PHelper.CreateButton	(items,	FHelper.PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
+	    B=PHelper().CreateButton	(items,	PHelper().PrepareKey(pref, "Fuzzy\\Generate"),"Random",0);
     	B->OnBtnClickEvent		= OnFuzzyGenerateClick;
-        P=PHelper.CreateToken<u8>(items,	FHelper.PrepareKey(pref, "Fuzzy\\Shape"),		(u8*)&m_FuzzyData->m_ShapeType,	fuzzy_shape_types);
+        P=PHelper().CreateToken8	(items,	PHelper().PrepareKey(pref, "Fuzzy\\Shape"),		(u8*)&m_FuzzyData->m_ShapeType,	fuzzy_shape_types);
         P->OnChangeEvent		= OnFuzzyTypeChange;
         switch (m_FuzzyData->m_ShapeType){
         case CLight::SFuzzyData::fstSphere: 
-            P=PHelper.CreateFloat(items,	FHelper.PrepareKey(pref, "Fuzzy\\Radius"),		&m_FuzzyData->m_SphereRadius,0.01f,100.f,0.01f,2);
+            P=PHelper().CreateFloat(items,	PHelper().PrepareKey(pref, "Fuzzy\\Radius"),		&m_FuzzyData->m_SphereRadius,0.01f,100.f,0.01f,2);
             P->OnChangeEvent	= OnFuzzyDataChange;
         break;
         case CLight::SFuzzyData::fstBox: 
-            P=PHelper.CreateVector(items,	FHelper.PrepareKey(pref, "Fuzzy\\Half Dimension"),&m_FuzzyData->m_BoxDimension,0.01f,100.f,0.01f,2);
+            P=PHelper().CreateVector(items,	PHelper().PrepareKey(pref, "Fuzzy\\Half Dimension"),&m_FuzzyData->m_BoxDimension,0.01f,100.f,0.01f,2);
             P->OnChangeEvent	= OnFuzzyDataChange;
         break;
         }
@@ -193,14 +193,14 @@ void CLight::FillPointProp(LPCSTR pref, PropItemVec& items)
 void CLight::FillSpotProp(LPCSTR pref, PropItemVec& items)
 {
 	// flags
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
-    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
-//    PHelper.CreateFlag32	(items,	FHelper.PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\LightMap"),	&m_Flags,	ELight::flAffectStatic);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Dynamic"),	&m_Flags,	ELight::flAffectDynamic);
+    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Usage\\Animated"),	&m_Flags,	ELight::flProcedural);
+//    PHelper().CreateFlag32	(items,	PHelper().PrepareKey(pref,"Flags\\Breakable"),&m_Flags,	CLight::flBreaking);
 
 	FillAttProp				(pref,items);
-	PHelper.CreateAngle		(items,	FHelper.PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
-	PHelper.CreateChoose	(items,	FHelper.PrepareKey(pref, "Spot R1\\Texture"),		&m_FalloffTex, 	smTexture);
+	PHelper().CreateAngle		(items,	PHelper().PrepareKey(pref, "Spot R1\\Cone Angle"),	&m_Cone,		0.1f,deg2rad(120),0.01f,2);
+	PHelper().CreateChoose	(items,	PHelper().PrepareKey(pref, "Spot R1\\Texture"),		&m_FalloffTex, 	smTexture);
 }
 //----------------------------------------------------
 
@@ -216,25 +216,25 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
     PropValue* V=0;
 
-    V=PHelper.CreateToken<u32>(items,	FHelper.PrepareKey(pref,"Type"),		(u32*)&m_Type,token_light_type);
+    V=PHelper().CreateToken32	(items,	PHelper().PrepareKey(pref,"Type"),		(u32*)&m_Type,token_light_type);
     V->OnChangeEvent		= OnTypeChange;
-    V=PHelper.CreateFColor	(items,	FHelper.PrepareKey(pref,"Color"),			&m_Color);
+    V=PHelper().CreateFColor	(items,	PHelper().PrepareKey(pref,"Color"),			&m_Color);
 	V->OnChangeEvent		= OnNeedUpdate;
-    V=PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
+    V=PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref,"Brightness"),		&m_Brightness,-3.f,3.f,0.1f,2);
     V->OnChangeEvent 		= OnPointDataChange;
 
     ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
-	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
+	PHelper().CreateRToken32	(items,PHelper().PrepareKey(pref,"Light Control"),	&m_LControl, &lt->lcontrols);
 
     switch(m_Type){
     case ELight::ltPoint:	FillPointProp	(pref, items);	break;
     case ELight::ltSpot: 	FillSpotProp 	(pref, items);	break;
     default: THROW;
     }
-    PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
+    PHelper().CreateBOOL		(items,	PHelper().PrepareKey(pref,"Use In D3D"),		&m_UseInD3D);
 }
 
-void __fastcall	CLight::OnTypeChange(PropValue* value)
+void 	CLight::OnTypeChange(PropValue* value)
 {
 	UI->Command		(COMMAND_UPDATE_PROPERTIES);
 

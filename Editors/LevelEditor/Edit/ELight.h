@@ -31,7 +31,7 @@ public:
     CLAItem*		m_pAnimRef;
 
     // spot light
-    AnsiString		m_FalloffTex;
+    ref_str			m_FalloffTex;
 
     // controller
     u32				m_LControl;
@@ -90,19 +90,19 @@ public:
     SFuzzyData*		m_FuzzyData;
 
     virtual void	OnUpdateTransform();
-    void __fastcall	OnTypeChange	(PropValue* value);
+    void __stdcall 	OnTypeChange	(PropValue* value);
 
-    void __fastcall OnFuzzyFlagChange	(PropValue* value);
-    void __fastcall	OnFuzzyDataChange	(PropValue* value);
-    void __fastcall	OnFuzzyTypeChange	(PropValue* value);
+    void __stdcall  OnFuzzyFlagChange	(PropValue* value);
+    void __stdcall 	OnFuzzyDataChange	(PropValue* value);
+    void __stdcall 	OnFuzzyTypeChange	(PropValue* value);
 
-    void __fastcall	OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe);
-    void __fastcall	OnAutoClick		(PropValue* value, bool& bModif, bool& bSafe);
-    void __fastcall	OnNeedUpdate	(PropValue* value);
+    void __stdcall 	OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnAutoClick		(PropValue* value, bool& bModif, bool& bSafe);
+    void __stdcall 	OnNeedUpdate	(PropValue* value);
 
-    void __fastcall	OnPointDataChange(PropValue* value);
-    void __fastcall OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect);
-    bool __fastcall	OnPointDataTestEqual(PropValue* a, PropValue* b);
+    void __stdcall 	OnPointDataChange(PropValue* value);
+    void __stdcall  OnAttenuationDraw(PropValue* sender, TCanvas* canvas, const TRect& rect);
+    void __stdcall 	OnPointDataTestEqual(PropValue* a, PropValue* b, bool& res);
 protected:
 //    virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
 //    virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}

@@ -38,9 +38,9 @@ protected:
 protected:
     // light control
 	int					lcontrol_last_idx;
-	ATokenVec			lcontrols;
-    void __fastcall 	OnControlAppendClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
-    void __fastcall 	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
+	RTokenVec			lcontrols;
+    void __stdcall  	OnControlAppendClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+    void __stdcall  	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 protected:
     // controls
     virtual void 		CreateControls			();
@@ -74,9 +74,9 @@ public:
 	virtual void 		FillProp				(LPCSTR pref, PropItemVec& items);
 
     AnsiString			GenLightControlName		();
-    xr_a_token*   		FindLightControl		(int id);
-    ATokenIt	   		FindLightControlIt		(LPCSTR name);
-    xr_a_token*   		FindLightControl		(LPCSTR name){ATokenIt it = FindLightControlIt(name); return it!=lcontrols.end()?it:0;}
+    xr_rtoken*   		FindLightControl		(int id);
+    RTokenVecIt	   		FindLightControlIt		(LPCSTR name);
+    xr_rtoken*   		FindLightControl		(LPCSTR name){RTokenVecIt it = FindLightControlIt(name); return it!=lcontrols.end()?it:0;}
     void				AppendLightControl		(LPCSTR name, u32* idx=0);
     void				RemoveLightControl		(LPCSTR name);
 };

@@ -633,17 +633,17 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
     }else{
     	switch (m_Type){
         case ptRPoint:{
-			PHelper.CreateU8	(items, FHelper.PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
-			PHelper.CreateToken<u8>(items, FHelper.PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
+			PHelper().CreateU8	(items, PHelper().PrepareKey(pref,"Respawn Point\\Team"), 	&m_RP_TeamID, 	0,7);
+			PHelper().CreateToken8(items, PHelper().PrepareKey(pref,"Respawn Point\\Type"), 	&m_RP_Type, 	rpoint_type);
         }break;
         case ptEnvMod:{
-        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
-        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
-        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
-        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
-        	PHelper.CreateFloat	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
-        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
-        	PHelper.CreateColor	(items, FHelper.PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
+        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Radius"),			&m_EM_Radius, 	EPS_L,10000.f);
+        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Power"), 			&m_EM_Power, 	0,1.f);
+        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\View Distance"),	&m_EM_ViewDist, EPS_L,10000.f);
+        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Fog Color"), 		&m_EM_FogColor);
+        	PHelper().CreateFloat	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Fog Density"), 	&m_EM_FogDensity, 0.f,10000.f);
+        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\Ambient Color"), 	&m_EM_AmbientColor);
+        	PHelper().CreateColor	(items, PHelper().PrepareKey(pref,"Environment Modificator\\LMap Color"), 	&m_EM_LMapColor);
         }break;
         default: THROW;
         }

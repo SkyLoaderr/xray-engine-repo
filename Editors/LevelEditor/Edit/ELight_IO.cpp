@@ -136,9 +136,9 @@ void CLight::Save(IWriter& F)
 		F.close_chunk();
     }
 
-    if (!m_FalloffTex.IsEmpty()){
+    if (m_FalloffTex.size()){
 	    F.open_chunk(LIGHT_CHUNK_FALLOFF_TEXTURE);
-    	F.w_stringZ	(m_FalloffTex.c_str());
+    	F.w_stringZ	(m_FalloffTex);
 	    F.close_chunk();
     }
 

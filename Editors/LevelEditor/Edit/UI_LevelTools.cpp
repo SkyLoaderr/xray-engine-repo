@@ -258,7 +258,7 @@ void CLevelTools::RealUpdateProperties()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CLevelTools::OnPropsClose()
+void CLevelTools::OnPropsClose()
 {
 	if (m_Props->IsModified()) Scene->UndoSave();
 }

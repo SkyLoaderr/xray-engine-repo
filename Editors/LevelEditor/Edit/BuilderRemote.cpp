@@ -434,7 +434,7 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 
     // scene stats
     b_mu_model& M		= l_mu_models[model_idx];
-    for (u32 mu_vi=0; mu_vi<M.vert_cnt; mu_vi++)
+    for (u32 mu_vi=0; mu_vi<(u32)M.vert_cnt; mu_vi++)
     	l_scene_stat->add_muvert(obj->_Transform(),M.verts[mu_vi]);
     
     return TRUE;
@@ -661,9 +661,9 @@ BOOL SceneBuilder::BuildGlow(CGlow* e)
 // material
     b_material mtl; ZeroMemory(&mtl,sizeof(mtl));
     int mtl_idx;
-    VERIFY(!e->m_ShaderName.IsEmpty());
-	mtl.surfidx		= BuildTexture		(e->m_TexName.c_str());		
-    mtl.shader      = BuildShader		(e->m_ShaderName.c_str());
+    VERIFY			(e->m_ShaderName.size());
+	mtl.surfidx		= BuildTexture		(*e->m_TexName);		
+    mtl.shader      = BuildShader		(*e->m_ShaderName);
     mtl.sector		= CalculateSector	(e->PPosition,e->m_fRadius);
     mtl.shader_xrlc	= -1;
     if ((u16(-1)==mtl.surfidx)||(u16(-1)==mtl.shader)) return FALSE;
@@ -934,7 +934,7 @@ BOOL SceneBuilder::CompileStatic()
 
 // make hemisphere
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene->GetOTools(OBJCLASS_LIGHT));
-    LPCSTR h_control	= lt->FindLightControl(lt->m_HemiControl)->name.c_str();
+    LPCSTR h_control	= *lt->FindLightControl(lt->m_HemiControl)->name;
 	BuildHemiLights		(lt->m_HemiQuality,h_control);
     if (0!=strcmp(LCONTROL_HEMI,h_control))
 		BuildHemiLights	(lt->m_HemiQuality,LCONTROL_HEMI);
@@ -957,9 +957,9 @@ BOOL SceneBuilder::CompileStatic()
         Fvector2Vec			scales;
         boolVec				rotated;
         U32Vec				remap;
-        AStringVec 			textures;
+        RStringVec 			textures;
         for (int k=0; k<(int)l_lods.size(); k++){
-            textures.push_back(*l_lods[k].tex_name);
+            textures.push_back(l_lods[k].tex_name);
 	        UI->ProgressInc	();                    
         }                           
         AnsiString fn 		= m_LevelPath+LEVEL_LODS_TEX_NAME;

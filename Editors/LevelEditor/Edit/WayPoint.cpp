@@ -556,23 +556,18 @@ bool CWayObject::ExportGame(SExportStreams& F){
 }
 //----------------------------------------------------
 
-CWayPoint* CWayObject::FindWayPoint(LPCSTR nm)
+CWayPoint* CWayObject::FindWayPoint(const ref_str& nm)
 {
-	ref_str N 		= nm;
     for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
-    	if ((*it)->m_Name.equal(N)) return *it;
+    	if ((*it)->m_Name.equal(nm)) return *it;
     return 0;
 }
 
-void __fastcall CWayObject::OnWayPointNameAfterEdit(PropItem* sender, LPVOID edit_val)
+void CWayObject::OnWayPointNameAfterEdit(PropValue* sender, ref_str& edit_val, bool& accepted)
 {
-	RTextValue* V 	= (RTextValue*)sender->GetFrontValue();
-	AnsiString* new_name = (AnsiString*)edit_val;
-    if (FindWayPoint(new_name->c_str())){
-        *new_name 	= *V->GetValue();
-    }else{
-	    *new_name 	= new_name->LowerCase();
-    }
+	RTextValue* V 	= dynamic_cast<RTextValue*>(sender);
+    edit_val 		= AnsiString(edit_val.c_str()).LowerCase().c_str();
+    accepted 		= !FindWayPoint(edit_val);
 }
 
 void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)
@@ -583,12 +578,11 @@ void CWayObject::FillProp(LPCSTR pref, PropItemVec& items)
         for(WPIt it=m_WayPoints.begin();it!=m_WayPoints.end();it++){
         	CWayPoint* W = *it;
             if ((*it)->m_bSelected){
-            	PropValue* V 					= PHelper.CreateRText(items, FHelper.PrepareKey(pref,"Way Point\\Name"),&W->m_Name);
-                V->Owner()->OnAfterEditEvent 	= OnWayPointNameAfterEdit;
+            	PHelper().CreateNameCB	(items, PHelper().PrepareKey(pref,"Way Point\\Name"),&W->m_Name,0,0,OnWayPointNameAfterEdit);
                 for (WPLIt l_it=W->m_Links.begin(); l_it!=W->m_Links.end(); l_it++)
-                    PHelper.CreateFloat	(items,	FHelper.PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
+                    PHelper().CreateFloat	(items,	PHelper().PrepareKey(pref,"Way Point\\Links",*(*l_it)->way_point->m_Name),&(*l_it)->probability);
                 for (int k=0; k<32; k++)
-                    PHelper.CreateFlag<Flags32>(items,	FHelper.PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
+                    PHelper().CreateFlag32(items,	PHelper().PrepareKey(pref,"Way Point\\Flags",AnsiString(k).c_str()),	&W->m_Flags,	1<<k);
             }
     	}
     }

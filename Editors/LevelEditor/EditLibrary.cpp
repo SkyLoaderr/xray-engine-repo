@@ -50,10 +50,10 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     DEFINE_INI(fsStorage);
 	m_pEditObject 	= xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);
     m_Props 		= TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
-    m_Items			= TItemList::CreateForm("Objects",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
-    m_Items->OnItemFocused 	= OnItemFocused;
-    m_Items->OnItemRemove 	= Lib.RemoveObject;
-    m_Items->OnItemRename 	= Lib.RenameObject;
+    m_Items			= IItemList::CreateForm("Objects",paItems,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed|IItemList::ilFolderStore);
+    m_Items->SetOnItemFocusedEvent(OnItemFocused);
+    m_Items->SetOnItemRemoveEvent(Lib.RemoveObject);
+    m_Items->SetOnItemRenameEvent(Lib.RenameObject);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ShowEditor()
@@ -158,7 +158,7 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormDestroy(TObject *Sender)
 {
-	TItemList::DestroyForm(m_Items);
+	IItemList::DestroyForm(m_Items);
     TfrmPropertiesEObject::DestroyProperties(m_Props);
 
 	form = 0;
@@ -259,7 +259,7 @@ void TfrmEditLibrary::InitObjects()
     FS_QueryPairIt it=lst.begin();
     FS_QueryPairIt _E=lst.end();
     for(; it!=_E; it++)
-    	LHelper.CreateItem(items,it->first.c_str(),0,0,0);
+    	LHelper().CreateItem(items,it->first.c_str(),0,0,0);
     m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------
@@ -327,7 +327,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 	            ELog.Msg(mtInformation,"Thumbnail successfully created.");
                 AnsiString full_name;
                 FHelper.MakeFullName(node,0,full_name);
-                m_Items->SelectItem(full_name,true,false,true);
+                m_Items->SelectItem(full_name.c_str(),true,false,true);
             }
 	    }else{
             ELog.DlgMsg(mtError,"Can't create thumbnail. Set preview mode.");
@@ -388,7 +388,7 @@ void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
             }
         }
         UnlockForm();
-        m_Items->SelectItem	(m_LastSelection,true,false,true);
+        m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
     }
 }
 //---------------------------------------------------------------------------
@@ -524,7 +524,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
         if (bNeedUpdate){
 			Lib.RefreshLibrary	();
 			InitObjects			();
-            m_Items->SelectItem	(m_LastSelection,true,false,true);
+            m_Items->SelectItem	(m_LastSelection.c_str(),true,false,true);
         }
         // refresh selected
 //		RefreshSelected();
@@ -540,7 +540,7 @@ void TfrmEditLibrary::UpdateObjectProperties()
 
 void __fastcall TfrmEditLibrary::FormActivate(TObject *Sender)
 {
-	m_Items->SetFocus();
+	m_Items->SetILFocus();
 }
 //---------------------------------------------------------------------------
 

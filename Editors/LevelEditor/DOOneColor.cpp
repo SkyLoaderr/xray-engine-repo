@@ -16,7 +16,8 @@ __fastcall TfrmOneColor::TfrmOneColor(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmOneColor::ShowIndex(TfrmDOShuffle* parent){
+void __fastcall TfrmOneColor::ShowIndex(TfrmDOShuffle* parent)
+{
 	m_Parent = parent;
 //	VERIFY(stage);
 //	m_CurStage = stage;
@@ -74,7 +75,7 @@ void __fastcall TfrmOneColor::tvDOListDragOver(TObject *Sender,
 void __fastcall TfrmOneColor::tvDOListDragDrop(TObject *Sender,
       TObject *Source, int X, int Y)
 {
-    tvDOList->Items->Add(0,m_Parent->FDragItem->Text);
+    tvDOList->Items->AddObject(0,m_Parent->FDragItem->Text,m_Parent->FDragItem->Data);
 	m_Parent->bColorIndModif = true;
 }
 //---------------------------------------------------------------------------
@@ -94,9 +95,24 @@ void __fastcall TfrmOneColor::RemoveObject(LPCSTR text){
         }
 }
 
-void __fastcall TfrmOneColor::AppendObject(LPCSTR text){
+void __fastcall TfrmOneColor::AppendObject(LPCSTR text, LPVOID data)
+{
     for ( TElTreeItem* node = tvDOList->Items->GetFirstNode(); node; node = node->GetNext())
         if (node->Text == (WideString)text) return;
-    tvDOList->Items->Add(0,text);
+    tvDOList->Items->AddObject(0,text,data);
 }
+
+void __fastcall TfrmOneColor::tvDOListExit(TObject *Sender)
+{
+    m_Parent->bTHMLockRepaint	= true;
+	tvDOList->Selected 			= 0;
+    m_Parent->bTHMLockRepaint	= false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmOneColor::tvDOListItemFocused(TObject *Sender)
+{
+	m_Parent->OnItemFocused		(tvDOList);
+}
+//---------------------------------------------------------------------------
 

@@ -145,7 +145,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	AppendLightControl(GenLightControlName().c_str());
     UI->Command(COMMAND_UPDATE_PROPERTIES);
@@ -153,7 +153,7 @@ void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& 
 }
 //------------------------------------------------------------------------------
 
-void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bDataModified, bool& bSafe)
+void ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     AnsiString item_name = sender->Owner()->Item()->Text;
@@ -166,7 +166,7 @@ void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, 
             }else if (new_name.IsEmpty()||new_name.Pos("\\")){
             	ELog.DlgMsg(mtError,"Invalid control name.");
 			}else{
-            	ATokenIt it		= FindLightControlIt(item_name.c_str());
+            	RTokenVecIt it	= FindLightControlIt(item_name.c_str());
                 it->rename 		(new_name.c_str());
             }
         }
@@ -181,26 +181,26 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     ButtonValue*	B 	= 0;
     // hemisphere
-    PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),				&m_HemiQuality,		1,2);
-	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Common\\Hemisphere\\Light Control"),	&m_HemiControl, &lcontrols);
+    PHelper().CreateU8	(items,	PHelper().PrepareKey(pref,"Common\\Hemisphere\\Quality"),				&m_HemiQuality,		1,2);
+	PHelper().CreateRToken32(items,PHelper().PrepareKey(pref,"Common\\Hemisphere\\Light Control"),	&m_HemiControl, &lcontrols);
     
     // sun
-    PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),&m_Flags,			flShowSun);
-    PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Quality"),		&m_SunShadowQuality,1,2);
-    PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),	&m_SunShadowDir.x,	-PI_DIV_2,0);
-    PHelper.CreateAngle	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),	&m_SunShadowDir.y,	0,PI_MUL_2);
+    PHelper().CreateFlag32(items, PHelper().PrepareKey(pref,"Common\\Sun Shadow\\Visible"),&m_Flags,			flShowSun);
+    PHelper().CreateU8	(items,	PHelper().PrepareKey(pref,"Common\\Sun Shadow\\Quality"),		&m_SunShadowQuality,1,2);
+    PHelper().CreateAngle	(items,	PHelper().PrepareKey(pref,"Common\\Sun Shadow\\Altitude"),	&m_SunShadowDir.x,	-PI_DIV_2,0);
+    PHelper().CreateAngle	(items,	PHelper().PrepareKey(pref,"Common\\Sun Shadow\\Longitude"),	&m_SunShadowDir.y,	0,PI_MUL_2);
     // light controls
-    PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Controls\\Draw Name"),&m_Flags,			flShowControlName);
-    PHelper.CreateCaption(items,FHelper.PrepareKey(pref,"Common\\Controls\\Count"),			lcontrols.size());
-//	B=PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
+    PHelper().CreateFlag32(items, PHelper().PrepareKey(pref,"Common\\Controls\\Draw Name"),&m_Flags,			flShowControlName);
+    PHelper().CreateCaption(items,PHelper().PrepareKey(pref,"Common\\Controls\\Count"),			ref_str().sprintf("%d",lcontrols.size()));
+//	B=PHelper().CreateButton(items,PHelper().PrepareKey(pref,"Common\\Controls\\Edit"),	"Append",	ButtonValue::flFirstOnly);
 //	B->OnBtnClickEvent	= OnControlAppendClick;
-	ATokenIt		_I 	= lcontrols.begin();
-    ATokenIt		_E 	= lcontrols.end();
+	RTokenVecIt		_I 	= lcontrols.begin();
+    RTokenVecIt		_E 	= lcontrols.end();
     for (;_I!=_E; _I++){
     	if (_I->equal(LCONTROL_HEMI)||_I->equal(LCONTROL_STATIC)||_I->equal(LCONTROL_SUN)){
-		    PHelper.CreateCaption(items,	FHelper.PrepareKey(pref,"Common\\Controls\\System",_I->name.c_str()),"");
+		    PHelper().CreateCaption(items,	PHelper().PrepareKey(pref,"Common\\Controls\\System",*_I->name),"");
         }else{
-		    B=PHelper.CreateButton(items,	FHelper.PrepareKey(pref,"Common\\Controls\\User",_I->name.c_str()),"Rename,Remove",ButtonValue::flFirstOnly);
+		    B=PHelper().CreateButton(items,	PHelper().PrepareKey(pref,"Common\\Controls\\User",*_I->name),"Rename,Remove",ButtonValue::flFirstOnly);
             B->OnBtnClickEvent	= OnControlRenameRemoveClick;
         }
     }                              
@@ -219,20 +219,20 @@ AnsiString ESceneLightTools::GenLightControlName()
 }
 //------------------------------------------------------------------------------
 
-xr_a_token* ESceneLightTools::FindLightControl(int id)
+xr_rtoken* ESceneLightTools::FindLightControl(int id)
 {
-	ATokenIt		_I 	= lcontrols.begin();
-    ATokenIt		_E 	= lcontrols.end();
+	RTokenVecIt		_I 	= lcontrols.begin();
+    RTokenVecIt		_E 	= lcontrols.end();
     for (;_I!=_E; _I++)
     	if (_I->id==id) return _I;
     return 0;
 }
 //------------------------------------------------------------------------------
 
-ATokenIt ESceneLightTools::FindLightControlIt(LPCSTR name)
+RTokenVecIt ESceneLightTools::FindLightControlIt(LPCSTR name)
 {
-	ATokenIt		_I 	= lcontrols.begin();
-    ATokenIt		_E 	= lcontrols.end();
+	RTokenVecIt		_I 	= lcontrols.begin();
+    RTokenVecIt		_E 	= lcontrols.end();
     for (;_I!=_E; _I++)
     	if (_I->equal(name)) return _I;
     return lcontrols.end();
@@ -244,13 +244,13 @@ void ESceneLightTools::AppendLightControl(LPCSTR nm, u32* idx)
 	AnsiString name = nm; _Trim(name);
     if (name.IsEmpty()) return;
 	if (FindLightControl(name.c_str())) return;
-	lcontrols.push_back	(xr_a_token(name.c_str(),idx?*idx:lcontrol_last_idx++));
+	lcontrols.push_back	(xr_rtoken(name.c_str(),idx?*idx:lcontrol_last_idx++));
 }
 //------------------------------------------------------------------------------
 
 void ESceneLightTools::RemoveLightControl(LPCSTR name)
 {
-	ATokenIt it		= FindLightControlIt(name);
+	RTokenVecIt it	= FindLightControlIt(name);
     if (it!=lcontrols.end()) lcontrols.erase(it);
 }
 //------------------------------------------------------------------------------
@@ -323,26 +323,26 @@ void CLight:xr_token sun_quality[]={
 {
 	CEditFlare& F 			= m_LensFlare;
     PropValue* prop			= 0;
-    PHelper.CreateToken		(items, FHelper.PrepareKey(pref,"Sun\\Quality"),				&m_SunQuality,			sun_quality);
+    PHelper().CreateToken		(items, PHelper().PrepareKey(pref,"Sun\\Quality"),				&m_SunQuality,			sun_quality);
     
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
-    prop 					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
+    PHelper().CreateFlag32	(items, PHelper().PrepareKey(pref,"Sun\\Source\\Enabled"),		&F.m_Flags,				CEditFlare::flSource);
+    PHelper().CreateFloat		(items, PHelper().PrepareKey(pref,"Sun\\Source\\Radius"),			&F.m_Source.fRadius,	0.f,10.f);
+    prop 					= PHelper().CreateTexture	(items, PHelper().PrepareKey(pref,"Sun\\Source\\Texture"),		F.m_Source.texture,		sizeof(F.m_Source.texture));
 	prop->OnChangeEvent		= OnNeedUpdate;
 
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
-    PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
-	prop					= PHelper.CreateTexture	(items, FHelper.PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
+    PHelper().CreateFlag32	(items, PHelper().PrepareKey(pref,"Sun\\Gradient\\Enabled"),		&F.m_Flags,				CEditFlare::flGradient);
+    PHelper().CreateFloat		(items, PHelper().PrepareKey(pref,"Sun\\Gradient\\Radius"),		&F.m_Gradient.fRadius,	0.f,100.f);
+    PHelper().CreateFloat		(items, PHelper().PrepareKey(pref,"Sun\\Gradient\\Opacity"),		&F.m_Gradient.fOpacity,	0.f,1.f);
+	prop					= PHelper().CreateTexture	(items, PHelper().PrepareKey(pref,"Sun\\Gradient\\Texture"),	F.m_Gradient.texture,	sizeof(F.m_Gradient.texture));
 	prop->OnChangeEvent		= OnNeedUpdate;
 
-    PHelper.CreateFlag32	(items, FHelper.PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
+    PHelper().CreateFlag32	(items, PHelper().PrepareKey(pref,"Sun\\Flares\\Enabled"),		&F.m_Flags,				CEditFlare::flFlare);
 	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
 		AnsiString nm; nm.sprintf("%s\\Sun\\Flares\\Flare %d",pref,it-F.m_Flares.begin());
-		PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
-        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
-        PHelper.CreateFloat	(items, FHelper.PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
-        prop				= PHelper.CreateTexture	(items, FHelper.PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
+		PHelper().CreateFloat	(items, PHelper().PrepareKey(nm.c_str(),"Radius"), 	&it->fRadius,  	0.f,10.f);
+        PHelper().CreateFloat	(items, PHelper().PrepareKey(nm.c_str(),"Opacity"),	&it->fOpacity,	0.f,1.f);
+        PHelper().CreateFloat	(items, PHelper().PrepareKey(nm.c_str(),"Position"),	&it->fPosition,	-10.f,10.f);
+        prop				= PHelper().CreateTexture	(items, PHelper().PrepareKey(nm.c_str(),"Texture"),	it->texture,	sizeof(it->texture));
         prop->OnChangeEvent	= OnNeedUpdate;
 	}
 }

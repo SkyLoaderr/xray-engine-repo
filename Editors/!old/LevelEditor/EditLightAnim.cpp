@@ -10,7 +10,6 @@
 #include "ColorPicker.h"
 #include "ui_main.h"
 #include "PropertiesList.h"
-#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma link "multi_edit"
 #pragma link "Gradient"
@@ -37,18 +36,18 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
 void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 {
     m_Props = TProperties::CreateForm("LAProps",paProps,alClient,OnModified);
-    m_Items	= TItemList::CreateForm("LA Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
-    m_Items->OnModifiedEvent= OnModified;
-    m_Items->OnItemFocused 	= OnItemFocused;
-    m_Items->OnItemRemove 	= LALib.RemoveObject;
-    m_Items->OnItemRename 	= LALib.RenameObject;
+    m_Items	= IItemList::CreateForm("LA Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed|IItemList::ilFolderStore);
+    m_Items->SetOnModifiedEvent		(OnModified);
+    m_Items->SetOnItemFocusedEvent	(OnItemFocused);
+    m_Items->SetOnItemRemoveEvent	(LALib.RemoveObject);
+    m_Items->SetOnItemRenameEvent	(LALib.RenameObject);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
 {
 	TProperties::DestroyForm(m_Props);
-    TItemList::DestroyForm(m_Items);
+    IItemList::DestroyForm(m_Items);
 }
 //---------------------------------------------------------------------------
 
@@ -145,7 +144,7 @@ void TfrmEditLightAnim::InitItems()
 {
 	ListItemsVec items;
     for (LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
-    	LHelper.CreateItem(items,*(*it)->cName,0,0,0);
+    	LHelper().CreateItem(items,*(*it)->cName,0,0,0);
     m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------
@@ -172,10 +171,10 @@ void TfrmEditLightAnim::UpdateView()
     }
 }
 //------------------------------------------------------------------------------
-void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropItem* v, LPVOID val)
+void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropValue* v, s32& val, bool& accepted)
 {
-	if (*(int*)val!=m_CurrentItem->iFrameCount) OnModified();
-	m_CurrentItem->Resize(*(int*)val);
+	if (val!=m_CurrentItem->iFrameCount) OnModified();
+	m_CurrentItem->Resize(val);
     UpdateView();    
 }
 //---------------------------------------------------------------------------
@@ -187,11 +186,11 @@ void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
     // fill data
     PropItemVec items;
 	if (m_CurrentItem){
-        PropValue* V=0;                                              
-        PHelper.CreateRName		(items, "Name",			&m_CurrentItem->cName,		owner);
-        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
-        V=PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-        V->Owner()->OnAfterEditEvent = OnFrameCountAfterEdit;
+        PHelper().CreateName	(items, "Name",			&m_CurrentItem->cName,		owner);
+        PHelper().CreateFloat	(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
+        S32Value* V;
+        V=PHelper().CreateS32	(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
+        V->OnAfterEditEvent 	= OnFrameCountAfterEdit;
     }
     m_Props->AssignItems		(items);
     UpdateView					();

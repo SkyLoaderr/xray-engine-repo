@@ -193,12 +193,12 @@ void CLight::Update()
 LPCSTR CLight::GetLControlName()
 {
     ESceneLightTools* lt	= dynamic_cast<ESceneLightTools*>(ParentTools); VERIFY(lt);
-    xr_a_token* lc			= lt->FindLightControl(m_LControl);
-	return lc?lc->name.c_str():0;
+    xr_rtoken* lc			= lt->FindLightControl(m_LControl);
+	return lc?*lc->name:0;
 }
 //----------------------------------------------------
 
-void __fastcall	CLight::OnNeedUpdate(PropValue* value)
+void CLight::OnNeedUpdate(PropValue* value)
 {
 	Update();
 }

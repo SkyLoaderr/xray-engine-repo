@@ -307,7 +307,7 @@ bool EDetailManager::Load(IReader& F)
     }
 
     if (F.find_chunk(DETMGR_CHUNK_DENSITY))
-		psDetailDensity		= F.r_float();
+		ps_r__Detail_density= F.r_float();
 
 	// base texture
 	if(F.find_chunk(DETMGR_CHUNK_BASE_TEXTURE)){
@@ -365,7 +365,7 @@ void EDetailManager::Save(IWriter& F)
 	    F.close_chunk	();
     }
     F.open_chunk		(DETMGR_CHUNK_DENSITY);
-    F.w_float			(psDetailDensity);
+    F.w_float			(ps_r__Detail_density);
     F.close_chunk		();
 	// snap objects
 	F.open_chunk		(DETMGR_CHUNK_SNAP_OBJECTS);
@@ -392,8 +392,8 @@ bool EDetailManager::Export(LPCSTR path)
     Fvector2Vec			offsets;
     Fvector2Vec			scales;
     boolVec				rotated;
-    AStringSet 			textures_set;
-    AStringVec 			textures;
+    RStringSet 			textures_set;
+    RStringVec 			textures;
     U32Vec				remap;
 
     int slot_cnt		= dtH.size_x*dtH.size_z;
@@ -475,7 +475,7 @@ bool EDetailManager::Export(LPCSTR path)
     return bRes;
 }
 
-void __fastcall	EDetailManager::OnDensityChange(PropValue* prop)
+void EDetailManager::OnDensityChange(PropValue* prop)
 {
 	InvalidateCache		();
 }	
@@ -483,13 +483,13 @@ void __fastcall	EDetailManager::OnDensityChange(PropValue* prop)
 void EDetailManager::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	PropValue* P;
-    P=PHelper.CreateFloat	(values, FHelper.PrepareKey(pref,"Objects per square"),	&psDetailDensity);
+    P=PHelper().CreateFloat	(values, PHelper().PrepareKey(pref,"Objects per square"),	&ps_r__Detail_density);
     P->OnChangeEvent		= OnDensityChange;
     m_Base.FillProp			(pref,values);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw objects"),			&m_Flags,	flObjectsDraw);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw base texture"),		&m_Flags,	flBaseTextureDraw);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
-    PHelper.CreateFlag<Flags32>(values, FHelper.PrepareKey(pref,"Common\\Draw slot boxes"),			&m_Flags,	flSlotBoxesDraw);
+    PHelper().CreateFlag32	(values, PHelper().PrepareKey(pref,"Common\\Draw objects"),			&m_Flags,	flObjectsDraw);
+    PHelper().CreateFlag32	(values, PHelper().PrepareKey(pref,"Common\\Draw base texture"),		&m_Flags,	flBaseTextureDraw);
+    PHelper().CreateFlag32	(values, PHelper().PrepareKey(pref,"Common\\Base texture blended"),	&m_Flags,	flBaseTextureBlended);
+    PHelper().CreateFlag32	(values, PHelper().PrepareKey(pref,"Common\\Draw slot boxes"),			&m_Flags,	flSlotBoxesDraw);
 }
 
 bool EDetailManager::GetSummaryInfo(SSceneSummary* inf)

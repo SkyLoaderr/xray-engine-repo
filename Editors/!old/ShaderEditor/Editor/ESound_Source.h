@@ -8,12 +8,12 @@ class ESoundSource: public CCustomObject
 	typedef CCustomObject inherited;
 	// static sound
 	ref_sound		m_Source;
-	AnsiString		m_WAVName;
+	ref_str			m_WAVName;
     CSound_params	m_Params;
     // edit events
-    void __fastcall	OnChangeWAV		(PropValue* prop);
-    void __fastcall	OnChangeSource	(PropValue* prop);
-	void __fastcall OnControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
+    void __stdcall 	OnChangeWAV		(PropValue* prop);
+    void __stdcall 	OnChangeSource	(PropValue* prop);
+	void __stdcall  OnControlClick	(PropValue* sender, bool& bModif, bool& bSafe);
     void			ResetSource		();
     enum{
     	flLooped		= (1<<0),
@@ -41,7 +41,7 @@ public:
 					~ESoundSource	();
     virtual bool	CanAttach		() {return true;}
     
-    LPCSTR			GetSourceWAV	(){return m_WAVName.c_str();}
+    LPCSTR			GetSourceWAV	(){return *m_WAVName;}
     void			SetSourceWAV	(LPCSTR fname);
     void			Play			(){m_Command=stPlay;}
     void			Stop			(){m_Command=stStop;}

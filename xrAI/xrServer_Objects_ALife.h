@@ -94,7 +94,7 @@ public:
 #endif
 
 #ifdef _EDITOR
-	void __fastcall					OnChooseGroupControl(ChooseItemVec& lst);
+	void __stdcall 					OnChooseGroupControl(ChooseItemVec& lst);
 #endif
 									CSE_ALifeObject		(LPCSTR caSection);
 	virtual							~CSE_ALifeObject	();
@@ -242,9 +242,9 @@ add_to_type_list(CSE_ALifeLevelChanger)
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 #ifdef _EDITOR
-	void __fastcall					OnChangeAnim	(PropValue* sender);
-	void __fastcall					OnChooseAnim	(ChooseItemVec& lst);
-	void __fastcall					OnChooseBone	(ChooseItemVec& lst);
+	void __stdcall 					OnChangeAnim	(PropValue* sender);
+	void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
+	void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
 #endif
 	u32 							type;
 	f32 							mass;
@@ -264,10 +264,10 @@ add_to_type_list(CSE_ALifeObjectPhysic)
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual,CSE_PHSkeleton)
 
 #ifdef _EDITOR
-    void __fastcall					OnChangeAnim	(PropValue* sender);
-    void __fastcall					OnChooseAnim	(ChooseItemVec& lst);
-    void __fastcall					OnChooseBone	(ChooseItemVec& lst);
-    void __fastcall					OnChangeFlag	(PropValue* sender);
+    void __stdcall 					OnChangeAnim	(PropValue* sender);
+    void __stdcall 					OnChooseAnim	(ChooseItemVec& lst);
+    void __stdcall 					OnChooseBone	(ChooseItemVec& lst);
+    void __stdcall 					OnChangeFlag	(PropValue* sender);
 #endif
     enum{
         flPhysic					= (1<<0),
@@ -322,8 +322,8 @@ add_to_type_list(CSE_ALifeObjectProjector)
 
 SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion,CSE_PHSkeleton)
 #ifdef _EDITOR
-	void __fastcall					OnChangeAnim				(PropValue* sender);
-	void __fastcall					OnChooseAnim				(ChooseItemVec& lst);
+	void __stdcall 					OnChangeAnim				(PropValue* sender);
+	void __stdcall 					OnChooseAnim				(ChooseItemVec& lst);
 #endif
 	ref_str							engine_sound;
 	ref_str							startup_animation;

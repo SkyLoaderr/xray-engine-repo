@@ -27,7 +27,6 @@
 // refs
 class CLAItem;
 class TProperties;
-class TItemList;
 class ListItem;
 class PropValue;
 //---------------------------------------------------------------------------
@@ -106,12 +105,12 @@ private:	// User declarations
     void	UpdateView		();
     int		iMoveKey;
     int 	iTgtMoveKey;
-    void __fastcall			OnFrameCountAfterEdit	(PropItem* v, LPVOID val);
-	void __fastcall 		OnItemFocused			(TElTreeItem* item);
+    void __stdcall 			OnFrameCountAfterEdit	(PropValue* v, s32& val, bool& accepted);
+	void __stdcall  		OnItemFocused			(TElTreeItem* item);
 
-    TItemList*				m_Items;
+    IItemList*				m_Items;
     TProperties*			m_Props;
-    void __fastcall			OnModified				(void);
+    void __stdcall 			OnModified				(void);
 public:		// User declarations
     __fastcall 				TfrmEditLightAnim		(TComponent* Owner);
     static bool 			FinalClose				();

@@ -13,10 +13,10 @@ class ESoundEnvironment: public CEditShape
 
 	friend class		CLevelSoundManager;
 	// Env
-	AnsiString			m_EnvInner;
-	AnsiString			m_EnvOuter;
+	ref_str				m_EnvInner;
+	ref_str				m_EnvOuter;
 
-    void __fastcall		OnChangeEnvs	(PropValue* prop);
+    void __stdcall 		OnChangeEnvs	(PropValue* prop);
 public:
     void				get_box			(Fmatrix& m);
 public:

@@ -8,12 +8,12 @@ class EParticlesObject: public CCustomObject
 {
 	typedef CCustomObject inherited;
     Fbox				m_BBox;
-    AnsiString			m_RefName;
+    ref_str				m_RefName;
 
     IParticleCustom*	m_Particles;
     
-	void __fastcall 	OnRefChange			(PropValue* V);
-	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __stdcall  	OnRefChange			(PropValue* V);
+	void __stdcall  	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
 public:
 	                	EParticlesObject   	(LPVOID data, LPCSTR name);
     void            	Construct   		(LPVOID data);
