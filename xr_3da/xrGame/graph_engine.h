@@ -107,7 +107,8 @@ protected:
 		CVertexAllocator
 	>														CAlgorithm;
 	
-	typedef CDijkstra<
+//	typedef CDijkstra<
+	typedef CAStar<
 //	typedef CDijkstraBidirectional<
 		_solver_dist_type,
 		CSolverPriorityQueue,
