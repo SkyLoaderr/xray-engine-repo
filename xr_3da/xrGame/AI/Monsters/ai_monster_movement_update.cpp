@@ -21,12 +21,11 @@ void CMonsterMovement::Update_Initialize()
 // Update Movement
 void CMonsterMovement::Update_Execute()
 {
-	update_target_point								();
-	
 	CDetailPathManager::set_try_min_time			(b_try_min_time); 
 	CDetailPathManager::set_use_dest_orientation	(b_use_dest_orient);
 	enable_movement									(b_enable_movement);
 
+	update_target_point								();
 	update_path										();
 }
 
@@ -43,6 +42,7 @@ void CMonsterMovement::Update_Finalize()
 // update path with new scheme method
 void CMonsterMovement::update_target_point() 
 {
+	if (!enabled()) return;
 	if (path_type() != MovementManager::ePathTypeLevelPath) return;
 	
 	m_path_end	= false;

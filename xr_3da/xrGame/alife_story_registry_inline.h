@@ -8,19 +8,6 @@
 
 #pragma once
 
-IC	void CALifeStoryRegistry::add						(ALife::_STORY_ID id, CSE_ALifeDynamicObject *object, bool no_assert)
-{
-	if (id == INVALID_STORY_ID)
-		return;
-
-	ALife::STORY_P_PAIR_IT	I = m_objects.find(id);
-	if (I != m_objects.end()) {
-		R_ASSERT2			(no_assert,"Specified subject object is already in the Story registry!");
-		return;
-	}
-	m_objects.insert		(std::make_pair(id,object));
-}
-
 IC	void CALifeStoryRegistry::remove					(ALife::_STORY_ID id, bool no_assert)
 {
 	if (id == INVALID_STORY_ID)
