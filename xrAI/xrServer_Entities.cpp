@@ -1421,10 +1421,12 @@ xrSE_PhysicObject::~xrSE_PhysicObject() {
 }
 void xrSE_PhysicObject::STATE_Read		(NET_Packet& P, u16 size) {
 	visual_read				(P);
+	P.r_u32					(type);
 }
 void xrSE_PhysicObject::STATE_Write		(NET_Packet& P)
 {
 	visual_write			(P);
+	P.w_u32					(type);
 }
 void xrSE_PhysicObject::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_PhysicObject::UPDATE_Write	(NET_Packet& P)	{};
@@ -1435,7 +1437,7 @@ xr_token po_types[]={
 };
 void	xrSE_PhysicObject::FillProp		(LPCSTR pref, PropItemVec& values) {
 	inherited::FillProp		(pref,values);
-	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,s_name,"Type"), &s_gameid,	po_types, 1);
+	PHelper.CreateToken		(values,	PHelper.PrepareKey(pref,s_name,"Type"), &type,	po_types, 1);
 }
 #endif
 
