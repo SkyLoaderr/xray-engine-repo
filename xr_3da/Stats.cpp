@@ -234,13 +234,9 @@ void CStats::Show()
 		if (RCache.stat.polys>500000)	F.OutNext	("Polys     > 500k: %d",	RCache.stat.polys);
 		if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP    > 1k:   %d",	RCache.stat.calls);
 		if (RCache.stat.textures>1000)	F.OutNext	("T_change  > 500:  %d",	RCache.stat.textures);
-		if (RCache.stat.ps>100)			F.OutNext	("PS_change > 100:  %d",	RCache.stat.ps);
-		if (RCache.stat.vs>100)			F.OutNext	("VS_change > 100:  %d",	RCache.stat.vs);
-		if (RCache.stat.vb>100)			F.OutNext	("VB_change > 100:  %d",	RCache.stat.vb);
-		if (RCache.stat.ib>100)			F.OutNext	("IB_change > 100:  %d",	RCache.stat.ib);
 		if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
 		F.OutSkip						();
-		if (fMem_calls>500)				F.OutNext	("MMGR calls > 500: %3.1f",	fMem_calls);
+		if (fMem_calls>1500)			F.OutNext	("MMGR calls > 1500:%3.1f",	fMem_calls);
 		if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
 		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
 		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
