@@ -53,15 +53,16 @@ public:
 class	ENGINE_API	IRender_Light
 {
 public:
-	enum	mode
+	enum
 	{
-		LIGHT_DISABLED				= 0,
-		LIGHT_ENABLED,
-		LIGHT_ENABLED_SHADOWED,
-		LIGHT_forcedword			= u32(-1)
+		DISABLE				= 0,
+		ENABLED				= 1<<0,
+		UNSHADOWED			= 0,
+		SHADOWED			= 1<<1,
+		_forcedword			= u32(-1)
 	};
 public:
-	virtual void					set_mode			(mode M)							= 0;
+	virtual void					set_mode			(u32 mode)							= 0;
 	virtual void					set_position		(const Fvector& P)					= 0;
 	virtual void					set_range			(float R)							= 0;
 	virtual void					set_color			(const Fcolor& C)					= 0;
