@@ -1534,22 +1534,6 @@ SOURCE=.\EffectorFall.cpp
 
 SOURCE=.\EffectorFall.h
 # End Source File
-# Begin Source File
-
-SOURCE=.\EffectorNoise.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorNoise.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorRecoil.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\EffectorRecoil.h
-# End Source File
 # End Group
 # Begin Group "Collision"
 
