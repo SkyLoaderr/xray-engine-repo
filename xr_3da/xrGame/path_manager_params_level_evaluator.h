@@ -51,9 +51,6 @@
 #define aiEnemyDistance					(aiOptEnemyDistance | aiOptEnemyDistanceWeight | aiMinEnemyDistance | aiMinEnemyDistanceWeight | aiMaxEnemyDistance | aiMaxEnemyDistanceWeight)
 #define aiMemberDanger					(u64(1) << 63)
 
-extern const Fvector	tLeft;
-extern const Fvector	tRight;
-
 typedef SBaseParameters<float,u32,u32> CBaseParameters;
 
 class CAbstractVertexEvaluator : public CBaseParameters {

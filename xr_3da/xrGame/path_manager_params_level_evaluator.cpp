@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "path_manager_params_level_evaluator.h"
 
+/*
 const Fvector	tLeft	= Fvector().set(-1,0,0);
 const Fvector	tRight	= Fvector().set(1,0,0);
-
+*/
