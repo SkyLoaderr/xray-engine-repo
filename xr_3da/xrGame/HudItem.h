@@ -75,6 +75,8 @@ public:
 	virtual void	OnH_A_Chield		();
 	virtual void	OnH_B_Independent	();
 
+	virtual void	net_Destroy			();
+
 	
 	//активация и деактивации вещи как активной в интерфейсе
 	virtual bool	Activate			();

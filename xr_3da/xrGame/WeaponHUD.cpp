@@ -103,6 +103,14 @@ void CWeaponHUD::Load			(LPCSTR section)
 	m_pSharedHudInfo = GetHudInfo(m_sHudSectionName, m_pParentWeapon);
 }
 
+
+void  CWeaponHUD::net_DestroyHud	()
+{
+	m_bStopAtEndAnimIsRunning = false;
+	m_pCallbackItem = NULL;
+	m_bCurrentEntityIsParent = false;
+}
+
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 {
 	Transform().mul	(trans,m_pSharedHudInfo->m_Offset);

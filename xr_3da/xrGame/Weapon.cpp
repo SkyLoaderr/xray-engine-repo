@@ -493,6 +493,8 @@ void CWeapon::net_Destroy	()
 
 
 	//удалить объекты партиклов
+	StopFlameParticles	();
+	StopFlameParticles2	();
 /*	if(m_sFlameParticles)
 	{
 		for(int i=0; i<PARTICLES_CACHE_SIZE; i++)

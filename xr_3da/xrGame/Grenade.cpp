@@ -33,6 +33,7 @@ BOOL CGrenade::net_Spawn(LPVOID DC)
 
 void CGrenade::net_Destroy() 
 {
+	CExplosive::net_Destroy();
 	inherited::net_Destroy	();
 }
 

@@ -93,9 +93,7 @@ protected:
 	//размер раны, чтоб остановить партиклы
 	static float m_fStopBurnWoundSize;
 
-
-
-	virtual void			BloodyWallmarks			(float P, Fvector &dir,	s16 element,Fvector position_in_object_space);
+	virtual void			BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
 	virtual void			LoadBloodyWallmarks		(LPCSTR section);
 
 	//информаци€ о кровавых отметках на стенах, обща€ дл€ всех CEntityAlive

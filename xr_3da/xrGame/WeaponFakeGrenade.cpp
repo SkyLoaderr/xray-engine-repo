@@ -129,7 +129,8 @@ BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC)
 
 void CWeaponFakeGrenade::net_Destroy() 
 {
-	 CInventoryItem::net_Destroy();
+	CExplosive::net_Destroy();
+	CInventoryItem::net_Destroy();
 }
 
 void CWeaponFakeGrenade::Destroy() 

@@ -185,6 +185,7 @@ void CCustomZone::net_Destroy()
 	inherited::net_Destroy();
 	
 	StopIdleParticles();
+	m_pLight->set_active(false);
 }
 
 void CCustomZone::UpdateCL() 

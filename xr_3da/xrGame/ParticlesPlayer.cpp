@@ -64,7 +64,26 @@ void CParticlesPlayer::Load(CKinematics* K)
 		}
 	}
 }
+//уничтожение партиклов на net_Destroy
+void	CParticlesPlayer::net_DestroyParticles	()
+{
+	CObject* object			= dynamic_cast<CObject*>(this);
+	VERIFY(object);
 
+	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+	{
+		SBoneInfo& b_info	= *b_it;
+
+		for (ParticlesInfoListIt p_it=b_info.particles.begin(); p_it!=b_info.particles.end(); p_it++)
+		{
+			SParticlesInfo& p_info	= *p_it;
+
+			p_info.ps->PSI_destroy		();
+			ParticlesInfoListIt cur_it	= p_it++;
+			b_info.particles.erase		(cur_it);
+		}
+	}
+}
 
 CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics* K, u16 bone_index)
 {

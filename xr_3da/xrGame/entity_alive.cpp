@@ -158,6 +158,8 @@ void CEntityAlive::net_Destroy	()
 		l_tpInventoryOwner->m_trade_storage->ClearAll();
 	}
 
+
+
 	inherited::net_Destroy		();
 }
 
@@ -223,8 +225,8 @@ void CEntityAlive::PHFreeze()
 //////////////////////////////////////////////////////////////////////
 
 //добавление кровавых отметок на стенах, после получения хита
-void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element, 
-									Fvector position_in_object_space)
+void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element, 
+									const Fvector& position_in_object_space)
 {
 	//вычислить координаты попадания
 	CKinematics* V = PKinematics(Visual());
@@ -266,10 +268,9 @@ void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element,
 
 		Fvector rnd_dir;
 		rnd_dir.random_dir(dir, disp, Random);
-		dir = rnd_dir;
-
+		
 		Collide::rq_result result;
-		BOOL reach_wall = Level().ObjectSpace.RayPick(start_pos, dir, m_fBloodMarkDistance, 
+		BOOL reach_wall = Level().ObjectSpace.RayPick(start_pos, rnd_dir, m_fBloodMarkDistance, 
 			Collide::rqtBoth, result) && !result.O;
 
 		//если кровь долетела до статического объекта
@@ -287,7 +288,7 @@ void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element,
 				//вычислить точку попадания
 				Fvector end_point;
 				end_point.set(0,0,0);
-				end_point.mad(start_pos, dir, result.range);
+				end_point.mad(start_pos, rnd_dir, result.range);
 
 
 				ref_shader* pWallmarkShader = m_BloodMarksVector.empty()?NULL:

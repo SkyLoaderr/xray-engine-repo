@@ -89,12 +89,20 @@ void CExplosive::Load(LPCSTR section)
 	effector.period_number	= pSettings->r_float("explode_effector","period_number");
 }
 
+
+void CExplosive::net_Destroy()
+{
+	m_pLight->set_active(false);
+}
+
+
 /////////////////////////////////////////////////////////
 // Взрыв 
 /////////////////////////////////////////////////////////
 void CExplosive::Explode() 
 {
 	setVisible(false);
+	setEnabled(false);
 
 	//играем звук взрыва
 	Sound->play_at_pos(sndExplode, 0, Position(), false);
@@ -119,7 +127,6 @@ void CExplosive::Explode()
 
 	//trace frags
 	Fvector frag_dir; 
-	setEnabled(false);
 	
 	//////////////////////////////
 	//осколки
@@ -160,7 +167,6 @@ void CExplosive::Explode()
 		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
 							 tracerTrailCoeff,tracerStartLength,tracerWidth);
 	}	
-	setEnabled(true);
 
 	if (Remote()) return;
 	

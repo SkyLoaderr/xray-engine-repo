@@ -157,6 +157,7 @@ void CWeaponRPG7Grenade::net_Destroy()
 		m_trailEffectsPSs.pop_front(); 
 	}
 
+	CExplosive::net_Destroy();
 	inherited::net_Destroy();
 }
 

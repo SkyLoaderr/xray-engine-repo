@@ -26,7 +26,7 @@ public:
 	virtual void Load(LPCSTR section);
 	
 	virtual BOOL net_Spawn(LPVOID DC) = 0;
-	virtual void net_Destroy() = 0;
+	virtual void net_Destroy();
 	virtual void net_Export			(NET_Packet& P) = 0;	// export to server
 	virtual void net_Import			(NET_Packet& P) = 0;	// import from server
 

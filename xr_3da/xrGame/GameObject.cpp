@@ -100,6 +100,11 @@ void CGameObject::net_Destroy	()
 	Parent = 0;
 
 	xr_delete									(m_pPhysicsShell);
+
+
+	//удалить партиклы из ParticlePlayer
+	CParticlesPlayer::net_DestroyParticles	();
+
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)

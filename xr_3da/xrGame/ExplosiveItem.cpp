@@ -34,6 +34,12 @@ void CExplosiveItem::Load(LPCSTR section)
 	inherited::Load(section);
 }
 
+void CExplosiveItem::net_Destroy()
+{
+	CExplosive::net_Destroy();
+	CInventoryItem::net_Destroy();
+}
+
 void CExplosiveItem::Hit(float P, Fvector &dir,	CObject* who, s16 element,
 						Fvector position_in_object_space, float impulse, 
 						ALife::EHitType hit_type)

@@ -44,6 +44,17 @@ void CHudItem::Load(LPCSTR section)
 	}
 }
 
+void CHudItem::net_Destroy()
+{
+	if(m_pHUD)
+		m_pHUD->net_DestroyHud	();
+
+	hud_mode = FALSE;
+	m_dwStateTime = 0;
+
+	inherited::net_Destroy();
+}
+
 void CHudItem::LoadSound(LPCSTR section, LPCSTR line, 
 						 HUD_SOUND& hud_snd, BOOL _3D, 
 						 int type)
