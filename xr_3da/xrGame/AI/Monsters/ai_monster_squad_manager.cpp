@@ -70,7 +70,8 @@ CMonsterSquad *CMonsterSquadManager::get_squad(u8 team_id, u8 squad_id)
 	if (!((team_id < team.size()) && (squad_id < team[team_id].size()))) {
 		Msg		("CMonsterSquadManager::get_squad MINIDUMP");
 		Msg		("TEAM ID : %d(%d)",team_id,team.size());
-		Msg		("SQUAD ID : %d(%d)",squad_id,team[team_id].size());
+		if (team_id < team.size())
+			Msg	("SQUAD ID : %d(%d)",squad_id,team[team_id].size());
 		FlushLog();
 	}
 	VERIFY((team_id < team.size()) && (squad_id < team[team_id].size()));
