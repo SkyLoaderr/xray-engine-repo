@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 #include "xrServer_Entity_Custom.h"
+#include "game_base.h"
 
 // EDITOR, NETWORK, SAVE, LOAD, DEMO
 void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
