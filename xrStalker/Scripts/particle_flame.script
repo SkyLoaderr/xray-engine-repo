@@ -1,6 +1,6 @@
 function main()
 	local actor   	= get_actor()
-	local 	ps = particles("nature\\fog_stormy",true)
+	local 	ps = particles("nature\\fog_stormy",false)
 
 	wait(2000)
 	ps:play_at_pos		(actor:position());
