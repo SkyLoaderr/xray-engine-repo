@@ -79,6 +79,7 @@ class CAI_Rat : public CCustomMonster
 		bool			m_bStartAttack;
 		vector<SSubNode> tpSubNodes;
 		DWORD			m_dwLastUpdate;
+		CBoneInstance*	m_tpBoneSpine;
 
 		// finite state machine
 		stack<ERatStates>	tStateStack;

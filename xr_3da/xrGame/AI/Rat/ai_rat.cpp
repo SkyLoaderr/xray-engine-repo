@@ -77,6 +77,9 @@ void CAI_Rat::Load(CInifile* ini, const char* section)
 	m_tpaAttackAnimations[0] = PKinematics(pVisual)->ID_Cycle_Safe("attack_1");
 	m_tpaAttackAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("attack_2");
 	m_tpaAttackAnimations[2] = PKinematics(pVisual)->ID_Cycle_Safe("attack_3");
+
+	int spine_bone			= PKinematics(pVisual)->LL_BoneID("bip01_spine2");
+	PKinematics(pVisual)->LL_GetInstance(spine_bone).set_callback(SpinCallback,this);
 }
 
 // when someone hit rat
@@ -259,6 +262,7 @@ IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
 	v.set(X,P0.y,Z);	
 	PL.intersectRayPoint(v,DUP,v1);	
 	//v1.direct(v1,PL.n,.01f);
+	//return(v1.y + .01f);
 	return(v1.y);
 }
 
@@ -553,6 +557,7 @@ void CAI_Rat::FollowLeader(CSquad &Squad, CEntity* Leader)
 		else
 			m_bMobility = false;
 	}
+	SpinCallback(m_tpBoneSpine);
 }
 
 void CAI_Rat::Attack()
@@ -588,7 +593,9 @@ void CAI_Rat::Attack()
 				}
 			return;
 		}
-		else
+		else {
+			Fvector tTempPosition = Position();
+			//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 			if (Enemy.bVisible) {
 				CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 				// determining who is leader
@@ -638,6 +645,7 @@ void CAI_Rat::Attack()
 				bStopThinking = true;
 				return;
 			}
+		}
 	}
 }
 
@@ -672,6 +680,7 @@ void CAI_Rat::FollowMe()
 #endif
 	if (g_Health() <= 0) {
 		eCurrentState = aiRatDie;
+		bStopThinking = true;
 		return;
 	}
 	else {
@@ -682,6 +691,7 @@ void CAI_Rat::FollowMe()
 		if (Enemy.Enemy) {
 			tStateStack.push(eCurrentState);
 			eCurrentState = aiRatAttack;
+			bStopThinking = true;
 			return;
 		}
 		else {
@@ -690,16 +700,20 @@ void CAI_Rat::FollowMe()
 			if (dwCurTime - dwHitTime < HIT_JUMP_TIME) {
 				tStateStack.push(eCurrentState);
 				eCurrentState = aiRatUnderFire;
+				bStopThinking = true;
 				return;
 			}
 			else {
 				if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
 					tStateStack.push(eCurrentState);
 					eCurrentState = aiRatSenseSomething;
+					bStopThinking = true;
 					return;
 				}
 				else {
 					// determining the team
+					Fvector tTempPosition = Position();
+					//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
 					CEntity* Leader = Squad.Leader;
@@ -714,6 +728,7 @@ void CAI_Rat::FollowMe()
 					if ((Leader == this) || (Leader->g_Health() <= 0) || (!(Leader->m_bMobility))) {
 						Leader = this;
 						eCurrentState = aiRatFreeHunting;
+						bStopThinking = true;
 						return;
 					}
 					else {
@@ -769,6 +784,8 @@ void CAI_Rat::FreeHunting()
 				}
 				else {
 					// determining the team
+					Fvector tTempPosition = Position();
+					//Msg("%d : %6.2f,%6.2f,%6.2f",this,tTempPosition.x,tTempPosition.y,tTempPosition.z);
 					CSquad&	Squad = Level().Teams[g_Team()].Squads[g_Squad()];
 					// determining who is leader
 					CEntity* Leader = Squad.Leader;
@@ -1399,6 +1416,7 @@ void CAI_Rat::Exec_Movement	( float dt )
 	if ((!m_bAttackStart) && (g_Health() > 0))
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
+		/**/
 		if (m_tpEnemyBeingAttacked) {
 			UpdateTransform	();
 			if (m_bStartAttack) {
@@ -1426,5 +1444,8 @@ void CAI_Rat::Exec_Movement	( float dt )
 			}
 			UpdateTransform	();
 		}
+		else
+		/**/
+			AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	}
 }

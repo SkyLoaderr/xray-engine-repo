@@ -251,11 +251,13 @@ void CAI_Soldier::Attack()
 			if ((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) {
 				eCurrentState = tStateStack.top();
 				tStateStack.pop();
+				q_action.setup(AI::AIC_Action::FireEnd);
 			}
 			//  no, we lost him
 			else {
 				dwLostEnemyTime = Level().timeServer();
 				eCurrentState = aiSoldierPursuit;
+				q_action.setup(AI::AIC_Action::FireEnd);
 			}
 			return;
 		}
