@@ -33,36 +33,38 @@ private:
 	};
 private:
 	// Control
-	EVENT			control_start;
-	EVENT			control_stop;
+	EVENT				control_start;
+	EVENT				control_stop;
 
 	// Visualization
-	Shader*			SH;
-	CVertexStream*	VS;
+	Shader*				SH;
+	CVertexStream*		VS;
 	
 	// Data and logic
-	vector<Item>	items;
-	States			state;
+	vector<Item>		items;
+	States				state;
 
 	// Particles
-	vector<Particle>	particles_pool;
+	vector<Particle>	particle_pool;
+	Particle*			particle_active;
+	Particle*			particle_idle;
 
 	// Sounds
-	int				snd_Ambient;
-	C2DSound*		snd_Ambient_control;
-	float			snd_Ambient_volume;
+	int					snd_Ambient;
+	C2DSound*			snd_Ambient_control;
+	float				snd_Ambient_volume;
 
-	void			Born			(Item& dest, float radius, float height);
-	void			Hit				(Fvector& pos);
+	void				Born			(Item& dest, float radius, float height);
+	void				Hit				(Fvector& pos);
 public:
-	virtual void	OnDeviceCreate	();
-	virtual void	OnDeviceDestroy	();
-	virtual void	OnEvent			(EVENT E, DWORD P1, DWORD P2);
+	virtual void		OnDeviceCreate	();
+	virtual void		OnDeviceDestroy	();
+	virtual void		OnEvent			(EVENT E, DWORD P1, DWORD P2);
 
-	void			Render			();
+	void				Render			();
 
-	CEffect_Rain	();
-	~CEffect_Rain	();
+	CEffect_Rain		();
+	~CEffect_Rain		();
 };
 
 #endif // !defined(AFX_RAIN_H__5284C8A3_153D_4331_83F8_02165A1B8AF4__INCLUDED_)

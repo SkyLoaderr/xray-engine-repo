@@ -46,8 +46,9 @@ void CPSVisual::Update(DWORD dt)
 	bv_Position.set	(m_Emitter->m_Position);
 	bv_BBox.set		(m_Emitter->m_Position,m_Emitter->m_Position);
 	bv_BBox.grow	(2.f);
+	
 	// update visual radius
-	bv_Radius = bv_BBox.getradius();
+	bv_Radius		= bv_BBox.getradius();
 
 	// update all particles that we own
     for (int i=0; i<int(m_Particles.size()); i++)
