@@ -501,7 +501,7 @@ bool CWeaponMagazined::Action(s32 cmd, u32 flags) {
 	if(inherited::Action(cmd, flags)) return true;
 	switch(cmd) {
 		case kWPN_RELOAD : {
-			if(flags&CMD_START) TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
+			if(flags&CMD_START) if(iAmmoElapsed < iMagazineSize) TryReload();//if(m_pAmmo && m_pAmmo->CanReload()) m_pAmmo->Reload();
 		} return true;
 	}
 	return false;
