@@ -74,14 +74,9 @@ end
 local counter = 0
 local need_monsters = 0
 function garbage_monster_death (actor, npc)
-
-    local st = xr_motivator.storage[npc:id()]
-    local way_name = nil
-    if st.active_scheme == "mob_walker" then
-        way_name = st[st.active_scheme].path_walk
-    else
-        printf ("WARNING: garbage_monster_death: object '%s' is not mob_walker", npc:name())
-    end
+    printf ("Monster %s killed...", npc:name ())
+    
+    local st = xr_motivator.storage[npc:id ()]
     if st.death.killer == -1 then return end
     
     -- remove from spawner 
@@ -96,16 +91,10 @@ function garbage_monster_death (actor, npc)
     
     counter = counter + 1
     printf ("Monsters killed by actor %d", counter)
-    if way_name ~= nil then
-       printf ("Monster last path : %s", way_name)
-       if way_name == "garbage_rush_way2" or way_name == "garbage_rush_way4" then
-          need_monsters = need_monsters + 1
-          counter = counter + 1
-       end   
-    end   
+    need_monsters = need_monsters + 1
     
     -- check for set gulag to normal mode
-    if need_monsters > 5 then
+    if need_monsters > 10 then
        -- set gulag to normal state
        if actor:has_info ("gar_monsters_rush_wave1") then
           actor:disable_info_portion ("gar_monsters_rush_wave1") 
@@ -113,6 +102,7 @@ function garbage_monster_death (actor, npc)
        end   
     end
     if counter > 3 then
+       printf ("INFOPORTIONS AFTER RUSH IS SET")
        actor:give_info_portion ("gar_dolg_help_kill_rush")
        actor:give_info_portion ("gar_dolg_access_rostok")
     end    
