@@ -44,10 +44,10 @@ function fract:checkNpc(npc)
 		return npc:character_community() == "military"
 	end
 	
-	if self.type == "garbage_bandits" then
+	if self.type == "gar_bandits" then
 		return npc:character_community() == "bandit"
 	end
-	if self.type == "garbage_stalkers" then
+	if self.type == "gar_stalkers" then
 		return npc:character_community() == "stalker"
 	end
 
