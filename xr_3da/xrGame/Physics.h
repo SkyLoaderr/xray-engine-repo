@@ -7,6 +7,7 @@
 #include "PHInterpolation.h"
 ///////////////////////////////////////////////////////////////////////////////
 const dReal fixed_step=0.02f;
+const int dis_frames=11;
 class CPHMesh {
 	dGeomID Geom;
 public:
@@ -240,6 +241,8 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	dBodyID m_body;
 	CPHInterpolation m_body_interpolation;
 	Fmatrix m_inverse_local_transform;
+
+/////disable///////////////////////
 //dVector3 mean_w;
 //dVector3 mean_v;
 dVector3 m_safe_position;
@@ -254,7 +257,9 @@ dReal previous_dev;
 dReal previous_v;
 UINT dis_count_f;
 UINT dis_count_f1;
+/////////////////////////////////////////////////////////////////////////////
 list<CPHObject*>::iterator m_ident;
+	void					Disable					();				
 public:
 	CPHShell				()							{bActive=false;
 														dis_count_f=0;

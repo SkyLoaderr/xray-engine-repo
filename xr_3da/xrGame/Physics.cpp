@@ -623,7 +623,6 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 //static dReal frame_time=0.f;
-const int dis_frames=11;
 void CPHWorld::Step(dReal step)
 {
 	
@@ -1215,6 +1214,21 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 				//const dReal k_w=0.1f;
 				//dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+				Disable();
+
+	
+				const dReal k_w=0.05f;
+				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+	
+				const dReal k_l=1.8f;
+				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+				
+				m_body_interpolation.UpdatePositions();
+				m_body_interpolation.UpdateRotations();
+
+}
+
+void	CPHShell::Disable(){
 
 /////////////////////////////////////////////////////////////////////////////////////
 ////////disabling main body//////////////////////////////////////////////////////////
@@ -1323,8 +1337,10 @@ void CPHShell::PhDataUpdate(dReal step){
 					else{
 						memcpy(previous_p1,current_p,sizeof(dVector3));
 						memcpy(previous_r1,current_r,sizeof(dMatrix3));
-					}
+						}
+
 					if(dis_count_f1>10) dis_count_f*=10;
+
 					}
 
 
@@ -1332,17 +1348,9 @@ void CPHShell::PhDataUpdate(dReal step){
 	
 				}
 /////////////////////////////////////////////////////////////////
-	
-				const dReal k_w=0.05f;
-				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
-	
-				const dReal k_l=1.8f;
-				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
-				
-				m_body_interpolation.UpdatePositions();
-				m_body_interpolation.UpdateRotations();
 
 }
+
 
 void CPHShell::PhTune(dReal step){
 }

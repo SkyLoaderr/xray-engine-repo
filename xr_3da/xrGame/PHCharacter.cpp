@@ -51,6 +51,8 @@ b_meet_control=false;
 b_jumping=false;
 m_contact_velocity=0.f;
 jump_up_velocity=6.f;
+dis_count_f=0;
+dis_count_f1=0;
 }
 
 CPHCharacter::~CPHCharacter(void)
@@ -247,9 +249,13 @@ void CPHSimpleCharacter::Destroy(){
 
 
 void CPHSimpleCharacter::PhDataUpdate(dReal step){
-
-	
-
+///////////////////
+	if( !dBodyIsEnabled(m_body)) {
+					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
+					return;
+				}
+	if(is_contact&&!is_control)Disable();
+///////////////////////
 	was_contact=is_contact;
 	is_contact=false;
 	b_side_contact=false;
@@ -561,6 +567,9 @@ m_update_time=Device.fTimeGlobal;
 }
 
 void CPHSimpleCharacter::SetAcceleration(Fvector accel){
+	if(!dBodyIsEnabled(m_body))
+		if(accel.magnitude()!=0.f)
+					dBodyEnable(m_body);
 m_acceleration=accel;
 if( m_acceleration.y>0.f&&!b_lose_control && m_ground_contact_normal[1]>0.5f) b_jump=true;
 	
@@ -891,3 +900,89 @@ EEnvironment	 CPHWheeledCharacter::CheckInvironment(){
 
 }
 
+void	CPHCharacter::Disable(){
+
+/////////////////////////////////////////////////////////////////////////////////////
+////////disabling main body//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+				{
+				const dReal* torqu=dBodyGetTorque(m_body);
+				const dReal* force=dBodyGetForce(m_body);
+				dReal t_m =sqrtf(	torqu[0]*torqu[0]+
+										torqu[1]*torqu[1]+
+										torqu[2]*torqu[2]);
+				dReal f_m=sqrtf(	force[0]*force[0]+
+										force[1]*force[1]+
+										force[2]*force[2]);
+				if(t_m+f_m>0.000000){
+					previous_p[0]=dInfinity;
+					previous_v=0;
+					dis_count_f=1;
+					dis_count_f1=0;
+					return;
+				}
+				}
+				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
+					const dReal* position=dBodyGetPosition(m_body);
+					memcpy(previous_p,position,sizeof(dVector3));
+					memcpy(previous_p1,position,sizeof(dVector3));	
+					previous_v=0;
+					dis_count_f=1;
+					dis_count_f1=0;
+				}
+
+			
+				if(ph_world->disable_count==dis_frames){	
+					if(previous_p[0]!=dInfinity){
+					const dReal* current_p=dBodyGetPosition(m_body);
+					dVector3 velocity={current_p[0]-previous_p[0],
+									   current_p[1]-previous_p[1],
+									   current_p[2]-previous_p[2]};
+					dReal mag_v=sqrtf(
+						  velocity[0]*velocity[0]+
+						  velocity[1]*velocity[1]+
+						  velocity[2]*velocity[2]);
+					mag_v/=dis_count_f;
+					if(mag_v<0.001f* dis_frames )
+						dBodyDisable(m_body);
+					if(previous_v>mag_v)
+					   
+					{
+					dis_count_f++;
+					previous_v=mag_v;
+					//return;
+					}
+					else{
+					previous_v=0;
+					dis_count_f=1;
+					memcpy(previous_p,current_p,sizeof(dVector3));
+					}
+
+					{
+					
+					dVector3 velocity={current_p[0]-previous_p1[0],
+									   current_p[1]-previous_p1[1],
+									   current_p[2]-previous_p1[2]};
+					dReal mag_v=sqrtf(
+						  velocity[0]*velocity[0]+
+						  velocity[1]*velocity[1]+
+						  velocity[2]*velocity[2]);
+					mag_v/=dis_count_f;
+	
+					if(mag_v<0.04* dis_frames )
+						dis_count_f1++;
+					else{
+						memcpy(previous_p1,current_p,sizeof(dVector3));
+						}
+
+					if(dis_count_f1>10) dis_count_f*=10;
+
+					}
+
+
+					}
+	
+				}
+/////////////////////////////////////////////////////////////////
+
+}

@@ -71,6 +71,15 @@ UINT m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
 
+/////disable///////////////////////
+dVector3 previous_p;
+dVector3 previous_p1;
+dReal previous_v;
+UINT dis_count_f;
+UINT dis_count_f1;
+/////////////////////////////////////////////////////////////////////////////
+
+void Disable										();
 public:
 bool b_exist;
 float m_update_time;

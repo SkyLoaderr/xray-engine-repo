@@ -50,8 +50,8 @@ inline bool ValidateCollision(dxGeom* o1, dxGeom* o2){
 
 	}
 
-	return b1 || b2;
-
+return b1 || b2;
+//return true;
 }
 
 
