@@ -130,6 +130,7 @@ void CGlowManager::Render()
 	if (!Selected_Count) return;
 
 	Device.Statistic.RenderDUMP_Glows.Begin();
+	float	fov_scale	= 1/(Device.fFOV/90.f);
 	{
 		// 1. Test some number of glows
 		Fvector &start	= Device.vCameraPosition;
@@ -147,7 +148,7 @@ void CGlowManager::Render()
 		}
 
 		// 2. Sort by shader
-		std::sort(Selected,Selected+Selected_Count,glow_compare);
+		std::sort	(Selected,Selected+Selected_Count,glow_compare);
 		
 		FVF::TL		*pv;
 		FVF::TL		TL;
@@ -171,7 +172,7 @@ void CGlowManager::Render()
 				if (G.fade<=1.f)	continue;
 				
 				TL.transform	(G.C,Device.mFullTransform);
-				float size		= Device.dwWidth * G.R /TL.p.w;
+				float size		= fov_scale * Device.dwWidth * G.R /TL.p.w;
 				
 				// Convert to screen coords
 				float cx        = Device._x2real(TL.p.x);
