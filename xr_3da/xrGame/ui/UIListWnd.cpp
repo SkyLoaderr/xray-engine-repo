@@ -583,7 +583,7 @@ void CUIListWnd::ScrollToPos(int position)
 	if (IsScrollBarEnabled())
 	{
 		int pos = position;
-		clamp(pos, m_ScrollBar.GetMinRange(), m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1);
+		clamp(pos, m_ScrollBar.GetMinRange(), int(m_ScrollBar.GetMaxRange() - m_ScrollBar.GetPageSize() + 1));
 		m_ScrollBar.SetScrollPos(static_cast<s16>(pos));
 		m_iFirstShownIndex = m_ScrollBar.GetScrollPos();
 		UpdateList();
