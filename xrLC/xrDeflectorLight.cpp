@@ -414,7 +414,7 @@ VOID CDeflector::Light()
 	lm_new.dwWidth	= (lm_old.dwWidth+2*BORDER);
 	lm_new.dwHeight	= (lm_old.dwHeight+2*BORDER);
 	DWORD size		= lm_new.dwWidth*lm_new.dwHeight*4;
-	lm.pSurface		= LPDWORD(malloc(size));
+	lm_new.pSurface	= LPDWORD(malloc(size));
 	ZeroMemory		(lm_new.pSurface,size);
 	blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
 	_FREE			(lm_old.pSurface);
