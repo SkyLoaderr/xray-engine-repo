@@ -22,9 +22,6 @@ private:
 	int				target_radius;
 	int				radius_speed;
 
-	//коэффициент масштаба прицела
-	float			disp_scale;
-	
 	ref_geom 		hGeomLine;
 	ref_shader		hShader;
 public:

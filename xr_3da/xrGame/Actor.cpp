@@ -767,14 +767,20 @@ void CActor::shedule_Update	(u32 DT)
 			m_bZoomAimingMode = true;
 		}
 
-		float only_weapon_fire_disp = pWeapon->GetFireDispersion();
-		HUD().SetCrosshairDisp(only_weapon_fire_disp);
-		HUD().ShowCrosshair(true);
+		if(eacFirstEye == cam_active)
+		{
+			float only_weapon_fire_disp = pWeapon->GetFireDispersion();
+			HUD().SetCrosshairDisp(only_weapon_fire_disp);
+			HUD().ShowCrosshair(true);
+		}
 	}
 	else
 	{
-		HUD().SetCrosshairDisp(0.f);
-		HUD().ShowCrosshair(false);
+		if(eacFirstEye == cam_active)
+		{
+			HUD().SetCrosshairDisp(0.f);
+			HUD().ShowCrosshair(false);
+		}
 	}
 	
 	//что актер видит перед собой

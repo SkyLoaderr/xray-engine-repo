@@ -62,9 +62,6 @@ void CHUDCrosshair::Load ()
 	radius_speed = iFloor(0.5f + radius_speed_perc*float(Device.dwWidth));
 	if(radius_speed<=0)
 		radius_speed = 1;
-
-
-	disp_scale = pSettings->r_float (HUD_CURSOR_SECTION, "disp_scale");
 }
 
 
@@ -72,8 +69,16 @@ void CHUDCrosshair::Load ()
 //выставляет radius от min_radius до max_radius
 void CHUDCrosshair::SetDispersion(float disp)
 { 
-	float factor = disp/disp_scale;
-	target_radius = min_radius + iFloor(0.5f+factor*float(max_radius-min_radius));
+	Fvector E={0,0,0};
+	Fvector D={0,0,1}, R={1,0,0};
+	E.mad(D,_cos(disp));
+	E.mad(R,_sin(disp));
+	Device.mProject.transform_tiny(E);
+
+    int radius_pixels = iFloor(0.5f + _abs(E.x)*Device.fWidth_2);
+	clamp(radius_pixels, min_radius, max_radius);
+
+	target_radius = radius_pixels; 
 }
 
 void CHUDCrosshair::OnRender ()

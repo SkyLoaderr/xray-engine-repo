@@ -32,7 +32,7 @@ void CFogOfWar::Init()
 	ACTOR_FOG_REMOVE_RADIUS = pSettings->r_float("game_map","actor_fog_remove_radius");
 
 	Fbox level_box;
-	if (Level().pLevel->section_exist("level_map"))	
+	if (Level().pLevel && Level().pLevel->section_exist("level_map"))	
 	{
 		level_box.x1 = Level().pLevel->r_float("level_map","x1");
 		level_box.z1 = Level().pLevel->r_float("level_map","z1");
