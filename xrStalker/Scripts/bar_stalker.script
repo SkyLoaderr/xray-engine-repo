@@ -21,6 +21,7 @@ function evaluator_complete:__init (storage, name) super ()
 end
 -------------------
 function evaluator_complete:evaluate ()
+    printf ("EVALUATOR complete for BAR_STALKER called")
     return not (self.a.enabled == true)
 end
 -------------------
@@ -435,6 +436,7 @@ function add_to_binder (npc, ini)
                
     action = manager:action (stalker_ids.action_puzzle_solver)
     action:add_precondition (world_property (property["complete"],  true))
+    printf ("BAR_STALKER scheme binded to object %s", npc:name ())
     
 end
 ----------------------------------------------------------------------------
