@@ -4,13 +4,14 @@ stalkers_already_saw_actor = false
 
 function main()
 
-
 	local stalker1	= get_level_object("m_stalker_e0000")
 	local actor   	= get_actor()
 	local prof_zomby = sound_object("scripts\\stalker_prof\\prof_zomby")
 	local prof_privet_hosh_potorgovat = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat")
 	local prof_privet_hosh_potorgovat2 = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat2")
 
+
+	wait(1000)		
 
 	stalker1:script	(true,  this.script_name())
 
