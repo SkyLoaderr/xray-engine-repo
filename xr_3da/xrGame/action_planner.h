@@ -54,7 +54,7 @@ public:
 	virtual	void			reinit					(_object_type *object, bool clear_all = false);
 	virtual	void			reload					(LPCSTR section);
 	virtual	void			update					(u32 time_delta);
-	IC		COperator		&action					(const _action_id_type action_id);
+	IC		COperator		&action					(const _action_id_type &action_id);
 	IC		_action_id_type	current_action_id		() const;
 	IC		COperator		&current_action			();
 	IC		bool			initialized				() const;
