@@ -249,6 +249,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_S
 	string64						*m_cppArtefactSections;
 	u16								m_wArtefactSpawnCount;
 	u32								m_dwStartIndex;
+	EAnomalousZoneType				m_tAnomalyType;
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();

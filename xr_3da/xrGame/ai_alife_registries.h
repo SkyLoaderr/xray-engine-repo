@@ -202,7 +202,7 @@ class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
 public:
 	typedef CSE_ALifeAStar inherited;
 	ALIFE_ENTITY_P_VECTOR_MAP		m_tLevelMap;
-	CSE_ALifeDynamicObject				*m_tpActor;
+	CSE_ALifeDynamicObject			*m_tpActor;
 	ALIFE_ENTITY_P_VECTOR			*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;		// по точке графа получить все 
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];			// массив списков: по идетнификатору 
@@ -478,26 +478,39 @@ public:
 
 class CSE_ALifeAnomalyRegistry : public IPureALifeLSObject {
 public:
-	ANOMALY_P_VECTOR				m_tpAnomalies;
+	ANOMALY_P_VECTOR_VECTOR			m_tpAnomalies;
 
 									CSE_ALifeAnomalyRegistry()
 	{
+		m_tpAnomalies.clear			();
 	};
 
 	virtual							~CSE_ALifeAnomalyRegistry()
 	{
+		ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
+		ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
+		for ( ; I != E; I++)
+			free_vector				(*I);
 	};
 	
 	virtual	void					Save(IWriter &tMemoryStream)
 	{
 		tMemoryStream.open_chunk	(ANOMALY_CHUNK_DATA);
-		save_object_vector			(m_tpAnomalies,tMemoryStream);
+		tMemoryStream.w_u32			(m_tpAnomalies.size());
+		ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
+		ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
+		for ( ; I != E; I++)
+			save_object_vector		(*I,tMemoryStream);
 		tMemoryStream.close_chunk	();
 	};
 	
-	virtual	void					Load(IReader	&tFileStream)
+	virtual	void					Load(IReader &tFileStream)
 	{ 
-		R_ASSERT2					(tFileStream.find_chunk(OBJECT_CHUNK_DATA),"Can't find chunk OBJECT_CHUNK_DATA!");
-		load_object_vector			(m_tpAnomalies,tFileStream);
+		R_ASSERT2					(tFileStream.find_chunk(ANOMALY_CHUNK_DATA),"Can't find chunk ANOMALY_CHUNK_DATA!");
+		m_tpAnomalies.resize		(tFileStream.r_u32());
+		ANOMALY_P_VECTOR_IT			I = m_tpAnomalies.begin();
+		ANOMALY_P_VECTOR_IT			E = m_tpAnomalies.end();
+		for ( ; I != E; I++)
+			load_object_vector		(*I,tFileStream);
 	};
 };

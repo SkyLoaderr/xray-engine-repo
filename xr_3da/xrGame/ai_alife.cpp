@@ -219,11 +219,6 @@ void CSE_ALifeSimulator::vfRemoveObject(CSE_Abstract *tpSE_Abstract)
 	tpSE_Abstract->m_bALifeControl = false;
 }
 
-
-void CSE_ALifeSimulator::vfGenerateAnomalyMap()
-{
-}
-
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 {
 }
@@ -340,6 +335,24 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				vfUpdateDynamicData(i);
 			}
 		}
+	}
+}
+
+void CSE_ALifeSimulator::vfGenerateAnomalyMap()
+{
+	m_tpAnomalies.resize		(getAI().GraphHeader().dwVertexCount);
+	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
+		if (!l_tpALifeAnomalousZone || !randI(20))
+			continue;
+		
+		CSE_ALifeKnownAnomaly *l_tpALifeKnownAnomaly	= xr_new<CSE_ALifeKnownAnomaly>();
+		l_tpALifeKnownAnomaly->m_tAnomalousZoneType		= randI(10) ? l_tpALifeAnomalousZone->m_tAnomalyType : EAnomalousZoneType(randI(eAnomalousZoneTypeDummy));
+		l_tpALifeKnownAnomaly->m_fAnomalyPower			= randF(l_tpALifeAnomalousZone->m_maxPower*.5f,l_tpALifeAnomalousZone->m_maxPower*1.5f);
+		l_tpALifeKnownAnomaly->m_fDistance				= randF(l_tpALifeAnomalousZone->m_fDistance*.5f,l_tpALifeAnomalousZone->m_fDistance*1.5f);
+		m_tpAnomalies[l_tpALifeAnomalousZone->m_tGraphID].push_back(l_tpALifeKnownAnomaly);
 	}
 }
 

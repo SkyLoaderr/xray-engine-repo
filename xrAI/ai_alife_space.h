@@ -72,6 +72,7 @@ namespace ALife {
 	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
+	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
 	
 	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,		GRAPH_VECTOR_IT);
 	
@@ -161,8 +162,7 @@ namespace ALife {
 	};
 	
 	enum EAnomalousZoneType {
-		eAnomalousZoneTypeNone = u32(0),
-		eAnomalousZoneTypeGravi,
+		eAnomalousZoneTypeGravi = u32(0),
 		eAnomalousZoneTypeFog,
 		eAnomalousZoneTypeRadio,
 		eAnomalousZoneTypePlant,
@@ -170,7 +170,7 @@ namespace ALife {
 		eAnomalousZoneTypeFluff,
 		eAnomalousZoneTypeRustyHair,
 		eAnomalousZoneTypeRustyWhistlers,
-		eAnomalousZoneTypeDummy = u32(-1),
+		eAnomalousZoneTypeDummy,
 	};
 
 	enum EArtefactType {

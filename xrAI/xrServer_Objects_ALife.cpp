@@ -481,6 +481,7 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeDyna
 		m_faWeights[i]			= (float)atof(_GetItem(l_caParameters,(i << 1) | 1,l_caBuffer));
 	}
 	m_wArtefactSpawnCount		= 32;
+	m_tAnomalyType				= eAnomalousZoneTypeGravi;
 }
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
@@ -534,6 +535,11 @@ void CSE_ALifeAnomalousZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 		tNetPacket.r_u16		(m_wArtefactSpawnCount);
 		tNetPacket.r_u32		(m_dwStartIndex);
 	}
+	if (m_wVersion > 27) {
+		u32						l_dwDummy;
+		tNetPacket.r_u32		(l_dwDummy);
+		m_tAnomalyType			= EAnomalousZoneType(l_dwDummy);
+	}
 }
 
 void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
@@ -554,6 +560,7 @@ void CSE_ALifeAnomalousZone::STATE_Write	(NET_Packet	&tNetPacket)
 	}
 	tNetPacket.w_u16			(m_wArtefactSpawnCount);
 	tNetPacket.w_u32			(m_dwStartIndex);
+	tNetPacket.w_u32			(m_tAnomalyType);
 }
 
 void CSE_ALifeAnomalousZone::UPDATE_Read	(NET_Packet	&tNetPacket)
@@ -567,10 +574,23 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 }
 
 #ifdef _EDITOR
+xr_token TokenAnomalyType[]={
+	{ "Gravi",			eAnomalousZoneTypeGravi			},
+	{ "Fog",			eAnomalousZoneTypeFog			},
+	{ "Radioactive",	eAnomalousZoneTypeRadio			},
+	{ "Plant",			eAnomalousZoneTypePlant			},
+	{ "Gelatine",		eAnomalousZoneTypeGelatine		},
+	{ "Fluff",			eAnomalousZoneTypeFluff			},
+	{ "Rusty Hair",		eAnomalousZoneTypeRustyHair		},
+	{ "RustyWhistlers",	eAnomalousZoneTypeRustyWhistlers},
+	{ 0,				0}
+};
+
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+	PHelper.CreateToken			(items,PHelper.PrepareKey(pref,s_name,"Type"),								&m_tAnomalyType,	TokenAnomalyType, 1);
+	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
     PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
     PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
