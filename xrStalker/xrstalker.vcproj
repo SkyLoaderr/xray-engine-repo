@@ -498,10 +498,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
@@ -1202,6 +1202,9 @@
 			</File>
 			<File
 				RelativePath=".\scripts\test_zombie.script">
+			</File>
+			<File
+				RelativePath=".\scripts\trader.script">
 			</File>
 			<File
 				RelativePath=".\scripts\trader_job.script">

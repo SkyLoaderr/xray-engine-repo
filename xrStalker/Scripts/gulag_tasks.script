@@ -21,7 +21,7 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)
 	end
-	if type == "garbage_bandits" then
+	if type == "gar_bandits" then
 		t = { section = "walker1@gar_bandits",
 			idle = 0,
 			prior = 3, state = {0},
@@ -71,7 +71,7 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)		
 	end
-	if type == "garbage_stalkers" then
+	if type == "gar_stalkers" then
 		t = { section = "walker1@gar_stalkers",
 			idle = 0,
 			prior = 0, state = {0},
