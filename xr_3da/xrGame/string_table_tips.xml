@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
     <string id="inventory_item_use">
-        <text>Поднять предмет (по-умолчанию 'E')</text>
+        <text>Поднять предмет ($$ACTION_USE$$)</text>
     </string>
     <string id="character_use">
-        <text>Говорить (по-умолчанию 'E')</text>
+        <text>Говорить ($$ACTION_USE$$)</text>
     </string>
     <string id="dead_character_use">
-        <text>Обыскать труп (по-умолчанию E)</text>
+        <text>Обыскать труп ($$ACTION_USE$$)</text>
     </string>
     <string id="car_use">
-        <text>Открыть дверь (по-умолчанию E)</text>
+        <text>Открыть дверь ($$ACTION_USE$$)</text>
     </string>
     <string id="physic_shell_use">
-        <text>Двигать объект (по-умолчанию shift+E)</text>
+        <text>Двигать объект ()</text>
     </string>
 </string_table>
