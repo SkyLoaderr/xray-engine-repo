@@ -5,6 +5,8 @@
 #include "../../../PhysicsShellHolder.h"
 #include "../ai_monster_utils.h"
 #include "../../../ai_debug.h"
+#include "poltergeist_movement.h"
+
 
 #define HEIGHT_CHANGE_VELOCITY	0.5f
 #define HEIGHT_CHANGE_MIN_TIME	3000
@@ -222,4 +224,10 @@ void CPoltergeist::on_deactivate()
 
 	Show();
 }
+
+CMovementManager *CPoltergeist::create_movement_manager	()
+{
+	return		(m_movement_manager = xr_new<CPoltergeisMovementManager>(this));
+}
+
 

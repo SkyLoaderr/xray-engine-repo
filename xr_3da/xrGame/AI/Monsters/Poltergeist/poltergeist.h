@@ -6,13 +6,17 @@
 
 class CPhysicsShellHolder;
 class CStateManagerPoltergeist;
+class CPoltergeisMovementManager;
 
 class CPoltergeist :	public CBaseMonster ,
 						public CTelekinesis,
 						public CEnergyHolder {
 	
-	typedef		CBaseMonster		inherited;
+	typedef		CBaseMonster	inherited;
 	typedef		CEnergyHolder	Energy;
+
+	friend class CPoltergeisMovementManager;
+
 
 	CParticlesObject	*m_particles_object;
 
@@ -23,6 +27,9 @@ class CPoltergeist :	public CBaseMonster ,
 	LPCSTR				m_particles_hide;
 
 	bool				m_disable_hide;
+
+//private:
+//	CPoltergeisMovementManager *m_movement_manager;
 
 public:
 					CPoltergeist		();
@@ -38,6 +45,8 @@ public:
 
 	virtual void	Die					(CObject* who);
 
+	virtual CMovementManager *create_movement_manager();
+	
 	virtual void	ForceFinalAnimation	();
 
 	virtual	void	on_activate			();
@@ -90,14 +99,8 @@ public:
 			const CObject		*tele_enemy;
 			CPhysicsShellHolder *tele_object;
 
-
-
 	// Movement
 			Fvector m_current_position;		// Позиция на ноде
-
-	virtual	void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
-			Fvector	CalculateRealPosition	();
-
 
 	// Dynamic Height
 			u32		time_height_updated;

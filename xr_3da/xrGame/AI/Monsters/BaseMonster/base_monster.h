@@ -339,7 +339,7 @@ IC	void					wake_up				(){m_bSleep = false;}
 private:
 	bool					m_first_update_initialized;
 
-private:
+protected:
 	CMonsterMovement			*m_movement_manager;
 protected:
 	virtual CMovementManager	*create_movement_manager();
