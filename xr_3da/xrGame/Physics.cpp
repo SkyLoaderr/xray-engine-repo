@@ -470,8 +470,8 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 			surface.mu=dInfinity;
 		if	(do_collide)
 		{
-			dJointID contact_joint = dJointCreateContact(phWorld, jointGroup, &c);
-			dJointAttach(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
+			dJointID contact_joint	= dJointCreateContact(phWorld, jointGroup, &c);
+			dJointAttach			(contact_joint, dGeomGetBody(g1), dGeomGetBody(g2));
 		}
 	}
 }
