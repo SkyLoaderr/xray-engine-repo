@@ -56,14 +56,14 @@ void	CTracer::Render	()
 //	Fvector&	vTop	=	Device.vCameraTop;
 //	Fvector&	vDir	=	Device.vCameraDirection;
 	Fvector&	vCenter =	Device.vCameraPosition;
-	for (int I=0; I<(int)bullets.size(); I++)
+	for (int I=0; I<(int)bullets.size(); ++I)
 	{
 		// General stuff and time control
 		Bullet&	B		=	bullets[I];
 		B.life_time		-=	dt;
 		if (B.life_time<=0)	{
 			bullets.erase(bullets.begin()+I);
-			I--;
+			--I;
 			continue;
 		}
 
@@ -86,10 +86,10 @@ void	CTracer::Render	()
 		camDir.normalize	();
 		lineTop.crossproduct(camDir,lineD);
 		float	w = B.width;
-		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,1);	verts++;
-		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0);	verts++;
-		P.mad(B.pos_head, lineTop,-w);	verts->set(P,1,1);	verts++;
-		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	verts++;
+		P.mad(B.pos_trail,lineTop,-w);	verts->set(P,0,1);	++verts;
+		P.mad(B.pos_trail,lineTop,w);	verts->set(P,0,0);	++verts;
+		P.mad(B.pos_head, lineTop,-w);	verts->set(P,1,1);	++verts;
+		P.mad(B.pos_head, lineTop,w);	verts->set(P,1,0);	++verts;
 	}
 
 	u32 vCount					= (u32)(verts-start);
