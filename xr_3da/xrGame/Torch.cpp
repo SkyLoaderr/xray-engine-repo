@@ -142,7 +142,7 @@ void CTorch::UpdateCL()
 			svTransform.i.crossproduct(l_up, svTransform.k); svTransform.i.normalize();
 			svTransform.j.crossproduct(svTransform.k, svTransform.i);
 		}
-		m_focus.inertion(l_end,1-Device.fTimeDelta);
+		m_focus.inertion(l_end,1-Device.fTimeDelta*2);
 
 		Fvector _P,_D;
 		_P.mad		(l_p,Device.vCameraRight,	m_pos.x);
