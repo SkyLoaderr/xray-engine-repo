@@ -20,19 +20,16 @@ function evaluator_leader_present:__init (name, storage) super (nil, name)
 end
 --------------
 function evaluator_leader_present:evaluate ()
-    if self.a.leader == nil then
-       if self.a.leader_name == nil then 
-          self.a.leader_name = self:get_leader ()
-          if self.a.leader_name == nil then 
-             return false 
-          end   
-       end
-       self.a.leader = level.object (self.a.leader_name)
+    if self.a.leader_id == -1 then
+       self.a.leader_id = self.get_leader () 
+       if self.a.leader_id == -1 then 
+          return false  
+       end   
+       self.a.leader = db.obj_by_id[self.a.leader_id]
        if self.a.leader == nil then 
           return false 
        else
           table.insert (db.storage[self.a.leader:id()].followers, self.a)
-          self.a.leader_id = self.a.leader:id ()
        end   
     end
     return true
@@ -40,13 +37,13 @@ end
 --------------
 function evaluator_leader_present:get_leader ()
     local gulag = xr_gulag.isUnderFraction (self.object)
-    if gulag == nil then return nil end
+    if gulag == nil then return -1 end
     local t = xr_gulag.fraction[gulag]:getJob (self.object)
     if t ~= nil and t.leader ~= nil then 
-       local name = xr_gulag.fraction[gulag]:nameStalkerOnJob (t.leader)
-       if name ~= nil then 
-          printf ("LEADER NAME %s", name) 
-          return name 
+       local id = xr_gulag.fraction[gulag]:idStalkerOnJob (t.leader)
+       if id ~= -1 then 
+          printf ("LEADER ID IS %d", id) 
+          return id
        end   
     end
     if self.time == 0 then
