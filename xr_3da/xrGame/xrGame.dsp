@@ -277,29 +277,6 @@ SOURCE=.\WeaponM134.cpp
 SOURCE=.\WeaponM134.h
 # End Source File
 # End Group
-# Begin Group "Weapon Groza"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\WeaponGroza.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\WeaponGroza.h
-# End Source File
-# End Group
 # Begin Group "Weapon Rail"
 
 # PROP Default_Filter ""
@@ -407,6 +384,18 @@ SOURCE=.\WeaponLR300.cpp
 # Begin Source File
 
 SOURCE=.\WeaponLR300.h
+# End Source File
+# End Group
+# Begin Group "FN2000"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\WeaponFN2000.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\WeaponFN2000.h
 # End Source File
 # End Group
 # Begin Source File
