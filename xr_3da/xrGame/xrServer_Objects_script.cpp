@@ -36,11 +36,12 @@ void CSE_Abstract::script_register(lua_State *L)
 	module(L)[
 		class_<CSE_Abstract,CPureServerObject>
 			("cse_abstract")
-			.def_readonly("id",				&CSE_Abstract::ID)
-			.def_readonly("parent_id",		&CSE_Abstract::ID_Parent)
-			.def_readonly("section_name",	&CSE_Abstract::s_name)
-			.def_readonly("name",			&CSE_Abstract::s_name_replace)
-			.def("clsid",					&CSE_Abstract::script_clsid)
+			.def_readonly	("id",				&CSE_Abstract::ID)
+			.def_readonly	("parent_id",		&CSE_Abstract::ID_Parent)
+			.def_readonly	("section_name",	&CSE_Abstract::s_name)
+			.def_readonly	("name",			&CSE_Abstract::s_name_replace)
+			.def			("clsid",			&CSE_Abstract::script_clsid)
+			.def_readwrite	("position",		&CSE_Abstract::o_Position)
 //			.def(		constructor<LPCSTR>())
 	];
 }
