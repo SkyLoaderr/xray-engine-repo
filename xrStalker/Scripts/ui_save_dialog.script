@@ -89,6 +89,7 @@ function save_dialog:InitControls()
 	
 	local edit_filename = CUIEditBox()
 	edit_filename:SetAutoDelete(true)
+	edit_filename:SetFont(GetFontLetterica25())
 	edit_filename:SetWindowName("edit_filename")
 	edit_filename:SetText("edit_me")
 	edit_filename:Init(edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
