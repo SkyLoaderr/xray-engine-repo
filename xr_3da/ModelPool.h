@@ -6,8 +6,14 @@
 #define AFX_MODELPOOL_H__F4AB6697_66F2_45A2_A501_4E791B8C0A3E__INCLUDED_
 #pragma once
 
+// refs
 class ENGINE_API CVisual;
+namespace PS	{ 
+	struct ENGINE_API SDef;
+	struct ENGINE_API SEmitter; 
+};
 
+// defs
 class ENGINE_API CModelPool : public pureDeviceDestroy
 {
 	friend class CRender;
@@ -29,7 +35,7 @@ public:
 
 	virtual void		OnDeviceDestroy		();
 
-	CVisual*			CreatePS			(LPCSTR name, PS::SEmitter* E);
+	CVisual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
 	CVisual*			Create				(LPCSTR name);
 	CVisual*			Create				(CStream* data);
 	void				Delete				(CVisual* &V);

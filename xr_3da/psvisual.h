@@ -2,6 +2,7 @@
 #define _INCDEF_PSVisual_H_
 
 #include "FBasicVisual.h"
+#include "ParticleSystem.h"
 
 #define MAX_PARTICLES	1024
 
@@ -24,7 +25,7 @@ public:
 
 	// Functionality
 	void				Update			(DWORD dt);
-    void				Compile			(LPCSTR name, PS::SEmitter* E);
+	void				Compile			(PS::SDef* source, PS::SEmitter* E);
 	IC int				ParticleCount	()	{ return m_Particles.size();}
 	IC void				Stop			()	{ m_Particles.clear();      }
 	IC CVertexStream*	GetStream		()	{ return m_Stream;			}

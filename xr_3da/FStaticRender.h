@@ -21,6 +21,7 @@
 #include "lightShadows.h"
 #include "lightProjector.h"
 #include "lightPPA.h"
+#include "PSLibrary.h"
 
 // defs
 const int max_patches = 512;
@@ -57,6 +58,7 @@ public:
 	vector<DWORD>									FVF;
 	vector<IDirect3DVertexBuffer8*>					VB;
 	vecGEO											Visuals;
+	CPSLibrary										PSystems;
 
 	CLightDB_Static									L_DB;
 	CLightPPA_Manager								L_Dynamic;

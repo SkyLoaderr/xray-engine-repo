@@ -19,7 +19,6 @@ ENGINE_API	CRender				Render_Implementation;
 ENGINE_API	CRender_interface*	Render = &Render_Implementation;
 
 // Implementation
-CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	{ return Models.CreatePS(name,E);		}
 CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);			}
 CVisual*	CRender::model_Create		(CStream* data)					{ return Models.Create(data);			}
 CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
@@ -67,6 +66,11 @@ void		CRender::set_Object			(CObject*		O )
 	L_Shadows.set_object	(O);
 	L_Projector.set_object	(O);
 	L_DB.Track				(O);
+}
+CVisual*	CRender::model_CreatePS		(LPCSTR name, PS::SEmitter* E)	
+{ 
+	PS::SDef*	source		= PSystems.FindPS	(name);
+	return Models.CreatePS	(source,E);
 }
 
 
@@ -154,10 +158,12 @@ IC		void		gm_SetLighting		(CObject* O)
 //////////////////////////////////////////////////////////////////////
 CRender::CRender()
 {
+	PSystems.xrStartUp			();
 }
 
 CRender::~CRender()
 {
+	PSystems.xrShutDown			();
 }
 
 void CRender::Calculate()
@@ -557,19 +563,24 @@ void CRender::OnDeviceCreate()
 {
 	REQ_CREATE					();
 	Target.OnDeviceCreate		();
-	level_Load					();
-	gm_Nearer					= FALSE;
-	rmNormal					();
-	L_Dynamic.Initialize		();
 	L_Shadows.OnDeviceCreate	();
 	L_Projector.OnDeviceCreate	();
+
+	PSystems.OnDeviceCreate		();
+	level_Load					();
+	L_Dynamic.Initialize		();
+
+	gm_Nearer					= FALSE;
+	rmNormal					();
 }
 
 void CRender::OnDeviceDestroy()
 {
-	level_Unload				();
-	Target.OnDeviceDestroy		();
 	L_Dynamic.Destroy			();
-	L_Shadows.OnDeviceDestroy	();
+	level_Unload				();
+	PSystems.OnDeviceDestroy	();
+
 	L_Projector.OnDeviceDestroy	();
+	L_Shadows.OnDeviceDestroy	();
+	Target.OnDeviceDestroy		();
 }

@@ -266,16 +266,14 @@ DWORD CPSVisual::RenderTO	(FVF::TL* dest)
 }
 
 //----------------------------------------------------
-void CPSVisual::Compile(LPCSTR name, PS::SEmitter* E)
+void CPSVisual::Compile(PS::SDef* source, PS::SEmitter* E)
 {
-	PS::SDef* source= Device.PSLib.FindPS(name);
-	R_ASSERT		(source);
-	R_ASSERT		(source->m_ShaderName[0]&&source->m_TextureName[0]);
-    hShader			= Device.Shader.Create(source->m_ShaderName,source->m_TextureName);
-	m_Definition	= source;
+    hShader				= source->m_CachedShader;
+	m_Definition		= source;
+
 	// set default emitter data
-	VERIFY			(E);
-    m_Emitter		= E;
-	m_Emitter->Compile(&source->m_DefaultEmitter);
+	VERIFY				(E);
+    m_Emitter			= E;
+	m_Emitter->Compile	(&source->m_DefaultEmitter);
 }
 //----------------------------------------------------

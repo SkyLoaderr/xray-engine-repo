@@ -13,6 +13,10 @@ class ENGINE_API	CVisual;
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 class ENGINE_API	CLightPPA;
+namespace PS	{ 
+	struct ENGINE_API SDef;
+	struct ENGINE_API SEmitter; 
+};
 
 // definition (Target)
 class	ENGINE_API	CRender_target

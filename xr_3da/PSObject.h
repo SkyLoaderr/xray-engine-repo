@@ -2,6 +2,7 @@
 #define _INCDEF_PSObject_H_
 
 #include "TempObject.h"
+#include "ParticleSystem.h"
 
 class ENGINE_API CSector;
 

@@ -56,7 +56,6 @@ void CRenderDevice::Initialize()
 
 	// Startup shaders
 	Shader.xrStartUp	();
-	PSLib.xrStartUp		();
 }
 
 void CRenderDevice::ShutDown()
@@ -65,7 +64,6 @@ void CRenderDevice::ShutDown()
 	Destroy				();
 
 	// destroy shaders
-	PSLib.xrShutDown	();
 	Shader.xrShutDown	();
 
 	// destroy streams

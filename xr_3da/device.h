@@ -14,7 +14,6 @@
 #include "stats.h"
 #include "primitivesR.h"
 #include "xr_effgamma.h"
-#include "PSLibrary.h"
 
 #define VIEWPORT_NEAR 0.2f
 
@@ -61,7 +60,6 @@ public:
 	CStats									Statistic;
 	CDraw									Primitive;
 	CGammaControl							Gamma;
-	CPSLibrary								PSLib;
 
 	// Shared Streams
 	CSharedStreams							Streams;

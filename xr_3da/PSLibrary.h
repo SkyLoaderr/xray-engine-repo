@@ -5,7 +5,7 @@
 #define _INCDEF_PSLibrary_H_
 
 #include "ParticleSystem.h"
-DEFINE_VECTOR(PS::SDef, PSList, PSIt);
+DEFINE_VECTOR			(PS::SDef, PSList, PSIt);
 
 #define PSLIB_FILENAME "particles.xr"
 
@@ -13,8 +13,8 @@ class CPSLibrary
 {
     PSList				m_PSs;
 public:
-						CPSLibrary		(){;}
-    virtual 			~CPSLibrary		(){m_PSs.clear();}
+						CPSLibrary		()	{;}
+    virtual 			~CPSLibrary		()	{m_PSs.clear();}
 
     // get object properties methods
     IC PSIt				FirstPS			()	{return m_PSs.begin();}
@@ -23,9 +23,11 @@ public:
     
     void				xrStartUp		();
     void				xrShutDown		();
+	void				OnDeviceCreate	();
+	void				OnDeviceDestroy	();
+
     PS::SDef*			FindPS			(LPCSTR name);
 };
 
-extern CPSLibrary* PSLib;
 #endif /*_INCDEF_PSLibrary_H_*/
 

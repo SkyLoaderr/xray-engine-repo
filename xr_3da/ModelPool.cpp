@@ -184,15 +184,12 @@ CVisual* CModelPool::Create(CStream* data)
 
 void	CModelPool::Delete(CVisual* &V)
 {
-	if (V) {
-		if (V->Type==MT_PARTICLE_SYSTEM) V->Release();
-		_DELETE(V);
-	}
+	_DELETE			(V);
 }
 
-CVisual* CModelPool::CreatePS(const char* name, PS::SEmitter* E)
+CVisual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
 {
 	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
-	V->Compile		(name,E);
+	V->Compile		(source,E);
 	return V;
 }
