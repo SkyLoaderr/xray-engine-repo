@@ -421,6 +421,10 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 	if (g_Alive()<=0) return;
 	Fvector position_in_bone_space;
 	position_in_bone_space.set(0.f,0.f,0.f);
+	if(pCreator->CurrentEntity() == this) {
+		Fvector l_d; l_d.set(dir); l_d.normalize();
+		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
+	}
 	switch (GameID())
 	{
 	case GAME_SINGLE:		
@@ -433,7 +437,6 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element, float i
 		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse);
 		break;
 	}
-	Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(2.5f, 1.f));
 }
 
 
@@ -457,6 +460,11 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	}
 
 	if (g_Alive()<=0) return;
+
+	if(pCreator->CurrentEntity() == this) {
+		Fvector l_d; l_d.set(dir); l_d.normalize();
+		Level().Cameras.AddEffector(xr_new<CEffectorPPHit>(svTransform.i.dotproduct(l_d), svTransform.j.dotproduct(l_d), .5f, .001f*iLost));
+	}
 
 	switch (GameID())
 	{
