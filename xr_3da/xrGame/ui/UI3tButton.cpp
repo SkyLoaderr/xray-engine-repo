@@ -10,7 +10,7 @@
 #include "StdAfx.h"
 #include "UI3tButton.h"
 #include "../MainUI.h"
-#include "../sound.h"
+#include "../../sound.h"
 
 CUI3tButton::CUI3tButton(){
 	m_iPushOffsetX = 0;
