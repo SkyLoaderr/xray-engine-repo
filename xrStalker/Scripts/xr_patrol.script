@@ -717,29 +717,29 @@ function add_to_binder(obj, char_ini)
   
 	local manager  = obj:motivation_action_manager ()
   	manager:add_evaluator (properties["complete"], this.evaluator_complete ("property_complete", xr_motivator.storage[obj:id()].patrol))
-    	manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
+    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
     
   	local action = this.action_single_patrol ("action_single_patrol", xr_motivator.storage[obj:id()].patrol)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["complete"],        false))
-    	action:add_precondition         (world_property (properties["raid"],            true))
+    action:add_precondition         (world_property (properties["raid"],            true))
 	action:add_precondition		(world_property (properties["state_end"], 	true))
    	action:add_effect           	(world_property (properties["complete"],        true))
    	manager:add_action              (operators["single_patrol"], action)
 
-    	action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
-    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
+    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
 	action:add_precondition	    (world_property(properties["state_end"], 	    true))
-    	action:add_precondition     (world_property (properties["raid"],            false))
-    	action:add_effect           (world_property (properties["raid"],            true))
-    	manager:add_action          (operators["raid"], action)
+    action:add_precondition     (world_property (properties["raid"],            false))
+    action:add_effect           (world_property (properties["raid"],            true))
+    manager:add_action          (operators["raid"], action)
 
    	action = manager:action (stalker_ids.action_puzzle_solver)
    	action:add_precondition (world_property (properties["complete"],  true))
 
-	if char_ini ~= nil then xr_patrol.set_patrol(obj) end
+	this.set_patrol (obj)
 	xr_report.AddScheme (obj, operators["single_patrol"])
     end
 end
