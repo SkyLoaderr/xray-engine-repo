@@ -562,7 +562,7 @@ void CEditFlare::Load(IReader& F){
 	    DeleteShaders();
 	    u32 deFCnt	= F.r_u32(); VERIFY(deFCnt==6);
 	   	F.r				(m_Flares.begin(),m_Flares.size()*sizeof(SFlare));
-    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader=0;
+    	for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) it->hShader._object=0;
     	CreateShaders();
     }
 }
