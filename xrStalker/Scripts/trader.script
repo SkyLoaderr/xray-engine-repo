@@ -1,5 +1,5 @@
 function bind(obj)
-  //obj:bind_object(CTrader(obj))
+	obj:bind_object(CTrader(obj))
 end
 
 local snd =   {
@@ -72,6 +72,8 @@ function CTrader:reload(section)
 	
 	self.state	= idle				// Положение тела	
 	self.trade	= false
+	
+	self.need_init	= true			// Необходимо вызвать select_state
 	
 	self.anim  = 
 	{
@@ -166,6 +168,16 @@ end
 function CTrader:update(delta)
 	object_binder.update(self, delta)
 
+	// Когда проспаунились, ждем появления актера, для того, чтоб прочитать у него инфу
+	if(self.need_init) then
+		if(level.actor()) then
+			self:select_state()
+			self.need_init	= false
+		else
+			return
+		end
+	end
+	
 	if(self.zone == nil) then self:set_zone_callback() end
 	if(self.object:get_script() == false) then self.object:script(true, script_name()) end
 	
