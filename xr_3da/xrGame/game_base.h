@@ -34,12 +34,14 @@ struct	game_TeamState
 class	game_GameState
 {
 public:
-	u32								type;
+	s32								type;
 
 	s32								round;
 	u32								fraglimit;
 	u32								timelimit;
 	vector<game_TeamState>			teams;
 public:
+	game_GameState();
+
 	virtual		void				Create					(LPCSTR options)	=	0;
 };

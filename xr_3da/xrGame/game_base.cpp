@@ -15,3 +15,11 @@ game_TeamState::game_TeamState()
 	score				=	0;
 	num_targets			=	0;
 }
+
+game_GameState::game_GameState()
+{
+	type				=	-1;
+	round				=	-1;
+	fraglimit			=	-1;
+	timelimit			=	-1;
+}

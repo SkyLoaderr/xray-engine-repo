@@ -40,7 +40,8 @@ CUI::~CUI()
 
 void CUI::Load()
 {
-	switch (GAME){
+	switch (Game())
+	{
 	case GAME_CS:
 	case GAME_ASSAULT:
 		pUIBuyMenu	= new CUIBuyMenu	();
