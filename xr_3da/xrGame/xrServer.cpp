@@ -69,6 +69,9 @@ void xrServer::Update	()
 	NET_Packet		Packet;
 	u32				position;
 
+	// game update
+	game->Update	();
+
 	// spawn queue
 	u32 svT				= Device.TimerAsync();
 	while (!(q_respawn.empty() || (svT<q_respawn.begin()->timestamp)))
