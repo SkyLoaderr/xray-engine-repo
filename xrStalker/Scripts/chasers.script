@@ -32,7 +32,7 @@ function main ()
                     if t < 50 and monsters[a] ~= old_monster then
                        scr_monster = monsters[a]
                        scr_monster:script (true, chasers.script_name ())
-                       action (scr_monster, move (move.act_run, move_force_type, actor), cond (cond.move_end))
+                       action (scr_monster, move (move.act_run, move.force_type, actor), cond (cond.move_end))
                        old_monster = nil
                        break
                     end   
