@@ -353,7 +353,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 		if (Local()) {
 			pCreator->Cameras.AddEffector		(new CEffectorFall(Movement.gcontact_Power));
 			Fvector D; D.set					(0,1,0);
-			if (Movement.gcontact_HealthLost)	Hit	(Movement.gcontact_HealthLost,D,this,-1);
+			if (Movement.gcontact_HealthLost)	Hit	(1.5f * Movement.gcontact_HealthLost,D,this,-1);
 		}
 	}
 }

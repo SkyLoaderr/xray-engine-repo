@@ -477,7 +477,7 @@ void CWeapon::UpdateCL		()
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
-		u32	dwTime		= Level().timeServer()-NET_Latency;
+		u32	dwTime			= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
@@ -497,8 +497,8 @@ void CWeapon::UpdateCL		()
 				// Interpolate state
 				net_update&	A		= NET[select+0];
 				net_update&	B		= NET[select+1];
-				u32	d1			= dwTime-A.dwTimeStamp;
-				u32	d2			= B.dwTimeStamp - A.dwTimeStamp;
+				u32	d1				= dwTime-A.dwTimeStamp;
+				u32	d2				= B.dwTimeStamp - A.dwTimeStamp;
 				float	factor		= (float(d1)/float(d2));
 				NET_Last.lerp		(A,B,factor);
 
