@@ -37,7 +37,6 @@ public:
 	IC		const CGameObject	*item				() const;
 			const CMemoryInfo	memory				(const CObject *object) const;
 	IC		void			enable					(const CObject *object, bool enable);
-	virtual	Feel::Sound*	dcast_FeelSound			()		{ return this;	}
 };
 
 #include "memory_manager_inline.h"
