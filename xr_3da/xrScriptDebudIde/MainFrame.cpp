@@ -9,7 +9,7 @@
 #include "LuaDoc.h"
 #include "LuaView.h"
 
-#include "../../xray/xrGame/script_debugger_messages.h"
+#include "../xrGame/script_debugger_messages.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE

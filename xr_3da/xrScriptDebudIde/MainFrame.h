@@ -13,7 +13,7 @@
 #include "WatchBar.h"
 
 #define R_ASSERT(x) ASSERT(x)
-#include "../../xray/xrGame/mslotutils.h"
+#include "../xrGame/mslotutils.h"
 
 class CMainFrame : public CCJMDIFrameWnd
 {
