@@ -29,7 +29,7 @@ void	xrMU_Model::export_geometry		()
 	Fbox			BB; 
 	BB.invalidate	();
 	for (v_vertices_it vit=m_vertices.begin(); vit!=m_vertices.end(); vit++)
-		BB.modify	(vit->P);
+		BB.modify	((*vit)->P);
 
 	Fvector			frac_low;
 	float			frac_Ysize;
@@ -64,7 +64,7 @@ void	xrMU_Model::export_geometry		()
 				// frac
 				float	f1	= (oV.P.y - frac_low.y)		/frac_Ysize;
 				float	f2	= oV.P.distance_to(frac_low)/frac_Ysize;
-				frac		= QC((f1+f2)/2);
+				frac		= QC((f1+f2)/2.f);
 				dummy		= 0;
 				g_VB.Add	(&frac,	2);
 				g_VB.Add	(&dummy,2);
