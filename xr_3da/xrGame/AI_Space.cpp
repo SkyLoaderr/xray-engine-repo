@@ -49,8 +49,8 @@ void CAI_Space::load				(LPCSTR level_name)
 		_max(game_graph().header().vertex_count(),level_graph().header().vertex_count())
 	);
 	
-	ALife::LEVEL_MAP::const_iterator	I = game_graph().header().levels().begin();
-	ALife::LEVEL_MAP::const_iterator	E = game_graph().header().levels().begin();
+	CGameGraph::LEVEL_MAP::const_iterator	I = game_graph().header().levels().begin();
+	CGameGraph::LEVEL_MAP::const_iterator	E = game_graph().header().levels().begin();
 	for ( ; I != E; ++I)
 		if (!strcmp((*I).second.name(),level_name))
 			break;
