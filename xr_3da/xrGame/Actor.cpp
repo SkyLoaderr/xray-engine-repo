@@ -126,24 +126,6 @@ void CActor::net_Import(NET_Packet* P)					// import from server
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntity()
 {
-	bbStandBox.set			(-X_SIZE_2,0,-Z_SIZE_2, X_SIZE_2,Y_SIZE_2*2,Z_SIZE_2);
-	bbCrouchBox.set			(-X_SIZE_2,0,-Z_SIZE_2, X_SIZE_2,Y_SIZE_2,Z_SIZE_2);
-	Fvector sh; sh.set		(X_SIZE_2*0.25f,0.f,Z_SIZE_2*0.25f);
-	Fbox bbFootBox; Fvector vfC,vfE;
-	bbFootBox.set			(-X_SIZE_2,	-0.1f, -Z_SIZE_2, X_SIZE_2, Y_SIZE_2*.4f, Z_SIZE_2);
-
-	// уменьшим размер ступней что-бы чуть зависать в воздухе при запрыгивании на препятствие
-	bbFootBox.shrink		(sh); 
-	bbFootBox.getcenter		(vfC);
-	bbFootBox.getradius		(vfE);
-
-	// Movement
-	Movement.SetParent		(this);
-	Movement.SetBox			(bbStandBox);
-	Movement.SetCrashSpeeds	(MIN_CRASH_SPEED,MAX_CRASH_SPEED);
-	Movement.SetFoots		(vfC,vfE);
-	Movement.SetMass		(120);
-
 	// Cameras
 	cameras[eacFirstEye]	= new CCameraFirstEye	(this, pSettings, "actor_firsteye_cam", false);
 	cameras[eacLookAt]		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
@@ -162,14 +144,10 @@ CActor::CActor() : CEntity()
 	r_model_yaw_delta		= 0;
 	r_model_yaw_dest		= 0;
 //	Device.seqRender.Add(this,REG_PRIORITY_LOW-1111);
-
-//	Log("ACTOR-LOAD");
 }
 
 CActor::~CActor()
 {
-//	Log("ACTOR-UNLOAD");
-
 //	Device.seqRender.Remove(this);
 	_DELETE(Weapons);
 	for (int i=0; i<eacMaxCam; i++) _DELETE(cameras[i]);

@@ -118,9 +118,12 @@ void CEntity::Load(CInifile* ini, const char* section)
 	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_min"		);
 	float	cs_max		= ini->ReadFLOAT	(section,"ph_crash_max"		);
 	float	mass		= ini->ReadFLOAT	(section,"ph_mass"			);
+	Movement.SetParent		(this);
+	Movement.SetCrashSpeeds	(cs_min,cs_max);
+	Movement.SetMass		(mass);
 }
 
-BOOL CEntity::Spawn(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)
+BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos)
 {
 	CObject::Spawn		(bLocal,server_id,o_pos);
 
