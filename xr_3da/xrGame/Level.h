@@ -120,7 +120,7 @@ public:
 	virtual void				net_Stop				( );
 	virtual BOOL				net_Start_client		( LPCSTR name );
 
-	void						vfCreateAllPossiblePaths( string64& sName, SPath &tpPatrolPath);
+	void						vfCreateAllPossiblePaths( LPCSTR sName, SPath &tpPatrolPath);
 	virtual BOOL				Load_GameSpecific_Before( );
 	virtual BOOL				Load_GameSpecific_After ( );
 	virtual void				Load_GameSpecific_CFORM	( CDB::TRI* T, u32 count );
