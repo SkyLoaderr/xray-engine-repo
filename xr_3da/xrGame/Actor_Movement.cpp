@@ -372,6 +372,16 @@ void CActor::g_Orientate	(u32 mstate_rl, float dt)
 	mXFORM.rotateY	(-(r_model_yaw + r_model_yaw_delta));
 	mXFORM.c.set	(Position());
 	XFORM().set		(mXFORM);
+
+	//-------------------------------------------------
+
+	float tgt_roll		=	0.f;
+	if (mstate_rl&mcLookout)
+		tgt_roll		=	(mstate_rl&mcLLookout)?-ACTOR_LOOKOUT_ANGLE:ACTOR_LOOKOUT_ANGLE;
+	if (!fsimilar(tgt_roll,r_torso_tgt_roll,EPS)){
+		angle_lerp		(r_torso_tgt_roll,tgt_roll,PI_MUL_2,dt);
+		r_torso_tgt_roll= angle_normalize_signed(r_torso_tgt_roll);
+	}
 }
 bool CActor::g_LadderOrient()
 {
@@ -420,7 +430,6 @@ bool CActor::g_LadderOrient()
 void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
-	float tgt_roll		=	0.f;
 	if (eacFreeLook!=cam_active){
 		r_torso.yaw		=	cam_Active()->GetWorldYaw	();
 		r_torso.pitch	=	cam_Active()->GetWorldPitch	();
@@ -438,13 +447,6 @@ void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 		dangle			= pWeapon->GetRecoilDeltaAngle();
 		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
 		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
-	}
-
-	if (mstate_rl&mcLookout)
-		tgt_roll		=	(mstate_rl&mcLLookout)?-ACTOR_LOOKOUT_ANGLE:ACTOR_LOOKOUT_ANGLE;
-	if (!fsimilar(tgt_roll,r_torso_tgt_roll,EPS)){
-		angle_lerp		(r_torso_tgt_roll,tgt_roll,PI_MUL_2,dt);
-		r_torso_tgt_roll= angle_normalize_signed(r_torso_tgt_roll);
 	}
 
 	// если есть движение - выровнять модель по камере
