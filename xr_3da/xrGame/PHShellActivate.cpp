@@ -21,51 +21,56 @@
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 
-	//PresetActive();
-	//if(bActive)return;
-	//if(!CPHObject::is_active()) vis_update_deactivate();
-	//if(!disable)EnableObject();
+	PresetActive();
+	if(bActive)return;
+	if(!CPHObject::is_active()) vis_update_deactivate();
+	if(!disable)EnableObject();
 
-	//ELEMENT_I i;
+	ELEMENT_I i;
 	mXFORM.set(m0);
-	//for(i=elements.begin();elements.end() != i;++i){
+	for(i=elements.begin();elements.end() != i;++i){
 
-	//	(*i)->Activate(m0,dt01, m2, disable);
-	//}
-	//bActive=true;
-	//bActivating=true;
-	//spatial_register();
-	Activate(disable);
-	Fvector lin_vel;
-	lin_vel.sub(m2.c,m0.c);
-	set_LinearVel(lin_vel);
+		(*i)->Activate(m0,dt01, m2, disable);
+	}
+	bActive=true;
+	bActivating=true;
+	spatial_register();
+///////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+	//mXFORM.set(m0);
+	//Activate(disable);
+	//Fvector lin_vel;
+	//lin_vel.sub(m2.c,m0.c);
+	//set_LinearVel(lin_vel);
 }
 
 
 
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 
-	//PresetActive();	
-	//if(bActive)return;
-	//if(!CPHObject::is_active()) vis_update_deactivate();
-	//if(!disable)EnableObject();
+	PresetActive();	
+	if(bActive)return;
+	if(!CPHObject::is_active()) vis_update_deactivate();
+	if(!disable)EnableObject();
 
 
 
 
-	//ELEMENT_I i;
-	//mXFORM.set(transform);
-	//for(i=elements.begin();elements.end() != i;++i){
-	//	(*i)->Activate(transform,lin_vel, ang_vel);
-	//}
-
-	//spatial_register();
-	//bActive=true;
-	//bActivating=true;
+	ELEMENT_I i;
 	mXFORM.set(transform);
-	Activate(disable);
-	set_LinearVel(lin_vel);
-	set_AngularVel(ang_vel);
+	for(i=elements.begin();elements.end() != i;++i){
+		(*i)->Activate(transform,lin_vel, ang_vel);
+	}
+
+	spatial_register();
+	bActive=true;
+	bActivating=true;
+/////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+	//mXFORM.set(transform);
+	//Activate(disable);
+	//set_LinearVel(lin_vel);
+	//set_AngularVel(ang_vel);
 
 }
 
