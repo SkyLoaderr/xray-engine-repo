@@ -1,0 +1,23 @@
+-- File:        UI_MULTIPLAYER_GAMETYPE_TAB.SCRIPT
+-- Description: "Game Type" tab for Create Server Dialog
+-- Created:     03.12.2004
+-- Author:      Serhiy 0. Vynnychenk0
+-- Mail:        narrator@gsc-game.com
+--
+-- Copyright:   2004 GSC Game World
+--
+
+class "gametype_tab" (ui_multiplayer_base_tab.multiplayer_base_tab)
+
+function gametype_tab:__init() super()
+end
+
+function gametype_tab:__finalize() 
+end
+
+function gametype_tab:InitControls()
+end
+
+function gametype_tab:InitCallbacks()
+end
+
