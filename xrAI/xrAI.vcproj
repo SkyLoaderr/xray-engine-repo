@@ -529,6 +529,9 @@
 					RelativePath="ai_alife_cross_table.h">
 				</File>
 				<File
+					RelativePath="ai_alife_graph.h">
+				</File>
+				<File
 					RelativePath="ai_alife_interfaces.h">
 				</File>
 				<File

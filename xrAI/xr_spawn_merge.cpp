@@ -19,9 +19,7 @@
 
 DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
-CGraph								*tpGraph = 0;
-//CVirtualFileStream				*tpGraphVFS = 0;
-//SCompressedGraphVertex			*tpGraph->m_tpaGraph;
+CGraph							*tpGraph = 0;
 
 class CSpawnComparePredicate {
 private:
@@ -42,7 +40,7 @@ public:
 
 class CSpawn : public CThread {
 public:
-	SLevel						m_tLevel;
+	CALifeGraph::SLevel			m_tLevel;
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	u32							m_dwLevelID;
 	u32							m_dwAStarStaticCounter;
@@ -57,7 +55,7 @@ public:
 	DWORD_VECTOR				m_tpGraphNodes;
 	CAI_Map						*m_tpAI_Map;
 
-								CSpawn(const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
+								CSpawn(const CALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
 		thDestroyOnComplete		= FALSE;
 		// loading AI map
@@ -158,14 +156,14 @@ public:
 	void						Execute()
 	{
 		thProgress				= 0.0f;
-		m_tpGraphNodes.resize	(tGraphHeader.dwVertexCount);
+		m_tpGraphNodes.resize	(tpGraph->m_tGraphHeader.dwVertexCount);
 		m_tpSpawnNodes.resize	(m_tpSpawnPoints.size());
-		u32						dwStart = tGraphHeader.dwVertexCount, dwFinish = tGraphHeader.dwVertexCount, dwCount = 0;
-		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
+		u32						dwStart = tpGraph->m_tGraphHeader.dwVertexCount, dwFinish = tpGraph->m_tGraphHeader.dwVertexCount, dwCount = 0;
+		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID)
 				dwCount++;
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
-		for (int i=0; i<(int)tGraphHeader.dwVertexCount; i++)
+		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
 			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
 				R_ASSERT((m_tpGraphNodes[i] = m_tpAI_Map->dwfFindCorrespondingNode(tpGraph->m_tpaGraph[i].tLocalPoint))!=-1);
 				if (dwStart > (u32)i)
@@ -250,32 +248,11 @@ public:
 	};
 };
 
-void vfLoadGameGraph()
-{
-//	string256						fName = "gamedata\\game.graph";
-//	tpGraphVFS						= xr_new<CVirtualFileStream>(fName);
-//	tGraphHeader.dwVersion			= tpGraphVFS->Rdword();
-//	tGraphHeader.dwVertexCount		= tpGraphVFS->Rdword();
-//	tGraphHeader.dwLevelCount		= tpGraphVFS->Rdword();
-//	tGraphHeader.tpLevels.resize	(tGraphHeader.dwLevelCount);
-//	R_ASSERT						(tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-//	{
-//		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-//		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
-//		for ( ; I != E; I++) {
-//			tpGraphVFS->RstringZ	((*I).caLevelName);
-//			tpGraphVFS->Rvector		((*I).tOffset);
-//		}
-//	}
-//	tpGraph->m_tpaGraph					= (SCompressedGraphVertex *)tpGraphVFS->Pointer();
-	tpGraph							= xr_new<CGraph>("gamedata\\game.graph");
-}
-
 void xrMergeSpawns()
 {
 	// load all the graphs
 	Phase						("Loading game graph");
-	vfLoadGameGraph				();
+	tpGraph						= xr_new<CGraph>("gamedata\\game.graph");
 	
 	Phase						("Reading level graphs");
 	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);
@@ -285,7 +262,7 @@ void xrMergeSpawns()
 	tSpawnHeader.dwSpawnCount	= 0;
 	u32							dwGroupOffset = 0;
 	vector<CSpawn *>			tpLevels;
-	SLevel						tLevel;
+	CALifeGraph::SLevel			tLevel;
     LPCSTR						N,V;
 	R_ASSERT					(Ini->SectionExists("levels"));
     for (u32 k = 0; Ini->ReadLINE("levels",k,&N,&V); k++) {
@@ -318,6 +295,7 @@ void xrMergeSpawns()
 	tMemoryStream.SaveTo		("game.spawn",0);
 
 	Phase						("Freeing resources being allocated");
+	xr_delete					(tpGraph);
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		xr_delete				(tpLevels[i]);
 }

@@ -8,8 +8,8 @@
 
 #include "stdafx.h"
 #include "xr_ini.h"
-#include "xrAI.h"
 #include "xrLevel.h"
+#include "xrAI.h"
 #include "xrGraph.h"
 #include "ai_alife_space.h"
 #include "game_base.h"
@@ -36,16 +36,14 @@ public:
 DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CComparePredicate());
 
-class CLevelGraph {
+class CLevelGraph : public CALifeGraph {
 public:
-	SGraphHeader				m_tGraphHeader;
 	GRAPH_VERTEX_VECTOR			m_tpVertices;
 	SLevel						m_tLevel;
-	SCompressedGraphVertex		*m_tpaGraph;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 
-								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID)
+								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID) : CALifeGraph()
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
@@ -85,20 +83,8 @@ public:
 		}
 
 		// loading graph
-		strconcat			(caFileName,S,"level.graph");
-		CVirtualFileStream		F(caFileName);
-		m_tGraphHeader.dwVersion		= F.Rdword();
-		m_tGraphHeader.dwVertexCount	= F.Rdword();
-		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount = F.Rdword());
-		{
-			vector<SLevel>::iterator		I = m_tGraphHeader.tpLevels.begin();
-			vector<SLevel>::iterator		E = m_tGraphHeader.tpLevels.end();
-			for ( ; I != E; I++) {
-				F.RstringZ((*I).caLevelName);
-				F.Rvector((*I).tOffset);
-			}
-		}
-		m_tpaGraph				= (SCompressedGraphVertex *)F.Pointer();
+		strconcat				(caFileName,S,"level.graph");
+		CALifeGraph::Load		(caFileName);
 		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			I = B;
@@ -205,7 +191,7 @@ public:
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
 		for ( ; I != E; I++) {
-			SCompressedGraphVertex tVertex;
+			SGraphVertex tVertex;
 			tVertex.tLocalPoint		= (*I).tLocalPoint;
 			tVertex.tGlobalPoint	= (*I).tGlobalPoint;
 			tVertex.tNodeID			= (*I).tNodeID;
@@ -236,7 +222,7 @@ void xrMergeGraphs()
 		THROW;
 	GRAPH_P_MAP						tpGraphs;
 	string256						S1, S2;
-	SLevel							tLevel;
+	CALifeGraph::SLevel				tLevel;
 	u32								dwOffset = 0;
 	R_ASSERT						(Ini->SectionExists("levels"));
     LPCSTR N,V;
@@ -266,7 +252,7 @@ void xrMergeGraphs()
 				if ((*i).second.caConnectName[0]) {
 					GRAPH_P_PAIR_IT				K;
 					VERTEX_PAIR_IT				M;
-					SGraphEdge					tGraphEdge;
+					CALifeGraph::SGraphEdge		tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
 					R_ASSERT					((K = tpGraphs.find(tConnectionVertex.dwLevelID)) != tpGraphs.end());
 					R_ASSERT					((M = (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName)) != (*K).second->m_tVertexMap.end());
@@ -291,15 +277,15 @@ void xrMergeGraphs()
 	F.Wdword						(tGraphHeader.dwVertexCount);
 	F.Wdword						(tGraphHeader.dwLevelCount);
 	{
-		vector<SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
-		vector<SLevel>::iterator	E = tGraphHeader.tpLevels.end();
+		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
+		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
 			F.WstringZ((*I).caLevelName);
 			F.Wvector((*I).tOffset);
 		}
 	}
 
-	dwOffset						*= sizeof(SCompressedGraphVertex);
+	dwOffset						*= sizeof(CALifeGraph::SGraphVertex);
 	{
 		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
 		GRAPH_P_PAIR_IT				E = tpGraphs.end();

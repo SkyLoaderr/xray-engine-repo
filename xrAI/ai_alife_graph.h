@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "..\\xrLevel.h"
+#include "xrLevel.h"
 #include "ai_alife_space.h"
 
 #define GRAPH_NAME							"game.graph"
@@ -25,6 +25,7 @@ public:
 		Fvector								tLocalPoint;
 		Fvector								tGlobalPoint;
 		u8									tLevelID;
+		u32									tNodeID;
 		u8									tVertexTypes[LOCATION_TYPE_COUNT];
 		u8									tNeighbourCount;
 		u32									dwEdgeOffset;
@@ -53,7 +54,7 @@ public:
 		m_tpaGraph							= 0;
 	};
 
-	CALifeGraph								(const FILE_NAME &fName)
+	CALifeGraph								(LPCSTR fName)
 	{
 		m_tpGraphVFS						= 0;
 		m_tpaGraph							= 0;
@@ -70,24 +71,22 @@ public:
 		return								(m_tGraphHeader);
 	};
 
-	IC void Load							(const FILE_NAME &fName)
+	IC void Load							(LPCSTR fName)
 	{
-		if (Engine.FS.Exist(fName)) {
-			m_tpGraphVFS					= Engine.FS.Open(fName);
-			m_tGraphHeader.dwVersion		= m_tpGraphVFS->Rdword();
-			m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->Rdword();
-			m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->Rdword();
-			m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
-			{
-				vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
-				vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
-				for ( ; I != E; I++) {
-					m_tpGraphVFS->RstringZ	((*I).caLevelName);
-					m_tpGraphVFS->Rvector	((*I).tOffset);
-				}
+		m_tpGraphVFS					= xr_new<CVirtualFileStream>(fName);
+		m_tGraphHeader.dwVersion		= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.dwVertexCount	= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->Rdword();
+		m_tGraphHeader.tpLevels.resize	(m_tGraphHeader.dwLevelCount);
+		{
+			vector<SLevel>::iterator	I = m_tGraphHeader.tpLevels.begin();
+			vector<SLevel>::iterator	E = m_tGraphHeader.tpLevels.end();
+			for ( ; I != E; I++) {
+				m_tpGraphVFS->RstringZ	((*I).caLevelName);
+				m_tpGraphVFS->Rvector	((*I).tOffset);
 			}
-			R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
-			m_tpaGraph						= (SGraphVertex*)m_tpGraphVFS->Pointer();
 		}
+		R_ASSERT						(m_tGraphHeader.dwVersion == XRAI_CURRENT_VERSION);
+		m_tpaGraph						= (SGraphVertex*)m_tpGraphVFS->Pointer();
 	};
 };
