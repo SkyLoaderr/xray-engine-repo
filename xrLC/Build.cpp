@@ -213,7 +213,6 @@ void CBuild::Run()
 	Phase			("Optimizing...");
 	mem_Compact		();
 	PreOptimize		();
-	IsolateVertices	();
 
 	FPU::m64r		();
 	Phase			("Checking T-Junctions...");
