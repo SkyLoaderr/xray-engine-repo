@@ -279,7 +279,7 @@ function military_dolg_dead (actor, npc)
     -- если все умерли и была задача мочить снайпера, но сообщать не кому, то
     -- ставим задачу, как не выполненую
     if db.storage[db.actor:id ()].mil_dolg["killed"] == 1 then
-       if db.actor:has_info ("mil_sniper_get_job") then 
+       if db.actor:has_info ("mil_sniper_get_job") and db.actor:dont_has_info ("mil_dolg_mission_complete") then 
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 0)
           level_tasks.set_task_state (task.fail, "mil_kill_sniper", 2)
           level_tasks.disable_info_portion ("mil_sniper_get_job")
