@@ -49,7 +49,7 @@ CHelicopterMovManager::~CHelicopterMovManager	()
 
 void	CHelicopterMovManager::load(LPCSTR		section)
 {
-
+/*
 	float	x_level_bound				= pSettings->r_float(section,"x_level_bound");
 	float	z_level_bound				= pSettings->r_float(section,"z_level_bound");
 
@@ -66,7 +66,7 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 
 	m_boundingAssert  = m_boundingVolume;
 	m_boundingAssert.scale(0.2f);
-
+*/
 }
 
 void CHelicopterMovManager::init(CHelicopter* heli)
@@ -76,6 +76,24 @@ void CHelicopterMovManager::init(CHelicopter* heli)
 	m_currPatrolVertex	= NULL;
 	m_currPatrolVertex	= NULL;
 	m_currPatrolPath	= NULL;
+
+	float	x_level_bound				= pSettings->r_float(heli->cNameSect(),"x_level_bound");
+	float	z_level_bound				= pSettings->r_float(heli->cNameSect(),"z_level_bound");
+
+	m_boundingVolume = Level().ObjectSpace.GetBoundingVolume();
+
+	if( 2*x_level_bound<(m_boundingVolume.max.x-m_boundingVolume.max.x)&&
+		2*z_level_bound<(m_boundingVolume.max.z-m_boundingVolume.max.z)){
+
+			Fvector b;
+			b.set(x_level_bound,0,z_level_bound);
+			m_boundingVolume.max.sub(b);
+			m_boundingVolume.min.add(b);
+		};
+
+	m_boundingAssert  = m_boundingVolume;
+	m_boundingAssert.scale(0.2f);
+
 }
 
 void CHelicopterMovManager::onTime(float t, Fvector& P, Fvector& R)
