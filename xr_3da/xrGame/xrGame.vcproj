@@ -1533,7 +1533,7 @@
 					Name="common"
 					Filter="">
 					<Filter
-						Name="ai_custom"
+						Name="custom"
 						Filter="">
 						<File
 							RelativePath=".\CustomMonster.cpp">
@@ -1549,7 +1549,7 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="Miscellaneous"
+						Name="miscellaneous"
 						Filter="">
 						<File
 							RelativePath=".\ai\ai_monster_defs.h">
@@ -1741,7 +1741,7 @@
 						</Filter>
 					</Filter>
 					<Filter
-						Name="ai_script"
+						Name="script"
 						Filter="">
 						<File
 							RelativePath=".\Ai\script\ai_script_monster.cpp">
