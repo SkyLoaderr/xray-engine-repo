@@ -689,7 +689,7 @@ void CAI_Rat::ReturnHome()
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
 	}
  
-	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
+	CHECK_IF_GO_TO_PREV_STATE(vPosition.distance_to(m_tSafeSpawnPosition) < m_fMaxHomeRadius);
 
 	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;

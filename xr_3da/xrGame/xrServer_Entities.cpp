@@ -649,7 +649,7 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropValueVec& values)
 xrSE_Zombie::xrSE_Zombie()
 {
 	caModel[0]						= 0;
-	strcat(caModel,"monsters\\rat\\rat_1");
+	strcat(caModel,"monsters\\zombie\\zombie_1");
 	// personal charactersitics
 	fEyeFov							= 120;
 	fEyeRange						= 10;
