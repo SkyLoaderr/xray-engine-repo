@@ -82,6 +82,8 @@ void edges(occTri& T)
 	line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
 	line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
 }
+extern	void i_edge ( occRasterizer* OCC, float x1, float y1, float x2, float y2);
+
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
@@ -122,6 +124,7 @@ int __cdecl main	(int argc, char* argv[])
 		occ.clear		();
 		occ.rasterize	(&T1);
 		occ.rasterize	(&T2);
+		i_edge			(&occ,T1.raster[0].x,T1.raster[0].y,T1.raster[1].x,T1.raster[1].y);
 		occ.propagade	();
 		
 		// copy into surface

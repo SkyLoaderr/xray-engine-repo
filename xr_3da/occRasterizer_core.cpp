@@ -121,7 +121,7 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 	}
 }
 
-void i_test	( occRasterizer* OCC, int x, int y)
+void i_test_micro( occRasterizer* OCC, int x, int y)
 {
 	occTri**	pFrame	= OCC->get_frame();
 	float*		pDepth	= OCC->get_depth();
@@ -139,6 +139,12 @@ void i_test	( occRasterizer* OCC, int x, int y)
 		float ZR = (pDepth[pos_up]+pDepth[pos_down])/2;
 		if (ZR<pDepth[pos])	{ pFrame[pos] = T1; pDepth[pos] = ZR; }
 	}
+}
+void i_test		( occRasterizer* OCC, int x, int y)
+{
+	i_test_micro	(OCC,x,y-1);
+	i_test_micro	(OCC,x,y+1);
+	i_test_micro	(OCC,x,y);
 }
 
 void i_line	( occRasterizer* OCC, int x1, int y1, int x2, int y2 )
