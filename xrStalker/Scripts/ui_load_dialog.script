@@ -57,7 +57,7 @@ function load_dialog:InitControls()
 						     y = self.top_align_y,
 						     width = 148, 
 						     height = 148}
-	//info_rect.y = (self.main_rect.width - info_rect.width)/2
+	info_rect.y = (self.main_rect.width - info_rect.width)/2
 							 
 							 
 							 
