@@ -117,10 +117,14 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 	}
 }
 
-void CLightPPA_Manager::Initialize()
+void CLightPPA_Manager::Initialize	()
 {
 	SH	= Device.Shader.Create	("$light");
 	VS	= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, MAX_POLYGONS*3);
+}
+void CLightPPA_Manager::Destroy		()
+{
+	Device.Shader.Delete		(SH);
 }
 
 void CLightPPA_Manager::Render()

@@ -7,6 +7,7 @@
 #pragma once
 
 #include "FLightsController.h"
+#include "LightPPA.h"
 #include "fbasicvisual.h"
 #include "scenegraph.h"
 #include "glowmanager.h"
@@ -61,6 +62,7 @@ public:
 	vector<CPortal>					Portals;
 	vector<CSector*>				Sectors;
 	CLightsController				Lights;
+	CLightPPA_Manager				Lights_Dynamic;
 	CGlowManager					Glows;
 	CWallmarksEngine				Wallmarks;
 	CDetailManager					Details;
