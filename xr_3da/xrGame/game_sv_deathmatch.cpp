@@ -170,8 +170,6 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	A->s_flags.set			(M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER);	// flags
 	assign_RP				(A);
 	spawn_end				(A,id_who);
-
-//	HUD().outMessage			(0xffffffff,"DM","Player '%s' connected",A->s_name_replace);
 }
 
 
@@ -203,5 +201,5 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 	S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
 
-	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
+//	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
 };
