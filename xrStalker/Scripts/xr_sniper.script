@@ -25,7 +25,7 @@ function point_with_bit(patrol_path, bit, old_point)			--old_point - старая точк
 	local number_point = table.getn(points)
 
 	if(number_point == 0) then
-		printf("bit = %d", bit)
+---		printf("bit = %d", bit)
     	return nil
     elseif(number_point == 1) then
     	return points[1]
@@ -451,7 +451,7 @@ function action_camper:initialize ()
     self.camper_point   = this.near_point_with_bit(self.object:position(), self.a.point_path, 0)
 
     self.state			= hide
-	printf("camper_point = %d", self.camper_point)
+--	printf("camper_point = %d", self.camper_point)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_camper:execute ()
@@ -518,15 +518,9 @@ end
 function action_camper:select_look_point()
 	--Просматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
 	for i = 2, 20 do
-        printf("point %d  bit %d", self.camper_point, i)
+--        printf("point %d  bit %d", self.camper_point, i)
         if(self.a.point_path:flag(self.camper_point, i)) then
-			printf("Ok")
         	self.look_point	= this.point_with_bit(self.a.point_path, i, self.camper_point)
-
-            local dir = self.look_point
---			local dir = self.look_point:sub(self.object:position())
-			printf("look direction x = %f  y = %f  z = %f", dir.x, dir.y, dir.z)
-            --printf("index camper point = %d  look_to_point = %d", self.camper_point, self.look_point)
             return
         end
     end
