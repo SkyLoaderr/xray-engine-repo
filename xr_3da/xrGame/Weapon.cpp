@@ -527,10 +527,9 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 
 	case GE_WPN_STATE_CHANGE:
 		{
-			u8				state, sub_state;
+			u8				state;
 			P.r_u8			(state);
-			P.r_u8			(sub_state);
-			m_sub_state		=(EWeaponSubStates)sub_state;
+			P.r_u8			(m_sub_state);
 			OnStateSwitch	(u32(state));
 		}
 		break;

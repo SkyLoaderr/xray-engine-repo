@@ -92,7 +92,7 @@ BOOL CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* item)
 	if (range>0.25f){
 		if (frustum.testSphere_dirty(to,item->Radius())){
 			dir.div	(range);
-			bool item_en		= item->getEnabled();
+			bool item_en		= !!item->getEnabled();
 			item->setEnabled	(false);
 			Level().CurrentEntity()->setEnabled(false);
 			collide::ray_defs RD(from, dir, range, 0, collide::rqtBoth);
@@ -160,5 +160,5 @@ void CActor::PickupInfoDraw(CObject* object)
 
 	HUD().Font().pFontMedium->SetAligment	(CGameFont::alCenter);
 	HUD().Font().pFontMedium->SetColor		(PICKUP_INFO_COLOR);
-	HUD().Font().pFontMedium->Out			(x,y,draw_str);
+	HUD().Font().pFontMedium->Out			((float)x,(float)y,draw_str);
 }

@@ -235,7 +235,7 @@ void CUIEncyclopediaCore::OpenTree(int value)
 	for(std::size_t k = 0; k<m_ArticlesDB.size(); ++k)
 	{
 		if(m_ArticlesDB[k]->Index() == value)
-		itemVal = k;
+		itemVal = (int)k;
 	}
 
 	R_ASSERT(pIdxList);

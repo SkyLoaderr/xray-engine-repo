@@ -130,7 +130,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
 
-		THROW3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *shared_str(CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex)));
+		THROW3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *CPhraseDialog::IndexToId(phrase_dialog->m_DialogIndex));
 
 		//упорядочить списко по убыванию благосклонности
 		std::sort(phrase_dialog->m_PhraseVector.begin(),
@@ -213,7 +213,7 @@ void CPhraseDialog::load_shared	(LPCSTR)
 
 	//loading from XML
 	XML_NODE* dialog_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	THROW3(dialog_node, "dialog id=", *shared_str(item_data.id));
+	THROW3(dialog_node, "dialog id=", *item_data.id);
 
 	uiXml.SetLocalRoot(dialog_node);
 
@@ -243,12 +243,12 @@ void CPhraseDialog::load_shared	(LPCSTR)
 
 	phrase_list_node = uiXml.NavigateToNode(dialog_node, "phrase_list", 0);
 	int phrase_num = uiXml.GetNodesNum(phrase_list_node, "phrase");
-	THROW3(phrase_num, "dialog %s has no phrases at all", *shared_str(item_data.id));
+	THROW3(phrase_num, "dialog %s has no phrases at all", *item_data.id);
 
 	uiXml.SetLocalRoot(phrase_list_node);
 
 	LPCSTR wrong_phrase_id = uiXml.CheckUniqueAttrib(phrase_list_node, "phrase", "id");
-	THROW3(wrong_phrase_id == NULL, *shared_str(item_data.id), wrong_phrase_id);
+	THROW3(wrong_phrase_id == NULL, *item_data.id, wrong_phrase_id);
 	
 
 	//ищем стартовую фразу

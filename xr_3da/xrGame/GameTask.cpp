@@ -92,7 +92,7 @@ void CGameTask::load_shared	(LPCSTR)
 
 	//loading from XML
 	XML_NODE* task_node = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	THROW3(task_node, "game task id=", *shared_str(item_data.id));
+	THROW3(task_node, "game task id=", *item_data.id);
 
 	int tag_num = uiXml.GetNodesNum(task_node, "objective");
 

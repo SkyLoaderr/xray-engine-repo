@@ -63,7 +63,7 @@ void CInfoPortion::load_shared	(LPCSTR)
 
 	//loading from XML
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	THROW3(pNode, "info_portion id=", *shared_str(item_data.id));
+	THROW3(pNode, "info_portion id=", *item_data.id);
 
 
 	int defer_init = uiXml.ReadAttribInt(pNode, "defer_init", 0);

@@ -14,10 +14,12 @@
 #define READ_IF_EXISTS(ltx,method,section,name,default_value)\
 	(ltx->line_exist(section,name)) ? ltx->method(section,name) : default_value
 
+
 #if XRAY_EXCEPTIONS
+IC	xr_string string2xr_string(LPCSTR s) {return s ? s : "";}
 #	define	THROW(xpr)				if (!(xpr)) {throw __FILE__LINE__"\""#xpr"\"";}
-#	define	THROW2(xpr,msg0)		if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "");}
-#	define	THROW3(xpr,msg0,msg1)	if (!(xpr)) {throw *shared_str().sprintf("%s \"%s\" : %s, %s",__FILE__LINE__,#xpr,msg0 ? msg0 : "",msg1 ? msg1 : "");}
+#	define	THROW2(xpr,msg0)		if (!(xpr)) {throw xr_string(__FILE__LINE__).append(" \"").append(#xpr).append(string2xr_string(msg0));}
+#	define	THROW3(xpr,msg0,msg1)	if (!(xpr)) {throw xr_string(__FILE__LINE__).append(" \"").append(#xpr).append(string2xr_string(msg0)).append(", ").append(string2xr_string(msg1));}
 #else
 #	define	THROW					VERIFY
 #	define	THROW2					VERIFY2

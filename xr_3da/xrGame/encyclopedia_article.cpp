@@ -45,7 +45,7 @@ void CEncyclopediaArticle::load_shared	(LPCSTR)
 
 	//loading from XML
 	XML_NODE* pNode = uiXml.NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
-	THROW3(pNode, "encyclopedia article id=", *shared_str(item_data.id));
+	THROW3(pNode, "encyclopedia article id=", *item_data.id);
 
 	//текст
 	data()->text = uiXml.Read(pNode, "text", 0);

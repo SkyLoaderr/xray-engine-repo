@@ -405,12 +405,24 @@ void CAI_Stalker::UpdateCL()
 {
 	if (g_Alive()) {
 		try {
-			CObjectHandler::update	();
-		}
-		catch (LPCSTR message) {
-			Msg						("! Expression \"%s\"",message);
-			CObjectHandler::set_goal(eObjectActionIdle);
-			CObjectHandler::update	();
+			try {
+				CObjectHandler::update	();
+			}
+			catch (xr_string &message) {
+				Msg						("! Expression \"%s\"",message.c_str());
+				throw;
+			}
+			catch (luabind::cast_failed &message) {
+				Msg						("! Expression \"%s\" from luabind::object to %s",message.what(),message.info()->name());
+				throw;
+			}
+			catch (std::exception &message) {
+				Msg						("! Expression \"%s\"",message.what());
+				throw;
+			}
+			catch(...) {
+				throw;
+			}
 		}
 		catch(...) {
 			CObjectHandler::set_goal(eObjectActionIdle);
@@ -674,6 +686,9 @@ void CAI_Stalker::Think			()
 		}
 		catch (std::exception &message) {
 			Msg						("! Expression \"%s\"",message.what());
+			throw;
+		}
+		catch (...) {
 			throw;
 		}
 	}
