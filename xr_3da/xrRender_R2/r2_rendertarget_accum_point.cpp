@@ -106,6 +106,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	}
 
 	// Render if (stencil >= light_id && z-pass)
+	/*
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			dwLightMarkerID		));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILMASK,		0xff				));
@@ -113,6 +114,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+	*/
 
 	RCache.set_Geometry					(g_accum_point);
 	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
