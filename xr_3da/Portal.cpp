@@ -167,7 +167,7 @@ void CSector::GetObjects	(CFrustum& F, objSET &D, objQualifier* Q, void* P)
 void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 {
 	// Occluders
-	Occluders.Select(F);
+	Occluders.Select(F,vBase,mFullXFORM);
 
 	// Traverse objects
 	{
