@@ -27,11 +27,52 @@ struct	SMAP_Rect
 
 class	SMAP_Allocator
 {
-	u32						psize;		// 
+	u32						psize;		// pool size
 	xr_vector<SMAP_Rect>	stack;		// 
 	xr_vector<Ivector2>		cpoint;		// critical points
-public:
-	BOOL			push	(u32	_size)
+private:
+	void			_add	(SMAP_Rect& R)
 	{
+		stack.push_back		(R);
+		Ivector2			p0,p1;
+		R.get_cp			(p0,p1);
+		if ((p0.x<psize)&&(p0.y<psize))	cpoint.push_back(p0);	// 1st
+		if ((p1.x<psize)&&(p1.y<psize))	cpoint.push_back(p1);	// 2nd
+	}
+public:
+	BOOL			push	(SMAP_Rect& R, u32	_size)
+	{
+		VERIFY	(_size<psize && size>4);
+
+		// setup first in the soup, if empty state
+		if (stack.empty())	{
+			Ivector2	p;	p.set(0,0);
+			R.setup			(p,_size);
+			_add			(R);
+			return			true;
+		}
+
+		// perform search	(first-fit)
+		for (u32 it=0; it<cpoint.size(); it++)
+		{
+			R.setup				(cpoint[it],_size);
+			if (R.max.x>=psize)	continue;
+			if (R.max.y>=psize)	continue;
+			BOOL	bIntersect	= false;
+			for (u32 t=0; t<stack.size(); t++)
+				if (stack[t].intersect(R))	{
+					bIntersect	= true;
+					break;
+				}
+			if (bIntersect)		continue;
+			
+			// OK, place
+			cpoint.erase		(cpoint.begin()+it);
+			_add				(R);
+			return				true;
+		}
+
+		// fail
+		return	false;
 	}
 };
