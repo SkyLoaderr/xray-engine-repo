@@ -10,7 +10,7 @@ news = {
 
 
 function send_news(actor, news_id, timeout)
-	if db.actor or news_id == nil then return false end
+	if db.actor == nil or news_id == nil then return false end
 	
 	if timeout == nil then timeout = 0 end
 		
