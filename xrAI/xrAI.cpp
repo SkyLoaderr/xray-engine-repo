@@ -65,6 +65,13 @@ extern  HWND logWindow;
 
 void Startup(LPSTR     lpCmdLine)
 {
+#ifdef TEST_FOR_BORLAND
+	CTestInterface		*test = create_test_object();
+	test->test_test0	();
+	test->test_test1	();
+	destroy_test_object	(test);
+#endif
+
 	char cmd[512],name[256];
 	BOOL bModifyOptions		= FALSE;
 
@@ -110,13 +117,6 @@ void Startup(LPSTR     lpCmdLine)
 	
 	pSettings			= xr_new<CInifile>(SYSTEM_LTX);
 
-#ifdef TEST_FOR_BORLAND
-	CTestInterface		*test = create_test_object();
-	test->test_test0	();
-	test->test_test1	();
-	destroy_test_object	(test);
-#endif
-	
 	if (strstr(cmd,"-f"))
 		xrCompiler			(prjName,!!strstr(cmd,"-draft"));
 	else
