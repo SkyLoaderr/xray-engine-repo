@@ -299,12 +299,9 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 			}
 		}
 		break;
-//	case DPN_MSGID_TERMINATE_SESSION:
-//		{
-//			Log					("**@@@@@@@@@*********###########$$$$$$$$$$$$$$$****************************");
-//			Engine.Event.Defer	("kernel:disconnect");
-//		}
-//		break;
+	case DPN_MSGID_TERMINATE_SESSION:
+		Engine.Event.Defer	("kernel:disconnect");
+		break;
 	default:
 		{
 			LPSTR	msg;	
