@@ -45,6 +45,9 @@ public:
 	// Cache
 	CSoundRender_Cache					cache;
 	u32									cache_bytes_per_line;
+protected:
+	virtual void						i_eax_set				(const GUID* guid, u32 prop, void* val, u32 sz)=0;
+	virtual void						i_eax_get				(const GUID* guid, u32 prop, void* val, u32 sz)=0;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();
@@ -72,18 +75,20 @@ public:
 
 	// listener
 	virtual const Fvector&				listener_position		( )=0;
+	virtual void						update_listener			(const Fvector& P, const Fvector& D, const Fvector& N, float dt)=0;
+	// eax listener
+	void								i_eax_commit_setting	();
+	void								i_eax_listener_set		(CSound_environment* E);
+	void								i_eax_listener_get		(CSound_environment* E);
+
 #ifdef _EDITOR
 	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
 	virtual void						refresh_env_library		();
 	virtual void						set_user_env			(CSound_environment* E);
 	virtual void						refresh_sources			();
-    virtual void						set_environment			(u32 id, CSound_environment** dst_env)=0;
-    virtual void						set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env)=0;
+    virtual void						set_environment			(u32 id, CSound_environment** dst_env);
+    virtual void						set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env);
 #endif
-	virtual void						i_set_eax				(CSound_environment* E)=0;
-	virtual void						i_get_eax				(CSound_environment* E)=0;
-
-	virtual void						update_listener			( const Fvector& P, const Fvector& D, const Fvector& N, float dt )=0;
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);
 	void								i_destroy_source		( CSoundRender_Source*  S	);

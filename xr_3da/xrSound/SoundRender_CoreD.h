@@ -28,8 +28,8 @@ public:
 	SListener					Listener;
 private:
 	virtual void			update_listener			( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
-	virtual void			i_set_eax				(CSound_environment* E);
-	virtual void			i_get_eax				(CSound_environment* E);
+	virtual void			i_eax_set				(const GUID* guid, u32 prop, void* val, u32 sz);
+	virtual void			i_eax_get				(const GUID* guid, u32 prop, void* val, u32 sz);
 public:
 							CSoundRender_CoreD		();
     virtual					~CSoundRender_CoreD		();
@@ -38,10 +38,6 @@ public:
 	virtual void			_destroy				( );
     
 	virtual const Fvector&	listener_position		( ){return Listener.vPosition;}
-#ifdef _EDITOR
-	virtual void 			set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env);
-	virtual void 			set_environment			(u32 id, CSound_environment** dst_env);
-#endif
 };
 extern CSoundRender_CoreD	SoundRenderD;
 #endif

@@ -154,59 +154,14 @@ void CSoundRender_CoreD::_destroy	()
 	_RELEASE					( pDevice		);
 }
 
-void CSoundRender_CoreD::i_set_eax		(CSound_environment* _E)
+void	CSoundRender_CoreD::i_eax_set			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
-	VERIFY(bEAX);
-    CSoundRender_Environment* E = static_cast<CSoundRender_Environment*>(_E);
-    EAXLISTENERPROPERTIES 		ep;
-    ep.lRoom					= iFloor(E->Room)				;	// room effect level at low frequencies
-    ep.lRoomHF					= iFloor(E->RoomHF)				;   // room effect high-frequency level re. low frequency level
-    ep.flRoomRolloffFactor		= E->RoomRolloffFactor			;   // like DS3D flRolloffFactor but for room effect
-    ep.flDecayTime				= E->DecayTime					;   // reverberation decay time at low frequencies
-    ep.flDecayHFRatio			= E->DecayHFRatio				;   // high-frequency to low-frequency decay time ratio
-    ep.lReflections				= iFloor(E->Reflections)		;   // early reflections level relative to room effect
-    ep.flReflectionsDelay		= E->ReflectionsDelay			;   // initial reflection delay time
-    ep.lReverb					= iFloor(E->Reverb)	 			;   // late reverberation level relative to room effect
-    ep.flReverbDelay			= E->ReverbDelay				;   // late reverberation delay time relative to initial reflection
-    ep.dwEnvironment			= EAXLISTENER_DEFAULTENVIRONMENT;  	// sets all listener properties
-    ep.flEnvironmentSize		= E->EnvironmentSize			;  	// environment size in meters
-    ep.flEnvironmentDiffusion	= E->EnvironmentDiffusion		; 	// environment diffusion
-    ep.flAirAbsorptionHF		= E->AirAbsorptionHF			;	// change in level per meter at 5 kHz
-    ep.dwFlags					= EAXLISTENER_DEFAULTFLAGS		;	// modifies the behavior of properties
-    R_CHK(pExtensions->Set		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOM, 					NULL, 0, &ep.lRoom, 				sizeof(LONG)));
-    R_CHK(pExtensions->Set     	(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOMHF, 				NULL, 0, &ep.lRoomHF, 				sizeof(LONG)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ROOMROLLOFFFACTOR, 		NULL, 0, &ep.flRoomRolloffFactor,	sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_DECAYTIME, 				NULL, 0, &ep.flDecayTime, 			sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_DECAYHFRATIO,			NULL, 0, &ep.flDecayHFRatio, 		sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REFLECTIONS, 			NULL, 0, &ep.lReflections, 			sizeof(LONG)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REFLECTIONSDELAY, 		NULL, 0, &ep.flReflectionsDelay, 	sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REVERB, 				NULL, 0, &ep.lReverb, 				sizeof(LONG)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_REVERBDELAY, 			NULL, 0, &ep.flReverbDelay, 		sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTDIFFUSION,	NULL, 0, &ep.flEnvironmentDiffusion,sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_AIRABSORPTIONHF, 		NULL, 0, &ep.flAirAbsorptionHF, 	sizeof(float)));
-    R_CHK(pExtensions->Set      (DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_FLAGS, 					NULL, 0, &ep.dwFlags, 				sizeof(DWORD)));
+    R_CHK(pExtensions->Set		(*guid, prop, NULL, 0, val, sz));
 }
-
-void	CSoundRender_CoreD::i_get_eax			(CSound_environment* _E)
+void	CSoundRender_CoreD::i_eax_get			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
-	VERIFY(bEAX);
-    CSoundRender_Environment* E = static_cast<CSoundRender_Environment*>(_E);
-    EAXLISTENERPROPERTIES ep;
-    // get all params
-    unsigned long total_bytes;
-    R_CHK(pExtensions->Get		(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, NULL, 0, &ep, sizeof(EAXLISTENERPROPERTIES), &total_bytes));
-    E->Room						= (float)ep.lRoom					;
-    E->RoomHF					= (float)ep.lRoomHF					;
-    E->RoomRolloffFactor		= (float)ep.flRoomRolloffFactor		;
-    E->DecayTime			   	= (float)ep.flDecayTime				;
-    E->DecayHFRatio				= (float)ep.flDecayHFRatio			;
-    E->Reflections				= (float)ep.lReflections			;
-    E->ReflectionsDelay			= (float)ep.flReflectionsDelay		;
-    E->Reverb					= (float)ep.lReverb					;
-    E->ReverbDelay				= (float)ep.flReverbDelay			;
-    E->EnvironmentSize			= (float)ep.flEnvironmentSize		;
-    E->EnvironmentDiffusion		= (float)ep.flEnvironmentDiffusion	;
-    E->AirAbsorptionHF			= (float)ep.flAirAbsorptionHF		;
+	unsigned long total_bytes;
+    R_CHK(pExtensions->Get		(*guid, prop, NULL, 0, val, sz, &total_bytes));
 }
 
 void CSoundRender_CoreD::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
@@ -228,28 +183,4 @@ void CSoundRender_CoreD::update_listener( const Fvector& P, const Fvector& D, co
     // commit deffered settings
     pListener->CommitDeferredSettings	();
 }
-
-#ifdef _EDITOR
-void CSoundRender_CoreD::set_environment_size(CSound_environment* src_env, CSound_environment** dst_env)
-{
-	if (bEAX){
-    	CSoundRender_Environment* SE 	= static_cast<CSoundRender_Environment*>(src_env); 
-    	CSoundRender_Environment* DE 	= static_cast<CSoundRender_Environment*>(*dst_env); 
-    	// set all params                                                                                                          
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, NULL, 0, &SE->EnvironmentSize, sizeof(float)));
-        i_set_eax						(SE);
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, NULL, 0, &DE->EnvironmentSize, sizeof(float)));
-        i_get_eax						(DE);
-    }
-}
-void CSoundRender_CoreD::set_environment(u32 id, CSound_environment** dst_env)
-{
-	if (pExtensions){
-    	CSoundRender_Environment* DE 	= static_cast<CSoundRender_Environment*>(*dst_env); 
-    	// set all params                                                                                                          
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, NULL, 0, &id, sizeof(id)));
-        i_get_eax						(DE);
-    }
-}
-#endif
 #endif

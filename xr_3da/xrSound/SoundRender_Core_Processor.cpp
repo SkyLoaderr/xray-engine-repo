@@ -98,8 +98,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
         }
         e_current.lerp				(e_current,e_target,dt);
 
-        i_set_eax					(&e_current);
-    }
+        i_eax_listener_set			(&e_current);
+		i_eax_commit_setting		();
+	}
 
     // update listener
     update_listener					(P,D,N,dt);
