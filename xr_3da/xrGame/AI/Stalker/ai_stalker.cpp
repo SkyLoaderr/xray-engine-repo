@@ -884,14 +884,6 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 
 void CAI_Stalker::shedule_Update		( u32 DT )
 {
-	if (!Remote()) {
-		if ((fHealth>0) || bfExecMovement())
-			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-			Exec_Movement	(float(DT)/1000.f);  
-	}
-
-	// *** general stuff
-	inherited::inherited::shedule_Update	(DT);
 	// Queue shrink
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
 	VERIFY				(!NET.empty());
@@ -902,6 +894,15 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (dt > 3)
 		return;
 
+	if (!Remote()) {
+		if ((fHealth>0) || bfExecMovement())
+			// функция должна выполняться до inherited::shedule_Update, для smooth movement
+			Exec_Movement	(float(DT)/1000.f);  
+	}
+
+	// *** general stuff
+	inherited::inherited::shedule_Update	(DT);
+	
 	if (Remote())		{
 	} else {
 		// here is monster AI call
@@ -915,7 +916,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		// Look and action streams
 		if (fHealth>0) {
 			Exec_Look				(dt);
-			Exec_Movement			(dt);
 			Exec_Visibility			();
 
 			//////////////////////////////////////
@@ -942,7 +942,6 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			Exec_Physics			(dt);
 			if (bfExecMovement()) 
 			{
-				Exec_Movement		(dt);
 				net_update			uNext;
 				uNext.dwTimeStamp	= Level().timeServer();
 				uNext.o_model		= r_torso_current.yaw;
