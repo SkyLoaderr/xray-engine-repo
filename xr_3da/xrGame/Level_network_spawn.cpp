@@ -1,25 +1,29 @@
 #include "stdafx.h"
 #include "gameobject.h"
+#include "xrServer_entities.h"
 
-void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
+void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, DWORD flags)
 {
-	Fvector		dummyPos,dummyAngle; dummyPos.set(0,0,0); dummyAngle.set(0,0,0);
-	NET_Packet	P;
-	P.w_begin	(M_SPAWN);
-	P.w_string	(name);
-	P.w_string	("");
-	P.w_u8		(u8(GAME));
-	P.w_u8		((rp>=0)?u8(rp):u8(0xff));
-	P.w_vec3	(dummyPos);
-	P.w_vec3	(dummyAngle);
-	P.w_u16		(0xffff);	// srv-id	| by server
-	P.w_u16		(0xffff);
-	P.w_u16		(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);
-	P.w_u16		(3);		// data size
-	P.w_u8		(u8(team));
-	P.w_u8		(u8(squad));
-	P.w_u8		(u8(group));
-	Send		(P,net_flags(TRUE));
+	// Create
+	xrServerEntity*		E	= F_entity_Create(name);
+	R_ASSERT			(E);
+
+	// Fill
+	strcpy				(E->s_name,name);
+	strcpy				(E->s_name_replace,"");
+	E->s_gameid			=	u8(GAME);
+	E->s_RP				=	rp;
+	E->ID				=	0xffff;
+	E->ID_Parent		=	0xffff;
+	E->s_flags			=	flags;
+
+	// Send
+	NET_Packet			P;
+	E->Spawn_Write		(P,TRUE);
+	Send				(P,net_flags(TRUE));
+
+	// Destroy
+	F_entity_Destroy	(E);
 }
 
 void CLevel::g_sv_Spawn		(NET_Packet* Packet)
@@ -59,8 +63,8 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		Objects.DestroyObject(O);
 		Msg("! Failed to spawn entity '%s'",s_name);
 	} else {
-		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (0==CurrentEntity()))	SetEntity		(O);
-		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
+		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (s_flags&M_SPAWN_OBJECT_ASPLAYER))	SetEntity		(O);
+		if (s_flags&M_SPAWN_OBJECT_ACTIVE)											O->OnActivate	( );
 		if (0xffff != s_server_parent_id)	
 		{
 			// Generate ownership-event

@@ -44,6 +44,7 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	}
 
 	// Analyze game and perform apropriate CLIENT spawning
+	DWORD	spawn_flags				= M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;
 	switch (GAME)
 	{
 	case GAME_SINGLE:
@@ -52,19 +53,19 @@ BOOL CLevel::net_Start	( LPCSTR name, BOOL server )
 	case GAME_DEATHMATCH:
 		// Spawn at ANY r-point
 		{
-			g_cl_Spawn("actor",0xFF,0,0,0);
+			g_cl_Spawn("actor",0xFF,spawn_flags);
 		}
 		break;
 	case GAME_CTF:
 		// Spawn at TEAM r-point
 		{
-			g_cl_Spawn("actor",0xFD,0,0,0);
+			g_cl_Spawn("actor",0xFD,spawn_flags);
 		}
 		break;
 	case GAME_ASSAULT:
 		// Spawn at TEAM r-point
 		{
-			g_cl_Spawn("actor",0xFD,0,0,0);
+			g_cl_Spawn("actor",0xFD,spawn_flags);
 		}
 		break;
 	}

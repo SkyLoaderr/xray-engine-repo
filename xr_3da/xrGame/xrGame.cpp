@@ -43,10 +43,8 @@ public:
 		R_ASSERT(pCreator);
 
 		char	Name[128];	Name[0]=0;
-		int		team=0,squad=0,group=0;
-
-		sscanf	(args,"%[^,],%d,%d,%d", Name, &team, &squad, &group);
-		Level().g_cl_Spawn	(Name,-1,team,squad,group);
+		sscanf	(args,"%s", Name);
+		Level().g_cl_Spawn	(Name,0xff,M_SPAWN_OBJECT_ACTIVE | M_SPAWN_OBJECT_LOCAL);
 	}
 	virtual void	Info	(TInfo& I)		
 	{

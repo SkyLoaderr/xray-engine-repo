@@ -19,7 +19,7 @@ void	xrServerEntity::Spawn_Write		(NET_Packet& P, BOOL bLocal)
 	P.w_string			(s_name			);
 	P.w_string			(s_name_replace	);
 	P.w_u8				(s_gameid		);
-	P.w_u8				(0xFE			);	// No need for RP, use supplied (POS,ANGLEs)
+	P.w_u8				(s_RP			);
 	P.w_vec3			(o_Position		);
 	P.w_vec3			(o_Angle		);
 	P.w_u16				(ID				);

@@ -65,6 +65,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 
 	// PROCESS RP;	 3D position/orientation
 	PerformRP			(E);
+	E->s_RP				= 0xFE;	// Use supplied
 
 	// REGISTER new ENTITY
 	entities.insert		(make_pair(ID,E));
@@ -82,6 +83,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 		SendTo				(sender,Packet,net_flags(TRUE));
 	}
 
+	E->s_flags			&=	~M_SPAWN_OBJECT_ASPLAYER;
 	E->Spawn_Write		(Packet,FALSE	);
 	SendBroadcast		(sender,Packet,net_flags(TRUE));
 }
