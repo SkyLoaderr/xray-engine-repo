@@ -41,18 +41,39 @@ function actor_have_research(actor,npc)
 	return false
 end
 function actor_transfer_research(actor,npc)
-	local obj = first_speaker:object("bar_ecolog_flash")
+	local obj = actor:object("bar_ecolog_flash")
 	if obj then
 		actor:transfer_item(obj, npc)
 	end
 end
+function transfer_research_to_actor(npc,actor)
+	local obj = npc:object("bar_ecolog_flash")
+	if obj then
+		npc:transfer_item(obj, actor)
+	end
+end
+
 function barman_ecolog_done(actor,npc)
 	level_tasks.set_task_state(task.completed, "bar_resque_information", 0)
 end
 function barman_ecolog_fail(actor,npc)
 	level_tasks.set_task_state(task.fail, "bar_resque_information", 0)
 end
-
+function volkodav_research_done(actor,npc)
+	level_tasks.set_task_state(task.completed, "bar_resque_information", 0)
+end
+function volkodav_research_fail(actor,npc)
+	level_tasks.set_task_state(task.fail, "bar_get_information", 0)
+end
+function volkodav_active_quest(actor,npc)
+	if db.actor:has_info("bar_get_research_start") and
+	   db.actor:dont_has_info("bar_get_research_done") and
+	   db.actor:dont_has_info("bar_get_research_fail")
+	then
+		return true
+	end
+	return false
+end
 
 --Долг архивные документы
 function have_dolg_arhive_document(first_speaker, second_speaker)

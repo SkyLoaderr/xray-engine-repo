@@ -16,6 +16,24 @@
         <text>Передать их бармену в баре сталкеров.</text>
     </string>
 
+
+    <string id="bar_get_information">
+        <text>Получить исследования ученных.</text>
+    </string>
+
+    <string id="bar_get_scientific_information">
+        <text>Необходимо помочь свободе получить результаты исследования ученных.</text>
+    </string>
+
+    <string id="bar_get_scientific_information_gain">
+        <text>Получить результаты исследований профессора Шарикова.</text>
+    </string>
+
+    <string id="bar_get_scientific_information_done">
+        <text>Отдать результаты исследований Волкодаву.</text>
+    </string>
+
+
 	<string id="bar_hunter_rifle">
 		<text>Ружье охотника</text>
 	</string>

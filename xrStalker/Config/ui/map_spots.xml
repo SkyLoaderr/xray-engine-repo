@@ -108,12 +108,17 @@
 		<mini_map spot="bar_ecolog_crush_spot" pointer="quest_pointer"></mini_map>
 	</bar_ecolog_crush_location>
 
+	<bar_freedom_volkodav_location hint="bar_ecolog_crush_professor">
+		<level_map spot="bar_freedom_volkodav_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_freedom_volkodav_spot" pointer="quest_pointer"></mini_map>
+	</bar_freedom_volkodav_location>
+
 	<bar_dolg_arhive_document_location hint="bar_dolg_arhive_document">
 		<level_map spot="bar_dolg_arhive_document_spot" pointer="quest_pointer"></level_map>
 		<mini_map spot="bar_dolg_arhive_document_spot" pointer="quest_pointer"></mini_map>
 	</bar_dolg_arhive_document_location>
 
-        <bar_dolg_captain_ivancov_location hint="bar_dolg_captain_ivancov">
+    <bar_dolg_captain_ivancov_location hint="bar_dolg_captain_ivancov">
 		<level_map spot="bar_dolg_captain_ivancov_spot" pointer="quest_pointer"></level_map>
 		<mini_map spot="bar_dolg_captain_ivancov_spot" pointer="quest_pointer"></mini_map>
 	</bar_dolg_captain_ivancov_location>
@@ -141,6 +146,10 @@
 	<bar_ecolog_crush_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="32" y="192" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_ecolog_crush_spot>
+
+	<bar_freedom_volkodav_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_freedom_volkodav_spot>
 
 	<bar_hunter_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="96" y="0" width="32" height="32">ui\ui_icons_map</texture>
