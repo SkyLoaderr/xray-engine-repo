@@ -56,8 +56,8 @@ function base_dialog:InitControls(txt_caption)
 --		| _main form_	     |
 --		|                    |
 --		|          ________  |
-		----------| cancel |--
-		          ``````````
+--		----------| cancel |--
+--		          ``````````
 	self.btn_special_rect = { x = 0, y = 0, width = self.btn_rect.width, height = self.btn_rect.height}
 	self.btn_special_rect.x = self.right_aling_x - self.btn_special_rect.width
 	self.btn_special_rect.y = self.main_rect.height - self.btn_special_rect.height/2
