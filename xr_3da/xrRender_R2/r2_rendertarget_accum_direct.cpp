@@ -49,7 +49,7 @@ void CRenderTarget::accum_direct	()
 
 		// Shader + constants
 		float circle				= 2.f / DSM_size;
-		if (0)
+		if (1)
 		{
 			Fvector4 J; float scale		= circle/11.f;
 

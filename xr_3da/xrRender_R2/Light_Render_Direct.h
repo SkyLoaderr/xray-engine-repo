@@ -1,7 +1,7 @@
 #pragma once
 
 const u32							DSM_size		= 1024;
-const float							DSM_distance	= 50.f;
+const float							DSM_distance	= 15.f;
 const float							DSM_d_range		= 100.f;
 
 class CLight_Render_Direct
