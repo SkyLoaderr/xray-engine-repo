@@ -11,6 +11,7 @@
 ; -J - from Jim
 ; -O - from Oles
 ; -Y - from Yura
+; -K - from Koan
 
 To OLES : 
 -D	(???)		memory leak during reload (press f7 for reload) ~ 346kb on occ_part
@@ -18,8 +19,11 @@ To OLES :
 -О	resolved	Обьекты у которых парент - рендерятся
 -O	resolved	~160 memory operations per frame
 -O	resolved	no particles
--WT				ни хера не работает (level - cs_test)
 -J	resolved	актер не видим для сталкеров и монстров
+-K				трасеры не рисуются
+-К				старые партиклы тоже не рисуются
+
+-WT				ни хера не работает (level - cs_test)
 -WT				ни хера по прежнему не работает (level - cs_test)
 -WT				когда выбрасываешь оружие, оно исчезает (level - cs_test)
 
