@@ -38,11 +38,11 @@
 	</info_portion>
 
 	<info_portion id="job_box_finished">
-	<dialog>trader_start2</dialog>
+	<disable>trader_start2</disable>
 	</info_portion>
 
 	<info_portion id="job_box02_finished">
-	<dialog>trader_start4</dialog>
+	<disable>trader_start4</disable>
 	</info_portion>
 
 
