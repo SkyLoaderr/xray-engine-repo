@@ -8,10 +8,10 @@
 
 #pragma once
 
-#ifdef AI_COMPILER
-#	include "xrLevel.h"
-#else
+#ifdef XRGAME_EXPORTS
 #	include "../xrLevel.h"
+#else
+#	include "xrLevel.h"
 #endif
 
 namespace GameGraph {
