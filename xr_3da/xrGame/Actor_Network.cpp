@@ -810,8 +810,7 @@ void CActor::net_Destroy	()
 
 #pragma todo("Dima to MadMax : do not comment inventory owner net_Destroy!!!")
 	CInventoryOwner::net_Destroy();
-	cam_UnsetLadder();
-	u32 it;
+	cam_UnsetLadder();	
 	m_PhysicMovementControl->DestroyCharacter();
 	if(m_pPhysicsShell)			{
 		m_pPhysicsShell->Deactivate();
