@@ -11,7 +11,6 @@
 
 #include <xrCore.h>
 
-// #define DIRECTSOUND_VERSION 0x0700
 #define DIRECTINPUT_VERSION 0x0700
 #pragma warning(disable:4995)
 #include <d3d9.h>

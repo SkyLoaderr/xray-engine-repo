@@ -21,8 +21,8 @@ CEngineAPI::~CEngineAPI()
 void CEngineAPI::Initialize(void)
 {
 	Log				("Loading game: xrGame.dll");
-	hModule			= LoadLibrary("xrGame.dll");
-	if (0==hModule) Log("* HR=%d",u32(GetLastError()));
+	hModule			= LoadLibrary	("xrGame.dll");
+	if (0==hModule) R_CHK			(GetLastError());
 	R_ASSERT		(hModule);
 	pCreate			= (Factory_Create*)		GetProcAddress(hModule,"xrFactory_Create"	);	R_ASSERT(pCreate);
 	pDestroy		= (Factory_Destroy*)	GetProcAddress(hModule,"xrFactory_Destroy"	);	R_ASSERT(pDestroy);

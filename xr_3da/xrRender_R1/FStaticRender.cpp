@@ -12,30 +12,26 @@
 #include "CustomHUD.h"
 #include "lighttrack.h"
 
-CRender_interface::CRender_interface()		{};
-CRender_interface::~CRender_interface()		{};
-
-CRender							Render_Implementation;
-ENGINE_API	CRender_interface*	Render = &Render_Implementation;
+CRender										Render_Implementation;
 
 // Implementation
-CVisual*	CRender::model_Create		(LPCSTR name)					{ return Models.Create(name);			}
-CVisual*	CRender::model_Create		(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-CVisual*	CRender::model_Duplicate	(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
-void		CRender::model_Delete		(CVisual* &V)					{ Models.Delete(V);						}
+CVisual*	CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
+CVisual*	CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
+CVisual*	CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
+void		CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
 
-int			CRender::getVisualsCount	()					{ return Visuals.size();								}
-CPortal*	CRender::getPortal			(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
-CSector*	CRender::getSector			(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
-CSector*	CRender::getSectorActive	()					{ return pLastSector;									}
-CVisual*	CRender::getVisual			(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
+int			CRender::getVisualsCount		()					{ return Visuals.size();								}
+CPortal*	CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return &Portals[id];}
+CSector*	CRender::getSector				(int id)			{ VERIFY(id<int(Sectors.size()));	return Sectors[id];	}
+CSector*	CRender::getSectorActive		()					{ return pLastSector;									}
+CVisual*	CRender::getVisual				(int id)			{ VERIFY(id<int(Visuals.size()));	return Visuals[id];	}
 D3DVERTEXELEMENT9*		CRender::getVB_Format(int id)		{ VERIFY(id<int(DCL.size()));		return DCL[id].begin();	}
-IDirect3DVertexBuffer9*	CRender::getVB	(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
-IDirect3DIndexBuffer9*	CRender::getIB	(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
-CRender_target* CRender::getTarget		()					{ return &Target;										}
+IDirect3DVertexBuffer9*	CRender::getVB		(int id)			{ VERIFY(id<int(VB.size()));		return VB[id];		}
+IDirect3DIndexBuffer9*	CRender::getIB		(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
+CRender_target* CRender::getTarget			()					{ return &Target;										}
 
-void		CRender::L_add				(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
-void		CRender::L_select			(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
+void		CRender::L_add					(CLightPPA* L)		{ VERIFY(L); L_Dynamic.Add(L);							}
+void		CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	L_DB.Select	(pos,fRadius,dest);		}
 
 void		CRender::flush				()					{ flush_Models();									}

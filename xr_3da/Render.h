@@ -110,6 +110,6 @@ public:
 	virtual ~CRender_interface();
 };
 
-extern ENGINE_API CRender_interface*	Render;
+extern ENGINE_API	CRender_interface*	Render;
 
 #endif

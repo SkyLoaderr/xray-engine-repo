@@ -1,6 +1,6 @@
 #pragma once
 
-class ENGINE_API CDetail 
+class CDetail 
 {
 public:
 	struct fvfVertexIn
