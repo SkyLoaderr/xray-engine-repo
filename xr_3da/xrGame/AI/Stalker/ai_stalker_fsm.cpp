@@ -11,6 +11,7 @@
 #include "..\\ai_monsters_misc.h"
 #include "..\\..\\hudmanager.h"
 
+#define AI_BEST
 /**
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
@@ -408,22 +409,24 @@ void CAI_Stalker::SearchEnemy()
 				m_tActionState = eActionStateWatchGo;
 			else {
 				bool bOk = false;	
-//				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-//					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
-//						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
-//							bOk = true;
-//							AI_Path.DestNode	= m_dwSavedEnemyNodeID;
-//							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-//							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
-//								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
-//							else {
-//								m_iSuspPoint = i;
-//								m_tLastActionState = m_tActionState;
-//								m_tActionState = eActionStateWatch;
-//							}
-//							break;
-//						}
-//					}
+#ifdef AI_BEST
+				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
+						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
+							bOk = true;
+							AI_Path.DestNode	= m_dwSavedEnemyNodeID;
+							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							else {
+								m_iSuspPoint = i;
+								m_tLastActionState = m_tActionState;
+								m_tActionState = eActionStateWatch;
+							}
+							break;
+						}
+					}
+#endif
 				if (!bOk)
 //					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
 //						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
@@ -471,23 +474,24 @@ void CAI_Stalker::SearchEnemy()
 			
 			if (m_iCurrentSuspiciousNodeIndex >= 0) {
 				bool bOk = false;	
-//				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-//					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
-//						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
-//							bOk = true;
-//							AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-//							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
-//							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
-//								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
-//							else {
-//								m_iSuspPoint = i;
-//								m_tLastActionState = m_tActionState;
-//								m_tActionState = eActionStateWatch;
-//							}
-//							break;
-//						}
-//					}
-				
+#ifdef AI_BEST
+				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
+						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
+							bOk = true;
+							AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
+							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							else {
+								m_iSuspPoint = i;
+								m_tLastActionState = m_tActionState;
+								m_tActionState = eActionStateWatch;
+							}
+							break;
+						}
+					}
+#endif
 				if (!bOk)
 					if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) && (getAI().u_SqrDistance2Node(vPosition,getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) < .35f)) {
 						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
