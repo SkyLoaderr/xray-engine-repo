@@ -85,6 +85,7 @@ public:
 	
 	//object serialization
 	virtual void			net_Save			(NET_Packet &net_packet);
+	virtual void			net_Load			(IReader	&ireader);
 	virtual BOOL			net_SaveRelevant	();
 	virtual void			save				(NET_Packet &output_packet);
 	virtual void			load				(IReader &input_packet);

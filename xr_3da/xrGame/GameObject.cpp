@@ -217,8 +217,8 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 	//load custom user data from server
 	if(!E->client_data.empty())
 	{	
-		IReader ireader = IReader(&*E->client_data.begin(), E->client_data.size());
-		load(ireader);
+		IReader			ireader = IReader(&*E->client_data.begin(), E->client_data.size());
+		net_Load		(ireader);
 	}
 
 	// if we have a parent
@@ -267,18 +267,63 @@ void CGameObject::net_Save		(NET_Packet &net_packet)
 {
 	u32	position;
 	net_packet.w_chunk_open8	(position);
-	save(net_packet);
+	save						(net_packet);
+
+	// Script Binder Save ---------------------------------------
+#ifdef DEBUG	
+	if (psAI_Flags.test(aiSerialize))	{
+		Msg(">> **** Save script object [%s] *****", *cName());
+		Msg(">> Before save :: packet position = [%u]", net_packet.w_tell());
+	}
+
+#endif
+
+	CScriptBinder::save			(net_packet);
+
+#ifdef DEBUG	
+
+	if (psAI_Flags.test(aiSerialize))	{
+		Msg(">> After save :: packet position = [%u]", net_packet.w_tell());
+	}
+#endif
+
+	// ----------------------------------------------------------
+
 	net_packet.w_chunk_close8	(position);
+}
+
+void CGameObject::net_Load		(IReader &ireader)
+{
+	load					(ireader);
+
+	// Script Binder Load ---------------------------------------
+#ifdef DEBUG	
+	if (psAI_Flags.test(aiSerialize))	{
+		Msg(">> **** Load script object [%s] *****", *cName());
+		Msg(">> Before load :: reader position = [%i]", ireader.tell());
+	}
+
+#endif
+
+	CScriptBinder::load		(ireader);
+
+
+#ifdef DEBUG	
+
+	if (psAI_Flags.test(aiSerialize))	{
+		Msg(">> After load :: reader position = [%i]", ireader.tell());
+	}
+#endif
+	// ----------------------------------------------------------
+
 }
 
 void CGameObject::save			(NET_Packet &output_packet) 
 {
-	CScriptBinder::save			(output_packet);
 }
 
 void CGameObject::load			(IReader &input_packet)
 {
-	CScriptBinder::load			(input_packet);
 }
 
 void CGameObject::spawn_supplies()
