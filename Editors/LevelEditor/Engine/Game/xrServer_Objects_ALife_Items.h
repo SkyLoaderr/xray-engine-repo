@@ -107,6 +107,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u32								m_dwAmmoAvailable;
 	u32								m_dwSlot;
 	Flags8							m_addon_flags;
+	u8								m_bZoom;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual							~CSE_ALifeItemWeapon();

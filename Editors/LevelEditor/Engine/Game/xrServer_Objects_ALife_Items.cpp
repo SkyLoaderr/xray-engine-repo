@@ -332,6 +332,7 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_u8				(m_addon_flags.flags);
 	tNetPacket.r_u8				(ammo_type);
 	tNetPacket.r_u8				(state);
+	tNetPacket.r_u8				(m_bZoom);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -345,6 +346,7 @@ void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u8				(m_addon_flags.get());
 	tNetPacket.w_u8				(ammo_type);
 	tNetPacket.w_u8				(state);
+	tNetPacket.w_u8				(m_bZoom);
 }
 
 void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)

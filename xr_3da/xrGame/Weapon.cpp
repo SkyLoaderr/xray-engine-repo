@@ -455,6 +455,8 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u8					(m_flagsAddOnState);
 	P.w_u8					((u8)m_ammoType);
 	P.w_u8					((u8)STATE);
+
+	P.w_u8					((u8)m_bZoomMode);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -471,6 +473,15 @@ void CWeapon::net_Import	(NET_Packet& P)
 	u8 ammoType, wstate;
 	P.r_u8					(ammoType);
 	P.r_u8					(wstate);
+
+	u8 Zoom;
+	P.r_u8					((u8)Zoom);
+
+	if (H_Parent() && H_Parent()->Remote())
+	{
+		if (Zoom) OnZoomIn();
+		else OnZoomOut();
+	};
 
 	iAmmoElapsed =			int(ammo_elapsed);
 	m_ammoType = ammoType;
