@@ -61,11 +61,7 @@ public:
 
 	void			Music_Play			(int id);
 	void			set_EnvMode			(int id, float s) { CurrentID=id; CurrentSpeed=s; }
-
 	void			SetGradient			(float b);
-	void			Zoom				(BOOL E);
-	void			Flash				() { fFlash	= 0.5f; }
-
 	void			Load				(CInifile *pIni, char* section);
 	void			Load_Music			(CInifile* INI);
 
