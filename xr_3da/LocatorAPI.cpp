@@ -120,7 +120,7 @@ void CLocatorAPI::Recurse		(const char* path)
 	strcpy			(N,path);
 	strcat			(N,"*.*");
 
-    R_ASSERT		((hFile=_findfirst(N, &sFile)) != -1);
+    R_ASSERT2		((hFile=_findfirst(N, &sFile)) != -1, path);
 	ProcessOne		(path,&sFile);
 
     while			( _findnext( hFile, &sFile ) == 0 )
