@@ -36,13 +36,13 @@
 	luabind::class_<a,b,bases<d,e,f,g > >(c)
 
 #define DEFINE_LUABIND_VIRTUAL_FUNCTION(a,b,c) \
-	.def(#c, &b::c, &b::c##_static)
+	.def(#c, &a::c, &b::c##_static)
 
 #define DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_CONST_0(a,b,c,d) \
-	.def(#c, (d (a::*)() const)(&b::c), (d (*)())(&b::c##_static))
+	.def(#c, (d (a::*)() const)(&a::c), (d (*)())(&b::c##_static))
 
 #define DEFINE_LUABIND_VIRTUAL_FUNCTION_EXPLICIT_1(a,b,c,d,e) \
-	.def(#c, (d (a::*)(e))(&b::c), (d (*)(e))(&b::c##_static))
+	.def(#c, (d (a::*)(e))(&a::c), (d (*)(e))(&b::c##_static))
 
 #define DEFINE_LUA_WRAPPER_CONST_METHOD_0(v_func_name,ret_type)							\
 		virtual ret_type v_func_name() const											\
