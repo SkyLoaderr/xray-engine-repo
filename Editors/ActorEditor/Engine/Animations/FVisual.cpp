@@ -70,12 +70,14 @@ void Fvisual::Load		(const char* N, CStream *data, DWORD dwFlags)
 	dwPrimitives = 0;
 	if ((dwFlags&VLOAD_NOINDICES)==0) {
 		if (data->FindChunk(OGF_ICONTAINER)) {
+#ifndef _EDITOR
 			DWORD ID			= data->Rdword			();
 			iBase				= data->Rdword			();
 			iCount				= data->Rdword			();
 			dwPrimitives		= iCount/3;
 			pIndices			= ::Render->getIB		(ID);
 			pIndices->AddRef	();
+#endif
 		} else {
 			R_ASSERT			(data->FindChunk(OGF_INDICES));
 			iBase				= 0;

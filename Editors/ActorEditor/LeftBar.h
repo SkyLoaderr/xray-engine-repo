@@ -110,6 +110,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ebPreferences;
 	TExtBtn *ebPreviewObjectClick;
 	TExtBtn *ebSceneCommands1;
+	TMenuItem *N7;
+	TMenuItem *N8;
+	TMenuItem *N9;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);

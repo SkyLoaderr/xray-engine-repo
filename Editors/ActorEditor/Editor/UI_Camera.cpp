@@ -256,7 +256,7 @@ void CUI_Camera::ZoomExtents(const Fbox& bb){
 	D.mul(m_CamMat.k,-1);
     H1 = R/sinf(m_FOV*0.5f);
     H2 = R/sinf(m_FOV*0.5f/m_Aspect);
-    m_Position.mad(C,D,_MAX(H1,H2));
+    m_Position.mad(C,D,_max(H1,H2));
 	m_Target.set(C);
 
 	BuildCamera();

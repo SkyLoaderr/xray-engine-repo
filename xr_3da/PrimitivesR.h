@@ -6,7 +6,7 @@
 #define AFX_PRIMITIVESR_H__1213C75A_5F4A_4121_9FB2_6FBFCFDA84B9__INCLUDED_
 #pragma once
 
-#include "primitive.h"
+//#include "primitive.h"
 #include "sharedprimitive.h"
 #include "fvf.h"
 

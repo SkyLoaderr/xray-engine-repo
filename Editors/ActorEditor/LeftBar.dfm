@@ -1080,6 +1080,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 18
+    object N7: TMenuItem
+      Caption = '-'
+    end
     object Clear1: TMenuItem
       Caption = 'Clear'
       OnClick = Clear1Click
@@ -1178,6 +1181,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 31
+    object N8: TMenuItem
+      Caption = '-'
+    end
     object Custom1: TMenuItem
       Caption = 'Custom...'
       OnClick = Custom1Click
@@ -1209,6 +1215,9 @@ object fraLeftBar: TfraLeftBar
     Style = msOwnerDraw
     Left = 181
     Top = 42
+    object N9: TMenuItem
+      Caption = '-'
+    end
     object ImageEditor1: TMenuItem
       Caption = 'Image Editor'
       OnClick = ImageEditor1Click

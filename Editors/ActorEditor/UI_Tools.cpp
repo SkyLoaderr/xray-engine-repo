@@ -315,6 +315,9 @@ void CActorTools::Clear(){
     m_MotionProps->ClearProperties();
     fraLeftBar->SkeletonPartEnabled(false);
 
+	m_bObjectModified = false;
+	m_bMotionModified = false;
+
     UI.RedrawScene();
 }
 
