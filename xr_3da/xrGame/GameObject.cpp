@@ -53,7 +53,7 @@ void CGameObject::net_Destroy	()
 	if (this == Level().CurrentEntity())
 		Level().SetEntity						(0);
 
-	if (!H_Parent() && ai().level_graph().valid_vertex_id(level_vertex_id()))
+	if (!H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec				(level_vertex_id());
 
 	Init										();
@@ -160,7 +160,7 @@ void CGameObject::setup_parent_ai_locations()
 	// get parent's position
 	Position().set			(l_tpGameObject->Position());
 	// setup its ai locations
-	if (ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
+	if (ai().get_level_graph() && ai().level_graph().valid_vertex_id(l_tpGameObject->level_vertex_id()))
 		set_level_vertex		(l_tpGameObject->level_vertex_id());
 	if (ai().game_graph().valid_vertex_id(l_tpGameObject->game_vertex_id()))
 		set_game_vertex			(l_tpGameObject->game_vertex_id());
@@ -218,7 +218,7 @@ void CGameObject::renderable_Render	()
 
 float CGameObject::renderable_Ambient	()
 {
-	return (ai().level_graph().valid_vertex_id(level_vertex_id()) ? float(level_vertex()->light()/15.f) : 1.f);
+	return (ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()) ? float(level_vertex()->light()/15.f) : 1.f);
 }
 
 CObject::SavedPosition CGameObject::ps_Element(u32 ID)
