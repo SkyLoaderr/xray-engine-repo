@@ -7448,6 +7448,9 @@
 				RelativePath=".\inventoryMP_new.xml">
 			</File>
 			<File
+				RelativePath=".\inventoryMP_new2.xml">
+			</File>
+			<File
 				RelativePath=".\maingame.xml">
 			</File>
 			<File
