@@ -375,9 +375,9 @@ void CAI_Trader::Think()
 {
 }
 
-void CAI_Trader::Die ( )
+void CAI_Trader::Die ()
 {
-	inventory().DropAll();
+	inherited::Die ();
 }
 
 void CAI_Trader::net_Destroy()
