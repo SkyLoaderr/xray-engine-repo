@@ -1684,6 +1684,10 @@
 						RelativePath="UIGameSP.h">
 					</File>
 				</Filter>
+				<Filter
+					Name="UIWindows"
+					Filter="">
+				</Filter>
 			</Filter>
 		</Filter>
 		<Filter
