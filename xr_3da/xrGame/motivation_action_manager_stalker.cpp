@@ -80,6 +80,7 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyEnemyAimed,false);
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyFireEnough,false);
 	m_combat_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertySafeToKill,false);
+	m_anomaly_planner->CScriptActionPlanner::m_storage.set_property	(eWorldPropertyAnomaly,false);
 
 //	{
 //		OPERATOR_VECTOR::iterator	I = m_operators.begin();

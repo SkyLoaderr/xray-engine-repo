@@ -18,6 +18,10 @@
 #include "inventory_item.h"
 #include "missile.h"
 #include "script_game_object.h"
+#include "customzone.h"
+#include "space_restriction_manager.h"
+#include "space_restriction_bridge.h"
+#include "space_restriction_base.h"
 
 using namespace StalkerDecisionSpace;
 
@@ -103,12 +107,24 @@ void CStalkerActionFreeNoALife::initialize	()
 	inherited::initialize			();
 	m_stop_weapon_handling_time		= Level().timeServer() + ::Random.randI(120000,180000);
 
-#ifdef STALKER_DEBUG_MODE
+#ifndef STALKER_DEBUG_MODE
+	m_object->set_node_evaluator	(0);
+	m_object->set_path_evaluator	(0);
+	m_object->set_desired_position	(0);
+	m_object->set_desired_direction	(0);
+	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
+	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
+	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_movement_type		(eMovementTypeWalk);
+	m_object->set_mental_state		(eMentalStateFree);
+	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
+#else
 //	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
 	m_object->set_node_evaluator	(0);
 	m_object->set_path_evaluator	(0);
 	m_object->set_desired_direction	(0);
+	m_object->set_desired_position	(0);
 
 	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 
@@ -117,7 +133,7 @@ void CStalkerActionFreeNoALife::initialize	()
 //	m_object->set_desired_direction	(&direction);
 //	m_object->set_desired_position	(0);
 	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeNearest,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
 //	CGameObject						*actor = smart_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
@@ -154,18 +170,6 @@ void CStalkerActionFreeNoALife::execute		()
 	inherited::execute				();
 #ifndef STALKER_DEBUG_MODE
 	m_object->play					(eStalkerSoundHumming,60000,10000);
-
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-
-	m_object->CSightManager::setup				(CSightAction(SightManager::eSightTypeCover,false,true));
 	if (Level().timeServer() >= m_stop_weapon_handling_time)
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
@@ -174,7 +178,6 @@ void CStalkerActionFreeNoALife::execute		()
 //	Fvector							look_pos = actor->Position();
 //	look_pos.y						+= .8f;
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
-
 //	m_object->play					(eStalkerSoundAttack,10000);
 #endif
 }
@@ -1854,8 +1857,9 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	m_object->set_body_state			(eBodyStateStand);
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateDanger);
-	m_object->CSightManager::setup		(SightManager::eSightTypePathDirection);
+	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
 	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	set_property						(eWorldPropertyAnomaly,true);
 }
 
 void CStalkerActionGetOutOfAnomaly::finalize	()
@@ -1867,11 +1871,6 @@ void CStalkerActionGetOutOfAnomaly::finalize	()
 
 	m_object->set_sound_mask			(0);
 }
-
-#include "customzone.h"
-#include "space_restriction_manager.h"
-#include "space_restriction_bridge.h"
-#include "space_restriction_base.h"
 
 void CStalkerActionGetOutOfAnomaly::execute	()
 {
@@ -1887,24 +1886,14 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 	}
 	
 	SpaceRestrictionHolder::CBaseRestrictionPtr	restriction = Level().space_restriction_manager().restriction(m_temp);
-	if (!restriction->inside(m_object->Position())) {
+	if (restriction->inside(m_object->Position()))
 		m_object->add_restrictions		("",m_temp);
-		if (!m_object->accessible(m_object->Position())) {
-			Fvector						dest_pos = m_object->Position();
-			u32 dest_vertex_id			= m_object->accessible_nearest(m_object->Position(),dest_pos);
-			m_object->set_level_dest_vertex	(dest_vertex_id);
-			m_object->set_desired_position	(&dest_pos);
-		}
-		else {
-			m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-			m_object->set_desired_position	(&m_object->Position());
-		}
-		return;
-	}
-	
-	Fvector								dest_pos = m_object->Position();
-	u32 dest_vertex_id					= restriction->accessible_nearest(m_object->Position(),dest_pos);
 
+	if (m_object->accessible(m_object->Position()))
+		return;
+
+	Fvector								dest_pos = m_object->Position();
+	u32 dest_vertex_id					= m_object->accessible_nearest(m_object->Position(),dest_pos);
 	m_object->set_level_dest_vertex		(dest_vertex_id);
 	m_object->set_desired_position		(&dest_pos);
 }
@@ -1920,35 +1909,27 @@ CStalkerActionDetectAnomaly::CStalkerActionDetectAnomaly	(CAI_Stalker *object, L
 
 void CStalkerActionDetectAnomaly::initialize	()
 {
-	inherited::initialize	();
-	m_object->set_sound_mask(u32(eStalkerSoundMaskNoHumming));
+	inherited::initialize			();
+	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
+	m_inertia_time					= 15000 + ::Random32.random(5000);
 }
 
 void CStalkerActionDetectAnomaly::finalize	()
 {
-	inherited::finalize		();
+	inherited::finalize				();
 
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask(0);
+	m_object->set_sound_mask		(0);
 }
 
 void CStalkerActionDetectAnomaly::execute	()
 {
-	inherited::execute		();
+	inherited::execute				();
 
-	m_object->set_level_dest_vertex	(m_object->level_vertex_id());
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(&m_object->Position());
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateDanger);
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->inventory().m_slots[5].m_pIItem);
 
-	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
-	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	if (completed())
+		set_property				(eWorldPropertyAnomaly,false);
 }

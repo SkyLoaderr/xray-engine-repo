@@ -11,6 +11,8 @@
 #include "../../script_entity_action.h"
 #include "../../inventory.h"
 #include "../../ef_storage.h"
+#include "../../stalker_decision_space.h"
+#include "../../script_game_object.h"
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
@@ -294,20 +296,19 @@ bool CAI_Stalker::can_kill_member		(const Fvector &position, const Fvector &dire
 
 bool CAI_Stalker::undetected_anomaly	()
 {
-	return					(false);
-//	return					(inside_anomaly());
+	return					(inside_anomaly() || m_anomaly_planner->CScriptActionPlanner::m_storage.property(StalkerDecisionSpace::eWorldPropertyAnomaly));
 }
 
 #include "../../customzone.h"
 
 bool CAI_Stalker::inside_anomaly		()
 {
-//	xr_vector<CObject*>::const_iterator	I = feel_touch.begin();
-//	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
-//	for ( ; I != E; ++I) {
-//		CCustomZone			*zone = smart_cast<CCustomZone*>(*I);
-//		if (zone)
-//			return			(true);
-//	}
+	xr_vector<CObject*>::const_iterator	I = feel_touch.begin();
+	xr_vector<CObject*>::const_iterator	E = feel_touch.end();
+	for ( ; I != E; ++I) {
+		CCustomZone			*zone = smart_cast<CCustomZone*>(*I);
+		if (zone)
+			return			(true);
+	}
 	return					(false);
 }
