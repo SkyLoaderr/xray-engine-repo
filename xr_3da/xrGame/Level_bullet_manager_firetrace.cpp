@@ -27,7 +27,7 @@
 //	params;			// user defined abstract data
 //	Device.Statistic.TEST0.End();
 //return TRUE-продолжить трассировку / FALSE-закончить трассировку
-BOOL __stdcall CBulletManager::firetrace_callback(Collide::rq_result& result, LPVOID params)
+BOOL __stdcall CBulletManager::firetrace_callback(collide::rq_result& result, LPVOID params)
 {
 	SBullet* bullet = (SBullet*)params;
 
@@ -82,7 +82,7 @@ private:
 };
 
 
-void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, Collide::rq_result& R, u16 target_material, Fvector& vNormal)
+void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, const Fvector &vEnd, collide::rq_result& R, u16 target_material, Fvector& vNormal)
 {
 	SGameMtlPair* mtl_pair	= GMLib.GetMaterialPair(bullet->bullet_material_idx, target_material);
 
@@ -179,7 +179,7 @@ NULL:*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.siz
 	}
 }
 
-void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, Collide::rq_result& R, u16 target_material)
+void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material)
 {
 	Fvector hit_normal;
 	FireShotmark(bullet, bullet->dir, end_point, R, target_material, hit_normal);
@@ -187,7 +187,7 @@ void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, 
 }
 
 
-void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point, Collide::rq_result& R, u16 target_material)
+void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point, collide::rq_result& R, u16 target_material)
 {
 	//только для динамических объектов
 	VERIFY(R.O);
@@ -251,7 +251,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 
 
 std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvector& end_point, 
-									Collide::rq_result& R, u16 target_material, 
+									collide::rq_result& R, u16 target_material, 
 									const Fvector& hit_normal)
 {
 	float old_speed, energy_lost;

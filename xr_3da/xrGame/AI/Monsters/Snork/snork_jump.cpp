@@ -162,14 +162,14 @@ float CSnorkJump::trace_current(float dist)
 	float ret_val = flt_max;
 	
 	m_object->setEnabled(false);
-	Collide::rq_result	l_rq;
+	collide::rq_result	l_rq;
 
 	Fvector			trace_from;
 	m_object->Center(trace_from);
 
 	float			trace_dist = m_object->Radius() + dist;
 
-	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), trace_dist, Collide::rqtStatic, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), trace_dist, collide::rqtStatic, l_rq)) {
 		if ((l_rq.range < trace_dist)) ret_val = l_rq.range;
 	}
 

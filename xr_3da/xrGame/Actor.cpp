@@ -912,7 +912,7 @@ void CActor::shedule_Update	(u32 DT)
 
 
 	//что актер видит перед собой
-	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 	
 	m_pObjectWeLookingAt = smart_cast<CGameObject*>(RQ.O);
 

@@ -120,10 +120,10 @@ bool CJumpingAbility::is_landing()
 	m_object->Center(trace_from);
 
 	m_object->setEnabled(false);
-	Collide::rq_result	l_rq;
+	collide::rq_result	l_rq;
 
 	bool on_the_ground = false;
-	if (Level().ObjectSpace.RayPick(trace_from, direction, m_trace_ground_range, Collide::rqtStatic, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, direction, m_trace_ground_range, collide::rqtStatic, l_rq)) {
 		if (l_rq.range < m_trace_ground_range) on_the_ground = true;
 	}
 
@@ -231,9 +231,9 @@ void CJumpingAbility::hit_test()
 	m_object->Center(trace_from);
 	
 	m_object->setEnabled(false);
-	Collide::rq_result	l_rq;
+	collide::rq_result	l_rq;
 
-	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), m_hit_trace_range, Collide::rqtObject, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, m_object->Direction(), m_hit_trace_range, collide::rqtObject, l_rq)) {
 		if ((l_rq.O == m_target_object) && (l_rq.range < m_hit_trace_range)) {
 			m_object->HitEntityInJump(smart_cast<CEntity*>(m_target_object));
 			m_object_hitted = true;
@@ -249,7 +249,7 @@ bool CJumpingAbility::is_on_the_ground()
 	bool ret_val = false;
 	
 	m_object->setEnabled(false);
-	Collide::rq_result	l_rq;
+	collide::rq_result	l_rq;
 	
 	Fvector			trace_from;
 	m_object->Center(trace_from);
@@ -259,7 +259,7 @@ bool CJumpingAbility::is_on_the_ground()
 	
 	float			trace_dist = m_object->Radius() + m_trace_ground_range;
 
-	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, trace_dist, Collide::rqtStatic, l_rq)) {
+	if (Level().ObjectSpace.RayPick(trace_from, trace_dir, trace_dist, collide::rqtStatic, l_rq)) {
 		if ((l_rq.range < trace_dist)) {
 			ret_val = true;
 		}
