@@ -38,7 +38,7 @@
 		<disable>tutorial_artefact_gain</disable>	
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
-	<info_portion id="tutorial_flash_die">
+	<info_portion id="tutorial_flesh_die">
 	</info_portion>
 	<info_portion id="tutorial_alarm_start">
 	</info_portion>
