@@ -19,7 +19,7 @@ void CController::Load(LPCSTR section)
 	inherited::Load	(section);
 
 	m_max_controlled_number			= pSettings->r_u8(section,"Max_Controlled_Count");
-	m_controlled_objects.resize		(m_max_controlled_number);
+	m_controlled_objects.reserve	(m_max_controlled_number);
 
 
 	MotionMan.accel_load			(section);
@@ -81,12 +81,13 @@ void CController::UpdateControlled()
 	}
 
 	// удалить мертвые объекты
-	for (u32 i=m_controlled_objects.size()-1; i>=0;i--) {
-		if (!m_controlled_objects[i]->g_Alive()) {
-			m_controlled_objects[i] = m_controlled_objects.back();
-			m_controlled_objects.pop_back();
+	if (!m_controlled_objects.empty()) 
+		for (u32 i=m_controlled_objects.size()-1; i>=0;i--) {
+			if (!m_controlled_objects[i]->g_Alive()) {
+				m_controlled_objects[i] = m_controlled_objects.back();
+				m_controlled_objects.pop_back();
+			}
 		}
-	}
 
 	// обновить цели подконтрольных монстров
 	// [...]

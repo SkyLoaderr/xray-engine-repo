@@ -32,28 +32,27 @@ template<class SHARED_TYPE, class KEY_TYPE> class CSharedObj : public CSingleton
 
 public:
 				CSharedObj	() {};
-	virtual		~CSharedObj	() {};
+	virtual		~CSharedObj	() {
+		for (SHARED_DATA_MAP_IT it = _shared_tab.begin(); it != _shared_tab.end(); ++it){
+			xr_delete(it->second);
+		}
+	}
 
 	// Access to data
-	SHARED_TYPE	*get_shared	(KEY_TYPE id);
+	SHARED_TYPE	*get_shared	(KEY_TYPE id) {
+		SHARED_DATA_MAP_IT shared_it = _shared_tab.find(id);
+
+		SHARED_TYPE *_data;
+
+		// if not found - create appropriate shared data object
+		if (_shared_tab.end() == shared_it) {
+			_data		= xr_new<SHARED_TYPE>();
+			_shared_tab.insert(mk_pair(id, _data));
+		} else _data = shared_it->second;
+
+		return _data;
+	}
 };
-
-
-template<class SHARED_TYPE, class KEY_TYPE> SHARED_TYPE *CSharedObj<SHARED_TYPE,KEY_TYPE>::get_shared(KEY_TYPE id) 
-{
-	SHARED_DATA_MAP_IT shared_it = _shared_tab.find(id);
-
-	SHARED_TYPE *_data;
-
-	// if not found - create appropriate shared data object
-	if (_shared_tab.end() == shared_it) {
-		_data		= xr_new<SHARED_TYPE>();
-		_shared_tab.insert(mk_pair(id, _data));
-	} else _data = shared_it->second;
-
-	return _data;
-}
-
 
 class CSharedResource {
 	bool	loaded;
