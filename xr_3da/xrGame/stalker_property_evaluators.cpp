@@ -131,7 +131,14 @@ _value_type CStalkerPropertyEvaluatorAnomaly::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorInsideAnomaly::evaluate	()
 {
-	return				(m_object->inside_anomaly());
+	if (!m_object->inside_anomaly())
+		return			(false);
+
+	if (!m_object->enemy())
+		return			(true);
+
+	u32					result = dwfChooseAction(2000,m_object->panic_threshold(),0.f,0.f,0.f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
+	return				(!result);
 }
 
 //////////////////////////////////////////////////////////////////////////
