@@ -1,0 +1,259 @@
+#include "stdafx.h"
+#pragma once
+
+#include "render.h"
+#include "Thunderbolt.h"
+#include "igame_persistent.h"
+
+#ifdef _EDITOR
+	#ifdef _LEVEL_EDITOR
+		#include "ui_tools.h"
+    #endif
+#else
+	#include "igame_level.h"
+	#include "xr_area.h"
+	#include "xr_object.h"
+#endif
+
+static const float MAX_DIST_FACTOR = 0.95f;
+
+CThunderboltDesc::CThunderboltDesc(CInifile* pIni, LPCSTR sect)
+{
+	name						= sect;
+    m_GradientTop.shader 		= pIni->r_string ( sect,"gradient_top_shader" );
+    m_GradientTop.texture		= pIni->r_string ( sect,"gradient_top_texture" );
+    m_GradientTop.fRadius		= pIni->r_fvector2(sect,"gradient_top_radius"  );
+    m_GradientTop.fOpacity 		= pIni->r_float	 ( sect,"gradient_top_opacity" );
+	m_GradientTop.hShader.create(*m_GradientTop.shader,*m_GradientTop.texture);
+    m_GradientCenter.shader 	= pIni->r_string ( sect,"gradient_center_shader" );
+    m_GradientCenter.texture	= pIni->r_string ( sect,"gradient_center_texture" );
+    m_GradientCenter.fRadius	= pIni->r_fvector2(sect,"gradient_center_radius"  );
+    m_GradientCenter.fOpacity 	= pIni->r_float	 ( sect,"gradient_center_opacity" );
+	m_GradientCenter.hShader.create(*m_GradientCenter.shader,*m_GradientCenter.texture);
+
+    // models
+    IReader* F			= 0;
+    LPCSTR m_name;
+	m_name				= pSettings->r_string(sect,"lightning_model");
+	F					= FS.r_open("$game_meshes$",m_name); R_ASSERT2(F,"Empty 'lightning_model'.");
+	l_model				= ::Render->model_CreateDM(F);
+    FS.r_close			(F);
+
+    // sound
+	m_name				= pSettings->r_string(sect,"sound");
+    if (m_name&&m_name[0]) snd.create(TRUE,m_name,0);
+}
+
+CThunderboltDesc::~CThunderboltDesc()
+{
+    ::Render->model_Delete			(l_model);
+    m_GradientTop.hShader.destroy	();
+    m_GradientCenter.hShader.destroy();
+    snd.destroy						();
+}
+
+CEffect_Thunderbolt::CEffect_Thunderbolt()
+{
+	current		= 0;
+	life_time	= 0.f;
+    state		= stIdle;
+    next_lightning_time = 0.f;
+    bEnabled	= FALSE;
+
+    // geom
+	hGeom_model.create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, RCache.Vertex.Buffer(), RCache.Index.Buffer());
+	hGeom_gradient.create(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
+
+    // params
+    p_var_alt		= pSettings->r_fvector2							( "thunderbolt_common","altitude" );  
+	p_var_alt.x	= deg2rad(p_var_alt.x); p_var_alt.y	= deg2rad(p_var_alt.y);
+    p_var_long		= deg2rad	(				 pSettings->r_float	( "thunderbolt_common","delta_longitude" ));
+    p_min_dist		= _min		(MAX_DIST_FACTOR,pSettings->r_float	( "thunderbolt_common","min_dist_factor" ));
+    p_tilt			= deg2rad	(pSettings->r_float					( "thunderbolt_common","tilt" ));
+    p_second_prop	= pSettings->r_float							( "thunderbolt_common","second_propability" );
+    clamp			(p_second_prop,0.f,1.f);
+    p_sky_color		= pSettings->r_float							( "thunderbolt_common","sky_color" );
+    p_sun_color		= pSettings->r_float							( "thunderbolt_common","sun_color" );
+        
+    // descriptions
+    int tb_count	= pSettings->line_count("thunderbolts");
+    for (int tb_idx=0; tb_idx<tb_count; tb_idx++){
+        LPCSTR tb, sect_tb;
+        if (pSettings->r_line("thunderbolts",tb_idx,&tb,&sect_tb))
+        	palette.push_back(xr_new<CThunderboltDesc>(pSettings,sect_tb));
+    }
+}
+
+CEffect_Thunderbolt::~CEffect_Thunderbolt()
+{
+	for (DescIt d_it=palette.begin(); d_it!=palette.end(); d_it++)
+    	xr_delete(*d_it);
+	hGeom_model.destroy			();
+	hGeom_gradient.destroy		();
+}
+
+BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dist)
+{
+	BOOL bRes 	= TRUE;
+#ifdef _EDITOR
+    bRes 				= Tools.RayPick	(s,d,dist,0,0);
+#else
+	Collide::ray_query	RQ;
+	CObject* E 			= g_pGameLevel->CurrentViewEntity();
+	if (E)				E->setEnabled		(FALSE);
+	bRes 				= g_pGameLevel->ObjectSpace.RayPick(s,d,dist,RQ);	
+	if (E)				E->setEnabled		(TRUE);
+    if (bRes) dist	 	= RQ.range;
+    else{
+        Fvector N	={0.f,-1.f,0.f};
+        Fvector P	={0.f,0.f,0.f};
+        Fplane PL; PL.build(P,N);
+        float dst	=dist;
+        if (PL.intersectRayDist(s,d,dst)&&(dst<=dist)){dist=dst; return true;}else return false;
+    }
+#endif
+    return bRes;
+}
+
+IC bool sound_pred(const CEffect_Thunderbolt::SoundDesc& x, float val)
+{
+	return x.time<val;
+};
+#define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
+#define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
+void CEffect_Thunderbolt::Bolt(float period, float lt)
+{
+	state 		            = stWorking;
+	life_time	            = lt+Random.randF(-lt*0.5f,lt*0.5f);
+    current_time            = 0.f;
+    current		            = palette[Random.randI(palette.size())]; VERIFY(current);
+
+    Fmatrix XF,S;
+    Fvector dir,pos,dev;
+    float sun_h, sun_p; 
+    SUN_DIR.getHP			(sun_h,sun_p);
+    float alt	            = Random.randF(p_var_alt.x,p_var_alt.y);
+    float lng	            = Random.randF(sun_h-p_var_long+PI,sun_h+p_var_long+PI); 
+    float dist	            = Random.randF(FAR_DIST*p_min_dist,FAR_DIST*MAX_DIST_FACTOR);
+    dir.setHP	            (lng,alt);
+    pos.mad		            (Device.vCameraPosition,dir,dist);
+    dev.x		            = Random.randF(-p_tilt,p_tilt);
+    dev.y		            = Random.randF(0,PI_MUL_2);
+    dev.z		            = Random.randF(-p_tilt,p_tilt);
+    XF.setXYZi	            (dev);               
+
+    Fvector light_dir 		= {0.f,-1.f,0.f};
+    XF.transform_dir		(light_dir);
+    lightning_size			= FAR_DIST*2.f;
+    RayPick					(pos,light_dir,lightning_size);
+
+    lightning_center.mad	(pos,light_dir,lightning_size*0.5f);
+
+    S.scale					(lightning_size,lightning_size,lightning_size);
+    XF.translate_over		(pos);
+    current_xform.mul_43	(XF,S);
+
+    float next_v			= Random.randF();
+
+    if (next_v<p_second_prop){
+	    next_lightning_time = Device.fTimeGlobal+lt+EPS_L;
+    }else{
+	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.3f,period*0.3f);
+    	float val			= Device.fTimeGlobal+dist/300.f;
+	    SoundDeqIt it		= std::lower_bound(sound_times.begin(),sound_times.end(),val,sound_pred);
+    	sound_times.insert	(it,SoundDesc(val,pos));
+    }
+}
+
+void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
+{
+	if (bEnabled!=enabled){
+    	bEnabled			= enabled;
+	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.5f,period*0.5f);
+    }else if (bEnabled&&(Device.fTimeGlobal>next_lightning_time)){ 
+    	if (state==stIdle)	Bolt(period,duration);
+    }
+    if (!sound_times.empty()){
+    	SoundDesc& next_tm 	= sound_times.front();
+        if (Device.fTimeGlobal>next_tm.time){
+            // play sound
+            float dist = next_tm.pos.distance_to(Device.vCameraPosition);
+			current->snd.play_at_pos_unlimited(0,next_tm.pos,FALSE);
+			current->snd.set_range	(dist/10,dist*2.f);
+            sound_times.pop_front	();
+        }
+    }
+	if (state==stWorking){
+    	if (current_time>life_time) state = stIdle;
+    	current_time	+= Device.fTimeDelta;
+
+        lightning_phase	= 1.5f*(current_time/life_time);
+        clamp			(lightning_phase,0.f,1.f);
+
+        g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
+        g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
+    }
+}
+
+void CEffect_Thunderbolt::Render()
+{                  
+	if (state==stWorking){
+    	VERIFY	(current);
+
+        // lightning model
+        float dv			= lightning_phase*0.5f;
+        dv					= (lightning_phase>0.5f)?Random.randI(2)*0.5f:dv;
+
+        HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_NONE);
+        u32					v_offset,i_offset;
+        u32					vCount_Lock		= current->l_model->number_vertices;
+        u32					iCount_Lock		= current->l_model->number_indices;
+        IRender_DetailModel::fvfVertexOut* v_ptr= (IRender_DetailModel::fvfVertexOut*) 	RCache.Vertex.Lock	(vCount_Lock, hGeom_model->vb_stride, v_offset);
+        u16*				i_ptr				=										RCache.Index.Lock	(iCount_Lock, i_offset);
+        // XForm verts
+        current->l_model->transfer(current_xform,v_ptr,0xffffffff,i_ptr,0,0.f,dv);
+        // Flush if needed
+        RCache.Vertex.Unlock(vCount_Lock,hGeom_model->vb_stride);
+        RCache.Index.Unlock	(iCount_Lock);
+        RCache.set_xform_world(Fidentity);
+        RCache.set_Shader	(current->l_model->shader);
+        RCache.set_Geometry	(hGeom_model);
+        RCache.Render		(D3DPT_TRIANGLELIST,v_offset,0,vCount_Lock,i_offset,iCount_Lock/3);
+        HW.pDevice->SetRenderState	(D3DRS_CULLMODE,D3DCULL_CCW);
+
+        // gradient
+        Fvector				vecSx, vecSy;
+        u32					VS_Offset;
+        FVF::LIT *pv		= (FVF::LIT*) RCache.Vertex.Lock(8,hGeom_gradient.stride(),VS_Offset);
+        // top
+        {
+            u32 c_val		= iFloor(current->m_GradientTop.fOpacity*lightning_phase*255.f);
+            u32 c			= color_rgba(c_val,c_val,c_val,c_val);
+            vecSx.mul		(Device.vCameraRight, 	current->m_GradientTop.fRadius.x*lightning_size);
+            vecSy.mul		(Device.vCameraTop, 	-current->m_GradientTop.fRadius.y*lightning_size);
+            pv->set			(current_xform.c.x+vecSx.x-vecSy.x, current_xform.c.y+vecSx.y-vecSy.y, current_xform.c.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
+            pv->set			(current_xform.c.x+vecSx.x+vecSy.x, current_xform.c.y+vecSx.y+vecSy.y, current_xform.c.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
+            pv->set			(current_xform.c.x-vecSx.x-vecSy.x, current_xform.c.y-vecSx.y-vecSy.y, current_xform.c.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
+            pv->set			(current_xform.c.x-vecSx.x+vecSy.x, current_xform.c.y-vecSx.y+vecSy.y, current_xform.c.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
+        }
+        // center
+        {
+            u32 c_val		= iFloor(current->m_GradientTop.fOpacity*lightning_phase*255.f);
+            u32 c			= color_rgba(c_val,c_val,c_val,c_val);
+            vecSx.mul		(Device.vCameraRight, 	current->m_GradientCenter.fRadius.x*lightning_size);
+            vecSy.mul		(Device.vCameraTop, 	-current->m_GradientCenter.fRadius.y*lightning_size);
+            pv->set			(lightning_center.x+vecSx.x-vecSy.x, lightning_center.y+vecSx.y-vecSy.y, lightning_center.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
+            pv->set			(lightning_center.x+vecSx.x+vecSy.x, lightning_center.y+vecSx.y+vecSy.y, lightning_center.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
+            pv->set			(lightning_center.x-vecSx.x-vecSy.x, lightning_center.y-vecSx.y-vecSy.y, lightning_center.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
+            pv->set			(lightning_center.x-vecSx.x+vecSy.x, lightning_center.y-vecSx.y+vecSy.y, lightning_center.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
+        }
+        RCache.Vertex.Unlock	(8,hGeom_gradient.stride());
+        RCache.set_xform_world	(Fidentity);
+        RCache.set_Geometry		(hGeom_gradient);
+        RCache.set_Shader		(current->m_GradientTop.hShader);
+        RCache.Render			(D3DPT_TRIANGLELIST,VS_Offset, 0,4,0,2);
+        RCache.set_Shader		(current->m_GradientCenter.hShader);
+        RCache.Render			(D3DPT_TRIANGLELIST,VS_Offset+4, 0,4,0,2);
+    }
+}
+
