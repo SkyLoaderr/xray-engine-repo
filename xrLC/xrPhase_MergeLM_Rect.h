@@ -1,17 +1,17 @@
 #pragma once
 
-struct _point {
+struct L_point {
 	int x,y;
 	IC void set(int _x, int _y)
 	{	x=_x; y=_y;	}
-	IC void set(_point &P)
+	IC void set(L_point &P)
 	{	set(P.x,P.y); }
 };
-struct _rect {
-	_point	a,b;		// min,max
+struct L_rect {
+	L_point	a,b;		// min,max
 	int		iArea;
 	
-	IC void	set	(_rect &R)
+	IC void	set	(L_rect &R)
 	{
 		a.set	(R.a);
 		b.set	(R.b);
@@ -21,9 +21,9 @@ struct _rect {
 	{	a.set(ax,ay); b.set(bx,by); }
 	IC void	calc_area()
 	{	iArea = SizeX()*SizeY(); 	};
-	IC bool	PointInside(_point &P)
+	IC bool	PointInside(L_point &P)
 	{	return (P.x>=a.x && P.x<=b.x && P.y>=a.y && P.y<=b.y); 	};
-	IC bool	Intersect(_rect &R)
+	IC bool	Intersect(L_rect &R)
 	{
 		if (R.b.x < a.x) return false;
 		if (R.b.y < a.y) return false;
@@ -31,7 +31,7 @@ struct _rect {
 		if (R.a.y > b.y) return false;
 		return true;
 	};
-	IC void	GetAB(_point &A, _point &B)
+	IC void	GetAB(L_point &A, L_point &B)
 	{
 		A.x = b.x; A.y = a.y;
 		B.x = a.x; B.y = b.y;
@@ -41,7 +41,7 @@ struct _rect {
 		a.set(SHRT_MAX,SHRT_MAX);
 		b.set(SHRT_MIN,SHRT_MIN);
 	}
-	IC void	Merge(_rect &R) 
+	IC void	Merge(L_rect &R) 
 	{
 		if (R.a.x<a.x) a.x=R.a.x;
 		if (R.a.y<a.y) a.y=R.a.y;

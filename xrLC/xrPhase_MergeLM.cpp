@@ -5,7 +5,7 @@
 
 // Surface access
 extern void _InitSurface	();
-extern BOOL _rect_place		(_rect &r, CDeflector::Layer* D);
+extern BOOL _rect_place		(L_rect &r, CDeflector::Layer* D);
 
 int 	compare_layer		= 0;
 
@@ -149,7 +149,7 @@ void CBuild::xrPhase_MergeLM()
 			{
 				if (0==(it%16))		Status	("Process [%d/%d]...",it,merge_count);
 				CDeflector::Layer&	L = *(Layer[it]->GetLayer(light_layer));
-				_rect		rT,rS; 
+				L_rect		rT,rS; 
 				rS.a.set	(0,0);
 				rS.b.set	(L.lm.dwWidth+2*BORDER-1, L.lm.dwHeight+2*BORDER-1);
 				rS.iArea	= L.Area();
