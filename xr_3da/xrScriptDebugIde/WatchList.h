@@ -45,6 +45,7 @@ protected:
 
 	//{{AFX_MSG(CWatchList)
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
+	afx_msg void OnKeyDown(UINT, UINT, UINT);
 	//}}AFX_MSG
 
 	DECLARE_MESSAGE_MAP()
