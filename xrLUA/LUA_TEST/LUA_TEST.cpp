@@ -2008,15 +2008,17 @@ void bug_test	()
 	LPCSTR					s = "main()";
 	lua_dofile				(L,"x:\\bug6.script");
 	for (int i=0; i<10; ++i) {
+		int					top = lua_gettop(L);
 		lua_State			*t = lua_newthread(L);
-		int					thread_reference = luaL_ref(L,LUA_REGISTRYINDEX);
+//		int					thread_reference = luaL_ref(L,LUA_REGISTRYINDEX);
 		int					err = luaL_loadbuffer(t,s,strlen(s),"@_thread_main");
 		if (err) {
 			printf			("ERROR : %s\n",lua_tostring(L,-1));
 			break;
 		}
 		lua_resume			(t,0);
-		luaL_unref			(L,LUA_REGISTRYINDEX,thread_reference);
+//		luaL_unref			(L,LUA_REGISTRYINDEX,thread_reference);
+		lua_settop			(L,top);
 		lua_setgcthreshold	(L,0);
 	}
 
