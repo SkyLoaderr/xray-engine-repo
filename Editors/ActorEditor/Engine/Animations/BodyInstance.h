@@ -99,8 +99,8 @@ public:
 };
 
 //*** Bone Instance *******************************************************************************
-#pragma pack(push,8)
-ALIGN(64) class ENGINE_API CBoneInstance
+#pragma pack(push,16)
+class ENGINE_API CBoneInstance
 {
 public:
 	// data
