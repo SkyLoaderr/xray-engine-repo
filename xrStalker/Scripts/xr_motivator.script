@@ -472,7 +472,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_camper2.add_to_binder(self.object)
     xr_sleeper.add_to_binder(self.object)
     xr_robbers.add_to_binder(self.object)
-    xr_talker.add_to_binder(self.object)
+--    xr_talker.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
 --    xr_talker.add_to_binder(self.object)
 
