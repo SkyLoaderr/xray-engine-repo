@@ -13,7 +13,7 @@ void blit	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD 
 		{
 			DWORD dx = px+x;
 			DWORD dy = py+y;
-			dest[dy*ds_x+dx] = src[y*ss_y+x];
+			dest[dy*ds_x+dx] = src[y*ss_x+x];
 		}
 }
 void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWORD ss_y, DWORD px, DWORD py)
@@ -25,7 +25,7 @@ void blit_r	(LPDWORD dest, DWORD ds_x, DWORD ds_y, LPDWORD src, DWORD ss_x, DWOR
 		{
 			DWORD dx = px+y;
 			DWORD dy = py+x;
-			dest[dy*ds_x+dx] = src[y*ss_y+x];
+			dest[dy*ds_x+dx] = src[y*ss_x+x];
 		}
 }
 
