@@ -48,7 +48,7 @@ public:
 		shape_data	data;
 	};
     DEFINE_VECTOR	(shape_def,ShapeVec,ShapeIt);
-    ShapeVec		shapes;
+	ShapeVec		shapes;
 public:
 	void			cform_read			(NET_Packet& P);
 	void			cform_write			(NET_Packet& P);
@@ -117,7 +117,7 @@ public:
         o_Angle.set			(0.f,0.f,0.f);
         o_Position.set		(0.f,0.f,0.f);
 	}
-	~xrServerEntity			()
+	virtual ~xrServerEntity	()
 	{
 	}
 };
@@ -189,7 +189,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 	char*					s_Particles;
 	char*					s_Sound;
     xrSE_Dummy				();
-    ~xrSE_Dummy				();
+    virtual ~xrSE_Dummy		();
 xrSE_DECLARE_END
 
 //***** MercuryBall
