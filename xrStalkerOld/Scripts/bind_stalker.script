@@ -22,12 +22,15 @@ function actor_binder:net_spawn(data)
 	end
 
 	db.add_obj(self.object)
+	db.actor = self.object
 
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
-function motivator_binder:net_destroy()
+function actor_binder:net_destroy()
 	db.del_obj(self.object)
+	db.actor = nil
+
 	object_binder.net_destroy(self)
 end
 ----------------------------------------------------------------------------------------------------------------------
