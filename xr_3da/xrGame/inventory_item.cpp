@@ -85,6 +85,14 @@ void CInventoryItem::Load(LPCSTR section)
 
 	m_iXPos			= pSettings->r_u32(section, "inv_grid_x");
 	m_iYPos			= pSettings->r_u32(section, "inv_grid_y");
+	//-----------------------------------------------------------------
+	m_iKillMsgXPos	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_x", 0);
+	m_iKillMsgYPos	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_y", 0);
+
+	m_iKillMsgWidth		= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_width", 0);
+	m_iKillMsgHeight	= READ_IF_EXISTS(pSettings,r_u32,section,"kill_msg_height", 0);
+
+	//-----------------------------------------------------------------
 
 	if(pSettings->line_exist(section, "slot"))
 		m_slot = pSettings->r_u32(section, "slot");

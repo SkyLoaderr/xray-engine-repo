@@ -820,6 +820,7 @@ float CWeapon::GetConditionMisfireProbability() const
 
 BOOL CWeapon::CheckForMisfire()
 {
+	if (GameID()!=GAME_SINGLE) return FALSE;
 	float rnd = ::Random.randF(0.f,1.f);
 	if(rnd<GetConditionMisfireProbability())
 	{

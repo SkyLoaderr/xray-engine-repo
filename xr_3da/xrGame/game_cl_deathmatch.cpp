@@ -474,32 +474,47 @@ bool	game_cl_Deathmatch::OnKeyboardPress			(int key)
 
 	if (kINVENTORY == key )
 	{
-		if (CanCallInventoryMenu())
-		{
+		if (pInventoryMenu->IsShown())
 			StartStopMenu(pInventoryMenu,true);
+		else
+		{
+			if (CanCallInventoryMenu())
+			{
+				StartStopMenu(pInventoryMenu,true);
+			};
 		};
 		return true;
 	};
 
 	if (kBUY == key )
 	{
-		if(CanCallBuyMenu()){
-			SetCurrentBuyMenu	();
-
-			if (pCurBuyMenu && !pCurBuyMenu->IsShown())
-				SetBuyMenuItems		();
+		if (pCurBuyMenu && pCurBuyMenu->IsShown())
 			StartStopMenu(pCurBuyMenu,true);
-		}
+		else
+		{		
+			if(CanCallBuyMenu()){
+				SetCurrentBuyMenu	();
+
+				if (pCurBuyMenu && !pCurBuyMenu->IsShown())
+					SetBuyMenuItems		();
+				StartStopMenu(pCurBuyMenu,true);
+			}
+		};
 
 		return true;
 	};
 	
 	if (kSKIN == key )
 	{
-		if (CanCallSkinMenu())
-		{
-			SetCurrentSkinMenu();
+		if (pCurSkinMenu && pCurSkinMenu->IsShown())
 			StartStopMenu(pCurSkinMenu,true);
+		else
+		{
+			if (CanCallSkinMenu())
+			{
+				SetCurrentSkinMenu();
+				StartStopMenu(pCurSkinMenu,true);
+			}
 		}
 		return true;
 	};

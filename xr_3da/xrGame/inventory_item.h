@@ -129,6 +129,13 @@ public:
 	virtual int		GetXPos				() const {return m_iXPos;}
 	virtual int		GetYPos				() const {return m_iYPos;}
 
+	//---------------------------------------------------------------------
+	virtual	int		GetKillMsgXPos		() const {return m_iKillMsgXPos; }
+	virtual	int		GetKillMsgYPos		() const {return m_iKillMsgYPos; }
+	virtual	int		GetKillMsgWidth		() const {return m_iKillMsgWidth; }
+	virtual	int		GetKillMsgHeight	() const {return m_iKillMsgHeight; }
+	//---------------------------------------------------------------------
+
 			float	GetCondition		()  const {return m_fCondition;}
 			void	ChangeCondition		(float fDeltaCondition);
 
@@ -173,6 +180,13 @@ protected:
 
 	int 			m_iXPos;											//позиция X в сетке инвенторя
 	int 			m_iYPos;											//позиция Y в сетке инвенторя
+	//-----------------------------------------------------------------------------------------------
+	int				m_iKillMsgXPos;
+	int				m_iKillMsgYPos;
+
+	int				m_iKillMsgWidth;
+	int				m_iKillMsgHeight;
+	//-----------------------------------------------------------------------------------------------
 	// Тектс описания вещи
 	shared_str			m_Description;
 
