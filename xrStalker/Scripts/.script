@@ -85,8 +85,8 @@ function pp_effector:process(pp)
 	
 	local dual		= duality()
 	local noise		= noise()
-	local color		= color()
 	local blend		= color()
+	local color		= color()
 
 	dual.h			= self.max_power.dual.h 			* d
 	dual.v			= self.max_power.dual.v 			* d
