@@ -13,6 +13,8 @@
 
 #include "lua.h"
 
+#include "lauxlib.h"
+
 #include "ldebug.h"
 #include "ldo.h"
 #include "lfunc.h"
@@ -348,6 +350,19 @@ static void resume (lua_State *L, void *ud) {
     luaD_poscall(L, LUA_MULTRET, firstResult);  /* finalize this coroutine */
 }
 
+static void callalert (lua_State *L, int status) {
+	if (status != 0) {
+		lua_getglobal(L, "_ALERT");
+		if (lua_isfunction(L, -1)) {
+			lua_insert(L, -2);
+			lua_call(L, 1, 0);
+		}
+		else {  /* no _ALERT function; print it on stderr */
+			fprintf(stderr, "%s\n", lua_tostring(L, -2));
+			lua_pop(L, 2);  /* remove error message and _ALERT */
+		}
+	}
+}
 
 LUA_API int lua_resume (lua_State *L, int nargs) {
   int status;
@@ -366,6 +381,7 @@ LUA_API int lua_resume (lua_State *L, int nargs) {
     restore_stack_limit(L);
   }
   lua_unlock(L);
+  callalert(L, status);
   return status;
 }
 
