@@ -81,6 +81,15 @@ private:
 	int							m_l_finger1;
 	int							m_r_finger2;
 
+//////////////////////////////////////////////////////////////////////////
+	float						m_disp_walk_stand;
+	float						m_disp_walk_crouch;
+	float						m_disp_run_stand;
+	float						m_disp_run_crouch;
+	float						m_disp_stand_stand;
+	float						m_disp_stand_crouch;
+//////////////////////////////////////////////////////////////////////////
+
 public:
 	CCharacterPhysicsSupport	*m_pPhysics_support;
 

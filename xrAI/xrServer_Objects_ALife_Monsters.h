@@ -45,16 +45,17 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	ALife::TRADER_SUPPLY_VECTOR			m_tpSupplies;
 
 
-									CSE_ALifeTrader	(LPCSTR caSection);
-	virtual							~CSE_ALifeTrader();
+									CSE_ALifeTrader			(LPCSTR caSection);
+	virtual							~CSE_ALifeTrader		();
+	virtual	bool					interactive				() const;
 #ifdef _EDITOR
 	int 							supplies_count;
     void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
 #endif    
 #ifndef _EDITOR
 #ifndef AI_COMPILER
-			u32						dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry);
-	virtual void					spawn_supplies		();
+			u32						dwfGetItemCost			(CSE_ALifeInventoryItem *tpALifeInventoryItem, CSE_ALifeObjectRegistry *tpALifeObjectRegistry);
+	virtual void					spawn_supplies			();
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

@@ -574,11 +574,14 @@ CSE_ALifeItemPDA::~CSE_ALifeItemPDA		()
 void CSE_ALifeItemPDA::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
+	if (m_wVersion > 58)
+		tNetPacket.r			(&m_original_owner,sizeof(m_original_owner));
 }
 
 void CSE_ALifeItemPDA::STATE_Write		(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w				(&m_original_owner,sizeof(m_original_owner));
 }
 
 void CSE_ALifeItemPDA::UPDATE_Read		(NET_Packet	&tNetPacket)

@@ -455,6 +455,11 @@ bool CSE_ALifeObject::can_save				() const
 	return						(true);
 }
 
+bool CSE_ALifeObject::interactive			() const
+{
+	return						(!!m_flags.is(flInteractive));
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGroupAbstract
 ////////////////////////////////////////////////////////////////////////////
@@ -750,8 +755,8 @@ CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifeDynami
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
     flags.zero					();
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeObjectPhysic::~CSE_ALifeObjectPhysic		() 
@@ -1105,8 +1110,8 @@ bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 
 CSE_ALifeObjectProjector::CSE_ALifeObjectProjector(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
 {
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeObjectProjector::~CSE_ALifeObjectProjector()
@@ -1171,8 +1176,8 @@ CSE_ALifeSchedulable::~CSE_ALifeSchedulable()
 
 CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion() 
 {
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeHelicopter::~CSE_ALifeHelicopter	()
@@ -1253,6 +1258,11 @@ bool CSE_ALifeHelicopter::can_switch_offline() const
 	return						(false);
 }
 
+bool CSE_ALifeHelicopter::interactive() const
+{
+	return						(false);
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCar
 ////////////////////////////////////////////////////////////////////////////
@@ -1260,8 +1270,8 @@ CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeCar::~CSE_ALifeCar				()

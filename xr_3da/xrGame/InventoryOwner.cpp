@@ -12,7 +12,7 @@
 #include "actor.h"
 #include "trade.h"
 #include "inventory.h"
-#include "xrserver_objects_alife.h"
+#include "xrserver_objects_alife_items.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -323,6 +323,14 @@ void CInventoryOwner::spawn_supplies		()
 	if (use_bolts())
 		Level().spawn_item					("bolt",game_object->Position(),game_object->level_vertex_id(),game_object->ID());
 
-	if (!ai().get_alife())
-		Level().spawn_item					("device_pda",game_object->Position(),game_object->level_vertex_id(),game_object->ID());
+	if (!ai().get_alife()) {
+		CSE_Abstract						*abstract = Level().spawn_item("device_pda",game_object->Position(),game_object->level_vertex_id(),game_object->ID(),true);
+		CSE_ALifeItemPDA					*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
+		R_ASSERT							(pda);
+		pda->m_original_owner				= (u16)game_object->ID();
+		NET_Packet							P;
+		abstract->Spawn_Write				(P,TRUE);
+		Level().Send						(P,net_flags(TRUE));
+		F_entity_Destroy					(abstract);
+	}
 }

@@ -9,8 +9,8 @@
 #include "hudmanager.h"
 #include "PhysicsShell.h"
 #include "Entity.h"
-
 #include "actor.h"
+#include "xrServer_Objects_ALife_Items.h"
 
 
 CPda::CPda(void) 
@@ -38,7 +38,14 @@ CPda::~CPda(void)
 
 BOOL CPda::net_Spawn(LPVOID DC) 
 {
-	return		(inherited::net_Spawn(DC));
+	if (!inherited::net_Spawn(DC))
+		return			(FALSE);
+	CSE_Abstract		*abstract = (CSE_Abstract*)(DC);
+	CSE_ALifeItemPDA	*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
+	R_ASSERT			(pda);
+	m_idOriginalOwner	= pda->m_original_owner;
+	TurnOn				();
+	return				(TRUE);
 }
 
 void CPda::Load(LPCSTR section) 
@@ -162,15 +169,6 @@ BOOL CPda::feel_touch_contact(CObject* O)
 void CPda::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
-	//первый владелец
-	if(m_idOriginalOwner == 0xffff)
-	{
-		CObject* E = dynamic_cast<CObject*>(H_Parent());
-		R_ASSERT(E);
-
-		m_idOriginalOwner = E->ID();
-		TurnOn();
-	}
 }
 
 void CPda::OnH_B_Independent() 

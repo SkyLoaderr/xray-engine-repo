@@ -15,7 +15,7 @@
 #include "xrserver_objects_alife_monsters.h"
 using namespace ALife;
 
-void CSE_ALifeSimulator::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, _GRAPH_ID game_vertex_id, u16 parent_id)
+CSE_Abstract *CSE_ALifeSimulator::spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, _GRAPH_ID game_vertex_id, u16 parent_id)
 {
 	CSE_Abstract				*abstract = F_entity_Create(section);
 	R_ASSERT3					(abstract,"Cannot find item with section %s",section);
@@ -48,6 +48,8 @@ void CSE_ALifeSimulator::spawn_item	(LPCSTR section, const Fvector &position, u3
 	CSE_ALifeObjectRegistry::Add(dynamic_object);
 
 	vfUpdateDynamicData			(dynamic_object);
+
+	return						(dynamic_object);
 }
 
 CSE_Abstract *CSE_ALifeSimulator::tpfCreateGroupMember(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)

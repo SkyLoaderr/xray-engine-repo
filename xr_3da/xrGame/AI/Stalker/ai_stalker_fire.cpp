@@ -15,23 +15,23 @@
 
 float CAI_Stalker::GetWeaponAccuracy	() const
 {
-	float				base = 2*PI/180.f;
+	float				base = PI/180.f;
 	if (movement_type() == eMovementTypeWalk)
 		if (body_state() == eBodyStateStand)
-			return		(base*1.f);
+			return		(base*m_disp_walk_stand);
 		else
-			return		(base*.75f);
+			return		(base*m_disp_walk_crouch);
 	else
 		if (movement_type() == eMovementTypeRun)
 			if (body_state() == eBodyStateStand)
-				return	(base*2.f);
+				return	(base*m_disp_run_stand);
 			else
-				return	(base*1.f);
+				return	(base*m_disp_run_crouch);
 		else
 			if (body_state() == eBodyStateStand)
-				return	(base*.5f);
+				return	(base*m_disp_stand_stand);
 			else
-				return	(base*.25f);
+				return	(base*m_disp_stand_crouch);
 }
 
 float CAI_Stalker::HitScale	(int element)

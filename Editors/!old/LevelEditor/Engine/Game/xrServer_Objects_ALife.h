@@ -112,6 +112,7 @@ protected:
 		flUseSwitches	= u32(1) << 0,
 		flSwitchOnline  = u32(1) << 1,
 		flSwitchOffline = u32(1) << 2,
+		flInteractive   = u32(1) << 3,
 	};
 public:
 	typedef CSE_Abstract inherited;
@@ -136,6 +137,7 @@ public:
 	virtual bool					can_switch_online	() const;
 	virtual bool					can_switch_offline	() const;
 	virtual bool					can_save			() const;
+	virtual bool					interactive			() const;
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual void					spawn_supplies		();
@@ -325,6 +327,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	virtual							~CSE_ALifeHelicopter		();
 	virtual bool					used_ai_locations			() const;
 	virtual bool					can_switch_offline			() const;
+	virtual bool					interactive					() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifeDynamicObjectVisual)

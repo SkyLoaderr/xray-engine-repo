@@ -743,12 +743,18 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 		Msg									("Selling all the items to %s",tpALifeTrader->s_name_replace);
 	}
 #endif
+	CSE_ALifeItemPDA						*original_pda = 0;
 	tpALifeHumanAbstract->m_dwTotalMoney	= tpALifeHumanAbstract->m_dwMoney;
 	{
 		OBJECT_IT							I = tpALifeHumanAbstract->children.begin();
 		OBJECT_IT							E = tpALifeHumanAbstract->children.end();
 		for ( ; I != E; ++I) {
 			CSE_ALifeInventoryItem			*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(object(*I));
+			CSE_ALifeItemPDA				*pda = dynamic_cast<CSE_ALifeItemPDA*>(l_tpALifeInventoryItem);
+			if (pda && (pda->m_original_owner == tpALifeHumanAbstract->ID)) {
+				VERIFY						(!original_pda);
+				original_pda				= pda;
+			}
 			tpALifeHumanAbstract->vfDetachItem(l_tpALifeInventoryItem,0,true,false);
 			tpALifeTrader->vfAttachItem		(l_tpALifeInventoryItem,true);
 			u32								l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem,this);
@@ -784,6 +790,7 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 			m_tpItemVector.erase			(I,m_tpItemVector.end());
 		}
 	}
+
 	tpALifeTrader->m_dwMoney				+= tpALifeHumanAbstract->m_dwMoney - tpALifeHumanAbstract->m_dwTotalMoney;
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	tpALifeHumanAbstract->m_dwTotalMoney	= u32(-1);
@@ -798,6 +805,13 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 #endif
 	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
 	vfAttachGatheredItems					(tpALifeTrader,tpALifeHumanAbstract,m_tpBlockedItems2);
+
+	{
+		OBJECT_IT							I = std::find(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),original_pda->ID);
+		VERIFY								(I != tpALifeTrader->children.end());
+		tpALifeTrader->vfDetachItem			(original_pda);
+		tpALifeHumanAbstract->vfAttachItem	(original_pda,true);
+	}
 
 	// update events
 #pragma todo("Dima to Dima: Update events")

@@ -320,7 +320,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 			break;
 		}
 		case CLSID_AI_BURER				: {
-			m_fLastValue =  3;
+			m_fLastValue =  12;
 			break;
 		}
 		case CLSID_AI_GIANT				: {

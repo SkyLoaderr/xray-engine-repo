@@ -184,7 +184,7 @@ public:
 	// trading routines
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		CSE_ALifeTrader			*tpALifeTrader);
 			float					distance					(const DWORD_VECTOR &path) const;
-			void					spawn_item					(LPCSTR section,			const Fvector &position,	u32 level_vertex_id,	ALife::_GRAPH_ID game_vertex_id,	u16 parent_id);
+			CSE_Abstract			*spawn_item					(LPCSTR section,			const Fvector &position,	u32 level_vertex_id,	ALife::_GRAPH_ID game_vertex_id,	u16 parent_id);
 	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();

@@ -422,7 +422,7 @@ void				CLevel::SetNumCrSteps		( u32 NumSteps )
 	m_dwNumSteps = NumSteps;
 };
 
-void CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id)
+CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item)
 {
 	CSE_Abstract			*abstract = F_entity_Create(section);
 	R_ASSERT3				(abstract,"Cannot find item with section %s",section);
@@ -444,9 +444,13 @@ void CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 level_ver
 	abstract->s_flags.set	(M_SPAWN_OBJECT_LOCAL);
 	abstract->RespawnTime	= 0;
 	
-	NET_Packet				P;
-	abstract->Spawn_Write	(P,TRUE);
-	Send					(P,net_flags(TRUE));
-	
-	F_entity_Destroy		(abstract);
+	if (!return_item) {
+		NET_Packet				P;
+		abstract->Spawn_Write	(P,TRUE);
+		Send					(P,net_flags(TRUE));
+		F_entity_Destroy		(abstract);
+		return					(0);
+	}
+	else
+		return				(abstract);
 }

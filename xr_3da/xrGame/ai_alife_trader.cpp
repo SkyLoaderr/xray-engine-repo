@@ -21,26 +21,31 @@ void CSE_ALifeObject::spawn_supplies		()
 #pragma warning(disable:4238)
 	CInifile					ini(
 		&IReader				(
-		(void*)(*(m_ini_string)),
-		m_ini_string.size()
+			(void*)(*(m_ini_string)),
+			m_ini_string.size()
 		)
-		);
+	);
 #pragma warning(pop)
 
-	if (!ini.section_exist("spawn"))
-		return;
-
-	LPCSTR					N,V;
-	for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
-		VERIFY				(xr_strlen(N));
-		j					= 1;
-		if (V && xr_strlen(V)) {
-			j				= atoi(V);
-			if (!j)
-				j			= 1;
+	if (ini.section_exist("spawn")) {
+		LPCSTR					N,V;
+		for (u32 k = 0, j; ini.r_line("spawn",k,&N,&V); k++) {
+			VERIFY				(xr_strlen(N));
+			j					= 1;
+			if (V && xr_strlen(V)) {
+				j				= atoi(V);
+				if (!j)
+					j			= 1;
+			}
+			for (u32 i=0; i<j; ++i)
+				ai().alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
 		}
-		for (u32 i=0; i<j; ++i)
-			ai().alife().spawn_item	(N,o_Position,m_tNodeID,m_tGraphID,ID);
+	}
+
+	if (ini.section_exist("alife")) {
+		if (ini.line_exist("alife","interactive")) {
+			m_flags.set			(flInteractive,ini.r_bool("alife","interactive"));
+		}
 	}
 }
 
@@ -48,7 +53,9 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 {
 	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(this);
 	VERIFY						(dynamic_object);
-	ai().alife().spawn_item		("device_pda",o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,ID);
+	CSE_Abstract				*abstract = ai().alife().spawn_item("device_pda",o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,ID);
+	CSE_ALifeItemPDA			*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
+	pda->m_original_owner		= ID;
 }
 
 void CSE_ALifeTraderAbstract::vfInitInventory()

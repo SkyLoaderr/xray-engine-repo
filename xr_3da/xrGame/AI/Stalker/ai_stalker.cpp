@@ -104,6 +104,13 @@ void CAI_Stalker::reload			(LPCSTR section)
 	CMotivationActionManagerStalker::reload(section);
 #endif
 	CScriptBinder::reload			(section);
+
+	m_disp_walk_stand				= pSettings->r_float(section,"disp_walk_stand");
+	m_disp_walk_crouch				= pSettings->r_float(section,"disp_walk_crouch");
+	m_disp_run_stand				= pSettings->r_float(section,"disp_run_stand");
+	m_disp_run_crouch				= pSettings->r_float(section,"disp_run_crouch");
+	m_disp_stand_stand				= pSettings->r_float(section,"disp_stand_stand");
+	m_disp_stand_crouch				= pSettings->r_float(section,"disp_stand_crouch");
 }
 
 void CAI_Stalker::Die				()

@@ -327,8 +327,7 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 		Msg						("[LSS] adding object [%s][%d] to graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tNextGraphPointID);
 	}
 #endif
-	if (!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) {
-		R_ASSERT2					(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject),"Can't add a trader to the graph point!");
+	if (tpALifeDynamicObject->used_ai_locations() && tpALifeDynamicObject->interactive()) {
 		D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tNextGraphPointID].tpObjects.find(tpALifeDynamicObject->ID);
 		R_ASSERT3					(m_tpGraphObjects[tNextGraphPointID].tpObjects.end() == I,"Specified object has already found on the given graph point!",tpALifeDynamicObject->s_name_replace);
 		m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(mk_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
@@ -341,7 +340,7 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID, bool bUpdateSwitchObjects)
 {
-	if (dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
+	if (!tpALifeDynamicObject->used_ai_locations() || !tpALifeDynamicObject->interactive())
 		return;
 
 #ifdef DEBUG
@@ -359,7 +358,7 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfChangeObjectGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID)
 {
-	VERIFY								(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject));
+	VERIFY								(tpALifeDynamicObject->used_ai_locations() && tpALifeDynamicObject->interactive());
 	vfRemoveObjectFromGraphPoint		(tpALifeDynamicObject,tGraphPointID);
 	vfAddObjectToGraphPoint				(tpALifeDynamicObject,tNextGraphPointID);
 	tpALifeDynamicObject->m_tGraphID	= tNextGraphPointID;
@@ -475,7 +474,7 @@ void CSE_ALifeTraderRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObjec
 
 CSE_ALifeTrader *CSE_ALifeTraderRegistry::trader_nearest(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
 {
-	float			fBestDistance = dInfinity;
+	float			fBestDistance = flt_max;
 	CSE_ALifeTrader *tpBestTrader = 0;
 	TRADER_P_IT		I = m_tpTraders.begin();
 	TRADER_P_IT		E = m_tpTraders.end();

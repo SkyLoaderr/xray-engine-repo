@@ -180,6 +180,11 @@ void CSE_ALifeTrader::UPDATE_Read			(NET_Packet &tNetPacket)
 	inherited2::UPDATE_Read		(tNetPacket);
 };
 
+bool CSE_ALifeTrader::interactive			() const
+{
+	return						(false);
+}
+
 #ifdef _EDITOR
 #include "ui_main.h"
 void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
@@ -718,8 +723,8 @@ CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatu
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
-	m_flags.set					(flUseSwitches,false);
-	m_flags.set					(flSwitchOffline,false);
+	m_flags.set					(flUseSwitches,FALSE);
+	m_flags.set					(flSwitchOffline,FALSE);
 }
 
 CSE_ALifeCreatureCrow::~CSE_ALifeCreatureCrow()

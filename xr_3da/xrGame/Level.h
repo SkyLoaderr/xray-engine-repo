@@ -284,7 +284,7 @@ public:
 		return (Server->client_Count() == 0);
 	};
 
-	void				spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id);
+	CSE_Abstract		*spawn_item	(LPCSTR section, const Fvector &position, u32 level_vertex_id, u16 parent_id, bool return_item = false);
 };
 
 IC CLevel&				Level()		{ return *((CLevel*) g_pGameLevel);			}
