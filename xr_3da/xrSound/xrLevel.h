@@ -64,7 +64,7 @@ struct NodeCompressed
 	u8				light;			// 1
 	u8				cover;			// 1
 	NodeLink		links	[4];	// 12
-};									// 2+6+1+12 = 21b
+};									// 2+6+1+1+12 = 22b
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
