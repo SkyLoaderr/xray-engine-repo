@@ -71,7 +71,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 	// Draw COLOR
-	RCache.set_Shader			(s_combine_dbg_Color);
+	RCache.set_Shader			(s_combine_dbg_Normal);
 	RCache.set_Geometry			(g_combine);
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
