@@ -118,9 +118,11 @@ void	Face::Verify		()
 	// 2nd :: TC0
 	Fvector2*	tc			= getTC0();
 	float	eps				= .5f / 4096.f;		// half pixel from 4096 texture (0.0001220703125)
-	float	e0				= tc[0].distance_to(tc[1]);	if (e0<eps)	{ Failure(); return; }
-	float	e1				= tc[1].distance_to(tc[2]);	if (e1<eps)	{ Failure(); return; }
-	float	e2				= tc[2].distance_to(tc[0]);	if (e2<eps)	{ Failure(); return; }
+	float	e0				= tc[0].distance_to(tc[1]);	
+	float	e1				= tc[1].distance_to(tc[2]);
+	float	e2				= tc[2].distance_to(tc[0]);
+	float	p				= e0+e1+e2;
+	if		(p<eps)			{ Failure(); return; }
 
 	// 3rd :: possibility to calc normal
 	CalcNormal				();
