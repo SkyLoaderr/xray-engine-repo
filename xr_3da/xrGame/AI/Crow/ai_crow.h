@@ -91,10 +91,15 @@ protected:
 	void			switch2_DeathDead			();
 
 	void			state_DeathFall				();
-	void			state_Flying				(u32 dt);
+	void			state_Flying				(float dt);
 
-	void			CreateSkeleton();
+	void			CreateSkeleton				();
 	
+	void			UpdateWorkload				(float DT);
+
+public:						
+	u32				o_workload_frame	;
+	u32				o_workload_rframe	;
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
@@ -107,7 +112,6 @@ public:
 	virtual void	renderable_Render			();
 	virtual void	shedule_Update				(u32 DT);
 	virtual void	UpdateCL					();
-			void	UpdateWorkload				(u32 DT);
 
 	virtual CEntity*cast_entity					()			{return this;}
 
@@ -128,11 +132,6 @@ public:
 	virtual bool	IsVisibleForZones()			{ return false;		}
 	virtual BOOL	UsedAI_Locations()			;
 	virtual void	create_physic_shell	()		;
-
-	// optimization FAST/SLOW mode
-public:						
-	u32				o_workload_frame	;
-	u32				o_workload_rframe	;
 };
 
 #endif

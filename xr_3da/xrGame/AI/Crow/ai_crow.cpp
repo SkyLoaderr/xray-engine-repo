@@ -180,10 +180,8 @@ void CAI_Crow::switch2_DeathFall()
 	smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 
-void CAI_Crow::state_Flying		(u32 dt)
+void CAI_Crow::state_Flying		(float fdt)
 {
-	float	fdt		= float(dt)/1000.f;
-
 	// Update position and orientation of the planes
 	float fAT = fASpeed * fdt		;
 	Fvector& vDirection = XFORM().k	;
@@ -246,14 +244,14 @@ void CAI_Crow::Die				(CObject* who)
 	CreateSkeleton	()		;
 	processing_activate	()	;	// enable UpdateCL for dead crows - especially for physics support
 };
-void CAI_Crow::UpdateWorkload	(u32 dt)
+void CAI_Crow::UpdateWorkload	(float fdt)
 {
 	if (o_workload_frame	==	Device.dwFrame)	return;
 	o_workload_frame		=	Device.dwFrame	;
 	switch (st_current)		{
 	case eFlyIdle	:
 	case eFlyUp		:
-		state_Flying		(dt);
+		state_Flying		(fdt);
 		break;
 	case eDeathFall	:
 		state_DeathFall		();
@@ -270,13 +268,14 @@ void CAI_Crow::UpdateCL		()
 }
 void CAI_Crow::renderable_Render	()
 {
-	UpdateWorkload					(Device.dwTimeDelta);
+	UpdateWorkload					(Device.fTimeDelta);
 	inherited::renderable_Render	();
 	o_workload_rframe				= Device.dwFrame	;
 }
 void CAI_Crow::shedule_Update		(u32 DT)
 {
-	spatial.type &=~STYPE_VISIBLEFORAI;
+	float fDT				= float(DT)/1000.F;
+	spatial.type			&=~STYPE_VISIBLEFORAI;
 
 	inherited::shedule_Update(DT);
 
@@ -301,24 +300,24 @@ void CAI_Crow::shedule_Update		(u32 DT)
 			fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
 			Fvector vP;
 			vP.set(Device.vCameraPosition.x,Device.vCameraPosition.y+fMinHeight,Device.vCameraPosition.z);
-			vGoalDir.x = vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
-			vGoalDir.y = vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
-			vGoalDir.z = vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
+			vGoalDir.x		= vP.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
+			vGoalDir.y		= vP.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
+			vGoalDir.z		= vP.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
 		}
-		fGoalChangeTime-=float(DT)/1000.f;
+		fGoalChangeTime		-= fDT;
 		// sounds
 		if (fIdleSoundTime<=0){
-			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
+			fIdleSoundTime	= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			//if (st_current==eFlyIdle)
 			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),Position());
 		}
-		fIdleSoundTime-=float(DT)/1000.f;
+		fIdleSoundTime		-= fDT;
 	}
 	m_Sounds.m_idle.SetPosition		(Position());
 
 	// work
 	if (o_workload_rframe	== (Device.dwFrame-1))	;
-	else					UpdateWorkload			(DT);
+	else					UpdateWorkload			(fDT);
 }
 
 // Core events
