@@ -219,7 +219,7 @@ void CUIBuyWeaponWnd::Init(char *strSectionName)
 	UIPropertiesBox.Hide();
 
 //	for (int i = 0; i < UIWeaponsTabControl.GetTabsCount(); ++i)
-	for (int i = 1; i < 20; ++i)
+	for (int i = 0; i < 19; ++i)
 	{
 		CUIDragDropList *pNewDDList = xr_new<CUIDragDropList>();
 		R_ASSERT(pNewDDList);
@@ -286,6 +286,7 @@ void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 	ClearWpnSubBags();
 	FillWpnSubBags();
 
+	UIBagWnd.AttachChild(m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]);
 };
 
 void CUIBuyWeaponWnd::InitInventory() 

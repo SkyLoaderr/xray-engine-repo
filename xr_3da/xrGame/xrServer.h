@@ -96,6 +96,7 @@ public:
 	// utilities
 	CSE_Abstract*			entity_Create		(LPCSTR name);
 	void					entity_Destroy		(CSE_Abstract *&P);
+	u32						GetEntitiesNum		()			{ return entities.size(); };
 
 	IC void					clients_Lock		()			{	csPlayers.Enter();	}
 	IC void					clients_Unlock		()			{   csPlayers.Leave();	}

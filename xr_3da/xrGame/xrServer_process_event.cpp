@@ -205,7 +205,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
 			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
 
-			
 			SendBroadcast		(0xffffffff,P,MODE);
 			// Parent-signal
 			if (0xffff != e_dest->ID_Parent)
@@ -217,6 +216,22 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				P2.w_u16			(e_dest->ID_Parent);
 				P2.w_u16			(id_dest);
 				SendBroadcast		(0xffffffff,P2,MODE);
+				//-----------------------------------------------
+				//если GE_DESTROY пришло раньше OWNERSHIP_REJECT удаляем объект из списка дочерних элементов
+				if (Game().type != GAME_SINGLE)
+				{
+					CSE_Abstract*		e_parent	= game->get_entity_from_eid	(e_dest->ID_Parent);
+					if (e_parent)
+					{
+						xr_vector<u16>& C			= e_parent->children;
+						xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),e_dest->ID);
+						if (C.end()!=c)
+						{
+							C.erase					(c);
+						}						
+					};
+				};
+				//-----------------------------------------------
 			}
 
 			// Everything OK, so perform entity-destroy
@@ -225,6 +240,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 				if (tpGame && tpGame->m_tpALife)
 					tpGame->m_tpALife->vfReleaseObject(e_dest,false);
 			}
+
 			entity_Destroy			(e_dest);
 		}
 		break;

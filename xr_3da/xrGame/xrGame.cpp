@@ -134,7 +134,21 @@ public:
 	}
 	virtual void	Info	(TInfo& I)		
 	{
-		strcpy(I,"change team"); 
+		strcpy(I,"player kill"); 
+	}
+};
+
+class CCC_Dbg_NumObjects : public IConsole_Command {
+public:
+	CCC_Dbg_NumObjects(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		Msg("Client Objects : %d", Level().Objects.objects.size());
+		Msg("Server Objects : %d", Level().Server->GetEntitiesNum());
+	}
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"dbg Num Objects"); 
 	}
 };
 class CCC_Money : public IConsole_Command {
@@ -926,6 +940,8 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD4(CCC_Integer,	"net_port",				&psNET_Port,		5400,	5500);
 		CMD3(CCC_String,	"net_name",				psNET_Name,			32			);
 		CMD3(CCC_Mask,		"net_dump_size",		&psNET_Flags,		0x1			);
+		CMD1(CCC_Dbg_NumObjects,	"dbg_num_objects"				);
+
 
 		// keyboard binding
 		CCC_RegisterInput			();

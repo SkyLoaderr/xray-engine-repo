@@ -465,7 +465,8 @@ void CActor::Die	( )
 		TIItemList &l_list = inventory().m_ruck;
 		for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		{
-			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
+			//пока у нас нельзя обыскивать трупы, удаляем все объекты из инвентаря
+//			if ((*l_it)->SUB_CLS_ID == CLSID_DEVICE_PDA)
 			{
 				NET_Packet P;
 				u_EventGen(P,GE_DESTROY,(*l_it)->ID());

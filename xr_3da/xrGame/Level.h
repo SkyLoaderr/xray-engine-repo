@@ -275,10 +275,12 @@ public:
 	//by Mad Max 
 	IC bool	IsServer ()
 	{
+		if (!Server) return false;
 		return (Server->client_Count() != 0);
 	};
 	IC bool IsClient ()
 	{
+		if (!Server) return true;
 		return (Server->client_Count() == 0);
 	};
 };
