@@ -41,7 +41,7 @@ struct v_skybox				{
 	u32			color;
 	Fvector3	uv	[2];
 
-	void		set			(Fvector3& _p, u32 _c, Fvector3& _tc, Fmatrix& m0, Fmatrix& m1)
+	void		set			(Fvector3& _p, u32 _c, Fvector3& _tc)
 	{
 		p					= _p;
 		color				= _c;
