@@ -428,20 +428,20 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_Team,				"g_change_team"			);
 		
 		// alife
-		CMD1(CCC_ALifePath,			"alife_path"			);		// build path
-		CMD1(CCC_ALifeSave,			"alife_save"			);		// save alife state
+		CMD1(CCC_ALifePath,			"al_path"				);		// build path
+		CMD1(CCC_ALifeSave,			"al_save"				);		// save alife state
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
-		CMD1(CCC_ALifeListAll,		"alife_la"				);		// list all (objects, events and tasks)
-		CMD1(CCC_ALifeListObjects,	"alife_lo"				);		// list objects
-		CMD1(CCC_ALifeListEvents,	"alife_le"				);		// list events
-		CMD1(CCC_ALifeListTasks,	"alife_lt"				);		// list tasks
-		CMD1(CCC_ALifeListLocations,"alife_ll"				);		// list location owners
-		CMD1(CCC_ALifeListTerrain,	"alife_lr"				);		// list terrain
-		CMD1(CCC_ALifeListSpawns,	"alife_ls"				);		// list spawnpoints
-		CMD1(CCC_ALifeObjectInfo,	"alife_io"				);		// object info
-		CMD1(CCC_ALifeEventInfo,	"alife_ie"				);		// event info
-		CMD1(CCC_ALifeTaskInfo,		"alife_it"				);		// task info
-		CMD1(CCC_ALifeSpawnInfo,	"alife_is"				);		// spawn-point info
+		CMD1(CCC_ALifeListAll,		"al_la"					);		// list all (objects, events and tasks)
+		CMD1(CCC_ALifeListObjects,	"al_lo"					);		// list objects
+		CMD1(CCC_ALifeListEvents,	"al_le"					);		// list events
+		CMD1(CCC_ALifeListTasks,	"al_lt"					);		// list tasks
+		CMD1(CCC_ALifeListLocations,"al_ll"					);		// list location owners
+		CMD1(CCC_ALifeListTerrain,	"al_lr"					);		// list terrain
+		CMD1(CCC_ALifeListSpawns,	"al_ls"					);		// list spawnpoints
+		CMD1(CCC_ALifeObjectInfo,	"al_io"					);		// object info
+		CMD1(CCC_ALifeEventInfo,	"al_ie"					);		// event info
+		CMD1(CCC_ALifeTaskInfo,		"al_it"					);		// task info
+		CMD1(CCC_ALifeSpawnInfo,	"al_is"					);		// spawn-point info
 #endif
 
 		// hud
