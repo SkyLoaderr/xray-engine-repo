@@ -6,6 +6,23 @@
 	<character id="default">
 		<team>Stalker</team>
 	</character>
+	
+	<character id="stalker">
+		<team>Stalker</team>
+	</character>
+	<character id="stalker_novice">
+		<team>Stalker_novice</team>
+	</character>
+	<character id="stalker_general">
+		<team>Stalker_general</team>
+	</character>
+	<character id="stalker_veteran">
+		<team>Stalker_veteran</team>
+	</character>
+	<character id="stalker_master">
+		<team>Stalker_master</team>
+	</character>
+
 
 	<character id="soldier">
 		<team>Soldier</team>

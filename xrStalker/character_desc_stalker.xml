@@ -1,23 +1,98 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+<!---------------------------STALKER------------------------------>
 	<specific_character id="stalker_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
-		<bio>Ничем себя проявить еще не успел.</bio>
+		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Stalker</team>
 		<rank>50</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\soldier\soldier_bandana</visual>
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
+<!---------------------------STALKER NOVICE----------------------->
+	<specific_character id="stalker_novice_default" team_default = "1">
+		<name>Неизвестный новичок</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Ничем себя проявить еще не успел.</bio>
+
+		<team>Stalker_novice</team>
+		<rank>30</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\novice\green_stalker_1</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER GENERAL---------------------->
+	<specific_character id="stalker__general_default" team_default = "1">
+		<name>Неизвестный сталкер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Об этом сталкере ничего не известно.</bio>
+
+		<team>Stalker_general</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER VETERAN---------------------->
+	<specific_character id="stalker_veteran_default" team_default = "1">
+		<name>Неизвестный ветеран</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер явно не первый день в Зоне.</bio>
+
+		<team>Stalker_veteran</team>
+		<rank>70</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_exosceleton</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+<!---------------------------STALKER MASTER----------------------->
+	<specific_character id="stalker_master_default" team_default = "1">
+		<name>Неизвестный мастер</name>
+		<icon x="0" y="0"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Этот сталкер знает Зону как своих пять пальцев.</bio>
+
+		<team>Stalker_master</team>
+		<rank>90</rank>
+		<reputation>50</reputation>
+
+		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	
+<!--	
 	<specific_character id="stalker_demon">
 		<name>Олег "Демон" Гусаров</name>
 		<icon x="0" y="0"></icon>
@@ -32,7 +107,7 @@
 		<rank>80</rank>
 		<reputation>70</reputation>
 
-		<visual>actors\soldier\soldier_bandana_1</visual>
+		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
@@ -231,4 +306,5 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
+	-->
 </xml>
