@@ -33,6 +33,9 @@ public:
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);
 
+	virtual void spatial_register();
+	//virtual void spatial_unregister();
+	virtual void spatial_move();
 
 	// debug
 //#ifdef DEBUG

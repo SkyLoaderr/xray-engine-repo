@@ -17,45 +17,42 @@ CCustomZone::~CCustomZone(void) {}
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
 {
-	BOOL res = inherited::net_Spawn(DC);
-
-	if(res) {
-		CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
-		collidable.model			= l_pShape;
-		CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-		CSE_ALifeAnomalousZone				*Z	= dynamic_cast<CSE_ALifeAnomalousZone*>(e);
-		for (u32 i=0; i < Z->shapes.size(); i++) {
-			CSE_Shape::shape_def& S = Z->shapes[i];
-			switch (S.type) {
-				case 0 : l_pShape->add_sphere(S.data.sphere); break;
-				case 1 : l_pShape->add_box(S.data.box); break;
-			}
-		}
-
-		l_pShape->ComputeBounds						();
-		m_maxPower = Z->m_maxPower;
-		m_attn = Z->m_attn;
-		m_period = Z->m_period;
-
-		Fvector P; XFORM().transform_tiny			(P,CFORM()->getSphere().P);
-		Sound->play_at_pos							(m_ambient,this, Position(), true);
-
-//		setVisible(true);
-		setEnabled(true);
-
-		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
-		Fmatrix l_m; l_m.set(renderable.xform);
-		for(s32 i = 0; i < l_c; i++) {
-			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
-			IRender_Sector *l_pRS = ::Render->detectSector(c);
-			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
-			pStaticPG->SetTransform(l_m);
-			pStaticPG->Play();
-			m_effectsPSs.push_back(pStaticPG);
+	CCF_Shape *l_pShape			= xr_new<CCF_Shape>(this);
+	collidable.model			= l_pShape;
+	CSE_Abstract				*e = (CSE_Abstract*)(DC);
+	CSE_ALifeAnomalousZone		*Z = dynamic_cast<CSE_ALifeAnomalousZone*>(e);
+	for (u32 i=0; i < Z->shapes.size(); i++) {
+		CSE_Shape::shape_def	&S = Z->shapes[i];
+		switch (S.type) {
+			case 0 : l_pShape->add_sphere(S.data.sphere); break;
+			case 1 : l_pShape->add_box(S.data.box); break;
 		}
 	}
 
-	return res;
+	l_pShape->ComputeBounds		();
+	m_maxPower					= Z->m_maxPower;
+	m_attn						= Z->m_attn;
+	m_period					= Z->m_period;
+
+	Fvector						P;
+	XFORM().transform_tiny		(P,CFORM()->getSphere().P);
+	Sound->play_at_pos			(m_ambient,this, Position(), true);
+
+//	setVisible(true);
+	setEnabled(true);
+
+	CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
+	Fmatrix l_m; l_m.set(renderable.xform);
+	for(s32 i = 0; i < l_c; i++) {
+		Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
+		IRender_Sector *l_pRS = ::Render->detectSector(c);
+		pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
+		pStaticPG->SetTransform(l_m);
+		pStaticPG->Play();
+		m_effectsPSs.push_back(pStaticPG);
+	}
+
+	return						inherited::net_Spawn(DC);
 }
 
 void CCustomZone::Load(LPCSTR section) {
@@ -156,6 +153,23 @@ void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bC
 void CCustomZone::SoundDestroy(ref_sound& dest) {
 	Sound->destroy		(dest);
 }
+
+void CCustomZone::spatial_register()
+{
+	R_ASSERT2			(CFORM(),"Invalid or no CForm!");
+	spatial.center.set	(CFORM()->getSphere().P);
+	spatial.radius		= CFORM()->getRadius();
+	ISpatial::spatial_register();
+}
+
+void CCustomZone::spatial_move()
+{
+	R_ASSERT2			(CFORM(),"Invalid or no CForm!");
+	spatial.center.set(CFORM()->getSphere().P);
+	spatial.radius	= CFORM()->getRadius();
+	ISpatial::spatial_move();
+}
+
 
 //#ifdef DEBUG
 void CCustomZone::OnRender() {

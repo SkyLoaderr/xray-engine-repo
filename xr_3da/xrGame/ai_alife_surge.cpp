@@ -28,7 +28,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	i->m_tSpawnID				= tSpawnID;
 	i->ID						= m_tpServer->PerformIDgen(0xffff);
 	m_tObjectRegistry.insert	(std::make_pair(i->ID,i));
-	vfUpdateDynamicData			(i);
+	//vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
 	m_tpServer->entity_Destroy	(tpSE_Abstract);
 
@@ -62,7 +62,7 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 			k->m_bDirectControl			= false;
 			k->m_bALifeControl			= true;
 			m_tObjectRegistry.insert	(std::make_pair(k->ID,k));
-			vfUpdateDynamicData			(k);
+			//vfUpdateDynamicData			(k);
 			m_tpServer->entity_Destroy	(l_tpAbstract);
 		}
 	}
@@ -161,7 +161,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 				l_tpALifeItemArtefact->m_fAnomalyValue = l_tpALifeAnomalousZone->m_maxPower*(1.f - i->o_Position.distance_to(l_tpSpawnAnomalousZone->o_Position)/l_tpSpawnAnomalousZone->m_fRadius);
 
 				m_tObjectRegistry.insert(std::make_pair(i->ID,i));
-				vfUpdateDynamicData(i);
+				//vfUpdateDynamicData(i);
 			}
 		}
 	}
@@ -283,7 +283,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 						l_tpALifeCreatureAbstract->m_tNodeID		= l_tpaLevelPoints[l_dwDeathpointIndex].tNodeID;
 						l_tpALifeCreatureAbstract->m_fDistance		= l_tpaLevelPoints[l_dwDeathpointIndex].fDistance;
 
-						vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
+						//vfUpdateDynamicData							(l_tpALifeCreatureAbstract);
 						i--;
 						N--;
 					}
@@ -723,7 +723,7 @@ void CSE_ALifeSimulator::vfPerformSurge()
 		for ( ; I != E; I++)
 			vfUpdateArtefactOrders	(**I);
 	}
-	//vfUpdateTasks					();
+	vfUpdateTasks					();
 	
 	// updating dynamic data
 	vfUpdateDynamicData				();
