@@ -69,7 +69,7 @@ BOOL shared(occTri* T1, occTri* T2)
 
 /* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-IC void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
+void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 	occTri**	pFrame	= Raster.get_frame();
 	float*		pDepth	= Raster.get_depth();
