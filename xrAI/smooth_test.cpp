@@ -118,7 +118,7 @@ IC	bool compute_tangent(
 		direction		= start.direction;
 
 	start_yaw			= direction.getH();
-	start_yaw			= angle_normalize(start_yaw);
+	start_yaw			= start_yaw >= 0.f ? start_yaw : start_yaw + PI_MUL_2;
 	start_cp			= start.direction.cross_product(direction);
 	
 	// computing 2D cross product for dest point
@@ -126,13 +126,13 @@ IC	bool compute_tangent(
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
 	dest_yaw			= direction.getH();
-	dest_yaw			= angle_normalize(dest_yaw);
+	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
 	dest_cp				= dest.direction.cross_product(direction);
 
 	// direction from the first circle to the second one
 	direction.sub		(dest_circle.center,start_circle.center);
 	yaw1				= direction.getH();
-	yaw1 = yaw2			= angle_normalize(yaw1);
+	yaw1 = yaw2			= yaw1 >= 0.f ? yaw1 : yaw1 + PI_MUL_2;
 
 	if (start_cp*dest_cp >= 0.f) {
 		// so, our tangents are outside
@@ -142,11 +142,11 @@ IC	bool compute_tangent(
 				tangents[0]			= tangents[1] = start_circle;
 				if (start_cp >= 0.f) {
 					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + PI_DIV_2),true);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true);
 				}
 				else {
 					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 - PI_DIV_2),false);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 > 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false);
 				}
 
 				tangents[1].point	= tangents[0].point;
@@ -171,7 +171,8 @@ IC	bool compute_tangent(
 			// angle between external tangents and circle centers segment
 			float			temp = r_diff/distance;
 			clamp			(temp,-.99999f,.99999f);
-			alpha			= angle_normalize(acosf(temp));
+			alpha			= acosf(temp);
+			alpha			= alpha >= 0.f ? alpha : alpha + PI_MUL_2;
 		}
 	}
 	else {
@@ -185,14 +186,13 @@ IC	bool compute_tangent(
 		// angle between internal tangents and circle centers segment
 		float			temp = (start_circle.radius + dest_circle.radius)/distance;
 		clamp			(temp,-.99999f,.99999f);
-		alpha			= angle_normalize(acosf(temp));
-		yaw2			= angle_normalize(yaw1 + PI);
+		alpha			= acosf(temp);
+		alpha			= alpha >= 0.f ? alpha : alpha + PI_MUL_2;
+		yaw2			= yaw1 < PI ? yaw1 + PI : yaw1 - PI;
 	}
 
 	tangents[0]			= start_circle;
 	tangents[1]			= dest_circle;
-	start_yaw			= angle_normalize(start_yaw);
-	dest_yaw			= angle_normalize(dest_yaw);
 
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 + alpha,	start_circle.radius,tangents[0].point);
@@ -202,8 +202,8 @@ IC	bool compute_tangent(
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
-		assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + alpha),start_cp >= 0);
-		assign_angle	(tangents[1].angle,dest_yaw, angle_normalize(yaw2 + alpha),dest_cp  >= 0,false);
+		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
+		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,false);
 		TIMER_STOP(ComputeTangent)
 		return			(true);
 	}
@@ -211,8 +211,8 @@ IC	bool compute_tangent(
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 - alpha,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center, yaw2 - alpha,	dest_circle.radius, tangents[1].point);
-	assign_angle		(tangents[0].angle,start_yaw,angle_normalize(yaw1 - alpha),start_cp >= 0);
-	assign_angle		(tangents[1].angle,dest_yaw, angle_normalize(yaw2 - alpha),dest_cp  >= 0,false);
+	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0);
+	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,false);
 
 	TIMER_STOP(ComputeTangent)
 	return				(true);
@@ -682,8 +682,8 @@ void test_smooth_path(LPCSTR name)
 
 	RESET_ALL_TIMERS;
 
-	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	TIMER_START					(BuildDetailPath);
