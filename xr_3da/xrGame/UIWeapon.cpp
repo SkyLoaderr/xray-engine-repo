@@ -25,6 +25,7 @@ void CUIWeapon::Init(){
 	back.SetRect(0,0,90,61);
 	weapons["M134"]		= new CUIWeaponItem("ui\\hud_wpn_m134");
 	weapons["GROZA"]	= new CUIWeaponItem("ui\\hud_wpn_groza");
+	weapons["PROPTECTA"]= new CUIWeaponItem("ui\\hud_wpn_protecta");
 	current		= weapons["M134"];
 }
 //--------------------------------------------------------------------
