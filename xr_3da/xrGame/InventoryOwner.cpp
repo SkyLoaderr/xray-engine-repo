@@ -88,7 +88,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	//получить указатель на объект, InventoryOwner
 	CGameObject			*pThis = smart_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
-
+	CSE_Abstract* E	= (CSE_Abstract*)(DC);
 	if (GameID() == GAME_SINGLE)
 	{
 		//-------------------------------------
@@ -96,7 +96,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 		CharacterInfo().Relations().Init(pThis->ID());
 		//-------------------------------------
 
-		CSE_Abstract* E	= (CSE_Abstract*)(DC);
 		CSE_ALifeTraderAbstract* pTrader = NULL;
 		if(E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
 		if(!pTrader) return FALSE;
@@ -117,7 +116,7 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	{
 		CharacterInfo().m_SpecificCharacter.Load(0);
 		CharacterInfo().InitSpecificCharacter (0);
-		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = *pThis->cName();
+		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->s_name_replace[0]) ? E->s_name_replace : *pThis->cName();
 		CEntity* pEntity = dynamic_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconY = pEntity->GetTradeIconY();
