@@ -10,7 +10,10 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-u32 CBreakableObject::m_remove_time=0;
+u32		CBreakableObject		::	m_remove_time		=0		;
+float	CBreakableObject		::	m_damage_threshold	=5.f	;
+float	CBreakableObject		::	m_health_threshhold	=0.f	;
+
 CBreakableObject::CBreakableObject	()
 {
 	Init();
@@ -24,11 +27,13 @@ void CBreakableObject::Load		(LPCSTR section)
 {
 	inherited::Load			(section);
 	m_remove_time=pSettings	->r_u32(section,"remove_time")*1000;
+	m_health_threshhold=pSettings	->r_float(section,"hit_break_threthhold");
+	m_damage_threshold=pSettings	->r_float(section,"collision_break_threthhold");
 }
 
 BOOL CBreakableObject::net_Spawn(LPVOID DC)
 {
-	Init					();
+
 	CSE_Abstract			*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeObjectBreakable *obj	= dynamic_cast<CSE_ALifeObjectBreakable*>(e);
 	R_ASSERT				(obj);
@@ -57,7 +62,7 @@ void CBreakableObject::shedule_Update	(u32 dt)
 void CBreakableObject::UpdateCL	()
 {
 	inherited::UpdateCL		();
-	if(m_pPhysicsShell)m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+
 	if(b_resived_damage)ProcessDamage();
 }
 
@@ -70,21 +75,13 @@ void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	
-	Break					();
+
+	CheckHitBreak(P,hit_type);
 	if(m_pPhysicsShell)
 	{
-		
-
-	
 		if(hit_type==ALife::eHitTypeExplosion)
 		{
-			if(m_pPhysicsShell)
-			{
-				Fvector pos;pos.set(0.f,0.f,0.f);
-				u16 el_num=m_pPhysicsShell->get_ElementsNumber();
-				for(u16 i=0;i<el_num;i++)	
-					m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,impulse/el_num,0);
-			}
+			ApplyExplosion(dir,impulse);
 		}
 		else
 			m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
@@ -159,7 +156,7 @@ void CBreakableObject::ActivateBroken()
 {
 	m_pPhysicsShell=m_Shell;
 	m_pPhysicsShell->RunSimulation();
-	m_pPhysicsShell->SetCallbacks();
+	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetStaticObjectBonesCallback());
 	PKinematics(Visual())->Calculate();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 }
@@ -262,6 +259,27 @@ void CBreakableObject::ProcessDamage()
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		=false;
 }
+void CBreakableObject::CheckHitBreak(float power,ALife::EHitType hit_type)
+{
+	if(ALife::eHitTypeStrike)
+		{
+			Break();return;
+		}
+
+	if(power>m_health_threshhold) Break();
+}
+
+void CBreakableObject::ApplyExplosion(const Fvector &dir,float impulse)
+{
+	
+	if(!m_pPhysicsShell) return;
+	
+		Fvector pos;pos.set(0.f,0.f,0.f);
+		u16 el_num=m_pPhysicsShell->get_ElementsNumber();
+		for(u16 i=0;i<el_num;i++)	
+			m_pPhysicsShell->get_ElementByStoreOrder(i)->applyImpulseTrace(pos,dir,impulse/el_num,0);
+	
+}
 
 void CBreakableObject::Init()
 {
@@ -271,6 +289,7 @@ void CBreakableObject::Init()
 	bRemoved				= false;
 	m_max_frame_damage		= 0.f;
 	b_resived_damage		=false;
-	m_damage_threshold		=5.f;
+	//m_damage_threshold		=5.f;
+	//m_health_threshhold		=0.f
 }
 

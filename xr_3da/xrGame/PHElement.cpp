@@ -570,6 +570,7 @@ void CPHElement::GetGlobalTransformDynamic(Fmatrix* m)
 {
 	PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),dBodyGetPosition(m_body),*m);
 	m->mulB(m_inverse_local_transform);
+	bUpdate=false;
 }
 
 void CPHElement::InterpolateGlobalPosition(Fvector* v){
@@ -661,6 +662,64 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 
 }
 
+void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
+{
+	Fmatrix parent;
+	if(! bActive)return;
+	VERIFY(_valid(m_shell->mXFORM));
+	if(bActivating)
+	{
+		//if(!dBodyIsEnabled(m_body))
+		//	dBodyEnable(m_body);
+		if(ph_world->GetSpace()->lock_count) return;
+		mXFORM.set(B->mTransform);
+		m_start_time=Device.fTimeGlobal;
+		Fmatrix global_transform;
+		global_transform.set(m_shell->mXFORM);
+		//if(m_parent_element)
+		global_transform.mulB(mXFORM);
+		SetTransform(global_transform);
+
+		FillInterpolation();
+		bActivating=false;
+		if(!m_parent_element) 
+		{
+			m_shell->m_object_in_root.set(mXFORM);
+			m_shell->m_object_in_root.invert();
+			m_shell->bActivating=false;
+		}
+		B->Callback_overwrite=TRUE;
+
+		return;
+	}
+
+	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
+		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
+
+
+	if( !m_shell->IsActive() && !bUpdate) return;
+
+	{
+		InterpolateGlobalTransform(&mXFORM);
+		parent.set(m_shell->mXFORM);
+		parent.invert();
+		mXFORM.mulA(parent);
+		B->mTransform.set(mXFORM);
+	}
+	//else
+	//{
+
+	//	InterpolateGlobalTransform(&m_shell->mXFORM);
+	//	mXFORM.identity();
+	//	B->mTransform.set(mXFORM);
+	//parent.set(B->mTransform);
+	//parent.invert();
+	//m_shell->mXFORM.mulB(parent);
+
+	//}
+
+
+}
 
 void CPHElement::BonesCallBack(CBoneInstance* B)
 {

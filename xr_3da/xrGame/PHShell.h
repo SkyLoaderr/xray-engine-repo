@@ -24,7 +24,9 @@ public:
 	virtual ~CPHShell						();
 	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
+	static void __stdcall	StataticRootBonesCallBack	(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
+	virtual BoneCallbackFun* GetStaticObjectBonesCallback()	{return StataticRootBonesCallBack;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		CPHElement* ph_element=dynamic_cast<CPHElement*>(E);
 		ph_element->SetShell(this);
@@ -141,7 +143,7 @@ public:
 	virtual void				preBuild_FromKinematics		(CKinematics* K,BONE_P_MAP* p_geting_map);
 	virtual void                ZeroCallbacks				();
 	virtual void				ResetCallbacks				(u16 id,Flags64 &mask);
-	virtual void				SetCallbacks				();
+	virtual void				SetCallbacks				(BoneCallbackFun* callback);
 	virtual void				set_DisableParams			(const SAllDDOParams& params);
 	virtual void				UpdateRoot					();
 	virtual void				SmoothElementsInertia		(float k);
@@ -150,6 +152,7 @@ public:
 	virtual void				GetGlobalTransformDynamic	(Fmatrix* m);
 	virtual void				GetGlobalPositionDynamic	(Fvector* v);
 	virtual Fmatrix&			ObjectInRoot				(){return m_object_in_root;}
+	virtual	void				ObjectToRootForm			(const Fmatrix& form);
 	virtual	dSpaceID			dSpace						(){return m_space;}
 
 	

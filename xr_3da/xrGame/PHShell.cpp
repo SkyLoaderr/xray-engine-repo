@@ -243,7 +243,12 @@ void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 }
 
 
+void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
+	///CPHElement*	E			= dynamic_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
+	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
+	E->StataticRootBonesCallBack(B);
+}
 
 
 void CPHShell::SetTransform(Fmatrix m){
@@ -429,7 +434,7 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	if(!m_spliter_holder) m_spliter_holder=xr_new<CPHShellSplitterHolder>(this);
 	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),Fidentity,0);
 	R_ASSERT2((*elements.begin())->numberOfGeoms(),"No physics shapes was assigned for model or no shapes in main root bone!!!");
-	SetCallbacks();
+	SetCallbacks(BonesCallback);
 	if(m_spliter_holder->isEmpty())xr_delete(m_spliter_holder);
 }
 
@@ -834,10 +839,11 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 }
 
 static u16 element_position_in_set_calbacks=u16(-1);
-
-void CPHShell::SetCallbacks()
+static BoneCallbackFun* bones_callback;//temp ror SetCallbacksRecursive
+void CPHShell::SetCallbacks(BoneCallbackFun* callback)
 {
 	element_position_in_set_calbacks=u16(-1);
+	bones_callback=callback;
 	SetCallbacksRecursive(m_pKinematics->LL_GetBoneRoot(),element_position_in_set_calbacks);
 }
 
@@ -862,7 +868,7 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 		R_ASSERT2(element<elements.size(),"Out of elements!!");
 		//if(elements.size()==element)	return;
 		CPhysicsElement* E=dynamic_cast<CPhysicsElement*>(elements[element]);
-		B.set_callback(BonesCallback,E);
+		B.set_callback(bones_callback,E);
 
 		//B.Callback_overwrite=TRUE;
 	}
@@ -921,9 +927,7 @@ void CPHShell::UpdateRoot()
 
 void CPHShell::InterpolateGlobalTransform(Fmatrix* m)
 {
-	VERIFY	(_valid(m_object_in_root));
 	(*elements.begin())->InterpolateGlobalTransform(m);
-	VERIFY	(_valid(m_object_in_root));
 	m->mulB	(m_object_in_root);
 	//m->c.add(m_object_in_root);
 }
@@ -944,6 +948,15 @@ void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 	(*elements.begin())->GetGlobalPositionDynamic(v);
 }
 
+
+void CPHShell::ObjectToRootForm(const Fmatrix& form)
+{
+	Fmatrix M;
+	M.mul(m_object_in_root,(*elements.begin())->InverceLocalForm());
+	M.invert();
+	mXFORM.mul(form,M);
+	
+}
 CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
 {
 	ELEMENT_I i,e;

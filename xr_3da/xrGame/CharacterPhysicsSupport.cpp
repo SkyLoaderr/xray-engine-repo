@@ -262,7 +262,7 @@ void CCharacterPhysicsSupport::ActivateShell()
 	m_pPhysicsShell=m_physics_skeleton;
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
-	m_pPhysicsShell->SetCallbacks();
+	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetBonesCallback());
 	velocity.mul(1.25f*m_after_death_velocity_factor);
 	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();

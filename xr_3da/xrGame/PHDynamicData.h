@@ -85,7 +85,7 @@ public:
 			}
 	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& aTransform){
 
-			Memory.mem_copy(&aTransform,R,sizeof(Fmatrix));
+			Memory.mem_copy(&aTransform,R,sizeof(dMatrix3));
 			aTransform.transpose();
 			Memory.mem_copy(&aTransform.c,pos,sizeof(Fvector));
 			aTransform._14=0.f;

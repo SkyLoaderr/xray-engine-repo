@@ -42,6 +42,7 @@ public:
 	virtual void			InterpolateGlobalTransform(Fmatrix* m)											= 0;
 	virtual void			GetGlobalTransformDynamic(Fmatrix* m)											= 0;
 	virtual void			InterpolateGlobalPosition (Fvector* v)											= 0;
+
 	virtual void			GetGlobalPositionDynamic (Fvector* v)											= 0;
 	virtual bool			isBreakable				()														= 0;
 	virtual bool			isEnabled				()														= 0;
@@ -112,6 +113,7 @@ public:
 	virtual float			getRadius				()												= 0;
 	virtual	dMass*			getMassTensor			()												= 0;
 	virtual void			get_Extensions			(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)=0;
+
 	virtual ~CPhysicsElement						()												{};
 };
 
@@ -214,6 +216,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const u16 id) = 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
+	virtual BoneCallbackFun*	GetStaticObjectBonesCallback()												= 0;
 	virtual void				Update					()													= 0;
 
 	virtual void				setMass1				(float M)											= 0;
@@ -235,8 +238,9 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;
 	virtual void				ResetCallbacks			(u16 id,Flags64 &mask)								= 0;
-	virtual void				SetCallbacks			()													= 0;
+	virtual void				SetCallbacks			(BoneCallbackFun* callback)							= 0;
 	virtual Fmatrix&			ObjectInRoot			()													= 0;
+	virtual	void				ObjectToRootForm		(const Fmatrix& form)							    = 0;
 	virtual						~CPhysicsShell		    (){}
 	//build_FromKinematics		in returns elements  & joint pointers according bone IDs;
 	};

@@ -121,6 +121,7 @@ public:																																				//
 ////////////////////////////////////////////////Updates///////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			void			BonesCallBack							(CBoneInstance* B);																//called from updateCL visual influent
+			void			StataticRootBonesCallBack				(CBoneInstance* B);
 			void			PhDataUpdate							(dReal step);																	//ph update
 			void			PhTune									(dReal step);																	//ph update
 	virtual void			Update									();																				//called update CL visual influence
@@ -168,6 +169,7 @@ public:																																				//
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);																	//called UpdateCL vis influent
 	virtual void			InterpolateGlobalPosition		(Fvector* v);																	//aux
 	virtual void			GetGlobalTransformDynamic		(Fmatrix* m);																	//aux
+			Fmatrix&		InverceLocalForm				(){return m_inverse_local_transform;}
 ////////////////////////////////////////////////////Structure/////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual CPhysicsShell*	PhysicsShell					();																				//aux
