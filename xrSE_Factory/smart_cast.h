@@ -24,6 +24,14 @@
 
 #	ifdef XRGAME_EXPORTS
 
+#		ifndef DO_NOT_DECLARE_TYPE_LIST
+			class CObject;
+			class CGameObject;
+			add_to_cast_list						(CGameObject,		CObject);
+#			undef cast_type_list
+#			define cast_type_list save_cast_list	(CGameObject,		CObject)
+#		endif
+
 		DECLARE_SPECIALIZATION	(CEntity,			CGameObject,		cast_entity);
 #		ifndef DO_NOT_DECLARE_TYPE_LIST
 #			undef cast_type_list
