@@ -13,8 +13,10 @@ CWeaponLR300::~CWeaponLR300		()
 {
 }
 
+/*
 void	CWeaponLR300::UpdateCL	()
 {
 	inherited::UpdateCL	();
 	Msg					("- %c%c - %3.1f,%3.1f,%3.1f", getVisible()?'+':'-', getEnabled()?'+':'-', VPUSH(Position()) );
 }
+*/

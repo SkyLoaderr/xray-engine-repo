@@ -9,7 +9,7 @@ class CWeaponLR300: public CWeaponMagazined
 private:
 	typedef CWeaponMagazined inherited;
 public:
-	virtual	void	UpdateCL		();
+//	virtual	void	UpdateCL		();
 
 					CWeaponLR300	();
 	virtual			~CWeaponLR300	();

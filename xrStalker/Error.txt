@@ -23,11 +23,16 @@ To OLES :
 +К	resolved	старые партиклы тоже не рисуются
 -K				трасеры не рисуются
 
--WT				ни хера не работает (level - cs_test)
--WT				ни хера по прежнему не работает (level - cs_test)
--WT				когда выбрасываешь оружие, оно исчезает (level - cs_test)
-
 To WT:
+-O				(-WT) когда выбрасываешь оружие, оно исчезает (level - cs_test)
+				ЭТО ЛОГИЧНО, ТЫ Ж ВЕДЬ ДЕЛАЕШЬ 'setVisible(false)'
+				и блядь, какого хуя я должен этим заниматься???
+				помоему это твоя работа.
+				все остальное я смотреть даже не буду.
+				
+-O				(-WT)	ни хера не работает (level - cs_test)
+-O				(-WT)	ни хера по прежнему не работает (level - cs_test)
+
 
 To AlexMX:
 -O				ocasional invalid radius and/or center after update of particle system
