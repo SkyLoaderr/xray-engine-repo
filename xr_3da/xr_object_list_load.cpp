@@ -47,7 +47,8 @@ void CObjectList::Unload	( )
 {
 	for (u32 i=0; i<objects.size(); i++) 
 	{
-		Destroy	( objects[i] );
+		objects[i]->net_Destroy	();
+		Destroy					( objects[i] );
 	}
 	objects.clear();
 }
