@@ -968,7 +968,7 @@ void PAKillOld::Execute(ParticleEffect *effect)
 	{
 		Particle &m = effect->list[i];
 		
-		if(!((m.age < age_limit) ^ kill_less_than))
+		if(!((m.age < age_limit) ^ kill_less_than))   
 			effect->Remove(i);
 	}
 }
@@ -1037,7 +1037,7 @@ void PAMove::Execute(ParticleEffect *effect)
 		// пропустить (на следующем кадре будет удален)
 		if (m.flags.is(Particle::DYING)) continue;
 		// move
-		m.age	+= dt;
+		m.age	+= dt;               
         m.posB 	= m.pos;
 //        m.velB 	= m.vel;
 		m.pos	+= m.vel * dt;
@@ -1377,15 +1377,11 @@ void PASource::Execute(ParticleEffect *effect)
 			velocity.Generate(vel);	vel += parent_vel;
 			color.Generate(col);
 			float ag = age + NRand(age_sigma);
-			
-			
-			effect->Add(pos, pos, siz, rt, vel, col, alpha, ag);
+
+			effect->Add(pos, pos, siz, rt, vel, color_argb_f(alpha, col.x, col.y, col.z), ag);
 		}
-	}
-	else
-	{
-		for(int i = 0; i < rate; i++)
-		{
+	}else{
+		for(int i = 0; i < rate; i++){
 			position.Generate(pos);
 			size.Generate(siz);
 			rot.Generate(rt);
@@ -1393,7 +1389,7 @@ void PASource::Execute(ParticleEffect *effect)
 			color.Generate(col);
 			float ag = age + NRand(age_sigma);
 
-			effect->Add(pos, posB, siz, rt, vel, col, alpha, ag);
+			effect->Add(pos, posB, siz, rt, vel, color_argb_f(alpha, col.x, col.y, col.z), ag);
 		}
 	}
 }
@@ -1431,12 +1427,18 @@ void PASpeedLimit::Execute(ParticleEffect *effect)
 void PATargetColor::Execute(ParticleEffect *effect)
 {
 	float scaleFac = scale * dt;
+    Fcolor c_p,c_t; 
 	
 	for(int i = 0; i < effect->p_count; i++)
 	{
 		Particle &m = effect->list[i];
-		m.color += (color - m.color) * scaleFac;
-		m.alpha += (alpha - m.alpha) * scaleFac;
+
+        c_p.set	(m.color);
+        c_t.set	(c_p.r+(color.x-c_p.r)*scaleFac, c_p.g+(color.y-c_p.g)*scaleFac, c_p.b+(color.z-c_p.b)*scaleFac, c_p.a+(alpha-c_p.a)*scaleFac);
+        m.color = c_t.get();
+        
+//		m.color += (color - m.color) * scaleFac;
+//		m.alpha += (alpha - m.alpha) * scaleFac;
 	}
 }
 

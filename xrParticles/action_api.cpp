@@ -468,7 +468,7 @@ PARTICLEDLL_API void pVertex(float x, float y, float z)
 	_ps.Rot.Generate(rot);
 	_ps.Vel.Generate(vel);
 	_ps.Color.Generate(col);
-	_ps.peff->Add(pos, posB, siz, rot, vel, col, _ps.Alpha, _ps.Age);
+	_ps.peff->Add(pos, posB, siz, rot, vel, color_argb_f(_ps.Alpha, col.x, col.y, col.z), _ps.Age);
 }
 
 PARTICLEDLL_API void pVortex(float center_x, float center_y, float center_z,

@@ -93,7 +93,7 @@ void CPEDef::pFrameInitExecute(ParticleEffect *effect)
 		Particle &m = effect->list[i];
         if (m.flags.is(Particle::BIRTH)){
             if (m_Flags.is(dfRandomFrame))
-                m.frame	= (float)Random.randI(m_Frame.m_iFrameCount);
+                m.frame	= iFloor(Random.randI(m_Frame.m_iFrameCount)*255.f);
             if (m_Flags.is(dfAnimated)&&m_Flags.is(dfRandomPlayback)&&Random.randI(2))
                 m.flags.set(Particle::ANIMATE_CCW,TRUE);
         }
@@ -104,9 +104,10 @@ void CPEDef::pAnimateExecute(ParticleEffect *effect, float dt)
 	float speedFac = m_Frame.m_fSpeed * dt;
 	for(int i = 0; i < effect->p_count; i++){
 		Particle &m = effect->list[i];
-		m.frame						+= ((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac;
-		if (m.frame>m_Frame.m_iFrameCount)	m.frame-=m_Frame.m_iFrameCount;
-		if (m.frame<0.f)					m.frame+=m_Frame.m_iFrameCount;
+        float f						= (float(m.frame)/255.f+((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac);
+		if (f>m_Frame.m_iFrameCount)f-=m_Frame.m_iFrameCount;
+		if (f<0.f)					f+=m_Frame.m_iFrameCount;
+        m.frame						= iFloor(f*255.f);
 	}
 }
 
@@ -367,8 +368,6 @@ void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 static const u32	uDT_STEP = 33;
 static const float	fDT_STEP = float(uDT_STEP)/1000.f;
 
-static u32 mb_dt = 500;
-
 void CParticleEffect::OnFrame(u32 frame_dt)
 {
 	if (m_Def && m_RT_Flags.is(flRT_Playing)){
@@ -558,12 +557,10 @@ void CParticleEffect::Render(float LOD)
         for(int i = 0; i < pe->p_count; i++){
             PAPI::Particle &m = pe->list[i];
 
-            Fcolor c; c.set(m.color.x,m.color.y,m.color.z,m.alpha);
-            u32 C 			= c.get();
             Fvector2 lt,rb;
             lt.set			(0.f,0.f);
             rb.set			(1.f,1.f);
-            if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(m.frame),lt,rb);
+            if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(float(m.frame)/255.f),lt,rb);
             float r_x		= m.size.x*0.5f;
             float r_y		= m.size.y*0.5f;
             if (m_Def->m_Flags.is(CPEDef::dfVelocityScale)){
@@ -576,9 +573,9 @@ void CParticleEffect::Render(float LOD)
 	            float speed	= m.vel.magnitude();
                 if (speed>=EPS_S)	dir.div	(m.vel,speed);
                 else				dir.set	(0.f,1.f,0.f);
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,C,dir,fov_scale_w,factor_r,w_2,h_2);
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
             }else{
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,C,m.rot.x,fov_scale_w,w_2,h_2);
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
             }
         }
         dwCount 			= u32(pv-pv_start);

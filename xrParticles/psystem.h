@@ -79,7 +79,7 @@ namespace PAPI
 		pVector	size;   // 12
 		pVector	rot;	// 12   60
 		u32		color;	// 4
-		float	age;	// 2       
+		float	age;	// 4       
 		u16		frame;	// 2
 		Flags16	flags;	// 2
 	};                  // 		72

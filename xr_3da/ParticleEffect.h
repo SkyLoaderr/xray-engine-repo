@@ -44,7 +44,7 @@ namespace PS
 		}
 		IC void 			Set(int frame_count, float w, float h, float fw, float fh)
 		{
-			m_iFrameCount 	= frame_count;
+			m_iFrameCount 	= frame_count; R_ASSERT(frame_count<=256);
 			m_fFrameSize.set(fw,fh);
 			m_fTexSize.set	(fw/w,fh/h);
 			m_iFrameDimX 	= iFloor(1.f/m_fTexSize.x);
