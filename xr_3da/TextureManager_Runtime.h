@@ -7,6 +7,7 @@
 #include "sh_constant.h"
 #include "sh_rt.h"
 #include "sh_vs.h"
+#include "sh_ps.h"
 
 // API
 IC void	CShaderManager::set_Code		(u32 dwCode)

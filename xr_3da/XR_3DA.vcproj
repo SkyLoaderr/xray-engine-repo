@@ -687,6 +687,9 @@
 						RelativePath=".\SH_Matrix.h">
 					</File>
 					<File
+						RelativePath="SH_PS.h">
+					</File>
+					<File
 						RelativePath=".\SH_RT.cpp">
 					</File>
 					<File

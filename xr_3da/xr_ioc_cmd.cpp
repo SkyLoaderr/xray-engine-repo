@@ -195,7 +195,7 @@ class CCC_SND_Restart : public CConsoleCommand
 public:
 	CCC_SND_Restart(LPCSTR N) : CConsoleCommand(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
-		pSounds->Restart();
+		Sound->Restart();
 	}
 };
 //-----------------------------------------------------------------------

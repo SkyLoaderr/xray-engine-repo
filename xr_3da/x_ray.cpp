@@ -7,7 +7,6 @@
 //-----------------------------------------------------------------------------
 #include "stdafx.h"
 #include "xr_input.h"
-#include "xr_sndman.h"
 #include "xr_creator.h"
 #include "xr_ioconsole.h"
 #include "x_ray.h"
@@ -54,8 +53,7 @@ void Startup()
 #endif
 
 	pInput						= new CInput		(bCaptureInput);
-	pSounds						= new CSoundManager	( );
-
+	Sound->Initialize			();
 	pApp						= new CApplication	( );
 
 	// ...command line for auto start
@@ -68,7 +66,7 @@ void Startup()
 	Engine.Event.Dump			( );
 
 	// Destroying
-	_DELETE						( pSounds		);
+	Sound->Destroy				( );
 	_DELETE						( pInput		);
 	_DELETE						( pSettings		);
 
