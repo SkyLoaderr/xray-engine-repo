@@ -175,6 +175,12 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 	local t
 
 	-- устанавливаем приоритет текущего задания
+	for k,v in self.Job do
+		if v.object == npc:id() then
+			t = v.prior
+			break
+		end
+	end
 
 	for k,v in self.Job do
 		local ena = false
