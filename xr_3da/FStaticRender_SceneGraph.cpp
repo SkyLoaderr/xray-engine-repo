@@ -54,7 +54,7 @@ void CRender::InsertSG_Static(FBasicVisual *pVisual)
 
 		if (SSA<=ssaLIMIT)	return;
 
-		//*
+		/*
 		Fvector		__c,__r;
 		pVisual->bv_BBox.get_CD			(__c,__r);
 		Device.Shader.set_Shader		(shDEBUG);
