@@ -58,7 +58,7 @@ void CPHObject::Collide()
 				if(from->x==-dInfinity) continue;
 				dir.sub(*to,*from);
 				float	magnitude=dir.magnitude();
-				if(magnitude<EPS_L) continue;
+				if(magnitude<EPS) continue;
 				dir.mul(1.f/magnitude);
 				g_SpatialSpace->q_ray(ph_world->r_spatial,0,STYPE_PHYSIC,*from,dir,magnitude);//|ISpatial_DB::O_ONLYFIRST
 				qResultVec& result=ph_world->r_spatial;

@@ -18,6 +18,9 @@
 #include "PHJoint.h"
 #include "PHShell.h"
 
+const float hinge2_spring=20000.f;
+const float hinge2_damping=1000.f;
+
 CPHJoint::~CPHJoint(){
 	xr_delete(m_destroy_info);
 	if(bActive) Deactivate();
@@ -87,13 +90,9 @@ default:NODEFAULT;
 	dJointAttach(m_joint,first->get_body(),second->get_body());
 	dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
 
-
 }
 
 
-void CPHJoint::CreateCarWeel()
-{
-}
 
 void CPHJoint::CreateHinge()
 {
@@ -221,26 +220,7 @@ void CPHJoint::CreateHinge2()
 	dJointSetHinge2Param(m_joint, dParamStopCFM,axes[0].cfm);
 }
 
-void CPHJoint::CreateShoulder1()
-{
-}
 
-void CPHJoint::CreateShoulder2()
-{
-}
-
-void CPHJoint::CreateUniversalHinge()
-{
-
-
-}
-
-void CPHJoint::CreateWelding()
-{
-	//smart_cast<CPHElement*>(pFirst_element)
-	//	->DynamicAttach(smart_cast<CPHElement*>(pSecond_element));
-
-}
 #ifdef  ODE_SLOW_SOLVER
 #define FIX_BY_ONE_HINGE
 #endif
@@ -516,19 +496,9 @@ CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysics
 
 	switch(eType){
 	case ball:					;						break;
-	case welding:				;						break;
 	case hinge:					axes.push_back(axis);	
 		break;
 	case hinge2:
-
-
-	case universal_hinge:		
-
-	case shoulder1:	
-
-	case shoulder2:	
-
-	case car_wheel:	
 		axes.push_back(axis);
 		axes.push_back(axis2);	
 		break;
@@ -555,11 +525,6 @@ void CPHJoint::Create()
 	case ball:					CreateBall();			break;
 	case hinge:					CreateHinge();			break;
 	case hinge2:				CreateHinge2();			break;
-	case universal_hinge:		CreateUniversalHinge(); break;
-	case shoulder1:				CreateShoulder1();		break;
-	case shoulder2:				CreateShoulder2();		break;
-	case car_wheel:				CreateCarWeel();		break;
-	case welding:				CreateWelding();		break;
 	case full_control:			CreateFullControl();	break;
 	}
 	if(m_destroy_info)
@@ -590,18 +555,12 @@ void CPHJoint::Deactivate()
 {
 	if(!bActive) return;
 	switch(eType){
-	case welding:				; break;
 	case ball:					;
 	case hinge:					;
 	case hinge2:				;
-	case universal_hinge:		;
-	case shoulder1:				;
-	case shoulder2:				;
-	case car_wheel:			
-							if(m_joint->world)pShell->Island().RemoveJoint(m_joint);
-							dJointDestroy(m_joint); 
+								if(m_joint->world)pShell->Island().RemoveJoint(m_joint);
+								dJointDestroy(m_joint); 
 		break;
-
 	case full_control:			
 								if(m_joint->world)pShell->Island().RemoveJoint(m_joint);
 								if(m_joint1->world)pShell->Island().RemoveJoint(m_joint1);
@@ -642,20 +601,14 @@ void CPHJoint::SetForce		(const float force,const int axis_num){
 
 	if(ax==-1) 
 		switch(eType){
-					case welding:				; 
 					case ball:					return;
 					case hinge:					
 						axes[0].force=force;
 						break;
 					case hinge2:				;
-					case universal_hinge:		;
-					case shoulder1:				;
-					case shoulder2:				;
-					case car_wheel:				
 						axes[0].force=force;
 						axes[1].force=force;
 						break;
-
 					case full_control:			
 						axes[0].force=force;
 						axes[1].force=force;
@@ -687,11 +640,6 @@ void CPHJoint::SetForceActive		(const int axis_num)
 						case 1:		dJointSetHinge2Param(m_joint,dParamFMax2 ,axes[1].force);break;
 									}
 									break;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				;
-						case welding:				; 
 						case ball:					break;
 						case hinge:					dJointSetHingeParam(m_joint,dParamFMax ,axes[0].force);
 							break;
@@ -720,20 +668,14 @@ void CPHJoint::SetVelocity		(const float velocity,const int axis_num){
 
 	if(ax==-1) 
 		switch(eType){
-					case welding:				; 
 					case ball:					return;
 					case hinge:					
 						axes[0].velocity=velocity;
 						break;
 					case hinge2:				;
-					case universal_hinge:		;
-					case shoulder1:				;
-					case shoulder2:				;
-					case car_wheel:	
 						axes[0].velocity=velocity;
 						axes[1].velocity=velocity;
 						break;
-
 					case full_control:			
 						axes[0].velocity=velocity;
 						axes[1].velocity=velocity;
@@ -764,11 +706,6 @@ void CPHJoint::SetVelocityActive(const int axis_num)
 						case 1:		dJointSetHinge2Param(m_joint,dParamVel2 ,axes[1].velocity);break;
 									}
 									break;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				;
-						case welding:				; 
 						case ball:					break;
 						case hinge:					dJointSetHingeParam(m_joint,dParamVel ,axes[0].velocity);
 							break;
@@ -803,11 +740,6 @@ void CPHJoint::SetLimitsActive(int axis_num)
 												dJointSetHinge2Param(m_joint,dParamHiStop,axes[1].high);break;
 											}
 									break;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				;
-						case welding:				; 
 						case ball:					break;
 						case hinge:					dJointSetHingeParam(m_joint,dParamLoStop ,axes[0].low);
 													dJointSetHingeParam(m_joint,dParamHiStop ,axes[0].high);
@@ -842,11 +774,6 @@ float CPHJoint::GetAxisAngle(int axis_num)
 {
 	switch(eType){
 						case hinge2:				return dJointGetHinge2Angle1(m_joint);
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				;
-						case welding:				; 
 						case ball:					return dInfinity;
 						case hinge:					return dJointGetHingeAngle(m_joint);
 						case full_control:			return dJointGetAMotorAngle(m_joint1,axis_num);
@@ -862,17 +789,11 @@ void CPHJoint::LimitAxisNum(int &axis_num)
 	}
 
 	switch(eType){
-
-						case welding:				; 
 						case ball:					axis_num=-1;
 													break;
 						case hinge:					axis_num=0;
 													break;
-						case hinge2:				;
-						case universal_hinge:		;
-						case shoulder1:				;
-						case shoulder2:				;
-						case car_wheel:				axis_num= axis_num>1 ? 1 : axis_num; 
+						case hinge2:				axis_num= axis_num>1 ? 1 : axis_num; 
 													break;
 
 						case full_control:			axis_num= axis_num>2 ? 2 : axis_num; 
@@ -887,20 +808,15 @@ int ax=axis_num;
 LimitAxisNum(ax);
 if(ax==-1) 
 	switch(eType){
-		case welding:				; 
-		case ball:					return;
+		case ball:					
+			break;
 		case hinge:					
-									axes[0]=axis;
-									break;
-		case hinge2:				;
-		case universal_hinge:		;
-		case shoulder1:				;
-		case shoulder2:				;
-		case car_wheel:	
+			axes[0]=axis;
+			break;
+		case hinge2:	;
 			axes[0]=axis;
 			axes[1]=axis;
 			break;
-
 		case full_control:			
 			axes[0]=axis;
 			axes[1]=axis;
@@ -912,58 +828,136 @@ else
 }
 
 void CPHJoint::SetAxisSDfactors(float spring_factor,float damping_factor,int axis_num)
+
 {
 	int ax=axis_num;
 	LimitAxisNum(ax);
-	if(ax==-1) 
-		switch(eType){
-		case welding:				; 
-		case ball:					return;
-		case hinge:					
-			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
-			break;
-		case hinge2:				;
-		case universal_hinge:		;
-		case shoulder1:				;
-		case shoulder2:				;
-		case car_wheel:	
-			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
-			axes[1].set_sd_factors(spring_factor,damping_factor,eType);
-			break;
+	if(ax==-1)
+	{
+			switch(eType){
+			case ball:					
+				break;
+			case hinge:					
+				axes[0].set_sd_factors(spring_factor,damping_factor,eType);
+				break;
+			case hinge2:				;
+				axes[0].set_sd_factors(spring_factor,damping_factor,eType);
+				axes[1].set_sd_factors(spring_factor,damping_factor,eType);
+				break;
 
-		case full_control:			
-			axes[0].set_sd_factors(spring_factor,damping_factor,eType);
-			axes[1].set_sd_factors(spring_factor,damping_factor,eType);
-			axes[2].set_sd_factors(spring_factor,damping_factor,eType);
-			break;
+			case full_control:			
+				axes[0].set_sd_factors(spring_factor,damping_factor,eType);
+				axes[1].set_sd_factors(spring_factor,damping_factor,eType);
+				axes[2].set_sd_factors(spring_factor,damping_factor,eType);
+				break;
+			} 
+		
+			if(bActive)SetLimitsSDfactorsActive();
 		}
 	else
 	{
 		axes[ax].set_sd_factors(spring_factor,damping_factor,eType);
+		if(bActive)SetAxisSDfactorsActive(ax);
 	}
 }
+
 
 void CPHJoint::SetJointSDfactors(float spring_factor,float damping_factor)
 {
 	switch(eType){
 		case hinge2:		
-			m_cfm=CFM(20000.f*spring_factor,1000.f*damping_factor);
-			m_erp=ERP(20000.f*spring_factor,1000.f*damping_factor);
+			m_cfm=CFM(hinge2_spring*spring_factor,hinge2_damping*damping_factor);
+			m_erp=ERP(hinge2_spring*spring_factor,hinge2_damping*damping_factor);
 			break;
-		case welding:				; 
 		case ball:					;
 		case hinge:					;								
-		case universal_hinge:		;
-		case shoulder1:				;
-		case shoulder2:				;
-		case car_wheel:				;
 		case full_control:			;			
 			m_erp=ERP(world_spring*spring_factor,world_damping*damping_factor);
 			m_cfm=CFM(world_spring*spring_factor,world_damping*damping_factor);
 			break;
 	}
+	if(bActive) SetJointSDfactorsActive();
 }
 
+void CPHJoint::SetJointSDfactorsActive()
+{
+	switch(eType){
+		case hinge2:		dJointSetHinge2Param(m_joint, dParamSuspensionERP, m_erp);
+							dJointSetHinge2Param(m_joint, dParamSuspensionCFM, m_cfm);	break	;
+		case ball:																		break	;
+		case hinge:			dJointSetHingeParam(m_joint,dParamCFM ,m_cfm);				break	;								
+		case full_control:	dJointSetAMotorParam(m_joint1,dParamCFM ,m_cfm);
+							dJointSetAMotorParam(m_joint1,dParamCFM2 ,m_cfm);
+							dJointSetAMotorParam(m_joint1,dParamCFM3 ,m_cfm);		;	break	;
+	}
+}
+void CPHJoint::SetLimitsSDfactorsActive()
+{
+	switch(eType){
+		case hinge2:		dJointSetHinge2Param(m_joint, dParamStopERP,axes[0].erp);
+							dJointSetHinge2Param(m_joint, dParamStopCFM,axes[0].cfm);	break	;
+		case ball:																		break	;
+		case hinge:			dJointSetHingeParam(m_joint,dParamStopERP ,axes[0].erp);
+							dJointSetHingeParam(m_joint,dParamStopCFM ,axes[0].cfm);	break	;								
+		case full_control:	dJointSetAMotorParam(m_joint1,dParamStopERP ,axes[0].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM ,axes[0].cfm);
+							dJointSetAMotorParam(m_joint1,dParamStopERP2 ,axes[1].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM2 ,axes[1].cfm);
+							dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);	break	;
+	}
+}
+void CPHJoint::SetAxisSDfactorsActive(int axis_num)
+{
+	LimitAxisNum(axis_num);
+
+	switch(eType){
+		case hinge2:		dJointSetHinge2Param(m_joint, dParamStopERP,axes[0].erp);
+							dJointSetHinge2Param(m_joint, dParamStopCFM,axes[0].cfm);	
+							break	;
+		case ball:			break	;
+		case hinge:			dJointSetHingeParam(m_joint,dParamStopERP ,axes[0].erp);
+							dJointSetHingeParam(m_joint,dParamStopCFM ,axes[0].cfm);	
+							break	;								
+		case full_control:	switch(axis_num)
+							{
+							case 0:
+							dJointSetAMotorParam(m_joint1,dParamStopERP ,axes[axis_num].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM ,axes[0].cfm);
+							break;
+							case 1:
+							dJointSetAMotorParam(m_joint1,dParamStopERP2 ,axes[1].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM2 ,axes[1].cfm);
+							break;
+							case 2:
+							dJointSetAMotorParam(m_joint1,dParamStopERP3 ,axes[2].erp);
+							dJointSetAMotorParam(m_joint1,dParamStopCFM3 ,axes[2].cfm);
+							break;
+							}
+							break;
+	}
+}
+void CPHJoint::GetJointSDfactors(float& spring_factor,float& damping_factor)
+{
+spring_factor =SPRING(m_cfm,m_erp);
+damping_factor=DAMPING(m_cfm,m_erp);
+if(eType==hinge2)
+	{
+		spring_factor/=hinge2_spring;
+		damping_factor/=hinge2_damping;
+	}
+else
+	{
+		spring_factor/=world_spring;
+		damping_factor/=world_damping;
+	}
+}
+void CPHJoint::GetAxisSDfactors(float& spring_factor,float& damping_factor,int axis_num)
+{
+	LimitAxisNum(axis_num);
+	spring_factor=SPRING(axes[axis_num].cfm,axes[axis_num].erp)/world_spring;
+	damping_factor=DAMPING(axes[axis_num].cfm,axes[axis_num].erp)/world_damping;
+}
 u16 CPHJoint::GetAxesNumber()
 {
 	return u16(axes.size());
@@ -1080,13 +1074,9 @@ LimitAxisNum(num);
 dVector3 result;
 	switch(eType)
 	{
-		case welding:				; 
+
 		case ball:					;
-		case universal_hinge:		;
-		case shoulder1:				;
-		case shoulder2:				;
-		case car_wheel:				
-									return;
+			return;
 		case hinge:					dJointGetHingeAxis (m_joint,result);
 			break;
 		case hinge2:				if(num)	dJointGetHinge2Axis2 (m_joint,result);
@@ -1105,19 +1095,10 @@ void CPHJoint::GetAnchorDynamic(Fvector& anchor)
 	dVector3 result;
 	switch(eType)
 	{
-	case welding:				; 
-	
-	case universal_hinge:		;
-	case shoulder1:				;
-	case shoulder2:				;
-	case car_wheel:				
-								return;
 	case hinge:					dJointGetHingeAnchor (m_joint,result);
 		break;
 	case hinge2:				dJointGetHingeAnchor (m_joint,result);
-						
-
-								break;
+		break;
 	case ball:					;
 	case full_control:			dJointGetBallAnchor (m_joint,result);
 		break;
@@ -1154,13 +1135,8 @@ void CPHJoint::SPHAxis::set_sd_factors(float sf,float df,enumType jt)
 			erp=1.f;
 			break;
 #endif
-		case welding:				; 
 		case ball:					;
 		case hinge:					;								
-		case universal_hinge:		;
-		case shoulder1:				;
-		case shoulder2:				;
-		case car_wheel:				;
 		case full_control:			;			
 			erp=ERP(world_spring*sf,world_damping*df);
 			cfm=CFM(world_spring*sf,world_damping*df);

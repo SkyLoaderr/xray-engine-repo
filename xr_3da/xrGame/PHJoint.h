@@ -45,11 +45,6 @@ class CPHJoint: public CPhysicsJoint{
 			void 				CreateBall					();
 			void 				CreateHinge					();
 			void 				CreateHinge2				();
-			void 				CreateShoulder1				();
-			void 				CreateShoulder2				();
-			void 				CreateCarWeel				();
-			void 				CreateWelding				();
-			void 				CreateUniversalHinge		();
 			void 				CreateFullControl			();
 			void 				LimitAxisNum				(int &axis_num);
 			void 				SetForceActive				(const int axis_num);
@@ -60,6 +55,9 @@ class CPHJoint: public CPhysicsJoint{
 	virtual	u16					GetAxesNumber				()																															 ;
 	virtual void 				SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
 	virtual void 				SetJointSDfactors			(float spring_factor,float damping_factor);
+	virtual void				SetJointSDfactorsActive		();
+	virtual void				SetLimitsSDfactorsActive	();
+	virtual void				SetAxisSDfactorsActive		(int axis_num);
 	virtual void 				SetAxis						(const SPHAxis& axis,const int axis_num);
 	virtual void 				SetAnchor					(const Fvector& position){SetAnchor(position.x,position.y,position.z);}	
 	virtual void 				SetAnchorVsFirstElement		(const Fvector& position){SetAnchorVsFirstElement(position.x,position.y,position.z);}
@@ -104,6 +102,8 @@ public:
 	virtual void 				GetAxisDir					(int num,Fvector& axis,eVs& vs);
 	virtual void 				GetAxisDirDynamic			(int num,Fvector& axis);
 	virtual void 				GetAnchorDynamic			(Fvector& anchor);
+	virtual void 				GetAxisSDfactors			(float& spring_factor,float& damping_factor,int axis_num);
+	virtual void 				GetJointSDfactors			(float& spring_factor,float& damping_factor);
 	virtual void				GetMaxForceAndVelocity		(float &force,float &velocity,int axis_num);
 	virtual float				GetAxisAngle				(int axis_num);
 	virtual void 				Deactivate					();

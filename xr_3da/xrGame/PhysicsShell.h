@@ -157,11 +157,6 @@ enum enumType{				//joint type
 	hinge,					// standart hinge 1 - axis
 	hinge2,					// for car wheels 2-axes 
 	full_control,			// 3 - axes control (eiler - angles)
-	universal_hinge,		//uu
-	shoulder1,				//uu
-	shoulder2,				//uu
-	car_wheel,				//uu
-	welding					//spesial - creates one rigid body 
 };
 
 
@@ -218,6 +213,8 @@ virtual CPHJointDestroyInfo*	JointDestroyInfo			()																  =0;
 	virtual void				GetMaxForceAndVelocity		(float &force,float &velocity,int axis_num)						  =0;
 	virtual float				GetAxisAngle				(int axis_num)													  =0;
 	virtual dJointID			GetDJoint					()																  =0;
+	virtual void 				GetAxisSDfactors			(float& spring_factor,float& damping_factor,int axis_num)		  =0;
+	virtual void 				GetJointSDfactors			(float& spring_factor,float& damping_factor)					  =0;
 	virtual void 				GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
 	virtual void 				GetAxisDir					(int num,Fvector& axis,eVs& vs)									  =0;
 	virtual void 				GetAxisDirDynamic			(int num,Fvector& axis)											  =0;
@@ -282,6 +279,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual	void				Build					(bool disable=false)	= 0;
 	virtual	void				SetMaxAABBRadius		(float size)										 {};
 	virtual void				AddTracedGeom			(u16 element=0,u16 geom=0)							= 0;
+	virtual void				SetAllGeomTraced		()													= 0;
 	virtual	void				RunSimulation			(bool place_current_forms=true)						= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;

@@ -300,12 +300,25 @@ void	CCar::OnHUDDraw				(CCustomHUD* /**hud/**/)
 #endif
 }
 
-void CCar::Hit(float /**P/**/,Fvector &dir,CObject * /**who/**/,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	inherited::Hit(P,dir,who,element,p_in_object_space,impulse,hit_type);
+	HitEffect();
+	WheelHit(P,element,hit_type);
+	DoorHit(P,element,hit_type);
+}
+void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(m_bone_steer==element) return;
 	if(m_pPhysicsShell)		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+
 }
 
+void CCar::ApplyDamage(u16 level)
+{
+	CDamagableItem::ApplyDamage(level);
+
+}
 void CCar::detach_Actor()
 {
 	if(!Owner()) return;
@@ -502,6 +515,13 @@ void CCar::ParseDefinitions()
 		m_doors_torque_factor=ini->r_u16("doors","open_torque_factor");
 	}
 
+	if(ini->section_exist("damage_particles"))
+	{
+		m_car_damage_particles1=ini->r_string("damage_particles","car_damage_particles1");
+		m_car_damage_particles2=ini->r_string("damage_particles","car_damage_particles2");
+		m_wheels_damage_particles1=ini->r_string("damage_particles","wheels_damage_particles1");
+		m_wheels_damage_particles2=ini->r_string("damage_particles","wheels_damage_particles2");
+	}
 }
 
 void CCar::CreateSkeleton()
@@ -551,13 +571,17 @@ void CCar::Init()
 	m_root_transform.set(bone_map.find(pKinematics->LL_GetBoneRoot())->second.element->mXFORM);
 	m_current_transmission_num=0;
 	m_pPhysicsShell->set_DynamicScales(1.f,1.f);
+	CDamagableItem::Init(fEntityHealth,3);
 
 	{
 		xr_map<u16,SWheel>::iterator i,e;
 		i=m_wheels_map.begin();
 		e=m_wheels_map.end();
 		for(;i!=e;++i)
+		{
 			i->second.Init();
+			i->second.CDamagableHealthItem::Init(100.f,2);
+		}
 	}
 
 	{
@@ -597,7 +621,32 @@ void CCar::Init()
 		i=m_doors.begin();
 		e=m_doors.end();
 		for(;i!=e;++i)
+		{
 			i->second.Init();
+			i->second.CDamagableHealthItem::Init(100,1);
+		}
+			
+	}
+
+	if(ini->section_exist("damage_defs"))
+	{
+		CInifile::Sect& data		= ini->r_section("damage_defs");
+		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+			CInifile::Item& item	= *I;
+			u16 index				= pKinematics->LL_BoneID(*item.first); 
+			R_ASSERT3(index != BI_NONE, "Wrong bone name", *item.first);
+			xr_map   <u16,SWheel>::iterator i=m_wheels_map.find(index);
+			
+			if(i!=m_wheels_map.end())
+					i->second.CDamagableHealthItem::Init(float(atof(*item.second)),2);
+			else 
+			{
+				xr_map   <u16,SDoor>::iterator i=m_doors.find(index);
+				R_ASSERT3(i!=m_doors.end(),"only wheel and doors bones allowed for damage defs",*item.first);
+				i->second.CDamagableHealthItem::Init(float(atof(*item.second)),1);
+			}
+
+		}
 	}
 	Break();
 	Transmision(1);
@@ -1034,8 +1083,9 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 			if(is_Door((u16)I->element,i)) 
 			{
 				i->second.Use();
+				if(i->second.state==SDoor::broken) break;
 				return false;
-
+				
 			}
 		}
 	}

@@ -208,6 +208,8 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			}
 			if(material_1->Flags.is(SGameMtl::flPassable)) 
 				do_collide=false;
+			if(material_2->Flags.is(SGameMtl::flClimable)) 
+				do_collide=false;
 		}
 		if(is_tri_2)
 		{
@@ -223,6 +225,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 			}
 			if(material_2->Flags.is(SGameMtl::flPassable)) 
 				do_collide=false;
+
 		}
 	
 		if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))

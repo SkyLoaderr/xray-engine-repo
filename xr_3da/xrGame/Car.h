@@ -7,6 +7,8 @@
 #include "phobject.h"
 #include "holder_custom.h"
 #include "PHSkeleton.h"
+#include "DamagableItem.h"
+#include "PHDestroyable.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -21,11 +23,23 @@ class CCar :
 	public CScriptMonster,
 	public CPHUpdateObject,
 	public CHolderCustom,
-	public CPHSkeleton
+	public CPHSkeleton,
+	public CDamagableItem,
+	public CPHDestroyable
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
-	virtual void PhDataUpdate(dReal step);
-	virtual void PhTune(dReal step);
+	virtual void						PhDataUpdate				(dReal step)			;
+	virtual void						PhTune						(dReal step)			;
+/////////////////////////////////////////////////////////////////////////
+	virtual void						ApplyDamage					(u16 level)				;
+	virtual	float						Health						()						{return fEntityHealth;}
+	virtual CPhysicsShellHolder*		PPhysicsShellHolder			()						{return static_cast<CPhysicsShellHolder*>(this);}
+////////////////////////////////////////////////////////////////////////
+	shared_str							m_wheels_damage_particles1;
+	shared_str							m_wheels_damage_particles2;
+	shared_str							m_car_damage_particles1;
+	shared_str							m_car_damage_particles2;
+///////////////////////////////////////////////////////////////////////
 protected:
 	enum ECarCamType{
 		ectFirst	= 0,
@@ -38,6 +52,7 @@ public:
 	bool rsp,lsp,fwp,bkp,brp;
 	Fmatrix m_root_transform;
 	Fvector m_exit_position;
+
 	enum eStateDrive
 	{
 		drive,
@@ -64,14 +79,26 @@ public:
 	float m_fuel_tank;
 	float m_fuel_consumption;
 	u16	  m_driver_anim_type;
-	struct SWheel 
+	struct SWheel: 
+	public CDamagableHealthItem
 	{
+		typedef		CDamagableHealthItem inherited;
 		u16 bone_id;
 		bool inited;
 		float radius;
 		CPhysicsJoint* joint;
 		CCar*	car;
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
+		void ApplyDriveAxisVel(float vel);
+		void ApplyDriveAxisTorque(float torque);
+		void ApplyDriveAxisVelTorque(float vel,float torque);
+		void ApplySteerAxisVel(float vel);
+		void ApplySteerAxisTorque(float torque);
+		void ApplySteerAxisVelTorque(float vel,float torque);
+		void SetSteerLoLimit		(float lo);
+		void SetSteerHiLimit		(float hi);
+		void SetSteerLimits			(float hi,float lo);
+virtual void ApplyDamage			(u16 level);
 		SWheel(CCar* acar)
 		{
 			bone_id=BI_NONE;
@@ -145,8 +172,10 @@ public:
 	};
 
 	struct SDoor;
-	struct SDoor 
+	struct SDoor :
+	public CDamagableHealthItem
 	{
+		typedef CDamagableHealthItem inherited;
 		u16 bone_id;
 		CCar* pcar;
 		bool  update;
@@ -176,12 +205,15 @@ public:
 		void Init();
 		void Open();
 		void Close();
+		void Break();
+virtual void ApplyDamage(u16 level);
 		void Update();
 		float GetAngle();
 		bool CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 		bool IsInArea(const Fvector& pos);
 		bool CanExit(const Fvector& pos,const Fvector& dir);
 		bool TestPass(const Fvector& pos,const Fvector& dir);
+		//bool TestPass1(const Fvector& pos,const Fvector& dir);
 		void GetExitPosition(Fvector& pos);
 		void ApplyOpenTorque();
 		void ApplyTorque(float atorque,float aa_vel);
@@ -199,7 +231,8 @@ public:
 			opening,
 			closing,
 			opened,
-			closed
+			closed,
+			broken
 		};
 		eState state;
 		SDoor(CCar* acar)
@@ -211,7 +244,6 @@ public:
 			torque=500.f;
 			a_vel=M_PI;
 		}
-
 	};
 
 	struct SCarSound
@@ -379,7 +411,10 @@ private:
 	bool					HUDview				( ) { return IsFocused(); }
 
 	static void __stdcall	cb_Steer			(CBoneInstance* B);
-	virtual void Hit(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual void Hit							(float P,Fvector &dir,CObject *who,s16 element,Fvector p_in_object_space, float impulse,  ALife::EHitType hit_type = ALife::eHitTypeWound);
+	virtual void PHHit							(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type/* =ALife::eHitTypeWound */);
+			bool WheelHit						(float P,s16 element,ALife::EHitType hit_type);
+			bool DoorHit						(float P,s16 element,ALife::EHitType hit_type);
 public:
 	virtual Fvector			ExitPosition		(){return m_exit_position;}
 	void					GetVelocity			(Fvector& vel)	{m_pPhysicsShell->get_LinearVel(vel);}
@@ -431,11 +466,10 @@ public:
 
 	CCameraBase*			Camera				(){return active_camera;}
 
-	// Inventory for the car
-	CInventory*				GetInventory		(){return inventory;}
-		  void				VisualUpdate		();
+	// Inventory for the car	
+	CInventory*						GetInventory						(){return inventory;}
+		  void						VisualUpdate						();
 protected:
-	virtual CPhysicsShellHolder*	PPhysicsShellHolder					()	{return PhysicsShellHolder();}												;
 	virtual void					SpawnInitPhysics					(CSE_Abstract	*D)																;
 	virtual void					net_Save							(NET_Packet& P)																	;
 	virtual	BOOL					net_SaveRelevant					()																				;

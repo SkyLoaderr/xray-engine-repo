@@ -3,6 +3,17 @@
 #include "../skeletoncustom.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CCar::WheelHit(float P,s16 element,ALife::EHitType hit_type)
+{
+	xr_map   <u16,SWheel>::iterator i=m_wheels_map.find(element);
+	if(i!=m_wheels_map.end())
+	{
+		i->second.Hit(P);
+		return true;
+	}
+	else return false;
+}
 void CCar::SWheel::Init()
 {
 	if(inited) return;
@@ -14,12 +25,93 @@ void CCar::SWheel::Init()
 	joint=bone->second.joint;
 	joint->SetBackRef(&joint);
 	R_ASSERT2(dJointGetType(joint->GetDJoint())==dJointTypeHinge2,"No wheel join was set for a wheel, only wheel-joint valid!!!");
-	dJointSetHinge2Param(joint->GetDJoint(), dParamFMax2,0.f);//car->m_axle_friction
-	dJointSetHinge2Param(joint->GetDJoint(), dParamVel2, 0.f);
+	ApplyDriveAxisVelTorque(0.f,0.f);
 	inited=true;
+}
+void CCar::SWheel::ApplyDriveAxisTorque(float torque)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamFMax2,torque);//car->m_axle_friction
+}
+void CCar::SWheel::ApplyDriveAxisVel(float vel)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamVel2, vel);
 }
 
 
+void CCar::SWheel::ApplyDriveAxisVelTorque(float vel,float torque)
+{
+	ApplyDriveAxisVel(vel);
+	ApplyDriveAxisTorque(torque);
+
+}
+void CCar::SWheel::ApplySteerAxisVel(float vel)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamVel, vel);
+}
+
+void CCar::SWheel::ApplySteerAxisTorque(float torque)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamFMax, torque);
+}
+
+void CCar::SWheel::ApplySteerAxisVelTorque(float vel,float torque)
+{
+	ApplySteerAxisVel(vel);
+	ApplySteerAxisTorque(torque);
+}
+
+void CCar::SWheel::SetSteerHiLimit(float hi)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamHiStop, hi);
+}
+void CCar::SWheel::SetSteerLoLimit(float lo)
+{
+	if(!joint) return;
+	dJointSetHinge2Param(joint->GetDJoint(), dParamLoStop, lo);
+}
+void CCar::SWheel::SetSteerLimits(float hi,float lo)
+{
+	SetSteerHiLimit(hi);
+	SetSteerLoLimit(lo);
+}
+
+void CCar::SWheel::ApplyDamage(u16 level)
+{
+	inherited::ApplyDamage(level);
+	if(!joint) return;
+	if(level == 0 )return;
+	float sf,df;
+	dJointID dj=joint->GetDJoint();
+	switch(level) {
+
+	case 1:
+		joint->GetJointSDfactors(sf,df);
+		sf/=20.f;df*=4.f;
+		joint->SetJointSDfactors(sf,df);
+		if(*car->m_wheels_damage_particles1)car->StartParticles(car->m_wheels_damage_particles1,bone_id,Fvector().set(0,1,0),car->ID());
+		break;
+	case 2:
+		
+		dVector3 v;
+	
+		dJointGetHinge2Axis2(dj,v);
+		v[0]+=0.1f;v[1]+=0.1f;v[2]+=0.1f;
+		dNormalize3(v);
+		dJointSetHinge2Axis2(dj,v[0],v[1],v[2]);
+		joint->GetJointSDfactors(sf,df);
+		sf/=30.f;df*=8.f;
+		joint->SetJointSDfactors(sf,df);
+		if(*car->m_wheels_damage_particles2)car->StartParticles(car->m_wheels_damage_particles2,bone_id,Fvector().set(0,1,0),car->ID());
+		break;
+	default: NODEFAULT;
+	}
+	
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCar::SWheelDrive::Init()
 {
@@ -37,35 +129,23 @@ void CCar::SWheelDrive::Init()
 
 	pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
 
-
 }
 void CCar::SWheelDrive::Drive()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
 	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
-	dJointSetHinge2Param(joint, dParamVel2, pos_fvd*cur_speed);
+	pwheel->ApplyDriveAxisVel(pos_fvd*cur_speed);
 	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
-	dJointSetHinge2Param(joint, dParamFMax2, pwheel->car->RefWheelCurTorque()/gear_factor);
-
+	pwheel->ApplyDriveAxisTorque(pwheel->car->RefWheelCurTorque()/gear_factor);
 }
 void CCar::SWheelDrive::UpdatePower()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
 	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
 	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
-	dJointSetHinge2Param(joint, dParamFMax2, pwheel->car->RefWheelCurTorque()/gear_factor);
+	pwheel->ApplyDriveAxisTorque(pwheel->car->RefWheelCurTorque()/gear_factor);
 }
 void CCar::SWheelDrive::Neutral()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
-	dJointSetHinge2Param(joint, dParamFMax2, pwheel->car->m_axle_friction);
-	dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	pwheel->ApplyDriveAxisVelTorque(0.f,pwheel->car->m_axle_friction);
 }
 
 float CCar::SWheelDrive::ASpeed()
@@ -84,106 +164,76 @@ void CCar::SWheelSteer::Init()
 	switch(bone_data.IK_data.type)
 	{
 	case jtWheel:	
-		//pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
 		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.y;//.dotproduct(pwheel->car->m_root_transform.j);
 		break;
-/*
-	case jtWheelXZ:	
-	case jtWheelXY:
-		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
-		break;
-	case jtWheelYZ:	
-	case jtWheelYX:
-		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.dotproduct(pwheel->car->m_root_transform.j);
-		break;
-	case jtWheelZY:	
-	case jtWheelZX:
-		pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.j);
-		break;
-*/
+
 	default: NODEFAULT;
 	}
 	
 	pos_right=pos_right>0.f ? -1.f : 1.f;
 	float steering_torque=pKinematics->LL_UserData()->r_float("car_definition","steering_torque");
-	dJointSetHinge2Param(pwheel->joint->GetDJoint(), dParamFMax, steering_torque);
+	pwheel->ApplySteerAxisTorque(steering_torque);
 	dJointSetHinge2Param(pwheel->joint->GetDJoint(), dParamFudgeFactor, 0.005f/steering_torque);
-	dJointSetHinge2Param(pwheel->joint->GetDJoint(), dParamVel, 0.f);
+	pwheel->ApplySteerAxisVel(0.f);
 	limited=false;
 }
 
 void CCar::SWheelSteer::SteerRight()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
 	limited=true;						//no need to limit wheels when steering
 	if(pos_right>0)
 	{
-
-		dJointSetHinge2Param(joint, dParamHiStop, hi_limit);
-		dJointSetHinge2Param(joint, dParamVel, pwheel->car->m_steering_speed);
-
+		pwheel->SetSteerHiLimit(hi_limit);
+		pwheel->ApplySteerAxisVel(pwheel->car->m_steering_speed);
 	}
 	else
 	{
-		dJointSetHinge2Param(joint, dParamLoStop, lo_limit);
-		dJointSetHinge2Param(joint, dParamVel, -pwheel->car->m_steering_speed);
+		pwheel->SetSteerLoLimit(lo_limit);
+		pwheel->ApplySteerAxisVel( -pwheel->car->m_steering_speed);
 	}
 }
 void CCar::SWheelSteer::SteerLeft()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
+
 	limited=true;						//no need to limit wheels when steering
 	if(pos_right<0)
 	{
-
-		dJointSetHinge2Param(joint, dParamHiStop, hi_limit);
-		dJointSetHinge2Param(joint, dParamVel, pwheel->car->m_steering_speed);
-
+		pwheel->SetSteerHiLimit(hi_limit);
+		pwheel->ApplySteerAxisVel(pwheel->car->m_steering_speed);
 	}
 	else
 	{
-		dJointSetHinge2Param(joint, dParamLoStop, lo_limit);
-		dJointSetHinge2Param(joint, dParamVel, -pwheel->car->m_steering_speed);
+		pwheel->SetSteerLoLimit(lo_limit);
+		pwheel->ApplySteerAxisVel( -pwheel->car->m_steering_speed);
 	}
 }
 void CCar::SWheelSteer::SteerIdle()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
 	limited=false;
 	if(pwheel->car->e_state_steer==right)
 	{
 		if(pos_right<0)
 		{
-
-			dJointSetHinge2Param(joint, dParamHiStop, 0.f);
-			dJointSetHinge2Param(joint, dParamVel, pwheel->car->m_steering_speed);
-
+			pwheel->SetSteerHiLimit(0.f);
+			pwheel->ApplySteerAxisVel( pwheel->car->m_steering_speed);
 		}
 		else
 		{
-			dJointSetHinge2Param(joint, dParamLoStop, 0.f);
-			dJointSetHinge2Param(joint, dParamVel, -pwheel->car->m_steering_speed);
+			pwheel->SetSteerLoLimit(0.f);
+			pwheel->ApplySteerAxisVel(-pwheel->car->m_steering_speed);
 		}
 	}
 	else
 	{
 		if(pos_right>0)
 		{
-
-			dJointSetHinge2Param(joint, dParamHiStop,0.f);
-			dJointSetHinge2Param(joint, dParamVel, pwheel->car->m_steering_speed);
-
+			pwheel->SetSteerHiLimit(0.f);
+			pwheel->ApplySteerAxisVel( pwheel->car->m_steering_speed);
 		}
 		else
 		{
-			dJointSetHinge2Param(joint, dParamLoStop, 0.f);
-			dJointSetHinge2Param(joint, dParamVel, -pwheel->car->m_steering_speed);
+			pwheel->SetSteerLoLimit(0.f);
+			pwheel->ApplySteerAxisVel(-pwheel->car->m_steering_speed);
 		}
 	}
 
@@ -199,9 +249,8 @@ void CCar::SWheelSteer::Limit()
 		dReal angle = dJointGetHinge2Angle1(joint);
 		if(dFabs(angle)<M_PI/180.f)
 		{
-			dJointSetHinge2Param(joint, dParamHiStop, 0);
-			dJointSetHinge2Param(joint, dParamLoStop, 0);///
-			dJointSetHinge2Param(joint, dParamVel, 0);
+			pwheel->SetSteerLimits(0.f,0.f);
+			pwheel->ApplySteerAxisVel(0.f);
 			limited=true;
 		}
 	}
@@ -217,27 +266,15 @@ void CCar::SWheelBreak::Init()
 
 void CCar::SWheelBreak::Break()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
-	dJointSetHinge2Param(joint, dParamFMax2, 100000.f*break_torque);//
-	dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	pwheel->ApplyDriveAxisVelTorque(0.f,100000.f*break_torque);
 }
 
 void CCar::SWheelBreak::HandBreak()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
-	dJointSetHinge2Param(joint, dParamFMax2, hand_break_torque);
-	dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	pwheel->ApplyDriveAxisVelTorque(0.f,hand_break_torque);
 }
 
 void CCar::SWheelBreak::Neutral()
 {
-	CPhysicsJoint* J=pwheel->joint;
-	if(!J) return;
-	dJointID joint=J->GetDJoint();
-	dJointSetHinge2Param(joint, dParamFMax2, pwheel->car->m_axle_friction);
-	dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	pwheel->ApplyDriveAxisVelTorque(0.f,pwheel->car->m_axle_friction);
 }

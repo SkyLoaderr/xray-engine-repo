@@ -166,8 +166,6 @@ void CEntity::Load		(LPCSTR section)
 
 
 	//загрузить параметры иконки торговли
-	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
-	CInifile* ini = NULL;
 
 /*			shared_str	first;
 		shared_str	second;
@@ -187,27 +185,7 @@ void CEntity::Load		(LPCSTR section)
 		IC void			clear()		{ Data.clear();			}
 	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
 */
-	
-	if(pKinematics) ini = pKinematics->LL_UserData();
-	if(ini)
-	{
-		if(ini->section_exist("icon"))
-		{
-			m_iTradeIconX = ini->r_u32("icon","icon_x");
-			m_iTradeIconY = ini->r_u32("icon","icon_y");
 
-			m_iMapIconX = ini->r_u32("icon","map_icon_x");
-			m_iMapIconY = ini->r_u32("icon","map_icon_y");
-		}
-		else
-		{
-			m_iTradeIconX = m_iTradeIconY = 0;
-			m_iMapIconX = 1;
-			m_iMapIconY = 4;
-		}
-
-		CParticlesPlayer::LoadParticles(pKinematics);
-	}
 	//////////////////////////////////////
 	//время убирания тела с уровня
 	if(pSettings->line_exist(section,"body_remove_time"))
@@ -257,6 +235,29 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
 
+	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
+	CInifile* ini = NULL;
+
+	if(pKinematics) ini = pKinematics->LL_UserData();
+	if(ini)
+	{
+		if(ini->section_exist("icon"))
+		{
+			m_iTradeIconX = ini->r_u32("icon","icon_x");
+			m_iTradeIconY = ini->r_u32("icon","icon_y");
+
+			m_iMapIconX = ini->r_u32("icon","map_icon_x");
+			m_iMapIconY = ini->r_u32("icon","map_icon_y");
+		}
+		else
+		{
+			m_iTradeIconX = m_iTradeIconY = 0;
+			m_iMapIconX = 1;
+			m_iMapIconY = 4;
+		}
+
+		CParticlesPlayer::LoadParticles(pKinematics);
+	}
 	return					TRUE;
 }
 

@@ -40,6 +40,7 @@ int dCollideRMB (dxGeom *o1, dxGeom *o2, int flags,
 	for (int i=0; i<ret; i++) {
 		dContactGeom *c = CONTACT(contact,skip*i);
 		c->g1 = rm->ray_ownwer;
+		c->depth*=60.f;
 	}
 	return ret;
 }
@@ -52,6 +53,7 @@ int dCollideRMS(dxGeom *o1, dxGeom *o2, int flags,
 	for (int i=0; i<ret; i++) {
 		dContactGeom *c = CONTACT(contact,skip*i);
 		c->g1 = rm->ray_ownwer;
+		c->depth*=60.f;
 	}
 	return ret;
 }
@@ -64,6 +66,7 @@ int dCollideRMCyl (dxGeom *o1, dxGeom *o2, int flags,
 	for (int i=0; i<ret; i++) {
 		dContactGeom *c = CONTACT(contact,skip*i);
 		c->g2 = rm->ray_ownwer;
+		c->depth*=60.f;
 	}
 	return ret;
 }

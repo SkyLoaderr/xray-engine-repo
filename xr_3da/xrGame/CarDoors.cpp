@@ -2,8 +2,18 @@
 #include "car.h"
 #include "net_utils.h"
 #include "../skeletoncustom.h"
-
+#include "MathUtils.h"
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+bool CCar::DoorHit(float P,s16 element,ALife::EHitType hit_type)
+{
+	xr_map   <u16,SDoor>::iterator i=m_doors.find(element);
+	if(i!=m_doors.end())
+	{
+		i->second.Hit(P);
+		return true;
+	}
+	else return false;
+}
 void CCar::SDoor::Init()
 {
 	update=false;
@@ -105,6 +115,7 @@ void CCar::SDoor::Init()
 			}
 		}
 	}
+
 	switch(door_plane_axes.y) 
 	{
 		case 0:
@@ -339,6 +350,7 @@ void CCar::SDoor::ClosingToClosed()
 	bone_instance.Callback_overwrite=FALSE;
 	joint->PSecond_element()->Deactivate();
 	joint->Deactivate();
+
 	RemoveFromUpdate();
 
 	//door_form.set(bone_data.bind_transform);
@@ -357,6 +369,7 @@ float CCar::SDoor::GetAngle()
 
 bool CCar::SDoor::IsInArea(const Fvector& pos)
 {
+	if(!joint)return true;
 	Fmatrix closed_door_form,door_form;
 	Fvector closed_door_dir,door_dir,anchor_to_pos,door_axis;
 	joint->GetAxisDirDynamic(0,door_axis);
@@ -396,16 +409,29 @@ bool CCar::SDoor::CanExit(const Fvector& pos,const Fvector& dir)
 {
 	//if(state==opened) return true;
 	//return false;
-	if(!joint) return true;//temp for fake doors
+	//if(!joint) return true;//temp for fake doors
 	if(state==closed)return false;
 	return TestPass(pos,dir);
 }
-
+static xr_vector<Fmatrix> bones_bind_forms;
 void CCar::SDoor::GetExitPosition(Fvector& pos)
 {
 	if(!joint) 
 	{
-		pos.set(pcar->Position());
+		CKinematics* K=PKinematics(pcar->Visual());
+		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
+		CBoneData& bd=K->LL_GetData(bone_id);
+		K->LL_GetBindTransform(bones_bind_forms);
+		Fobb bb;//=bd.obb;
+		
+		Fmatrix pf;
+		pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
+		bb.transform(bd.obb,pf);
+		bb.xform_get(pf);
+		pos.set(pf.c);
+		Fvector add;
+		MAX_OF(abs(pf.i.y),add.set(pf.i);add.mul(bb.m_halfsize.x*fsignum(pf.i.y)),abs(pf.j.y),add.set(pf.j);add.mul(bb.m_halfsize.y*fsignum(pf.j.y)),abs(pf.k.y),add.set(pf.k);add.mul(bb.m_halfsize.z*fsignum(pf.k.y)));
+		pos.sub(add);
 		return;
 	}
 	float lo_ext,hi_ext;
@@ -444,11 +470,26 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 }
 
 
+
 bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 {
-	if(!joint) return false;
+	if(!joint)
+	{
+		CKinematics* K=PKinematics(pcar->Visual());
+		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
+		//CBoneData& bd=K->LL_GetData(bone_id);
+		K->LL_GetBindTransform(bones_bind_forms);
+		//		Fobb bb=bd.obb;
+		Fmatrix pf;
+		pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
+		Fvector dif;
+		dif.sub(pf.c,pos);
+		//dif.normalize_safe();
+		return (dif.dotproduct(dir)>0.f);
+	}
 	float lo_ext,hi_ext;
 	Fvector door_axis,door_pos,door_dir,closed_door_dir;
+
 	joint->GetAxisDirDynamic(0,door_axis);
 	joint->GetAnchorDynamic(door_pos);
 
@@ -495,8 +536,8 @@ bool CCar::SDoor::TestPass(const Fvector& pos,const Fvector& dir)
 
 bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 {
-	if(!joint) return true;//temp for fake doors
-	return state==opened && TestPass(foot_pos,dir)&& IsInArea(pos);//
+	//if(!joint) return true;//temp for fake doors
+	return state==opened || state == broken && TestPass(foot_pos,dir)&& IsInArea(pos);//
 }
 
 void CCar::SDoor::SaveNetState(NET_Packet& P)
@@ -515,6 +556,51 @@ void CCar::SDoor::SetDefaultNetState()
 	ClosingToClosed();
 }
 
+void CCar::SDoor::Break()
+{
+	switch(state) {
+	case closed:
+		ClosedToOpening();
+		break;
+	case opened:
+	case closing:
+		RemoveFromUpdate();
+	case opening:
+		ApplyTorque(torque/10.f,0.f);
+	}
+	if(joint)
+	{
+		dVector3 v;float sf,df;
+		dJointID dj=joint->GetDJoint();
+		dJointGetHingeAxis(dj,v);
+		v[0]+=0.1f;v[1]+=0.1f;v[2]+=0.1f;
+		dNormalize3(v);
+		dJointSetHingeAxis(dj,v[0],v[1],v[2]);
+		joint->GetJointSDfactors(sf,df);
+		sf/=30.f;df*=8.f;
+		joint->SetJointSDfactors(sf,df);
+		joint->GetAxisSDfactors(sf,df,0);
+		sf/=20.f;df*=8.f;
+		joint->SetAxisSDfactors(sf,df,0);
+		float lo,hi;
+		joint->GetLimits(lo,hi,0);
+		if(pos_open>0.f)
+			joint->SetLimits(lo+M_PI/4.f,hi,0);
+		else
+			joint->SetLimits(lo,hi-M_PI/4.f,0);
+	}
+	//ApplyOpenTorque();
+	state=broken;
+}
+
+void CCar::SDoor::ApplyDamage(u16 level)
+{
+	inherited::ApplyDamage(level);
+	switch(level)
+	{
+		case 1: Break();
+	}
+}
 CCar::SDoor::SDoorway::SDoorway()
 {
 	door=NULL;

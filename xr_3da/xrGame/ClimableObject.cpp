@@ -5,49 +5,6 @@
 #include "PHCharacter.h"
 #include "MathUtils.h"
 
-#define  MAX_OF(x,on_x,y,on_y,z,on_z)\
-				if(x>y){\
-					if	(x>z)	{on_x;}\
-					else		{on_z;}\
-				}\
-				else\
-				{\
-					if	(y>z)	{on_y;}\
-					else		{on_z;}\
-				}
-
-#define  MIN_OF(x,on_x,y,on_y,z,on_z)\
-	if(x<y){\
-					if	(x<z)	{on_x;}\
-					else		{on_z;}\
-				}\
-				else\
-				{\
-					if	(y<z)	{on_y;}\
-					else		{on_z;}\
-				}
-
-#define  NON_MIN_OF(x,on_x1,on_x2,y,on_y1,on_y2,z,on_z1,on_z2)\
-					if(x<y){\
-						if	(x<z){if(y<z){on_z1;on_y2;}else{on_z2;on_y1;}}\
-							else{on_x2;on_y1;}\
-						}\
-					else\
-							{\
-							if	(y<z)	{if(x>z){ on_x1;on_z2;}else{on_z1;on_x2;}}\
-							else		{on_x1;on_y2;}\
-							}
-
-#define  SORT(x,on_x1,on_x2,on_x3,y,on_y1,on_y2,on_y3,z,on_z1,on_z2,on_z3)\
-	if(x<y){\
-	if	(x<z){if(y<z){on_z1;on_y2;on_x3;}else{on_z2;on_y1;on_x3;}}\
-				else{on_x2;on_y1;on_z3;}\
-	}\
-	else\
-		{\
-			if	(y<z)	{if(x>z){ on_x1;on_z2;on_y3;}else{on_z1;on_x2;on_y3;}}\
-			else		{on_x1;on_y2;on_z3;}\
-		}
 
 
 IC void OrientToNorm(const Fvector& normal,Fmatrix& form,Fobb& box)

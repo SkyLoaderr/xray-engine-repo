@@ -173,6 +173,7 @@ public:
 	virtual	dSpaceID			dSpace						(){return m_space;}
 	virtual void				SetTransform				(const Fmatrix& m0);
 	virtual void				AddTracedGeom				(u16 element=0,u16 geom=0);
+	virtual void				SetAllGeomTraced			();
 	virtual void				SetPrefereExactIntegration	();
 	void CreateSpace()
 	{

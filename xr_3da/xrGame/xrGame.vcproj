@@ -8496,6 +8496,16 @@
 					</File>
 				</Filter>
 			</Filter>
+			<Filter
+				Name="DamagableItem"
+				Filter="">
+				<File
+					RelativePath=".\DamagableItem.cpp">
+				</File>
+				<File
+					RelativePath=".\DamagableItem.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="UI"
