@@ -68,7 +68,6 @@ void	CObjectList::o_activate		( CObject*		O		)
 	VERIFY						(O && O->processing_enabled());
 	o_remove					(objects_sleeping,O);
 	objects_active.push_back	(O);
-
 }
 void	CObjectList::o_sleep		( CObject*		O		)
 {
@@ -211,7 +210,7 @@ void CObjectList::Unload	( )
 CObject*	CObjectList::Create				( LPCSTR	name	)
 {
 	CObject*	O				= g_pGamePersistent->ObjectPool.create(name);
-	objects_active.push_back	(O);
+	objects_sleeping.push_back	(O);
 	return						O;
 }
 
