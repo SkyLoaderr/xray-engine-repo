@@ -61,7 +61,19 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
             VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic.");
             BuildHOMModel	();
-			BuildAIMap		();
+    	    // build tools
+            SceneToolsMapPairIt _I 	= Scene->FirstTools();
+            SceneToolsMapPairIt _E	= Scene->LastTools();
+            for (; _I!=_E; _I++){
+            	if (_I->first!=OBJCLASS_DUMMY){
+                    if (_I->second->Valid()){
+                        VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
+                        ELog.Msg(mtInformation,"%s: created successfully.",_I->second->ClassDesc());
+                    }else{
+                        ELog.Msg(mtError,"%s: validation failed.",_I->second->ClassDesc());
+                    }
+                }
+            }
 		    Clear			();
         } while(0);
 
@@ -97,19 +109,6 @@ BOOL SceneBuilder::MakeGame( )
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
-    	    // save wallmarks
-            SceneToolsMapPairIt _I 	= Scene->FirstTools();
-            SceneToolsMapPairIt _E	= Scene->LastTools();
-            for (; _I!=_E; _I++){
-            	if (_I->first!=OBJCLASS_DUMMY){
-                    if (_I->second->Valid()){
-                        VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
-                        ELog.Msg(mtInformation,"%s: created successfully.",_I->second->ClassDesc());
-                    }else{
-                        ELog.Msg(mtError,"%s: validation failed.",_I->second->ClassDesc());
-                    }
-                }
-            }
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
@@ -140,14 +139,29 @@ BOOL SceneBuilder::MakeAIMap()
 }
 //------------------------------------------------------------------------------
 
+BOOL SceneBuilder::MakeWallmarks()
+{
+	AnsiString error_text;
+    do{
+		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
+        VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
+		VERIFY_COMPILE(BuildWallmarks(),			"Failed to build Wallmarks.");
+    }while(0);
+    if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
+    else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
+    else						ELog.DlgMsg(mtInformation,"Wallmarks succesfully exported.");
+
+	return error_text.IsEmpty();
+}
+//------------------------------------------------------------------------------
+
 BOOL SceneBuilder::MakeDetails()
 {
 	AnsiString error_text;
     do{
 		VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-        AnsiString fn			= m_LevelPath+"level.details";
         // save details
-		VERIFY_COMPILE(Scene->GetMTools(OBJCLASS_DO)->Export(fn.c_str()), "Export failed.");
+		VERIFY_COMPILE(Scene->GetMTools(OBJCLASS_DO)->Export(m_LevelPath.c_str()), "Export failed.");
     }while(0);
     if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
     else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");

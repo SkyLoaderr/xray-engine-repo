@@ -41,8 +41,16 @@ bool SceneBuilder::BuildAIMap()
 {
 	// build sky ogf
     if (Scene->GetMTools(OBJCLASS_AIMAP)->Valid()){
-	    AnsiString fname = m_LevelPath+"build.aimap";
-        return Scene->GetMTools(OBJCLASS_AIMAP)->Export(fname.c_str());
+        return Scene->GetMTools(OBJCLASS_AIMAP)->Export(m_LevelPath.c_str());
+    }
+	return false;
+}
+
+bool SceneBuilder::BuildWallmarks()
+{
+	// build sky ogf
+    if (Scene->GetMTools(OBJCLASS_WM)->Valid()){
+        return Scene->GetMTools(OBJCLASS_WM)->Export(m_LevelPath.c_str());
     }
 	return false;
 }

@@ -382,7 +382,7 @@ void EDetailManager::SaveSelection(IWriter& F)
 
 bool EDetailManager::Export(LPCSTR path) 
 {
-    AnsiString fn		= AnsiString(path)+"level.details";
+    AnsiString fn		= AnsiString(path)+"build.details";
     bool bRes=true;
 
     UI->ProgressStart	(5,"Making details...");

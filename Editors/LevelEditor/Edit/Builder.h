@@ -115,6 +115,7 @@ protected:
     BOOL	BuildSceneStat			();
     bool 	BuildHOMModel			();
     bool	BuildAIMap				();
+    bool	BuildWallmarks			();
     BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);
     BOOL 	CompileStatic		   	();
 
@@ -130,6 +131,7 @@ public:
     BOOL 	MakeDetails				();
     BOOL 	MakeHOM					();
     BOOL	MakeAIMap				();
+    BOOL	MakeWallmarks			();
 };
 
 extern SceneBuilder Builder;
