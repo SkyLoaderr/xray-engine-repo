@@ -25,6 +25,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 			v_count		=	t;
 			i_count		+=	V.iCount;
 		}
+		vs				=	cache[Start]->VS;
 
 		// Transfer geometry
 		DWORD	vBase,iBase;
