@@ -1,0 +1,62 @@
+function main()
+
+	wait(1000)
+	local 	actor = get_actor()
+	local 	trader = get_level_object("m_trader")
+	GiveInfoViaPda(actor, actor, 1)
+	trader:set_start_dialog("trader_hello_dialog")
+
+	while true do
+	wait()
+	end
+end
+
+
+function give_job_box01(first_speaker, second_speaker)
+
+	first_speaker:give_info_portion(3)
+
+end
+
+
+function is_box_present(first_speaker, second_speaker)
+
+	printf("whether we have box: first %s, second %s", first_speaker:name(), second_speaker:name())
+	if( first_speaker:object("device_atifact_merger")  ) then
+		return true
+	end
+	return false
+
+end
+
+
+function give_box_to_trader(first_speaker, second_speaker)
+	local box = second_speaker:object("device_atifact_merger")
+	second_speaker:transfer_item (box, first_speaker)
+	second_speaker:disable_info_portion (3)
+end
+
+
+function test_action(first_speaker, second_speaker)
+	printf("phrase action first %s, second %s", first_speaker:name(), second_speaker:name())
+	local 	actor = get_actor()
+	GiveInfoViaPda(actor, actor, 2)
+end
+
+function test_action1(first_speaker, second_speaker)
+	printf("1111action first %s, second %s", first_speaker:name(), second_speaker:name())
+end
+
+
+function test_predicate(first_speaker, second_speaker)
+	printf("predicate first %s, second %s", first_speaker:name(), second_speaker:name())
+	return true
+end
+
+
+function test_predicate1(first_speaker, second_speaker)
+	printf("11111predicate first %s, second %s", first_speaker:name(), second_speaker:name())
+	return false
+end
+
+
