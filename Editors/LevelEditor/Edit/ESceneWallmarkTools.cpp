@@ -141,7 +141,7 @@ void ESceneWallmarkTools::Clear(bool bOnlyNodes)
 	}
 }
 
-bool ESceneWallmarkTools::Valid		(){return true;}
+bool ESceneWallmarkTools::Valid		(){return !marks.empty();}
 bool ESceneWallmarkTools::IsNeedSave(){return marks.size();}
 void ESceneWallmarkTools::OnFrame	(){}
 

@@ -380,7 +380,7 @@ void EDetailManager::SaveSelection(IWriter& F)
 	Save(F);
 }
 
-bool EDetailManager::Export(LPCSTR path)
+bool EDetailManager::Export(LPCSTR path) 
 {
     AnsiString fn		= AnsiString(path)+"level.details";
     bool bRes=true;

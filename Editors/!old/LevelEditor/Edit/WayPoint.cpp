@@ -327,11 +327,6 @@ void CWayObject::Select(int flag)
     }else{
 		inherited::Select(flag);
     }
-/*
-
-    if (flag==0) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(0);
-    if ((flag==1)&&(m_WayPoints.size()==1)) for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Select(1);
-*/
 }
 
 bool CWayObject::RaySelect(int flag, const Fvector& start, const Fvector& dir, bool bRayTest)

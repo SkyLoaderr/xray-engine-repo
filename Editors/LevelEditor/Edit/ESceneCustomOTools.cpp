@@ -206,7 +206,9 @@ BOOL ESceneCustomOTools::SpherePick(ObjectList& lst, const Fvector& center, floa
 int ESceneCustomOTools::RaySelect(int flag, float& distance, const Fvector& start, const Fvector& direction, BOOL bDistanceOnly)
 {
     CCustomObject* nearest_object=0;
-    if (RayPick(nearest_object,distance,start,direction,0)&&!bDistanceOnly) nearest_object->Select(flag);
+    if (RayPick(nearest_object,distance,start,direction,0)&&!bDistanceOnly) 
+    	nearest_object->RaySelect(flag,start,direction,false);
+//    	nearest_object->Select(flag);
     UI->RedrawScene();
     return !!nearest_object;
 }

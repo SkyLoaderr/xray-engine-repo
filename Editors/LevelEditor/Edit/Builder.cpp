@@ -101,13 +101,20 @@ BOOL SceneBuilder::MakeGame( )
             SceneToolsMapPairIt _I 	= Scene->FirstTools();
             SceneToolsMapPairIt _E	= Scene->LastTools();
             for (; _I!=_E; _I++){
-            	VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
+            	if (_I->first!=OBJCLASS_DUMMY){
+                    if (_I->second->Valid()){
+                        VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),"Export failed.");
+                        ELog.Msg(mtInformation,"%s: created successfully.",_I->second->ClassDesc());
+                    }else{
+                        ELog.Msg(mtError,"%s: validation failed.",_I->second->ClassDesc());
+                    }
+                }
             }
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
-        else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated...");
-        else						ELog.DlgMsg(mtInformation,"Building OK...");
+        else if (UI->NeedAbort())	ELog.DlgMsg(mtInformation,"Making terminated.");
+        else						ELog.DlgMsg(mtInformation,"Making finished.");
     }catch(...){
     	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
         abort();
