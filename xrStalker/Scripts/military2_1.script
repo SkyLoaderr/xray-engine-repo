@@ -64,7 +64,7 @@ function main ()
     action (stalker2, anim ("stalker_1_2"), cond (cond.time_end, 100000000))
     sound3_1:play_at_pos (stalker3, stalker3:position (), 0)
     while sound3_1:playing () do wait () end
-    wait (500)
+    wait (1500)
 
     --phrase 3
     sound1_1:play_at_pos (stalker1, stalker1:position (), 0)
@@ -74,7 +74,7 @@ function main ()
     --phrase 4
     sound1_2:play_at_pos (stalker1, stalker1:position (), 0)
     while sound1_2:playing () do wait () end
-    wait (500)
+    wait (1500)
 
     --phrase 5
     sound2_2:play_at_pos (stalker2, stalker2:position (), 0)
@@ -104,7 +104,10 @@ function main ()
 			cond (cond.sound_end))
 
 	while stalker3:action () do wait () end
-	wait (1000)
+
+	reset_action (stalker3, military2_1.script_name ())
+	action (stalker3, anim (anim.free), cond (cond.time_end, 1000);
+	while stalker3:action () do wait () end
 
 	--last
 	reset_action (stalker3, military2_1.script_name ())
