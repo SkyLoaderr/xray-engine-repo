@@ -67,10 +67,6 @@ void CRenderDevice::overdrawBegin	()
 
 void CRenderDevice::overdrawEnd		()
 {
-    // Turn off the buffer, and enable alpha blending
-    HW.pDevice->SetRenderState( D3DRS_SRCBLEND,			D3DBLEND_ONE	);
-    HW.pDevice->SetRenderState( D3DRS_DESTBLEND,		D3DBLEND_ZERO	);
-
     // Set up the stencil states
     HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,	D3DSTENCILOP_KEEP	);
     HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,  D3DSTENCILOP_KEEP	);
