@@ -20,7 +20,11 @@ extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-class DLL_API CTestImpl:public CTestInterface {
+struct DLL_API CTestMultiple {
+	virtual ~CTestMultiple(){};
+};
+
+class DLL_API CTestImpl : public CTestInterface, public CTestMultiple {
 public:
 							CTestImpl		();
 	virtual	void xr_stdcall	test_0			(LPCSTR);
