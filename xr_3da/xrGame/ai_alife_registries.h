@@ -14,7 +14,7 @@ using namespace ALife;
 
 class CSE_ALifeObjectRegistry : public IPureALifeLSObject {
 public:
-	OBJECT_MAP						m_tObjectRegistry;			// список событий игры
+	D_OBJECT_MAP					m_tObjectRegistry;			// список событий игры
 
 									CSE_ALifeObjectRegistry		();
 	virtual							~CSE_ALifeObjectRegistry	();
@@ -24,7 +24,7 @@ public:
 
 	IC		CSE_ALifeDynamicObject	*tpfGetObjectByID			(_OBJECT_ID tObjectID, bool bNoAssert = false)
 	{
-		OBJECT_PAIR_IT				I = m_tObjectRegistry.find(tObjectID);
+		D_OBJECT_PAIR_IT			I = m_tObjectRegistry.find(tObjectID);
 		
 		if (!bNoAssert)
 			R_ASSERT2				(I != m_tObjectRegistry.end(),"Specified object hasn't been found in the Object registry!");
@@ -91,9 +91,9 @@ public:
 class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {
 public:
 	typedef CSE_ALifeAStar inherited;
-	ALIFE_ENTITY_P_MAP_MAP			m_tLevelMap;
-	CSE_ALifeDynamicObject			*m_tpActor;
-	ALIFE_ENTITY_P_MAP				*m_tpCurrentLevel;
+	D_OBJECT_P_MAP_MAP				m_tLevelMap;
+	CSE_ALifeCreatureActor			*m_tpActor;
+	D_OBJECT_P_MAP					*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;					// по точке графа получить все 
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];	// массив списков: по идетнификатору 
        																	//	местности получить список точек 
@@ -128,7 +128,7 @@ public:
 
 class CSE_ALifeScheduleRegistry {
 public:
-	ALIFE_MONSTER_P_MAP				m_tpScheduledObjects;	// массив обновляемых объектов
+	MONSTER_P_MAP					m_tpScheduledObjects;	// массив обновляемых объектов
 	_OBJECT_ID						m_tNextFirstProcessObjectID;
 
 			void					Init						();
@@ -141,7 +141,7 @@ class CSE_ALifeSpawnRegistry : public CSE_ALifeSpawnHeader {
 public:
 	typedef CSE_ALifeSpawnHeader inherited;
 	
-	ALIFE_ENTITY_P_VECTOR			m_tpSpawnPoints;
+	D_OBJECT_P_VECTOR				m_tpSpawnPoints;
 	LEVEL_POINT_VECTOR				m_tpArtefactSpawnPositions;
 	xr_vector<bool>					m_baAliveSpawnObjects;
 	ITEM_SET_MAP					m_tArtefactAnomalyMap;

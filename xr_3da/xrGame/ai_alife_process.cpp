@@ -30,9 +30,9 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 		case eZoneStateAfterSurge : {
 			if (tfGetGameTime() > m_tNextSurgeTime) {
 				m_tZoneState			= eZoneStateSurge;
-				ALIFE_ENTITY_P_PAIR_IT	B = m_tpCurrentLevel->begin();
-				ALIFE_ENTITY_P_PAIR_IT	E = m_tpCurrentLevel->end();
-				ALIFE_ENTITY_P_PAIR_IT	I;
+				D_OBJECT_P_PAIR_IT		B = m_tpCurrentLevel->begin();
+				D_OBJECT_P_PAIR_IT		E = m_tpCurrentLevel->end();
+				D_OBJECT_P_PAIR_IT		I;
 				for (I = B ; I != E; I++)
 					vfFurlObjectOffline((*I).second);
 				Device.Statistic.TEST3.End();
@@ -40,8 +40,8 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			}
 			u64							qwStartTime	= CPU::GetCycleCount();
 			if (m_bFirstUpdate) {
-				ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin(), I = B;
-				ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
+				D_OBJECT_P_PAIR_IT		B = m_tpCurrentLevel->begin(), I = B;
+				D_OBJECT_P_PAIR_IT		E = m_tpCurrentLevel->end();
 				for ( ; I != E; I++)
 					ProcessOnlineOfflineSwitches((*I).second);
 				m_tNextFirstSwitchObjectID = (*B).second->ID;
@@ -50,9 +50,9 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			else {
 				// processing online/offline switches
 				R_ASSERT2					(m_tpCurrentLevel,"There is no actor in the game!");
-				ALIFE_ENTITY_P_PAIR_IT		B = m_tpCurrentLevel->begin();
-				ALIFE_ENTITY_P_PAIR_IT		E = m_tpCurrentLevel->end();
-				ALIFE_ENTITY_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
+				D_OBJECT_P_PAIR_IT		B = m_tpCurrentLevel->begin();
+				D_OBJECT_P_PAIR_IT		E = m_tpCurrentLevel->end();
+				D_OBJECT_P_PAIR_IT		M = m_tpCurrentLevel->find(m_tNextFirstSwitchObjectID), I;
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
 					ProcessOnlineOfflineSwitches((*I).second);
@@ -92,9 +92,9 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 			Msg("Enough time (0) !");
 #endif
 			if (m_tpScheduledObjects.size()) {
-				ALIFE_MONSTER_P_PAIR_IT	B = m_tpScheduledObjects.begin();
-				ALIFE_MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
-				ALIFE_MONSTER_P_PAIR_IT	M = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID), I;
+				MONSTER_P_PAIR_IT		B = m_tpScheduledObjects.begin();
+				MONSTER_P_PAIR_IT		E = m_tpScheduledObjects.end();
+				MONSTER_P_PAIR_IT		M = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID), I;
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
 					vfProcessNPC		((*I).second);

@@ -35,35 +35,12 @@ private:
 	bool							m_bActorEnabled;
 	string256						m_caSaveName;
 	bool							m_bFirstUpdate;
-
 	
-	// buffer for union operations
-	TASK_VECTOR						m_tpBufferTaskIDs;
-
-	// temporary buffer for purchesed by the particular trader artefacts
+	// temporary buffer for purchased by the particular trader artefacts
 	ITEM_COUNT_MAP					m_tpTraderItems;
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
-	// inline
-	IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman,			OBJECT_IT &I)
-	{
-		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
-	}
-
-	IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman)
-	{
-		OBJECT_IT I;
-		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
-	}
-
-	IC		void					vfSetCurrentTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, _TASK_ID &tTaskID)
-	{
-		tpALifeHumanAbstract->m_dwCurTaskID = tpfGetTaskByID(tTaskID)->m_tTaskID;
-	}
-
-
-
-	// comnmon
+	// common
 			void					vfUpdateDynamicData			(bool bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
 			void					vfCreateNewTask				(CSE_ALifeTrader			*tpTrader);
@@ -83,26 +60,51 @@ private:
 			void					vfBallanceCreatures			();
 			void					vfUpdateTasks				();
 			void					vfAssignStalkerCustomers	();
-			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
 
-	// after surge
+	// human misc
+			IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman,			OBJECT_IT &I)
+			{
+				return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
+			}
+
+			IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman)
+			{
+				OBJECT_IT I;
+				return(bfCheckIfTaskCompleted(tpALifeHuman,I));
+			}
+
+			IC		void					vfSetCurrentTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, _TASK_ID &tTaskID)
+			{
+				tpALifeHumanAbstract->m_dwCurTaskID = tpfGetTaskByID(tTaskID)->m_tTaskID;
+			}
+			
 			bool					bfCheckIfTaskCompleted		(CSE_Abstract				&CSE_Abstract,			CSE_ALifeHumanAbstract *tpALifeHumanAbstract,	OBJECT_IT &I);
-			void					vfChooseTask				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			void					vfGoToCustomer				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			void					vfAccomplishTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			void					vfSearchObject				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfChooseHumanTask			(CSE_ALifeHumanAbstract		*tpALifeHuman);
 			CSE_ALifeTrader *		tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract);
-			void					vfUpdateMonster				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
-			void					vfUpdateHuman				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			bool					bfProcessItems				(CSE_Abstract				&CSE_Abstract,			_GRAPH_ID		tGraphID, float fMaxItemMass,	float fProbability);
 			bool					bfCheckForItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfCheckForDeletedEvents		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			bool					bfChooseNextRoutePoint		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+	// human fsm
+			void					vfUpdateHuman				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfChooseTask				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfHealthCare				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfBuySupplies				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfGoToCustomer				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfBringToCustomer			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfGoToSOS					(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfSendSOS					(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfAccomplishTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfSearchObject				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+	// monster misc
+			void					vfUpdateMonster				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfChooseNextRoutePoint		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	// common misc
 			void					vfProcessNPC				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	// switch online/offline routines
+			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
 			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bAddToScheduled = true);
 			void					vfCreateOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bRemoveFromScheduled = true);
 			void					vfSwitchObjectOnline		(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -113,19 +115,25 @@ public:
 	// members
 	bool							m_bLoaded;
 	LPSTR							*m_cppServerOptions;
-	// methods
+	
+	// constructors/destructors
 									CSE_ALifeSimulator			(xrServer					*tpServer);
 	virtual							~CSE_ALifeSimulator			();
+	
+	// scheduler
 	virtual float					shedule_Scale				();
 	virtual void					shedule_Update				(u32 dt);	
 	virtual BOOL					shedule_Ready				();
 	virtual LPCSTR					cName						();
+	
+	// game interface
 	virtual void					Load						(LPCSTR						caSaveName);
 			void					Save						(LPCSTR						caSaveName);
 			void					Save						();
-			void					Generate					();
 			void					vfNewGame					(LPCSTR						caSaveName);
 			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract, bool bForceDelete = true);
+	
+	// console commands support
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 			void					vfListObjects				();
 			void					vfListEvents				();

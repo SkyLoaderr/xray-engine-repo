@@ -23,8 +23,8 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 CSE_ALifeSimulator::~CSE_ALifeSimulator()
 {
 	shedule_unregister	();
-	OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT		I = m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT		E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CSE_Abstract		*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*I).second);
 		m_tpServer->entity_Destroy(l_tpAbstract);
@@ -72,24 +72,24 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)
 		CSE_ALifeTraderRegistry::Init	();
 		CSE_ALifeScheduleRegistry::Init	();
 
-		OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
+		D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
-			vfUpdateDynamicData	((*I).second);
-			_OBJECT_ID		l_tObjectID = (*I).second->ID;
-			(*I).second->ID	= m_tpServer->PerformIDgen(l_tObjectID);
-			R_ASSERT2		(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
+			vfUpdateDynamicData			((*I).second);
+			_OBJECT_ID					l_tObjectID = (*I).second->ID;
+			(*I).second->ID				= m_tpServer->PerformIDgen(l_tObjectID);
+			R_ASSERT2					(l_tObjectID == (*I).second->ID,"Can't reserve a particular object identifier");
 		}
 		// update events
 		{
-			EVENT_PAIR_IT			I = m_tEventRegistry.begin();
-			EVENT_PAIR_IT			E = m_tEventRegistry.end();
+			EVENT_PAIR_IT				I = m_tEventRegistry.begin();
+			EVENT_PAIR_IT				E = m_tEventRegistry.end();
 			for ( ; I != E; I++)
-				vfAddEventToGraphPoint((*I).second,(*I).second->m_tGraphID);
+				vfAddEventToGraphPoint	((*I).second,(*I).second->m_tGraphID);
 		}
 	}
 
-	vfSetupScheduledObjects();
+	vfSetupScheduledObjects				();
 }
 
 void CSE_ALifeSimulator::vfSetupScheduledObjects()
@@ -226,11 +226,11 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	CSE_ALifeScheduleRegistry::Init	();
 
 	m_tpServer->PerformIDgen	(0x0000);
-	ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin();
-	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
-	for (ALIFE_ENTITY_P_IT I = B ; I != E; ) {
+	D_OBJECT_P_IT				B = m_tpSpawnPoints.begin();
+	D_OBJECT_P_IT				E = m_tpSpawnPoints.end();
+	for (D_OBJECT_P_IT I = B ; I != E; ) {
 		u32						l_dwGroupID	= (*I)->m_dwSpawnGroup;
-		for (ALIFE_ENTITY_P_IT m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); m++) ;
+		for (D_OBJECT_P_IT m = I + 1, j = I; (m != E) && ((*m)->m_dwSpawnGroup == l_dwGroupID); m++) ;
 
 		CSE_Abstract			*tpSE_Abstract = F_entity_Create((*I)->s_name);
 		R_ASSERT2				(tpSE_Abstract,"Can't create entity.");
@@ -272,8 +272,8 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 					break;
 				}
 
-				ALIFE_MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.begin();
-				ALIFE_MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
+				MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.begin();
+				MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
 				for ( ; I != E; I++)
 					vfProcessNPC	((*I).second);
 

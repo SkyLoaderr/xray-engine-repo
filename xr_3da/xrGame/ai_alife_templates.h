@@ -25,6 +25,16 @@ void delete_data(xr_map<T1,T2,T3> &tpMap)
 	tpMap.clear					();
 };
 
+template <class T1, class T2>
+void delete_data(xr_set<T1,T2> &tpSet)
+{
+	xr_set<T1,T2>::iterator	I = tpMap.begin();
+	xr_set<T1,T2>::iterator	E = tpMap.end();
+	for ( ; I != E; I++)
+		delete_data				(*I);
+	tpSet.clear					();
+};
+
 template <class T> 
 void delete_data(xr_vector<T> &tpVector)
 {
@@ -58,6 +68,17 @@ void save_data(xr_map<T1,T2,T3> &tpMap, M &tStream, bool bSaveCount = true)
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
 		save_data				((*I).second,tStream,bSaveCount);
+};
+
+template <class T1, class T2, class M>
+void save_data(xr_set<T1,T2> &tpSet, M &tStream, bool bSaveCount = true)
+{
+	if (bSaveCount)
+		tStream.w_u32			((u32)tpSet.size());
+	xr_set<T1,T2>::iterator	I = tpSet.begin();
+	xr_set<T1,T2>::iterator	E = tpSet.end();
+	for ( ; I != E; I++)
+		save_data				(*I,tStream,bSaveCount);
 };
 
 template <class T, class M>
@@ -129,6 +150,12 @@ void save_data(xr_map<T1,T2,T3> *&tpMap, M &tStream, bool bSaveCount = true)
 	save_data					(*tpMap,tStream,bSaveCount);
 };
 
+template <class T1, class T2, class M>
+void save_data(xr_set<T1,T2> *&tpSet, M &tStream, bool bSaveCount = true)
+{
+	save_data					(*tpSet,tStream,bSaveCount);
+};
+
 template <class T, class M>
 void save_data(xr_vector<T> *&tpVector, M &tStream, bool bSaveCount = true)
 {
@@ -167,6 +194,15 @@ void load_data(xr_map<T1,T2,T3> &tpMap, M &tStream, bool bSaveCount = true)
 	xr_map<T1,T2,T3>::iterator	E = tpMap.end();
 	for ( ; I != E; I++)
 		load_data				((*I).second,tStream,bSaveCount);
+};
+
+template <class T1, class T2, class M>
+void load_data(xr_set<T1,T2> &tpSet, M &tStream, bool bSaveCount = true)
+{
+	xr_set<T1,T2>::iterator	I = tpSet.begin();
+	xr_set<T1,T2>::iterator	E = tpSet.end();
+	for ( ; I != E; I++)
+		load_data				(*I,tStream,bSaveCount);
 };
 
 template <class T, class M>

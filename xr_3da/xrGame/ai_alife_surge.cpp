@@ -77,8 +77,8 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 {
 	// deactivating all the anomalous zones
-	OBJECT_PAIR_IT				B = m_tObjectRegistry.begin(), I = B, J;
-	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT				B = m_tObjectRegistry.begin(), I = B, J;
+	D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (l_tpALifeAnomalousZone)
@@ -104,7 +104,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		// if this condition is _not_ guaranteed we have to rewrite this piece of code
 		// !
 		float					fSum = 0;
-		ALIFE_ENTITY_P_IT		i = m_tpSpawnPoints.begin() + l_tpALifeAnomalousZone->m_tSpawnID, j = i, e = m_tpSpawnPoints.end(), b = m_tpSpawnPoints.begin();
+		D_OBJECT_P_IT		i = m_tpSpawnPoints.begin() + l_tpALifeAnomalousZone->m_tSpawnID, j = i, e = m_tpSpawnPoints.end(), b = m_tpSpawnPoints.begin();
 		u32						l_dwGroupID = (*i)->m_dwSpawnGroup;
 		for ( ; j != e; j++)
 			if ((*j)->m_dwSpawnGroup != l_dwGroupID)
@@ -117,7 +117,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalousZones()
 		float					fProbability = randF(1.f);
 		fSum					= 0.f;
 		J						= I;
-		ALIFE_ENTITY_P_IT		m = j;
+		D_OBJECT_P_IT		m = j;
 		for ( j = i; (j != e) && ((*j)->m_dwSpawnGroup == l_dwGroupID); j++, I++) {
 			fSum += (*j)->m_fProbability;
 			if (fSum > fProbability)
@@ -184,8 +184,8 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 	}
 
 	m_tpAnomalies.resize		(getAI().GraphHeader().dwVertexCount);
-	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>((*I).second);
 		if (!l_tpALifeAnomalousZone || !randI(20))
@@ -207,8 +207,8 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 {
 	// filling array of the survived creatures
 	{
-		OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+		D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+		D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 		for ( ; I != E; I++) {
 			CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 			if (!l_tpALifeCreatureAbstract || (l_tpALifeCreatureAbstract->fHealth > 0.f))
@@ -219,8 +219,8 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 	// i.e. if there is no object being spawned by the particular spawn group
 	// then we have to spawn an object from this spawn group
 	{
-		ALIFE_ENTITY_P_IT			B = m_tpSpawnPoints.begin(), I = B, J;
-		ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+		D_OBJECT_P_IT			B = m_tpSpawnPoints.begin(), I = B, J;
+		D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 		for ( ; I != E; ) {
 			u32						l_dwSpawnGroup = (*I)->m_dwSpawnGroup;
 			bool					bOk = false;
@@ -234,8 +234,8 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 			if (!bOk) {
 				// there is no object being spawned from this spawn group -> spawn it!
 				float				l_fProbability = randF(0,1.f), l_fSum = 0.f;
-				ALIFE_ENTITY_P_IT	j = J;
-				ALIFE_ENTITY_P_IT	e = I;
+				D_OBJECT_P_IT	j = J;
+				D_OBJECT_P_IT	e = I;
 				for ( ; (j != e); j++) {
 					l_fSum			+= (*j)->m_fProbability;
 					if (l_fSum > l_fProbability)
@@ -264,8 +264,8 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 
 void CSE_ALifeSimulator::vfKillCreatures()
 {
-	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeCreatureAbstract *l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 		if (l_tpALifeCreatureAbstract && (l_tpALifeCreatureAbstract->m_bDirectControl) && (l_tpALifeCreatureAbstract->fHealth > 0.f)) {
@@ -724,8 +724,8 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 
 void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 {
-	ALIFE_MONSTER_P_PAIR_IT			I = m_tpScheduledObjects.begin();
-	ALIFE_MONSTER_P_PAIR_IT			E = m_tpScheduledObjects.end();
+	MONSTER_P_PAIR_IT				I = m_tpScheduledObjects.begin();
+	MONSTER_P_PAIR_IT				E = m_tpScheduledObjects.end();
 	for ( ; I != E; I++) {
 		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>((*I).second);
 		if (l_tpALifeHumanAbstract && strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
@@ -738,8 +738,8 @@ void CSE_ALifeSimulator::vfAssignStalkerCustomers()
 //			for (u32 i=0; i<N; i++) {
 //				_GetItem(l_tpALifeHumanAbstract->m_caKnownCustomers,i,S);
 //				bool				bOk = false;
-//				OBJECT_PAIR_IT		II = m_tObjectRegistry.begin();
-//				OBJECT_PAIR_IT		EE = m_tObjectRegistry.end();
+//				D_OBJECT_PAIR_IT		II = m_tObjectRegistry.begin();
+//				D_OBJECT_PAIR_IT		EE = m_tObjectRegistry.end();
 //				for ( ; II != EE; II++) {
 //					CSE_ALifeTraderAbstract *l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>((*II).second);
 //					if (l_tpTraderAbstract) {

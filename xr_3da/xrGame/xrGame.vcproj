@@ -2114,6 +2114,9 @@
 					RelativePath=".\ai_alife_human.cpp">
 				</File>
 				<File
+					RelativePath=".\ai_alife_human_fsm.cpp">
+				</File>
+				<File
 					RelativePath="ai_alife_interfaces.h">
 				</File>
 				<File

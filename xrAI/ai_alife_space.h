@@ -54,55 +54,11 @@ namespace ALife {
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
-	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
-	DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
-	DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
-	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
-	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
-	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
-	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
-	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
-	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
-	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	DYNAMIC_OBJECT_P_VECTOR,		DYNAMIC_OBJECT_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract*,	ALIFE_MONSTER_P_VECTOR,			ALIFE_MONSTER_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
-	DEFINE_VECTOR	(CSE_ALifePersonalEvent*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
-	DEFINE_VECTOR	(ALIFE_MONSTER_P_VECTOR,	ALIFE_MONSTER_P_VECTOR_VECTOR,	ALIFE_MONSTER_P_VECTOR_IT);
-	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	ALIFE_ENTITY_P_VECTOR,			ALIFE_ENTITY_P_IT);
-	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
-	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
-	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
-
-	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,		GRAPH_VECTOR_IT);
-	
-	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		OBJECT_MAP,					OBJECT_PAIR_IT);
-	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
-	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
-	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		ALIFE_ENTITY_P_MAP,			ALIFE_ENTITY_P_PAIR_IT);
-	DEFINE_MAP		(_LEVEL_ID,					ALIFE_ENTITY_P_MAP*,			ALIFE_ENTITY_P_MAP_MAP,		ALIFE_ENTITY_P_MAP_PAIR_IT);
-	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeMonsterAbstract*,		ALIFE_MONSTER_P_MAP,		ALIFE_MONSTER_P_PAIR_IT);
-	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
-	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);
-	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,		pred_str);
-
-	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_PAIR_IT);
-	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
-
-	typedef struct tagSGraphPoint {
-		ALIFE_ENTITY_P_VECTOR		tpObjects;
-		EVENT_P_VECTOR				tpEvents;
-	} SGraphPoint;
-	
-	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
-
 	typedef struct tagSLevelPoint {
 		Fvector		tPoint;
 		u32			tNodeID;
 		float		fDistance;	
 	} SLevelPoint;
-
-	DEFINE_VECTOR	(SLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
 
 	typedef struct tagSTerrainPlace{
 		svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
@@ -110,30 +66,16 @@ namespace ALife {
 		u32											dwMaxTime;
 	} STerrainPlace;
 
-	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
-
 	struct SArtefactOrder {
 		string64				m_caSection;
 		u32						m_dwCount;
 		u32						m_dwPrice;
 	};
 
-	DEFINE_VECTOR		(SArtefactOrder,				ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
-
-	struct SArtefactTraderOrder {
-		string64				m_caSection;
-		u32						m_dwTotalCount;
-		ARTEFACT_ORDER_VECTOR	m_tpOrders;
-	};
-
-	DEFINE_VECTOR		(SArtefactTraderOrder,			ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
-
 	struct SOrganizationOrder {
 		CSE_ALifeOrganization	*m_tpALifeOrganization;
 		u32						m_dwCount;
 	};
-
-	DEFINE_MAP_PRED		(u32,							SOrganizationOrder,				ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT, std::greater<u32>);
 
 	struct STraderSupply {
 		string256				m_caSections;
@@ -141,24 +83,15 @@ namespace ALife {
 		float					m_fMinFactor;
 		float					m_fMaxFactor;
 #ifdef _EDITOR
-        STraderSupply()
-        {
-            m_caSections[0]		= 0;
-            m_dwCount			= 1;
-            m_fMinFactor		= 0.f;
-            m_fMaxFactor		= 1.f;
-        }
+		STraderSupply()
+		{
+			m_caSections[0]		= 0;
+			m_dwCount			= 1;
+			m_fMinFactor		= 0.f;
+			m_fMaxFactor		= 1.f;
+		}
 #endif
 	};
-
-	DEFINE_VECTOR		(STraderSupply,					TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
-
-//	typedef struct tagSOwner {
-//		float					m_fDistance;
-//		CSE_ALifeDynamicObject	*m_tpOwner;
-//	} SOwner;
-//
-//	DEFINE_VECTOR		(SOwner,						OWNER_GRAPH_VECTOR,				OWNER_GRAPH_IT);
 
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
@@ -200,14 +133,6 @@ namespace ALife {
 		eTaskTypeDummy = u32(-1),
 	};
 
-	enum ETaskState {
-		eTaskStateChooseTask = u32(0),
-		eTaskStateAccomplishing,
-		eTaskStateGoToCustomer,
-		eTaskStateSearching,
-		eTaskStateDummy = u32(-1),
-	};
-
 	enum EStalkerRank {
 		eStalkerRankNone = u32(0),
 		eStalkerRankNovice,
@@ -224,18 +149,6 @@ namespace ALife {
 		eZoneStateDummy = u32(-1),
 	};
 	
-	enum EAnomalousZoneType {
-		eAnomalousZoneTypeGravi = u32(0),
-		eAnomalousZoneTypeFog,
-		eAnomalousZoneTypeRadio,
-		eAnomalousZoneTypePlant,
-		eAnomalousZoneTypeGelatine,
-		eAnomalousZoneTypeFluff,
-		eAnomalousZoneTypeRustyHair,
-		eAnomalousZoneTypeRustyWhistlers,
-		eAnomalousZoneTypeDummy,
-	};
-
 	enum EArtefactType {
 		eArtefactTypeNone = u32(0),
 		eArtefactTypeGravi,
@@ -254,12 +167,90 @@ namespace ALife {
 		eResearchStateDummy = u32(-1),
 	};
 	
-	DEFINE_MAP_PRED	(LPSTR,						bool,							LPSTR_BOOL_MAP,				LPSTR_BOOL_PAIR_IT,	pred_str);
-	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
-	DEFINE_MAP_PRED	(LPSTR,						U32_SET,						ITEM_SET_MAP,				ITEM_SET_PAIR_IT,	pred_str);
-	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);
-	DEFINE_MAP_PRED	(LPSTR,						TRADER_SET,						TRADER_SET_MAP,				TRADER_SET_PAIR_IT,	pred_str);
+	enum ETaskState {
+		eTaskStateChooseTask = u32(0),
+		eTaskStateHealthCare,
+		eTaskStateBuySupplies,
+		eTaskStateGoToCustomer,
+		eTaskStateBringToCustomer,
+		eTaskStateGoToSOS,
+		eTaskStateSendSOS,
+		eTaskStateAccomplishTask,
+		eTaskStateSearchItem,
+		eTaskStateDummy = u32(-1),
+	};
+	
+	enum EAnomalousZoneType {
+		eAnomalousZoneTypeGravi = u32(0),
+		eAnomalousZoneTypeFog,
+		eAnomalousZoneTypeRadio,
+		eAnomalousZoneTypePlant,
+		eAnomalousZoneTypeGelatine,
+		eAnomalousZoneTypeFluff,
+		eAnomalousZoneTypeRustyHair,
+		eAnomalousZoneTypeRustyWhistlers,
+		eAnomalousZoneTypeDummy,
+	};
+
+	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
+	DEFINE_VECTOR	(SArtefactOrder,			ARTEFACT_ORDER_VECTOR,			ARTEFACT_ORDER_IT);
+
+	typedef struct tagSGraphPoint {
+		D_OBJECT_P_VECTOR		tpObjects;
+		EVENT_P_VECTOR			tpEvents;
+	} SGraphPoint;
+
+	struct SArtefactTraderOrder {
+		string64				m_caSection;
+		u32						m_dwTotalCount;
+		ARTEFACT_ORDER_VECTOR	m_tpOrders;
+	};
+
+	DEFINE_VECTOR	(float,						FLOAT_VECTOR,					FLOAT_IT);
+	DEFINE_VECTOR	(LPSTR,						LPSTR_VECTOR,					LPSTR_IT);
+	DEFINE_VECTOR	(Fvector,					FVECTOR_VECTOR,					FVECTOR_IT);
+	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
+	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
+	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,					EVENT_IT);
+	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,					TASK_IT);
+	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,					GRAPH_IT);
+	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,			OBJECT_VECTOR_IT);
+	DEFINE_VECTOR	(CSE_ALifeMonsterAbstract*,	MONSTER_P_VECTOR,				MONSTER_P_IT);
+	DEFINE_VECTOR	(CSE_ALifeTrader*,			TRADER_P_VECTOR,				TRADER_P_IT);
+	DEFINE_VECTOR	(CSE_ALifePersonalEvent*,	PERSONAL_EVENT_P_VECTOR,		PERSONAL_EVENT_P_IT);
+	DEFINE_VECTOR	(MONSTER_P_VECTOR,			MONSTER_P_VECTOR_VECTOR,		MONSTER_P_VECTOR_IT);
+	DEFINE_VECTOR	(CSE_ALifeKnownAnomaly*,	ANOMALY_P_VECTOR,				ANOMALY_P_IT);
+	DEFINE_VECTOR	(ANOMALY_P_VECTOR,			ANOMALY_P_VECTOR_VECTOR,		ANOMALY_P_VECTOR_IT);
+	DEFINE_VECTOR	(CSE_ALifeArtefactDemand*,	DEMAND_P_VECTOR,				DEMAND_P_IT);
+	DEFINE_VECTOR	(SLevelPoint,				LEVEL_POINT_VECTOR,				LEVEL_POINT_IT);
+	DEFINE_VECTOR	(STerrainPlace,				TERRAIN_VECTOR,					TERRAIN_IT);
+	DEFINE_VECTOR	(STraderSupply,				TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);
+	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,				GRAPH_POINT_IT);
+	DEFINE_VECTOR	(SArtefactTraderOrder,		ARTEFACT_TRADER_ORDER_VECTOR,	ARTEFACT_TRADER_ORDER_IT);
+
+	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,					GRAPH_VECTOR_SVECTOR,		GRAPH_VECTOR_IT);
 	DEFINE_SVECTOR	(ANOMALY_P_VECTOR,			eAnomalousZoneTypeDummy,		ANOMALY_P_VECTOR_SVECTOR,	ANOMALY_P_VECTOR_SIT)
+
+	DEFINE_SET		(_TASK_ID,					TASK_SET,						TASK_SET_IT);
+	DEFINE_SET		(CSE_ALifeTrader*,			TRADER_SET,						TRADER_SET_IT);
+	DEFINE_SET		(EAnomalousZoneType,		U32_SET,						U32_SET_IT);
+
+	DEFINE_MAP		(_OBJECT_ID,				TASK_SET,						OBJECT_TASK_MAP,			OBJECT_TASK_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_MAP,				D_OBJECT_PAIR_IT);
+	DEFINE_MAP		(_EVENT_ID,					CSE_ALifeEvent*,				EVENT_MAP,					EVENT_PAIR_IT);
+	DEFINE_MAP		(_TASK_ID,					CSE_ALifeTask*,					TASK_MAP,					TASK_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeDynamicObject*,		D_OBJECT_P_MAP,				D_OBJECT_P_PAIR_IT);
+	DEFINE_MAP		(_LEVEL_ID,					D_OBJECT_P_MAP*,				D_OBJECT_P_MAP_MAP,			D_OBJECT_P_MAP_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CSE_ALifeMonsterAbstract*,		MONSTER_P_MAP,				MONSTER_P_PAIR_IT);
+
+	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeDiscovery*,			DISCOVERY_P_MAP,			DISCOVERY_P_PAIR_IT,	pred_str);
+	DEFINE_MAP_PRED	(LPCSTR,					CSE_ALifeOrganization*,			ORGANIZATION_P_MAP,			ORGANIZATION_P_PAIR_IT, pred_str);
+	DEFINE_MAP_PRED	(LPSTR,						u32,							ITEM_COUNT_MAP,				ITEM_COUNT_PAIR_IT,		pred_str);
+	DEFINE_MAP_PRED	(u32,						SOrganizationOrder,				ORGANIZATION_ORDER_MAP,		ORGANIZATION_ORDER_PAIR_IT, std::greater<u32>);
+	DEFINE_MAP_PRED	(LPSTR,						bool,							LPSTR_BOOL_MAP,				LPSTR_BOOL_PAIR_IT,	pred_str);
+	DEFINE_MAP_PRED	(LPSTR,						U32_SET,						ITEM_SET_MAP,				ITEM_SET_PAIR_IT,	pred_str);
+	DEFINE_MAP_PRED	(LPSTR,						TRADER_SET,						TRADER_SET_MAP,				TRADER_SET_PAIR_IT,	pred_str);
 };
 
 #endif

@@ -25,8 +25,8 @@ CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
 	// to delete them properly
-	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT			I = m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT			E = m_tObjectRegistry.end();
 	for ( ; I != E; I++)
 		xr_delete				(dynamic_cast<CSE_Abstract*>((*I).second));
 }
@@ -35,8 +35,8 @@ void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
 {
 	tMemoryStream.open_chunk	(OBJECT_CHUNK_DATA);
 	tMemoryStream.w_u32			((u32)m_tObjectRegistry.size());
-	OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT I			= m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT E			= m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		NET_Packet				tNetPacket;
 		// Spawn
@@ -228,14 +228,16 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 {
 	if (!tpALifeDynamicObject->m_bDirectControl)
 		return;
-	if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
-		m_tpActor = tpALifeDynamicObject;
+	if (tpALifeDynamicObject->s_flags.is(M_SPAWN_OBJECT_ASPLAYER)) {
+		m_tpActor = dynamic_cast<CSE_ALifeCreatureActor*>(tpALifeDynamicObject);
+		R_ASSERT2			(m_tpActor,"Invalid flag M_SPAWN_OBJECT_ASPLAYER for non-actor object!");
+	}
 
 	u8 dwLevelID = getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID;
 
-	ALIFE_ENTITY_P_MAP_PAIR_IT I = m_tLevelMap.find(dwLevelID);
+	D_OBJECT_P_MAP_PAIR_IT I = m_tLevelMap.find(dwLevelID);
 	if (I == m_tLevelMap.end()) {
-		ALIFE_ENTITY_P_MAP	*tpTemp = xr_new<ALIFE_ENTITY_P_MAP>();
+		D_OBJECT_P_MAP	*tpTemp = xr_new<D_OBJECT_P_MAP>();
 		tpTemp->insert		(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 		m_tLevelMap.insert	(std::make_pair(dwLevelID,tpTemp));
 	}
@@ -256,7 +258,7 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 void CSE_ALifeGraphRegistry::vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 {
-	ALIFE_ENTITY_P_PAIR_IT	I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
+	D_OBJECT_P_PAIR_IT	I = m_tpCurrentLevel->find(tpALifeDynamicObject->ID), J = I;
 	R_ASSERT2				(I != m_tpCurrentLevel->end(),"Object not found in the level map!");
 	if (m_tNextFirstSwitchObjectID == tpALifeDynamicObject->ID) {
 		if (++J == m_tpCurrentLevel->end())
@@ -274,8 +276,8 @@ void CSE_ALifeGraphRegistry::vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject
 	if (dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject))
 		return;
 
-	ALIFE_ENTITY_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
-	ALIFE_ENTITY_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
+	D_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();
+	D_OBJECT_P_IT				E = m_tpGraphObjects[tGraphID].tpObjects.end();
 	bool							bOk = false;
 	for ( ; I != E; I++)
 		if ((*I) == tpALifeDynamicObject) {
@@ -430,8 +432,8 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 	if (!tpALifeMonsterAbstract || ((tpALifeMonsterAbstract->fHealth <= 0) && (m_tpScheduledObjects.find(tpALifeDynamicObject->ID) == m_tpScheduledObjects.end())))
 		return;
 
-	ALIFE_MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID), J = I;
-	R_ASSERT2				(I != m_tpScheduledObjects.end(),"Object not found in the level map!");
+	MONSTER_P_PAIR_IT			I = m_tpScheduledObjects.find(tpALifeDynamicObject->ID), J = I;
+	R_ASSERT2					(I != m_tpScheduledObjects.end(),"Object not found in the level map!");
 	if (m_tNextFirstProcessObjectID == tpALifeDynamicObject->ID) {
 		if (++J == m_tpScheduledObjects.end())
 			J = m_tpScheduledObjects.begin();
@@ -457,8 +459,8 @@ CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
 	// to delete them properly
-	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
-	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
+	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++)
 		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
 }
@@ -467,8 +469,8 @@ void CSE_ALifeSpawnRegistry::Init()
 {
 	// since we use multiple inheritance, we have to cast the objects to the underlying class
 	// to delete them properly
-	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
-	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
+	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 	for ( ; I != E; I++)
 		xr_delete				(dynamic_cast<CSE_Abstract*>(*I));
 }
@@ -479,8 +481,8 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 	m_tpSpawnPoints.resize		(m_dwSpawnCount);
 	m_baAliveSpawnObjects.assign(m_dwSpawnCount,false);
 	m_tArtefactAnomalyMap.clear	();
-	ALIFE_ENTITY_P_IT			I = m_tpSpawnPoints.begin();
-	ALIFE_ENTITY_P_IT			E = m_tpSpawnPoints.end();
+	D_OBJECT_P_IT			I = m_tpSpawnPoints.begin();
+	D_OBJECT_P_IT			E = m_tpSpawnPoints.end();
 	NET_Packet					tNetPacket;
 	IReader						*S = 0;
 	u16							ID;
@@ -529,10 +531,8 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 			}
 		}
 	}
-	{
-		R_ASSERT2				(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
-		load_data				(m_tpArtefactSpawnPositions,tFileStream);
-	}
+	R_ASSERT2					(0!=(S = tFileStream.open_chunk(id++)),"Can't find artefact spawn points chunk in the 'game.spawn'");
+	load_data					(m_tpArtefactSpawnPositions,tFileStream);
 }
 
 ////////////////////////////////////////////////////////////////////////////

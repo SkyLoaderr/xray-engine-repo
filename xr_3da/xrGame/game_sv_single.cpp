@@ -26,7 +26,7 @@ void	game_sv_Single::Create			(LPSTR &options)
 CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
 {
 	if (m_tpALife) {
-		OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
+		D_OBJECT_PAIR_IT	I = m_tpALife->m_tObjectRegistry.find(id);
 		if (I != m_tpALife->m_tObjectRegistry.end())
 			return((*I).second);
 		else

@@ -79,8 +79,8 @@ void vfPrintLargeString(const char *S1, const char *S, const int j, const u32 u)
 
 void CSE_ALifeSimulator::vfListObjects()
 {
-	OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
+	D_OBJECT_PAIR_IT	I = m_tObjectRegistry.begin();
+	D_OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
 	string64		tString;
 	Msg("%s->Listing objects :",cName());
 	for (int i=0; I != E; I++, i++) {
@@ -157,7 +157,7 @@ void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 {
 	string4096		S;
 	string16		S1;
-	OBJECT_PAIR_IT	I = m_tObjectRegistry.find(tObjectID);
+	D_OBJECT_PAIR_IT	I = m_tObjectRegistry.find(tObjectID);
 	//Msg				("%s->Object information :",cName());
 	if (I == m_tObjectRegistry.end()) {
 		Msg			("Object not found! (ID = %d)",tObjectID);
@@ -304,8 +304,8 @@ void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID tEventID)
 		string4096	S;
 		string16	S1;
 		S[0] = 0;
-		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
+		D_OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
+		D_OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
 			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
@@ -363,8 +363,8 @@ void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID tTaskID)
 	string4096	S;
 	S[0] = 0;
 	{
-		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
-		OBJECT_PAIR_IT E = m_tObjectRegistry.end();
+		D_OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
+		D_OBJECT_PAIR_IT E = m_tObjectRegistry.end();
 		for (int j=0; I != E; I++) {
 			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)

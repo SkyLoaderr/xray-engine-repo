@@ -59,18 +59,18 @@ public:
 
 class CSortItemPredicate {
 private:
-	ALife::OBJECT_MAP				*m_tpMap;
+	ALife::D_OBJECT_MAP				*m_tpMap;
 public:
-									CSortItemPredicate					(ALife::OBJECT_MAP &tpMap)
+									CSortItemPredicate					(ALife::D_OBJECT_MAP &tpMap)
 	{
 		m_tpMap						= &tpMap;
 	};
 
 	IC bool							operator()							(const ALife::_OBJECT_ID &tObjectID1, const ALife::_OBJECT_ID &tObjectID2)  const
 	{
-		ALife::OBJECT_PAIR_IT		it1 = m_tpMap->find(tObjectID1);
+		ALife::D_OBJECT_PAIR_IT		it1 = m_tpMap->find(tObjectID1);
 		VERIFY						(it1 != m_tpMap->end());
-		ALife::OBJECT_PAIR_IT		it2 = m_tpMap->find(tObjectID2);
+		ALife::D_OBJECT_PAIR_IT		it2 = m_tpMap->find(tObjectID2);
 		VERIFY						(it2 != m_tpMap->end());
 		CSE_ALifeItem				*tpItem1 = dynamic_cast<CSE_ALifeItem *>((*it1).second);
 		VERIFY						(tpItem1);

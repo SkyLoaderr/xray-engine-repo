@@ -184,8 +184,8 @@ void CAI_Space::Render()
 			if (Level().game.type == GAME_SINGLE) {
 				game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 				if ((tpGame) && (tpGame->m_tpALife)) {
-					OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
-					OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
+					D_OBJECT_PAIR_IT	I = tpGame->m_tpALife->m_tObjectRegistry.begin();
+					D_OBJECT_PAIR_IT	E = tpGame->m_tpALife->m_tObjectRegistry.end();
 					for ( ; I != E; I++) {
 						{
 							CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>((*I).second);
