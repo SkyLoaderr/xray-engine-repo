@@ -20,6 +20,7 @@
 #include "alife_news_registry.h"
 #include "alife_registry_container.h"
 #include "xrserver.h"
+#include "level.h"
 
 using namespace ALife;
 
