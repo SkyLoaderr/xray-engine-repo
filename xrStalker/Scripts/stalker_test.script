@@ -8,7 +8,7 @@ function test_callback:__init()
 end
 
 function object_idle(name,...)
-	local				act = action(,...)
+	local				act = action(nil,unpack(arg))
 	while true do
 		local			obj	= get_level_object(name)
 		obj:set_command	(action);
