@@ -25,7 +25,7 @@ CSoundPlayer::~CSoundPlayer			()
 
 void CSoundPlayer::Init				()
 {
-	seed							(CPU::GetCycleCount() && 0xffffffff);
+	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
 }
 
 void CSoundPlayer::reinit			()

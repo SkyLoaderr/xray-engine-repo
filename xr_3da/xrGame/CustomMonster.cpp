@@ -393,7 +393,7 @@ void CCustomMonster::UpdateCL	()
 				SelectAnimation		(XFORM().k,direction(),speed());
 		}
 		else {
-			CAI_Rat				*l_tpRat = dynamic_cast<CAI_Rat*>(this);
+			CAI_Rat				*l_tpRat = dcast_Rat();
 			R_ASSERT			(l_tpRat);
 			if (((dwTime > N.dwTimeStamp) || (NET.size() < 2)) && (_abs(l_tpRat->m_fSpeed) > EPS_L)) {
 				Fmatrix				l_tSavedTransform = XFORM();
@@ -777,3 +777,28 @@ void CCustomMonster::ChangeTeam(int team, int squad, int group)
 	Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	Group.Member_Add(this);
 }
+
+void CCustomMonster::PitchCorrection() 
+{
+	CLevelGraph::SContour	contour;
+	ai().level_graph().contour(contour, level_vertex_id());
+	
+	Fplane  P;
+	P.build(contour.v1,contour.v2,contour.v3);
+
+	// находим проекцию точки, лежащей на векторе текущего направления
+	Fvector dir_point, proj_point;
+	dir_point.mad(Position(), Direction(), 1.f);
+	P.project(proj_point,dir_point);
+	
+	// получаем искомый вектор направления
+	Fvector target_dir;
+	target_dir.sub(proj_point,Position());
+
+	float yaw,pitch;
+	target_dir.getHP(yaw,pitch);
+
+	m_body.target.pitch = -pitch;
+
+}
+

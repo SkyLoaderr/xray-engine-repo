@@ -8,24 +8,17 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
+#include "ai_rat_space.h"
+
+using namespace RatSpace;
 
 void CAI_Rat::Exec_Action(float /**dt/**/)
 {
 	switch (m_tAction) {
 		case eRatActionAttackBegin : {
-			u32 dwTime = Level().timeServer();
-			if (enemy() && (enemy()->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
-				bool bOk = true;
-
-				for (int i=0; i<SND_ATTACK_COUNT; ++i)
-					if (m_tpaSoundAttack[i].feedback) {
-						bOk = false;
-						break;
-					}
-
-				if (bOk)
-					m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)].play_at_pos(this,Position());
-
+			u32					dwTime = Level().timeServer();
+			CSoundPlayer::play	(eRatSoundAttack);//,0,0,m_dwHitInterval+1,m_dwHitInterval);
+			if (enemy() && enemy()->g_Alive() && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				m_bActionStarted = true;
 				m_dwStartAttackTime = dwTime;
 				Fvector tDirection;
@@ -40,22 +33,8 @@ void CAI_Rat::Exec_Action(float /**dt/**/)
 					entity_alive->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
 				}
 			}
-			else {
-				if (enemy()) {
-					bool bOk = true;
-
-					for (int i=0; i<SND_ATTACK_COUNT; ++i)
-						if (m_tpaSoundAttack[i].feedback) {
-							bOk = false;
-							break;
-						}
-
-					if (bOk && !::Random.randI(100))
-						m_tpaSoundAttack[Random.randI(SND_ATTACK_COUNT)].play_at_pos(this,Position());
-				}
+			else
 				m_bActionStarted = false;
-			}
-
 			break;
 		}
 		case eRatActionAttackEnd : {
@@ -78,20 +57,7 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 	m_tHitPosition = who->Position();
 	
 	// Play hit-ref_sound
-	ref_sound& S				= m_tpaSoundHit[Random.randI(SND_HIT_COUNT)];
-	
-	if (g_Health() > 0) {
-		if (S.feedback)
-			return;
-		if (Random.randI(2))
-			return;
-		::Sound->play_at_pos		(S,this,Position());
-	}
-	if (g_Health() - amount <= 0) {
-		if ((m_tpCurrentGlobalAnimation) && (!m_tpCurrentGlobalBlend->playing))
-			if (m_tpCurrentGlobalAnimation != m_tRatAnimations.tNormal.tGlobal.tpaDeath[0])
-				m_tpCurrentGlobalBlend = PSkeletonAnimated(Visual())->PlayCycle(m_tpCurrentGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)]);
-	}
+	CSoundPlayer::play			(eRatSoundInjuring);
 }
 
 bool CAI_Rat::useful		(const CGameObject *object) const

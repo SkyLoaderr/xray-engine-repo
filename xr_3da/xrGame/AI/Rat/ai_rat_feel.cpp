@@ -21,7 +21,7 @@ void CAI_Rat::SetDirectionLook()
 		}
 	}
 	else
-		m_body.target.pitch = 0;
+		PitchCorrection		();
 }
 
 void CAI_Rat::vfAimAtEnemy()

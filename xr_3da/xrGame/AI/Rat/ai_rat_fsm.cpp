@@ -11,19 +11,22 @@
 #include "../ai_monsters_misc.h"
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
+#include "ai_rat_space.h"
+
+using namespace RatSpace;
 
 #undef	WRITE_TO_LOG
 #define WRITE_TO_LOG(s) m_bStopThinking = true;
+/*	if (!visible_objects().size())\
+Msg("* No objects in frustum",visible_objects().size());\
+else {\
+Msg("* Objects in frustum (%d) :",visible_objects().size());\
+for (int i=0; i<(int)visible_objects().size(); ++i)\
+Msg("*   %s",*visible_objects()[i]->cName());\
+}\
 /**
 #define WRITE_TO_LOG(s) {\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",*cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
-	if (!visible_objects().size())\
-		Msg("* No objects in frustum",visible_objects().size());\
-	else {\
-		Msg("* Objects in frustum (%d) :",visible_objects().size());\
-		for (int i=0; i<(int)visible_objects().size(); ++i)\
-			Msg("*   %s",*visible_objects()[i]->cName());\
-	}\
 	m_bStopThinking = true;\
 }
 /**/
@@ -94,23 +97,6 @@ void CAI_Rat::Think()
 		m_bStateChanged = m_ePreviousState != m_eCurrentState;
 	}
 	while (!m_bStopThinking);
-//	if (m_fSpeed > EPS_L) {
-//		CDetailPathManager::m_path.resize(3);
-//		CDetailPathManager::m_path[0].floating = CDetailPathManager::m_path[1].floating = CDetailPathManager::m_path[2].floating = FALSE;
-//		CDetailPathManager::m_path[0].P = m_tOldPosition;
-//		CDetailPathManager::m_path[1].P = Position();
-//		Fvector tTemp;
-//		tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
-//		tTemp.normalize_safe();
-//		tTemp.mul(10.f);
-//		CDetailPathManager::m_path[2].P.add(Position(),tTemp);
-//		CDetailPathManager::m_current_travel_point = 0;
-//		Position() = m_tOldPosition;
-//	}
-//	else {
-//		CDetailPathManager::m_path.clear();
-//		CDetailPathManager::m_current_travel_point = 0;
-//	}
 }
 
 void CAI_Rat::Death()
@@ -124,7 +110,6 @@ void CAI_Rat::Death()
 	vfSetFire		(false,Group);
 	
 	SelectAnimation	(XFORM().k,direction(),0);
-	enable_movement	(false);
 
 	if (m_fFood <= 0) {
 		if (m_previous_query_time <= GetLevelDeathTime())
@@ -151,19 +136,17 @@ void CAI_Rat::Turn()
 
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
-//	Fmatrix	mXFORM;
-//	mXFORM.setHPB	(m_tHPB.x = -m_body.current.yaw,m_tHPB.y,m_tHPB.z);
-//	mXFORM.c		= Position();
-//	XFORM()			= mXFORM;
-	m_tHPB.x		= -m_body.current.yaw;
+	m_tHPB.x			= -m_body.current.yaw;
 
 	CHECK_IF_GO_TO_PREV_STATE(angle_difference(m_body.target.yaw, m_body.current.yaw) <= PI_DIV_6)
 	
 	INIT_SQUAD_AND_LEADER
 	
-	m_body.speed = PI_MUL_2;
+	m_body.speed		= PI_MUL_2;
 
-	m_fSpeed = 0;
+	m_fSpeed			= 0;
+
+	CSoundPlayer::play	(eRatSoundVoice,45*1000,15*1000);
 }
 
 void CAI_Rat::FreeHuntingActive()
@@ -181,7 +164,18 @@ void CAI_Rat::FreeHuntingActive()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_fMorale < m_fMoraleNormalValue,aiRatUnderFire);
 	
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && !enemy()) {
+	if	(
+			(m_tLastSound.dwTime >= m_dwLastUpdateTime) && 
+			(
+				!m_tLastSound.tpEntity || 
+				(
+					(!item() || (item()->ID() != m_tLastSound.tpEntity->ID())) && 
+					(m_tLastSound.tpEntity->g_Team() != g_Team())
+				)
+			) && 
+			!enemy()
+		)
+	{
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
     
@@ -211,26 +205,7 @@ void CAI_Rat::FreeHuntingActive()
 	if (bfComputeNewPosition(false))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 	
-	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-		u32 dwCurTime = Level().timeServer();
-		if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-			m_tpSoundBeingPlayed = 0;
-			m_dwLastVoiceTalk = dwCurTime;
-		}
-		if ((dwCurTime - m_dwLastSoundRefresh > m_fVoiceRefreshRate) && ((dwCurTime - m_dwLastVoiceTalk > m_fMaxVoiceIinterval) || ((dwCurTime - m_dwLastVoiceTalk > m_fMinVoiceIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastVoiceTalk - m_fMinVoiceIinterval)/(m_fMaxVoiceIinterval - m_fMinVoiceIinterval))))) {
-			m_dwLastSoundRefresh = dwCurTime;
-			// Play voice-ref_sound
-			m_tpSoundBeingPlayed = &(m_tpaSoundVoice[Random.randI(SND_VOICE_COUNT)]);
-			
-			if (!m_tpSoundBeingPlayed->feedback)
-				::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-			else
-				m_tpSoundBeingPlayed->feedback->set_position(eye_matrix.c);
-		}
-	}
-	else
-		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
-			m_tpSoundBeingPlayed->feedback->set_position(eye_matrix.c);
+	CSoundPlayer::play	(eRatSoundVoice,45*1000,15*1000);
 }
 
 void CAI_Rat::FreeHuntingPassive()
@@ -267,6 +242,8 @@ void CAI_Rat::FreeHuntingPassive()
 
 	vfAddStandingMember();
 	vfAddActiveMember();
+
+	CSoundPlayer::play	(eRatSoundVoice,45*1000,15*1000);
 }
 
 void CAI_Rat::UnderFire()
@@ -289,11 +266,13 @@ void CAI_Rat::UnderFire()
 				SWITCH_TO_NEW_STATE(aiRatAttackRun);
 			}
 			m_previous_query_time = Level().timeServer();
-			Fvector tTemp;
-			tTemp.setHP(m_body.current.yaw,m_body.current.pitch);
-			tTemp.normalize_safe();
-			tTemp.mul(m_fUnderFireDistance);
-			m_tSpawnPosition.add(Position(),tTemp);
+			if (m_bStateChanged) {
+				Fvector tTemp;
+				tTemp.setHP(-m_body.current.yaw,-m_body.current.pitch);
+				tTemp.normalize_safe();
+				tTemp.mul(m_fUnderFireDistance);
+				m_tSpawnPosition.add(Position(),tTemp);
+			}
 		}
 		if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
 			GO_TO_PREV_STATE;
@@ -302,7 +281,7 @@ void CAI_Rat::UnderFire()
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
+	if (m_bStateChanged)//(Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
 		m_tGoalDir = m_tSpawnPosition;
 	
 	m_fSpeed = m_fAttackSpeed;
@@ -338,9 +317,10 @@ void CAI_Rat::AttackFire()
 		
 	Fvector			tDistance;
 	tDistance.sub	(Position(),enemy()->Position());
-	enable_movement	(false);
 	
 	vfAimAtEnemy	();
+
+	m_fSpeed		= 0.f;
 
 	vfSetFire		(true,Level().get_group(g_Team(),g_Squad(),g_Group()));
 	
@@ -379,8 +359,9 @@ void CAI_Rat::AttackRun()
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((enemy()->Position().distance_to(Position()) <= m_fAttackDistance) && (angle_difference(m_body.target.yaw, sTemp.yaw) <= m_fAttackAngle),aiRatAttackFire)
 
-	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
+	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time) {
 		m_tGoalDir.set(enemy()->Position());
+	}
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -475,7 +456,19 @@ void CAI_Rat::Pursuit()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE((m_fMorale < m_fMoraleNormalValue),aiRatUnderFire);
 
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT)) {
+//	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_HIT) == SOUND_TYPE_WEAPON_BULLET_HIT)) {
+	if	(
+			(m_tLastSound.dwTime >= m_dwLastUpdateTime) && 
+			(
+				!m_tLastSound.tpEntity || 
+				(
+					(!item() || (item()->ID() != m_tLastSound.tpEntity->ID())) && 
+					(m_tLastSound.tpEntity->g_Team() != g_Team())
+				)
+			) && 
+			!enemy()
+		)
+	{
 		GO_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
 
@@ -524,6 +517,8 @@ void CAI_Rat::FreeRecoil()
 
 	if (bfComputeNewPosition(true,true))
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+
+	CSoundPlayer::play	(eRatSoundVoice,45*1000,15*1000);
 }
 
 void CAI_Rat::ReturnHome()
@@ -586,40 +581,81 @@ void CAI_Rat::EatCorpse()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE((enemy() && ((enemy()->Position().distance_to(m_tSafeSpawnPosition) < m_fMaxPursuitRadius) || (Position().distance_to(m_tSafeSpawnPosition) > m_fMaxHomeRadius))));
 
-	if (item()) {
-		vfChangeGoal();
-		m_fGoalChangeTime = 10.f;
-	}
+//	if (item()) {
+//		vfChangeGoal();
+//		m_fGoalChangeTime = 10.f;
+//	}
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!item() || (m_fMorale < m_fMoraleNormalValue));
 
-	if ((m_tLastSound.dwTime >= m_dwLastUpdateTime) && ((!m_tLastSound.tpEntity) || (m_tLastSound.tpEntity->g_Team() != g_Team())) && !item()) {
+	m_fGoalChangeTime					= 10.f;
+
+	if	(
+			(m_tLastSound.dwTime >= m_dwLastUpdateTime) && 
+			(
+				!m_tLastSound.tpEntity || 
+				(
+					(!item() || (item()->ID() != m_tLastSound.tpEntity->ID())) && 
+					(m_tLastSound.tpEntity->g_Team() != g_Team())
+				)
+			) && 
+			!enemy()
+		)
+	{
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatFreeRecoil);
 	}
-	
+
+//	CSkeletonAnimated					*V= PSkeletonAnimated(const_cast<CGameObject*>(item())->Visual());
+//	R_ASSERT							(V);
+//	u16									head_bone = V->LL_BoneID("bip01_head");
+//	Fmatrix								l_tMatrix;
+//	l_tMatrix.mul_43					(const_cast<CGameObject*>(item())->XFORM(),PKinematics(const_cast<CGameObject*>(item())->Visual())->LL_GetBoneInstance(head_bone).mTransform);
+//	Fvector								temp_position = l_tMatrix.c;
+	Fvector								temp_position;
+	item()->Center						(temp_position);
+
 	if ((Level().timeServer() - m_previous_query_time > TIME_TO_GO) || !m_previous_query_time)
-		m_tGoalDir.set(item()->Position());
-	
-	vfUpdateTime(m_fTimeUpdateDelta);
+		m_tGoalDir.set					(temp_position);
 
-	m_fSpeed = m_fMaxSpeed;
+	vfUpdateTime						(m_fTimeUpdateDelta);
 
-	if (bfComputeNewPosition(true,true))
-		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
-
-	Fvector tTemp;
-	item()->Center(tTemp);
-	if (tTemp.distance_to(Position()) <= m_fAttackDistance) {
-		m_fSpeed = 0;
+	bool								a = temp_position.distance_to(Position()) <= m_fAttackDistance;
+	Fvector								direction;
+	direction.sub						(temp_position,Position());
+	float								y,p;
+	direction.getHP						(y,p);
+	if (a && angle_difference(y,-m_body.current.yaw) < PI_DIV_6) {
+		m_fSpeed						= 0;
 		if (Level().timeServer() - m_previous_query_time > m_dwHitInterval) {
-			m_previous_query_time = Level().timeServer();
-			const CEntityAlive	*const_corpse = dynamic_cast<const CEntityAlive*>(item());
-			VERIFY			(const_corpse);
-			CEntityAlive	*corpse = const_cast<CEntityAlive*>(const_corpse);
-			VERIFY			(corpse);
-			corpse->m_fFood -= m_fHitPower/10.f;
+			m_previous_query_time		= Level().timeServer();
+			const CEntityAlive			*const_corpse = dynamic_cast<const CEntityAlive*>(item());
+			VERIFY						(const_corpse);
+			CEntityAlive				*corpse = const_cast<CEntityAlive*>(const_corpse);
+			VERIFY						(corpse);
+			corpse->m_fFood				-= m_fHitPower/10.f;
 		}
 		m_bFiring = true;
+		CSoundPlayer::play				(eRatSoundEat);
+	}
+	else {
+		CSoundPlayer::set_sound_mask	(u32(-1));
+		CSoundPlayer::set_sound_mask	(0);
+
+		bool							a = false;
+		if (true || (temp_position.distance_to(Position()) > 3.5f) || ((temp_position.distance_to(Position()) > 2.5f) && !fsimilar(m_fSpeed,m_fMinSpeed))) 
+		{
+			m_fSpeed					= m_fMaxSpeed;
+			a							= bfComputeNewPosition(true,true);
+		}
+		else {
+			m_fSpeed					= m_fMinSpeed;
+			a							= bfComputeNewPosition(false);
+		}
+		if (a)
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+//		m_fSpeed						= m_fMaxSpeed;
+//		if (bfComputeNewPosition(true,true))
+//			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 	}
 }
 

@@ -7,38 +7,34 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "ai_rat.h"
 #include "../ai_monsters_misc.h"
 #include "../../PhysicsShell.h"
 #include "../../game_graph.h"
 #include "../../game_level_cross_table.h"
 #include "../../xrserver_objects_alife_monsters.h"
+#include "ai_rat_space.h"
+
+using namespace RatSpace;
 
 CAI_Rat::CAI_Rat()
 {
-	Init();
+	Init					();
 }
 
 CAI_Rat::~CAI_Rat()
 {
-	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS			(SND_VOICE_COUNT,	m_tpaSoundVoice);
 }
 
 void CAI_Rat::Init()
 {
 	m_tAction				= eRatActionNone;
-	m_hit_direction.set			(0,0,1);
+	m_hit_direction.set		(0,0,1);
 	m_hit_time				= 0;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend	= 0;
 	m_bActionStarted		= false;
 	m_bFiring				= false;
-	m_dwLastVoiceTalk		= 0;
-	m_tpSoundBeingPlayed	= 0;
-	m_dwLastSoundRefresh	= 0;
 	m_previous_query_time		= 0;
 	m_tGoalDir.set			(10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()),10.0f*(Random.randF()-Random.randF()));
 	m_tCurrentDir.set		(0,0,1);
@@ -80,7 +76,7 @@ void CAI_Rat::Die()
 
 	SelectAnimation(XFORM().k,direction(),speed());
 
-	::Sound->play_at_pos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,Position());
+	CSoundPlayer::play		(eRatSoundDie);
 
 	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
 
@@ -104,12 +100,12 @@ void CAI_Rat::Load(LPCSTR section)
 	P.x								+= ::Random.randF();
 	P.z								+= ::Random.randF();
 
-	vfLoadSounds();
-
-	// sounds
-	m_fMinVoiceIinterval			= pSettings->r_float (section,"MinVoiceInterval");
-	m_fMaxVoiceIinterval			= pSettings->r_float (section,"MaxVoiceInterval");
-	m_fVoiceRefreshRate				= pSettings->r_float (section,"VoiceRefreshRate");
+	LPCSTR							head_bone_name = pSettings->r_string(section,"bone_head");
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_death"),	100, SOUND_TYPE_MONSTER_DYING,		0, u32(eRatSoundMaskDie),		eRatSoundDie,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_hit"),		100, SOUND_TYPE_MONSTER_INJURING,	1, u32(eRatSoundMaskInjuring),	eRatSoundInjuring,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_attack"),	100, SOUND_TYPE_MONSTER_ATTACKING,	2, u32(eRatSoundMaskAttack),	eRatSoundAttack,	head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_voice"),	100, SOUND_TYPE_MONSTER_TALKING,	4, u32(eRatSoundMaskVoice),		eRatSoundVoice,		head_bone_name);
+	CSoundPlayer::add				(pSettings->r_string(section,"sound_eat"),		100, SOUND_TYPE_MONSTER_EATING	,	3, u32(eRatSoundMaskEat),		eRatSoundEat,		head_bone_name);
 
 	// active\passive
 	m_fChangeActiveStateProbability = pSettings->r_float (section,"ChangeActiveStateProbability");
@@ -172,6 +168,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	// personal characteristics
 	m_body.current.yaw				= m_body.target.yaw	= -tpSE_Rat->o_Angle.y;
 	m_body.current.pitch			= m_body.target.pitch	= 0;
+	m_body.speed					= PI_MUL_2;
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
@@ -213,6 +210,8 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tHPB.x						= m_body.current.yaw;
 	m_tHPB.y						= m_body.current.pitch;
 	m_tHPB.z						= 0;
+
+	enable_movement					(false);
 
 	INIT_SQUAD_AND_LEADER;
 
@@ -358,9 +357,7 @@ void CAI_Rat::CreateSkeleton(){
 
 void CAI_Rat::shedule_Update(u32 dt)
 {
-//	Msg					("%6d : rat before [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 	inherited::shedule_Update	(dt);
-//	Msg					("%6d : rat after  [%f][%f][%f]",Level().timeServer(),VPUSH(Position()));
 }
 
 void CAI_Rat::UpdateCL(){
@@ -472,4 +469,19 @@ void CAI_Rat::setup_physic_shell()
 void CAI_Rat::activate_physic_shell	()
 {
 	CEatableItem::activate_physic_shell();
+}
+
+float CAI_Rat::get_custom_pitch_speed	(float def_speed)
+{
+	return PI_DIV_2;
+}
+
+BOOL CAI_Rat::renderable_ShadowReceive	()
+{
+	return TRUE;
+}
+
+BOOL CAI_Rat::renderable_ShadowGenerate	()
+{
+	return FALSE;
 }

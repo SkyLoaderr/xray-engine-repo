@@ -27,6 +27,8 @@
 
 using namespace MonsterSpace;
 
+class CAI_Rat;
+
 class CCustomMonster : 
 			public CEntityAlive, 
 			public CScriptMonster,
@@ -184,12 +186,12 @@ public:
 	}
 	
 	virtual void				ChangeTeam				(int team, int squad, int group);
+	virtual	void				PitchCorrection			();
 
 	virtual void				save					(NET_Packet &output_packet) {inherited::save(output_packet);}
 	virtual void				load					(IReader &input_packet)		{inherited::load(input_packet);}
 	virtual BOOL				net_SaveRelevant		()							{return inherited::net_SaveRelevant();}
-
-
+	virtual CAI_Rat				*dcast_Rat				() {return 0;}
 };
 
 #include "custommonster_inline.h"

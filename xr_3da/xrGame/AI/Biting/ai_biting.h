@@ -131,7 +131,6 @@ public:
 
 	virtual const SRotation	Orientation						() const					{return inherited::Orientation();}
 	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
-	virtual	void			PitchCorrection					();
 
 	virtual	void			SetAttackEffector				();
 	

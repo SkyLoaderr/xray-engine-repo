@@ -9,15 +9,7 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 
-// sounds
-void CAI_Rat::vfLoadSounds()
-{
-	::Sound->create(m_tpaSoundHit[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_INJURING);
-	::Sound->create(m_tpaSoundDie[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_DYING);
-	::Sound->create(m_tpaSoundAttack[0],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_ATTACKING);
-	::Sound->create(m_tpaSoundVoice[0],TRUE,"monsters\\rat\\rat_1",SOUND_TYPE_MONSTER_TALKING);
-	::Sound->create(m_tpaSoundVoice[1],TRUE,"monsters\\rat\\rat_2",SOUND_TYPE_MONSTER_TALKING);
-}
+#define MIN_TURN_ANGLE PI_DIV_6*.5f
 
 // animations
 void CAI_Rat::vfLoadAnimations()
@@ -51,7 +43,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 	CSkeletonAnimated* tpVisualObject = PSkeletonAnimated(Visual());
 	CMotionDef*	tpGlobalAnimation=0;
 
-	if (fEntityHealth <= 0) {
+	if (!g_Alive()) {
 		for (int i=0 ;i<2; ++i)
 			if (m_tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -77,7 +69,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 		}
 		else
 			if (_abs(m_body.target.yaw - m_body.current.yaw) <= PI)
-				if (_abs(m_body.target.yaw - m_body.current.yaw) >= EPS_L)
+				if (_abs(m_body.target.yaw - m_body.current.yaw) >= MIN_TURN_ANGLE)
 					if (m_body.target.yaw - m_body.current.yaw >= 0)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnRight;
 					else
@@ -98,7 +90,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 							else
 								tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tWalk.fwd;
 			else
-				if (PI_MUL_2 - _abs(m_body.target.yaw - m_body.current.yaw) >= EPS_L)
+				if (PI_MUL_2 - _abs(m_body.target.yaw - m_body.current.yaw) >= MIN_TURN_ANGLE)
 					if (m_body.target.yaw > m_body.current.yaw)
 						tpGlobalAnimation = m_tRatAnimations.tNormal.tGlobal.tpTurnLeft;
 					else
@@ -121,4 +113,7 @@ void CAI_Rat::SelectAnimation(const Fvector& /**_view/**/, const Fvector& /**_mo
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation)
 		m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(m_tpCurrentGlobalAnimation = tpGlobalAnimation);
+
+	if (psAI_Flags.is(aiAnimation))
+		Msg			("%6d %s animation : %s",Level().timeServer(),"Global",PSkeletonAnimated(Visual())->LL_MotionDefName_dbg(m_tpCurrentGlobalAnimation));
 }

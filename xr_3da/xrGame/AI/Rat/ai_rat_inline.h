@@ -115,3 +115,8 @@ IC bool CAI_Rat::bfCheckIfOutsideAIMap(Fvector &tTemp1)
 	}
 	return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,QueryPos));
 };
+
+IC	bool CAI_Rat::use_model_pitch	() const
+{
+	return			(true);
+}

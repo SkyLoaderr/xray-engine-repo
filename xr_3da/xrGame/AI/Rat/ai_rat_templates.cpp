@@ -209,15 +209,17 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 	m_tHPB.x  +=  m_fDHeading;
 
-	m_tHPB.x = angle_normalize_signed(m_tHPB.x);
-	m_tHPB.y = angle_normalize_signed(m_tHPB.y);
+	m_tHPB.x			= angle_normalize_signed(m_tHPB.x);
+	m_tHPB.y			= angle_normalize_signed(m_tHPB.y);
+	m_tHPB.y			= -m_body.current.pitch;
 
 	// Build the local matrix for the pplane
-	XFORM().setHPB	(m_tHPB.x,m_tHPB.y,m_tHPB.z);
-	Position()		= tSavedPosition;
-	Position().mad	(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-//	Msg				("[%f][%f][%f]",VPUSH(Position()));
-	m_body.target.yaw = -m_tHPB.x;
+	XFORM().setHPB		(m_tHPB.x,m_tHPB.y,m_tHPB.z);
+	Position()			= tSavedPosition;
+	Position().mad		(tDirection,m_fSpeed*m_fTimeUpdateDelta);
+//	Msg					("[%f][%f][%f]",VPUSH(Position()));
+	m_body.target.yaw	= -m_tHPB.x;
+	PitchCorrection		();
 
 //	Fvector tAcceleration;
 //	tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);
@@ -230,8 +232,12 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	u32 dwNewNode = level_vertex_id();
 	const CLevelGraph::CVertex *tpNewNode = level_vertex();
 	CLevelGraph::CPosition	QueryPos;
-	ai().level_graph().vertex_position	(QueryPos,Position());
-	if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
+	bool					a = !ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().valid_vertex_position(Position());
+	if (!a) {
+		ai().level_graph().vertex_position	(QueryPos,Position());
+		a					= !ai().level_graph().inside(*level_vertex(),QueryPos);
+	}
+	if (a) {
 		dwNewNode = ai().level_graph().vertex(level_vertex_id(),Position());
 		tpNewNode = ai().level_graph().vertex(dwNewNode);
 	}
@@ -251,7 +257,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	}
 
 	bool m_bResult = false;
-	if ((angle_difference(m_body.target.yaw, m_body.current.yaw) > PI_DIV_8) || m_bNoWay) {
+	if ((angle_difference(m_body.target.yaw, m_body.current.yaw) > PI_DIV_6) || m_bNoWay) {
 		m_fSpeed = .1f;
 		if (m_bNoWay)
 			if ((Level().timeServer() - m_previous_query_time > TIME_TO_RETURN) || (!m_previous_query_time)) {
