@@ -190,6 +190,8 @@ void CAgentManager::permutate_enemies	()
 			xr_vector<u32>::const_iterator	i = (*I).enemies().begin();
 			xr_vector<u32>::const_iterator	e = (*I).enemies().end();
 			for ( ; i != e; ++i) {
+				if ((*I).selected_enemy() == *i)
+					continue;
 				float			my_distance = (*I).object()->Position().distance_to(m_enemies[*i].m_object->Position());
 				if (my_distance < best) {
 					// check if we can exchange enemies
