@@ -248,6 +248,12 @@ void CUIBuyWeaponWnd::ReInitItems	(char *strSectionName)
 	SlotToSection(APPARATUS_SLOT	);
 	SlotToSection(OUTFIT_SLOT		);
 
+	// очищаем пояс
+	for (int i = 0; i < m_iUsedItems; ++i)
+	{
+		BeltToSection(&m_vDragDropItems[i]);
+	}
+
 	// очищаем секции
 	for (u32 i=0; i<wpnSectStorage.size(); i++)
 	{
@@ -1347,10 +1353,13 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 		break;
 	}
 
-	if (DIK_0 == dik)
+	if (DIK_ESCAPE == dik)
 	{
-		MenuLevelDown();
-		return true;
+		if (mlRoot != m_mlCurrLevel)
+		{
+			MenuLevelDown();
+			return true;
+		}
 	}
 
 	if (static_cast<u32>(dik) == UIBtnOK.GetAccelerator())
@@ -1361,8 +1370,11 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	if (static_cast<u32>(dik) == UIBtnCancel.GetAccelerator())
 	{
-		SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
-		return true;
+		if (mlRoot == m_mlCurrLevel)
+		{
+			SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
+			return true;
+		}
 	}
 
 	return false;
@@ -1406,9 +1418,13 @@ void CUIBuyWeaponWnd::RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDD
 */
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
 //-----------------------------------------------------------------------------/
 //  CUIDragDropItemMP class
 //-----------------------------------------------------------------------------/
+
+////////////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool bAttach)
 {
@@ -1425,6 +1441,8 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetchAllAddons(bool bAttach)
 		AttachDetachAddon(i, bAttach);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOff()
 {
 	inherited::ClipperOff();
@@ -1434,6 +1452,8 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOff()
 	if(1 == m_AddonInfo[ID_GRENADE_LAUNCHER].iAttachStatus)  inherited::ClipperOff(m_UIStaticGrenadeLauncher);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOn()
 {
 	inherited::ClipperOn();
@@ -1442,6 +1462,8 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOn()
 	if(1 == m_AddonInfo[ID_SILENCER].iAttachStatus)  this->TextureClipper(0,0,NULL, m_UIStaticSilencer);
 	if(1 == m_AddonInfo[ID_GRENADE_LAUNCHER].iAttachStatus)  this->TextureClipper(0,0,NULL, m_UIStaticGrenadeLauncher);
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::CUIDragDropItemMP::Draw()
 {
