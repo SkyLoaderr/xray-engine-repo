@@ -283,7 +283,7 @@ IC void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMidd
 		float	maxT	= maxp(rightX-rhx,rightX+rhx);
 		float	minX	= maxp(leftX-lhx,leftX+lhx);
 		float	maxX	= minp(rightX-rhx,rightX+rhx);
-		i_scan	(T, int(startY), minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
+		i_scan	(T, startY, minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
