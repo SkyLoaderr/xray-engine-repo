@@ -79,6 +79,9 @@ class CMyD3DApplication : public CD3DApplication
 	D3DXMATRIX						dm_model2world2view;
 	D3DXMATRIX						dm_model2world2view2projection;
 
+	D3DXMATRIX						dm_world2view;
+	D3DXMATRIX						dm_world2view2projection;
+
 	// Shaders
 	R_shader						s_Scene2fat;
 
