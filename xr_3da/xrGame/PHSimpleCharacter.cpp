@@ -13,7 +13,7 @@
 #include "PhysicsGamePars.h"
 const float LOSE_CONTROL_DISTANCE=0.5f; //fly distance to lose control
 const float CLAMB_DISTANCE=0.5f;
-const float CLIMB_GETUP_HEIGHT=0.1f;
+const float CLIMB_GETUP_HEIGHT=0.3f;
 static u16 lastMaterial;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -813,6 +813,13 @@ void CPHSimpleCharacter::ApplyAcceleration()
 					b_block_climb_getup=true;
 				}
 			}
+		}
+		else
+		{
+				if((dBodyGetPosition(m_body)[1]-m_start_climb_getup_height)<CLIMB_GETUP_HEIGHT)
+				{
+					b_block_climb_getup=false;
+				}
 		}
 	}
 	else 
