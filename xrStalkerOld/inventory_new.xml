@@ -38,7 +38,7 @@
     </frame_window>
     
     <!-- OUTFIT INFO -->
-    <outfit_info_window x="40" y="32" width="268" height="230">
+    <outfit_info_window x="40" y="32" width="268" height="460">
 		<text font="medium" r="255" g="255" b="255" a="130"></text>
 	</outfit_info_window>
 
