@@ -173,6 +173,7 @@ void CRender::Render		()
 	stats.l_point		= Lights.v_point.size	();
 	stats.l_spot_s		= Lights.v_spot_s.size	();
 	stats.l_spot		= Lights.v_spot.size	();
+	Msg					("--- %d",stats.l_total	);
 
 	//******* Decompression on some HW :)
 	Target.phase_decompress						();
