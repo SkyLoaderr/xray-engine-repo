@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "x_ray.h"
-#include "xr_ini.h"
 #include "CameraFirstEye.h"
 #include "xr_object.h"
 #include "xr_creator.h"

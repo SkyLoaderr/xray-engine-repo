@@ -60,42 +60,6 @@ void CSoundManager::Restart				()
 
 BOOL CSoundManager::CreatePrimaryBuffer	()
 {
-	DSBUFFERDESC	dsbd;
-	WAVEFORMATEX	wfm;
-
-	// Create primary buffer.
-	ZeroMemory			( &dsbd, sizeof( DSBUFFERDESC ) );
-	dsbd.dwSize			= sizeof( DSBUFFERDESC );
-	dsbd.dwFlags		= DSBCAPS_CTRL3D | DSBCAPS_CTRLVOLUME | DSBCAPS_PRIMARYBUFFER;
-	dsbd.dwBufferBytes	= 0;
-
-	// Actual creating
-	if( FAILED	( pDevice->CreateSoundBuffer( &dsbd, &pBuffer, NULL ) ) )	return FALSE;
-
-	// Calculate primary buffer format.
-	DSCAPS				dsCaps;
-	dsCaps.dwSize		= sizeof(DSCAPS);
-	VERIFY				(pDevice);
-	CHK_DX				(pDevice->GetCaps (&dsCaps));
-
-	ZeroMemory			( &wfm, sizeof( WAVEFORMATEX ) );
-	switch ( psSoundFreq )
-	{
-	case sf_11K:	wfm.nSamplesPerSec = 11025; break;
-	case sf_22K:	wfm.nSamplesPerSec = 22050; break;
-	case sf_44K:	wfm.nSamplesPerSec = 44100; break;
-	}
-	wfm.wFormatTag		= WAVE_FORMAT_PCM;
-	wfm.nChannels		= (dsCaps.dwFlags&DSCAPS_PRIMARYSTEREO)?2:1;
-	wfm.wBitsPerSample	= (dsCaps.dwFlags&DSCAPS_PRIMARY16BIT)?16:8;
-	wfm.nBlockAlign		= wfm.wBitsPerSample / 8 * wfm.nChannels;
-	wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
-
-	// For safety only :)
-	R_CHK(pBuffer->SetFormat	(&wfm));
-	R_CHK(pBuffer->Play			(0,0,DSBPLAY_LOOPING));
-
-	return true;
 }
 
 //-----------------------------------------------------------------------------

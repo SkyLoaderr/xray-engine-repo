@@ -2,7 +2,6 @@
 #include "xr_effsun.h"
 #include "xr_creator.h"
 #include "environment.h"
-#include "xr_ini.h"
 
 CSun::CSun( CInifile* pIni, LPCSTR section ) {
 	// общие установки

@@ -3,7 +3,6 @@
 
 #include "ObjectAnimator.h"
 #include "motion.h"
-#include "xr_ini.h"
  
 bool st_AnimParam::Update(float dt){ 
 	t+=dt; 

@@ -844,28 +844,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="LTX"
-				Filter="">
-				<File
-					RelativePath=".\Xr_ini.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_ini.h">
-				</File>
-				<File
-					RelativePath=".\xr_tokens.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_tokens.h">
-				</File>
-				<File
-					RelativePath=".\xr_trims.cpp">
-				</File>
-				<File
-					RelativePath=".\xr_trims.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="Console"
 				Filter="">
 				<File
@@ -920,16 +898,6 @@
 				<File
 					RelativePath=".\xrSheduler.h">
 				</File>
-				<Filter
-					Name="File System"
-					Filter="">
-					<File
-						RelativePath=".\LocatorAPI.cpp">
-					</File>
-					<File
-						RelativePath=".\LocatorAPI.h">
-					</File>
-				</Filter>
 			</Filter>
 			<Filter
 				Name="Client - Server"
@@ -1939,9 +1907,6 @@
 				</File>
 				<File
 					RelativePath="SoundRender_Core.h">
-				</File>
-				<File
-					RelativePath="SoundRender_Core_Initialize.cpp">
 				</File>
 				<File
 					RelativePath="SoundRender_Core_Processor.cpp">

@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "xr_object_list.h"
-#include "xr_tokens.h"
 #include "std_classes.h"
 #include "xr_creator.h"
-#include "xr_ini.h"
 
 #include "xr_object.h"
 #include "net_utils.h"

@@ -10,9 +10,6 @@
 #include "xr_creator.h"
 #include "xr_ioconsole.h"
 #include "x_ray.h"
-#include "xr_ini.h"
-#include "xr_trims.h"
-#include "xr_streamsnd.h"
 #include "std_classes.h"
 #include "GameFont.h"
 #include <crtdbg.h>

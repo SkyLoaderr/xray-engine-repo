@@ -40,7 +40,7 @@ public:
 	~CSoundRender_Core					();
 
 	// General
-	virtual void						_initialize				( );
+	virtual void						_initialize				( u32 window );
 	virtual void						_destroy				( );
 	virtual void						_restart				( );
 

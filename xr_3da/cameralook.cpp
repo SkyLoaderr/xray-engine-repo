@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 #include "x_ray.h"
-#include "xr_ini.h"
 #include "GameFont.h"
 #include "CameraLook.h"
 #include "xr_object.h"

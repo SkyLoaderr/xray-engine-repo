@@ -2,7 +2,6 @@
 #include "xr_creator.h"
 #include "xr_object.h"
 #include "xr_object_list.h"
-#include "xr_ini.h"
 
 CObject*	CObjectList::Create				( LPCSTR	name	)
 {

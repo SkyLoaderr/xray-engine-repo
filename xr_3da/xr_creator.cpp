@@ -3,7 +3,6 @@
 #include "xr_creator.h"
 #include "std_classes.h"
 #include "customHUD.h"
-#include "xr_ini.h"
 #include "render.h"
 #include "gamefont.h"
 #include "xrLevel.h"

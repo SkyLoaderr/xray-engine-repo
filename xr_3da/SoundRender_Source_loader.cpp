@@ -90,7 +90,7 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, u32 &
 void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
 {
 	// Load file into memory and parse WAV-format
-	destructor<IReader>		data	(Engine.FS.Open(pName));
+	destructor<IReader>		data	(Engine.FS.r_open(pName));
 	WAVEFORMATEX*			pFormat;
 	u32						dwLen;
 	void *					wavedata = ParseWave(&data(),pFormat,dwLen);
@@ -140,8 +140,8 @@ void CSoundRender_Source::LoadWaveAs2D	(LPCSTR pName)
 void	CSoundRender_Source::LoadWaveAs3D(LPCSTR pName)
 {
 	// Load file into memory and parse WAV-format
-	R_ASSERT2			(Engine.FS.Exist(pName),pName);
-	destructor<IReader>	data(Engine.FS.Open(pName));
+	R_ASSERT2			(Engine.FS.exist(pName),pName);
+	destructor<IReader>	data(Engine.FS.r_open(pName));
 	WAVEFORMATEX*	pFormat;
 	u32				dwLen;
 	void *			wavedata = ParseWave	(&data(),pFormat,dwLen);
@@ -203,7 +203,7 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 
 	strconcat			(fn,Path.Current,N,".wav");
 	strlwr				(fn);
-	if (!Engine.FS.Exist(fn))	{
+	if (!Engine.FS.exist(fn))	{
 		strconcat			(fn,Path.Sounds,N,".wav");
 		strlwr				(fn);
 	}

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "fstaticrender_rendertarget.h"
-#include "xr_ini.h"
 
 static LPCSTR		RTname			= "$user$rendertarget";
 int					psSupersample	= 0;

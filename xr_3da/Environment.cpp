@@ -8,7 +8,6 @@
 #include "xr_effsun.h"
 #include "xr_trims.h"
 #include "xr_input.h"
-#include "xr_ini.h"
 #include "xr_creator.h"
 #include "xr_streamsnd.h"
 #include "PSObject.h"

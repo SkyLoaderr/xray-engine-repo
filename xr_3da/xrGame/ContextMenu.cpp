@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "contextmenu.h"
-#include "..\xr_ini.h"
   
 const float fade_speed = 8.0f;
 

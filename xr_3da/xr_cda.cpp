@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "xr_cda.h"
-#include "xr_ini.h"
 
 CCDA::CCDA( ) {
 	retLen			= sizeof(retStr);

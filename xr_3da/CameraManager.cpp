@@ -8,7 +8,6 @@
 #include "CameraDebug.h"
 #include "CameraFirstEye.h"
 #include "Effector.h"
-#include "xr_ini.h"
 #include "xr_creator.h"
 
 #include "x_ray.h"
