@@ -72,7 +72,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 
 	//tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[2];
 	/**/
-	if (iHealth <= 0) {
+	if (fHealth <= 0) {
 		switch (m_cBodyState) {
 			case BODY_STATE_STAND : {
 				for (int i=0 ;i<3; i++)

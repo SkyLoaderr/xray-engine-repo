@@ -100,7 +100,7 @@ void CAI_Rat::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	if (Random.randI(2))	return;
 	pSounds->PlayAtPos		(S,this,vPosition);
 	
-	if (iHealth > 0) {
+	if (fHealth > 0) {
 		/**
 		if (dwfRandom(2))
 			PKinematics(pVisual)->PlayFX(tRatAnimations.tNormal.tTorso.tpDamageLeft);

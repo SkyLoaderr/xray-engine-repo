@@ -91,7 +91,7 @@ void CAI_Rat::SelectAnimation(const Fvector& _view, const Fvector& _move, float 
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	CMotionDef*	tpGlobalAnimation=0;
 
-	if (iHealth <= 0) {
+	if (fHealth <= 0) {
 		for (int i=0 ;i<2; i++)
 			if (tRatAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 				tpGlobalAnimation = m_tpCurrentGlobalAnimation;

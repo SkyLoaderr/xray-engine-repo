@@ -85,7 +85,7 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	Group.m_tLastHitDirection = tHitDir;
 	Group.m_tHitPosition = tHitPosition;
 	
-	if (iHealth > 0) {
+	if (fHealth > 0) {
 		// Play hit-sound
 		sound& S				= sndHit[Random.randI(SND_HIT_COUNT)];
 		if (S.feedback)			return;

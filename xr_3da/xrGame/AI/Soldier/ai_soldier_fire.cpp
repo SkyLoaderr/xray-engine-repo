@@ -128,7 +128,7 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 		vfSaveEnemy();
 	}
 	
-	if (iHealth > 0) {
+	if (fHealth > 0) {
 		vfAddHurtToList(who);
 		if (::Random.randI(0,2))
 			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);

@@ -771,7 +771,7 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 {
 	CHUDManager* HUD	= (CHUDManager*)hud;
 	CUI* pUI=HUD->GetUI	();
-	pUI->OutHealth		(iHealth,iArmor);
+	pUI->OutHealth		(iFloor(fHealth),iFloor(fArmor));
 	pUI->OutWeapon		(Weapons->ActiveWeapon());
 	pUI->SetHeading		(-r_torso.yaw);
 	

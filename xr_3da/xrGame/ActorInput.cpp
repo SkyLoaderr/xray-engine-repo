@@ -11,7 +11,7 @@ void CActor::OnKeyboardPress(int cmd)
 	if (Remote() || !bAlive)	return;
 
 	switch(cmd){
-	case kACCEL:	iHealth+=5; mstate_wishful |= mcAccel;		break;
+	case kACCEL:	fHealth+=5; mstate_wishful |= mcAccel;		break;
 	case kR_STRAFE:	mstate_wishful |= mcRStrafe;				break;
 	case kL_STRAFE:	mstate_wishful |= mcLStrafe;				break;
 	case kFWD:		mstate_wishful |= mcFwd;					break;

@@ -287,9 +287,9 @@ void CAI_Crow::net_Import	(NET_Packet& P)
 {
 }
 //---------------------------------------------------------------------
-void CAI_Crow::HitSignal	(int HitAmount, Fvector& local_dir, CEntity* who)
+void CAI_Crow::HitSignal	(float HitAmount, Fvector& local_dir, CEntity* who)
 {
-	iHealth		= 0;
+	fHealth		= 0;
 	if (st_current!=eDeathDead) st_target = eDeathFall;
 	else PKinematics(pVisual)->PlayCycle(m_Anims.m_death_dead.GetRandom());
 }
