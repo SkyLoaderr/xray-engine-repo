@@ -52,6 +52,7 @@ struct	hdrNODES
 };
 #pragma pack(pop)
 
+#ifndef _EDITOR
 #pragma pack(push,1)
 #pragma pack(1)
 class NodePosition {
@@ -149,6 +150,7 @@ public:
 	friend class CLevelGraph;
 	friend struct CNodeCompressed;
 };									// 2+5+1+11 = 19b
+#endif
 
 struct SNodePositionOld {
 	s16				x;
