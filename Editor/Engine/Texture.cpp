@@ -430,14 +430,15 @@ ENGINE_API IDirect3DTexture8*	TWLoader2D(
 #ifdef M_BORLAND
 	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".dds"))	goto _DDS;
 	if (FS.Exist(fn,FS.m_GameTextures.m_Path,fname,	".tga"))	goto _TGA;
+	ELog.Msg(mtError,"Can't find texture '%s'",fname);
 #else
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".dds"))	goto _DDS;
 	if (Engine.FS.Exist(fn,Path.Current,fname,	".tga"))	goto _TGA;
 	if (Engine.FS.Exist(fn,Path.Textures,fname,	".tga"))	goto _TGA;
-#endif
 	Device.Fatal("Can't find texture '%s'",fname);
-	return 0;
+#endif
+ 	return 0;
 
 _DDS:
 	D3DXIMAGE_INFO IMG;
