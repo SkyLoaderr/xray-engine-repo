@@ -173,7 +173,7 @@ void CHelicopterMotion::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float d
 		float key_box_size = .25f;
 		u32 cnt = KeyCount();
 		for(u32 ii=0;ii<cnt;++ii) {
-			Fvector _t, TT;
+			Fvector _t;
 			Fvector _r;
 			GetKey (ii,_t,_r);
 			RCache.dbg_DrawAABB  (_t,key_box_size,key_box_size,key_box_size,D3DCOLOR_XRGB(0,255,255));

@@ -168,7 +168,7 @@ void CHelicopter::Load(LPCSTR section)
 	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
 	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
-	m_syncronize_rocket						= (bool)pSettings->r_bool(section,"syncronize_rocket");
+	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
 
 }
 
