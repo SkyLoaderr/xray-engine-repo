@@ -1886,9 +1886,22 @@
 					<File
 						RelativePath=".\ui\UIXmlInit.h">
 					</File>
-					<File
-						RelativePath=".\ui\xrXMLParser.h">
-					</File>
+					<Filter
+						Name="XML"
+						Filter="">
+						<File
+							RelativePath=".\ui\CkSettings.h">
+						</File>
+						<File
+							RelativePath=".\ui\CkString.h">
+						</File>
+						<File
+							RelativePath=".\ui\CkXml.h">
+						</File>
+						<File
+							RelativePath=".\ui\xrXMLParser.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 		</Filter>

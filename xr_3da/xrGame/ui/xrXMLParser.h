@@ -23,11 +23,9 @@ XRXMLPARSER_API void FunctionSampleExport();
 //
 //////////////////////////////////////////////////////////////////////
 
-/*
 #include "CkXml.h"
 #include "CkString.h"
 #include "CkSettings.h"
-*/
 
 #pragma once
 
