@@ -34,7 +34,7 @@ namespace SceneGraph
 		std::vector<IVisual*>				unsorted;
 	};
 	struct mapNormalItems		: public	mapNormalDirect										{	float	ssa;	};
-	struct mapNormalConstants	: public	FixedMAP<SConstantList*,mapNormalItems>				{	float	ssa;	};
+	struct mapNormalConstants	: public	FixedMAP<R_constants*,mapNormalItems>				{	float	ssa;	};
 	struct mapNormalMatrices	: public	FixedMAP<SMatrixList*,mapNormalConstants>			{	float	ssa;	};
 	struct mapNormalVB			: public	FixedMAP<IDirect3DVertexBuffer9*,mapNormalMatrices>	{	float	ssa;	};
 	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalVB>		{	float	ssa;	};
