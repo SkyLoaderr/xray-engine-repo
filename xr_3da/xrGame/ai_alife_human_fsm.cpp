@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-#define OLD_BEHAVIOUR
+//#define OLD_BEHAVIOUR
 
 void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 {
@@ -152,7 +152,9 @@ void CSE_ALifeHumanAbstract::vfBringToCustomer(CSE_ALifeSimulator *tpALife)
 	// go to customer to sell found artefacts
 	if (m_tpPath.empty()) {
 		tpALife->ffFindMinimalPath	(m_tGraphID,tpALife->tpfGetObjectByID(tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpPath);
-		m_dwCurNode		= 0;
+		m_dwCurNode					= 0;
+		m_tNextGraphID				= m_tGraphID;
+		m_fCurSpeed					= m_fGoingSpeed;
 	}
 	if ((m_dwCurNode >= (m_tpPath.size() - 1)) && (m_tGraphID == m_tNextGraphID)) {
 		m_tpPath.clear();
@@ -175,6 +177,7 @@ void CSE_ALifeHumanAbstract::vfGoToSOS(CSE_ALifeSimulator *tpALife)
 void CSE_ALifeHumanAbstract::vfSendSOS(CSE_ALifeSimulator *tpALife)
 {
 	// send SOS by myself
+	m_fCurSpeed						= 0.f;
 }
 
 void CSE_ALifeHumanAbstract::vfAccomplishTask(CSE_ALifeSimulator *tpALife)
