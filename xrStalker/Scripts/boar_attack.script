@@ -1,3 +1,45 @@
+-- Кабан атакующий через дверь
+-- Кабан - boar
+-- Пути : boar_way1		-	просто бегаем
+--		  boar_way2		-	точка у двери
+-- Зоны : stalker_zone	-	срабатывает на приближение игрока 	
+--		  zone_boar_attack	 срабатывает при приближении кабана и отпускает его
+
+
+local boar = get_level_object ("boar")
+	
+function on_enter_pzone (zone, obj)
+	zone:clear_callback (true)
+	reset_action (boar, boar_attack.script_name ())
+	action (boar, move (move.act_run, move.force_type, patrol ("boar_way2"), cond (cond.move_end))
+end
+
+function on_enter_bzone (zone, obj)
+	boar:script (false, boar_attack.script_name ())
+	zone:clear_callback (true)
+end
+
+
 function main ()
 
+	local bzone = get_level_object ("zone_boar_attack")
+	local pzone = get_level_object ("stalker_zone")
+	
+	boar:script (true, boar_attack.script_name ())
+	action (boar, move (move.act_walk_fwd, move.default, patrol ("boar_way1"), cond (cond.move_end))
+	
+	local oldtime = game.time ()
+	local wait_time = math.random (1000, 2000)
+
+	while boar:action do 
+		if game.time () - oldtime >= wait_time then
+		   oldtime = game.time ()
+		   wait_time = math.random (1000, 2000)	
+		   update_action (boar, boar_attack.script_name (), sound ("monsters\\boar\\Idle_1", "bip01_head", vector ():set (0, 0, 0), 
+		   				  vector ():set (0, 0, 0), false)
+		end   
+		wait ()
+	end	
+	
+	
 end
