@@ -1,0 +1,48 @@
+-- File:        UI_LOAD_DIALOG.SCRIPT
+-- Description: Load Dialog for STALKER
+-- Created:     28.10.2004
+-- Copyright:   2004 GSC Game World
+-- Author:      Serhiy Vynnychenko (narrator@gsc-game.kiev.ua)
+-- Version:     0.1
+
+class "laod_dialog" (CUIScriptWnd)
+
+function load_dialog:__init() super()
+	self:SetFont(GetFontMedium())
+
+	self:InitControls()
+	self:InitCallBacks()
+end
+
+function load_dialog:__finalize() 
+	
+end
+
+function load_dialog:SetClGame (game_cl)
+	self.m_game_cl = game_cl
+end
+
+function load_dialog:InitControls()
+	-- DATA --
+	local indent          = 50
+	local screen          = {width = 1024,height = 768}	
+	local main_rect       = {x = 0,      y = 0,      width = 800, height = 600}	
+	main_rect.x = (screen.width - main_rect.width)/2
+	main_rect.y = (screen.height - main_rect.height)/2
+	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+end
+
+function load_dialog:InitCallBacks()
+end
+
+function load_dialog:OnKeyboard(dik, keyboard_action)  -- virtual function
+	CUIScriptWind.OnKeyboard(self, dik, keyboard_action)
+
+	DIK_RETURN = 28
+	WINDOW_KEY_PRESSED = 6
+
+	local bind = dik_to_bind(dik)
+	if bind == key_bindings.kQUIT then
+		level.start_stop_menu(self, true)
+	end
+end
