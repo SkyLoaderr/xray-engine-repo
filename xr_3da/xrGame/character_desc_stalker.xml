@@ -107,6 +107,29 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>tutorial_wounded_give_medkit</actor_dialog>
 	</specific_character>
+	
+	<specific_character id="stalker_gar_seriy" team_default = "1">
+		<name>Сталкер Серый</name>
+		<icon x="26" y="10"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Сталкер с грязным лицом и не менее грязной биографией.</bio>
+
+		<class>stalker_gar_seriy</class>
+		<community>stalker</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\neytral\stalker_neytral_hood_4</visual>
+		<supplies>
+			[spawn] \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+	</specific_character>	
+	
+	
 <!---------------------------STALKER NOVICE----------------------->
 	<specific_character id="stalker_novice_default1" team_default = "1">
 		<name>Неизвестный новичок</name>
