@@ -38,7 +38,7 @@ void CObject::cNameVisual_set	(ref_str N)
 	if (*N && N[0]) 
 	{
 		NameVisual			= N;
-		renderable.visual	= Render->model_Create	(N);
+		renderable.visual	= Render->model_Create	(*N);
 	} else {
 		NameVisual			= 0;
 	}
@@ -73,9 +73,9 @@ void CObject::setVisible		(BOOL _visible)
 	}
 }
 
-void	CObject::Center					(Fvector& C)	const	{ VERIFY2(renderable.visual,cName()); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
-float	CObject::Radius					()				const	{ VERIFY2(renderable.visual,cName()); return renderable.visual->vis.sphere.R;								}
-const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY2(renderable.visual,cName()); return renderable.visual->vis.box;									}
+void	CObject::Center					(Fvector& C)	const	{ VERIFY2(renderable.visual,*cName()); renderable.xform.transform_tiny(C,renderable.visual->vis.sphere.P);	}
+float	CObject::Radius					()				const	{ VERIFY2(renderable.visual,*cName()); return renderable.visual->vis.sphere.R;								}
+const	Fbox&	CObject::BoundingBox	()				const	{ VERIFY2(renderable.visual,*cName()); return renderable.visual->vis.box;									}
 
 //----------------------------------------------------------------------
 // Class	: CXR_Object
@@ -122,17 +122,17 @@ BOOL CObject::net_Spawn			(LPVOID data)
 {
 	if (0==collidable.model) 
 	{
-		if (pSettings->line_exist(cNameSect(),"cform")) {
-			LPCSTR cf			= pSettings->r_string	(cNameSect(), "cform");
+		if (pSettings->line_exist(*cNameSect(),"cform")) {
+			LPCSTR cf			= pSettings->r_string	(*cNameSect(), "cform");
 
-			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",cName());
+			R_ASSERT3			(*NameVisual, "Model isn't assigned for object, but cform requisted",*cName());
 
 			if (xr_strcmp(cf,"skeleton")==0) collidable.model	= xr_new<CCF_Skeleton>	(this);
 			else {
 				if (xr_strcmp(cf,"rigid")==0)collidable.model	= xr_new<CCF_Rigid>		(this);
 				else{
 					collidable.model						= xr_new<CCF_Polygonal> (this);
-					((CCF_Polygonal*)(collidable.model))->LoadModel(pSettings, cNameSect());
+					((CCF_Polygonal*)(collidable.model))->LoadModel(pSettings, *cNameSect());
 				}
 			}
 		}
@@ -155,10 +155,10 @@ void CObject::UpdateCL			()
 {
 	// consistency check
 #ifdef DEBUG
-	if (Device.dwFrame==dbg_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",cName());
+	if (Device.dwFrame==dbg_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",*cName());
 	dbg_update_cl	= Device.dwFrame;
 
-	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered inside spatial DB",cName());
+	if (Parent && spatial.node_ptr)		Debug.fatal	("Object %s has parent but is still registered inside spatial DB",*cName());
 #endif
 }
 
@@ -171,8 +171,8 @@ void CObject::shedule_Update	( u32 T )
 	dbg_update_shedule	= Device.dwFrame;
 #endif
 
-	const	eps_R	= 0.01f;
-	const	eps_P	= 0.005f;
+	const	float eps_R	= 0.01f;
+	const	float eps_P	= 0.005f;
 
 	//
 	BOOL	bUpdate=FALSE;
