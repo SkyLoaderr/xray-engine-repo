@@ -34,17 +34,18 @@ protected:
 	using CSActionPlanner::add_condition;
 
 protected:
-	IC		void	add_condition				(CWorldState &goal, _condition_type condition_id, _value_type value);
+	IC		void			add_condition				(CWorldState &goal, _condition_type condition_id, _value_type value);
 
 public:
-	IC				CMotivationActionManager	();
-	virtual			~CMotivationActionManager	();
-	virtual void	setup						(_object_type *object);
-	virtual void	update						();
-	virtual void	clear						();
-	IC		void	add_action					(const _edge_type &, CScriptActionPlannerAction *);
-	IC		void	clear_motivations			();
-	IC		void	clear_actions				();
+	IC						CMotivationActionManager	();
+	virtual					~CMotivationActionManager	();
+	virtual void			setup						(_object_type *object);
+	virtual void			update						();
+	virtual void			clear						();
+	IC		void			add_action					(const _edge_type &, CScriptActionPlannerAction *);
+	IC		void			clear_motivations			();
+	IC		void			clear_actions				();
+	IC		_object_type	*object						() const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 typedef CMotivationActionManager<CScriptGameObject> CScriptMotivationActionManager;

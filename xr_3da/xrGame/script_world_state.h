@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include "graph_engine.h"
+#include "graph_engine_space.h"
 #include "script_export_space.h"
 
-typedef CGraphEngine::CWorldState CScriptWorldState;
+typedef GraphEngineSpace::CWorldState CScriptWorldState;
 
 class CScriptWorldStateWrapper {
 public:

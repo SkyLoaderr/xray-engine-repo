@@ -35,37 +35,61 @@
 //		path_managers
 #include "path_manager.h"
 
-//
+//		
+#include "graph_engine_space.h"
 #include "operator_condition.h"
 #include "condition_state.h"
 #include "operator_abstract.h"
 
+using namespace GraphEngineSpace;
+
 class CGraphEngine {
 public:
-	typedef float																_dist_type;
-	typedef u32																	_index_type;
-	typedef u32																	_iteration_type;
-	typedef u16																	_solver_dist_type;
-	typedef u32																	_solver_condition_type;
-	typedef bool																_solver_value_type;
-
-	typedef xr_map<_solver_condition_type,_solver_value_type>					CSolverConditionStorage;
-
-	typedef COperatorConditionAbstract<_solver_condition_type,_solver_value_type>CWorldProperty;
-	typedef CConditionState<CWorldProperty>										CWorldState;
-	typedef COperatorAbstract<CWorldProperty,_solver_dist_type>					CWorldOperator;
-	typedef CWorldState															_solver_index_type;
-	typedef u32																	_solver_edge_type;
-
-	typedef SBaseParameters<_solver_dist_type,_solver_index_type,_iteration_type>	CSolverBaseParameters;
-	typedef SBaseParameters<_dist_type,_index_type,_iteration_type>				CBaseParameters;
-	typedef SFlooder<_dist_type,_index_type,_iteration_type>					CFlooder;
-	typedef SObstacleParams<_dist_type,_index_type,_iteration_type>				CObstacleParams;
-	typedef SObstaclesLightCover<_dist_type,_index_type,_iteration_type>		CObstaclesLightCover;
-	typedef SObstaclesLightCoverEnemy<_dist_type,_index_type,_iteration_type>	CObstaclesLightCoverEnemy;
-	typedef SPosition<_dist_type,_index_type,_iteration_type>					CPositionParameters;
-	typedef SStraightLineParams<_dist_type,_index_type,_iteration_type>			CStraightLineParams;
-	typedef SGameLevel<_dist_type,_index_type,_iteration_type>					CGameLevelParams;
+	typedef SBaseParameters<
+				_solver_dist_type,
+				_solver_index_type,
+				_iteration_type
+			>		CSolverBaseParameters;
+	typedef SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CBaseParameters;
+	typedef SFlooder<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CFlooder;
+	typedef SObstacleParams<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstacleParams;
+	typedef SObstaclesLightCover<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstaclesLightCover;
+	typedef SObstaclesLightCoverEnemy<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CObstaclesLightCoverEnemy;
+	typedef SPosition<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CPositionParameters;
+	typedef SStraightLineParams<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CStraightLineParams;
+	typedef SGameLevel<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>		CGameLevelParams;
 
 protected:
 //	typedef CDataStorageSingleLinkedList<false>				CPriorityQueue;

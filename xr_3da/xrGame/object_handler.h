@@ -9,7 +9,7 @@
 #pragma once
 
 #include "inventoryowner.h"
-#include "graph_engine.h"
+#include "graph_engine_space.h"
 
 template<typename _container_type>
 struct CMapLocator {
@@ -32,8 +32,8 @@ class CObjectHandlerPlanner;
 class CObjectHandler : public CInventoryOwner {
 protected:
 	typedef CInventoryOwner								inherited;
-	typedef CGraphEngine::_solver_value_type			_value_type;
-	typedef CGraphEngine::_solver_condition_type		_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 
 protected:
 	bool							m_hammer_is_clutched;

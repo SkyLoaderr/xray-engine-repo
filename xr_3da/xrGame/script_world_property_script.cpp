@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "script_world_property.h"
 #include "script_space.h"
+#include "operator_abstract.h"
 #include <luabind/operator.hpp>
 
 using namespace luabind;

@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CScriptMotivationActionWrapper::CScriptMotivationActionWrapper	(const CGraphEngine::CWorldState &goal) :
+IC	CScriptMotivationActionWrapper::CScriptMotivationActionWrapper	(const GraphEngineSpace::CWorldState &goal) :
 	inherited						(goal)
 {
 }

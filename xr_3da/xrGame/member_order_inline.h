@@ -58,14 +58,14 @@ IC	void CMemberOrder::order_type				(const AgentManager::EOrderType &order_type)
 	m_order_type	= order_type;
 }
 
-IC	const CGraphEngine::CWorldState &CMemberOrder::goal	() const
+IC	const GraphEngineSpace::CWorldState &CMemberOrder::goal	() const
 {
 	VERIFY			(m_initialized);
 	VERIFY			(m_order_type == AgentManager::eOrderTypeGoal);
 	return			(m_goal);
 }
 
-IC	void CMemberOrder::goal						(const CGraphEngine::CWorldState &goal)
+IC	void CMemberOrder::goal						(const GraphEngineSpace::CWorldState &goal)
 {
 	m_order_type	= AgentManager::eOrderTypeGoal;
 	m_goal			= goal;

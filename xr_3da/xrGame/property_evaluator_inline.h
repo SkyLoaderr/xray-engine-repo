@@ -26,7 +26,9 @@ TEMPLATE_SPECIALIZATION
 IC	void CEvaluator::init			(_object_type *object, LPCSTR evaluator_name)
 {
 	m_object			= object;
+#ifdef LOG_ACTION
 	m_evaluator_name	= evaluator_name;
+#endif
 	m_storage			= 0;
 }
 
@@ -53,12 +55,6 @@ IC	const typename CEvaluator::_value_type &CEvaluator::property	(const _conditio
 {
 	VERIFY				(m_storage);
 	return				(m_storage->property(condition_id));
-}
-
-TEMPLATE_SPECIALIZATION
-IC	LPCSTR CEvaluator::name	() const
-{
-	return				(m_evaluator_name);
 }
 
 #undef TEMPLATE_SPECIALIZATION

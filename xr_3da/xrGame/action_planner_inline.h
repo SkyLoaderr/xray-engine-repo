@@ -75,12 +75,14 @@ void CPlanner::update				()
 	}
 #endif
 
-#ifdef DEBUG
+#ifdef LOG_ACTION
 	if (m_failed && psAI_Flags.test(aiLua)) {
 		// printing current world state
 		{
-			Msg					("! ERROR!!! : there is no action sequence, which can transfer current world state to the target world state!!!");
-			Msg					("%6d : Current world state",Level().timeServer());
+			Msg					("! ERROR : there is no action sequence, which can transfer current world state to the target one");
+			Msg					("Time : %6d",Level().timeServer());
+			Msg					("Object : %s",object_name());
+			Msg					("Current world state :");
 			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I) {
@@ -94,7 +96,7 @@ void CPlanner::update				()
 		}
 		// printing target world state
 		{
-			Msg					("%6d : Target world state",Level().timeServer());
+			Msg					("Target world state :");
 			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
 			EVALUATOR_MAP::const_iterator	E = evaluators().end();
 			for ( ; I != E; ++I) {
@@ -181,7 +183,7 @@ LPCSTR CPlanner::action2string		(const _action_id_type &action_id)
 TEMPLATE_SPECIALIZATION
 LPCSTR CPlanner::property2string	(const _condition_type &property_id)
 {
-	return			(evaluator(property_id).name());//itoa(property_id,m_temp_string,10));
+	return			(evaluator(property_id).m_evaluator_name);//itoa(property_id,m_temp_string,10));
 }
 
 TEMPLATE_SPECIALIZATION
@@ -189,6 +191,7 @@ LPCSTR CPlanner::object_name		() const
 {
 	return			(*m_object->cName());
 }
+#endif
 
 TEMPLATE_SPECIALIZATION
 IC	void CPlanner::add_operator		(const _edge_type &operator_id,	_operator_ptr _operator)
@@ -214,8 +217,6 @@ IC	void CPlanner::set_use_log		(bool value)
 	for ( ; I != E; ++I)
 		(*I).get_operator()->set_use_log(m_use_log);
 }
-#endif
-
 #endif
 
 #undef TEMPLATE_SPECIALIZATION

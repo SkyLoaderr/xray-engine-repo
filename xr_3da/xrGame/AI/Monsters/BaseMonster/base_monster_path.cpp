@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "base_monster.h"
-#include "../../../graph_engine.h"
 #include "../../../game_graph.h"
 #include "../../../game_level_cross_table.h"
 #include "../corpse_cover.h"

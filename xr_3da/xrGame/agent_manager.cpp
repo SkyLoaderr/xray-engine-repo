@@ -9,11 +9,7 @@
 #include "stdafx.h"
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
-#include "agent_manager_actions.h"
-#include "agent_manager_motivations.h"
-#include "agent_manager_properties.h"
-
-using namespace AgentManager;
+#include "agent_manager_motivation_planner.h"
 
 #define SECTION				"agent_manager"
 #define IMPORTANT_BUILD
@@ -23,19 +19,15 @@ CAgentManager::CAgentManager		()
 	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
 	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
 	shedule_register			();
-	
-	inherited::setup			(this);
-
-	clear						();
-	add_motivations				();
-	add_evaluators				();
-	add_actions					();
+	m_brain						= xr_new<CAgentManagerMotivationPlanner>();
+	brain().setup				(this);
 }
 
 CAgentManager::~CAgentManager		()
 {
-	VERIFY						(m_members.empty());
 	shedule_unregister			();
+	xr_delete					(m_brain);
+	VERIFY						(m_members.empty());
 }
 
 float CAgentManager::shedule_Scale	()
@@ -48,7 +40,7 @@ void CAgentManager::shedule_Update	(u32 time_delta)
 	ISheduled::shedule_Update	(time_delta);
 	reset_memory_masks			();
 	remove_old_danger_covers	();
-	inherited::update			();
+	brain().update				();
 }
 
 BOOL CAgentManager::shedule_Ready	()
@@ -89,43 +81,4 @@ void CAgentManager::remove			(CEntity *member, bool no_assert)
 		return;
 	}
 	m_members.erase				(I);
-}
-
-void CAgentManager::add_motivations	()
-{
-	CWorldState				goal;
-
-	goal.clear				();
-	goal.add_condition		(CWorldProperty(ePropertyOrders,true));
-	add_motivation			(eMotivationNoOrders,	xr_new<CAgentManagerMotivationAction>(goal));
-}
-
-void CAgentManager::add_evaluators	()
-{
-	add_evaluator			(ePropertyOrders		,xr_new<CAgentManagerPropertyEvaluatorConst>(false));
-	add_evaluator			(ePropertyItem			,xr_new<CAgentManagerPropertyEvaluatorItem>());
-	add_evaluator			(ePropertyEnemy			,xr_new<CAgentManagerPropertyEvaluatorEnemy>());
-}
-
-void CAgentManager::add_actions		()
-{
-	CAgentManagerActionBase	*action;
-
-	action					= xr_new<CAgentManagerActionNoOrders>		(this,"no_orders");
-	add_condition			(action,ePropertyOrders,			false);
-	add_condition			(action,ePropertyItem,				false);
-	add_condition			(action,ePropertyEnemy,				false);
-	add_effect				(action,ePropertyOrders,			true);
-	add_operator			(eOperatorNoOrders,					action);
-
-	action					= xr_new<CAgentManagerActionGatherItems>	(this,"gather_items");
-	add_condition			(action,ePropertyItem,				true);
-	add_condition			(action,ePropertyEnemy,				false);
-	add_effect				(action,ePropertyItem,				false);
-	add_operator			(eOperatorGatherItem,				action);
-
-	action					= xr_new<CAgentManagerActionKillEnemy>		(this,"kill_enemy");
-	add_condition			(action,ePropertyEnemy,				true);
-	add_effect				(action,ePropertyEnemy,				false);
-	add_operator			(eOperatorKillEnemy,				action);
 }

@@ -18,9 +18,9 @@ class CAgentManager;
 
 class CAgentManagerActionBase : public CActionBase<CAgentManager> {
 protected:
-	typedef CActionBase<CAgentManager>				inherited;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::_solver_value_type		_value_type;
+	typedef CActionBase<CAgentManager>					inherited;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
 
 public:
 						CAgentManagerActionBase		(CAgentManager *object, LPCSTR action_name = "");

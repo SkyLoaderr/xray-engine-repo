@@ -84,21 +84,6 @@ IC	CAgentManager::iterator CAgentManager::member		(MemorySpace::squad_mask_type 
 }
 
 template <typename T>
-IC	void CAgentManager::setup_mask						(xr_vector<T> &objects, CEnemy &enemy)
-{
-	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
-	if (I != objects.end())
-		(*I).m_squad_mask.assign	(enemy.m_distribute_mask.get());
-}
-
-IC	void CAgentManager::setup_mask						(CEnemy &enemy)
-{
-	setup_mask						(*m_visible_objects,enemy);
-	setup_mask						(*m_sound_objects,enemy);
-	setup_mask						(*m_hit_objects,enemy);
-}
-
-template <typename T>
 IC	void CAgentManager::reset_memory_masks				(xr_vector<T> &objects)
 {
 	xr_vector<CVisibleObject>::iterator	I = m_visible_objects->begin();
@@ -130,4 +115,15 @@ IC	CAgentManager::CDangerCover *CAgentManager::danger_cover	(CCoverPoint *cover)
 IC	void CAgentManager::clear_danger_covers	()
 {
 	m_danger_covers.clear			();
+}
+
+IC	shared_str CAgentManager::cName	() const
+{
+	return							("agent_manager");
+}
+
+IC	CAgentManagerMotivationPlanner &CAgentManager::brain() const
+{
+	VERIFY							(m_brain);
+	return							(*m_brain);
 }

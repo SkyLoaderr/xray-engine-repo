@@ -300,19 +300,6 @@
 						RelativePath=".\agent_manager_space.h">
 					</File>
 					<Filter
-						Name="actions"
-						Filter="">
-						<File
-							RelativePath=".\agent_manager_actions.cpp">
-						</File>
-						<File
-							RelativePath=".\agent_manager_actions.h">
-						</File>
-						<File
-							RelativePath=".\agent_manager_actions_inline.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="member_order"
 						Filter="">
 						<File
@@ -326,30 +313,56 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="motivations"
+						Name="motivation_planner"
 						Filter="">
 						<File
-							RelativePath=".\agent_manager_motivations.cpp">
+							RelativePath=".\agent_manager_motivation_planner.cpp">
 						</File>
 						<File
-							RelativePath=".\agent_manager_motivations.h">
+							RelativePath=".\agent_manager_motivation_planner.h">
 						</File>
 						<File
-							RelativePath=".\agent_manager_motivations_inline.h">
+							RelativePath=".\agent_manager_motivation_planner_inline.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="properties"
-						Filter="">
-						<File
-							RelativePath=".\agent_manager_properties.cpp">
-						</File>
-						<File
-							RelativePath=".\agent_manager_properties.h">
-						</File>
-						<File
-							RelativePath=".\agent_manager_properties_inline.h">
-						</File>
+						<Filter
+							Name="actions"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_actions.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_actions.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_actions_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="motivations"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_motivations.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_motivations.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_motivations_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="properties"
+							Filter="">
+							<File
+								RelativePath=".\agent_manager_properties.cpp">
+							</File>
+							<File
+								RelativePath=".\agent_manager_properties.h">
+							</File>
+							<File
+								RelativePath=".\agent_manager_properties_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -960,19 +973,6 @@
 						RelativePath=".\object_handler_space.h">
 					</File>
 					<Filter
-						Name="actions"
-						Filter="">
-						<File
-							RelativePath=".\object_actions.cpp">
-						</File>
-						<File
-							RelativePath=".\object_actions.h">
-						</File>
-						<File
-							RelativePath=".\object_actions_inline.h">
-						</File>
-					</Filter>
-					<Filter
 						Name="planner"
 						Filter="">
 						<File
@@ -984,19 +984,32 @@
 						<File
 							RelativePath=".\object_handler_planner_inline.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="properties"
-						Filter="">
-						<File
-							RelativePath=".\object_property_evaluators.cpp">
-						</File>
-						<File
-							RelativePath=".\object_property_evaluators.h">
-						</File>
-						<File
-							RelativePath=".\object_property_evaluators_inline.h">
-						</File>
+						<Filter
+							Name="actions"
+							Filter="">
+							<File
+								RelativePath=".\object_actions.cpp">
+							</File>
+							<File
+								RelativePath=".\object_actions.h">
+							</File>
+							<File
+								RelativePath=".\object_actions_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="properties"
+							Filter="">
+							<File
+								RelativePath=".\object_property_evaluators.cpp">
+							</File>
+							<File
+								RelativePath=".\object_property_evaluators.h">
+							</File>
+							<File
+								RelativePath=".\object_property_evaluators_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
@@ -3959,6 +3972,9 @@
 						</File>
 						<File
 							RelativePath=".\graph_engine_inline.h">
+						</File>
+						<File
+							RelativePath=".\graph_engine_space.h">
 						</File>
 					</Filter>
 					<Filter

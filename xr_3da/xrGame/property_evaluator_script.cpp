@@ -25,8 +25,7 @@ void CPropertyEvaluator<CScriptGameObject>::script_register(lua_State *L)
 			.def(								constructor<CScriptGameObject*>())
 			.def(								constructor<CScriptGameObject*,LPCSTR>())
 			.def("setup",						&CScriptPropertyEvaluator::setup, &CScriptPropertyEvaluatorWrapper::setup_static)
-			.def("evaluate",					&CScriptPropertyEvaluator::evaluate, &CScriptPropertyEvaluatorWrapper::evaluate_static)
-			.def("name",						&CScriptPropertyEvaluator::name),
+			.def("evaluate",					&CScriptPropertyEvaluator::evaluate, &CScriptPropertyEvaluatorWrapper::evaluate_static),
 
 		class_<CPropertyEvaluatorConst<CScriptGameObject>, CScriptPropertyEvaluator>("property_evaluator_const")
 			.def(								constructor<CPropertyEvaluatorConst<CScriptGameObject>::_value_type>())

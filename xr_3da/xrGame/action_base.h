@@ -11,16 +11,18 @@
 #include "action_management_config.h"
 #include "property_storage.h"
 #include "script_export_space.h"
+#include "operator_abstract.h"
+#include "alife_space.h"
 
 class CScriptGameObject;
 
 template <typename _object_type>
-class CActionBase : public CGraphEngine::CWorldOperator {
+class CActionBase : public GraphEngineSpace::CWorldOperator {
 protected:
-	typedef CGraphEngine::CWorldOperator			inherited;
-	typedef CGraphEngine::CWorldProperty			COperatorCondition;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::CWorldOperator			inherited;
+	typedef GraphEngineSpace::CWorldProperty			COperatorCondition;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
 
 protected:
 	enum EActionStates {

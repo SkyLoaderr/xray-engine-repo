@@ -43,6 +43,21 @@ struct CEnemyFiller {
 	}
 };
 
+template <typename T>
+IC	void CAgentManager::setup_mask	(xr_vector<T> &objects, CEnemy &enemy)
+{
+	xr_vector<T>::iterator			I = std::find(objects.begin(),objects.end(),enemy.m_object->ID());
+	if (I != objects.end())
+		(*I).m_squad_mask.assign	(enemy.m_distribute_mask.get());
+}
+
+IC	void CAgentManager::setup_mask	(CEnemy &enemy)
+{
+	setup_mask						(*m_visible_objects,enemy);
+	setup_mask						(*m_sound_objects,enemy);
+	setup_mask						(*m_hit_objects,enemy);
+}
+
 float CAgentManager::evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const
 {
 	ai().ef_storage().m_tpCurrentMember = object0;

@@ -18,8 +18,8 @@ class CMotivationActionManagerStalker : public CMotivationActionManagerScript<CA
 protected:
 	typedef CMotivationActionManagerScript<CAI_Stalker>	inherited;
 	typedef CActionScriptBase<CAI_Stalker>				CAction;
-	typedef CGraphEngine::_solver_value_type			_value_type;
-	typedef CGraphEngine::_solver_condition_type		_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 	typedef CActionPlannerActionScript<CAI_Stalker>		CActionPlannerAction;
 
 

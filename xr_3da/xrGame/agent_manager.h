@@ -8,20 +8,19 @@
 
 #pragma once
 
-#include "motivation_action_manager.h"
 #include "member_order.h"
 
 class CEntity;
 class CAI_Stalker;
 class CSetupAction;
+class CAgentManagerMotivationPlanner;
 
-class CAgentManager :
-	public CMotivationActionManager<CAgentManager>,
-	public ISheduled
-{
+class CAgentManager : public ISheduled {
+private:
 	enum {
 		DANGER_INTERVAL = u32(30000),
 	};
+
 public:
 	class CMemberPredicate {
 	protected:
@@ -89,22 +88,15 @@ public:
 	typedef MEMBER_STORAGE::const_iterator			const_iterator;
 
 protected:
-	typedef CMotivationActionManager<CAgentManager>	inherited;
-	
-	using inherited::add_condition;
-
-protected:
 	MEMBER_STORAGE							m_members;
 	xr_vector<CVisibleObject>				*m_visible_objects;
 	xr_vector<CSoundObject>					*m_sound_objects;
 	xr_vector<CHitObject>					*m_hit_objects;
 	xr_vector<CEnemy>						m_enemies;
 	mutable xr_vector<CDangerCover>			m_danger_covers;
+	CAgentManagerMotivationPlanner			*m_brain;
 
 protected:
-			void							add_motivations		();
-			void							add_evaluators		();
-			void							add_actions			();
 	IC		xr_vector<CVisibleObject>		&visibles			() const;
 	IC		xr_vector<CSoundObject>			&sounds				() const;
 	IC		xr_vector<CHitObject>			&hits				() const;
@@ -150,7 +142,8 @@ public:
 	IC		CDangerCover					*danger_cover		(CCoverPoint *cover) const;
 			float							cover_danger		(CCoverPoint *cover) const;
 	IC		void							clear_danger_covers	();
-	IC		shared_str						cName				() const {return "agent_manager";}
+	IC		shared_str						cName				() const;
+	IC		CAgentManagerMotivationPlanner	&brain				() const;
 };
 
 #include "agent_manager_inline.h"

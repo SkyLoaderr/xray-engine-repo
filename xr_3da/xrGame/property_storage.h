@@ -8,14 +8,14 @@
 
 #pragma once
 
-#include "graph_engine.h"
+#include "graph_engine_space.h"
 #include "script_export_space.h"
 
 class CPropertyStorage {
 public:
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::_solver_value_type		_value_type;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::CSolverConditionStorage	CConditionStorage;
 
 public:
 	CConditionStorage			m_storage;

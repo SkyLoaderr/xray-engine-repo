@@ -27,8 +27,8 @@ template <
 >
 class CActionPlanner : 
 	public CProblemSolver<
-		CGraphEngine::CWorldProperty,
-		CGraphEngine::CWorldState,
+		GraphEngineSpace::CWorldProperty,
+		GraphEngineSpace::CWorldState,
 		_world_operator,
 		_condition_evaluator,
 		u32,
@@ -39,8 +39,8 @@ class CActionPlanner :
 {
 public:
 	typedef CProblemSolver<
-		CGraphEngine::CWorldProperty,
-		CGraphEngine::CWorldState,
+		GraphEngineSpace::CWorldProperty,
+		GraphEngineSpace::CWorldState,
 		_world_operator,
 		_condition_evaluator,
 		u32,
@@ -50,8 +50,8 @@ public:
 	>												CProblemSolver;
 	typedef CProblemSolver							inherited;
 	typedef typename inherited::_edge_type			_action_id_type;
-	typedef CGraphEngine::CWorldProperty			CWorldProperty;
-	typedef CGraphEngine::CWorldState				CWorldState;
+	typedef GraphEngineSpace::CWorldProperty		CWorldProperty;
+	typedef GraphEngineSpace::CWorldState			CWorldState;
 	typedef _world_operator							_world_operator;
 
 protected:

@@ -17,8 +17,8 @@ class CScriptGameObject;
 template <typename _object_type>
 class CMotivationAction : public CMotivation<_object_type> {
 protected:
-	typedef CMotivation<_object_type>	inherited;
-	typedef CGraphEngine::CWorldState	CWorldState;
+	typedef CMotivation<_object_type>		inherited;
+	typedef GraphEngineSpace::CWorldState	CWorldState;
 
 protected:
 	CWorldState					m_goal;

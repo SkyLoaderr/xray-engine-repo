@@ -22,9 +22,9 @@ class CWeaponMagazined;
 template <typename _item_type>
 class CObjectActionBase : public CActionBase<CAI_Stalker> {
 protected:
-	typedef CActionBase<CAI_Stalker>				inherited;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::_solver_value_type		_value_type;
+	typedef CActionBase<CAI_Stalker>					inherited;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
 
 protected:
 	_item_type			*m_item;

@@ -73,5 +73,12 @@ IC	void CSMotivationActionManager::add_action		(const _edge_type &a, CScriptActi
 	CSActionPlanner::add_operator		(a,b);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	_object_type *CSMotivationActionManager::object	() const
+{
+	VERIFY								(CSActionPlanner::m_object);
+	return								(CSActionPlanner::m_object);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CSMotivationActionManager

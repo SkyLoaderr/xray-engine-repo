@@ -19,7 +19,7 @@ protected:
 	typedef CScriptGameObject			_object_type;
 
 public:
-	IC						CScriptMotivationActionWrapper	(const CGraphEngine::CWorldState &goal);
+	IC						CScriptMotivationActionWrapper	(const GraphEngineSpace::CWorldState &goal);
 	virtual					~CScriptMotivationActionWrapper	();
 	virtual void			setup							(_object_type *object);
 	static	void			setup_static					(inherited *motivation, CScriptGameObject *object);

@@ -23,9 +23,9 @@ namespace MonsterSpace {
 
 class CObjectHandlerPlanner : public CActionPlanner<CAI_Stalker,true> {
 public:
-	typedef CActionPlanner<CAI_Stalker,true>		inherited;
-	typedef CGraphEngine::_solver_value_type		_value_type;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
+	typedef CActionPlanner<CAI_Stalker,true>			inherited;
+	typedef GraphEngineSpace::_solver_value_type		_value_type;
+	typedef GraphEngineSpace::_solver_condition_type	_condition_type;
 
 protected:
 			void			add_evaluators			(CWeapon		*weapon);
