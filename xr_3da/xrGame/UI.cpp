@@ -133,10 +133,9 @@ bool CUI::OnKeyboardRelease(int dik)
 
 bool CUI::OnMouseMove(int dx,int dy)
 {
-	if (UICursor.bVisible)
+	if (UICursor.IsVisible())
 	{ 
-		UICursor.vPos.x+=(float)dx;
-		UICursor.vPos.y+=(float)dy;
+		UICursor.MoveBy(dx,dy);
 		return true;
 	}
 	return false;
