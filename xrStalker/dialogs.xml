@@ -317,6 +317,7 @@
 			<phrase id="1">
 				<text>Спасибо, брат... Возьми немного денег, я тебе очень благодарен\n          [получено 1500 рублей]</text>
 				<action>trader_job.give_medkit_to_wounded</action>
+				<disable_info>is_medkit_present</disable_info> 
 			</phrase>
 
 		</phrase_list>
