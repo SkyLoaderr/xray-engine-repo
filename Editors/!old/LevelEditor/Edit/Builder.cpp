@@ -24,6 +24,7 @@ SceneBuilder::SceneBuilder()
     l_face_cnt 			= 0;
 	l_vert_it	 		= 0;
 	l_face_it			= 0;
+    object_for_render	= 0;
 }
 
 SceneBuilder::~SceneBuilder()
@@ -69,9 +70,9 @@ BOOL SceneBuilder::Compile()
             	if (_I->first!=OBJCLASS_DUMMY){
                     if (_I->second->Valid()){                                  
                         VERIFY_COMPILE(_I->second->Export(m_LevelPath.c_str()),_I->second->ClassDesc(),"export failed.");
-                        ELog.Msg(mtInformation,"%s: created successfully.",_I->second->ClassDesc());
+                        ELog.Msg(mtInformation,"Process %s - done.",_I->second->ClassDesc());
                     }else{
-                        ELog.Msg(mtError,"%s: validation failed.",_I->second->ClassDesc());
+                        ELog.Msg(mtError,"Process %s - failed.",_I->second->ClassDesc());
                     }
                 }
             }
@@ -199,4 +200,13 @@ BOOL SceneBuilder::MakeHOM( )
 	return error_text.IsEmpty();
 }
 //------------------------------------------------------------------------------
+
+#include "EditObject.h"
+void SceneBuilder::OnRender()
+{
+	if (object_for_render){
+        object_for_render->OnFrame();
+        object_for_render->RenderSingle(Fidentity);
+    }
+}
 

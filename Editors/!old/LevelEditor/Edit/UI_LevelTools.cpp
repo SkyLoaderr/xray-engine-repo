@@ -13,6 +13,7 @@
 #include "ObjectList.h"
 
 #include "igame_persistent.h"
+#include "Builder.h"
 
 #define DETACH_FRAME(a) 	if (a){ (a)->Hide(); 	(a)->Parent = NULL; }
 #define ATTACH_FRAME(a,b) 	if (a){ (a)->Parent=(b);(a)->Show(); 		}
@@ -364,12 +365,13 @@ void __fastcall CLevelTools::Render()
     EEditorState est 		= UI->GetEState();
     // draw scene
     switch(est){
-    case esEditLibrary: 	TfrmEditLibrary::OnRender(); break;
+    case esEditLibrary: 	TfrmEditLibrary::OnRender(); 	break;
     case esEditLightAnim:
     case esEditScene:
     	Scene->Render(Device.m_Camera.GetTransform()); 
 	    if (psDeviceFlags.is(rsEnvironment)) g_pGamePersistent->Environment.RenderLast	();
     break;
+    case esBuildLevel:  	Builder.OnRender();				break;
     }
     // draw cursor
     LUI->m_Cursor->Render();

@@ -73,7 +73,9 @@ protected:
     U32Vec			m_VM[clpSMX+1][clpSMY+1][clpSMZ+1];
     Fvector			m_VMeps;
 
-    u32			VPack(SSkelVert& V);
+    u32				VPack(SSkelVert& V);
+public:
+    u32 			invalid_faces;
 public:
     CSkeletonCollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
     bool 			check      	(SSkelFace& F){
@@ -89,18 +91,25 @@ public:
         }
         return true;
     }
-	void add_face	(SSkelVert& v0, SSkelVert& v1, SSkelVert& v2)
+	bool add_face	(SSkelVert& v0, SSkelVert& v1, SSkelVert& v2)
     {
 		if (v0.O.similar(v1.O,EPS) || v0.O.similar(v2.O,EPS) || v1.O.similar(v2.O,EPS)){
 			ELog.Msg(mtError,"Degenerate face found. Removed.");
-            return;
+            invalid_faces++;
+            return false;
         }
         SSkelFace F;
         F.v[0]	= VPack(v0);
         F.v[1]	= VPack(v1);
         F.v[2]	= VPack(v2);
-        if (check(F)) 	m_Faces.push_back(F);
-        else			ELog.Msg(mtError,"Duplicate(degenerate) face found. Removed.");
+        if (check(F)){ 
+        	m_Faces.push_back	(F);
+	        return 				true;
+        }else{	
+        	ELog.Msg(mtError,"Duplicate face found. Removed.");
+            invalid_faces++;
+            return false;
+        }
     }
     SkelVertVec& 	getV_Verts()	{return m_Verts;}
     SkelFaceVec& 	getV_Faces()	{return m_Faces;}

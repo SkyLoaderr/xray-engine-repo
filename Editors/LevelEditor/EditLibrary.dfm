@@ -1,6 +1,6 @@
 object frmEditLibrary: TfrmEditLibrary
-  Left = 536
-  Top = 285
+  Left = 948
+  Top = 526
   Width = 332
   Height = 468
   BorderIcons = [biSystemMenu, biMinimize]

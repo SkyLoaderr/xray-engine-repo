@@ -80,6 +80,8 @@ CSkeletonCollectorPacked::CSkeletonCollectorPacked(const Fbox &_bb, int apx_vert
     m_VMeps.y		= (m_VMeps.y<EPS_L)?m_VMeps.y:EPS_L;
     m_VMeps.z		= (m_VMeps.z<EPS_L)?m_VMeps.z:EPS_L;
 
+    invalid_faces	= 0;
+
     // Preallocate memory
     m_Verts.reserve	(apx_vertices);
     m_Faces.reserve	(apx_faces);
@@ -603,10 +605,9 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     F.close_chunk();
 
     if (m_Source->GetClassScript().size()){
-        F.open_chunk(OGF_S_USERDATA);
-        std::string aaa;
-        F.w_stringZ(aaa);//m_Source->m_ClassScript);
-        F.close_chunk();
+        F.open_chunk	(OGF_S_USERDATA);
+        F.w_stringZ		(m_Source->GetClassScript());
+        F.close_chunk	();
     }
 
     pb->Inc		();

@@ -522,6 +522,7 @@ int CPortalUtils::CalculateSelectedPortals(ObjectList& sectors){
     for (ObjectIt s_it=sectors.begin(); s_it!=sectors.end(); s_it++){
         CSector* S=(CSector*)(*s_it);
         for (SItemIt s_it=S->sector_items.begin();s_it!=S->sector_items.end();s_it++){
+        	if (s_it->object->IsMUStatic()) continue;
             s_it->GetTransform(T);
             FvectorVec& m_verts=s_it->mesh->m_Points;
             FaceIt _S=s_it->mesh->m_Faces.begin();

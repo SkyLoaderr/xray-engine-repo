@@ -292,7 +292,10 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
         CSurface* surf 		= sp_it->first;
         int m_id			= BuildMaterial(surf,sect_num);
 		int gm_id			= surf->_GameMtl(); 
-        if (m_id<0)			{ bResult = FALSE; break; }
+        if (m_id<0)			{ 
+        	bResult = FALSE; 
+            break; 
+        }
         if (gm_id<0){ 
         	ELog.DlgMsg		(mtError,"Surface: '%s' contains bad game material.",surf->_Name());
         	bResult 		= FALSE; 
@@ -327,7 +330,8 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
             float _a		= CalcArea(mesh->m_Points[face.pv[0].pindex],mesh->m_Points[face.pv[1].pindex],mesh->m_Points[face.pv[2].pindex]);
-            if (fis_zero(_a)){
+	    	if (!_valid(_a) || (_a<EPS)){
+		    	Scene->m_CompilerErrors.AppendFace(mesh->m_Points[face.pv[0].pindex],mesh->m_Points[face.pv[1].pindex],mesh->m_Points[face.pv[2].pindex]);
             	dwInvalidFaces++;
                 continue;
             }
@@ -446,6 +450,8 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
 		// parse mesh data
 	    for(EditMeshIt MESH=O->FirstMesh();MESH!=O->LastMesh();MESH++)
 	    	if (!BuildMesh(Fidentity,O,*MESH,sect_num,M.verts,M.vert_cnt,vert_it,M.faces,M.face_cnt,face_it)) return FALSE;
+        M.face_cnt		= face_it;
+        M.vert_cnt		= vert_it;
     }
 
     l_mu_refs.push_back	(b_mu_reference());
@@ -758,11 +764,11 @@ int SceneBuilder::BuildShaderXRLC(const char * s){
     strcpy(sh.name,s);
     int sh_id = FindInShadersXRLC(&sh);
     if (sh_id<0){
-        l_shaders_xrlc.push_back(sh);
         if (!Device.ShaderXRLC.Get(sh.name)){
         	ELog.DlgMsg(mtError,"Can't find compiler shader: %s",sh.name);
             return -1;
         }
+        l_shaders_xrlc.push_back(sh);
         return l_shaders_xrlc.size()-1;
     }
     return sh_id;
@@ -844,35 +850,6 @@ int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* E, int 
     ImageLib.CreateLODTexture	(E->GetBox(), b.data, LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT);
     E->m_Flags.set				(CEditableObject::eoUsingLOD,TRUE);
 
-    // calc filling
-    Fvector3 S;
-    E->GetBox().getradius		(S);
-    float R 					= _max(S.x,S.z);
-    float kx=LOD_IMAGE_SIZE, ky=LOD_IMAGE_SIZE;
-    if (S.y>R) 	kx				= (((R*LOD_IMAGE_SIZE)/S.y)/LOD_IMAGE_SIZE);
-    else		ky				= (((S.y*LOD_IMAGE_SIZE)/R)/LOD_IMAGE_SIZE);
-    
-    float fill_factor			= 0.f;
-    u32 cnt						= 0;
-    for (u32 s=0; s<LOD_SAMPLE_COUNT; s++){
-        for (u32 y=0; y<LOD_IMAGE_SIZE; y++){
-            int yy				= iFloor(float(int(y)-32)/ky+32);
-            for (u32 x=0; x<LOD_IMAGE_SIZE; x++){
-                Fvector2 p={x,x},c={32.f,32.f};
-                float r			= c.sub(p).magnitude();
-                if (r<LOD_IMAGE_SIZE*0.5f){
-                	int xx		= iFloor(float(int(x)-32)/kx+32);
-                    if (xx>=0&&xx<64&&yy>=0&&yy<64){
-                        u32 d		= b.data[yy*LOD_IMAGE_SIZE*LOD_SAMPLE_COUNT+s*LOD_IMAGE_SIZE+xx];
-                        fill_factor	+= color_get_A(d)>0?1.f:0.f;
-                    }
-                    cnt++;
-                }
-            }
-        }
-    }
-    fill_factor					/= float(cnt);
-    
     return l_lods.size()-1;
 }
 //------------------------------------------------------------------------------
@@ -1043,7 +1020,7 @@ BOOL SceneBuilder::CompileStatic()
 		        pb->Inc();
 			}
         }else{
-            ELog.DlgMsg		(mtError,"Failed to build merged LOD texture.");
+            ELog.DlgMsg		(mtError,"Failed to build merged LOD texture. Merged texture more than [2048x1024].");
         	bResult			= FALSE;
         }
         UI->ProgressEnd(pb);

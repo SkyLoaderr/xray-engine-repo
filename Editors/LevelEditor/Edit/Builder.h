@@ -32,10 +32,13 @@ struct sb_light_control						// controller or "layer", 30fps
 
 struct e_b_lod{
 	b_lod				lod;
-    shared_str				tex_name;
+    U32Vec				data;
+    shared_str		   	tex_name;
 };
 
 class SceneBuilder{
+	CEditableObject*			object_for_render;
+
 	int							l_vert_cnt, l_vert_it;
 	int							l_face_cnt, l_face_it;
     b_vertex*		        	l_verts;
@@ -133,6 +136,8 @@ public:
     BOOL 	MakeHOM					();
     BOOL	MakeAIMap				();
     BOOL	MakeWallmarks			();
+
+    void	OnRender				();
 };
 
 extern SceneBuilder Builder;

@@ -63,9 +63,14 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
             }
             if (ot->IsAppendRandomScaleActive()){
             	Fvector s;
-                s.set(	Random.randF(ot->m_AppendRandomMinScale.x,ot->m_AppendRandomMaxScale.x),
-                        Random.randF(ot->m_AppendRandomMinScale.y,ot->m_AppendRandomMaxScale.y),
-                        Random.randF(ot->m_AppendRandomMinScale.z,ot->m_AppendRandomMaxScale.z));
+                if (ot->IsAppendRandomScaleProportional()){
+                    s.x		= Random.randF(ot->m_AppendRandomMinScale.x,ot->m_AppendRandomMaxScale.x);
+                    s.set	(s.x,s.x,s.x);
+                }else{
+                    s.set(	Random.randF(ot->m_AppendRandomMinScale.x,ot->m_AppendRandomMaxScale.x),
+                            Random.randF(ot->m_AppendRandomMinScale.y,ot->m_AppendRandomMaxScale.y),
+                            Random.randF(ot->m_AppendRandomMinScale.z,ot->m_AppendRandomMaxScale.z));
+                }
                 obj->PScale = s;
             }
         }

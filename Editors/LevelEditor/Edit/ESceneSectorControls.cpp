@@ -84,7 +84,7 @@ bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
         } else {
             if (fraSector->ebAddMesh->Down)	AddMesh();
             if (fraSector->ebDelMesh->Down)	DelMesh();
-            return true;
+            return false;
         }
     }
     return false;

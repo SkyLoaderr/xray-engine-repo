@@ -234,7 +234,7 @@ void CommandImportCompilerError(u32 p1, u32 p2, u32& res)
 void CommandValidateScene(u32 p1, u32 p2, u32& res)
 {
     if( !Scene->locked() ){
-        Scene->Validate(true,false,true,true,true);
+        Scene->Validate(true,true,true,true,true);
     } else {
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         res = FALSE;

@@ -203,7 +203,7 @@ bool SBPart::Export	(IWriter& F)
         split.add_face		(v[0], v[1], v[2]);
         if (face->surf->m_Flags.is(CSurface::sf2Sided)){
             v[0].N.invert(); v[1].N.invert(); v[2].N.invert();
-            split.add_face(v[0], v[2], v[1]);
+            if (!split.add_face(v[0], v[2], v[1])) split.invalid_faces++;
         }
     }
 
@@ -213,6 +213,9 @@ bool SBPart::Export	(IWriter& F)
             ELog.Msg(mtError,"Degenerate part found (Texture '%s').",*split_it->m_Texture);
             bRes = false;
             break;
+        }
+        if (0!=split_it->invalid_faces){
+	        ELog.Msg(mtError,"Part [texture '%s'] have %d duplicate(degenerate) face(s).",*split_it->m_Texture,split_it->invalid_faces);
         }
     	// calculate T&B components
 		split_it->CalculateTB();

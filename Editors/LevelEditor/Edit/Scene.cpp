@@ -278,10 +278,11 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     }
 
 	if (bTestPortal){
-		if (!PortalUtils.Validate(false)){
-			ELog.Msg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
-            bRes = false;
-    	}
+        if (Scene->ObjCount(OBJCLASS_SECTOR)||Scene->ObjCount(OBJCLASS_PORTAL))
+            if (!PortalUtils.Validate(false)){
+                ELog.Msg(mtError,"*ERROR: Scene has non associated face (face without sector)!");
+                bRes = false;
+            }
     }
     if (bTestHOM){
         bool bHasHOM=false;

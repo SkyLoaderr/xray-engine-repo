@@ -215,7 +215,7 @@ void __fastcall TfrmImageLib::RegisterModifiedTHM()
 }
 
 void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
-{
+{                     
 	m_ItemProps->RestoreParams(fsStorage);
     m_ItemList->LoadParams(fsStorage);
 }

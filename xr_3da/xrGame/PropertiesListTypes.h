@@ -11,6 +11,7 @@
 enum EPropType{
 	PROP_UNDEF		= -1,
 	PROP_CAPTION	= 0x1000,
+	PROP_SHORTCUT,
 	PROP_BUTTON,
     PROP_CHOOSE,
 	PROP_NUMERIC,	// {u8,u16,u32,s8,s16,s32,f32}
@@ -275,7 +276,39 @@ public:
     	return false;
     }
 };
-
+/*
+class ShortcutValue: public PropValue{
+public:
+	enum{
+    	ssCtrl			= (1<<0),
+    	ssShift			= (1<<1),
+    	ssAlt			= (1<<2),
+    };
+    Flags8*				shift_state;
+    char*				key;
+    u16*				value;
+public:
+						ShortcutValue	():key(0){shift_state.zero();}
+    virtual std::string	GetDrawText		(TOnDrawTextEvent)
+    {
+    	std::string 	tmp;
+        if (shift_state.is(ssCtrl)) 	tmp = tmp.size()?"+Ctrl"	:"Ctrl"; 
+        if (shift_state.is(ssShift)) 	tmp = tmp.size()?"+Shift"	:"Shift"; 
+        if (shift_state.is(ssAlt)) 		tmp = tmp.size()?"+Alt"		:"Alt"; 
+        if (tmp.size())					tmp	+="+";
+        tmp									+="/'";
+        tmp									+=key;
+        tmp									+="/'";
+        return 			tmp;
+    }
+    virtual	void		ResetValue		(){;}
+    virtual	bool		Equal			(PropValue* val)
+    {
+    	ShortcutValue* prop = (ShortcutValue*)val;
+        return (shift_state.equal(prop->shift_state))&&(key==prop->key);
+    }
+};
+*/
 class ButtonValue: public PropValue{
 public:
 	RStringVec			value;
@@ -462,6 +495,7 @@ IC std::string draw_sprintf(std::string& s, const Fvector& V, int dec)
 {
 	string128 fmt;	sprintf(fmt,"{%%.%df, %%.%df, %%.%df}",dec,dec,dec);
     string256 tmp;	sprintf(tmp,fmt,V.x,V.y,V.z);
+    s 				= tmp;
     return s;
 }
 //------------------------------------------------------------------------------

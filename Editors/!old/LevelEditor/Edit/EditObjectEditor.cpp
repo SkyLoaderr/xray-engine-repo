@@ -203,7 +203,7 @@ void CEditableObject::GetLODFrame(int frame, Fvector p[4], Fvector2 t[4], const 
     T.translate_over(P);
     if (parent) T.mulA(*parent);
 
-    float angle = frame*(PI_MUL_2/LOD_SAMPLE_COUNT);
+    float angle = frame*(PI_MUL_2/float(LOD_SAMPLE_COUNT));
     rot.rotateY(-angle);
     matrix.mul(T,rot);
     Fvector2 lt, rb;
@@ -231,7 +231,7 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
     parent.getHPB	(HPB);
 
     for (int frame=0; frame<LOD_SAMPLE_COUNT; frame++){
-    	float angle = angle_normalize(frame*(PI_MUL_2/LOD_SAMPLE_COUNT)+HPB.x);
+    	float angle = angle_normalize(frame*(PI_MUL_2/float(LOD_SAMPLE_COUNT))+HPB.x);
 
         Fvector D;
         D.setHP(angle,0);
