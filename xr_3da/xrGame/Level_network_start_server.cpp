@@ -25,7 +25,7 @@ BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 		F->Close					();
 
 		// Startup client
-		BOOL bResult				= net_Client("localhost");
+		bResult						= net_Client("localhost");
 
 		// Load client-specific data
 		F							= FS().OpenChunk(fsSLS_UnitsSpecific);
@@ -42,7 +42,7 @@ BOOL CLevel::net_Server			( LPCSTR name, BOOL SLS_Load )
 		Server->SLS_Default			();
 
 		// Startup client
-		BOOL bResult				= net_Client("localhost");
+		bResult						= net_Client("localhost");
 	}
 
 	// End of process
