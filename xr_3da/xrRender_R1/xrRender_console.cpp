@@ -90,7 +90,7 @@ float		ps_r2_gmaterial				= 0.f;				//
 class CCC_tf_Aniso	: public CCC_Integer
 {
 public:
-	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 2, 16) { *v = 4; };
+	CCC_tf_Aniso(LPCSTR N, int*	v) : CCC_Integer(N, v, 1, 16)		{ };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Integer::Execute	(args);
@@ -101,7 +101,7 @@ public:
 class CCC_tf_MipBias: public CCC_Float
 {
 public:
-	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -3, +3)	{ *v = -0.5f; };
+	CCC_tf_MipBias(LPCSTR N, float*	v) : CCC_Float(N, v, -3, +3)	{ };
 	virtual void Execute(LPCSTR args)
 	{
 		CCC_Float::Execute	(args);
