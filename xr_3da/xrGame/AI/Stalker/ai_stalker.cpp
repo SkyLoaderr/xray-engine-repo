@@ -78,37 +78,37 @@ void CAI_Stalker::Load				(LPCSTR section)
 	m_tSelectorReload.Load			(section,"selector_reload");
 	m_tSelectorRetreat.Load			(section,"selector_retreat");
 	// visibility
-	m_dwMovementIdleTime			= pSettings->ReadINT(section,"MovementIdleTime");
-	m_fMaxInvisibleSpeed			= pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
-	m_fMaxViewableSpeed				= pSettings->ReadFLOAT(section,"MaxViewableSpeed");
-	m_fMovementSpeedWeight			= pSettings->ReadFLOAT(section,"MovementSpeedWeight");
-	m_fDistanceWeight				= pSettings->ReadFLOAT(section,"DistanceWeight");
-	m_fSpeedWeight					= pSettings->ReadFLOAT(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier	= pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier		= pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
-	m_fVisibilityThreshold			= pSettings->ReadFLOAT(section,"VisibilityThreshold");
-	m_fLateralMultiplier			= pSettings->ReadFLOAT(section,"LateralMultiplier");
-	m_fShadowWeight					= pSettings->ReadFLOAT(section,"ShadowWeight");
+	m_dwMovementIdleTime			= pSettings->r_s32(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed			= pSettings->r_float(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed				= pSettings->r_float(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight			= pSettings->r_float(section,"MovementSpeedWeight");
+	m_fDistanceWeight				= pSettings->r_float(section,"DistanceWeight");
+	m_fSpeedWeight					= pSettings->r_float(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier	= pSettings->r_float(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier		= pSettings->r_float(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold			= pSettings->r_float(section,"VisibilityThreshold");
+	m_fLateralMultiplier			= pSettings->r_float(section,"LateralMultiplier");
+	m_fShadowWeight					= pSettings->r_float(section,"ShadowWeight");
 
-	m_fCrouchFactor					= pSettings->ReadFLOAT(section,"CrouchFactor");
-	m_fWalkFactor					= pSettings->ReadFLOAT(section,"WalkFactor");
-	m_fRunFactor					= pSettings->ReadFLOAT(section,"RunFactor");
+	m_fCrouchFactor					= pSettings->r_float(section,"CrouchFactor");
+	m_fWalkFactor					= pSettings->r_float(section,"WalkFactor");
+	m_fRunFactor					= pSettings->r_float(section,"RunFactor");
 
 	//fire
-	m_dwFireRandomMin  				= pSettings->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax  				= pSettings->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin  				= pSettings->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax  				= pSettings->ReadINT(section,"NoFireTimeMax");
-	m_fMinMissDistance 				= pSettings->ReadFLOAT(section,"MinMissDistance");
-	m_fMinMissFactor   				= pSettings->ReadFLOAT(section,"MinMissFactor");
-	m_fMaxMissDistance 				= pSettings->ReadFLOAT(section,"MaxMissDistance");
-	m_fMaxMissFactor				= pSettings->ReadFLOAT(section,"MaxMissFactor");
+	m_dwFireRandomMin  				= pSettings->r_s32(section,"FireRandomMin");
+	m_dwFireRandomMax  				= pSettings->r_s32(section,"FireRandomMax");
+	m_dwNoFireTimeMin  				= pSettings->r_s32(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax  				= pSettings->r_s32(section,"NoFireTimeMax");
+	m_fMinMissDistance 				= pSettings->r_float(section,"MinMissDistance");
+	m_fMinMissFactor   				= pSettings->r_float(section,"MinMissFactor");
+	m_fMaxMissDistance 				= pSettings->r_float(section,"MaxMissDistance");
+	m_fMaxMissFactor				= pSettings->r_float(section,"MaxMissFactor");
 
-	eye_fov							= pSettings->ReadFLOAT(section,"eye_fov");
-	eye_range						= pSettings->ReadFLOAT(section,"eye_range");
+	eye_fov							= pSettings->r_float(section,"eye_fov");
+	eye_range						= pSettings->r_float(section,"eye_range");
 
 	m_tpaTerrain.clear				();
-	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");
+	LPCSTR							S = pSettings->r_string(section,"terrain");
 	u32								N = _GetItemCount(S);
 	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
 	STerrainPlace					tTerrainPlace;
@@ -122,21 +122,21 @@ void CAI_Stalker::Load				(LPCSTR section)
 		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
 		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
-	m_fGoingSpeed					= pSettings->ReadFLOAT	(section, "going_speed");
+	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 
-	m_dwMaxDynamicObjectsCount		= _min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
-	m_dwMaxDynamicSoundsCount		= _min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
+	m_dwMaxDynamicObjectsCount		= _min(pSettings->r_s32(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount		= _min(pSettings->r_s32(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
 	// physics
-	skel_density_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_mass_factor");
-	skel_airr_lin_factor			= pSettings->ReadFLOAT(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor			= pSettings->ReadFLOAT(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor");
-	hinge_force_factor1				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay						= pSettings->ReadINT(section,"ph_skeleton_ddelay");
-	hinge_force_factor2				= pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
-	hinge_vel						= pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
-	skel_fatal_impulse_factor		= pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
+	skel_density_factor				= pSettings->r_float(section,"ph_skeleton_mass_factor");
+	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
+	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
+	hinge_force_factor				= pSettings->r_float(section,"ph_skeleton_hinger_factor");
+	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
+	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
+	hinge_force_factor2				= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
+	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
+	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 
 	// Msg	("! stalker size: %d",sizeof(*this));
 }

@@ -210,7 +210,7 @@ public:
 
 	IC		void	Load								(LPCSTR section, LPCSTR Name)
 			{
-				LPCSTR		S = pSettings->ReadSTRING(section,Name);
+				LPCSTR		S = pSettings->r_string(section,Name);
 				string16	I;
 				for (u32 i=0, j=0; i<dwSelectorVarCount; i++)
 					if ((qwFlags & (u64(1) << i)) == (u64(1) << i))

@@ -32,28 +32,20 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	
 	// counting types of points
 	for ( i=0; i<(int)N; i++) {
-		if (tpaTo[i] > 2) {
-			Msg("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			THROW;
-		}
-		if (tpaFrom[i] > 2) {
-			Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			THROW;
-		}
+		if (tpaTo[i] > 2)
+			Debug.fatal("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
+		if (tpaFrom[i] > 2)
+			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 		if ((tpaTo[i] == 1) && (tpaFrom[i] == 0)) {
-			if (dwOneZero) {
-				Msg("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-				THROW;
-			}
+			if (dwOneZero)
+				Debug.fatal("Patrol path %s : invalid count of start points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 			dwOneZero++;
 			iFinishPoint = i;
 		}
 		
 		if ((tpaTo[i] == 0) && (tpaFrom[i] == 1)) {
-			if (dwZeroOne) {
-				Msg("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-				THROW;
-			}
+			if (dwZeroOne)
+				Debug.fatal("Patrol path %s : invalid count of finish points [%.2f,%.2f,%.2f]",sName,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 			dwZeroOne++;
 			iStartPoint = i;
 		}
@@ -81,16 +73,12 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			if (dwOneCount == N)
 				tpPatrolPath.dwType ^= PATH_BIDIRECTIONAL;
 			else
-				if (dwTwoCount != N) {
-					Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-					THROW;
-				}
+				if (dwTwoCount != N)
+					Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 	}
 	else
-		if ((dwOneCount != N - 2) || (dwOneZero != 1) || (dwZeroOne != 1)) {
-			Msg("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
-			THROW;
-		}
+		if ((dwOneCount != N - 2) || (dwOneZero != 1) || (dwZeroOne != 1))
+			Debug.fatal("Patrol path %s : invalid count of outcoming links (%d) for point %d [%.2f,%.2f,%.2f] in non-looped one-directional path",sName,tpaFrom[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 		else {
 			iCurPoint = iStartPoint;
 			tpPatrolPath.dwType ^= PATH_LOOPED ^ PATH_BIDIRECTIONAL;
@@ -117,10 +105,8 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	getAI().vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
 
 	// creating variations
-	if (!tpPatrolPath.tpaVectors[0].size()) {
-		Msg("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
-		THROW;
-	}
+	if (!tpPatrolPath.tpaVectors[0].size())
+		Debug.fatal("Patrol path %s was not built - there are not enough nodes to build all the straight lines",sName);
 	tpPatrolPath.tpaVectors[1].resize(tpPatrolPath.tpaVectors[0].size());
 	tpPatrolPath.tpaVectors[2].resize(tpPatrolPath.tpaVectors[0].size());
 			
@@ -192,11 +178,11 @@ BOOL CLevel::Load_GameSpecific_Before()
 {
 	// AI space
 	pApp->LoadTitle	("Loading AI objects...");
-	getAI().Load(Path.Current);
+	getAI().Load	();
 
 	string256		fn_game;
-	if (Engine.FS.Exist(fn_game, Path.Current, "level.game")) {
-		IReader *F = Engine.FS.Open	(fn_game);
+	if (FS.exist(fn_game, "$level$", "level.game")) {
+		IReader *F = FS.r_open	(fn_game);
 		IReader *O = 0;
 
 		// Load WayPoints
@@ -255,7 +241,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 			}
 			O->close();
 		}
-		Engine.FS.Close(F);
+		FS.r_close(F);
 	}
 
 	return TRUE;

@@ -128,15 +128,6 @@ class CBaseFunction;
 			SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(b);\
 	}
 
-	
-	/************************************************************************/
-	/* 		
-	m_tHitDir = Group.m_tLastHitDirection;\
-	m_dwHitTime = Group.m_dwLastHitTime;\
-	m_tHitPosition = Group.m_tHitPosition;\
-	*/
-	/************************************************************************/
-
 	#define SET_LOOK_FIRE_MOVEMENT(a,b,c)\
 		if (!(Group.m_bLessCoverLook)) {\
 			Group.m_bLessCoverLook = m_bLessCoverLook = true;\
@@ -212,7 +203,7 @@ class CBaseFunction;
 
 	#define DELETE_SOUNDS(a,b) {\
 		for (int i=0; i<(a); i++)\
-			::Sound->Delete((b)[i]);\
+			::Sound->destroy((b)[i]);\
 	}
 
 	IC float ffGetY(NodeCompressed &tNode, float X, float Z)

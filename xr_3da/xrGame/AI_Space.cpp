@@ -30,8 +30,7 @@ CAI_Space::CAI_Space	()
 	m_tpAStar					= 0;
 	
 	string256					caFileName;
-	strconcat					(caFileName,::Path.GameData,GRAPH_NAME);
-	if (Engine.FS.Exist(caFileName))
+	if (FS.exist(caFileName,"$game_data$",GRAPH_NAME))
 		CALifeGraph::Load		(caFileName);
 }
 
@@ -63,19 +62,19 @@ void CAI_Space::Unload()
 	xr_delete	(m_tpAStar);
 }
 
-void CAI_Space::Load(LPCSTR name)
+void CAI_Space::Load()
 {
 	CALifeCrossTable::Unload();
 	Unload		();
 
 	string256	fName;
-	strconcat	(fName,name,"level.ai");
-	if (!Engine.FS.Exist(fName))	return;
+	if (!FS.exist(fName,"$level$","level.ai"))
+		return;
 
-	vfs			= Engine.FS.Open	(fName);
+	vfs			= FS.r_open	(fName);
 
 	// m_header & data
-	vfs->r	(&m_header,sizeof(m_header));
+	vfs->r		(&m_header,sizeof(m_header));
 	R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
 	m_nodes		= (BYTE*) vfs->pointer();
 
@@ -104,9 +103,9 @@ void CAI_Space::Load(LPCSTR name)
 	m_fYSize2				= _sqr((float)(m_header.size_y/32767.0))/4;
 	m_tpAStar				= xr_new<CAStar>(65535);
 
-	strconcat				(fName,name,CROSS_TABLE_NAME);
-	if (!Engine.FS.Exist(fName))
+	if (!FS.exist(fName,"$level$",CROSS_TABLE_NAME))
 		return;
+
 	CALifeCrossTable::Load	(fName);
 }
 

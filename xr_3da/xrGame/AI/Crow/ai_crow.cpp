@@ -27,16 +27,16 @@ void CAI_Crow::SAnim::Load(CKinematics* visual, LPCSTR prefix)
 void CAI_Crow::SSound::Load(LPCSTR prefix)
 {
 	string128 fn;
-	if (FS.exist(fn,Path.Sounds,prefix,".wav")){
-		m_Sounds.push_back(sound());
-		::Sound->create(m_Sounds.back(),TRUE,prefix,0);
+	if (FS.exist(fn,"$game_sounds$",prefix,".wav")){
+		m_Sounds.push_back	(sound());
+		::Sound->create		(m_Sounds.back(),TRUE,prefix,0);
 	}
 	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); i++){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
-		if (FS.exist(fn,Path.Sounds,name,".wav")){
+		if (FS.exist(fn,"$game_sounds$",name,".wav")){
 			m_Sounds.push_back(sound());
-			::Sound->Create(m_Sounds.back(),TRUE,name,false,0);
+			::Sound->create(m_Sounds.back(),TRUE,name,0);
 		}
 	}
 	R_ASSERT(m_Sounds.size());
@@ -45,13 +45,13 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 void CAI_Crow::SSound::SetPosition(const Fvector& pos)
 {
 	for (int i=0; i<(int)m_Sounds.size(); i++)
-		if (m_Sounds[i].feedback) m_Sounds[i].feedback->SetPosition(pos);
+		m_Sounds[i].set_position(pos);
 }
 
 void CAI_Crow::SSound::Unload()
 {
 	for (int i=0; i<(int)m_Sounds.size(); i++)
-		::Sound->Delete	(m_Sounds[i]);
+		::Sound->destroy	(m_Sounds[i]);
 }
 
 void __stdcall	cb_OnHitEndPlaying			(CBlend* B)
@@ -96,12 +96,12 @@ void CAI_Crow::Load( LPCSTR section )
 	m_Sounds.m_idle.Load		("monsters\\crow\\idle");
 	// play defaut
 	
-	fSpeed						= pSettings->ReadFLOAT	(section,"speed");
-	fASpeed						= pSettings->ReadFLOAT	(section,"angular_speed");
-	fGoalChangeDelta			= pSettings->ReadFLOAT	(section,"goal_change_delta");
-	fMinHeight					= pSettings->ReadFLOAT	(section,"min_height");
-	vVarGoal					= pSettings->ReadVECTOR	(section,"goal_variability");
-	fIdleSoundDelta				= pSettings->ReadFLOAT	(section,"idle_sound_delta");
+	fSpeed						= pSettings->r_float	(section,"speed");
+	fASpeed						= pSettings->r_float	(section,"angular_speed");
+	fGoalChangeDelta			= pSettings->r_float	(section,"goal_change_delta");
+	fMinHeight					= pSettings->r_float	(section,"min_height");
+	vVarGoal					= pSettings->r_fvector3	(section,"goal_variability");
+	fIdleSoundDelta				= pSettings->r_float	(section,"idle_sound_delta");
 	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
 
 	Movement.SetParent			(this);
@@ -192,7 +192,7 @@ void CAI_Crow::Update(u32 DT)
 		if (fIdleSoundTime<=0){
 			fIdleSoundTime = fIdleSoundDelta+fIdleSoundDelta*Random.randF(-0.5f,0.5f);
 			//if (st_current==eFlyIdle)
-			::Sound->PlayAtPos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
+			::Sound->play_at_pos(m_Sounds.m_idle.GetRandom(),H_Root(),vPosition);
 		}
 		fIdleSoundTime-=float(DT)/1000.f;
 	}

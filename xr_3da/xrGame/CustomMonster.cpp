@@ -289,7 +289,15 @@ void CCustomMonster::Update	( u32 DT )
 			Exec_Look				(dt);
 			Exec_Movement			(dt);
 			Exec_Visibility			();
-			Fvector C; float R;		Movement.GetBoundingSphere	(C,R);
+			//////////////////////////////////////
+			Fvector C; float R;
+			//////////////////////////////////////
+			// С Олеся - ПИВО!!!! (Диме :-))))
+			// Movement.GetBoundingSphere	(C,R);
+			//////////////////////////////////////
+			svCenter(C);
+			R = Radius();
+			//////////////////////////////////////
 			feel_touch_update		(C,R);
 
 			net_update				uNext;
@@ -492,7 +500,7 @@ void CCustomMonster::OnRender()
 	//if (!bDebug)					return;
 	if (!psAI_Flags.test(aiDebug))	return;
 
-	Movement.DBG_Render();
+//	Movement.DBG_Render();
 
 	RCache.OnFrameEnd				();
 	{
