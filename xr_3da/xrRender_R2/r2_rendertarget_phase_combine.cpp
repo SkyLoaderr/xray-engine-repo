@@ -98,7 +98,7 @@ void	CRenderTarget::phase_combine	()
 	RCache.set_Stencil		(FALSE);
 
 	// ********************* Debug
-	if (0)		{
+	if (1)		{
 		u32		C					= color_rgba	(255,255,255,255);
 		float	_w					= float(Device.dwWidth)/2;
 		float	_h					= float(Device.dwHeight)/2;
@@ -138,7 +138,7 @@ void	CRenderTarget::phase_combine	()
 		}
 
 		// Draw quater-screen quad textured with our accumulator
-		if (1)
+		if (0)
 		{
 			u32							IX=1,IY=1;
 			p0.set						(.5f/_w, .5f/_h);

@@ -228,7 +228,7 @@ void CRender::render_sun				()
 		// rotate the view frustum into light space, find AABB
 		D3DXVec3TransformCoordArray	( frustumPnts, sizeof(D3DXVECTOR3), frustumPnts, sizeof(D3DXVECTOR3), &lightSpaceBasis, sizeof(frustumPnts)/sizeof(D3DXVECTOR3) );
 		frustumBox.invalidate		();
-		for (int p=0; p<8; p++)	frustumBox.modify	(frustumPnts[p].x, frustumPnts[p].y, frustumPnts[p].z);
+		for (int p=0; p<8; p++)		frustumBox.modify	(frustumPnts[p].x, frustumPnts[p].y, frustumPnts[p].z);
 
 		// build initial ortho-xform
 		D3DXMatrixOrthoOffCenterLH	( &lightSpaceOrtho, frustumBox.min.x, frustumBox.max.x, frustumBox.min.y, frustumBox.max.y, frustumBox.min.z+tweak_ortho_xform_initial_offs, frustumBox.max.z);
@@ -260,25 +260,28 @@ void CRender::render_sun				()
 		//  we want to translate along the Z axis so that all shadow casters are 
 		//	in front of the near plane.
 		float		min_z = 1e32f,	max_z=-1e32f;
-		Fmatrix&	minmax_xform	= *((Fmatrix*)&m_LightViewProj);
+		D3DXMATRIX	minmax_xf;
+		D3DXMatrixMultiply	(&minmax_xf,&m_View,&lightSpaceBasis);
+		Fmatrix&	minmax_xform = *((Fmatrix*)&minmax_xf);
 		for		(int c=0; c<s_casters.size(); c++)
 		{
-			Fvector3				pt;
-			minmax_xform.transform	(pt,s_casters[c].min);
-			min_z	= _min			( min_z, pt.z );
-			max_z	= _max			( max_z, pt.z );
-			minmax_xform.transform	(pt,s_casters[c].max);
-			min_z	= _min			( min_z, pt.z );
-			max_z	= _max			( max_z, pt.z );
+			Fvector3	pt;
+			for			(int e=0; e<8; e++)
+			{
+				s_casters[c].getpoint	(e,pt);
+				minmax_xform.transform	(pt);
+				min_z	= _min			( min_z, pt.z );
+				max_z	= _max			( max_z, pt.z );
+			}
 		}
 		min_z	= _min	( min_z, frustumBox.min.z );
 		max_z	= _max	( max_z, frustumBox.max.z );
 		if ( min_z <= 1.f )
 		{
-			D3DXMATRIX				lightSpaceTranslate;
-			D3DXMatrixTranslation	( &lightSpaceTranslate, 0.f, 0.f, -min_z + 1.f );
-			max_z					= -min_z + max_z + 1.f;
-			min_z					= 1.f;
+			D3DXMATRIX					lightSpaceTranslate;
+			D3DXMatrixTranslation		( &lightSpaceTranslate, 0.f, 0.f, -min_z + 1.f );
+			max_z						= -min_z + max_z + 1.f;
+			min_z						= 1.f;
 			D3DXMatrixMultiply			( &lightSpaceBasis, &lightSpaceBasis, &lightSpaceTranslate );
 
 			// update view frustum, find AABB
@@ -415,25 +418,28 @@ void CRender::render_sun				()
 	{
 		Fmatrix&	xform	= *((Fmatrix*)&m_LightViewProj);
 		Fbox3		b_casters, b_receivers;
+		Fvector3	pt		;
 
 		// casters
 		b_casters.invalidate	();
 		for		(int c=0; c<s_casters.size(); c++)		{
-			Fvector3			pt;
-			xform.transform		(pt,s_casters[c].min);
-			b_casters.modify	(pt);
-			xform.transform		(pt,s_casters[c].max);
-			b_casters.modify	(pt);
+			for		(int e=0; e<8; e++)
+			{
+				s_casters[c].getpoint	(e,pt);
+				xform.transform			(pt);
+				b_casters.modify		(pt);
+			}
 		}
 
 		// receivers
 		b_receivers.invalidate	();
 		for		(int c=0; c<s_receivers.size(); c++)	{
-			Fvector3			pt;
-			xform.transform		(pt,s_receivers[c].min);
-			b_receivers.modify	(pt);
-			xform.transform		(pt,s_receivers[c].max);
-			b_receivers.modify	(pt);
+			for		(int e=0; e<8; e++)
+			{
+				s_receivers[c].getpoint	(e,pt);
+				xform.transform			(pt);
+				b_receivers.modify		(pt);
+			}
 		}
 
 		// because caster points are from coarse representation only allow to "shrink" box, not grow
