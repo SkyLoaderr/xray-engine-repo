@@ -34,14 +34,15 @@ private:
 	typedef xr_map<IRender_Visual*,LPCSTR>					REGISTRY;
 	typedef REGISTRY::iterator								REGISTRY_IT;
 private:
-	xr_vector<ModelDef>		Models;				// Reference / Base
-	REGISTRY				Registry;			// Just pairing of pointer / Name
-	POOL					Pool;				// Unused / Inactive
-	BOOL					bLogging;
-    BOOL					bForceDiscard;
-    BOOL					bAllowChildrenDuplicate;
+	xr_vector<ModelDef>			Models;				// Reference / Base
+	xr_vector<IRender_Visual*>	ModelsToDelete;		// 
+	REGISTRY					Registry;			// Just pairing of pointer / Name
+	POOL						Pool;				// Unused / Inactive
+	BOOL						bLogging;
+    BOOL						bForceDiscard;
+    BOOL						bAllowChildrenDuplicate;
 
-	void					Destroy	();
+	void						Destroy	();
 public:
                             CModelPool			();
 	virtual 				~CModelPool			();
@@ -58,6 +59,8 @@ public:
 	IRender_Visual*			CreateChild			(LPCSTR name, IReader* data);
 	void					Delete				(IRender_Visual* &V, BOOL bDiscard=FALSE);
 	void					Discard				(IRender_Visual* &V);
+	void					DeleteInternal		(IRender_Visual* &V, BOOL bDiscard=FALSE);
+	void					DeleteQueue			();
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 

@@ -152,7 +152,8 @@ CLevel::~CLevel()
 
 	// destroy PSs
 	for (POIt p_it=m_StaticParticles.begin(); m_StaticParticles.end()!=p_it; ++p_it)
-		xr_delete		(*p_it);
+		(*p_it)->PSI_destroy();
+
 	m_StaticParticles.clear();
 
 	// Unload sounds

@@ -39,6 +39,8 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 //////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
+	Device.seqFrame.Add	(this,REG_PRIORITY_HIGH+0x12345678);
+
 	// c-setup
 	::Device.Resources->RegisterConstantSetup("L_dynamic_pos",		&r1_dlight_binder_PR);
 	::Device.Resources->RegisterConstantSetup("L_dynamic_color",	&r1_dlight_binder_color);
@@ -65,6 +67,7 @@ void					CRender::create					()
 }
 void					CRender::destroy				()
 {
+	Device.seqFrame.Remove		(this);
 	HWOCC.occq_destroy			();
 	PSLibrary.OnDestroy			();
 	xr_delete					(L_Dynamic);
@@ -79,6 +82,10 @@ void					CRender::reset_end				()
 {
 	HWOCC.occq_create			(occq_size);
 	Target						=	xr_new<CRenderTarget>	();
+}
+void					CRender::OnFrame				()
+{
+	Models->DeleteQueue	();
 }
 
 // Implementation

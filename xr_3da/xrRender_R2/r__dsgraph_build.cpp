@@ -163,6 +163,7 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	// Distortive geometry should be marked and R2 special-cases it
 	// a) Allow to optimize RT order
 	// b) Should be rendered to special distort buffer in another pass
+	VERIFY						(pVisual->shader._get());
 	ShaderElement*		sh_d	= &*pVisual->shader->E[4];
 	if (RImplementation.o.distortion && sh_d && sh_d->flags.bDistort && pmask[sh_d->flags.iPriority/2]) {
 		mapSorted_Node* N		= mapDistort.insertInAnyWay		(distSQ);

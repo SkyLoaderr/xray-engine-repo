@@ -183,6 +183,7 @@ public:
 	virtual void					Calculate				();
 	virtual void					Render					();
 	virtual void					Screenshot				(ScreenshotMode mode=SM_NORMAL, LPCSTR name = 0);
+	virtual void					OnFrame					();
 	
 	// Render mode
 	virtual void					rmNear					();

@@ -14,12 +14,12 @@ using namespace luabind;
 
 void CParticlesObject::script_register(lua_State *L)
 {
-	module(L)
+/*	module(L)
 	[
 		class_<CParticlesObject>("particles")
 			.def(								constructor<LPCSTR,bool>())
 			.def("position",					&CParticlesObject::Position)
 			.def("play_at_pos",					&CParticlesObject::play_at_pos)
 			.def("stop",						&CParticlesObject::Stop)
-	];
+	];*/
 }

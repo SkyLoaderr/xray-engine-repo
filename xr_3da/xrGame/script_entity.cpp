@@ -226,8 +226,10 @@ void CScriptEntity::vfFinishAction(CScriptEntityAction *tpEntityAction)
 		m_current_sound->destroy	();
 		xr_delete					(m_current_sound);
 	}
-	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove)
-		xr_delete(tpEntityAction->m_tParticleAction.m_tpParticleSystem);
+	if (!tpEntityAction->m_tParticleAction.m_bAutoRemove){
+		tpEntityAction->m_tParticleAction.m_tpParticleSystem->PSI_destroy();
+		tpEntityAction->m_tParticleAction.m_tpParticleSystem = NULL;
+	}
 }
 
 void CScriptEntity::ProcessScripts()

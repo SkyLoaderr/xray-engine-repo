@@ -5,7 +5,10 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 CCar::SExhaust::~SExhaust()
 {
-	if(p_pgobject)xr_delete(p_pgobject);
+	if(p_pgobject){
+		p_pgobject->PSI_destroy();
+		p_pgobject = NULL;
+	}
 }
 
 void CCar::SExhaust::Init()
@@ -43,7 +46,8 @@ void CCar::SExhaust::Update()
 
 void CCar::SExhaust::Clear()
 {
-	xr_delete(p_pgobject);
+	p_pgobject->PSI_destroy();
+	p_pgobject = NULL;
 }
 
 void CCar::SExhaust::Play()

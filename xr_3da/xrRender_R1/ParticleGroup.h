@@ -68,7 +68,7 @@ namespace PS
 		Fvector				m_InitialPosition;
 	public:
     	DEFINE_VECTOR(IRender_Visual*,VisualVec,VisualVecIt);
-    	struct SItem{
+    	struct SItem		{
         	IRender_Visual*	_effect;
             VisualVec		_children_related;
             VisualVec		_children_free;

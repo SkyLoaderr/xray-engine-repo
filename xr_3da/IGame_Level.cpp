@@ -25,7 +25,7 @@ IGame_Level::~IGame_Level	()
 {
 	// Cleanup particles, some of them can be still active
 	while (!ps_active.empty())
-		xr_delete				( *ps_active.begin() );
+		(*ps_active.begin())->PSI_internal_delete();
 
 	// 
 	DEL_INSTANCE				( pHUD			);

@@ -275,11 +275,13 @@ IRender_Visual* CModelPool::CreateChild(LPCSTR name, IReader* data)
     return					Model;
 }
 
-void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
+extern ENGINE_API BOOL				g_bRendering; 
+void	CModelPool::DeleteInternal	(IRender_Visual* &V, BOOL bDiscard)
 {
+	VERIFY					(!g_bRendering);
 //	bDiscard = false;
 	if (bDiscard||bForceDiscard){
-    	Discard(V); 
+    	Discard	(V); 
 	}else{
 		//
 		REGISTRY_IT	it		= Registry.find	(V);
@@ -293,6 +295,24 @@ void	CModelPool::Delete	(IRender_Visual* &V, BOOL bDiscard)
 		}
 	}
 	V	=	NULL;
+}
+
+void	CModelPool::Delete			(IRender_Visual* &V, BOOL bDiscard)
+{
+	if	(g_bRendering)		{
+		VERIFY					(!bDiscard);
+		ModelsToDelete.push_back(V);
+	} else {
+		DeleteInternal			(V,bDiscard);
+	}
+	V	=	NULL;
+}
+
+void	CModelPool::DeleteQueue		()
+{
+	for (u32 it=0; it<ModelsToDelete.size(); it++)
+		DeleteInternal(ModelsToDelete[it]);
+	ModelsToDelete.clear	();
 }
 
 void	CModelPool::Discard	(IRender_Visual* &V)

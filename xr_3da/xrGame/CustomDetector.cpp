@@ -15,7 +15,7 @@ ZONE_INFO::ZONE_INFO	()
 
 ZONE_INFO::~ZONE_INFO	()
 {
-	xr_delete(pParticle);
+	pParticle->PSI_destroy();
 }
 
 CCustomDetector::CCustomDetector(void) 
@@ -336,8 +336,9 @@ void CCustomDetector::UpdateNightVisionMode()
 				zone_info.pParticle->Play();
 		}else{
 			if(zone_info.pParticle){
-				zone_info.pParticle->Stop();
-				xr_delete(zone_info.pParticle);
+				zone_info.pParticle->Stop			();
+				zone_info.pParticle->PSI_destroy	();
+				zone_info.pParticle					= NULL;
 			}
 		}
 	}
