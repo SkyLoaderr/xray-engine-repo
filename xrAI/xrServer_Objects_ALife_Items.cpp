@@ -316,6 +316,10 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp			(pref, items);
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),			&a_current,0,1000,1);
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
+	
+	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Scope"), &m_addon_flags, 0x01);
+	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Silencer"), &m_addon_flags, 0x02);
+	PHelper.CreateFlag8			(items,FHelper.PrepareKey(pref,s_name,"Podstvolnik"), &m_addon_flags, 0x04);
 }
 #endif
 
