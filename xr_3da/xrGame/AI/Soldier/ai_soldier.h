@@ -82,20 +82,6 @@ class CAI_Soldier : public CCustomMonster
 		#define COMPUTE_DISTANCE_2D(t,p)		(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 		#define MIN_COVER_MOVE					120
 
-		////////////////////////////////////////////////////////////////////////////
-		// dynamic objects
-		////////////////////////////////////////////////////////////////////////////
-
-		typedef struct tagSDynamicObject {
-			DWORD			dwTime;
-			DWORD			dwUpdateCount;
-			Fvector			tSavedPosition;
-			SRotation		tOrientation;
-			Fvector			tMySavedPosition;
-			SRotation		tMyOrientation;
-			CEntity			*tpEntity;
-		} SDynamicObject;
-
 		vector<SDynamicObject>	tpaDynamicObjects;
 		DWORD					m_dwMaxDynamicObjectsCount;
 

@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_zombie_fsm.cpp
+//	Module 		: ai_zombie.cpp
 //	Created 	: 07.05.2002
 //  Modified 	: 07.05.2002
 //	Author		: Dmitriy Iassenev
@@ -27,32 +27,25 @@ CAI_Zombie::CAI_Zombie()
 	dwSavedEnemyNodeID = -1;
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
-	#ifdef TEST_ACTIONS
-		eCurrentState = aiMonsterTestMicroActions;
-	#else
-		eCurrentState = aiZombieFollowLeader;
-	#endif
 	m_dwLastRangeSearch = 0;
 	m_dwLastSuccessfullSearch = 0;
-	m_fAggressiveness = ::Random.randF(0,1);
-	m_fTimorousness = ::Random.randF(0,1);
-	m_bFiring = false;
 	m_bLessCoverLook = false;
 	q_look.o_look_speed = _FB_look_speed;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;
-	// event handlers
+	m_dwPatrolPathIndex = -1;
+	m_dwCreatePathAttempts = 0;
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
-	m_dwPatrolPathIndex = -1;
 }
 
 CAI_Zombie::~CAI_Zombie()
 {
 	for (int i=0; i<SND_HIT_COUNT; i++) pSounds->Delete3D(sndHit[i]);
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete3D(sndDie[i]);
+	
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 }
@@ -60,33 +53,20 @@ CAI_Zombie::~CAI_Zombie()
 // when zombie is dead
 void CAI_Zombie::Death()
 {
-	// perform death operations
 	inherited::Death( );
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	eCurrentState = aiZombieDie;
-	
-	// removing from group
-	//Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()].Member_Remove(this);
 	
 	Fvector	dir;
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
-	// Play sound
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
 }
 
 void CAI_Zombie::vfLoadSelectors(CInifile *ini, const char *section)
 {
-	SelectorAttack.Load(ini,section);
-	//SelectorFindEnemy.Load(ini,section);
-	//SelectorFollowLeader.Load(ini,section);
 	SelectorFreeHunting.Load(ini,section);
-	//SelectorPatrol.Load(ini,section);
-	//SelectorPursuit.Load(ini,section);
-	//SelectorRetreat.Load(ini,section);
-	//SelectorSenseSomething.Load(ini,section);
-	SelectorUnderFire.Load(ini,section);
 }
 
 void CAI_Zombie::Load(CInifile* ini, const char* section)
@@ -117,23 +97,14 @@ void CAI_Zombie::Load(CInifile* ini, const char* section)
 	m_fLateralMutliplier = ini->ReadFLOAT(section,"LateralMultiplier");
 	
 	//fire
-	m_dwFireRandomMin = ini->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax = ini->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin = ini->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax = ini->ReadINT(section,"NoFireTimeMax");
 	m_fHitPower       = ini->ReadINT(section,"HitPower");
 	m_dwHitInterval   = ini->ReadINT(section,"HitInterval");
-	
-	// patrol under fire
-	m_dwPatrolShock = ini->ReadINT(section,"PatrolShock");
-	m_dwUnderFireShock = ini->ReadINT(section,"UnderFireShock");
-	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
 }
 
 BOOL CAI_Zombie::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
-	//vfCheckForPatrol();
+	eCurrentState = aiZombieFreeHunting;
 	return TRUE;
 }
 
@@ -161,7 +132,6 @@ void CAI_Zombie::net_Export(NET_Packet* P)
 void CAI_Zombie::net_Import(NET_Packet* P)
 {
 	R_ASSERT				(!net_Local);
-	VERIFY					(Weapons);
 	net_update				N;
 
 	u8 flags;

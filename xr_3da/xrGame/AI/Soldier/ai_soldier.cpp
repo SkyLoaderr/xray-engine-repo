@@ -44,12 +44,12 @@ CAI_Soldier::CAI_Soldier()
 	m_tpCurrentLegsBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;
-	m_dwPatrolPathIndex = -1;
-	m_dwCreatePathAttempts = 0;
 	tpaDynamicObjects.clear();
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
+	m_dwPatrolPathIndex = -1;
+	m_dwCreatePathAttempts = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -143,6 +143,7 @@ BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_
 	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	
 	INIT_SQUAD_AND_LEADER;
+
 	if (Leader == this)
 		eCurrentState = aiSoldierPatrolRoute;
 	else

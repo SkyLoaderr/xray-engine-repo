@@ -18,6 +18,28 @@ class CRatSelectorAttack : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
+class CRatSelectorDefend : public CAISelectorBase
+{
+	public:
+		CRatSelectorDefend();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorFindEnemy : public CAISelectorBase
+{
+	public:
+		CRatSelectorFindEnemy();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorFollowLeader : public CAISelectorBase
+{
+	public:
+		CRatSelectorFollowLeader();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+
+};
+
 class CRatSelectorFreeHunting : public CAISelectorBase
 {
 	public:
@@ -25,18 +47,52 @@ class CRatSelectorFreeHunting : public CAISelectorBase
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
-class CRatSelectorFollow : public CAISelectorBase
+class CRatSelectorMoreDeadThanAlive : public CAISelectorBase
 {
 	public:
-		CRatSelectorFollow	();
+		CRatSelectorMoreDeadThanAlive();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
 
+class CRatSelectorNoWeapon : public CAISelectorBase
+{
+	public:
+		CRatSelectorNoWeapon();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorPatrol : public CAISelectorBase
+{
+	public:
+		CRatSelectorPatrol();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 
 class CRatSelectorPursuit : public CAISelectorBase
 {
 	public:
 		CRatSelectorPursuit();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorReload : public CAISelectorBase
+{
+	public:
+		CRatSelectorReload();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorRetreat : public CAISelectorBase
+{
+	public:
+		CRatSelectorRetreat();
+		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
+};
+
+class CRatSelectorSenseSomething : public CAISelectorBase
+{
+	public:
+		CRatSelectorSenseSomething();
 		virtual	float Estimate(NodeCompressed* tNode, float fDistance, BOOL& bStop);
 };
 

@@ -23,83 +23,9 @@ class CAI_Zombie : public CCustomMonster
 	};
 
 	enum EZombieStates 	{
-		aiZombieAttackFire = 0,
-		aiZombieAttackRun,
-		aiZombieDefend,
-		aiZombieDie,
-		aiZombieFindEnemy,
-		aiZombieFollowLeader,
-		aiZombieFreeHunting,
-		aiZombieInjuring,
+		aiZombieDie = 0,
 		aiZombieJumping,
-		
-		aiZombieStandingUp,
-		aiZombieSitting,
-		aiZombieLyingDown,
-
-		aiZombieMoreDeadThanAlive,
-		
-		aiZombiePatrolReturnToRoute,
-		aiZombiePatrolRoute,
-		aiZombieFollowLeaderPatrol,
-		aiZombiePatrolHurt,
-		aiZombiePatrolHurtAggressiveUnderFire,
-		aiZombiePatrolHurtNonAggressiveUnderFire,
-		aiZombiePatrolUnderFire,
-		aiZombieTurnOver,
-
-		aiZombiePursuit,
-		aiZombieRetreat,
-		aiZombieSenseSomething,
-		aiZombieUnderFire,
-		
-		#ifdef TEST_ACTIONS
-			aiMonsterTestMicroActions,
-			aiMonsterTestMicroActionA,
-			aiMonsterTestMicroActionD,
-			aiMonsterTestMicroActionQ,
-			aiMonsterTestMicroActionE,
-			aiMonsterTestMicroActionZ,
-			aiMonsterTestMicroActionC,
-			aiMonsterTestMicroActionW,
-			aiMonsterTestMicroActionS,
-			aiMonsterTestMicroActionX,
-			aiMonsterTestMicroActionR,
-			aiMonsterTestMicroActionF,
-			aiMonsterTestMicroActionV,
-			aiMonsterTestMicroActionT,
-			aiMonsterTestMicroActionG,
-			aiMonsterTestMicroActionB,
-			aiMonsterTestMicroActionY,
-			aiMonsterTestMicroActionH,
-			aiMonsterTestMicroActionN,
-			aiMonsterTestMicroActionU,
-			aiMonsterTestMicroActionJ,
-			aiMonsterTestMicroActionM,
-
-			aiMonsterTestMacroActions,
-			aiMonsterTestMacroActionA,
-			aiMonsterTestMacroActionD,
-			aiMonsterTestMacroActionQ,
-			aiMonsterTestMacroActionE,
-			aiMonsterTestMacroActionZ,
-			aiMonsterTestMacroActionC,
-			aiMonsterTestMacroActionW,
-			aiMonsterTestMacroActionS,
-			aiMonsterTestMacroActionX,
-			aiMonsterTestMacroActionR,
-			aiMonsterTestMacroActionF,
-			aiMonsterTestMacroActionV,
-			aiMonsterTestMacroActionT,
-			aiMonsterTestMacroActionG,
-			aiMonsterTestMacroActionB,
-			aiMonsterTestMacroActionY,
-			aiMonsterTestMacroActionH,
-			aiMonsterTestMacroActionN,
-			aiMonsterTestMacroActionU,
-			aiMonsterTestMacroActionJ,
-			aiMonsterTestMacroActionM,
-		#endif
+		aiZombieFreeHunting,
 	};
 	
 	typedef	CCustomMonster inherited;
@@ -107,8 +33,8 @@ class CAI_Zombie : public CCustomMonster
 	protected:
 		
 		// macroses
-		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
-		#define MAX_TIME_RANGE_SEARCH			150000.f
+		#define MIN_RANGE_SEARCH_TIME_INTERVAL	5000.f
+		#define MAX_TIME_RANGE_SEARCH			10000.f
 		#define	FIRE_ANGLE						PI/10
 		#define	FIRE_SAFETY_ANGLE				PI/10
 		#define LEFT_NODE(Index)				((Index + 3) & 3)
@@ -126,27 +52,6 @@ class CAI_Zombie : public CCustomMonster
 		#define COMPUTE_DISTANCE_2D(t,p)		(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
 		#define MIN_COVER_MOVE					120
 		#define MAX_NEIGHBOUR_COUNT				9
-		//#define MAX_NEIGHBOUR_COUNT			5
-
-		typedef struct tagSSubNode {
-			Fvector tLeftDown;
-			Fvector tRightUp;
-			bool	bEmpty;
-		} SSubNode;
-
-		////////////////////////////////////////////////////////////////////////////
-		// dynamic objects
-		////////////////////////////////////////////////////////////////////////////
-
-		typedef struct tagSDynamicObject {
-			DWORD		dwTime;
-			DWORD		dwUpdateCount;
-			Fvector		tSavedPosition;
-			SRotation	tRotation;
-			CEntity		*tpEntity;
-		} SDynamicObject;
-
-		vector<SDynamicObject>	tpaDynamicObjects;
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations
@@ -243,10 +148,6 @@ class CAI_Zombie : public CCustomMonster
 		DWORD			m_dwLastRangeSearch;
 		DWORD			m_dwLastSuccessfullSearch;
 		
-		// characteristics
-		float			m_fAggressiveness;
-		float			m_fTimorousness;
-		
 		// visibility constants
 		DWORD			m_dwMovementIdleTime;
 		float			m_fMaxInvisibleSpeed;
@@ -259,30 +160,17 @@ class CAI_Zombie : public CCustomMonster
 		float			m_fVisibilityThreshold;
 		float			m_fLateralMutliplier;
 		
-		// firing
-		bool			m_bFiring;
-		DWORD			m_dwStartFireAmmo;
-		DWORD			m_dwNoFireTime;
-		
-		// fire  constants
-		DWORD			m_dwFireRandomMin;
-		DWORD			m_dwFireRandomMax;
-		DWORD			m_dwNoFireTimeMin;
-		DWORD			m_dwNoFireTimeMax;
 		float			m_fHitPower;
 		DWORD			m_dwHitInterval;
-		
-		// patrol under fire constants
-		DWORD			m_dwPatrolShock;
-		DWORD			m_dwUnderFireShock;
-		DWORD			m_dwUnderFireReturn;
-		// //
 
+		DWORD			m_dwStartAttackTime;
+		
 		// patrol structures
 		vector<Fvector>			m_tpaPatrolPoints;
 		vector<Fvector>			m_tpaPointDeviations;
 		vector<DWORD>			m_dwaNodes;
 		DWORD					m_dwStartPatrolNode;
+		DWORD					m_dwCreatePathAttempts;
 		bool					m_bLooped;
 		DWORD					m_dwPatrolPathIndex;
 		DWORD					m_dwLoopCount;
@@ -293,96 +181,12 @@ class CAI_Zombie : public CCustomMonster
 		// finite state machine
 		stack<EZombieStates>	tStateStack;
 		bool					m_bStateChanged;
-		
-		CZombieSelectorAttack				SelectorAttack;
-		CZombieSelectorFindEnemy			SelectorFindEnemy;
-		CZombieSelectorFollowLeader			SelectorFollowLeader;
-		CZombieSelectorFreeHunting			SelectorFreeHunting;
-		CZombieSelectorPatrol				SelectorPatrol;
-		CZombieSelectorPursuit				SelectorPursuit;
-		CZombieSelectorRetreat				SelectorRetreat;
-		CZombieSelectorSenseSomething		SelectorSenseSomething;
-		CZombieSelectorUnderFire			SelectorUnderFire;
 
-		void AttackRun();
-		void AttackFire();
+		CZombieSelectorFreeHunting	SelectorFreeHunting;
 		
 		void Die();
-		void Defend();
-		void FindEnemy();
-		void FollowLeader();
-		void FreeHunting();
-		void Injuring();
 		void Jumping();
-		void MoreDeadThanAlive();
-		void NoWeapon();
-
-		void StandingUp();
-		void Sitting();
-		void LyingDown();
-
-		void Patrol();
-		void PatrolReturn();
-		void PatrolHurt();
-		void PatrolHurtAggressiveUnderFire();
-		void PatrolHurtNonAggressiveUnderFire();
-		void PatrolUnderFire();
-		void FollowLeaderPatrol();
-		void TurnOver();
-		
-		void Pursuit();
-		void Reload();
-		void Retreat();
-		void SenseSomething();
-		void UnderFire();
-		
-		// test
-		void TestMicroActions();
-		#ifdef TEST_ACTIONS
-			DECLARE_MICRO_ACTION(A);
-			DECLARE_MICRO_ACTION(D);
-			DECLARE_MICRO_ACTION(Q);
-			DECLARE_MICRO_ACTION(E);
-			DECLARE_MICRO_ACTION(Z);
-			DECLARE_MICRO_ACTION(C);
-			DECLARE_MICRO_ACTION(W);
-			DECLARE_MICRO_ACTION(S);
-			DECLARE_MICRO_ACTION(X);
-			DECLARE_MICRO_ACTION(R);
-			DECLARE_MICRO_ACTION(F);
-			DECLARE_MICRO_ACTION(V);
-			DECLARE_MICRO_ACTION(T);
-			DECLARE_MICRO_ACTION(G);
-			DECLARE_MICRO_ACTION(B);
-			DECLARE_MICRO_ACTION(Y);
-			DECLARE_MICRO_ACTION(H);
-			DECLARE_MICRO_ACTION(N);
-			DECLARE_MICRO_ACTION(U);
-			DECLARE_MICRO_ACTION(J);
-			DECLARE_MICRO_ACTION(M);
-			void TestMacroActions();
-			DECLARE_MACRO_ACTION(A);
-			DECLARE_MACRO_ACTION(D);
-			DECLARE_MACRO_ACTION(Q);
-			DECLARE_MACRO_ACTION(E);
-			DECLARE_MACRO_ACTION(Z);
-			DECLARE_MACRO_ACTION(C);
-			DECLARE_MACRO_ACTION(W);
-			DECLARE_MACRO_ACTION(S);
-			DECLARE_MACRO_ACTION(X);
-			DECLARE_MACRO_ACTION(R);
-			DECLARE_MACRO_ACTION(F);
-			DECLARE_MACRO_ACTION(V);
-			DECLARE_MACRO_ACTION(T);
-			DECLARE_MACRO_ACTION(G);
-			DECLARE_MACRO_ACTION(B);
-			DECLARE_MACRO_ACTION(Y);
-			DECLARE_MACRO_ACTION(H);
-			DECLARE_MACRO_ACTION(N);
-			DECLARE_MACRO_ACTION(U);
-			DECLARE_MACRO_ACTION(J);
-			DECLARE_MACRO_ACTION(M);
-		#endif
+		void FreeHunting();
 		
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
@@ -396,7 +200,8 @@ class CAI_Zombie : public CCustomMonster
 		void SetDirectionLook();
 		void SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection);
 		void vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
-		void vfBuildPathToDestinationPoint(CZombieSelectorAttack *S);
+		//void vfBuildPathToDestinationPoint(CZombieSelectorAttack *S);
+		void vfBuildPathToDestinationPoint(CZombieSelectorFreeHunting *S);
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();

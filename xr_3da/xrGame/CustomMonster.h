@@ -26,11 +26,6 @@ protected:
 	// weapons
 	CWeaponList*		Weapons;
 	
-	struct				SRotation
-	{
-		float yaw,pitch;
-		SRotation() { yaw=pitch=0; }
-	};
 	struct				SAnimState
 	{
 		CMotionDef		*fwd;
@@ -40,8 +35,28 @@ protected:
 		
 		void			Create(CKinematics* K, LPCSTR base);
 	};
+	
 	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
+	
+	typedef struct SRotation
+	{
+		float yaw;
+		float pitch;
+		SRotation() { yaw=pitch=0; }
+	};
+	
+	typedef struct tagSDynamicObject {
+		DWORD			dwTime;
+		DWORD			dwUpdateCount;
+		Fvector			tSavedPosition;
+		SRotation		tOrientation;
+		Fvector			tMySavedPosition;
+		SRotation		tMyOrientation;
+		CEntity			*tpEntity;
+	} SDynamicObject;
+
 public:
+
 	#define BODY_STATE_STAND	0
 	#define BODY_STATE_CROUCH	1
 	#define BODY_STATE_LIE		2

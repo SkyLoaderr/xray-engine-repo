@@ -3,7 +3,7 @@
 //	Created 	: 25.04.2002
 //  Modified 	: 25.04.2002
 //	Author		: Dmitriy Iassenev
-//	Description : AI Behaviour for monster "Soldier"
+//	Description : AI selectors for monster "Soldier"
 ////////////////////////////////////////////////////////////////////////////
 
 #ifndef __XRAY_AI_SOLDIER_SELECTORS__

@@ -20,13 +20,13 @@ void CAI_Zombie::Exec_Action(float dt)
 			DWORD dwTime = Level().timeServer();
 			
 			if (!m_bActionStarted) {
-				m_dwStartFireAmmo = dwTime;
+				m_dwStartAttackTime = dwTime;
 				m_bActionStarted = true;
 			}
 				
-			if (dwTime - m_dwStartFireAmmo > m_dwHitInterval) {
+			if (dwTime - m_dwStartAttackTime > m_dwHitInterval) {
 				
-				m_dwStartFireAmmo = dwTime;
+				m_dwStartAttackTime = dwTime;
 				
 				Fvector tDirection;
 				tDirection.sub(tSavedEnemy->Position(),this->Position());

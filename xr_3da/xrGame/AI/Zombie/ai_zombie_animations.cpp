@@ -107,9 +107,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 	}
 	else
 		switch (eCurrentState) {
-			case aiZombieLyingDown : {
-				break;
-			}
 			default : {
 				if (speed<0.2f) {
 					switch (m_cBodyState) {
@@ -126,6 +123,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 						}
 					}
 					switch (eCurrentState) {
+						/**
 						case aiZombieAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -148,6 +146,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							}
 							break;
 						}
+						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -200,6 +199,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							tpGlobalAnimation = AState->back;
 
 					switch (eCurrentState) {
+						/**
 						case aiZombieAttackFire : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -222,6 +222,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							}
 							break;
 						}
+						/**/
 						default : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
@@ -240,19 +241,6 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 				}
 			}
 		}
-	
-	/**
-	if (tpLegsAnimation != m_tpCurrentLegsAnimation) { 
-		//Msg("restarting animation..."); 
-		m_tpCurrentLegsAnimation = tpLegsAnimation;
-		if (tpLegsAnimation) {
-			m_tpCurrentLegsBlend = tpVisualObject->PlayCycle(tpLegsAnimation);
-			if (tpLegsAnimation == m_walk.fwd) {
-				m_tpCurrentLegsBlend->timeCurrent = ::Random.randF(m_tpCurrentLegsBlend->timeTotal);
-			}
-		}
-	}
-	/**/
 	
 	if (tpGlobalAnimation != m_tpCurrentGlobalAnimation) { 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
