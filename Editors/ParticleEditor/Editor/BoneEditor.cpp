@@ -16,6 +16,10 @@ void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
 		clamp(dest_xyz.y,limits[1].limit.x,limits[1].limit.y);
 		clamp(dest_xyz.z,limits[2].limit.x,limits[2].limit.y);
     break;
+    case jtWheel:
+		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.y=0;
+    break;
+/*
     case jtWheelXZ:
 		clamp(dest_xyz.x,limits[0].limit.x,limits[0].limit.y);		dest_xyz.y=0;
     break;
@@ -34,6 +38,7 @@ void SJointIKData::clamp_by_limits(Fvector& dest_xyz)
     case jtWheelZY:
 		clamp(dest_xyz.z,limits[2].limit.x,limits[2].limit.y);		dest_xyz.x=0;
     break;
+*/
     }
 }
 
@@ -68,13 +73,13 @@ void CBone::ShapeRotate(const Fvector& _amount)
 	switch (shape.type){
     case SBoneShape::stBox:{
     	Fmatrix R;
-        R.setHPB(amount.y,amount.x,amount.z);
+        R.setXYZi(amount.x,amount.y,amount.z);
         shape.box.transform(shape.box,R);
     }break;
     case SBoneShape::stSphere:	break;
     case SBoneShape::stCylinder:{
     	Fmatrix R;
-        R.setHPB(amount.y,amount.x,amount.z);
+        R.setXYZi(amount.x,amount.y,amount.z);
         R.transform_dir(shape.cylinder.m_direction);
     }break;
     }
@@ -96,6 +101,16 @@ void CBone::ShapeMove(const Fvector& _amount)
     	shape.cylinder.m_center.add(amount);
     }break;
     }
+}
+
+void CBone::BindRotate(const Fvector& _amount)
+{
+	rest_rotate.add(_amount);
+}
+
+void CBone::BindMove(const Fvector& _amount)
+{
+	rest_offset.add(_amount);
 }
 
 bool CBone::Pick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent)
