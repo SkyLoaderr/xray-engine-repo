@@ -141,11 +141,13 @@ void CRender::Render		()
 	//******* Main render
 	{
 		// level
-		Target->phase_scene						();
+		Target->phase_scene_prepare				();
+		Target->phase_scene_begin				();
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
 		r_dsgraph_render_lods					();
 		Details->Render							();
+		Target->phase_scene_end					();
 	}
 
 	//******* Occlusion testing of volume-limited light-sources
