@@ -479,6 +479,12 @@ function add_to_binder(obj, char_ini)
    
     if char_ini == nil or char_ini:section_exist("sniper") == true then
     
+    //'Биндим читера снайпера, если есть для него секция
+    if(char_ini ~= nil and char_ini:line_exist ("sniper", "chiter") == true) then
+		chiter_binding(obj, char_ini)
+		return 
+	end	
+    
     local operators     = {}
     local properties    = {}
 
@@ -592,7 +598,7 @@ function set_sniper(object, enabled, rest_path, camper_path, point_path)
 			st.enabled = false
 		end
 	else
-		st.point_path = patrol( point_path )
+		st.point_path = point_path
     end
     if camper_path == nil then
 		if (char_ini:line_exist ("sniper", "camper_path") == true) then
@@ -668,6 +674,7 @@ function action_kill_enemy2:__init (name, storage) super (nil, name)
     self.time	= 0
     self.state  = sight
     self.enemy  = nil
+    self.point  = nil
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_kill_enemy2:initialize ()
@@ -704,7 +711,6 @@ function action_kill_enemy2:execute ()
 	if(self.object:see(self.enemy) == false) then
 		self.object:set_sight           (look.fire_point, self.enemy:position(), 0)		
 		self.state	= sight
-		printf("Not see enemy")
 		return
 	end
 
@@ -713,6 +719,8 @@ function action_kill_enemy2:execute ()
         if(self.state == sight) then
             self.state  = fire
             self.time   = device():time_global() + 1500
+            self.point  = self.enemy:position()
+            self.point.y = self.point.y + 1.2                       //Это для того, чтоб стрелял в туловище, а не в ноги
             self.object:set_item            (object.fire1, self.object:best_weapon())
             self.object:set_sight           (look.fire_point, self.enemy:position(), 0)
         elseif(self.state == fire) then
@@ -728,13 +736,21 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_kill_enemy2:finalize ()
     action_base.finalize		(self)
-    self.object:set_body_state	(move.stand)   
+    self.object:set_body_state	(move.standing)   
 	self.object:clear_animations()
 	self.object:set_item		(object.idle, self.object:best_weapon())
 end
 
 
-function chiter_binding(obj)
+function chiter_binding(obj, char_ini)
+	local st = xr_motivator.storage[obj:id()].sniper
+
+	st.enabled		= char_ini:r_bool("sniper", "enabled")
+	st.rest_path	= char_ini:r_string("sniper", "rest_path")
+	st.point_path	= char_ini:r_string("sniper", "point_path")
+	st.camper_path	= char_ini:r_string("sniper", "camper_path")
+	st.zone			= char_ini:r_string("sniper", "zone")
+
     local operators     = {}
     local properties    = {}
 
