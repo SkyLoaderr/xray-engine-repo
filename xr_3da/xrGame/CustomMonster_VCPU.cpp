@@ -87,6 +87,7 @@ void CCustomMonster::Exec_Look		( float dt )
 
 void CCustomMonster::Exec_Action	( float dt )
 {
+	if (0==Weapons)		return;
 	//*** process action commands
 	AI::C_Command* C	= &q_action;
 	AI::AIC_Action* L	= (AI::AIC_Action*)C;

@@ -23,9 +23,6 @@ CAI_Crow::CAI_Crow()
 	tSenseDir.set(0,0,1);
 	m_tpCurrentBlend = 0;
 	eCurrentState = aiCrowFreeHunting;
-	CKinematics* V = PKinematics(pVisual);
-	m_fly = V->ID_Cycle("norm_fly_fwd");
-	m_death_idle = V->ID_Cycle("norm_death_idle");
 }
 
 CAI_Crow::~CAI_Crow()
@@ -61,6 +58,10 @@ void CAI_Crow::Load(CInifile* ini, const char* section)
 
 	SelectorFreeHunting.Load(ini,section);
 	SelectorFreeHunting.fSearchRange += ::Random.randF(-1.f,1.f);
+	
+	CKinematics* V = PKinematics(pVisual);
+	m_fly = V->ID_Cycle("norm_fly_fwd");
+	m_death_idle = V->ID_Cycle("norm_death_idle");
 }
 
 // when someone hit crow
