@@ -7,7 +7,45 @@
             <x>15</x>
             <y>675</y>
 			<icon name="" x="3" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
-            <text>На свалку.</text>
+            <text>Свалку.</text>
         </location>
+
+        <location>
+            <level>l02_garbage</level>
+            <x>13</x>
+            <y>-634</y>
+			<icon name="" x="4" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>Армейская застава.</text>
+        </location>
+        <location>
+            <level>l02_garbage</level>
+            <x>-134</x>
+            <y>-3</y>
+			<icon name="" x="6" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>НИИ "Агропром".</text>
+        </location>
+        <location>
+            <level>l02_garbage</level>
+            <x>-134</x>
+            <y>-254</y>
+			<icon name="" x="6" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>НИИ "Агропром".</text>
+        </location>
+
+        <location>
+            <level>l03_agroprom</level>
+            <x>286</x>
+            <y>12</y>
+			<icon name="" x="5" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>Свалка.</text>
+        </location>
+        <location>
+            <level>l03_agroprom</level>
+            <x>155</x>
+            <y>-239</y>
+			<icon name="" x="5" y="5" width="1" height="1" r="0" g="0" b="255" marker="0"></icon>
+            <text>Свалка.</text>
+        </location>
+
     </info_portion>    
 </game_information_portions>
