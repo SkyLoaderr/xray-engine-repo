@@ -16,7 +16,6 @@ function main()
 				stalker_veteran01,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
 				sound	("scripts\\idle\\movie_footsteps","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
-				look	(look.fire_point, stalker_veteran02),
 				anim	(anim.free),
 				cond	(cond.move_end)
 			)
@@ -169,42 +168,82 @@ function main()
 			prof_stoyat_pristrelu:play_at_pos		(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(7000)			
 
-		if stalker_veteran01:see(actor) or stalker_veteran02:see(actor) then
 			prof_padla_podslushivala:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
-		
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
 		end
+
 			rainbow_tak_i_znal_ktoto_pryatalsya2:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(4000)			
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
 
 			prof_chert:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(2000)		
 			prof_dermo:play_at_pos				(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)		
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_siviy_che_delat_budem:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)			
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
 
 			rainbow_otpusti_ego:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(2000)			
 			rainbow_suchenok_s_pistoletikom:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
 			wait(5000)			
 
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_luche_ne_privlekat_vnimanie:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(5000)			
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_mi_tebya_otpuskaem:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(4000)			
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_kgm4:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(1500)			
 			prof_blin:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(1000)			
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_uviju_pristrelu:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(8000)			
+
 			prof_1_2_3:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(3000)			
+
+		if stalker_veteran01:see(actor) == false and stalker_veteran02:see(actor) == false  then
+			break
+		end
+
 			prof_sam_naprosilsya:play_at_pos	(stalker_veteran01,stalker_veteran01:position(),0);
 			wait(1000)			
 
 			rainbow_mochi_ego:play_at_pos		(stalker_veteran02,stalker_veteran02:position(),0);
+			stalker_veteran01:script	(false, script_veterans_00.script_name())
 			stalker_veteran02:script	(false, script_veterans_00.script_name())
 		end
 		wait()
@@ -247,9 +286,6 @@ function main()
 		wait()			
 	end
 
-	stalker_veteran01:script	(false, script_veterans_00.script_name())
-	stalker_veteran02:script	(false, script_veterans_00.script_name())
-
 	while true do
 		if actor.health <= 0 and stalker_veteran01.health > 0 then
 		wait(2000)			
@@ -261,6 +297,27 @@ function main()
 		end
 		wait()			
 	end
+
+	while stalker_veteran01:action() and stalker_veteran02:action() do
+		wait()			
+	end
+
+	stalker_veteran01:script	(true, script_veterans_00.script_name())
+	stalker_veteran02:script	(true, script_veterans_00.script_name())
+
+			action(
+				stalker_veteran01,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				sound	("scripts\\idle\\movie_footsteps","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),true),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
+			action(
+				stalker_veteran02,
+			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
+				anim	(anim.free),
+				cond	(cond.move_end)
+			)
 
 end
 
