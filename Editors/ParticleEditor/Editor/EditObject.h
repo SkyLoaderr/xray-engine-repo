@@ -90,11 +90,11 @@ public:
 #ifdef _EDITOR
 					~CSurface		(){R_ASSERT(!m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
-    IC int			_Priority		() {return _Shader()?_Shader()->E[0]->Flags.iPriority:1;}
-    IC bool			_StrictB2F		() {return _Shader()?_Shader()->E[0]->Flags.bStrictB2F:false;}
+    IC int			_Priority		()	{return _Shader()?_Shader()->E[0]->Flags.iPriority:1;}
+    IC bool			_StrictB2F		()	{return _Shader()?_Shader()->E[0]->Flags.bStrictB2F:false;}
+	IC Shader*		_Shader			()	{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
 #endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
-    IC Shader*		_Shader			() 		{if (!m_RTFlags.is(rtValidShader)) OnDeviceCreate(); return m_Shader;}
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
     IC LPCSTR		_GameMtlName	()const {return m_GameMtlName.c_str();}
     IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
@@ -102,7 +102,14 @@ public:
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
-    IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name; OnDeviceDestroy();}
+	IC void			SetShader		(LPCSTR name)
+	{
+		R_ASSERT(name&&name[0]); 
+		m_ShaderName=name; 
+#ifdef _EDITOR 
+		OnDeviceDestroy(); 
+#endif
+	}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
     IC void			SetFVF			(u32 fvf){m_dwFVF=fvf;}
