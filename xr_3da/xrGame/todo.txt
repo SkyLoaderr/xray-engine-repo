@@ -70,7 +70,7 @@
 	- particles
 -----------------------------------------------------------------------------------------------------------
 Oles:
-	+ BUG:	update blend-list before playing new motion
+	+ BUG:	update blend-list before playing _new motion
 	+ BUG:	zero weight motions
 	+ BUG:  Ошибка (в связи с менеджером памяти) при создании консольных комманд
 	+ BUG:	Fonts

@@ -169,8 +169,8 @@ public:
 			tMemoryStream.write		(&(tpEvent->m_tTimeID),			sizeof(tpEvent->m_tTimeID		));
 			tMemoryStream.write		(&(tpEvent->m_tGraphID),		sizeof(tpEvent->m_tGraphID		));
 			tMemoryStream.write		(&(tpEvent->m_tBattleResult),	sizeof(tpEvent->m_tBattleResult	));
-			tpEvent->m_tpMonsterGroup1 = new CALifeEventGroup();
-			tpEvent->m_tpMonsterGroup2 = new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup1 = xr_new<CALifeEventGroup> ();
+			tpEvent->m_tpMonsterGroup2 = xr_new<CALifeEventGroup> ();
 			tpEvent->m_tpMonsterGroup1->Save(tMemoryStream);
 			tpEvent->m_tpMonsterGroup2->Save(tMemoryStream);
 		}
@@ -184,13 +184,13 @@ public:
 		m_tEventRegistry.clear();
 		u32 dwCount = tFileStream.Rdword();
 		for (u32 i=0; i<dwCount; i++) {
-			CALifeEvent				*tpEvent = new CALifeEvent;
+			CALifeEvent				*tpEvent = xr_new<CALifeEvent> ();
 			tFileStream.Read		(&tpEvent->m_tEventID,		sizeof(tpEvent->m_tEventID		));
 			tFileStream.Read		(&tpEvent->m_tTimeID,		sizeof(tpEvent->m_tTimeID		));
 			tFileStream.Read		(&tpEvent->m_tGraphID,		sizeof(tpEvent->m_tGraphID		));
 			tFileStream.Read		(&tpEvent->m_tBattleResult,	sizeof(tpEvent->m_tBattleResult	));
-			tpEvent->m_tpMonsterGroup1	= new CALifeEventGroup();
-			tpEvent->m_tpMonsterGroup2	= new CALifeEventGroup();
+			tpEvent->m_tpMonsterGroup1	= xr_new<CALifeEventGroup> ();
+			tpEvent->m_tpMonsterGroup2	= xr_new<CALifeEventGroup> ();
 			tpEvent->m_tpMonsterGroup1->Load(tFileStream);
 			tpEvent->m_tpMonsterGroup2->Load(tFileStream);
 			m_tEventRegistry.insert	(make_pair(tpEvent->m_tEventID,tpEvent));
