@@ -199,7 +199,7 @@ function mob_walker:update_movement_state()
 	else
 		m = move.walk_fwd
 	end
-	action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue, true, self.last_index + 1)), cond(cond.move_end))
+	action(self.object, move(m, patrol(self.st.path_walk, patrol.next, patrol.continue)), cond(cond.move_end))
 end
 
 function mob_walker:update_standing_state()
