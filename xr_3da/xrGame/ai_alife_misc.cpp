@@ -32,8 +32,6 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonsterAbst
 			vfChangeObjectGraphPoint(tpALifeMonsterAbstract,tpALifeMonsterAbstract->m_tGraphID,tpALifeMonsterAbstract->m_tNextGraphID);
 			tpALifeMonsterAbstract->m_fDistanceToPoint	= tpALifeMonsterAbstract->m_fDistanceFromPoint	= 0.0f;
 			tpALifeMonsterAbstract->m_tPrevGraphID		= tpALifeMonsterAbstract->m_tGraphID;
-			tpALifeMonsterAbstract->m_tGraphID			= tpALifeMonsterAbstract->m_tNextGraphID;
-			tpALifeMonsterAbstract->o_Position			= getAI().m_tpaGraph[tpALifeMonsterAbstract->m_tGraphID].tLocalPoint;
 			CALifeAbstractGroup							*tpALifeAbstractGroup = dynamic_cast<CALifeAbstractGroup*>(tpALifeMonsterAbstract);
 			if (tpALifeAbstractGroup)
 				tpALifeAbstractGroup->m_bCreateSpawnPositions = true;

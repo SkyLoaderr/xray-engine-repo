@@ -8,7 +8,7 @@
 #include "3dsound.h"
 #include "3DSoundRender.h"
 #include "cl_intersect.h"
-
+ 
 CSoundManager							Sound_Implementation;
 ENGINE_API	CSound_manager_interface*	Sound = &Sound_Implementation;
 

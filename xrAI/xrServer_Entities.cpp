@@ -1068,8 +1068,8 @@ void	xrSE_Zone::FillProp			(LPCSTR pref, PropItemVec& items)
 //***** Detector
 void xrSE_Detector::STATE_Read		(NET_Packet& P, u16 size)	{};
 void xrSE_Detector::STATE_Write		(NET_Packet& P)				{};
-void xrSE_Detector::UPDATE_Read		(NET_Packet& P)				{inherited::UPDATE_Read(P);};
-void xrSE_Detector::UPDATE_Write	(NET_Packet& P)				{inherited::UPDATE_Write(P);};
+void xrSE_Detector::UPDATE_Read		(NET_Packet& P)				{};
+void xrSE_Detector::UPDATE_Write	(NET_Packet& P)				{};
 #ifdef _EDITOR
 void xrSE_Detector::FillProp		(LPCSTR pref, PropItemVec& items)
 {

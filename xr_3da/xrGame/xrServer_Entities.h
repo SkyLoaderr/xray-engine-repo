@@ -373,7 +373,7 @@ class xrSE_Zone : public CALifeDynamicObject, public xrSE_CFormed { typedef CALi
 xrSE_DECLARE_END
 
 //***** Detector
-xrSE_DECLARE_BEGIN(xrSE_Detector,CALifeDynamicObject)
+xrSE_DECLARE_BEGIN(xrSE_Detector,xrServerEntity)
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrGraphPoint,xrServerEntity)

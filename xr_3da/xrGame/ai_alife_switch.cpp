@@ -39,6 +39,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 				//tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
 				//(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
 				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
+				(*J).second->m_tNodeID	= tpALifeDynamicObject->m_tNodeID;
 				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
@@ -68,7 +69,8 @@ void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 			CALifeMonsterAbstract	*tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract*>(tpALifeAbstractGroup);
 			if (tpEnemy && tpALifeMonsterAbstract) {
 				tpALifeMonsterAbstract->m_fCurSpeed		= tpALifeMonsterAbstract->m_fGoingSpeed;
-				u32 dwNodeID = getAI().q_LoadSearch(tpALifeMonsterAbstract->o_Position = tpEnemy->o_Position);
+				tpALifeMonsterAbstract->o_Position		= tpEnemy->o_Position;
+				u32 dwNodeID = tpALifeMonsterAbstract->m_tNodeID;
 				tpALifeMonsterAbstract->m_tGraphID		= getAI().m_tpaCrossTable[dwNodeID].tGraphIndex;
 				tpALifeMonsterAbstract->m_fDistanceToPoint = getAI().m_tpaCrossTable[dwNodeID].fDistance;
 				tpALifeMonsterAbstract->m_tNextGraphID	= tpALifeMonsterAbstract->m_tGraphID;
