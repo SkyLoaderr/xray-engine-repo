@@ -114,6 +114,7 @@ USEUNIT("Editor\CustomObject.cpp");
 USELIB("Lib\ETools.lib");
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEUNIT("Editor\EditMeshPick.cpp");
+USEUNIT("Editor\EditObjectEditor.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
