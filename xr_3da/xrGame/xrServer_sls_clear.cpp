@@ -8,17 +8,27 @@
 
 void xrServer::Perform_destroy	(CSE_Abstract* object, u32 mode)
 {
+#ifdef DEBUG
+	verify_entities			();
+#endif
 	VERIFY					(object);
 
 	while (!object->children.empty()) {
 		CSE_Abstract		*child = game->get_entity_from_eid(object->children.back());
 		R_ASSERT			(child);
 		Perform_reject		(child,object);
+#ifdef DEBUG
+		verify_entities			();
+#endif
 		Perform_destroy		(child,mode);
 	}
 
 	u16						object_id = object->ID;
 	entity_Destroy			(object);
+
+#ifdef DEBUG
+	verify_entities			();
+#endif
 
 	NET_Packet				P;
 	P.w_begin				(M_EVENT);
