@@ -1,9 +1,42 @@
 ---------------------------------------------------------------------------------------------------------------------
---	Схема реакции на раздражители
+--	Схема озвучки
 --	автор: Диденко Руслан (Stohe)
 ----------------------------------------------------------------------------------------------------------------------
 
 local theme = {}
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_sound(obj)
+	local sounds_base = stalker_ids.sound_script + 10000
+    	function id()
+       		local t = sounds_base
+        	sounds_base = sounds_base + 1
+        	return t
+	end
+	-- загрузка звуков, возвращает ИД пачки и количество звуков в пачке.
+	function load_theme(name, sid)
+		if name == "weather_bad_soldier" then
+	               	return obj:add_sound ("script_sound\\weather\\bad\\soldier_bad_weather_",  10, snd_type.talk, 2, 1, sid)
+		elseif name == "weather_good_soldier" then
+	               	return obj:add_sound ("script_sound\\weather\\good\\soldier_good_weather_",  10, snd_type.talk, 2, 1, sid)
+		end
+		return nil
+	end
+
+    	-- фразы о погоде
+    	theme["weather"] = { exec = nil,
+			     types = {}}
+	theme["weather"].types["bad"] = { exec = npc_class,
+					   types = {}}
+	theme["weather"].types["bad"].types["soldier"] = load_theme("weather_bad_soldier", id())
+	theme["weather"].types["good"] = { exec = npc_class,
+					   types = {}}
+	theme["weather"].types["good"].types["soldier"] = load_theme("weather_good_soldier", id())
+
+	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Sound Player Function
+-----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 --  Пример конструктора, описывающего звуки
 --
@@ -28,7 +61,6 @@ local theme = {}
 -- npc - object который будет играть звук
 -- sound - конструктр звуков, см выше
 -- now - если звук отыграть надо прямо сейчас
------------------------------------------------------------------------------------------------------------------------------------
 function set_sound(npc, sound, now)
     local a = now
 
@@ -55,20 +87,11 @@ function set_sound(npc, sound, now)
         end
     end
 end
------------------------------------------------------------------------------------------------------------------------------------
-function load_sound(obj)
-	local sounds_base = stalker_ids.sound_script + 10000
-    	function id()
-       		local t = sounds_base
-        	sounds_base = sounds_base + 1
-        	return t
-	end
-	function load_theme(name)
-		if name == "weather" then
-	               	obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, id ())
-		end
-	end
 
-    	-- фразы о погоде
-    	theme["weather"] = {}
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Theme  functions
+-----------------------------------------------------------------------------------------------------------------------------------
+function npc_class(avail_types, npc)
+	return nil
 end
+
