@@ -326,7 +326,7 @@ _BUMP:
 					DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
 					pDst			= color_rgba
 						(
-						color_get_A(pSrc),
+						color_get_A(pSrc)/2,	// gloss
 						color_get_B(pDst),
 						color_get_G(pDst),
 						color_get_R(pDst)
