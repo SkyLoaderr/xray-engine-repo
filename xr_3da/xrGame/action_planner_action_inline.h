@@ -38,7 +38,9 @@ void CPlanner::Load					(LPCSTR section)
 TEMPLATE_SPECIALIZATION
 void CPlanner::reinit					(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
+#ifdef LOG_ACTION
 	inherited_planner::m_use_log = inherited_action::m_use_log;
+#endif
 	inherited_planner::reinit	(object,clear_all);
 	inherited_action::reinit	(object,storage,clear_all);
 	set_target_state			(effects());
