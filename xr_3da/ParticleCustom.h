@@ -17,7 +17,7 @@ public:
     virtual void	Stop				(BOOL bDefferedStop=TRUE)=0;
 	virtual BOOL	IsPlaying			()=0;
 
-	virtual float	GetTimeLimit		()=0;
+	virtual u32		GetTimeLimit		()=0;
 
 	virtual LPCSTR	Name				()=0;
 };
