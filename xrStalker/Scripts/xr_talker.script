@@ -28,7 +28,7 @@ function evaluator_need_talker:evaluate ()
 		if is_object_online(vo:id()) then
 			local otype = vo:clsid()
 			if otype == clsid.actor or otype == clsid.soldier or otype == clsid.stalker then
-				--printf("333[%s]: %d: vo:name() = %s", self.object:name(), device():time_global(), vo:name())
+				printf("333[%s]: %d: vo:name() = %s", self.object:name(), device():time_global(), vo:name())
 			end
 		end
 	end
@@ -330,3 +330,23 @@ function vector_copy_by_val(vec)
 	return newvec
 end
 
+function set_talker(object, enable)
+	-- 
+	local char_ini = object:spawn_ini()
+	local st = xr_motivator.storage[object:id()].talker
+	if enable == nil then
+	    	if char_ini:section_exist ("guard") == true then
+        		if char_ini:line_exist("guard", "enabled") == true then
+                		st.enabled = char_ini:r_bool("guard", "enabled")
+			else
+				st.enabled = false
+		        end
+		else
+			st.enabled = false
+		end
+	else
+		st.enabled = enable		
+	end	
+
+	xr_motivator.checkStorage(object)
+end

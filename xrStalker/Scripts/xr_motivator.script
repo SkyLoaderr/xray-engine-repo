@@ -216,17 +216,6 @@ xr_motivator.storage[self.object:id()].talker = {
             printf("_bp: enabled = true")
         end
     end
-xr_motivator.storage[self.object:id()].talker = {
-        enabled = false
-    }
-    printf("_bp: npc = %s", self.object:name())
-        if char_ini:section_exist ("talker") == true then
-        printf("_bp: npc is talker = %s", self.object:name())
-        if char_ini:line_exist("talker", "enabled") == true then
-                xr_motivator.storage[self.object:id()].talker.enabled = char_ini:r_bool("talker", "enabled")
-            printf("_bp: enabled = true")
-        end
-    end
 -- Настройка встречи
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
@@ -469,9 +458,8 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_camper2.add_to_binder(self.object)
     xr_sleeper.add_to_binder(self.object)
     xr_robbers.add_to_binder(self.object)
---    xr_talker.add_to_binder(self.object)
+    xr_talker.add_to_binder(self.object)
     xr_scout.add_to_binder(self.object)
---    xr_talker.add_to_binder(self.object)
 
     -- сюжетные скрипты
     xr_trivial.add_novice     (self.object)
@@ -489,7 +477,8 @@ xr_motivator.storage[self.object:id()].reactions = {
         -- включение схем
         xr_kamp.set_kamp(self.object)
         xr_guard.set_guard(self.object)
-	xr_sleeper.set_sleeper(self.object)
+		xr_talker.set_talker(self.object)
+	    xr_sleeper.set_sleeper(self.object)
         xr_patrol.set_patrol (self.object)
         xr_follower.set_follower (self.object)
     end
@@ -516,6 +505,7 @@ function checkStorage(npc)
            k == "follower" or
            k == "patrol" or
            k == "guard" or
+           k == "talker" or
            k == "commander"
         then
             if v.enabled == true then 
@@ -532,6 +522,7 @@ function checkStorage(npc)
                k == "follower" or
                k == "patrol" or
                k == "guard" or
+               k == "talker" or
                k == "commander"
             then
                 if v.enabled == true then 
