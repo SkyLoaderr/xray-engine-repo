@@ -1057,4 +1057,22 @@ function print_table(table, subs)
     end
   end
 end
-
+-------------------------------------------------------------------------------------------
+function switch_online (id)
+    if id == -1 then return end
+    local sim = alife ()
+    if sim ~= nil then
+       sim:set_switch_online  (id, true) 
+       sim:set_switch_offline (id, false)
+    end   
+end
+-------------------------------------------------------------------------------------------
+function switch_offline (npc)
+    if npc == nil or npc:alive () == false then return end
+    local sim = alife ()
+    if sim ~= nil then
+       sim:set_switch_online  (npc:id (), false) 
+       sim:set_switch_offline (npc:id (), true)
+    end   
+end
+-------------------------------------------------------------------------------------------
