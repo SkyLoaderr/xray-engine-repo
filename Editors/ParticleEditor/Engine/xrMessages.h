@@ -33,6 +33,8 @@ enum {
 
 	GEG_SIGNAL,
 	GEG_PLAYER_READY,
+
+	GE_FORCEDWORD				= DWORD(-1)
 };
 
 enum
