@@ -1050,6 +1050,6 @@ function remove_rule(obj, rule)
 		end
 	end
 	for k,v in tt do
-		table.delete(xr_motivator.storage[obj:id()].reactions.rules, v)
+		table.remove(xr_motivator.storage[obj:id()].reactions.rules, v)
 	end
 end
