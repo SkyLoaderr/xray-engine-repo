@@ -9,7 +9,11 @@
 #ifndef XRAY_OBJECT_BROKER
 #define XRAY_OBJECT_BROKER
 
+#include <queue>
 #include "alife_interfaces.h"
+#include "net_utils.h"
+#include "object_type_traits.h"
+#include "object_equality_checker.h"
 #include "object_destroyer.h"
 #include "object_loader.h"
 #include "object_saver.h"

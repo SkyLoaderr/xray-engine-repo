@@ -13,14 +13,6 @@
 
 class CALifeNewsRegistry {
 protected:
-	struct CNewsPredicate {
-		IC	ALife::_NEWS_ID operator()(const CALifeNews *news) const
-		{
-			return					(news->m_news_id);
-		}
-	};
-
-protected:
 	ALife::NEWS_REGISTRY				m_news;
 	ALife::_NEWS_ID						m_last_id;
 

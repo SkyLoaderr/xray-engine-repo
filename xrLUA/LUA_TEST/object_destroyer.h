@@ -9,23 +9,156 @@
 #ifndef XRAY_OBJECT_DESTROYER
 #define XRAY_OBJECT_DESTROYER
 
-template <class T1, class T2, class T3>
-IC	void delete_data(xr_map<T1,T2,T3> &tpMap);
+struct CDestroyer {
+	IC	static void delete_data(LPCSTR data)
+	{
+	}
 
-template <class T1, class T2>
-IC	void delete_data(xr_set<T1,T2> &tpSet);
+	IC	static void delete_data(LPSTR data)
+	{
+		xr_free						(data);
+	}
 
-template <class T> 
-IC	void delete_data(xr_vector<T> &tpVector);
+	template <typename T1, typename T2>
+	IC	static void delete_data(std::pair<T1,T2> &data)
+	{
+		delete_data					(data.first);
+		delete_data					(data.second);
+	}
 
-template <class T> 
-IC	void delete_data(T *&tpData);
+	template <typename T, int size>
+	IC	static void delete_data(svector<T,size> &data)
+	{
+		svector<T,size>::iterator	I = data.begin();
+		svector<T,size>::iterator	E = data.end();
+		for ( ; I != E; ++I)
+			delete_data				(*I);
+		data.clear					();
+	}
 
-template <class T> 
-IC	void delete_data(T &tData);
+	template <typename T1, typename T2>
+	IC	static void delete_data(std::queue<T1,T2> &data)
+	{
+		std::queue<T1,T2>			temp = data;
+		for ( ; !temp.empty(); temp.pop())
+			delete_data				(temp.front());
+	}
 
-IC	void delete_data(LPSTR &tpData);
+	template <template <typename _1, typename _2> class T1, typename T2, typename T3>
+	IC	static void delete_data(T1<T2,T3> &data, bool)
+	{
+		T1<T2,T3>					temp = data;
+		for ( ; !temp.empty(); temp.pop())
+			delete_data				(temp.top());
+	}
 
-#include "object_destroyer_inline.h"
+	template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
+	IC	static void delete_data(T1<T2,T3,T4> &data, bool)
+	{
+		T1<T2,T3,T4>				temp = data;
+		for ( ; !temp.empty(); temp.pop())
+			delete_data				(temp.top());
+	}
+
+	template <typename T1, typename T2>
+	IC	static void delete_data(xr_stack<T1,T2> &data)
+	{
+		delete_data					(data,true);
+	}
+
+	template <typename T1, typename T2, typename T3>
+	IC	static void delete_data(std::priority_queue<T1,T2,T3> &data)
+	{
+		delete_data					(data,true);
+	}
+
+	template <typename T>
+	struct CHelper {
+		template <bool a>
+		IC	static void delete_data(T &)
+		{
+		}
+
+		template <>
+		IC	static void delete_data<true>(T &data)
+		{
+			CDestroyer::delete_data		(*data);
+			xr_delete					(data);
+		}
+	};
+
+	struct CHelper3 {
+	#pragma warning(push)
+	#pragma warning(disable:4239)
+		template <template <typename _1> class T1, typename T2>
+		IC	static void delete_data(T1<T2> &data)
+		{
+			T1<T2>::iterator			I = data.begin();
+			T1<T2>::iterator			E = data.end();
+			for ( ; I != E; ++I)
+				CDestroyer::delete_data	(*I);
+			data.clear					();
+		}
+	#pragma warning(pop)
+
+		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
+		IC	static void delete_data(T1<T2,T3> &data)
+		{
+			T1<T2,T3>::iterator			I = data.begin();
+			T1<T2,T3>::iterator			E = data.end();
+			for ( ; I != E; ++I)
+				CDestroyer::delete_data	(*I);
+			data.clear					();
+		}
+
+		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
+		IC	static void delete_data(T1<T2,T3,T4> &data)
+		{
+			T1<T2,T3,T4>::iterator		I = data.begin();
+			T1<T2,T3,T4>::iterator		E = data.end();
+			for ( ; I != E; ++I)
+				CDestroyer::delete_data	(*I);
+			data.clear					();
+		}
+
+		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
+		IC	static void delete_data(T1<T2,T3,T4,T5> &data)
+		{
+			T1<T2,T3,T4,T5>::iterator	I = data.begin();
+			T1<T2,T3,T4,T5>::iterator	E = data.end();
+			for ( ; I != E; ++I)
+				CDestroyer::delete_data	(*I);
+			data.clear					();
+		}
+	};
+
+	template <typename T>
+	struct CHelper4 {
+		template <bool a>
+		IC	static void delete_data(T &data)
+		{
+			CHelper<T>::delete_data<object_type_traits::is_pointer<T>::value>	(data);
+		}
+
+		template <>
+		IC	static void delete_data<true>(T &data)
+		{
+			CHelper3::delete_data	(data);
+		}
+	};
+
+	template <typename T>
+	IC	static void delete_data(T &data)
+	{
+		CHelper4<T>::delete_data<object_type_traits::is_stl_container<T>::value>(data);
+	}
+};
+
+template <typename T>
+IC	void delete_data(const T &data)
+{
+	T	*temp = const_cast<T*>(&data);
+	CDestroyer::delete_data(*temp);
+}
 
 #endif // XRAY_OBJECT_DESTROYER

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "alife_event_registry.h"
-#include "object_broker.h"
 
 CALifeEventRegistry::~CALifeEventRegistry	()
 {

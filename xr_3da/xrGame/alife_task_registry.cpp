@@ -10,9 +10,15 @@
 #include "alife_task_registry.h"
 #include "object_broker.h"
 
-IC const ALife::_TASK_ID tfChooseTaskKeyPredicate	(const CALifeTask *T)
-{
-	return						(T->m_tTaskID);
+struct CTaskLoader : public object_loader::detail::CEmptyPredicate {
+	using object_loader::detail::CEmptyPredicate::operator();
+	template <typename T1, typename T2>
+	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
+	template <typename T1, typename T2>
+	IC	void operator()	(std::pair<T1,T2> &data) const
+	{
+		const_cast<object_type_traits::remove_const<T1>::type&>(data.first) = data.second->m_tTaskID;
+	}
 };
 
 CALifeTaskRegistry::~CALifeTaskRegistry	()
@@ -25,7 +31,7 @@ void CALifeTaskRegistry::save			(IWriter &memory_stream)
 	Msg							("* Saving tasks...");
 	memory_stream.open_chunk	(TASK_CHUNK_DATA);
 	memory_stream.w				(&m_id,sizeof(m_id));
-	save_data					(m_tasks,memory_stream);
+	save_data					(m_tasks,memory_stream,CTaskLoader());
 	memory_stream.close_chunk	();
 }
 
@@ -34,7 +40,7 @@ void CALifeTaskRegistry::load			(IReader &file_stream)
 	Msg							("* Loading tasks...");
 	R_ASSERT2					(file_stream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 	file_stream.r				(&m_id,sizeof(m_id));
-	load_data					(m_tasks,file_stream,tfChooseTaskKeyPredicate);
+	load_data					(m_tasks,file_stream,CTaskLoader());
 	ALife::TASK_PAIR_IT			I = m_tasks.begin();
 	ALife::TASK_PAIR_IT			E = m_tasks.end();
 	for ( ; I != E; ++I)

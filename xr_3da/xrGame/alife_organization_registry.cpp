@@ -15,6 +15,66 @@
 
 using namespace ALife;
 
+struct COrganizationLoader : public object_loader::detail::CEmptyPredicate {
+	using object_loader::detail::CEmptyPredicate::operator();
+	
+	mutable ALife::ORGANIZATION_P_MAP::iterator I;
+	ALife::ORGANIZATION_P_MAP::iterator E;
+	
+	IC	COrganizationLoader(ALife::ORGANIZATION_P_MAP &orgs)
+	{
+		I = orgs.begin();
+		E = orgs.end();
+	}
+
+	IC	bool can_clear() const {return(false);}
+	template <typename T1, typename T2>
+	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
+	template <typename T1>
+	IC	void operator()	(T1 &data) const
+	{
+		VERIFY2			((I != E) && !xr_strcmp(data.second->m_name,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
+	}
+
+	template <typename T1, typename T2>
+	IC	bool operator()	(T1 &data, T2 &value) const
+	{
+		(*I).second = value.second;
+		++I;
+		return			(false);
+	}
+};
+
+struct CDiscoveryLoader : public object_loader::detail::CEmptyPredicate {
+	using object_loader::detail::CEmptyPredicate::operator();
+
+	mutable ALife::DISCOVERY_P_MAP::iterator I;
+	ALife::DISCOVERY_P_MAP::iterator E;
+	
+	IC	CDiscoveryLoader(ALife::DISCOVERY_P_MAP &discoveries)
+	{
+		I = discoveries.begin();
+		E = discoveries.end();
+	}
+
+	IC	bool can_clear() const {return(false);}
+	template <typename T1, typename T2>
+	IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
+	template <typename T1>
+	IC	void operator()	(T1 &data) const
+	{
+		VERIFY2			((I != E) && !xr_strcmp(data.second->m_id,(*I).first),"Data key value mismatch : DELETE saved game and try again!");
+	}
+
+	template <typename T1, typename T2>
+	IC	bool operator()	(T1 &data, T2 &value) const
+	{
+		(*I).second = value.second;
+		++I;
+		return			(false);
+	}
+};
+
 class CArtefactOrderPredicate {
 public:
 	IC	bool		operator()	(const ALife::SArtefactOrder &tArtefactOrder1, const ALife::SArtefactOrder &tArtefactOrder2) const
@@ -62,8 +122,8 @@ void CALifeOrganizationRegistry::save					(IWriter &memory_stream)
 {
 	Msg							("* Saving organizations and discoveries...");
 	memory_stream.open_chunk	(DISCOVERY_CHUNK_DATA);
-	save_data					(m_organizations,	memory_stream,false);
-	save_data					(m_discoveries,		memory_stream,false);
+	save_data					(m_organizations,	memory_stream,COrganizationLoader(m_organizations));
+	save_data					(m_discoveries,		memory_stream,CDiscoveryLoader(m_discoveries));
 	save_data					(m_artefacts,		memory_stream);
 	memory_stream.close_chunk	();
 }
@@ -72,8 +132,8 @@ void CALifeOrganizationRegistry::load					(IReader &file_stream)
 { 
 	Msg							("* Loading organizations and discoveries...");
 	R_ASSERT2					(file_stream.find_chunk(DISCOVERY_CHUNK_DATA),"Can't find chunk DISCOVERY_CHUNK_DATA!");
-	load_data					(m_organizations,	file_stream,false);
-	load_data					(m_discoveries,		file_stream,false);
+	load_data					(m_organizations,	file_stream,COrganizationLoader(m_organizations));
+	load_data					(m_discoveries,		file_stream,CDiscoveryLoader(m_discoveries));
 	load_data					(m_artefacts,		file_stream);
 }
 

@@ -105,7 +105,6 @@ CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVi
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
 	
-	m_tpOrderedArtefacts.clear	();
 	m_tpSupplies.clear			();
 	m_tOrgID					= 1;
 }
@@ -168,8 +167,8 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r			(&m_tOrgID,sizeof(m_tOrgID));
 		
 	if (m_wVersion > 29) {
-		m_tpOrderedArtefacts.clear();
-		u32							l_dwCount	= tNetPacket.r_u32();
+		delete_data				(m_tpOrderedArtefacts);
+		u32						l_dwCount	= tNetPacket.r_u32();
 		for (int i=0 ; i<(int)l_dwCount; ++i) {
 			ALife::SArtefactTraderOrder	*l_tpArtefactOrder = xr_new<ALife::SArtefactTraderOrder>();
 			tNetPacket.r_string	(l_tpArtefactOrder->m_caSection);

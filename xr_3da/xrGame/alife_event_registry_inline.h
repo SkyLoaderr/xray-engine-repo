@@ -53,5 +53,5 @@ void CALifeEventRegistry::load							(IReader &file_stream, const _predicate &pr
 	Msg							("* Loading events...");
 	R_ASSERT2					(file_stream.find_chunk(EVENT_CHUNK_DATA),"Can't find chunk EVENT_CHUNK_DATA!");
 	file_stream.r				(&m_id,sizeof(m_id));
-	load_data					(m_events,file_stream,CEventIDPredicate<_predicate>(predicate));
+	load_data					(m_events,file_stream,CEventLoader<_predicate>(predicate));
 }

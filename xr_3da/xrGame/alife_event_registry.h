@@ -9,25 +9,32 @@
 #pragma once
 
 #include "alife_event.h"
+#include "object_broker.h"
 
 class CALifeEventRegistry {
 protected:
 	template <typename _predicate>
-	struct CEventIDPredicate {
+	struct CEventLoader : public object_loader::detail::CEmptyPredicate {
+		using object_loader::detail::CEmptyPredicate::operator();
+
 		const _predicate			&m_predicate;
 
-		IC							CEventIDPredicate	(const _predicate &predicate) :
+		IC							CEventLoader	(const _predicate &predicate) :
 										m_predicate		(predicate)
 		{
 		}
 
-		IC const ALife::_EVENT_ID	operator()			(CALifeEvent *T) const
+		template <typename T1, typename T2>
+		IC	bool operator()	(T1 &data, const T2 &value, bool first) const {return(!first);}
+		
+		template <typename T1, typename T2>
+		IC	void operator()	(std::pair<T1,T2> &data) const
 		{
-			m_predicate				(T);
-			return					(T->m_tEventID);
+			const_cast<object_type_traits::remove_const<T1>::type&>(data.first) = data.second->m_tEventID;
+			m_predicate				(data.second);
 		}
 
-		IC CEventIDPredicate<_predicate> &operator=		(const CEventIDPredicate<_predicate> &T)
+		IC CEventLoader<_predicate> &operator=		(const CEventLoader<_predicate> &T)
 		{
 			*this					= T;
 			return					(*this);
