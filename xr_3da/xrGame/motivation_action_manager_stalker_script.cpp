@@ -125,9 +125,9 @@ void CMotivationActionManagerStalker::script_register(lua_State *L)
 				luabind::value("sound_panic_monster",						StalkerSpace::eStalkerSoundPanicMonster),
 				luabind::value("sound_tolls",								StalkerSpace::eStalkerSoundTolls),
 				luabind::value("sound_script",								StalkerSpace::eStalkerSoundScript)
-			],
+			]
 		
-//		class_<CAI_Stalker,DLL_Pure>("ce_stalker")
+//		,class_<CAI_Stalker,DLL_Pure>("ce_stalker")
 //			.def(constructor<>())
 	];
 }
