@@ -124,7 +124,8 @@ function fract:calculate() -- просчет лагеря
 	if self.checkBegin == nil or
 	   game.time() - self.checkBegin > self.checkTime then
 		self:updateJob()
-	end		
+	end
+	self:print()
 end
 function fract:updateJob()
 	self.checkBegin = game.time()
