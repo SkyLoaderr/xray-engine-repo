@@ -20,7 +20,7 @@ function main ()
 		stalkers[a]:script (true, military2_2.script_name ())
 	end
 
-	wait (60000)	
+	wait (120000)	
 
 	for a = 1, table.getn (stalkers), 1 do
 	    action (stalkers[a], object (stalkers[a]:best_weapon (), object.activate), cond (cond.time_end, 1000))
