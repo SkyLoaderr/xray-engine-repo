@@ -15,53 +15,28 @@
 #include "..\\..\\..\\3dsound.h"
 #include "..\\..\\..\\xr_trims.h"
 
-#define COMPUTE_DISTANCE_2D(t,p) (sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
-
 void CAI_Soldier::AttackFire()
 {
 	WRITE_TO_LOG("Shooting enemy...");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
+	CHECK_FOR_DEATH
 	
 	SelectEnemy(Enemy);
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE(
+		(dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime) && (m_cBodyState != BODY_STATE_LIE),
+		aiSoldierLyingDown)
 	
 	if (!(Enemy.Enemy)) {
-		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
-			eCurrentState = tStateStack.top();
-			tStateStack.pop();
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		else {
-			dwLostEnemyTime = Level().timeServer();
-			eCurrentState = aiSoldierPursuit;
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		
-		return;
+		vfSetFire(false,getGroup());
+		CHECK_IF_SWITCH_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE(aiSoldierPursuit);
 	}
 	
-	if (!(Enemy.bVisible)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierFindEnemy;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierFindEnemy)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
@@ -72,92 +47,54 @@ void CAI_Soldier::AttackFire()
 	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
 		eCurrentState = aiSoldierAttackRun;
 		m_dwLastRangeSearch = 0;
-		
 		return;
 	}
 	/**/
 
-	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierReload;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-
-	vfSaveEnemy();
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierReload)
 
 	AI_Path.TravelPath.clear();
 	
+	vfSaveEnemy();
+
 	if (!m_bFiring)
 		vfAimAtEnemy();
 	
 	vfSetFire(true,Group);
 	
 	vfSetMovementType(m_cBodyState,0);
-	
-	
 }
 
 void CAI_Soldier::AttackRun()
 {
 	WRITE_TO_LOG("Attack enemy");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 	
 	SelectEnemy(Enemy);
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierLyingDown)
 	
 	if (!(Enemy.Enemy)) {
-		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
-			eCurrentState = tStateStack.top();
-			tStateStack.pop();
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		else {
-			dwLostEnemyTime = Level().timeServer();
-			eCurrentState = aiSoldierPursuit;
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		
-		return;
+		vfSetFire(false,getGroup());
+		CHECK_IF_SWITCH_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE(aiSoldierPursuit);
 	}
 	
-	if (!(Enemy.bVisible)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierFindEnemy;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE(!(Enemy.bVisible),aiSoldierFindEnemy)
 		
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 	
-	if ((tDistance.square_magnitude() < 25.f) || ((!(Group.m_dwFiring)) && (Weapons->ActiveWeapon() && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)))) {
-	//if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0)){
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_GO_TO_NEW_STATE(
+		(tDistance.square_magnitude() < 25.f) || ((!(Group.m_dwFiring)) && (Weapons->ActiveWeapon() && (Weapons->ActiveWeapon()->GetAmmoElapsed() > 0))),
+		aiSoldierAttackFire)
 
 	INIT_SQUAD_AND_LEADER;
 	
@@ -176,13 +113,13 @@ void CAI_Soldier::AttackRun()
 		Weapons->ActiveWeapon()->Reload();
 	
 	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
-
-	
 }
 
 void CAI_Soldier::Defend()
 {
 	WRITE_TO_LOG("Defend from enemy");
+	
+	CHECK_FOR_DEATH
 }
 
 void CAI_Soldier::Die()
@@ -199,55 +136,28 @@ void CAI_Soldier::Die()
 
 	//bActive = false;
 	bEnabled = false;
-	
-	
 }
 
 void CAI_Soldier::FindEnemy()
 {
 	WRITE_TO_LOG("Looking for enemy");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 	
 	SelectEnemy(Enemy);
 	
 	if (!(Enemy.Enemy)) {
-		if (((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy)) {
-			eCurrentState = tStateStack.top();
-			tStateStack.pop();
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		else {
-			dwLostEnemyTime = Level().timeServer();
-			eCurrentState = aiSoldierPursuit;
-			q_action.setup(AI::AIC_Action::FireEnd);
-			m_dwLastRangeSearch = 0;
-		}
-		
-		return;
+		vfSetFire(false,getGroup());
+		CHECK_IF_SWITCH_TO_PREV_STATE(((tSavedEnemy) && (tSavedEnemy->g_Health() <= 0)) || (!tSavedEnemy))
+		dwLostEnemyTime = Level().timeServer();
+		GO_TO_NEW_STATE(aiSoldierPursuit);
 	}
 	
-	if (Enemy.bVisible) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		m_dwLastRangeSearch = 0;
+	CHECK_IF_SWITCH_TO_PREV_STATE(Enemy.bVisible)
+	CHECK_IF_SWITCH_TO_NEW_STATE(
+		(Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD),
+		aiSoldierReload)
 		
-		return;
-	}
-		
-	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() < AMMO_NEED_RELOAD)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierReload;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-
 	INIT_SQUAD_AND_LEADER;
 	
 	vfInitSelector(SelectorFindEnemy,Squad,Leader);
@@ -270,68 +180,30 @@ void CAI_Soldier::FollowLeader()
 {
 	WRITE_TO_LOG("Following leader");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 		
 	SelectEnemy(Enemy);
-	// do I see the enemies?
-	if (Enemy.Enemy)		{
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierUnderFire)
 	
-	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierSenseSomething;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime),aiSoldierSenseSomething)
 	
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		//tHitDir = Group.m_tLastHitDirection;
-		//dwHitTime = Group.m_dwLastHitTime;
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
 
 	if (Leader == this) {
-		if (m_tpaPatrolPoints.size())
-			eCurrentState = aiSoldierPatrolRoute;
-		else
-			eCurrentState = aiSoldierFreeHunting;
-		
-		return;
+		CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size(),aiSoldierPatrolRoute)
+		GO_TO_NEW_STATE(aiSoldierFreeHunting)
 	}
 	else
-		if (m_tpaPatrolPoints.size()) {
-			eCurrentState = aiSoldierFollowLeaderPatrol;
-			
-			return;
-		}
+		CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size(),aiSoldierFollowLeaderPatrol)
 
 	vfInitSelector(SelectorFollowLeader,Squad,Leader);
 
@@ -345,67 +217,31 @@ void CAI_Soldier::FollowLeader()
 	vfSetFire(false,Group);
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
-	// stop processing more rules
-	
 }
 
 void CAI_Soldier::FreeHunting()
 {
 	WRITE_TO_LOG("Free hunting");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 		
 	SelectEnemy(Enemy);
 	
-	if (Enemy.Enemy) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
 	
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierUnderFire)
 	
-	if (dwCurTime - dwSenseTime < SENSE_JUMP_TIME) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierSenseSomething;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwSenseTime < SENSE_JUMP_TIME) && (dwSenseTime),aiSoldierSenseSomething)
 	
 	INIT_SQUAD_AND_LEADER;
-
+	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
-		//tHitDir = Group.m_tLastHitDirection;
-		//dwHitTime = Group.m_dwLastHitTime;
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-
-	if (m_tpaPatrolPoints.size()) {
-		eCurrentState = aiSoldierPatrolRoute;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierUnderFire)
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_tpaPatrolPoints.size(),aiSoldierPatrolRoute)
 
 	vfInitSelector(SelectorFreeHunting,Squad,Leader);
 
@@ -419,19 +255,18 @@ void CAI_Soldier::FreeHunting()
 	vfSetFire(false,Group);
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
-	// stop processing more rules
-	
 }
 
 void CAI_Soldier::Injuring()
 {
 	WRITE_TO_LOG("Feeling pain...");
 	
+	CHECK_FOR_DEATH
+
 }
 
 void CAI_Soldier::Jumping()
 {
-
 	if (Movement.Environment() == CMovementControl::peInAir)
 		WRITE_TO_LOG("Jumping(air)...")
 	else
@@ -439,6 +274,8 @@ void CAI_Soldier::Jumping()
 			WRITE_TO_LOG("Jumping(ground)...")
 		else
 			WRITE_TO_LOG("Jumping(unknown)...")
+
+	CHECK_FOR_DEATH
 
 	if (m_bStateChanged) {
 		m_dwLastRangeSearch = Level().timeServer();
@@ -459,25 +296,17 @@ void CAI_Soldier::Jumping()
 					}
 				break;
 			}
-			case BODY_STATE_LIE : {
-				eCurrentState = tStateStack.top();
-				tStateStack.pop();
-				break;
-			}
+			case BODY_STATE_LIE : 
+				SWITCH_TO_PREV_STATE
 		}
 	}
-
-	return;
 }
 
 void CAI_Soldier::StandingUp()
 {
 	WRITE_TO_LOG("Standing up...");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	//if (m_cBodyState == BODY_STATE_LIE)
 	//	m_tpCurrentGlobalAnimation = m_tpCurrentTorsoAnimation = m_tpCurrentHandsAnimation = m_tpCurrentLegsAnimation = 0;
@@ -486,11 +315,8 @@ void CAI_Soldier::StandingUp()
 	
 	AI_Path.TravelPath.clear();
 	
+	CHECK_IF_SWITCH_TO_PREV_STATE(true)
 	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		
-		return;
 	//}
 }
 
@@ -498,20 +324,14 @@ void CAI_Soldier::Sitting()
 {
 	WRITE_TO_LOG("Sitting...");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	vfSetMovementType(BODY_STATE_CROUCH,0);
 	
 	AI_Path.TravelPath.clear();
 	
+	CHECK_IF_SWITCH_TO_PREV_STATE(true)
 	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		
-		return;
 	//}
 }
 
@@ -519,38 +339,30 @@ void CAI_Soldier::LyingDown()
 {
 	WRITE_TO_LOG("Lying down...");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	vfSetMovementType(BODY_STATE_LIE,0);
+	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
 	
 	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
 	AI_Path.TravelPath.clear();
 	
-	if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_PREV_STATE((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500))
 }
 
 void CAI_Soldier::MoreDeadThanAlive()
 {
 	WRITE_TO_LOG("More dead than alive");
+	
+	CHECK_FOR_DEATH
+
 }
 
 void CAI_Soldier::NoWeapon()
 {
 	WRITE_TO_LOG("Searching for weapon");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 		
 	SelectEnemy(Enemy);
 	
@@ -577,70 +389,31 @@ void CAI_Soldier::NoWeapon()
 	vfSetFire(false,Group);
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
-	// stop processing more rules
-	
 }
 
 void CAI_Soldier::PatrolUnderFire()
 {
 	WRITE_TO_LOG("Patrol under fire");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	SelectEnemy(Enemy);
 
-	/**/
-	if (Enemy.Enemy)		{
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	/**/
-
+	CHECK_IF_GO_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	
 	DWORD dwCurTime = Level().timeServer();
-
-	/**/
-	if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	/**/
 	
-	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
-		eCurrentState = aiSoldierPatrolHurt;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_PREV_STATE((dwCurTime - dwHitTime > HIT_REACTION_TIME) && (dwHitTime))
 	
-	/**
-	if (m_cBodyState != BODY_STATE_LIE) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		
-		return;
-	}
-	/**/
-
+	CHECK_IF_SWITCH_TO_NEW_STATE(dwCurTime - dwHitTime < m_dwPatrolShock,aiSoldierPatrolHurt)
+	
 	INIT_SQUAD_AND_LEADER;
-
+	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	if ((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime)) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_SWITCH_TO_PREV_STATE((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime))
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
 	
 	vfInitSelector(SelectorUnderFire,Squad,Leader);
 
@@ -666,12 +439,8 @@ void CAI_Soldier::PatrolUnderFire()
 		AI_Path.TravelPath.clear();
 		vfSetMovementType(BODY_STATE_STAND,0);
 	}
-	/**/
 	
 	vfSetFire(false,Group);
-	
-	// stop processing more rules
-	
 }
 
 void CAI_Soldier::PatrolHurtAggressiveUnderFire()
@@ -679,52 +448,29 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	// if no more health then soldier is dead
 	WRITE_TO_LOG("Patrol hurt aggressive under fire");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	SelectEnemy(Enemy);
 
 	DWORD dwCurTime = Level().timeServer();
 	
-	if ((Enemy.Enemy) && (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock)) {
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_GO_TO_NEW_STATE((Enemy.Enemy) && (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock),aiSoldierAttackFire)
 	
-	if (dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock) {
-		eCurrentState = aiSoldierPatrolUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
+	CHECK_IF_GO_TO_NEW_STATE(dwCurTime - dwHitTime >= m_dwPatrolShock + m_dwUnderFireShock,aiSoldierPatrolUnderFire)
 	
-	if (dwCurTime - dwHitTime < m_dwPatrolShock) {
-		eCurrentState = aiSoldierPatrolHurt;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	
-	if (m_cBodyState != BODY_STATE_LIE) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		
-		return;
-	}
+	CHECK_IF_GO_TO_NEW_STATE(dwCurTime - dwHitTime < m_dwPatrolShock,aiSoldierPatrolHurt)
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
 
 	INIT_SQUAD_AND_LEADER;
-
+	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	tWatchDirection.sub(Group.m_tHitPosition,vPosition);
 	LOOK_AT_DIRECTION(tWatchDirection)
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
+	SUB_ANGLE(r_torso_target.yaw,EYE_WEAPON_DELTA)
 	//r_torso_target.pitch = r_target.pitch = 0;
+
 	vfSetMovementType(BODY_STATE_LIE,0);
 	
 	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() <= 0)) {
@@ -733,64 +479,30 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	}
 	else
 		vfSetFire(Enemy.Enemy ? fabsf(r_torso_current.yaw - r_torso_target.yaw) < PI/30.f : false,Group);
-	
-	
 }
 
 void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 {
 	WRITE_TO_LOG("Patrol hurt non-aggressive under fire");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	SelectEnemy(Enemy);
 
-	/**/
-	if (Enemy.Enemy)		{
-		eCurrentState = aiSoldierAttackFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	/**/
+	CHECK_IF_GO_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
 
 	DWORD dwCurTime = Level().timeServer();
 
-	/**/
-	if (dwCurTime - dwHitTime > HIT_REACTION_TIME) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	/**/
+	CHECK_IF_SWITCH_TO_PREV_STATE(dwCurTime - dwHitTime > HIT_REACTION_TIME)
 	
-	/**
-	if (m_cBodyState != BODY_STATE_LIE) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		
-		return;
-	}
-	/**/
-
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
+	
 	INIT_SQUAD_AND_LEADER;
 
 	CGroup &Group = Squad.Groups[g_Group()];
 	
-	if ((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime)) {
-		eCurrentState = tStateStack.top();
-		tStateStack.pop();
-		m_dwLastRangeSearch = 0;
-		
-		return;
-	}
-	
+	CHECK_IF_SWITCH_TO_PREV_STATE((dwCurTime - Group.m_dwLastHitTime > HIT_REACTION_TIME) && (Group.m_dwLastHitTime))
+
 	vfInitSelector(SelectorUnderFire,Squad,Leader);
 
 	Fvector tTemp = tHitDir;
@@ -812,43 +524,27 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 		AI_Path.TravelPath.clear();
 		vfSetMovementType(BODY_STATE_CROUCH,0);
 	}
-	/**/
 	
 	vfSetFire(false,Group);
-	
-	// stop processing more rules
-	
 }
 
 void CAI_Soldier::PatrolHurt()
 {
 	WRITE_TO_LOG("Patrol hurt");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
-	if (m_cBodyState != BODY_STATE_LIE) {
-		tStateStack.push(eCurrentState);
-		eCurrentState = aiSoldierLyingDown;
-		return;
-	}
+	CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
 	
 	INIT_SQUAD_AND_LEADER;
+
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	DWORD dwCurTime = Level().timeServer();
 
 	if (dwCurTime - dwHitTime >= m_dwPatrolShock) {
-		if (iHealth < 0)
-			eCurrentState = aiSoldierPatrolHurtNonAggressiveUnderFire;
-		else
-			eCurrentState = aiSoldierPatrolHurtAggressiveUnderFire;
-		m_dwLastRangeSearch = 0;
-		
-		return;
+		CHECK_IF_GO_TO_NEW_STATE(iHealth < 0,aiSoldierPatrolHurtNonAggressiveUnderFire)
+		GO_TO_NEW_STATE(aiSoldierPatrolHurtAggressiveUnderFire);
 	}
 
 	AI_Path.TravelPath.clear();
@@ -856,8 +552,6 @@ void CAI_Soldier::PatrolHurt()
 	vfSetFire(false,Group);
 
 	vfSetMovementType(BODY_STATE_LIE,0);
-
-	
 }
 
 void CAI_Soldier::FollowLeaderPatrol()
@@ -1044,11 +738,7 @@ void CAI_Soldier::Pursuit()
 {
 	WRITE_TO_LOG("Pursuiting");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	SelectEnemy(Enemy);
 	
@@ -1133,11 +823,7 @@ void CAI_Soldier::Reload()
 {
 	WRITE_TO_LOG("Recharging...");
 	
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	if ((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize())) {
 		eCurrentState = tStateStack.top();
@@ -1229,11 +915,7 @@ void CAI_Soldier::UnderFire()
 {
 	WRITE_TO_LOG("Under fire...");
 
-	if (g_Health() <= 0) {
-		eCurrentState = aiSoldierDie;
-		
-		return;
-	}
+	CHECK_FOR_DEATH
 
 	SelectEnemy(Enemy);
 
