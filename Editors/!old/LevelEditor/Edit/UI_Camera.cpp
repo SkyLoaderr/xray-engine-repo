@@ -3,6 +3,7 @@
 
 #include "UI_Camera.h"
 #include "ui_main.h"
+#include "ui_toolscustom.h"
 
 CUI_Camera::CUI_Camera()
 {
@@ -108,7 +109,7 @@ void CUI_Camera::SetSensitivity(float sm, float sr)
     m_SR = 0.02f*(sr*sr);
 }
 
-static const Fvector dir={0.f,-1.f,0.f};
+static const Fvector down_dir={0.f,-1.f,0.f};
 
 void CUI_Camera::Update(float dt)
 {
@@ -122,13 +123,14 @@ void CUI_Camera::Update(float dt)
     		if (bLeftDn) 		m_Position.add( vmove );
     		else if (bRightDn) 	m_Position.sub( vmove );
 
-#ifdef _LEVEL_EDITOR
             if (m_Shift.Contains(ssCtrl)){
-            	Fvector pos;
-            	if (UI->PickGround(pos,m_Position,dir,-1))
-                	m_Position.y = pos.y+m_FlyAltitude;
+                float dist = flt_max;
+            	if (Tools->RayPick(m_Position,down_dir,dist))//UI->R PickGround(pos,m_Position,dir,-1))
+                	m_Position.y = m_Position.y+down_dir.y*dist+m_FlyAltitude;
+                else
+                	m_Position.y = m_FlyAltitude;
+                	
             }
-#endif
 
         	UI->RedrawScene();
 	    }
