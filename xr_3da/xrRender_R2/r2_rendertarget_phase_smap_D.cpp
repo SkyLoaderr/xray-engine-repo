@@ -19,7 +19,7 @@ void	CRenderTarget::phase_smap_direct		(light* L)
 
 void	CRenderTarget::phase_smap_direct_tsh	(light* L)
 {
-	VERIFY								(RImplementation.o.Tshadows);
+	//. VERIFY								(RImplementation.o.Tshadows);
 	RCache.set_ColorWriteEnable			();
 	CHK_DX								(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_TARGET,	0xffffffff,	1.0f, 0L));
 }
