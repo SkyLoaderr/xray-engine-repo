@@ -43,6 +43,8 @@ function action_camera_activity:reset_scheme()
 	    action(self.object, look(self.path:point(self.cur_wp), self.st.speed_h, self.st.speed_p), cond(cond.look_end))
 	--elseif self.st.state == "range_tracking" then
     end
+    
+    self.st.signals = {}
 end
 
 function angle_diff(a1, a2)
@@ -116,6 +118,9 @@ function action_camera_activity:update(delta)
 	   --and actor:see(self.object)
 	   and in_focus
 	then
+		if not self.st.signals["enemy_tracking"] then
+			self.st.signals["enemy_tracking"] = true
+		end
 		self.track_enemy = actor
 		xr_logic.mob_capture(self.object, true)
 		action(self.object, look(actor:position(), self.st.speed_h, self.st.speed_p), cond(cond.look_end))
@@ -126,11 +131,13 @@ function action_camera_activity:update(delta)
 			xr_logic.mob_capture(self.object, true)
 		end
 		
-		-- ѕровер€ем нужно ли делать паузу, если мы уже не в ней
+		-- ѕровер€ем нужно ли делать паузу
 		if self.st.pause_after_lost_target > 0 then
 			self.pause = true
 			self.pause_start = device():time_global()
 			return
+		elseif self.st.signals["enemy_tracking"] then
+			self.st.signals["enemy_tracking"] = false
 		end
 	end
 
@@ -140,7 +147,11 @@ function action_camera_activity:update(delta)
 		then
 			return
 		end
+
 		self.pause = false
+		if self.st.signals["enemy_tracking"] then
+			self.st.signals["enemy_tracking"] = false
+		end
     end
     
     if not self.track_enemy and not self.object:action() then

@@ -91,8 +91,8 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 	
-	st.force     = utils.cfg_get_number(ini, section, "force", npc, false, 10)
-	st.velocity  = utils.cfg_get_number(ini, section, "velocity", npc, false, 10)
+	st.force     = utils.cfg_get_number(ini, section, "force", npc, false, 5)
+	st.velocity  = utils.cfg_get_number(ini, section, "velocity", npc, false, 100)
 	st.duration  = utils.cfg_get_number(ini, section, "duration", npc, false, 100)
 	st.bone      = utils.cfg_get_string(ini, section, "bone", npc, true, "")
 	st.dir_path  = utils.cfg_get_string(ini, section, "dir_path", npc, true, "")
