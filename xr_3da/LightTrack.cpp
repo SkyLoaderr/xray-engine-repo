@@ -133,7 +133,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 			CLightTrack::Light&	L	= lights.back();
 			L.source				= xrL;
 			L.color.mul_rgb			(xrL->color,I->energy/2);
-			L.energy				= I->energy;
+			L.energy				= I->energy/2;
 		}
 	}
 	
