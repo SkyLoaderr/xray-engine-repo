@@ -25,6 +25,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 	m_cap=dCreateSphere(0,m_radius+m_radius/30.f);
 	dGeomSetPosition(m_cap,0.f,m_radius,0.f);
 	m_cap_transform=dCreateGeomTransform(0);
+	dGeomTransformSetCleanup(m_cap_transform,0);
 	dGeomTransformSetInfo(m_cap_transform,1);
 	dGeomTransformSetGeom(m_cap_transform,m_cap);
 	dGeomCreateUserData(m_cap);

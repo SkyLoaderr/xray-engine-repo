@@ -156,8 +156,11 @@ virtual ~CPHShell				()
 	}
 	void CreateSpace()
 	{
-		if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
-		//dSpaceSetCleanup (m_space, 0);
+		if(!m_space) 
+		{
+			m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+			dSpaceSetCleanup (m_space, 0);
+		}
 	}
 	void PassEndElements(u16 from,CPHShell *dest,u16 position);
 	void PassEndJoints(u16 from,CPHShell *dest);
@@ -165,7 +168,7 @@ virtual ~CPHShell				()
 	void DeleteJoint(u16 joint);
 	void SetTransform(Fmatrix m);
 private:
-	void AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneData& parent_data);
+	void AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent);
 	void ZeroCallbacksRecursive(u16 id);
 
 };

@@ -79,6 +79,7 @@ void CPHWorld::Create()
 
 	phWorld = dWorldCreate();
 	Space = dHashSpaceCreate(0);
+	dSpaceSetCleanup(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
 	dWorldSetAutoEnableDepth(phWorld, 3);

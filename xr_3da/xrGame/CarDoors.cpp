@@ -306,7 +306,7 @@ void CCar::SDoor::ClosedToOpening()
 	CBoneData& bone_data= pKinematics->LL_GetData(u16(bone_id));
 	CBoneInstance& bone_instance=pKinematics->LL_GetBoneInstance(u16(bone_id));
 	bone_instance.set_callback(pcar->PPhysicsShell()->GetBonesCallback1(),joint->PSecond_element());
-	door_form.set(bone_data.bind_transform);
+	door_form.set(bone_instance.mTransform);
 	//door_form.mulB(pcar->XFORM());
 	joint->PSecond_element()->mXFORM.set(door_form);
 	pcar->m_pPhysicsShell->GetGlobalTransformDynamic(&root_form);
@@ -330,8 +330,8 @@ void CCar::SDoor::ClosingToClosed()
 	joint->Deactivate();
 	RemoveFromUpdate();
 
-	door_form.set(bone_data.bind_transform);
-	bone_instance.mTransform.set(door_form);
+	//door_form.set(bone_data.bind_transform);
+	//bone_instance.mTransform.set(door_form);
 }
 
 

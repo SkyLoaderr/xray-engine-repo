@@ -388,13 +388,16 @@ void CCar::CreateSkeleton()
 
 	if (!Visual()) return;
 	CSkeletonAnimated* K = PSkeletonAnimated(Visual());
-	K->PlayCycle("idle");
-	K->Calculate();
+	if(K)
+	{
+		K->PlayCycle("idle");
+		K->Calculate();
+	}
 
 	//CInifile* ini=K->LL_UserData();
 	//K->LL_GetBoneInstance				(K->LL_BoneID(ini->r_string("car_definition","steer"))).set_callback			(cb_Steer,this);
 	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(K,&bone_map);
+	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()),&bone_map);
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
 	m_pPhysicsShell->Activate(true);

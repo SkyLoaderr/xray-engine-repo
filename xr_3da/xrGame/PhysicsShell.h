@@ -27,6 +27,7 @@ extern const dReal default_disl;
 class CPhysicsJoint;
 class CPhysicsElement;
 class CPhysicsShell;
+class CPHFracture;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -103,13 +104,13 @@ public:
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
 	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
-	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)=0;
+	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
-	virtual void			setEndGeomFracturable	(u16 bone_id, const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)=0;
+	virtual void			setEndGeomFracturable	(CPHFracture &fracture)							= 0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;

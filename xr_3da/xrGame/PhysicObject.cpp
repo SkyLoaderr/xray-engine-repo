@@ -28,21 +28,24 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		default: NODEFAULT; 
 	}
 
+	CreateBody				(po);
+
+	CSkeletonAnimated* pSkeletonAnimated=NULL;
 	switch(m_type) {
 		case epotBox:				break;
 		case epotFixedChain:
-			R_ASSERT				(Visual()&&PKinematics(Visual()));
-			PSkeletonAnimated(Visual())->PlayCycle(start_anim);
-			PSkeletonAnimated(Visual())->Calculate();
-			break;
 		case epotSkeleton:
-			R_ASSERT				(Visual()&&PKinematics(Visual()));
-			PSkeletonAnimated(Visual())->PlayCycle(start_anim);
-			PSkeletonAnimated(Visual())->Calculate();
+			R_ASSERT(Visual()&&PKinematics(Visual()));
+			pSkeletonAnimated=PSkeletonAnimated(Visual());
+			if(pSkeletonAnimated)
+			{
+				pSkeletonAnimated->PlayCycle(start_anim);
+				pSkeletonAnimated->Calculate();
+			}
 			break;
 		default: NODEFAULT; 
 	}
-	CreateBody				(po);
+
 
 	setVisible(true);
 	setEnabled(true);
@@ -184,6 +187,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 		dBodySetMass(fixed_element->get_body(),&m);
 		dBodySetGravityMode(fixed_element->get_body(),0);
 	}
+
 
 }
 

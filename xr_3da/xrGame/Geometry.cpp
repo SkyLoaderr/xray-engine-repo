@@ -257,6 +257,7 @@ void CODEGeom::init()
 {
 	dGeomID	geom=create();
 	m_geom_transform=dCreateGeomTransform(0);
+	dGeomTransformSetCleanup(m_geom_transform,0);
 	dGeomSetData(m_geom_transform,0);
 	dGeomTransformSetGeom(m_geom_transform,geom);
 	dGeomTransformSetInfo(m_geom_transform,1);

@@ -69,6 +69,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 
 	mXFORM.set(m0);
 	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	dSpaceSetCleanup(m_space,0);
 	//dSpaceSetCleanup (m_space, 0);
 	for(i=elements.begin();i!=elements.end();i++){
 		//(*i)->Start();
@@ -91,6 +92,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 
 	mXFORM.set(transform);
 	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	dSpaceSetCleanup(m_space,0);
 	//dSpaceSetCleanup (m_space, 0);
 	for(i=elements.begin();i!=elements.end();i++){
 		//(*i)->Start();
@@ -109,7 +111,11 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 	if(bActive)
 		return;
 	CPHObject::Activate();
-	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	if(!m_space)
+	{
+		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		dSpaceSetCleanup(m_space,0);
+	}
 
 	{		
 		ELEMENT_I i=elements.begin(),e=elements.end();
@@ -130,7 +136,11 @@ void CPHShell::PresetActive()
 	if(bActive)
 		return;
 	CPHObject::Activate();
-	if(!m_space) m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	if(!m_space) 
+	{
+		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		dSpaceSetCleanup(m_space,0);
+	}
 	bActive=true;
 	bActivating=true;
 	ELEMENT_I i=elements.begin(),e=elements.end();
@@ -393,32 +403,33 @@ void CPHShell::build_FromKinematics(CKinematics* K,BONE_P_MAP* p_geting_map)
 	m_pKinematics=K;
 	spGetingMap=p_geting_map;
 	CBoneData& bone_data= m_pKinematics->LL_GetData(0);
-	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),bone_data);
+	AddElementRecursive(0,m_pKinematics->LL_GetBoneRoot(),bone_data.bind_transform);
 	
 	//Activate(true);
 
 }
-void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneData& parent_data)
+void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix global_parent)
 {
 
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 
+	Fmatrix fm_position;
+	fm_position.set(bone_data.bind_transform);
+	fm_position.mulA(global_parent);
 
 	CPhysicsElement* E  = 0;
 	CPhysicsJoint*   J	= 0;
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//
 	{														
-		Fmatrix fm_position;
-		fm_position.set(bone_data.bind_transform);
 		if(bone_data.IK_data.type==jtRigid && root_e ) //
 		{
-			Fmatrix inv_root;
-			inv_root.set(root_e->mXFORM);
-			inv_root.invert();
-			fm_position.mulA(inv_root);
-			root_e->add_Shape(bone_data.shape,fm_position);
-			root_e->add_Mass(bone_data.shape,fm_position,bone_data.center_of_mass,bone_data.mass);
+			//Fmatrix inv_root;
+			//inv_root.set(root_e->mXFORM);
+			//inv_root.invert();
+			//fm_position.mulA(inv_root);
+			root_e->add_Shape(bone_data.shape,bone_data.bind_transform);
+			root_e->add_Mass(bone_data.shape,bone_data.bind_transform,bone_data.center_of_mass,bone_data.mass);
 			B.Callback_Param=root_e;
 			B.Callback=NULL;
 			E=root_e;
@@ -713,7 +724,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,const CBoneDa
 	}
 
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); it++)
-		AddElementRecursive		(E,(*it)->SelfID,bone_data);
+		AddElementRecursive		(E,(*it)->SelfID,fm_position);
 
 }
 

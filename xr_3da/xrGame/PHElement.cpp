@@ -77,8 +77,11 @@ void CPHElement::			build	(){
 
 	dBodySetMass(m_body,&m_mass);
 
-	if(m_geoms.size()>1)m_group=dSimpleSpaceCreate(0);
-
+	if(m_geoms.size()>1)
+	{
+		m_group=dSimpleSpaceCreate(0);
+		dSpaceSetCleanup(m_group,0);
+	}
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
@@ -183,9 +186,28 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
+static float static_dencity;
+void CPHElement::calc_it_fract_data_use_density(const Fvector& mc,float density)
+{
+	m_mass_center.set(mc);
+	dMassSetZero(&m_mass);
+	static_dencity=density;
+	recursive_mass_summ(0,m_fratures_holder->m_fractures.begin());
+}
 
-
-
+dMass CPHElement::recursive_mass_summ(u16 start_geom,FRACTURE_I cur_fracture)
+{
+	dMass end_mass;
+	dMassSetZero(&end_mass);
+	GEOM_I i_geom=m_geoms.begin()+start_geom,	e=m_geoms.begin()+cur_fracture->m_geom_num;
+	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(end_mass,m_mass_center,static_dencity);
+	dMassAdd(&m_mass,&end_mass);
+	start_geom=cur_fracture->m_geom_num;
+	cur_fracture++;
+	if(cur_fracture!=m_fratures_holder->m_fractures.end())
+				cur_fracture->SetMassParts(m_mass,recursive_mass_summ(start_geom,cur_fracture));
+	return end_mass;
+}
 void		CPHElement::	setDensity		(float M)
 {
 	calculate_it_data_use_density(get_mc_data(),M);
@@ -1092,7 +1114,7 @@ void CPHElement::add_Shape(const SBoneShape& shape)
 
 #pragma todo(remake it using Geometry functions)
 
-void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)
+void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture)
 {
 
 	dMass m;
@@ -1160,6 +1182,10 @@ void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fv
 	dMassTranslate(&m,mc.x,mc.y,mc.z);
 	m_mass_center.sub(new_mc);
 	dMassTranslate(&m_mass,m_mass_center.x,m_mass_center.y,m_mass_center.z);
+	if(fracture)
+	{
+		fracture->SetMassParts(m_mass,m);
+	}
 	dMassAdd(&m_mass,&m);
 	m_mass_center.set(new_mc);
 }
@@ -1247,7 +1273,11 @@ void CPHElement::CreateSimulBase()
 	m_saved_contacts=dJointGroupCreate (0);
 	b_contacts_saved=false;
 	dBodyDisable(m_body);
-	if(m_geoms.size()>1)m_group=dSimpleSpaceCreate(0);
+	if(m_geoms.size()>1)
+	{
+		m_group=dSimpleSpaceCreate(0);
+		dSpaceSetCleanup(m_group,0);
+	}
 }
 
 void CPHElement::ReInitDynamics()
@@ -1302,8 +1332,9 @@ void CPHElement::PresetActive()
 	
 }
 
-void	CPHElement::setEndGeomFracturable(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+void	CPHElement::setEndGeomFracturable(CPHFracture& fracture)
 {
 	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
-	m_fratures_holder->AddFracture(u16(m_geoms.size()-1),bone_id,position,direction,break_force,break_torque);
+	fracture.SetGeomNum(u16(m_geoms.size()-1));
+	m_fratures_holder->AddFracture(fracture);
 }

@@ -9,6 +9,7 @@
 #define PH_ELEMENT
 class CPHElement;
 class CPHShell;
+class CPHFracture;
 typedef		void	__stdcall	ContactCallbackFun		(CDB::TRI* T,dContactGeom* c);
 void				__stdcall	ContactShotMark			(CDB::TRI* T,dContactGeom* c);
 typedef		void	__stdcall	PushOutCallbackFun		(bool& do_colide,dContact& c);
@@ -74,6 +75,8 @@ private:
 	void					build_Geom						(CODEGeom&	V);
 	void					calculate_it_data				(const Fvector& mc,float mass);
 	void					calculate_it_data_use_density	(const Fvector& mc,float density);
+	void					calc_it_fract_data_use_density  (const Fvector& mc,float density);//sets element mass and fractures parts mass
+	dMass					recursive_mass_summ				(u16 start_geom,FRACTURE_I cur_fracture);
 	void					Disabling						();
 	void					unset_Pushout					();
 IC	void					UpdateInterpolation				()
@@ -121,7 +124,7 @@ public:
 	virtual void			set_LinearVel					(const Fvector& velocity);
 	virtual void			set_AngularVel					(const Fvector& velocity);
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);
-	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
+	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass,CPHFracture* fracture=NULL);
 	virtual float			getRadius						();
 	virtual void			InterpolateGlobalTransform		(Fmatrix* m);
 	virtual void			InterpolateGlobalPosition		(Fvector* v);
@@ -161,7 +164,7 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
-	virtual void			setEndGeomFracturable	(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+	virtual void			setEndGeomFracturable	(CPHFracture& fracture);
 	dGeomID					dSpacedGeometry			();
 			void			PassEndGeoms			(u16 from,CPHElement* dest);
 

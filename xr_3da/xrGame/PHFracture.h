@@ -5,9 +5,9 @@
 #include "PHDefs.h"
 class CPHFracture;
 class CPHElement;
-DEFINE_VECTOR(CPHFracture,FRACTURE_STORAGE,FRACTURE_I)
+
 DEFINE_VECTOR(dJointFeedback,CFEEDBACK_STORAGE,CFEEDBACK_I)
-typedef		xr_vector<CPHFracture>::reverse_iterator	FRACTURE_RI;
+
 struct SPHImpact 
 {
 	Fvector force;
@@ -19,6 +19,7 @@ DEFINE_VECTOR(SPHImpact,PH_IMPACT_STORAGE,PH_IMPACT_I)
 
 class CPHFracturesHolder 			//stored in CPHElement
 {
+friend class CPHElement;
 bool			 m_has_breaks;
 FRACTURE_STORAGE m_fractures;
 PH_IMPACT_STORAGE m_impacts;		//filled in anytime from CPHElement applyImpulseTrace cleared in PhDataUpdate
@@ -37,7 +38,7 @@ void				InitNewElement	(CPHElement* element);
 void				PassEndFractures(u16 from,CPHElement* dest,u16 shift_geoms);
 public:
 void				SplitProcess	(CPHElement* element,ELEMENT_PAIR_VECTOR &new_elements);
-void				AddFracture		(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+void				AddFracture		(const CPHFracture& fracture);
 void				PhTune			(dBodyID body);										//set feedback for joints called from PhTune of ShellSplitterHolder
 bool				PhDataUpdate	(dBodyID body);										//collect joints and external impacts in fractures Update which set m_fractured; called from PhDataUpdate of ShellSplitterHolder returns true if has breaks
 };
@@ -45,17 +46,22 @@ bool				PhDataUpdate	(dBodyID body);										//collect joints and external impa
 class CPHFracture
 {
 friend class  CPHFracturesHolder;
+friend class CPHElement;
 bool			m_breaked;
 u16				m_geom_num;
 u16				m_bone_id;
 Fvector			m_position;							//vs body//when fractured is additional linear vel for seccond body
 Fvector			m_direction;						//norm to fracture plane vs body//when fractured is additional angular vel for seccond body
+dMass			m_firstM;
+dMass			m_seccondM;
 float			m_break_force;
 float			m_break_torque;
-				CPHFracture(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
+				CPHFracture(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
 public:
 bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
 IC bool			Breaked(){return m_breaked;}
+void			SetMassParts(const dMass& first,const dMass& second);
+IC void			SetGeomNum(u16 geom_num){m_geom_num=geom_num;};
 };
 
 

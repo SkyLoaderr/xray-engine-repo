@@ -32,6 +32,7 @@ CGameObject::CGameObject		()
 
 CGameObject::~CGameObject		()
 {
+
 	/******* Oles
 #ifdef DEBUG
 	Device.seqRender.Remove	(this);
@@ -66,6 +67,7 @@ void CGameObject::net_Destroy	()
 	}
 	AI_NodeID									= u32(-1);
 	AI_Node										= 0;
+	xr_delete(m_pPhysicsShell);
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)

@@ -134,7 +134,9 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 
 
 	m_shell_transform=dCreateGeomTransform(0);
+	dGeomTransformSetCleanup(m_shell_transform,0);
 	m_hat_transform=dCreateGeomTransform(0);
+	dGeomTransformSetCleanup(m_hat_transform,0);
 	//m_wheel_transform=dCreateGeomTransform(0);
 	
 	dGeomTransformSetInfo(m_shell_transform,1);

@@ -116,13 +116,12 @@ void CPHFracturesHolder::AddImpact(const Fvector& force,const Fvector& point)
 {
 	m_impacts.push_back(SPHImpact(force,point));
 }
-void CPHFracturesHolder::AddFracture(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+void CPHFracturesHolder::AddFracture(const CPHFracture& fracture)
 {
-	m_fractures.push_back(CPHFracture(geom_num,bone_id,position,direction,break_force,break_torque));
+	m_fractures.push_back(fracture);
 }
-CPHFracture::CPHFracture(u16 geom_num,u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+CPHFracture::CPHFracture(u16 bone_id,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
 {
-m_geom_num=geom_num;
 m_bone_id=bone_id;
 m_position.set(position);
 m_direction.set(direction);
@@ -134,4 +133,10 @@ bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
 {
 	//itterate through impacts & calculate 
 	return false;
+}
+
+void CPHFracture::SetMassParts(const dMass& first,const dMass& second)
+{
+	m_firstM=first;
+	m_seccondM=second;
 }
