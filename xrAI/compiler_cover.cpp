@@ -250,7 +250,7 @@ public:
 	}
 };
 
-#define NUM_THREADS	8
+#define NUM_THREADS	4
 void	xrCover	()
 {
 	Status("Calculating...");
