@@ -121,7 +121,7 @@ void CWeapon::SoundDestroy	(	ref_sound& dest)
 
 void CWeapon::ShaderCreate	(ref_shader &dest, LPCSTR S, LPCSTR T)
 {
-	if (dest())	return;
+	if	(dest)	return;
 	string256	name,temp;
 
 	// test 'WEAPONS' folder 
@@ -386,8 +386,8 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 
 	ShaderCreate				(hUIIcon,"hud\\default","");
 
-	if (0==pstrWallmark)		hWallmark	= 0; 
-	else						hWallmark	= Device.Shader.Create("effects\\wallmark",pstrWallmark);
+	if (0==pstrWallmark)		hWallmark			= 0; 
+	else						hWallmark.create	("effects\\wallmark",pstrWallmark);
 
 	if (0==m_pPhysicsShell)
 	{
@@ -405,7 +405,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 		m_pPhysicsShell						= P_create_Shell	();
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setDensity			(500.f);//400 - плотность т.е. - масса 1 м^3!
+		m_pPhysicsShell->setDensity			(500.f);//400 - ieioiinou o.a. - ianna 1 i^3!
 		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
 		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
 		m_pPhysicsShell->mDesired.identity	();
@@ -667,7 +667,7 @@ void CWeapon::UpdatePosition(const Fmatrix& trans)
 
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
-	if (0==hWallmark())	return;
+	if (!hWallmark)	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)
@@ -682,7 +682,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 		}
 	} else {
 		::Render->add_Wallmark	(
-			hWallmark(),
+			hWallmark,
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element);
@@ -820,7 +820,7 @@ void CWeapon::OnDrawFlame	()
 			f		*= 0.9f;
 			float	S = f+f*::Random.randF	();
 			float	A = ::Random.randF		(PI_MUL_2);
-			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())](),P,S,A,hud_mode);
+			::Render->add_Patch				(hFlames[Random.randI(hFlames.size())],P,S,A,hud_mode);
 			P.add(D);
 		}
 		fFlameTime -= Device.fTimeDelta;
@@ -851,8 +851,8 @@ void CWeapon::OnEvent		(NET_Packet& P, u16 type)
 }
 
 bool CWeapon::Activate() {
-	// Вызывается при активации слота в котором находится объект
-	// Если объект может быть активирован вернуть true, иначе false
+	// Aucuaaaony i?e aeoeaaoee neioa a eioi?ii iaoiaeony iauaeo
+	// Anee iauaeo ii?ao auou aeoeae?iaai aa?ioou true, eia?a false
 	//if(H_Parent() && m_ammoSect) SpawnAmmo();
 	//if(!IsValid()) return false;
 	Show();
@@ -860,7 +860,7 @@ bool CWeapon::Activate() {
 }
 
 void CWeapon::Deactivate() {
-	// Вызывается при деактивации слота в котором находится объект
+	// Aucuaaaony i?e aaaeoeaaoee neioa a eioi?ii iaoiaeony iauaeo
 	Hide();
 }
 
@@ -889,20 +889,20 @@ bool CWeapon::Action(s32 cmd, u32 flags) {
 }
 
 bool CWeapon::Attach(PIItem pIItem, bool force) {
-	// Аргумент force всегда равен false
-	// наследник должен изменить его на true
-	// если данный IItem *МОЖЕТ* быть к нему присоединен,
-	// и вызвать return CInventoryItem::Attach(pIItem, force);
-	//if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && /*так надо*/(force = CheckAmmoType((CWeaponAmmo*)pIItem))/*так надо*/) m_pAmmo = (CWeaponAmmo*)pIItem;
+	// A?aoiaio force anaaaa ?aaai false
+	// ianeaaiee aie?ai eciaieou aai ia true
+	// anee aaiiue IItem *II?AO* auou e iaio i?eniaaeiai,
+	// e aucaaou return CInventoryItem::Attach(pIItem, force);
+	//if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && /*oae iaai*/(force = CheckAmmoType((CWeaponAmmo*)pIItem))/*oae iaai*/) m_pAmmo = (CWeaponAmmo*)pIItem;
 	/*if(!m_pAmmo && dynamic_cast<CWeaponAmmo*>(pIItem) && !strcmp(m_ammoSect, pIItem->cName())) { force = true; m_pAmmo = (CWeaponAmmo*)pIItem; }
 	*/return inherited::Attach(pIItem, force);
 }
 
 bool CWeapon::Detach(PIItem pIItem, bool force) {
-	// Аргумент force всегда равен true
-	// наследник должен изменить его на false
-	// если данный IItem *НЕ МОЖЕТ* быть отсоединен,
-	// и вызвать return CInventoryItem::Detach(pIItem, force);
+	// A?aoiaio force anaaaa ?aaai true
+	// ianeaaiee aie?ai eciaieou aai ia false
+	// anee aaiiue IItem *IA II?AO* auou ioniaaeiai,
+	// e aucaaou return CInventoryItem::Detach(pIItem, force);
 	return CInventoryItem::Detach(pIItem, false);
 }
 
