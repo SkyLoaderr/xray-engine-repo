@@ -43,6 +43,12 @@ bool CScriptGameObject::DisableInfoPortion(LPCSTR info_id)
 	return true;
 }
 
+
+void  CScriptGameObject::SetNewsShowTime	(LPCSTR news, int show_time)
+{
+	if(HUD().GetUI())
+		HUD().GetUI()->UIMainIngameWnd.SetDelayForPdaMessage(CStringTable().IndexById(news), show_time);
+}
 bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2)
 {
 	CActor* pActor = smart_cast<CActor*>(&object());
@@ -50,6 +56,7 @@ bool  CScriptGameObject::GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1
 
 	GAME_NEWS_DATA news_data;
 	news_data.news_text = CStringTable().IndexById(news);
+	news_data.show_time = DEFAULT_NEWS_SHOW_TIME;
 	
 	if(xr_strlen(texture_name)>0)
 	{

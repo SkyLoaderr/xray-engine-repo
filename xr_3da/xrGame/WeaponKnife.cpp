@@ -9,7 +9,7 @@
 #include "game_cl_base.h"
 #include "../skeletonanimated.h"
 
-#define KNIFE_MATERIAL_NAME "objects\\bullet"
+#define KNIFE_MATERIAL_NAME "objects\\knife"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

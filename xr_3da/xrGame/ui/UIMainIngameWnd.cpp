@@ -962,9 +962,9 @@ CUIPdaMsgListItem * CUIMainIngameWnd::AddGameMessage(LPCSTR message, int iId, in
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR TextMessage)
+void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCSTR TextMessage, int iId, int iDelay)
 {
-	CUIPdaMsgListItem *pItem = AddGameMessage(TextMessage);
+	CUIPdaMsgListItem *pItem = AddGameMessage(TextMessage, iId, iDelay);
 	if (pItem)
 	{
 		pItem->InitCharacter(pSender);
@@ -973,9 +973,9 @@ void CUIMainIngameWnd::AddPersonalizedGameMessage(CInventoryOwner* pSender, LPCS
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRect, LPCSTR message)
+void CUIMainIngameWnd::AddIconedGameMessage(LPCSTR textureName, RECT originalRect, LPCSTR message, int iId, int iDelay)
 {
-	CUIPdaMsgListItem* pItem = AddGameMessage(message);
+	CUIPdaMsgListItem* pItem = AddGameMessage(message, iId, iDelay);
 
 	if (pItem)
 	{
@@ -1060,10 +1060,10 @@ void CUIMainIngameWnd::OnNewsReceived(GAME_NEWS_DATA &news)
 		rect.right = news.x2;
 		rect.top = news.y1;
 		rect.bottom = news.y2;
-		AddIconedGameMessage(news.texture_name, rect, news.FullText());
+		AddIconedGameMessage(news.texture_name, rect, news.FullText(), news.news_text, news.show_time);
 	}
 	else
-		AddGameMessage(news.FullText());
+		AddGameMessage(news.FullText(), news.news_text, news.show_time);
 
 //	CUIGameSP* pGameSP		= smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 //	pGameSP->PdaMenu.AddNewsItem(result);

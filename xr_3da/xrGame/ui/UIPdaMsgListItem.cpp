@@ -98,9 +98,9 @@ bool CUIPdaMsgListItem::IsTimeToDestroy(){
 		return true;
 
 	if (0 == m_timeBegin)	
-		m_timeBegin = Level().GetGameTime();
+		m_timeBegin = Device.dwTimeGlobal;
 
-	if (m_iDelay*1000 < Level().GetGameTime() - m_timeBegin)
+	if (m_iDelay < Device.dwTimeGlobal - m_timeBegin)
 	{		
 		CUIColorAnimatorWrapper *p = reinterpret_cast<CUIColorAnimatorWrapper*>(GetData());
 		p->Reset();
@@ -110,20 +110,3 @@ bool CUIPdaMsgListItem::IsTimeToDestroy(){
 
 	return false;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

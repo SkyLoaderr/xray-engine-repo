@@ -9,14 +9,11 @@
 #include "string_table_defs.h"
 #include "object_interfaces.h"
 
-#define NOT_SIMULATION_NEWS ALife::_NEWS_ID(-1)
-
-
+#define NOT_SIMULATION_NEWS		ALife::_NEWS_ID(-1)
+#define DEFAULT_NEWS_SHOW_TIME	5000
 //-----------------------------------------------------------------------------/
 //	News related routines
 //-----------------------------------------------------------------------------/
-
-
 
 
 struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
@@ -31,6 +28,8 @@ struct GAME_NEWS_DATA : public IPureSerializeObject<IReader,IWriter>
 	ALife::_NEWS_ID news_id;
 	//текст для сюжетной новости
 	STRING_INDEX news_text;
+	//время показывания новости на экране в млс(-1 - бесконечность)
+	int	show_time;
 
 	//время получения новости
 	ALife::_TIME_ID		receive_time;

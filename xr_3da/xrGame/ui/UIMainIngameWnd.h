@@ -78,9 +78,9 @@ public:
 	void ReceivePdaMessage(CInventoryOwner* pSender, EPdaMsg msg, INFO_INDEX info_index);
 	
 	bool SetDelayForPdaMessage          (int iValue, int iDelay);
-	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message, int iId = 0, int iDelay = 0);
-	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage);
-	void AddIconedGameMessage			(LPCSTR textureName, RECT originalRect, LPCSTR message);
+	CUIPdaMsgListItem * AddGameMessage	(LPCSTR message, int iId = -1, int iDelay = 0);
+	void AddPersonalizedGameMessage		(CInventoryOwner* pSender, LPCSTR TextMessage, int iId = -1, int iDelay = 0);
+	void AddIconedGameMessage			(LPCSTR textureName, RECT originalRect, LPCSTR message, int iId = -1, int iDelay = 0);
 	void AddStaticItem					(CUIStaticItem* si, int left, int top, int right, int bottom, int priority = 0);
 	// Функция для вывода служебных сообщений, таких как "здась спать нельзя",
 	// "рюкзак переполнен", и т.д. Возвращаем указатель на добавленный элемент

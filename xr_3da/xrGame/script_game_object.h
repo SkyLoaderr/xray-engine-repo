@@ -192,6 +192,7 @@ public:
 			bool				DisableInfoPortion	(LPCSTR info_id);
 			bool				GiveInfoPortionViaPda	(LPCSTR info_id, CScriptGameObject* pFromWho);
 			bool				GiveGameNews		(LPCSTR news, LPCSTR texture_name, int x1, int y1, int x2, int y2);
+			void				SetNewsShowTime		(LPCSTR news, int show_time);
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);

@@ -30,6 +30,7 @@ GAME_NEWS_DATA::GAME_NEWS_DATA():news_id(ALife::_NEWS_ID(-1)), news_text(NO_STRI
 {
 	texture_name = NULL;
 	x1 = y1 = x2 = y2 = 0;
+	show_time = DEFAULT_NEWS_SHOW_TIME;
 
 	LoadNewsTemplates ();
 }
