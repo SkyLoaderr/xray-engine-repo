@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <game_dialogs>
     <dialog id="rad_found_stalkers_dialog">
+	<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="200">
                 <text>rad_found_stalkers_dialog_200</text>
@@ -52,6 +53,7 @@
         </phrase_list>
     </dialog>
     <dialog id="rad_find_stalkers_dialog">
+	<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="1150">
                 <text>rad_find_stalkers_dialog_1150</text>
@@ -152,6 +154,7 @@
         </phrase_list>
     </dialog>
     <dialog id="rad_find_stalkers_dialog111">
+	<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="102">
                 <text>rad_find_stalkers_dialog111_102</text>
@@ -294,6 +297,7 @@
         </phrase_list>
     </dialog>
     <dialog id="rad_test">
+	<precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="20">
                 <text>rad_test_20</text>
