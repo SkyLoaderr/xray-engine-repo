@@ -4,6 +4,8 @@
 #include "..\WaveForm.h"
 #include "Particle.h"
 
+#include <time.h>
+
 namespace PS
 {
 	DEFINE_VECTOR	(SParticle,Particles,ParticleIt);
