@@ -27,7 +27,7 @@ struct XR_EPROPS_API STextureParams{
 		tfForceU32	= u32(-1)
 	};
     enum ETBumpMode{
-    	tbmAutogen	= 0,
+    	tbmResereved	= 0,
         tbmNone,
         tbmUse,
 		tbmForceU32	= u32(-1)
@@ -133,8 +133,9 @@ struct XR_EPROPS_API STextureParams{
     void Load (IReader& F);
     void Save (IWriter& F);
 #ifdef _EDITOR
+	PropValue::TOnChange			OnTypeChangeEvent;
 	void __stdcall	OnTypeChange	(PropValue* v);
-    void 			FillProp		(PropItemVec& items);
+    void 			FillProp		(PropItemVec& items, PropValue::TOnChange OnChangeEvent);
 #endif
 };
 #pragma pack( pop )

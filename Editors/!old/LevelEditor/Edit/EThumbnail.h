@@ -34,7 +34,7 @@ public:
 	virtual bool 	Load			(LPCSTR src_name=0, LPCSTR path=0)=0;
 	virtual void 	Save			(int age=0,LPCSTR path=0)=0;
     virtual bool	Valid			()=0;
-	virtual void	FillProp		(PropItemVec& values)=0;
+//	virtual void	FillProp		(PropItemVec& values)=0;
 	virtual void	FillInfo		(PropItemVec& values)=0;
 };
 //------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public:
 	virtual bool 	Load			(LPCSTR src_name=0, LPCSTR path=0);
 	virtual void 	Save			(int age=0,LPCSTR path=0);
     virtual bool	Valid			(){return !m_Pixels.empty();}
-	virtual void	FillProp		(PropItemVec& values);
+	virtual void	FillProp		(PropItemVec& values, PropValue::TOnChange on_type_change);
 	virtual void	FillInfo		(PropItemVec& values);
 	virtual void 	Draw			(void* pCanvas, const Irect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,_Width(),_Height(),bUseAlpha);}

@@ -53,7 +53,6 @@ xr_token					tmtl_token								[ ]={
 };
 
 xr_token					tbmode_token							[ ]={
-	{ "Autogen",			STextureParams::tbmAutogen					},
 	{ "None",				STextureParams::tbmNone						},
 	{ "Use",				STextureParams::tbmUse						},
 	{ 0,					0											}
@@ -88,6 +87,9 @@ void STextureParams::Load(IReader& F)
     if (F.find_chunk(THM_CHUNK_BUMP)){
 	    bump_virtual_height	= F.r_float				();
 	    bump_mode			= (ETBumpMode)F.r_u32	();
+        if (bump_mode<STextureParams::tbmNone){
+        	bump_mode		= STextureParams::tbmNone; //.. временно (до полного убирания Autogen)
+        }
     	F.r_stringZ			(bump_name);
     }
 }
@@ -121,7 +123,7 @@ void STextureParams::Save(IWriter& F)
     F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_BUMP);
-	F.w_float		(bump_virtual_height);
+	F.w_float		(0.f);			// obsolette bump_virtual_height
     F.w_u32			(bump_mode);
     F.w_stringZ		(bump_name);
     F.close_chunk	();
@@ -131,9 +133,6 @@ void STextureParams::Save(IWriter& F)
 #ifdef _EDITOR
 #include "PropertiesListHelper.h"
 
-#ifndef XR_EPROPS_EXPORTS    
-	#include "ImageEditor.h"
-#endif
 void STextureParams::OnTypeChange(PropValue* prop)
 {
 	switch (type){
@@ -144,14 +143,13 @@ void STextureParams::OnTypeChange(PropValue* prop)
 	    flags.set	(flGenerateMipMaps,FALSE);
     break;
     }
-#ifndef XR_EPROPS_EXPORTS    
-    TfrmImageLib::UpdateProperties();
-#endif
+    if (!OnTypeChangeEvent.empty()) OnTypeChangeEvent(prop);
 }
 
-void STextureParams::FillProp(PropItemVec& items)
+void STextureParams::FillProp(PropItemVec& items, PropValue::TOnChange on_type_change)
 {                             
-    PropValue* P	= PHelper().CreateToken32	(items, "Type",				(u32*)&type,		ttype_token);
+	OnTypeChangeEvent	= on_type_change;
+    PropValue* P		= PHelper().CreateToken32	(items, "Type",		(u32*)&type,		ttype_token);
     P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
     PHelper().CreateCaption			(items, "Source\\Width",			ref_str().sprintf("%d",width));
     PHelper().CreateCaption			(items, "Source\\Height",			ref_str().sprintf("%d",height));
@@ -168,8 +166,6 @@ void STextureParams::FillProp(PropItemVec& items)
         P->OnChangeEvent.bind(this,&STextureParams::OnTypeChange);
         if (tbmUse==bump_mode)
         	PHelper().CreateChoose	(items, "Bump\\Texture",			&bump_name,			smTexture);
-        if (tbmAutogen==bump_mode)
-            PHelper().CreateFloat  	(items, "Bump\\Virtual Height (m)",	&bump_virtual_height, 0.f, 0.1f, 0.001f, 3);
         
         PHelper().CreateFlag32		(items, "Details\\Use As Diffuse",	&flags,				flDiffuseDetail);
         PHelper().CreateFlag32		(items, "Details\\Use As Bump (R2)",&flags,				flBumpDetail);
