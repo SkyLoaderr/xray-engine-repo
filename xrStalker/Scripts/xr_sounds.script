@@ -1,2 +1,63 @@
+local themes = {name = "themes"}
+
+-----------------------------------------------------------------------------------------------------------------------------------
 function load_sounds (obj)
+    local sounds_base = stalker_ids.sound_script + 8192
+    sounds_base = this.load_common (obj, sounds_base)
 end
+-----------------------------------------------------------------------------------------------------------------------------------
+function load_common (obj, sounds_base)
+    -- create patrol commander radio speech
+    themes["commander_radio"] = {}
+    local t = {} 
+    t[1] = sounds_base
+    local num = obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, sounds_base)
+    table.insert (t, num)
+    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, sounds_base + 1))
+    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 2))
+    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, sounds_base + 3))
+    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, sounds_base + 4))
+    table.insert (t, obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, sounds_base + 5))
+    table.insert (t, obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, sounds_base + 6))
+    table.insert (themes["commander_radio"], t)                         
+    
+    this.sounds_base = this.sound_base + 7
+    return sounds_base                             
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function play_sound (obj, delay, theme, sub_theme, num_phrase, sub_phrase)
+
+    if obj == nil or theme == nil then return end
+    if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
+       sub_theme = math.random (1, table.getn (themes[theme]))
+    end
+    if phrase_set == nil or table.getn (themes[theme][sub_theme]) < num_phrase - 1 then
+       num_phrase = math.random (2, table.getn (themes[theme][sub_theme]))
+    end
+    if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, num_phrase) < sub_phrase then
+       sub_phrase = math.random (1, this.get_num_subphrases (theme, sub_theme, num_phrase))
+    end   
+    obj:set_sound_mask (-1)
+    obj:set_sound_mask (0)
+    obj:play_sound (themes[theme][sub_theme][1], delay + 1, delay, 1, 0, sub_phrase)
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function get_num_themes ()
+    return table.getn (themes)
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function get_num_sub_themes (theme)
+    if theme == nil then return 0 end
+    return table.getn (themes[themes])
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function get_num_phrases (theme, sub_theme)
+    if theme == nil or sub_theme == nil then return 0 end
+    return table.getn (themes[themes][sub_theme]) - 1
+end
+-----------------------------------------------------------------------------------------------------------------------------------
+function get_num_subphrases (theme, sub_theme, phrases)
+    if theme == nil or sub_theme == nil or phrases == nil then return 0 end
+    return themes[themes][sub_theme][phrases + 1]
+end
+-----------------------------------------------------------------------------------------------------------------------------------

@@ -5,6 +5,8 @@ module ("xr_evaluators_id")
 module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_motivator")
+module ("xr_sounds")
+
 
 module ("xr_reactions")
 module ("xr_state")
@@ -272,7 +274,7 @@ function distance_between(obj1, obj2)
 end
 
 --------------------------------------------------
--- іласс LUA реализуіий Finite State Machine
+-- іласс LUA реализуі	ий Finite State Machine
 -- для управления персонажами
 --------------------------------------------------
 class 'FSM'
@@ -283,10 +285,10 @@ function FSM:__init(script_name, npc_obj)
     self.npc = npc_obj
     -- строка - имя скрипта, которvй запускает игру
     self.script_name = script_name
-    -- матрица, задаіая граф переходов состояний
+    -- матрица, задаі	ая граф переходов состояний
     -- реализуется как двумерная таблица
     self.transition_matrix = {[0] = {}}
-    -- номер текуего состояния
+    -- номер теку	его состояния
     self.current_state = 0
 
     -- флаг того, что машина вклічена
