@@ -1016,9 +1016,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 			CCC_RegisterInput			();
 			// xml parser options
 			XML_DisableStringCaching	();
-			// ai space creation
-			VERIFY						(!g_ai_space);
-			g_ai_space					= xr_new<CAI_Space>();
 			// script registration
 			ai().script_engine().export	();
 			break;
@@ -1027,9 +1024,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 		case DLL_PROCESS_DETACH: {
 			// xml parser options
 			XML_CleanUpMemory			();
-			// ai space destruction
-			VERIFY						(g_ai_space);
-			xr_delete					(g_ai_space);
 			break;
 		}
 	}

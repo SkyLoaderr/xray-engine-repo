@@ -60,9 +60,10 @@ public:
 
 #include "ai_space_inline.h"
 
-extern CAI_Space *g_ai_space;
+extern  *g_ai_space;
 
 IC CAI_Space &ai()
 {
-	return			(*g_ai_space);
+	static CAI_Space ai_space;
+	return			(ai_space);
 }

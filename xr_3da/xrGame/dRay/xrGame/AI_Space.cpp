@@ -17,8 +17,6 @@
 #include "cover_point.h"
 #include "script_engine.h"
 
-CAI_Space *g_ai_space = 0;
-
 CAI_Space::CAI_Space				()
 {
 	m_ef_storage			= xr_new<CEF_Storage>();
