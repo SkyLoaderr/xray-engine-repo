@@ -87,7 +87,10 @@ bool CShaderTools::OnCreate(){
     return true;
 }
 
-void CShaderTools::OnDestroy(){
+void CShaderTools::OnDestroy()
+{
+	// destroy props
+	TProperties::DestroyForm(m_Props);
 	// unlock
     Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders.xr");
     Engine.FS.UnlockFile(&Engine.FS.m_GameRoot,"shaders_xrlc.xr");
@@ -98,8 +101,6 @@ void CShaderTools::OnDestroy(){
 	SEngine.OnDestroy();
     SCompiler.OnDestroy();
     SMaterial.OnDestroy();
-	// destroy props
-	TProperties::DestroyForm(m_Props);
 }
 
 void CShaderTools::Render(){
