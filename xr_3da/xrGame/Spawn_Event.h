@@ -26,9 +26,10 @@ public:
 		string64	target;	// object name
 		string64	custom;	// custom event
 		Action() {
-			type	= typeNone;
-			target	= "";
-			custom	= "";
+			type.IDselected	= typeNone;
+			type.Count		= 4;
+			target			= "";
+			custom			= "";
 		}
 	};
 	struct	Pair
@@ -36,10 +37,11 @@ public:
 		xrP_BOOL	bOnce;
 		xrP_CLSID	Target;
 		Action		OnEnter;
-		Action		OnExit;
+		Action		OnLeave;
 		Pair() {
-			bOnce	= true;
-			Target	= CLSID_OBJECT_ACTOR;
+			bOnce.value		= true;
+			Target.Selected	= CLSID_OBJECT_ACTOR;
+			Target.Count	= 0;
 		}
 	};
 public:

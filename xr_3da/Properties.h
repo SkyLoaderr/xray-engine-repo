@@ -23,6 +23,7 @@ enum	xrProperties
 	xrPID_TOKEN,
 	xrPID_CLSID,
 	xrPID_OBJECT,		// really only name(stringZ) is written into stream
+	xrPID_STRING,		// really only name(stringZ) is written into stream
 	xrPID_MARKER_TEMPLATE,
 	xrPID_FORCEDWORD=DWORD(-1)
 };
