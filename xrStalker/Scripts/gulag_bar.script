@@ -329,7 +329,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_follower_1", 
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:community() == "dolg"
 			            end
@@ -338,7 +338,7 @@ function load_job(sj, gname, type, squad, groups)
 		t = { section = "logic@bar_arena_follower_2", 
 			idle = 0,
 			prior = 7, state = {0}, squad = squad, group = groups[0],
-			in_rest = "", out_rest = ""
+			in_rest = "", out_rest = "",
 			predicate = function(obj)
 				         	return obj:community() == "dolg"
 			            end
