@@ -19,4 +19,4 @@
 typedef	char FILE_NAME[_MAX_PATH];
 
 void xrBuildCrossTable	(LPCSTR	caProjectName);
-void vfRecurseMark		(CAI_Map &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID);
+void vfRecurseMark		(const CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID);

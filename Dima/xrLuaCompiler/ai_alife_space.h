@@ -381,8 +381,4 @@ namespace ALife {
 	DEFINE_MAP_PRED	(LPSTR,						SArtefactTraderOrder*,			ARTEFACT_TRADER_ORDER_MAP,	ARTEFACT_TRADER_ORDER_PAIR_IT,	pred_str);
 };
 
-#ifndef _EDITOR
-#include "ai_console.h"
-#endif
-
 #endif

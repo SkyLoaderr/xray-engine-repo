@@ -556,12 +556,45 @@
 						Name="graphs"
 						Filter="">
 						<File
+							RelativePath=".\game_graph.h">
+						</File>
+						<File
+							RelativePath=".\game_graph_inline.h">
+						</File>
+						<File
+							RelativePath=".\game_level_cross_table.h">
+						</File>
+						<File
+							RelativePath=".\game_level_cross_table_inline.h">
+						</File>
+						<File
+							RelativePath=".\level_graph.cpp">
+						</File>
+						<File
+							RelativePath=".\level_graph.h">
+						</File>
+						<File
+							RelativePath=".\level_graph_debug.cpp">
+						</File>
+						<File
+							RelativePath=".\level_graph_inline.h">
+						</File>
+						<File
+							RelativePath=".\level_graph_vertex.cpp">
+						</File>
+						<File
+							RelativePath=".\level_graph_vertex_inline.h">
+						</File>
+						<File
 							RelativePath=".\test_table.h">
 						</File>
 					</Filter>
 					<Filter
 						Name="path_machines"
 						Filter="">
+						<File
+							RelativePath=".\graph_search_engine.h">
+						</File>
 						<File
 							RelativePath=".\path_machine.h">
 						</File>
@@ -574,6 +607,9 @@
 						</File>
 						<File
 							RelativePath=".\path_manager_base.h">
+						</File>
+						<File
+							RelativePath=".\path_manager_params.h">
 						</File>
 					</Filter>
 				</Filter>
@@ -591,9 +627,6 @@
 			<Filter
 				Name="Graph"
 				Filter="">
-				<File
-					RelativePath="ai_map.h">
-				</File>
 				<File
 					RelativePath="ai_nodes.h">
 				</File>
@@ -639,43 +672,10 @@
 					RelativePath="ai_alife_templates.h">
 				</File>
 				<File
-					RelativePath=".\AI_Console.h">
-				</File>
-				<File
 					RelativePath="clsid_game.h">
 				</File>
 				<File
 					RelativePath="game_base.h">
-				</File>
-				<File
-					RelativePath=".\game_graph.h">
-				</File>
-				<File
-					RelativePath=".\game_graph_inline.h">
-				</File>
-				<File
-					RelativePath=".\game_level_cross_table.h">
-				</File>
-				<File
-					RelativePath=".\game_level_cross_table_inline.h">
-				</File>
-				<File
-					RelativePath=".\level_graph.cpp">
-				</File>
-				<File
-					RelativePath=".\level_graph.h">
-				</File>
-				<File
-					RelativePath=".\level_graph_debug.cpp">
-				</File>
-				<File
-					RelativePath=".\level_graph_inline.h">
-				</File>
-				<File
-					RelativePath=".\level_graph_vertex.cpp">
-				</File>
-				<File
-					RelativePath=".\level_graph_vertex_inline.h">
 				</File>
 				<File
 					RelativePath="NET_Compressor.h">

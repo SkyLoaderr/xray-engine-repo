@@ -26,11 +26,11 @@ typedef struct tagSQuickStructure {
 	*j = uiTemp;\
 }
 
-void vfSimpleInsertionSort(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int i,int j)
+void vfSimpleInsertionSort(CGameGraph::CEdge *tpaEdges, u32 *uiaSortOrder, int i,int j)
 {
 	for (int k=1; k < j - i + 1; k++) {
 		for (u32 *uipPointer = uiaSortOrder + i + k, *uipStop = uiaSortOrder + i; uipPointer > uipStop; uipPointer--) {
-			if (tpaEdges[*(uipPointer - 1)].fPathDistance > tpaEdges[*uipPointer].fPathDistance) {
+			if (tpaEdges[*(uipPointer - 1)].distance() > tpaEdges[*uipPointer].distance()) {
 				u32 uiTemp = *uipPointer;
 				*uipPointer = *(uipPointer - 1);
 				*(uipPointer - 1)= uiTemp;
@@ -50,7 +50,7 @@ __forceinline void vfSwapVectors(u32 *i, u32 *j, int n)
 	}
 }
 
-void vfQuickSortEdges(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, int n)
+void vfQuickSortEdges(CGameGraph::CEdge *tpaEdges, u32 *uiaSortOrder, int n)
 {
 	SQuickStructure tpStack[QUICK_SORT_STACK_SIZE], *tpStackPointer = tpStack;
 	int iStartI;
@@ -67,18 +67,18 @@ void vfQuickSortEdges(CSE_ALifeGraph::SGraphEdge *tpaEdges, u32 *uiaSortOrder, i
 			float r, v;
 			u32 *a, *b, *c, *d;
 			u32 *uiaArray = uiaSortOrder + iStartI;
-			v = tpaEdges[*uiaArray].fPathDistance;
+			v = tpaEdges[*uiaArray].distance();
 			a = b = uiaArray + 1;
 			c = d = uiaArray + n - 1;
 			for (;;) {
-				while ((b <= c) && ((r = tpaEdges[*b].fPathDistance - v) <= 0)) {
+				while ((b <= c) && ((r = tpaEdges[*b].distance() - v) <= 0)) {
 					if (r == 0) {
 						QSWAP(a,b);
 						a++;
 					}
 					b++;
 				}
-				while ((b <= c) && ((r = tpaEdges[*c].fPathDistance - v) >= 0)) {
+				while ((b <= c) && ((r = tpaEdges[*c].distance() - v) >= 0)) {
 					if (r == 0) {
 						QSWAP(c,d);
 						d--;

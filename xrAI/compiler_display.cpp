@@ -8,7 +8,7 @@ extern HWND logWindow;
 
 int	dimX,dimZ;
 struct	Texel {
-	Node*	N;
+	vertex*	N;
 	u32	depth;
 };
 
@@ -31,7 +31,7 @@ void InternalRender()
 	// rasterization
 	for (u32 i=0; i<g_nodes.size(); i++)
 	{
-		Node&	N	= g_nodes[i];
+		vertex&	N	= g_nodes[i];
 		P.sub	(N.Pos, LevelBB.min);
 		int		nx	= iFloor(P.x/g_params.fPatchSize+0.5f);	clamp(nx,0,dimX-1);
 		int		nz	= iFloor(P.z/g_params.fPatchSize+0.5f);	clamp(nz,0,dimZ-1);
@@ -187,11 +187,11 @@ void ShowCover(HWND hw, int direction)
 
 	ReleaseDC		(hw, dc);
 }
-IC bool isBorder(Node& N, int dir)
+IC bool isBorder(vertex& N, int dir)
 {
 	if	(N.n[dir]==InvalidNode)	return true;
 
-	Node&	C = g_nodes[N.n[dir]];
+	vertex&	C = g_nodes[N.n[dir]];
 	if (N.Group!=C.Group)		return true;
 
 	return false;
@@ -208,7 +208,7 @@ void ShowSubdiv(HWND hw)
 			Texel&	T	= texels[z*dimX+x];
 			if (T.N)	{
 				pixel	(dc,x,z,RGB(127,127,127));
-				Node&	N = *T.N;
+				vertex&	N = *T.N;
 
 				int		_x=x*3,_y=z*3;
 				if		(isBorder(N,0))	{		// left

@@ -8,10 +8,10 @@
 
 #pragma once
 
-IC CGameLevelCrossTable::CGameLevelCrossTable()
+IC CGameLevelCrossTable::CGameLevelCrossTable(LPCSTR fName)
 {
-	string256							fName;
-	R_ASSERT							(!FS.exist(fName,"$level$",CROSS_TABLE_NAME));
+//	string256							fName;
+//	R_ASSERT							(!FS.exist(fName,"$level$",CROSS_TABLE_NAME));
 	m_tpCrossTableVFS					= FS.r_open(fName);
 	R_ASSERT2							(m_tpCrossTableVFS,"Can't open cross table!");
 	R_ASSERT2							(m_tpCrossTableVFS->find_chunk(CROSS_TABLE_CHUNK_VERSION),"Can't find chunk CROSS_TABLE_CHUNK_VERSION!");
@@ -56,4 +56,9 @@ IC	ALife::_GRAPH_ID CGameLevelCrossTable::CCell::game_vertex_id() const
 IC	float CGameLevelCrossTable::CCell::distance() const
 {
 	return			(fDistance);
+}
+
+IC	const CGameLevelCrossTable::CHeader &CGameLevelCrossTable::header() const
+{
+	return			(m_tCrossTableHeader);
 }

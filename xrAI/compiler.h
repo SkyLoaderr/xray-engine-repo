@@ -9,7 +9,7 @@ const u32 InvalidNode		= (1<<24)-1;
 const u32 UnkonnectedNode	= 0xfffffff0;
 const WORD	InvalidSector	= 0xff;
 
-struct Node					// definition of "patch" or "node"
+struct vertex					// definition of "patch" or "node"
 {
 	union	{
 		struct {
@@ -28,7 +28,7 @@ struct Node					// definition of "patch" or "node"
 	float	cover[4];		// cover in four directions
 	u8		cover_index;
 
-	Node() {
+	vertex() {
 		n1=n2=n3=n4	= UnkonnectedNode;
 		Sector		= InvalidSector;
 		Group		= 0;
@@ -56,7 +56,9 @@ DEF_VECTOR(DWORDs,u32);
 //	float		cover[4];
 //};
 
-void	Compress	(NodeCompressed& Dest, Node& Src);
+#include "level_graph.h"
+
+void	Compress	(CLevelGraph::CVertex& Dest, vertex& Src);
 
 #define LT_DIRECT		0
 #define LT_POINT		1
@@ -81,7 +83,7 @@ struct SCover {
 	u8				cover[4];
 };
 
-DEF_VECTOR(Nodes,Node			);
+DEF_VECTOR(Nodes,vertex			);
 //DEF_VECTOR(Merged,NodeMerged	);
 DEF_VECTOR(Vectors,Fvector		);
 DEF_VECTOR(Marks,BYTE			);

@@ -8,8 +8,10 @@
 
 #include "stdafx.h"
 #include "level_graph.h"
-#include "ai_space.h"
 #include "game_level_cross_table.h"
+#ifndef AI_COMPILER
+#include "ai_space.h"
+#endif
 
 #pragma todo("Jim to Dima: IBaseAI_NodeEvaluator uses large amount of memory. Currently 372 bytes!!!")
 
@@ -190,6 +192,38 @@ u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector 
 		return((u32)(-1));
 }
 
+float CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position, const float max_distance) const
+{
+	SContour				_contour;
+	const_iterator			I,E;
+	int						saved_index, iPrevIndex = -1, iNextNode;
+	Fvector					start_point = start_position, temp_point = start_position, finish_point = finish_position;
+	float					fCurDistance = 0.f, fDistance = start_position.distance_to_xz(finish_position);
+	u32						dwCurNode = start_vertex_id;
+
+	while (!inside(vertex(dwCurNode),finish_position) && (fCurDistance < (fDistance + EPS_L))) {
+		begin				(dwCurNode,I,E);
+		saved_index			= -1;
+		contour				(_contour,dwCurNode);
+		for ( ; I != E; ++I)
+			if ((iNextNode = value(dwCurNode,I)) != iPrevIndex)
+				choose_point(start_point,finish_point,_contour, iNextNode,temp_point,saved_index);
+
+		if (saved_index > -1) {
+			fCurDistance	= start_point.distance_to_xz(temp_point);
+			iPrevIndex		= dwCurNode;
+			dwCurNode		= saved_index;
+		}
+		else
+			return			(max_distance);
+	}
+
+	if (inside(vertex(dwCurNode),finish_position) && (_abs(vertex_plane_y(*vertex(dwCurNode),finish_position.x,finish_position.z) - finish_position.y) < .5f))
+		return				(start_point.distance_to(finish_position));
+	else
+		return				(max_distance);
+}
+
 float CLevelGraph::mark_nodes_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &tDirection, float fDistance, xr_vector<u32> &tpaStack, xr_vector<bool> *tpaMarks) const
 {
 	Fvector					finish_point, direction = tDirection;
@@ -347,6 +381,7 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 		return(false);
 }
 
+#ifndef AI_COMPILER
 void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, _GRAPH_ID tGraphID) const
 {
 	SContour				_contour;
@@ -378,3 +413,4 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 		finish_vertex_id		= dwCurNode;
 	}
 }
+#endif

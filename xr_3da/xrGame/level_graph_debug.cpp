@@ -7,6 +7,10 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
+#ifdef DEBUG
+#ifndef AI_COMPILER
+
 #include "level_graph.h"
 #include "../customhud.h"
 #include "level.h"
@@ -16,8 +20,6 @@
 #include "game_sv_single.h"
 #include "ai_alife.h"
 #include "custommonster.h"
-
-#ifdef DEBUG
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -512,3 +514,4 @@ void CLevelGraph::draw_dynamic_obstacles() const
 }
 
 #endif // DEBUG
+#endif

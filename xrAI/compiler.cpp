@@ -15,7 +15,7 @@ CDB::COLLIDER		XRC;
 Fbox				LevelBB;
 Vectors				Emitters;
 
-void Node::PointLF(Fvector& D)
+void vertex::PointLF(Fvector& D)
 {
 	Fvector	d;	d.set(0,-1,0);
 	Fvector	v	= Pos;	
@@ -25,7 +25,7 @@ void Node::PointLF(Fvector& D)
 	Plane.intersectRayPoint(v,d,D);
 }
 
-void Node::PointFR(Fvector& D)
+void vertex::PointFR(Fvector& D)
 {
 	Fvector	d;	d.set(0,-1,0);
 	Fvector	v	= Pos;	
@@ -35,7 +35,7 @@ void Node::PointFR(Fvector& D)
 	Plane.intersectRayPoint(v,d,D);
 }
 
-void Node::PointRB(Fvector& D)
+void vertex::PointRB(Fvector& D)
 {
 	Fvector	d;	d.set(0,-1,0);
 	Fvector	v	= Pos;	
@@ -45,7 +45,7 @@ void Node::PointRB(Fvector& D)
 	Plane.intersectRayPoint(v,d,D);
 }
 
-void Node::PointBL(Fvector& D)
+void vertex::PointBL(Fvector& D)
 {
 	Fvector	d;	d.set(0,-1,0);
 	Fvector	v	= Pos;	

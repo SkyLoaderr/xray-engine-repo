@@ -26,6 +26,10 @@ public:
 		IC	u32				version					() const;
 		IC	u32				level_vertex_count		() const;
 		IC	u32				game_vertex_count		() const;
+#ifdef AI_COMPILER		
+		friend class CLevelGameGraph;
+		friend class CCrossTableBuilder;
+#endif
 	};
 	
 	class  CCell {
@@ -34,6 +38,10 @@ public:
 	public:
 		IC	ALife::_GRAPH_ID game_vertex_id			() const;
 		IC	float			distance				() const;
+#ifdef AI_COMPILER		
+		friend class CLevelGameGraph;
+		friend class CCrossTableBuilder;
+#endif
 	};
 	#pragma pack(pop)
 
@@ -43,9 +51,17 @@ protected:
 	CCell					*m_tpaCrossTable;
 
 public:
-	IC						CGameLevelCrossTable	();
+#ifdef AI_COMPILER
+	IC						CGameLevelCrossTable	(){};
+#endif
+	IC						CGameLevelCrossTable	(LPCSTR fName);
 	IC virtual				~CGameLevelCrossTable	();
 	IC		const CCell		&vertex					(u32 level_vertex_id) const;
+	IC		const CHeader	&header					() const;
+#ifdef AI_COMPILER		
+	friend class CLevelGameGraph;
+	friend class CCrossTableBuilder;
+#endif
 };
 
 #include "game_level_cross_table_inline.h"

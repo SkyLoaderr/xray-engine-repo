@@ -9,10 +9,14 @@
 #pragma once
 
 #include "path_manager_base.h"
+#include "path_manager_params.h"
+#include "game_graph.h"
+#include "level_graph.h"
 
 template <
 	typename _Graph,
 	typename _DataStorage,
+	typename _Parameters,
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
@@ -20,6 +24,7 @@ template <
 		public CPathManagerBase <
 			_Graph,
 			_DataStorage,
+			_Parameters,
 			_dist_type,
 			_index_type,
 			_iteration_type
@@ -33,18 +38,21 @@ template <
 	u32		 rows,
 	u32		 columns,
 	typename _DataStorage,
+	typename _Parameters,
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
 		CTestTable<_cell_type,rows,columns>,
 		_DataStorage,
+		_Parameters,
 		_dist_type,
 		_index_type,
 		_iteration_type
 	> : public CPathManagerBase <
 			CTestTable<_cell_type,rows,columns>,
 			_DataStorage,
+			_Parameters,
 			_dist_type,
 			_index_type,
 			_iteration_type
@@ -54,6 +62,7 @@ template <
 	typedef typename CPathManagerBase <
 		_Graph,
 		_DataStorage,
+		_Parameters,
 		_dist_type,
 		_index_type,
 		_iteration_type
@@ -67,15 +76,13 @@ public:
 	}
 
 	IC		void		setup			(
-		const _Graph			*_graph,
-		_DataStorage			*_data_storage,
-		xr_vector<_index_type>	*_path,
-		const _index_type		_start_node_index,
-		const _index_type		_goal_node_index,
-		const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
-		const _dist_type		_max_range				= _dist_type(6000),
-		const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
-		)
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				const _Parameters		&parameters
+			)
 	{
 		inherited::setup(
 			_graph,
@@ -83,10 +90,8 @@ public:
 			_path,
 			_start_node_index,
 			_goal_node_index,
-			_max_visited_node_count,
-			_max_range,
-			_max_iteration_count
-			);
+			parameters
+		);
 		_i						= goal_node_index / (columns + 2);
 		_j						= goal_node_index % (columns + 2);
 	}
@@ -128,42 +133,144 @@ public:
 
 template <
 	typename _DataStorage,
+	typename _Parameters,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CGameGraph,
+		_DataStorage,
+		_Parameters,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManagerBase <
+			CGameGraph,
+			_DataStorage,
+			_Parameters,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CGameGraph _Graph;
+	typedef typename CPathManagerBase <
+		_Graph,
+		_DataStorage,
+		_Parameters,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> inherited;
+protected:
+	const _Graph::CVertex	*goal_vertex;
+public:
+
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+			const _Graph			*_graph,
+			_DataStorage			*_data_storage,
+			xr_vector<_index_type>	*_path,
+			const _index_type		_start_node_index,
+			const _index_type		_goal_node_index,
+			const _Parameters		&parameters
+		)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		goal_vertex				= &graph->vertex(goal_node_index);
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i) const
+	{
+		VERIFY					(graph);
+		return					((*i).distance());
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(goal_vertex->game_point().distance_to(graph->vertex(node_index).game_point()));
+	}
+
+	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
+	{
+		VERIFY					(data_storage);
+		return					(false);
+	}
+
+	IC	bool		is_accessible	(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(true);
+	}
+
+	IC	bool		is_metric_euclidian() const
+	{
+		return					(true);
+	}
+};
+
+template <
+	typename _DataStorage,
 	typename _dist_type,
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
 		CLevelGraph,
 		_DataStorage,
+		PathManagers::SBaseParameters<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
 		_dist_type,
 		_index_type,
 		_iteration_type
 	> : public CPathManagerBase <
 			CLevelGraph,
 			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
 			_dist_type,
 			_index_type,
 			_iteration_type
 		>
 {
 	typedef CLevelGraph _Graph;
+	typedef PathManagers::SBaseParameters<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
 	typedef typename CPathManagerBase <
 				_Graph,
 				_DataStorage,
+				_Parameters,
 				_dist_type,
 				_index_type,
 				_iteration_type
 			> inherited;
 protected:
-//	int					x1;
 	float				y1;
-//	int					z1;
 	int					x2;
 	float				y2;
 	int					z2;
 	int					x3;
 	float				y3;
 	int					z3;
-	float				square_size_xz;
 	float				square_size_y;
 	float				m_sqr_distance_xz;
 
@@ -178,9 +285,7 @@ public:
 				xr_vector<_index_type>	*_path,
 				const _index_type		_start_node_index,
 				const _index_type		_goal_node_index,
-				const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
-				const _dist_type		_max_range				= _dist_type(6000),
-				const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
+				const _Parameters		&parameters
 			)
 	{
 		inherited::setup(
@@ -189,11 +294,8 @@ public:
 			_path,
 			_start_node_index,
 			_goal_node_index,
-			_max_visited_node_count,
-			_max_range,
-			_max_iteration_count
+			parameters
 		);
-		square_size_xz			= graph->header().cell_size();
 		square_size_y			= graph->header().factor_y();
 		m_sqr_distance_xz		= _sqr(graph->header().cell_size());
 	}
@@ -223,7 +325,7 @@ public:
 	IC	_dist_type	estimate		(const _index_type node_index) const
 	{
 		VERIFY					(graph);
-		return					(_sqrt((float)(square_size_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
+		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
@@ -262,45 +364,59 @@ template <
 	typename _index_type,
 	typename _iteration_type
 >	class CPathManager <
-		CGameGraph,
+		CLevelGraph,
 		_DataStorage,
+		PathManagers::SObstacleParams<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
 		_dist_type,
 		_index_type,
 		_iteration_type
-	> : public CPathManagerBase <
-			CGameGraph,
+	> : public CPathManager <
+			CLevelGraph,
 			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
 			_dist_type,
 			_index_type,
 			_iteration_type
 		>
 {
-	typedef CGameGraph _Graph;
-	typedef typename CPathManagerBase <
-		_Graph,
-		_DataStorage,
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::SObstacleParams<
 		_dist_type,
 		_index_type,
 		_iteration_type
-	> inherited;
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				_Parameters,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
 protected:
-	const _Graph::CVertex	*goal_vertex;
-public:
+	bool				m_avoid_dynamic_obstacles;
 
+public:
 	virtual				~CPathManager	()
 	{
 	}
 
 	IC		void		setup			(
-			const _Graph			*_graph,
-			_DataStorage			*_data_storage,
-			xr_vector<_index_type>	*_path,
-			const _index_type		_start_node_index,
-			const _index_type		_goal_node_index,
-			const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
-			const _dist_type		_max_range				= _dist_type(6000),
-			const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
-		)
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				const _Parameters		&parameters
+			)
 	{
 		inherited::setup(
 			_graph,
@@ -308,35 +424,15 @@ public:
 			_path,
 			_start_node_index,
 			_goal_node_index,
-			_max_visited_node_count,
-			_max_range,
-			_max_iteration_count
-			);
-		goal_vertex				= &graph->vertex(goal_node_index);
-	}
-
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i) const
-	{
-		VERIFY					(graph);
-		return					((*i).distance());
-	}
-
-	IC	_dist_type	estimate		(const _index_type node_index) const
-	{
-		VERIFY					(graph);
-		return					(goal_vertex->game_point().distance_to(graph->vertex(node_index).game_point()));
-	}
-
-	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
-	{
-		VERIFY					(data_storage);
-		return					(false);
+			parameters
+		);
+		m_avoid_dynamic_obstacles		= parameters.avoid_dynamic_obstacles;
 	}
 
 	IC	bool		is_accessible	(const _index_type node_index) const
 	{
 		VERIFY					(graph);
-		return					(true);
+		return					(!m_avoid_dynamic_obstacles || graph->is_accessible(node_index));
 	}
 
 	IC	bool		is_metric_euclidian() const

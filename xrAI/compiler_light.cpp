@@ -98,7 +98,7 @@ public:
 		float			LperN	= float(g_lights.size());
 		for (u32 i=Nstart; i<Nend; i++)
 		{
-			Node& N = g_nodes[i];
+			vertex& N = g_nodes[i];
 			
 			// select lights
 			Selected.clear();
@@ -159,8 +159,8 @@ void	xrLight			()
 		Nodes	Old = g_nodes;
 		for (u32 N=0; N<g_nodes.size(); N++)
 		{
-			Node&	Base		= Old[N];
-			Node&	Dest		= g_nodes[N];
+			vertex&	Base		= Old[N];
+			vertex&	Dest		= g_nodes[N];
 			
 			float	val			= 2*Base.LightLevel;
 			float	cnt			= 2;

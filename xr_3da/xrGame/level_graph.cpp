@@ -9,16 +9,17 @@
 #include "stdafx.h"
 #include "level_graph.h"
 
-CLevelGraph::CLevelGraph		()
+CLevelGraph::CLevelGraph		(LPCSTR file_name)
 {
-#ifdef DEBUG
-	sh_debug.create				("debug\\ai_nodes","$null");
-#endif
-	m_reader					= 0;
-	string256					file_name;
-	if (!FS.exist(file_name,"$level$","level.ai"))
-		return;
-//	R_ASSERT					(!FS.exist(file_name,"$level$","level.ai"));
+//#ifdef DEBUG
+//#ifndef AI_COMPILER
+//	sh_debug.create				("debug\\ai_nodes","$null");
+//#endif
+//#endif
+//	m_reader					= 0;
+//	string256					file_name;
+//	if (!FS.exist(file_name,"$level$","level.ai"))
+//		return;
 	m_reader					= FS.r_open	(file_name);
 
 	// m_header & data
@@ -49,8 +50,6 @@ CLevelGraph::~CLevelGraph		()
 
 u32	CLevelGraph::vertex		(const Fvector &position) const
 {
-	VERIFY					(loaded());
-
 	CLevelGraph::CPosition	_node_position;
 	vertex_position			(_node_position,position);
 	for (u32 i=0, selected = u32(-1), min_dist = u32(-1); i<header().vertex_count(); ++i) {
@@ -69,13 +68,15 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 
 u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool full_search) const
 {
-	VERIFY					(loaded());
-
+#ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
+#endif
 
 	if (valid_vertex_id(current_node_id) && 
 		inside			(vertex(current_node_id),position)) {
+#ifndef AI_COMPILER
 		Device.Statistic.AI_Node.End();
+#endif
 		return				(current_node_id);
 	}
 
@@ -86,6 +87,8 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 	if (valid_vertex_id(id))
 		return				(id);
 
+#ifndef AI_COMPILER
 	Device.Statistic.AI_Node.End		();
+#endif
 	return					(current_node_id);
 }

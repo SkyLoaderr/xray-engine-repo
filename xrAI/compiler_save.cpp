@@ -17,7 +17,7 @@ IC BYTE	CompressCover(float c)
 	return BYTE(cover);
 }
 
-void	Compress	(NodeCompressed& Dest, Node& Src, hdrNODES& H)
+void	Compress	(NodeCompressed& Dest, vertex& Src, hdrNODES& H)
 {
 	// Compress plane (normal)
 	Dest.plane	= pvCompress	(Src.Plane.n);
@@ -50,7 +50,7 @@ float	CalculateHeight(Fbox& BB)
 
 	for (u32 i=0; i<g_nodes.size(); i++)
 	{
-		Node&	N	= g_nodes[i];
+		vertex&	N	= g_nodes[i];
 		BB.modify	(N.Pos);
 //		BB.modify	(N.P1);
 	}
@@ -59,7 +59,7 @@ float	CalculateHeight(Fbox& BB)
 
 void xrSaveNodes(LPCSTR N)
 {
-	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(Node),sizeof(NodeCompressed),100*float(sizeof(NodeCompressed))/float(sizeof(Node)));
+	Msg				("NS: %d, CNS: %d, ratio: %f%%",sizeof(vertex),sizeof(CLevelGraph::CVertex),100*float(sizeof(CLevelGraph::CVertex))/float(sizeof(vertex)));
 
 	string256		fName; 
 	strconcat		(fName,N,"level.ai");
@@ -88,7 +88,7 @@ void xrSaveNodes(LPCSTR N)
 	Status			("Saving nodes...");
 	for (u32 i=0; i<g_nodes.size(); i++)
 	{
-		Node&		N	= g_nodes[i];
+		vertex&		N	= g_nodes[i];
 
 		Compress		(NC,N,H);
 		NC.link0		= 0xffffffff;
@@ -122,7 +122,7 @@ void xrSaveNodes(LPCSTR N)
 
 	// Stats
 	u32	SizeTotal	= fs->tell();
-	u32	SizeData	= g_nodes.size()*sizeof(NodeCompressed);
+	u32	SizeData	= g_nodes.size()*sizeof(CLevelGraph::CVertex);
 	u32	SizeLinks	= SizeTotal-SizeData;
 	Msg		("%dK saved (D:%d / L:%d)",SizeTotal/1024,SizeData/1024,SizeLinks/1024);
 }

@@ -29,7 +29,7 @@ void xrConvertAndLink()
 		N.cover[2]		=0;
 		N.cover[3]		=0;
 		for (u32 L=0; L<N.contains.size(); L++) {
-			Node&	element		= g_nodes[N.contains[L]];
+			vertex&	element		= g_nodes[N.contains[L]];
 			points.push_back	(element.Pos);
 			N.plane.n.add		(element.Plane.n);
 			N.sector			=  element.Sector;
@@ -78,7 +78,7 @@ void xrConvertAndLink()
 		m_used.assign(g_merged.size(),false);
 		for (L=0; L<N.contains.size(); L++) {
 			u32	ID	= N.contains[L];
-			Node&	E	= g_nodes[ID];
+			vertex&	E	= g_nodes[ID];
 
 			ProcessID	(E.n1,N,it,m_used);
 			ProcessID	(E.n2,N,it,m_used);

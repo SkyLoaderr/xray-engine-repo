@@ -27,6 +27,11 @@ public:
 	public:
 		IC	ALife::_GRAPH_ID		vertex_id			() const;
 		IC	float					distance			() const;
+#ifdef AI_COMPILER
+		friend class CLevelGameGraph;
+		friend class CGraphThread;
+		friend class CGraphMerger;
+#endif
 	};
 
 	class CVertex {
@@ -50,6 +55,10 @@ public:
 		IC	u32						death_point_count	() const;
 		IC	u32						death_point_offset	() const;
 		friend class CGameGraph;
+#ifdef AI_COMPILER
+		friend class CLevelGameGraph;
+		friend class CGraphSaver;
+#endif
 	};
 
 	class CHeader {
@@ -68,11 +77,15 @@ public:
 		IC	u32						death_point_count	() const;
 		IC	const ALife::LEVEL_MAP	&levels				() const;
 		friend class CGameGraph;
+#ifdef AI_COMPILER
+		friend class CGraphSaver;
+		friend class CGraphMerger;
+#endif
 	};
 #pragma pack(pop)
 
 	typedef const CEdge				*const_iterator;
-	typedef const CLevelPoint		*const_spawn_iterator;
+	typedef const ALife::SLevelPoint*const_spawn_iterator;
 
 protected:
 	CHeader							m_tGraphHeader;	// graph header
@@ -80,7 +93,7 @@ protected:
 	CVertex							*m_tpaGraph;
 
 public:
-	IC 								CGameGraph		();
+	IC 								CGameGraph		(LPCSTR file_name);
 	IC virtual						~CGameGraph		();
 	IC const CHeader				&header			() const;
 	IC		bool					mask			(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const;

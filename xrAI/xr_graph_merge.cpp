@@ -19,7 +19,7 @@
 #include "ai_alife_templates.h"
 using namespace ALife;
 
-class CLevelGraph;
+class CLevelGameGraph;
 
 typedef struct tagSConnectionVertex {
 	LPSTR		caConnectName;
@@ -44,18 +44,19 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 	return(-1);
 }
 
-DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
+DEFINE_MAP		(u32,	CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CCompareVertexPredicate);
 
-class CLevelGraph : public CSE_ALifeGraph {
+class CLevelGameGraph {
 public:
 	GRAPH_VERTEX_VECTOR			m_tpVertices;
 	SLevel						m_tLevel;
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 	xr_vector<SLevelPoint>		m_tpLevelPoints;
+	CGameGraph					*m_tpGraph;
 
-								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini) : CSE_ALifeGraph()
+								CLevelGameGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, CInifile *Ini)
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
@@ -65,31 +66,31 @@ public:
 		
 		// loading graph
 		strconcat				(caFileName,S,"level.graph");
-		CSE_ALifeGraph::Load	(caFileName);
+		m_tpGraph				= xr_new<CGameGraph>(caFileName);
 
 		strconcat				(caFileName,S,CROSS_TABLE_NAME_RAW);
-		CSE_ALifeCrossTable		*l_tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
+		CGameLevelCrossTable	*l_tpCrossTable = xr_new<CGameLevelCrossTable>(caFileName);
 
-		CAI_Map					*l_tpAI_Map = xr_new<CAI_Map>(S);
+		CLevelGraph				*l_tpAI_Map = xr_new<CLevelGraph>(S);
 		u32						l_dwPointOffset = 0;
 
-		m_tpVertices.resize		(m_tGraphHeader.dwVertexCount);
+		m_tpVertices.resize		(m_tpGraph->header().vertex_count());
 		GRAPH_VERTEX_IT			B = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			I = B;
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
 		for ( ; I != E; I++) {
-			(*I).tLocalPoint		= m_tpaGraph[I - B].tLocalPoint;
-			(*I).tGlobalPoint.add	(m_tpaGraph[I - B].tGlobalPoint,m_tLevel.tOffset);
+			(*I).tLocalPoint		= m_tpGraph->vertex(int(I - B)).level_point();
+			(*I).tGlobalPoint.add	(m_tpGraph->vertex(int(I - B)).game_point(),m_tLevel.tOffset);
 			(*I).tLevelID			= dwLevelID;
-			(*I).tNodeID			= m_tpaGraph[I - B].tNodeID;
-			Memory.mem_copy			((*I).tVertexTypes,m_tpaGraph[I - B].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
-			(*I).tNeighbourCount	= m_tpaGraph[I - B].tNeighbourCount;
-			
-			(*I).tpaEdges			= (SGraphEdge *)xr_malloc((*I).tNeighbourCount*sizeof(SGraphEdge));
-			SGraphEdge				*tpaEdges = (SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[I - B].dwEdgeOffset);
-			for (int i=0; i<(int)(*I).tNeighbourCount; i++) {
-				(*I).tpaEdges[i]	= tpaEdges[i];
-				(*I).tpaEdges[i].dwVertexNumber += dwOffset;
+			(*I).tNodeID			= m_tpGraph->vertex(int(I - B)).level_vertex_id();
+			Memory.mem_copy			((*I).tVertexTypes,m_tpGraph->vertex(int(I - B)).vertex_type(),LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			(*I).tNeighbourCount	= m_tpGraph->vertex(int(I - B)).edge_count();
+			CGameGraph::const_iterator	b,i,e;
+			m_tpGraph->begin		(int(I - B),i,e);
+			b						= i;
+			for ( ; i != e; ++i) {
+				(*I).tpaEdges[b - i]	= *i;
+				(*I).tpaEdges[b - i].dwVertexNumber += dwOffset;
 			}
 			(*I).dwPointOffset		= 0;
 			vfGenerateDeathPoints	(int(I - B),l_tpCrossTable,l_tpAI_Map,(*I).tDeathPointCount);
@@ -100,17 +101,17 @@ public:
 		
 		// updating cross-table
 		{
-			strconcat			(caFileName,S,CROSS_TABLE_NAME_RAW);
-			CSE_ALifeCrossTable	*tpCrossTable = xr_new<CSE_ALifeCrossTable>(caFileName);
-			xr_vector<CSE_ALifeCrossTable::SCrossTableCell> tCrossTableUpdate;
-			tCrossTableUpdate.resize(tpCrossTable->m_tCrossTableHeader.dwNodeCount);
-			for (int i=0; i<(int)tpCrossTable->m_tCrossTableHeader.dwNodeCount; i++) {
-				tCrossTableUpdate[i] = tpCrossTable->m_tpaCrossTable[i];
+			strconcat				(caFileName,S,CROSS_TABLE_NAME_RAW);
+			CGameLevelCrossTable	*tpCrossTable = xr_new<CGameLevelCrossTable>(caFileName);
+			xr_vector<CGameLevelCrossTable::CCell> tCrossTableUpdate;
+			tCrossTableUpdate.resize(tpCrossTable->header().level_vertex_count());
+			for (int i=0; i<(int)tpCrossTable->header().level_vertex_count(); i++) {
+				tCrossTableUpdate[i] = tpCrossTable->vertex(i);
 				tCrossTableUpdate[i].tGraphIndex += dwOffset;
 			}
 
-			CMemoryWriter		tMemoryStream;
-			CSE_ALifeCrossTable	tCrossTable;
+			CMemoryWriter			tMemoryStream;
+			CGameLevelCrossTable	tCrossTable;
 
 			tCrossTable.m_tCrossTableHeader.dwVersion = XRAI_CURRENT_VERSION;
 			tCrossTable.m_tCrossTableHeader.dwNodeCount = tpCrossTable->m_tCrossTableHeader.dwNodeCount;
@@ -186,7 +187,7 @@ public:
 		}
 	};
 
-	virtual							~CLevelGraph()
+	virtual							~CLevelGameGraph()
 	{
 		{
 			GRAPH_VERTEX_IT			I = m_tpVertices.begin();
@@ -195,12 +196,13 @@ public:
 				xr_free((*I).tpaEdges);
 		}
 		delete_data					(m_tVertexMap);
+		xr_delete					(m_tpGraph);
 	};
 
-	void						vfAddEdge(u32 dwVertexNumber, SGraphEdge &tGraphEdge)
+	void						vfAddEdge(u32 dwVertexNumber, CGameGraph::CEdge &tGraphEdge)
 	{
-		R_ASSERT(m_tGraphHeader.dwVertexCount > dwVertexNumber);
-		m_tpVertices[dwVertexNumber].tpaEdges = (SGraphEdge *)xr_realloc(m_tpVertices[dwVertexNumber].tpaEdges,sizeof(SGraphEdge)*++m_tpVertices[dwVertexNumber].tNeighbourCount);
+		R_ASSERT(m_tpGraph->header().vertex_count() > dwVertexNumber);
+		m_tpVertices[dwVertexNumber].tpaEdges = (CGameGraph::CEdge *)xr_realloc(m_tpVertices[dwVertexNumber].tpaEdges,sizeof(CGameGraph::CEdge)*++m_tpVertices[dwVertexNumber].tNeighbourCount);
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
@@ -208,7 +210,7 @@ public:
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
-		SGraphVertex			tVertex;
+		CGameGraph::CVertex		tVertex;
 		for ( ; I != E; I++) {
 			tVertex.tLocalPoint		= (*I).tLocalPoint;
 			tVertex.tGlobalPoint	= (*I).tGlobalPoint;
@@ -220,8 +222,8 @@ public:
 			tVertex.tNeighbourCount = (*I).tNeighbourCount;
 			tVertex.tDeathPointCount = (*I).tDeathPointCount;
 			tMemoryStream.w			(&tVertex,sizeof(tVertex));
-			dwOffset				+= (*I).tNeighbourCount*sizeof(SGraphEdge);
-			dwPointOffset			+= (*I).tDeathPointCount*sizeof(SLevelPoint);
+			dwOffset				+= (*I).tNeighbourCount*sizeof(CGameGraph::CEdge);
+			dwPointOffset			+= (*I).tDeathPointCount*sizeof(ALife::SLevelPoint);
 		}
 	};
 	
@@ -231,7 +233,7 @@ public:
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
 		for ( ; I != E; I++)
 			for (int i=0; i<(int)(*I).tNeighbourCount; i++)
-				tMemoryStream.w	((*I).tpaEdges + i,sizeof(SGraphEdge));
+				tMemoryStream.w	((*I).tpaEdges + i,sizeof(CGameGraph::CEdge));
 	};
 
 	u32							dwfGetEdgeCount()
@@ -254,7 +256,7 @@ public:
 		return					(l_dwResult);
 	}
 
-	void						vfGenerateDeathPoints(int iGraphIndex, CSE_ALifeCrossTable *tpCrossTable, CAI_Map *tpAI_Map, u32 &dwDeathPointCount)
+	void						vfGenerateDeathPoints(int iGraphIndex, CGameLevelCrossTable *tpCrossTable, CLevelGraph *tpAI_Map, u32 &dwDeathPointCount)
 	{
 		xr_vector<u32>			l_dwaNodes;
 		l_dwaNodes.clear		();
@@ -278,14 +280,19 @@ public:
 
 		for ( ; I != E; I++, i++) {
 			(*I).tNodeID	= *i;
-			(*I).tPoint		= tpAI_Map->tfGetNodeCenter(*i);
-			(*I).fDistance	= tpCrossTable->m_tpaCrossTable[*i].fDistance;
+			(*I).tPoint		= tpAI_Map->vertex_position(*i);
+			(*I).fDistance	= tpCrossTable->vertex(*i).distance();
 		}
 	}
 
 };
 
-void xrMergeGraphs(LPCSTR name)
+class CGraphMerger {
+public:
+	CGraphMerger(LPCSTR name);
+};
+
+CGraphMerger::CGraphMerger(LPCSTR name)
 {
 	// load all the graphs
 	Phase("Reading level graphs");
@@ -313,8 +320,8 @@ void xrMergeGraphs(LPCSTR name)
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.tLevelID				= Ini->r_s32(N,"id");
-		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.tLevelID, Ini);
-		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
+		CLevelGameGraph				*tpLevelGraph = xr_new<CLevelGameGraph>(tLevel,S1,dwOffset,tLevel.tLevelID, Ini);
+		dwOffset					+= tpLevelGraph->m_tpGraph->header().vertex_count();
 		tpGraphs.insert				(mk_pair(tLevel.tLevelID,tpLevelGraph));
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
     }
@@ -331,7 +338,7 @@ void xrMergeGraphs(LPCSTR name)
 				if ((*i).second.caConnectName[0]) {
 					GRAPH_P_PAIR_IT				K;
 					VERTEX_PAIR_IT				M;
-					CSE_ALifeGraph::SGraphEdge		tGraphEdge;
+					CGameGraph::CEdge		tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
 					R_ASSERT					((K = tpGraphs.find(tConnectionVertex.dwLevelID)) != tpGraphs.end());
 					R_ASSERT					((M = (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName)) != (*K).second->m_tVertexMap.end());
@@ -378,9 +385,9 @@ void xrMergeGraphs(LPCSTR name)
 		}
 	}
 
-	dwOffset					*= sizeof(CSE_ALifeGraph::SGraphVertex);
+	dwOffset					*= sizeof(CGameGraph::CVertex);
 	u32							l_dwOffset = F.size();
-	l_dwPointOffset				= dwOffset + tGraphHeader.dwEdgeCount*sizeof(CSE_ALifeGraph::SGraphEdge);
+	l_dwPointOffset				= dwOffset + tGraphHeader.edge_count()*sizeof(CGameGraph::CEdge);
 	u32							l_dwStartPointOffset = l_dwPointOffset;
 	{
 		GRAPH_P_PAIR_IT			I = tpGraphs.begin();
@@ -417,4 +424,9 @@ void xrMergeGraphs(LPCSTR name)
 			xr_free((*I).second);
 	}
 	xr_delete						(Ini);
+}
+
+void xrMergeGraphs(LPCSTR name)
+{
+	CGraphMerger	A(name);
 }

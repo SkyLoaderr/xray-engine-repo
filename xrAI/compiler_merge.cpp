@@ -3,7 +3,7 @@
 
 Marks	used;
 
-BOOL	NodeSimilar(Node&	N1, Node&	N2)
+BOOL	NodeSimilar(vertex&	N1, vertex&	N2)
 {
 	// sector
 	if (N1.Sector!=N2.Sector)										return FALSE;
@@ -43,12 +43,12 @@ void ProcessOne		(u32 Base, u32 limit=8)
 	u32			BL_Left=0,BL_Right=0;
 	
 	// middle
-	Node&			BaseNode = g_nodes[Base];
+	vertex&			BaseNode = g_nodes[Base];
 	BaseLine.push_back(Base);
 	
 	// left expansion
 	for (;;) {
-		Node&	B	= g_nodes[BaseLine.front()];
+		vertex&	B	= g_nodes[BaseLine.front()];
 		u32	LP	= B.nLeft();
 		
 		if (BL_Left>limit)						break;
@@ -62,7 +62,7 @@ void ProcessOne		(u32 Base, u32 limit=8)
 	
 	// right expansion
 	for (;;) {
-		Node&	B	= g_nodes[BaseLine.back()];
+		vertex&	B	= g_nodes[BaseLine.back()];
 		u32	RP	= B.nRight();
 		
 		if (BL_Right>limit)						break;
@@ -178,13 +178,13 @@ BOOL QuadFit(u32 Base, u32 Size)
 	BaseLine.reserve(Size);
 	
 	// middle
-	Node&			BaseNode = g_nodes[Base];
+	vertex&			BaseNode = g_nodes[Base];
 	BaseLine.push_back(Base);
 	
 	// right expansion
 	for (; BaseLine.size()<Size; ) 
 	{
-		Node&	B	= g_nodes[BaseLine.back()];
+		vertex&	B	= g_nodes[BaseLine.back()];
 		u32	RP	= B.nRight();
 		
 		if (RP==InvalidNode)					break;
@@ -265,7 +265,7 @@ void xrMerge()
 		{
 			if (!used[i]) {
 				// analyze
-				Node& Start = g_nodes[i];
+				vertex& Start = g_nodes[i];
 
 				int px,pz;
 				px = iFloor(Start.Pos.x/g_params.fPatchSize+EPS_L);

@@ -21,14 +21,14 @@
 
 DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
-CSE_ALifeGraph						*tpGraph = 0;
+CGameGraph						*tpGraph = 0;
 
 class CSpawnComparePredicate {
 private:
 	u32							m_dwStartNode;
-	const CAI_Map				*m_tpAI_Map;
+	const CLevelGraph				*m_tpAI_Map;
 public:
-	CSpawnComparePredicate(u32 dwStartNode, const CAI_Map &tAI_Map)
+	CSpawnComparePredicate(u32 dwStartNode, const CLevelGraph &tAI_Map)
 	{
 		m_dwStartNode	= dwStartNode;
 		m_tpAI_Map		= &tAI_Map;
@@ -36,7 +36,7 @@ public:
 
 	IC bool operator()(u32 dwNode1, u32 dwNode2) const 
 	{
-		return(m_tpAI_Map->ffGetDistanceBetweenNodeCenters(m_dwStartNode,dwNode1) < m_tpAI_Map->ffGetDistanceBetweenNodeCenters(m_dwStartNode,dwNode2));
+		return(m_tpAI_Map->distance(m_dwStartNode,dwNode1) < m_tpAI_Map->distance(m_dwStartNode,dwNode2));
 	};
 };
 
@@ -46,8 +46,8 @@ public:
 	ALIFE_OBJECT_P_VECTOR		m_tpSpawnPoints;
 	xr_vector<CSE_LevelPoint*>	m_tpLevelSpawnPoints;
 	u32							m_dwLevelID;
-	CAI_Map						*m_tpAI_Map;
-	CSE_ALifeCrossTable			*m_tpCrossTable;
+	CLevelGraph						*m_tpAI_Map;
+	CGameLevelCrossTable			*m_tpCrossTable;
 	xr_vector<SLevelPoint>		m_tpLevelPoints;
 
 								CSpawn(LPCSTR name, const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
@@ -59,10 +59,10 @@ public:
 		string256				fName;
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
 		strcat					(fName,"\\");
-		m_tpAI_Map				= xr_new<CAI_Map>(fName);
+		m_tpAI_Map				= xr_new<CLevelGraph>(fName);
 		// loading cross table
 		strcat					(fName,CROSS_TABLE_NAME);
-		m_tpCrossTable			= xr_new<CSE_ALifeCrossTable>(fName);
+		m_tpCrossTable			= xr_new<CGameLevelCrossTable>(fName);
 		// loading spawn points
 		FS.update_path			(fName,name,m_tLevel.caLevelName);
 		strcat					(fName,"\\level.spawn");
@@ -190,13 +190,13 @@ public:
 	void						Execute()
 	{
 		thProgress				= 0.0f;
-		u32						dwStart = tpGraph->m_tGraphHeader.dwVertexCount, dwFinish = tpGraph->m_tGraphHeader.dwVertexCount, dwCount = 0;
-		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
-			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID)
+		u32						dwStart = tpGraph->header().vertex_count(), dwFinish = tpGraph->header().vertex_count(), dwCount = 0;
+		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
+			if (tpGraph->vertex(i).level_id() == m_dwLevelID)
 				dwCount++;
 		float fRelation = float(dwCount)/(float(dwCount) + 2*m_tpSpawnPoints.size());
-		for (int i=0; i<(int)tpGraph->m_tGraphHeader.dwVertexCount; i++)
-			if (tpGraph->m_tpaGraph[i].tLevelID == m_dwLevelID) {
+		for (int i=0; i<(int)tpGraph->header().vertex_count(); i++)
+			if (tpGraph->vertex(i).level_id() == m_dwLevelID) {
 				if (dwStart > (u32)i)
 					dwStart = (u32)i;
 				thProgress = float(i - dwStart + 1)/float(dwCount)*float(fRelation);
@@ -213,7 +213,7 @@ public:
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
 		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
-			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
+			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->vertex(m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
 				S += sprintf(S,"SPAWN POINT %s IS REMOVED! (Reason : can't find a corresponding NODE)",m_tpSpawnPoints[i]->s_name_replace);
@@ -226,8 +226,8 @@ public:
 				continue;
 				//R_ASSERT2(false,S1);
 			}
-			u32 dwBest = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].tGraphIndex;
-			float fCurrentBestDistance = m_tpCrossTable->m_tpaCrossTable[m_tpSpawnPoints[i]->m_tNodeID].fDistance;
+			u32 dwBest = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).game_vertex_id();
+			float fCurrentBestDistance = m_tpCrossTable->vertex(m_tpSpawnPoints[i]->m_tNodeID).distance();
 			if (dwBest == u32(-1)) {
 				string4096 S1;
 				char *S = S1;
@@ -270,8 +270,8 @@ public:
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
-					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
-					(*I).fDistance	= m_tpCrossTable->m_tpaCrossTable[*i].fDistance;
+					(*I).tPoint		= m_tpAI_Map->vertex_position(*i);
+					(*I).fDistance	= m_tpCrossTable->vertex(*i).distance();
 				}
 			}
 			else {
@@ -283,8 +283,8 @@ public:
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
-					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
-					(*I).fDistance	= m_tpCrossTable->m_tpaCrossTable[*i].fDistance;
+					(*I).tPoint		= m_tpAI_Map->vertex_position(*i);
+					(*I).fDistance	= m_tpCrossTable->vertex(*i).distance();
 				}
 			}
 		}
@@ -296,7 +296,7 @@ public:
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			CSE_Abstract		*E = m_tpSpawnPoints[i];
 			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
-			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->m_header.count),"Invalid node for object ",l_tpALifeObject->s_name_replace);
+			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->header().vertex_count()),"Invalid node for object ",l_tpALifeObject->s_name_replace);
 			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
 			strcpy				(l_tpALifeObject->m_caGroupControl,"");
 			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
@@ -355,7 +355,7 @@ void xrMergeSpawns(LPCSTR name)
 	Phase						("Loading game graph");
 	char						S[256];
 	FS.update_path				(S,"$game_data$","game.graph");
-	tpGraph						= xr_new<CSE_ALifeGraph>(S);
+	tpGraph						= xr_new<CGameGraph>(S);
 	
 	Phase						("Reading level graphs");
 	CInifile 					*Ini = xr_new<CInifile>(INI_FILE);

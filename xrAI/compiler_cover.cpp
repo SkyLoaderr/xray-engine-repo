@@ -171,7 +171,7 @@ public:
 		q_Marks[ID]			= true;
 		q_Clear.push_back	(ID);
 
-		Node&	N			= g_nodes[ID];
+		vertex&	N			= g_nodes[ID];
 		if (q_Base.distance_to_sqr(N.Pos)>cover_sqr_dist)	return;
 		
 		// ok
@@ -222,7 +222,7 @@ public:
 		{
 			// initialize process
 			thProgress	= float(N-Nstart)/float(Nend-Nstart);
-			Node&		BaseNode= g_nodes[N];
+			vertex&		BaseNode= g_nodes[N];
 			Fvector&	BasePos	= BaseNode.Pos;
 			Fvector		TestPos = BasePos; TestPos.y+=cover_height;
 			
@@ -240,7 +240,7 @@ public:
 				u32		ID			= *it;
 				R_ASSERT	(ID<g_nodes.size());
 				if			(N==ID)		continue;
-				Node&		N			= g_nodes[ID];
+				vertex&		N			= g_nodes[ID];
 				Fvector&	Pos			= N.Pos;
 				Fvector		Dir;
 				Dir.sub		(Pos,BasePos);
@@ -294,8 +294,8 @@ void	xrCover	()
 	Nodes	Old		= g_nodes;
 	for (u32 N=0; N<g_nodes.size(); N++)
 	{
-		Node&	Base		= Old[N];
-		Node&	Dest		= g_nodes[N];
+		vertex&	Base		= Old[N];
+		vertex&	Dest		= g_nodes[N];
 		
 		for (int dir=0; dir<4; dir++)
 		{

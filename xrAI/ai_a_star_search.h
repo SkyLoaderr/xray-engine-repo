@@ -8,11 +8,13 @@
 
 #pragma once
 
-class CAI_Map;
+#define MAX_VALUE 100000000.f
+
+class CLevelGraph;
 
 typedef struct tagSAIMapData {
 	u32				dwFinishNode;
-	const CAI_Map	*m_tpAI_Map;
+	const CLevelGraph	*m_tpAI_Map;
 } SAIMapData;
 
 #pragma pack(push,4)
@@ -120,10 +122,10 @@ public:
 				xr_vector<u32>::iterator	E = tpaNodes.end();
 				u32 dwNode = *I;
 				for (I++; I != E; I++) {
-					fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(*I),fMaxValue);
+					fDirectDistance = tTemplateNode.tData.m_tpAI_Map->check_position_in_direction(dwNode,tPosition,tTemplateNode.tData.m_tpAI_Map->vertex_position(*I),fMaxValue);
 					if (fDirectDistance == MAX_VALUE) {
 						if (fLastDirectDistance == 0) {
-							fCumulativeDistance += tTemplateNode.tData.m_tpAI_Map->ffGetDistanceBetweenNodeCenters(dwNode,*I);
+							fCumulativeDistance += tTemplateNode.tData.m_tpAI_Map->distance(dwNode,*I);
 							dwNode = *I;
 						}
 						else {
@@ -131,7 +133,7 @@ public:
 							fLastDirectDistance = 0;
 							dwNode = *--I;
 						}
-						tPosition = tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(dwNode);
+						tPosition = tTemplateNode.tData.m_tpAI_Map->vertex_position(dwNode);
 					}
 					else 
 						fLastDirectDistance = fDirectDistance;
@@ -141,9 +143,9 @@ public:
 					}
 				}
 
-				fDirectDistance = tTemplateNode.tData.m_tpAI_Map->ffCheckPositionInDirection(dwNode,tPosition,tFinishPosition,fMaxValue);
+				fDirectDistance = tTemplateNode.tData.m_tpAI_Map->check_position_in_direction(dwNode,tPosition,tFinishPosition,fMaxValue);
 				if (fDirectDistance == MAX_VALUE)
-					fValue = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tTemplateNode.tData.m_tpAI_Map->tfGetNodeCenter(tpaNodes[tpaNodes.size() - 1]));
+					fValue = fCumulativeDistance + fLastDirectDistance + tFinishPosition.distance_to(tTemplateNode.tData.m_tpAI_Map->vertex_position(tpaNodes[tpaNodes.size() - 1]));
 				else
 					fValue = fCumulativeDistance + fDirectDistance;
 				return;

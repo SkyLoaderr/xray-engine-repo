@@ -22,7 +22,7 @@ struct tri {
 	Fvector v[3];
 };
 
-BOOL	ValidNode(Node& N)
+BOOL	ValidNode(vertex& N)
 {
 	// *** Query and cache polygons for ray-casting
 	Fvector	PointUp;		PointUp.set(N.Pos);		PointUp.y	+= RCAST_Depth/2;
@@ -112,7 +112,7 @@ void	xrSmoothNodes()
 	int inv_count = 0;
 	for (u32 i=0; i<g_nodes.size(); i++)
 	{
-		Node& N = g_nodes[i];
+		vertex& N = g_nodes[i];
 
 		Fvector	P1,P2,P3,P4,P,REF;
 		int		c;
@@ -123,24 +123,24 @@ void	xrSmoothNodes()
 
 			c=1;	N.PointLF(REF);	P1.set(REF);
 			if (N.nLeft()!=InvalidNode) {
-				Node& L = g_nodes[N.nLeft()];
+				vertex& L = g_nodes[N.nLeft()];
 
 				L.PointFR(P);	merge(P1);
 				if (L.nForward()!=InvalidNode) {
 					bCorner = true;
-					Node& C = g_nodes[L.nForward()];
+					vertex& C = g_nodes[L.nForward()];
 
 					C.PointRB(P);	merge(P1);
 				}
 			}
 			if (N.nForward()!=InvalidNode) {
-				Node& F = g_nodes[N.nForward()];
+				vertex& F = g_nodes[N.nForward()];
 
 				F.PointBL(P);	merge(P1);
 				if ((!bCorner) && (F.nLeft()!=InvalidNode)) {
 					bCorner = true;
 
-					Node& C = g_nodes[F.nLeft()];
+					vertex& C = g_nodes[F.nLeft()];
 					C.PointRB(P);	merge(P1);
 				}
 			}
@@ -154,24 +154,24 @@ void	xrSmoothNodes()
 
 			c=1;	N.PointFR(REF); P2.set(REF);
 			if (N.nForward()!=InvalidNode) {
-				Node& F = g_nodes[N.nForward()];
+				vertex& F = g_nodes[N.nForward()];
 
 				F.PointRB(P);	merge(P2);
 				if (F.nRight()!=InvalidNode) {
 					bCorner = true;
-					Node& C = g_nodes[F.nRight()];
+					vertex& C = g_nodes[F.nRight()];
 
 					C.PointBL(P);	merge(P2);
 				}
 			}
 			if (N.nRight()!=InvalidNode) {
-				Node& R = g_nodes[N.nRight()];
+				vertex& R = g_nodes[N.nRight()];
 
 				R.PointLF(P);	merge(P2);
 				if ((!bCorner) && (R.nForward()!=InvalidNode)) {
 					bCorner = true;
 
-					Node& C = g_nodes[R.nForward()];
+					vertex& C = g_nodes[R.nForward()];
 					C.PointBL(P);	merge(P2);
 				}
 			}
@@ -185,24 +185,24 @@ void	xrSmoothNodes()
 
 			c=1;	N.PointRB(REF); P3.set(REF);
 			if (N.nRight()!=InvalidNode) {
-				Node& R = g_nodes[N.nRight()];
+				vertex& R = g_nodes[N.nRight()];
 
 				R.PointBL(P);	merge(P3);
 				if (R.nBack()!=InvalidNode) {
 					bCorner = true;
-					Node& C = g_nodes[R.nBack()];
+					vertex& C = g_nodes[R.nBack()];
 
 					C.PointLF(P);	merge(P3);
 				}
 			}
 			if (N.nBack()!=InvalidNode) {
-				Node& B = g_nodes[N.nBack()];
+				vertex& B = g_nodes[N.nBack()];
 
 				B.PointFR(P);	merge(P3);
 				if ((!bCorner) && (B.nRight()!=InvalidNode)) {
 					bCorner = true;
 
-					Node& C = g_nodes[B.nRight()];
+					vertex& C = g_nodes[B.nRight()];
 					C.PointLF(P);	merge(P3);
 				}
 			}
@@ -216,24 +216,24 @@ void	xrSmoothNodes()
 
 			c=1;	N.PointBL(REF); P4.set(REF);
 			if (N.nBack()!=InvalidNode) {
-				Node& B = g_nodes[N.nBack()];
+				vertex& B = g_nodes[N.nBack()];
 
 				B.PointLF(P);	merge(P4);
 				if (B.nLeft()!=InvalidNode) {
 					bCorner = true;
-					Node& C = g_nodes[B.nLeft()];
+					vertex& C = g_nodes[B.nLeft()];
 
 					C.PointFR(P);	merge(P4);
 				}
 			}
 			if (N.nLeft()!=InvalidNode) {
-				Node& L = g_nodes[N.nLeft()];
+				vertex& L = g_nodes[N.nLeft()];
 
 				L.PointRB(P);	merge(P4);
 				if ((!bCorner) && (L.nBack()!=InvalidNode)) {
 					bCorner = true;
 
-					Node& C = g_nodes[L.nBack()];
+					vertex& C = g_nodes[L.nBack()];
 					C.PointFR(P);	merge(P4);
 				}
 			}
@@ -254,7 +254,7 @@ void	xrSmoothNodes()
 		if (vNorm.y<0) vNorm.invert();
 
 		// create _new node
-		Node NEW = N;
+		vertex NEW = N;
 		NEW.Plane.build	(vOffs,vNorm);
 		D.set			(0,1,0);
 		N.Plane.intersectRayPoint(N.Pos,D,NEW.Pos);	// "project" position

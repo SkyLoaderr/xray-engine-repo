@@ -9,7 +9,7 @@
 #pragma once
 
 #include "ai_alife_space.h"
-#include "ai_alife_graph.h"
+#include "game_graph.h"
 
 typedef struct tagSDynamicGraphVertex {
 	Fvector						tLocalPoint;
@@ -20,16 +20,16 @@ typedef struct tagSDynamicGraphVertex {
 	u32							tNeighbourCount;
 	u32							tDeathPointCount;
 	u32							dwPointOffset;
-	CSE_ALifeGraph::SGraphEdge		*tpaEdges;
+	CGameGraph::CEdge			*tpaEdges;
 } SDynamicGraphVertex;
 
 #define MAX_DISTANCE_TO_CONNECT		4096.f
 
 DEFINE_VECTOR(SDynamicGraphVertex,		GRAPH_VERTEX_VECTOR,	GRAPH_VERTEX_IT);
-DEFINE_VECTOR(CSE_ALifeGraph::SGraphEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
+DEFINE_VECTOR(CGameGraph::CEdge,	GRAPH_EDGE_VECTOR,		GRAPH_EDGE_IT);
 
 extern xr_vector<SDynamicGraphVertex>	tpaGraph;		// graph
-extern CSE_ALifeGraph::SGraphHeader		tGraphHeader;
+extern CGameGraph::CHeader				tGraphHeader;
 
 void xrBuildGraph(LPCSTR name);
 void xrMergeSpawns();

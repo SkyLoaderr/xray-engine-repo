@@ -14,10 +14,18 @@ template <
 	u32			columns
 >
 class CTestTable {
+public:
+	struct CHeader {
+		IC u32 vertex_count() const
+		{
+			return		((rows + 2)*(columns + 2));
+		}
+	};
 protected:
 	_cell_type			table[(rows+2)*(columns + 2)];
 	_cell_type			invalid_value;
 	_cell_type			valid_value;
+	CHeader				m_header;
 public:
 	typedef	_cell_type const_iterator;
 
@@ -49,7 +57,7 @@ public:
 		return					(1);
 	}
 
-	IC		u32			get_value		(const u32 node_index, const_iterator &i) const
+	IC		u32			value		(const u32 node_index, const_iterator &i) const
 	{
 		switch (i) {
 			case 0 : return		(node_index - rows - 2);
@@ -66,8 +74,8 @@ public:
 		return					(table[node_index] != invalid_value);
 	}
 
-	IC		u32			get_node_count	() const
+	IC const CHeader	&header() const
 	{
-		return					((rows + 2)*(columns + 2));
+		return					(m_header);
 	}
 };

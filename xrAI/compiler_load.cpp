@@ -5,6 +5,19 @@
 #include "level_graph.h"
 #include "AIMapExport.h"
 
+IC	const Fvector vertex_position(const CLevelGraph::CPosition &Psrc, const Fbox &bb, const SAIParams &params)
+{
+	Fvector				Pdest;
+	int	x,z, row_length;
+	row_length			= iFloor((bb.max.z - bb.min.z)/params.fPatchSize + EPS_L + .5f) + 1;
+	x					= Psrc.xz / row_length;
+	z					= Psrc.xz % row_length;
+	Pdest.x =			float(x)*params.fPatchSize;
+	Pdest.y =			(float(Psrc.y)/65535)*(bb.max.y-bb.min.y) + bb.min.y;
+	Pdest.z =			float(z)*params.fPatchSize;
+	return				(Pdest);
+}
+
 void xrLoad(LPCSTR name)
 {
 	// Load CFORM
@@ -132,7 +145,6 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(F->open_chunk(E_AIMAP_CHUNK_NODES));
 		u32					N = F->r_u32();
 		g_nodes.resize		(N);
-		CAI_Map				tAIMap;
 		
 		typedef BYTE NodeLink[3];
 		for (u32 i=0; i<N; i++) {
@@ -152,7 +164,7 @@ void xrLoad(LPCSTR name)
 			pl				= F->r_u16();
 			pvDecompress	(g_nodes[i].Plane.n,pl);
 			F->r			(&np,sizeof(np));
-			tAIMap.UnpackPosition(g_nodes[i].Pos,np,LevelBB,g_params);
+			g_nodes[i].Pos	= vertex_position(np,LevelBB,g_params);
 
 			g_nodes[i].Plane.build(g_nodes[i].Pos,g_nodes[i].Plane.n);
 		}

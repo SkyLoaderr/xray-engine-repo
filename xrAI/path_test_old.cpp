@@ -22,17 +22,17 @@ class CSearch {
 public:
 	xr_vector<u32>		tpaNodes;
 
-						CSearch		(const CAI_Map *tAI_Map)
+						CSearch		(const CLevelGraph *tAI_Map)
 	{
 		tData.m_tpAI_Map		= tAI_Map;
 		m_dwAStarStaticCounter	= 0;
-		u32 S1					= (tAI_Map->m_header.count + 2)*sizeof(SNode);
+		u32 S1					= (tAI_Map->header().vertex_count() + 2)*sizeof(SNode);
 		m_tpHeap				= (SNode *)xr_malloc(S1);
 		ZeroMemory				(m_tpHeap,S1);
-		u32 S2					= (tAI_Map->m_header.count)*sizeof(SIndexNode);
+		u32 S2					= (tAI_Map->header().vertex_count())*sizeof(SIndexNode);
 		m_tpIndexes				= (SIndexNode *)xr_malloc(S2);
 		ZeroMemory				(m_tpIndexes,S2);
-		u32 S3					= (tAI_Map->m_header.count)*sizeof(SNode *);
+		u32 S3					= (tAI_Map->header().vertex_count())*sizeof(SNode *);
 		m_tppHeap				= (SNode **)xr_malloc(S3);
 		ZeroMemory				(m_tppHeap,S3);
 	}
@@ -64,7 +64,7 @@ public:
 
 void path_test_old(LPCSTR caLevelName)
 {
-	CAI_Map					*graph			= xr_new<CAI_Map>				(caLevelName);
+	CLevelGraph				*graph			= xr_new<CLevelGraph>				(caLevelName);
 	CSearch					*search			= xr_new<CSearch>				(graph);
 
 	xr_vector<u32>			a;
@@ -72,7 +72,7 @@ void path_test_old(LPCSTR caLevelName)
 //	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
 //		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
 
-	a.resize				(graph->get_node_count());
+	a.resize				(graph->header().vertex_count());
 	for (int i=0, n = (int)a.size(); i<n; ++i)
 		a[i] = i;
 	
@@ -98,7 +98,7 @@ void path_test_old(LPCSTR caLevelName)
 	xr_delete				(search);
 }
 
-void path_test_old(CAI_Map *graph, xr_vector<u32> &path, u32 start, u32 end, float &f, u32 &v1)
+void path_test_old(CLevelGraph *graph, xr_vector<u32> &path, u32 start, u32 end, float &f, u32 &v1)
 {
 	CSearch					*search			= xr_new<CSearch>				(graph);
 

@@ -8,12 +8,12 @@
 
 #pragma once
 
-IC CGameGraph::CGameGraph			()
+IC CGameGraph::CGameGraph		(LPCSTR file_name)
 {
-	m_tpGraphVFS				= 0;
-	m_tpaGraph					= 0;
-	string256					file_name;
-	VERIFY						(FS.exist(file_name,"$game_data$",GRAPH_NAME));
+//	m_tpGraphVFS				= 0;
+//	m_tpaGraph					= 0;
+//	string256					file_name;
+//	VERIFY						(FS.exist(file_name,"$game_data$",GRAPH_NAME));
 	m_tpGraphVFS				= FS.r_open(file_name);
 	m_tGraphHeader.dwVersion		= m_tpGraphVFS->r_u32();
 	m_tGraphHeader.dwLevelCount		= m_tpGraphVFS->r_u32();

@@ -31,7 +31,7 @@ struct tri	{
 };
 
 const float RCAST_VALID = 0.55f;
-BOOL	CreateNode(Fvector& vAt, Node& N)
+BOOL	CreateNode(Fvector& vAt, vertex& N)
 {
 	// *** Query and cache polygons for ray-casting
 	Fvector	PointUp;		PointUp.set(vAt);	PointUp.y	+= RCAST_Depth;		SnapXZ	(PointUp);
@@ -272,7 +272,7 @@ vecDW&	HashMap	(Fvector& V)
 	return *HASH[ix][iz];
 }
 
-void	RegisterNode(Node& N)
+void	RegisterNode(vertex& N)
 {
 	u32 ID = g_nodes.size();
 	g_nodes.push_back(N);
@@ -287,7 +287,7 @@ u32	FindNode(Fvector& vAt)
 
 	for (vecDW_it I=V.begin(); I!=V.end(); I++)
 	{
-		Node& N = g_nodes[*I];
+		vertex& N = g_nodes[*I];
 		if (vAt.similar(N.Pos,eps)) return *I;
 	}
 	return InvalidNode;
@@ -320,7 +320,7 @@ u32 BuildNode(Fvector& vFrom, Fvector& vAt)	// return node's index
 	if (!CanTravel(vFrom, vAt))	return InvalidNode;
 
 	// *** set up xr_new<node
-	Node N;
+	vertex N;
 	if (CreateNode(vAt,N)) {
 		//*** check if similar node exists
 		u32	old		= FindNode(N.Pos);

@@ -567,3 +567,4 @@ IC	u8 *CLevelGraph::cover(const u32 _node) const
 {
 	return				(cover(vertex(_node)));
 }
+

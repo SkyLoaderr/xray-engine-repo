@@ -32,10 +32,10 @@ template <
 >
 void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type dummy)
 {
-	typedef CPathManager<_Graph,_DataStorage,_dist_type,u32,u32>			_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>				_AStarSearch;
+	typedef CPathManager<_Graph,_DataStorage,PathManagers::SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
+	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>									_AStarSearch;
 
-	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->get_node_count());
+	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->header().vertex_count());
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
 	_AStarSearch			*a_star			= xr_new<_AStarSearch>			();
 
@@ -57,7 +57,8 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 			data_storage,
 			&path,
 			(*I).x,
-			(*I).y
+			(*I).y,
+			PathManagers::SBaseParameters<_dist_type,u32,u32>()
 			);
 		a_star->find		(*data_storage,*path_manager);
 	}
@@ -81,10 +82,10 @@ template <
 >
 void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _dist_type min_value, _dist_type max_value)
 {
-	typedef CPathManager<_Graph,_DataStorage,_dist_type,u32,u32>			_PathManager;
-	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>				_AStarSearch;
+	typedef CPathManager<_Graph,_DataStorage,PathManagers::SBaseParameters<_dist_type,u32,u32>,_dist_type,u32,u32>	_PathManager;
+	typedef CAStar<_DataStorage,_PathManager,u32,_dist_type>									_AStarSearch;
 
-	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->get_node_count(),min_value,max_value);
+	_DataStorage			*data_storage	= xr_new<_DataStorage>			(graph->header().vertex_count(),min_value,max_value);
 	_PathManager			*path_manager	= xr_new<_PathManager>			();
 	_AStarSearch			*a_star			= xr_new<_AStarSearch>			();
 
@@ -106,8 +107,9 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 			data_storage,
 			&path,
 			(*I).x,
-			(*I).y
-			);
+			(*I).y,
+			PathManagers::SBaseParameters<_dist_type,u32,u32>()
+		);
 		a_star->find		(*data_storage,*path_manager);
 	}
 
@@ -129,8 +131,8 @@ template <
 void init_search			(LPCSTR caLevelName, _Graph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
 {
 	graph					= xr_new<_Graph>(caLevelName);
-	u32						n = graph->get_node_count();
-	path_params.resize		(graph->get_node_count());
+	u32						n = graph->header().vertex_count()();
+	path_params.resize		(graph->header().vertex_count()());
 	xr_vector<SPathParams>::const_iterator	I = path_params.begin(), B = I;
 	xr_vector<SPathParams>::const_iterator	E = path_params.end();
 	for ( ; I != E; ++I) {
@@ -144,13 +146,13 @@ void init_search			(LPCSTR caLevelName, _Graph *&graph, xr_vector<SPathParams> &
 #define TEST_DIST2	100.f
 
 template <>
-void init_search<CAI_Map>	(LPCSTR caLevelName, CAI_Map *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
+void init_search<CLevelGraph>	(LPCSTR caLevelName, CLevelGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
 {
-	graph					= xr_new<CAI_Map>(caLevelName);
+	graph					= xr_new<CLevelGraph>(caLevelName);
 
 	if (bRandom) {
-		u32					n = graph->get_node_count();
-		path_params.resize	(graph->get_node_count() - 2);
+		u32					n = graph->header().vertex_count();
+		path_params.resize	(n - 2);
 		xr_vector<SPathParams>::iterator	I = path_params.begin(), B = I;
 		xr_vector<SPathParams>::iterator	E = path_params.end();
 		for ( ; I != E; ++I) {
@@ -159,7 +161,7 @@ void init_search<CAI_Map>	(LPCSTR caLevelName, CAI_Map *&graph, xr_vector<SPathP
 		}
 	}
 //	else
-//		for (int i=1, n=graph->get_node_count(); i<n; ++i) {
+//		for (int i=1, n=graph->header().vertex_count()(); i<n; ++i) {
 //			for (int j=i + 1; j<n; j++)
 //				if ((graph->get_edge_weight(i,j) > TEST_DIST2) && (graph->get_edge_weight(i,j) <= TEST_DIST1)) {
 //					path_params.push_back(SPathParams(i,j));
@@ -174,13 +176,13 @@ void init_search<CAI_Map>	(LPCSTR caLevelName, CAI_Map *&graph, xr_vector<SPathP
 }
 
 template <>
-void init_search<CSE_ALifeGraph>(LPCSTR caLevelName, CSE_ALifeGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
+void init_search<CGameGraph>(LPCSTR caLevelName, CGameGraph *&graph, xr_vector<SPathParams> &path_params, bool bRandom)
 {
 	string256				fName;
 	strconcat				(fName,caLevelName,"level.graph");
-	graph					= xr_new<CSE_ALifeGraph>(fName);
-	u32						n = graph->get_node_count();
-	path_params.resize		(graph->get_node_count());
+	graph					= xr_new<CGameGraph>(fName);
+	u32						n = graph->header().vertex_count();
+	path_params.resize		(graph->header().vertex_count());
 	
 	xr_vector<SPathParams>::iterator	I = path_params.begin(), B = I;
 	xr_vector<SPathParams>::iterator	E = path_params.end();
@@ -245,8 +247,8 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-	test_all<CAI_Map>					(caLevelName,TEST_COUNT,float(0),float(2000));
-	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
+	test_all<CGameGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
 	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
 	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
