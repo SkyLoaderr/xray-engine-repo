@@ -187,6 +187,8 @@ function change_state(object, new, emerg)
 		return false
 	end
 end
+function getIdle(id)
+end
 
 ----------------------------------------------------------------------------------------------------------------------
 --State binder
