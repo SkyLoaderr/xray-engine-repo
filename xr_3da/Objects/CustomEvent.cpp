@@ -123,7 +123,7 @@ void CCustomEvent::Load(CInifile* ini, const char * section)
 	// Net params
 	net_Local					= TRUE;
 	net_ID						= 0xffff;
-	net_Ready					= FALSE;
+	net_Ready					= TRUE;
 }
 
 void CCustomEvent::Update (DWORD dt)
