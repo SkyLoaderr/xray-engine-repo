@@ -1,0 +1,135 @@
+----------------------------------------------------------------------------------------------------
+-- Remark
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_need_remark" (property_evaluator)
+
+function evaluator_need_remark:__init(storage) super()
+  	self.st = storage
+end
+
+function evaluator_need_remark:evaluate()
+  	return xr_logic.is_active(self.object, self.st)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+class "action_remark_activity" (action_base)
+
+function action_remark_activity:__init (npc_name, action_name, storage) super(nil, action_name)
+	self.st = storage
+	self.move_mgr = move_mgr.move_mgr()
+end
+
+function action_remark_activity:initialize()
+	--printf("_bp: action_remark_activity: initialize")
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()
+
+	self.move_mgr:initialize(self.object)
+
+	--printf("initiz")
+	self.initialized = true
+
+	self:reset_scheme()
+end
+
+
+function action_remark_activity:reset_scheme()
+	--printf("reset_scheme, initialized=%s", utils.to_str(self.initialized))
+	if not self.initialized then
+		return
+	end
+
+	self.object:clear_animations()
+	
+	if self.st.path_walk_info == nil then
+		self.st.path_walk_info = utils.path_parse_waypoints(self.st.path_walk)
+	end
+	if self.st.path_look_info == nil then
+		self.st.path_look_info = utils.path_parse_waypoints(self.st.path_look)
+	end
+
+	self.move_mgr:reset(self.st.path_walk, self.st.path_walk_info, self.st.path_look, self.st.path_look_info, self.st.team)
+end	
+
+function action_remark_activity:execute()
+	action_base.execute(self)
+	self.move_mgr:update()
+	if self.move_mgr:arrived_to_first_waypoint() then
+		xr_logic.try_switch_to_another_section(self.object, self.st)
+	end
+end
+
+function action_remark_activity:finalize()
+	self.move_mgr:finalize()
+	self.object:clear_animations()
+	action_base.finalize(self)
+end
+
+----------------------------------------------------------------------------------------------------------------------
+--remark binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+		printf("DEBUG: add_to_binder: scheme='%s', section='%s'", scheme, section)
+  		local operators	= {}
+	  	local properties  = {}
+		
+	   	local manager = npc:motivation_action_manager()
+
+		properties["event"] = xr_evaluators_id.reaction
+		properties["state_end"] = xr_evaluators_id.state_change
+	 	properties["need_remark"] = xr_evaluators_id.zmey_remark_base + 1
+
+	 	operators["action_remark"] = xr_actions_id.zmey_remark_base + 1
+
+	   	-- // evaluators
+		manager:add_evaluator(properties["need_remark"], this.evaluator_need_remark(storage))
+
+		local new_action = this.action_remark_activity(npc, "action_remark_activity", storage)
+		new_action:add_precondition(world_property(stalker_ids.property_alive, true))
+		new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
+		new_action:add_precondition(world_property(properties["need_remark"], true))
+		new_action:add_precondition(world_property(properties["event"], false))
+		new_action:add_precondition(world_property(properties["state_end"], true))
+	   	new_action:add_effect(world_property(properties["need_remark"], false))
+		manager:add_action(operators["action_remark"], new_action)
+
+		-- Зарегистрировать все actions, в которых должен быть вызван метод reset_scheme при изменении настроек схемы:
+		xr_logic.subscribe_action_for_events(storage, new_action)
+
+	  	new_action = manager:action(stalker_ids.action_puzzle_solver)
+	  	new_action:add_precondition(world_property(properties["need_remark"], false))
+end
+
+-- Включение схемы
+-- 
+-- enabled - включена ли схема
+-- path_walk - основной путь, по которому ходит охранник
+-- path_look [опционально] - путь, куда смотрит охранник
+-- team [опционально] - команда для синхронизации
+--
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	printf("DEBUG: set_scheme: scheme='%s', section='%s'", scheme, section)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	printf("DEBUG: set_scheme: storage assigned")
+
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+
+	st.path_walk = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
+	st.path_look = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
+	st.team      = utils.cfg_get_string(ini, section, "team",      npc, false, gulag_name)
+
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_look_info = nil -- не загружены.
+
+	-- После изменении настроек, сбросить все actions, нуждающиеся в сбросе:
+	printf("DEBUG: set_scheme: about to call xr_logic.reset_actions()")
+	xr_logic.reset_actions(st)
+end
+
