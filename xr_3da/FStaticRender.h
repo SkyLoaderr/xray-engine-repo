@@ -91,7 +91,7 @@ public:
 	CSector*		detectSector(Fvector& P);
 
 	// Main 
-	IC void	set_Occluders			(COccluderSystem* O)	{ VERIFY(O); View = O; }
+	IC void	set_Occluders			(CFrustum* O)			{ VERIFY(O); View = O; }
 	IC void	set_Transform			(Fmatrix* pM)			{ VERIFY(pM); pTransform = pM; }
 	IC void set_LightLevel			(int L)					{ iLightLevel = L; }
 	IC void add_Lights				(vector<WORD> &V)		{ Lights.add_sector_lights(V);	}
@@ -109,8 +109,8 @@ public:
 		P.angle = a;
 		P.nearer= bNearer;
 	}
-	BOOL	add_Dynamic				(FBasicVisual	*pVisual, CVisiCache C);		// normal processing
-	void	add_Static				(FBasicVisual	*pVisual, CVisiCache C);
+	BOOL	add_Dynamic				(FBasicVisual	*pVisual, DWORD planes);	// normal processing
+	void	add_Static				(FBasicVisual	*pVisual, DWORD planes);
 	void	add_leafs_Dynamic		(FBasicVisual	*pVisual);					// if detected node's full visibility
 	void	add_leafs_Static		(FBasicVisual	*pVisual);					// if detected node's full visibility
 	void	InsertSG_Dynamic		(FBasicVisual	*pVisual, Fvector& Center);
