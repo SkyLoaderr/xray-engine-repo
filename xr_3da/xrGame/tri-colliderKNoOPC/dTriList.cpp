@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#define SHAREDLIBIMPORT __declspec (dllimport)
+#define SHAREDLIBEXPORT __declspec (dllexport)
 #include <include/ode/common.h>
 #include <include/ode/geom.h>
 #include <include/ode/rotation.h>
@@ -93,12 +95,11 @@ int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* 
 
 
    dColliderFn* FUNCCALL dTriListColliderFn(int num){
-
-	   if (num ==1/* dBoxClass*/){ 
+	int i=dBoxClass;
+	   if (num == dBoxClass){ 
 		return 	(dColliderFn*)&dCollideBTL;
 	   }
-	   if (num == 3/*dSphereClass*/) {
-		   dSphereClass=dSphereClass;
+	   if (num == dSphereClass) {
 		return (dColliderFn*)&dCollideSTL;
 	   }
 	
