@@ -782,9 +782,9 @@ void CCustomMonster::ResetScriptData(void *P)
 {
 }
 
-void ScriptCallBack(CBlend* B)
+static void __stdcall ScriptCallBack(CBlend* B)
 {
-	CScriptMonster	*l_tpScriptMonster = static_cast<CScriptMonster*>(B->CallbackParam);
+	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
 	if (l_tpScriptMonster->GetCurrentAction())
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
