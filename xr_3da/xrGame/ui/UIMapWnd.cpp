@@ -253,7 +253,7 @@ bool CUICustomMap::NeedShowPointer(Irect r)
 	Ivector2 pos = GetAbsolutePos();
 	r.add(pos.x,pos.y);
 
-	return !!map_visible_rect.intersected(r);
+	return !map_visible_rect.intersected(r);
 }
 
 CUIGlobalMap::CUIGlobalMap(CUIMapWnd*	pMapWnd)
