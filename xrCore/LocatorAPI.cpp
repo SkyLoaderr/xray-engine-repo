@@ -210,7 +210,7 @@ bool CLocatorAPI::Recurse		(const char* path)
 		rec_files.push_back(sFile);
 	_findclose		( hFile );
 
-	sort			(rec_files.begin(), rec_files.end(), pred_str_ff);
+	std::sort		(rec_files.begin(), rec_files.end(), pred_str_ff);
 
 	for (FFIt it=rec_files.begin(); it!=rec_files.end(); it++)
 		ProcessOne	(path,it);
@@ -265,11 +265,11 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy, LPCSTR root_path)
 		lp_def		=(cnt>=5)?def:0;
 		lp_capt		=(cnt>=6)?capt:0;
 		PathPairIt p_it = pathes.find(root);
-		pair<PathPairIt, bool> I;
+		std::pair<PathPairIt, bool> I;
         FS_Path* P	= xr_new<FS_Path>((p_it!=pathes.end())?p_it->second->m_Path:root,lp_add,lp_def,lp_capt,fl);
         bNoRecurse	= !(fl&FS_Path::flRecurse);
 		Recurse		(P->m_Path);
-        I			= pathes.insert(make_pair(xr_strdup(id),P));
+		I			= pathes.insert(std::make_pair(xr_strdup(id),P));
         R_ASSERT	(I.second);
 	}
 	r_close			(F);

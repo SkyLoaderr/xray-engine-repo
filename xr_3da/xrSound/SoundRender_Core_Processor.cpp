@@ -83,7 +83,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	if (!s_targets_defer.empty())
 	{
 		//Msg	("! update: start render - commit");
-		s_targets_defer.erase	(unique(s_targets_defer.begin(),s_targets_defer.end()),s_targets_defer.end());
+		s_targets_defer.erase	(std::unique(s_targets_defer.begin(),s_targets_defer.end()),s_targets_defer.end());
 		for (it=0; it<s_targets_defer.size(); it++)
 			s_targets_defer[it]->fill_parameters();
 	}

@@ -70,13 +70,13 @@ namespace CDB
 				{
 					u32 f1	= faces[f].IDverts()[(f_e+0)%3];
 					u32 f2	= faces[f].IDverts()[(f_e+1)%3];
-					if (f1>f2)	swap(f1,f2);
+					if (f1>f2)	std::swap(f1,f2);
 
 					for (u32 t_e=0; t_e<3; t_e++)
 					{
 						u32 t1	= faces[t].IDverts()[(t_e+0)%3];
 						u32 t2	= faces[t].IDverts()[(t_e+1)%3];
-						if (t1>t2)	swap(t1,t2);
+						if (t1>t2)	std::swap(t1,t2);
 
 						if (f1==t1 && f2==t2)
 						{

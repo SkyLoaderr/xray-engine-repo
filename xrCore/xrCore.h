@@ -152,7 +152,6 @@
 #include <list>
 #include <set>
 #include <map>
-using namespace std;
 
 // Warnings
 #pragma warning (disable : 4786 )		// too long names
