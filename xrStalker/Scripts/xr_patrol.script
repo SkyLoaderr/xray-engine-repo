@@ -1,210 +1,805 @@
-local Patrols = {}
-
-function FindCommand (_group, _command)
-    if table.getn (Patrols) == 0 then return 0 end
-    for a = 1, table.getn (Patrols), 1 do
-        if Patrols[a].group == _group and Patrols[a].command == _command then
-           return a
-        end
-    end
-    return 0
-end
-
-function AddToCommand (_group, _command, _member, _npc)
-    --find command
-    local index = this.FindCommand (_group, _command)
---    printf ("Index = %d", index)
-    --if command present - add the new member
-    if index ~= 0 then
---       printf ("Find command %s_%d", _group, _command)
-       local t = {npc = _npc, member = _member, variables = {}}
-       table.insert (Patrols[index].members, t)
---       printf ("New member successfully added")
-       return
-    end
-
-    --create new command
-    local temp = {
-                 group = _group,
-                 command = _command,
-                 members = {}
-                 }
-    local t =
-             {
-             npc = _npc,
-             member = _member,
-             variables = {}
-             }
-    table.insert (temp.members, t)
-    table.insert (Patrols, temp)
---    printf ("New command successfully added")
-end
-
-function RemoveFromCommand (_group, _command, _member)
-
-    if table.getn (Patrols) == 0 then
-       printf ("ERROR !!! Requested remove patrol member %s_%d_%d. Patrols table is empty !!!", _group, _command, _member)
-       return
-    end
-
-    for a = 1, table.getn (Patrols), 1 do
-        if Patrols[a].group == _group and Patrols[a].command == _command then
---           printf ("Find in %s_%d", _group, _command)
---           printf ("Size of table Patrols[a].members is %d units", table.getn (Patrols[a].members))
-           for b = 1, table.getn (Patrols[a].members), 1 do
---               printf ("Member %d", Patrols[a].members[b].member)
-              if Patrols[a].members[b].member == _member then
-                 table.remove (Patrols[a].members, b)
-                 printf ("Remove member %s_%d_%d", _group, _command, _member)
-                 if table.getn (Patrols[a].members) == 0 then
-                    table.remove (Patrols, a)
-                    printf ("Patrol group %s_%d is empty. Removed", _group, _command)
-                 end
-                 return
-              end
-           end
-        end
-    end
-    printf ("ERROR !!! Requested remove patrol member %s_%d_%d. Member not found !!!", _group, _command, _member)
-end
+local animations = {
+                   {anim = "stoya_ruje_ 0",       flag = true},
+                   {anim = "vishka_3",            flag = false},
+                   {anim = "norm_torso_2_idle_1", flag = false},
+                   {anim = "norm_torso_2_idle_2", flag = true},
+                   {anim = "norm_torso_2_idle_3", flag = false},
+                   {anim = "norm_torso_2_idle_4", flag = true},
+                   {anim = "norm_torso_2_idle_5", flag = false},
+                   {anim = "norm_torso_2_idle_6", flag = false}
+                   }
 
 
-function PrintTable ()
+local anim_pris = {
+                  {anim = "prisluh_0", flag = false},
+                  {anim = "prisluh_1", flag = false},
+                  {anim = "prisluh_2", flag = false}
+                  }
 
-    printf ("----------------------Start table---------------------------------")
-    if table.getn (Patrols) == 0 then printf ("Table is empty") end
-    for a = 1, table.getn (Patrols), 1 do
-        printf ("Patrol Unit %d", a)
-        printf ("Patrol group : %s, patrol command : %d", Patrols[a].group, Patrols[a].command)
-        if table.getn (Patrols[a].members) == 0 then
-           printf ("Member table is empty")
-        else
-           for b = 1, table.getn (Patrols[a].members), 1 do
-               printf ("NPC : %s, member %d", Patrols[a].members[b].npc:name (), Patrols[a].members[b].member)
-           end
-        end
-    end
-    printf ("----------------------End table-----------------------------------")
-end
+local property_pathend_comm             = xr_evaluators_id.sidor_pathend_commander_property
+local property_pathend_sold             = xr_evaluators_id.sidor_pathend_soldier_property
+local action_move                       = stalker_ids.action_script   + 1
 
+--leader states
+local leader_move       =   0               --leader move for path
+local leader_check      =   1               --leader stop on checkpoint
+local leader_wait       =   2               --leader wait for him command
+local leader_alarm      =   3               --leader move to base
+local leader_collect    =   4               --leader move to collect
+local leader_rotate     =   5               --leader rotate
+local leader_move_fwd   =   6
+local leader_move_bwd   =   7
 
+--soldier states
+local soldier_move      =   0
+local soldier_check     =   1
+local soldier_ready     =   2
+local soldier_collect   =   3
+local soldier_rotate    =   4
+local soldier_alarm     =   5
+--local soldier_ready     =   6
 
+local num_phrases = 10
 
 ----------------------------------------------------------------------------------------------------------------------
 --Evaluator const
 ----------------------------------------------------------------------------------------------------------------------
-class "evaluator_const"		(property_evaluator)
+class "evaluator_const"    (property_evaluator)
 ----------------------------------------------------------------------------------------------------------------------
 function evaluator_const:__init(value) super()
-	self.value = value
+  self.value = value
 end
 ----------------------------------------------------------------------------------------------------------------------
 function evaluator_const:evaluate()
-	return self.value
+  return self.value
 end
 ----------------------------------------------------------------------------------------------------------------------
-
 
 
 ----------------------------------------------------------------------------------------------------------------------
 -- Action path
 ----------------------------------------------------------------------------------------------------------------------
+-- Ёкшен дл€ перемещени€ по патрульному пути
+----------------------------------------------------------------------------------------------------------------------
 class "action_path" (action_base)
 
-function action_path:__init (path,name) super (nil,name)
+function action_path:__init (path, group, command, name) super (nil, name)
     self.path = path
+    self.group = group
+    self.command = command
+    self.state = leader_move
+    self.first_call = true
+    self.members = {}
+    self.move_direction = true
+    self.c_waypoint = 0
+    self.n_waypoint = 1
+    self.waypoints = patrol (self.path):count ()
+    self.target_point = vector ():set (0, 0, 0)
+    self.c_time = 0
+    self.need_rotate = false
+    self.sounds_loaded = false
+    self.talk_time = 0
+    self.current_talk = 0
+    self.start_talk = 0
 end
-
+----------------------------------------------------------------------------------------------------------------------
 function action_path:initialize ()
-	action_base.initialize (self)
-	self.object:set_node_evaluator		()
-	self.object:set_path_evaluator		()
-	self.object:set_desired_position	()
-	self.object:set_desired_direction	()    
-	
-	self.object:play_sound				(2, 60000, 10000)
-	self.object:set_sight				(look.path_dir,nil,0)
-	self.object:set_item				(object.idle)
-	self.object:set_path_type			(game_object.patrol_path)
-	self.object:set_patrol_path			(self.path, patrol.start, patrol.continue, true)
-	self.object:set_detail_path_type	(move.line)
-	self.object:set_body_state			(move.standing)
-	self.object:set_movement_type		(move.walk)
-	self.object:set_mental_state		(anim.free)
-	
-end
 
+    action_base.initialize (self)
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
+
+    --self.object:play_sound                (2, 60000, 10000)
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+
+    if self.sounds_loaded == false then
+       self.object:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, stalker_ids.sound_script + 1)
+       self.object:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, stalker_ids.sound_script + 2)
+       self.sounds_loaded = true
+    end
+
+    self.object:set_callback (self, "move_callback", game_object.movement)
+
+    local __name, __command, __group, __member = str_split (self.object:name ())
+    self.current_animation = __member
+    self:check_path ()
+    self:move_to_collect ()
+    --printf ("action_path:initialize called")
+    self.need_rotate = false
+    self.talk_time = math.random (20000, 40000)
+    self.start_talk = device ():time_global ()
+    self.current_talk = 0
+    self.current_phrase = 0
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:move_to_collect ()
+    local way           = patrol (self.path)
+    local position      = self.object:position ()
+    local i_nearest     = way:get_nearest        (position)
+    local waypoint      = way:point              (i_nearest)
+    local dir           = vector ():set (waypoint.x - position.x, waypoint.y - position.y, waypoint.z - position.z)
+    dir:normalize ()
+    self.c_waypoint     = i_nearest
+    self.object:set_path_type               (game_object.level_path)
+    self.object:set_dest_level_vertex_id    (way:level_vertex_id (i_nearest))
+    self.object:set_desired_position        (way:point (i_nearest))
+    self.object:set_desired_direction       ()
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.walk)
+    self.object:set_sight                   (look.point, vector ():set (waypoint.x, waypoint.y + 1.5, waypoint.z), 0)
+    self.target_point = waypoint
+    self.state = leader_collect
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:send_command (command, target)
+    local size = table.getn (self.members)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        if self.members[a].object:alive () == true then
+           self.members[a].action:send_command (command, target)
+        end
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:check_path ()
+
+    if self.move_direction == true then
+       if self.c_waypoint == self.waypoints then
+          self.move_direction = false
+          self.c_waypoint = count
+          self.n_waypoint = count - 1
+       else
+          self.n_waypoint = self.c_waypoint + 1
+       end
+    else
+       if self.c_waypoint == 0 then
+          self.n_waypoint = 1
+          self.move_direction = true
+       else
+          self.n_waypoint = self.c_waypoint - 1
+       end
+    end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:set_alarm ()
+    self.n_waypoint = self.c_waypoint - 1
+    self.move_direction = false
+    self:check_path ()
+    self.object:clear_animations ()
+    self.object:set_path_type  (game_object.level_path)
+    self.object:set_path_type  (game_object.patrol_path)
+    self.object:set_patrol_path (self.path, patrol.custom, patrol.continue, true)
+    self.object:set_desired_direction ()
+    self.object:set_desired_position ()
+    self.object:set_previous_point (self.c_waypoint)
+    self.object:set_start_point (self.n_waypoint)
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state (anim.danger)
+    self.state = leader_alarm
+    self.object:set_movement_type (move.run)
+    self.object:set_sight (look.path_dir, nil, 0)
+    self:send_command (leader_alarm)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:talking ()
+    local size = table.getn (self.members)
+    if size < 2 then return end
+
+    if self.current_talk == 0 then
+       self.current_talk = 1
+    else
+       self.current_talk = self.current_talk + 1
+       if self.current_talk > size then
+          self.current_talk = 1
+       end
+    end
+
+    if self.members[self.current_talk].object:alive () == false then
+       return
+    end
+
+    self.members[self.current_talk].action:talk (self.current_phrase)
+    self.current_phrase = self.current_phrase + 1
+    if self.current_phrase >= num_phrases then self.current_phrase = 0 end
+    self.talk_time = math.random (20000, 40000)
+    self.start_talk = device ():time_global ()
+
+end
+----------------------------------------------------------------------------------------------------------------------
 function action_path:execute ()
-	action_base.execute					(self)
-end
 
+    action_base.execute (self)
+
+
+    local v_table = self.object:memory_visible_objects ()
+    if v_table ~= nil then
+       --printf ("Visual objects = %d", table.getn (v_table))
+    end
+
+    if self.talk_time == 0 then
+       self:talking ()
+    else
+       if device ():time_global () - self.start_talk > self.talk_time then
+          self.talk_time = 0
+       end
+    end
+
+
+    self.object:set_item (object.idle, self.object:best_weapon ())
+
+    if self.state == leader_collect then
+       self:check_collect ()
+    elseif self.state == leader_check then
+       self:checkpoint ()
+    elseif self.state == leader_move then
+       self:set_move ()
+    elseif self.state == leader_rotate then
+       self:rotate ()
+    elseif self.state == leader_alarm then
+       self:move_to_base ()
+    end
+
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:check_members_alive ()
+    local size = table.getn (self.members)
+    if size == 0 then
+       return false
+    end
+
+    for a = 1, size, 1 do
+        if self.members[a].object:alive () == true then
+           return true
+        end
+    end
+    return false
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:checkpoint ()
+
+    self.object:set_movement_type (move.stand)
+    if self:check_members_alive () == false then
+       if self.object:animation_count () == 0 then
+          self.object:clear_animations ()
+          self.c_time = device ():time_global ()
+          self.state = leader_rotate
+       end
+    else
+       --printf ("This is test checkpoint for command")
+       if self.object:animation_count () == 0 then
+          for a = 1, table.getn (self.members), 1 do
+              local state = self.members[a].action:get_state ()
+              if state == soldier_collect then
+                 self:set_animation ()
+                 return
+              end
+              if state ~= soldier_ready then
+                 --self:set_animation ()
+                 return
+              end
+          end
+          self.object:clear_animations ()
+          self:set_move ()
+
+          local way = patrol (self.path)
+          if way:flag (self.c_waypoint, 0) == true then
+             self.object:play_sound (stalker_ids.sound_script + 1, 1, 0, 1, 0, 2)
+          elseif way:flag (self.c_waypoint, 2) == true then
+             self.object:play_sound (stalker_ids.sound_script + 1, 1, 0, 1, 0, 1)
+          end
+       end
+    end
+    --printf ("Set checkpoint")
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:move_to_base ()
+
+    local way = patrol (self.path)
+    if way:point (0):distance_to (self.object:position ()) < 2.0 then
+       self:move_to_collect ()
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:rotate ()
+
+    if self.need_rotate == true then
+       --printf ("This is test")
+       local pos = patrol (self.path):point (self.n_waypoint)
+       pos.y = pos.y + 1.5
+       self.object:set_sight (look.fire_point, pos, 0)
+       if device ():time_global () - self.c_time > 1000 then
+          self.state = leader_move
+          self:set_move ()
+          self.need_rotate = false
+       end
+    else
+       self.state = leader_move
+       self:set_move ()
+    end
+
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:check_collect ()
+    if self.target_point:distance_to (self.object:position ()) > 0.5 then
+       self:send_command (leader_collect, self.target_point)
+       return
+    end
+    self.object:set_movement_type (move.stand)
+    self:check_path ()
+    self.state = leader_check
+    local pt1 = patrol (self.path):point (self.n_waypoint)
+    local pt2 = self.object:position ()
+    local dir = vector ():set (pt1.x - pt2.x, pt1.y - pt2.y, pt1.z - pt2.z)
+    dir:normalize ()
+    self.object:set_sight (look.direction, dir, 0)
+    self:set_animation ()
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_path:set_move ()
+    self.object:set_path_type  (game_object.patrol_path)
+    self.object:set_patrol_path (self.path, patrol.custom, patrol.continue, true)
+    self.object:set_desired_direction ()
+    self.object:set_desired_position ()
+    self.object:set_previous_point (self.c_waypoint)
+    self.object:set_start_point (self.n_waypoint)
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state (anim.free)
+    self.state = leader_move
+    self.object:set_movement_type (move.walk)
+    self.object:set_sight (look.path_dir, nil, 0)
+    --printf ("[%d]Current waypoint %d, next waypoint %d", device ():time_global (), self.c_waypoint, self.n_waypoint)
+    if self.move_direction == true then
+       self:send_command (leader_move_fwd, nil)
+    else
+       self:send_command (leader_move_bwd, nil)
+    end
+    self:send_command (leader_move, nil)
+end
+----------------------------------------------------------------------------------------------------------------------
 function action_path:finalize ()
-	action_base.finalize (self)
-end
-
-----------------------------------------------------------------------------------------------------------------------
-
-
-
-----------------------------------------------------------------------------------------------------------------------
---Patrol binder
-----------------------------------------------------------------------------------------------------------------------
-class "patrol_binder" (object_binder)
-----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:__init (obj) super(obj)
-    self.npc = obj
+    self.object:clear_callback (game_object.movement)
+    self.object:clear_animations ()
+    action_base.finalize (self)
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:reinit ()
-	object_binder.reinit	(self)
+function action_path:set_animation ()
+
+--    self.object:clear_animations ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:reload (section)
-	object_binder.reload	(self, section)
-	local					actions = {}
-	local					properties = {}
-	local					manager	= self.object:motivation_action_manager ()
-	local					goal = world_state ()
+function action_path:move_callback (obj, action_type, index)
 
-	properties["path_end"]	= stalker_ids.property_script + 1
-	actions["move"]		    = stalker_ids.action_script   + 1
-	
-	goal:clear ()
-	-- // evaluators
-	manager:add_evaluator	(properties["path_end"],	this.evaluator_const	(false))
+    if index == -1 then return end
+    local ptr = patrol (self.object:patrol ())
+    self.c_waypoint = index
 
---	action = this.action_path (globals.GetPatrolPath (self.npc:name ()),"action_path")
-	action = this.action_path ("patrol_way","action_path")
-	action:add_precondition	(world_property(stalker_ids.property_alive,	true))
-	action:add_precondition	(world_property(stalker_ids.property_items,	false))
-	action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
-	action:add_effect		(world_property(properties["path_end"],	    true))
-	manager:add_action		(actions["move"],			                action)
-	
-	action                  = manager:action (stalker_ids.action_free_no_alife)
-	action:add_precondition (world_property(properties["path_end"],	    true))
+    if self.state == leader_alarm then
+       return
+    end
+
+    if ptr:flag (index, 0) then
+       self.need_rotate = true
+       self.move_direction = true
+    end
+
+    if ptr:flag (index, 2) then
+       self.move_direction = false
+       self.need_rotate = true
+    end
+
+    self:check_path ()
+
+    if self:check_members_alive () == true then
+       for a = 1, table.getn (self.members), 1 do
+           if self.members[a].object:alive () == true and distance_between (self.object, self.members[a].object) > 16 then
+              self.state = leader_check
+              self:set_animation ()
+              self:checkpoint ()
+              self:send_command (leader_collect, self.object:position ())
+              self.object:play_sound (stalker_ids.sound_script + 1, 1, 0, 1, 0, 0)
+              return
+           end
+       end
+    end
+
+
+    if ptr:flag (index, 1) == true or ptr:flag (index, 0) == true or ptr:flag (index, 2) == true then
+       self.state = leader_check
+       self:set_animation ()
+       self:checkpoint ()
+       self:send_command (leader_check, nil)
+    end
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+-- Action path
+----------------------------------------------------------------------------------------------------------------------
+-- Ёкшен дл€ перемещени€ по патрульному пути
+----------------------------------------------------------------------------------------------------------------------
+class "action_soldier" (action_base)
+
+function action_soldier:__init (path, name) super (nil, name)
+    self.path = path
+    self.state = soldier_check
+    self.move_direction = true
+    self.c_waypoint = 0
+    self.n_waypoint = 1
+    self.waypoints = patrol (self.path):count ()
+    self.target_point = vector ():set (0, 0, 0)
+    self.c_time = 0
+    self.need_rotate = false
+    self.leader_index = 0
+    self.r_command = soldier_check
+    self.sounds_loaded = false
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:net_spawn	(server_object)
-    printf ("NetSpawn called")
-	if (object_binder.net_spawn(self,server_object) == false) then
-	   return false
-	end
-	local name, group, command, member = str_split (self.npc:name ())
-    this.AddToCommand (group, command, member, self.npc)
-    this.PrintTable ()
-	return true
+function action_soldier:get_state ()
+    return self.state
 end
 ----------------------------------------------------------------------------------------------------------------------
-function patrol_binder:net_destroy	()
-    printf ("NetDestroy called")
-	local name, group, command, member = str_split (self.npc:name ())
-    this.RemoveFromCommand (group, command, member)
-	object_binder.net_destroy	(self)
+function action_soldier:initialize ()
+
+    action_base.initialize (self)
+    self.object:set_node_evaluator        ()
+    self.object:set_path_evaluator        ()
+    self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
+
+    --self.object:play_sound                (2, 60000, 10000)
+    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_detail_path_type      (move.line)
+    self.object:set_body_state            (move.standing)
+
+    self.object:set_callback (self, "move_callback", game_object.movement)
+
+    local __name, __command, __group, __member = str_split (self.object:name ())
+    self.current_animation = __member
+    self.r_command = soldier_check
+    self.need_rotate = false
+
+    if self.sounds_loaded == false then
+       self.object:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, stalker_ids.sound_script + 2)
+       self.sounds_loaded = true
+    end
+
+    if self.leader_index ~= 0 then
+       if Patrols[self.leader_index].object:alive () == false then
+          self.state = soldier_alarm
+          self:set_alarm ()
+          --printf ("Set alarm for soldier %s", self.object:name ())
+       end
+    else
+       --printf ("Alarm not set. Leader index is %d", self.leader_index)
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
+function action_soldier:talk (num_phrase)
+    self.object:play_sound (stalker_ids.sound_script + 2, 1, 0, 1, 0, num_phrase)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:set_view ()
+    self.object:set_movement_type (move.stand)
+    self:set_animation ()
+    self.state = soldier_check
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:move_to_collect ()
+    local way           = patrol (self.path)
+    local position      = self.object:position ()
+    local i_nearest     = way:get_nearest (self.target_point)
+    local waypoint      = way:point (i_nearest)
+    local dir           = vector ():set (waypoint.x - position.x, waypoint.y - position.y, waypoint.z - position.z)
+    dir:normalize ()
+    self.c_waypoint = i_nearest
+    self.object:set_path_type               (game_object.level_path)
+    self.object:set_dest_level_vertex_id    (way:level_vertex_id (i_nearest))
+    self.object:set_desired_position        (way:point (i_nearest))
+    self.object:set_desired_direction       ()
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state            (anim.free)
+    self.object:set_movement_type           (move.walk)
+    self.object:set_sight                   (look.point, vector ():set (waypoint.x, waypoint.y + 1.5, waypoint.z), 0)
+    self.target_point = waypoint
+    self.state = soldier_collect
+    --printf ("Soldier set move to collect")
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:check_path ()
 
-function AddToPatrol (npc, group, command, member)
-	npc:bind_object	(this.patrol_binder (npc))
+    if self.move_direction == true then
+       if self.c_waypoint == self.waypoints then
+          self.move_direction = false
+          self.c_waypoint = count
+          self.n_waypoint = count - 1
+       else
+          self.n_waypoint = self.c_waypoint + 1
+       end
+    else
+       if self.c_waypoint == 0 then
+          self.n_waypoint = 1
+          self.move_direction = true
+       else
+          self.n_waypoint = self.c_waypoint - 1
+       end
+    end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:execute ()
+
+    action_base.execute (self)
+    self.object:set_item (object.idle, self.object:best_weapon ())
+
+    if Patrols[self.leader_index].object:alive () == false then
+       self:send_command (leader_alarm, nil)
+    end
+
+    if self.state == soldier_collect then
+       self:check_collect ()
+    elseif self.state == soldier_check then
+       self:checkpoint ()
+    elseif self.state == soldier_move then
+       self:set_move ()
+    elseif self.state == soldier_rotate then
+       self:rotate ()
+    elseif self.state == soldier_check then
+       self:checkpoint ()
+    elseif self.state == soldier_alarm then
+       self:move_to_base ()
+    end
+
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:move_to_base ()
+    local way = patrol (self.path)
+    if way:point (0):distance_to (self.object:position ()) < 3 then
+       self.object:set_movement_type (move.stand)
+       if self.object:animation_count () < 2 then
+          --printf ("Set animation")
+          self:set_animation ()
+       end
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:checkpoint ()
+
+    self.object:set_movement_type (move.stand)
+    if self.object:animation_count () == 0 then
+       self.object:clear_animations ()
+       self.c_time = device ():time_global ()
+       self.state = soldier_ready
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:rotate ()
+
+    if self.need_rotate == true then
+       local pos = patrol (self.path):point (self.n_waypoint)
+       pos.y = pos.y + 1.5
+       self.object:set_sight (look.fire_point, pos, 0)
+       if device ():time_global () - self.c_time > 1000 then
+          self.state = leader_move
+          self:set_move ()
+          self.need_rotate = false
+       end
+    else
+       self.state = soldier_move
+       self:set_move ()
+    end
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:check_collect ()
+    if self.target_point:distance_to (self.object:position ()) > 0.5 then
+       return
+    end
+    self.object:set_movement_type (move.stand)
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state (anim.free)
+    self:check_path ()
+    local pt1 = patrol (self.path):point (self.n_waypoint)
+    local pt2 = self.object:position ()
+    local dir = vector ():set (pt1.x - pt2.x, pt1.y - pt2.y, pt1.z - pt2.z)
+    dir:normalize ()
+    self.object:set_sight (look.direction, dir, 0)
+    self:set_animation ()
+    self.state = soldier_check
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:set_move ()
+    self.object:set_path_type  (game_object.patrol_path)
+    self.object:set_patrol_path (self.path, patrol.custom, patrol.continue, true)
+    self.object:set_desired_direction ()
+    self.object:set_desired_position ()
+    self.object:set_previous_point (self.c_waypoint)
+    self.object:set_start_point (self.n_waypoint)
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state (anim.free)
+    self.state = soldier_move
+    self.object:set_movement_type (move.walk)
+    self.object:set_sight (look.path_dir, nil, 0)
+    --printf ("[%d]Current waypoint %d, next waypoint %d", device ():time_global (), self.c_waypoint, self.n_waypoint)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:finalize ()
+  self.object:clear_callback (game_object.movement)
+  self.object:clear_animations ()
+  action_base.finalize (self)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:send_command (command, target)
+    --printf ("Soldier %s received command", self.object:name ())
+    if command == leader_collect then
+       --printf ("Receive command LEADER_COLLECT")
+       self.r_command = soldier_check
+       self.target_point = target
+       self:move_to_collect ()
+    elseif command == leader_move then
+       --printf ("Receive command LEADER_MOVE")
+       self.r_command = soldier_move
+       self:set_move ()
+    elseif command == leader_check then
+       --printf ("Receive command LEADER_CHECK")
+       self.state = soldier_check
+       self.r_command = soldier_check
+       self:set_animation ()
+    elseif command == leader_wait then
+       --printf ("Receive command LEADER_WAIT")
+       self.r_command = soldier_collect
+    elseif command == leader_alarm then
+       if self.state ~= soldier_alarm then
+          --printf ("Receive command LEADER_ALARM")
+          self.state = soldier_alarm
+          self:set_alarm ()
+       end
+    elseif command == leader_move_fwd then
+       --printf ("Receive command LEADER_MOVE_FORWARD")
+       self.move_direction = true
+       self:check_path ()
+    elseif command == leader_move_bwd then
+       --printf ("Receive command LEADER_MOVE_BACKWARD")
+       self.move_direction = false
+       self:check_path ()
+    end
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:set_alarm ()
+    self.n_waypoint = self.c_waypoint - 1
+    self.move_direction = false
+    self:check_path ()
+    self.object:clear_animations ()
+    self.object:set_path_type  (game_object.level_path)
+    self.object:set_path_type  (game_object.patrol_path)
+    self.object:set_patrol_path (self.path, patrol.custom, patrol.continue, true)
+    self.object:set_desired_direction ()
+    self.object:set_desired_position ()
+    self.object:set_previous_point (self.c_waypoint)
+    self.object:set_start_point (self.n_waypoint)
+    self.object:set_body_state(move.standing) -- added by Zmey: crash bug fix: always set body standing to standing when setting mental state to anim.free
+    self.object:set_mental_state (anim.danger)
+    self.object:set_movement_type (move.run)
+    self.object:set_sight (look.path_dir, nil, 0)
+
+    --printf ("Set alarm for soldier %s. Current waypoint %d, next waypoint %d", self.object:name (), self.c_waypoint, self.n_waypoint)
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:get_state ()
+    return self.state
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:set_animation ()
+
+    --self.object:clear_animations ()
+
+    self.current_animation = self.current_animation + 1
+    if self.current_animation > table.getn (animations) then
+       self.current_animation = 1
+    end
+
+    self.object:add_animation (animations[self.current_animation].anim, animations[self.current_animation].flag)
+
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_soldier:move_callback (obj, action_type, index)
+
+    if index == -1 then return end
+    local ptr = patrol (self.object:patrol ())
+    self.c_waypoint = index
+
+    if self.state == soldier_alarm then
+       return
+    end
+
+    if ptr:flag (index, 0) then
+       self.need_rotate = true
+       self.move_direction = true
+    end
+
+    if ptr:flag (index, 2) then
+       self.move_direction = false
+       self.need_rotate = true
+    end
+
+    self:check_path ()
+
 end
 
+function AddPatrolMember (object)
+
+        local ini_file = object:spawn_ini ()
+    if ini_file:section_exist ("settings") == false then
+       --printf ("Section not found")
+       return
+    end
+    --printf ("Settings section founded")
+
+    local path_name = ini_file:line_exist ("settings", "patrol_path")
+    if path_name == nil then
+       --printf ("Line PATROL_PATH in section SETTINGS not found")
+       return
+    end
+    --printf ("Patrol path for soldier %s is %s", object:name (), path_name)
+
+    local scheme = ini_file:line_exist ("settings", "scheme")
+    if scheme == nil then
+       --printf ("Line SCHEME in section SETTINGS not found")
+       return
+    end
+    --printf ("Scheme for soldier %s is %s", object:name (), scheme)
+
+    local str = ini_file:r_string ("settings", "patrol_path")
+
+    object:add_sound ("Scripts\\Patrol\\Commander1_",   20, snd_type.talk, 2, 1, stalker_ids.sound_script + 1)
+    object:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, stalker_ids.sound_script + 2)
+    object:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, stalker_ids.sound_script + 2)
+
+    local manager = object:motivation_action_manager ()
+
+    if leader == true then
+       manager:add_evaluator (property_pathend_comm, this.evaluator_const (false))
+
+       local action = this.action_path   (this.GetPatrolPath (self.npc:name ()), self.group, self.command, "action_path")
+       action:add_precondition           (world_property (stalker_ids.property_alive, true))
+       action:add_precondition           (world_property (stalker_ids.property_enemy, false))
+       action:add_effect                 (world_property (property_pathend_comm, true))
+       manager:add_action                (xr_actions_id.sidor_act_commander, self.action)
+
+       action = manager:action           (stalker_ids.action_free_no_alife)
+       action:add_precondition           (world_property (property_pathend_comm,  true))
+       action = manager:action           (stalker_ids.action_gather_items)
+       action:add_precondition           (world_property (property_pathend_comm,  true))
+    else
+        manager:add_evaluator (property_pathend_sold, this.evaluator_const (false))
+        local action = this.action_soldier(this.GetPatrolPath (self.npc:name ()), "action_soldier")
+        action:add_precondition         (world_property (stalker_ids.property_alive, true))
+        action:add_precondition         (world_property (stalker_ids.property_enemy, false))
+        action:add_effect               (world_property (property_pathend_sold, true))
+        manager:add_action              (xr_actions_id.sidor_act_soldier, self.action)
+
+        action = manager:action         (stalker_ids.action_free_no_alife)
+        action:add_precondition         (world_property (property_pathend_sold,  true))
+        action = manager:action         (stalker_ids.action_gather_items)
+        action:add_precondition         (world_property (property_pathend_sold,  true))
+    end
+
+end
