@@ -46,6 +46,7 @@ public:
 	xr_vector<R_dsgraph::_LodItem>								lstLODs;
 	xr_vector<int>												lstLODgroups;
 	xr_vector<ISpatial*>										lstRenderables;
+	xr_vector<ISpatial*>										lstSpatial;
 	xr_vector<IRender_Visual*>									lstVisuals;
 public:
 	virtual		void					set_Transform			(Fmatrix*	M	)				{ VERIFY(M);	val_pTransform = M;	}

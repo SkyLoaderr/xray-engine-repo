@@ -76,13 +76,13 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	
 	// Select nearest lights
 	Fvector					bb_size	=	{fRadius,fRadius,fRadius};
-	g_SpatialSpace->q_box				(RImplementation.lstRenderables,0,STYPE_LIGHTSOURCE,pos,bb_size);
+	g_SpatialSpace->q_box				(RImplementation.lstSpatial,0,STYPE_LIGHTSOURCE,pos,bb_size);
 	add									(RImplementation.L_DB->sun_base);
 
 	// Process selected lights
-	for (u32 o_it=0; o_it<RImplementation.lstRenderables.size(); o_it++)
+	for (u32 o_it=0; o_it<RImplementation.lstSpatial.size(); o_it++)
 	{
-		ISpatial*	spatial		= RImplementation.lstRenderables[o_it];
+		ISpatial*	spatial		= RImplementation.lstSpatial[o_it];
 		light*		source		= dynamic_cast<light*>	(spatial);
 		if (0==source)			continue;
 		float	R				= fRadius+source->range;
