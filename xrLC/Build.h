@@ -79,26 +79,21 @@ public:
 	void	BuildRapid		();
 
 	void	xrPhase_ResolveMaterials();
-	void	xrPhase_UVmap	();
+	void	xrPhase_UVmap			();
+	void	xrPhase_Subdivide		();
+	void	xrPhase_MergeLM			();
+	void	xrPhase_MergeGeometry	();
 
-	void	ResolveMaterials();
-	void	BuildUVmap		();
-	void	MergeLM			();
 	void	SoftenLights	();
 	void	ImplicitLighting();
 	void	Light			();
 	void	LightVertex		();
 
-	void	MergeGeometry	();
-
 	void	Flex2OGF		();
 	void	LightPatches	();
 
 	void	BuildSectors	();
-	void	BuildHierrarhy	();
 
-	void	BuildPVS		();
-	void	BuildRelevance	(CFS_Base &fs);
 	void	SaveLights		(CFS_Base &fs);
 	void	SaveTREE		(CFS_Base &fs);
 	void	SaveSectors		(CFS_Base &fs);
