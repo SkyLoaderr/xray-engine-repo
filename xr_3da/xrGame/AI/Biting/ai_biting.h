@@ -408,12 +408,12 @@ public:
 
 	bool RayPickEnemy(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
+	CMotionStats	*MotionStats;
+
 	//////////////////////////////////////////////////////////////////////////
 	// DEBUG
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
-	CMotionStats	*MotionStats;
-
 	virtual void	OnRender();
 #endif
 

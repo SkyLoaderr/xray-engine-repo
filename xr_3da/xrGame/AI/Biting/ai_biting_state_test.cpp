@@ -66,7 +66,9 @@ void CBitingSearchEnemy::Init()
 	search_vertex_id = ai().level_graph().check_position_in_direction(m_tEnemy.node_id, m_tEnemy.position, next_pos);
 	if (search_vertex_id == u32(-1)) search_vertex_id = m_tEnemy.node_id;
 
+#ifdef DEBUG
 	pMonster->HDebug->M_Add(0,"INIT !!! SEARCH ENEMY ",D3DCOLOR_XRGB(255,0,0));
+#endif
 
 	pMonster->MoveToTarget(ai().level_graph().vertex_position(search_vertex_id),search_vertex_id);
 	m_tAction = ACTION_SEARCH_ENEMY_INIT;
@@ -109,6 +111,7 @@ void CBitingSearchEnemy::Run()
 			bNeedRebuildPath = true;
 		DO_IN_TIME_INTERVAL_END();
 
+	
 		if (!pMonster->MotionStats->is_good_motion(5) || !pMonster->IsMovingOnPath()) {
 			bNeedRebuildPath = true;
 		}
@@ -129,7 +132,9 @@ void CBitingSearchEnemy::Run()
 
 void CBitingSearchEnemy::Done()
 {
+#ifdef DEBUG
 	pMonster->HDebug->M_Clear();
 	pMonster->HDebug->L_Clear();
+#endif
 }
 

@@ -25,7 +25,9 @@ CAI_Biting::CAI_Biting()
 	m_tSelectorCommon				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 
 
+#ifdef DEBUG
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
+#endif
 	MotionStats						= xr_new<CMotionStats> (this);
 }
 
@@ -37,7 +39,10 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_tSelectorWalkAround);
 	xr_delete(m_tSelectorCommon);
 
+#ifdef DEBUG
 	xr_delete(HDebug);
+#endif
+
 	xr_delete(MotionStats);
 }
 
@@ -339,8 +344,11 @@ void CAI_Biting::UpdateCL()
 
 
 	m_pPhysics_support->in_UpdateCL();
-	
+
+#ifdef DEBUG
 	HDebug->M_Update();
+#endif
+	
 }
 
 void CAI_Biting::shedule_Update(u32 dt)
@@ -391,6 +399,7 @@ void CAI_Biting::OnRender()
 {
 	inherited::OnRender();
 	
+
 	HDebug->L_Update();
 	HDebug->HT_Update();
 }

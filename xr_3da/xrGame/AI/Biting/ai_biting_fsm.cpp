@@ -78,7 +78,10 @@ void CAI_Biting::Think()
 //	Msg("* Control Sound:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	// Debuging
+#ifdef DEBUG
 	HDebug->SetActive						(true);
+#endif
+	
 }
 
 
