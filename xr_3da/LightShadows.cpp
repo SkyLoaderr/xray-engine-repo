@@ -222,9 +222,48 @@ void CLightShadows::calculate	()
 	
 	// Finita la comedia
 	Device.Statistic.TEST.End	();
-
+	
 	Device.set_xform_project	(Device.mProject);
 	Device.set_xform_view		(Device.mView);
+}
+
+IC float PLC_energy	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+{
+	Fvector Ldir;
+	if (L->type==D3DLIGHT_DIRECTIONAL)
+	{
+		// Cos
+		Ldir.invert	(L->direction);
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+		
+		// Trace Light
+		float A		= D*E;
+		return A;
+	} else {
+		// Distance
+		float sqD	= P.distance_to_sqr(L->position);
+		if (sqD > (L->range*L->range))	return 0;
+		
+		// Dir
+		Ldir.sub	(L->position,P);
+		Ldir.normalize_safe();
+		float D		= Ldir.dotproduct( N );
+		if( D <=0 )						return 0;
+		
+		// Trace Light
+		float R		= sqrtf(sqD);
+		float A		= D*E / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+		return A;
+	}
+}
+
+IC DWORD PLC_calc	(Fvector& P, Fvector& N, xrLIGHT* L, float E)
+{
+	float	A		= 1.f-PLC_energy	(P,N,L,E);
+	int		iA		= iCeil(255.f*A);
+	clamp	(iA,0,255);
+	return	D3DCOLOR_RGBA	(iA,iA,iA,iA);
 }
 
 void CLightShadows::render	()
@@ -289,18 +328,20 @@ void CLightShadows::render	()
 			// Clip polygon
 			sPoly*		clip	= F.ClipPoly(A,B);
 			if (0==clip)		continue;
-
+			
 			// Triangulate poly 
+			float lE			= S.L->diffuse.magnitude_rgb	();
 			for (int v=2; v<clip->size(); v++)
 			{
 				Fvector& v1		= (*clip)[0];
 				Fvector& v2		= (*clip)[v-1];
 				Fvector& v3		= (*clip)[v];
-				Fvector	 T;
+				Fvector		T;
+				float		l;
 				
-				S.M.transform(T,v1); pv->set(v1,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v2); pv->set(v2,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v3); pv->set(v3,C,(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v1); pv->set(v1,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v2); pv->set(v2,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v3); pv->set(v3,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 				batch++;
 				if (batch==batch_size)	{
 					// Flush
