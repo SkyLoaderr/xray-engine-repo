@@ -530,7 +530,7 @@ void CAI_Stalker::SearchEnemy()
 					m_iCurrentSuspiciousNodeIndex = -1;
 				}
 			}
-			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && bfIf_I_SeePosition(m_tSavedEnemyPosition))
+			if ((getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) != -1) && (bfIf_I_SeePosition(m_tSavedEnemyPosition) || (AI_NodeID == m_dwSavedEnemyNodeID)))
 				m_tActionState = eActionStateWatchGo;
 			else {
 				bool bOk = false;	
