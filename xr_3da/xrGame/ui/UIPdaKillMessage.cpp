@@ -39,38 +39,6 @@ void CUIPdaKillMessage::Init(KillMessageStruct& msg){
 	width = InitText(m_killer_name, x, msg.m_killer);		x += width + INDENT;
 			InitIcon(m_ext_info,	x, msg.m_ext_info);
 
-//	int		y = 0;
-//	int		selfHeight = GetHeight();
-//	float	scale = 0;
-//	Irect	rect;
-//	CGameFont* pFont = GetFont();
-
-    // firtst of all init victim name
-	//int width = (int)pFont->SizeOf(*msg.m_victim.m_name);
-	//int height = (int)pFont->CurrentHeight();
-	//y = (selfHeight - height)/2;
-
-	//m_victim_name.Init(x, y, width, height);
-	//m_victim_name.SetText(*msg.m_victim.m_name);
-	//m_victim_name.SetTextColor(msg.m_victim.m_color);
-
-    // init initiator icon
-
-	
-
-//	y = 0;
-	
-	//rect = msg.m_initiator.m_rect;
-	//width = rect.width();
-	//height = rect.height();
-	//scale = ((float)selfHeight)/((float)height);
-	//m_initiator.Init(x, y, width, height);
-	//m_initiator.SetOriginalRect(msg.m_initiator.m_rect);
-	//m_initiator.SetShader(msg.m_initiator.m_shader);
-	//m_initiator.SetTextureScaleXY(scale, scale);
-
-	
-
 	m_killer_name.SetText(*msg.m_killer.m_name);
 
     
