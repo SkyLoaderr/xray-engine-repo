@@ -67,7 +67,7 @@ void light::set_active		(bool a)
 	}
 }
 
-void	light::set_position	(const Fvector& P)
+void	light::set_position		(const Fvector& P)
 { 
 	if (position.similar(P))	return;
 	position.set				(P);
@@ -76,3 +76,12 @@ void	light::set_position	(const Fvector& P)
 	spatial.radius				= range;
 	spatial_move				();
 }
+
+void	light::set_range		(float R)			{
+	if (fsimilar(range,R))		return;
+	range						= R;
+
+	spatial.center				= P;
+	spatial.radius				= range;
+	spatial_move				();
+};

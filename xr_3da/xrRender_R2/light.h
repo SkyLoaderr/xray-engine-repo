@@ -31,7 +31,7 @@ public:
 	virtual void	set_position	(const Fvector& P);
 	virtual void	set_direction	(const Fvector& D)				{ direction.normalize(D);	}
 	virtual void	set_cone		(float angle)					{ cone	= angle;			}
-	virtual void	set_range		(float R)						{ range = R;				}
+	virtual void	set_range		(float R);
 	virtual void	set_color		(const Fcolor& C)				{ color.set(C);				}
 	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1);		}
 	virtual void	set_texture		(LPCSTR name);
