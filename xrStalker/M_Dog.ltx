@@ -4,9 +4,9 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist|
 ;---------------------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0 =	  	0.45,		8,	    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_0 =	  	0.35,		8,	    30,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
 ;Both Legs strike with bite
-stand_attack_1 =	  	0.45,		12,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
+stand_attack_1 =	  	0.35,		12,	    50,        0.0, 1.0, 0.0,		 -1.6, 1.6, -1.6, 1.6,				 3.5
 
 [m_dog_attack_effector]
 
@@ -106,11 +106,11 @@ Accel_Calm		  	= 2.5
 Accel_Aggressive		= 20.0
 
 ;attack parameters
-MinAttackDist		= 0.5
-MaxAttackDist		= 2.2
+MinAttackDist		= 0.9
+MaxAttackDist		= 1.8
 hit_type = wound
 as_min_dist				= 0.1
-as_step					= 0.4
+as_step					= 0.3
 
 
 transparency_threshold  = 0.25
