@@ -236,7 +236,7 @@ namespace RAPID {
 		
 		// make the call
 		if (ray_flags&RAY_ONLYNEAREST)	raypick_fast_nearest(o1->b, rmodel_C, rmodel_D);
-		else							raypick_fast(o1->b, rmodel_C, rmodel_D);
+		else							raypick_fast		(o1->b, rmodel_C, rmodel_D);
 		R_END;
 	}
 }
