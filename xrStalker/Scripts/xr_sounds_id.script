@@ -34,6 +34,7 @@ zmey_robber_do_what_i_say   = --[[zmey_robber_base +]] 5 -- Молодец, будешь жить
 zmey_robber_will_shoot      = --[[zmey_robber_base +]] 6 -- Пристрелю!
 zmey_camper_base            = sound_zmey_base + 200
 zmey_sleeper_base           = sound_zmey_base + 300
+zmey_talker_base            = sound_zmey_base + 400
 
 -- Чугай
 chugai_sounds          = global_sounds + 4000
