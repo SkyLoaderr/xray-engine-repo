@@ -27,7 +27,7 @@ typedef CSProblemSolver::CState													_index_type;
 typedef SBaseParameters<_dist_type,_index_type,_iteration_type>	CBaseParameters;
 CRandom								random;
 
-CState random_condition(int _max = 100, int _min = 5, int __max = 2, int __min = 1)
+CState random_condition(int _max = 100, int _min = 20, int __max = 2, int __min = 1)
 {
 	CState		result;
 	for (u32 i=0; i<world_state_dimension; ++i)
@@ -116,8 +116,8 @@ void test_goap	()
 		graph_engine->search			(problem_solver,CState(),problem_solver.target_state(),&path,CBaseParameters());
 #endif
 //		if (ii == 137) {
-			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
-			FlushLog					();
+//			Msg							("Finished %5d (try %I64d, %f sec, %d vertices)",jj,ii,CPU::cycles2seconds*(CPU::GetCycleCount() - start),graph_engine->solver_algorithm().data_storage().get_visited_node_count());
+//			FlushLog					();
 //		}
 
 		xr_vector<_edge_type>::iterator	I = path.begin(), B = I;
