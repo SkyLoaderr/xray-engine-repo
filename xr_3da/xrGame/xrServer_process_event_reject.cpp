@@ -27,7 +27,7 @@ void	xrServer::Process_event_reject	(NET_Packet& P, DPNID sender, u32 time, u16 
 			R_ASSERT				(0xffff != e_entity->ID_Parent);
 			e_entity->ID_Parent		= 0xffff;
 			xr_vector<u16>& C			= e_parent->children;
-			xr_vector<u16>::iterator c	= find	(C.begin(),C.end(),id_entity);
+			xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),id_entity);
 			VERIFY					(c!=C.end());
 			C.erase					(c);
 

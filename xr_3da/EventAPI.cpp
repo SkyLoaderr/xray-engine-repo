@@ -32,7 +32,7 @@ public:
 	}
 	void	Detach(CEventBase* H)
 	{
-		xr_vector<CEventBase*>::iterator I = find(Handlers.begin(),Handlers.end(),H);
+		xr_vector<CEventBase*>::iterator I = std::find(Handlers.begin(),Handlers.end(),H);
 		if (I!=Handlers.end())
 			Handlers.erase(I);
 	}

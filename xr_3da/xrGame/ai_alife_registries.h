@@ -383,7 +383,7 @@ public:
 		CALifeTrader *tpALifeTrader = dynamic_cast<CALifeTrader *>(tpALifeDynamicObject);
 		if (tpALifeTrader) {
 			m_tpTraders.push_back(tpALifeTrader);
-			sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
+			std::sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
 		}
 	};
 };
