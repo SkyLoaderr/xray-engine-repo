@@ -860,7 +860,7 @@ void CUIMainIngameWnd::AddGameMessage	(CInventoryOwner* pSender, LPCSTR TextMess
 {
 	CUIPdaMsgListItem* pItem = NULL;
 	pItem = xr_new<CUIPdaMsgListItem>();
-	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, true); 
+	UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, 0); 
 	UIPdaMsgListWnd.ScrollToBegin();
 
 	pItem->SetValue(m_dwMaxShowTime);
@@ -955,7 +955,7 @@ void CUIMainIngameWnd::OnNewsReceived(const CALifeNews &newsItem)
 	{
 		CUIPdaMsgListItem* pItem = NULL;
 		pItem = xr_new<CUIPdaMsgListItem>();
-		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem, true); 
+		UIPdaMsgListWnd.AddItem<CUIListItem>(pItem); 
 		UIPdaMsgListWnd.ScrollToBegin();
 
 		pItem->InitCharacter(dynamic_cast<CInventoryOwner*>(Level().CurrentEntity()));

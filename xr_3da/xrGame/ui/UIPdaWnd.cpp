@@ -88,8 +88,8 @@ void CUIPdaWnd::Init()
 	
 	// Oкно новостей
 //	UIMainPdaFrame.AttachChild(&UIDiaryWnd);
-//	UIDiaryWnd.Init();
-//	UIDiaryWnd.SetMessageTarget(this);
+	UIDiaryWnd.Init();
+	UIDiaryWnd.SetMessageTarget(this);
 
 	// Окно энциклопедии
 	UIMainPdaFrame.AttachChild(&UIEncyclopediaWnd);
