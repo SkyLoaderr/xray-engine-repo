@@ -466,7 +466,7 @@ void CMonsterSquad::SetupMemeberPositions_TargetDir(MEMBER_ENEMY_VEC &members, C
 	// обработать ближний элемент
 	first.pE		= members.back().member;
 	first.p_from	= first.pE->Position();
-	first.yaw		= PI;
+	first.yaw		= 0;
 	members.pop_back();
 
 	lines.push_back(first);
