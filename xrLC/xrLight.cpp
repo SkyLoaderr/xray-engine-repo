@@ -6,6 +6,30 @@
 xrCriticalSection		task_CS;
 vector<int>				task_pool;
 
+class CMUThread : public CThread
+{
+public:
+	CMUThread	(DWORD ID) : CThread(ID)
+	{
+		thMessages	= FALSE;
+	}
+	virtual void	Execute()
+	{
+		u32 m;
+
+		// Light models
+		for (m=0; m<mu_models.size(); m++)
+			mu_models[m]->calc_lighting	();
+
+		// Light references
+		for (m=0; m<mu_refs.size(); m++)
+		{
+			mu_refs[m]->calc_lighting	();
+			thProgress					= (float(m)/float(mu_refs.size()));
+		}
+	}
+};
+
 class CLMThread : public CThread
 {
 public:
@@ -51,6 +75,22 @@ public:
 
 void CBuild::Light()
 {
+	//****************************************** Starting MU
+	CThreadManager	mu;
+	mu.start		(xr_new<CMUThread> (0));
+
+	//****************************************** Implicit
+	FPU::m64r		();
+	Phase			("Implicit lighting...");
+	mem_Compact		();
+
+	ImplicitLighting();
+
+	//****************************************** Lmaps
+	FPU::m64r		();
+	Phase			("Lighting...");
+	mem_Compact		();
+
 	// Randomize deflectors
 	random_shuffle	(g_deflectors.begin(),g_deflectors.end());
 	for (u32 dit = 0; dit<g_deflectors.size(); dit++)	task_pool.push_back(dit);
@@ -58,11 +98,24 @@ void CBuild::Light()
 	// Main process (4 threads)
 	Status	("Lighting...");
 	CThreadManager	threads;
-	const	DWORD	thNUM	= 3;
-	DWORD	dwTimeStart		= timeGetTime();
-	for (int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
+	const	DWORD	thNUM	= 4;
+	u32	dwTimeStart	= timeGetTime();
+	for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 	threads.wait	(500);
-	clMsg	("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+	clMsg			("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+
+	//****************************************** Lmaps
+	FPU::m64r		();
+	Phase			("Vertex Lighting...");
+	mem_Compact		();
+
+	LightVertex		();
+
+	//****************************************** Wait for MU
+	FPU::m64r		();
+	Phase			("Waiting for completition of MU-Lighting...");
+	mem_Compact		();
+	mu.wait			(100);
 }
 
 //-----------------------------------------------------------------------
@@ -184,7 +237,7 @@ void CBuild::LightVertex()
 
 		VL_faces->push_back					(F);
 	}
-	clMsg("%d/%d selected.",VL_faces->size(),g_faces.size());
+	clMsg	("%d/%d selected.",VL_faces->size(),g_faces.size());
 
 	// Start threads, wait, continue --- perform all the work
 	Status					("Calculating...");
@@ -194,13 +247,6 @@ void CBuild::LightVertex()
 	DWORD	last			= VL_faces->size()-stride*(NUM_THREADS-1);
 	for (DWORD thID=0; thID<NUM_THREADS; thID++)
 		Threads.start(xr_new<CVertexLightThread>(thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride)));
-
-	// Light models
-	for (u32 m=0; m<mu_refs.size(); m++)
-	{
-		mu_refs[m]->calc_lighting	();
-		Progress					(float(m)/float(mu_refs.size()));
-	}
 
 	// Wait other threads
 	Threads.wait			();

@@ -75,6 +75,8 @@ public:
 	v_vertices			m_vertices;
 	v_faces				m_faces;
 	v_subdivs			m_subdivs;
+
+	vector<Fcolor>		color;
 private:
 	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*			load_create_vertex	(Fvector& P);
@@ -84,6 +86,7 @@ public:
 	void				calc_materials		();
 	void				calc_faceopacity	();
 	void				calc_lighting		(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, LPCSTR L_layer);
+	void				calc_lighting		();
 };
 
 class xrMU_Reference

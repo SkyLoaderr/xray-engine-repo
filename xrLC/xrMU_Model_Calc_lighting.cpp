@@ -83,7 +83,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		vN.normalize			();
 
 		// multi-sample
-		const int n_samples		= 16;
+		const int n_samples		= 8;
 		for (u32 sample=0; sample<n_samples; sample++)
 		{
 			float					a	= 0.2f * float(sample) / float(n_samples);
@@ -199,7 +199,13 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	}
 }
 
-void xrMU_Reference::calc_lighting()
+void xrMU_Model::calc_lighting		()
+{
+	clMsg				("model '%s' - reference lighted.",m_name);
+	calc_lighting		(color,Fidentity,0,0);
+}
+
+void xrMU_Reference::calc_lighting	()
 {
 	model->calc_lighting(color,xform,RCAST_Model,0);
 }

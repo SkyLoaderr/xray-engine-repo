@@ -385,23 +385,10 @@ void CBuild::Run	(string& P)
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
 	for (u32 m=0; m<mu_models.size(); m++) mu_models[m]->calc_faceopacity();
 
-	// Implicit
-	FPU::m64r		();
-	Phase			("Implicit lighting...");
-	mem_Compact		();
-	ImplicitLighting();
-
 	// All lighting
-	FPU::m64r		();
-	Phase			("Lighting...");
-	mem_Compact		();
 	Light			();
-	
-	FPU::m64r		();
-	Phase			("Calculating vertex lighting...");
-	mem_Compact		();
-	LightVertex		();
 
+	// 
 	FPU::m64r		();
 	Phase			("Destroying collision model...");
 	mem_Compact		();
