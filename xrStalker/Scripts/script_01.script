@@ -117,6 +117,8 @@ function main()
                 	break		
 		end
 		wait()			
+			stalker1:script	(false, script_01.script_name())
+			stalker2:script	(false, script_01.script_name())
 	end
 
 	while true do		
