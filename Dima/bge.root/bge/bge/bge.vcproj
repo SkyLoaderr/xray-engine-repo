@@ -294,6 +294,22 @@
 			<Filter
 				Name="file_system"
 				>
+				<Filter
+					Name="in_stream"
+					>
+					<File
+						RelativePath=".\gtl\in_stream.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="out_stream"
+					>
+					<File
+						RelativePath=".\gtl\out_stream.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="network"
@@ -2488,6 +2504,22 @@
 				>
 				<File
 					RelativePath=".\gtl\id_generator.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="smart_container"
+				>
+				<File
+					RelativePath=".\gtl\smart_container.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\gtl\smart_container.h"
+					>
+				</File>
+				<File
+					RelativePath=".\gtl\smart_container_types.h"
 					>
 				</File>
 			</Filter>
