@@ -19,7 +19,7 @@ end
 class "base_dialog" (CUIScriptWnd)
 
 function base_dialog:__init() super()
-	self:InitControls("base dialog")
+	
 end
 
 function base_dialog:__finalize()

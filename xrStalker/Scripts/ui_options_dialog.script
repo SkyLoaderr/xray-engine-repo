@@ -15,7 +15,7 @@ function main()
 end
 
 
-class "options_dialog" (CUIScriptWnd)
+class "options_dialog" (base_dialog)
 
 function options_dialog:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
@@ -33,88 +33,49 @@ function options_dialog:SetClGame(game_cl)
 end
 
 function options_dialog:InitControls()
+	base_dialog.InitControls(self, "Options")
 
 	----- DATA ----
-	local indent          = 35
-	local button_indent   = 7
-	local screen          = {width = 1024,height = 768}	
-	local main_rect       = {x = 0,
-							 y = 0,
-							 width = 600, 
-							 height = 400}	
-	main_rect.x = (screen.width - main_rect.width)/2
-	main_rect.y = (screen.height - main_rect.height)/2
-	--local caption_rect    = {x = -20,      y = -50,      width = main_rect.width, height = indent*2}
-	local captiontxt_rect = {x = 60, --caption_rect.width/2,
-							 y = -60, --caption_rect.height/2,
-							 width = 0,
-							 height = 0}
-	     --->> BUTTONS
-	local btn_rect = {x = 0, y = 0, width = 135, height = 40}
-		  btn_rect.x = indent --(main_rect.width - btn_rect.width)/2
-	local btn_video_rect  = {x = btn_rect.x,
-							 y = indent,
+		----- BUTTONS --->>>
+	local btn_video_rect  = {x = self.left_aling_x,
+							 y = self.top_align_y,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
-	local btn_sound_rect  = {x = btn_rect.x,
+	local btn_sound_rect  = {x = self.left_aling_x,
 							 y = btn_video_rect.y + btn_video_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
-	local btn_game_rect   = {x = btn_rect.x,
+	local btn_game_rect   = {x = self.left_aling_x,
 							 y = btn_sound_rect.y + btn_sound_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	
-	local btn_control_rect= {x = btn_rect.x,
+	local btn_control_rect= {x = self.left_aling_x,
 							 y = btn_game_rect.y + btn_game_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
-	-- Bottom right align
-	local btn_cancel_rect = {x = 0,
-							 y = 0,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
-	btn_cancel_rect.x = main_rect.width - btn_cancel_rect.width - indent
-	btn_cancel_rect.y = main_rect.height - btn_cancel_rect.height/2
-	local btn_accept_rect = {x = 0,
+		----- Bottom right align --->>>
+	local btn_cancel_rect = {x = self.btn_special_rect.x,
+							 y = self.btn_special_rect.y,
+							 width = self.btn_special_rect.width,
+							 height = self.btn_special_rect.height}
+							 
+	local btn_accept_rect = {x = btn_cancel_rect.x - self.btn_special_rect.width - indent, 
 							 y = btn_cancel_rect.y,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
-	btn_accept_rect.x = btn_cancel_rect.x - btn_accept_rect.width - indent
-
-	local message_rect = {x = 0, y = 0, width = 400, height = 300}
+							 width = self.btn_special_rect.width,
+							 height = self.btn_special_rect.height}
 	
 	----- CODE -------
-	
-	-- init self position and size
-	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
-	
-	-- MAIN FRAME WINDOW
-	local main_frame = CUIFrameWindow()
-	main_frame:SetAutoDelete(true)              --parent will delete this item in destructor
-	main_frame:SetWindowName("main_frame")
-	main_frame:Init("ui\\ui_frame",0,0,main_rect.width, main_rect.height)    
-	main_frame:InitLeftTop("ui\\ui_frame_over_lt", 20, 45)
-	self:AttachChild(main_frame)
-	
-	-- CAPTION --
+		
 --[[	local wnd_caption = CUIFrameWindow()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
 	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
 	main_frame:AttachChild(wnd_caption)
 	]]
-	local txt_caption = CUIStatic()
-	txt_caption:SetAutoDelete(true)
-	txt_caption:SetWindowName("txt_caption")
-	txt_caption:SetFont(GetFontLetterica25())
-	txt_caption:SetTextAlign(CGameFont.alLeft)
-	txt_caption:SetText("Options")
-	txt_caption:SetTextAlign(CGameFont.alCenter)
-	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, captiontxt_rect.width, captiontxt_rect.height)
-	main_frame:AttachChild(txt_caption)	
+	
 
 -------- BUTTONS ------------------------------- 
 	--------->> VIDEO
