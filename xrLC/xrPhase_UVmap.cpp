@@ -51,8 +51,9 @@ void	CBuild::xrPhase_UVmap()
 	// Main loop
 	Status					("Processing...");
 	g_deflectors.reserve	(64*1024);
-	float p_cost	= 1.f / float(g_XSplit.size());
-	float p_total	= 0.f;
+	float		p_cost	= 1.f / float(g_XSplit.size());
+	float		p_total	= 0.f;
+	vecFace		faces_affected;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		Progress			(p_total+=p_cost);
@@ -66,6 +67,8 @@ void	CBuild::xrPhase_UVmap()
 		
 		//   find first poly that doesn't has mapping and start recursion
 		while (TRUE) {
+			IsolateVertices	();
+
 			// Select maximal sized poly
 			Face *	msF		= NULL;
 			float	msA		= 0;
@@ -91,8 +94,6 @@ void	CBuild::xrPhase_UVmap()
 				Deflector->OA_Export	();
 				
 				// Detach affected faces
-				vecFace		faces_affected;
-				faces_affected.reserve	(_max(256,affected));
 				faces_affected.clear	();
 				for (int i=0; i<int(g_XSplit[SP]->size()); i++) {
 					Face *F = (*g_XSplit[SP])[i];
@@ -130,7 +131,7 @@ void CBuild::mem_CompactSubdivs()
 	{
 		temp.clear			();
 		temp.assign			(g_XSplit[SP]->begin(),g_XSplit[SP]->end());
-		xr_delete				(g_XSplit[SP]);
+		xr_delete			(g_XSplit[SP]);
 		mem_Compact			();
 		g_XSplit[SP]		= xr_new<vecFace> ();
 		g_XSplit[SP]->assign(temp.begin(),temp.end());
