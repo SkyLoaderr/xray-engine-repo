@@ -1,14 +1,10 @@
 function main()
-	wait(25000)
+	wait(10000)
 
 	local 	actor = get_actor()
 	local 	stalker1 = get_level_object("m_stalker_demo0001") 
 	local 	stalker2 = get_level_object("m_stalker_demo0002") 
 	local 	stalker3 = get_level_object("m_stalker_demo0003") 
-	local 	stalker4 = get_level_object("m_stalker_demo0004") 
-	local 	stalker5 = get_level_object("m_stalker_demo0005") 
-	local 	stalker6 = get_level_object("m_stalker_demo0006") 
-
 
 	--GiveInfo(actor, 1)
 	GiveInfoViaPda(actor, stalker1, 1)
@@ -16,22 +12,6 @@ function main()
 	GiveInfoViaPda(actor, stalker2, 1)
 	wait(3000)
 	GiveInfoViaPda(actor, stalker3, 1)
-	wait(3000)
-	GiveInfoViaPda(actor, stalker4, 1)
-	wait(3000)
-	GiveInfoViaPda(actor, stalker5, 1)
-	wait(3000)
-	GiveInfoViaPda(actor, stalker6, 1)
-	wait(2000)
-	GiveInfoViaPda(actor, stalker1, 1)
-	wait(2000)
-	GiveInfoViaPda(actor, stalker2, 1)
-	wait(2000)
-	GiveInfoViaPda(actor, stalker3, 1)
-	wait(2000)
-	GiveInfoViaPda(actor, stalker4, 1)
-	wait(2000)
-
 
 	while true do
 		wait()
