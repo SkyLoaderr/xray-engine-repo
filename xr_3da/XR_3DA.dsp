@@ -484,14 +484,6 @@ SOURCE=.\_irect.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\_l_vertex.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\_lit_vertex.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\_math.cpp
 # End Source File
 # Begin Source File
@@ -544,10 +536,6 @@ SOURCE=.\_stl_extensions.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\_tl_vertex.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\_types.h
 # End Source File
 # Begin Source File
@@ -561,10 +549,6 @@ SOURCE=.\_vector3d.h
 # Begin Source File
 
 SOURCE=.\_vector4.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\_vertex.h
 # End Source File
 # Begin Source File
 
