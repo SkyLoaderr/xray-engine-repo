@@ -6,8 +6,8 @@
 //	Description : Object equality checker
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef XRAY_OBJECT_EQUALITY_CHECKER
-#define XRAY_OBJECT_EQUALITY_CHECKER
+#ifndef XRAY_OBJECT_COMPARER
+#define XRAY_OBJECT_COMPARER
 
 template <typename P>
 struct CComparer {
@@ -209,4 +209,4 @@ declare_comparer(not_equal,		std::not_equal_to);
 declare_comparer(logical_and,	std::logical_and);
 declare_comparer(logical_or,	std::logical_or);
 
-#endif // XRAY_OBJECT_EQUALITY_CHECKER
+#endif // XRAY_OBJECT_COMPARER
