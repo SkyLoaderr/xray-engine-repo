@@ -19,7 +19,7 @@ void CRender::Render		()
 	Device.Statistic.RenderCALC.Begin		();
 	r_pmask									(true,true);	// enable priority "0" and "1"
 	lstRecorded.clear						();
-	if (b_emap)	set_RecordMP				(true);
+	//if (b_emap)	set_RecordMP				(true);
 	{
 		marker									++;
 		phase									= PHASE_NORMAL;
@@ -189,24 +189,6 @@ void CRender::Render		()
 	}
 	LP_normal.sort			();
 	LP_pending.sort			();
-
-	//******* Elevation maps render
-	if (b_emap)
-	{
-		// level
-		marker									++;
-		phase									= PHASE_EMAP;
-		Target.phase_scene						();
-		for (u32 it=0; it<lstRecorded.size(); it++)	{
-			r_dsgraph_insert_static				(lstRecorded[it]);
-		}
-		for (emapslice=ps_r2_emap_slices-1; emapslice>=0; emapslice--)
-		{
-			bool	b_last				= false;
-			if		(0==emapslice)		b_last	= true;
-			r_dsgraph_render_graph		(0,b_last ? true : false);
-		}
-	}
 
 	//******* Decompression on some HW :)
 	Target.phase_decompress				();
