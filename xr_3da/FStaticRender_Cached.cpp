@@ -111,7 +111,7 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		HW.pDevice->SetVertexShader		(vs->getFVF());
 		HW.pDevice->SetStreamSource		(0,vs->getBuffer(),vs->Stride());
 		HW.pDevice->SetIndices			(is->getBuffer(),vBase);
-		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
+		HW.pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,V.vCount,iBase,dwNumPrimitives);
 
 		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
 	}
