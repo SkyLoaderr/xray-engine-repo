@@ -23,6 +23,7 @@
 #include "sound_memory_manager.h"
 #include "enemy_manager.h"
 #include "item_manager.h"
+#include "greeting_manager.h"
 #include "ai_object_location.h"
 #include "level_graph.h"
 #include "game_graph.h"
@@ -890,6 +891,11 @@ bool CCustomMonster::useful			(const CEntityAlive *object) const
 float CCustomMonster::evaluate		(const CEntityAlive *object) const
 {
 	return	(memory().enemy().evaluate(object));
+}
+
+bool CCustomMonster::useful			(const CAI_Stalker *object) const
+{
+	return	(memory().greeting().useful(object));
 }
 
 CMovementManager *CCustomMonster::create_movement_manager	()

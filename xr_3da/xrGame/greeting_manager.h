@@ -45,6 +45,7 @@ public:
 							CGreetingManager	(CCustomMonster *object);
 	virtual void			reload				(LPCSTR section);
 	virtual bool			useful				(const CAI_Stalker *object) const;
+	virtual bool			is_useful			(const CAI_Stalker *object) const;
 	virtual	float			evaluate			(const CAI_Stalker *object) const;
 	virtual void			update				();
 			void			process_greeting	();

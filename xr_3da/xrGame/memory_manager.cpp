@@ -122,7 +122,7 @@ void CMemoryManager::update			(const xr_vector<T> &objects)
 			continue;
 
 		const CAI_Stalker			*stalker = smart_cast<const CAI_Stalker*>((*I).m_object);
-		if (stalker && greeting().add(stalker))
+		if (m_stalker && stalker && greeting().add(stalker))
 			continue;
 
 		item().add					((*I).m_object);

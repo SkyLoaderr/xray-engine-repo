@@ -23,6 +23,7 @@ class CMemoryManager;
 class CMovementManager;
 class CSoundPlayer;
 class CMaterialManager;
+class CAI_Stalker;
 
 class CCustomMonster : 
 	public CEntityAlive, 
@@ -216,6 +217,7 @@ public:
 	virtual float				evaluate				(const CGameObject *object) const;
 	virtual bool				useful					(const CEntityAlive *object) const;
 	virtual float				evaluate				(const CEntityAlive *object) const;
+	virtual bool				useful					(const CAI_Stalker *object) const;
 
 private:
 	CSoundUserDataVisitor			*m_sound_user_data_visitor;

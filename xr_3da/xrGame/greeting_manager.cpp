@@ -40,6 +40,11 @@ bool CGreetingManager::useful		(const CAI_Stalker *object) const
 	return						(object->g_Alive() && !old_greeting(object));
 }
 
+bool CGreetingManager::is_useful	(const CAI_Stalker *object) const
+{
+	return						(m_object->useful(object));
+}
+
 float CGreetingManager::evaluate	(const CAI_Stalker *object) const
 {
 	return						(m_object->Position().distance_to_sqr(object->Position()));

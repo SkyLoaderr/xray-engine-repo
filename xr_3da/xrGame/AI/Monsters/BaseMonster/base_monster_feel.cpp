@@ -97,7 +97,7 @@ BOOL  CBaseMonster::feel_vision_isRelevant(CObject* O)
 	
 	// если не враг, не видит
 	CEntityAlive* entity = smart_cast<CEntityAlive*> (O);
-	if (entity && !EnemyMan.is_enemy(entity)) return FALSE;
+	if (entity && entity->g_Alive() && !EnemyMan.is_enemy(entity)) return FALSE;
 
 	return TRUE;
 }
