@@ -374,14 +374,15 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
     B->OnBtnClickEvent.bind		(this,&CActorTools::OnBoneShapeClick);
     if (BONE){
     	PropValue* V;
-        PHelper().CreateCaption		(items, PrepareKey(pref,"Bone\\Name"),					BONE->Name());
-		PHelper().CreateChoose		(items,	PrepareKey(pref,"Bone\\Game Material"),			&BONE->game_mtl, smGameMaterial);
-        PHelper().CreateFloat	 	(items, PrepareKey(pref,"Bone\\Mass"),					&BONE->mass, 			0.f, 10000.f);
+        PHelper().CreateCaption		(items, PrepareKey(pref,"Bone\\Name"),						BONE->Name());
+//.		PHelper().CreateCaption		(items, PrepareKey(pref,"Bone\\Influence"),					ref_str().sprintf("%d vertices",0));
+		PHelper().CreateChoose		(items,	PrepareKey(pref,"Bone\\Game Material"),				&BONE->game_mtl, smGameMaterial);
+        PHelper().CreateFloat	 	(items, PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
         PHelper().CreateVector		(items, PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
-        V=PHelper().CreateVector 	(items, PrepareKey(pref,"Bone\\Bind Position"),			&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent.bind	(this,&CActorTools::OnBindTransformChange);
-        V=PHelper().CreateAngle3 	(items, PrepareKey(pref,"Bone\\Bind Rotation"),			&BONE->_RestRotate());						V->OnChangeEvent.bind	(this,&CActorTools::OnBindTransformChange);
+        V=PHelper().CreateVector 	(items, PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent.bind	(this,&CActorTools::OnBindTransformChange);
+        V=PHelper().CreateAngle3 	(items, PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent.bind	(this,&CActorTools::OnBindTransformChange);
         PHelper().CreateFlag16		(items, PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
-        PHelper().CreateFlag16		(items, PrepareKey(pref,"Bone\\Flags\\Remove After Break"),&BONE->shape.flags,SBoneShape::sfRemoveAfterBreak);
+        PHelper().CreateFlag16		(items, PrepareKey(pref,"Bone\\Flags\\Remove After Break"),	&BONE->shape.flags,SBoneShape::sfRemoveAfterBreak);
 		V=PHelper().CreateToken16	(items,	PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types);			V->OnChangeEvent.bind	(this,&CActorTools::OnShapeTypeChange);
         switch (BONE->shape.type){
         case SBoneShape::stBox:
