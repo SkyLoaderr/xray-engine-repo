@@ -202,7 +202,7 @@ void CEnvironment::RenderFirst	()
 	// Render skybox/plane
 	{
 		::Render->rmFar				();
-		Fmatrix						mSky,m0,m1;
+		Fmatrix						mSky;
 		mSky.translate				(Device.vCameraPosition);
 		RCache.set_xform_world		(mSky);
 
