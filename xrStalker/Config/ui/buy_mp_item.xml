@@ -2,8 +2,8 @@
 <!-- ITEM INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- NAME -->
-	<static x="20" y="10" width="240" height="60">
-		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
+	<static x="20" y="197" width="240" height="60">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- WEIGHT -->
