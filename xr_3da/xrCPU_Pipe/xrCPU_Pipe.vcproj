@@ -354,6 +354,12 @@
 			</File>
 			<File
 				RelativePath=".\xrSkin2W_SSE.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						AssemblerOutput="3"/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<Filter

@@ -230,8 +230,8 @@ void CGlowManager::Render()
 			for (; pos<end; pos++)
 			{
 				// Cull invisible 
-				CGlow&	G				= *Selected[pos];
-				if (G.fade<=1.f)		continue;
+				CGlow&	G					= *Selected[pos];
+				if (G.fade<=1.f)			continue;
 
 				// Now perform dotproduct if need it
 				float	scale	= 1.f, dist_sq;
@@ -242,7 +242,7 @@ void CGlowManager::Render()
 					dir.div			(_sqrt(dist_sq));
 					scale			= dir.dotproduct(G.direction);
 				}
-				if (G.fade*scale<=1.f)	continue;
+				if (G.fade*scale<=1.f)		continue;
 
 				// Now fade glows directly in front of us
 				TL.transform	(G.spatial.center,Device.mFullTransform);
