@@ -12,10 +12,10 @@ IC	bool CCoverManager::edge_vertex		(u32 index)
 {
 	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
 	return					(
-		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < 17)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < 17)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < 17)) ||
-		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < 17))
+		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < 12))
 	);
 }
 
