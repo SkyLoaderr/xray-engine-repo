@@ -234,8 +234,9 @@ IC	bool build_circle_trajectory(
 	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
 		Fvector			t;
 		adjust_point	(position.center,yaw + float(i)*angle/float(n),position.radius,t);
-		if (!level_graph.inside(curr_vertex_id,t))
-			curr_vertex_id = level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
+		TIMER_START(BCT_CPID)
+		curr_vertex_id	= level_graph.check_position_in_direction(curr_vertex_id,curr_pos,t);
+		TIMER_STOP(BCT_CPID)
 		if (!level_graph.valid_vertex_id(curr_vertex_id))
 			return		(false);
 		if (path) {
@@ -624,8 +625,8 @@ void test_smooth_path(LPCSTR name)
 
 	RESET_ALL_TIMERS;
 
-//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	TIMER_START					(BuildDetailPath);
@@ -634,8 +635,8 @@ void test_smooth_path(LPCSTR name)
 	}
 	TIMER_STOP					(BuildDetailPath);
 	
-//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-//	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+	SetPriorityClass			(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
 	PRINT_TIMERS;
 
