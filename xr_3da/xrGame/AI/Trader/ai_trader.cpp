@@ -110,33 +110,33 @@ void CAI_Trader::OnEvent		(NET_Packet& P, u16 type)
 	CObject* Obj;
 
 	switch (type) {
-//		case GE_OWNERSHIP_TAKE:
-//			P.r_u16		(id);
-//			Obj = Level().Objects.net_Find	(id);
-//			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
-//			break;
-//		case GE_OWNERSHIP_REJECT:
-//			P.r_u16		(id);
-//			Obj = Level().Objects.net_Find	(id);
-//			if(m_inventory.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
-//			break;
+		case GE_TRADE_BUY:
+		case GE_OWNERSHIP_TAKE:
+			P.r_u16		(id);
+			Obj = Level().Objects.net_Find	(id);
+			if(g_Alive() && m_inventory.Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
+			break;
+		case GE_TRADE_SELL:
+		case GE_OWNERSHIP_REJECT:
+			P.r_u16		(id);
+			Obj = Level().Objects.net_Find	(id);
+			if(m_inventory.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
+			break;
 		case GE_TRANSFER_AMMO:
 			break;
 		
-		// Trade is accomplishing through 'm_trade_storage'
-		case GE_OWNERSHIP_TAKE:
-//		case GE_BUY:		// equal to GE_OWNERSHIP_TAKE
-			P.r_u16		(id);
-			Obj			= Level().Objects.net_Find	(id);
-			
-			if(g_Alive() && m_trade_storage.Take(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(this);
-			break;
-		case GE_OWNERSHIP_REJECT:
-//		case GE_SELL:
-			P.r_u16		(id);
-			Obj			= Level().Objects.net_Find	(id);
-			if	(m_trade_storage.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
-			break;
+//			// Trade is accomplishing through 'm_trade_storage'
+//		case GE_TRADE_BUY:		// equal to GE_OWNERSHIP_TAKE
+//			P.r_u16		(id);
+//			Obj			= Level().Objects.net_Find	(id);
+//			
+//			if(g_Alive() && m_trade_storage.Take(dynamic_cast<CGameObject*>(Obj), true)) Obj->H_SetParent(this);
+//			break;
+//		case GE_TRADE_SELL:
+//			P.r_u16		(id);
+//			Obj			= Level().Objects.net_Find	(id);
+//			if	(m_trade_storage.Drop(dynamic_cast<CGameObject*>(Obj))) Obj->H_SetParent(0);
+//			break;
 	}
 }
 
@@ -175,17 +175,13 @@ void CAI_Trader::shedule_Update	(u32 dt)
 {
 	inherited::shedule_Update	(dt);
 	m_inventory.Update			(dt);
-//	m_trade_storage.Update		(dt);
-
 	m_trade->UpdateTrade		();
 
 	Think();
-
 }
 
 void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
 {
-	R_ASSERT (g_Alive() && m_inventory.ActiveItem());
 	CKinematics *V	= PKinematics(Visual());
 	R1				= V->LL_BoneID("bip01_r_hand");
 	R2				= V->LL_BoneID("bip01_r_finger2");
@@ -195,8 +191,6 @@ void CAI_Trader::g_WeaponBones	(int &L, int &R1, int &R2)
 void CAI_Trader::renderable_Render	()
 {
 	inherited::renderable_Render	();
-//	if(m_inventory.ActiveItem())
-//		m_inventory.ActiveItem()->renderable_Render();
 }
 
 void CAI_Trader::g_fireParams(Fvector& P, Fvector& D)

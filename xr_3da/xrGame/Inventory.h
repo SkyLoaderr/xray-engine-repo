@@ -80,7 +80,7 @@ public:
 	virtual ~CInventory();
 
 	f32 TotalWeight();										// Вес инвенторя
-	bool Take(CGameObject *pObj);							// Взять объект. Объект попадает в рюкзак
+	bool Take(CGameObject *pObj, bool bNotActivate = false);// Взять объект. Объект попадает в рюкзак, если bNotActivate == false, то активировать объект, если у владельца инвентаря ничего не активировано (e.g. трейдер)
 	bool Drop(CGameObject *pObj);							// Выбросить объект
 	bool DropAll();											// Выбросить все
 	void ClearAll();										// Очистить всё

@@ -282,8 +282,7 @@ void CTrade::ShowArtifactPrices()
 				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
 					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);
 					l_dwAlreadyPurchased = 0;
-				}
-				else
+				}else
 					l_dwAlreadyPurchased -= (*iii).m_dwCount;
 		}
 	}
@@ -316,7 +315,6 @@ void CTrade::SellItem(int id)
 		}
 	}
 	
-
 	// id - в списке, т.е. найти первый элемент из группы в списке
 	CInventory &pThisInv		= GetTradeInv(pThis);
 	CInventory &pPartnerInv		= GetTradeInv(pPartner);
@@ -346,7 +344,7 @@ void CTrade::SellItem(int id)
 				// выбросить у себя 
 				NET_Packet				P;
 				CGameObject				*O = dynamic_cast<CGameObject *>(pThis.inv_owner);
-				O->u_EventGen			(P,GE_OWNERSHIP_REJECT,O->ID());
+				O->u_EventGen			(P,GE_TRADE_SELL,O->ID());
 				P.w_u16					(u16(l_pIItem->ID()));
 				O->u_EventSend			(P);
 
@@ -355,7 +353,7 @@ void CTrade::SellItem(int id)
 
 				// взять у партнера
 				O						= dynamic_cast<CGameObject *>(pPartner.inv_owner);
-				O->u_EventGen			(P,GE_OWNERSHIP_TAKE,O->ID());
+				O->u_EventGen			(P,GE_TRADE_BUY,O->ID());
 				P.w_u16					(u16(l_pIItem->ID()));
 				O->u_EventSend			(P);
 
@@ -373,11 +371,6 @@ CInventory &CTrade::GetTradeInv(SInventoryOwner owner)
 {
 	R_ASSERT(owner.type != TT_NONE);
 
-	return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
-	//return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_inventory) : (owner.inv_owner->m_inventory));
+	//return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
+	return (owner.inv_owner->m_inventory);
 }
-
-//
-//
-// -e -i -ltx user_jim.ltx -external -noprefetch -start server(occ_part_jim/single) client(localhost/jim)
-//

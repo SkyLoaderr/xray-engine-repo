@@ -279,7 +279,7 @@ CInventory::CInventory() {
 
 CInventory::~CInventory() {}
 
-bool CInventory::Take(CGameObject *pObj) 
+bool CInventory::Take(CGameObject *pObj, bool bNotActivate) 
 {
 	CInventoryItem *l_pIItem = dynamic_cast<CInventoryItem*>(pObj);
 	//if(l_pIItem && l_pIItem->Useful() && (l_pIItem->m_weight + TotalWeight() < m_maxWeight) && (m_ruck.size() < m_maxRuck) && (m_all.find(l_pIItem) == m_all.end())) {
@@ -318,7 +318,7 @@ bool CInventory::Take(CGameObject *pObj)
 				if(Belt(l_pIItem)) return true;
 				else return !Drop(l_pIItem);
 			}
-		} else if(m_activeSlot == 0xffffffff) Activate(l_pIItem->m_slot);
+		} else if(m_activeSlot == 0xffffffff && !bNotActivate) Activate(l_pIItem->m_slot);
 		return true;
 	}
 	return false;
