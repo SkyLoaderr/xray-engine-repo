@@ -207,8 +207,17 @@ void CUIGameDM::OnFrame()
 			{
 				if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 				{
+					HUD().pFontDI->SetAligment		(CGameFont::alCenter);
+
 					HUD().pFontDI->SetColor		(0xffffffff);
 					HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
+
+					float OldSize = HUD().pFontDI->GetSize			();
+
+					HUD().pFontDI->SetSize		(0.02f);
+					HUD().pFontDI->SetColor		(0xffffffff);
+					HUD().pFontDI->Out			(0.f,0.9f,"Press Jump to start");
+					HUD().pFontDI->SetSize		(OldSize);
 				};
 			};
 		}break;
