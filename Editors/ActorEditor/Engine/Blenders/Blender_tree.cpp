@@ -139,6 +139,10 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		C.r2_End				();
 		break;
 	case 2:		// smap-point
+		if (oBlend.value)		C.r2_Pass				("r2_shadow_point_aref","r2_shadow_point_aref");
+		else					C.r2_Pass				("r2_shadow_point_base","r2_shadow_point_base");
+		C.r2_Sampler			("s_base",C.L_textures[0]);
+		C.r2_End				();
 		break;
 	}
 }

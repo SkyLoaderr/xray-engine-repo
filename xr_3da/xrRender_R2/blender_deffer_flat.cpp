@@ -45,6 +45,9 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 		C.r2_End			();
 		break;
 	case 2:		// smap-point
+		C.r2_Pass			("r2_shadow_point_base","r2_shadow_point_base");
+		C.r2_Sampler		("s_base",C.L_textures[0]);
+		C.r2_End			();
 		break;
 	}
 }
