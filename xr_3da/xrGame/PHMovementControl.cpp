@@ -255,7 +255,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	}
 
 	m_character->SetMaximumVelocity(speed);
-	if(!fis_zero(dir.magnitude()))m_character->SetAcceleration(dir);
+	m_character->SetAcceleration(dir);
 	//////////////////////////////////////////////////////
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
