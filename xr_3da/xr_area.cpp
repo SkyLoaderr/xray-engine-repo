@@ -155,8 +155,8 @@ IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	Fvector				min, max;
 	min.set				(obj->s_box.min);
 	max.set				(obj->s_box.max);
-	obj->owner->svTransform.transform(min);
-	obj->owner->svTransform.transform(max);
+	obj->owner->svXFORM().transform(min);
+	obj->owner->svXFORM().transform(max);
 	minmax				(min.x, max.x);
 	minmax				(min.z, max.z);
 	rect.x1				= TransX(min.x);

@@ -98,11 +98,11 @@ VOID CObjectList::OnMove	( )
 
 VOID CObjectList::net_Register	(CObject* O)
 {
-	map_NETID.insert(make_pair(O->net_ID,O));
+	map_NETID.insert(make_pair(O->ID(),O));
 }
 VOID CObjectList::net_Unregister(CObject* O)
 {
-	map<u32,CObject*>::iterator	it = map_NETID.find(O->net_ID);
+	map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());
 	if ((it!=map_NETID.end()) && (it->second == O))	map_NETID.erase(it);
 }
 
@@ -112,7 +112,7 @@ VOID CObjectList::net_Export	(NET_Packet* Packet)
 	{
 		CObject* P = *O;
 		if (P->net_Relevant())	{
-			Packet->w_u16			(u16(P->net_ID));
+			Packet->w_u16			(u16(P->ID()));
 			P->net_Export			(Packet);
 		}
 	}
