@@ -30,7 +30,9 @@
 
 #include "map_manager.h"
 #include "HUDManager.h"
+#include "ui/UIArtefactPanel.h"
 #include "ui/UIMainIngameWnd.h"
+
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -645,7 +647,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	//убрать все артефакты с пояса
 	m_ArtefactsOnBelt.clear();
 	if (Level().CurrentViewEntity() == this)
-		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
+		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
 		
 
 	ROS()->force_mode	(IRender_ObjectSpecific::TRACE_ALL);
@@ -672,6 +674,7 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	// *** movement state - respawn
 	mstate_wishful			= 0;
 	mstate_real				= 0;
+	mstate_old				= 0;
 	m_bJumpKeyPressed		= FALSE;
 
 	NET_SavedAccel.set		(0,0,0);
@@ -834,7 +837,7 @@ void CActor::net_Destroy	()
 	
 	m_ArtefactsOnBelt.clear();
 	if (Level().CurrentViewEntity() == this)
-		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);	
+		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);	
 
 	SetDefaultVisualOutfit(NULL);
 }

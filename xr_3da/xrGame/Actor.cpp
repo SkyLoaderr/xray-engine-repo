@@ -67,6 +67,7 @@
 #include "material_manager.h"
 #include "IColisiondamageInfo.h"
 #include "ui/UIMainIngameWnd.h"
+#include "ui/UIArtefactPanel.h"
 
 #include "map_manager.h"
 
@@ -1314,7 +1315,7 @@ void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
 		m_ArtefactsOnBelt.erase(it);
 	}
 	if (Level().CurrentViewEntity() == this)
-		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
+		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel->InitIcons(m_ArtefactsOnBelt);
 }
 #define ARTEFACTS_UPDATE_TIME 100
 //old==1000

@@ -28,6 +28,7 @@ public:
 	virtual void SetScaleXY(float x, float y);
 
 protected:
-	xr_vector<Irect>           m_vRects;
-	CUIStaticItem             m_si;
+	float						m_fScale;
+	xr_vector<Irect>            m_vRects;
+	CUIStaticItem               m_si;
 };

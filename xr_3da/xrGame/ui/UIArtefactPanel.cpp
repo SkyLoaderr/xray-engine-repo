@@ -15,15 +15,19 @@
 
 using namespace InventoryUtilities;
 
-CUIArtefactPanel::CUIArtefactPanel(){		
+CUIArtefactPanel::CUIArtefactPanel()
+{		
+	m_fScale = 1.0f;
 }
 
-CUIArtefactPanel::~CUIArtefactPanel(){
+CUIArtefactPanel::~CUIArtefactPanel()
+{
 
 }
 
-void CUIArtefactPanel::SetScaleXY(float x, float y){	
-//.	m_si.SetScaleXY(x, y);
+void CUIArtefactPanel::SetScaleXY(float x, float y)
+{	
+	m_fScale = x;
 }
 
 void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
@@ -45,7 +49,7 @@ void CUIArtefactPanel::InitIcons(const xr_vector<const CArtefact*>& artefacts)
 }
 
 void CUIArtefactPanel::Draw(){
-	const int iIndent = 8;
+	const int iIndent = 1;
 	      int x = 0;
 		  int y = 0;
 		  int iHeight;
@@ -59,8 +63,8 @@ void CUIArtefactPanel::Draw(){
 	{
 		const Irect& r = *it;		
 
-		iHeight = (int)(m_si.GetScaleY()*(r.bottom - r.top));
-		iWidth  = (int)(m_si.GetScaleX()*(r.right - r.left));
+		iHeight = (int)(m_fScale*(r.bottom - r.top));
+		iWidth  = (int)(m_fScale*(r.right - r.left));
 
 		m_si.SetOriginalRect(r.left, r.top, r.width(), r.height());
 		m_si.SetRect(0, 0, iWidth, iHeight);

@@ -14,7 +14,7 @@
 #include "UIListWnd.h"
 #include "UIMultiTextStatic.h"
 #include "UIColorAnimatorWrapper.h"
-#include "UIArtefactPanel.h"
+
 
 //#include "../UIZoneMap.h"
 
@@ -35,6 +35,7 @@ extern int				g_bNewsDisable;
 class					CUIPdaMsgListItem;
 class					CLAItem;
 class					CUIZoneMap;
+class					CUIArtefactPanel;
 //////////////////////////////////////////////////////////////////////////
 
 struct CUSTOM_TEXTURE
@@ -162,7 +163,7 @@ protected:
 	CUIStatic			UIInvincibleIcon;
 
 public:	
-	CUIArtefactPanel    m_artefactPanel;
+	CUIArtefactPanel*    m_artefactPanel;
 	
 public:
 	

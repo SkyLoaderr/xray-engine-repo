@@ -40,7 +40,7 @@
 
 #include "../string_table.h"
 #include "../clsid_game.h"
-
+#include "UIArtefactPanel.h"
 //////////////////////////////////////////////////////////////////////////
 
 using namespace InventoryUtilities;
@@ -94,6 +94,7 @@ CUIMainIngameWnd::CUIMainIngameWnd()
 	fuzzyShowInfo				= 0.f;
 	UIZoneMap					= xr_new<CUIZoneMap>();
 	m_pPickUpItem				= NULL;
+	m_artefactPanel				= xr_new<CUIArtefactPanel>();
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -102,6 +103,7 @@ CUIMainIngameWnd::~CUIMainIngameWnd()
 {
 	DestroyFlashingIcons();
 	xr_delete(UIZoneMap);
+	xr_delete(m_artefactPanel);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -323,8 +325,8 @@ void CUIMainIngameWnd::Init()
 	xml_init.InitWindow(uiXml, "motion_icon", 0, &UIMotionIcon);
 //	UICarPanel.Show(true);
 
-	xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, &m_artefactPanel);
-	this->AttachChild(&m_artefactPanel);	
+	xml_init.InitArtefactPanel(uiXml, "artefact_panel", 0, m_artefactPanel);
+	this->AttachChild(m_artefactPanel);	
 	xr_vector<Irect> vRects;
 
 /*	// uncoment to test ArtefactPanel
