@@ -45,7 +45,7 @@ void FSPath::VerifyPath(){
 	for(int i=0;m_Path[i];i++){
 		if( m_Path[i]!='\\' || i==0 )
 			continue;
-		memcpy( tmp, m_Path, i );
+		Memory.mem_copy( tmp, m_Path, i );
 		tmp[i] = 0;
 		CreateDirectory( tmp, 0 );
 	}
@@ -149,7 +149,7 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
 	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
 
 	OPENFILENAME ofn;
-	memset( &ofn, 0, sizeof(ofn) );
+	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
     ofn.lStructSize		= sizeof(OPENFILENAME);
 	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= initial.m_DefExt;
@@ -202,7 +202,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 	string1024 flt;
 	MakeFilter(flt,initial.m_FilterString,initial.m_DefExt);
 	OPENFILENAME ofn;
-	memset( &ofn, 0, sizeof(ofn) );
+	Memory.mem_fill		( &ofn, 0, sizeof(ofn) );
 	ofn.hwndOwner 		= GetForegroundWindow();
 	ofn.lpstrDefExt 	= initial.m_DefExt;
 	ofn.lpstrFile 		= buffer;
@@ -472,7 +472,7 @@ void CFileSystem::VerifyPath(LPCSTR path)
 	for(int i=0;path[i];i++){
 		if( path[i]!='\\' || i==0 )
 			continue;
-		memcpy( tmp, path, i );
+		Memory.mem_copy( tmp, path, i );
 		tmp[i] = 0;
 		CreateDirectory( tmp, 0 );
 	}

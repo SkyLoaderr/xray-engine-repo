@@ -21,6 +21,11 @@ class	CExporter;
 struct	FSChunkDef;
 struct	st_ObjectDB;
 
+#ifndef _EDITOR
+	class PropValue;
+	class SSceneSummary;
+#endif
+
 #ifdef _LW_IMPORT
 #include <lwobjimp.h>
 #include <lwsurf.h>
@@ -180,9 +185,9 @@ public:
         eoMultipleUsage	= (1<<4),
 		eoFORCE32		= DWORD(-1)
     };
-    IC bool			IsDynamic				(){return m_Flags.is(eoDynamic);}
-    IC bool			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
-    IC bool			IsMUStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&m_Flags.is(eoMultipleUsage);}
+    IC BOOL			IsDynamic				(){return m_Flags.is(eoDynamic);}
+    IC BOOL			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
+    IC BOOL			IsMUStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&m_Flags.is(eoMultipleUsage);}
 private:
 	// bounding volume
 	Fbox 			m_Box;
