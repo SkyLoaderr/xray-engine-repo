@@ -68,6 +68,9 @@ private:
 	_condition_type			m_property_id;
 	_value_type				m_property_value;
 
+private:
+	bool					m_call_script_callback;
+
 protected:
 			void			fill_object_info				();
 			EBodyState		body_state						() const;

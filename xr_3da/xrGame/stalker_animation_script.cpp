@@ -27,7 +27,8 @@ void	CStalkerAnimationManager::script_play_callback(CBlend *blend)
 			)
 		)
 		animation_manager.pop_script_animation();
-	object->callback(GameObject::eScriptAnimation)();
+
+	animation_manager.m_call_script_callback	= true;
 }
 
 void CStalkerAnimationManager::add_script_animation	(LPCSTR animation, bool hand_usage)

@@ -12,12 +12,13 @@
 #include "../skeletonanimated.h"
 #include "stalker_movement_manager.h"
 #include "entitycondition.h"
-
 #include "inventory.h"
 #include "missile.h"
 #include "weapon.h"
 #include "object_handler_planner.h"
 #include "object_handler_space.h"
+#include "game_object_space.h"
+#include "script_callback_ex.h"
 
 void CStalkerAnimationManager::reinit				()
 {
@@ -36,6 +37,8 @@ void CStalkerAnimationManager::reinit				()
 	m_script.global_animation	(true);
 	
 	m_storage					= 0;
+
+	m_call_script_callback		= false;
 }
 
 void CStalkerAnimationManager::reload				(CAI_Stalker *_object)
@@ -76,6 +79,11 @@ void CStalkerAnimationManager::play_fx(float power_factor, int fx_index)
 
 void CStalkerAnimationManager::update						()
 {
+	if (m_call_script_callback) {
+		m_call_script_callback	= false;
+		object().callback(GameObject::eScriptAnimation)();
+	}
+
 	if (!object().g_Alive())
 		return;
 
