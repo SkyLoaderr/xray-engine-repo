@@ -19,7 +19,7 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-#define SPAWN_VERSION	u16(66)
+#define SPAWN_VERSION	u16(67)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -83,7 +83,9 @@
 // 62 - CSE_AlifeObject					appended with m_story_id
 // 63 - CSE_AlifeTraderAbstract			remove bug with money
 // 64 - CSE_ALifeObjectPhysic			flags, source_id, saved_bones moved to CSE_AlifePHSkeletonObject
-// 65 -CSE_ALifeObjectPhysic			startup_anim moved to CSE_AlifePHSkeletonObject
+// 65 - CSE_ALifeObjectPhysic			startup_anim moved to CSE_AlifePHSkeletonObject
+// 66 - CSE_ALifeObjectPhysic			С Кости - пиво!!! где описание изменения версии
+// 67 - CSE_ALifeCustomZone				new class appended, heritage changed
 //------------------------------------------------------------------------------
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
