@@ -171,6 +171,9 @@ void CObject::shedule_Update	( u32 T )
 	dbg_update_shedule	= Device.dwFrame;
 #endif
 
+	const	eps_R	= 0.01f;
+	const	eps_P	= 0.005f;
+
 	//
 	BOOL	bUpdate=FALSE;
 	if (PositionStack.empty())
@@ -181,7 +184,7 @@ void CObject::shedule_Update	( u32 T )
 		PositionStack.back().dwTime		= Device.dwTimeGlobal;
 		PositionStack.back().vPosition	= Position();
 	} else {
-		if (PositionStack.back().vPosition.similar(Position(),0.005f))
+		if (PositionStack.back().vPosition.similar(Position(),eps_P))
 		{
 			// Just update time
 			PositionStack.back().dwTime		= Device.dwTimeGlobal;
@@ -202,6 +205,15 @@ void CObject::shedule_Update	( u32 T )
 
 	if (bUpdate)		{	
 		spatial_move	();
+	} else {
+		if (!fsimilar(Radius(),spatial.radius,eps_R))	spatial_move();
+		else			{
+			Fvector			C;
+			Center			(C);
+			if (!C.similar(spatial.center,eps_P))	spatial_move();
+		} else			{
+			// nothing to do :_)
+		}
 	}
 }
 
