@@ -236,15 +236,18 @@ void CAI_Stalker::ForwardCover()
 {
 	WRITE_TO_LOG("Forward cover");
 	
-	m_dwInertion				= 20000;
 	if (!m_tEnemy.Enemy) {
-		Camp(true);
+		if (Level().timeServer() - m_dwLostEnemyTime > 6000)
+			SearchEnemy();
+		else
+			Camp(true);
 		return;
 	}
 	Fvector						tPoint;
 	m_tEnemy.Enemy->clCenter	(tPoint);
 
 	if (m_bStateChanged) {
+		m_dwInertion				= ::Random.randI(20000,60000);
 		float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
 		CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 		if (tpWeapon)
@@ -305,6 +308,36 @@ void CAI_Stalker::ForwardCover()
 	}
 }
 
+void CAI_Stalker::SearchEnemy()
+{
+	WRITE_TO_LOG				("Search enemy");
+	
+	m_dwInertion				= 60000;
+
+	//if (!Group.m_tpaSuspiciousNodes.size()) 
+	{
+		//vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
+		//vfClasterizeSuspiciousNodes(Group);
+		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) - 3.f;
+		m_tSelectorFreeHunting.m_fMinEnemyDistance = max(m_tSelectorFreeHunting.m_fMaxEnemyDistance - m_tSelectorFreeHunting.m_fSearchRange,0.f);
+		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMinEnemyDistance;
+		vfSetParameters				(
+			&m_tSelectorFreeHunting,
+			&m_tSavedEnemyPosition,
+			true,
+			eWeaponStateIdle,
+			ePathTypeCriteria,
+			eBodyStateStand,
+			eMovementTypeWalk,
+			eStateTypeDanger,
+			eLookTypeFirePoint,
+			m_tSavedEnemyPosition);
+	}
+//	else {
+//		vfChooseSuspiciousNode(m_tSelectorFreeHunting);
+//	}
+}
+
 void CAI_Stalker::Think()
 {
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
@@ -328,7 +361,7 @@ void CAI_Stalker::Think()
 		I = _I;
 	}
 
-	if (!A && _A  && (Level().timeServer() - m_tpaDynamicObjects[m_iSoundIndex].dwTime < m_dwInertion))
+	if (!A && _A  && (m_iSoundIndex > -1) && (Level().timeServer() - m_tpaDynamicObjects[m_iSoundIndex].dwTime < m_dwInertion))
 		A = _A;
 
 	if (m_tEnemy.Enemy && (_K != K))

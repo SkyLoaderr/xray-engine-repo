@@ -219,6 +219,7 @@ private:
 			void			Panic							();
 			void			Hide							();
 			void			Detour							();
+			void			SearchEnemy						();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);

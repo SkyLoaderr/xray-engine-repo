@@ -60,9 +60,6 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 			fOldCost						= tNodeEvaluator.ffEvaluateNode();
 //			Msg								("Old  : [%d][%f]",AI_NodeID,fOldCost);
 		}
-		else {
-//			Msg("Invalid dest path node");
-		}
 
 		Squad.Groups[g_Group()].GetAliveMemberInfo(tNodeEvaluator.m_taMemberPositions, tNodeEvaluator.m_taMemberNodes, tNodeEvaluator.m_taDestMemberPositions, tNodeEvaluator.m_taDestMemberNodes, this);
 		
@@ -405,7 +402,7 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 
 void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
 {
-	Device.Statistic.AI_Range.Begin	();
+	Device.Statistic.TEST3.Begin	();
 
 	Group.m_tpaSuspiciousNodes.clear();
 
@@ -534,7 +531,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 		for ( ; it!=end; it++)	
 			AI.q_mark_bit[*it] = false;
 	}
-	Device.Statistic.AI_Range.End();
+	Device.Statistic.TEST3.End();
 }
 
 #define GROUP_RADIUS	15.f

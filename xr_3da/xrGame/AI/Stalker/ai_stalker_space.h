@@ -86,3 +86,8 @@ enum EActionState {
 	eActionStateRun = 0,
 	eActionStateStand,
 };
+
+enum ESearchState {
+	eSearchStateMarkVisibleNodes = 0,
+	eSearchStateFindSuspiciousNodes,
+};
