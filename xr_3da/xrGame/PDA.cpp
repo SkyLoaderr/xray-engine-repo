@@ -120,8 +120,10 @@ void CPda::feel_touch_delete(CObject* O)
 			m_PDAList.erase(std::find(m_PDAList.begin(), 
 										m_PDAList.end(), 
 										pInvOwner->GetPDA()));
-			m_DeletedPDAList.push_back(pInvOwner->GetPDA());
-			GetOriginalOwner()->LostPdaContact(pInvOwner);
+			if (!O->getDestroy()) {
+				m_DeletedPDAList.push_back(pInvOwner->GetPDA());
+				GetOriginalOwner()->LostPdaContact(pInvOwner);
+			}
 		}
 		//для случая перехода PDA в offline
 		else
@@ -150,7 +152,9 @@ void CPda::feel_touch_delete(CObject* O)
 		//		if(!pPda->GetOriginalOwner())
 				{
 					m_PDAList.erase(it);
-					m_DeletedPDAList.push_back(pPda);
+					if (!O->getDestroy()) {
+						m_DeletedPDAList.push_back(pPda);
+					}
 					break;
 				}
 			}
