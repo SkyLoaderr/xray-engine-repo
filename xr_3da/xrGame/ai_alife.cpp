@@ -9,7 +9,7 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-//#define WRITE_TO_LOG
+#define WRITE_TO_LOG
 
 CAI_ALife::CAI_ALife()
 {
@@ -19,7 +19,7 @@ CAI_ALife::CAI_ALife()
 CAI_ALife::~CAI_ALife()
 {
 	shedule_Unregister	();
-	Save				();
+	//Save				();
 }
 
 void CAI_ALife::vfInitTerrain()
@@ -62,6 +62,7 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 	u16 wGroupID				= 0;
 	m_tSpawnHeader.dwCount		= dwSpawnCount;
 	m_tSpawnHeader.dwVersion	= NPC_SPAWN_POINT_VERSION;
+	::Random.seed(0);
 	for (int i=0; i<(int)dwSpawnCount; i++) {
 		m_tpSpawnPoint[i].wNearestGraphPoint		= (u16)::Random.randI(Level().AI.GraphHeader().dwVertexCount);
 		bool bOk = false;
@@ -141,11 +142,10 @@ void CAI_ALife::Load()
 	shedule_Min					=   100;
 	shedule_Max					= 10000;
 	m_dwNPCBeingProcessed		=     0;
-	m_qwMaxProcessTime			=   100*CPU::cycles_per_microsec;
+	m_qwMaxProcessTime			= 100000*CPU::cycles_per_microsec;
 	
 	m_tNPCHeader.dwVersion		= ALIFE_VERSION;
 	m_tNPCHeader.dwCount		= 0;
-	m_bLoaded					= true;
 
 	// checking if graph is loaded
 	if (!Level().AI.m_tpaGraph)
@@ -154,9 +154,8 @@ void CAI_ALife::Load()
 	// loading spawn-points
 	CStream		*tpStream;
 	FILE_NAME	caFileName;
-	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn"))
+	if (!Engine.FS.Exist(caFileName, Path.GameData, "game.spawn")) {
 //		THROW;
-	{
 #ifdef DEBUG
 		vfGenerateSpawnPoints(10);
 		vfSaveSpawnPoints();
@@ -192,8 +191,10 @@ void CAI_ALife::Load()
 
 	// loading NPCs
 	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife")) {
+#ifdef DEBUG
 		Generate();
 		Save();
+#endif
 	}
 	
 	if (!Engine.FS.Exist(caFileName,Path.GameData,"game.alife"))
@@ -212,6 +213,7 @@ void CAI_ALife::Load()
 		m_tpNPC[i].wCount				= tpStream->Rword();
 		m_tpNPC[i].wGraphPoint			= tpStream->Rword();
 		m_tpNPC[i].wNextGraphPoint		= tpStream->Rword();
+		m_tpNPC[i].wPrevGraphPoint		= tpStream->Rword();
 		m_tpNPC[i].fSpeed				= tpStream->Rfloat();
 		m_tpNPC[i].fDistanceFromPoint	= tpStream->Rfloat();
 		m_tpNPC[i].iHealth				= tpStream->Rint();
@@ -225,6 +227,7 @@ void CAI_ALife::Load()
 	vfInitGraph();
 	vfInitTerrain();
 	vfInitLocationOwners();
+	m_bLoaded					= true;
 }
 
 void CAI_ALife::Save()
@@ -245,6 +248,7 @@ void CAI_ALife::Save()
 		tStream.Wword	(m_tpNPC[i].wCount);
 		tStream.Wword	(m_tpNPC[i].wGraphPoint);
 		tStream.Wword	(m_tpNPC[i].wNextGraphPoint);
+		tStream.Wword	(m_tpNPC[i].wPrevGraphPoint);
 		tStream.Wfloat	(m_tpNPC[i].fSpeed);
 		tStream.Wfloat	(m_tpNPC[i].fDistanceFromPoint);
 		tStream.Wdword	(m_tpNPC[i].iHealth);
@@ -280,7 +284,8 @@ void CAI_ALife::Generate()
 		tALifeNPC.wSpawnPoint			= (u16)k;
 		tALifeNPC.wCount				= m_tpSpawnPoint[k].wCount;
 		tALifeNPC.wGraphPoint			= m_tpSpawnPoint[k].wNearestGraphPoint;
-		tALifeNPC.wNextGraphPoint		= u16(-1);
+		tALifeNPC.wNextGraphPoint		= tALifeNPC.wGraphPoint;
+		tALifeNPC.wPrevGraphPoint		= tALifeNPC.wGraphPoint;
 		tALifeNPC.fSpeed				= 0.f;
 		tALifeNPC.fDistanceFromPoint	= 0.f;
 		tALifeNPC.iHealth				= pSettings->ReadINT(m_tpSpawnPoint[i].caModel, "Health");
@@ -302,12 +307,15 @@ void CAI_ALife::Update(u32 dt)
 	Msg("* %7.2fs",Level().timeServer()/1000.f);
 #endif
 	u64	qwStartTime = CPU::GetCycleCount();
-	if (m_tNPCHeader.dwCount)
-		for (int i=1; ; i++, m_dwNPCBeingProcessed = (m_dwNPCBeingProcessed + 1) % m_tNPCHeader.dwCount) {
+	if (m_tNPCHeader.dwCount) {
+		int i=0;
+		do {
+			i++;
+			m_dwNPCBeingProcessed = ((m_dwNPCBeingProcessed + 1) % m_tNPCHeader.dwCount);
 			vfProcessNPC(m_dwNPCBeingProcessed);
-			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i > m_qwMaxProcessTime)
-				break;
 		}
+		while (((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i < m_qwMaxProcessTime) && (i < (int)m_tNPCHeader.dwCount));
+	}
 #ifdef WRITE_TO_LOG
 	u64 t2x = CPU::GetCycleCount() - qwStartTime;
 	Msg("* %.3f microseconds",CPU::cycles2microsec*t2x);
@@ -316,5 +324,76 @@ void CAI_ALife::Update(u32 dt)
 
 void CAI_ALife::vfProcessNPC(u32 dwNPCIndex)
 {
-	
+	Msg						("* Monster %d",dwNPCIndex);
+//	Msg						("* * Time       : %d",m_tpNPC[dwNPCIndex].dwLastUpdateTime);
+//	Msg						("* * Spawn      : %d",m_tpNPC[dwNPCIndex].wSpawnPoint);
+//	Msg						("* * Count      : %d",m_tpNPC[dwNPCIndex].wCount);
+	vfCheckForTheBattle		(dwNPCIndex);
+	vfChooseNextRoutePoint	(dwNPCIndex);
+	m_tpNPC[dwNPCIndex].dwLastUpdateTime = Level().timeServer();
+	Msg						("* * PrevPoint  : %d",m_tpNPC[dwNPCIndex].wPrevGraphPoint);
+	Msg						("* * GraphPoint : %d",m_tpNPC[dwNPCIndex].wGraphPoint);
+	Msg						("* * NextPoint  : %d",m_tpNPC[dwNPCIndex].wNextGraphPoint);
+	Msg						("* * Speed      : %5.2f",m_tpNPC[dwNPCIndex].fSpeed);
+	Msg						("* * Distance   : %5.2f",m_tpNPC[dwNPCIndex].fDistanceFromPoint);
+//	Msg						("* * Health     : %d",m_tpNPC[dwNPCIndex].iHealth);
+}
+
+void CAI_ALife::vfCheckForTheBattle(u32 dwNPCIndex)
+{
+}
+
+void CAI_ALife::vfChooseNextRoutePoint(u32 dwNPCIndex)
+{
+	if (m_tpNPC[dwNPCIndex].wNextGraphPoint == m_tpNPC[dwNPCIndex].wGraphPoint) {
+		u16					wGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
+		AI::SGraphVertex	*tpaGraph		= Level().AI.m_tpaGraph;
+		u16					wNeighbourCount = (u16)tpaGraph[wGraphPoint].dwNeighbourCount;
+		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wGraphPoint].dwEdgeOffset);
+		int					iPointCount		= (int)m_tpSpawnPoint[m_tpNPC[dwNPCIndex].wSpawnPoint].ucRoutePointCount;
+		vector<u16>			&wpaVertexes	= m_tpSpawnPoint[m_tpNPC[dwNPCIndex].wSpawnPoint].wpRouteGraphPoints;
+		bool				bOk				= false;
+		float				fDistance		= 0.0f;
+		for (int i=0; i<wNeighbourCount; i++) {
+			for (int j=0; j<iPointCount; j++)
+				if ((tpaEdges[i].dwVertexNumber == wpaVertexes[j]) && (wpaVertexes[j] != m_tpNPC[dwNPCIndex].wPrevGraphPoint)) {
+					m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
+					fDistance = tpaEdges[i].fPathDistance;
+					bOk = true;
+					break;
+				}
+			if (bOk)
+				break;
+		}
+		if (!bOk) {
+			for (int i=0; i<wNeighbourCount; i++) {
+				for (int j=0; j<iPointCount; j++)
+					if (tpaEdges[i].dwVertexNumber == wpaVertexes[j]) {
+						m_tpNPC[dwNPCIndex].wNextGraphPoint = wpaVertexes[j];
+						fDistance = tpaEdges[i].fPathDistance;
+						bOk = true;
+						break;
+					}
+				if (bOk)
+					break;
+			}
+		}
+		if (!bOk) {
+			m_tpNPC[dwNPCIndex].fSpeed = 0.0f;
+			m_tpNPC[dwNPCIndex].fDistanceFromPoint = 0.0f;
+		}
+		else {
+			m_tpNPC[dwNPCIndex].fSpeed = 1.5f;
+			m_tpNPC[dwNPCIndex].fDistanceFromPoint = fDistance;
+		}
+	}
+	else {
+		u32 dwCurTime = Level().timeServer();
+		m_tpNPC[dwNPCIndex].fDistanceFromPoint -= float(dwCurTime)/1000.f * m_tpNPC[dwNPCIndex].fSpeed;
+		if (m_tpNPC[dwNPCIndex].fDistanceFromPoint < EPS_L) {
+			m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
+			m_tpNPC[dwNPCIndex].wPrevGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
+			m_tpNPC[dwNPCIndex].wGraphPoint			= m_tpNPC[dwNPCIndex].wNextGraphPoint;
+		}
+	}
 }

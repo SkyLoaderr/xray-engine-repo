@@ -168,10 +168,18 @@ void CAI_Space::Render()
 						NORMALIZE_VECTOR(t2);
 						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));
 					}
-					Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoint[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wNearestGraphPoint].tPoint;
-					t1.y += .6f;
-					NORMALIZE_VECTOR(t1);
-					Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+					{
+						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoint[tpGame->m_tALife.m_tpNPC[i].wSpawnPoint].wNearestGraphPoint].tPoint;
+						t1.y += .6f;
+						NORMALIZE_VECTOR(t1);
+						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+					}
+					{
+						Fvector t1 = m_tpaGraph[tpGame->m_tALife.m_tpNPC[i].wGraphPoint].tPoint;
+						t1.y += .6f;
+						NORMALIZE_VECTOR(t1);
+						Device.Primitive.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
+					}
 				}
 		}
 	}
