@@ -24,12 +24,12 @@ class CHM_Static
 
 		IC			void		set(int _x, int _z)	{ x=_x; z=_z; }
 	};
-	Slot*						data	[dhm_matrix][dhm_matrix];	// database
-	int							c_x,c_z;							// center of heighmap
+	Slot*						data	[dhm_matrix][dhm_matrix];			// database
+	int							c_x,c_z;									// center of heighmap
 	svector<Slot*,dhm_total>	task;
 public: 
 	void						Update		();
-	float						Query		(Fvector2& pos);		// 2D query
+	float						Query		(float x, float z);				// 2D query
 	
 	CHM_Static					();
 	~CHM_Static					();
@@ -40,7 +40,7 @@ class CHM_Dynamic
 {
 public:
 	void						Update		();
-	float						Query		(Fvector2& pos);		// 2D query
+	float						Query		(float x, float z);				// 2D query
 	
 	CHM_Dynamic					();
 	~CHM_Dynamic				();
@@ -53,7 +53,7 @@ class CHeightMap
 	CHM_Dynamic					hm_dynamic;
 	DWORD						dwFrame;
 public:
-	float						Query		(Fvector2& pos);				// 2D query
+	float						Query		(float x, float z);				// 2D query
 	Fvector						Query		(Fvector& pos, Fvector& dir);	// 3D ray-query
 };
 

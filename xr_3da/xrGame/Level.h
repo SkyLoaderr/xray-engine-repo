@@ -9,6 +9,7 @@
 #include "xrServer.h"
 #include "group.h"
 #include "tracer.h"
+#include "dynamicheightmap.h"
 #include "..\fixedset.h"
 
 class CHUDManager;
@@ -59,6 +60,7 @@ public:
 
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
+	CHeightMap					HeightMap;
 
 	// Starting/Loading
 	virtual BOOL				net_Server				( LPCSTR name_of_level	);

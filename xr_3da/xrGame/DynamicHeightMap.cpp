@@ -120,11 +120,11 @@ void CHM_Static::Update	()
 	}
 }
 
-float CHM_Static::Query	(Fvector2& pos)
+float CHM_Static::Query	(float x, float z)
 {
 	// base slot
-	int			v_x		= iFloor(pos.x/dhm_size);
-	int			v_z		= iFloor(pos.y/dhm_size);
+	int			v_x		= iFloor(x/dhm_size);
+	int			v_z		= iFloor(y/dhm_size);
 	int			dx		= v_x - c_x;
 	int			dz		= v_z - c_z;
 	int			gx		= dx  - dhm_line;	clamp(gx,0,dhm_matrix-1);
@@ -149,7 +149,7 @@ float	CHM_Dynamic::Query	(Fvector2& pos)
 }
 
 //
-float	CHeightMap::Query	(Fvector2& pos)
+float	CHeightMap::Query	(float x, float z)
 {
 	if (dwFrame!=Device.dwFrame)
 	{
@@ -157,7 +157,7 @@ float	CHeightMap::Query	(Fvector2& pos)
 		hm_static.Update	();
 		hm_dynamic.Update	();
 	}
-	float q1 = hm_static.Query(pos);
-	float q2 = hm_dynamic.Query(pos);
+	float q1 = hm_static.Query(x,z);
+	float q2 = hm_dynamic.Query(x,z);
 	return _MAX(q1,q2);
 }

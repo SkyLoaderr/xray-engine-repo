@@ -82,8 +82,15 @@ void	CEffect_Rain::Render	()
 	}
 
 	// Perform update
+	CHeightMap&	HM			= Level().HeightMap;
+	float		dt			= Device.fTimeDelta;
 	for (DWORD I=0; I<items.size(); I++)
 	{
-		
+		Item&	one		=	items[I];
+		one.fLifetime	-=	dt;
+		if (one.fLifetime<0)	Born(one,b_radius,b_height);
+		one.P.mad		(one.D,one.fSpeed*dt);
+
+		float	
 	}
 }

@@ -13,6 +13,7 @@ private:
 	{
 		Fvector	P;
 		Fvector D;
+		float	fSpeed;
 		float	fLifetime;
 	};
 	enum	States
@@ -34,6 +35,7 @@ private:
 	float			snd_Ambient_volume;
 
 	void			Born		(Item& dest, float radius, float height);
+	void			Hit			(Fvector& pos);
 public:
 	virtual void	OnEvent		(EVENT E, DWORD P1, DWORD P2);
 
