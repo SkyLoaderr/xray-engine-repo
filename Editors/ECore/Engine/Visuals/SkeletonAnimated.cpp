@@ -652,16 +652,6 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 	// sort in decreasing order
 	std::sort(keys,keys+count);
 }
-template <class T>
-IC void clamp_a	( T& val, const T& _low, const T& _high ){
-	if( val<_low ) val = _low; else if( val>_high ) val = _high;
-};
-template <class T>
-IC T clamp_a	( const T val, const T _low, const T _high ){
-	if		( val<_low	)	return _low; 
-	else if	( val>_high )	return _high;
-	else					return val;
-};
 
 void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
 {
