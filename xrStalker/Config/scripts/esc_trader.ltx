@@ -82,7 +82,7 @@ dialog_cond = {-tutorial_artefact_start}, {-esc_trader_can_leave}
 anim = idle_0_def_0
 on_signal = action_end | {=talking_or_tutor} mob_remark@idle_0_def_0, {~50} mob_remark@idle_0_spec_scratch_0, mob_remark@idle_0_def_0
 on_info = {-esc_trader_monolog_1_played +esc_trader_monolog_1} mob_remark@monolog_1 %+esc_trader_monolog_1_played%,   {-esc_trader_tutorial_choice_played +esc_trader_tutorial_choice} mob_remark@tut_choice %+esc_trader_tutorial_choice_played%
-on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1_experienced %+esc_trader_map_quest_1_played%,   {-esc_trader_newbie_course_done +esc_trader_newbiet} mob_remark@newbie_pda %+esc_trader_newbie_course_done -ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
+on_info2 = {-esc_trader_map_quest_1_played +esc_trader_experienced} mob_remark@map_quest_1_experienced %+esc_trader_map_quest_1_played%,   {-esc_trader_newbie_course_done +esc_trader_newbie} mob_remark@newbie_pda %+esc_trader_newbie_course_done -ui_pda_jobs_current -ui_pda_contacts -ui_pda_map_local%
 ; сняли ui_pda_jobs_current, ui_pda_contacts и ui_pda_map_local, чтобы не реагировать, если игрок его включал до этого
 
 ; ------------------------------------------------------------------------------------------------------
