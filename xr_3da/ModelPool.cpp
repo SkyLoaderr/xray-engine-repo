@@ -217,8 +217,6 @@ IVisual* CModelPool::Create(const char* name)
 
 IVisual* CModelPool::Create(LPCSTR name, IReader* data)
 {
-	Msg						("! -CREATE_STREAM- %s",name);
-
 	string128 low_name;		R_ASSERT(strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
