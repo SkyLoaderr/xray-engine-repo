@@ -141,7 +141,7 @@ void CAI_Biting::vfAssignPitch			()
 {
 	if (getAI().bfInsideNode(AI_Node,Position())) {
 		Fvector l_tDirection, l_tEdgePosition, l_tEdgePosition1;
-		float fRadius;
+		float fRadius = 0.f;
 		u32 l_dwNodeID;
 		//Movement.GetBoundingSphere	(l_tDirection,fRadius);
 		l_tDirection.setHP			(-r_torso_current.yaw,0);
