@@ -43,10 +43,15 @@ function main ()
              scr_monster:script (false, chasers.script_name ())
              old_monster = scr_monster:id ()
              scr_monster = nil   
+             printf ("Attacker freed")
              wait (10000)
           end
           
-          if scr_monster ~= nil and scr_monster:alive () == false then scr_monster = nil end
+          if scr_monster ~= nil and scr_monster:alive () == false then 
+             scr_monster = nil 
+             old_monster = 0
+             printf ("Attacker is dead")
+          end
           
           if scr_monster == nil then
              local distance = 1000000
@@ -56,6 +61,7 @@ function main ()
                     if t < distance and monsters[a]:id () ~= old_monster then
                        scr_monster = monsters[a]
                        distance = t
+                       printf ("Distance from attackers %s - %f", scr_monster:name (), t)
                     end   
                  end   
              end
