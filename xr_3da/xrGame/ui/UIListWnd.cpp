@@ -45,17 +45,6 @@ CUIListWnd::~CUIListWnd()
 	//очистить список и удалить все элементы
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
 		DetachChild(*it);
-//	{
-//		CUIListItem* itm = (*it);
-//		bool bAuto = 
-//			itm->IsAutoDelete();
-//		bool bManual = itm->IsManualDelete();
-//		VERIFY( !( bAuto && bManual ) );
-
-
-//		if( !itm->IsAutoDelete() )
-//			xr_delete(itm);
-//	}
 
 	m_ItemList.clear();
 }
@@ -139,11 +128,7 @@ void CUIListWnd::RemoveItem(int index)
 
 	R_ASSERT(m_ItemList.end() != it);
 	
-//	VERIFY( !(*it)->IsAutoDelete() );
-	
 	DetachChild(*it);
-//	if (!(*it)->IsManualDelete())
-//		xr_delete(*it);
 
 	m_ItemList.erase(it);
 

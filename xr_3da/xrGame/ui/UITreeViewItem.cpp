@@ -191,7 +191,6 @@ void CUITreeViewItem::AddItem(CUITreeViewItem *pItem)
 	pItem->SetTextShift(subShift + iTextShift);
 
 	vSubItems.push_back(pItem);
-//	pItem->ManualDelete(true);
 	pItem->SetAutoDelete(false);
 
 	pItem->SetOwner(this);
@@ -208,12 +207,10 @@ void CUITreeViewItem::DeleteAllSubItems()
 	{
 		CUIWindow *pWindow = (*it)->GetParent();
 
-//		VERIFY( (*it)->IsAutoDelete() );
 		if (pWindow)
 			pWindow->DetachChild(*it);
 
 //		xr_delete(*it);
-//		(*it) = NULL;
 	}
 
 	vSubItems.clear();

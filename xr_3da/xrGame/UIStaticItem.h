@@ -19,6 +19,9 @@ class CUIStaticItem: public CUICustomItem
 protected:
 	typedef CUICustomItem inherited;
 public:
+#ifdef DEBUG
+	string_path		dbg_tex_name;
+#endif
 					CUIStaticItem	();
 	virtual			~CUIStaticItem	();
 	void			Init			(LPCSTR tex, LPCSTR sh, int left, int top, u32 align);
