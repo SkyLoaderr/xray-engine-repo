@@ -4,8 +4,12 @@
 
 #pragma once
 
+#include "UIBuyWeaponStd.h"
+
 #include "UIDialogWnd.h"
 #include "UIDragDropList.h"
+#include "UIDragDropItemMP.h"
+
 #include "UIProgressBar.h"
 
 #include "UIPropertiesBox.h"
@@ -16,11 +20,10 @@
 #include "UITabControl.h"
 #include "UIListItem.h"
 #include "UIMultiTextStatic.h"
-#include "UIDragDropItemMP.h"
 
-#define 	BELT_SLOT			5
-#define 	MP_SLOTS_NUM		8
-#define		WEAPON_BOXES_SLOT	MP_SLOTS_NUM + 1
+
+#include "UIBuyWeaponTab.h"
+#include "UIBag.h"
 
 extern const u32	cDetached;
 extern const u32	cAttached;
@@ -28,6 +31,9 @@ extern const u32	cUnableToBuy;
 extern const u32	cAbleToBuy;
 extern const u32	cAbleToBuyOwned;
 extern const float	fRealItemSellMultiplier;
+
+//#define MAX_ITEMS 70;
+
 
 class CUIBuyWeaponWnd: public CUIDialogWnd
 {
@@ -38,16 +44,14 @@ public:
 	CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection);
 	virtual ~CUIBuyWeaponWnd();
 
-	virtual void Init(LPCSTR strSectionName);
+	virtual void Init(LPCSTR strSectionName, LPCSTR strPricesSection);
 
 	void InitInventory();
 
-
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
+	virtual void OnMouseScroll(int iDirection);
 
-
-//	CInventory* GetInventory() {return m_pInv;}
 
 	virtual void Update();
 	virtual void Draw();
@@ -60,25 +64,25 @@ protected:
 	//  новые данные относящиеся к покупке оружия 
 	//-----------------------------------------------------------------------------/
 
-	CUIStatic			UIBagWnd;
+	CUIBag				UIBagWnd;
 	CUIStatic			UIDescWnd;
 	CUIStatic			UIPersonalWnd;
 
 	// Набор закладок для экранов с оружием
-	CUITabControl		UIWeaponsTabControl;
+	CUIBuyWeaponTab		UITabControl;
 	// Статик для  вывода надписей на кнопках
-	CUIMultiTextStatic	UIMTStatic;
+	//CUIMultiTextStatic	UIMTStatic;
 
 	// и процедура для их инициализации
-	void InitBackgroundStatics();
+	//void InitBackgroundStatics();
 
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
 
-	CUIStatic			UIStaticTabCtrl;
+	//CUIStatic			UIStaticTabCtrl;
 	// Зелененькая лампочка, которой мы метим текущую выбранную закладку
-	CUIStatic			UIGreenIndicator;
+//	CUIStatic			UIGreenIndicator;
 
 	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
@@ -92,7 +96,6 @@ protected:
 	//слоты для оружия
 	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 
 	//отдельный слот для костюмов
-//	CUIOutfitSlot		UIOutfitSlot;
 	CUIStatic			UIOutfitIcon;		
 
 	//pop-up меню вызываемое по нажатию правой кнопки
@@ -102,9 +105,8 @@ protected:
 	DEF_VECTOR			(WEAPON_TYPES, CUIDragDropList*)
 	WEAPON_TYPES		m_WeaponSubBags;
 
-	static const int MAX_ITEMS = 70;
-	CUIDragDropItemMP m_vDragDropItems[MAX_ITEMS];
-	int m_iUsedItems;
+//	CUIDragDropItemMP m_vDragDropItems[70];
+//	int m_iUsedItems;
 
 	//элемент с которым работают в текущий момент
 	PIItem m_pCurrentItem;
@@ -140,8 +142,6 @@ protected:
 
 	//выбросить элемент
 	void DropItem();
-	//съесть элемент
-//	void EatItem();
 
 	//перемещение вещи
 	bool ToSlot();
@@ -156,20 +156,6 @@ protected:
 	void StartSleepWnd();
 	void StopSleepWnd();
 
-	//присоединение/отсоединение аддонов к оружию
-//	void AttachAddon();
-//	void DetachAddon(const char* addon_name);
-
-	//устанавливает текущий предмет
-//	void SetCurrentItem(CInventoryItem* pItem);
-
-
-	//дополнительные списки для сортировки вещей
-//	TIItemList ruck_list;
-
-	//вещь к которой мы присоединяем add-on
-//	PIItem	m_pItemToUpgrade;
-
 	//слот который был активным перед вызовом менюшки
 	u32	m_iCurrentActiveSlot;
 
@@ -177,27 +163,28 @@ protected:
 	//  новые данные относящиеся к покупке оружия 
 	//-----------------------------------------------------------------------------/
 
-	// Имя секции из которой читать данные
+	//// Имя секции из которой читать данные
+	////!!!!!!!!!!!!!!!!!!!!! delete later next 2 lines
 	shared_str		m_StrSectionName;
 	shared_str		m_StrPricesSection;
 
-	// массив в котором хратнятся названия секций для оружия 
-	DEF_VECTOR(WPN_SECT_NAMES, xr_string);
-	// Вектор массивов с именами секций для оружия
-	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
-	WPN_LISTS	wpnSectStorage;
-	// Функция инициализации массива строк - имен секций для оружия, разгруппированных по типам
-	void InitWpnSectStorage();
-	// заполнить секции оружием которое мы определили предыдущей процедурой
-	void FillWpnSubBags();
-	// заполнить отдельную секцию оружием
-	void FillWpnSubBag(const u32 slotNum);
+	//// массив в котором хратнятся названия секций для оружия 
+	//DEF_VECTOR(WPN_SECT_NAMES, xr_string);
+	//// Вектор массивов с именами секций для оружия
+	//DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
+	//WPN_LISTS	wpnSectStorage;
+	//// Функция инициализации массива строк - имен секций для оружия, разгруппированных по типам
+	//void InitWpnSectStorage();
+	//// заполнить секции оружием которое мы определили предыдущей процедурой
+	//void FillWpnSubBags();
+	//// заполнить отдельную секцию оружием
+	//void FillWpnSubBag(const u32 slotNum);
 	// Инициализируем аддоны у вещи
-	void InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName);
-	// удаляем все из секций
-	void ClearWpnSubBags();
-	// удаляем все из заданной секции
-	void ClearWpnSubBag(const u32 slotNum);
+	/*void InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName);*/
+	//// удаляем все из секций
+	//void ClearWpnSubBags();
+	//// удаляем все из заданной секции
+	//void ClearWpnSubBag(const u32 slotNum);
 	// переместить вещь из слота обратно в сответствующую секцию.
 	bool SlotToSection(const u32 SlotNum);
 	// переместить вещь с пояса в сумку
@@ -207,11 +194,11 @@ protected:
 	// Проверка возможности помещения вещи на пояс
 	bool CanPutInBelt(CUIDragDropItemMP *pDDItemMP);
 	// Кнопки OK и Cancel
-	CUIListItem UIBtnOK, UIBtnCancel;
+	CUI3tButton UIBtnOK, UIBtnCancel;
 	// массив индексов пустых элементов
 	std::set<int> m_iEmptyIndexes;
 	// Получить первый свободный индекс в массиве m_vDragDropItems
-	int GetFirstFreeIndex();
+//	int GetFirstFreeIndex();
 
 	// Дополнительные функции для получения информации о вещах в слотах
 	// Params:	slotNum	- номер слота (раздела) в котором ищем 
@@ -219,26 +206,22 @@ protected:
 	// Return:	Указатель на затребованную вещь, либо NULL, если не найдено
 	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
 
-	// Поддержка клавиатурного режима покупки оружия
 
-	// Есть 3 уровня глубины вложенности меню:
-	// 0) root			- меню уровня табконтрола
-	// 1) wpnsubtype	- меню уровня выбора оружия
-	// 2) addons		- меню уровня выбора аддонов, если оружие позволяет
-	enum MENU_LEVELS	{ mlRoot = 0, mlBoxes, mlWpnSubType };
+
+//	enum MENU_LEVELS	{ mlRoot = 0, mlBoxes, mlWpnSubType };
 	// Текущий уровень
-	MENU_LEVELS			m_mlCurrLevel;
+//	MENU_LEVELS			m_mlCurrLevel;
 
 	// Переход на любой уровень меню непосредственно
-	bool MenuLevelJump(MENU_LEVELS lvl);
+//	bool MenuLevelJump(MENU_LEVELS lvl);
 	// Переход на уровень выше/ниже. Возвращаем true, если переход удачен, и 
 	// false если мы уже находимся на высшем/низшем уровне меню
-	bool MenuLevelUp()		{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel + 1)); }
-	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
+//	bool MenuLevelUp()		{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel + 1)); }
+//	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
 	// callback функция для отрисовки цифровых подписей к оружию
 	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
 	// Включаем, выключаем индикатор активной кнопки табконтрола
-	void SwitchIndicator(bool bOn, const int activeTabIndex);
+//	void SwitchIndicator(bool bOn, const int activeTabIndex);
 	// Запрос количества денег у игрока
 
 	// Работа с деньгами
@@ -250,33 +233,34 @@ protected:
 	// Проверка всех вещей на возможность покупки (достаточно ли денег?)
 	// Если вещь невозможно купить, то помечаем ее красным и запрещаем ее перетаскивание
 	// проверяем только в листах с доступным оружием
-	void		CheckBuyAvailabilityInShop();
+//	void		CheckBuyAvailabilityInShop();
 
 	// Работа с арморами
 
 	// Вернуть номер текущего армора.
 	// На данный момент: - 1 - нет, 0 - экзоскелет, 1 - научный
-	const u8	GetCurrentSuit();
+//	const u8	GetCurrentSuit();
 	
-	// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется на этапе считывания 
-	// информации из ltx файла соответствующего типу сетевой игры
-	typedef xr_vector<std::pair<shared_str, shared_str> >	CONFORMITY_TABLE;
-	typedef CONFORMITY_TABLE::iterator				CONFORMITY_TABLE_it;
-	CONFORMITY_TABLE								m_ConformityTable;
+	//// Таблица соответсвия имени армора с именами моделей персонажей. Заполняется на этапе считывания 
+	//// информации из ltx файла соответствующего типу сетевой игры
+	//typedef xr_vector<std::pair<shared_str, shared_str> >	CONFORMITY_TABLE;
+	//typedef CONFORMITY_TABLE::iterator				CONFORMITY_TABLE_it;
+	//CONFORMITY_TABLE								m_ConformityTable;
 	
 	// Координаты дефолтного скина на текстуре с иконками сталкеров.
 	int			m_iIconTextureX, m_iIconTextureY;
 	// Функция проверки пренадлежности вещи секции (магазину а не слоту)
 	// Params:	idx		- индекс в массиве оружия, который требуется проверить
 	// Return:	true если оружие находится в магазине.
-	bool		IsItemInShop(int idx);
+//	bool		IsItemInShop(int idx);
 	
 	// Применить фильтр к секции с определенным оружием по заданной записи в ltx файле
 	void		ApplyFilter(int slotNum, const shared_str &name, const shared_str &value);
 	// Заполняем лист с ящиками
-	void		InitWeaponBoxes();
-	void		RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item);
+//	void		InitWeaponBoxes();
+//	void		RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item);
 	void		FillItemInfo(CUIDragDropItemMP *pDDItemMP);
+	void		BuyReaction();
 
 public:
 	// Проверяем цены вещей в слотах. Это нужно для того, чтобы после респавна небыло
@@ -305,14 +289,20 @@ public:
 	CUIDragDropItemMP * GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 	// Обработчик нажатий на кнопки клавы
 	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
+			void OnTabChange();
+			void OnMenuLevelChange();
+			void OnDDItemDbClick();
+			void OnDDItemDrag();
+			void OnButtonClicked(CUIWindow* pWnd);
+			void SetCurrentDDItem(CUIWindow* pWnd);
 
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
 	// Params:	slotNum		- номер слота в котором смотрим
 	// Result:	указатель на внутренний буфер с именем (удалять его не надо!)
-	const char	*GetWeaponName(u32 slotNum);
+//	const char	*GetWeaponName(u32 slotNum);
 	// Params:	indexInBelt	- номер вещи на поясе
 	// Result:	указатель на внутренний буфер с именем (удалять его не надо!)
-	const char	*GetWeaponNameInBelt(u32 indexInBelt);
+//	const char	*GetWeaponNameInBelt(u32 indexInBelt);
 
 	// Получить индекс оружия в массиве доступных, из заданного слота.
 	// Первое оружие имеет индекс 0. Если в слоте нет ничего, то возвращаем -1
@@ -325,7 +315,7 @@ public:
 	const u8 GetItemIndex(u32 slotNum, u32 idx, u8 &sectionNum);
 	
 	// Получить имя оружия по индексу, и номеру слота
-	const char	*GetWeaponNameByIndex(u32 grpNum, u8 idx);
+	//const char	*GetWeaponNameByIndex(u32 grpNum, u8 idx);
 	// Получить номер в списке секций и номер списка секций по имени
 	// Если не найдено, то grpNum == -1 и idx == -1
 	void		GetWeaponIndexByName(const xr_string sectionName, u8 &grpNum, u8 &idx);
