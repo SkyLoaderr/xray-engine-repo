@@ -11,10 +11,18 @@
 
 CLightShadows::CLightShadows()
 {
-
+	current	= 0;
 }
 
 CLightShadows::~CLightShadows()
 {
 
+}
+
+void CLightShadows::set_object	(CObject* O)
+{
+	current	= O;
+}
+void CLightShadows::add_element	(NODE* N)
+{
 }

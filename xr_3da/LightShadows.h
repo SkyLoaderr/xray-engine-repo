@@ -13,10 +13,18 @@ class ENGINE_API	CObject;
 class ENGINE_API	CLightShadows  
 {
 private:
-	CObject*	current;
+	typedef	SceneGraph::mapMatrixItem::TNode	NODE;		
+	struct	caster
+	{
+		CObject*			O;
+		svector<NODE*,32>	nodes;
+	};
+private:
+	CObject*		current;
+	vector<caster>	casters;
 public:
-	void		add_object	(CObject* O);
-	void		add_element	(SceneGraph::mapMatrixItem::TNode* N);
+	void			set_object	(CObject*	O);
+	void			add_element	(NODE*		N);
 
 	CLightShadows			();
 	~CLightShadows			();

@@ -78,7 +78,11 @@ void CSector::Render(CFrustum &F)
 			{
 				FBasicVisual*	pV = O->Visual();
 				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
-				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	O->OnVisible	();
+				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	
+				{
+					
+					O->OnVisible	();
+				}
 			}
 		}
 
