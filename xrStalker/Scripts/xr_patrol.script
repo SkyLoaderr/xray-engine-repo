@@ -221,10 +221,10 @@ function action_single_patrol:execute ()
        end
        self.object:set_movement_type (self.move_type)  
        self.object:set_mental_state  (self.mental_state)
-       printf ("ACTION_SINGLE_PATROL, STAGE 0, TIME %d", device ():time_global ())
-       if self.move_type == move.walk then printf ("ACTION_SINGLE_PATROL - MOVE_WALK") end
-       if self.move_type == move.stand then printf ("ACTION_SINGLE_PATROL - MOVE_STAND") end
-       if self.move_type == move.run then printf ("ACTION_SINGLE_PATROL - MOVE_RUN") end
+       --printf ("ACTION_SINGLE_PATROL, STAGE 0, TIME %d", device ():time_global ())
+       --if self.move_type == move.walk then printf ("ACTION_SINGLE_PATROL - MOVE_WALK") end
+       --if self.move_type == move.stand then printf ("ACTION_SINGLE_PATROL - MOVE_STAND") end
+       --if self.move_type == move.run then printf ("ACTION_SINGLE_PATROL - MOVE_RUN") end
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
@@ -236,7 +236,7 @@ function action_single_patrol:execute ()
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 3, 0)
            end   
-           printf ("ACTION_SINGLE_PATROL, STAGE 1, TIME %d", device ():time_global ())
+           --printf ("ACTION_SINGLE_PATROL, STAGE 1, TIME %d", device ():time_global ())
         end   
     elseif self.stage == 2 then
         if self:process_radio () == true then
@@ -248,7 +248,7 @@ function action_single_patrol:execute ()
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
            end   
-           printf ("ACTION_SINGLE_PATROL, STAGE 2, TIME %d", device ():time_global ())
+           --printf ("ACTION_SINGLE_PATROL, STAGE 2, TIME %d", device ():time_global ())
         end   
     elseif self.stage == 3 then    
            self.move_type = move.run
@@ -256,7 +256,7 @@ function action_single_patrol:execute ()
            self.object:set_mental_state (anim.danger)
            self.object:set_movement_type (move.run)
            self:set_command (leader_return)
-           printf ("ACTION_SINGLE_PATROL, STAGE 3, TIME %d", device ():time_global ())
+           --printf ("ACTION_SINGLE_PATROL, STAGE 3, TIME %d", device ():time_global ())
     end    
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -384,8 +384,11 @@ function action_single_patrol:free ()
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:move_callback (obj, action_type, index)
-    if index == -1 then return end
 
+    printf ("MOVE_CALLBACK called for object %s, index %d", obj:name (), index)
+
+    if index == -1 then return end
+    
     if self.a.first_init == true then   
        self.path_type = patrol.nearest
        self.a.first_init = false
