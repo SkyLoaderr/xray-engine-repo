@@ -263,7 +263,7 @@ public:
 			if (!l_tpALifeAnomalousZone)
 				continue;
 
-			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
+			m_tpAI_Map->vfShallowGraphSearch(l_tpALifeAnomalousZone->o_Position,l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
 
 			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
 				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();

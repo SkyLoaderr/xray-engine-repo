@@ -549,12 +549,11 @@ public:
 		return(selected);
 	}
 
-	void						vfShallowGraphSearch(u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
+	void						vfShallowGraphSearch(Fvector tStartPosition, u32 dwStartNode, float fSearchRange, xr_vector<u32> &tpaStack, xr_vector<bool> &tpaMask)
 	{
 		u32							dwCurNodeID, dwNextNodeID, dwNeighbourCount;
 		NodeCompressed				*tpStartNode = Node(dwStartNode), *tpCurNode, *tpCurrentNode = tpStartNode;
-		Fvector						tStartPosition = tfGetNodeCenter(dwStartNode);
-		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to(tfGetNodeCenter(tpStartNode));
+		float						fRangeSquare = fSearchRange*fSearchRange, fDistance = tStartPosition.distance_to_sqr(tfGetNodeCenter(tpStartNode));
 		NodeLink					*I, *E;
 
 		tpaStack.clear				();
