@@ -79,7 +79,7 @@ void CCar::reload		(LPCSTR section)
 
 void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 {
-	CCar*	C			= smart_cast<CCar*>	(static_cast<CObject*>(B->Callback_Param));
+	CCar*	C			= static_cast<CCar*>(B->Callback_Param);
 	Fmatrix m;
 
 	C->m_steer_angle=C->m_steering_wheels.begin()->GetSteerAngle()*0.1f+C->m_steer_angle*0.9f;

@@ -143,7 +143,7 @@ void CAI_Bloodsucker::LoadEffector(LPCSTR section)
 
 void __stdcall CAI_Bloodsucker::BoneCallback(CBoneInstance *B)
 {
-	CAI_Bloodsucker*	this_class = smart_cast<CAI_Bloodsucker*> (static_cast<CObject*>(B->Callback_Param));
+	CAI_Bloodsucker*	this_class = static_cast<CAI_Bloodsucker*> (B->Callback_Param);
 
 	this_class->Bones.Update(B, Level().timeServer());
 }

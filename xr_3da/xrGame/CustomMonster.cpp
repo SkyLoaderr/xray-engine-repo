@@ -34,7 +34,7 @@ void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 
 //void __stdcall CCustomMonster::TorsoSpinCallback(CBoneInstance* B)
 //{
-//	CCustomMonster*		M = smart_cast<CCustomMonster*> (static_cast<CObject*>(B->Callback_Param));
+//	CCustomMonster*		M = static_cast<CCustomMonster*> (B->Callback_Param);
 //
 //	Fmatrix					spin;
 //	spin.setXYZ				(0, M->NET_Last.o_torso.pitch, 0);

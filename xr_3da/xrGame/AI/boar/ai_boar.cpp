@@ -157,7 +157,7 @@ void CAI_Boar::StateSelector()
 
 void __stdcall CAI_Boar::BoneCallback(CBoneInstance *B)
 {
-	CAI_Boar	*P = smart_cast<CAI_Boar*> (static_cast<CObject*>(B->Callback_Param));
+	CAI_Boar	*P = static_cast<CAI_Boar*>(B->Callback_Param);
 
 	if (!P->look_at_enemy) return;
 	

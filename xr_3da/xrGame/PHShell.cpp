@@ -300,7 +300,7 @@ u16			CPHShell::get_JointsNumber				()
 void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
-	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
+	CPHElement*	E			= static_cast<CPHElement*>(static_cast<CPhysicsElement*>(B->Callback_Param));
 	E->BonesCallBack(B);
 }
 
@@ -308,7 +308,7 @@ void __stdcall CPHShell:: BonesCallback				(CBoneInstance* B){
 void __stdcall CPHShell::StataticRootBonesCallBack			(CBoneInstance* B){
 	///CPHElement*	E			= smart_cast<CPHElement*>	(static_cast<CPhysicsBase*>(B->Callback_Param));
 
-	CPHElement*	E			= static_cast<CPHElement*>(B->Callback_Param);
+	CPHElement*	E			= static_cast<CPHElement*>(static_cast<CPhysicsElement*>(B->Callback_Param));
 	E->StataticRootBonesCallBack(B);
 }
 
@@ -868,7 +868,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 		if(bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid&& element!=u16(-1))
 		{
 
-			B.set_callback(0,smart_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(0,static_cast<CPhysicsElement*>(elements[element]));
 		}
 		else
 		{
@@ -876,8 +876,7 @@ void CPHShell::ResetCallbacksRecursive(u16 id,u16 element,Flags64 &mask)
 			element++;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			CPhysicsElement* E=smart_cast<CPhysicsElement*>(elements[element]);
-			B.set_callback(BonesCallback,E);
+			B.set_callback(BonesCallback,static_cast<CPhysicsElement*>(elements[element]));
 			B.Callback_overwrite=TRUE;
 		}
 	}
@@ -919,14 +918,13 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 	if(mask.is(1ui64<<(u64)id))
 	{
 		if((bone_data.shape.type==SBoneShape::stNone||joint_data.type==jtRigid)	&& element!=u16(-1)){
-			B.set_callback(0,smart_cast<CPhysicsElement*>(elements[element]));
+			B.set_callback(0,static_cast<CPhysicsElement*>(elements[element]));
 		}else{
 			element_position_in_set_calbacks++;
 			element=element_position_in_set_calbacks;
 			R_ASSERT2(element<elements.size(),"Out of elements!!");
 			//if(elements.size()==element)	return;
-			CPhysicsElement* E=smart_cast<CPhysicsElement*>(elements[element]);
-			B.set_callback(bones_callback,E);
+			B.set_callback(bones_callback,smart_cast<CPhysicsElement*>(elements[element]));
 			//B.Callback_overwrite=TRUE;
 		}
 	}

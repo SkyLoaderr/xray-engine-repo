@@ -19,16 +19,17 @@
 
 void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 {
-	CWeaponMounted	*P = smart_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
+	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 
 	if (P->Owner()){
 		Fmatrix rX;		rX.rotateX		(P->camera->pitch);
 		B->mTransform.mulB(rX);
 	}
 }
+
 void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 {
-	CWeaponMounted	*P = smart_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
+	CWeaponMounted	*P = static_cast<CWeaponMounted*>(B->Callback_Param);
 
 	if (P->Owner()){
 		Fmatrix rY;		rY.rotateY		(P->camera->yaw);
