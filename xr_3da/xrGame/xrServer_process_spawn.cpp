@@ -24,48 +24,68 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	// check for respawn-capability and create phantom as needed
 	if (E->RespawnTime && (0xffff==E->ID_Phantom))
 	{
+		// Create phantom
 		xrServerEntity* Phantom	=	entity_Create	(s_name); R_ASSERT(Phantom);
 		Phantom->Spawn_Read		(P);
 		Phantom->ID				=	PerformIDgen	(0xffff);
-		Phantom->ID_Phantom		=	Phantom->ID;	// Self-linked to avoid phantom-breeding
-		E->ID_Phantom			=	Phantom->ID;
-		Phantom->s_flags		|=	M_SPAWN_OBJECT_PHANTOM;
+		Phantom->ID_Phantom		=	Phantom->ID;						// Self-linked to avoid phantom-breeding
+		Phantom->owner			=	NULL;
 		ids_used[Phantom->ID]	=	true;	
 		entities.insert			(make_pair(Phantom->ID,Phantom));
+
+		Phantom->s_flags		|=	M_SPAWN_OBJECT_PHANTOM;
+
+		// Spawn entity
+		E->ID					=	PerformIDgen(E->ID);
+		E->ID_Phantom			=	Phantom->ID;
+		E->owner				=	CL;
+		ids_used[ID]			=	true;	
+		entities.insert			(make_pair(ID,E));
+	} else {
+		if (E->s_flags & M_SPAWN_OBJECT_PHANTOM)
+		{
+			// Clone from Phantom
+			E->ID					=	PerformIDgen(0xffff);
+			E->owner				=	CL		= SelectBestClientToMigrateTo	(E);
+			ids_used[ID]			=	true;
+			entities.insert			(make_pair(ID,E));
+		} else {
+			// Simple spawn
+			E->ID					=	PerformIDgen(E->ID);
+			E->owner				=	CL;
+			ids_used[ID]			=	true;
+			entities.insert			(make_pair(ID,E));
+		}
 	}
- 
-	// generate/find new ID for entity
-	u16 ID				=	PerformIDgen(E->ID);
-	E->ID				=	ID;
-	E->owner			=	CL;
 
 	// PROCESS NAME; Name this entity
-	if (CL && (0 == CL->owner))	{
+	if (CL && (E->s_flags&M_SPAWN_OBJECT_ASPLAYER))
+	{
 		CL->owner		= E;
 		strcpy			(E->s_name_replace,CL->Name);
 	}
 
 	// PROCESS RP;	 3D position/orientation
-	PerformRP			(E);
-	E->s_RP				= 0xFE;	// Use supplied
-
-	// REGISTER new ENTITY
-	ids_used[ID]		= true;	
-	entities.insert		(make_pair(ID,E));
-
-	// log
-	Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
+	PerformRP				(E);
+	E->s_RP					= 0xFE;	// Use supplied
 
 	// create packet and broadcast packet to everybody
-	NET_Packet			Packet;
-
+	NET_Packet				Packet;
 	if (CL) 
 	{
 		E->Spawn_Write		(Packet,TRUE	);
 		SendTo				(sender,Packet,net_flags(TRUE));
 	}
 
-	if (GAME!=GAME_SINGLE)	E->s_flags		&=	~M_SPAWN_OBJECT_ASPLAYER;
 	E->Spawn_Write			(Packet,FALSE	);
 	SendBroadcast			(sender,Packet,net_flags(TRUE));
+
+	// log
+	Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL?CL->Name:"*SERVER*");
 }
+
+/*
+void spawn_WithPhantom
+void spawn_FromPhantom
+void spawn_Simple
+*/
