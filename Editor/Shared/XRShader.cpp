@@ -273,6 +273,10 @@ void SH_Stage::Compile(SH_ShaderDef& SHADER, SH_StageDef& DEF, DWORD ID, CSimula
 	// Parse geom channel
 	int	iOffset	= (SHADER.CL==SH_ShaderDef::clLightmap)?1:0;
 	int iChannel = ParseName(DEF.Gname,iOffset);
+	
+#ifdef _EDITOR	
+	if (iOffset && (iChannel>0)) iChannel--;
+#endif
 
 	// Record wrap mode
 	switch (DEF.tca)
