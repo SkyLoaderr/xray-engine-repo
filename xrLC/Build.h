@@ -75,7 +75,6 @@ public:
 	void	Load					(const b_params& P, const IReader&  fs);
 	void	Run						(LPCSTR path);
 
-	void	xrPhase_R2_Lights		();
 	void	Tesselate				();
 	void	PreOptimize				();
 	void	CorrectTJunctions		();

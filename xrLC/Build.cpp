@@ -82,9 +82,8 @@ void CBuild::Run	(LPCSTR P)
 	strconcat					(path,P,"\\");
 	string256					lfn;
 	IWriter* fs					= FS.w_open(strconcat(lfn,path,"level."));
-	fs->open_chunk				(fsL_HEADER);
-	hdrLEVEL H;		ZeroMemory	(&H,sizeof(H));
-	H.XRLC_version				= XRCL_PRODUCTION_VERSION;
+	fs->open_chunk				(fsL_HEADER2);
+	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
 
@@ -138,10 +137,6 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Building portals...");
 	mem_Compact					();
 	BuildPortals				(*fs);
-
-	//****************************************** Modify lighting
-	// If it is R2 - leave just high quality identical hemisphere
-	if (b_R2)					xrPhase_R2_Lights();
 
 	//****************************************** Starting MU
 	FPU::m64r					();
