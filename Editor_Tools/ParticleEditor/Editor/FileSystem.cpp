@@ -6,7 +6,6 @@
 #pragma hdrstop
 
 #include "xr_trims.h"
-#include <io.h>
 
 CFileSystem FS;
 //----------------------------------------------------
@@ -89,7 +88,6 @@ void CFileSystem::OnCreate(){
 
 //----------------------------------------------------
 
-#ifdef M_BORLAND
 bool CFileSystem::GetOpenName( FSPath *initial, char *buffer, bool bMulti ){
 	VERIFY( initial && buffer );
 
@@ -373,4 +371,5 @@ void CFileSystem::VerifyPath(LPCSTR path)
 		CreateDirectory( tmp, 0 );
 	}
 }
+
 

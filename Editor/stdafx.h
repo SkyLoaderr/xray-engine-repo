@@ -46,6 +46,7 @@
 #include <fcntl.h>
 #include <sys\stat.h>
 #include <process.h>
+#include <utime.h>
 
 // C++ STL headers
 #include <vector>
