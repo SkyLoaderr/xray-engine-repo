@@ -48,7 +48,7 @@ CBaseMonster::CBaseMonster()
 
 	// Components external init 
 
-	EnemyMemory.init_external		(this, 200000);
+	EnemyMemory.init_external		(this, 20000);
 	SoundMemory.init_external		(this, 20000);
 	CorpseMemory.init_external		(this, 20000);
 	HitMemory.init_external			(this, 50000);
