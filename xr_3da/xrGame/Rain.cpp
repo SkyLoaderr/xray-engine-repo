@@ -13,8 +13,8 @@ const int	desired_items	= 2500;
 const float	drop_length		= 1.5f;
 const float drop_width		= 0.02f;
 const float drop_angle		= 3.01f;
-const float drop_speed_min	= 40.f;
-const float drop_speed_max	= 80.f;
+const float drop_speed_min	= 20.f;
+const float drop_speed_max	= 40.f;
 
 const int	max_particles	= 1000;
 const int	particles_cache	= 400;
@@ -243,7 +243,7 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Born new if needed
-	float	b_radius		= 30.f;
+	float	b_radius		= 15.f;
 	float	b_radius_wrap	= b_radius+.5f;
 	float	b_height		= 40.f;
 	if (bBornNewItems && (items.size()<desired_items))	{
