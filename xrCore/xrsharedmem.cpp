@@ -66,7 +66,7 @@ void				smem_container::dump			()
 	cdb::iterator	it	= container.begin	();
 	cdb::iterator	end	= container.end		();
 	for (; it!=end; it++)
-		Msg	("%4d : %6x, %d bytes",(*it)->dwReference,(*it)->dwCRC,(*it)->dwLength);
+		Msg	("%4d : crc[%6x], %d bytes",(*it)->dwReference,(*it)->dwCRC,(*it)->dwLength);
 	cs.Leave		();
 }
 
