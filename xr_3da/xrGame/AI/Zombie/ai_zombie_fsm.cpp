@@ -126,7 +126,7 @@ void CAI_Zombie::Death()
 	}
 	else {
 		if (Level().timeServer() - m_dwDeathTime > m_dwTimeToLie) {
-			//m_fFood = m_PhysicMovementControl.GetMass()*100;
+			//m_fFood = m_PhysicMovementControl->GetMass()*100;
 			fEntityHealth = m_fMaxHealthValue;
 			m_tpSoundBeingPlayed = 0;
 			m_previous_query_time = Level().timeServer();

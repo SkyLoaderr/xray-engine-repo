@@ -10,6 +10,7 @@
 #include "ai_idol.h"
 #include "../../bolt.h"
 #include "../../inventory.h"
+#include "../../phmovementcontrol.h"
 
 CAI_Idol::CAI_Idol					()
 {
@@ -17,7 +18,7 @@ CAI_Idol::CAI_Idol					()
 	m_tpCurrentBlend				= 0;
 	m_bPlaying						= false;
 	m_dwCurrentAnimationIndex		= 0;
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 }
 
 CAI_Idol::~CAI_Idol					()

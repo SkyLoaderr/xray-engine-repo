@@ -223,9 +223,9 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 //	tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);
 //	tAcceleration.normalize_safe();
 //	tAcceleration.mul(m_fSpeed*12.f);
-//	m_PhysicMovementControl.SetPosition(Position());
-//	m_PhysicMovementControl.Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
-//	m_PhysicMovementControl.GetPosition(Position());
+//	m_PhysicMovementControl->SetPosition(Position());
+//	m_PhysicMovementControl->Calculate	(tAcceleration,0,0,m_fTimeUpdateDelta,false);
+//	m_PhysicMovementControl->GetPosition(Position());
 
 	u32 dwNewNode = level_vertex_id();
 	const CLevelGraph::CVertex *tpNewNode = level_vertex();

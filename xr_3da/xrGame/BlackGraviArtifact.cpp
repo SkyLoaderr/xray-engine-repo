@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "entity_alive.h"
 #include "ParticlesObject.h"
+#include "phmovementcontrol.h"
 
 CBlackGraviArtifact::CBlackGraviArtifact(void) 
 {
@@ -178,7 +179,7 @@ void CBlackGraviArtifact::GraviStrike()
 		if(pGameObject->m_pPhysicsShell) 
 			hit_power = 0;
 		else if(pEntityAlive && pEntityAlive->g_Alive() && 
-				pEntityAlive->m_PhysicMovementControl.CharacterExist())
+				pEntityAlive->m_PhysicMovementControl->CharacterExist())
 			hit_power = 0;
 		else
 			hit_power = impulse;

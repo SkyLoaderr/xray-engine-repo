@@ -12,11 +12,12 @@
 #include "../../CharacterPhysicsSupport.h"
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
+#include "../../phmovementcontrol.h"
 
 
 CAI_Biting::CAI_Biting()
 {
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
 
 #ifdef DEBUG
@@ -209,8 +210,8 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	// Установить новый Visual, перезагрузить анимации
 	MotionMan.UpdateVisual();
 
-	m_PhysicMovementControl.SetPosition	(Position());
-	m_PhysicMovementControl.SetVelocity	(0,0,0);
+	m_PhysicMovementControl->SetPosition	(Position());
+	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	if ((pSquad->GetLeader() == this)) { 

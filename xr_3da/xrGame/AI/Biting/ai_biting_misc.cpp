@@ -143,7 +143,7 @@ void CAI_Biting::vfUpdateParameters()
 	
 	// update speed checking
 	Fvector vec;
-	m_PhysicMovementControl.GetCharacterVelocity(vec);
+	m_PhysicMovementControl->GetCharacterVelocity(vec);
 	float ph_speed = vec.magnitude();
 
 	bSpeedDiffer = ((ph_speed * 2.f) < m_fCurSpeed) && (m_fCurSpeed > 0.f);

@@ -4,6 +4,7 @@
 #include "PhysicsShell.h"
 #include "ai/script/ai_script_monster.h"
 #include "CarLights.h"
+#include "phobject.h"
 
 // refs
 class ENGINE_API			CBoneInstance;

@@ -75,34 +75,34 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	///////////
 	// m_PhysicMovementControl: General
-	m_PhysicMovementControl.SetParent		(this);
-	m_PhysicMovementControl.Load			(section);
+	m_PhysicMovementControl->SetParent		(this);
+	m_PhysicMovementControl->Load			(section);
 	//Fbox	bb;
 
 	//// m_PhysicMovementControl: BOX
 	//Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
 	//Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
 	//bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	//m_PhysicMovementControl.SetBox		(0,bb);
+	//m_PhysicMovementControl->SetBox		(0,bb);
 
 	//// m_PhysicMovementControl: BOX
 	//Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
 	//Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
 	//bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	//m_PhysicMovementControl.SetBox		(1,bb);
+	//m_PhysicMovementControl->SetBox		(1,bb);
 
 	//// m_PhysicMovementControl: Foots
 	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	//Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	//bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	//m_PhysicMovementControl.SetFoots	(vFOOT_center,vFOOT_size);
+	//m_PhysicMovementControl->SetFoots	(vFOOT_center,vFOOT_size);
 
 	//// m_PhysicMovementControl: Crash speed and mass
 	//float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
 	//float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
 	//float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	//m_PhysicMovementControl.SetCrashSpeeds	(cs_min,cs_max);
-	//m_PhysicMovementControl.SetMass		(mass);
+	//m_PhysicMovementControl->SetCrashSpeeds	(cs_min,cs_max);
+	//m_PhysicMovementControl->SetMass		(mass);
 	
 
 	// m_PhysicMovementControl: Frictions
@@ -111,10 +111,10 @@ void CCustomMonster::Load		(LPCSTR section)
 	af					= pSettings->r_float	(section,"ph_friction_air"	);
 	gf					= pSettings->r_float	(section,"ph_friction_ground");
 	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	m_PhysicMovementControl.SetFriction	(af,wf,gf);
+	m_PhysicMovementControl->SetFriction	(af,wf,gf);
 
 	// BOX activate
-	m_PhysicMovementControl.ActivateBox	(0);
+	m_PhysicMovementControl->ActivateBox	(0);
 	*/
 	////////
 
@@ -284,7 +284,7 @@ void CCustomMonster::shedule_Update	( u32 DT )
 			Fvector C; float R;
 			//////////////////////////////////////
 			// Ñ Îëåñÿ - ÏÈÂÎ!!!! (Äèìå :-))))
-			// m_PhysicMovementControl.GetBoundingSphere	(C,R);
+			// m_PhysicMovementControl->GetBoundingSphere	(C,R);
 			//////////////////////////////////////
 			Center(C);
 			R = Radius();
@@ -379,7 +379,7 @@ void CCustomMonster::UpdateCL	()
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
 		
 		if (CLSID_AI_RAT != SUB_CLS_ID) {
-			move_along_path			(&m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
+			move_along_path			(m_PhysicMovementControl,NET_Last.p_pos,Device.fTimeDelta);
 			if (!bfScriptAnimation())
 				SelectAnimation		(XFORM().k,direction(),speed());
 		}
@@ -501,7 +501,7 @@ void CCustomMonster::OnRender()
 	//if (!bDebug)					return;
 	//if (!psAI_Flags.test(aiDebug))	return;
 
-//	m_PhysicMovementControl.DBG_Render();
+//	m_PhysicMovementControl->DBG_Render();
 
 	RCache.OnFrameEnd				();
 	{
@@ -624,7 +624,7 @@ void CCustomMonster::OnRender()
 	
 	if (psAI_Flags.test(aiMotion)) 
 	{
-		m_PhysicMovementControl.dbg_Draw();
+		m_PhysicMovementControl->dbg_Draw();
 	}
 	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
 }

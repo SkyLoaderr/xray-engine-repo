@@ -223,10 +223,10 @@ void CActor::ActorUse()
 	u16 element=BI_NONE;
 	CGameObject* object =pick_Object(element);	
 	if(use_Vehicle(object)) return;
-	if(!m_PhysicMovementControl.PHCapture())
-		m_PhysicMovementControl.PHCaptureObject(object,element);
+	if(!m_PhysicMovementControl->PHCapture())
+		m_PhysicMovementControl->PHCaptureObject(object,element);
 	else
-		m_PhysicMovementControl.PHReleaseObject();
+		m_PhysicMovementControl->PHReleaseObject();
 	
 }
 //void CActor::IR_OnMousePress(int btn)

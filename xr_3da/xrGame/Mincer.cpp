@@ -98,7 +98,7 @@ void CMincer::Affect(CObject* O)
 				  ::Random.randF(-.5f,.5f)); 
 		dir.normalize();
 		
-		//l_pO->m_PhysicMovementControl.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
+		//l_pO->m_PhysicMovementControl->ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		float power = Power(pObject->Position().distance_to(position), pObject->GetMass());
 		float impulse = power*pObject->GetMass()/**m_fHitImpulseScale*/;
 		//float impulse = Impulse(power, l_pO->GetMass());

@@ -169,8 +169,8 @@ void	CCar::UpdateCL				( )
 		HUD().pFontSmall->OutNext		("wheel torque:      [%3.2f]",RefWheelCurTorque());
 		HUD().pFontSmall->OutNext		("engine torque:      [%3.2f]",EngineCurTorque());
 		HUD().pFontSmall->OutNext		("fuel:      [%3.2f]",m_fuel);
-		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl.GetVelocityMagnitude());
-		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl.GetVelocityActual());
+		//HUD().pFontSmall->OutNext("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
+		//HUD().pFontSmall->OutNext("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
 	}
 	//#endif
 	//	Log("UpdateCL",Device.dwFrame);

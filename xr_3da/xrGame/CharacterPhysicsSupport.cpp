@@ -3,10 +3,12 @@
 #include "PHMovementControl.h"
 #include "CustomMonster.h"
 #include "PhysicsShell.h"
+
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
 }
+
 CCharacterPhysicsSupport::CCharacterPhysicsSupport(EType atype,CEntityAlive* aentity) 
 : m_PhysicMovementControl(*aentity->PMovement()), 
   m_pPhysicsShell(aentity->PPhysicsShell()),

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "../../ai_script_actions.h"
+#include "../../phmovementcontrol.h"
 
 //////////////////////////////////////////////////////////////////////////
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
@@ -54,10 +55,10 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 
 	switch (l_tObjectAction.m_tGoalType) {
 		case eObjectActionTake: 
-			m_PhysicMovementControl.PHCaptureObject(l_tpEntity);
+			m_PhysicMovementControl->PHCaptureObject(l_tpEntity);
 			break;
 		case eObjectActionDrop: 
-			m_PhysicMovementControl.PHReleaseObject();
+			m_PhysicMovementControl->PHReleaseObject();
 			break;
 	}
 	l_tObjectAction.m_bCompleted = true;

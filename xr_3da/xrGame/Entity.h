@@ -10,10 +10,7 @@
 #define PropertyGP(a,b) __declspec( property( get=a, put=b ) )
 
 #include "gameobject.h"
-#include "phmovementcontrol.h"
 #include "entitycondition.h"
-
-
 
 // refs
 class	ENGINE_API CCameraBase;

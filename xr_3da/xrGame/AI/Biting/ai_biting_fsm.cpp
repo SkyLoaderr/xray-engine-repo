@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "ai_biting.h"
+#include "../../phmovementcontrol.h"
 
 void CAI_Biting::Think()
 {
@@ -20,7 +21,7 @@ void CAI_Biting::Think()
 
 	vfUpdateParameters						();
 
-	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
+	if (m_PhysicMovementControl->JumpState()) enable_movement(false);
 
 	CMonsterMovement::Frame_Init();
 

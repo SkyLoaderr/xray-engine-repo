@@ -30,7 +30,7 @@ void CActor::attach_Vehicle(CCar* vehicle)
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(NULL,NULL);
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(CarHeadCallback,this);
 
-	m_PhysicMovementControl.DestroyCharacter();
+	m_PhysicMovementControl->DestroyCharacter();
 	//PIItem iitem=inventory().ActiveItem();
 	setVisible(true);
 	//clear actor movement states 
@@ -41,8 +41,8 @@ void CActor::detach_Vehicle()
 {
 	if(!m_vehicle) return;
 	m_vehicle->detach_Actor();//
-	m_PhysicMovementControl.CreateCharacter();
-	m_PhysicMovementControl.SetPosition(m_vehicle->ExitPosition());
+	m_PhysicMovementControl->CreateCharacter();
+	m_PhysicMovementControl->SetPosition(m_vehicle->ExitPosition());
 	r_model_yaw=-m_vehicle->Camera()->yaw;
 	r_torso.yaw=r_model_yaw;
 	r_model_yaw_dest=r_model_yaw;

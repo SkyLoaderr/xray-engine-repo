@@ -58,7 +58,6 @@ u32	CLevelGraph::vertex		(const Fvector &position) const
 {
 	CLevelGraph::CPosition	_node_position;
 	vertex_position			(_node_position,position);
-	bool					inside_vertex = false;
 	float					min_dist = flt_max;
 	u32						selected;
 	set_invalid_vertex		(selected);

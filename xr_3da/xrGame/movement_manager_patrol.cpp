@@ -66,14 +66,20 @@ void CMovementManager::process_patrol_path()
 					break;
 			}
 			case ePathStatePathVerification : {
-				if (!CPatrolPathManager::actual())
+				if (!CPatrolPathManager::actual()) {
+					Msg				("%6d : Patrol path is inactual!",Level().timeServer());
 					m_path_state	= ePathStateSelectPatrolPoint;
+				}
 				else
-				if (!CLevelPathManager::actual())
+				if (!CLevelPathManager::actual()) {
+					Msg				("%6d : Level path is inactual!",Level().timeServer());
 					m_path_state	= ePathStateBuildLevelPath;
+				}
 				else
-				if (!CDetailPathManager::actual())
+				if (!CDetailPathManager::actual()) {
+					Msg				("%6d : Detail path is inactual!",Level().timeServer());
 					m_path_state	= ePathStateBuildLevelPath;
+				}
 				else
 					if (CDetailPathManager::completed(Position(),!state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;

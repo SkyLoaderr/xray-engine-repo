@@ -2,6 +2,7 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 #include "../ai_monster_utils.h"
+#include "../phmovementcontrol.h"
 
 CBitingSquadTask::CBitingSquadTask(CAI_Biting *p)
 {
@@ -115,7 +116,7 @@ void CBitingSquadTask::Run()
 
 			CGameObject *pO = dynamic_cast<CGameObject *>(task.target.entity);
 			R_ASSERT(pO);
-			Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl.PHCaptureGetNearestElemPos(pO);
+			Fvector nearest_bone_pos = pMonster->m_PhysicMovementControl->PHCaptureGetNearestElemPos(pO);
 			cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 				
 		} else { 

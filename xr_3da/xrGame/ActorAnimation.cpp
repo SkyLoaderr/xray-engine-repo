@@ -262,7 +262,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	HUD().pFontSmall->OutNext	("MSTATE:     [%s]",buf);
 //	if (buf[0]) 
 //		Msg("%s",buf);
-	switch (m_PhysicMovementControl.Environment())
+	switch (m_PhysicMovementControl->Environment())
 	{
 	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
 	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
@@ -270,7 +270,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	}
 	HUD().pFontSmall->OutNext	(buf);
 	HUD().pFontSmall->OutNext	("Accel     [%3.2f, %3.2f, %3.2f]",VPUSH(NET_SavedAccel));
-	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl.GetVelocity()));
+	HUD().pFontSmall->OutNext	("V         [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
 	HUD().pFontSmall->OutNext	("vertex ID   %d",level_vertex_id());
 #endif
 #endif

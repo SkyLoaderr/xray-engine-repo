@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ai_monster_jump.h"
 #include "../custommonster.h"
+#include "../phmovementcontrol.h"
 
 CJumping::CJumping()
 {
@@ -111,9 +112,9 @@ void CJumping::Execute()
 	}
 
 	// получить время физ.прыжка
-	ph_time = pMonster->m_PhysicMovementControl.JumpMinVelTime(target_pos);
+	ph_time = pMonster->m_PhysicMovementControl->JumpMinVelTime(target_pos);
 	// выполнить прыжок в соответствии с делителем времени
-	pMonster->m_PhysicMovementControl.Jump(target_pos,ph_time/m_fJumpFactor);
+	pMonster->m_PhysicMovementControl->Jump(target_pos,ph_time/m_fJumpFactor);
 
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;

@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "PHCapture.h"
 #include "entity_alive.h"
+#include "phmovementcontrol.h"
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 
@@ -238,7 +239,7 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	CEntityAlive* capturer=dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object);
 	if(capturer)
 	{
-		CPHCapture* capture=capturer->m_PhysicMovementControl.PHCapture();
+		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
 		if(capture)
 		{
 			if(capture->m_taget_element->PhysicsRefObject()==l_pUD2->ph_ref_object) 
@@ -252,7 +253,7 @@ void CPHCapture::object_contactCallbackFun(bool& do_colide,dContact& c)
 	capturer=dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object);
 	if(capturer)
 	{
-		CPHCapture* capture=capturer->m_PhysicMovementControl.PHCapture();
+		CPHCapture* capture=capturer->m_PhysicMovementControl->PHCapture();
 		if(capture)
 		{
 			if(capture->m_taget_element->PhysicsRefObject()==l_pUD1->ph_ref_object) 

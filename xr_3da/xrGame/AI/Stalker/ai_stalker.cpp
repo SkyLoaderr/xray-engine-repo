@@ -16,6 +16,7 @@
 #include "../../game_graph.h"
 #include "../../inventory.h"
 #include "../../artifact.h"
+#include "../../phmovementcontrol.h"
 
 
 CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
@@ -23,7 +24,7 @@ CAI_Stalker::CAI_Stalker			() : CStateManagerStalker("StalkerManager")
 	Init							();
 	InitTrade						();
 	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
-	m_PhysicMovementControl.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -172,8 +173,8 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 	setEnabled						(true);
 
-	m_PhysicMovementControl.SetPosition	(Position());
-	m_PhysicMovementControl.SetVelocity	(0,0,0);
+	m_PhysicMovementControl->SetPosition	(Position());
+	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
 	if (!Level().CurrentViewEntity())
 		Level().SetEntity(this);
@@ -351,7 +352,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			Fvector C; float R;
 			//////////////////////////////////////
 			// Ñ Îëåñÿ - ÏÈÂÎ!!!! (Äèìå :-))))
-			// m_PhysicMovementControl.GetBoundingSphere	(C,R);
+			// m_PhysicMovementControl->GetBoundingSphere	(C,R);
 			//////////////////////////////////////
 			Center(C);
 			R = Radius();

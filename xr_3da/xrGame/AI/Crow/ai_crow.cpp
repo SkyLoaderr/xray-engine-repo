@@ -162,7 +162,7 @@ void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
 	V.mul(XFORM().k,fSpeed);
-//	m_PhysicMovementControl.SetVelocity(V);
+//	m_PhysicMovementControl->SetVelocity(V);
 	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 
@@ -274,9 +274,9 @@ void CAI_Crow::state_DeathFall()
 {
 	Fvector tAcceleration;
 	tAcceleration.set(0,-10.f,0);
-	//m_PhysicMovementControl.SetPosition(Position());
-	//m_PhysicMovementControl.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
-	//m_PhysicMovementControl.GetPosition(Position());
+	//m_PhysicMovementControl->SetPosition(Position());
+	//m_PhysicMovementControl->Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
+	//m_PhysicMovementControl->GetPosition(Position());
 
 	if (m_pPhysicsShell)
 	{
@@ -376,8 +376,8 @@ void CAI_Crow::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvec
 	/*
 	switch (st_current){
 	case eDeathDead:{
-		float Q	= float(amount)/m_PhysicMovementControl.GetMass();
-		m_PhysicMovementControl.vExternalImpulse.mad(vWorldDir,Q);
+		float Q	= float(amount)/m_PhysicMovementControl->GetMass();
+		m_PhysicMovementControl->vExternalImpulse.mad(vWorldDir,Q);
 	}break;
 	}
 */

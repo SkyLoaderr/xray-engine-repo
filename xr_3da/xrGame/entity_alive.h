@@ -16,7 +16,7 @@ public:
 	float					m_fAccuracy;
 	float					m_fIntelligence;
 	//m_PhysicMovementControl
-	CPHMovementControl		m_PhysicMovementControl;
+	CPHMovementControl		*m_PhysicMovementControl;
 public:
 	// General
 							CEntityAlive			();
@@ -63,7 +63,7 @@ public:
 public:
 IC	CPHMovementControl* PMovement()
 	{
-		return &m_PhysicMovementControl;
+		return m_PhysicMovementControl;
 	}
 ///////////////////////////////////////////////////////////////////////
 	virtual u16				PHGetSyncItemsNumber();

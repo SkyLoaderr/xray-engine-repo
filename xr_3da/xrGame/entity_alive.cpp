@@ -3,9 +3,8 @@
 #include "inventoryowner.h"
 #include "inventory.h"
 #include "physicsshell.h"
-
 #include "gamemtllib.h"
-
+#include "phmovementcontrol.h"
 
 #define SMALL_ENTITY_RADIUS		0.6f
 
@@ -27,10 +26,12 @@ CEntityAlive::CEntityAlive()
 
 CEntityAlive::~CEntityAlive()
 {
+	xr_delete				(m_PhysicMovementControl);
 }
 
 void CEntityAlive::Init			()
 {
+	m_PhysicMovementControl = xr_new<CPHMovementControl>();
 }
 
 void CEntityAlive::Load		(LPCSTR section)
@@ -116,8 +117,8 @@ BOOL CEntityAlive::net_Spawn	(LPVOID DC)
 {
 	inherited::net_Spawn	(DC);
 
-	//m_PhysicMovementControl.SetPosition	(Position());
-	//m_PhysicMovementControl.SetVelocity	(0,0,0);
+	//m_PhysicMovementControl->SetPosition	(Position());
+	//m_PhysicMovementControl->SetVelocity	(0,0,0);
 	return					TRUE;
 }
 
@@ -134,8 +135,8 @@ void CEntityAlive::net_Destroy	()
 
 void CEntityAlive::HitImpulse	(float /**amount/**/, Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
 {
-	//	float Q					= 2*float(amount)/m_PhysicMovementControl.GetMass();
-	//	m_PhysicMovementControl.vExternalImpulse.mad	(vWorldDir,Q);
+	//	float Q					= 2*float(amount)/m_PhysicMovementControl->GetMass();
+	//	m_PhysicMovementControl->vExternalImpulse.mad	(vWorldDir,Q);
 }
 
 void CEntityAlive::Hit(float P, Fvector &dir,CObject* who, s16 element,Fvector position_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -169,21 +170,21 @@ float CEntityAlive::CalcCondition(float /**hit/**/)
 ///////////////////////////////////////////////////////////////////////
 u16	CEntityAlive::PHGetSyncItemsNumber()
 {
-	if(m_PhysicMovementControl.CharacterExist()) return 1;
+	if(m_PhysicMovementControl->CharacterExist()) return 1;
 	else										  return 0;
 }
 CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16/*item*/)
 {
-	if(m_PhysicMovementControl.CharacterExist()) return m_PhysicMovementControl.GetSyncItem();
+	if(m_PhysicMovementControl->CharacterExist()) return m_PhysicMovementControl->GetSyncItem();
 	else										 return 0;
 }
 void CEntityAlive::PHUnFreeze()
 {
-	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.UnFreeze();
+	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->UnFreeze();
 }
 void CEntityAlive::PHFreeze()
 {
-	if(m_PhysicMovementControl.CharacterExist()) m_PhysicMovementControl.Freeze();
+	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->Freeze();
 }
 //////////////////////////////////////////////////////////////////////
 

@@ -2,6 +2,8 @@
 #ifndef PH_CAPTURE_H
 #define PH_CAPTURE_H
 
+#include "phobject.h"
+
 class CPHCapture : public CPHObject
 {
 public:

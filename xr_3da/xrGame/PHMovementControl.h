@@ -5,7 +5,6 @@
 //#define NO_PHYSICS_IN_AI_MOVE
 
 #include "PHCharacter.h"
-#include "ai_space.h"
 #include "detail_path_manager.h"
 
 class CPHAICharacter;
