@@ -12,7 +12,6 @@
 	#include "scene.h"
 #else
 	#include "xr_creator.h"
-	#include "xr_object.h"
 #endif
 
 struct FlareVertex {
@@ -36,12 +35,12 @@ struct FlareVertex {
 #endif
 
 
-#define FVF_FlareVertex		( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 )
 #define MAX_Flares	12
 //////////////////////////////////////////////////////////////////////////////
 // Globals ///////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
-#define BLEND_SPEED 3.0f
+#define BLEND_INC_SPEED 50.0f
+#define BLEND_DEC_SPEED 4.0f
 
 CLensFlare::CLensFlare()
 {
@@ -57,10 +56,10 @@ CLensFlare::CLensFlare()
     m_Flags.bFlare		= FALSE;
     m_Flags.bSource		= FALSE;
     m_Flags.bGradient	= FALSE;
-	fBlend				= 0;
+	fBlend				= 0.f;
 
     LightColor.set		( 0xFFFFFFFF );
-	fGradientDensity	= 0.85f;
+	fGradientValue		= 0.f;
 }
 
 
@@ -90,7 +89,7 @@ void CLensFlare::OnDeviceCreate()
 
 		Cnt+=4;
 	}
-	P.VB_Create(FVF_FlareVertex, MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
+	P.VB_Create(FVF::F_LIT, MAX_Flares*4, D3DUSAGE_WRITEONLY|D3DUSAGE_DYNAMIC);
 	P.IB_Create(0, MAX_Flares*2*3, D3DUSAGE_WRITEONLY, Indices);
 	// shaders
 	m_Gradient.hShader	= CreateFlareShader(m_Gradient.texture);
@@ -125,10 +124,11 @@ void CLensFlare::SetSource(float fRadius, const char* tex_name)
     strcpy(m_Source.texture,tex_name);
 }
 
-void CLensFlare::SetGradient(float fMaxRadius, const char* tex_name)
+void CLensFlare::SetGradient(float fMaxRadius, float fOpacity, const char* tex_name)
 {
 	m_Gradient.fRadius	= fMaxRadius;
 	m_Gradient.hShader	= CreateFlareShader(tex_name);
+	m_Gradient.fOpacity	= fOpacity;
     strcpy(m_Gradient.texture,tex_name);
 }
 
@@ -171,10 +171,10 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	}
 	m_Flags.bGradient = pIni->ReadTOKEN( section, "gradient", BOOL_token );
 	if (m_Flags.bGradient){
-		fGradientDensity = pIni->ReadFLOAT( section, "gradient_density");
-		T = pIni->ReadSTRING ( section,"source_texture" );
-		r = pIni->ReadFLOAT	 ( section,"source_radius" );
-		SetGradient(r*100.f,T);
+		T = pIni->ReadSTRING( section,"gradient_texture" );
+		r = pIni->ReadFLOAT	( section,"gradient_radius"  );
+		o = pIni->ReadFLOAT	( section,"gradient_opacity" );
+		SetGradient(r,o,T);
 	}
 	bInit			= false;
 }
@@ -236,42 +236,31 @@ void CLensFlare::OnMove()
 #ifdef _LEVEL_EDITOR
 	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
-	pCreator->CurrentEntity()->CFORM()->Enable	( pCreator->CurrentEntity()->getVisible() );
-	if ( pCreator->ObjectSpace.RayTest			( Device.vCameraPosition, vSunDir) )
+	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
 #endif
 	{
-		fBlend = fBlend - BLEND_SPEED * Device.fTimeDelta;
+		fBlend = fBlend - BLEND_DEC_SPEED * Device.fTimeDelta;
 	}else{
-		fBlend = fBlend + BLEND_SPEED * Device.fTimeDelta;
+		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
 	}
-#ifndef _LEVEL_EDITOR
-	pCreator->CurrentEntity()->CFORM()->EnableRollback( );
-#endif
 	clamp( fBlend, 0.0f, 1.0f );
 	
 	// gradient
 	if (m_Flags.bGradient){
 		Fvector				scr_pos;
-		float w =	vecLight.x*Device.mFullTransform._14 + 
-			vecLight.y*Device.mFullTransform._24 + 
-			vecLight.z*Device.mFullTransform._34 + Device.mFullTransform._44;
-		w = fabsf(w);
 		Device.mFullTransform.transform	( scr_pos, vecLight );
 		float kx = 1, ky = 1;
 		float sun_blend		= 0.5f;
-		float sun_max		= 1.5f;
+		float sun_max		= 1.75f;
 		scr_pos.y			*= -1;
 		
 		if (fabsf(scr_pos.x) > sun_blend)	kx = ((sun_max - (float)fabsf(scr_pos.x))) / (sun_max - sun_blend);
 		if (fabsf(scr_pos.y) > sun_blend)	ky = ((sun_max - (float)fabsf(scr_pos.y))) / (sun_max - sun_blend);
-		fGradientValue		= kx * ky * fGradientDensity * 0.3f * fBlend;
 		
 		if (!((fabsf(scr_pos.x) > sun_max) || (fabsf(scr_pos.y) > sun_max)))
-#ifdef _LEVEL_EDITOR
-			UI.SetGradient(fGradientValue);
-#else
-			pCreator->Environment.SetGradient(fGradientValue);
-#endif
+			fGradientValue	= kx * ky * m_Gradient.fOpacity * fBlend;
+		else
+			fGradientValue	= 0;
 	}
 }
 

@@ -19,12 +19,11 @@ protected:
 	BOOL			bRender;
 	// variable
     Fcolor			LightColor;
-	float			fGradientDensity;
 	float			fGradientValue;
 
 	CPrimitive		P;
 
-	void			SetGradient	(float fMaxRadius, const char* tex_name);
+	void			SetGradient	(float fMaxRadius, float fOpacity, const char* tex_name);
     void			SetSource	(float fRadius, const char* tex_name);
     void			AddFlare	(float fRadius, float fOpacity, float fPosition, const char* tex_name);
 public:
@@ -53,7 +52,6 @@ public:
     SFlare			m_Source;
     // gradient
     SFlare			m_Gradient;
-    float			m_fGradientDensity;
     Shader*			CreateSourceShader(const char* tex_name);
     Shader*			CreateFlareShader(const char* tex_name);
 public:
