@@ -85,7 +85,7 @@
       Intermediate\ItemDialog.obj Intermediate\ParticleEffectActions.obj 
       Intermediate\ParticleEffectActionsProps.obj 
       Intermediate\ParticleEffectActionsRender.obj Intermediate\pDomain.obj 
-      Intermediate\EditorPreferences.obj"/>
+      Intermediate\EditorPreferences.obj Intermediate\Fmesh.obj"/>
     <RESFILES value="resource.res ParticleEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -304,6 +304,7 @@
       <FILE FILENAME="Editor\pDomain.cpp" FORMNAME="" UNITNAME="pDomain" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\EditorPreferences.cpp" FORMNAME="" UNITNAME="EditorPreferences" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Sound.h" FORMNAME="" UNITNAME="Sound.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Fmesh.cpp" FORMNAME="" UNITNAME="Fmesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
