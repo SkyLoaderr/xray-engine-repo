@@ -27,7 +27,7 @@
 		<text x="0" y="0" font="normal" r="255" g="255" b="255"></text>
 	</static>
 
-	<gl_button x="20" y="20" width="150" height="40">
+	<gl_button x="10" y="30" width="150" height="40">
 		<text font="letterica16" r="255" g="255" b="255">Global</text>
 	</gl_button>
 
