@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "PHCapture.h"
 #include "Entity.h"
+#include "Inventory.h"
 ///////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////
 CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object)
@@ -18,7 +19,11 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 	b_failed				=false;
 	e_state					=cstPulling;
 
-	if(!a_taget_object||!a_taget_object->m_pPhysicsShell||!a_taget_object->m_pPhysicsShell->bActive) 
+	if(!a_taget_object							||
+	   !a_taget_object->m_pPhysicsShell			||
+	   !a_taget_object->m_pPhysicsShell->bActive||
+	   dynamic_cast<CInventoryItem*>(a_taget_object)
+	   ) 
 	{
 		m_taget_object=NULL;
 		b_failed=true;
@@ -90,7 +95,11 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u
 	b_failed				=false;
 	e_state					=cstPulling;
 
-	if(!a_taget_object||!a_taget_object->m_pPhysicsShell||!a_taget_object->m_pPhysicsShell->bActive) 
+	if(!a_taget_object							||
+	   !a_taget_object->m_pPhysicsShell			||
+	   !a_taget_object->m_pPhysicsShell->bActive||
+	   dynamic_cast<CInventoryItem*>(a_taget_object)
+	   ) 
 	{
 		m_taget_object=NULL;
 		b_failed=true;

@@ -822,10 +822,11 @@ int dSortedTriSphere(//const dReal* v1,const dReal* v2,
 								const dReal* v0= (const dReal*)&V_array[T->verts[0]];
 								const dReal* v1= (const dReal*)&V_array[T->verts[1]];
 								const dReal* v2= (const dReal*)&V_array[T->verts[2]];
-								 if((((dDOT(b_neg_tri->norm,v0)-b_neg_tri->pos)<0.f)||
-									 ((dDOT(b_neg_tri->norm,v1)-b_neg_tri->pos)<0.f)||
-									 ((dDOT(b_neg_tri->norm,v2)-b_neg_tri->pos)<0.f))
-									 ){
+								 if(
+									 !((dDOT(b_neg_tri->norm,v0)-b_neg_tri->pos)>0.f)||
+									 !((dDOT(b_neg_tri->norm,v1)-b_neg_tri->pos)>0.f)||
+									 !((dDOT(b_neg_tri->norm,v2)-b_neg_tri->pos)>0.f)
+									){
 										 include=false;
 										 break;
 									 }
