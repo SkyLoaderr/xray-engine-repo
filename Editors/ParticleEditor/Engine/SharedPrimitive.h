@@ -32,34 +32,36 @@ public:
 	IC DWORD					DiscardID()		{ return mDiscardID;	}
 	IC void						Flush()			{ mPosition=mSize;		}
 
-	IC void*					Lock			( DWORD Count, DWORD Stride, DWORD& vOffset )
+	IC void*					Lock			( DWORD vl_Count, DWORD Stride, DWORD& vOffset )
 	{
-		vOffset				= 0;
-		BYTE* pLockedData	= 0;
-		
 		// Ensure there is enough space in the VB for this data
-		DWORD	bytes_need	= Count*Stride;
+		DWORD	bytes_need	= vl_Count*Stride;
 		R_ASSERT			(bytes_need<=mSize);
 
-		// Align position to stride and calc offset
-		vOffset				= (mPosition/Stride)+1;
-		mPosition			= vOffset*Stride;
-
-		// If either user forced us to flush,
-		// or there is not enough space for the vertex data,
-		// then flush the buffer contents
-		DWORD dwFlags		= LOCKFLAGS_APPEND;
-		if ( ( bytes_need + mPosition ) >= mSize )
+		// Vertex-local info
+		DWORD vl_mSize		= mSize/Stride;
+		DWORD vl_mPosition	= mPosition/Stride + 1;
+		
+		// Check if there is need to flush and perform lock
+		BYTE* pData			= 0;
+		if ((vl_Count+vl_mPosition) >= vl_mSize)
 		{
-			mPosition			= 0;						// clear position
-			dwFlags				= LOCKFLAGS_FLUSH;			// discard it's contens
+			// FLUSH-LOCK
+			mPosition			= 0;
+			vOffset				= 0;
 			mDiscardID			++;
+
+			pVB->Lock			( mPosition, bytes_need, &pData, LOCKFLAGS_FLUSH);
+		} else {
+			// APPEND-LOCK
+			mPosition			= vl_mPosition*Stride;
+			vOffset				= vl_mPosition;
+
+			pVB->Lock			( mPosition, bytes_need, &pData, LOCKFLAGS_APPEND);
 		}
+		VERIFY				( pData );
 
-		pVB->Lock			( mPosition, bytes_need, &pLockedData, dwFlags);
-		VERIFY				(pLockedData);
-
-		return LPVOID		(pLockedData);
+		return LPVOID		( pData );
 	}
 
 	IC void						Unlock			( DWORD Count, DWORD Stride)
