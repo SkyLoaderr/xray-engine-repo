@@ -4,6 +4,7 @@
 #include "PhysicsShell.h"
 #include "effectorshot.h"
 #include "actor.h"
+#include "../CameraBase.h"
 
 CMissile::CMissile(void) 
 {
@@ -158,9 +159,24 @@ void CMissile::OnH_B_Independent()
 	if(m_pPhysicsShell) 
 	{
 		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		Fvector l_fw; l_fw.set(trans.k);// l_fw.mul(2.f);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
+		
+		Fvector l_fw; 
+		Fvector l_up; 
+
+		CActor* ParentA = dynamic_cast<CActor*>	(Parent);
+		if (ParentA)
+		{
+			Fvector P, D, N;
+			ParentA->cam_Active()->Get(P, D, N);
+			l_fw.set(D);
+		}
+		else
+		{
+			Level().Cameras.unaffected_Matrix(trans);
+			l_fw.set(trans.k);// l_fw.mul(2.f);
+		};
+		
+		l_up.set(XFORM().j); l_up.mul(2.f);
 		Fmatrix l_p1, l_p2;
 		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); //l_p1.c.add(l_fw);
 		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(1.f+m_force); l_p2.c.add(l_fw);

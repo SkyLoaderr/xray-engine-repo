@@ -367,6 +367,12 @@ void CActor::net_ImportInput	(NET_Packet &P)
 
 	P.r_angle8		(cam_Active()->yaw);
 	P.r_angle8		(cam_Active()->pitch);
+
+	Fvector			t;
+	t.setHP			(-cam_Active()->yaw, cam_Active()->pitch);
+	Fvector	vP, vD, vN;
+	cam_Active()->Get(vP, vD, vN);
+	cam_Active()->Set(vP, t, vN);
 };
 
 BOOL CActor::net_Spawn		(LPVOID DC)
