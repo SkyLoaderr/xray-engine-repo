@@ -91,8 +91,8 @@ void CPda::net_Destroy()
 	//самостоятельно выкинуть все ссылки на себя
 	//из других PDA
 	/*for(PDA_LIST_it it = m_PDAList.begin();
-					it!=m_PDAList.end(); 
-					it++)
+					m_PDAList.end() != it; 
+					++it)
 	{
 		CPda* pPda = (*it);
 		pPda->feel_touch_delete(H_Parent());
@@ -148,7 +148,7 @@ void CPda::feel_touch_new(CObject* O)
 
 	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(O);
 
-	if(pInvOwner && pInvOwner->IsActivePDA() && pInvOwner->GetPDA()!=this) 
+	if(pInvOwner && pInvOwner->IsActivePDA() && this != pInvOwner->GetPDA()) 
 	{
 		if(bDebug) HUD().outMessage(0xffffffff,cName(),"_new_ PDA detected");
 		m_PDAList.push_back(pInvOwner->GetPDA());
@@ -176,8 +176,8 @@ void CPda::feel_touch_delete(CObject* O)
 		else
 		{
 			for(PDA_LIST_it it = m_PDAList.begin();
-					it!=m_PDAList.end(); 
-					it++)
+					m_PDAList.end() != it; 
+					++it)
 			{
 				CPda* pPda = (*it);
 				if(O == pPda->H_Parent())
@@ -198,7 +198,7 @@ BOOL CPda::feel_touch_contact(CObject* O)
 	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(O);
 
 	if(pInvOwner && pEntityAlive->g_Alive() && !pEntityAlive->getDestroy() &&
-	   pInvOwner->IsActivePDA() && pInvOwner->GetPDA()!=this &&
+	   pInvOwner->IsActivePDA() && this!=pInvOwner->GetPDA() &&
 	   !pInvOwner->GetPDA()->getDestroy()) 
 		return TRUE;
 	else
@@ -281,8 +281,8 @@ void CPda::SendMessage(u32 pda_num, EPdaMsg msg, EPdaMsgAnger anger)
 	//найти PDA с нужным номером в списке
 	u32 i=0;
 	for(PDA_LIST_it it = m_PDAList.begin();
-		i<=pda_num && it!=m_PDAList.end(); 
-		i++, it++){}
+		i<=pda_num && m_PDAList.end() != it; 
+		++i, ++it){}
 
 	CPda* pPda = (*it);
 
@@ -433,7 +433,7 @@ bool CPda::IsKnowAbout(int info_index)
 	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
 
 	//нам уже известна эта информация
-	if(it!=m_mapKnownInfo.end()) return true;
+	if(m_mapKnownInfo.end() != it) return true;
 
 	return false;
 }
@@ -459,7 +459,7 @@ void CPda::OnReceiveInfo(int info_index)
 	KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.find(info_index);
 
 	//нам уже известна эта информация
-	if(it!=m_mapKnownInfo.end()) return;
+	if(m_mapKnownInfo.end() != it) return;
 
 	//что означает FALSE пока не известно....
 	//главное что элемент есть и мы об этом знаем
@@ -476,15 +476,15 @@ void CPda::UpdateQuestions()
 
 
 	for(KNOWN_INFO_PAIR_IT it = m_mapKnownInfo.begin();
-		it != m_mapKnownInfo.end(); it++)
+		m_mapKnownInfo.end() != it; ++it)
 	{
 		//подгрузить кусочек информации с которым мы работаем
 		CInfoPortion info_portion;
 		info_portion.Load((*it).first);
 		
 		for(INFO_QUESTIONS_LIST_it it1 = info_portion.m_QuestionsList.begin();
-								   it1 != info_portion.m_QuestionsList.end();
-								   it1++)
+								   info_portion.m_QuestionsList.end() != it1;
+								   ++it1)
 		{
 			//проверить осталась ли еще неизвестная нам информация
 			//которую мы можем получить в ответ на вопрос
@@ -492,8 +492,8 @@ void CPda::UpdateQuestions()
 
 			INFO_INDEX_LIST_it it2;
 			for(it2 = question.IndexList.begin();
-				it2 != question.IndexList.end();
-				it2++)
+				question.IndexList.end() != it2;
+				++it2)
 			{
 				if(!IsKnowAbout(*it2))
 				{

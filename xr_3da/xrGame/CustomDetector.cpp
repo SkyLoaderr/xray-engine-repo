@@ -88,7 +88,7 @@ void CCustomDetector::Load(LPCSTR section)
 			ref_sound *l_pSound = xr_new<ref_sound>();
 			SoundCreate(*l_pSound, l_soundName);
 			m_sounds[zone_cls] = l_pSound;
-			i++;
+			++i;
 		} else break;
 	} while(true);
 }
@@ -100,7 +100,7 @@ void CCustomDetector::net_Destroy()
 	inherited::net_Destroy();
 	SoundDestroy(m_noise);
 	xr_map<CLASS_ID, ref_sound*>::iterator l_it;
-	for(l_it = m_sounds.begin(); l_it != m_sounds.end(); l_it++) SoundDestroy(*l_it->second);
+	for(l_it = m_sounds.begin(); m_sounds.end() != l_it; ++l_it) SoundDestroy(*l_it->second);
 }
 
 void CCustomDetector::shedule_Update(u32 dt) 
@@ -124,7 +124,7 @@ void CCustomDetector::shedule_Update(u32 dt)
 	///////////////////////////////////
 	//звуки обнаружения аномальных зон
 	///////////////////////////////////
-	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) 
+	for(l_it = m_zones.begin(); m_zones.end() != l_it; ++l_it) 
 	{
 		CCustomZone *l_pZ = *l_it;
 		u32 &l_time = m_times[l_pZ];
@@ -181,7 +181,7 @@ void CCustomDetector::shedule_Update(u32 dt)
 	//////////////////////////////////
 /*	
 	xr_set<CArtifact*>::iterator l_it2;
-	for(l_it2 = CArtifact::m_all.begin(); l_it2 != CArtifact::m_all.end(); l_it2++) 
+	for(l_it2 = CArtifact::m_all.begin(); CArtifact::m_all.end() != l_it2; ++l_it2) 
 	{
 		CArtifact &l_af = **l_it2;
 		float l_dst = P.distance_to(l_af.Position());
@@ -206,7 +206,7 @@ void CCustomDetector::UpdateCL()
 	/*
 	f32 l_zonePow = 0;
 	xr_list<CCustomZone*>::iterator l_it;
-	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(Position())));
+	for(l_it = m_zones.begin(); m_zones.end() != l_it; ++l_it) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(Position())));
 	CGameFont* H		= HUD().pFontMedium;
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
@@ -242,10 +242,10 @@ void CCustomDetector::feel_touch_delete(CObject* O)
 
 BOOL CCustomDetector::feel_touch_contact(CObject* O) 
 {
-	return dynamic_cast<CCustomZone*>(O) != NULL;
+	return NULL != dynamic_cast<CCustomZone*>(O);
 }
 
-void CCustomDetector::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+void CCustomDetector::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256 temp;
 	if (FS.exist(temp,"$game_sounds$",s_name)) 

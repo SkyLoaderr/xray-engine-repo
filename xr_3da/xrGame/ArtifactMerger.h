@@ -56,9 +56,9 @@ public:
 	{
 		int artifact_count = 0;
 		for(ARTIFACT_LIST_it it = m_ArtifactList.begin();
-							 it!= m_ArtifactList.end();
-							 it++)
-							if(dynamic_cast<A*>(*it)) artifact_count++;
+							 m_ArtifactList.end() != it;
+							 ++it)
+							if(dynamic_cast<A*>(*it)) ++artifact_count;
 		return artifact_count;
 	};
 
@@ -72,7 +72,7 @@ public:
 	{
 		int artifact_count=0;
 //		for(ARTIFACT_LIST_it it = m_ArtifactList.begin();
-//							 (it!= m_ArtifactList.end()) &&
+//							 (m_ArtifactList.end() != it) &&
 //							 (artifact_count<num_to_destroy);)
 
 		ARTIFACT_LIST_it it = m_ArtifactList.begin();
@@ -80,7 +80,7 @@ public:
 		{
 			if(dynamic_cast<A*>(*it)) 
 			{
-				artifact_count++;
+				++artifact_count;
 				//удалить объект артефакта
 				PIItem pIItem = *it;
 				pIItem->Drop();
@@ -100,9 +100,9 @@ public:
 			}
 			else
 			{
-				it++;
+				++it;
 			}
-		} while((it!= m_ArtifactList.end()) &&
+		} while((m_ArtifactList.end() != it) &&
 		  	    (artifact_count<num_to_destroy));
 	}
 

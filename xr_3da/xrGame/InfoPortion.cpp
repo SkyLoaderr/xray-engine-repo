@@ -35,7 +35,7 @@ static void LoadAllToMemory()
 
 
 	//загрузка кусочка информации
-	for(int i=0; i<info_num; i++)
+	for(int i=0; i<info_num; ++i)
 	{
 		info_portion.LoadInfoPortionFromXml(uiXml, i);
 
@@ -74,7 +74,7 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 
 	m_iIndex = uiXml.ReadAttribInt(pNode, "index", -1);
 	
-	R_ASSERT2(m_iIndex != -1, "Wrong index");
+	R_ASSERT2(-1 != m_iIndex, "Wrong index");
 										
 	//текст
 	m_text.SetText(uiXml.Read(pNode, "text", 0));
@@ -90,7 +90,7 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 
 	m_QuestionsList.clear();
 	
-	for(i=0; i<questions_num; i++)
+	for(i=0; i<questions_num; ++i)
 	{
 		XML_NODE* pQuestionNode = uiXml.NavigateToNode(pNode,"question",i);
 		
@@ -104,7 +104,7 @@ void CInfoPortion::LoadInfoPortionFromXml(CUIXml& uiXml, int num_in_file)
 		int info_num = uiXml.GetNodesNum(pQuestionNode, "to_info");
 		question.IndexList.clear();
 
-		for(j=0; j<info_num; j++)
+		for(j=0; j<info_num; ++j)
 		{
 			int val = uiXml.ReadInt(pQuestionNode,"to_info",j);
 			question.IndexList.push_back(val);
@@ -164,7 +164,7 @@ void CInfoPortion::Load(int index)
 	int questions_num = uiXml.GetNodesNum(pNode, "question");
 	SInfoQuestion question;
 	
-	for(i=0; i<questions_num; i++)
+	for(i=0; i<questions_num; ++i)
 	{
 		XML_NODE* pQuestionNode = uiXml.NavigateToNode(pNode,"question",i);
 		
@@ -177,7 +177,7 @@ void CInfoPortion::Load(int index)
 	
 		int info_num = uiXml.GetNodesNum(pQuestionNode, "to_info");
 	
-		for(j=0; j<info_num; j++)
+		for(j=0; j<info_num; ++j)
 		{
 			int val = uiXml.ReadInt(pQuestionNode,"to_info",j);
 			question.IndexList.push_back(val);

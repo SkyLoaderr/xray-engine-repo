@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 #include "inventory.h"
 #include "InfoPortion.h"
 

@@ -7,7 +7,7 @@
 #pragma once
 #include "GraviArtifact.h"
 #include "GameObject.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 DEFINE_VECTOR (CGameObject*, GAME_OBJECT_LIST, GAME_OBJECT_LIST_it);
 

@@ -7,8 +7,8 @@
 #pragma once
 
 
-#include "ui\\uistring.h"
-#include "ui\\xrXMLParser.h"
+#include "ui/uistring.h"
+#include "ui/xrXMLParser.h"
 
 
 //структура для локации на карте
