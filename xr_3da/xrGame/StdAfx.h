@@ -37,10 +37,10 @@
 
 #define BOOST_THROW_EXCEPTION_HPP_INCLUDED
 //temporaraly by Kostya & Dima
-//#undef		VERIFY
-//#undef		VERIFY2
-//#undef		VERIFY3
-//
-//#define		VERIFY(a)
-//#define		VERIFY2(a,b)
-//#define		VERIFY3(a,b,c)
+#undef		VERIFY
+#undef		VERIFY2
+#undef		VERIFY3
+
+#define		VERIFY(a)
+#define		VERIFY2(a,b)
+#define		VERIFY3(a,b,c)
