@@ -143,6 +143,8 @@ struct ENGINE_API		ref_geom
 	void			create			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
 	void			destroy			();
 
+	u32				stride			()				{ VERIFY(_object); return _object->vb_stride;	}
+
 	void			operator	=	(SGeometry* _o)	{ destroy();	_object=_o;		}
 	SGeometry*		operator	()	()				{ return _object;				}
 };
