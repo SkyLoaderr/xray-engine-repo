@@ -98,7 +98,6 @@ void CFileSystem::OnCreate(){
 	m_OMotions.Init			(m_Local, 		"import\\", 		    "*.anms",	    	"Object animation list files" );
 	m_SMotion.Init			(m_Local, 		"import\\", 		    "*.skl",			"Skeleton motion files" );
 	m_SMotions.Init			(m_Local, 		"import\\", 		    "*.skls",			"Skeleton motions files" );
-	m_SBones.Init			(m_Local, 		"import\\", 		    "*.bones",			"Skeleton bones files" );
 	m_Maps.Init     		(m_Server, 		"maps\\",         		"*.level",  		"Level files" );
 	m_Textures.Init 		(m_ServerData, 	"textures\\",     		"*.bmp;*.tga",		"Texture files" );
 	m_Temp.Init     		(m_Local, 		"temp\\",         		"",     			"" );

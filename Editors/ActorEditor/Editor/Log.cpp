@@ -11,6 +11,10 @@
 	#include "splash.h"
 	#include "ui_main.h"
 #endif
+#ifdef _LW_PLUGIN
+	#include <lwhost.h>
+	extern "C" LWMessageFuncs	*g_msg;
+#endif
 //----------------------------------------------------
 
 bool g_ErrorMode=false;
@@ -63,6 +67,9 @@ int CLog::DlgMsg (TMsgDlgType mt, TMsgDlgButtons btn, LPCSTR _Format, ...){
 
     res=MessageDlg(buf, mt, btn, 0);
 #endif
+#ifdef _LW_PLUGIN
+	g_msg->info(buf,0);
+#endif
 
     Msg(mt, buf);
 	strcat( buf, "\r\n" );
@@ -85,6 +92,10 @@ int CLog::DlgMsg (TMsgDlgType mt, LPCSTR _Format, ...){
 
     if (mt==mtConfirmation)	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
     else                   	res=MessageDlg(buf, mt, TMsgDlgButtons() << mbOK, 0);
+#else
+	#ifdef _LW_PLUGIN
+		g_msg->info(buf,0);
+	#endif
 #endif
 
     Msg(mt,buf);
@@ -103,9 +114,11 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...){
     if (frmSplash) frmSplash->SetStatus(buf);
     TfrmLog::AddMessage(mt,AnsiString(buf));
 #endif
-
 #ifdef _MAX_EXPORT
 	EConsole.print(mt,buf);
+#endif
+#ifdef _LW_PLUGIN
+	g_msg->info(buf,0);
 #endif
 
 	strcat( buf, "\r\n" );

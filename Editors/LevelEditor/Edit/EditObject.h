@@ -34,8 +34,29 @@ public:
     Shader*			m_Shader;
     BYTE			m_Sideflag;
     DWORD			m_dwFVF;
+#ifdef _MAX_EXPORT
+	DWORD			mat_id;
+	Mtl*			pMtlMain;
+#endif
+#ifdef _LW_IMPORT
+	LWSurfaceID		surf_id;
+#endif 
+	DWORD			tag;
 public:
-    				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
+	CSurface		()
+	{
+		m_Shader	= 0;
+		m_Sideflag	= 0;
+		m_dwFVF		= 0;
+#ifdef _MAX_EXPORT
+		mat_id		= 0;
+		pMtlMain	= 0;
+#endif
+#ifdef _LW_IMPORT
+		surf_id		= 0;
+#endif 
+		tag			= 0;
+	}
 #ifdef _EDITOR
 					~CSurface		(){DeleteShader();}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
@@ -62,14 +83,6 @@ public:
     IC void			CreateShader	(){m_Shader=Device.Shader.Create(m_ShaderName.c_str(),m_Texture.c_str());}
     IC void			DeleteShader	(){ if (m_Shader) Device.Shader.Delete(m_Shader); m_Shader=0; }
 #endif
-#ifdef _MAX_EXPORT
-	DWORD			mat_id;
-	Mtl*			pMtlMain;
-#endif
-#ifdef _LW_IMPORT
-	LWSurfaceID		surf_id;
-#endif 
-	DWORD			tag;
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
@@ -158,7 +171,6 @@ protected:
 
     void			ClearRenderBuffers		();
 
-    bool			Import_LWO				(const char* fname, bool bNeedOptimize);
     void			UpdateRenderBuffers		();
 
 	void 			UpdateBoneParenting		();
@@ -228,7 +240,7 @@ public:
     // statistics methods
     int 			GetFaceCount			();
 	int 			GetVertexCount			();
-    int 			GetSurfFaceCount		(const char* surf_name);
+    int 			GetSurfFaceCount		(LPCSTR surf_name);
 
     // render methods
 	void 			Render					(Fmatrix& parent, int priority, bool strictB2F);
@@ -257,34 +269,35 @@ public:
     // clone/copy methods
     void			RemoveMesh				(CEditableMesh* mesh);
 
-    bool			RemoveSMotion			(const char* name);
-    bool			RenameSMotion			(const char* old_name, const char* new_name);
+    bool			RemoveSMotion			(LPCSTR name);
+    bool			RenameSMotion			(LPCSTR old_name, LPCSTR new_name);
     CSMotion*		AppendSMotion			(LPCSTR name, LPCSTR fname);
-    bool			ReloadSMotion			(CSMotion* M, const char* fname);
+    bool			ReloadSMotion			(CSMotion* M, LPCSTR fname);
     void			ClearSMotions			();
-    bool			LoadSMotions			(const char* fname);
-    bool			SaveSMotions			(const char* fname);
+    bool			LoadSMotions			(LPCSTR fname);
+    bool			SaveSMotions			(LPCSTR fname);
 
     // load/save methods
 	void 			LoadMeshDef				(FSChunkDef *chunk);
 	bool 			Reload					();
-	bool 			Load					(const char* fname);
-	bool 			LoadObject				(const char* fname);
-	void 			SaveObject				(const char* fname);
-    CSMotion*		LoadSMotion				(const char* fname);
+	bool 			Load					(LPCSTR fname);
+	bool 			LoadObject				(LPCSTR fname);
+	void 			SaveObject				(LPCSTR fname);
+    CSMotion*		LoadSMotion				(LPCSTR fname);
   	bool 			Load					(CStream&);
 	void 			Save					(CFS_Base&);
+	bool			Import_LWO				(LPCSTR fname, bool bNeedOptimize);
 
     // contains methods
-    CEditableMesh* 	FindMeshByName			(const char* name, CEditableMesh* Ignore=0);
+    CEditableMesh* 	FindMeshByName			(LPCSTR name, CEditableMesh* Ignore=0);
     void			GenerateMeshNames		();
     void			VerifyMeshNames			();
     bool 			ContainsMesh			(const CEditableMesh* m);
-	CSurface*		FindSurfaceByName		(const char* surf_name, int* s_id=0);
-    CBone*			FindBoneByName			(const char* name);
-    int				GetBoneIndexByWMap		(const char* wm_name);
-    CSMotion* 		FindSMotionByName		(const char* name, const CSMotion* Ignore=0);
-    void			GenerateSMotionName		(char* buffer, const char* start_name, const CSMotion* M);
+	CSurface*		FindSurfaceByName		(LPCSTR surf_name, int* s_id=0);
+    CBone*			FindBoneByName			(LPCSTR name);
+    int				GetBoneIndexByWMap		(LPCSTR wm_name);
+    CSMotion* 		FindSMotionByName		(LPCSTR name, const CSMotion* Ignore=0);
+    void			GenerateSMotionName		(char* buffer, LPCSTR start_name, const CSMotion* M);
 
     // device dependent routine
 	void 			OnDeviceCreate 			();
@@ -301,14 +314,9 @@ public:
     bool			PrepareOGF				(CFS_Base& F);
 #ifdef _MAX_EXPORT
 	CSurface*		CreateSurface			(Mtl* M, DWORD m_id);
-	LPCSTR			GenerateSurfaceName		(const char* base_name);
+	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 #endif
 	
-#ifdef _LW_EXPORT
-		// import routines
-	bool			Import_LWO				(st_ObjectDB *I);
-	bool			ExportBones				(LPCSTR fname);
-#endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
 #endif

@@ -39,7 +39,7 @@ public:
 	INTVec			vindices;
 	INTVec			pindices;
 public:
-	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, bool pm=false){
+	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false){
 		type=t; 
 		polymap=pm; 
 		if(nm) strcpy(name,nm); else name[0]=0; 
