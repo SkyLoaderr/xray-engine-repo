@@ -352,8 +352,8 @@ function CDangerDogs:set_action()
 			action(self.object, anim(anim.stand_idle, 0), sound(sound.threaten), cond(cond.time_end, 1500))		
 		else
 			// еще далеко от сталкера, подходим, но учитываем рассто€ни€.  огда не сильно далеко, то подкрадуемс€
-			if(self.object:position():distance_to(self.dead_way:point(0)) < 2) then
-				action(self.object, move(move.steal, self.enemy:position(), 3.5), sound(sound.threaten), cond(cond.move_end))
+			if(self.object:position():distance_to(self.dead_way:point(0)) < 4.5) then
+				action(self.object, move(move.steal, self.enemy:position(), 4), sound(sound.threaten), cond(cond.move_end))
 			else
 				action(self.object, move(move.walk_fwd, self.dead_way:point(0), 1), sound(sound.threaten), cond(cond.move_end))
 			end
