@@ -200,7 +200,7 @@ void CWeapon::OnDeviceCreate()
 void CWeapon::OnDeviceDestroy()
 {
 	CObject::OnDeviceDestroy();
-
+	
 	ShaderDestroy		(hUIIcon);
 	Device.Shader.Delete(hWallmark);
 }
@@ -235,19 +235,22 @@ void CWeapon::UpdatePosition(const Fmatrix& trans){
 void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	if (0==hWallmark)	return;
+	Fvector D;			D.invert(vDir);
+	CSector* S			= R.O->Sector();
+	
 	if (R.O && (R.O->CLS_ID==CLSID_ENTITY)){
 		// particles
-		Fvector D;
-		D.invert(vDir);
-
-		CSector* S			= R.O->Sector();
-
 		// stones or sparks
 		LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
 		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
 	}else{
+		// stones
+		CPSObject* PS		= new CPSObject("stones",S,true);
+		PS->m_Emitter.m_ConeDirection.set(D);
+		PS->PlayAtPos		(vEnd);
+		
 		::Render.Wallmarks.AddWallmark(
 			pCreator->ObjectSpace.GetStaticTris()+R.element,
 			vEnd,

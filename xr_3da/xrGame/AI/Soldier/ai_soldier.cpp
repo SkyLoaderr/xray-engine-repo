@@ -271,7 +271,7 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	
 
 	//Msg("%8.2f",fCover);
-	if (fCover > 0.05f*255.f) {
+	if (fCover > 0.0f*255.f) {
 		q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
 		q_look.o_look_speed=8*_FB_look_speed;
 	}
