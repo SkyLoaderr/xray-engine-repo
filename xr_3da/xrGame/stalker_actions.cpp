@@ -141,13 +141,13 @@ void CStalkerActionFreeNoALife::execute		()
 //	direction.normalize_safe		();
 //	m_object->set_desired_direction	(&direction);
 //	m_object->set_desired_position	(0);
-	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
-	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
+//	m_object->set_path_type			(MovementManager::ePathTypePatrolPath);
+//	m_object->set_path				("way",PatrolPathManager::ePatrolStartTypeFirst,PatrolPathManager::ePatrolRouteTypeContinue,false);
 
-	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
+//	CGameObject						*actor = dynamic_cast<CGameObject*>(Level().CurrentEntity());
 //	m_object->set_desired_position	(&actor->Position());
 //	m_object->set_level_dest_vertex	(actor->level_vertex_id());
-//	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
+	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 	Fvector							look_pos = Fvector().set(0.f,0.f,1.f);//actor->Position();
 	look_pos.y						+= .8f;
 	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
@@ -156,7 +156,7 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeStand);
 	m_object->set_mental_state		(eMentalStateDanger);
-	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("vodka"));
+	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 #endif
 }
 
