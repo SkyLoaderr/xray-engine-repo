@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
 
-    <string id="val_suicide_title_find_lost_stalker">
-        <text>Найти сталкера Сокола, пропавшего в окрестностях Темной Долины.</text>
+    <string id="bar_radar_turn_off">
+        <text>Выключить антенны</text>
     </string>
 
-    <string id="val_suicide_find_lost_stalker">
-        <text>Меченый, сталкеры шепчутся о появлении в окрестностях сталкера Сокола, которого не видели уже месяцев шесть. Он пытался найти проход к центру зоны и бесследно исчез, а теперь вот вдруг объявился. Его недавно видели в Темной Долине, где-то за базой Монолита. Будет время - разузнай, что там с ним.</text>
+    <string id="rad_antenna">
+        <text>Антенны</text>
     </string>
 	
 </string_table>
