@@ -38,9 +38,12 @@ public:
 							CRender			();
 	virtual 				~CRender		();
 
-	void					create			();
-	void					destroy			();
-    
+	void 					Initialize		();
+	void 					ShutDown		();
+
+	void					OnDeviceCreate	();
+	void					OnDeviceDestroy	();
+
     void					Calculate		();
     void					Render	 		();
 

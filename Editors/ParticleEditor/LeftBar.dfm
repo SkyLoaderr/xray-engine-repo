@@ -194,7 +194,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 279
+        Height = 210
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 277
+          Top = 208
           Width = 296
           Height = 2
           Align = alBottom
@@ -335,7 +335,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 241
+          Height = 172
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -474,6 +474,10 @@ object fraLeftBar: TfraLeftBar
     object Reload1: TMenuItem
       Caption = 'Reload'
       OnClick = ebReloadClick
+    end
+    object Merge1: TMenuItem
+      Caption = 'Merge...'
+      OnClick = Merge1Click
     end
     object N2: TMenuItem
       Caption = '-'

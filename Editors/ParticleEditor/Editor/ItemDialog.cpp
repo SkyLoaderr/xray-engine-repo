@@ -5,125 +5,60 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
-TfrmItemDialog *frmNumericVector=0;
-
-bool NumericVectorRun(const char* title, Fvector* data, int decimal, Fvector* reset_value, Fvector* min, Fvector* max, int* X, int* Y){
-	frmNumericVector = xr_new<TfrmItemDialog>((TComponent*)0);
-    bool res = frmNumericVector->Run(title, data, decimal, reset_value, min, max, X, Y);
-    xr_delete(frmNumericVector);
-    return res;
-}
+TfrmItemDialog* TfrmItemDialog::form=0;
+int 			TfrmItemDialog::res=-1;
 
 //---------------------------------------------------------------------------
 __fastcall TfrmItemDialog::TfrmItemDialog(TComponent* Owner)
     : TForm(Owner)
 {
+	res		= -1;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmItemDialog::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-    if (Key==VK_ESCAPE) ebCancel->Click();
-    if (Key==VK_RETURN) ebOk->Click();
+    if (Key==VK_ESCAPE) ModalResult = -1;
 }
 
 //----------------------------------------------------
-void __fastcall TfrmItemDialog::FormShow(TObject *Sender)
+
+void __fastcall TfrmItemDialog::ebClick(TObject *Sender)
 {
-    ebOk->Enabled       = false;
-	// check window position
-	UI.CheckWindowPos(this);
+	TExtBtn* E 	= dynamic_cast<TExtBtn*>(Sender); VERIFY(E);
+    res 		= E->Tag;
+    Close		();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmItemDialog::OnModified(TObject *Sender)
+int __fastcall TfrmItemDialog::Run(LPCSTR caption, LPCSTR msg, LPCSTR buttons)
 {
-    ebOk->Enabled = true;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmItemDialog::ebOkClick(TObject *Sender)
-{
-	edit_data->x = seX->Value;
-	edit_data->y = seY->Value;
-	edit_data->z = seZ->Value;
-
-    Close();
-    ModalResult = mrOk;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmItemDialog::ebCancelClick(TObject *Sender)
-{
-    Close();
-    ModalResult = mrCancel;
-}
-//---------------------------------------------------------------------------
-
-//----------------------------------------------------
-bool __fastcall TfrmItemDialog::Run(const char* title, Fvector* data, int decimal, Fvector* rv, Fvector* MN, Fvector* MX, int* X, int* Y)
-{
-	frmNumericVector->Caption = title;
-
-	VERIFY(data);
-    edit_data = data;
-
-    reset_value = rv;
-	ebReset->Enabled = !!reset_value;
-
-    seX->Decimal = decimal;
-    seY->Decimal = decimal;
-    seZ->Decimal = decimal;
-
-	seX->Value = data->x;
-    seY->Value = data->y;
-	seZ->Value = data->z;
-
-    if (MN){
-	    seX->MinValue = MN->x;
-    	seY->MinValue = MN->y;
-	    seZ->MinValue = MN->z;
-    }else{
-	    seX->MinValue = 0;
-    	seY->MinValue = 0;
-	    seZ->MinValue = 0;
+	R_ASSERT(buttons&&buttons[0]);
+	form = xr_new<TfrmItemDialog>((TComponent*)0);
+	form->Caption 		= caption;
+    form->lbMsg->Caption= msg;
+    int cnt				= _GetItemCount(buttons); R_ASSERT(cnt<9);
+    AnsiString 			nm;
+    for (int k=0; k<cnt; k++){
+    	_GetItem		(buttons,k,nm);
+        TExtBtn* E		= dynamic_cast<TExtBtn*>(form->FindComponent(AnsiString().sprintf("eb%d",k))); VERIFY(E);
+        E->Caption		= nm;
+        E->Visible		= true;
+        E->Tag			= k;
     }
-    if (MX){
-	    seX->MaxValue = MX->x;
-    	seY->MaxValue = MX->y;
-	    seZ->MaxValue = MX->z;
-    }else{
-	    seX->MaxValue = 0;
-    	seY->MaxValue = 0;
-	    seZ->MaxValue = 0;
-    }
-
-    if (!X||!Y){
-	    POINT pt;
-    	GetCursorPos(&pt);
-        int w=GetSystemMetrics(SM_CXSCREEN);
-        int h=GetSystemMetrics(SM_CYSCREEN);
-	    Left = pt.x-(Width*0.5f);
-    	Top = pt.y;
-        if (((Left+Width*0.5f)>w)||((Top+Height)>h)){ Left=w*0.5f-Width*0.5f; Top=h*0.5f; }
-    }else{
-	    Left = *X-(Width*0.5f);
-    	Top = *Y;
-    }
-
-    return (ShowModal()==mrOk);
-}
-
-void __fastcall TfrmItemDialog::ebResetClick(TObject *Sender)
-{
-	seX->Value = reset_value->x;
-    seY->Value = reset_value->y;
-	seZ->Value = reset_value->z;
+    form->ShowModal		();
+    return res;
 }
 //---------------------------------------------------------------------------
 
-
+void __fastcall TfrmItemDialog::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+	Action = caFree;	
+}
+//---------------------------------------------------------------------------
 
 

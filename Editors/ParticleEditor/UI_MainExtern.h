@@ -9,6 +9,8 @@ enum {
     COMMAND_SELECT_PREVIEW_OBJ,
 
     COMMAND_PLAY_CURRENT,
+
+	COMMAND_MERGE,
 };
 //------------------------------------------------------------------------------
 

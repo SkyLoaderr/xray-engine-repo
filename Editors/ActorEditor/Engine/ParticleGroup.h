@@ -29,17 +29,26 @@ namespace PS
 			string64		m_EffectName;  
 			float			m_Time0;
 			float			m_Time1;
-			SEffect(){m_Flags.set(flEnabled);m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
+							SEffect				(){m_Flags.set(flEnabled);m_Type=etStopEnd;m_EffectName[0]=0;m_Time0=0;m_Time1=0;}
+#ifdef _PARTICLE_EDITOR
+            BOOL			Equal				(const SEffect&);
+#endif
 		};
 		DEFINE_VECTOR(SEffect,EffectVec,EffectIt);
 		EffectVec			m_Effects;
 #ifdef _PARTICLE_EDITOR
+        ref_str				m_OwnerName;
+        ref_str				m_ModifName;
+        time_t				m_CreateTime;
+        time_t				m_ModifTime;
+// change Equal if variables changed
 		void __fastcall 	OnEffectsEditClick	(PropValue* sender, bool& bDataModified);
 		void __fastcall 	OnEffectTypeChange	(PropValue* sender);
 		void __fastcall 	OnEffectEditClick	(PropValue* sender, bool& bDataModified);
 		void __fastcall 	OnControlClick	(PropValue* sender, bool& bDataModified);
 		void __fastcall 	OnParamsChange	(PropValue* sender);
 		void				FillProp	   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
+		BOOL				Equal			(const CPGDef* pe);
 #endif
 	public:
 		CPGDef		  	();
@@ -97,6 +106,7 @@ namespace PS
 #define PGD_CHUNK_FLAGS			0x0003
 #define PGD_CHUNK_EFFECTS		0x0004
 #define PGD_CHUNK_TIME_LIMIT	0x0005
+#define PGD_CHUNK_OWNER			0x0006
 
 //---------------------------------------------------------------------------
 #endif

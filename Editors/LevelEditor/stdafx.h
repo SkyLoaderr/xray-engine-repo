@@ -63,6 +63,16 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 
 // core
 #include <xrCore.h>
+
+#ifdef _EDITOR
+	class PropValue;
+	class PropItem;
+	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
+
+	class ListItem;
+	DEFINE_VECTOR(ListItem*,ListItemsVec,ListItemsIt);
+#endif
+
 #include <xrCDB.h>
 #include <Sound.h>
 #include <PSystem.h>
@@ -108,13 +118,6 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 };
 
 #ifdef _EDITOR
-	class PropValue;
-	class PropItem;
-	DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt);
-
-	class ListItem;
-	DEFINE_VECTOR(ListItem*,ListItemsVec,ListItemsIt);
-
 	#include "device.h"
 	#include "properties.h"
 	#include "render.h"

@@ -81,10 +81,14 @@ void CRenderDevice::Initialize()
 
 	// Startup shaders
 	Create				();
+
+    ::Render->Initialize();
 }
 
 void CRenderDevice::ShutDown()
 {
+    ::Render->ShutDown	();
+
 	ShaderXRLC.Unload	();
 	GMLib.Unload		();
 
@@ -147,14 +151,14 @@ void CRenderDevice::Destroy(){
 
 	ELog.Msg( mtInformation, "Destroying Direct3D...");
 
-	HW.Validate					();
+	HW.Validate			();
 
 	// before destroy
-	_Destroy					(FALSE);
-	xr_delete					(Resources);
+	_Destroy			(FALSE);
+	xr_delete			(Resources);
 
 	// real destroy
-	HW.DestroyDevice			();
+	HW.DestroyDevice	();
 
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
@@ -188,7 +192,7 @@ void CRenderDevice::_Create(IReader* F)
 
     RCache.OnDeviceCreate		();
 	Resources->OnDeviceCreate	(F);
-    ::Render->create			();
+    ::Render->OnDeviceCreate	();
 
     m_WireShader.create			("editor\\wire");
     m_SelectionShader.create	("editor\\selection");
@@ -197,12 +201,12 @@ void CRenderDevice::_Create(IReader* F)
     UI.OnDeviceCreate			();           
 	seqDevCreate.Process		(rp_DeviceCreate);
 
-	pSystemFont			= xr_new<CGameFont>("hud_font_small");
+	pSystemFont					= xr_new<CGameFont>("hud_font_small");
 }
 
 void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 {
-	xr_delete			(pSystemFont);
+	xr_delete					(pSystemFont);
 
 	bReady 						= FALSE;
     m_CurrentShader				= 0;
@@ -218,7 +222,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures)
 	Resources->OnDeviceDestroy	(bKeepTextures);
 
 	RCache.OnDeviceDestroy		();
-    ::Render->destroy			();
+    ::Render->OnDeviceDestroy	();
 }
 
 //---------------------------------------------------------------------------

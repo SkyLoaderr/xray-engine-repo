@@ -247,6 +247,8 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 
     // check size
 	tvItemsResize			(0);
+
+    paStatus->Caption		= AnsiString(" Items count: ")+m_Items.size();
 }
 //---------------------------------------------------------------------------
 

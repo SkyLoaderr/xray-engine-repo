@@ -73,6 +73,7 @@ __published:	// IDE-managed Components
 	TMenuItem *ParticleGroup1;
 	TPanel *paItemList;
 	TSplitter *Splitter1;
+	TMenuItem *Merge1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -97,6 +98,7 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebPGCreateClick(TObject *Sender);
 	void __fastcall ebEngineShaderRemoveClick(TObject *Sender);
+	void __fastcall Merge1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar		(TComponent* Owner);

@@ -8,6 +8,9 @@
 #ifdef _EDITOR
 	#include "UI_Tools.h"
 #endif
+#ifdef _PARTICLE_EDITOR
+	#include "ParticleEffectActions.h"
+#endif
 
 using namespace PAPI;
 using namespace PS;
@@ -23,24 +26,24 @@ CPEDef::CPEDef()
     m_ShaderName		= 0;
     m_TextureName		= 0;
     m_Frame.InitDefault	();
-    m_ActionCount		= 0;
-    m_ActionList		= 0;
     m_MaxParticles		= 0;
 	m_CachedShader		= 0;
 	m_fTimeLimit		= 0.f;
     // collision
-    m_CollideOneMinusFriction 	= 1.f;
-    m_CollideResilience			= 0.f;
-    m_CollideSqrCutoff			= 0.f;
+    m_fCollideOneMinusFriction 	= 1.f;
+    m_fCollideResilience		= 0.f;
+    m_fCollideSqrCutoff			= 0.f;
     // velocity scale
     m_VelocityScale.set	(0.f,0.f,0.f);
+	// flags
+    m_Flags.zero		();
 }
 
 CPEDef::~CPEDef()
 {
     xr_free				(m_ShaderName);
     xr_free				(m_TextureName);
-    xr_free				(m_ActionList);
+    for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++) xr_delete(*it);
 }
 void CPEDef::SetName(LPCSTR name)
 {
@@ -57,9 +60,9 @@ void CPEDef::pVelocityScale(float scale_x, float scale_y, float scale_z)
 }
 void CPEDef::pCollision(float friction, float resilience, float cutoff, BOOL destroy_on_contact)
 {
-    m_CollideOneMinusFriction 	= 1.f-friction;
-    m_CollideResilience			= resilience;
-    m_CollideSqrCutoff			= cutoff*cutoff;
+    m_fCollideOneMinusFriction 	= 1.f-friction;
+    m_fCollideResilience		= resilience;
+    m_fCollideSqrCutoff			= cutoff*cutoff;
 	m_Flags.set					(dfCollision,TRUE);
 	m_Flags.set					(dfCollisionDel,destroy_on_contact);
 }
@@ -152,10 +155,10 @@ void CPEDef::pCollisionExecute(PAPI::ParticleEffect *effect, float dt, CParticle
 
                         // Compute _new velocity heading out:
                         // Don't apply friction if tangential velocity < cutoff
-                        if(vt.length2() <= m_CollideSqrCutoff){
-                            m.vel = vt - vn * m_CollideResilience;
+                        if(vt.length2() <= m_fCollideSqrCutoff){
+                            m.vel = vt - vn * m_fCollideResilience;
                         }else{
-                            m.vel = vt * m_CollideOneMinusFriction - vn * m_CollideResilience;
+                            m.vel = vt * m_fCollideOneMinusFriction - vn * m_fCollideResilience;
                         }
                         m.pos	= m.posB + m.vel * dt; 
                         pick_needed = true;
@@ -186,9 +189,15 @@ BOOL CPEDef::Load(IReader& F)
     m_MaxParticles	= F.r_u32();
 
     R_ASSERT		(F.find_chunk(PED_CHUNK_ACTIONLIST));
-    m_ActionCount	= F.r_u32();
-    m_ActionList	= xr_alloc<PAPI::PAHeader>(m_ActionCount);
-    F.r				(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    m_ActionList.resize(F.r_u32());
+    for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++){
+#ifdef _PARTICLE_EDITOR
+    	*it			= pCreateEAction((PActionEnum)F.r_u32());
+#else
+    	*it			= PAPI::pCreateAction((PActionEnum)F.r_u32());
+#endif
+        (*it)->Load	(F);
+    }
 
 	F.r_chunk		(PED_CHUNK_FLAGS,&m_Flags);
 
@@ -211,19 +220,31 @@ BOOL CPEDef::Load(IReader& F)
 
     if (m_Flags.is(dfCollision)){
     	R_ASSERT(F.find_chunk(PED_CHUNK_COLLISION));
-        m_CollideOneMinusFriction 	= F.r_float();
-        m_CollideResilience			= F.r_float();
-        m_CollideSqrCutoff			= F.r_float();
+        m_fCollideOneMinusFriction 	= F.r_float();
+        m_fCollideResilience		= F.r_float();
+        m_fCollideSqrCutoff			= F.r_float();
     }
 
     if (m_Flags.is(dfVelocityScale)){
     	R_ASSERT(F.find_chunk(PED_CHUNK_VEL_SCALE));
         F.r_fvector3				(m_VelocityScale);
     }
+
+//    m_Flags.and(dfAllFlags);
     
 #ifdef _PARTICLE_EDITOR
-	F.find_chunk	(PED_CHUNK_SOURCETEXT);
-    F.r_stringZ		(m_SourceText);
+    if (F.find_chunk(PED_CHUNK_OWNER)){
+    	AnsiString 	tmp;
+	    F.r_stringZ	(tmp); m_OwnerName = tmp.c_str();
+	    F.r_stringZ	(tmp); m_ModifName = tmp.c_str();
+        F.r			(&m_CreateTime,sizeof(m_CreateTime));
+        F.r			(&m_ModifTime,sizeof(m_ModifTime));
+    }
+    
+	if (F.find_chunk(PED_CHUNK_SOURCETEXT)){
+	    F.r_stringZ	(m_SourceText);
+//        Compile		();
+    }
 #endif
 
     return TRUE;
@@ -244,8 +265,11 @@ void CPEDef::Save(IWriter& F)
     F.close_chunk	();
 
 	F.open_chunk	(PED_CHUNK_ACTIONLIST);
-    F.w_u32			(m_ActionCount);
-    F.w				(m_ActionList,m_ActionCount*sizeof(PAPI::PAHeader));
+    F.w_u32			(m_ActionList.size());
+    for (PAVecIt it=m_ActionList.begin(); it!=m_ActionList.end(); it++){
+    	F.w_u32		((*it)->type);
+        (*it)->Save	(F);
+    }
     F.close_chunk	();
 
 	F.w_chunk		(PED_CHUNK_FLAGS,&m_Flags,sizeof(m_Flags));
@@ -271,9 +295,9 @@ void CPEDef::Save(IWriter& F)
 
     if (m_Flags.is(dfCollision)){
         F.open_chunk	(PED_CHUNK_COLLISION);
-        F.w_float		(m_CollideOneMinusFriction);
-        F.w_float		(m_CollideResilience);
-        F.w_float		(m_CollideSqrCutoff);
+        F.w_float		(m_fCollideOneMinusFriction);
+        F.w_float		(m_fCollideResilience);
+        F.w_float		(m_fCollideSqrCutoff);
         F.close_chunk	();
     }
     
@@ -283,6 +307,13 @@ void CPEDef::Save(IWriter& F)
         F.close_chunk	();
     }
 #ifdef _PARTICLE_EDITOR
+	F.open_chunk	(PED_CHUNK_OWNER);
+    F.w_stringZ		(*m_OwnerName);
+    F.w_stringZ		(*m_ModifName);
+    F.w				(&m_CreateTime,sizeof(m_CreateTime));
+    F.w				(&m_ModifTime,sizeof(m_ModifTime));
+	F.close_chunk	();
+
 	F.open_chunk	(PED_CHUNK_SOURCETEXT);
     F.w_stringZ		(m_SourceText.c_str());
 	F.close_chunk	();
@@ -443,16 +474,14 @@ BOOL CParticleEffect::Compile(CPEDef* def)
         ResetParticles			();
         // load action list
         // get pointer to specified action list.
-        PAPI::PAHeader* pa		= _GetListPtr(m_HandleActionList);
-        if(pa == NULL)	
-			return FALSE; // ERROR
+        if (!_GetListPtr(m_HandleActionList)) return FALSE;
 
-        // start append actions
+        // append actions
         pNewActionList			(m_HandleActionList);
-        for (int k=0; k<m_Def->m_ActionCount; k++)
-            pAddActionToList	(m_Def->m_ActionList+k);
-        // end append action
+	    for (PAVecIt it=m_Def->m_ActionList.begin(); it!=m_Def->m_ActionList.end(); it++)
+            pAddActionToList	(*it);
         pEndActionList();
+        
         // time limit
 		if (m_Def->m_Flags.is(CPEDef::dfTimeLimit))
 			m_fElapsedLimit 	= m_Def->m_fTimeLimit;
@@ -541,56 +570,58 @@ void CParticleEffect::Render(float LOD)
 	u32			dwOffset,dwCount;
     // Get a pointer to the particles in gp memory
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
-    if(pe == NULL)		return;
-    if(pe->p_count < 1)	return;
+    if((pe!=NULL)&&(pe->p_count>0)){
+        if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+            // build transform matrix
+            Fmatrix mSpriteTransform;
 
-    if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-        // build transform matrix
-        Fmatrix mSpriteTransform;
+            if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
+            else							mSpriteTransform.set(Device.mFullTransform);
 
-        if (m_RT_Flags.is(flRT_XFORM))	mSpriteTransform.mul(Device.mFullTransform,m_XFORM);
-        else							mSpriteTransform.set(Device.mFullTransform);
+            float	w_2			= float(::Render->getTarget()->get_width()) / 2;
+            float	h_2			= float(::Render->getTarget()->get_height()) / 2;
+            float	fov_rate	= (Device.fFOV/90.f);
+            float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
+            float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
 
-        float	w_2			= float(::Render->getTarget()->get_width()) / 2;
-        float	h_2			= float(::Render->getTarget()->get_height()) / 2;
-        float	fov_rate	= (Device.fFOV/90.f);
-        float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
-        float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
+            FVF::TL* pv_start	= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
+            FVF::TL* pv			= pv_start;
 
-        FVF::TL* pv_start	= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
-        FVF::TL* pv			= pv_start;
+            for(int i = 0; i < pe->p_count; i++){
+                PAPI::Particle &m = pe->list[i];
 
-        for(int i = 0; i < pe->p_count; i++){
-            PAPI::Particle &m = pe->list[i];
-
-            Fvector2 lt,rb;
-            lt.set			(0.f,0.f);
-            rb.set			(1.f,1.f);
-            if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(float(m.frame)/255.f),lt,rb);
-            float r_x		= m.size.x*0.5f;
-            float r_y		= m.size.y*0.5f;
-            if (m_Def->m_Flags.is(CPEDef::dfVelocityScale)){
-	            float speed	= m.vel.magnitude();
-                r_x			+= speed*m_Def->m_VelocityScale.x;
-                r_y			+= speed*m_Def->m_VelocityScale.y;
+                Fvector2 lt,rb;
+                lt.set			(0.f,0.f);
+                rb.set			(1.f,1.f);
+                if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(float(m.frame)/255.f),lt,rb);
+                float r_x		= m.size.x*0.5f;
+                float r_y		= m.size.y*0.5f;
+                if (m_Def->m_Flags.is(CPEDef::dfVelocityScale)){
+                    float speed	= m.vel.magnitude();
+                    r_x			+= speed*m_Def->m_VelocityScale.x;
+                    r_y			+= speed*m_Def->m_VelocityScale.y;
+                }
+                if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
+                    Fvector 	dir;
+                    float speed	= m.vel.magnitude();
+                    if (speed>=EPS_S)	dir.div	(m.vel,speed);
+                    else				dir.set	(0.f,1.f,0.f);
+                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
+                }else{
+                    FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
+                }
             }
-            if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
-                Fvector 	dir;
-	            float speed	= m.vel.magnitude();
-                if (speed>=EPS_S)	dir.div	(m.vel,speed);
-                else				dir.set	(0.f,1.f,0.f);
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,dir,fov_scale_w,factor_r,w_2,h_2);
-            }else{
-                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x,fov_scale_w,w_2,h_2);
+            dwCount 			= u32(pv-pv_start);
+            RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
+            if (dwCount)    {
+                RCache.set_Geometry	(hGeom);
+                RCache.Render	   	(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
             }
-        }
-        dwCount 			= u32(pv-pv_start);
-        RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
-        if (dwCount)    {
-            RCache.set_Geometry	(hGeom);
-            RCache.Render	   	(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
         }
     }
+#ifdef _PARTICLE_EDITOR
+	if (m_Def)		m_Def->Render();
+#endif
 }
 
 void CParticleEffect::ApplyExplosion()

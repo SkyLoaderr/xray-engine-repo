@@ -1,8 +1,8 @@
 object ItemList: TItemList
   Left = 471
   Top = 191
-  Width = 259
-  Height = 329
+  Width = 287
+  Height = 391
   BiDiMode = bdRightToLeft
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'Item list'
@@ -24,7 +24,7 @@ object ItemList: TItemList
   object Bevel1: TBevel
     Left = 0
     Top = 0
-    Width = 251
+    Width = 279
     Height = 1
     Align = alTop
     Shape = bsFrame
@@ -32,8 +32,8 @@ object ItemList: TItemList
   object tvItems: TElTree
     Left = 0
     Top = 1
-    Width = 251
-    Height = 301
+    Width = 279
+    Height = 346
     Cursor = crDefault
     LeftPosition = 0
     HeaderPopupMenu = pmSystem
@@ -115,11 +115,11 @@ object ItemList: TItemList
     HeaderHeight = 17
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF010000006174610000537479FFFFFFFF0000010100007269C3000000
-      0000000010270000000101004014FF040000000001000000FFFFFFFF00000100
-      0000000000000000000100000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000000000000000000000000000
-      0000000000000000000000000000000000000000060000004974656D73000100
+      F4FFFFFF01000000D476B00700000000FFFFFFFF0000010100006374C3000000
+      0000000010270000000101004014FF040000000001006356FFFFFFFF00000100
+      00000000000000000001000000000000726963566563746F580000001F000000
+      000000000D0000004E756D65726963566563746F720019014877B0074877B007
+      1C0000004E756D65726963566563746F90000000060000004974656D73000100
       0000000000000000000000}
     HeaderFlat = True
     HeaderFont.Charset = DEFAULT_CHARSET
@@ -204,6 +204,27 @@ object ItemList: TItemList
     OnMouseMove = tvItemsMouseMove
     OnMouseUp = tvItemsMouseUp
     OnKeyDown = tvItemsKeyDown
+  end
+  object paStatus: TPanel
+    Left = 0
+    Top = 347
+    Width = 279
+    Height = 17
+    Align = alBottom
+    Alignment = taLeftJustify
+    BevelOuter = bvNone
+    Caption = ' Items count: 123'
+    ParentColor = True
+    TabOrder = 1
+    object Bevel2: TBevel
+      Left = 0
+      Top = 0
+      Width = 279
+      Height = 2
+      Align = alTop
+      Shape = bsTopLine
+      Style = bsRaised
+    end
   end
   object fsStorage: TFormStorage
     StoredValues = <>

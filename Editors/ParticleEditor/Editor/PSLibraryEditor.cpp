@@ -6,22 +6,10 @@
 #include "ParticleEffect.h"
 //------------------------------------------------------------------------------
 
-char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
+bool __fastcall CPSLibrary::FindByName(LPCSTR new_name)
 {
-    int cnt = 0;
-    string128 prefix; prefix[0]=0;
-    if (pref&&pref[0]){
-    	strcpy( prefix, pref );                                     
-        for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])||(prefix[i]=='_')){ if (prefix[i]=='_') prefix[i]=0; }else break;
-		sprintf( buffer, "%s%s_%02d", folder?folder:"", prefix, cnt++);
-    }else        sprintf( buffer, "%sps_%02d", folder?folder:"", cnt++ );
-    while (FindPS(buffer)||FindPED(buffer)||FindPGD(buffer)){
-        if (pref&&pref[0])	sprintf( buffer, "%s%s_%02d", folder?folder:"", prefix, cnt++ );
-        else   	  			sprintf( buffer, "%sps_%02d", folder?folder:"", cnt++ );
-	}
-    return buffer;
+	return FindPS(new_name)||FindPED(new_name)||FindPGD(new_name);
 }
-//------------------------------------------------------------------------------
 
 PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
 {

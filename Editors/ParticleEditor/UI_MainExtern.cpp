@@ -28,6 +28,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_SAVE_BACKUP:
 		Command(COMMAND_SAVE);
     break;
+    case COMMAND_MERGE:
+    	Tools.Merge();
+    break;
     case COMMAND_RELOAD:
 		if (!Tools.IfModified()) return false;
 		Tools.Reload();

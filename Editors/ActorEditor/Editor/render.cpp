@@ -22,22 +22,28 @@ CRender::~CRender	()
 {
 }
 
-void					CRender::create					()
+void					CRender::Initialize				()
+{
+	PSLibrary.OnCreate			();
+}
+void					CRender::ShutDown				()
+{
+	PSLibrary.OnDestroy			();
+}
+
+void					CRender::OnDeviceCreate			()
 {
 	::Device.Resources->SetHLSL_path("XR1\\");
 	Models						= xr_new<CModelPool>	();
     Models->Logging				(FALSE);
 
-
-	PSLibrary.OnCreate			();
 	PSLibrary.OnDeviceCreate	();
 }
-void					CRender::destroy				()
+void					CRender::OnDeviceDestroy		()
 {
 	xr_delete					(Models);
 
 	PSLibrary.OnDeviceDestroy	();
-	PSLibrary.OnDestroy			();
 }
 
 ref_shader	CRender::getShader	(int id){ return 0; }//VERIFY(id<int(Shaders.size()));	return Shaders[id];	}

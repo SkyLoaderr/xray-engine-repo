@@ -144,6 +144,7 @@ public:
     void				Load				();
     void				Save				();
     void				Reload				();
+    void				Merge				();
 
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();

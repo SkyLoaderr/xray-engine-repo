@@ -55,6 +55,16 @@ BOOL CPGDef::Load(IReader& F)
    		m_fTimeLimit= F.r_float();
     }
 
+#ifdef _PARTICLE_EDITOR
+    if (F.find_chunk(PGD_CHUNK_OWNER)){
+    	AnsiString 	tmp;
+	    F.r_stringZ	(tmp); m_OwnerName = tmp.c_str();
+	    F.r_stringZ	(tmp); m_ModifName = tmp.c_str();
+        F.r			(&m_CreateTime,sizeof(m_CreateTime));
+        F.r			(&m_ModifTime,sizeof(m_ModifTime));
+    }
+#endif
+    
     return TRUE;
 }
 
@@ -83,6 +93,15 @@ void CPGDef::Save(IWriter& F)
     F.open_chunk	(PGD_CHUNK_TIME_LIMIT);
    	F.w_float		(m_fTimeLimit);
     F.close_chunk	();
+
+#ifdef _PARTICLE_EDITOR
+	F.open_chunk	(PGD_CHUNK_OWNER);
+    F.w_stringZ		(*m_OwnerName);
+    F.w_stringZ		(*m_ModifName);
+    F.w				(&m_CreateTime,sizeof(m_CreateTime));
+    F.w				(&m_ModifTime,sizeof(m_ModifTime));
+	F.close_chunk	();
+#endif
 }
 
 //------------------------------------------------------------------------------

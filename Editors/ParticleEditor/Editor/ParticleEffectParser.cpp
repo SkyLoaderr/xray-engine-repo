@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "ParticleEffect.h"
+#include "ParticleEffectActions.h"
 
 using namespace PAPI;
 using namespace PS;
@@ -137,14 +138,14 @@ static const int MANY_PARAMS 	= 2;
 static const int BAD_PARAM	 	= 3;
 static const int STA_MISSING 	= 4;
 
-void ErrMsg(int c, int l, int v, LPCSTR line)
+void ErrMsg(LPCSTR ps, int c, int l, int v, LPCSTR line)
 {
     switch (c){
-    case BAD_COMMAND: 	ELog.DlgMsg(mtError,"[Error] (%d): Unrecognized command: '%s'",l+1,line); break;
-    case FEW_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Too few parameters in call to '%s'",line); break;
-    case MANY_PARAMS: 	ELog.DlgMsg(mtError,"[Error] Extra parameters in call to '%s'",line); break;
-    case BAD_PARAM: 	ELog.DlgMsg(mtError,"[Error] (%d): Bad parameter '%d' - '%s'",l+1,v,line); break;
-    case STA_MISSING:	ELog.DlgMsg(mtError,"[Error] (%d): Statement missing ';'",l+1,line); break;
+    case BAD_COMMAND: 	ELog.Msg(mtError,"[Error] '%s'(%d): Unrecognized command: '%s'",ps,l+1,line); break;
+    case FEW_PARAMS: 	ELog.Msg(mtError,"[Error] '%s': Too few parameters in call to '%s'",ps,line); break;
+    case MANY_PARAMS: 	ELog.Msg(mtError,"[Error] '%s': Extra parameters in call to '%s'",ps,line); break;
+    case BAD_PARAM: 	ELog.Msg(mtError,"[Error] '%s'(%d): Bad parameter '%d' - '%s'",ps,l+1,v,line); break;
+    case STA_MISSING:	ELog.Msg(mtError,"[Error] '%s'(%d): Statement missing ';'",ps,l+1,line); break;
     }
 }
 
@@ -214,7 +215,7 @@ public:
             	req_params = k+1;
             }
             if (!bRes){ 
-            	ErrMsg(BAD_PARAM,0,k,P.s_data.c_str());
+            	ErrMsg(parent->m_Name,BAD_PARAM,0,k,P.s_data.c_str());
             	break;
             }
         }
@@ -228,11 +229,11 @@ public:
         bool bRes		= true;
         int p_cnt 		= _GetItemCount(pms.c_str());
         if (p_cnt>params.size()){
-        	ErrMsg		(MANY_PARAMS,l,0,line);
+        	ErrMsg		(parent->m_Name,MANY_PARAMS,l,0,line);
         	return false;
         }
         if (p_cnt<req_params){
-        	ErrMsg		(FEW_PARAMS,l,0,line);
+        	ErrMsg		(parent->m_Name,FEW_PARAMS,l,0,line);
         	return false;
         }
         for (int k=0; k<p_cnt; k++){
@@ -248,7 +249,7 @@ public:
             case ptString:	bRes=get_string(pm.c_str(),P.data);			break;
             }
             if (!bRes){ 
-            	ErrMsg(BAD_PARAM,l,k,pm.c_str());
+            	ErrMsg(parent->m_Name,BAD_PARAM,l,k,pm.c_str());
             	break;
             }
         }
@@ -300,7 +301,7 @@ public:
         else if (command=="pAnimate")			parent->pAnimate(P2);		
         else if (command=="pAvoid")		  		pAvoid			(P15);
         else if (command=="pBounce")			pBounce			(P15);
-        else if (command=="pCopyVertexB")	  	pCopyVertexB	(P2);
+        else if (command=="pCopyVertexB")	  	pCopyVertexB	(P1);
         else if (command=="pDamping")			pDamping		(P5);
         else if (command=="pExplosion")			pExplosion		(P10);
         else if (command=="pFollow")			pFollow			(P3);
@@ -384,7 +385,7 @@ static LPCSTR PStateCommands[]={
 static LPCSTR PActionCommands[]={
 	"pAvoid(float magnitude, float epsilon, float look_ahead,  PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
 	"pBounce(float friction, float resilience, float cutoff, PDomainEnum dtype, float a0=0.0f, float a1=0.0f, float a2=0.0f, float a3=0.0f, float a4=0.0f, float a5=0.0f, float a6=0.0f, float a7=0.0f, float a8=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
-	"pCopyVertexB(BOOL copy_pos=TRUE, BOOL copy_vel=FALSE);",
+	"pCopyVertexB(BOOL copy_pos=TRUE);",
 	"pDamping(float damping_x, float damping_y, float damping_z, float vlow=0.0f, float vhigh=P_MAXFLOAT);",
 	"pExplosion(float center_x, float center_y, float center_z, float velocity, float magnitude, float stdev, float epsilon=P_EPS, float age=0.0f, BOOL allow_translate=TRUE, BOOL allow_rotate=TRUE);",
 	"pFollow(float magnitude=1.0f, float epsilon=P_EPS, float max_radius=P_MAXFLOAT);",
@@ -508,6 +509,103 @@ PFunction* CPEDef::FindCommandPrototype(LPCSTR src, LPCSTR& dest)
     }
 }
 
+void TransferActions(PAVec& src, PAVec& dest)
+{
+	for (PAVecIt d_it=dest.begin(); d_it!=dest.end(); d_it++)
+    	xr_delete(*d_it);
+    dest.clear();
+	for (PAVecIt s_it=src.begin(); s_it!=src.end(); s_it++)
+    	dest.push_back(pCreateEAction(*s_it));
+}
+
+
+void CPEDef::Compile()
+{
+	// load templates
+	if (CommandTemplates.empty()) R_ASSERT(InitCommandTemplates());
+
+    // parse
+    LPSTRVec 			lst;
+    _SequenceToList		(lst,m_SourceText.c_str(),'\r');  // 0x0d 0x0a \n \r
+
+    // reset flags
+	m_Flags.zero		();
+    
+    // parse commands
+	static PFuncVec 	Commands;
+    Commands.clear		();
+    bool bRes=true;
+	for (int i_line=0; i_line<(int)lst.size(); i_line++){
+		LPSTRIt it		= lst.begin() + i_line;
+        AnsiString		command,line;
+        _GetItem		(*it,0,command,'(');
+        // comment
+        if (command==strstr(command.c_str(),"//")) continue;
+        // check ';' found
+        _GetItem		(*it,1,line,')');
+        if (line!=strstr(line.c_str(),";")){
+        	ErrMsg		(m_Name,STA_MISSING,i_line,0,*it);
+            bRes		= false;
+            break;
+        }
+        // find command in templates
+    	PFuncPairIt pfp_it = CommandTemplates.find(command.c_str());
+        if (pfp_it==CommandTemplates.end()){
+        	ErrMsg		(m_Name,BAD_COMMAND,i_line,0,*it);
+            bRes		= false;
+            break;
+        }
+        Commands.push_back(PFunction());
+		PFunction& F	= Commands.back();
+        F				= pfp_it->second;
+        F.parent		= this;
+        // parse params
+        if (!(bRes=F.Parse(i_line,*it))) break;
+    }
+    // free list
+    for (LPSTRIt it=lst.begin(); it!=lst.end(); it++)
+    	xr_free(*it);
+
+    if (!bRes) return;
+
+    // destroy shader (may be changed)
+    m_CachedShader.destroy	();
+    
+    // create temporary handles
+	int effect_handle 		= pGenParticleEffects(1, 1);
+    int action_list_handle	= pGenActionLists();
+	pCurrentEffect			(effect_handle);
+
+    // reset state (одинаковые начальные условия)
+    pResetState				();
+    
+    // execute commands
+    PFuncIt pf_it;
+    // at first state commands
+    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+    	if (PFunction::ftState==pf_it->type) pf_it->Execute();             
+    // at next action commands
+	pNewActionList			(action_list_handle);
+    for (pf_it=Commands.begin(); pf_it!=Commands.end(); pf_it++)
+    	if (PFunction::ftAction==pf_it->type) pf_it->Execute();             
+	pEndActionList			();
+
+    // save effect data
+	ParticleEffect *pe 		= _GetEffectPtr(effect_handle); R_ASSERT(pe);
+    m_MaxParticles			= pe->max_particles;
+    
+    // save action list
+	PAVec*	pa				= _GetListPtr(action_list_handle); R_ASSERT(pa);
+    TransferActions			(*pa,m_ActionList);
+
+    // destroy temporary handls
+	pDeleteParticleEffects	(effect_handle);
+	pDeleteActionLists		(action_list_handle);
+
+    if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0])
+	    m_CachedShader.create(m_ShaderName,m_TextureName);
+}
+/*
 void CPEDef::Compile()
 {
 	// load templates
@@ -598,5 +696,5 @@ void CPEDef::Compile()
     if (m_ShaderName&&m_ShaderName[0]&&m_TextureName&&m_TextureName[0])
 	    m_CachedShader.create(m_ShaderName,m_TextureName);
 }
-
+*/
 

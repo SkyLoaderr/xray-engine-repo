@@ -43,6 +43,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem5;
 	TMenuItem *N3;
 	TMenuItem *RefreshForm1;
+	TPanel *paStatus;
+	TBevel *Bevel2;
 	void __fastcall 	FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall 	tvItemsClick(TObject *Sender);
 	void __fastcall 	tvItemsMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y);

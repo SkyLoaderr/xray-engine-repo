@@ -93,6 +93,12 @@ void __fastcall TfraLeftBar::ebReloadClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::Merge1Click(TObject *Sender)
+{
+	UI.Command( COMMAND_MERGE );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebRefreshTexturesClick(TObject *Sender)
 {
 	UI.Command( COMMAND_REFRESH_TEXTURES );
@@ -217,5 +223,6 @@ void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
     Tools.m_ItemProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
+
 
 

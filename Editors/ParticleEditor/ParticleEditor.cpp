@@ -20,6 +20,7 @@ USEFORM("LogForm.cpp", frmLog);
 USEFORM("main.cpp", frmMain);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("Editor\SoundEditor.cpp", frmSoundLib);
+USEFORM("Editor\ItemDialog.cpp", frmItemDialog);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

@@ -16,8 +16,11 @@ class CPSLibrary{
 
 #ifdef _EDITOR    
     AnsiString			m_CurrentParticles;
+public:
+	bool __fastcall 	FindByName		(LPCSTR new_name);
 #endif
 
+public:
     bool 				Load			(LPCSTR nm);
     void				Save			(LPCSTR nm);
 public:
@@ -32,8 +35,6 @@ public:
     PS::PEDIt			FindPEDIt		(LPCSTR name);
     PS::CPGDef*			FindPGD			(LPCSTR name);
     PS::PGDIt			FindPGDIt		(LPCSTR name);
-	// editor part
-    char*				GenerateName	(char* buffer, LPCSTR folder, LPCSTR pref);
 
     // get object properties methods
     IC PS::PSIt			FirstPS			()	{return m_PSs.begin();}
@@ -58,7 +59,7 @@ public:
 	void				OnDeviceDestroy	();
 };
 
-#define PSLIB_FILENAME 			"particles2.xr"
+#define PSLIB_FILENAME 			"particles.xr"
 #define PS_LIB_SIGN 			"PS_LIB"
 
 #define PS_VERSION				0x0001

@@ -8,6 +8,25 @@
 #include "PropertiesListHelper.h"
 #include "ui_tools.h"
              
+BOOL PS::CPEDef::Equal(const CPEDef* pe)
+{
+	if (m_SourceText!=pe->m_SourceText)						return FALSE;
+    if (!m_Flags.equal(pe->m_Flags)) 						return FALSE;
+    if (((m_ShaderName==0)||(pe->m_ShaderName==0))&&(m_ShaderName!=pe->m_ShaderName)) 		return FALSE;
+    if ((m_ShaderName!=pe->m_ShaderName)&&(0!=strcmp(m_ShaderName,pe->m_ShaderName))) 		return FALSE;
+    if (((m_TextureName==0)||(pe->m_TextureName==0))&&(m_TextureName!=pe->m_TextureName)) 	return FALSE;
+    if ((m_TextureName!=pe->m_TextureName)&&(0!=strcmp(m_TextureName,pe->m_TextureName)))	return FALSE;
+    if (0!=memcmp(&m_Frame,&pe->m_Frame,sizeof(m_Frame))) 	return FALSE;
+	if (!fsimilar(m_fTimeLimit,pe->m_fTimeLimit))			return FALSE;
+    if (m_MaxParticles!=pe->m_MaxParticles)					return FALSE;
+    if (m_ActionList.size()!=pe->m_ActionList.size())		return FALSE;
+    if (!m_VelocityScale.similar(pe->m_VelocityScale))		return FALSE;
+	if (!fsimilar(m_fCollideOneMinusFriction,pe->m_fCollideOneMinusFriction))	return FALSE;
+    if (!fsimilar(m_fCollideResilience,pe->m_fCollideResilience))				return FALSE;
+    if (!fsimilar(m_fCollideSqrCutoff,pe->m_fCollideSqrCutoff))					return FALSE;
+    return TRUE;
+}
+
 void PS::CPEDef::Copy(const CPEDef& src)
 {
     strcpy				(m_Name,src.m_Name); VERIFY(strlen(m_Name)<sizeof(m_Name));
@@ -17,10 +36,15 @@ void PS::CPEDef::Copy(const CPEDef& src)
     m_Frame				= src.m_Frame;
 	m_fTimeLimit		= src.m_fTimeLimit;
     m_MaxParticles		= src.m_MaxParticles;
-    m_ActionCount 		= 0;
-    m_ActionList		= 0;
+    m_ActionList.clear	();
 	m_CachedShader		= src.m_CachedShader;
+    m_VelocityScale.set			(src.m_VelocityScale);
+	m_fCollideOneMinusFriction	= src.m_fCollideOneMinusFriction;
+    m_fCollideResilience		= src.m_fCollideResilience;
+    m_fCollideSqrCutoff			= src.m_fCollideSqrCutoff; 
+
 	m_SourceText		= src.m_SourceText;
+
     Compile				();
 }
 
@@ -30,6 +54,7 @@ void __fastcall PS::CPEDef::OnSourceTextEdit(PropValue* sender, bool& bDataModif
     switch (B->btn_num){
     case 0: 			Tools.EditActionList();	break;
     }
+    bDataModified		= false;
 }
 
 void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModified)
@@ -45,12 +70,18 @@ void __fastcall PS::CPEDef::OnControlClick(PropValue* sender, bool& bDataModifie
 
 void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modif Name"),*m_ModifName);
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))));
 	ButtonValue* B;
 	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Control"),"Play (F5),Stop,Stop...",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnControlClick;
 	::PHelper.CreateName	(items,FHelper.PrepareKey(pref,"Name"),m_Name,sizeof(m_Name),owner);
     B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Source Text"),"Edit",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnSourceTextEdit;
+//	for (PAPI::PAVecIt s_it=m_ActionList.begin(); s_it!=m_ActionList.end(); s_it++)
+//    	(*s_it)->FillProp	(items,FHelper.PrepareKey(pref,"Actions").c_str());
 }
 #endif
 

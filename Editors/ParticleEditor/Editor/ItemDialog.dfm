@@ -3,9 +3,9 @@ object frmItemDialog: TfrmItemDialog
   Top = 409
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
-  Caption = 'Numeric'
-  ClientHeight = 57
-  ClientWidth = 158
+  Caption = 'Item'
+  ClientHeight = 105
+  ClientWidth = 274
   Color = 10528425
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -17,147 +17,189 @@ object frmItemDialog: TfrmItemDialog
   OldCreateOrder = False
   Position = poDefault
   Scaled = False
+  OnClose = FormClose
   OnKeyDown = FormKeyDown
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object RxLabel3: TLabel
-    Left = 3
-    Top = 3
-    Width = 10
-    Height = 13
-    Caption = 'X:'
+  object eb0: TExtBtn
+    Left = 1
+    Top = 51
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
   end
-  object RxLabel1: TLabel
-    Left = 3
-    Top = 21
-    Width = 10
-    Height = 13
-    Caption = 'Y:'
+  object eb3: TExtBtn
+    Tag = 3
+    Left = 1
+    Top = 69
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
   end
-  object RxLabel2: TLabel
-    Left = 3
-    Top = 39
-    Width = 10
-    Height = 13
-    Caption = 'Z:'
+  object lbMsg: TMxLabel
+    Left = 0
+    Top = 7
+    Width = 274
+    Height = 42
+    Align = alTop
+    Alignment = taCenter
+    AutoSize = False
+    Caption = 'Overwrite:'
+    Font.Charset = RUSSIAN_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = []
+    ParentFont = False
+    ShadowColor = clBlack
+    ShadowSize = 0
+    ShadowPos = spRightBottom
+    WordWrap = True
   end
-  object Bevel1: TBevel
-    Left = 14
-    Top = 2
-    Width = 84
-    Height = 16
+  object eb1: TExtBtn
+    Tag = 1
+    Left = 92
+    Top = 51
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
   end
-  object Bevel2: TBevel
-    Left = 14
-    Top = 20
-    Width = 84
-    Height = 16
+  object eb4: TExtBtn
+    Tag = 4
+    Left = 92
+    Top = 69
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
   end
-  object Bevel3: TBevel
-    Left = 14
-    Top = 38
-    Width = 84
-    Height = 16
+  object eb2: TExtBtn
+    Tag = 2
+    Left = 183
+    Top = 51
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
   end
-  object paBottom: TPanel
-    Left = 100
+  object eb5: TExtBtn
+    Tag = 5
+    Left = 183
+    Top = 69
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
+  end
+  object eb6: TExtBtn
+    Tag = 6
+    Left = 1
+    Top = 87
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
+  end
+  object eb7: TExtBtn
+    Tag = 7
+    Left = 92
+    Top = 87
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
+  end
+  object eb8: TExtBtn
+    Tag = 8
+    Left = 183
+    Top = 87
+    Width = 90
+    Height = 17
+    Align = alNone
+    BevelShow = False
+    BtnColor = 10528425
+    CloseButton = False
+    Caption = '-'
+    Transparent = False
+    FlatAlwaysEdge = True
+    Visible = False
+    OnClick = ebClick
+  end
+  object Panel1: TPanel
+    Left = 0
     Top = 0
-    Width = 58
-    Height = 57
-    Align = alRight
+    Width = 274
+    Height = 7
+    Align = alTop
     BevelOuter = bvNone
-    Color = 10528425
+    ParentColor = True
     TabOrder = 0
-    object ebOk: TExtBtn
-      Left = 1
-      Top = 21
-      Width = 56
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = 'Ok'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebOkClick
-    end
-    object ebCancel: TExtBtn
-      Left = 1
-      Top = 39
-      Width = 56
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = 'Cancel'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebCancelClick
-    end
-    object ebReset: TExtBtn
-      Left = 1
-      Top = 1
-      Width = 56
-      Height = 17
-      Align = alNone
-      BevelShow = False
-      BtnColor = 10528425
-      CloseButton = False
-      Caption = 'Reset'
-      Transparent = False
-      FlatAlwaysEdge = True
-      OnClick = ebResetClick
-    end
   end
-  object seX: TMultiObjSpinEdit
-    Left = 15
-    Top = 4
-    Width = 82
-    Height = 13
-    LWSensitivity = 0.1
-    ButtonKind = bkLightWave
-    Decimal = 3
-    Increment = 0.1
-    ValueType = vtFloat
-    AutoSize = False
-    BorderStyle = bsNone
-    Color = 10526880
-    TabOrder = 1
-    OnChange = OnModified
-  end
-  object seY: TMultiObjSpinEdit
-    Left = 15
-    Top = 22
-    Width = 82
-    Height = 13
-    LWSensitivity = 0.1
-    ButtonKind = bkLightWave
-    Decimal = 3
-    Increment = 0.1
-    ValueType = vtFloat
-    AutoSize = False
-    BorderStyle = bsNone
-    Color = 10526880
-    TabOrder = 2
-    OnChange = OnModified
-  end
-  object seZ: TMultiObjSpinEdit
-    Left = 15
-    Top = 40
-    Width = 82
-    Height = 13
-    LWSensitivity = 0.1
-    ButtonKind = bkLightWave
-    Decimal = 3
-    Increment = 0.1
-    ValueType = vtFloat
-    AutoSize = False
-    BorderStyle = bsNone
-    Color = 10526880
-    TabOrder = 3
-    OnChange = OnModified
+  object fsStorage: TFormStorage
+    IniSection = 'Item Dialog'
+    RegistryRoot = prLocalMachine
+    Version = 8
+    StoredValues = <>
+    Left = 65529
+    Top = 65526
   end
 end

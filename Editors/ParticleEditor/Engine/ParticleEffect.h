@@ -76,11 +76,15 @@ namespace PS
             dfCollision		= (1<<16),
             dfCollisionDel	= (1<<17),
             dfVelocityScale	= (1<<18),
+/*
+            dfAllFlags		= (	dfSprite|dfFramed|dfAnimated|dfRandomFrame|dfRandomPlayback
+            					|dfTimeLimit|dfAlignToPath|dfCollision|dfVelocityScale|dfVelocityScale)
+*/
 		};
 
 		string64			m_Name;
 		Flags32				m_Flags;
-        
+
 		LPSTR				m_ShaderName;
 		LPSTR				m_TextureName;
 
@@ -90,8 +94,7 @@ namespace PS
 
 		int					m_MaxParticles;
 
-		int					m_ActionCount;
-		PAPI::PAHeader*		m_ActionList;
+		PAPI::PAVec 		m_ActionList;
 
 		ref_shader			m_CachedShader;
 
@@ -99,16 +102,23 @@ namespace PS
 	    Fvector				m_VelocityScale;
 	protected:
     // collision
-	    float 				m_CollideOneMinusFriction;
-        float 				m_CollideResilience;
-        float 				m_CollideSqrCutoff; 
+	    float 				m_fCollideOneMinusFriction;
+        float 				m_fCollideResilience;
+        float 				m_fCollideSqrCutoff; 
 #ifdef _PARTICLE_EDITOR
+// change Copy&Equal if variables changed
 	public:
+        ref_str				m_OwnerName;
+        ref_str				m_ModifName;
+        time_t				m_CreateTime;
+        time_t				m_ModifTime;
+        
 		AnsiString			m_SourceText;
 		void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
 		void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
 		void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
 		void				Copy				(const CPEDef& src);
+		BOOL				Equal				(const CPEDef* pe);
 #endif
 	public:
 		// api function
@@ -137,6 +147,7 @@ namespace PS
 		BOOL 				Load				(IReader& F);
 
 #ifdef _PARTICLE_EDITOR
+		void 				Render				();
 		void 				Compile				();
 		static PFunction*	FindCommandPrototype(LPCSTR src, LPCSTR& dest);
 #endif
@@ -176,7 +187,7 @@ namespace PS
 
 		void				RefreshShader		();
 	public:
-		CParticleEffect		();
+							CParticleEffect		();
 		virtual 			~CParticleEffect	();
 
 		void	 			OnFrame				(u32 dt);
@@ -223,6 +234,7 @@ namespace PS
 #define PED_CHUNK_SOURCETEXT   	0x0020
 #define PED_CHUNK_COLLISION	   	0x0021
 #define PED_CHUNK_VEL_SCALE		0x0022
+#define PED_CHUNK_OWNER			0x0023
 
 //---------------------------------------------------------------------------
 #endif

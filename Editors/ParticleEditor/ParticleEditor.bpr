@@ -82,7 +82,10 @@
       Intermediate\EThumbnailTexture.obj Intermediate\EThumbnail.obj 
       Intermediate\EThumbnailObject.obj Intermediate\EThumbnailSound.obj 
       Intermediate\SoundEditor.obj 
-      Intermediate\Blender_Recorder_StandartBinding.obj"/>
+      Intermediate\Blender_Recorder_StandartBinding.obj 
+      Intermediate\ItemDialog.obj Intermediate\ParticleEffectActions.obj 
+      Intermediate\ParticleEffectActionsProps.obj 
+      Intermediate\ParticleEffectActionsRender.obj"/>
     <RESFILES value="resource.res ParticleEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -91,7 +94,7 @@
       Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
       Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
       BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm 
-      Editor\SoundEditor.dfm"/>
+      Editor\SoundEditor.dfm Editor\ItemDialog.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -119,8 +122,8 @@
       -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -src_suffix cpp 
       -D_EDITOR -D_PARTICLE_EDITOR -DDEBUG -D_DEBUG -no_tie -boa"/>
-    <CFLAG1 value="-Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps -a4 
-      -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
+    <CFLAG1 value="-vGc -vGt -vGd -Od -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff 
+      -X- -r- -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
@@ -130,7 +133,7 @@
   <LINKER>
     <ALLOBJ value="c0w32.obj $(PACKAGES) Memmgr.Lib sysinit.obj $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
+    <ALLLIB value="cg32.lib $(LIBFILES) $(LIBRARIES) import32.lib cp32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -295,6 +298,10 @@
       <FILE FILENAME="Editor\EThumbnailSound.cpp" FORMNAME="" UNITNAME="EThumbnailSound.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Recorder_StandartBinding.cpp" FORMNAME="" UNITNAME="Blender_Recorder_StandartBinding" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleEffectActions.cpp" FORMNAME="" UNITNAME="ParticleEffectActions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleEffectActionsProps.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsProps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ParticleEffectActionsRender.cpp" FORMNAME="" UNITNAME="ParticleEffectActionsRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -306,7 +313,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=2
-Build=95
+Build=96
 Debug=1
 PreRelease=0
 Special=0
@@ -318,7 +325,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.2.95
+FileVersion=1.0.2.96
 InternalName=
 LegalCopyright=
 LegalTrademarks=
@@ -447,7 +454,7 @@ RemoteDebug=0
 [Compiler]
 ShowInfoMsgs=0
 LinkDebugVcl=0
-LinkCGLIB=0
+LinkCGLIB=1
 
 [CORBA]
 AddServerUnit=1

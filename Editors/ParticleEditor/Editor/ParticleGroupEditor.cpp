@@ -7,6 +7,27 @@
 #include "ui_main.h"
 #include "ui_tools.h"
 
+BOOL PS::CPGDef::SEffect::Equal(const SEffect& src)
+{
+	if (m_Type!=src.m_Type) 			return FALSE;
+	if (!m_Flags.equal(src.m_Flags))	return FALSE;
+    if (0!=strcmp(m_EffectName,src.m_EffectName)) return FALSE;
+	if (!fsimilar(m_Time0,src.m_Time0))	return FALSE;
+	if (!fsimilar(m_Time1,src.m_Time1))	return FALSE;
+	return TRUE;
+}
+
+BOOL PS::CPGDef::Equal(const CPGDef* pg)
+{
+	if (!m_Flags.equal(pg->m_Flags))				return FALSE;
+	if (!fsimilar(m_fTimeLimit,pg->m_fTimeLimit))	return FALSE;
+    if (m_Effects.size()!=pg->m_Effects.size())		return FALSE;
+    EffectIt s_it=m_Effects.begin(); 
+    for (EffectIt d_it=m_Effects.begin(); d_it!=m_Effects.end(); s_it++,d_it++)
+    	if (!s_it->Equal(*d_it)) return FALSE;
+	return TRUE;
+}
+
 void __fastcall PS::CPGDef::OnEffectsEditClick(PropValue* sender, bool& bDataModified)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);
@@ -65,6 +86,10 @@ xr_token			effect_token					[ ]={
 };
 void PS::CPGDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 {
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Owner Name"),*m_OwnerName);
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modif Name"),*m_ModifName);
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))));
+	PHelper.CreateCaption	(items,FHelper.PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))));
     ButtonValue* B;
 	B=PHelper.CreateButton		(items,FHelper.PrepareKey(pref,"Control"),"Play (F5),Stop,Stop...",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent			= OnControlClick;
