@@ -299,6 +299,7 @@ bool EScene::Load(char *_FileName){
     	    }
 	        OBJ->Close();
         }
+	    UI.ProgressEnd();
 
         // snap list
         if (F->FindChunk(CHUNK_SNAPOBJECTS)){
@@ -319,8 +320,6 @@ bool EScene::Load(char *_FileName){
 	    	m_DetailObjects->Load(*DO);
             DO->Close();
         }
-
-	    UI.ProgressEnd();
 
         // update scene groups list
 //S        UpdateGroups();

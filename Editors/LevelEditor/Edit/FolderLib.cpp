@@ -506,8 +506,13 @@ TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
 	if (node){
 	    tv->Selected 		= node;
 		tv->EnsureVisible	(node);
-    	TElTreeItem* folder	= node->Parent;
-		if (folder) folder->Expand(false);
+        TElTreeItem* folder	= node->Parent;
+        while(folder){
+			if (folder) folder->Expand(false);
+        	if (folder->Parent){ 
+            	folder = folder->Parent;
+            }else				break;
+        }
     }
     return node;
 }

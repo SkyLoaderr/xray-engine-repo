@@ -70,7 +70,9 @@ public:
     // file system function
   	virtual bool 	Load		(CStream&);
 	virtual void 	Save		(CFS_Base&);
-	virtual bool	FillProp	(PropValueMap& values, bool bFirstInit);
+	virtual bool	FillProp	(PropValueVec& values);
+	bool			FillSunProp	(PropValueVec& values);
+	bool			FillPointProp(PropValueVec& values);
 
     // render utility function
 	void 			Set			(int d3dindex);

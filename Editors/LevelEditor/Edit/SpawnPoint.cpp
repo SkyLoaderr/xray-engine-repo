@@ -81,7 +81,9 @@ bool CSpawnPoint::GetBox( Fbox& box ){
 	return true;
 }
 
-void CSpawnPoint::Render( int priority, bool strictB2F ){
+void CSpawnPoint::Render( int priority, bool strictB2F )
+{
+	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Device.m_Frustum.testSphere(PPosition,RPOINT_SIZE)){
         	if (m_SpawnData){
@@ -253,29 +255,25 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
 }
 //----------------------------------------------------
 
-void CSpawnPoint::FillProp(CFS_Base& F)
+bool CSpawnPoint::FillProp(PropValueVec& values)
 {
-/*
-	inherited::PropWrite(F);
-
+	inherited::FillProp(values);
+    
     if (m_SpawnData){
-    	xrPWRITE_MARKER(F,"Spawn Data");
-    	m_SpawnData->P_Write(F);
+    	m_SpawnData->FillProp(values);
     }else{
     	switch (m_Type){
         case ptRPoint:{
-	    	xrPWRITE_MARKER	(F,"Point Data");
-            xrP_Integer		dI;
-            dI.min			= 0;
-            dI.max			= 64;
-            dI.value		= m_dwTeamID;	xrPWRITE_PROP(F,"Team",xrPID_INTEGER,dI);
+            FILL_PROP_EX(values, "Respawn Point", "Team",	&m_dwTeamID, PROP::CreateDWORDValue(64,1));
         }break;
         case ptAIPoint: 
+            FILL_PROP_EX(values, "AI Point", "Reserved", "-", PROP::CreateMarkerValue());
         break;
         default: THROW;
         }
     }
-*/
+	
+    return true;
 }
 //----------------------------------------------------
 

@@ -85,7 +85,7 @@ void CImageManager::CreateThumbnail(EImageThumbnail* THM, const AnsiString& src_
     MakeThumbnail(THM,data.begin(),w,h,a);
 	THM->m_Age = Engine.FS.GetFileAge(base_name);
 	THM->m_TexParams.fmt 	= (a)?STextureParams::tfDXT3:STextureParams::tfDXT1;
-    if ((h*6)==w) THM->m_TexParams.flag	|= STextureParams::flCubeMap;
+    if ((h*6)==w) THM->m_TexParams.type	= STextureParams::ttCubeMap;
 }
 
 //------------------------------------------------------------------------------

@@ -35,23 +35,21 @@ __published:	// IDE-managed Components
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
-	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
-	static TfrmPropertiesSpawnPoint* form;
-    TProperties* 	m_Props;
-    CFS_Memory 		m_SPData;
-    CSpawnPoint* 	m_SPObject;
-//	PropItemVec		m_Items;
+    ObjectList* 	m_Objects;
+    void 			GetObjectsInfo();
+    bool 			ApplyObjectsInfo();
+    void 			CancelObjectsInfo();
 
-    void GetObjectInfo	();
-    bool ApplyObjectInfo();
+	static TfrmPropertiesSpawnPoint* form;
+
+    TProperties* 	m_Props;
+
     void __fastcall OnModified();
     void __fastcall UpdateProps();
 public:		// User declarations
     __fastcall TfrmPropertiesSpawnPoint(TComponent* Owner);
-    static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);
-    static bool __fastcall Visible(){return !!form;}
-    static TfrmPropertiesSpawnPoint* GetForm(){VERIFY(form); return form;}
+    static int __fastcall Run(ObjectList* pObjects, bool& bChange);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -99,6 +99,7 @@ private:	// User declarations
 public:
 	float fStatusProgress;
     float fMaxVal;
+    AnsiString sProgressTitle;
 public:		// User declarations
     __fastcall TfraBottomBar(TComponent* Owner);
 };

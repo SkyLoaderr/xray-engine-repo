@@ -19,6 +19,7 @@
 #include "bottombar.h"
 #include "leftbar.h"    
 #include "ui_main.h"
+#include "d3dutils.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
@@ -528,7 +529,7 @@ void EScene::Render( const Fmatrix& camera )
         	(*_F)->Render(1,false);
 			(*_F)->Render(1,true);
         }
-
+        
     mapRenderObjects.clear			();
 
 	ClearLights();

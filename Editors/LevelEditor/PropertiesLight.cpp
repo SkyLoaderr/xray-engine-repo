@@ -26,7 +26,8 @@ void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
-    m_SunProps 	= TProperties::CreateForm(tsSun,alClient);
+	m_PointProps= TProperties::CreateForm(paPointProps,alClient,OnModified);
+    m_SunProps 	= TProperties::CreateForm(tsSun,alClient,OnModified);
     m_Props		= TProperties::CreateForm(paProps,alClient,OnModified);
 	DEFINE_INI(fsStorage);
 }
@@ -39,6 +40,7 @@ void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
     case mrCancel: 	CancelObjectsInfo();	break;
     default: THROW2("Invalid case");
     }
+    TProperties::DestroyForm(m_PointProps);
 	TProperties::DestroyForm(m_SunProps);
 	TProperties::DestroyForm(m_Props);
 }
@@ -47,15 +49,8 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 {
     m_Objects = pObjects;
     pcType->ActivePage = tsPoint;
-
     pcType->Show();
-	ObjectIt _F=m_Objects->begin();
-    DWORD t=((CLight*)(*_F))->m_D3D.type;
-    _F++;
-	for(;_F!=m_Objects->end();_F++) if (t!=((CLight*)(*_F))->m_D3D.type) pcType->Hide();
-
 	GetObjectsInfo();
-
     bChange = (ShowModal()==mrOk);
 }
 
@@ -66,7 +61,7 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 void __fastcall TfrmPropertiesLight::DrawGraph()
 {
 	if (!flBrightness) return;
-	DrawGraph(sePointRange->Value, flBrightness->GetValue(), flBrightness->lim_mx, seA0->Value, seA1->Value, seA2->Value);
+	DrawGraph(flPointRange->GetValue(), flBrightness->GetValue(), flBrightness->lim_mx, flPointA0->GetValue(), flPointA1->GetValue(), flPointA2->GetValue());
 }
 
 void __fastcall TfrmPropertiesLight::DrawGraph(float range, float br, float br_max, float a0, float a1, float a2)
@@ -126,22 +121,24 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 	_L = (CLight *)(*_F);
 
-	sePointRange->ObjFirstInit		( _L->m_D3D.range );
-    seA0->ObjFirstInit				( _L->m_D3D.attenuation0 );
-    seA1->ObjFirstInit				( _L->m_D3D.attenuation1 );
-    seA2->ObjFirstInit				( _L->m_D3D.attenuation2 );
-
     switch(_L->m_D3D.type){
     case D3DLIGHT_POINT:   			pcType->ActivePage = tsPoint;   break;
     case D3DLIGHT_DIRECTIONAL: 		pcType->ActivePage = tsSun; 	break;
     default: THROW;
     }
 
-//    m_Props->BeginFillMode	();
-    PropValueMap values;
-    _L->FillProp(values,true);
+    PropValueVec values;
+    PropValueVec sun_values;
+    PropValueVec point_values;
+    _L->FillProp	(values);
+    _L->FillSunProp	(sun_values);
+    _L->FillPointProp(point_values);
 	flBrightness 					= (FloatValue*)PROP::FindProp(values,"Brightness"); R_ASSERT(flBrightness);
     flBrightness->OnAfterEdit		= OnBrightnessAfterEdit;
+    flPointRange					= (FloatValue*)PROP::FindProp(point_values,"Range");					R_ASSERT(flPointRange);
+    flPointA0						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Constant"); 	R_ASSERT(flPointA0);
+    flPointA1						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Linear"); 		R_ASSERT(flPointA1);
+    flPointA2						= (FloatValue*)PROP::FindProp(point_values,"Attenuation\\Quadratic"); 	R_ASSERT(flPointA2);
     if (m_Objects->size()>1){
 		PropValue* V 				= PROP::FindProp(values,"Name"); R_ASSERT(V);
         V->bEnabled					= false;
@@ -151,50 +148,13 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L 							= (CLight *)(*_F);
-        _L->FillProp				(values,false);
-
-        seA0->ObjNextInit		 	(_L->m_D3D.attenuation0);
-        seA1->ObjNextInit		 	(_L->m_D3D.attenuation1);
-        seA2->ObjNextInit		 	(_L->m_D3D.attenuation2);
-
-		sePointRange->ObjNextInit	(_L->m_D3D.range);
+        _L->FillProp				(values);
+	    _L->FillSunProp				(sun_values);
+	    _L->FillPointProp			(point_values);
 	}
     m_Props->AssignValues			(values,true);
-//    m_Props->EndFillMode	();
-    
-    // init flares
-    if (m_Objects->size()==1){
-		CEditFlare& F = ((CLight*)m_Objects->front())->m_LensFlare;
-/*       
-//p 
-    	m_SunProps->Enabled = true;
-		m_SunProps->BeginFillMode();
-        TElTreeItem* M=0;
-        TElTreeItem* N=0;
-		M = m_SunProps->AppendMarkerValue	(0,"Source")->item;
-			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flSource);
-			m_SunProps->AppendFloatValue	(M,"Radius", 	&F.m_Source.fRadius,0.f,10.f);
-			m_SunProps->AppendTextureValue	(M,"Texture",	F.m_Source.texture,sizeof(F.m_Source.texture));
-		M = m_SunProps->AppendMarkerValue	(0,"Gradient")->item;
-			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flGradient);
-			m_SunProps->AppendFloatValue	(M,"Radius", 	&F.m_Gradient.fRadius,0.f,100.f);
-			m_SunProps->AppendFloatValue	(M,"Opacity",	&F.m_Gradient.fOpacity,0.f,1.f);
-			m_SunProps->AppendTextureValue	(M,"Texture",	F.m_Gradient.texture,sizeof(F.m_Gradient.texture));
-		M = m_SunProps->AppendMarkerValue	(0,"Flares")->item;
-			m_SunProps->AppendFlagValue		(M,"Enabled",	&F.m_dwFlags,CEditFlare::flFlare);
-		for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
-            AnsiString nm; nm.sprintf("Flare %d",it-F.m_Flares.begin());
-		N = m_SunProps->AppendMarkerValue	(M,nm.c_str())->item;
-			m_SunProps->AppendFloatValue	(N,"Radius", 	&it->fRadius,0.f,10.f);
-			m_SunProps->AppendFloatValue	(N,"Opacity", 	&it->fOpacity,0.f,1.f);
-			m_SunProps->AppendFloatValue	(N,"Position",	&it->fPosition,-10.f,10.f);
-			m_SunProps->AppendTextureValue	(N,"Texture",	it->texture,sizeof(it->texture));
-		}
-		m_SunProps->EndFillMode();
-*/
-    }else{
-    	m_SunProps->Enabled = false;
-    }
+    m_SunProps->AssignValues		(sun_values,false);
+    m_PointProps->AssignValues		(point_values,true);
 }
 
 bool TfrmPropertiesLight::ApplyObjectsInfo(){
@@ -205,17 +165,8 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	for(ObjectIt _F = m_Objects->begin();_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
-        if  (pcType->ActivePage==tsSun){
-            _L->m_D3D.type 		= D3DLIGHT_DIRECTIONAL;
-        }else if (pcType->ActivePage==tsPoint){
-            _L->m_D3D.type 		= D3DLIGHT_POINT;
-        }
-
-        seA0->ObjApplyFloat( _L->m_D3D.attenuation0 );
-        seA1->ObjApplyFloat( _L->m_D3D.attenuation1 );
-        seA2->ObjApplyFloat( _L->m_D3D.attenuation2 );
-        sePointRange->ObjApplyFloat( _L->m_D3D.range );
-
+        if  (pcType->ActivePage==tsSun)			_L->m_D3D.type = D3DLIGHT_DIRECTIONAL;
+        else if (pcType->ActivePage==tsPoint)	_L->m_D3D.type = D3DLIGHT_POINT;
         _L->Update();
 	}
 
@@ -251,27 +202,6 @@ void __fastcall TfrmPropertiesLight::btCancelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesLight::tbA0Change(TObject *Sender)
-{
-    seA0->Value = float(tbA0->Position)/100.f;
-    DrawGraph();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::tbA1Change(TObject *Sender)
-{
-    seA1->Value = float(tbA1->Position)/100.f;
-    DrawGraph();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::tbA2Change(TObject *Sender)
-{
-    seA2->Value = float(tbA2->Position)/100.f;
-    DrawGraph();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmPropertiesLight::FormPaint(TObject *Sender)
 {
     DrawGraph();
@@ -286,73 +216,54 @@ void __fastcall TfrmPropertiesLight::OnModified()
 
 void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-	DrawGraph(sePointRange->Value, *(float*)edit_val, flBrightness->lim_mx, seA0->Value, seA1->Value, seA2->Value);
+	DrawGraph(flPointRange->GetValue(), *(float*)edit_val, flBrightness->lim_mx, flPointA0->GetValue(), flPointA1->GetValue(), flPointA2->GetValue());
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (m_SunProps->Focused()||m_Props->Focused()) return;
-
+	if (m_SunProps->IsFocused()||m_Props->IsFocused()||m_PointProps->IsFocused()) return;
     if (Key==VK_ESCAPE) ebCancel->Click();
     if (Key==VK_RETURN) ebOk->Click();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::seA0Change(TObject *Sender){
-    if (seA0->Text.Length()){ tbA0->Position = seA0->Value*100; DrawGraph(); }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::seA1Change(TObject *Sender){
-    if (seA1->Text.Length()){ tbA1->Position = seA1->Value*100; DrawGraph(); }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::seA2Change(TObject *Sender){
-    if (seA2->Text.Length()){ tbA2->Position = seA2->Value*100; DrawGraph(); }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::sePointRangeChange(TObject *Sender){
-    if (sePointRange->Text.Length()) DrawGraph();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::ebALautoClick(TObject *Sender){
 	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
-    seA0->Value = 1.f;
-    seA1->Value = (flBrightness->GetValue()-P-P*sePointRange->Value*sePointRange->Value*seA2->Value)/(P*sePointRange->Value);
-    tbA0->Position = float(seA0->Value)*100.f;
-    tbA1->Position = float(seA1->Value)*100.f;
+    flPointA0->ApplyValue(1.f);
+    flPointA1->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointRange->GetValue()*flPointA2->GetValue())/(P*flPointRange->GetValue()));
+    m_PointProps->RefreshForm();
+    DrawGraph();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::ebQLautoClick(TObject *Sender){
 	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
-    seA0->Value = 1.f;
-    seA2->Value = (flBrightness->GetValue()-P-P*sePointRange->Value*seA1->Value)/(P*sePointRange->Value*sePointRange->Value);
-    tbA0->Position = float(seA0->Value)*100.f;
-    tbA2->Position = float(seA2->Value)*100.f;
+    flPointA0->ApplyValue(1.f);
+    flPointA2->ApplyValue((flBrightness->GetValue()-P-P*flPointRange->GetValue()*flPointA1->GetValue())/(P*flPointRange->GetValue()*flPointRange->GetValue()));
+    m_PointProps->RefreshForm();
+    DrawGraph();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::fsStorageRestorePlacement(
       TObject *Sender)
 {
-	m_SunProps->RestoreColumnWidth(fsStorage);
-	m_Props->RestoreColumnWidth(fsStorage);
+	m_PointProps->RestoreColumnWidth(fsStorage);
+	m_SunProps->RestoreColumnWidth	(fsStorage);
+	m_Props->RestoreColumnWidth		(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::fsStorageSavePlacement(
       TObject *Sender)
 {
-	m_SunProps->SaveColumnWidth(fsStorage);
-	m_Props->SaveColumnWidth(fsStorage);
+	m_PointProps->SaveColumnWidth	(fsStorage);
+	m_SunProps->SaveColumnWidth		(fsStorage);
+	m_Props->SaveColumnWidth		(fsStorage);
 }
 //---------------------------------------------------------------------------
 

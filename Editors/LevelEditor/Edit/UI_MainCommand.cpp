@@ -512,6 +512,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 	case COMMAND_BREAK_LAST_OPERATION:
     	NeedBreak();
+		ELog.DlgMsg(mtInformation,"Execution canceled.");
     	break;
     case COMMAND_LOAD_FIRSTRECENT:
     	if (fraLeftBar->FirstRecentFile()){

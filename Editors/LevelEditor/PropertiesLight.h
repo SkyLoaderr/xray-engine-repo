@@ -35,45 +35,27 @@ __published:	// IDE-managed Components
     TTabSheet *tsSun;
     TTabSheet *tsPoint;
     TBevel *Bevel2;
-	TLabel *RxLabel13;
-	TLabel *RxLabel14;
     TImage *LG;
-	TLabel *RxLabel15;
-	TLabel *RxLabel16;
-	TLabel *RxLabel17;
-    TTrackBar *tbA0;
-    TTrackBar *tbA1;
-    TTrackBar *tbA2;
     TLabel *lbRange;
     TExtBtn *ebALauto;
     TExtBtn *ebQLauto;
 	TLabel *RxLabel3;
     TMultiObjSpinEdit *seAutoBMax;
 	TLabel *RxLabel4;
-	TMultiObjSpinEdit *sePointRange;
-	TMultiObjSpinEdit *seA0;
-	TMultiObjSpinEdit *seA1;
-	TMultiObjSpinEdit *seA2;
 	TPanel *Panel1;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebOk;
 	TExtBtn *ebCancel;
 	TFormStorage *fsStorage;
 	TPanel *paProps;
+	TPanel *paPointProps;
     void __fastcall mcColorMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
     void __fastcall btApplyClick(TObject *Sender);
     void __fastcall btOkClick(TObject *Sender);
-    void __fastcall tbA0Change(TObject *Sender);
-    void __fastcall tbA1Change(TObject *Sender);
-    void __fastcall tbA2Change(TObject *Sender);
     void __fastcall FormPaint(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-    void __fastcall seA0Change(TObject *Sender);
-    void __fastcall seA1Change(TObject *Sender);
-    void __fastcall seA2Change(TObject *Sender);
-    void __fastcall sePointRangeChange(TObject *Sender);
     void __fastcall ebALautoClick(TObject *Sender);
     void __fastcall ebQLautoClick(TObject *Sender);
 	void __fastcall btCancelClick(TObject *Sender);
@@ -81,17 +63,22 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 private:	// User declarations
-    list<CCustomObject*>* m_Objects;
+    ObjectList* 	m_Objects;
     void 			GetObjectsInfo();
     bool 			ApplyObjectsInfo();
     void 			CancelObjectsInfo();
     void __fastcall	DrawGraph();
     void __fastcall DrawGraph(float r, float b, float b_max, float a0, float a1, float a2);
 
+    TProperties*	m_PointProps;
     TProperties*	m_SunProps;
     TProperties*	m_Props;
 
     FloatValue*		flBrightness;
+    FloatValue*		flPointRange;
+    FloatValue*		flPointA0;
+    FloatValue*		flPointA1;
+    FloatValue*		flPointA2;
 
 	void __fastcall OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
     void __fastcall OnModified();

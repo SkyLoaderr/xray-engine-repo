@@ -50,8 +50,8 @@ protected:
 	bool				bDiff;			// internal use only
 public:
 	// internal use only
+    LPSTR				key;
     EPropType			type;
-//	PropValue*			parent;
 	TElTreeItem*		item; 
     bool				bEnabled;
 public:
@@ -61,14 +61,15 @@ public:
     TOnDrawValue		OnDrawValue;
 public:
 						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):
-                        				item(0),/*parent(0),*/bEnabled(true),bDiff(false),OnAfterEdit(after),
+                        				item(0),key(0),/*parent(0),*/bEnabled(true),bDiff(false),OnAfterEdit(after),
                                         OnBeforeEdit(before),OnDrawValue(draw){};
-	virtual 			~PropValue		(){};
+	virtual 			~PropValue		(){_FREE(key);};
     virtual LPCSTR		GetText			()=0;
     virtual void		InitFirst		(LPVOID value)=0;
     virtual void		InitNext		(LPVOID value)=0;
     virtual void		ResetValue		()=0;
     bool				IsDiffValues	(){return bDiff;}
+    void				SetName			(LPCSTR name){key=strdup(name);}
 //    TElTreeItem*		GetParentItem	(){return parent?parent->item:0;}
 };
 //------------------------------------------------------------------------------
@@ -215,6 +216,7 @@ public:
     virtual void		InitNext		(LPVOID value){if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
     virtual bool		ApplyValue		(DWORD value)
     {
+    	clamp(value,0ul,lim_mx); 
     	bool bChanged	= false;
         for (LPDWORDIt it=values.begin();it!=values.end();it++){
         	if (**it!=value){
@@ -251,6 +253,7 @@ public:
     virtual void		InitNext		(LPVOID value){if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
     virtual bool		ApplyValue		(int value)
     {
+    	clamp(value,lim_mn,lim_mx); 
     	bool bChanged	= false;
         for (LPIntIt it=values.begin();it!=values.end();it++){
         	if (**it!=value){
@@ -289,6 +292,7 @@ public:
     virtual void		InitNext		(LPVOID value){if (*(float*)value!=*values.front()) bDiff=true; AppendValue((float*)value);}
     virtual bool		ApplyValue		(float value)
     {	
+	    clamp(value,lim_mn,lim_mx); 
     	bool bChanged	= false;
         for (LPFloatIt it=values.begin();it!=values.end();it++){
         	if (**it!=value){
@@ -359,8 +363,12 @@ public:
     }
     virtual void		InitFirst		(LPVOID value){R_ASSERT(values.empty()); AppendValue((Fvector*)value);}
     virtual void		InitNext		(LPVOID value){if (!((Fvector*)value)->similar(*values.front())) bDiff=true; AppendValue((Fvector*)value);}
-    virtual bool		ApplyValue		(const Fvector& value)
+    virtual bool		ApplyValue		(const Fvector& val)
     {
+    	Fvector value	= val;
+    	clamp(value.x,lim_mn,lim_mx); 
+    	clamp(value.y,lim_mn,lim_mx); 
+    	clamp(value.z,lim_mn,lim_mx); 
     	bool bChanged	= false;
         for (LPFvectorIt it=values.begin();it!=values.end();it++){
         	if (!(*it)->similar(value)){
@@ -516,7 +524,7 @@ public:
     void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
 };
 //------------------------------------------------------------------------------
-DEFINE_MAP(AnsiString,PropValue*,PropValueMap,PropValuePairIt);
+DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
 
 //---------------------------------------------------------------------------
 namespace PROP{
@@ -526,7 +534,7 @@ namespace PROP{
         V->type			= PROP_MARKER;
         return V;
     }
-    IntValue* 			CreateIntValueValue	(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
+    IntValue* 			CreateIntValue		(int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
         IntValue* V		= new IntValue(mn,mx,inc,after,before,draw);
         V->type			= PROP_INTEGER;
@@ -683,27 +691,29 @@ namespace PROP{
         return V;
     }     
 //------------------------------------------------------------------------------
-    IC PropValue* 		InitFirst			(PropValueMap& values,	LPCSTR key,	LPVOID val, PropValue* v)
+    IC PropValue* 		InitFirst			(PropValueVec& values,	LPCSTR key,	LPVOID val, PropValue* v)
     {
-        pair<PropValuePairIt, bool> R;
-	 	R				= values.insert(make_pair(key,v));
-        if (!R.second)	Device.Fatal("PropValue: '%s' already exist.",key);
+    	R_ASSERT		(v);
+    	v->SetName		(key);
+    	values.push_back(v);
         v->InitFirst	(val);
         return v;
     }
-    IC PropValue* 		FindProp			(PropValueMap& values,	LPCSTR key)
+    IC PropValue* 		FindProp			(PropValueVec& values,	LPCSTR key)
     {
-    	PropValuePairIt	it = values.find(key); 
-        return (values.end()==it)?0:it->second;
+    	for (PropValueIt it=values.begin(); it!=values.end(); it++)
+        	if (0==strcmp((*it)->key,key)) return *it;
+        return 0;
     }
-    IC PropValue* 		InitNext			(PropValueMap& values,	LPCSTR key,	LPVOID val)
+    IC PropValue* 		InitNext			(PropValue* v, LPVOID val)
 	{
-        PropValue* v	= FindProp(values,key);
-        if (!v) Device.Fatal("PropValue: '%s' can't find in map.",key);
+    	R_ASSERT		(v);
         v->InitNext		(val);
         return v;
     }
 }
+#define FILL_PROP(A,K,V,P){PropValue* prop=PROP::FindProp(A,K); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,K,V,P);}
+#define FILL_PROP_EX(A,X,K,V,P){AnsiString XK=AnsiString(X)+"\\"+AnsiString(K); PropValue* prop=PROP::FindProp(A,XK.c_str()); if (prop) PROP::InitNext(prop,V); else PROP::InitFirst(A,XK.c_str(),V,P);}
 //---------------------------------------------------------------------------
 #endif
 

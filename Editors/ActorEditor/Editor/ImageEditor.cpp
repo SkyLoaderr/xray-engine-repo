@@ -10,6 +10,7 @@
 #include "FolderLib.h"
 #include "xr_tokens.h"
 #include "ui_main.h"
+#include "xr_ini.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -59,7 +60,8 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::CheckImageLib(){
+void __fastcall TfrmImageLib::CheckImageLib()
+{
 	texture_map.clear();
     int new_cnt = ImageManager.GetLocalNewTextures(texture_map);
     if (new_cnt){
@@ -80,7 +82,8 @@ void __fastcall TfrmImageLib::CheckImageLib(){
     }
 }
 
-void __fastcall TfrmImageLib::UpdateImageLib(){
+void __fastcall TfrmImageLib::UpdateImageLib()
+{
     SaveTextureParams();
     if (bCheckMode&&!texture_map.empty()){
     	LPSTRVec modif;
@@ -102,7 +105,8 @@ void __fastcall TfrmImageLib::UpdateImageLib(){
 	}
 }
 
-bool __fastcall TfrmImageLib::HideImageLib(){
+bool __fastcall TfrmImageLib::HideImageLib()
+{
 	if (form){
     	form->Close();
     	texture_map.clear();
@@ -171,7 +175,7 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE){
-		if (bFormLocked) 	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+		if (bFormLocked)   	UI.Command(COMMAND_BREAK_LAST_OPERATION);
         else				ebClose->Click();
         Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
     }
@@ -237,39 +241,11 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
                 }
             }
             lbInfo->Caption			= temp;
-            // set UI
-            STextureParams& fmt 	= m_Thm->_Format();
 
-            char key[255];
-            TElTreeItem* M=0;
-/*
-//p            
-            ImageProps->BeginFillMode	("Image properties");
-            ImageProps->AddTokenItem	(0,"Format",(LPDWORD)&fmt.fmt,tfmt_token);
-            M=ImageProps->AddMarkerItem	(0,"MipMaps")->item;
-            ImageProps->AddFlagItem		(M,"Enabled",		&fmt.flag,STextureParams::flGenerateMipMaps);
-            ImageProps->AddTokenItem	(M,"Filter",		(LPDWORD)&fmt.mip_filter,tparam_token);
-            M=ImageProps->AddMarkerItem	(0,"Fade")->item;
-            ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flFadeToColor);
-            ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flFadeToAlpha);
-            ImageProps->AddDWORDItem	(M,"Amount",		&fmt.fade_amount,1000,1);
-            ImageProps->AddColorItem	(M,"Color",			&fmt.fade_color);
-            M=ImageProps->AddMarkerItem	(0,"Border")->item;
-            ImageProps->AddFlagItem		(M,"Color Enabled",	&fmt.flag,STextureParams::flColorBorder);
-            ImageProps->AddFlagItem		(M,"Alpha Enabled",	&fmt.flag,STextureParams::flAlphaBorder);
-            ImageProps->AddColorItem	(M,"Color",			&fmt.border_color);
-            M=ImageProps->AddMarkerItem	(0,"Type")->item;
-            ImageProps->AddFlagItem		(M,"Cube Map",		&fmt.flag,STextureParams::flCubeMap);
-            ImageProps->AddFlagItem		(M,"Normal Map",	&fmt.flag,STextureParams::flNormalMap);
-            ImageProps->AddFlagItem		(M,"Du Dv Map",		&fmt.flag,STextureParams::flDuDvMap);
-            M=ImageProps->AddMarkerItem	(0,"Flags")->item;
-            ImageProps->AddFlagItem		(M,"Grayscale",		&fmt.flag,STextureParams::flGreyScale);
-            ImageProps->AddFlagItem		(M,"Binary Alpha",	&fmt.flag,STextureParams::flBinaryAlpha);
-            ImageProps->AddFlagItem		(M,"Dither",		&fmt.flag,STextureParams::flDitherColor);
-            ImageProps->AddFlagItem		(M,"Dither Each MIP",&fmt.flag,STextureParams::flDitherEachMIPLevel);
-            ImageProps->AddFlagItem		(M,"Implicit Lighted",&fmt.flag,STextureParams::flImplicitLighted);
-            ImageProps->EndFillMode		();
-*/
+		    PropValueVec values;
+            m_Thm->FillProp(values);
+            ImageProps->AssignValues(values,true);
+
             m_LastSelection = m_SelectedName;
         }
     }else{
@@ -278,6 +254,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
         m_SelectedName = "";
 		lbFileName->Caption	= "...";
 		lbInfo->Caption		= "...";
+       	pbImage->Repaint();
     }
 }
 //---------------------------------------------------------------------------
@@ -352,4 +329,39 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmImageLib::ebAssociationClick(TObject *Sender)
+{
+    // save previous data
+    SaveTextureParams();
+    
+	AnsiString nm = "textures.ltx";
+    Engine.FS.m_GameTextures.Update(nm);
+	CInifile* ini = new CInifile(nm.c_str(), FALSE, FALSE, TRUE);
+
+	LockForm();
+    
+    string256 fn;
+    FilePairIt it=texture_map.begin();
+    FilePairIt _E=texture_map.end();
+    UI.ProgressStart(texture_map.size(),"Export assosiation");
+    bool bRes=true;
+    for (;it!=_E; it++){
+        EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture,true,false);
+	    UI.ProgressInc(it->first.c_str());
+        if (m_Thm->Valid()&&(m_Thm->_Format().flag&STextureParams::flHasDetailTexture)){
+        	AnsiString tmp;
+            tmp.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);
+	    	ini->WriteString("assosiation", it->first.c_str(), tmp.c_str());
+        }
+        _DELETE(m_Thm);
+		if (UI.NeedAbort()){ bRes=false; break; }
+    }
+    UI.ProgressEnd();
+
+	UnlockForm();
+
+    if (!bRes) ini->bSaveAtEnd = false;
+	_DELETE(ini);    
+}
+//---------------------------------------------------------------------------
 

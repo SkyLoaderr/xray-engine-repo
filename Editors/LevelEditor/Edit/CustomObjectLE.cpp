@@ -195,4 +195,10 @@ void CCustomObject::Scale( Fvector& amount )
     PScale		= s;
 }
 
+bool CCustomObject::FillProp(PropValueVec& values)
+{
+	FILL_PROP(values, "Name",	FName,	PROP::CreateTextValue	(sizeof(FName),Scene.OnObjectNameAfterEdit));
+    return true;
+}
+//----------------------------------------------------
 

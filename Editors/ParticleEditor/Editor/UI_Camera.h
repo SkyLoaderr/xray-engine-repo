@@ -38,6 +38,11 @@ public:
 					CUI_Camera	();
     virtual			~CUI_Camera	();
 
+	IC float 		_Aspect		(){return m_Aspect;}
+	IC float 		_FOV		(){return m_FOV;}
+	IC float 		_Znear		(){return m_Znear;}
+	IC float 		_Zfar		(){return m_Zfar;}
+
 	void			BuildCamera	();
 	void			Reset		();
     void 			Update		(float dt);

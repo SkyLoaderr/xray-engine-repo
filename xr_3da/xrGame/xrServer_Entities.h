@@ -65,8 +65,6 @@ public:
 	void					Spawn_Read		(NET_Packet& P);
 
 	// editor integration
-	virtual void			P_Write			(CFS_Base& FS);
-	virtual void			P_Read			(CStream& FS);
 #ifdef _EDITOR
     virtual void			FillProp		(PropValueVec& values);
 #endif

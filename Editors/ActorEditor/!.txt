@@ -590,18 +590,22 @@ General:
 --------------------------------------------------------------------------------
 Level:
 --------------------------------------------------------------------------------
-- builder LTX 	- группы!!!
-- builder Game  - тоже!!!
-- DO - engine render 
-- Scene load per object progress
-- удаление WayPoint
-- PropList: AddItem через Type
-- PropList: PropRead, PropWrite
-- Library access witout clear
-- FindObjectByName не использовать с классом
++ Render bug Lines
++ Scene load per object progress
++ удаление WayPoint
+- Library access without clear
++ Image Library access without clear
+- Export Tex Assos
 - Cancel ImageEditor вернуть текстуры
-- Render bug Lines
+- осветить хемисферой лод
+- на спавнпоинтах рисовать иконки
+- DO - engine render 
+- FindObjectByName не использовать с классом
 - Render на расстоянии боксами
++ builder LTX 	- группы!!!
++ builder Game  - тоже!!!
++ PropList: AddItem через Type
++ PropList: FillProp
 
 - осветить DO
 - sound library
@@ -609,11 +613,11 @@ Level:
 - мигалки
 	+ библиотека
 	- назначить лайту и отыграть
-    - экспорт в игру
+    +-экспорт в игру
 - сортировать в EditObj Props по имени, текстуре ...
 - Update Textures (reload) (только детайл)
 - всунуть DO как объект сцены
-- variable flares count
+--variable flares count
 + загрузить без детальной текстуры
 + ubrat' state esEditImages
 + импорт текстур

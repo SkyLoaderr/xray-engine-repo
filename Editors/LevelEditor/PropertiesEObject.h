@@ -63,8 +63,8 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
 private:	// User declarations
-    TProperties* 	m_Basic;
-    TProperties* 	m_Surfaces;
+    TProperties* 	m_BasicProp;
+    TProperties* 	m_SurfProp;
     bool			bModified;
     TOnModifiedEvent OnModifiedEvent;
     void __fastcall	OnSurfaceFocused	   	(TElTreeItem* item);
@@ -87,7 +87,7 @@ public:		// User declarations
 	void 			UpdateProperties		(CSceneObject* S);
     void			ShowProperties			(){Show();}
     void			HideProperties			(){Hide();}
-    bool __fastcall IsModified				(){return (m_Basic->IsModified()||m_Surfaces->IsModified());}
+    bool __fastcall IsModified				(){return (m_BasicProp->IsModified()||m_SurfProp->IsModified());}
 	void __fastcall OnPick					(const SRayPickInfo& pinf);
 };
 //---------------------------------------------------------------------------

@@ -185,16 +185,15 @@ void __fastcall TfrmEditLightAnim::NameOnDraw(PropValue* sender, LPVOID draw_val
 void TfrmEditLightAnim::GetItemData()
 {
 	if (m_CurrentItem){
-    	m_Props->BeginFillMode	();
-/*
-//p
-        m_Props->AddTextItem	(0,"Name",			m_CurrentItem->cName,sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw);
-        m_Props->AddFloatItem	(0,"FPS",			&m_CurrentItem->fFPS,0.1f,1000,1.f,1);
-        m_Props->AddIntItem		(0,"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-    	m_Props->EndFillMode	();
-*/
-        UpdateView				();
+    	PropValueVec values;
+        FILL_PROP(values,	"Name",			m_CurrentItem->cName,		PROP::CreateTextValue	(sizeof(m_CurrentItem->cName),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        FILL_PROP(values,	"FPS",			&m_CurrentItem->fFPS,		PROP::CreateFloatValue	(0.1f,1000,1.f,1));
+        FILL_PROP(values,	"Frame Count",	&m_CurrentItem->iFrameCount,PROP::CreateIntValue	(1,100000,1));
+    	m_Props->AssignValues(values,true);
+    }else{
+    	m_Props->ClearProperties();
     }
+    UpdateView();
 }
 //---------------------------------------------------------------------------
 
@@ -462,33 +461,6 @@ void __fastcall TfrmEditLightAnim::Rename1Click(TObject *Sender)
 void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
       TObject *Sender, bool &InputValid)
 {
-/*
-	TElTreeInplaceAdvancedEdit* IE=InplaceParticleEdit;
-
-    AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text = new_text;
-
-    TElTreeItem* node = IE->Item;
-    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
-        if ((item->Text==new_text)&&(item!=IE->Item)){
-            InputValid = false;
-            return;
-        }
-    }
-    AnsiString full_name;
-    if (FOLDER::IsFolder(node)){
-        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FOLDER::IsObject(item)){
-                FOLDER::MakeName(item,0,full_name,false);
-                Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
-            }
-        }
-    }else if (FOLDER::IsObject(node)){
-        FOLDER::MakeName(node,0,full_name,false);
-        Tools.RenameMotion(full_name.c_str(),new_text.c_str());//,node->Level);
-    }
-	Tools.MotionModified();
-*/
 	TElTreeInplaceAdvancedEdit* IE=0;
     IE=InplaceTextEdit;
 

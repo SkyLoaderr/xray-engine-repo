@@ -140,18 +140,16 @@ CEditableObject* ELibrary::CreateEditObject(LPCSTR nm,int* age)
 	VERIFY(m_bReady);
     R_ASSERT(nm&&nm[0]);
     string1024 name; strcpy(name,nm); strlwr(name);
+    UI.ProgressInfo(name);
     CEditableObject* m_EditObject = 0;
     FilePairIt p_it = m_Objects.find(name);
     if (p_it==m_Objects.end()) return 0;
-    UI.ProgressStart(2,"Object loading...");
-    UI.ProgressInc();
     if (age) *age = p_it->second;
 	EditObjPairIt it = m_EditObjects.find(name);
     if (it!=m_EditObjects.end())	m_EditObject = it->second;
     else if (m_EditObject=LoadEditObject(name,p_it->second))
 		m_EditObjects[name] = m_EditObject;
 	if (m_EditObject) m_EditObject->m_RefCount++;
-    UI.ProgressEnd();
 	return m_EditObject;
 }
 //---------------------------------------------------------------------------

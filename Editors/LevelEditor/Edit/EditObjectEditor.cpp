@@ -117,13 +117,6 @@ void CEditableObject::RenderSingle(const Fmatrix& parent)
 		Render(parent, i, false);
 		Render(parent, i, true);
     }
-/*
-    Device.SetTransform(D3DTS_WORLD,parent);
-	Fvector offs, size;
-	m_Box.get_CD(offs,size);
-	Device.SetShader(Device.m_WireShader);
-	DU::DrawBox(offs,size,true,0xFFFFFFFF);
-*/
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){

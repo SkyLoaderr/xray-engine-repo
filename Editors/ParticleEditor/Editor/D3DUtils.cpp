@@ -497,8 +497,7 @@ void DrawAxis(const Fmatrix& T){
 
     for (int i=0; i<6; i++,pv++){
 	    pv->color = c[i]; pv->transform(p[i],Device.mFullTransform);
-	    pv->p.x	= Device._x2real(pv->p.x)+dx;
-        pv->p.y	= Device._y2real(pv->p.y)+dy;
+	    pv->p.set(iFloor(Device._x2real(pv->p.x)+dx),iFloor(Device._y2real(pv->p.y)+dy),0,1);
         p[i].set(pv->p.x,pv->p.y,0);
     }
 
@@ -509,17 +508,19 @@ void DrawAxis(const Fmatrix& T){
     Device.DP(D3DPT_LINELIST,vs_TL,vBase,3);
 	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    Device.pHUDFont->Color(0xFF000000);
+    Device.pHUDFont->Color(0xFF909090);
     Device.pHUDFont->Out(p[1].x,p[1].y,"x");
     Device.pHUDFont->Out(p[3].x,p[3].y,"y");
     Device.pHUDFont->Out(p[5].x,p[5].y,"z");
+    Device.pHUDFont->Color(0xFF000000);
+    Device.pHUDFont->Out(p[1].x-1,p[1].y-1,"x");
+    Device.pHUDFont->Out(p[3].x-1,p[3].y-1,"y");
+    Device.pHUDFont->Out(p[5].x-1,p[5].y-1,"z");
 }
 
 void DrawObjectAxis(const Fmatrix& T){
 	VERIFY( Device.bReady );
-
-    Fvector c,d,n,r;
-
+    Fvector c,r,n,d;
 	float w	= T.c.x*Device.mFullTransform._14 + T.c.y*Device.mFullTransform._24 + T.c.z*Device.mFullTransform._34 + Device.mFullTransform._44;
     if (w<0) return; // culling
 
@@ -528,31 +529,35 @@ void DrawObjectAxis(const Fmatrix& T){
     r.mul(T.i,s); r.add(T.c); 	Device.mFullTransform.transform(r);
     n.mul(T.j,s); n.add(T.c); 	Device.mFullTransform.transform(n);
     d.mul(T.k,s); d.add(T.c); 	Device.mFullTransform.transform(d);
-	c.x = Device._x2real(c.x); c.y = Device._y2real(-c.y);
-    r.x = Device._x2real(r.x); r.y = Device._y2real(-r.y);
-    n.x = Device._x2real(n.x); n.y = Device._y2real(-n.y);
-    d.x = Device._x2real(d.x); d.y = Device._y2real(-d.y);
+	c.x = iFloor(Device._x2real(c.x)); c.y = iFloor(Device._y2real(-c.y));
+    r.x = iFloor(Device._x2real(r.x)); r.y = iFloor(Device._y2real(-r.y));
+    n.x = iFloor(Device._x2real(n.x)); n.y = iFloor(Device._y2real(-n.y));
+    d.x = iFloor(Device._x2real(d.x)); d.y = iFloor(Device._y2real(-d.y));
 
     DWORD vBase;      
 	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
-	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
-	pv->p.x	= d.x; pv->p.y = d.y; pv->color=0x000000FF; pv++;
-	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
-	pv->p.x	= r.x; pv->p.y = r.y; pv->color=0x00FF0000; pv++;
-	pv->p.x	= c.x; pv->p.y = c.y; pv->color=0x00222222; pv++;
-	pv->p.x	= n.x; pv->p.y = n.y; pv->color=0x0000FF00;
-
-	// unlock VB and Render it as triangle list
+	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
+	pv->p.set(d.x,d.y,0,1); pv->color=0xFF0000FF; pv++;
+	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
+	pv->p.set(r.x,r.y,0,1); pv->color=0xFFFF0000; pv++;
+	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
+	pv->p.set(n.x,n.y,0,1); pv->color=0xFF00FF00;
 	Device.Streams.Vertex.Unlock(6,vs_TL->dwStride);
-	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
-	Device.SetShader(Device.m_WireShader);
-    Device.DP(D3DPT_LINELIST,vs_TL,vBase,3);
-	Device.SetRS(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    Device.pHUDFont->Color(0xFF000000);
+	// Render it as line list
+	Device.SetRS	(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
+	Device.SetShader(Device.m_WireShader);
+    Device.DP		(D3DPT_LINELIST,vs_TL,vBase,3);
+	Device.SetRS	(D3DRS_SHADEMODE,Device.dwShadeMode);
+
+    Device.pHUDFont->Color(0xFF909090);
     Device.pHUDFont->Out(r.x,r.y,"x");
     Device.pHUDFont->Out(n.x,n.y,"y");
     Device.pHUDFont->Out(d.x,d.y,"z");
+    Device.pHUDFont->Color(0xFF000000);
+    Device.pHUDFont->Out(r.x-1,r.y-1,"x");
+    Device.pHUDFont->Out(n.x-1,n.y-1,"y");
+    Device.pHUDFont->Out(d.x-1,d.y-1,"z");
 }
 
 void DrawGrid(){
@@ -573,10 +578,10 @@ void DrawSelectionRect(const Ipoint& m_SelStart, const Ipoint& m_SelEnd){
 	// fill VB
     DWORD vBase;
 	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,vs_TL->dwStride,vBase);
-    pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelStart.y*Device.m_ScreenQuality, 0,0,m_SelectionRect,0,0); pv++;
-    pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelEnd.y*Device.m_ScreenQuality,   0,0,m_SelectionRect,0,0); pv++;
-    pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelEnd.y*Device.m_ScreenQuality,   0,0,m_SelectionRect,0,0); pv++;
-    pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelStart.y*Device.m_ScreenQuality, 0,0,m_SelectionRect,0,0); pv++;
+    pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelStart.y*Device.m_ScreenQuality, m_SelectionRect,0.f,0.f); pv++;
+    pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelEnd.y*Device.m_ScreenQuality,   m_SelectionRect,0.f,0.f); pv++;
+    pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelEnd.y*Device.m_ScreenQuality,   m_SelectionRect,0.f,0.f); pv++;
+    pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelStart.y*Device.m_ScreenQuality, m_SelectionRect,0.f,0.f); pv++;
 	Device.Streams.Vertex.Unlock(4,vs_TL->dwStride);
 	// Render it as triangle list
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
@@ -602,15 +607,15 @@ void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, D
 void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle){
 	// fill VB
 	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
-	FVF::TL* 	pv	= (FVF::TL*)Device.Streams.Vertex.Lock(dwNeed,vs_TL->dwStride,vBase);
+	FVF::TL* pv		= (FVF::TL*)Device.Streams.Vertex.Lock(dwNeed,vs_TL->dwStride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k]);
     if (bCycle)		pv->set(*(pv-vc));
 	Device.Streams.Vertex.Unlock(dwNeed,vs_TL->dwStride);
 
-    if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+    if (!bCull) 	Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     Device.DP		(pt,vs_TL,vBase,pc);
-    if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+    if (!bCull) 	Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
 void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle){
@@ -644,6 +649,9 @@ void DrawLink(const Fvector& p0, const Fvector& p1, float sz, DWORD clr){
 	pp[1].add(N,D); pp[1].mul(sz*-0.5f);	pp[1].add(p1);
     DrawLine(p1,pp[0],clr);
     DrawLine(p1,pp[1],clr);
+}
+
+void OnRender(){
 }
 
 }// namespace

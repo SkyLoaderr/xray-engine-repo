@@ -161,10 +161,11 @@ public:
     EEditorState 	GetEState			(){ return m_EditorState.back(); }
     bool 			ContainEState		(EEditorState st){ return find(m_EditorState.begin(),m_EditorState.end(),st)!=m_EditorState.end(); }
 
+	void 			ProgressInfo		(const char* text);
 	void 			ProgressStart		(float max_val, const char* text);
 	void 			ProgressEnd			();
 	void 			ProgressUpdate		(float val);
-    void 			ProgressInc			();
+    void 			ProgressInc			(const char* info=0);
 
     void 			OutCameraPos		();
     void 			SetStatus			(LPSTR s);

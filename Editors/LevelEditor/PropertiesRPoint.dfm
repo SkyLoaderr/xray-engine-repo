@@ -18,7 +18,6 @@ object frmPropertiesSpawnPoint: TfrmPropertiesSpawnPoint
   Position = poScreenCenter
   Scaled = False
   OnClose = FormClose
-  OnDestroy = FormDestroy
   OnKeyDown = FormKeyDown
   OnShow = FormShow
   PixelsPerInch = 96

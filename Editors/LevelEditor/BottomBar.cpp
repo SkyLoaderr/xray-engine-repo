@@ -20,8 +20,17 @@ void TUI::SetStatus(LPSTR s){
 	VERIFY(m_bReady);
     fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
 }
-void TUI::ProgressStart(float max_val, const char* text){
+void TUI::ProgressInfo(LPCSTR text)
+{
+	if (text){
+		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
+    	fraBottomBar->paStatus->Repaint();
+    }
+}                                                           
+void TUI::ProgressStart(float max_val, const char* text)
+{
 	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = text;
 	fraBottomBar->paStatus->Caption=text;
     fraBottomBar->paStatus->Repaint();
 	fraBottomBar->fMaxVal=max_val;
@@ -31,6 +40,7 @@ void TUI::ProgressStart(float max_val, const char* text){
 }
 void TUI::ProgressEnd(){
 	VERIFY(m_bReady);
+    fraBottomBar->sProgressTitle = "";
 	fraBottomBar->paStatus->Caption="";
     fraBottomBar->paStatus->Repaint();
 	fraBottomBar->cgProgress->Visible=false;
@@ -46,8 +56,9 @@ void TUI::ProgressUpdate(float val){
         }
     }
 }
-void TUI::ProgressInc(){
+void TUI::ProgressInc(const char* info){
 	VERIFY(m_bReady);
+    ProgressInfo(info);
 	fraBottomBar->fStatusProgress++;
     if (fraBottomBar->fMaxVal>=0){
     	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);

@@ -30,8 +30,11 @@ void Log	(const char *msg, int  			dop){ ELog.Msg(mtInformation,"%s%d",msg,dop);
 void Log	(const char *msg, float			dop){ ELog.Msg(mtInformation,"%s%f",msg,dop); }
 void Log	(const char *msg, const Fvector& dop){ ELog.Msg(mtInformation,"%s [%f,%f,%f]",msg,dop.x,dop.y,dop.z); }
 void Log	(const char *msg, const Fmatrix& dop){
-	ELog.Msg(mtInformation,"%s [%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n",msg,
-	dop.i.x,dop.i.y,dop.i.z,dop._14_, dop.k.x,dop.k.y,dop.k.z,dop._34_,dop.c.x,dop.c.y,dop.c.z,dop._44_);
+	ELog.Msg(mtInformation,"%s\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n[%f,%f,%f,%f]\n",msg
+																				,dop.i.x,dop.i.y,dop.i.z,dop._14_
+																				,dop.j.x,dop.j.y,dop.j.z,dop._24_
+																				,dop.k.x,dop.k.y,dop.k.z,dop._34_
+																				,dop.c.x,dop.c.y,dop.c.z,dop._44_);
 }
 
 void __cdecl Msg	(LPCSTR format, ...){

@@ -100,8 +100,7 @@
       intermediate\_math.obj intermediate\xrSkin1W.obj 
       intermediate\ExportObjectOGF.obj intermediate\SoundManager.obj 
       intermediate\tga.obj intermediate\xrServer_Entities.obj 
-      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj 
-      intermediate\xrServer_Entities_ed.obj"/>
+      intermediate\SpawnPoint.obj intermediate\PropertiesListTypes.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -152,7 +151,7 @@
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mx /w2 /zi"/>
-    <LFLAGS value="-Iintermediate -D&quot;&quot; -aa -Tpe -GD -x -v"/>
+    <LFLAGS value="-Iintermediate -D&quot;&quot; -E1 -aa -Tpe -GD -x -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -383,7 +382,6 @@
       <FILE FILENAME="PropertiesListTypes.h" FORMNAME="" UNITNAME="PropertiesListTypes.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="lib\xrHemisphere.lib" FORMNAME="" UNITNAME="xrHemisphere.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Game\xrServer_Entities_ed.cpp" FORMNAME="" UNITNAME="xrServer_Entities_ed" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -395,7 +393,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=419
+Build=421
 Debug=1
 PreRelease=0
 Special=0
@@ -407,7 +405,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.419
+FileVersion=1.0.1.421
 InternalName=
 LegalCopyright=
 LegalTrademarks=

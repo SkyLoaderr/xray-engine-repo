@@ -265,27 +265,50 @@ void CLight::Save(CFS_Base& F){
 }
 //----------------------------------------------------
 
-bool CLight::FillProp(PropValueMap& values, bool bFirstInit)
+bool CLight::FillProp(PropValueVec& values)
 {
-	if (bFirstInit){
-	    PROP::InitFirst	(values,"Name", 			FName,			PROP::CreateTextValue	(sizeof(FName), Scene.OnObjectNameAfterEdit));
-    	PROP::InitFirst	(values,"Diffuse",			&m_D3D.diffuse,	PROP::CreateColorValue	());
-	    PROP::InitFirst	(values,"Brightness",		&m_Brightness,	PROP::CreateFloatValue	(-3.f,3.f,0.1f,2));
-    	PROP::InitFirst	(values,"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOLValue	());
-    	PROP::InitFirst	(values,"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectStatic));
-	    PROP::InitFirst	(values,"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectDynamic));
-    	PROP::InitFirst	(values,"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flProcedural));
-    	PROP::InitFirst	(values,"Flags\\Breaking",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flBreaking));
-    }else{
-	    PROP::InitNext	(values,"Name", 			FName			);
-    	PROP::InitNext	(values,"Diffuse",			&m_D3D.diffuse	);
-	    PROP::InitNext	(values,"Brightness",		&m_Brightness	);
-    	PROP::InitNext	(values,"Use In D3D",		&m_UseInD3D		);
-    	PROP::InitNext	(values,"Usage\\LightMap",	&m_dwFlags		);
-	    PROP::InitNext	(values,"Usage\\Dynamic",	&m_dwFlags		);
-    	PROP::InitNext	(values,"Usage\\Animated",	&m_dwFlags		);
-    	PROP::InitNext	(values,"Flags\\Breaking",	&m_dwFlags		);
-    }
+	inherited::FillProp(values);
+	FILL_PROP(values,	"Color",			&m_D3D.diffuse,	PROP::CreateFColorValue	());
+	FILL_PROP(values,	"Brightness",		&m_Brightness,	PROP::CreateFloatValue	(-3.f,3.f,0.1f,2));
+	FILL_PROP(values,	"Use In D3D",		&m_UseInD3D,	PROP::CreateBOOLValue	());
+	FILL_PROP(values,	"Usage\\LightMap",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectStatic));
+	FILL_PROP(values,	"Usage\\Dynamic",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flAffectDynamic));
+	FILL_PROP(values,	"Usage\\Animated",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flProcedural));
+	FILL_PROP(values,	"Flags\\Breakable",	&m_dwFlags,		PROP::CreateFlagValue	(CLight::flBreaking));
+    return true;
+}
+//----------------------------------------------------
+
+bool CLight::FillSunProp	(PropValueVec& values)
+{
+	CEditFlare& F 		= m_LensFlare;
+	FILL_PROP(values,	"Source\\Enabled",	&F.m_dwFlags,			PROP::CreateFlagValue	(CEditFlare::flSource));
+	FILL_PROP(values,	"Source\\Radius",	&F.m_Source.fRadius,	PROP::CreateFloatValue	(0.f,10.f));
+	FILL_PROP(values,	"Source\\Texture",	F.m_Source.texture,		PROP::CreateTextureValue(sizeof(F.m_Source.texture)));
+
+	FILL_PROP(values,	"Gradient\\Enabled",&F.m_dwFlags,			PROP::CreateFlagValue	(CEditFlare::flGradient));
+	FILL_PROP(values,	"Gradient\\Radius",	&F.m_Gradient.fRadius,	PROP::CreateFloatValue	(0.f,100.f));
+	FILL_PROP(values,	"Gradient\\Opacity",&F.m_Gradient.fOpacity,	PROP::CreateFloatValue	(0.f,1.f));
+	FILL_PROP(values,	"Gradient\\Texture",F.m_Gradient.texture,	PROP::CreateTextureValue(sizeof(F.m_Gradient.texture)));
+
+	FILL_PROP(values,	"Flares\\Enabled",	&F.m_dwFlags,			PROP::CreateFlagValue	(CEditFlare::flFlare));
+	for (CEditFlare::FlareIt it=F.m_Flares.begin(); it!=F.m_Flares.end(); it++){
+		AnsiString nm; nm.sprintf("Flares\\Flare %d",it-F.m_Flares.begin());
+		FILL_PROP(values,	AnsiString(nm+"\\Radius").c_str(),  &it->fRadius,	PROP::CreateFloatValue	(0.f,10.f));
+		FILL_PROP(values,	AnsiString(nm+"\\Opacity").c_str(),	&it->fOpacity,	PROP::CreateFloatValue	(0.f,1.f));
+		FILL_PROP(values,	AnsiString(nm+"\\Position").c_str(),&it->fPosition,	PROP::CreateFloatValue	(-10.f,10.f));
+		FILL_PROP(values,	AnsiString(nm+"\\Texture").c_str(),	it->texture,	PROP::CreateTextureValue(sizeof(it->texture)));
+	}
+    return true;
+}
+//----------------------------------------------------
+
+bool CLight::FillPointProp(PropValueVec& values)
+{
+	FILL_PROP(values,	"Range",					&m_D3D.range,			PROP::CreateFloatValue	(0.f,1000.f));
+	FILL_PROP(values,	"Attenuation\\Constant",	&m_D3D.attenuation0,	PROP::CreateFloatValue	(0.f,1.f,0.0001f,6));
+	FILL_PROP(values,	"Attenuation\\Linear",		&m_D3D.attenuation1,	PROP::CreateFloatValue	(0.f,1.f,0.0001f,6));
+	FILL_PROP(values,	"Attenuation\\Quadratic",	&m_D3D.attenuation2,	PROP::CreateFloatValue	(0.f,1.f,0.0001f,6));
     return true;
 }
 //----------------------------------------------------

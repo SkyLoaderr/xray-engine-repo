@@ -58,6 +58,7 @@ private:
 	LPSTR		fName;
 	Root		DATA;
 	BOOL		bReadOnly;
+public:
     BOOL		bSaveAtEnd;
 public:
 				CInifile		( LPCSTR szFileName, BOOL ReadOnly=TRUE, BOOL bLoadAtStart=TRUE, BOOL SaveAtEnd=TRUE);

@@ -23,38 +23,55 @@ __fastcall TfrmPropertiesSpawnPoint::TfrmPropertiesSpawnPoint(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-void TfrmPropertiesSpawnPoint::GetObjectInfo()
+void TfrmPropertiesSpawnPoint::GetObjectsInfo()
 {
-    m_Props->BeginFillMode();
-    TElTreeItem* M=0;
-//	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
-//p	m_Props->AddTextItem	(0,"Name",		m_SPObject->FName,sizeof(m_SPObject->FName),Scene.OnObjectNameAfterEdit);
-//    m_SPObject->PropWrite(m_SPData);
-//    CStream F(m_SPData.pointer(),m_SPData.size());
-//    m_Props->AddItems	(M,F);
-    m_Props->EndFillMode();
+	VERIFY( !m_Objects->empty() );
+
+	ObjectIt _F = m_Objects->begin();
+	CSpawnPoint *P 		= dynamic_cast<CSpawnPoint*>(*_F); R_ASSERT(P);
+
+    PropValueVec values;
+    P->FillProp	(values);
+
+    if (m_Objects->size()>1){
+		PropValue* V 	= PROP::FindProp(values,"Name"); R_ASSERT(V);
+        V->bEnabled		= false;
+    }
+
+	_F++;
+	for(;_F!=m_Objects->end();_F++){
+		P 				= dynamic_cast<CSpawnPoint*>(*_F); R_ASSERT(P);
+        P->FillProp		(values);
+	}
+	m_Props->AssignValues(values,true);
 }
 //---------------------------------------------------------------------------
 
-bool TfrmPropertiesSpawnPoint::ApplyObjectInfo(){
-    CStream F(m_SPData.pointer(),m_SPData.size());
-//    m_SPObject->PropRead(F);
-    return true;
+bool TfrmPropertiesSpawnPoint::ApplyObjectsInfo()
+{
+	return true;
+}
+//---------------------------------------------------------------------------
+
+void TfrmPropertiesSpawnPoint::CancelObjectsInfo()
+{
+	m_Props->ResetValues();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSpawnPoint::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-//	if (Key==VK_ESCAPE) ebCancel->Click();
-//	if (Key==VK_RETURN) ebOk->Click();
+	if (m_Props->IsFocused()) return;
+	if (Key==VK_ESCAPE) ebCancel->Click();
+	if (Key==VK_RETURN) ebOk->Click();
 }
 
 //----------------------------------------------------
 void __fastcall TfrmPropertiesSpawnPoint::FormShow(TObject *Sender)
 {
     ebOk->Enabled       = false;
-    GetObjectInfo		();
+    GetObjectsInfo		();
 }
 //---------------------------------------------------------------------------
 
@@ -66,15 +83,12 @@ void __fastcall TfrmPropertiesSpawnPoint::OnModified()
 
 void __fastcall TfrmPropertiesSpawnPoint::ebOkClick(TObject *Sender)
 {
-    if (!ApplyObjectInfo()) return;
-    Close();
     ModalResult = mrOk;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesSpawnPoint::ebCancelClick(TObject *Sender)
 {
-    Close();
     ModalResult = mrCancel;
 }
 //---------------------------------------------------------------------------
@@ -83,13 +97,9 @@ void __fastcall TfrmPropertiesSpawnPoint::ebCancelClick(TObject *Sender)
 int __fastcall TfrmPropertiesSpawnPoint::Run(ObjectList* pObjects, bool& bChange)
 {
 	VERIFY(!TfrmPropertiesSpawnPoint::form);
-    if (pObjects->size()>1){
-    	ELog.DlgMsg(mtError,"Unsupport multiple selection.");
-    	return mrCancel;
-    }
+    VERIFY(pObjects);
 	form = new TfrmPropertiesSpawnPoint(0);
-    form->m_SPObject = (CSpawnPoint*)pObjects->front();
-    VERIFY(form->m_SPObject);
+    form->m_Objects = pObjects;
     int res = form->ShowModal();
     bChange = (res==mrOk);
     return res;
@@ -98,6 +108,14 @@ int __fastcall TfrmPropertiesSpawnPoint::Run(ObjectList* pObjects, bool& bChange
 void __fastcall TfrmPropertiesSpawnPoint::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+    switch (ModalResult){
+    case mrOk: 		ApplyObjectsInfo();		break;
+    case mrCancel: 	CancelObjectsInfo();	break;
+    default: THROW2("Invalid case");
+    }
+	TProperties::DestroyForm(m_Props);
+
+	// free resources
 	Action = caFree;
     form = 0;
 }
@@ -117,9 +135,4 @@ void __fastcall TfrmPropertiesSpawnPoint::fsStorageSavePlacement(
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesSpawnPoint::FormDestroy(TObject *Sender)
-{
-	TProperties::DestroyForm(m_Props);
-}
-//---------------------------------------------------------------------------
 

@@ -42,7 +42,6 @@ const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
 //---------------------------------------------------------------------------
 TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 {
-	iFillMode++;
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
     if (section) return FOLDER::FindFolder(tvProperties,section);
@@ -52,7 +51,6 @@ TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 
 void __fastcall TProperties::EndEditMode(TElTreeItem* expand_node)
 {
-	iFillMode--;
 	if (expand_node) expand_node->Expand(true);
     tvProperties->IsUpdating = false;
 }
@@ -60,7 +58,6 @@ void __fastcall TProperties::EndEditMode(TElTreeItem* expand_node)
 
 void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
-	iFillMode++;
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
     if (section){
@@ -80,11 +77,11 @@ void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR secti
 //---------------------------------------------------------------------------
 void __fastcall TProperties::EndFillMode(bool bFullExpand)
 {
-	iFillMode--;
     bModified=false;
+    // end fill mode
 	if (bFullExpand) tvProperties->FullExpand();
-    tvProperties->IsUpdating = false;
-    tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
+    tvProperties->IsUpdating 	= false;
+    FOLDER::RestoreSelection	(tvProperties,last_selected_item.c_str());
 };
 //---------------------------------------------------------------------------
 void TProperties::ClearParams(TElTreeItem* node)
@@ -105,16 +102,16 @@ void TProperties::ClearParams(TElTreeItem* node)
 		}
 */
     }else{
-	    for (PropValuePairIt it=m_Values.begin(); it!=m_Values.end(); it++)
-    		_DELETE	(it->second);
+	    for (PropValueIt it=m_Values.begin(); it!=m_Values.end(); it++)
+    		_DELETE	(*it);
 		m_Values.clear();
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TProperties::ResetValues()
 {
-    for (PropValuePairIt it=m_Values.begin(); it!=m_Values.end(); it++)
-        it->second->ResetValue();
+    for (PropValueIt it=m_Values.begin(); it!=m_Values.end(); it++)
+        (*it)->ResetValue();
 }
 //---------------------------------------------------------------------------
 void __fastcall TProperties::ClearProperties()
@@ -130,7 +127,6 @@ __fastcall TProperties::TProperties(TComponent* Owner)
 	: TForm(Owner)
 {
 	bModified 		= false;
-	iFillMode 		= 0;
     DEFINE_INI		(fsStorage);
 	m_BMCheck 		= new Graphics::TBitmap();
     m_BMDot 		= new Graphics::TBitmap();
@@ -161,6 +157,9 @@ TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModif
 void TProperties::DestroyForm(TProperties*& props)
 {
 	VERIFY(props);
+	// apply edit controls
+	props->ApplyEditControl();
+    // destroy forms
 	props->ClearProperties();
 	props->Close();
     _DELETE(props);
@@ -230,7 +229,7 @@ void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
 */
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::AssignValues(PropValueMap& values, bool full_expand)
+void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand, const AnsiString& title)
 {
 	R_ASSERT(!values.empty());
 	// begin fill mode
@@ -243,9 +242,9 @@ void __fastcall TProperties::AssignValues(PropValueMap& values, bool full_expand
     // fill values
 	string128 fld;
     m_Values				= values;
-	for (PropValuePairIt it=m_Values.begin(); it!=m_Values.end(); it++){
-    	PropValue* prop		= it->second;
-        prop->item			= FOLDER::AppendObject(tvProperties,it->first.c_str());
+	for (PropValueIt it=m_Values.begin(); it!=m_Values.end(); it++){
+    	PropValue* prop		= *it;
+        prop->item			= FOLDER::AppendObject(tvProperties,(*it)->key);
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         TElCellStyle* CS    = prop->item->AddStyle();
@@ -258,8 +257,10 @@ void __fastcall TProperties::AssignValues(PropValueMap& values, bool full_expand
     // end fill mode
     bModified=false;
 	if (full_expand) tvProperties->FullExpand();
-    tvProperties->IsUpdating 	= false;
     FOLDER::RestoreSelection	(tvProperties,last_selected_item.c_str());
+    tvProperties->IsUpdating 	= false;
+
+    Caption = title;
 }
 //---------------------------------------------------------------------------
 
@@ -295,7 +296,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             TColor C 		= Surface->Brush->Color;
             TBrushStyle S 	= Surface->Brush->Style;
             Surface->Brush->Style = bsSolid;
-            Surface->Brush->Color = (TColor)0x008E8E8E;
+            Surface->Brush->Color = Item->Selected?(TColor)0x00A0A0A0:(TColor)0x008E8E8E;
             TRect r	=	R;
             r.Left 	-= 	1;
             r.Right	+=	1;
@@ -432,7 +433,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (V->ApplyValue(new_val)){
                 Modified();
-	            RefreshProperties();
+	            RefreshForm();
             }
         }break;
 		case PROP_BOOLEAN:{
@@ -441,7 +442,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (V->ApplyValue(new_val)){
                 Modified();
-	            RefreshProperties();
+	            RefreshForm();
             }
         }break;
 		case PROP_TOKEN:{

@@ -10,6 +10,8 @@ namespace DU{
     void OnDeviceCreate	();
     void OnDeviceDestroy();
 
+    void OnRender		();
+
 	void UpdateGrid(int number_of_cell, float square_size, int subdiv=10);
 
     //----------------------------------------------------

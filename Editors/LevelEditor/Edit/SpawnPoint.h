@@ -42,7 +42,7 @@ public:
 	virtual void 	Save			(CFS_Base&);
     virtual bool	ExportGame		(SExportStreams& data);
 
-	virtual void	FillProp		(CFS_Base& F);
+	virtual bool	FillProp		(PropValueVec& values);
 };
 
 #endif /*_INCDEF_Glow_H_*/

@@ -58,26 +58,6 @@ void	xrServerEntity::FillProp(PropValueVec& values)
 }
 #endif
 
-void	xrServerEntity::P_Read			(CStream& FS)
-{
-//	FS.Read				(&desc,sizeof(desc));
-
-	// Active
-	xrP_BOOL			dB;
-	xrPREAD_PROP		(FS,xrPID_BOOL,dB); 
-	if (dB.value)		s_flags|=	(M_SPAWN_OBJECT_ACTIVE); 
-	else				s_flags&=~	(M_SPAWN_OBJECT_ACTIVE); 
-}
-
-void	xrServerEntity::P_Write			(CFS_Base& FS)
-{
-//	FS.write			(&desc,sizeof(desc));
-
-	// Active
-	xrP_BOOL			dB;
-	dB.value			= s_flags&M_SPAWN_OBJECT_ACTIVE; xrPWRITE_PROP	(FS,"Active",xrPID_BOOL,dB);
-}
-
 //
 class xrSE_Weapon : public xrServerEntity
 {
@@ -153,24 +133,6 @@ public:
         FILL_PROP_EX(values,s_name, "Ammo: in magazine",&a_elapsed, PROP::CreateIntValue(0,30,1));
     }
 #endif
-	virtual void			P_Write				(CFS_Base& FS)
-	{
-		inherited::P_Write	(FS);
-
-		xrP_Integer			dI;
-		dI.min				= 0;
-		
-		dI.max = 1000;		dI.value=a_current;	xrPWRITE_PROP(FS,"Ammo: total",			xrPID_INTEGER,dI);
-		dI.max = 30;		dI.value=a_elapsed;	xrPWRITE_PROP(FS,"Ammo: in magazine",	xrPID_INTEGER,dI);
-	}
-	virtual void			P_Read				(CStream& FS)
-	{
-		inherited::P_Read	(FS);
-
-		xrP_Integer			dI;
-		xrPREAD_PROP		(FS,xrPID_INTEGER,dI);	a_current	=	u8(dI.value);
-		xrPREAD_PROP		(FS,xrPID_INTEGER,dI);  a_elapsed	=	u8(dI.value);
-	}
 };
 
 //
@@ -212,28 +174,6 @@ public:
         FILL_PROP_EX(values,s_name, "Group",	&s_group, 	PROP::CreateIntValue(0,64,1));
     }
 #endif
-	virtual void			P_Write				(CFS_Base& FS)
-	{
-		inherited::P_Write	(FS);
-
-		xrP_Integer			dI;
-		dI.min				= 0;
-		dI.max				= 64;
-
-		dI.value=s_team;	xrPWRITE_PROP		(FS,"Team",	xrPID_INTEGER,dI);
-		dI.value=s_squad;	xrPWRITE_PROP		(FS,"Squad",xrPID_INTEGER,dI);
-		dI.value=s_group;	xrPWRITE_PROP		(FS,"Group",xrPID_INTEGER,dI);
-	}
-	virtual void			P_Read				(CStream& FS)
-	{
-		inherited::P_Read	(FS);
-
-		xrP_Integer			dI;
-
-		xrPREAD_PROP		(FS,xrPID_INTEGER,dI);	s_team	=	u8(dI.value);
-		xrPREAD_PROP		(FS,xrPID_INTEGER,dI);  s_squad	=	u8(dI.value);
-		xrPREAD_PROP		(FS,xrPID_INTEGER,dI);  s_group	=	u8(dI.value);
-	}
 };
 
 //

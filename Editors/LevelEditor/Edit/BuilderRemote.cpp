@@ -156,8 +156,10 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
     point_offs = l_vertices_it;  // save offset
 
     // fill vertices
-	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++)
+	for (FvectorIt pt_it=mesh->m_Points.begin(); pt_it!=mesh->m_Points.end(); pt_it++){
+    	R_ASSERT(l_vertices_it<l_vertices_cnt);
     	parent.transform_tiny(l_vertices[l_vertices_it++],*pt_it);
+    }
 
     if (object->IsDynamic()){
 	    // update mesh
@@ -185,6 +187,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 	    for (IntIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
+		    	R_ASSERT(l_faces_it<l_faces_cnt);
                 b_face& new_face 	= l_faces[l_faces_it++];
                 int m_id			= BuildMaterial(surf,sect_num,lod_id);
                 if (m_id<0){
@@ -212,6 +215,7 @@ BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
             }
 
 	        if (surf->_2Sided()){
+		    	R_ASSERT(l_faces_it<l_faces_cnt);
                 b_face& new_face 	= l_faces[l_faces_it++];
                 new_face.dwMaterial = l_faces[l_faces_it-2].dwMaterial;
                 for (int k=0; k<3; k++){
@@ -716,10 +720,23 @@ BOOL SceneBuilder::CompileStatic()
     ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
     for(;_O!=_E;_O++){
     	CSceneObject* obj = (CSceneObject*)(*_O);
-	    UI.ProgressInc();
 		if (!obj->IsDynamic()){
 			l_faces_cnt		+= obj->GetFaceCount();
     	    l_vertices_cnt  += obj->GetVertexCount();
+        }
+    }
+    _O = Scene.FirstObj	(OBJCLASS_GROUP);
+    _E = Scene.LastObj	(OBJCLASS_GROUP);
+    for(;_O!=_E;_O++){
+    	CGroupObject* group = (CGroupObject*)(*_O);
+	    ObjectIt _O1 = group->GetObjects().begin();
+    	ObjectIt _E1 = group->GetObjects().end();
+	    for(;_O1!=_E1;_O1++){
+	    	CSceneObject* obj = dynamic_cast<CSceneObject*>(*_O1);
+			if (obj&&!obj->IsDynamic()){
+				l_faces_cnt		+= obj->GetFaceCount();
+    	    	l_vertices_cnt  += obj->GetVertexCount();
+	        }
         }
     }
 	l_faces		= new b_face[l_faces_cnt];

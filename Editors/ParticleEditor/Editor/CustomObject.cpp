@@ -137,3 +137,4 @@ bool CCustomObject::FrustumSelect(int flag, const CFrustum& frustum){
 	return false;
 };
 
+

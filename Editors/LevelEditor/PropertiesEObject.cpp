@@ -38,8 +38,8 @@ TfrmPropertiesEObject* TfrmPropertiesEObject::CreateProperties(TWinControl* pare
 	    props->BorderStyle = bsNone;
         props->ShowProperties();
     }
-    props->m_Basic 		= TProperties::CreateForm(props->paBasic,alClient,props->OnModifiedEvent);
-    props->m_Surfaces 	= TProperties::CreateForm(props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
+    props->m_BasicProp	= TProperties::CreateForm(props->paBasic,alClient,props->OnModifiedEvent);
+    props->m_SurfProp 	= TProperties::CreateForm(props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
 	return props;
 }
 //---------------------------------------------------------------------------
@@ -81,57 +81,55 @@ void TfrmPropertiesEObject::FillBasicProps()
 {
 	// basic
 	CSceneObject* 		S = m_pEditObject;
-	m_Basic->BeginFillMode();
+	m_BasicProp->BeginFillMode();
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-/*
-//p        
-		m_Basic->AddMarkerItem	(0,"Name",		S->GetRefName());
-		m_Basic->AddFlagItem	(0,"Dynamic",	&O->m_dwFlags,CEditableObject::eoDynamic);
-		m_Basic->AddFlagItem	(0,"HOM",		&O->m_dwFlags,CEditableObject::eoHOM);
-        m_Basic->AddFlagItem	(0,"Use LOD", 	&O->m_dwFlags,CEditableObject::eoUsingLOD);
-        TElTreeItem* M;
-		M=m_Basic->AddMarkerItem(0,"Transformation")->item;
-		m_Basic->AddVectorItem	(M,"Position",	&S->FPosition,	-10000,	10000,0.01,2,OnAfterTransformation);
-		m_Basic->AddVectorItem	(M,"Rotation",	&S->FRotation,	-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw);
-		m_Basic->AddVectorItem	(M,"Scale",		&S->FScale,		0.01,	10000,0.01,2,OnAfterTransformation);
-		M=m_Basic->AddMarkerItem(0,"Summary")->item;
+        PropValueVec values;
+
+        FILL_PROP(values, "Name", 					(LPVOID)S->GetRefName(),PROP::CreateMarkerValue());
+        FILL_PROP(values, "Dynamic",				&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoDynamic));
+        FILL_PROP(values, "HOM",					&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoHOM));
+        FILL_PROP(values, "Use LOD",				&O->m_dwFlags, 			PROP::CreateFlagValue(CEditableObject::eoUsingLOD));
+
+        FILL_PROP(values, "Transform\\Position",	&S->FPosition, 			PROP::CreateVectorValue(-10000,	10000,0.01,2,OnAfterTransformation));
+        FILL_PROP(values, "Transform\\Rotation",	&S->FRotation, 			PROP::CreateVectorValue(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+        FILL_PROP(values, "Transform\\Scale",		&S->FScale, 			PROP::CreateVectorValue(0.01,	10000,0.01,2,OnAfterTransformation));
+        
         AnsiString t; t.sprintf("V: %d, F: %d",	S->GetVertexCount(),S->GetFaceCount());
-		m_Basic->AddMarkerItem	(M,"Object",   	t.c_str());
-		M=m_Basic->AddMarkerItem(M,"Meshes")->item;
+        FILL_PROP(values, "Summary\\Object",		t.c_str(), 			PROP::CreateMarkerValue());
         for (EditMeshIt m_it=O->FirstMesh(); m_it!=O->LastMesh(); m_it++){
         	CEditableMesh* MESH=*m_it;
 	        t.sprintf("V: %d, F: %d",MESH->GetVertexCount(),MESH->GetFaceCount());
-			m_Basic->AddMarkerItem(M,MESH->GetName(),t.c_str());
+	        FILL_PROP(values, AnsiString(AnsiString("Summary\\Meshes\\")+MESH->GetName()).c_str(),		t.c_str(), 			PROP::CreateMarkerValue());
         }
-		M=m_Basic->AddMarkerItem(0,"Game options")->item;
-		m_Basic->AddAnsiTextItem(M,"Script",	&O->m_ClassScript);
-*/
+        FILL_PROP(values, "Game options\\Script",	&O->m_ClassScript,		PROP::CreateATextValue());
+
+        m_BasicProp->AssignValues(values,true);
+    }else{
+    	m_BasicProp->ClearProperties();
     }
-    m_Basic->EndFillMode(true);
+    m_BasicProp->EndFillMode(true);
 }
 //---------------------------------------------------------------------------
 
 void TfrmPropertiesEObject::FillSurfProps()
 {
 	// surfaces
-	m_Surfaces->BeginFillMode();
 	CSceneObject* 		S = m_pEditObject;
     if (S->GetReference()){
     	CEditableObject* 	O = S->GetReference();
-/*
-//p        
-        TElTreeItem* M;
-        for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++){
+        PropValueVec values;
+		for (SurfaceIt s_it=O->FirstSurface(); s_it!=O->LastSurface(); s_it++){
         	CSurface* SURF=*s_it;
-			M=m_Surfaces->AddMarkerItem(0,SURF->_Name())->item;
-			m_Surfaces->AddAnsiEShaderItem(M,"Shader",	&SURF->m_ShaderName, 	OnAfterShaderEdit);
-			m_Surfaces->AddAnsiCShaderItem(M,"Compile",	&SURF->m_ShaderXRLCName);
-            m_Surfaces->AddAnsiTextureItem(M,"Texture",	&SURF->m_Texture,		OnAfterTextureEdit);
+            AnsiString nm = SURF->_Name();
+		    FILL_PROP(values, AnsiString(nm+"\\Shader").c_str(), 	&SURF->m_ShaderName, 	PROP::CreateAEShaderValue(OnAfterShaderEdit));
+		    FILL_PROP(values, AnsiString(nm+"\\Compile").c_str(), 	&SURF->m_ShaderXRLCName,PROP::CreateACShaderValue());
+		    FILL_PROP(values, AnsiString(nm+"\\Texture").c_str(), 	&SURF->m_Texture, 		PROP::CreateATextureValue(OnAfterTextureEdit));
         }
-*/
+        m_SurfProp->AssignValues(values,true);
+    }else{
+    	m_SurfProp->ClearProperties();
     }
-    m_Surfaces->EndFillMode(true);
 }
 //---------------------------------------------------------------------------
 
@@ -145,24 +143,24 @@ void TfrmPropertiesEObject::UpdateProperties(CSceneObject* S)
 void __fastcall TfrmPropertiesEObject::FormDestroy(TObject *Sender)
 {
 	_DELETE(m_Thumbnail);
-    TProperties::DestroyForm(m_Basic);
-    TProperties::DestroyForm(m_Surfaces);
+    TProperties::DestroyForm(m_BasicProp);
+    TProperties::DestroyForm(m_SurfProp);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEObject::fsStorageRestorePlacement(
       TObject *Sender)
 {
-	m_Basic->RestoreColumnWidth(fsStorage);
-	m_Surfaces->RestoreColumnWidth(fsStorage);
+	m_BasicProp->RestoreColumnWidth(fsStorage);
+	m_SurfProp->RestoreColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesEObject::fsStorageSavePlacement(
       TObject *Sender)
 {
-	m_Basic->SaveColumnWidth(fsStorage);
-	m_Surfaces->SaveColumnWidth(fsStorage);
+	m_BasicProp->SaveColumnWidth(fsStorage);
+	m_SurfProp->SaveColumnWidth(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -233,8 +231,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 	R_ASSERT(pinf.e_mesh);
 	if (ebDropper->Down&&m_pEditObject){
         CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
-        m_Surfaces->tvProperties->Selected = FOLDER::FindItemInFolder(m_Surfaces->tvProperties,0,surf->_Name());
-        m_Surfaces->tvProperties->EnsureVisible(m_Surfaces->tvProperties->Selected);
+        FOLDER::RestoreSelection(m_SurfProp->tvProperties,surf->_Name());
     }
 }
 //---------------------------------------------------------------------------

@@ -110,17 +110,19 @@ void CSceneObject::Render(int priority, bool strictB2F){
     if (!m_pRefs) return;
     Scene.TurnLightsForObject(this);
 	m_pRefs->Render(_Transform(), priority, strictB2F);
-    if ((1==priority)&&(false==strictB2F)){
-        if (Selected()){
-            if (m_iBlinkTime>(int)Device.dwTimeGlobal){
-            	DWORD c=D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255);
-                RenderSelection(c);
-                UI.RedrawScene();
+    if (Selected()){
+    	if (1==priority){
+            if (false==strictB2F){
+                Device.SetShader(Device.m_WireShader);
+                Device.SetTransform(D3DTS_WORLD,_Transform());
+                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
+            }else{
+                if (m_iBlinkTime>(int)Device.dwTimeGlobal){
+    	            RenderSelection(D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255));
+        	        UI.RedrawScene();
+            	}
             }
-            Device.SetShader(Device.m_WireShader);
-            Device.SetTransform(D3DTS_WORLD,_Transform());
-            DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-            DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
         }
     }
 }

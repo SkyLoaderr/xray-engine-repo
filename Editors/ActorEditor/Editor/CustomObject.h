@@ -69,7 +69,7 @@ public:
     IC BOOL			Valid			(){return m_bValid;}
 
 	// editor integration
-	virtual bool	FillProp		(PropValueMap& values, bool bFirstInit){return false;}
+	virtual bool	FillProp		(PropValueVec& values);
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);

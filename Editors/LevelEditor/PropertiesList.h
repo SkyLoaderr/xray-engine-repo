@@ -58,7 +58,6 @@ private:	// User declarations
 	Graphics::TBitmap* m_BMDot;
 	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
-    int iFillMode;
     AnsiString last_selected_item;
 	// LW style inpl editor
     void HideLWNumber();
@@ -73,7 +72,7 @@ private:	// User declarations
     void ApplyLWText();
     void CancelLWText();
 
-    PropValueMap 		m_Values;
+    PropValueVec 		m_Values;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
     void 				Modified		(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
@@ -91,11 +90,11 @@ public:		// User declarations
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall ResetModified			(){bModified = false;}
-    void __fastcall RefreshProperties		(){tvProperties->Repaint();}
+    void __fastcall RefreshForm				(){tvProperties->Repaint();}
 
-    void __fastcall AssignValues			(PropValueMap& values, bool full_expand);
+    void __fastcall AssignValues			(PropValueVec& values, bool full_expand, const AnsiString& title="Properties"); 
     void __fastcall ResetValues				();
-    bool __fastcall Focused					(){;} xxxxxxxx
+    bool __fastcall IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
     void __fastcall EndFillMode				(bool bFullExpand=true);
