@@ -10,6 +10,7 @@
 #define XRAY_AI_ALIFE_INTERFACES
 
 #include "ai_alife_space.h"
+#include "net_utils.h"
 using namespace ALife;
 
 interface IPureALifeLObject {

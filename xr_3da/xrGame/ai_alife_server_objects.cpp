@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xr_ini.h"
 #include "ai_alife_server_objects.h"
 
 // CALifeObject

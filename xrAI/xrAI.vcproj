@@ -524,6 +524,9 @@
 						RelativePath="ai_alife_interfaces.h">
 					</File>
 					<File
+						RelativePath="ai_alife_server_objects.cpp">
+					</File>
+					<File
 						RelativePath="ai_alife_server_objects.h">
 					</File>
 					<File
@@ -546,6 +549,12 @@
 					</File>
 					<File
 						RelativePath="xrServer_Entities.h">
+					</File>
+					<File
+						RelativePath="xrServer_Entity_Custom.cpp">
+					</File>
+					<File
+						RelativePath="xrServer_Entity_Custom.h">
 					</File>
 				</Filter>
 			</Filter>

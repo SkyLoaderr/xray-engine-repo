@@ -1,6 +1,7 @@
 #ifndef XRSERVER_SERVER_ENTITY_CUSTOMH
 #define XRSERVER_SERVER_ENTITY_CUSTOMH
 
+#include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
 class xrClientData;
