@@ -347,9 +347,6 @@
 				RelativePath="FStaticRender_RenderTarget.h">
 			</File>
 			<File
-				RelativePath=".\Particle.h">
-			</File>
-			<File
 				RelativePath=".\PSLibrary.cpp">
 			</File>
 			<File
