@@ -96,7 +96,7 @@ void CHUDManager::Render_Calcualte()
 void CHUDManager::Render_Affected()
 {
 }
- 
+
 void CHUDManager::Render_Direct	()
 {
 	BOOL bAlready = FALSE;

@@ -670,8 +670,10 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
             WORD mot_count			= MP->Rword();
             for (WORD mot_i=0; mot_i<mot_count; mot_i++){
                 MP->RstringZ(buf);
-                BYTE bCycle			= MP->Rbyte();
-                CMotionDef	D;		D.Load(this,MP,bCycle);
+                BYTE bCycle			=	MP->Rbyte();
+				CMotionDef	D;		D.Load(this,MP,bCycle?0:esmFX);
+				BYTE bNoLoop		=	MP->Rbyte();
+				D.flags				|=	(bNoLoop?esmStopAtEnd:0);
                 if (bCycle)			m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
                 else				m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
             }
