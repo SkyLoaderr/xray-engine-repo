@@ -15,9 +15,14 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLC", "xrLC.vcproj", "{25B60978-8467-4263-A6EB-CB3BB108F8BF}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5D41084D-1A7F-493E-8B81-C7F62F6DD3EA} = {5D41084D-1A7F-493E-8B81-C7F62F6DD3EA}
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27} = {F1836CE2-59EF-4189-8B9C-D103A511CB27}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "close", "close\close.vcproj", "{2996B2B8-B3A1-4785-97BD-56F4398C2E97}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrQSlim", "..\XRQSLIM\xrQSlim.vcproj", "{F1836CE2-59EF-4189-8B9C-D103A511CB27}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -26,7 +31,7 @@ Global
 		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
 	EndGlobalSection
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 6
+		SccNumberOfProjects = 7
 		SccProjectName0 = \u0022$/xrLC\u0022,\u0020TLAAAAAA
 		SccLocalPath0 = .
 		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
@@ -51,6 +56,10 @@ Global
 		SccLocalPath5 = .
 		CanCheckoutShared = true
 		SccProjectFilePathRelativizedFromConnection5 = close\\
+		SccProjectUniqueName6 = ..\\XRQSLIM\\xrQSlim.vcproj
+		SccProjectName6 = \u0022$/xrQSlim\u0022,\u0020YJVAAAAA
+		SccLocalPath6 = ..\\XRQSLIM
+		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -88,6 +97,12 @@ Global
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Mixed.Build.0 = Mixed|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.ActiveCfg = Release|Win32
 		{2996B2B8-B3A1-4785-97BD-56F4398C2E97}.Release.Build.0 = Release|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Debug.ActiveCfg = Debug|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Debug.Build.0 = Debug|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Mixed.ActiveCfg = Release|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Mixed.Build.0 = Release|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.ActiveCfg = Release|Win32
+		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
