@@ -190,6 +190,13 @@ void CLensFlare::OnFrame()
 #ifdef _LEVEL_EDITOR
 	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
 #else
+	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
+	BOOL		o_enable	= FALSE;
+	if (o_main)
+	{
+		o_enable			=	o_main->getEnabled():
+		o_main->setEnabled	(FALSE);
+	}
 	if ( g_pGameLevel->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir, 1000.f) )
 #endif
 	{
@@ -198,6 +205,12 @@ void CLensFlare::OnFrame()
 		fBlend = fBlend + BLEND_INC_SPEED * Device.fTimeDelta;
 	}
 	clamp( fBlend, 0.0f, 1.0f );
+
+#ifdef _LEVEL_EDITOR
+#else
+	if (o_main)				o_main->setEnabled	(o_enable);
+#endif
+
 
 	// gradient
 	if (m_Flags.is(flGradient)){
