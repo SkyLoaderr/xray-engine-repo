@@ -6,6 +6,8 @@
 //	Description : 32-bit peudo random number generator
 ////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
 class CRandom32 {
 private:
 	u32			m_seed;
