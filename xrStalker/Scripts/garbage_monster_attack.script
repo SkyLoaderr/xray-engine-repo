@@ -93,6 +93,7 @@ function monster_on_line()
 		for j = 1, table.getn(g_monsters[i]) do
 			if(level.object(g_monsters[i][j]) == nil) then
 				// Какой-то объект еще в офлайне
+				printf("not object %s", g_monsters[i][j])
 				return false
 			end
 		end
