@@ -99,7 +99,7 @@ function Trader:process ()
     elseif self.current_state == trader_wait then
        self:process_wait ()
     elseif self.current_state == trader_end then
-       self:process_end ()
+       self:process_end_trade ()
     end
 
 
@@ -134,7 +134,7 @@ function Trader:process_wait ()
 
 end
 ----------------------------------------------------------------------------------------------------------------------
-function Trader:process_end ()
+function Trader:process_end_trade ()
 
     --printf ("Process end")
     if self.npc:action () then return end
