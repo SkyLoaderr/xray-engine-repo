@@ -5,7 +5,9 @@
 
 -- Последний раз, когда игрока предупреждали убрать оружие (чтобы часто не повторяться):
 --warn_rem_weapon_time = nil
-warn_rem_weapon_times = {}
+bg_warn_rem_weapon_times = {}
+-- Количество патронов в магазине
+bg_num_bullets = {}
 
 local state_none = 0
 local state_moving = 1
@@ -152,12 +154,21 @@ function action_bodyguard_activity:execute()
 			local active_item = actor:active_item()
 			local has_weapon = active_item and isWeapon(active_item)
 		        if has_weapon or dist_center > 5 then
+				if has_weapon and dist_center <= 5 and this.bg_num_bullets[self.stor.path_center] and
+				   this.bg_num_bullets[self.stor.path_center] ~= active_item:get_ammo_in_magazine() then
+					if self.object:relation(actor) ~= game_object.enemy then
+						self.object:set_relation(game_object.enemy, actor)
+					end
+				end
+			
 				if has_weapon and dist_center <= 5 and
-				   (not this.warn_rem_weapon_times[self.stor.path_center] or device():time_global() > this.warn_rem_weapon_times[self.stor.path_center] + 60000) then
+				   (not this.bg_warn_rem_weapon_times[self.stor.path_center] or device():time_global() > this.bg_warn_rem_weapon_times[self.stor.path_center] + 60000) then
 					self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-					this.warn_rem_weapon_times[self.stor.path_center] = device():time_global()
-				elseif dist_center > 5 and this.warn_rem_weapon_times[self.stor.path_center] then
-					this.warn_rem_weapon_times[self.stor.path_center] = nil
+					this.bg_warn_rem_weapon_times[self.stor.path_center] = device():time_global()
+					this.bg_num_bullets[self.stor.path_center] = active_item:get_ammo_in_magazine()
+				elseif dist_center > 5 and this.bg_warn_rem_weapon_times[self.stor.path_center] then
+					this.bg_warn_rem_weapon_times[self.stor.path_center] = nil
+					this.bg_num_bullets[self.stor.path_center] = nil
 				end
 
 				if self.path_guard_ptr:point(0):distance_to(actor:position()) < self.path_guard_radius then
@@ -168,7 +179,7 @@ function action_bodyguard_activity:execute()
 				elseif self.path_active ~= self.path_main then
 					if has_weapon and dist_center <= 5 then
 						self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
-						this.warn_rem_weapon_times[self.stor.path_center] = device():time_global()
+						this.bg_warn_rem_weapon_times[self.stor.path_center] = device():time_global()
 					end
 
 					self.path_active = self.path_main
