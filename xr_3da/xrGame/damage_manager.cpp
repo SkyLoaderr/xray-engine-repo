@@ -47,8 +47,6 @@ void CDamageManager::reload				(LPCSTR section)
 				CBoneInstance			&bone_instance = PKinematics(object->Visual())->LL_GetBoneInstance(u16(bone));
 				bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
 				bone_instance.set_param	(1,(float)atoi(_GetItem(*(*i).second,1,buffer)));
-				float					p0 = bone_instance.get_param(0);
-				float					p1 = bone_instance.get_param(0);
 			}
 		}
 	}
