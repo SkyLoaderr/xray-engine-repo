@@ -39,13 +39,13 @@ function fract:addObject(npc)
 	end
 end
 function fract:checkNpc(npc)
+	printf("COMM %s !! %s", npc:character_community(), self.type)
 	if self.type == "blockpost"
 	then
 		return npc:character_community() == "military"
 	end
 	
 	if self.type == "gar_bandits" then
-		printf("COMM %s", npc:character_community())
 		return npc:character_community() == "bandit"
 	end
 	if self.type == "gar_stalkers" then
