@@ -2,11 +2,23 @@
 -- демонстрация работы FSM  
 -- пример 01. FSM одного сталкера с двумя
 -- состояниями	
+--
+-- ходит сталкер, видит актера, предупреждает, 
+-- а потом начинает стрелять
 ---------------------------------------
+
+
+
+-- глобальная переменная, указываюшая на то что сталкер уже
+-- не первый раз видит актера
+stalker_already_saw_actor = false
+
+
+
 
 -- функция перехода в первое состояние из нулевого
 function if_see_actor(npc, fsm)
-	if npc:see(actor) == true then
+	if npc:see(actor) == true and not stalker_already_saw_actor then
 		-- да, условие выполнено, FSM перейдет в состояние 
 		-- как только мы сделаем return true
 		log("i saw a fucking actor")
@@ -16,7 +28,10 @@ function if_see_actor(npc, fsm)
 		fsm:set_script_control()
 
 		log("setting action")
+
+
 		--	задаем новое состояние сталкера
+		-- "стрелять буду"	
 		action(                                                                                                       
 	    		npc,
 			  	move	(move.standing, move.walk,move.line,patrol("way0002")),
@@ -25,6 +40,9 @@ function if_see_actor(npc, fsm)
 				anim	(anim.danger),
 				cond	(cond.time_end, 100000)
 		)
+
+		-- мы уже видели актера, больше предупреждать не нужно	
+		stalker_already_saw_actor = true
 
 		return true
 	end
