@@ -95,8 +95,8 @@ void	CSoundRender_Target::_initialize		()
 		R_CHK	(pBuffer->GetObjectInPath(desc[0].guidDSFXClass, 0, IID_IDirectSoundFXWavesReverb8,	(void**)&pFX_Reverb));
 		R_CHK	(pBuffer->GetObjectInPath(desc[1].guidDSFXClass, 0, IID_IDirectSoundFXEcho8,		(void**)&pFX_Echo));
 	} else {
-		pFX_Reverb			= NULL;
-		pFX_Echo			= NULL;
+		pFX_Reverb				= NULL;
+		pFX_Echo				= NULL;
 	}
 }
 
@@ -181,7 +181,7 @@ void	CSoundRender_Target::fill_parameters()
 
 	// 1. Set 3D params (including mode)
 	{
-		Fvector&					p_pos	= pEmitter->p_source.position;
+		Fvector&			p_pos	= pEmitter->p_source.position;
 		DS3DBUFFER					buf;
 		buf.dwSize					= sizeof(DS3DBUFFER);
 		buf.vPosition.x				= p_pos.x;
@@ -227,6 +227,7 @@ void	CSoundRender_Target::fill_parameters()
 		CSoundRender_Environment& E		= pEmitter->e_current;
 
 		// 1. Reverb
+		if (pFX_Reverb)
 		{
 			DSFXWavesReverb					para;
 			para.fInGain					= E.R_InGain;
@@ -237,6 +238,7 @@ void	CSoundRender_Target::fill_parameters()
 		}
 
 		// 2. Echo
+		if (pFX_Echo)
 		{
 			DSFXEcho						para;
 			para.fWetDryMix					= E.E_WetDry;
