@@ -2,12 +2,6 @@
 #include "flightscontroller.h"
 #include "..\xrLevel.h"
 
-// Disables all lights
-void CLightDB_Static::UnselectAll	(void) 
-{
-	Selected.clear();
-}
-
 void CLightDB_Static::Load			(IReader *fs) 
 {
 	IReader* F	= 0;
@@ -73,9 +67,4 @@ IC void t_spline(float t, float *m)
 	m[1] = ( 0.5f * ( ( 3.0f * t3) + (-5.0f * t2) + ( 0.0f * t) + 2.0f ) );
 	m[2] = ( 0.5f * ( (-3.0f * t3) + ( 4.0f * t2) + ( 1.0f * t) ) );
 	m[3] = ( 0.5f * ( ( 1.0f * t3) + (-1.0f * t2) + ( 0.0f * t) ) );
-}
-
-void	CLightDB_Static::add_light(WORD ID)
-{
-	Selected.push_back	(ID);
 }

@@ -10,27 +10,28 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-void CLightTrack::add	(int id)
+void CLightTrack::add	(R1_light* source)
 {
 	// Search
-	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (id == I->id)	return;
-		
+	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)	if (source == I->source)	return;
+
 	// Register _new_
 	track.push_back		(Item());
 	Item&	L			= track.back();
-	L.id				= id;
-	L.Cache.verts[0].set(0,0,0);
-	L.Cache.verts[1].set(0,0,0);
-	L.Cache.verts[2].set(0,0,0);
+	L.source			= source;
+	L.cache.verts[0].set(0,0,0);
+	L.cache.verts[1].set(0,0,0);
+	L.cache.verts[2].set(0,0,0);
 	L.test				= 0.f;
 	L.energy			= 0.f;
 }
-void CLightTrack::remove(int id)
+
+void CLightTrack::remove(R1_light* source)
 {
 	// Search
 	for (xr_vector<Item>::iterator I=track.begin(); I!=track.end(); I++)
 	{
-		if (id == I->id)
+		if (source == I->source)
 		{
 			track.erase(I);
 			return;
@@ -65,16 +66,22 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	dest.ambient		= l_i*dest.ambient + l_f*O->renderable_Ambient();
 	clamp				(dest.ambient,0.f,255.f);
 	
+	// Select nearest lights
+	Fvector					bb_size	= {fRadius,fRadius,fRadius};
+	g_SpatialSpace.q_box	(0,STYPE_LIGHTSOURCE,pos,bb_size);
+
 	// Process selected lights
-	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
+	for (u32 o_it=0; o_it<g_SpatialSpace.q_result.size(); o_it++)
 	{
-		int		num	= *it;
-		Flight &L	= Lights[num]->data;
-		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.add	(num);
+		ISpatial*	spatial		= g_SpatialSpace.q_result[o_it];
+		R1_light*	source		= dynamic_cast<R1_light*>(spatial);
+		if (0==source)			continue;
+		Flight &L				= source->data;
+		if (L.type == D3DLIGHT_DIRECTIONAL)				dest.add	(source);
 		else {
 			float	R	= fRadius+L.range;
-			if (pos.distance_to_sqr(L.position) < R*R)	dest.add	(num);
-			else										dest.remove	(num);
+			if (pos.distance_to_sqr(L.position) < R*R)	dest.add	(source);
+			else										dest.remove	(source);
 		}
 	}
 	
@@ -86,7 +93,7 @@ void	CLightDB_Static::Track	(IRenderable* O)
 	for (; I!=E; I++)
 	{
 		float	amount	= 0;
-		Flight&		xrL	= Lights[I->id]->data;
+		Flight&		xrL	= I->source->data;
 		Fvector&	LP	= xrL.position;
 
 		for (int it=0; it<1; it++)
@@ -101,8 +108,8 @@ void	CLightDB_Static::Track	(IRenderable* O)
 			D.sub			(P,LP);
 			float	f		= D.magnitude();
 			D.div			(f);
-			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->Cache))	amount -=	lt_dec;
-			else														amount +=	lt_inc;
+			if (g_pGameLevel->ObjectSpace.RayTest(LP,D,f,false,&I->cache))	amount -=	lt_dec;
+			else															amount +=	lt_inc;
 		}
 		
 		I->test			+= amount * dt;

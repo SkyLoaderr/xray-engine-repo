@@ -10,13 +10,15 @@ const	float				lt_inc			= 4.f;
 const	float				lt_dec			= 2.f;
 const	float				lt_smooth		= 4.f;
 
+class	R1_light;
+
 class	CLightTrack			: public IRender_ObjectSpecific
 {
 public:
 	struct Item 
 	{
-		int					id;
-		Collide::ray_cache	Cache;
+		R1_light*			source;
+		Collide::ray_cache	cache;
 		float				test;			// note range: (-1[no]..1[yes])
 		float				energy;
 	};
@@ -33,8 +35,8 @@ public:
 	u32						Shadowed_dwFrame;
 	int						Shadowed_Slot;
 
-	void					add				(int id);
-	void					remove			(int id);
+	void					add				(R1_light* L);
+	void					remove			(R1_light* id);
 
 	virtual ~CLightTrack	()	{};
 };

@@ -219,7 +219,6 @@ void CRender::Calculate()
 	HOM.Render						(ViewBase);
 
 	// Build L_DB visibility & perform basic initialization
-	L_DB.UnselectAll				();
 	gm_Data.diffuse.set				(1,1,1,1);
 	gm_Data.ambient.set				(1,1,1,1);
 	gm_Data.emissive.set			(0,0,0,0);
@@ -284,7 +283,7 @@ void CRender::Calculate()
 		g_SpatialSpace.q_frustum
 			(
 				ISpatial_DB::O_ORDERED,
-				STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
+				STYPE_RENDERABLE,
 				ViewBase
 			);
 
@@ -305,22 +304,13 @@ void CRender::Calculate()
 				CFrustum&	view	= sector->r_frustums[v_it];
 				if (view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))
 				{
-					// visible: check if it is "renderable" or "lightsource"
-					if (spatial->spatial.type & STYPE_RENDERABLE)
-					{
-						// renderable
-						IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-						VERIFY							(renderable);
-						set_Object						(renderable);
-						renderable->renderable_Render	();
-						set_Object						(0);
+					// renderable
+					IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+					VERIFY							(renderable);
+					set_Object						(renderable);
+					renderable->renderable_Render	();
+					set_Object						(0);
 #pragma todo("Oles to Oles: verify if it is needed at all")
-					} else {
-						// lightsource
-						R1_light*		source			= dynamic_cast<R1_light*>(spatial);
-						VERIFY							(source);
-						L_DB.add_light					(source->ID);
-					}
 				}
 			}
 		}
