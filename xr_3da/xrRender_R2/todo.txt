@@ -23,11 +23,11 @@ same,			+ optimized order				( 57.20	)
 same,occq-delay:	~25.9
 ----------------------------
 +BUG:	mt_physics
++BUG:	particles
++BUG:	self-illum
 BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection
 BUG:	light - spanning multiple sectors -> connect to portals
-BUG:	particles
-BUG:	self-illum
 
 OPT:	clipping light volume by visibility frustum (or primary)
 		should minimize geometry/fill req
@@ -36,6 +36,9 @@ OPT:	occlusion culling of light volumes
 		1. if camera inside - assume visible
 		2. employ temporal coherence
 OPT:	precompute invisible list (visuals) for static lights at load time
+
+OPT:	
+
 +FEATURE:	stats:
 +FEATURE:	materials:
 +FEATURE:	anisotropic
@@ -78,7 +81,7 @@ R2:
 	* work out point-light-hw-shadowmaps()							-	1 day
 done* work out tonemapping				(?)							-	?
 done* work out blooming					(again)						-\  3 days	
-	* work out skybox					(again)						-/
+done* work out skybox					(again)						-/
 	* work out hemisphere				(again)						-	1 day (?)
 done* work out ordinary rendering + transparency					-	1 day (?)
 done* work out HUD													-	1 day (?)
