@@ -650,18 +650,18 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
 	
-	if (ai().get_level_graph())
-		set_level_dest_vertex	(level_vertex_id());
-	
-	eye_matrix.identity		();
-	m_body.current.yaw		= m_body.target.yaw	= -E->o_Angle.y;
-	m_body.current.pitch	= m_body.target.pitch	= 0;
-	fEntityHealth			= E->fHealth;
+	eye_matrix.identity			();
+	m_body.current.yaw			= m_body.target.yaw	= -E->o_Angle.y;
+	m_body.current.pitch		= m_body.target.pitch	= 0;
+	fEntityHealth				= E->fHealth;
 	if (!g_Alive())
-		set_death_time		();
+		set_death_time			();
+
+	if (ai().get_level_graph() && used_ai_locations())
+		set_level_dest_vertex	(level_vertex_id());
 
 	// Eyes
-	eye_bone				= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
+	eye_bone					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
 	if (Local()) {
