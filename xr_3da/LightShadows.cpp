@@ -271,7 +271,6 @@ void CLightShadows::calculate	()
 		Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		
 //		for (int it=0; it<50; it++)	
-/*
 		{
 			// Actual rendering (pass1, real2temp)
 			Device.Shader.set_RT		(RT_temp->pRT,	0);
@@ -283,7 +282,6 @@ void CLightShadows::calculate	()
 			Device.Shader.set_Shader	(sh_BlurTR	);
 			Device.Primitive.Draw		(vs_Blur,	4, 2, Offset,	Device.Streams_QuadIB);
 		}
-*/
 	}
 	
 	// Finita la comedia
