@@ -17,16 +17,16 @@ public:
 
 	virtual void Load(LPCSTR section);
 
-	float GetHealth() {return m_fHealth;}
-	float GetPower() {return m_fPower;}
-	float GetSatiety() {return m_fSatiety;}
-	float GetRadiation() {return m_fRadiation;}
+	float GetHealth() const {return m_fHealth;}
+	float GetPower() const {return m_fPower;}
+	float GetSatiety() const {return m_fSatiety;}
+	float GetRadiation() const {return m_fRadiation;}
 
-	float GetCircumspection() {return m_fCircumspection;}
-	float GetEntityMorale() {return m_fEntityMorale;}
+	float GetCircumspection() const {return m_fCircumspection;}
+	float GetEntityMorale() const {return m_fEntityMorale;}
 
-	float GetMaxHealth() {return m_fHealthMax;}
-	float GetHealthLost() {return m_fHealthLost;}
+	float GetMaxHealth() const {return m_fHealthMax;}
+	float GetHealthLost() const {return m_fHealthLost;}
 
 	virtual bool IsLimping();
 

@@ -2561,6 +2561,12 @@
 					</File>
 					<File
 						RelativePath=".\ai_script_classes.h">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCustomBuildTool"
+								CommandLine=""/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ai_script_lua_debug.cpp">

@@ -17,21 +17,29 @@
 	{
 
 #define DECLARE_FUNCTION11(A,D,F)\
-	IC		D				A					(F f) const\
+	IC		D				A					(F f) \
 	{
 
-#define CAST_OBJECT(A,B)\
-		B				*l_tpEntity = dynamic_cast<B*>(m_tpGameObject);\
-		if (!l_tpEntity) {\
-			Log				("* [LUA] %s cannot access class member #A!",m_tpGameObject->cName());
+#define DECLARE_FUNCTION12(A,D,F,G)\
+	IC		D				A					(F f, G g) \
+	{
 
-#define CAST_OBJECT0(A,B)\
-		CAST_OBJECT(A,B)\
+#define DECLARE_FUNCTION13(A,D,F,G,H)\
+	IC		D				A					(F f, G g, H h) \
+	{
+
+#define CAST_OBJECT(Z,A,B)\
+		B				*l_tpEntity = dynamic_cast<B*>(Z);\
+		if (!l_tpEntity) {\
+			Log		("* [LUA] #B : cannot access class member #A!");
+
+#define CAST_OBJECT0(Z,A,B)\
+		CAST_OBJECT(Z,A,B)\
 			return;\
 		}
 
-#define CAST_OBJECT1(A,B,E)\
-		CAST_OBJECT(A,B)\
+#define CAST_OBJECT1(Z,A,B,E)\
+		CAST_OBJECT(Z,A,B)\
 			return		(E);\
 		}
 
@@ -51,27 +59,120 @@
 		l_tpEntity->C((F)(f));\
 	}
 
-#define BIND_MEMBER(A,B,C,D,E) \
+#define CALL_FUNCTION02(C,F,G)\
+		l_tpEntity->C((F)(f),(G)(g));\
+	}
+
+#define CALL_FUNCTION03(C,F,G,H)\
+		l_tpEntity->C((F)(f),(G)(g),(H)(h));\
+	}
+
+#define CALL_FUNCTION00(C)\
+		l_tpEntity->C();\
+	}
+
+#define BIND_MEMBER(Z,A,B,C,D,E) \
 	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(A,B,E)\
+	CAST_OBJECT1		(Z,A,B,E)\
 	GET_MEMBER			(C)
 
-#define BIND_FUNCTION10(A,B,C,D,E) \
+#define BIND_FUNCTION00(Z,A,B,C) \
+	DECLARE_FUNCTION10	(A,void)\
+	CAST_OBJECT0		(Z,A,B)\
+	CALL_FUNCTION00		(C)
+
+#define BIND_FUNCTION10(Z,A,B,C,D,E) \
 	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(A,B,E)\
+	CAST_OBJECT1		(Z,A,B,E)\
 	CALL_FUNCTION10		(C)
 
-#define BIND_FUNCTION11(A,B,C,D,E,F) \
+#define BIND_FUNCTION11(Z,A,B,C,D,E,F,I) \
 	DECLARE_FUNCTION11	(A,D,F)\
-	CAST_OBJECT1		(A,B,E)\
-	CALL_FUNCTION11		(C,F)
+	CAST_OBJECT1		(Z,A,B,E)\
+	CALL_FUNCTION11		(C,I)
 
-#define BIND_FUNCTION01(A,B,C,F) \
+#define BIND_FUNCTION01(Z,A,B,C,F,I) \
 	DECLARE_FUNCTION11	(A,void,F)\
-	CAST_OBJECT0		(A,B)\
-	CALL_FUNCTION01		(C,F)
+	CAST_OBJECT0		(Z,A,B)\
+	CALL_FUNCTION01		(C,I)
+
+#define BIND_FUNCTION02(Z,A,B,C,F,G,I,J) \
+	DECLARE_FUNCTION12	(A,void,F,G)\
+	CAST_OBJECT0		(Z,A,B)\
+	CALL_FUNCTION02		(C,I,J)
+
+#define BIND_FUNCTION03(Z,A,B,C,F,G,H,I,J,K) \
+	DECLARE_FUNCTION13	(A,void,F,G,H)\
+	CAST_OBJECT0		(Z,A,B)\
+	CALL_FUNCTION03		(C,I,J,K)
 
 class CLuaGameObject;
+
+class CLuaSound {
+	ref_sound				*m_tpSound;
+public:
+								CLuaSound		(LPCSTR caSoundName)
+	{
+		string256			l_caFileName;
+		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".wav"))
+			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName,0);
+		else {
+			Log				("* [LUA] File not found \"%s\"!",l_caFileName);
+			m_tpSound		= 0;
+		}
+	}
+
+								~CLuaSound		()
+	{
+		xr_delete			(m_tpSound);
+	}
+
+	BIND_FUNCTION02	(m_tpSound,			Play,				ref_sound,		play,				CLuaGameObject *,		BOOL,				CObject *,				BOOL);
+	BIND_FUNCTION02	(m_tpSound,			PlayUnlimited,		ref_sound,		play_unlimited,		CLuaGameObject *,		BOOL,				CObject *,				BOOL);
+	BIND_FUNCTION03	(m_tpSound,			PlayAtPos,			ref_sound,		play_at_pos,		CLuaGameObject *,		const Fvector &,	BOOL,					CObject *,		const Fvector &,	BOOL);
+	BIND_FUNCTION03	(m_tpSound,			PlayAtPosUnlimited,	ref_sound,		play_at_pos_unlimited,CLuaGameObject *,		const Fvector &,	BOOL,					CObject *,		const Fvector &,	BOOL);
+	BIND_FUNCTION00	(m_tpSound,			Stop,				ref_sound,		stop);
+	BIND_FUNCTION01	(m_tpSound,			SetPosition,		ref_sound,		set_position,		const Fvector &,		const Fvector &);
+	BIND_FUNCTION01	(m_tpSound,			SetFrequency,		ref_sound,		set_frequency,		const float,			const float);
+	BIND_FUNCTION01	(m_tpSound,			SetVolume,			ref_sound,		set_volume,			const float,			const float);
+	BIND_FUNCTION10	(m_tpSound,			GetParams,			ref_sound,		get_params,			const CSound_params *,	0);
+	BIND_FUNCTION01	(m_tpSound,			SetParams,			ref_sound,		set_params,			CSound_params *,		CSound_params *);
+
+			 void				SetMinDistance	(const float fMinDistance)
+	{
+		m_tpSound->set_range(fMinDistance,GetMaxDistance());
+	}
+
+			 void				SetMaxDistance	(const float fMaxDistance)
+	{
+		m_tpSound->set_range(GetMinDistance(),fMaxDistance);
+	}
+
+			 const Fvector		&GetPosition	() const
+	{
+		return				(m_tpSound->get_params()->position);
+	}
+
+			 const float		GetFrequency	() const
+	{
+		return				(m_tpSound->get_params()->freq);
+	}
+
+			 const float		GetMinDistance	() const
+	{
+		return				(m_tpSound->get_params()->min_distance);
+	}
+
+			 const float		GetMaxDistance	() const
+	{
+		return				(m_tpSound->get_params()->max_distance);
+	}
+
+			 const float		GetVolume		() const
+	{
+		return				(m_tpSound->get_params()->volume);
+	}
+};
 
 class CLuaHit {
 public:
@@ -128,6 +229,11 @@ public:
 	{
 	}
 
+							operator CObject*	() const
+	{
+		return			(dynamic_cast<CObject*>(m_tpGameObject));
+	}
+
 	IC		CLuaGameObject	*Parent				() const
 	{
 		CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(m_tpGameObject->H_Parent());
@@ -139,41 +245,47 @@ public:
 			
 			void			Hit					(CLuaHit &tLuaHit);
 
-	BIND_MEMBER		(ClassID,			CGameObject,	CLS_ID,				CLASS_ID,				CLASS_ID(-1));
-	BIND_FUNCTION10	(Position,			CGameObject,	Position,			Fvector,				Fvector());
-	BIND_FUNCTION10	(Name,				CGameObject,	cName,				LPCSTR,					"");
-	BIND_FUNCTION10	(Section,			CGameObject,	cNameSect,			LPCSTR,					"");
-	BIND_FUNCTION10	(Mass,				CGameObject,	GetMass,			float,					float(-1));
-	BIND_FUNCTION10	(ID,				CGameObject,	ID,					u32,					u32(-1));
-	BIND_FUNCTION10	(getVisible,		CGameObject,	getVisible,			BOOL,					FALSE);
-	BIND_FUNCTION01	(setVisible,		CGameObject,	setVisible,			BOOL);
-	BIND_FUNCTION10	(getEnabled,		CGameObject,	getEnabled,			BOOL,					FALSE);
-	BIND_FUNCTION01	(setEnabled,		CGameObject,	setEnabled,			BOOL);
+	// CGameObject
+	BIND_MEMBER		(m_tpGameObject,	ClassID,			CGameObject,	CLS_ID,				CLASS_ID,				CLASS_ID(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Position,			CGameObject,	Position,			Fvector,				Fvector());
+	BIND_FUNCTION10	(m_tpGameObject,	Name,				CGameObject,	cName,				LPCSTR,					"");
+	BIND_FUNCTION10	(m_tpGameObject,	Section,			CGameObject,	cNameSect,			LPCSTR,					"");
+	BIND_FUNCTION10	(m_tpGameObject,	Mass,				CGameObject,	GetMass,			float,					float(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	ID,					CGameObject,	ID,					u32,					u32(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	getVisible,			CGameObject,	getVisible,			BOOL,					FALSE);
+	BIND_FUNCTION01	(m_tpGameObject,	setVisible,			CGameObject,	setVisible,			BOOL,					BOOL);
+	BIND_FUNCTION10	(m_tpGameObject,	getEnabled,			CGameObject,	getEnabled,			BOOL,					FALSE);
+	BIND_FUNCTION01	(m_tpGameObject,	setEnabled,			CGameObject,	setEnabled,			BOOL,					BOOL);
 
-	BIND_FUNCTION10	(Cost,				CInventoryItem,	Cost,				u32,					u32(-1));
+	// CInventoryItem
+	BIND_FUNCTION10	(m_tpGameObject,	Cost,				CInventoryItem,	Cost,				u32,					u32(-1));
 
-	BIND_MEMBER		(DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,				_TIME_ID(-1));
-	BIND_FUNCTION10	(Armor,				CEntity,		g_Armor,			float,					-1);
-	BIND_FUNCTION10	(Health,			CEntity,		g_Health,			float,					-1);
-	BIND_FUNCTION10	(MaxHealth,			CEntity,		g_MaxHealth,		float,					-1);
-	BIND_FUNCTION10	(Accuracy,			CEntity,		g_Accuracy,			float,					-1);
-	BIND_FUNCTION10	(Alive,				CEntity,		g_Alive,			BOOL,					FALSE);
-	BIND_FUNCTION10	(Team,				CEntity,		g_Team,				int,					-1);
-	BIND_FUNCTION10	(Squad,				CEntity,		g_Squad,			int,					-1);
-	BIND_FUNCTION10	(Group,				CEntity,		g_Group,			int,					-1);
-	
-	IC		void			Kill				(CLuaGameObject* who)
-	{
-		CEntity				*l_tpEntity = dynamic_cast<CEntity*>(m_tpGameObject);
-		if (!l_tpEntity) {
-			Log				("* [LUA] %s cannot access class member!",m_tpGameObject->cName());
-			return;
-		}
-		l_tpEntity->KillEntity(who->m_tpGameObject);
-	}
+	// CEntity
+	BIND_MEMBER		(m_tpGameObject,	DeathTime,			CEntity,		m_dwDeathTime,		_TIME_ID,				_TIME_ID(-1));
+	BIND_FUNCTION10	(m_tpGameObject,	Armor,				CEntity,		g_Armor,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	MaxHealth,			CEntity,		g_MaxHealth,		float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Accuracy,			CEntity,		g_Accuracy,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Alive,				CEntity,		g_Alive,			BOOL,					FALSE);
+	BIND_FUNCTION10	(m_tpGameObject,	Team,				CEntity,		g_Team,				int,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Squad,				CEntity,		g_Squad,			int,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	Group,				CEntity,		g_Group,			int,					-1);
+	BIND_FUNCTION01	(m_tpGameObject,	Kill,				CEntity,		KillEntity,			CLuaGameObject *,		CObject *);
 
-	BIND_FUNCTION10	(GetFOV,			CEntityAlive,	ffGetFov,			float,					-1);
-	BIND_FUNCTION10	(GetRange,			CEntityAlive,	ffGetRange,			float,					-1);
+	// CEntityAlive
+	BIND_FUNCTION10	(m_tpGameObject,	GetFOV,				CEntityAlive,	ffGetFov,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRange,			CEntityAlive,	ffGetRange,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetHealth,			CEntityAlive,	GetHealth,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetPower,			CEntityAlive,	GetPower,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetSatiety,			CEntityAlive,	GetSatiety,			float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetRadiation,		CEntityAlive,	GetRadiation,		float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetCircumspection,	CEntityAlive,	GetCircumspection,	float,					-1);
+	BIND_FUNCTION10	(m_tpGameObject,	GetMorale,			CEntityAlive,	GetEntityMorale,	float,					-1);
+	BIND_FUNCTION01	(m_tpGameObject,	SetHealth,			CEntityAlive,	ChangeHealth,		float,					float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetPower,			CEntityAlive,	ChangePower,		float,					float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetSatiety,			CEntityAlive,	ChangeSatiety,		float,					float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetRadiation,		CEntityAlive,	ChangeRadiation,	float,					float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetCircumspection,	CEntityAlive,	ChangeCircumspection,float,					float);
+	BIND_FUNCTION01	(m_tpGameObject,	SetMorale,			CEntityAlive,	ChangeEntityMorale,	float,					float);
 
 	IC		void			GetRelationType		(CLuaGameObject* who)
 	{
@@ -191,9 +303,6 @@ public:
 		
 		l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
 	}
-
-//			.def("HealthValue",					&CLuaGameItem::HealthValue)
-//			.def("FoodValue",					&CLuaGameItem::FoodValue)
 //class CItemObject {
 //public:
 //	Condition();
@@ -211,3 +320,4 @@ public:
 //};
 //
 };
+
