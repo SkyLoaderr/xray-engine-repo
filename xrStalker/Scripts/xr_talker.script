@@ -28,7 +28,7 @@ function evaluator_need_talker:evaluate ()
 		if is_object_online(vo:id()) then
 			local otype = vo:clsid()
 			if otype == clsid.actor or otype == clsid.soldier or otype == clsid.stalker then
-				printf("333[%s]: %d: vo:name() = %s", self.object:name(), device():time_global(), vo:name())
+				--printf("333[%s]: %d: vo:name() = %s", self.object:name(), device():time_global(), vo:name())
 			end
 		end
 	end
