@@ -3,6 +3,15 @@
 
 light::light(void)
 {
+	flags.type		= POINT;
+	flags.bStatic	= false;
+	flags.bActive	= false;
+	flags.bShadow	= false;
+	position.set	(0,0,0);
+	direction.set	(0,-1,0);
+	range			= 8.f;
+	cone			= deg2rad(60.f);
+	color.set		(1,1,1,1);
 }
 
 light::~light(void)
