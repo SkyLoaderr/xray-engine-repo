@@ -88,7 +88,8 @@ xr_token TokenAnomalyType[]={
 	{ "NPC Attacking",			SOUND_TYPE_MONSTER_ATTACKING		},
 	{ "World Object Breaking",	SOUND_TYPE_WORLD_OBJECT_BREAKING	},
 	{ "World Object Falling",	SOUND_TYPE_WORLD_OBJECT_FALLING		},
-	{ 0,				0}
+	{ "Meaningless",			0},
+	{ 0,						0}
 };
 
 extern float ffGetStartVolume(ESoundTypes eType);
