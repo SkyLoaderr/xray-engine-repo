@@ -7,6 +7,7 @@
 
 const u32	MAX_POLYGONS			=	1024*8;
 const float MAX_DISTANCE			=	50.f;
+const float	SSM_near_plane			=	.1f;
 
 IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
@@ -110,9 +111,32 @@ void CLightR_Manager::render_point	()
 void CLightR_Manager::render_spot	()
 {
 	// for each light
-	//		1. Calculate light frustum
-	//		2. Calculate visibility for light
-	//		3. Set global light-params to be used by shading
+	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
+	{
+		light*	L					= *it;
+
+		//		1. Calculate light frustum
+		Fvector						L_dir,L_up,L_right,L_pos;
+		L_dir.set					(L->direction);			L_dir.normalize		();
+		L_up.set					(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
+		L_right.crossproduct		(L_up,L_dir);			L_right.normalize	();
+		L_up.crossproduct			(L_dir,L_right);		L_up.normalize		();
+		L_pos.set					(L->position);
+		L_view.build_camera_dir		(L_pos,L_dir,L_up);
+		L_project.build_projection	(L->cone,1.f,SSM_near_plane,L->range+EPS_S);
+		L_combine.mul				(L_project,L_view);
+
+		//		2. Calculate visibility for light + build soring tree
+		RImplementation.r_pmask						(true,false);
+		RImplementation.r_dsgraph_render_subspace	(
+			L->spatial.sector,
+			L_combine,
+			L_pos,
+			TRUE
+			);
+
+		//		3. Set global light-params to be used by shading
+	}
 	//		4. Dump sorting tree
 	//		??? grass ???
 }
