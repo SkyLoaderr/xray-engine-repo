@@ -7,6 +7,8 @@
 
 #include "ui/UIDialogWnd.h"
 #include "ui/UIInventoryWnd.h"
+#include "ui/UIMapWnd.h"
+
 
 
 // refs 
@@ -31,5 +33,6 @@ public:
 
 	/////////
 	CUIInventoryWnd		InventoryMenu;
+	CUIMapWnd			MapMenu;
 };
 #endif // __XR_UIGAMEDM_H__
