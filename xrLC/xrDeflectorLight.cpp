@@ -248,11 +248,11 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 	} catch (...)
 	{
 		Msg		("* ERROR: imf_Process");
-		_FREE	(pScaled);
-		_FREE	(pRestored);
+		xr_free	(pScaled);
+		xr_free	(pRestored);
 		return	FALSE;
 	}
-	_FREE		(pScaled);
+	xr_free		(pScaled);
 
 	// compare them
 	const u32 limit = 254-BORDER;
@@ -272,11 +272,11 @@ BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
 			}
 		}
 	}
-	_FREE	(pRestored);
+	xr_free	(pRestored);
 	return	TRUE;
 
 fail:
-	_FREE	(pRestored);
+	xr_free	(pRestored);
 	return	FALSE;
 }
 
@@ -337,7 +337,7 @@ BOOL	compress_Zero			(b_texture& lm, u32 rms)
 	// Compress if needed
 	if (rms_test(lm,_r,_g,_b,rms))
 	{
-		_FREE	(lm.pSurface);		// release OLD
+		xr_free	(lm.pSurface);		// release OLD
 		u32		c_x			= BORDER*2;
 		u32		c_y			= BORDER*2;
 		u32		c_size		= c_x*c_y;
@@ -479,7 +479,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				// Reacalculate lightmap at lower resolution
 				lm.dwWidth	= w;
 				lm.dwHeight	= h;
-				_FREE		(lm.pSurface);
+				xr_free		(lm.pSurface);
 				L_Calculate	(DB,LightsSelected,H);
 			}
 		} catch (...)
@@ -510,7 +510,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				}
 
 				// Exchange
-				_FREE			(lm.pSurface);
+				xr_free			(lm.pSurface);
 				T.dwWidth		= 0;
 				T.dwHeight		= lm.dwHeight;
 				lm				= T;
@@ -535,7 +535,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				}
 
 				// Exchange
-				_FREE			(lm.pSurface);
+				xr_free			(lm.pSurface);
 				T.dwWidth		= lm.dwWidth;
 				T.dwHeight		= 0;
 				lm				= T;
@@ -549,7 +549,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				lm_new.pSurface	= (u32*)(xr_malloc(size));
 				ZeroMemory		(lm_new.pSurface,size);
 				blit			(lm_new.pSurface,lm_new.dwWidth,lm_new.dwHeight,lm_old.pSurface,lm_old.dwWidth,lm_old.dwHeight,BORDER,BORDER,255-BORDER);
-				_FREE			(lm_old.pSurface);
+				xr_free			(lm_old.pSurface);
 				lm				= lm_new;
 				ApplyBorders	(lm,254);
 				ApplyBorders	(lm,253);
@@ -576,7 +576,7 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, LSelection* LightsSelected, HASH& H)
 				if (color_get_B(pixel)>rms_discard)		{ bSkip=FALSE; break; }
 			}
 			if (bSkip)		{
-				_FREE			(lm.pSurface);
+				xr_free			(lm.pSurface);
 				layers.pop_back	();
 			}
 		}

@@ -108,7 +108,7 @@ u32*	Surface_Load(char* name, u32& w, u32& h)
 	if (strchr(name,'.')) *(strchr(name,'.')) = 0;
 
 	// detect format
-	FILE_NAME		full;
+	string256		full;
 	if (!Surface_Detect(full,name)) return NULL;
 
 	FIBITMAP* map32		= Surface_Load(full);
