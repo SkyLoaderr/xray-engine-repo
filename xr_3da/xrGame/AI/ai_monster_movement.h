@@ -19,6 +19,8 @@ class CMonsterMovement : virtual public CMovementManager {
 
 	bool				b_targeted_path;		// предположительно путь ведёт к целевой точке
 
+	u32					m_dwFrameReinit;
+
 public :
 
 	SVelocity			m_velocity_linear, m_velocity_angular;
@@ -26,7 +28,6 @@ public :
 public:
 
 		CAbstractVertexEvaluator	*m_tSelectorApproach;
-
 		CMotionStats				*MotionStats;
 
 	// -------------------------------------------------------------------
@@ -56,19 +57,22 @@ public:
 	// -------------------------------------------------------------------
 
 public:
-				CMonsterMovement		();
-				~CMonsterMovement		();
+						CMonsterMovement	();
+						~CMonsterMovement	();
+			void		InitExternal		(CAI_Biting	*pM);
 
-		void		Init				();
+	virtual void		reinit				();
+		
+
 				
-		void		Frame_Init			();
-		void		Frame_Update		();
-		void		Frame_Finalize		();
-	
+			void		Frame_Init			();
+			void		Frame_Update		();
+			void		Frame_Finalize		();
+		
 
-		void		WalkNextGraphPoint	();
+			void		WalkNextGraphPoint	();
 
-		void		update_velocity		();
+			void		update_velocity		();
 private:
 	
 		// проверка на завершение пути

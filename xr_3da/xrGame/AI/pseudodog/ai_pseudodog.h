@@ -28,6 +28,8 @@ public:
 	virtual void	Load				(LPCSTR section);
 
 			void	Init				();
+	virtual void	reload				(LPCSTR section);
+
 	virtual void	StateSelector		();
 	virtual void	UpdateCL			();
 

@@ -103,7 +103,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 
 	MotionMan.FX_Play(hit_side, 1.0f);
 
-	//AddDangerousEnemy(who,20000);
+	HitMemory.add_hit(who,hit_side);
 
 	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
 	if (script_monster)

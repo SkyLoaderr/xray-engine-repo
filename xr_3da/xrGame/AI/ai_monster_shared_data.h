@@ -14,14 +14,6 @@ public:
 	SVelocityParam 			m_fsVelocityDrag;
 	SVelocityParam 			m_fsVelocitySteal;
 
-	u32						m_dwProbRestWalkFree;
-	u32						m_dwProbRestStandIdle;
-	u32						m_dwProbRestLieIdle;
-	u32						m_dwProbRestTurnLeft;
-
-	float					m_fImpulseMin;
-	float					m_fImpulseMax;
-
 	float					m_fDistToCorpse;
 	float					m_fMinAttackDist;
 	float					m_fMaxAttackDist;

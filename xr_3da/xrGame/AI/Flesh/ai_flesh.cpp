@@ -11,7 +11,7 @@ CAI_Flesh::CAI_Flesh()
 	stateHide			= xr_new<CBitingHide>		(this);
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	stateExploreDE		= xr_new<CBitingExploreDE>	(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	CurrentState		= stateRest;
@@ -127,6 +127,8 @@ void CAI_Flesh::Load(LPCSTR section)
 
 void CAI_Flesh::StateSelector()
 {
+	TTime last_hit_time = 0;
+	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
 
 	if (EnemyMan.get_enemy()) {
 		switch (EnemyMan.get_danger_type()) {
@@ -135,24 +137,13 @@ void CAI_Flesh::StateSelector()
 			case eNormal:
 			case eWeak:			SetState(stateAttack); break;
 		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
-		if (hear_dangerous_sound)			SetState(stateExploreNDE);		
+	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) SetState(stateExploreDNE);
+	else if (hear_dangerous_sound || hear_interesting_sound) {
+			if (hear_dangerous_sound)			SetState(stateExploreDNE);		
 		if (hear_interesting_sound)			SetState(stateExploreNDE);	
 	} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					
 											SetState(stateEat);	
 	else									SetState(stateRest);
-
-//#ifdef TEST_EAT_STATE	
-//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))
-//		SetState(stateEat);
-//#else
-//	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))	
-//		SetState(stateEat);
-//#endif
-	
-
-///	if ((CurrentState == stateAttack) && m_tEnemy.obj && (m_tEnemy.time + 1500 < m_current_update) ) 
-///		SetState(stateSearchEnemy);
 
 }
 

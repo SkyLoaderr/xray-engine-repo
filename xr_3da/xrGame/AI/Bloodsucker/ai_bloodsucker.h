@@ -28,7 +28,7 @@ public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
 
-			void			Init					();
+	virtual void			reinit					();
 	virtual void			UpdateCL				();
 	virtual void			shedule_Update			(u32 dt);
 

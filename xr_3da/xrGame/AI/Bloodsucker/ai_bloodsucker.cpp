@@ -6,18 +6,19 @@
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
 
-
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
 	stateRest			= xr_new<CBitingRest>			(this);
 	stateEat			= xr_new<CBitingEat>			(this);
 	stateAttack			= xr_new<CBitingAttack>			(this);
 	statePanic			= xr_new<CBitingPanic>			(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>		(this);
+	stateExploreDNE		= xr_new<CBitingRunAway>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 	stateSquadTask		= xr_new<CBitingSquadTask>		(this);
-	
-	Init();
+
+
+	m_fEffectDist					= 0.f;
+	invisible_vel.set				(0.1f, 0.1f);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -31,19 +32,14 @@ CAI_Bloodsucker::~CAI_Bloodsucker()
 	xr_delete(stateSquadTask);
 }
 
-
-void CAI_Bloodsucker::Init()
+void CAI_Bloodsucker::reinit()
 {
-	inherited::Init();
-
-	m_fEffectDist					= 0.f;
-
+	inherited::reinit();
 	CurrentState					= stateRest;
 	CurrentState->Reset				();
 
 	Bones.Reset();
 
-	invisible_vel.set				(0.1f, 0.1f);
 	visibility_steady				= true;
 }
 
@@ -281,6 +277,9 @@ void CAI_Bloodsucker::StateSelector()
 {
 	IState *pState = CurrentState;
 
+	TTime last_hit_time = 0;
+	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
+
 	if (EnemyMan.get_enemy()) {
 		switch (EnemyMan.get_danger_type()) {
 			case eVeryStrong:				pState = statePanic; break;
@@ -288,7 +287,8 @@ void CAI_Bloodsucker::StateSelector()
 			case eNormal:
 			case eWeak:						pState = stateAttack; break;
 		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
+	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) pState = stateExploreDNE;
+	else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			pState = stateExploreNDE;		
 		if (hear_interesting_sound)			pState = stateExploreNDE;	
 	} else	if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					

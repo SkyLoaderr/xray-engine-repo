@@ -498,9 +498,12 @@ struct SMonsterCorpse {
 
 DEFINE_MAP(const CEntityAlive *,SMonsterCorpse,CORPSE_MAP, CORPSE_MAP_IT);
 
+
+
 struct SMonsterHit {
-	CObject *object;
-	TTime	time;
+	CObject		*object;
+	TTime		time;
+	EHitSide	side;
 
 	bool	operator==(const CObject *obj) {
 		return (object == obj);

@@ -17,7 +17,7 @@ CAI_PseudoDog::CAI_PseudoDog()
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	stateGrowling		= xr_new<CPseudodogGrowling>(this);
 
 	CurrentState		= stateRest;
@@ -59,8 +59,6 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	inherited::Load	(section);
 	CJumping::Load	(section);
 
-
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::_sd->m_fsVelocityRunFwdNormal.velocity.angular);
 
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
 	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
@@ -163,6 +161,13 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	::Sound->create(psy_effect_sound,TRUE, pSettings->r_string(section,"sound_psy_effect"), SOUND_TYPE_WORLD);
 }
 
+void CAI_PseudoDog::reload(LPCSTR section)
+{
+	inherited::reload(section);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("jump_glide_0"), JT_GLIDE,	false,	0.f, inherited::_sd->m_fsVelocityRunFwdNormal.velocity.angular);
+}
+
+
 #define MIN_ANGRY_TIME		10000
 #define MAX_GROWLING_TIME	20000
 
@@ -186,6 +191,8 @@ void CAI_PseudoDog::StateSelector()
 	const CAI_Stalker	*pStalker	= dynamic_cast<const CAI_Stalker *>(enemy);
 	const CActor		*pActor		= dynamic_cast<const CActor *>(enemy);
 
+	TTime last_hit_time = 0;
+	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
 
 	if (!m_bAngry && (pActor || pStalker)) {
 		if (EnemyMan.get_danger_type() == eVeryStrong) SetState(statePanic);
@@ -199,7 +206,8 @@ void CAI_PseudoDog::StateSelector()
 				case eNormal:
 				case eWeak:			SetState(stateAttack); break;
 			}
-		} else if (hear_dangerous_sound || hear_interesting_sound) {
+	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) SetState(stateExploreDNE);
+	else if (hear_dangerous_sound || hear_interesting_sound) {
 			if (hear_dangerous_sound)			SetState(stateExploreNDE);		
 			if (hear_interesting_sound)			SetState(stateExploreNDE);	
 		} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))

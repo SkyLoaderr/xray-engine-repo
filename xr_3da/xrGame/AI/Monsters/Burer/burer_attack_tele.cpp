@@ -14,6 +14,7 @@
 #define MAXIMAL_MASS			5000.f
 
 #define MIN_TIME_HOLD			1200
+#define MAX_TIME_CHECK_FAILURE	6000
 
 CBurerAttackTele::CBurerAttackTele(CBurer *p)
 {
@@ -164,6 +165,11 @@ void CBurerAttackTele::ExecuteTeleContinue()
 	if (object_found) {
 		m_tAction		= ACTION_TELE_FIRE;
 		selected_object = tele_object.get_object();
+	} else {
+		if (!IsActiveObjects() || (time_started + MAX_TIME_CHECK_FAILURE < m_dwCurrentTime)) {
+			pMonster->MotionMan.TA_Deactivate();
+			m_tAction = ACTION_COMPLETED;
+		} 
 	}
 }
 

@@ -11,7 +11,7 @@ CAI_Dog::CAI_Dog()
 	stateDetour			= xr_new<CBitingDetour>		(this);
 	statePanic			= xr_new<CBitingPanic>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
-	stateExploreDNE		= xr_new<CBitingExploreDNE>	(this);
+	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	
 	CurrentState		= stateRest;
 
@@ -135,6 +135,9 @@ void CAI_Dog::Load(LPCSTR section)
 void CAI_Dog::StateSelector()
 {	
 	IState *state = 0;
+	
+	TTime last_hit_time = 0;
+	if (HitMemory.is_hit()) last_hit_time = HitMemory.get_last_hit_time();
 
 	if (EnemyMan.get_enemy()) {
 		switch (EnemyMan.get_danger_type()) {
@@ -143,7 +146,8 @@ void CAI_Dog::StateSelector()
 			case eNormal:
 			case eWeak:						state = stateAttack; break;
 		}
-	} else if (hear_dangerous_sound || hear_interesting_sound) {
+	} else if (HitMemory.is_hit() && (last_hit_time + 10000 > m_current_update)) state = stateExploreDNE;
+	else if (hear_dangerous_sound || hear_interesting_sound) {
 		if (hear_dangerous_sound)			state = stateExploreNDE;		
 		if (hear_interesting_sound)			state = stateExploreNDE;	
 	} else if (CorpseMan.get_corpse() && ((GetSatiety() < _sd->m_fMinSatiety) || flagEatNow))					

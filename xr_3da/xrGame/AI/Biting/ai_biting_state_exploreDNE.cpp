@@ -32,7 +32,6 @@ void CBitingExploreDNE::Init()
 	m_dwStayLastTimeCheck	= m_dwCurrentTime;
 
 	m_tAction				= ACTION_RUN_AWAY;
-
 }
 
 void CBitingExploreDNE::Run()
@@ -43,16 +42,15 @@ void CBitingExploreDNE::Run()
 	pMonster->SoundMemory.GetSound(se, bTemp);
 	if (m_tSound.time + 2000 < se.time) Init();
 
-
-	// нивидимость
-#pragma todo("Jim to Jim: fix nesting: Bloodsucker in Biting state")
+	// ѕроверить возможность невидимости
 	if (pMonster->ability_invisibility()) {
-		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);	
+		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
 		if (pBS && pA && (pA->Position().distance_to(pBS->Position()) < pBS->m_fEffectDist)) {
-			if (pBS->GetPower() > pBS->m_fPowerThreshold) {
+			if ((pBS->GetPower() > pBS->m_fPowerThreshold)) {
 				if (pBS->CMonsterInvisibility::Switch(false)) {
+					pBS->set_visible(false);
 					pBS->ChangePower(pBS->m_ftrPowerDown);
 					pBS->ActivateEffector(pBS->CMonsterInvisibility::GetInvisibleInterval() / 1000.f);
 				}

@@ -7,29 +7,38 @@
 
 CMonsterMovement::CMonsterMovement()
 {
-	m_tSelectorApproach	= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-	MotionStats			= 0;		
+	m_tSelectorApproach		= xr_new<CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	pMonster				= 0;
+
+	m_dwFrameReinit			= u32(-1);
 }
 
 CMonsterMovement::~CMonsterMovement()
 {
 	xr_delete(m_tSelectorApproach);
-	
-	if (MotionStats) xr_delete(MotionStats);
+	xr_delete(MotionStats);
 }
 
-void CMonsterMovement::Init()
+void CMonsterMovement::reinit()
 {
-	pMonster						= dynamic_cast<CAI_Biting*>(this);
-	VERIFY							(pMonster);
+	if (!frame_check(m_dwFrameReinit))
+		return;
 	
-	MotionStats						= xr_new<CMotionStats> (pMonster);
+	inherited::reinit();
 
 	b_try_min_time					= false;
 	time_last_approach				= 0;
 
 	m_velocity_linear.set			(0.f,0.f);
 	m_velocity_angular.set			(0.f,0.f);
+}
+
+void CMonsterMovement::InitExternal(CAI_Biting *pM)
+{
+	pMonster	= pM;
+	VERIFY		(pMonster);
+
+	MotionStats	= xr_new<CMotionStats> (pMonster);
 }
 
 //////////////////////////////////////////////////////////////////////////

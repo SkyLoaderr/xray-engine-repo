@@ -77,7 +77,7 @@ void CBitingRest::Run()
 	switch (m_tAction) {
 		case ACTION_WALK:						// обход точек графа
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-
+			
 			// ходить по точкам графа
 			pMonster->WalkNextGraphPoint();
 
@@ -96,10 +96,12 @@ void CBitingRest::Run()
 			break;
 		case ACTION_WALK_PATH_END:
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+			
 			break;
 	}
 
 	pMonster->State_PlaySound(MonsterSpace::eMonsterSoundIdle, pMonster->_sd->m_dwIdleSndDelay);
+
 }
 
 TTime CBitingRest::UnlockState(TTime cur_time)

@@ -16,8 +16,10 @@ class CAI_Biting;
 
 #include "ai_biting_state_attack.h"
 #include "ai_biting_state_exploreNDE.h"
+#include "ai_biting_state_exploreDNE.h"
 #include "ai_biting_state_panic.h"
 #include "ai_biting_state_misc.h"
+#include "ai_biting_run_away.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
@@ -143,38 +145,6 @@ private:
 	virtual void	Run				();
 };
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingExploreDNE class	// Explore danger-non-expedient enemy
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingExploreDNE : public IState {
-	typedef	IState inherited;
-	CAI_Biting	*pMonster;
-
-	enum {
-		ACTION_RUN_AWAY,
-		ACTION_LOOK_BACK_POSITION,
-		ACTION_LOOK_AROUND
-	} m_tAction;
-
-	SoundElem		m_tSound;
-	bool			flag_once_1;
-
-	Fvector 		SavedPosition;
-	Fvector 		StartPosition;
-	Fvector 		LastPosition;
-
-	float			m_fRunAwayDist;
-
-	TTime			m_dwLastPosSavedTime;
-	TTime			m_dwStayLastTimeCheck;
-
-public:
-					CBitingExploreDNE	(CAI_Biting *p);
-private:
-	virtual	void	Init				();
-	virtual	void	Run					();
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreDE class	// Explore danger-expedient enemy //  Посмотреть по сторонам, укрыться	

@@ -36,6 +36,7 @@ class CAI_Biting : public CCustomMonster,
 	typedef	CCustomMonster					inherited;
 	typedef CSharedClass<_biting_shared>	_sd_biting;
 	typedef CMovementManager				MoveMan;
+	typedef CSharedClass<_biting_shared>	inherited_shared;
 
 
 	// -------------------------------------------------------
@@ -75,21 +76,11 @@ public:
 	
 	// friend definitions
 	friend	class			CMotionManager;
-	friend	class			IState;
-	friend	class			CBitingRest;
-	friend  class 			CBitingAttack;
-	friend	class 			CBitingEat;
-	friend	class 			CBitingHide;
-	friend	class 			CBitingDetour;
-	friend	class 			CBitingPanic;
-	friend	class 			CBitingExploreDNE;
-	friend	class 			CBitingExploreDE;
-	friend	class 			CBitingExploreNDE;
-	friend	class 			CBitingSquadTask;
-	friend	class			CBitingRest;
+	friend	class			CBitingAttack;
 
 							CAI_Biting						();
 	virtual					~CAI_Biting						();
+	
 	virtual	BOOL			renderable_ShadowReceive		()	{ return TRUE;	}  
 	virtual void			Die								();
 	virtual void			HitSignal						(float amount, Fvector& vLocalDir, CObject* who, s16 element);
@@ -109,8 +100,8 @@ public:
 	virtual void			shedule_Update					(u32 dt);
 
 	virtual void			Think							();
-			void			Init							();
 	virtual	void			reinit							();
+	virtual void			reload							(LPCSTR section);
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
@@ -124,7 +115,7 @@ public:
 	virtual void			PHUnFreeze						()							{return inherited::PHUnFreeze();}
 	virtual void			PHFreeze						()							{return inherited::PHFreeze();}
 	virtual BOOL			UsedAI_Locations				()							{return inherited::UsedAI_Locations();}
-	virtual void			reload							(LPCSTR section);
+
 	virtual const SRotation	Orientation						() const					{return inherited::Orientation();}
 	virtual void			renderable_Render				()							{return inherited::renderable_Render();} 
 	virtual	void			PitchCorrection					();
@@ -132,6 +123,10 @@ public:
 	virtual	void			SetAttackEffector				();
 	
 	virtual float			get_custom_pitch_speed			(float def_speed);
+
+			void			Init							() {}
+
+	virtual void			load_shared						(LPCSTR section);
 
 	// ---------------------------------------------------------------------------------
 	// Process scripts
@@ -201,12 +196,12 @@ public:
 			CBoneInstance *GetEatBone						();
 
 			// attack-stop
-			void			AS_Init							();
-			void			AS_Load							(LPCSTR section);
-			void			AS_Start						();
-			void			AS_Stop							();
-			void			AS_Check						(bool hit_success);
-			bool			AS_Active						();
+	IC		void			AS_Init							();
+	IC		void			AS_Load							(LPCSTR section);
+	IC		void			AS_Start						();
+	IC		void			AS_Stop							();
+	IC		void			AS_Check						(bool hit_success);
+	IC		bool			AS_Active						();
 	
 	// Morale
 			void			MoraleBroadcast					(float fValue);
@@ -216,21 +211,21 @@ public:
 // members
 public:
 
-	CCharacterPhysicsSupport *m_pPhysics_support;
+	CCharacterPhysicsSupport	*m_pPhysics_support;
 	
-	float					m_fGoingSpeed;			// speed over the path
-	u32						m_dwHealth;				
+	float						m_fGoingSpeed;			// speed over the path
+	u32							m_dwHealth;				
 
 	// State flags
-	bool					m_bDamaged;
-	bool					m_bAngry;
-	bool					m_bGrowling;
-	bool					flagEatNow;				// true - сейчас монстр ест
+	bool						m_bDamaged;
+	bool						m_bAngry;
+	bool						m_bGrowling;
+	bool						flagEatNow;				// true - сейчас монстр ест
 
-	float					m_fCurMinAttackDist;		// according to attack stops
+	float						m_fCurMinAttackDist;		// according to attack stops
 
 	
-	SCurrentAnim			cur_anim;
+	SCurrentAnim				cur_anim;
 
 
 	// -----------------------------------------------------------------------
@@ -277,7 +272,6 @@ public:
 	bool					RayPickEnemy			(const CObject *target_obj, const Fvector &trace_from, const Fvector &dir, float dist, float radius, u32 num_picks);
 
 
-	u16						fire_bone_id;
 	float					GetRealDistToEnemy		(const CEntity *pE);
 
 	void					FaceTarget				(const CEntity *entity);
@@ -296,6 +290,14 @@ public:
 	// проиграть звук у актера
 	virtual void			play_effect_sound		() {}
 	
+
+	// предотвращение двойного вызова методов
+	u32						m_dwFrameLoad;
+	u32						m_dwFrameReload;
+	u32						m_dwFrameReinit;
+	u32						m_dwFrameSpawn;
+	u32						m_dwFrameDestroy;
+	u32						m_dwFrameClient;
 
 
 #ifdef DEBUG

@@ -20,7 +20,11 @@ public:
 	bool				is_hit					() {return !m_hits.empty();}
 	bool				is_hit					(CObject *pO);
 
-	void				add_hit					(CObject *who);
+	void				add_hit					(CObject *who, EHitSide side);
+	
+	Fvector				get_last_hit_dir		();
+	TTime				get_last_hit_time		();
+
 
 private:
 	void				remove_non_actual		();

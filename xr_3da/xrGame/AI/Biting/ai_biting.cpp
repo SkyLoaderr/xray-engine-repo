@@ -1,10 +1,3 @@
-////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_biting.cpp
-//	Created 	: 22.05.2003
-//  Modified 	: 22.05.2003
-//	Author		: Serge Zhem
-//	Description : AI Behaviour for all monsters of class "Biting"
-////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "ai_biting.h"
@@ -28,8 +21,35 @@ CAI_Biting::CAI_Biting()
 	HDebug							= xr_new<CMonsterDebug>(this, Fvector().set(0.0f,2.0f,0.0f), 20.f);
 #endif
 	
-	Init();
+	m_pPhysics_support				->in_Init();
 
+	m_dwFrameLoad		= u32(-1);
+	m_dwFrameReload		= u32(-1);
+	m_dwFrameReinit		= u32(-1);
+	m_dwFrameSpawn		= u32(-1);
+	m_dwFrameDestroy	= u32(-1);
+	m_dwFrameClient		= u32(-1);
+
+	// Components external init 
+
+	CMonsterMovement::InitExternal	(this);
+	EnemyMemory.init_external		(this, 20000);
+	SoundMemory.init_external		(this, 20000);
+	CorpseMemory.init_external		(this, 20000);
+	HitMemory.init_external			(this, 50000);
+
+	EnemyMan.init_external			(this);
+	CorpseMan.init_external			(this);
+
+	// Инициализация параметров анимации	
+	MotionMan.Init					(this);
+
+	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
+
+	m_fGoingSpeed					= 0.f;
+
+	// Attack-stops init
+	AS_Init							();
 }
 
 CAI_Biting::~CAI_Biting()
@@ -40,24 +60,20 @@ CAI_Biting::~CAI_Biting()
 #endif	
 }
 
-void CAI_Biting::Init()
+void CAI_Biting::reinit()
 {
-	// initializing class members
-	m_fGoingSpeed					= 0.f;
+	if (!frame_check(m_dwFrameReinit))
+		return;
 	
-	CDetailPathManager::Init();
+	m_pPhysics_support->in_NetSpawn		();
+	
+	inherited::reinit					();
+	CMonsterMovement::reinit			();
 
-	m_pPhysics_support				->in_Init();
 
 	flagEatNow						= false;
 	m_bDamaged						= false;
 	m_bAngry						= false;
-
-	// Attack-stops init
-	AS_Init							();
-
-	// Инициализация параметров анимации	
-	MotionMan.Init					(this);
 
 	anim_speed						= -1.f;
 	cur_blend						= 0;
@@ -68,47 +84,18 @@ void CAI_Biting::Init()
 
 	state_invisible					= false;
 
-	EnemyMemory.init_external		(this, 20000);
-	SoundMemory.init_external		(this, 20000);
-	CorpseMemory.init_external		(this, 20000);
-	HitMemory.init_external			(this, 50000);
-
-	EnemyMan.init_external			(this);
-	CorpseMan.init_external			(this);
-
-	for (u32 i = 0; i < eLegsMaxNumber; i++) m_FootBones[i] = BI_NONE;
-
-}
-
-void CAI_Biting::reinit()
-{
-	m_pPhysics_support->in_NetSpawn		();
-	
-	inherited::reinit					();
-	CMonsterMovement::reinit			();
 
 #ifdef 	DEEP_TEST_SPEED	
 	time_next_update				= 0;
 #endif
 
-	CMonsterMovement::Init();
-}
-
-
-
-void CAI_Biting::Die()
-{
-	inherited::Die( );
-
-	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
-
-	MotionMan.ForceAnimSelect();
-	
-	Level().SquadMan.RemoveMember((u8)g_Squad(), this);
 }
 
 void CAI_Biting::Load(LPCSTR section)
 {
+	if (!frame_check(m_dwFrameLoad))
+		return;
+
 	// load parameters from ".ltx" file
 	inherited::Load					(section);
 	CMonsterMovement::Load			(section);
@@ -123,10 +110,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
 	fEntityHealth					= (float)m_dwHealth;
-	fire_bone_id					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(section,"bone_fire"));
 
-	// Load shared data
-	SHARE_ON_LOAD(_sd_biting);
+	inherited_shared::load_shared	(SUB_CLS_ID, section);
 
 	m_fCurMinAttackDist				= _sd->m_fMinAttackDist;
 
@@ -143,12 +128,9 @@ void CAI_Biting::Load(LPCSTR section)
 	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
 	CSoundPlayer::add(pSettings->r_string(section,"sound_growling"),	16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
 
-
-	LoadFootBones();
-
 }
 
-void CAI_Biting::LoadShared(LPCSTR section)
+void CAI_Biting::load_shared(LPCSTR section)
 {
 	// Загрузка параметров из LTX
 	_sd->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
@@ -161,11 +143,6 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
 	_sd->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
 
-	_sd->m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
-	_sd->m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
-	_sd->m_dwProbRestLieIdle			= pSettings->r_u32   (section,"ProbRestLieIdle");
-	_sd->m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
-
 	_sd->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
 	_sd->m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
 	_sd->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
@@ -176,7 +153,7 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	_sd->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
 	_sd->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
-	
+
 	_sd->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
 	_sd->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
 	_sd->m_dwAttackSndDelay				= pSettings->r_u32	(section,"attack_sound_delay");
@@ -206,7 +183,7 @@ void CAI_Biting::LoadShared(LPCSTR section)
 	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_base.r, &_sd->m_attack_effector.ppi.color_base.g, &_sd->m_attack_effector.ppi.color_base.b);
 	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_gray.r, &_sd->m_attack_effector.ppi.color_gray.g, &_sd->m_attack_effector.ppi.color_gray.b);
 	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &_sd->m_attack_effector.ppi.color_add.r,	&_sd->m_attack_effector.ppi.color_add.g,&_sd->m_attack_effector.ppi.color_add.b);
-	
+
 	_sd->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
 	_sd->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
 	_sd->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
@@ -218,12 +195,14 @@ void CAI_Biting::LoadShared(LPCSTR section)
 
 	// --------------------------------------------------------------------------------
 
-	R_ASSERT2 (100 == (_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft), "Probability sum isn't 1");
 }
 
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
 {
+	if (!frame_check(m_dwFrameSpawn))
+		return	(TRUE);
+	
 	if (!inherited::net_Spawn(DC))
 		return(FALSE);
 
@@ -240,6 +219,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	m_PhysicMovementControl->SetPosition	(Position());
 	m_PhysicMovementControl->SetVelocity	(0,0,0);
 
+	// Установить алгоритм групповой атаки
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	if ((pSquad->GetLeader() == this)) { 
 		pSquad->SetupAlgType(ESquadAttackAlg(_sd->m_bUsedSquadAttackAlg));
@@ -258,6 +238,9 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 
 void CAI_Biting::net_Destroy()
 {
+	if (!frame_check(m_dwFrameDestroy))
+		return;
+
 	inherited::net_Destroy();
 	m_pPhysics_support->in_NetDestroy();
 }
@@ -341,12 +324,11 @@ void CAI_Biting::net_Import(NET_Packet& P)
 	setEnabled				(TRUE);
 }
 
-//////////////////////////////////////////////////////////////////////
-// Other functions
-//////////////////////////////////////////////////////////////////////
-
 void CAI_Biting::UpdateCL()
 {
+	if (!frame_check(m_dwFrameClient))
+		return;
+
 	inherited::UpdateCL();
 	
 	// Проверка состояния анимации (атака)
@@ -356,6 +338,7 @@ void CAI_Biting::UpdateCL()
 		MotionMan.STEPS_Update(get_legs_number());
 	}
 
+	
 	CJumping *pJumping = dynamic_cast<CJumping *>(this);
 	if (!pJumping || !pJumping->IsActive())
 		PitchCorrection();
@@ -382,6 +365,23 @@ void CAI_Biting::shedule_Update(u32 dt)
 	
 	m_pPhysics_support->in_shedule_Update(dt);
 }
+
+
+//////////////////////////////////////////////////////////////////////
+// Other functions
+//////////////////////////////////////////////////////////////////////
+
+
+void CAI_Biting::Die()
+{
+	inherited::Die( );
+
+	CSoundPlayer::play(MonsterSpace::eMonsterSoundDie);
+	MotionMan.ForceAnimSelect();
+
+	Level().SquadMan.RemoveMember((u8)g_Squad(), this);
+}
+
 
 void CAI_Biting::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_object_space,float impulse, ALife::EHitType hit_type)
 {
@@ -441,8 +441,8 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 	
 	Fmatrix global_transform;
 	global_transform.set(XFORM());
-	global_transform.mulB(PKinematics(Visual())->LL_GetBoneInstance(fire_bone_id).mTransform);
-
+	
+	global_transform.mulB(PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head")).mTransform);
 	
 	Fvector dir; 
 	dir.sub(enemy_center, global_transform.c);
@@ -475,8 +475,13 @@ bool CAI_Biting::useful(const CGameObject *object) const
 
 void CAI_Biting::reload	(LPCSTR section)
 {
+	if (!frame_check(m_dwFrameReload))
+		return;
+
 	CCustomMonster::reload		(section);
 	CMonsterMovement::reload	(section);
+
+	LoadFootBones();
 }
 
 
@@ -558,21 +563,21 @@ void CAI_Biting::LoadFootBones()
 			CInifile::Item& item	= *I;
 			
 			u16 index = PKinematics(Visual())->LL_BoneID(*item.second);
-			R_ASSERT3(index != BI_NONE, "foot bone not found", *item.second);
+			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
 			
 			if (xr_strcmp(*item.first, "front_left") == 0) 			m_FootBones[eFrontLeft]		= index;
 			else if (xr_strcmp(*item.first, "front_right")== 0)		m_FootBones[eFrontRight]	= index;
 			else if (xr_strcmp(*item.first, "back_right")== 0)		m_FootBones[eBackRight]		= index;
 			else if (xr_strcmp(*item.first, "back_left")== 0)		m_FootBones[eBackLeft]		= index;
 		}
-	} else R_ASSERT("section [foot_bones] not found in monster user_data");
+	} else VERIFY("section [foot_bones] not found in monster user_data");
 
 	// проверка на соответсвие
 	int count = 0;
 	for (u32 i = 0; i < eLegsMaxNumber; i++) 
 		if (m_FootBones[i] != BI_NONE) count++;
 
-	R_ASSERT(count == get_legs_number());
+	VERIFY(count == get_legs_number());
 }
 
 //////////////////////////////////////////////////////////////////////////

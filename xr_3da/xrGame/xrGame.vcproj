@@ -1135,6 +1135,12 @@
 						Name="States"
 						Filter="">
 						<File
+							RelativePath=".\ai\biting\ai_biting_run_away.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_run_away.h">
+						</File>
+						<File
 							RelativePath=".\Ai\Biting\ai_biting_state.h">
 						</File>
 						<File
@@ -1154,6 +1160,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_state_exploreDNE.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_exploreDNE.h">
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_state_exploreNDE.cpp">
@@ -1626,27 +1635,6 @@
 					</File>
 				</Filter>
 				<Filter
-					Name="PseudoGigant"
-					Filter="">
-					<File
-						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
-						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCustomBuildTool"/>
-						</FileConfiguration>
-					</File>
-					<File
-						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
-					</File>
-					<File
-						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="Abilities"
 					Filter="">
 					<Filter
@@ -1683,6 +1671,27 @@
 						</File>
 						<File
 							RelativePath=".\ai\ai_monster_jump.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="PseudoGigant"
+						Filter="">
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\pseudo_gigant.h">
+							<FileConfiguration
+								Name="Debug|Win32">
+								<Tool
+									Name="VCCustomBuildTool"/>
+							</FileConfiguration>
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
 						</File>
 					</Filter>
 				</Filter>

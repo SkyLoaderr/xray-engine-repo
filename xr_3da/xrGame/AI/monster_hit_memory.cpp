@@ -32,11 +32,12 @@ bool CMonsterHitMemory::is_hit(CObject *pO)
 	return (it != m_hits.end());
 }
 
-void CMonsterHitMemory::add_hit(CObject *who)
+void CMonsterHitMemory::add_hit(CObject *who, EHitSide side)
 {
 	SMonsterHit			new_hit_info;
 	new_hit_info.object = who;
 	new_hit_info.time	= Level().timeServer();
+	new_hit_info.side	= side;
 
 	MONSTER_HIT_VECTOR_IT it = find(m_hits.begin(), m_hits.end(), who);
 
@@ -63,4 +64,54 @@ void CMonsterHitMemory::remove_non_actual()
 {
 	MONSTER_HIT_VECTOR_IT it = remove_if(m_hits.begin(), m_hits.end(), predicate_old_hit(time_memory, Level().timeServer()));
 	m_hits.erase(it, m_hits.end());
+}
+
+Fvector CMonsterHitMemory::get_last_hit_dir()
+{
+	Fvector			dir = monster->Direction();
+
+	// найти последний по времени хит
+	SMonsterHit		last_hit;
+	last_hit.time	= 0;
+
+	for (u32 i = 0; i < m_hits.size(); i++) {
+		if (m_hits[i].time > last_hit.time)	last_hit = m_hits[i];
+	}
+
+	// если есть хит, вычислить направление
+	if (last_hit.time != 0) {
+
+		float h,p;
+		dir.getHP(h,p);
+		
+		switch (last_hit.side) {
+			case eSideBack:
+				h += PI;
+				break;
+			case eSideLeft:
+				h += PI_DIV_2;
+				break;
+			case eSideRight:
+				h -= PI_DIV_2;
+				break;
+		}
+
+		h = angle_normalize(h);
+		dir.setHP(h,p);
+		dir.normalize();
+	}
+
+	return dir;
+}
+
+TTime CMonsterHitMemory::get_last_hit_time()
+{
+	SMonsterHit		last_hit;
+	last_hit.time	= 0;
+
+	for (u32 i = 0; i < m_hits.size(); i++) {
+		if (m_hits[i].time > last_hit.time)	last_hit = m_hits[i];
+	}
+
+	return last_hit.time;
 }

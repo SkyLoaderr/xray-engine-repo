@@ -139,16 +139,16 @@ void CTelekinesis::PhDataUpdate(dReal step)
 bool RemovePred(CTelekineticObject &tele_object)
 {
 	return (!tele_object.get_object() || 
-			tele_object.get_object()->getDestroy() ||
-			!tele_object.get_object()->m_pPhysicsShell ||
-			!tele_object.get_object()->m_pPhysicsShell->bActive);
+		tele_object.get_object()->getDestroy() ||
+		!tele_object.get_object()->m_pPhysicsShell ||
+		!tele_object.get_object()->m_pPhysicsShell->bActive);
 }
 
 void  CTelekinesis::PhTune(dReal step)
 {
 	if (!active) return;
 
-	//убрать все объеты с getDestroy() == true
+	//убрать все объеты со старыми параметрами
 	TELE_OBJECTS_IT it = remove_if(objects.begin(),objects.end(), RemovePred);
 	objects.erase(it, objects.end());
 	
