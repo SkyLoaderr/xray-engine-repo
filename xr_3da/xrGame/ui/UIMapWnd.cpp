@@ -47,7 +47,7 @@ void CUICustomMap::Update()
 	UpdateSpots();
 }
 
-void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
+void CUICustomMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
 
 	m_name				= name;
@@ -60,9 +60,9 @@ void CUICustomMap::Init	(shared_str name, CInifile& gameLtx)
 		tex = "ui\\ui_nomap2";
 		tmp.set(-10000.0f,-10000.0f,10000.0f,10000.0f);
 	}
-
 	m_BoundRect.set		(tmp.x, tmp.y, tmp.z, tmp.w);
-	CUIStatic::Init		(tex, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
+	CUIStatic::Init		(tex, sh_name, 0, 0, iFloor(m_BoundRect.width()), iFloor(m_BoundRect.height()) );
+	
 	SetStretchTexture	(true);
 	ClipperOn			();
 	SetWindowName(*m_name);
@@ -275,9 +275,9 @@ CUIGlobalMap::~CUIGlobalMap()
 {
 }
 
-void CUIGlobalMap::Init		(shared_str _name, CInifile& gameLtx)
+void CUIGlobalMap::Init		(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
-	inherited::Init(_name, gameLtx);
+	inherited::Init(name, gameLtx, sh_name);
 
 	CUIXml uiXml;
 	bool xml_result			= uiXml.Init(CONFIG_PATH, UI_PATH, "pda_map.xml");
@@ -416,9 +416,9 @@ CUILevelMap::~CUILevelMap()
 	xr_delete			(m_globalMapSpot);
 }
 
-void CUILevelMap::Init	(shared_str name, CInifile& gameLtx)
+void CUILevelMap::Init	(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
-	inherited::Init(name, gameLtx);
+	inherited::Init(name, gameLtx, "hud\\set");
 
 	Fvector4 tmp = gameLtx.r_fvector4(MapName(),"global_rect");
 	m_GlobalRect.set(tmp.x, tmp.w, tmp.z, tmp.y);
@@ -446,9 +446,9 @@ CUIMiniMap::~CUIMiniMap()
 
 
 
-void CUIMiniMap::Init(shared_str name, CInifile& gameLtx)
+void CUIMiniMap::Init(shared_str name, CInifile& gameLtx, LPCSTR sh_name)
 {
-	inherited::Init(name, gameLtx);
+	inherited::Init(name, gameLtx, sh_name);
 }
 void CUIMiniMap::MoveWndDelta(const Ivector2& d)
 {
@@ -534,7 +534,7 @@ void CUIMapWnd::Init()
 
 	m_GlobalMap				= xr_new<CUIGlobalMap>(this);
 	m_GlobalMap->SetAutoDelete				(true);
-	m_GlobalMap->Init						("global_map",gameLtx);
+	m_GlobalMap->Init						("global_map",gameLtx,"hud\\set");
 	m_UILevelFrame.AttachChild				(m_GlobalMap);
 	m_GlobalMap->SwitchTo					(CUIGlobalMap::stNormal);
 
@@ -552,7 +552,7 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			
-			l->Init(map_name, gameLtx);
+			l->Init(map_name, gameLtx, "hud\\set");
 
 			l->OptimalFit( m_UILevelFrame.GetWndRect() );
 			

@@ -69,12 +69,17 @@ void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 	InitTexture(tex_name);
 }
 
+void CUIStatic::Init(LPCSTR tex_name, LPCSTR sh_name, int x, int y, int width, int height)
+{
+	Init(x, y, width, height);
+	InitTexture(tex_name, sh_name);
+}
 //////////////////////////////////////////////////////////////////////////
 
-void CUIStatic::InitTexture(LPCSTR tex_name)
+void CUIStatic::InitTexture(LPCSTR tex_name, LPCSTR sh_name)
 {
-	m_UIStaticItem.Init(tex_name,"hud\\default", GetAbsoluteRect().left,
-						                         GetAbsoluteRect().top,alNone);
+	m_UIStaticItem.Init(tex_name,sh_name, GetAbsoluteRect().left,
+						                  GetAbsoluteRect().top,alNone);
 	m_bAvailableTexture = true;
 }
 

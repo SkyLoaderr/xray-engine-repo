@@ -35,7 +35,7 @@ public:
 	virtual			~CUICustomMap					();
 	virtual void	SetActivePoint					(const Fvector &vNewPoint);
 
-	virtual void	Init							(shared_str name, CInifile& gameLtx);
+	virtual void	Init							(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	Ivector2		ConvertRealToLocal				(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 	Ivector2		ConvertRealToLocalNoTransform	(const Fvector2& src);// meters->pixels (relatively own left-top pos)
 
@@ -95,7 +95,7 @@ public:
 					CUIGlobalMap			(CUIMapWnd*	pMapWnd);
 	virtual			~CUIGlobalMap			();
 	
-	virtual void	Init					(shared_str name, CInifile& gameLtx);
+	virtual void	Init					(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual void	Draw					();
 	virtual void	Update					();
 
@@ -135,7 +135,7 @@ private:
 public:
 								CUILevelMap			();
 	virtual						~CUILevelMap		();
-	virtual void				Init				(shared_str name, CInifile& gameLtx);
+	virtual void				Init				(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	const Frect&				GlobalRect			() const								{return m_GlobalRect;}
 	virtual CUIGlobalMapSpot*	GlobalMapSpot		()										{return m_globalMapSpot;}
 protected:
@@ -149,7 +149,7 @@ class CUIMiniMap: public CUICustomMap{
 public:
 								CUIMiniMap			();
 	virtual						~CUIMiniMap			();
-	virtual void				Init				(shared_str name, CInifile& gameLtx);
+	virtual void				Init				(shared_str name, CInifile& gameLtx, LPCSTR sh_name);
 	virtual	void				MoveWndDelta		(const Ivector2& d);
 protected:
 	virtual void				UpdateSpots			();

@@ -52,7 +52,7 @@ void CUIZoneMap::Init()
 	
 	m_activeMap = xr_new<CUIMiniMap>();
 	m_activeMap->SetAutoDelete(true);
-	m_activeMap->Init(Level().name(),gameLtx);
+	m_activeMap->Init(Level().name(),gameLtx,"hud\\default");
 	m_clipFrame.AttachChild(m_activeMap);
 	m_activeMap->SetClipRect( m_clipFrame.GetAbsoluteRect() );
 	m_activeMap->SetZoomFactor( float(m_clipFrame.GetWndRect().width())/100.0f );
