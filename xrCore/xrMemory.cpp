@@ -61,8 +61,6 @@ void	xrMemory::_initialize	(BOOL bDebug)
 	mem_initialized				= TRUE;
 	g_pStringContainer			= xr_new<str_container>		();
 	g_pSharedMemoryContainer	= xr_new<smem_container>	();
-	Memory.dbg_check();
-Memory.dbg_check();
 }
 
 extern void dbg_dump_leaks();
@@ -71,7 +69,9 @@ void	xrMemory::_destroy()
 	xr_delete					(g_pSharedMemoryContainer);
 	xr_delete					(g_pStringContainer);
 
+#ifndef M_BORLAND
 	if (debug_mode)				dbg_dump_leaks();
+#endif    
 
 	mem_initialized				= FALSE;
 	debug_mode					= FALSE;
