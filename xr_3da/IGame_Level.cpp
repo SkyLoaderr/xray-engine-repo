@@ -90,7 +90,7 @@ BOOL IGame_Level::Load				(u32 dwNum)
 	// Render-level Load
 	Render->level_Load			();
 	tscreate.FrameEnd			();
-	Msg							("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
+	// Msg						("* S-CREATE: %f ms, %d times",tscreate.result,tscreate.count);
 
 	// Objects
 	pApp->LoadTitle				("Loading game...");

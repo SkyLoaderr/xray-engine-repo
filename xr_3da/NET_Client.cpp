@@ -372,7 +372,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 					receive.setFromWORDS		(cfg->receive);
 					net_Compressor.Initialize	(send,receive);
 					net_Connected				= TRUE;
-					Msg("* New reparse point received");
+					// Msg("* New reparse point received");
 				} else {
 					Msg("! Unknown system message");
 				}
