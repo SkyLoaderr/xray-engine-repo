@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <d3dx9.h>
+
 #include "TextureManager.h"
 #include "tss.h"
 #include "blenders\blender.h"

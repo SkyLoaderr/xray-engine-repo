@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <d3dx9.h>
+
 #include "image.h"
 #include "texture.h"
 #include "std_classes.h"

@@ -14,7 +14,6 @@
 #define DIRECTINPUT_VERSION 0x0700
 #pragma warning(disable:4995)
 #include <d3d9.h>
-#include <d3dx9.h>
 #include <dinput.h>
 #include <dplay8.h>
 #pragma warning(default:4995)

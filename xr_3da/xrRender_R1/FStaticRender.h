@@ -54,7 +54,7 @@ public:
 	CHOM													HOM;
 	
 	// Global vertex-buffer container
-	typedef svector<D3DVERTEXELEMENT9,MAX_FVF_DECL_SIZE>	VertexDeclarator;
+	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
 	vector<VertexDeclarator>								DCL;
 	vector<IDirect3DVertexBuffer9*>							VB;
 	vector<IDirect3DIndexBuffer9*>							IB;

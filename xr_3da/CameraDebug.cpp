@@ -3,8 +3,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+
+#include <d3dx9.h>
+
 #include "CameraDebug.h"
-#include "device.h"
 #include "x_ray.h"
 #include "xr_ioconsole.h"
 #include "xr_creator.h"

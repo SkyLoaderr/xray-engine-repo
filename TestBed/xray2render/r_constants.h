@@ -80,7 +80,7 @@ private:
 	void					fatal		(LPCSTR s);
 public:
 	void					clear		();
-	BOOL					parse		(D3DXSHADER_CONSTANTTABLE* desc, u16 destination);
+	BOOL					parse		(void* desc, u16 destination);
 	void					merge		(R_constant_table* C);
 	R_constant*				get			(LPCSTR name);
 
