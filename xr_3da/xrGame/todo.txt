@@ -5,12 +5,12 @@
 	+ TODO: Engine: LOD rendering
 	+ TODO: Engine: Single VB/IB
 	+ TODO: Engine: Native vertex-shaders
-	. TODO: Detail texturing
-	. TODO: Show mip-maps
-	. TODO: Fog-pass
-	. TODO: Usage list
-	+ TODO: Load Cubemap
-	. TODO: Generate Cubemap
+	+ TODO: Engine: Detail texturing
+	. TODO: Engine: Show mip-maps
+	. TODO: Engine: Fog-pass
+	. TODO: Engine: Usage list
+	+ TODO: Engine: Load Cubemap
+	. TODO: Engine: Generate Cubemap
 
 	+ TODO: Weapons as 'native' objects
 	+ BUG:  NET: Can't connect
