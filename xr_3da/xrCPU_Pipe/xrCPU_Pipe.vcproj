@@ -21,8 +21,7 @@
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
 			CharacterSet="2"
-			WholeProgramOptimization="TRUE"
-			CompilerName="Microsoft">
+			WholeProgramOptimization="TRUE">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="3"
@@ -93,8 +92,7 @@
 			ConfigurationType="2"
 			UseOfMFC="0"
 			ATLMinimizesCRunTimeLibraryUsage="FALSE"
-			CharacterSet="2"
-			CompilerName="Microsoft">
+			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
@@ -108,7 +106,7 @@
 				AssemblerListingLocation=".\Debug/"
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
-				WarningLevel="3"
+				WarningLevel="1"
 				SuppressStartupBanner="TRUE"
 				DebugInformationFormat="4"
 				CallingConvention="2"/>
@@ -168,39 +166,50 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\StdAfx.h"/>
+				RelativePath=".\StdAfx.h">
+			</File>
 			<File
-				RelativePath=".\xrCPU_Pipe.cpp"/>
+				RelativePath=".\xrCPU_Pipe.cpp">
+			</File>
 			<File
-				RelativePath=".\xrCPU_Pipe.h"/>
+				RelativePath=".\xrCPU_Pipe.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="3DNow!"
 			Filter="">
 			<File
-				RelativePath=".\3DNow!Lib.cpp"/>
+				RelativePath=".\3DNow!Lib.cpp">
+			</File>
 			<File
-				RelativePath=".\xrBoneLerp_3DNow!.cpp"/>
+				RelativePath=".\xrBoneLerp_3DNow!.cpp">
+			</File>
 			<File
-				RelativePath=".\xrM44mul_3DNow!.cpp"/>
+				RelativePath=".\xrM44mul_3DNow!.cpp">
+			</File>
 			<File
-				RelativePath=".\xrMemCopy8_3DNow!.cpp"/>
+				RelativePath=".\xrMemCopy8_3DNow!.cpp">
+			</File>
 			<File
-				RelativePath=".\xrMemFill32_3DNow!.cpp"/>
+				RelativePath=".\xrMemFill32_3DNow!.cpp">
+			</File>
 			<File
-				RelativePath=".\xrSkin1W_3DNow!.cpp"/>
+				RelativePath=".\xrSkin1W_3DNow!.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="SSE"
 			Filter="">
 			<File
-				RelativePath=".\xrSkin1W_SSE.cpp"/>
+				RelativePath=".\xrSkin1W_SSE.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Generic x86"
 			Filter="">
 			<File
-				RelativePath=".\xrBoneLerp.cpp"/>
+				RelativePath=".\xrBoneLerp.cpp">
+			</File>
 			<File
 				RelativePath=".\xrM44mul.cpp">
 				<FileConfiguration
@@ -211,12 +220,16 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\xrQuatSlerp.cpp"/>
+				RelativePath=".\xrQuatSlerp.cpp">
+			</File>
 			<File
-				RelativePath=".\xrSkin1W.cpp"/>
+				RelativePath=".\xrSkin1W.cpp">
+			</File>
 			<File
-				RelativePath=".\xrTransfer.cpp"/>
+				RelativePath=".\xrTransfer.cpp">
+			</File>
 		</Filter>
 	</Files>
-	<Globals/>
+	<Globals>
+	</Globals>
 </VisualStudioProject>
