@@ -71,6 +71,7 @@ extern "C" int dSortTriBoxCollide (
 								)
 {
 //	Log("in dSortTriBoxCollide");
+	//Msg("%f",dInfinity);
 	int ret=0;
 	Triangle tri;
 	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
@@ -272,13 +273,13 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	dReal* R=const_cast<dReal*>(dGeomGetRotation(Box));
 
 	AABB.x=(dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[1])+dFabs(BoxSides[2]*R[2]))/2.f+1.f*EPS_L;
-	AABB.y=(dFabs(BoxSides[0]*R[4])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[6]))/2.f+EPS_L;//*1000.f;
+	AABB.y=(dFabs(BoxSides[0]*R[4])+dFabs(BoxSides[1]*R[5])+dFabs(BoxSides[2]*R[6]))/2.f+EPS_L;
 	AABB.z=(dFabs(BoxSides[0]*R[8])+dFabs(BoxSides[1]*R[9])+dFabs(BoxSides[2]*R[10]))/2.f+1.f*EPS_L;
 
 	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Box));
-	AABB.x+=dFabs(velocity[0])*0.02;
-	AABB.y+=dFabs(velocity[1])*0.02;
-	AABB.z+=dFabs(velocity[2])*0.02;
+	AABB.x+=dFabs(velocity[0])*0.01f;
+	AABB.y+=dFabs(velocity[1])*0.01f;
+	AABB.z+=dFabs(velocity[2])*0.01f;
 	//
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);
