@@ -22,7 +22,13 @@ CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
 {
-	free_map					(m_tObjectRegistry);
+//	OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();
+//	OBJECT_PAIR_IT				E = m_tObjectRegistry.end();
+//	for ( ; I != E; I++)
+//		if (!(*I).second->m_bOnline)
+//			xr_delete((*I).second);
+	Msg							("Destroying object registry");
+	//free_map					(m_tObjectRegistry);
 }
 
 void CSE_ALifeObjectRegistry::Save(IWriter &tMemoryStream)
@@ -401,7 +407,7 @@ CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
 {
-	free_object_vector				(m_tpSpawnPoints);
+	//free_object_vector				(m_tpSpawnPoints);
 }
 
 void CSE_ALifeSpawnRegistry::Init()

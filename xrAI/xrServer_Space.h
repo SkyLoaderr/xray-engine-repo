@@ -46,7 +46,7 @@ DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
 
 template <class T> void	F_entity_Destroy	(T *&P)
 {
-	xr_delete(P);
+	xr_delete	(P);
 };
 
 #endif

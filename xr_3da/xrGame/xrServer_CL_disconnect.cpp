@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "hudmanager.h"
+#include "game_sv_single.h"
+#include "ai_alife.h"
 
 void xrServer::OnCL_Disconnected	(IClient* CL)
 {
@@ -22,12 +24,18 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 		}
 	} else {
 		// Destroy entities
-		for (; I!=E; I++)
-		{
+		for (; I!=E; I++) {
 			CSE_Abstract*	entity		= I->second;
-			entities.erase	(entity->ID);
+			//entities.erase	(entity->ID);
+
+			//////////////////////////////////////////////////////////////////////////
+			//.!!! What does it mean?! we cannot specify E instead of entities.end(), 
+			// because we change map during the loop
+			//////////////////////////////////////////////////////////////////////////
+			
 			entity_Destroy	(entity);
 		}
+		entities.clear();
 	}
 	csPlayers.Leave			();
 }

@@ -24,6 +24,30 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_Abstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
+{
+	RespawnTime					= 0;
+	net_Ready					= FALSE;
+	ID							= 0xffff;
+	ID_Parent					= 0xffff;
+	ID_Phantom					= 0xffff;
+	owner						= 0;
+	s_gameid					= 0;
+	s_RP						= 0xFE;			// Use supplied coords
+	s_flags.set					(0);
+	Memory.mem_copy				(s_name,caSection,((u32)strlen(caSection) + 1)*sizeof(char));
+	ZeroMemory					(s_name_replace,sizeof(string64));
+	o_Angle.set					(0.f,0.f,0.f);
+	o_Position.set				(0.f,0.f,0.f);
+	m_bALifeControl				= false;
+	m_wVersion					= 0;
+}
+
+CSE_Abstract::~CSE_Abstract					()
+{
+	Msg							("Destroying object %s",s_name);
+}
+	
 void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
 	// generic
