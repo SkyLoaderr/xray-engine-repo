@@ -285,13 +285,16 @@ void CActor::Die	( )
 	mstate_real		&=		~mcAnyMove;
 
 	// Drop active weapon
-	CObject*		O		= Weapons->ActiveWeapon();
-	if (O) 
+	if (Local()) 
 	{
-		NET_Packet		P;
-		u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-		P.w_u16			(u16(O->ID()));
-		u_EventSend		(P);
+		CObject*		O		= Weapons->ActiveWeapon();
+		if (O) 
+		{
+			NET_Packet		P;
+			u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
+			P.w_u16			(u16(O->ID()));
+			u_EventSend		(P);
+		}
 	}
 }
 
