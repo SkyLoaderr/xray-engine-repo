@@ -554,6 +554,38 @@ tracer			= on
 wm_size         = 0.05
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_gauss]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\ammo_gauss" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = weapon\ammo\ammo_gauss.ogf
+$prefetch 		= 64
+
+cost					 = 50
+
+box_size		= 60
+
+inv_name		= "9x10 ROUNDS"
+inv_name_short		= "ROUNDS"
+inv_weight		= .5
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 17
+inv_grid_y			= 10
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1.2
+k_pierce		= 1
+impair			= 0.7
+buck_shot		= 1
+tracer			= on
+wm_size         = 0.05
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x39_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
